@@ -187,6 +187,10 @@ var dict = {
   "objecttype_contentversion": "Document",
   "collaborationgroup": "Groupe de collaboration",
   "objecttype_collaborationgroup": "Groupe de collaboration",
+  "phonecall": "Appel téléphonique",
+  "objecttype_phonecall": "Appel téléphonique",
+  "appointment": "Rendez vous",
+  "objecttype_appointment": "Rendez vous",
   "box user": "Utilisateur",
   "filetype_box user": "Utilisateur",
   "html": "Fichier HTML",
@@ -525,6 +529,8 @@ var dict = {
   "filetype_youtubevideo": "Vidéos YouTube",
   "youtubeplaylistitem": "Élément de liste de lecture",
   "filetype_youtubeplaylistitem": "Élément de liste de lecture",
+  "youtubeplaylist": "Liste de lecture",
+  "filetype_youtubeplaylist": "Liste de lecture",
   "Unknown": "Inconnu",
   "And": "ET",
   "Authenticating": "Authentification à {0} en cours...",
@@ -829,6 +835,9 @@ var dict = {
   "WithinLastWeek": "Depuis la dernière semaine",
   "WithinLastMonth": "Depuis le dernier mois",
   "WithinLastYear": "Depuis la dernière année",
+  "RelevanceInspector": "Inspecteur de Pertinence des Documents",
+  "KeywordInCategory": "{0} dans {1}",
+  "ResultCount": "{0} résultats",
 }
   var locales = String["locales"] || (String["locales"] = {});
   locales["fr"] = merge(locales["fr"], dict);
@@ -948,6 +957,10 @@ var dict = {
   "objecttype_contentversion": "Document",
   "collaborationgroup": "Groupe de collaboration",
   "objecttype_collaborationgroup": "Groupe de collaboration",
+  "phonecall": "Appel téléphonique",
+  "objecttype_phonecall": "Appel téléphonique",
+  "appointment": "Rendez vous",
+  "objecttype_appointment": "Rendez vous",
   "box user": "Utilisateur",
   "filetype_box user": "Utilisateur",
   "html": "Fichier HTML",
@@ -1286,6 +1299,8 @@ var dict = {
   "filetype_youtubevideo": "Vidéos YouTube",
   "youtubeplaylistitem": "Élément de liste de lecture",
   "filetype_youtubeplaylistitem": "Élément de liste de lecture",
+  "youtubeplaylist": "Liste de lecture",
+  "filetype_youtubeplaylist": "Liste de lecture",
   "Unknown": "Inconnu",
   "And": "ET",
   "Authenticating": "Authentification à {0} en cours...",
@@ -1590,6 +1605,9 @@ var dict = {
   "WithinLastWeek": "Depuis la dernière semaine",
   "WithinLastMonth": "Depuis le dernier mois",
   "WithinLastYear": "Depuis la dernière année",
+  "RelevanceInspector": "Inspecteur de Pertinence des Documents",
+  "KeywordInCategory": "{0} dans {1}",
+  "ResultCount": "{0} résultats",
 }
 
   var locales = String["locales"] || (String["locales"] = {});

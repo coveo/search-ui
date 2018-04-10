@@ -141,6 +141,10 @@ var dict = {
   "objecttype_contentversion": "Document",
   "collaborationgroup": "Collaboration group",
   "objecttype_collaborationgroup": "Collaboration group",
+  "phonecall": "Phone call",
+  "objecttype_phonecall": "Phone call",
+  "appointment": "Appointment",
+  "objecttype_appointment": "Appointment",
   "box user": "User",
   "filetype_box user": "User",
   "html": "HTML File",
@@ -479,6 +483,8 @@ var dict = {
   "filetype_youtubevideo": "YouTube video",
   "youtubeplaylistitem": "YouTube playlist item",
   "filetype_youtubeplaylistitem": "YouTube playlist item",
+  "youtubeplaylist": "YouTube playlist",
+  "filetype_youtubeplaylist": "YouTube playlist",
   "Unknown": "Unknown",
   "And": "AND",
   "Authenticating": "Authenticating {0}...",
@@ -783,6 +789,9 @@ var dict = {
   "WithinLastWeek": "Within last week",
   "WithinLastMonth": "Within last month",
   "WithinLastYear": "Within last year",
+  "RelevanceInspector": "Relevance Inspector",
+  "KeywordInCategory": "{0} in {1}",
+  "ResultCount": "{0} results",
 }
   var locales = String["locales"] || (String["locales"] = {});
   locales["en"] = merge(locales["en"], dict);
@@ -902,6 +911,10 @@ var dict = {
   "objecttype_contentversion": "Document",
   "collaborationgroup": "Collaboration group",
   "objecttype_collaborationgroup": "Collaboration group",
+  "phonecall": "Phone call",
+  "objecttype_phonecall": "Phone call",
+  "appointment": "Appointment",
+  "objecttype_appointment": "Appointment",
   "box user": "User",
   "filetype_box user": "User",
   "html": "HTML File",
@@ -1240,6 +1253,8 @@ var dict = {
   "filetype_youtubevideo": "YouTube video",
   "youtubeplaylistitem": "YouTube playlist item",
   "filetype_youtubeplaylistitem": "YouTube playlist item",
+  "youtubeplaylist": "YouTube playlist",
+  "filetype_youtubeplaylist": "YouTube playlist",
   "Unknown": "Unknown",
   "And": "AND",
   "Authenticating": "Authenticating {0}...",
@@ -1544,6 +1559,9 @@ var dict = {
   "WithinLastWeek": "Within last week",
   "WithinLastMonth": "Within last month",
   "WithinLastYear": "Within last year",
+  "RelevanceInspector": "Relevance Inspector",
+  "KeywordInCategory": "{0} in {1}",
+  "ResultCount": "{0} results",
 }
 
   var locales = String["locales"] || (String["locales"] = {});

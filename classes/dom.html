@@ -162,6 +162,9 @@
 								<a href="dom.html#isempty" class="tsd-kind-icon">is<wbr>Empty</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="dom.html#isvisible" class="tsd-kind-icon">is<wbr>Visible</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="dom.html#nodelisttoarray" class="tsd-kind-icon">node<wbr>List<wbr>ToArray</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
@@ -302,6 +305,7 @@
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="dom.html#is" class="tsd-kind-icon">is</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="dom.html#isdescendant" class="tsd-kind-icon">is<wbr>Descendant</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="dom.html#isempty" class="tsd-kind-icon">is<wbr>Empty</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="dom.html#isvisible" class="tsd-kind-icon">is<wbr>Visible</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="dom.html#nodelisttoarray" class="tsd-kind-icon">node<wbr>List<wbr>ToArray</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="dom.html#off" class="tsd-kind-icon">off</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="dom.html#offset" class="tsd-kind-icon">offset</a></li>
@@ -342,15 +346,15 @@
 					<a name="addclass" class="tsd-anchor"></a>
 					<h3>add<wbr>Class</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">add<wbr>Class<span class="tsd-signature-symbol">(</span>classNames<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">add<wbr>Class<span class="tsd-signature-symbol">(</span>classNames<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L335">src/utils/Dom.ts
-									:335</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/utils/Dom.ts#L354">utils/Dom.ts
+									:354</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -361,7 +365,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>classNames: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h5>
+									<h5>classNames: <span class="tsd-signature-type">string[]</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -379,7 +383,7 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L74">src/utils/Dom.ts
+										<a href="https://github.com/coveo/search-ui/tree/master/utils/Dom.ts#L74">utils/Dom.ts
 									:74</a></li>
 								</ul>
 							</aside>
@@ -405,15 +409,15 @@
 					<a name="children" class="tsd-anchor"></a>
 					<h3>children</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">children<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLElement</span><span class="tsd-signature-symbol">[]</span></li>
+						<li class="tsd-signature tsd-kind-icon">children<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLElement[]</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L269">src/utils/Dom.ts
-									:269</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/utils/Dom.ts#L290">utils/Dom.ts
+									:290</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -421,7 +425,7 @@
 									<p>Return all children</p>
 								</div>
 							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">HTMLElement</span><span class="tsd-signature-symbol">[]</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">HTMLElement[]</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -436,8 +440,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L687">src/utils/Dom.ts
-									:687</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/utils/Dom.ts#L706">utils/Dom.ts
+									:706</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -469,8 +473,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L231">src/utils/Dom.ts
-									:231</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/utils/Dom.ts#L252">utils/Dom.ts
+									:252</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -503,7 +507,7 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L83">src/utils/Dom.ts
+										<a href="https://github.com/coveo/search-ui/tree/master/utils/Dom.ts#L83">utils/Dom.ts
 									:83</a></li>
 								</ul>
 							</aside>
@@ -536,8 +540,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L416">src/utils/Dom.ts
-									:416</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/utils/Dom.ts#L435">utils/Dom.ts
+									:435</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -560,7 +564,7 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L125">src/utils/Dom.ts
+										<a href="https://github.com/coveo/search-ui/tree/master/utils/Dom.ts#L125">utils/Dom.ts
 									:125</a></li>
 								</ul>
 							</aside>
@@ -584,8 +588,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L197">src/utils/Dom.ts
-									:197</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/utils/Dom.ts#L218">utils/Dom.ts
+									:218</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -610,15 +614,15 @@
 					<a name="findall" class="tsd-anchor"></a>
 					<h3>find<wbr>All</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">find<wbr>All<span class="tsd-signature-symbol">(</span>selector<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLElement</span><span class="tsd-signature-symbol">[]</span></li>
+						<li class="tsd-signature tsd-kind-icon">find<wbr>All<span class="tsd-signature-symbol">(</span>selector<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLElement[]</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L305">src/utils/Dom.ts
-									:305</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/utils/Dom.ts#L326">utils/Dom.ts
+									:326</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -635,7 +639,7 @@
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">HTMLElement</span><span class="tsd-signature-symbol">[]</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">HTMLElement[]</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -643,15 +647,15 @@
 					<a name="findclass" class="tsd-anchor"></a>
 					<h3>find<wbr>Class</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">find<wbr>Class<span class="tsd-signature-symbol">(</span>className<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLElement</span><span class="tsd-signature-symbol">[]</span></li>
+						<li class="tsd-signature tsd-kind-icon">find<wbr>Class<span class="tsd-signature-symbol">(</span>className<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLElement[]</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L314">src/utils/Dom.ts
-									:314</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/utils/Dom.ts#L335">utils/Dom.ts
+									:335</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -668,7 +672,7 @@
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">HTMLElement</span><span class="tsd-signature-symbol">[]</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">HTMLElement[]</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -683,8 +687,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L327">src/utils/Dom.ts
-									:327</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/utils/Dom.ts#L346">utils/Dom.ts
+									:346</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -716,8 +720,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L179">src/utils/Dom.ts
-									:179</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/utils/Dom.ts#L200">utils/Dom.ts
+									:200</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -742,15 +746,15 @@
 					<a name="getclass" class="tsd-anchor"></a>
 					<h3>get<wbr>Class</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Class<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></li>
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Class<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string[]</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L394">src/utils/Dom.ts
-									:394</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/utils/Dom.ts#L413">utils/Dom.ts
+									:413</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -758,7 +762,7 @@
 									<p>Return an array with all the classname on the element. Empty array if the element has not classname</p>
 								</div>
 							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string[]</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -773,8 +777,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L409">src/utils/Dom.ts
-									:409</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/utils/Dom.ts#L428">utils/Dom.ts
+									:428</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -806,8 +810,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L678">src/utils/Dom.ts
-									:678</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/utils/Dom.ts#L697">utils/Dom.ts
+									:697</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -830,7 +834,7 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L150">src/utils/Dom.ts
+										<a href="https://github.com/coveo/search-ui/tree/master/utils/Dom.ts#L150">utils/Dom.ts
 									:150</a></li>
 								</ul>
 							</aside>
@@ -854,8 +858,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L424">src/utils/Dom.ts
-									:424</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/utils/Dom.ts#L443">utils/Dom.ts
+									:443</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -886,8 +890,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L432">src/utils/Dom.ts
-									:432</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/utils/Dom.ts#L451">utils/Dom.ts
+									:451</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -918,8 +922,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L206">src/utils/Dom.ts
-									:206</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/utils/Dom.ts#L227">utils/Dom.ts
+									:227</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -950,8 +954,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L568">src/utils/Dom.ts
-									:568</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/utils/Dom.ts#L587">utils/Dom.ts
+									:587</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -980,8 +984,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L560">src/utils/Dom.ts
-									:560</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/utils/Dom.ts#L579">utils/Dom.ts
+									:579</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -994,17 +998,42 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="nodelisttoarray" class="tsd-anchor"></a>
-					<h3>node<wbr>List<wbr>ToArray</h3>
+					<a name="isvisible" class="tsd-anchor"></a>
+					<h3>is<wbr>Visible</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">node<wbr>List<wbr>ToArray<span class="tsd-signature-symbol">(</span>nodeList<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">NodeList</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLElement</span><span class="tsd-signature-symbol">[]</span></li>
+						<li class="tsd-signature tsd-kind-icon">is<wbr>Visible<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L113">src/utils/Dom.ts
+										<a href="https://github.com/coveo/search-ui/tree/master/utils/Dom.ts#L180">utils/Dom.ts
+									:180</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Tries to determine if an element is &quot;visible&quot;, in a generic manner.</p>
+								</div>
+								<p>This is not meant to be a &quot;foolproof&quot; method, but only a superficial &quot;best effort&quot; detection is performed.</p>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="nodelisttoarray" class="tsd-anchor"></a>
+					<h3>node<wbr>List<wbr>ToArray</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">node<wbr>List<wbr>ToArray<span class="tsd-signature-symbol">(</span>nodeList<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">NodeList</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLElement[]</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in
+										<a href="https://github.com/coveo/search-ui/tree/master/utils/Dom.ts#L113">utils/Dom.ts
 									:113</a></li>
 								</ul>
 							</aside>
@@ -1023,7 +1052,7 @@
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">HTMLElement</span><span class="tsd-signature-symbol">[]</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">HTMLElement[]</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -1031,15 +1060,15 @@
 					<a name="off" class="tsd-anchor"></a>
 					<h3>off</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">off<span class="tsd-signature-symbol">(</span>types<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span>, eventHandle<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">off<span class="tsd-signature-symbol">(</span>types<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string[]</span>, eventHandle<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L508">src/utils/Dom.ts
-									:508</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/utils/Dom.ts#L527">utils/Dom.ts
+									:527</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1050,7 +1079,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>types: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h5>
+									<h5>types: <span class="tsd-signature-type">string[]</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>The {string} or {Array<String>} of types on which to remove an event handler</p>
 									</div>
@@ -1098,8 +1127,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L648">src/utils/Dom.ts
-									:648</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/utils/Dom.ts#L667">utils/Dom.ts
+									:667</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1122,8 +1151,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L630">src/utils/Dom.ts
-									:630</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/utils/Dom.ts#L649">utils/Dom.ts
+									:649</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1140,15 +1169,15 @@
 					<a name="on" class="tsd-anchor"></a>
 					<h3>on</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">on<span class="tsd-signature-symbol">(</span>types<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span>, eventHandle<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">on<span class="tsd-signature-symbol">(</span>types<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string[]</span>, eventHandle<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L453">src/utils/Dom.ts
-									:453</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/utils/Dom.ts#L472">utils/Dom.ts
+									:472</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1159,7 +1188,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>types: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h5>
+									<h5>types: <span class="tsd-signature-type">string[]</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>The {string} or {Array<String>} of types on which to bind an event handler</p>
 									</div>
@@ -1200,15 +1229,15 @@
 					<a name="one" class="tsd-anchor"></a>
 					<h3>one</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">one<span class="tsd-signature-symbol">(</span>types<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span>, eventHandle<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">one<span class="tsd-signature-symbol">(</span>types<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string[]</span>, eventHandle<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L486">src/utils/Dom.ts
-									:486</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/utils/Dom.ts#L505">utils/Dom.ts
+									:505</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1220,7 +1249,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>types: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h5>
+									<h5>types: <span class="tsd-signature-type">string[]</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>The {string} or {Array<String>} of types on which to bind an event handler</p>
 									</div>
@@ -1268,8 +1297,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L241">src/utils/Dom.ts
-									:241</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/utils/Dom.ts#L262">utils/Dom.ts
+									:262</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1292,15 +1321,15 @@
 					<a name="parents" class="tsd-anchor"></a>
 					<h3>parents</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">parents<span class="tsd-signature-symbol">(</span>className<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLElement</span><span class="tsd-signature-symbol">[]</span></li>
+						<li class="tsd-signature tsd-kind-icon">parents<span class="tsd-signature-symbol">(</span>className<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLElement[]</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L255">src/utils/Dom.ts
-									:255</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/utils/Dom.ts#L276">utils/Dom.ts
+									:276</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1315,7 +1344,7 @@
 									<h5>className: <span class="tsd-signature-type">string</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">HTMLElement</span><span class="tsd-signature-symbol">[]</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">HTMLElement[]</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -1330,8 +1359,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L595">src/utils/Dom.ts
-									:595</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/utils/Dom.ts#L614">utils/Dom.ts
+									:614</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1354,8 +1383,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L440">src/utils/Dom.ts
-									:440</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/utils/Dom.ts#L459">utils/Dom.ts
+									:459</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1386,7 +1415,7 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L134">src/utils/Dom.ts
+										<a href="https://github.com/coveo/search-ui/tree/master/utils/Dom.ts#L134">utils/Dom.ts
 									:134</a></li>
 								</ul>
 							</aside>
@@ -1410,8 +1439,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L357">src/utils/Dom.ts
-									:357</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/utils/Dom.ts#L376">utils/Dom.ts
+									:376</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1443,8 +1472,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L583">src/utils/Dom.ts
-									:583</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/utils/Dom.ts#L602">utils/Dom.ts
+									:602</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1475,8 +1504,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L188">src/utils/Dom.ts
-									:188</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/utils/Dom.ts#L209">utils/Dom.ts
+									:209</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1514,8 +1543,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L386">src/utils/Dom.ts
-									:386</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/utils/Dom.ts#L405">utils/Dom.ts
+									:405</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1547,7 +1576,7 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L143">src/utils/Dom.ts
+										<a href="https://github.com/coveo/search-ui/tree/master/utils/Dom.ts#L143">utils/Dom.ts
 									:143</a></li>
 								</ul>
 							</aside>
@@ -1564,15 +1593,15 @@
 					<a name="siblings" class="tsd-anchor"></a>
 					<h3>siblings</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">siblings<span class="tsd-signature-symbol">(</span>selector<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLElement</span><span class="tsd-signature-symbol">[]</span></li>
+						<li class="tsd-signature tsd-kind-icon">siblings<span class="tsd-signature-symbol">(</span>selector<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLElement[]</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L277">src/utils/Dom.ts
-									:277</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/utils/Dom.ts#L298">utils/Dom.ts
+									:298</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1586,7 +1615,7 @@
 									<h5>selector: <span class="tsd-signature-type">string</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">HTMLElement</span><span class="tsd-signature-symbol">[]</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">HTMLElement[]</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -1601,7 +1630,7 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L95">src/utils/Dom.ts
+										<a href="https://github.com/coveo/search-ui/tree/master/utils/Dom.ts#L95">utils/Dom.ts
 									:95</a></li>
 								</ul>
 							</aside>
@@ -1634,7 +1663,7 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L159">src/utils/Dom.ts
+										<a href="https://github.com/coveo/search-ui/tree/master/utils/Dom.ts#L159">utils/Dom.ts
 									:159</a></li>
 								</ul>
 							</aside>
@@ -1668,8 +1697,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L366">src/utils/Dom.ts
-									:366</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/utils/Dom.ts#L385">utils/Dom.ts
+									:385</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1707,8 +1736,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L543">src/utils/Dom.ts
-									:543</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/utils/Dom.ts#L562">utils/Dom.ts
+									:562</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1750,8 +1779,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L671">src/utils/Dom.ts
-									:671</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/utils/Dom.ts#L690">utils/Dom.ts
+									:690</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1774,7 +1803,7 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L44">src/utils/Dom.ts
+										<a href="https://github.com/coveo/search-ui/tree/master/utils/Dom.ts#L44">utils/Dom.ts
 									:44</a></li>
 								</ul>
 							</aside>
@@ -1821,7 +1850,7 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L23">src/utils/Dom.ts
+										<a href="https://github.com/coveo/search-ui/tree/master/utils/Dom.ts#L23">utils/Dom.ts
 									:23</a></li>
 								</ul>
 							</aside>

@@ -339,22 +339,21 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L474">src/ui/Base/QueryBuilder.ts
-									:474</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/ui/Base/QueryBuilder.ts#L472">ui/Base/QueryBuilder.ts
+									:472</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Add a context object to the query.</p>
+									<p>Merges the specified <code>values</code> into the <code>context</code> object.</p>
 								</div>
-								<p>This can contain multiple key-&gt;value.</p>
-								<p>This is used by the Query pipeline in the Coveo platform.</p>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>values: <span class="tsd-signature-type">object</span></h5>
 									<div class="tsd-comment tsd-typography">
+										<p>The object to merge into the <code>context</code> object. Can contain multiple key-value pairs, where each value should be a string or an array of strings. If some keys are already present in the <code>context</code> object, their values are updated.</p>
 									</div>
 									<ul class="tsd-parameters">
 										<li class="tsd-parameter-index-signature">
@@ -378,24 +377,27 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L459">src/ui/Base/QueryBuilder.ts
-									:459</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/ui/Base/QueryBuilder.ts#L460">ui/Base/QueryBuilder.ts
+									:460</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Add a single context key-&gt;value pair to the query.</p>
+									<p>Adds or updates a single context key-value pair in the <code>context</code> object.</p>
 								</div>
-								<p>This is used by the Query pipeline in the Coveo platform.</p>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>key: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The context key. If this key is already present in the <code>context</code> object, its value is updated.</p>
+									</div>
 								</li>
 								<li>
 									<h5>value: <span class="tsd-signature-type">any</span></h5>
 									<div class="tsd-comment tsd-typography">
+										<p>The context value. This should be a string or an array of strings.</p>
 									</div>
 								</li>
 							</ul>
@@ -407,15 +409,15 @@
 					<a name="addfieldstoexclude" class="tsd-anchor"></a>
 					<h3>add<wbr>Fields<wbr>ToExclude</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">add<wbr>Fields<wbr>ToExclude<span class="tsd-signature-symbol">(</span>fields<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">add<wbr>Fields<wbr>ToExclude<span class="tsd-signature-symbol">(</span>fields<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L440">src/ui/Base/QueryBuilder.ts
-									:440</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/ui/Base/QueryBuilder.ts#L442">ui/Base/QueryBuilder.ts
+									:442</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -427,7 +429,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>fields: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h5>
+									<h5>fields: <span class="tsd-signature-type">string[]</span></h5>
 									<div class="tsd-comment tsd-typography">
 									</div>
 								</li>
@@ -440,15 +442,15 @@
 					<a name="addfieldstoinclude" class="tsd-anchor"></a>
 					<h3>add<wbr>Fields<wbr>ToInclude</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">add<wbr>Fields<wbr>ToInclude<span class="tsd-signature-symbol">(</span>fields<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">add<wbr>Fields<wbr>ToInclude<span class="tsd-signature-symbol">(</span>fields<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L426">src/ui/Base/QueryBuilder.ts
-									:426</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/ui/Base/QueryBuilder.ts#L428">ui/Base/QueryBuilder.ts
+									:428</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -460,7 +462,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>fields: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h5>
+									<h5>fields: <span class="tsd-signature-type">string[]</span></h5>
 									<div class="tsd-comment tsd-typography">
 									</div>
 								</li>
@@ -480,8 +482,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L301">src/ui/Base/QueryBuilder.ts
-									:301</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/ui/Base/QueryBuilder.ts#L303">ui/Base/QueryBuilder.ts
+									:303</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -505,8 +507,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L357">src/ui/Base/QueryBuilder.ts
-									:357</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/ui/Base/QueryBuilder.ts#L359">ui/Base/QueryBuilder.ts
+									:359</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -530,8 +532,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L381">src/ui/Base/QueryBuilder.ts
-									:381</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/ui/Base/QueryBuilder.ts#L383">ui/Base/QueryBuilder.ts
+									:383</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -561,8 +563,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L365">src/ui/Base/QueryBuilder.ts
-									:365</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/ui/Base/QueryBuilder.ts#L367">ui/Base/QueryBuilder.ts
+									:367</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -585,8 +587,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L392">src/ui/Base/QueryBuilder.ts
-									:392</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/ui/Base/QueryBuilder.ts#L394">ui/Base/QueryBuilder.ts
+									:394</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -616,8 +618,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L486">src/ui/Base/QueryBuilder.ts
-									:486</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/ui/Base/QueryBuilder.ts#L484">ui/Base/QueryBuilder.ts
+									:484</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -640,8 +642,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L282">src/ui/Base/QueryBuilder.ts
-							:282</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/ui/Base/QueryBuilder.ts#L284">ui/Base/QueryBuilder.ts
+							:284</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -658,7 +660,7 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L30">src/ui/Base/QueryBuilder.ts
+								<a href="https://github.com/coveo/search-ui/tree/master/ui/Base/QueryBuilder.ts#L30">ui/Base/QueryBuilder.ts
 							:30</a></li>
 						</ul>
 					</aside>
@@ -683,8 +685,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L294">src/ui/Base/QueryBuilder.ts
-							:294</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/ui/Base/QueryBuilder.ts#L296">ui/Base/QueryBuilder.ts
+							:296</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -702,7 +704,7 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L225">src/ui/Base/QueryBuilder.ts
+								<a href="https://github.com/coveo/search-ui/tree/master/ui/Base/QueryBuilder.ts#L225">ui/Base/QueryBuilder.ts
 							:225</a></li>
 						</ul>
 					</aside>
@@ -719,7 +721,7 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L37">src/ui/Base/QueryBuilder.ts
+								<a href="https://github.com/coveo/search-ui/tree/master/ui/Base/QueryBuilder.ts#L37">ui/Base/QueryBuilder.ts
 							:37</a></li>
 						</ul>
 					</aside>
@@ -744,14 +746,15 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L277">src/ui/Base/QueryBuilder.ts
-							:277</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/ui/Base/QueryBuilder.ts#L279">ui/Base/QueryBuilder.ts
+							:279</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The context is a map of key_value that can be used in the Query pipeline in the Coveo platform.</p>
+							<p>The custom context information to send along with the query. Each value should be a string or an array of strings.</p>
 						</div>
+						<p>Custom context information can influence the output of Coveo Machine Learning models and can also be used in query pipeline conditions.</p>
 					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
@@ -769,7 +772,7 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L54">src/ui/Base/QueryBuilder.ts
+								<a href="https://github.com/coveo/search-ui/tree/master/ui/Base/QueryBuilder.ts#L54">ui/Base/QueryBuilder.ts
 							:54</a></li>
 						</ul>
 					</aside>
@@ -795,7 +798,7 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L245">src/ui/Base/QueryBuilder.ts
+								<a href="https://github.com/coveo/search-ui/tree/master/ui/Base/QueryBuilder.ts#L245">ui/Base/QueryBuilder.ts
 							:245</a></li>
 						</ul>
 					</aside>
@@ -812,7 +815,7 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L241">src/ui/Base/QueryBuilder.ts
+								<a href="https://github.com/coveo/search-ui/tree/master/ui/Base/QueryBuilder.ts#L241">ui/Base/QueryBuilder.ts
 							:241</a></li>
 						</ul>
 					</aside>
@@ -831,7 +834,7 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L233">src/ui/Base/QueryBuilder.ts
+								<a href="https://github.com/coveo/search-ui/tree/master/ui/Base/QueryBuilder.ts#L233">ui/Base/QueryBuilder.ts
 							:233</a></li>
 						</ul>
 					</aside>
@@ -848,7 +851,7 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L139">src/ui/Base/QueryBuilder.ts
+								<a href="https://github.com/coveo/search-ui/tree/master/ui/Base/QueryBuilder.ts#L139">ui/Base/QueryBuilder.ts
 							:139</a></li>
 						</ul>
 					</aside>
@@ -874,7 +877,7 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L153">src/ui/Base/QueryBuilder.ts
+								<a href="https://github.com/coveo/search-ui/tree/master/ui/Base/QueryBuilder.ts#L153">ui/Base/QueryBuilder.ts
 							:153</a></li>
 						</ul>
 					</aside>
@@ -901,7 +904,7 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L125">src/ui/Base/QueryBuilder.ts
+								<a href="https://github.com/coveo/search-ui/tree/master/ui/Base/QueryBuilder.ts#L125">ui/Base/QueryBuilder.ts
 							:125</a></li>
 						</ul>
 					</aside>
@@ -928,7 +931,7 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L109">src/ui/Base/QueryBuilder.ts
+								<a href="https://github.com/coveo/search-ui/tree/master/ui/Base/QueryBuilder.ts#L109">ui/Base/QueryBuilder.ts
 							:109</a></li>
 						</ul>
 					</aside>
@@ -954,7 +957,7 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L95">src/ui/Base/QueryBuilder.ts
+								<a href="https://github.com/coveo/search-ui/tree/master/ui/Base/QueryBuilder.ts#L95">ui/Base/QueryBuilder.ts
 							:95</a></li>
 						</ul>
 					</aside>
@@ -981,7 +984,7 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L205">src/ui/Base/QueryBuilder.ts
+								<a href="https://github.com/coveo/search-ui/tree/master/ui/Base/QueryBuilder.ts#L205">ui/Base/QueryBuilder.ts
 							:205</a></li>
 						</ul>
 					</aside>
@@ -1000,7 +1003,7 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L23">src/ui/Base/QueryBuilder.ts
+								<a href="https://github.com/coveo/search-ui/tree/master/ui/Base/QueryBuilder.ts#L23">ui/Base/QueryBuilder.ts
 							:23</a></li>
 						</ul>
 					</aside>
@@ -1025,7 +1028,7 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L213">src/ui/Base/QueryBuilder.ts
+								<a href="https://github.com/coveo/search-ui/tree/master/ui/Base/QueryBuilder.ts#L213">ui/Base/QueryBuilder.ts
 							:213</a></li>
 						</ul>
 					</aside>
@@ -1044,7 +1047,7 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L217">src/ui/Base/QueryBuilder.ts
+								<a href="https://github.com/coveo/search-ui/tree/master/ui/Base/QueryBuilder.ts#L217">ui/Base/QueryBuilder.ts
 							:217</a></li>
 						</ul>
 					</aside>
@@ -1061,7 +1064,7 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L191">src/ui/Base/QueryBuilder.ts
+								<a href="https://github.com/coveo/search-ui/tree/master/ui/Base/QueryBuilder.ts#L191">ui/Base/QueryBuilder.ts
 							:191</a></li>
 						</ul>
 					</aside>
@@ -1075,11 +1078,11 @@
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="groupbyrequests" class="tsd-anchor"></a>
 					<h3>group<wbr>ByRequests</h3>
-					<div class="tsd-signature tsd-kind-icon">group<wbr>ByRequests<span class="tsd-signature-symbol">:</span> <a href="../interfaces/igroupbyrequest.html" class="tsd-signature-type">IGroupByRequest</a><span class="tsd-signature-symbol">[]</span></div>
+					<div class="tsd-signature tsd-kind-icon">group<wbr>ByRequests<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">IGroupByRequest[]</span></div>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L272">src/ui/Base/QueryBuilder.ts
+								<a href="https://github.com/coveo/search-ui/tree/master/ui/Base/QueryBuilder.ts#L272">ui/Base/QueryBuilder.ts
 							:272</a></li>
 						</ul>
 					</aside>
@@ -1096,7 +1099,7 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L45">src/ui/Base/QueryBuilder.ts
+								<a href="https://github.com/coveo/search-ui/tree/master/ui/Base/QueryBuilder.ts#L45">ui/Base/QueryBuilder.ts
 							:45</a></li>
 						</ul>
 					</aside>
@@ -1116,7 +1119,7 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L79">src/ui/Base/QueryBuilder.ts
+								<a href="https://github.com/coveo/search-ui/tree/master/ui/Base/QueryBuilder.ts#L79">ui/Base/QueryBuilder.ts
 							:79</a></li>
 						</ul>
 					</aside>
@@ -1135,7 +1138,7 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L197">src/ui/Base/QueryBuilder.ts
+								<a href="https://github.com/coveo/search-ui/tree/master/ui/Base/QueryBuilder.ts#L197">ui/Base/QueryBuilder.ts
 							:197</a></li>
 						</ul>
 					</aside>
@@ -1153,7 +1156,7 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L221">src/ui/Base/QueryBuilder.ts
+								<a href="https://github.com/coveo/search-ui/tree/master/ui/Base/QueryBuilder.ts#L221">ui/Base/QueryBuilder.ts
 							:221</a></li>
 						</ul>
 					</aside>
@@ -1170,7 +1173,7 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L169">src/ui/Base/QueryBuilder.ts
+								<a href="https://github.com/coveo/search-ui/tree/master/ui/Base/QueryBuilder.ts#L169">ui/Base/QueryBuilder.ts
 							:169</a></li>
 						</ul>
 					</aside>
@@ -1197,7 +1200,7 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L185">src/ui/Base/QueryBuilder.ts
+								<a href="https://github.com/coveo/search-ui/tree/master/ui/Base/QueryBuilder.ts#L185">ui/Base/QueryBuilder.ts
 							:185</a></li>
 						</ul>
 					</aside>
@@ -1224,7 +1227,7 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L71">src/ui/Base/QueryBuilder.ts
+								<a href="https://github.com/coveo/search-ui/tree/master/ui/Base/QueryBuilder.ts#L71">ui/Base/QueryBuilder.ts
 							:71</a></li>
 						</ul>
 					</aside>
@@ -1238,11 +1241,11 @@
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="queryfunctions" class="tsd-anchor"></a>
 					<h3>query<wbr>Functions</h3>
-					<div class="tsd-signature tsd-kind-icon">query<wbr>Functions<span class="tsd-signature-symbol">:</span> <a href="../interfaces/iqueryfunction.html" class="tsd-signature-type">IQueryFunction</a><span class="tsd-signature-symbol">[]</span></div>
+					<div class="tsd-signature tsd-kind-icon">query<wbr>Functions<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">IQueryFunction[]</span></div>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L264">src/ui/Base/QueryBuilder.ts
+								<a href="https://github.com/coveo/search-ui/tree/master/ui/Base/QueryBuilder.ts#L264">ui/Base/QueryBuilder.ts
 							:264</a></li>
 						</ul>
 					</aside>
@@ -1255,11 +1258,11 @@
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="rankingfunctions" class="tsd-anchor"></a>
 					<h3>ranking<wbr>Functions</h3>
-					<div class="tsd-signature tsd-kind-icon">ranking<wbr>Functions<span class="tsd-signature-symbol">:</span> <a href="../interfaces/irankingfunction.html" class="tsd-signature-type">IRankingFunction</a><span class="tsd-signature-symbol">[]</span></div>
+					<div class="tsd-signature tsd-kind-icon">ranking<wbr>Functions<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">IRankingFunction[]</span></div>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L268">src/ui/Base/QueryBuilder.ts
+								<a href="https://github.com/coveo/search-ui/tree/master/ui/Base/QueryBuilder.ts#L268">ui/Base/QueryBuilder.ts
 							:268</a></li>
 						</ul>
 					</aside>
@@ -1276,8 +1279,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L286">src/ui/Base/QueryBuilder.ts
-							:286</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/ui/Base/QueryBuilder.ts#L288">ui/Base/QueryBuilder.ts
+							:288</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1293,7 +1296,7 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L60">src/ui/Base/QueryBuilder.ts
+								<a href="https://github.com/coveo/search-ui/tree/master/ui/Base/QueryBuilder.ts#L60">ui/Base/QueryBuilder.ts
 							:60</a></li>
 						</ul>
 					</aside>
@@ -1311,7 +1314,7 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L256">src/ui/Base/QueryBuilder.ts
+								<a href="https://github.com/coveo/search-ui/tree/master/ui/Base/QueryBuilder.ts#L256">ui/Base/QueryBuilder.ts
 							:256</a></li>
 						</ul>
 					</aside>
@@ -1334,7 +1337,7 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L64">src/ui/Base/QueryBuilder.ts
+								<a href="https://github.com/coveo/search-ui/tree/master/ui/Base/QueryBuilder.ts#L64">ui/Base/QueryBuilder.ts
 							:64</a></li>
 						</ul>
 					</aside>
