@@ -395,7 +395,6 @@ export class Initialization {
   /**
    * Scan the element and all its children for known components. Initialize every known component found.
    *
-   * NB : This
    * @param element
    * @param initParameters
    * @param ignore
