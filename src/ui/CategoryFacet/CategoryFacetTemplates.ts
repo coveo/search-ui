@@ -13,7 +13,7 @@ export class CategoryFacetTemplates {
   private collapseArrow: Dom;
 
   constructor() {
-    this.listRoot = $$('ol', { className: 'coveo-facet-values' });
+    this.listRoot = $$('ul', { className: 'coveo-facet-values' });
     this.collapseArrow = $$('span', { className: 'coveo-category-facet-collapse-children' }, SVGIcons.icons.arrowDown);
     SVGDom.addClassToSVGInContainer(this.collapseArrow.el, 'coveo-category-facet-collapse-children-svg');
   }

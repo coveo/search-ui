@@ -7,7 +7,7 @@ import { Utils } from '../../utils/Utils';
 import { each } from 'underscore';
 
 export class CategoryChildrenValueRenderer {
-  private children: CategoryValue[] = [];
+  public children: CategoryValue[] = [];
   private listOfChildValues: Dom;
 
   constructor(
@@ -16,10 +16,6 @@ export class CategoryChildrenValueRenderer {
     private categoryValue: CategoryValueParent,
     private categoryFacet: CategoryFacet
   ) {}
-
-  public getChildren() {
-    return this.children;
-  }
 
   public clearChildrenExceptOne(except: CategoryValue) {
     const newChildren = [];

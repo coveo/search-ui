@@ -19,14 +19,13 @@ export class CategoryValue implements CategoryValueParent {
   private captionOnClick: (e: Event) => void;
 
   public isActive = false;
-
   public categoryChildrenValueRenderer: CategoryChildrenValueRenderer;
 
   constructor(
     private parentElement: Dom,
-    private value: string,
+    public value: string,
     private count: number,
-    private parent: CategoryValueParent,
+    public parent: CategoryValueParent,
     private categoryFacetTemplates: CategoryFacetTemplates,
     private categoryFacet: CategoryFacet
   ) {
@@ -34,14 +33,13 @@ export class CategoryValue implements CategoryValueParent {
     this.collapseArrow = this.categoryFacetTemplates.buildCollapseArrow();
     this.categoryChildrenValueRenderer = new CategoryChildrenValueRenderer(this.element, categoryFacetTemplates, this, this.categoryFacet);
     this.arrowOnClick = () => this.closeChildMenu();
-    this.captionOnClick = () => (this.isActive ? this.closeChildMenu() : this.categoryFacet.updatePath(this.getPath()));
+    this.captionOnClick = () => (this.isActive ? this.closeChildMenu() : this.categoryFacet.changeActivePath(this.getPath()));
     this.getCaption().on('click', this.captionOnClick);
   }
 
   public render() {
     this.parentElement.append(this.element.el);
   }
-
   public hideSiblings() {
     this.parent.hideChildrenExceptOne(this);
   }
@@ -51,7 +49,7 @@ export class CategoryValue implements CategoryValueParent {
   }
 
   public showSiblings() {
-    this.categoryFacet.updatePath(this.parent.getPath());
+    this.categoryFacet.changeActivePath(this.parent.getPath());
   }
 
   public clear() {
@@ -69,14 +67,6 @@ export class CategoryValue implements CategoryValueParent {
     return $$(this.element.find('.coveo-category-facet-value-caption'));
   }
 
-  public getParent() {
-    return this.parent;
-  }
-
-  public getValue() {
-    return this.value;
-  }
-
   public renderChildren(values: ICategoryFacetValue[]) {
     this.isActive = true;
     this.categoryChildrenValueRenderer.renderChildren(values);
@@ -86,6 +76,9 @@ export class CategoryValue implements CategoryValueParent {
     return this.categoryChildrenValueRenderer.renderAsParent(value);
   }
 
+  get children() {
+    return this.categoryChildrenValueRenderer.children;
+  }
   private closeChildMenu() {
     this.isActive = false;
     this.showSiblings();

@@ -9,17 +9,15 @@ import { ICategoryFacetValue } from '../../rest/CategoryFacetValue';
 
 export class CategoryValueRoot implements CategoryValueParent {
   private positionInQuery: number;
-  private activePath: string[] = [];
+
+  public activePath: string[] = [];
+  public activeCategoryValue: CategoryValue | undefined;
   public categoryChildrenValueRenderer: CategoryChildrenValueRenderer;
 
   constructor(element: Dom, categoryFacetTemplates: CategoryFacetTemplates, private categoryFacet: CategoryFacet) {
     this.categoryChildrenValueRenderer = new CategoryChildrenValueRenderer(element, categoryFacetTemplates, this, categoryFacet);
     this.categoryFacet.bind.onRootElement<IBuildingQueryEventArgs>(QueryEvents.buildingQuery, args => this.handleBuildingQuery(args));
     this.categoryFacet.bind.onRootElement<IQuerySuccessEventArgs>(QueryEvents.querySuccess, args => this.handleQuerySuccess(args));
-  }
-
-  public setActivePath(path: string[]) {
-    this.activePath = path;
   }
 
   public handleBuildingQuery(args: IBuildingQueryEventArgs) {
@@ -44,6 +42,7 @@ export class CategoryValueRoot implements CategoryValueParent {
         currentParentValue = currentParentValue.renderAsParent(categoryFacetParentValue);
       });
       currentParentValue.categoryChildrenValueRenderer.renderChildren(categoryFacetResult.values);
+      this.activeCategoryValue = currentParentValue as CategoryValue;
     } else if (categoryFacetResult.parentValues.length != 0) {
       this.clear();
       const sortedParentValues = this.sortParentValues(categoryFacetResult.parentValues);
@@ -52,6 +51,7 @@ export class CategoryValueRoot implements CategoryValueParent {
         currentParentValue = currentParentValue.renderAsParent(categoryFacetParentValue);
       });
       currentParentValue.renderChildren([last(sortedParentValues)]);
+      this.activeCategoryValue = currentParentValue as CategoryValue;
     } else {
       this.categoryFacet.hide();
     }
@@ -73,8 +73,8 @@ export class CategoryValueRoot implements CategoryValueParent {
     return partialPath;
   }
 
-  public getChildren() {
-    return this.categoryChildrenValueRenderer.getChildren();
+  public get children() {
+    return this.categoryChildrenValueRenderer.children;
   }
 
   public clear() {

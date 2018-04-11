@@ -7,7 +7,6 @@ import { Initialization } from '../Base/Initialization';
 import { exportGlobally } from '../../GlobalExports';
 import { CategoryFacetTemplates } from './CategoryFacetTemplates';
 import { CategoryValueRoot } from './CategoryValueRoot';
-import { CategoryValue } from './CategoryValue';
 import { CategoryFacetQueryController } from '../../controllers/CategoryFacetQueryController';
 import { SVGDom } from '../../utils/SVGDom';
 import { SVGIcons } from '../../utils/SVGIcons';
@@ -15,7 +14,9 @@ import { QueryStateModel } from '../../models/QueryStateModel';
 import 'styling/_CategoryFacet';
 import { IAttributesChangedEventArg, MODEL_EVENTS } from '../../models/Model';
 import { Utils } from '../../utils/Utils';
-import _ = require('underscore');
+import { CategoryValue } from './CategoryValue';
+import { contains, isArray } from 'underscore';
+import { Assert } from '../../misc/Assert';
 
 export interface CategoryFacetOptions {
   field: IFieldOption;
@@ -23,6 +24,11 @@ export interface CategoryFacetOptions {
   id: string;
 }
 
+/**
+ * This component allows to render hierarchical facet values. It determines the filter to apply depending on the current path of values that
+ * are selected. The path is a a combination of values that follow each other in a hierarchy.
+ * TODO: Add examples. Explain what a path is.
+ */
 export class CategoryFacet extends Component {
   public categoryFacetQueryController: CategoryFacetQueryController;
   public listenToQueryStateChange = true;
@@ -62,8 +68,76 @@ export class CategoryFacet extends Component {
     this.initQueryStateEvents();
   }
 
-  public getChildren(): CategoryValue[] {
-    return this.categoryValueRoot.getChildren();
+  /**
+   * Changes the active path.
+   */
+  public changeActivePath(path: string[]) {
+    this.listenToQueryStateChange = false;
+    this.queryStateModel.set(this.queryStateAttribute, path);
+    this.listenToQueryStateChange = true;
+
+    this.categoryValueRoot.activePath = path;
+
+    this.queryController.executeQuery();
+  }
+
+  /**
+   * Returns the active path
+   */
+  public getActivePath() {
+    this.categoryValueRoot.activePath;
+  }
+
+  /**
+   * Returns all the visible parent values. The last visible child values are available on the `children` field of the last CategoryValue
+   * in the returned list.
+   *
+   */
+  public getVisibleParentCategoryValues() {
+    if (this.categoryValueRoot.children.length == 0 || this.categoryValueRoot.children[0].children.length == 0) {
+      return [];
+    }
+    let currentParentvalue = this.categoryValueRoot.children[0];
+    const parentValues: CategoryValue[] = [currentParentvalue];
+    while (currentParentvalue.children.length != 0) {
+      currentParentvalue = currentParentvalue.children[0];
+      parentValues.push(currentParentvalue);
+    }
+    return parentValues;
+  }
+
+  /**
+   * Returns the values at the bottom of the hierarchy. These are the values that are not yet applied to the query.
+   */
+  public getAvailableValues() {
+    return this.categoryValueRoot.activeCategoryValue.children;
+  }
+
+  /**
+   * Selects a value from the currently available values.
+   * If the given value to select is not in the available values, it will throw an error.
+   */
+  public selectValueFromAvailableValues(value: string) {
+    Assert.check(
+      contains(this.getAvailableValues().map(categoryValue => categoryValue.value), value),
+      'Failed while trying to select a value that is not available.'
+    );
+    const newPath = this.categoryValueRoot.activePath.slice(0);
+    newPath.push(value);
+    this.changeActivePath(newPath);
+  }
+
+  /**
+   * Deselect the last value in the hierarchy that is applied to the query. Does nothing if we are at the top of the hierarchy.
+   */
+  public deselectCurrentValue() {
+    if (this.categoryValueRoot.activePath.length == 0) {
+      return;
+    }
+
+    const newPath = this.categoryValueRoot.activePath.slice(0);
+    newPath.pop();
+    this.changeActivePath(newPath);
   }
 
   public disable() {
@@ -91,6 +165,10 @@ export class CategoryFacet extends Component {
     }
   }
 
+  get children(): CategoryValue[] {
+    return this.categoryValueRoot.children;
+  }
+
   private buildFacetHeader() {
     this.waitElement = $$('div', { className: 'coveo-category-facet-header-wait-animation' }, SVGIcons.icons.loading);
     SVGDom.addClassToSVGInContainer(this.waitElement.el, 'coveo-category-facet-header-wait-animation-svg');
@@ -105,20 +183,10 @@ export class CategoryFacet extends Component {
   private handleQueryStateChanged(data: IAttributesChangedEventArg) {
     if (this.listenToQueryStateChange) {
       let path = data.attributes[this.queryStateAttribute];
-      if (!Utils.isNullOrUndefined(path) && _.isArray(path) && path.length != 0) {
-        this.categoryValueRoot.setActivePath(path);
+      if (!Utils.isNullOrUndefined(path) && isArray(path) && path.length != 0) {
+        this.categoryValueRoot.activePath = path;
       }
     }
-  }
-
-  public updatePath(path: string[]) {
-    this.listenToQueryStateChange = false;
-    this.queryStateModel.set(this.queryStateAttribute, path);
-    this.listenToQueryStateChange = true;
-
-    this.categoryValueRoot.setActivePath(path);
-
-    this.queryController.executeQuery().then();
   }
 
   private initQueryStateEvents() {
