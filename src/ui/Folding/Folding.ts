@@ -1,4 +1,4 @@
-import { clone, each, map, sortBy, without, any } from 'underscore';
+import { any, clone, each, map, sortBy, without } from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 import { IBuildingQueryEventArgs, IPreprocessResultsEventArgs, QueryEvents } from '../../events/QueryEvents';
 import { Assert } from '../../misc/Assert';

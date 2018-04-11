@@ -1,16 +1,14 @@
-import * as Mock from '../MockEnvironment';
-import { Folding } from '../../src/ui/Folding/Folding';
-import { IQueryResults } from '../../src/rest/QueryResults';
-import { IFoldingOptions } from '../../src/ui/Folding/Folding';
-import { FakeResults } from '../Fake';
-import { Simulate } from '../Simulate';
 import { IQuery } from '../../src/rest/Query';
-import { ISimulateQueryData } from '../Simulate';
 import { IQueryResult } from '../../src/rest/QueryResult';
+import { IQueryResults } from '../../src/rest/QueryResults';
 import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
-import _ = require('underscore');
+import { Folding, IFoldingOptions } from '../../src/ui/Folding/Folding';
 import { SortCriteria } from '../../src/ui/Sort/SortCriteria';
 import { $$ } from '../../src/utils/Dom';
+import { FakeResults } from '../Fake';
+import * as Mock from '../MockEnvironment';
+import { ISimulateQueryData, Simulate } from '../Simulate';
+import _ = require('underscore');
 
 export function FoldingTest() {
   describe('Folding', () => {
