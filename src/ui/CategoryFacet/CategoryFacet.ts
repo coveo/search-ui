@@ -106,13 +106,19 @@ export class CategoryFacet extends Component {
     if (this.listenToQueryStateChange) {
       let path = data.attributes[this.queryStateAttribute];
       if (!Utils.isNullOrUndefined(path) && _.isArray(path) && path.length != 0) {
-        this.rebuild(path.slice(0));
+        this.categoryValueRoot.setActivePath(path);
       }
     }
   }
 
-  private rebuild(path: string[]) {
-    this.categoryValueRoot.buildFromPath(path);
+  public updatePath(path: string[]) {
+    this.listenToQueryStateChange = false;
+    this.queryStateModel.set(this.queryStateAttribute, path);
+    this.listenToQueryStateChange = true;
+
+    this.categoryValueRoot.setActivePath(path);
+
+    this.queryController.executeQuery().then();
   }
 
   private initQueryStateEvents() {

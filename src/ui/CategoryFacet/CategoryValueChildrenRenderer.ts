@@ -3,23 +3,19 @@ import { CategoryFacetTemplates } from './CategoryFacetTemplates';
 import { CategoryValue, CategoryValueParent } from './CategoryValue';
 import { CategoryFacet } from './CategoryFacet';
 import { ICategoryFacetValue } from '../../rest/CategoryFacetValue';
-import { IBuildingQueryEventArgs, IQuerySuccessEventArgs, QueryEvents } from '../../events/QueryEvents';
 import { Utils } from '../../utils/Utils';
+import { each } from 'underscore';
 
 export class CategoryChildrenValueRenderer {
   private children: CategoryValue[] = [];
   private listOfChildValues: Dom;
-  private positionInQuery: number;
 
   constructor(
     private element: Dom,
     private categoryFacetTemplates: CategoryFacetTemplates,
     private categoryValue: CategoryValueParent,
     private categoryFacet: CategoryFacet
-  ) {
-    this.categoryFacet.bind.onRootElement<IBuildingQueryEventArgs>(QueryEvents.buildingQuery, args => this.handleBuildingQuery(args));
-    this.categoryFacet.bind.onRootElement<IQuerySuccessEventArgs>(QueryEvents.querySuccess, args => this.handleQuerySuccess(args));
-  }
+  ) {}
 
   public getChildren() {
     return this.children;
@@ -47,26 +43,31 @@ export class CategoryChildrenValueRenderer {
   }
 
   public renderChildren(values: ICategoryFacetValue[]) {
-    this.categoryFacet.show();
-    const listOfChildValues = this.getListOfChildValues();
-
-    this.clearChildren();
-    this.element.append(listOfChildValues.el);
-
-    values.forEach(value => {
-      const categoryValue = new CategoryValue(
-        listOfChildValues,
-        value.value,
-        value.numberOfResults,
-        this.categoryValue,
-        this.categoryFacetTemplates,
-        this.categoryFacet
-      );
-      categoryValue.render();
-      this.element.addClass('coveo-active-category-facet-parent');
-      this.children.push(categoryValue);
-    });
+    each(values, value => this.renderValue(value));
+    this.element.addClass('coveo-active-category-facet-parent');
     this.categoryFacet.hideWaitAnimation();
+  }
+
+  public renderAsParent(value: ICategoryFacetValue) {
+    const categoryValue = this.renderValue(value);
+    categoryValue.showCollapseArrow();
+    return categoryValue;
+  }
+
+  private renderValue(value: ICategoryFacetValue) {
+    const listOfChildValues = this.getListOfChildValues();
+    this.element.append(listOfChildValues.el);
+    const categoryValue = new CategoryValue(
+      listOfChildValues,
+      value.value,
+      value.numberOfResults,
+      this.categoryValue,
+      this.categoryFacetTemplates,
+      this.categoryFacet
+    );
+    categoryValue.render();
+    this.children.push(categoryValue);
+    return categoryValue;
   }
 
   public getListOfChildValues() {
@@ -74,25 +75,5 @@ export class CategoryChildrenValueRenderer {
       this.listOfChildValues = this.categoryFacetTemplates.buildListRoot();
     }
     return this.listOfChildValues;
-  }
-
-  private handleBuildingQuery(args: IBuildingQueryEventArgs) {
-    if (this.categoryValue.isActive) {
-      this.positionInQuery = args.queryBuilder.categoryFacets.length;
-      this.categoryFacet.categoryFacetQueryController.putCategoryFacetInQueryBuilder(args.queryBuilder, this.categoryValue.getPath());
-    }
-  }
-
-  private handleQuerySuccess(args: IQuerySuccessEventArgs) {
-    if (this.categoryValue.isActive) {
-      const categoryFacetResults = args.results.categoryFacets[this.positionInQuery];
-      if (categoryFacetResults.notImplemented) {
-        const errorMessage = 'Category Facets are not supported by your current search endpoint. Disabling this component.';
-        this.categoryFacet.logger.error(errorMessage);
-        this.categoryFacet.disable();
-      } else if (categoryFacetResults.values.length != 0) {
-        this.renderChildren(categoryFacetResults.values);
-      }
-    }
   }
 }

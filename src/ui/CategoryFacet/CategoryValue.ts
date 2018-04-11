@@ -2,22 +2,23 @@ import { Dom, $$ } from '../../utils/Dom';
 import { CategoryFacetTemplates } from './CategoryFacetTemplates';
 import { CategoryChildrenValueRenderer } from './CategoryValueChildrenRenderer';
 import { CategoryFacet } from './CategoryFacet';
-import { IQueryResults } from '../../rest/QueryResults';
+import { ICategoryFacetValue } from '../../rest/CategoryFacetValue';
 
 export interface CategoryValueParent {
   hideChildrenExceptOne: (categoryValue: CategoryValue) => void;
-  renderChildren: () => Promise<void | IQueryResults>;
+  renderChildren: (values: ICategoryFacetValue[]) => void;
+  renderAsParent: (value: ICategoryFacetValue) => CategoryValue;
   getPath: (partialPath?: string[]) => string[];
-  isActive: boolean;
   categoryChildrenValueRenderer: CategoryChildrenValueRenderer;
 }
 
 export class CategoryValue implements CategoryValueParent {
   private element: Dom;
   private collapseArrow: Dom;
-  public isActive = false;
   private arrowOnClick: (e: Event) => void;
   private captionOnClick: (e: Event) => void;
+
+  public isActive = false;
 
   public categoryChildrenValueRenderer: CategoryChildrenValueRenderer;
 
@@ -33,7 +34,7 @@ export class CategoryValue implements CategoryValueParent {
     this.collapseArrow = this.categoryFacetTemplates.buildCollapseArrow();
     this.categoryChildrenValueRenderer = new CategoryChildrenValueRenderer(this.element, categoryFacetTemplates, this, this.categoryFacet);
     this.arrowOnClick = () => this.closeChildMenu();
-    this.captionOnClick = () => (this.isActive ? this.closeChildMenu() : this.renderChildren());
+    this.captionOnClick = () => (this.isActive ? this.closeChildMenu() : this.categoryFacet.updatePath(this.getPath()));
     this.getCaption().on('click', this.captionOnClick);
   }
 
@@ -50,12 +51,13 @@ export class CategoryValue implements CategoryValueParent {
   }
 
   public showSiblings() {
-    return this.parent.renderChildren();
+    this.categoryFacet.updatePath(this.parent.getPath());
   }
 
   public clear() {
     this.getCaption().off('click', this.captionOnClick);
     this.element.detach();
+    this.categoryChildrenValueRenderer.clearChildren();
   }
 
   public getPath(partialPath: string[] = []) {
@@ -75,39 +77,25 @@ export class CategoryValue implements CategoryValueParent {
     return this.value;
   }
 
-  public async renderChildren() {
-    this.categoryFacet.listenToQueryStateChange = false;
-    this.categoryFacet.queryStateModel.set(this.categoryFacet.queryStateAttribute, this.getPath());
-    this.categoryFacet.listenToQueryStateChange = true;
-
-    this.parent.isActive = false;
+  public renderChildren(values: ICategoryFacetValue[]) {
     this.isActive = true;
-    return this.categoryFacet.queryController.executeQuery().then(() => {
-      this.showCollapseArrow();
-      this.hideSiblings();
-    });
+    this.categoryChildrenValueRenderer.renderChildren(values);
+  }
+
+  public renderAsParent(value: ICategoryFacetValue) {
+    return this.categoryChildrenValueRenderer.renderAsParent(value);
   }
 
   private closeChildMenu() {
     this.isActive = false;
-    this.showSiblings().then(() => {
-      this.categoryChildrenValueRenderer.clearChildren();
-      this.hideCollapseArrow();
-    });
+    this.showSiblings();
   }
 
-  private showCollapseArrow() {
+  public showCollapseArrow() {
     if (!this.collapseArrow.el.parentElement) {
       this.collapseArrow.on('click', this.arrowOnClick);
       const label = this.element.find('label');
       $$(label).prepend(this.collapseArrow.el);
-    }
-  }
-
-  private hideCollapseArrow() {
-    if (this.collapseArrow.el.parentElement) {
-      this.collapseArrow.off('click', this.arrowOnClick);
-      this.collapseArrow.detach();
     }
   }
 }
