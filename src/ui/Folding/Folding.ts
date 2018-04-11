@@ -1,4 +1,4 @@
-import { clone, each, map, sortBy, without } from 'underscore';
+import { clone, each, map, sortBy, without, any } from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 import { IBuildingQueryEventArgs, IPreprocessResultsEventArgs, QueryEvents } from '../../events/QueryEvents';
 import { Assert } from '../../misc/Assert';
@@ -257,8 +257,6 @@ export class Folding extends Component {
     this.bind.onRootElement(QueryEvents.preprocessResults, this.handlepreprocessResults);
   }
 
-  static rearrangeChildResultsClientSide(childResults: IQueryResult[]) {}
-
   // From a list of results, return a list of results and their attachments
   // We use parentResult to build a tree of result
   static foldWithParent(queryResults: IQueryResult[]): IQueryResult[] {
@@ -418,15 +416,30 @@ export class Folding extends Component {
 
     const getResult: (result: IQueryResult) => IQueryResult = this.options.getResult || Folding.defaultGetResult;
     queryResults.results = map(queryResults.results, getResult);
+
     if (this.options.rearrange) {
-      queryResults.results.forEach(results => {
-        results.childResults = sortBy(results.childResults, result => Utils.getFieldValue(result, this.options.rearrange.sort));
-        if (this.options.rearrange.direction == 'descending') {
-          results.childResults = results.childResults.reverse();
+      queryResults.results.forEach(result => {
+        result.childResults = sortBy(result.childResults, result => Utils.getFieldValue(result, this.options.rearrange.sort));
+        if (this.shouldBeReversed(result.childResults)) {
+          result.childResults = result.childResults.reverse();
         }
       });
     }
+
     this.addLoadMoreHandler(<IQueryResult[]>queryResults.results, data.query);
+  }
+
+  private shouldBeReversed(childResults: IQueryResult[]) {
+    if (this.options.rearrange.direction != 'descending') {
+      return false;
+    }
+    const anyChildResultHasNoValueToSortBy = any(childResults, childResult => {
+      return Utils.isNullOrUndefined(Utils.getFieldValue(childResult, this.options.rearrange.sort));
+    });
+    if (anyChildResultHasNoValueToSortBy) {
+      return false;
+    }
+    return true;
   }
 
   private addLoadMoreHandler(results: IQueryResult[], originalQuery: IQuery) {
