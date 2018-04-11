@@ -37,6 +37,7 @@ export class CategoryValueRoot implements CategoryValueParent {
       const sortedParentValues = this.sortParentValues(categoryFacetResult.parentValues);
       this.categoryFacet.show();
       this.clear();
+
       let currentParentValue: CategoryValueParent;
       currentParentValue = this;
       each(sortedParentValues, categoryFacetParentValue => {
@@ -44,6 +45,7 @@ export class CategoryValueRoot implements CategoryValueParent {
       });
       currentParentValue.categoryChildrenValueRenderer.renderChildren(categoryFacetResult.values);
     } else if (categoryFacetResult.parentValues.length != 0) {
+      this.clear();
       const sortedParentValues = this.sortParentValues(categoryFacetResult.parentValues);
       let currentParentValue: CategoryValueParent = this;
       each(sortedParentValues.slice(0, sortedParentValues.length - 1), categoryFacetParentValue => {
