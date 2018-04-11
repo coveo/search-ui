@@ -4,7 +4,7 @@ import { Dom } from '../../utils/Dom';
 import { CategoryChildrenValueRenderer } from './CategoryValueChildrenRenderer';
 import { CategoryFacet } from './CategoryFacet';
 import { QueryEvents, IBuildingQueryEventArgs, IQuerySuccessEventArgs } from '../../events/QueryEvents';
-import { each, last } from 'underscore';
+import { each, last, find } from 'underscore';
 import { ICategoryFacetValue } from '../../rest/CategoryFacetValue';
 
 export class CategoryValueRoot implements CategoryValueParent {
@@ -30,24 +30,26 @@ export class CategoryValueRoot implements CategoryValueParent {
   }
 
   public handleQuerySuccess(args: IQuerySuccessEventArgs) {
-    const categoryFacetResults = args.results.categoryFacets[this.positionInQuery];
-    if (categoryFacetResults.notImplemented) {
+    const categoryFacetResult = args.results.categoryFacets[this.positionInQuery];
+    if (categoryFacetResult.notImplemented) {
       this.notImplementedError();
-    } else if (categoryFacetResults.values.length != 0) {
+    } else if (categoryFacetResult.values.length != 0) {
+      const sortedParentValues = this.sortParentValues(categoryFacetResult.parentValues);
       this.categoryFacet.show();
       this.clear();
       let currentParentValue: CategoryValueParent;
       currentParentValue = this;
-      each(categoryFacetResults.parentValues, categoryFacetParentValue => {
+      each(sortedParentValues, categoryFacetParentValue => {
         currentParentValue = currentParentValue.renderAsParent(categoryFacetParentValue);
       });
-      currentParentValue.categoryChildrenValueRenderer.renderChildren(categoryFacetResults.values);
-    } else if (categoryFacetResults.parentValues.length != 0) {
+      currentParentValue.categoryChildrenValueRenderer.renderChildren(categoryFacetResult.values);
+    } else if (categoryFacetResult.parentValues.length != 0) {
+      const sortedParentValues = this.sortParentValues(categoryFacetResult.parentValues);
       let currentParentValue: CategoryValueParent = this;
-      each(categoryFacetResults.parentValues.slice(0, categoryFacetResults.parentValues.length - 1), categoryFacetParentValue => {
+      each(sortedParentValues.slice(0, sortedParentValues.length - 1), categoryFacetParentValue => {
         currentParentValue = currentParentValue.renderAsParent(categoryFacetParentValue);
       });
-      currentParentValue.renderChildren([last(categoryFacetResults.parentValues)]);
+      currentParentValue.renderChildren([last(sortedParentValues)]);
     } else {
       this.categoryFacet.hide();
     }
@@ -82,5 +84,25 @@ export class CategoryValueRoot implements CategoryValueParent {
     const errorMessage = 'Category Facets are not supported by your current search endpoint. Disabling this component.';
     this.categoryFacet.logger.error(errorMessage);
     this.categoryFacet.disable();
+  }
+
+  private sortParentValues(parentValues: ICategoryFacetValue[]) {
+    if (this.activePath.length != parentValues.length) {
+      this.categoryFacet.logger.warn(
+        'Inconsistent CategoryFacet results: Number of parent values results does not equal length of active path'
+      );
+      return parentValues;
+    }
+
+    const sortedParentvalues = [];
+    for (const pathElement of this.activePath) {
+      const currentParentValue = find(parentValues, parentValue => parentValue.value == pathElement);
+      if (!currentParentValue) {
+        this.categoryFacet.logger.warn('Inconsistent CategoryFacet results: path not consistent with parent values results');
+        return parentValues;
+      }
+      sortedParentvalues.push(currentParentValue);
+    }
+    return sortedParentvalues;
   }
 }
