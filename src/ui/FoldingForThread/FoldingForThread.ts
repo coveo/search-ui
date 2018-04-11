@@ -1,8 +1,8 @@
-import { Folding, IFoldingOptions } from '../Folding/Folding';
-import { IComponentBindings } from '../Base/ComponentBindings';
-import { IQueryResult } from '../../rest/QueryResult';
-import { Initialization } from '../Base/Initialization';
 import { exportGlobally } from '../../GlobalExports';
+import { IQueryResult } from '../../rest/QueryResult';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { Initialization } from '../Base/Initialization';
+import { Folding, IFoldingOptions } from '../Folding/Folding';
 
 /**
  * The `FoldingForThread` component inherits from the [`Folding`]{@link Folding} component. It offers the

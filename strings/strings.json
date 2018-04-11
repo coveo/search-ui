@@ -7341,5 +7341,9 @@
   "ResultCount": {
     "en": "{0} results",
     "fr": "{0} résultats"
+  },
+  "NumberOfVideos": {
+    "en": "Number of videos",
+    "fr": "Nombre de vidéos"
   }
 }
