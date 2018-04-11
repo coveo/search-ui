@@ -51,14 +51,14 @@ export class LocalStorageHistoryController extends RootComponent {
   }
 
   private updateLocalStorageFromModel() {
-    var attributes = _.omit(this.model.getAttributes(), this.omit);
+    const attributes = _.omit(this.model.getAttributes(), this.omit);
     this.setStorageValues(attributes);
     this.logger.debug('Saving state to localstorage', attributes);
   }
 
   private updateModelFromLocalStorage() {
-    var toSet: { [key: string]: any } = {};
-    var loadedFromStorage = this.storage.load();
+    const toSet: { [key: string]: any } = {};
+    const loadedFromStorage = this.storage.load();
     _.each(<_.Dictionary<any>>this.model.attributes, (value, key?, obj?) => {
       var valToSet = loadedFromStorage ? loadedFromStorage[key] : undefined;
       if (valToSet == undefined) {

@@ -68,6 +68,7 @@
   color: $color-greyish-teal-blue;
   @include display(flex);
   @include justify-content(center);
+  @include align-items(center);
   overflow: hidden;
   width: inherit;
   pointer-events: none;
@@ -75,6 +76,11 @@
   @include user-select(none);
   white-space: nowrap;
   height: 20px;
+}
+
+.coveo-simplefilter-toggle-svg-container {
+  @include display(flex);
+  padding-top: 2px;
 }
 
 .coveo-simplefilter-circle {

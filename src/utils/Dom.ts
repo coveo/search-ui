@@ -173,6 +173,27 @@ export class Dom {
   }
 
   /**
+   * Tries to determine if an element is "visible", in a generic manner.
+   *
+   * This is not meant to be a "foolproof" method, but only a superficial "best effort" detection is performed.
+   */
+  public isVisible() {
+    if (this.el.style.display == 'none') {
+      return false;
+    }
+
+    if (this.el.style.visibility == 'hidden') {
+      return false;
+    }
+
+    if (this.hasClass('coveo-tab-disabled')) {
+      return false;
+    }
+
+    return true;
+  }
+
+  /**
    * Returns the value of the specified attribute.
    * @param name The name of the attribute
    */
@@ -353,7 +374,7 @@ export class Dom {
    * @param className Classname to remove on the the element
    */
   public removeClass(className: string): void {
-    this.el.className = this.el.className.replace(new RegExp(`(^|\\s)${className}(\\s|\\b)`, 'g'), '$1').trim();
+    this.el.className = this.el.className.replace(new RegExp(`(^|\\s)${className}(\\s|$)`, 'g'), '$1').trim();
   }
 
   /**

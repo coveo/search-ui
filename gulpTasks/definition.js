@@ -32,14 +32,19 @@ gulp.task('cleanDefs', function() {
       .pipe(replace(/\n\t(?:const|let|var)\s.*;/gm, ''))
       .pipe(replace(/readonly/gm, ''))
       .pipe(replace(/undefined/g, 'any'))
-      .pipe(replace(/ Record<.*>;/g, ' any;'))
-      .pipe(replace(/(enum [a-zA-Z_$]+\s{$)((?:\n^\s*[a-zA-Z_$]+ = "[a-zA-Z_$]+",$)*)/gm, clearEnumVariableDeclaration))
+      .pipe(replace(/ Record<.*>/g, ' any'))
+      .pipe(replace(/(enum [a-zA-Z_$]+\s{$)((?:\n^\s*[a-zA-Z_$]+ = "[a-zA-Z_$\s]+",$)*)/gm, clearEnumVariableDeclaration))
+      .pipe(replace(/extends agGridModule\.[a-zA-Z]+/g, 'extends Object'))
+      .pipe(replace(/implements agGridModule\.[a-zA-Z]+/g, 'implements Object'))
+      .pipe(replace(/agGridModule\.[a-zA-Z]+/g, 'any'))
+      .pipe(replace(/\(this: [A-Za-z_-]+, /gm, '('))
+      .pipe(replace(/\| null/gm, '| void'))
       .pipe(gulp.dest('bin/ts/')) );
 });
 
 function clearEnumVariableDeclaration(match, p1, p2) {
   let lines = p2.split('\n');
-  lines = lines.map(line => line.replace(/ = ["|'][a-zA-Z_$]*["|']/, ''));
+  lines = lines.map(line => line.replace(/ = ["|'][a-zA-Z_$\s]*["|']/, ''));
   return p1 + lines.join('\n');
 }
 
@@ -53,7 +58,8 @@ gulp.task('externalDefs', function() {
       './node_modules/@types/d3/index.d.ts',
       './lib/globalize/index.d.ts',
       './lib/jstimezonedetect/index.d.ts',
-      './lib/coveoanalytics/index.d.ts'
+      './lib/coveoanalytics/index.d.ts',
+      './lib/map/index.d.ts'
     ])
     .pipe(concat('Externals.d.ts'))
     .pipe(replace(/import.*$/gm, ''))

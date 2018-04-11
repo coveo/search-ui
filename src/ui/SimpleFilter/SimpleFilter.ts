@@ -383,7 +383,7 @@ export class SimpleFilter extends Component {
   }
 
   private buildSvgToggleUpIcon(): HTMLElement {
-    let svgIcon = $$('span', null, SVGIcons.icons.arrowDown).el;
+    let svgIcon = $$('span', { className: 'coveo-simplefilter-toggle-svg-container' }, SVGIcons.icons.arrowDown).el;
     SVGDom.addClassToSVGInContainer(svgIcon, 'coveo-simplefilter-toggle-down-svg');
     return svgIcon;
   }

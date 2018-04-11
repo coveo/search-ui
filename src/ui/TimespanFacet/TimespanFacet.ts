@@ -135,6 +135,16 @@ export class TimespanFacet extends Component {
     this.buildFacet();
   }
 
+  public isCurrentlyDisplayed() {
+    if (!$$(this.element).isVisible()) {
+      return false;
+    }
+    if (this.disabled) {
+      return false;
+    }
+    return true;
+  }
+
   /**
    * Sets a new range for the component.
    */
@@ -169,6 +179,7 @@ export class TimespanFacet extends Component {
       customSort: pluck(this.rangeValues, 'label'),
       id: this.options.id
     });
+    this.facetRange.isCurrentlyDisplayed = this.isCurrentlyDisplayed;
   }
 
   private destroyFacet() {

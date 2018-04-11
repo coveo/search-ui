@@ -208,11 +208,7 @@ export class FacetValues {
       if (Utils.exists(myValue)) {
         myValue.selected = true;
       } else {
-        if (otherValue.occurrences && !otherValue.excluded) {
-          this.values.push(otherValue.clone());
-        } else {
-          this.values.push(otherValue.cloneWithZeroOccurrences());
-        }
+        this.values.push(otherValue.cloneWithZeroOccurrences());
       }
     });
 

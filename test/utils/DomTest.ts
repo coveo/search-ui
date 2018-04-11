@@ -214,6 +214,36 @@ export function DomTests() {
         expect(new Dom(el).findClass('shouldNotBeFound').length).toBe(0);
       });
 
+      it('using isVisible should work if the element is display:none', () => {
+        el.style.display = 'none';
+        expect(new Dom(el).isVisible()).toBeFalsy();
+      });
+
+      it('using isVisible should work if the element is visibility:hidden', () => {
+        el.style.display = 'none';
+        expect(new Dom(el).isVisible()).toBeFalsy();
+      });
+
+      it("using isVisible should work if the element has 'coveo-tab-disabled' added by tab(s)", () => {
+        el.className = 'coveo-tab-disabled';
+        expect(new Dom(el).isVisible()).toBeFalsy();
+      });
+
+      it('using isVisible should work if the element is not display:none', () => {
+        el.style.display = 'block';
+        expect(new Dom(el).isVisible()).toBeTruthy();
+      });
+
+      it('using isVisible should work if the element is not visibility hidden', () => {
+        el.style.visibility = 'visible';
+        expect(new Dom(el).isVisible()).toBeTruthy();
+      });
+
+      it('using isVisible should work if the element does not have a specific css class added by tab(s)', () => {
+        el.className = 'totally-not-coveo-tab-disabled';
+        expect(new Dom(el).isVisible()).toBeTruthy();
+      });
+
       it('using addClass should work properly', () => {
         el.className = 'qwerty';
         new Dom(el).addClass('notqwerty');
@@ -256,6 +286,22 @@ export function DomTests() {
         el.className = 'popoqwerty qwerty notqwerty';
         new Dom(el).removeClass('qwerty');
         expect(el.className).toBe('popoqwerty notqwerty');
+      });
+
+      it('using removeClass should work properly if we are removing part of a an existing class name', () => {
+        el.className = 'a-b-c';
+        new Dom(el).removeClass('a');
+        expect(el.className).toBe('a-b-c');
+
+        new Dom(el).removeClass('-b-');
+        expect(el.className).toBe('a-b-c');
+
+        new Dom(el).removeClass('a-b-');
+
+        expect(el.className).toBe('a-b-c');
+
+        new Dom(el).removeClass('a-b-c');
+        expect(el.className).toBe('');
       });
 
       it('using getClass should return the correct array with all classes', () => {

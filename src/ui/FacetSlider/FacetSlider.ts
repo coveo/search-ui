@@ -402,6 +402,17 @@ export class FacetSlider extends Component {
     );
   }
 
+  public isCurrentlyDisplayed() {
+    if (!$$(this.element).isVisible()) {
+      return false;
+    }
+
+    if ($$(this.element).hasClass('coveo-disabled-empty')) {
+      return false;
+    }
+    return true;
+  }
+
   public createDom() {
     this.facetHeader = new FacetHeader({
       field: <string>this.options.field,
@@ -412,11 +423,6 @@ export class FacetSlider extends Component {
       facetSlider: this
     });
     this.element.appendChild(this.facetHeader.build());
-  }
-
-  public disable() {
-    super.disable();
-    $$(this.element).addClass('coveo-disabled-empty');
   }
 
   /**

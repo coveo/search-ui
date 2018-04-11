@@ -94,6 +94,9 @@ lazyFacetSlider();
 import { lazyFieldSuggestions } from './ui/FieldSuggestions/LazyFieldSuggestions';
 lazyFieldSuggestions();
 
+import { lazyFacetValueSuggestions } from './ui/FacetValueSuggestions/LazyFacetValueSuggestions';
+lazyFacetValueSuggestions();
+
 import { lazyFieldTable } from './ui/FieldTable/LazyFieldTable';
 lazyFieldTable();
 

@@ -14,7 +14,7 @@ import { FacetUtils } from './FacetUtils';
 import { QueryEvents, INewQueryEventArgs, IQuerySuccessEventArgs, IDoneBuildingQueryEventArgs } from '../../events/QueryEvents';
 import { Assert } from '../../misc/Assert';
 import { ISearchEndpoint } from '../../rest/SearchEndpointInterface';
-import { $$ } from '../../utils/Dom';
+import { $$, Win } from '../../utils/Dom';
 import { IAnalyticsFacetMeta, analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
 import { Utils } from '../../utils/Utils';
 import { IIndexFieldValue } from '../../rest/FieldValue';
@@ -702,7 +702,8 @@ export class Facet extends Component {
 
     responsiveBreakpoint: ComponentOptions.buildNumberOption({
       defaultValue: 800,
-      deprecated: 'This option is exposed for legacy reasons. It is not recommended to use this option.'
+      deprecated:
+        'This option is exposed for legacy reasons. It is not recommended to use this option. Instead, use `ResponsiveComponents` methods exposed on the `SearchInterface`.'
     }),
 
     /**
@@ -799,6 +800,22 @@ export class Facet extends Component {
     this.bind.oneRootElement(QueryEvents.querySuccess, () => {
       this.firstQuery = false;
     });
+  }
+
+  public isCurrentlyDisplayed() {
+    if (!$$(this.element).isVisible()) {
+      return false;
+    }
+
+    if ($$(this.element).hasClass('coveo-active')) {
+      return true;
+    }
+
+    if ($$(this.element).hasClass('coveo-facet-empty')) {
+      return false;
+    }
+
+    return true;
   }
 
   public createDom() {
@@ -1824,7 +1841,7 @@ export class Facet extends Component {
       let offset = currentViewportPosition - this.pinnedViewportPosition;
       const scrollToOffset = () => {
         if (elementToScroll instanceof Window) {
-          window.scrollTo(0, window.scrollY + offset);
+          window.scrollTo(0, new Win(elementToScroll).scrollY() + offset);
         } else {
           (<HTMLElement>elementToScroll).scrollTop = elementToScroll.scrollTop + offset;
         }
@@ -1962,7 +1979,7 @@ export class Facet extends Component {
     // Crop those out, and adjust the nbAvailable values for the "search" and "show more";
     if (this.options.isMultiValueField) {
       _.each(this.values.getAll(), v => {
-        if (v.occurrences == 0) {
+        if (v.occurrences == 0 && !v.selected && !v.excluded) {
           this.values.remove(v.value);
         }
       });

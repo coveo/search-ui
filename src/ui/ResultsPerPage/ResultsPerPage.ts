@@ -110,8 +110,8 @@ export class ResultsPerPage extends Component {
       this.options.choicesDisplayed.indexOf(resultsPerPage) != -1,
       'The specified number of results is not available in the options.'
     );
+    this.searchInterface.resultsPerPage = resultsPerPage;
     this.currentResultsPerPage = resultsPerPage;
-    this.queryController.options.resultsPerPage = this.currentResultsPerPage;
     this.usageAnalytics.logCustomEvent<IAnalyticsResultsPerPageMeta>(
       analyticCause,
       { currentResultsPerPage: this.currentResultsPerPage },
@@ -193,6 +193,14 @@ export class ResultsPerPage extends Component {
   }
 
   private handleQuerySuccess(data: IQuerySuccessEventArgs) {
+    if (this.searchInterface.isResultsPerPageModifiedByPipeline) {
+      this.logger.info('Results per page was modified by backend code (query pipeline). ResultsPerPage component will be hidden', this);
+      this.reset();
+      this.currentResultsPerPage = this.getInitialChoice();
+      this.searchInterface.resultsPerPage = this.currentResultsPerPage;
+      return;
+    }
+
     if (data.results.results.length != 0) {
       this.reset();
       this.render();

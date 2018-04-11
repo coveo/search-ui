@@ -83,7 +83,7 @@ export class Model extends BaseComponent {
    * the options (see {@link setMultiple}).
    */
   public set(attribute: string, value: any, options?: IModelSetOptions) {
-    let toSet: { [key: string]: any } = {};
+    const toSet: { [key: string]: any } = {};
     toSet[attribute] = value;
     this.setMultiple(toSet, options);
   }
@@ -94,11 +94,11 @@ export class Model extends BaseComponent {
    * @returns {{object}}
    */
   public getAttributes() {
-    let attributes: { [key: string]: any } = {};
+    const attributes: { [key: string]: any } = {};
     _.each(this.attributes, (attribute, key) => {
       if (_.isObject(attribute)) {
         if (!Utils.objectEqual(attribute, this.defaultAttributes[key])) {
-          attributes[key] = attribute;
+          attributes[key] = Utils.extendDeep({}, attribute);
         }
       } else if (attribute != this.defaultAttributes[key]) {
         attributes[key] = attribute;
@@ -272,7 +272,7 @@ export class Model extends BaseComponent {
   }
 
   private checkIfAttributeExists(attribute: string) {
-    Assert.check(_.has(this.attributes, attribute));
+    Assert.check(_.has(this.attributes, attribute), `The attribute ${attribute} is not registered.`);
   }
 
   private typeIsValid(attribute: string, value: any): boolean {

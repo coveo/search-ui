@@ -1,6 +1,6 @@
 /// <reference path="../../lib/jasmine/index.d.ts" />
 import * as Mock from '../MockEnvironment';
-import { SearchInterface } from '../../src/ui/SearchInterface/SearchInterface';
+import { SearchInterface, ISearchInterfaceOptions } from '../../src/ui/SearchInterface/SearchInterface';
 import { QueryController } from '../../src/controllers/QueryController';
 import { QueryStateModel } from '../../src/models/QueryStateModel';
 import { ComponentOptionsModel } from '../../src/models/ComponentOptionsModel';
@@ -17,6 +17,7 @@ import { FakeResults } from '../Fake';
 import _ = require('underscore');
 import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
 import { PipelineContext } from '../../src/ui/PipelineContext/PipelineContext';
+import { SearchEndpoint } from '../Test';
 
 export function SearchInterfaceTest() {
   describe('SearchInterface', () => {
@@ -172,9 +173,27 @@ export function SearchInterfaceTest() {
 
       beforeEach(() => {
         div = document.createElement('div');
-        env = new Mock.MockEnvironmentBuilder().withRoot(div).build();
+        env = new Mock.MockEnvironmentBuilder()
+          .withRoot(div)
+          .withEndpoint(
+            new SearchEndpoint({
+              restUri: 'foo/rest/search'
+            })
+          )
+          .withLiveQueryStateModel()
+          .build();
+        env.queryController.setEndpoint(env.searchEndpoint);
+        env.queryController.getEndpoint = () => env.searchEndpoint;
         mockWindow = Mock.mockWindow();
       });
+
+      const setupSearchInterface = (options?: ISearchInterfaceOptions, analyticsOptions?: any) => {
+        cmp = new SearchInterface(div, options, analyticsOptions, mockWindow);
+        cmp.queryController = env.queryController;
+        cmp.queryStateModel = env.queryStateModel;
+        cmp.usageAnalytics = env.usageAnalytics;
+        return cmp;
+      };
 
       afterEach(() => {
         div = null;
@@ -182,12 +201,64 @@ export function SearchInterfaceTest() {
         mockWindow = null;
       });
 
+      describe('when modifying results per page', () => {
+        let searchInterface: SearchInterface;
+
+        beforeEach(() => {
+          Simulate.removeJQuery();
+          searchInterface = new SearchInterface(div, undefined, undefined, mockWindow);
+          searchInterface.queryController.setEndpoint(Mock.mockSearchEndpoint());
+        });
+
+        it('should adapt the query controller options', () => {
+          searchInterface.resultsPerPage = 1235;
+          expect(searchInterface.queryController.options.resultsPerPage).toBe(1235);
+        });
+
+        it('should tell correctly when the parameter has been overwritten by a query pipeline', () => {
+          // Component is configured to request 15 results, but receives only 7, meaning the setting was overwritten by the backend
+          searchInterface.resultsPerPage = 15;
+          let fakeResults = FakeResults.createFakeResults(7);
+          fakeResults.totalCountFiltered = fakeResults.totalCount = 999;
+          let builder = new QueryBuilder();
+          builder.numberOfResults = 15;
+
+          Simulate.query(
+            { element: searchInterface.root, result: null, searchEndpoint: null, ...searchInterface.getBindings() },
+            {
+              results: fakeResults,
+              query: builder.build()
+            }
+          );
+
+          expect(searchInterface.isResultsPerPageModifiedByPipeline).toBeTruthy();
+
+          // Component is configured to request 15 results, and exactly 15 results are returned
+          searchInterface.resultsPerPage = 15;
+          fakeResults = FakeResults.createFakeResults(15);
+          fakeResults.totalCountFiltered = fakeResults.totalCount = 999;
+          builder = new QueryBuilder();
+          builder.numberOfResults = 15;
+
+          Simulate.query(
+            { element: searchInterface.root, result: null, searchEndpoint: null, ...searchInterface.getBindings() },
+            {
+              results: fakeResults,
+              query: builder.build()
+            }
+          );
+
+          expect(searchInterface.isResultsPerPageModifiedByPipeline).toBeFalsy();
+        });
+      });
+
       it('should return undefined if no query context exists', () => {
-        new SearchInterface(div, undefined, undefined, mockWindow);
+        setupSearchInterface();
         expect(cmp.getQueryContext()).toBeUndefined();
       });
 
       it('should allow to retrieve the context after a query', () => {
+        setupSearchInterface();
         const queryBuilder = new QueryBuilder();
         queryBuilder.addContextValue('123', 456);
         cmp.queryController.getLastQuery = () => queryBuilder.build();
@@ -198,6 +269,7 @@ export function SearchInterfaceTest() {
       });
 
       it('should allow to retrieve the context from a PipelineContext if present', () => {
+        setupSearchInterface();
         const pipeline = new PipelineContext($$('script').el, {}, cmp.getBindings());
         pipeline.setContext({
           foo: 'bar'
@@ -235,120 +307,93 @@ export function SearchInterfaceTest() {
 
       describe('exposes options', () => {
         it('enableHistory allow to enable history in the url', () => {
-          const cmp = new SearchInterface(
-            div,
-            {
-              enableHistory: true
-            },
-            undefined,
-            mockWindow
-          );
+          setupSearchInterface({
+            enableHistory: true
+          });
           expect(Component.resolveBinding(cmp.element, HistoryController)).toBeDefined();
         });
 
         it("enableHistory can be disabled and won't save history in the url", () => {
-          const cmp = new SearchInterface(
-            div,
-            {
-              enableHistory: false
-            },
-            undefined,
-            mockWindow
-          );
+          setupSearchInterface({
+            enableHistory: false
+          });
           expect(Component.resolveBinding(cmp.element, HistoryController)).toBeUndefined();
         });
 
         it('useLocalStorageForHistory allow to use local storage for history', () => {
-          const cmp = new SearchInterface(
-            div,
-            {
-              enableHistory: true,
-              useLocalStorageForHistory: true
-            },
-            undefined,
-            mockWindow
-          );
+          setupSearchInterface({
+            enableHistory: true,
+            useLocalStorageForHistory: true
+          });
           expect(Component.resolveBinding(cmp.element, HistoryController)).toBeUndefined();
           expect(Component.resolveBinding(cmp.element, LocalStorageHistoryController)).toBeDefined();
         });
 
         it('useLocalStorageForHistory allow to use local storage for history, but not if history is disabled', () => {
-          const cmp = new SearchInterface(
-            div,
-            {
-              enableHistory: false,
-              useLocalStorageForHistory: true
-            },
-            undefined,
-            mockWindow
-          );
+          setupSearchInterface({
+            enableHistory: false,
+            useLocalStorageForHistory: true
+          });
           expect(Component.resolveBinding(cmp.element, HistoryController)).toBeUndefined();
           expect(Component.resolveBinding(cmp.element, LocalStorageHistoryController)).toBeUndefined();
         });
 
         it('resultsPerPage allow to specify the number of results in query', () => {
-          new SearchInterface(div, { resultsPerPage: 123 }, undefined, mockWindow);
+          setupSearchInterface({ resultsPerPage: 123 });
           const simulation = Simulate.query(env);
           expect(simulation.queryBuilder.numberOfResults).toBe(123);
         });
 
         it('resultsPerPage should be 10 by default', () => {
-          new SearchInterface(div, undefined, undefined, mockWindow);
+          setupSearchInterface();
           const simulation = Simulate.query(env);
           expect(simulation.queryBuilder.numberOfResults).toBe(10);
         });
 
         it('excerptLength allow to specify the excerpt length of results in a query', () => {
-          new SearchInterface(
-            div,
-            {
-              excerptLength: 123
-            },
-            undefined,
-            mockWindow
-          );
+          setupSearchInterface({ excerptLength: 123 });
           const simulation = Simulate.query(env);
           expect(simulation.queryBuilder.excerptLength).toBe(123);
         });
 
         it('excerptLength should be 200 by default', () => {
-          new SearchInterface(div, undefined, undefined, mockWindow);
+          setupSearchInterface();
           const simulation = Simulate.query(env);
           expect(simulation.queryBuilder.excerptLength).toBe(200);
         });
 
         it('expression allow to specify and advanced expression to add to the query', () => {
-          new SearchInterface(div, { expression: 'foobar' }, undefined, mockWindow);
+          setupSearchInterface({ expression: 'foobar' });
           const simulation = Simulate.query(env);
           expect(simulation.queryBuilder.constantExpression.build()).toBe('foobar');
         });
 
         it('expression should not be added if empty', () => {
-          new SearchInterface(div, { expression: '' }, undefined, mockWindow);
+          setupSearchInterface({ expression: '' });
           const simulation = Simulate.query(env);
           expect(simulation.queryBuilder.constantExpression.build()).toBeUndefined();
         });
 
         it('expression should be empty by default', () => {
-          new SearchInterface(div, undefined, undefined, mockWindow);
+          setupSearchInterface();
           const simulation = Simulate.query(env);
           expect(simulation.queryBuilder.constantExpression.build()).toBeUndefined();
         });
 
         it('filterField allow to specify a filtering field', () => {
-          new SearchInterface(div, { filterField: '@foobar' }, undefined, mockWindow);
+          setupSearchInterface({ filterField: '@foobar' });
           const simulation = Simulate.query(env);
           expect(simulation.queryBuilder.filterField).toBe('@foobar');
         });
 
         it('filterField should be empty by default', () => {
-          new SearchInterface(div, undefined, mockWindow);
+          setupSearchInterface();
           const simulation = Simulate.query(env);
           expect(simulation.queryBuilder.filterField).toBeUndefined();
         });
 
         it('timezone allow to specify a timezone in the query', () => {
-          new SearchInterface(div, { timezone: 'aa-bb' }, undefined, mockWindow);
+          setupSearchInterface({ timezone: 'aa-bb' });
           const simulation = Simulate.query(env);
           expect(simulation.queryBuilder.timezone).toBe('aa-bb');
         });
@@ -384,37 +429,38 @@ export function SearchInterfaceTest() {
         });
 
         it('enableCollaborativeRating allow to specify the collaborative rating in the query', () => {
-          new SearchInterface(div, { enableCollaborativeRating: true }, undefined, mockWindow);
+          setupSearchInterface({ enableCollaborativeRating: true });
+
           const simulation = Simulate.query(env);
           expect(simulation.queryBuilder.enableCollaborativeRating).toBe(true);
         });
 
         it('enableCollaborativeRating to false allow to disable the collaborative rating in the query', () => {
-          new SearchInterface(div, { enableCollaborativeRating: false }, undefined, mockWindow);
+          setupSearchInterface({ enableCollaborativeRating: false });
           const simulation = Simulate.query(env);
           expect(simulation.queryBuilder.enableCollaborativeRating).toBe(false);
         });
 
         it('enableDuplicateFiltering allow to filter duplicate in the query', () => {
-          new SearchInterface(div, { enableDuplicateFiltering: true }, undefined, mockWindow);
+          setupSearchInterface({ enableDuplicateFiltering: true });
           const simulation = Simulate.query(env);
           expect(simulation.queryBuilder.enableDuplicateFiltering).toBe(true);
         });
 
         it('enableDuplicateFiltering to false allow to disable the filter duplicate in the query', () => {
-          new SearchInterface(div, { enableDuplicateFiltering: false }, undefined, mockWindow);
+          setupSearchInterface({ enableDuplicateFiltering: false });
           const simulation = Simulate.query(env);
           expect(simulation.queryBuilder.enableDuplicateFiltering).toBe(false);
         });
 
         it('pipeline allow to specify the pipeline to use in a query', () => {
-          new SearchInterface(div, { pipeline: 'foobar' }, undefined, mockWindow);
+          setupSearchInterface({ pipeline: 'foobar' });
           const simulation = Simulate.query(env);
           expect(simulation.queryBuilder.pipeline).toBe('foobar');
         });
 
         it('maximumAge allow to specify the duration of the cache in a query', () => {
-          new SearchInterface(div, { maximumAge: 123 }, undefined, mockWindow);
+          setupSearchInterface({ maximumAge: 123 });
           const simulation = Simulate.query(env);
           expect(simulation.queryBuilder.maximumAge).toBe(123);
         });
@@ -422,7 +468,7 @@ export function SearchInterfaceTest() {
 
       describe('when allowQueriesWithoutKeywords if true', () => {
         beforeEach(() => {
-          new SearchInterface(div, { allowQueriesWithoutKeywords: true }, undefined, mockWindow);
+          setupSearchInterface({ allowQueriesWithoutKeywords: true });
         });
 
         it('it does not cancel the query if there are no keywords', done => {
@@ -434,7 +480,6 @@ export function SearchInterfaceTest() {
         });
 
         it('allowQueriesWithoutKeywords to true should be sent as a flag in the query', () => {
-          new SearchInterface(div, { allowQueriesWithoutKeywords: true }, undefined, mockWindow);
           const simulation = Simulate.query(env);
           expect(simulation.queryBuilder.build().allowQueriesWithoutKeywords).toBe(true);
         });
@@ -442,7 +487,7 @@ export function SearchInterfaceTest() {
 
       describe('when allowQueriesWithoutKeywords if false', () => {
         beforeEach(() => {
-          new SearchInterface(div, { allowQueriesWithoutKeywords: false }, undefined, mockWindow);
+          setupSearchInterface({ allowQueriesWithoutKeywords: false });
         });
 
         it('it does cancel the query if there are no keywords', done => {

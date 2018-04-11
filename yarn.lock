@@ -70,6 +70,12 @@
   version "2.4.4"
   resolved "https://registry.yarnpkg.com/@salesforce-ux/design-system/-/design-system-2.4.4.tgz#381688169cf34a298fca70b73d3788ff4036d1ca"
 
+"@types/ag-grid@^3.2.0":
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/@types/ag-grid/-/ag-grid-3.2.0.tgz#a498dfc04313745e8057f86249a434774ee1818c"
+  dependencies:
+    ag-grid "*"
+
 "@types/d3-scale@1.0.4":
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/@types/d3-scale/-/d3-scale-1.0.4.tgz#2763f81a52383caac89c063eb9c3bf7f72e286c6"
@@ -225,6 +231,10 @@ adjust-sourcemap-loader@^1.1.0:
 after@0.8.2:
   version "0.8.2"
   resolved "https://registry.yarnpkg.com/after/-/after-0.8.2.tgz#fedb394f9f0e02aa9768e702bda23b505fae7e1f"
+
+ag-grid@*:
+  version "17.0.0"
+  resolved "https://registry.yarnpkg.com/ag-grid/-/ag-grid-17.0.0.tgz#b8c82268c1785e04425a3149ca53cc526376029b"
 
 agent-base@^4.1.0:
   version "4.2.0"

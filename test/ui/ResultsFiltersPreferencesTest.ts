@@ -95,6 +95,22 @@ export function ResultsFiltersPreferencesTest() {
         let form = $$(test.cmp.element).find('form');
         expect(() => $$(form).trigger('submit')).not.toThrow();
       });
+
+      it('should not trigger a query when a full breadcrumb clear is triggered', () => {
+        test.env.queryController.firstQuery = true;
+        test.cmp.createDom();
+        test.env.queryController.firstQuery = false;
+        $$(test.env.root).trigger(BreadcrumbEvents.clearBreadcrumb);
+        expect(test.env.queryController.executeQuery).not.toHaveBeenCalled();
+      });
+
+      it('should not trigger a query when a filter is selected and it is the first query in the interface', () => {
+        test.cmp.createDom();
+        test.env.queryController.firstQuery = true;
+        let choiceInput = $$(test.cmp.element).find('input');
+        $$(choiceInput).trigger('change');
+        expect(test.env.queryController.executeQuery).not.toHaveBeenCalled();
+      });
     });
   });
 }

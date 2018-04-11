@@ -8,13 +8,17 @@ const _ = require('underscore');
 const path = require('path');
 const fs = require('fs');
 const glob = require('glob');
+const args = require('yargs').argv;
+
+const port = args.port || 8080;
+const testsPort = args.port || 8081;
 
 const webpackConfig = require('../webpack.config.js');
-webpackConfig.entry['CoveoJsSearch.Lazy'].unshift('webpack-dev-server/client?http://localhost:8080/');
+webpackConfig.entry['CoveoJsSearch.Lazy'].unshift(`webpack-dev-server/client?http://localhost:${port}/`);
 const compiler = webpack(webpackConfig);
 
 const webpackConfigTest = require('../webpack.test.config.js');
-webpackConfigTest.entry['tests'].unshift('webpack-dev-server/client?http://localhost:8081/');
+webpackConfigTest.entry['tests'].unshift(`webpack-dev-server/client?http://localhost:${testsPort}/`);
 const compilerTest = webpack(webpackConfigTest);
 
 let server;
@@ -28,10 +32,9 @@ const watchHtmlPagesOnce = _.once(() => {
   glob('bin/*.html', (err, files) => {
     files.forEach(file => {
       fs.watch(file, () => {
-        server.sockets.forEach(socket => {
-          // Sending an "ok" message triggers a simple page reload in the client
-          socket.write(JSON.stringify({ type: 'ok' }));
-        });
+        if (server.sockets && server.sockets[0]) {
+          server.sockets[0].write(JSON.stringify({ type: 'ok' }));
+        }
       });
     });
   });
@@ -46,14 +49,14 @@ gulp.task('dev', ['setup', 'deleteCssFile'], done => {
   server = new WebpackDevServer(compiler, {
     compress: true,
     contentBase: 'bin/',
-    publicPath: '/js/',
+    publicPath: `http://localhost:${port}/js/`,
     disableHostCheck: true,
     stats: {
       colors: true,
       publicPath: true
     }
   });
-  server.listen(8080, '0.0.0.0', () => {});
+  server.listen(port, 'localhost', () => {});
   done();
 });
 
@@ -70,6 +73,6 @@ gulp.task('devTest', ['setupTests'], function(done) {
     publicPath: '/tests/',
     compress: true
   });
-  serverTests.listen(8081, 'localhost', () => {});
+  serverTests.listen(testsPort, 'localhost', () => {});
   done();
 });

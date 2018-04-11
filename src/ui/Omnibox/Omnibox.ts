@@ -22,7 +22,7 @@ import { Initialization } from '../Base/Initialization';
 import { Querybox } from '../Querybox/Querybox';
 import { FieldAddon } from './FieldAddon';
 import { QueryExtensionAddon } from './QueryExtensionAddon';
-import { QuerySuggestAddon } from './QuerySuggestAddon';
+import { QuerySuggestAddon, IQuerySuggestAddon, VoidQuerySuggestAddon } from './QuerySuggestAddon';
 import { OldOmniboxAddon } from './OldOmniboxAddon';
 import { QueryboxQueryParameters } from '../Querybox/QueryboxQueryParameters';
 import { IAnalyticsActionCause } from '../Analytics/AnalyticsActionListMeta';
@@ -34,6 +34,7 @@ import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 import 'styling/_Omnibox';
 import { logSearchBoxSubmitEvent } from '../Analytics/SharedAnalyticsCalls';
+import { Dom } from '../../Core';
 
 export interface IOmniboxSuggestion extends Coveo.MagicBox.Suggestion {
   executableConfidence?: number;
@@ -227,6 +228,8 @@ export class Omnibox extends Component {
   private searchAsYouTypeTimeout: number;
   private skipAutoSuggest = false;
 
+  public suggestionAddon: IQuerySuggestAddon;
+
   /**
    * Creates a new Omnibox component. Also enables necessary addons and binds events on various query events.
    * @param element The HTMLElement on which to instantiate the component.
@@ -242,9 +245,7 @@ export class Omnibox extends Component {
     const originalValueForQuerySyntax = this.options.enableQuerySyntax;
     this.options = _.extend({}, this.options, this.componentOptionsModel.get(ComponentOptionsModel.attributesEnum.searchBox));
 
-    if (this.options.enableQuerySuggestAddon) {
-      new QuerySuggestAddon(this);
-    }
+    this.suggestionAddon = this.options.enableQuerySuggestAddon ? new QuerySuggestAddon(this) : new VoidQuerySuggestAddon();
     new OldOmniboxAddon(this);
     this.createMagicBox();
 
@@ -459,12 +460,8 @@ export class Omnibox extends Component {
     };
 
     this.magicBox.onblur = () => {
-      if (this.options.enableSearchAsYouType && !this.options.inline) {
-        this.setText(this.lastQuery);
-      } else {
-        this.updateQueryState();
-      }
       if (this.isAutoSuggestion()) {
+        this.setText(this.getQuery(true));
         this.usageAnalytics.sendAllPendingEvents();
       }
     };
@@ -673,9 +670,8 @@ export class Omnibox extends Component {
   private handleTabPress() {
     if (this.options.enableQuerySuggestAddon) {
       this.handleTabPressForSuggestions();
-    } else {
-      this.handleTabPressForOldOmniboxAddon();
     }
+    this.handleTabPressForOldOmniboxAddon();
   }
 
   private handleTabPressForSuggestions() {
@@ -690,15 +686,23 @@ export class Omnibox extends Component {
   }
 
   private handleTabPressForOldOmniboxAddon() {
-    if (this.lastSuggestions && this.lastSuggestions[0] && this.lastSuggestions[0].dom) {
-      const firstSelected = $$(this.lastSuggestions[0].dom).find('.coveo-omnibox-selected');
-      const firstSelectable = $$(this.lastSuggestions[0].dom).find('.coveo-omnibox-selectable');
-      if (firstSelected) {
-        $$(firstSelected).trigger('tabSelect');
-      } else if (firstSelectable) {
-        $$(firstSelectable).trigger('tabSelect');
+    const domSuggestions = this.lastSuggestions.filter(suggestions => suggestions.dom).map(suggestions => $$(suggestions.dom));
+    const selected = this.findAllElementsWithClass(domSuggestions, '.coveo-omnibox-selected');
+    if (selected.length > 0) {
+      $$(selected[0]).trigger('tabSelect');
+    } else if (!this.options.enableQuerySuggestAddon) {
+      const selectable = this.findAllElementsWithClass(domSuggestions, '.coveo-omnibox-selectable');
+      if (selectable.length > 0) {
+        $$(selectable[0]).trigger('tabSelect');
       }
     }
+  }
+
+  private findAllElementsWithClass(elements: Dom[], className: string): Dom[] {
+    return elements
+      .map(element => element.find(className))
+      .filter(s => s)
+      .reduce((total, s) => total.concat(s), []);
   }
 
   private triggerNewQuery(searchAsYouType: boolean, analyticsEvent: () => void) {
