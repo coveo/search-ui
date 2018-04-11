@@ -144,6 +144,8 @@ export class Folding extends Component {
      * `@myfield descending`, etc. [See
      * Query Parameters - sortCriteria](https://developers.coveo.com/x/iwEv#QueryParameters-sortCriteriasortCriteria)).
      *
+     * TODO : Explain technical limitation related to client side sorting.
+     *
      * **Example**
      * > If you are folding email results by conversation and you specify `date descending` as the `rearrange` value of
      * > the `Folding` component, the component re-arranges email conversations so that the newest email is always the
