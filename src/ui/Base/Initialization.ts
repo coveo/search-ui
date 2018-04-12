@@ -19,6 +19,7 @@ import * as _ from 'underscore';
 import { IStringMap } from '../../rest/GenericParam';
 import { get, state } from './RegisteredNamedMethods';
 import { InitializationHelper } from './InitializationHelper';
+import { IResultsComponentBindings } from './ResultsComponentBindings';
 
 /**
  * Represent the initialization parameters required to init a new component.
@@ -369,7 +370,31 @@ export class Initialization {
   }
 
   /**
+   * Scan the result element and all its children for known components. Initialize every known result component found.
+   *
+   * See also : {@link Initialization.automaticallyCreateComponentsInside}.
+   * @param resultElement The root element to scan for known components
+   * @param result The result which needs to be passed to each result component constructor.
+   * @param optionsToInject A set of options to inject for the components found inside the resultElement. These options will be merged with any options passed during the "init" call of the search interface.
+   */
+  public static automaticallyCreateComponentsInsideResult(
+    resultElement: HTMLElement,
+    result: IQueryResult,
+    optionsToInject = {}
+  ): IInitResult {
+    const options = { ...{ initOptions: optionsToInject }, ...result.searchInterface.options.originalOptionsObject };
+    const bindings: IResultsComponentBindings = { ...result.searchInterface.getBindings(), resultElement };
+    const initParameters: IInitializationParameters = {
+      options,
+      bindings,
+      result
+    };
+    return Initialization.automaticallyCreateComponentsInside(resultElement, initParameters);
+  }
+
+  /**
    * Scan the element and all its children for known components. Initialize every known component found.
+   *
    * @param element
    * @param initParameters
    * @param ignore
@@ -701,11 +726,7 @@ export class LazyInitialization {
   public static buildErrorCallback(chunkName: string, resolve: Function) {
     return error => {
       LazyInitialization.logger.warn(
-        `Cannot load chunk for ${
-          chunkName
-        }. You may need to configure the paths of the resources using Coveo.configureResourceRoot. Current path is ${
-          __webpack_public_path__
-        }.`
+        `Cannot load chunk for ${chunkName}. You may need to configure the paths of the resources using Coveo.configureResourceRoot. Current path is ${__webpack_public_path__}.`
       );
       resolve(() => {});
     };

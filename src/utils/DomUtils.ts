@@ -8,6 +8,7 @@ import { SVGIcons } from './SVGIcons';
 import { load } from '../ui/Base/RegisteredNamedMethods';
 import { Logger } from '../misc/Logger';
 import { IComponentBindings } from '../ui/Base/ComponentBindings';
+import { Initialization } from '../Core';
 export class DomUtils {
   static getPopUpCloseButton(captionForClose: string, captionForReminder: string): string {
     let container = document.createElement('span');
@@ -109,7 +110,8 @@ export class DomUtils {
 
     load(toLoad)
       .then(() => {
-        new Coveo[toLoad](clickableLinkElement.el, undefined, bindings, resultForResultLink);
+        clickableLinkElement.addClass(`Coveo${toLoad}`);
+        return Initialization.automaticallyCreateComponentsInsideResult(clickableLinkElement.el, resultForResultLink);
       })
       .catch(err => {
         const logger = new Logger(this);
