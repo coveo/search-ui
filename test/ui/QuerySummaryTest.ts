@@ -73,7 +73,7 @@ export function QuerySummaryTest() {
         test.cmp.root.appendChild(resultListTwo.element);
       });
 
-      it('should not display the results range if there is a single result list with infinite scroll enabled', () => {
+      it('should not display the results range if there is exactly one result list with infinite scroll enabled', () => {
         resultListOne.options.enableInfiniteScroll = true;
         $$(resultListTwo.element).remove();
 
@@ -81,7 +81,7 @@ export function QuerySummaryTest() {
         expect($$(test.cmp.element).text()).not.toEqual(jasmine.stringMatching(/^Results 1-10/));
       });
 
-      it('should display the results range if there is a single result list with infinite scroll disabled', () => {
+      it('should display the results range if there is exactly one result list with infinite scroll disabled', () => {
         resultListOne.options.enableInfiniteScroll = false;
         $$(resultListTwo.element).remove();
 
