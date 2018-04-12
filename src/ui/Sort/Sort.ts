@@ -1,23 +1,21 @@
-import { Component } from '../Base/Component';
-import { SortCriteria } from './SortCriteria';
-import { ComponentOptions } from '../Base/ComponentOptions';
-import { IComponentBindings } from '../Base/ComponentBindings';
-import { Assert } from '../../misc/Assert';
-import { Utils } from '../../utils/Utils';
-import { $$ } from '../../utils/Dom';
-import { IAttributesChangedEventArg, MODEL_EVENTS } from '../../models/Model';
-import { QueryStateModel, QUERY_STATE_ATTRIBUTES } from '../../models/QueryStateModel';
-import { QueryEvents, IQuerySuccessEventArgs, IBuildingQueryEventArgs } from '../../events/QueryEvents';
-import { Initialization } from '../Base/Initialization';
-import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
-import { IQueryErrorEventArgs } from '../../events/QueryEvents';
+import 'styling/_Sort';
 import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
-
-import 'styling/_Sort';
-import { SVGIcons } from '../../utils/SVGIcons';
+import { IBuildingQueryEventArgs, IQueryErrorEventArgs, IQuerySuccessEventArgs, QueryEvents } from '../../events/QueryEvents';
+import { Assert } from '../../misc/Assert';
+import { IAttributesChangedEventArg, MODEL_EVENTS } from '../../models/Model';
+import { QUERY_STATE_ATTRIBUTES, QueryStateModel } from '../../models/QueryStateModel';
+import { $$ } from '../../utils/Dom';
+import { KEYBOARD, KeyboardUtils } from '../../utils/KeyboardUtils';
 import { SVGDom } from '../../utils/SVGDom';
+import { SVGIcons } from '../../utils/SVGIcons';
+import { Utils } from '../../utils/Utils';
 import { logSortEvent } from '../Analytics/SharedAnalyticsCalls';
+import { Component } from '../Base/Component';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { Initialization } from '../Base/Initialization';
+import { SortCriteria } from './SortCriteria';
 
 export interface ISortOptions {
   sortCriteria?: SortCriteria[];
@@ -58,13 +56,13 @@ export class Sort extends Component {
      * You must specify a valid value for this option in order for this component instance to work correctly.
      */
     sortCriteria: ComponentOptions.buildCustomListOption(
-      (values: string[] | SortCriteria[]) => {
-        return _.map(<any>values, criteria => {
+      values => {
+        return _.map(values, criteria => {
           // 'any' because Underscore won't accept the union type as an argument.
           if (typeof criteria === 'string') {
-            return SortCriteria.parse(criteria);
+            return new SortCriteria(criteria);
           } else {
-            return <SortCriteria>criteria;
+            return criteria as SortCriteria;
           }
         });
       },
