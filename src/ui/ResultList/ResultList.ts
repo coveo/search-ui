@@ -3,7 +3,6 @@ import { TableTemplate } from '../Templates/TableTemplate';
 import { DefaultResultTemplate } from '../Templates/DefaultResultTemplate';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
-import { IResultsComponentBindings } from '../Base/ResultsComponentBindings';
 import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
 import { IQueryResult } from '../../rest/QueryResult';
 import { IQueryResults } from '../../rest/QueryResults';
@@ -21,7 +20,7 @@ import { QUERY_STATE_ATTRIBUTES } from '../../models/QueryStateModel';
 import { QueryUtils } from '../../utils/QueryUtils';
 import { $$, Win, Doc } from '../../utils/Dom';
 import { analyticsActionCauseList, IAnalyticsNoMeta } from '../Analytics/AnalyticsActionListMeta';
-import { Initialization, IInitializationParameters, IInitResult } from '../Base/Initialization';
+import { Initialization, IInitResult } from '../Base/Initialization';
 import { Defer } from '../../misc/Defer';
 import { DeviceUtils } from '../../utils/DeviceUtils';
 import { ResultListEvents, IDisplayedNewResultEventArgs, IChangeLayoutEventArgs } from '../../events/ResultListEvents';
@@ -538,17 +537,7 @@ export class ResultList extends Component {
 
   protected autoCreateComponentsInsideResult(element: HTMLElement, result: IQueryResult): IInitResult {
     Assert.exists(element);
-
-    const initOptions = this.searchInterface.options.originalOptionsObject;
-    const resultComponentBindings: IResultsComponentBindings = _.extend({}, this.getBindings(), {
-      resultElement: element
-    });
-    const initParameters: IInitializationParameters = {
-      options: initOptions,
-      bindings: resultComponentBindings,
-      result: result
-    };
-    return Initialization.automaticallyCreateComponentsInside(element, initParameters);
+    return Initialization.automaticallyCreateComponentsInsideResult(element, result);
   }
 
   protected triggerNewResultDisplayed(result: IQueryResult, resultElement: HTMLElement) {
