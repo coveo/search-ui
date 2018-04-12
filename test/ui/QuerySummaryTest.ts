@@ -5,6 +5,7 @@ import { Simulate } from '../Simulate';
 import { $$ } from '../../src/utils/Dom';
 import { IQuerySummaryOptions } from '../../src/ui/QuerySummary/QuerySummary';
 import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
+import { ResultList } from '../../src/ui/ResultList/ResultList';
 
 export function QuerySummaryTest() {
   describe('QuerySummary', () => {
@@ -59,6 +60,54 @@ export function QuerySummaryTest() {
         query: queryBuilder.build()
       });
       expect($$(test.cmp.element).text()).toEqual(jasmine.stringMatching(/for foo/));
+    });
+
+    describe('when there are result lists in the page', () => {
+      let resultListOne: ResultList;
+      let resultListTwo: ResultList;
+
+      beforeEach(() => {
+        resultListOne = new ResultList($$('div', { className: 'CoveoResultList' }).el, null, test.env);
+        resultListTwo = new ResultList($$('div', { className: 'CoveoResultList' }).el, null, test.env);
+        test.cmp.root.appendChild(resultListOne.element);
+        test.cmp.root.appendChild(resultListTwo.element);
+      });
+
+      it('should not display the results range if there is exactly one result list with infinite scroll enabled', () => {
+        resultListOne.options.enableInfiniteScroll = true;
+        $$(resultListTwo.element).remove();
+
+        Simulate.query(test.env);
+        expect($$(test.cmp.element).text()).not.toEqual(jasmine.stringMatching(/^Results 1-10/));
+      });
+
+      it('should display the results range if there is exactly one result list with infinite scroll disabled', () => {
+        resultListOne.options.enableInfiniteScroll = false;
+        $$(resultListTwo.element).remove();
+
+        Simulate.query(test.env);
+        expect($$(test.cmp.element).text()).toEqual(jasmine.stringMatching(/^Results 1-10/));
+      });
+
+      it('should not display the results range if there is at least one result list with infinite scroll enabled', () => {
+        resultListOne.options.enableInfiniteScroll = true;
+        resultListTwo.options.enableInfiniteScroll = false;
+
+        Simulate.query(test.env);
+        expect($$(test.cmp.element).text()).not.toEqual(jasmine.stringMatching(/^Results 1-10/));
+      });
+
+      it('should display query recall if possible, but not the results range if there is a result list with infinite scroll', () => {
+        const queryBuilder = new QueryBuilder();
+        queryBuilder.expression.add('foo');
+        resultListOne.options.enableInfiniteScroll = true;
+
+        Simulate.query(test.env, {
+          query: queryBuilder.build()
+        });
+        expect($$(test.cmp.element).text()).toEqual(jasmine.stringMatching(/for foo/));
+        expect($$(test.cmp.element).text()).not.toEqual(jasmine.stringMatching(/^Results 1-10/));
+      });
     });
 
     describe('exposes options', () => {

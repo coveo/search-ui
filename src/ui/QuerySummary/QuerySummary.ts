@@ -10,10 +10,13 @@ import { Initialization } from '../Base/Initialization';
 import { QueryStateModel } from '../../models/QueryStateModel';
 import * as Globalize from 'globalize';
 import { QuerySummaryEvents } from '../../events/QuerySummaryEvents';
-import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
-
+import { escape, any } from 'underscore';
+import { get } from '../../ui/Base/RegisteredNamedMethods';
+import ResultListModule = require('../ResultList/ResultList');
 import 'styling/_QuerySummary';
+import { IQuery } from '../../rest/Query';
+import { IQueryResults } from '../../rest/QueryResults';
 
 export interface IQuerySummaryOptions {
   enableSearchTips?: boolean;
@@ -86,58 +89,108 @@ export class QuerySummary extends Component {
     $$(this.element).removeClass('coveo-hidden');
   }
 
-  private handleQuerySuccess(data: IQuerySuccessEventArgs) {
-    Assert.exists(data);
+  private render(queryPerformed: IQuery, queryResults: IQueryResults) {
     $$(this.textContainer).empty();
     this.show();
 
     if (!this.options.onlyDisplaySearchTips) {
-      if (data.results.results.length > 0) {
-        const first = Globalize.format(data.query.firstResult + 1, 'n0');
-        const last = Globalize.format(data.query.firstResult + data.results.results.length, 'n0');
-        const totalCount = Globalize.format(data.results.totalCountFiltered, 'n0');
-
-        const highlightFirst = $$('span', { className: 'coveo-highlight' }, first).el;
-        const highlightLast = $$('span', { className: 'coveo-highlight' }, last).el;
-        const highlightTotal = $$('span', { className: 'coveo-highlight' }, totalCount).el;
-
-        const query = data.query.q ? _.escape(data.query.q.trim()) : '';
-
-        if (query) {
-          const highlightQuery = $$('span', { className: 'coveo-highlight' }, query).el;
-
-          this.textContainer.innerHTML = l(
-            'ShowingResultsOfWithQuery',
-            highlightFirst.outerHTML,
-            highlightLast.outerHTML,
-            highlightTotal.outerHTML,
-            highlightQuery.outerHTML,
-            data.results.results.length
-          );
-        } else {
-          this.textContainer.innerHTML = l(
-            'ShowingResultsOf',
-            highlightFirst.outerHTML,
-            highlightLast.outerHTML,
-            highlightTotal.outerHTML,
-            data.results.results.length
-          );
-        }
+      if (this.isInfiniteScrollingMode()) {
+        this.renderSummaryInInfiniteScrollingMode(queryPerformed, queryResults);
+      } else {
+        this.renderSummaryInStandardMode(queryPerformed, queryResults);
       }
     }
 
-    if (data.results.exception != null && data.results.exception.code != null) {
-      const code: string = ('QueryException' + data.results.exception.code).toLocaleString();
+    if (queryResults.exception != null && queryResults.exception.code != null) {
+      const code: string = ('QueryException' + queryResults.exception.code).toLocaleString();
       this.textContainer.innerHTML = l('QueryException', code);
-    } else if (data.results.results.length == 0) {
+    } else if (queryResults.results.length == 0) {
       this.displayInfoOnNoResults();
     } else {
       this.lastKnownGoodState = this.queryStateModel.getAttributes();
     }
   }
 
+  private handleQuerySuccess(data: IQuerySuccessEventArgs) {
+    Assert.exists(data);
+    this.render(data.query, data.results);
+  }
+
+  private isInfiniteScrollingMode() {
+    const allResultsLists = $$(this.root).findAll(`.${Component.computeCssClassNameForType('ResultList')}`);
+    const anyResultListIsUsingInfiniteScroll = any(allResultsLists, resultList => {
+      return (get(resultList) as ResultListModule.ResultList).options.enableInfiniteScroll;
+    });
+    return anyResultListIsUsingInfiniteScroll;
+  }
+
+  private formatSummary(queryPerformed: IQuery, queryResults: IQueryResults) {
+    const first = Globalize.format(queryPerformed.firstResult + 1, 'n0');
+    const last = Globalize.format(queryPerformed.firstResult + queryResults.results.length, 'n0');
+    const totalCount = Globalize.format(queryResults.totalCountFiltered, 'n0');
+    const query = queryPerformed.q ? escape(queryPerformed.q.trim()) : '';
+
+    const highlightFirst = $$('span', { className: 'coveo-highlight' }, first).el;
+    const highlightLast = $$('span', { className: 'coveo-highlight' }, last).el;
+    const highlightTotal = $$('span', { className: 'coveo-highlight' }, totalCount).el;
+    const highlightQuery = $$('span', { className: 'coveo-highlight' }, query).el;
+
+    return {
+      first,
+      last,
+      totalCount,
+      query,
+      highlightFirst,
+      highlightLast,
+      highlightTotal,
+      highlightQuery
+    };
+  }
+
+  private renderSummaryInStandardMode(queryPerformed: IQuery, queryResults: IQueryResults) {
+    if (queryResults.results.length > 0) {
+      const { query, highlightFirst, highlightLast, highlightTotal, highlightQuery } = this.formatSummary(queryPerformed, queryResults);
+
+      if (query) {
+        this.textContainer.innerHTML = l(
+          'ShowingResultsOfWithQuery',
+          highlightFirst.outerHTML,
+          highlightLast.outerHTML,
+          highlightTotal.outerHTML,
+          highlightQuery.outerHTML,
+          queryResults.results.length
+        );
+      } else {
+        this.textContainer.innerHTML = l(
+          'ShowingResultsOf',
+          highlightFirst.outerHTML,
+          highlightLast.outerHTML,
+          highlightTotal.outerHTML,
+          queryResults.results.length
+        );
+      }
+    }
+  }
+
+  private renderSummaryInInfiniteScrollingMode(queryPerformed: IQuery, queryResults: IQueryResults) {
+    if (queryResults.results.length > 0) {
+      const { query, highlightQuery, highlightTotal } = this.formatSummary(queryPerformed, queryResults);
+
+      if (query) {
+        this.textContainer.innerHTML = l(
+          'ShowingResultsWithQuery',
+          highlightTotal.outerHTML,
+          highlightQuery.outerHTML,
+          queryResults.results.length
+        );
+      } else {
+        this.textContainer.innerHTML = l('ShowingResults', highlightTotal.outerHTML, queryResults.results.length);
+      }
+    }
+  }
+
   private displayInfoOnNoResults() {
-    const queryEscaped = _.escape(this.queryStateModel.get(QueryStateModel.attributesEnum.q));
+    const queryEscaped = escape(this.queryStateModel.get(QueryStateModel.attributesEnum.q));
     let noResultsForString: Dom;
 
     if (queryEscaped != '') {
