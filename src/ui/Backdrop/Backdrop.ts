@@ -1,10 +1,9 @@
 import { Component } from '../Base/Component';
 import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
 import { IComponentBindings } from '../Base/ComponentBindings';
-import { Initialization, IInitializationParameters } from '../Base/Initialization';
+import { Initialization } from '../Base/Initialization';
 import { IResultsComponentBindings } from '../Base/ResultsComponentBindings';
 import { IQueryResult } from '../../rest/QueryResult';
-import * as _ from 'underscore';
 import { Utils } from '../../utils/Utils';
 import { exportGlobally } from '../../GlobalExports';
 import { YouTubeThumbnail, IYouTubeThumbnailOptions } from '../YouTube/YouTubeThumbnail';
@@ -112,18 +111,7 @@ export class Backdrop extends Component {
     this.element.style.background = background;
     this.element.style.backgroundSize = 'cover';
 
-    // Initialize components inside
-    let initOptions = this.searchInterface.options.originalOptionsObject;
-    let resultComponentBindings: IResultsComponentBindings = _.extend({}, this.getBindings(), {
-      resultElement: element
-    });
-    let initParameters: IInitializationParameters = {
-      options: _.extend({}, { initOptions: { ResultLink: options } }, initOptions),
-      bindings: resultComponentBindings,
-      result: result
-    };
-    Initialization.automaticallyCreateComponentsInside(this.element, initParameters);
-
+    Initialization.automaticallyCreateComponentsInsideResult(element, result);
     this.configureSpecialBackdropActions();
   }
 

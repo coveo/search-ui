@@ -107,6 +107,7 @@ export class MockEnvironmentBuilder {
     this.searchInterface.componentStateModel = this.componentStateModel;
     this.searchInterface.componentOptionsModel = this.componentOptionsModel;
     this.searchInterface.element = this.root;
+    this.searchInterface.getBindings = () => this.getBindings() as any;
 
     if (!this.searchEndpoint) {
       this.searchEndpoint = mockSearchEndpoint();
@@ -219,6 +220,9 @@ export function mockSearchInterface(): SearchInterface {
   m.options.originalOptionsObject = {};
   m.responsiveComponents = mockResponsiveComponents();
   m.resultsPerPage = 10;
+  m.getBindings = () => {
+    return new MockEnvironmentBuilder().build() as any;
+  };
   return m;
 }
 
