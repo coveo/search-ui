@@ -17,6 +17,7 @@ import { Utils } from '../../utils/Utils';
 import { CategoryValue } from './CategoryValue';
 import { contains, isArray } from 'underscore';
 import { Assert } from '../../misc/Assert';
+import { QueryEvents } from '../../events/QueryEvents';
 
 export interface CategoryFacetOptions {
   field: IFieldOption;
@@ -64,12 +65,15 @@ export class CategoryFacet extends Component {
     this.categoryFacetQueryController = new CategoryFacetQueryController(this);
     this.categoryFacetTemplates = new CategoryFacetTemplates();
     this.categoryValueRoot = new this.categoryValueRootModule($$(this.element), this.categoryFacetTemplates, this);
+
+    this.bind.onRootElement(QueryEvents.duringQuery, () => this.addFading());
+    this.bind.onRootElement(QueryEvents.deferredQuerySuccess, () => this.removeFading());
     this.buildFacetHeader();
     this.initQueryStateEvents();
   }
 
   /**
-   * Changes the active path.
+   * Changes the active path and triggers a new query.
    */
   public changeActivePath(path: string[]) {
     this.listenToQueryStateChange = false;
@@ -78,7 +82,10 @@ export class CategoryFacet extends Component {
 
     this.categoryValueRoot.activePath = path;
 
-    this.queryController.executeQuery();
+    this.showWaitingAnimation();
+    this.queryController.executeQuery().then(() => {
+      this.hideWaitAnimation();
+    });
   }
 
   /**
@@ -193,6 +200,14 @@ export class CategoryFacet extends Component {
     this.queryStateAttribute = QueryStateModel.getCategoryFacetId(this.options.id);
     this.queryStateModel.registerNewAttribute(QueryStateModel.getCategoryFacetId(this.options.id), []);
     this.bind.onQueryState<IAttributesChangedEventArg>(MODEL_EVENTS.CHANGE, undefined, data => this.handleQueryStateChanged(data));
+  }
+
+  private addFading() {
+    $$(this.element).addClass('coveo-category-facet-values-fade');
+  }
+
+  private removeFading() {
+    $$(this.element).removeClass('coveo-category-facet-values-fade');
   }
 }
 

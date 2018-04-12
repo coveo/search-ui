@@ -2,13 +2,35 @@
 @import 'bourbon/bourbon';
 
 .CoveoCategoryFacet {
-  transition: height 0.4s $standard-transition-timing-function;
   &.coveo-hidden {
     display: none;
   }
 
   & > .coveo-facet-values > .coveo-category-facet-value {
-    padding: 5px 20px 5px 20px;
+    padding: 5px 0 5px 0;
+  }
+
+  &.coveo-category-facet-values-fade .coveo-active-category-facet-parent {
+    .coveo-category-facet-value {
+      opacity: 0.5;
+    }
+  }
+}
+
+.coveo-category-facet-values {
+  list-style: none;
+  padding: 0;
+}
+
+.coveo-category-facet-value-label {
+  transition: background-color 0.07s $standard-transition-timing-function;
+  cursor: pointer;
+  vertical-align: middle;
+  @include display(flex);
+  line-height: 22px;
+  padding: 5px 19px 5px 20px;
+  &:hover {
+    background-color: $color-blueish-white-grey;
   }
 }
 
@@ -17,16 +39,15 @@
 }
 
 .coveo-active-category-facet-parent .coveo-category-facet-value {
-  padding-left: 20px;
-  .coveo-category-facet-value-caption {
-    color: $color-vibrant-blue;
+  .coveo-category-facet-value-label {
+    padding-left: 53px;
   }
 }
 
-.coveo-category-facet-value {
-  line-height: 22px;
-  padding-top: 5px;
-  padding-bottom: 5px;
+.coveo-category-facet-child-values {
+  .coveo-category-facet-value-caption {
+    color: $color-vibrant-blue;
+  }
 }
 
 .coveo-category-facet-value-caption {
@@ -38,12 +59,6 @@
 
 .coveo-category-facet-value-count {
   margin: 0 5px;
-}
-
-.coveo-category-facet-value-label {
-  cursor: pointer;
-  vertical-align: middle;
-  @include display(flex);
 }
 
 .coveo-category-facet-collapse-children {

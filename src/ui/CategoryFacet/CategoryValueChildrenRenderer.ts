@@ -36,12 +36,12 @@ export class CategoryChildrenValueRenderer {
       child.clear();
     });
     this.children = [];
+    this.listOfChildValues = null;
   }
 
   public renderChildren(values: ICategoryFacetValue[]) {
     each(values, value => this.renderValue(value));
-    this.element.addClass('coveo-active-category-facet-parent');
-    this.categoryFacet.hideWaitAnimation();
+    this.getListOfChildValues().addClass('coveo-category-facet-child-values');
   }
 
   public renderAsParent(value: ICategoryFacetValue) {

@@ -1,7 +1,7 @@
 import { $$, Dom } from '../../utils/Dom';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { SVGDom } from '../../utils/SVGDom';
-import _ = require('underscore');
+import { escape } from 'underscore';
 
 export interface CategoryFacetData {
   value: string;
@@ -13,7 +13,7 @@ export class CategoryFacetTemplates {
   private collapseArrow: Dom;
 
   constructor() {
-    this.listRoot = $$('ul', { className: 'coveo-facet-values' });
+    this.listRoot = $$('ul', { className: 'coveo-category-facet-values' });
     this.collapseArrow = $$('span', { className: 'coveo-category-facet-collapse-children' }, SVGIcons.icons.arrowDown);
     SVGDom.addClassToSVGInContainer(this.collapseArrow.el, 'coveo-category-facet-collapse-children-svg');
   }
@@ -34,7 +34,7 @@ export class CategoryFacetTemplates {
   private createListElement(data: CategoryFacetData) {
     return `<li class="coveo-category-facet-value">
         <label class="coveo-category-facet-value-label">
-          <span title="${_.escape(data.value)}" class="coveo-category-facet-value-caption">${_.escape(data.value)}</span>
+          <span title="${escape(data.value)}" class="coveo-category-facet-value-caption">${escape(data.value)}</span>
           <span class="coveo-category-facet-value-count">${data.count}</span>
         </label>
       </li>`;

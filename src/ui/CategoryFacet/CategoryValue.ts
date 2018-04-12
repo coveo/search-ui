@@ -34,7 +34,7 @@ export class CategoryValue implements CategoryValueParent {
     this.categoryChildrenValueRenderer = new CategoryChildrenValueRenderer(this.element, categoryFacetTemplates, this, this.categoryFacet);
     this.arrowOnClick = () => this.closeChildMenu();
     this.captionOnClick = () => (this.isActive ? this.closeChildMenu() : this.categoryFacet.changeActivePath(this.getPath()));
-    this.getCaption().on('click', this.captionOnClick);
+    this.getCaption().one('click', this.captionOnClick);
   }
 
   public render() {
@@ -69,6 +69,7 @@ export class CategoryValue implements CategoryValueParent {
 
   public renderChildren(values: ICategoryFacetValue[]) {
     this.isActive = true;
+    this.element.addClass('coveo-active-category-facet-parent');
     this.categoryChildrenValueRenderer.renderChildren(values);
   }
 
@@ -86,7 +87,7 @@ export class CategoryValue implements CategoryValueParent {
 
   public showCollapseArrow() {
     if (!this.collapseArrow.el.parentElement) {
-      this.collapseArrow.on('click', this.arrowOnClick);
+      this.collapseArrow.one('click', this.arrowOnClick);
       const label = this.element.find('label');
       $$(label).prepend(this.collapseArrow.el);
     }

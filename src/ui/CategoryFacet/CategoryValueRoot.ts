@@ -4,7 +4,7 @@ import { Dom } from '../../utils/Dom';
 import { CategoryChildrenValueRenderer } from './CategoryValueChildrenRenderer';
 import { CategoryFacet } from './CategoryFacet';
 import { QueryEvents, IBuildingQueryEventArgs, IQuerySuccessEventArgs } from '../../events/QueryEvents';
-import { each, last, find } from 'underscore';
+import { each, find } from 'underscore';
 import { ICategoryFacetValue } from '../../rest/CategoryFacetValue';
 
 export class CategoryValueRoot implements CategoryValueParent {
@@ -41,16 +41,16 @@ export class CategoryValueRoot implements CategoryValueParent {
       each(sortedParentValues, categoryFacetParentValue => {
         currentParentValue = currentParentValue.renderAsParent(categoryFacetParentValue);
       });
-      currentParentValue.categoryChildrenValueRenderer.renderChildren(categoryFacetResult.values);
+      currentParentValue.renderChildren(categoryFacetResult.values);
       this.activeCategoryValue = currentParentValue as CategoryValue;
     } else if (categoryFacetResult.parentValues.length != 0) {
       this.clear();
       const sortedParentValues = this.sortParentValues(categoryFacetResult.parentValues);
       let currentParentValue: CategoryValueParent = this;
-      each(sortedParentValues.slice(0, sortedParentValues.length - 1), categoryFacetParentValue => {
+      each(sortedParentValues, categoryFacetParentValue => {
         currentParentValue = currentParentValue.renderAsParent(categoryFacetParentValue);
       });
-      currentParentValue.renderChildren([last(sortedParentValues)]);
+      currentParentValue.renderChildren([]);
       this.activeCategoryValue = currentParentValue as CategoryValue;
     } else {
       this.categoryFacet.hide();
