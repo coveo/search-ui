@@ -85,7 +85,6 @@
     color: $color-greyish-teal-blue;
     display: inline-block;
     vertical-align: middle;
-    vertical-align: middle;
     @include animation-name(coveo-spin);
     @include animation-timing-function(linear);
     @include animation-duration(1s);

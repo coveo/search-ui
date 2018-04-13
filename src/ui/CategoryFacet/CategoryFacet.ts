@@ -124,7 +124,7 @@ export class CategoryFacet extends Component {
    * Selects a value from the currently available values.
    * If the given value to select is not in the available values, it will throw an error.
    */
-  public selectValueFromAvailableValues(value: string) {
+  public selectValue(value: string) {
     Assert.check(
       contains(this.getAvailableValues().map(categoryValue => categoryValue.value), value),
       'Failed while trying to select a value that is not available.'

@@ -1,4 +1,3 @@
-/// <reference path="../lib/jasmine/index.d.ts" />
 export * from '../src/Eager';
 // Get a cleaner output in phantom js for CI builds
 import { Logger } from '../src/misc/Logger';
@@ -505,8 +504,12 @@ UrlUtilsTest();
 import { AccessTokenTest } from './rest/AccessTokenTest';
 AccessTokenTest();
 
-import { CategoryFacetTest } from './ui/CatetgoryFacet/CategoryFacetTest';
+import { CategoryFacetTest } from './ui/CategoryFacet/CategoryFacetTest';
 CategoryFacetTest();
+
+import { CategoryValueRootTest } from './ui/CategoryFacet/CategoryValueRootTest';
+CategoryValueRootTest();
+
 import { FacetValueSuggestionsTest } from './ui/FacetValueSuggestionsTest';
 FacetValueSuggestionsTest();
 

@@ -44,6 +44,7 @@
     "@types/d3-scale": "1.0.4",
     "@types/fastclick": "^1.0.28",
     "@types/jasmine": "^2.6.0",
+    "@types/jasmine-ajax": "^2.6.0",
     "@types/pikaday": "0.0.31",
     "@types/underscore": "1.8.3",
     "aws-sdk": "^2.155.0",
