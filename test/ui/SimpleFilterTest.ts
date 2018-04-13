@@ -4,6 +4,7 @@ import { Simulate } from '../Simulate';
 import { $$ } from '../../src/utils/Dom';
 import { BreadcrumbEvents, IPopulateBreadcrumbEventArgs } from '../../src/events/BreadcrumbEvents';
 import { FakeResults } from '../Fake';
+import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
 
 export function SimpleFilterTest() {
   describe('SimpleFilter', () => {
@@ -68,6 +69,22 @@ export function SimpleFilterTest() {
       expect(aSimpleFilter.env.queryController.executeQuery).toHaveBeenCalled();
     });
 
+    it('should log an analytics event when a checkbox is checked', () => {
+      aSimpleFilter.cmp.toggleValue('foo');
+      const eventDefinition = analyticsActionCauseList.simpleFilterSelectValue;
+
+      expect(aSimpleFilter.env.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(
+        jasmine.objectContaining({
+          name: eventDefinition.name,
+          type: eventDefinition.type
+        }),
+        jasmine.objectContaining({
+          simpleFilterTitle: aSimpleFilter.cmp.options.title,
+          simpleFilterSelectedValue: 'foo'
+        })
+      );
+    });
+
     it('should set the field in the query', () => {
       aSimpleFilter.cmp.options.values = undefined;
       let simulation = Simulate.query(aSimpleFilter.env);
@@ -120,6 +137,16 @@ export function SimpleFilterTest() {
       $$(aSimpleFilter.env.root).trigger(BreadcrumbEvents.populateBreadcrumb, args);
       $$(aSimpleFilter.env.root).trigger(BreadcrumbEvents.clearBreadcrumb, args);
       expect(aSimpleFilter.cmp.getSelectedCaptions().length).toEqual(0);
+    });
+
+    it('should not trigger a query when clearBreadcumb is triggered', () => {
+      $$(aSimpleFilter.env.root).trigger(BreadcrumbEvents.clearBreadcrumb);
+      expect(aSimpleFilter.env.queryController.executeQuery).not.toHaveBeenCalled();
+    });
+
+    it('should not log an analytics event when clearBreadcrumb is triggered', () => {
+      $$(aSimpleFilter.env.root).trigger(BreadcrumbEvents.clearBreadcrumb);
+      expect(aSimpleFilter.env.usageAnalytics.logSearchEvent).not.toHaveBeenCalled();
     });
 
     it('should redraw checkbox containers with the previously selected Values if they are present', () => {
