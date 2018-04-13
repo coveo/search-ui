@@ -10,13 +10,6 @@ export function SuggestionsCacheTest() {
       cache = new SuggestionsCache<string>();
     });
 
-    it('should return null when the cache key is empty', async done => {
-      const cacheResult = await cache.getSuggestions('', suggestionFetcher);
-
-      expect(cacheResult).toBeNull();
-      done();
-    });
-
     it('should call the suggestion fetcher when the key is not in cache', async done => {
       const cacheResult = await cache.getSuggestions('first', suggestionFetcher);
       const secondCacheResult = await cache.getSuggestions('second', suggestionFetcher);
