@@ -144,7 +144,6 @@ export class Folding extends Component {
      * `@myfield descending`, etc. [See
      * Query Parameters - sortCriteria](https://developers.coveo.com/x/iwEv#QueryParameters-sortCriteriasortCriteria)).
      *
-     * TODO : Explain technical limitation related to client side sorting.
      *
      * **Example**
      * > If you are folding email results by conversation and you specify `date descending` as the `rearrange` value of
@@ -432,13 +431,13 @@ export class Folding extends Component {
   }
 
   private shouldBeReversed(childResults: IQueryResult[]) {
-    if (this.options.rearrange.direction != 'descending') {
+    if (this.options.rearrange.direction == 'ascending') {
       return false;
     }
-    const anyChildResultHasNoValueToSortBy = any(childResults, childResult => {
+    const childMissingSortByValue = any(childResults, childResult => {
       return Utils.isNullOrUndefined(Utils.getFieldValue(childResult, this.options.rearrange.sort));
     });
-    if (anyChildResultHasNoValueToSortBy) {
+    if (childMissingSortByValue) {
       return false;
     }
     return true;
