@@ -1,24 +1,25 @@
-import { IQueryResult } from '../../rest/QueryResult';
-import { Logger } from '../../misc/Logger';
-import { IComponentDefinition, Component } from '../Base/Component';
-import { IComponentBindings } from '../Base/ComponentBindings';
-import { Utils } from '../../utils/Utils';
-import { Assert } from '../../misc/Assert';
-import { $$ } from '../../utils/Dom';
-import { InitializationEvents } from '../../events/InitializationEvents';
-import { SearchInterface, StandaloneSearchInterface } from '../SearchInterface/SearchInterface';
-import { QueryController } from '../../controllers/QueryController';
-import { HashUtils } from '../../utils/HashUtils';
-import { QueryStateModel } from '../../models/QueryStateModel';
-import { ComponentStateModel } from '../../models/ComponentStateModel';
-import { ComponentOptionsModel } from '../../models/ComponentOptionsModel';
-import { IAnalyticsNoMeta, analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
-import { JQueryUtils } from '../../utils/JQueryutils';
-import { IJQuery } from './CoveoJQuery';
 import * as _ from 'underscore';
+import { QueryController } from '../../controllers/QueryController';
+import { InitializationEvents } from '../../events/InitializationEvents';
+import { Assert } from '../../misc/Assert';
+import { Logger } from '../../misc/Logger';
+import { ComponentOptionsModel } from '../../models/ComponentOptionsModel';
+import { ComponentStateModel } from '../../models/ComponentStateModel';
+import { QueryStateModel } from '../../models/QueryStateModel';
 import { IStringMap } from '../../rest/GenericParam';
-import { get, state } from './RegisteredNamedMethods';
+import { IQueryResult } from '../../rest/QueryResult';
+import { $$ } from '../../utils/Dom';
+import { HashUtils } from '../../utils/HashUtils';
+import { JQueryUtils } from '../../utils/JQueryutils';
+import { Utils } from '../../utils/Utils';
+import { IAnalyticsNoMeta, analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
+import { Component, IComponentDefinition } from '../Base/Component';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { SearchInterface, StandaloneSearchInterface } from '../SearchInterface/SearchInterface';
+import { IJQuery } from './CoveoJQuery';
 import { InitializationHelper } from './InitializationHelper';
+import { get, state } from './RegisteredNamedMethods';
+import { IResultsComponentBindings } from './ResultsComponentBindings';
 
 /**
  * Represent the initialization parameters required to init a new component.
@@ -369,7 +370,31 @@ export class Initialization {
   }
 
   /**
+   * Scan the result element and all its children for known components. Initialize every known result component found.
+   *
+   * See also : {@link Initialization.automaticallyCreateComponentsInside}.
+   * @param resultElement The root element to scan for known components
+   * @param result The result which needs to be passed to each result component constructor.
+   * @param optionsToInject A set of options to inject for the components found inside the resultElement. These options will be merged with any options passed during the "init" call of the search interface.
+   */
+  public static automaticallyCreateComponentsInsideResult(
+    resultElement: HTMLElement,
+    result: IQueryResult,
+    optionsToInject = {}
+  ): IInitResult {
+    const options = { ...{ initOptions: optionsToInject }, ...result.searchInterface.options.originalOptionsObject };
+    const bindings: IResultsComponentBindings = { ...result.searchInterface.getBindings(), resultElement };
+    const initParameters: IInitializationParameters = {
+      options,
+      bindings,
+      result
+    };
+    return Initialization.automaticallyCreateComponentsInside(resultElement, initParameters);
+  }
+
+  /**
    * Scan the element and all its children for known components. Initialize every known component found.
+   *
    * @param element
    * @param initParameters
    * @param ignore
@@ -701,11 +726,7 @@ export class LazyInitialization {
   public static buildErrorCallback(chunkName: string, resolve: Function) {
     return error => {
       LazyInitialization.logger.warn(
-        `Cannot load chunk for ${
-          chunkName
-        }. You may need to configure the paths of the resources using Coveo.configureResourceRoot. Current path is ${
-          __webpack_public_path__
-        }.`
+        `Cannot load chunk for ${chunkName}. You may need to configure the paths of the resources using Coveo.configureResourceRoot. Current path is ${__webpack_public_path__}.`
       );
       resolve(() => {});
     };
