@@ -1,20 +1,24 @@
+import * as _ from 'underscore';
+import { IQuickviewLoadedEventArgs, QuickviewEvents } from '../../events/QuickviewEvents';
+import { IOpenQuickviewEventArgs } from '../../events/ResultListEvents';
+import { Assert } from '../../misc/Assert';
+import { AjaxError } from '../../rest/AjaxError';
+import { IQuery } from '../../rest/Query';
+import { IQueryResult } from '../../rest/QueryResult';
+import { IViewAsHtmlOptions } from '../../rest/SearchEndpointInterface';
+import { l } from '../../strings/Strings';
+import { ColorUtils } from '../../utils/ColorUtils';
+import { DeviceUtils } from '../../utils/DeviceUtils';
+import { $$, Doc, Dom } from '../../utils/Dom';
+import { Utils } from '../../utils/Utils';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { ComponentOptions } from '../Base/ComponentOptions';
-import { IQueryResult } from '../../rest/QueryResult';
-import { Assert } from '../../misc/Assert';
-import { $$, Dom } from '../../utils/Dom';
-import { IOpenQuickviewEventArgs } from '../../events/ResultListEvents';
-import { QuickviewEvents, IQuickviewLoadedEventArgs } from '../../events/QuickviewEvents';
-import { DeviceUtils } from '../../utils/DeviceUtils';
-import { Utils } from '../../utils/Utils';
-import { ColorUtils } from '../../utils/ColorUtils';
 import { Initialization } from '../Base/Initialization';
-import { IQuery } from '../../rest/Query';
-import { IViewAsHtmlOptions } from '../../rest/SearchEndpointInterface';
-import { AjaxError } from '../../rest/AjaxError';
-import { l } from '../../strings/Strings';
-import * as _ from 'underscore';
+import { QuickviewDocumentIframe } from './QuickviewDocumentIframe';
+import { QuickviewDocumentHeader } from './QuickviewDocumentHeader';
+import { Quickview } from './Quickview';
+import { QuickviewDocumentWordButton } from './QuickviewDocumentWordButton';
 
 const HIGHLIGHT_PREFIX = 'CoveoHighlight';
 
@@ -31,7 +35,7 @@ interface IWord {
   occurence: number;
 }
 
-interface IWordState {
+export interface IWordState {
   word: IWord;
   color: string;
   currentIndex: number;
@@ -63,8 +67,8 @@ export class QuickviewDocument extends Component {
     maximumDocumentSize: ComponentOptions.buildNumberOption({ defaultValue: 0, min: 0 })
   };
 
-  private iframe: Dom;
-  private header: Dom;
+  private iframe: QuickviewDocumentIframe;
+  private header: QuickviewDocumentHeader;
   private termsToHighlightWereModified: boolean;
   private keywordsState: IWordState[];
 
@@ -91,180 +95,61 @@ export class QuickviewDocument extends Component {
   }
 
   public createDom() {
-    const container = $$('div');
-    container.addClass('coveo-quickview-document');
+    const container = $$('div', {
+      className: 'coveo-quickview-document'
+    });
     this.element.appendChild(container.el);
 
-    this.header = this.buildHeader();
-    this.iframe = this.buildIFrame();
+    this.header = new QuickviewDocumentHeader();
+    this.iframe = new QuickviewDocumentIframe();
 
     container.append(this.header.el);
     container.append(this.iframe.el);
   }
 
-  public open() {
+  private get query() {
+    return { ...this.queryController.getLastQuery() };
+  }
+
+  public async open() {
     this.ensureDom();
 
     const beforeLoad = new Date().getTime();
-    const iframe = <HTMLIFrameElement>this.iframe.find('iframe');
-    iframe.src = 'about:blank';
-    const endpoint = this.queryController.getEndpoint();
-
     const termsToHighlight = _.keys(this.result.termsToHighlight);
-    const dataToSendOnOpenQuickView: IOpenQuickviewEventArgs = {
-      termsToHighlight: termsToHighlight
-    };
 
-    $$(this.element).trigger(QuickviewEvents.openQuickview, dataToSendOnOpenQuickView);
-    this.checkIfTermsToHighlightWereModified(dataToSendOnOpenQuickView.termsToHighlight);
+    $$(this.element).trigger(QuickviewEvents.openQuickview, {
+      termsToHighlight
+    } as IOpenQuickviewEventArgs);
 
-    const queryObject = _.extend({}, this.getBindings().queryController.getLastQuery());
+    this.checkIfTermsToHighlightWereModified(termsToHighlight);
 
     if (this.termsToHighlightWereModified) {
-      this.handleTermsToHighlight(dataToSendOnOpenQuickView.termsToHighlight, queryObject);
+      this.handleTermsToHighlight(termsToHighlight, this.query);
     }
 
-    const callOptions: IViewAsHtmlOptions = {
-      queryObject: queryObject,
-      requestedOutputSize: this.options.maximumDocumentSize
-    };
-
-    endpoint
-      .getDocumentHtml(this.result.uniqueId, callOptions)
-      .then((html: HTMLDocument) => {
-        // If the contentDocument is null at this point it means that the Quick View
-        // was closed before we've finished loading it. In this case do nothing.
-        if (iframe.contentDocument == null) {
-          return;
-        }
-
-        this.renderHTMLDocument(iframe, html);
-        this.triggerQuickviewLoaded(beforeLoad);
-      })
-      .catch((error: AjaxError) => {
-        // If the contentDocument is null at this point it means that the Quick View
-        // was closed before we've finished loading it. In this case do nothing.
-        if (iframe.contentDocument == null) {
-          return;
-        }
-
-        if (error.status != 0) {
-          this.renderErrorReport(iframe, error.status);
-          this.triggerQuickviewLoaded(beforeLoad);
-        } else {
-          iframe.onload = () => {
-            this.triggerQuickviewLoaded(beforeLoad);
-          };
-          iframe.src = endpoint.getViewAsHtmlUri(this.result.uniqueId, callOptions);
-        }
-      });
-  }
-
-  protected renderHTMLDocument(iframe: HTMLIFrameElement, html: HTMLDocument) {
-    iframe.onload = () => {
-      this.computeHighlights(iframe.contentWindow);
-
-      // Remove white border for new Quickview
-      if (this.isNewQuickviewDocument(iframe.contentWindow)) {
-        const body = $$(this.element).find('iframe');
-        if (body) {
-          body.style.padding = '0';
-          const header = $$(this.element).find('.coveo-quickview-header');
-          header.style.paddingTop = '10';
-          header.style.paddingLeft = '10';
-        }
-      }
-
-      if ($$(this.element).find('.coveo-quickview-header').innerHTML == '') {
-        $$(this.element).find('.coveo-quickview-header').style.display = 'none';
-      }
-    };
-
-    this.writeToIFrame(iframe, html);
-    this.wrapPreElementsInIframe(iframe);
-  }
-
-  private renderErrorReport(iframe: HTMLIFrameElement, errorStatus: number) {
-    let errorString = '';
-    if (errorStatus == 400) {
-      errorString = 'NoQuickview';
-    } else {
-      errorString = 'OopsError';
-    }
-    const errorMessage = `<html><body style='font-family: Arimo, \'Helvetica Neue\', Helvetica, Arial, sans-serif; -webkit-text-size-adjust: none;' >${l(
-      errorString
-    )} </body></html>`;
-    this.writeToIFrame(iframe, errorMessage);
-  }
-
-  private writeToIFrame(iframe: HTMLIFrameElement, content: HTMLDocument);
-  private writeToIFrame(iframe: HTMLIFrameElement, content: String);
-  private writeToIFrame(iframe: HTMLIFrameElement, content: any) {
-    let toWrite = content;
-
-    if (content instanceof HTMLDocument) {
-      _.each($$(content.body).findAll('a'), link => {
-        link.setAttribute('target', '_top');
-      });
-      toWrite = content.getElementsByTagName('html')[0].outerHTML;
-    }
-
-    iframe.contentWindow.document.open();
     try {
-      iframe.contentWindow.document.write(toWrite);
-    } catch (e) {
-      // The iframe is sandboxed, and can throw ugly errors, especially when rendering random web pages.
-      // Suppress those
-    }
+      const documentHTML = await this.queryController.getEndpoint().getDocumentHtml(this.result.uniqueId, {
+        queryObject: this.query,
+        requestedOutputSize: this.options.maximumDocumentSize
+      } as IViewAsHtmlOptions);
 
-    iframe.contentWindow.document.close();
-  }
+      await this.iframe.render(documentHTML);
 
-  private wrapPreElementsInIframe(iframe: HTMLIFrameElement) {
-    try {
-      const style = document.createElement('style');
-      style.type = 'text/css';
+      const afterLoad = new Date().getTime();
 
-      // This CSS forces <pre> tags used in some emails to wrap by default
-      let cssText =
-        'html pre { white-space: pre-wrap; white-space: -moz-pre-wrap; white-space: -pre-wrap; white-space: -o-pre-wrap; word-wrap: break-word; }';
+      this.triggerQuickviewLoaded(afterLoad - beforeLoad);
+    } catch (error) {
+      await this.iframe.renderError(error);
+      const afterLoad = new Date().getTime();
 
-      // Some people react strongly when presented with their browser's default font, so let's fix that
-      cssText += "body, html { font-family: Arimo, 'Helvetica Neue', Helvetica, Arial, sans-serif; -webkit-text-size-adjust: none; }";
-
-      if (DeviceUtils.isIos()) {
-        // Safari on iOS forces resize iframes to fit their content, even if an explicit size
-        // is set on the iframe. Isn't that great? By chance there is a trick around it: by
-        // setting a very small size on the body and instead using min-* to set the size to
-        // 100% we're able to trick Safari from thinking it must expand the iframe. Amazed.
-        // The 'scrolling' part is required otherwise the hack doesn't work.
-        //
-        // http://stackoverflow.com/questions/23083462/how-to-get-an-iframe-to-be-responsive-in-ios-safari
-        cssText += 'body, html { height: 1px !important; min-height: 100%; width: 1px !important; min-width: 100%; overflow: scroll; }';
-        $$(iframe).setAttribute('scrolling', 'no');
-
-        // Some content is cropped on iOs if a margin is present
-        // We remove it and add one on the iframe wrapper.
-        cssText += 'body, html {margin: auto}';
-        iframe.parentElement.style.margin = '0 0 5px 5px';
-      }
-
-      if ('styleSheet' in style) {
-        style['styleSheet'].cssText = cssText;
-      } else {
-        style.appendChild(document.createTextNode(cssText));
-      }
-      const head = iframe.contentWindow.document.head;
-      head.appendChild(style);
-    } catch (e) {
-      // if not allowed
+      this.triggerQuickviewLoaded(afterLoad - beforeLoad);
     }
   }
 
-  private triggerQuickviewLoaded(beforeLoad: number) {
-    const afterLoad = new Date().getTime();
-    const eventArgs: IQuickviewLoadedEventArgs = { duration: afterLoad - beforeLoad };
-    $$(this.element).trigger(QuickviewEvents.quickviewLoaded, eventArgs);
+  private triggerQuickviewLoaded(duration: number) {
+    $$(this.element).trigger(QuickviewEvents.quickviewLoaded, {
+      duration
+    } as IQuickviewLoadedEventArgs);
   }
 
   // An highlighted term looks like:
@@ -308,10 +193,8 @@ export class QuickviewDocument extends Component {
   //     <span id='CoveoHighlight:2.1.2'>f</span>
   //
   // In the previous example, the words 'abcd' and 'bcdef' are highlighted.
-  //
-  // This method is public for testing purposes.
   public computeHighlights(window: Window): string[] {
-    $$(this.header).empty();
+    //$$(this.header).empty();
     this.keywordsState = [];
 
     const words: { [index: string]: IWord } = {};
@@ -394,9 +277,8 @@ export class QuickviewDocument extends Component {
       };
 
       this.keywordsState.push(state);
-      $$(this.header).append(this.buildWordButton(state, window));
-
-      resolvedWords.push(word.text);
+      this.header.addWord(new QuickviewDocumentWordButton(state, this.iframe));
+      //      $$(this.header).append(this.buildWordButton(state, window));
     });
 
     return resolvedWords;
@@ -444,43 +326,31 @@ export class QuickviewDocument extends Component {
     return found;
   }
 
-  private buildWordButton(wordState: IWordState, window: Window): HTMLElement {
-    const wordHtml = $$('span');
-    wordHtml.addClass('coveo-term-for-quickview');
+  private buildWordButton(wordState: IWordState, window: Window): HTMLElement {}
 
-    const quickviewName = $$('span');
-    quickviewName.addClass('coveo-term-for-quickview-name');
-    quickviewName.setHtml(wordState.word.text);
-    quickviewName.on('click', () => {
-      this.navigate(wordState, false, window);
+  private renderPreviewBar(win: Window) {
+    const docHeight = new Doc(win.document).height();
+    const previewBar = $$('div');
+
+    previewBar.el.style.width = '15px';
+    previewBar.el.style.position = 'fixed';
+    previewBar.el.style.top = '0';
+    previewBar.el.style.right = '0';
+    previewBar.el.style.height = '100%';
+
+    win.document.body.appendChild(previewBar.el);
+    _.each($$(win.document.body).findAll('[id^="' + HIGHLIGHT_PREFIX + '"]'), (element: HTMLElement, index: number) => {
+      const elementPosition = element.getBoundingClientRect().top;
+
+      const previewUnit = $$('div');
+      previewUnit.el.style.position = 'absolute';
+      previewUnit.el.style.top = `${elementPosition / docHeight * 100}%`;
+      previewUnit.el.style.width = '100%';
+      previewUnit.el.style.height = '2px';
+      previewUnit.el.style.border = `1px solid ${element.style.backgroundColor}`;
+      previewUnit.el.style.backgroundColor = element.style.backgroundColor;
+      previewBar.append(previewUnit.el);
     });
-    wordHtml.append(quickviewName.el);
-
-    const quickviewUpArrow = $$('span');
-    quickviewUpArrow.addClass('coveo-term-for-quickview-up-arrow');
-    const quickviewUpArrowIcon = $$('span');
-    quickviewUpArrowIcon.addClass('coveo-term-for-quickview-up-arrow-icon');
-    quickviewUpArrow.append(quickviewUpArrowIcon.el);
-    quickviewUpArrow.on('click', () => {
-      this.navigate(wordState, true, window);
-    });
-    wordHtml.append(quickviewUpArrow.el);
-
-    const quickviewDownArrow = $$('span');
-    quickviewDownArrow.addClass('coveo-term-for-quickview-down-arrow');
-    const quickviewDownArrowIcon = $$('span');
-    quickviewDownArrowIcon.addClass('coveo-term-for-quickview-down-arrow-icon');
-    quickviewDownArrow.append(quickviewDownArrowIcon.el);
-    quickviewDownArrow.on('click', () => {
-      this.navigate(wordState, false, window);
-    });
-    wordHtml.append(quickviewDownArrow.el);
-
-    wordHtml.el.style.backgroundColor = wordState.color;
-    wordHtml.el.style.borderColor = this.getSaturatedColor(wordState.color);
-    quickviewDownArrow.el.style.borderColor = this.getSaturatedColor(wordState.color);
-
-    return wordHtml.el;
   }
 
   private navigate(state: IWordState, backward: boolean, window: Window) {
@@ -517,21 +387,6 @@ export class QuickviewDocument extends Component {
 
     document.body.scrollLeft = 0;
     document.body.scrollTop = 0;
-  }
-
-  private buildHeader(): Dom {
-    const header = $$('div');
-    header.addClass('coveo-quickview-header');
-    return header;
-  }
-
-  private buildIFrame(): Dom {
-    const iFrame = $$('iframe');
-    iFrame.setAttribute('sandbox', 'allow-same-origin allow-top-navigation');
-    const iFrameWrapper = $$('div');
-    iFrameWrapper.addClass('coveo-iframeWrapper');
-    iFrameWrapper.el.appendChild(iFrame.el);
-    return iFrameWrapper;
   }
 
   private getScrollingElement(iframeWindow: Window): HTMLElement {

@@ -1,0 +1,148 @@
+import { Dom, $$ } from '../../utils/Dom';
+import { AjaxError } from '../../rest/AjaxError';
+import { each } from 'underscore';
+import { DeviceUtils, l } from '../../Core';
+
+export class QuickviewDocumentIframe {
+  public el: HTMLElement;
+  private iframeElement: HTMLIFrameElement;
+
+  constructor() {
+    this.el = this.buildIFrame().el;
+  }
+
+  public render(htmlDocument: HTMLDocument): Promise<HTMLIFrameElement> {
+    if (this.quickviewIsClosedByEndUser) {
+      return Promise.reject(null);
+    }
+
+    return new Promise((resolve, reject) => {
+      this.addClientSideTweaksToIFrameStyling(htmlDocument);
+
+      this.writeToIFrame(htmlDocument);
+
+      this.iframeElement.onload = () => {
+        resolve(this.iframeElement);
+      };
+    });
+  }
+
+  public renderError(error: AjaxError): Promise<HTMLIFrameElement> {
+    if (this.quickviewIsClosedByEndUser()) {
+      return Promise.reject(null);
+    }
+
+    return new Promise((resolve, reject) => {
+      let errorMessage = '';
+      switch (error.status) {
+        case 400:
+          errorMessage = l('NoQuickview');
+          break;
+        default:
+          errorMessage = l('OoopsError');
+          break;
+      }
+
+      const errorDocument = document.implementation.createHTMLDocument();
+      errorDocument.body.style.fontFamily = `Arimo, \'Helvetica Neue\', Helvetica, Arial, sans-serif`;
+      $$(errorDocument.body).text(errorMessage);
+
+      this.writeToIFrame(errorDocument);
+
+      this.iframeElement.onload = () => {
+        resolve(this.iframeElement);
+      };
+    });
+  }
+
+  private quickviewIsClosedByEndUser() {
+    return this.iframeElement.contentDocument == null;
+  }
+
+  private get iframeDocument() {
+    return this.iframeElement.contentWindow.document;
+  }
+
+  private buildIFrame(): Dom {
+    const iframe = $$('iframe', {
+      sandbox: 'allow-same-origin allow-top-navigation',
+      src: 'about:blank'
+    });
+    this.iframeElement = iframe.el as HTMLIFrameElement;
+
+    const iframewrapper = $$('div', {
+      className: 'coveo-iframeWrapper'
+    });
+    iframewrapper.append(iframe.el);
+
+    return iframewrapper;
+  }
+
+  private writeToIFrame(htmlDocument: HTMLDocument) {
+    this.allowDocumentLinkToEscapeSandbox(htmlDocument);
+    this.iframeDocument.open();
+
+    try {
+      this.iframeDocument.write(htmlDocument.getElementsByTagName('html')[0].outerHTML);
+    } catch (e) {
+      // The iframe is sandboxed, and can throw ugly errors in the console, especially when rendering random web pages.
+      // Try to suppress those.
+    }
+
+    this.iframeDocument.close();
+  }
+
+  private allowDocumentLinkToEscapeSandbox(htmlDocument: HTMLDocument) {
+    // On the iframe, we set the sandbox attribute to "allow top navigation".
+    // For this to work, we need to force all link to target _top.
+    // This is especially useful for quickview on web pages.
+    each($$(htmlDocument.body).findAll('a'), link => {
+      link.setAttribute('target', '_top');
+    });
+  }
+
+  private addClientSideTweaksToIFrameStyling(htmlDocument: HTMLDocument) {
+    try {
+      const style = $$('style', { type: 'text/css' }).el as HTMLStyleElement;
+
+      // Safari on iOS forces resize iframes to fit their content, even if an explicit size
+      // is set on the iframe. Isn't that great? By chance there is a trick around it: by
+      // setting a very small size on the body and instead using min-* to set the size to
+      // 100% we're able to trick Safari from thinking it must expand the iframe. Amazed.
+      // The 'scrolling' part is required otherwise the hack doesn't work.
+      //
+      // http://stackoverflow.com/questions/23083462/how-to-get-an-iframe-to-be-responsive-in-ios-safari
+      const cssHackForIOS = `
+      body, html { 
+        height: 1px !important; 
+        min-height: 100%; 
+        width: 1px !important; 
+        min-width: 100%; 
+        overflow: scroll; 
+        margin: auto
+      }
+      `;
+
+      const cssText = `
+      html pre { 
+        white-space: pre-wrap;
+        word-wrap: break-word;
+      }
+      body, html { 
+        font-family: Arimo, 'Helvetica Neue', Helvetica, Arial, sans-serif; -webkit-text-size-adjust: none; 
+      }
+      ${DeviceUtils.isIos() ? cssHackForIOS : ''}
+      `;
+
+      if (DeviceUtils.isIos()) {
+        $$(this.iframeElement).setAttribute('scrolling', 'no');
+        this.iframeElement.parentElement.style.margin = '0 0 5px 5px';
+      }
+
+      style.appendChild(document.createTextNode(cssText));
+      htmlDocument.head.appendChild(style);
+    } catch (e) {
+      // if not allowed
+    }
+  }
+}
