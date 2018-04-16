@@ -6,6 +6,7 @@ import { $$ } from '../../src/utils/Dom';
 import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
 import { QueryController } from '../../src/controllers/QueryController';
 import { FacetQueryController } from '../../src/controllers/FacetQueryController';
+import { AllowedValuesPatternType } from '../../src/rest/AllowedValuesPatternType';
 
 export function FacetSearchParametersTest() {
   describe('FacetSearchParameters', () => {
@@ -109,6 +110,12 @@ export function FacetSearchParametersTest() {
         expect(groupBy.allowedValues).toContain('*qwerty*');
         expect(groupBy.allowedValues).toContain('test');
         expect(groupBy.allowedValues).toContain('c');
+      });
+
+      it('uses wildcards as AllowedValuesPatterntype by default', () => {
+        const params = new FacetSearchParameters(mockFacet);
+        const groupBy = params.getGroupByRequest();
+        expect(groupBy.allowedValuesPatternType).toBe(AllowedValuesPatternType.Wildcards);
       });
 
       describe('should duplicate query', () => {
