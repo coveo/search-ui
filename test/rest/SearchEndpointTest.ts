@@ -308,8 +308,7 @@ export function SearchEndpointTest() {
 
           jasmine.Ajax.requests.mostRecent().respondWith({
             status: 200,
-            response: new ArrayBuffer(123),
-            responseType: 'arraybuffer'
+            response: new ArrayBuffer(123)
           });
         });
 

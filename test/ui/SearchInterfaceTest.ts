@@ -264,7 +264,7 @@ export function SearchInterfaceTest() {
         Simulate.query(env, {
           query: queryBuilder.build()
         });
-        expect(cmp.getQueryContext()).toEqual({ '123': 456 });
+        expect(cmp.getQueryContext()).toEqual({ '123': '456' });
       });
 
       it('should allow to retrieve the context from a PipelineContext if present', () => {

@@ -209,6 +209,7 @@ export function mockWindow(): Window {
 
 export function mockComponent<T extends BaseComponent>(constructorFunc, name = 'mock'): T {
   const m = mock<T>(constructorFunc, name);
+
   m.type = name;
   return m;
 }
