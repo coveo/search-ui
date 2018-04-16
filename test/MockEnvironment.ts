@@ -171,7 +171,7 @@ export class AdvancedComponentSetupOptions {
   }
 }
 
-export function mock<T>(contructorFunc, name = 'mock'): T {
+export function mock<T>(contructorFunc, name = 'mock'): jasmine.SpyObj<T> {
   const keys = [];
   for (const key in contructorFunc.prototype) {
     keys.push(key);

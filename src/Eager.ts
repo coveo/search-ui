@@ -269,5 +269,8 @@ SimpleFilter.doExport();
 import { TimespanFacet } from './ui/TimespanFacet/TimespanFacet';
 TimespanFacet.doExport();
 
+import { CategoryFacet } from './ui/CategoryFacet/CategoryFacet';
+CategoryFacet.doExport();
+
 import { swapVar } from './SwapVar';
 swapVar(this);

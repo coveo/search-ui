@@ -270,5 +270,8 @@ lazySimpleFilter();
 import { lazyTimespanFacet } from './ui/TimespanFacet/LazyTimespanFacet';
 lazyTimespanFacet();
 
+import { CategoryFacet } from './ui/CategoryFacet/CategoryFacet';
+CategoryFacet.doExport();
+
 import { swapVar } from './SwapVar';
 swapVar(this);

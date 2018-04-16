@@ -1,0 +1,102 @@
+@import 'Variables';
+@import 'bourbon/bourbon';
+
+.CoveoCategoryFacet {
+  &.coveo-hidden {
+    display: none;
+  }
+
+  & > .coveo-facet-values > .coveo-category-facet-value {
+    padding: 5px 0 5px 0;
+  }
+
+  &.coveo-category-facet-values-fade .coveo-active-category-facet-parent {
+    .coveo-category-facet-value {
+      opacity: 0.5;
+    }
+  }
+}
+
+.coveo-category-facet-values {
+  list-style: none;
+  padding: 0;
+}
+
+.coveo-category-facet-value-label {
+  transition: background-color 0.07s $standard-transition-timing-function;
+  cursor: pointer;
+  vertical-align: middle;
+  @include display(flex);
+  line-height: 22px;
+  padding: 5px 19px 5px 20px;
+  &:hover {
+    background-color: $color-blueish-white-grey;
+  }
+}
+
+.coveo-active-category-facet-parent > .coveo-category-facet-value-label {
+  font-weight: bold;
+}
+
+.coveo-active-category-facet-parent .coveo-category-facet-value {
+  .coveo-category-facet-value-label {
+    padding-left: 53px;
+  }
+}
+
+.coveo-category-facet-child-values {
+  .coveo-category-facet-value-caption {
+    color: $color-vibrant-blue;
+  }
+}
+
+.coveo-category-facet-value-caption {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  @include flex-grow(1);
+}
+
+.coveo-category-facet-value-count {
+  margin: 0 5px;
+}
+
+.coveo-category-facet-collapse-children {
+  cursor: pointer;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+.coveo-category-facet-header {
+  padding: 10px 20px 6px 20px;
+  color: $color-greyish-teal-blue;
+}
+
+.coveo-category-facet-collapse-children-svg {
+  transform: rotate(90deg);
+  color: $color-light-grey;
+  width: 10px;
+  height: 6px;
+  vertical-align: 2px;
+}
+
+.coveo-category-facet-title {
+  display: inline-block;
+}
+
+.coveo-category-facet-header-wait-animation {
+  margin-left: 10px;
+  position: relative;
+  display: inline-block;
+  width: 18px;
+  height: 20px;
+  .coveo-category-facet-header-wait-animation-svg {
+    color: $color-greyish-teal-blue;
+    display: inline-block;
+    vertical-align: middle;
+    @include animation-name(coveo-spin);
+    @include animation-timing-function(linear);
+    @include animation-duration(1s);
+    @include animation-iteration-count(infinite);
+  }
+}
