@@ -120,7 +120,7 @@
   version "9.12.2"
   resolved "https://registry.yarnpkg.com/@types/highlight.js/-/highlight.js-9.12.2.tgz#6ee7cd395effe5ec80b515d3ff1699068cd0cd1d"
 
-"@types/jasmine-ajax@3.1.17":
+"@types/jasmine-ajax@3.1.37":
   version "3.1.37"
   resolved "https://registry.yarnpkg.com/@types/jasmine-ajax/-/jasmine-ajax-3.1.37.tgz#bcee41b838c6b0caf53ce7327a9ad00d30caf763"
 

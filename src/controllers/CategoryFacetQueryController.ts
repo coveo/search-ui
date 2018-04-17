@@ -1,6 +1,8 @@
 import { CategoryFacet } from '../ui/CategoryFacet/CategoryFacet';
 import { QueryBuilder } from '../ui/Base/QueryBuilder';
 import { ICategoryFacetsRequest } from '../rest/CategoryFacetsRequest';
+import { ICategoryFacetValue } from '../rest/CategoryFacetValue';
+import { IGroupByRequest } from '../rest/GroupByRequest';
 
 export class CategoryFacetQueryController {
   constructor(private categoryFacet: CategoryFacet) {}
@@ -15,5 +17,12 @@ export class CategoryFacetQueryController {
       path
     } as ICategoryFacetsRequest);
     return positionInQuery;
+  }
+
+  public searchFacetValues(value: string): ICategoryFacetValue[] {
+    const groupByRequest: IGroupByRequest = {
+      allowedValues: `*${value}*`,
+      allowedValuesPatternType: Allow
+    };
   }
 }
