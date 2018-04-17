@@ -22,6 +22,7 @@ import { QueryEvents } from '../../events/QueryEvents';
 export interface CategoryFacetOptions {
   field: IFieldOption;
   title?: string;
+  numberOfResultsInFacetSearch: number;
   id: string;
 }
 
@@ -47,7 +48,10 @@ export class CategoryFacet extends Component {
     title: ComponentOptions.buildLocalizedStringOption({
       defaultValue: l('NoTitle')
     }),
-    id: ComponentOptions.buildStringOption({ postProcessing: (value, options: CategoryFacetOptions) => value || (options.field as string) })
+    id: ComponentOptions.buildStringOption({
+      postProcessing: (value, options: CategoryFacetOptions) => value || (options.field as string)
+    }),
+    numberOfResultsInFacetSearch: ComponentOptions.buildNumberOption({ defaultValue: 15, min: 1 })
   };
 
   private categoryValueRoot: CategoryValueRoot;
