@@ -1,10 +1,8 @@
 @import 'Variables';
-
 $color_indexDuration: #b33;
 $color_proxyDuration: #b3b;
 $color_clientDuration: #3b3;
 $color_duration: #33b;
-
 .coveo-debug.coveo-modal-container {
   .coveo-modal-content {
     @include transition(opacity 0.3s);
@@ -12,7 +10,6 @@ $color_duration: #33b;
       opacity: 0.5;
     }
   }
-
   .coveo-checkbox-label,
   .coveo-input {
     margin: 8px;
@@ -68,8 +65,10 @@ $color_duration: #33b;
     .coveo-searching-loading {
       display: none;
     }
+    .coveo-debug {
+      min-width: 800px;
+    }
   }
-
   .coveo-debug-durations {
     display: table;
     width: 100%;
@@ -92,7 +91,6 @@ $color_duration: #33b;
       }
     }
   }
-
   .coveo-debug-duration-legend {
     display: inline-block;
     margin-right: 16px;
@@ -126,7 +124,6 @@ $color_duration: #33b;
       vertical-align: middle;
     }
   }
-
   .coveo-section {
     &.coveo-debug-collapsed {
       .coveo-section-header:before {

@@ -1,19 +1,19 @@
-import { Component } from '../Base/Component';
-import { ComponentOptions } from '../Base/ComponentOptions';
-import { IComponentBindings } from '../Base/ComponentBindings';
-import { Assert } from '../../misc/Assert';
-import { QueryEvents, IBuildingQueryEventArgs, INoResultsEventArgs, IQuerySuccessEventArgs } from '../../events/QueryEvents';
-import { $$ } from '../../utils/Dom';
-import { QueryStateModel } from '../../models/QueryStateModel';
-import { Initialization } from '../Base/Initialization';
-import { IQueryCorrection } from '../../rest/QueryCorrection';
-import { StringUtils } from '../../utils/StringUtils';
-import { Utils } from '../../utils/Utils';
-import { analyticsActionCauseList, IAnalyticsNoMeta } from '../Analytics/AnalyticsActionListMeta';
-import { l } from '../../strings/Strings';
+import 'styling/_DidYouMean';
 import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
-import 'styling/_DidYouMean';
+import { IBuildingQueryEventArgs, INoResultsEventArgs, IQuerySuccessEventArgs, QueryEvents } from '../../events/QueryEvents';
+import { Assert } from '../../misc/Assert';
+import { QueryStateModel } from '../../models/QueryStateModel';
+import { IQueryCorrection } from '../../rest/QueryCorrection';
+import { l } from '../../strings/Strings';
+import { $$ } from '../../utils/Dom';
+import { StringUtils } from '../../utils/StringUtils';
+import { Utils } from '../../utils/Utils';
+import { IAnalyticsNoMeta, analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
+import { Component } from '../Base/Component';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { Initialization } from '../Base/Initialization';
 
 export interface IDidYouMeanOptions {
   enableAutoCorrection?: boolean;
