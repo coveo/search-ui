@@ -1,0 +1,30 @@
+.CoveoResultActionsMenu {
+  display: none;
+  position: absolute;
+  right: 0;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  margin-top: -24px;
+  background: white;
+
+  &.coveo-menu-opened {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-end;
+    float: right;
+  }
+
+  .coveo-result-actions-menu-menu-item {
+    height: initial;
+    padding: 0 8px;
+    border-right: 1px solid #ccc;
+
+    &:last-child {
+      border: none;
+    }
+
+    .coveo-icon-for-quickview-svg {
+      margin: 0;
+    }
+  }
+}
