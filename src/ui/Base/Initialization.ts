@@ -726,7 +726,7 @@ export class LazyInitialization {
   public static buildErrorCallback(chunkName: string, resolve: Function) {
     return error => {
       LazyInitialization.logger.warn(
-        `Cannot load chunk for ${chunkName}. You may need to configure the paths of the resources using Coveo.configureResourceRoot. Current path is ${__webpack_public_path__}.`
+        `Cannot load chunk for ${chunkName}. You may need to add the coveo-script class on the script tag that includes the Coveo framework.`
       );
       resolve(() => {});
     };
