@@ -3,8 +3,8 @@ import { Logger, $$ } from '../Core';
 
 /**
  * Set of utilities to determine where to load the lazy chunks from.
- * You should always add the `coveo-script` class on the script tag that includes the Coveo framework to make sure the framework can always
- * auto-detect the path to load the lazy chunks from.
+ * You should the `coveo-script` class on the script tag that includes the Coveo framework to make sure the framework can always
+ * auto-detect the path to load the lazy chunks from. More details [here]{@link https://docs.coveo.com/en/418/javascript-search-framework/javascript-search-framework-version-1-x-to-2-x-breaking-changes-and-migration-guidelines#fixing-code-chunks-loading-path-issues}
  */
 export class PublicPathUtils {
   private static pathHasBeenConfigured = false;
@@ -19,16 +19,17 @@ export class PublicPathUtils {
 
   /**
    * Helper function to resolve the public path used to load the chunks relative to the Coveo script.
-   * You should always add the `coveo-script` class on the script tag that includes the Coveo framework
+   * You should add the `coveo-script` class on the script tag that includes the Coveo framework
    * to make sure the framework can always auto-detect the path to load the lazy chunks from.
+   * More details [here]{@link https://docs.coveo.com/en/418/javascript-search-framework/javascript-search-framework-version-1-x-to-2-x-breaking-changes-and-migration-guidelines#fixing-code-chunks-loading-path-issues}
    */
   public static getDynamicPublicPath() {
     let currentScript = this.getCurrentScript();
     const coveoScript = this.getCoveoScript();
     if (!this.isScript(coveoScript)) {
-      new Logger(this).warn(
-        `You should add the class coveo-script on the script tag that includes the Coveo framework. Not doing so may cause the framework to not be able to auto-detect the path to load the lazy chunks in certain environments.`
-      );
+      new Logger(this)
+        .warn(`You should add the class coveo-script on the script tag that includes the Coveo framework. Not doing so may cause the framework to not be able to auto-detect the path to load the lazy chunks in certain environments.
+        More details here https://docs.coveo.com/en/418/javascript-search-framework/javascript-search-framework-version-1-x-to-2-x-breaking-changes-and-migration-guidelines#fixing-code-chunks-loading-path-issues`);
     }
     if (!Utils.isNullOrUndefined(currentScript)) {
       return this.parseScriptDirectoryPath(currentScript);
