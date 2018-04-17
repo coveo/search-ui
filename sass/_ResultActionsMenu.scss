@@ -17,10 +17,9 @@
   .coveo-result-actions-menu-menu-item {
     height: initial;
     padding: 0 8px;
-    border-right: 1px solid #ccc;
 
-    &:last-child {
-      border: none;
+    &:not(:first-child) {
+      border-left: 1px solid #ccc;
     }
 
     .coveo-icon-for-quickview-svg {
