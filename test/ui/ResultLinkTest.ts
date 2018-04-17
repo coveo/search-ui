@@ -16,6 +16,8 @@ export function ResultLinkTest() {
     beforeEach(() => {
       fakeResult = initFakeResult();
       test = Mock.advancedResultComponentSetup<ResultLink>(ResultLink, fakeResult, undefined);
+      spyOn(test.cmp, 'openLink');
+      spyOn(window, 'open');
     });
 
     afterEach(function() {
