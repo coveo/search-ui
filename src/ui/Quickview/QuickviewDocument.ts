@@ -2,14 +2,10 @@ import * as _ from 'underscore';
 import { IQuickviewLoadedEventArgs, QuickviewEvents } from '../../events/QuickviewEvents';
 import { IOpenQuickviewEventArgs } from '../../events/ResultListEvents';
 import { Assert } from '../../misc/Assert';
-import { AjaxError } from '../../rest/AjaxError';
 import { IQuery } from '../../rest/Query';
 import { IQueryResult } from '../../rest/QueryResult';
 import { IViewAsHtmlOptions } from '../../rest/SearchEndpointInterface';
-import { l } from '../../strings/Strings';
-import { ColorUtils } from '../../utils/ColorUtils';
-import { DeviceUtils } from '../../utils/DeviceUtils';
-import { $$, Doc, Dom } from '../../utils/Dom';
+import { $$ } from '../../utils/Dom';
 import { Utils } from '../../utils/Utils';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
@@ -17,29 +13,13 @@ import { ComponentOptions } from '../Base/ComponentOptions';
 import { Initialization } from '../Base/Initialization';
 import { QuickviewDocumentIframe } from './QuickviewDocumentIframe';
 import { QuickviewDocumentHeader } from './QuickviewDocumentHeader';
-import { Quickview } from './Quickview';
-import { QuickviewDocumentWordButton } from './QuickviewDocumentWordButton';
+//import { QuickviewDocumentWordButton } from './QuickviewDocumentWordButton';
+import {} from './QuickviewdocumentKeywords';
 
-const HIGHLIGHT_PREFIX = 'CoveoHighlight';
+export const HIGHLIGHT_PREFIX = 'CoveoHighlight';
 
 export interface IQuickviewDocumentOptions {
   maximumDocumentSize?: number;
-}
-
-interface IWord {
-  text: string;
-  count: number;
-  index: number;
-  termsCount: number;
-  element: HTMLElement;
-  occurence: number;
-}
-
-export interface IWordState {
-  word: IWord;
-  color: string;
-  currentIndex: number;
-  index: number;
 }
 
 /**
@@ -70,7 +50,7 @@ export class QuickviewDocument extends Component {
   private iframe: QuickviewDocumentIframe;
   private header: QuickviewDocumentHeader;
   private termsToHighlightWereModified: boolean;
-  private keywordsState: IWordState[];
+  //  private keywordsState: IWordState[];
 
   /**
    * Creates a new `QuickviewDocument` component.
@@ -134,7 +114,7 @@ export class QuickviewDocument extends Component {
       } as IViewAsHtmlOptions);
 
       await this.iframe.render(documentHTML);
-
+      this.computeHighlights();
       const afterLoad = new Date().getTime();
 
       this.triggerQuickviewLoaded(afterLoad - beforeLoad);
@@ -193,96 +173,7 @@ export class QuickviewDocument extends Component {
   //     <span id='CoveoHighlight:2.1.2'>f</span>
   //
   // In the previous example, the words 'abcd' and 'bcdef' are highlighted.
-  public computeHighlights(window: Window): string[] {
-    //$$(this.header).empty();
-    this.keywordsState = [];
-
-    const words: { [index: string]: IWord } = {};
-    let highlightsCount = 0;
-    _.each($$(window.document.body).findAll('[id^="' + HIGHLIGHT_PREFIX + '"]'), (element: HTMLElement, index: number) => {
-      const idParts = this.getHighlightIdParts(element);
-
-      if (idParts) {
-        const idIndexPart = idParts[1]; // X
-        const idOccurencePart = parseInt(idParts[2], 10); // Y
-        const idTermPart = parseInt(idParts[3], 10); // Z in <span id='CoveoHighlight:X.Y.Z'>a</span>
-
-        let word = words[idIndexPart];
-
-        // The 'idTermPart' check is to circumvent a bug from the index
-        // where an highlight of an empty string start with an idTermPart > 1.
-        if (word == null && idTermPart == 1) {
-          words[idIndexPart] = word = {
-            text: this.getHighlightInnerText(element),
-            count: 1,
-            index: parseInt(idIndexPart, 10),
-
-            // Here I try to be clever.
-            // An overlaping word:
-            // 1) always start with a 'coveotaggedword' element.
-            // 2) then other 'coveotaggedword' elements may follow
-            // 3) then a 'span' element may follow.
-            //
-            // All 1), 2) and 3) will have the same id so I consider them as
-            // a whole having the id 0 instead of 1.
-            termsCount: element.nodeName.toLowerCase() == 'coveotaggedword' ? 0 : 1,
-            element: element,
-            occurence: idOccurencePart
-          };
-        } else if (word) {
-          if (word.occurence == idOccurencePart) {
-            if (element.nodeName.toLowerCase() == 'coveotaggedword') {
-              word.text += this.getHighlightInnerText(element);
-              // Doesn't count as a term part (see method description for more info).
-            } else if (word.termsCount < idTermPart) {
-              word.text += this.getHighlightInnerText(element);
-              word.termsCount += 1;
-            }
-          }
-
-          word.count = Math.max(word.count, idOccurencePart);
-          highlightsCount += 1;
-        }
-
-        // See the method description to understand why this code const us
-        // create the word 'bcdef' instead of 'bdef'.
-        if (word && word.occurence == idOccurencePart && element.nodeName.toLowerCase() == 'span') {
-          const embeddedWordParts = this.getHightlightEmbeddedWordIdParts(element);
-          const embeddedWord = embeddedWordParts ? words[embeddedWordParts[1]] : null;
-
-          if (embeddedWord && embeddedWord.occurence == parseInt(embeddedWordParts[2], 10)) {
-            embeddedWord.text += element.childNodes[0].nodeValue || ''; // only immediate text without children.
-          }
-        }
-      }
-    });
-
-    if (highlightsCount == 0) {
-      this.header.el.style.minHeight = '0';
-    }
-
-    const resolvedWords = [];
-
-    _.each(words, word => {
-      // When possible, take care to find the original term from the query instead of the
-      // first highlighted version we encounter. This relies on a recent feature by the
-      // Search API, but will fallback properly on older versions.
-      word.text = this.resolveOriginalTermFromHighlight(word.text);
-
-      const state = {
-        word: word,
-        color: word.element.style.backgroundColor,
-        currentIndex: 0,
-        index: word.index
-      };
-
-      this.keywordsState.push(state);
-      this.header.addWord(new QuickviewDocumentWordButton(state, this.iframe));
-      //      $$(this.header).append(this.buildWordButton(state, window));
-    });
-
-    return resolvedWords;
-  }
+  public computeHighlights() {}
 
   private getHighlightIdParts(element: HTMLElement): string[] {
     const parts = element.id.substr(HIGHLIGHT_PREFIX.length + 1).match(/^([0-9]+)\.([0-9]+)\.([0-9]+)$/);
@@ -290,7 +181,7 @@ export class QuickviewDocument extends Component {
     return parts && parts.length > 3 ? parts : null;
   }
 
-  private getHighlightInnerText(element: HTMLElement): string {
+  /*private getHighlightInnerText(element: HTMLElement): string {
     if (element.nodeName.toLowerCase() == 'coveotaggedword') {
       // only immediate text without children.
       return element.childNodes.length >= 1 ? element.childNodes.item(0).textContent || '' : '';
@@ -319,16 +210,14 @@ export class QuickviewDocument extends Component {
           return (
             originalTerm.toLowerCase() == highlight.toLowerCase() ||
             _.find(this.result.termsToHighlight[originalTerm], (expansion: string) => expansion.toLowerCase() == highlight.toLowerCase()) !=
-              undefined
+            undefined
           );
         }) || found;
     }
     return found;
-  }
+  }*/
 
-  private buildWordButton(wordState: IWordState, window: Window): HTMLElement {}
-
-  private renderPreviewBar(win: Window) {
+  /*private renderPreviewBar(win: Window) {
     const docHeight = new Doc(win.document).height();
     const previewBar = $$('div');
 
@@ -351,65 +240,7 @@ export class QuickviewDocument extends Component {
       previewUnit.el.style.backgroundColor = element.style.backgroundColor;
       previewBar.append(previewUnit.el);
     });
-  }
-
-  private navigate(state: IWordState, backward: boolean, window: Window) {
-    const fromIndex = state.currentIndex;
-    let toIndex: number;
-    if (!backward) {
-      toIndex = fromIndex == state.word.count ? 1 : fromIndex + 1;
-    } else {
-      toIndex = fromIndex <= 1 ? state.word.count : fromIndex - 1;
-    }
-
-    const scroll = this.getScrollingElement(window);
-
-    // Un-highlight any currently selected element
-    const current = $$(scroll).find('[id^="' + HIGHLIGHT_PREFIX + ':' + state.word.index + '.' + fromIndex + '"]');
-    if (current) {
-      current.style.border = '';
-    }
-
-    // Find and highlight the new element.
-    const element = $$(window.document.body).find('[id^="' + HIGHLIGHT_PREFIX + ':' + state.word.index + '.' + toIndex + '"]');
-    element.style.border = '1px dotted #333';
-    state.currentIndex = toIndex;
-
-    // pdf2html docs hide the non-visible frames by default, to speed up browsers.
-    // But this prevents keyword navigation from working so we must force show it. This
-    // is done by adding the 'opened' class to it (defined by pdf2html).
-    if (this.isNewQuickviewDocument(window)) {
-      const pdf = $$(element).closest('.pc');
-      $$(pdf).addClass('opened');
-    }
-
-    element.scrollIntoView();
-
-    document.body.scrollLeft = 0;
-    document.body.scrollTop = 0;
-  }
-
-  private getScrollingElement(iframeWindow: Window): HTMLElement {
-    let found: HTMLElement;
-
-    if (this.isNewQuickviewDocument(iframeWindow)) {
-      // 'New' quick views have a #page-container element generated by the pdf2html thing.
-      // This is the element we want to scroll on.
-      found = $$(iframeWindow.document.body).find('#page-container');
-    }
-
-    // If all else fails, we use the body
-    if (!found) {
-      found = $$(iframeWindow.document.body).el;
-    }
-
-    return found;
-  }
-
-  private isNewQuickviewDocument(iframeWindow: Window): boolean {
-    const meta = $$(iframeWindow.document.head).find("meta[name='generator']");
-    return meta && meta.getAttribute('content') == 'pdf2htmlEX';
-  }
+  }*/
 
   private handleTermsToHighlight(termsToHighlight: Array<string>, queryObject: IQuery) {
     for (const term in this.result.termsToHighlight) {
@@ -428,19 +259,6 @@ export class QuickviewDocument extends Component {
     if (!Utils.arrayEqual(termsToHighlight, _.keys(this.result.termsToHighlight))) {
       this.termsToHighlightWereModified = true;
     }
-  }
-
-  private getSaturatedColor(color: string): string {
-    const r = parseInt(color.substring(4, 7));
-    const g = parseInt(color.substring(9, 12));
-    const b = parseInt(color.substring(14, 17));
-    const hsv = ColorUtils.rgbToHsv(r, g, b);
-    hsv[1] *= 2;
-    if (hsv[1] > 1) {
-      hsv[1] = 1;
-    }
-    const rgb = ColorUtils.hsvToRgb(hsv[0], hsv[1], hsv[2]);
-    return 'rgb(' + rgb[0].toString() + ', ' + rgb[1].toString() + ', ' + rgb[2].toString() + ')';
   }
 }
 

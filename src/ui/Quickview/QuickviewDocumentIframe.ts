@@ -11,8 +11,21 @@ export class QuickviewDocumentIframe {
     this.el = this.buildIFrame().el;
   }
 
+  public get document() {
+    return this.iframeElement.contentWindow.document;
+  }
+
+  public get body() {
+    return this.document.body;
+  }
+
+  public isNewQuickviewDocument(): boolean {
+    const meta = $$(this.document.head).find("meta[name='generator']");
+    return meta && meta.getAttribute('content') == 'pdf2htmlEX';
+  }
+
   public render(htmlDocument: HTMLDocument): Promise<HTMLIFrameElement> {
-    if (this.quickviewIsClosedByEndUser) {
+    if (this.quickviewIsClosedByEndUser()) {
       return Promise.reject(null);
     }
 
@@ -59,10 +72,6 @@ export class QuickviewDocumentIframe {
     return this.iframeElement.contentDocument == null;
   }
 
-  private get iframeDocument() {
-    return this.iframeElement.contentWindow.document;
-  }
-
   private buildIFrame(): Dom {
     const iframe = $$('iframe', {
       sandbox: 'allow-same-origin allow-top-navigation',
@@ -80,16 +89,16 @@ export class QuickviewDocumentIframe {
 
   private writeToIFrame(htmlDocument: HTMLDocument) {
     this.allowDocumentLinkToEscapeSandbox(htmlDocument);
-    this.iframeDocument.open();
+    this.document.open();
 
     try {
-      this.iframeDocument.write(htmlDocument.getElementsByTagName('html')[0].outerHTML);
+      this.document.write(htmlDocument.getElementsByTagName('html')[0].outerHTML);
     } catch (e) {
       // The iframe is sandboxed, and can throw ugly errors in the console, especially when rendering random web pages.
       // Try to suppress those.
     }
 
-    this.iframeDocument.close();
+    this.document.close();
   }
 
   private allowDocumentLinkToEscapeSandbox(htmlDocument: HTMLDocument) {

@@ -1,4 +1,5 @@
 import { $$, Dom } from '../../utils/Dom';
+import { QuickviewDocumentWordButton } from './QuickviewDocumentWordButton';
 
 export class QuickviewDocumentHeader {
   public el: HTMLElement;
@@ -7,7 +8,9 @@ export class QuickviewDocumentHeader {
     this.el = this.buildHeader().el;
   }
 
-  public addWord() {}
+  public addWord(wordButton: QuickviewDocumentWordButton) {
+    this.el.appendChild(wordButton.el);
+  }
 
   public removeWord() {}
 
