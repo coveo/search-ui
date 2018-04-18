@@ -13,7 +13,7 @@ export enum VALID_DIRECTION {
   DESCENDING = 'descending'
 }
 
-export class SingleSortCriteria {
+export class SortCriterion {
   private static sortsNeedingDirection = [VALID_SORT.DATE];
 
   /**
@@ -22,13 +22,13 @@ export class SingleSortCriteria {
    * @param direction The direction by which to sort (e.g.: ascending, descending)
    */
   constructor(public sort: VALID_SORT, public direction: VALID_DIRECTION | '' = '') {
-    if (!SingleSortCriteria.sortIsField(sort)) {
+    if (!SortCriterion.sortIsField(sort)) {
       Assert.check(
         this.isValidSort(sort),
         `${sort} is not a valid sort criteria. Valid values are ${values(VALID_SORT)} or a valid index sortable index field.`
       );
     }
-    if (SingleSortCriteria.sortNeedsDirection(sort)) {
+    if (SortCriterion.sortNeedsDirection(sort)) {
       Assert.check(
         this.isValidDirection(direction),
         `${direction} is not a valid sort criteria direction. Valid values are ${values(VALID_DIRECTION)}`
@@ -57,27 +57,27 @@ export class SingleSortCriteria {
   }
 
   private static sortNeedsDirection(sort: string) {
-    return contains(SingleSortCriteria.sortsNeedingDirection, sort) || SingleSortCriteria.sortIsField(sort);
+    return contains(SortCriterion.sortsNeedingDirection, sort) || SortCriterion.sortIsField(sort);
   }
 }
 
 export class SortCriteria {
-  private singleCriterias: SingleSortCriteria[] = [];
+  private criteria: SortCriterion[] = [];
 
   constructor(rawCriteriaString: string) {
-    const multipleCriteria = rawCriteriaString.split(';');
-    multipleCriteria.forEach(singleCriteria => {
-      const split = singleCriteria.match(/\S+/g);
-      this.singleCriterias.push(new SingleSortCriteria(split[0] as VALID_SORT, split[1] as VALID_DIRECTION));
+    const criteria = rawCriteriaString.split(';');
+    criteria.forEach(criterion => {
+      const split = criterion.match(/\S+/g);
+      this.criteria.push(new SortCriterion(split[0] as VALID_SORT, split[1] as VALID_DIRECTION));
     });
   }
 
   public get direction() {
-    return first(this.singleCriterias).direction;
+    return first(this.criteria).direction;
   }
 
   public get sort() {
-    return first(this.singleCriterias).sort;
+    return first(this.criteria).sort;
   }
 
   /**
@@ -103,9 +103,9 @@ export class SortCriteria {
    * Returns a string representation of the sort criteria (e.g.: 'date ascending').
    */
   public toString(): string {
-    return this.singleCriterias
-      .map(singleCriteria => {
-        return singleCriteria.direction ? `${singleCriteria.sort} ${singleCriteria.direction}` : `${singleCriteria.sort}`;
+    return this.criteria
+      .map(criterion => {
+        return criterion.direction ? `${criterion.sort} ${criterion.direction}` : `${criterion.sort}`;
       })
       .join(';');
   }
