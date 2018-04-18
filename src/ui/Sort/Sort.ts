@@ -49,7 +49,9 @@ export class Sort extends Component {
      * - `@field ascending`/`@field descending`, where you must replace `field` with the name of a sortable field in your index (e.g., `data-sort-criteria="@size ascending"`).
      *
      * You can specify a comma separated list of sort criteria to toggle between when interacting with this component instance (e.g., `data-sort-criteria="date descending,date ascending"`).
+     *
      * You can specify multiple sort criteria to be used in the same request by separating them with a semicolon (e.g., `data-sort-criteria="@size ascending;date ascending"` ).
+     *
      * Interacting with this component instance will cycle through those criteria in the order they are listed in.
      * Typically, you should only specify a list of sort criteria when you want the end user to be able to to toggle the direction of a `date` or `@field` sort criteria.
      * Otherwise, you should configure a distinct `Sort` component instance for each sort criterion you want to make available in your search page.
@@ -58,10 +60,10 @@ export class Sort extends Component {
      *
      * Examples:
      *
-     * - `data-sort-criteria="date ascending"` will create a Sort component that will only allow to sort on `date ascending`, with no possibility to toggle.
-     * - `data-sort-criteria="date ascending, date descending"` will create a Sort component that will allow the end user to toggle between `date ascending` and `date descending` on click.
-     * - `data-sort-criteria="@size ascending; date descending"` will create a Sort component that will only allow to sort on `@size ascending`. The index will apply a second sort on `date descending` if there are equal values.
-     * - `data-sort-criteria="@size ascending; date descending, @size descending; date descending"` will create a Sort component that will allow the end user to toggle between `@size ascending` and `@size descending`. For each of those values, the index will apply a second sort on `date descending` if there are equalities.
+     * - `data-sort-criteria="date ascending"` createes a Sort component that allows to sort on `date ascending`, without being able to toggle the order.
+     * - `data-sort-criteria="date ascending, date descending"` creates a Sort component that allows end users to toggle between `date ascending` and `date descending` on click.
+     * - `data-sort-criteria="@size ascending; date descending"` creates a Sort component that only allows end users to sort on `@size ascending`. The index then applies a second sort on `date descending` when two items are of equal value.
+     * - `data-sort-criteria="@size ascending; date descending, @size descending; date descending"` creates a Sort component that allows end users to toggle between `@size ascending` and `@size descending`. For each value, the index applies a second sort on `date descending` when two items are of equal value.
      */
     sortCriteria: ComponentOptions.buildCustomListOption(
       values => {
