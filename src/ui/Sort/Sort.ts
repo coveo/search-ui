@@ -1,23 +1,21 @@
-import { Component } from '../Base/Component';
-import { SortCriteria } from './SortCriteria';
-import { ComponentOptions } from '../Base/ComponentOptions';
-import { IComponentBindings } from '../Base/ComponentBindings';
-import { Assert } from '../../misc/Assert';
-import { Utils } from '../../utils/Utils';
-import { $$ } from '../../utils/Dom';
-import { IAttributesChangedEventArg, MODEL_EVENTS } from '../../models/Model';
-import { QueryStateModel, QUERY_STATE_ATTRIBUTES } from '../../models/QueryStateModel';
-import { QueryEvents, IQuerySuccessEventArgs, IBuildingQueryEventArgs } from '../../events/QueryEvents';
-import { Initialization } from '../Base/Initialization';
-import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
-import { IQueryErrorEventArgs } from '../../events/QueryEvents';
+import 'styling/_Sort';
 import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
-
-import 'styling/_Sort';
-import { SVGIcons } from '../../utils/SVGIcons';
+import { IBuildingQueryEventArgs, IQueryErrorEventArgs, IQuerySuccessEventArgs, QueryEvents } from '../../events/QueryEvents';
+import { Assert } from '../../misc/Assert';
+import { IAttributesChangedEventArg, MODEL_EVENTS } from '../../models/Model';
+import { QUERY_STATE_ATTRIBUTES, QueryStateModel } from '../../models/QueryStateModel';
+import { $$ } from '../../utils/Dom';
+import { KEYBOARD, KeyboardUtils } from '../../utils/KeyboardUtils';
 import { SVGDom } from '../../utils/SVGDom';
+import { SVGIcons } from '../../utils/SVGIcons';
+import { Utils } from '../../utils/Utils';
 import { logSortEvent } from '../Analytics/SharedAnalyticsCalls';
+import { Component } from '../Base/Component';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { Initialization } from '../Base/Initialization';
+import { SortCriteria } from './SortCriteria';
 
 export interface ISortOptions {
   sortCriteria?: SortCriteria[];
@@ -51,20 +49,30 @@ export class Sort extends Component {
      * - `@field ascending`/`@field descending`, where you must replace `field` with the name of a sortable field in your index (e.g., `data-sort-criteria="@size ascending"`).
      *
      * You can specify a comma separated list of sort criteria to toggle between when interacting with this component instance (e.g., `data-sort-criteria="date descending,date ascending"`).
-     * Interacting with this compnent instance will cycle through those criteria in the order they are listed in.
+     *
+     * You can specify multiple sort criteria to be used in the same request by separating them with a semicolon (e.g., `data-sort-criteria="@size ascending;date ascending"` ).
+     *
+     * Interacting with this component instance will cycle through those criteria in the order they are listed in.
      * Typically, you should only specify a list of sort criteria when you want the end user to be able to to toggle the direction of a `date` or `@field` sort criteria.
      * Otherwise, you should configure a distinct `Sort` component instance for each sort criterion you want to make available in your search page.
      *
      * You must specify a valid value for this option in order for this component instance to work correctly.
+     *
+     * Examples:
+     *
+     * - `data-sort-criteria="date ascending"` createes a Sort component that allows to sort on `date ascending`, without being able to toggle the order.
+     * - `data-sort-criteria="date ascending, date descending"` creates a Sort component that allows end users to toggle between `date ascending` and `date descending` on click.
+     * - `data-sort-criteria="@size ascending; date descending"` creates a Sort component that only allows end users to sort on `@size ascending`. The index then applies a second sort on `date descending` when two items are of equal value.
+     * - `data-sort-criteria="@size ascending; date descending, @size descending; date descending"` creates a Sort component that allows end users to toggle between `@size ascending` and `@size descending`. For each value, the index applies a second sort on `date descending` when two items are of equal value.
      */
     sortCriteria: ComponentOptions.buildCustomListOption(
-      (values: string[] | SortCriteria[]) => {
-        return _.map(<any>values, criteria => {
+      values => {
+        return _.map(values, criteria => {
           // 'any' because Underscore won't accept the union type as an argument.
           if (typeof criteria === 'string') {
-            return SortCriteria.parse(criteria);
+            return new SortCriteria(criteria);
           } else {
-            return <SortCriteria>criteria;
+            return criteria as SortCriteria;
           }
         });
       },

@@ -254,6 +254,9 @@ export class QueryBuilder {
    * -- @field ascending / @field descending Sort using the value of a custom field.
    */
   public sortCriteria: string = 'relevancy';
+  /**
+   * @deprecated
+   */
   public sortField: string;
   public retrieveFirstSentences: boolean = true;
   public timezone: string;
