@@ -287,6 +287,26 @@
     ],
     "layout": "list"
   },
+  "YouTubePlaylist": {
+    "priority": 1,
+    "fieldsToMatch": [
+      {
+        "field": "filetype",
+        "values": ["YouTubePlaylist"]
+      }
+    ],
+    "layout": "list"
+  },
+  "CardYouTubePlaylist": {
+    "priority": 2,
+    "fieldsToMatch": [
+      {
+        "field": "filetype",
+        "values": ["YouTubePlaylist"]
+      }
+    ],
+    "layout": "card"
+  },
   "CardSlack": {
     "priority": 2,
     "fieldsToMatch": [
