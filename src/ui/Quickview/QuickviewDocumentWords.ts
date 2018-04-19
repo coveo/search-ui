@@ -2,15 +2,16 @@ import { HIGHLIGHT_PREFIX } from './QuickviewDocument';
 import { $$ } from '../../utils/Dom';
 import { first, each } from 'underscore';
 import { QuickviewDocumentIframe } from './QuickviewDocumentIframe';
-
-export class QuickviewDocumentWord {}
+import { QuickviewDocumentWord } from './QuickviewDocumentWord';
 
 export class QuickviewDocumentWords {
   public keywordsState = [];
   public words: Record<string, QuickviewDocumentWord> = {};
 
   constructor(public iframe: QuickviewDocumentIframe) {
-    each($$(this.iframe.body).findAll(`[id^="${HIGHLIGHT_PREFIX}"]`), (element: HTMLElement, index: number) => {});
+    each($$(this.iframe.body).findAll(`[id^="${HIGHLIGHT_PREFIX}"]`), (element: HTMLElement, index: number) => {
+      const quickviewWord = new QuickviewDocumentWord(element);
+    });
   }
 
   public computeHighlights() {}
