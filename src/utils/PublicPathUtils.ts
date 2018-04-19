@@ -1,10 +1,11 @@
 import { Utils } from './Utils';
 import { Logger, $$ } from '../Core';
+import { find } from 'underscore';
 
 /**
  * Set of utilities to determine where to load the lazy chunks from.
- * You should the `coveo-script` class on the script tag that includes the Coveo framework to make sure the framework can always
- * auto-detect the path to load the lazy chunks from. More details [here]{@link https://docs.coveo.com/en/418/javascript-search-framework/javascript-search-framework-version-1-x-to-2-x-breaking-changes-and-migration-guidelines#fixing-code-chunks-loading-path-issues}
+ * You should add the `coveo-script` class on the script tag that includes the Coveo framework to make sure the framework can always
+ * auto-detect the path to load the lazy chunks from. More details [here]{@link https://docs.coveo.com/en/295/}
  */
 export class PublicPathUtils {
   private static pathHasBeenConfigured = false;
@@ -21,7 +22,7 @@ export class PublicPathUtils {
    * Helper function to resolve the public path used to load the chunks relative to the Coveo script.
    * You should add the `coveo-script` class on the script tag that includes the Coveo framework
    * to make sure the framework can always auto-detect the path to load the lazy chunks from.
-   * More details [here]{@link https://docs.coveo.com/en/418/javascript-search-framework/javascript-search-framework-version-1-x-to-2-x-breaking-changes-and-migration-guidelines#fixing-code-chunks-loading-path-issues}
+   * More details [here]{@link  https://docs.coveo.com/en/295/}
    */
   public static getDynamicPublicPath() {
     let currentScript = this.getCurrentScript();
@@ -29,7 +30,7 @@ export class PublicPathUtils {
     if (!this.isScript(coveoScript)) {
       new Logger(this)
         .warn(`You should add the class coveo-script on the script tag that includes the Coveo framework. Not doing so may cause the framework to not be able to auto-detect the path to load the lazy chunks in certain environments.
-        More details here https://docs.coveo.com/en/418/javascript-search-framework/javascript-search-framework-version-1-x-to-2-x-breaking-changes-and-migration-guidelines#fixing-code-chunks-loading-path-issues`);
+        More details here https://docs.coveo.com/en/295/`);
     }
     if (!Utils.isNullOrUndefined(currentScript)) {
       return this.parseScriptDirectoryPath(currentScript);
@@ -59,7 +60,7 @@ export class PublicPathUtils {
   }
 
   public static getCoveoScript() {
-    return document.querySelector('.coveo-script');
+    return find(document.querySelectorAll('.coveo-script'), el => this.isScript(el));
   }
 
   private static parseScriptDirectoryPath(script: HTMLScriptElement) {
