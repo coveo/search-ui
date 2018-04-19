@@ -4,6 +4,7 @@ import { ICategoryFacetsRequest } from '../rest/CategoryFacetsRequest';
 import { ICategoryFacetValue } from '../rest/CategoryFacetValue';
 import { IGroupByRequest } from '../rest/GroupByRequest';
 import { AllowedValuesPatternType } from '../rest/AllowedValuesPatternType';
+import { clone } from 'underscore';
 
 export class CategoryFacetQueryController {
   constructor(private categoryFacet: CategoryFacet) {}
@@ -21,12 +22,23 @@ export class CategoryFacetQueryController {
   }
 
   public async searchFacetValues(value: string): Promise<ICategoryFacetValue[]> {
+    let lastQuery = clone(this.categoryFacet.queryController.getLastQuery());
+    if (!lastQuery) {
+      lastQuery = new QueryBuilder().build();
+    }
+
     const groupByRequest: IGroupByRequest = {
       allowedValues: [`*${value}*`],
       allowedValuesPatternType: AllowedValuesPatternType.Wildcards,
       maximumNumberOfValues: this.categoryFacet.options.numberOfResultsInFacetSearch,
       field: this.categoryFacet.options.field as string
     };
-    return [];
+    lastQuery.groupBy = [groupByRequest];
+    return this.categoryFacet.queryController
+      .getEndpoint()
+      .search(lastQuery)
+      .then(queryResults => {
+        return queryResults.groupByResults[0].values as ICategoryFacetValue[];
+      });
   }
 }
