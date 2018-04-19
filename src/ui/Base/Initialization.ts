@@ -726,7 +726,7 @@ export class LazyInitialization {
   public static buildErrorCallback(chunkName: string, resolve: Function) {
     return error => {
       LazyInitialization.logger
-        .warn(`Cannot load chunk for ${chunkName}. You may need to add the coveo-script class on the script tag that includes the Coveo framework. More details here https://docs.coveo.com/en/418/javascript-search-framework/javascript-search-framework-version-1-x-to-2-x-breaking-changes-and-migration-guidelines#fixing-code-chunks-loading-path-issues
+        .warn(`Cannot load chunk for ${chunkName}. You may need to add the coveo-script class on the script tag that includes the Coveo framework. More details here https://docs.coveo.com/en/295/
         ${error}`);
       resolve(() => {});
     };
