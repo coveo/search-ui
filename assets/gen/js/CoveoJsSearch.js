@@ -170,7 +170,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 		if (__webpack_require__.nc) {
 /******/ 			script.setAttribute("nonce", __webpack_require__.nc);
 /******/ 		}
-/******/ 		script.src = __webpack_require__.p + "" + ({"0":"RelevanceInspector"}[chunkId]||chunkId) + "__" + "119648951d2af823e366" + ".js";
+/******/ 		script.src = __webpack_require__.p + "" + ({"0":"RelevanceInspector"}[chunkId]||chunkId) + "__" + "3e2dbc78f7eee4eb22cd" + ".js";
 /******/ 		var timeout = setTimeout(onScriptComplete, 120000);
 /******/ 		script.onerror = script.onload = onScriptComplete;
 /******/ 		function onScriptComplete() {
@@ -17305,8 +17305,8 @@ exports.PreferencesPanelEvents = PreferencesPanelEvents;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    lib: '2.4094.0-beta',
-    product: '2.4094.0-beta',
+    lib: '2.4094.1-beta',
+    product: '2.4094.1-beta',
     supportedApiVersion: 2
 };
 
