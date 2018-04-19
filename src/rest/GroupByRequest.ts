@@ -92,10 +92,7 @@ export interface IGroupByRequest {
   allowedValues?: string[];
 
   /**
-   * The type of pattern used in {@link IGroupByRequest.allowedValues}. Possible values are legacy, wildcards and regex.
-   * - legacy: only support exact match and trailing wildcards
-   * - wildcards: full support for wildcars
-   * - regex: supports regular expressions
+   * The type of pattern used in {@link IGroupByRequest.allowedValues}. See {@link AllowedValuesPatternType}.
    * Not specifying a value for this parameter is equivalent to using legacy.
    */
   allowedValuesPatternType?: AllowedValuesPatternType;

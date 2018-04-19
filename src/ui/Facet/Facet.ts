@@ -93,6 +93,7 @@ export interface IFacetOptions {
   enableResponsiveMode?: boolean;
   responsiveBreakpoint?: number;
   dropdownHeaderLabel?: string;
+  useWildcardsInFacetSearch?: boolean;
 }
 
 /**
@@ -382,6 +383,18 @@ export class Facet extends Component {
      * Default value is `15`. Minimum value is `1`.
      */
     numberOfValuesInFacetSearch: ComponentOptions.buildNumberOption({ defaultValue: 15, min: 1, section: 'FacetSearch' }),
+
+    /**
+     * Specifies whether [wildcards]{@link AllowedValuesPatternType.wildcards} will be used as the [allowedValuesPatternType]{@link IGroupByRequest.allowedValuesPatternType}
+     * in the [groupBy]{@link IGroupByRequest} for the facet search.
+     *
+     * Enabling this option will correctly return results for search values that match at the end of a field value.
+     * For example, searching for "veo" will not match "Coveo" without this option enabled.
+     *
+     * **Note:** If you use this option and experience slow results or even timeouts, you should consider using the "cache for nested queries" option
+     * available in the administration console. Details on how to do this [here]{@link https://onlinehelp.coveo.com/en/cloud/add_edit_fields.htm}.
+     */
+    useWildcardsInFacetSearch: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'FacetSearch' }),
 
     /**
      * Specifies whether the facet should push data to the [`Breadcrumb`]{@link Breadcrumb} component.
