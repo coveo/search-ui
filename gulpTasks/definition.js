@@ -33,7 +33,12 @@ gulp.task('cleanDefs', function() {
       .pipe(replace(/readonly/gm, ''))
       .pipe(replace(/undefined/g, 'any'))
       .pipe(replace(/ Record<.*>/g, ' any'))
-      .pipe(replace(/(enum [a-zA-Z_$]+\s{$)((?:\n^\s*[a-zA-Z_$]+ = "[a-zA-Z_$\s]+",$)*)/gm, clearEnumVariableDeclaration))
+      .pipe(
+        replace(
+          /(enum [a-zA-Z_$]+\s{$)((?:\n^\s*[a-zA-Z_$]+ = "[a-zA-Z_$\s]+",?$|\n^\s*[@{}\[\]\w\/*.,\s]+$)*)/gm,
+          clearEnumVariableDeclaration
+        )
+      )
       .pipe(replace(/extends agGridModule\.[a-zA-Z]+/g, 'extends Object'))
       .pipe(replace(/implements agGridModule\.[a-zA-Z]+/g, 'implements Object'))
       .pipe(replace(/agGridModule\.[a-zA-Z]+/g, 'any'))
