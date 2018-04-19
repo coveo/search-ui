@@ -15,6 +15,9 @@ import { QuickviewDocumentIframe } from './QuickviewDocumentIframe';
 import { QuickviewDocumentHeader } from './QuickviewDocumentHeader';
 //import { QuickviewDocumentWordButton } from './QuickviewDocumentWordButton';
 import {} from './QuickviewdocumentKeywords';
+import { QuickviewDocumentWords } from './QuickviewDocumentWords';
+import { each } from 'underscore';
+import { QuickviewDocumentWordButton } from './QuickviewDocumentWordButton';
 
 export const HIGHLIGHT_PREFIX = 'CoveoHighlight';
 
@@ -173,13 +176,19 @@ export class QuickviewDocument extends Component {
   //     <span id='CoveoHighlight:2.1.2'>f</span>
   //
   // In the previous example, the words 'abcd' and 'bcdef' are highlighted.
-  public computeHighlights() {}
-
-  private getHighlightIdParts(element: HTMLElement): string[] {
-    const parts = element.id.substr(HIGHLIGHT_PREFIX.length + 1).match(/^([0-9]+)\.([0-9]+)\.([0-9]+)$/);
-
-    return parts && parts.length > 3 ? parts : null;
+  public computeHighlights() {
+    const documentWords = new QuickviewDocumentWords(this.iframe);
+    each(documentWords.words, word => {
+      const button = new QuickviewDocumentWordButton(word, this.iframe);
+      this.header.addWord(button);
+    });
   }
+
+  /*  private getHighlightIdParts(element: HTMLElement): string[] {
+      const parts = element.id.substr(HIGHLIGHT_PREFIX.length + 1).match(/^([0-9]+)\.([0-9]+)\.([0-9]+)$/);
+  
+      return parts && parts.length > 3 ? parts : null;
+    }*/
 
   /*private getHighlightInnerText(element: HTMLElement): string {
     if (element.nodeName.toLowerCase() == 'coveotaggedword') {

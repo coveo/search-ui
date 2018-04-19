@@ -1,36 +1,35 @@
-import { HIGHLIGHT_PREFIX } from './QuickviewDocument';
 import { $$ } from '../../utils/Dom';
-import { first, each } from 'underscore';
+import { each } from 'underscore';
 import { QuickviewDocumentIframe } from './QuickviewDocumentIframe';
 import { QuickviewDocumentWord } from './QuickviewDocumentWord';
+import { HIGHLIGHT_PREFIX } from './QuickviewDocument';
+import { IQueryResult } from '../../rest/QueryResult';
 
 export class QuickviewDocumentWords {
   public keywordsState = [];
   public words: Record<string, QuickviewDocumentWord> = {};
 
-  constructor(public iframe: QuickviewDocumentIframe) {
+  constructor(public iframe: QuickviewDocumentIframe, result: IQueryResult) {
     each($$(this.iframe.body).findAll(`[id^="${HIGHLIGHT_PREFIX}"]`), (element: HTMLElement, index: number) => {
-      const quickviewWord = new QuickviewDocumentWord(element);
+      const quickviewWord = new QuickviewDocumentWord(result);
+      quickviewWord.doCompleteInitialScanForKeywordInDocument(element);
+
+      const alreadyScannedKeyword = this.words[quickviewWord.indexIdentifier];
+
+      if (!alreadyScannedKeyword) {
+        this.words[quickviewWord.indexIdentifier] = quickviewWord;
+      } else {
+        alreadyScannedKeyword.addElement(element);
+
+        // Special code needed to workaround invalid HTML returned by the index with embedded keyword
+        if (alreadyScannedKeyword.occurrence == quickviewWord.occurrence) {
+          alreadyScannedKeyword.text += quickviewWord.text;
+
+          if (alreadyScannedKeyword.numberOfEmbeddedWords < quickviewWord.indexTermPart) {
+            alreadyScannedKeyword.numberOfEmbeddedWords += 1;
+          }
+        }
+      }
     });
-  }
-
-  public computeHighlights() {}
-
-  private getHighlightInnerText(element: HTMLElement): string {
-    if (element.nodeName.toLowerCase() != 'coveotaggedword') {
-      return $$(element).text() || '';
-    }
-
-    const children = $$(element).children();
-    if (children.length >= 1) {
-      return $$(first(children)).text() || '';
-    }
-
-    return '';
-  }
-
-  private getHightlightEmbeddedWordIdParts(element: HTMLElement) {
-    const embedded = element.getElementsByTagName('coveotaggedword')[0];
-    return embedded ? this.parseKeywordIdentifier(embedded as HTMLElement) : null;
   }
 }
