@@ -1,16 +1,16 @@
+@import 'Variables';
 .CoveoResultActionsMenu {
   display: none;
   position: absolute;
   right: 0;
-  border: 1px solid #ccc;
-  border-radius: 6px;
+  @include defaultRoundedBorder();
   margin-top: -24px;
   background: white;
 
   &.coveo-menu-opened {
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: flex-end;
+    @include display(flex);
+    @include flex-flow(row nowrap);
+    @include justify-content(flex-end);
     float: right;
   }
 
@@ -19,7 +19,7 @@
     padding: 0 8px;
 
     &:not(:first-child) {
-      border-left: 1px solid #ccc;
+      border-left: $default-border;
     }
 
     .coveo-icon-for-quickview-svg {

@@ -5,7 +5,7 @@ import { $$ } from '../../utils/Dom';
 import { IQueryResult } from '../../rest/QueryResult';
 import { Assert } from '../../misc/Assert';
 import { Initialization } from '../Base/Initialization';
-import * as _ from 'underscore';
+import { forEach } from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 import 'styling/_ResultActionsMenu';
 
@@ -14,17 +14,14 @@ export interface IResultActionsMenuOptions {
 }
 
 /**
- * The ResultActionsMenu is a small floating slack-like result actions menu.
- * It is designed to contain "buttons" that execute an action on a result when pressed.
- * For example you can include the Quickview inside that menu or the AttachToCase.
- *
- * Example of how to use it in a template:
+ * The _ResultActionsMenu_ component adds a floating result action menu, meant to be used inside result templates (see [Result Templates](https://docs.coveo.com/en/413/javascript-search-framework/result-templates)).
+ * It is designed to contain other components that can execute actions related to the result,
+ * typically the [Quickview]{@link Quickview} and AttachToCase components, available in the Coveo for Salesforce and Coveo for Dynamics integrations.
  *
  * ```html
  * <script type="text/html" class="result-template" [...]
  *   <div class="coveo-result-frame">
  *     <div class="CoveoResultActionsMenu">
- *       <div class="CoveoAttachToCase" data-display-text="false"></div>
  *       <div class="CoveoQuickview"></div>
  *     </div>
  *   [...]
@@ -47,13 +44,16 @@ export class ResultActionsMenu extends Component {
    */
   static options: IResultActionsMenuOptions = {
     /**
-     * Specify that the menu should open when you mouse over the Result.
-     * If this option is set to false, the menu will open only when you click on the Result.
+     * Specifies whether the menu should open when the user hovers over the result.
      *
-     * Default is `true`.
+     * When set to false, the menu opens only when clicking on the result.
+     *
+     * Default value is `true`.
      */
     openOnMouseOver: ComponentOptions.buildBooleanOption({ defaultValue: true })
   };
+
+  private isOpened: boolean;
 
   /**
    * The rendered result that contains this menu.
@@ -92,8 +92,31 @@ export class ResultActionsMenu extends Component {
     this.buildMenuItems();
   }
 
+  /**
+   * Shows the floating menu.
+   */
+  public show() {
+    this.isOpened = true;
+    $$(this.element).addClass(ResultActionsMenu.SHOW_CLASS);
+  }
+
+  /**
+   * Hides the floating menu.
+   */
+  public hide() {
+    this.isOpened = false;
+    $$(this.element).removeClass(ResultActionsMenu.SHOW_CLASS);
+  }
+
   private bindEvents() {
-    $$(this.parentResult).on('click', () => this.show());
+    $$(this.parentResult).on('click', () => {
+      if (this.isOpened) {
+        this.hide();
+      } else {
+        this.show();
+      }
+    });
+
     $$(this.parentResult).on('mouseleave', () => this.hide());
     if (this.options.openOnMouseOver) {
       $$(this.parentResult).on('mouseenter', () => this.show());
@@ -102,24 +125,10 @@ export class ResultActionsMenu extends Component {
 
   private buildMenuItems() {
     this.menuItems = [];
-    _.forEach($$(this.element).children(), (elem: HTMLElement) => {
+    forEach($$(this.element).children(), (elem: HTMLElement) => {
       this.menuItems.push(elem);
       $$(elem).addClass('coveo-result-actions-menu-menu-item');
     });
-  }
-
-  /**
-   * Show the floating menu.
-   */
-  public show() {
-    $$(this.element).addClass(ResultActionsMenu.SHOW_CLASS);
-  }
-
-  /**
-   * Hide the floating menu.
-   */
-  public hide() {
-    $$(this.element).removeClass(ResultActionsMenu.SHOW_CLASS);
   }
 }
 
