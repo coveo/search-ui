@@ -9,7 +9,6 @@ import { EventsUtils } from '../../utils/EventsUtils';
 import { FacetSearchParameters } from './FacetSearchParameters';
 import { IAnalyticsFacetMeta, analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
 import { IEndpointError } from '../../rest/EndpointError';
-import { Component } from '../Base/Component';
 import { PopupUtils, PopupHorizontalAlignment, PopupVerticalAlignment } from '../../utils/PopupUtils';
 import { l } from '../../strings/Strings';
 import { Assert } from '../../misc/Assert';
@@ -25,7 +24,7 @@ import { FacetValuesOrder } from './FacetValuesOrder';
 import * as _ from 'underscore';
 import 'styling/_FacetSearch';
 import { SVGIcons } from '../../utils/SVGIcons';
-import { SVGDom } from '../../utils/SVGDom';
+import { FacetSearchElement } from './FacetSearchElement';
 
 /**
  * Used by the {@link Facet} component to render and handle the facet search part of each facet.
@@ -47,6 +46,7 @@ export class FacetSearch {
   private onDocumentClick: (e: Event) => void;
   private searchBarIsAnimating: boolean = false;
   private lastSearchWasEmpty = true;
+  private facetSearchElement: FacetSearchElement;
 
   constructor(public facet: Facet, public facetSearchValuesListKlass: IFacetSearchValuesListKlass, private root: HTMLElement) {
     this.searchResults = document.createElement('ul');
@@ -124,7 +124,6 @@ export class FacetSearch {
     this.currentlyDisplayedResults = undefined;
   }
 
-  // facet specific
   /**
    * Trigger a new facet search, and display the results.
    * @param params
@@ -150,7 +149,7 @@ export class FacetSearch {
           );
           this.facet.logger.debug('Received field values', fieldValues);
           this.processNewFacetSearchResults(fieldValues, params);
-          this.hideFacetSearchWaitingAnimation();
+          this.facetSearchElement.hideFacetSearchWaitingAnimation();
           this.facetSearchPromise = undefined;
         })
         .catch((error: IEndpointError) => {
@@ -158,7 +157,7 @@ export class FacetSearch {
           // In this case we do not hide the animation to prevent flicking.
           if (Utils.exists(error)) {
             this.facet.logger.error('Error while retrieving facet values', error);
-            this.hideFacetSearchWaitingAnimation();
+            this.facetSearchElement.hideFacetSearchWaitingAnimation();
           }
           this.facetSearchPromise = undefined;
           return null;
@@ -179,48 +178,14 @@ export class FacetSearch {
   }
 
   private buildBaseSearch(): HTMLElement {
-    this.search = document.createElement('div');
-    $$(this.search).addClass('coveo-facet-search');
-
-    this.magnifier = document.createElement('div');
-    this.magnifier.innerHTML = SVGIcons.icons.search;
-    $$(this.magnifier).addClass('coveo-facet-search-magnifier');
-    SVGDom.addClassToSVGInContainer(this.magnifier, 'coveo-facet-search-magnifier-svg');
-    this.search.appendChild(this.magnifier);
-
-    this.wait = document.createElement('div');
-    this.wait.innerHTML = SVGIcons.icons.loading;
-    $$(this.wait).addClass('coveo-facet-search-wait-animation');
-    SVGDom.addClassToSVGInContainer(this.wait, 'coveo-facet-search-wait-animation-svg');
-    this.search.appendChild(this.wait);
-    this.hideFacetSearchWaitingAnimation();
-
-    this.clear = $$(
-      'div',
-      { className: 'coveo-facet-search-clear', title: l('Clear', l('Search')) },
-      SVGIcons.icons.checkboxHookExclusionMore
-    ).el;
-    SVGDom.addClassToSVGInContainer(this.clear, 'coveo-facet-search-clear-svg');
-    this.clear.style.display = 'none';
-    this.search.appendChild(this.clear);
-
-    this.middle = document.createElement('div');
-    $$(this.middle).addClass('coveo-facet-search-middle');
-    this.search.appendChild(this.middle);
-
     this.input = document.createElement('input');
-    this.input.setAttribute('type', 'text');
-    this.input.setAttribute('autocapitalize', 'off');
-    this.input.setAttribute('autocorrect', 'off');
-    $$(this.input).addClass('coveo-facet-search-input');
-    Component.pointElementsToDummyForm(this.input);
-    this.middle.appendChild(this.input);
+    this.facetSearchElement = new FacetSearchElement(this.handleFacetSearchKeyUp, this.handleFacetSearchClear, this.handleFacetSearchFocus);
+    this.search = this.facetSearchElement.search;
+    this.magnifier = this.facetSearchElement.magnifier;
+    this.wait = this.facetSearchElement.wait;
+    this.clear = this.facetSearchElement.clear;
+    this.middle = this.facetSearchElement.middle;
 
-    $$(this.input).on('keyup', (e: KeyboardEvent) => this.handleFacetSearchKeyUp(e));
-    $$(this.clear).on('click', (e: Event) => this.handleFacetSearchClear());
-    $$(this.input).on('focus', (e: Event) => this.handleFacetSearchFocus());
-
-    this.detectSearchBarAnimation();
     this.root.appendChild(this.searchResults);
     this.searchResults.style.display = 'none';
 
@@ -316,7 +281,6 @@ export class FacetSearch {
       }
     }
   }
-
   private keyboardNavigationDeletePressed(event: KeyboardEvent) {
     if (event.shiftKey) {
       this.performExcludeActionOnCurrentSearchResult();
@@ -342,7 +306,7 @@ export class FacetSearch {
       this.facetSearchPromise = undefined;
     }
 
-    this.hideFacetSearchWaitingAnimation();
+    this.facetSearchElement.hideFacetSearchWaitingAnimation();
   }
 
   private processNewFacetSearchResults(fieldValues: IIndexFieldValue[], facetSearchParameters: FacetSearchParameters) {
@@ -552,7 +516,6 @@ export class FacetSearch {
   public getValueInInputForFacetSearch() {
     return this.input.value.trim();
   }
-  // facet specific
   protected selectAllValuesMatchingSearch() {
     this.facet.showWaitingAnimation();
 
@@ -579,24 +542,5 @@ export class FacetSearch {
   private showFacetSearchWaitingAnimation() {
     $$(this.magnifier).hide();
     $$(this.wait).show();
-  }
-
-  private hideFacetSearchWaitingAnimation() {
-    $$(this.magnifier).show();
-    $$(this.wait).hide();
-  }
-
-  private detectSearchBarAnimation() {
-    EventsUtils.addPrefixedEvent(this.search, 'AnimationStart', event => {
-      if (event.animationName == 'grow') {
-        this.searchBarIsAnimating = true;
-      }
-    });
-
-    EventsUtils.addPrefixedEvent(this.search, 'AnimationEnd', event => {
-      if (event.animationName == 'grow') {
-        this.searchBarIsAnimating = false;
-      }
-    });
   }
 }
