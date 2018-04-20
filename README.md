@@ -1,4 +1,4 @@
-# Search UI [![Build Status](https://travis-ci.org/coveo/search-ui.svg?branch=master)](https://travis-ci.org/coveo/search-ui) [![Coverage Status](https://coveralls.io/repos/github/coveo/search-ui/badge.svg?branch=master)](https://coveralls.io/github/coveo/search-ui?branch=master) [![TypeScript](https://badges.frapsoft.com/typescript/code/typescript.svg?v=101)](https://github.com/ellerbrock/typescript-badges/)
+# Search UI [![Build Status](https://travis-ci.org/coveo/search-ui.svg?branch=master)](https://travis-ci.org/coveo/search-ui) [![Coverage Status](https://coveralls.io/repos/github/coveo/search-ui/badge.svg?branch=master)](https://coveralls.io/github/coveo/search-ui?branch=master) [![CodeFactor](https://www.codefactor.io/repository/github/coveo/search-ui/badge)](https://www.codefactor.io/repository/github/coveo/search-ui) [![TypeScript](https://badges.frapsoft.com/typescript/code/typescript.svg?v=101)](https://github.com/ellerbrock/typescript-badges/)
 
 Coveo JavaScript Search UI Framework
 
