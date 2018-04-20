@@ -18,12 +18,14 @@ import { CategoryValue } from './CategoryValue';
 import { contains, isArray } from 'underscore';
 import { Assert } from '../../misc/Assert';
 import { QueryEvents } from '../../events/QueryEvents';
+import { CategoryFacetSearch } from './CategoryFacetSearch';
 
 export interface CategoryFacetOptions {
   field: IFieldOption;
   title?: string;
   numberOfResultsInFacetSearch: number;
   id: string;
+  enableFacetSearch: boolean;
 }
 
 /**
@@ -48,6 +50,7 @@ export class CategoryFacet extends Component {
     title: ComponentOptions.buildLocalizedStringOption({
       defaultValue: l('NoTitle')
     }),
+    enableFacetSearch: ComponentOptions.buildBooleanOption({ defaultValue: true }),
     id: ComponentOptions.buildStringOption({
       postProcessing: (value, options: CategoryFacetOptions) => value || (options.field as string)
     }),
@@ -69,6 +72,10 @@ export class CategoryFacet extends Component {
     this.categoryFacetQueryController = new CategoryFacetQueryController(this);
     this.categoryFacetTemplates = new CategoryFacetTemplates();
     this.categoryValueRoot = new this.categoryValueRootModule($$(this.element), this.categoryFacetTemplates, this);
+
+    if (this.options.enableFacetSearch) {
+      new CategoryFacetSearch(this);
+    }
 
     this.bind.onRootElement(QueryEvents.duringQuery, () => this.addFading());
     this.bind.onRootElement(QueryEvents.deferredQuerySuccess, () => this.removeFading());
