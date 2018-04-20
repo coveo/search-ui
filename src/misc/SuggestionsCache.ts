@@ -1,11 +1,7 @@
 export class SuggestionsCache<T> {
   private cache: { [hash: string]: Promise<T> } = {};
 
-  getSuggestions(hash: string, suggestionsFetcher: () => Promise<T>): Promise<T | null> {
-    if (!hash || hash.length === 0) {
-      return null;
-    }
-
+  getSuggestions(hash: string, suggestionsFetcher: () => Promise<T>): Promise<T> {
     if (this.cache[hash] != null) {
       return this.cache[hash];
     }

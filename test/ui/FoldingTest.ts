@@ -1,13 +1,13 @@
-import * as Mock from '../MockEnvironment';
-import { Folding } from '../../src/ui/Folding/Folding';
-import { IQueryResults } from '../../src/rest/QueryResults';
-import { IFoldingOptions } from '../../src/ui/Folding/Folding';
-import { FakeResults } from '../Fake';
-import { Simulate } from '../Simulate';
 import { IQuery } from '../../src/rest/Query';
-import { ISimulateQueryData } from '../Simulate';
 import { IQueryResult } from '../../src/rest/QueryResult';
+import { IQueryResults } from '../../src/rest/QueryResults';
 import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
+import { Folding, IFoldingOptions } from '../../src/ui/Folding/Folding';
+import { SortCriteria } from '../../src/ui/Sort/SortCriteria';
+import { $$ } from '../../src/utils/Dom';
+import { FakeResults } from '../Fake';
+import * as Mock from '../MockEnvironment';
+import { ISimulateQueryData, Simulate } from '../Simulate';
 import _ = require('underscore');
 
 export function FoldingTest() {
@@ -140,6 +140,64 @@ export function FoldingTest() {
         });
         const data = Simulate.query(test.env, { results: fakeResults });
         expect(data.results.results[0].moreResults).toBeUndefined();
+      });
+    });
+
+    describe('should re-arrange child results client side when preprocessing results', () => {
+      beforeEach(() => {
+        fakeResults = FakeResults.createFakeResultsWithChildResults(10, 5, 10);
+
+        fakeResults.results.forEach(fakeResult => {
+          let i = 0;
+          fakeResult.childResults.forEach(childResult => {
+            childResult.raw.numericalField = i;
+            i++;
+          });
+        });
+      });
+
+      const verifyChildOrder = (firstExpectedValue: number, lastExpectedValue: number) => {
+        expect(fakeResults.results[0].childResults[0].raw.numericalField).toBe(firstExpectedValue);
+        expect(fakeResults.results[0].childResults[4].raw.numericalField).toBe(lastExpectedValue);
+
+        expect(fakeResults.results[9].childResults[0].raw.numericalField).toBe(firstExpectedValue);
+        expect(fakeResults.results[9].childResults[4].raw.numericalField).toBe(lastExpectedValue);
+      };
+
+      it('by field ascending', () => {
+        test = Mock.optionsComponentSetup<Folding, IFoldingOptions>(Folding, {
+          rearrange: SortCriteria.parse('@numericalField ascending')
+        });
+
+        $$(test.env.root).trigger('preprocessResults', {
+          results: fakeResults
+        });
+
+        verifyChildOrder(0, 4);
+      });
+
+      it('by field descending', () => {
+        test = Mock.optionsComponentSetup<Folding, IFoldingOptions>(Folding, {
+          rearrange: SortCriteria.parse('@numericalField descending')
+        });
+
+        $$(test.env.root).trigger('preprocessResults', {
+          results: fakeResults
+        });
+
+        verifyChildOrder(4, 0);
+      });
+
+      it('by non-existing field', () => {
+        test = Mock.optionsComponentSetup<Folding, IFoldingOptions>(Folding, {
+          rearrange: SortCriteria.parse('@doesNotExist descending')
+        });
+
+        $$(test.env.root).trigger('preprocessResults', {
+          results: fakeResults
+        });
+
+        verifyChildOrder(0, 4);
       });
     });
 
