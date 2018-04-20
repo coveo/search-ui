@@ -14,34 +14,20 @@ export function ResultActionsMenuTest() {
       test = null;
     });
 
-    it('should add show class when show is called', () => {
+    function componentHasShowClass() {
       const component = $$(test.cmp.element);
-      expect(component.hasClass(ResultActionsMenu.SHOW_CLASS)).toBe(false);
-
-      test.cmp.show();
-
-      expect(component.hasClass(ResultActionsMenu.SHOW_CLASS)).toBe(true);
-    });
-
-    it('should remove show class when hide is called', () => {
-      const component = $$(test.cmp.element);
-      test.cmp.show();
-      expect(component.hasClass(ResultActionsMenu.SHOW_CLASS)).toBe(true);
-
-      test.cmp.hide();
-
-      expect(component.hasClass(ResultActionsMenu.SHOW_CLASS)).toBe(false);
-    });
+      return component.hasClass(ResultActionsMenu.SHOW_CLASS);
+    }
 
     it('should add and remove show class on concecutive clicks', () => {
       const component = $$(test.cmp.element);
 
       component.trigger("click");
-      expect(component.hasClass(ResultActionsMenu.SHOW_CLASS)).toBe(true);
+      expect(componentHasShowClass()).toBe(true);
 
       component.trigger("click");
 
-      expect(component.hasClass(ResultActionsMenu.SHOW_CLASS)).toBe(false);
+      expect(componentHasShowClass()).toBe(false);
     });
 
     it('should add show class on mouseenter when openOnMouseOver option is true', () => {
@@ -49,17 +35,17 @@ export function ResultActionsMenuTest() {
       const component = $$(test.cmp.element);
 
       component.trigger("mouseenter");
-      expect(component.hasClass(ResultActionsMenu.SHOW_CLASS)).toBe(true);
+      expect(componentHasShowClass()).toBe(true);
     });
 
     it('should remove show class on mouseleave', () => {
       const component = $$(test.cmp.element);
 
       component.trigger("click");
-      expect(component.hasClass(ResultActionsMenu.SHOW_CLASS)).toBe(true);
+      expect(componentHasShowClass()).toBe(true);
 
       component.trigger("mouseleave");
-      expect(component.hasClass(ResultActionsMenu.SHOW_CLASS)).toBe(false);
+      expect(componentHasShowClass()).toBe(false);
     });
 
     it('should not add show class on mouseenter when openOnMouseOver option is false', () => {
@@ -67,7 +53,7 @@ export function ResultActionsMenuTest() {
       const component = $$(test.cmp.element);
 
       component.trigger("mouseenter");
-      expect(component.hasClass(ResultActionsMenu.SHOW_CLASS)).toBe(false);
+      expect(componentHasShowClass()).toBe(false);
     });
   });
 }

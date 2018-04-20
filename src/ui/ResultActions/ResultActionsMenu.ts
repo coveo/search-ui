@@ -82,11 +82,7 @@ export class ResultActionsMenu extends Component {
     super(element, ResultActionsMenu.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, ResultActionsMenu, options);
 
-    // Find the result containing this ResultActionsMenu
-    this.parentResult = $$(this.element).closest('CoveoResult');
-    Assert.check(this.parentResult !== undefined, 'ResultActionsMenu needs to be a child of a Result');
-
-    $$(this.parentResult).addClass('coveo-clickable');
+    this.initializeParentResult();
     this.bindEvents();
 
     this.buildMenuItems();
@@ -108,14 +104,16 @@ export class ResultActionsMenu extends Component {
     $$(this.element).removeClass(ResultActionsMenu.SHOW_CLASS);
   }
 
+  private initializeParentResult() {
+    // Find the result containing this ResultActionsMenu
+    this.parentResult = $$(this.element).closest('CoveoResult');
+    Assert.check(this.parentResult !== undefined, 'ResultActionsMenu needs to be a child of a Result');
+
+    $$(this.parentResult).addClass('coveo-clickable');
+  }
+
   private bindEvents() {
-    $$(this.parentResult).on('click', () => {
-      if (this.isOpened) {
-        this.hide();
-      } else {
-        this.show();
-      }
-    });
+    $$(this.parentResult).on('click', () => this.isOpened ? this.hide() : this.show());
 
     $$(this.parentResult).on('mouseleave', () => this.hide());
     if (this.options.openOnMouseOver) {
