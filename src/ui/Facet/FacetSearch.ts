@@ -124,7 +124,6 @@ export class FacetSearch {
     this.currentlyDisplayedResults = undefined;
   }
 
-  // facet specific
   /**
    * Trigger a new facet search, and display the results.
    * @param params
@@ -552,7 +551,7 @@ export class FacetSearch {
   public getValueInInputForFacetSearch() {
     return this.input.value.trim();
   }
-  // facet specific
+
   protected selectAllValuesMatchingSearch() {
     this.facet.showWaitingAnimation();
 

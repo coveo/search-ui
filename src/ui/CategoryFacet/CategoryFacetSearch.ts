@@ -1,3 +1,3 @@
-export class CategoryFacetSearch {
-  constructor() {}
-}
+// export class CategoryFacetSearch {
+// constructor() {}
+// }
