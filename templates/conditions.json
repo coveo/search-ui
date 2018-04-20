@@ -307,26 +307,6 @@
     ],
     "layout": "card"
   },
-  "CardSlack": {
-    "priority": 2,
-    "fieldsToMatch": [
-      {
-        "field": "connectortype",
-        "values": ["SlackCrawler"]
-      }
-    ],
-    "layout": "card"
-  },
-  "Slack": {
-    "priority": 1,
-    "fieldsToMatch": [
-      {
-        "field": "connectortype",
-        "values": ["SlackCrawler"]
-      }
-    ],
-    "layout": "list"
-  },
   "CardConfluence": {
     "priority": 2,
     "layout": "card",
