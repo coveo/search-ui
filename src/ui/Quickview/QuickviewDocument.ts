@@ -18,6 +18,7 @@ import {} from './QuickviewdocumentKeywords';
 import { QuickviewDocumentWords } from './QuickviewDocumentWords';
 import { each } from 'underscore';
 import { QuickviewDocumentWordButton } from './QuickviewDocumentWordButton';
+import { QuickviewDocumentPreviewBar } from './QuickviewDocumentPreviewBar';
 
 export const HIGHLIGHT_PREFIX = 'CoveoHighlight';
 
@@ -117,7 +118,15 @@ export class QuickviewDocument extends Component {
       } as IViewAsHtmlOptions);
 
       await this.iframe.render(documentHTML);
-      this.computeHighlights();
+
+      const documentWords = new QuickviewDocumentWords(this.iframe, this.result);
+      const previewBar = new QuickviewDocumentPreviewBar(this.iframe, documentWords);
+
+      each(documentWords.words, word => {
+        const button = new QuickviewDocumentWordButton(word, previewBar, this.iframe);
+        this.header.addWord(button);
+      });
+
       const afterLoad = new Date().getTime();
 
       this.triggerQuickviewLoaded(afterLoad - beforeLoad);
@@ -134,122 +143,6 @@ export class QuickviewDocument extends Component {
       duration
     } as IQuickviewLoadedEventArgs);
   }
-
-  // An highlighted term looks like:
-  //
-  //     <span id='CoveoHighlight:X.Y.Z'>a</span>
-  //
-  // The id has 3 components:
-  // - X: the term
-  // - Y: the term occurence
-  // - Z: the term part
-  //
-  // For the 'Z' component, if the term 'foo bar' is found in multiple elements, we will see:
-  //
-  //     <span id='CoveoHighlight:1.1.1'>foo</span>
-  //     <span id='CoveoHighlight:1.1.2'>bar</span>
-  //
-  // Highlighted words can overlap, which looks like:
-  //
-  //     <span id='CoveoHighlight:1.Y.Z'>
-  //         a
-  //         <coveotaggedword id='CoveoHighlight:2.Y.Z'>b</coveotaggedword>
-  //     </span>
-  //     <span id='CoveoHighlight:2.Y.Z'>c</span>
-  //
-  // In the previous example, the words 'ab' and 'bc' are highlighted.
-  //
-  // One thing important to note is that the id of all 'coveotaggedword' for
-  // the same word AND the first 'span' for that word will have the same id.
-  //
-  // Example:
-  //
-  //     <span id='CoveoHighlight:1.1.1'>
-  //         a
-  //         <coveotaggedword id='CoveoHighlight:2.1.1'>b</coveotaggedword>
-  //     </span>
-  //     <span id='CoveoHighlight:1.1.2'>
-  //         c
-  //         <coveotaggedword id='CoveoHighlight:2.1.1'>d</coveotaggedword>
-  //     </span>
-  //     <span id='CoveoHighlight:2.1.1'>e</span>
-  //     <span id='CoveoHighlight:2.1.2'>f</span>
-  //
-  // In the previous example, the words 'abcd' and 'bcdef' are highlighted.
-  public computeHighlights() {
-    const documentWords = new QuickviewDocumentWords(this.iframe);
-    each(documentWords.words, word => {
-      const button = new QuickviewDocumentWordButton(word, this.iframe);
-      this.header.addWord(button);
-    });
-  }
-
-  /*  private getHighlightIdParts(element: HTMLElement): string[] {
-      const parts = element.id.substr(HIGHLIGHT_PREFIX.length + 1).match(/^([0-9]+)\.([0-9]+)\.([0-9]+)$/);
-  
-      return parts && parts.length > 3 ? parts : null;
-    }*/
-
-  /*private getHighlightInnerText(element: HTMLElement): string {
-    if (element.nodeName.toLowerCase() == 'coveotaggedword') {
-      // only immediate text without children.
-      return element.childNodes.length >= 1 ? element.childNodes.item(0).textContent || '' : '';
-    } else {
-      return element.textContent || '';
-    }
-  }
-
-  private getHightlightEmbeddedWordIdParts(element: HTMLElement): string[] {
-    const embedded = element.getElementsByTagName('coveotaggedword')[0];
-
-    return embedded ? this.getHighlightIdParts(<HTMLElement>embedded) : null;
-  }
-
-  private resolveOriginalTermFromHighlight(highlight: string): string {
-    let found = highlight;
-
-    // Beware, terms to highlight is only set by recent search APIs.
-    if (this.result.termsToHighlight) {
-      // We look for the term expansion and we'll return the corresponding
-      // original term is one is found.
-      found =
-        _.find(_.keys(this.result.termsToHighlight), (originalTerm: string) => {
-          // The expansions do NOT include the original term (makes sense), so be sure to check
-          // the original term for a match too.
-          return (
-            originalTerm.toLowerCase() == highlight.toLowerCase() ||
-            _.find(this.result.termsToHighlight[originalTerm], (expansion: string) => expansion.toLowerCase() == highlight.toLowerCase()) !=
-            undefined
-          );
-        }) || found;
-    }
-    return found;
-  }*/
-
-  /*private renderPreviewBar(win: Window) {
-    const docHeight = new Doc(win.document).height();
-    const previewBar = $$('div');
-
-    previewBar.el.style.width = '15px';
-    previewBar.el.style.position = 'fixed';
-    previewBar.el.style.top = '0';
-    previewBar.el.style.right = '0';
-    previewBar.el.style.height = '100%';
-
-    win.document.body.appendChild(previewBar.el);
-    _.each($$(win.document.body).findAll('[id^="' + HIGHLIGHT_PREFIX + '"]'), (element: HTMLElement, index: number) => {
-      const elementPosition = element.getBoundingClientRect().top;
-
-      const previewUnit = $$('div');
-      previewUnit.el.style.position = 'absolute';
-      previewUnit.el.style.top = `${elementPosition / docHeight * 100}%`;
-      previewUnit.el.style.width = '100%';
-      previewUnit.el.style.height = '2px';
-      previewUnit.el.style.border = `1px solid ${element.style.backgroundColor}`;
-      previewUnit.el.style.backgroundColor = element.style.backgroundColor;
-      previewBar.append(previewUnit.el);
-    });
-  }*/
 
   private handleTermsToHighlight(termsToHighlight: Array<string>, queryObject: IQuery) {
     for (const term in this.result.termsToHighlight) {

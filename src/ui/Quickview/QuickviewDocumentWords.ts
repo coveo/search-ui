@@ -6,7 +6,6 @@ import { HIGHLIGHT_PREFIX } from './QuickviewDocument';
 import { IQueryResult } from '../../rest/QueryResult';
 
 export class QuickviewDocumentWords {
-  public keywordsState = [];
   public words: Record<string, QuickviewDocumentWord> = {};
 
   constructor(public iframe: QuickviewDocumentIframe, result: IQueryResult) {

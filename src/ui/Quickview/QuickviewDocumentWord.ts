@@ -1,9 +1,10 @@
-import { HIGHLIGHT_PREFIX } from './QuickviewDocument';
-import { $$ } from '../../utils/Dom';
-import { first, without } from 'underscore';
+import { find, first, keys, without } from 'underscore';
+import { StringUtils } from '../../Core';
 import { Logger } from '../../misc/Logger';
-import { QuickviewDocumentWordColor } from './QuickviewDocumentWordColor';
 import { IQueryResult } from '../../rest/QueryResult';
+import { $$ } from '../../utils/Dom';
+import { HIGHLIGHT_PREFIX } from './QuickviewDocument';
+import { QuickviewDocumentWordColor } from './QuickviewDocumentWordColor';
 
 export class QuickviewDocumentWord {
   public text: string;
@@ -15,9 +16,6 @@ export class QuickviewDocumentWord {
   public elements: HTMLElement[] = [];
   public currentNavigationPosition = -1;
   public color: QuickviewDocumentWordColor;
-  public colorRed: number;
-  public colorGreen: number;
-  public colorBLue: number;
 
   private logger: Logger;
 
@@ -30,21 +28,23 @@ export class QuickviewDocumentWord {
     this.elements.push(element);
   }
 
-  public navigateForward(): HTMLElement {
+  public navigateForward() {
     this.currentNavigationPosition++;
     if (this.currentNavigationPosition >= this.elements.length) {
       this.currentNavigationPosition = 0;
     }
     this.highlightNavigation();
+    this.putElementIntoView();
     return this.elements[this.currentNavigationPosition];
   }
 
-  public navigateBackward(): HTMLElement {
+  public navigateBackward() {
     this.currentNavigationPosition--;
     if (this.currentNavigationPosition < 0) {
       this.currentNavigationPosition = this.elements.length - 1;
     }
     this.highlightNavigation();
+    this.putElementIntoView();
     return this.elements[this.currentNavigationPosition];
   }
 
@@ -65,7 +65,7 @@ export class QuickviewDocumentWord {
       this.indexIdentifier = parsed.keywordIdentifier;
       this.occurrence = parsed.keywordOccurrencesInDocument;
       this.indexTermPart = parsed.keywordTermPart;
-      this.text = this.getHighlightedInnerText(element);
+      this.text = this.getText(element);
       this.numberOfEmbeddedWords = this.isTaggedWord(element) ? 0 : 1;
       this.color = new QuickviewDocumentWordColor(element.style.backgroundColor);
 
@@ -88,29 +88,32 @@ export class QuickviewDocumentWord {
     });
   }
 
-  private getText(element: HTMLElement) {
-    const innerTextOfHTMLElement = this.getHighlightedInnerText(element);
+  private putElementIntoView() {
+    const element = this.elements[this.currentNavigationPosition];
+    element.scrollIntoView();
   }
 
-  private resolveOriginalTermFromHighlight(highlight: string): string {
-    let found = highlight;
+  private getText(element: HTMLElement) {
+    const innerTextOfHTMLElement = this.getHighlightedInnerText(element);
+    return this.resolveOriginalTerm(innerTextOfHTMLElement);
+  }
 
-    // Beware, terms to highlight is only set by recent search APIs.
-    if (this.result.termsToHighlight) {
-      // We look for the term expansion and we'll return the corresponding
-      // original term is one is found.
-      found =
-        _.find(_.keys(this.result.termsToHighlight), (originalTerm: string) => {
-          // The expansions do NOT include the original term (makes sense), so be sure to check
-          // the original term for a match too.
-          return (
-            originalTerm.toLowerCase() == highlight.toLowerCase() ||
-            _.find(this.result.termsToHighlight[originalTerm], (expansion: string) => expansion.toLowerCase() == highlight.toLowerCase()) !=
-              undefined
-          );
-        }) || found;
+  private resolveOriginalTerm(highlight: string): string {
+    if (!this.result || !this.result.termsToHighlight) {
+      return highlight;
     }
-    return found;
+
+    const found = find(keys(this.result.termsToHighlight), (originalTerm: string) => {
+      // The expansions do NOT include the original term (makes sense), so be sure to check
+      // the original term for a match too.
+      const originalTermMatch = StringUtils.equalsCaseInsensitive(originalTerm, highlight);
+      const expansionMatch =
+        find(this.result.termsToHighlight[originalTerm], (expansion: string) => StringUtils.equalsCaseInsensitive(expansion, highlight)) !=
+        undefined;
+      return originalTermMatch || expansionMatch;
+    });
+
+    return found || highlight;
   }
 
   private getHighlightedInnerText(element: HTMLElement): string {

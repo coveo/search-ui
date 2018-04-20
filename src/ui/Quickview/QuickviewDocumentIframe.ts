@@ -19,6 +19,10 @@ export class QuickviewDocumentIframe {
     return this.document.body;
   }
 
+  public get window() {
+    return this.iframeElement.contentWindow;
+  }
+
   public isNewQuickviewDocument(): boolean {
     const meta = $$(this.document.head).find("meta[name='generator']");
     return meta && meta.getAttribute('content') == 'pdf2htmlEX';

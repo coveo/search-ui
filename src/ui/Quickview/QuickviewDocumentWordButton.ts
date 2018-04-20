@@ -1,10 +1,11 @@
 import { QuickviewDocumentIframe } from './QuickviewDocumentIframe';
 import { $$ } from '../../utils/Dom';
 import { QuickviewDocumentWord } from './QuickviewDocumentWord';
+import { QuickviewDocumentPreviewBar } from './QuickviewDocumentPreviewBar';
 
 export class QuickviewDocumentWordButton {
   public el: HTMLElement;
-  constructor(public word: QuickviewDocumentWord, public iframe: QuickviewDocumentIframe) {
+  constructor(public word: QuickviewDocumentWord, public previewBar: QuickviewDocumentPreviewBar, public iframe: QuickviewDocumentIframe) {
     this.el = this.render();
   }
 
