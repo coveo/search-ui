@@ -55,8 +55,12 @@ export class FacetSearchElement {
     Component.pointElementsToDummyForm(this.input);
     middle.appendChild(this.input);
 
-    $$(this.input).on('keyup', (e: KeyboardEvent) => this.handleFacetSearchKeyUp(e));
-    $$(this.clear).on('click', (e: Event) => this.handleFacetSearchClear());
+    $$(this.input).on('keyup', (e: KeyboardEvent) => {
+      this.handleFacetSearchKeyUp(e);
+    });
+    $$(this.clear).on('click', (e: Event) => {
+      this.handleFacetSearchClear();
+    });
     $$(this.input).on('focus', (e: Event) => {
       this.handleFacetSearchFocus();
     });
