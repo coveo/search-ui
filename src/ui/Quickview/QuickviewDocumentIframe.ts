@@ -94,14 +94,7 @@ export class QuickviewDocumentIframe {
   private writeToIFrame(htmlDocument: HTMLDocument) {
     this.allowDocumentLinkToEscapeSandbox(htmlDocument);
     this.document.open();
-
-    try {
-      this.document.write(htmlDocument.getElementsByTagName('html')[0].outerHTML);
-    } catch (e) {
-      // The iframe is sandboxed, and can throw ugly errors in the console, especially when rendering random web pages.
-      // Try to suppress those.
-    }
-
+    this.document.write(htmlDocument.getElementsByTagName('html')[0].outerHTML);
     this.document.close();
   }
 
@@ -115,17 +108,16 @@ export class QuickviewDocumentIframe {
   }
 
   private addClientSideTweaksToIFrameStyling(htmlDocument: HTMLDocument) {
-    try {
-      const style = $$('style', { type: 'text/css' }).el as HTMLStyleElement;
+    const style = $$('style', { type: 'text/css' }).el as HTMLStyleElement;
 
-      // Safari on iOS forces resize iframes to fit their content, even if an explicit size
-      // is set on the iframe. Isn't that great? By chance there is a trick around it: by
-      // setting a very small size on the body and instead using min-* to set the size to
-      // 100% we're able to trick Safari from thinking it must expand the iframe. Amazed.
-      // The 'scrolling' part is required otherwise the hack doesn't work.
-      //
-      // http://stackoverflow.com/questions/23083462/how-to-get-an-iframe-to-be-responsive-in-ios-safari
-      const cssHackForIOS = `
+    // Safari on iOS forces resize iframes to fit their content, even if an explicit size
+    // is set on the iframe. Isn't that great? By chance there is a trick around it: by
+    // setting a very small size on the body and instead using min-* to set the size to
+    // 100% we're able to trick Safari from thinking it must expand the iframe. Amazed.
+    // The 'scrolling' part is required otherwise the hack doesn't work.
+    //
+    // http://stackoverflow.com/questions/23083462/how-to-get-an-iframe-to-be-responsive-in-ios-safari
+    const cssHackForIOS = `
       body, html { 
         height: 1px !important; 
         min-height: 100%; 
@@ -136,7 +128,7 @@ export class QuickviewDocumentIframe {
       }
       `;
 
-      const cssText = `
+    const cssText = `
       html pre { 
         white-space: pre-wrap;
         word-wrap: break-word;
@@ -147,15 +139,12 @@ export class QuickviewDocumentIframe {
       ${DeviceUtils.isIos() ? cssHackForIOS : ''}
       `;
 
-      if (DeviceUtils.isIos()) {
-        $$(this.iframeElement).setAttribute('scrolling', 'no');
-        this.iframeElement.parentElement.style.margin = '0 0 5px 5px';
-      }
-
-      style.appendChild(document.createTextNode(cssText));
-      htmlDocument.head.appendChild(style);
-    } catch (e) {
-      // if not allowed
+    if (DeviceUtils.isIos()) {
+      $$(this.iframeElement).setAttribute('scrolling', 'no');
+      this.iframeElement.parentElement.style.margin = '0 0 5px 5px';
     }
+
+    style.appendChild(document.createTextNode(cssText));
+    htmlDocument.head.appendChild(style);
   }
 }

@@ -9,6 +9,23 @@ export class QuickviewDocumentWordButton {
     this.el = this.render();
   }
 
+  public render() {
+    const wordHtml = $$('span', {
+      className: 'coveo-term-for-quickview'
+    });
+
+    wordHtml.append(this.buildName().el);
+
+    wordHtml.append(this.renderArrow('up').el);
+
+    wordHtml.append(this.renderArrow('down').el);
+
+    wordHtml.el.style.backgroundColor = this.word.color.htmlColor;
+    wordHtml.el.style.borderColor = this.word.color.saturate();
+
+    return wordHtml.el;
+  }
+
   private buildName() {
     const name = $$(
       'span',
@@ -41,23 +58,6 @@ export class QuickviewDocumentWordButton {
     }
 
     element.scrollIntoView();
-  }
-
-  public render() {
-    const wordHtml = $$('span', {
-      className: 'coveo-term-for-quickview'
-    });
-
-    wordHtml.append(this.buildName().el);
-
-    wordHtml.append(this.renderArrow('up').el);
-
-    wordHtml.append(this.renderArrow('down').el);
-
-    wordHtml.el.style.backgroundColor = this.word.color.htmlColor;
-    wordHtml.el.style.borderColor = this.word.color.saturate();
-
-    return wordHtml.el;
   }
 
   private renderArrow(direction: 'up' | 'down') {

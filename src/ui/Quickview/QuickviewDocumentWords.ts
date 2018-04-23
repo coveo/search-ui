@@ -8,9 +8,13 @@ import { IQueryResult } from '../../rest/QueryResult';
 export class QuickviewDocumentWords {
   public words: Record<string, QuickviewDocumentWord> = {};
 
-  constructor(public iframe: QuickviewDocumentIframe, result: IQueryResult) {
+  constructor(public iframe: QuickviewDocumentIframe, public result: IQueryResult) {
+    this.scanDocument();
+  }
+
+  private scanDocument() {
     each($$(this.iframe.body).findAll(`[id^="${HIGHLIGHT_PREFIX}"]`), (element: HTMLElement, index: number) => {
-      const quickviewWord = new QuickviewDocumentWord(result);
+      const quickviewWord = new QuickviewDocumentWord(this.result);
       quickviewWord.doCompleteInitialScanForKeywordInDocument(element);
 
       const alreadyScannedKeyword = this.words[quickviewWord.indexIdentifier];
@@ -23,10 +27,6 @@ export class QuickviewDocumentWords {
         // Special code needed to workaround invalid HTML returned by the index with embedded keyword
         if (alreadyScannedKeyword.occurrence == quickviewWord.occurrence) {
           alreadyScannedKeyword.text += quickviewWord.text;
-
-          if (alreadyScannedKeyword.numberOfEmbeddedWords < quickviewWord.indexTermPart) {
-            alreadyScannedKeyword.numberOfEmbeddedWords += 1;
-          }
         }
       }
     });

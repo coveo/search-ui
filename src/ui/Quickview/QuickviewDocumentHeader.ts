@@ -12,8 +12,6 @@ export class QuickviewDocumentHeader {
     this.el.appendChild(wordButton.el);
   }
 
-  public removeWord() {}
-
   private buildHeader(): Dom {
     const header = $$('div', {
       className: 'coveo-quickview-header'
