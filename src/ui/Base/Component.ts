@@ -239,23 +239,28 @@ export class Component extends BaseComponent {
     Assert.exists(element);
     Assert.exists(componentClass);
     Assert.exists(componentClass.ID);
-    // first, look down
-    var found;
-    if ($$(element).is('.' + Component.computeCssClassNameForType(componentClass.ID))) {
+
+    const targetClassName = Component.computeCssClassNameForType(componentClass.ID);
+    let found: HTMLElement;
+
+    if ($$(element).is('.' + targetClassName)) {
       found = element;
     } else {
-      var findDown = $$(element).findClass(Component.computeCssClassNameForType(componentClass.ID));
-      if (!findDown || findDown.length == 0) {
-        var findUp = $$(element).closest(Component.computeCssClassNameForType(componentClass.ID));
+      // first, look down
+      const findDown = $$(element).findClass(targetClassName);
+
+      if (findDown && findDown.length !== 0) {
+        found = findDown[0];
+      } else {
+        const findUp = $$(element).closest(targetClassName);
+
         if (findUp) {
           found = findUp;
         }
-      } else {
-        found = findDown;
       }
     }
     if (found) {
-      return <BaseComponent>found[Component.computeCssClassNameForType(componentClass.ID)];
+      return <BaseComponent>found[targetClassName];
     } else {
       return undefined;
     }
