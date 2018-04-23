@@ -1,12 +1,10 @@
-import * as Mock from '../MockEnvironment';
-import { Sort } from '../../src/ui/Sort/Sort';
-import { Dom } from '../../src/utils/Dom';
-import { $$ } from '../../src/utils/Dom';
-import { QueryEvents } from '../../src/events/QueryEvents';
-import { IQuerySuccessEventArgs } from '../../src/events/QueryEvents';
-import { SortCriteria } from '../../src/ui/Sort/SortCriteria';
-import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
+import { IQuerySuccessEventArgs, QueryEvents } from '../../src/events/QueryEvents';
 import { QueryStateModel } from '../../src/models/QueryStateModel';
+import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
+import { Sort } from '../../src/ui/Sort/Sort';
+import { SortCriteria } from '../../src/ui/Sort/SortCriteria';
+import { $$, Dom } from '../../src/utils/Dom';
+import * as Mock from '../MockEnvironment';
 
 export function SortTest() {
   describe('Sort', function() {
@@ -80,8 +78,8 @@ export function SortTest() {
       });
 
       it('should build the correct criteria on toggle from its attribute', function() {
-        expect(test.cmp.options.sortCriteria[0].equals(new SortCriteria('date', 'ascending'))).toBe(true);
-        expect(test.cmp.options.sortCriteria[1].equals(new SortCriteria('date', 'descending'))).toBe(true);
+        expect(test.cmp.options.sortCriteria[0].equals(new SortCriteria('date ascending'))).toBe(true);
+        expect(test.cmp.options.sortCriteria[1].equals(new SortCriteria('date descending'))).toBe(true);
       });
 
       it('should toggle between its criterias when selected', function() {
@@ -146,12 +144,12 @@ export function SortTest() {
           test = buildSort('date ascending');
           test.cmp.select();
           var queryBuilder = fireBuildingQuery(test.env.root);
-          expect(queryBuilder.sortCriteria).toEqual('dateascending');
+          expect(queryBuilder.sortCriteria).toEqual('date ascending');
 
           test = buildSort('date descending');
           test.cmp.select();
           queryBuilder = fireBuildingQuery(test.env.root);
-          expect(queryBuilder.sortCriteria).toEqual('datedescending');
+          expect(queryBuilder.sortCriteria).toEqual('date descending');
         });
 
         it('should add the correct qre sorting expression to the query', function() {
@@ -165,14 +163,12 @@ export function SortTest() {
           test = buildSort('@field ascending');
           test.cmp.select();
           var queryBuilder = fireBuildingQuery(test.env.root);
-          expect(queryBuilder.sortCriteria).toEqual('fieldascending');
-          expect(queryBuilder.sortField).toEqual('@field');
+          expect(queryBuilder.sortCriteria).toEqual('@field ascending');
 
           test = buildSort('@field descending');
           test.cmp.select();
           queryBuilder = fireBuildingQuery(test.env.root);
-          expect(queryBuilder.sortCriteria).toEqual('fielddescending');
-          expect(queryBuilder.sortField).toEqual('@field');
+          expect(queryBuilder.sortCriteria).toEqual('@field descending');
         });
       });
     });
