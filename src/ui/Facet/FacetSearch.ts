@@ -5,11 +5,9 @@ import { Facet } from './Facet';
 import { $$, Dom } from '../../utils/Dom';
 import { Utils } from '../../utils/Utils';
 import { InitializationEvents } from '../../events/InitializationEvents';
-import { EventsUtils } from '../../utils/EventsUtils';
 import { FacetSearchParameters } from './FacetSearchParameters';
 import { IAnalyticsFacetMeta, analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
 import { IEndpointError } from '../../rest/EndpointError';
-import { PopupUtils, PopupHorizontalAlignment, PopupVerticalAlignment } from '../../utils/PopupUtils';
 import { l } from '../../strings/Strings';
 import { Assert } from '../../misc/Assert';
 import { KEYBOARD } from '../../utils/KeyboardUtils';
@@ -33,8 +31,6 @@ export class FacetSearch {
   public searchResults: HTMLElement;
   public search: HTMLElement;
 
-  private magnifier: HTMLElement;
-  private wait: HTMLElement;
   private clear: HTMLElement;
   private input: HTMLInputElement;
   private facetSearchTimeout: number;
@@ -42,14 +38,12 @@ export class FacetSearch {
   private moreValuesToFetch = true;
   private onResize: (...args: any[]) => void;
   private onDocumentClick: (e: Event) => void;
-  private searchBarIsAnimating: boolean = false;
   private lastSearchWasEmpty = true;
   private facetSearchElement: FacetSearchElement;
 
   constructor(public facet: Facet, public facetSearchValuesListKlass: IFacetSearchValuesListKlass, private root: HTMLElement) {
-    console.log('creating facet sarch');
-    this.searchResults = document.createElement('ul');
-    $$(this.searchResults).addClass('coveo-facet-search-results');
+    this.facetSearchElement = new FacetSearchElement();
+    this.searchResults = this.facetSearchElement.searchResults;
     this.onResize = _.debounce(() => {
       // Mitigate issues in UT where the window in phantom js might get resized in the scope of another test.
       // These would point to random instance of a test karma object, and not a real search interface.
@@ -79,32 +73,7 @@ export class FacetSearch {
    * Position the search results at the footer of the facet.
    */
   public positionSearchResults(nextTo: HTMLElement = this.search) {
-    if (this.searchResults != null) {
-      this.searchResults.style.display = 'block';
-      this.searchResults.style.width = this.facet.element.clientWidth - 40 + 'px';
-
-      if ($$(this.searchResults).css('display') == 'none') {
-        this.searchResults.style.display = '';
-      }
-      let searchBar = $$(this.search);
-      if (searchBar.css('display') == 'none' || this.searchBarIsAnimating) {
-        if ($$(this.searchResults).css('display') == 'none') {
-          this.searchResults.style.display = '';
-        }
-        EventsUtils.addPrefixedEvent(this.search, 'AnimationEnd', evt => {
-          PopupUtils.positionPopup(this.searchResults, nextTo, this.root, {
-            horizontal: PopupHorizontalAlignment.CENTER,
-            vertical: PopupVerticalAlignment.BOTTOM
-          });
-          EventsUtils.removePrefixedEvent(this.search, 'AnimationEnd', this);
-        });
-      } else {
-        PopupUtils.positionPopup(this.searchResults, nextTo, this.root, {
-          horizontal: PopupHorizontalAlignment.CENTER,
-          vertical: PopupVerticalAlignment.BOTTOM
-        });
-      }
-    }
+    this.facetSearchElement.positionSearchResults(this.root, this.facet.element.clientWidth, nextTo);
   }
 
   /**
@@ -129,7 +98,7 @@ export class FacetSearch {
    */
   public triggerNewFacetSearch(params: FacetSearchParameters) {
     this.cancelAnyPendingSearchOperation();
-    this.showFacetSearchWaitingAnimation();
+    this.facetSearchElement.showFacetSearchWaitingAnimation();
 
     this.facet.logger.info('Triggering new facet search');
 
@@ -172,22 +141,24 @@ export class FacetSearch {
     this.handleFacetSearchFocus();
   }
 
+  get searchBarIsAnimating() {
+    return this.facetSearchElement.searchBarIsAnimating;
+  }
+
   private shouldPositionSearchResults(): boolean {
     return !ResponsiveComponentsUtils.isSmallFacetActivated($$(this.root)) && $$(this.facet.element).hasClass('coveo-facet-searching');
   }
 
   private buildBaseSearch(): HTMLElement {
-    this.input = document.createElement('input');
-    this.facetSearchElement = new FacetSearchElement(
+    this.facetSearchElement.build(
       e => this.handleFacetSearchKeyUp(e),
       () => this.handleFacetSearchClear(),
       () => {
         this.handleFacetSearchFocus();
       }
     );
+    this.input = this.facetSearchElement.input;
     this.search = this.facetSearchElement.search;
-    this.magnifier = this.facetSearchElement.magnifier;
-    this.wait = this.facetSearchElement.wait;
     this.clear = this.facetSearchElement.clear;
 
     this.root.appendChild(this.searchResults);
@@ -541,10 +512,5 @@ export class FacetSearch {
       this.facet.processFacetSearchAllResultsSelected(facetValues);
     });
     this.completelyDismissSearch();
-  }
-
-  private showFacetSearchWaitingAnimation() {
-    $$(this.magnifier).hide();
-    $$(this.wait).show();
   }
 }

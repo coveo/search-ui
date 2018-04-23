@@ -4,20 +4,23 @@ import { SVGDom } from '../../utils/SVGDom';
 import { Component } from '../Base/Component';
 import { l } from '../../strings/Strings';
 import { EventsUtils } from '../../utils/EventsUtils';
+import { PopupUtils, PopupHorizontalAlignment, PopupVerticalAlignment } from '../../utils/PopupUtils';
 
 export class FacetSearchElement {
   public search: HTMLElement;
   public magnifier: HTMLElement;
   public wait: HTMLElement;
   public clear: HTMLElement;
-  public input: HTMLElement;
-  public searchBarIsAnimating: boolean;
+  public input: HTMLInputElement;
+  public searchBarIsAnimating: boolean = false;
+  public searchResults: HTMLElement;
 
-  constructor(
-    private handleFacetSearchKeyUp: (e: KeyboardEvent) => void,
-    private handleFacetSearchClear: () => void,
-    private handleFacetSearchFocus: () => void
-  ) {
+  constructor() {
+    this.searchResults = document.createElement('ul');
+    $$(this.searchResults).addClass('coveo-facet-search-results');
+  }
+
+  public build(handleFacetSearchKeyUp: (e: KeyboardEvent) => void, handleFacetSearchClear: () => void, handleFacetSearchFocus: () => void) {
     this.search = document.createElement('div');
     $$(this.search).addClass('coveo-facet-search');
 
@@ -56,16 +59,21 @@ export class FacetSearchElement {
     middle.appendChild(this.input);
 
     $$(this.input).on('keyup', (e: KeyboardEvent) => {
-      this.handleFacetSearchKeyUp(e);
+      handleFacetSearchKeyUp(e);
     });
     $$(this.clear).on('click', (e: Event) => {
-      this.handleFacetSearchClear();
+      handleFacetSearchClear();
     });
     $$(this.input).on('focus', (e: Event) => {
-      this.handleFacetSearchFocus();
+      handleFacetSearchFocus();
     });
 
     this.detectSearchBarAnimation();
+  }
+
+  public showFacetSearchWaitingAnimation() {
+    $$(this.magnifier).hide();
+    $$(this.wait).show();
   }
 
   public hideFacetSearchWaitingAnimation() {
@@ -85,5 +93,34 @@ export class FacetSearchElement {
         this.searchBarIsAnimating = false;
       }
     });
+  }
+
+  public positionSearchResults(root: HTMLElement, facetWidth: number, nextTo: HTMLElement) {
+    if (this.searchResults != null) {
+      this.searchResults.style.display = 'block';
+      this.searchResults.style.width = facetWidth - 40 + 'px';
+
+      if ($$(this.searchResults).css('display') == 'none') {
+        this.searchResults.style.display = '';
+      }
+      let searchBar = $$(this.search);
+      if (searchBar.css('display') == 'none' || this.searchBarIsAnimating) {
+        if ($$(this.searchResults).css('display') == 'none') {
+          this.searchResults.style.display = '';
+        }
+        EventsUtils.addPrefixedEvent(this.search, 'AnimationEnd', evt => {
+          PopupUtils.positionPopup(this.searchResults, nextTo, root, {
+            horizontal: PopupHorizontalAlignment.CENTER,
+            vertical: PopupVerticalAlignment.BOTTOM
+          });
+          EventsUtils.removePrefixedEvent(this.search, 'AnimationEnd', this);
+        });
+      } else {
+        PopupUtils.positionPopup(this.searchResults, nextTo, root, {
+          horizontal: PopupHorizontalAlignment.CENTER,
+          vertical: PopupVerticalAlignment.BOTTOM
+        });
+      }
+    }
   }
 }
