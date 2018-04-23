@@ -181,7 +181,9 @@ export class FacetSearch {
     this.facetSearchElement = new FacetSearchElement(
       e => this.handleFacetSearchKeyUp(e),
       () => this.handleFacetSearchClear(),
-      () => this.handleFacetSearchFocus()
+      () => {
+        this.handleFacetSearchFocus();
+      }
     );
     this.search = this.facetSearchElement.search;
     this.magnifier = this.facetSearchElement.magnifier;

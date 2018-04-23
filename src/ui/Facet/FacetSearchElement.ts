@@ -57,7 +57,9 @@ export class FacetSearchElement {
 
     $$(this.input).on('keyup', (e: KeyboardEvent) => this.handleFacetSearchKeyUp(e));
     $$(this.clear).on('click', (e: Event) => this.handleFacetSearchClear());
-    $$(this.input).on('focus', (e: Event) => this.handleFacetSearchFocus());
+    $$(this.input).on('focus', (e: Event) => {
+      this.handleFacetSearchFocus();
+    });
 
     this.detectSearchBarAnimation();
   }
