@@ -23,7 +23,14 @@ export class QuickviewDocumentWordButton {
   }
 
   private navigate(backward: boolean) {
-    const element = backward ? this.word.navigateBackward() : this.word.navigateForward();
+    let element: HTMLElement;
+    if (backward) {
+      element = this.word.navigateBackward();
+      this.previewBar.navigateBackward(this.word);
+    } else {
+      element = this.word.navigateForward();
+      this.previewBar.navigateForward(this.word);
+    }
 
     // pdf2html docs hide the non-visible frames by default, to speed up browsers.
     // But this prevents keyword navigation from working so we must force show it. This
