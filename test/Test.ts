@@ -585,3 +585,6 @@ MetaDataTableTest();
 
 import { QueryUtilsTest } from './utils/QueryUtilsTest';
 QueryUtilsTest();
+
+import { QuickviewDocumentWordTest } from './ui/QuickviewDocumentWordTest';
+QuickviewDocumentWordTest();

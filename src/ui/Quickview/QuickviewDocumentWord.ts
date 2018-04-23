@@ -66,7 +66,6 @@ export class QuickviewDocumentWord {
       this.occurrence = parsed.keywordOccurrencesInDocument;
       this.indexTermPart = parsed.keywordTermPart;
       this.text = this.getText(element);
-      this.numberOfEmbeddedWords = this.isTaggedWord(element) ? 0 : 1;
       this.color = new QuickviewDocumentWordColor(element.style.backgroundColor);
 
       this.addElement(element);

@@ -13,7 +13,6 @@ import { ComponentOptions } from '../Base/ComponentOptions';
 import { Initialization } from '../Base/Initialization';
 import { QuickviewDocumentIframe } from './QuickviewDocumentIframe';
 import { QuickviewDocumentHeader } from './QuickviewDocumentHeader';
-//import { QuickviewDocumentWordButton } from './QuickviewDocumentWordButton';
 import {} from './QuickviewdocumentKeywords';
 import { QuickviewDocumentWords } from './QuickviewDocumentWords';
 import { each } from 'underscore';
