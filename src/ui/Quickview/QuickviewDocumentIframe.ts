@@ -118,23 +118,23 @@ export class QuickviewDocumentIframe {
     //
     // http://stackoverflow.com/questions/23083462/how-to-get-an-iframe-to-be-responsive-in-ios-safari
     const cssHackForIOS = `
-      body, html { 
-        height: 1px !important; 
-        min-height: 100%; 
-        width: 1px !important; 
-        min-width: 100%; 
-        overflow: scroll; 
+      body, html {
+        height: 1px !important;
+        min-height: 100%;
+        width: 1px !important;
+        min-width: 100%;
+        overflow: scroll;
         margin: auto
       }
       `;
 
     const cssText = `
-      html pre { 
+      html pre {
         white-space: pre-wrap;
         word-wrap: break-word;
       }
-      body, html { 
-        font-family: Arimo, 'Helvetica Neue', Helvetica, Arial, sans-serif; -webkit-text-size-adjust: none; 
+      body, html {
+        font-family: Arimo, 'Helvetica Neue', Helvetica, Arial, sans-serif; -webkit-text-size-adjust: none;
       }
       ${DeviceUtils.isIos() ? cssHackForIOS : ''}
       `;

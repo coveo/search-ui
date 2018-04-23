@@ -54,7 +54,6 @@ export class QuickviewDocument extends Component {
   private iframe: QuickviewDocumentIframe;
   private header: QuickviewDocumentHeader;
   private termsToHighlightWereModified: boolean;
-  //  private keywordsState: IWordState[];
 
   /**
    * Creates a new `QuickviewDocument` component.
