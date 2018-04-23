@@ -5,23 +5,19 @@ import { Component } from '../Base/Component';
 import { l } from '../../strings/Strings';
 import { EventsUtils } from '../../utils/EventsUtils';
 
-export interface FacetSearchElement {
-  search: HTMLElement;
-  magnifier: HTMLElement;
-  wait: HTMLElement;
-  clear: HTMLElement;
-  middle: HTMLElement;
-}
 export class FacetSearchElement {
   public search: HTMLElement;
   public magnifier: HTMLElement;
   public wait: HTMLElement;
   public clear: HTMLElement;
-  public middle: HTMLElement;
   public input: HTMLElement;
   public searchBarIsAnimating: boolean;
 
-  constructor(private handleFacetSearchKeyUp, private handleFacetSearchClear, private handleFacetSearchFocus) {
+  constructor(
+    private handleFacetSearchKeyUp: (e: KeyboardEvent) => void,
+    private handleFacetSearchClear: () => void,
+    private handleFacetSearchFocus: () => void
+  ) {
     this.search = document.createElement('div');
     $$(this.search).addClass('coveo-facet-search');
 
@@ -47,9 +43,9 @@ export class FacetSearchElement {
     this.clear.style.display = 'none';
     this.search.appendChild(this.clear);
 
-    this.middle = document.createElement('div');
-    $$(this.middle).addClass('coveo-facet-search-middle');
-    this.search.appendChild(this.middle);
+    const middle = document.createElement('div');
+    $$(middle).addClass('coveo-facet-search-middle');
+    this.search.appendChild(middle);
 
     this.input = document.createElement('input');
     this.input.setAttribute('type', 'text');
@@ -57,7 +53,7 @@ export class FacetSearchElement {
     this.input.setAttribute('autocorrect', 'off');
     $$(this.input).addClass('coveo-facet-search-input');
     Component.pointElementsToDummyForm(this.input);
-    this.middle.appendChild(this.input);
+    middle.appendChild(this.input);
 
     $$(this.input).on('keyup', (e: KeyboardEvent) => this.handleFacetSearchKeyUp(e));
     $$(this.clear).on('click', (e: Event) => this.handleFacetSearchClear());
@@ -65,10 +61,12 @@ export class FacetSearchElement {
 
     this.detectSearchBarAnimation();
   }
+
   public hideFacetSearchWaitingAnimation() {
     $$(this.magnifier).show();
     $$(this.wait).hide();
   }
+
   public detectSearchBarAnimation() {
     EventsUtils.addPrefixedEvent(this.search, 'AnimationStart', event => {
       if (event.animationName == 'grow') {
