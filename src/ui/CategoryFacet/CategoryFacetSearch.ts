@@ -1,3 +1,4 @@
+import { CategoryFacet } from './CategoryFacet';
 export class CategoryFacetSearch {
-  constructor() {}
+  constructor(categoryFacet: CategoryFacet) {}
 }

@@ -23,7 +23,6 @@ import { ResponsiveComponentsUtils } from '../ResponsiveComponents/ResponsiveCom
 import { FacetValuesOrder } from './FacetValuesOrder';
 import * as _ from 'underscore';
 import 'styling/_FacetSearch';
-import { SVGIcons } from '../../utils/SVGIcons';
 import { FacetSearchElement } from './FacetSearchElement';
 
 /**
@@ -37,7 +36,6 @@ export class FacetSearch {
   private magnifier: HTMLElement;
   private wait: HTMLElement;
   private clear: HTMLElement;
-  private middle: HTMLElement;
   private input: HTMLInputElement;
   private facetSearchTimeout: number;
   private facetSearchPromise: Promise<IIndexFieldValue[]>;
@@ -179,12 +177,15 @@ export class FacetSearch {
 
   private buildBaseSearch(): HTMLElement {
     this.input = document.createElement('input');
-    this.facetSearchElement = new FacetSearchElement(this.handleFacetSearchKeyUp, this.handleFacetSearchClear, this.handleFacetSearchFocus);
+    this.facetSearchElement = new FacetSearchElement(
+      e => this.handleFacetSearchKeyUp(e),
+      () => this.handleFacetSearchClear(),
+      () => this.handleFacetSearchFocus()
+    );
     this.search = this.facetSearchElement.search;
     this.magnifier = this.facetSearchElement.magnifier;
     this.wait = this.facetSearchElement.wait;
     this.clear = this.facetSearchElement.clear;
-    this.middle = this.facetSearchElement.middle;
 
     this.root.appendChild(this.searchResults);
     this.searchResults.style.display = 'none';

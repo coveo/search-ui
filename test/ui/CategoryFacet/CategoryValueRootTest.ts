@@ -19,7 +19,7 @@ export function CategoryValueRootTest() {
       categoryFacetMock.categoryFacetQueryController = jasmine.createSpyObj<CategoryFacetQueryController>('categoryFacetQueryController', [
         'putCategoryFacetInQueryBuilder'
       ]);
-      categoryFacetMock.categoryFacetQueryController.putCategoryFacetInQueryBuilder.and.returnValue(0);
+      categoryFacetMock.categoryFacetQueryController.putCategoryFacetInQueryBuilder = () => 0;
       noopComponentMock = Mock.basicComponentSetup<NoopComponent>(NoopComponent);
       categoryFacetMock.bind = noopComponentMock.cmp.bind;
       new CategoryValueRoot($$(noopComponentMock.env.element), new CategoryFacetTemplates(), categoryFacetMock);
