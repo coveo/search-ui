@@ -47,6 +47,7 @@ export class FacetSearch {
   private facetSearchElement: FacetSearchElement;
 
   constructor(public facet: Facet, public facetSearchValuesListKlass: IFacetSearchValuesListKlass, private root: HTMLElement) {
+    console.log('creating facet sarch');
     this.searchResults = document.createElement('ul');
     $$(this.searchResults).addClass('coveo-facet-search-results');
     this.onResize = _.debounce(() => {
