@@ -168,6 +168,9 @@ Recommendation.doExport();
 import { ResultAttachments } from './ui/ResultAttachments/ResultAttachments';
 ResultAttachments.doExport();
 
+import { ResultActionsMenu } from './ui/ResultActions/ResultActionsMenu';
+ResultActionsMenu.doExport();
+
 import { ResultFolding } from './ui/ResultFolding/ResultFolding';
 ResultFolding.doExport();
 

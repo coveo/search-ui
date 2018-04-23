@@ -1,27 +1,83 @@
+import { chain, contains, first, values } from 'underscore';
 import { Assert } from '../../misc/Assert';
-import { QueryBuilder } from '../Base/QueryBuilder';
-import { Utils } from '../../utils/Utils';
-import { IQueryResult } from '../../rest/QueryResult';
-import * as _ from 'underscore';
+import { QueryBuilder } from '../../ui/Base/QueryBuilder';
 
-export class SortCriteria {
-  private static validSorts = ['relevancy', 'date', 'qre'];
-  private static sortsNeedingDirection = ['date'];
-  private static validDirections = ['ascending', 'descending'];
+export enum VALID_SORT {
+  RELEVANCY = 'relevancy',
+  DATE = 'date',
+  QRE = 'qre'
+}
+
+export enum VALID_DIRECTION {
+  ASCENDING = 'ascending',
+  DESCENDING = 'descending'
+}
+
+export class SortCriterion {
+  private static sortsNeedingDirection = [VALID_SORT.DATE];
 
   /**
    * Create a new SortCriteria
    * @param sort The sort criteria (e.g.: relevancy, date)
    * @param direction The direction by which to sort (e.g.: ascending, descending)
    */
-  constructor(public sort: string, public direction: string = '') {
-    Assert.isNonEmptyString(sort);
-    Assert.check(_.contains(SortCriteria.validSorts, sort) || SortCriteria.sortIsField(sort));
-    if (SortCriteria.sortNeedsDirection(sort)) {
-      Assert.check(_.contains(SortCriteria.validDirections, direction));
+  constructor(public sort: VALID_SORT, public direction: VALID_DIRECTION | '' = '') {
+    if (!SortCriterion.sortIsField(sort)) {
+      Assert.check(
+        this.isValidSort(sort),
+        `${sort} is not a valid sort criteria. Valid values are ${values(VALID_SORT)} or a valid index sortable index field.`
+      );
+    }
+    if (SortCriterion.sortNeedsDirection(sort)) {
+      Assert.check(
+        this.isValidDirection(direction),
+        `${direction} is not a valid sort criteria direction. Valid values are ${values(VALID_DIRECTION)}`
+      );
     } else {
       Assert.check(direction == '');
     }
+  }
+
+  private isValidDirection(direction: string): direction is VALID_DIRECTION {
+    return chain(VALID_DIRECTION)
+      .values()
+      .contains(direction as any)
+      .value();
+  }
+
+  private isValidSort(sort: string): sort is VALID_SORT {
+    return chain(VALID_SORT)
+      .values()
+      .contains(sort as any)
+      .value();
+  }
+
+  private static sortIsField(criteria: string) {
+    return criteria.charAt(0) == '@';
+  }
+
+  private static sortNeedsDirection(sort: string) {
+    return contains(SortCriterion.sortsNeedingDirection, sort) || SortCriterion.sortIsField(sort);
+  }
+}
+
+export class SortCriteria {
+  private criteria: SortCriterion[] = [];
+
+  constructor(rawCriteriaString: string) {
+    const criteria = rawCriteriaString.split(';');
+    criteria.forEach(criterion => {
+      const split = criterion.match(/\S+/g);
+      this.criteria.push(new SortCriterion(split[0] as VALID_SORT, split[1] as VALID_DIRECTION));
+    });
+  }
+
+  public get direction() {
+    return first(this.criteria).direction;
+  }
+
+  public get sort() {
+    return first(this.criteria).sort;
   }
 
   /**
@@ -29,9 +85,7 @@ export class SortCriteria {
    * @param criteria The string from which to create the SortCriteria
    */
   static parse(criteria: string): SortCriteria {
-    Assert.isNonEmptyString(criteria);
-    var split = criteria.match(/\S+/g);
-    return new SortCriteria(split[0], split[1]);
+    return new SortCriteria(criteria);
   }
 
   /**
@@ -40,42 +94,20 @@ export class SortCriteria {
    */
   public putInQueryBuilder(queryBuilder: QueryBuilder) {
     Assert.exists(queryBuilder);
-    if (SortCriteria.sortIsField(this.sort)) {
-      queryBuilder.sortCriteria = 'field' + this.direction;
-      queryBuilder.sortField = this.sort;
-    } else if (this.direction != '') {
-      queryBuilder.sortCriteria = this.sort + this.direction;
-    } else {
-      queryBuilder.sortCriteria = this.sort;
-    }
-  }
-
-  /**
-   * Gets the value of the sort criteria from a single {@link IQueryResult}.<br/>
-   * For example, if the sort criteria is 'relevancy', it will return the value of the 'relevancy' field from result.
-   * @param result The {@link IQueryResult} from which to get the value.
-   */
-  public getValueFromResult(result: IQueryResult): any {
-    Assert.exists(result);
-
-    if (SortCriteria.sortIsField(this.sort)) {
-      return Utils.getFieldValue(result, this.sort);
-    } else if (this.sort == 'date') {
-      return result.raw['date'];
-    } else {
-      Assert.fail('Cannot retrieve value: ' + this.sort);
-    }
+    queryBuilder.sortCriteria = this.toString()
+      .split(';')
+      .join(',');
   }
 
   /**
    * Returns a string representation of the sort criteria (e.g.: 'date ascending').
    */
   public toString(): string {
-    if (Utils.isNonEmptyString(this.direction)) {
-      return this.sort + ' ' + this.direction;
-    } else {
-      return this.sort;
-    }
+    return this.criteria
+      .map(criterion => {
+        return criterion.direction ? `${criterion.sort} ${criterion.direction}` : `${criterion.sort}`;
+      })
+      .join(';');
   }
 
   /**
@@ -83,15 +115,6 @@ export class SortCriteria {
    * @param criteria The SortCriteria to compare with
    */
   public equals(criteria: SortCriteria): boolean {
-    Assert.exists(criteria);
-    return criteria.sort == this.sort && criteria.direction == this.direction;
-  }
-
-  private static sortIsField(criteria: string) {
-    return criteria.charAt(0) == '@';
-  }
-
-  private static sortNeedsDirection(sort: string) {
-    return _.contains(SortCriteria.sortsNeedingDirection, sort) || SortCriteria.sortIsField(sort);
+    return criteria.toString() == this.toString();
   }
 }

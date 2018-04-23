@@ -163,6 +163,9 @@ quickviewRegisterFields();
 import { lazyRecommendation } from './ui/Recommendation/LazyRecommendation';
 lazyRecommendation();
 
+import { lazyResultActionsMenu } from './ui/ResultActions/LazyResultActionsMenu';
+lazyResultActionsMenu();
+
 import { lazyResultAttachment } from './ui/ResultAttachments/LazyResultAttachments';
 lazyResultAttachment();
 

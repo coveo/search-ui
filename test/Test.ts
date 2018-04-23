@@ -321,6 +321,9 @@ TriggersTest();
 import { ValueElementRendererTest } from './ui/ValueElementRendererTest';
 ValueElementRendererTest();
 
+import { ResultActionsMenuTest } from './ui/ResultActionsMenuTest';
+ResultActionsMenuTest()
+
 import { ResultsPerPageTest } from './ui/ResultsPerPageTest';
 ResultsPerPageTest();
 
