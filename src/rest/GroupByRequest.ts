@@ -1,5 +1,6 @@
 import { IComputedFieldRequest } from './ComputedFieldRequest';
 import { IRangeValue } from './RangeValue';
+import { AllowedValuesPatternType } from './AllowedValuesPatternType';
 
 /**
  * The `IGroupByRequest` interface describes a Group By operation to perform against the index.
@@ -89,6 +90,12 @@ export interface IGroupByRequest {
    * > The array `["foo", "bar*"]` would return Group By values for `foo` and any value starting with `bar`.
    */
   allowedValues?: string[];
+
+  /**
+   * The type of pattern used in {@link IGroupByRequest.allowedValues}. See {@link AllowedValuesPatternType}.
+   * Not specifying a value for this parameter is equivalent to using legacy.
+   */
+  allowedValuesPatternType?: AllowedValuesPatternType;
 
   /**
    * Specifies an array of computed fields that should be evaluated for each Group By value that is returned.
