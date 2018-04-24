@@ -588,3 +588,6 @@ QueryUtilsTest();
 
 import { QuickviewDocumentWordTest } from './ui/QuickviewDocumentWordTest';
 QuickviewDocumentWordTest();
+
+import { QuickviewDocumentIframeTest } from './ui/QuickviewDocumentIframeTest';
+QuickviewDocumentIframeTest();

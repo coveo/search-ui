@@ -11,6 +11,10 @@ export class QuickviewDocumentIframe {
     this.el = this.buildIFrame().el;
   }
 
+  public get iframeHTMLElement() {
+    return this.iframeElement;
+  }
+
   public get document() {
     return this.iframeElement.contentWindow.document;
   }
@@ -66,9 +70,7 @@ export class QuickviewDocumentIframe {
 
       this.writeToIFrame(errorDocument);
 
-      this.iframeElement.onload = () => {
-        resolve(this.iframeElement);
-      };
+      resolve(this.iframeElement);
     });
   }
 
