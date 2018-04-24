@@ -263,7 +263,10 @@ export class Quickview extends Component {
     if (this.modalbox == null) {
       // To prevent the keyboard from opening on mobile if the search bar has focus
       Quickview.resultCurrentlyBeingRendered = this.result;
-      $$(<HTMLElement>document.activeElement).trigger('blur');
+      // activeElement does not exist in LockerService
+      if (document.activeElement && document.activeElement instanceof HTMLElement) {
+        $$(document.activeElement as HTMLElement).trigger('blur');
+      }
 
       const openerObject = this.prepareOpenQuickviewObject();
       this.createModalBox(openerObject).then(() => {
