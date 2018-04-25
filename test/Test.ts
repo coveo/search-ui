@@ -600,3 +600,12 @@ QuickviewDocumentWordColorTest();
 
 import { QuickviewDocumentPreviewBarTest } from './ui/QuickviewDocumentPreviewBarTest';
 QuickviewDocumentPreviewBarTest();
+
+import { QuickviewDocumentHeaderTest } from './ui/QuickviewDocumentHeaderTest';
+QuickviewDocumentHeaderTest();
+
+import { QuickviewDocumentWordButtonTest } from './ui/QuickviewDocumentWordButtonTest';
+QuickviewDocumentWordButtonTest();
+
+import { QuickviewDocumentTest } from './ui/QuickviewDocumentTest';
+QuickviewDocumentTest();

@@ -89,10 +89,6 @@ export class QuickviewDocument extends Component {
     container.append(this.iframe.el);
   }
 
-  private get query() {
-    return { ...this.queryController.getLastQuery() };
-  }
-
   public async open() {
     this.ensureDom();
 
@@ -134,6 +130,10 @@ export class QuickviewDocument extends Component {
 
       this.triggerQuickviewLoaded(afterLoad - beforeLoad);
     }
+  }
+
+  private get query() {
+    return { ...this.queryController.getLastQuery() };
   }
 
   private triggerQuickviewLoaded(duration: number) {
