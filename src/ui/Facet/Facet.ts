@@ -365,13 +365,15 @@ export class Facet extends Component {
      */
     numberOfValuesInFacetSearch: ComponentOptions.buildNumberOption({ defaultValue: 15, min: 1, section: 'FacetSearch' }),
     /**
-     * Specifies whether [wildcards]{@link AllowedValuesPatternType.wildcards} will be used as the [allowedValuesPatternType]{@link IGroupByRequest.allowedValuesPatternType}
+     * Specifies whether [wildcards]{@link AllowedValuesPatternType.wildcards} are used as the [allowedValuesPatternType]{@link IGroupByRequest.allowedValuesPatternType}
      * in the [groupBy]{@link IGroupByRequest} for the facet search.
      *
-     * Enabling this option returns results that end with the entered value. For example, searching for veo would match with Coveo.
+     * Enabling this option returns results that end with the entered value. For example, searching for `veo` would match with `Coveo`.
      *
-     * **Note:** If you use this option and experience slow results or even timeouts, you should consider using the "cache for nested queries" option
-     * available in the administration console. Details on how to do this [here]{@link https://onlinehelp.coveo.com/en/cloud/add_edit_fields.htm}.
+     * **Note:** If you use this option and are experiencing slow results or timeouts, you should consider using the `cache for nested queries` option
+     * available in the Coveo Cloud Administration Console.
+     * 
+     * For more information, see  [Add/Edit a Field]{@link https://onlinehelp.coveo.com/en/cloud/add_edit_fields.htm}.
      */
     useWildcardsInFacetSearch: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'FacetSearch' }),
     /**

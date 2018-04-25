@@ -5,7 +5,7 @@ import { AllowedValuesPatternType } from './AllowedValuesPatternType';
 /**
  * The `IGroupByRequest` interface describes a Group By operation to perform against the index.
  *
- * See [Group By Parameters](https://developers.coveo.com/x/jQEv).
+ * For more information, see [Group By Parameters](https://developers.coveo.com/x/jQEv).
  */
 export interface IGroupByRequest {
   /**
@@ -92,8 +92,9 @@ export interface IGroupByRequest {
   allowedValues?: string[];
 
   /**
-   * The type of pattern used in {@link IGroupByRequest.allowedValues}. See {@link AllowedValuesPatternType}.
-   * Not specifying a value for this parameter is equivalent to using legacy.
+   * The pattern type used for the {@link IGroupByRequest.allowedValues} option (see {@link AllowedValuesPatternType}).
+   * 
+   * Not specifying a value for this parameter is equivalent to using the legacy option.
    */
   allowedValuesPatternType?: AllowedValuesPatternType;
 

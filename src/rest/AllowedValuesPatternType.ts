@@ -1,5 +1,5 @@
 /**
- * Values that are allowed for the [allowedValuesPatternType]{@link IGroupByRequest.allowedValuesPatternType} parameter.
+ * The allowed values for the [allowedValuesPatternType]{@link IGroupByRequest.allowedValuesPatternType} parameter.
  */
 export enum AllowedValuesPatternType {
   /**
@@ -7,7 +7,7 @@ export enum AllowedValuesPatternType {
    */
   Legacy = 'legacy',
   /**
-   * Full support for wildcards.
+   * Fully supports wildcards.
    */
   Wildcards = 'wildcards',
   /**
