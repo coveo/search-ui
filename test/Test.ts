@@ -591,3 +591,12 @@ QuickviewDocumentWordTest();
 
 import { QuickviewDocumentIframeTest } from './ui/QuickviewDocumentIframeTest';
 QuickviewDocumentIframeTest();
+
+import { QuickviewDocumentWordsTest } from './ui/QuickviewDocumentWordsTest';
+QuickviewDocumentWordsTest();
+
+import { QuickviewDocumentWordColorTest } from './ui/QuickviewDocumentWordColorTest';
+QuickviewDocumentWordColorTest();
+
+import { QuickviewDocumentPreviewBarTest } from './ui/QuickviewDocumentPreviewBarTest';
+QuickviewDocumentPreviewBarTest();
