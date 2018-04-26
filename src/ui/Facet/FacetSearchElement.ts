@@ -17,6 +17,7 @@ export class FacetSearchElement {
 
   constructor() {
     this.searchResults = document.createElement('ul');
+    this.searchResults.style.display = 'none';
     $$(this.searchResults).addClass('coveo-facet-search-results');
   }
 
@@ -69,6 +70,7 @@ export class FacetSearchElement {
     });
 
     this.detectSearchBarAnimation();
+    return this.search;
   }
 
   public showFacetSearchWaitingAnimation() {
@@ -97,6 +99,7 @@ export class FacetSearchElement {
 
   public positionSearchResults(root: HTMLElement, facetWidth: number, nextTo: HTMLElement) {
     if (this.searchResults != null) {
+      root.appendChild(this.searchResults);
       this.searchResults.style.display = 'block';
       this.searchResults.style.width = facetWidth - 40 + 'px';
 

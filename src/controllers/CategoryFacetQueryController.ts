@@ -1,10 +1,10 @@
 import { CategoryFacet } from '../ui/CategoryFacet/CategoryFacet';
 import { QueryBuilder } from '../ui/Base/QueryBuilder';
 import { ICategoryFacetsRequest } from '../rest/CategoryFacetsRequest';
-import { ICategoryFacetValue } from '../rest/CategoryFacetValue';
 import { IGroupByRequest } from '../rest/GroupByRequest';
 import { AllowedValuesPatternType } from '../rest/AllowedValuesPatternType';
 import { clone } from 'underscore';
+import { IGroupByValue } from '../rest/GroupByValue';
 
 export class CategoryFacetQueryController {
   constructor(private categoryFacet: CategoryFacet) {}
@@ -21,7 +21,7 @@ export class CategoryFacetQueryController {
     return positionInQuery;
   }
 
-  public async searchFacetValues(value: string): Promise<ICategoryFacetValue[]> {
+  public async searchFacetValues(value: string): Promise<IGroupByValue[]> {
     let lastQuery = clone(this.categoryFacet.queryController.getLastQuery());
     if (!lastQuery) {
       lastQuery = new QueryBuilder().build();
@@ -31,14 +31,16 @@ export class CategoryFacetQueryController {
       allowedValues: [`*${value}*`],
       allowedValuesPatternType: AllowedValuesPatternType.Wildcards,
       maximumNumberOfValues: this.categoryFacet.options.numberOfResultsInFacetSearch,
-      field: this.categoryFacet.options.field as string
+      field: this.categoryFacet.options.field as string,
+      sortCriteria: 'occurrences'
     };
+
     lastQuery.groupBy = [groupByRequest];
     return this.categoryFacet.queryController
       .getEndpoint()
       .search(lastQuery)
       .then(queryResults => {
-        return queryResults.groupByResults[0].values as ICategoryFacetValue[];
+        return queryResults.groupByResults[0].values;
       });
   }
 }

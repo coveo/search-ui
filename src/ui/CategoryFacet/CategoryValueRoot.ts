@@ -1,6 +1,6 @@
 import { CategoryValueParent, CategoryValue } from './CategoryValue';
 import { CategoryFacetTemplates } from './CategoryFacetTemplates';
-import { Dom } from '../../utils/Dom';
+import { Dom, $$ } from '../../utils/Dom';
 import { CategoryChildrenValueRenderer } from './CategoryValueChildrenRenderer';
 import { CategoryFacet } from './CategoryFacet';
 import { QueryEvents, IBuildingQueryEventArgs, IQuerySuccessEventArgs } from '../../events/QueryEvents';
@@ -55,6 +55,10 @@ export class CategoryValueRoot implements CategoryValueParent {
     } else {
       this.categoryFacet.hide();
     }
+    if (this.categoryFacet.options.enableFacetSearch) {
+      const facetSearch = this.categoryFacet.categoryFacetSearch.build();
+      $$(facetSearch).insertAfter(this.categoryChildrenValueRenderer.getListOfChildValues().el);
+    }
   }
 
   public renderChildren(values: ICategoryFacetValue[]) {
@@ -78,6 +82,7 @@ export class CategoryValueRoot implements CategoryValueParent {
   }
 
   public clear() {
+    this.categoryFacet.categoryFacetSearch.clear();
     this.categoryChildrenValueRenderer.getListOfChildValues().detach();
     this.categoryChildrenValueRenderer.clearChildren();
   }

@@ -26,6 +26,7 @@ export interface CategoryFacetOptions {
   numberOfResultsInFacetSearch: number;
   id: string;
   enableFacetSearch: boolean;
+  facetSearchDelay: number;
 }
 
 /**
@@ -54,16 +55,27 @@ export class CategoryFacet extends Component {
     id: ComponentOptions.buildStringOption({
       postProcessing: (value, options: CategoryFacetOptions) => value || (options.field as string)
     }),
-    numberOfResultsInFacetSearch: ComponentOptions.buildNumberOption({ defaultValue: 15, min: 1 })
+    numberOfResultsInFacetSearch: ComponentOptions.buildNumberOption({ defaultValue: 15, min: 1 }),
+    /**
+     * If the [`enableFacetSearch`]{@link CategoryFacet.options.enableFacetSearch} option is `true`, specifies the delay (in
+     * milliseconds) before sending a search request to the server when the user starts typing in the category facet search box.
+     *
+     * Specifying a smaller value makes results appear faster. However, chances of having to cancel many requests
+     * sent to the server increase as the user keeps on typing new characters.
+     *
+     * Default value is `100`. Minimum value is `0`.
+     */
+    facetSearchDelay: ComponentOptions.buildNumberOption({ defaultValue: 100, min: 0 })
   };
+
+  public queryStateAttribute: string;
+  public categoryValueRootModule = CategoryValueRoot;
+  public categoryFacetSearch: CategoryFacetSearch;
 
   private categoryValueRoot: CategoryValueRoot;
   private categoryFacetTemplates: CategoryFacetTemplates;
   private facetHeader: Dom;
   private waitElement: Dom;
-  public queryStateAttribute: string;
-
-  public categoryValueRootModule = CategoryValueRoot;
 
   constructor(public element: HTMLElement, public options: CategoryFacetOptions, bindings?: IComponentBindings) {
     super(element, 'CategoryFacet', bindings);
@@ -74,7 +86,7 @@ export class CategoryFacet extends Component {
     this.categoryValueRoot = new this.categoryValueRootModule($$(this.element), this.categoryFacetTemplates, this);
 
     if (this.options.enableFacetSearch) {
-      new CategoryFacetSearch(this);
+      this.categoryFacetSearch = new CategoryFacetSearch(this);
     }
 
     this.bind.onRootElement(QueryEvents.duringQuery, () => this.addFading());
@@ -103,7 +115,7 @@ export class CategoryFacet extends Component {
    * Returns the active path
    */
   public getActivePath() {
-    this.categoryValueRoot.activePath;
+    return this.categoryValueRoot.activePath;
   }
 
   /**

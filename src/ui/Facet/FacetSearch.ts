@@ -161,9 +161,6 @@ export class FacetSearch {
     this.search = this.facetSearchElement.search;
     this.clear = this.facetSearchElement.clear;
 
-    this.root.appendChild(this.searchResults);
-    this.searchResults.style.display = 'none';
-
     return this.search;
   }
 
