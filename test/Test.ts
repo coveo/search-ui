@@ -588,3 +588,27 @@ MetaDataTableTest();
 
 import { QueryUtilsTest } from './utils/QueryUtilsTest';
 QueryUtilsTest();
+
+import { QuickviewDocumentWordTest } from './ui/QuickviewDocumentWordTest';
+QuickviewDocumentWordTest();
+
+import { QuickviewDocumentIframeTest } from './ui/QuickviewDocumentIframeTest';
+QuickviewDocumentIframeTest();
+
+import { QuickviewDocumentWordsTest } from './ui/QuickviewDocumentWordsTest';
+QuickviewDocumentWordsTest();
+
+import { QuickviewDocumentWordColorTest } from './ui/QuickviewDocumentWordColorTest';
+QuickviewDocumentWordColorTest();
+
+import { QuickviewDocumentPreviewBarTest } from './ui/QuickviewDocumentPreviewBarTest';
+QuickviewDocumentPreviewBarTest();
+
+import { QuickviewDocumentHeaderTest } from './ui/QuickviewDocumentHeaderTest';
+QuickviewDocumentHeaderTest();
+
+import { QuickviewDocumentWordButtonTest } from './ui/QuickviewDocumentWordButtonTest';
+QuickviewDocumentWordButtonTest();
+
+import { QuickviewDocumentTest } from './ui/QuickviewDocumentTest';
+QuickviewDocumentTest();
