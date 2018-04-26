@@ -311,7 +311,6 @@ export class SearchInterface extends RootComponent implements IComponentBindings
      * It also modifies the {@link IQuery.allowQueriesWithoutKeywords} query parameter.
      *
      * Default value is `true`
-     * @notSupportedIn salesforcefree
      */
     allowQueriesWithoutKeywords: ComponentOptions.buildBooleanOption({ defaultValue: true }),
     endpoint: ComponentOptions.buildCustomOption(

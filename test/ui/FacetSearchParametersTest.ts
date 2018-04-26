@@ -112,7 +112,14 @@ export function FacetSearchParametersTest() {
         expect(groupBy.allowedValues).toContain('c');
       });
 
-      it('uses wildcards as AllowedValuesPatterntype by default', () => {
+      it('uses legacy as allowedValuesPatternType by default', () => {
+        const params = new FacetSearchParameters(mockFacet);
+        const groupBy = params.getGroupByRequest();
+        expect(groupBy.allowedValuesPatternType).toBe(AllowedValuesPatternType.Legacy);
+      });
+
+      it('uses wildcards as allowedValuesPatternType when the useWildcardsInFacetSearch option on the facet is set to true', () => {
+        mockFacet.options.useWildcardsInFacetSearch = true;
         const params = new FacetSearchParameters(mockFacet);
         const groupBy = params.getGroupByRequest();
         expect(groupBy.allowedValuesPatternType).toBe(AllowedValuesPatternType.Wildcards);

@@ -70,7 +70,9 @@ export class FacetSearchParameters {
 
     const request: IGroupByRequest = {
       allowedValues,
-      allowedValuesPatternType: AllowedValuesPatternType.Wildcards,
+      allowedValuesPatternType: this.facet.options.useWildcardsInFacetSearch
+        ? AllowedValuesPatternType.Wildcards
+        : AllowedValuesPatternType.Legacy,
       maximumNumberOfValues: nbResults,
       completeFacetWithStandardValues: completeFacetWithStandardValues,
       field: <string>this.facet.options.field,
