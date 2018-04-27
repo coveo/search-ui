@@ -148,7 +148,6 @@
     vertical-align: middle;
   }
 
-  transition: background-color 0.075s $standard-transition-timing-function;
   &:hover,
   &.coveo-focused {
     background-color: $color-blueish-white-grey;

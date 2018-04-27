@@ -7,13 +7,13 @@ import { EventsUtils } from '../../utils/EventsUtils';
 import { PopupUtils, PopupHorizontalAlignment, PopupVerticalAlignment } from '../../utils/PopupUtils';
 
 export class FacetSearchElement {
-  public search: HTMLElement;
-  public magnifier: HTMLElement;
-  public wait: HTMLElement;
-  public clear: HTMLElement;
-  public input: HTMLInputElement;
+  public search: HTMLElement | undefined;
+  public magnifier: HTMLElement | undefined;
+  public wait: HTMLElement | undefined;
+  public clear: HTMLElement | undefined;
+  public input: HTMLInputElement | undefined;
   public searchBarIsAnimating: boolean = false;
-  public searchResults: HTMLElement;
+  public searchResults: HTMLElement | undefined;
 
   constructor() {
     this.searchResults = document.createElement('ul');
@@ -124,6 +124,16 @@ export class FacetSearchElement {
           vertical: PopupVerticalAlignment.BOTTOM
         });
       }
+    }
+  }
+
+  public hideSearchResultsElement() {
+    $$(this.searchResults).hide();
+  }
+
+  public clearSearchInput() {
+    if (this.input) {
+      this.input.value = '';
     }
   }
 }

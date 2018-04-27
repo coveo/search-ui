@@ -86,7 +86,7 @@ export class FacetSearch {
     this.moreValuesToFetch = true;
     $$(this.search).removeClass('coveo-facet-search-no-results');
     $$(this.facet.element).removeClass('coveo-facet-searching');
-    this.hideSearchResultsElement();
+    this.facetSearchElement.hideSearchResultsElement();
     this.input.value = '';
     $$(this.clear).hide();
     this.currentlyDisplayedResults = undefined;
@@ -297,7 +297,7 @@ export class FacetSearch {
       if (facetSearchParameters.fetchMore) {
         this.moreValuesToFetch = false;
       } else {
-        this.hideSearchResultsElement();
+        this.facetSearchElement.hideSearchResultsElement();
         $$(this.search).addClass('coveo-facet-search-no-results');
       }
     }
@@ -392,10 +392,6 @@ export class FacetSearch {
 
   private showSearchResultsElement() {
     this.positionSearchResults();
-  }
-
-  private hideSearchResultsElement() {
-    this.searchResults.style.display = 'none';
   }
 
   private highlightCurrentQueryWithinSearchResults() {
