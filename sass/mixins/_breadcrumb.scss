@@ -46,7 +46,7 @@ $breadcrumb-border: 1px solid $color-light-grey;
     color: #666666;
     white-space: normal;
     line-height: 30px;
-    padding: 7px 5px 8px 5px;
+    padding: 7px 5px 8px;
     &:before {
       content: '';
       border-top: $breadcrumb-border;

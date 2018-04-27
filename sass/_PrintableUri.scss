@@ -1,9 +1,9 @@
 @import 'Variables';
 .CoveoPrintableUri {
   @include justify-content(flex-start);
-  margin: 2px 0 5px 0;
+  margin: 2px 0 5px;
   font-size: $font-size-smallest;
-  padding: 0 2px 0 2px;
+  padding: 0 2px;
   @include display(flex);
   position: relative;
   &.CoveoResultLink:hover {

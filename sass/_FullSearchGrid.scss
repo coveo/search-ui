@@ -24,10 +24,10 @@ $page-width: 1000px;
   }
   .coveo-search-section {
     max-width: $medium_screen_width + unquote('px');
-    margin: 54px auto 47px auto;
+    margin: 54px auto 47px;
     padding: 0 10px;
     @include smallScreenWidth {
-      padding: 20px 10px 20px 10px;
+      padding: 20px 10px;
       margin: 0 auto;
       width: 100%;
       max-width: none;

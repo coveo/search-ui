@@ -1,5 +1,5 @@
-@import "../bin/sass/MagicBox/MagicBox";
-@import "Variables";
+@import '../bin/sass/MagicBox/MagicBox';
+@import 'Variables';
 
 .coveo-waiting-for-first-query .coveo-omnibox {
   z-index: 0;
@@ -18,15 +18,15 @@
     color: $black;
   }
   .magic-box-underlay {
-    [data-id="FieldQuery"],
-    [data-id="FieldSimpleQuery"] {
-      &[data-success="true"] {
+    [data-id='FieldQuery'],
+    [data-id='FieldSimpleQuery'] {
+      &[data-success='true'] {
         @include highlight($green-100);
       }
-      &[data-success="false"] {
-        > [data-success="true"] {
+      &[data-success='false'] {
+        > [data-success='true'] {
           @include highlight($amber-100, false, false);
-          &[data-id="FieldQuery_0"] {
+          &[data-id='FieldQuery_0'] {
             @include highlight($amber-100, true, false);
           }
         }
@@ -67,7 +67,7 @@
   .coveo-omnibox-facet-header {
     float: left;
     width: 100%;
-    padding: 5px 5px;
+    padding: 5px;
     height: 26px;
     color: #2c5985;
     .coveo-icon {
