@@ -43,6 +43,26 @@ export function RankingInfoParserTest() {
       expect(testsTermsWeights.terms.test.Correlation).toBe(100);
     });
 
+    it('should parse ranking info properly with QRE', () => {
+      const toParse = FakeResults.createRankingInforWithQRE();
+
+      const parsed = parseRankingInfo(toParse);
+
+      expect(parsed.qreWeights[0].score).toBe(2500);
+      expect(parsed.qreWeights[0].expression).toBe(
+        'Expression: "@permanentid=95ad18de4cb8e17023f0224e9d44dd2f7177c6dceac6cb81b16f3659a3c3"'
+      );
+      expect(parsed.qreWeights.length).toBe(1);
+    });
+
+    it('should parse ranking info properly with no QRE', () => {
+      const toParse = FakeResults.createRankingInfoNoKeywords();
+
+      const parsed = parseRankingInfo(toParse);
+
+      expect(parsed.qreWeights.length).toBe(0);
+    });
+
     it('should be able to build a generic HtML list of terms', () => {
       const toParse = FakeResults.createRankingInfoWithKeywords();
 
