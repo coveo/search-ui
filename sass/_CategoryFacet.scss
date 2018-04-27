@@ -103,6 +103,8 @@
 
 .coveo-category-facet-search-container {
   padding: 0 20px 0 20px;
+  margin-bottom: 15px;
+  height: 32px;
 }
 
 .coveo-category-facet-search-icon {
@@ -173,6 +175,11 @@
   display: block;
   font-size: 11px;
 }
+
 .coveo-category-facet-search-path-parents {
   color: $color-blueish-gray;
+}
+
+.coveo-category-facet-search-current-value {
+  background-color: $color-blueish-white-grey;
 }

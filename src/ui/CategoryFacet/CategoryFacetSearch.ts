@@ -1,18 +1,19 @@
 import { CategoryFacet } from './CategoryFacet';
 import { FacetSearchElement } from '../Facet/FacetSearchElement';
-import { debounce, each } from 'underscore';
+import { debounce, last, first } from 'underscore';
 import { $$, Dom } from '../../utils/Dom';
 import { SVGDom } from '../../utils/SVGDom';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { l } from '../../strings/Strings';
 import { IGroupByValue } from '../../rest/GroupByValue';
-import { last } from 'underscore';
+import { KEYBOARD } from '../../utils/KeyboardUtils';
 
 export class CategoryFacetSearch {
   public container: Dom | undefined;
   private facetSearchElement: FacetSearchElement;
   private currentlyDisplayedResults: HTMLElement;
   private displayNewValues: () => void;
+  private currentResult: Dom | undefined;
 
   constructor(private categoryFacet: CategoryFacet) {
     this.facetSearchElement = new FacetSearchElement();
@@ -23,9 +24,13 @@ export class CategoryFacetSearch {
         .searchFacetValues(this.facetSearchElement.input.value)
         .then((categoryFacetValues: IGroupByValue[]) => {
           $$(this.facetSearchElement.searchResults).empty();
-          each(categoryFacetValues, categoryFacetValue => {
-            this.facetSearchElement.searchResults.appendChild(this.buildFacetSearchValue(categoryFacetValue).el);
-          });
+          for (let i = 0; i < categoryFacetValues.length; i++) {
+            const searchResult = this.buildFacetSearchValue(categoryFacetValues[i]);
+            if (i == 0) {
+              this.setAsCurrentResult(searchResult);
+            }
+            this.facetSearchElement.searchResults.appendChild(searchResult.el);
+          }
           this.facetSearchElement.positionSearchResults(
             this.categoryFacet.root,
             this.categoryFacet.element.clientWidth,
@@ -59,6 +64,7 @@ export class CategoryFacetSearch {
   }
 
   public clear() {
+    this.closeSearchInput();
     this.container && this.container.detach();
   }
 
@@ -68,16 +74,67 @@ export class CategoryFacetSearch {
     }
   }
 
-  private handleKeyboardEvent(e: KeyboardEvent) {
-    this.displayNewValues();
+  private handleKeyboardEvent(event: KeyboardEvent) {
+    switch (event.which) {
+      case KEYBOARD.ENTER:
+        this.keyboardEventEnter();
+        break;
+      case KEYBOARD.DOWN_ARROW:
+        this.moveCurrentResultDown();
+        break;
+      case KEYBOARD.UP_ARROW:
+        this.moveCurrentResultUp();
+        break;
+      case KEYBOARD.ESCAPE:
+        this.closeSearchInput();
+        break;
+      default:
+        this.displayNewValues();
+    }
+  }
+
+  private moveCurrentResultDown() {
+    let nextResult = this.currentResult.el.nextSibling;
+    if (!nextResult) {
+      nextResult = first(this.facetSearchElement.searchResults.children);
+    }
+    this.setAsCurrentResult($$(<HTMLElement>nextResult));
+  }
+
+  private moveCurrentResultUp() {
+    let previousResult = this.currentResult.el.previousSibling;
+    if (!previousResult) {
+      previousResult = last(this.facetSearchElement.searchResults.children);
+    }
+    this.setAsCurrentResult($$(<HTMLElement>previousResult));
+  }
+
+  private keyboardEventEnter() {
+    this.selectCurrentResult();
+  }
+
+  private selectCurrentResult() {
+    if (this.currentResult) {
+      this.categoryFacet.changeActivePath(this.currentResult.el.dataset.path.split('|'));
+    }
+  }
+
+  private setAsCurrentResult(toSet: Dom) {
+    this.currentResult && this.currentResult.removeClass('coveo-category-facet-search-current-value');
+    this.currentResult = toSet;
+    toSet.addClass('coveo-category-facet-search-current-value');
   }
 
   private handleClickElsewhere(e: MouseEvent) {
     if (!$$(<HTMLElement>e.target).closest('.coveo-category-facet-search-container')) {
-      $$(this.categoryFacet.element).removeClass('coveo-category-facet-searching');
-      $$(this.facetSearchElement.searchResults).empty();
-      this.facetSearchElement.searchResults.style.display = 'none';
+      this.closeSearchInput();
     }
+  }
+
+  private closeSearchInput() {
+    $$(this.categoryFacet.element).removeClass('coveo-category-facet-searching');
+    $$(this.facetSearchElement.searchResults).empty();
+    this.facetSearchElement.searchResults.style.display = 'none';
   }
 
   private buildfacetSearchPlaceholder() {
@@ -110,6 +167,7 @@ export class CategoryFacetSearch {
     const firstRow = $$('div', { className: 'coveo-category-facet-search-first-row' }, value, number);
     const secondRow = $$('div', { className: 'coveo-category-facet-search-second-row' }, pathToValueCaption);
     const item = $$('li', { className: 'coveo-category-facet-search-value' }, firstRow, secondRow);
+    item.el.dataset.path = categoryFacetValue.value;
     item.on('click', () => {
       this.categoryFacet.changeActivePath(categoryFacetValue.value.split('|'));
     });

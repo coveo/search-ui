@@ -33,8 +33,8 @@ export class CategoryValueRoot implements CategoryValueParent {
       this.notImplementedError();
     } else if (categoryFacetResult.values.length != 0) {
       const sortedParentValues = this.sortParentValues(categoryFacetResult.parentValues);
-      this.categoryFacet.show();
       this.clear();
+      this.categoryFacet.show();
 
       let currentParentValue: CategoryValueParent;
       currentParentValue = this;
