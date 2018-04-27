@@ -92,8 +92,9 @@ export interface IGroupByRequest {
   allowedValues?: string[];
 
   /**
-   * The type of pattern used in {@link IGroupByRequest.allowedValues}. See {@link AllowedValuesPatternType}.
-   * Not specifying a value for this parameter is equivalent to using legacy.
+   * The pattern type to use for the {@link IGroupByRequest.allowedValues} property (see {@link AllowedValuesPatternType}).
+   *
+   * This option is empty by default, which makes it behave as [`legacy`]{@link AllowedValuesPatternType.Legacy}.
    */
   allowedValuesPatternType?: AllowedValuesPatternType;
 
