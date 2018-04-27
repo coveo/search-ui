@@ -39,9 +39,7 @@ export class FacetValuesList {
     });
   }
 
-  public get(value: FacetValue): ValueElement;
-  public get(value: string): ValueElement;
-  public get(value: any): ValueElement {
+  public get(value: FacetValue | string): ValueElement {
     var getter;
     if (value instanceof FacetValue) {
       getter = value.value;
@@ -53,41 +51,31 @@ export class FacetValuesList {
     return this.valueList[getter.toLowerCase()];
   }
 
-  public select(value: FacetValue): ValueElement;
-  public select(value: string): ValueElement;
-  public select(value: any): ValueElement {
+  public select(value: FacetValue | string): ValueElement {
     var valueElement = this.get(value);
     valueElement.select();
     return valueElement;
   }
 
-  public unselect(value: FacetValue): ValueElement;
-  public unselect(value: string): ValueElement;
-  public unselect(value: any): ValueElement {
+  public unselect(value: FacetValue | string): ValueElement {
     var valueElement = this.get(value);
     valueElement.unselect();
     return valueElement;
   }
 
-  public exclude(value: FacetValue): ValueElement;
-  public exclude(value: string): ValueElement;
-  public exclude(value: any): ValueElement {
+  public exclude(value: FacetValue | string): ValueElement {
     var valueElement = this.get(value);
     valueElement.exclude();
     return valueElement;
   }
 
-  public unExclude(value: FacetValue): ValueElement;
-  public unExclude(value: string): ValueElement;
-  public unExclude(value: any): ValueElement {
+  public unExclude(value: FacetValue | string): ValueElement {
     var valueElement = this.get(value);
     valueElement.unexclude();
     return valueElement;
   }
 
-  public toggleSelect(value: FacetValue): ValueElement;
-  public toggleSelect(value: string): ValueElement;
-  public toggleSelect(value: any): ValueElement {
+  public toggleSelect(value: FacetValue | string): ValueElement {
     var valueElement = this.get(value);
     if (valueElement.facetValue.selected) {
       valueElement.unselect();
@@ -97,9 +85,7 @@ export class FacetValuesList {
     return valueElement;
   }
 
-  public toggleExclude(value: FacetValue): ValueElement;
-  public toggleExclude(value: string): ValueElement;
-  public toggleExclude(value: any): ValueElement {
+  public toggleExclude(value: FacetValue | string): ValueElement {
     var valueElement = this.get(value);
     if (valueElement.facetValue.excluded) {
       valueElement.unexclude();

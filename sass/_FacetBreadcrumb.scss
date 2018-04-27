@@ -1,5 +1,4 @@
 @import './mixins/breadcrumb';
-
 .coveo-facet-breadcrumb-title,
 .coveo-facet-slider-breadcrumb-title {
   @include breadcrumbTitle();
@@ -9,7 +8,6 @@
 .coveo-facet-slider-breadcrumb-value {
   font-size: $font-size-smaller;
   display: inline-block;
-
   &.coveo-excluded .coveo-facet-breadcrumb-caption {
     text-decoration: line-through;
   }
@@ -39,7 +37,7 @@
   display: inline-block;
   margin: 0;
   &.coveo-selected {
-    margin-left: 0px;
+    margin-left: 0;
     margin-right: 5px;
     .coveo-facet-breadcrumb-multi-icon-svg {
       vertical-align: middle;
@@ -51,14 +49,13 @@
     }
   }
   &.coveo-excluded {
-    margin-left: 0px;
+    margin-left: 0;
     margin-right: 5px;
     .coveo-facet-breadcrumb-multi-icon-svg {
       vertical-align: middle;
       width: 10px;
       height: 10px;
     }
-
     .coveo-exclusion-svg {
       fill: $color-red;
     }

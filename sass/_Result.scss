@@ -128,7 +128,7 @@
 
 .coveo-list-layout.CoveoResult {
   border-bottom: $default-border;
-  padding: 16px 0px 16px 16px;
+  padding: 16px 0 16px 16px;
 }
 
 .coveo-card-layout {
@@ -140,8 +140,6 @@
     font-size: 0.9em;
     width: 300px;
     @include flex-grow(1);
-    & + .CoveoResult {
-    }
     margin: 0 20px 20px 0;
     @include smallScreenWidth {
       margin: 0 0 20px 0;

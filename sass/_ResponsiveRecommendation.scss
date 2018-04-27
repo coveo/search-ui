@@ -20,7 +20,7 @@
     width: 100%;
     padding: 0;
     margin: 25px 0 15px;
-    border-bottom: 0px solid $color-blueish-white-grey;
+    border-bottom: 0 solid $color-blueish-white-grey;
 
     @include smallScreenWidth() {
       @include transition(all $standard-transition-timing-function 400ms);

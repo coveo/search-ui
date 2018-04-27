@@ -1,5 +1,5 @@
-@import "Variables";
-@import "mixins/pagerList";
+@import 'Variables';
+@import 'mixins/pagerList';
 
 .coveo-pager-list {
   @include pager-list;
@@ -9,7 +9,8 @@
   @include pager-list-item;
 }
 
-.coveo-pager-previous, .coveo-pager-next{
+.coveo-pager-previous,
+.coveo-pager-next {
   margin: 5px 6px;
   list-style: none;
   display: inline-block;
@@ -24,14 +25,15 @@
 }
 
 .CoveoPager {
-  margin-top: 0px;
+  margin-top: 0;
   margin-left: 25px;
   display: inline-block;
 }
 
-.coveo-pager-next-icon-svg, .coveo-pager-previous-icon-svg {
+.coveo-pager-next-icon-svg,
+.coveo-pager-previous-icon-svg {
   width: 11px;
   height: 20px;
   color: $color-greyish-teal-blue;
-  vertical-align: middle
+  vertical-align: middle;
 }
