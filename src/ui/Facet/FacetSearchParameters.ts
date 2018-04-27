@@ -8,6 +8,7 @@ import { IQuery } from '../../rest/Query';
 import { QueryBuilder } from '../Base/QueryBuilder';
 import { $$ } from '../../utils/Dom';
 import * as _ from 'underscore';
+import { AllowedValuesPatternType } from '../../rest/AllowedValuesPatternType';
 
 export class FacetSearchParameters {
   public nbResults: number;
@@ -68,7 +69,10 @@ export class FacetSearchParameters {
     }
 
     const request: IGroupByRequest = {
-      allowedValues: allowedValues,
+      allowedValues,
+      allowedValuesPatternType: this.facet.options.useWildcardsInFacetSearch
+        ? AllowedValuesPatternType.Wildcards
+        : AllowedValuesPatternType.Legacy,
       maximumNumberOfValues: nbResults,
       completeFacetWithStandardValues: completeFacetWithStandardValues,
       field: <string>this.facet.options.field,
