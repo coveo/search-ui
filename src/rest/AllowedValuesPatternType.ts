@@ -1,5 +1,5 @@
 /**
- * The allowed values for the [allowedValuesPatternType]{@link IGroupByRequest.allowedValuesPatternType} parameter.
+ * The possible values for the [allowedValuesPatternType]{@link IGroupByRequest.allowedValuesPatternType} property of the `IGroupByRequest` interface.
  */
 export enum AllowedValuesPatternType {
   /**

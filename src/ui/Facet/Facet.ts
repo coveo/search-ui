@@ -370,10 +370,9 @@ export class Facet extends Component {
      *
      * Enabling this option returns results that end with the entered value. For example, searching for `veo` would match with `Coveo`.
      *
-     * **Note:** If you use this option and are experiencing slow results or timeouts, you should consider using the `cache for nested queries` option
-     * available in the Coveo Cloud Administration Console.
-     * 
-     * For more information, see  [Add/Edit a Field]{@link https://onlinehelp.coveo.com/en/cloud/add_edit_fields.htm}.
+     * **Note:**
+     * > If you are experiencing slow facet search and/or timeouts when this option is set to `true`, consider enabling the **Use cache for nested queries**
+     * > option on your facet [field]{@link Facet.options.field} in the Coveo Cloud Admninistration Console (see [Add/Edit a Field]{@link https://onlinehelp.coveo.com/en/cloud/add_edit_fields.htm}).
      */
     useWildcardsInFacetSearch: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'FacetSearch' }),
     /**
