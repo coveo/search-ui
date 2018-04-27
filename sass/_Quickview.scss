@@ -24,7 +24,7 @@
     &:before {
       border: solid;
       border-color: $color-greyish-dark-blue transparent;
-      border-width: 0 6px 7px 6px;
+      border-width: 0 6px 7px;
       content: '';
       position: absolute;
       z-index: 99;
@@ -45,7 +45,7 @@
     position: relative;
     transform: none;
     display: inline;
-    padding: 0px 5px;
+    padding: 0 5px;
     font-size: inherit;
     &:before {
       display: none;

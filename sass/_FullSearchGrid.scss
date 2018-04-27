@@ -4,7 +4,7 @@
 
 $max-width: 1200px;
 $grid-columns: 10;
-$gutter: 0em;
+$gutter: 0;
 $page-width: 1000px;
 .CoveoSearchInterface {
   min-width: 300px;
@@ -24,10 +24,10 @@ $page-width: 1000px;
   }
   .coveo-search-section {
     max-width: $medium_screen_width + unquote('px');
-    margin: 54px auto 47px auto;
+    margin: 54px auto 47px;
     padding: 0 10px;
     @include smallScreenWidth {
-      padding: 20px 10px 20px 10px;
+      padding: 20px 10px;
       margin: 0 auto;
       width: 100%;
       max-width: none;
@@ -108,7 +108,7 @@ $page-width: 1000px;
   padding-top: 10px;
   min-height: 35px;
   overflow: hidden;
-  box-shadow: 0 -1px 0px 0px $color-light-grey inset;
+  box-shadow: 0 -1px 0 0 $color-light-grey inset;
   &.coveo-no-results {
     box-shadow: none;
   }

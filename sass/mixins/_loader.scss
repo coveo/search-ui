@@ -1,45 +1,36 @@
 @mixin coveo-generic-loading-animation {
-
   .coveo-loading-container {
-    @include transform(translate3d(0px, 0px, 0px));
+    @include transform(translate3d(0, 0, 0));
     @include transform(rotatex(0));
     .coveo-loading-dot {
       background-color: rgba(20, 20, 20, 0.9);
       background: rgba(20, 20, 20, 0.9);
-
       border-radius: 5px;
       box-shadow: inset 0 0 5px #000, 0 1px 1px rgba(255, 255, 255, 0.1);
-
       display: inline-block;
       width: 8px;
       height: 8px;
       margin: 0 4px;
       border-radius: 50%;
-
       opacity: 0;
       box-shadow: 0 0 2px black;
-
       @include animation(loadingFade 1s infinite);
     }
-
     .coveo-loading-dot:nth-child(1) {
       -webkit-animation-delay: 100ms;
       -moz-animation-delay: 100ms;
       animation-delay: 100ms;
     }
-
     .coveo-loading-dot:nth-child(2) {
       -webkit-animation-delay: 200ms;
       -moz-animation-delay: 200ms;
       animation-delay: 200ms;
     }
-
     .coveo-loading-dot:nth-child(3) {
       -webkit-animation-delay: 300ms;
       -moz-animation-delay: 300ms;
       animation-delay: 300ms;
     }
-
     .coveo-loading-dot:nth-child(4) {
       -webkit-animation-delay: 400ms;
       -moz-animation-delay: 400ms;
@@ -50,15 +41,14 @@
 
 @mixin coveo-first-loading-animation {
   position: absolute;
-  top: 0px;
-  left: 0px;
-  right: 0px;
-  bottom: 0px;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   text-align: center;
   padding-top: 100px;
   background: #f7f7f7;
   @include coveo-generic-loading-animation;
-
   .coveo-loading-container {
     margin-top: 15px;
   }
@@ -107,4 +97,3 @@
     transform: rotate(360deg);
   }
 }
-
