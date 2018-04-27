@@ -7,6 +7,7 @@ import { SVGIcons } from '../../utils/SVGIcons';
 import { l } from '../../strings/Strings';
 import { IGroupByValue } from '../../rest/GroupByValue';
 import { KEYBOARD } from '../../utils/KeyboardUtils';
+import 'styling/_CategoryFacetSearch';
 
 export class CategoryFacetSearch {
   public container: Dom | undefined;
