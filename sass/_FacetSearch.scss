@@ -5,8 +5,8 @@
   @include defaultRoundedBorder();
   background-color: white;
   list-style: none;
-  margin: 0 0 3px 0;
-  padding: 0 0 10px 0;
+  margin: 0 0 3px;
+  padding: 0 0 10px;
   z-index: 999;
   input[type='checkbox'] {
     display: none;
@@ -70,7 +70,7 @@
 
 .coveo-facet-search-input {
   border: 0;
-  padding: 1px 0 0 0;
+  padding: 1px 0 0;
   margin: 0;
   font-size: 13px;
   width: 100%;
