@@ -206,7 +206,7 @@ module.exports = {
           {
             loader: 'file-loader',
             options: {
-              name: production ? '../image/[name].[ext]' : 'http://localhost:8080/image/[name].[ext]',
+              name: '../image/[name].[ext]',
               emitFile: false,
               publicPath: ' '
             }

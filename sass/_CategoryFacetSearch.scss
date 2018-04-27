@@ -6,6 +6,10 @@
   margin-bottom: 15px;
   height: 32px;
   line-height: 30px;
+
+  .coveo-facet-search {
+    margin: 0;
+  }
 }
 
 .CoveoCategoryFacet:not(.coveo-category-facet-searching) .coveo-category-facet-search-container:hover {
