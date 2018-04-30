@@ -18,33 +18,7 @@ export class CategoryFacetSearch {
 
   constructor(private categoryFacet: CategoryFacet) {
     this.facetSearchElement = new FacetSearchElement();
-    this.displayNewValues = debounce(() => {
-      this.facetSearchElement.showFacetSearchWaitingAnimation();
-      this.categoryFacet.logger.info('Triggering new Category Facet search');
-      this.categoryFacet.categoryFacetQueryController
-        .searchFacetValues(this.facetSearchElement.input.value)
-        .then((categoryFacetValues: IGroupByValue[]) => {
-          if (categoryFacetValues.length == 0) {
-            this.noFacetSearchResults();
-            return;
-          }
-          this.withFacetSearchResults();
-          $$(this.facetSearchElement.searchResults).empty();
-          for (let i = 0; i < categoryFacetValues.length; i++) {
-            const searchResult = this.buildFacetSearchValue(categoryFacetValues[i]);
-            if (i == 0) {
-              this.setAsCurrentResult(searchResult);
-            }
-            this.facetSearchElement.searchResults.appendChild(searchResult.el);
-          }
-          this.facetSearchElement.positionSearchResults(
-            this.categoryFacet.root,
-            this.categoryFacet.element.clientWidth,
-            this.facetSearchElement.search
-          );
-          this.facetSearchElement.hideFacetSearchWaitingAnimation();
-        });
-    }, this.categoryFacet.options.facetSearchDelay);
+    this.displayNewValues = debounce(this.getDisplayNewValuesFunction(), this.categoryFacet.options.facetSearchDelay);
     this.categoryFacet.root.addEventListener('click', (e: MouseEvent) => this.handleClickElsewhere(e));
   }
 
@@ -161,12 +135,45 @@ export class CategoryFacetSearch {
     return placeholder;
   }
 
+  private getDisplayNewValuesFunction() {
+    return async () => {
+      this.facetSearchElement.showFacetSearchWaitingAnimation();
+      this.categoryFacet.logger.info('Triggering new Category Facet search');
+      const categoryFacetValues = await this.categoryFacet.categoryFacetQueryController.searchFacetValues(
+        this.facetSearchElement.input.value
+      );
+      if (categoryFacetValues.length == 0) {
+        this.noFacetSearchResults();
+        return;
+      }
+      this.withFacetSearchResults();
+      this.setFacetSearchResults(categoryFacetValues);
+      this.facetSearchElement.positionSearchResults(
+        this.categoryFacet.root,
+        this.categoryFacet.element.clientWidth,
+        this.facetSearchElement.search
+      );
+      this.facetSearchElement.hideFacetSearchWaitingAnimation();
+    };
+  }
+
+  private setFacetSearchResults(categoryFacetValues: IGroupByValue[]) {
+    $$(this.facetSearchElement.searchResults).empty();
+    for (let i = 0; i < categoryFacetValues.length; i++) {
+      const searchResult = this.buildFacetSearchValue(categoryFacetValues[i]);
+      if (i == 0) {
+        this.setAsCurrentResult(searchResult);
+      }
+      this.facetSearchElement.searchResults.appendChild(searchResult.el);
+    }
+  }
+
   private buildFacetSearchValue(categoryFacetValue: IGroupByValue) {
     const path = categoryFacetValue.value.split('|');
     const pathLastValue = last(path) ? last(path) : '';
     const pathParents = path.slice(0, -1).length != 0 ? `${path.slice(0, -1)}/` : '';
 
-    const value = $$('span', { className: 'coveo-category-facet-search-value-caption' }, last(path));
+    const value = $$('span', { className: 'coveo-category-facet-search-value-caption' }, pathLastValue);
     const number = $$('span', { className: 'coveo-category-facet-search-value-number' }, categoryFacetValue.numberOfResults.toString(10));
     const pathParentsCaption = $$('span', { className: 'coveo-category-facet-search-path-parents' }, pathParents);
     const pathValue = $$('span', { className: 'coveo-category-facet-search-path-last-value' }, pathLastValue);

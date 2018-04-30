@@ -27,6 +27,10 @@ export interface CategoryFacetOptions {
   id: string;
   enableFacetSearch: boolean;
   facetSearchDelay: number;
+  numberOfValues: number;
+  injectionDepth: number;
+  enableMoreLess: boolean;
+  pageSize: number;
 }
 
 /**
@@ -51,10 +55,27 @@ export class CategoryFacet extends Component {
     title: ComponentOptions.buildLocalizedStringOption({
       defaultValue: l('NoTitle')
     }),
+    /**
+     * Specifies the maximum number of field values to display by default in the facet before the user
+     * clicks the arrow to show more.
+     *
+     * See also the [`enableMoreLess`]{@link CategoryFacet.options.enableMoreLess} option.
+     */
+    numberOfValues: ComponentOptions.buildNumberOption({ defaultValue: 5, min: 0, section: 'CommonOptions' }),
     enableFacetSearch: ComponentOptions.buildBooleanOption({ defaultValue: true }),
     id: ComponentOptions.buildStringOption({
       postProcessing: (value, options: CategoryFacetOptions) => value || (options.field as string)
     }),
+    /**
+     * Specifies the *injection depth* to use.
+     *
+     * The injection depth determines how many results to scan in the index to ensure that the category facet lists all potential
+     * facet values. Increasing this value enhances the accuracy of the listed values at the cost of performance.
+     *
+     * Default value is `1000`. Minimum value is `0`.
+     * @notSupportedIn salesforcefree
+     */
+    injectionDepth: ComponentOptions.buildNumberOption({ defaultValue: 1000, min: 0 }),
     numberOfResultsInFacetSearch: ComponentOptions.buildNumberOption({ defaultValue: 15, min: 1 }),
     /**
      * If the [`enableFacetSearch`]{@link CategoryFacet.options.enableFacetSearch} option is `true`, specifies the delay (in
@@ -65,7 +86,22 @@ export class CategoryFacet extends Component {
      *
      * Default value is `100`. Minimum value is `0`.
      */
-    facetSearchDelay: ComponentOptions.buildNumberOption({ defaultValue: 100, min: 0 })
+    facetSearchDelay: ComponentOptions.buildNumberOption({ defaultValue: 100, min: 0 }),
+    /**
+     * Specifies whether to enable the **More** and **Less** buttons in the Facet.
+     *
+     * See also the [`pageSize`]{@link CategoryFacet.options.pageSize} option.
+     *
+     * Default value is `true`.
+     */
+    enableMoreLess: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+    /**
+     * If the [`enableMoreLess`]{@link CategoryFacet.options.enableMoreLess} option is `true`, specifies the number of
+     * additional results to fetch when clicking the **More** button.
+     *
+     * Default value is `10`. Minimum value is `1`.
+     */
+    pageSize: ComponentOptions.buildNumberOption({ defaultValue: 10, min: 1, depend: 'enableMoreLess' })
   };
 
   public queryStateAttribute: string;

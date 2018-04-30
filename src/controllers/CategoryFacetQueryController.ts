@@ -3,7 +3,6 @@ import { QueryBuilder } from '../ui/Base/QueryBuilder';
 import { ICategoryFacetsRequest } from '../rest/CategoryFacetsRequest';
 import { IGroupByRequest } from '../rest/GroupByRequest';
 import { AllowedValuesPatternType } from '../rest/AllowedValuesPatternType';
-import { clone } from 'underscore';
 import { IGroupByValue } from '../rest/GroupByValue';
 
 export class CategoryFacetQueryController {
@@ -16,23 +15,23 @@ export class CategoryFacetQueryController {
     }
     queryBuilder.categoryFacets.push({
       field: this.categoryFacet.options.field as string,
-      path
+      path,
+      injectionDepth: this.categoryFacet.options.injectionDepth,
+      maximumNumberOfValues: this.categoryFacet.options.numberOfValues
     } as ICategoryFacetsRequest);
     return positionInQuery;
   }
 
-  public async searchFacetValues(value: string): Promise<IGroupByValue[]> {
-    let lastQuery = clone(this.categoryFacet.queryController.getLastQuery());
-    if (!lastQuery) {
-      lastQuery = new QueryBuilder().build();
-    }
+  public searchFacetValues(value: string): Promise<IGroupByValue[]> {
+    let lastQuery = { ...this.categoryFacet.queryController.getLastQuery() };
 
     const groupByRequest: IGroupByRequest = {
       allowedValues: [`*${value}*`],
       allowedValuesPatternType: AllowedValuesPatternType.Wildcards,
       maximumNumberOfValues: this.categoryFacet.options.numberOfResultsInFacetSearch,
       field: this.categoryFacet.options.field as string,
-      sortCriteria: 'occurrences'
+      sortCriteria: 'occurrences',
+      injectionDepth: this.categoryFacet.options.injectionDepth
     };
 
     lastQuery.groupBy = [groupByRequest];

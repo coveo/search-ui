@@ -28,11 +28,7 @@ import { FacetSearchElement } from './FacetSearchElement';
  */
 export class FacetSearch {
   public currentlyDisplayedResults: string[];
-  public searchResults: HTMLElement;
-  public search: HTMLElement;
 
-  private clear: HTMLElement;
-  private input: HTMLInputElement;
   private facetSearchTimeout: number;
   private facetSearchPromise: Promise<IIndexFieldValue[]>;
   private moreValuesToFetch = true;
@@ -43,7 +39,6 @@ export class FacetSearch {
 
   constructor(public facet: Facet, public facetSearchValuesListKlass: IFacetSearchValuesListKlass, private root: HTMLElement) {
     this.facetSearchElement = new FacetSearchElement();
-    this.searchResults = this.facetSearchElement.searchResults;
     this.onResize = _.debounce(() => {
       // Mitigate issues in UT where the window in phantom js might get resized in the scope of another test.
       // These would point to random instance of a test karma object, and not a real search interface.
@@ -141,8 +136,24 @@ export class FacetSearch {
     this.handleFacetSearchFocus();
   }
 
-  get searchBarIsAnimating() {
+  public get searchResults() {
+    return this.facetSearchElement.searchResults;
+  }
+
+  public get searchBarIsAnimating() {
     return this.facetSearchElement.searchBarIsAnimating;
+  }
+
+  public get search() {
+    return this.facetSearchElement.search;
+  }
+
+  private get input() {
+    return this.facetSearchElement.input;
+  }
+
+  private get clear() {
+    return this.facetSearchElement.clear;
   }
 
   private shouldPositionSearchResults(): boolean {
@@ -157,10 +168,6 @@ export class FacetSearch {
         this.handleFacetSearchFocus();
       }
     );
-    this.input = this.facetSearchElement.input;
-    this.search = this.facetSearchElement.search;
-    this.clear = this.facetSearchElement.clear;
-
     return this.search;
   }
 

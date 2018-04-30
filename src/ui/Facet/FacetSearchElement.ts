@@ -13,29 +13,24 @@ export class FacetSearchElement {
   public clear: HTMLElement | undefined;
   public input: HTMLInputElement | undefined;
   public searchBarIsAnimating: boolean = false;
-  public searchResults: HTMLElement | undefined;
+  public searchResults: HTMLElement;
 
+  private static FACET_SEARCH_PADDING = 40;
   constructor() {
-    this.searchResults = document.createElement('ul');
-    this.searchResults.style.display = 'none';
-    $$(this.searchResults).addClass('coveo-facet-search-results');
+    this.searchResults = $$('ul', { className: 'coveo-facet-search-results' }).el;
+    $$(this.searchResults).hide();
   }
 
   public build(handleFacetSearchKeyUp: (e: KeyboardEvent) => void, handleFacetSearchClear: () => void, handleFacetSearchFocus: () => void) {
     this.search = document.createElement('div');
     $$(this.search).addClass('coveo-facet-search');
 
-    this.magnifier = document.createElement('div');
-    this.magnifier.innerHTML = SVGIcons.icons.search;
-    $$(this.magnifier).addClass('coveo-facet-search-magnifier');
-    SVGDom.addClassToSVGInContainer(this.magnifier, 'coveo-facet-search-magnifier-svg');
+    this.magnifier = this.buildMagnifierIcon();
     this.search.appendChild(this.magnifier);
 
-    this.wait = document.createElement('div');
-    this.wait.innerHTML = SVGIcons.icons.loading;
-    $$(this.wait).addClass('coveo-facet-search-wait-animation');
-    SVGDom.addClassToSVGInContainer(this.wait, 'coveo-facet-search-wait-animation-svg');
+    this.wait = this.buildWaitIcon();
     this.search.appendChild(this.wait);
+
     this.hideFacetSearchWaitingAnimation();
 
     this.clear = $$(
@@ -51,11 +46,7 @@ export class FacetSearchElement {
     $$(middle).addClass('coveo-facet-search-middle');
     this.search.appendChild(middle);
 
-    this.input = document.createElement('input');
-    this.input.setAttribute('type', 'text');
-    this.input.setAttribute('autocapitalize', 'off');
-    this.input.setAttribute('autocorrect', 'off');
-    $$(this.input).addClass('coveo-facet-search-input');
+    this.input = this.buildInputElement();
     Component.pointElementsToDummyForm(this.input);
     middle.appendChild(this.input);
 
@@ -101,7 +92,7 @@ export class FacetSearchElement {
     if (this.searchResults != null) {
       root.appendChild(this.searchResults);
       this.searchResults.style.display = 'block';
-      this.searchResults.style.width = facetWidth - 40 + 'px';
+      this.searchResults.style.width = facetWidth - FacetSearchElement.FACET_SEARCH_PADDING + 'px';
 
       if ($$(this.searchResults).css('display') == 'none') {
         this.searchResults.style.display = '';
@@ -111,11 +102,8 @@ export class FacetSearchElement {
         if ($$(this.searchResults).css('display') == 'none') {
           this.searchResults.style.display = '';
         }
-        EventsUtils.addPrefixedEvent(this.search, 'AnimationEnd', evt => {
-          PopupUtils.positionPopup(this.searchResults, nextTo, root, {
-            horizontal: PopupHorizontalAlignment.CENTER,
-            vertical: PopupVerticalAlignment.BOTTOM
-          });
+        EventsUtils.addPrefixedEvent(this.search, 'AnimationEnd', () => {
+          this.positionPopUp(nextTo, root);
           EventsUtils.removePrefixedEvent(this.search, 'AnimationEnd', this);
         });
       } else {
@@ -135,5 +123,38 @@ export class FacetSearchElement {
     if (this.input) {
       this.input.value = '';
     }
+  }
+
+  private buildMagnifierIcon() {
+    const magnifier = document.createElement('div');
+    magnifier.innerHTML = SVGIcons.icons.search;
+    $$(magnifier).addClass('coveo-facet-search-magnifier');
+    SVGDom.addClassToSVGInContainer(magnifier, 'coveo-facet-search-magnifier-svg');
+    this.search.appendChild(magnifier);
+    return magnifier;
+  }
+
+  private buildWaitIcon() {
+    const wait = document.createElement('div');
+    wait.innerHTML = SVGIcons.icons.loading;
+    $$(wait).addClass('coveo-facet-search-wait-animation');
+    SVGDom.addClassToSVGInContainer(wait, 'coveo-facet-search-wait-animation-svg');
+    return wait;
+  }
+
+  private buildInputElement() {
+    return <HTMLInputElement>$$('input', {
+      className: 'coveo-facet-search-input',
+      type: 'test',
+      autocapitalize: 'off',
+      autocorrect: 'off'
+    }).el;
+  }
+
+  private positionPopUp(nextTo: HTMLElement, root: HTMLElement) {
+    PopupUtils.positionPopup(this.searchResults, nextTo, root, {
+      horizontal: PopupHorizontalAlignment.CENTER,
+      vertical: PopupVerticalAlignment.BOTTOM
+    });
   }
 }

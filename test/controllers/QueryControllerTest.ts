@@ -78,6 +78,16 @@ export function QueryControllerTest() {
       }, 10);
     });
 
+    it('should not return undefined or null when getLastQuery is called and there is no last query', done => {
+      test.cmp.executeQuery();
+      setTimeout(() => {
+        const lastQuery = test.cmp.getLastQuery();
+        expect(lastQuery).not.toBeNull();
+        expect(lastQuery).not.toBeUndefined();
+        done();
+      });
+    });
+
     it('should allow to get the last query results', done => {
       var search = <jasmine.Spy>test.env.searchEndpoint.search;
       var results = FakeResults.createFakeResults();
