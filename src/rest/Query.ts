@@ -69,7 +69,7 @@ export interface IQuery {
   /**
    * Whether to enable wildcards on the basic expression keywords.<br/>
    * This enables the wildcard features of the index. Coveo Platform will expand keywords containing wildcard characters to the possible matching keywords to broaden the query.<br/>
-   * See : https://onlinehelp.coveo.com/en/ces/7.0/user/using_wildcards_in_queries.htm<br/>
+   * See [Using Wildcards in Queries](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=359).<br/>
    * If not specified, this parameter defaults to false.
    */
   wildcards?: boolean;
