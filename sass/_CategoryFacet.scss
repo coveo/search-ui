@@ -99,3 +99,7 @@
     @include animation-iteration-count(infinite);
   }
 }
+
+.coveo-category-facet-header {
+  background-color: $color-blueish-white;
+}

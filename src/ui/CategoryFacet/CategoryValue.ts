@@ -13,10 +13,10 @@ export interface CategoryValueParent {
 }
 
 export class CategoryValue implements CategoryValueParent {
-  private element: Dom;
+  public element: Dom;
   private collapseArrow: Dom;
-  private arrowOnClick: (e: Event) => void;
-  private captionOnClick: (e: Event) => void;
+  private labelOnClick: (e: Event) => void;
+  private label: Dom;
 
   public isActive = false;
   public categoryChildrenValueRenderer: CategoryChildrenValueRenderer;
@@ -30,11 +30,11 @@ export class CategoryValue implements CategoryValueParent {
     private categoryFacet: CategoryFacet
   ) {
     this.element = this.categoryFacetTemplates.buildListElement({ value: this.value, count: this.count });
+    this.label = $$(this.element.find('.coveo-category-facet-value-label'));
     this.collapseArrow = this.categoryFacetTemplates.buildCollapseArrow();
     this.categoryChildrenValueRenderer = new CategoryChildrenValueRenderer(this.element, categoryFacetTemplates, this, this.categoryFacet);
-    this.arrowOnClick = () => this.closeChildMenu();
-    this.captionOnClick = () => (this.isActive ? this.closeChildMenu() : this.categoryFacet.changeActivePath(this.getPath()));
-    this.getCaption().one('click', this.captionOnClick);
+    this.labelOnClick = () => (this.isActive ? this.closeChildMenu() : this.categoryFacet.changeActivePath(this.getPath()));
+    this.label.one('click', this.labelOnClick);
   }
 
   public render() {
@@ -53,7 +53,6 @@ export class CategoryValue implements CategoryValueParent {
   }
 
   public clear() {
-    this.getCaption().off('click', this.captionOnClick);
     this.element.detach();
     this.categoryChildrenValueRenderer.clearChildren();
   }
@@ -61,10 +60,6 @@ export class CategoryValue implements CategoryValueParent {
   public getPath(partialPath: string[] = []) {
     partialPath.unshift(this.value);
     return this.parent.getPath(partialPath);
-  }
-
-  public getCaption() {
-    return $$(this.element.find('.coveo-category-facet-value-caption'));
   }
 
   public renderChildren(values: ICategoryFacetValue[]) {
@@ -87,7 +82,6 @@ export class CategoryValue implements CategoryValueParent {
 
   public showCollapseArrow() {
     if (!this.collapseArrow.el.parentElement) {
-      this.collapseArrow.one('click', this.arrowOnClick);
       const label = this.element.find('label');
       $$(label).prepend(this.collapseArrow.el);
     }

@@ -170,10 +170,10 @@ export class CategoryFacetSearch {
 
   private buildFacetSearchValue(categoryFacetValue: IGroupByValue) {
     const path = categoryFacetValue.value.split('|');
-    const pathLastValue = last(path) ? last(path) : '';
-    const pathParents = path.slice(0, -1).length != 0 ? `${path.slice(0, -1)}/` : '';
+    const pathLastValue = path.length > 1 ? last(path) : '';
+    const pathParents = path.slice(0, -1).length != 0 ? `${path.slice(0, -1).join('/')}/` : '';
 
-    const value = $$('span', { className: 'coveo-category-facet-search-value-caption' }, pathLastValue);
+    const value = $$('span', { className: 'coveo-category-facet-search-value-caption' }, last(path));
     const number = $$('span', { className: 'coveo-category-facet-search-value-number' }, categoryFacetValue.numberOfResults.toString(10));
     const pathParentsCaption = $$('span', { className: 'coveo-category-facet-search-path-parents' }, pathParents);
     const pathValue = $$('span', { className: 'coveo-category-facet-search-path-last-value' }, pathLastValue);
