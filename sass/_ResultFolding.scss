@@ -1,16 +1,13 @@
-@import "Variables";
-
+@import 'Variables';
 .CoveoResultFolding {
-
   .coveo-folding-results {
     margin-bottom: 6px;
     > .coveo-result-frame {
       > .coveo-result-row {
-        margin: 0px;
+        margin: 0;
       }
     }
   }
-
   .coveo-loading-animation {
     margin: auto;
     width: 84px;
@@ -21,7 +18,7 @@
 .coveo-list-layout {
   .coveo-result-folding-child-result {
     border-left: $default-border;
-    padding: 0px 0px 0px 6px;
+    padding: 0 0 0 6px;
     &:hover {
       border-left: 1px solid $color-teal;
     }
@@ -33,7 +30,8 @@
   }
 }
 
-.coveo-folding-footer-section-for-less, .coveo-folding-footer-section-for-more {
+.coveo-folding-footer-section-for-less,
+.coveo-folding-footer-section-for-more {
   display: inline-block;
 }
 
@@ -91,12 +89,14 @@
   color: $color-greyish-teal-blue;
 }
 
-a.coveo-folding-show-more, a.coveo-folding-show-less {
+a.coveo-folding-show-more,
+a.coveo-folding-show-less {
   @include clickable();
 }
 
 .coveo-card-layout {
-  a.coveo-folding-show-more, a.coveo-folding-show-less {
+  a.coveo-folding-show-more,
+  a.coveo-folding-show-less {
     @include clickable($dark-background: true);
   }
 }
@@ -118,7 +118,6 @@ a.coveo-folding-show-more, a.coveo-folding-show-less {
   .coveo-folding-header {
     margin-top: 10px;
   }
-
   .coveo-result-folding-child-result:not(:last-child) {
     border-bottom: 1px solid $color-light-grey;
   }

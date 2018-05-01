@@ -1,12 +1,11 @@
 @import 'bourbon/bourbon';
 @import 'Variables';
-
 .CoveoFacet,
 .CoveoFacetRange,
 .CoveoFacetSlider,
 .CoveoHierarchicalFacet,
 .CoveoCategoryFacet {
-  margin: 10px 0px 10px 0px;
+  margin: 10px 0;
   padding: 0;
   @include defaultRoundedBorder();
   background: white;
