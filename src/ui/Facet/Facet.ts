@@ -1427,7 +1427,7 @@ export class Facet extends Component {
 
   protected updateSearchElement(moreValuesAvailable = true) {
     if (moreValuesAvailable) {
-      const renderer = new ValueElementRenderer(this, FacetValue.create('Search'));
+      const renderer = new ValueElementRenderer(this, FacetValue.create(l('Search')));
       const searchButton = renderer.build().withNo([renderer.excludeIcon, renderer.icon]);
       $$(searchButton.listItem).addClass('coveo-facet-search-button');
       searchButton.stylishCheckbox.removeAttribute('tabindex');

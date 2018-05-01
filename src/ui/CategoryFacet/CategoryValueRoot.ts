@@ -1,6 +1,6 @@
 import { CategoryValueParent, CategoryValue } from './CategoryValue';
 import { CategoryFacetTemplates } from './CategoryFacetTemplates';
-import { Dom } from '../../utils/Dom';
+import { Dom, $$ } from '../../utils/Dom';
 import { CategoryChildrenValueRenderer } from './CategoryValueChildrenRenderer';
 import { CategoryFacet } from './CategoryFacet';
 import { QueryEvents, IBuildingQueryEventArgs, IQuerySuccessEventArgs } from '../../events/QueryEvents';
@@ -33,8 +33,8 @@ export class CategoryValueRoot implements CategoryValueParent {
       this.notImplementedError();
     } else if (categoryFacetResult.values.length != 0) {
       const sortedParentValues = this.sortParentValues(categoryFacetResult.parentValues);
-      this.categoryFacet.show();
       this.clear();
+      this.categoryFacet.show();
 
       let currentParentValue: CategoryValueParent;
       currentParentValue = this;
@@ -54,6 +54,10 @@ export class CategoryValueRoot implements CategoryValueParent {
       this.activeCategoryValue = currentParentValue as CategoryValue;
     } else {
       this.categoryFacet.hide();
+    }
+    if (this.categoryFacet.options.enableFacetSearch) {
+      const facetSearch = this.categoryFacet.categoryFacetSearch.build();
+      $$(facetSearch).insertAfter(this.categoryChildrenValueRenderer.getListOfChildValues().el);
     }
   }
 
@@ -78,6 +82,7 @@ export class CategoryValueRoot implements CategoryValueParent {
   }
 
   public clear() {
+    this.categoryFacet.categoryFacetSearch.clear();
     this.categoryChildrenValueRenderer.getListOfChildValues().detach();
     this.categoryChildrenValueRenderer.clearChildren();
   }

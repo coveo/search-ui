@@ -116,6 +116,7 @@
     "tvm": "^0.8.14",
     "typedoc": "https://github.com/coveord/typedoc",
     "typescript": "^2.8.1",
+    "underscore": "1.8.3",
     "walk": "^2.3.9",
     "webpack": "^3.10.0",
     "webpack-bundle-analyzer": "^2.9.1",
@@ -136,7 +137,6 @@
     "jstimezonedetect": "^1.0.6",
     "latinize": "^0.4.0",
     "modal-box": "^2.0.10",
-    "pikaday": "^1.4.0",
-    "underscore": "^1.8.3"
+    "pikaday": "^1.4.0"
   }
 }

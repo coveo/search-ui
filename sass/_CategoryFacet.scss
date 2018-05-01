@@ -23,7 +23,6 @@
 }
 
 .coveo-category-facet-value-label {
-  transition: background-color 0.07s $standard-transition-timing-function;
   cursor: pointer;
   vertical-align: middle;
   @include display(flex);

@@ -10,16 +10,16 @@ import { CategoryFacetQueryController } from '../../../src/controllers/CategoryF
 
 export function CategoryValueRootTest() {
   describe('CategoryValueRoot', () => {
-    let categoryFacetMock: jasmine.SpyObj<CategoryFacet>;
+    let categoryFacetMock: CategoryFacet;
     let noopComponentMock: Mock.IBasicComponentSetup<NoopComponent>;
 
     beforeEach(() => {
-      categoryFacetMock = Mock.mock<jasmine.SpyObj<CategoryFacet>>(CategoryFacet, 'categoryFacetMock');
+      categoryFacetMock = Mock.mock<CategoryFacet>(CategoryFacet, 'categoryFacetMock');
       categoryFacetMock.categoryFacetQueryController = Mock.mock<CategoryFacetQueryController>(CategoryFacetQueryController);
       categoryFacetMock.categoryFacetQueryController = jasmine.createSpyObj<CategoryFacetQueryController>('categoryFacetQueryController', [
         'putCategoryFacetInQueryBuilder'
       ]);
-      categoryFacetMock.categoryFacetQueryController.putCategoryFacetInQueryBuilder.and.returnValue(0);
+      categoryFacetMock.categoryFacetQueryController.putCategoryFacetInQueryBuilder = () => 0;
       noopComponentMock = Mock.basicComponentSetup<NoopComponent>(NoopComponent);
       categoryFacetMock.bind = noopComponentMock.cmp.bind;
       new CategoryValueRoot($$(noopComponentMock.env.element), new CategoryFacetTemplates(), categoryFacetMock);

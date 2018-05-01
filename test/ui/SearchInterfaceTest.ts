@@ -259,7 +259,7 @@ export function SearchInterfaceTest() {
       it('should allow to retrieve the context after a query', () => {
         setupSearchInterface();
         const queryBuilder = new QueryBuilder();
-        queryBuilder.addContextValue('123', 456);
+        queryBuilder.addContextValue('123', '456');
         cmp.queryController.getLastQuery = () => queryBuilder.build();
         Simulate.query(env, {
           query: queryBuilder.build()

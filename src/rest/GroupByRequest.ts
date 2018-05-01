@@ -95,6 +95,7 @@ export interface IGroupByRequest {
    * The pattern type to use for the {@link IGroupByRequest.allowedValues} property (see {@link AllowedValuesPatternType}).
    *
    * This option is empty by default, which makes it behave as [`legacy`]{@link AllowedValuesPatternType.Legacy}.
+   * - regex: supports regular expressions
    */
   allowedValuesPatternType?: AllowedValuesPatternType;
 
