@@ -719,16 +719,22 @@ export class Omnibox extends Component {
   }
 
   private getQuery(searchAsYouType: boolean) {
-    let query: string;
-    if (searchAsYouType) {
-      query = this.magicBox.getWordCompletion();
-      if (query == null && this.lastSuggestions != null && this.lastSuggestions.length > 0) {
-        const textSuggestion = _.find(this.lastSuggestions, (suggestion: IOmniboxSuggestion) => suggestion.text != null);
-        if (textSuggestion != null) {
-          query = textSuggestion.text;
-        }
+    if (this.lastQuery == this.magicBox.getText()) {
+      return this.lastQuery;
+    }
+
+    if (!searchAsYouType) {
+      return this.magicBox.getText();
+    }
+
+    let query = this.magicBox.getWordCompletion();
+    if (query == null && this.lastSuggestions != null && this.lastSuggestions.length > 0) {
+      const textSuggestion = _.find(this.lastSuggestions, (suggestion: IOmniboxSuggestion) => suggestion.text != null);
+      if (textSuggestion != null) {
+        query = textSuggestion.text;
       }
     }
+
     return query || this.magicBox.getText();
   }
 
