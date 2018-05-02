@@ -175,6 +175,10 @@ export class FacetValueSuggestions extends Component {
   }
 
   public async getSuggestions(omnibox: Omnibox): Promise<IOmniboxSuggestion[]> {
+    if (this.options.numberOfSuggestions == 0) {
+      return [];
+    }
+
     const text = omnibox.getText();
 
     const suggestions: IOmniboxSuggestion[] = await this.getFacetValueSuggestions(text, omnibox);
@@ -220,10 +224,17 @@ export class FacetValueSuggestions extends Component {
 
   private rankSuggestionRows(suggestions: IFacetValueSuggestionRow[]): IFacetValueSuggestionRow[] {
     const rankedResults = [...suggestions.sort((a, b) => b.score.distanceFromTotalForField - a.score.distanceFromTotalForField)];
-    const preciseResults = rankedResults.splice(0, Math.ceil(this.options.numberOfSuggestions / 2));
-    const broadResults = rankedResults.slice(-1, Math.floor(this.options.numberOfSuggestions / 2));
+    const firstSlice = Math.ceil(this.options.numberOfSuggestions / 2);
+    const lastSlice = -Math.floor(this.options.numberOfSuggestions / 2);
 
-    return [...preciseResults, ...broadResults];
+    const firstResultsToReturn = rankedResults.splice(0, firstSlice);
+
+    if (lastSlice != 0) {
+      const lastResultsToReturn = rankedResults.slice(lastSlice);
+      return [...firstResultsToReturn, ...lastResultsToReturn];
+    }
+
+    return firstResultsToReturn;
   }
 
   private mapFacetValueSuggestion(resultToShow: IFacetValueSuggestionRow, omnibox: Omnibox) {

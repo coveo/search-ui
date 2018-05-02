@@ -1,6 +1,5 @@
 @import 'Variables';
 @import 'mixins/mediaQuery';
-
 .CoveoTab {
   color: $color-blueish-gray;
   text-decoration: none;
@@ -8,7 +7,7 @@
   height: 52px;
   display: inline-block;
   font-size: 15px;
-  padding: 0px 10px 2px 10px;
+  padding: 0 10px 2px;
   text-transform: uppercase;
   vertical-align: middle;
   white-space: normal;
@@ -24,13 +23,11 @@
   p {
     height: 100%;
   }
-
   &.coveo-selected,
   &.coveo-selected:hover {
     border-bottom: 2px solid $color-greyish-dark-blue;
-    padding-bottom: 0px;
+    padding-bottom: 0;
   }
-
   &:hover {
     color: $color-greyish-dark-blue;
   }

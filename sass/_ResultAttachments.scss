@@ -1,11 +1,9 @@
-@import "Variables";
+@import 'Variables';
 
 .CoveoResultAttachments {
-
   .coveo-attachment-sub-container {
-    padding: 6px 0px 6px 20px;
+    padding: 6px 0 6px 20px;
   }
-
   .coveo-attachment-icon {
     margin-right: 5px;
     display: inline-block;
@@ -18,13 +16,11 @@
 
 .coveo-result-attachments-container {
   font-size: 14px;
-  margin: 0px 0px 5px 0px;
+  margin: 0 0 5px;
   position: relative;
-
   .coveo-icon {
-    margin: 0px 5px 0px 0px;
+    margin: 0 5px 0 0;
   }
-
   * {
     vertical-align: middle;
   }

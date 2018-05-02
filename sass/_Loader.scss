@@ -1,11 +1,10 @@
-@import "./mixins/loader";
-
+@import './mixins/loader';
 .coveo-first-loading-animation {
   position: absolute;
-  top: 0px;
-  left: 0px;
-  right: 0px;
-  bottom: 0px;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   text-align: center;
   padding-top: 100px;
   background: #f7f7f7;
@@ -14,6 +13,7 @@
     margin-top: 15px;
   }
 }
+
 .coveo-generic-loading-animation {
   @include coveo-generic-loading-animation;
 }

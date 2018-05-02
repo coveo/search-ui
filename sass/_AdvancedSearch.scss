@@ -1,4 +1,4 @@
-@import "Variables";
+@import 'Variables';
 
 $spaceBetween: 0 5px 5px 0;
 
@@ -9,7 +9,7 @@ $spaceBetween: 0 5px 5px 0;
 #coveo-advanced-search-in-the-last-select {
   margin-left: 20px;
 
-  .coveo-button { 
+  .coveo-button {
     width: auto;
   }
 }
@@ -31,14 +31,14 @@ $spaceBetween: 0 5px 5px 0;
     }
   }
 
-  margin: 10px 0 10px 0;
+  margin: 10px 0;
 
   .coveo-advanced-search-date-input {
     display: inline-block;
     padding: 0;
     border: none;
 
-    .coveo-button{
+    .coveo-button {
       width: 100px;
     }
 
@@ -54,8 +54,6 @@ $spaceBetween: 0 5px 5px 0;
   @include flex-wrap(wrap);
   align-items: center;
 
-
-
   .coveo-input {
     @include flex-basis(200px);
     @include flex(1);
@@ -65,12 +63,13 @@ $spaceBetween: 0 5px 5px 0;
   }
 }
 
-.coveo-advanced-search-date-input, .coveo-advanced-search-document-input-section {
+.coveo-advanced-search-date-input,
+.coveo-advanced-search-document-input-section {
   .coveo-numeric-spinner {
     display: inline-block;
     vertical-align: middle;
 
-    input[type='text']{
+    input[type='text'] {
       color: $color-grey;
       width: 55px;
     }
@@ -88,7 +87,6 @@ $spaceBetween: 0 5px 5px 0;
 #coveo-advanced-search-select-year {
   width: 70px;
 }
-
 
 .coveo-advanced-search-keyword-label {
   display: inline-block;
@@ -129,7 +127,8 @@ $spaceBetween: 0 5px 5px 0;
   fieldset {
     display: inline-block;
   }
-  .coveo-dropdown, .coveo-numeric-spinner {
+  .coveo-dropdown,
+  .coveo-numeric-spinner {
     margin: $spaceBetween;
   }
 }
