@@ -119,3 +119,11 @@
     outline: none;
   }
 }
+
+.coveo-category-facet-eraser {
+  display: inline-block;
+}
+
+.coveo-category-facet-non-empty-path .coveo-category-facet-eraser {
+  visibility: visible;
+}

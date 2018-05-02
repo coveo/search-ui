@@ -15,11 +15,10 @@ import 'styling/_CategoryFacet';
 import { IAttributesChangedEventArg, MODEL_EVENTS } from '../../models/Model';
 import { Utils } from '../../utils/Utils';
 import { CategoryValue, CategoryValueParent } from './CategoryValue';
-import { contains, isArray } from 'underscore';
+import { each, find, isEmpty, contains, isArray } from 'underscore';
 import { Assert } from '../../misc/Assert';
 import { QueryEvents, IBuildingQueryEventArgs, IQuerySuccessEventArgs } from '../../events/QueryEvents';
 import { CategoryFacetSearch } from './CategoryFacetSearch';
-import { each, find } from 'underscore';
 import { ICategoryFacetValue } from '../../rest/CategoryFacetValue';
 import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
 
@@ -173,6 +172,7 @@ export class CategoryFacet extends Component {
       this.activeCategoryValue = currentParentValue as CategoryValue;
     } else if (categoryFacetResult.parentValues.length != 0) {
       this.clear();
+      this.show();
       const sortedParentValues = this.sortParentValues(categoryFacetResult.parentValues);
       let currentParentValue: CategoryValueParent = this.categoryValueRoot;
       each(sortedParentValues, categoryFacetParentValue => {
@@ -191,6 +191,10 @@ export class CategoryFacet extends Component {
 
     if (this.options.enableMoreLess) {
       this.renderMoreLess();
+    }
+
+    if (!isEmpty(this.activePath)) {
+      $$(this.element).addClass('coveo-category-facet-non-empty-path');
     }
   }
   /**
@@ -234,6 +238,9 @@ export class CategoryFacet extends Component {
     return parentValues;
   }
 
+  /**
+   * Shows more values according to {@link CategoryFacet.options.pageSize}.
+   */
   public showMore() {
     if (this.moreValuesToFetch) {
       this.currentPage++;
@@ -242,6 +249,9 @@ export class CategoryFacet extends Component {
     }
   }
 
+  /**
+   * Shows more values according to {@link CategoryFacet.options.pageSize}.
+   */
   public showLess() {
     if (this.currentPage > 0) {
       this.currentPage--;
@@ -322,6 +332,15 @@ export class CategoryFacet extends Component {
     this.facetHeader = $$('div', { className: 'coveo-category-facet-header' }, titleSection);
     $$(this.element).prepend(this.facetHeader.el);
     this.facetHeader.append(this.waitElement.el);
+
+    const clearIcon = $$(
+      'div',
+      { title: l('Clear', this.options.title), className: 'coveo-category-facet-header-eraser coveo-facet-header-eraser' },
+      SVGIcons.icons.mainClear
+    );
+    SVGDom.addClassToSVGInContainer(clearIcon.el, 'coveo-facet-header-eraser-svg');
+    clearIcon.on('click', () => this.changeActivePath([]));
+    this.facetHeader.append(clearIcon.el);
   }
 
   private handleQueryStateChanged(data: IAttributesChangedEventArg) {
@@ -388,6 +407,7 @@ export class CategoryFacet extends Component {
     this.categoryValueRoot.clear();
     this.categoryFacetSearch.clear();
     this.moreLessContainer && this.moreLessContainer.detach();
+    $$(this.element).removeClass('coveo-category-facet-non-empty-path');
   }
 
   private buildMoreButton() {
