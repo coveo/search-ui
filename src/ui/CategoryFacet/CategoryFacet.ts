@@ -14,11 +14,14 @@ import { QueryStateModel } from '../../models/QueryStateModel';
 import 'styling/_CategoryFacet';
 import { IAttributesChangedEventArg, MODEL_EVENTS } from '../../models/Model';
 import { Utils } from '../../utils/Utils';
-import { CategoryValue } from './CategoryValue';
+import { CategoryValue, CategoryValueParent } from './CategoryValue';
 import { contains, isArray } from 'underscore';
 import { Assert } from '../../misc/Assert';
-import { QueryEvents } from '../../events/QueryEvents';
+import { QueryEvents, IBuildingQueryEventArgs, IQuerySuccessEventArgs } from '../../events/QueryEvents';
 import { CategoryFacetSearch } from './CategoryFacetSearch';
+import { each, find } from 'underscore';
+import { ICategoryFacetValue } from '../../rest/CategoryFacetValue';
+import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
 
 export interface CategoryFacetOptions {
   field: IFieldOption;
@@ -39,9 +42,6 @@ export interface CategoryFacetOptions {
  * TODO: Add examples. Explain what a path is.
  */
 export class CategoryFacet extends Component {
-  public categoryFacetQueryController: CategoryFacetQueryController;
-  public listenToQueryStateChange = true;
-
   static doExport = () => {
     exportGlobally({
       CategoryFacet
@@ -104,14 +104,23 @@ export class CategoryFacet extends Component {
     pageSize: ComponentOptions.buildNumberOption({ defaultValue: 10, min: 1, depend: 'enableMoreLess' })
   };
 
+  public categoryFacetQueryController: CategoryFacetQueryController;
+  public listenToQueryStateChange = true;
   public queryStateAttribute: string;
   public categoryValueRootModule = CategoryValueRoot;
   public categoryFacetSearch: CategoryFacetSearch;
+  public activeCategoryValue: CategoryValue | undefined;
+  public activePath: string[] = [];
 
   private categoryValueRoot: CategoryValueRoot;
   private categoryFacetTemplates: CategoryFacetTemplates;
   private facetHeader: Dom;
   private waitElement: Dom;
+  private positionInQuery: number;
+  private currentPage: number;
+  private moreLessContainer: Dom;
+  private moreValuesToFetch: boolean = true;
+  private numberOfValues: number;
 
   constructor(public element: HTMLElement, public options: CategoryFacetOptions, bindings?: IComponentBindings) {
     super(element, 'CategoryFacet', bindings);
@@ -120,17 +129,70 @@ export class CategoryFacet extends Component {
     this.categoryFacetQueryController = new CategoryFacetQueryController(this);
     this.categoryFacetTemplates = new CategoryFacetTemplates();
     this.categoryValueRoot = new this.categoryValueRootModule($$(this.element), this.categoryFacetTemplates, this);
+    this.currentPage = 0;
+    this.numberOfValues = this.options.numberOfValues;
 
     if (this.options.enableFacetSearch) {
       this.categoryFacetSearch = new CategoryFacetSearch(this);
     }
 
+    this.bind.onRootElement<IBuildingQueryEventArgs>(QueryEvents.buildingQuery, args => this.handleBuildingQuery(args));
+    this.bind.onRootElement<IQuerySuccessEventArgs>(QueryEvents.querySuccess, args => this.handleQuerySuccess(args));
     this.bind.onRootElement(QueryEvents.duringQuery, () => this.addFading());
     this.bind.onRootElement(QueryEvents.deferredQuerySuccess, () => this.removeFading());
     this.buildFacetHeader();
     this.initQueryStateEvents();
   }
 
+  public handleBuildingQuery(args: IBuildingQueryEventArgs) {
+    this.positionInQuery = this.categoryFacetQueryController.putCategoryFacetInQueryBuilder(
+      args.queryBuilder,
+      this.activePath,
+      this.numberOfValues + 1
+    );
+  }
+
+  public handleQuerySuccess(args: IQuerySuccessEventArgs) {
+    const numberOfRequestedValues = args.query.categoryFacets[this.positionInQuery].maximumNumberOfValues;
+    const categoryFacetResult = args.results.categoryFacets[this.positionInQuery];
+    this.moreValuesToFetch = numberOfRequestedValues == categoryFacetResult.values.length;
+
+    if (categoryFacetResult.notImplemented) {
+      this.notImplementedError();
+    } else if (categoryFacetResult.values.length != 0) {
+      this.clear();
+      this.show();
+
+      const sortedParentValues = this.sortParentValues(categoryFacetResult.parentValues);
+      let currentParentValue: CategoryValueParent = this.categoryValueRoot;
+      each(sortedParentValues, categoryFacetParentValue => {
+        currentParentValue = currentParentValue.renderAsParent(categoryFacetParentValue);
+      });
+      const childrenValuesToRender = categoryFacetResult.values.slice(0, numberOfRequestedValues - 1);
+      currentParentValue.renderChildren(childrenValuesToRender);
+      this.activeCategoryValue = currentParentValue as CategoryValue;
+    } else if (categoryFacetResult.parentValues.length != 0) {
+      this.clear();
+      const sortedParentValues = this.sortParentValues(categoryFacetResult.parentValues);
+      let currentParentValue: CategoryValueParent = this.categoryValueRoot;
+      each(sortedParentValues, categoryFacetParentValue => {
+        currentParentValue = currentParentValue.renderAsParent(categoryFacetParentValue);
+      });
+      currentParentValue.renderChildren([]);
+      this.activeCategoryValue = currentParentValue as CategoryValue;
+    } else {
+      this.hide();
+    }
+
+    if (this.options.enableFacetSearch) {
+      const facetSearch = this.categoryFacetSearch.build();
+      $$(facetSearch).insertAfter(this.categoryValueRoot.categoryChildrenValueRenderer.getListOfChildValues().el);
+    }
+
+    if (this.options.enableMoreLess) {
+      this.renderMoreLess();
+    }
+  }
   /**
    * Changes the active path and triggers a new query.
    */
@@ -139,7 +201,7 @@ export class CategoryFacet extends Component {
     this.queryStateModel.set(this.queryStateAttribute, path);
     this.listenToQueryStateChange = true;
 
-    this.categoryValueRoot.activePath = path;
+    this.activePath = path;
 
     this.showWaitingAnimation();
     this.queryController.executeQuery().then(() => {
@@ -148,10 +210,10 @@ export class CategoryFacet extends Component {
   }
 
   /**
-   * Returns the active path
+   * Reloads the facet with the same path.
    */
-  public getActivePath() {
-    return this.categoryValueRoot.activePath;
+  public reload() {
+    this.changeActivePath(this.activePath);
   }
 
   /**
@@ -172,11 +234,27 @@ export class CategoryFacet extends Component {
     return parentValues;
   }
 
+  public showMore() {
+    if (this.moreValuesToFetch) {
+      this.currentPage++;
+      this.numberOfValues = this.options.numberOfValues + this.currentPage * this.options.pageSize;
+      this.reload();
+    }
+  }
+
+  public showLess() {
+    if (this.currentPage > 0) {
+      this.currentPage--;
+      this.numberOfValues = this.options.numberOfValues + this.currentPage * this.options.pageSize;
+      this.reload();
+    }
+  }
+
   /**
    * Returns the values at the bottom of the hierarchy. These are the values that are not yet applied to the query.
    */
   public getAvailableValues() {
-    return this.categoryValueRoot.activeCategoryValue.children;
+    return this.activeCategoryValue.children;
   }
 
   /**
@@ -188,7 +266,7 @@ export class CategoryFacet extends Component {
       contains(this.getAvailableValues().map(categoryValue => categoryValue.value), value),
       'Failed while trying to select a value that is not available.'
     );
-    const newPath = this.categoryValueRoot.activePath.slice(0);
+    const newPath = this.activePath.slice(0);
     newPath.push(value);
     this.changeActivePath(newPath);
   }
@@ -197,11 +275,11 @@ export class CategoryFacet extends Component {
    * Deselect the last value in the hierarchy that is applied to the query. Does nothing if we are at the top of the hierarchy.
    */
   public deselectCurrentValue() {
-    if (this.categoryValueRoot.activePath.length == 0) {
+    if (this.activePath.length == 0) {
       return;
     }
 
-    const newPath = this.categoryValueRoot.activePath.slice(0);
+    const newPath = this.activePath.slice(0);
     newPath.pop();
     this.changeActivePath(newPath);
   }
@@ -250,7 +328,7 @@ export class CategoryFacet extends Component {
     if (this.listenToQueryStateChange) {
       let path = data.attributes[this.queryStateAttribute];
       if (!Utils.isNullOrUndefined(path) && isArray(path) && path.length != 0) {
-        this.categoryValueRoot.activePath = path;
+        this.activePath = path;
       }
     }
   }
@@ -267,6 +345,73 @@ export class CategoryFacet extends Component {
 
   private removeFading() {
     $$(this.element).removeClass('coveo-category-facet-values-fade');
+  }
+
+  private notImplementedError() {
+    const errorMessage = 'Category Facets are not supported by your current search endpoint. Disabling this component.';
+    this.logger.error(errorMessage);
+    this.disable();
+  }
+
+  private sortParentValues(parentValues: ICategoryFacetValue[]) {
+    if (this.activePath.length != parentValues.length) {
+      this.logger.warn('Inconsistent CategoryFacet results: Number of parent values results does not equal length of active path');
+      return parentValues;
+    }
+
+    const sortedParentvalues = [];
+    for (const pathElement of this.activePath) {
+      const currentParentValue = find(parentValues, parentValue => parentValue.value == pathElement);
+      if (!currentParentValue) {
+        this.logger.warn('Inconsistent CategoryFacet results: path not consistent with parent values results');
+        return parentValues;
+      }
+      sortedParentvalues.push(currentParentValue);
+    }
+    return sortedParentvalues;
+  }
+
+  private renderMoreLess() {
+    this.moreLessContainer = $$('div', { className: 'coveo-category-facet-more-less-container' });
+    $$(this.element).append(this.moreLessContainer.el);
+
+    if (this.currentPage != 0) {
+      this.moreLessContainer.append(this.buildLessButton());
+    }
+
+    if (this.moreValuesToFetch) {
+      this.moreLessContainer.append(this.buildMoreButton());
+    }
+  }
+
+  private clear() {
+    this.categoryValueRoot.clear();
+    this.categoryFacetSearch.clear();
+    this.moreLessContainer && this.moreLessContainer.detach();
+  }
+
+  private buildMoreButton() {
+    const svgContainer = $$('span', { className: 'coveo-facet-more-icon' }, SVGIcons.icons.arrowDown).el;
+    SVGDom.addClassToSVGInContainer(svgContainer, 'coveo-facet-more-icon-svg');
+    const more = $$('div', { className: 'coveo-category-facet-more', tabindex: 0 }, svgContainer);
+
+    const showMoreHandler = () => this.showMore();
+    more.on('click', () => this.showMore());
+    more.on('keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, showMoreHandler));
+
+    return more.el;
+  }
+
+  private buildLessButton() {
+    const svgContainer = $$('span', { className: 'coveo-facet-less-icon' }, SVGIcons.icons.arrowUp).el;
+    SVGDom.addClassToSVGInContainer(svgContainer, 'coveo-facet-less-icon-svg');
+    const less = $$('div', { className: 'coveo-category-facet-less', tabIndex: 0 }, svgContainer);
+
+    const showLessHandler = () => this.showLess();
+    less.on('click', showLessHandler);
+    less.on('keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, showLessHandler));
+
+    return less.el;
   }
 }
 

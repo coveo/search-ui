@@ -103,3 +103,19 @@
 .coveo-category-facet-header {
   background-color: $color-blueish-white;
 }
+
+.coveo-category-facet-more,
+.coveo-category-facet-less {
+  width: 100%;
+  height: 15px;
+  background: $color-blueish-white;
+  cursor: pointer;
+  text-align: center;
+  border-bottom-left-radius: $default-border-radius;
+  border-bottom-right-radius: $default-border-radius;
+  &:hover,
+  &:focus {
+    background: $color-light-grey;
+    outline: none;
+  }
+}
