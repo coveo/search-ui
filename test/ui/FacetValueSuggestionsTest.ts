@@ -273,6 +273,23 @@ export function FacetValueSuggestionsTest() {
       });
     });
 
+    describe('when only using the search box keywords and the keyword is empty', () => {
+      beforeEach(() => {
+        test.cmp.options.useValueFromSearchbox = true;
+        test.cmp.options.useQuerySuggestions = false;
+        setUpKeywordInOmnibox('');
+      });
+
+      it('returns no suggestions', async done => {
+        const resultingArgs = await triggerPopulateOmniboxEvent();
+
+        firstSuggestion(resultingArgs).then(result => {
+          expect(result.length).toBe(0);
+          done();
+        });
+      });
+    });
+
     it('caches results by keywords', async done => {
       test.cmp.options.useValueFromSearchbox = true;
 
