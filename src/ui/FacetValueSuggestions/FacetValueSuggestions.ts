@@ -221,7 +221,7 @@ export class FacetValueSuggestions extends Component {
   private rankSuggestionRows(suggestions: IFacetValueSuggestionRow[]): IFacetValueSuggestionRow[] {
     const rankedResults = [...suggestions.sort((a, b) => b.score.distanceFromTotalForField - a.score.distanceFromTotalForField)];
     const preciseResults = rankedResults.splice(0, Math.ceil(this.options.numberOfSuggestions / 2));
-    const broadResults = rankedResults.slice(-1, Math.floor(this.options.numberOfSuggestions / 2));
+    const broadResults = rankedResults.slice(-Math.floor(this.options.numberOfSuggestions / 2));
 
     return [...preciseResults, ...broadResults];
   }
