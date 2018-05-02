@@ -43,7 +43,7 @@ export class MetaDataTable implements IRelevanceInspectorTab {
       fields[`Fields Values`] = {
         content: { result, fieldsDescription },
         cellRenderer: FieldValuesRenderer,
-        width: 1000,
+        width: 900,
         getQuickFilterText: (params: agGridModule.GetQuickFilterTextParams) => {
           const allValues = map(params.value.result.raw, val => val.toString());
           return Object.keys(params.value.result.raw)
