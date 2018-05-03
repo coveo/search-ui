@@ -199,9 +199,7 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
    * @param selectChildren Specifies whether to also select all child values (if any). Default value is the opposite of
    * the [`useAnd`]{@link Facet.options.useAnd} option value set for this `HierarchicalFacet`.
    */
-  public selectValue(value: FacetValue, selectChildren?: boolean): void;
-  public selectValue(value: string, selectChildren?: boolean): void;
-  public selectValue(value: any, selectChildren = !this.options.useAnd) {
+  public selectValue(value: FacetValue | string, selectChildren = !this.options.useAnd) {
     this.ensureDom();
     this.ensureValueHierarchyExists([value]);
     let valueHierarchy = this.getValueFromHierarchy(value);
@@ -218,12 +216,10 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
    * @param selectChildren Specifies whether to also select all child values (if any). Default value is the opposite of
    * the [`useAnd`]{@link Facet.options.useAnd} option value set for this `HierarchicalFacet`.
    */
-  public selectMultipleValues(values: FacetValue[], selectChildren?: boolean): void;
-  public selectMultipleValues(values: string[], selectChildren?: boolean): void;
-  public selectMultipleValues(values: any[], selectChildren = !this.options.useAnd): void {
+  public selectMultipleValues(values: FacetValue[] | string[], selectChildren = !this.options.useAnd): void {
     this.ensureDom();
     this.ensureValueHierarchyExists(values);
-    _.each(values, value => {
+    _.each(values as FacetValue[], value => {
       let valueHierarchy = this.getValueFromHierarchy(value);
       this.flagParentForSelection(valueHierarchy);
       if (selectChildren) {
@@ -240,9 +236,7 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
    * @param value The value to deselect.
    * @param deselectChildren Specifies whether to also deselect all child values (if any). Default value is `true`.
    */
-  public deselectValue(value: FacetValue, deselectChildren?: boolean): void;
-  public deselectValue(value: string, deselectChildren?: boolean): void;
-  public deselectValue(value: any, deselectChildren = true) {
+  public deselectValue(value: FacetValue | string, deselectChildren = true) {
     this.ensureDom();
     this.ensureValueHierarchyExists([value]);
     let valueHierarchy = this.getValueFromHierarchy(value);
@@ -270,9 +264,7 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
    * @param excludeChildren Specifies whether to also exclude all child values (if any). Default value is the opposite
    * of the [`useAnd`]{@link Facet.options.useAnd} option value set for this `HierarchicalFacet`.
    */
-  public excludeValue(value: FacetValue, excludeChildren?: boolean): void;
-  public excludeValue(value: string, excludeChildren?: boolean): void;
-  public excludeValue(value: any, excludeChildren = !this.options.useAnd): void {
+  public excludeValue(value: FacetValue | string, excludeChildren = !this.options.useAnd): void {
     this.ensureDom();
     this.ensureValueHierarchyExists([value]);
     let valueHierarchy = this.getValueFromHierarchy(value);
@@ -292,9 +284,7 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
    * @param unexludeChildren Specifies whether to also un-exclude all child values (if any). Default value is the
    * opposite of the [`useAnd`]{@link Facet.options.useAnd} option value set for this `HierarchicalFacet`.
    */
-  public unexcludeValue(value: FacetValue, unexludeChildren?: boolean): void;
-  public unexcludeValue(value: string, unexludeChildren?: boolean): void;
-  public unexcludeValue(value: any, unexludeChildren = !this.options.useAnd): void {
+  public unexcludeValue(value: FacetValue | string, unexludeChildren = !this.options.useAnd): void {
     this.ensureDom();
     this.ensureValueHierarchyExists([value]);
     let valueHierarchy = this.getValueFromHierarchy(value);
@@ -311,12 +301,10 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
    * @param deselectChildren Specifies whether to also deselect all child values (if any). Default value is the opposite
    * of the [`useAnd`]{@link Facet.options.useAnd} option value set for this `HierarchicalFacet`.
    */
-  public deselectMultipleValues(values: FacetValue[], deselectChildren?: boolean): void;
-  public deselectMultipleValues(values: string[], deselectChildren?: boolean): void;
-  public deselectMultipleValues(values: any[], deselectChildren = !this.options.useAnd): void {
+  public deselectMultipleValues(values: FacetValue[] | string[], deselectChildren = !this.options.useAnd): void {
     this.ensureDom();
     this.ensureValueHierarchyExists(values);
-    _.each(values, value => {
+    _.each(values as FacetValue[], value => {
       let valueHierarchy = this.getValueFromHierarchy(value);
       valueHierarchy.hasChildSelected = false;
       this.unflagParentForSelection(valueHierarchy);
@@ -335,9 +323,7 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
    * Toggles the selection of a single value (selects value if not selected; deselects value if selected).
    * @param value The value to select or deselect.
    */
-  public toggleSelectValue(value: FacetValue): void;
-  public toggleSelectValue(value: string): void;
-  public toggleSelectValue(value: any): void {
+  public toggleSelectValue(value: FacetValue | string): void {
     this.ensureDom();
     this.ensureValueHierarchyExists([value]);
     if (this.getFacetValueFromHierarchy(value).selected == false) {
@@ -351,9 +337,7 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
    * Toggles the exclusion of a single value (excludes value if not excluded; un-excludes value if excluded).
    * @param value The value to exclude or un-exclude.
    */
-  public toggleExcludeValue(value: FacetValue): void;
-  public toggleExcludeValue(value: string): void;
-  public toggleExcludeValue(value: any): void {
+  public toggleExcludeValue(value: FacetValue | string): void {
     this.ensureDom();
     this.ensureValueHierarchyExists([value]);
     if (this.getFacetValueFromHierarchy(value).excluded == false) {
@@ -368,10 +352,8 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
    * @param facetValue The value whose caption the method should return.
    * @returns {string} The caption of the value.
    */
-  public getValueCaption(facetValue: IIndexFieldValue): string;
-  public getValueCaption(facetValue: FacetValue): string;
-  public getValueCaption(facetValue: any): string {
-    let stringValue = this.getSelf(facetValue);
+  public getValueCaption(facetValue: IIndexFieldValue | FacetValue): string {
+    let stringValue = this.getSelf(facetValue as FacetValue);
     let ret = stringValue;
     if (Utils.exists(this.options.valueCaption)) {
       if (typeof this.options.valueCaption == 'object') {
@@ -416,10 +398,7 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
    * Opens (expands) a single value and shows all its children.
    * @param value The value to open.
    */
-  public open(value: FacetValue);
-  public open(value: IValueHierarchy);
-  public open(value: String);
-  public open(value: any) {
+  public open(value: FacetValue | IValueHierarchy | string) {
     let getter;
     if (_.isString(value)) {
       getter = this.getValueHierarchy(value);
@@ -442,10 +421,7 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
    * Closes (collapses) a single value and hides all its children.
    * @param value The value to close.
    */
-  public close(value: FacetValue);
-  public close(value: IValueHierarchy);
-  public close(value: String);
-  public close(value: any) {
+  public close(value: FacetValue | IValueHierarchy | string) {
     let getter;
     if (_.isString(value)) {
       getter = this.getValueHierarchy(value);

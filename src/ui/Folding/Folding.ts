@@ -141,9 +141,13 @@ export class Folding extends Component {
 
     /**
      * Specifies the sort criteria to apply to the top result and its child results (e.g., `date ascending`,
-     * `@myfield descending`, etc. [See
-     * Query Parameters - sortCriteria](https://developers.coveo.com/x/iwEv#QueryParameters-sortCriteriasortCriteria)).
+     * `@myfield descending`, etc.). See [Query Parameters - sortCriteria](https://developers.coveo.com/x/iwEv#QueryParameters-sortCriteriasortCriteria).
      *
+     * This option works from the results returned by the index. This means that if only the three most relevant folded results are returned by the index
+     * and you choose to rearrange the folded results by date, then the three most relevant results will be rearranged by date,
+     * meaning that the first folded result is not necessarily the oldest or newest item.
+     *
+     * However, since clicking on the `Show More` button triggers a new query, you would receive new results based on the sort criteria of this option.
      *
      * **Example**
      * > If you are folding email results by conversation and you specify `date descending` as the `rearrange` value of

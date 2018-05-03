@@ -63,7 +63,7 @@
   .coveo-slider-caption {
     position: absolute;
     top: 25px;
-    left: 0px;
+    left: 0;
     max-width: 100%;
     white-space: nowrap;
     overflow: hidden;
@@ -101,7 +101,7 @@
     }
     svg {
       position: absolute;
-      left: 0px;
+      left: 0;
       top: -5px;
       .coveo-bar {
         fill: $color-blueish-gray;

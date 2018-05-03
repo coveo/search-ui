@@ -365,13 +365,14 @@ export class Facet extends Component {
      */
     numberOfValuesInFacetSearch: ComponentOptions.buildNumberOption({ defaultValue: 15, min: 1, section: 'FacetSearch' }),
     /**
-     * Specifies whether [wildcards]{@link AllowedValuesPatternType.wildcards} will be used as the [allowedValuesPatternType]{@link IGroupByRequest.allowedValuesPatternType}
+     * Specifies whether [wildcards]{@link AllowedValuesPatternType.wildcards} are used as the [allowedValuesPatternType]{@link IGroupByRequest.allowedValuesPatternType}
      * in the [groupBy]{@link IGroupByRequest} for the facet search.
      *
-     * Enabling this option returns results that end with the entered value. For example, searching for veo would match with Coveo.
+     * Enabling this option returns results that end with the entered value. For example, searching for `veo` would match with `Coveo`.
      *
-     * **Note:** If you use this option and experience slow results or even timeouts, you should consider using the "cache for nested queries" option
-     * available in the administration console. Details on how to do this [here]{@link https://onlinehelp.coveo.com/en/cloud/add_edit_fields.htm}.
+     * **Note:**
+     * > If you are experiencing slow facet search and/or timeouts when this option is set to `true`, consider enabling the **Use cache for nested queries**
+     * > option on your facet [field]{@link Facet.options.field} in the Coveo Cloud Admninistration Console (see [Add/Edit a Field]{@link https://onlinehelp.coveo.com/en/cloud/add_edit_fields.htm}).
      */
     useWildcardsInFacetSearch: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'FacetSearch' }),
     /**
@@ -812,9 +813,7 @@ export class Facet extends Component {
    * @param value Can be a [`FacetValue`]{@link FacetValue} or a string (e.g., `selectValue('foobar')` or
    * `selectValue(new FacetValue('foobar'))`).
    */
-  public selectValue(value: FacetValue): void;
-  public selectValue(value: string): void;
-  public selectValue(value: any): void {
+  public selectValue(value: FacetValue | string): void {
     Assert.exists(value);
     this.ensureDom();
     this.logger.info('Selecting facet value', this.facetValuesList.select(value));
@@ -828,12 +827,10 @@ export class Facet extends Component {
    *
    * @param values Can be an array of [`FacetValue`]{@link FacetValue} or an array of strings.
    */
-  public selectMultipleValues(values: FacetValue[]): void;
-  public selectMultipleValues(values: string[]): void;
-  public selectMultipleValues(values: any[]): void {
+  public selectMultipleValues(values: FacetValue[] | string[]): void {
     Assert.exists(values);
     this.ensureDom();
-    _.each(values, value => {
+    _.each(values as FacetValue[], value => {
       this.logger.info('Selecting facet value', this.facetValuesList.select(value));
     });
     this.facetValueHasChanged();
@@ -847,9 +844,7 @@ export class Facet extends Component {
    * @param value Can be a [`FacetValue`]{@link FacetValue} or a string (e.g., `deselectValue('foobar')` or
    * `deselectValue(new FacetValue('foobar'))`).
    */
-  public deselectValue(value: FacetValue): void;
-  public deselectValue(value: string): void;
-  public deselectValue(value: any): void {
+  public deselectValue(value: FacetValue | string): void {
     Assert.exists(value);
     this.ensureDom();
     this.logger.info('Deselecting facet value', this.facetValuesList.unselect(value));
@@ -863,12 +858,10 @@ export class Facet extends Component {
    *
    * @param values Can be an array of [`FacetValue`]{@link FacetValue} or an array of strings.
    */
-  public deselectMultipleValues(values: FacetValue[]): void;
-  public deselectMultipleValues(values: string[]): void;
-  public deselectMultipleValues(values: any[]): void {
+  public deselectMultipleValues(values: FacetValue[] | string[]): void {
     Assert.exists(values);
     this.ensureDom();
-    _.each(values, value => {
+    _.each(values as FacetValue[], value => {
       this.logger.info('Deselecting facet value', this.facetValuesList.unselect(value));
     });
     this.facetValueHasChanged();
@@ -882,9 +875,7 @@ export class Facet extends Component {
    * @param value Can be a [`FacetValue`]{@link FacetValue} or a string (e.g., `excludeValue('foobar')` or
    * `excludeValue(new FacetValue('foobar'))`).
    */
-  public excludeValue(value: FacetValue): void;
-  public excludeValue(value: string): void;
-  public excludeValue(value: any): void {
+  public excludeValue(value: FacetValue | string): void {
     Assert.exists(value);
     this.ensureDom();
     this.logger.info('Excluding facet value', this.facetValuesList.exclude(value));
@@ -898,12 +889,10 @@ export class Facet extends Component {
    *
    * @param values Can be an array of [`FacetValue`]{@link FacetValue} or an array of strings.
    */
-  public excludeMultipleValues(values: FacetValue[]): void;
-  public excludeMultipleValues(values: string[]): void;
-  public excludeMultipleValues(values: any[]): void {
+  public excludeMultipleValues(values: FacetValue[] | string[]): void {
     Assert.exists(values);
     this.ensureDom();
-    _.each(values, value => {
+    _.each(values as FacetValue[], value => {
       this.logger.info('Excluding facet value', this.facetValuesList.exclude(value));
     });
     this.facetValueHasChanged();
@@ -916,9 +905,7 @@ export class Facet extends Component {
    *
    * @param value Can be a [`FacetValue`]{@link FacetValue} or a string.
    */
-  public unexcludeValue(value: FacetValue): void;
-  public unexcludeValue(value: string): void;
-  public unexcludeValue(value: any): void {
+  public unexcludeValue(value: FacetValue | string): void {
     Assert.exists(value);
     this.ensureDom();
     this.logger.info('Unexcluding facet value', this.facetValuesList.unExclude(value));
@@ -932,12 +919,10 @@ export class Facet extends Component {
    *
    * @param values Can be an array of [`FacetValue`]{@link FacetValue} or an array of strings.
    */
-  public unexcludeMultipleValues(values: FacetValue[]): void;
-  public unexcludeMultipleValues(values: string[]): void;
-  public unexcludeMultipleValues(values: any[]): void {
+  public unexcludeMultipleValues(values: FacetValue[] | string[]): void {
     Assert.exists(values);
     this.ensureDom();
-    _.each(values, value => {
+    _.each(values as FacetValue[], value => {
       this.logger.info('Unexcluding facet value', this.facetValuesList.unExclude(value));
     });
     this.facetValueHasChanged();
@@ -950,9 +935,7 @@ export class Facet extends Component {
    * Does not trigger a query automatically.
    * @param value Can be a [`FacetValue`]{@link FacetValue} or a string.
    */
-  public toggleSelectValue(value: FacetValue): void;
-  public toggleSelectValue(value: string): void;
-  public toggleSelectValue(value: any): void {
+  public toggleSelectValue(value: FacetValue | string): void {
     Assert.exists(value);
     this.ensureDom();
     this.logger.info('Toggle select facet value', this.facetValuesList.toggleSelect(value));
@@ -967,9 +950,7 @@ export class Facet extends Component {
    *
    * @param value Can be a [`FacetValue`]{@link FacetValue} or a string.
    */
-  public toggleExcludeValue(value: FacetValue): void;
-  public toggleExcludeValue(value: string): void;
-  public toggleExcludeValue(value: any): void {
+  public toggleExcludeValue(value: FacetValue | string): void {
     Assert.exists(value);
     this.ensureDom();
     this.logger.info('Toggle exclude facet value', this.facetValuesList.toggleExclude(value));
@@ -1143,9 +1124,7 @@ export class Facet extends Component {
    *
    * @param facetValue The `FacetValue` whose caption the method should return.
    */
-  public getValueCaption(facetValue: IIndexFieldValue): string;
-  public getValueCaption(facetValue: FacetValue): string;
-  public getValueCaption(facetValue: any): string {
+  public getValueCaption(facetValue: IIndexFieldValue | FacetValue): string {
     Assert.exists(facetValue);
     const lookupValue = facetValue.lookupValue || facetValue.value;
     let ret = lookupValue;
