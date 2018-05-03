@@ -57,12 +57,8 @@
 }
 
 .coveo-relevance-inspector-result-thumbnail {
-  min-width: 350px;
+  min-width: 500px;
   white-space: normal;
-}
-
-.coveo-relevance-inspector-thumbnail-cell {
-  overflow: scroll;
 }
 
 .coveo-relevance-inspector-dt {
@@ -210,4 +206,14 @@
 
 .coveo-relevance-inspector-inline-ranking-button {
   height: 35px;
+  margin: 5px 0;
+}
+
+.relevance-inspector-list-output {
+  padding-left: 5px;
+  margin-top: 0;
+}
+
+.coveo-relevance-inspector-inline-ranking-qre-expression {
+  font-weight: bold;
 }

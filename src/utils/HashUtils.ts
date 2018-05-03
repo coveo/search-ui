@@ -202,6 +202,17 @@ export class HashUtils {
       obj = obj.replace(Utils.safeEncodeURIComponent(HashUtils.DELIMITER.objectEnd), HashUtils.DELIMITER.objectEnd);
     }
     try {
+      const containsArray = /(\[.*\])/.exec(obj);
+
+      if (containsArray) {
+        obj = obj.replace(
+          /(\[.*\])/,
+          `[${this.decodeArray(containsArray[1])
+            .map(val => `"${val}"`)
+            .join(',')}]`
+        );
+      }
+
       const decoded = decodeURIComponent(obj);
       return JSON.parse(decoded);
     } catch (e) {
