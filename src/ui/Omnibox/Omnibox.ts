@@ -727,15 +727,31 @@ export class Omnibox extends Component {
       return this.magicBox.getText();
     }
 
-    let query = this.magicBox.getWordCompletion();
-    if (query == null && this.lastSuggestions != null && this.lastSuggestions.length > 0) {
-      const textSuggestion = _.find(this.lastSuggestions, (suggestion: IOmniboxSuggestion) => suggestion.text != null);
-      if (textSuggestion != null) {
-        query = textSuggestion.text;
-      }
+    const wordCompletion = this.magicBox.getWordCompletion();
+
+    if (wordCompletion != null) {
+      return wordCompletion;
     }
 
-    return query || this.magicBox.getText();
+    return this.magicBox.getWordCompletion() || this.getFirstSuggestion() || this.magicBox.getText();
+  }
+
+  private getFirstSuggestion() {
+    if (this.lastSuggestions == null) {
+      return '';
+    }
+
+    if (this.lastSuggestions.length <= 0) {
+      return '';
+    }
+
+    const textSuggestion = _.find(this.lastSuggestions, (suggestion: IOmniboxSuggestion) => suggestion.text != null);
+
+    if (textSuggestion == null) {
+      return '';
+    }
+
+    return textSuggestion.text;
   }
 
   public updateQueryState() {
