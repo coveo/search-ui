@@ -67,6 +67,9 @@ export function FacetValueSuggestionsTest() {
       omniboxInstance = Mock.mock(Omnibox);
       omniboxInstance.suggestionAddon = Mock.mock(QuerySuggestAddon);
       omniboxInstance.suggestionAddon.getSuggestion = jasmine.createSpy('getSuggestions');
+      omniboxInstance.magicBox = {
+        blur: jasmine.createSpy('blur')
+      } as any;
       setUpKeywordInOmnibox(aKeyword);
       setUpOmniboxSuggestionsToReturn([]);
       test = Mock.basicComponentSetup<FacetValueSuggestions>(FacetValueSuggestions, <IFacetValueSuggestionsOptions>{
