@@ -1031,7 +1031,7 @@ export class StandaloneSearchInterface extends SearchInterface {
       stateValues['firstQueryCause'] = uaCausedBy;
     }
     const uaMeta = this.usageAnalytics.getCurrentEventMeta();
-    if (uaMeta != null) {
+    if (uaMeta != null && !isEmpty(uaMeta)) {
       stateValues['firstQueryMeta'] = uaMeta;
     }
 
