@@ -6,6 +6,7 @@ export interface IRankingInfo {
   documentWeights: IListOfWeights;
   totalWeight: number;
   termsWeight: IListOfTermsWeights;
+  qreWeights: IListOfQRE[];
 }
 
 export interface IListOfWeights {
@@ -19,6 +20,11 @@ export interface IListOfWeights {
   Source: number;
   Title: number;
   [key: string]: number;
+}
+
+export interface IListOfQRE {
+  expression: string;
+  score: number;
 }
 
 export type IListOfTermsWeights = Record<string, IWeightsPerTerm>;
@@ -85,6 +91,7 @@ export const parseRankingInfo = (value: string): IRankingInfo | null => {
     const termsWeightRegexResult = REGEX_EXTRACT_TERMS_WEIGHTS.exec(value);
     const totalWeigthRegexResult = REGEX_EXTRACT_TOTAL_WEIGHTS.exec(value);
 
+    const qreWeights = parseQREWeights(value);
     const documentWeights = parseWeights(docWeightsRegexResult ? docWeightsRegexResult[1] : null);
     const termsWeight = parseTermsWeights(termsWeightRegexResult);
     const totalWeight = totalWeigthRegexResult ? Number(totalWeigthRegexResult[1]) : null;
@@ -92,7 +99,8 @@ export const parseRankingInfo = (value: string): IRankingInfo | null => {
     return {
       documentWeights,
       termsWeight,
-      totalWeight
+      totalWeight,
+      qreWeights
     };
   }
   return null;
@@ -156,4 +164,21 @@ const parseTermsWeights = (termsWeight: RegExpExecArray | null): IListOfTermsWei
     ) as IListOfTermsWeights;
   }
   return null;
+};
+
+const parseQREWeights = (value: string): IListOfQRE[] => {
+  const REGEX_EXTRACT_QRE_WEIGHTS = /(Expression:\s".*")\sScore:\s(?!0)([0-9]+)\n+/g;
+
+  let qreWeightsRegexResult = REGEX_EXTRACT_QRE_WEIGHTS.exec(value);
+
+  const qreWeights: IListOfQRE[] = [];
+  while (qreWeightsRegexResult) {
+    qreWeights.push({
+      expression: qreWeightsRegexResult[1],
+      score: parseInt(qreWeightsRegexResult[2], 10)
+    });
+    qreWeightsRegexResult = REGEX_EXTRACT_QRE_WEIGHTS.exec(value);
+  }
+
+  return qreWeights;
 };

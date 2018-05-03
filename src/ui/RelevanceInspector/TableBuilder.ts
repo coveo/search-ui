@@ -94,7 +94,7 @@ export class TableBuilder {
       Document: {
         content: { result, bindings },
         cellRenderer: ThumbnailHtmlRenderer,
-        width: 400,
+        width: 550,
         getQuickFilterText: (params: agGridModule.GetQuickFilterTextParams) => {
           return '';
         }

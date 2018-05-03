@@ -57,7 +57,10 @@ export class GenericValueOutput {
       };
     }
 
-    const list = $$('ul');
+    const list = $$('ul', {
+      className: 'relevance-inspector-list-output'
+    });
+
     section.forEach(sectionValue => {
       if (isObject(sectionValue)) {
         list.append($$('li', undefined, this.objectJoined(sectionValue as any).content).el);
