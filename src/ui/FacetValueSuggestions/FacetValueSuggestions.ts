@@ -260,6 +260,7 @@ export class FacetValueSuggestions extends Component {
     const existingValues: string[] = fvState[this.options.field.toString()] || [];
     fvState[this.options.field.toString()] = existingValues.concat([row.value]);
     this.queryStateModel.set(QueryStateModel.attributesEnum.fv, fvState);
+    omnibox.magicBox.blur();
     this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.omniboxField, {});
     this.queryController.executeQuery();
   }
