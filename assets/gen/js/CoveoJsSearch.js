@@ -170,7 +170,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 		if (__webpack_require__.nc) {
 /******/ 			script.setAttribute("nonce", __webpack_require__.nc);
 /******/ 		}
-/******/ 		script.src = __webpack_require__.p + "" + ({"0":"RelevanceInspector"}[chunkId]||chunkId) + "__" + "e88b07527d07df27a874" + ".js";
+/******/ 		script.src = __webpack_require__.p + "" + ({"0":"RelevanceInspector"}[chunkId]||chunkId) + "__" + "d0a9a13fb91315cd3e85" + ".js";
 /******/ 		var timeout = setTimeout(onScriptComplete, 120000);
 /******/ 		script.onerror = script.onload = onScriptComplete;
 /******/ 		function onScriptComplete() {
@@ -7070,7 +7070,7 @@ var StandaloneSearchInterface = /** @class */ (function (_super) {
             stateValues['firstQueryCause'] = uaCausedBy;
         }
         var uaMeta = this.usageAnalytics.getCurrentEventMeta();
-        if (uaMeta != null) {
+        if (uaMeta != null && !underscore_1.isEmpty(uaMeta)) {
             stateValues['firstQueryMeta'] = uaMeta;
         }
         var link = document.createElement('a');
@@ -17304,8 +17304,8 @@ exports.PreferencesPanelEvents = PreferencesPanelEvents;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    lib: '2.4094.6-beta',
-    product: '2.4094.6-beta',
+    lib: '2.4094.7-beta',
+    product: '2.4094.7-beta',
     supportedApiVersion: 2
 };
 
@@ -18988,17 +18988,30 @@ var Omnibox = /** @class */ (function (_super) {
         }
     };
     Omnibox.prototype.getQuery = function (searchAsYouType) {
-        var query;
-        if (searchAsYouType) {
-            query = this.magicBox.getWordCompletion();
-            if (query == null && this.lastSuggestions != null && this.lastSuggestions.length > 0) {
-                var textSuggestion = _.find(this.lastSuggestions, function (suggestion) { return suggestion.text != null; });
-                if (textSuggestion != null) {
-                    query = textSuggestion.text;
-                }
-            }
+        if (this.lastQuery == this.magicBox.getText()) {
+            return this.lastQuery;
         }
-        return query || this.magicBox.getText();
+        if (!searchAsYouType) {
+            return this.magicBox.getText();
+        }
+        var wordCompletion = this.magicBox.getWordCompletion();
+        if (wordCompletion != null) {
+            return wordCompletion;
+        }
+        return this.magicBox.getWordCompletion() || this.getFirstSuggestion() || this.magicBox.getText();
+    };
+    Omnibox.prototype.getFirstSuggestion = function () {
+        if (this.lastSuggestions == null) {
+            return '';
+        }
+        if (this.lastSuggestions.length <= 0) {
+            return '';
+        }
+        var textSuggestion = _.find(this.lastSuggestions, function (suggestion) { return suggestion.text != null; });
+        if (textSuggestion == null) {
+            return '';
+        }
+        return textSuggestion.text;
     };
     Omnibox.prototype.updateQueryState = function () {
         this.queryStateModel.set(QueryStateModel_2.QueryStateModel.attributesEnum.q, this.magicBox.getText());
@@ -40316,8 +40329,7 @@ var FacetValueSuggestions = /** @class */ (function (_super) {
     };
     FacetValueSuggestions.prototype.getFacetValueSuggestions = function (text, omnibox) {
         return __awaiter(this, void 0, void 0, function () {
-            var _this = this;
-            var wordsToQuery, suggestionsKeywords, allWordsToQuery, suggestions, currentSelectedValues_1, filteredSuggestions, error_1;
+            var wordsToQuery, suggestionsKeywords, allWordsToQuery;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -40325,14 +40337,27 @@ var FacetValueSuggestions = /** @class */ (function (_super) {
                         return [4 /*yield*/, this.getQuerySuggestionsKeywords(omnibox)];
                     case 1:
                         suggestionsKeywords = _a.sent();
-                        allWordsToQuery = _.unique(wordsToQuery.concat(suggestionsKeywords));
-                        _a.label = 2;
-                    case 2:
-                        _a.trys.push([2, 4, , 5]);
-                        return [4 /*yield*/, this.fieldValueCache.getSuggestions("fv" + allWordsToQuery.join(''), function () {
-                                return _this.facetValueSuggestionsProvider.getSuggestions(allWordsToQuery);
+                        allWordsToQuery = _.unique(wordsToQuery.concat(suggestionsKeywords).filter(function (value) { return value != ''; }));
+                        if (allWordsToQuery.length === 0) {
+                            return [2 /*return*/, []];
+                        }
+                        return [2 /*return*/, this.getSuggestionsForWords(allWordsToQuery, omnibox)];
+                }
+            });
+        });
+    };
+    FacetValueSuggestions.prototype.getSuggestionsForWords = function (wordsToQuery, omnibox) {
+        return __awaiter(this, void 0, void 0, function () {
+            var _this = this;
+            var suggestions, currentSelectedValues_1, filteredSuggestions, error_1;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, this.fieldValueCache.getSuggestions("fv" + wordsToQuery.join(''), function () {
+                                return _this.facetValueSuggestionsProvider.getSuggestions(wordsToQuery);
                             })];
-                    case 3:
+                    case 1:
                         suggestions = _a.sent();
                         this.logger.debug('FacetValue Suggestions Results', suggestions);
                         currentSelectedValues_1 = this.queryStateModel.get(this.queryStateFieldFacetId) || [];
@@ -40340,11 +40365,11 @@ var FacetValueSuggestions = /** @class */ (function (_super) {
                             return _this.isSuggestionRowAlreadyCheckedInFacet(suggestion, currentSelectedValues_1);
                         });
                         return [2 /*return*/, this.rankSuggestionRows(filteredSuggestions).map(function (result) { return _this.mapFacetValueSuggestion(result, omnibox); })];
-                    case 4:
+                    case 2:
                         error_1 = _a.sent();
                         this.logger.error(error_1);
                         return [2 /*return*/, []];
-                    case 5: return [2 /*return*/];
+                    case 3: return [2 /*return*/];
                 }
             });
         });
@@ -40386,6 +40411,7 @@ var FacetValueSuggestions = /** @class */ (function (_super) {
         var existingValues = fvState[this.options.field.toString()] || [];
         fvState[this.options.field.toString()] = existingValues.concat([row.value]);
         this.queryStateModel.set(ModelsModules_1.QueryStateModel.attributesEnum.fv, fvState);
+        omnibox.magicBox.blur();
         this.usageAnalytics.logSearchEvent(AnalyticsActionListMeta_1.analyticsActionCauseList.omniboxField, {});
         this.queryController.executeQuery();
     };
@@ -48541,7 +48567,8 @@ var Thumbnail = /** @class */ (function (_super) {
         }
         else {
             _this.logger.info('Result has no thumbnail. Cannot build thumbnail image, instanciating an Icon component instead.');
-            new Icon_1.Icon(element, { small: true }, bindings, result);
+            var icn = new Icon_1.Icon(Dom_1.$$('div').el, { small: true }, bindings, result);
+            Dom_1.$$(_this.element).replaceWith(icn.element);
         }
         return _this;
     }
