@@ -131,12 +131,48 @@ export function FacetValueSuggestionsTest() {
 
     describe('when the provider resolves suggestions', () => {
       beforeEach(() => {
-        setUpSuggestionsFromProviderToReturn([getSuggestionValue()]);
+        setUpSuggestionsFromProviderToReturn([getSuggestionValue(), getSuggestionValue(), getSuggestionValue()]);
       });
 
       it('populates suggestions', async done => {
         const resultingArgs = await triggerPopulateOmniboxEvent();
 
+        firstSuggestion(resultingArgs).then(result => {
+          expect(result.length).toBe(3);
+          done();
+        });
+      });
+
+      it('should respect the numberOfSuggestions option when the value is less than what is returned', async done => {
+        test.cmp.options.numberOfSuggestions = 2;
+        const resultingArgs = await triggerPopulateOmniboxEvent();
+        firstSuggestion(resultingArgs).then(result => {
+          expect(result.length).toBe(2);
+          done();
+        });
+      });
+
+      it('should respect the numberOfSuggestions option when the value is more than what is returned', async done => {
+        test.cmp.options.numberOfSuggestions = 99;
+        const resultingArgs = await triggerPopulateOmniboxEvent();
+        firstSuggestion(resultingArgs).then(result => {
+          expect(result.length).toBe(3);
+          done();
+        });
+      });
+
+      it('should respect the numberOfSuggestions option when the value is 0', async done => {
+        test.cmp.options.numberOfSuggestions = 0;
+        const resultingArgs = await triggerPopulateOmniboxEvent();
+        firstSuggestion(resultingArgs).then(result => {
+          expect(result.length).toBe(0);
+          done();
+        });
+      });
+
+      it('should respect the numberOfSuggestions option when the value is 1', async done => {
+        test.cmp.options.numberOfSuggestions = 1;
+        const resultingArgs = await triggerPopulateOmniboxEvent();
         firstSuggestion(resultingArgs).then(result => {
           expect(result.length).toBe(1);
           done();
@@ -147,7 +183,6 @@ export function FacetValueSuggestionsTest() {
         const resultingArgs = await triggerPopulateOmniboxEvent();
 
         firstSuggestion(resultingArgs).then(result => {
-          expect(result.length).toBe(1);
           result[0].onSelect();
           expect(omniboxInstance.setText).toHaveBeenCalledWith(aKeyword);
           done();
@@ -158,7 +193,6 @@ export function FacetValueSuggestionsTest() {
         const resultingArgs = await triggerPopulateOmniboxEvent();
 
         firstSuggestion(resultingArgs).then(result => {
-          expect(result.length).toBe(1);
           result[0].onSelect();
           expect(test.env.queryStateModel.set).toHaveBeenCalledWith(QueryStateModel.attributesEnum.fv, {
             [someField]: [someSuggestionValue]
@@ -175,7 +209,6 @@ export function FacetValueSuggestionsTest() {
         const resultingArgs = await triggerPopulateOmniboxEvent();
 
         firstSuggestion(resultingArgs).then(result => {
-          expect(result.length).toBe(1);
           result[0].onSelect();
           expect(test.env.queryStateModel.set).toHaveBeenCalledWith(QueryStateModel.attributesEnum.fv, {
             wow: 'existingvalue',
@@ -189,7 +222,6 @@ export function FacetValueSuggestionsTest() {
         const resultingArgs = await triggerPopulateOmniboxEvent();
 
         firstSuggestion(resultingArgs).then(result => {
-          expect(result.length).toBe(1);
           result[0].onSelect();
           expect(test.env.usageAnalytics.logSearchEvent).toHaveBeenCalled();
           expect(test.env.queryController.executeQuery).toHaveBeenCalled();

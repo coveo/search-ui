@@ -106,7 +106,8 @@ export class Thumbnail extends Component {
       this.buildThumbnailImage();
     } else {
       this.logger.info('Result has no thumbnail. Cannot build thumbnail image, instanciating an Icon component instead.');
-      new Icon(element, { small: true }, bindings, result);
+      const icn = new Icon($$('div').el, { small: true }, bindings, result);
+      $$(this.element).replaceWith(icn.element);
     }
   }
 
