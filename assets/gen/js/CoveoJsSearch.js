@@ -170,7 +170,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 		if (__webpack_require__.nc) {
 /******/ 			script.setAttribute("nonce", __webpack_require__.nc);
 /******/ 		}
-/******/ 		script.src = __webpack_require__.p + "" + ({"0":"RelevanceInspector"}[chunkId]||chunkId) + "__" + "914dd8a22aba225bac13" + ".js";
+/******/ 		script.src = __webpack_require__.p + "" + ({"0":"RelevanceInspector"}[chunkId]||chunkId) + "__" + "e88b07527d07df27a874" + ".js";
 /******/ 		var timeout = setTimeout(onScriptComplete, 120000);
 /******/ 		script.onerror = script.onload = onScriptComplete;
 /******/ 		function onScriptComplete() {
@@ -6641,16 +6641,11 @@ var SearchInterface = /** @class */ (function (_super) {
         data.queryBuilder.allowQueriesWithoutKeywords = this.options.allowQueriesWithoutKeywords;
         var endpoint = this.queryController.getEndpoint();
         if (endpoint != null && endpoint.options) {
-            var qsArguments = endpoint.options.queryStringArguments;
             if (this.queryStateModel.get(QueryStateModel_1.QueryStateModel.attributesEnum.debug)) {
                 data.queryBuilder.maximumAge = 0;
                 data.queryBuilder.enableDebug = true;
-                qsArguments ? (qsArguments.debugRankingInformation = 1) : null;
                 data.queryBuilder.fieldsToExclude = ['allmetadatavalues'];
                 data.queryBuilder.fieldsToInclude = null;
-            }
-            else {
-                qsArguments ? (qsArguments.debugRankingInformation = 0) : null;
             }
         }
     };
@@ -10328,6 +10323,12 @@ var HashUtils = /** @class */ (function () {
             obj = obj.replace(Utils_1.Utils.safeEncodeURIComponent(HashUtils.DELIMITER.objectEnd), HashUtils.DELIMITER.objectEnd);
         }
         try {
+            var containsArray = /(\[.*\])/.exec(obj);
+            if (containsArray) {
+                obj = obj.replace(/(\[.*\])/, "[" + this.decodeArray(containsArray[1])
+                    .map(function (val) { return "\"" + val + "\""; })
+                    .join(',') + "]");
+            }
             var decoded = decodeURIComponent(obj);
             return JSON.parse(decoded);
         }
@@ -17303,8 +17304,8 @@ exports.PreferencesPanelEvents = PreferencesPanelEvents;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    lib: '2.4094.5-beta',
-    product: '2.4094.5-beta',
+    lib: '2.4094.6-beta',
+    product: '2.4094.6-beta',
     supportedApiVersion: 2
 };
 
@@ -40285,6 +40286,9 @@ var FacetValueSuggestions = /** @class */ (function (_super) {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
+                        if (this.options.numberOfSuggestions == 0) {
+                            return [2 /*return*/, []];
+                        }
                         text = omnibox.getText();
                         return [4 /*yield*/, this.getFacetValueSuggestions(text, omnibox)];
                     case 1:
@@ -40350,9 +40354,14 @@ var FacetValueSuggestions = /** @class */ (function (_super) {
     };
     FacetValueSuggestions.prototype.rankSuggestionRows = function (suggestions) {
         var rankedResults = suggestions.sort(function (a, b) { return b.score.distanceFromTotalForField - a.score.distanceFromTotalForField; }).slice();
-        var preciseResults = rankedResults.splice(0, Math.ceil(this.options.numberOfSuggestions / 2));
-        var broadResults = rankedResults.slice(-1, Math.floor(this.options.numberOfSuggestions / 2));
-        return preciseResults.concat(broadResults);
+        var firstSlice = Math.ceil(this.options.numberOfSuggestions / 2);
+        var lastSlice = -Math.floor(this.options.numberOfSuggestions / 2);
+        var firstResultsToReturn = rankedResults.splice(0, firstSlice);
+        if (lastSlice != 0) {
+            var lastResultsToReturn = rankedResults.slice(lastSlice);
+            return firstResultsToReturn.concat(lastResultsToReturn);
+        }
+        return firstResultsToReturn;
     };
     FacetValueSuggestions.prototype.mapFacetValueSuggestion = function (resultToShow, omnibox) {
         var _this = this;
