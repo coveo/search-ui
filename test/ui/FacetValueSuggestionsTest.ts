@@ -28,7 +28,7 @@ export function FacetValueSuggestionsTest() {
     };
     const getOmniboxSuggestionValue = (value?: string): IOmniboxSuggestion => {
       return {
-        text: anOmniboxSuggestionKeyword
+        text: value || anOmniboxSuggestionKeyword
       };
     };
     const someField: string = '@bloupbloup';
@@ -71,7 +71,7 @@ export function FacetValueSuggestionsTest() {
         blur: jasmine.createSpy('blur')
       } as any;
       setUpKeywordInOmnibox(aKeyword);
-      setUpOmniboxSuggestionsToReturn([]);
+      setUpOmniboxSuggestionsToReturn([getOmniboxSuggestionValue()]);
       test = Mock.basicComponentSetup<FacetValueSuggestions>(FacetValueSuggestions, <IFacetValueSuggestionsOptions>{
         field: <IFieldOption>someField
       });
@@ -126,6 +126,24 @@ export function FacetValueSuggestionsTest() {
           );
           done();
         });
+      });
+    });
+
+    describe('when no keywords are provided', () => {
+      beforeEach(() => {
+        setUpOmniboxSuggestionsToReturn([]);
+        setUpKeywordInOmnibox('');
+        setUpSuggestionsFromProviderToReturn([getSuggestionValue()]);
+
+        test.cmp.options.useValueFromSearchbox = true;
+        test.cmp.options.useQuerySuggestions = true;
+      });
+
+      it('should not call the suggestions provider', async done => {
+        await triggerPopulateOmniboxEvent();
+
+        expect(facetValueSuggestionsProvider.getSuggestions).toHaveBeenCalledTimes(0);
+        done();
       });
     });
 
@@ -242,6 +260,7 @@ export function FacetValueSuggestionsTest() {
 
     it('calls suggestions with the omnibox keyword when the useValueFromSearchbox options is true', async done => {
       test.cmp.options.useValueFromSearchbox = true;
+      test.cmp.options.useQuerySuggestions = false;
 
       await triggerPopulateOmniboxEvent();
 
@@ -252,6 +271,7 @@ export function FacetValueSuggestionsTest() {
 
     describe('when the omnibox has suggestions', () => {
       beforeEach(() => {
+        test.cmp.options.useQuerySuggestions = true;
         setUpOmniboxSuggestionsToReturn([getOmniboxSuggestionValue()]);
       });
 
@@ -262,16 +282,6 @@ export function FacetValueSuggestionsTest() {
 
         expect(facetValueSuggestionsProvider.getSuggestions).toHaveBeenCalledTimes(1);
         expect(facetValueSuggestionsProvider.getSuggestions).toHaveBeenCalledWith([anOmniboxSuggestionKeyword]);
-        done();
-      });
-
-      it('calls suggestions without the shown omnibox suggestions keyword when the useQuerySuggestions options is false', async done => {
-        test.cmp.options.useQuerySuggestions = false;
-
-        await triggerPopulateOmniboxEvent();
-
-        expect(facetValueSuggestionsProvider.getSuggestions).toHaveBeenCalledTimes(1);
-        expect(facetValueSuggestionsProvider.getSuggestions).not.toHaveBeenCalledWith([anOmniboxSuggestionKeyword]);
         done();
       });
     });
@@ -308,8 +318,26 @@ export function FacetValueSuggestionsTest() {
       });
     });
 
+    describe('when only using the search box keywords and the keyword is empty', () => {
+      beforeEach(() => {
+        test.cmp.options.useValueFromSearchbox = true;
+        test.cmp.options.useQuerySuggestions = false;
+        setUpKeywordInOmnibox('');
+      });
+
+      it('returns no suggestions', async done => {
+        const resultingArgs = await triggerPopulateOmniboxEvent();
+
+        firstSuggestion(resultingArgs).then(result => {
+          expect(result.length).toBe(0);
+          done();
+        });
+      });
+    });
+
     it('caches results by keywords', async done => {
       test.cmp.options.useValueFromSearchbox = true;
+      test.cmp.options.useQuerySuggestions = false;
 
       const anotherKeyword = 'anotherkeyword';
       await triggerPopulateOmniboxEvent();

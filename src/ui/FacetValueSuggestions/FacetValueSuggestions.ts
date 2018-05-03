@@ -199,10 +199,19 @@ export class FacetValueSuggestions extends Component {
     const wordsToQuery = this.options.useValueFromSearchbox ? [text] : [];
 
     const suggestionsKeywords: string[] = await this.getQuerySuggestionsKeywords(omnibox);
-    const allWordsToQuery = _.unique(wordsToQuery.concat(suggestionsKeywords));
+    const allWordsToQuery = _.unique(wordsToQuery.concat(suggestionsKeywords).filter(value => value != ''));
+
+    if (allWordsToQuery.length === 0) {
+      return [];
+    }
+
+    return this.getSuggestionsForWords(allWordsToQuery, omnibox);
+  }
+
+  private async getSuggestionsForWords(wordsToQuery: string[], omnibox: Omnibox): Promise<IOmniboxSuggestion[]> {
     try {
-      const suggestions = await this.fieldValueCache.getSuggestions(`fv${allWordsToQuery.join('')}`, () =>
-        this.facetValueSuggestionsProvider.getSuggestions(allWordsToQuery)
+      const suggestions = await this.fieldValueCache.getSuggestions(`fv${wordsToQuery.join('')}`, () =>
+        this.facetValueSuggestionsProvider.getSuggestions(wordsToQuery)
       );
 
       this.logger.debug('FacetValue Suggestions Results', suggestions);
