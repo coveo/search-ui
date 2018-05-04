@@ -52,14 +52,15 @@ export class CategoryChildrenValueRenderer {
 
   private renderValue(value: ICategoryFacetValue) {
     const listOfChildValues = this.getListOfChildValues();
+    const path = this.categoryValue.path.concat([value.value]);
     this.element.append(listOfChildValues.el);
     const categoryValue = new CategoryValue(
       listOfChildValues,
       value.value,
       value.numberOfResults,
-      this.categoryValue,
       this.categoryFacetTemplates,
-      this.categoryFacet
+      this.categoryFacet,
+      path
     );
     categoryValue.render();
     this.children.push(categoryValue);

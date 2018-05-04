@@ -35,6 +35,7 @@ export class CategoryFacetQueryController {
     };
 
     lastQuery.groupBy = [groupByRequest];
+    lastQuery.categoryFacets.splice(this.categoryFacet.positionInQuery, 1);
     return this.categoryFacet.queryController
       .getEndpoint()
       .search(lastQuery)

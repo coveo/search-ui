@@ -1,6 +1,20 @@
 @import 'Variables';
 @import 'bourbon/bourbon';
 
+@mixin facetValueLabelPadding {
+  padding: 5px 19px 5px 20px;
+}
+
+@mixin clickableCategoryFacetValue {
+  vertical-align: middle;
+  line-height: 22px;
+  cursor: pointer;
+  &:focus,
+  &:hover {
+    background-color: $color-blueish-white-grey;
+  }
+}
+
 .CoveoCategoryFacet {
   &.coveo-hidden {
     display: none;
@@ -23,14 +37,9 @@
 }
 
 .coveo-category-facet-value-label {
-  cursor: pointer;
-  vertical-align: middle;
   @include display(flex);
-  line-height: 22px;
-  padding: 5px 19px 5px 20px;
-  &:hover {
-    background-color: $color-blueish-white-grey;
-  }
+  @include facetValueLabelPadding();
+  @include clickableCategoryFacetValue();
 }
 
 .coveo-active-category-facet-parent > .coveo-category-facet-value-label {
@@ -120,10 +129,20 @@
   }
 }
 
-.coveo-category-facet-eraser {
-  display: inline-block;
+.coveo-category-facet-header-eraser {
+  float: right;
 }
 
-.coveo-category-facet-non-empty-path .coveo-category-facet-eraser {
+.coveo-category-facet-non-empty-path .coveo-category-facet-header-eraser {
   visibility: visible;
+}
+
+.coveo-category-facet-all-categories {
+  @include facetValueLabelPadding();
+  @include clickableCategoryFacetValue();
+}
+
+.coveo-category-facet-ellipsis-caption {
+  @include facetValueLabelPadding();
+  padding-left: 36px;
 }
