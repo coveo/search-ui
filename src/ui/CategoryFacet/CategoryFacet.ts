@@ -15,24 +15,26 @@ import 'styling/_CategoryFacet';
 import { IAttributesChangedEventArg, MODEL_EVENTS } from '../../models/Model';
 import { Utils } from '../../utils/Utils';
 import { CategoryValue, CategoryValueParent } from './CategoryValue';
-import { each, find, isEmpty, contains, isArray } from 'underscore';
+import { find, first, last, isEmpty, contains, isArray } from 'underscore';
 import { Assert } from '../../misc/Assert';
 import { QueryEvents, IBuildingQueryEventArgs, IQuerySuccessEventArgs } from '../../events/QueryEvents';
 import { CategoryFacetSearch } from './CategoryFacetSearch';
 import { ICategoryFacetValue } from '../../rest/CategoryFacetValue';
 import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
+import { ICategoryFacetResult } from '../../rest/CategoryFacetsResult';
 
 export interface CategoryFacetOptions {
   field: IFieldOption;
   title?: string;
-  numberOfResultsInFacetSearch: number;
-  id: string;
-  enableFacetSearch: boolean;
-  facetSearchDelay: number;
-  numberOfValues: number;
-  injectionDepth: number;
-  enableMoreLess: boolean;
-  pageSize: number;
+  numberOfResultsInFacetSearch?: number;
+  id?: string;
+  enableFacetSearch?: boolean;
+  facetSearchDelay?: number;
+  numberOfValues?: number;
+  injectionDepth?: number;
+  enableMoreLess?: boolean;
+  pageSize?: number;
+  showClearIcon?: boolean;
 }
 
 /**
@@ -61,7 +63,27 @@ export class CategoryFacet extends Component {
      * See also the [`enableMoreLess`]{@link CategoryFacet.options.enableMoreLess} option.
      */
     numberOfValues: ComponentOptions.buildNumberOption({ defaultValue: 5, min: 0, section: 'CommonOptions' }),
+    /**
+     * Specifies whether to display a search box at the bottom of the facet for searching among the available facet
+     * [`field`]{@link CategoryFacet.options.field} values.
+     *
+     * See also the [`facetSearchDelay`]{@link CategoryFacet.options.facetSearchDelay},
+     * [`facetSearchIgnoreAccents`]{@link Facet.options.facetSearchIgnoreAccents}, and
+     * [`numberOfValuesInFacetSearch`]{@link Facet.options.numberOfValuesInFacetSearch} options.
+     *
+     *
+     * Default value is `true`.
+     */
     enableFacetSearch: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+    /**
+     * Specifies a unique identifier for the facet. Among other things, this identifier serves the purpose of saving
+     * the facet state in the URL hash.
+     *
+     * If you have two facets with the same field on the same page, you should specify an `id` value for at least one of
+     * those two facets. This `id` must be unique among the facets.
+     *
+     * Default value is the [`field`]{@link CategoryFacet.options.field} option value.
+     */
     id: ComponentOptions.buildStringOption({
       postProcessing: (value, options: CategoryFacetOptions) => value || (options.field as string)
     }),
@@ -75,6 +97,13 @@ export class CategoryFacet extends Component {
      * @notSupportedIn salesforcefree
      */
     injectionDepth: ComponentOptions.buildNumberOption({ defaultValue: 1000, min: 0 }),
+    /**
+     * If the [`enableFacetSearch`]{@link CategoryFacet.options.enableFacetSearch} option is `true`, specifies the number of
+     * values to display in the facet search results popup.
+     *
+     *
+     * Default value is `15`. Minimum value is `1`.
+     */
     numberOfResultsInFacetSearch: ComponentOptions.buildNumberOption({ defaultValue: 15, min: 1 }),
     /**
      * If the [`enableFacetSearch`]{@link CategoryFacet.options.enableFacetSearch} option is `true`, specifies the delay (in
@@ -100,7 +129,12 @@ export class CategoryFacet extends Component {
      *
      * Default value is `10`. Minimum value is `1`.
      */
-    pageSize: ComponentOptions.buildNumberOption({ defaultValue: 10, min: 1, depend: 'enableMoreLess' })
+    pageSize: ComponentOptions.buildNumberOption({ defaultValue: 10, min: 1, depend: 'enableMoreLess' }),
+
+    /**
+     * Specifies whether to show a clear icon when values have been selected.
+     */
+    showClearIcon: ComponentOptions.buildBooleanOption({ defaultValue: true })
   };
 
   public categoryFacetQueryController: CategoryFacetQueryController;
@@ -120,6 +154,9 @@ export class CategoryFacet extends Component {
   private moreLessContainer: Dom;
   private moreValuesToFetch: boolean = true;
   private numberOfValues: number;
+
+  private static MAXIMUM_NUMBER_OF_VALUES_BEFORE_TRUNCATING = 15;
+  private static NUMBER_OF_VALUES_TO_KEEP_AFTER_TRUNCATING = 10;
 
   constructor(public element: HTMLElement, public options: CategoryFacetOptions, bindings?: IComponentBindings) {
     super(element, 'CategoryFacet', bindings);
@@ -155,31 +192,12 @@ export class CategoryFacet extends Component {
     const numberOfRequestedValues = args.query.categoryFacets[this.positionInQuery].maximumNumberOfValues;
     const categoryFacetResult = args.results.categoryFacets[this.positionInQuery];
     this.moreValuesToFetch = numberOfRequestedValues == categoryFacetResult.values.length;
+    this.clear();
 
     if (categoryFacetResult.notImplemented) {
       this.notImplementedError();
-    } else if (categoryFacetResult.values.length != 0) {
-      this.clear();
-      this.show();
-
-      const sortedParentValues = this.sortParentValues(categoryFacetResult.parentValues);
-      let currentParentValue: CategoryValueParent = this.categoryValueRoot;
-      each(sortedParentValues, categoryFacetParentValue => {
-        currentParentValue = currentParentValue.renderAsParent(categoryFacetParentValue);
-      });
-      const childrenValuesToRender = categoryFacetResult.values.slice(0, numberOfRequestedValues - 1);
-      currentParentValue.renderChildren(childrenValuesToRender);
-      this.activeCategoryValue = currentParentValue as CategoryValue;
-    } else if (categoryFacetResult.parentValues.length != 0) {
-      this.clear();
-      this.show();
-      const sortedParentValues = this.sortParentValues(categoryFacetResult.parentValues);
-      let currentParentValue: CategoryValueParent = this.categoryValueRoot;
-      each(sortedParentValues, categoryFacetParentValue => {
-        currentParentValue = currentParentValue.renderAsParent(categoryFacetParentValue);
-      });
-      currentParentValue.renderChildren([]);
-      this.activeCategoryValue = currentParentValue as CategoryValue;
+    } else if (categoryFacetResult.values.length != 0 || categoryFacetResult.parentValues.length != 0) {
+      this.renderValues(categoryFacetResult, numberOfRequestedValues);
     } else {
       this.hide();
     }
@@ -197,6 +215,7 @@ export class CategoryFacet extends Component {
       $$(this.element).addClass('coveo-category-facet-non-empty-path');
     }
   }
+
   /**
    * Changes the active path and triggers a new query.
    */
@@ -323,6 +342,42 @@ export class CategoryFacet extends Component {
     return this.categoryValueRoot.children;
   }
 
+  private renderValues(categoryFacetResult: ICategoryFacetResult, numberOfRequestedValues: number) {
+    this.show();
+    let sortedParentValues = this.sortParentValues(categoryFacetResult.parentValues);
+    let needToTruncate = false;
+    let currentParentValue: CategoryValueParent = this.categoryValueRoot;
+
+    if (this.shouldTruncate(sortedParentValues)) {
+      sortedParentValues = first(sortedParentValues, Math.floor(CategoryFacet.NUMBER_OF_VALUES_TO_KEEP_AFTER_TRUNCATING / 2)).concat(
+        last(sortedParentValues, Math.ceil(CategoryFacet.NUMBER_OF_VALUES_TO_KEEP_AFTER_TRUNCATING / 2))
+      );
+      needToTruncate = true;
+    }
+
+    if (!isEmpty(this.activePath)) {
+      currentParentValue.categoryChildrenValueRenderer
+        .getListOfChildValues()
+        .append($$('li', { className: 'coveo-category-facet-all-categories-button' }, l('AllCategories')).el);
+    }
+
+    for (let i = 0; i < sortedParentValues.length; i++) {
+      currentParentValue = currentParentValue.renderAsParent(sortedParentValues[i]);
+      if (needToTruncate && i == Math.floor(CategoryFacet.NUMBER_OF_VALUES_TO_KEEP_AFTER_TRUNCATING / 2) - 1) {
+        currentParentValue.categoryChildrenValueRenderer
+          .getListOfChildValues()
+          .append($$('li', { className: 'coveo-category-facet-ellipsis' }, '...').el);
+      }
+    }
+    const childrenValuesToRender = categoryFacetResult.values.slice(0, numberOfRequestedValues - 1);
+    currentParentValue.renderChildren(childrenValuesToRender);
+    this.activeCategoryValue = currentParentValue as CategoryValue;
+  }
+
+  private shouldTruncate(parentValues: ICategoryFacetValue[]) {
+    return this.sortParentValues.length > CategoryFacet.MAXIMUM_NUMBER_OF_VALUES_BEFORE_TRUNCATING;
+  }
+
   private buildFacetHeader() {
     this.waitElement = $$('div', { className: 'coveo-category-facet-header-wait-animation' }, SVGIcons.icons.loading);
     SVGDom.addClassToSVGInContainer(this.waitElement.el, 'coveo-category-facet-header-wait-animation-svg');
@@ -378,7 +433,7 @@ export class CategoryFacet extends Component {
       return parentValues;
     }
 
-    const sortedParentvalues = [];
+    const sortedParentvalues: ICategoryFacetValue[] = [];
     for (const pathElement of this.activePath) {
       const currentParentValue = find(parentValues, parentValue => parentValue.value == pathElement);
       if (!currentParentValue) {

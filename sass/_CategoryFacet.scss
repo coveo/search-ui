@@ -120,10 +120,10 @@
   }
 }
 
-.coveo-category-facet-eraser {
-  display: inline-block;
+.coveo-category-facet-header-eraser {
+  float: right;
 }
 
-.coveo-category-facet-non-empty-path .coveo-category-facet-eraser {
+.coveo-category-facet-non-empty-path .coveo-category-facet-header-eraser {
   visibility: visible;
 }
