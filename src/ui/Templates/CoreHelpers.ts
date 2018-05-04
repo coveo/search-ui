@@ -297,15 +297,34 @@ export interface ICoreHelpers {
 
 /**
  * Available options for the size templateHelpers.
+ * Example
+ * <div class="CoveoFieldValue" data-field='@size' data-helper="size"  data-helper-options="{base: 0, precision: 1}"></div>
  */
 export interface ISizeOptions {
   /**
    * The base into which to format the value.
+   * Formula: value * 10^(3 * base)
+   *
+   * Base 0 Examples:
+   * 1 -> 1B
+   * 1000 -> 1MB
+   *
+   * Base 1 Examples:
+   * 1 -> 1MB
+   * 1000 -> 1GB
    */
   base?: number;
   /**
-   * The precision to use to format the size.
+   * The precision to use to format the size (i.e., the number of digits to display after the decimal)
+   * Precision 0 Examples
+   * 1.0 -> 1
+   * 1.85 -> 1
+   *
+   * Precision 1 Examples
+   * 1.0 -> 1.0
+   * 1.85 -> 1.8
    */
+
   precision?: number;
 }
 
