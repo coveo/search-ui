@@ -3,7 +3,6 @@ import { CategoryFacetTemplates } from './CategoryFacetTemplates';
 import { CategoryChildrenValueRenderer } from './CategoryValueChildrenRenderer';
 import { CategoryFacet } from './CategoryFacet';
 import { ICategoryFacetValue } from '../../rest/CategoryFacetValue';
-import { initial } from 'underscore';
 
 export interface CategoryValueParent {
   path: string[];
@@ -39,10 +38,6 @@ export class CategoryValue implements CategoryValueParent {
 
   public render() {
     this.parentElement.append(this.element.el);
-  }
-
-  public showSiblings() {
-    this.categoryFacet.changeActivePath(initial(this.path));
   }
 
   public clear() {
