@@ -8,6 +8,7 @@ import { l } from '../../strings/Strings';
 import { IGroupByValue } from '../../rest/GroupByValue';
 import { KEYBOARD } from '../../utils/KeyboardUtils';
 import 'styling/_CategoryFacetSearch';
+import { StringUtils } from '../../utils/StringUtils';
 
 export class CategoryFacetSearch {
   public container: Dom | undefined;
@@ -166,6 +167,7 @@ export class CategoryFacetSearch {
       }
       this.facetSearchElement.searchResults.appendChild(searchResult.el);
     }
+    this.highlightCurrentQueryWithinSearchResults();
   }
 
   private buildFacetSearchValue(categoryFacetValue: IGroupByValue) {
@@ -202,5 +204,19 @@ export class CategoryFacetSearch {
   private withFacetSearchResults() {
     this.facetSearchElement.search && $$(this.facetSearchElement.search).removeClass('coveo-facet-search-no-results');
     $$(this.categoryFacet.element).removeClass('coveo-no-results');
+  }
+
+  private highlightCurrentQueryWithinSearchResults() {
+    const searchResults = $$(this.facetSearchElement.searchResults);
+    const captions = searchResults
+      .findAll('.coveo-category-facet-search-value-caption')
+      .concat(searchResults.findAll('.coveo-category-facet-search-path-parents'))
+      .concat(searchResults.findAll('.coveo-category-facet-search-path-last-value'));
+    const regex = new RegExp(`(${StringUtils.regexEncode(this.facetSearchElement.input.value)})`, 'ig');
+    captions.forEach(caption => {
+      caption.innerHTML = $$(caption)
+        .text()
+        .replace(regex, '<span class="coveo-highlight">$1</span>');
+    });
   }
 }
