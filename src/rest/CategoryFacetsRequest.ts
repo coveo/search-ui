@@ -3,4 +3,5 @@ export interface ICategoryFacetsRequest {
   path: string[];
   maximumNumberOfValues: number;
   injectionDepth: number;
+  delimitingCharacter: string;
 }

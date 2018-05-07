@@ -13,12 +13,14 @@ export class CategoryFacetQueryController {
     if (path.length != 0) {
       queryBuilder.advancedExpression.addFieldExpression(this.categoryFacet.options.field as string, '==', [path.join('|')]);
     }
-    queryBuilder.categoryFacets.push({
+    const categoryFacetsRequest: ICategoryFacetsRequest = {
       field: this.categoryFacet.options.field as string,
       path,
       injectionDepth: this.categoryFacet.options.injectionDepth,
-      maximumNumberOfValues: numberOfValues
-    } as ICategoryFacetsRequest);
+      maximumNumberOfValues: numberOfValues,
+      delimitingCharacter: this.categoryFacet.options.delimitingCharacter
+    };
+    queryBuilder.categoryFacets.push(categoryFacetsRequest);
     return positionInQuery;
   }
 

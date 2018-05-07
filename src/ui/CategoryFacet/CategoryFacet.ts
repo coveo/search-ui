@@ -35,6 +35,7 @@ export interface CategoryFacetOptions {
   enableMoreLess?: boolean;
   pageSize?: number;
   showClearIcon?: boolean;
+  delimitingCharacter?: string;
 }
 
 /**
@@ -134,7 +135,21 @@ export class CategoryFacet extends Component {
     /**
      * Specifies whether to show a clear icon when values have been selected.
      */
-    showClearIcon: ComponentOptions.buildBooleanOption({ defaultValue: true })
+    showClearIcon: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+    /**
+     * The character that allows to specify the hierarchical dependency.
+     *
+     * **Example:**
+     *
+     * If your field has the following values:
+     *
+     * `@field: c; c>folder2; c>folder2>folder3;`
+     *
+     * The delimiting character is `>`.
+     *
+     * Default value is `|`.
+     */
+    delimitingCharacter: ComponentOptions.buildStringOption({ defaultValue: '|' })
   };
 
   public categoryFacetQueryController: CategoryFacetQueryController;
