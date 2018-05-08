@@ -2,6 +2,7 @@ import { $$, Dom } from '../../utils/Dom';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { SVGDom } from '../../utils/SVGDom';
 import { escape } from 'underscore';
+import { l } from '../../strings/Strings';
 
 export interface CategoryFacetData {
   value: string;
@@ -25,6 +26,23 @@ export class CategoryFacetTemplates {
   public buildListElement(data: CategoryFacetData) {
     const div = $$('div', {}, this.createListElement(data));
     return $$(div.el.firstChild as HTMLElement);
+  }
+
+  public buildAllCategoriesButton() {
+    const allCategoriesCaption = $$('span', { className: 'coveo-category-facet-all-categories-caption' }, l('AllCategories'));
+    const allCategories = $$(
+      'li',
+      { className: 'coveo-category-facet-value coveo-category-facet-all-categories' },
+      this.buildCollapseArrow(),
+      allCategoriesCaption
+    );
+    return allCategories;
+  }
+
+  public buildEllipsis() {
+    const ellipsisCaption = $$('span', { className: 'coveo-category-facet-ellipsis-caption' }, '[ ... ]');
+    const ellipsis = $$('li', { className: 'coveo-category-facet-ellipsis' }, ellipsisCaption);
+    return ellipsis;
   }
 
   public buildCollapseArrow() {

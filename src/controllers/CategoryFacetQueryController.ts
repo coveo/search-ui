@@ -8,17 +8,19 @@ import { IGroupByValue } from '../rest/GroupByValue';
 export class CategoryFacetQueryController {
   constructor(private categoryFacet: CategoryFacet) {}
 
-  public putCategoryFacetInQueryBuilder(queryBuilder: QueryBuilder, path: string[]): number {
+  public putCategoryFacetInQueryBuilder(queryBuilder: QueryBuilder, path: string[], maximumNumberOfValues: number): number {
     const positionInQuery = queryBuilder.categoryFacets.length;
     if (path.length != 0) {
       queryBuilder.advancedExpression.addFieldExpression(this.categoryFacet.options.field as string, '==', [path.join('|')]);
     }
-    queryBuilder.categoryFacets.push({
+    const categoryFacetsRequest: ICategoryFacetsRequest = {
       field: this.categoryFacet.options.field as string,
       path,
       injectionDepth: this.categoryFacet.options.injectionDepth,
-      maximumNumberOfValues: this.categoryFacet.options.numberOfValues
-    } as ICategoryFacetsRequest);
+      maximumNumberOfValues,
+      delimitingCharacter: this.categoryFacet.options.delimitingCharacter
+    };
+    queryBuilder.categoryFacets.push(categoryFacetsRequest);
     return positionInQuery;
   }
 
@@ -35,6 +37,7 @@ export class CategoryFacetQueryController {
     };
 
     lastQuery.groupBy = [groupByRequest];
+    lastQuery.categoryFacets.splice(this.categoryFacet.positionInQuery, 1);
     return this.categoryFacet.queryController
       .getEndpoint()
       .search(lastQuery)

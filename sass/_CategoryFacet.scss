@@ -1,5 +1,20 @@
 @import 'Variables';
+@import './mixins/breadcrumb';
 @import 'bourbon/bourbon';
+
+@mixin facetValueLabelPadding {
+  padding: 5px 19px 5px 20px;
+}
+
+@mixin clickableCategoryFacetValue {
+  vertical-align: middle;
+  line-height: 22px;
+  cursor: pointer;
+  &:focus,
+  &:hover {
+    background-color: $color-blueish-white-grey;
+  }
+}
 
 .CoveoCategoryFacet {
   &.coveo-hidden {
@@ -23,14 +38,9 @@
 }
 
 .coveo-category-facet-value-label {
-  cursor: pointer;
-  vertical-align: middle;
   @include display(flex);
-  line-height: 22px;
-  padding: 5px 19px 5px 20px;
-  &:hover {
-    background-color: $color-blueish-white-grey;
-  }
+  @include facetValueLabelPadding();
+  @include clickableCategoryFacetValue();
 }
 
 .coveo-active-category-facet-parent > .coveo-category-facet-value-label {
@@ -102,4 +112,46 @@
 
 .coveo-category-facet-header {
   background-color: $color-blueish-white;
+}
+
+.coveo-category-facet-more,
+.coveo-category-facet-less {
+  width: 100%;
+  height: 15px;
+  background: $color-blueish-white;
+  cursor: pointer;
+  text-align: center;
+  border-bottom-left-radius: $default-border-radius;
+  border-bottom-right-radius: $default-border-radius;
+  &:hover,
+  &:focus {
+    background: $color-light-grey;
+    outline: none;
+  }
+}
+
+.coveo-category-facet-header-eraser {
+  float: right;
+}
+
+.coveo-category-facet-non-empty-path .coveo-category-facet-header-eraser {
+  visibility: visible;
+}
+
+.coveo-category-facet-all-categories {
+  @include facetValueLabelPadding();
+  @include clickableCategoryFacetValue();
+}
+
+.coveo-category-facet-ellipsis-caption {
+  @include facetValueLabelPadding();
+  padding-left: 36px;
+}
+
+.coveo-category-facet-breadcrumb-title {
+  @include breadcrumbTitle();
+}
+
+.coveo-category-facet-breadcrumb-values {
+  @include clickable();
 }
