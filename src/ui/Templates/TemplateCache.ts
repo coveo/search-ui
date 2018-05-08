@@ -149,7 +149,7 @@ export class TemplateCache {
 
   private static scanAndRegisterUnderscoreTemplates() {
     _.each(UnderscoreTemplate.mimeTypes, type => {
-      let scriptList = document.querySelectorAll(`script[id][type='${type}']`);
+      let scriptList = document.querySelectorAll(`script[id][type='${type}'], template[id][type='${type}']`);
       let i = scriptList.length;
       let arr: HTMLElement[] = new Array(i);
       while (i--) {
@@ -164,7 +164,7 @@ export class TemplateCache {
 
   private static scanAndRegisterHtmlTemplates() {
     _.each(HtmlTemplate.mimeTypes, type => {
-      let scriptList = document.querySelectorAll(`script[id][type='${type}']`);
+      let scriptList = document.querySelectorAll(`script[id][type='${type}'], template[id][type='${type}']`);
       let i = scriptList.length;
       let arr: HTMLElement[] = new Array(i);
       while (i--) {
