@@ -324,13 +324,13 @@ export interface ISizeOptions {
    * >
    * > 1 => 1B
    * >
-   * > 1000 => 1MB
+   * > 1000 => 1KB
    *
    * > **Base 1:**
    * >
-   * > 1 => 1MB
+   * > 1 => 1KB
    * >
-   * > 1000 => 1GB
+   * > 1000 => 1MB
    */
   base?: number;
   /**
