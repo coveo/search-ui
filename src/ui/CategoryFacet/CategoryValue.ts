@@ -12,18 +12,18 @@ export interface CategoryValueParent {
 }
 
 export class CategoryValue implements CategoryValueParent {
-  public element: Dom;
   private collapseArrow: Dom;
   private labelOnClick: (e: Event) => void;
   private label: Dom;
 
+  public element: Dom;
   public isActive = false;
   public categoryChildrenValueRenderer: CategoryChildrenValueRenderer;
 
   constructor(
     private parentElement: Dom,
     public value: string,
-    private count: number,
+    public count: number,
     private categoryFacetTemplates: CategoryFacetTemplates,
     private categoryFacet: CategoryFacet,
     public path: string[]

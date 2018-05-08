@@ -19,9 +19,12 @@ import { reduce, find, first, last, isEmpty, contains, isArray } from 'underscor
 import { Assert } from '../../misc/Assert';
 import { QueryEvents, IBuildingQueryEventArgs, IQuerySuccessEventArgs } from '../../events/QueryEvents';
 import { CategoryFacetSearch } from './CategoryFacetSearch';
-import { ICategoryFacetValue } from '../../rest/CategoryFacetValue';
 import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
 import { ICategoryFacetResult } from '../../rest/CategoryFacetsResult';
+import { BreadcrumbEvents, IPopulateBreadcrumbEventArgs } from '../../events/BreadcrumbEvents';
+import { CategoryFacetBreadcrumbBuilder } from './CategoryFacetBreadcrumb';
+import { IQueryResults } from '../../rest/QueryResults';
+import { ICategoryFacetValue } from '../../rest/CategoryFacetValue';
 
 export interface CategoryFacetOptions {
   field: IFieldOption;
@@ -34,7 +37,6 @@ export interface CategoryFacetOptions {
   injectionDepth?: number;
   enableMoreLess?: boolean;
   pageSize?: number;
-  showClearIcon?: boolean;
   delimitingCharacter?: string;
 }
 
@@ -131,11 +133,6 @@ export class CategoryFacet extends Component {
      * Default value is `10`. Minimum value is `1`.
      */
     pageSize: ComponentOptions.buildNumberOption({ defaultValue: 10, min: 1, depend: 'enableMoreLess' }),
-
-    /**
-     * Specifies whether to show a clear icon when values have been selected.
-     */
-    showClearIcon: ComponentOptions.buildBooleanOption({ defaultValue: true }),
     /**
      * The character that allows to specify the hierarchical dependency.
      *
@@ -193,6 +190,7 @@ export class CategoryFacet extends Component {
     this.bind.onRootElement<IQuerySuccessEventArgs>(QueryEvents.querySuccess, args => this.handleQuerySuccess(args));
     this.bind.onRootElement(QueryEvents.duringQuery, () => this.addFading());
     this.bind.onRootElement(QueryEvents.deferredQuerySuccess, () => this.removeFading());
+    this.bind.onRootElement<IPopulateBreadcrumbEventArgs>(BreadcrumbEvents.populateBreadcrumb, args => this.handlePopulateBreadCrumb(args));
     this.buildFacetHeader();
     this.initQueryStateEvents();
   }
@@ -246,8 +244,9 @@ export class CategoryFacet extends Component {
     this.activePath = path;
 
     this.showWaitingAnimation();
-    return this.queryController.executeQuery().then(() => {
+    return this.queryController.executeQuery().then((queryResults: IQueryResults) => {
       this.hideWaitAnimation();
+      return queryResults;
     });
   }
 
@@ -369,17 +368,10 @@ export class CategoryFacet extends Component {
     let pathOfLastTruncatedParentValue: string[];
 
     const numberOfItemsInFirstSlice = Math.floor(CategoryFacet.NUMBER_OF_VALUES_TO_KEEP_AFTER_TRUNCATING / 2);
-    const numberOfItemsInSecondSlice = Math.floor(CategoryFacet.NUMBER_OF_VALUES_TO_KEEP_AFTER_TRUNCATING / 2);
+    const numberOfItemsInSecondSlice = Math.ceil(CategoryFacet.NUMBER_OF_VALUES_TO_KEEP_AFTER_TRUNCATING / 2);
 
     if (this.shouldTruncate(sortedParentValues)) {
-      const indexOfLastTruncatedParentValue = sortedParentValues.length - numberOfItemsInSecondSlice - 1;
-      pathOfLastTruncatedParentValue = reduce(
-        first(sortedParentValues, indexOfLastTruncatedParentValue + 1),
-        (path, parentValue) => {
-          return [...path, parentValue.value];
-        },
-        []
-      );
+      pathOfLastTruncatedParentValue = this.findPathOfLastTruncatedParentValue(sortedParentValues, numberOfItemsInSecondSlice);
       needToTruncate = true;
       sortedParentValues = first(sortedParentValues, numberOfItemsInFirstSlice).concat(
         last(sortedParentValues, numberOfItemsInSecondSlice)
@@ -387,20 +379,14 @@ export class CategoryFacet extends Component {
     }
 
     if (!isEmpty(this.activePath)) {
-      const allCategories = this.categoryFacetTemplates.buildAllCategoriesButton();
-      allCategories.on('click', () => this.changeActivePath([]));
-      currentParentValue.categoryChildrenValueRenderer.getListOfChildValues().append(allCategories.el);
+      this.addAllCategoriesButton(currentParentValue);
     }
 
     for (let i = 0; i < sortedParentValues.length; i++) {
-      if (needToTruncate && i == Math.floor(CategoryFacet.NUMBER_OF_VALUES_TO_KEEP_AFTER_TRUNCATING / 2)) {
-        const listOfChildValues = currentParentValue.categoryChildrenValueRenderer.getListOfChildValues();
-        listOfChildValues.append(this.categoryFacetTemplates.buildEllipsis().el);
-        currentParentValue = currentParentValue.renderAsParent(sortedParentValues[i]);
-        currentParentValue.path = [...pathOfLastTruncatedParentValue, sortedParentValues[i].value];
-        continue;
-      }
       currentParentValue = currentParentValue.renderAsParent(sortedParentValues[i]);
+      if (needToTruncate && i == numberOfItemsInFirstSlice) {
+        this.addEllipsis(currentParentValue, pathOfLastTruncatedParentValue, sortedParentValues[i].value);
+      }
     }
 
     const childrenValuesToRender = categoryFacetResult.values.slice(0, numberOfRequestedValues - 1);
@@ -410,6 +396,23 @@ export class CategoryFacet extends Component {
 
   private shouldTruncate(parentValues: ICategoryFacetValue[]) {
     return parentValues.length > CategoryFacet.MAXIMUM_NUMBER_OF_VALUES_BEFORE_TRUNCATING;
+  }
+
+  private addEllipsis(parentValue: CategoryValueParent, pathOfLastTruncatedParentValue: string[], valueToAddToPath: string) {
+    const listOfChildValues = parentValue.categoryChildrenValueRenderer.getListOfChildValues();
+    listOfChildValues.append(this.categoryFacetTemplates.buildEllipsis().el);
+    parentValue.path = [...pathOfLastTruncatedParentValue, valueToAddToPath];
+  }
+
+  private findPathOfLastTruncatedParentValue(sortedParentValues: ICategoryFacetValue[], numberOfItemsInSecondSlice: number) {
+    const indexOfLastTruncatedParentValue = sortedParentValues.length - numberOfItemsInSecondSlice - 1;
+    return reduce(first(sortedParentValues, indexOfLastTruncatedParentValue + 1), (path, parentValue) => [...path, parentValue.value], []);
+  }
+
+  private addAllCategoriesButton(parentValue: CategoryValueParent) {
+    const allCategories = this.categoryFacetTemplates.buildAllCategoriesButton();
+    allCategories.on('click', () => this.changeActivePath([]));
+    parentValue.categoryChildrenValueRenderer.getListOfChildValues().append(allCategories.el);
   }
 
   private buildFacetHeader() {
@@ -521,6 +524,22 @@ export class CategoryFacet extends Component {
     less.on('keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, showLessHandler));
 
     return less.el;
+  }
+
+  private handlePopulateBreadCrumb(args: IPopulateBreadcrumbEventArgs) {
+    if (!isEmpty(this.activePath)) {
+      const resetFacet = () => this.changeActivePath([]);
+      const lastParentValue = this.getVisibleParentCategoryValues().pop();
+
+      const categoryFacetBreadcrumbBuilder = new CategoryFacetBreadcrumbBuilder(
+        this.options.title,
+        this.activePath,
+        resetFacet,
+        lastParentValue.value,
+        lastParentValue.count.toString(10)
+      );
+      args.breadcrumbs.push({ element: categoryFacetBreadcrumbBuilder.build() });
+    }
   }
 }
 

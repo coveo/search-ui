@@ -1,4 +1,5 @@
 @import 'Variables';
+@import './mixins/breadcrumb';
 @import 'bourbon/bourbon';
 
 @mixin facetValueLabelPadding {
@@ -145,4 +146,12 @@
 .coveo-category-facet-ellipsis-caption {
   @include facetValueLabelPadding();
   padding-left: 36px;
+}
+
+.coveo-category-facet-breadcrumb-title {
+  @include breadcrumbTitle();
+}
+
+.coveo-category-facet-breadcrumb-values {
+  @include clickable();
 }

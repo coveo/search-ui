@@ -1,6 +1,7 @@
 import { CategoryFacet } from '../../../src/ui/CategoryFacet/CategoryFacet';
 import * as Mock from '../../MockEnvironment';
 import { $$ } from '../../Test';
+import { IQueryResults } from '../../../src/rest/QueryResults';
 
 export function CategoryFacetTest() {
   describe('CategoryFacet', () => {
@@ -16,7 +17,7 @@ export function CategoryFacetTest() {
 
     describe('calling changeActivePath', () => {
       let newPath: string[];
-      let queryPromise: Promise<void>;
+      let queryPromise: Promise<IQueryResults>;
       beforeEach(() => {
         newPath = ['new', 'path'];
         queryPromise = categoryFacet.changeActivePath(newPath);
@@ -43,6 +44,10 @@ export function CategoryFacetTest() {
       });
     });
 
-    it('calling reload calls changeActivePath');
+    it('calling reload calls changeActivePath', () => {
+      spyOn(categoryFacet, 'changeActivePath');
+      categoryFacet.reload();
+      expect(categoryFacet.changeActivePath).toHaveBeenCalledWith(categoryFacet.activePath);
+    });
   });
 }
