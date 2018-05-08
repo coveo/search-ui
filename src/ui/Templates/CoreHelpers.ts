@@ -29,11 +29,14 @@ import { TemplateCache } from './TemplateCache';
  *
  * >**HTML**
  * >
- * >```<div class="CoveoFieldValue" data-helper="helperName" data-helper-options-optionName="option-value"></div>```
- *
+ * > ```html
+ * > <div class="CoveoFieldValue" data-helper="helperName" data-helper-options-optionName="option-value"></div>
+ * > ```
  * >**Underscore**
  * >
- * >```<%= helperName(argument1, argument2) %>```
+ * > ```erb
+ * > <%= helperName(argument1, argument2) %>
+ * > ```
  */
 export interface ICoreHelpers {
   /**
@@ -260,21 +263,25 @@ export interface ICoreHelpers {
    *
    * **Examples:**
    *
-   * >```size(1024) => 1024 B```
+   * >`size(1024) => 1024 B`
    * >
-   * >```size(1025) => 1 KB```
+   * >`size(1025) => 1 KB`
    * >
-   * >```size(10240) => 10 KB```
+   * >`size(10240) => 10 KB`
    *
    * **Usage Examples:**
    *
    * >**HTML**
    * >
-   * >```<div class="CoveoFieldValue" data-field='@size' data-helper="size" data-helper-options-base="1"></div>```
+   * > ```html
+   * > <div class="CoveoFieldValue" data-field='@size' data-helper="size" data-helper-options-base="1"></div>
+   * > ```
    *
    * >**Underscore**
    * >
-   * >```<%= size(raw.size, {base: 0, precision: 2}) %>```
+   * > ```erb
+   * > <%= size(raw.size, {base: 0, precision: 2}) %>
+   * > ```
    */
   size: (value: number, options?: ISizeOptions) => string;
   /**
