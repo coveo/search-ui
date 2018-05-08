@@ -25,17 +25,15 @@ import { TemplateCache } from './TemplateCache';
 /**
  * The core template helpers provided by default.
  *
- * Example usage:
+ * **Usage Examples:**
  *
- * ### HTML
- * ```
- * <div class="CoveoFieldValue" data-helper="helperName" data-helper-options-optionName="option-value"></div>
- * ```
+ * >**HTML**
+ * >
+ * >```<div class="CoveoFieldValue" data-helper="helperName" data-helper-options-optionName="option-value"></div>```
  *
- * ### Underscore
- * ```
- * <%= helperName(argument1, argument2) %>
- * ```
+ * >**Underscore**
+ * >
+ * >```<%= helperName(argument1, argument2) %>```
  */
 export interface ICoreHelpers {
   /**
@@ -258,15 +256,25 @@ export interface ICoreHelpers {
    */
   timeSpan: (value: number, options: ITimeSpanUtilsOptions) => string;
   /**
-   * Given a number, which represent a file size in bytes, format the value into a logical unit size.
+   * Formats a number, which represents a file size in bytes, into a logical unit size.
    *
-   * eg:
+   * **Examples:**
    *
-   * `size(1024) => 1024 B`
+   * >```size(1024) => 1024 B```
+   * >
+   * >```size(1025) => 1 KB```
+   * >
+   * >```size(10240) => 10 KB```
    *
-   * `size(1025) => 1 KB`
+   * **Usage Examples:**
    *
-   * `size(10240) => 10 KB`
+   * >**HTML**
+   * >
+   * >```<div class="CoveoFieldValue" data-field='@size' data-helper="size" data-helper-options-base="1"></div>```
+   *
+   * >**Underscore**
+   * >
+   * >```<%= size(raw.size, {base: 0, precision: 2}) %>```
    */
   size: (value: number, options?: ISizeOptions) => string;
   /**
