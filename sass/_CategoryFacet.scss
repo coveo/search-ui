@@ -148,10 +148,20 @@
   padding-left: 36px;
 }
 
+.coveo-category-facet-breadcrumb .coveo-exclusion-svg {
+  fill: $color-greyish-teal-blue;
+}
+
 .coveo-category-facet-breadcrumb-title {
   @include breadcrumbTitle();
 }
 
 .coveo-category-facet-breadcrumb-values {
   @include clickable();
+  color: $color-vibrant-blue;
+  &:hover {
+    .coveo-exclusion-svg {
+      fill: $color-red;
+    }
+  }
 }

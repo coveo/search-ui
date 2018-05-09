@@ -27,7 +27,7 @@ export function CategoryValueRootTest() {
 
     it('does not hide the component when there is no results and a path is selected', () => {
       const queryResults = FakeResults.createFakeResults();
-      queryResults.categoryFacets = [FakeResults.createFakeCategoryFacetResult('@field', ['parentA', 'parentB'], [])];
+      queryResults.categoryFacets = [FakeResults.createFakeCategoryFacetResult('@field', ['parentA', 'parentB'])];
 
       Simulate.query(noopComponentMock.env, { results: queryResults });
       expect(categoryFacetMock.hide).not.toHaveBeenCalled();

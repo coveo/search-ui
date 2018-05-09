@@ -143,11 +143,6 @@ export class Simulate {
           searchAsYouType: options.searchAsYouType
         };
         $$(env.root).trigger(QueryEvents.preprocessResults, preprocessResultsEventArgs);
-        Promise.resolve(
-          new Promise((resolve, reject) => {
-            resolve(options.results);
-          })
-        );
 
         var noResultsEventArgs: INoResultsEventArgs = {
           query: options.query,

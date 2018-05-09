@@ -1,18 +1,36 @@
-import { CategoryFacet } from '../../../src/ui/CategoryFacet/CategoryFacet';
+import { CategoryFacet, ICategoryFacetOptions } from '../../../src/ui/CategoryFacet/CategoryFacet';
 import * as Mock from '../../MockEnvironment';
-import { $$ } from '../../Test';
+import { $$ } from '../../../src/utils/Dom';
 import { IQueryResults } from '../../../src/rest/QueryResults';
+import { IBasicComponentSetup } from '../../MockEnvironment';
+import { Simulate, ISimulateQueryData } from '../../Simulate';
+import { FakeResults } from '../../Fake';
+import { QueryBuilder } from '../../../src/Core';
 
 export function CategoryFacetTest() {
+  function buildSimulateQueryData(): ISimulateQueryData {
+    const fakeResults = FakeResults.createFakeResults();
+    const queryBuilder = new QueryBuilder();
+    queryBuilder.categoryFacets.push({
+      field: '@field',
+      path: [],
+      maximumNumberOfValues: 11
+    });
+    fakeResults.categoryFacets.push(FakeResults.createFakeCategoryFacetResult('@field', [], 'value', 11));
+    return { results: fakeResults, query: queryBuilder.build() };
+  }
   describe('CategoryFacet', () => {
-    let categoryFacet: CategoryFacet;
+    let test: IBasicComponentSetup<CategoryFacet>;
+    let simulateQueryData: ISimulateQueryData;
 
     beforeEach(() => {
-      categoryFacet = Mock.basicComponentSetup<CategoryFacet>(CategoryFacet).cmp;
+      simulateQueryData = buildSimulateQueryData();
+      test = Mock.basicComponentSetup<CategoryFacet>(CategoryFacet);
     });
+
     it('calling hide adds the coveo hidden class', () => {
-      categoryFacet.hide();
-      expect($$(categoryFacet.element).hasClass('coveo-hidden')).toBeTruthy();
+      test.cmp.hide();
+      expect($$(test.cmp.element).hasClass('coveo-hidden')).toBeTruthy();
     });
 
     describe('calling changeActivePath', () => {
@@ -20,34 +38,55 @@ export function CategoryFacetTest() {
       let queryPromise: Promise<IQueryResults>;
       beforeEach(() => {
         newPath = ['new', 'path'];
-        queryPromise = categoryFacet.changeActivePath(newPath);
+        queryPromise = test.cmp.changeActivePath(newPath);
       });
 
       it('sets the new path', () => {
-        expect(categoryFacet.activePath).toEqual(['new', 'path']);
+        expect(test.cmp.activePath).toEqual(['new', 'path']);
       });
 
       it('triggers a new query', () => {
-        expect(categoryFacet.queryController.executeQuery).toHaveBeenCalled();
+        expect(test.cmp.queryController.executeQuery).toHaveBeenCalled();
       });
 
       it('sets the path in the query state', () => {
-        expect(categoryFacet.queryStateModel.set).toHaveBeenCalledWith(categoryFacet.queryStateAttribute, newPath);
+        expect(test.cmp.queryStateModel.set).toHaveBeenCalledWith(test.cmp.queryStateAttribute, newPath);
       });
 
       it('shows a wait animation', () => {
+        const waitIcon = $$(test.cmp.element).find('.' + CategoryFacet.WAIT_ELEMENT_CLASS);
+        expect(waitIcon.style.visibility).toEqual('visible');
+      });
+      it('hides the wait animation after the query', done => {
         queryPromise.then(() => {
-          const waitIcon = $$(categoryFacet.element).find('.' + CategoryFacet.WAIT_ELEMENT_CLASS);
+          const waitIcon = $$(test.cmp.element).find('.' + CategoryFacet.WAIT_ELEMENT_CLASS);
           expect(waitIcon).not.toBeNull();
-          expect(waitIcon.style.visibility).toEqual('visible');
+          expect(waitIcon.style.visibility).toEqual('hidden');
+          done();
         });
       });
     });
 
     it('calling reload calls changeActivePath', () => {
-      spyOn(categoryFacet, 'changeActivePath');
-      categoryFacet.reload();
-      expect(categoryFacet.changeActivePath).toHaveBeenCalledWith(categoryFacet.activePath);
+      spyOn(test.cmp, 'changeActivePath');
+      test.cmp.reload();
+      expect(test.cmp.changeActivePath).toHaveBeenCalledWith(test.cmp.activePath);
+    });
+
+    describe('when moreLess is enabled', () => {
+      beforeEach(() => {
+        test = Mock.optionsComponentSetup<CategoryFacet, ICategoryFacetOptions>(CategoryFacet, {
+          field: '@field',
+          enableMoreLess: true,
+          numberOfValues: 10
+        });
+      });
+      it('downward arrow is appended when there are more results to fetch', done => {
+        Simulate.query(test.env, simulateQueryData);
+        const moreArrow = $$(test.cmp.element).find('.coveo-category-facet-more');
+        expect(moreArrow).not.toBeNull();
+        done();
+      });
     });
   });
 }

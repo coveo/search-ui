@@ -26,7 +26,7 @@ import { CategoryFacetBreadcrumbBuilder } from './CategoryFacetBreadcrumb';
 import { IQueryResults } from '../../rest/QueryResults';
 import { ICategoryFacetValue } from '../../rest/CategoryFacetValue';
 
-export interface CategoryFacetOptions {
+export interface ICategoryFacetOptions {
   field: IFieldOption;
   title?: string;
   numberOfResultsInFacetSearch?: number;
@@ -54,7 +54,7 @@ export class CategoryFacet extends Component {
 
   static ID = 'CategoryFacet';
 
-  static options: CategoryFacetOptions = {
+  static options: ICategoryFacetOptions = {
     field: ComponentOptions.buildFieldOption({ required: true }),
     title: ComponentOptions.buildLocalizedStringOption({
       defaultValue: l('NoTitle')
@@ -88,7 +88,7 @@ export class CategoryFacet extends Component {
      * Default value is the [`field`]{@link CategoryFacet.options.field} option value.
      */
     id: ComponentOptions.buildStringOption({
-      postProcessing: (value, options: CategoryFacetOptions) => value || (options.field as string)
+      postProcessing: (value, options: ICategoryFacetOptions) => value || (options.field as string)
     }),
     /**
      * Specifies the *injection depth* to use.
@@ -172,7 +172,7 @@ export class CategoryFacet extends Component {
   private static MAXIMUM_NUMBER_OF_VALUES_BEFORE_TRUNCATING = 15;
   private static NUMBER_OF_VALUES_TO_KEEP_AFTER_TRUNCATING = 10;
 
-  constructor(public element: HTMLElement, public options: CategoryFacetOptions, bindings?: IComponentBindings) {
+  constructor(public element: HTMLElement, public options: ICategoryFacetOptions, bindings?: IComponentBindings) {
     super(element, 'CategoryFacet', bindings);
     this.options = ComponentOptions.initComponentOptions(element, CategoryFacet, options);
 

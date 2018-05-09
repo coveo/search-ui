@@ -12,8 +12,8 @@ import { IPopulateOmniboxEventArgs } from '../src/events/OmniboxEvents';
 import { mockSearchInterface } from './MockEnvironment';
 import _ = require('underscore');
 import { IFieldDescription } from '../src/rest/FieldDescription';
-import { Utils } from '../src/utils/Utils';
 import { ICategoryFacetResult } from '../src/rest/CategoryFacetsResult';
+import { range } from 'underscore';
 
 export class FakeResults {
   static createFakeResults(count = 10, token = ''): IQueryResults {
@@ -254,16 +254,15 @@ export class FakeResults {
     };
   }
 
-  static createFakeCategoryFacetResult(field: string, path: string[], values: string[]): ICategoryFacetResult {
+  static createFakeCategoryFacetResult(field: string, path: string[], token = 'value', numberOfValues: number = 10): ICategoryFacetResult {
     Assert.isNonEmptyString(field);
-    Assert.check(Utils.isNonEmptyArray(path));
     return {
       field,
-      values: values.map(value => {
-        return { value, numberOfResults: 5 };
+      values: range(1, numberOfValues + 1).map(number => {
+        return { value: token + number, numberOfResults: 5 };
       }),
-      parentValues: path.map(value => {
-        return { value, numberOfResults: 5 };
+      parentValues: range(1, numberOfValues + 1).map(number => {
+        return { value: token + number, numberOfResults: 5 };
       })
     };
   }
