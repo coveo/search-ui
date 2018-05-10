@@ -9,35 +9,6 @@ const utilities = require('./buildUtilities');
 const xml2js = require('xml2js');
 const xmlParser = new xml2js.Parser({ async: false });
 
-gulp.task('copyAllStandardSalesforceIcons', () => {
-  glob('node_modules/@salesforce-ux/design-system/assets/icons/standard/*.svg', (err, files) => {
-    files.forEach(file => {
-      const fileNameUsingDash = file.replace(/_/g, '-');
-      let svgContent = fs.readFileSync(file).toString();
-      svgContent = svgContent.replace(/width="([0-9]+)"/, 'width="60"');
-      svgContent = svgContent.replace(/height="([0-9]+)"/, 'height="60"');
-      const imageName = /\/([a-zA-Z-0-9]+)\.svg$/.exec(fileNameUsingDash)[1];
-      const newImageEmplacement = `./image/svg/filetypes/salesforce-standard-${imageName}.svg`;
-      fs.writeFileSync(newImageEmplacement, svgContent);
-    });
-  });
-});
-
-gulp.task('copyAllDoctypeSalesforceIcons', () => {
-  glob('node_modules/@salesforce-ux/design-system/assets/icons/doctype/*.svg', (err, files) => {
-    files.forEach(file => {
-      const fileNameUsingDash = file.replace(/_/g, '-');
-      let svgContent = fs.readFileSync(file).toString();
-      svgContent = svgContent.replace(/width="([0-9]+)"/, 'width="56"');
-      svgContent = svgContent.replace(/height="([0-9]+)"/, 'height="64"');
-
-      const imageName = /\/([a-zA-Z-0-9]+)\.svg$/.exec(fileNameUsingDash)[1];
-      const newImageEmplacement = `./image/svg/filetypes/salesforce-doctype-${imageName}.svg`;
-      fs.writeFileSync(newImageEmplacement, svgContent);
-    });
-  });
-});
-
 gulp.task('fileTypes', function(done) {
   gulp.src('./image/svg/filetypes/*.svg').pipe(gulp.dest('./bin/image'));
 
