@@ -3,9 +3,9 @@ import { Utils } from '../../utils/Utils';
 import { TemplateConditionEvaluator } from './TemplateConditionEvaluator';
 import { ComponentOptions, IComponentOptionsFieldsOption } from '../Base/ComponentOptions';
 import { $$, Dom } from '../../utils/Dom';
-import * as _ from 'underscore';
 import { Initialization } from '../Base/Initialization';
 import { ValidLayout } from '../ResultLayoutSelector/ValidLayout';
+import { map, chain, each } from 'underscore';
 
 export interface ITemplateFromStringProperties {
   condition?: string;
@@ -47,19 +47,19 @@ export class TemplateFromAScriptTag {
     });
     if (additionalFields != null) {
       // remove the @
-      this.template.addFields(_.map(additionalFields, field => field.substr(1)));
+      this.template.addFields(map(additionalFields, field => field.substr(1)));
     }
 
     // Additional fields that might be used to conditionally load the template when it's going to be rendered.
     this.template.addFields(
-      _.map(this.template.fieldsToMatch, (toMatch: IFieldsToMatch) => {
+      map(this.template.fieldsToMatch, (toMatch: IFieldsToMatch) => {
         return toMatch.field;
       })
     );
 
     // Scan components in this template
     // return the fields needed for the content of this template
-    const neededFieldsForComponents = _.chain(this.template.getComponentsInside(scriptTag.innerHTML))
+    const neededFieldsForComponents = chain(this.template.getComponentsInside(scriptTag.innerHTML))
       .map((component: string) => {
         return Initialization.getRegisteredFieldsComponentForQuery(component);
       })
@@ -83,17 +83,17 @@ export class TemplateFromAScriptTag {
 
   parseFieldsAttributes(): IFieldsToMatch[] {
     const dataSet = this.scriptTag.dataset;
-    return _.chain(dataSet)
+    return chain(dataSet)
       .map((value, key: string) => {
-        const match = key.match(/field([a-z0-9]*)/i);
+        const match = key.match(/field([a-zA-Z0-9_\.]*)/i);
         if (match) {
           let values;
           if (value != null && value != 'null' && value != '') {
-            values = value.split(',');
+            values = map(value.split(','), val => val.trim());
           }
           return {
             field: match[1].toLowerCase(),
-            values: values
+            values
           };
         } else {
           return undefined;
@@ -136,7 +136,7 @@ export class TemplateFromAScriptTag {
       container.setAttribute('data-desktop', properties.desktop.toString());
     }
     if (properties.fieldsToMatch != null) {
-      _.each(properties.fieldsToMatch, (fieldToMatch: IFieldsToMatch) => {
+      each(properties.fieldsToMatch, (fieldToMatch: IFieldsToMatch) => {
         if (fieldToMatch.values) {
           container.setAttribute(`data-field-${fieldToMatch.field.toLowerCase()}`, fieldToMatch.values.join(','));
         } else {
