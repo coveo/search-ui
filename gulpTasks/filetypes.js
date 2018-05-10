@@ -16,14 +16,23 @@ gulp.task('copyAllStandardSalesforceIcons', () => {
       let svgContent = fs.readFileSync(file).toString();
       svgContent = svgContent.replace(/width="([0-9]+)"/, 'width="60"');
       svgContent = svgContent.replace(/height="([0-9]+)"/, 'height="60"');
-      /*xmlParser.parseString(svgContent, (err, svg) => {
-        console.log(svg);
-        //        width = small ? Math.floor(svg.svg.$.width / 2) : svg.svg.$.width;
-        //      height = small ? Math.floor(svg.svg.$.height / 2) : svg.svg.$.height;
-      });*/
-
       const imageName = /\/([a-zA-Z-0-9]+)\.svg$/.exec(fileNameUsingDash)[1];
       const newImageEmplacement = `./image/svg/filetypes/salesforce-standard-${imageName}.svg`;
+      fs.writeFileSync(newImageEmplacement, svgContent);
+    });
+  });
+});
+
+gulp.task('copyAllDoctypeSalesforceIcons', () => {
+  glob('node_modules/@salesforce-ux/design-system/assets/icons/doctype/*.svg', (err, files) => {
+    files.forEach(file => {
+      const fileNameUsingDash = file.replace(/_/g, '-');
+      let svgContent = fs.readFileSync(file).toString();
+      svgContent = svgContent.replace(/width="([0-9]+)"/, 'width="56"');
+      svgContent = svgContent.replace(/height="([0-9]+)"/, 'height="64"');
+
+      const imageName = /\/([a-zA-Z-0-9]+)\.svg$/.exec(fileNameUsingDash)[1];
+      const newImageEmplacement = `./image/svg/filetypes/salesforce-doctype-${imageName}.svg`;
       fs.writeFileSync(newImageEmplacement, svgContent);
     });
   });
@@ -112,7 +121,7 @@ function generateSass(json, files) {
 function generateTopLevelIconClass(files, small) {
   let ret = '';
   files.forEach(file => {
-    const svgName = /\/([a-zA-Z-]+)\.svg$/.exec(file)[1];
+    const svgName = /\/([a-zA-Z-0-9]+)\.svg$/.exec(file)[1];
     const { width, height } = getSVGSize(svgName, small);
     const className = `coveo-filetype-${svgName}${small ? '-small' : ''}`;
     ret += `&.${className} { display: inline-block; width: ${width}px; height: ${height}px; background-size: ${width}px ${height}px; background-image: url(../../image/svg/filetypes/${svgName}.svg); }\n`;
