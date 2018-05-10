@@ -7,29 +7,30 @@ const glob = require('glob');
 const gulp = require('gulp');
 const utilities = require('./buildUtilities');
 const xml2js = require('xml2js');
-const xmlParser = new xml2js.Parser({ async: false});
+const xmlParser = new xml2js.Parser({ async: false });
 
-gulp.task('fileTypes', function (done) {
-   gulp.src('./image/svg/filetypes/*.svg')
-       .pipe(gulp.dest('./bin/image'));
+gulp.task('fileTypes', function(done) {
+  gulp.src('./image/svg/filetypes/*.svg').pipe(gulp.dest('./bin/image'));
 
-  readJsonForAllRepositories(function (json) {
-    const sass = generateSass(json);
-    utilities.ensureDirectory('bin/sass');
-    fs.writeFileSync('bin/sass/_GeneratedIconsNew.scss', sass);
+  readJsonForAllRepositories(function(json) {
+    glob('./image/svg/filetypes/*.svg', (err, files) => {
+      const sass = generateSass(json, files);
+      utilities.ensureDirectory('bin/sass');
+      fs.writeFileSync('bin/sass/_GeneratedIconsNew.scss', sass);
 
-    const str = generateStrings(json);
-    utilities.ensureDirectory('bin/strings');
-    fs.writeFileSync('bin/strings/filetypesNew.json', str);
+      const str = generateStrings(json);
+      utilities.ensureDirectory('bin/strings');
+      fs.writeFileSync('bin/strings/filetypesNew.json', str);
 
-    done();
+      done();
+    });
   }, './filetypes/*.json');
 });
 
 function readJsonForAllRepositories(callback, path) {
-  glob(path, function (err, files) {
+  glob(path, function(err, files) {
     const json = {};
-    _.each(files, function (file) {
+    _.each(files, function(file) {
       const data = JSON.parse(fs.readFileSync(file));
       json.objecttype = _.extend(json.objecttype || {}, data.objecttype);
       json.filetype = _.extend(json.filetype || {}, data.filetype);
@@ -39,7 +40,7 @@ function readJsonForAllRepositories(callback, path) {
   });
 }
 
-function generateSass(json) {
+function generateSass(json, files) {
   // Be careful to output lowercase object types, since the JS UI helpers do the same,
   // and CSS class names are case sensitive. I do that because I can't expect to
   // match all the time the casing output by the connectors.
@@ -51,27 +52,30 @@ function generateSass(json) {
 
   const defaultIcon = '.coveo-sprites-custom';
 
+  sass += generateTopLevelIconClass(files, false);
+  sass += generateTopLevelIconClass(files, true);
+
   sass += '  &.objecttype {\n';
-  sass += '    @extend .coveo-filetype-custom;\n'
-  sass += '    display: inline-block;\n'
+  sass += '    @extend .coveo-filetype-custom;\n';
+  sass += '    display: inline-block;\n';
   sass += generateInnerObjecttype(json, false, iconClasses);
   sass += '  }\n';
 
   sass += '  &.objecttype.coveo-small {\n';
-  sass += '    @extend .coveo-filetype-custom-small;\n'
-  sass += '    display: inline-block;\n'
+  sass += '    @extend .coveo-filetype-custom-small;\n';
+  sass += '    display: inline-block;\n';
   sass += generateInnerObjecttype(json, true, iconClasses);
   sass += '  }\n';
 
   sass += '  &.filetype, &.sysfiletype {\n'; // we include the version with a sys prefix for backward compatibility
-  sass += '    @extend .coveo-filetype-custom;\n'
-  sass += '    display: inline-block;\n'
-  sass += generateInnerFiletype(json, false, iconClasses)
+  sass += '    @extend .coveo-filetype-custom;\n';
+  sass += '    display: inline-block;\n';
+  sass += generateInnerFiletype(json, false, iconClasses);
   sass += '  }\n';
 
   sass += '  &.filetype.coveo-small, &.sysfiletype.coveo-small {\n';
-  sass += '    @extend .coveo-filetype-custom-small;\n'
-  sass += '    display: inline-block;\n'
+  sass += '    @extend .coveo-filetype-custom-small;\n';
+  sass += '    display: inline-block;\n';
   sass += generateInnerFiletype(json, true, iconClasses);
   sass += '  }\n';
 
@@ -84,16 +88,30 @@ function generateSass(json) {
 
   return sassIconClasses + sass;
 }
+
+function generateTopLevelIconClass(files, small) {
+  let ret = '';
+  files.forEach(file => {
+    const svgName = /\/([a-zA-Z-0-9]+)\.svg$/.exec(file)[1];
+    const { width, height } = getSVGSize(svgName, small);
+    const className = `coveo-filetype-${svgName}${small ? '-small' : ''}`;
+    ret += `&.${className} { display: inline-block; width: ${width}px; height: ${height}px; background-size: ${width}px ${height}px; background-image: url(../../image/svg/filetypes/${svgName}.svg); }\n`;
+  });
+  return ret;
+}
+
 function generateInnerObjecttype(json, small, iconClasses) {
   let ret = '';
-  _.each(_.keys(json.objecttype), function (objecttype) {
+  _.each(_.keys(json.objecttype), function(objecttype) {
     const svgName = json.objecttype[objecttype].icon;
     let className = 'coveo-filetype-' + svgName;
     className += small ? '-small' : '';
     let width, height;
-    ({width, height} = getSVGSize(svgName, small));
+    ({ width, height } = getSVGSize(svgName, small));
     if (iconClasses[className] == undefined) {
-      iconClasses[className] = ` { display: inline-block; width: ${width}px; height: ${height}px; background-size: ${width}px ${height}px; background-image: url(../../image/svg/filetypes/${svgName}.svg); }`;
+      iconClasses[
+        className
+      ] = ` { display: inline-block; width: ${width}px; height: ${height}px; background-size: ${width}px ${height}px; background-image: url(../../image/svg/filetypes/${svgName}.svg); }`;
     }
 
     ensureImageIsValid(svgName, objecttype);
@@ -101,18 +119,20 @@ function generateInnerObjecttype(json, small, iconClasses) {
     // Old templates in salesforce are using something like this
     // <div class="coveo-icon objecttype <%-raw.objecttype%> "></div>
     // instead of the template helper : <%= fromFileTypeToIcon() %>
-    ret += '    &.' + removeSpace(capitalizeFirstLetter(objecttype)) + " , ";
-    ret += '    &.' + objecttype.toLowerCase() +
-        `{ @extend .${className};` +
-        generateShouldDisplayLabel(json.objecttype[objecttype].shouldDisplayLabel) +
-        ' }\n';
+    ret += '    &.' + removeSpace(capitalizeFirstLetter(objecttype)) + ' , ';
+    ret +=
+      '    &.' +
+      objecttype.toLowerCase() +
+      `{ @extend .${className};` +
+      generateShouldDisplayLabel(json.objecttype[objecttype].shouldDisplayLabel) +
+      ' }\n';
   });
   return ret;
 }
 
 function generateInnerFiletype(json, small, iconClasses) {
-   let ret = '';
-  _.each(_.keys(json.filetype), function (filetype) {
+  let ret = '';
+  _.each(_.keys(json.filetype), function(filetype) {
     const svgName = json.filetype[filetype].icon;
     let className = 'coveo-filetype-' + svgName;
     className += small ? '-small' : '';
@@ -121,15 +141,18 @@ function generateInnerFiletype(json, small, iconClasses) {
     // and CSS class names are case sensitive. I do that because I can't expect to
     // match all the time the casing output by the connectors.
     let width, height;
-    ({width, height} = getSVGSize(svgName,small));
+    ({ width, height } = getSVGSize(svgName, small));
     if (iconClasses[className] == undefined) {
-      iconClasses[className] = ` { display: inline-block; width: ${width}px; height: ${height}px; background-size: ${width}px ${height}px; background-image: url(../../image/svg/filetypes/${svgName}.svg); }`;
+      iconClasses[
+        className
+      ] = ` { display: inline-block; width: ${width}px; height: ${height}px; background-size: ${width}px ${height}px; background-image: url(../../image/svg/filetypes/${svgName}.svg); }`;
     }
-    ret += ' &.' + removeSpace(filetype.toLowerCase()) +
+    ret +=
+      ' &.' +
+      removeSpace(filetype.toLowerCase()) +
       `{ @extend .${className};` +
       generateShouldDisplayLabel(json.filetype[filetype].shouldDisplayLabel) +
       '}\n';
-
   });
   return ret;
 }
@@ -149,7 +172,7 @@ function getSVGSize(svgName, small) {
   if (isNaN(width) || isNaN(height)) {
     console.warn(`${svgName} has no width or/and height attribute.`);
   }
-  return {width: width, height: height}
+  return { width: width, height: height };
 }
 
 function generateStrings(json) {
@@ -158,12 +181,12 @@ function generateStrings(json) {
   // Be careful to output lowercase filetypes and objecttypes, since the JS UI
   // helpers do the same, and string lookups are case sensitive. I do that because
   // I can't expect to match all the time the casing output by the connectors.
-  _.each(_.keys(json.objecttype), function (objecttype) {
+  _.each(_.keys(json.objecttype), function(objecttype) {
     out[objecttype.toLowerCase()] = json.objecttype[objecttype].captions;
     out['objecttype_' + objecttype.toLowerCase()] = json.objecttype[objecttype].captions;
   });
 
-  _.each(_.keys(json.filetype), function (filetype) {
+  _.each(_.keys(json.filetype), function(filetype) {
     out[filetype.toLowerCase()] = json.filetype[filetype].captions;
     out['filetype_' + filetype.toLowerCase()] = json.filetype[filetype].captions;
   });
@@ -173,7 +196,7 @@ function generateStrings(json) {
 
 function generateShouldDisplayLabel(shouldDisplayLabel) {
   if (shouldDisplayLabel) {
-    return ' .coveo-icon-caption-overlay { display: block; }'
+    return ' .coveo-icon-caption-overlay { display: block; }';
   } else {
     return '';
   }
