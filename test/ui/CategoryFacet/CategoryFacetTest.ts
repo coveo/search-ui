@@ -19,6 +19,7 @@ export function CategoryFacetTest() {
     fakeResults.categoryFacets.push(FakeResults.createFakeCategoryFacetResult('@field', [], 'value', 11));
     return { results: fakeResults, query: queryBuilder.build() };
   }
+
   describe('CategoryFacet', () => {
     let test: IBasicComponentSetup<CategoryFacet>;
     let simulateQueryData: ISimulateQueryData;
@@ -57,6 +58,7 @@ export function CategoryFacetTest() {
         const waitIcon = $$(test.cmp.element).find('.' + CategoryFacet.WAIT_ELEMENT_CLASS);
         expect(waitIcon.style.visibility).toEqual('visible');
       });
+
       it('hides the wait animation after the query', done => {
         queryPromise.then(() => {
           const waitIcon = $$(test.cmp.element).find('.' + CategoryFacet.WAIT_ELEMENT_CLASS);
@@ -81,12 +83,29 @@ export function CategoryFacetTest() {
           numberOfValues: 10
         });
       });
-      it('downward arrow is appended when there are more results to fetch', done => {
+      it('downward arrow is appended when there are more results to fetch', () => {
         Simulate.query(test.env, simulateQueryData);
         const moreArrow = $$(test.cmp.element).find('.coveo-category-facet-more');
         expect(moreArrow).not.toBeNull();
-        done();
       });
+
+      it('upward arrow is appended when we are not on the first page of results', () => {
+        test.cmp.showMore();
+        Simulate.query(test.env, simulateQueryData);
+        const downArrow = $$(test.cmp.element).find('.coveo-category-facet-less');
+        expect(downArrow).not.toBeNull();
+      });
+    });
+
+    it('showMore should increment the number of values requested according the the pageSize', () => {
+      const initialNumberOfValues = test.cmp.options.numberOfValues;
+      const pageSize = test.cmp.options.pageSize;
+      Simulate.query(test.env, simulateQueryData);
+
+      test.cmp.showMore();
+      const { queryBuilder } = Simulate.query(test.env, simulateQueryData);
+
+      expect(queryBuilder.categoryFacets[0].maximumNumberOfValues).toBe(initialNumberOfValues + pageSize + 1);
     });
   });
 }

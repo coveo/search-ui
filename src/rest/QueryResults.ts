@@ -5,7 +5,7 @@ import { IQueryResult } from './QueryResult';
 import { IGroupByResult } from './GroupByResult';
 import { IQueryCorrection } from './QueryCorrection';
 import { ITrigger } from './Trigger';
-import { ICategoryFacetResult } from './CategoryFacetsResult';
+import { ICategoryFacetResult } from './CategoryFacetResult';
 
 /**
  * Describe a set a results returned by the Search API

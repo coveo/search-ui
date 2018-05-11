@@ -1,6 +1,6 @@
 import { CategoryFacet } from '../ui/CategoryFacet/CategoryFacet';
 import { QueryBuilder } from '../ui/Base/QueryBuilder';
-import { ICategoryFacetsRequest } from '../rest/CategoryFacetsRequest';
+import { ICategoryFacetRequest } from '../rest/CategoryFacetRequest';
 import { IGroupByRequest } from '../rest/GroupByRequest';
 import { AllowedValuesPatternType } from '../rest/AllowedValuesPatternType';
 import { IGroupByValue } from '../rest/GroupByValue';
@@ -13,7 +13,7 @@ export class CategoryFacetQueryController {
     if (path.length != 0) {
       queryBuilder.advancedExpression.addFieldExpression(this.categoryFacet.options.field as string, '==', [path.join('|')]);
     }
-    const categoryFacetsRequest: ICategoryFacetsRequest = {
+    const categoryFacetsRequest: ICategoryFacetRequest = {
       field: this.categoryFacet.options.field as string,
       path,
       injectionDepth: this.categoryFacet.options.injectionDepth,

@@ -20,11 +20,12 @@ import { Assert } from '../../misc/Assert';
 import { QueryEvents, IBuildingQueryEventArgs, IQuerySuccessEventArgs } from '../../events/QueryEvents';
 import { CategoryFacetSearch } from './CategoryFacetSearch';
 import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
-import { ICategoryFacetResult } from '../../rest/CategoryFacetsResult';
+import { ICategoryFacetResult } from '../../rest/CategoryFacetResult';
 import { BreadcrumbEvents, IPopulateBreadcrumbEventArgs } from '../../events/BreadcrumbEvents';
 import { CategoryFacetBreadcrumbBuilder } from './CategoryFacetBreadcrumb';
 import { IQueryResults } from '../../rest/QueryResults';
 import { ICategoryFacetValue } from '../../rest/CategoryFacetValue';
+import { ISearchEndpoint } from '../../rest/SearchEndpointInterface';
 
 export interface ICategoryFacetOptions {
   field: IFieldOption;
@@ -277,6 +278,9 @@ export class CategoryFacet extends Component {
 
   /**
    * Shows more values according to {@link CategoryFacet.options.pageSize}.
+   *
+   * See the [`enableMoreLess`]{@link CategoryFacet.options.enableMoreLess}, and
+   * [`numberOfValues`]{@link CategoryFacet.options.numberOfValues} options.
    */
   public showMore() {
     if (this.moreValuesToFetch) {
@@ -287,7 +291,10 @@ export class CategoryFacet extends Component {
   }
 
   /**
-   * Shows more values according to {@link CategoryFacet.options.pageSize}.
+   * Shows less values, up to the original number of values.
+   *
+   * See the [`enableMoreLess`]{@link CategoryFacet.options.enableMoreLess}, and
+   * [`numberOfValues`]{@link CategoryFacet.options.numberOfValues} options.
    */
   public showLess() {
     if (this.currentPage > 0) {
@@ -336,10 +343,16 @@ export class CategoryFacet extends Component {
     $$(this.element).addClass('coveo-hidden');
   }
 
+  /**
+   * Hide the component.
+   */
   public hide() {
     $$(this.element).addClass('coveo-hidden');
   }
 
+  /**
+   * Show the component.
+   */
   public show() {
     $$(this.element).removeClass('coveo-hidden');
   }
@@ -354,6 +367,10 @@ export class CategoryFacet extends Component {
     if (this.waitElement.el.style.visibility == 'visible') {
       this.waitElement.el.style.visibility = 'hidden';
     }
+  }
+
+  public getEndpoint(): ISearchEndpoint {
+    return this.queryController.getEndpoint();
   }
 
   get children(): CategoryValue[] {

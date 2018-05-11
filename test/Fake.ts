@@ -12,7 +12,7 @@ import { IPopulateOmniboxEventArgs } from '../src/events/OmniboxEvents';
 import { mockSearchInterface } from './MockEnvironment';
 import _ = require('underscore');
 import { IFieldDescription } from '../src/rest/FieldDescription';
-import { ICategoryFacetResult } from '../src/rest/CategoryFacetsResult';
+import { ICategoryFacetResult } from '../src/rest/CategoryFacetResult';
 import { range } from 'underscore';
 
 export class FakeResults {

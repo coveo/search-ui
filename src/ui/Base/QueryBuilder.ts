@@ -6,7 +6,7 @@ import { IQuery } from '../../rest/Query';
 import { QueryBuilderExpression } from './QueryBuilderExpression';
 import * as _ from 'underscore';
 import { Utils } from '../../utils/Utils';
-import { ICategoryFacetsRequest } from '../../rest/CategoryFacetsRequest';
+import { ICategoryFacetRequest } from '../../rest/CategoryFacetRequest';
 
 /**
  * The QueryBuilder is used to build a {@link IQuery} that will be able to be executed using the Search API.
@@ -278,7 +278,7 @@ export class QueryBuilder {
   /**
    * This specifies an array of request for the CategoryFacet component.
    */
-  public categoryFacets: ICategoryFacetsRequest[] = [];
+  public categoryFacets: ICategoryFacetRequest[] = [];
   public enableDuplicateFiltering: boolean = false;
   /**
    * The custom context information to send along with the query. Each value should be a string or an array of strings.

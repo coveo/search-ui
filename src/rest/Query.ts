@@ -2,7 +2,7 @@ import { IQueryFunction } from './QueryFunction';
 import { IRankingFunction } from './RankingFunction';
 import { IGroupByRequest } from './GroupByRequest';
 import { Context } from '../ui/PipelineContext/PipelineGlobalExports';
-import { ICategoryFacetsRequest } from './CategoryFacetsRequest';
+import { ICategoryFacetRequest } from './CategoryFacetRequest';
 
 /**
  * The IQuery interface describes a query that can be performed on the Coveo REST Search API.
@@ -177,7 +177,7 @@ export interface IQuery {
   /**
    * This specifies an array of request to retrieve facet values for the CategoryFacet component
    */
-  categoryFacets?: ICategoryFacetsRequest[];
+  categoryFacets?: ICategoryFacetRequest[];
   /**
    * Whether to include debug information from the Search API in the query response.
    *
