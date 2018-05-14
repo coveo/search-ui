@@ -73,15 +73,23 @@ export interface IAnalyticsOmniboxFacetMeta {
   suggestionRanking: number;
   query: string;
 }
+
 export interface IAnalyticsSimpleFilterMeta {
   simpleFilterTitle: string;
   simpleFilterSelectedValue?: string;
   simpleFilterField: string;
 }
+
 export interface IAnalyticsFacetMeta {
   facetId: string;
   facetValue?: string;
   facetTitle: string;
+}
+
+export interface IAnalyticsCategoryFacetMeta {
+  categoryFacetId: string;
+  categoryFacetPath?: string[];
+  categoryFacetTitle: string;
 }
 
 export interface IAnalyticsQueryErrorMeta {
@@ -368,6 +376,26 @@ export var analyticsActionCauseList = {
     name: 'facetUnexclude',
     type: 'facet',
     metaMap: { facetId: 1, facetValue: 2, facetTitle: 3 }
+  },
+  categoryFacetSelect: <IAnalyticsActionCause>{
+    name: 'categoryFacetSelect',
+    type: 'categoryFacet',
+    metaMap: { categoryFacetId: 1, categoryFacetValue: 2, categoryFacetTitle: 3 }
+  },
+  categoryFacetClear: <IAnalyticsActionCause>{
+    name: 'categoryFacetClear',
+    type: 'categoryFacet',
+    metaMap: { categoryFacetId: 1, categoryFacetValue: 2, categoryFacetTitle: 3 }
+  },
+  categoryFacetBreadcrumb: <IAnalyticsActionCause>{
+    name: 'categoryFacetBreadcrumb',
+    type: 'categoryFacet',
+    metaMap: { categoryFacetId: 1, categoryFacetValue: 2, categoryFacetTitle: 3 }
+  },
+  categoryFacetSearch: <IAnalyticsActionCause>{
+    name: 'categoryFacetSearch',
+    type: 'categoryFacet',
+    metaMap: { categoryFacetId: 1, categoryFacetValue: 2, categoryFacetTitle: 3 }
   },
   errorBack: <IAnalyticsActionCause>{
     name: 'errorBack',

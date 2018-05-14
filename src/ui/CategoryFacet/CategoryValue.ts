@@ -3,6 +3,7 @@ import { CategoryFacetTemplates } from './CategoryFacetTemplates';
 import { CategoryChildrenValueRenderer } from './CategoryValueChildrenRenderer';
 import { CategoryFacet } from './CategoryFacet';
 import { ICategoryFacetValue } from '../../rest/CategoryFacetValue';
+import { analyticsActionCauseList, IAnalyticsCategoryFacetMeta } from '../Analytics/AnalyticsActionListMeta';
 
 export interface CategoryValueParent {
   path: string[];
@@ -32,7 +33,7 @@ export class CategoryValue implements CategoryValueParent {
     this.label = $$(this.element.find('.coveo-category-facet-value-label'));
     this.collapseArrow = this.categoryFacetTemplates.buildCollapseArrow();
     this.categoryChildrenValueRenderer = new CategoryChildrenValueRenderer(this.element, categoryFacetTemplates, this, this.categoryFacet);
-    this.labelOnClick = () => this.categoryFacet.changeActivePath(this.path);
+    this.labelOnClick = () => this.onLabelClick();
     this.label.one('click', this.labelOnClick);
   }
 
@@ -64,5 +65,14 @@ export class CategoryValue implements CategoryValueParent {
       const label = this.element.find('label');
       $$(label).prepend(this.collapseArrow.el);
     }
+  }
+
+  private onLabelClick() {
+    this.categoryFacet.usageAnalytics.logSearchEvent<IAnalyticsCategoryFacetMeta>(analyticsActionCauseList.categoryFacetSelect, {
+      categoryFacetId: this.categoryFacet.options.id,
+      categoryFacetPath: this.categoryFacet.activePath,
+      categoryFacetTitle: this.categoryFacet.options.title
+    });
+    this.categoryFacet.changeActivePath(this.path);
   }
 }
