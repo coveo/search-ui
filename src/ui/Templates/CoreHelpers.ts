@@ -312,6 +312,9 @@ export interface ICoreHelpers {
 
 /**
  * Available options for the size templateHelpers.
+ *
+ * Example:
+ * <div class="CoveoFieldValue" data-helper="helperName" data-helper-options-optionName="option-value"></div>
  */
 export interface ISizeOptions {
   /**

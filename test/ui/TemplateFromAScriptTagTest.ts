@@ -1,6 +1,7 @@
 import { TemplateFromAScriptTag } from '../../src/ui/Templates/TemplateFromAScriptTag';
 import { Template } from '../../src/ui/Templates/Template';
 import { ValidLayout } from '../../src/ui/ResultLayoutSelector/ValidLayout';
+import { $$ } from '../../src/utils/Dom';
 export function TemplateFromAScriptTagTest() {
   describe('TemplateFromAScriptTag', () => {
     let tmpl: Template;
@@ -23,6 +24,53 @@ export function TemplateFromAScriptTagTest() {
       scriptTag.setAttribute('data-fields', '@foo,@bar');
       let created = new TemplateFromAScriptTag(tmpl, scriptTag);
       expect(created.template.getFields()).toEqual(jasmine.arrayContaining(['foo', 'bar']));
+    });
+
+    describe('when there are fields to match directly on the the HTMLElement', () => {
+      const createMatcher = (field, values) => {
+        return jasmine.arrayContaining([
+          jasmine.objectContaining({
+            field,
+            values
+          })
+        ]);
+      };
+
+      it('should extract fields to match from the HTMLScript element', () => {
+        const scriptTag = $$('script', {
+          'data-field-foo': 'bar'
+        }).el as HTMLScriptElement;
+
+        const created = new TemplateFromAScriptTag(tmpl, scriptTag);
+        expect(created.template.fieldsToMatch).toEqual(createMatcher('foo', ['bar']));
+      });
+
+      it('should extract fields to match with underscore', () => {
+        const scriptTag = $$('script', {
+          'data-field-foo___something_bar': 'baz'
+        }).el as HTMLScriptElement;
+
+        const created = new TemplateFromAScriptTag(tmpl, scriptTag);
+        expect(created.template.fieldsToMatch).toEqual(createMatcher('foo___something_bar', ['baz']));
+      });
+
+      it('should trim field values', () => {
+        const scriptTag = $$('script', {
+          'data-field-foo': '1, 2 ,  3,4  ,5'
+        }).el as HTMLScriptElement;
+
+        const created = new TemplateFromAScriptTag(tmpl, scriptTag);
+        expect(created.template.fieldsToMatch).toEqual(createMatcher('foo', ['1', '2', '3', '4', '5']));
+      });
+
+      it('should extract fields to match with dots', () => {
+        const scriptTag = $$('script', {
+          'data-field-foo.bar.baz': 'hello'
+        }).el as HTMLScriptElement;
+
+        const created = new TemplateFromAScriptTag(tmpl, scriptTag);
+        expect(created.template.fieldsToMatch).toEqual(createMatcher('foo.bar.baz', ['hello']));
+      });
     });
 
     describe('instantiated from a string', () => {
