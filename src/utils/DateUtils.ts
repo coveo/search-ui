@@ -153,7 +153,7 @@ export interface IDateToStringOptions {
    * - `dddd`: day name (e.g., Thursday)
    * - `ddd`: shorterened day name (e.g., Thu)
    * - `dd`: day number (e.g., 05)
-   * - `d`: single digit day for day before the 10th (e.g., 5)
+   * - `d`: single digit day for days before the 10th (e.g., 5)
    * - `hh`: hour, in the 24-hour format (e.g., 14)
    * - `h`: hour, in the 12-hour format (e.g., 2)
    * - `mm`: minutes (e.g., 15)
