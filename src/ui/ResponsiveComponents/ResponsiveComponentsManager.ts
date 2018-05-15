@@ -10,6 +10,7 @@ import { ResponsiveFacets } from './ResponsiveFacets';
 import { QueryEvents } from '../../events/QueryEvents';
 import { Logger } from '../../misc/Logger';
 import _ = require('underscore');
+import { DeviceUtils } from '../../Index';
 
 export interface IResponsiveComponentOptions {
   enableResponsiveMode?: boolean;
@@ -18,7 +19,7 @@ export interface IResponsiveComponentOptions {
 }
 
 export interface IResponsiveComponentConstructor {
-  new (root: Dom, ID: string, options: IResponsiveComponentOptions): IResponsiveComponent;
+  new(root: Dom, ID: string, options: IResponsiveComponentOptions): IResponsiveComponent;
 }
 
 export interface IResponsiveComponent {
@@ -133,7 +134,10 @@ export class ResponsiveComponentsManager {
         loading, it could be the cause of this issue.`);
       }
     }, ResponsiveComponentsManager.RESIZE_DEBOUNCE_DELAY);
-    window.addEventListener('resize', this.resizeListener);
+    if (!DeviceUtils.isMobileDevice()) {
+      window.addEventListener('resize', this.resizeListener);
+    }
+
     this.bindNukeEvents();
   }
 
