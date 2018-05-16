@@ -36,7 +36,9 @@ export enum EXECUTION_REPORT_SECTION {
   TOP_RESULT = 'ApplyTopResultFeature',
   RANKING_WEIGHT = 'ApplyRankingWeightFeature',
   INDEX_QUERY = 'Send query to index',
-  TOP_CLICKS = 'EvaluatingTopClicks'
+  TOP_CLICKS = 'EvaluatingTopClicks',
+  PARTIAL_MATCH = 'PartialMatch',
+  NONE = 'NONE'
 }
 
 export interface IExecutionReportSection {
