@@ -60,6 +60,19 @@ export function FacetSliderQueryControllerTest() {
       expect(filter).toContain(`@foo>="1970`);
     });
 
+    it('should add a group by request into the query builder to generate the full range available for the slider', () => {
+      const builder = new QueryBuilder();
+      controller.putGroupByIntoQueryBuilder(builder);
+      const requestForFullRange = builder.groupByRequests[controller.groupByRequestForFullRange];
+      expect(requestForFullRange.sortCriteria).toBe('nosort');
+      expect(requestForFullRange.field).toBe(facet.options.field);
+      expect(requestForFullRange.maximumNumberOfValues).toBe(1);
+
+      expect(requestForFullRange.advancedQueryOverride).toBe('@uri');
+      expect(requestForFullRange.constantQueryOverride).toBeUndefined();
+      expect(requestForFullRange.queryOverride).toBeUndefined();
+    });
+
     it('should allow to put the group by into a query builder with simple slider config', () => {
       facet.isSimpleSliderConfig = () => true;
       const builder = new QueryBuilder();
