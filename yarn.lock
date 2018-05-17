@@ -66,9 +66,9 @@
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/@material/typography/-/typography-0.3.0.tgz#f828c2d3215bfd66c58072709b4260c64125390a"
 
-"@salesforce-ux/design-system@2.4.4":
-  version "2.4.4"
-  resolved "https://registry.yarnpkg.com/@salesforce-ux/design-system/-/design-system-2.4.4.tgz#381688169cf34a298fca70b73d3788ff4036d1ca"
+"@salesforce-ux/design-system@^2.6.0":
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/@salesforce-ux/design-system/-/design-system-2.6.0.tgz#2a81d904337ec185bb95476325cd531ab0f85c5c"
 
 "@types/ag-grid@^3.2.0":
   version "3.2.0"
