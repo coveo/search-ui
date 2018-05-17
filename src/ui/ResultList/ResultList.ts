@@ -271,7 +271,7 @@ export class ResultList extends Component {
   public currentlyDisplayedResults: IQueryResult[] = [];
   private fetchingMoreResults: Promise<IQueryResults>;
   private reachedTheEndOfResults = false;
-  private disabledByLayoutSelectorChange = false;
+  private disableLayoutChange = false;
   private renderer: ResultListRenderer;
 
   // This variable serves to block some setup where the framework fails to correctly identify the "real" scrolling container.
@@ -528,8 +528,8 @@ export class ResultList extends Component {
 
   public enable(): void {
     super.enable();
-    this.disabledByLayoutSelectorChange = false;
-    each(this.resultLayoutSelectorsInTheInterface, resultLayoutSelector => {
+    this.disableLayoutChange = false;
+    each(this.resultLayoutSelectors, resultLayoutSelector => {
       resultLayoutSelector.enableLayouts([this.options.layout] as ValidLayout[]);
     });
     $$(this.element).removeClass('coveo-hidden');
@@ -538,13 +538,13 @@ export class ResultList extends Component {
   public disable(): void {
     super.disable();
 
-    const otherLayoutsStillActive = map(this.otherResultListsInTheInterface, otherResultList => otherResultList.options.layout);
-    if (!contains(otherLayoutsStillActive, this.options.layout) && !this.disabledByLayoutSelectorChange) {
-      each(this.resultLayoutSelectorsInTheInterface, resultLayoutSelector => {
+    const otherLayoutsStillActive = map(this.otherResultLists, otherResultList => otherResultList.options.layout);
+    if (!contains(otherLayoutsStillActive, this.options.layout) && !this.disableLayoutChange) {
+      each(this.resultLayoutSelectors, resultLayoutSelector => {
         resultLayoutSelector.disableLayouts([this.options.layout] as ValidLayout[]);
       });
     }
-    this.disabledByLayoutSelectorChange = false;
+    this.disableLayoutChange = false;
     $$(this.element).addClass('coveo-hidden');
   }
 
@@ -640,12 +640,12 @@ export class ResultList extends Component {
     ResultList.resultCurrentlyBeingRendered = undefined;
   }
 
-  private get otherResultListsInTheInterface() {
+  private get otherResultLists() {
     const allResultLists = this.searchInterface.getComponents(ResultList.ID) as ResultList[];
     return without(allResultLists, this);
   }
 
-  private get resultLayoutSelectorsInTheInterface() {
+  private get resultLayoutSelectors() {
     return this.searchInterface.getComponents(ResultLayoutSelector.ID) as ResultLayoutSelector[];
   }
 
@@ -656,7 +656,7 @@ export class ResultList extends Component {
     }
     if (this.options.autoSelectFieldsToInclude) {
       const otherFields = flatten(
-        map(this.otherResultListsInTheInterface, otherResultList => {
+        map(this.otherResultLists, otherResultList => {
           return otherResultList.getAutoSelectedFieldsToInclude();
         })
       );
@@ -668,7 +668,7 @@ export class ResultList extends Component {
 
   protected handleChangeLayout(args: IChangeLayoutEventArgs) {
     if (args.layout === this.options.layout) {
-      this.disabledByLayoutSelectorChange = false;
+      this.disableLayoutChange = false;
       this.enable();
       this.options.resultTemplate.layout = <ValidLayout>this.options.layout;
       if (args.results) {
@@ -684,7 +684,7 @@ export class ResultList extends Component {
         });
       }
     } else {
-      this.disabledByLayoutSelectorChange = true;
+      this.disableLayoutChange = true;
       this.disable();
     }
   }

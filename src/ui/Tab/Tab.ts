@@ -265,18 +265,16 @@ export class Tab extends Component {
    */
   public select() {
     if (!this.disabled) {
+      const state = {
+        t: this.options.id,
+        sort: this.options.sort || QueryStateModel.defaultAttributes.sort
+      } as any;
+
       if (this.options.layout) {
-        this.queryStateModel.setMultiple({
-          t: this.options.id,
-          sort: this.options.sort || QueryStateModel.defaultAttributes.sort,
-          layout: this.options.layout
-        });
-      } else {
-        this.queryStateModel.setMultiple({
-          t: this.options.id,
-          sort: this.options.sort || QueryStateModel.defaultAttributes.sort
-        });
+        state.layout = this.options.layout;
       }
+
+      this.queryStateModel.setMultiple(state);
 
       this.usageAnalytics.logSearchEvent<IAnalyticsInterfaceChange>(analyticsActionCauseList.interfaceChange, {
         interfaceChangeTo: this.options.id

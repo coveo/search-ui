@@ -264,25 +264,13 @@ export function TabTest() {
       });
 
       it('layout will not change on selection if the layout option is not specified', () => {
-        test = Mock.advancedComponentSetup<Tab>(
-          Tab,
-          new Mock.AdvancedComponentSetupOptions(
-            undefined,
-            {
-              caption: 'caption',
-              id: 'id'
-            },
-            (env: Mock.MockEnvironmentBuilder) => {
-              return env.withLiveQueryStateModel();
-            }
-          )
-        );
-        test.env.queryStateModel.set('layout', 'card');
-        test.env.queryStateModel.set('t', 'id');
+        test = Mock.optionsComponentSetup<Tab, ITabOptions>(Tab, {
+          caption: 'caption',
+          id: 'id'
+        });
         $$(test.env.root).trigger(InitializationEvents.afterInitialization);
-        expect(test.env.queryStateModel.get('layout')).toEqual('card');
         test.cmp.select();
-        expect(test.env.queryStateModel.get('layout')).toEqual('card');
+        expect(test.env.queryStateModel.set).not.toHaveBeenCalled();
       });
     });
 
