@@ -60,17 +60,38 @@ export function FacetSliderQueryControllerTest() {
       expect(filter).toContain(`@foo>="1970`);
     });
 
-    it('should add a group by request into the query builder to generate the full range available for the slider', () => {
-      const builder = new QueryBuilder();
-      controller.putGroupByIntoQueryBuilder(builder);
-      const requestForFullRange = builder.groupByRequests[controller.groupByRequestForFullRange];
-      expect(requestForFullRange.sortCriteria).toBe('nosort');
-      expect(requestForFullRange.field).toBe(facet.options.field);
-      expect(requestForFullRange.maximumNumberOfValues).toBe(1);
+    describe('when cloning the request to determine the full range in the index', () => {
+      let requestForFullRange;
 
-      expect(requestForFullRange.advancedQueryOverride).toBe('@uri');
-      expect(requestForFullRange.constantQueryOverride).toBeUndefined();
-      expect(requestForFullRange.queryOverride).toBeUndefined();
+      beforeEach(() => {
+        const builder = new QueryBuilder();
+        controller.putGroupByIntoQueryBuilder(builder);
+        requestForFullRange = builder.groupByRequests[controller.groupByRequestForFullRange];
+      });
+
+      it('should use nosort', () => {
+        expect(requestForFullRange.sortCriteria).toBe('nosort');
+      });
+
+      it('should use the same field', () => {
+        expect(requestForFullRange.field).toBe(facet.options.field);
+      });
+
+      it('should request only one value', () => {
+        expect(requestForFullRange.maximumNumberOfValues).toBe(1);
+      });
+
+      it('should set @uri in the advanced query override', () => {
+        expect(requestForFullRange.advancedQueryOverride).toBe('@uri');
+      });
+
+      it('should not use any constant query override', () => {
+        expect(requestForFullRange.constantQueryOverride).toBeUndefined();
+      });
+
+      it('should not use any simple query override', () => {
+        expect(requestForFullRange.queryOverride).toBeUndefined();
+      });
     });
 
     it('should allow to put the group by into a query builder with simple slider config', () => {
