@@ -323,7 +323,7 @@ import { ValueElementRendererTest } from './ui/ValueElementRendererTest';
 ValueElementRendererTest();
 
 import { ResultActionsMenuTest } from './ui/ResultActionsMenuTest';
-ResultActionsMenuTest()
+ResultActionsMenuTest();
 
 import { ResultsPerPageTest } from './ui/ResultsPerPageTest';
 ResultsPerPageTest();
@@ -573,6 +573,9 @@ ExecutionReportQueryOverrideSectionTest();
 
 import { ExecutionReportAuthenticationSectionTest } from './ui/RelevanceInspector/ExecutionReportAuthenticationSectionTest';
 ExecutionReportAuthenticationSectionTest();
+
+import { ExecutionReportITDSectionTest } from './ui/RelevanceInspector/ExecutionReportITDSectionTest';
+ExecutionReportITDSectionTest();
 
 import { ExecutionReportTest } from './ui/RelevanceInspector/ExecutionReportTest';
 ExecutionReportTest();
