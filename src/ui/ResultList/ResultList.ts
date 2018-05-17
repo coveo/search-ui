@@ -34,16 +34,16 @@ import { ResponsiveDefaultResultTemplate } from '../ResponsiveComponents/Respons
 import { ResultListRenderer } from './ResultListRenderer';
 import { ResultListTableRenderer } from './ResultListTableRenderer';
 import { ResultListCardRenderer } from './ResultListCardRenderer';
-import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 import 'styling/_ResultList';
 import 'styling/_ResultFrame';
 import 'styling/_Result';
 import { InitializationPlaceholder } from '../Base/InitializationPlaceholder';
-import { get } from '../Base/RegisteredNamedMethods';
 import { ValidLayout } from '../ResultLayoutSelector/ValidLayout';
 import { TemplateComponentOptions } from '../Base/TemplateComponentOptions';
 import { CoreHelpers } from '../Templates/CoreHelpers';
+import { without, compact, map, chain, each, pluck, sortBy, flatten, unique, contains } from 'underscore';
+import { ResultLayoutSelector } from '../ResultLayoutSelector/ResultLayoutSelector';
 
 CoreHelpers.exportAllHelpersGlobally(window['Coveo']);
 export interface IResultListOptions {
@@ -90,7 +90,7 @@ export class ResultList extends Component {
   private static loadTemplatesFromCache(): Template {
     var pageTemplateNames = TemplateCache.getResultListTemplateNames();
     if (pageTemplateNames.length > 0) {
-      return new TemplateList(_.compact(_.map(pageTemplateNames, templateName => TemplateCache.getTemplate(templateName))));
+      return new TemplateList(compact(map(pageTemplateNames, templateName => TemplateCache.getTemplate(templateName))));
     }
 
     return null;
@@ -271,7 +271,7 @@ export class ResultList extends Component {
   public currentlyDisplayedResults: IQueryResult[] = [];
   private fetchingMoreResults: Promise<IQueryResults>;
   private reachedTheEndOfResults = false;
-
+  private disableLayoutChange = false;
   private renderer: ResultListRenderer;
 
   // This variable serves to block some setup where the framework fails to correctly identify the "real" scrolling container.
@@ -348,7 +348,7 @@ export class ResultList extends Component {
    * @returns {string[]}
    */
   public getAutoSelectedFieldsToInclude(): string[] {
-    return _.chain(this.options.resultTemplate.getFields())
+    return chain(this.options.resultTemplate.getFields())
       .concat(this.getMinimalFieldsToInclude())
       .compact()
       .unique()
@@ -369,7 +369,7 @@ export class ResultList extends Component {
     // Stick to the "hardcoded" configuration present in the page.
     // We only add the correct layout options if it has not been set manually.
     if (this.options.resultTemplate instanceof TemplateList) {
-      _.each((<TemplateList>this.options.resultTemplate).templates, (tmpl: Template) => {
+      each((<TemplateList>this.options.resultTemplate).templates, (tmpl: Template) => {
         if (!tmpl.layout) {
           tmpl.layout = <ValidLayout>this.options.layout;
         }
@@ -404,7 +404,7 @@ export class ResultList extends Component {
    */
   public buildResults(results: IQueryResults): Promise<HTMLElement[]> {
     const res: { elem: HTMLElement; idx: number }[] = [];
-    const resultsPromises = _.map(results.results, (result: IQueryResult, index: number) => {
+    const resultsPromises = map(results.results, (result: IQueryResult, index: number) => {
       return this.buildResult(result).then((resultElement: HTMLElement) => {
         if (resultElement != null) {
           res.push({ elem: resultElement, idx: index });
@@ -417,7 +417,7 @@ export class ResultList extends Component {
     // We need to sort by the original index order, because in lazy loading mode, it's possible that results does not gets rendered
     // in the correct order returned by the index, depending on the time it takes to load all the results component for a given result template
     return Promise.all(resultsPromises).then(() => {
-      return _.pluck(_.sortBy(res, 'idx'), 'elem');
+      return pluck(sortBy(res, 'idx'), 'elem');
     });
   }
 
@@ -482,7 +482,7 @@ export class ResultList extends Component {
       this.reachedTheEndOfResults = count > data.results.length;
       this.buildResults(data).then((elements: HTMLElement[]) => {
         this.renderResults(elements, true);
-        _.each(results, result => {
+        each(results, result => {
           this.currentlyDisplayedResults.push(result);
         });
         this.triggerNewResultsDisplayed();
@@ -528,10 +528,23 @@ export class ResultList extends Component {
 
   public enable(): void {
     super.enable();
+    this.disableLayoutChange = false;
+    each(this.resultLayoutSelectors, resultLayoutSelector => {
+      resultLayoutSelector.enableLayouts([this.options.layout] as ValidLayout[]);
+    });
     $$(this.element).removeClass('coveo-hidden');
   }
+
   public disable(): void {
     super.disable();
+
+    const otherLayoutsStillActive = map(this.otherResultLists, otherResultList => otherResultList.options.layout);
+    if (!contains(otherLayoutsStillActive, this.options.layout) && !this.disableLayoutChange) {
+      each(this.resultLayoutSelectors, resultLayoutSelector => {
+        resultLayoutSelector.disableLayouts([this.options.layout] as ValidLayout[]);
+      });
+    }
+    this.disableLayoutChange = false;
     $$(this.element).addClass('coveo-hidden');
   }
 
@@ -627,34 +640,35 @@ export class ResultList extends Component {
     ResultList.resultCurrentlyBeingRendered = undefined;
   }
 
+  private get otherResultLists() {
+    const allResultLists = this.searchInterface.getComponents(ResultList.ID) as ResultList[];
+    return without(allResultLists, this);
+  }
+
+  private get resultLayoutSelectors() {
+    return this.searchInterface.getComponents(ResultLayoutSelector.ID) as ResultLayoutSelector[];
+  }
+
   private handleBuildingQuery(args: IBuildingQueryEventArgs) {
     if (this.options.fieldsToInclude != null) {
       // remove the @
-      args.queryBuilder.addFieldsToInclude(_.map(this.options.fieldsToInclude, field => field.substr(1)));
+      args.queryBuilder.addFieldsToInclude(map(this.options.fieldsToInclude, field => field.substr(1)));
     }
     if (this.options.autoSelectFieldsToInclude) {
-      const otherResultListsElements = _.reject(
-        $$(this.root).findAll(`.${Component.computeCssClassName(ResultList)}`),
-        resultListElement => resultListElement == this.element
-      );
-      const otherFields = _.flatten(
-        _.map(otherResultListsElements, otherResultListElement => {
-          const otherResultListInstance = <ResultList>get(otherResultListElement);
-          if (otherResultListInstance) {
-            return otherResultListInstance.getAutoSelectedFieldsToInclude();
-          } else {
-            return [];
-          }
+      const otherFields = flatten(
+        map(this.otherResultLists, otherResultList => {
+          return otherResultList.getAutoSelectedFieldsToInclude();
         })
       );
 
-      args.queryBuilder.addRequiredFields(_.unique(otherFields.concat(this.getAutoSelectedFieldsToInclude())));
+      args.queryBuilder.addRequiredFields(unique(otherFields.concat(this.getAutoSelectedFieldsToInclude())));
       args.queryBuilder.includeRequiredFields = true;
     }
   }
 
   protected handleChangeLayout(args: IChangeLayoutEventArgs) {
     if (args.layout === this.options.layout) {
+      this.disableLayoutChange = false;
       this.enable();
       this.options.resultTemplate.layout = <ValidLayout>this.options.layout;
       if (args.results) {
@@ -670,6 +684,7 @@ export class ResultList extends Component {
         });
       }
     } else {
+      this.disableLayoutChange = true;
       this.disable();
     }
   }
@@ -728,16 +743,16 @@ export class ResultList extends Component {
     const showIfResults = $$(this.element).findAll('.coveo-show-if-results');
     const showIfNoResults = $$(this.element).findAll('.coveo-show-if-no-results');
 
-    _.each(showIfQuery, (s: HTMLElement) => {
+    each(showIfQuery, (s: HTMLElement) => {
       $$(s).toggle(hasQuery);
     });
-    _.each(showIfNoQuery, (s: HTMLElement) => {
+    each(showIfNoQuery, (s: HTMLElement) => {
       $$(s).toggle(!hasQuery);
     });
-    _.each(showIfResults, (s: HTMLElement) => {
+    each(showIfResults, (s: HTMLElement) => {
       $$(s).toggle(hasQuery && hasResults);
     });
-    _.each(showIfNoResults, (s: HTMLElement) => {
+    each(showIfNoResults, (s: HTMLElement) => {
       $$(s).toggle(hasQuery && !hasResults);
     });
   }
@@ -748,7 +763,7 @@ export class ResultList extends Component {
         $$(this.options.waitAnimationContainer).addClass('coveo-fade-out');
         break;
       case 'spinner':
-        _.each(this.options.resultContainer.children, (child: HTMLElement) => {
+        each(this.options.resultContainer.children, (child: HTMLElement) => {
           $$(child).hide();
         });
         if ($$(this.options.waitAnimationContainer).find('.coveo-wait-animation') == undefined) {
@@ -776,7 +791,7 @@ export class ResultList extends Component {
     const spinner = DomUtils.getLoadingSpinner();
     if (this.options.layout == 'card' && this.options.enableInfiniteScroll) {
       const previousSpinnerContainer = $$(this.options.waitAnimationContainer).findAll('.coveo-loading-spinner-container');
-      _.each(previousSpinnerContainer, previousSpinner => $$(previousSpinner).remove());
+      each(previousSpinnerContainer, previousSpinner => $$(previousSpinner).remove());
       const spinnerContainer = $$('div', {
         className: 'coveo-loading-spinner-container'
       });
@@ -790,8 +805,8 @@ export class ResultList extends Component {
   private hideWaitingAnimationForInfiniteScrolling() {
     const spinners = $$(this.options.waitAnimationContainer).findAll('.coveo-loading-spinner');
     const containers = $$(this.options.waitAnimationContainer).findAll('.coveo-loading-spinner-container');
-    _.each(spinners, spinner => $$(spinner).remove());
-    _.each(containers, container => $$(container).remove());
+    each(spinners, spinner => $$(spinner).remove());
+    each(containers, container => $$(container).remove());
   }
 
   private initResultContainer() {
