@@ -6,6 +6,7 @@ import { Utils } from '../../utils/Utils';
 import * as _ from 'underscore';
 import { QueryEvents } from '../../events/QueryEvents';
 import { Logger } from '../../misc/Logger';
+import { DeviceUtils } from '../../utils/DeviceUtils';
 
 export interface IResponsiveComponentOptions {
   enableResponsiveMode?: boolean;
@@ -140,7 +141,14 @@ export class ResponsiveComponentsManager {
         loading, it could be the cause of this issue.`);
       }
     };
-    window.addEventListener('resize', this.resizeListener);
+    // On many android devices, focusing on an input (eg: facet search input) causes the device to "zoom in"
+    // and this triggers the window resize event. Since this class modify HTML nodes, Android has the quirks of removing the focus on the input.
+    // As a net result, users focus on the text input, the keyboard appears for a few milliseconds, then dissapears instantly when the DOM is modified.
+    // Since on a mobile device resizing the page is not something that should really happen, we disable it here.
+    if (!DeviceUtils.isMobileDevice()) {
+      window.addEventListener('resize', this.resizeListener);
+    }
+
     this.bindNukeEvents();
   }
 
