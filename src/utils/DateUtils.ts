@@ -140,6 +140,25 @@ export interface IDateToStringOptions {
    * Default value is `false`.
    */
   alwaysIncludeTime?: boolean;
+  /**
+   * Specifies a custom date format (e.g., dd/MM/yyyy), regardless of browser locale or any other option.
+   *
+   * This option uses the following syntax. All examples use the April 5th, 2018 14:15:34 time.
+   * - `yyyy`: full length year (e.g., 2018)
+   * - `yy`: short length year (e.g., 18)
+   * - `MMMM`: month name (e.g., April)
+   * - `MMM`: shortened month name (e.g., Apr)
+   * - `MM`: month number (e.g., 04)
+   * - `M`: single digit month number for months before October (e.g., 4)
+   * - `dddd`: day name (e.g., Thursday)
+   * - `ddd`: shortened day name (e.g., Thu)
+   * - `dd`: day number (e.g., 05)
+   * - `d`: single digit day for days before the 10th (e.g., 5)
+   * - `hh`: hour, in the 24-hour format (e.g., 14)
+   * - `h`: hour, in the 12-hour format (e.g., 2)
+   * - `mm`: minutes (e.g., 15)
+   * - `ss`: seconds (e.g., 34)
+   */
   predefinedFormat?: string;
 }
 
