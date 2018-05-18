@@ -284,7 +284,7 @@ export interface ICoreHelpers {
    * > <%= size(raw.size, {base: 0, precision: 2}) %>
    * > ```
    *
-   * - `value`: The number to convert to a timespan
+   * - `value`: The number to format
    * - `options` : The options to use (see {@link ISizeOptions})
    */
   size: (value: number, options?: ISizeOptions) => string;
