@@ -175,6 +175,10 @@ export class FacetValueSuggestions extends Component {
   }
 
   public async getSuggestions(omnibox: Omnibox): Promise<IOmniboxSuggestion[]> {
+    if (this.options.numberOfSuggestions == 0) {
+      return [];
+    }
+
     const text = omnibox.getText();
 
     const suggestions: IOmniboxSuggestion[] = await this.getFacetValueSuggestions(text, omnibox);
@@ -195,10 +199,19 @@ export class FacetValueSuggestions extends Component {
     const wordsToQuery = this.options.useValueFromSearchbox ? [text] : [];
 
     const suggestionsKeywords: string[] = await this.getQuerySuggestionsKeywords(omnibox);
-    const allWordsToQuery = _.unique(wordsToQuery.concat(suggestionsKeywords));
+    const allWordsToQuery = _.unique(wordsToQuery.concat(suggestionsKeywords).filter(value => value != ''));
+
+    if (allWordsToQuery.length === 0) {
+      return [];
+    }
+
+    return this.getSuggestionsForWords(allWordsToQuery, omnibox);
+  }
+
+  private async getSuggestionsForWords(wordsToQuery: string[], omnibox: Omnibox): Promise<IOmniboxSuggestion[]> {
     try {
-      const suggestions = await this.fieldValueCache.getSuggestions(`fv${allWordsToQuery.join('')}`, () =>
-        this.facetValueSuggestionsProvider.getSuggestions(allWordsToQuery)
+      const suggestions = await this.fieldValueCache.getSuggestions(`fv${wordsToQuery.join('')}`, () =>
+        this.facetValueSuggestionsProvider.getSuggestions(wordsToQuery)
       );
 
       this.logger.debug('FacetValue Suggestions Results', suggestions);
@@ -220,10 +233,17 @@ export class FacetValueSuggestions extends Component {
 
   private rankSuggestionRows(suggestions: IFacetValueSuggestionRow[]): IFacetValueSuggestionRow[] {
     const rankedResults = [...suggestions.sort((a, b) => b.score.distanceFromTotalForField - a.score.distanceFromTotalForField)];
-    const preciseResults = rankedResults.splice(0, Math.ceil(this.options.numberOfSuggestions / 2));
-    const broadResults = rankedResults.slice(-1, Math.floor(this.options.numberOfSuggestions / 2));
+    const firstSlice = Math.ceil(this.options.numberOfSuggestions / 2);
+    const lastSlice = -Math.floor(this.options.numberOfSuggestions / 2);
 
-    return [...preciseResults, ...broadResults];
+    const firstResultsToReturn = rankedResults.splice(0, firstSlice);
+
+    if (lastSlice != 0) {
+      const lastResultsToReturn = rankedResults.slice(lastSlice);
+      return [...firstResultsToReturn, ...lastResultsToReturn];
+    }
+
+    return firstResultsToReturn;
   }
 
   private mapFacetValueSuggestion(resultToShow: IFacetValueSuggestionRow, omnibox: Omnibox) {
@@ -249,6 +269,7 @@ export class FacetValueSuggestions extends Component {
     const existingValues: string[] = fvState[this.options.field.toString()] || [];
     fvState[this.options.field.toString()] = existingValues.concat([row.value]);
     this.queryStateModel.set(QueryStateModel.attributesEnum.fv, fvState);
+    omnibox.magicBox.blur();
     this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.omniboxField, {});
     this.queryController.executeQuery();
   }

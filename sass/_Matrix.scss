@@ -1,14 +1,13 @@
-@import "Variables";
-
+@import 'Variables';
 .CoveoMatrix {
-  margin: 10px 5px 10px 5px;
+  margin: 10px 5px;
 }
 
 .coveo-matrix-title {
   text-align: center;
   font-size: 14px;
   font-weight: bold;
-  margin: 10px 0 10px 0;
+  margin: 10px 0;
   color: $color-greyish-teal-blue;
   font-size: $font-size-bigger;
 }
@@ -30,7 +29,8 @@
   }
 }
 
-.matrix-header-row, .matrix-total-row {
+.matrix-header-row,
+.matrix-total-row {
   font-weight: bold;
   color: $color-greyish-teal-blue;
   font-weight: bold;
@@ -49,7 +49,6 @@
   overflow: hidden;
   vertical-align: middle;
   border: $default-border;
-
   &:hover {
     cursor: pointer;
   }
@@ -63,16 +62,13 @@
   position: absolute;
   z-index: 1;
   @include defaultRoundedBorder();
-
   background-color: white;
-
   .coveo-result-frame {
     border-bottom: $default-border;
     text-align: left;
     overflow: hidden;
     padding: 5px;
   }
-
   .coveo-result-cell {
     overflow: hidden;
     text-overflow: ellipsis;

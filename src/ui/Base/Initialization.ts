@@ -752,7 +752,7 @@ export class LazyInitialization {
         if (Component.get(matchingElement, componentClassId) == null) {
           // If options were provided, lookup options for this component class and
           // also for the element id. Merge them and pass those to the factory method.
-          let optionsToUse = undefined;
+          let optionsToUse;
           if (Utils.exists(initParameters.options)) {
             const optionsForComponentClass = initParameters.options[componentClassId];
             const optionsForElementId = initParameters.options[matchingElement.id];
@@ -798,7 +798,7 @@ export class LazyInitialization {
 
       const bindings: IComponentBindings = {};
       let options = {};
-      let result: IQueryResult = undefined;
+      let result: IQueryResult;
 
       if (initParameters != undefined) {
         _.each(<{ [key: string]: any }>initParameters.bindings, (value, key) => {
@@ -830,7 +830,7 @@ export class EagerInitialization {
         if (Component.get(matchingElement, componentClassId) == null) {
           // If options were provided, lookup options for this component class and
           // also for the element id. Merge them and pass those to the factory method.
-          let optionsToUse = undefined;
+          let optionsToUse;
           if (Utils.exists(initParameters.options)) {
             const optionsForComponentClass = initParameters.options[componentClassId];
             const optionsForElementId = initParameters.options[matchingElement.id];
@@ -861,7 +861,7 @@ export class EagerInitialization {
     const eagerlyLoadedComponent: IComponentDefinition = Initialization.getRegisteredComponent(componentClassId);
     const bindings: IComponentBindings = {};
     let options = {};
-    let result: IQueryResult = undefined;
+    let result: IQueryResult;
 
     if (initParameters != undefined) {
       _.each(<{ [key: string]: any }>initParameters.bindings, (value, key) => {

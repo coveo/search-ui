@@ -2,7 +2,7 @@
 @import 'mixins/mediaQuery';
 
 .CoveoBreadcrumb {
-  padding: 10px 0px 10px 0px;
+  padding: 10px 0;
   &.coveo-small-display {
     @include breadcrumb-small-display;
   }
@@ -43,7 +43,7 @@
 }
 
 .coveo-breadcrumb-item {
-  margin: 5px 0px 5px 0px;
+  margin: 5px 0;
 }
 
 @include smallScreenWidth() {

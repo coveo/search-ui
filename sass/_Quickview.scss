@@ -1,9 +1,7 @@
 @import 'Variables';
 @import 'mixins/mediaQuery';
-
 .CoveoQuickview {
   @include clickable();
-
   > div {
     position: relative;
   }
@@ -13,7 +11,6 @@
     transform: translateX(-50%);
     left: 50%;
   }
-
   .coveo-caption-for-icon {
     font-size: $font-size-smallest;
     display: none;
@@ -24,11 +21,10 @@
     position: absolute;
     white-space: nowrap;
     z-index: 1;
-
     &:before {
       border: solid;
       border-color: $color-greyish-dark-blue transparent;
-      border-width: 0 6px 7px 6px;
+      border-width: 0 6px 7px;
       content: '';
       position: absolute;
       z-index: 99;
@@ -49,7 +45,7 @@
     position: relative;
     transform: none;
     display: inline;
-    padding: 0px 5px;
+    padding: 0 5px;
     font-size: inherit;
     &:before {
       display: none;
@@ -84,21 +80,18 @@
 }
 
 .coveo-term-for-quickview {
-  margin: 0px 10px 10px 0px;
+  margin: 2px 10px 10px 0;
   font-weight: bold;
   display: inline-block;
   cursor: pointer;
-
   border-radius: 5px;
   border: 2px solid;
-
   .coveo-term-for-quickview-down-arrow {
     display: inline-block;
     padding: 5px;
     height: 26px;
     position: relative;
     width: 20px;
-    border-right: 2px solid;
     .coveo-term-for-quickview-down-arrow-icon {
       position: absolute;
       top: 11px;

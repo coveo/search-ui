@@ -25,17 +25,18 @@ import { TemplateCache } from './TemplateCache';
 /**
  * The core template helpers provided by default.
  *
- * Example usage:
+ * **Usage Examples:**
  *
- * ### HTML
- * ```
- * <div class="CoveoFieldValue" data-helper="helperName" data-helper-options-optionName="option-value"></div>
- * ```
- *
- * ### Underscore
- * ```
- * <%= helperName(argument1, argument2) %>
- * ```
+ * >**HTML**
+ * >
+ * > ```html
+ * > <div class="CoveoFieldValue" data-helper="helperName" data-helper-options-optionName="option-value"></div>
+ * > ```
+ * >**Underscore**
+ * >
+ * > ```erb
+ * > <%= helperName(argument1, argument2) %>
+ * > ```
  */
 export interface ICoreHelpers {
   /**
@@ -258,15 +259,29 @@ export interface ICoreHelpers {
    */
   timeSpan: (value: number, options: ITimeSpanUtilsOptions) => string;
   /**
-   * Given a number, which represent a file size in bytes, format the value into a logical unit size.
+   * Formats a number, which represents a file size in bytes, into a logical unit size.
    *
-   * eg:
+   * **Examples:**
    *
-   * `size(1024) => 1024 B`
+   * >`size(1024) => 1024 B`
+   * >
+   * >`size(1025) => 1 KB`
+   * >
+   * >`size(10240) => 10 KB`
    *
-   * `size(1025) => 1 KB`
+   * **Usage Examples:**
    *
-   * `size(10240) => 10 KB`
+   * >**HTML**
+   * >
+   * > ```html
+   * > <div class="CoveoFieldValue" data-field='@size' data-helper="size" data-helper-options-base="1"></div>
+   * > ```
+   *
+   * >**Underscore**
+   * >
+   * > ```erb
+   * > <%= size(raw.size, {base: 0, precision: 2}) %>
+   * > ```
    */
   size: (value: number, options?: ISizeOptions) => string;
   /**
@@ -297,15 +312,47 @@ export interface ICoreHelpers {
 
 /**
  * Available options for the size templateHelpers.
+ *
+ * Example:
+ * <div class="CoveoFieldValue" data-helper="helperName" data-helper-options-optionName="option-value"></div>
  */
 export interface ISizeOptions {
   /**
    * The base into which to format the value.
+   *
+   * Formula: value * 10^(3 * base)
+   *
+   * **Examples:**
+   * > **Base 0:**
+   * >
+   * > 1 => 1B
+   * >
+   * > 1000 => 1KB
+   *
+   * > **Base 1:**
+   * >
+   * > 1 => 1KB
+   * >
+   * > 1000 => 1MB
    */
   base?: number;
   /**
-   * The precision to use to format the size.
+   * The precision to use to format the size (i.e., the number of digits to display after the decimal)
+   *
+   * **Examples:**
+   * > **Precision 0:**
+   * >
+   * > 1.0 => 1
+   * >
+   * > 1.85 => 1
+   *
+   * > **Precision 1:**
+   * >
+   * > 1.0 => 1.0
+   * >
+   * > 1.85 => 1.8
    */
+
   precision?: number;
 }
 

@@ -262,6 +262,16 @@ export function TabTest() {
         test.cmp.select();
         expect(test.env.queryStateModel.get('layout')).toEqual('card');
       });
+
+      it('layout will not change on selection if the layout option is not specified', () => {
+        test = Mock.optionsComponentSetup<Tab, ITabOptions>(Tab, {
+          caption: 'caption',
+          id: 'id'
+        });
+        $$(test.env.root).trigger(InitializationEvents.afterInitialization);
+        test.cmp.select();
+        expect(test.env.queryStateModel.set).not.toHaveBeenCalled();
+      });
     });
 
     describe('can control inclusion of other elements', function() {
