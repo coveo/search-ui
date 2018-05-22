@@ -101,6 +101,12 @@ export interface IQueryResult {
    * See also [Coveo Machine Learning](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=177).
    */
   isRecommendation: boolean;
+  /**
+   * Contains a value that specifies whether the result is featured by the Coveo Query Pipeline.
+   *
+   * See [Managing Query Pipeline Featured Results](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=126)
+   */
+  isTopResult: boolean;
   termsToHighlight?: IHighlightTerm;
   phrasesToHighlight: IHighlightPhrase;
   rankingModifier?: string;

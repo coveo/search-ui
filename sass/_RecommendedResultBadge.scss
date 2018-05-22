@@ -1,0 +1,33 @@
+@import 'Variables';
+@import 'Result';
+.coveo-promoted-result-badge {
+  text-transform: uppercase;
+  display: inline-block;
+  margin: 0 0 10px 0;
+  padding: 5px;
+  color: white;
+  border-radius: 10px 5px 10px 5px;
+  font-size: $font-size-smallest;
+  letter-spacing: 2px;
+}
+
+.coveo-card-layout-container {
+  .coveo-promoted-result-badge {
+    position: absolute;
+    transform: translate(-10px, -10px);
+    z-index: 1;
+  }
+}
+
+.coveo-promoted-result-badge-container-card-layout {
+  flex-grow: 1;
+  display: flex;
+}
+
+.coveo-featured-result-badge {
+  background-color: $coveo-orange;
+}
+
+.coveo-recommended-result-badge {
+  background-color: $coveo-blue;
+}
