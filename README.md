@@ -84,10 +84,11 @@ A tutorial is available to help you get started (see
 
 ## Build
 
-You should have node 6.9.1 (or later) installed to build this project.
+You should have node 9.5.0 (or later) installed to build this project.
 
-    npm install -g gulp
-    npm install
+    npm install -g yarn
+    yarn global add gulp
+    yarn install
     gulp
 
 ## Important Gulp Tasks
@@ -119,6 +120,10 @@ If you need to modify the content of the search page (i.e., the markup itself, n
 `index.html` page under `./bin`. This page is not committed to the repository, so you do not have to worry about 
 breaking anything. However, if you feel like you have a good reason to modify the original `index.html`, feel free to 
 do so.
+
+You might need to assign more memory to Webpack if you see errors about `heap out of memory`. To do so, use this command : 
+
+    node --max_old_space_size=8192 ./node_modules/gulp/bin/gulp.js dev;
 
 ### Tests
 
