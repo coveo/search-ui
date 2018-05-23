@@ -51,10 +51,6 @@ export class PromotedResultsBadge extends Component {
     });
   }
 
-  private getClassName(result: IQueryResult) {
-    return `coveo-promoted-result-badge coveo-${this.isFeatured(result) ? 'featured' : 'recommended'}-result-badge`;
-  }
-
   private buildBadge(result: IQueryResult, resultElement: HTMLElement): void {
     if (!this.shouldShowABadge(result, resultElement)) {
       return null;
@@ -63,6 +59,34 @@ export class PromotedResultsBadge extends Component {
       className: this.getClassName(result)
     });
 
+    this.applyTagline(result, badge);
+    this.applyColor(result, badge);
+
+    if (this.isCardLayout(resultElement)) {
+      this.addBadgeToCardLayout(badge, resultElement);
+    } else {
+      $$(resultElement).prepend(badge.el);
+    }
+  }
+
+  private addBadgeToCardLayout(badge: Dom, resultElement: HTMLElement): void {
+    let container: Dom;
+
+    if (resultElement.parentElement == null) {
+      container = $$('div', {
+        className: 'coveo-promoted-result-badge-container-card-layout'
+      });
+
+      container.insertBefore(resultElement);
+    } else {
+      container = $$(resultElement.parentElement);
+    }
+
+    container.append(badge.el);
+    container.append(resultElement);
+  }
+
+  private applyColor(result: IQueryResult, badge: Dom) {
     if (this.isFeatured(result) && this.options.colorForFeaturedResults) {
       badge.el.style.backgroundColor = this.options.colorForFeaturedResults;
     }
@@ -70,38 +94,15 @@ export class PromotedResultsBadge extends Component {
     if (this.isRecommended(result) && this.options.colorForRecommendedResults) {
       badge.el.style.backgroundColor = this.options.colorForRecommendedResults;
     }
-
-    badge.text(this.resolveTagline(result));
-
-    if (this.isCardLayout(resultElement)) {
-      let container: Dom;
-
-      if (resultElement.parentElement == null) {
-        container = $$('div', {
-          className: 'coveo-promoted-result-badge-container-card-layout'
-        });
-
-        container.insertBefore(resultElement);
-      } else {
-        container = $$(resultElement.parentElement);
-      }
-
-      container.append(badge.el);
-      container.append(resultElement);
-    } else {
-      $$(resultElement).prepend(badge.el);
-    }
   }
 
-  private resolveTagline(result: IQueryResult): string {
+  private applyTagline(result: IQueryResult, badge: Dom): string {
     if (this.isFeatured(result) && this.options.showBadgeForFeaturedResults) {
-      return this.options.captionForFeatured;
+      badge.text(this.options.captionForFeatured);
     }
     if (this.isRecommended(result) && this.options.showBadgeForRecommendedResults) {
-      return this.options.captionForRecommended;
+      return badge.text(this.options.captionForRecommended);
     }
-
-    return '';
   }
 
   private isFeatured(result: IQueryResult): boolean {
@@ -118,6 +119,10 @@ export class PromotedResultsBadge extends Component {
 
   private isCardLayout(resultElement: HTMLElement): boolean {
     return $$(resultElement).hasClass('coveo-card-layout');
+  }
+
+  private getClassName(result: IQueryResult) {
+    return `coveo-promoted-result-badge coveo-${this.isFeatured(result) ? 'featured' : 'recommended'}-result-badge`;
   }
 
   private shouldShowABadge(result: IQueryResult, resultElement: HTMLElement): boolean {
