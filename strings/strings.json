@@ -7361,13 +7361,5 @@
   "Featured": {
     "en": "Featured",
     "fr": "En vedette"
-  },
-  "RecommendedType": {
-    "en": "Recommended {0}",
-    "fr": "{0} recommendé"
-  },
-  "FeaturedType": {
-    "en": "Featured {0}",
-    "fr": "{0} en vedette"
   }
 }

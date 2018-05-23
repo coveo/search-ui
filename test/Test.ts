@@ -323,7 +323,7 @@ import { ValueElementRendererTest } from './ui/ValueElementRendererTest';
 ValueElementRendererTest();
 
 import { ResultActionsMenuTest } from './ui/ResultActionsMenuTest';
-ResultActionsMenuTest()
+ResultActionsMenuTest();
 
 import { ResultsPerPageTest } from './ui/ResultsPerPageTest';
 ResultsPerPageTest();
@@ -612,3 +612,6 @@ QuickviewDocumentWordButtonTest();
 
 import { QuickviewDocumentTest } from './ui/QuickviewDocumentTest';
 QuickviewDocumentTest();
+
+import { PromotedResultsBadgeTest } from './ui/PromotedResultsBadgeTest';
+PromotedResultsBadgeTest();

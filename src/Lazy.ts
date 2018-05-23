@@ -273,8 +273,8 @@ lazySimpleFilter();
 import { lazyTimespanFacet } from './ui/TimespanFacet/LazyTimespanFacet';
 lazyTimespanFacet();
 
-import { lazyRecommendedResultBadge } from './ui/RecommendedResultBadge/LazyRecommendedResultBadge';
-lazyRecommendedResultBadge();
+import { lazyPromotedResultsBadge } from './ui/PromotedResultsBadge/LazyPromotedResultsBadge';
+lazyPromotedResultsBadge();
 
 import { swapVar } from './SwapVar';
 swapVar(this);

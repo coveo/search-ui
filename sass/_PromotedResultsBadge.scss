@@ -12,10 +12,15 @@
 }
 
 .coveo-card-layout-container {
+  position: relative;
   .coveo-promoted-result-badge {
     position: absolute;
     transform: translate(-10px, -10px);
+    z-index: 2;
+  }
+  .coveo-promoted-result-badge + .coveo-promoted-result-badge {
     z-index: 1;
+    left: 79px;
   }
 }
 
