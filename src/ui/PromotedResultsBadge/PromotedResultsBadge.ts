@@ -18,7 +18,12 @@ export interface IPromotedResultsBadgeOptions {
 }
 
 /**
- * This component is in charge of
+ * This component is in charge of adding a badge to promoted results in your interface.
+ *
+ * Promoted results consists of either "Featured Results" configured through a [Coveo Query Pipeline](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=126)
+ * or "Recommended Results" through a [Coveo Machine Learning algorithm](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=183).
+ *
+ * This component can be added anywhere inside the search interface, and will modify specific results after they have been rendered by adding a badge.
  */
 export class PromotedResultsBadge extends Component {
   static ID = 'PromotedResultsBadge';
@@ -29,17 +34,54 @@ export class PromotedResultsBadge extends Component {
     });
   };
 
+  /**
+   * @componentOptions
+   */
   static options: IPromotedResultsBadgeOptions = {
+    /**
+     * Specifies if a badge should be added to "Featured Results" configured through a [Coveo Query Pipeline](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=126).
+     *
+     * Default value is `true`.
+     */
     showBadgeForFeaturedResults: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+    /**
+     * Specifies if a badge should be added to "Recommended Results" returned by a [Coveo Machine Learning algorithm](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=183).
+     *
+     * Default value is `false`.
+     */
     showBadgeForRecommendedResults: ComponentOptions.buildBooleanOption({ defaultValue: false }),
 
+    /**
+     * Specifies the caption that should be used for "Recommended Results".
+     *
+     * Default value is the localized string for `Recommended`.
+     */
     captionForRecommended: ComponentOptions.buildLocalizedStringOption({
       defaultValue: l('Recommended'),
       depend: 'showBadgeForRecommendedResults'
     }),
+    /**
+     * Specifies the caption that should be used for "Featured Results".
+     *
+     * Default value is the localized string for `Featured`.
+     */
     captionForFeatured: ComponentOptions.buildLocalizedStringOption({ defaultValue: l('Featured'), depend: 'showBadgeForFeaturedResults' }),
 
+    /**
+     * Specifies the color that should be used for "Featured Results".
+     *
+     * This can be specified using either an hexadecimal value (eg: `#f58020`), an RGB value (eg: `rgb(125,10,36)`), or a CSS color name (eg: `pink`, `yellow`, `orange`, etc.).
+     *
+     * Default value is `undefined`, and is controlled through the default stylesheet of the framework.
+     */
     colorForFeaturedResults: ComponentOptions.buildColorOption({ depend: 'showBadgeForFeaturedResults' }),
+    /**
+     * Specifies the color that should be used for "Recommended Results".
+     *
+     * This can be specified using either an hexadecimal value (eg: `#f58020`), an RGB value (eg: `rgb(125,10,36)`), or a CSS color name (eg: `pink`, `yellow`, `orange`, etc.).
+     *
+     * Default value is `undefined`, and is controlled through the default stylesheet of the framework.
+     */
     colorForRecommendedResults: ComponentOptions.buildColorOption({ depend: 'showBadgeForRecommendedResults' })
   };
 
