@@ -3,7 +3,7 @@ import { CategoryFacetTemplates } from './CategoryFacetTemplates';
 import { CategoryChildrenValueRenderer } from './CategoryValueChildrenRenderer';
 import { CategoryFacet } from './CategoryFacet';
 import { ICategoryFacetValue } from '../../rest/CategoryFacetValue';
-import { analyticsActionCauseList, IAnalyticsCategoryFacetMeta } from '../Analytics/AnalyticsActionListMeta';
+import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
 
 export interface CategoryValueParent {
   path: string[];
@@ -68,11 +68,7 @@ export class CategoryValue implements CategoryValueParent {
   }
 
   private onLabelClick() {
-    this.categoryFacet.usageAnalytics.logSearchEvent<IAnalyticsCategoryFacetMeta>(analyticsActionCauseList.categoryFacetSelect, {
-      categoryFacetId: this.categoryFacet.options.id,
-      categoryFacetPath: this.categoryFacet.activePath,
-      categoryFacetTitle: this.categoryFacet.options.title
-    });
+    this.categoryFacet.logAnalyticsEvent(analyticsActionCauseList.categoryFacetSelect);
     this.categoryFacet.changeActivePath(this.path);
   }
 }

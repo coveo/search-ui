@@ -26,7 +26,7 @@ import { CategoryFacetBreadcrumbBuilder } from './CategoryFacetBreadcrumb';
 import { IQueryResults } from '../../rest/QueryResults';
 import { ICategoryFacetValue } from '../../rest/CategoryFacetValue';
 import { ISearchEndpoint } from '../../rest/SearchEndpointInterface';
-import { IAnalyticsCategoryFacetMeta, analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
+import { IAnalyticsCategoryFacetMeta, analyticsActionCauseList, IAnalyticsActionCause } from '../Analytics/AnalyticsActionListMeta';
 
 export interface ICategoryFacetOptions {
   field: IFieldOption;
@@ -371,6 +371,14 @@ export class CategoryFacet extends Component {
     }
   }
 
+  public logAnalyticsEvent(eventName: IAnalyticsActionCause) {
+    this.usageAnalytics.logSearchEvent<IAnalyticsCategoryFacetMeta>(eventName, {
+      categoryFacetId: this.options.id,
+      categoryFacetPath: this.activePath,
+      categoryFacetTitle: this.options.title
+    });
+  }
+
   public getEndpoint(): ISearchEndpoint {
     return this.queryController.getEndpoint();
   }
@@ -452,10 +460,7 @@ export class CategoryFacet extends Component {
     );
     SVGDom.addClassToSVGInContainer(clearIcon.el, 'coveo-facet-header-eraser-svg');
     clearIcon.on('click', () => {
-      this.usageAnalytics.logSearchEvent<IAnalyticsCategoryFacetMeta>(analyticsActionCauseList.categoryFacetClear, {
-        categoryFacetId: this.options.id,
-        categoryFacetTitle: this.options.title
-      });
+      this.logAnalyticsEvent(analyticsActionCauseList.categoryFacetClear);
       this.changeActivePath([]);
     });
     this.facetHeader.append(clearIcon.el);
@@ -555,10 +560,7 @@ export class CategoryFacet extends Component {
   private handlePopulateBreadCrumb(args: IPopulateBreadcrumbEventArgs) {
     if (!isEmpty(this.activePath)) {
       const resetFacet = () => {
-        this.usageAnalytics.logSearchEvent<IAnalyticsCategoryFacetMeta>(analyticsActionCauseList.breadcrumbFacet, {
-          categoryFacetId: this.options.id,
-          categoryFacetTitle: this.options.title
-        });
+        this.logAnalyticsEvent(analyticsActionCauseList.breadcrumbFacet);
         this.changeActivePath([]);
       };
       const lastParentValue = this.getVisibleParentCategoryValues().pop();

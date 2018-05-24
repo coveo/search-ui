@@ -141,12 +141,10 @@ export class CategoryFacetSearch {
     return async () => {
       this.facetSearchElement.showFacetSearchWaitingAnimation();
       this.categoryFacet.logger.info('Triggering new Category Facet search');
-      const categoryFacetValues = await this.categoryFacet.categoryFacetQueryController
-        .searchFacetValues(this.facetSearchElement.input.value)
-        .then((categoryFacetValues: IGroupByValue[]) => {
-          this.logAnalyticsEvent();
-          return categoryFacetValues;
-        });
+      const categoryFacetValues = await this.categoryFacet.categoryFacetQueryController.searchFacetValues(
+        this.facetSearchElement.input.value
+      );
+      this.logAnalyticsEvent();
       if (categoryFacetValues.length == 0) {
         this.noFacetSearchResults();
         return;
@@ -223,6 +221,7 @@ export class CategoryFacetSearch {
         .replace(regex, '<span class="coveo-highlight">$1</span>');
     });
   }
+
   private logAnalyticsEvent() {
     this.categoryFacet.usageAnalytics.logCustomEvent<IAnalyticsCategoryFacetMeta>(
       analyticsActionCauseList.categoryFacetSearch,
