@@ -865,15 +865,11 @@ export class SearchInterface extends RootComponent implements IComponentBindings
 
     const endpoint = this.queryController.getEndpoint();
     if (endpoint != null && endpoint.options) {
-      const qsArguments = endpoint.options.queryStringArguments;
       if (this.queryStateModel.get(QueryStateModel.attributesEnum.debug)) {
         data.queryBuilder.maximumAge = 0;
         data.queryBuilder.enableDebug = true;
-        qsArguments ? (qsArguments.debugRankingInformation = 1) : null;
         data.queryBuilder.fieldsToExclude = ['allmetadatavalues'];
         data.queryBuilder.fieldsToInclude = null;
-      } else {
-        qsArguments ? (qsArguments.debugRankingInformation = 0) : null;
       }
     }
   }
@@ -1035,7 +1031,7 @@ export class StandaloneSearchInterface extends SearchInterface {
       stateValues['firstQueryCause'] = uaCausedBy;
     }
     const uaMeta = this.usageAnalytics.getCurrentEventMeta();
-    if (uaMeta != null) {
+    if (uaMeta != null && !isEmpty(uaMeta)) {
       stateValues['firstQueryMeta'] = uaMeta;
     }
 
