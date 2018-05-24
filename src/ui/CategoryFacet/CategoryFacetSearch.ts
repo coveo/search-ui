@@ -9,6 +9,7 @@ import { IGroupByValue } from '../../rest/GroupByValue';
 import { KEYBOARD } from '../../utils/KeyboardUtils';
 import 'styling/_CategoryFacetSearch';
 import { StringUtils } from '../../utils/StringUtils';
+import { analyticsActionCauseList, IAnalyticsCategoryFacetMeta } from '../Analytics/AnalyticsActionListMeta';
 
 export class CategoryFacetSearch {
   public container: Dom | undefined;
@@ -143,6 +144,7 @@ export class CategoryFacetSearch {
       const categoryFacetValues = await this.categoryFacet.categoryFacetQueryController.searchFacetValues(
         this.facetSearchElement.input.value
       );
+      this.logAnalyticsEvent();
       if (categoryFacetValues.length == 0) {
         this.noFacetSearchResults();
         return;
@@ -218,5 +220,16 @@ export class CategoryFacetSearch {
         .text()
         .replace(regex, '<span class="coveo-highlight">$1</span>');
     });
+  }
+
+  private logAnalyticsEvent() {
+    this.categoryFacet.usageAnalytics.logCustomEvent<IAnalyticsCategoryFacetMeta>(
+      analyticsActionCauseList.categoryFacetSearch,
+      {
+        categoryFacetId: this.categoryFacet.options.id,
+        categoryFacetTitle: this.categoryFacet.options.title
+      },
+      this.categoryFacet.root
+    );
   }
 }

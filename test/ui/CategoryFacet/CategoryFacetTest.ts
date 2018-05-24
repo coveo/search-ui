@@ -8,15 +8,15 @@ import { FakeResults } from '../../Fake';
 import { QueryBuilder } from '../../../src/Core';
 
 export function CategoryFacetTest() {
-  function buildSimulateQueryData(): ISimulateQueryData {
+  function buildSimulateQueryData(numberOfResults = 11, numberOfRequestedValues = 11): ISimulateQueryData {
     const fakeResults = FakeResults.createFakeResults();
     const queryBuilder = new QueryBuilder();
     queryBuilder.categoryFacets.push({
       field: '@field',
       path: [],
-      maximumNumberOfValues: 11
+      maximumNumberOfValues: numberOfRequestedValues
     });
-    fakeResults.categoryFacets.push(FakeResults.createFakeCategoryFacetResult('@field', [], 'value', 11));
+    fakeResults.categoryFacets.push(FakeResults.createFakeCategoryFacetResult('@field', [], 'value', numberOfResults));
     return { results: fakeResults, query: queryBuilder.build() };
   }
 
@@ -83,29 +83,40 @@ export function CategoryFacetTest() {
           numberOfValues: 10
         });
       });
-      it('downward arrow is appended when there are more results to fetch', () => {
+
+      it('more arrow is appended when there are more results to fetch', () => {
         Simulate.query(test.env, simulateQueryData);
+
         const moreArrow = $$(test.cmp.element).find('.coveo-category-facet-more');
         expect(moreArrow).not.toBeNull();
       });
 
-      it('upward arrow is appended when we are not on the first page of results', () => {
-        test.cmp.showMore();
-        Simulate.query(test.env, simulateQueryData);
+      it('less arrow is appended when there are more results than the numberOfValues option', () => {
+        const numberOfValues = test.cmp.options.numberOfValues + 2; // +1 for the fetchMoreValues and +1 to trigger the less values
+        Simulate.query(test.env, buildSimulateQueryData(numberOfValues, numberOfValues));
+
         const downArrow = $$(test.cmp.element).find('.coveo-category-facet-less');
         expect(downArrow).not.toBeNull();
       });
-    });
 
-    it('showMore should increment the number of values requested according the the pageSize', () => {
-      const initialNumberOfValues = test.cmp.options.numberOfValues;
-      const pageSize = test.cmp.options.pageSize;
-      Simulate.query(test.env, simulateQueryData);
+      it('should not render the downward arrow when there are less values than the numberOfValues option', () => {
+        test.cmp.changeActivePath(['path']);
+        Simulate.query(test.env, buildSimulateQueryData(3));
 
-      test.cmp.showMore();
-      const { queryBuilder } = Simulate.query(test.env, simulateQueryData);
+        const downArrow = $$(test.cmp.element).find('.coveo-category-facet-less');
+        expect(downArrow).toBeNull();
+      });
 
-      expect(queryBuilder.categoryFacets[0].maximumNumberOfValues).toBe(initialNumberOfValues + pageSize + 1);
+      it('showMore should increment the number of values requested according the the pageSize', () => {
+        const initialNumberOfValues = test.cmp.options.numberOfValues;
+        const pageSize = test.cmp.options.pageSize;
+        Simulate.query(test.env, simulateQueryData);
+
+        test.cmp.showMore();
+        const { queryBuilder } = Simulate.query(test.env, simulateQueryData);
+
+        expect(queryBuilder.categoryFacets[0].maximumNumberOfValues).toBe(initialNumberOfValues + pageSize + 1);
+      });
     });
   });
 }

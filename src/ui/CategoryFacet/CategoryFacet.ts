@@ -26,6 +26,7 @@ import { CategoryFacetBreadcrumbBuilder } from './CategoryFacetBreadcrumb';
 import { IQueryResults } from '../../rest/QueryResults';
 import { ICategoryFacetValue } from '../../rest/CategoryFacetValue';
 import { ISearchEndpoint } from '../../rest/SearchEndpointInterface';
+import { IAnalyticsCategoryFacetMeta, analyticsActionCauseList, IAnalyticsActionCause } from '../Analytics/AnalyticsActionListMeta';
 
 export interface ICategoryFacetOptions {
   field: IFieldOption;
@@ -166,6 +167,7 @@ export class CategoryFacet extends Component {
   private currentPage: number;
   private moreLessContainer: Dom;
   private moreValuesToFetch: boolean = true;
+  private numberOfChildValuesCurrentlyDisplayed = 0;
   private numberOfValues: number;
 
   public static WAIT_ELEMENT_CLASS = 'coveo-category-facet-header-wait-animation';
@@ -369,6 +371,14 @@ export class CategoryFacet extends Component {
     }
   }
 
+  public logAnalyticsEvent(eventName: IAnalyticsActionCause) {
+    this.usageAnalytics.logSearchEvent<IAnalyticsCategoryFacetMeta>(eventName, {
+      categoryFacetId: this.options.id,
+      categoryFacetPath: this.activePath,
+      categoryFacetTitle: this.options.title
+    });
+  }
+
   public getEndpoint(): ISearchEndpoint {
     return this.queryController.getEndpoint();
   }
@@ -407,6 +417,7 @@ export class CategoryFacet extends Component {
     }
 
     const childrenValuesToRender = categoryFacetResult.values.slice(0, numberOfRequestedValues - 1);
+    this.numberOfChildValuesCurrentlyDisplayed = childrenValuesToRender.length;
     currentParentValue.renderChildren(childrenValuesToRender);
     this.activeCategoryValue = currentParentValue as CategoryValue;
   }
@@ -448,7 +459,10 @@ export class CategoryFacet extends Component {
       SVGIcons.icons.mainClear
     );
     SVGDom.addClassToSVGInContainer(clearIcon.el, 'coveo-facet-header-eraser-svg');
-    clearIcon.on('click', () => this.changeActivePath([]));
+    clearIcon.on('click', () => {
+      this.logAnalyticsEvent(analyticsActionCauseList.categoryFacetClear);
+      this.changeActivePath([]);
+    });
     this.facetHeader.append(clearIcon.el);
   }
 
@@ -503,7 +517,7 @@ export class CategoryFacet extends Component {
     this.moreLessContainer = $$('div', { className: 'coveo-category-facet-more-less-container' });
     $$(this.element).append(this.moreLessContainer.el);
 
-    if (this.currentPage != 0) {
+    if (this.numberOfChildValuesCurrentlyDisplayed > this.options.numberOfValues) {
       this.moreLessContainer.append(this.buildLessButton());
     }
 
@@ -545,7 +559,10 @@ export class CategoryFacet extends Component {
 
   private handlePopulateBreadCrumb(args: IPopulateBreadcrumbEventArgs) {
     if (!isEmpty(this.activePath)) {
-      const resetFacet = () => this.changeActivePath([]);
+      const resetFacet = () => {
+        this.logAnalyticsEvent(analyticsActionCauseList.breadcrumbFacet);
+        this.changeActivePath([]);
+      };
       const lastParentValue = this.getVisibleParentCategoryValues().pop();
 
       const categoryFacetBreadcrumbBuilder = new CategoryFacetBreadcrumbBuilder(
