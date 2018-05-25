@@ -40,7 +40,6 @@ export interface ICategoryFacetOptions {
   enableMoreLess?: boolean;
   pageSize?: number;
   delimitingCharacter?: string;
-  debug?: boolean;
 }
 
 /**
@@ -149,12 +148,7 @@ export class CategoryFacet extends Component {
      *
      * Default value is `|`.
      */
-    delimitingCharacter: ComponentOptions.buildStringOption({ defaultValue: '|' }),
-    /**
-     * Specifies whetter or not field format debugging is activated.
-     * This will log messages in the console and inform you of any issues encountered.
-     */
-    debug: ComponentOptions.buildBooleanOption({ defaultValue: false })
+    delimitingCharacter: ComponentOptions.buildStringOption({ defaultValue: '|' })
   };
 
   public categoryFacetQueryController: CategoryFacetQueryController;
