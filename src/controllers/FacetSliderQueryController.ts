@@ -68,7 +68,8 @@ export class FacetSliderQueryController {
 
     if (this.facet.options && this.facet.options.graph && this.rangeValuesForGraphToUse == undefined) {
       this.rangeValuesForGraphToUse = [];
-      const rawValues = args.results.groupByResults[this.graphGroupByQueriesIndex].values;
+      const groupByResult = args.results.groupByResults[this.graphGroupByQueriesIndex];
+      const rawValues = groupByResult ? groupByResult.values : [];
       _.each(rawValues, rawValue => {
         const rawSplit = rawValue.value.split('..');
         this.rangeValuesForGraphToUse.push({
@@ -182,7 +183,7 @@ export class FacetSliderQueryController {
     const groupByRequestForFullRange = _.clone(basicGroupByRequestForSlider);
     groupByRequestForFullRange.advancedQueryOverride = this.facet.options.queryOverride || '@uri';
     delete groupByRequestForFullRange.constantQueryOverride;
-    delete groupByRequestForFullRange.advancedQueryOverride;
+    delete groupByRequestForFullRange.queryOverride;
 
     queryBuilder.groupByRequests.push(groupByRequestForFullRange);
   }

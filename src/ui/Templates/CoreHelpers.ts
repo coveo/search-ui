@@ -44,7 +44,7 @@ export interface ICoreHelpers {
    * characters. An ellipsis is appended to the string if it exceeds the
    * maximum length.
    *
-   * - `value`: The string to shorten.
+   * - `content`: The string to shorten.
    * - `length`: The maximum length of the resulting string.
    * - `highlights`: Optional. If provided, the string will be highlighted
    *   using this highlight information.
@@ -56,7 +56,7 @@ export interface ICoreHelpers {
    * will insert an ellipsis in the string where text has been removed when
    * the path exceeds the maximum length.
    *
-   * - `value`: The path to shorten.
+   * - `content`: The path to shorten.
    * - `length`: The maximum length of the resulting string.
    * - `highlights`: Optional. If provided, the string will be highlighted using
    *   this highlight information.
@@ -68,7 +68,7 @@ export interface ICoreHelpers {
    * insert an ellipsis in the string where text has been removed when the URI
    * exceeds the maximum length.
    *
-   * - `value`: The URI to shorten.
+   * - `content`: The URI to shorten.
    * - `length`: The maximum length of the resulting string.
    * - `highlights`: Optional. If provided, the string will be highlighted
    *   using this highlight information.
@@ -78,20 +78,21 @@ export interface ICoreHelpers {
   /**
    * Highlights a string using the provided highlight information.
    *
-   * - `highlights`: The highlight information to use.
+   * - `content`: The URI to shorten.
+   * - `highlights`: Optional. The highlight information to use.
    * - `cssClass`: Optional. The name of the CSS class to use for highlighting.
    */
   highlight: (content: string, highlights?: IHighlight[], cssClass?: string) => string;
   /**
-   * This helper highlights the provided terms in a given string.<br/>
+   * Highlights the provided terms in a given string.<br/>
    * By default, the terms to highlight are the current query and the
    * associated stemming words from the index.
    * The only required parameter is the content, which specify the string that needs to be highlighted.
    * The other parameters will normally be automatically resolved for you from the current result object.
    *
    * - `content`: The string content to highlight
-   * - `termsToHighlight`: Optional. The terms to highlight (see {@link IHighlightTerm})
-   * - `phraseToHighlight`: Optional. The phrases to highlight (see {@link IHighlightPhrase})
+   * - `termsToHighlight`: The terms to highlight (see {@link IHighlightTerm})
+   * - `phraseToHighlight`: The phrases to highlight (see {@link IHighlightPhrase})
    * - `options`: Optional. The options defined below as {@link IStreamHighlightOptions}
    */
   highlightStreamText: (
@@ -106,8 +107,8 @@ export interface ICoreHelpers {
    * of not highlighting the HTML markup.
    *
    * - `content`: The string content to highlight
-   * - `termsToHighlight`: Optional. The terms to highlight (see {@link IHighlightTerm})
-   * - `phraseToHighlight`: Optional. The phrases to highlight (see {@link IHighlightPhrase})
+   * - `termsToHighlight`: The terms to highlight (see {@link IHighlightTerm})
+   * - `phraseToHighlight`: The phrases to highlight (see {@link IHighlightPhrase})
    * - `options`: Optional. The options defined below as {@link IStreamHighlightOptions}
    */
   highlightStreamHTML: (
@@ -119,7 +120,7 @@ export interface ICoreHelpers {
   /**
    * Formats a numeric value using the format string.
    *
-   * - `value`: The numeric value to format.
+   * - `content`: The numeric value to format.
    * - `format`: The format string to use. The options available are defined by
    *   the [Globalize](https://github.com/klaaspieter/jquery-global#numbers) library.
    */
@@ -127,60 +128,60 @@ export interface ICoreHelpers {
   /**
    * Formats a date value to a date-only string using the specified options.
    *
-   * - `value`: The Date value to format.
-   * - `options`: The options to use (see IDateToStringOptions).
+   * - `content`: The Date value to format.
+   * - `options`: Optional. The options to use (see IDateToStringOptions).
    */
   date: (content: any, options?: IDateToStringOptions) => string;
   /**
-   * Formats a date value to a time-only string using the sepcified options.
+   * Formats a date value to a time-only string using the specified options.
    *
-   * - `value`: The Date value to format.
-   * - `options`: The options to use (see IDateToStringOptions).
+   * - `content`: The Date value to format.
+   * - `options`: Optional. The options to use (see IDateToStringOptions).
    */
   time: (content: any, options?: IDateToStringOptions) => string;
   /**
    * Formats a date value to a date and time string using the specified
    * options.
    *
-   * - `value`: The Date value to format.
-   * - `options`: The options to use (see IDateToStringOptions).
+   * - `content`: The Date value to format.
+   * - `options`: Optional. The options to use (see IDateToStringOptions).
    */
   dateTime: (content: any, options?: IDateToStringOptions) => string;
   /**
    * Formats a currency value to a string using the specified options.
    *
-   * - `value`: The number value to format.
-   * - `options`: The options to use (see ICurrencyToStringOptions).
+   * - `content`: The number value to format.
+   * - `options`: Optional. The options to use (see ICurrencyToStringOptions).
    */
   currency: (content: any, options?: ICurrencyToStringOptions) => string;
   /**
    * Formats a date value to a date and time string using options suitable for
    * email dates
    *
-   * - `value`: The Date value to format.
-   * - `options`: The options to use (see IDateToStringOptions).
+   * - `content`: The Date value to format.
+   * - `options`: Optional. The options to use (see IDateToStringOptions).
    */
   emailDateTime: (content: any, options?: IDateToStringOptions) => string;
   /**
    * Renders one or several email values in `mailto:` hyperlinks.
    *
-   * - `value`: The string or array of string that contains a list of semicolon-separated email
+   * - `value`: The string or array of strings that contains a list of semicolon-separated email
    *   values. When multiple values are passed, each value is displayed in a
    *   separate hyperlink.
-   * - `companyDomain`: The string that contains your own domain (e.g.:
+   * - `companyDomain`: Optional. The string that contains your own domain (e.g.:
    *   coveo.com). When specified, this parameter allows email addresses
    *   coming from your own domain to be displayed in a shortened format
    *   (e.g.: Full Name), whereas email addresses coming from an external
    *   domain will be displayed in an extended format (e.g.: Full Name
    *   (domain.com)). If this parameter is not specified, then the shortened
    *   format will automatically be used.
-   * - `me`: The string that contains the current username. If it is
+   * - `me`: Optional. The string that contains the current username. If it is
    *   specified, then the email address containing the current username will
    *   be replaced by the localized string 'Me'.
-   * - `lengthLimit`: The number of email addresses that you want to display
+   * - `lengthLimit`: Optional. The number of email addresses that you want to display
    *   before an ellipse is added (e.g.: 'From Joe, John and 5 others').<br/>
    *   The default value is 2.
-   * - `truncateName`: When the username is available from the email address,
+   * - `truncateName`: Optional. When the username is available from the email address,
    *   then you can specify if you want to truncate the full name. (e.g.:
    *   'John S.' instead of 'John Smith').<br/>
    *   The default value is `false`.
@@ -190,29 +191,29 @@ export interface ICoreHelpers {
    * Formats a clickable HTML link (`<a>`).
    *
    * - `href`: The link URI
-   * - `options`: The options to use (see {@link IAnchorUtilsOptions})
+   * - `options`: Optional. The options to use (see {@link IAnchorUtilsOptions})
    */
   anchor: (href: string, options?: IAnchorUtilsOptions) => string;
   /**
    * Formats an HTML image tag (`<img>`).
    *
    * - `src`: The image source URI
-   * - `options`: The options to use (see {@link IImageUtilsOptions})
+   * - `options`: Optional. The options to use (see {@link IImageUtilsOptions})
    */
   image: (src: string, options?: IImageUtilsOptions) => string;
   /**
    * Formats an HTML image tag (`<img>`), and automatically uses the result
    * object to query the REST API to get the thumbnail for this result. For
    * example, this can be used to great effect when designing a template
-   * showing users or preview of files.
-   * - `result`: The current result object inside your template. In
-   *   underscore, it is referenced as `obj`. Optional, by default the result
+   * showing users or previews of files.
+   * - `result`: Optional. The current result object inside your template. In
+   *   underscore, it is referenced as `obj`. By default, the result
    *   will be resolved automatically from your current template function (
    *   Meaning the nearest result in the current call stack execution inside
    *   your template)
    * - `endpoint`: Optional. The name of the endpoint to use for your
    *   thumbnail. Default is default.
-   * - `options`: The options to use (see {@link IImageUtilsOptions}).
+   * - `options`: Optional. The options to use (see {@link IImageUtilsOptions}).
    */
   thumbnail: (result?: IQueryResult, endpoint?: string, options?: IImageUtilsOptions) => string;
   /**
@@ -220,12 +221,12 @@ export interface ICoreHelpers {
    * will be contained inside a `<span>` element with the appropriate CSS
    * class.
    *
-   * - `result`: The current result object inside your template. In
-   *   underscore, it is referenced as `obj`. *Optional*, by default the result
+   * - `result`: Optional. The current result object inside your template. In
+   *   underscore, it is referenced as `obj`. By default, the result
    *   will be resolved automatically from your current template function (
    *   Meaning the nearest result in the current call stack execution inside
    *   your template)
-   * - `options`: The options to use (see {@link IIconOptions}).
+   * - `options`: Optional. The options to use (see {@link IIconOptions}).
    */
   fromFileTypeToIcon: (result?: IQueryResult, options?: any) => string;
   /**
@@ -237,22 +238,22 @@ export interface ICoreHelpers {
    * ResultList Component, the contextObject would, by default, be the Query
    * Results.
    *
-   * - `templateId`: the ID of the template to load.
-   * - `condition`: The boolean condition to determine if this template should
+   * - `templateId`: The ID of the template to load.
+   * - `condition`: Optional. The boolean condition to determine if this template should
    *   load for this result set. Most of the time this would be a condition of
    *   the type if raw.somefield == 'something'.
-   * - `contextObject`: The object that should be used by the loaded template
+   * - `contextObject`: Optional. The object that should be used by the loaded template
    *   as its contextObject.
    */
   loadTemplate: (templateId: string, condition?: boolean, contextObject?: any) => string;
   /**
    * Given a number, either in millisecond or second, convert to a HH:MM:SS format.
    *
-   * eg:
+   * **Examples**
    *
-   * `timeSpan(1, {isMilliseconds: false}) => '00:01'`
-   *
-   * `timeSpan(1000, {isMilliseconds: true}) => '00:01'`
+   * >`timeSpan(1, {isMilliseconds: false}) => '00:01'`
+   * >
+   * >`timeSpan(1000, {isMilliseconds: true}) => '00:01'`
    *
    * - `value`: The number to convert to a timespan
    * - `options` : The options to use (see {@link ITimeSpanUtilsOptions})
@@ -282,6 +283,9 @@ export interface ICoreHelpers {
    * > ```erb
    * > <%= size(raw.size, {base: 0, precision: 2}) %>
    * > ```
+   *
+   * - `value`: The number to format
+   * - `options` : The options to use (see {@link ISizeOptions})
    */
   size: (value: number, options?: ISizeOptions) => string;
   /**
@@ -289,15 +293,19 @@ export interface ICoreHelpers {
    *
    * If the filetype is known and recognized by the framework, a translated value will be returned.
    *
-   * eg:
+   * **Examples**
    *
-   * `translatedCaption('doc') => Document`
+   * >`translatedCaption('doc') => Document`
+   * >
+   * >`translatedCaption('xls') => Spreadsheet Document`
    *
-   * `translatedCaption('xls') => Spreadsheet Document`
+   * - `value`: The string value to translate
    */
   translatedCaption: (value: string) => string;
   /**
    * Replace all carriage return in a string by a &lt;br /&gt; tag
+   *
+   * - `value`: The string value to replace the carriage returns in.
    */
   encodeCarriageReturn: (value: string) => string;
   /**

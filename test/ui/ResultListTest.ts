@@ -14,6 +14,7 @@ import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
 import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
 import { IQueryResults } from '../../src/rest/QueryResults';
 import { Defer } from '../../src/misc/Defer';
+import { ResultLayoutSelector } from '../../src/ui/ResultLayoutSelector/ResultLayoutSelector';
 
 export function ResultListTest() {
   describe('ResultList', () => {
@@ -439,10 +440,8 @@ export function ResultListTest() {
         });
 
         const otherResultList = Mock.mockComponent<ResultList>(ResultList);
-        otherResultList.element = document.createElement('div');
-        $$(otherResultList.element).addClass('CoveoResultList');
-        otherResultList.element['CoveoBoundComponents'] = [otherResultList];
-        $$(test.env.root).append(otherResultList.element);
+        (test.env.searchInterface.getComponents as jasmine.Spy).and.returnValue([otherResultList]);
+
         Simulate.query(test.env);
         expect(otherResultList.getAutoSelectedFieldsToInclude).toHaveBeenCalled();
       });
@@ -621,6 +620,94 @@ export function ResultListTest() {
             results: FakeResults.createFakeResults()
           });
           expect($$(test.cmp.element).hasClass('coveo-hidden')).toBe(false);
+        });
+
+        describe('when it is disabled', () => {
+          let mockResultLayoutSelector;
+
+          beforeEach(() => {
+            test = Mock.optionsComponentSetup<ResultList, IResultListOptions>(ResultList, {
+              layout: 'card'
+            });
+            mockResultLayoutSelector = Mock.mock<ResultLayoutSelector>(ResultLayoutSelector);
+          });
+
+          const addAnotherResultListInTheInterface = layout => {
+            const mockOtherResultList = Mock.mock<ResultList>(ResultList);
+            mockOtherResultList.options = { layout };
+            return mockOtherResultList;
+          };
+
+          it('should disable the layout in the layout selector', () => {
+            (test.env.searchInterface.getComponents as jasmine.Spy).and.callFake(cmp => {
+              if (cmp == 'ResultLayoutSelector') {
+                return [mockResultLayoutSelector];
+              }
+              return [];
+            });
+            test.cmp.disable();
+            expect(mockResultLayoutSelector.disableLayouts).toHaveBeenCalledWith(['card']);
+          });
+
+          it('should not disable the layout selector if there are other result list using the same layout', () => {
+            (test.env.searchInterface.getComponents as jasmine.Spy).and.callFake(cmp => {
+              if (cmp == 'ResultLayoutSelector') {
+                return [mockResultLayoutSelector];
+              } else if (cmp == 'ResultList') {
+                return [test.cmp, addAnotherResultListInTheInterface('card')];
+              }
+              return [];
+            });
+            test.cmp.disable();
+            expect(mockResultLayoutSelector.disableLayouts).not.toHaveBeenCalled();
+          });
+
+          it('should disable the layout selector if there are other result list using different layout', () => {
+            (test.env.searchInterface.getComponents as jasmine.Spy).and.callFake(cmp => {
+              if (cmp == 'ResultLayoutSelector') {
+                return [mockResultLayoutSelector];
+              } else if (cmp == 'ResultList') {
+                return [test.cmp, addAnotherResultListInTheInterface('list')];
+              }
+              return [];
+            });
+            test.cmp.disable();
+            expect(mockResultLayoutSelector.disableLayouts).toHaveBeenCalledWith(['card']);
+          });
+
+          it('should not disable the layout when the end user is simply switching layouts', () => {
+            (test.env.searchInterface.getComponents as jasmine.Spy).and.callFake(cmp => {
+              if (cmp == 'ResultLayoutSelector') {
+                return [mockResultLayoutSelector];
+              } else if (cmp == 'ResultList') {
+                return [test.cmp, addAnotherResultListInTheInterface('list')];
+              }
+              return [];
+            });
+
+            $$(test.env.root).trigger(ResultListEvents.changeLayout, {
+              layout: 'list',
+              results: FakeResults.createFakeResults()
+            });
+            expect(mockResultLayoutSelector.disableLayouts).not.toHaveBeenCalled();
+          });
+        });
+
+        describe('when it is enabled', () => {
+          let mockResultLayoutSelector: ResultLayoutSelector;
+
+          beforeEach(() => {
+            test = Mock.optionsComponentSetup<ResultList, IResultListOptions>(ResultList, {
+              layout: 'card'
+            });
+            mockResultLayoutSelector = Mock.mock<ResultLayoutSelector>(ResultLayoutSelector);
+            (test.env.searchInterface.getComponents as jasmine.Spy).and.returnValue([mockResultLayoutSelector]);
+          });
+
+          it('should enable the layout in the layout selector', () => {
+            test.cmp.enable();
+            expect(mockResultLayoutSelector.enableLayouts).toHaveBeenCalledWith(['card']);
+          });
         });
       });
     });

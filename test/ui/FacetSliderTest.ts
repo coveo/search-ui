@@ -8,6 +8,7 @@ import { IPopulateBreadcrumbEventArgs } from '../../src/events/BreadcrumbEvents'
 import { $$ } from '../../src/utils/Dom';
 import { FakeResults } from '../Fake';
 import { QueryEvents } from '../../src/events/QueryEvents';
+import { Defer } from '../../src/misc/Defer';
 
 export function FacetSliderTest() {
   describe('FacetSlider', () => {
@@ -205,6 +206,24 @@ export function FacetSliderTest() {
           expect(slider.drawGraph).toHaveBeenCalled();
           done();
         }, FacetSlider.DEBOUNCED_RESIZE_DELAY + 1);
+      });
+
+      it('should draw the graph when there are no group by results returned', done => {
+        let fakeResults = createFacetSliderGraphGroupByResults();
+        // Remove group by results
+        fakeResults.groupByResults[0].values = [];
+        facetSliderOptions = { start: 0, end: 100, field: '@bar', graph: { steps: 4 } };
+
+        new FacetSlider(env.element, facetSliderOptions, mockEnvironmentBuilder.getBindings(), slider);
+
+        $$(env.root).on(QueryEvents.deferredQuerySuccess, () => {
+          Defer.defer(() => {
+            expect(slider.drawGraph).toHaveBeenCalled();
+            done();
+          });
+        });
+
+        Simulate.query(env, { results: fakeResults });
       });
 
       function hideFacetColumn(env: Mock.IMockEnvironment) {
