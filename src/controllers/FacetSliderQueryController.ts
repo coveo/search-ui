@@ -183,7 +183,7 @@ export class FacetSliderQueryController {
     const groupByRequestForFullRange = _.clone(basicGroupByRequestForSlider);
     groupByRequestForFullRange.advancedQueryOverride = this.facet.options.queryOverride || '@uri';
     delete groupByRequestForFullRange.constantQueryOverride;
-    delete groupByRequestForFullRange.advancedQueryOverride;
+    delete groupByRequestForFullRange.queryOverride;
 
     queryBuilder.groupByRequests.push(groupByRequestForFullRange);
   }
