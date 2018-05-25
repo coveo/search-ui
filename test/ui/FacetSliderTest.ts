@@ -129,7 +129,7 @@ export function FacetSliderTest() {
       let env: Mock.IMockEnvironment;
 
       beforeEach(() => {
-        slider = jasmine.createSpyObj('slider', ['drawGraph']);
+        slider = jasmine.createSpyObj('slider', ['drawGraph', 'onMoving']);
         mockEnvironmentBuilder = new Mock.MockEnvironmentBuilder();
         env = mockEnvironmentBuilder.build();
       });
@@ -141,6 +141,17 @@ export function FacetSliderTest() {
 
         setTimeout(() => {
           expect(slider.drawGraph).toHaveBeenCalled();
+          done();
+        }, FacetSlider.DEBOUNCED_RESIZE_DELAY + 1);
+      });
+
+      it('should execute the onMoving function of the slider on resize', done => {
+        let facetSlider = new FacetSlider(env.element, facetSliderOptions, mockEnvironmentBuilder.getBindings(), slider);
+
+        facetSlider.onResize(new Event('resize'));
+
+        setTimeout(() => {
+          expect(slider.onMoving).toHaveBeenCalled();
           done();
         }, FacetSlider.DEBOUNCED_RESIZE_DELAY + 1);
       });
