@@ -127,16 +127,16 @@ export function FacetSliderTest() {
       let slider: Slider;
       let mockEnvironmentBuilder: Mock.MockEnvironmentBuilder;
       let env: Mock.IMockEnvironment;
+      let facetSlider: FacetSlider;
 
       beforeEach(() => {
         slider = jasmine.createSpyObj('slider', ['drawGraph', 'onMoving']);
         mockEnvironmentBuilder = new Mock.MockEnvironmentBuilder();
         env = mockEnvironmentBuilder.build();
+        facetSlider = new FacetSlider(env.element, facetSliderOptions, mockEnvironmentBuilder.getBindings(), slider);
       });
 
       it('should draw the graph on resize when there are results', done => {
-        let facetSlider = new FacetSlider(env.element, facetSliderOptions, mockEnvironmentBuilder.getBindings(), slider);
-
         facetSlider.onResize(new Event('resize'));
 
         setTimeout(() => {
@@ -146,8 +146,6 @@ export function FacetSliderTest() {
       });
 
       it('should execute the onMoving function of the slider on resize', done => {
-        let facetSlider = new FacetSlider(env.element, facetSliderOptions, mockEnvironmentBuilder.getBindings(), slider);
-
         facetSlider.onResize(new Event('resize'));
 
         setTimeout(() => {
@@ -157,8 +155,6 @@ export function FacetSliderTest() {
       });
 
       it('should not draw the graph on resize when there are no results', done => {
-        let facetSlider = new FacetSlider(env.element, facetSliderOptions, mockEnvironmentBuilder.getBindings(), slider);
-
         $$(env.root).trigger(QueryEvents.noResults);
         facetSlider.onResize(new Event('resize'));
 
