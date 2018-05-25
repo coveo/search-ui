@@ -97,7 +97,9 @@ export class PromotedResultsBadge extends Component {
     this.options = ComponentOptions.initComponentOptions(element, PromotedResultsBadge, options);
     this.bind.onRootElement(ResultListEvents.newResultDisplayed, (args: IDisplayedNewResultEventArgs) => {
       const badge = this.buildBadge(args.result, args.item);
-      this.appendBadge(badge, args.item);
+      if (badge) {
+        this.appendBadge(badge, args.item);
+      }
     });
   }
 
