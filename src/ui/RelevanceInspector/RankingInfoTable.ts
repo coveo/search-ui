@@ -1,5 +1,5 @@
-import { parseRankingInfo, IRankingInfo, buildListOfTermsElement } from './RankingInfoParser';
-import { each, uniq, contains } from 'underscore';
+import { parseRankingInfo, IRankingInfo, buildListOfTermsElement, IWeightsPerTerm } from './RankingInfoParser';
+import { each, uniq, contains, chain, reduce } from 'underscore';
 import { TableBuilder, ITableDataSource, GenericHtmlRenderer } from './TableBuilder';
 import { $$, Dom } from '../../utils/Dom';
 import { IQueryResult } from '../../rest/QueryResult';
@@ -44,7 +44,21 @@ export class RankingInfoTable implements IRelevanceInspectorTab {
         const documentsWeights = this.buildTopLevelDocumentsWeights(rankingInfo, topLevelInfoThatHaveAtLeastANonZeroValue);
         const breakdownPerTerm: Record<string, ITableDataSource> = {};
 
-        each(rankingInfo.termsWeight || {}, (value, key) => {
+        const onlyTopFewKeywords: Record<string, IWeightsPerTerm> = {};
+
+        chain(rankingInfo.termsWeight)
+          .keys()
+          .sortBy(key => {
+            const total = reduce(rankingInfo.termsWeight[key].Weights, (memo, value) => memo + value, 0);
+            return total;
+          })
+          .reverse()
+          .first(3)
+          .each(key => {
+            onlyTopFewKeywords[key] = rankingInfo.termsWeight[key];
+          });
+
+        each(onlyTopFewKeywords, (value, key) => {
           const builtKey = `Keyword: ${key}`;
           breakdownPerTerm[builtKey] = {
             content: buildListOfTermsElement(value.Weights).el.outerHTML,

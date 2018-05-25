@@ -727,7 +727,7 @@ export class FacetSlider extends Component {
     const groupByResults = data.results.groupByResults[this.facetQueryController.lastGroupByRequestIndex];
     this.isEmpty = this.isFacetEmpty(groupByResults, data);
     this.updateAppearanceDependingOnState();
-    if (this.hasAGraph() && !this.isEmpty) {
+    if (this.hasAGraph()) {
       this.renderToSliderGraph(data);
     }
   }
@@ -830,7 +830,9 @@ export class FacetSlider extends Component {
         this.isEmpty = true;
       }
       this.updateAppearanceDependingOnState();
-    } else if (graphData != undefined && !this.isDropdownHidden()) {
+    }
+
+    if (graphData != undefined && !this.isDropdownHidden()) {
       // This is deferred since it might be called on initialization with a placehoder over the facet during load time
       // We need to wait that the animation is gone so that the width/height calculation done by the graph are okay.
       Defer.defer(() => this.slider.drawGraph(graphData));
