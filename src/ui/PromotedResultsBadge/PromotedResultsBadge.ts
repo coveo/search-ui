@@ -18,12 +18,13 @@ export interface IPromotedResultsBadgeOptions {
 }
 
 /**
- * This component is in charge of adding a badge to promoted results in your interface.
+ * The `PromotedResultsBadge` component adds a badge to promoted results in your interface.
  *
- * Promoted results consists of either "Featured Results" configured through a [Coveo Query Pipeline](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=126)
- * or "Recommended Results" through a [Coveo Machine Learning algorithm](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=183).
+ * To be considered promoted, a result needs to either:
+ * - be a Featured Result configured through a Coveo Query Pipeline (see [Managing Query Pipeline Featured Results](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=126))
+ * - be a recommended result by Coveo Machine Learning (see [Coveo Machine Learning Features](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=183)).
  *
- * This component can be added anywhere inside the search interface, and will modify specific results after they have been rendered by adding a badge.
+ * You can add this component anywhere in your search interface. The component will then add a badge to your results after they have been rendered.
  */
 export class PromotedResultsBadge extends Component {
   static ID = 'PromotedResultsBadge';
@@ -70,7 +71,10 @@ export class PromotedResultsBadge extends Component {
     /**
      * Specifies the color that should be used for "Featured Results".
      *
-     * This can be specified using either an hexadecimal value (eg: `#f58020`), an RGB value (eg: `rgb(125,10,36)`), or a CSS color name (eg: `pink`, `yellow`, `orange`, etc.).
+     * This can be specified using:
+     * - a hexadecimal value (e.g., `#f58020`)
+     * - an RGB value (e.g., `rgb(125,10,36)`)
+     * - a CSS color name (e.g., `red`)
      *
      * Default value is `undefined`, and is controlled through the default stylesheet of the framework.
      */
@@ -78,7 +82,10 @@ export class PromotedResultsBadge extends Component {
     /**
      * Specifies the color that should be used for "Recommended Results".
      *
-     * This can be specified using either an hexadecimal value (eg: `#f58020`), an RGB value (eg: `rgb(125,10,36)`), or a CSS color name (eg: `pink`, `yellow`, `orange`, etc.).
+     * This can be specified using:
+     * - a hexadecimal value (e.g., `#f58020`)
+     * - an RGB value (e.g., `rgb(125,10,36)`)
+     * - a CSS color name (e.g., `red`)
      *
      * Default value is `undefined`, and is controlled through the default stylesheet of the framework.
      */
@@ -89,11 +96,12 @@ export class PromotedResultsBadge extends Component {
     super(element, PromotedResultsBadge.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, PromotedResultsBadge, options);
     this.bind.onRootElement(ResultListEvents.newResultDisplayed, (args: IDisplayedNewResultEventArgs) => {
-      this.buildBadge(args.result, args.item);
+      const badge = this.buildBadge(args.result, args.item);
+      this.appendBadge(badge, args.item);
     });
   }
 
-  private buildBadge(result: IQueryResult, resultElement: HTMLElement): void {
+  private buildBadge(result: IQueryResult, resultElement: HTMLElement): Dom {
     if (!this.shouldShowABadge(result, resultElement)) {
       return null;
     }
@@ -103,7 +111,10 @@ export class PromotedResultsBadge extends Component {
 
     this.applyTagline(result, badge);
     this.applyColor(result, badge);
+    return badge;
+  }
 
+  private appendBadge(badge: Dom, resultElement: HTMLElement) {
     if (this.isCardLayout(resultElement)) {
       this.addBadgeToCardLayout(badge, resultElement);
     } else {
