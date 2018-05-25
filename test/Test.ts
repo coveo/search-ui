@@ -617,3 +617,6 @@ QuickviewDocumentWordButtonTest();
 
 import { QuickviewDocumentTest } from './ui/QuickviewDocumentTest';
 QuickviewDocumentTest();
+
+import { CategoryFacetDebugTest } from './ui/CategoryFacet/CategoryFacetDebugTest';
+CategoryFacetDebugTest();
