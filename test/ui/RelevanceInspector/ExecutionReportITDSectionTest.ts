@@ -97,7 +97,7 @@ export function ExecutionReportITDSectionTest() {
           done();
         });
 
-        it('should highlights the keywords extracted if available', async done => {
+        it('should highlight the keywords extracted if available', async done => {
           const { gridOptions } = await new ExecutionReportITDSection().build(execReport);
 
           expect(getLongQueryRecall(gridOptions)).toContain(
