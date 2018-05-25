@@ -4,7 +4,7 @@ import { lazyExport } from '../../GlobalExports';
 
 export function lazyPromotedResultsBadge() {
   LazyInitialization.registerLazyComponent('PromotedResultsBadge', () => {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       require.ensure(
         ['./PromotedResultsBadge'],
         () => {
