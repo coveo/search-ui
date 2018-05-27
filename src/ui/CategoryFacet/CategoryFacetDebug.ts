@@ -1,8 +1,6 @@
 import { CategoryFacet } from './CategoryFacet';
 import { IBuildingQueryEventArgs, QueryEvents, IQuerySuccessEventArgs } from '../../events/QueryEvents';
-import { AllowedValuesPatternType } from '../../rest/AllowedValuesPatternType';
 import { IGroupByResult } from '../../rest/GroupByResult';
-import { Utils } from '../../utils/Utils';
 import { QueryBuilder } from '../Base/QueryBuilder';
 import { sortBy, chain } from 'underscore';
 import { Logger } from '../../misc/Logger';
@@ -44,11 +42,7 @@ export class CategoryFacetDebug {
 
   private addGroupByForEachPathElement(queryBuilder: QueryBuilder, path: string[]) {
     path.forEach(pathElement => {
-      queryBuilder.groupByRequests.push({
-        field: this.categoryFacet.options.field as string,
-        allowedValues: [`.*${Utils.escapeRegexCharacter(pathElement)}.*`],
-        allowedValuesPatternType: AllowedValuesPatternType.Regex
-      });
+      this.categoryFacet.categoryFacetQueryController.addDebugGroupBy(queryBuilder, pathElement);
     });
   }
 

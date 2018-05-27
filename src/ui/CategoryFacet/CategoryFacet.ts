@@ -28,6 +28,7 @@ import { ICategoryFacetValue } from '../../rest/CategoryFacetValue';
 import { ISearchEndpoint } from '../../rest/SearchEndpointInterface';
 import { IAnalyticsCategoryFacetMeta, analyticsActionCauseList, IAnalyticsActionCause } from '../Analytics/AnalyticsActionListMeta';
 import { CategoryFacetDebug } from './CategoryFacetDebug';
+import { QueryBuilder } from '../Base/QueryBuilder';
 
 export interface ICategoryFacetOptions {
   field: IFieldOption;
@@ -163,6 +164,7 @@ export class CategoryFacet extends Component {
   public queryStateAttribute: string;
   public categoryValueRootModule = CategoryValueRoot;
   public categoryFacetSearch: CategoryFacetSearch;
+  public categoryFacetDebug: CategoryFacetDebug;
   public activeCategoryValue: CategoryValue | undefined;
   public activePath: string[] = [];
   public positionInQuery: number;
@@ -189,6 +191,7 @@ export class CategoryFacet extends Component {
     this.categoryFacetQueryController = new CategoryFacetQueryController(this);
     this.categoryFacetTemplates = new CategoryFacetTemplates();
     this.categoryValueRoot = new this.categoryValueRootModule($$(this.element), this.categoryFacetTemplates, this);
+    this.categoryFacetDebug = new CategoryFacetDebug(this);
     this.currentPage = 0;
     this.numberOfValues = this.options.numberOfValues;
 
@@ -203,7 +206,6 @@ export class CategoryFacet extends Component {
     this.bind.onRootElement<IPopulateBreadcrumbEventArgs>(BreadcrumbEvents.populateBreadcrumb, args => this.handlePopulateBreadCrumb(args));
     this.buildFacetHeader();
     this.initQueryStateEvents();
-    new CategoryFacetDebug(this);
   }
 
   public handleBuildingQuery(args: IBuildingQueryEventArgs) {
@@ -365,6 +367,19 @@ export class CategoryFacet extends Component {
    */
   public show() {
     $$(this.element).removeClass('coveo-hidden');
+  }
+
+  /**
+   * This method will go through any value that contains the value parameter and verify if there are missig parents.
+   * If you don't want to specify a value, you can simply enable {@link CategoryFacet.option.debug} and do an empty query.
+   */
+  public debugValue(value: string) {
+    const queryBuilder = new QueryBuilder();
+    this.categoryFacetQueryController.addDebugGroupBy(queryBuilder, value);
+    this.queryController
+      .getEndpoint()
+      .search(queryBuilder.build())
+      .then(queryResults => CategoryFacetDebug.analyzeResults(queryResults.groupByResults[0], this.options.delimitingCharacter));
   }
 
   public showWaitingAnimation() {
