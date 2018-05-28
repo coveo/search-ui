@@ -1,12 +1,12 @@
-import { $$, Win } from '../../utils/Dom';
-import { DeviceUtils } from '../../utils/DeviceUtils';
-import { SliderEvents, IGraphValueSelectedArgs } from '../../events/SliderEvents';
-import { Utils } from '../../utils/Utils';
+import { max as d3max, select as d3select } from 'd3';
 import { scaleBand, scaleLinear } from 'd3-scale';
-import { select as d3select, max as d3max } from 'd3';
 import * as Globalize from 'globalize';
-import * as _ from 'underscore';
+import { each, indexOf, map, min } from 'underscore';
+import { IGraphValueSelectedArgs, SliderEvents } from '../../events/SliderEvents';
 import { Logger } from '../../misc/Logger';
+import { DeviceUtils } from '../../utils/DeviceUtils';
+import { $$, Win } from '../../utils/Dom';
+import { Utils } from '../../utils/Utils';
 
 export interface IStartSlideEventArgs {
   slider: Slider;
@@ -94,13 +94,13 @@ export class Slider {
     }
 
     this.sliderLine = new SliderLine(this);
-    _.each(this.sliderLine.build(), (e: HTMLElement) => {
+    each(this.sliderLine.build(), (e: HTMLElement) => {
       this.element.appendChild(e);
     });
 
     if (this.options.rangeSlider) {
       this.sliderRange = new SliderRange(this);
-      _.each(this.sliderRange.build(), (e: HTMLElement) => {
+      each(this.sliderRange.build(), (e: HTMLElement) => {
         this.element.appendChild(e);
       });
     } else {
@@ -485,21 +485,21 @@ export class SliderButton {
   }
 
   private snapToStep(spanX: number) {
-    const diffs = _.map(this.slider.steps, (step, i) => {
+    const diffs = map(this.slider.steps, (step, i) => {
       return Math.abs(this.currentPos - this.fromValueToPosition(this.slider.steps[i]));
     });
-    const diffsNext = _.map(this.slider.steps, (step, i) => {
+    const diffsNext = map(this.slider.steps, (step, i) => {
       return Math.abs(this.rightBoundary - this.fromValueToPosition(this.slider.steps[i]));
     });
-    const diffsPrev = _.map(this.slider.steps, (step, i) => {
+    const diffsPrev = map(this.slider.steps, (step, i) => {
       return Math.abs(this.leftBoundary - this.fromValueToPosition(this.slider.steps[i]));
     });
-    const nearest = _.min(diffs);
-    const nearestNext = _.min(diffsNext);
-    const nearestPrevious = _.min(diffsPrev);
-    let currentStep = this.slider.steps[_.indexOf(diffs, nearest)];
-    const nextStep = this.slider.steps[_.indexOf(diffsNext, nearestNext)];
-    const previousStep = this.slider.steps[_.indexOf(diffsPrev, nearestPrevious)];
+    const nearest = min(diffs);
+    const nearestNext = min(diffsNext);
+    const nearestPrevious = min(diffsPrev);
+    let currentStep = this.slider.steps[indexOf(diffs, nearest)];
+    const nextStep = this.slider.steps[indexOf(diffsNext, nearestNext)];
+    const previousStep = this.slider.steps[indexOf(diffsPrev, nearestPrevious)];
     currentStep = Math.min(currentStep, nextStep);
     currentStep = Math.max(currentStep, previousStep);
     return { position: this.fromValueToPosition(currentStep), value: currentStep };
@@ -719,7 +719,7 @@ class SliderGraph {
   }
 
   private modifyPossibleSinglePointDataIntoValidRange(data: ISliderGraphData[]) {
-    return _.map(data, (d: ISliderGraphData) => {
+    return map(data, (d: ISliderGraphData) => {
       // In some rare corner case, the index can return range values where the start of the data is equal to the end of the data
       // Since it's a "point" as opposed to a real range, it's impossible to display this properly on a graph (where the range is the x axis)
       // An element in a graph with with 0 width on the x axis is illogical and cannot work.
@@ -743,7 +743,7 @@ class SliderGraph {
   private setXAndYDomain(data: ISliderGraphData[]) {
     this.padGraphWithEmptyData(data);
     this.x.domain(
-      _.map(data, d => {
+      map(data, d => {
         return d.start;
       })
     );
