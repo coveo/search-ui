@@ -1,8 +1,8 @@
 import { FieldValuesRenderer } from '../../../src/ui/RelevanceInspector/MetaDataTable';
-import { FakeResults } from '../../Fake';
 import { Dom, $$ } from '../../Test';
 import { IQueryResult } from '../../../src/rest/QueryResult';
 import { IFieldDescription } from '../../../src/rest/FieldDescription';
+import { FakeResults } from '../../../testsFramework/TestsFramework';
 
 export function FieldValuesRendererTest() {
   describe('FieldValuesRenderer', () => {

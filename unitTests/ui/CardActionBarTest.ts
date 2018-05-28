@@ -1,4 +1,3 @@
-import * as Mock from '../MockEnvironment';
 import { CardActionBar } from '../../src/ui/CardActionBar/CardActionBar';
 import { $$ } from '../../src/utils/Dom';
 

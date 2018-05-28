@@ -1,9 +1,8 @@
-import { TableBuilder, ITableDataSource, ThumbnailHtmlRenderer } from '../../../src/ui/RelevanceInspector/TableBuilder';
-import { FakeResults } from '../../Fake';
-import { MockEnvironmentBuilder } from '../../MockEnvironment';
+import { $$, Dom } from '../../../src/Core';
 import { IQueryResult } from '../../../src/rest/QueryResult';
 import { IComponentBindings } from '../../../src/ui/Base/ComponentBindings';
-import { $$, Dom } from '../../../src/Core';
+import { ITableDataSource, TableBuilder, ThumbnailHtmlRenderer } from '../../../src/ui/RelevanceInspector/TableBuilder';
+import { FakeResults, MockEnvironmentBuilder } from '../../../testsFramework/TestsFramework';
 
 export function TableBuilderTest() {
   describe('TableBuilder', () => {

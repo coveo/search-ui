@@ -1,5 +1,5 @@
-import { ExecutionReportQueryOverrideSection } from '../../../src/ui/RelevanceInspector/ExecutionReportQueryOverrideSection';
 import { EXECUTION_REPORT_SECTION, IExecutionReport } from '../../../src/ui/RelevanceInspector/ExecutionReport';
+import { ExecutionReportQueryOverrideSection } from '../../../src/ui/RelevanceInspector/ExecutionReportQueryOverrideSection';
 
 export function ExecutionReportQueryOverrideSectionTest() {
   describe('ExecutionReportQueryOverrideSection', () => {
