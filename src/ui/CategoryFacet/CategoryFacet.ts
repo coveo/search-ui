@@ -352,7 +352,7 @@ export class CategoryFacet extends Component {
 
   public disable() {
     super.disable();
-    $$(this.element).addClass('coveo-hidden');
+    this.hide();
   }
 
   /**
@@ -439,7 +439,9 @@ export class CategoryFacet extends Component {
       }
     }
 
-    const childrenValuesToRender = categoryFacetResult.values.slice(0, numberOfRequestedValues - 1);
+    const childrenValuesToRender = this.moreValuesToFetch
+      ? categoryFacetResult.values.slice(0, numberOfRequestedValues - 1)
+      : categoryFacetResult.values.slice(0, numberOfRequestedValues);
     this.numberOfChildValuesCurrentlyDisplayed = isEmpty(this.activePath)
       ? categoryFacetResult.parentValues.length
       : childrenValuesToRender.length;

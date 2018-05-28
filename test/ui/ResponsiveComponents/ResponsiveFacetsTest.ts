@@ -83,7 +83,7 @@ export function ResponsiveFacetsTest() {
       setTimeout(() => {
         expect(facet.facetSearch.positionSearchResults).toHaveBeenCalled();
         done();
-      }, ResponsiveFacets.DEBOUNCE_SCROLL_WAIT + 1);
+      }, ResponsiveFacets.DEBOUNCE_SCROLL_WAIT + 10);
     });
 
     it('registers dismissFacetSearches an on close handler on the responsive dropdown', () => {

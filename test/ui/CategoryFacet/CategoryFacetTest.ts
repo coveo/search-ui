@@ -36,6 +36,39 @@ export function CategoryFacetTest() {
       expect($$(test.cmp.element).hasClass('coveo-hidden')).toBeTruthy();
     });
 
+    describe(' when categoryFacet is not implemented on the endpoint', () => {
+      beforeEach(() => {
+        const categoryFacetResults = FakeResults.createFakeCategoryFacetResult('@field', []);
+        const fakeResults = FakeResults.createFakeResults();
+        simulateQueryData = {
+          ...simulateQueryData,
+          results: { ...fakeResults, categoryFacets: [{ ...categoryFacetResults, notImplemented: true }] }
+        };
+      });
+
+      it('disables the component', () => {
+        Simulate.query(test.env, simulateQueryData);
+
+        expect(test.cmp.disabled).toBe(true);
+      });
+
+      it('hides the component', () => {
+        spyOn(test.cmp, 'hide');
+        Simulate.query(test.env, simulateQueryData);
+        expect(test.cmp.hide).toHaveBeenCalled();
+      });
+    });
+
+    it('hides the component when there is no results', () => {
+      const emptyCategoryFacetResults = FakeResults.createFakeCategoryFacetResult('@field', [], undefined, 0);
+      simulateQueryData.results = { ...simulateQueryData.results, categoryFacets: [emptyCategoryFacetResults] };
+      spyOn(test.cmp, 'hide');
+
+      Simulate.query(test.env, simulateQueryData);
+
+      expect(test.cmp.hide).toHaveBeenCalled();
+    });
+
     describe('calling changeActivePath', () => {
       let newPath: string[];
       let queryPromise: Promise<IQueryResults>;
@@ -93,7 +126,7 @@ export function CategoryFacetTest() {
       });
 
       it('less arrow is appended when there are more results than the numberOfValues option', () => {
-        const numberOfValues = test.cmp.options.numberOfValues + 2; // +1 for the fetchMoreValues and +1 to trigger the less values
+        const numberOfValues = test.cmp.options.numberOfValues + 1; // +1 for the fetchMoreValues and +1 to trigger the less values
         Simulate.query(test.env, buildSimulateQueryData(numberOfValues, numberOfValues));
 
         const downArrow = $$(test.cmp.element).find('.coveo-category-facet-less');
@@ -118,6 +151,21 @@ export function CategoryFacetTest() {
 
         expect(queryBuilder.categoryFacets[0].maximumNumberOfValues).toBe(initialNumberOfValues + pageSize + 1);
       });
+
+      it('showLess should decrement the number of values requested according to the pageSize', () => {
+        const pageSize = test.cmp.options.pageSize;
+        const initialNumberOfValues = 20;
+        test.cmp.showMore();
+        simulateQueryData = buildSimulateQueryData(21, 21);
+        Simulate.query(test.env, simulateQueryData);
+
+        test.cmp.showLess();
+        const { queryBuilder } = Simulate.query(test.env, simulateQueryData);
+
+        expect(queryBuilder.categoryFacets[0].maximumNumberOfValues).toBe(initialNumberOfValues - pageSize + 1);
+      });
+
+      it('showLess should not request less values than the numberOfValues option', () => {});
     });
 
     it('calls putCategoryFacetInQueryBuilder when building the query', () => {

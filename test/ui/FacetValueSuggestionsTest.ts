@@ -142,7 +142,7 @@ export function FacetValueSuggestionsTest() {
       it('should not call the suggestions provider', async done => {
         await triggerPopulateOmniboxEvent();
 
-        expect(facetValueSuggestionsProvider.getSuggestions).toHaveBeenCalledTimes(0);
+        expect(facetValueSuggestionsProvider.getSuggestions).not.toHaveBeenCalled();
         done();
       });
     });
