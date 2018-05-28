@@ -16,11 +16,15 @@ var configuration = {
       watched: false
     },
     {
-      pattern: './test/lib/jasmine-ajax/jasmine-ajax.js',
+      pattern: './unitTests/lib/jasmine-ajax/jasmine-ajax.js',
       watched: false
     },
     {
       pattern: 'https://cdnjs.cloudflare.com/ajax/libs/ag-grid/16.0.1/ag-grid.min.noStyle.js',
+      watched: false
+    },
+    {
+      pattern: './node_modules/axe-core/axe.js',
       watched: false
     },
     {

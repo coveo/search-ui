@@ -18,7 +18,7 @@ webpackConfig.entry['CoveoJsSearch.Lazy'].unshift(`webpack-dev-server/client?htt
 const compiler = webpack(webpackConfig);
 
 const webpackConfigTest = require('../webpack.test.config.js');
-webpackConfigTest.entry['tests'].unshift(`webpack-dev-server/client?http://localhost:${testsPort}/`);
+webpackConfigTest.entry['unitTests'].unshift(`webpack-dev-server/client?http://localhost:${testsPort}/`);
 const compilerTest = webpack(webpackConfigTest);
 
 let server;
