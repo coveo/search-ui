@@ -62,6 +62,14 @@ export function OmniboxTest() {
         }, test.cmp.options.searchAsYouTypeDelay);
       });
 
+      it('enableQuerySyntax to false should add the correct class on the element', () => {
+        test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
+          enableQuerySyntax: false
+        });
+
+        expect($$(test.cmp.element).hasClass('coveo-query-syntax-disabled')).toBeTruthy();
+      });
+
       it('enableQuerySyntax should modify the enableQuerySyntax parameter', function() {
         test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
           enableQuerySyntax: false
