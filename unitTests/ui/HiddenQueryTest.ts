@@ -1,10 +1,8 @@
+import { range } from 'underscore';
+import { BreadcrumbEvents, IPopulateBreadcrumbEventArgs } from '../../src/events/BreadcrumbEvents';
 import { HiddenQuery } from '../../src/ui/HiddenQuery/HiddenQuery';
-import * as Mock from '../MockEnvironment';
 import { $$ } from '../../src/utils/Dom';
-import { BreadcrumbEvents } from '../../src/events/BreadcrumbEvents';
-import { Simulate } from '../Simulate';
-import { IPopulateBreadcrumbEventArgs } from '../../src/events/BreadcrumbEvents';
-import _ = require('underscore');
+import { Mock, Simulate } from '../../testsFramework/TestsFramework';
 
 export function HiddenQueryTest() {
   describe('HiddenQuery', function() {
@@ -91,7 +89,7 @@ export function HiddenQueryTest() {
         );
 
         test.env.queryStateModel.set('hq', 'test');
-        test.env.queryStateModel.set('hd', _.range(200).toString());
+        test.env.queryStateModel.set('hd', range(200).toString());
         $$(test.env.root).on(BreadcrumbEvents.populateBreadcrumb, (e: Event, args: IPopulateBreadcrumbEventArgs) => {
           // Not an exact comparison, because there's comma, and (...) at the end.
           // We don't need exact number, just that it's way less than 200 that was generated

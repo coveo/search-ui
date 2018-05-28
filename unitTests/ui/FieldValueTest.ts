@@ -1,15 +1,11 @@
-import * as Mock from '../MockEnvironment';
-import { FieldValue } from '../../src/ui/FieldValue/FieldValue';
-import { FakeResults } from '../Fake';
-import { IFieldValueOptions } from '../../src/ui/FieldValue/FieldValue';
-import { $$ } from '../../src/utils/Dom';
-import { TemplateHelpers } from '../../src/ui/Templates/TemplateHelpers';
+import { range } from 'underscore';
 import { Facet } from '../../src/ui/Facet/Facet';
-import { FacetValues } from '../../src/ui/Facet/FacetValues';
-import { FacetValue } from '../../src/ui/Facet/FacetValues';
-import { IDateToStringOptions } from '../../src/utils/DateUtils';
-import { DateUtils } from '../../src/utils/DateUtils';
-import * as _ from 'underscore';
+import { FacetValue, FacetValues } from '../../src/ui/Facet/FacetValues';
+import { FieldValue, IFieldValueOptions } from '../../src/ui/FieldValue/FieldValue';
+import { TemplateHelpers } from '../../src/ui/Templates/TemplateHelpers';
+import { DateUtils, IDateToStringOptions } from '../../src/utils/DateUtils';
+import { $$ } from '../../src/utils/Dom';
+import { FakeResults, Mock } from '../../testsFramework/TestsFramework';
 
 export function FieldValueTest() {
   describe('FieldValue', () => {
@@ -240,7 +236,7 @@ export function FieldValueTest() {
           }
         );
 
-        expect(test.cmp.renderOneValue(_.range(0, 1000).join('-')).textContent.length).toBe(200);
+        expect(test.cmp.renderOneValue(range(0, 1000).join('-')).textContent.length).toBe(200);
       });
 
       it('textCaption should render a text value', () => {

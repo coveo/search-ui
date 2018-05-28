@@ -1,8 +1,8 @@
-import { $$, Dom } from '../../src/utils/Dom';
-import { InitializationPlaceholder } from '../../src/ui/Base/InitializationPlaceholder';
 import { InitializationEvents } from '../../src/events/InitializationEvents';
 import { QueryEvents } from '../../src/events/QueryEvents';
 import { ResultListEvents } from '../../src/events/ResultListEvents';
+import { InitializationPlaceholder } from '../../src/ui/Base/InitializationPlaceholder';
+import { $$, Dom } from '../../src/utils/Dom';
 
 export function InitializationPlaceholderTest() {
   describe('InitializationPlaceholder', () => {

@@ -1,5 +1,6 @@
 import { FacetColumnAutoLayoutAdjustment } from '../../src/ui/SearchInterface/FacetColumnAutoLayoutAdjustment';
 import { $$, Dom, QueryEvents } from '../Test';
+
 export function FacetColumnAutoLayoutAdjustmentTest() {
   describe('FacetColumnAutoLayoutAdjustment', () => {
     const getAutoLayoutAdjustableComponent = () => {

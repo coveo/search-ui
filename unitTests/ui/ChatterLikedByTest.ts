@@ -1,10 +1,8 @@
-import * as Mock from '../MockEnvironment';
-import { ChatterLikedBy } from '../../src/ui/ChatterLikedBy/ChatterLikedBy';
-import { FakeResults } from '../Fake';
-import { IChatterLikedByOptions } from '../../src/ui/ChatterLikedBy/ChatterLikedBy';
+import { l } from '../../src/strings/Strings';
+import { ChatterLikedBy, IChatterLikedByOptions } from '../../src/ui/ChatterLikedBy/ChatterLikedBy';
 import { ChatterUtils } from '../../src/utils/ChatterUtils';
 import { $$ } from '../../src/utils/Dom';
-import { l } from '../../src/strings/Strings';
+import { FakeResults, Mock } from '../../testsFramework/TestsFramework';
 
 export function ChatterLikedByTest() {
   describe('ChatterLikedBy', () => {

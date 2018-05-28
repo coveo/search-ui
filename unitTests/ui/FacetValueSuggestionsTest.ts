@@ -1,11 +1,11 @@
-import { IFacetValueSuggestionsOptions, FacetValueSuggestions } from '../../src/ui/FacetValueSuggestions/FacetValueSuggestions';
-import * as Mock from '../MockEnvironment';
-import { IFieldOption } from '../../src/ui/Base/ComponentOptions';
-import { $$, OmniboxEvents, QueryStateModel, l } from '../Test';
-import { Omnibox, IOmniboxSuggestion } from '../../src/ui/Omnibox/Omnibox';
 import { IPopulateOmniboxSuggestionsEventArgs } from '../../src/events/OmniboxEvents';
+import { IFieldOption } from '../../src/ui/Base/ComponentOptions';
+import { FacetValueSuggestions, IFacetValueSuggestionsOptions } from '../../src/ui/FacetValueSuggestions/FacetValueSuggestions';
 import { IFacetValueSuggestionRow, IFacetValueSuggestionsProvider } from '../../src/ui/FacetValueSuggestions/FacetValueSuggestionsProvider';
+import { IOmniboxSuggestion, Omnibox } from '../../src/ui/Omnibox/Omnibox';
 import { QuerySuggestAddon } from '../../src/ui/Omnibox/QuerySuggestAddon';
+import { $$, OmniboxEvents, QueryStateModel, l } from '../Test';
+import { Mock } from '../../testsFramework/TestsFramework';
 
 export function FacetValueSuggestionsTest() {
   describe('FacetValueSuggestions', () => {

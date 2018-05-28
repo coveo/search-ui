@@ -1,10 +1,8 @@
-/// <reference path="../../lib/jasmine/index.d.ts" />
-import * as Mock from '../MockEnvironment';
-import { IPrintableUriOptions, PrintableUri } from '../../src/ui/PrintableUri/PrintableUri';
 import { IQueryResult } from '../../src/rest/QueryResult';
-import { $$ } from '../../src/utils/Dom';
 import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
-import { FakeResults } from '../Fake';
+import { IPrintableUriOptions, PrintableUri } from '../../src/ui/PrintableUri/PrintableUri';
+import { $$ } from '../../src/utils/Dom';
+import { FakeResults, Mock } from '../../testsFramework/TestsFramework';
 
 export function PrintableUriTest() {
   describe('PrintableUri', function() {

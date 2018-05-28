@@ -1,35 +1,32 @@
-import * as Mock from '../MockEnvironment';
-import { HierarchicalFacet } from '../../src/ui/HierarchicalFacet/HierarchicalFacet';
+import { chain, compact, first } from 'underscore';
 import { IGroupByResult } from '../../src/rest/GroupByResult';
-import { IHierarchicalFacetOptions } from '../../src/ui/HierarchicalFacet/HierarchicalFacet';
-import { FakeResults } from '../Fake';
+import { HierarchicalFacet, IHierarchicalFacetOptions } from '../../src/ui/HierarchicalFacet/HierarchicalFacet';
 import { $$ } from '../../src/utils/Dom';
-import { Simulate } from '../Simulate';
-import _ = require('underscore');
+import { FakeResults, Mock, Simulate } from '../../testsFramework/TestsFramework';
 
 export function HierarchicalFacetTest() {
-  describe('HierarchicalFacet', function() {
+  describe('HierarchicalFacet', () => {
     let test: Mock.IBasicComponentSetup<HierarchicalFacet>;
     let results: IGroupByResult;
 
-    beforeEach(function() {
+    beforeEach(() => {
       test = Mock.optionsComponentSetup<HierarchicalFacet, IHierarchicalFacetOptions>(HierarchicalFacet, {
         field: '@foobar'
       });
       results = FakeResults.createFakeHierarchicalGroupByResult('@foobar', 'foo', 4, 3, '|', false, true);
     });
 
-    afterEach(function() {
+    afterEach(() => {
       test = null;
       results = null;
     });
 
     function getFacetValueElement(facetValue: string): HTMLElement {
-      return _.first(getAllFacetValueElement(facetValue));
+      return first(getAllFacetValueElement(facetValue));
     }
 
     function getAllFacetValueElement(facetValue: string) {
-      return _.chain($$(test.cmp.element).findAll('.coveo-facet-value'))
+      return chain($$(test.cmp.element).findAll('.coveo-facet-value'))
         .filter(value => {
           return (
             $$($$(value).find('.coveo-facet-value-caption'))
@@ -46,7 +43,7 @@ export function HierarchicalFacetTest() {
       });
     }
 
-    it('should flag the parent value when a child value is selected or deselected', function() {
+    it('should flag the parent value when a child value is selected or deselected', () => {
       doQuery();
       expect(test.cmp.values.get(FakeResults.createFakeHierarchicalValue('foo0', 0)).selected).toBe(false);
       expect(test.cmp.values.get(FakeResults.createFakeHierarchicalValue('foo0', 1)).selected).toBe(false);
@@ -62,12 +59,12 @@ export function HierarchicalFacetTest() {
       expect($$(getFacetValueElement('level:0--value:foo0')).hasClass('coveo-has-childs-selected')).toBe(false);
     });
 
-    it('should hide child value by default', function() {
+    it('should hide child value by default', () => {
       doQuery();
       expect($$(getFacetValueElement('level:1--value:foo0')).hasClass('coveo-inactive')).toBe(true);
     });
 
-    it('should show and hide the children if you open/close the parent', function() {
+    it('should show and hide the children if you open/close the parent', () => {
       doQuery();
       test.cmp.open('level:0--value:foo0');
       expect($$(getFacetValueElement('level:1--value:foo0')).hasClass('coveo-inactive')).toBe(false);
@@ -75,7 +72,7 @@ export function HierarchicalFacetTest() {
       expect($$(getFacetValueElement('level:1--value:foo0')).hasClass('coveo-inactive')).toBe(true);
     });
 
-    it('should keep a value opened after a query', function() {
+    it('should keep a value opened after a query', () => {
       doQuery();
       test.cmp.open('level:0--value:foo0');
       expect($$(getFacetValueElement('level:1--value:foo0')).hasClass('coveo-inactive')).toBe(false);
@@ -83,7 +80,7 @@ export function HierarchicalFacetTest() {
       expect($$(getFacetValueElement('level:1--value:foo0')).hasClass('coveo-inactive')).toBe(false);
     });
 
-    it('should reset correctly (selection)', function() {
+    it('should reset correctly (selection)', () => {
       doQuery();
       test.cmp.selectValue('level:0--value:foo0');
       var simulation = Simulate.query(test.env, {
@@ -98,12 +95,12 @@ export function HierarchicalFacetTest() {
       expect(simulation.queryBuilder.build().aq).not.toEqual(jasmine.stringMatching('@foobar'));
     });
 
-    it('should set the correct css class for a value with childs', function() {
+    it('should set the correct css class for a value with childs', () => {
       doQuery();
       expect($$(getFacetValueElement('level:0--value:foo0')).hasClass('coveo-has-childs')).toBe(true);
     });
 
-    it('should set the correct css class for a value with childs selected', function() {
+    it('should set the correct css class for a value with childs selected', () => {
       doQuery();
       test.cmp.selectValue('level:0--value:foo0|level:1--value:foo0');
       doQuery();
@@ -113,7 +110,7 @@ export function HierarchicalFacetTest() {
       expect($$(getFacetValueElement('level:0--value:foo0')).hasClass('coveo-has-childs-selected')).toBe(false);
     });
 
-    it('should set the correct css class for a value with multiple child selected', function() {
+    it('should set the correct css class for a value with multiple child selected', () => {
       doQuery();
       test.cmp.selectValue('level:0--value:foo0|level:1--value:foo0');
       test.cmp.selectValue('level:0--value:foo0|level:1--value:foo1');
@@ -127,12 +124,12 @@ export function HierarchicalFacetTest() {
       expect($$(getFacetValueElement('level:0--value:foo0')).hasClass('coveo-has-childs-selected')).toBe(false);
     });
 
-    it('should set the correct css class for a value with no child', function() {
+    it('should set the correct css class for a value with no child', () => {
       doQuery();
       expect($$(getFacetValueElement('level:3--value:foo0')).hasClass('coveo-no-childs')).toBe(true);
     });
 
-    it('should request 10000 values but displays only as much as requested', function() {
+    it('should request 10000 values but displays only as much as requested', () => {
       expect(test.cmp.numberOfValues).toBe(10000);
       expect(test.cmp.numberOfValuesToShow).toBe(5);
       FakeResults.createFakeHierarchicalGroupByResult('@foo', 'foo', 50);
@@ -157,7 +154,7 @@ export function HierarchicalFacetTest() {
       results = FakeResults.createFakeHierarchicalGroupByResult('@foobar', 'foo', 2, 3, '|', false, true);
       // values[0] is foo0 : a parent
       results.values[0] = undefined;
-      results.values = _.compact(results.values);
+      results.values = compact(results.values);
       doQuery();
       // foo0-0 is a child of the value we just deleted
       // it should be hidden
@@ -174,7 +171,7 @@ export function HierarchicalFacetTest() {
       results = FakeResults.createFakeHierarchicalGroupByResult('@foobar', 'foo', 3, 3, '|', false, true);
       // values[3] is level:1-value:foo1 : a parent
       results.values[3] = undefined;
-      results.values = _.compact(results.values);
+      results.values = compact(results.values);
       doQuery();
       // level:2--value:foo1 is a child of the value we just deleted
       // it should be hidden

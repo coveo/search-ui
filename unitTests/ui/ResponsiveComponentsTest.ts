@@ -1,5 +1,6 @@
 import { ResponsiveComponents } from '../../src/ui/ResponsiveComponents/ResponsiveComponents';
-import * as Mock from '../MockEnvironment';
+import { Mock } from '../../testsFramework/TestsFramework';
+
 export function ResponsiveComponentsTest() {
   describe('ResponsiveComponents', () => {
     let responsiveComponent: ResponsiveComponents;

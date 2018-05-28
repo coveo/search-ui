@@ -1,4 +1,5 @@
 import { MultiSelect } from '../../src/ui/FormWidgets/MultiSelect';
+
 export function MultiSelectTest() {
   describe('MultiSelect', () => {
     let multiSelect: MultiSelect;

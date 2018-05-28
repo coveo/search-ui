@@ -1,24 +1,21 @@
-import * as Mock from '../MockEnvironment';
-import { Matrix } from '../../src/ui/Matrix/Matrix';
-import { IMatrixOptions } from '../../src/ui/Matrix/Matrix';
-import { IQueryResults } from '../../src/rest/QueryResults';
-import { FakeResults } from '../Fake';
-import { Simulate } from '../Simulate';
-import { $$ } from '../../src/utils/Dom';
-import { Cell } from '../../src/ui/Matrix/Cell';
 import * as Globalize from 'globalize';
-import _ = require('underscore');
+import { map, range } from 'underscore';
+import { IQueryResults } from '../../src/rest/QueryResults';
+import { Cell } from '../../src/ui/Matrix/Cell';
+import { IMatrixOptions, Matrix } from '../../src/ui/Matrix/Matrix';
+import { $$ } from '../../src/utils/Dom';
+import { FakeResults, Mock, Simulate } from '../../testsFramework/TestsFramework';
 
 export function MatrixTest() {
   describe('Matrix', function() {
-    var test: Mock.IBasicComponentSetup<Matrix>;
+    let test: Mock.IBasicComponentSetup<Matrix>;
 
     beforeEach(function() {
       test = Mock.optionsComponentSetup<Matrix, IMatrixOptions>(Matrix, {
         rowField: '@foo',
         columnField: '@bar',
         computedField: '@compute',
-        columnFieldValues: _.map(_.range(9), (n: number) => {
+        columnFieldValues: map(range(9), (n: number) => {
           return n.toString();
         }),
         maximumNumberOfRows: 10
@@ -30,10 +27,10 @@ export function MatrixTest() {
     });
 
     describe('when fully rendered', function() {
-      var fakeResults: IQueryResults;
+      let fakeResults: IQueryResults;
       beforeEach(function() {
         fakeResults = FakeResults.createFakeResults(1);
-        fakeResults.groupByResults = _.map(_.range(10), (n: number) => {
+        fakeResults.groupByResults = map(range(10), (n: number) => {
           return FakeResults.createFakeGroupByResult('@foo', 'row', 10, true);
         });
 
@@ -51,18 +48,18 @@ export function MatrixTest() {
 
       it('should trigger the correct query on cell selection', function() {
         test.cmp.selectCell(5, 5);
-        var simulation = Simulate.query(test.env);
+        const simulation = Simulate.query(test.env);
         expect(simulation.queryBuilder.build().aq).toEqual(jasmine.stringMatching('@foo=row5'));
         expect(simulation.queryBuilder.build().aq).toEqual(jasmine.stringMatching('@bar=4'));
       });
 
       it('should allow to get the cell html element', function() {
-        var elem = test.cmp.getCellElement(5, 5);
+        const elem = test.cmp.getCellElement(5, 5);
         expect($$(elem).text()).toBe(Globalize.format(fakeResults.groupByResults[0].values[5].computedFieldResults[0], 'c0'));
       });
 
       it('should allow to get the cell value', function() {
-        var value = test.cmp.getCellValue(5, 5);
+        const value = test.cmp.getCellValue(5, 5);
         expect(value).toBe(Globalize.format(fakeResults.groupByResults[0].values[5].computedFieldResults[0], 'c0'));
       });
     });
@@ -75,7 +72,7 @@ export function MatrixTest() {
           columnField: '@bar',
           computedField: '@compute'
         });
-        var title = $$(test.cmp.element).find('.coveo-matrix-title');
+        const title = $$(test.cmp.element).find('.coveo-matrix-title');
         expect($$(title).text()).toBe('nice title');
       });
 
@@ -86,7 +83,7 @@ export function MatrixTest() {
           computedField: '@compute'
         });
 
-        var simulation = Simulate.query(test.env);
+        const simulation = Simulate.query(test.env);
         expect(simulation.queryBuilder.build().groupBy).toEqual(
           jasmine.arrayContaining([
             jasmine.objectContaining({
@@ -104,7 +101,7 @@ export function MatrixTest() {
           computedField: '@compute'
         });
 
-        var simulation = Simulate.query(test.env);
+        const simulation = Simulate.query(test.env);
         expect(simulation.queryBuilder.build().groupBy).toEqual(
           jasmine.arrayContaining([
             jasmine.objectContaining({
@@ -134,7 +131,7 @@ export function MatrixTest() {
 
         Simulate.query(test.env);
 
-        var cellsValue = _.map(test.cmp.data[0], (c: Cell) => {
+        const cellsValue = map(test.cmp.data[0], (c: Cell) => {
           return c.getValue();
         });
 
@@ -151,7 +148,7 @@ export function MatrixTest() {
         });
 
         Simulate.query(test.env);
-        var cellsValues = _.map(test.cmp.data[0], (c: Cell) => {
+        const cellsValues = map(test.cmp.data[0], (c: Cell) => {
           return c.getValue();
         });
 
@@ -179,7 +176,7 @@ export function MatrixTest() {
           maximumNumberOfValuesInGroupBy: 123
         });
 
-        var simulation = Simulate.query(test.env);
+        const simulation = Simulate.query(test.env);
         expect(simulation.queryBuilder.build().groupBy).toEqual(
           jasmine.arrayContaining([
             jasmine.objectContaining({
@@ -220,7 +217,7 @@ export function MatrixTest() {
           computedField: '@compute'
         });
 
-        var simulation = Simulate.query(test.env);
+        const simulation = Simulate.query(test.env);
 
         expect(simulation.queryBuilder.build().groupBy).toEqual(
           jasmine.arrayContaining([
@@ -243,7 +240,7 @@ export function MatrixTest() {
           computedFieldOperation: 'qwerty'
         });
 
-        var simulation = Simulate.query(test.env);
+        const simulation = Simulate.query(test.env);
 
         expect(simulation.queryBuilder.build().groupBy).toEqual(
           jasmine.arrayContaining([

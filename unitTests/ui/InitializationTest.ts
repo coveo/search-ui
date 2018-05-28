@@ -1,22 +1,19 @@
-import * as Mock from '../MockEnvironment';
-import { SearchEndpoint } from '../../src/rest/SearchEndpoint';
-import { $$ } from '../../src/utils/Dom';
-import { Querybox } from '../../src/ui/Querybox/Querybox';
-import { Component } from '../../src/ui/Base/Component';
-import { Initialization, LazyInitialization } from '../../src/ui/Base/Initialization';
-import { Facet } from '../../src/ui/Facet/Facet';
-import { Pager } from '../../src/ui/Pager/Pager';
-import { ResultList } from '../../src/ui/ResultList/ResultList';
-import { Simulate } from '../Simulate';
-import { InitializationEvents } from '../../src/events/InitializationEvents';
-import { init } from '../../src/ui/Base/RegisteredNamedMethods';
-import { NoopComponent } from '../../src/ui/NoopComponent/NoopComponent';
-import { state } from '../../src/ui/Base/RegisteredNamedMethods';
 import { get } from '../../src/UIBaseModules';
 import { QueryController } from '../../src/controllers/QueryController';
-import { FakeResults } from '../Fake';
+import { InitializationEvents } from '../../src/events/InitializationEvents';
 import { IQueryResult } from '../../src/rest/QueryResult';
+import { SearchEndpoint } from '../../src/rest/SearchEndpoint';
+import { Component } from '../../src/ui/Base/Component';
+import { Initialization, LazyInitialization } from '../../src/ui/Base/Initialization';
+import { init, state } from '../../src/ui/Base/RegisteredNamedMethods';
+import { Facet } from '../../src/ui/Facet/Facet';
+import { NoopComponent } from '../../src/ui/NoopComponent/NoopComponent';
+import { Pager } from '../../src/ui/Pager/Pager';
+import { Querybox } from '../../src/ui/Querybox/Querybox';
 import { ResultLink } from '../../src/ui/ResultLink/ResultLink';
+import { ResultList } from '../../src/ui/ResultList/ResultList';
+import { $$ } from '../../src/utils/Dom';
+import { FakeResults, Mock, Simulate } from '../../testsFramework/TestsFramework';
 declare const $;
 
 export function InitializationTest() {

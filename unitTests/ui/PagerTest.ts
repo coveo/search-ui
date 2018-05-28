@@ -1,15 +1,10 @@
-import * as Mock from '../MockEnvironment';
-import { Pager } from '../../src/ui/Pager/Pager';
-import { registerCustomMatcher } from '../CustomMatchers';
-import { $$ } from '../../src/utils/Dom';
-import { IBuildingQueryEventArgs } from '../../src/events/QueryEvents';
-import { Simulate } from '../Simulate';
-import { FakeResults } from '../Fake';
-import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
-import { QueryEvents, INoResultsEventArgs } from '../../src/events/QueryEvents';
-import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
-import { IPagerOptions } from '../../src/ui/Pager/Pager';
+import { IBuildingQueryEventArgs, INoResultsEventArgs, QueryEvents } from '../../src/events/QueryEvents';
 import { Defer } from '../../src/misc/Defer';
+import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
+import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
+import { IPagerOptions, Pager } from '../../src/ui/Pager/Pager';
+import { $$ } from '../../src/utils/Dom';
+import { FakeResults, Mock, Simulate, registerCustomMatcher } from '../../testsFramework/TestsFramework';
 
 export function PagerTest() {
   describe('Pager', () => {

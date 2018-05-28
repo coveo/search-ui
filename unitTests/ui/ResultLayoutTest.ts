@@ -1,12 +1,10 @@
-import * as Mock from '../MockEnvironment';
-import { ResultLayoutSelector } from '../../src/ui/ResultLayoutSelector/ResultLayoutSelector';
-import { ResultLayoutEvents } from '../../src/events/ResultLayoutEvents';
-import { QueryEvents, IQuerySuccessEventArgs } from '../../src/events/QueryEvents';
 import { InitializationEvents } from '../../src/events/InitializationEvents';
-import { IResultLayoutPopulateArgs } from '../../src/events/ResultLayoutEvents';
-import { FakeResults } from '../Fake';
+import { IQuerySuccessEventArgs, QueryEvents } from '../../src/events/QueryEvents';
+import { IResultLayoutPopulateArgs, ResultLayoutEvents } from '../../src/events/ResultLayoutEvents';
 import { QueryStateModel } from '../../src/models/QueryStateModel';
+import { ResultLayoutSelector } from '../../src/ui/ResultLayoutSelector/ResultLayoutSelector';
 import { $$ } from '../../src/utils/Dom';
+import { FakeResults, Mock } from '../../testsFramework/TestsFramework';
 
 export function ResultLayoutTest() {
   describe('ResultLayout', () => {

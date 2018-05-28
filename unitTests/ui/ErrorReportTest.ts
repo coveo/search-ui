@@ -1,15 +1,13 @@
-import * as Mock from '../MockEnvironment';
-import { ErrorReport } from '../../src/ui/ErrorReport/ErrorReport';
-import { IErrorReportOptions } from '../../src/ui/ErrorReport/ErrorReport';
-import { Simulate } from '../Simulate';
 import { QueryError } from '../../src/rest/QueryError';
-import { $$ } from '../../src/utils/Dom';
-import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
 import { l } from '../../src/strings/Strings';
+import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
+import { ErrorReport, IErrorReportOptions } from '../../src/ui/ErrorReport/ErrorReport';
+import { $$ } from '../../src/utils/Dom';
+import { Mock, Simulate } from '../../testsFramework/TestsFramework';
 
 export function ErrorReportTest() {
   describe('ErrorReport', () => {
-    var test: Mock.IBasicComponentSetup<ErrorReport>;
+    let test: Mock.IBasicComponentSetup<ErrorReport>;
 
     beforeEach(() => {
       test = Mock.basicComponentSetup<ErrorReport>(ErrorReport);

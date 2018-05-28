@@ -1,6 +1,5 @@
-import { QuickviewDocumentWord } from '../../src/ui/Quickview/QuickviewDocumentWord';
 import { IQueryResult } from '../../src/rest/QueryResult';
-import { FakeResults } from '../Fake';
+import { QuickviewDocumentWord } from '../../src/ui/Quickview/QuickviewDocumentWord';
 import { $$ } from '../../src/utils/Dom';
 
 export function QuickviewDocumentWordTest() {

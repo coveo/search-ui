@@ -1,10 +1,8 @@
-import * as Mock from '../MockEnvironment';
-import { ChatterPostedBy } from '../../src/ui/ChatterPostedBy/ChatterPostedBy';
-import { FakeResults } from '../Fake';
-import { IChatterPostedByOption } from '../../src/ui/ChatterPostedBy/ChatterPostedBy';
 import { l } from '../../src/strings/Strings';
+import { ChatterPostedBy, IChatterPostedByOption } from '../../src/ui/ChatterPostedBy/ChatterPostedBy';
 import { ChatterUtils } from '../../src/utils/ChatterUtils';
 import { $$ } from '../../src/utils/Dom';
+import { FakeResults, Mock } from '../../testsFramework/TestsFramework';
 
 export function ChatterPostedByTest() {
   describe('ChatterPostedBy', () => {

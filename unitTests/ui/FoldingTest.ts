@@ -1,3 +1,4 @@
+import { times } from 'underscore';
 import { IQuery } from '../../src/rest/Query';
 import { IQueryResult } from '../../src/rest/QueryResult';
 import { IQueryResults } from '../../src/rest/QueryResults';
@@ -5,10 +6,7 @@ import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
 import { Folding, IFoldingOptions } from '../../src/ui/Folding/Folding';
 import { SortCriteria } from '../../src/ui/Sort/SortCriteria';
 import { $$ } from '../../src/utils/Dom';
-import { FakeResults } from '../Fake';
-import * as Mock from '../MockEnvironment';
-import { ISimulateQueryData, Simulate } from '../Simulate';
-import _ = require('underscore');
+import { FakeResults, ISimulateQueryData, Mock, Simulate } from '../../testsFramework/TestsFramework';
 
 export function FoldingTest() {
   describe('Folding', () => {
@@ -333,7 +331,7 @@ export function FoldingTest() {
 
     it('should set the proper childResults and attachments in multiple folded results', () => {
       const results: IQueryResult[] = [];
-      _.times(7, n => results.push(FakeResults.createFakeResult(n.toString())));
+      times(7, n => results.push(FakeResults.createFakeResult(n.toString())));
 
       // 0 - 1
       //   - 2 - 3
@@ -387,7 +385,7 @@ export function FoldingTest() {
 
     it('should sort by the original position', () => {
       const results: IQueryResult[] = [];
-      _.times(7, n => results.push(FakeResults.createFakeResult(n.toString())));
+      times(7, n => results.push(FakeResults.createFakeResult(n.toString())));
 
       // Priority is : 6, 3, 5, 4, 1, 2, 0
       // Give :
@@ -443,7 +441,7 @@ export function FoldingTest() {
 
     it('should remove duplicate from the result set if one is loaded through the parentResult field', () => {
       const results: IQueryResult[] = [];
-      _.times(7, n => results.push(FakeResults.createFakeResult(n.toString())));
+      times(7, n => results.push(FakeResults.createFakeResult(n.toString())));
 
       // 0 - 1
       //   - 2 - 3

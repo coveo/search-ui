@@ -1,19 +1,19 @@
-import { Facet } from '../../src/ui/Facet/Facet';
-import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
-import * as Mock from '../MockEnvironment';
-import { IDistanceOptions, DistanceResources } from '../../src/ui/Distance/DistanceResources';
-import { $$ } from '../../src/utils/Dom';
-import {
-  IGeolocationPosition,
-  DistanceEvents,
-  IResolvingPositionEventArgs,
-  IGeolocationPositionProvider,
-  IPositionResolvedEventArgs
-} from '../../src/events/DistanceEvents';
 import { InitializationEvents } from '../../src/EventsModules';
-import { QueryEvents, IBuildingQueryEventArgs } from '../../src/events/QueryEvents';
+import {
+  DistanceEvents,
+  IGeolocationPosition,
+  IGeolocationPositionProvider,
+  IPositionResolvedEventArgs,
+  IResolvingPositionEventArgs
+} from '../../src/events/DistanceEvents';
+import { IBuildingQueryEventArgs, QueryEvents } from '../../src/events/QueryEvents';
 import { IQueryFunction } from '../../src/rest/QueryFunction';
 import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
+import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
+import { DistanceResources, IDistanceOptions } from '../../src/ui/Distance/DistanceResources';
+import { Facet } from '../../src/ui/Facet/Facet';
+import { $$ } from '../../src/utils/Dom';
+import { Mock } from '../../testsFramework/TestsFramework';
 
 export function DistanceResourcesTest() {
   describe('DistanceResources', () => {

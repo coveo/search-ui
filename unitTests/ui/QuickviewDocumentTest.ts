@@ -1,7 +1,7 @@
-import { QuickviewDocument } from '../../src/ui/Quickview/QuickviewDocument';
-import * as Mock from '../MockEnvironment';
 import { QuickviewEvents } from '../../src/events/QuickviewEvents';
+import { QuickviewDocument } from '../../src/ui/Quickview/QuickviewDocument';
 import { $$ } from '../../src/utils/Dom';
+import { Mock } from '../../testsFramework/TestsFramework';
 
 export function QuickviewDocumentTest() {
   describe('QuickviewDocument', () => {

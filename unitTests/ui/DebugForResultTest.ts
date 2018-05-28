@@ -1,7 +1,6 @@
-import { DebugForResult } from '../../src/ui/Debug/DebugForResult';
-import { MockEnvironmentBuilder, IMockEnvironment } from '../MockEnvironment';
 import { IQueryResult } from '../../src/rest/QueryResult';
-import { FakeResults } from '../Fake';
+import { DebugForResult } from '../../src/ui/Debug/DebugForResult';
+import { FakeResults, IMockEnvironment, MockEnvironmentBuilder } from '../../testsFramework/TestsFramework';
 
 export function DebugForResultTest() {
   describe('DebugForResult', () => {

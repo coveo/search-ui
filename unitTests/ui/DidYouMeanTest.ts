@@ -1,20 +1,15 @@
-import * as Mock from '../MockEnvironment';
-import { DidYouMean } from '../../src/ui/DidYouMean/DidYouMean';
-import { IQueryCorrection } from '../../src/rest/QueryCorrection';
-import { IWordCorrection } from '../../src/rest/QueryCorrection';
-import { Simulate } from '../Simulate';
-import { FakeResults } from '../Fake';
-import { ISimulateQueryData } from '../Simulate';
-import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
-import { IDidYouMeanOptions } from '../../src/ui/DidYouMean/DidYouMean';
 import { QueryStateModel } from '../../src/models/QueryStateModel';
+import { IQueryCorrection, IWordCorrection } from '../../src/rest/QueryCorrection';
+import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
+import { DidYouMean, IDidYouMeanOptions } from '../../src/ui/DidYouMean/DidYouMean';
 import { $$ } from '../../src/utils/Dom';
+import { FakeResults, ISimulateQueryData, Mock, Simulate } from '../../testsFramework/TestsFramework';
 
 export function DidYouMeanTest() {
-  describe('DidYouMean', function() {
+  describe('DidYouMean', () => {
     var test: Mock.IBasicComponentSetup<DidYouMean>;
     var fakeQueryCorrection: IQueryCorrection;
-    beforeEach(function() {
+    beforeEach(() => {
       test = Mock.basicComponentSetup<DidYouMean>(DidYouMean);
       fakeQueryCorrection = {
         correctedQuery: 'this is the corrected query',
@@ -30,11 +25,11 @@ export function DidYouMeanTest() {
       test.env.queryStateModel.get = () => 'originalquery';
     });
 
-    it('should be hidden before making a query', function() {
+    it('should be hidden before making a query', () => {
       expect(test.cmp.element.style.display).toBe('none');
     });
 
-    it('should be shown when there are both query corrections and results', function() {
+    it('should be shown when there are both query corrections and results', () => {
       Simulate.query(test.env, {
         results: FakeResults.createFakeResults(2),
         queryCorrections: [fakeQueryCorrection]
@@ -43,7 +38,7 @@ export function DidYouMeanTest() {
       expect(test.cmp.element.style.display).not.toBe('none');
     });
 
-    it('should be hidden when there are no query corrections', function() {
+    it('should be hidden when there are no query corrections', () => {
       Simulate.query(test.env, {
         results: FakeResults.createFakeResults(0),
         queryCorrections: []
@@ -52,7 +47,7 @@ export function DidYouMeanTest() {
       expect(test.cmp.element.style.display).toBe('none');
     });
 
-    it('should send an analytics event when doQueryWithCorrectedTerm is called', function() {
+    it('should send an analytics event when doQueryWithCorrectedTerm is called', () => {
       var analyticsSpy = jasmine.createSpy('analyticsSpy');
       test.env.usageAnalytics.logSearchEvent = analyticsSpy;
       Simulate.query(test.env, <ISimulateQueryData>{
@@ -65,9 +60,9 @@ export function DidYouMeanTest() {
       expect(analyticsSpy).toHaveBeenCalledWith(analyticsActionCauseList.didyoumeanClick, {});
     });
 
-    describe('exposes options', function() {
-      describe('enableAutoCorrection', function() {
-        it('set to true should autocorrect the query when no results are found', function() {
+    describe('exposes options', () => {
+      describe('enableAutoCorrection', () => {
+        it('set to true should autocorrect the query when no results are found', () => {
           test = Mock.optionsComponentSetup<DidYouMean, IDidYouMeanOptions>(DidYouMean, <IDidYouMeanOptions>{
             enableAutoCorrection: true
           });
@@ -83,7 +78,7 @@ export function DidYouMeanTest() {
           expect(qsmSpy).toHaveBeenCalledWith(QueryStateModel.attributesEnum.q, 'this is the corrected query');
         });
 
-        it('set to true should send an analytics event when query is autocorrected', function() {
+        it('set to true should send an analytics event when query is autocorrected', () => {
           test = Mock.optionsComponentSetup<DidYouMean, IDidYouMeanOptions>(DidYouMean, <IDidYouMeanOptions>{
             enableAutoCorrection: true
           });
@@ -100,7 +95,7 @@ export function DidYouMeanTest() {
           expect(analyticsSpy.calls.count()).toBe(1);
         });
 
-        it('set to false should not autocorrect the query when no results are found', function() {
+        it('set to false should not autocorrect the query when no results are found', () => {
           test = Mock.optionsComponentSetup<DidYouMean, IDidYouMeanOptions>(DidYouMean, <IDidYouMeanOptions>{
             enableAutoCorrection: false
           });
@@ -118,7 +113,7 @@ export function DidYouMeanTest() {
       });
     });
 
-    it('should not autocorrect search-as-you-type queries', function() {
+    it('should not autocorrect search-as-you-type queries', () => {
       var qsmSpy = jasmine.createSpy('queryStateModelSpy');
       test.env.queryStateModel.set = qsmSpy;
 
@@ -131,11 +126,11 @@ export function DidYouMeanTest() {
       expect(qsmSpy).not.toHaveBeenCalled();
     });
 
-    it('correctedTerm should be null before a query', function() {
+    it('correctedTerm should be null before a query', () => {
       expect(test.cmp.correctedTerm).toBeNull();
     });
 
-    it('correctedTerm should be initialized properly from the queryCorrections', function() {
+    it('correctedTerm should be initialized properly from the queryCorrections', () => {
       Simulate.query(test.env, {
         queryCorrections: [fakeQueryCorrection]
       });
@@ -143,12 +138,12 @@ export function DidYouMeanTest() {
       expect(test.cmp.correctedTerm).toBe(fakeQueryCorrection.correctedQuery);
     });
 
-    describe('doQueryWithCorrectedTerm', function() {
-      it('should throw an exception if no query was made', function() {
+    describe('doQueryWithCorrectedTerm', () => {
+      it('should throw an exception if no query was made', () => {
         expect(() => test.cmp.doQueryWithCorrectedTerm()).toThrow();
       });
 
-      it('should throw an exception if no corrections were available', function() {
+      it('should throw an exception if no corrections were available', () => {
         Simulate.query(test.env, {
           queryCorrections: []
         });
@@ -156,7 +151,7 @@ export function DidYouMeanTest() {
         expect(() => test.cmp.doQueryWithCorrectedTerm()).toThrow();
       });
 
-      it('should execute a query when corrections were available', function() {
+      it('should execute a query when corrections were available', () => {
         Simulate.query(test.env, {
           queryCorrections: [fakeQueryCorrection]
         });
@@ -170,10 +165,10 @@ export function DidYouMeanTest() {
       });
     });
 
-    describe('escape the HTML against XSS', function() {
-      beforeEach(function() {});
+    describe('escape the HTML against XSS', () => {
+      beforeEach(() => {});
 
-      it('when there are results', function() {
+      it('when there are results', () => {
         Simulate.query(test.env, {
           queryCorrections: [
             <IQueryCorrection>{
@@ -186,7 +181,7 @@ export function DidYouMeanTest() {
         );
       });
 
-      it('when query is autocorrected', function() {
+      it('when query is autocorrected', () => {
         Simulate.query(test.env, {
           results: FakeResults.createFakeResults(10),
           queryCorrections: [
