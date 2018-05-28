@@ -440,7 +440,9 @@ export class CategoryFacet extends Component {
     }
 
     const childrenValuesToRender = categoryFacetResult.values.slice(0, numberOfRequestedValues - 1);
-    this.numberOfChildValuesCurrentlyDisplayed = childrenValuesToRender.length;
+    this.numberOfChildValuesCurrentlyDisplayed = isEmpty(this.activePath)
+      ? categoryFacetResult.parentValues.length
+      : childrenValuesToRender.length;
     currentParentValue.renderChildren(childrenValuesToRender);
     this.activeCategoryValue = currentParentValue as CategoryValue;
   }
