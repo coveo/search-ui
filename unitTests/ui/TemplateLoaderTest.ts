@@ -1,12 +1,12 @@
-import * as Mock from '../MockEnvironment';
+import { TemplateLoader } from '../../src/ui/TemplateLoader/TemplateLoader';
 import { Template } from '../../src/ui/Templates/Template';
 import { TemplateCache } from '../../src/ui/Templates/TemplateCache';
-import { TemplateLoader } from '../../src/ui/TemplateLoader/TemplateLoader';
 import { $$ } from '../../src/utils/Dom';
+import { Mock } from '../../testsFramework/TestsFramework';
 
 export function TemplateLoaderTest() {
   describe('TemplateLoder', () => {
-    it('should not load a template into itself for template-ception', function() {
+    it('should not load a template into itself for template-ception', () => {
       let badTemplateId = 'badTemplate';
       let badTemplate = new Template(() => {
         return `<div class='CoveoTemplateLoader' data-template-id='${badTemplateId}'></div>`;

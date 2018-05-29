@@ -3,7 +3,7 @@ import { ResultListEvents } from '../../src/events/ResultListEvents';
 import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
 import { DebugHeader } from '../../src/ui/Debug/DebugHeader';
 import { $$, Dom } from '../../src/utils/Dom';
-import { IMockEnvironment, MockEnvironmentBuilder } from '../../testsFramework/TestsFramework';
+import { IMockEnvironment, MockEnvironmentBuilder, Simulate } from '../../testsFramework/TestsFramework';
 
 export function DebugHeaderTest() {
   describe('DebugHeader', () => {

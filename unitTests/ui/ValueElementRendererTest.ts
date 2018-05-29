@@ -1,13 +1,11 @@
-import * as Mock from '../MockEnvironment';
-import { Facet } from '../../src/ui/Facet/Facet';
-import { ValueElementRenderer } from '../../src/ui/Facet/ValueElementRenderer';
-import { IFacetOptions } from '../../src/ui/Facet/Facet';
+import { Facet, IFacetOptions } from '../../src/ui/Facet/Facet';
 import { FacetValue } from '../../src/ui/Facet/FacetValues';
-import { FakeResults } from '../Fake';
+import { ValueElementRenderer } from '../../src/ui/Facet/ValueElementRenderer';
 import { $$ } from '../../src/utils/Dom';
+import { FakeResults, Mock } from '../../testsFramework/TestsFramework';
 
 export function ValueElementRendererTest() {
-  describe('ValueElementRenderer', function() {
+  describe('ValueElementRenderer', () => {
     var facet: Facet;
     var valueRenderer: ValueElementRenderer;
 
@@ -17,7 +15,7 @@ export function ValueElementRendererTest() {
       }).cmp;
     });
 
-    afterEach(function() {
+    afterEach(() => {
       facet = null;
       valueRenderer = null;
     });

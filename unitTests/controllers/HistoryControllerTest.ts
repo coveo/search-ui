@@ -1,14 +1,15 @@
+import { size } from 'underscore';
 import { HistoryController } from '../../src/controllers/HistoryController';
 import { InitializationEvents } from '../../src/events/InitializationEvents';
-import { $$ } from '../../src/utils/Dom';
 import { Defer } from '../../src/misc/Defer';
-import { Mock } from '../../testsFramework/TestsFramework';
 import {
-  analyticsActionCauseList,
-  IAnalyticsResultsSortMeta,
+  IAnalyticsActionCause,
   IAnalyticsFacetMeta,
-  IAnalyticsActionCause
+  IAnalyticsResultsSortMeta,
+  analyticsActionCauseList
 } from '../../src/ui/Analytics/AnalyticsActionListMeta';
+import { $$ } from '../../src/utils/Dom';
+import { Mock } from '../../testsFramework/TestsFramework';
 
 export function HistoryControllerTest() {
   describe('HistoryController', () => {
@@ -89,7 +90,7 @@ export function HistoryControllerTest() {
 
         $$(env.root).trigger(InitializationEvents.restoreHistoryState);
 
-        expect(historyController.hashUtils.getValue).toHaveBeenCalledTimes(_.size(env.queryStateModel.attributes));
+        expect(historyController.hashUtils.getValue).toHaveBeenCalledTimes(size(env.queryStateModel.attributes));
       });
 
       describe('when logging analytics event', () => {

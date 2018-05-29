@@ -1,4 +1,5 @@
-import { KeyboardUtils, KEYBOARD } from '../../src/utils/KeyboardUtils';
+import { KEYBOARD, KeyboardUtils } from '../../src/utils/KeyboardUtils';
+
 export function KeyboardUtilsTests() {
   describe('KeyboardUtils', () => {
     it('should detect correct keys for omnibox events', () => {

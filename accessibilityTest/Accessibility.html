@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, height=device-height">
+  <title>Accessibility Tests</title>
+
+  <link rel="stylesheet" type="text/css" href="./lib/jasmine-2.4.1/jasmine.css">
+  <script type="text/javascript" src="./lib/jasmine-2.4.1/jasmine.js"></script>
+  <script type="text/javascript" src="./lib/jasmine-2.4.1/jasmine-html.js"></script>
+  <script type="text/javascript" src="./lib/jasmine-2.4.1/boot.js"></script>
+
+  <script type="text/javascript" src="./lib/axe.js"></script>
+
+  <link rel="stylesheet" href="../css/CoveoFullSearch.css" type="text/css" />
+  <script type="text/javascript" src="../js/CoveoJsSearch.js"></script>
+  <script src="../js/templates/templates.js"></script>
+
+  <script type="text/javascript" src="accessibilityTests.js"></script>
+
+</head>
+
+<body id="search" class="CoveoSearchInterface">
+  <foldings />
+  <div class="CoveoAnalytics"></div>
+  <div class="coveo-tab-section">
+    <tabs />
+  </div>
+  <div class="coveo-search-section">
+    <div class="CoveoSettings"></div>
+    <div class="CoveoSearchbox" data-enable-omnibox="true"></div>
+  </div>
+  <div class="coveo-main-section">
+    <div class="coveo-facet-column">
+      <facets />
+    </div>
+    <div class="coveo-results-column">
+      <div class="CoveoShareQuery"></div>
+      <div class="CoveoPreferencesPanel">
+        <div class="CoveoResultsPreferences"></div>
+        <div class="CoveoResultsFiltersPreferences"></div>
+      </div>
+      <div class="CoveoTriggers"></div>
+      <div class="CoveoBreadcrumb"></div>
+      <div class="CoveoDidYouMean"></div>
+      <div class="coveo-results-header">
+        <div class="coveo-summary-section">
+          <span class="CoveoQuerySummary"></span>
+          <span class="CoveoQueryDuration"></span>
+        </div>
+        <div class="coveo-result-layout-section">
+          <span class="CoveoResultLayout"></span>
+        </div>
+        <div class="coveo-sort-section">
+          <sorts />
+        </div>
+      </div>
+      <div class="CoveoHiddenQuery"></div>
+      <div class="CoveoErrorReport" data-pop-up="false"></div>
+      <div class="CoveoResultList" data-layout="list" data-wait-animation="fade" data-auto-select-fields-to-include="true">
+      </div>
+      <div class="CoveoPager"></div>
+      <div class="CoveoLogo"></div>
+      <div class="CoveoResultsPerPage"></div>
+    </div>
+  </div>
+</body>

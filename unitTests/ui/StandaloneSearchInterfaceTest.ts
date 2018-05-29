@@ -1,6 +1,7 @@
-import * as Mock from '../MockEnvironment';
-import { StandaloneSearchInterface } from '../../src/ui/SearchInterface/SearchInterface';
 import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
+import { StandaloneSearchInterface } from '../../src/ui/SearchInterface/SearchInterface';
+import { Mock } from '../../testsFramework/TestsFramework';
+
 export function StandaloneSearchInterfaceTest() {
   describe('StandaloneSearchInterface', () => {
     let cmp: StandaloneSearchInterface;

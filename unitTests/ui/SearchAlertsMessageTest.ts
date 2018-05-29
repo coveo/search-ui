@@ -1,11 +1,11 @@
-import * as Mock from '../MockEnvironment';
-import { SearchAlertsMessage } from '../../src/ui/SearchAlerts/SearchAlertsMessage';
-import { PopupUtils } from '../../src/utils/PopupUtils';
-import { $$ } from '../../src/utils/Dom';
 import { SearchAlertsEvents } from '../../src/events/SearchAlertEvents';
+import { SearchAlertsMessage } from '../../src/ui/SearchAlerts/SearchAlertsMessage';
+import { $$ } from '../../src/utils/Dom';
+import { PopupUtils } from '../../src/utils/PopupUtils';
+import { Mock } from '../../testsFramework/TestsFramework';
 
 export function SearchAlertsMessageTest() {
-  describe('SearchAlertsMessage', function() {
+  describe('SearchAlertsMessage', () => {
     let test: Mock.IBasicComponentSetup<SearchAlertsMessage>;
 
     beforeEach(() => {

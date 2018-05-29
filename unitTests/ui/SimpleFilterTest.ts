@@ -1,10 +1,8 @@
-import * as Mock from '../MockEnvironment';
-import { ISimpleFilterOptions, SimpleFilter } from '../../src/ui/SimpleFilter/SimpleFilter';
-import { Simulate } from '../Simulate';
-import { $$ } from '../../src/utils/Dom';
 import { BreadcrumbEvents, IPopulateBreadcrumbEventArgs } from '../../src/events/BreadcrumbEvents';
-import { FakeResults } from '../Fake';
 import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
+import { ISimpleFilterOptions, SimpleFilter } from '../../src/ui/SimpleFilter/SimpleFilter';
+import { $$ } from '../../src/utils/Dom';
+import { FakeResults, Mock, Simulate } from '../../testsFramework/TestsFramework';
 
 export function SimpleFilterTest() {
   describe('SimpleFilter', () => {

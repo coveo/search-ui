@@ -1,6 +1,6 @@
-import * as Mock from '../MockEnvironment';
-import { TimespanFacet, ITimespanFacetOptions } from '../../src/ui/TimespanFacet/TimespanFacet';
 import { FacetRange } from '../../src/ui/FacetRange/FacetRange';
+import { ITimespanFacetOptions, TimespanFacet } from '../../src/ui/TimespanFacet/TimespanFacet';
+import { Mock } from '../../testsFramework/TestsFramework';
 
 export function TimespanFacetTest() {
   describe('TimespanFacet', () => {

@@ -1,8 +1,8 @@
 import { Cookie } from '../../src/utils/CookieUtils';
-import { Simulate } from '../Simulate';
+import { Simulate } from '../../testsFramework/TestsFramework';
 
 export function CookieUtilsTest() {
-  describe('CookieUtils', function() {
+  describe('CookieUtils', () => {
     var mockDocument = {
       cookie: ''
     };
@@ -10,7 +10,7 @@ export function CookieUtilsTest() {
       Object.getOwnPropertyDescriptor(Document.prototype, 'cookie') || Object.getOwnPropertyDescriptor(HTMLDocument.prototype, 'cookie');
     if (cookieDesc && cookieDesc.configurable) {
       Object.defineProperty(document, 'cookie', {
-        get: function() {
+        get: () => {
           return mockDocument.cookie;
         },
         set: function(val) {
@@ -19,7 +19,7 @@ export function CookieUtilsTest() {
       });
     }
 
-    afterEach(function() {
+    afterEach(() => {
       mockDocument.cookie = '';
     });
 

@@ -10,16 +10,17 @@ import { NumericSpinner } from '../../../src/ui/FormWidgets/NumericSpinner';
 import { TextInput } from '../../../src/ui/FormWidgets/TextInput';
 import { $$ } from '../../../src/utils/Dom';
 import { AdvancedComponentSetupOptions, Mock, MockEnvironmentBuilder, Simulate } from '../../../testsFramework/TestsFramework';
+import { find } from 'underscore';
 
 export function AdvancedSearchTest() {
   describe('AdvancedSearch', () => {
     var test: Mock.IBasicComponentSetupWithModalBox<AdvancedSearch>;
 
-    beforeEach(function() {
+    beforeEach(() => {
       test = Mock.basicComponentSetupWithModalBox<AdvancedSearch>(AdvancedSearch);
     });
 
-    afterEach(function() {
+    afterEach(() => {
       test = null;
     });
 
@@ -192,7 +193,7 @@ export function AdvancedSearchTest() {
 
     function getSection(section: string) {
       let sectionsTitle = $$(test.cmp.content).findAll('.coveo-advanced-search-section-title');
-      let title = _.find(sectionsTitle, title => {
+      let title = find(sectionsTitle, title => {
         return title.innerText == section;
       });
       return title ? title.parentElement : undefined;

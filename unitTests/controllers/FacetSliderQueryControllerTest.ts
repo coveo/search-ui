@@ -2,6 +2,7 @@ import { FacetSliderQueryController } from '../../src/controllers/FacetSliderQue
 import { FacetSlider } from '../../src/ui/FacetSlider/FacetSlider';
 import { IFieldOption } from '../../src/ui/Base/ComponentOptions';
 import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
+import { Mock } from '../../testsFramework/TestsFramework';
 
 export function FacetSliderQueryControllerTest() {
   describe('FacetSliderQueryController', () => {
