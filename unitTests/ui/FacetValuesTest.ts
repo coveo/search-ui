@@ -1,5 +1,5 @@
 import { FacetValues } from '../../src/ui/Facet/FacetValues';
-import { FakeResults } from '../Fake';
+import { FakeResults } from '../../testsFramework/TestsFramework';
 
 export function FacetValuesTest() {
   describe('FacetValues', () => {

@@ -1,28 +1,25 @@
-import * as Mock from '../MockEnvironment';
-import { AnalyticsEndpoint } from '../../src/rest/AnalyticsEndpoint';
-import { LiveAnalyticsClient } from '../../src/ui/Analytics/LiveAnalyticsClient';
-import { IQueryResults } from '../../src/rest/QueryResults';
-import { FakeResults } from '../Fake';
-import { IAnalyticsNoMeta } from '../../src/ui/Analytics/AnalyticsActionListMeta';
-import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
-import { PendingSearchAsYouTypeSearchEvent } from '../../src/ui/Analytics/PendingSearchAsYouTypeSearchEvent';
-import { PendingSearchEvent } from '../../src/ui/Analytics/PendingSearchEvent';
-import { IQuery } from '../../src/rest/Query';
-import { Simulate, ISimulateQueryData } from '../Simulate';
-import { $$ } from '../../src/utils/Dom';
+import { defer } from 'underscore';
 import { AnalyticsEvents } from '../../src/events/AnalyticsEvents';
 import { Defer } from '../../src/misc/Defer';
+import { AnalyticsEndpoint } from '../../src/rest/AnalyticsEndpoint';
+import { IQuery } from '../../src/rest/Query';
 import { IQueryResult } from '../../src/rest/QueryResult';
-import _ = require('underscore');
+import { IQueryResults } from '../../src/rest/QueryResults';
+import { IAnalyticsNoMeta, analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
+import { LiveAnalyticsClient } from '../../src/ui/Analytics/LiveAnalyticsClient';
+import { PendingSearchAsYouTypeSearchEvent } from '../../src/ui/Analytics/PendingSearchAsYouTypeSearchEvent';
+import { PendingSearchEvent } from '../../src/ui/Analytics/PendingSearchEvent';
+import { $$ } from '../../src/utils/Dom';
+import { FakeResults, ISimulateQueryData, Mock, Simulate } from '../../testsFramework/TestsFramework';
 
 export function LiveAnalyticsClientTest() {
-  describe('LiveAnalyticsClient', function() {
-    var endpoint: AnalyticsEndpoint;
-    var env: Mock.IMockEnvironment;
-    var client: LiveAnalyticsClient;
-    var promise: Promise<IQueryResults>;
+  describe('LiveAnalyticsClient', () => {
+    let endpoint: AnalyticsEndpoint;
+    let env: Mock.IMockEnvironment;
+    let client: LiveAnalyticsClient;
+    let promise: Promise<IQueryResults>;
 
-    beforeEach(function() {
+    beforeEach(() => {
       // Thanks phantom js for bad native event support
       if (Simulate.isPhantomJs()) {
         Simulate.addJQuery();
@@ -36,7 +33,7 @@ export function LiveAnalyticsClientTest() {
       });
     });
 
-    afterEach(function() {
+    afterEach(() => {
       env = null;
       endpoint = null;
       client = null;
@@ -60,7 +57,7 @@ export function LiveAnalyticsClientTest() {
 
     it('should send proper information on logSearchEvent', function(done) {
       client.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxSubmit, {});
-      var query: IQuery = {
+      const query: IQuery = {
         q: 'the query',
         aq: 'the advanced query',
         firstResult: 20,
@@ -73,8 +70,8 @@ export function LiveAnalyticsClientTest() {
         query: query,
         promise: promise
       });
-      _.defer(function() {
-        var jasmineMatcher = jasmine.arrayContaining([
+      defer(() => {
+        const jasmineMatcher = jasmine.arrayContaining([
           jasmine.objectContaining({
             queryText: 'the query',
             advancedQuery: 'the advanced query',
@@ -99,7 +96,7 @@ export function LiveAnalyticsClientTest() {
 
     it('should give precedence to query from the query state model instead of the one sent to the search api', done => {
       client.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxSubmit, {});
-      var query: IQuery = {
+      const query: IQuery = {
         q: 'the query',
         aq: 'the advanced query',
         firstResult: 20,
@@ -116,8 +113,8 @@ export function LiveAnalyticsClientTest() {
         promise: promise
       });
 
-      _.defer(function() {
-        var jasmineMatcher = jasmine.arrayContaining([
+      defer(() => {
+        const jasmineMatcher = jasmine.arrayContaining([
           jasmine.objectContaining({
             queryText: 'another query',
             advancedQuery: 'the advanced query',
@@ -136,12 +133,12 @@ export function LiveAnalyticsClientTest() {
       });
     });
 
-    describe('with multiple (3) search events', function() {
-      var root: HTMLElement;
-      var env2: Mock.IMockEnvironment;
-      var env3: Mock.IMockEnvironment;
+    describe('with multiple (3) search events', () => {
+      let root: HTMLElement;
+      let env2: Mock.IMockEnvironment;
+      let env3: Mock.IMockEnvironment;
 
-      beforeEach(function() {
+      beforeEach(() => {
         root = document.createElement('div');
         env2 = new Mock.MockEnvironmentBuilder().build();
         env3 = new Mock.MockEnvironmentBuilder().build();
@@ -151,7 +148,7 @@ export function LiveAnalyticsClientTest() {
         client = new LiveAnalyticsClient(endpoint, root, 'foo', 'foo display', false, 'foo run name', 'foo run version', 'default', true);
       });
 
-      afterEach(function() {
+      afterEach(() => {
         env = null;
         env2 = null;
         env3 = null;
@@ -183,8 +180,8 @@ export function LiveAnalyticsClientTest() {
           deferSuccess: true
         });
 
-        _.defer(function() {
-          var jasmineMatcher = jasmine.arrayContaining([
+        defer(() => {
+          const jasmineMatcher = jasmine.arrayContaining([
             jasmine.objectContaining({
               queryText: 'the query 1'
             }),
@@ -224,8 +221,8 @@ export function LiveAnalyticsClientTest() {
           deferSuccess: true
         });
 
-        _.defer(function() {
-          var jasmineMatcher = jasmine.arrayContaining([
+        defer(() => {
+          const jasmineMatcher = jasmine.arrayContaining([
             jasmine.objectContaining({
               queryText: 'the query 1'
             }),
@@ -261,8 +258,8 @@ export function LiveAnalyticsClientTest() {
           deferSuccess: true
         });
 
-        _.defer(function() {
-          var jasmineMatcher = jasmine.arrayContaining([
+        defer(() => {
+          const jasmineMatcher = jasmine.arrayContaining([
             jasmine.objectContaining({
               queryText: 'the query 3'
             }),
@@ -303,8 +300,9 @@ export function LiveAnalyticsClientTest() {
           },
           deferSuccess: true
         });
-        _.defer(function() {
-          var jasmineMatcher = jasmine.arrayContaining([
+
+        defer(() => {
+          const jasmineMatcher = jasmine.arrayContaining([
             jasmine.objectContaining({
               queryText: 'the query 1'
             }),
@@ -322,7 +320,7 @@ export function LiveAnalyticsClientTest() {
 
       it('should only send success events to the endpoint', function(done) {
         client.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxSubmit, {});
-        var promise2 = new Promise((resolve, reject) => {
+        const promise2 = new Promise((resolve, reject) => {
           reject();
         });
 
@@ -349,8 +347,8 @@ export function LiveAnalyticsClientTest() {
           },
           deferSuccess: true
         });
-        _.defer(function() {
-          var jasmineMatcher = jasmine.arrayContaining([
+        defer(() => {
+          const jasmineMatcher = jasmine.arrayContaining([
             jasmine.objectContaining({
               queryText: 'the query 1'
             }),
@@ -359,7 +357,7 @@ export function LiveAnalyticsClientTest() {
             })
           ]);
 
-          var jasmineMatcherNot = jasmine.arrayContaining([
+          const jasmineMatcherNot = jasmine.arrayContaining([
             jasmine.objectContaining({
               queryText: 'the query 2'
             })
@@ -371,8 +369,8 @@ export function LiveAnalyticsClientTest() {
       });
     });
 
-    it('should trigger an analytics event on document view', function() {
-      var spy = jasmine.createSpy('spy');
+    it('should trigger an analytics event on document view', () => {
+      const spy = jasmine.createSpy('spy');
       $$(env.root).on(AnalyticsEvents.documentViewEvent, spy);
       client.logClickEvent<IAnalyticsNoMeta>(
         analyticsActionCauseList.documentOpen,
@@ -385,7 +383,7 @@ export function LiveAnalyticsClientTest() {
     });
 
     it('should trigger an analytics event on search event', function(done) {
-      var spy = jasmine.createSpy('spy');
+      const spy = jasmine.createSpy('spy');
       $$(env.root).on(AnalyticsEvents.searchEvent, spy);
       client.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxSubmit, {});
       Simulate.query(env, {
@@ -396,22 +394,22 @@ export function LiveAnalyticsClientTest() {
           resolve(FakeResults.createFakeResults(3));
         })
       });
-      _.defer(function() {
+      defer(() => {
         expect(spy).toHaveBeenCalled();
         done();
       });
     });
 
-    it('should trigger an analytics event on custom event', function() {
-      var spy = jasmine.createSpy('spy');
+    it('should trigger an analytics event on custom event', () => {
+      const spy = jasmine.createSpy('spy');
       $$(env.root).on(AnalyticsEvents.customEvent, spy);
       client.logCustomEvent<IAnalyticsNoMeta>(analyticsActionCauseList.documentOpen, {}, document.createElement('div'));
       Defer.flush();
       expect(spy).toHaveBeenCalled();
     });
 
-    it('should trigger change analytics metadata event', function() {
-      var spy = jasmine.createSpy('spy');
+    it('should trigger change analytics metadata event', () => {
+      const spy = jasmine.createSpy('spy');
       $$(env.root).on(AnalyticsEvents.changeAnalyticsCustomData, spy);
       client.logCustomEvent<IAnalyticsNoMeta>(analyticsActionCauseList.documentOpen, {}, document.createElement('div'));
       Defer.flush();
@@ -486,15 +484,15 @@ export function LiveAnalyticsClientTest() {
       });
     });
 
-    describe('search as you type', function() {
-      beforeEach(function() {
+    describe('search as you type', () => {
+      beforeEach(() => {
         jasmine.clock().install();
       });
-      afterEach(function() {
+      afterEach(() => {
         jasmine.clock().uninstall();
       });
 
-      it('should log after 5 seconds have passed since the last duringQueryEvent', function() {
+      it('should log after 5 seconds have passed since the last duringQueryEvent', () => {
         client.logSearchAsYouType<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxSubmit, {});
         Simulate.query(env, {
           query: {
@@ -508,7 +506,7 @@ export function LiveAnalyticsClientTest() {
         expect(client['pendingSearchAsYouTypeSearchEvent']['searchPromises'].length).toBe(1);
       });
 
-      it("should not log after 5 seconds have passed since the last duringQueryEvent if another event is pushed and it's a search box", function() {
+      it("should not log after 5 seconds have passed since the last duringQueryEvent if another event is pushed and it's a search box", () => {
         client.logSearchAsYouType<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxSubmit, {});
         Simulate.query(env, {
           query: {
@@ -528,7 +526,7 @@ export function LiveAnalyticsClientTest() {
         expect(client['pendingSearchAsYouTypeSearchEvent']).toBeUndefined();
       });
 
-      it("should log after 5 seconds have passed since the last duringQueryEvent if another event is pushed and it's not a search box", function() {
+      it("should log after 5 seconds have passed since the last duringQueryEvent if another event is pushed and it's not a search box", () => {
         client.logSearchAsYouType<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxSubmit, {});
         Simulate.query(env, {
           query: {

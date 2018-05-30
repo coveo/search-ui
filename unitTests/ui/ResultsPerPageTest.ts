@@ -1,10 +1,7 @@
-import * as Mock from '../MockEnvironment';
-import { ResultsPerPage } from '../../src/ui/ResultsPerPage/ResultsPerPage';
 import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
-import { IResultsPerPageOptions } from '../../src/ui/ResultsPerPage/ResultsPerPage';
-import { Simulate } from '../Simulate';
-import { FakeResults } from '../Fake';
+import { IResultsPerPageOptions, ResultsPerPage } from '../../src/ui/ResultsPerPage/ResultsPerPage';
 import { $$ } from '../../src/utils/Dom';
+import { FakeResults, Mock, Simulate } from '../../testsFramework/TestsFramework';
 
 export function ResultsPerPageTest() {
   describe('ResultsPerPage', () => {

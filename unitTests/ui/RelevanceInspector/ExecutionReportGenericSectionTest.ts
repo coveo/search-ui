@@ -1,5 +1,5 @@
-import { ExecutionReportGenericSection } from '../../../src/ui/RelevanceInspector/ExecutionReportGenericSection';
 import { IExecutionReportSection } from '../../../src/ui/RelevanceInspector/ExecutionReport';
+import { ExecutionReportGenericSection } from '../../../src/ui/RelevanceInspector/ExecutionReportGenericSection';
 
 export function ExecutionReportGenericSectionTest() {
   describe('ExecutionReportGenericSection', () => {

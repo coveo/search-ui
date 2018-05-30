@@ -1,8 +1,9 @@
-import { Template, IInstantiateTemplateOptions } from '../../src/ui/Templates/Template';
 import { IQueryResult } from '../../src/rest/QueryResult';
-import { FakeResults } from '../Fake';
 import { ResponsiveComponents } from '../../src/ui/ResponsiveComponents/ResponsiveComponents';
+import { IInstantiateTemplateOptions, Template } from '../../src/ui/Templates/Template';
 import { $$ } from '../../src/utils/Dom';
+import { FakeResults } from '../../testsFramework/TestsFramework';
+
 export function TemplateTest() {
   describe('Template', () => {
     let result: IQueryResult;

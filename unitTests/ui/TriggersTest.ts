@@ -1,28 +1,23 @@
-import * as Mock from '../MockEnvironment';
-import { Triggers } from '../../src/ui/Triggers/Triggers';
-import { IQueryResults } from '../../src/rest/QueryResults';
-import { FakeResults } from '../Fake';
-import { Simulate } from '../Simulate';
-import { $$ } from '../../src/utils/Dom';
-import { ITriggerNotify } from '../../src/rest/Trigger';
-import { ITriggerExecute } from '../../src/rest/Trigger';
-import { ITriggerRedirect } from '../../src/rest/Trigger';
-import { ITriggerQuery } from '../../src/rest/Trigger';
 import { QueryStateModel } from '../../src/models/QueryStateModel';
+import { IQueryResults } from '../../src/rest/QueryResults';
+import { ITriggerExecute, ITriggerNotify, ITriggerQuery, ITriggerRedirect } from '../../src/rest/Trigger';
 import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
+import { Triggers } from '../../src/ui/Triggers/Triggers';
+import { $$ } from '../../src/utils/Dom';
+import { FakeResults, Mock, Simulate } from '../../testsFramework/TestsFramework';
 
 export function TriggersTest() {
-  describe('Triggers', function() {
+  describe('Triggers', () => {
     var test: Mock.IBasicComponentSetup<Triggers>;
     var results: IQueryResults;
 
-    beforeEach(function() {
+    beforeEach(() => {
       test = Mock.basicComponentSetup<Triggers>(Triggers);
       test.cmp._window = Mock.mockWindow();
       results = FakeResults.createFakeResults(0);
     });
 
-    it('should do nothing if triggers are not present in the response', function() {
+    it('should do nothing if triggers are not present in the response', () => {
       results.triggers = null;
 
       Simulate.query(test.env, { results: results });
@@ -31,13 +26,13 @@ export function TriggersTest() {
       expect(test.cmp.element.innerHTML).toBe('');
     });
 
-    it("should set a notification properly when a 'notify' trigger is present", function() {
+    it("should set a notification properly when a 'notify' trigger is present", () => {
       results.triggers = [<ITriggerNotify>{ type: 'notify', content: 'quite warm' }];
       Simulate.query(test.env, { results: results });
       expect(test.cmp.notifications).toEqual(['quite warm']);
     });
 
-    it('should reset the notifications with each request', function() {
+    it('should reset the notifications with each request', () => {
       results.triggers = [<ITriggerNotify>{ type: 'notify', content: 'quite warm' }];
       Simulate.query(test.env, { results: results });
       expect(test.cmp.notifications).toEqual(['quite warm']);
@@ -51,7 +46,7 @@ export function TriggersTest() {
       expect(test.cmp.notifications).toEqual([]);
     });
 
-    it("should handle multiple 'notify's properly", function() {
+    it("should handle multiple 'notify's properly", () => {
       results.triggers = [
         <ITriggerNotify>{ type: 'notify', content: 'foo' },
         <ITriggerNotify>{ type: 'notify', content: 'bar' },
@@ -61,7 +56,7 @@ export function TriggersTest() {
       expect(test.cmp.notifications).toEqual(['foo', 'bar', '2000']);
     });
 
-    it("should execute an 'execute' trigger", function() {
+    it("should execute an 'execute' trigger", () => {
       var funcSpy = jasmine.createSpy('customFunc');
       test.cmp._window['customFunc'] = funcSpy;
 
@@ -81,7 +76,7 @@ export function TriggersTest() {
       expect(errorSpy).not.toHaveBeenCalled();
     });
 
-    it("should handle an 'execute' trigger when function doesn't exist", function() {
+    it("should handle an 'execute' trigger when function doesn't exist", () => {
       var errSpy = jasmine.createSpy('errSpy');
       test.cmp.logger.error = errSpy;
 
@@ -90,7 +85,7 @@ export function TriggersTest() {
       expect(errSpy.calls.count()).toBe(1);
     });
 
-    it("should handle an 'execute' trigger when function throws exception", function() {
+    it("should handle an 'execute' trigger when function throws exception", () => {
       var errorSpy = jasmine.createSpy('error');
       test.cmp._window['bombFunc'] = params => {
         throw '💣';
@@ -103,13 +98,13 @@ export function TriggersTest() {
       expect(errorSpy.calls.count()).toBe(1);
     });
 
-    it("should handle a 'redirect' trigger properly", function() {
+    it("should handle a 'redirect' trigger properly", () => {
       results.triggers = [<ITriggerRedirect>{ type: 'redirect', content: 'http://www.coveo.com' }];
       Simulate.query(test.env, { results: results });
       expect(test.cmp._window.location.href).toBe('http://www.coveo.com');
     });
 
-    it("should handle a 'query' trigger properly", function() {
+    it("should handle a 'query' trigger properly", () => {
       var qsmSpy = jasmine.createSpy('qsm');
       var qcSpy = jasmine.createSpy('qc');
 
@@ -122,14 +117,14 @@ export function TriggersTest() {
       expect(qcSpy.calls.count()).toBe(1);
     });
 
-    describe('should log a custom analytics event', function() {
+    describe('should log a custom analytics event', () => {
       var analyticsSpy;
-      beforeEach(function() {
+      beforeEach(() => {
         analyticsSpy = jasmine.createSpy('analytics');
         test.cmp.usageAnalytics.logCustomEvent = analyticsSpy;
       });
 
-      it("for a 'redirect' trigger", function() {
+      it("for a 'redirect' trigger", () => {
         results.triggers = [<ITriggerRedirect>{ type: 'redirect', content: 'http://www.coveo.com' }];
         Simulate.query(test.env, { results: results });
         expect(analyticsSpy).toHaveBeenCalledWith(
@@ -141,7 +136,7 @@ export function TriggersTest() {
         );
       });
 
-      it("for an 'execute' trigger", function() {
+      it("for an 'execute' trigger", () => {
         test.cmp._window['doSomething'] = () => null;
         results.triggers = [<ITriggerExecute>{ type: 'execute', content: { name: 'doSomething' } }];
         Simulate.query(test.env, { results: results });
@@ -154,7 +149,7 @@ export function TriggersTest() {
         );
       });
 
-      it("for a 'notify' trigger", function() {
+      it("for a 'notify' trigger", () => {
         results.triggers = [<ITriggerNotify>{ type: 'notify', content: 'hello there' }];
         Simulate.query(test.env, { results: results });
         expect(analyticsSpy).toHaveBeenCalledWith(
@@ -166,7 +161,7 @@ export function TriggersTest() {
         );
       });
 
-      it("for a 'query' trigger", function() {
+      it("for a 'query' trigger", () => {
         results.triggers = [<ITriggerQuery>{ type: 'query', content: '@title=foo' }];
         test.cmp.queryController.executeQuery = arg => {
           arg.beforeExecuteQuery();

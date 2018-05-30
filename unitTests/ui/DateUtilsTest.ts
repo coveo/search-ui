@@ -1,7 +1,6 @@
-import { DateUtils } from '../../src/utils/DateUtils';
-import { IDateToStringOptions } from '../../src/utils/DateUtils';
 import * as moment from 'moment';
 import { l } from '../../src/strings/Strings';
+import { DateUtils, IDateToStringOptions } from '../../src/utils/DateUtils';
 
 export function DateUtilsTest() {
   describe('DateUtils', () => {

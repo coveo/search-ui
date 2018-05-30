@@ -1,8 +1,7 @@
 import { ExecutionReport, IExecutionReport } from '../../../src/ui/RelevanceInspector/ExecutionReport';
 import { IComponentBindings } from '../../../src/ui/Base/ComponentBindings';
 import { IQueryResults } from '../../../src/rest/QueryResults';
-import { MockEnvironmentBuilder } from '../../MockEnvironment';
-import { FakeResults } from '../../Fake';
+import { MockEnvironmentBuilder, FakeResults } from '../../../testsFramework/TestsFramework';
 
 export function ExecutionReportTest() {
   describe('ExecutionReport', () => {

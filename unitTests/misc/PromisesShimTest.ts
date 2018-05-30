@@ -1,4 +1,4 @@
-import { Simulate } from '../Simulate';
+import { Simulate } from '../../testsFramework/TestsFramework';
 
 export function PromisesShimTest() {
   describe('PromisesShim', function() {

@@ -1,11 +1,9 @@
-import * as Mock from '../MockEnvironment';
-import { FieldTable } from '../../src/ui/FieldTable/FieldTable';
+import { FieldTable, IFieldTableOptions } from '../../src/ui/FieldTable/FieldTable';
 import { $$ } from '../../src/utils/Dom';
-import { FakeResults } from '../Fake';
-import { IFieldTableOptions } from '../../src/ui/FieldTable/FieldTable';
+import { FakeResults, Mock } from '../../testsFramework/TestsFramework';
 
 export function FieldTableTest() {
-  describe('FieldTable', function() {
+  describe('FieldTable', () => {
     let test: Mock.IBasicComponentSetup<FieldTable>;
     let element: HTMLElement;
 
@@ -14,20 +12,20 @@ export function FieldTableTest() {
       element.appendChild($$('tr', { 'data-field': '@author', 'data-caption': 'Author' }).el);
     };
 
-    beforeEach(function() {
+    beforeEach(() => {
       test = Mock.advancedResultComponentSetup<FieldTable>(FieldTable, FakeResults.createFakeResult(), <Mock.AdvancedComponentSetupOptions>{
         element: element
       });
     });
 
-    afterEach(function() {
+    afterEach(() => {
       test = null;
       element = null;
     });
 
-    describe('exposes options', function() {
-      describe('allowMinimization set to false', function() {
-        beforeEach(function() {
+    describe('exposes options', () => {
+      describe('allowMinimization set to false', () => {
+        beforeEach(() => {
           test = Mock.optionsResultComponentSetup<FieldTable, IFieldTableOptions>(
             FieldTable,
             <IFieldTableOptions>{
@@ -37,19 +35,19 @@ export function FieldTableTest() {
           );
         });
 
-        it('should not show a toggle link', function() {
+        it('should not show a toggle link', () => {
           expect($$(test.env.element).find('.coveo-field-table-toggle')).toBeNull();
         });
 
-        it('should not wrap table in a toggle container', function() {
+        it('should not wrap table in a toggle container', () => {
           expect($$(test.env.element).find('.coveo-field-table-toggle-container')).toBeNull();
         });
 
-        it('should be expanded', function() {
+        it('should be expanded', () => {
           expect(test.cmp.isExpanded).toBe(true);
         });
 
-        it('should disable toggling, expanding and minimizing', function() {
+        it('should disable toggling, expanding and minimizing', () => {
           test.cmp.toggle();
           expect(test.cmp.isExpanded).toBe(true);
           test.cmp.minimize();
@@ -59,8 +57,8 @@ export function FieldTableTest() {
         });
       });
 
-      describe('allowMinimization set to true', function() {
-        beforeEach(function() {
+      describe('allowMinimization set to true', () => {
+        beforeEach(() => {
           createElement();
           test = Mock.advancedResultComponentSetup<FieldTable>(
             FieldTable,
@@ -74,11 +72,11 @@ export function FieldTableTest() {
           );
         });
 
-        it('should show a toggle link', function() {
+        it('should show a toggle link', () => {
           expect($$(test.env.root).find('.coveo-field-table-toggle')).not.toBeNull();
         });
 
-        it('should put the tabindex to 0 on the toggle caption', function() {
+        it('should put the tabindex to 0 on the toggle caption', () => {
           expect(
             $$(test.env.root)
               .find('.coveo-field-table-toggle-caption')
@@ -86,11 +84,11 @@ export function FieldTableTest() {
           ).toBe('0');
         });
 
-        it('should wrap the table in a toggle container', function() {
+        it('should wrap the table in a toggle container', () => {
           expect($$(test.env.element.parentElement).hasClass('coveo-field-table-toggle-container')).toBe(true);
         });
 
-        it('expandedTitle should be the text of the toggle link only when table is expanded', function() {
+        it('expandedTitle should be the text of the toggle link only when table is expanded', () => {
           createElement();
           test = Mock.advancedResultComponentSetup<FieldTable>(
             FieldTable,
@@ -109,13 +107,13 @@ export function FieldTableTest() {
           expect(toggle.textContent).not.toBe('foobar2000');
         });
 
-        it('expandedTitle should be the localized version of "Details" by default', function() {
+        it('expandedTitle should be the localized version of "Details" by default', () => {
           test.cmp.expand();
           let toggle = $$(test.env.root).find('.coveo-field-table-toggle-caption');
           expect(toggle.textContent).toBe('Details'.toLocaleString());
         });
 
-        it('minimizedTitle should be the text of the toggle link only when table is minimized', function() {
+        it('minimizedTitle should be the text of the toggle link only when table is minimized', () => {
           createElement();
           test = Mock.advancedResultComponentSetup<FieldTable>(
             FieldTable,
@@ -134,13 +132,13 @@ export function FieldTableTest() {
           expect(toggle.textContent).not.toBe('foobar2000');
         });
 
-        it('minimizedTitle should be the localized version of "Details" by default', function() {
+        it('minimizedTitle should be the localized version of "Details" by default', () => {
           test.cmp.minimize();
           let toggle = $$(test.env.root).find('.coveo-field-table-toggle-caption');
           expect(toggle.textContent).toBe('Details'.toLocaleString());
         });
 
-        it('minimizedByDefault set to true should initialize the table in a minimized state', function() {
+        it('minimizedByDefault set to true should initialize the table in a minimized state', () => {
           test = Mock.optionsResultComponentSetup<FieldTable, IFieldTableOptions>(
             FieldTable,
             <IFieldTableOptions>{
@@ -151,7 +149,7 @@ export function FieldTableTest() {
           expect(test.cmp.isExpanded).toBe(false);
         });
 
-        it('minimizedByDefault set to false should initialize the table in an expanded state', function() {
+        it('minimizedByDefault set to false should initialize the table in an expanded state', () => {
           test = Mock.optionsResultComponentSetup<FieldTable, IFieldTableOptions>(
             FieldTable,
             <IFieldTableOptions>{
@@ -164,7 +162,7 @@ export function FieldTableTest() {
       });
     });
 
-    it('toggle should toggle between expanded and minimized states', function() {
+    it('toggle should toggle between expanded and minimized states', () => {
       test.cmp.minimize();
       test.cmp.toggle();
       expect(test.cmp.isExpanded).toBe(true);

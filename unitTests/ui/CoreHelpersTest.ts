@@ -1,12 +1,11 @@
-import { TemplateHelpers } from '../../src/ui/Templates/TemplateHelpers';
 import { IHighlight } from '../../src/rest/Highlight';
+import { IQueryResult } from '../../src/rest/QueryResult';
+import { SearchEndpoint } from '../../src/rest/SearchEndpoint';
+import { IIconOptions } from '../../src/ui/Icon/Icon';
+import { TemplateHelpers } from '../../src/ui/Templates/TemplateHelpers';
 import { IDateToStringOptions } from '../../src/utils/DateUtils';
 import { ITimeSpanUtilsOptions } from '../../src/utils/TimeSpanUtils';
-import { FakeResults } from '../Fake';
-import { SearchEndpoint } from '../../src/rest/SearchEndpoint';
-import { mockSearchEndpoint, MockEnvironmentBuilder } from '../MockEnvironment';
-import { IQueryResult } from '../../src/rest/QueryResult';
-import { IIconOptions } from '../../src/ui/Icon/Icon';
+import { FakeResults, MockEnvironmentBuilder, mockSearchEndpoint } from '../../testsFramework/TestsFramework';
 
 export function CoreHelperTest() {
   describe('CoreHelpers', () => {

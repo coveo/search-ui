@@ -24,6 +24,10 @@ var configuration = {
       watched: false
     },
     {
+      pattern: './node_modules/axe-core/axe.js',
+      watched: false
+    },
+    {
       pattern: './bin/js/CoveoJsSearch.js',
       watched: true
     },

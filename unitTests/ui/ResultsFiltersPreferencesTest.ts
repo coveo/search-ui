@@ -1,9 +1,8 @@
-import * as Mock from '../MockEnvironment';
+import { BreadcrumbEvents, IBreadcrumbItem } from '../../src/events/BreadcrumbEvents';
+import { PreferencesPanel } from '../../src/ui/PreferencesPanel/PreferencesPanel';
 import { ResultsFiltersPreferences } from '../../src/ui/ResultsFiltersPreferences/ResultsFiltersPreferences';
 import { $$ } from '../../src/utils/Dom';
-import { PreferencesPanel } from '../../src/ui/PreferencesPanel/PreferencesPanel';
-import { Simulate } from '../Simulate';
-import { BreadcrumbEvents, IBreadcrumbItem } from '../../src/events/BreadcrumbEvents';
+import { Mock, Simulate } from '../../testsFramework/TestsFramework';
 
 export function ResultsFiltersPreferencesTest() {
   describe('ResultsFiltersPreferences', () => {

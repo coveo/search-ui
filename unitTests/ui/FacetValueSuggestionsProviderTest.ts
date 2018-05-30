@@ -1,8 +1,8 @@
-import { FacetValueSuggestionsProvider } from '../../src/ui/FacetValueSuggestions/FacetValueSuggestionsProvider';
-import * as Mock from '../MockEnvironment';
-import { IFieldOption } from '../../src/ui/Base/ComponentOptions';
 import { IIndexFieldValue } from '../../src/rest/FieldValue';
 import { IListFieldValuesRequest } from '../../src/rest/ListFieldValuesRequest';
+import { IFieldOption } from '../../src/ui/Base/ComponentOptions';
+import { FacetValueSuggestionsProvider } from '../../src/ui/FacetValueSuggestions/FacetValueSuggestionsProvider';
+import { Mock } from '../../testsFramework/TestsFramework';
 
 export function FacetValueSuggestionsProviderTest() {
   describe('FacetValueSuggestionsProvider', () => {

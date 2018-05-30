@@ -1,5 +1,5 @@
-import { QuickviewDocumentIframe } from '../../src/ui/Quickview/QuickviewDocumentIframe';
 import { AjaxError } from '../../src/rest/AjaxError';
+import { QuickviewDocumentIframe } from '../../src/ui/Quickview/QuickviewDocumentIframe';
 import { $$ } from '../../src/utils/Dom';
 import { l } from '../Test';
 

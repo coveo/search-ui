@@ -1,8 +1,5 @@
-/// <reference path="../../lib/jasmine/index.d.ts" />
-import { registerCustomMatcher } from '../CustomMatchers';
-import { Dom } from '../../src/utils/Dom';
-import { $$ } from '../../src/utils/Dom';
-import { Simulate } from '../Simulate';
+import { $$, Dom } from '../../src/utils/Dom';
+import { Simulate, registerCustomMatcher } from '../../testsFramework/TestsFramework';
 
 interface IJQuery {
   Event: any;

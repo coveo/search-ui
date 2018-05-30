@@ -1,11 +1,8 @@
-import * as Mock from '../MockEnvironment';
-import { QuerySummary } from '../../src/ui/QuerySummary/QuerySummary';
-import { FakeResults } from '../Fake';
-import { Simulate } from '../Simulate';
-import { $$ } from '../../src/utils/Dom';
-import { IQuerySummaryOptions } from '../../src/ui/QuerySummary/QuerySummary';
 import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
+import { IQuerySummaryOptions, QuerySummary } from '../../src/ui/QuerySummary/QuerySummary';
 import { ResultList } from '../../src/ui/ResultList/ResultList';
+import { $$ } from '../../src/utils/Dom';
+import { FakeResults, Mock, Simulate } from '../../testsFramework/TestsFramework';
 
 export function QuerySummaryTest() {
   describe('QuerySummary', () => {

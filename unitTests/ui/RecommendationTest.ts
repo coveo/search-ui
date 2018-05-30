@@ -1,15 +1,11 @@
-/// <reference path="../../lib/jasmine/index.d.ts" />
-import * as Mock from '../MockEnvironment';
-import { SearchInterface } from '../../src/ui/SearchInterface/SearchInterface';
-import { Recommendation } from '../../src/ui/Recommendation/Recommendation';
-import { IRecommendationOptions } from '../../src/ui/Recommendation/Recommendation';
-import { Simulate } from '../Simulate';
-import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
-import { FakeResults } from '../Fake';
-import _ = require('underscore');
+import { extend } from 'underscore';
 import { Model } from '../../src/models/Model';
 import { QUERY_STATE_ATTRIBUTES } from '../../src/models/QueryStateModel';
+import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
+import { IRecommendationOptions, Recommendation } from '../../src/ui/Recommendation/Recommendation';
+import { SearchInterface } from '../../src/ui/SearchInterface/SearchInterface';
 import { $$ } from '../../src/utils/Dom';
+import { FakeResults, Mock, Simulate } from '../../testsFramework/TestsFramework';
 
 export function RecommendationTest() {
   describe('Recommendation', () => {
@@ -132,7 +128,7 @@ export function RecommendationTest() {
       });
 
       it('should only copy the optionsToUse', () => {
-        _.extend(options, { optionsToUse: ['expression'] });
+        extend(options, { optionsToUse: ['expression'] });
         test = Mock.optionsSearchInterfaceSetup<Recommendation, IRecommendationOptions>(Recommendation, options);
 
         let queryBuilder: QueryBuilder = new QueryBuilder();

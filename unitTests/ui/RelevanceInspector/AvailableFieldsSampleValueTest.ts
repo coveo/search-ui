@@ -1,8 +1,7 @@
-import { AvailableFieldsSampleValue } from '../../../src/ui/RelevanceInspector/AvailableFieldsTable';
-import { MockEnvironmentBuilder, IMockEnvironment } from '../../MockEnvironment';
-import { $$, Dom } from '../../Test';
 import { IFieldDescription } from '../../../src/rest/FieldDescription';
-import { FakeResults } from '../../Fake';
+import { AvailableFieldsSampleValue } from '../../../src/ui/RelevanceInspector/AvailableFieldsTable';
+import { FakeResults, IMockEnvironment, MockEnvironmentBuilder } from '../../../testsFramework/TestsFramework';
+import { $$, Dom } from '../../Test';
 
 export function AvailableFieldsSampleValueTest() {
   describe('AvailableFieldsSampleValue', () => {

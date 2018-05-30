@@ -1,6 +1,6 @@
-import * as Mock from '../MockEnvironment';
 import { ResultActionsMenu } from '../../src/ui/ResultActions/ResultActionsMenu';
 import { $$ } from '../../src/utils/Dom';
+import { Mock } from '../../testsFramework/TestsFramework';
 
 export function ResultActionsMenuTest() {
   describe('ResultActionsMenu', () => {

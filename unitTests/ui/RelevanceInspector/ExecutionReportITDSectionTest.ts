@@ -1,12 +1,12 @@
+import { isArray } from 'util';
+import { StreamHighlightUtils } from '../../../src/Core';
 import { EXECUTION_REPORT_SECTION, IExecutionReport, IExecutionReportSection } from '../../../src/ui/RelevanceInspector/ExecutionReport';
 import {
   ExecutionReportITDSection,
-  IRefinedQueriesFromTopClicks,
-  IExecutionReportITDSection
+  IExecutionReportITDSection,
+  IRefinedQueriesFromTopClicks
 } from '../../../src/ui/RelevanceInspector/ExecutionReportITDSection';
 import { Dom } from '../../../src/utils/Dom';
-import { StreamHighlightUtils } from '../../../src/Core';
-import { isArray } from 'util';
 
 export function ExecutionReportITDSectionTest() {
   describe('ExecutionReportITDSection', () => {

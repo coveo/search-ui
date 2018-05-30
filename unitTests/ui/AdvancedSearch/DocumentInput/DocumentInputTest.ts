@@ -1,8 +1,8 @@
 import { DocumentInput } from '../../../../src/ui/AdvancedSearch/DocumentInput/DocumentInput';
-import { QueryBuilder } from '../../../../src/ui/Base/QueryBuilder';
 import { ExpressionBuilder } from '../../../../src/ui/Base/ExpressionBuilder';
-import * as Mock from '../../../MockEnvironment';
+import { QueryBuilder } from '../../../../src/ui/Base/QueryBuilder';
 import { $$ } from '../../../../src/utils/Dom';
+import { Mock } from '../../../../testsFramework/TestsFramework';
 
 export function DocumentInputTest() {
   describe('DocumentInput', () => {

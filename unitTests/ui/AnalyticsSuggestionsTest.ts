@@ -1,10 +1,8 @@
-import * as Mock from '../MockEnvironment';
-import { AnalyticsSuggestions } from '../../src/ui/AnalyticsSuggestions/AnalyticsSuggestions';
-import { Simulate } from '../Simulate';
-import { $$ } from '../../src/utils/Dom';
+import { range } from 'underscore';
 import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
-import { IAnalyticsSuggestionsOptions } from '../../src/ui/AnalyticsSuggestions/AnalyticsSuggestions';
-import _ = require('underscore');
+import { AnalyticsSuggestions, IAnalyticsSuggestionsOptions } from '../../src/ui/AnalyticsSuggestions/AnalyticsSuggestions';
+import { $$ } from '../../src/utils/Dom';
+import { Mock, Simulate } from '../../testsFramework/TestsFramework';
 
 export function AnalyticsSuggestionsTest() {
   describe('AnalyticsSuggestions', () => {
@@ -174,7 +172,7 @@ export function AnalyticsSuggestionsTest() {
       );
       var simulation = Simulate.omnibox(test.env, {
         completeQueryExpression: {
-          word: _.range(0, 500).join(''),
+          word: range(0, 500).join(''),
           regex: /t;/
         }
       });
@@ -198,7 +196,7 @@ export function AnalyticsSuggestionsTest() {
         );
         let simulation = Simulate.omnibox(test.env, {
           completeQueryExpression: {
-            word: _.range(0, 500).join(''),
+            word: range(0, 500).join(''),
             regex: /t;/
           }
         });

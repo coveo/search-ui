@@ -1,10 +1,9 @@
-import { DomUtils } from '../../src/utils/DomUtils';
-import { FakeResults } from '../Fake';
-import { MockEnvironmentBuilder } from '../MockEnvironment';
-import { load, get } from '../Test';
 import { IQueryResult } from '../../src/rest/QueryResult';
 import { LazyInitialization } from '../../src/ui/Base/Initialization';
 import { $$ } from '../../src/utils/Dom';
+import { DomUtils } from '../../src/utils/DomUtils';
+import { FakeResults, MockEnvironmentBuilder } from '../../testsFramework/TestsFramework';
+import { get, load } from '../Test';
 
 declare const Coveo;
 

@@ -28,7 +28,11 @@ gulp.task('setupTests', function() {
 
 gulp.task('coverage', ['lcovCoverage']);
 
+<<<<<<< HEAD
 gulp.task('unitTests', ['setupTests', 'buildUnitTests'], function(done) {
+=======
+gulp.task('test', ['setupTests', 'buildUnitTest'], function(done) {
+>>>>>>> d56a382db3ab9c381b57020ac96c3819f70a3794
   new TestServer(
     {
       configFile: path.resolve('./karma.unit.test.conf.js')
@@ -44,6 +48,7 @@ gulp.task('unitTests', ['setupTests', 'buildUnitTests'], function(done) {
   ).start();
 });
 
+<<<<<<< HEAD
 gulp.task('accessibilityTests', ['setupTests', 'buildAccessibilityTests'], done => {
   new TestServer(
     {
@@ -66,6 +71,11 @@ gulp.task(
   'buildAccessibilityTests',
   shell.task(['node node_modules/webpack/bin/webpack.js --config webpack.accessibility.test.config.js'])
 );
+=======
+gulp.task('buildUnitTest', shell.task(['node node_modules/webpack/bin/webpack.js --config webpack.unit.test.config.js']));
+
+gulp.task('buildAccessibilityTest', shell.task(['node node_modules/webpack/bin/webpack.js --config webpack.accessibility.test.config.js']));
+>>>>>>> d56a382db3ab9c381b57020ac96c3819f70a3794
 
 gulp.task('uploadCoverage', ['lcovCoverage'], shell.task(['cat bin/coverage/lcov.info | ./node_modules/.bin/coveralls']));
 

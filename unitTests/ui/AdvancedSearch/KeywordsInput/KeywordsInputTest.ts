@@ -1,8 +1,8 @@
 import { KeywordsInput } from '../../../../src/ui/AdvancedSearch/KeywordsInput/KeywordsInput';
-import { QueryBuilder } from '../../../../src/ui/Base/QueryBuilder';
 import { ExpressionBuilder } from '../../../../src/ui/Base/ExpressionBuilder';
+import { QueryBuilder } from '../../../../src/ui/Base/QueryBuilder';
 import { $$ } from '../../../../src/utils/Dom';
-import * as Mock from '../../../MockEnvironment';
+import { Mock } from '../../../../testsFramework/TestsFramework';
 
 export function KeywordsInputTest() {
   describe('KeywordsInput', () => {

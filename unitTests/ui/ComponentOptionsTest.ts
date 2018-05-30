@@ -1,8 +1,7 @@
-import { ComponentOptions } from '../../src/ui/Base/ComponentOptions';
-import { ComponentOptionsType, IComponentOptions } from '../../src/ui/Base/ComponentOptions';
-import { Dom } from '../../src/utils/Dom';
-import { TemplateCache } from '../../src/ui/Templates/TemplateCache';
+import { ComponentOptions, ComponentOptionsType, IComponentOptions } from '../../src/ui/Base/ComponentOptions';
 import { TemplateComponentOptions } from '../../src/ui/Base/TemplateComponentOptions';
+import { TemplateCache } from '../../src/ui/Templates/TemplateCache';
+import { Dom } from '../../src/utils/Dom';
 
 export function ComponentOptionsTest() {
   describe('ComponentOptions', () => {

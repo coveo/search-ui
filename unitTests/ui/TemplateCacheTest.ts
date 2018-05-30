@@ -1,5 +1,6 @@
-import { TemplateCache } from '../../src/ui/Templates/TemplateCache';
 import { Template } from '../../src/ui/Templates/Template';
+import { TemplateCache } from '../../src/ui/Templates/TemplateCache';
+
 export function TemplateCacheTest() {
   describe('TemplateCache', () => {
     it('should allow to register a default template', () => {

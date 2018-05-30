@@ -1,15 +1,14 @@
-import { ResponsiveRecommendation } from '../../../src/ui/ResponsiveComponents/ResponsiveRecommendation';
+import { QueryEvents } from '../../../src/events/QueryEvents';
 import { Component } from '../../../src/ui/Base/Component';
 import { Recommendation } from '../../../src/ui/Recommendation/Recommendation';
+import { ResponsiveComponentsManager } from '../../../src/ui/ResponsiveComponents/ResponsiveComponentsManager';
 import { ResponsiveComponentsUtils } from '../../../src/ui/ResponsiveComponents/ResponsiveComponentsUtils';
 import { ResponsiveDropdown } from '../../../src/ui/ResponsiveComponents/ResponsiveDropdown/ResponsiveDropdown';
-import { ResponsiveDropdownHeader } from '../../../src/ui/ResponsiveComponents/ResponsiveDropdown/ResponsiveDropdownHeader';
 import { ResponsiveDropdownContent } from '../../../src/ui/ResponsiveComponents/ResponsiveDropdown/ResponsiveDropdownContent';
-import { ResponsiveComponentsManager } from '../../../src/ui/ResponsiveComponents/ResponsiveComponentsManager';
+import { ResponsiveDropdownHeader } from '../../../src/ui/ResponsiveComponents/ResponsiveDropdown/ResponsiveDropdownHeader';
+import { ResponsiveRecommendation } from '../../../src/ui/ResponsiveComponents/ResponsiveRecommendation';
 import { $$, Dom } from '../../../src/utils/Dom';
-import { QueryEvents } from '../../../src/events/QueryEvents';
-import { mockComponent } from '../../MockEnvironment';
-import { FakeResults } from '../../Fake';
+import { FakeResults, mockComponent } from '../../../testsFramework/TestsFramework';
 
 export function ResponsiveRecommendationTest() {
   describe('ResponsiveRecommendation', () => {

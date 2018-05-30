@@ -1,12 +1,11 @@
-import { Omnibox, MagicBox } from '../../src/ui/Omnibox/Omnibox';
-import * as Mock from '../MockEnvironment';
-import { QuerySuggestAddon } from '../../src/ui/Omnibox/QuerySuggestAddon';
-import { SearchEndpoint } from '../../src/rest/SearchEndpoint';
-import { ComponentOptionsModel } from '../../src/models/ComponentOptionsModel';
-import { SearchInterface } from '../../src/ui/SearchInterface/SearchInterface';
 import { QueryController } from '../../src/controllers/QueryController';
+import { ComponentOptionsModel } from '../../src/models/ComponentOptionsModel';
+import { SearchEndpoint } from '../../src/rest/SearchEndpoint';
 import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
-import { Simulate } from '../Simulate';
+import { MagicBox, Omnibox } from '../../src/ui/Omnibox/Omnibox';
+import { QuerySuggestAddon } from '../../src/ui/Omnibox/QuerySuggestAddon';
+import { SearchInterface } from '../../src/ui/SearchInterface/SearchInterface';
+import { Mock, Simulate } from '../../testsFramework/TestsFramework';
 
 export function QuerySuggestAddonTest() {
   describe('QuerySuggest', () => {

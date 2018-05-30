@@ -1,16 +1,15 @@
-import * as Mock from '../MockEnvironment';
-import { ResultsPreferences } from '../../src/ui/ResultsPreferences/ResultsPreferences';
-import { Dom } from '../../src/utils/Dom';
-import { $$ } from '../../src/utils/Dom';
-import { Component } from '../../src/ui/Base/Component';
-import { PreferencesPanel } from '../../src/ui/PreferencesPanel/PreferencesPanel';
-import { l } from '../../src/strings/Strings';
 import { PreferencesPanelEvents } from '../../src/events/PreferencesPanelEvents';
 import { Defer } from '../../src/misc/Defer';
+import { l } from '../../src/strings/Strings';
 import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
+import { Component } from '../../src/ui/Base/Component';
+import { PreferencesPanel } from '../../src/ui/PreferencesPanel/PreferencesPanel';
+import { ResultsPreferences } from '../../src/ui/ResultsPreferences/ResultsPreferences';
+import { $$, Dom } from '../../src/utils/Dom';
+import { Mock } from '../../testsFramework/TestsFramework';
 
 export function ResultsPreferencesTest() {
-  describe('ResultsPreferences', function() {
+  describe('ResultsPreferences', () => {
     let test: Mock.IBasicComponentSetup<ResultsPreferences>;
     let element: Dom;
 

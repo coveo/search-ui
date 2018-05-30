@@ -1,22 +1,21 @@
-import * as Mock from '../MockEnvironment';
-import { Omnibox } from '../../src/ui/Omnibox/Omnibox';
-import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
-import { IOmniboxOptions, IOmniboxSuggestion } from '../../src/ui/Omnibox/Omnibox';
-import { Simulate } from '../Simulate';
-import { $$ } from '../../src/utils/Dom';
-import { l } from '../../src/strings/Strings';
 import { InitializationEvents } from '../../src/events/InitializationEvents';
-import Suggestion = Coveo.MagicBox.Suggestion;
 import { IFieldDescription } from '../../src/rest/FieldDescription';
+import { l } from '../../src/strings/Strings';
+import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
+import { IOmniboxOptions, IOmniboxSuggestion, Omnibox } from '../../src/ui/Omnibox/Omnibox';
+import { $$ } from '../../src/utils/Dom';
+import { Mock, Simulate } from '../../testsFramework/TestsFramework';
+import Suggestion = Coveo.MagicBox.Suggestion;
 
 export function OmniboxTest() {
   describe('Omnibox', () => {
-    var test: Mock.IBasicComponentSetup<Omnibox>;
+    let test: Mock.IBasicComponentSetup<Omnibox>;
     beforeEach(() => {
       // Thanks phantom js for bad native event support
       if (Simulate.isPhantomJs()) {
         Simulate.addJQuery();
       }
+
       test = Mock.basicComponentSetup<Omnibox>(Omnibox);
       $$(test.env.root).trigger(InitializationEvents.afterComponentsInitialization);
     });
