@@ -257,6 +257,8 @@ export class Querybox extends Component {
     this.options = ComponentOptions.initComponentOptions(element, Querybox, options);
     this.options = _.extend({}, this.options, this.componentOptionsModel.get(ComponentOptionsModel.attributesEnum.searchBox));
 
+    $$(this.element).toggleClass('coveo-query-syntax-disabled', this.options.enableQuerySyntax == false);
+
     this.magicBox = MagicBox.create(
       element,
       new MagicBox.Grammar('Query', {
