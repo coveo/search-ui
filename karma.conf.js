@@ -16,7 +16,7 @@ var configuration = {
       watched: false
     },
     {
-      pattern: './test/lib/jasmine-ajax/jasmine-ajax.js',
+      pattern: './testsFramework/lib/jasmine-ajax/jasmine-ajax.js',
       watched: false
     },
     {
@@ -24,17 +24,21 @@ var configuration = {
       watched: false
     },
     {
+      pattern: './node_modules/axe-core/axe.js',
+      watched: false
+    },
+    {
       pattern: './bin/js/CoveoJsSearch.js',
       watched: true
     },
     {
-      pattern: './bin/tests/tests.js',
+      pattern: './bin/tests/unitTests.js',
       watched: true
     }
   ],
   plugins: ['karma-jasmine', 'karma-chrome-launcher', 'karma-coverage', 'karma-spec-reporter'],
   preprocessors: {
-    './bin/tests/tests.js': 'coverage'
+    './bin/tests/unitTests.js': 'coverage'
   },
   reporters: ['coverage', 'spec'],
   coverageReporter: {
