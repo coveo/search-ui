@@ -1,8 +1,10 @@
-import { l } from '../../src/strings/Strings';
-import { ChatterPostAttachment, IChatterPostAttachmentOption } from '../../src/ui/ChatterPostAttachment/ChatterPostAttachment';
+import * as Mock from '../MockEnvironment';
+import { ChatterPostAttachment } from '../../src/ui/ChatterPostAttachment/ChatterPostAttachment';
+import { FakeResults } from '../Fake';
+import { IChatterPostAttachmentOption } from '../../src/ui/ChatterPostAttachment/ChatterPostAttachment';
 import { ChatterUtils } from '../../src/utils/ChatterUtils';
 import { $$ } from '../../src/utils/Dom';
-import { FakeResults, Mock } from '../../testsFramework/TestsFramework';
+import { l } from '../../src/strings/Strings';
 
 export function ChatterPostAttachmentTest() {
   describe('ChatterPostAttachment', () => {
@@ -12,7 +14,7 @@ export function ChatterPostAttachmentTest() {
       let result = FakeResults.createFakeFeedItemResult('token', 0, 0, true);
       test = Mock.optionsResultComponentSetup<ChatterPostAttachment, IChatterPostAttachmentOption>(
         ChatterPostAttachment,
-        {} as IChatterPostAttachmentOption,
+        <IChatterPostAttachmentOption>{},
         result
       );
       expect($$($$(test.cmp.element).find('a')).text()).toContain(result.raw.sfcontentfilename);

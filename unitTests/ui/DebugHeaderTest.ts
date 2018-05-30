@@ -1,10 +1,10 @@
+import { DebugHeader } from '../../src/ui/Debug/DebugHeader';
+import { IMockEnvironment, MockEnvironmentBuilder } from '../MockEnvironment';
+import { Dom, $$ } from '../../src/utils/Dom';
+import { Simulate } from '../Simulate';
 import { InitializationEvents } from '../../src/events/InitializationEvents';
 import { ResultListEvents } from '../../src/events/ResultListEvents';
 import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
-import { DebugHeader } from '../../src/ui/Debug/DebugHeader';
-import { $$, Dom } from '../../src/utils/Dom';
-import { IMockEnvironment, MockEnvironmentBuilder, Simulate } from '../../testsFramework/TestsFramework';
-
 export function DebugHeaderTest() {
   describe('DebugHeader', () => {
     let env: IMockEnvironment;

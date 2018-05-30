@@ -1,16 +1,19 @@
-import { Defer } from '../../src/misc/Defer';
+import * as Mock from '../MockEnvironment';
+import { Thumbnail } from '../../src/ui/Thumbnail/Thumbnail';
 import { SearchEndpoint } from '../../src/rest/SearchEndpoint';
-import { Component } from '../../src/ui/Base/Component';
-import { get } from '../../src/ui/Base/RegisteredNamedMethods';
-import { FieldTable } from '../../src/ui/FieldTable/FieldTable';
-import { Icon } from '../../src/ui/Icon/Icon';
-import { ResultLink } from '../../src/ui/ResultLink/ResultLink';
-import { IThumbnailOptions, Thumbnail } from '../../src/ui/Thumbnail/Thumbnail';
+import { IThumbnailOptions } from '../../src/ui/Thumbnail/Thumbnail';
 import { $$ } from '../../src/utils/Dom';
-import { FakeResults, Mock, MockEnvironmentBuilder } from '../../testsFramework/TestsFramework';
+import { FieldTable } from '../../src/ui/FieldTable/FieldTable';
+import { get } from '../../src/ui/Base/RegisteredNamedMethods';
+import { ResultLink } from '../../src/ui/ResultLink/ResultLink';
+import { Component } from '../../src/ui/Base/Component';
+import { MockEnvironmentBuilder } from '../MockEnvironment';
+import { Defer } from '../../src/misc/Defer';
+import { Icon } from '../../src/ui/Icon/Icon';
+import { FakeResults } from '../Fake';
 
 export function ThumbnailTest() {
-  describe('Thumbnail', () => {
+  describe('Thumbnail', function() {
     let test: Mock.IBasicComponentSetup<Thumbnail>;
     let endpoint: SearchEndpoint;
     let getRawDataStreamPromise: Promise<ArrayBuffer>;
@@ -29,7 +32,7 @@ export function ThumbnailTest() {
     });
 
     describe('without JSONP', () => {
-      beforeEach(() => {
+      beforeEach(function() {
         endpoint.isJsonp = () => false;
         endpoint.getRawDataStream = () => new Promise<ArrayBuffer>((resolve, reject) => resolve(new ArrayBuffer(0)));
         test = Mock.advancedResultComponentSetup<Thumbnail>(Thumbnail, undefined, <Mock.AdvancedComponentSetupOptions>{
@@ -42,7 +45,7 @@ export function ThumbnailTest() {
       });
 
       it('should use async call by default', done => {
-        setTimeout(() => {
+        setTimeout(function() {
           expect(test.cmp.element.getAttribute('src')).toBe('data:image/png;base64, ');
           done();
         }, 0);
@@ -54,7 +57,7 @@ export function ThumbnailTest() {
         fakeFieldTable.cmp.updateToggleHeight = spyResize;
         fakeFieldTable.cmp.element.appendChild(test.cmp.element);
 
-        setTimeout(() => {
+        setTimeout(function() {
           expect(spyResize).toHaveBeenCalled();
           done();
         }, 0);
@@ -62,7 +65,7 @@ export function ThumbnailTest() {
     });
 
     describe('with JSONP', () => {
-      beforeEach(() => {
+      beforeEach(function() {
         endpoint.isJsonp = () => true;
         test = Mock.advancedResultComponentSetup<Thumbnail>(Thumbnail, undefined, <Mock.AdvancedComponentSetupOptions>{
           modifyBuilder: (builder: Mock.MockEnvironmentBuilder) =>

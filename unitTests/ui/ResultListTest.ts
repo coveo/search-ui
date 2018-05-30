@@ -1,15 +1,20 @@
-import { ResultLayoutEvents } from '../../src/events/ResultLayoutEvents';
-import { ResultListEvents } from '../../src/events/ResultListEvents';
-import { Defer } from '../../src/misc/Defer';
-import { IQueryResults } from '../../src/rest/QueryResults';
-import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
-import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
-import { ResultLayoutSelector } from '../../src/ui/ResultLayoutSelector/ResultLayoutSelector';
-import { IResultListOptions, ResultList } from '../../src/ui/ResultList/ResultList';
-import { TemplateList } from '../../src/ui/Templates/TemplateList';
-import { UnderscoreTemplate } from '../../src/ui/Templates/UnderscoreTemplate';
+import * as Mock from '../MockEnvironment';
+import { ResultList } from '../../src/ui/ResultList/ResultList';
+import { registerCustomMatcher } from '../CustomMatchers';
+import { FakeResults } from '../Fake';
+import { Simulate } from '../Simulate';
 import { $$ } from '../../src/utils/Dom';
-import { AdvancedComponentSetupOptions, FakeResults, Mock, Simulate, registerCustomMatcher } from '../../testsFramework/TestsFramework';
+import { ResultListEvents } from '../../src/events/ResultListEvents';
+import { IResultListOptions } from '../../src/ui/ResultList/ResultList';
+import { UnderscoreTemplate } from '../../src/ui/Templates/UnderscoreTemplate';
+import { ResultLayoutEvents } from '../../src/events/ResultLayoutEvents';
+import { AdvancedComponentSetupOptions } from '../MockEnvironment';
+import { TemplateList } from '../../src/ui/Templates/TemplateList';
+import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
+import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
+import { IQueryResults } from '../../src/rest/QueryResults';
+import { Defer } from '../../src/misc/Defer';
+import { ResultLayoutSelector } from '../../src/ui/ResultLayoutSelector/ResultLayoutSelector';
 
 export function ResultListTest() {
   describe('ResultList', () => {

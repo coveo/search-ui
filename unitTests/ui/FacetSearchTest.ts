@@ -1,17 +1,19 @@
-import { FacetQueryController } from '../../src/controllers/FacetQueryController';
-import { IIndexFieldValue } from '../../src/rest/FieldValue';
+import * as Mock from '../MockEnvironment';
 import { Facet } from '../../src/ui/Facet/Facet';
 import { FacetSearch } from '../../src/ui/Facet/FacetSearch';
-import { FacetSearchParameters } from '../../src/ui/Facet/FacetSearchParameters';
 import { FacetSearchValuesList } from '../../src/ui/Facet/FacetSearchValuesList';
 import { $$ } from '../../src/utils/Dom';
+import { FacetQueryController } from '../../src/controllers/FacetQueryController';
+import { FakeResults } from '../Fake';
+import { FacetSearchParameters } from '../../src/ui/Facet/FacetSearchParameters';
+import { IIndexFieldValue } from '../../src/rest/FieldValue';
+import { Simulate } from '../Simulate';
 import { KEYBOARD } from '../../src/utils/KeyboardUtils';
-import { FakeResults, Mock, Simulate } from '../../testsFramework/TestsFramework';
 
 export function FacetSearchTest() {
   describe('FacetSearch', function() {
-    let mockFacet: Facet;
-    let facetSearch: FacetSearch;
+    var mockFacet: Facet;
+    var facetSearch: FacetSearch;
 
     beforeEach(function() {
       let options = {
@@ -29,7 +31,7 @@ export function FacetSearchTest() {
     });
 
     it('input should have correct attributes', function() {
-      const built = facetSearch.build();
+      var built = facetSearch.build();
       expect(
         $$(built)
           .find('input')
@@ -59,14 +61,14 @@ export function FacetSearchTest() {
       });
 
       it('should display facet search results', function(done) {
-        const pr = new Promise((resolve, reject) => {
-          const results = FakeResults.createFakeFieldValues('foo', 10);
+        var pr = new Promise((resolve, reject) => {
+          var results = FakeResults.createFakeFieldValues('foo', 10);
           resolve(results);
         });
 
         (<jasmine.Spy>mockFacet.facetQueryController.search).and.returnValue(pr);
 
-        const params = new FacetSearchParameters(mockFacet);
+        var params = new FacetSearchParameters(mockFacet);
         expect($$(facetSearch.searchResults).findAll('li').length).toBe(0);
         expect(facetSearch.currentlyDisplayedResults).toBeUndefined();
         facetSearch.triggerNewFacetSearch(params);
@@ -78,14 +80,14 @@ export function FacetSearchTest() {
       });
 
       it('should hide facet search results', function(done) {
-        const pr = new Promise((resolve, reject) => {
-          const results = FakeResults.createFakeFieldValues('foo', 10);
+        var pr = new Promise((resolve, reject) => {
+          var results = FakeResults.createFakeFieldValues('foo', 10);
           resolve(results);
         });
 
         (<jasmine.Spy>mockFacet.facetQueryController.search).and.returnValue(pr);
 
-        const params = new FacetSearchParameters(mockFacet);
+        var params = new FacetSearchParameters(mockFacet);
         expect($$(facetSearch.searchResults).findAll('li').length).toBe(0);
         expect(facetSearch.currentlyDisplayedResults).toBeUndefined();
         facetSearch.triggerNewFacetSearch(params);
@@ -100,13 +102,13 @@ export function FacetSearchTest() {
       });
 
       it('should handle error', function(done) {
-        const pr = new Promise((resolve, reject) => {
+        var pr = new Promise((resolve, reject) => {
           reject(new Error('woops !'));
         });
 
         (<jasmine.Spy>mockFacet.facetQueryController.search).and.returnValue(pr);
 
-        const params = new FacetSearchParameters(mockFacet);
+        var params = new FacetSearchParameters(mockFacet);
         facetSearch.triggerNewFacetSearch(params);
         expect(facetSearch.currentlyDisplayedResults).toBeUndefined();
         pr.catch(() => {
@@ -119,20 +121,20 @@ export function FacetSearchTest() {
       // The KeyboardEvent constructor is not even defined ...
       if (!Simulate.isPhantomJs()) {
         describe('hook user events', function() {
-          let searchPromise: Promise<IIndexFieldValue[]>;
-          let built: HTMLElement;
+          var searchPromise: Promise<IIndexFieldValue[]>;
+          var built: HTMLElement;
           beforeEach(function() {
             Simulate.removeJQuery();
             mockFacet.options.facetSearchDelay = 50;
             searchPromise = new Promise((resolve, reject) => {
-              const results = FakeResults.createFakeFieldValues('foo', 10);
+              var results = FakeResults.createFakeFieldValues('foo', 10);
               resolve(results);
             });
 
             (<jasmine.Spy>mockFacet.facetQueryController.search).and.returnValue(searchPromise);
 
             built = facetSearch.build();
-            const params = new FacetSearchParameters(mockFacet);
+            var params = new FacetSearchParameters(mockFacet);
             facetSearch.triggerNewFacetSearch(params);
           });
 

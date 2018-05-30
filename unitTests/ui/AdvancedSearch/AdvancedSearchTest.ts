@@ -1,26 +1,29 @@
-import { AdvancedSearchEvents, IBuildingAdvancedSearchEventArgs } from '../../../src/events/AdvancedSearchEvents';
-import { BreadcrumbEvents, IPopulateBreadcrumbEventArgs } from '../../../src/events/BreadcrumbEvents';
-import { l } from '../../../src/strings/Strings';
 import { AdvancedSearch, IAdvancedSearchOptions } from '../../../src/ui/AdvancedSearch/AdvancedSearch';
-import { BaseFormTypes } from '../../../src/ui/AdvancedSearch/AdvancedSearchInput';
-import { analyticsActionCauseList } from '../../../src/ui/Analytics/AnalyticsActionListMeta';
+import { AdvancedSearchEvents, IBuildingAdvancedSearchEventArgs } from '../../../src/events/AdvancedSearchEvents';
 import { QueryBuilder } from '../../../src/ui/Base/QueryBuilder';
-import { DatePicker } from '../../../src/ui/FormWidgets/DatePicker';
-import { NumericSpinner } from '../../../src/ui/FormWidgets/NumericSpinner';
-import { TextInput } from '../../../src/ui/FormWidgets/TextInput';
+import { Simulate } from '../../Simulate';
 import { $$ } from '../../../src/utils/Dom';
-import { AdvancedComponentSetupOptions, Mock, MockEnvironmentBuilder, Simulate } from '../../../testsFramework/TestsFramework';
-import { find } from 'underscore';
+import { l } from '../../../src/strings/Strings';
+import * as Mock from '../../MockEnvironment';
+import { TextInput } from '../../../src/ui/FormWidgets/TextInput';
+import { NumericSpinner } from '../../../src/ui/FormWidgets/NumericSpinner';
+import { DatePicker } from '../../../src/ui/FormWidgets/DatePicker';
+import { BaseFormTypes } from '../../../src/ui/AdvancedSearch/AdvancedSearchInput';
+import { AdvancedComponentSetupOptions } from '../../MockEnvironment';
+import { MockEnvironmentBuilder } from '../../MockEnvironment';
+import { analyticsActionCauseList } from '../../../src/ui/Analytics/AnalyticsActionListMeta';
+import _ = require('underscore');
+import { BreadcrumbEvents, IPopulateBreadcrumbEventArgs } from '../../../src/events/BreadcrumbEvents';
 
 export function AdvancedSearchTest() {
   describe('AdvancedSearch', () => {
     var test: Mock.IBasicComponentSetupWithModalBox<AdvancedSearch>;
 
-    beforeEach(() => {
+    beforeEach(function() {
       test = Mock.basicComponentSetupWithModalBox<AdvancedSearch>(AdvancedSearch);
     });
 
-    afterEach(() => {
+    afterEach(function() {
       test = null;
     });
 
@@ -193,7 +196,7 @@ export function AdvancedSearchTest() {
 
     function getSection(section: string) {
       let sectionsTitle = $$(test.cmp.content).findAll('.coveo-advanced-search-section-title');
-      let title = find(sectionsTitle, title => {
+      let title = _.find(sectionsTitle, title => {
         return title.innerText == section;
       });
       return title ? title.parentElement : undefined;

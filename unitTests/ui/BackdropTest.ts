@@ -1,7 +1,9 @@
+import * as Mock from '../MockEnvironment';
+import { FakeResults } from '../Fake';
 import { IQueryResult } from '../../src/rest/QueryResult';
 import { Backdrop, IBackdropOptions } from '../../src/ui/Backdrop/Backdrop';
 import { $$ } from '../../src/utils/Dom';
-import { FakeResults, Mock, Simulate } from '../../testsFramework/TestsFramework';
+import { Simulate } from '../Simulate';
 
 export function BackdropTest() {
   describe('Backdrop', function() {

@@ -1,8 +1,7 @@
 import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
-
 export function QueryBuilderTest() {
   describe('QueryBuilder', () => {
-    let queryBuilder: QueryBuilder;
+    var queryBuilder: QueryBuilder;
 
     beforeEach(() => {
       queryBuilder = new QueryBuilder();

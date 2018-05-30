@@ -1,7 +1,7 @@
-import { IQueryResult } from '../../src/rest/QueryResult';
 import { QuickviewDocumentWord } from '../../src/ui/Quickview/QuickviewDocumentWord';
+import { IQueryResult } from '../../src/rest/QueryResult';
+import { FakeResults } from '../Fake';
 import { $$ } from '../../src/utils/Dom';
-import { FakeResults } from '../../testsFramework/TestsFramework';
 
 export function QuickviewDocumentWordTest() {
   describe('QuickviewDocumentWord', () => {

@@ -1,15 +1,17 @@
-import { map } from 'underscore';
+import * as Mock from '../MockEnvironment';
+import { Facet } from '../../src/ui/Facet/Facet';
 import { FacetQueryController } from '../../src/controllers/FacetQueryController';
-import { QueryController } from '../../src/controllers/QueryController';
-import { IQueryResults } from '../../src/rest/QueryResults';
-import { SearchEndpoint } from '../../src/rest/SearchEndpoint';
+import { FacetValues } from '../../src/ui/Facet/FacetValues';
+import { FacetValue } from '../../src/ui/Facet/FacetValues';
 import { ExpressionBuilder } from '../../src/ui/Base/ExpressionBuilder';
 import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
-import { Facet } from '../../src/ui/Facet/Facet';
-import { FacetSearchParameters } from '../../src/ui/Facet/FacetSearchParameters';
-import { FacetValue, FacetValues } from '../../src/ui/Facet/FacetValues';
+import { SearchEndpoint } from '../../src/rest/SearchEndpoint';
+import { QueryController } from '../../src/controllers/QueryController';
 import { SearchInterface } from '../../src/ui/SearchInterface/SearchInterface';
-import { FakeResults, Mock } from '../../testsFramework/TestsFramework';
+import { FacetSearchParameters } from '../../src/ui/Facet/FacetSearchParameters';
+import { FakeResults } from '../Fake';
+import { IQueryResults } from '../../src/rest/QueryResults';
+import * as _ from 'underscore';
 
 export function FacetQueryControllerTest() {
   describe('FacetQueryController', () => {
@@ -222,7 +224,7 @@ export function FacetQueryControllerTest() {
         });
 
         const generateMatcher = (values: string[]) => {
-          const generated = map(values, value => {
+          const generated = _.map(values, value => {
             return jasmine.objectContaining({ value });
           });
           return jasmine.arrayContaining(generated);

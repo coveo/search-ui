@@ -1,6 +1,5 @@
 import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
 import { QueryboxQueryParameters } from '../../src/ui/Querybox/QueryboxQueryParameters';
-
 export function QueryboxQueryParametersTest() {
   describe('QueryBoxQueryParameters', () => {
     let builder: QueryBuilder;

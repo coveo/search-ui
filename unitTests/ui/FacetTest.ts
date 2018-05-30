@@ -1,10 +1,14 @@
 /// <reference path="../../lib/jasmine/index.d.ts" />
-import { BreadcrumbEvents, IPopulateBreadcrumbEventArgs } from '../../src/events/BreadcrumbEvents';
-import { IPopulateOmniboxEventArgs, OmniboxEvents } from '../../src/events/OmniboxEvents';
+import * as Mock from '../MockEnvironment';
 import { Facet, IFacetOptions } from '../../src/ui/Facet/Facet';
-import { FacetValue } from '../../src/ui/Facet/FacetValues';
 import { $$ } from '../../src/utils/Dom';
-import { FakeResults, Mock, Simulate } from '../../testsFramework/TestsFramework';
+import { FacetValue } from '../../src/ui/Facet/FacetValues';
+import { Simulate } from '../Simulate';
+import { FakeResults } from '../Fake';
+import { OmniboxEvents } from '../../src/events/OmniboxEvents';
+import { BreadcrumbEvents } from '../../src/events/BreadcrumbEvents';
+import { IPopulateBreadcrumbEventArgs } from '../../src/events/BreadcrumbEvents';
+import { IPopulateOmniboxEventArgs } from '../../src/events/OmniboxEvents';
 
 export function FacetTest() {
   describe('Facet', () => {

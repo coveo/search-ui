@@ -1,4 +1,4 @@
-import { DefaultInstantiateTemplateOptions, IInstantiateTemplateOptions } from '../../src/ui/Templates/Template';
+import { IInstantiateTemplateOptions, DefaultInstantiateTemplateOptions } from '../../src/ui/Templates/Template';
 
 export function DefaultInstantiateTemplateOptionsTest() {
   describe('DefaultInstantiateTemplateOptions', () => {

@@ -1,5 +1,5 @@
-import { EXECUTION_REPORT_SECTION, IExecutionReport } from '../../../src/ui/RelevanceInspector/ExecutionReport';
 import { ExecutionReportEffectiveIndexQuerySection } from '../../../src/ui/RelevanceInspector/ExecutionReportEffectiveIndexQuerySection';
+import { IExecutionReport, EXECUTION_REPORT_SECTION } from '../../../src/ui/RelevanceInspector/ExecutionReport';
 
 export function ExecutionReportEffectiveIndexQueryTest() {
   describe('ExecutionReportEffectiveIndex', () => {

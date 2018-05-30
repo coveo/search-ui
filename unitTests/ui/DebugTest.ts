@@ -1,6 +1,6 @@
 import { Debug } from '../../src/ui/Debug/Debug';
 import { $$ } from '../../src/utils/Dom';
-import { Mock } from '../../testsFramework/TestsFramework';
+import * as Mock from '../MockEnvironment';
 
 export function DebugTest() {
   describe('Debug', () => {

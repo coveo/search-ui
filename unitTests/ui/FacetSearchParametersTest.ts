@@ -1,12 +1,12 @@
-import { FacetQueryController } from '../../src/controllers/FacetQueryController';
-import { QueryController } from '../../src/controllers/QueryController';
-import { AllowedValuesPatternType } from '../../src/rest/AllowedValuesPatternType';
-import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
 import { Facet } from '../../src/ui/Facet/Facet';
+import * as Mock from '../MockEnvironment';
 import { FacetSearchParameters } from '../../src/ui/Facet/FacetSearchParameters';
 import { FacetValue } from '../../src/ui/Facet/FacetValues';
 import { $$ } from '../../src/utils/Dom';
-import { Mock } from '../../testsFramework/TestsFramework';
+import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
+import { QueryController } from '../../src/controllers/QueryController';
+import { FacetQueryController } from '../../src/controllers/FacetQueryController';
+import { AllowedValuesPatternType } from '../../src/rest/AllowedValuesPatternType';
 
 export function FacetSearchParametersTest() {
   describe('FacetSearchParameters', () => {

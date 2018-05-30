@@ -1,8 +1,8 @@
 import { FacetSliderQueryController } from '../../src/controllers/FacetSliderQueryController';
+import * as Mock from '../MockEnvironment';
 import { FacetSlider } from '../../src/ui/FacetSlider/FacetSlider';
 import { IFieldOption } from '../../src/ui/Base/ComponentOptions';
 import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
-import { Mock } from '../../testsFramework/TestsFramework';
 
 export function FacetSliderQueryControllerTest() {
   describe('FacetSliderQueryController', () => {

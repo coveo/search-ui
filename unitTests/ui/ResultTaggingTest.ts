@@ -1,7 +1,8 @@
+import * as Mock from '../MockEnvironment';
+import { ResultTagging, IResultTaggingOptions } from '../../src/ui/ResultTagging/ResultTagging';
+import { FakeResults } from '../Fake';
 import { IQueryResult } from '../../src/rest/QueryResult';
-import { IResultTaggingOptions, ResultTagging } from '../../src/ui/ResultTagging/ResultTagging';
 import { $$ } from '../../src/utils/Dom';
-import { FakeResults, Mock } from '../../testsFramework/TestsFramework';
 
 export function ResultTaggingTest() {
   describe('ResultTagging', () => {

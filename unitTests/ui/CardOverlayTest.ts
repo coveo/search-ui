@@ -1,13 +1,13 @@
+import * as Mock from '../MockEnvironment';
 import { CardOverlay } from '../../src/ui/CardOverlay/CardOverlay';
 import { $$ } from '../../src/utils/Dom';
-import { Mock } from '../../testsFramework/TestsFramework';
 
 export function CardOverlayTest() {
   describe('CardOverlay', () => {
     let test: Mock.IBasicComponentSetup<CardOverlay>;
     let parentResult: HTMLElement;
 
-    beforeEach(() => {
+    beforeEach(function() {
       test = Mock.advancedComponentSetup<CardOverlay>(CardOverlay, <Mock.AdvancedComponentSetupOptions>{
         modifyBuilder: b => {
           parentResult = $$('div', { className: 'CoveoResult' }, $$('div')).el;
@@ -16,12 +16,12 @@ export function CardOverlayTest() {
       });
     });
 
-    afterEach(() => {
+    afterEach(function() {
       test = null;
     });
 
-    describe('exposes options', () => {
-      it('title should put the title in the button and the overlay header', () => {
+    describe('exposes options', function() {
+      it('title should put the title in the button and the overlay header', function() {
         test = Mock.advancedComponentSetup<CardOverlay>(CardOverlay, <Mock.AdvancedComponentSetupOptions>{
           modifyBuilder: b => {
             parentResult = $$('div', { className: 'CoveoResult' }, $$('div')).el;
@@ -36,7 +36,7 @@ export function CardOverlayTest() {
         expect(label.textContent).toBe('foobar');
         expect(overlay.textContent).toBe('foobar');
       });
-      it('icon should put an icon in the button and the overlay header', () => {
+      it('icon should put an icon in the button and the overlay header', function() {
         test = Mock.advancedComponentSetup<CardOverlay>(CardOverlay, <Mock.AdvancedComponentSetupOptions>{
           modifyBuilder: b => {
             parentResult = $$('div', { className: 'CoveoResult' }, $$('div')).el;
@@ -51,11 +51,11 @@ export function CardOverlayTest() {
       });
     });
 
-    it('should create an overlay on closest .CoveoResult', () => {
+    it('should create an overlay on closest .CoveoResult', function() {
       expect($$(parentResult).find('.coveo-card-overlay')).not.toBeUndefined();
     });
 
-    it('toggle should toggle between opening and closing the overlay', () => {
+    it('toggle should toggle between opening and closing the overlay', function() {
       const overlay = $$(parentResult).find('.coveo-card-overlay');
       expect($$(overlay).hasClass('coveo-opened')).not.toBe(true);
       test.cmp.toggleOverlay();
@@ -64,7 +64,7 @@ export function CardOverlayTest() {
       expect($$(overlay).hasClass('coveo-opened')).not.toBe(true);
     });
 
-    it('should transfer DOM elements from its body to the overlay', () => {
+    it('should transfer DOM elements from its body to the overlay', function() {
       test = Mock.advancedComponentSetup<CardOverlay>(CardOverlay, <Mock.AdvancedComponentSetupOptions>{
         modifyBuilder: b => {
           parentResult = $$('div', { className: 'CoveoResult' }).el;
@@ -78,20 +78,20 @@ export function CardOverlayTest() {
       expect($$(overlay).find('.innerElement')).not.toBeNull();
     });
 
-    it('clicking the overlay button should call toggleOverlay', () => {
+    it('clicking the overlay button should call toggleOverlay', function() {
       spyOn(test.cmp, 'toggleOverlay');
       $$(test.cmp.element).trigger('click');
       expect(test.cmp.toggleOverlay).toHaveBeenCalledTimes(1);
     });
 
-    it('clicking the overlay header should call toggleOverlay', () => {
+    it('clicking the overlay header should call toggleOverlay', function() {
       spyOn(test.cmp, 'toggleOverlay');
       const overlayHeader = $$(parentResult).find('.coveo-card-overlay-header');
       $$(overlayHeader).trigger('click');
       expect(test.cmp.toggleOverlay).toHaveBeenCalledTimes(1);
     });
 
-    it('clicking the overlay footer should call toggleOverlay', () => {
+    it('clicking the overlay footer should call toggleOverlay', function() {
       spyOn(test.cmp, 'toggleOverlay');
       const overlayFooter = $$(parentResult).find('.coveo-card-overlay-footer');
       $$(overlayFooter).trigger('click');

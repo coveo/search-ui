@@ -1,8 +1,8 @@
-import { EXECUTION_REPORT_SECTION, IExecutionReport } from '../../../src/ui/RelevanceInspector/ExecutionReport';
 import {
   ExecutionReportAuthenticationSection,
   IExecutionReportAuthenticationSection
 } from '../../../src/ui/RelevanceInspector/ExecutionReportAuthenticationSection';
+import { EXECUTION_REPORT_SECTION, IExecutionReport } from '../../../src/ui/RelevanceInspector/ExecutionReport';
 
 export function ExecutionReportAuthenticationSectionTest() {
   const getExecutionReportSection = (): IExecutionReport => {

@@ -1,7 +1,8 @@
+import * as Mock from '../MockEnvironment';
 import { PipelineContext } from '../../src/ui/PipelineContext/PipelineContext';
 import { $$ } from '../../src/utils/Dom';
+import { Simulate } from '../Simulate';
 import { Utils } from '../../src/utils/Utils';
-import { Mock, Simulate } from '../../testsFramework/TestsFramework';
 
 export function PipelineContextText() {
   describe('PipelineContext', () => {

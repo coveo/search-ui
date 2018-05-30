@@ -1,28 +1,30 @@
-import { InitializationEvents } from '../../src/events/InitializationEvents';
-import { SearchEndpoint } from '../../src/rest/SearchEndpoint';
-import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
-import { NoopComponent } from '../../src/ui/NoopComponent/NoopComponent';
-import { ITabOptions, Tab } from '../../src/ui/Tab/Tab';
+import * as Mock from '../MockEnvironment';
+import { Tab } from '../../src/ui/Tab/Tab';
+import { ITabOptions } from '../../src/ui/Tab/Tab';
+import { Simulate } from '../Simulate';
 import { $$ } from '../../src/utils/Dom';
-import { Mock, Simulate } from '../../testsFramework/TestsFramework';
+import { SearchEndpoint } from '../../src/rest/SearchEndpoint';
+import { NoopComponent } from '../../src/ui/NoopComponent/NoopComponent';
+import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
+import { InitializationEvents } from '../../src/events/InitializationEvents';
 
 export function TabTest() {
-  describe('Tab', () => {
-    let test: Mock.IBasicComponentSetup<Tab>;
+  describe('Tab', function() {
+    var test: Mock.IBasicComponentSetup<Tab>;
 
-    beforeEach(() => {
+    beforeEach(function() {
       test = Mock.optionsComponentSetup<Tab, ITabOptions>(Tab, {
         id: 'testingtabid',
         caption: 'caption test tab'
       });
     });
 
-    afterEach(() => {
+    afterEach(function() {
       test = null;
     });
 
-    describe('exposes options', () => {
-      it('tab id can be set, and is sent in the query, only if selected', () => {
+    describe('exposes options', function() {
+      it('tab id can be set, and is sent in the query, only if selected', function() {
         test = Mock.advancedComponentSetup<Tab>(
           Tab,
           new Mock.AdvancedComponentSetupOptions(
@@ -37,14 +39,14 @@ export function TabTest() {
           )
         );
 
-        let simulation = Simulate.query(test.env);
+        var simulation = Simulate.query(test.env);
         expect(simulation.queryBuilder.build().tab).toBeUndefined();
         test.cmp.select();
         simulation = Simulate.query(test.env);
         expect(simulation.queryBuilder.build().tab).toBe('niceid');
       });
 
-      it('expression is set on the constant part of the query, only if selected', () => {
+      it('expression is set on the constant part of the query, only if selected', function() {
         test = Mock.advancedComponentSetup<Tab>(
           Tab,
           new Mock.AdvancedComponentSetupOptions(
@@ -59,14 +61,14 @@ export function TabTest() {
             }
           )
         );
-        let simulation = Simulate.query(test.env);
+        var simulation = Simulate.query(test.env);
         expect(simulation.queryBuilder.build().cq).toBeUndefined();
         test.cmp.select();
         simulation = Simulate.query(test.env);
         expect(simulation.queryBuilder.build().cq).toBe('@foo==bar');
       });
 
-      it('expression is set on the advanced part of the query, only if selected and constant is false', () => {
+      it('expression is set on the advanced part of the query, only if selected and constant is false', function() {
         test = Mock.advancedComponentSetup<Tab>(
           Tab,
           new Mock.AdvancedComponentSetupOptions(
@@ -82,14 +84,14 @@ export function TabTest() {
             }
           )
         );
-        let simulation = Simulate.query(test.env);
+        var simulation = Simulate.query(test.env);
         expect(simulation.queryBuilder.build().aq).toBeUndefined();
         test.cmp.select();
         simulation = Simulate.query(test.env);
         expect(simulation.queryBuilder.build().aq).toBe('@foo==bar');
       });
 
-      it('caption can specify the caption for the element', () => {
+      it('caption can specify the caption for the element', function() {
         test = Mock.optionsComponentSetup<Tab, ITabOptions>(Tab, {
           caption: 'yo man',
           id: 'foobarde'
@@ -98,18 +100,18 @@ export function TabTest() {
         expect($$(test.cmp.element).text()).toBe('yo man');
       });
 
-      it('icon can be added on a tab', () => {
+      it('icon can be added on a tab', function() {
         test = Mock.optionsComponentSetup<Tab, ITabOptions>(Tab, {
           icon: 'yoman',
           caption: 'foobarde',
           id: 'foobarde'
         });
-        const icn = $$(test.cmp.element).find('.coveo-icon');
+        var icn = $$(test.cmp.element).find('.coveo-icon');
         expect($$(icn).hasClass('yoman')).toBe(true);
       });
 
-      it('endpoint can be set on a tab, or take default otherwise', () => {
-        const ep = new SearchEndpoint({ restUri: 'test' });
+      it('endpoint can be set on a tab, or take default otherwise', function() {
+        var ep = new SearchEndpoint({ restUri: 'test' });
         SearchEndpoint.endpoints['testing'] = ep;
         test = Mock.optionsComponentSetup<Tab, ITabOptions>(Tab, {
           endpoint: ep,
@@ -120,7 +122,7 @@ export function TabTest() {
         SearchEndpoint.endpoints['testing'] = null;
       });
 
-      it('enableDuplicateFiltering will be set on the query, only if selected', () => {
+      it('enableDuplicateFiltering will be set on the query, only if selected', function() {
         test = Mock.advancedComponentSetup<Tab>(
           Tab,
           new Mock.AdvancedComponentSetupOptions(
@@ -136,7 +138,7 @@ export function TabTest() {
           )
         );
 
-        let simulation = Simulate.query(test.env);
+        var simulation = Simulate.query(test.env);
         expect(simulation.queryBuilder.build().enableDuplicateFiltering).toBe(false);
 
         test.cmp.select();
@@ -145,7 +147,7 @@ export function TabTest() {
         expect(simulation.queryBuilder.build().enableDuplicateFiltering).toBe(true);
       });
 
-      it('pipeline will be set on the query, only if selected', () => {
+      it('pipeline will be set on the query, only if selected', function() {
         test = Mock.advancedComponentSetup<Tab>(
           Tab,
           new Mock.AdvancedComponentSetupOptions(
@@ -160,7 +162,7 @@ export function TabTest() {
             }
           )
         );
-        let simulation = Simulate.query(test.env);
+        var simulation = Simulate.query(test.env);
         expect(simulation.queryBuilder.build().pipeline).toBeUndefined();
 
         test.cmp.select();
@@ -168,7 +170,7 @@ export function TabTest() {
         expect(simulation.queryBuilder.build().pipeline).toBe('foobar');
       });
 
-      it('maximumAge will be set on the query, only if selected', () => {
+      it('maximumAge will be set on the query, only if selected', function() {
         test = Mock.advancedComponentSetup<Tab>(
           Tab,
           new Mock.AdvancedComponentSetupOptions(
@@ -184,7 +186,7 @@ export function TabTest() {
           )
         );
 
-        let simulation = Simulate.query(test.env);
+        var simulation = Simulate.query(test.env);
         expect(simulation.queryBuilder.build().maximumAge).toBeUndefined();
 
         test.cmp.select();
@@ -272,14 +274,14 @@ export function TabTest() {
       });
     });
 
-    describe('can control inclusion of other elements', () => {
-      let test2: Mock.IBasicComponentSetup<Tab>;
-      let dummyCmp: Mock.IBasicComponentSetup<NoopComponent>;
-      let dummyCmp2: Mock.IBasicComponentSetup<NoopComponent>;
-      let elem: HTMLElement;
-      let elem2: HTMLElement;
+    describe('can control inclusion of other elements', function() {
+      var test2: Mock.IBasicComponentSetup<Tab>;
+      var dummyCmp: Mock.IBasicComponentSetup<NoopComponent>;
+      var dummyCmp2: Mock.IBasicComponentSetup<NoopComponent>;
+      var elem: HTMLElement;
+      var elem2: HTMLElement;
 
-      beforeEach(() => {
+      beforeEach(function() {
         test = Mock.advancedComponentSetup<Tab>(
           Tab,
           new Mock.AdvancedComponentSetupOptions(
@@ -334,7 +336,7 @@ export function TabTest() {
         dummyCmp2.cmp.element.setAttribute('data-tab', 'testingtabid2');
       });
 
-      afterEach(() => {
+      afterEach(function() {
         test2 = null;
         dummyCmp = null;
         dummyCmp2 = null;
@@ -342,7 +344,7 @@ export function TabTest() {
         elem2 = null;
       });
 
-      it('should hide and show elements if selected', () => {
+      it('should hide and show elements if selected', function() {
         test.cmp.select();
         Simulate.query(test.env);
         expect($$(elem2).hasClass('coveo-tab-disabled')).toBe(true);
@@ -358,7 +360,7 @@ export function TabTest() {
         expect($$(elem).hasClass('coveo-tab-disabled')).toBe(true);
       });
 
-      it('should disable or enable component if selected', () => {
+      it('should disable or enable component if selected', function() {
         test.cmp.select();
         Simulate.query(test.env);
         expect(dummyCmp.cmp.disabled).toBe(false);
@@ -370,7 +372,7 @@ export function TabTest() {
         expect(dummyCmp2.cmp.disabled).toBe(false);
       });
 
-      it('should disable or enable component if created under a div with data-tab', () => {
+      it('should disable or enable component if created under a div with data-tab', function() {
         // remove the attribute directly on the component, and put them under another div which has the attribute data-tab
         dummyCmp.cmp.element.removeAttribute('data-tab');
         dummyCmp2.cmp.element.removeAttribute('data-tab');
@@ -388,7 +390,7 @@ export function TabTest() {
         expect(dummyCmp2.cmp.disabled).toBe(false);
       });
 
-      it('can specify multiple tab for one component', () => {
+      it('can specify multiple tab for one component', function() {
         dummyCmp.cmp.element.setAttribute('data-tab', 'testingtabid,testingtabid2');
         test.cmp.select();
         Simulate.query(test.env);
@@ -399,7 +401,7 @@ export function TabTest() {
         expect(dummyCmp.cmp.disabled).toBe(false);
       });
 
-      it('can specify not to be included in a tab for one component', () => {
+      it('can specify not to be included in a tab for one component', function() {
         dummyCmp.cmp.element.removeAttribute('data-tab');
         dummyCmp.cmp.element.setAttribute('data-tab-not', 'testingtabid');
 
@@ -412,7 +414,7 @@ export function TabTest() {
         expect(dummyCmp.cmp.disabled).toBe(false);
       });
 
-      it('can specify not to be included in multiple tabs for one component', () => {
+      it('can specify not to be included in multiple tabs for one component', function() {
         dummyCmp.cmp.element.removeAttribute('data-tab');
         dummyCmp.cmp.element.setAttribute('data-tab-not', 'testingtabid,testingtabid2');
 
@@ -426,12 +428,12 @@ export function TabTest() {
       });
     });
 
-    it('should trigger a query on selection', () => {
+    it('should trigger a query on selection', function() {
       test.cmp.select();
       expect(test.env.queryController.executeQuery).toHaveBeenCalled();
     });
 
-    it('should trigger an analytics event on selection', () => {
+    it('should trigger an analytics event on selection', function() {
       test.cmp.select();
       expect(test.env.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(analyticsActionCauseList.interfaceChange, {
         interfaceChangeTo: 'testingtabid'

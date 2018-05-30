@@ -1,7 +1,8 @@
+import * as Mock from '../MockEnvironment';
 import { Badge } from '../../src/ui/Badge/Badge';
 import { IBadgeOptions } from '../../src/ui/Badge/Badge';
+import { FakeResults } from '../Fake';
 import { $$ } from '../../src/utils/Dom';
-import { Mock, FakeResults, AdvancedComponentSetupOptions } from '../../testsFramework/TestsFramework';
 
 export function BadgeTest() {
   describe('Badge', function() {
@@ -38,14 +39,14 @@ export function BadgeTest() {
       describe('colors', function() {
         it('should throw an error when trying to initialize with an invalid color format', function() {
           expect(() => {
-            Mock.advancedResultComponentSetup<Badge>(Badge, FakeResults.createFakeResult(), <AdvancedComponentSetupOptions>{
+            Mock.advancedResultComponentSetup<Badge>(Badge, FakeResults.createFakeResult(), <Mock.AdvancedComponentSetupOptions>{
               element: $$('span', { 'data-colors': 'I am quite invalid.' }).el
             });
           }).toThrow();
         });
 
         it('should parse the colors using the old format properly', function() {
-          test = Mock.advancedResultComponentSetup<Badge>(Badge, FakeResults.createFakeResult(), <AdvancedComponentSetupOptions>{
+          test = Mock.advancedResultComponentSetup<Badge>(Badge, FakeResults.createFakeResult(), <Mock.AdvancedComponentSetupOptions>{
             element: $$('span', { 'data-colors': 'red; foo: green; bar: #123456; foobar: #911' }).el
           });
 
@@ -70,7 +71,7 @@ export function BadgeTest() {
               }
             }
           };
-          test = Mock.advancedResultComponentSetup<Badge>(Badge, FakeResults.createFakeResult(), <AdvancedComponentSetupOptions>{
+          test = Mock.advancedResultComponentSetup<Badge>(Badge, FakeResults.createFakeResult(), <Mock.AdvancedComponentSetupOptions>{
             element: $$('span', { 'data-colors': JSON.stringify(jsonColors) }).el
           });
           expect(test.cmp.options.colors).toEqual(jsonColors);

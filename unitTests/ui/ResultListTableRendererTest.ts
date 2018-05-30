@@ -1,6 +1,6 @@
 import { ResultListTableRenderer } from '../../src/ui/ResultList/ResultListTableRenderer';
-import { TableTemplate } from '../../src/ui/Templates/TableTemplate';
 import { Template } from '../../src/ui/Templates/Template';
+import { TableTemplate } from '../../src/ui/Templates/TableTemplate';
 import { $$ } from '../../src/utils/Dom';
 
 export function ResultListTableRendererTest() {

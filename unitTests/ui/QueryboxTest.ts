@@ -1,12 +1,15 @@
-import { StandaloneSearchInterfaceEvents } from '../../src/events/StandaloneSearchInterfaceEvents';
+import * as Mock from '../MockEnvironment';
+import { Querybox } from '../../src/ui/Querybox/Querybox';
+import { registerCustomMatcher } from '../CustomMatchers';
 import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
-import { IQueryboxOptions, Querybox } from '../../src/ui/Querybox/Querybox';
+import { Simulate } from '../Simulate';
 import { $$ } from '../../src/utils/Dom';
-import { Mock, Simulate, registerCustomMatcher } from '../../testsFramework/TestsFramework';
+import { StandaloneSearchInterfaceEvents } from '../../src/events/StandaloneSearchInterfaceEvents';
+import { IQueryboxOptions } from '../../src/ui/Querybox/Querybox';
 
 export function QueryboxTest() {
   describe('Querybox', () => {
-    let test: Mock.IBasicComponentSetup<Querybox>;
+    var test: Mock.IBasicComponentSetup<Querybox>;
 
     beforeEach(function() {
       test = Mock.basicComponentSetup<Querybox>(Querybox);

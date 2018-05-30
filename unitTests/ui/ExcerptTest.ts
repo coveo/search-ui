@@ -1,7 +1,8 @@
-import { IQueryResult } from '../../src/rest/QueryResult';
+import * as Mock from '../MockEnvironment';
 import { Excerpt } from '../../src/ui/Excerpt/Excerpt';
+import { IQueryResult } from '../../src/rest/QueryResult';
+import { FakeResults } from '../Fake';
 import { HighlightUtils } from '../../src/utils/HighlightUtils';
-import { FakeResults, Mock } from '../../testsFramework/TestsFramework';
 
 export function ExcerptTest() {
   describe('Excerpt', function() {

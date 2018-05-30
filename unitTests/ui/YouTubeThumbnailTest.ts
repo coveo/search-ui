@@ -1,10 +1,12 @@
-import { IQueryResult } from '../../src/rest/QueryResult';
-import { get } from '../../src/ui/Base/RegisteredNamedMethods';
-import { IResultsComponentBindings } from '../../src/ui/Base/ResultsComponentBindings';
-import { ResultLink } from '../../src/ui/ResultLink/ResultLink';
-import { IYouTubeThumbnailOptions, YouTubeThumbnail } from '../../src/ui/YouTube/YouTubeThumbnail';
+import * as Mock from '../MockEnvironment';
+import { YouTubeThumbnail, IYouTubeThumbnailOptions } from '../../src/ui/YouTube/YouTubeThumbnail';
 import { $$ } from '../../src/utils/Dom';
-import { FakeResults, Mock, Simulate } from '../../testsFramework/TestsFramework';
+import { get } from '../../src/ui/Base/RegisteredNamedMethods';
+import { ResultLink } from '../../src/ui/ResultLink/ResultLink';
+import { IQueryResult } from '../../src/rest/QueryResult';
+import { FakeResults } from '../Fake';
+import { IResultsComponentBindings } from '../../src/ui/Base/ResultsComponentBindings';
+import { Simulate } from '../Simulate';
 
 export function YouTubeThumbnailTest() {
   describe('YouTubeThumbnail', () => {

@@ -1,11 +1,14 @@
+import * as Mock from '../MockEnvironment';
+import { ResultRating } from '../../src/ui/ResultRating/ResultRating';
 import { IQueryResult } from '../../src/rest/QueryResult';
-import { IRatingRequest } from '../../src/rest/RatingRequest';
-import { RatingValues, ResultRating } from '../../src/ui/ResultRating/ResultRating';
+import { FakeResults } from '../Fake';
+import { RatingValues } from '../../src/ui/ResultRating/ResultRating';
 import { $$ } from '../../src/utils/Dom';
-import { FakeResults, Mock, Simulate } from '../../testsFramework/TestsFramework';
+import { IRatingRequest } from '../../src/rest/RatingRequest';
+import { Simulate } from '../Simulate';
 
 export function ResultRatingTest() {
-  describe('ResultRating', () => {
+  describe('ResultRating', function() {
     const activeStarClass = 'coveo-result-rating-star-active';
     let test: Mock.IBasicComponentSetup<ResultRating>;
     let averageFakeResult: IQueryResult;

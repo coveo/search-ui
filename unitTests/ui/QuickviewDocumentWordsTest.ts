@@ -1,8 +1,8 @@
-import { IQueryResult } from '../../src/rest/QueryResult';
-import { QuickviewDocumentIframe } from '../../src/ui/Quickview/QuickviewDocumentIframe';
 import { QuickviewDocumentWords } from '../../src/ui/Quickview/QuickviewDocumentWords';
+import { QuickviewDocumentIframe } from '../../src/ui/Quickview/QuickviewDocumentIframe';
+import { IQueryResult } from '../../src/rest/QueryResult';
+import { FakeResults } from '../Fake';
 import { $$, Dom } from '../../src/utils/Dom';
-import { FakeResults } from '../../testsFramework/TestsFramework';
 
 export function QuickviewDocumentWordsTest() {
   describe('QuickviewDocumentWords', () => {

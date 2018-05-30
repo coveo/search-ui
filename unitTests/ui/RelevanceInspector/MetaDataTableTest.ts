@@ -1,6 +1,7 @@
-import { IQueryResult } from '../../../src/rest/QueryResult';
 import { MetaDataTable } from '../../../src/ui/RelevanceInspector/MetaDataTable';
-import { FakeResults, IMockEnvironment, MockEnvironmentBuilder } from '../../../testsFramework/TestsFramework';
+import { IQueryResult } from '../../../src/rest/QueryResult';
+import { FakeResults } from '../../Fake';
+import { MockEnvironmentBuilder, IMockEnvironment } from '../../MockEnvironment';
 
 export function MetaDataTableTest() {
   describe('MetaDataTable', () => {

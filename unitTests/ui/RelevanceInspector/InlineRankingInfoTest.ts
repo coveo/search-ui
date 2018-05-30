@@ -1,9 +1,9 @@
 import { InlineRankingInfo } from '../../../src/ui/RelevanceInspector/InlineRankingInfo';
+import { FakeResults } from '../../Fake';
 import { IQueryResult } from '../../../src/rest/QueryResult';
 import { parseRankingInfo, IRankingInfo } from '../../../src/ui/RelevanceInspector/RankingInfoParser';
 import { each, keys } from 'underscore';
 import { $$ } from '../../../src/UtilsModules';
-import { FakeResults } from '../../../testsFramework/TestsFramework';
 
 export function InlineRankingInfoTest() {
   let result: IQueryResult;

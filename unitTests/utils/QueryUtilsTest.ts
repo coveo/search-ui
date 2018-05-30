@@ -1,6 +1,6 @@
-import { QueryUtils } from '../../src/Core';
+import { FakeResults } from '../Fake';
 import { IQueryResult } from '../../src/rest/QueryResult';
-import { FakeResults } from '../../testsFramework/TestsFramework';
+import { QueryUtils } from '../../src/Core';
 
 export function QueryUtilsTest() {
   describe('QueryUtils', () => {

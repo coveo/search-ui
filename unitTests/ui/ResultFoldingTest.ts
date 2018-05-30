@@ -1,13 +1,15 @@
-import { each, map, pluck } from 'underscore';
-import { CardOverlayEvents } from '../../src/events/CardOverlayEvents';
-import { Defer } from '../../src/misc/Defer';
-import { IQueryResult } from '../../src/rest/QueryResult';
-import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
-import { IResultFoldingOptions, ResultFolding } from '../../src/ui/ResultFolding/ResultFolding';
-import { TemplateCache } from '../../src/ui/Templates/TemplateCache';
-import { UnderscoreTemplate } from '../../src/ui/Templates/UnderscoreTemplate';
+import * as Mock from '../MockEnvironment';
+import { ResultFolding } from '../../src/ui/ResultFolding/ResultFolding';
+import { IResultFoldingOptions } from '../../src/ui/ResultFolding/ResultFolding';
+import { FakeResults } from '../Fake';
 import { $$ } from '../../src/utils/Dom';
-import { FakeResults, Mock } from '../../testsFramework/TestsFramework';
+import { IQueryResult } from '../../src/rest/QueryResult';
+import { UnderscoreTemplate } from '../../src/ui/Templates/UnderscoreTemplate';
+import { TemplateCache } from '../../src/ui/Templates/TemplateCache';
+import { CardOverlayEvents } from '../../src/events/CardOverlayEvents';
+import _ = require('underscore');
+import { Defer } from '../../src/misc/Defer';
+import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
 
 export function ResultFoldingTest() {
   describe('ResultFolding', () => {
@@ -44,8 +46,8 @@ export function ResultFoldingTest() {
         afterMoreResults.then(() => {
           let displayedChildResults = $$(test.cmp.element).findAll('.coveo-result-folding-child-result');
           expect(displayedChildResults.length).toBe(4);
-          let expectedTitles = pluck(fakeResult.childResults, 'title');
-          let actualTitles = map(displayedChildResults, (res: HTMLElement) => $$(res).find('a.CoveoResultLink').innerHTML);
+          let expectedTitles = _.pluck(fakeResult.childResults, 'title');
+          let actualTitles = _.map(displayedChildResults, (res: HTMLElement) => $$(res).find('a.CoveoResultLink').innerHTML);
           expect(actualTitles).toEqual(expectedTitles);
           done();
         });
@@ -53,7 +55,7 @@ export function ResultFoldingTest() {
 
       it("should put an 'expanded' CSS class on the expanded results", done => {
         setTimeout(() => {
-          each($$(test.cmp.element).findAll('.coveo-result-folding-child-result'), (res: HTMLElement) => {
+          _.each($$(test.cmp.element).findAll('.coveo-result-folding-child-result'), (res: HTMLElement) => {
             expect($$(res).hasClass('coveo-expanded-child-result')).toBe(true);
           });
           done();
@@ -211,7 +213,7 @@ export function ResultFoldingTest() {
         FakeResults.createFakeResultWithChildResult('rez', 10)
       );
       Defer.defer(() => {
-        each($$(test.cmp.element).findAll('.coveo-result-folding-child-result'), (res: HTMLElement) => {
+        _.each($$(test.cmp.element).findAll('.coveo-result-folding-child-result'), (res: HTMLElement) => {
           expect($$(res).hasClass('coveo-normal-child-result')).toBe(true);
           done();
         });
@@ -227,7 +229,7 @@ export function ResultFoldingTest() {
         FakeResults.createFakeResultWithChildResult('razzza', 2)
       );
       Defer.defer(() => {
-        each($$(test.cmp.element).findAll('.coveo-result-folding-child-result'), (result: HTMLElement) => {
+        _.each($$(test.cmp.element).findAll('.coveo-result-folding-child-result'), (result: HTMLElement) => {
           expect(result.innerHTML).toBe('Foo');
         });
         done();
@@ -244,7 +246,7 @@ export function ResultFoldingTest() {
         fakeResult
       );
       Defer.defer(() => {
-        each($$(test.cmp.element).findAll('.coveo-result-folding-child-result'), (result: HTMLElement, i) => {
+        _.each($$(test.cmp.element).findAll('.coveo-result-folding-child-result'), (result: HTMLElement, i) => {
           expect(result.getAttribute('href')).toBe(fakeResult.childResults[i].clickUri);
         });
         done();

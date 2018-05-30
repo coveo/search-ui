@@ -1,8 +1,10 @@
-import { IQueryResult } from '../../src/rest/QueryResult';
-import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
+/// <reference path="../../lib/jasmine/index.d.ts" />
+import * as Mock from '../MockEnvironment';
 import { IPrintableUriOptions, PrintableUri } from '../../src/ui/PrintableUri/PrintableUri';
+import { IQueryResult } from '../../src/rest/QueryResult';
 import { $$ } from '../../src/utils/Dom';
-import { FakeResults, Mock } from '../../testsFramework/TestsFramework';
+import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
+import { FakeResults } from '../Fake';
 
 export function PrintableUriTest() {
   describe('PrintableUri', function() {

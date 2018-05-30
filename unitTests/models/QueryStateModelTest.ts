@@ -1,5 +1,6 @@
+/// <reference path="../../lib/jasmine/index.d.ts" />
 import { QueryStateModel } from '../../src/models/QueryStateModel';
-import { Mock } from '../../testsFramework/TestsFramework';
+import * as Mock from '../MockEnvironment';
 
 export function QueryStateModelTest() {
   describe('QueryStateModel', () => {

@@ -1,9 +1,10 @@
+import { ThumbnailHtmlRenderer } from '../../../src/ui/RelevanceInspector/TableBuilder';
 import { IQueryResult } from '../../../src/rest/QueryResult';
 import { IComponentBindings } from '../../../src/ui/Base/ComponentBindings';
-import { ThumbnailHtmlRenderer } from '../../../src/ui/RelevanceInspector/TableBuilder';
-import { ResultList } from '../../../src/ui/ResultList/ResultList';
-import { FakeResults, MockEnvironmentBuilder } from '../../../testsFramework/TestsFramework';
+import { FakeResults } from '../../Fake';
+import { MockEnvironmentBuilder } from '../../MockEnvironment';
 import { $$ } from '../../Test';
+import { ResultList } from '../../../src/ui/ResultList/ResultList';
 
 export function ThumbnailHtmlRendererTest() {
   describe('ThumbnailHtmlRenderer', () => {

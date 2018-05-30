@@ -1,13 +1,15 @@
-import { Defer } from '../../src/misc/Defer';
-import { IAnalyticsClient } from '../../src/ui/Analytics/AnalyticsClient';
-import { Component } from '../../src/ui/Base/Component';
-import { LazyInitialization } from '../../src/ui/Base/Initialization';
 import * as RegisteredNamedMethod from '../../src/ui/Base/RegisteredNamedMethods';
-import { NoopComponent } from '../../src/ui/NoopComponent/NoopComponent';
-import { SearchInterface } from '../../src/ui/SearchInterface/SearchInterface';
-import { Searchbox } from '../../src/ui/Searchbox/Searchbox';
+import { IMockEnvironment, MockEnvironmentBuilder } from '../MockEnvironment';
 import { $$ } from '../../src/utils/Dom';
-import { FakeResults, IMockEnvironment, MockEnvironmentBuilder, mockUsageAnalytics } from '../../testsFramework/TestsFramework';
+import { Component } from '../../src/ui/Base/Component';
+import { Searchbox } from '../../src/ui/Searchbox/Searchbox';
+import { FakeResults } from '../Fake';
+import { IAnalyticsClient } from '../../src/ui/Analytics/AnalyticsClient';
+import { mockUsageAnalytics } from '../MockEnvironment';
+import { LazyInitialization } from '../../src/ui/Base/Initialization';
+import { NoopComponent } from '../../src/ui/NoopComponent/NoopComponent';
+import { Defer } from '../../src/misc/Defer';
+import { SearchInterface } from '../../src/ui/SearchInterface/SearchInterface';
 
 export function RegisteredNamedMethodsTest() {
   describe('RegisteredNamedMethods', () => {

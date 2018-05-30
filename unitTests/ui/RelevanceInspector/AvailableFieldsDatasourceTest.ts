@@ -1,6 +1,6 @@
+import { ITableDataSource } from '../../../src/ui/RelevanceInspector/TableBuilder';
 import { range } from 'underscore';
 import { AvailableFieldsDatasource } from '../../../src/ui/RelevanceInspector/AvailableFieldsTable';
-import { ITableDataSource } from '../../../src/ui/RelevanceInspector/TableBuilder';
 import agGridModule = require('ag-grid/main');
 
 export function AvailableFieldsDatasourceTest() {

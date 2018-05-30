@@ -1,19 +1,19 @@
-import { SettingsEvents } from '../../src/events/SettingsEvents';
+import * as Mock from '../MockEnvironment';
+import { ShareQuery } from '../../src/ui/ShareQuery/ShareQuery';
 import { IQuery } from '../../src/rest/Query';
 import { l } from '../../src/strings/Strings';
-import { ShareQuery } from '../../src/ui/ShareQuery/ShareQuery';
+import { SettingsEvents } from '../../src/events/SettingsEvents';
 import { $$ } from '../../src/utils/Dom';
-import { Mock } from '../../testsFramework/TestsFramework';
 
 export function ShareQueryTest() {
-  describe('ShareQuery', () => {
-    let test: Mock.IBasicComponentSetupWithModalBox<ShareQuery>;
+  describe('ShareQuery', function() {
+    var test: Mock.IBasicComponentSetupWithModalBox<ShareQuery>;
 
-    beforeEach(() => {
+    beforeEach(function() {
       test = Mock.basicComponentSetupWithModalBox<ShareQuery>(ShareQuery);
     });
 
-    it('should open', () => {
+    it('should open', function() {
       test.cmp.open();
       expect(test.modalBox.open).toHaveBeenCalledWith(test.cmp.dialogBoxContent, {
         title: l('Share Query'),
@@ -27,13 +27,13 @@ export function ShareQueryTest() {
       expect(menus.menuData[0].className).toEqual('coveo-share-query');
     });
 
-    it('should close', () => {
+    it('should close', function() {
       test.cmp.open();
       test.cmp.close();
       expect(test.modalBox.close).toHaveBeenCalled();
     });
 
-    it('should update according to result', () => {
+    it('should update according to result', function() {
       test.env.queryController.getLastQuery = () => {
         return <IQuery>{
           firstResult: 0,

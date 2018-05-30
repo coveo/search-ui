@@ -1,9 +1,9 @@
-import { IQueryResult } from '../../src/rest/QueryResult';
 import { DefaultResultTemplate } from '../../src/ui/Templates/DefaultResultTemplate';
-import { Template } from '../../src/ui/Templates/Template';
+import { FakeResults } from '../Fake';
 import { TemplateCache } from '../../src/ui/Templates/TemplateCache';
-import { FakeResults, Simulate } from '../../testsFramework/TestsFramework';
-
+import { Template } from '../../src/ui/Templates/Template';
+import { IQueryResult } from '../../src/rest/QueryResult';
+import { Simulate } from '../Simulate';
 export function DefaultResultTemplateTest() {
   describe('DefaultResultTemplate', () => {
     let result: IQueryResult;

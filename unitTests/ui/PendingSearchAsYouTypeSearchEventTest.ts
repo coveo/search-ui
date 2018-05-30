@@ -1,13 +1,13 @@
-import { Defer } from '../../src/MiscModules';
-import { QueryEvents } from '../../src/events/QueryEvents';
-import { AccessToken } from '../../src/rest/AccessToken';
-import { AnalyticsEndpoint } from '../../src/rest/AnalyticsEndpoint';
-import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
 import { PendingSearchAsYouTypeSearchEvent } from '../../src/ui/Analytics/PendingSearchAsYouTypeSearchEvent';
-import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
+import { AnalyticsEndpoint } from '../../src/rest/AnalyticsEndpoint';
+import { FakeResults } from '../Fake';
+import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
 import { SearchInterface } from '../../src/ui/SearchInterface/SearchInterface';
+import { QueryEvents } from '../../src/events/QueryEvents';
 import { $$ } from '../../src/utils/Dom';
-import { FakeResults } from '../../testsFramework/TestsFramework';
+import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
+import { Defer } from '../../src/MiscModules';
+import { AccessToken } from '../../src/rest/AccessToken';
 
 export function PendingSearchAsYouTypeSearchEventTest() {
   describe('PendingSearchAsYouTypeSearchEvent', () => {

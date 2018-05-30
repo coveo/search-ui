@@ -1,8 +1,7 @@
-import { ValidLayout } from '../../src/ui/ResultLayoutSelector/ValidLayout';
-import { Template } from '../../src/ui/Templates/Template';
 import { TemplateFromAScriptTag } from '../../src/ui/Templates/TemplateFromAScriptTag';
+import { Template } from '../../src/ui/Templates/Template';
+import { ValidLayout } from '../../src/ui/ResultLayoutSelector/ValidLayout';
 import { $$ } from '../../src/utils/Dom';
-
 export function TemplateFromAScriptTagTest() {
   describe('TemplateFromAScriptTag', () => {
     let tmpl: Template;

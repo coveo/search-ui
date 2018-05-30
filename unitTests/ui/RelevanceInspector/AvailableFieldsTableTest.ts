@@ -1,7 +1,7 @@
-import { findWhere } from 'underscore';
-import { IFieldDescription } from '../../../src/rest/FieldDescription';
+import { MockEnvironmentBuilder, IMockEnvironment } from '../../MockEnvironment';
 import { AvailableFieldsTable } from '../../../src/ui/RelevanceInspector/AvailableFieldsTable';
-import { IMockEnvironment, MockEnvironmentBuilder } from '../../../testsFramework/TestsFramework';
+import { IFieldDescription } from '../../../src/rest/FieldDescription';
+import { findWhere } from 'underscore';
 
 export function AvailableFieldsTableTest() {
   describe('AvailableFieldsTable', () => {

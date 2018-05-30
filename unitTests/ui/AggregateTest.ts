@@ -1,7 +1,10 @@
-import * as Globalize from 'globalize';
-import { Aggregate, IAggregateOptions } from '../../src/ui/Aggregate/Aggregate';
+import { Aggregate } from '../../src/ui/Aggregate/Aggregate';
+import * as Mock from '../MockEnvironment';
+import { IAggregateOptions } from '../../src/ui/Aggregate/Aggregate';
+import { FakeResults } from '../Fake';
 import { $$ } from '../../src/utils/Dom';
-import { FakeResults, Mock, Simulate } from '../../testsFramework/TestsFramework';
+import { Simulate } from '../Simulate';
+import * as Globalize from 'globalize';
 
 export function AggregateTest() {
   describe('Aggregate', function() {

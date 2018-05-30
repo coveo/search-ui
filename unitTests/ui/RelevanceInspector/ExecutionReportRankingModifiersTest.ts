@@ -1,7 +1,8 @@
+import { ExecutionReportRankingModifiers } from '../../../src/ui/RelevanceInspector/ExecutionReportRankingModifiers';
 import { IQueryResult } from '../../../src/rest/QueryResult';
 import { IRankingExpression } from '../../../src/rest/RankingExpression';
-import { ExecutionReportRankingModifiers } from '../../../src/ui/RelevanceInspector/ExecutionReportRankingModifiers';
-import { FakeResults, IMockEnvironment, MockEnvironmentBuilder } from '../../../testsFramework/TestsFramework';
+import { IMockEnvironment, MockEnvironmentBuilder } from '../../MockEnvironment';
+import { FakeResults } from '../../Fake';
 
 export function ExecutionReportRankingModifiersTest() {
   describe('ExecutionReportRankingModifiers', () => {

@@ -1,7 +1,6 @@
-import { IQueryResult } from '../../src/rest/QueryResult';
 import { UnderscoreTemplate } from '../../src/ui/Templates/UnderscoreTemplate';
-import { FakeResults } from '../../testsFramework/TestsFramework';
-
+import { IQueryResult } from '../../src/rest/QueryResult';
+import { FakeResults } from '../Fake';
 export function UnderscoreTemplateTest() {
   describe('UnderscoreTemplate', () => {
     let element: HTMLElement;

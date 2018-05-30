@@ -1,12 +1,14 @@
-import { ResultListEvents } from '../../src/EventsModules';
+import * as Mock from '../MockEnvironment';
+import { OmniboxResultList, IOmniboxResultListOptions } from '../../src/ui/OmniboxResultList/OmniboxResultList';
+import { FakeResults } from '../Fake';
+import { $$ } from '../../src/utils/Dom';
 import { IQueryResults } from '../../src/rest/QueryResults';
+import { Simulate } from '../Simulate';
+import { Template } from '../../src/ui/Templates/Template';
 import { get } from '../../src/ui/Base/RegisteredNamedMethods';
-import { IOmniboxResultListOptions, OmniboxResultList } from '../../src/ui/OmniboxResultList/OmniboxResultList';
 import { Quickview } from '../../src/ui/Quickview/Quickview';
 import { ResultLink } from '../../src/ui/ResultLink/ResultLink';
-import { Template } from '../../src/ui/Templates/Template';
-import { $$ } from '../../src/utils/Dom';
-import { FakeResults, Mock, Simulate } from '../../testsFramework/TestsFramework';
+import { ResultListEvents } from '../../src/EventsModules';
 
 export function OmniboxResultListTest() {
   describe('OmniboxResultListTest', () => {

@@ -1,24 +1,25 @@
+import * as Mock from '../MockEnvironment';
 import { NoopComponent } from '../../src/ui/NoopComponent/NoopComponent';
+import { registerCustomMatcher } from '../CustomMatchers';
 import { $$ } from '../../src/utils/Dom';
-import { Mock, registerCustomMatcher } from '../../testsFramework/TestsFramework';
 
 export function ComponentEventsTest() {
   describe('ComponentEvent', () => {
     var test: Mock.IBasicComponentSetup<NoopComponent>;
     var spy: jasmine.Spy;
 
-    beforeEach(() => {
+    beforeEach(function() {
       registerCustomMatcher();
       test = Mock.basicComponentSetup<NoopComponent>(NoopComponent);
       spy = jasmine.createSpy('spy');
     });
 
-    afterEach(() => {
+    afterEach(function() {
       test = null;
       spy = null;
     });
 
-    it('should execute handler if the component is enabled', () => {
+    it('should execute handler if the component is enabled', function() {
       test.cmp.enable();
       test.cmp.bind.onRootElement('foo', spy);
       $$(test.env.root).trigger('foo');
@@ -27,7 +28,7 @@ export function ComponentEventsTest() {
       expect(spy).toHaveBeenCalledWith({ bar: 'baz' });
     });
 
-    it('should execute handler only once if the component is enabled', () => {
+    it('should execute handler only once if the component is enabled', function() {
       test.cmp.enable();
       var spyOnce = jasmine.createSpy('spyOnce');
       test.cmp.bind.onRootElement('foo', spy);
@@ -39,7 +40,7 @@ export function ComponentEventsTest() {
       expect(spyOnce).toHaveBeenCalledTimes(1);
     });
 
-    it('should not execute handler if the component is disabled', () => {
+    it('should not execute handler if the component is disabled', function() {
       test.cmp.disable();
       test.cmp.bind.onRootElement('foo', spy);
       $$(test.env.root).trigger('foo');
@@ -48,7 +49,7 @@ export function ComponentEventsTest() {
       expect(spy).not.toHaveBeenCalledWith({ bar: 'baz' });
     });
 
-    it('should not execute handler only once if the component is disabled', () => {
+    it('should not execute handler only once if the component is disabled', function() {
       test.cmp.disable();
       test.cmp.bind.oneRootElement('foo', spy);
       $$(test.env.root).trigger('foo');
@@ -57,7 +58,7 @@ export function ComponentEventsTest() {
       expect(spy).not.toHaveBeenCalled();
     });
 
-    it('should trigger if the component is enabled', () => {
+    it('should trigger if the component is enabled', function() {
       test.cmp.enable();
       test.cmp.bind.onRootElement('foo', spy);
       test.cmp.bind.trigger(test.env.root, 'foo');
@@ -66,7 +67,7 @@ export function ComponentEventsTest() {
       expect(spy).toHaveBeenCalledWith({ bar: 'baz' });
     });
 
-    it('should not trigger if the component is disabled', () => {
+    it('should not trigger if the component is disabled', function() {
       test.cmp.disable();
       $$(test.env.root).on('foo', spy);
       test.cmp.bind.trigger(test.env.root, 'foo');

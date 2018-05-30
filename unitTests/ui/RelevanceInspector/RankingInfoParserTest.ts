@@ -1,6 +1,6 @@
+import { parseRankingInfo, buildListOfTermsElement } from '../../../src/ui/RelevanceInspector/RankingInfoParser';
+import { FakeResults } from '../../Fake';
 import { $$ } from '../../../src/UtilsModules';
-import { buildListOfTermsElement, parseRankingInfo } from '../../../src/ui/RelevanceInspector/RankingInfoParser';
-import { FakeResults } from '../../../testsFramework/TestsFramework';
 
 export function RankingInfoParserTest() {
   describe('RankingInfoParser', () => {

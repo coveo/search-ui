@@ -1,8 +1,10 @@
-import { IQueryResults } from '../../../src/rest/QueryResults';
-import { IComponentBindings } from '../../../src/ui/Base/ComponentBindings';
 import { RelevanceInspector } from '../../../src/ui/RelevanceInspector/RelevanceInspector';
-import { FakeResults, MockEnvironmentBuilder, Simulate } from '../../../testsFramework/TestsFramework';
+import { IComponentBindings } from '../../../src/ui/Base/ComponentBindings';
+import { MockEnvironmentBuilder } from '../../MockEnvironment';
 import { $$, ResultListEvents } from '../../Test';
+import { Simulate } from '../../Simulate';
+import { FakeResults } from '../../Fake';
+import { IQueryResults } from '../../../src/rest/QueryResults';
 
 export function RelevanceInspectorTest() {
   describe('RelevanceInspector', () => {

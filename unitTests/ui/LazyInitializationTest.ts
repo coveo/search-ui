@@ -1,9 +1,9 @@
-import { IComponentDefinition } from '../../src/ui/Base/Component';
-import { IInitializationParameters, LazyInitialization } from '../../src/ui/Base/Initialization';
-import { get } from '../../src/ui/Base/RegisteredNamedMethods';
+import { LazyInitialization, IInitializationParameters } from '../../src/ui/Base/Initialization';
 import { Querybox } from '../../src/ui/Querybox/Querybox';
 import { $$ } from '../../src/utils/Dom';
-import { MockEnvironmentBuilder } from '../../testsFramework/TestsFramework';
+import { MockEnvironmentBuilder } from '../MockEnvironment';
+import { get } from '../../src/ui/Base/RegisteredNamedMethods';
+import { IComponentDefinition } from '../../src/ui/Base/Component';
 
 export function LazyInitializationTest() {
   describe('LazyInitialization', () => {

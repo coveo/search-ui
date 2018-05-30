@@ -1,6 +1,6 @@
-import { Facet } from '../../src/ui/Facet/Facet';
 import { FacetValueStateHandler } from '../../src/ui/SearchInterface/FacetValueStateHandler';
-import { Mock } from '../../testsFramework/TestsFramework';
+import { Facet } from '../../src/ui/Facet/Facet';
+import * as Mock from '../MockEnvironment';
 
 export function FacetValueStateHandlerTest() {
   describe('FacetValueStateHandler', () => {

@@ -5,12 +5,12 @@ export function RadioButtonTest() {
     let radioButton: RadioButton;
     let onChange: jasmine.Spy;
 
-    beforeEach(() => {
+    beforeEach(function() {
       onChange = jasmine.createSpy('onchange');
       radioButton = new RadioButton(onChange, 'Hello world', 'same-name');
     });
 
-    afterEach(() => {
+    afterEach(function() {
       onChange = null;
       radioButton = null;
     });

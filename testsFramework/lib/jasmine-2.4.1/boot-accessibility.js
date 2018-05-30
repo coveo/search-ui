@@ -132,10 +132,7 @@
     if (currentWindowOnload) {
       currentWindowOnload();
     }
-<<<<<<< HEAD
 
-=======
->>>>>>> d56a382db3ab9c381b57020ac96c3819f70a3794
     htmlReporter.initialize();
     env.execute();
   };

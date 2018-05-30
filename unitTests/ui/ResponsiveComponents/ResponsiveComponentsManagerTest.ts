@@ -1,7 +1,7 @@
-import { ResponsiveComponentsManager } from '../../../src/ui/ResponsiveComponents/ResponsiveComponentsManager';
-import { ISearchInterfaceOptions, SearchInterface } from '../../../src/ui/SearchInterface/SearchInterface';
 import { $$, Dom } from '../../../src/utils/Dom';
-import { Mock } from '../../../testsFramework/TestsFramework';
+import { ResponsiveComponentsManager } from '../../../src/ui/ResponsiveComponents/ResponsiveComponentsManager';
+import * as Mock from '../../MockEnvironment';
+import { SearchInterface, ISearchInterfaceOptions } from '../../../src/ui/SearchInterface/SearchInterface';
 
 export function ResponsiveComponentsManagerTest() {
   let root: Dom;

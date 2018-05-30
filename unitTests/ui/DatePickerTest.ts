@@ -6,12 +6,12 @@ export function DatePickerTest() {
     let picker: DatePicker;
     let spy: jasmine.Spy;
 
-    beforeEach(() => {
+    beforeEach(function() {
       spy = jasmine.createSpy('spy');
       picker = new DatePicker(spy);
     });
 
-    afterEach(() => {
+    afterEach(function() {
       picker = null;
     });
 

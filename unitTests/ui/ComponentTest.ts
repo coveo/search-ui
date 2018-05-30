@@ -1,8 +1,9 @@
-import { IQueryResult } from '../../src/rest/QueryResult';
+import * as Mock from '../MockEnvironment';
 import { Component } from '../../src/ui/Base/Component';
 import { SearchInterface } from '../../src/ui/SearchInterface/SearchInterface';
 import { $$ } from '../../src/utils/Dom';
-import { FakeResults, Mock } from '../../testsFramework/TestsFramework';
+import { IQueryResult } from '../../src/rest/QueryResult';
+import { FakeResults } from '../Fake';
 
 export function ComponentTest() {
   describe('Component', () => {

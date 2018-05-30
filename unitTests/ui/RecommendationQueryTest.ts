@@ -1,6 +1,7 @@
-import { RecommendationQuery } from '../../src/ui/Recommendation/RecommendationQuery';
+import * as Mock from '../MockEnvironment';
 import { $$ } from '../../src/utils/Dom';
-import { Mock, Simulate } from '../../testsFramework/TestsFramework';
+import { RecommendationQuery } from '../../src/ui/Recommendation/RecommendationQuery';
+import { Simulate } from '../Simulate';
 
 export function RecommendationQueryTest() {
   describe('RecommendationQuery', () => {

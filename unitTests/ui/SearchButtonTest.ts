@@ -1,29 +1,29 @@
-import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
+import * as Mock from '../MockEnvironment';
 import { SearchButton } from '../../src/ui/SearchButton/SearchButton';
-import { Mock } from '../../testsFramework/TestsFramework';
+import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
 
 export function SearchButtonTest() {
   describe('SearchButton', () => {
-    let test: Mock.IBasicComponentSetup<SearchButton>;
+    var test: Mock.IBasicComponentSetup<SearchButton>;
 
-    beforeEach(() => {
+    beforeEach(function() {
       test = Mock.basicComponentSetup<SearchButton>(SearchButton);
     });
 
-    afterEach(() => {
+    afterEach(function() {
       test = null;
     });
 
-    it('can be initialized', () => {
+    it('can be initialized', function() {
       expect(test.cmp).toBeDefined();
     });
 
-    it('will trigger a query on click', () => {
+    it('will trigger a query on click', function() {
       test.cmp.click();
       expect(test.env.queryController.executeQuery).toHaveBeenCalled();
     });
 
-    it('will log an analytics event', () => {
+    it('will log an analytics event', function() {
       test.cmp.click();
       expect(test.env.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(analyticsActionCauseList.searchboxSubmit, {});
     });

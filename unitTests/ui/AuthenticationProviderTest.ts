@@ -1,13 +1,15 @@
+import * as Mock from '../MockEnvironment';
+import { AuthenticationProvider } from '../../src/ui/AuthenticationProvider/AuthenticationProvider';
 import { ModalBox } from '../../src/ExternalModulesShim';
-import { IBuildingCallOptionsEventArgs, QueryEvents } from '../../src/events/QueryEvents';
-import { SettingsEvents } from '../../src/events/SettingsEvents';
-import { MissingAuthenticationError } from '../../src/rest/MissingAuthenticationError';
-import { l } from '../../src/strings/Strings';
-import { AuthenticationProvider, IAuthenticationProviderOptions } from '../../src/ui/AuthenticationProvider/AuthenticationProvider';
+import { IAuthenticationProviderOptions } from '../../src/ui/AuthenticationProvider/AuthenticationProvider';
+import { IBuildingCallOptionsEventArgs } from '../../src/events/QueryEvents';
+import { QueryEvents } from '../../src/events/QueryEvents';
 import { ISettingsPopulateMenuArgs } from '../../src/ui/Settings/Settings';
+import { SettingsEvents } from '../../src/events/SettingsEvents';
+import { l } from '../../src/strings/Strings';
 import { $$ } from '../../src/utils/Dom';
-import { Mock } from '../../testsFramework/TestsFramework';
-import { times } from 'underscore';
+import { MissingAuthenticationError } from '../../src/rest/MissingAuthenticationError';
+import _ = require('underscore');
 
 export function AuthenticationProviderTest() {
   describe('AuthenticationProvider', function() {
@@ -129,7 +131,7 @@ export function AuthenticationProviderTest() {
 
     it('should stop a redirect loop after 3 redirects', function() {
       spyOn(test.cmp.logger, 'error').and.returnValue(null);
-      times(3, () => $$(test.env.root).trigger(QueryEvents.queryError, { error: { provider: 'foo' } }));
+      _.times(3, () => $$(test.env.root).trigger(QueryEvents.queryError, { error: { provider: 'foo' } }));
 
       $$(test.env.root).trigger(QueryEvents.queryError, { error: new MissingAuthenticationError('foo') });
       expect(test.cmp.logger.error).toHaveBeenCalledWith(

@@ -1,9 +1,10 @@
-import { each } from 'underscore';
-import { Facet } from '../../src/ui/Facet/Facet';
-import { FacetSort, IFacetSortDescription } from '../../src/ui/Facet/FacetSort';
-import { FacetValue } from '../../src/ui/Facet/FacetValues';
 import { FacetValuesOrder } from '../../src/ui/Facet/FacetValuesOrder';
-import { Mock } from '../../testsFramework/TestsFramework';
+import { Facet } from '../../src/ui/Facet/Facet';
+import { FacetSort } from '../../src/ui/Facet/FacetSort';
+import * as Mock from '../MockEnvironment';
+import { FacetValue } from '../../src/ui/Facet/FacetValues';
+import { IFacetSortDescription } from '../../src/ui/Facet/FacetSort';
+import _ = require('underscore');
 
 export function FacetValuesOrderTest() {
   describe('FacetValuesOrder', () => {
@@ -12,7 +13,7 @@ export function FacetValuesOrderTest() {
     let mockFacetSort: FacetSort;
 
     let expectEqualOrder = (ordered: FacetValue[], expecteds: string[]) => {
-      each(expecteds, (expected, i) => {
+      _.each(expecteds, (expected, i) => {
         expect(ordered[i]).toEqual(jasmine.objectContaining({ value: expected }));
       });
     };

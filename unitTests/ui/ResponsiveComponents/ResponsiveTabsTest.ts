@@ -1,8 +1,8 @@
-import { ResponsiveComponents } from '../../../src/ui/ResponsiveComponents/ResponsiveComponents';
 import { ResponsiveComponentsUtils } from '../../../src/ui/ResponsiveComponents/ResponsiveComponentsUtils';
+import { $$, Dom } from '../../../src/utils/Dom';
 import { ResponsiveTabs } from '../../../src/ui/ResponsiveComponents/ResponsiveTabs';
 import { Tab } from '../../../src/ui/Tab/Tab';
-import { $$, Dom } from '../../../src/utils/Dom';
+import { ResponsiveComponents } from '../../../src/ui/ResponsiveComponents/ResponsiveComponents';
 
 export function ResponsiveTabsTest() {
   let root: Dom;

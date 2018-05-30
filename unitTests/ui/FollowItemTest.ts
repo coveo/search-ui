@@ -1,15 +1,17 @@
-import { SearchAlertsEvents } from '../../src/events/SearchAlertEvents';
-import { IQueryResult } from '../../src/rest/QueryResult';
-import { SearchEndpoint } from '../../src/rest/SearchEndpoint';
-import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
 import { FollowItem } from '../../src/ui/FollowItem/FollowItem';
+import * as Mock from '../MockEnvironment';
+import { SearchEndpoint } from '../../src/rest/SearchEndpoint';
+import { IQueryResult } from '../../src/rest/QueryResult';
+import { FakeResults } from '../Fake';
 import { $$ } from '../../src/utils/Dom';
-import { KEYBOARD } from '../../src/utils/KeyboardUtils';
+import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
 import { QueryUtils } from '../../src/utils/QueryUtils';
-import { FakeResults, Mock, Simulate } from '../../testsFramework/TestsFramework';
+import { Simulate } from '../Simulate';
+import { KEYBOARD } from '../../src/utils/KeyboardUtils';
+import { SearchAlertsEvents } from '../../src/events/SearchAlertEvents';
 
 export function FollowItemTest() {
-  describe('FollowItem', () => {
+  describe('FollowItem', function() {
     let test: Mock.IBasicComponentSetup<FollowItem>;
     let endpointMock: SearchEndpoint;
     let result: IQueryResult;

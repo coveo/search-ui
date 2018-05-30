@@ -1,11 +1,13 @@
-import { Defer } from '../../src/misc/Defer';
-import { IQueryResult } from '../../src/rest/QueryResult';
-import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
+import * as Mock from '../MockEnvironment';
 import { Quickview } from '../../src/ui/Quickview/Quickview';
+import { FakeResults } from '../Fake';
+import { IQueryResult } from '../../src/rest/QueryResult';
 import { Template } from '../../src/ui/Templates/Template';
 import { StringUtils } from '../../src/utils/StringUtils';
+import { Simulate } from '../Simulate';
+import { Defer } from '../../src/misc/Defer';
+import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
 import { Utils } from '../../src/utils/Utils';
-import { Mock, Simulate, FakeResults } from '../../testsFramework/TestsFramework';
 
 export function QuickviewTest() {
   describe('Quickview', () => {

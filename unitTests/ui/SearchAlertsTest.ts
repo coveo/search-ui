@@ -1,16 +1,20 @@
-import { escape } from 'underscore';
-import { ISearchAlertsPopulateMessageEventArgs, SearchAlertsEvents } from '../../src/events/SearchAlertEvents';
-import { SettingsEvents } from '../../src/events/SettingsEvents';
-import { ISubscriptionItemRequest, ISubscriptionQueryRequest, SUBSCRIPTION_TYPE } from '../../src/rest/Subscription';
-import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
-import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
-import { ISearchAlertsOptions, SearchAlerts } from '../../src/ui/SearchAlerts/SearchAlerts';
-import { ISettingsPopulateMenuArgs, Settings } from '../../src/ui/Settings/Settings';
+import * as Mock from '../MockEnvironment';
+import { SearchAlerts } from '../../src/ui/SearchAlerts/SearchAlerts';
+import { ISettingsPopulateMenuArgs } from '../../src/ui/Settings/Settings';
+import { Settings } from '../../src/ui/Settings/Settings';
+import { ISearchAlertsOptions } from '../../src/ui/SearchAlerts/SearchAlerts';
 import { $$ } from '../../src/utils/Dom';
-import { AdvancedComponentSetupOptions, Mock, Simulate } from '../../testsFramework/TestsFramework';
+import { SettingsEvents } from '../../src/events/SettingsEvents';
+import { Simulate } from '../Simulate';
+import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
+import { SearchAlertsEvents, ISearchAlertsPopulateMessageEventArgs } from '../../src/events/SearchAlertEvents';
+import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
+import { AdvancedComponentSetupOptions } from '../MockEnvironment';
+import { SUBSCRIPTION_TYPE, ISubscriptionQueryRequest, ISubscriptionItemRequest } from '../../src/rest/Subscription';
+import * as _ from 'underscore';
 
 export function SearchAlertsTest() {
-  describe('SearchAlerts', () => {
+  describe('SearchAlerts', function() {
     let test: Mock.IBasicComponentSetupWithModalBox<SearchAlerts>;
     let settingsData: ISettingsPopulateMenuArgs;
     let listSubscription: jasmine.Spy;
@@ -220,7 +224,7 @@ export function SearchAlertsTest() {
             const elementOpened = getRootElementOpenedInModalBox(test);
             expect($$(elementOpened).find('tr.coveo-subscriptions-panel-subscription')).not.toBeNull();
             expect($$(elementOpened).find('td.coveo-subscriptions-panel-context')).not.toBeNull();
-            expect($$(elementOpened).find('td.coveo-subscriptions-panel-context').innerHTML).toEqual(escape('<script>1+1</script>'));
+            expect($$(elementOpened).find('td.coveo-subscriptions-panel-context').innerHTML).toEqual(_.escape('<script>1+1</script>'));
             done();
           });
         });

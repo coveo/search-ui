@@ -1,4 +1,5 @@
 import { SearchEndpoint } from '../../src/rest/SearchEndpoint';
+import { FakeResults } from '../Fake';
 import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
 import { IQueryResults } from '../../src/rest/QueryResults';
 import { IErrorResponse, IRequestInfo } from '../../src/rest/EndpointCaller';
@@ -12,7 +13,6 @@ import { ISubscription } from '../../src/rest/Subscription';
 import { AjaxError } from '../../src/rest/AjaxError';
 import _ = require('underscore');
 import { Utils } from '../../src/utils/Utils';
-import { FakeResults } from '../../testsFramework/TestsFramework';
 
 export function SearchEndpointTest() {
   describe('SearchEndpoint', () => {

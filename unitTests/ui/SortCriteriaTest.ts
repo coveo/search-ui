@@ -1,6 +1,6 @@
 import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
 import { SortCriteria, VALID_DIRECTION } from '../../src/ui/Sort/SortCriteria';
-import { Mock } from '../../testsFramework/TestsFramework';
+import * as Mock from '../MockEnvironment';
 
 export function SortCriteriaTest() {
   describe('SortCriteria', () => {

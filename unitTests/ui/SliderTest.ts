@@ -1,8 +1,9 @@
-import * as Globalize from 'globalize';
-import { map, range } from 'underscore';
-import { ISliderGraphData, Slider } from '../../src/ui/Misc/Slider';
-import { SearchInterface } from '../../src/ui/SearchInterface/SearchInterface';
+import { Slider } from '../../src/ui/Misc/Slider';
 import { $$ } from '../../src/utils/Dom';
+import { ISliderGraphData } from '../../src/ui/Misc/Slider';
+import { SearchInterface } from '../../src/ui/SearchInterface/SearchInterface';
+import * as Globalize from 'globalize';
+import _ = require('underscore');
 
 export function SliderTest() {
   describe('Slider', () => {
@@ -23,7 +24,7 @@ export function SliderTest() {
     }
 
     function buildGraphData(): ISliderGraphData[] {
-      let graphData: ISliderGraphData[] = map(range(0, 10, 1), range => {
+      let graphData: ISliderGraphData[] = _.map(_.range(0, 10, 1), range => {
         return {
           start: range * 10,
           end: (range + 1) * 10,
@@ -165,7 +166,7 @@ export function SliderTest() {
           },
           root
         );
-        expect(slider.steps).toEqual(jasmine.arrayContaining(range(0, 104, 4)));
+        expect(slider.steps).toEqual(jasmine.arrayContaining(_.range(0, 104, 4)));
       });
 
       it('step should not go above 100 for performance reason', () => {
@@ -179,7 +180,7 @@ export function SliderTest() {
           root
         );
 
-        expect(slider.steps).toEqual(jasmine.arrayContaining(range(0, 1000, 10)));
+        expect(slider.steps).toEqual(jasmine.arrayContaining(_.range(0, 1000, 10)));
       });
 
       it('getSteps allow to provide a function to generate steps', () => {

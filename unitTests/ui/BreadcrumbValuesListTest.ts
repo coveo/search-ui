@@ -1,11 +1,12 @@
-import { isString, map } from 'underscore';
-import { IIndexFieldValue } from '../../src/rest/FieldValue';
-import { BreadcrumbValueElement } from '../../src/ui/Facet/BreadcrumbValueElement';
 import { BreadcrumbValueList } from '../../src/ui/Facet/BreadcrumbValuesList';
+import * as Mock from '../MockEnvironment';
 import { Facet } from '../../src/ui/Facet/Facet';
 import { FacetValue } from '../../src/ui/Facet/FacetValues';
+import { BreadcrumbValueElement } from '../../src/ui/Facet/BreadcrumbValueElement';
+import * as _ from 'underscore';
 import { $$ } from '../../src/utils/Dom';
-import { FakeResults, Mock } from '../../testsFramework/TestsFramework';
+import { FakeResults } from '../Fake';
+import { IIndexFieldValue } from '../../src/rest/FieldValue';
 
 export function BreadcrumbValueListTest() {
   describe('BreadcrumbValuesListTest', () => {
@@ -17,7 +18,7 @@ export function BreadcrumbValueListTest() {
       facet.options = {};
       facet.options.numberOfValuesInBreadcrumb = 5;
       facet.getValueCaption = jasmine.createSpy('getValueCaption').and.callFake((facetValue: IIndexFieldValue) => facetValue.value);
-      facetValues = map(FakeResults.createFakeFieldValues('foo', 3), fieldValue => {
+      facetValues = _.map(FakeResults.createFakeFieldValues('foo', 3), fieldValue => {
         const created = FacetValue.createFromFieldValue(fieldValue);
         created.selected = true;
         return created;
@@ -27,7 +28,7 @@ export function BreadcrumbValueListTest() {
     it('should support rendering as a simple string and not an HTML element', () => {
       facet.options.title = 'My facet title';
       const builtAsString = new BreadcrumbValueList(facet, facetValues, BreadcrumbValueElement).buildAsString();
-      expect(isString(builtAsString)).toBe(true);
+      expect(_.isString(builtAsString)).toBe(true);
       expect(builtAsString).toContain('My facet title');
       expect(builtAsString).toContain('foo0');
       expect(builtAsString).toContain('foo1');
@@ -90,7 +91,7 @@ export function BreadcrumbValueListTest() {
       });
 
       it('should display the hidden values correctly when every values are excluded', () => {
-        facetValues = map(facetValues, facetValue => {
+        facetValues = _.map(facetValues, facetValue => {
           facetValue.excluded = true;
           facetValue.selected = false;
           return facetValue;
@@ -104,7 +105,7 @@ export function BreadcrumbValueListTest() {
       });
 
       it('should display the hidden values correctly when every values are included', () => {
-        facetValues = map(facetValues, facetValue => {
+        facetValues = _.map(facetValues, facetValue => {
           facetValue.excluded = false;
           facetValue.selected = true;
           return facetValue;

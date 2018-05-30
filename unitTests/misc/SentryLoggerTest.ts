@@ -1,7 +1,7 @@
 import { QueryController } from '../../src/controllers/QueryController';
 import { SentryLogger } from '../../src/misc/SentryLogger';
+import { mockQueryController, mockWindow, mockSearchEndpoint } from '../MockEnvironment';
 import { SearchEndpoint } from '../../src/rest/SearchEndpoint';
-import { Mock } from '../../testsFramework/TestsFramework';
 
 export function SentryLoggerTest() {
   describe('SentryLoggerTest', () => {
@@ -10,10 +10,10 @@ export function SentryLoggerTest() {
     let windoh: Window;
 
     beforeEach(() => {
-      windoh = Mock.mockWindow();
+      windoh = mockWindow();
       windoh.onerror = null;
-      queryController = Mock.mockQueryController();
-      endpoint = Mock.mockSearchEndpoint();
+      queryController = mockQueryController();
+      endpoint = mockSearchEndpoint();
       queryController.getEndpoint = () => endpoint;
       new SentryLogger(queryController, windoh);
     });

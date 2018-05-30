@@ -1,7 +1,9 @@
+import * as Mock from '../MockEnvironment';
+import { FieldSuggestions } from '../../src/ui/FieldSuggestions/FieldSuggestions';
+import { IFieldSuggestionsOptions } from '../../src/ui/FieldSuggestions/FieldSuggestions';
+import { Simulate } from '../Simulate';
 import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
-import { FieldSuggestions, IFieldSuggestionsOptions } from '../../src/ui/FieldSuggestions/FieldSuggestions';
 import { $$ } from '../../src/utils/Dom';
-import { Mock, Simulate } from '../../testsFramework/TestsFramework';
 
 export function FieldSuggestionsTest() {
   describe('FieldSuggestions', () => {

@@ -1,14 +1,15 @@
-import { IQueryResult } from '../../src/rest/QueryResult';
-import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
+import * as Mock from '../MockEnvironment';
 import { ResultLink } from '../../src/ui/ResultLink/ResultLink';
-import { IResultLinkOptions } from '../../src/ui/ResultLink/ResultLinkOptions';
-import { $$ } from '../../src/utils/Dom';
+import { IQueryResult } from '../../src/rest/QueryResult';
 import { HighlightUtils } from '../../src/utils/HighlightUtils';
+import { $$ } from '../../src/utils/Dom';
+import { IResultLinkOptions } from '../../src/ui/ResultLink/ResultLinkOptions';
+import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
 import { OS_NAME } from '../../src/utils/OSUtils';
-import { FakeResults, Mock } from '../../testsFramework/TestsFramework';
+import { FakeResults } from '../Fake';
 
 export function ResultLinkTest() {
-  describe('ResultLink', () => {
+  describe('ResultLink', function() {
     let test: Mock.IBasicComponentSetup<ResultLink>;
     let fakeResult: IQueryResult;
 
@@ -19,7 +20,7 @@ export function ResultLinkTest() {
       spyOn(window, 'open');
     });
 
-    afterEach(() => {
+    afterEach(function() {
       test = null;
       fakeResult = null;
     });
