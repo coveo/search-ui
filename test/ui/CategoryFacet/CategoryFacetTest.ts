@@ -281,6 +281,17 @@ export function CategoryFacetTest() {
         removeAllCategoriesButton(test.cmp.element);
         expect($$(test.cmp.element).findAll('.coveo-category-facet-value').length).toEqual(numberOfReturnedValues);
       });
+
+      it('appends an all categories button when there are parents', () => {
+        Simulate.query(test.env, simulateQueryData);
+        expect($$(test.cmp.element).find('.coveo-category-facet-all-categories')).not.toBeNull();
+      });
+
+      it('does not append an all categories button when there are no parents', () => {
+        simulateQueryData.query.categoryFacets[0].path = [];
+        Simulate.query(test.env, simulateQueryData);
+        expect($$(test.cmp.element).find('.coveo-category-facet-all-categories')).toBeNull();
+      });
     });
   });
 }
