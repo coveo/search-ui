@@ -45,6 +45,4 @@ export class CategoryFacetQueryController {
         return queryResults.groupByResults[0].values;
       });
   }
-
-  public addDebugQueries;
 }
