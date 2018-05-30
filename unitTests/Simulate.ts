@@ -22,7 +22,7 @@ import { Defer } from '../src/misc/Defer';
 import { IOmniboxData } from '../src/ui/Omnibox/OmniboxInterface';
 import { OmniboxEvents } from '../src/events/OmniboxEvents';
 import { IBreadcrumbItem, IPopulateBreadcrumbEventArgs, BreadcrumbEvents } from '../src/events/BreadcrumbEvents';
-import { JQuery } from '../test/JQueryModule';
+import { JQuery } from './JQueryModule';
 import _ = require('underscore');
 import ModalBox = Coveo.ModalBox.ModalBox;
 import { NoopComponent } from '../src/ui/NoopComponent/NoopComponent';

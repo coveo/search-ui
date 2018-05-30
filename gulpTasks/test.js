@@ -28,10 +28,10 @@ gulp.task('setupTests', function() {
 
 gulp.task('coverage', ['lcovCoverage']);
 
-gulp.task('test', ['setupTests', 'buildUnitTest'], function(done) {
+gulp.task('unitTests', ['setupTests', 'buildUnitTests'], function(done) {
   new TestServer(
     {
-      configFile: path.resolve('./karma.conf.js')
+      configFile: path.resolve('./karma.unit.test.conf.js')
     },
     exitCode => {
       if (exitCode) {
@@ -44,9 +44,28 @@ gulp.task('test', ['setupTests', 'buildUnitTest'], function(done) {
   ).start();
 });
 
-gulp.task('buildUnitTest', shell.task(['node node_modules/webpack/bin/webpack.js --config webpack.unit.test.config.js']));
+gulp.task('accessibilityTests', ['setupTests', 'buildAccessibilityTests'], done => {
+  new TestServer(
+    {
+      configFile: path.resolve('./karma.accessibility.test.conf.js')
+    },
+    exitCode => {
+      if (exitCode) {
+        // Fail CI builds if any test fails (since karma will exit 1 on any error)
+        throw new Error(exitCode);
+      } else {
+        done();
+      }
+    }
+  ).start();
+});
 
-gulp.task('buildAccessibilityTest', shell.task(['node node_modules/webpack/bin/webpack.js --config webpack.accessibility.test.config.js']));
+gulp.task('buildUnitTests', shell.task(['node node_modules/webpack/bin/webpack.js --config webpack.unit.test.config.js']));
+
+gulp.task(
+  'buildAccessibilityTests',
+  shell.task(['node node_modules/webpack/bin/webpack.js --config webpack.accessibility.test.config.js'])
+);
 
 gulp.task('uploadCoverage', ['lcovCoverage'], shell.task(['cat bin/coverage/lcov.info | ./node_modules/.bin/coveralls']));
 

@@ -20,7 +20,7 @@ script:
 - yarn run injectTag
 - yarn run build
 - if [ "x$TRAVIS_TAG" != "x" ]; then yarn run minimize ; fi
-- yarn run test
+- yarn run unitTests
 - yarn run uploadCoverage
 - yarn run testChunks
 after_success:
