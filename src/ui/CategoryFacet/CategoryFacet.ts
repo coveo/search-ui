@@ -439,7 +439,6 @@ export class CategoryFacet extends Component {
       }
     }
 
-    const childrenValuesToRender = this.moreValuesToFetch;
     const childrenValuesToRender = this.moreValuesToFetch
       ? categoryFacetResult.values.slice(0, numberOfRequestedValues - 1)
       : categoryFacetResult.values.slice(0, numberOfRequestedValues);
