@@ -1,6 +1,6 @@
 import { CategoryFacet, ICategoryFacetOptions } from '../../../src/ui/CategoryFacet/CategoryFacet';
 import * as Mock from '../../MockEnvironment';
-import { $$ } from '../../../src/utils/Dom';
+import { $$, Dom } from '../../../src/utils/Dom';
 import { IQueryResults } from '../../../src/rest/QueryResults';
 import { IBasicComponentSetup, mock } from '../../MockEnvironment';
 import { Simulate, ISimulateQueryData } from '../../Simulate';
@@ -8,18 +8,18 @@ import { FakeResults } from '../../Fake';
 import { QueryBuilder } from '../../../src/Core';
 import { CategoryFacetQueryController } from '../../../src/controllers/CategoryFacetQueryController';
 import { IBuildingQueryEventArgs } from '../../../src/events/QueryEvents';
-import { range } from 'underscore';
+import { range, pluck, shuffle } from 'underscore';
 
 export function CategoryFacetTest() {
   function buildSimulateQueryData(numberOfResults = 11, numberOfRequestedValues = 11): ISimulateQueryData {
     const fakeResults = FakeResults.createFakeResults();
     const queryBuilder = new QueryBuilder();
+    fakeResults.categoryFacets.push(FakeResults.createFakeCategoryFacetResult('@field', [], 'value', numberOfResults));
     queryBuilder.categoryFacets.push({
       field: '@field',
-      path: [],
+      path: pluck(fakeResults.categoryFacets[0].parentValues, 'value'),
       maximumNumberOfValues: numberOfRequestedValues
     });
-    fakeResults.categoryFacets.push(FakeResults.createFakeCategoryFacetResult('@field', [], 'value', numberOfResults));
     return { results: fakeResults, query: queryBuilder.build() };
   }
 
@@ -29,7 +29,9 @@ export function CategoryFacetTest() {
 
     beforeEach(() => {
       simulateQueryData = buildSimulateQueryData();
-      test = Mock.basicComponentSetup<CategoryFacet>(CategoryFacet);
+      test = Mock.optionsComponentSetup<CategoryFacet, ICategoryFacetOptions>(CategoryFacet, {
+        field: '@field'
+      });
     });
 
     it('calling hide adds the coveo hidden class', () => {
@@ -157,20 +159,22 @@ export function CategoryFacetTest() {
         const pageSize = test.cmp.options.pageSize;
         const initialNumberOfValues = 20;
         test.cmp.showMore();
-        Simulate.query(test.env, buildSimulateQueryData(21, 21));
+        simulateQueryData = buildSimulateQueryData(21, 21);
+        Simulate.query(test.env, simulateQueryData);
 
         test.cmp.showLess();
-        const { queryBuilder } = Simulate.query(test.env);
+        const { queryBuilder } = Simulate.query(test.env, simulateQueryData);
 
         expect(queryBuilder.categoryFacets[0].maximumNumberOfValues).toBe(initialNumberOfValues - pageSize + 1);
       });
 
       it('showLess should not request less values than the numberOfValues option', () => {
         const initialNumberOfValues = test.cmp.options.numberOfValues;
-        Simulate.query(test.env, buildSimulateQueryData(13, 13));
+        simulateQueryData = buildSimulateQueryData(13, 13);
+        Simulate.query(test.env, simulateQueryData);
 
         test.cmp.showLess();
-        const { queryBuilder } = Simulate.query(test.env);
+        const { queryBuilder } = Simulate.query(test.env, simulateQueryData);
 
         expect(queryBuilder.categoryFacets[0].maximumNumberOfValues).toBe(initialNumberOfValues + 1);
       });
@@ -192,8 +196,14 @@ export function CategoryFacetTest() {
     });
 
     describe('renders', () => {
-      function verifyParents(firstParent, numberOfParents) {
-        let currentCategoryValue = firstParent;
+      function removeAllCategoriesButton(element) {
+        const allCategoriesButton = $$(element).find('.coveo-category-facet-all-categories');
+        allCategoriesButton && $$(allCategoriesButton).detach();
+      }
+
+      function verifyParents(numberOfParents: number) {
+        removeAllCategoriesButton(test.cmp.element);
+        let currentCategoryValue = $$(test.cmp.element).find('.coveo-category-facet-value');
         for (const i in range(numberOfParents)) {
           const valueCaption = $$(currentCategoryValue).find('.coveo-category-facet-value-caption');
           const valueCount = $$(currentCategoryValue).find('.coveo-category-facet-value-count');
@@ -201,10 +211,12 @@ export function CategoryFacetTest() {
           expect($$(valueCount).text()).toEqual('5');
           currentCategoryValue = $$(currentCategoryValue).find('.coveo-category-facet-value');
         }
-        return currentCategoryValue;
+        return $$(currentCategoryValue);
       }
 
-      function verifyChildren(categoryValues, numberOfValues) {
+      function verifyChildren(numberOfValues: number, parent: Dom = $$(test.cmp.element)) {
+        removeAllCategoriesButton(parent);
+        const categoryValues = $$(parent).findAll('.coveo-category-facet-value');
         for (const i in range(0, numberOfValues)) {
           const valueCaption = $$(categoryValues[i]).find('.coveo-category-facet-value-caption');
           const valueCount = $$(categoryValues[i]).find('.coveo-category-facet-value-count');
@@ -212,13 +224,20 @@ export function CategoryFacetTest() {
           expect($$(valueCount).text()).toEqual('5');
         }
       }
+
+      beforeEach(() => {
+        Object.defineProperty(test.cmp, 'activePath', {
+          get: () => simulateQueryData.query.categoryFacets[0].path
+        });
+      });
+
       it('when there are only children', () => {
         const numberOfValues = simulateQueryData.results.categoryFacets[0].values.length - 1; //-1 because we always request one more result
+        simulateQueryData.query.categoryFacets[0].path = [];
         simulateQueryData.results.categoryFacets[0].parentValues = [];
         Simulate.query(test.env, simulateQueryData);
 
-        const categoryValues = $$(test.cmp.element).findAll('.coveo-category-facet-value');
-        verifyChildren(categoryValues, numberOfValues);
+        verifyChildren(numberOfValues);
       });
 
       it('when there are only parents', () => {
@@ -226,8 +245,7 @@ export function CategoryFacetTest() {
         simulateQueryData.results.categoryFacets[0].values = [];
         Simulate.query(test.env, simulateQueryData);
 
-        let currentCategoryValue = $$(test.cmp.element).find('.coveo-category-facet-value');
-        verifyParents(currentCategoryValue, numberOfParents);
+        verifyParents(numberOfParents);
       });
 
       it('when there are children and parents', () => {
@@ -236,15 +254,33 @@ export function CategoryFacetTest() {
 
         Simulate.query(test.env, simulateQueryData);
 
-        let currentCategoryValue = $$(test.cmp.element).find('.coveo-category-facet-value');
-        const lastParent = verifyParents(currentCategoryValue, numberOfParents);
-        const categoryValues = $$(lastParent).findAll('.coveo-category-facet-value');
-        verifyChildren(categoryValues, numberOfValues);
+        const lastParent = verifyParents(numberOfParents);
+        verifyChildren(numberOfValues, lastParent);
       });
 
-      it('correctly sorts parents', () => {});
+      it('correctly sorts parents', () => {
+        const numberOfParents = simulateQueryData.results.categoryFacets[0].parentValues.length - 1;
+        simulateQueryData.results.categoryFacets[0].values = [];
+        simulateQueryData.results.categoryFacets[0].parentValues = shuffle(simulateQueryData.results.categoryFacets[0].parentValues);
 
-      it('correct number of children when there are less than the numberOfValues option');
+        Simulate.query(test.env, simulateQueryData);
+
+        verifyParents(numberOfParents);
+      });
+
+      it('correct number of children when there are less results than what has been queried for', () => {
+        // We usually render one less result than what we queried for, because the extra result queried is just a check.
+        // This makes sure we don't do it when there are less results than we queries for.
+        const numberOfRequestedValues = test.cmp.options.numberOfValues - 1;
+        const numberOfReturnedValues = numberOfRequestedValues - 1;
+        simulateQueryData = buildSimulateQueryData(numberOfReturnedValues, numberOfRequestedValues);
+        simulateQueryData.results.categoryFacets[0].parentValues = [];
+
+        Simulate.query(test.env, simulateQueryData);
+
+        removeAllCategoriesButton(test.cmp.element);
+        expect($$(test.cmp.element).findAll('.coveo-category-facet-value').length).toEqual(numberOfReturnedValues);
+      });
     });
   });
 }
