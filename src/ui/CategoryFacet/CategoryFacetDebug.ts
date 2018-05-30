@@ -75,7 +75,7 @@ export class CategoryFacetDebug {
           if (!currentNode) {
             const formattedOrphan = path.join(delimiter);
             orphans.push(formattedOrphan);
-            logger.error(`Value ${formattedOrphan} has no parents.`);
+            logger.error(`Value ${formattedOrphan} has no parent.`);
             pathIsValid = false;
             break;
           }
