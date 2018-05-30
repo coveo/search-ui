@@ -258,11 +258,11 @@ export class FakeResults {
     Assert.isNonEmptyString(field);
     return {
       field,
-      values: range(1, numberOfValues + 1).map(number => {
+      values: range(0, numberOfValues).map(number => {
         return { value: token + number, numberOfResults: 5 };
       }),
-      parentValues: range(1, numberOfValues + 1).map(number => {
-        return { value: token + number, numberOfResults: 5 };
+      parentValues: range(0, numberOfValues).map(number => {
+        return { value: 'parent' + number, numberOfResults: 5 };
       })
     };
   }
