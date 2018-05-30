@@ -390,7 +390,7 @@ export var analyticsActionCauseList = {
     metaMap: { documentTitle: 1, documentURL: 2 }
   },
   /**
-   * Identifies the click and custom event that gets logged when a user clicks on a search result to open an item.
+   * Identifies the click event that gets logged when a user clicks on a search result to open an item.
    *
    * `actionCause`: `'documentOpen'`
    * `actionType`: `'document'`
@@ -551,7 +551,7 @@ export var analyticsActionCauseList = {
     metaMap: { facetId: 1 }
   },
   /**
-   * Identifies the search event that gets logged when a user toggles the Collapse/Expand icon???
+   * Identifies the search event that gets logged when the user toggles the facet operator.
    *
    * `actionCause`: `'facetToggle'`
    * `actionType`: `'facet'`
@@ -719,7 +719,7 @@ export var analyticsActionCauseList = {
     type: 'noResults'
   },
   /**
-   * In the context of Coveo for Salesforce, this is logged when a user switches from a search results list in the Insight Panel to the Expanded Search using the Expanded Search icon.
+   * In the context of Coveo for Salesforce, this search event is logged when a user switches from a search results list in the Insight Panel to the Expanded Search using the Expanded Search icon.
    *
    * `actionCause`: `'expandToFullUI'`
    * `actionType`: `'interface'`
@@ -729,7 +729,7 @@ export var analyticsActionCauseList = {
     type: 'interface'
   },
   /**
-   * In the context of some Coveo for Salesforce user interfaces, this is logged when a user fills a form input in the case creation page.
+   * In the context of some Coveo for Salesforce user interfaces, this search event is logged when a user fills a form input in the case creation page.
    *
    * `actionCause`: `'inputChange'`
    * `actionType`: `'caseCreation'`
@@ -739,7 +739,7 @@ export var analyticsActionCauseList = {
     type: 'caseCreation'
   },
   /**
-   * In the context of some Coveo for Salesforce user interfaces, this is logged when a user creates a case by clicking the submit button.
+   * In the context of some Coveo for Salesforce user interfaces, this custom event is logged when a user creates a case by clicking the submit button.
    *
    * `actionCause`: `'submitButton'`
    * `actionType`: `'caseCreation'`
@@ -749,7 +749,7 @@ export var analyticsActionCauseList = {
     type: 'caseCreation'
   },
   /**
-   * In the context of some Coveo for Salesforce user interfaces, this is logged when a user cancels the creation of their case by clicking the cancel button.
+   * In the context of some Coveo for Salesforce user interfaces, this custom event is logged when a user cancels the creation of their case by clicking the cancel button.
    *
    * `actionCause`: `'cancelButton'`
    * `actionType`: `'caseCreation'`
@@ -759,7 +759,7 @@ export var analyticsActionCauseList = {
     type: 'caseCreation'
   },
   /**
-   * In the context of some Coveo for Salesforce user interfaces, this is logged when a user leaves the case creation page.
+   * In the context of some Coveo for Salesforce user interfaces, this custom event is logged when a user leaves the case creation page.
    *
    * `actionCause`: `'unloadPage'`
    * `actionType`: `'caseCreation'`
@@ -769,7 +769,7 @@ export var analyticsActionCauseList = {
     type: 'caseCreation'
   },
   /**
-   * In the context of Coveo for Salesforce, this is logged when a user checks the Show only contextual result checkbox from the Insight Panel.
+   * In the context of Coveo for Salesforce, this search event is logged when a user checks the Show only contextual result checkbox from the Insight Panel.
    *
    * `actionCause`: `'casecontextAdd'`
    * `actionType`: `'casecontext'`
@@ -783,7 +783,7 @@ export var analyticsActionCauseList = {
     metaMap: { caseID: 5 }
   },
   /**
-   * In the context of Coveo for Salesforce, this is logged when a user clears the Show only contextual result checkbox from the Insight Panel.
+   * In the context of Coveo for Salesforce, this search event is logged when a user clears the Show only contextual result checkbox from the Insight Panel.
    *
    * `actionCause`: `'casecontextRemove'`
    * `actionType`: `'casecontext'`
@@ -812,7 +812,7 @@ export var analyticsActionCauseList = {
     metaMap: { preferenceName: 1, preferenceType: 2 }
   },
   /**
-   * In the context of Coveo for Salesforce, this is logged when an agent opens the User Actions panel.
+   * In the context of Coveo for Salesforce, this is custom event logged when an agent opens the User Actions panel.
    *
    * `actionCause`: `'getUserHistory'`
    * `actionType`: `'userHistory'`
@@ -822,7 +822,7 @@ export var analyticsActionCauseList = {
     type: 'userHistory'
   },
   /**
-   * In the context of some Coveo for Salesforce user interfaces, this is logged when an agent clicks a link in the User Actions panel.
+   * In the context of some Coveo for Salesforce user interfaces, this  custom event is logged when an agent clicks a link in the User Actions panel.
    *
    * `actionCause`: `'userActionDocumentClick'`
    * `actionType`: `'userHistory'`
@@ -832,7 +832,7 @@ export var analyticsActionCauseList = {
     type: 'userHistory'
   },
   /**
-   * In the context of Coveo for Salesforce, this is logged when a user attaches a knowledge base article to a case.
+   * In the context of Coveo for Salesforce, this custom event is logged when a user attaches a knowledge base article to a case.
    *
    * `actionCause`: `'caseAttach'`
    * `actionType`: `'case'`
@@ -849,7 +849,7 @@ export var analyticsActionCauseList = {
     metaMap: { documentTitle: 1, resultUriHash: 3, articleID: 4, caseID: 5 }
   },
   /**
-   * In the context of Coveo for Salesforce, this is logged when a user detaches a knowledge base article to a case.
+   * In the context of Coveo for Salesforce, this custom event is logged when a user detaches a knowledge base article to a case.
    *
    * `actionCause`: `'caseDetach'`
    * `actionType`: `'case'`
@@ -1063,7 +1063,7 @@ export var analyticsActionCauseList = {
     type: 'recommendation'
   },
   /**
-   * Identifies the search event that gets logged???
+   * Identifies the search event that gets logged when an advanced query is successfully executed.
    *
    * `actionCause`: `'advancedSearch'`
    * `actionType`: `'advancedSearch'`
@@ -1073,7 +1073,7 @@ export var analyticsActionCauseList = {
     type: 'advancedSearch'
   },
   /**
-   * Identifies the custom??? event that gets logged???
+   * Identifies the custom event that gets logged when a user follows a document.
    *
    * `actionCause`: `'followDocument'`
    * `actionType`: `'searchAlerts'`
@@ -1083,7 +1083,7 @@ export var analyticsActionCauseList = {
     type: 'searchAlerts'
   },
   /**
-   * Identifies the custom event that gets logged???
+   * Identifies the custom event that gets logged when a user follows a query.
    *
    * `actionCause`: `'followQuery'`
    * `actionType`: `'searchAlerts'`
@@ -1093,7 +1093,7 @@ export var analyticsActionCauseList = {
     type: 'searchAlerts'
   },
   /**
-   * Identifies the custom event that gets logged???
+   * Identifies the custom event that gets logged when the dropdown value for frequency is changed.
    *
    * `actionCause`: `'updateSubscription'`
    * `actionType`: `'searchAlerts'`
@@ -1103,7 +1103,7 @@ export var analyticsActionCauseList = {
     type: 'searchAlerts'
   },
   /**
-   * Identifies the custom??? event that gets logged???
+   * Identifies the custom event that gets logged when a subscription is successfully deleted.
    *
    * `actionCause`: `'deleteSubscription'`
    * `actionType`: `'searchAlerts'`
@@ -1113,7 +1113,7 @@ export var analyticsActionCauseList = {
     type: 'searchAlerts'
   },
   /**
-   * Identifies the custom??? event that gets logged???
+   * Identifies the custom event that gets logged when a user unfollows a document.
    *
    * `actionCause`: `'unfollowDocument'`
    * `actionType`: `'searchAlerts'`
@@ -1123,7 +1123,7 @@ export var analyticsActionCauseList = {
     type: 'searchAlerts'
   },
   /**
-   * Identifies the analytics??? event that gets logged???
+   * Identifies the custom event that gets logged when a user unfollows a query.
    *
    * `actionCause`: `'unfollowQuery'`
    * `actionType`: `'searchAlerts'`
