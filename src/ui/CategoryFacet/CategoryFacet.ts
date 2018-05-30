@@ -373,13 +373,11 @@ export class CategoryFacet extends Component {
    * This method will go through any value that contains the value parameter and verify if there are missig parents.
    * If you don't want to specify a value, you can simply enable {@link CategoryFacet.option.debug} and do an empty query.
    */
-  public debugValue(value: string) {
+  public async debugValue(value: string) {
     const queryBuilder = new QueryBuilder();
     this.categoryFacetQueryController.addDebugGroupBy(queryBuilder, value);
-    this.queryController
-      .getEndpoint()
-      .search(queryBuilder.build())
-      .then(queryResults => CategoryFacetDebug.analyzeResults(queryResults.groupByResults[0], this.options.delimitingCharacter));
+    const queryResults = await this.queryController.getEndpoint().search(queryBuilder.build());
+    CategoryFacetDebug.analyzeResults(queryResults.groupByResults[0], this.options.delimitingCharacter);
   }
 
   public showWaitingAnimation() {
