@@ -7357,5 +7357,13 @@
   "AllCategories": {
     "en": "All Categories",
     "fr": "Toutes les catégories"
+  },
+  "Recommended": {
+    "en": "Recommended",
+    "fr": "Recommandé"
+  },
+  "Featured": {
+    "en": "Featured",
+    "fr": "En vedette"
   }
 }

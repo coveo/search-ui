@@ -579,6 +579,9 @@ ExecutionReportQueryOverrideSectionTest();
 import { ExecutionReportAuthenticationSectionTest } from './ui/RelevanceInspector/ExecutionReportAuthenticationSectionTest';
 ExecutionReportAuthenticationSectionTest();
 
+import { ExecutionReportITDSectionTest } from './ui/RelevanceInspector/ExecutionReportITDSectionTest';
+ExecutionReportITDSectionTest();
+
 import { ExecutionReportTest } from './ui/RelevanceInspector/ExecutionReportTest';
 ExecutionReportTest();
 
