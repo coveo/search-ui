@@ -50,8 +50,7 @@ getJasmineRequireObj().AjaxEvent = function() {
     return new Date().getTime();
   }
 
-  function noop() {
-  }
+  function noop() {}
 
   // Event object
   // https://dom.spec.whatwg.org/#concept-event
@@ -113,7 +112,7 @@ getJasmineRequireObj().AjaxEventBus = function(eventFactory) {
       return list.indexOf(thing);
     }
 
-    for(var i = 0; i < list.length; i++) {
+    for (var i = 0; i < list.length; i++) {
       if (thing === list[i]) {
         return i;
       }
@@ -200,12 +199,7 @@ getJasmineRequireObj().AjaxFakeRequest = function(eventBusFactory) {
   }
 
   function unconvertibleResponseTypeMessage(type) {
-    var msg = [
-      "Can't build XHR.response for XHR.responseType of '",
-      type,
-      "'.",
-      "XHR.response must be explicitly stubbed"
-    ];
+    var msg = ["Can't build XHR.response for XHR.responseType of '", type, "'.", 'XHR.response must be explicitly stubbed'];
     return msg.join(' ');
   }
 
@@ -241,7 +235,7 @@ getJasmineRequireObj().AjaxFakeRequest = function(eventBusFactory) {
           }
         }
       } else {
-        headers.push({ name: "Content-Type", value: contentType || "application/json" });
+        headers.push({ name: 'Content-Type', value: contentType || 'application/json' });
       }
 
       return headers;
@@ -249,10 +243,10 @@ getJasmineRequireObj().AjaxFakeRequest = function(eventBusFactory) {
 
     function parseXml(xmlText, contentType) {
       if (global.DOMParser) {
-        return (new global.DOMParser()).parseFromString(xmlText, 'text/xml');
+        return new global.DOMParser().parseFromString(xmlText, 'text/xml');
       } else {
-        var xml = new global.ActiveXObject("Microsoft.XMLDOM");
-        xml.async = "false";
+        var xml = new global.ActiveXObject('Microsoft.XMLDOM');
+        xml.async = 'false';
         xml.loadXML(xmlText);
         return xml;
       }
@@ -269,7 +263,15 @@ getJasmineRequireObj().AjaxFakeRequest = function(eventBusFactory) {
       return null;
     }
 
-    var iePropertiesThatCannotBeCopied = ['responseBody', 'responseText', 'responseXML', 'status', 'statusText', 'responseTimeout', 'responseURL'];
+    var iePropertiesThatCannotBeCopied = [
+      'responseBody',
+      'responseText',
+      'responseXML',
+      'status',
+      'statusText',
+      'responseTimeout',
+      'responseURL'
+    ];
     extend(FakeXMLHttpRequest.prototype, new global.XMLHttpRequest(), iePropertiesThatCannotBeCopied);
     extend(FakeXMLHttpRequest.prototype, {
       open: function() {
@@ -283,7 +285,7 @@ getJasmineRequireObj().AjaxFakeRequest = function(eventBusFactory) {
       },
 
       setRequestHeader: function(header, value) {
-        if(this.requestHeaders.hasOwnProperty(header)) {
+        if (this.requestHeaders.hasOwnProperty(header)) {
           this.requestHeaders[header] = [this.requestHeaders[header], value].join(', ');
         } else {
           this.requestHeaders[header] = value;
@@ -297,7 +299,7 @@ getJasmineRequireObj().AjaxFakeRequest = function(eventBusFactory) {
       abort: function() {
         this.readyState = 0;
         this.status = 0;
-        this.statusText = "abort";
+        this.statusText = 'abort';
         this.eventBus.trigger('readystatechange');
         this.eventBus.trigger('progress');
         this.eventBus.trigger('abort');
@@ -356,7 +358,7 @@ getJasmineRequireObj().AjaxFakeRequest = function(eventBusFactory) {
       getResponseHeader: function(name) {
         name = name.toLowerCase();
         var resultHeader;
-        for(var i = 0; i < this.responseHeaders.length; i++) {
+        for (var i = 0; i < this.responseHeaders.length; i++) {
           var header = this.responseHeaders[i];
           if (name === header.name.toLowerCase()) {
             if (resultHeader) {
@@ -372,8 +374,7 @@ getJasmineRequireObj().AjaxFakeRequest = function(eventBusFactory) {
       getAllResponseHeaders: function() {
         var responseHeaders = [];
         for (var i = 0; i < this.responseHeaders.length; i++) {
-          responseHeaders.push(this.responseHeaders[i].name + ': ' +
-              this.responseHeaders[i].value);
+          responseHeaders.push(this.responseHeaders[i].name + ': ' + this.responseHeaders[i].value);
         }
         return responseHeaders.join('\r\n') + '\r\n';
       },
@@ -384,36 +385,35 @@ getJasmineRequireObj().AjaxFakeRequest = function(eventBusFactory) {
       responseURL: null,
 
       responseValue: function() {
-        switch(this.responseType) {
+        switch (this.responseType) {
           case null:
-          case "":
-          case "text":
-            return this.readyState >= 3 ? this.responseText : "";
-          case "json":
+          case '':
+          case 'text':
+            return this.readyState >= 3 ? this.responseText : '';
+          case 'json':
             return JSON.parse(this.responseText);
-          case "arraybuffer":
+          case 'arraybuffer':
             throw unconvertibleResponseTypeMessage('arraybuffer');
-          case "blob":
+          case 'blob':
             throw unconvertibleResponseTypeMessage('blob');
-          case "document":
+          case 'document':
             return this.responseXML;
         }
       },
 
-
       respondWith: function(response) {
         if (this.readyState === 4) {
-          throw new Error("FakeXMLHttpRequest already completed");
+          throw new Error('FakeXMLHttpRequest already completed');
         }
 
         this.status = response.status;
-        this.statusText = response.statusText || "";
+        this.statusText = response.statusText || '';
         this.responseHeaders = normalizeHeaders(response.responseHeaders, response.contentType);
         this.readyState = 2;
         this.eventBus.trigger('readystatechange');
 
-        this.responseText = response.responseText || "";
-        this.responseType = response.responseType || "";
+        this.responseText = response.responseText || '';
+        this.responseType = response.responseType || '';
         this.responseURL = response.responseURL || null;
         this.readyState = 4;
         this.responseXML = getResponseXml(response.responseText, this.getResponseHeader('content-type') || '');
@@ -435,7 +435,7 @@ getJasmineRequireObj().AjaxFakeRequest = function(eventBusFactory) {
 
       responseTimeout: function() {
         if (this.readyState === 4) {
-          throw new Error("FakeXMLHttpRequest already completed");
+          throw new Error('FakeXMLHttpRequest already completed');
         }
         this.readyState = 4;
         jasmine.clock().tick(30000);
@@ -447,7 +447,7 @@ getJasmineRequireObj().AjaxFakeRequest = function(eventBusFactory) {
 
       responseError: function() {
         if (this.readyState === 4) {
-          throw new Error("FakeXMLHttpRequest already completed");
+          throw new Error('FakeXMLHttpRequest already completed');
         }
         this.readyState = 4;
         this.eventBus.trigger('readystatechange');
@@ -466,14 +466,14 @@ getJasmineRequireObj().AjaxFakeRequest = function(eventBusFactory) {
 getJasmineRequireObj().MockAjax = function($ajax) {
   function MockAjax(global) {
     var requestTracker = new $ajax.RequestTracker(),
-        stubTracker = new $ajax.StubTracker(),
-        paramParser = new $ajax.ParamParser(),
-        realAjaxFunction = global.XMLHttpRequest,
-        mockAjaxFunction = $ajax.fakeRequest(global, requestTracker, stubTracker, paramParser);
+      stubTracker = new $ajax.StubTracker(),
+      paramParser = new $ajax.ParamParser(),
+      realAjaxFunction = global.XMLHttpRequest,
+      mockAjaxFunction = $ajax.fakeRequest(global, requestTracker, stubTracker, paramParser);
 
     this.install = function() {
       if (global.XMLHttpRequest === mockAjaxFunction) {
-        throw "MockAjax is already installed.";
+        throw 'MockAjax is already installed.';
       }
 
       global.XMLHttpRequest = mockAjaxFunction;
@@ -481,7 +481,7 @@ getJasmineRequireObj().MockAjax = function($ajax) {
 
     this.uninstall = function() {
       if (global.XMLHttpRequest !== mockAjaxFunction) {
-        throw "MockAjax not installed.";
+        throw 'MockAjax not installed.';
       }
       global.XMLHttpRequest = realAjaxFunction;
 
@@ -521,7 +521,7 @@ getJasmineRequireObj().AjaxParamParser = function() {
     var defaults = [
       {
         test: function(xhr) {
-          return (/^application\/json/).test(xhr.contentType());
+          return /^application\/json/.test(xhr.contentType());
         },
         parse: function jsonParser(paramString) {
           return JSON.parse(paramString);
@@ -552,7 +552,7 @@ getJasmineRequireObj().AjaxParamParser = function() {
     };
 
     this.findParser = function(xhr) {
-      for(var i in paramParsers) {
+      for (var i in paramParsers) {
         var parser = paramParsers[i];
         if (parser.test(xhr)) {
           return parser;
@@ -562,7 +562,7 @@ getJasmineRequireObj().AjaxParamParser = function() {
 
     this.reset = function() {
       paramParsers = [];
-      for(var i in defaults) {
+      for (var i in defaults) {
         paramParsers.push(defaults[i]);
       }
     };
@@ -575,12 +575,17 @@ getJasmineRequireObj().AjaxParamParser = function() {
 
 getJasmineRequireObj().AjaxRequestStub = function() {
   var RETURN = 0,
-      ERROR = 1,
-      TIMEOUT = 2;
+    ERROR = 1,
+    TIMEOUT = 2;
 
   function RequestStub(url, stubData, method) {
     var normalizeQuery = function(query) {
-      return query ? query.split('&').sort().join('&') : undefined;
+      return query
+        ? query
+            .split('&')
+            .sort()
+            .join('&')
+        : undefined;
     };
 
     if (url instanceof RegExp) {
@@ -592,7 +597,7 @@ getJasmineRequireObj().AjaxRequestStub = function() {
       this.query = split.length > 1 ? normalizeQuery(split[1]) : undefined;
     }
 
-    this.data = (stubData instanceof RegExp) ? stubData : normalizeQuery(stubData);
+    this.data = stubData instanceof RegExp ? stubData : normalizeQuery(stubData);
     this.method = method;
 
     this.andReturn = function(options) {
@@ -633,8 +638,8 @@ getJasmineRequireObj().AjaxRequestStub = function() {
         urlMatches = this.url.test(fullUrl);
       } else {
         var urlSplit = fullUrl.split('?'),
-            url = urlSplit[0],
-            query = urlSplit[1];
+          url = urlSplit[0],
+          query = urlSplit[1];
         urlMatches = this.url === url && this.query === normalizeQuery(query);
       }
       var dataMatches = false;
@@ -682,11 +687,9 @@ getJasmineRequireObj().AjaxRequestTracker = function() {
       var matching_requests = [];
 
       for (var i = 0; i < requests.length; i++) {
-        if (url_to_match instanceof RegExp &&
-            url_to_match.test(requests[i].url)) {
+        if (url_to_match instanceof RegExp && url_to_match.test(requests[i].url)) {
           matching_requests.push(requests[i]);
-        } else if (url_to_match instanceof Function &&
-            url_to_match(requests[i])) {
+        } else if (url_to_match instanceof Function && url_to_match(requests[i])) {
           matching_requests.push(requests[i]);
         } else {
           if (requests[i].url === url_to_match) {
@@ -729,12 +732,12 @@ getJasmineRequireObj().AjaxStubTracker = function() {
 
 (function() {
   var jRequire = getJasmineRequireObj(),
-      MockAjax = jRequire.ajax(jRequire);
-  if (typeof window === "undefined" && typeof exports === "object") {
+    MockAjax = jRequire.ajax(jRequire);
+  if (typeof window === 'undefined' && typeof exports === 'object') {
     exports.MockAjax = MockAjax;
     jasmine.Ajax = new MockAjax(exports);
   } else {
     window.MockAjax = MockAjax;
     jasmine.Ajax = new MockAjax(window);
   }
-}());
+})();

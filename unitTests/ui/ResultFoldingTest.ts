@@ -255,11 +255,13 @@ export function ResultFoldingTest() {
 
     it('can load an external template from an id', done => {
       TemplateCache.registerTemplate('Foo', UnderscoreTemplate.fromString('foubarre', {}));
-      test = Mock.advancedResultComponentSetup<
-        ResultFolding
-      >(ResultFolding, FakeResults.createFakeResult(), <Mock.AdvancedComponentSetupOptions>{
-        element: $$('div', { 'data-result-template-id': 'Foo' }).el
-      });
+      test = Mock.advancedResultComponentSetup<ResultFolding>(
+        ResultFolding,
+        FakeResults.createFakeResult(),
+        <Mock.AdvancedComponentSetupOptions>{
+          element: $$('div', { 'data-result-template-id': 'Foo' }).el
+        }
+      );
       test.cmp.options.resultTemplate.instantiateToElement(<IQueryResult>{}).then(elem => {
         expect(elem.innerHTML).toBe('foubarre');
         done();
@@ -267,11 +269,13 @@ export function ResultFoldingTest() {
     });
 
     it('should automatically use the template inside its element', done => {
-      test = Mock.advancedResultComponentSetup<
-        ResultFolding
-      >(ResultFolding, FakeResults.createFakeResult(), <Mock.AdvancedComponentSetupOptions>{
-        element: $$('div', {}, $$('script', { className: 'result-template', type: 'text/underscore' }, 'heyo')).el
-      });
+      test = Mock.advancedResultComponentSetup<ResultFolding>(
+        ResultFolding,
+        FakeResults.createFakeResult(),
+        <Mock.AdvancedComponentSetupOptions>{
+          element: $$('div', {}, $$('script', { className: 'result-template', type: 'text/underscore' }, 'heyo')).el
+        }
+      );
       test.cmp.options.resultTemplate.instantiateToElement(<IQueryResult>{}).then(elem => {
         expect(elem.innerHTML).toBe('heyo');
         done();

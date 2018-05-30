@@ -34,10 +34,11 @@ getJasmineRequireObj().console = function(jRequire, j$) {
 };
 
 getJasmineRequireObj().ConsoleReporter = function() {
-
   var noopTimer = {
-    start: function(){},
-    elapsed: function(){ return 0; }
+    start: function() {},
+    elapsed: function() {
+      return 0;
+    }
   };
 
   function ConsoleReporter(options) {
@@ -74,11 +75,10 @@ getJasmineRequireObj().ConsoleReporter = function() {
         specFailureDetails(failedSpecs[i]);
       }
 
-      if(specCount > 0) {
+      if (specCount > 0) {
         printNewline();
 
-        var specCounts = specCount + ' ' + plural('spec', specCount) + ', ' +
-          failureCount + ' ' + plural('failure', failureCount);
+        var specCounts = specCount + ' ' + plural('spec', specCount) + ', ' + failureCount + ' ' + plural('failure', failureCount);
 
         if (pendingCount) {
           specCounts += ', ' + pendingCount + ' pending ' + plural('spec', pendingCount);
@@ -94,7 +94,7 @@ getJasmineRequireObj().ConsoleReporter = function() {
       print('Finished in ' + seconds + ' ' + plural('second', seconds));
       printNewline();
 
-      for(i = 0; i < failedSuites.length; i++) {
+      for (i = 0; i < failedSuites.length; i++) {
         suiteFailureDetails(failedSuites[i]);
       }
 
@@ -136,7 +136,7 @@ getJasmineRequireObj().ConsoleReporter = function() {
     }
 
     function colored(color, str) {
-      return showColors ? (ansi[color] + str + ansi.none) : str;
+      return showColors ? ansi[color] + str + ansi.none : str;
     }
 
     function plural(str, count) {
@@ -180,7 +180,6 @@ getJasmineRequireObj().ConsoleReporter = function() {
         print(colored('red', 'An error was thrown in an afterAll'));
         printNewline();
         print(colored('red', 'AfterAll ' + result.failedExpectations[i].message));
-
       }
       printNewline();
     }

@@ -26,9 +26,7 @@ export function DistanceResourcesTest() {
     const disabledComponentsClass = 'bloupbloup';
     const aNicePlace = <IGeolocationPosition>{ latitude: latitudeForANicePlace, longitude: longitudeForANicePlace };
     const expectedQueryFunctionForANicePlace = <IQueryFunction>{
-      function: `dist(${latitudeField}, ${longitudeField}, ${latitudeForANicePlace}, ${longitudeForANicePlace})/${
-        defaultUnitConversionFactor
-      }`,
+      function: `dist(${latitudeField}, ${longitudeField}, ${latitudeForANicePlace}, ${longitudeForANicePlace})/${defaultUnitConversionFactor}`,
       fieldName: distanceField
     };
 

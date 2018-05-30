@@ -22,10 +22,10 @@ export function ResultActionsMenuTest() {
     it('should add and remove show class on concecutive clicks', () => {
       const component = $$(test.cmp.element);
 
-      component.trigger("click");
+      component.trigger('click');
       expect(componentHasShowClass()).toBe(true);
 
-      component.trigger("click");
+      component.trigger('click');
 
       expect(componentHasShowClass()).toBe(false);
     });
@@ -34,17 +34,17 @@ export function ResultActionsMenuTest() {
       test = Mock.basicResultComponentSetup<ResultActionsMenu>(ResultActionsMenu, { openOnMouseOver: true });
       const component = $$(test.cmp.element);
 
-      component.trigger("mouseenter");
+      component.trigger('mouseenter');
       expect(componentHasShowClass()).toBe(true);
     });
 
     it('should remove show class on mouseleave', () => {
       const component = $$(test.cmp.element);
 
-      component.trigger("click");
+      component.trigger('click');
       expect(componentHasShowClass()).toBe(true);
 
-      component.trigger("mouseleave");
+      component.trigger('mouseleave');
       expect(componentHasShowClass()).toBe(false);
     });
 
@@ -52,7 +52,7 @@ export function ResultActionsMenuTest() {
       test = Mock.basicResultComponentSetup<ResultActionsMenu>(ResultActionsMenu, { openOnMouseOver: false });
       const component = $$(test.cmp.element);
 
-      component.trigger("mouseenter");
+      component.trigger('mouseenter');
       expect(componentHasShowClass()).toBe(false);
     });
   });

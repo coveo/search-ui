@@ -19,14 +19,14 @@ export function AuthenticationProviderTest() {
       spyOn(ModalBox, 'open').and.callFake(() => {});
       spyOn(ModalBox, 'close').and.callFake(() => {});
 
-      test = Mock.optionsComponentSetup<
+      test = Mock.optionsComponentSetup<AuthenticationProvider, IAuthenticationProviderOptions>(
         AuthenticationProvider,
-        IAuthenticationProviderOptions
-      >(AuthenticationProvider, <IAuthenticationProviderOptions>{
-        name: 'foo',
-        caption: 'foobar',
-        useIFrame: true
-      });
+        <IAuthenticationProviderOptions>{
+          name: 'foo',
+          caption: 'foobar',
+          useIFrame: true
+        }
+      );
     });
 
     afterEach(function() {
@@ -35,12 +35,12 @@ export function AuthenticationProviderTest() {
 
     describe('exposes options', function() {
       it('name should push name in buildingCallOptions', function() {
-        test = Mock.optionsComponentSetup<
+        test = Mock.optionsComponentSetup<AuthenticationProvider, IAuthenticationProviderOptions>(
           AuthenticationProvider,
-          IAuthenticationProviderOptions
-        >(AuthenticationProvider, <IAuthenticationProviderOptions>{
-          name: 'testpatate'
-        });
+          <IAuthenticationProviderOptions>{
+            name: 'testpatate'
+          }
+        );
         let eventArgs: IBuildingCallOptionsEventArgs = {
           options: {
             authentication: []

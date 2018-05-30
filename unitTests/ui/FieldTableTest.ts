@@ -62,14 +62,16 @@ export function FieldTableTest() {
       describe('allowMinimization set to true', function() {
         beforeEach(function() {
           createElement();
-          test = Mock.advancedResultComponentSetup<
-            FieldTable
-          >(FieldTable, FakeResults.createFakeResult(), <Mock.AdvancedComponentSetupOptions>{
-            element: element,
-            cmpOptions: <IFieldTableOptions>{
-              allowMinimization: true
+          test = Mock.advancedResultComponentSetup<FieldTable>(
+            FieldTable,
+            FakeResults.createFakeResult(),
+            <Mock.AdvancedComponentSetupOptions>{
+              element: element,
+              cmpOptions: <IFieldTableOptions>{
+                allowMinimization: true
+              }
             }
-          });
+          );
         });
 
         it('should show a toggle link', function() {
@@ -90,14 +92,16 @@ export function FieldTableTest() {
 
         it('expandedTitle should be the text of the toggle link only when table is expanded', function() {
           createElement();
-          test = Mock.advancedResultComponentSetup<
-            FieldTable
-          >(FieldTable, FakeResults.createFakeResult(), <Mock.AdvancedComponentSetupOptions>{
-            element: element,
-            cmpOptions: <IFieldTableOptions>{
-              expandedTitle: 'foobar2000'
+          test = Mock.advancedResultComponentSetup<FieldTable>(
+            FieldTable,
+            FakeResults.createFakeResult(),
+            <Mock.AdvancedComponentSetupOptions>{
+              element: element,
+              cmpOptions: <IFieldTableOptions>{
+                expandedTitle: 'foobar2000'
+              }
             }
-          });
+          );
           let toggle = $$(test.env.root).find('.coveo-field-table-toggle-caption');
           test.cmp.expand();
           expect(toggle.textContent).toBe('foobar2000');
@@ -113,14 +117,16 @@ export function FieldTableTest() {
 
         it('minimizedTitle should be the text of the toggle link only when table is minimized', function() {
           createElement();
-          test = Mock.advancedResultComponentSetup<
-            FieldTable
-          >(FieldTable, FakeResults.createFakeResult(), <Mock.AdvancedComponentSetupOptions>{
-            element: element,
-            cmpOptions: <IFieldTableOptions>{
-              minimizedTitle: 'foobar2000'
+          test = Mock.advancedResultComponentSetup<FieldTable>(
+            FieldTable,
+            FakeResults.createFakeResult(),
+            <Mock.AdvancedComponentSetupOptions>{
+              element: element,
+              cmpOptions: <IFieldTableOptions>{
+                minimizedTitle: 'foobar2000'
+              }
             }
-          });
+          );
           let toggle = $$(test.env.root).find('.coveo-field-table-toggle-caption');
           test.cmp.minimize();
           expect(toggle.textContent).toBe('foobar2000');
