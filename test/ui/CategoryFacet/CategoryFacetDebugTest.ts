@@ -43,7 +43,7 @@ export function CategoryFacetDebugTest() {
         'Chopper|Civilian',
         'Chopper|Military|Apache',
         'Chopper|Civilian|Airbus',
-        'Chopper|Civilian|Airbus|Car|Sport',
+        'Chopper|Civilian|Airbus|Car|Sport|Ferrari',
         'Civilian',
         'Airbus'
       ];
@@ -51,7 +51,7 @@ export function CategoryFacetDebugTest() {
 
       const orphans = CategoryFacetDebug.analyzeResults(groupByResult, '|');
 
-      expect(orphans).toEqual(['Plane|Airline|Airbus', 'Chopper|Civilian|Airbus|Car|Sport']);
+      expect(orphans).toEqual(['Plane|Airline|Airbus', 'Chopper|Civilian|Airbus|Car|Sport|Ferrari']);
     });
   });
 }
