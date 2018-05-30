@@ -2,12 +2,10 @@ import { CategoryFacet, ICategoryFacetOptions } from '../../../src/ui/CategoryFa
 import * as Mock from '../../MockEnvironment';
 import { $$ } from '../../../src/utils/Dom';
 import { IQueryResults } from '../../../src/rest/QueryResults';
-import { IBasicComponentSetup, mock } from '../../MockEnvironment';
+import { IBasicComponentSetup } from '../../MockEnvironment';
 import { Simulate, ISimulateQueryData } from '../../Simulate';
 import { FakeResults } from '../../Fake';
 import { QueryBuilder } from '../../../src/Core';
-import { CategoryFacetQueryController } from '../../../src/controllers/CategoryFacetQueryController';
-import { IBuildingQueryEventArgs } from '../../../src/events/QueryEvents';
 import { range } from 'underscore';
 
 export function CategoryFacetTest() {
@@ -122,6 +120,7 @@ export function CategoryFacetTest() {
 
       it('more arrow is appended when there are more results to fetch', () => {
         Simulate.query(test.env, simulateQueryData);
+
         const moreArrow = $$(test.cmp.element).find('.coveo-category-facet-more');
         expect(moreArrow).not.toBeNull();
       });
@@ -174,21 +173,6 @@ export function CategoryFacetTest() {
 
         expect(queryBuilder.categoryFacets[0].maximumNumberOfValues).toBe(initialNumberOfValues + 1);
       });
-    });
-
-    it('calls putCategoryFacetInQueryBuilder when building the query', () => {
-      const queryBuilder = mock(QueryBuilder);
-      const buildingQueryArgs = { queryBuilder } as IBuildingQueryEventArgs;
-      test.cmp.categoryFacetQueryController = mock(CategoryFacetQueryController);
-      const path = (test.cmp.activePath = ['some', 'path']);
-
-      test.cmp.handleBuildingQuery(buildingQueryArgs);
-
-      expect(test.cmp.categoryFacetQueryController.putCategoryFacetInQueryBuilder).toHaveBeenCalledWith(
-        queryBuilder,
-        path,
-        test.cmp.options.numberOfValues + 1
-      );
     });
 
     describe('renders', () => {

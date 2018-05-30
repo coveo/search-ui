@@ -14,23 +14,21 @@ All resources will be available under `node_modules/coveo-search-ui/bin`. You ca
 
 If you are using a module bundler (Browserify, Webpack, rollup, etc.), you can use `require('coveo-search-ui')` or `import * as Coveo from 'coveo-search-ui'`.
 
-Alternatively, you can download the latest version of the Coveo JavaScript Search UI Framework
+Alternatively, you can download the latest version of the Coveo JavaScript Search UI Framework 
 [here](http://productupdate.coveo.com/?product=coveo-search-ui&version=1).
 
 ## Including the Resources from a CDN
 
-Since the April 2017 release, it is possible to access the resources of any specific Coveo JavaScript Search Framework
+Since the April 2017 release, it is possible to access the resources of any specific Coveo JavaScript Search  Framework 
 official release (from version `1.2537` on) through a content delivery network (CDN).
 
-You can simply use an URL such as `https://static.cloud.coveo.com/searchui/v[VERSION]/[PATH_TO_FILE]`, where you
-replace `[VERSION]` by the actual release version number you wish to use and `[PATH_TO_FILE]` by the path of the file
+You can simply use an URL such as `https://static.cloud.coveo.com/searchui/v[VERSION]/[PATH_TO_FILE]`, where you 
+replace `[VERSION]` by the actual release version number you wish to use and `[PATH_TO_FILE]` by the path of the file 
 you require.
 
 **Example:**
-
-> The following tags include the `1.2537` version (April 2017 release) of the `CoveoJsSearch.min.js`, `templateNew.js`
+> The following tags include the `1.2537` version (April 2017 release) of the `CoveoJsSearch.min.js`, `templateNew.js` 
 > and `CoveoFullSearchNewDesign.css` files.
->
 > ```
 > <head>
 >
@@ -71,7 +69,7 @@ you require.
 
         // We provide a sample endpoint with public sources for demo purposes.
         Coveo.SearchEndpoint.configureSampleEndpoint();
-
+        
         // Initialize the framework by targeting the root in the interface.
         // It does not have to be the document body.
         Coveo.init(document.body);
@@ -81,7 +79,7 @@ you require.
 
 You can find more examples of fully configured pages in the `./pages` folder.
 
-A tutorial is available to help you get started (see
+A tutorial is available to help you get started (see 
 [Coveo JavaScript Search UI Framework Getting Started Tutorial](https://developers.coveo.com/x/J4okAg)).
 
 ## Build
@@ -107,24 +105,25 @@ You should have node 6.9.1 (or later) installed to build this project.
 
 Make sure you were able to run `gulp` entirely without any errors first. Then you can start the dev-server:
 
+
     gulp dev
 
-This will start a webpack-dev-server instance (see
+This will start a webpack-dev-server instance (see 
 [Webpack Dev Server](https://webpack.github.io/docs/webpack-dev-server.html)).
 
 You can now load [http://localhost:8080/index.html](http://localhost:8080/index.html) in a web browser.
 
 Any time you hit **Save** in a source file, the bundle will be recompiled and the dev page will reload.
 
-If you need to modify the content of the search page (i.e., the markup itself, not the TypeScript code), modify the
-`index.html` page under `./bin`. This page is not committed to the repository, so you do not have to worry about
-breaking anything. However, if you feel like you have a good reason to modify the original `index.html`, feel free to
+If you need to modify the content of the search page (i.e., the markup itself, not the TypeScript code), modify the 
+`index.html` page under `./bin`. This page is not committed to the repository, so you do not have to worry about 
+breaking anything. However, if you feel like you have a good reason to modify the original `index.html`, feel free to 
 do so.
 
 ### Tests
 
-Tests are written using [Jasmine](http://jasmine.github.io/2.4/introduction.html). You can use `npm run test` to run
-the tests in Chrome Headless.
+Tests are written using [Jasmine](http://jasmine.github.io/2.4/introduction.html). You can use `npm run test` to run 
+the tests in PhantomJS.
 
 If you wish to write new unit tests, you can do so by starting a new webpack-dev-server instance.
 
@@ -138,17 +137,17 @@ Code coverage will be reported in `./bin/coverage`
 
 ## Documentation
 
-General reference documentation is generated using TypeDoc (see
-[Coveo JavaScript Search UI Framework - Reference Documentation](https://coveo.github.io/search-ui/)). The
+General reference documentation is generated using TypeDoc (see 
+[Coveo JavaScript Search UI Framework - Reference Documentation](https://coveo.github.io/search-ui/)). The 
 generated reference documentation lists and describes all available options and public methods for each component.
 
-Handwritten documentation with more examples is also available (see
+Handwritten documentation with more examples is also available (see 
 [JavaScript Search Framework Home](https://developers.coveo.com/display/JsSearchV1/JavaScript+Search+Framework+V1+Home)).
 
-A tutorial is available (see
-[JavaScript Search Framework Getting Started Tutorial](https://developers.coveo.com/display/JsSearchV1/JavaScript+Search+Framework+V1+Getting+Started+Tutorial)).
-If you are new to the Coveo JavaScript Search UI Framework, you should definitely consult this tutorial, as it contains
+A tutorial is available (see 
+[JavaScript Search Framework Getting Started Tutorial](https://developers.coveo.com/display/JsSearchV1/JavaScript+Search+Framework+V1+Getting+Started+Tutorial)). 
+If you are new to the Coveo JavaScript Search UI Framework, you should definitely consult this tutorial, as it contains 
 valuable information.
 
-You can also use Coveo Search to find answers to any specific issues/questions (see
+You can also use Coveo Search to find answers to any specific issues/questions (see 
 [search.coveo.com](https://search.coveo.com)).
