@@ -272,5 +272,8 @@ SimpleFilter.doExport();
 import { TimespanFacet } from './ui/TimespanFacet/TimespanFacet';
 TimespanFacet.doExport();
 
+import { PromotedResultsBadge } from './ui/PromotedResultsBadge/PromotedResultsBadge';
+PromotedResultsBadge.doExport();
+
 import { swapVar } from './SwapVar';
 swapVar(this);

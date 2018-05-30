@@ -20,7 +20,7 @@ import { QUERY_STATE_ATTRIBUTES } from '../../models/QueryStateModel';
 import { QueryUtils } from '../../utils/QueryUtils';
 import { $$, Win, Doc } from '../../utils/Dom';
 import { analyticsActionCauseList, IAnalyticsNoMeta } from '../Analytics/AnalyticsActionListMeta';
-import { Initialization, IInitResult } from '../Base/Initialization';
+import { Initialization, IInitResult, IInitializationParameters } from '../Base/Initialization';
 import { Defer } from '../../misc/Defer';
 import { DeviceUtils } from '../../utils/DeviceUtils';
 import { ResultListEvents, IDisplayedNewResultEventArgs, IChangeLayoutEventArgs } from '../../events/ResultListEvents';
@@ -824,7 +824,13 @@ export class ResultList extends Component {
   }
 
   private setupRenderer() {
-    const autoCreateComponentsFn = this.autoCreateComponentsInsideResult.bind(this);
+    const initParameters: IInitializationParameters = {
+      options: this.searchInterface.options.originalOptionsObject,
+      bindings: this.bindings
+    };
+
+    const autoCreateComponentsFn = (elem: HTMLElement) => Initialization.automaticallyCreateComponentsInside(elem, initParameters);
+
     switch (this.options.layout) {
       case 'card':
         this.renderer = new ResultListCardRenderer(this.options, autoCreateComponentsFn);
