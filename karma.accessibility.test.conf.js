@@ -14,11 +14,11 @@ var configuration = {
     {
       pattern: './bin/tests/lib/axe.js',
       watched: false
-    } /*
+    },
     {
       pattern: './bin/css/CoveoFullSearch.css',
       watched: false
-    },*/,
+    },
     {
       pattern: './bin/js/CoveoJsSearch.js',
       watched: true

@@ -1,3 +1,5 @@
+/// <reference types="../bin/ts/CoveoJsSearch" />
+
 import { customMatcher } from './CustomMatcher';
 import { AccessibilityQuerybox } from './AccessibilityQuerybox';
 import { defaultPage } from './DefaultTestPage';
@@ -5,7 +7,6 @@ import { $$ } from '../src/utils/Dom';
 import { AccessibilityPager } from './AccessibilityPager';
 import { AccessibilityFacet } from './AccessibilityFacet';
 import { Simulate } from '../unitTests/Simulate';
-declare const Coveo;
 
 const initialHTMLSetup = () => {
   const body = jasmine['getGlobal']().document.body;
@@ -22,10 +23,12 @@ const initialHTMLSetup = () => {
 };
 
 export const setupPageBetweenTest = () => {
+  jasmine.addMatchers(customMatcher);
   document.querySelector('#search-page').innerHTML = defaultPage;
 };
 
 export const teardownPageBetweenTest = () => {
+  Coveo.nuke($$(document.body).find('.CoveoSearchInterface'));
   $$($$(document.body).find('#search-page')).empty();
 };
 
@@ -42,12 +45,10 @@ describe('Testing ...', () => {
   });
 
   beforeEach(() => {
-    jasmine.addMatchers(customMatcher);
     setupPageBetweenTest();
   });
 
   afterEach(() => {
-    Coveo.nuke($$(document.body).find('.CoveoSearchInterface'));
     teardownPageBetweenTest();
   });
 
