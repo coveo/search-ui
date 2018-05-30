@@ -4,7 +4,6 @@ import { ICategoryFacetRequest } from '../rest/CategoryFacetRequest';
 import { IGroupByRequest } from '../rest/GroupByRequest';
 import { AllowedValuesPatternType } from '../rest/AllowedValuesPatternType';
 import { IGroupByValue } from '../rest/GroupByValue';
-import { Utils } from '../utils/Utils';
 
 export class CategoryFacetQueryController {
   constructor(private categoryFacet: CategoryFacet) {}
@@ -47,11 +46,5 @@ export class CategoryFacetQueryController {
       });
   }
 
-  public addDebugGroupBy(queryBuilder: QueryBuilder, value: string) {
-    queryBuilder.groupByRequests.push({
-      field: this.categoryFacet.options.field as string,
-      allowedValues: [`.*${Utils.escapeRegexCharacter(value)}.*`],
-      allowedValuesPatternType: AllowedValuesPatternType.Regex
-    });
-  }
+  public addDebugQueries;
 }
