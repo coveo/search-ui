@@ -17,19 +17,6 @@ export class CategoryChildrenValueRenderer {
     private categoryFacet: CategoryFacet
   ) {}
 
-  public clearChildrenExceptOne(except: CategoryValue) {
-    const newChildren = [];
-    this.children.forEach(categoryValue => {
-      if (except !== categoryValue) {
-        categoryValue.clear();
-      } else {
-        newChildren.push(categoryValue);
-      }
-    });
-    this.children = newChildren;
-    this.element.removeClass('coveo-active-category-facet-parent');
-  }
-
   public clearChildren() {
     this.element.removeClass('coveo-active-category-facet-parent');
     this.children.forEach(child => {

@@ -13,9 +13,10 @@ import { analyticsActionCauseList, IAnalyticsCategoryFacetMeta } from '../Analyt
 
 export class CategoryFacetSearch {
   public container: Dom | undefined;
-  private facetSearchElement: FacetSearchElement;
+  public facetSearchElement: FacetSearchElement;
+  public displayNewValues: () => void;
+
   private currentlyDisplayedResults: HTMLElement;
-  private displayNewValues: () => void;
   private currentResult: Dom | undefined;
 
   constructor(private categoryFacet: CategoryFacet) {
@@ -50,13 +51,7 @@ export class CategoryFacetSearch {
     this.container && this.container.detach();
   }
 
-  private handleFacetSearchFocus() {
-    if (this.currentlyDisplayedResults == null) {
-      this.displayNewValues();
-    }
-  }
-
-  private handleKeyboardEvent(event: KeyboardEvent) {
+  public handleKeyboardEvent(event: KeyboardEvent) {
     switch (event.which) {
       case KEYBOARD.ENTER:
         this.keyboardEventEnter();
@@ -72,6 +67,12 @@ export class CategoryFacetSearch {
         break;
       default:
         this.displayNewValues();
+    }
+  }
+
+  private handleFacetSearchFocus() {
+    if (this.currentlyDisplayedResults == null) {
+      this.displayNewValues();
     }
   }
 

@@ -25,7 +25,7 @@ export class CategoryFacetQueryController {
     return positionInQuery;
   }
 
-  public searchFacetValues(value: string): Promise<IGroupByValue[]> {
+  public async searchFacetValues(value: string): Promise<IGroupByValue[]> {
     let lastQuery = { ...this.categoryFacet.queryController.getLastQuery() };
 
     const groupByRequest: IGroupByRequest = {
@@ -39,12 +39,8 @@ export class CategoryFacetQueryController {
 
     lastQuery.groupBy = [groupByRequest];
     lastQuery.categoryFacets.splice(this.categoryFacet.positionInQuery, 1);
-    return this.categoryFacet.queryController
-      .getEndpoint()
-      .search(lastQuery)
-      .then(queryResults => {
-        return queryResults.groupByResults[0].values;
-      });
+    const results = await this.categoryFacet.queryController.getEndpoint().search(lastQuery);
+    return results.groupByResults[0].values;
   }
 
   public addDebugGroupBy(queryBuilder: QueryBuilder, value: string) {

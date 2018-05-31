@@ -40,7 +40,7 @@ export function registerCustomMatcher() {
           var args = Array.prototype.slice.call(arguments, 0),
             result = { pass: false, message: undefined };
 
-          if (!expected) {
+          if (expected === null || expected === void 0) {
             throw new Error('Expected times failed is required as an argument.');
           }
 

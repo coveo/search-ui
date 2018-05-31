@@ -623,3 +623,6 @@ QuickviewDocumentTest();
 
 import { CategoryFacetDebugTest } from './ui/CategoryFacet/CategoryFacetDebugTest';
 CategoryFacetDebugTest();
+
+import { CategoryFacetSearchTest } from './ui/CategoryFacet/CategoryFacetSearchTest';
+CategoryFacetSearchTest();

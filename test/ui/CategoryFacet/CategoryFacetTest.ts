@@ -204,7 +204,7 @@ export function CategoryFacetTest() {
       function verifyParents(numberOfParents: number) {
         removeAllCategoriesButton(test.cmp.element);
         let currentCategoryValue = $$(test.cmp.element).find('.coveo-category-facet-value');
-        for (const i in range(numberOfParents)) {
+        for (const i of range(numberOfParents)) {
           const valueCaption = $$(currentCategoryValue).find('.coveo-category-facet-value-caption');
           const valueCount = $$(currentCategoryValue).find('.coveo-category-facet-value-count');
           expect($$(valueCaption).text()).toEqual(`parent${i}`);
@@ -217,7 +217,7 @@ export function CategoryFacetTest() {
       function verifyChildren(numberOfValues: number, parent: Dom = $$(test.cmp.element)) {
         removeAllCategoriesButton(parent);
         const categoryValues = $$(parent).findAll('.coveo-category-facet-value');
-        for (const i in range(0, numberOfValues)) {
+        for (const i of range(0, numberOfValues)) {
           const valueCaption = $$(categoryValues[i]).find('.coveo-category-facet-value-caption');
           const valueCount = $$(categoryValues[i]).find('.coveo-category-facet-value-count');
           expect($$(valueCaption).text()).toEqual(`value${i}`);
