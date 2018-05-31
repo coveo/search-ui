@@ -6,6 +6,7 @@ import { CategoryFacetQueryController } from '../../../src/controllers/CategoryF
 import _ = require('underscore');
 import { IGroupByValue } from '../../../src/rest/GroupByValue';
 import { $$ } from '../../../src/Core';
+import { KEYBOARD } from '../../../src/utils/KeyboardUtils';
 
 export function CategoryFacetSearchTest() {
   describe('CategoryFacetSearch', () => {
@@ -100,7 +101,7 @@ export function CategoryFacetSearchTest() {
       });
     });
 
-    it('removes no results classes when there are results', () => {
+    it('removes no results classes when there are results', done => {
       categoryFacetSearch.build();
       $$(categoryFacetMock.element).addClass('coveo-no-results');
       $$(categoryFacetSearch.facetSearchElement.search).addClass('coveo-facet-search-no-results');
@@ -110,6 +111,80 @@ export function CategoryFacetSearchTest() {
       setTimeout(() => {
         expect($$(categoryFacetMock.element).hasClass('coveo-no-results')).toBe(false);
         expect($$(categoryFacetSearch.facetSearchElement.search).hasClass('coveo-facet-search-no-results')).toBe(false);
+        done();
+      });
+    });
+
+    it('selects the first results when displaying new values', done => {
+      categoryFacetSearch.build();
+      categoryFacetSearch.displayNewValues();
+
+      setTimeout(() => {
+        const facetSearchValues = $$(categoryFacetSearch.facetSearchElement.searchResults).findAll('.coveo-category-facet-search-value');
+        expect($$(facetSearchValues[0]).hasClass('coveo-category-facet-search-current-value')).toBe(true);
+        done();
+      });
+    });
+    it('pressing enter selects the current result', done => {
+      const keyboardEvent = { which: KEYBOARD.ENTER } as KeyboardEvent;
+      spyOn(categoryFacetMock, 'changeActivePath');
+      categoryFacetSearch.build();
+      categoryFacetSearch.displayNewValues();
+
+      setTimeout(() => {
+        categoryFacetSearch.handleKeyboardEvent(keyboardEvent);
+        expect(categoryFacetMock.changeActivePath).toHaveBeenCalledWith(['value0']);
+        done();
+      });
+    });
+
+    it('pressing down arrow moves current result down', done => {
+      const keyboardEvent = { which: KEYBOARD.DOWN_ARROW } as KeyboardEvent;
+      categoryFacetSearch.build();
+      categoryFacetSearch.displayNewValues();
+
+      setTimeout(() => {
+        categoryFacetSearch.handleKeyboardEvent(keyboardEvent);
+        const facetSearchValues = $$(categoryFacetSearch.facetSearchElement.searchResults).findAll('.coveo-category-facet-search-value');
+        expect($$(facetSearchValues[1]).hasClass('coveo-category-facet-search-current-value')).toBe(true);
+        done();
+      });
+    });
+
+    it('pressing up arrow moves current result up', done => {
+      const keyboardEvent = { which: KEYBOARD.UP_ARROW } as KeyboardEvent;
+      categoryFacetSearch.build();
+      categoryFacetSearch.displayNewValues();
+
+      setTimeout(() => {
+        categoryFacetSearch.handleKeyboardEvent(keyboardEvent);
+        const facetSearchValues = $$(categoryFacetSearch.facetSearchElement.searchResults).findAll('.coveo-category-facet-search-value');
+        expect($$(facetSearchValues.slice(-1)[0]).hasClass('coveo-category-facet-search-current-value')).toBe(true);
+        done();
+      });
+    });
+
+    it('pressing escape closes the search input', done => {
+      const keyboardEvent = { which: KEYBOARD.ESCAPE } as KeyboardEvent;
+      spyOn(categoryFacetSearch.facetSearchElement, 'clearSearchInput');
+      categoryFacetSearch.build();
+      categoryFacetSearch.displayNewValues();
+
+      setTimeout(() => {
+        categoryFacetSearch.handleKeyboardEvent(keyboardEvent);
+        expect(categoryFacetSearch.facetSearchElement.clearSearchInput).toHaveBeenCalled();
+        done();
+      });
+    });
+
+    it('pressing any other key displays new values', done => {
+      const keyboardEvent = { which: 1337 } as KeyboardEvent;
+      categoryFacetSearch.build();
+
+      setTimeout(() => {
+        categoryFacetSearch.handleKeyboardEvent(keyboardEvent);
+        expect(categoryFacetSearch.facetSearchElement.searchResults.innerHTML).not.toEqual('');
+        done();
       });
     });
   });
