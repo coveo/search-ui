@@ -615,3 +615,6 @@ QuickviewDocumentWordButtonTest();
 
 import { QuickviewDocumentTest } from './ui/QuickviewDocumentTest';
 QuickviewDocumentTest();
+
+import { PromotedResultsBadgeTest } from './ui/PromotedResultsBadgeTest';
+PromotedResultsBadgeTest();
