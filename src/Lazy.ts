@@ -276,5 +276,8 @@ lazyTimespanFacet();
 import { lazyPromotedResultsBadge } from './ui/PromotedResultsBadge/LazyPromotedResultsBadge';
 lazyPromotedResultsBadge();
 
+import { lazyCategoryFacet } from './ui/CategoryFacet/LazyCategoryFacet';
+lazyCategoryFacet();
+
 import { swapVar } from './SwapVar';
 swapVar(this);
