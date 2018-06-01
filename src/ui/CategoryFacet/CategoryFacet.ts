@@ -15,7 +15,7 @@ import 'styling/_CategoryFacet';
 import { IAttributesChangedEventArg, MODEL_EVENTS } from '../../models/Model';
 import { Utils } from '../../utils/Utils';
 import { CategoryValue, CategoryValueParent } from './CategoryValue';
-import { reduce, find, first, last, isEmpty, contains, isArray } from 'underscore';
+import { pluck, reduce, find, first, last, isEmpty, contains, isArray } from 'underscore';
 import { Assert } from '../../misc/Assert';
 import { QueryEvents, IBuildingQueryEventArgs, IQuerySuccessEventArgs } from '../../events/QueryEvents';
 import { CategoryFacetSearch } from './CategoryFacetSearch';
@@ -46,9 +46,40 @@ export interface ICategoryFacetOptions {
 }
 
 /**
- * This component allows to render hierarchical facet values. It determines the filter to apply depending on the current path of values that
+ * This component allows to render hierarchical values. It determines the filter to apply depending on the current path of values that
  * are selected. The path is a a combination of values that follow each other in a hierarchy.
- * TODO: Add examples. Explain what a path is.
+ *
+ * For example, in the example below, the file text1.txt has the path `['c', 'folder1', 'text1.txt'].
+ *
+ * This facet requires a field with a special format to work correctly.
+ *
+ * **Example:**
+ *
+ * If you have the following files indexed on a file system:
+ * ```
+ * c:\
+ *    folder1\
+ *        text1.txt
+ *    folder2\
+ *      folder3\
+ *        text2.txt
+ * ```
+ * The `text1.txt` item would need to have a field with the following format:
+ * `@field : c; c|folder1;`
+ *
+ * The `text2.txt` item would have a field with the following format:
+ * `@field: c; c|folder2; c|folder2|folder3;`
+ *
+ * The `|` character allows the facet to build its hierarchy (`folder3` inside `folder2` inside `c`).
+ *
+ * Since both items contain the `c` value, selecting this value in the facet would return both items.
+ *
+ * Selecting the `folder3` value in the facet would only return the `text2.txt` item.
+ *
+ * To help you verify if your fields are setup correctly check out the option {@link CategoryFacet.options.debug} and the method
+ * {@link CategoryFacet.debugValue}.
+ *
+ * @notSupportedIn salesforcefree
  */
 export class CategoryFacet extends Component {
   static doExport = () => {
@@ -153,8 +184,9 @@ export class CategoryFacet extends Component {
      */
     delimitingCharacter: ComponentOptions.buildStringOption({ defaultValue: '|' }),
     /**
-     * Specifies whetter or not field format debugging is activated.
+     * Specifies whether or not field format debugging is activated.
      * This will log messages in the console and inform you of any issues encountered.
+     * This option should only be enabled when debugging because it can have negative effects on performance.
      */
     debug: ComponentOptions.buildBooleanOption({ defaultValue: false })
   };
@@ -271,11 +303,10 @@ export class CategoryFacet extends Component {
   }
 
   /**
-   * Returns all the visible parent values. The last visible child values are available on the `children` field of the last CategoryValue
-   * in the returned list.
+   * Returns all the visible parent values.
    *
    */
-  public getVisibleParentCategoryValues() {
+  public getVisibleParentValues() {
     if (this.categoryValueRoot.children.length == 0 || this.categoryValueRoot.children[0].children.length == 0) {
       return [];
     }
@@ -285,7 +316,7 @@ export class CategoryFacet extends Component {
       currentParentvalue = currentParentvalue.children[0];
       parentValues.push(currentParentvalue);
     }
-    return parentValues;
+    return pluck(parentValues, 'value');
   }
 
   /**
@@ -320,7 +351,7 @@ export class CategoryFacet extends Component {
    * Returns the values at the bottom of the hierarchy. These are the values that are not yet applied to the query.
    */
   public getAvailableValues() {
-    return this.activeCategoryValue.children;
+    return pluck(this.activeCategoryValue.children, 'value');
   }
 
   /**
@@ -328,10 +359,7 @@ export class CategoryFacet extends Component {
    * If the given value to select is not in the available values, it will throw an error.
    */
   public selectValue(value: string) {
-    Assert.check(
-      contains(this.getAvailableValues().map(categoryValue => categoryValue.value), value),
-      'Failed while trying to select a value that is not available.'
-    );
+    Assert.check(contains(this.getAvailableValues(), value), 'Failed while trying to select a value that is not available.');
     const newPath = this.activePath.slice(0);
     newPath.push(value);
     this.changeActivePath(newPath);
@@ -589,7 +617,7 @@ export class CategoryFacet extends Component {
         this.logAnalyticsEvent(analyticsActionCauseList.breadcrumbFacet);
         this.changeActivePath([]);
       };
-      const lastParentValue = this.getVisibleParentCategoryValues().pop();
+      const lastParentValue = this.getVisibleParentValues().pop();
 
       const categoryFacetBreadcrumbBuilder = new CategoryFacetBreadcrumb(
         this.options.title,

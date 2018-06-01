@@ -35,9 +35,9 @@ export function CategoryFacetTest() {
       test.cmp.activePath = simulateQueryData.query.categoryFacets[0].path;
     });
 
-    it('when calling getVisibleParentCategoryValues returns all the visible parent values', () => {
+    it('when calling getVisibleParentValues returns all the visible parent values', () => {
       Simulate.query(test.env, simulateQueryData);
-      const visibleParentValues: string[] = pluck(test.cmp.getVisibleParentCategoryValues(), 'value');
+      const visibleParentValues: string[] = test.cmp.getVisibleParentValues();
       for (let i = 0; i < test.cmp.activePath.length; i++) {
         expect(visibleParentValues[i]).toEqual(`parent${i}`);
       }
@@ -48,14 +48,14 @@ export function CategoryFacetTest() {
       simulateQueryData.query.categoryFacets[0].path = [];
       test.cmp.activePath = [];
 
-      const visibleParentValues: string[] = pluck(test.cmp.getVisibleParentCategoryValues(), 'value');
+      const visibleParentValues: string[] = test.cmp.getVisibleParentValues();
 
       expect(visibleParentValues).toEqual([]);
     });
 
     it('when calling getAvailableValues returns children of the last parent', () => {
       Simulate.query(test.env, simulateQueryData);
-      const values: string[] = pluck(test.cmp.getAvailableValues(), 'value');
+      const values: string[] = test.cmp.getAvailableValues();
       for (let i = 0; i < simulateQueryData.results.categoryFacets[0].values.length - 1; i++) {
         expect(values[i]).toEqual(`value${i}`);
       }
