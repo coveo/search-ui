@@ -2,7 +2,7 @@ import { $$ } from '../../utils/Dom';
 import { SVGDom } from '../../utils/SVGDom';
 import { SVGIcons } from '../../utils/SVGIcons';
 
-export class CategoryFacetBreadcrumbBuilder {
+export class CategoryFacetBreadcrumb {
   constructor(
     private categoryFacetTitle: string,
     private path: string[],

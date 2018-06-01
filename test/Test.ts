@@ -626,3 +626,6 @@ CategoryFacetDebugTest();
 
 import { CategoryFacetSearchTest } from './ui/CategoryFacet/CategoryFacetSearchTest';
 CategoryFacetSearchTest();
+
+import { CategoryFacetBreadcrumbTest } from './ui/CategoryFacet/CategoryFacetBreadcrumbTest';
+CategoryFacetBreadcrumbTest();

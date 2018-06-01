@@ -180,9 +180,9 @@ export function CategoryFacetSearchTest() {
     it('pressing any other key displays new values', done => {
       const keyboardEvent = { which: 1337 } as KeyboardEvent;
       categoryFacetSearch.build();
+      categoryFacetSearch.handleKeyboardEvent(keyboardEvent);
 
       setTimeout(() => {
-        categoryFacetSearch.handleKeyboardEvent(keyboardEvent);
         expect(categoryFacetSearch.facetSearchElement.searchResults.innerHTML).not.toEqual('');
         done();
       });

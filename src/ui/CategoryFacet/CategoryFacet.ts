@@ -22,7 +22,7 @@ import { CategoryFacetSearch } from './CategoryFacetSearch';
 import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
 import { ICategoryFacetResult } from '../../rest/CategoryFacetResult';
 import { BreadcrumbEvents, IPopulateBreadcrumbEventArgs } from '../../events/BreadcrumbEvents';
-import { CategoryFacetBreadcrumbBuilder } from './CategoryFacetBreadcrumb';
+import { CategoryFacetBreadcrumb } from './CategoryFacetBreadcrumb';
 import { IQueryResults } from '../../rest/QueryResults';
 import { ICategoryFacetValue } from '../../rest/CategoryFacetValue';
 import { ISearchEndpoint } from '../../rest/SearchEndpointInterface';
@@ -280,7 +280,7 @@ export class CategoryFacet extends Component {
       return [];
     }
     let currentParentvalue = this.categoryValueRoot.children[0];
-    const parentValues: CategoryValue[] = [currentParentvalue];
+    const parentValues = [currentParentvalue];
     while (currentParentvalue.children.length != 0) {
       currentParentvalue = currentParentvalue.children[0];
       parentValues.push(currentParentvalue);
@@ -591,7 +591,7 @@ export class CategoryFacet extends Component {
       };
       const lastParentValue = this.getVisibleParentCategoryValues().pop();
 
-      const categoryFacetBreadcrumbBuilder = new CategoryFacetBreadcrumbBuilder(
+      const categoryFacetBreadcrumbBuilder = new CategoryFacetBreadcrumb(
         this.options.title,
         this.activePath,
         resetFacet,

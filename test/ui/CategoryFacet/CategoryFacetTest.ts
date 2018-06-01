@@ -32,11 +32,74 @@ export function CategoryFacetTest() {
       test = Mock.optionsComponentSetup<CategoryFacet, ICategoryFacetOptions>(CategoryFacet, {
         field: '@field'
       });
+      test.cmp.activePath = simulateQueryData.query.categoryFacets[0].path;
+    });
+
+    it('when calling getVisibleParentCategoryValues returns all the visible parent values', () => {
+      Simulate.query(test.env, simulateQueryData);
+      const visibleParentValues: string[] = pluck(test.cmp.getVisibleParentCategoryValues(), 'value');
+      for (let i = 0; i < test.cmp.activePath.length; i++) {
+        expect(visibleParentValues[i]).toEqual(`parent${i}`);
+      }
+    });
+
+    it('when calling getVisibleParentCategoryValues when there are no parents returns empty array', () => {
+      simulateQueryData.results.categoryFacets[0].parentValues = [];
+      simulateQueryData.query.categoryFacets[0].path = [];
+      test.cmp.activePath = [];
+
+      const visibleParentValues: string[] = pluck(test.cmp.getVisibleParentCategoryValues(), 'value');
+
+      expect(visibleParentValues).toEqual([]);
+    });
+
+    it('when calling getAvailableValues returns children of the last parent', () => {
+      Simulate.query(test.env, simulateQueryData);
+      const values: string[] = pluck(test.cmp.getAvailableValues(), 'value');
+      for (let i = 0; i < simulateQueryData.results.categoryFacets[0].values.length - 1; i++) {
+        expect(values[i]).toEqual(`value${i}`);
+      }
+    });
+
+    it('when calling deselectCurrentValue it strips the last element of the path', () => {
+      test.cmp.activePath = ['value1', 'value2'];
+      test.cmp.deselectCurrentValue();
+      expect(test.cmp.activePath).toEqual(['value1']);
+    });
+
+    it('when calling deselectCurrentValue and the path is empty the path remains empty', () => {
+      test.cmp.activePath = [];
+      test.cmp.deselectCurrentValue();
+      expect(test.cmp.activePath).toEqual([]);
+    });
+
+    it('when calling selectValue with a non-existent value throws an error', () => {
+      Simulate.query(test.env, simulateQueryData);
+      expect(() => test.cmp.selectValue('inexistentvalue')).toThrowError();
+    });
+
+    it('when calling selectValue appends the given value to the path', () => {
+      const currentPath = test.cmp.activePath;
+      Simulate.query(test.env, simulateQueryData);
+
+      test.cmp.selectValue('value9');
+
+      expect(test.cmp.activePath).toEqual(currentPath.concat(['value9']));
     });
 
     it('calling hide adds the coveo hidden class', () => {
       test.cmp.hide();
       expect($$(test.cmp.element).hasClass('coveo-hidden')).toBeTruthy();
+    });
+
+    it('hides the component when there is no results', () => {
+      const emptyCategoryFacetResults = FakeResults.createFakeCategoryFacetResult('@field', [], undefined, 0);
+      simulateQueryData.results = { ...simulateQueryData.results, categoryFacets: [emptyCategoryFacetResults] };
+      spyOn(test.cmp, 'hide');
+
+      Simulate.query(test.env, simulateQueryData);
+
+      expect(test.cmp.hide).toHaveBeenCalled();
     });
 
     describe('when categoryFacet is not implemented on the endpoint', () => {
@@ -60,16 +123,6 @@ export function CategoryFacetTest() {
         Simulate.query(test.env, simulateQueryData);
         expect(test.cmp.hide).toHaveBeenCalled();
       });
-    });
-
-    it('hides the component when there is no results', () => {
-      const emptyCategoryFacetResults = FakeResults.createFakeCategoryFacetResult('@field', [], undefined, 0);
-      simulateQueryData.results = { ...simulateQueryData.results, categoryFacets: [emptyCategoryFacetResults] };
-      spyOn(test.cmp, 'hide');
-
-      Simulate.query(test.env, simulateQueryData);
-
-      expect(test.cmp.hide).toHaveBeenCalled();
     });
 
     describe('calling changeActivePath', () => {
