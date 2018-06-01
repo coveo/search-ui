@@ -127,42 +127,54 @@ export function FacetSliderTest() {
       let slider: Slider;
       let mockEnvironmentBuilder: Mock.MockEnvironmentBuilder;
       let env: Mock.IMockEnvironment;
+      let facetSlider: FacetSlider;
 
       beforeEach(() => {
-        slider = jasmine.createSpyObj('slider', ['drawGraph']);
+        slider = jasmine.createSpyObj('slider', ['drawGraph', 'onMoving']);
         mockEnvironmentBuilder = new Mock.MockEnvironmentBuilder();
         env = mockEnvironmentBuilder.build();
       });
 
-      it('should draw the graph on resize when there are results', done => {
-        let facetSlider = new FacetSlider(env.element, facetSliderOptions, mockEnvironmentBuilder.getBindings(), slider);
-
-        facetSlider.onResize(new Event('resize'));
-
-        setTimeout(() => {
-          expect(slider.drawGraph).toHaveBeenCalled();
-          done();
-        }, FacetSlider.DEBOUNCED_RESIZE_DELAY + 1);
+      afterEach(() => {
+        jasmine.clock().uninstall();
       });
 
-      it('should not draw the graph on resize when there are no results', done => {
-        let facetSlider = new FacetSlider(env.element, facetSliderOptions, mockEnvironmentBuilder.getBindings(), slider);
+      describe('on resize', () => {
+        beforeEach(() => {
+          jasmine.clock().install();
+          facetSlider = new FacetSlider(env.element, facetSliderOptions, mockEnvironmentBuilder.getBindings(), slider);
+        });
 
-        $$(env.root).trigger(QueryEvents.noResults);
-        facetSlider.onResize(new Event('resize'));
+        afterEach(() => {
+          jasmine.clock().uninstall();
+        });
 
-        setTimeout(() => {
+        it('should draw the graph on resize when there are results', () => {
+          facetSlider.onResize(new Event('resize'));
+          jasmine.clock().tick(FacetSlider.DEBOUNCED_RESIZE_DELAY + 1);
+          expect(slider.drawGraph).toHaveBeenCalled();
+        });
+
+        it('should execute the onMoving function of the slider on resize', () => {
+          facetSlider.onResize(new Event('resize'));
+          jasmine.clock().tick(FacetSlider.DEBOUNCED_RESIZE_DELAY + 1);
+          expect(slider.onMoving).toHaveBeenCalled();
+        });
+
+        it('should not draw the graph on resize when there are no results', () => {
+          $$(env.root).trigger(QueryEvents.noResults);
+          facetSlider.onResize(new Event('resize'));
+          jasmine.clock().tick(FacetSlider.DEBOUNCED_RESIZE_DELAY + 1);
           expect(slider.drawGraph).not.toHaveBeenCalled();
-          done();
-        }, FacetSlider.DEBOUNCED_RESIZE_DELAY + 1);
+        });
       });
 
       it('should draw the graph when draw delayed graph data is called', done => {
-        let fakeResults = createFacetSliderGraphGroupByResults();
+        const fakeResults = createFacetSliderGraphGroupByResults();
         $$(env.element).addClass('coveo-facet-column');
 
         facetSliderOptions = { start: 0, end: 100, field: '@bar', graph: { steps: 4 } };
-        let facetSlider = new FacetSlider(env.element, facetSliderOptions, mockEnvironmentBuilder.getBindings(), slider);
+        facetSlider = new FacetSlider(env.element, facetSliderOptions, mockEnvironmentBuilder.getBindings(), slider);
 
         hideFacetColumn(env);
 
@@ -181,7 +193,7 @@ export function FacetSliderTest() {
         $$(env.element).addClass('coveo-facet-column');
 
         facetSliderOptions = { start: 0, end: 100, field: '@bar', graph: { steps: 4 } };
-        let facetSlider = new FacetSlider(env.element, facetSliderOptions, mockEnvironmentBuilder.getBindings(), slider);
+        facetSlider = new FacetSlider(env.element, facetSliderOptions, mockEnvironmentBuilder.getBindings(), slider);
 
         hideFacetColumn(env);
 
