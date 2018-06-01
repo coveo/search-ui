@@ -11,7 +11,9 @@ import { exportGlobally } from '../../GlobalExports';
 
 import 'styling/_QueryDuration';
 
-export interface IQueryDurationOptions {}
+export interface IQueryDurationOptions {
+  enableQueryDuration?: boolean;
+}
 
 /**
  * The QueryDuration component displays the duration of the last query execution.
@@ -30,7 +32,10 @@ export class QueryDuration extends Component {
     });
   };
 
-  static options: IQueryDurationOptions = {};
+  static options: IQueryDurationOptions = {
+    // TODO : Add description
+    enableQueryDuration: ComponentOptions.buildBooleanOption({ defaultValue: true })
+  };
 
   private textContainer: HTMLElement;
 
@@ -54,8 +59,17 @@ export class QueryDuration extends Component {
     this.element.appendChild(this.textContainer);
   }
 
+  // TODO : Is it a good practice to allow the access to this variable?
+  public enableQueryDuration() {
+    this.options.enableQueryDuration = true;
+  }
+
+  public disableQueryDuration() {
+    this.options.enableQueryDuration = false;
+  }
+
   private handleQuerySuccess(data: IQuerySuccessEventArgs) {
-    if (!this.disabled && data.results.results.length > 0) {
+    if (!this.disabled && data.results.results.length > 0 && this.options.enableQueryDuration) {
       Assert.exists(data);
 
       let tooltip = [

@@ -17,10 +17,13 @@ import ResultListModule = require('../ResultList/ResultList');
 import 'styling/_QuerySummary';
 import { IQuery } from '../../rest/Query';
 import { IQueryResults } from '../../rest/QueryResults';
+import { QueryDuration } from '../QueryDuration/QueryDuration';
 
 export interface IQuerySummaryOptions {
+  enableResultsSummary?: boolean;
+  enableNoResultsForSearch?: boolean;
+  enableCancelLastAction?: boolean;
   enableSearchTips?: boolean;
-  onlyDisplaySearchTips?: boolean;
 }
 
 /**
@@ -44,24 +47,28 @@ export class QuerySummary extends Component {
    * @componentOptions
    */
   static options: IQuerySummaryOptions = {
+    // TODO : Add description
+    enableResultsSummary: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+
+    // TODO : Add description
+    enableNoResultsForSearch: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+
+    // TODO : Add description
+    enableCancelLastAction: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+
     /**
      * Specifies whether to display the search tips to the end user when there are no search results.
      *
      * Default value is `true`.
      */
-    enableSearchTips: ComponentOptions.buildBooleanOption({ defaultValue: true }),
-
-    /**
-     * Specifies whether to hide the information about the currently displayed range of results and only display the
-     * search tips instead.
-     *
-     * Default value is `false`.
-     */
-    onlyDisplaySearchTips: ComponentOptions.buildBooleanOption({ defaultValue: false })
+    enableSearchTips: ComponentOptions.buildBooleanOption({ defaultValue: true })
   };
 
   private textContainer: HTMLElement;
   private lastKnownGoodState: any;
+
+  private querryDurationContainer: HTMLElement;
+  private querryDuration: QueryDuration;
 
   /**
    * Creates a new QuerySummary component.
@@ -77,8 +84,15 @@ export class QuerySummary extends Component {
     this.bind.onRootElement(QueryEvents.querySuccess, (data: IQuerySuccessEventArgs) => this.handleQuerySuccess(data));
     this.bind.onRootElement(QueryEvents.queryError, () => this.hide());
     this.hide();
+
     this.textContainer = $$('span').el;
     this.element.appendChild(this.textContainer);
+    $$(this.textContainer).addClass('coveo-query-summary-range-of-results');
+
+    // TODO : Is this something we could do?
+    this.querryDurationContainer = $$('span').el;
+    this.element.appendChild(this.querryDurationContainer);
+    this.querryDuration = new QueryDuration(this.querryDurationContainer);
   }
 
   private hide() {
@@ -93,12 +107,15 @@ export class QuerySummary extends Component {
     $$(this.textContainer).empty();
     this.show();
 
-    if (!this.options.onlyDisplaySearchTips) {
+    if (this.options.enableResultsSummary) {
+      this.querryDuration.enableQueryDuration();
       if (this.isInfiniteScrollingMode()) {
         this.renderSummaryInInfiniteScrollingMode(queryPerformed, queryResults);
       } else {
         this.renderSummaryInStandardMode(queryPerformed, queryResults);
       }
+    } else {
+      this.querryDuration.disableQueryDuration();
     }
 
     if (queryResults.exception != null && queryResults.exception.code != null) {
@@ -244,18 +261,17 @@ export class QuerySummary extends Component {
       searchTips.el.appendChild(fewerFilter.el);
     }
 
-    if (this.options.enableSearchTips) {
-      if (noResultsForString) {
-        this.textContainer.appendChild(noResultsForString.el);
-      }
+    if (noResultsForString && this.options.enableNoResultsForSearch) {
+      this.textContainer.appendChild(noResultsForString.el);
+    }
+
+    if (this.options.enableCancelLastAction) {
       this.textContainer.appendChild(cancelLastAction.el);
+    }
+
+    if (this.options.enableSearchTips) {
       this.textContainer.appendChild(searchTipsInfo.el);
       this.textContainer.appendChild(searchTips.el);
-    } else {
-      if (noResultsForString) {
-        this.textContainer.appendChild(noResultsForString.el);
-      }
-      this.textContainer.appendChild(cancelLastAction.el);
     }
   }
 }
