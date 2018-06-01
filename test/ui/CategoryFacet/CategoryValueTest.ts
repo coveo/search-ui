@@ -1,0 +1,34 @@
+import { optionsComponentSetup } from '../../MockEnvironment';
+import { CategoryFacet, ICategoryFacetOptions } from '../../../src/ui/CategoryFacet/CategoryFacet';
+import { CategoryValue } from '../../../src/ui/CategoryFacet/CategoryValue';
+import { CategoryFacetTemplates } from '../../../src/ui/CategoryFacet/CategoryFacetTemplates';
+import { $$ } from '../../../src/Core';
+export function CategoryValueTest() {
+  describe('CategoryValue', () => {
+    it('does not call changeActivePath if we reached maximumDepth', () => {
+      const categoryFacet = optionsComponentSetup<CategoryFacet, ICategoryFacetOptions>(CategoryFacet, {
+        field: '@field',
+        maximumDepth: 3
+      }).cmp;
+      const categoryValue = new CategoryValue($$('div'), 'value', 3, new CategoryFacetTemplates(), categoryFacet, ['1', '2', '3']);
+      spyOn(categoryFacet, 'changeActivePath');
+
+      $$($$(categoryValue.element).find('.coveo-category-facet-value-label')).trigger('click');
+
+      expect(categoryFacet.changeActivePath).not.toHaveBeenCalled();
+    });
+
+    it('calls changeActivePath on click when below or equal maximumDepth', () => {
+      const categoryFacet = optionsComponentSetup<CategoryFacet, ICategoryFacetOptions>(CategoryFacet, {
+        field: '@field',
+        maximumDepth: 3
+      }).cmp;
+      const categoryValue = new CategoryValue($$('div'), 'value', 3, new CategoryFacetTemplates(), categoryFacet, ['1', '2']);
+      spyOn(categoryFacet, 'changeActivePath');
+
+      $$($$(categoryValue.element).find('.coveo-category-facet-value-label')).trigger('click');
+
+      expect(categoryFacet.changeActivePath).toHaveBeenCalled();
+    });
+  });
+}
