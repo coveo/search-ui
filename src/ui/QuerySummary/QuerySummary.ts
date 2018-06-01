@@ -17,7 +17,6 @@ import ResultListModule = require('../ResultList/ResultList');
 import 'styling/_QuerySummary';
 import { IQuery } from '../../rest/Query';
 import { IQueryResults } from '../../rest/QueryResults';
-import { QueryDuration } from '../QueryDuration/QueryDuration';
 
 export interface IQuerySummaryOptions {
   enableResultsSummary?: boolean;
@@ -67,9 +66,6 @@ export class QuerySummary extends Component {
   private textContainer: HTMLElement;
   private lastKnownGoodState: any;
 
-  private querryDurationContainer: HTMLElement;
-  private querryDuration: QueryDuration;
-
   /**
    * Creates a new QuerySummary component.
    * @param element The HTMLElement on which to instantiate the component.
@@ -87,12 +83,6 @@ export class QuerySummary extends Component {
 
     this.textContainer = $$('span').el;
     this.element.appendChild(this.textContainer);
-    $$(this.textContainer).addClass('coveo-query-summary-range-of-results');
-
-    // TODO : Is this something we could do?
-    this.querryDurationContainer = $$('span').el;
-    this.element.appendChild(this.querryDurationContainer);
-    this.querryDuration = new QueryDuration(this.querryDurationContainer);
   }
 
   private hide() {
@@ -108,14 +98,11 @@ export class QuerySummary extends Component {
     this.show();
 
     if (this.options.enableResultsSummary) {
-      this.querryDuration.enableQueryDuration();
       if (this.isInfiniteScrollingMode()) {
         this.renderSummaryInInfiniteScrollingMode(queryPerformed, queryResults);
       } else {
         this.renderSummaryInStandardMode(queryPerformed, queryResults);
       }
-    } else {
-      this.querryDuration.disableQueryDuration();
     }
 
     if (queryResults.exception != null && queryResults.exception.code != null) {
