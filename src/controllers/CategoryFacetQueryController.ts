@@ -12,7 +12,9 @@ export class CategoryFacetQueryController {
   public putCategoryFacetInQueryBuilder(queryBuilder: QueryBuilder, path: string[], maximumNumberOfValues: number): number {
     const positionInQuery = queryBuilder.categoryFacets.length;
     if (path.length != 0) {
-      queryBuilder.advancedExpression.addFieldExpression(this.categoryFacet.options.field as string, '==', [path.join('|')]);
+      queryBuilder.advancedExpression.addFieldExpression(this.categoryFacet.options.field as string, '==', [
+        path.join(this.categoryFacet.options.delimitingCharacter)
+      ]);
     }
     const categoryFacetsRequest: ICategoryFacetRequest = {
       field: this.categoryFacet.options.field as string,

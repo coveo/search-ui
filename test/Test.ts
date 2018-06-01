@@ -510,9 +510,6 @@ AccessTokenTest();
 import { CategoryFacetTest } from './ui/CategoryFacet/CategoryFacetTest';
 CategoryFacetTest();
 
-import { CategoryValueRootTest } from './ui/CategoryFacet/CategoryValueRootTest';
-CategoryValueRootTest();
-
 import { FacetValueSuggestionsTest } from './ui/FacetValueSuggestionsTest';
 FacetValueSuggestionsTest();
 
@@ -629,3 +626,6 @@ CategoryFacetSearchTest();
 
 import { CategoryFacetBreadcrumbTest } from './ui/CategoryFacet/CategoryFacetBreadcrumbTest';
 CategoryFacetBreadcrumbTest();
+
+import { CategoryValueTest } from './ui/CategoryFacet/CategoryValueTest';
+CategoryValueTest();

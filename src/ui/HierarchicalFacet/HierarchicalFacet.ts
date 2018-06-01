@@ -93,6 +93,10 @@ interface IFlatHierarchy {
  *
  * Selecting the `folder3` value in the facet would only return the `text2.txt` item.
  *
+ * @deprecated This component is exposed for legacy reasons. You should instead use the {@link CategoryFacet} component. It uses a different
+ * api to fetch its values and will be a lot more performant on fields that have a lot of values. Also, its UI design is also much simpler and
+ * easier to use.
+ *
  * @notSupportedIn salesforcefree
  */
 export class HierarchicalFacet extends Facet implements IComponentBindings {

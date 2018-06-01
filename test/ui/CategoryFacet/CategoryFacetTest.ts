@@ -8,7 +8,7 @@ import { FakeResults } from '../../Fake';
 import { QueryBuilder } from '../../../src/Core';
 import { CategoryFacetQueryController } from '../../../src/controllers/CategoryFacetQueryController';
 import { IBuildingQueryEventArgs } from '../../../src/events/QueryEvents';
-import { range, pluck, shuffle } from 'underscore';
+import { first, range, pluck, shuffle } from 'underscore';
 
 export function CategoryFacetTest() {
   function buildSimulateQueryData(numberOfResults = 11, numberOfRequestedValues = 11): ISimulateQueryData {
@@ -345,6 +345,29 @@ export function CategoryFacetTest() {
         Simulate.query(test.env, simulateQueryData);
         expect($$(test.cmp.element).find('.coveo-category-facet-all-categories')).toBeNull();
       });
+    });
+
+    it('when default path is specified, sends the correct path in the query', () => {
+      test = Mock.optionsComponentSetup<CategoryFacet, ICategoryFacetOptions>(CategoryFacet, {
+        field: '@field',
+        basePath: ['base', 'path']
+      });
+      const { queryBuilder } = Simulate.query(test.env, simulateQueryData);
+      expect(first(queryBuilder.categoryFacets[0].path, 2)).toEqual(['base', 'path']);
+    });
+
+    it('when default path is specified, exclude those values from the rendered values', () => {
+      test = Mock.optionsComponentSetup<CategoryFacet, ICategoryFacetOptions>(CategoryFacet, {
+        field: '@field',
+        basePath: ['parent0', 'parent1']
+      });
+      Simulate.query(test.env, simulateQueryData);
+
+      const values = $$(test.cmp.element)
+        .findAll('.coveo-category-facet-value-caption')
+        .map(el => $$(el).text());
+      expect(values).not.toContain('parent0');
+      expect(values).not.toContain('parent1');
     });
   });
 }

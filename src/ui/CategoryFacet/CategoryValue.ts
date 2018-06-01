@@ -33,7 +33,11 @@ export class CategoryValue implements CategoryValueParent {
     this.label = $$(this.element.find('.coveo-category-facet-value-label'));
     this.collapseArrow = this.categoryFacetTemplates.buildCollapseArrow();
     this.categoryChildrenValueRenderer = new CategoryChildrenValueRenderer(this.element, categoryFacetTemplates, this, this.categoryFacet);
-    this.labelOnClick = () => this.onLabelClick();
+    this.labelOnClick = () => {
+      if (this.path.length < this.categoryFacet.options.maximumDepth) {
+        this.onLabelClick();
+      }
+    };
     this.label.one('click', this.labelOnClick);
   }
 

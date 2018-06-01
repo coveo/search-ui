@@ -43,11 +43,13 @@ export interface ICategoryFacetOptions {
   pageSize?: number;
   delimitingCharacter?: string;
   debug?: boolean;
+  basePath?: string[];
+  maximumDepth?: number;
 }
 
 /**
  * This component allows to render hierarchical values. It determines the filter to apply depending on the current path of values that
- * are selected. The path is a a combination of values that follow each other in a hierarchy.
+ * are selected. The path is a sequence of values that lead to a specific value in the hierarchy.
  *
  * For example, in the example below, the file text1.txt has the path `['c', 'folder1', 'text1.txt'].
  *
@@ -184,6 +186,30 @@ export class CategoryFacet extends Component {
      */
     delimitingCharacter: ComponentOptions.buildStringOption({ defaultValue: '|' }),
     /**
+     * Path that will be used as a path prefix for every query.
+     *
+     * **Example:**
+     *
+     * If you have the following files indexed on a file system:
+     * ```
+     * c:\
+     *    folder1\
+     *        text1.txt
+     *    folder2\
+     *      folder3\
+     *        text2.txt
+     * ```
+     * Setting `basePath` to `c` displays `folder1` and `folder2` in the `CategoryFacet`, but omits `c`.
+     *
+     */
+    basePath: ComponentOptions.buildListOption<string>({ defaultValue: [] }),
+    /**
+     * Maximum number of levels to traverse in the hierarchy.
+     *
+     * Default value is `Number.MAX_VALUE`.
+     */
+    maximumDepth: ComponentOptions.buildNumberOption({ defaultValue: Number.MAX_VALUE }),
+    /**
      * Specifies whether or not field format debugging is activated.
      * This will log messages in the console and inform you of any issues encountered.
      * This option should only be enabled when debugging because it can have negative effects on performance.
@@ -194,7 +220,6 @@ export class CategoryFacet extends Component {
   public categoryFacetQueryController: CategoryFacetQueryController;
   public listenToQueryStateChange = true;
   public queryStateAttribute: string;
-  public categoryValueRootModule = CategoryValueRoot;
   public categoryFacetSearch: CategoryFacetSearch;
   public categoryFacetDebug: CategoryFacetDebug;
   public activeCategoryValue: CategoryValue | undefined;
@@ -219,10 +244,12 @@ export class CategoryFacet extends Component {
   constructor(public element: HTMLElement, public options: ICategoryFacetOptions, bindings?: IComponentBindings) {
     super(element, 'CategoryFacet', bindings);
     this.options = ComponentOptions.initComponentOptions(element, CategoryFacet, options);
+    this.activePath = this.options.basePath;
 
     this.categoryFacetQueryController = new CategoryFacetQueryController(this);
     this.categoryFacetTemplates = new CategoryFacetTemplates();
-    this.categoryValueRoot = new this.categoryValueRootModule($$(this.element), this.categoryFacetTemplates, this);
+    this.categoryValueRoot = new CategoryValueRoot($$(this.element), this.categoryFacetTemplates, this);
+    this.categoryValueRoot.path = this.activePath;
     this.categoryFacetDebug = new CategoryFacetDebug(this);
     this.currentPage = 0;
     this.numberOfValues = this.options.numberOfValues;
@@ -257,6 +284,12 @@ export class CategoryFacet extends Component {
     if (categoryFacetResult.notImplemented) {
       this.notImplementedError();
     } else if (categoryFacetResult.values.length != 0 || categoryFacetResult.parentValues.length != 0) {
+      if (Utils.arrayEqual(first(this.activePath, this.options.basePath.length), this.options.basePath)) {
+        categoryFacetResult.parentValues = last(
+          categoryFacetResult.parentValues,
+          categoryFacetResult.parentValues.length - this.options.basePath.length
+        );
+      }
       this.renderValues(categoryFacetResult, numberOfRequestedValues);
     } else {
       this.hide();
@@ -469,9 +502,11 @@ export class CategoryFacet extends Component {
     const childrenValuesToRender = this.moreValuesToFetch
       ? categoryFacetResult.values.slice(0, numberOfRequestedValues - 1)
       : categoryFacetResult.values.slice(0, numberOfRequestedValues);
+
     this.numberOfChildValuesCurrentlyDisplayed = isEmpty(this.activePath)
       ? categoryFacetResult.parentValues.length
       : childrenValuesToRender.length;
+
     currentParentValue.renderChildren(childrenValuesToRender);
     this.activeCategoryValue = currentParentValue as CategoryValue;
   }
