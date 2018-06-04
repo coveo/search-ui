@@ -51,7 +51,7 @@ export interface ICategoryFacetOptions {
  * This component allows to render hierarchical values. It determines the filter to apply depending on the current path of values that
  * are selected. The path is a sequence of values that lead to a specific value in the hierarchy.
  *
- * For example, in the example below, the file text1.txt has the path `['c', 'folder1', 'text1.txt'].
+ * For example, in the example below, the file text1.txt has the path `['c', 'folder1']`.
  *
  * This facet requires a field with a special format to work correctly.
  *
