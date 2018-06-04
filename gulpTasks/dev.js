@@ -49,14 +49,14 @@ gulp.task('dev', ['setup', 'deleteCssFile'], done => {
   server = new WebpackDevServer(compiler, {
     compress: true,
     contentBase: 'bin/',
-    publicPath: `/js/`,
+    publicPath: `http://localhost:${port}/js/`,
     disableHostCheck: true,
     stats: {
       colors: true,
       publicPath: true
     }
   });
-  server.listen(port, '0.0.0.0', () => {});
+  server.listen(port, 'localhost', () => {});
   done();
 });
 
