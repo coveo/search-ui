@@ -59,6 +59,12 @@
   }
 }
 
+.coveo-category-facet-value.coveo-category-facet-last-value {
+  .coveo-category-facet-value-caption {
+    color: black;
+  }
+}
+
 .coveo-category-facet-value-caption {
   text-overflow: ellipsis;
   overflow: hidden;

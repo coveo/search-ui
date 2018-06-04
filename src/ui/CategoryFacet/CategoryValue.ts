@@ -34,7 +34,7 @@ export class CategoryValue implements CategoryValueParent {
     this.collapseArrow = this.categoryFacetTemplates.buildCollapseArrow();
     this.categoryChildrenValueRenderer = new CategoryChildrenValueRenderer(this.element, categoryFacetTemplates, this, this.categoryFacet);
     this.labelOnClick = () => {
-      if (this.path.length < this.categoryFacet.options.maximumDepth) {
+      if (!this.passededMaximumDepth()) {
         this.onLabelClick();
       }
     };
@@ -42,6 +42,9 @@ export class CategoryValue implements CategoryValueParent {
   }
 
   public render() {
+    if (this.passededMaximumDepth()) {
+      this.element.addClass('coveo-category-facet-last-value');
+    }
     this.parentElement.append(this.element.el);
   }
 
@@ -74,5 +77,9 @@ export class CategoryValue implements CategoryValueParent {
   private onLabelClick() {
     this.categoryFacet.logAnalyticsEvent(analyticsActionCauseList.categoryFacetSelect);
     this.categoryFacet.changeActivePath(this.path);
+  }
+
+  private passededMaximumDepth() {
+    return this.path.length - this.categoryFacet.options.basePath.length >= this.categoryFacet.options.maximumDepth;
   }
 }
