@@ -1,5 +1,6 @@
 @import 'Variables';
-@import './mixins/breadcrumb';
+@import 'mixins/breadcrumb';
+@import 'mixins/_facetHeaderAnimation';
 @import 'bourbon/bourbon';
 
 @mixin facetValueLabelPadding {
@@ -22,7 +23,7 @@
   }
 
   & > .coveo-facet-values > .coveo-category-facet-value {
-    padding: 5px 0 5px 0;
+    padding: 5px 0;
   }
 
   &.coveo-category-facet-values-fade .coveo-active-category-facet-parent {
@@ -83,8 +84,9 @@
 }
 
 .coveo-category-facet-header {
-  padding: 10px 20px 6px 20px;
+  padding: 10px 20px 6px;
   color: $color-greyish-teal-blue;
+  background-color: $color-blueish-white;
 }
 
 .coveo-category-facet-collapse-children-svg {
@@ -106,18 +108,8 @@
   width: 18px;
   height: 20px;
   .coveo-category-facet-header-wait-animation-svg {
-    color: $color-greyish-teal-blue;
-    display: inline-block;
-    vertical-align: middle;
-    @include animation-name(coveo-spin);
-    @include animation-timing-function(linear);
-    @include animation-duration(1s);
-    @include animation-iteration-count(infinite);
+    @include facet-header-animation;
   }
-}
-
-.coveo-category-facet-header {
-  background-color: $color-blueish-white;
 }
 
 .coveo-category-facet-more,
