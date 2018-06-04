@@ -202,9 +202,6 @@ export interface IAnalyticsResultsLayoutChange {
   resultsLayoutChangeTo: string;
 }
 
-/**
- *
- */
 export var analyticsActionCauseList = {
   /**
    * Identifies the search event that gets logged when the initial query is performed as a result of loading a search interface.
@@ -1063,7 +1060,7 @@ export var analyticsActionCauseList = {
     type: 'recommendation'
   },
   /**
-   * Identifies the search event that gets logged when an advanced query is successfully executed.
+   * Identifies the search event that gets logged when a user creates an advanced query from the {@link AdvancedSearch} component.
    *
    * `actionCause`: `'advancedSearch'`
    * `actionType`: `'advancedSearch'`
