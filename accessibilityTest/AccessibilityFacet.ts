@@ -1,14 +1,23 @@
-/// <reference path="./CustomMatcher.d.ts" />
 import * as axe from 'axe-core';
-import { $$ } from '../src/utils/Dom';
-import { getRoot, afterDeferredQuerySuccess, getFacetColumn } from './Testing';
-import { Component, get } from '../src/Core';
-import { Facet } from '../src/ui/Facet/Facet';
+import { $$, Component, Facet, get } from 'coveo-search-ui';
+import { afterDeferredQuerySuccess, afterDelay, getFacetColumn, getRoot, inDesktopMode, resetMode } from './Testing';
 
 export const AccessibilityFacet = () => {
   describe('Facet', () => {
+    const getFacetElement = () => {
+      return $$('div', { className: Component.computeCssClassName(Facet), 'data-field': '@objecttype' });
+    };
+
+    beforeEach(() => {
+      inDesktopMode();
+    });
+
+    afterEach(() => {
+      resetMode();
+    });
+
     it('should be accessible', async done => {
-      getFacetColumn().appendChild($$('div', { className: Component.computeCssClassName(Facet), 'data-field': '@objecttype' }).el);
+      getFacetColumn().appendChild(getFacetElement().el);
       await afterDeferredQuerySuccess();
       const axeResults = await axe.run(getRoot());
       expect(axeResults).toBeAccessible();
@@ -16,15 +25,24 @@ export const AccessibilityFacet = () => {
     });
 
     it('search should be accessible', async done => {
-      const facetElement = $$('div', { className: Component.computeCssClassName(Facet), 'data-field': '@objecttype' });
+      const facetElement = getFacetElement();
       getFacetColumn().appendChild(facetElement.el);
       await afterDeferredQuerySuccess();
       (get(facetElement.el) as Facet).facetSearch.focus();
-      setTimeout(async () => {
-        const axeResults = await axe.run(getRoot());
-        expect(axeResults).toBeAccessible();
-        done();
-      }, 500);
+      await afterDelay(500);
+      const axeResults = await axe.run(getRoot());
+      expect(axeResults).toBeAccessible();
+      done();
+    });
+
+    it('settings should be accessible', async done => {
+      const facetElement = getFacetElement();
+      getFacetColumn().appendChild(facetElement.el);
+      await afterDeferredQuerySuccess();
+      facetElement.find('.coveo-facet-header-settings').click();
+      const axeResults = await axe.run(getRoot());
+      expect(axeResults).toBeAccessible();
+      done();
     });
   });
 };

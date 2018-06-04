@@ -1,11 +1,11 @@
 import * as axe from 'axe-core';
-import { $$, Component, Pager } from 'coveo-search-ui';
+import { $$, Aggregate, Component } from 'coveo-search-ui';
 import { afterQuerySuccess, getResultsColumn, getRoot } from './Testing';
 
-export const AccessibilityPager = () => {
-  describe('Pager', () => {
+export const AccessibilityAggregate = () => {
+  describe('Aggregate', () => {
     it('should be accessible', async done => {
-      getResultsColumn().appendChild($$('div', { className: Component.computeCssClassName(Pager) }).el);
+      getResultsColumn().appendChild($$('div', { className: Component.computeCssClassName(Aggregate), 'data-field': '@objecttype' }).el);
       await afterQuerySuccess();
       const axeResults = await axe.run(getRoot());
       expect(axeResults).toBeAccessible();

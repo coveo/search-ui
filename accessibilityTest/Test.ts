@@ -1,12 +1,18 @@
 /// <reference types="../bin/ts/CoveoJsSearch" />
-
-import { customMatcher } from './CustomMatcher';
-import { AccessibilityQuerybox } from './AccessibilityQuerybox';
-import { defaultPage } from './DefaultTestPage';
-import { $$ } from '../src/utils/Dom';
-import { AccessibilityPager } from './AccessibilityPager';
+/// <reference path="./CustomMatcher.d.ts" />
+import { $$ } from 'coveo-search-ui';
+import { AccessibilityAdvancedSearch } from './AccessibilityAdvancedSearch';
+import { AccessibilityAggregate } from './AccessibilityAggregate';
 import { AccessibilityFacet } from './AccessibilityFacet';
-import { Simulate } from '../unitTests/Simulate';
+import { AccessibilityPager } from './AccessibilityPager';
+import { AccessibilityQuerybox } from './AccessibilityQuerybox';
+import { customMatcher } from './CustomMatcher';
+import { defaultPage } from './DefaultTestPage';
+import { AccessibilityBackdrop } from './AccessibilityBackdrop';
+import { AccessibilityBadge } from './AccessibilityBadge';
+import { AccessibilityBreadcrumb } from './AccessibilityBreadcrumb';
+import { AccessibilityCardActionBar } from './AccessibilityCardActionBar';
+import { AccessibilityCardOverlay } from './AccessibilityCardOverlay';
 
 const initialHTMLSetup = () => {
   const body = jasmine['getGlobal']().document.body;
@@ -30,16 +36,18 @@ export const setupPageBetweenTest = () => {
 export const teardownPageBetweenTest = () => {
   Coveo.nuke($$(document.body).find('.CoveoSearchInterface'));
   $$($$(document.body).find('#search-page')).empty();
+  const everything = $$(document.body).children();
+  everything.forEach(element => {
+    if (element.id != 'jasmine-report' && element.id != 'search-page') {
+      element.remove();
+    }
+  });
 };
 
 describe('Testing ...', () => {
   beforeAll(done => {
     initialHTMLSetup();
-
-    if (Simulate.isChromeHeadless()) {
-      Coveo.Logger.disable();
-    }
-
+    Coveo.Logger.disable();
     Coveo.SearchEndpoint.configureSampleEndpointV2();
     done();
   });
@@ -52,6 +60,13 @@ describe('Testing ...', () => {
     teardownPageBetweenTest();
   });
 
+  AccessibilityAdvancedSearch();
+  AccessibilityAggregate();
+  AccessibilityBackdrop();
+  AccessibilityBadge();
+  AccessibilityBreadcrumb();
+  AccessibilityCardActionBar();
+  AccessibilityCardOverlay();
   AccessibilityQuerybox();
   AccessibilityPager();
   AccessibilityFacet();

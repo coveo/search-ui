@@ -1,9 +1,6 @@
-/// <reference path="./CustomMatcher.d.ts" />
 import * as axe from 'axe-core';
-import { $$ } from '../src/utils/Dom';
+import { $$, Component, Querybox, get } from 'coveo-search-ui';
 import { afterQuerySuccess, getRoot, getSearchSection } from './Testing';
-import { Component, get } from '../src/Core';
-import { Querybox } from '../src/ui/Querybox/Querybox';
 
 export const AccessibilityQuerybox = () => {
   describe('Querybox', () => {
