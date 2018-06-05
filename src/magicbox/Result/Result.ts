@@ -1,4 +1,5 @@
 import { Expression } from '../Expression/Expression';
+import { ExpressionEndOfInput } from '../Expression/ExpressionEndOfInput';
 import { ExpressionConstant } from '../Expression/ExpressionConstant';
 import _ = require('underscore');
 
@@ -298,5 +299,14 @@ export class Result {
       return JSON.stringify((<ExpressionConstant>this.expression).value);
     }
     return this.expression.id;
+  }
+}
+
+export class EndOfInputResult extends Result {
+  constructor(result: Result) {
+    super([result], ExpressionEndOfInput, result.input);
+    var endOfInput = new Result(null, ExpressionEndOfInput, result.input.substr(result.getLength()));
+    endOfInput.parent = this;
+    this.subResults.push(endOfInput);
   }
 }

@@ -6,6 +6,7 @@ import _ = require('underscore');
 import { ExpressionFunction, ExpressionFunctionArgument } from './Expression/ExpressionFunction';
 import { ExpressionConstant } from './Expression/ExpressionConstant';
 import { ExpressionList } from './Expression/ExpressionList';
+import { Result } from './Result/Result';
 
 export class Grammar {
   public start: ExpressionRef;
@@ -33,7 +34,7 @@ export class Grammar {
     return this.expressions[id];
   }
 
-  public parse(value: string) {
+  public parse(value: string): Result {
     return this.start.parse(value, true);
   }
 

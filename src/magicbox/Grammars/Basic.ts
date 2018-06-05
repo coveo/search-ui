@@ -1,7 +1,7 @@
 import { SubGrammar } from './Expressions';
 import { Expression } from '../Expression/Expression';
 import { Result } from '../Result/Result';
-import { EndOfInputResult } from '../Result/EndOfInputResult';
+import { EndOfInputResult } from '../Result/Result';
 
 export const notWordStart = ' ()[],$@\'"';
 export const notInWord = ' ()[],:';
