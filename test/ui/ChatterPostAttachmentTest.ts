@@ -38,7 +38,7 @@ export function ChatterPostAttachmentTest() {
     });
     it('should use sftitle if sfcontentfilename is not present', () => {
       let result = FakeResults.createFakeFeedItemResult('token', 0, 0, true);
-      result.raw.sfcontentfilename = 'foo';
+      result.raw.sfcontentfilename = undefined;
       result.raw.sftitle = 'bar';
       result.raw.sf_title = 'baz';
       test = Mock.optionsResultComponentSetup<ChatterPostAttachment, IChatterPostAttachmentOption>(
@@ -50,8 +50,8 @@ export function ChatterPostAttachmentTest() {
     });
     it('should use sf_title if sftitle and sfcontentfilename are not present', () => {
       let result = FakeResults.createFakeFeedItemResult('token', 0, 0, true);
-      result.raw.sfcontentfilename = 'foo';
-      result.raw.sftitle = 'bar';
+      result.raw.sfcontentfilename = undefined;
+      result.raw.sftitle = undefined;
       result.raw.sf_title = 'baz';
       test = Mock.optionsResultComponentSetup<ChatterPostAttachment, IChatterPostAttachmentOption>(
         ChatterPostAttachment,
