@@ -49,6 +49,10 @@ export class ChatterPostAttachment extends Component {
 
       if (!Utils.isNullOrUndefined(Utils.getFieldValue(result, 'sfcontentfilename'))) {
         linkElement.text(Utils.getFieldValue(result, 'sfcontentfilename'));
+      } else if (!Utils.isNullOrUndefined(Utils.getFieldValue(result, 'sftitle'))) {
+        linkElement.text(Utils.getFieldValue(result, 'sftitle'));
+      } else if (!Utils.isNullOrUndefined(Utils.getFieldValue(result, 'sf_title'))) {
+        linkElement.text(Utils.getFieldValue(result, 'sf_title'));
       } else {
         linkElement.text(l('ShowAttachment'));
       }

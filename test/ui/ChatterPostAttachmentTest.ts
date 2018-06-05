@@ -28,6 +28,8 @@ export function ChatterPostAttachmentTest() {
     it('should behave correctly with no filename but with a contentversionid', () => {
       let result = FakeResults.createFakeFeedItemResult('token', 0, 0, true);
       result.raw.sfcontentfilename = undefined;
+      result.raw.sftitle = undefined;
+      result.raw.sf_title = undefined;
       test = Mock.optionsResultComponentSetup<ChatterPostAttachment, IChatterPostAttachmentOption>(
         ChatterPostAttachment,
         <IChatterPostAttachmentOption>{},
