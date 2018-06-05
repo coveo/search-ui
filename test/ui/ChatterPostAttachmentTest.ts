@@ -24,7 +24,42 @@ export function ChatterPostAttachmentTest() {
           .getAttribute('href')
       ).toContain(ChatterUtils.buildURI(result.clickUri, result.raw.sffeeditemid, result.raw.sfcontentversionid));
     });
-
+    it('should use sfcontentfilename if present', () => {
+      let result = FakeResults.createFakeFeedItemResult('token', 0, 0, true);
+      result.raw.sfcontentfilename = 'foo';
+      result.raw.sftitle = 'bar';
+      result.raw.sf_title = 'baz';
+      test = Mock.optionsResultComponentSetup<ChatterPostAttachment, IChatterPostAttachmentOption>(
+        ChatterPostAttachment,
+        <IChatterPostAttachmentOption>{},
+        result
+      );
+      expect($$($$(test.cmp.element).find('a')).text()).toContain(result.raw.sfcontentfilename);
+    });
+    it('should use sftitle if sfcontentfilename is not present', () => {
+      let result = FakeResults.createFakeFeedItemResult('token', 0, 0, true);
+      result.raw.sfcontentfilename = 'foo';
+      result.raw.sftitle = 'bar';
+      result.raw.sf_title = 'baz';
+      test = Mock.optionsResultComponentSetup<ChatterPostAttachment, IChatterPostAttachmentOption>(
+        ChatterPostAttachment,
+        <IChatterPostAttachmentOption>{},
+        result
+      );
+      expect($$($$(test.cmp.element).find('a')).text()).toContain(result.raw.sftitle);
+    });
+    it('should use sf_title if sftitle and sfcontentfilename are not present', () => {
+      let result = FakeResults.createFakeFeedItemResult('token', 0, 0, true);
+      result.raw.sfcontentfilename = 'foo';
+      result.raw.sftitle = 'bar';
+      result.raw.sf_title = 'baz';
+      test = Mock.optionsResultComponentSetup<ChatterPostAttachment, IChatterPostAttachmentOption>(
+        ChatterPostAttachment,
+        <IChatterPostAttachmentOption>{},
+        result
+      );
+      expect($$($$(test.cmp.element).find('a')).text()).toContain(result.raw.sf_title);
+    });
     it('should behave correctly with no filename but with a contentversionid', () => {
       let result = FakeResults.createFakeFeedItemResult('token', 0, 0, true);
       result.raw.sfcontentfilename = undefined;
