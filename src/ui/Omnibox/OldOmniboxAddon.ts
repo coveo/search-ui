@@ -20,32 +20,23 @@ export class OldOmniboxAddon {
     });
   }
 
-  private lastQuery: string;
-  private lastSuggestions: Promise<IOmniboxSuggestion[]>[];
-
   public getSuggestion(): Promise<IOmniboxSuggestion[]>[] {
-    let text = this.omnibox.magicBox.getText();
+    const text = this.omnibox.magicBox.getText();
 
     if (text.length == 0) {
       return null;
     }
 
-    if (this.lastQuery == text) {
-      return this.lastSuggestions;
-    }
-
-    this.lastQuery = text;
-
-    let eventArgs = this.buildPopulateOmniboxEventArgs();
+    const eventArgs = this.buildPopulateOmniboxEventArgs();
     $$(this.omnibox.root).trigger(OmniboxEvents.populateOmnibox, eventArgs);
 
-    return (this.lastSuggestions = this.rowsToSuggestions(eventArgs.rows));
+    return this.rowsToSuggestions(eventArgs.rows);
   }
 
   private getCurrentQueryExpression() {
-    let cursorPos = this.omnibox.getCursor();
-    let value = this.omnibox.getText();
-    let length = value.length;
+    const cursorPos = this.omnibox.getCursor();
+    const value = this.omnibox.getText();
+    const length = value.length;
     let start = cursorPos;
     let end = cursorPos;
     if (value[start] == ' ') {
@@ -68,8 +59,8 @@ export class OldOmniboxAddon {
   }
 
   private getQueryExpressionBreakDown() {
-    let ret = [];
-    let queryWords = this.omnibox.getText().split(' ');
+    const ret = [];
+    const queryWords = this.omnibox.getText().split(' ');
     _.each(queryWords, word => {
       ret.push({
         word: word,
@@ -88,8 +79,8 @@ export class OldOmniboxAddon {
   }
 
   private insertAt(at: number, toInsert: string) {
-    let oldValue = this.omnibox.getText();
-    let newValue = [oldValue.slice(0, at), toInsert, oldValue.slice(at)].join('');
+    const oldValue = this.omnibox.getText();
+    const newValue = [oldValue.slice(0, at), toInsert, oldValue.slice(at)].join('');
     this.omnibox.setText(newValue);
   }
 
@@ -98,8 +89,8 @@ export class OldOmniboxAddon {
   }
 
   private buildPopulateOmniboxEventArgs() {
-    let currentQueryExpression = this.getCurrentQueryExpression();
-    let ret: IPopulateOmniboxEventArgs = {
+    const currentQueryExpression = this.getCurrentQueryExpression();
+    const ret: IPopulateOmniboxEventArgs = {
       rows: [],
       completeQueryExpression: {
         word: this.omnibox.getText(),

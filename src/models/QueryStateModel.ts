@@ -13,7 +13,8 @@ export const QUERY_STATE_ATTRIBUTES = {
   LAYOUT: 'layout',
   HD: 'hd',
   HQ: 'hq',
-  QUICKVIEW: 'quickview'
+  QUICKVIEW: 'quickview',
+  DEBUG: 'debug'
 };
 
 export interface IQueryStateIncludedAttribute {
@@ -63,25 +64,29 @@ export class QueryStateModel extends Model {
   static defaultAttributes = {
     q: '',
     first: 0,
+    fv: '',
     t: '',
     hd: '',
     hq: '',
     sort: '',
     layout: 'list',
     tg: '',
-    quickview: ''
+    quickview: '',
+    debug: false
   };
 
   static attributesEnum = {
     q: 'q',
     first: 'first',
+    fv: 'fv',
     t: 't',
     sort: 'sort',
     layout: 'layout',
     hd: 'hd',
     hq: 'hq',
     tg: 'tg',
-    quickview: 'quickview'
+    quickview: 'quickview',
+    debug: 'debug'
   };
 
   static getFacetId(id: string, include: boolean = true) {
@@ -102,7 +107,7 @@ export class QueryStateModel extends Model {
    * @param attributes The state key-value store to instantiate the `QueryStateModel` with.
    */
   constructor(element: HTMLElement, attributes?: IStringMap<string>) {
-    let merged = _.extend({}, QueryStateModel.defaultAttributes, attributes);
+    const merged = { ...QueryStateModel.defaultAttributes, ...attributes };
     super(element, QueryStateModel.ID, merged);
   }
 

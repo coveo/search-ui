@@ -7,7 +7,7 @@ import { StringUtils } from '../../src/utils/StringUtils';
 import { Simulate } from '../Simulate';
 import { Defer } from '../../src/misc/Defer';
 import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
-import { Utils } from '../../src/UtilsModules';
+import { Utils } from '../../src/utils/Utils';
 
 export function QuickviewTest() {
   describe('Quickview', () => {

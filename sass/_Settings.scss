@@ -1,4 +1,4 @@
-@import "Variables";
+@import 'Variables';
 
 .CoveoSettings {
   float: right;
@@ -31,12 +31,11 @@
     margin-left: 5px;
     margin-right: 5px;
     & + .coveo-settings-square {
-      margin-left: 0px;
-      margin-right: 0px;
+      margin-left: 0;
+      margin-right: 0;
     }
   }
 }
-
 
 .coveo-settings-advanced-menu {
   position: absolute;
@@ -46,8 +45,8 @@
   z-index: 11;
 
   &:before {
-    content: "";
-    position:absolute;
+    content: '';
+    position: absolute;
     top: -13px;
     right: 13px;
     @include triangle(12px, $color-light-grey, up);
@@ -61,17 +60,17 @@
   .coveo-icon {
     min-width: 18px;
     display: inline-block;
-    margin: 0px 10px 0px 10px;
+    margin: 0 10px;
     vertical-align: middle;
   }
 
   @include hoverEffectForDropdown();
 
   .coveo-settings-text {
-    overflow:hidden;
+    overflow: hidden;
     display: inline-block;
     vertical-align: middle;
-    padding: 8px 8px 8px 8px;
+    padding: 8px;
   }
 
   &:first-child {
@@ -119,6 +118,6 @@
   }
 
   &.coveo-follow-query {
-    @include iconWithHoverState('coveo-follow-query-svg', 'none')
+    @include iconWithHoverState('coveo-follow-query-svg', 'none');
   }
 }

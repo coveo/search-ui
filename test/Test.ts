@@ -283,6 +283,9 @@ SearchAlertsTest();
 import { SearchButtonTest } from './ui/SearchButtonTest';
 SearchButtonTest();
 
+import { FacetValueStateHandlerTest } from './ui/FacetValueStateHandlerTest';
+FacetValueStateHandlerTest();
+
 import { SearchInterfaceTest } from './ui/SearchInterfaceTest';
 SearchInterfaceTest();
 
@@ -318,6 +321,9 @@ TriggersTest();
 
 import { ValueElementRendererTest } from './ui/ValueElementRendererTest';
 ValueElementRendererTest();
+
+import { ResultActionsMenuTest } from './ui/ResultActionsMenuTest';
+ResultActionsMenuTest();
 
 import { ResultsPerPageTest } from './ui/ResultsPerPageTest';
 ResultsPerPageTest();
@@ -492,3 +498,123 @@ SimpleFilterTest();
 
 import { DeviceUtilsTest } from './utils/DeviceUtilsTest';
 DeviceUtilsTest();
+
+import { TimespanFacetTest } from './ui/TimespanFacetTest';
+TimespanFacetTest();
+
+import { UrlUtilsTest } from './utils/UrlUtilsTest';
+UrlUtilsTest();
+
+import { AccessTokenTest } from './rest/AccessTokenTest';
+AccessTokenTest();
+
+import { FacetValueSuggestionsTest } from './ui/FacetValueSuggestionsTest';
+FacetValueSuggestionsTest();
+
+import { FacetValueSuggestionsProviderTest } from './ui/FacetValueSuggestionsProviderTest';
+FacetValueSuggestionsProviderTest();
+
+import { SuggestionsCacheTest } from './misc/SuggestionsCacheTest';
+SuggestionsCacheTest();
+
+import { FacetColumnAutoLayoutAdjustmentTest } from './ui/FacetColumnAutoLayoutAdjustmentTest';
+FacetColumnAutoLayoutAdjustmentTest();
+
+import { AgGridTest } from './ui/RelevanceInspector/AgGridTest';
+AgGridTest();
+
+import { GenericValueOutputTest } from './ui/RelevanceInspector/GenericValueOutputTest';
+GenericValueOutputTest();
+
+import { RankingInfoParserTest } from './ui/RelevanceInspector/RankingInfoParserTest';
+RankingInfoParserTest();
+
+import { InlineRankingInfoTest } from './ui/RelevanceInspector/InlineRankingInfoTest';
+InlineRankingInfoTest();
+
+import { RelevanceInspectorTabsTest } from './ui/RelevanceInspector/RelevanceInspectorTabsTest';
+RelevanceInspectorTabsTest();
+
+import { TableBuilderTest } from './ui/RelevanceInspector/TableBuilderTest';
+TableBuilderTest();
+
+import { ThumbnailHtmlRendererTest } from './ui/RelevanceInspector/ThumbnailHtmlRendererTest';
+ThumbnailHtmlRendererTest();
+
+import { GenericHtmlRendererTest } from './ui/RelevanceInspector/GenericHtmlRendererTest';
+GenericHtmlRendererTest();
+
+import { AvailableFieldsTableTest } from './ui/RelevanceInspector/AvailableFieldsTableTest';
+AvailableFieldsTableTest();
+
+import { AvailableFieldsSampleValueTest } from './ui/RelevanceInspector/AvailableFieldsSampleValueTest';
+AvailableFieldsSampleValueTest();
+
+import { AvailableFieldsDatasourceTest } from './ui/RelevanceInspector/AvailableFieldsDatasourceTest';
+AvailableFieldsDatasourceTest();
+
+import { ExecutionReportGenericSectionTest } from './ui/RelevanceInspector/ExecutionReportGenericSectionTest';
+ExecutionReportGenericSectionTest();
+
+import { ExecutionReportEffectiveIndexQueryTest } from './ui/RelevanceInspector/ExecutionReportEffectiveIndexQuerySectionTest';
+ExecutionReportEffectiveIndexQueryTest();
+
+import { ExecutionReportSimpleSectionTest } from './ui/RelevanceInspector/ExecutionReportSimpleSectionTest';
+ExecutionReportSimpleSectionTest();
+
+import { ExecutionReportResolvedPipelineSectionTest } from './ui/RelevanceInspector/ExecutionReportResolvedPipelineSectionTest';
+ExecutionReportResolvedPipelineSectionTest();
+
+import { ExecutionReportRankingModifiersTest } from './ui/RelevanceInspector/ExecutionReportRankingModifiersTest';
+ExecutionReportRankingModifiersTest();
+
+import { ExecutionReportQueryOverrideSectionTest } from './ui/RelevanceInspector/ExecutionReportQueryOverrideSectionTest';
+ExecutionReportQueryOverrideSectionTest();
+
+import { ExecutionReportAuthenticationSectionTest } from './ui/RelevanceInspector/ExecutionReportAuthenticationSectionTest';
+ExecutionReportAuthenticationSectionTest();
+
+import { ExecutionReportITDSectionTest } from './ui/RelevanceInspector/ExecutionReportITDSectionTest';
+ExecutionReportITDSectionTest();
+
+import { ExecutionReportTest } from './ui/RelevanceInspector/ExecutionReportTest';
+ExecutionReportTest();
+
+import { RelevanceInspectorTest } from './ui/RelevanceInspector/RelevanceInspectorTest';
+RelevanceInspectorTest();
+
+import { FieldValuesRendererTest } from './ui/RelevanceInspector/FieldValuesRendererTest';
+FieldValuesRendererTest();
+
+import { MetaDataTableTest } from './ui/RelevanceInspector/MetaDataTableTest';
+MetaDataTableTest();
+
+import { QueryUtilsTest } from './utils/QueryUtilsTest';
+QueryUtilsTest();
+
+import { QuickviewDocumentWordTest } from './ui/QuickviewDocumentWordTest';
+QuickviewDocumentWordTest();
+
+import { QuickviewDocumentIframeTest } from './ui/QuickviewDocumentIframeTest';
+QuickviewDocumentIframeTest();
+
+import { QuickviewDocumentWordsTest } from './ui/QuickviewDocumentWordsTest';
+QuickviewDocumentWordsTest();
+
+import { QuickviewDocumentWordColorTest } from './ui/QuickviewDocumentWordColorTest';
+QuickviewDocumentWordColorTest();
+
+import { QuickviewDocumentPreviewBarTest } from './ui/QuickviewDocumentPreviewBarTest';
+QuickviewDocumentPreviewBarTest();
+
+import { QuickviewDocumentHeaderTest } from './ui/QuickviewDocumentHeaderTest';
+QuickviewDocumentHeaderTest();
+
+import { QuickviewDocumentWordButtonTest } from './ui/QuickviewDocumentWordButtonTest';
+QuickviewDocumentWordButtonTest();
+
+import { QuickviewDocumentTest } from './ui/QuickviewDocumentTest';
+QuickviewDocumentTest();
+
+import { PromotedResultsBadgeTest } from './ui/PromotedResultsBadgeTest';
+PromotedResultsBadgeTest();

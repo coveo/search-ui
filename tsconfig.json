@@ -2,13 +2,13 @@
   "compilerOptions": {
     "module": "commonjs",
     "target": "es5",
-    "declaration": false,
     "experimentalDecorators": true,
     "outDir": "./bin",
     "sourceMap": true,
     "forceConsistentCasingInFileNames": true,
     "noUnusedLocals": true,
-    "typeRoots": ["lib", "node_modules/@types"]
+    "typeRoots": ["lib", "node_modules/@types"],
+    "skipLibCheck": true
   },
   "include": ["src/**/*.ts"]
 }

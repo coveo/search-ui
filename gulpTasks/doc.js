@@ -4,29 +4,35 @@ const TypeDoc = require('typedoc');
 const fs = require('fs');
 const shell = require('gulp-shell');
 const notSupportedFeaturesConfig = require('./notSupportedFeaturesConfig');
+const del = require('del');
+const baseTsConfig = require('../tsconfig.json');
 
 gulp.task('doc', ['copyBinToDoc', 'buildPlayground'], function() {
-  var app = new TypeDoc.Application({
+  const typedocConfig = {
+    ...baseTsConfig.compilerOptions,
     mode: 'file',
-    target: 'ES5',
-    experimentalDecorators: true,
-    module: 'CommonJS',
-    includeDeclarations: true,
     theme: 'docs/theme',
     name: 'Coveo JavaScript Search Framework - Reference Documentation',
     readme: 'README.md',
-    externalPattern: '**/{sure,lib,node_modules}/**',
+    excludePrivate: true,
+    excludeProtected: true,
     ignoreCompilerErrors: true,
-    notSupportedFeaturesConfig: notSupportedFeaturesConfig
-  });
-  var src = app.expandInputFiles(['src/Doc.ts']);
-  var project = app.convert(src);
+    notSupportedFeaturesConfig
+  };
+
+  const app = new TypeDoc.Application(typedocConfig);
+  const src = app.expandInputFiles(['src']);
+  const project = app.convert(src);
   app.generateDocs(project, 'docgen');
   app.generateJson(project, './bin/docgen/docgen.json', 'https://coveo.github.io/search-ui/');
   return gulp.src('./readme.png').pipe(gulp.dest('./docgen'));
 });
 
-gulp.task('copyBinToDoc', function() {
+gulp.task('cleanGeneratedThemesFiles', () => {
+  return del(['./docs/theme/assets/gen/**/*']);
+});
+
+gulp.task('copyBinToDoc', ['cleanGeneratedThemesFiles'], function() {
   return gulp.src('./bin/{js,image,css}/**/*').pipe(gulp.dest('./docs/theme/assets/gen'));
 });
 

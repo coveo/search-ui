@@ -21,6 +21,7 @@ import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 import { PendingSearchEvent } from './PendingSearchEvent';
 import { PendingSearchAsYouTypeSearchEvent } from './PendingSearchAsYouTypeSearchEvent';
+import { AccessToken } from '../../rest/AccessToken';
 
 export interface IAnalyticsOptions {
   user?: string;
@@ -33,6 +34,7 @@ export interface IAnalyticsOptions {
   splitTestRunVersion?: string;
   sendToCloud?: boolean;
   organization?: string;
+  renewAccessToken?: () => Promise<string>;
 }
 
 /**
@@ -165,6 +167,8 @@ export class Analytics extends Component {
    */
   public client: IAnalyticsClient;
 
+  private accessToken: AccessToken;
+
   /**
    * Creates a new `Analytics` component. Creates the [`AnalyticsClient`]{@link IAnalyticsClient}.
    * @param element The HTMLElement on which the component will be instantiated.
@@ -176,7 +180,20 @@ export class Analytics extends Component {
     super(element, Analytics.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, Analytics, options);
 
-    this.retrieveInfoFromDefaultSearchEndpoint();
+    this.setupAccessToken();
+
+    if (this.accessToken == null) {
+      this.logger.error(`Analytics component could not resolve any access token`);
+      this.logger.error(
+        `Either provide a analytics token : data-option-token="an-authentication-token" on the Analytics element, or configure a default SearchEndpoint`,
+        this.element
+      );
+      return;
+    } else {
+      this.options.token = this.accessToken.token;
+      this.accessToken.subscribeToRenewal(newToken => (this.client.endpoint.endpointCaller.options.accessToken = newToken));
+    }
+
     this.initializeAnalyticsClient();
     Assert.exists(this.client);
 
@@ -327,7 +344,7 @@ export class Analytics extends Component {
 
   protected initializeAnalyticsEndpoint(): AnalyticsEndpoint {
     return new AnalyticsEndpoint({
-      token: this.options.token,
+      accessToken: this.accessToken,
       serviceUrl: this.options.endpoint,
       organization: this.options.organization
     });
@@ -381,15 +398,41 @@ export class Analytics extends Component {
     }
   }
 
-  private retrieveInfoFromDefaultSearchEndpoint() {
-    let defaultEndpoint = SearchEndpoint.endpoints['default'];
-    if (this.options.token == null && defaultEndpoint) {
-      this.options.token = defaultEndpoint.options.accessToken;
+  private setupAccessToken() {
+    this.trySetupAccessTokenFromOptions();
+    if (this.accessToken == null) {
+      this.trySetupAccessTokenFromDefaultSearchEndpoint();
+    }
+  }
+
+  private trySetupAccessTokenFromOptions() {
+    if (this.options.token != null) {
+      this.accessToken = new AccessToken(this.options.token, this.options.renewAccessToken);
+    }
+  }
+
+  private trySetupAccessTokenFromDefaultSearchEndpoint() {
+    if (this.defaultEndpoint) {
+      this.accessToken = this.defaultEndpoint.accessToken;
+
+      this.options.token = this.defaultEndpoint.accessToken.token;
+      this.defaultEndpoint.accessToken.subscribeToRenewal(newToken => {
+        this.options.token = newToken;
+        this.initializeAnalyticsClient();
+      });
     }
 
-    if (!this.options.organization && defaultEndpoint) {
-      this.options.organization = defaultEndpoint.options.queryStringArguments['workgroup'];
+    if (!this.options.organization && this.defaultEndpoint) {
+      this.options.organization = this.defaultEndpoint.options.queryStringArguments['workgroup'];
     }
+  }
+
+  private get defaultEndpoint(): SearchEndpoint {
+    return (
+      this.searchInterface.options.endpoint ||
+      SearchEndpoint.endpoints['default'] ||
+      _.find(SearchEndpoint.endpoints, endpoint => endpoint != null)
+    );
   }
 
   private handleBuildingQuery(data: IBuildingQueryEventArgs) {

@@ -2,6 +2,7 @@ import { ComponentOptions } from '../../src/ui/Base/ComponentOptions';
 import { ComponentOptionsType, IComponentOptions } from '../../src/ui/Base/ComponentOptions';
 import { Dom } from '../../src/utils/Dom';
 import { TemplateCache } from '../../src/ui/Templates/TemplateCache';
+import { TemplateComponentOptions } from '../../src/ui/Base/TemplateComponentOptions';
 
 export function ComponentOptionsTest() {
   describe('ComponentOptions', () => {
@@ -67,7 +68,7 @@ export function ComponentOptionsTest() {
       });
 
       it('a template option', () => {
-        const option = ComponentOptions.buildTemplateOption();
+        const option = TemplateComponentOptions.buildTemplateOption();
         expect((<any>option).type).toBe(ComponentOptionsType.TEMPLATE);
       });
 
@@ -530,32 +531,32 @@ export function ComponentOptionsTest() {
 
       describe('loadTemplateOption', () => {
         it('which loads an html template from the document matching the selector in the html element option', () => {
-          const option = ComponentOptions.loadTemplateOption(elem, '', { selectorAttr: 'data-my-template-selector' }, doc);
-          const template = ComponentOptions.createResultTemplateFromElement(testTemplate);
+          const option = TemplateComponentOptions.loadTemplateOption(elem, '', { selectorAttr: 'data-my-template-selector' }, doc);
+          const template = TemplateComponentOptions.createResultTemplateFromElement(testTemplate);
           expect(option.toHtmlElement()).toEqual(template.toHtmlElement());
         });
         it('which loads an html template from the cache matching the id in the html element option', () => {
-          const template = ComponentOptions.createResultTemplateFromElement(testTemplate);
+          const template = TemplateComponentOptions.createResultTemplateFromElement(testTemplate);
           TemplateCache.registerTemplate('CoveoTemplateId', template);
-          const option = ComponentOptions.loadTemplateOption(elem, '', { idAttr: 'data-my-template-id' }, doc);
+          const option = TemplateComponentOptions.loadTemplateOption(elem, '', { idAttr: 'data-my-template-id' }, doc);
           expect(option.toHtmlElement()).toEqual(template.toHtmlElement());
           TemplateCache.unregisterTemplate('CoveoTemplateId');
         });
         it('which loads html templates from the html elements matching the child selector in the html element option', () => {
-          const option = ComponentOptions.loadTemplateOption(elem, '', { childSelector: '.coveo-child' }, doc);
+          const option = TemplateComponentOptions.loadTemplateOption(elem, '', { childSelector: '.coveo-child' }, doc);
           expect(option.getType()).toBe('TemplateList');
         });
         it('which loads an html template from the html element matching the name in the html element option', () => {
-          const option = ComponentOptions.loadTemplateOption(elem, 'coveoChild', {}, doc);
+          const option = TemplateComponentOptions.loadTemplateOption(elem, 'coveoChild', {}, doc);
           expect(option.getType()).toBe('TemplateList');
         });
       });
 
       describe('loadResultTemplateFromId', () => {
         it('which loads an html template from the cache matching the id', () => {
-          const template = ComponentOptions.createResultTemplateFromElement(testTemplate);
+          const template = TemplateComponentOptions.createResultTemplateFromElement(testTemplate);
           TemplateCache.registerTemplate('CoveoTemplateId', template);
-          const option = ComponentOptions.loadResultTemplateFromId('CoveoTemplateId');
+          const option = TemplateComponentOptions.loadResultTemplateFromId('CoveoTemplateId');
           expect(option.toHtmlElement()).toEqual(template.toHtmlElement());
           TemplateCache.unregisterTemplate('CoveoTemplateId');
         });
@@ -563,7 +564,7 @@ export function ComponentOptionsTest() {
 
       describe('loadChildrenResultTemplateFromSelector', () => {
         it('which loads html templates from the html elements matching the selector', () => {
-          const option = ComponentOptions.loadChildrenResultTemplateFromSelector(elem, '.coveo-child');
+          const option = TemplateComponentOptions.loadChildrenResultTemplateFromSelector(elem, '.coveo-child');
           expect(option.getType()).toBe('TemplateList');
         });
       });
@@ -591,7 +592,7 @@ export function ComponentOptionsTest() {
 
       describe('createResultTemplateFromElement', () => {
         it('which creates a result template from the given html element', () => {
-          const option = ComponentOptions.createResultTemplateFromElement(testTemplate);
+          const option = TemplateComponentOptions.createResultTemplateFromElement(testTemplate);
           expect(option.getType()).toBe('HtmlTemplate');
         });
       });

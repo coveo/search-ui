@@ -187,7 +187,7 @@ export class HashUtils {
     if (_.isArray(val)) {
       encodedValue = HashUtils.encodeArray(val);
     } else if (_.isObject(val)) {
-      encodedValue = HashUtils.encodeObject(val);
+      encodedValue = JSON.stringify(val);
     } else if (_.isNumber(val) || _.isBoolean(val)) {
       encodedValue = Utils.safeEncodeURIComponent(val.toString());
     } else {
@@ -202,6 +202,17 @@ export class HashUtils {
       obj = obj.replace(Utils.safeEncodeURIComponent(HashUtils.DELIMITER.objectEnd), HashUtils.DELIMITER.objectEnd);
     }
     try {
+      const containsArray = /(\[.*\])/.exec(obj);
+
+      if (containsArray) {
+        obj = obj.replace(
+          /(\[.*\])/,
+          `[${this.decodeArray(containsArray[1])
+            .map(val => `"${val}"`)
+            .join(',')}]`
+        );
+      }
+
       const decoded = decodeURIComponent(obj);
       return JSON.parse(decoded);
     } catch (e) {

@@ -34,23 +34,14 @@ export interface ITabOptions {
 }
 
 /**
- * The Tab component renders a bar that allows the end user to select a specific search interface.
+ * The Tab component renders a widget that allows the end user to select a specific search interface.
  *
  * This component attaches itself to a `div` element. It is in charge of adding an advanced expression to the outgoing
  * query in order to refine the results.
  *
  * The Tab component can also hide and show different parts of the UI. For each individual component in the UI, you can
- * specify whether you wish to include or exclude that component when the user selects a certain Tab.
- *
- * **Including and Excluding Other HTML Components:**
- *
- * You can hide or show a specific HTML component based on the currently selected Tab by adding one of the following
- * attributes to its tag:
- *
- * - `<div data-tab="foobar">`: Only include this element in the Tab with `foobar` as its `data-id`.
- * - `<div data-tab-not="foobar">`: Do not include this element in the Tab with `foobar` as its `data-id`.
- * - `<div data-tab="foobar,somethingelse">`: Only include this element in the Tab with `foobar` as its `data-id` and in
- * the Tab with `somethingelse` as its `data-id`.
+ * specify whether you wish to include or exclude that component when the user selects a certain Tab (see [Using Components
+ * Only on Specific Tabs](https://docs.coveo.com/en/508/javascript-search-framework/using-components-only-on-specific-tabs)).
  *
  * **Setting a New Endpoint for a Tab:**
  *
@@ -265,12 +256,17 @@ export class Tab extends Component {
    */
   public select() {
     if (!this.disabled) {
-      const currentLayout = this.queryStateModel.get(QUERY_STATE_ATTRIBUTES.LAYOUT);
-      this.queryStateModel.setMultiple({
+      const state = {
         t: this.options.id,
-        sort: this.options.sort || QueryStateModel.defaultAttributes.sort,
-        layout: this.options.layout || currentLayout || QueryStateModel.defaultAttributes.layout
-      });
+        sort: this.options.sort || QueryStateModel.defaultAttributes.sort
+      } as any;
+
+      if (this.options.layout) {
+        state.layout = this.options.layout;
+      }
+
+      this.queryStateModel.setMultiple(state);
+
       this.usageAnalytics.logSearchEvent<IAnalyticsInterfaceChange>(analyticsActionCauseList.interfaceChange, {
         interfaceChangeTo: this.options.id
       });

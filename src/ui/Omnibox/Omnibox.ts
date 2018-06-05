@@ -21,7 +21,7 @@ import { Initialization } from '../Base/Initialization';
 import { Querybox } from '../Querybox/Querybox';
 import { FieldAddon } from './FieldAddon';
 import { QueryExtensionAddon } from './QueryExtensionAddon';
-import { QuerySuggestAddon } from './QuerySuggestAddon';
+import { QuerySuggestAddon, IQuerySuggestAddon, VoidQuerySuggestAddon } from './QuerySuggestAddon';
 import { OldOmniboxAddon } from './OldOmniboxAddon';
 import { QueryboxQueryParameters } from '../Querybox/QueryboxQueryParameters';
 import { IAnalyticsActionCause } from '../Analytics/AnalyticsActionListMeta';
@@ -33,6 +33,7 @@ import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 import 'styling/_Omnibox';
 import { logSearchBoxSubmitEvent } from '../Analytics/SharedAnalyticsCalls';
+import { Dom } from '../../Core';
 import { MagicBox, createMagicBox } from '../../magicbox/MagicBox';
 import { Grammar } from '../../magicbox/Grammar';
 import { Complete } from '../../magicbox/Grammars/Complete';
@@ -233,6 +234,8 @@ export class Omnibox extends Component {
   private searchAsYouTypeTimeout: number;
   private skipAutoSuggest = false;
 
+  public suggestionAddon: IQuerySuggestAddon;
+
   /**
    * Creates a new Omnibox component. Also enables necessary addons and binds events on various query events.
    * @param element The HTMLElement on which to instantiate the component.
@@ -248,9 +251,9 @@ export class Omnibox extends Component {
     const originalValueForQuerySyntax = this.options.enableQuerySyntax;
     this.options = _.extend({}, this.options, this.componentOptionsModel.get(ComponentOptionsModel.attributesEnum.searchBox));
 
-    if (this.options.enableQuerySuggestAddon) {
-      new QuerySuggestAddon(this);
-    }
+    $$(this.element).toggleClass('coveo-query-syntax-disabled', this.options.enableQuerySyntax == false);
+
+    this.suggestionAddon = this.options.enableQuerySuggestAddon ? new QuerySuggestAddon(this) : new VoidQuerySuggestAddon();
     new OldOmniboxAddon(this);
     this.createMagicBox();
 
@@ -465,19 +468,15 @@ export class Omnibox extends Component {
     };
 
     this.magicBox.onblur = () => {
-      if (this.options.enableSearchAsYouType && !this.options.inline) {
-        this.setText(this.lastQuery);
-      } else {
-        this.updateQueryState();
-      }
       if (this.isAutoSuggestion()) {
+        this.setText(this.getQuery(true));
         this.usageAnalytics.sendAllPendingEvents();
       }
     };
 
     this.magicBox.onclear = () => {
       this.updateQueryState();
-      if (this.options.triggerQueryOnClear) {
+      if (this.options.triggerQueryOnClear || this.options.enableSearchAsYouType) {
         this.triggerNewQuery(false, () => {
           this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxClear, {});
         });
@@ -679,9 +678,8 @@ export class Omnibox extends Component {
   private handleTabPress() {
     if (this.options.enableQuerySuggestAddon) {
       this.handleTabPressForSuggestions();
-    } else {
-      this.handleTabPressForOldOmniboxAddon();
     }
+    this.handleTabPressForOldOmniboxAddon();
   }
 
   private handleTabPressForSuggestions() {
@@ -696,15 +694,23 @@ export class Omnibox extends Component {
   }
 
   private handleTabPressForOldOmniboxAddon() {
-    if (this.lastSuggestions && this.lastSuggestions[0] && this.lastSuggestions[0].dom) {
-      const firstSelected = $$(this.lastSuggestions[0].dom).find('.coveo-omnibox-selected');
-      const firstSelectable = $$(this.lastSuggestions[0].dom).find('.coveo-omnibox-selectable');
-      if (firstSelected) {
-        $$(firstSelected).trigger('tabSelect');
-      } else if (firstSelectable) {
-        $$(firstSelectable).trigger('tabSelect');
+    const domSuggestions = this.lastSuggestions.filter(suggestions => suggestions.dom).map(suggestions => $$(suggestions.dom));
+    const selected = this.findAllElementsWithClass(domSuggestions, '.coveo-omnibox-selected');
+    if (selected.length > 0) {
+      $$(selected[0]).trigger('tabSelect');
+    } else if (!this.options.enableQuerySuggestAddon) {
+      const selectable = this.findAllElementsWithClass(domSuggestions, '.coveo-omnibox-selectable');
+      if (selectable.length > 0) {
+        $$(selectable[0]).trigger('tabSelect');
       }
     }
+  }
+
+  private findAllElementsWithClass(elements: Dom[], className: string): Dom[] {
+    return elements
+      .map(element => element.find(className))
+      .filter(s => s)
+      .reduce((total, s) => total.concat(s), []);
   }
 
   private triggerNewQuery(searchAsYouType: boolean, analyticsEvent: () => void) {
@@ -721,17 +727,39 @@ export class Omnibox extends Component {
   }
 
   private getQuery(searchAsYouType: boolean) {
-    let query: string;
-    if (searchAsYouType) {
-      query = this.magicBox.getWordCompletion();
-      if (query == null && this.lastSuggestions != null && this.lastSuggestions.length > 0) {
-        const textSuggestion = _.find(this.lastSuggestions, (suggestion: IOmniboxSuggestion) => suggestion.text != null);
-        if (textSuggestion != null) {
-          query = textSuggestion.text;
-        }
-      }
+    if (this.lastQuery == this.magicBox.getText()) {
+      return this.lastQuery;
     }
-    return query || this.magicBox.getText();
+
+    if (!searchAsYouType) {
+      return this.magicBox.getText();
+    }
+
+    const wordCompletion = this.magicBox.getWordCompletion();
+
+    if (wordCompletion != null) {
+      return wordCompletion;
+    }
+
+    return this.magicBox.getWordCompletion() || this.getFirstSuggestion() || this.magicBox.getText();
+  }
+
+  private getFirstSuggestion() {
+    if (this.lastSuggestions == null) {
+      return '';
+    }
+
+    if (this.lastSuggestions.length <= 0) {
+      return '';
+    }
+
+    const textSuggestion = _.find(this.lastSuggestions, (suggestion: IOmniboxSuggestion) => suggestion.text != null);
+
+    if (textSuggestion == null) {
+      return '';
+    }
+
+    return textSuggestion.text;
   }
 
   public updateQueryState() {
@@ -774,7 +802,7 @@ export class Omnibox extends Component {
   private searchAsYouType(forceExecuteQuery = false) {
     this.clearSearchAsYouType();
     if (this.shouldExecuteQuery(true)) {
-      this.searchAsYouTypeTimeout = setTimeout(() => {
+      this.searchAsYouTypeTimeout = window.setTimeout(() => {
         if (this.suggestionShouldTriggerQuery() || forceExecuteQuery) {
           const suggestions = _.map(this.lastSuggestions, suggestion => suggestion.text);
           const index = _.indexOf(suggestions, this.magicBox.getWordCompletion());

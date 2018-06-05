@@ -497,5 +497,20 @@ export const PlaygroundConfiguration: IStringMap<IComponentPlaygroundConfigurati
     toExecute: () => {
       setMinHeightOnSearchInterface('300px');
     }
+  },
+  TimespanFacet: {
+    show: true
+  },
+  PromotedResultsBadge: {
+    show: true,
+    element: new SearchSectionBuilder()
+      .withComponent('CoveoResultList', {
+        'data-layout': 'list'
+      })
+      .withComponent('CoveoPromotedResultsBadge', {
+        'data-show-badge-for-featured-results': true,
+        'data-show-badge-for-recommended-results': true
+      })
+      .build()
   }
 };

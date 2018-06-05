@@ -18,3 +18,4 @@ export { StreamHighlightUtils } from './utils/StreamHighlightUtils';
 export { StringUtils } from './utils/StringUtils';
 export { TimeSpan } from './utils/TimeSpanUtils';
 export { Utils } from './utils/Utils';
+export { UrlUtils } from './utils/UrlUtils';

@@ -1,17 +1,14 @@
 import { IFieldDescription } from '../../rest/FieldDescription';
 import { Assert } from '../../misc/Assert';
 import { Logger } from '../../misc/Logger';
-import { Template } from '../Templates/Template';
 import { $$ } from '../../utils/Dom';
-import { TemplateCache } from '../Templates/TemplateCache';
-import { TemplateList } from '../Templates/TemplateList';
-import { UnderscoreTemplate } from '../Templates/UnderscoreTemplate';
-import { HtmlTemplate } from '../Templates/HtmlTemplate';
 import { Utils } from '../../utils/Utils';
 import { l } from '../../strings/Strings';
 import * as _ from 'underscore';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { IStringMap } from '../../rest/GenericParam';
+import { IComponentOptionsTemplateOptionArgs, TemplateComponentOptions } from './TemplateComponentOptions';
+import { Template } from '../Templates/Template';
 
 /**
  * The `IFieldOption` interface declares a type for options that should contain a field to be used in a query.
@@ -201,39 +198,10 @@ export interface IComponentOptionsChildHtmlElementOptionArgs extends IComponentO
   childSelector?: string;
 }
 
-export interface IComponentOptionsTemplateOption extends IComponentOptionsOption<Template>, IComponentOptionsTemplateOptionArgs {}
-
 /**
  * The `IComponentOptionsTemplateOptionArgs` interface describes the available parameters when building a
  * [template option]{@link ComponentOptions.buildTemplateOption}.
  */
-export interface IComponentOptionsTemplateOptionArgs extends IComponentOptions<Template> {
-  /**
-   * Specifies the CSS selector the template must match. The first matching element in the page is used as the template
-   * option value, if this element is a valid template.
-   *
-   * If specified, this parameter takes precedence over [`idAttr`]{@link IComponentOptionsTemplateOptionArgs.idAttr}.
-   */
-  selectorAttr?: string;
-
-  /**
-   * Specifies the CSS selector the templates must match. The list of all matching, valid elements in the page is used
-   * as the template option value.
-   *
-   * Default value is `.`, followed by the hyphened name of the template option being configured (e.g.,
-   * `.content-template`, `.result-template`, `.sub-result-template`, `.preview-template`, etc.).
-   */
-  childSelector?: string;
-
-  /**
-   * Specifies the HTML `id` attribute the template must match. The corresponding template must be registered in
-   * the [`TemplateCache`]{@link TemplateCache} to be usable as the template option value.
-   *
-   * If specified, this parameter takes precedence over
-   * [`childSelector`]{@link IComponentOptionsTemplateOptionArgs.childSelector}.
-   */
-  idAttr?: string;
-}
 
 export interface IComponentOptionsFieldOption extends IComponentOptionsOption<string>, IComponentOptionsFieldOptionArgs {}
 
@@ -308,6 +276,10 @@ const localizer = /([a-zA-Z\-]+)\s*:\s*(([^,]|,\s*(?!([a-zA-Z\-]+)\s*:))+)/g;
  * [`buildStringOption`]{@link ComponentOptions.buildStringOption}, etc.)
  */
 export class ComponentOptions {
+  static buildTemplateOption(optionArgs?: IComponentOptionsTemplateOptionArgs): Template {
+    return TemplateComponentOptions.buildTemplateOption(optionArgs);
+  }
+
   /**
    * Builds a boolean option.
    *
@@ -427,26 +399,26 @@ export class ComponentOptions {
 
   /**
    * Tries to parse a stringified JSON option.
-   * 
+   *
    * If unsuccessful (because of invalid syntax), the JSON option is ignored altogether, and the console displays a warning message.
-   * 
+   *
    * **Markup Example:**
    *
    * > `data-foo='{"bar" : "baz"}'`
    *
    * **Note:**
-   * 
+   *
    * A JSON option can always be set as a property in the `init` call of the framework rather than as a `data-` property in the corresponding HTMLElement markup.
-   * 
+   *
    * **Initialization Example:**
-   * 
+   *
    * ```
    * Coveo.init(root, {
    *   Facet : {
    *     foo : {
    *       "bar" : "baz"
    *     }
-   *   } 
+   *   }
    * })
    * ```
    * @param optionArgs The arguments to apply when building the option.
@@ -564,28 +536,6 @@ export class ComponentOptions {
       ComponentOptions.loadChildHtmlElementOption,
       optionArgs
     );
-  }
-
-  /**
-   * Builds a template option.
-   *
-   * The option accepts a CSS selector matching a valid template. This selector can either be a class, or an ID
-   * selector.
-   *
-   * When building a template option using an ID selector, the matching template must be registered in the
-   * [`TemplateCache`]{@link TemplateCache}, however.
-   *
-   * **Markup Examples:**
-   *
-   * > `data-foo-id="#bar"`
-   *
-   * > `data-foo-selector=".bar"`
-   *
-   * @param optionArgs The arguments to apply when building the option.
-   * @returns {Template} The resulting option value.
-   */
-  static buildTemplateOption(optionArgs?: IComponentOptionsTemplateOptionArgs): Template {
-    return ComponentOptions.buildOption<Template>(ComponentOptionsType.TEMPLATE, ComponentOptions.loadTemplateOption, optionArgs);
   }
 
   static buildCustomOption<T>(converter: (value: string) => T, optionArgs?: IComponentOptions<T>): T {
@@ -835,14 +785,18 @@ export class ComponentOptions {
     let numberValue = option.float === true ? Utils.parseFloatIfNotUndefined(attributeValue) : Utils.parseIntIfNotUndefined(attributeValue);
     if (option.min != null && option.min > numberValue) {
       new Logger(element).info(
-        `Value for option ${name} is less than the possible minimum (Value is ${numberValue}, minimum is ${option.min}). It has been forced to its minimum value.`,
+        `Value for option ${name} is less than the possible minimum (Value is ${numberValue}, minimum is ${
+          option.min
+        }). It has been forced to its minimum value.`,
         option
       );
       numberValue = option.min;
     }
     if (option.max != null && option.max < numberValue) {
       new Logger(element).info(
-        `Value for option ${name} is higher than the possible maximum (Value is ${numberValue}, maximum is ${option.max}). It has been forced to its maximum value.`,
+        `Value for option ${name} is higher than the possible maximum (Value is ${numberValue}, maximum is ${
+          option.max
+        }). It has been forced to its maximum value.`,
         option
       );
       numberValue = option.max;
@@ -928,54 +882,6 @@ export class ComponentOptions {
     return $$(element).findAll(selector);
   }
 
-  static loadTemplateOption(
-    element: HTMLElement,
-    name: string,
-    option: IComponentOptionsTemplateOption,
-    doc: Document = document
-  ): Template {
-    let template: Template;
-
-    // Attribute: template selector
-    const selectorAttr = option.selectorAttr || ComponentOptions.attrNameFromName(name, option) + '-selector';
-    const selector = element.getAttribute(selectorAttr) || ComponentOptions.getAttributeFromAlias(element, option);
-    if (selector != null) {
-      const templateElement = <HTMLElement>doc.querySelector(selector);
-      if (templateElement != null) {
-        template = ComponentOptions.createResultTemplateFromElement(templateElement);
-      }
-    }
-    // Attribute: template id
-    if (template == null) {
-      const idAttr = option.idAttr || ComponentOptions.attrNameFromName(name, option) + '-id';
-      const id = element.getAttribute(idAttr) || ComponentOptions.getAttributeFromAlias(element, option);
-      if (id != null) {
-        template = ComponentOptions.loadResultTemplateFromId(id);
-      }
-    }
-    // Child
-    if (template == null) {
-      let childSelector = option.childSelector;
-      if (childSelector == null) {
-        childSelector = '.' + name.replace(/([A-Z])/g, '-$1').toLowerCase();
-      }
-      template = ComponentOptions.loadChildrenResultTemplateFromSelector(element, childSelector);
-    }
-    return template;
-  }
-
-  static loadResultTemplateFromId(templateId: string): Template {
-    return Utils.isNonEmptyString(templateId) ? TemplateCache.getTemplate(templateId) : null;
-  }
-
-  static loadChildrenResultTemplateFromSelector(element: HTMLElement, selector: string): Template {
-    const foundElements = ComponentOptions.loadChildrenHtmlElementFromSelector(element, selector);
-    if (foundElements.length > 0) {
-      return new TemplateList(_.compact(_.map(foundElements, element => ComponentOptions.createResultTemplateFromElement(element))));
-    }
-    return null;
-  }
-
   static findParentScrolling(element: HTMLElement, doc: Document = document): HTMLElement {
     while (<Node>element != doc && element != null) {
       if (ComponentOptions.isElementScrollable(element)) {
@@ -1003,28 +909,10 @@ export class ComponentOptions {
         }
       });
       return attributeFound;
-    } else {
-      return element.getAttribute(ComponentOptions.attrNameFromName(<string>option.alias));
     }
-  }
-
-  static createResultTemplateFromElement(element: HTMLElement): Template {
-    Assert.exists(element);
-    const type = element.getAttribute('type');
-    const mimeTypes =
-      'You must specify the type of template. Valid values are:' +
-      ' ' +
-      UnderscoreTemplate.mimeTypes.toString() +
-      ' ' +
-      HtmlTemplate.mimeTypes.toString();
-    Assert.check(Utils.isNonEmptyString(type), mimeTypes);
-
-    if (_.indexOf(UnderscoreTemplate.mimeTypes, type.toLowerCase()) != -1) {
-      return UnderscoreTemplate.create(element);
-    } else if (_.indexOf(HtmlTemplate.mimeTypes, type.toLowerCase()) != -1) {
-      return new HtmlTemplate(element);
+    if (option.alias) {
+      return element.getAttribute(ComponentOptions.attrNameFromName(option.alias));
     } else {
-      Assert.fail('Cannot guess template type from attribute: ' + type + '. Valid values are ' + mimeTypes);
       return undefined;
     }
   }

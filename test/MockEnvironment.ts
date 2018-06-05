@@ -107,6 +107,7 @@ export class MockEnvironmentBuilder {
     this.searchInterface.componentStateModel = this.componentStateModel;
     this.searchInterface.componentOptionsModel = this.componentOptionsModel;
     this.searchInterface.element = this.root;
+    this.searchInterface.getBindings = () => this.getBindings() as any;
 
     if (!this.searchEndpoint) {
       this.searchEndpoint = mockSearchEndpoint();
@@ -200,6 +201,7 @@ export function mockWindow(): Window {
       mockWindow.location.hash = '#' + mockWindow.location.hash;
     }
   };
+  spyOn(mockWindow.location, 'replace').and.callThrough();
   mockWindow.addEventListener = jasmine.createSpy('addEventListener');
   mockWindow.removeEventListener = jasmine.createSpy('removeEventListener');
   mockWindow.dispatchEvent = jasmine.createSpy('dispatchEvent');
@@ -217,6 +219,10 @@ export function mockSearchInterface(): SearchInterface {
   m.options = {};
   m.options.originalOptionsObject = {};
   m.responsiveComponents = mockResponsiveComponents();
+  m.resultsPerPage = 10;
+  m.getBindings = () => {
+    return new MockEnvironmentBuilder().build() as any;
+  };
   return m;
 }
 

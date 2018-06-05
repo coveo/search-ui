@@ -3,16 +3,15 @@ import { ComponentOptions } from '../Base/ComponentOptions';
 import { IResultsComponentBindings } from '../Base/ResultsComponentBindings';
 import { IQueryResult } from '../../rest/QueryResult';
 import { ResultLink } from '../ResultLink/ResultLink';
-import { Initialization, IInitializationParameters } from '../Base/Initialization';
+import { Initialization } from '../Base/Initialization';
 import { DomUtils } from '../../utils/DomUtils';
 import { $$, Dom } from '../../utils/Dom';
 import { ModalBox as ModalBoxModule } from '../../ExternalModulesShim';
-import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 import { get } from '../Base/RegisteredNamedMethods';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { SVGDom } from '../../utils/SVGDom';
-import { Utils } from '../../UtilsModules';
+import { Utils } from '../../utils/Utils';
 
 export interface IYouTubeThumbnailOptions {
   width: string;
@@ -111,22 +110,9 @@ export class YouTubeThumbnail extends Component {
 
     $$(this.element).append(this.resultLink.el);
 
-    if (this.options.embed) {
-      this.options = _.extend(this.options, {
-        onClick: () => this.openYoutubeIframe()
-      });
-    }
-
-    let initOptions = this.searchInterface.options.originalOptionsObject;
-    let resultComponentBindings: IResultsComponentBindings = _.extend({}, this.getBindings(), {
-      resultElement: element
+    Initialization.automaticallyCreateComponentsInsideResult(element, result, {
+      ResultLink: this.options.embed ? { onClick: () => this.openYoutubeIframe() } : null
     });
-    let initParameters: IInitializationParameters = {
-      options: _.extend({}, { initOptions: { ResultLink: options } }, initOptions),
-      bindings: resultComponentBindings,
-      result: result
-    };
-    Initialization.automaticallyCreateComponentsInside(element, initParameters);
   }
 
   /**
@@ -153,7 +139,7 @@ export class YouTubeThumbnail extends Component {
 
     this.modalbox = this.ModalBox.open(div.el, {
       overlayClose: true,
-      title: DomUtils.getQuickviewHeader(this.result, { showDate: true, title: this.result.title }, this.bindings).el.outerHTML,
+      title: DomUtils.getQuickviewHeader(this.result, { showDate: true, title: this.result.title }, this.bindings).el,
       className: 'coveo-youtube-player',
       validation: () => true,
       body: this.element.ownerDocument.body,

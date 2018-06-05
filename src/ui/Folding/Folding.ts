@@ -1,21 +1,23 @@
-import { IQueryResult } from '../../rest/QueryResult';
-import { Component } from '../Base/Component';
-import { SortCriteria } from '../Sort/SortCriteria';
-import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
-import { IComponentBindings } from '../Base/ComponentBindings';
-import { Utils } from '../../utils/Utils';
-import { Assert } from '../../misc/Assert';
-import { QueryEvents, IBuildingQueryEventArgs, IPreprocessResultsEventArgs } from '../../events/QueryEvents';
-import { Initialization } from '../Base/Initialization';
-import { IQueryResults } from '../../rest/QueryResults';
-import { IQuery } from '../../rest/Query';
-import { $$ } from '../../utils/Dom';
-import { QueryBuilder } from '../Base/QueryBuilder';
-import * as _ from 'underscore';
+import { any, clone, each, map, sortBy, without } from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
+import { IBuildingQueryEventArgs, IPreprocessResultsEventArgs, QueryEvents } from '../../events/QueryEvents';
+import { Assert } from '../../misc/Assert';
+import { IQuery } from '../../rest/Query';
+import { IQueryResult } from '../../rest/QueryResult';
+import { IQueryResults } from '../../rest/QueryResults';
+import { $$ } from '../../utils/Dom';
+import { Utils } from '../../utils/Utils';
+import { Component } from '../Base/Component';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
+import { Initialization } from '../Base/Initialization';
+import { QueryBuilder } from '../Base/QueryBuilder';
+import { SortCriteria } from '../Sort/SortCriteria';
 
 export interface IFoldingOptions {
   field?: IFieldOption;
+  child?: IFieldOption;
+  parent?: IFieldOption;
 
   childField?: IFieldOption;
   parentField?: IFieldOption;
@@ -79,22 +81,50 @@ export class Folding extends Component {
      * Specifies the name of the field on which to do the folding.
      *
      * Specifying a value for this option is required for this component to work.
+     *
+     * **Note:**
+     * > In an Elasticsearch index, the corresponding field must be configured as a *Facet* field
+     * > (see [Add/Edit a Field: [FieldName] - Panel ](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=288)).
+     * > This limitation does not apply to Coveo indexes.
+     *
+     * Default value is `@foldingcollection`.
      */
-    field: ComponentOptions.buildFieldOption({ required: true }),
-
+    field: ComponentOptions.buildFieldOption({ defaultValue: '@foldingcollection' }),
     /**
      * Specifies the field that determines whether a certain result is a child of another top result.
      *
-     * Default value is `@topparentid`.
+     * **Note:**
+     * > In the index, the values of the corresponding field must contain alphanumerical characters only. Using a
+     * > `child` whose values contain non-indexable characters (such as underscores) will make folding fail.
+     *
+     * Default value is `@foldingchild`.
      */
-    childField: ComponentOptions.buildFieldOption({ defaultValue: '@topparentid' }),
-
+    child: ComponentOptions.buildFieldOption({ defaultValue: '@foldingchild' }),
     /**
      * Specifies the field that determines whether a certain result is a top result containing other child results.
      *
-     * Default value is `@containsattachment`.
+     * **Note:**
+     * > In the index, the values of the corresponding field must contain alphanumerical characters only. Using a
+     * > `parent` whose values contain non-indexable characters (such as underscores) will make folding fail.
+     *
+     * Default value is `@foldingparent`.
      */
-    parentField: ComponentOptions.buildFieldOption({ defaultValue: '@containsattachment' }),
+    parent: ComponentOptions.buildFieldOption({ defaultValue: '@foldingparent' }),
+
+    /**
+     * This option is deprecated. Instead, use the {@link Folding.options.parent} option.
+     * @deprecated
+     */
+    childField: ComponentOptions.buildFieldOption({
+      deprecated: 'This option is deprecated. Instead, use the data-parent option.'
+    }),
+    /**
+     * This option is deprecated. Instead, use the {@link Folding.options.child} option.
+     * @deprecated
+     */
+    parentField: ComponentOptions.buildFieldOption({
+      deprecated: 'This option is deprecated. Instead, use the data-child option.'
+    }),
 
     /**
      * Specifies the maximum number of child results to fold.
@@ -111,8 +141,13 @@ export class Folding extends Component {
 
     /**
      * Specifies the sort criteria to apply to the top result and its child results (e.g., `date ascending`,
-     * `@myfield descending`, etc. [See
-     * Query Parameters - sortCriteria](https://developers.coveo.com/x/iwEv#QueryParameters-sortCriteriasortCriteria)).
+     * `@myfield descending`, etc.). See [Query Parameters - sortCriteria](https://developers.coveo.com/x/iwEv#QueryParameters-sortCriteriasortCriteria).
+     *
+     * This option works from the results returned by the index. This means that if only the three most relevant folded results are returned by the index
+     * and you choose to rearrange the folded results by date, then the three most relevant results will be rearranged by date,
+     * meaning that the first folded result is not necessarily the oldest or newest item.
+     *
+     * However, since clicking on the `Show More` button triggers a new query, you would receive new results based on the sort criteria of this option.
      *
      * **Example**
      * > If you are folding email results by conversation and you specify `date descending` as the `rearrange` value of
@@ -221,6 +256,8 @@ export class Folding extends Component {
     Assert.check(Utils.isCoveoField(<string>this.options.field), this.options.field + ' is not a valid field');
     Assert.exists(this.options.maximumExpandedResults);
 
+    this.swapParentChildFoldingFields();
+
     this.bind.onRootElement(QueryEvents.buildingQuery, this.handleBuildingQuery);
     this.bind.onRootElement(QueryEvents.preprocessResults, this.handlepreprocessResults);
   }
@@ -228,7 +265,7 @@ export class Folding extends Component {
   // From a list of results, return a list of results and their attachments
   // We use parentResult to build a tree of result
   static foldWithParent(queryResults: IQueryResult[]): IQueryResult[] {
-    let rootNode: IResultNode = {
+    const rootNode: IResultNode = {
       score: Number.NEGATIVE_INFINITY,
       children: [],
       result: <IQueryResult>{
@@ -236,7 +273,7 @@ export class Folding extends Component {
       }
     };
 
-    _.each(queryResults, (queryResult: IQueryResult, i: number) => {
+    each(queryResults, (queryResult: IQueryResult, i: number) => {
       let resultNode = Folding.findUniqueId(rootNode.children, queryResult.uniqueId);
       // If he have no parent or is parent is him self, add it to the root
       if (queryResult.parentResult == null || queryResult.parentResult.uniqueId == queryResult.uniqueId) {
@@ -255,7 +292,7 @@ export class Folding extends Component {
         if (resultNode != null) {
           resultNode.score = Math.min(i, resultNode.score);
           // Remove himself from his parent because it will be added in his parent. This allowed to remove duplicate.
-          resultNode.parent.children = _.without(resultNode.parent.children, resultNode);
+          resultNode.parent.children = without(resultNode.parent.children, resultNode);
         } else {
           resultNode = {
             result: queryResult,
@@ -285,9 +322,9 @@ export class Folding extends Component {
         }
       }
     });
-    let rootResult = Folding.resultNodeToQueryResult(rootNode);
+    const rootResult = Folding.resultNodeToQueryResult(rootNode);
     // Remove the root from all results
-    _.each(rootResult.attachments, attachment => (attachment.parentResult = null));
+    each(rootResult.attachments, attachment => (attachment.parentResult = null));
     return rootResult.attachments;
   }
 
@@ -302,9 +339,10 @@ export class Folding extends Component {
     // Fold those results
     results = Folding.foldWithParent(results);
     // The first result is the top one
-    let topResult = results.shift();
+    const topResult = results.shift();
     // All other the results are childResults
     topResult.childResults = results;
+
     return topResult;
   }
 
@@ -315,8 +353,8 @@ export class Folding extends Component {
 
   // Convert ResultNode to QueryResult
   private static resultNodeToQueryResult(resultNode: IResultNode): IQueryResult {
-    let result = resultNode.result;
-    result.attachments = _.map(_.sortBy<IResultNode>(resultNode.children, 'score'), Folding.resultNodeToQueryResult);
+    const result = resultNode.result;
+    result.attachments = map(sortBy<IResultNode>(resultNode.children, 'score'), Folding.resultNodeToQueryResult);
     result.parentResult = resultNode.parent != null ? resultNode.parent.result : null;
     return result;
   }
@@ -326,7 +364,7 @@ export class Folding extends Component {
       if (resultNodes[i].result.uniqueId == uniqueId) {
         return resultNodes[i];
       }
-      let resultNode = Folding.findUniqueId(resultNodes[i].children, uniqueId);
+      const resultNode = Folding.findUniqueId(resultNodes[i].children, uniqueId);
       if (resultNode != null) {
         return resultNode;
       }
@@ -334,21 +372,39 @@ export class Folding extends Component {
     return null;
   }
 
+  private swapParentChildFoldingFields() {
+    // Swap "old" childField and parentField and assign them to the "new" parent option
+    // This needs to be done because connectors push the default data in *reverse* order compared to what the index expect.
+    if (this.options.childField != null) {
+      this.logger.warn('Detecting usage of deprecated option "childField". Assigning it automatically to the "parent" option instead.');
+      this.logger.warn('The option definition was changed to support universal folding across all sources.');
+      this.logger.warn('To remove this warning, rename the "childField" option (data-child-field) to "parent" (data-parent).');
+      this.options.parent = this.options.childField;
+    }
+
+    if (this.options.parentField != null) {
+      this.logger.warn('Detecting usage of deprecated option "parentField". Assigning it automatically to the "child" option instead.');
+      this.logger.warn('The option definition was changed to support universal folding across all sources.');
+      this.logger.warn('To remove this warning, rename the "parentField" option (data-parent-field) to "child" (data-child).');
+      this.options.child = this.options.parentField;
+    }
+  }
+
   private handleBuildingQuery(data: IBuildingQueryEventArgs) {
     Assert.exists(data);
 
     if (!this.disabled) {
-      data.queryBuilder.childField = <string>this.options.childField;
-      data.queryBuilder.parentField = <string>this.options.parentField;
+      data.queryBuilder.childField = <string>this.options.parent;
+      data.queryBuilder.parentField = <string>this.options.child;
       data.queryBuilder.filterField = <string>this.options.field;
       data.queryBuilder.filterFieldRange = this.options.range;
 
       data.queryBuilder.requiredFields.push(<string>this.options.field);
-      if (this.options.childField != null) {
-        data.queryBuilder.requiredFields.push(<string>this.options.childField);
+      if (this.options.parent != null) {
+        data.queryBuilder.requiredFields.push(<string>this.options.parent);
       }
-      if (this.options.parentField != null) {
-        data.queryBuilder.requiredFields.push(<string>this.options.parentField);
+      if (this.options.child != null) {
+        data.queryBuilder.requiredFields.push(<string>this.options.child);
       }
     }
   }
@@ -361,15 +417,38 @@ export class Folding extends Component {
     );
     data.results._folded = true;
 
-    let queryResults = data.results;
+    const queryResults = data.results;
 
-    let getResult: (result: IQueryResult) => IQueryResult = this.options.getResult || Folding.defaultGetResult;
-    queryResults.results = _.map(queryResults.results, getResult);
+    const getResult: (result: IQueryResult) => IQueryResult = this.options.getResult || Folding.defaultGetResult;
+    queryResults.results = map(queryResults.results, getResult);
+
+    if (this.options.rearrange) {
+      queryResults.results.forEach(result => {
+        result.childResults = sortBy(result.childResults, result => Utils.getFieldValue(result, this.options.rearrange.sort));
+        if (this.shouldBeReversed(result.childResults)) {
+          result.childResults = result.childResults.reverse();
+        }
+      });
+    }
+
     this.addLoadMoreHandler(<IQueryResult[]>queryResults.results, data.query);
   }
 
+  private shouldBeReversed(childResults: IQueryResult[]) {
+    if (this.options.rearrange.direction == 'ascending') {
+      return false;
+    }
+    const childMissingSortByValue = any(childResults, childResult => {
+      return Utils.isNullOrUndefined(Utils.getFieldValue(childResult, this.options.rearrange.sort));
+    });
+    if (childMissingSortByValue) {
+      return false;
+    }
+    return true;
+  }
+
   private addLoadMoreHandler(results: IQueryResult[], originalQuery: IQuery) {
-    return _.map(results, result => {
+    return map(results, result => {
       if (this.options.enableExpand && !Utils.isNullOrUndefined(Utils.getFieldValue(result, <string>this.options.field))) {
         result.moreResults = () => {
           return this.moreResults(result, originalQuery);
@@ -380,11 +459,11 @@ export class Folding extends Component {
   }
 
   private moreResults(result: IQueryResult, originalQuery: IQuery): Promise<IQueryResult[]> {
-    let query = _.clone(originalQuery);
-    let builder = new QueryBuilder();
+    const query = clone(originalQuery);
+    const builder = new QueryBuilder();
 
     query.numberOfResults = this.options.maximumExpandedResults;
-    let fieldValue = Utils.getFieldValue(result, <string>this.options.field);
+    const fieldValue = Utils.getFieldValue(result, <string>this.options.field);
 
     if (Utils.isNonEmptyString(fieldValue)) {
       builder.advancedExpression.addFieldExpression(<string>this.options.field, '=', [fieldValue]);
@@ -407,12 +486,12 @@ export class Folding extends Component {
       query.cq = this.options.expandExpression;
     }
 
-    if (this.options.parentField != null) {
-      query.parentField = <string>this.options.parentField;
+    if (this.options.child != null) {
+      query.parentField = <string>this.options.child;
     }
 
-    if (this.options.childField != null) {
-      query.childField = <string>this.options.childField;
+    if (this.options.parent != null) {
+      query.childField = <string>this.options.parent;
     }
 
     query.filterField = null;
@@ -438,7 +517,7 @@ export class Folding extends Component {
   }
 
   private handlePreprocessMoreResults(queryResults: IQueryResults) {
-    let getResults: (results: IQueryResult[]) => IQueryResult[] = this.options.getMoreResults || Folding.defaultGetMoreResults;
+    const getResults: (results: IQueryResult[]) => IQueryResult[] = this.options.getMoreResults || Folding.defaultGetMoreResults;
     queryResults.results = getResults(queryResults.results);
     $$(this.element).trigger(QueryEvents.preprocessMoreResults, {
       results: queryResults

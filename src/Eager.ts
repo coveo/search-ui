@@ -91,6 +91,9 @@ FacetSlider.doExport();
 import { FieldSuggestions } from './ui/FieldSuggestions/FieldSuggestions';
 FieldSuggestions.doExport();
 
+import { FacetValueSuggestions } from './ui/FacetValueSuggestions/FacetValueSuggestions';
+FacetValueSuggestions.doExport();
+
 import { FieldTable } from './ui/FieldTable/FieldTable';
 FieldTable.doExport();
 
@@ -164,6 +167,9 @@ Recommendation.doExport();
 
 import { ResultAttachments } from './ui/ResultAttachments/ResultAttachments';
 ResultAttachments.doExport();
+
+import { ResultActionsMenu } from './ui/ResultActions/ResultActionsMenu';
+ResultActionsMenu.doExport();
 
 import { ResultFolding } from './ui/ResultFolding/ResultFolding';
 ResultFolding.doExport();
@@ -262,6 +268,12 @@ TextInput.doExport();
 
 import { SimpleFilter } from './ui/SimpleFilter/SimpleFilter';
 SimpleFilter.doExport();
+
+import { TimespanFacet } from './ui/TimespanFacet/TimespanFacet';
+TimespanFacet.doExport();
+
+import { PromotedResultsBadge } from './ui/PromotedResultsBadge/PromotedResultsBadge';
+PromotedResultsBadge.doExport();
 
 import { swapVar } from './SwapVar';
 swapVar(this);

@@ -178,7 +178,7 @@ export class SearchAlertsMessage extends Component {
 
   private startCloseDelay() {
     clearTimeout(this.closeTimeout);
-    this.closeTimeout = setTimeout(() => {
+    this.closeTimeout = window.setTimeout(() => {
       this.close();
     }, this.options.closeDelay);
   }

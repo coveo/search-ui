@@ -7,7 +7,6 @@ import { IQueryResult } from '../../rest/QueryResult';
 import { $$, Dom } from '../../utils/Dom';
 import { StringUtils } from '../../utils/StringUtils';
 import { SearchEndpoint } from '../../rest/SearchEndpoint';
-import { Template } from '../Templates/Template';
 import { RootComponent } from '../Base/RootComponent';
 import { BaseComponent } from '../Base/BaseComponent';
 import { ModalBox as ModalBoxModule } from '../../ExternalModulesShim';
@@ -19,6 +18,8 @@ import { IComponentBindings } from '../Base/ComponentBindings';
 import { DebugHeader } from './DebugHeader';
 import { QueryEvents, IQuerySuccessEventArgs } from '../../events/QueryEvents';
 import { DebugForResult } from './DebugForResult';
+import { exportGlobally } from '../../GlobalExports';
+import { Template } from '../Templates/Template';
 
 export interface IDebugOptions {
   enableDebug?: boolean;
@@ -26,6 +27,13 @@ export interface IDebugOptions {
 
 export class Debug extends RootComponent {
   static ID = 'Debug';
+
+  static doExport = () => {
+    exportGlobally({
+      Debug: Debug
+    });
+  };
+
   static options: IDebugOptions = {
     enableDebug: ComponentOptions.buildBooleanOption({ defaultValue: false })
   };
@@ -76,7 +84,7 @@ export class Debug extends RootComponent {
     if (this.stackDebug == null) {
       this.stackDebug = {};
     }
-    this.stackDebug = _.extend({}, this.stackDebug, info);
+    this.stackDebug = { ...this.stackDebug, ...info };
   }
 
   private handleNewResultDisplayed(args: IDisplayedNewResultEventArgs) {
@@ -94,10 +102,11 @@ export class Debug extends RootComponent {
       const findResult = (results?: IQueryResults) =>
         results != null ? _.find(results.results, (result: IQueryResult) => result.index == index) : args.result;
 
-      const debugInfo = _.extend(new DebugForResult(this.bindings).generateDebugInfoForResult(args.result), {
-        findResult: findResult,
+      const debugInfo = {
+        ...new DebugForResult(this.bindings).generateDebugInfoForResult(args.result),
+        findResult,
         template: this.templateToJson(template)
-      });
+      };
 
       this.addInfoToDebugPanel(debugInfo);
       this.showDebugPanel();

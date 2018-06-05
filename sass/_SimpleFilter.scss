@@ -9,9 +9,7 @@
   display: block;
   @include flex-wrap(nowrap);
   @include justify-content(flex-start);
-  padding: 0 0 0 15px;
   @include mediumScreenWidth() {
-    padding: 0 0 0 10px;
     &.coveo-no-results {
       max-width: 100%;
     }
@@ -43,13 +41,13 @@
   cursor: pointer;
   padding: 5px 0;
   box-sizing: content-box;
-  margin: 0 10px 5px 0;
   display: inline-block;
   position: relative;
   border: $default-border;
   background-color: white;
   max-width: 250px;
   min-width: 150px;
+  outline: none;
   &:hover {
     background-color: $color-blueish-white-grey;
   }
@@ -68,12 +66,19 @@
   color: $color-greyish-teal-blue;
   @include display(flex);
   @include justify-content(center);
+  @include align-items(center);
   overflow: hidden;
   width: inherit;
   pointer-events: none;
   text-overflow: ellipsis;
   @include user-select(none);
   white-space: nowrap;
+  height: 20px;
+}
+
+.coveo-simplefilter-toggle-svg-container {
+  @include display(flex);
+  padding-top: 2px;
 }
 
 .coveo-simplefilter-circle {
@@ -88,7 +93,7 @@
   min-height: 20px;
   min-width: 20px;
   line-height: 16px;
-  padding: 0 3px 0 3px;
+  padding: 0 3px;
   text-align: center;
   margin: 0 3px;
   pointer-events: none;
@@ -179,4 +184,24 @@
 
 .coveo-simplefilter-empty {
   display: none;
+}
+
+.coveo-main-section {
+  .CoveoSimpleFilter {
+    margin-left: 15px;
+  }
+}
+
+.coveo-facet-column {
+  .CoveoSimpleFilter {
+    width: 100%;
+    max-width: 100%;
+    margin-left: 0;
+  }
+}
+
+.coveo-results-column {
+  .CoveoSimpleFilter {
+    margin-left: 0;
+  }
 }

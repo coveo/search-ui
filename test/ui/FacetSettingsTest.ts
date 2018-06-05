@@ -119,7 +119,7 @@ export function FacetSettingsTest() {
       facetSettings = new FacetSettings(['score', 'alphaascending', 'alphadescending'], facet);
       facetSettings.build();
       facetSettings.open();
-      let ascendingSection = $$(facetSettings.settingsPopup).find('.coveo-facet-settings-item[data-direction="ascending"]');
+      const ascendingSection = $$(facetSettings.settingsPopup).find('.coveo-facet-settings-item[data-direction="ascending"]');
       expect($$(ascendingSection).hasClass('coveo-selected')).toBe(false);
       $$(facetSettings.getSortItem('alphaascending')).trigger('click');
       expect($$(ascendingSection).hasClass('coveo-selected')).toBe(true);
@@ -129,10 +129,38 @@ export function FacetSettingsTest() {
       facetSettings = new FacetSettings(['alphaascending', 'alphadescending', 'score'], facet);
       facetSettings.build();
       facetSettings.open();
-      let ascendingSection = $$(facetSettings.settingsPopup).find('.coveo-facet-settings-item[data-direction="ascending"]');
+      const ascendingSection = $$(facetSettings.settingsPopup).find('.coveo-facet-settings-item[data-direction="ascending"]');
       expect($$(ascendingSection).hasClass('coveo-selected')).toBe(true);
       $$(facetSettings.getSortItem('score')).trigger('click');
       expect($$(ascendingSection).hasClass('coveo-selected')).toBe(false);
+    });
+
+    describe('when closing the popup', () => {
+      beforeEach(() => {
+        jasmine.clock().install();
+        facetSettings = new FacetSettings(['foo', 'bar'], facet);
+        spyOn(facetSettings, 'close');
+        facetSettings.build();
+        facetSettings.open();
+      });
+
+      afterEach(() => {
+        jasmine.clock().uninstall();
+      });
+
+      it('should close the after a delay on mouseleave', () => {
+        $$(facetSettings.button).trigger('mouseleave');
+        jasmine.clock().tick(400);
+        expect(facetSettings.close).toHaveBeenCalled();
+      });
+
+      it('should not close if there is a mouseenter following a mouseleave', () => {
+        $$(facetSettings.button).trigger('mouseleave');
+        jasmine.clock().tick(50);
+        $$(facetSettings.button).trigger('mouseenter');
+        jasmine.clock().tick(400);
+        expect(facetSettings.close).not.toHaveBeenCalled();
+      });
     });
   });
 }

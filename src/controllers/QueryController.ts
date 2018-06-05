@@ -29,6 +29,7 @@ import { BaseComponent } from '../ui/Base/BaseComponent';
 import { ModalBox } from '../ExternalModulesShim';
 import { history } from 'coveo.analytics';
 import * as _ from 'underscore';
+import { UrlUtils } from '../utils/UrlUtils';
 
 /**
  * Possible options when performing a query with the query controller
@@ -93,6 +94,7 @@ class DefaultQueryOptions implements IQueryOptions {
 export class QueryController extends RootComponent {
   static ID = 'QueryController';
   public historyStore: CoveoAnalytics.HistoryStore;
+  public firstQuery: boolean;
 
   private currentPendingQuery: Promise<IQueryResults>;
   private lastQueryBuilder: QueryBuilder;
@@ -101,7 +103,6 @@ export class QueryController extends RootComponent {
   private lastSearchUid: string;
   private lastQueryResults: IQueryResults;
   private currentError: any;
-  private firstQuery: boolean;
   private createdOneQueryBuilder: boolean;
   private showingExecutingQueryAnimation = false;
   private overrideEndpoint: SearchEndpoint;
@@ -495,7 +496,7 @@ export class QueryController extends RootComponent {
   }
 
   private getPipelineInUrl() {
-    return QueryUtils.getUrlParameter('pipeline');
+    return UrlUtils.getUrlParameter('pipeline');
   }
 
   private cancelAnyCurrentPendingQuery() {

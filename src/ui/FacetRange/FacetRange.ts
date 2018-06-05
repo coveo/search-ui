@@ -6,12 +6,14 @@ import { ComponentOptions } from '../Base/ComponentOptions';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { Utils } from '../../utils/Utils';
 import { TemplateHelpers } from '../Templates/TemplateHelpers';
-import { DateUtils } from '../../utils/DateUtils';
+import { IDateToStringOptions, DateUtils } from '../../utils/DateUtils';
 import { FacetRangeQueryController } from '../../controllers/FacetRangeQueryController';
 import { IGroupByResult } from '../../rest/GroupByResult';
 import { Initialization } from '../Base/Initialization';
 import * as Globalize from 'globalize';
 import { exportGlobally } from '../../GlobalExports';
+import { IIndexFieldValue } from '../../rest/FieldValue';
+import { IGroupByValue } from '../../rest/GroupByValue';
 
 export interface IFacetRangeOptions extends IFacetOptions {
   ranges?: IRangeValue[];
@@ -144,32 +146,16 @@ export class FacetRange extends Facet implements IComponentBindings {
     this.options.enableSettings = false;
     this.options.includeInOmnibox = false;
     this.options.enableMoreLess = false;
-
-    if (this.options.valueCaption == null && this.options.dateField == true) {
-      this.options.valueCaption = 'date';
-    }
   }
 
   public getValueCaption(facetValue: any): string {
-    let ret = super.getValueCaption(facetValue);
     if (Utils.exists(this.options.valueCaption) && typeof this.options.valueCaption == 'string') {
-      const startEnd = /^(.*)\.\.(.*)$/.exec(facetValue.value);
-      if (startEnd != null) {
-        const helper = TemplateHelpers.getHelper(this.options.valueCaption);
-        if (helper != null) {
-          ret = helper.call(this, startEnd[1]) + ' - ' + helper.call(this, startEnd[2]);
-        } else {
-          const start = startEnd[1].match(/^[\+\-]?[0-9]+(\.[0-9]+)?$/)
-            ? <any>Number(startEnd[1])
-            : <any>DateUtils.convertFromJsonDateIfNeeded(startEnd[1]);
-          const end = startEnd[2].match(/^[\+\-]?[0-9]+(\.[0-9]+)?$/)
-            ? <any>Number(startEnd[2])
-            : <any>DateUtils.convertFromJsonDateIfNeeded(startEnd[2]);
-          ret = Globalize.format(start, this.options.valueCaption) + ' - ' + Globalize.format(end, this.options.valueCaption);
-        }
-      }
+      return this.translateValueCaptionFromFunctionName(facetValue);
     }
-    return ret;
+    if (!Utils.exists(this.options.valueCaption) && this.options.dateField) {
+      return this.translateValueCaptionFromDate(facetValue);
+    }
+    return super.getValueCaption(facetValue);
   }
 
   protected initFacetQueryController() {
@@ -178,16 +164,82 @@ export class FacetRange extends Facet implements IComponentBindings {
 
   protected processNewGroupByResults(groupByResults: IGroupByResult) {
     if (groupByResults != null && this.options.ranges == null) {
-      groupByResults.values.sort((valueA, valueB) => {
-        const startEndA = valueA.value.split('..');
-        const startEndB = valueB.value.split('..');
-        if (this.options.dateField) {
-          return Date.parse(startEndA[0]) - Date.parse(startEndB[0]);
-        }
-        return Number(startEndA[0]) - Number(startEndB[0]);
-      });
+      groupByResults.values.sort((valueA, valueB) => this.sortRangeGroupByResults(valueA, valueB));
     }
     super.processNewGroupByResults(groupByResults);
+  }
+
+  private sortRangeGroupByResults(valueA: IGroupByValue, valueB: IGroupByValue) {
+    const startEndA = this.extractStartAndEndValue(valueA);
+    const startEndB = this.extractStartAndEndValue(valueB);
+    let firstValue: string;
+    let secondValue: string;
+
+    if (!startEndA) {
+      firstValue = valueA.value;
+    } else {
+      firstValue = startEndA.start;
+    }
+
+    if (!startEndB) {
+      secondValue = valueB.value;
+    } else {
+      secondValue = startEndB.start;
+    }
+
+    if (this.options.dateField) {
+      return Date.parse(firstValue) - Date.parse(secondValue);
+    }
+    return Number(firstValue) - Number(secondValue);
+  }
+
+  private translateValueCaptionFromFunctionName(facetValue: IIndexFieldValue) {
+    const { start, end } = this.extractStartAndEndValue(facetValue);
+    if (start == null || end == null) {
+      return null;
+    }
+
+    const helper = TemplateHelpers.getHelper(this.options.valueCaption);
+
+    if (helper != null) {
+      return `${helper.call(this, start)} - ${helper.call(this, end)}`;
+    } else {
+      const startConverted = start.match(/^[\+\-]?[0-9]+(\.[0-9]+)?$/) ? Number(start) : DateUtils.convertFromJsonDateIfNeeded(start);
+
+      const endConverted = end.match(/^[\+\-]?[0-9]+(\.[0-9]+)?$/) ? Number(end) : DateUtils.convertFromJsonDateIfNeeded(end);
+
+      return `${Globalize.format(startConverted, this.options.valueCaption)} - ${Globalize.format(
+        endConverted,
+        this.options.valueCaption
+      )}`;
+    }
+  }
+
+  private extractStartAndEndValue(facetValue: IIndexFieldValue) {
+    const startAndEnd = /^(.*)\.\.(.*)$/.exec(facetValue.value);
+
+    if (startAndEnd == null) {
+      return null;
+    }
+
+    return {
+      start: startAndEnd[1],
+      end: startAndEnd[2]
+    };
+  }
+
+  private translateValueCaptionFromDate(facetValue: IIndexFieldValue) {
+    const helper = TemplateHelpers.getHelper('dateTime');
+    const { start, end } = this.extractStartAndEndValue(facetValue);
+    const helperOptions: IDateToStringOptions = {
+      alwaysIncludeTime: false,
+      includeTimeIfThisWeek: false,
+      includeTimeIfToday: false,
+      omitYearIfCurrentOne: false,
+      useTodayYesterdayAndTomorrow: false,
+      useWeekdayIfThisWeek: false
+    };
+    return `${helper(start, helperOptions)} - ${helper(end, helperOptions)}`;
   }
 }
 Initialization.registerAutoCreateComponent(FacetRange);

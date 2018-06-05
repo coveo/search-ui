@@ -31,7 +31,7 @@ export interface IAnalyticsSuggestionsOptions extends ISuggestionForOmniboxOptio
  *
  * @deprecated This component is exposed for legacy reasons. If possible, you should avoid using this component.
  * Instead, you should use the [`Omnibox`]{@link Omnibox}
- * [`enableQuerySuggesAddon`]{@link Omnibox.options.enableQuerySuggestAddon} option.
+ * [`enableQuerySuggestAddon`]{@link Omnibox.options.enableQuerySuggestAddon} option.
  */
 export class AnalyticsSuggestions extends Component {
   static ID = 'AnalyticsSuggestions';

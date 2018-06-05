@@ -287,25 +287,25 @@
     ],
     "layout": "list"
   },
-  "CardSlack": {
-    "priority": 2,
-    "fieldsToMatch": [
-      {
-        "field": "connectortype",
-        "values": ["SlackCrawler"]
-      }
-    ],
-    "layout": "card"
-  },
-  "Slack": {
+  "YouTubePlaylist": {
     "priority": 1,
     "fieldsToMatch": [
       {
-        "field": "connectortype",
-        "values": ["SlackCrawler"]
+        "field": "filetype",
+        "values": ["YouTubePlaylist"]
       }
     ],
     "layout": "list"
+  },
+  "CardYouTubePlaylist": {
+    "priority": 2,
+    "fieldsToMatch": [
+      {
+        "field": "filetype",
+        "values": ["YouTubePlaylist"]
+      }
+    ],
+    "layout": "card"
   },
   "CardConfluence": {
     "priority": 2,

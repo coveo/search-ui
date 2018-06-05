@@ -1,40 +1,40 @@
 /// <reference path="../Facet/FacetHeader.ts" />
 /// <reference path="../../controllers/FacetSliderQueryController.ts" />
 
-import { ISliderOptions, Slider, IEndSlideEventArgs, IDuringSlideEventArgs, ISliderGraphData } from '../Misc/Slider';
-import { Component } from '../Base/Component';
-import { IComponentBindings } from '../Base/ComponentBindings';
-import { ComponentOptions, IFieldOption, IComponentOptionsObjectOptionArgs } from '../Base/ComponentOptions';
-import { FacetHeader } from '../Facet/FacetHeader';
-import { l } from '../../strings/Strings';
-import { InitializationEvents } from '../../events/InitializationEvents';
+import 'styling/_FacetSlider';
+import { map } from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
+import { Defer } from '../../MiscModules';
 import { FacetSliderQueryController } from '../../controllers/FacetSliderQueryController';
-import { QueryEvents, IQuerySuccessEventArgs, IBuildingQueryEventArgs, IDoneBuildingQueryEventArgs } from '../../events/QueryEvents';
-import { BreadcrumbEvents, IPopulateBreadcrumbEventArgs, IBreadcrumbItem } from '../../events/BreadcrumbEvents';
+import { BreadcrumbEvents, IBreadcrumbItem, IPopulateBreadcrumbEventArgs } from '../../events/BreadcrumbEvents';
+import { InitializationEvents } from '../../events/InitializationEvents';
+import { IBuildingQueryEventArgs, IDoneBuildingQueryEventArgs, IQuerySuccessEventArgs, QueryEvents } from '../../events/QueryEvents';
+import { ISearchAlertsPopulateMessageEventArgs, SearchAlertsEvents } from '../../events/SearchAlertEvents';
+import { IGraphValueSelectedArgs, SliderEvents } from '../../events/SliderEvents';
+import { Assert } from '../../misc/Assert';
 import { IAttributeChangedEventArg, Model } from '../../models/Model';
+import { QueryStateModel } from '../../models/QueryStateModel';
+import { IGroupByResult } from '../../rest/GroupByResult';
+import { l } from '../../strings/Strings';
 import { $$ } from '../../utils/Dom';
+import { SVGDom } from '../../utils/SVGDom';
+import { SVGIcons } from '../../utils/SVGIcons';
+import { Utils } from '../../utils/Utils';
 import {
-  analyticsActionCauseList,
+  IAnalyticsFacetGraphSelectedMeta,
   IAnalyticsFacetMeta,
   IAnalyticsFacetSliderChangeMeta,
-  IAnalyticsFacetGraphSelectedMeta
+  analyticsActionCauseList
 } from '../Analytics/AnalyticsActionListMeta';
-import { QueryStateModel } from '../../models/QueryStateModel';
-import { SliderEvents, IGraphValueSelectedArgs } from '../../events/SliderEvents';
-import { Assert } from '../../misc/Assert';
-import { Utils } from '../../utils/Utils';
-import { ResponsiveComponentsUtils } from '../ResponsiveComponents/ResponsiveComponentsUtils';
+import { Component } from '../Base/Component';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { ComponentOptions, IComponentOptionsObjectOptionArgs, IFieldOption } from '../Base/ComponentOptions';
 import { Initialization } from '../Base/Initialization';
-import { SearchAlertsEvents, ISearchAlertsPopulateMessageEventArgs } from '../../events/SearchAlertEvents';
-import * as _ from 'underscore';
-import { exportGlobally } from '../../GlobalExports';
+import { FacetHeader } from '../Facet/FacetHeader';
+import { IDuringSlideEventArgs, IEndSlideEventArgs, ISliderGraphData, ISliderOptions, Slider } from '../Misc/Slider';
+import { ResponsiveComponentsUtils } from '../ResponsiveComponents/ResponsiveComponentsUtils';
+import { ResponsiveDropdownEvent } from '../ResponsiveComponents/ResponsiveDropdown/ResponsiveDropdown';
 import { ResponsiveFacetSlider } from '../ResponsiveComponents/ResponsiveFacetSlider';
-import 'styling/_FacetSlider';
-import { IGroupByResult } from '../../rest/GroupByResult';
-import { Defer } from '../../MiscModules';
-import { SVGIcons } from '../../utils/SVGIcons';
-import { SVGDom } from '../../utils/SVGDom';
-import { ResponsiveDropdownHeaderEvent } from '../ResponsiveComponents/ResponsiveDropdown/ResponsiveDropdownHeader';
 
 export interface IFacetSliderOptions extends ISliderOptions {
   dateField?: boolean;
@@ -402,6 +402,17 @@ export class FacetSlider extends Component {
     );
   }
 
+  public isCurrentlyDisplayed() {
+    if (!$$(this.element).isVisible()) {
+      return false;
+    }
+
+    if ($$(this.element).hasClass('coveo-disabled-empty')) {
+      return false;
+    }
+    return true;
+  }
+
   public createDom() {
     this.facetHeader = new FacetHeader({
       field: <string>this.options.field,
@@ -412,11 +423,6 @@ export class FacetSlider extends Component {
       facetSlider: this
     });
     this.element.appendChild(this.facetHeader.build());
-  }
-
-  public disable() {
-    super.disable();
-    $$(this.element).addClass('coveo-disabled-empty');
   }
 
   /**
@@ -543,9 +549,10 @@ export class FacetSlider extends Component {
           this.slider.drawGraph();
         }
       }
+      this.slider.onMoving();
     };
     window.addEventListener('resize', this.onResize);
-    this.bind.onRootElement(ResponsiveDropdownHeaderEvent.OPEN, this.onResize);
+    this.bind.onRootElement(ResponsiveDropdownEvent.OPEN, this.onResize);
 
     // This is used inside SF integration
     this.bind.onRootElement('onPopupOpen', this.onResize);
@@ -679,7 +686,7 @@ export class FacetSlider extends Component {
 
     this.slider = this.slider
       ? this.slider
-      : new Slider(sliderDiv, _.extend({}, this.options, { dateField: this.options.dateField }), this.root);
+      : new Slider(sliderDiv, { ...this.options, ...{ dateField: this.options.dateField } } as ISliderOptions, this.root);
     $$(sliderDiv).on(SliderEvents.endSlide, (e: MouseEvent, args: IEndSlideEventArgs) => {
       this.handleEndSlide(args);
     });
@@ -721,7 +728,7 @@ export class FacetSlider extends Component {
     const groupByResults = data.results.groupByResults[this.facetQueryController.lastGroupByRequestIndex];
     this.isEmpty = this.isFacetEmpty(groupByResults, data);
     this.updateAppearanceDependingOnState();
-    if (this.hasAGraph() && !this.isEmpty) {
+    if (this.hasAGraph()) {
       this.renderToSliderGraph(data);
     }
   }
@@ -794,7 +801,7 @@ export class FacetSlider extends Component {
     let graphData: ISliderGraphData[];
     let totalGraphResults = 0;
     if (rawGroupByResults) {
-      graphData = _.map(rawGroupByResults.values, value => {
+      graphData = map(rawGroupByResults.values, value => {
         totalGraphResults += value.numberOfResults;
         let start: any = value.value.split('..')[0];
         let end: any = value.value.split('..')[1];
@@ -824,7 +831,9 @@ export class FacetSlider extends Component {
         this.isEmpty = true;
       }
       this.updateAppearanceDependingOnState();
-    } else if (graphData != undefined && !this.isDropdownHidden()) {
+    }
+
+    if (graphData != undefined && !this.isDropdownHidden()) {
       // This is deferred since it might be called on initialization with a placehoder over the facet during load time
       // We need to wait that the animation is gone so that the width/height calculation done by the graph are okay.
       Defer.defer(() => this.slider.drawGraph(graphData));
@@ -990,21 +999,27 @@ export class FacetSlider extends Component {
   }
 
   private updateAppearanceDependingOnState(sliding = false) {
-    if (this.isEmpty && !this.isActive() && !sliding) {
-      $$(this.element).addClass('coveo-disabled-empty');
-    } else {
-      $$(this.element).removeClass('coveo-disabled-empty');
-      $$(this.facetHeader.eraserElement).toggle(this.isActive());
-    }
-    if (!this.isActive() && !sliding) {
-      $$(this.element).addClass('coveo-disabled');
-    } else {
-      $$(this.element).removeClass('coveo-disabled');
-    }
+    // Defer the visual update so that we can execute it after the current call stack has resolved.
+    // Since this component is closely linked to DOM size calculation (width), this allows to cover some corner cases
+    // where the component would be visually hidden, leading to incorrect width calculation.
+    // For example, first query placeholder animation hiding the component, or switching between different tabs would affect the calculation otherwise.
+    Defer.defer(() => {
+      if (this.isEmpty && !this.isActive() && !sliding) {
+        $$(this.element).addClass('coveo-disabled-empty');
+      } else {
+        $$(this.element).removeClass('coveo-disabled-empty');
+        $$(this.facetHeader.eraserElement).toggle(this.isActive());
+      }
+      if (!this.isActive() && !sliding) {
+        $$(this.element).addClass('coveo-disabled');
+      } else {
+        $$(this.element).removeClass('coveo-disabled');
+      }
 
-    if (this.isActive() && this.slider) {
-      this.slider.onMoving();
-    }
+      if (this.isActive() && this.slider) {
+        this.slider.onMoving();
+      }
+    });
   }
 
   private handleNuke() {

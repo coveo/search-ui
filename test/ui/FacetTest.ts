@@ -24,6 +24,30 @@ export function FacetTest() {
       test = null;
     });
 
+    it('should be currentlyDisplayed by default', () => {
+      expect(test.cmp.isCurrentlyDisplayed()).toBeTruthy();
+    });
+
+    it('should not be currentlyDisplayed if display:none', () => {
+      test.cmp.element.style.display = 'none';
+      expect(test.cmp.isCurrentlyDisplayed()).toBeFalsy();
+    });
+
+    it('should not be currently displayed if visibility:hidden', () => {
+      test.cmp.element.style.visibility = 'hidden';
+      expect(test.cmp.isCurrentlyDisplayed()).toBeFalsy();
+    });
+
+    it('should not be currently displayed if disabled by a tab', () => {
+      test.cmp.element.className = 'coveo-tab-disabled';
+      expect(test.cmp.isCurrentlyDisplayed()).toBeFalsy();
+    });
+
+    it('should not be currently displayed if empty', () => {
+      test.cmp.element.className = 'coveo-facet-empty';
+      expect(test.cmp.isCurrentlyDisplayed()).toBeFalsy();
+    });
+
     it('allows to select a value', () => {
       expect(test.cmp.getDisplayedFacetValues()).not.toContain('foobar');
       test.cmp.selectValue('foobar');

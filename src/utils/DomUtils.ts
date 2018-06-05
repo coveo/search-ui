@@ -8,6 +8,7 @@ import { SVGIcons } from './SVGIcons';
 import { load } from '../ui/Base/RegisteredNamedMethods';
 import { Logger } from '../misc/Logger';
 import { IComponentBindings } from '../ui/Base/ComponentBindings';
+import { Initialization } from '../Core';
 export class DomUtils {
   static getPopUpCloseButton(captionForClose: string, captionForReminder: string): string {
     let container = document.createElement('span');
@@ -45,13 +46,17 @@ export class DomUtils {
     return dom;
   }
 
-  static highlightElement(initialString: string, valueToSearch: string): string {
+  static highlightElement(initialString: string, valueToSearch: string, classToApply: string = 'coveo-highlight'): string {
     let regex = new RegExp(Utils.escapeRegexCharacter(StringUtils.latinize(valueToSearch)), 'i');
     let firstChar = StringUtils.latinize(initialString).search(regex);
-    let lastChar = firstChar + valueToSearch.length;
-    return `${StringUtils.htmlEncode(initialString.slice(0, firstChar))}<span class='coveo-highlight'>${StringUtils.htmlEncode(
-      initialString.slice(firstChar, lastChar)
-    )}</span>${StringUtils.htmlEncode(initialString.slice(lastChar))}`;
+    if (firstChar >= 0) {
+      let lastChar = firstChar + valueToSearch.length;
+      return `${StringUtils.htmlEncode(initialString.slice(0, firstChar))}<span class='${classToApply}'>${StringUtils.htmlEncode(
+        initialString.slice(firstChar, lastChar)
+      )}</span>${StringUtils.htmlEncode(initialString.slice(lastChar))}`;
+    } else {
+      return initialString;
+    }
   }
 
   static getLoadingSpinner(): HTMLElement {
@@ -98,10 +103,15 @@ export class DomUtils {
     const clickableLinkElement = $$('a', { className: 'coveo-quickview-pop-up-reminder' });
 
     const toLoad = Coveo['Salesforce'] ? 'SalesforceResultLink' : 'ResultLink';
+    const resultForResultLink = { ...result };
+    if (options.title) {
+      resultForResultLink.title = options.title;
+    }
 
     load(toLoad)
       .then(() => {
-        new Coveo[toLoad](clickableLinkElement.el, undefined, bindings, { ...result, title: options.title });
+        clickableLinkElement.addClass(`Coveo${toLoad}`);
+        return Initialization.automaticallyCreateComponentsInsideResult(clickableLinkElement.el, resultForResultLink);
       })
       .catch(err => {
         const logger = new Logger(this);
@@ -114,9 +124,5 @@ export class DomUtils {
       });
 
     return header;
-  }
-
-  static getCurrentScript(): HTMLScriptElement {
-    return <HTMLScriptElement>document.currentScript;
   }
 }

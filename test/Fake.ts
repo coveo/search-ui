@@ -11,6 +11,7 @@ import { IOmniboxDataRow } from '../src/ui/Omnibox/OmniboxInterface';
 import { IPopulateOmniboxEventArgs } from '../src/events/OmniboxEvents';
 import { mockSearchInterface } from './MockEnvironment';
 import _ = require('underscore');
+import { IFieldDescription } from '../src/rest/FieldDescription';
 
 export class FakeResults {
   static createFakeResults(count = 10, token = ''): IQueryResults {
@@ -392,6 +393,37 @@ export class FakeResults {
       insertAt: () => {},
       replace: () => {},
       replaceCurrentExpression: () => {}
+    };
+  }
+
+  static createRankingInfoNoKeywords() {
+    return `Document weights:
+    Title: 0; Quality: 180; Date: 405; Adjacency: 0; Source: 500; Custom: 400; Collaborative rating: 0; QRE: 890; Ranking functions: 0; 
+    
+    Total weight: 2375`;
+  }
+
+  static createRankingInfoWithKeywords() {
+    return `Document weights:\nTitle: 800; Quality: 180; Date: 101; Adjacency: 0; Source: 500; Custom: 350; Collaborative rating: 0; QRE: 2500; Ranking functions: 0; \n\nTerms weights:\ntest: 100, 26; \nTitle: 800; Concept: 0; Summary: 300; URI: 500; Formatted: 0; Casing: 0; Relation: 200; Frequency: 1744; \n\nTotal weight: 7975`;
+  }
+
+  static createRankingInforWithQRE() {
+    return `Document weights:\nTitle: 0; Quality: 180; Date: 0; Adjacency: 0; Source: 500; Custom: 350; Collaborative rating: 0; QRE: 2500; Ranking functions: 0; \nQRE:\nExpression: \"@permanentid=95ad18de4cb8e17023f0224e9d44dd2f7177c6dceac6cb81b16f3659a3c3\" Score: 2500\nExpression: \"@permanentid=4119a14f02a63d0c2d92b51d4501dd83580831caea327179934dd1bc6645\" Score: 0\nExpression: \"@permanentid=39ce64557bee624c368c6cfe736787f1dd22667f43a9f3e46fafa67158d6\" Score: 0\nExpression: \"@permanentid=0d4e5fe9dca91c13d9de061c0c00d1a2733e0a1c0e198c588c2b93cfcd25\" Score: 0\nExpression: \"@permanentid=c612db560ef1f77316b6c11fbedfa3e9b728e09859a188639911aef9e6ea\" Score: 0\nRanking Functions:\n\nTotal weight: 3530`;
+  }
+
+  static createFieldDescription(): IFieldDescription {
+    return {
+      name: 'foo',
+      type: 'String',
+      splitGroupByField: false,
+      groupByField: true,
+      sortByField: true,
+      includeInResults: true,
+      includeInQuery: true,
+      fieldType: 'String',
+      fieldSourceType: null,
+      defaultValue: null,
+      description: 'a description'
     };
   }
 }

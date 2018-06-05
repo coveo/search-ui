@@ -1,4 +1,4 @@
-# Search UI [![Build Status](https://travis-ci.org/coveo/search-ui.svg?branch=master)](https://travis-ci.org/coveo/search-ui) [![Coverage Status](https://coveralls.io/repos/github/coveo/search-ui/badge.svg?branch=master)](https://coveralls.io/github/coveo/search-ui?branch=master) [![TypeScript](https://badges.frapsoft.com/typescript/code/typescript.svg?v=101)](https://github.com/ellerbrock/typescript-badges/)
+# Search UI [![Build Status](https://travis-ci.org/coveo/search-ui.svg?branch=master)](https://travis-ci.org/coveo/search-ui) [![Coverage Status](https://coveralls.io/repos/github/coveo/search-ui/badge.svg?branch=master)](https://coveralls.io/github/coveo/search-ui?branch=master) [![CodeFactor](https://www.codefactor.io/repository/github/coveo/search-ui/badge)](https://www.codefactor.io/repository/github/coveo/search-ui) [![TypeScript](https://badges.frapsoft.com/typescript/code/typescript.svg?v=101)](https://github.com/ellerbrock/typescript-badges/)
 
 Coveo JavaScript Search UI Framework
 
@@ -84,10 +84,11 @@ A tutorial is available to help you get started (see
 
 ## Build
 
-You should have node 6.9.1 (or later) installed to build this project.
+You should have node 9.5.0 (or later) installed to build this project.
 
-    npm install -g gulp
-    npm install
+    npm install -g yarn
+    yarn global add gulp
+    yarn install
     gulp
 
 ## Important Gulp Tasks
@@ -120,34 +121,14 @@ If you need to modify the content of the search page (i.e., the markup itself, n
 breaking anything. However, if you feel like you have a good reason to modify the original `index.html`, feel free to 
 do so.
 
-<h3 class="home-section-with-ordered-list">I Want to Add a New Component!</h3> 
+You might need to assign more memory to Webpack if you see errors about `heap out of memory`. To do so, use this command : 
 
-1. Fork the `coveo/search-ui` repository.
-2. Install Plop globally with `npm install -g plop`.
-3. Navigate to the `./plop` folder.
-4. Run `plop` to automatically start the small command line utility.
-5. Choose the **Create a new component** option.
-6. Enter a name for your component. This will automatically generate 4 things :
-    * Plop will create a new source file under `./src/ui/{{your component name}}/{{your component name}}.ts`.
-      This is where your component logic should be implemented.
-    * Plop will export your component in `./src/Index.ts`. This will make your component globally available under the 
-      Coveo namespace.
-    * Plop will add your component to `./tsconfig.json`. This will allow the project to recognize your component.
-    * Plop will create a new file under `./test/ui/{{your component name}}Test.ts`. This is a blank test file in which 
-      you should add your unit tests.
-    * Plop will reference your component in `./test/Test.ts`. This will build your test like the rest of the 
-      components.
-7. Now, make it work (your mileage may vary)!
-8. Add tests for your component.
-9. You should test the entire public API of your component. This includes all public methods and available options.
-10. Create a pull request to merge your changes in the master branch.
-
-We are very eager to receive external contributions and to collaborate with other developers!
+    node --max_old_space_size=8192 ./node_modules/gulp/bin/gulp.js dev;
 
 ### Tests
 
 Tests are written using [Jasmine](http://jasmine.github.io/2.4/introduction.html). You can use `npm run test` to run 
-the tests in PhantomJS.
+the tests in Chrome Headless.
 
 If you wish to write new unit tests, you can do so by starting a new webpack-dev-server instance.
 

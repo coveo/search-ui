@@ -127,6 +127,7 @@ export class SimpleFilter extends Component {
   private groupByRequestValues: string[] = [];
   private isSticky: boolean = false;
   private groupByBuilder: SimpleFilterValues;
+  private shouldTriggerQuery = true;
 
   /**
    * Creates a new `SimpleFilter` component. Binds multiple query events as well.
@@ -326,7 +327,9 @@ export class SimpleFilter extends Component {
       simpleFilterSelectedValue: checkbox.label,
       simpleFilterField: <string>this.options.field
     });
-    this.queryController.executeQuery();
+    if (this.shouldTriggerQuery) {
+      this.queryController.executeQuery();
+    }
   }
 
   private createCheckbox(label: string) {
@@ -383,7 +386,7 @@ export class SimpleFilter extends Component {
   }
 
   private buildSvgToggleUpIcon(): HTMLElement {
-    let svgIcon = $$('span', null, SVGIcons.icons.arrowDown).el;
+    let svgIcon = $$('span', { className: 'coveo-simplefilter-toggle-svg-container' }, SVGIcons.icons.arrowDown).el;
     SVGDom.addClassToSVGInContainer(svgIcon, 'coveo-simplefilter-toggle-down-svg');
     return svgIcon;
   }
@@ -439,11 +442,11 @@ export class SimpleFilter extends Component {
   }
 
   private handleClearBreadcrumb() {
-    this.usageAnalytics.logSearchEvent<IAnalyticsSimpleFilterMeta>(analyticsActionCauseList.simpleFilterClearAll, {
-      simpleFilterTitle: this.options.title,
-      simpleFilterField: <string>this.options.field
-    });
+    // Bit of a hack with that flag, but essentially we want "clear breadcrumb" to be a global, unique event.
+    // Not something that will log a special event for SimpleFilter (or any component)
+    this.shouldTriggerQuery = false;
     this.resetSimpleFilter();
+    this.shouldTriggerQuery = true;
   }
 
   private handleQuerySuccess(data: IQuerySuccessEventArgs) {

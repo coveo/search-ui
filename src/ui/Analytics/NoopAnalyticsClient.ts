@@ -7,7 +7,7 @@ import { IStringMap } from '../../rest/GenericParam';
 
 export class NoopAnalyticsClient implements IAnalyticsClient {
   public isContextual: boolean = false;
-
+  public endpoint = null;
   private currentEventCause: string;
   private currentEventMeta: IStringMap<any>;
 

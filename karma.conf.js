@@ -9,7 +9,7 @@ var configuration = {
   browsers: ['ChromeHeadless'],
   frameworks: ['jasmine'],
   browserNoActivityTimeout: 90000,
-  browserDisconnectTolerance : 10,
+  browserDisconnectTolerance: 10,
   files: [
     {
       pattern: './node_modules/es6-promise/dist/es6-promise.auto.js',
@@ -17,6 +17,10 @@ var configuration = {
     },
     {
       pattern: './test/lib/jasmine-ajax/jasmine-ajax.js',
+      watched: false
+    },
+    {
+      pattern: 'https://cdnjs.cloudflare.com/ajax/libs/ag-grid/16.0.1/ag-grid.min.noStyle.js',
       watched: false
     },
     {

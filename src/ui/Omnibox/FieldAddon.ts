@@ -80,10 +80,10 @@ export class FieldAddon {
     if (this.omnibox.options.enableSimpleFieldAddon) {
       const word: Result = _.last(this.omnibox.resultAtCursor('Word'));
       if (word != null) {
-        const currentField = word.toString();
+        const current = word.toString();
         const before = word.before();
         const after = word.after();
-        return { type: 'SimpleFieldName', current: currentField, before: before, after: after };
+        return { type: 'SimpleFieldName', current, before, after };
       }
     }
   }
@@ -146,10 +146,11 @@ export class FieldAddon {
 
     return this.getFields().then((fields: string[] | IOmniboxSuggestion[]): any[] => {
       let matchFields = _.chain(fields)
-        .map((field: any) => {
+        .map((fieldName: any) => {
+          const fieldNameBeginsWithAt = fieldName.length > 0 && fieldName[0] == '@';
           return {
-            index: field.toLowerCase().indexOf(fieldNameLC),
-            field: withAt ? field : '@' + field
+            index: fieldName.toLowerCase().indexOf(fieldNameLC),
+            field: fieldNameBeginsWithAt ? fieldName : '@' + fieldName
           };
         })
         .filter(field => {

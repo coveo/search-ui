@@ -1,5 +1,4 @@
-@import "Variables";
-
+@import 'Variables';
 .CoveoFieldTable {
   @include defaultRoundedBorder();
   width: 100%;
@@ -7,25 +6,24 @@
   padding-bottom: 10px;
   position: relative;
   word-break: break-all;
-  margin-top:1px;
-  th, td {
+  margin-top: 1px;
+  th,
+  td {
     font-size: $font-size-smaller;
   }
   td {
     width: 99%;
-    padding: 10px 20px 0px 0px;
+    padding: 10px 20px 0 0;
   }
-
   th {
     color: $color-blueish-gray;
     text-align: left;
     font-weight: normal;
     white-space: nowrap;
-    padding: 10px 10px 0px 20px;
+    padding: 10px 10px 0 20px;
   }
   border-collapse: separate;
   margin-bottom: 20px;
-
   .coveo-clickable {
     @include clickable();
     &.coveo-selected {
@@ -36,7 +34,7 @@
 
 .coveo-field-table-toggle {
   @include clickable();
-  margin: 0px 5px 5px 0px;
+  margin: 0 5px 5px 0;
   .coveo-field-table-toggle-caption {
     margin-right: 5px;
   }
@@ -58,7 +56,7 @@
 }
 
 .coveo-field-table-toggle-down-svg {
-  color: $color-greyish-teal-blue;  
+  color: $color-greyish-teal-blue;
   width: 10px;
   height: 6px;
   @include transition(fill-opacity 0.5s);
@@ -73,7 +71,7 @@
   bottom: 44px;
   right: 10px;
   margin: 0;
-  height: 0px;
+  height: 0;
 }
 
 .coveo-field-table-toggle-up-svg {
@@ -85,7 +83,7 @@
   &.coveo-opened {
     fill-opacity: 1;
     height: 13px;
-    @include transition(fill-opacity cubic-bezier(1,0,1,0) 0.4s);
+    @include transition(fill-opacity cubic-bezier(1, 0, 1, 0) 0.4s);
   }
 }
 

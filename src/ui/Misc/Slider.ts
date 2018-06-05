@@ -1,12 +1,12 @@
-import { $$ } from '../../utils/Dom';
-import { DeviceUtils } from '../../utils/DeviceUtils';
-import { SliderEvents, IGraphValueSelectedArgs } from '../../events/SliderEvents';
-import { Utils } from '../../utils/Utils';
+import { max as d3max, select as d3select } from 'd3';
 import { scaleBand, scaleLinear } from 'd3-scale';
-import { select as d3select, max as d3max } from 'd3';
 import * as Globalize from 'globalize';
-import * as _ from 'underscore';
+import { each, indexOf, map, min } from 'underscore';
+import { IGraphValueSelectedArgs, SliderEvents } from '../../events/SliderEvents';
 import { Logger } from '../../misc/Logger';
+import { DeviceUtils } from '../../utils/DeviceUtils';
+import { $$, Win } from '../../utils/Dom';
+import { Utils } from '../../utils/Utils';
 
 export interface IStartSlideEventArgs {
   slider: Slider;
@@ -94,13 +94,13 @@ export class Slider {
     }
 
     this.sliderLine = new SliderLine(this);
-    _.each(this.sliderLine.build(), (e: HTMLElement) => {
+    each(this.sliderLine.build(), (e: HTMLElement) => {
       this.element.appendChild(e);
     });
 
     if (this.options.rangeSlider) {
       this.sliderRange = new SliderRange(this);
-      _.each(this.sliderRange.build(), (e: HTMLElement) => {
+      each(this.sliderRange.build(), (e: HTMLElement) => {
         this.element.appendChild(e);
       });
     } else {
@@ -485,21 +485,21 @@ export class SliderButton {
   }
 
   private snapToStep(spanX: number) {
-    const diffs = _.map(this.slider.steps, (step, i) => {
+    const diffs = map(this.slider.steps, (step, i) => {
       return Math.abs(this.currentPos - this.fromValueToPosition(this.slider.steps[i]));
     });
-    const diffsNext = _.map(this.slider.steps, (step, i) => {
+    const diffsNext = map(this.slider.steps, (step, i) => {
       return Math.abs(this.rightBoundary - this.fromValueToPosition(this.slider.steps[i]));
     });
-    const diffsPrev = _.map(this.slider.steps, (step, i) => {
+    const diffsPrev = map(this.slider.steps, (step, i) => {
       return Math.abs(this.leftBoundary - this.fromValueToPosition(this.slider.steps[i]));
     });
-    const nearest = _.min(diffs);
-    const nearestNext = _.min(diffsNext);
-    const nearestPrevious = _.min(diffsPrev);
-    let currentStep = this.slider.steps[_.indexOf(diffs, nearest)];
-    const nextStep = this.slider.steps[_.indexOf(diffsNext, nearestNext)];
-    const previousStep = this.slider.steps[_.indexOf(diffsPrev, nearestPrevious)];
+    const nearest = min(diffs);
+    const nearestNext = min(diffsNext);
+    const nearestPrevious = min(diffsPrev);
+    let currentStep = this.slider.steps[indexOf(diffs, nearest)];
+    const nextStep = this.slider.steps[indexOf(diffsNext, nearestNext)];
+    const previousStep = this.slider.steps[indexOf(diffsPrev, nearestPrevious)];
     currentStep = Math.min(currentStep, nextStep);
     currentStep = Math.max(currentStep, previousStep);
     return { position: this.fromValueToPosition(currentStep), value: currentStep };
@@ -644,6 +644,9 @@ class SliderGraph {
   private y: any;
   private oldData: ISliderGraphData[];
   private tooltip: HTMLElement;
+  private tooltipArrow: HTMLElement;
+  private tooltipCount: HTMLElement;
+  private tooltipCaption: HTMLElement;
 
   constructor(public slider: Slider) {
     this.svg = d3select(slider.element)
@@ -661,13 +664,9 @@ class SliderGraph {
       this.slider.options.graph.margin || {}
     );
     this.slider.options.graph.animationDuration = this.slider.options.graph.animationDuration || 500;
-
-    this.tooltip = $$('div', {
-      className: 'coveo-slider-tooltip'
-    }).el;
-    this.tooltip.style.display = 'none';
-    this.slider.element.appendChild(this.tooltip);
     this.slider.options.graph.steps = this.slider.options.graph.steps || 10;
+
+    this.buildTooltip();
   }
 
   public draw(data: ISliderGraphData[] = this.oldData) {
@@ -695,8 +694,32 @@ class SliderGraph {
     }
   }
 
+  private buildTooltip() {
+    this.tooltip = $$('div', {
+      className: 'coveo-slider-tooltip'
+    }).el;
+
+    this.tooltipArrow = $$('div', {
+      className: 'coveo-slider-tooltip-arrow'
+    }).el;
+
+    this.tooltipCaption = $$('span', {
+      className: 'coveo-caption'
+    }).el;
+
+    this.tooltipCount = $$('span', {
+      className: 'coveo-count'
+    }).el;
+
+    $$(this.tooltip).append(this.tooltipArrow);
+    $$(this.tooltip).append(this.tooltipCaption);
+    $$(this.tooltip).append(this.tooltipCount);
+    $$(this.tooltip).hide();
+    $$(this.slider.element).append(this.tooltip);
+  }
+
   private modifyPossibleSinglePointDataIntoValidRange(data: ISliderGraphData[]) {
-    return _.map(data, (d: ISliderGraphData) => {
+    return map(data, (d: ISliderGraphData) => {
       // In some rare corner case, the index can return range values where the start of the data is equal to the end of the data
       // Since it's a "point" as opposed to a real range, it's impossible to display this properly on a graph (where the range is the x axis)
       // An element in a graph with with 0 width on the x axis is illogical and cannot work.
@@ -720,7 +743,7 @@ class SliderGraph {
   private setXAndYDomain(data: ISliderGraphData[]) {
     this.padGraphWithEmptyData(data);
     this.x.domain(
-      _.map(data, d => {
+      map(data, d => {
         return d.start;
       })
     );
@@ -809,46 +832,49 @@ class SliderGraph {
   }
 
   private setTooltip(d: ISliderGraphData, height: number) {
-    const caption = $$('span', {
-      className: 'coveo-caption'
-    });
-    caption.text(this.slider.getCaptionFromValue([d.start, d.end]));
+    $$(this.tooltipCaption).text(this.slider.getCaptionFromValue([d.start, d.end]));
+    $$(this.tooltipCount).text(d.y.toString());
+    $$(this.tooltip).show();
 
-    const count = $$('span', {
-      className: 'coveo-count'
-    });
-    count.text(d.y.toString());
-    $$(this.tooltip).empty();
-    this.tooltip.appendChild(caption.el);
-    this.tooltip.appendChild(count.el);
+    // rolled a dice and got those numbers
+    const arbitraryOffsetForTooltip = 50;
+    const arbitraryOffsetForScrollbar = 20;
+    const tooltipArrowSize = 5;
 
-    this.tooltip.style.display = 'block';
-    this.tooltip.style.left = this.x(d.start) - 0.2 * this.slider.options.graph.steps + 'px';
-    this.tooltip.style.top = this.y(d.y) - height + 'px';
+    const leftPositionForCurrentBand = this.x(d.start) - arbitraryOffsetForTooltip;
+    const halfOfBandwidth = this.x.bandwidth() / 2;
+    const tooltipArrowOffset = arbitraryOffsetForTooltip + halfOfBandwidth - tooltipArrowSize;
+
+    this.tooltip.style.left = `${leftPositionForCurrentBand}px`;
+    this.tooltip.style.top = `${this.y(d.y) - height}px`;
+    this.tooltipArrow.style.left = `${tooltipArrowOffset}px`;
+
+    const tooltipRect = this.tooltip.getBoundingClientRect();
+    const windowWidth = new Win(window).width();
+
+    const tooltipOverflowsRightOfWindow = tooltipRect.right > windowWidth - arbitraryOffsetForScrollbar;
+
+    if (tooltipOverflowsRightOfWindow) {
+      const offsetToPreventWindowOverflow = windowWidth - tooltipRect.right - arbitraryOffsetForScrollbar;
+      this.tooltip.style.left = `${leftPositionForCurrentBand + offsetToPreventWindowOverflow}px`;
+      this.tooltipArrow.style.left = `${tooltipArrowOffset - offsetToPreventWindowOverflow}px`;
+    }
   }
 
   private getFunctionForX() {
-    return (d: ISliderGraphData) => {
-      return this.x(d.start);
-    };
+    return (d: ISliderGraphData) => this.x(d.start);
   }
 
   private getFunctionForY() {
-    return (d: ISliderGraphData) => {
-      return this.y(d.y);
-    };
+    return (d: ISliderGraphData) => this.y(d.y);
   }
 
   private getFunctionForHeight(height: number) {
-    return (d: ISliderGraphData) => {
-      return height - this.y(d.y);
-    };
+    return (d: ISliderGraphData) => height - this.y(d.y);
   }
 
   private getFunctionForClass(currentSliderValues: number[]) {
-    return (d, i) => {
-      return 'coveo-bar ' + this.getBarClass(currentSliderValues, d, i);
-    };
+    return (d, i) => `coveo-bar ${this.getBarClass(currentSliderValues, d, i)}`;
   }
 
   private getFunctionForClick() {
@@ -862,14 +888,10 @@ class SliderGraph {
   }
 
   private getFunctionForMouseOver(height: number) {
-    return (d: ISliderGraphData) => {
-      this.setTooltip(d, height);
-    };
+    return (d: ISliderGraphData) => this.setTooltip(d, height);
   }
 
   private getFunctionForMouseOut() {
-    return () => {
-      this.tooltip.style.display = 'none';
-    };
+    return () => $$(this.tooltip).hide();
   }
 }

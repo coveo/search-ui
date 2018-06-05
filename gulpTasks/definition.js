@@ -5,6 +5,7 @@ const fs = require('fs');
 const runsequence = require('run-sequence');
 const footer = require('gulp-footer');
 const shell = require('gulp-shell');
+const tvm = require('tvm');
 
 gulp.task('definitions', function(done) {
   runsequence('externalDefs', 'internalDefs', 'cleanDefs', 'validateDefs', done);
@@ -13,6 +14,7 @@ gulp.task('definitions', function(done) {
 gulp.task('cleanDefs', function() {
   return (gulp
       .src('bin/ts/CoveoJsSearch.d.ts')
+      .pipe(footer('declare module Coveo {\n\t class ResultLayout extends ResultLayoutSelector { }\n}\n'))
       .pipe(replace(/import.*$/gm, ''))
       .pipe(replace(/(declare module )(.*)( {$)/gm, '$1Coveo$3'))
       .pipe(replace(/export =.+;$/gm, ''))
@@ -29,8 +31,29 @@ gulp.task('cleanDefs', function() {
       // and stripping ModuleDefinition will refer to the correct type.
       .pipe(replace(/\n\t(?:const|let|var)\s.*;/gm, ''))
       .pipe(replace(/readonly/gm, ''))
+      .pipe(replace(/undefined/g, 'any'))
+      .pipe(replace(/ Record<.*>/g, ' any'))
+      .pipe(replace(getEnumRegex(), clearEnumVariableDeclaration))
+      .pipe(replace(/extends agGridModule\.[a-zA-Z]+/g, 'extends Object'))
+      .pipe(replace(/implements agGridModule\.[a-zA-Z]+/g, 'implements Object'))
+      .pipe(replace(/agGridModule\.[a-zA-Z]+/g, 'any'))
+      .pipe(replace(/\(this: [A-Za-z_-]+, /gm, '('))
+      .pipe(replace(/\| null/gm, '| void'))
       .pipe(gulp.dest('bin/ts/')) );
 });
+
+function clearEnumVariableDeclaration(match, p1, p2) {
+  let lines = p2.split('\n');
+  lines = lines.map(line => line.replace(/ = ["|'][a-zA-Z_$\s]*["|']/, ''));
+  return p1 + lines.join('\n');
+}
+
+function getEnumRegex() {
+  const enumIdentifier = '(enum [a-zA-Z_$]+\\s{$)';
+  const enumDeclaration = '\\n^\\s*[a-zA-Z_$]+ = "[a-zA-Z_$\\s]+",?$';
+  const documentation = '\\n^\\s*[@{}\\[\\]\\w\\/*.,\\s]+$';
+  return new RegExp(`${enumIdentifier}((?:${enumDeclaration}|${documentation})*)`, 'gm');
+}
 
 gulp.task('externalDefs', function() {
   return gulp
@@ -42,7 +65,8 @@ gulp.task('externalDefs', function() {
       './node_modules/@types/d3/index.d.ts',
       './lib/globalize/index.d.ts',
       './lib/jstimezonedetect/index.d.ts',
-      './lib/coveoanalytics/index.d.ts'
+      './lib/coveoanalytics/index.d.ts',
+      './lib/map/index.d.ts'
     ])
     .pipe(concat('Externals.d.ts'))
     .pipe(replace(/import.*$/gm, ''))
@@ -78,4 +102,13 @@ gulp.task('internalDefs', function() {
   });
 });
 
-gulp.task('validateDefs', shell.task(['node node_modules/typescript/bin/tsc --noEmit ./bin/ts/CoveoJsSearch.d.ts']));
+gulp.task('validateDefs', ['validateTSV1', 'validateTSV2']);
+
+gulp.task('installTSV1', done => {
+  const version = '1.8.10';
+  new Promise(() => tvm.install(version, () => tvm.use(version, done)));
+});
+
+gulp.task('validateTSV1', ['installTSV1'], shell.task('node node_modules/tvm/current/bin/tsc --noEmit ./bin/ts/CoveoJsSearch.d.ts'));
+
+gulp.task('validateTSV2', shell.task(['node node_modules/typescript/bin/tsc --noEmit ./bin/ts/CoveoJsSearch.d.ts']));

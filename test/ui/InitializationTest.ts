@@ -14,6 +14,9 @@ import { NoopComponent } from '../../src/ui/NoopComponent/NoopComponent';
 import { state } from '../../src/ui/Base/RegisteredNamedMethods';
 import { get } from '../../src/UIBaseModules';
 import { QueryController } from '../../src/controllers/QueryController';
+import { FakeResults } from '../Fake';
+import { IQueryResult } from '../../src/rest/QueryResult';
+import { ResultLink } from '../../src/ui/ResultLink/ResultLink';
 declare const $;
 
 export function InitializationTest() {
@@ -287,6 +290,31 @@ export function InitializationTest() {
       expect(Component.get(queryBox) instanceof ResultList).toBe(false);
     });
 
+    describe('when inside a result element', () => {
+      let result: IQueryResult;
+      let resultLink: HTMLElement;
+
+      beforeEach(() => {
+        result = FakeResults.createFakeResult();
+        result.searchInterface = new Mock.MockEnvironmentBuilder().build().searchInterface;
+        resultLink = $$('a', { className: 'CoveoResultLink' }).el;
+      });
+
+      it('allow to automaticallyCreateComponentInsideResult', () => {
+        expect(Component.get(resultLink) instanceof ResultLink).toBe(false);
+        Initialization.automaticallyCreateComponentsInsideResult(resultLink, result);
+        expect(Component.get(resultLink) instanceof ResultLink).toBe(true);
+      });
+
+      it('allows to automaticallyCreateComponentInsideResult with additional options', () => {
+        Initialization.automaticallyCreateComponentsInsideResult(resultLink, result, {
+          ResultLink: { alwaysOpenInNewWindow: true }
+        });
+        const resultLinkComponent = Component.get(resultLink) as ResultLink;
+        expect(resultLinkComponent.options.alwaysOpenInNewWindow).toBeTruthy();
+      });
+    });
+
     it('allow to monkeyPatchComponentMethod', () => {
       Initialization.initializeFramework(root, searchInterfaceOptions, () => {
         return Initialization.initSearchInterface(root, searchInterfaceOptions);
@@ -305,12 +333,12 @@ export function InitializationTest() {
       Initialization.monkeyPatchComponentMethod('Querybox.submit', queryBox, patch);
       (<Querybox>Component.get(queryBox)).submit();
       expect(patch).toHaveBeenCalled();
+    });
 
-      it('allows to determine if a top level method is already registed', () => {
-        expect(Initialization.isNamedMethodRegistered('get')).toBe(true);
-        expect(Initialization.isNamedMethodRegistered('executeQuery')).toBe(true);
-        expect(Initialization.isNamedMethodRegistered('does not exist')).toBe(false);
-      });
+    it('allows to determine if a top level method is already registed', () => {
+      expect(Initialization.isNamedMethodRegistered('get')).toBe(true);
+      expect(Initialization.isNamedMethodRegistered('executeQuery')).toBe(true);
+      expect(Initialization.isNamedMethodRegistered('does not exist')).toBe(false);
     });
 
     it("should allow to init a box interface (and throw because it's only used in salesforce)", done => {

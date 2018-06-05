@@ -5,9 +5,11 @@ import { IQueryResult } from '../../rest/QueryResult';
 import { ITopQueries } from '../../rest/TopQueries';
 import { IAPIAnalyticsEventResponse } from '../../rest/APIAnalyticsEventResponse';
 import * as _ from 'underscore';
+import { AnalyticsEndpoint } from '../../rest/AnalyticsEndpoint';
 
 export class MultiAnalyticsClient implements IAnalyticsClient {
   public isContextual = false;
+  public endpoint: AnalyticsEndpoint = _.first(this.analyticsClients).endpoint;
 
   constructor(private analyticsClients: IAnalyticsClient[] = []) {}
 

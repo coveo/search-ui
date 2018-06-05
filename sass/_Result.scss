@@ -1,23 +1,19 @@
 @import 'Variables';
 @import 'mixins/mediaQuery';
-
 .CoveoResult {
   &.coveo-omnibox-selectable {
     padding: 10px 10px 10px 15px;
     margin: 0;
   }
-
   .coveo-no-thumbnail {
     display: none;
   }
-
   .coveo-date {
     float: right;
     font-size: 13px;
     margin-left: 10px;
     padding-top: 3px;
   }
-
   .coveo-title {
     display: block;
     font-size: 16px;
@@ -28,49 +24,41 @@
     > * {
       vertical-align: middle;
     }
-
     .CoveoResultLink {
       margin-right: 5px;
       display: inline;
       overflow: hidden;
       white-space: normal;
     }
-
     .CoveoResultLink:after {
       content: '\00a0';
       white-space: nowrap;
       visibility: hidden;
     }
   }
-
   .coveo-excerpt {
     max-width: 600px;
     font-size: 14px;
-    padding: 5px 0 8px 0;
+    padding: 5px 0 8px;
   }
-
   a {
     @include clickable();
   }
-
   .coveo-badge {
     display: inline-block;
     padding: 4px 6px;
     vertical-align: middle;
     font-size: 12px;
   }
-
   .CoveoBadge .coveo-value {
     display: inline-block;
     vertical-align: middle;
     border-radius: 1em;
     line-height: 1.25em;
     margin-right: 8px;
-
     &.coveo-clickable {
       @include clickable();
     }
-
     .coveo-badge-icon {
       position: relative;
       display: inline-block;
@@ -78,7 +66,6 @@
       height: 16px;
       margin-right: 2px;
       vertical-align: middle;
-
       &:before {
         content: '';
         display: block;
@@ -111,27 +98,22 @@
         border: 2px solid;
         border-bottom: none;
         border-left: none;
-
         -webkit-border-top-right-radius: 3px;
         -moz-border-radius-topright: 3px;
         border-top-right-radius: 3px;
         box-sizing: border-box;
       }
     }
-
     .coveo-badge-label {
       vertical-align: middle;
     }
   }
-
   .coveo-selectable-link {
     @include clickable();
   }
-
   .coveo-field .coveo-label {
     font-weight: normal;
   }
-
   .CoveoResultFolding {
     .coveo-child-result {
       .CoveoQuickview {
@@ -139,7 +121,6 @@
       }
     }
   }
-
   &.coveo-is-recommendation {
     box-shadow: 0 0 1px 1px $color-greyish-dark-blue;
   }
@@ -147,7 +128,7 @@
 
 .coveo-list-layout.CoveoResult {
   border-bottom: $default-border;
-  padding: 16px 0px 16px 16px;
+  padding: 16px 0 16px 16px;
 }
 
 .coveo-card-layout {
@@ -156,19 +137,14 @@
     overflow: hidden;
     display: flex;
     position: relative;
-
     font-size: 0.9em;
-
     width: 300px;
     @include flex-grow(1);
-    & + .CoveoResult {
-    }
     margin: 0 20px 20px 0;
     @include smallScreenWidth {
-      margin: 0 0 20px 0;
+      margin: 0 0 20px;
     }
     @include defaultRoundedBorder();
-
     &.coveo-clickable {
       cursor: pointer;
       &:hover {
@@ -176,11 +152,9 @@
         border-color: $color-vibrant-blue;
       }
     }
-
     .coveo-result-row:first-child {
       margin-top: 0;
     }
-
     .coveo-result-frame,
     &.coveo-result-frame {
       display: flex;
@@ -189,18 +163,19 @@
       width: 100%;
       height: auto;
     }
-
     .CoveoResultLink {
       font-size: 16px;
       line-height: 21px;
     }
-  }
-  // These divs are used for filling the space when the number of cards is not even
+  } // These divs are used for filling the space when the number of cards is not even
   &:empty {
     width: 300px;
     height: 0;
     @include flex-grow(1);
     margin-right: 20px;
+  }
+  &.coveo-with-inline-ranking-info {
+    @include flex-wrap(wrap);
   }
 }
 
@@ -224,6 +199,10 @@
   }
   &:hover td {
     background-color: $color-blueish-white-grey;
+  }
+  .coveo-relevance-inspector-inline-ranking {
+    display: table-cell;
+    overflow: auto;
   }
 }
 

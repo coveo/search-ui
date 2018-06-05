@@ -1,15 +1,15 @@
 /// <reference path="../ui/FacetSlider/FacetSlider.ts" />
 
-import { FacetSlider } from '../ui/FacetSlider/FacetSlider';
-import { QueryEvents, IQuerySuccessEventArgs } from '../events/QueryEvents';
-import { QueryBuilder } from '../ui/Base/QueryBuilder';
-import { IGroupByRequest } from '../rest/GroupByRequest';
-import { ExpressionBuilder } from '../ui/Base/ExpressionBuilder';
-import { IRangeValue } from '../rest/RangeValue';
-import { DateUtils } from '../utils/DateUtils';
+import { clone, each, map, range } from 'underscore';
+import { IQuerySuccessEventArgs, QueryEvents } from '../events/QueryEvents';
 import { Logger } from '../misc/Logger';
+import { IGroupByRequest } from '../rest/GroupByRequest';
+import { IRangeValue } from '../rest/RangeValue';
+import { ExpressionBuilder } from '../ui/Base/ExpressionBuilder';
+import { QueryBuilder } from '../ui/Base/QueryBuilder';
+import { FacetSlider } from '../ui/FacetSlider/FacetSlider';
+import { DateUtils } from '../utils/DateUtils';
 import { QueryUtils } from '../utils/QueryUtils';
-import * as _ from 'underscore';
 
 export class FacetSliderQueryController {
   public graphGroupByQueriesIndex: number;
@@ -68,8 +68,9 @@ export class FacetSliderQueryController {
 
     if (this.facet.options && this.facet.options.graph && this.rangeValuesForGraphToUse == undefined) {
       this.rangeValuesForGraphToUse = [];
-      const rawValues = args.results.groupByResults[this.graphGroupByQueriesIndex].values;
-      _.each(rawValues, rawValue => {
+      const groupByResult = args.results.groupByResults[this.graphGroupByQueriesIndex];
+      const rawValues = groupByResult ? groupByResult.values : [];
+      each(rawValues, rawValue => {
         const rawSplit = rawValue.value.split('..');
         this.rangeValuesForGraphToUse.push({
           start: this.facet.options.dateField ? this.getISOFormat(rawSplit[0].replace('@', ' ')) : parseInt(rawSplit[0], 10),
@@ -179,10 +180,10 @@ export class FacetSliderQueryController {
     // We need a group by request for the "full range" that does not take into account the current query
     // This will determine the full range of the query so that the X range of the slider is static
     this.groupByRequestForFullRange = queryBuilder.groupByRequests.length;
-    const groupByRequestForFullRange = _.clone(basicGroupByRequestForSlider);
+    const groupByRequestForFullRange = clone(basicGroupByRequestForSlider);
     groupByRequestForFullRange.advancedQueryOverride = this.facet.options.queryOverride || '@uri';
     delete groupByRequestForFullRange.constantQueryOverride;
-    delete groupByRequestForFullRange.advancedQueryOverride;
+    delete groupByRequestForFullRange.queryOverride;
 
     queryBuilder.groupByRequests.push(groupByRequestForFullRange);
   }
@@ -230,7 +231,7 @@ export class FacetSliderQueryController {
   }
 
   private usePrebuiltRange(basicRangeRequest: IRangeValue) {
-    return _.map(this.rangeValuesForGraphToUse, value => {
+    return map(this.rangeValuesForGraphToUse, value => {
       return {
         start: value.start,
         end: value.end,
@@ -243,7 +244,7 @@ export class FacetSliderQueryController {
   private buildRange(basicRangeRequest: IRangeValue) {
     const start = this.facet.options.start;
     const oneStep = (this.facet.options.end - this.facet.options.start) / this.facet.options.graph.steps;
-    return _.map(_.range(0, this.facet.options.graph.steps, 1), step => {
+    return map(range(0, this.facet.options.graph.steps, 1), step => {
       let newStart = start + step * oneStep;
       let newEnd = start + (step + 1) * oneStep;
       if (this.facet.options.dateField) {

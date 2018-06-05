@@ -6,6 +6,7 @@ import { DeviceUtils } from '../utils/DeviceUtils';
 import { Utils } from '../utils/Utils';
 import { JQueryUtils } from '../utils/JQueryutils';
 import * as _ from 'underscore';
+import { UrlUtils } from '../utils/UrlUtils';
 
 declare const XDomainRequest;
 
@@ -224,6 +225,7 @@ export class EndpointCaller {
       method: params.method
     };
     requestInfo.headers = this.buildRequestHeaders(requestInfo);
+
     if (_.isFunction(this.options.requestModifier)) {
       requestInfo = this.options.requestModifier(requestInfo);
     }
@@ -481,12 +483,11 @@ export class EndpointCaller {
     error(queryError);
   }
 
-  private combineUrlAndQueryString(url: String, queryString: string[]): string {
-    let questionMark = '?';
-    if (url.match(/\?$/)) {
-      questionMark = '';
-    }
-    return url + (queryString.length > 0 ? questionMark + queryString.join('&') : '');
+  private combineUrlAndQueryString(url: string, queryString: string[]): string {
+    return UrlUtils.normalizeAsString({
+      paths: [url],
+      queryAsString: queryString
+    });
   }
 
   private isXDomainRequestSupported(): boolean {
