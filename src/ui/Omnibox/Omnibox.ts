@@ -245,6 +245,8 @@ export class Omnibox extends Component {
     const originalValueForQuerySyntax = this.options.enableQuerySyntax;
     this.options = _.extend({}, this.options, this.componentOptionsModel.get(ComponentOptionsModel.attributesEnum.searchBox));
 
+    $$(this.element).toggleClass('coveo-query-syntax-disabled', this.options.enableQuerySyntax == false);
+
     this.suggestionAddon = this.options.enableQuerySuggestAddon ? new QuerySuggestAddon(this) : new VoidQuerySuggestAddon();
     new OldOmniboxAddon(this);
     this.createMagicBox();

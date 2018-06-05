@@ -84,10 +84,11 @@ A tutorial is available to help you get started (see
 
 ## Build
 
-You should have node 6.9.1 (or later) installed to build this project.
+You should have node 9.5.0 (or later) installed to build this project.
 
-    npm install -g gulp
-    npm install
+    npm install -g yarn
+    yarn global add gulp
+    yarn install
     gulp
 
 ## Important Gulp Tasks
@@ -120,10 +121,14 @@ If you need to modify the content of the search page (i.e., the markup itself, n
 breaking anything. However, if you feel like you have a good reason to modify the original `index.html`, feel free to 
 do so.
 
+You might need to assign more memory to Webpack if you see errors about `heap out of memory`. To do so, use this command : 
+
+    node --max_old_space_size=8192 ./node_modules/gulp/bin/gulp.js dev;
+
 ### Tests
 
 Tests are written using [Jasmine](http://jasmine.github.io/2.4/introduction.html). You can use `npm run test` to run 
-the tests in PhantomJS.
+the tests in Chrome Headless.
 
 If you wish to write new unit tests, you can do so by starting a new webpack-dev-server instance.
 

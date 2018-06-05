@@ -7353,5 +7353,13 @@
   "NumberOfVideos": {
     "en": "Number of videos",
     "fr": "Nombre de vidéos"
+  },
+  "Recommended": {
+    "en": "Recommended",
+    "fr": "Recommandé"
+  },
+  "Featured": {
+    "en": "Featured",
+    "fr": "En vedette"
   }
 }
