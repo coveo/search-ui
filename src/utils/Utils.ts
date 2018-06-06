@@ -199,16 +199,16 @@ export class Utils {
   /**
    * Get the value of a field.
    * If multiple names are provided the first result not null is returned.
-   * 
+   *
    * @param result a QueryResult in which to ge the fieldvalue.
    * @param name One or multiple fieldNames to get the value.
    */
-  static getFieldValue(result: IQueryResult, name: string|Array<string>): any {
-    if(Array.isArray(name)) {
+  static getFieldValue(result: IQueryResult, name: string | Array<string>): any {
+    if (Array.isArray(name)) {
       for (let i = 0; i < name.length; i++) {
-        const fieldValue = this.getFieldValue(result, name[i]);
-        if(fieldValue !== undefined) {
-          return fieldValue;
+        let value = this.getFieldValue(result, name[i]);
+        if (value !== undefined) {
+          return value;
         }
       }
       return undefined;
@@ -216,7 +216,7 @@ export class Utils {
       // Be as forgiving as possible about the field name, since we expect
       // user provided values.
       if (name == null) {
-      return undefined;
+        return undefined;
       }
       name = Utils.trim(name);
       if (name[0] == '@') {
@@ -248,7 +248,6 @@ export class Utils {
     }
   }
 
-  
   static throttle(func, wait, options: { leading?: boolean; trailing?: boolean } = {}, context?, args?) {
     let result;
     let timeout: number = null;
