@@ -10,8 +10,9 @@ import { IQueryResult } from '../../src/rest/QueryResult';
 export function ChatterPostAttachmentTest() {
   describe('ChatterPostAttachment', () => {
     let test: Mock.IBasicComponentSetup<ChatterPostAttachment>;
-    const generateResult = function(sfcontentfilename: string, sftitle: string, sf_title: string): IQueryResult {
-      let result = FakeResults.createFakeFeedItemResult('token', 0, 0, true);
+    let result: IQueryResult;
+    const generateResult = function(sfcontentfilename: string, sftitle: string, sf_title: string) {
+      result = FakeResults.createFakeFeedItemResult('token', 0, 0, true);
       result.raw.sfcontentfilename = sfcontentfilename;
       result.raw.sftitle = sftitle;
       result.raw.sf_title = sf_title;
@@ -20,11 +21,10 @@ export function ChatterPostAttachmentTest() {
         <IChatterPostAttachmentOption>{},
         result
       );
-      return result;
     };
 
     it('should behave correctly with no data', () => {
-      let result = FakeResults.createFakeFeedItemResult('token', 0, 0, true);
+      result = FakeResults.createFakeFeedItemResult('token', 0, 0, true);
       test = Mock.optionsResultComponentSetup<ChatterPostAttachment, IChatterPostAttachmentOption>(
         ChatterPostAttachment,
         <IChatterPostAttachmentOption>{},
@@ -38,20 +38,19 @@ export function ChatterPostAttachmentTest() {
       ).toContain(ChatterUtils.buildURI(result.clickUri, result.raw.sffeeditemid, result.raw.sfcontentversionid));
     });
     it('should use sfcontentfilename if present', () => {
-      let result = generateResult('foo', 'bar', 'baz');
+      generateResult('foo', 'bar', 'baz');
       expect($$($$(test.cmp.element).find('a')).text()).toContain(result.raw.sfcontentfilename);
     });
     it('should use sftitle if sfcontentfilename is not present', () => {
-      let result = generateResult(undefined, 'bar', 'baz');
+      generateResult(undefined, 'bar', 'baz');
       expect($$($$(test.cmp.element).find('a')).text()).toContain(result.raw.sftitle);
     });
     it('should use sf_title if sftitle and sfcontentfilename are not present', () => {
-      let result;
       generateResult(undefined, undefined, 'baz');
       expect($$($$(test.cmp.element).find('a')).text()).toContain(result.raw.sf_title);
     });
     it('should behave correctly with no filename but with a contentversionid', () => {
-      let result = generateResult(undefined, undefined, undefined);
+      generateResult(undefined, undefined, undefined);
       expect($$($$(test.cmp.element).find('a')).text()).toContain(l('ShowAttachment'));
     });
   });
