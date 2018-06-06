@@ -5,10 +5,6 @@ export class MagicBoxUtils {
     return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&');
   }
 
-  private static escapeText = (classname: string, text: string) => {
-    return `<span class="${classname}">${_.escape(text)}</span>`;
-  };
-
   static highlightText(
     text: string,
     highligth: string,
@@ -24,4 +20,8 @@ export class MagicBoxUtils {
     const regex = new RegExp(stringRegex, ignoreCase ? 'gi' : 'g');
     return text.replace(regex, (text, match, notmatch) => this.escapeText(match != null ? matchClass : doNotMatchClass, text));
   }
+
+  private static escapeText = (classname: string, text: string) => {
+    return `<span class="${classname}">${_.escape(text)}</span>`;
+  };
 }
