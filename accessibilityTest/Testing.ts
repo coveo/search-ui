@@ -8,8 +8,11 @@ import {
   ExpressionBuilder,
   InitializationEvents,
   get,
-  SearchInterface
+  SearchInterface,
+  Settings,
+  Component
 } from 'coveo-search-ui';
+import { isArray } from 'underscore';
 
 export const getRoot = () => {
   return document.querySelector('.CoveoSearchInterface') as HTMLElement;
@@ -68,6 +71,13 @@ export const testResultElement = (element: HTMLElement) => {
   tmpl.textContent = element.outerHTML;
 };
 
+export const testSettingsElement = (element: HTMLElement) => {
+  const settingsComponent = $$('div', { className: Component.computeCssClassName(Settings) });
+  getResultsColumn().appendChild(settingsComponent.el);
+  getResultsColumn().appendChild(element);
+  return settingsComponent;
+};
+
 export const inDesktopMode = () => {
   document.body.style.width = '1200px';
 };
@@ -80,15 +90,21 @@ export const resetMode = () => {
   document.body.style.width = '';
 };
 
-export const addFieldEqualFilter = (field: string, filter: string) => {
+export const addFieldEqualFilter = (field: string, filter: string | string[]) => {
   const expression = new ExpressionBuilder();
-  expression.addFieldExpression(field, '==', [filter]);
+  expression.addFieldExpression(field, '==', isArray(filter) ? filter : [filter]);
   return addQueryFilter(expression.build());
 };
 
 export const addQueryFilter = (filter: string) => {
   $$(getRoot()).on(QueryEvents.buildingQuery, (e, args: IBuildingQueryEventArgs) => {
     args.queryBuilder.advancedExpression.add(filter);
+  });
+};
+
+export const addBasicExpression = (filter: string) => {
+  $$(getRoot()).on(QueryEvents.buildingQuery, (e, args: IBuildingQueryEventArgs) => {
+    args.queryBuilder.expression.add(filter);
   });
 };
 
@@ -107,49 +123,15 @@ export const afterInit = () => {
 };
 
 export const afterQuerySuccess = () => {
-  const resolvesOnQuerySuccess = resolve => {
-    $$(getRoot()).one('querySuccess', async () => {
-      await afterDelay(0);
-      resolve();
-    });
-  };
+  return afterEvent('querySuccess');
+};
 
-  if (!isInit()) {
-    return new Promise(async resolve => {
-      $$(getRoot()).on(InitializationEvents.afterInitialization, () => {
-        resolvesOnQuerySuccess(resolve);
-      });
-
-      await init(getRoot());
-    });
-  }
-
-  return new Promise(async resolve => {
-    resolvesOnQuerySuccess(resolve);
-  });
+export const afterQueryError = () => {
+  return afterEvent('queryError');
 };
 
 export const afterDeferredQuerySuccess = async () => {
-  const resolvesOnQuerySuccess = resolve => {
-    $$(getRoot()).one('deferredQuerySuccess', async () => {
-      await afterDelay(0);
-      resolve();
-    });
-  };
-
-  if (!isInit()) {
-    return new Promise(async resolve => {
-      $$(getRoot()).on(InitializationEvents.afterInitialization, () => {
-        resolvesOnQuerySuccess(resolve);
-      });
-
-      await init(getRoot());
-    });
-  }
-
-  return new Promise(async resolve => {
-    resolvesOnQuerySuccess(resolve);
-  });
+  return afterEvent('deferredQuerySuccess');
 };
 
 export const afterDelay = (delayMs: number) => {
@@ -160,4 +142,27 @@ export const afterDelay = (delayMs: number) => {
 
 export const isInit = () => {
   return get(getRoot(), SearchInterface) != null;
+};
+
+const afterEvent = (event: string) => {
+  const resolvesAfterEvent = resolve => {
+    $$(getRoot()).one(event, async () => {
+      await afterDelay(0);
+      resolve();
+    });
+  };
+
+  if (!isInit()) {
+    return new Promise(async resolve => {
+      $$(getRoot()).on(InitializationEvents.afterInitialization, () => {
+        resolvesAfterEvent(resolve);
+      });
+
+      await init(getRoot());
+    });
+  }
+
+  return new Promise(async resolve => {
+    resolvesAfterEvent(resolve);
+  });
 };

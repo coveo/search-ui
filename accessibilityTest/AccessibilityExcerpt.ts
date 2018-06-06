@@ -1,16 +1,15 @@
 import * as axe from 'axe-core';
-import { $$, Badge, Component } from 'coveo-search-ui';
+import { $$, Component, Excerpt } from 'coveo-search-ui';
 import { afterQuerySuccess, getRoot, testResultElement } from './Testing';
 
-export const AccessibilityBadge = () => {
-  describe('Badge', () => {
+export const AccessibilityExcerpt = () => {
+  describe('Excerpt', () => {
     it('should be accessible', async done => {
-      const badgeElement = $$('div', {
-        className: Component.computeCssClassName(Badge),
-        'data-field': '@filetype'
+      const excerptElement = $$('div', {
+        className: Component.computeCssClassName(Excerpt)
       });
 
-      testResultElement(badgeElement.el);
+      testResultElement(excerptElement.el);
       await afterQuerySuccess();
       const axeResults = await axe.run(getRoot());
       expect(axeResults).toBeAccessible();
