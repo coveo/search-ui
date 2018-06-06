@@ -202,9 +202,9 @@ export class Utils {
    * @param result a QueryResult in which to ge the fieldvalue.
    * @param name One or multiple fieldNames to get the value.
    */
-  static getFirstAvailableFieldValue(result: IQueryResult, fieldNames: Array<String>): string | undefined {
+  static getFirstAvailableFieldValue(result: IQueryResult, fieldNames: Array<string>): string | undefined {
     for (let i = 0; i < fieldNames.length; i++) {
-      let value = Utils.getFieldValue(result, name[i]);
+      let value = Utils.getFieldValue(result, fieldNames[i]);
       if (value !== undefined) {
         return value;
       }
