@@ -196,41 +196,59 @@ export class Utils {
     return value;
   }
 
-  static getFieldValue(result: IQueryResult, name: string): any {
-    // Be as forgiving as possible about the field name, since we expect
-    // user provided values.
-    if (name == null) {
+  /**
+   * Get the value of a field.
+   * If multiple names are provided the first result not null is returned.
+   * 
+   * @param result a QueryResult in which to ge the fieldvalue.
+   * @param name One or multiple fieldNames to get the value.
+   */
+  static getFieldValue(result: IQueryResult, name: string|Array<string>): any {
+    if(Array.isArray(name)) {
+      for (let i = 0; i < name.length; i++) {
+        const fieldValue = this.getFieldValue(result, name[i]);
+        if(fieldValue !== undefined) {
+          return fieldValue;
+        }
+      }
       return undefined;
-    }
-    name = Utils.trim(name);
-    if (name[0] == '@') {
-      name = name.substr(1);
-    }
-    if (name == '') {
+    } else {
+      // Be as forgiving as possible about the field name, since we expect
+      // user provided values.
+      if (name == null) {
       return undefined;
-    }
-
-    // At this point the name should be well formed
-    if (!Utils.isCoveoField('@' + name)) {
-      throw `Not a valid field : ${name}`;
-    }
-    // Handle namespace field values of the form sf.Foo.Bar
-    let parts = name.split('.').reverse();
-    let obj = result.raw;
-    while (parts.length > 1) {
-      obj = Utils.getCaseInsensitiveProperty(obj, parts.pop());
-      if (Utils.isUndefined(obj)) {
+      }
+      name = Utils.trim(name);
+      if (name[0] == '@') {
+        name = name.substr(1);
+      }
+      if (name == '') {
         return undefined;
       }
+
+      // At this point the name should be well formed
+      if (!Utils.isCoveoField('@' + name)) {
+        throw `Not a valid field : ${name}`;
+      }
+      // Handle namespace field values of the form sf.Foo.Bar
+      let parts = name.split('.').reverse();
+      let obj = result.raw;
+      while (parts.length > 1) {
+        obj = Utils.getCaseInsensitiveProperty(obj, parts.pop());
+        if (Utils.isUndefined(obj)) {
+          return undefined;
+        }
+      }
+      let value = Utils.getCaseInsensitiveProperty(obj, parts[0]);
+      // If still nothing, look at the root of the result
+      if (value == null) {
+        value = Utils.getCaseInsensitiveProperty(result, name);
+      }
+      return value;
     }
-    let value = Utils.getCaseInsensitiveProperty(obj, parts[0]);
-    // If still nothing, look at the root of the result
-    if (value == null) {
-      value = Utils.getCaseInsensitiveProperty(result, name);
-    }
-    return value;
   }
 
+  
   static throttle(func, wait, options: { leading?: boolean; trailing?: boolean } = {}, context?, args?) {
     let result;
     let timeout: number = null;
