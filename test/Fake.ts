@@ -317,6 +317,8 @@ export class FakeResults {
     if (hasAttachment) {
       result.raw.coveochatterfeedtopics = 'PostAttachment';
       result.raw.sfcontentfilename = 'fileName';
+      result.raw.sftitle = 'fileName';
+      result.raw.sf_title = 'fileName';
       result.raw.sfcontentversionid = token;
     }
 
