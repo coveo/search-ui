@@ -26,12 +26,20 @@ export const getSearchSection = () => {
   return document.body.querySelector('.coveo-search-section') as HTMLElement;
 };
 
+export const getSortSection = () => {
+  return document.body.querySelector('.coveo-sort-section') as HTMLElement;
+};
+
 export const getResultsColumn = () => {
   return document.body.querySelector('.coveo-results-column') as HTMLElement;
 };
 
 export const getFacetColumn = () => {
   return document.body.querySelector('.coveo-facet-column') as HTMLElement;
+};
+
+export const getTabSection = () => {
+  return document.body.querySelector('.coveo-tab-section') as HTMLElement;
 };
 
 export const getResultList = () => {

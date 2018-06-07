@@ -36,6 +36,17 @@ import { AccessibilityQuickview } from './AccessibilityQuickview';
 import { AccessibilityRecommendation } from './AccessibilityRecommendation';
 import { AccessibilityResultActionMenu } from './AccessibilityResultActionMenu';
 import { AccessibilityResultLayoutSelector } from './AccessibilityResultLayoutSelector';
+import { AccessibilityResultLink } from './AccessibilityResultLink';
+import { AccessibilityResultsPerPage } from './AccessibilityResultsPerPage';
+import { AccessibilitySearchbox } from './AccessibilitySearchbox';
+import { AccessibilitySearchButton } from './AccessibilitySearchbutton';
+import { AccessibilityShareQuery } from './AccessibilityShareQuery';
+import { AccessibilitySimpleFilter } from './AccessibilitySimpleFilter';
+import { AccessibilityResultList } from './AccessibilityResultList';
+import { AccessibilitySort } from './AccessibilitySort';
+import { AccessibilityTab } from './AccessibilityTab';
+import { AccessibilityTimespanFacet } from './AccessibilityTimespanFacet';
+import { AccessibilityYouTubeThumbnail } from './AccessibilityYoutubeThumbnail';
 
 const initialHTMLSetup = () => {
   const body = jasmine['getGlobal']().document.body;
@@ -116,4 +127,15 @@ describe('Testing ...', () => {
   AccessibilityRecommendation();
   AccessibilityResultActionMenu();
   AccessibilityResultLayoutSelector();
+  AccessibilityResultLink();
+  AccessibilityResultList();
+  AccessibilityResultsPerPage();
+  AccessibilitySearchbox();
+  AccessibilitySearchButton();
+  AccessibilityShareQuery();
+  AccessibilitySimpleFilter();
+  AccessibilitySort();
+  AccessibilityTab();
+  AccessibilityTimespanFacet();
+  AccessibilityYouTubeThumbnail();
 });
