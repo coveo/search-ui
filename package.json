@@ -6,6 +6,7 @@
   "types": "./bin/ts/CoveoJsSearch.d.ts",
   "scripts": {
     "precommit": "lint-staged",
+    "test": "npm run unitTests",
     "unitTests": "gulp unitTests && gulp coverage",
     "accessibilityTests": "gulp accessibilityTests",
     "testChunks": "node chunkTesters/chunk.tester.js",
