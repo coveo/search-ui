@@ -8,7 +8,7 @@ const shell = require('gulp-shell');
 const tvm = require('tvm');
 
 gulp.task('definitions', function(done) {
-  runsequence('externalDefs', 'internalDefs', 'cleanDefs', 'validateDefs', done);
+  runsequence('externalDefs', 'internalDefs', 'cleanDefs', done);
 });
 
 gulp.task('cleanDefs', function() {
