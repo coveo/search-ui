@@ -125,7 +125,8 @@ export class Settings extends Component {
     _.each(settingsPopulateMenuArgs.menuData, menuItem => {
       var menuItemDom = $$('div', {
         className: `coveo-settings-item ${menuItem.className}`,
-        title: _.escape(menuItem.tooltip || '')
+        title: _.escape(menuItem.tooltip || ''),
+        role: 'button'
       }).el;
       let icon = $$('div', { className: 'coveo-icon' }).el;
       if (menuItem.svgIcon) {

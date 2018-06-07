@@ -45,6 +45,7 @@ export class ChatterPostAttachment extends Component {
           Utils.getFieldValue(result, 'sfcontentversionid')
         )
       });
+
       rootElement.append(linkElement.el);
 
       const fieldValue = Utils.getFirstAvailableFieldValue(result, ['sfcontentfilename', 'sftitle', 'sf_title']);
