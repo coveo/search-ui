@@ -128,7 +128,7 @@ You might need to assign more memory to Webpack if you see errors about `heap ou
 ### Tests
 
 Tests are written using [Jasmine](http://jasmine.github.io/2.4/introduction.html). You can use `npm run test` to run 
-the tests in PhantomJS.
+the tests in Chrome Headless.
 
 If you wish to write new unit tests, you can do so by starting a new webpack-dev-server instance.
 

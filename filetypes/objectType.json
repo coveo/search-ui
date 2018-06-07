@@ -561,7 +561,7 @@
       }
     },
     "solution": {
-      "icon": "salesforce-standard-article",
+      "icon": "salesforce-standard-solution",
       "captions": {
         "en": "Solution",
         "fr": "Solution",
@@ -586,8 +586,7 @@
         "tr": "Çözüm",
         "zh-cn": "解决方案",
         "zh-tw": "解決方案"
-      },
-      "shouldDisplayLabel": true
+      }
     },
     "report": {
       "icon": "salesforce-standard-report",
@@ -622,8 +621,7 @@
         "tr": "Görev",
         "zh-cn": "任务",
         "zh-tw": "任務"
-      },
-      "shouldDisplayLabel": true
+      }
     },
     "user": {
       "icon": "user",
@@ -987,8 +985,7 @@
         "tr": "Satış Literatürü",
         "zh-cn": "销售说明书",
         "zh-tw": "銷售說明書"
-      },
-      "shouldDisplayLabel": true
+      }
     },
     "salesorder": {
       "icon": "salesforce-standard-orders",
@@ -1016,11 +1013,10 @@
         "tr": "Satış Siparişi",
         "zh-cn": "销售订单",
         "zh-tw": "銷售定單"
-      },
-      "shouldDisplayLabel": true
+      }
     },
     "service": {
-      "icon": "list",
+      "icon": "salesforce-standard-service-contract",
       "captions": {
         "en": "Service",
         "fr": "Service",
@@ -1045,11 +1041,10 @@
         "tr": "Servis",
         "zh-cn": "服务",
         "zh-tw": "服務"
-      },
-      "shouldDisplayLabel": true
+      }
     },
     "socialprofile": {
-      "icon": "user",
+      "icon": "salesforce-standard-social",
       "captions": {
         "en": "Social Profile",
         "fr": "Profil social",
@@ -1074,11 +1069,10 @@
         "tr": "Sosyal Profil",
         "zh-cn": "社会形象",
         "zh-tw": "社會形象"
-      },
-      "shouldDisplayLabel": true
+      }
     },
     "kbdocumentation": {
-      "icon": "salesforce-standard-article",
+      "icon": "salesforce-standard-knowledge",
       "captions": {
         "en": "Knowledge Document",
         "fr": "Article de Documentation",
@@ -1103,11 +1097,10 @@
         "tr": "Dokümantasyon",
         "zh-cn": "文件",
         "zh-tw": "檔編制"
-      },
-      "shouldDisplayLabel": true
+      }
     },
     "kbtechnicalarticle": {
-      "icon": "salesforce-standard-article",
+      "icon": "salesforce-standard-knowledge",
       "captions": {
         "en": "Technical Documentation",
         "fr": "Documentation Technique",
@@ -1132,11 +1125,10 @@
         "tr": "Dokümantasyon",
         "zh-cn": "文件",
         "zh-tw": "檔編制"
-      },
-      "shouldDisplayLabel": true
+      }
     },
     "kbsolution": {
-      "icon": "salesforce-standard-article",
+      "icon": "salesforce-standard-solution",
       "captions": {
         "en": "Solution",
         "fr": "Solution",
@@ -1161,11 +1153,10 @@
         "tr": "Çözüm",
         "zh-cn": "解决方案",
         "zh-tw": "解決方案"
-      },
-      "shouldDisplayLabel": true
+      }
     },
     "kbknowledgearticle": {
-      "icon": "salesforce-standard-article",
+      "icon": "salesforce-standard-knowledge",
       "captions": {
         "en": "Knowledge Article",
         "fr": "Article de base de connaissance",
@@ -1190,11 +1181,10 @@
         "tr": "Bilgi Makalesi",
         "zh-cn": "知识文章",
         "zh-tw": "知識文章"
-      },
-      "shouldDisplayLabel": true
+      }
     },
     "kbattachment": {
-      "icon": "salesforce-standard-article",
+      "icon": "salesforce-doctype-attachment",
       "captions": {
         "en": "Attachment",
         "fr": "Pièce jointe",
