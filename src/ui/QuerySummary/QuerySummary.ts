@@ -2,7 +2,7 @@ import { Component } from '../Base/Component';
 import { ComponentOptions } from '../Base/ComponentOptions';
 import { QueryEvents, IQuerySuccessEventArgs } from '../../events/QueryEvents';
 import { IComponentBindings } from '../Base/ComponentBindings';
-import { $$, Dom } from '../../utils/Dom';
+import { $$ } from '../../utils/Dom';
 import { Assert } from '../../misc/Assert';
 import { l } from '../../strings/Strings';
 import { analyticsActionCauseList, IAnalyticsNoMeta } from '../Analytics/AnalyticsActionListMeta';
@@ -23,7 +23,11 @@ export interface IQuerySummaryOptions {
   enableNoResultsForSearch?: boolean;
   enableCancelLastAction?: boolean;
   enableSearchTips?: boolean;
+  noResultsForSearchMessage?: string;
 }
+
+// TODO : Is it the right way to declare a constant like this?
+const QUERY_TAG: string = '<%-query%>';
 
 /**
  * The QuerySummary component can display information about the currently displayed range of results (e.g., "Results
@@ -51,6 +55,13 @@ export class QuerySummary extends Component {
 
     // TODO : Add description
     enableNoResultsForSearch: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+
+    // TODO : Add description
+    noResultsForSearchMessage: ComponentOptions.buildStringOption({
+      defaultValue: l('noResultFor', ' '),
+      depend: 'enableNoResultsForSearch',
+      postProcessing: (value, options) => value || l('noResultFor', ' ')
+    }),
 
     // TODO : Add description
     enableCancelLastAction: ComponentOptions.buildBooleanOption({ defaultValue: true }),
@@ -193,19 +204,73 @@ export class QuerySummary extends Component {
     }
   }
 
+  private parseNoResultsForSearchMessage(noResultsForSearchMessage: string) {
+    let parsedNoResultsForSearchMessage = noResultsForSearchMessage.split(QUERY_TAG, 2);
+    if (parsedNoResultsForSearchMessage.length == 1) {
+      parsedNoResultsForSearchMessage.push('');
+    }
+    return parsedNoResultsForSearchMessage;
+  }
+
+  private isDefautlValue() {
+    return this.options.noResultsForSearchMessage == l('noResultFor', ' ');
+  }
+
+  private isSubArrayInArray(array: string, subarray: string) {
+    let subArrayfound: boolean;
+    let sl: number = subarray.length,
+      l: number = array.length + 1 - sl;
+
+    for (let i = 0; i < l; i++) {
+      subArrayfound = true;
+      for (let j = 0; j < sl; j++) {
+        if (array[i + j] !== subarray[j]) {
+          subArrayfound = false;
+          break;
+        }
+      }
+      if (subArrayfound) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   private displayInfoOnNoResults() {
     const queryEscaped = escape(this.queryStateModel.get(QueryStateModel.attributesEnum.q));
-    let noResultsForString: Dom;
+    let queryEscapedValue: string;
+    // TODO : we could use : _.contains(this.options.noResultsForSearchMessage, QUERY_TAG)
+    //        if we assume the QUERY_TAG has a space before and after it.
+    // I didn't find an equivalent for isSubArrayInArray()
+    // In this scenario isSubArrayInArray() is more flexible than _.contains
+    const isQueryTagInMessage = this.isSubArrayInArray(this.options.noResultsForSearchMessage, QUERY_TAG);
 
-    if (queryEscaped != '') {
-      noResultsForString = $$(
-        'div',
-        {
-          className: 'coveo-query-summary-no-results-string'
-        },
-        l('noResultFor', $$('span', { className: 'coveo-highlight' }, queryEscaped).el.outerHTML)
-      );
+    if (!isQueryTagInMessage && !this.isDefautlValue()) {
+      queryEscapedValue = '';
+    } else {
+      queryEscapedValue = queryEscaped;
     }
+
+    let queryEscapedString = $$(
+      'span',
+      {
+        className: 'coveo-highlight'
+      },
+      queryEscapedValue
+    );
+
+    let parsedNoResultsForSearchMessage = this.parseNoResultsForSearchMessage(this.options.noResultsForSearchMessage);
+
+    let noResultsForString = $$(
+      'div',
+      {
+        className: 'coveo-query-summary-no-results-string'
+      },
+      parsedNoResultsForSearchMessage[0],
+      queryEscapedString,
+      parsedNoResultsForSearchMessage[1]
+    );
+
     const cancelLastAction = $$(
       'div',
       {
