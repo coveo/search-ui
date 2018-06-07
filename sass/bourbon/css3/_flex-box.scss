@@ -12,7 +12,7 @@
   display: -webkit-box;
   display: -moz-box;
   display: -ms-flexbox; // IE 10
-  display: box;
+  display: flex;
 }
 
 @mixin box-orient($orient: inline-axis) {
@@ -65,18 +65,17 @@
 // 2012 - display (flex | inline-flex)
 @mixin display($value) {
   // flex | inline-flex
-  @if $value == "flex" {
+  @if $value == 'flex' {
     // 2009
     display: -webkit-box;
     display: -moz-box;
-    display: box;
 
     // 2012
     display: -webkit-flex;
     display: -moz-flex;
     display: -ms-flexbox; // 2011 (IE 10)
     display: flex;
-  } @else if $value == "inline-flex" {
+  } @else if $value == 'inline-flex' {
     display: -webkit-inline-box;
     display: -moz-inline-box;
     display: inline-box;
@@ -94,7 +93,6 @@
 // 2011 - flex (decimal | width decimal)
 // 2012 - flex (integer integer width)
 @mixin flex($value) {
-
   // Grab flex-grow for older browsers.
   $flex-grow: nth($value, 1);
 
@@ -110,7 +108,6 @@
 // 2011 - flex-direction (row | row-reverse | column | column-reverse)
 // 2012 - flex-direction (row | row-reverse | column | column-reverse)
 @mixin flex-direction($value: row) {
-
   // Alt values.
   $value-2009: $value;
   $value-2011: $value;
@@ -118,12 +115,12 @@
 
   @if $value == row {
     $value-2009: horizontal;
-  } @else if $value == "row-reverse" {
+  } @else if $value == 'row-reverse' {
     $value-2009: horizontal;
     $direction: reverse;
   } @else if $value == column {
     $value-2009: vertical;
-  } @else if $value == "column-reverse" {
+  } @else if $value == 'column-reverse' {
     $value-2009: vertical;
     $direction: reverse;
   }
@@ -149,7 +146,7 @@
     $alt-value: single;
   } @else if $value == wrap {
     $alt-value: multiple;
-  } @else if $value == "wrap-reverse" {
+  } @else if $value == 'wrap-reverse' {
     $alt-value: multiple;
   }
 
@@ -200,16 +197,15 @@
 // 2011 - flex-pack (start | end | center | justify)
 // 2012 - justify-content (flex-start | flex-end | center | space-between | space-around)
 @mixin justify-content($value: flex-start) {
-
   // Alt values.
   $alt-value: $value;
-  @if $value == "flex-start" {
+  @if $value == 'flex-start' {
     $alt-value: start;
-  } @else if $value == "flex-end" {
+  } @else if $value == 'flex-end' {
     $alt-value: end;
-  } @else if $value == "space-between" {
+  } @else if $value == 'space-between' {
     $alt-value: justify;
-  } @else if $value == "space-around" {
+  } @else if $value == 'space-around' {
     $alt-value: distribute;
   }
 
@@ -227,12 +223,11 @@
 // 2011 - flex-align (start | end | center | baseline | stretch)
 // 2012 - align-items (flex-start | flex-end | center | baseline | stretch)
 @mixin align-items($value: stretch) {
-
   $alt-value: $value;
 
-  @if $value == "flex-start" {
+  @if $value == 'flex-start' {
     $alt-value: start;
-  } @else if $value == "flex-end" {
+  } @else if $value == 'flex-end' {
     $alt-value: end;
   }
 
@@ -249,11 +244,10 @@
 // 2011 - flex-item-align (auto | start | end | center | baseline | stretch)
 // 2012 - align-self (auto | flex-start | flex-end | center | baseline | stretch)
 @mixin align-self($value: auto) {
-
   $value-2011: $value;
-  @if $value == "flex-start" {
+  @if $value == 'flex-start' {
     $value-2011: start;
-  } @else if $value == "flex-end" {
+  } @else if $value == 'flex-end' {
     $value-2011: end;
   }
 
@@ -267,15 +261,14 @@
 // 2011 - flex-line-pack (start | end | center | justify | distribute | stretch)
 // 2012 - align-content (flex-start | flex-end | center | space-between | space-around | stretch)
 @mixin align-content($value: stretch) {
-
   $value-2011: $value;
-  @if $value == "flex-start" {
+  @if $value == 'flex-start' {
     $value-2011: start;
-  } @else if $value == "flex-end" {
+  } @else if $value == 'flex-end' {
     $value-2011: end;
-  } @else if $value == "space-between" {
+  } @else if $value == 'space-between' {
     $value-2011: justify;
-  } @else if $value == "space-around" {
+  } @else if $value == 'space-around' {
     $value-2011: distribute;
   }
 
