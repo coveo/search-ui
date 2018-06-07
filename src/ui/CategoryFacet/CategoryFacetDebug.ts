@@ -4,33 +4,44 @@ import { IGroupByResult } from '../../rest/GroupByResult';
 import { QueryBuilder } from '../Base/QueryBuilder';
 import { sortBy, chain } from 'underscore';
 import { Logger } from '../../misc/Logger';
+import { IGroupByValue } from '../../rest/GroupByValue';
 
 class PathMap {
   get: (key: string) => PathMap;
   set: (key: string, value?: PathMap) => void;
 }
 
+type DebugGroupByPositionInQuery = {
+  start: number;
+  end: number;
+};
+
 export class CategoryFacetDebug {
-  private positionInQuery: [number, number];
+  private static logger = new Logger(CategoryFacet);
+  private positionInQuery: DebugGroupByPositionInQuery;
   constructor(private categoryFacet: CategoryFacet) {
-    this.categoryFacet.bind.onRootElement<IBuildingQueryEventArgs>(QueryEvents.buildingQuery, args => this.addGroupBy(args));
+    this.categoryFacet.bind.onRootElement<IBuildingQueryEventArgs>(QueryEvents.buildingQuery, args => this.handleBuildingQuery(args));
     this.categoryFacet.bind.onRootElement<IQuerySuccessEventArgs>(QueryEvents.querySuccess, args => {
-      args.results.groupByResults
-        .slice(this.positionInQuery[0], this.positionInQuery[1])
-        .forEach(groupByResult => CategoryFacetDebug.analyzeResults(groupByResult, this.categoryFacet.options.delimitingCharacter));
+      this.handleQuerySuccess(args);
     });
   }
 
-  private addGroupBy(args: IBuildingQueryEventArgs) {
+  private handleBuildingQuery(args: IBuildingQueryEventArgs) {
     const firstPositionInQuery = args.queryBuilder.groupByRequests.length;
     if (this.categoryFacet.activePath.length == 0) {
-      this.positionInQuery = [firstPositionInQuery, firstPositionInQuery + 1];
+      this.positionInQuery = { start: firstPositionInQuery, end: firstPositionInQuery + 1 };
       this.addGroupByForEmptyPath(args.queryBuilder);
     } else {
       const path = this.categoryFacet.activePath;
-      this.positionInQuery = [firstPositionInQuery, firstPositionInQuery + path.length];
+      this.positionInQuery = { start: firstPositionInQuery, end: firstPositionInQuery + path.length };
       this.addGroupByForEachPathElement(args.queryBuilder, path);
     }
+  }
+
+  private handleQuerySuccess(args: IQuerySuccessEventArgs) {
+    args.results.groupByResults
+      .slice(this.positionInQuery.start, this.positionInQuery.end)
+      .forEach(groupByResult => CategoryFacetDebug.analyzeResults(groupByResult, this.categoryFacet.options.delimitingCharacter));
   }
 
   private addGroupByForEmptyPath(queryBuilder: QueryBuilder) {
@@ -46,45 +57,55 @@ export class CategoryFacetDebug {
     });
   }
 
-  /**
-   *  This method expects group by results from a hierarchical field. It will find values with missing parents and values that are
-   * potentially missing values in their path. It will log any issue found in the console.
-   * @param groupByResults Group by results on a hierarhical field.
-   */
   public static analyzeResults(groupByResults: IGroupByResult, delimiter: string) {
-    const root: PathMap = new Map<string, PathMap>();
-    const logger = new Logger(CategoryFacet);
-    const orphans = [];
-    let paths = chain(groupByResults.values)
-      .pluck('value')
-      .map((value: string) => value.split(delimiter))
-      .sortBy(value => value.length)
-      .value();
+    const treeRoot: PathMap = new Map<string, PathMap>();
+    const orphans: string[] = [];
 
+    let paths = this.buildPathsFromGroupByValues(groupByResults.values, delimiter);
     paths = sortBy(paths, value => value.length);
+
     paths.forEach(path => {
       if (path.length == 1) {
-        root.set(path[0], new Map<string, PathMap>());
+        this.addFirstNodeToTree(treeRoot, path);
       } else {
         let pathIsValid = true;
         const parentsOnly = path.slice(0, -1);
-        let currentNode = root;
-        parentsOnly.forEach(value => {});
-        for (let i = 0; i < parentsOnly.length; i++) {
-          currentNode = currentNode.get(parentsOnly[i]);
+        let currentNode = treeRoot;
+        for (const parent of parentsOnly) {
+          currentNode = currentNode.get(parent);
           if (!currentNode) {
-            const formattedOrphan = path.join(delimiter);
-            orphans.push(formattedOrphan);
-            logger.error(`Value ${formattedOrphan} has no parent.`);
+            this.processOrphan(orphans, path, delimiter);
             pathIsValid = false;
             break;
           }
         }
         if (pathIsValid) {
-          currentNode.set(path.slice(-1)[0], new Map<string, PathMap>());
+          this.addValidNodeToTree(currentNode, path);
         }
       }
     });
     return orphans;
+  }
+
+  private static buildPathsFromGroupByValues(values: IGroupByValue[], delimiter: string) {
+    return chain(values)
+      .pluck('value')
+      .map((value: string) => value.split(delimiter))
+      .sortBy(value => value.length)
+      .value();
+  }
+
+  private static addFirstNodeToTree(treeRoot: PathMap, path: string[]) {
+    treeRoot.set(path[0], new Map<string, PathMap>());
+  }
+
+  private static addValidNodeToTree(node: PathMap, path: string[]) {
+    node.set(path.slice(-1)[0], new Map<string, PathMap>());
+  }
+
+  private static processOrphan(orphans: string[], path: string[], delimiter: string) {
+    const formattedOrphan = path.join(delimiter);
+    orphans.push(formattedOrphan);
+    this.logger.error(`Value ${formattedOrphan} has no parent.`);
   }
 }

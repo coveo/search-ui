@@ -28,7 +28,7 @@ export class CategoryFacetQueryController {
   }
 
   public async searchFacetValues(value: string): Promise<IGroupByValue[]> {
-    let lastQuery = { ...this.categoryFacet.queryController.getLastQuery() };
+    const lastQuery = { ...this.categoryFacet.queryController.getLastQuery() };
 
     const groupByRequest: IGroupByRequest = {
       allowedValues: [`*${value}*`],

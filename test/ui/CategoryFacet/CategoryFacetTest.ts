@@ -1,6 +1,6 @@
 import { CategoryFacet, ICategoryFacetOptions } from '../../../src/ui/CategoryFacet/CategoryFacet';
 import * as Mock from '../../MockEnvironment';
-import { $$, Dom } from '../../../src/utils/Dom';
+import { $$ } from '../../../src/utils/Dom';
 import { IQueryResults } from '../../../src/rest/QueryResults';
 import { IBasicComponentSetup, mock } from '../../MockEnvironment';
 import { Simulate, ISimulateQueryData } from '../../Simulate';
@@ -37,7 +37,7 @@ export function CategoryFacetTest() {
 
     it('when calling getVisibleParentValues returns all the visible parent values', () => {
       Simulate.query(test.env, simulateQueryData);
-      const visibleParentValues: string[] = test.cmp.getVisibleParentValues();
+      const visibleParentValues: string[] = pluck(test.cmp.getVisibleParentValues(), 'value');
       for (let i = 0; i < test.cmp.activePath.length; i++) {
         expect(visibleParentValues[i]).toEqual(`parent${i}`);
       }
@@ -48,14 +48,14 @@ export function CategoryFacetTest() {
       simulateQueryData.query.categoryFacets[0].path = [];
       test.cmp.activePath = [];
 
-      const visibleParentValues: string[] = test.cmp.getVisibleParentValues();
+      const visibleParentValues = test.cmp.getVisibleParentValues();
 
       expect(visibleParentValues).toEqual([]);
     });
 
     it('when calling getAvailableValues returns children of the last parent', () => {
       Simulate.query(test.env, simulateQueryData);
-      const values: string[] = test.cmp.getAvailableValues();
+      const values: string[] = pluck(test.cmp.getAvailableValues(), 'value');
       for (let i = 0; i < simulateQueryData.results.categoryFacets[0].values.length - 1; i++) {
         expect(values[i]).toEqual(`value${i}`);
       }
@@ -256,20 +256,18 @@ export function CategoryFacetTest() {
 
       function verifyParents(numberOfParents: number) {
         removeAllCategoriesButton(test.cmp.element);
-        let currentCategoryValue = $$(test.cmp.element).find('.coveo-category-facet-value');
+        const parentCategoryValues = $$(test.cmp.element).findAll('.coveo-category-facet-parent-value');
         for (const i of range(numberOfParents)) {
-          const valueCaption = $$(currentCategoryValue).find('.coveo-category-facet-value-caption');
-          const valueCount = $$(currentCategoryValue).find('.coveo-category-facet-value-count');
+          const valueCaption = $$(parentCategoryValues[i]).find('.coveo-category-facet-value-caption');
+          const valueCount = $$(parentCategoryValues[i]).find('.coveo-category-facet-value-count');
           expect($$(valueCaption).text()).toEqual(`parent${i}`);
           expect($$(valueCount).text()).toEqual('5');
-          currentCategoryValue = $$(currentCategoryValue).find('.coveo-category-facet-value');
         }
-        return $$(currentCategoryValue);
       }
 
-      function verifyChildren(numberOfValues: number, parent: Dom = $$(test.cmp.element)) {
-        removeAllCategoriesButton(parent);
-        const categoryValues = $$(parent).findAll('.coveo-category-facet-value');
+      function verifyChildren(numberOfValues: number) {
+        removeAllCategoriesButton(test.cmp.element);
+        const categoryValues = $$(test.cmp.element).findAll('.coveo-category-facet-child-value');
         for (const i of range(0, numberOfValues)) {
           const valueCaption = $$(categoryValues[i]).find('.coveo-category-facet-value-caption');
           const valueCount = $$(categoryValues[i]).find('.coveo-category-facet-value-count');
@@ -302,13 +300,9 @@ export function CategoryFacetTest() {
       });
 
       it('when there are children and parents', () => {
-        const numberOfParents = simulateQueryData.results.categoryFacets[0].parentValues.length - 1;
         const numberOfValues = simulateQueryData.results.categoryFacets[0].values.length - 1;
-
         Simulate.query(test.env, simulateQueryData);
-
-        const lastParent = verifyParents(numberOfParents);
-        verifyChildren(numberOfValues, lastParent);
+        verifyChildren(numberOfValues);
       });
 
       it('correctly sorts parents', () => {

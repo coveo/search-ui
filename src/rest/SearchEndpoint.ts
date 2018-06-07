@@ -80,8 +80,7 @@ export class SearchEndpoint implements ISearchEndpoint {
         _.extend(
           {
             restUri: 'http://localhost:8100/rest/search',
-            searchAlertsUri: 'http://localhost:8088/rest/search/alerts/',
-            accessToken: '52d806a2-0f64-4390-a3f2-e0f41a4a73ec'
+            searchAlertsUri: 'http://localhost:8088/rest/search/alerts/'
           },
           otherOptions
         )

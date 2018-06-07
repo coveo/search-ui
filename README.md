@@ -22,7 +22,7 @@ Alternatively, you can download the latest version of the Coveo JavaScript Searc
 Since the April 2017 release, it is possible to access the resources of any specific Coveo JavaScript Search Framework
 official release (from version `1.2537` on) through a content delivery network (CDN).
 
-You can simply use an URL such as `https://static.cloud.coveo.com/searchui/v[VERSION]/[PATH_TO_FILE]`, where you
+You can simply use a URL such as `https://static.cloud.coveo.com/searchui/v[VERSION]/[PATH_TO_FILE]`, where you
 replace `[VERSION]` by the actual release version number you wish to use and `[PATH_TO_FILE]` by the path of the file
 you require.
 
@@ -122,7 +122,7 @@ If you need to modify the content of the search page (i.e., the markup itself, n
 breaking anything. However, if you feel like you have a good reason to modify the original `index.html`, feel free to
 do so.
 
-You might need to assign more memory to Webpack if you see errors about `heap out of memory`. To do so, use this command : 
+You might need to assign more memory to Webpack if you see errors about `heap out of memory`. To do so, use this command :
 
     node --max_old_space_size=8192 ./node_modules/gulp/bin/gulp.js dev;
 

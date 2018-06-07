@@ -47,41 +47,48 @@ export interface ICategoryFacetOptions {
   maximumDepth?: number;
 }
 
+export type CategoryValueDescriptor = {
+  value: string;
+  count: number;
+  path: string[];
+};
+
 /**
- * This component allows to render hierarchical values. It determines the filter to apply depending on the current path of values that
- * are selected. The path is a sequence of values that lead to a specific value in the hierarchy.
+ * The _CategoryFacet_ component is a facet that renders values in a hierarchical fashion. It determines the filter to apply depending on the
+ * current selected path of values.
  *
- * For example, in the example below, the file text1.txt has the path `['c', 'folder1']`.
+ * The path is a sequence of values that leads to a specific value in the hierarchy.
+ * It is an array listing all the parents of a file (e.g., `['c', 'folder1']` for the `c:\folder1\text1.txt` file).
  *
  * This facet requires a field with a special format to work correctly.
  *
  * **Example:**
  *
- * If you have the following files indexed on a file system:
+ * You have the following files indexed on a file system:
+ *
  * ```
  * c:\
- *    folder1\
- *        text1.txt
- *    folder2\
- *      folder3\
- *        text2.txt
+ *   folder1\
+ *     text1.txt
+ *   folder2\
+ *     folder3\
+ *       text2.txt
  * ```
- * The `text1.txt` item would need to have a field with the following format:
- * `@field : c; c|folder1;`
  *
- * The `text2.txt` item would have a field with the following format:
- * `@field: c; c|folder2; c|folder2|folder3;`
+ * The `text1.txt` item would have a field with the following value:
+ * `c; c|folder1;`
  *
- * The `|` character allows the facet to build its hierarchy (`folder3` inside `folder2` inside `c`).
+ * The `text2.txt` item would have a field with the following value:
+ * `c; c|folder2; c|folder2|folder3;`
  *
- * Since both items contain the `c` value, selecting this value in the facet would return both items.
+ * By default, the `|` character determines the hierarchy (`folder3` inside `folder2` inside `c`).
+ *
+ * Since both items contain the `c` value, selecting it value in the facet would return both items.
  *
  * Selecting the `folder3` value in the facet would only return the `text2.txt` item.
  *
- * To help you verify if your fields are setup correctly check out the option {@link CategoryFacet.options.debug} and the method
- * {@link CategoryFacet.debugValue}.
- *
- * @notSupportedIn salesforcefree
+ * To help you verify if your fields are setup correctly, see the {@link CategoryFacet.options.debug} option
+ * and the {@link CategoryFacet.debugValue} method.
  */
 export class CategoryFacet extends Component {
   static doExport = () => {
@@ -142,7 +149,6 @@ export class CategoryFacet extends Component {
      * If the [`enableFacetSearch`]{@link CategoryFacet.options.enableFacetSearch} option is `true`, specifies the number of
      * values to display in the facet search results popup.
      *
-     *
      * Default value is `15`. Minimum value is `1`.
      */
     numberOfResultsInFacetSearch: ComponentOptions.buildNumberOption({ defaultValue: 15, min: 1 }),
@@ -172,7 +178,7 @@ export class CategoryFacet extends Component {
      */
     pageSize: ComponentOptions.buildNumberOption({ defaultValue: 10, min: 1, depend: 'enableMoreLess' }),
     /**
-     * The character that allows to specify the hierarchical dependency.
+     * The character that specifies the hierarhical dependency.
      *
      * **Example:**
      *
@@ -186,34 +192,34 @@ export class CategoryFacet extends Component {
      */
     delimitingCharacter: ComponentOptions.buildStringOption({ defaultValue: '|' }),
     /**
-     * Path that will be used as a path prefix for every query.
+     * The path to use as the path prefix for every query.
      *
      * **Example:**
      *
-     * If you have the following files indexed on a file system:
+     * You have the following files indexed on a file system:
      * ```
      * c:\
      *    folder1\
-     *        text1.txt
+     *      text1.txt
      *    folder2\
      *      folder3\
      *        text2.txt
      * ```
-     * Setting `basePath` to `c` displays `folder1` and `folder2` in the `CategoryFacet`, but omits `c`.
+     * Setting the `basePath` to `c` would display `folder1` and `folder2` in the `CategoryFacet`, but omit `c`.
      *
      */
     basePath: ComponentOptions.buildListOption<string>({ defaultValue: [] }),
     /**
-     * Maximum number of levels to traverse in the hierarchy.
-     * This option will not count the length of the base path as depth. The depth will depend on what is shown in the interface.
+     * The maximum number of levels to traverse in the hierarchy.
+     * This option does not count the length of the base path. The depth depends on what is shown in the interface.
      *
      * Default value is `Number.MAX_VALUE`.
      */
     maximumDepth: ComponentOptions.buildNumberOption({ min: 1, defaultValue: Number.MAX_VALUE }),
     /**
-     * Specifies whether or not field format debugging is activated.
-     * This will log messages in the console and inform you of any issues encountered.
-     * This option should only be enabled when debugging because it can have negative effects on performance.
+     * Specifies whether field format debugging is activated.
+     * This options logs messages in the console for any potential encountered issues.
+     * This option can have negative effects on performance, and should only be activated when debugging.
      */
     debug: ComponentOptions.buildBooleanOption({ defaultValue: false })
   };
@@ -279,6 +285,13 @@ export class CategoryFacet extends Component {
   }
 
   public handleQuerySuccess(args: IQuerySuccessEventArgs) {
+    if (
+      Utils.isNullOrUndefined(args.results.categoryFacets) ||
+      Utils.isNullOrUndefined(args.results.categoryFacets[this.positionInQuery])
+    ) {
+      this.notImplementedError();
+      return;
+    }
     const numberOfRequestedValues = args.query.categoryFacets[this.positionInQuery].maximumNumberOfValues;
     const categoryFacetResult = args.results.categoryFacets[this.positionInQuery];
     this.moreValuesToFetch = numberOfRequestedValues == categoryFacetResult.values.length;
@@ -286,6 +299,7 @@ export class CategoryFacet extends Component {
 
     if (categoryFacetResult.notImplemented) {
       this.notImplementedError();
+      return;
     } else if (categoryFacetResult.values.length != 0 || categoryFacetResult.parentValues.length != 0) {
       this.renderValues(categoryFacetResult, numberOfRequestedValues);
     } else {
@@ -294,7 +308,7 @@ export class CategoryFacet extends Component {
 
     if (this.options.enableFacetSearch) {
       const facetSearch = this.categoryFacetSearch.build();
-      $$(facetSearch).insertAfter(this.categoryValueRoot.categoryChildrenValueRenderer.getListOfChildValues().el);
+      $$(facetSearch).insertAfter(this.categoryValueRoot.listRoot.el);
     }
 
     if (this.options.enableMoreLess) {
@@ -334,10 +348,10 @@ export class CategoryFacet extends Component {
 
   /**
    * Returns all the visible parent values.
-   *
+   * @returns simple object with three fields: `value`, `count` and `path`.
    */
-  public getVisibleParentValues(): string[] {
-    return pluck(this.getVisibleParentCategoryValues(), 'value');
+  public getVisibleParentValues(): CategoryValueDescriptor[] {
+    return this.getVisibleParentCategoryValues().map(categoryValue => categoryValue.getDescriptor());
   }
 
   private getVisibleParentCategoryValues() {
@@ -383,9 +397,16 @@ export class CategoryFacet extends Component {
 
   /**
    * Returns the values at the bottom of the hierarchy. These are the values that are not yet applied to the query.
+   * @returns simple object with three fields: `value`, `count` and `path`.
    */
   public getAvailableValues() {
-    return pluck(this.activeCategoryValue.children, 'value');
+    return this.activeCategoryValue.children.map(categoryValue => {
+      return {
+        value: categoryValue.value,
+        count: categoryValue.count,
+        path: categoryValue.path
+      };
+    });
   }
 
   /**
@@ -393,14 +414,17 @@ export class CategoryFacet extends Component {
    * If the given value to select is not in the available values, it will throw an error.
    */
   public selectValue(value: string) {
-    Assert.check(contains(this.getAvailableValues(), value), 'Failed while trying to select a value that is not available.');
+    Assert.check(
+      contains(pluck(this.getAvailableValues(), 'value'), value),
+      'Failed while trying to select a value that is not available.'
+    );
     const newPath = this.activePath.slice(0);
     newPath.push(value);
     this.changeActivePath(newPath);
   }
 
   /**
-   * Deselect the last value in the hierarchy that is applied to the query. Does nothing if we are at the top of the hierarchy.
+   * Deselects the last value in the hierarchy that is applied to the query. When at the top of the hierarchy, this method does nothing.
    */
   public deselectCurrentValue() {
     if (this.activePath.length == 0) {
@@ -413,7 +437,7 @@ export class CategoryFacet extends Component {
   }
 
   /**
-   * Reset the facet to its pristine state.
+   * Reset the facet to its initial state.
    */
   public reset() {
     this.changeActivePath(this.options.basePath);
@@ -425,23 +449,23 @@ export class CategoryFacet extends Component {
   }
 
   /**
-   * Hide the component.
+   * Hides the component.
    */
   public hide() {
     $$(this.element).addClass('coveo-hidden');
   }
 
   /**
-   * Show the component.
+   * Shows the component.
    */
   public show() {
     $$(this.element).removeClass('coveo-hidden');
   }
 
   /**
-   * This method will go through any value that contains the value parameter and verify if there are missig parents.
-   * Issues will be logged in the console.
-   * If you don't want to specify a value, you can simply enable {@link CategoryFacet.option.debug} and do an empty query.
+   * This method goes through any value that contains the value parameter, and verifies if there are missing parents.
+   * Issues are then logged in the console.
+   * If you do not want to specify a value, you can simply enable {@link CategoryFacet.option.debug} and do an empty query.
    */
   public async debugValue(value: string) {
     const queryBuilder = new QueryBuilder();
@@ -499,7 +523,7 @@ export class CategoryFacet extends Component {
     }
 
     if (!this.isPristine()) {
-      this.addAllCategoriesButton(currentParentValue);
+      this.addAllCategoriesButton();
     }
 
     for (let i = 0; i < sortedParentValues.length; i++) {
@@ -531,8 +555,7 @@ export class CategoryFacet extends Component {
   }
 
   private addEllipsis(parentValue: CategoryValueParent, pathOfLastTruncatedParentValue: string[], valueToAddToPath: string) {
-    const listOfChildValues = parentValue.categoryChildrenValueRenderer.getListOfChildValues();
-    listOfChildValues.append(this.categoryFacetTemplates.buildEllipsis().el);
+    this.categoryValueRoot.listRoot.append(this.categoryFacetTemplates.buildEllipsis().el);
     parentValue.path = [...pathOfLastTruncatedParentValue, valueToAddToPath];
   }
 
@@ -541,10 +564,10 @@ export class CategoryFacet extends Component {
     return reduce(first(sortedParentValues, indexOfLastTruncatedParentValue + 1), (path, parentValue) => [...path, parentValue.value], []);
   }
 
-  private addAllCategoriesButton(parentValue: CategoryValueParent) {
+  private addAllCategoriesButton() {
     const allCategories = this.categoryFacetTemplates.buildAllCategoriesButton();
     allCategories.on('click', () => this.reset());
-    parentValue.categoryChildrenValueRenderer.getListOfChildValues().append(allCategories.el);
+    this.categoryValueRoot.listRoot.append(allCategories.el);
   }
 
   private isPristine() {
@@ -666,20 +689,14 @@ export class CategoryFacet extends Component {
   }
 
   private handlePopulateBreadCrumb(args: IPopulateBreadcrumbEventArgs) {
-    const lastParentValue = this.getVisibleParentCategoryValues().pop();
+    const lastParentValue = this.getVisibleParentValues().pop();
     if (!this.isPristine() && lastParentValue) {
       const resetFacet = () => {
         this.logAnalyticsEvent(analyticsActionCauseList.breadcrumbFacet);
         this.reset();
       };
 
-      const categoryFacetBreadcrumbBuilder = new CategoryFacetBreadcrumb(
-        this.options.title,
-        this.activePath,
-        resetFacet,
-        lastParentValue.value,
-        lastParentValue.count.toString(10)
-      );
+      const categoryFacetBreadcrumbBuilder = new CategoryFacetBreadcrumb(this.options.title, resetFacet, lastParentValue);
       args.breadcrumbs.push({ element: categoryFacetBreadcrumbBuilder.build() });
     }
   }

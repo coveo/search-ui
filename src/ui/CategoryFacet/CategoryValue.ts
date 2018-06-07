@@ -6,6 +6,7 @@ import { ICategoryFacetValue } from '../../rest/CategoryFacetValue';
 import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
 
 export interface CategoryValueParent {
+  listRoot: Dom;
   path: string[];
   categoryChildrenValueRenderer: CategoryChildrenValueRenderer;
   renderAsParent(categoryFacetValue: ICategoryFacetValue): CategoryValue;
@@ -14,7 +15,6 @@ export interface CategoryValueParent {
 
 export class CategoryValue implements CategoryValueParent {
   private collapseArrow: Dom;
-  private labelOnClick: (e: Event) => void;
   private label: Dom;
 
   public element: Dom;
@@ -22,7 +22,7 @@ export class CategoryValue implements CategoryValueParent {
   public categoryChildrenValueRenderer: CategoryChildrenValueRenderer;
 
   constructor(
-    private parentElement: Dom,
+    public listRoot: Dom,
     public value: string,
     public count: number,
     private categoryFacetTemplates: CategoryFacetTemplates,
@@ -33,19 +33,29 @@ export class CategoryValue implements CategoryValueParent {
     this.label = $$(this.element.find('.coveo-category-facet-value-label'));
     this.collapseArrow = this.categoryFacetTemplates.buildCollapseArrow();
     this.categoryChildrenValueRenderer = new CategoryChildrenValueRenderer(this.element, categoryFacetTemplates, this, this.categoryFacet);
-    this.labelOnClick = () => {
-      if (!this.passededMaximumDepth()) {
-        this.onLabelClick();
-      }
-    };
-    this.label.one('click', this.labelOnClick);
+    this.label.one('click', () => this.onLabelClick());
   }
 
-  public render() {
+  public render(isChild: boolean) {
     if (this.passededMaximumDepth()) {
       this.element.addClass('coveo-category-facet-last-value');
     }
-    this.parentElement.append(this.element.el);
+
+    if (isChild) {
+      this.element.addClass('coveo-category-facet-child-value');
+    } else {
+      this.element.addClass('coveo-category-facet-parent-value');
+    }
+
+    this.listRoot.append(this.element.el);
+  }
+
+  public getDescriptor() {
+    return {
+      value: this.value,
+      count: this.count,
+      path: this.path
+    };
   }
 
   public clear() {
@@ -75,8 +85,10 @@ export class CategoryValue implements CategoryValueParent {
   }
 
   private onLabelClick() {
-    this.categoryFacet.logAnalyticsEvent(analyticsActionCauseList.categoryFacetSelect);
-    this.categoryFacet.changeActivePath(this.path);
+    if (!this.passededMaximumDepth()) {
+      this.categoryFacet.logAnalyticsEvent(analyticsActionCauseList.categoryFacetSelect);
+      this.categoryFacet.changeActivePath(this.path);
+    }
   }
 
   private passededMaximumDepth() {
