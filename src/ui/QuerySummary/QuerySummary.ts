@@ -19,16 +19,19 @@ import { IQuery } from '../../rest/Query';
 import { IQueryResults } from '../../rest/QueryResults';
 
 export interface IQuerySummaryOptions {
-  enableResultsSummary?: boolean;
-  enableNoResultsForSearch?: boolean;
+  onlyDisplaySearchTips?: boolean;
+  enableNoResultsFoundMessage?: boolean;
+  noResultsFoundMessage?: string;
   enableCancelLastAction?: boolean;
   enableSearchTips?: boolean;
-  noResultsForSearchMessage?: string;
 }
 
-// TODO : Is it the right way to declare a constant like this?
+// TODO : Is it the right place to declare constants like this in a scenario like this one?
 const QUERY_TAG: string = '<%-query%>';
+const DEFAULT_NO_RESULT_FOUND_MESSAGE: string = l('noResultFor', ' ');
 
+// TODO : Do we want to change the description of the QuerySummary component?
+//        This specific part : "If the query matches [...] a better query."
 /**
  * The QuerySummary component can display information about the currently displayed range of results (e.g., "Results
  * 1-10 of 123").
@@ -50,20 +53,52 @@ export class QuerySummary extends Component {
    * @componentOptions
    */
   static options: IQuerySummaryOptions = {
-    // TODO : Add description
-    enableResultsSummary: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+    /**
+     * Specifies whether to hide the information about the currently displayed range of results and only display the
+     * search tips instead.
+     *
+     * Default value is `false`.
+     */
+    onlyDisplaySearchTips: ComponentOptions.buildBooleanOption({ defaultValue: false }),
 
-    // TODO : Add description
-    enableNoResultsForSearch: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+    /**
+     * Specifies whether to display the a message to the end user when there are no search results.
+     *
+     * Default value is `true`.
+     */
+    enableNoResultsFoundMessage: ComponentOptions.buildBooleanOption({ defaultValue: true }),
 
-    // TODO : Add description
-    noResultsForSearchMessage: ComponentOptions.buildStringOption({
-      defaultValue: l('noResultFor', ' '),
-      depend: 'enableNoResultsForSearch',
-      postProcessing: (value, options) => value || l('noResultFor', ' ')
+    // TODO : There is probably an other place where I will need to add this documentation for the query tag :<%-query%>)?
+    // TODO : I'm not sure if we should put an example in the description and if the description is precise enough?
+    /**
+     * Specifies a custom message to display when there are no search results.
+     *
+     * A query tag ({@link QUERY_TAG}) can be added in the message. This tag will
+     * be replaced by the search box input who triggered the no result found page.
+     *
+     * Ex.:
+     *
+     * Searchbox input : "ThereIsNoResults"
+     *
+     * {@link QUERY_TAG} = <%-query%>
+     *
+     * Message input : "We are sorry, <%-query%> did not match any results."
+     *
+     * Final Message : "We are sorry, ThereIsNoResults did not match any results."
+     *
+     * Default value is `No results for <%-query%>`.
+     */
+    noResultsFoundMessage: ComponentOptions.buildStringOption({
+      defaultValue: DEFAULT_NO_RESULT_FOUND_MESSAGE,
+      depend: 'enableNoResultsFoundMessage',
+      postProcessing: (value, options) => value || DEFAULT_NO_RESULT_FOUND_MESSAGE
     }),
 
-    // TODO : Add description
+    /**
+     * Specifies whether to display the cancel last action link to the end user when there are no search results.
+     *
+     * Default value is `true`.
+     */
     enableCancelLastAction: ComponentOptions.buildBooleanOption({ defaultValue: true }),
 
     /**
@@ -108,7 +143,7 @@ export class QuerySummary extends Component {
     $$(this.textContainer).empty();
     this.show();
 
-    if (this.options.enableResultsSummary) {
+    if (!this.options.onlyDisplaySearchTips) {
       if (this.isInfiniteScrollingMode()) {
         this.renderSummaryInInfiniteScrollingMode(queryPerformed, queryResults);
       } else {
@@ -204,26 +239,28 @@ export class QuerySummary extends Component {
     }
   }
 
-  private parseNoResultsForSearchMessage(noResultsForSearchMessage: string) {
-    let parsedNoResultsForSearchMessage = noResultsForSearchMessage.split(QUERY_TAG, 2);
-    if (parsedNoResultsForSearchMessage.length == 1) {
-      parsedNoResultsForSearchMessage.push('');
+  // TODO : For now, the function is built such as the custom message can only contain one QUERY_TAG
+  //        Do we want to be able to put mutiple QUERY_TAG ?
+  private parseNoResultsFoundMessage(noResultsFoundMessage: string) {
+    let parsedNoResultsFoundMessage = noResultsFoundMessage.split(QUERY_TAG, 2);
+    if (parsedNoResultsFoundMessage.length == 1) {
+      parsedNoResultsFoundMessage.push('');
     }
-    return parsedNoResultsForSearchMessage;
+    return parsedNoResultsFoundMessage;
   }
 
-  private isDefautlValue() {
-    return this.options.noResultsForSearchMessage == l('noResultFor', ' ');
+  private isDefautlNoResulstFoundMessage() {
+    return this.options.noResultsFoundMessage == DEFAULT_NO_RESULT_FOUND_MESSAGE;
   }
 
   private isSubArrayInArray(array: string, subarray: string) {
     let subArrayfound: boolean;
-    let sl: number = subarray.length,
-      l: number = array.length + 1 - sl;
+    let subArrayLength: number = subarray.length,
+      arrayLengthToScan: number = array.length + 1 - subArrayLength;
 
-    for (let i = 0; i < l; i++) {
+    for (let i = 0; i < arrayLengthToScan; i++) {
       subArrayfound = true;
-      for (let j = 0; j < sl; j++) {
+      for (let j = 0; j < subArrayLength; j++) {
         if (array[i + j] !== subarray[j]) {
           subArrayfound = false;
           break;
@@ -239,13 +276,10 @@ export class QuerySummary extends Component {
   private displayInfoOnNoResults() {
     const queryEscaped = escape(this.queryStateModel.get(QueryStateModel.attributesEnum.q));
     let queryEscapedValue: string;
-    // TODO : we could use : _.contains(this.options.noResultsForSearchMessage, QUERY_TAG)
-    //        if we assume the QUERY_TAG has a space before and after it.
-    // I didn't find an equivalent for isSubArrayInArray()
-    // In this scenario isSubArrayInArray() is more flexible than _.contains
-    const isQueryTagInMessage = this.isSubArrayInArray(this.options.noResultsForSearchMessage, QUERY_TAG);
+    // TODO : I didn't find an equivalent for isSubArrayInArray() but something might exist?
+    const isQueryTagInMessage = this.isSubArrayInArray(this.options.noResultsFoundMessage, QUERY_TAG);
 
-    if (!isQueryTagInMessage && !this.isDefautlValue()) {
+    if (!isQueryTagInMessage && !this.isDefautlNoResulstFoundMessage()) {
       queryEscapedValue = '';
     } else {
       queryEscapedValue = queryEscaped;
@@ -259,16 +293,16 @@ export class QuerySummary extends Component {
       queryEscapedValue
     );
 
-    let parsedNoResultsForSearchMessage = this.parseNoResultsForSearchMessage(this.options.noResultsForSearchMessage);
+    let parsedNoResultsFoundMessage = this.parseNoResultsFoundMessage(this.options.noResultsFoundMessage);
 
     let noResultsForString = $$(
       'div',
       {
         className: 'coveo-query-summary-no-results-string'
       },
-      parsedNoResultsForSearchMessage[0],
+      parsedNoResultsFoundMessage[0],
       queryEscapedString,
-      parsedNoResultsForSearchMessage[1]
+      parsedNoResultsFoundMessage[1]
     );
 
     const cancelLastAction = $$(
@@ -313,7 +347,7 @@ export class QuerySummary extends Component {
       searchTips.el.appendChild(fewerFilter.el);
     }
 
-    if (noResultsForString && this.options.enableNoResultsForSearch) {
+    if (noResultsForString && this.options.enableNoResultsFoundMessage) {
       this.textContainer.appendChild(noResultsForString.el);
     }
 
