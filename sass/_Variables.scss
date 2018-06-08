@@ -6,6 +6,7 @@ $coveo-blue: #004990;
 $coveo-red: #dc291e;
 // Complementary Colors Set 1
 $color-dark-grey: #313a45;
+$color-purple: #609;
 $color-grey: #4f5658;
 $color-greyish-dark-blue: #263e55;
 $color-greyish-teal-blue: #1d4f76;
@@ -95,11 +96,11 @@ $standard-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   }
   text-decoration: none;
   cursor: pointer;
-  &:hover,
-  &:visited {
+  &:visited,
+  &:visited:hover {
     text-decoration: none;
     @if $dark-background==false {
-      color: $coveo-blue;
+      color: $color-purple;
     } @else {
       color: $color-coveo-for-salesforce;
     }
