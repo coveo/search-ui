@@ -74,7 +74,7 @@ export class QuerySummary extends Component {
      * Specifies a custom message to display when there are no search results.
      *
      * A query tag ({@link QUERY_TAG}) can be added in the message. This tag will
-     * be replaced by the search box input who triggered the no result found page.
+     * be replaced by the search box input who triggered the no results found page.
      *
      * Ex.:
      *
@@ -126,7 +126,6 @@ export class QuerySummary extends Component {
     this.bind.onRootElement(QueryEvents.querySuccess, (data: IQuerySuccessEventArgs) => this.handleQuerySuccess(data));
     this.bind.onRootElement(QueryEvents.queryError, () => this.hide());
     this.hide();
-
     this.textContainer = $$('span').el;
     this.element.appendChild(this.textContainer);
   }
