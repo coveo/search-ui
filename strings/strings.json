@@ -7361,5 +7361,17 @@
   "Featured": {
     "en": "Featured",
     "fr": "En vedette"
+  },
+  "PoweredByCoveo": {
+    "en": "Powered by Coveo",
+    "fr": "Propulsé par Coveo"
+  },
+  "SizeValue": {
+    "en": "Size value",
+    "fr": "Valeur de la taille"
+  },
+  "UnitMeasurement": {
+    "en": "Unit of measurement",
+    "fr": "Unité de taille"
   }
 }

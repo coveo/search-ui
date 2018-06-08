@@ -94,6 +94,7 @@ export class TextInput implements IFormWidget, IFormWidgetSettable {
     if (this.name) {
       let label = $$('label');
       label.text(this.name);
+      input.setAttribute('aria-label', this.name);
       container.append(label.el);
     }
     this.element = container.el;
