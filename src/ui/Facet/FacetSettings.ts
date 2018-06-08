@@ -1,19 +1,18 @@
-import { Facet } from './Facet';
-import { FacetSort } from './FacetSort';
+import 'styling/_FacetSettings';
+import * as _ from 'underscore';
+import { InitializationEvents } from '../../events/InitializationEvents';
+import { QueryStateModel } from '../../models/QueryStateModel';
+import { l } from '../../strings/Strings';
+import { DeviceUtils } from '../../utils/DeviceUtils';
 import { $$ } from '../../utils/Dom';
 import { LocalStorageUtils } from '../../utils/LocalStorageUtils';
-import { IFacetSortDescription } from './FacetSort';
-import { Utils } from '../../utils/Utils';
-import { l } from '../../strings/Strings';
-import { QueryStateModel } from '../../models/QueryStateModel';
-import { IAnalyticsFacetMeta, analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
-import { DeviceUtils } from '../../utils/DeviceUtils';
-import { PopupUtils, PopupHorizontalAlignment, PopupVerticalAlignment } from '../../utils/PopupUtils';
-import * as _ from 'underscore';
-import 'styling/_FacetSettings';
-import { SVGIcons } from '../../utils/SVGIcons';
+import { PopupHorizontalAlignment, PopupUtils, PopupVerticalAlignment } from '../../utils/PopupUtils';
 import { SVGDom } from '../../utils/SVGDom';
-import { InitializationEvents } from '../../events/InitializationEvents';
+import { SVGIcons } from '../../utils/SVGIcons';
+import { Utils } from '../../utils/Utils';
+import { IAnalyticsFacetMeta, analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
+import { Facet } from './Facet';
+import { FacetSort, IFacetSortDescription } from './FacetSort';
 
 export interface IFacetSettingsKlass {
   new (sorts: string[], facet: Facet): FacetSettings;
@@ -355,6 +354,7 @@ export class FacetSettings extends FacetSort {
 
   private buildAscendingOrDescending(direction: string) {
     const elem = this.buildItem(l(direction));
+    elem.setAttribute('aria-disabled', 'true');
     elem.setAttribute('data-direction', direction.toLowerCase());
     return elem;
   }
@@ -484,6 +484,9 @@ export class FacetSettings extends FacetSort {
   private activateDirectionSection() {
     _.each(this.directionSection, direction => {
       $$(direction).removeClass('coveo-facet-settings-disabled');
+      $$(direction)
+        .find('.coveo-facet-settings-item')
+        .removeAttribute('aria-disabled');
       this.unselectSection(direction);
     });
     this.selectItem(this.getCurrentDirectionItem());
@@ -492,6 +495,9 @@ export class FacetSettings extends FacetSort {
   private disableDirectionSection() {
     _.each(this.directionSection, direction => {
       $$(direction).addClass('coveo-facet-settings-disabled');
+      $$(direction)
+        .find('.coveo-facet-settings-item')
+        .setAttribute('aria-disabled', 'true');
       this.unselectSection(direction);
     });
   }
