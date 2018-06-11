@@ -1,5 +1,4 @@
 @import 'Variables';
-
 .coveo-facet-settings-popup {
   position: absolute;
   overflow: hidden;
@@ -33,11 +32,9 @@
   padding: 10px;
   cursor: pointer;
   -moz-padding-end: 70px;
-
   &.coveo-selected {
     font-weight: bold;
   }
-  color: $color-dark-grey;
 }
 
 .coveo-facet-settings-disabled {
