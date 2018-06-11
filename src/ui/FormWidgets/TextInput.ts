@@ -1,7 +1,8 @@
+import { exportGlobally } from '../../GlobalExports';
+import { l } from '../../strings/Strings';
 import { $$ } from '../../utils/Dom';
 import { KEYBOARD } from '../../utils/KeyboardUtils';
 import { IFormWidget, IFormWidgetSettable } from './FormWidgets';
-import { exportGlobally } from '../../GlobalExports';
 
 /**
  * A text input widget with standard styling.
@@ -82,19 +83,24 @@ export class TextInput implements IFormWidget, IFormWidgetSettable {
   }
 
   private buildContent() {
-    let container = $$('div', { className: 'coveo-input' });
-    let input = $$('input', { type: 'text' });
+    const container = $$('div', { className: 'coveo-input' });
+    const input = $$('input', {
+      type: 'text',
+      'aria-label': this.name ? l(this.name) : ''
+    });
+
     input.on(['keydown', 'blur'], (e: Event) => {
       if (e.type == 'blur' || (<KeyboardEvent>e).keyCode == KEYBOARD.ENTER) {
         this.triggerChange();
       }
     });
+
     (<HTMLInputElement>input.el).required = true;
     container.append(input.el);
+
     if (this.name) {
-      let label = $$('label');
+      const label = $$('label');
       label.text(this.name);
-      input.setAttribute('aria-label', this.name);
       container.append(label.el);
     }
     this.element = container.el;

@@ -50,10 +50,14 @@ export class SimpleFieldInput extends DocumentInput {
         _.each(values, (value: IIndexFieldValue) => {
           options.push(value.value);
         });
-        this.dropDown = new Dropdown(this.onChange.bind(this), options, (str: string) => {
-          return FacetUtils.tryToGetTranslatedCaption(this.fieldName, str);
-        });
-        this.dropDown.getElement().setAttribute('aria-label', this.inputName);
+        this.dropDown = new Dropdown(
+          this.onChange.bind(this),
+          options,
+          (str: string) => {
+            return FacetUtils.tryToGetTranslatedCaption(this.fieldName, str);
+          },
+          this.inputName
+        );
       });
   }
 }
