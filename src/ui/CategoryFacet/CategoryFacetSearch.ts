@@ -84,9 +84,9 @@ export class CategoryFacetSearch implements IFacetSearch {
 
   private selectCurrentResult() {
     if (this.facetSearchElement.currentResult) {
-      this.categoryFacet.changeActivePath(
-        this.facetSearchElement.currentResult.el.dataset.path.split(this.categoryFacet.options.delimitingCharacter)
-      );
+      const currentResultPathData = this.facetSearchElement.currentResult.el.dataset.path;
+      const delimiter = this.categoryFacet.options.delimitingCharacter;
+      this.categoryFacet.changeActivePath(currentResultPathData.split(delimiter));
     }
   }
 

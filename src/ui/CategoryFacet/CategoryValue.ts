@@ -40,7 +40,7 @@ export class CategoryValue implements CategoryValueParent {
   }
 
   public render(isChild: boolean) {
-    if (this.passededMaximumDepth()) {
+    if (this.pastMaximumDepth()) {
       this.element.addClass('coveo-category-facet-last-value');
     }
 
@@ -88,13 +88,13 @@ export class CategoryValue implements CategoryValueParent {
   }
 
   private onLabelClick() {
-    if (!this.passededMaximumDepth()) {
+    if (!this.pastMaximumDepth()) {
       this.categoryFacet.logAnalyticsEvent(analyticsActionCauseList.categoryFacetSelect);
       this.categoryFacet.changeActivePath(this.path);
     }
   }
 
-  private passededMaximumDepth() {
+  private pastMaximumDepth() {
     return this.path.length - this.categoryFacet.options.basePath.length >= this.categoryFacet.options.maximumDepth;
   }
 }

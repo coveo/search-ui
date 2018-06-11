@@ -79,13 +79,10 @@ export function QueryControllerTest() {
     });
 
     it('should not return undefined or null when getLastQuery is called and there is no last query', done => {
-      test.cmp.executeQuery();
-      setTimeout(() => {
-        const lastQuery = test.cmp.getLastQuery();
-        expect(lastQuery).not.toBeNull();
-        expect(lastQuery).not.toBeUndefined();
-        done();
-      });
+      const lastQuery = test.cmp.getLastQuery();
+      expect(lastQuery).not.toBeNull();
+      expect(lastQuery).not.toBeUndefined();
+      done();
     });
 
     it('should allow to get the last query results', done => {

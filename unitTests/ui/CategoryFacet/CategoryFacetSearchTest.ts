@@ -10,6 +10,8 @@ import { KEYBOARD } from '../../../src/utils/KeyboardUtils';
 
 export function CategoryFacetSearchTest() {
   describe('CategoryFacetSearch', () => {
+    const noResultsClass = 'coveo-no-results';
+    const facetSearchNoResultsClass = 'coveo-facet-search-no-results';
     let categoryFacetMock: CategoryFacet;
     let categoryFacetSearch: CategoryFacetSearch;
     let realDebounce;
@@ -36,16 +38,21 @@ export function CategoryFacetSearchTest() {
     }
 
     function expectNoResults() {
-      expect($$(categoryFacetMock.element).hasClass('coveo-no-results')).toBe(true);
-      expect($$(getSearchElement()).hasClass('coveo-facet-search-no-results')).toBe(true);
+      expect($$(categoryFacetMock.element).hasClass(noResultsClass)).toBe(true);
+      expect($$(getSearchElement()).hasClass(facetSearchNoResultsClass)).toBe(true);
+    }
+
+    function expectResults() {
+      expect($$(categoryFacetMock.element).hasClass(noResultsClass)).toBe(false);
+      expect($$(getSearchElement()).hasClass(facetSearchNoResultsClass)).toBe(false);
     }
 
     function searchWithValues(values: IGroupByValue[]) {
-      return (categoryFacetMock.categoryFacetQueryController.searchFacetValues = () => new Promise(resolve => resolve(fakeGroupByValues)));
+      return (categoryFacetMock.categoryFacetQueryController.searchFacetValues = () => Promise.resolve(fakeGroupByValues));
     }
 
     function searchWithNoValues() {
-      categoryFacetMock.categoryFacetQueryController.searchFacetValues = () => new Promise(resolve => resolve([]));
+      categoryFacetMock.categoryFacetQueryController.searchFacetValues = () => Promise.resolve([]);
     }
 
     beforeEach(() => {
@@ -136,13 +143,13 @@ export function CategoryFacetSearchTest() {
 
     it('removes no results classes when there are results', done => {
       categoryFacetSearch.build();
-      $$(categoryFacetMock.element).addClass('coveo-no-results');
-      $$(getSearchElement()).addClass('coveo-facet-search-no-results');
+      $$(categoryFacetMock.element).addClass(noResultsClass);
+      $$(getSearchElement()).addClass(facetSearchNoResultsClass);
 
       categoryFacetSearch.displayNewValues();
 
       setTimeout(() => {
-        expectNoResults();
+        expectResults();
         done();
       });
     });

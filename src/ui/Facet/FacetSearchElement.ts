@@ -72,7 +72,7 @@ export class FacetSearchElement {
   }
 
   public showFacetSearchWaitingAnimation() {
-    $$(this.magnifier).hide();
+    this.magnifier && $$(this.magnifier).hide();
     $$(this.wait).show();
   }
 
