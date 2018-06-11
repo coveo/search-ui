@@ -5,7 +5,7 @@ import { CategoryFacetTemplates } from '../../../src/ui/CategoryFacet/CategoryFa
 import { $$ } from '../../../src/Core';
 export function CategoryValueTest() {
   describe('CategoryValue', () => {
-    const categoryValueDescriptor: CategoryValueDescriptor = {
+    let categoryValueDescriptor: CategoryValueDescriptor = {
       value: 'value',
       count: 3,
       path: ['1', '2', '3']
@@ -24,6 +24,7 @@ export function CategoryValueTest() {
     });
 
     it('calls changeActivePath on click when below or equal maximumDepth', () => {
+      categoryValueDescriptor.path = ['1', '2'];
       const categoryFacet = optionsComponentSetup<CategoryFacet, ICategoryFacetOptions>(CategoryFacet, {
         field: '@field',
         maximumDepth: 3
