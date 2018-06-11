@@ -15,8 +15,37 @@ export function CategoryFacetSearchTest() {
     let realDebounce;
     let fakeGroupByValues: IGroupByValue[];
 
-    function getInputHandler(categoryFacetSearch: CategoryFacetSearch) {
+    function getInputHandler() {
       return categoryFacetSearch.facetSearchElement.facetSearchUserInputHandler;
+    }
+
+    function getInput() {
+      return categoryFacetSearch.facetSearchElement.input;
+    }
+
+    function getSearchResults() {
+      return categoryFacetSearch.facetSearchElement.searchResults;
+    }
+
+    function getSearchElement() {
+      return categoryFacetSearch.facetSearchElement.search;
+    }
+
+    function getFacetSearchValues() {
+      return $$(getSearchResults()).findAll('.coveo-category-facet-search-value');
+    }
+
+    function expectNoResults() {
+      expect($$(categoryFacetMock.element).hasClass('coveo-no-results')).toBe(true);
+      expect($$(getSearchElement()).hasClass('coveo-facet-search-no-results')).toBe(true);
+    }
+
+    function searchWithValues(values: IGroupByValue[]) {
+      return (categoryFacetMock.categoryFacetQueryController.searchFacetValues = () => new Promise(resolve => resolve(fakeGroupByValues)));
+    }
+
+    function searchWithNoValues() {
+      categoryFacetMock.categoryFacetQueryController.searchFacetValues = () => new Promise(resolve => resolve([]));
     }
 
     beforeEach(() => {
@@ -44,18 +73,18 @@ export function CategoryFacetSearchTest() {
 
     it('focus moves the focus to the input element', () => {
       categoryFacetSearch.facetSearchElement.input = { focus: () => {} } as any;
-      spyOn(categoryFacetSearch.facetSearchElement.input, 'focus');
+      spyOn(getInput(), 'focus');
 
       categoryFacetSearch.focus();
 
-      expect(categoryFacetSearch.facetSearchElement.input.focus).toHaveBeenCalled();
+      expect(getInput().focus).toHaveBeenCalled();
     });
 
     it('renders values on focus', done => {
       categoryFacetSearch.build();
       categoryFacetSearch.focus();
       setTimeout(() => {
-        expect(categoryFacetSearch.facetSearchElement.searchResults.innerHTML).not.toEqual('');
+        expect(getSearchResults().innerHTML).not.toEqual('');
         done();
       });
     });
@@ -66,7 +95,7 @@ export function CategoryFacetSearchTest() {
       categoryFacetSearch.displayNewValues();
 
       setTimeout(() => {
-        const searchResults = categoryFacetSearch.facetSearchElement.searchResults;
+        const searchResults = getSearchResults();
         const valueCaptions = $$(searchResults).findAll('.coveo-category-facet-search-value-caption');
         const pathValues = $$(searchResults).findAll('.coveo-category-facet-search-path');
         const valueCounts = $$(searchResults).findAll('.coveo-category-facet-search-value-number');
@@ -81,27 +110,26 @@ export function CategoryFacetSearchTest() {
 
     it('renders the path correctly', done => {
       fakeGroupByValues = FakeResults.createFakeGroupByResult('@field', 'a|b|c', 10).values;
-      categoryFacetMock.categoryFacetQueryController.searchFacetValues = () => new Promise(resolve => resolve(fakeGroupByValues));
+      searchWithValues(fakeGroupByValues);
       categoryFacetSearch.build();
 
       categoryFacetSearch.displayNewValues();
 
       setTimeout(() => {
-        const pathCaption = $$(categoryFacetSearch.facetSearchElement.searchResults).find('.coveo-category-facet-search-path');
+        const pathCaption = $$(getSearchResults()).find('.coveo-category-facet-search-path');
         expect($$(pathCaption).text()).toEqual('a/b/c0');
         done();
       });
     });
 
     it('sets the correct classes when there is no results', done => {
-      categoryFacetMock.categoryFacetQueryController.searchFacetValues = () => new Promise(resolve => resolve([]));
+      searchWithNoValues();
       categoryFacetSearch.build();
 
       categoryFacetSearch.displayNewValues();
 
       setTimeout(() => {
-        expect($$(categoryFacetMock.element).hasClass('coveo-no-results')).toBe(true);
-        expect($$(categoryFacetSearch.facetSearchElement.search).hasClass('coveo-facet-search-no-results')).toBe(true);
+        expectNoResults();
         done();
       });
     });
@@ -109,13 +137,12 @@ export function CategoryFacetSearchTest() {
     it('removes no results classes when there are results', done => {
       categoryFacetSearch.build();
       $$(categoryFacetMock.element).addClass('coveo-no-results');
-      $$(categoryFacetSearch.facetSearchElement.search).addClass('coveo-facet-search-no-results');
+      $$(getSearchElement()).addClass('coveo-facet-search-no-results');
 
       categoryFacetSearch.displayNewValues();
 
       setTimeout(() => {
-        expect($$(categoryFacetMock.element).hasClass('coveo-no-results')).toBe(false);
-        expect($$(categoryFacetSearch.facetSearchElement.search).hasClass('coveo-facet-search-no-results')).toBe(false);
+        expectNoResults();
         done();
       });
     });
@@ -125,8 +152,7 @@ export function CategoryFacetSearchTest() {
       categoryFacetSearch.displayNewValues();
 
       setTimeout(() => {
-        const facetSearchValues = $$(categoryFacetSearch.facetSearchElement.searchResults).findAll('.coveo-category-facet-search-value');
-        expect($$(facetSearchValues[0]).hasClass('coveo-facet-search-current-result')).toBe(true);
+        expect($$(getFacetSearchValues()[0]).hasClass('coveo-facet-search-current-result')).toBe(true);
         done();
       });
     });
@@ -137,7 +163,7 @@ export function CategoryFacetSearchTest() {
       categoryFacetSearch.displayNewValues();
 
       setTimeout(() => {
-        getInputHandler(categoryFacetSearch).handleKeyboardEvent(keyboardEvent);
+        getInputHandler().handleKeyboardEvent(keyboardEvent);
         expect(categoryFacetMock.changeActivePath).toHaveBeenCalledWith(['value0']);
         done();
       });
@@ -149,9 +175,8 @@ export function CategoryFacetSearchTest() {
       categoryFacetSearch.displayNewValues();
 
       setTimeout(() => {
-        getInputHandler(categoryFacetSearch).handleKeyboardEvent(keyboardEvent);
-        const facetSearchValues = $$(categoryFacetSearch.facetSearchElement.searchResults).findAll('.coveo-category-facet-search-value');
-        expect($$(facetSearchValues[1]).hasClass('coveo-facet-search-current-result')).toBe(true);
+        getInputHandler().handleKeyboardEvent(keyboardEvent);
+        expect($$(getFacetSearchValues()[1]).hasClass('coveo-facet-search-current-result')).toBe(true);
         done();
       });
     });
@@ -162,9 +187,8 @@ export function CategoryFacetSearchTest() {
       categoryFacetSearch.displayNewValues();
 
       setTimeout(() => {
-        getInputHandler(categoryFacetSearch).handleKeyboardEvent(keyboardEvent);
-        const facetSearchValues = $$(categoryFacetSearch.facetSearchElement.searchResults).findAll('.coveo-category-facet-search-value');
-        expect($$(facetSearchValues.slice(-1)[0]).hasClass('coveo-facet-search-current-result')).toBe(true);
+        getInputHandler().handleKeyboardEvent(keyboardEvent);
+        expect($$(getFacetSearchValues().slice(-1)[0]).hasClass('coveo-facet-search-current-result')).toBe(true);
         done();
       });
     });
@@ -176,7 +200,7 @@ export function CategoryFacetSearchTest() {
       categoryFacetSearch.displayNewValues();
 
       setTimeout(() => {
-        getInputHandler(categoryFacetSearch).handleKeyboardEvent(keyboardEvent);
+        getInputHandler().handleKeyboardEvent(keyboardEvent);
         expect(categoryFacetSearch.facetSearchElement.clearSearchInput).toHaveBeenCalled();
         done();
       });
@@ -185,9 +209,9 @@ export function CategoryFacetSearchTest() {
     it('pressing any other key displays new values', done => {
       const keyboardEvent = { which: 1337 } as KeyboardEvent;
       categoryFacetSearch.build();
-      getInputHandler(categoryFacetSearch).handleKeyboardEvent(keyboardEvent);
+      getInputHandler().handleKeyboardEvent(keyboardEvent);
       setTimeout(() => {
-        expect(categoryFacetSearch.facetSearchElement.searchResults.innerHTML).not.toEqual('');
+        expect(getSearchResults().innerHTML).not.toEqual('');
         done();
       });
     });

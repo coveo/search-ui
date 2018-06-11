@@ -37,13 +37,16 @@ export class CategoryChildrenValueRenderer {
 
   private renderValue(value: ICategoryFacetValue, isChild: boolean) {
     const path = this.categoryValue.path.concat([value.value]);
+    const categoryValueDescriptor = {
+      value: value.value,
+      count: value.numberOfResults,
+      path
+    };
     const categoryValue = new CategoryValue(
       this.categoryValue.listRoot,
-      value.value,
-      value.numberOfResults,
+      categoryValueDescriptor,
       this.categoryFacetTemplates,
-      this.categoryFacet,
-      path
+      this.categoryFacet
     );
     categoryValue.render(isChild);
     this.children.push(categoryValue);

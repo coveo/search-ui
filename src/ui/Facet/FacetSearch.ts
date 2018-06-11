@@ -363,7 +363,7 @@ export class FacetSearch implements IFacetSearch {
   }
 
   private performSelectActionOnCurrentSearchResult() {
-    let current = $$(this.searchResults).find('.coveo-current');
+    let current = $$(this.searchResults).find('.coveo-facet-search-current-result');
     Assert.check(current != undefined);
 
     let checkbox = <HTMLInputElement>$$(current).find('input[type="checkbox"]');
@@ -376,7 +376,7 @@ export class FacetSearch implements IFacetSearch {
   }
 
   private performExcludeActionOnCurrentSearchResult() {
-    let current = $$(this.searchResults).find('.coveo-current');
+    let current = $$(this.searchResults).find('.coveo-facet-search-current-result');
     Assert.check(current != null);
     let valueCaption = $$(current).find('.coveo-facet-value-caption');
     let valueElement = this.facet.facetValuesList.get($$(valueCaption).text());

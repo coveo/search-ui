@@ -1,16 +1,21 @@
 import { optionsComponentSetup } from '../../MockEnvironment';
-import { CategoryFacet, ICategoryFacetOptions } from '../../../src/ui/CategoryFacet/CategoryFacet';
+import { CategoryFacet, ICategoryFacetOptions, CategoryValueDescriptor } from '../../../src/ui/CategoryFacet/CategoryFacet';
 import { CategoryValue } from '../../../src/ui/CategoryFacet/CategoryValue';
 import { CategoryFacetTemplates } from '../../../src/ui/CategoryFacet/CategoryFacetTemplates';
 import { $$ } from '../../../src/Core';
 export function CategoryValueTest() {
   describe('CategoryValue', () => {
+    const categoryValueDescriptor: CategoryValueDescriptor = {
+      value: 'value',
+      count: 3,
+      path: ['1', '2', '3']
+    };
     it('does not call changeActivePath if we reached maximumDepth', () => {
       const categoryFacet = optionsComponentSetup<CategoryFacet, ICategoryFacetOptions>(CategoryFacet, {
         field: '@field',
         maximumDepth: 3
       }).cmp;
-      const categoryValue = new CategoryValue($$('div'), 'value', 3, new CategoryFacetTemplates(), categoryFacet, ['1', '2', '3']);
+      const categoryValue = new CategoryValue($$('div'), categoryValueDescriptor, new CategoryFacetTemplates(), categoryFacet);
       spyOn(categoryFacet, 'changeActivePath');
 
       $$($$(categoryValue.element).find('.coveo-category-facet-value-label')).trigger('click');
@@ -23,7 +28,7 @@ export function CategoryValueTest() {
         field: '@field',
         maximumDepth: 3
       }).cmp;
-      const categoryValue = new CategoryValue($$('div'), 'value', 3, new CategoryFacetTemplates(), categoryFacet, ['1', '2']);
+      const categoryValue = new CategoryValue($$('div'), categoryValueDescriptor, new CategoryFacetTemplates(), categoryFacet);
       spyOn(categoryFacet, 'changeActivePath');
 
       $$($$(categoryValue.element).find('.coveo-category-facet-value-label')).trigger('click');

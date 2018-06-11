@@ -58,44 +58,42 @@ interface IFlatHierarchy {
 }
 
 /**
+ * @deprecated This component is exposed for legacy reasons. Instead, use the {@link CategoryFacet} component, which is more performant and easier to use.
+ *
  * The `HierarchicalFacet` component inherits all of its options and behaviors from the [`Facet`]{@link Facet}
  * component, but is meant to be used to render hierarchical values.
  *
  * **Note:**
- * > The `HierarchicalFacet` component does not currently support the [`customSort`]{@link Facet.options.customSort}
+ * > The `HierarchicalFacet` component does not support the [`customSort`]{@link Facet.options.customSort}
  * > `Facet` option.
  *
- * You can use the `HierarchicalFacet` component to display files in a file system, or categories for items in a
+ * The `HierarchicalFacet` component can be used to display files in a file system, or categories for items in a
  * hierarchy.
  *
  * This facet requires a group by field with a special format to work correctly.
  *
  * **Example:**
  *
- * If you have the following files indexed on a file system:
+ * You have the following files indexed on a file system:
  * ```
  * c:\
- *    folder1\
- *        text1.txt
- *    folder2\
- *      folder3\
- *        text2.txt
+ *   folder1\
+ *     text1.txt
+ *   folder2\
+ *     folder3\
+ *       text2.txt
  * ```
- * The `text1.txt` item would need to have a field with the following format:
- * `@field : c; c|folder1;`
+ * The `text1.txt` item would have a field with the following format:
+ * `c; c|folder1;`
  *
  * The `text2.txt` item would have a field with the following format:
- * `@field: c; c|folder2; c|folder2|folder3;`
+ * `c; c|folder2; c|folder2|folder3;`
  *
- * The `|` character allows the facet to build its hierarchy (`folder3` inside `folder2` inside `c`).
+ * By default, the `|` character determines the hierarchy (`folder3` inside `folder2` inside `c`).
  *
- * Since both items contain the `c` value, selecting this value in the facet would return both items.
+ * Since both items contain the `c` value, selecting it value in the facet would return both items.
  *
  * Selecting the `folder3` value in the facet would only return the `text2.txt` item.
- *
- * @deprecated This component is exposed for legacy reasons. You should instead use the {@link CategoryFacet} component. It uses a different
- * api to fetch its values and will be a lot more performant on fields that have a lot of values. Also, its UI design is also much simpler and
- * easier to use.
  *
  * @notSupportedIn salesforcefree
  */

@@ -401,8 +401,8 @@ export class CategoryFacet extends Component {
   public getAvailableValues() {
     return this.activeCategoryValue.children.map(categoryValue => {
       return {
-        value: categoryValue.value,
-        count: categoryValue.count,
+        value: categoryValue.categoryValueDescriptor.value,
+        count: categoryValue.categoryValueDescriptor.count,
         path: categoryValue.path
       };
     });

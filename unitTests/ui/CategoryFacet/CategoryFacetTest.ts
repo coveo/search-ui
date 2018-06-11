@@ -43,7 +43,7 @@ export function CategoryFacetTest() {
       }
     });
 
-    it('when calling getVisibleParentCategoryValues when there are no parents returns empty array', () => {
+    it('when calling getVisibleParentValues when there are no parents returns empty array', () => {
       simulateQueryData.results.categoryFacets[0].parentValues = [];
       simulateQueryData.query.categoryFacets[0].path = [];
       test.cmp.activePath = [];
