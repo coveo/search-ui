@@ -20,13 +20,13 @@ export class InTheLastDateInput extends DateInput {
 
   public build(): HTMLElement {
     super.build();
-    let input = $$('fieldset', { className: 'coveo-advanced-search-date-input' });
+    const input = $$('fieldset', { className: 'coveo-advanced-search-date-input' });
     (<HTMLFieldSetElement>input.el).disabled = true;
 
-    this.spinner = new NumericSpinner(this.onChange.bind(this));
+    this.spinner = new NumericSpinner(this.onChange.bind(this), undefined, undefined, l('InTheLast'));
     input.append(this.spinner.getElement());
 
-    this.dropdown = new Dropdown(this.onChange.bind(this), ['Days', 'Months']);
+    this.dropdown = new Dropdown(this.onChange.bind(this), ['Days', 'Months'], undefined, l('InTheLast'));
     this.dropdown.setId('coveo-advanced-search-in-the-last-select');
     input.append(this.dropdown.getElement());
 
@@ -37,11 +37,11 @@ export class InTheLastDateInput extends DateInput {
   }
 
   public getValue(): string {
-    let currentDate = new Date();
-    let time = this.spinner.getIntValue();
-    let size = this.dropdown.getValue().toLowerCase();
+    const currentDate = new Date();
+    const time = this.spinner.getIntValue();
+    const size = this.dropdown.getValue().toLowerCase();
 
-    let date = new Date();
+    const date = new Date();
     if (size == 'months') {
       date.setMonth(currentDate.getMonth() - time);
     } else {
