@@ -148,8 +148,8 @@ export class ValueElement {
 
       this.handleExcludeClick(eventBindings);
 
-      if (this.facet && this.facet.facetSearch && this.facet.facetSearch.completelyDismissSearch) {
-        this.facet.facetSearch.completelyDismissSearch();
+      if (this.facet && this.facet.facetSearch && this.facet.facetSearch.dismissSearchResults) {
+        this.facet.facetSearch.dismissSearchResults();
       }
       event.stopPropagation();
       event.preventDefault();

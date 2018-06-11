@@ -27,13 +27,13 @@ export class CategoryFacetQueryController {
     return positionInQuery;
   }
 
-  public async searchFacetValues(value: string): Promise<IGroupByValue[]> {
+  public async searchFacetValues(value: string, numberOfValues: number): Promise<IGroupByValue[]> {
     const lastQuery = { ...this.categoryFacet.queryController.getLastQuery() };
 
     const groupByRequest: IGroupByRequest = {
       allowedValues: [`*${value}*`],
       allowedValuesPatternType: AllowedValuesPatternType.Wildcards,
-      maximumNumberOfValues: this.categoryFacet.options.numberOfResultsInFacetSearch,
+      maximumNumberOfValues: numberOfValues,
       field: this.categoryFacet.options.field as string,
       sortCriteria: 'occurrences',
       injectionDepth: this.categoryFacet.options.injectionDepth

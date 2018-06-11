@@ -14,6 +14,11 @@ export function CategoryFacetSearchTest() {
     let categoryFacetSearch: CategoryFacetSearch;
     let realDebounce;
     let fakeGroupByValues: IGroupByValue[];
+
+    function getInputHandler(categoryFacetSearch: CategoryFacetSearch) {
+      return categoryFacetSearch.facetSearchElement.facetSearchUserInputHandler;
+    }
+
     beforeEach(() => {
       realDebounce = _.debounce;
       spyOn(_, 'debounce').and.callFake(function(func) {
@@ -38,8 +43,8 @@ export function CategoryFacetSearchTest() {
     });
 
     it('focus moves the focus to the input element', () => {
-      categoryFacetSearch.facetSearchElement = { input: jasmine.createSpyObj('input', ['focus']) } as any;
-      spyOn(categoryFacetSearch.facetSearchElement, 'input');
+      categoryFacetSearch.facetSearchElement.input = { focus: () => {} } as any;
+      spyOn(categoryFacetSearch.facetSearchElement.input, 'focus');
 
       categoryFacetSearch.focus();
 
@@ -121,7 +126,7 @@ export function CategoryFacetSearchTest() {
 
       setTimeout(() => {
         const facetSearchValues = $$(categoryFacetSearch.facetSearchElement.searchResults).findAll('.coveo-category-facet-search-value');
-        expect($$(facetSearchValues[0]).hasClass('coveo-category-facet-search-current-value')).toBe(true);
+        expect($$(facetSearchValues[0]).hasClass('coveo-facet-search-current-result')).toBe(true);
         done();
       });
     });
@@ -132,7 +137,7 @@ export function CategoryFacetSearchTest() {
       categoryFacetSearch.displayNewValues();
 
       setTimeout(() => {
-        categoryFacetSearch.handleKeyboardEvent(keyboardEvent);
+        getInputHandler(categoryFacetSearch).handleKeyboardEvent(keyboardEvent);
         expect(categoryFacetMock.changeActivePath).toHaveBeenCalledWith(['value0']);
         done();
       });
@@ -144,9 +149,9 @@ export function CategoryFacetSearchTest() {
       categoryFacetSearch.displayNewValues();
 
       setTimeout(() => {
-        categoryFacetSearch.handleKeyboardEvent(keyboardEvent);
+        getInputHandler(categoryFacetSearch).handleKeyboardEvent(keyboardEvent);
         const facetSearchValues = $$(categoryFacetSearch.facetSearchElement.searchResults).findAll('.coveo-category-facet-search-value');
-        expect($$(facetSearchValues[1]).hasClass('coveo-category-facet-search-current-value')).toBe(true);
+        expect($$(facetSearchValues[1]).hasClass('coveo-facet-search-current-result')).toBe(true);
         done();
       });
     });
@@ -157,9 +162,9 @@ export function CategoryFacetSearchTest() {
       categoryFacetSearch.displayNewValues();
 
       setTimeout(() => {
-        categoryFacetSearch.handleKeyboardEvent(keyboardEvent);
+        getInputHandler(categoryFacetSearch).handleKeyboardEvent(keyboardEvent);
         const facetSearchValues = $$(categoryFacetSearch.facetSearchElement.searchResults).findAll('.coveo-category-facet-search-value');
-        expect($$(facetSearchValues.slice(-1)[0]).hasClass('coveo-category-facet-search-current-value')).toBe(true);
+        expect($$(facetSearchValues.slice(-1)[0]).hasClass('coveo-facet-search-current-result')).toBe(true);
         done();
       });
     });
@@ -171,7 +176,7 @@ export function CategoryFacetSearchTest() {
       categoryFacetSearch.displayNewValues();
 
       setTimeout(() => {
-        categoryFacetSearch.handleKeyboardEvent(keyboardEvent);
+        getInputHandler(categoryFacetSearch).handleKeyboardEvent(keyboardEvent);
         expect(categoryFacetSearch.facetSearchElement.clearSearchInput).toHaveBeenCalled();
         done();
       });
@@ -180,8 +185,7 @@ export function CategoryFacetSearchTest() {
     it('pressing any other key displays new values', done => {
       const keyboardEvent = { which: 1337 } as KeyboardEvent;
       categoryFacetSearch.build();
-      categoryFacetSearch.handleKeyboardEvent(keyboardEvent);
-
+      getInputHandler(categoryFacetSearch).handleKeyboardEvent(keyboardEvent);
       setTimeout(() => {
         expect(categoryFacetSearch.facetSearchElement.searchResults.innerHTML).not.toEqual('');
         done();

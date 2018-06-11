@@ -115,9 +115,8 @@ export class CategoryFacet extends Component {
      * Specifies whether to display a search box at the bottom of the facet for searching among the available facet
      * [`field`]{@link CategoryFacet.options.field} values.
      *
-     * See also the [`facetSearchDelay`]{@link CategoryFacet.options.facetSearchDelay},
-     * [`facetSearchIgnoreAccents`]{@link Facet.options.facetSearchIgnoreAccents}, and
-     * [`numberOfValuesInFacetSearch`]{@link Facet.options.numberOfValuesInFacetSearch} options.
+     * See also the [`facetSearchDelay`]{@link CategoryFacet.options.facetSearchDelay}, and
+     * [`numberOfValuesInFacetSearch`]{@link CategoryFacet.options.numberOfValuesInFacetSearch} options.
      *
      *
      * Default value is `true`.

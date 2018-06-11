@@ -1,10 +1,13 @@
-import { $$ } from '../../utils/Dom';
+import { $$, Dom } from '../../utils/Dom';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { SVGDom } from '../../utils/SVGDom';
 import { Component } from '../Base/Component';
 import { l } from '../../strings/Strings';
 import { EventsUtils } from '../../utils/EventsUtils';
 import { PopupUtils, PopupHorizontalAlignment, PopupVerticalAlignment } from '../../utils/PopupUtils';
+import { IFacetSearch } from './IFacetSearch';
+import { FacetSearchUserInputHandler } from './FacetSearchUserInputHandler';
+import { first, last } from 'underscore';
 
 export class FacetSearchElement {
   public search: HTMLElement | undefined;
@@ -14,14 +17,18 @@ export class FacetSearchElement {
   public input: HTMLInputElement | undefined;
   public searchBarIsAnimating: boolean = false;
   public searchResults: HTMLElement;
+  public currentResult: Dom;
+  public facetSearchUserInputHandler: FacetSearchUserInputHandler;
 
   private static FACET_SEARCH_PADDING = 40;
-  constructor() {
+  constructor(private facetSearch: IFacetSearch) {
+    this.facetSearchUserInputHandler = new FacetSearchUserInputHandler(this.facetSearch);
     this.searchResults = $$('ul', { className: 'coveo-facet-search-results' }).el;
+    $$(this.searchResults).on('scroll', () => this.facetSearchUserInputHandler.handleFacetSearchResultsScroll());
     $$(this.searchResults).hide();
   }
 
-  public build(handleFacetSearchKeyUp: (e: KeyboardEvent) => void, handleFacetSearchClear: () => void, handleFacetSearchFocus: () => void) {
+  public build(handleFacetSearchClear?: () => void) {
     this.search = document.createElement('div');
     $$(this.search).addClass('coveo-facet-search');
 
@@ -51,13 +58,13 @@ export class FacetSearchElement {
     middle.appendChild(this.input);
 
     $$(this.input).on('keyup', (e: KeyboardEvent) => {
-      handleFacetSearchKeyUp(e);
+      this.facetSearchUserInputHandler.handleKeyboardEvent(e);
     });
     $$(this.clear).on('click', (e: Event) => {
-      handleFacetSearchClear();
+      handleFacetSearchClear && handleFacetSearchClear();
     });
     $$(this.input).on('focus', (e: Event) => {
-      handleFacetSearchFocus();
+      this.handleFacetSearchFocus();
     });
 
     this.detectSearchBarAnimation();
@@ -67,6 +74,10 @@ export class FacetSearchElement {
   public showFacetSearchWaitingAnimation() {
     $$(this.magnifier).hide();
     $$(this.wait).show();
+  }
+
+  public getValueInInputForFacetSearch() {
+    return this.input.value.trim();
   }
 
   public hideFacetSearchWaitingAnimation() {
@@ -107,12 +118,86 @@ export class FacetSearchElement {
           EventsUtils.removePrefixedEvent(this.search, 'AnimationEnd', this);
         });
       } else {
-        PopupUtils.positionPopup(this.searchResults, nextTo, root, {
-          horizontal: PopupHorizontalAlignment.CENTER,
-          vertical: PopupVerticalAlignment.BOTTOM
-        });
+        this.positionPopUp(nextTo, root);
       }
     }
+  }
+
+  public setAsCurrentResult(toSet: Dom) {
+    this.currentResult && this.currentResult.removeClass('coveo-facet-search-current-result');
+    this.currentResult = toSet;
+    toSet.addClass('coveo-facet-search-current-result');
+  }
+
+  public moveCurrentResultDown() {
+    let nextResult = this.currentResult.el.nextElementSibling;
+    if (!nextResult) {
+      nextResult = first(this.searchResults.children);
+    }
+    this.setAsCurrentResult($$(<HTMLElement>nextResult));
+    this.highlightAndShowCurrentResultWithKeyboard();
+  }
+
+  public moveCurrentResultUp() {
+    let previousResult = this.currentResult.el.previousElementSibling;
+    if (!previousResult) {
+      previousResult = last(this.searchResults.children);
+    }
+    this.setAsCurrentResult($$(<HTMLElement>previousResult));
+    this.highlightAndShowCurrentResultWithKeyboard();
+  }
+
+  public highlightCurrentQueryInSearchResults(regex: RegExp) {
+    const captions = this.facetSearch.getCaptions();
+    captions.forEach(caption => {
+      caption.innerHTML = $$(caption)
+        .text()
+        .replace(regex, '<span class="coveo-highlight">$1</span>');
+    });
+  }
+
+  public appendToSearchResults(el: HTMLElement) {
+    this.searchResults.appendChild(el);
+    this.setupFacetSearchResultsEvents(el);
+  }
+
+  public focus() {
+    this.input.focus();
+    this.handleFacetSearchFocus();
+  }
+
+  private highlightAndShowCurrentResultWithKeyboard() {
+    this.currentResult.addClass('coveo-facet-search-current-result');
+    this.searchResults.scrollTop = this.currentResult.el.offsetTop;
+  }
+
+  private handleFacetSearchFocus() {
+    if (this.facetSearch.currentlyDisplayedResults == null) {
+      this.facetSearch.displayNewValues();
+    }
+  }
+
+  private setupFacetSearchResultsEvents(el: HTMLElement) {
+    $$(el).on('mousemove', () => {
+      this.setAsCurrentResult($$(el));
+    });
+
+    // Prevent closing the search results on the end of a touch drag
+    let touchDragging = false;
+    let mouseDragging = false;
+    $$(el).on('mousedown', () => (mouseDragging = false));
+    $$(el).on('mousemove', () => (mouseDragging = true));
+    $$(el).on('touchmove', () => (touchDragging = true));
+
+    $$(el).on('mouseup touchend', () => {
+      if (!touchDragging && !mouseDragging) {
+        setTimeout(() => {
+          this.facetSearch.dismissSearchResults();
+        }, 0); // setTimeout is to give time to trigger the click event before hiding the search menu.
+      }
+      touchDragging = false;
+      mouseDragging = false;
+    });
   }
 
   public hideSearchResultsElement() {
