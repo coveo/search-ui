@@ -19,7 +19,8 @@
     "heroku-postbuild": "npm run build",
     "start": "node index.js",
     "zipForGitReleases": "gulp zip",
-    "uploadCoverage": "gulp uploadCoverage"
+    "uploadCoverage": "gulp uploadCoverage",
+    "validateTypeDefinitions": "gulp validateDefs"
   },
   "lint-staged": {
     "*.{js,ts,json,scss}": ["prettier --write", "git add"]
