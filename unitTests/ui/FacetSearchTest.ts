@@ -94,7 +94,7 @@ export function FacetSearchTest() {
         pr.then(() => {
           expect($$(facetSearch.searchResults).findAll('li').length).toBe(10);
           expect(facetSearch.currentlyDisplayedResults.length).toBe(10);
-          facetSearch.completelyDismissSearch();
+          facetSearch.dismissSearchResults();
           expect($$(facetSearch.searchResults).findAll('li').length).toBe(0);
           expect(facetSearch.currentlyDisplayedResults).toBeUndefined();
           done();
@@ -144,23 +144,23 @@ export function FacetSearchTest() {
 
           it('arrow navigation', function(done) {
             searchPromise.then(() => {
-              expect($$($$(facetSearch.searchResults).findAll('li')[0]).hasClass('coveo-current')).toBe(true);
+              expect($$($$(facetSearch.searchResults).findAll('li')[0]).hasClass('coveo-facet-search-current-result')).toBe(true);
 
               Simulate.keyUp($$(built).find('input'), KEYBOARD.DOWN_ARROW);
-              expect($$($$(facetSearch.searchResults).findAll('li')[1]).hasClass('coveo-current')).toBe(true);
+              expect($$($$(facetSearch.searchResults).findAll('li')[1]).hasClass('coveo-facet-search-current-result')).toBe(true);
 
               Simulate.keyUp($$(built).find('input'), KEYBOARD.DOWN_ARROW);
-              expect($$($$(facetSearch.searchResults).findAll('li')[2]).hasClass('coveo-current')).toBe(true);
+              expect($$($$(facetSearch.searchResults).findAll('li')[2]).hasClass('coveo-facet-search-current-result')).toBe(true);
 
               Simulate.keyUp($$(built).find('input'), KEYBOARD.UP_ARROW);
-              expect($$($$(facetSearch.searchResults).findAll('li')[1]).hasClass('coveo-current')).toBe(true);
+              expect($$($$(facetSearch.searchResults).findAll('li')[1]).hasClass('coveo-facet-search-current-result')).toBe(true);
 
               Simulate.keyUp($$(built).find('input'), KEYBOARD.UP_ARROW);
-              expect($$($$(facetSearch.searchResults).findAll('li')[0]).hasClass('coveo-current')).toBe(true);
+              expect($$($$(facetSearch.searchResults).findAll('li')[0]).hasClass('coveo-facet-search-current-result')).toBe(true);
 
               // loop around !
               Simulate.keyUp($$(built).find('input'), KEYBOARD.UP_ARROW);
-              expect($$($$(facetSearch.searchResults).findAll('li')[9]).hasClass('coveo-current')).toBe(true);
+              expect($$($$(facetSearch.searchResults).findAll('li')[9]).hasClass('coveo-facet-search-current-result')).toBe(true);
               done();
             });
           });

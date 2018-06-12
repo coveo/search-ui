@@ -88,7 +88,7 @@ export class ResponsiveFacetColumn implements IResponsiveComponent {
   public dismissFacetSearches() {
     _.each(this.componentsInFacetColumn, component => {
       if (component.facetSearch && component.facetSearch.currentlyDisplayedResults) {
-        component.facetSearch.completelyDismissSearch();
+        component.facetSearch.dismissSearchResults();
       }
     });
   }

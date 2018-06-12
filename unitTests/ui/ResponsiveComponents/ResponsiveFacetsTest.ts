@@ -83,7 +83,7 @@ export function ResponsiveFacetsTest() {
       setTimeout(() => {
         expect(facet.facetSearch.positionSearchResults).toHaveBeenCalled();
         done();
-      }, ResponsiveFacets.DEBOUNCE_SCROLL_WAIT + 1);
+      }, ResponsiveFacets.DEBOUNCE_SCROLL_WAIT + 10);
     });
 
     it('registers dismissFacetSearches an on close handler on the responsive dropdown', () => {
@@ -196,10 +196,10 @@ export function ResponsiveFacetsTest() {
       });
     });
 
-    it('calls completelyDismissSearch on the registered facet when dismissFacetSearches is called', () => {
-      spyOn(facet.facetSearch, 'completelyDismissSearch');
+    it('calls dismissSearchResults on the registered facet when dismissFacetSearches is called', () => {
+      spyOn(facet.facetSearch, 'dismissSearchResults');
       responsiveFacets.dismissFacetSearches();
-      expect(facet.facetSearch.completelyDismissSearch).toHaveBeenCalled();
+      expect(facet.facetSearch.dismissSearchResults).toHaveBeenCalled();
     });
 
     it('should need the dropdown wrapper when the width is under the breakpoint specified', () => {
