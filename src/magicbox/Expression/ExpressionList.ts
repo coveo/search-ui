@@ -4,7 +4,7 @@ import { Expression } from './Expression';
 export class ExpressionList implements Expression {
   constructor(private parts: Expression[], public id: string) {
     if (parts.length == 0) {
-      throw JSON.stringify(id) + ' should have at least 1 parts';
+      throw new Error(JSON.stringify(id) + ' should have at least 1 parts');
     }
   }
 

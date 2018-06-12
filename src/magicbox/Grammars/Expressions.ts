@@ -37,7 +37,7 @@ function loadSubGrammar(
         _.each(<string[]>expressionDef, (value: string) => {
           (<string[]>grammars[id]).push(value);
         });
-        throw 'Can not merge ' + id + '(' + new String(expressionDef) + ' => ' + new String(grammars[id]) + ')';
+        throw new Error('Can not merge ' + id + '(' + JSON.stringify(expressionDef) + ' => ' + JSON.stringify(grammars[id]) + ')');
       }
     }
   });

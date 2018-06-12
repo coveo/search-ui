@@ -25,7 +25,7 @@ export class Grammar {
 
   public addExpression(id: string, basicExpression: ExpressionDef) {
     if (id in this.expressions) {
-      throw 'Grammar already contain the id:' + id;
+      throw new Error('Grammar already contain the id:' + id);
     }
     this.expressions[id] = Grammar.buildExpression(basicExpression, id, this);
   }
@@ -39,9 +39,9 @@ export class Grammar {
   }
 
   public static buildExpression(value: ExpressionDef, id: string, grammar: Grammar): Expression {
-    var type = typeof value;
+    const type = typeof value;
     if (type == 'undefined') {
-      throw 'Invalid Expression: ' + value;
+      throw new Error('Invalid Expression: ' + value);
     }
     if (_.isString(value)) {
       return this.buildStringExpression(<string>value, id, grammar);
@@ -55,16 +55,16 @@ export class Grammar {
     if (_.isFunction(value)) {
       return new ExpressionFunction(<ExpressionFunctionArgument>value, id, grammar);
     }
-    throw 'Invalid Expression: ' + value;
+    throw new Error('Invalid Expression: ' + value);
   }
 
   public static buildStringExpression(value: string, id: string, grammar: Grammar): Expression {
-    var matchs = Grammar.stringMatch(value, Grammar.spliter);
-    var expressions = _.map(matchs, (match: string[], i: number): Expression => {
+    const matchs = Grammar.stringMatch(value, Grammar.spliter);
+    const expressions = _.map(matchs, (match: string[], i: number): Expression => {
       if (match[1]) {
         // Ref
-        var ref = match[1];
-        var occurrence = match[3] ? Number(match[3]) : match[2] || null;
+        const ref = match[1];
+        const occurrence = match[3] ? Number(match[3]) : match[2] || null;
         return new ExpressionRef(ref, occurrence, id + '_' + i, grammar);
       } else {
         // Constant
@@ -72,7 +72,7 @@ export class Grammar {
       }
     });
     if (expressions.length == 1) {
-      var expression = expressions[0];
+      const expression = expressions[0];
       expression.id = id;
       return expression;
     } else {
@@ -81,11 +81,13 @@ export class Grammar {
   }
 
   public static stringMatch(str: string, re: RegExp) {
-    var groups: string[][] = [];
-    var group: RegExpExecArray;
-    var cloneRegExp = new RegExp(re.source, 'g');
-    while ((group = cloneRegExp.exec(str)) !== null) {
+    const groups: string[][] = [];
+    const cloneRegExp = new RegExp(re.source, 'g');
+    let group: RegExpExecArray = cloneRegExp.exec(str);
+
+    while (group !== null) {
       groups.push(group);
+      group = cloneRegExp.exec(str);
     }
     return groups;
   }

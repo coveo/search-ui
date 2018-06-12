@@ -11,7 +11,7 @@ export class ExpressionRef implements Expression {
   parse(input: string, end: boolean): Result {
     var ref = this.grammar.getExpression(this.ref);
     if (ref == null) {
-      throw 'Expression not found:' + this.ref;
+      throw new Error('Expression not found:' + this.ref);
     }
     if (this.occurrence == '?' || this.occurrence == null) {
       return this.parseOnce(input, end, ref);
