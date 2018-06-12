@@ -15,21 +15,23 @@ const COVERAGE_DIR = path.resolve('bin/coverage');
 gulp.task('setupTests', function() {
   return event_stream
     .merge(
-      gulp.src('./test/lib/**/*').pipe(gulp.dest('./bin/tests/lib')),
+      gulp.src('./testsFramework/lib/**/*').pipe(gulp.dest('./bin/tests/lib')),
+      gulp.src('./node_modules/axe-core/axe.js').pipe(gulp.dest('./bin/tests/lib')),
       gulp
-        .src('./test/SpecRunner.html')
-        .pipe(replace(/\.\.\/bin\/tests\/tests\.js/, 'tests.js'))
-        .pipe(gulp.dest('./bin/tests/'))
+        .src('./unitTests/SpecRunner.html')
+        .pipe(replace(/\.\.\/bin\/tests\/unitTests\.js/, 'unitTests.js'))
+        .pipe(gulp.dest('./bin/tests/')),
+      gulp.src('./accessibilityTest/Accessibility.html').pipe(gulp.dest('./bin/tests/'))
     )
     .pipe(event_stream.wait());
 });
 
 gulp.task('coverage', ['lcovCoverage']);
 
-gulp.task('test', ['setupTests', 'buildTest'], function(done) {
+gulp.task('unitTests', ['setupTests', 'buildUnitTests'], function(done) {
   new TestServer(
     {
-      configFile: path.resolve('./karma.conf.js')
+      configFile: path.resolve('./karma.unit.test.conf.js')
     },
     exitCode => {
       if (exitCode) {
@@ -42,7 +44,28 @@ gulp.task('test', ['setupTests', 'buildTest'], function(done) {
   ).start();
 });
 
-gulp.task('buildTest', shell.task(['node node_modules/webpack/bin/webpack.js --config webpack.test.config.js']));
+gulp.task('accessibilityTests', ['setupTests', 'buildAccessibilityTests'], done => {
+  new TestServer(
+    {
+      configFile: path.resolve('./karma.accessibility.test.conf.js')
+    },
+    exitCode => {
+      if (exitCode) {
+        // Fail CI builds if any test fails (since karma will exit 1 on any error)
+        throw new Error(exitCode);
+      } else {
+        done();
+      }
+    }
+  ).start();
+});
+
+gulp.task('buildUnitTests', shell.task(['node node_modules/webpack/bin/webpack.js --config webpack.unit.test.config.js']));
+
+gulp.task(
+  'buildAccessibilityTests',
+  shell.task(['node node_modules/webpack/bin/webpack.js --config webpack.accessibility.test.config.js'])
+);
 
 gulp.task('uploadCoverage', ['lcovCoverage'], shell.task(['cat bin/coverage/lcov.info | ./node_modules/.bin/coveralls']));
 
@@ -72,7 +95,7 @@ gulp.task('lcovCoverage', ['remapCoverage'], function(done) {
 });
 
 function filesToExclude(fileName) {
-  const entryFile = /search-ui[\/\\]bin[\/\\]tests[\/\\]tests.js/;
+  const entryFile = /search-ui[\/\\]bin[\/\\]tests[\/\\]unitTests.js/;
   const whiteList = /search-ui[\/\\](src.+\.ts)/;
 
   return !entryFile.test(fileName) && !whiteList.test(fileName);
