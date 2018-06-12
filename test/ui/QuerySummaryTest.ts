@@ -133,7 +133,29 @@ export function QuerySummaryTest() {
         expect($$(test.cmp.element).find('.coveo-query-summary-search-tips-info')).not.toBeNull();
       });
 
-      it('enableCancelLastAction allow to display the cancel last action link', () => {
+      it('enableNoResultsFoundMessage allow to display the no results found message on no results', () => {
+        test = Mock.optionsComponentSetup<QuerySummary, IQuerySummaryOptions>(QuerySummary, {
+          enableNoResultsFoundMessage: false
+        });
+
+        let results = FakeResults.createFakeResults(0);
+        Simulate.query(test.env, {
+          results: results
+        });
+        expect($$(test.cmp.element).find('.coveo-query-summary-no-results-string')).toBeNull();
+
+        test = Mock.optionsComponentSetup<QuerySummary, IQuerySummaryOptions>(QuerySummary, {
+          enableNoResultsFoundMessage: true
+        });
+
+        results = FakeResults.createFakeResults(0);
+        Simulate.query(test.env, {
+          results: results
+        });
+        expect($$(test.cmp.element).find('.coveo-query-summary-no-results-string')).not.toBeNull();
+      });
+
+      it('enableCancelLastAction allow to display the cancel last action link on no results', () => {
         test = Mock.optionsComponentSetup<QuerySummary, IQuerySummaryOptions>(QuerySummary, {
           enableCancelLastAction: false
         });

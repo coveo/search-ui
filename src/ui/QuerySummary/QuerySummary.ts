@@ -2,7 +2,7 @@ import { Component } from '../Base/Component';
 import { ComponentOptions } from '../Base/ComponentOptions';
 import { QueryEvents, IQuerySuccessEventArgs } from '../../events/QueryEvents';
 import { IComponentBindings } from '../Base/ComponentBindings';
-import { $$ } from '../../utils/Dom';
+import { $$, Dom } from '../../utils/Dom';
 import { Assert } from '../../misc/Assert';
 import { l } from '../../strings/Strings';
 import { analyticsActionCauseList, IAnalyticsNoMeta } from '../Analytics/AnalyticsActionListMeta';
@@ -17,6 +17,7 @@ import ResultListModule = require('../ResultList/ResultList');
 import 'styling/_QuerySummary';
 import { IQuery } from '../../rest/Query';
 import { IQueryResults } from '../../rest/QueryResults';
+import * as _ from 'underscore';
 
 export interface IQuerySummaryOptions {
   onlyDisplaySearchTips?: boolean;
@@ -26,12 +27,13 @@ export interface IQuerySummaryOptions {
   enableSearchTips?: boolean;
 }
 
-// TODO : Is it the right place to declare constants like this in a scenario like this one?
 const QUERY_TAG: string = '<%-query%>';
-const DEFAULT_NO_RESULT_FOUND_MESSAGE: string = l('noResultFor', ' ');
+const DEFAULT_NO_RESULT_FOUND_MESSAGE: string = l('noResultFor', QUERY_TAG);
 
-// TODO : Do we want to change the description of the QuerySummary component?
+// TODO : Documentation review :
+//        Do we want to change the description of the QuerySummary component?
 //        This specific part : "If the query matches [...] a better query."
+//        Basicaly do we want to add a description for the NO_RESULT_FOUND_MESSAGE about the fact that it can be edited?
 /**
  * The QuerySummary component can display information about the currently displayed range of results (e.g., "Results
  * 1-10 of 123").
@@ -61,6 +63,7 @@ export class QuerySummary extends Component {
      */
     onlyDisplaySearchTips: ComponentOptions.buildBooleanOption({ defaultValue: false }),
 
+    // TODO : Documentation review
     /**
      * Specifies whether to display the a message to the end user when there are no search results.
      *
@@ -68,8 +71,7 @@ export class QuerySummary extends Component {
      */
     enableNoResultsFoundMessage: ComponentOptions.buildBooleanOption({ defaultValue: true }),
 
-    // TODO : There is probably an other place where I will need to add this documentation for the query tag :<%-query%>)?
-    // TODO : I'm not sure if we should put an example in the description and if the description is precise enough?
+    // TODO : Documentation review : I'm not sure if we should put an example in the description and if the description is precise enough?
     /**
      * Specifies a custom message to display when there are no search results.
      *
@@ -94,6 +96,7 @@ export class QuerySummary extends Component {
       postProcessing: (value, options) => value || DEFAULT_NO_RESULT_FOUND_MESSAGE
     }),
 
+    // TODO : Documentation review
     /**
      * Specifies whether to display the cancel last action link to the end user when there are no search results.
      *
@@ -238,53 +241,90 @@ export class QuerySummary extends Component {
     }
   }
 
-  // TODO : For now, the function is built such as the custom message can only contain one QUERY_TAG
-  //        Do we want to be able to put mutiple QUERY_TAG ?
   private parseNoResultsFoundMessage(noResultsFoundMessage: string) {
-    let parsedNoResultsFoundMessage = noResultsFoundMessage.split(QUERY_TAG, 2);
-    if (parsedNoResultsFoundMessage.length == 1) {
-      parsedNoResultsFoundMessage.push('');
-    }
-    return parsedNoResultsFoundMessage;
-  }
+    if (this.isQuerySummaryTagInMessage(noResultsFoundMessage)) {
+      let messageSections = noResultsFoundMessage.split(QUERY_TAG);
+      let messageElements = Array<Dom>();
 
-  private isDefautlNoResulstFoundMessage() {
-    return this.options.noResultsFoundMessage == DEFAULT_NO_RESULT_FOUND_MESSAGE;
-  }
+      _.each(messageSections, section => {
+        messageElements.push(this.createTextElement(section));
+      });
 
-  private isSubArrayInArray(array: string, subarray: string) {
-    let subArrayfound: boolean;
-    let subArrayLength: number = subarray.length,
-      arrayLengthToScan: number = array.length + 1 - subArrayLength;
-
-    for (let i = 0; i < arrayLengthToScan; i++) {
-      subArrayfound = true;
-      for (let j = 0; j < subArrayLength; j++) {
-        if (array[i + j] !== subarray[j]) {
-          subArrayfound = false;
-          break;
+      for (let i = 0, j = messageElements.length - 1; i < j; i++) {
+        if (messageElements[i].el.innerHTML != '' && messageElements[i + 1].el.innerHTML != '') {
+          messageElements.splice(i + 1, 0, this.getQueryElement());
+          i++;
+          j++;
         }
       }
-      if (subArrayfound) {
-        return true;
-      }
+
+      _.each(messageElements, message => {
+        if (message.el.innerHTML == '') {
+          message = this.getQueryElement();
+        }
+      });
+
+      return messageElements;
+    } else {
+      return [this.createTextElement(noResultsFoundMessage)];
     }
-    return false;
+  }
+
+  private isQuerySummaryTagInMessage(noResultsFoundMessage: string) {
+    return noResultsFoundMessage.split(QUERY_TAG).length > 0;
   }
 
   private displayInfoOnNoResults() {
-    const queryEscaped = escape(this.queryStateModel.get(QueryStateModel.attributesEnum.q));
-    let queryEscapedValue: string;
-    // TODO : I didn't find an equivalent for isSubArrayInArray() but something might exist?
-    const isQueryTagInMessage = this.isSubArrayInArray(this.options.noResultsFoundMessage, QUERY_TAG);
+    const noResultsFoundMessage = this.getNoResultsFoundMessageElement();
+    const cancelLastAction = this.getCancelLastActionElement();
+    const searchTipsInfo = this.getSearchTipsInfoElement();
+    const searchTips = this.getSearchTipsElement();
 
-    if (!isQueryTagInMessage && !this.isDefautlNoResulstFoundMessage()) {
+    if (noResultsFoundMessage && this.options.enableNoResultsFoundMessage) {
+      this.textContainer.appendChild(noResultsFoundMessage.el);
+    }
+
+    if (this.options.enableCancelLastAction) {
+      this.textContainer.appendChild(cancelLastAction.el);
+    }
+
+    if (this.options.enableSearchTips) {
+      this.textContainer.appendChild(searchTipsInfo.el);
+      this.textContainer.appendChild(searchTips.el);
+    }
+  }
+
+  private getNoResultsFoundMessageElement() {
+    let parsedNoResultsFoundMessage = this.parseNoResultsFoundMessage(this.options.noResultsFoundMessage);
+
+    let noResultsFoundMessage = $$(
+      'div',
+      {
+        className: 'coveo-query-summary-no-results-string'
+      },
+      ...parsedNoResultsFoundMessage
+    );
+
+    return noResultsFoundMessage;
+  }
+
+  private createTextElement(text: string) {
+    let textContainer = $$('span', {}, text);
+    return textContainer;
+  }
+
+  private getQueryElement() {
+    const queryEscaped = escape(this.queryStateModel.get(QueryStateModel.attributesEnum.q));
+    const isQueryTagInMessage = this.isQuerySummaryTagInMessage(this.options.noResultsFoundMessage);
+    let queryEscapedValue: string;
+
+    if (!isQueryTagInMessage) {
       queryEscapedValue = '';
     } else {
       queryEscapedValue = queryEscaped;
     }
 
-    let queryEscapedString = $$(
+    let query = $$(
       'span',
       {
         className: 'coveo-highlight'
@@ -292,18 +332,10 @@ export class QuerySummary extends Component {
       queryEscapedValue
     );
 
-    let parsedNoResultsFoundMessage = this.parseNoResultsFoundMessage(this.options.noResultsFoundMessage);
+    return query;
+  }
 
-    let noResultsForString = $$(
-      'div',
-      {
-        className: 'coveo-query-summary-no-results-string'
-      },
-      parsedNoResultsFoundMessage[0],
-      queryEscapedString,
-      parsedNoResultsFoundMessage[1]
-    );
-
+  private getCancelLastActionElement() {
     const cancelLastAction = $$(
       'div',
       {
@@ -325,10 +357,18 @@ export class QuerySummary extends Component {
       }
     });
 
+    return cancelLastAction;
+  }
+
+  private getSearchTipsInfoElement() {
     const searchTipsInfo = $$('div', {
       className: 'coveo-query-summary-search-tips-info'
     });
-    searchTipsInfo.text(l('SearchTips'));
+
+    return searchTipsInfo;
+  }
+
+  private getSearchTipsElement() {
     const searchTips = $$('ul');
 
     const checkSpelling = $$('li');
@@ -346,18 +386,7 @@ export class QuerySummary extends Component {
       searchTips.el.appendChild(fewerFilter.el);
     }
 
-    if (noResultsForString && this.options.enableNoResultsFoundMessage) {
-      this.textContainer.appendChild(noResultsForString.el);
-    }
-
-    if (this.options.enableCancelLastAction) {
-      this.textContainer.appendChild(cancelLastAction.el);
-    }
-
-    if (this.options.enableSearchTips) {
-      this.textContainer.appendChild(searchTipsInfo.el);
-      this.textContainer.appendChild(searchTips.el);
-    }
+    return searchTips;
   }
 }
 Initialization.registerAutoCreateComponent(QuerySummary);
