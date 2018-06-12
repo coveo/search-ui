@@ -13,8 +13,11 @@ import { IPopulateOmniboxEventArgs } from '../../src/events/OmniboxEvents';
 export function FacetTest() {
   describe('Facet', () => {
     let test: Mock.IBasicComponentSetup<Facet>;
+    let foobarFacetValue: FacetValue;
 
     beforeEach(() => {
+      foobarFacetValue = new FacetValue();
+      foobarFacetValue.value = 'foobar';
       test = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, <IFacetOptions>{
         field: '@field'
       });
@@ -49,7 +52,7 @@ export function FacetTest() {
     });
 
     it('allows to select a value', () => {
-      expect(test.cmp.getDisplayedFacetValues()).not.toContain('foobar');
+      expect(test.cmp.getDisplayedFacetValues()).not.toContain(foobarFacetValue);
       test.cmp.selectValue('foobar');
       expect(test.cmp.getDisplayedValues()).toContain('foobar');
       expect(test.cmp.values.get('foobar').selected).toBe(true);
@@ -63,12 +66,12 @@ export function FacetTest() {
     });
 
     it('allows to deselect a value', () => {
-      expect(test.cmp.getDisplayedFacetValues()).not.toContain('foobar');
+      expect(test.cmp.getDisplayedFacetValues()).not.toContain(foobarFacetValue);
       test.cmp.selectValue('foobar');
       expect(test.cmp.getDisplayedValues()).toContain('foobar');
       expect(test.cmp.values.get('foobar').selected).toBe(true);
       test.cmp.deselectValue('foobar');
-      expect(test.cmp.getDisplayedFacetValues()).not.toContain('foobar');
+      expect(test.cmp.getDisplayedFacetValues()).not.toContain(foobarFacetValue);
       expect(test.cmp.values.get('foobar').selected).not.toBe(true);
     });
 
@@ -83,7 +86,7 @@ export function FacetTest() {
     });
 
     it('allows to exclude a value', () => {
-      expect(test.cmp.getDisplayedFacetValues()).not.toContain('foobar');
+      expect(test.cmp.getDisplayedFacetValues()).not.toContain(foobarFacetValue);
       test.cmp.excludeValue('foobar');
       expect(test.cmp.getDisplayedValues()).toContain('foobar');
       expect(test.cmp.values.get('foobar').excluded).toBe(true);
@@ -97,12 +100,12 @@ export function FacetTest() {
     });
 
     it('allows to unexclude a value', () => {
-      expect(test.cmp.getDisplayedFacetValues()).not.toContain('foobar');
+      expect(test.cmp.getDisplayedFacetValues()).not.toContain(foobarFacetValue);
       test.cmp.excludeValue('foobar');
       expect(test.cmp.getDisplayedValues()).toContain('foobar');
       expect(test.cmp.values.get('foobar').excluded).toBe(true);
       test.cmp.unexcludeValue('foobar');
-      expect(test.cmp.getDisplayedFacetValues()).not.toContain('foobar');
+      expect(test.cmp.getDisplayedFacetValues()).not.toContain(foobarFacetValue);
       expect(test.cmp.values.get('foobar').excluded).not.toBe(true);
     });
 
@@ -117,7 +120,7 @@ export function FacetTest() {
     });
 
     it('allows to toggleSelectValue', () => {
-      expect(test.cmp.getDisplayedFacetValues()).not.toContain('foobar');
+      expect(test.cmp.getDisplayedFacetValues()).not.toContain(foobarFacetValue);
       test.cmp.toggleSelectValue('foobar');
       expect(test.cmp.getDisplayedValues()).toContain('foobar');
       expect(test.cmp.values.get('foobar').selected).toBe(true);
@@ -126,7 +129,7 @@ export function FacetTest() {
     });
 
     it('allows to toggleExcludeValue', () => {
-      expect(test.cmp.getDisplayedFacetValues()).not.toContain('foobar');
+      expect(test.cmp.getDisplayedFacetValues()).not.toContain(foobarFacetValue);
       test.cmp.toggleExcludeValue('foobar');
       expect(test.cmp.getDisplayedValues()).toContain('foobar');
       expect(test.cmp.values.get('foobar').excluded).toBe(true);

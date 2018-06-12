@@ -32,12 +32,12 @@ export class HierarchicalFacetSearch extends FacetSearch {
     searchParameters.alwaysInclude = this.facet.getDisplayedValues();
     searchParameters.setValueToSearch(this.getValueInInputForFacetSearch());
     this.facet.facetQueryController.search(searchParameters).then((fieldValues: IIndexFieldValue[]) => {
-      this.completelyDismissSearch();
+      this.dismissSearchResults();
       ModalBox.close(true);
       var facetValues = this.getFacetValues(fieldValues);
       this.facet.processFacetSearchAllResultsSelected(facetValues);
     });
-    this.completelyDismissSearch();
+    this.dismissSearchResults();
   }
 
   private getFacetValues(fieldValues: IIndexFieldValue[]): FacetValue[] {

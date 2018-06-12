@@ -410,7 +410,7 @@ export function DomTests() {
         expect(spy).toHaveBeenCalledTimes(1);
       });
 
-      it('using off should work properly', () => {
+      it('after calling off the event handler should not be called', () => {
         const spy = jasmine.createSpy('spy');
         new Dom(el).on('click', spy);
         new Dom(el).off('click', spy);
