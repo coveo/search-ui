@@ -264,7 +264,7 @@ export class MagicBox {
   }
 }
 
-export function create(element: HTMLElement, grammar: Grammar, options?: Options) {
+export function createMagicBox(element: HTMLElement, grammar: Grammar, options?: Options) {
   return new MagicBox(element, grammar, options);
 }
 

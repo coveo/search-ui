@@ -34,13 +34,13 @@ import { exportGlobally } from '../../GlobalExports';
 import 'styling/_Omnibox';
 import { logSearchBoxSubmitEvent } from '../Analytics/SharedAnalyticsCalls';
 import { Dom } from '../../Core';
-import * as MagicBox from '../../magicbox/MagicBox';
 import { Grammar } from '../../magicbox/Grammar';
 import { Complete } from '../../magicbox/Grammars/Complete';
 import { Expressions } from '../../magicbox/Grammars/Expressions';
 import { Suggestion } from '../../magicbox/SuggestionsManager';
 import { ExpressionDef } from '../../magicbox/Expression/Expression';
 import { Result } from '../../magicbox/Result/Result';
+import { MagicBox, createMagicBox } from '../../magicbox/MagicBox';
 
 export interface IOmniboxSuggestion extends Suggestion {
   executableConfidence?: number;
@@ -85,7 +85,6 @@ export class Omnibox extends Component {
   static doExport = () => {
     exportGlobally({
       Omnibox: Omnibox,
-      MagicBox: MagicBox,
       QueryboxQueryParameters: QueryboxQueryParameters
     });
   };
@@ -225,7 +224,7 @@ export class Omnibox extends Component {
     })
   };
 
-  public magicBox: MagicBox.MagicBox;
+  public magicBox: MagicBox;
   private partialQueries: string[] = [];
   private lastSuggestions: IOmniboxSuggestion[] = [];
   private lastQuery: string;
@@ -372,7 +371,7 @@ export class Omnibox extends Component {
 
   private createMagicBox() {
     const grammar = this.createGrammar();
-    this.magicBox = MagicBox.create(this.element, new Grammar(grammar.start, grammar.expressions), {
+    this.magicBox = createMagicBox(this.element, new Grammar(grammar.start, grammar.expressions), {
       inline: this.options.inline,
       selectableSuggestionClass: 'coveo-omnibox-selectable',
       selectedSuggestionClass: 'coveo-omnibox-selected',

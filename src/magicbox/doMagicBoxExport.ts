@@ -10,7 +10,7 @@ import { ExpressionRegExp } from './Expression/ExpressionRegExp';
 import { Grammar } from './Grammar';
 import * as Grammars from './Grammars/Grammars';
 import { InputManager } from './InputManager';
-import { MagicBox, create, requestAnimationFrame } from './MagicBox';
+import { MagicBox, createMagicBox, requestAnimationFrame } from './MagicBox';
 import { OptionResult } from './Result/OptionResult';
 import { RefResult } from './Result/RefResult';
 import { SuggestionsManager } from './SuggestionsManager';
@@ -36,7 +36,7 @@ export function doMagicBoxExport() {
       Result,
       SuggestionsManager,
       Utils,
-      create,
+      create: createMagicBox,
       requestAnimationFrame
     }
   });

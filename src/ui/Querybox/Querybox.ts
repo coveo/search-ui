@@ -13,9 +13,9 @@ import { Assert } from '../../misc/Assert';
 import { QueryboxQueryParameters } from './QueryboxQueryParameters';
 import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
-import * as MagicBox from '../../magicbox/MagicBox';
 import { Grammar } from '../../magicbox/Grammar';
 import { Result } from '../../magicbox/Result/Result';
+import { MagicBox, createMagicBox } from '../../magicbox/MagicBox';
 
 export interface IQueryboxOptions {
   enableSearchAsYouType?: boolean;
@@ -49,7 +49,6 @@ export class Querybox extends Component {
   static doExport = () => {
     exportGlobally({
       Querybox: Querybox,
-      MagicBox: MagicBox,
       QueryboxQueryParameters: QueryboxQueryParameters
     });
   };
@@ -236,7 +235,7 @@ export class Querybox extends Component {
     triggerQueryOnClear: ComponentOptions.buildBooleanOption({ defaultValue: false })
   };
 
-  public magicBox: MagicBox.MagicBox;
+  public magicBox: MagicBox;
   private lastQuery: string;
   private searchAsYouTypeTimeout: number;
 
@@ -260,7 +259,7 @@ export class Querybox extends Component {
     this.options = _.extend({}, this.options, this.componentOptionsModel.get(ComponentOptionsModel.attributesEnum.searchBox));
 
     $$(this.element).toggleClass('coveo-query-syntax-disabled', this.options.enableQuerySyntax == false);
-    this.magicBox = MagicBox.create(
+    this.magicBox = createMagicBox(
       element,
       new Grammar('Query', {
         Query: '[Term*][Spaces?]',
