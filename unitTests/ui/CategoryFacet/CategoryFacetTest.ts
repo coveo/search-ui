@@ -182,7 +182,7 @@ export function CategoryFacetTest() {
       });
 
       it('less arrow is appended when there are more results than the numberOfValues option', () => {
-        const numberOfValues = test.cmp.options.numberOfValues + 1; // +1 for the fetchMoreValues and +1 to trigger the less values
+        const numberOfValues = test.cmp.options.numberOfValues + 2; // +1 for the fetchMoreValues and +1 to trigger the less values
         Simulate.query(test.env, buildSimulateQueryData(numberOfValues, numberOfValues));
 
         const downArrow = $$(test.cmp.element).find('.coveo-category-facet-less');
