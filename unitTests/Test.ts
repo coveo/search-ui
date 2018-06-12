@@ -618,3 +618,9 @@ QuickviewDocumentTest();
 
 import { PromotedResultsBadgeTest } from './ui/PromotedResultsBadgeTest';
 PromotedResultsBadgeTest();
+
+import { GrammarTest } from './magicbox/GrammarTest';
+GrammarTest();
+
+import { SuggestionsManagerTest } from './magicbox/SuggestionsManagerTest';
+SuggestionsManagerTest();

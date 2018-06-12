@@ -15,6 +15,7 @@ import { OptionResult } from './Result/OptionResult';
 import { RefResult } from './Result/RefResult';
 import { SuggestionsManager } from './SuggestionsManager';
 import { Utils } from '../utils/Utils';
+
 export function doMagicBoxExport() {
   exportGlobally({
     MagicBox: {

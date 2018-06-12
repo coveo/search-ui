@@ -6,6 +6,7 @@ import { Omnibox, IOmniboxSuggestion } from '../../src/ui/Omnibox/Omnibox';
 import { IPopulateOmniboxSuggestionsEventArgs } from '../../src/events/OmniboxEvents';
 import { IFacetValueSuggestionRow, IFacetValueSuggestionsProvider } from '../../src/ui/FacetValueSuggestions/FacetValueSuggestionsProvider';
 import { QuerySuggestAddon } from '../../src/ui/Omnibox/QuerySuggestAddon';
+import { Suggestion } from '../../src/magicbox/SuggestionsManager';
 
 export function FacetValueSuggestionsTest() {
   describe('FacetValueSuggestions', () => {
@@ -52,7 +53,7 @@ export function FacetValueSuggestionsTest() {
     };
 
     const firstSuggestion = (args: IPopulateOmniboxSuggestionsEventArgs) => {
-      return <Promise<Coveo.MagicBox.Suggestion[]>>args.suggestions[0];
+      return <Promise<Suggestion[]>>args.suggestions[0];
     };
 
     const setUpKeywordInOmnibox = (keyword: string) => {
@@ -142,7 +143,7 @@ export function FacetValueSuggestionsTest() {
       it('should not call the suggestions provider', async done => {
         await triggerPopulateOmniboxEvent();
 
-        expect(facetValueSuggestionsProvider.getSuggestions).toHaveBeenCalledTimes(0);
+        expect(facetValueSuggestionsProvider.getSuggestions).not.toHaveBeenCalled();
         done();
       });
     });
