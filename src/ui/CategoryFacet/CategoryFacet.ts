@@ -536,7 +536,7 @@ export class CategoryFacet extends Component {
       ? categoryFacetResult.values.slice(0, numberOfRequestedValues - 1)
       : categoryFacetResult.values.slice(0, numberOfRequestedValues);
 
-    this.numberOfChildValuesCurrentlyDisplayed = this.isPristine() ? sortedParentValues.length : childrenValuesToRender.length;
+    this.numberOfChildValuesCurrentlyDisplayed = childrenValuesToRender.length;
 
     currentParentValue.renderChildren(childrenValuesToRender);
     this.activeCategoryValue = currentParentValue as CategoryValue;

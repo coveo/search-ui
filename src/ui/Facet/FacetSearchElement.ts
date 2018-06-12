@@ -20,11 +20,13 @@ export class FacetSearchElement {
   public currentResult: Dom;
   public facetSearchUserInputHandler: FacetSearchUserInputHandler;
 
+  private triggeredScroll = false;
   private static FACET_SEARCH_PADDING = 40;
+
   constructor(private facetSearch: IFacetSearch) {
     this.facetSearchUserInputHandler = new FacetSearchUserInputHandler(this.facetSearch);
     this.searchResults = $$('ul', { className: 'coveo-facet-search-results' }).el;
-    $$(this.searchResults).on('scroll', () => this.facetSearchUserInputHandler.handleFacetSearchResultsScroll());
+    $$(this.searchResults).on('scroll', () => this.handleScrollEvent());
     $$(this.searchResults).hide();
   }
 
@@ -168,6 +170,8 @@ export class FacetSearchElement {
 
   private highlightAndShowCurrentResultWithKeyboard() {
     this.currentResult.addClass('coveo-facet-search-current-result');
+
+    this.triggeredScroll = true;
     this.searchResults.scrollTop = this.currentResult.el.offsetTop;
   }
 
@@ -241,5 +245,13 @@ export class FacetSearchElement {
       horizontal: PopupHorizontalAlignment.CENTER,
       vertical: PopupVerticalAlignment.BOTTOM
     });
+  }
+
+  private handleScrollEvent() {
+    if (this.triggeredScroll) {
+      this.triggeredScroll = false;
+    } else {
+      this.facetSearchUserInputHandler.handleFacetSearchResultsScroll();
+    }
   }
 }

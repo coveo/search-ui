@@ -213,7 +213,7 @@ export class FacetSearch implements IFacetSearch {
 
   private buildBaseSearch(): HTMLElement {
     this.facetSearchElement.build(() => this.handleFacetSearchClear());
-    $$(this.facetSearchElement.input).on('keyup', () => this.showOrHideClearElement(this.inputIsEmpty()));
+    $$(this.facetSearchElement.input).on('keyup', () => this.showOrHideClearElement());
     return this.search;
   }
 
@@ -234,8 +234,8 @@ export class FacetSearch implements IFacetSearch {
     this.dismissSearchResults();
   }
 
-  private showOrHideClearElement(isEmpty: boolean) {
-    if (!isEmpty) {
+  private showOrHideClearElement() {
+    if (!this.inputIsEmpty()) {
       $$(this.clear).show();
     } else {
       $$(this.clear).hide();
@@ -308,20 +308,6 @@ export class FacetSearch implements IFacetSearch {
     each($$(this.searchResults).findAll('.coveo-facet-selectable'), (elem: HTMLElement) => {
       $$(elem).addClass('coveo-facet-search-selectable');
     });
-    $$(this.searchResults).on('scroll', () => this.handleFacetSearchResultsScroll());
-  }
-
-  private handleFacetSearchResultsScroll() {
-    if (this.facetSearchPromise || this.getValueInInputForFacetSearch() != '' || !this.moreValuesToFetch) {
-      return;
-    }
-
-    let elementHeight = this.searchResults.clientHeight;
-    let scrollHeight = this.searchResults.scrollHeight;
-    let bottomPosition = this.searchResults.scrollTop + elementHeight;
-    if (scrollHeight - bottomPosition < elementHeight / 2) {
-      this.triggerNewFacetSearch(this.buildParamsForFetchingMore());
-    }
   }
 
   private buildParamsForNormalSearch() {
