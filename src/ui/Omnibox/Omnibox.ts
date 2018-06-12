@@ -34,7 +34,7 @@ import { exportGlobally } from '../../GlobalExports';
 import 'styling/_Omnibox';
 import { logSearchBoxSubmitEvent } from '../Analytics/SharedAnalyticsCalls';
 import { Dom } from '../../Core';
-import { MagicBox, createMagicBox } from '../../magicbox/MagicBox';
+import * as MagicBox from '../../magicbox/MagicBox';
 import { Grammar } from '../../magicbox/Grammar';
 import { Complete } from '../../magicbox/Grammars/Complete';
 import { Expressions } from '../../magicbox/Grammars/Expressions';
@@ -225,7 +225,7 @@ export class Omnibox extends Component {
     })
   };
 
-  public magicBox: MagicBox;
+  public magicBox: MagicBox.MagicBox;
   private partialQueries: string[] = [];
   private lastSuggestions: IOmniboxSuggestion[] = [];
   private lastQuery: string;
@@ -372,7 +372,7 @@ export class Omnibox extends Component {
 
   private createMagicBox() {
     const grammar = this.createGrammar();
-    this.magicBox = createMagicBox(this.element, new Grammar(grammar.start, grammar.expressions), {
+    this.magicBox = MagicBox.create(this.element, new Grammar(grammar.start, grammar.expressions), {
       inline: this.options.inline,
       selectableSuggestionClass: 'coveo-omnibox-selectable',
       selectedSuggestionClass: 'coveo-omnibox-selected',

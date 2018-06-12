@@ -1,6 +1,6 @@
 import { Basic } from './Basic';
 import { SubGrammar } from './Expressions';
-import { MagicBoxDate } from './Date';
+import { Date } from './Date';
 export const Field: SubGrammar = {
   basicExpressions: ['FieldSimpleQuery', 'FieldQuery', 'Field'],
   grammars: {
@@ -22,5 +22,5 @@ export const Field: SubGrammar = {
     FieldValueNotQuoted: /[^ \(\),]+/,
     NumberRange: '[Number][Spaces?]..[Spaces?][Number]'
   },
-  include: [MagicBoxDate, Basic]
+  include: [Date, Basic]
 };

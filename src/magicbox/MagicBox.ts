@@ -3,6 +3,7 @@ import { InputManager } from './InputManager';
 import { $$ } from '../utils/Dom';
 import { Result } from './Result/Result';
 import { Grammar } from './Grammar';
+import { doMagicBoxExport } from './doMagicBoxExport';
 import _ = require('underscore');
 
 export interface Options {
@@ -263,7 +264,7 @@ export class MagicBox {
   }
 }
 
-export function createMagicBox(element: HTMLElement, grammar: Grammar, options?: Options) {
+export function create(element: HTMLElement, grammar: Grammar, options?: Options) {
   return new MagicBox(element, grammar, options);
 }
 
@@ -273,3 +274,5 @@ export function requestAnimationFrame(callback: () => void) {
   }
   return setTimeout(callback);
 }
+
+doMagicBoxExport();

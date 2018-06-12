@@ -1,7 +1,7 @@
 import { SubGrammar } from './Expressions';
 import { Basic } from './Basic';
 
-export const MagicBoxDate: SubGrammar = {
+export const Date: SubGrammar = {
   grammars: {
     Date: '[DateYear]/[DateMonth]/[DateDay]',
     DateYear: /([0-9]{4})/,

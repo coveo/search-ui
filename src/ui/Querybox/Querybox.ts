@@ -13,7 +13,7 @@ import { Assert } from '../../misc/Assert';
 import { QueryboxQueryParameters } from './QueryboxQueryParameters';
 import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
-import { MagicBox, createMagicBox } from '../../magicbox/MagicBox';
+import * as MagicBox from '../../magicbox/MagicBox';
 import { Grammar } from '../../magicbox/Grammar';
 import { Result } from '../../magicbox/Result/Result';
 
@@ -236,7 +236,7 @@ export class Querybox extends Component {
     triggerQueryOnClear: ComponentOptions.buildBooleanOption({ defaultValue: false })
   };
 
-  public magicBox: MagicBox;
+  public magicBox: MagicBox.MagicBox;
   private lastQuery: string;
   private searchAsYouTypeTimeout: number;
 
@@ -260,7 +260,7 @@ export class Querybox extends Component {
     this.options = _.extend({}, this.options, this.componentOptionsModel.get(ComponentOptionsModel.attributesEnum.searchBox));
 
     $$(this.element).toggleClass('coveo-query-syntax-disabled', this.options.enableQuerySyntax == false);
-    this.magicBox = createMagicBox(
+    this.magicBox = MagicBox.create(
       element,
       new Grammar('Query', {
         Query: '[Term*][Spaces?]',
