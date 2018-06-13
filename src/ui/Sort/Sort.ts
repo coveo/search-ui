@@ -6,7 +6,6 @@ import { Assert } from '../../misc/Assert';
 import { IAttributesChangedEventArg, MODEL_EVENTS } from '../../models/Model';
 import { QUERY_STATE_ATTRIBUTES, QueryStateModel } from '../../models/QueryStateModel';
 import { $$ } from '../../utils/Dom';
-import { KEYBOARD, KeyboardUtils } from '../../utils/KeyboardUtils';
 import { SVGDom } from '../../utils/SVGDom';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { Utils } from '../../utils/Utils';
