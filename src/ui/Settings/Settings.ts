@@ -125,7 +125,7 @@ export class Settings extends Component {
       .withElement(this.element)
       .withOwner(this.bind)
       .withSelectAction(() => this.toggle())
-      .withBlurAction(() => this.mouseleave())
+      .withBlurAction(e => this.mouseleave(e))
       .withFocusAction(() => this.mouseenter())
       .withLabel(l('Settings'))
       .build();
@@ -210,7 +210,7 @@ export class Settings extends Component {
     return textElement;
   }
 
-  private mouseleave() {
+  private mouseleave(e) {
     clearTimeout(this.closeTimeout);
     this.closeTimeout = window.setTimeout(() => {
       this.close();

@@ -10,7 +10,7 @@ export class AccessibleButton {
 
   private clickAction: () => void;
   private enterKeyboardAction: () => void;
-  private blurAction: () => void;
+  private blurAction: (e) => void;
   private focusAction: () => void;
 
   private logger: Logger;
@@ -55,7 +55,7 @@ export class AccessibleButton {
     return this;
   }
 
-  public withBlurAction(action: () => void) {
+  public withBlurAction(action: (e) => void) {
     this.blurAction = action;
     return this;
   }
