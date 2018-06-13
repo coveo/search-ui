@@ -21,7 +21,6 @@ script:
 - yarn run build
 - if [ "x$TRAVIS_TAG" != "x" ]; then yarn run minimize ; fi
 - yarn run unitTests
-- if [ "x$TRAVIS_TAG" != "x" ]; then yarn run accessibilityTests ; fi
 - yarn run uploadCoverage
 - yarn run testChunks
 - yarn run validateTypeDefinitions
