@@ -13,7 +13,7 @@ import { InputManager } from './InputManager';
 import { MagicBox, createMagicBox, requestAnimationFrame } from './MagicBox';
 import { OptionResult } from './Result/OptionResult';
 import { RefResult } from './Result/RefResult';
-import { SuggestionsManager } from './SuggestionsManager';
+import { SuggestionsManager as SuggestionsManagerImpl } from './SuggestionsManager';
 import { Utils } from '../utils/Utils';
 
 export function doMagicBoxExport() {
@@ -34,7 +34,7 @@ export function doMagicBoxExport() {
       OptionResult,
       RefResult,
       Result,
-      SuggestionsManager,
+      SuggestionsManager: SuggestionsManagerImpl,
       Utils,
       create: createMagicBox,
       requestAnimationFrame
