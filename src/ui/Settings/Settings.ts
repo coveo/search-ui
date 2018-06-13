@@ -84,10 +84,15 @@ export class Settings extends Component {
     }
 
     this.menu = this.buildMenu();
-    $$(this.element).append(this.menu);
+    $$(this.menu).insertAfter(this.element);
 
     new PopperJs(this.element, this.menu, {
-      placement: 'bottom-end'
+      placement: 'bottom-start',
+      modifiers: {
+        offset: {
+          offset: '0, 5'
+        }
+      }
     });
   }
 
@@ -142,6 +147,12 @@ export class Settings extends Component {
 
       menu.appendChild(menuItemElement);
     });
+    menu.appendChild(
+      $$('div', {
+        className: 'popper__arrow',
+        'x-arrow': ''
+      }).el
+    );
     return menu;
   }
 

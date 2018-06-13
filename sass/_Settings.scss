@@ -42,6 +42,13 @@
   @include defaultRoundedBorder();
   min-width: 160px;
   z-index: 11;
+  &:before {
+    content: '';
+    position: absolute;
+    top: -13px;
+    right: 19px;
+    @include triangle(12px, $color-light-grey, up);
+  }
 }
 
 .coveo-settings-item {

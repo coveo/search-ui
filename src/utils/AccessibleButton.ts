@@ -2,6 +2,7 @@ import { Logger } from '../misc/Logger';
 import { ComponentEvents } from '../ui/Base/Component';
 import { KEYBOARD, KeyboardUtils } from '../utils/KeyboardUtils';
 import { $$, Dom } from './Dom';
+import 'styling/_AccessibleButton';
 
 export class AccessibleButton {
   private element: Dom;
@@ -75,8 +76,27 @@ export class AccessibleButton {
     this.ensureKeyboardEnterAction();
     this.ensureFocusAction();
     this.ensureBlurAction();
+    this.ensureDifferentiationBetweenKeyboardAndMouseFocus();
 
     return this;
+  }
+
+  private ensureDifferentiationBetweenKeyboardAndMouseFocus() {
+    const classOnPress = 'coveo-accessible-button-pressed';
+    const classOnFocus = 'coveo-accessible-button-focused';
+    $$(this.element).addClass('coveo-accessible-button');
+    $$(this.element).on('mousedown', () => {
+      $$(this.element).addClass(classOnPress);
+      $$(this.element).removeClass(classOnFocus);
+    });
+
+    $$(this.element).on('mouseup', () => $$(this.element).removeClass(classOnPress));
+    $$(this.element).on('focus', () => {
+      if (!$$(this.element).hasClass(classOnPress)) {
+        $$(this.element).addClass(classOnFocus);
+      }
+    });
+    $$(this.element).on('blur', () => $$(this.element).removeClass(classOnFocus));
   }
 
   private ensureCorrectRole() {
@@ -115,7 +135,6 @@ export class AccessibleButton {
   private ensureBlurAction() {
     if (this.blurAction) {
       this.bindEvent('mouseleave', this.blurAction);
-      this.bindEvent('blur', this.blurAction);
     }
   }
 
