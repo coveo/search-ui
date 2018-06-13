@@ -30,6 +30,8 @@ export interface IQuerySummaryOptions {
 const QUERY_TAG: string = '<%-query%>';
 const DEFAULT_NO_RESULT_FOUND_MESSAGE: string = l('noResultFor', QUERY_TAG);
 
+const SHOW_IF_NO_RESULTS: string = 'coveo-show-if-no-results';
+
 // TODO : Documentation review :
 //        Do we want to change the description of the QuerySummary component?
 //        This specific part : "If the query matches [...] a better query."
@@ -130,7 +132,7 @@ export class QuerySummary extends Component {
     this.bind.onRootElement(QueryEvents.queryError, () => this.hide());
     this.hide();
     this.textContainer = $$('span').el;
-    this.element.appendChild(this.textContainer);
+    $$(this.element).append(this.textContainer);
   }
 
   private hide() {
@@ -144,6 +146,8 @@ export class QuerySummary extends Component {
   private render(queryPerformed: IQuery, queryResults: IQueryResults) {
     $$(this.textContainer).empty();
     this.show();
+
+    this.hideCustomNoResultsFoundPage();
 
     if (!this.options.onlyDisplaySearchTips) {
       if (this.isInfiniteScrollingMode()) {
@@ -275,6 +279,8 @@ export class QuerySummary extends Component {
   }
 
   private displayInfoOnNoResults() {
+    this.showCustomNoResultsFoundPage();
+
     const noResultsFoundMessage = this.getNoResultsFoundMessageElement();
     const cancelLastAction = this.getCancelLastActionElement();
     const searchTipsInfo = this.getSearchTipsInfoElement();
@@ -291,6 +297,20 @@ export class QuerySummary extends Component {
     if (this.options.enableSearchTips) {
       this.textContainer.appendChild(searchTipsInfo.el);
       this.textContainer.appendChild(searchTips.el);
+    }
+  }
+
+  private hideCustomNoResultsFoundPage() {
+    const showIfNoResultsElement = this.element.getElementsByClassName(SHOW_IF_NO_RESULTS);
+    if (showIfNoResultsElement.length > 0) {
+      showIfNoResultsElement[0].classList.add('coveo-hidden');
+    }
+  }
+
+  private showCustomNoResultsFoundPage() {
+    const showIfNoResultsElement = this.element.getElementsByClassName(SHOW_IF_NO_RESULTS);
+    if (showIfNoResultsElement.length > 0) {
+      showIfNoResultsElement[0].classList.remove('coveo-hidden');
     }
   }
 
