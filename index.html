@@ -121,6 +121,9 @@
 						<a href="components/cardoverlay.html" class="tsd-kind-icon">Card<wbr>Overlay</a>
 					</li>
 					<li class=" tsd-kind-coveo-component">
+						<a href="components/categoryfacet.html" class="tsd-kind-icon">Category<wbr>Facet</a>
+					</li>
+					<li class=" tsd-kind-coveo-component">
 						<a href="components/didyoumean.html" class="tsd-kind-icon">Did<wbr>You<wbr>Mean</a>
 					</li>
 					<li class=" tsd-kind-coveo-component">
@@ -196,6 +199,9 @@
 						<a href="components/printableuri.html" class="tsd-kind-icon">Printable<wbr>Uri</a>
 					</li>
 					<li class=" tsd-kind-coveo-component">
+						<a href="components/promotedresultsbadge.html" class="tsd-kind-icon">Promoted<wbr>Results<wbr>Badge</a>
+					</li>
+					<li class=" tsd-kind-coveo-component">
 						<a href="components/queryduration.html" class="tsd-kind-icon">Query<wbr>Duration</a>
 					</li>
 					<li class=" tsd-kind-coveo-component">
@@ -212,6 +218,9 @@
 					</li>
 					<li class=" tsd-kind-coveo-component">
 						<a href="components/recommendation.html" class="tsd-kind-icon">Recommendation</a>
+					</li>
+					<li class=" tsd-kind-coveo-component">
+						<a href="components/resultactionsmenu.html" class="tsd-kind-icon">Result<wbr>Actions<wbr>Menu</a>
 					</li>
 					<li class=" tsd-kind-coveo-component">
 						<a href="components/resultattachments.html" class="tsd-kind-icon">Result<wbr>Attachments</a>
@@ -846,7 +855,7 @@
 				</div>
 			</div>
 			<div class="tsd-panel tsd-typography">
-				<h1 id="search-ui-build-status-https-travis-ci-org-coveo-search-ui-svg-branch-master-https-travis-ci-org-coveo-search-ui-coverage-status-https-coveralls-io-repos-github-coveo-search-ui-badge-svg-branch-master-https-coveralls-io-github-coveo-search-ui-branch-master-typescript-https-badges-frapsoft-com-typescript-code-typescript-svg-v-101-https-github-com-ellerbrock-typescript-badges-">Search UI <a href="https://travis-ci.org/coveo/search-ui"><img src="https://travis-ci.org/coveo/search-ui.svg?branch=master" alt="Build Status"></a> <a href="https://coveralls.io/github/coveo/search-ui?branch=master"><img src="https://coveralls.io/repos/github/coveo/search-ui/badge.svg?branch=master" alt="Coverage Status"></a> <a href="https://github.com/ellerbrock/typescript-badges/"><img src="https://badges.frapsoft.com/typescript/code/typescript.svg?v=101" alt="TypeScript"></a></h1>
+				<h1 id="search-ui-build-status-https-travis-ci-org-coveo-search-ui-svg-branch-master-https-travis-ci-org-coveo-search-ui-coverage-status-https-coveralls-io-repos-github-coveo-search-ui-badge-svg-branch-master-https-coveralls-io-github-coveo-search-ui-branch-master-codefactor-https-www-codefactor-io-repository-github-coveo-search-ui-badge-https-www-codefactor-io-repository-github-coveo-search-ui-typescript-https-badges-frapsoft-com-typescript-code-typescript-svg-v-101-https-github-com-ellerbrock-typescript-badges-">Search UI <a href="https://travis-ci.org/coveo/search-ui"><img src="https://travis-ci.org/coveo/search-ui.svg?branch=master" alt="Build Status"></a> <a href="https://coveralls.io/github/coveo/search-ui?branch=master"><img src="https://coveralls.io/repos/github/coveo/search-ui/badge.svg?branch=master" alt="Coverage Status"></a> <a href="https://www.codefactor.io/repository/github/coveo/search-ui"><img src="https://www.codefactor.io/repository/github/coveo/search-ui/badge" alt="CodeFactor"></a> <a href="https://github.com/ellerbrock/typescript-badges/"><img src="https://badges.frapsoft.com/typescript/code/typescript.svg?v=101" alt="TypeScript"></a></h1>
 				<p>Coveo JavaScript Search UI Framework</p>
 				<p><img id='readme-image' src='https://raw.githubusercontent.com/coveo/search-ui/master/readme.png' /></p>
 				<h2 id="installation">Installation</h2>
@@ -857,9 +866,9 @@
 				<p>Alternatively, you can download the latest version of the Coveo JavaScript Search UI Framework
 				<a href="http://productupdate.coveo.com/?product=coveo-search-ui&amp;version=1">here</a>.</p>
 				<h2 id="including-the-resources-from-a-cdn">Including the Resources from a CDN</h2>
-				<p>Since the April 2017 release, it is possible to access the resources of any specific Coveo JavaScript Search  Framework
+				<p>Since the April 2017 release, it is possible to access the resources of any specific Coveo JavaScript Search Framework
 				official release (from version <code>1.2537</code> on) through a content delivery network (CDN).</p>
-				<p>You can simply use an URL such as <code>https://static.cloud.coveo.com/searchui/v[VERSION]/[PATH_TO_FILE]</code>, where you
+				<p>You can simply use a URL such as <code>https://static.cloud.coveo.com/searchui/v[VERSION]/[PATH_TO_FILE]</code>, where you
 					replace <code>[VERSION]</code> by the actual release version number you wish to use and <code>[PATH_TO_FILE]</code> by the path of the file
 				you require.</p>
 				<p><strong>Example:</strong></p>
@@ -912,9 +921,10 @@
 				<p>A tutorial is available to help you get started (see
 				<a href="https://developers.coveo.com/x/J4okAg">Coveo JavaScript Search UI Framework Getting Started Tutorial</a>).</p>
 				<h2 id="build">Build</h2>
-				<p>You should have node 6.9.1 (or later) installed to build this project.</p>
-				<pre><code>npm <span class="hljs-keyword">install</span> -g gulp
-npm <span class="hljs-keyword">install</span>
+				<p>You should have node 9.5.0 (or later) installed to build this project.</p>
+				<pre><code>npm <span class="hljs-keyword">install</span> -g yarn
+yarn <span class="hljs-keyword">global</span> <span class="hljs-keyword">add</span> gulp
+yarn <span class="hljs-keyword">install</span>
 gulp
 </code></pre><h2 id="important-gulp-tasks">Important Gulp Tasks</h2>
 				<ul>
@@ -930,7 +940,7 @@ gulp
 				<h2 id="dev-server">Dev Server</h2>
 				<p>Make sure you were able to run <code>gulp</code> entirely without any errors first. Then you can start the dev-server:</p>
 				<pre><code><span class="hljs-attribute">gulp dev</span>
-</code></pre><p>This will start a webpack-dev-server instance (see 
+</code></pre><p>This will start a webpack-dev-server instance (see
 				<a href="https://webpack.github.io/docs/webpack-dev-server.html">Webpack Dev Server</a>).</p>
 				<p>You can now load <a href="http://localhost:8080/index.html">http://localhost:8080/index.html</a> in a web browser.</p>
 				<p>Any time you hit <strong>Save</strong> in a source file, the bundle will be recompiled and the dev page will reload.</p>
@@ -938,9 +948,11 @@ gulp
 					<code>index.html</code> page under <code>./bin</code>. This page is not committed to the repository, so you do not have to worry about
 					breaking anything. However, if you feel like you have a good reason to modify the original <code>index.html</code>, feel free to
 				do so.</p>
-				<h3 id="tests">Tests</h3>
+				<p>You might need to assign more memory to Webpack if you see errors about <code>heap out of memory</code>. To do so, use this command :</p>
+				<pre><code><span class="hljs-keyword">node</span> <span class="hljs-title">--max_old_space_size</span>=<span class="hljs-number">8192</span> ./node_modules/gulp/bin/gulp.js dev;
+</code></pre><h3 id="tests">Tests</h3>
 				<p>Tests are written using <a href="http://jasmine.github.io/2.4/introduction.html">Jasmine</a>. You can use <code>npm run test</code> to run
-				the tests in PhantomJS.</p>
+				the tests in Chrome Headless.</p>
 				<p>If you wish to write new unit tests, you can do so by starting a new webpack-dev-server instance.</p>
 				<p>To start the server, run <code>gulp devTest</code>.</p>
 				<p>Load <a href="http://localhost:8081/tests/SpecRunner.html">http://localhost:8081/tests/SpecRunner.html</a>.</p>

@@ -99,6 +99,9 @@
 								<a href="initialization.html#automaticallycreatecomponentsinside" class="tsd-kind-icon">automatically<wbr>Create<wbr>Components<wbr>Inside</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
+								<a href="initialization.html#automaticallycreatecomponentsinsideresult" class="tsd-kind-icon">automatically<wbr>Create<wbr>Components<wbr>Inside<wbr>Result</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
 								<a href="initialization.html#getlistofloadedcomponents" class="tsd-kind-icon">get<wbr>List<wbr>OfLoaded<wbr>Components</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
@@ -193,6 +196,7 @@
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="initialization.html#automaticallycreatecomponentsinside" class="tsd-kind-icon">automatically<wbr>Create<wbr>Components<wbr>Inside</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="initialization.html#automaticallycreatecomponentsinsideresult" class="tsd-kind-icon">automatically<wbr>Create<wbr>Components<wbr>Inside<wbr>Result</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="initialization.html#getlistofloadedcomponents" class="tsd-kind-icon">get<wbr>List<wbr>OfLoaded<wbr>Components</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="initialization.html#getlistofregisteredcomponents" class="tsd-kind-icon">get<wbr>List<wbr>OfRegistered<wbr>Components</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="initialization.html#getregisteredcomponent" class="tsd-kind-icon">get<wbr>Registered<wbr>Component</a></li>
@@ -227,8 +231,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Initialization.ts#L378">ui/Base/Initialization.ts
-									:378</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Initialization.ts#L403">ui/Base/Initialization.ts
+									:403</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -253,6 +257,54 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static">
+					<a name="automaticallycreatecomponentsinsideresult" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> automatically<wbr>Create<wbr>Components<wbr>Inside<wbr>Result</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
+						<li class="tsd-signature tsd-kind-icon">automatically<wbr>Create<wbr>Components<wbr>Inside<wbr>Result<span class="tsd-signature-symbol">(</span>resultElement<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLElement</span>, result<span class="tsd-signature-symbol">: </span><a href="../interfaces/iqueryresult.html" class="tsd-signature-type">IQueryResult</a>, optionsToInject<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">IInitResult</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Initialization.ts#L380">ui/Base/Initialization.ts
+									:380</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Scan the result element and all its children for known components. Initialize every known result component found.</p>
+								</div>
+								<p>See also : <a href="initialization.html#automaticallycreatecomponentsinside">Initialization.automaticallyCreateComponentsInside</a>.</p>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>resultElement: <span class="tsd-signature-type">HTMLElement</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The root element to scan for known components</p>
+									</div>
+								</li>
+								<li>
+									<h5>result: <a href="../interfaces/iqueryresult.html" class="tsd-signature-type">IQueryResult</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The result which needs to be passed to each result component constructor.</p>
+									</div>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> optionsToInject: <span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> =&nbsp;{}</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>A set of options to inject for the components found inside the resultElement. These options will be merged with any options passed during the &quot;init&quot; call of the search interface.</p>
+									</div>
+									<ul class="tsd-parameters">
+									</ul>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">IInitResult</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static">
 					<a name="getlistofloadedcomponents" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagStatic">Static</span> get<wbr>List<wbr>OfLoaded<wbr>Components</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
@@ -263,8 +315,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Initialization.ts#L212">ui/Base/Initialization.ts
-									:212</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Initialization.ts#L213">ui/Base/Initialization.ts
+									:213</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -287,8 +339,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Initialization.ts#L204">ui/Base/Initialization.ts
-									:204</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Initialization.ts#L205">ui/Base/Initialization.ts
+									:205</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -311,8 +363,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Initialization.ts#L224">ui/Base/Initialization.ts
-									:224</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Initialization.ts#L225">ui/Base/Initialization.ts
+									:225</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -342,8 +394,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Initialization.ts#L182">ui/Base/Initialization.ts
-									:182</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Initialization.ts#L183">ui/Base/Initialization.ts
+									:183</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -374,8 +426,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Initialization.ts#L169">ui/Base/Initialization.ts
-									:169</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Initialization.ts#L170">ui/Base/Initialization.ts
+									:170</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -400,8 +452,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Initialization.ts#L356">ui/Base/Initialization.ts
-									:356</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Initialization.ts#L357">ui/Base/Initialization.ts
+									:357</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -433,8 +485,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Initialization.ts#L310">ui/Base/Initialization.ts
-									:310</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Initialization.ts#L311">ui/Base/Initialization.ts
+									:311</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -466,8 +518,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Initialization.ts#L324">ui/Base/Initialization.ts
-									:324</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Initialization.ts#L325">ui/Base/Initialization.ts
+									:325</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -499,8 +551,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Initialization.ts#L235">ui/Base/Initialization.ts
-									:235</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Initialization.ts#L236">ui/Base/Initialization.ts
+									:236</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -563,8 +615,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Initialization.ts#L193">ui/Base/Initialization.ts
-									:193</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Initialization.ts#L194">ui/Base/Initialization.ts
+									:194</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -593,8 +645,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Initialization.ts#L444">ui/Base/Initialization.ts
-									:444</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Initialization.ts#L469">ui/Base/Initialization.ts
+									:469</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -623,8 +675,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Initialization.ts#L454">ui/Base/Initialization.ts
-									:454</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Initialization.ts#L479">ui/Base/Initialization.ts
+									:479</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -679,8 +731,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Initialization.ts#L106">ui/Base/Initialization.ts
-									:106</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Initialization.ts#L107">ui/Base/Initialization.ts
+									:107</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -713,8 +765,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Initialization.ts#L141">ui/Base/Initialization.ts
-									:141</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Initialization.ts#L142">ui/Base/Initialization.ts
+									:142</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -753,8 +805,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Initialization.ts#L76">ui/Base/Initialization.ts
-									:76</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Initialization.ts#L77">ui/Base/Initialization.ts
+									:77</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -790,8 +842,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Initialization.ts#L431">ui/Base/Initialization.ts
-									:431</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Initialization.ts#L456">ui/Base/Initialization.ts
+									:456</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">

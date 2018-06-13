@@ -685,8 +685,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L168">ui/Folding/Folding.ts
-							:168</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L173">ui/Folding/Folding.ts
+							:173</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -712,8 +712,8 @@ data-enable-expand&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L175">ui/Folding/Folding.ts
-							:175</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L180">ui/Folding/Folding.ts
+							:180</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -764,8 +764,8 @@ data-enable-expand&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L234">ui/Folding/Folding.ts
-							:234</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L239">ui/Folding/Folding.ts
+							:239</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -808,8 +808,8 @@ data-enable-expand&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L218">ui/Folding/Folding.ts
-							:218</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L223">ui/Folding/Folding.ts
+							:223</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -870,8 +870,8 @@ topResult.childResults = results;
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L183">ui/Folding/Folding.ts
-							:183</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L188">ui/Folding/Folding.ts
+							:188</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -976,16 +976,19 @@ topResult.childResults = results;
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L155">ui/Folding/Folding.ts
-							:155</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L160">ui/Folding/Folding.ts
+							:160</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>Specifies the sort criteria to apply to the top result and its child results (e.g., <code>date ascending</code>,
-								<code>@myfield descending</code>, etc. <a href="https://developers.coveo.com/x/iwEv#QueryParameters-sortCriteriasortCriteria">See
-							Query Parameters - sortCriteria</a>).</p>
+							<code>@myfield descending</code>, etc.). See <a href="https://developers.coveo.com/x/iwEv#QueryParameters-sortCriteriasortCriteria">Query Parameters - sortCriteria</a>.</p>
 						</div>
+						<p>This option works from the results returned by the index. This means that if only the three most relevant folded results are returned by the index
+							and you choose to rearrange the folded results by date, then the three most relevant results will be rearranged by date,
+						meaning that the first folded result is not necessarily the oldest or newest item.</p>
+						<p>However, since clicking on the <code>Show More</code> button triggers a new query, you would receive new results based on the sort criteria of this option.</p>
 						<p><strong>Example</strong></p>
 						<blockquote>
 							<p>If you are folding email results by conversation and you specify <code>date descending</code> as the <code>rearrange</code> value of

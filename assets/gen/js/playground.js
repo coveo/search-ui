@@ -61,16 +61,16 @@ var playground =
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 14);
+/******/ 	return __webpack_require__(__webpack_require__.s = 15);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscore.js 1.8.3
+/* WEBPACK VAR INJECTION */(function(global, module) {var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscore.js 1.9.1
 //     http://underscorejs.org
-//     (c) 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+//     (c) 2009-2018 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 //     Underscore may be freely distributed under the MIT license.
 
 (function() {
@@ -78,29 +78,32 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscor
   // Baseline setup
   // --------------
 
-  // Establish the root object, `window` in the browser, or `exports` on the server.
-  var root = this;
+  // Establish the root object, `window` (`self`) in the browser, `global`
+  // on the server, or `this` in some virtual machines. We use `self`
+  // instead of `window` for `WebWorker` support.
+  var root = typeof self == 'object' && self.self === self && self ||
+            typeof global == 'object' && global.global === global && global ||
+            this ||
+            {};
 
   // Save the previous value of the `_` variable.
   var previousUnderscore = root._;
 
   // Save bytes in the minified (but not gzipped) version:
-  var ArrayProto = Array.prototype, ObjProto = Object.prototype, FuncProto = Function.prototype;
+  var ArrayProto = Array.prototype, ObjProto = Object.prototype;
+  var SymbolProto = typeof Symbol !== 'undefined' ? Symbol.prototype : null;
 
   // Create quick reference variables for speed access to core prototypes.
-  var
-    push             = ArrayProto.push,
-    slice            = ArrayProto.slice,
-    toString         = ObjProto.toString,
-    hasOwnProperty   = ObjProto.hasOwnProperty;
+  var push = ArrayProto.push,
+      slice = ArrayProto.slice,
+      toString = ObjProto.toString,
+      hasOwnProperty = ObjProto.hasOwnProperty;
 
   // All **ECMAScript 5** native function implementations that we hope to use
   // are declared here.
-  var
-    nativeIsArray      = Array.isArray,
-    nativeKeys         = Object.keys,
-    nativeBind         = FuncProto.bind,
-    nativeCreate       = Object.create;
+  var nativeIsArray = Array.isArray,
+      nativeKeys = Object.keys,
+      nativeCreate = Object.create;
 
   // Naked function reference for surrogate-prototype-swapping.
   var Ctor = function(){};
@@ -113,10 +116,12 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscor
   };
 
   // Export the Underscore object for **Node.js**, with
-  // backwards-compatibility for the old `require()` API. If we're in
+  // backwards-compatibility for their old module API. If we're in
   // the browser, add `_` as a global object.
-  if (true) {
-    if (typeof module !== 'undefined' && module.exports) {
+  // (`nodeType` is checked to ensure that `module`
+  // and `exports` are not HTML elements.)
+  if (typeof exports != 'undefined' && !exports.nodeType) {
+    if (typeof module != 'undefined' && !module.nodeType && module.exports) {
       exports = module.exports = _;
     }
     exports._ = _;
@@ -125,7 +130,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscor
   }
 
   // Current version.
-  _.VERSION = '1.8.3';
+  _.VERSION = '1.9.1';
 
   // Internal function that returns an efficient (for current engines) version
   // of the passed-in callback, to be repeatedly applied in other Underscore
@@ -136,9 +141,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscor
       case 1: return function(value) {
         return func.call(context, value);
       };
-      case 2: return function(value, other) {
-        return func.call(context, value, other);
-      };
+      // The 2-argument case is omitted because we’re not using it.
       case 3: return function(value, index, collection) {
         return func.call(context, value, index, collection);
       };
@@ -151,34 +154,51 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscor
     };
   };
 
-  // A mostly-internal function to generate callbacks that can be applied
-  // to each element in a collection, returning the desired result — either
-  // identity, an arbitrary callback, a property matcher, or a property accessor.
+  var builtinIteratee;
+
+  // An internal function to generate callbacks that can be applied to each
+  // element in a collection, returning the desired result — either `identity`,
+  // an arbitrary callback, a property matcher, or a property accessor.
   var cb = function(value, context, argCount) {
+    if (_.iteratee !== builtinIteratee) return _.iteratee(value, context);
     if (value == null) return _.identity;
     if (_.isFunction(value)) return optimizeCb(value, context, argCount);
-    if (_.isObject(value)) return _.matcher(value);
+    if (_.isObject(value) && !_.isArray(value)) return _.matcher(value);
     return _.property(value);
   };
-  _.iteratee = function(value, context) {
+
+  // External wrapper for our callback generator. Users may customize
+  // `_.iteratee` if they want additional predicate/iteratee shorthand styles.
+  // This abstraction hides the internal-only argCount argument.
+  _.iteratee = builtinIteratee = function(value, context) {
     return cb(value, context, Infinity);
   };
 
-  // An internal function for creating assigner functions.
-  var createAssigner = function(keysFunc, undefinedOnly) {
-    return function(obj) {
-      var length = arguments.length;
-      if (length < 2 || obj == null) return obj;
-      for (var index = 1; index < length; index++) {
-        var source = arguments[index],
-            keys = keysFunc(source),
-            l = keys.length;
-        for (var i = 0; i < l; i++) {
-          var key = keys[i];
-          if (!undefinedOnly || obj[key] === void 0) obj[key] = source[key];
-        }
+  // Some functions take a variable number of arguments, or a few expected
+  // arguments at the beginning and then a variable number of values to operate
+  // on. This helper accumulates all remaining arguments past the function’s
+  // argument length (or an explicit `startIndex`), into an array that becomes
+  // the last argument. Similar to ES6’s "rest parameter".
+  var restArguments = function(func, startIndex) {
+    startIndex = startIndex == null ? func.length - 1 : +startIndex;
+    return function() {
+      var length = Math.max(arguments.length - startIndex, 0),
+          rest = Array(length),
+          index = 0;
+      for (; index < length; index++) {
+        rest[index] = arguments[index + startIndex];
       }
-      return obj;
+      switch (startIndex) {
+        case 0: return func.call(this, rest);
+        case 1: return func.call(this, arguments[0], rest);
+        case 2: return func.call(this, arguments[0], arguments[1], rest);
+      }
+      var args = Array(startIndex + 1);
+      for (index = 0; index < startIndex; index++) {
+        args[index] = arguments[index];
+      }
+      args[startIndex] = rest;
+      return func.apply(this, args);
     };
   };
 
@@ -192,18 +212,31 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscor
     return result;
   };
 
-  var property = function(key) {
+  var shallowProperty = function(key) {
     return function(obj) {
       return obj == null ? void 0 : obj[key];
     };
   };
 
+  var has = function(obj, path) {
+    return obj != null && hasOwnProperty.call(obj, path);
+  }
+
+  var deepGet = function(obj, path) {
+    var length = path.length;
+    for (var i = 0; i < length; i++) {
+      if (obj == null) return void 0;
+      obj = obj[path[i]];
+    }
+    return length ? obj : void 0;
+  };
+
   // Helper for collection methods to determine whether a collection
-  // should be iterated as an array or as an object
+  // should be iterated as an array or as an object.
   // Related: http://people.mozilla.org/~jorendorff/es6-draft.html#sec-tolength
   // Avoids a very nasty iOS 8 JIT bug on ARM-64. #2094
   var MAX_ARRAY_INDEX = Math.pow(2, 53) - 1;
-  var getLength = property('length');
+  var getLength = shallowProperty('length');
   var isArrayLike = function(collection) {
     var length = getLength(collection);
     return typeof length == 'number' && length >= 0 && length <= MAX_ARRAY_INDEX;
@@ -245,30 +278,29 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscor
   };
 
   // Create a reducing function iterating left or right.
-  function createReduce(dir) {
-    // Optimized iterator function as using arguments.length
-    // in the main function will deoptimize the, see #1991.
-    function iterator(obj, iteratee, memo, keys, index, length) {
+  var createReduce = function(dir) {
+    // Wrap code that reassigns argument variables in a separate function than
+    // the one that accesses `arguments.length` to avoid a perf hit. (#1991)
+    var reducer = function(obj, iteratee, memo, initial) {
+      var keys = !isArrayLike(obj) && _.keys(obj),
+          length = (keys || obj).length,
+          index = dir > 0 ? 0 : length - 1;
+      if (!initial) {
+        memo = obj[keys ? keys[index] : index];
+        index += dir;
+      }
       for (; index >= 0 && index < length; index += dir) {
         var currentKey = keys ? keys[index] : index;
         memo = iteratee(memo, obj[currentKey], currentKey, obj);
       }
       return memo;
-    }
+    };
 
     return function(obj, iteratee, memo, context) {
-      iteratee = optimizeCb(iteratee, context, 4);
-      var keys = !isArrayLike(obj) && _.keys(obj),
-          length = (keys || obj).length,
-          index = dir > 0 ? 0 : length - 1;
-      // Determine the initial value if none is provided.
-      if (arguments.length < 3) {
-        memo = obj[keys ? keys[index] : index];
-        index += dir;
-      }
-      return iterator(obj, iteratee, memo, keys, index, length);
+      var initial = arguments.length >= 3;
+      return reducer(obj, optimizeCb(iteratee, context, 4), memo, initial);
     };
-  }
+  };
 
   // **Reduce** builds up a single result from a list of values, aka `inject`,
   // or `foldl`.
@@ -279,12 +311,8 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscor
 
   // Return the first value which passes a truth test. Aliased as `detect`.
   _.find = _.detect = function(obj, predicate, context) {
-    var key;
-    if (isArrayLike(obj)) {
-      key = _.findIndex(obj, predicate, context);
-    } else {
-      key = _.findKey(obj, predicate, context);
-    }
+    var keyFinder = isArrayLike(obj) ? _.findIndex : _.findKey;
+    var key = keyFinder(obj, predicate, context);
     if (key !== void 0 && key !== -1) return obj[key];
   };
 
@@ -339,14 +367,26 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscor
   };
 
   // Invoke a method (with arguments) on every item in a collection.
-  _.invoke = function(obj, method) {
-    var args = slice.call(arguments, 2);
-    var isFunc = _.isFunction(method);
-    return _.map(obj, function(value) {
-      var func = isFunc ? method : value[method];
-      return func == null ? func : func.apply(value, args);
+  _.invoke = restArguments(function(obj, path, args) {
+    var contextPath, func;
+    if (_.isFunction(path)) {
+      func = path;
+    } else if (_.isArray(path)) {
+      contextPath = path.slice(0, -1);
+      path = path[path.length - 1];
+    }
+    return _.map(obj, function(context) {
+      var method = func;
+      if (!method) {
+        if (contextPath && contextPath.length) {
+          context = deepGet(context, contextPath);
+        }
+        if (context == null) return void 0;
+        method = context[path];
+      }
+      return method == null ? method : method.apply(context, args);
     });
-  };
+  });
 
   // Convenience version of a common use case of `map`: fetching a property.
   _.pluck = function(obj, key) {
@@ -369,20 +409,20 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscor
   _.max = function(obj, iteratee, context) {
     var result = -Infinity, lastComputed = -Infinity,
         value, computed;
-    if (iteratee == null && obj != null) {
+    if (iteratee == null || typeof iteratee == 'number' && typeof obj[0] != 'object' && obj != null) {
       obj = isArrayLike(obj) ? obj : _.values(obj);
       for (var i = 0, length = obj.length; i < length; i++) {
         value = obj[i];
-        if (value > result) {
+        if (value != null && value > result) {
           result = value;
         }
       }
     } else {
       iteratee = cb(iteratee, context);
-      _.each(obj, function(value, index, list) {
-        computed = iteratee(value, index, list);
+      _.each(obj, function(v, index, list) {
+        computed = iteratee(v, index, list);
         if (computed > lastComputed || computed === -Infinity && result === -Infinity) {
-          result = value;
+          result = v;
           lastComputed = computed;
         }
       });
@@ -394,20 +434,20 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscor
   _.min = function(obj, iteratee, context) {
     var result = Infinity, lastComputed = Infinity,
         value, computed;
-    if (iteratee == null && obj != null) {
+    if (iteratee == null || typeof iteratee == 'number' && typeof obj[0] != 'object' && obj != null) {
       obj = isArrayLike(obj) ? obj : _.values(obj);
       for (var i = 0, length = obj.length; i < length; i++) {
         value = obj[i];
-        if (value < result) {
+        if (value != null && value < result) {
           result = value;
         }
       }
     } else {
       iteratee = cb(iteratee, context);
-      _.each(obj, function(value, index, list) {
-        computed = iteratee(value, index, list);
+      _.each(obj, function(v, index, list) {
+        computed = iteratee(v, index, list);
         if (computed < lastComputed || computed === Infinity && result === Infinity) {
-          result = value;
+          result = v;
           lastComputed = computed;
         }
       });
@@ -415,21 +455,13 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscor
     return result;
   };
 
-  // Shuffle a collection, using the modern version of the
-  // [Fisher-Yates shuffle](http://en.wikipedia.org/wiki/Fisher–Yates_shuffle).
+  // Shuffle a collection.
   _.shuffle = function(obj) {
-    var set = isArrayLike(obj) ? obj : _.values(obj);
-    var length = set.length;
-    var shuffled = Array(length);
-    for (var index = 0, rand; index < length; index++) {
-      rand = _.random(0, index);
-      if (rand !== index) shuffled[index] = shuffled[rand];
-      shuffled[rand] = set[index];
-    }
-    return shuffled;
+    return _.sample(obj, Infinity);
   };
 
-  // Sample **n** random values from a collection.
+  // Sample **n** random values from a collection using the modern version of the
+  // [Fisher-Yates shuffle](http://en.wikipedia.org/wiki/Fisher–Yates_shuffle).
   // If **n** is not specified, returns a single random element.
   // The internal `guard` argument allows it to work with `map`.
   _.sample = function(obj, n, guard) {
@@ -437,17 +469,28 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscor
       if (!isArrayLike(obj)) obj = _.values(obj);
       return obj[_.random(obj.length - 1)];
     }
-    return _.shuffle(obj).slice(0, Math.max(0, n));
+    var sample = isArrayLike(obj) ? _.clone(obj) : _.values(obj);
+    var length = getLength(sample);
+    n = Math.max(Math.min(n, length), 0);
+    var last = length - 1;
+    for (var index = 0; index < n; index++) {
+      var rand = _.random(index, last);
+      var temp = sample[index];
+      sample[index] = sample[rand];
+      sample[rand] = temp;
+    }
+    return sample.slice(0, n);
   };
 
   // Sort the object's values by a criterion produced by an iteratee.
   _.sortBy = function(obj, iteratee, context) {
+    var index = 0;
     iteratee = cb(iteratee, context);
-    return _.pluck(_.map(obj, function(value, index, list) {
+    return _.pluck(_.map(obj, function(value, key, list) {
       return {
         value: value,
-        index: index,
-        criteria: iteratee(value, index, list)
+        index: index++,
+        criteria: iteratee(value, key, list)
       };
     }).sort(function(left, right) {
       var a = left.criteria;
@@ -461,9 +504,9 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscor
   };
 
   // An internal function used for aggregate "group by" operations.
-  var group = function(behavior) {
+  var group = function(behavior, partition) {
     return function(obj, iteratee, context) {
-      var result = {};
+      var result = partition ? [[], []] : {};
       iteratee = cb(iteratee, context);
       _.each(obj, function(value, index) {
         var key = iteratee(value, index, obj);
@@ -476,7 +519,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscor
   // Groups the object's values by a criterion. Pass either a string attribute
   // to group by, or a function that returns the criterion.
   _.groupBy = group(function(result, value, key) {
-    if (_.has(result, key)) result[key].push(value); else result[key] = [value];
+    if (has(result, key)) result[key].push(value); else result[key] = [value];
   });
 
   // Indexes the object's values by a criterion, similar to `groupBy`, but for
@@ -489,13 +532,18 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscor
   // either a string attribute to count by, or a function that returns the
   // criterion.
   _.countBy = group(function(result, value, key) {
-    if (_.has(result, key)) result[key]++; else result[key] = 1;
+    if (has(result, key)) result[key]++; else result[key] = 1;
   });
 
+  var reStrSymbol = /[^\ud800-\udfff]|[\ud800-\udbff][\udc00-\udfff]|[\ud800-\udfff]/g;
   // Safely create a real, live array from anything iterable.
   _.toArray = function(obj) {
     if (!obj) return [];
     if (_.isArray(obj)) return slice.call(obj);
+    if (_.isString(obj)) {
+      // Keep surrogate pair characters together
+      return obj.match(reStrSymbol);
+    }
     if (isArrayLike(obj)) return _.map(obj, _.identity);
     return _.values(obj);
   };
@@ -508,14 +556,9 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscor
 
   // Split a collection into two arrays: one whose elements all satisfy the given
   // predicate, and one whose elements all do not satisfy the predicate.
-  _.partition = function(obj, predicate, context) {
-    predicate = cb(predicate, context);
-    var pass = [], fail = [];
-    _.each(obj, function(value, key, obj) {
-      (predicate(value, key, obj) ? pass : fail).push(value);
-    });
-    return [pass, fail];
-  };
+  _.partition = group(function(result, value, pass) {
+    result[pass ? 0 : 1].push(value);
+  }, true);
 
   // Array Functions
   // ---------------
@@ -524,7 +567,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscor
   // values in the array. Aliased as `head` and `take`. The **guard** check
   // allows it to work with `_.map`.
   _.first = _.head = _.take = function(array, n, guard) {
-    if (array == null) return void 0;
+    if (array == null || array.length < 1) return n == null ? void 0 : [];
     if (n == null || guard) return array[0];
     return _.initial(array, array.length - n);
   };
@@ -539,7 +582,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscor
   // Get the last element of an array. Passing **n** will return the last N
   // values in the array.
   _.last = function(array, n, guard) {
-    if (array == null) return void 0;
+    if (array == null || array.length < 1) return n == null ? void 0 : [];
     if (n == null || guard) return array[array.length - 1];
     return _.rest(array, Math.max(0, array.length - n));
   };
@@ -553,21 +596,23 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscor
 
   // Trim out all falsy values from an array.
   _.compact = function(array) {
-    return _.filter(array, _.identity);
+    return _.filter(array, Boolean);
   };
 
   // Internal implementation of a recursive `flatten` function.
-  var flatten = function(input, shallow, strict, startIndex) {
-    var output = [], idx = 0;
-    for (var i = startIndex || 0, length = getLength(input); i < length; i++) {
+  var flatten = function(input, shallow, strict, output) {
+    output = output || [];
+    var idx = output.length;
+    for (var i = 0, length = getLength(input); i < length; i++) {
       var value = input[i];
       if (isArrayLike(value) && (_.isArray(value) || _.isArguments(value))) {
-        //flatten current level of array or arguments object
-        if (!shallow) value = flatten(value, shallow, strict);
-        var j = 0, len = value.length;
-        output.length += len;
-        while (j < len) {
-          output[idx++] = value[j++];
+        // Flatten current level of array or arguments object.
+        if (shallow) {
+          var j = 0, len = value.length;
+          while (j < len) output[idx++] = value[j++];
+        } else {
+          flatten(value, shallow, strict, output);
+          idx = output.length;
         }
       } else if (!strict) {
         output[idx++] = value;
@@ -582,12 +627,15 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscor
   };
 
   // Return a version of the array that does not contain the specified value(s).
-  _.without = function(array) {
-    return _.difference(array, slice.call(arguments, 1));
-  };
+  _.without = restArguments(function(array, otherArrays) {
+    return _.difference(array, otherArrays);
+  });
 
   // Produce a duplicate-free version of the array. If the array has already
   // been sorted, you have the option of using a faster algorithm.
+  // The faster algorithm will not work with an iteratee if the iteratee
+  // is not a one-to-one function, so providing an iteratee will disable
+  // the faster algorithm.
   // Aliased as `unique`.
   _.uniq = _.unique = function(array, isSorted, iteratee, context) {
     if (!_.isBoolean(isSorted)) {
@@ -601,7 +649,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscor
     for (var i = 0, length = getLength(array); i < length; i++) {
       var value = array[i],
           computed = iteratee ? iteratee(value, i, array) : value;
-      if (isSorted) {
+      if (isSorted && !iteratee) {
         if (!i || seen !== computed) result.push(value);
         seen = computed;
       } else if (iteratee) {
@@ -618,9 +666,9 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscor
 
   // Produce an array that contains the union: each distinct element from all of
   // the passed-in arrays.
-  _.union = function() {
-    return _.uniq(flatten(arguments, true, true));
-  };
+  _.union = restArguments(function(arrays) {
+    return _.uniq(flatten(arrays, true, true));
+  });
 
   // Produce an array that contains every item shared between all the
   // passed-in arrays.
@@ -630,7 +678,8 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscor
     for (var i = 0, length = getLength(array); i < length; i++) {
       var item = array[i];
       if (_.contains(result, item)) continue;
-      for (var j = 1; j < argsLength; j++) {
+      var j;
+      for (j = 1; j < argsLength; j++) {
         if (!_.contains(arguments[j], item)) break;
       }
       if (j === argsLength) result.push(item);
@@ -640,21 +689,15 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscor
 
   // Take the difference between one array and a number of other arrays.
   // Only the elements present in just the first array will remain.
-  _.difference = function(array) {
-    var rest = flatten(arguments, true, true, 1);
+  _.difference = restArguments(function(array, rest) {
+    rest = flatten(rest, true, true);
     return _.filter(array, function(value){
       return !_.contains(rest, value);
     });
-  };
-
-  // Zip together multiple lists into a single array -- elements that share
-  // an index go together.
-  _.zip = function() {
-    return _.unzip(arguments);
-  };
+  });
 
   // Complement of _.zip. Unzip accepts an array of arrays and groups
-  // each array's elements on shared indices
+  // each array's elements on shared indices.
   _.unzip = function(array) {
     var length = array && _.max(array, getLength).length || 0;
     var result = Array(length);
@@ -665,9 +708,13 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscor
     return result;
   };
 
+  // Zip together multiple lists into a single array -- elements that share
+  // an index go together.
+  _.zip = restArguments(_.unzip);
+
   // Converts lists into objects. Pass either a single array of `[key, value]`
   // pairs, or two parallel arrays of the same length -- one of keys, and one of
-  // the corresponding values.
+  // the corresponding values. Passing by pairs is the reverse of _.pairs.
   _.object = function(list, values) {
     var result = {};
     for (var i = 0, length = getLength(list); i < length; i++) {
@@ -680,8 +727,8 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscor
     return result;
   };
 
-  // Generator function to create the findIndex and findLastIndex functions
-  function createPredicateIndexFinder(dir) {
+  // Generator function to create the findIndex and findLastIndex functions.
+  var createPredicateIndexFinder = function(dir) {
     return function(array, predicate, context) {
       predicate = cb(predicate, context);
       var length = getLength(array);
@@ -691,9 +738,9 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscor
       }
       return -1;
     };
-  }
+  };
 
-  // Returns the first index on an array-like that passes a predicate test
+  // Returns the first index on an array-like that passes a predicate test.
   _.findIndex = createPredicateIndexFinder(1);
   _.findLastIndex = createPredicateIndexFinder(-1);
 
@@ -710,15 +757,15 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscor
     return low;
   };
 
-  // Generator function to create the indexOf and lastIndexOf functions
-  function createIndexFinder(dir, predicateFind, sortedIndex) {
+  // Generator function to create the indexOf and lastIndexOf functions.
+  var createIndexFinder = function(dir, predicateFind, sortedIndex) {
     return function(array, item, idx) {
       var i = 0, length = getLength(array);
       if (typeof idx == 'number') {
         if (dir > 0) {
-            i = idx >= 0 ? idx : Math.max(idx + length, i);
+          i = idx >= 0 ? idx : Math.max(idx + length, i);
         } else {
-            length = idx >= 0 ? Math.min(idx + 1, length) : idx + length + 1;
+          length = idx >= 0 ? Math.min(idx + 1, length) : idx + length + 1;
         }
       } else if (sortedIndex && idx && length) {
         idx = sortedIndex(array, item);
@@ -733,7 +780,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscor
       }
       return -1;
     };
-  }
+  };
 
   // Return the position of the first occurrence of an item in an array,
   // or -1 if the item is not included in the array.
@@ -750,7 +797,9 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscor
       stop = start || 0;
       start = 0;
     }
-    step = step || 1;
+    if (!step) {
+      step = stop < start ? -1 : 1;
+    }
 
     var length = Math.max(Math.ceil((stop - start) / step), 0);
     var range = Array(length);
@@ -762,11 +811,23 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscor
     return range;
   };
 
+  // Chunk a single array into multiple arrays, each containing `count` or fewer
+  // items.
+  _.chunk = function(array, count) {
+    if (count == null || count < 1) return [];
+    var result = [];
+    var i = 0, length = array.length;
+    while (i < length) {
+      result.push(slice.call(array, i, i += count));
+    }
+    return result;
+  };
+
   // Function (ahem) Functions
   // ------------------
 
   // Determines whether to execute a function as a constructor
-  // or a normal function with the provided arguments
+  // or a normal function with the provided arguments.
   var executeBound = function(sourceFunc, boundFunc, context, callingContext, args) {
     if (!(callingContext instanceof boundFunc)) return sourceFunc.apply(context, args);
     var self = baseCreate(sourceFunc.prototype);
@@ -778,52 +839,53 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscor
   // Create a function bound to a given object (assigning `this`, and arguments,
   // optionally). Delegates to **ECMAScript 5**'s native `Function.bind` if
   // available.
-  _.bind = function(func, context) {
-    if (nativeBind && func.bind === nativeBind) return nativeBind.apply(func, slice.call(arguments, 1));
+  _.bind = restArguments(function(func, context, args) {
     if (!_.isFunction(func)) throw new TypeError('Bind must be called on a function');
-    var args = slice.call(arguments, 2);
-    var bound = function() {
-      return executeBound(func, bound, context, this, args.concat(slice.call(arguments)));
-    };
+    var bound = restArguments(function(callArgs) {
+      return executeBound(func, bound, context, this, args.concat(callArgs));
+    });
     return bound;
-  };
+  });
 
   // Partially apply a function by creating a version that has had some of its
   // arguments pre-filled, without changing its dynamic `this` context. _ acts
-  // as a placeholder, allowing any combination of arguments to be pre-filled.
-  _.partial = function(func) {
-    var boundArgs = slice.call(arguments, 1);
+  // as a placeholder by default, allowing any combination of arguments to be
+  // pre-filled. Set `_.partial.placeholder` for a custom placeholder argument.
+  _.partial = restArguments(function(func, boundArgs) {
+    var placeholder = _.partial.placeholder;
     var bound = function() {
       var position = 0, length = boundArgs.length;
       var args = Array(length);
       for (var i = 0; i < length; i++) {
-        args[i] = boundArgs[i] === _ ? arguments[position++] : boundArgs[i];
+        args[i] = boundArgs[i] === placeholder ? arguments[position++] : boundArgs[i];
       }
       while (position < arguments.length) args.push(arguments[position++]);
       return executeBound(func, bound, this, this, args);
     };
     return bound;
-  };
+  });
+
+  _.partial.placeholder = _;
 
   // Bind a number of an object's methods to that object. Remaining arguments
   // are the method names to be bound. Useful for ensuring that all callbacks
   // defined on an object belong to it.
-  _.bindAll = function(obj) {
-    var i, length = arguments.length, key;
-    if (length <= 1) throw new Error('bindAll must be passed function names');
-    for (i = 1; i < length; i++) {
-      key = arguments[i];
+  _.bindAll = restArguments(function(obj, keys) {
+    keys = flatten(keys, false, false);
+    var index = keys.length;
+    if (index < 1) throw new Error('bindAll must be passed function names');
+    while (index--) {
+      var key = keys[index];
       obj[key] = _.bind(obj[key], obj);
     }
-    return obj;
-  };
+  });
 
   // Memoize an expensive function by storing its results.
   _.memoize = function(func, hasher) {
     var memoize = function(key) {
       var cache = memoize.cache;
       var address = '' + (hasher ? hasher.apply(this, arguments) : key);
-      if (!_.has(cache, address)) cache[address] = func.apply(this, arguments);
+      if (!has(cache, address)) cache[address] = func.apply(this, arguments);
       return cache[address];
     };
     memoize.cache = {};
@@ -832,12 +894,11 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscor
 
   // Delays a function for the given number of milliseconds, and then calls
   // it with the arguments supplied.
-  _.delay = function(func, wait) {
-    var args = slice.call(arguments, 2);
-    return setTimeout(function(){
+  _.delay = restArguments(function(func, wait, args) {
+    return setTimeout(function() {
       return func.apply(null, args);
     }, wait);
-  };
+  });
 
   // Defers a function, scheduling it to run after the current call stack has
   // cleared.
@@ -849,17 +910,18 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscor
   // but if you'd like to disable the execution on the leading edge, pass
   // `{leading: false}`. To disable execution on the trailing edge, ditto.
   _.throttle = function(func, wait, options) {
-    var context, args, result;
-    var timeout = null;
+    var timeout, context, args, result;
     var previous = 0;
     if (!options) options = {};
+
     var later = function() {
       previous = options.leading === false ? 0 : _.now();
       timeout = null;
       result = func.apply(context, args);
       if (!timeout) context = args = null;
     };
-    return function() {
+
+    var throttled = function() {
       var now = _.now();
       if (!previous && options.leading === false) previous = now;
       var remaining = wait - (now - previous);
@@ -878,6 +940,14 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscor
       }
       return result;
     };
+
+    throttled.cancel = function() {
+      clearTimeout(timeout);
+      previous = 0;
+      timeout = context = args = null;
+    };
+
+    return throttled;
   };
 
   // Returns a function, that, as long as it continues to be invoked, will not
@@ -885,35 +955,32 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscor
   // N milliseconds. If `immediate` is passed, trigger the function on the
   // leading edge, instead of the trailing.
   _.debounce = function(func, wait, immediate) {
-    var timeout, args, context, timestamp, result;
+    var timeout, result;
 
-    var later = function() {
-      var last = _.now() - timestamp;
-
-      if (last < wait && last >= 0) {
-        timeout = setTimeout(later, wait - last);
-      } else {
-        timeout = null;
-        if (!immediate) {
-          result = func.apply(context, args);
-          if (!timeout) context = args = null;
-        }
-      }
+    var later = function(context, args) {
+      timeout = null;
+      if (args) result = func.apply(context, args);
     };
 
-    return function() {
-      context = this;
-      args = arguments;
-      timestamp = _.now();
-      var callNow = immediate && !timeout;
-      if (!timeout) timeout = setTimeout(later, wait);
-      if (callNow) {
-        result = func.apply(context, args);
-        context = args = null;
+    var debounced = restArguments(function(args) {
+      if (timeout) clearTimeout(timeout);
+      if (immediate) {
+        var callNow = !timeout;
+        timeout = setTimeout(later, wait);
+        if (callNow) result = func.apply(this, args);
+      } else {
+        timeout = _.delay(later, wait, this, args);
       }
 
       return result;
+    });
+
+    debounced.cancel = function() {
+      clearTimeout(timeout);
+      timeout = null;
     };
+
+    return debounced;
   };
 
   // Returns the first function passed as an argument to the second,
@@ -968,22 +1035,24 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscor
   // often you call it. Useful for lazy initialization.
   _.once = _.partial(_.before, 2);
 
+  _.restArguments = restArguments;
+
   // Object Functions
   // ----------------
 
   // Keys in IE < 9 that won't be iterated by `for key in ...` and thus missed.
   var hasEnumBug = !{toString: null}.propertyIsEnumerable('toString');
   var nonEnumerableProps = ['valueOf', 'isPrototypeOf', 'toString',
-                      'propertyIsEnumerable', 'hasOwnProperty', 'toLocaleString'];
+    'propertyIsEnumerable', 'hasOwnProperty', 'toLocaleString'];
 
-  function collectNonEnumProps(obj, keys) {
+  var collectNonEnumProps = function(obj, keys) {
     var nonEnumIdx = nonEnumerableProps.length;
     var constructor = obj.constructor;
-    var proto = (_.isFunction(constructor) && constructor.prototype) || ObjProto;
+    var proto = _.isFunction(constructor) && constructor.prototype || ObjProto;
 
     // Constructor is a special case.
     var prop = 'constructor';
-    if (_.has(obj, prop) && !_.contains(keys, prop)) keys.push(prop);
+    if (has(obj, prop) && !_.contains(keys, prop)) keys.push(prop);
 
     while (nonEnumIdx--) {
       prop = nonEnumerableProps[nonEnumIdx];
@@ -991,15 +1060,15 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscor
         keys.push(prop);
       }
     }
-  }
+  };
 
   // Retrieve the names of an object's own properties.
-  // Delegates to **ECMAScript 5**'s native `Object.keys`
+  // Delegates to **ECMAScript 5**'s native `Object.keys`.
   _.keys = function(obj) {
     if (!_.isObject(obj)) return [];
     if (nativeKeys) return nativeKeys(obj);
     var keys = [];
-    for (var key in obj) if (_.has(obj, key)) keys.push(key);
+    for (var key in obj) if (has(obj, key)) keys.push(key);
     // Ahem, IE < 9.
     if (hasEnumBug) collectNonEnumProps(obj, keys);
     return keys;
@@ -1026,22 +1095,22 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscor
     return values;
   };
 
-  // Returns the results of applying the iteratee to each element of the object
-  // In contrast to _.map it returns an object
+  // Returns the results of applying the iteratee to each element of the object.
+  // In contrast to _.map it returns an object.
   _.mapObject = function(obj, iteratee, context) {
     iteratee = cb(iteratee, context);
-    var keys =  _.keys(obj),
-          length = keys.length,
-          results = {},
-          currentKey;
-      for (var index = 0; index < length; index++) {
-        currentKey = keys[index];
-        results[currentKey] = iteratee(obj[currentKey], currentKey, obj);
-      }
-      return results;
+    var keys = _.keys(obj),
+        length = keys.length,
+        results = {};
+    for (var index = 0; index < length; index++) {
+      var currentKey = keys[index];
+      results[currentKey] = iteratee(obj[currentKey], currentKey, obj);
+    }
+    return results;
   };
 
   // Convert an object into a list of `[key, value]` pairs.
+  // The opposite of _.object.
   _.pairs = function(obj) {
     var keys = _.keys(obj);
     var length = keys.length;
@@ -1063,7 +1132,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscor
   };
 
   // Return a sorted list of the function names available on the object.
-  // Aliased as `methods`
+  // Aliased as `methods`.
   _.functions = _.methods = function(obj) {
     var names = [];
     for (var key in obj) {
@@ -1072,14 +1141,33 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscor
     return names.sort();
   };
 
+  // An internal function for creating assigner functions.
+  var createAssigner = function(keysFunc, defaults) {
+    return function(obj) {
+      var length = arguments.length;
+      if (defaults) obj = Object(obj);
+      if (length < 2 || obj == null) return obj;
+      for (var index = 1; index < length; index++) {
+        var source = arguments[index],
+            keys = keysFunc(source),
+            l = keys.length;
+        for (var i = 0; i < l; i++) {
+          var key = keys[i];
+          if (!defaults || obj[key] === void 0) obj[key] = source[key];
+        }
+      }
+      return obj;
+    };
+  };
+
   // Extend a given object with all the properties in passed-in object(s).
   _.extend = createAssigner(_.allKeys);
 
-  // Assigns a given object with all the own properties in the passed-in object(s)
+  // Assigns a given object with all the own properties in the passed-in object(s).
   // (https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object/assign)
   _.extendOwn = _.assign = createAssigner(_.keys);
 
-  // Returns the first key on an object that passes a predicate test
+  // Returns the first key on an object that passes a predicate test.
   _.findKey = function(obj, predicate, context) {
     predicate = cb(predicate, context);
     var keys = _.keys(obj), key;
@@ -1089,16 +1177,21 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscor
     }
   };
 
+  // Internal pick helper function to determine if `obj` has key `key`.
+  var keyInObj = function(value, key, obj) {
+    return key in obj;
+  };
+
   // Return a copy of the object only containing the whitelisted properties.
-  _.pick = function(object, oiteratee, context) {
-    var result = {}, obj = object, iteratee, keys;
+  _.pick = restArguments(function(obj, keys) {
+    var result = {}, iteratee = keys[0];
     if (obj == null) return result;
-    if (_.isFunction(oiteratee)) {
+    if (_.isFunction(iteratee)) {
+      if (keys.length > 1) iteratee = optimizeCb(iteratee, keys[1]);
       keys = _.allKeys(obj);
-      iteratee = optimizeCb(oiteratee, context);
     } else {
-      keys = flatten(arguments, false, false, 1);
-      iteratee = function(value, key, obj) { return key in obj; };
+      iteratee = keyInObj;
+      keys = flatten(keys, false, false);
       obj = Object(obj);
     }
     for (var i = 0, length = keys.length; i < length; i++) {
@@ -1107,20 +1200,22 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscor
       if (iteratee(value, key, obj)) result[key] = value;
     }
     return result;
-  };
+  });
 
-   // Return a copy of the object without the blacklisted properties.
-  _.omit = function(obj, iteratee, context) {
+  // Return a copy of the object without the blacklisted properties.
+  _.omit = restArguments(function(obj, keys) {
+    var iteratee = keys[0], context;
     if (_.isFunction(iteratee)) {
       iteratee = _.negate(iteratee);
+      if (keys.length > 1) context = keys[1];
     } else {
-      var keys = _.map(flatten(arguments, false, false, 1), String);
+      keys = _.map(flatten(keys, false, false), String);
       iteratee = function(value, key) {
         return !_.contains(keys, key);
       };
     }
     return _.pick(obj, iteratee, context);
-  };
+  });
 
   // Fill in a given object with default properties.
   _.defaults = createAssigner(_.allKeys, true);
@@ -1162,12 +1257,23 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscor
 
 
   // Internal recursive comparison function for `isEqual`.
-  var eq = function(a, b, aStack, bStack) {
+  var eq, deepEq;
+  eq = function(a, b, aStack, bStack) {
     // Identical objects are equal. `0 === -0`, but they aren't identical.
     // See the [Harmony `egal` proposal](http://wiki.ecmascript.org/doku.php?id=harmony:egal).
     if (a === b) return a !== 0 || 1 / a === 1 / b;
-    // A strict comparison is necessary because `null == undefined`.
-    if (a == null || b == null) return a === b;
+    // `null` or `undefined` only equal to itself (strict comparison).
+    if (a == null || b == null) return false;
+    // `NaN`s are equivalent, but non-reflexive.
+    if (a !== a) return b !== b;
+    // Exhaust primitive checks
+    var type = typeof a;
+    if (type !== 'function' && type !== 'object' && typeof b != 'object') return false;
+    return deepEq(a, b, aStack, bStack);
+  };
+
+  // Internal recursive comparison function for `isEqual`.
+  deepEq = function(a, b, aStack, bStack) {
     // Unwrap any wrapped objects.
     if (a instanceof _) a = a._wrapped;
     if (b instanceof _) b = b._wrapped;
@@ -1184,7 +1290,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscor
         return '' + a === '' + b;
       case '[object Number]':
         // `NaN`s are equivalent, but non-reflexive.
-        // Object(NaN) is equivalent to NaN
+        // Object(NaN) is equivalent to NaN.
         if (+a !== +a) return +b !== +b;
         // An `egal` comparison is performed for other numeric values.
         return +a === 0 ? 1 / +a === 1 / b : +a === +b;
@@ -1194,6 +1300,8 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscor
         // millisecond representations. Note that invalid dates with millisecond representations
         // of `NaN` are not equivalent.
         return +a === +b;
+      case '[object Symbol]':
+        return SymbolProto.valueOf.call(a) === SymbolProto.valueOf.call(b);
     }
 
     var areArrays = className === '[object Array]';
@@ -1245,7 +1353,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscor
       while (length--) {
         // Deep compare each member
         key = keys[length];
-        if (!(_.has(b, key) && eq(a[key], b[key], aStack, bStack))) return false;
+        if (!(has(b, key) && eq(a[key], b[key], aStack, bStack))) return false;
       }
     }
     // Remove the first object from the stack of traversed objects.
@@ -1284,8 +1392,8 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscor
     return type === 'function' || type === 'object' && !!obj;
   };
 
-  // Add some isType methods: isArguments, isFunction, isString, isNumber, isDate, isRegExp, isError.
-  _.each(['Arguments', 'Function', 'String', 'Number', 'Date', 'RegExp', 'Error'], function(name) {
+  // Add some isType methods: isArguments, isFunction, isString, isNumber, isDate, isRegExp, isError, isMap, isWeakMap, isSet, isWeakSet.
+  _.each(['Arguments', 'Function', 'String', 'Number', 'Date', 'RegExp', 'Error', 'Symbol', 'Map', 'WeakMap', 'Set', 'WeakSet'], function(name) {
     _['is' + name] = function(obj) {
       return toString.call(obj) === '[object ' + name + ']';
     };
@@ -1295,13 +1403,14 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscor
   // there isn't any inspectable "Arguments" type.
   if (!_.isArguments(arguments)) {
     _.isArguments = function(obj) {
-      return _.has(obj, 'callee');
+      return has(obj, 'callee');
     };
   }
 
   // Optimize `isFunction` if appropriate. Work around some typeof bugs in old v8,
-  // IE 11 (#1621), and in Safari 8 (#1929).
-  if (typeof /./ != 'function' && typeof Int8Array != 'object') {
+  // IE 11 (#1621), Safari 8 (#1929), and PhantomJS (#2236).
+  var nodelist = root.document && root.document.childNodes;
+  if (typeof /./ != 'function' && typeof Int8Array != 'object' && typeof nodelist != 'function') {
     _.isFunction = function(obj) {
       return typeof obj == 'function' || false;
     };
@@ -1309,12 +1418,12 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscor
 
   // Is a given object a finite number?
   _.isFinite = function(obj) {
-    return isFinite(obj) && !isNaN(parseFloat(obj));
+    return !_.isSymbol(obj) && isFinite(obj) && !isNaN(parseFloat(obj));
   };
 
-  // Is the given value `NaN`? (NaN is the only number which does not equal itself).
+  // Is the given value `NaN`?
   _.isNaN = function(obj) {
-    return _.isNumber(obj) && obj !== +obj;
+    return _.isNumber(obj) && isNaN(obj);
   };
 
   // Is a given value a boolean?
@@ -1334,8 +1443,19 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscor
 
   // Shortcut function for checking if an object has a given property directly
   // on itself (in other words, not on a prototype).
-  _.has = function(obj, key) {
-    return obj != null && hasOwnProperty.call(obj, key);
+  _.has = function(obj, path) {
+    if (!_.isArray(path)) {
+      return has(obj, path);
+    }
+    var length = path.length;
+    for (var i = 0; i < length; i++) {
+      var key = path[i];
+      if (obj == null || !hasOwnProperty.call(obj, key)) {
+        return false;
+      }
+      obj = obj[key];
+    }
+    return !!length;
   };
 
   // Utility Functions
@@ -1362,12 +1482,24 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscor
 
   _.noop = function(){};
 
-  _.property = property;
+  // Creates a function that, when passed an object, will traverse that object’s
+  // properties down the given `path`, specified as an array of keys or indexes.
+  _.property = function(path) {
+    if (!_.isArray(path)) {
+      return shallowProperty(path);
+    }
+    return function(obj) {
+      return deepGet(obj, path);
+    };
+  };
 
   // Generates a function for a given object that returns a given property.
   _.propertyOf = function(obj) {
-    return obj == null ? function(){} : function(key) {
-      return obj[key];
+    if (obj == null) {
+      return function(){};
+    }
+    return function(path) {
+      return !_.isArray(path) ? obj[path] : deepGet(obj, path);
     };
   };
 
@@ -1402,7 +1534,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscor
     return new Date().getTime();
   };
 
-   // List of HTML entities for escaping.
+  // List of HTML entities for escaping.
   var escapeMap = {
     '&': '&amp;',
     '<': '&lt;',
@@ -1418,7 +1550,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscor
     var escaper = function(match) {
       return map[match];
     };
-    // Regexes for identifying a key that needs to be escaped
+    // Regexes for identifying a key that needs to be escaped.
     var source = '(?:' + _.keys(map).join('|') + ')';
     var testRegexp = RegExp(source);
     var replaceRegexp = RegExp(source, 'g');
@@ -1430,14 +1562,24 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscor
   _.escape = createEscaper(escapeMap);
   _.unescape = createEscaper(unescapeMap);
 
-  // If the value of the named `property` is a function then invoke it with the
-  // `object` as context; otherwise, return it.
-  _.result = function(object, property, fallback) {
-    var value = object == null ? void 0 : object[property];
-    if (value === void 0) {
-      value = fallback;
+  // Traverses the children of `obj` along `path`. If a child is a function, it
+  // is invoked with its parent as context. Returns the value of the final
+  // child, or `fallback` if any child is undefined.
+  _.result = function(obj, path, fallback) {
+    if (!_.isArray(path)) path = [path];
+    var length = path.length;
+    if (!length) {
+      return _.isFunction(fallback) ? fallback.call(obj) : fallback;
     }
-    return _.isFunction(value) ? value.call(object) : value;
+    for (var i = 0; i < length; i++) {
+      var prop = obj == null ? void 0 : obj[path[i]];
+      if (prop === void 0) {
+        prop = fallback;
+        i = length; // Ensure we don't continue iterating.
+      }
+      obj = _.isFunction(prop) ? prop.call(obj) : prop;
+    }
+    return obj;
   };
 
   // Generate a unique integer id (unique within the entire client session).
@@ -1451,9 +1593,9 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscor
   // By default, Underscore uses ERB-style template delimiters, change the
   // following template settings to use alternative delimiters.
   _.templateSettings = {
-    evaluate    : /<%([\s\S]+?)%>/g,
-    interpolate : /<%=([\s\S]+?)%>/g,
-    escape      : /<%-([\s\S]+?)%>/g
+    evaluate: /<%([\s\S]+?)%>/g,
+    interpolate: /<%=([\s\S]+?)%>/g,
+    escape: /<%-([\s\S]+?)%>/g
   };
 
   // When customizing `templateSettings`, if you don't want to define an
@@ -1464,15 +1606,15 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscor
   // Certain characters need to be escaped so that they can be put into a
   // string literal.
   var escapes = {
-    "'":      "'",
-    '\\':     '\\',
-    '\r':     'r',
-    '\n':     'n',
+    "'": "'",
+    '\\': '\\',
+    '\r': 'r',
+    '\n': 'n',
     '\u2028': 'u2028',
     '\u2029': 'u2029'
   };
 
-  var escaper = /\\|'|\r|\n|\u2028|\u2029/g;
+  var escapeRegExp = /\\|'|\r|\n|\u2028|\u2029/g;
 
   var escapeChar = function(match) {
     return '\\' + escapes[match];
@@ -1497,7 +1639,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscor
     var index = 0;
     var source = "__p+='";
     text.replace(matcher, function(match, escape, interpolate, evaluate, offset) {
-      source += text.slice(index, offset).replace(escaper, escapeChar);
+      source += text.slice(index, offset).replace(escapeRegExp, escapeChar);
       index = offset + match.length;
 
       if (escape) {
@@ -1508,7 +1650,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscor
         source += "';\n" + evaluate + "\n__p+='";
       }
 
-      // Adobe VMs need the match returned to produce the correct offest.
+      // Adobe VMs need the match returned to produce the correct offset.
       return match;
     });
     source += "';\n";
@@ -1520,8 +1662,9 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscor
       "print=function(){__p+=__j.call(arguments,'');};\n" +
       source + 'return __p;\n';
 
+    var render;
     try {
-      var render = new Function(settings.variable || 'obj', '_', source);
+      render = new Function(settings.variable || 'obj', '_', source);
     } catch (e) {
       e.source = source;
       throw e;
@@ -1552,7 +1695,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscor
   // underscore functions. Wrapped objects may be chained.
 
   // Helper function to continue chaining intermediate results.
-  var result = function(instance, obj) {
+  var chainResult = function(instance, obj) {
     return instance._chain ? _(obj).chain() : obj;
   };
 
@@ -1563,9 +1706,10 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscor
       _.prototype[name] = function() {
         var args = [this._wrapped];
         push.apply(args, arguments);
-        return result(this, func.apply(_, args));
+        return chainResult(this, func.apply(_, args));
       };
     });
+    return _;
   };
 
   // Add all of the Underscore functions to the wrapper object.
@@ -1578,7 +1722,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscor
       var obj = this._wrapped;
       method.apply(obj, arguments);
       if ((name === 'shift' || name === 'splice') && obj.length === 0) delete obj[0];
-      return result(this, obj);
+      return chainResult(this, obj);
     };
   });
 
@@ -1586,7 +1730,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscor
   _.each(['concat', 'join', 'slice'], function(name) {
     var method = ArrayProto[name];
     _.prototype[name] = function() {
-      return result(this, method.apply(this._wrapped, arguments));
+      return chainResult(this, method.apply(this._wrapped, arguments));
     };
   });
 
@@ -1600,7 +1744,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscor
   _.prototype.valueOf = _.prototype.toJSON = _.prototype.value;
 
   _.prototype.toString = function() {
-    return '' + this._wrapped;
+    return String(this._wrapped);
   };
 
   // AMD registration happens at the end for compatibility with AMD loaders
@@ -1616,8 +1760,9 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscor
     }).apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
   }
-}.call(this));
+}());
 
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5), __webpack_require__(18)(module)))
 
 /***/ }),
 /* 1 */
@@ -1906,6 +2051,21 @@ var Utils = /** @class */ (function () {
             }
         }
         return value;
+    };
+    /**
+     * Get the value of the first field from the array and defined in the result.
+     *
+     * @param result a QueryResult in which to ge the fieldvalue.
+     * @param name One or multiple fieldNames to get the value.
+     */
+    Utils.getFirstAvailableFieldValue = function (result, fieldNames) {
+        for (var i = 0; i < fieldNames.length; i++) {
+            var value = Utils.getFieldValue(result, fieldNames[i]);
+            if (value !== undefined) {
+                return value;
+            }
+        }
+        return undefined;
     };
     Utils.getFieldValue = function (result, name) {
         // Be as forgiving as possible about the field name, since we expect
@@ -2270,7 +2430,7 @@ exports.Logger = Logger;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var Utils_1 = __webpack_require__(2);
-var JQueryutils_1 = __webpack_require__(5);
+var JQueryutils_1 = __webpack_require__(6);
 var Assert_1 = __webpack_require__(1);
 var Logger_1 = __webpack_require__(3);
 var _ = __webpack_require__(0);
@@ -2709,10 +2869,7 @@ var Dom = /** @class */ (function () {
                 var fn = function (e) {
                     eventHandle(e, e.detail);
                 };
-                Dom.handlers.push({
-                    eventHandle: eventHandle,
-                    fn: fn
-                });
+                Dom.handlers.set(eventHandle, fn);
                 this.el.addEventListener(modifiedType, fn, false);
             }
             else if (this.el['on']) {
@@ -2750,16 +2907,9 @@ var Dom = /** @class */ (function () {
                 jq(this.el).off(modifiedType, eventHandle);
             }
             else if (this.el.removeEventListener) {
-                var idx_1 = 0;
-                var found = _.find(Dom.handlers, function (handlerObj, i) {
-                    if (handlerObj.eventHandle == eventHandle) {
-                        idx_1 = i;
-                        return true;
-                    }
-                });
-                if (found) {
-                    this.el.removeEventListener(modifiedType, found.fn, false);
-                    Dom.handlers.splice(idx_1, 1);
+                var handler = Dom.handlers.get(eventHandle);
+                if (handler) {
+                    this.el.removeEventListener(modifiedType, handler, false);
                 }
             }
             else if (this.el['off']) {
@@ -2939,7 +3089,7 @@ var Dom = /** @class */ (function () {
     };
     Dom.CLASS_NAME_REGEX = /-?[_a-zA-Z]+[_a-zA-Z0-9-]*/g;
     Dom.ONLY_WHITE_SPACE_REGEX = /^\s*$/;
-    Dom.handlers = [];
+    Dom.handlers = new WeakMap();
     return Dom;
 }());
 exports.Dom = Dom;
@@ -3007,6 +3157,33 @@ exports.$$ = $$;
 
 /***/ }),
 /* 5 */
+/***/ (function(module, exports) {
+
+var g;
+
+// This works in non-strict mode
+g = (function() {
+	return this;
+})();
+
+try {
+	// This works if eval is allowed (see CSP)
+	g = g || Function("return this")() || (1,eval)("this");
+} catch(e) {
+	// This works if the window reference is available
+	if(typeof window === "object")
+		g = window;
+}
+
+// g can still be undefined, but nothing to do about it...
+// We return undefined, instead of nothing here, so it's
+// easier to handle this case. if(!global) { ...}
+
+module.exports = g;
+
+
+/***/ }),
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3041,7 +3218,7 @@ exports.JQueryUtils = JQueryUtils;
 
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3096,21 +3273,21 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var EndpointCaller_1 = __webpack_require__(17);
+var EndpointCaller_1 = __webpack_require__(19);
 var Logger_1 = __webpack_require__(3);
 var Assert_1 = __webpack_require__(1);
-var Version_1 = __webpack_require__(26);
-var AjaxError_1 = __webpack_require__(27);
-var MissingAuthenticationError_1 = __webpack_require__(28);
-var QueryUtils_1 = __webpack_require__(29);
-var QueryError_1 = __webpack_require__(30);
+var Version_1 = __webpack_require__(23);
+var AjaxError_1 = __webpack_require__(24);
+var MissingAuthenticationError_1 = __webpack_require__(25);
+var QueryUtils_1 = __webpack_require__(26);
+var QueryError_1 = __webpack_require__(27);
 var Utils_1 = __webpack_require__(2);
 var _ = __webpack_require__(0);
-var coveo_analytics_1 = __webpack_require__(31);
-var CookieUtils_1 = __webpack_require__(38);
-var TimeSpanUtils_1 = __webpack_require__(7);
-var UrlUtils_1 = __webpack_require__(8);
-var AccessToken_1 = __webpack_require__(39);
+var coveo_analytics_1 = __webpack_require__(28);
+var CookieUtils_1 = __webpack_require__(35);
+var TimeSpanUtils_1 = __webpack_require__(8);
+var UrlUtils_1 = __webpack_require__(9);
+var AccessToken_1 = __webpack_require__(36);
 var DefaultSearchEndpointOptions = /** @class */ (function () {
     function DefaultSearchEndpointOptions() {
         this.version = 'v2';
@@ -3199,7 +3376,7 @@ var SearchEndpoint = /** @class */ (function () {
      *
      * @param otherOptions A set of additional options to use when configuring this endpoint.
      */
-    SearchEndpoint.configureSampleEndpointV2 = function (optionsOPtions) {
+    SearchEndpoint.configureSampleEndpointV2 = function (otherOptions) {
         SearchEndpoint.endpoints['default'] = new SearchEndpoint(_.extend({
             restUri: 'https://platform.cloud.coveo.com/rest/search',
             accessToken: 'xx564559b1-0045-48e1-953c-3addd1ee4457',
@@ -3207,7 +3384,7 @@ var SearchEndpoint = /** @class */ (function () {
                 organizationId: 'searchuisamples',
                 viewAllContent: 1
             }
-        }));
+        }, otherOptions));
     };
     /**
      * Configures a search endpoint on a Coveo Cloud index.
@@ -4235,7 +4412,7 @@ function includeIsGuestUser() {
 
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4297,7 +4474,7 @@ exports.TimeSpan = TimeSpan;
 
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4465,13 +4642,13 @@ exports.UrlUtils = UrlUtils;
 
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var history_1 = __webpack_require__(10);
-__webpack_require__(33);
+var history_1 = __webpack_require__(11);
+__webpack_require__(30);
 exports.Version = 'v15';
 exports.Endpoints = {
     default: 'https://usageanalytics.coveo.com',
@@ -4554,13 +4731,13 @@ exports.default = Client;
 
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var storage_1 = __webpack_require__(11);
-var detector = __webpack_require__(12);
+var storage_1 = __webpack_require__(12);
+var detector = __webpack_require__(13);
 exports.STORE_KEY = '__coveo.analytics.history';
 exports.MAX_NUMBER_OF_HISTORY_ELEMENTS = 20;
 exports.MIN_THRESHOLD_FOR_DUPLICATE_VALUE = 1000 * 60;
@@ -4658,13 +4835,13 @@ exports.default = HistoryStore;
 
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var detector = __webpack_require__(12);
-var cookieutils_1 = __webpack_require__(32);
+var detector = __webpack_require__(13);
+var cookieutils_1 = __webpack_require__(29);
 exports.preferredStorage = null;
 function getAvailableStorage() {
     if (exports.preferredStorage) {
@@ -4709,7 +4886,7 @@ exports.NullStorage = NullStorage;
 
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4752,7 +4929,7 @@ exports.hasDocumentLocation = hasDocumentLocation;
 
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4791,23 +4968,10 @@ exports.SectionBuilder = SectionBuilder;
 
 
 /***/ }),
-/* 14 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(15);
-
-
-/***/ }),
 /* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var Playground_1 = __webpack_require__(16);
-document.addEventListener('DOMContentLoaded', function () {
-    new Playground_1.Playground(document.body);
-});
+module.exports = __webpack_require__(16);
 
 
 /***/ }),
@@ -4817,11 +4981,24 @@ document.addEventListener('DOMContentLoaded', function () {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+var Playground_1 = __webpack_require__(17);
+document.addEventListener('DOMContentLoaded', function () {
+    new Playground_1.Playground(document.body);
+});
+
+
+/***/ }),
+/* 17 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(4);
-var SearchEndpoint_1 = __webpack_require__(6);
-var PlaygroundConfiguration_1 = __webpack_require__(40);
-var QueryEvents_1 = __webpack_require__(42);
-var DefaultLanguage_1 = __webpack_require__(43);
+var SearchEndpoint_1 = __webpack_require__(7);
+var PlaygroundConfiguration_1 = __webpack_require__(37);
+var QueryEvents_1 = __webpack_require__(39);
+var DefaultLanguage_1 = __webpack_require__(40);
 DefaultLanguage_1.setLanguageAfterPageLoaded();
 var Playground = /** @class */ (function () {
     function Playground(body) {
@@ -4982,7 +5159,35 @@ exports.Playground = Playground;
 
 
 /***/ }),
-/* 17 */
+/* 18 */
+/***/ (function(module, exports) {
+
+module.exports = function(module) {
+	if(!module.webpackPolyfill) {
+		module.deprecate = function() {};
+		module.paths = [];
+		// module.parent = undefined by default
+		if(!module.children) module.children = [];
+		Object.defineProperty(module, "loaded", {
+			enumerable: true,
+			get: function() {
+				return module.l;
+			}
+		});
+		Object.defineProperty(module, "id", {
+			enumerable: true,
+			get: function() {
+				return module.i;
+			}
+		});
+		module.webpackPolyfill = 1;
+	}
+	return module;
+};
+
+
+/***/ }),
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4990,12 +5195,12 @@ exports.Playground = Playground;
 Object.defineProperty(exports, "__esModule", { value: true });
 var Logger_1 = __webpack_require__(3);
 var Assert_1 = __webpack_require__(1);
-var TimeSpanUtils_1 = __webpack_require__(7);
-var DeviceUtils_1 = __webpack_require__(18);
+var TimeSpanUtils_1 = __webpack_require__(8);
+var DeviceUtils_1 = __webpack_require__(20);
 var Utils_1 = __webpack_require__(2);
-var JQueryutils_1 = __webpack_require__(5);
+var JQueryutils_1 = __webpack_require__(6);
 var _ = __webpack_require__(0);
-var UrlUtils_1 = __webpack_require__(8);
+var UrlUtils_1 = __webpack_require__(9);
 // In ie8, XMLHttpRequest has no status property, so let's use this enum instead
 var XMLHttpRequestStatus;
 (function (XMLHttpRequestStatus) {
@@ -5358,14 +5563,14 @@ exports.EndpointCaller = EndpointCaller;
 
 
 /***/ }),
-/* 18 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 // Not sure about this : In year 2033 who's to say that this list won't be 50 pages long !
-var ResponsiveComponents_1 = __webpack_require__(19);
+var ResponsiveComponents_1 = __webpack_require__(21);
 var mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 var DeviceUtils = /** @class */ (function () {
     function DeviceUtils() {
@@ -5434,14 +5639,14 @@ exports.DeviceUtils = DeviceUtils;
 
 
 /***/ }),
-/* 19 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var Assert_1 = __webpack_require__(1);
-__webpack_require__(20);
+__webpack_require__(22);
 exports.MEDIUM_SCREEN_WIDTH = 800;
 exports.SMALL_SCREEN_WIDTH = 480;
 /**
@@ -5538,601 +5743,27 @@ exports.ResponsiveComponents = ResponsiveComponents;
 
 
 /***/ }),
-/* 20 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(21);
-if(typeof content === 'string') content = [[module.i, content, '']];
-// Prepare cssTransformation
-var transform;
-transform = __webpack_require__(23);
-var options = {"publicPath":"","transform":"./style.transform.js","hmr":true}
-options.transform = transform
-// add the styles to the DOM
-var update = __webpack_require__(24)(content, options);
-if(content.locals) module.exports = content.locals;
-// Hot Module Replacement
-if(false) {
-	// When the styles change, update the <style> tags
-	if(!content.locals) {
-		module.hot.accept("!!../node_modules/css-loader/index.js??ref--0-1!../node_modules/resolve-url-loader/index.js??ref--0-2!../node_modules/sass-loader/lib/loader.js??ref--0-3!./_ResponsiveComponents.scss", function() {
-			var newContent = require("!!../node_modules/css-loader/index.js??ref--0-1!../node_modules/resolve-url-loader/index.js??ref--0-2!../node_modules/sass-loader/lib/loader.js??ref--0-3!./_ResponsiveComponents.scss");
-			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-			update(newContent);
-		});
-	}
-	// When the module is disposed, remove the <style> tags
-	module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 21 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(22)();
-// imports
-
-
-// module
-exports.push([module.i, "/*\n* @param direction vertical or horizontal\n* @param position type of positioning to apply (relative/absolute)\n*/\n\n/*\n* @param $selector css selector on which to apply the icon. Can be '&' if the icon should be applied on the current element;\n* @param $size size of the icon to use\n*/\n\n.CoveoSearchInterface.coveo-small-tabs .coveo-dropdown-content,\n.CoveoSearchInterface.coveo-small-facets .coveo-dropdown-content,\n.CoveoSearchInterface.coveo-small-recommendation .coveo-dropdown-content {\n  padding: 0;\n}\n\n.CoveoSearchInterface.coveo-small-tabs .coveo-dropdown-header,\n.CoveoSearchInterface.coveo-small-facets .coveo-dropdown-header,\n.CoveoSearchInterface.coveo-small-recommendation .coveo-dropdown-header {\n  font-size: 12px;\n  display: inline-block;\n  padding: 0px 7px 0px 7px;\n  height: 22px;\n  font-weight: 700;\n  line-height: 20px;\n  letter-spacing: 0.09px;\n  vertical-align: middle;\n  white-space: normal;\n  color: #1d4f76;\n  cursor: pointer;\n  text-transform: uppercase;\n}\n\n.CoveoSearchInterface.coveo-small-tabs .coveo-dropdown-header *,\n.CoveoSearchInterface.coveo-small-facets .coveo-dropdown-header *,\n.CoveoSearchInterface.coveo-small-recommendation .coveo-dropdown-header * {\n  display: inline-block;\n  margin: 0;\n}\n\n.CoveoSearchInterface.coveo-small-tabs .coveo-dropdown-header p,\n.CoveoSearchInterface.coveo-small-facets .coveo-dropdown-header p,\n.CoveoSearchInterface.coveo-small-recommendation .coveo-dropdown-header p {\n  line-height: 16px;\n}\n\n.CoveoSearchInterface.coveo-small-tabs .coveo-dropdown-header .coveo-more-tabs,\n.CoveoSearchInterface.coveo-small-facets .coveo-dropdown-header .coveo-more-tabs,\n.CoveoSearchInterface.coveo-small-recommendation .coveo-dropdown-header .coveo-more-tabs {\n  margin-left: 10px;\n}\n\n.CoveoSearchInterface.coveo-small-tabs .coveo-dropdown-header.coveo-hidden,\n.CoveoSearchInterface.coveo-small-facets .coveo-dropdown-header.coveo-hidden,\n.CoveoSearchInterface.coveo-small-recommendation .coveo-dropdown-header.coveo-hidden {\n  display: none;\n}\n\n.CoveoSearchInterface.coveo-small-tabs .coveo-tab-section > a:last-of-type,\n.CoveoSearchInterface.coveo-small-facets .coveo-tab-section > a:last-of-type,\n.CoveoSearchInterface.coveo-small-recommendation .coveo-tab-section > a:last-of-type {\n  margin-right: 20px;\n}\n\n.CoveoSearchInterface.coveo-small-tabs .coveo-dropdown-header-wrapper,\n.CoveoSearchInterface.coveo-small-facets .coveo-dropdown-header-wrapper,\n.CoveoSearchInterface.coveo-small-recommendation .coveo-dropdown-header-wrapper {\n  width: 100%;\n  margin: 0;\n  padding: 0;\n  display: -webkit-inline-box;\n  display: -moz-inline-box;\n  display: inline-box;\n  display: -webkit-inline-flex;\n  display: -moz-inline-flex;\n  display: -ms-inline-flexbox;\n  display: inline-flex;\n  -webkit-box-lines: single;\n  -moz-box-lines: single;\n  box-lines: single;\n  -webkit-flex-wrap: nowrap;\n  -moz-flex-wrap: nowrap;\n  -ms-flex-wrap: nowrap;\n  flex-wrap: nowrap;\n  -webkit-box-pack: end;\n  -moz-box-pack: end;\n  box-pack: end;\n  -webkit-justify-content: flex-end;\n  -moz-justify-content: flex-end;\n  -ms-justify-content: flex-end;\n  -o-justify-content: flex-end;\n  justify-content: flex-end;\n  -ms-flex-pack: end;\n}\n\n.CoveoSearchInterface.coveo-small-tabs .coveo-dropdown-header-wrapper a,\n.CoveoSearchInterface.coveo-small-facets .coveo-dropdown-header-wrapper a,\n.CoveoSearchInterface.coveo-small-recommendation .coveo-dropdown-header-wrapper a {\n  margin-right: 10px;\n}\n\n.coveo-dropdown-background {\n  -webkit-transition-property: opacity;\n  -moz-transition-property: opacity;\n  transition-property: opacity;\n  -webkit-transition-duration: 0.3s;\n  -moz-transition-duration: 0.3s;\n  transition-duration: 0.3s;\n  background: rgba(28, 79, 118, 0.9);\n  opacity: 0;\n  position: fixed;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  z-index: 15;\n}\n\n.coveo-media-max-width-480 .CoveoSearchInterface .coveo-tab-section {\n  background-color: #f7f8f9;\n}\n\n.coveo-media-max-width-480 .CoveoSearchInterface .CoveoSearchbox {\n  max-width: 800px;\n  margin-right: 50px;\n}\n\n.coveo-media-max-width-480 .CoveoSearchInterface .CoveoSettings {\n  margin-left: 0;\n}\n\n.coveo-media-max-width-480 .CoveoSearchInterface .CoveoSettings + .CoveoSearchbox {\n  margin-right: 50px;\n}\n\n@media (max-width: 480px) {\n  .CoveoSearchInterface .coveo-tab-section {\n    background-color: #f7f8f9;\n  }\n\n  .CoveoSearchInterface .CoveoSearchbox {\n    max-width: 800px;\n    margin-right: 50px;\n  }\n\n  .CoveoSearchInterface .CoveoSettings {\n    margin-left: 0;\n  }\n\n  .CoveoSearchInterface .CoveoSettings + .CoveoSearchbox {\n    margin-right: 50px;\n  }\n}\n\n", "", {"version":3,"sources":["/./sass/_Variables.scss","/./sass/_ResponsiveComponents.scss","/./sass/_ResponsiveComponents.scss","/./sass/bourbon/css3/_flex-box.scss","/./sass/bourbon/addons/_prefixer.scss","/./sass/bourbon/css3/_transition.scss","/./sass/mixins/_mediaQuery.scss"],"names":[],"mappings":"AA0DA;;;ECvDE;;AD0IF;;;ECrIE;;ACFA;;;EACE,WAAA;CDOH;;ACJC;;;EACE,gBAAA;EACA,sBAAA;EACA,yBAAA;EACA,aAAA;EACA,iBAAA;EACA,kBAAA;EACA,uBAAA;EACA,uBAAA;EACA,oBAAA;EACA,eAAA;EACA,gBAAA;EACA,0BAAA;CDSH;;ACPG;;;EACE,sBAAA;EACA,UAAA;CDYL;;ACnCD;;;EA2BM,kBAAA;CDcL;;ACXG;;;EACE,kBAAA;CDgBL;;ACxCC;;;EA4BI,cAAA;CDkBL;;ACbK;;;EACA,mBAAA;CDkBL;;AC3DD;;;EA8CI,YAAA;EACA,UAAA;EACA,WAAA;EC4BA,4BAAA;EACA,yBAAA;EACA,oBAAA;EAEA,6BAAA;EACA,0BAAA;EACA,4BAAA;EACA,qBAAA;ECzEI,0BAAA;EAKA,uBAAA;EAeA,kBAAA;EApBA,0BAAA;EAKA,uBAAA;EAKA,sBAAA;EAUA,kBAAA;EApBA,sBAAA;EAKA,mBAAA;EAeA,cAAA;EApBA,kCAAA;EAKA,+BAAA;EAKA,8BAAA;EAKA,6BAAA;EAKA,0BAAA;ED6LN,mBAAA;CFjID;;AC1FD;;;EAsDM,mBAAA;CD0CL;;ACrCD;EG7CG,qCAAA;EACG,kCAAA;EACK,6BAAA;EDNH,kCAAA;EAKA,+BAAA;EAeA,0BAAA;EFgCN,mCAAA;EACA,WAAA;EACA,gBAAA;EACA,OAAA;EACA,SAAA;EACA,UAAA;EACA,QAAA;EACA,YAAA;CD4CD;;ACvCG;EACE,0BAAA;CD0CL;;AKpHC;EJ8EI,iBAAA;EACA,mBAAA;CD0CL;;ACvCG;EACE,eAAA;CD0CL;;ACvCoB;EACf,mBAAA;CD0CL;;AK9HC;EJsEE;IACE,0BAAA;GD4DH;;EC9DD;IAMI,iBAAA;IACA,mBAAA;GD4DH;;ECzDC;IACE,eAAA;GD4DH;;ECvED;IAeI,mBAAA;GD4DH;CACF","file":"_ResponsiveComponents.scss","sourcesContent":["@import 'bourbon/bourbon';\n\n// https://app.frontify.com/d/GthysWU8RY0Q/brand-guidelines#/basics/colors\n\n// Corporate Main Colors\n$coveo-orange: #f58020;\n$coveo-blue: #004990;\n$coveo-red: #dc291e;\n\n// Complementary Colors Set 1\n$color-charcoal: #08080e;\n$color-dark-grey: #373737;\n$color-grey: #4f5658;\n$color-greyish-dark-blue: #263e55;\n$color-greyish-teal-blue: #1d4f76;\n$color-blueish-gray: #67768b;\n$color-vibrant-blue: #009ddc;\n\n// Complementary Colors Set 2\n$color-teal: #296896;\n$color-greyish-cyan: #cddee9;\n$color-greyish-light-cyan: #cddee9;\n$color-light-grey: #bcc3ca;\n$color-blueish-white-grey: #e6ecf0;\n$color-blueish-white: #f7f8f9;\n$color-light-greyish-blue: #9cb4cb;\n\n// Coveo Partners Colors\n$color-coveo-for-sitecore: #dc291e;\n$color-coveo-for-salesforce: #009ddc;\n\n$color-green: #4caf50;\n$color-red: #cc0d00;\n$color-active-yellow: #ecad00;\n$color-transparent-background: rgba(28, 79, 118, 0.9);\n$color-white-transparent: rgba(255, 255, 255, 0.5);\n$color-light-grey-transparent: rgba($color-light-grey, 0.74);\n\n// Font sizes\n$font-size-huge: 24px;\n$font-size-biggest: 18px;\n$font-size-bigger: 16px;\n$font-size-regular: 15px;\n$font-size-smaller: 14px;\n$font-size-smallest: 12px;\n\n// Border\n$default-border-radius: 2px;\n$small-border-radius: 1px;\n$default-border: thin solid $color-light-grey;\n\n@mixin defaultRoundedBorder {\n  border: $default-border;\n  border-radius: $default-border-radius;\n}\n\n$standard-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);\n\n/*\n* @param direction vertical or horizontal\n* @param position type of positioning to apply (relative/absolute)\n*/\n@mixin align($direction: 'vertical', $position: relative) {\n  position: $position;\n  @if $direction == 'vertical' {\n    top: 50%;\n    @include transform(translateY(-50%));\n  } @else {\n    left: 50%;\n    @include transform(translateX(-50%));\n  }\n}\n\n@mixin hoverEffectForDropdown($target: '&') {\n  @include clickable();\n  cursor: pointer;\n  #{$target} {\n    background: white;\n  }\n\n  #{$target}:hover {\n    background: $color-blueish-white-grey;\n  }\n}\n\n@mixin iconWithHoverState($iconClass, $float:'left', $inactive : 'coveo-disabled') {\n  .#{$iconClass} {\n    float: #{$float};\n  }\n  &:hover {\n    .coveo-active-shape-svg {\n      fill: $color-active-yellow;\n    }\n  }\n  &:hover.#{$inactive} {\n    .coveo-active-shape-svg {\n      fill: currentColor;\n    }\n  }\n}\n\n@mixin clickable($dark-background: false) {\n  color: $color-teal;\n  @if $dark-background == true {\n    color: $color-coveo-for-salesforce;\n  }\n  text-decoration: none;\n  cursor: pointer;\n  &:hover,\n  &:visited {\n    text-decoration: none;\n    @if $dark-background == false {\n      color: $color-greyish-dark-blue;\n    } @else {\n      color: $color-coveo-for-salesforce;\n    }\n  }\n  &:hover,\n  &:hover a {\n    text-decoration: underline;\n  }\n  &.coveo-selected * {\n    @if $dark-background == false {\n      color: $color-greyish-dark-blue;\n    } @else {\n      color: $color-coveo-for-salesforce;\n    }\n  }\n}\n\n@mixin clickableVibrant($dark-background: false) {\n  @include clickable($dark-background);\n  color: $color-coveo-for-salesforce;\n  &:hover {\n    color: $color-coveo-for-salesforce;\n  }\n  &.coveo-selected * {\n    color: $color-coveo-for-salesforce;\n  }\n}\n\n/*\n* @param $selector css selector on which to apply the icon. Can be '&' if the icon should be applied on the current element;\n* @param $size size of the icon to use\n*/\n@mixin clearButton($selector, $size:'normal') {\n  cursor: pointer;\n  color: $color-greyish-teal-blue;\n  .coveo-exclusion-svg {\n    fill: $color-greyish-teal-blue;\n  }\n\n  #{$selector} svg {\n    @if $size == 'normal' {\n      width: 12px;\n      height: 12px;\n    } @else if $size == 'small' {\n      width: 8px;\n      height: 8px;\n    } @else if $size == 'big' {\n      width: 15px;\n      height: 15px;\n    }\n  }\n\n  &:hover {\n    #{$selector} {\n      color: $color-red;\n      .coveo-exclusion-svg {\n        fill: $color-red;\n      }\n    }\n  }\n}\n\n@mixin breadcrumbTitle {\n  color: $color-blueish-gray;\n  margin-right: 14px;\n}\n\n@mixin coveo-email-to-and-from {\n  font-size: 13px;\n  a {\n    @include clickable();\n    white-space: nowrap;\n  }\n}\n","/*\n* @param direction vertical or horizontal\n* @param position type of positioning to apply (relative/absolute)\n*/\n\n/*\n* @param $selector css selector on which to apply the icon. Can be '&' if the icon should be applied on the current element;\n* @param $size size of the icon to use\n*/\n\n.CoveoSearchInterface.coveo-small-tabs .coveo-dropdown-content,\n.CoveoSearchInterface.coveo-small-facets .coveo-dropdown-content,\n.CoveoSearchInterface.coveo-small-recommendation .coveo-dropdown-content {\n  padding: 0;\n}\n\n.CoveoSearchInterface.coveo-small-tabs .coveo-dropdown-header,\n.CoveoSearchInterface.coveo-small-facets .coveo-dropdown-header,\n.CoveoSearchInterface.coveo-small-recommendation .coveo-dropdown-header {\n  font-size: 12px;\n  display: inline-block;\n  padding: 0px 7px 0px 7px;\n  height: 22px;\n  font-weight: 700;\n  line-height: 20px;\n  letter-spacing: 0.09px;\n  vertical-align: middle;\n  white-space: normal;\n  color: #1d4f76;\n  cursor: pointer;\n  text-transform: uppercase;\n}\n\n.CoveoSearchInterface.coveo-small-tabs .coveo-dropdown-header *,\n.CoveoSearchInterface.coveo-small-facets .coveo-dropdown-header *,\n.CoveoSearchInterface.coveo-small-recommendation .coveo-dropdown-header * {\n  display: inline-block;\n  margin: 0;\n}\n\n.CoveoSearchInterface.coveo-small-tabs .coveo-dropdown-header p,\n.CoveoSearchInterface.coveo-small-facets .coveo-dropdown-header p,\n.CoveoSearchInterface.coveo-small-recommendation .coveo-dropdown-header p {\n  line-height: 16px;\n}\n\n.CoveoSearchInterface.coveo-small-tabs .coveo-dropdown-header .coveo-more-tabs,\n.CoveoSearchInterface.coveo-small-facets .coveo-dropdown-header .coveo-more-tabs,\n.CoveoSearchInterface.coveo-small-recommendation .coveo-dropdown-header .coveo-more-tabs {\n  margin-left: 10px;\n}\n\n.CoveoSearchInterface.coveo-small-tabs .coveo-dropdown-header.coveo-hidden,\n.CoveoSearchInterface.coveo-small-facets .coveo-dropdown-header.coveo-hidden,\n.CoveoSearchInterface.coveo-small-recommendation .coveo-dropdown-header.coveo-hidden {\n  display: none;\n}\n\n.CoveoSearchInterface.coveo-small-tabs .coveo-tab-section > a:last-of-type,\n.CoveoSearchInterface.coveo-small-facets .coveo-tab-section > a:last-of-type,\n.CoveoSearchInterface.coveo-small-recommendation .coveo-tab-section > a:last-of-type {\n  margin-right: 20px;\n}\n\n.CoveoSearchInterface.coveo-small-tabs .coveo-dropdown-header-wrapper,\n.CoveoSearchInterface.coveo-small-facets .coveo-dropdown-header-wrapper,\n.CoveoSearchInterface.coveo-small-recommendation .coveo-dropdown-header-wrapper {\n  width: 100%;\n  margin: 0;\n  padding: 0;\n  display: -webkit-inline-box;\n  display: -moz-inline-box;\n  display: inline-box;\n  display: -webkit-inline-flex;\n  display: -moz-inline-flex;\n  display: -ms-inline-flexbox;\n  display: inline-flex;\n  -webkit-box-lines: single;\n  -moz-box-lines: single;\n  box-lines: single;\n  -webkit-flex-wrap: nowrap;\n  -moz-flex-wrap: nowrap;\n  -ms-flex-wrap: nowrap;\n  flex-wrap: nowrap;\n  -webkit-box-pack: end;\n  -moz-box-pack: end;\n  box-pack: end;\n  -webkit-justify-content: flex-end;\n  -moz-justify-content: flex-end;\n  -ms-justify-content: flex-end;\n  -o-justify-content: flex-end;\n  justify-content: flex-end;\n  -ms-flex-pack: end;\n}\n\n.CoveoSearchInterface.coveo-small-tabs .coveo-dropdown-header-wrapper a,\n.CoveoSearchInterface.coveo-small-facets .coveo-dropdown-header-wrapper a,\n.CoveoSearchInterface.coveo-small-recommendation .coveo-dropdown-header-wrapper a {\n  margin-right: 10px;\n}\n\n.coveo-dropdown-background {\n  -webkit-transition-property: opacity;\n  -moz-transition-property: opacity;\n  transition-property: opacity;\n  -webkit-transition-duration: 0.3s;\n  -moz-transition-duration: 0.3s;\n  transition-duration: 0.3s;\n  background: rgba(28, 79, 118, 0.9);\n  opacity: 0;\n  position: fixed;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  z-index: 15;\n}\n\n.coveo-media-max-width-480 .CoveoSearchInterface .coveo-tab-section {\n  background-color: #f7f8f9;\n}\n\n.coveo-media-max-width-480 .CoveoSearchInterface .CoveoSearchbox {\n  max-width: 800px;\n  margin-right: 50px;\n}\n\n.coveo-media-max-width-480 .CoveoSearchInterface .CoveoSettings {\n  margin-left: 0;\n}\n\n.coveo-media-max-width-480 .CoveoSearchInterface .CoveoSettings + .CoveoSearchbox {\n  margin-right: 50px;\n}\n\n@media (max-width: 480px) {\n  .CoveoSearchInterface .coveo-tab-section {\n    background-color: #f7f8f9;\n  }\n\n  .CoveoSearchInterface .CoveoSearchbox {\n    max-width: 800px;\n    margin-right: 50px;\n  }\n\n  .CoveoSearchInterface .CoveoSettings {\n    margin-left: 0;\n  }\n\n  .CoveoSearchInterface .CoveoSettings + .CoveoSearchbox {\n    margin-right: 50px;\n  }\n}\n\n","@import 'Variables';\n@import 'mixins/mediaQuery';\n\n.CoveoSearchInterface.coveo-small-tabs,\n.CoveoSearchInterface.coveo-small-facets,\n.CoveoSearchInterface.coveo-small-recommendation {\n  .coveo-dropdown-content {\n    padding: 0;\n  }\n\n  .coveo-dropdown-header {\n    font-size: $font-size-smallest;\n    display: inline-block;\n    padding: 0px 7px 0px 7px;\n    height: 22px;\n    font-weight: 700;\n    line-height: 20px;\n    letter-spacing: 0.09px;\n    vertical-align: middle;\n    white-space: normal;\n    color: $color-greyish-teal-blue;\n    cursor: pointer;\n    text-transform: uppercase;\n\n    * {\n      display: inline-block;\n      margin: 0;\n    }\n\n    p {\n      line-height: 16px;\n    }\n\n    .coveo-more-tabs {\n      margin-left: 10px;\n    }\n\n    &.coveo-hidden {\n      display: none;\n    }\n  }\n\n  .coveo-tab-section {\n    > a:last-of-type {\n      margin-right: 20px;\n    }\n  }\n\n  .coveo-dropdown-header-wrapper {\n    width: 100%;\n    margin: 0;\n    padding: 0;\n    @include display(inline-flex);\n    @include flex-wrap(nowrap);\n    @include justify-content(flex-end);\n\n    a {\n      margin-right: 10px;\n    }\n  }\n}\n\n.coveo-dropdown-background {\n  @include transition-property(opacity);\n  @include transition-duration(0.3s);\n  background: $color-transparent-background;\n  opacity: 0;\n  position: fixed;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  z-index: 15;\n}\n\n@include smallScreenWidth {\n  .CoveoSearchInterface {\n    .coveo-tab-section {\n      background-color: $color-blueish-white;\n    }\n\n    .CoveoSearchbox {\n      max-width: $medium_screen_width + unquote('px');\n      margin-right: 50px;\n    }\n\n    .CoveoSettings {\n      margin-left: 0;\n    }\n\n    .CoveoSettings + .CoveoSearchbox {\n      margin-right: 50px;\n    }\n  }\n}\n","// CSS3 Flexible Box Model and property defaults\n\n// Custom shorthand notation for flexbox\n@mixin box($orient: inline-axis, $pack: start, $align: stretch) {\n  @include display-box;\n  @include box-orient($orient);\n  @include box-pack($pack);\n  @include box-align($align);\n}\n\n@mixin display-box {\n  display: -webkit-box;\n  display: -moz-box;\n  display: -ms-flexbox; // IE 10\n  display: box;\n}\n\n@mixin box-orient($orient: inline-axis) {\n  // horizontal|vertical|inline-axis|block-axis|inherit\n  @include prefixer(box-orient, $orient, webkit moz spec);\n}\n\n@mixin box-pack($pack: start) {\n  // start|end|center|justify\n  @include prefixer(box-pack, $pack, webkit moz spec);\n  -ms-flex-pack: $pack; // IE 10\n}\n\n@mixin box-align($align: stretch) {\n  // start|end|center|baseline|stretch\n  @include prefixer(box-align, $align, webkit moz spec);\n  -ms-flex-align: $align; // IE 10\n}\n\n@mixin box-direction($direction: normal) {\n  // normal|reverse|inherit\n  @include prefixer(box-direction, $direction, webkit moz spec);\n  -ms-flex-direction: $direction; // IE 10\n}\n\n@mixin box-lines($lines: single) {\n  // single|multiple\n  @include prefixer(box-lines, $lines, webkit moz spec);\n}\n\n@mixin box-ordinal-group($int: 1) {\n  @include prefixer(box-ordinal-group, $int, webkit moz spec);\n  -ms-flex-order: $int; // IE 10\n}\n\n@mixin box-flex($value: 0) {\n  @include prefixer(box-flex, $value, webkit moz spec);\n  -ms-flex: $value; // IE 10\n}\n\n@mixin box-flex-group($int: 1) {\n  @include prefixer(box-flex-group, $int, webkit moz spec);\n}\n\n// CSS3 Flexible Box Model and property defaults\n// Unified attributes for 2009, 2011, and 2012 flavours.\n\n// 2009 - display (box | inline-box)\n// 2011 - display (flexbox | inline-flexbox)\n// 2012 - display (flex | inline-flex)\n@mixin display($value) {\n  // flex | inline-flex\n  @if $value == \"flex\" {\n    // 2009\n    display: -webkit-box;\n    display: -moz-box;\n    display: box;\n\n    // 2012\n    display: -webkit-flex;\n    display: -moz-flex;\n    display: -ms-flexbox; // 2011 (IE 10)\n    display: flex;\n  } @else if $value == \"inline-flex\" {\n    display: -webkit-inline-box;\n    display: -moz-inline-box;\n    display: inline-box;\n\n    display: -webkit-inline-flex;\n    display: -moz-inline-flex;\n    display: -ms-inline-flexbox;\n    display: inline-flex;\n  } @else {\n    display: $value;\n  }\n}\n\n// 2009 - box-flex (integer)\n// 2011 - flex (decimal | width decimal)\n// 2012 - flex (integer integer width)\n@mixin flex($value) {\n\n  // Grab flex-grow for older browsers.\n  $flex-grow: nth($value, 1);\n\n  // 2009\n  @include prefixer(box-flex, $flex-grow, webkit moz spec);\n\n  // 2011 (IE 10), 2012\n  @include prefixer(flex, $value, webkit moz ms spec);\n}\n\n// 2009 - box-orient ( horizontal | vertical | inline-axis | block-axis)\n//      - box-direction (normal | reverse)\n// 2011 - flex-direction (row | row-reverse | column | column-reverse)\n// 2012 - flex-direction (row | row-reverse | column | column-reverse)\n@mixin flex-direction($value: row) {\n\n  // Alt values.\n  $value-2009: $value;\n  $value-2011: $value;\n  $direction: normal;\n\n  @if $value == row {\n    $value-2009: horizontal;\n  } @else if $value == \"row-reverse\" {\n    $value-2009: horizontal;\n    $direction: reverse;\n  } @else if $value == column {\n    $value-2009: vertical;\n  } @else if $value == \"column-reverse\" {\n    $value-2009: vertical;\n    $direction: reverse;\n  }\n\n  // 2009\n  @include prefixer(box-orient, $value-2009, webkit moz spec);\n  @include prefixer(box-direction, $direction, webkit moz spec);\n\n  // 2012\n  @include prefixer(flex-direction, $value, webkit moz spec);\n\n  // 2011 (IE 10)\n  -ms-flex-direction: $value;\n}\n\n// 2009 - box-lines (single | multiple)\n// 2011 - flex-wrap (nowrap | wrap | wrap-reverse)\n// 2012 - flex-wrap (nowrap | wrap | wrap-reverse)\n@mixin flex-wrap($value: nowrap) {\n  // Alt values\n  $alt-value: $value;\n  @if $value == nowrap {\n    $alt-value: single;\n  } @else if $value == wrap {\n    $alt-value: multiple;\n  } @else if $value == \"wrap-reverse\" {\n    $alt-value: multiple;\n  }\n\n  @include prefixer(box-lines, $alt-value, webkit moz spec);\n  @include prefixer(flex-wrap, $value, webkit moz ms spec);\n}\n\n// 2009 - TODO: parse values into flex-direction/flex-wrap\n// 2011 - TODO: parse values into flex-direction/flex-wrap\n// 2012 - flex-flow (flex-direction || flex-wrap)\n@mixin flex-flow($value) {\n  @include prefixer(flex-flow, $value, webkit moz spec);\n}\n\n// 2009 - box-ordinal-group (integer)\n// 2011 - flex-order (integer)\n// 2012 - order (integer)\n@mixin order($int: 0) {\n  // 2009\n  @include prefixer(box-ordinal-group, $int, webkit moz spec);\n\n  // 2012\n  @include prefixer(order, $int, webkit moz spec);\n\n  // 2011 (IE 10)\n  -ms-flex-order: $int;\n}\n\n// 2012 - flex-grow (number)\n@mixin flex-grow($number: 0) {\n  @include prefixer(flex-grow, $number, webkit moz spec);\n  -ms-flex-positive: $number;\n}\n\n// 2012 - flex-shrink (number)\n@mixin flex-shrink($number: 1) {\n  @include prefixer(flex-shrink, $number, webkit moz spec);\n  -ms-flex-negative: $number;\n}\n\n// 2012 - flex-basis (number)\n@mixin flex-basis($width: auto) {\n  @include prefixer(flex-basis, $width, webkit moz spec);\n  -ms-flex-preferred-size: $width;\n}\n\n// 2009 - box-pack (start | end | center | justify)\n// 2011 - flex-pack (start | end | center | justify)\n// 2012 - justify-content (flex-start | flex-end | center | space-between | space-around)\n@mixin justify-content($value: flex-start) {\n\n  // Alt values.\n  $alt-value: $value;\n  @if $value == \"flex-start\" {\n    $alt-value: start;\n  } @else if $value == \"flex-end\" {\n    $alt-value: end;\n  } @else if $value == \"space-between\" {\n    $alt-value: justify;\n  } @else if $value == \"space-around\" {\n    $alt-value: distribute;\n  }\n\n  // 2009\n  @include prefixer(box-pack, $alt-value, webkit moz spec);\n\n  // 2012\n  @include prefixer(justify-content, $value, webkit moz ms o spec);\n\n  // 2011 (IE 10)\n  -ms-flex-pack: $alt-value;\n}\n\n// 2009 - box-align (start | end | center | baseline | stretch)\n// 2011 - flex-align (start | end | center | baseline | stretch)\n// 2012 - align-items (flex-start | flex-end | center | baseline | stretch)\n@mixin align-items($value: stretch) {\n\n  $alt-value: $value;\n\n  @if $value == \"flex-start\" {\n    $alt-value: start;\n  } @else if $value == \"flex-end\" {\n    $alt-value: end;\n  }\n\n  // 2009\n  @include prefixer(box-align, $alt-value, webkit moz spec);\n\n  // 2012\n  @include prefixer(align-items, $value, webkit moz ms o spec);\n\n  // 2011 (IE 10)\n  -ms-flex-align: $alt-value;\n}\n\n// 2011 - flex-item-align (auto | start | end | center | baseline | stretch)\n// 2012 - align-self (auto | flex-start | flex-end | center | baseline | stretch)\n@mixin align-self($value: auto) {\n\n  $value-2011: $value;\n  @if $value == \"flex-start\" {\n    $value-2011: start;\n  } @else if $value == \"flex-end\" {\n    $value-2011: end;\n  }\n\n  // 2012\n  @include prefixer(align-self, $value, webkit moz spec);\n\n  // 2011 (IE 10)\n  -ms-flex-item-align: $value-2011;\n}\n\n// 2011 - flex-line-pack (start | end | center | justify | distribute | stretch)\n// 2012 - align-content (flex-start | flex-end | center | space-between | space-around | stretch)\n@mixin align-content($value: stretch) {\n\n  $value-2011: $value;\n  @if $value == \"flex-start\" {\n    $value-2011: start;\n  } @else if $value == \"flex-end\" {\n    $value-2011: end;\n  } @else if $value == \"space-between\" {\n    $value-2011: justify;\n  } @else if $value == \"space-around\" {\n    $value-2011: distribute;\n  }\n\n  // 2012\n  @include prefixer(align-content, $value, webkit moz spec);\n\n  // 2011 (IE 10)\n  -ms-flex-line-pack: $value-2011;\n}","//************************************************************************//\n// Example: @include prefixer(border-radius, $radii, webkit ms spec);\n//************************************************************************//\n$prefix-for-webkit:    true !default;\n$prefix-for-mozilla:   true !default;\n$prefix-for-microsoft: true !default;\n$prefix-for-opera:     true !default;\n$prefix-for-spec:      true !default; // required for keyframe mixin\n\n@mixin prefixer ($property, $value, $prefixes) {\n  @each $prefix in $prefixes {\n    @if $prefix == webkit {\n      @if $prefix-for-webkit {\n        -webkit-#{$property}: $value;\n      }\n    }\n    @else if $prefix == moz {\n      @if $prefix-for-mozilla {\n        -moz-#{$property}: $value;\n      }\n    }\n    @else if $prefix == ms {\n      @if $prefix-for-microsoft {\n        -ms-#{$property}: $value;\n      }\n    }\n    @else if $prefix == o {\n      @if $prefix-for-opera {\n        -o-#{$property}: $value;\n      }\n    }\n    @else if $prefix == spec {\n      @if $prefix-for-spec {\n        #{$property}: $value;\n      }\n    }\n    @else  {\n      @warn \"Unrecognized prefix: #{$prefix}\";\n    }\n  }\n}\n\n@mixin disable-prefix-for-all() {\n  $prefix-for-webkit:    false;\n  $prefix-for-mozilla:   false;\n  $prefix-for-microsoft: false;\n  $prefix-for-opera:     false;\n  $prefix-for-spec:      false;\n}\n","// Shorthand mixin. Supports multiple parentheses-deliminated values for each variable.\n// Example: @include transition (all, 2.0s, ease-in-out);\n//          @include transition ((opacity, width), (1.0s, 2.0s), ease-in, (0, 2s));\n//          @include transition ($property:(opacity, width), $delay: (1.5s, 2.5s));\n\n@mixin transition ($properties...) {\n  @if length($properties) >= 1 {\n    @include prefixer(transition, $properties, webkit moz spec);\n  }\n\n  @else {\n    $properties: all 0.15s ease-out 0;\n    @include prefixer(transition, $properties, webkit moz spec);\n  }\n}\n\n@mixin transition-property ($properties...) {\n   -webkit-transition-property: transition-property-names($properties, 'webkit');\n      -moz-transition-property: transition-property-names($properties, 'moz');\n           transition-property: transition-property-names($properties, false);\n}\n\n@mixin transition-duration ($times...) {\n  @include prefixer(transition-duration, $times, webkit moz spec);\n}\n\n@mixin transition-timing-function ($motions...) {\n// ease | linear | ease-in | ease-out | ease-in-out | cubic-bezier()\n  @include prefixer(transition-timing-function, $motions, webkit moz spec);\n}\n\n@mixin transition-delay ($times...) {\n  @include prefixer(transition-delay, $times, webkit moz spec);\n}\n","$medium_screen_width: 800;\n$small_screen_width: 480;\n$large_screen_with: 1020;\n@mixin mediaSelector($max) {\n  .coveo-media-max-width-#{$max} {\n    @content;\n  }\n  @media (max-width: $max * 1px) {\n    @content;\n  }\n}\n\n@mixin smallScreenWidth() {\n  @include mediaSelector($small_screen_width) {\n    @content;\n  }\n}\n\n@mixin mediumScreenWidth() {\n  @include mediaSelector($medium_screen_width) {\n    @content;\n  }\n}\n\n@mixin largeScreenWidth() {\n  @include mediaSelector($large_screen_with) {\n    @content;\n  }\n}\n"],"sourceRoot":"webpack://"}]);
-
-// exports
-
-
-/***/ }),
 /* 22 */
 /***/ (function(module, exports) {
 
-/*
-	MIT License http://www.opensource.org/licenses/mit-license.php
-	Author Tobias Koppers @sokra
-*/
-// css base code, injected by the css-loader
-module.exports = function() {
-	var list = [];
-
-	// return the list of modules as css string
-	list.toString = function toString() {
-		var result = [];
-		for(var i = 0; i < this.length; i++) {
-			var item = this[i];
-			if(item[2]) {
-				result.push("@media " + item[2] + "{" + item[1] + "}");
-			} else {
-				result.push(item[1]);
-			}
-		}
-		return result.join("");
-	};
-
-	// import a list of modules into the list
-	list.i = function(modules, mediaQuery) {
-		if(typeof modules === "string")
-			modules = [[null, modules, ""]];
-		var alreadyImportedModules = {};
-		for(var i = 0; i < this.length; i++) {
-			var id = this[i][0];
-			if(typeof id === "number")
-				alreadyImportedModules[id] = true;
-		}
-		for(i = 0; i < modules.length; i++) {
-			var item = modules[i];
-			// skip already imported module
-			// this implementation is not 100% perfect for weird media query combinations
-			//  when a module is imported multiple times with different media queries.
-			//  I hope this will never occur (Hey this way we have smaller bundles)
-			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
-				if(mediaQuery && !item[2]) {
-					item[2] = mediaQuery;
-				} else if(mediaQuery) {
-					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
-				}
-				list.push(item);
-			}
-		}
-	};
-	return list;
-};
-
+// removed by extract-text-webpack-plugin
 
 /***/ }),
 /* 23 */
-/***/ (function(module, exports) {
-
-module.exports = function (css) {
-  if (window.COVEO_LOAD_DYNAMIC_STYLE === false) {
-    return false;
-  }
-  return css;
-}
-
-
-/***/ }),
-/* 24 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/*
-	MIT License http://www.opensource.org/licenses/mit-license.php
-	Author Tobias Koppers @sokra
-*/
-
-var stylesInDom = {};
-
-var	memoize = function (fn) {
-	var memo;
-
-	return function () {
-		if (typeof memo === "undefined") memo = fn.apply(this, arguments);
-		return memo;
-	};
-};
-
-var isOldIE = memoize(function () {
-	// Test for IE <= 9 as proposed by Browserhacks
-	// @see http://browserhacks.com/#hack-e71d8692f65334173fee715c222cb805
-	// Tests for existence of standard globals is to allow style-loader
-	// to operate correctly into non-standard environments
-	// @see https://github.com/webpack-contrib/style-loader/issues/177
-	return window && document && document.all && !window.atob;
-});
-
-var getElement = (function (fn) {
-	var memo = {};
-
-	return function(selector) {
-		if (typeof memo[selector] === "undefined") {
-			var styleTarget = fn.call(this, selector);
-			// Special case to return head of iframe instead of iframe itself
-			if (styleTarget instanceof window.HTMLIFrameElement) {
-				try {
-					// This will throw an exception if access to iframe is blocked
-					// due to cross-origin restrictions
-					styleTarget = styleTarget.contentDocument.head;
-				} catch(e) {
-					styleTarget = null;
-				}
-			}
-			memo[selector] = styleTarget;
-		}
-		return memo[selector]
-	};
-})(function (target) {
-	return document.querySelector(target)
-});
-
-var singleton = null;
-var	singletonCounter = 0;
-var	stylesInsertedAtTop = [];
-
-var	fixUrls = __webpack_require__(25);
-
-module.exports = function(list, options) {
-	if (typeof DEBUG !== "undefined" && DEBUG) {
-		if (typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
-	}
-
-	options = options || {};
-
-	options.attrs = typeof options.attrs === "object" ? options.attrs : {};
-
-	// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
-	// tags it will allow on a page
-	if (!options.singleton && typeof options.singleton !== "boolean") options.singleton = isOldIE();
-
-	// By default, add <style> tags to the <head> element
-	if (!options.insertInto) options.insertInto = "head";
-
-	// By default, add <style> tags to the bottom of the target
-	if (!options.insertAt) options.insertAt = "bottom";
-
-	var styles = listToStyles(list, options);
-
-	addStylesToDom(styles, options);
-
-	return function update (newList) {
-		var mayRemove = [];
-
-		for (var i = 0; i < styles.length; i++) {
-			var item = styles[i];
-			var domStyle = stylesInDom[item.id];
-
-			domStyle.refs--;
-			mayRemove.push(domStyle);
-		}
-
-		if(newList) {
-			var newStyles = listToStyles(newList, options);
-			addStylesToDom(newStyles, options);
-		}
-
-		for (var i = 0; i < mayRemove.length; i++) {
-			var domStyle = mayRemove[i];
-
-			if(domStyle.refs === 0) {
-				for (var j = 0; j < domStyle.parts.length; j++) domStyle.parts[j]();
-
-				delete stylesInDom[domStyle.id];
-			}
-		}
-	};
-};
-
-function addStylesToDom (styles, options) {
-	for (var i = 0; i < styles.length; i++) {
-		var item = styles[i];
-		var domStyle = stylesInDom[item.id];
-
-		if(domStyle) {
-			domStyle.refs++;
-
-			for(var j = 0; j < domStyle.parts.length; j++) {
-				domStyle.parts[j](item.parts[j]);
-			}
-
-			for(; j < item.parts.length; j++) {
-				domStyle.parts.push(addStyle(item.parts[j], options));
-			}
-		} else {
-			var parts = [];
-
-			for(var j = 0; j < item.parts.length; j++) {
-				parts.push(addStyle(item.parts[j], options));
-			}
-
-			stylesInDom[item.id] = {id: item.id, refs: 1, parts: parts};
-		}
-	}
-}
-
-function listToStyles (list, options) {
-	var styles = [];
-	var newStyles = {};
-
-	for (var i = 0; i < list.length; i++) {
-		var item = list[i];
-		var id = options.base ? item[0] + options.base : item[0];
-		var css = item[1];
-		var media = item[2];
-		var sourceMap = item[3];
-		var part = {css: css, media: media, sourceMap: sourceMap};
-
-		if(!newStyles[id]) styles.push(newStyles[id] = {id: id, parts: [part]});
-		else newStyles[id].parts.push(part);
-	}
-
-	return styles;
-}
-
-function insertStyleElement (options, style) {
-	var target = getElement(options.insertInto)
-
-	if (!target) {
-		throw new Error("Couldn't find a style target. This probably means that the value for the 'insertInto' parameter is invalid.");
-	}
-
-	var lastStyleElementInsertedAtTop = stylesInsertedAtTop[stylesInsertedAtTop.length - 1];
-
-	if (options.insertAt === "top") {
-		if (!lastStyleElementInsertedAtTop) {
-			target.insertBefore(style, target.firstChild);
-		} else if (lastStyleElementInsertedAtTop.nextSibling) {
-			target.insertBefore(style, lastStyleElementInsertedAtTop.nextSibling);
-		} else {
-			target.appendChild(style);
-		}
-		stylesInsertedAtTop.push(style);
-	} else if (options.insertAt === "bottom") {
-		target.appendChild(style);
-	} else if (typeof options.insertAt === "object" && options.insertAt.before) {
-		var nextSibling = getElement(options.insertInto + " " + options.insertAt.before);
-		target.insertBefore(style, nextSibling);
-	} else {
-		throw new Error("[Style Loader]\n\n Invalid value for parameter 'insertAt' ('options.insertAt') found.\n Must be 'top', 'bottom', or Object.\n (https://github.com/webpack-contrib/style-loader#insertat)\n");
-	}
-}
-
-function removeStyleElement (style) {
-	if (style.parentNode === null) return false;
-	style.parentNode.removeChild(style);
-
-	var idx = stylesInsertedAtTop.indexOf(style);
-	if(idx >= 0) {
-		stylesInsertedAtTop.splice(idx, 1);
-	}
-}
-
-function createStyleElement (options) {
-	var style = document.createElement("style");
-
-	options.attrs.type = "text/css";
-
-	addAttrs(style, options.attrs);
-	insertStyleElement(options, style);
-
-	return style;
-}
-
-function createLinkElement (options) {
-	var link = document.createElement("link");
-
-	options.attrs.type = "text/css";
-	options.attrs.rel = "stylesheet";
-
-	addAttrs(link, options.attrs);
-	insertStyleElement(options, link);
-
-	return link;
-}
-
-function addAttrs (el, attrs) {
-	Object.keys(attrs).forEach(function (key) {
-		el.setAttribute(key, attrs[key]);
-	});
-}
-
-function addStyle (obj, options) {
-	var style, update, remove, result;
-
-	// If a transform function was defined, run it on the css
-	if (options.transform && obj.css) {
-	    result = options.transform(obj.css);
-
-	    if (result) {
-	    	// If transform returns a value, use that instead of the original css.
-	    	// This allows running runtime transformations on the css.
-	    	obj.css = result;
-	    } else {
-	    	// If the transform function returns a falsy value, don't add this css.
-	    	// This allows conditional loading of css
-	    	return function() {
-	    		// noop
-	    	};
-	    }
-	}
-
-	if (options.singleton) {
-		var styleIndex = singletonCounter++;
-
-		style = singleton || (singleton = createStyleElement(options));
-
-		update = applyToSingletonTag.bind(null, style, styleIndex, false);
-		remove = applyToSingletonTag.bind(null, style, styleIndex, true);
-
-	} else if (
-		obj.sourceMap &&
-		typeof URL === "function" &&
-		typeof URL.createObjectURL === "function" &&
-		typeof URL.revokeObjectURL === "function" &&
-		typeof Blob === "function" &&
-		typeof btoa === "function"
-	) {
-		style = createLinkElement(options);
-		update = updateLink.bind(null, style, options);
-		remove = function () {
-			removeStyleElement(style);
-
-			if(style.href) URL.revokeObjectURL(style.href);
-		};
-	} else {
-		style = createStyleElement(options);
-		update = applyToTag.bind(null, style);
-		remove = function () {
-			removeStyleElement(style);
-		};
-	}
-
-	update(obj);
-
-	return function updateStyle (newObj) {
-		if (newObj) {
-			if (
-				newObj.css === obj.css &&
-				newObj.media === obj.media &&
-				newObj.sourceMap === obj.sourceMap
-			) {
-				return;
-			}
-
-			update(obj = newObj);
-		} else {
-			remove();
-		}
-	};
-}
-
-var replaceText = (function () {
-	var textStore = [];
-
-	return function (index, replacement) {
-		textStore[index] = replacement;
-
-		return textStore.filter(Boolean).join('\n');
-	};
-})();
-
-function applyToSingletonTag (style, index, remove, obj) {
-	var css = remove ? "" : obj.css;
-
-	if (style.styleSheet) {
-		style.styleSheet.cssText = replaceText(index, css);
-	} else {
-		var cssNode = document.createTextNode(css);
-		var childNodes = style.childNodes;
-
-		if (childNodes[index]) style.removeChild(childNodes[index]);
-
-		if (childNodes.length) {
-			style.insertBefore(cssNode, childNodes[index]);
-		} else {
-			style.appendChild(cssNode);
-		}
-	}
-}
-
-function applyToTag (style, obj) {
-	var css = obj.css;
-	var media = obj.media;
-
-	if(media) {
-		style.setAttribute("media", media)
-	}
-
-	if(style.styleSheet) {
-		style.styleSheet.cssText = css;
-	} else {
-		while(style.firstChild) {
-			style.removeChild(style.firstChild);
-		}
-
-		style.appendChild(document.createTextNode(css));
-	}
-}
-
-function updateLink (link, options, obj) {
-	var css = obj.css;
-	var sourceMap = obj.sourceMap;
-
-	/*
-		If convertToAbsoluteUrls isn't defined, but sourcemaps are enabled
-		and there is no publicPath defined then lets turn convertToAbsoluteUrls
-		on by default.  Otherwise default to the convertToAbsoluteUrls option
-		directly
-	*/
-	var autoFixUrls = options.convertToAbsoluteUrls === undefined && sourceMap;
-
-	if (options.convertToAbsoluteUrls || autoFixUrls) {
-		css = fixUrls(css);
-	}
-
-	if (sourceMap) {
-		// http://stackoverflow.com/a/26603875
-		css += "\n/*# sourceMappingURL=data:application/json;base64," + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + " */";
-	}
-
-	var blob = new Blob([css], { type: "text/css" });
-
-	var oldSrc = link.href;
-
-	link.href = URL.createObjectURL(blob);
-
-	if(oldSrc) URL.revokeObjectURL(oldSrc);
-}
-
-
-/***/ }),
-/* 25 */
-/***/ (function(module, exports) {
-
-
-/**
- * When source maps are enabled, `style-loader` uses a link element with a data-uri to
- * embed the css on the page. This breaks all relative urls because now they are relative to a
- * bundle instead of the current page.
- *
- * One solution is to only use full urls, but that may be impossible.
- *
- * Instead, this function "fixes" the relative urls to be absolute according to the current page location.
- *
- * A rudimentary test suite is located at `test/fixUrls.js` and can be run via the `npm test` command.
- *
- */
-
-module.exports = function (css) {
-  // get current location
-  var location = typeof window !== "undefined" && window.location;
-
-  if (!location) {
-    throw new Error("fixUrls requires window.location");
-  }
-
-	// blank or null?
-	if (!css || typeof css !== "string") {
-	  return css;
-  }
-
-  var baseUrl = location.protocol + "//" + location.host;
-  var currentDir = baseUrl + location.pathname.replace(/\/[^\/]*$/, "/");
-
-	// convert each url(...)
-	/*
-	This regular expression is just a way to recursively match brackets within
-	a string.
-
-	 /url\s*\(  = Match on the word "url" with any whitespace after it and then a parens
-	   (  = Start a capturing group
-	     (?:  = Start a non-capturing group
-	         [^)(]  = Match anything that isn't a parentheses
-	         |  = OR
-	         \(  = Match a start parentheses
-	             (?:  = Start another non-capturing groups
-	                 [^)(]+  = Match anything that isn't a parentheses
-	                 |  = OR
-	                 \(  = Match a start parentheses
-	                     [^)(]*  = Match anything that isn't a parentheses
-	                 \)  = Match a end parentheses
-	             )  = End Group
-              *\) = Match anything and then a close parens
-          )  = Close non-capturing group
-          *  = Match anything
-       )  = Close capturing group
-	 \)  = Match a close parens
-
-	 /gi  = Get all matches, not the first.  Be case insensitive.
-	 */
-	var fixedCss = css.replace(/url\s*\(((?:[^)(]|\((?:[^)(]+|\([^)(]*\))*\))*)\)/gi, function(fullMatch, origUrl) {
-		// strip quotes (if they exist)
-		var unquotedOrigUrl = origUrl
-			.trim()
-			.replace(/^"(.*)"$/, function(o, $1){ return $1; })
-			.replace(/^'(.*)'$/, function(o, $1){ return $1; });
-
-		// already a full url? no change
-		if (/^(#|data:|http:\/\/|https:\/\/|file:\/\/\/)/i.test(unquotedOrigUrl)) {
-		  return fullMatch;
-		}
-
-		// convert the url to a full url
-		var newUrl;
-
-		if (unquotedOrigUrl.indexOf("//") === 0) {
-		  	//TODO: should we add protocol?
-			newUrl = unquotedOrigUrl;
-		} else if (unquotedOrigUrl.indexOf("/") === 0) {
-			// path should be relative to the base url
-			newUrl = baseUrl + unquotedOrigUrl; // already starts with '/'
-		} else {
-			// path should be relative to current directory
-			newUrl = currentDir + unquotedOrigUrl.replace(/^\.\//, ""); // Strip leading './'
-		}
-
-		// send back the fixed url(...)
-		return "url(" + JSON.stringify(newUrl) + ")";
-	});
-
-	// send back the fixed css
-	return fixedCss;
-};
-
-
-/***/ }),
-/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    lib: '2.4094.8',
-    product: '2.4094.8',
+    lib: '2.4382.1-beta',
+    product: '2.4382.1-beta',
     supportedApiVersion: 2
 };
 
 
 /***/ }),
-/* 27 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6153,7 +5784,7 @@ exports.AjaxError = AjaxError;
 
 
 /***/ }),
-/* 28 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6171,7 +5802,7 @@ exports.MissingAuthenticationError = MissingAuthenticationError;
 
 
 /***/ }),
-/* 29 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6272,7 +5903,7 @@ var QueryUtils = /** @class */ (function () {
         return result.raw['objecttype'];
     };
     QueryUtils.getCollection = function (result) {
-        return result.raw['collection'];
+        return result.raw['collection'] || 'default';
     };
     QueryUtils.getSource = function (result) {
         return result.raw['source'];
@@ -6378,7 +6009,7 @@ exports.QueryUtils = QueryUtils;
 
 
 /***/ }),
-/* 30 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6401,25 +6032,25 @@ exports.QueryError = QueryError;
 
 
 /***/ }),
-/* 31 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var analytics = __webpack_require__(9);
+var analytics = __webpack_require__(10);
 exports.analytics = analytics;
-var SimpleAnalytics = __webpack_require__(34);
+var SimpleAnalytics = __webpack_require__(31);
 exports.SimpleAnalytics = SimpleAnalytics;
-var history = __webpack_require__(10);
+var history = __webpack_require__(11);
 exports.history = history;
-var donottrack = __webpack_require__(37);
+var donottrack = __webpack_require__(34);
 exports.donottrack = donottrack;
-var storage = __webpack_require__(11);
+var storage = __webpack_require__(12);
 exports.storage = storage;
 
 
 /***/ }),
-/* 32 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6473,7 +6104,7 @@ exports.Cookie = Cookie;
 
 
 /***/ }),
-/* 33 */
+/* 30 */
 /***/ (function(module, exports) {
 
 (function(self) {
@@ -6940,14 +6571,14 @@ exports.Cookie = Cookie;
 
 
 /***/ }),
-/* 34 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var analytics = __webpack_require__(9);
-var objectassign_1 = __webpack_require__(35);
-var utils_1 = __webpack_require__(36);
+var analytics = __webpack_require__(10);
+var objectassign_1 = __webpack_require__(32);
+var utils_1 = __webpack_require__(33);
 var SimpleAPI = (function () {
     function SimpleAPI() {
     }
@@ -7019,7 +6650,7 @@ exports.default = exports.SimpleAnalytics;
 
 
 /***/ }),
-/* 35 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7061,7 +6692,7 @@ exports.default = exports.assign;
 
 
 /***/ }),
-/* 36 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7077,7 +6708,7 @@ exports.popFromObject = popFromObject;
 
 
 /***/ }),
-/* 37 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7088,7 +6719,7 @@ exports.default = exports.doNotTrack;
 
 
 /***/ }),
-/* 38 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7160,7 +6791,7 @@ exports.Cookie = Cookie;
 
 
 /***/ }),
-/* 39 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7284,16 +6915,16 @@ exports.AccessToken = AccessToken;
 
 
 /***/ }),
-/* 40 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(4);
-var SearchEndpoint_1 = __webpack_require__(6);
-var SearchSectionBuilder_1 = __webpack_require__(41);
-var SectionBuilder_1 = __webpack_require__(13);
+var SearchEndpoint_1 = __webpack_require__(7);
+var SearchSectionBuilder_1 = __webpack_require__(38);
+var SectionBuilder_1 = __webpack_require__(14);
 var getComponentContainerElement = function () {
     return Dom_1.$$(document.body).find('.component-container');
 };
@@ -7718,12 +7349,24 @@ exports.PlaygroundConfiguration = {
     },
     TimespanFacet: {
         show: true
+    },
+    PromotedResultsBadge: {
+        show: true,
+        element: new SearchSectionBuilder_1.SearchSectionBuilder()
+            .withComponent('CoveoResultList', {
+            'data-layout': 'list'
+        })
+            .withComponent('CoveoPromotedResultsBadge', {
+            'data-show-badge-for-featured-results': true,
+            'data-show-badge-for-recommended-results': true
+        })
+            .build()
     }
 };
 
 
 /***/ }),
-/* 41 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7740,7 +7383,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(4);
-var SectionBuilder_1 = __webpack_require__(13);
+var SectionBuilder_1 = __webpack_require__(14);
 var SearchSectionBuilder = /** @class */ (function (_super) {
     __extends(SearchSectionBuilder, _super);
     function SearchSectionBuilder(sectionParameter) {
@@ -7789,7 +7432,7 @@ exports.SearchSectionBuilder = SearchSectionBuilder;
 
 
 /***/ }),
-/* 42 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7932,13 +7575,13 @@ exports.QueryEvents = QueryEvents;
 
 
 /***/ }),
-/* 43 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var Globalize = __webpack_require__(44);
+var Globalize = __webpack_require__(41);
 var merge = function (obj1, obj2) {
     var obj3 = {};
     for (var attrname in obj1) {
@@ -7950,112 +7593,6 @@ var merge = function (obj1, obj2) {
     return obj3;
 };
 var dict = {
-    "people": "User",
-    "objecttype_people": "User",
-    "message": "Message",
-    "objecttype_message": "Message",
-    "feed": "RSS Feed",
-    "objecttype_feed": "RSS Feed",
-    "thread": "Thread",
-    "objecttype_thread": "Thread",
-    "file": "File",
-    "objecttype_file": "File",
-    "board": "Board",
-    "objecttype_board": "Board",
-    "category": "Category",
-    "objecttype_category": "Category",
-    "account": "Account",
-    "objecttype_account": "Account",
-    "annotation": "Note",
-    "objecttype_annotation": "Note",
-    "campaign": "Campaign",
-    "objecttype_campaign": "Campaign",
-    "case": "Case",
-    "objecttype_case": "Case",
-    "contact": "Contact",
-    "objecttype_contact": "Contact",
-    "contract": "Contract",
-    "objecttype_contract": "Contract",
-    "event": "Event",
-    "objecttype_event": "Event",
-    "email": "Email",
-    "objecttype_email": "Email",
-    "goal": "Goal",
-    "objecttype_goal": "Goal",
-    "incident": "Case",
-    "objecttype_incident": "Case",
-    "invoice": "Invoice",
-    "objecttype_invoice": "Invoice",
-    "lead": "Lead",
-    "objecttype_lead": "Lead",
-    "list": "List",
-    "objecttype_list": "Marketing List",
-    "solution": "Solution",
-    "objecttype_solution": "Solution",
-    "report": "Report",
-    "objecttype_report": "Report",
-    "task": "Task",
-    "objecttype_task": "Task",
-    "user": "User",
-    "objecttype_user": "User",
-    "attachment": "Attachment",
-    "objecttype_attachment": "Attachment",
-    "casecomment": "Case Comment",
-    "objecttype_casecomment": "Case Comment",
-    "opportunity": "Opportunity",
-    "objecttype_opportunity": "Opportunity",
-    "opportunityproduct": "Opportunity Product",
-    "objecttype_opportunityproduct": "Opportunity Product",
-    "feeditem": "Chatter",
-    "objecttype_feeditem": "Chatter",
-    "feedcomment": "Comment",
-    "objecttype_feedcomment": "Comment",
-    "note": "Note",
-    "objecttype_note": "Note",
-    "product": "Product",
-    "objecttype_product": "Product",
-    "partner": "Partner",
-    "objecttype_partner": "Partner",
-    "queueitem": "Queue Item",
-    "objecttype_queueitem": "Queue Item",
-    "quote": "Quote",
-    "objecttype_quote": "Quote",
-    "salesliterature": "Sales Literature",
-    "objecttype_salesliterature": "Sales Literature",
-    "salesorder": "Sales Order",
-    "objecttype_salesorder": "Sales Order",
-    "service": "Service",
-    "objecttype_service": "Service",
-    "socialprofile": "Social Profile",
-    "objecttype_socialprofile": "Social Profile",
-    "kbdocumentation": "Knowledge Document",
-    "objecttype_kbdocumentation": "Knowledge Document",
-    "kbtechnicalarticle": "Technical Documentation",
-    "objecttype_kbtechnicalarticle": "Technical Documentation",
-    "kbsolution": "Solution",
-    "objecttype_kbsolution": "Solution",
-    "kbknowledgearticle": "Knowledge Article",
-    "objecttype_kbknowledgearticle": "Knowledge Article",
-    "kbattachment": "Attachment",
-    "objecttype_kbattachment": "Attachment",
-    "kbarticle": "Article",
-    "objecttype_kbarticle": "Article",
-    "kbarticlecomment": "Article Comment",
-    "objecttype_kbarticlecomment": "Article Comment",
-    "knowledgearticle": "Knowledge Article",
-    "objecttype_knowledgearticle": "Knowledge Article",
-    "topic": "Topic",
-    "objecttype_topic": "Topic",
-    "dashboard": "Dashboard",
-    "objecttype_dashboard": "Dashboard",
-    "contentversion": "Document",
-    "objecttype_contentversion": "Document",
-    "collaborationgroup": "Collaboration group",
-    "objecttype_collaborationgroup": "Collaboration group",
-    "phonecall": "Phone call",
-    "objecttype_phonecall": "Phone call",
-    "appointment": "Appointment",
-    "objecttype_appointment": "Appointment",
     "box user": "User",
     "filetype_box user": "User",
     "html": "HTML File",
@@ -8164,6 +7701,112 @@ var dict = {
     "filetype_lithiumcategory": "Lithium Category",
     "lithiumcommunity": "Lithium Community",
     "filetype_lithiumcommunity": "Lithium Community",
+    "people": "User",
+    "objecttype_people": "User",
+    "message": "Message",
+    "objecttype_message": "Message",
+    "feed": "RSS Feed",
+    "objecttype_feed": "RSS Feed",
+    "thread": "Thread",
+    "objecttype_thread": "Thread",
+    "file": "File",
+    "objecttype_file": "File",
+    "board": "Board",
+    "objecttype_board": "Board",
+    "category": "Category",
+    "objecttype_category": "Category",
+    "account": "Account",
+    "objecttype_account": "Account",
+    "annotation": "Note",
+    "objecttype_annotation": "Note",
+    "campaign": "Campaign",
+    "objecttype_campaign": "Campaign",
+    "case": "Case",
+    "objecttype_case": "Case",
+    "contact": "Contact",
+    "objecttype_contact": "Contact",
+    "contract": "Contract",
+    "objecttype_contract": "Contract",
+    "event": "Event",
+    "objecttype_event": "Event",
+    "email": "Email",
+    "objecttype_email": "Email",
+    "goal": "Goal",
+    "objecttype_goal": "Goal",
+    "incident": "Case",
+    "objecttype_incident": "Case",
+    "invoice": "Invoice",
+    "objecttype_invoice": "Invoice",
+    "lead": "Lead",
+    "objecttype_lead": "Lead",
+    "list": "List",
+    "objecttype_list": "Marketing List",
+    "solution": "Solution",
+    "objecttype_solution": "Solution",
+    "report": "Report",
+    "objecttype_report": "Report",
+    "task": "Task",
+    "objecttype_task": "Task",
+    "user": "User",
+    "objecttype_user": "User",
+    "attachment": "Attachment",
+    "objecttype_attachment": "Attachment",
+    "casecomment": "Case Comment",
+    "objecttype_casecomment": "Case Comment",
+    "opportunity": "Opportunity",
+    "objecttype_opportunity": "Opportunity",
+    "opportunityproduct": "Opportunity Product",
+    "objecttype_opportunityproduct": "Opportunity Product",
+    "feeditem": "Chatter",
+    "objecttype_feeditem": "Chatter",
+    "feedcomment": "Comment",
+    "objecttype_feedcomment": "Comment",
+    "note": "Note",
+    "objecttype_note": "Note",
+    "product": "Product",
+    "objecttype_product": "Product",
+    "partner": "Partner",
+    "objecttype_partner": "Partner",
+    "queueitem": "Queue Item",
+    "objecttype_queueitem": "Queue Item",
+    "quote": "Quote",
+    "objecttype_quote": "Quote",
+    "salesliterature": "Sales Literature",
+    "objecttype_salesliterature": "Sales Literature",
+    "salesorder": "Sales Order",
+    "objecttype_salesorder": "Sales Order",
+    "service": "Service",
+    "objecttype_service": "Service",
+    "socialprofile": "Social Profile",
+    "objecttype_socialprofile": "Social Profile",
+    "kbdocumentation": "Knowledge Document",
+    "objecttype_kbdocumentation": "Knowledge Document",
+    "kbtechnicalarticle": "Technical Documentation",
+    "objecttype_kbtechnicalarticle": "Technical Documentation",
+    "kbsolution": "Solution",
+    "objecttype_kbsolution": "Solution",
+    "kbknowledgearticle": "Knowledge Article",
+    "objecttype_kbknowledgearticle": "Knowledge Article",
+    "kbattachment": "Attachment",
+    "objecttype_kbattachment": "Attachment",
+    "kbarticle": "Article",
+    "objecttype_kbarticle": "Article",
+    "kbarticlecomment": "Article Comment",
+    "objecttype_kbarticlecomment": "Article Comment",
+    "knowledgearticle": "Knowledge Article",
+    "objecttype_knowledgearticle": "Knowledge Article",
+    "topic": "Topic",
+    "objecttype_topic": "Topic",
+    "dashboard": "Dashboard",
+    "objecttype_dashboard": "Dashboard",
+    "contentversion": "Document",
+    "objecttype_contentversion": "Document",
+    "collaborationgroup": "Collaboration group",
+    "objecttype_collaborationgroup": "Collaboration group",
+    "phonecall": "Phone call",
+    "objecttype_phonecall": "Phone call",
+    "appointment": "Appointment",
+    "objecttype_appointment": "Appointment",
     "spportal": "Portal",
     "filetype_spportal": "Portal",
     "spsite": "SharePoint Site",
@@ -8703,6 +8346,12 @@ var dict = {
     "RelevanceInspector": "Relevance Inspector",
     "KeywordInCategory": "{0} in {1}",
     "ResultCount": "{0} results",
+    "ShowingResults": "{0} result<pl>s</pl>",
+    "ShowingResultsWithQuery": "{0} result<pl></pl> for {1}",
+    "NumberOfVideos": "Number of videos",
+    "AllCategories": "All Categories",
+    "Recommended": "Recommended",
+    "Featured": "Featured",
 };
 function defaultLanguage() {
     var locales = String["locales"] || (String["locales"] = {});
@@ -8725,41 +8374,14 @@ exports.setLanguageAfterPageLoaded = setLanguageAfterPageLoaded;
 
 
 /***/ }),
-/* 44 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(global) {module.exports = global["Globalize"] = __webpack_require__(46);
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(45)))
+/* WEBPACK VAR INJECTION */(function(global) {module.exports = global["Globalize"] = __webpack_require__(42);
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
 
 /***/ }),
-/* 45 */
-/***/ (function(module, exports) {
-
-var g;
-
-// This works in non-strict mode
-g = (function() {
-	return this;
-})();
-
-try {
-	// This works if eval is allowed (see CSP)
-	g = g || Function("return this")() || (1,eval)("this");
-} catch(e) {
-	// This works if the window reference is available
-	if(typeof window === "object")
-		g = window;
-}
-
-// g can still be undefined, but nothing to do about it...
-// We return undefined, instead of nothing here, so it's
-// easier to handle this case. if(!global) { ...}
-
-module.exports = g;
-
-
-/***/ }),
-/* 46 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! globalize - v0.1.1 - 2013-04-30

@@ -196,12 +196,15 @@
 					<div class="lead">
 						<p>The core template helpers provided by default.</p>
 					</div>
-					<p>Example usage:</p>
-					<h3 id="html">HTML</h3>
-					<pre><code>&lt;div <span class="hljs-class"><span class="hljs-keyword">class</span></span>=<span class="hljs-string">"CoveoFieldValue"</span> data-helper=<span class="hljs-string">"helperName"</span> data-helper-options-optionName=<span class="hljs-string">"option-value"</span>&gt;<span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
-</code></pre><h3 id="underscore">Underscore</h3>
-					<pre><code><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">%=</span></span></span><span class="ruby"> helperName(argument1, argument2) </span><span class="xml"><span class="hljs-tag">%&gt;</span></span>
+					<p><strong>Usage Examples:</strong></p>
+					<blockquote>
+						<p><strong>HTML</strong></p>
+						<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoFieldValue"</span> <span class="hljs-attr">data-helper</span>=<span class="hljs-string">"helperName"</span> <span class="hljs-attr">data-helper-options-optionName</span>=<span class="hljs-string">"option-value"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
 </code></pre>
+						<p><strong>Underscore</strong></p>
+						<pre><code class="lang-erb"><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">%=</span></span></span><span class="ruby"> helperName(argument1, argument2) </span><span class="xml"><span class="hljs-tag">%&gt;</span></span>
+</code></pre>
+					</blockquote>
 				</div>
 			</section>
 			<div class="preview-container tsd-panel">
@@ -251,8 +254,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L194">ui/Templates/CoreHelpers.ts
-							:194</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L196">ui/Templates/CoreHelpers.ts
+							:196</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -261,7 +264,7 @@
 						</div>
 						<ul>
 							<li><code>href</code>: The link URI</li>
-							<li><code>options</code>: The options to use (see <a href="ianchorutilsoptions.html">IAnchorUtilsOptions</a>)</li>
+							<li><code>options</code>: Optional. The options to use (see <a href="ianchorutilsoptions.html">IAnchorUtilsOptions</a>)</li>
 						</ul>
 					</div>
 					<div class="tsd-type-declaration">
@@ -296,8 +299,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L154">ui/Templates/CoreHelpers.ts
-							:154</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L156">ui/Templates/CoreHelpers.ts
+							:156</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -305,8 +308,8 @@
 							<p>Formats a currency value to a string using the specified options.</p>
 						</div>
 						<ul>
-							<li><code>value</code>: The number value to format.</li>
-							<li><code>options</code>: The options to use (see ICurrencyToStringOptions).</li>
+							<li><code>content</code>: The number value to format.</li>
+							<li><code>options</code>: Optional. The options to use (see ICurrencyToStringOptions).</li>
 						</ul>
 					</div>
 					<div class="tsd-type-declaration">
@@ -341,8 +344,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L132">ui/Templates/CoreHelpers.ts
-							:132</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L134">ui/Templates/CoreHelpers.ts
+							:134</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -350,8 +353,8 @@
 							<p>Formats a date value to a date-only string using the specified options.</p>
 						</div>
 						<ul>
-							<li><code>value</code>: The Date value to format.</li>
-							<li><code>options</code>: The options to use (see IDateToStringOptions).</li>
+							<li><code>content</code>: The Date value to format.</li>
+							<li><code>options</code>: Optional. The options to use (see IDateToStringOptions).</li>
 						</ul>
 					</div>
 					<div class="tsd-type-declaration">
@@ -386,8 +389,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L147">ui/Templates/CoreHelpers.ts
-							:147</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L149">ui/Templates/CoreHelpers.ts
+							:149</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -396,8 +399,8 @@
 							options.</p>
 						</div>
 						<ul>
-							<li><code>value</code>: The Date value to format.</li>
-							<li><code>options</code>: The options to use (see IDateToStringOptions).</li>
+							<li><code>content</code>: The Date value to format.</li>
+							<li><code>options</code>: Optional. The options to use (see IDateToStringOptions).</li>
 						</ul>
 					</div>
 					<div class="tsd-type-declaration">
@@ -432,8 +435,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L187">ui/Templates/CoreHelpers.ts
-							:187</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L189">ui/Templates/CoreHelpers.ts
+							:189</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -441,23 +444,23 @@
 							<p>Renders one or several email values in <code>mailto:</code> hyperlinks.</p>
 						</div>
 						<ul>
-							<li><code>value</code>: The string or array of string that contains a list of semicolon-separated email
+							<li><code>value</code>: The string or array of strings that contains a list of semicolon-separated email
 								values. When multiple values are passed, each value is displayed in a
 							separate hyperlink.</li>
-							<li><code>companyDomain</code>: The string that contains your own domain (e.g.:
+							<li><code>companyDomain</code>: Optional. The string that contains your own domain (e.g.:
 								coveo.com). When specified, this parameter allows email addresses
 								coming from your own domain to be displayed in a shortened format
 								(e.g.: Full Name), whereas email addresses coming from an external
 								domain will be displayed in an extended format (e.g.: Full Name
 								(domain.com)). If this parameter is not specified, then the shortened
 							format will automatically be used.</li>
-							<li><code>me</code>: The string that contains the current username. If it is
+							<li><code>me</code>: Optional. The string that contains the current username. If it is
 								specified, then the email address containing the current username will
 							be replaced by the localized string &#39;Me&#39;.</li>
-							<li><code>lengthLimit</code>: The number of email addresses that you want to display
+							<li><code>lengthLimit</code>: Optional. The number of email addresses that you want to display
 								before an ellipse is added (e.g.: &#39;From Joe, John and 5 others&#39;).<br/>
 							The default value is 2.</li>
-							<li><code>truncateName</code>: When the username is available from the email address,
+							<li><code>truncateName</code>: Optional. When the username is available from the email address,
 								then you can specify if you want to truncate the full name. (e.g.:
 								&#39;John S.&#39; instead of &#39;John Smith&#39;).<br/>
 							The default value is <code>false</code>.</li>
@@ -504,8 +507,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L162">ui/Templates/CoreHelpers.ts
-							:162</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L164">ui/Templates/CoreHelpers.ts
+							:164</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -514,8 +517,8 @@
 							email dates</p>
 						</div>
 						<ul>
-							<li><code>value</code>: The Date value to format.</li>
-							<li><code>options</code>: The options to use (see IDateToStringOptions).</li>
+							<li><code>content</code>: The Date value to format.</li>
+							<li><code>options</code>: Optional. The options to use (see IDateToStringOptions).</li>
 						</ul>
 					</div>
 					<div class="tsd-type-declaration">
@@ -550,14 +553,17 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L287">ui/Templates/CoreHelpers.ts
-							:287</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L310">ui/Templates/CoreHelpers.ts
+							:310</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>Replace all carriage return in a string by a &lt;br /&gt; tag</p>
 						</div>
+						<ul>
+							<li><code>value</code>: The string value to replace the carriage returns in.</li>
+						</ul>
 					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
@@ -588,8 +594,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L229">ui/Templates/CoreHelpers.ts
-							:229</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L231">ui/Templates/CoreHelpers.ts
+							:231</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -599,12 +605,12 @@
 							class.</p>
 						</div>
 						<ul>
-							<li><code>result</code>: The current result object inside your template. In
-								underscore, it is referenced as <code>obj</code>. <em>Optional</em>, by default the result
+							<li><code>result</code>: Optional. The current result object inside your template. In
+								underscore, it is referenced as <code>obj</code>. By default, the result
 								will be resolved automatically from your current template function (
 								Meaning the nearest result in the current call stack execution inside
 							your template)</li>
-							<li><code>options</code>: The options to use (see <a href="iiconoptions.html">IIconOptions</a>).</li>
+							<li><code>options</code>: Optional. The options to use (see <a href="iiconoptions.html">IIconOptions</a>).</li>
 						</ul>
 					</div>
 					<div class="tsd-type-declaration">
@@ -639,8 +645,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L83">ui/Templates/CoreHelpers.ts
-							:83</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L85">ui/Templates/CoreHelpers.ts
+							:85</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -648,7 +654,8 @@
 							<p>Highlights a string using the provided highlight information.</p>
 						</div>
 						<ul>
-							<li><code>highlights</code>: The highlight information to use.</li>
+							<li><code>content</code>: The URI to shorten.</li>
+							<li><code>highlights</code>: Optional. The highlight information to use.</li>
 							<li><code>cssClass</code>: Optional. The name of the CSS class to use for highlighting.</li>
 						</ul>
 					</div>
@@ -687,8 +694,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L112">ui/Templates/CoreHelpers.ts
-							:112</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L114">ui/Templates/CoreHelpers.ts
+							:114</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -699,8 +706,8 @@
 						</div>
 						<ul>
 							<li><code>content</code>: The string content to highlight</li>
-							<li><code>termsToHighlight</code>: Optional. The terms to highlight (see <a href="ihighlightterm.html">IHighlightTerm</a>)</li>
-							<li><code>phraseToHighlight</code>: Optional. The phrases to highlight (see <a href="ihighlightphrase.html">IHighlightPhrase</a>)</li>
+							<li><code>termsToHighlight</code>: The terms to highlight (see <a href="ihighlightterm.html">IHighlightTerm</a>)</li>
+							<li><code>phraseToHighlight</code>: The phrases to highlight (see <a href="ihighlightphrase.html">IHighlightPhrase</a>)</li>
 							<li><code>options</code>: Optional. The options defined below as <a href="istreamhighlightoptions.html">IStreamHighlightOptions</a></li>
 						</ul>
 					</div>
@@ -742,13 +749,13 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L96">ui/Templates/CoreHelpers.ts
-							:96</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L98">ui/Templates/CoreHelpers.ts
+							:98</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>This helper highlights the provided terms in a given string.<br/>
+							<p>Highlights the provided terms in a given string.<br/>
 								By default, the terms to highlight are the current query and the
 								associated stemming words from the index.
 								The only required parameter is the content, which specify the string that needs to be highlighted.
@@ -756,8 +763,8 @@
 						</div>
 						<ul>
 							<li><code>content</code>: The string content to highlight</li>
-							<li><code>termsToHighlight</code>: Optional. The terms to highlight (see <a href="ihighlightterm.html">IHighlightTerm</a>)</li>
-							<li><code>phraseToHighlight</code>: Optional. The phrases to highlight (see <a href="ihighlightphrase.html">IHighlightPhrase</a>)</li>
+							<li><code>termsToHighlight</code>: The terms to highlight (see <a href="ihighlightterm.html">IHighlightTerm</a>)</li>
+							<li><code>phraseToHighlight</code>: The phrases to highlight (see <a href="ihighlightphrase.html">IHighlightPhrase</a>)</li>
 							<li><code>options</code>: Optional. The options defined below as <a href="istreamhighlightoptions.html">IStreamHighlightOptions</a></li>
 						</ul>
 					</div>
@@ -799,8 +806,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L201">ui/Templates/CoreHelpers.ts
-							:201</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L203">ui/Templates/CoreHelpers.ts
+							:203</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -809,7 +816,7 @@
 						</div>
 						<ul>
 							<li><code>src</code>: The image source URI</li>
-							<li><code>options</code>: The options to use (see <a href="iimageutilsoptions.html">IImageUtilsOptions</a>)</li>
+							<li><code>options</code>: Optional. The options to use (see <a href="iimageutilsoptions.html">IImageUtilsOptions</a>)</li>
 						</ul>
 					</div>
 					<div class="tsd-type-declaration">
@@ -844,8 +851,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L295">ui/Templates/CoreHelpers.ts
-							:295</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L318">ui/Templates/CoreHelpers.ts
+							:318</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -878,8 +885,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L246">ui/Templates/CoreHelpers.ts
-							:246</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L248">ui/Templates/CoreHelpers.ts
+							:248</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -893,11 +900,11 @@
 							Results.</p>
 						</div>
 						<ul>
-							<li><code>templateId</code>: the ID of the template to load.</li>
-							<li><code>condition</code>: The boolean condition to determine if this template should
+							<li><code>templateId</code>: The ID of the template to load.</li>
+							<li><code>condition</code>: Optional. The boolean condition to determine if this template should
 								load for this result set. Most of the time this would be a condition of
 							the type if raw.somefield == &#39;something&#39;.</li>
-							<li><code>contextObject</code>: The object that should be used by the loaded template
+							<li><code>contextObject</code>: Optional. The object that should be used by the loaded template
 							as its contextObject.</li>
 						</ul>
 					</div>
@@ -936,8 +943,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L125">ui/Templates/CoreHelpers.ts
-							:125</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L127">ui/Templates/CoreHelpers.ts
+							:127</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -945,7 +952,7 @@
 							<p>Formats a numeric value using the format string.</p>
 						</div>
 						<ul>
-							<li><code>value</code>: The numeric value to format.</li>
+							<li><code>content</code>: The numeric value to format.</li>
 							<li><code>format</code>: The format string to use. The options available are defined by
 							the <a href="https://github.com/klaaspieter/jquery-global#numbers">Globalize</a> library.</li>
 						</ul>
@@ -982,8 +989,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L52">ui/Templates/CoreHelpers.ts
-							:52</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L53">ui/Templates/CoreHelpers.ts
+							:53</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -993,7 +1000,7 @@
 							maximum length.</p>
 						</div>
 						<ul>
-							<li><code>value</code>: The string to shorten.</li>
+							<li><code>content</code>: The string to shorten.</li>
 							<li><code>length</code>: The maximum length of the resulting string.</li>
 							<li><code>highlights</code>: Optional. If provided, the string will be highlighted
 							using this highlight information.</li>
@@ -1038,8 +1045,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L64">ui/Templates/CoreHelpers.ts
-							:64</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L65">ui/Templates/CoreHelpers.ts
+							:65</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1049,7 +1056,7 @@
 							the path exceeds the maximum length.</p>
 						</div>
 						<ul>
-							<li><code>value</code>: The path to shorten.</li>
+							<li><code>content</code>: The path to shorten.</li>
 							<li><code>length</code>: The maximum length of the resulting string.</li>
 							<li><code>highlights</code>: Optional. If provided, the string will be highlighted using
 							this highlight information.</li>
@@ -1094,8 +1101,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L76">ui/Templates/CoreHelpers.ts
-							:76</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L77">ui/Templates/CoreHelpers.ts
+							:77</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1105,7 +1112,7 @@
 							exceeds the maximum length.</p>
 						</div>
 						<ul>
-							<li><code>value</code>: The URI to shorten.</li>
+							<li><code>content</code>: The URI to shorten.</li>
 							<li><code>length</code>: The maximum length of the resulting string.</li>
 							<li><code>highlights</code>: Optional. If provided, the string will be highlighted
 							using this highlight information.</li>
@@ -1150,18 +1157,33 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L271">ui/Templates/CoreHelpers.ts
-							:271</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L290">ui/Templates/CoreHelpers.ts
+							:290</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Given a number, which represent a file size in bytes, format the value into a logical unit size.</p>
+							<p>Formats a number, which represents a file size in bytes, into a logical unit size.</p>
 						</div>
-						<p>eg:</p>
-						<p><code>size(1024) =&gt; 1024 B</code></p>
-						<p><code>size(1025) =&gt; 1 KB</code></p>
-						<p><code>size(10240) =&gt; 10 KB</code></p>
+						<p><strong>Examples:</strong></p>
+						<blockquote>
+							<p><code>size(1024) =&gt; 1024 B</code></p>
+							<p><code>size(1025) =&gt; 1 KB</code></p>
+							<p><code>size(10240) =&gt; 10 KB</code></p>
+						</blockquote>
+						<p><strong>Usage Examples:</strong></p>
+						<blockquote>
+							<p><strong>HTML</strong></p>
+							<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoFieldValue"</span> <span class="hljs-attr">data-field</span>=<span class="hljs-string">'@size'</span> <span class="hljs-attr">data-helper</span>=<span class="hljs-string">"size"</span> <span class="hljs-attr">data-helper-options-base</span>=<span class="hljs-string">"1"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+							<p><strong>Underscore</strong></p>
+							<pre><code class="lang-erb"><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">%=</span></span></span><span class="ruby"> size(raw.size, {<span class="hljs-symbol">base:</span> <span class="hljs-number">0</span>, <span class="hljs-symbol">precision:</span> <span class="hljs-number">2</span>}) </span><span class="xml"><span class="hljs-tag">%&gt;</span></span>
+</code></pre>
+						</blockquote>
+						<ul>
+							<li><code>value</code>: The number to format</li>
+							<li><code>options</code> : The options to use (see <a href="isizeoptions.html">ISizeOptions</a>)</li>
+						</ul>
 					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
@@ -1195,8 +1217,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L216">ui/Templates/CoreHelpers.ts
-							:216</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L218">ui/Templates/CoreHelpers.ts
+							:218</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1204,16 +1226,16 @@
 							<p>Formats an HTML image tag (<code>&lt;img&gt;</code>), and automatically uses the result
 								object to query the REST API to get the thumbnail for this result. For
 								example, this can be used to great effect when designing a template
-							showing users or preview of files.</p>
+							showing users or previews of files.</p>
 							<ul>
-								<li><code>result</code>: The current result object inside your template. In
-									underscore, it is referenced as <code>obj</code>. Optional, by default the result
+								<li><code>result</code>: Optional. The current result object inside your template. In
+									underscore, it is referenced as <code>obj</code>. By default, the result
 									will be resolved automatically from your current template function (
 									Meaning the nearest result in the current call stack execution inside
 								your template)</li>
 								<li><code>endpoint</code>: Optional. The name of the endpoint to use for your
 								thumbnail. Default is default.</li>
-								<li><code>options</code>: The options to use (see <a href="iimageutilsoptions.html">IImageUtilsOptions</a>).</li>
+								<li><code>options</code>: Optional. The options to use (see <a href="iimageutilsoptions.html">IImageUtilsOptions</a>).</li>
 							</ul>
 						</div>
 					</div>
@@ -1252,17 +1274,17 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L139">ui/Templates/CoreHelpers.ts
-							:139</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L141">ui/Templates/CoreHelpers.ts
+							:141</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Formats a date value to a time-only string using the sepcified options.</p>
+							<p>Formats a date value to a time-only string using the specified options.</p>
 						</div>
 						<ul>
-							<li><code>value</code>: The Date value to format.</li>
-							<li><code>options</code>: The options to use (see IDateToStringOptions).</li>
+							<li><code>content</code>: The Date value to format.</li>
+							<li><code>options</code>: Optional. The options to use (see IDateToStringOptions).</li>
 						</ul>
 					</div>
 					<div class="tsd-type-declaration">
@@ -1297,17 +1319,19 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L259">ui/Templates/CoreHelpers.ts
-							:259</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L261">ui/Templates/CoreHelpers.ts
+							:261</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>Given a number, either in millisecond or second, convert to a HH:MM:SS format.</p>
 						</div>
-						<p>eg:</p>
-						<p><code>timeSpan(1, {isMilliseconds: false}) =&gt; &#39;00:01&#39;</code></p>
-						<p><code>timeSpan(1000, {isMilliseconds: true}) =&gt; &#39;00:01&#39;</code></p>
+						<p><strong>Examples</strong></p>
+						<blockquote>
+							<p><code>timeSpan(1, {isMilliseconds: false}) =&gt; &#39;00:01&#39;</code></p>
+							<p><code>timeSpan(1000, {isMilliseconds: true}) =&gt; &#39;00:01&#39;</code></p>
+						</blockquote>
 						<ul>
 							<li><code>value</code>: The number to convert to a timespan</li>
 							<li><code>options</code> : The options to use (see <a href="itimespanutilsoptions.html">ITimeSpanUtilsOptions</a>)</li>
@@ -1345,8 +1369,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L283">ui/Templates/CoreHelpers.ts
-							:283</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L304">ui/Templates/CoreHelpers.ts
+							:304</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1354,9 +1378,14 @@
 							<p>Given a filetype value, try to return a translated and human readable version.</p>
 						</div>
 						<p>If the filetype is known and recognized by the framework, a translated value will be returned.</p>
-						<p>eg:</p>
-						<p><code>translatedCaption(&#39;doc&#39;) =&gt; Document</code></p>
-						<p><code>translatedCaption(&#39;xls&#39;) =&gt; Spreadsheet Document</code></p>
+						<p><strong>Examples</strong></p>
+						<blockquote>
+							<p><code>translatedCaption(&#39;doc&#39;) =&gt; Document</code></p>
+							<p><code>translatedCaption(&#39;xls&#39;) =&gt; Spreadsheet Document</code></p>
+						</blockquote>
+						<ul>
+							<li><code>value</code>: The string value to translate</li>
+						</ul>
 					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>

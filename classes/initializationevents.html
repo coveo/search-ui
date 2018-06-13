@@ -184,7 +184,7 @@
 						</dl>
 						<div class="lead">
 							<p>Triggered after the components are initialized (eg: After the constructor of each component is executed)
-							but before their state is set from the hash portion of the URL (e.g., <a href="http://mysearchinterface#q=myQuery">http://mysearchinterface#q=myQuery</a> ).</p>
+							but before their state is set from the hash portion of the URL (e.g., <code>http://mysearchinterface#q=myQuery</code>).</p>
 						</div>
 						<p>This is also before the first query is launched (if the <a href="../components/searchinterface.html#options.autotriggerquery">SearchInterface.options.autoTriggerQuery</a> is <code>true</code>).</p>
 						<p>The string value is <code>afterComponentsInitialization</code>.</p>
@@ -212,7 +212,7 @@
 						<div class="lead">
 							<p>Triggered right after the UI is fully initialized.</p>
 						</div>
-						<p>Concretely this means that the constructor of each component has been executed, and that the state coming for the URL (e.g., <a href="http://mysearchinterface#q=myquery">http://mysearchinterface#q=myquery</a>) has been applied.</p>
+						<p>Concretely this means that the constructor of each component has been executed, and that the state coming for the URL (e.g., <code>http://mysearchinterface#q=myquery</code>) has been applied.</p>
 						<p>It is triggered <em>before</em> the first query is launched, and if the <a href="../components/searchinterface.html#options.autotriggerquery">SearchInterface.options.autoTriggerQuery</a> is <code>true</code>.</p>
 						<p>The string value is <code>afterInitialization</code>.</p>
 						<dl class="tsd-comment-tags">
@@ -288,7 +288,7 @@
 						<dl class="tsd-deprecated">
 						</dl>
 						<div class="lead">
-							<p>Triggered right before the state from the URL (e.g., <a href="http://mysearchinterface#q=myQuery">http://mysearchinterface#q=myQuery</a> ) gets applied in the interface.</p>
+							<p>Triggered right before the state from the URL (e.g., <code>http://mysearchinterface#q=myQuery</code>) gets applied in the interface.</p>
 						</div>
 						<p>This will typically only be useful if the <a href="../components/searchinterface.html#options.enablehistory">SearchInterface.options.enableHistory</a> is set to <code>true</code>.</p>
 						<p>The string value is <code>restoreHistoryState</code>.</p>

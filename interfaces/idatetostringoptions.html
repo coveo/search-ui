@@ -111,6 +111,9 @@
 								<a href="idatetostringoptions.html#omityearifcurrentone" class="tsd-kind-icon">omit<wbr>Year<wbr>IfCurrent<wbr>One</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="idatetostringoptions.html#predefinedformat" class="tsd-kind-icon">predefined<wbr>Format</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="idatetostringoptions.html#uselongdateformat" class="tsd-kind-icon">use<wbr>Long<wbr>Date<wbr>Format</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
@@ -178,6 +181,7 @@
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="idatetostringoptions.html#includetimeiftoday" class="tsd-kind-icon">include<wbr>Time<wbr>IfToday</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="idatetostringoptions.html#now" class="tsd-kind-icon">now</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="idatetostringoptions.html#omityearifcurrentone" class="tsd-kind-icon">omit<wbr>Year<wbr>IfCurrent<wbr>One</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="idatetostringoptions.html#predefinedformat" class="tsd-kind-icon">predefined<wbr>Format</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="idatetostringoptions.html#uselongdateformat" class="tsd-kind-icon">use<wbr>Long<wbr>Date<wbr>Format</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="idatetostringoptions.html#usetodayyesterdayandtomorrow" class="tsd-kind-icon">use<wbr>Today<wbr>Yesterday<wbr>And<wbr>Tomorrow</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="idatetostringoptions.html#useweekdayifthisweek" class="tsd-kind-icon">use<wbr>Weekday<wbr>IfThis<wbr>Week</a></li>
@@ -315,6 +319,40 @@
 							</li>
 						</ul>
 						<p>Default value is <code>true</code>.</p>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="predefinedformat" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> predefined<wbr>Format</h3>
+					<div class="tsd-signature tsd-kind-icon">predefined<wbr>Format<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/utils/DateUtils.ts#L162">utils/DateUtils.ts
+							:162</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Specifies a custom date format (e.g., dd/MM/yyyy), regardless of browser locale or any other option.</p>
+						</div>
+						<p>This option uses the following syntax. All examples use the April 5th, 2018 14:15:34 time.</p>
+						<ul>
+							<li><code>yyyy</code>: full length year (e.g., 2018)</li>
+							<li><code>yy</code>: short length year (e.g., 18)</li>
+							<li><code>MMMM</code>: month name (e.g., April)</li>
+							<li><code>MMM</code>: shortened month name (e.g., Apr)</li>
+							<li><code>MM</code>: month number (e.g., 04)</li>
+							<li><code>M</code>: single digit month number for months before October (e.g., 4)</li>
+							<li><code>dddd</code>: day name (e.g., Thursday)</li>
+							<li><code>ddd</code>: shortened day name (e.g., Thu)</li>
+							<li><code>dd</code>: day number (e.g., 05)</li>
+							<li><code>d</code>: single digit day for days before the 10th (e.g., 5)</li>
+							<li><code>hh</code>: hour, in the 24-hour format (e.g., 14)</li>
+							<li><code>h</code>: hour, in the 12-hour format (e.g., 2)</li>
+							<li><code>mm</code>: minutes (e.g., 15)</li>
+							<li><code>ss</code>: seconds (e.g., 34)</li>
+						</ul>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
