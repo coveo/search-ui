@@ -16,6 +16,8 @@ import { IComponentBindings } from '../Base/ComponentBindings';
 import { ComponentOptions } from '../Base/ComponentOptions';
 import { Initialization } from '../Base/Initialization';
 import { SortCriteria } from './SortCriteria';
+import { AccessibleButton } from '../../utils/AccessibleButton';
+import { l } from '../../strings/Strings';
 
 export interface ISortOptions {
   sortCriteria?: SortCriteria[];
@@ -112,10 +114,13 @@ export class Sort extends Component {
     this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => this.handleBuildingQuery(args));
     this.bind.onRootElement(QueryEvents.queryError, (args: IQueryErrorEventArgs) => this.handleQueryError(args));
     const clickAction = () => this.handleClick();
-    this.bind.on(this.element, 'click', clickAction);
-    this.bind.on(this.element, 'keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, clickAction));
 
-    this.element.setAttribute('tabindex', '0');
+    new AccessibleButton()
+      .withElement(this.element)
+      .withSelectAction(clickAction)
+      .withLabel(this.options.caption || l('Sort'))
+      .build();
+
     if (Utils.isNonEmptyString(this.options.caption)) {
       $$(this.element).text(this.options.caption);
     }

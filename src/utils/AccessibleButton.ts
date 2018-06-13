@@ -8,10 +8,10 @@ export class AccessibleButton {
   private element: Dom;
   private label: string;
 
-  private clickAction: () => void;
-  private enterKeyboardAction: () => void;
-  private blurAction: (e) => void;
-  private focusAction: () => void;
+  private clickAction: (e: Event) => void;
+  private enterKeyboardAction: (e: Event) => void;
+  private blurAction: (e: Event) => void;
+  private focusAction: (e: Event) => void;
 
   private logger: Logger;
   private eventOwner: ComponentEvents;
@@ -39,28 +39,28 @@ export class AccessibleButton {
     return this;
   }
 
-  public withSelectAction(action: () => void) {
+  public withSelectAction(action: (e: Event) => void) {
     this.clickAction = action;
     this.enterKeyboardAction = action;
     return this;
   }
 
-  public withClickAction(clickAction: () => void) {
+  public withClickAction(clickAction: (e: Event) => void) {
     this.clickAction = clickAction;
     return this;
   }
 
-  public withEnterKeyboardAction(enterAction: () => void) {
+  public withEnterKeyboardAction(enterAction: (e: Event) => void) {
     this.enterKeyboardAction = enterAction;
     return this;
   }
 
-  public withBlurAction(action: (e) => void) {
+  public withBlurAction(action: (e: Event) => void) {
     this.blurAction = action;
     return this;
   }
 
-  public withFocusAction(action: () => void) {
+  public withFocusAction(action: (e: Event) => void) {
     this.focusAction = action;
     return this;
   }
@@ -128,20 +128,21 @@ export class AccessibleButton {
       this.logger.warn('Missing enter keyboard action on accessible button !');
     } else {
       this.ensureTabIndex();
-      this.bindEvent('keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, () => this.enterKeyboardAction()));
+      this.bindEvent('keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, (e: Event) => this.enterKeyboardAction(e)));
     }
   }
 
   private ensureBlurAction() {
     if (this.blurAction) {
       this.bindEvent('mouseleave', this.blurAction);
+      this.bindEvent('blur', this.blurAction);
     }
   }
 
   private ensureFocusAction() {
     if (this.focusAction) {
       this.bindEvent('mouseenter', this.focusAction);
-      this.bindEvent('focus', () => this.focusAction);
+      this.bindEvent('focus', this.focusAction);
     }
   }
 

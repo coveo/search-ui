@@ -1,9 +1,9 @@
 import PopperJs from 'popper.js';
 import 'styling/_Settings';
 import { each, escape, times } from 'underscore';
-import { exportGlobally } from '../../GlobalExports';
 import { InitializationEvents } from '../../events/InitializationEvents';
 import { SettingsEvents } from '../../events/SettingsEvents';
+import { exportGlobally } from '../../GlobalExports';
 import { l } from '../../strings/Strings';
 import { AccessibleButton } from '../../utils/AccessibleButton';
 import { $$ } from '../../utils/Dom';
@@ -87,7 +87,7 @@ export class Settings extends Component {
     $$(this.menu).insertAfter(this.element);
 
     new PopperJs(this.element, this.menu, {
-      placement: 'bottom-start',
+      placement: 'bottom-end',
       modifiers: {
         offset: {
           offset: '0, 5'
@@ -125,8 +125,8 @@ export class Settings extends Component {
       .withElement(this.element)
       .withOwner(this.bind)
       .withSelectAction(() => this.toggle())
-      .withBlurAction(e => this.mouseleave(e))
-      .withFocusAction(() => this.mouseenter())
+      .withBlurAction(() => this.onblur())
+      .withFocusAction(() => this.onfocus())
       .withLabel(l('Settings'))
       .build();
   }
@@ -147,12 +147,6 @@ export class Settings extends Component {
 
       menu.appendChild(menuItemElement);
     });
-    menu.appendChild(
-      $$('div', {
-        className: 'popper__arrow',
-        'x-arrow': ''
-      }).el
-    );
     return menu;
   }
 
@@ -172,6 +166,8 @@ export class Settings extends Component {
     new AccessibleButton()
       .withElement(menuItemElement)
       .withSelectAction(selectAction)
+      .withFocusAction(() => this.onfocus())
+      .withBlurAction(() => this.onblur())
       .withLabel(menuItem.tooltip || menuItem.text)
       .build();
 
@@ -210,14 +206,14 @@ export class Settings extends Component {
     return textElement;
   }
 
-  private mouseleave(e) {
+  private onblur() {
     clearTimeout(this.closeTimeout);
     this.closeTimeout = window.setTimeout(() => {
       this.close();
     }, this.options.menuDelay);
   }
 
-  private mouseenter() {
+  private onfocus() {
     clearTimeout(this.closeTimeout);
   }
 }
