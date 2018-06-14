@@ -41,7 +41,7 @@ export class Logo extends Component {
       {
         className: 'coveo-powered-by coveo-footer-logo',
         href: 'http://www.coveo.com/',
-        'aria-label': l('PoweredByCoveo')
+        'aria-label': l('CoveoHomePage')
       },
       SVGIcons.icons.coveoPoweredBy
     );

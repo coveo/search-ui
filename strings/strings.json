@@ -7362,9 +7362,9 @@
     "en": "Featured",
     "fr": "En vedette"
   },
-  "PoweredByCoveo": {
-    "en": "Powered by Coveo",
-    "fr": "Propulsé par Coveo"
+  "CoveoHomePage": {
+    "en": "Coveo Home page",
+    "fr": "Page d'accueil Coveo"
   },
   "SizeValue": {
     "en": "Size value",
