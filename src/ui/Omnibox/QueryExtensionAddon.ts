@@ -3,7 +3,7 @@ import { OmniboxEvents, IPopulateOmniboxSuggestionsEventArgs } from '../../event
 import { Omnibox, IOmniboxSuggestion } from './Omnibox';
 import { IExtension } from '../../rest/Extension';
 import * as _ from 'underscore';
-import { MagicBox } from '../../magicbox/MagicBox';
+import { MagicBoxInstance } from '../../magicbox/MagicBox';
 import { MagicBoxUtils } from '../../magicbox/MagicBoxUtils';
 import { Result } from '../../magicbox/Result/Result';
 
@@ -44,7 +44,7 @@ export class QueryExtensionAddon {
     return this.hashValueToSuggestion(hash, values);
   }
 
-  private getHash(magicBox: MagicBox): IQueryExtensionAddonHash {
+  private getHash(magicBox: MagicBoxInstance): IQueryExtensionAddonHash {
     var queryExtension: Result = _.last(magicBox.resultAtCursor('QueryExtension'));
     if (queryExtension != null) {
       var queryExtensionArgumentResults = queryExtension.findAll('QueryExtensionArgument');

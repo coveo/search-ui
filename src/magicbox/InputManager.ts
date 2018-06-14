@@ -1,6 +1,6 @@
 import { Result } from './Result/Result';
 import { $$ } from '../utils/Dom';
-import { MagicBox } from './MagicBox';
+import { MagicBoxInstance } from './MagicBox';
 import _ = require('underscore');
 
 export class InputManager {
@@ -25,7 +25,7 @@ export class InputManager {
   public onchangecursor: () => void;
   public ontabpress: () => void;
 
-  constructor(element: HTMLElement, private onchange: (text: string, wordCompletion: boolean) => void, private magicBox: MagicBox) {
+  constructor(element: HTMLElement, private onchange: (text: string, wordCompletion: boolean) => void, private magicBox: MagicBoxInstance) {
     this.underlay = document.createElement('div');
     this.underlay.className = 'magic-box-underlay';
 

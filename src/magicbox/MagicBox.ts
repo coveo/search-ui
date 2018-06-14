@@ -6,7 +6,7 @@ import { Grammar } from './Grammar';
 import { doMagicBoxExport } from './doMagicBoxExport';
 import _ = require('underscore');
 
-export namespace MagicBox {
+export namespace Coveo.MagicBox {
   export interface Options {
     inline?: boolean;
     selectableSuggestionClass?: string;
@@ -14,7 +14,7 @@ export namespace MagicBox {
     suggestionTimeout?: number;
   }
 
-  export class MagicBox {
+  export class MagicBoxInstance {
     public onblur: () => void;
     public onfocus: () => void;
     public onchange: () => void;
@@ -266,7 +266,7 @@ export namespace MagicBox {
   }
 
   export function createMagicBox(element: HTMLElement, grammar: Grammar, options?: Options) {
-    return new MagicBox(element, grammar, options);
+    return new MagicBoxInstance(element, grammar, options);
   }
 
   export function requestAnimationFrame(callback: () => void) {
@@ -276,5 +276,4 @@ export namespace MagicBox {
     return setTimeout(callback);
   }
 }
-
 doMagicBoxExport();

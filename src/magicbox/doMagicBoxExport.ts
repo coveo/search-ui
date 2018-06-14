@@ -1,41 +1,41 @@
 import { exportGlobally } from '../GlobalExports';
-import { EndOfInputResult, Result } from './Result/Result';
-import { ExpressionConstant } from './Expression/ExpressionConstant';
-import { ExpressionEndOfInput } from './Expression/ExpressionEndOfInput';
-import { ExpressionFunction } from './Expression/ExpressionFunction';
-import { ExpressionList } from './Expression/ExpressionList';
-import { ExpressionOptions } from './Expression/ExpressionOptions';
-import { ExpressionRef } from './Expression/ExpressionRef';
-import { ExpressionRegExp } from './Expression/ExpressionRegExp';
-import { Grammar } from './Grammar';
-import * as Grammars from './Grammars/Grammars';
-import { InputManager } from './InputManager';
-import { MagicBox, createMagicBox, requestAnimationFrame } from './MagicBox';
-import { OptionResult } from './Result/OptionResult';
-import { RefResult } from './Result/RefResult';
-import { SuggestionsManager as SuggestionsManagerImpl } from './SuggestionsManager';
-import { Utils } from '../utils/Utils';
+import { EndOfInputResult as EndOfInputResultTemp, Result as ResultTemp } from './Result/Result';
+import { ExpressionConstant as ExpressionConstantTemp } from './Expression/ExpressionConstant';
+import { ExpressionEndOfInput as ExpressionEndOfInputTemp } from './Expression/ExpressionEndOfInput';
+import { ExpressionFunction as ExpressionFunctionTemp } from './Expression/ExpressionFunction';
+import { ExpressionList as ExpressionListTemp } from './Expression/ExpressionList';
+import { ExpressionOptions as ExpressionOptionsTemp } from './Expression/ExpressionOptions';
+import { ExpressionRef as ExpressionRefTemp } from './Expression/ExpressionRef';
+import { ExpressionRegExp as ExpressionRegExpTemp } from './Expression/ExpressionRegExp';
+import { Grammar as GrammarTemp } from './Grammar';
+import * as GrammarsTemp from './Grammars/Grammars';
+import { InputManager as InputManagerTemp } from './InputManager';
+import { MagicBoxInstance, createMagicBox, requestAnimationFrame } from './MagicBox';
+import { OptionResult as OptionResultTemp } from './Result/OptionResult';
+import { RefResult as RefResultTemp } from './Result/RefResult';
+import { Utils as UtilsTemp } from '../utils/Utils';
+import { SuggestionsManager as SuggestionsManagerTemp } from './SuggestionsManager';
 
 export function doMagicBoxExport() {
   exportGlobally({
     MagicBox: {
-      EndOfInputResult,
-      ExpressionConstant,
-      ExpressionEndOfInput,
-      ExpressionFunction,
-      ExpressionList,
-      ExpressionOptions,
-      ExpressionRef,
-      ExpressionRegExp,
-      Grammar,
-      Grammars,
-      InputManager,
-      Instance: MagicBox,
-      OptionResult,
-      RefResult,
-      Result,
-      SuggestionsManager: SuggestionsManagerImpl,
-      Utils,
+      EndOfInputResult: EndOfInputResultTemp,
+      ExpressionConstant: ExpressionConstantTemp,
+      ExpressionEndOfInput: ExpressionEndOfInputTemp,
+      ExpressionFunction: ExpressionFunctionTemp,
+      ExpressionList: ExpressionListTemp,
+      ExpressionOptions: ExpressionOptionsTemp,
+      ExpressionRef: ExpressionRefTemp,
+      ExpressionRegExp: ExpressionRegExpTemp,
+      Grammar: GrammarTemp,
+      Grammars: GrammarsTemp,
+      InputManager: InputManagerTemp,
+      Instance: MagicBoxInstance,
+      OptionResult: OptionResultTemp,
+      RefResult: RefResultTemp,
+      Result: ResultTemp,
+      SuggestionsManager: SuggestionsManagerTemp,
+      Utils: UtilsTemp,
       create: createMagicBox,
       requestAnimationFrame
     }

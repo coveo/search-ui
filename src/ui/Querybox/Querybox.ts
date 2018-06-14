@@ -14,10 +14,9 @@ import { IComponentBindings } from '../Base/ComponentBindings';
 import { ComponentOptions } from '../Base/ComponentOptions';
 import { Initialization } from '../Base/Initialization';
 import { QueryboxQueryParameters } from './QueryboxQueryParameters';
-export const MagicBox: any = require('exports-loader?Coveo.MagicBox!magic-box');
-import { Grammar } from '../../magicbox/Grammar';
 import { Result } from '../../magicbox/Result/Result';
-import { MagicBox, createMagicBox } from '../../magicbox/MagicBox';
+import { MagicBoxInstance, createMagicBox } from '../../magicbox/MagicBox';
+import { Grammar } from '../../magicbox/Grammar';
 
 export interface IQueryboxOptions {
   enableSearchAsYouType?: boolean;
@@ -236,8 +235,9 @@ export class Querybox extends Component {
      */
     triggerQueryOnClear: ComponentOptions.buildBooleanOption({ defaultValue: false })
   };
+  MagicBoxImpl;
 
-  public magicBox: MagicBox;
+  public magicBox: MagicBoxInstance;
   private lastQuery: string;
   private searchAsYouTypeTimeout: number;
 
