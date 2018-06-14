@@ -3,7 +3,8 @@
 .CoveoFacet,
 .CoveoFacetRange,
 .CoveoFacetSlider,
-.CoveoHierarchicalFacet {
+.CoveoHierarchicalFacet,
+.CoveoCategoryFacet {
   margin: 10px 0;
   padding: 0;
   @include defaultRoundedBorder();

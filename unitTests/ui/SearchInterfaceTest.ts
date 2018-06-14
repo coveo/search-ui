@@ -1,4 +1,3 @@
-/// <reference path="../../lib/jasmine/index.d.ts" />
 import * as Mock from '../MockEnvironment';
 import { SearchInterface, ISearchInterfaceOptions } from '../../src/ui/SearchInterface/SearchInterface';
 import { QueryController } from '../../src/controllers/QueryController';
@@ -260,12 +259,12 @@ export function SearchInterfaceTest() {
       it('should allow to retrieve the context after a query', () => {
         setupSearchInterface();
         const queryBuilder = new QueryBuilder();
-        queryBuilder.addContextValue('123', 456);
+        queryBuilder.addContextValue('123', '456');
         cmp.queryController.getLastQuery = () => queryBuilder.build();
         Simulate.query(env, {
           query: queryBuilder.build()
         });
-        expect(cmp.getQueryContext()).toEqual({ '123': 456 });
+        expect(cmp.getQueryContext()).toEqual({ '123': '456' });
       });
 
       it('should allow to retrieve the context from a PipelineContext if present', () => {
