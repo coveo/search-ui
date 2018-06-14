@@ -140,7 +140,6 @@ export class YouTubeThumbnail extends Component {
     const iframe = $$('iframe', {
       src: `https://www.youtube.com/embed/${this.extractVideoId()}?autoplay=1`,
       allowfullscreen: 'allowfullscreen',
-      webkitallowfullscreen: 'webkitallowfullscreen',
       width: '100%',
       height: '100%'
     });
