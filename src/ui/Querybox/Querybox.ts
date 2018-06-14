@@ -1,19 +1,20 @@
+import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
+import { IBuildingQueryEventArgs, QueryEvents } from '../../events/QueryEvents';
+import { StandaloneSearchInterfaceEvents } from '../../events/StandaloneSearchInterfaceEvents';
+import { Assert } from '../../misc/Assert';
 import { ComponentOptionsModel } from '../../models/ComponentOptionsModel';
-export const MagicBox: any = require('exports-loader?Coveo.MagicBox!magic-box');
-import { Initialization } from '../Base/Initialization';
+import { IAttributeChangedEventArg, MODEL_EVENTS } from '../../models/Model';
+import { QUERY_STATE_ATTRIBUTES, QueryStateModel } from '../../models/QueryStateModel';
+import { l } from '../../strings/Strings';
+import { $$ } from '../../utils/Dom';
+import { IAnalyticsNoMeta, analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { ComponentOptions } from '../Base/ComponentOptions';
-import { QueryEvents, IBuildingQueryEventArgs } from '../../events/QueryEvents';
-import { MODEL_EVENTS, IAttributeChangedEventArg } from '../../models/Model';
-import { QUERY_STATE_ATTRIBUTES, QueryStateModel } from '../../models/QueryStateModel';
-import { StandaloneSearchInterfaceEvents } from '../../events/StandaloneSearchInterfaceEvents';
-import { IAnalyticsNoMeta, analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
-import { $$ } from '../../utils/Dom';
-import { Assert } from '../../misc/Assert';
+import { Initialization } from '../Base/Initialization';
 import { QueryboxQueryParameters } from './QueryboxQueryParameters';
-import * as _ from 'underscore';
-import { exportGlobally } from '../../GlobalExports';
+export const MagicBox: any = require('exports-loader?Coveo.MagicBox!magic-box');
 
 export interface IQueryboxOptions {
   enableSearchAsYouType?: boolean;
@@ -271,6 +272,11 @@ export class Querybox extends Component {
         inline: true
       }
     );
+
+    const input = $$(this.magicBox.element).find('input');
+    if (input) {
+      $$(input).setAttribute('aria-label', this.options.placeholder || l('Search'));
+    }
 
     this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => this.handleBuildingQuery(args));
     this.bind.onRootElement(StandaloneSearchInterfaceEvents.beforeRedirect, () => this.updateQueryState());

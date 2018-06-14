@@ -314,7 +314,14 @@ export class InitializationPlaceholder {
   }
 
   private getAllFacetsElements(): HTMLElement[] {
-    const toSelect = ['.CoveoFacet', '.CoveoFacetRange', '.CoveoTimespanFacet', '.CoveoFacetSlider', '.CoveoHierarchicalFacet'].join(', ');
+    const toSelect = [
+      '.CoveoFacet',
+      '.CoveoFacetRange',
+      '.CoveoTimespanFacet',
+      '.CoveoFacetSlider',
+      '.CoveoHierarchicalFacet',
+      '.CoveoCategoryFacet'
+    ].join(', ');
     return $$(this.root).findAll(toSelect);
   }
 }

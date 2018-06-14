@@ -163,7 +163,7 @@ export class Facet extends Component {
      * the facet state in the URL hash.
      *
      * If you have two facets with the same field on the same page, you should specify an `id` value for at least one of
-     * those two facets. This `id` must be unique in the page.
+     * those two facets. This `id` must be unique among the facets.
      *
      * Default value is the [`field`]{@link Facet.options.field} option value.
      */
@@ -1199,7 +1199,7 @@ export class Facet extends Component {
     if (!beforeExecuteQuery) {
       this.queryController.executeQuery({ ignoreWarningSearchEvent: true });
     } else {
-      this.queryController.executeQuery({ beforeExecuteQuery: beforeExecuteQuery });
+      this.queryController.executeQuery({ beforeExecuteQuery });
     }
     this.showWaitingAnimation();
   }
@@ -1405,7 +1405,7 @@ export class Facet extends Component {
 
   protected updateSearchElement(moreValuesAvailable = true) {
     if (moreValuesAvailable) {
-      const renderer = new ValueElementRenderer(this, FacetValue.create('Search'));
+      const renderer = new ValueElementRenderer(this, FacetValue.create(l('Search')));
       const searchButton = renderer.build().withNo([renderer.excludeIcon, renderer.icon]);
       $$(searchButton.listItem).addClass('coveo-facet-search-button');
       searchButton.stylishCheckbox.removeAttribute('tabindex');

@@ -7354,6 +7354,10 @@
     "en": "Number of videos",
     "fr": "Nombre de vidéos"
   },
+  "AllCategories": {
+    "en": "All Categories",
+    "fr": "Toutes les catégories"
+  },
   "Recommended": {
     "en": "Recommended",
     "fr": "Recommandé"
@@ -7361,5 +7365,17 @@
   "Featured": {
     "en": "Featured",
     "fr": "En vedette"
+  },
+  "CoveoHomePage": {
+    "en": "Coveo Home page",
+    "fr": "Page d'accueil Coveo"
+  },
+  "SizeValue": {
+    "en": "Size value",
+    "fr": "Valeur de la taille"
+  },
+  "UnitMeasurement": {
+    "en": "Unit of measurement",
+    "fr": "Unité de taille"
   }
 }

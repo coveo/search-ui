@@ -3,38 +3,39 @@
 ///<reference path="QuerySuggestAddon.ts" />
 ///<reference path="OldOmniboxAddon.ts" />
 
-import { ComponentOptionsModel, COMPONENT_OPTIONS_ATTRIBUTES } from '../../models/ComponentOptionsModel';
-export const MagicBox: any = require('exports-loader?Coveo.MagicBox!magic-box');
-import { IQueryboxOptions } from '../Querybox/Querybox';
+import 'styling/_Omnibox';
+import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
+import { IOmniboxPreprocessResultForQueryEventArgs, IPopulateOmniboxSuggestionsEventArgs, OmniboxEvents } from '../../events/OmniboxEvents';
+import { IBuildingQueryEventArgs, IDuringQueryEventArgs, QueryEvents } from '../../events/QueryEvents';
+import { StandaloneSearchInterfaceEvents } from '../../events/StandaloneSearchInterfaceEvents';
+import { Assert } from '../../misc/Assert';
+import { COMPONENT_OPTIONS_ATTRIBUTES, ComponentOptionsModel } from '../../models/ComponentOptionsModel';
+import { IAttributeChangedEventArg, MODEL_EVENTS } from '../../models/Model';
+import { QUERY_STATE_ATTRIBUTES, QueryStateModel } from '../../models/QueryStateModel';
+import { l } from '../../strings/Strings';
+import { $$, Dom } from '../../utils/Dom';
+import { Utils } from '../../utils/Utils';
+import {
+  IAnalyticsActionCause,
+  IAnalyticsNoMeta,
+  IAnalyticsOmniboxSuggestionMeta,
+  analyticsActionCauseList
+} from '../Analytics/AnalyticsActionListMeta';
+import { PendingSearchAsYouTypeSearchEvent } from '../Analytics/PendingSearchAsYouTypeSearchEvent';
+import { logSearchBoxSubmitEvent } from '../Analytics/SharedAnalyticsCalls';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
-import { QueryEvents, IBuildingQueryEventArgs } from '../../events/QueryEvents';
-import { StandaloneSearchInterfaceEvents } from '../../events/StandaloneSearchInterfaceEvents';
-import { MODEL_EVENTS, IAttributeChangedEventArg } from '../../models/Model';
-import { QUERY_STATE_ATTRIBUTES } from '../../models/QueryStateModel';
-import { IAnalyticsNoMeta, analyticsActionCauseList, IAnalyticsOmniboxSuggestionMeta } from '../Analytics/AnalyticsActionListMeta';
-import { OmniboxEvents, IOmniboxPreprocessResultForQueryEventArgs, IPopulateOmniboxSuggestionsEventArgs } from '../../events/OmniboxEvents';
-import { $$ } from '../../utils/Dom';
-import { Assert } from '../../misc/Assert';
-import { QueryStateModel } from '../../models/QueryStateModel';
 import { Initialization } from '../Base/Initialization';
-import { Querybox } from '../Querybox/Querybox';
-import { FieldAddon } from './FieldAddon';
-import { QueryExtensionAddon } from './QueryExtensionAddon';
-import { QuerySuggestAddon, IQuerySuggestAddon, VoidQuerySuggestAddon } from './QuerySuggestAddon';
-import { OldOmniboxAddon } from './OldOmniboxAddon';
+import { IQueryboxOptions, Querybox } from '../Querybox/Querybox';
 import { QueryboxQueryParameters } from '../Querybox/QueryboxQueryParameters';
-import { IAnalyticsActionCause } from '../Analytics/AnalyticsActionListMeta';
-import { IDuringQueryEventArgs } from '../../events/QueryEvents';
-import { PendingSearchAsYouTypeSearchEvent } from '../Analytics/PendingSearchAsYouTypeSearchEvent';
-import { Utils } from '../../utils/Utils';
 import { StandaloneSearchInterface } from '../SearchInterface/SearchInterface';
-import * as _ from 'underscore';
-import { exportGlobally } from '../../GlobalExports';
-import 'styling/_Omnibox';
-import { logSearchBoxSubmitEvent } from '../Analytics/SharedAnalyticsCalls';
-import { Dom } from '../../Core';
+import { FieldAddon } from './FieldAddon';
+import { OldOmniboxAddon } from './OldOmniboxAddon';
+import { QueryExtensionAddon } from './QueryExtensionAddon';
+import { IQuerySuggestAddon, QuerySuggestAddon, VoidQuerySuggestAddon } from './QuerySuggestAddon';
+export const MagicBox: any = require('exports-loader?Coveo.MagicBox!magic-box');
 
 export interface IOmniboxSuggestion extends Coveo.MagicBox.Suggestion {
   executableConfidence?: number;
@@ -372,6 +373,12 @@ export class Omnibox extends Component {
       selectedSuggestionClass: 'coveo-omnibox-selected',
       suggestionTimeout: this.options.omniboxTimeout
     });
+
+    const input = $$(this.magicBox.element).find('input');
+    if (input) {
+      $$(input).setAttribute('aria-label', this.options.placeholder || l('Search'));
+    }
+
     this.setupMagicBox();
   }
 

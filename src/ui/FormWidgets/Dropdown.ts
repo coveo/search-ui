@@ -25,12 +25,13 @@ export class Dropdown implements IFormWidget, IFormWidgetSettable {
    * @param listOfValues The selectable values to display in the dropdown.
    * @param getDisplayValue An optional function to modify the display values, rather than using the values as they
    * appear in the `listOfValues`.
-   * @param label The label to display for the dropdown.
+   * @param label The label to use for the input for accessibility purposes.
    */
   constructor(
     public onChange: (dropdown: Dropdown) => void = (dropdown: Dropdown) => {},
     protected listOfValues: string[],
-    private getDisplayValue: (string) => string = l
+    private getDisplayValue: (string) => string = l,
+    private label?: string
   ) {
     this.buildContent();
     this.select(0, false);
@@ -102,8 +103,15 @@ export class Dropdown implements IFormWidget, IFormWidgetSettable {
   }
 
   private buildContent() {
-    this.selectElement = <HTMLSelectElement>$$('select', { className: 'coveo-dropdown' }).el;
-    let selectOptions = this.buildOptions();
+    this.selectElement = <HTMLSelectElement>$$('select', {
+      className: 'coveo-dropdown'
+    }).el;
+
+    if (this.label) {
+      this.selectElement.setAttribute('aria-label', l(this.label));
+    }
+
+    const selectOptions = this.buildOptions();
     _.each(selectOptions, opt => {
       $$(this.selectElement).append(opt);
     });
@@ -111,7 +119,7 @@ export class Dropdown implements IFormWidget, IFormWidgetSettable {
   }
 
   private buildOptions(): HTMLElement[] {
-    let ret: HTMLElement[] = [];
+    const ret: HTMLElement[] = [];
     _.each(this.listOfValues, (value: string) => {
       ret.push(this.buildOption(value));
     });
@@ -119,7 +127,7 @@ export class Dropdown implements IFormWidget, IFormWidgetSettable {
   }
 
   private buildOption(value: string): HTMLElement {
-    let option = $$('option');
+    const option = $$('option');
     option.setAttribute('data-value', value);
     option.setAttribute('value', value);
     option.text(this.getDisplayValue(value));

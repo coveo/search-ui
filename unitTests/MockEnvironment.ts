@@ -210,6 +210,7 @@ export function mockWindow(): Window {
 
 export function mockComponent<T extends BaseComponent>(constructorFunc, name = 'mock'): T {
   const m = mock<T>(constructorFunc, name);
+
   m.type = name;
   return m;
 }
@@ -241,6 +242,7 @@ export function mockQueryController(): QueryController {
   spy.options.resultsPerPage = 10;
   spy.fetchMore.and.returnValue(new Promise((resolve, reject) => {}));
   spy.getLastQuery.and.returnValue(new QueryBuilder().build());
+  spy.executeQuery.and.returnValue(Promise.resolve());
   return m;
 }
 

@@ -298,7 +298,6 @@ export function SearchEndpointTest() {
             .then((data: ArrayBuffer) => {
               expect(data).toBeDefined();
               expect(data.byteLength).toBe(123);
-              expect(jasmine.Ajax.requests.mostRecent().responseType).toBe('arraybuffer');
             })
             .catch((e: IErrorResponse) => {
               fail(e);
@@ -308,8 +307,7 @@ export function SearchEndpointTest() {
 
           jasmine.Ajax.requests.mostRecent().respondWith({
             status: 200,
-            response: new ArrayBuffer(123),
-            responseType: 'arraybuffer'
+            response: new ArrayBuffer(123)
           });
         });
 
