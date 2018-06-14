@@ -1,13 +1,13 @@
-import { Component } from '../Base/Component';
-import { ComponentOptions } from '../Base/ComponentOptions';
-import { IComponentBindings } from '../Base/ComponentBindings';
-import { Initialization } from '../Base/Initialization';
-import { $$ } from '../../utils/Dom';
-import { QueryEvents } from '../../events/QueryEvents';
-import { IQuerySuccessEventArgs } from '../../events/QueryEvents';
 import { exportGlobally } from '../../GlobalExports';
-import { SVGIcons } from '../../utils/SVGIcons';
+import { IQuerySuccessEventArgs, QueryEvents } from '../../events/QueryEvents';
+import { l } from '../../strings/Strings';
+import { $$ } from '../../utils/Dom';
 import { SVGDom } from '../../utils/SVGDom';
+import { SVGIcons } from '../../utils/SVGIcons';
+import { Component } from '../Base/Component';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { Initialization } from '../Base/Initialization';
 
 export interface ILogoOptions {}
 
@@ -36,11 +36,12 @@ export class Logo extends Component {
     super(element, Logo.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, Logo, options);
 
-    let link = $$(
+    const link = $$(
       'a',
       {
         className: 'coveo-powered-by coveo-footer-logo',
-        href: 'http://www.coveo.com/'
+        href: 'http://www.coveo.com/',
+        'aria-label': l('CoveoHomePage')
       },
       SVGIcons.icons.coveoPoweredBy
     );
