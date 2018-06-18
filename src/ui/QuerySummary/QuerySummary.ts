@@ -32,16 +32,13 @@ const DEFAULT_NO_RESULT_FOUND_MESSAGE: string = l('noResultFor', QUERY_TAG);
 
 const SHOW_IF_NO_RESULTS: string = 'coveo-show-if-no-results';
 
-// TODO : Documentation review :
-//        Do we want to change the description of the QuerySummary component?
-//        This specific part : "If the query matches [...] a better query."
-//        Basicaly do we want to add a description for the NO_RESULT_FOUND_MESSAGE about the fact that it can be edited?
 /**
  * The QuerySummary component can display information about the currently displayed range of results (e.g., "Results
  * 1-10 of 123").
  *
- * If the query matches no item, the QuerySummary component can instead display tips to help the end user formulate
- * a better query.
+ * When the query does not match any items, the QuerySummary component can instead display information to the end users.
+ *
+ * The information displayed to the end user is customizable through this component.
  */
 export class QuerySummary extends Component {
   static ID = 'QuerySummary';
@@ -58,39 +55,32 @@ export class QuerySummary extends Component {
    */
   static options: IQuerySummaryOptions = {
     /**
-     * Specifies whether to hide the information about the currently displayed range of results and only display the
-     * search tips instead.
+     * Specifies whether to hide the number of returned results.
+     *
+     * When this option is set to true, the number of returned results will be hidden from the page, meaning that your end users will not know how many results were returned for their query.
      *
      * Default value is `false`.
      */
     onlyDisplaySearchTips: ComponentOptions.buildBooleanOption({ defaultValue: false }),
 
-    // TODO : Documentation review
     /**
-     * Specifies whether to display the a message to the end user when there are no search results.
+     * Specifies whether to display the {@link QuerySummary.options.noResultsFoundMessage} message when there are no search results.
      *
      * Default value is `true`.
      */
     enableNoResultsFoundMessage: ComponentOptions.buildBooleanOption({ defaultValue: true }),
 
-    // TODO : Documentation review : I'm not sure if we should put an example in the description and if the description is precise enough?
     /**
      * Specifies a custom message to display when there are no search results.
      *
-     * A query tag ({@link QUERY_TAG}) can be added in the message. This tag will
-     * be replaced by the search box input who triggered the no results found page.
+     * You can refer to the query the end user has entered using the `${query}` query tag.
      *
-     * Ex.:
+     * **Example**
+     * > For the `noResultFoundMessage` option, you enter `There were no results found for "${query}"`.
+     * > Your end user searches for `query without results`, which does not return any result.
+     * > On your page, they see this message: `There were no results found for "query without results"`.
      *
-     * Searchbox input : "ThereIsNoResults"
-     *
-     * {@link QUERY_TAG} = <%-query%>
-     *
-     * Message input : "We are sorry, <%-query%> did not match any results."
-     *
-     * Final Message : "We are sorry, ThereIsNoResults did not match any results."
-     *
-     * Default value is `No results for <%-query%>`.
+     * Default value is `No results for ${query}`.
      */
     noResultsFoundMessage: ComponentOptions.buildStringOption({
       defaultValue: DEFAULT_NO_RESULT_FOUND_MESSAGE,
@@ -98,9 +88,10 @@ export class QuerySummary extends Component {
       postProcessing: (value, options) => value || DEFAULT_NO_RESULT_FOUND_MESSAGE
     }),
 
-    // TODO : Documentation review
     /**
-     * Specifies whether to display the cancel last action link to the end user when there are no search results.
+     * Specifies whether to display the `Cancel last action` link when there are no search results.
+     *
+     * When clicked, the link restores the previous query that contained results.
      *
      * Default value is `true`.
      */
