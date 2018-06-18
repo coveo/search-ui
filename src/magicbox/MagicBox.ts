@@ -1,3 +1,4 @@
+/// <reference path="./MagicBox.d.ts"/>
 import { $$ } from '../utils/Dom';
 import { Result } from './Result/Result';
 import { Grammar } from './Grammar';

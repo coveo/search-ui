@@ -42,25 +42,3 @@ export function doMagicBoxExport() {
     }
   });
 }
-
-export namespace MagicBox {
-  export const EndOfInputResult = EndOfInputResultTemp;
-  export const ExpressionConstant = ExpressionConstantTemp;
-  export const ExpressionEndOfInput: Expression = ExpressionEndOfInputTemp;
-  export const ExpressionFunction = ExpressionFunctionTemp;
-  export const ExpressionList = ExpressionListTemp;
-  export const ExpressionOptions = ExpressionOptionsTemp;
-  export const ExpressionRef = ExpressionRefTemp;
-  export const ExpressionRegExp = ExpressionRegExpTemp;
-  export const Grammar = GrammarTemp;
-  export const Grammars = GrammarsTemp;
-  export const InputManager = InputManagerTemp;
-  export const Instance = MagicBoxInstance;
-  export const OptionResult = OptionResultTemp;
-  export const RefResult = RefResultTemp;
-  export const Result = ResultTemp;
-  export const SuggestManager = SuggestionsManagerTemp;
-  export const Utils = UtilsTemp;
-  export const create = createMagicBox;
-  export const requestAnimationFrame = requestAnimationFrameTemp;
-}
