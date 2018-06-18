@@ -1,14 +1,11 @@
 @import 'Variables';
-
 $spaceBetween: 0 5px 5px 0;
-
 .coveo-advanced-search-section {
   margin: 20px 0;
 }
 
 #coveo-advanced-search-in-the-last-select {
   margin-left: 20px;
-
   .coveo-button {
     width: auto;
   }
@@ -24,24 +21,19 @@ $spaceBetween: 0 5px 5px 0;
   @include display(flex);
   align-items: center;
   @include flex-wrap(wrap);
-
   .coveo-radio {
     input[type='radio'] + label {
       display: inline;
     }
   }
-
   margin: 10px 0;
-
   .coveo-advanced-search-date-input {
     display: inline-block;
     padding: 0;
     border: none;
-
     .coveo-button {
       width: 100px;
     }
-
     &:disabled {
       visibility: hidden;
     }
@@ -53,7 +45,6 @@ $spaceBetween: 0 5px 5px 0;
   @include display(flex);
   @include flex-wrap(wrap);
   align-items: center;
-
   .coveo-input {
     @include flex-basis(200px);
     @include flex(1);
@@ -68,7 +59,6 @@ $spaceBetween: 0 5px 5px 0;
   .coveo-numeric-spinner {
     display: inline-block;
     vertical-align: middle;
-
     input[type='text'] {
       color: $color-grey;
       width: 55px;
@@ -136,12 +126,12 @@ $spaceBetween: 0 5px 5px 0;
 .coveo-advanced-search-breadcrumb {
   .coveo-advanced-search-breadcrumb-clear {
     position: relative;
+    vertical-align: middle;
     @include clearButton('&');
   }
 }
 
 .coveo-advanced-search-breadcrumb-clear-svg {
-  position: absolute;
   top: 5px;
   left: 3px;
 }
@@ -150,4 +140,10 @@ $spaceBetween: 0 5px 5px 0;
   width: 16px;
   height: 16px;
   color: $color-greyish-teal-blue;
+}
+
+.coveo-advanced-search-breadcrumb-title {
+  @include breadcrumbTitle();
+  display: inline-block;
+  vertical-align: middle;
 }

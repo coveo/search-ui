@@ -49,7 +49,7 @@ export class ResultsPerPage extends Component {
      */
     choicesDisplayed: ComponentOptions.buildCustomListOption<number[]>(
       function(list: string[]) {
-        let values = _.map(list, function(value) {
+        const values = _.map(list, function(value) {
           return parseInt(value, 10);
         });
         return values.length == 0 ? null : values;
@@ -155,9 +155,9 @@ export class ResultsPerPage extends Component {
 
   private render() {
     $$(this.span).removeClass('coveo-results-per-page-no-results');
-    let numResultsList: number[] = this.options.choicesDisplayed;
+    const numResultsList: number[] = this.options.choicesDisplayed;
     for (var i = 0; i < numResultsList.length; i++) {
-      let listItem = $$('li', {
+      const listItem = $$('li', {
         className: 'coveo-results-per-page-list-item',
         tabindex: 0
       });
@@ -166,7 +166,7 @@ export class ResultsPerPage extends Component {
       }
 
       ((resultsPerPage: number) => {
-        let clickAction = () => this.handleClickPage(numResultsList[resultsPerPage]);
+        const clickAction = () => this.handleClickPage(numResultsList[resultsPerPage]);
         listItem.on('click', clickAction);
         listItem.on('keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, clickAction));
       })(i);
