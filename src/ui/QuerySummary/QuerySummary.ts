@@ -237,8 +237,7 @@ export class QuerySummary extends Component {
   private parseNoResultsFoundMessage(noResultsFoundMessage: string) {
     if (this.isQuerySummaryTagInMessage(noResultsFoundMessage)) {
       const messageSections = noResultsFoundMessage.split(QUERY_TAG);
-      const messageElements = Array<Dom>();
-
+      const messageElements: Dom[] = [];
       _.each(messageSections, section => {
         messageElements.push(this.createTextElement(section));
       });
