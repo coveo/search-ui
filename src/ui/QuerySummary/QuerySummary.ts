@@ -27,8 +27,7 @@ export interface IQuerySummaryOptions {
   enableSearchTips?: boolean;
 }
 
-const QUERY_TAG: string = '<%-query%>';
-const DEFAULT_NO_RESULT_FOUND_MESSAGE: string = l('noResultFor', QUERY_TAG);
+const QUERY_TAG: string = '${query}';
 
 const SHOW_IF_NO_RESULTS: string = 'coveo-show-if-no-results';
 
@@ -83,9 +82,8 @@ export class QuerySummary extends Component {
      * Default value is `No results for ${query}`.
      */
     noResultsFoundMessage: ComponentOptions.buildStringOption({
-      defaultValue: DEFAULT_NO_RESULT_FOUND_MESSAGE,
-      depend: 'enableNoResultsFoundMessage',
-      postProcessing: (value, options) => value || DEFAULT_NO_RESULT_FOUND_MESSAGE
+      defaultValue: l('noResultFor', QUERY_TAG),
+      depend: 'enableNoResultsFoundMessage'
     }),
 
     /**
@@ -238,8 +236,8 @@ export class QuerySummary extends Component {
 
   private parseNoResultsFoundMessage(noResultsFoundMessage: string) {
     if (this.isQuerySummaryTagInMessage(noResultsFoundMessage)) {
-      let messageSections = noResultsFoundMessage.split(QUERY_TAG);
-      let messageElements = Array<Dom>();
+      const messageSections = noResultsFoundMessage.split(QUERY_TAG);
+      const messageElements = Array<Dom>();
 
       _.each(messageSections, section => {
         messageElements.push(this.createTextElement(section));
@@ -306,9 +304,9 @@ export class QuerySummary extends Component {
   }
 
   private getNoResultsFoundMessageElement() {
-    let parsedNoResultsFoundMessage = this.parseNoResultsFoundMessage(this.options.noResultsFoundMessage);
+    const parsedNoResultsFoundMessage = this.parseNoResultsFoundMessage(this.options.noResultsFoundMessage);
 
-    let noResultsFoundMessage = $$(
+    const noResultsFoundMessage = $$(
       'div',
       {
         className: 'coveo-query-summary-no-results-string'
@@ -320,8 +318,7 @@ export class QuerySummary extends Component {
   }
 
   private createTextElement(text: string) {
-    let textContainer = $$('span', {}, text);
-    return textContainer;
+    return $$('span', {}, text);
   }
 
   private getQueryElement() {
@@ -335,7 +332,7 @@ export class QuerySummary extends Component {
       queryEscapedValue = queryEscaped;
     }
 
-    let query = $$(
+    const query = $$(
       'span',
       {
         className: 'coveo-highlight'
