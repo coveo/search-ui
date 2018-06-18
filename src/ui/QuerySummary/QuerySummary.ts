@@ -132,7 +132,7 @@ export class QuerySummary extends Component {
     this.bind.onRootElement(QueryEvents.queryError, () => this.hide());
     this.hide();
     this.textContainer = $$('span').el;
-    $$(this.element).append(this.textContainer);
+    $$(this.element).prepend(this.textContainer);
   }
 
   private hide() {
@@ -303,14 +303,14 @@ export class QuerySummary extends Component {
   private hideCustomNoResultsFoundPage() {
     const showIfNoResultsElement = this.element.getElementsByClassName(SHOW_IF_NO_RESULTS);
     if (showIfNoResultsElement.length > 0) {
-      showIfNoResultsElement[0].classList.add('coveo-hidden');
+      showIfNoResultsElement[0].classList.add('coveo-no-results-found-page-hidden');
     }
   }
 
   private showCustomNoResultsFoundPage() {
     const showIfNoResultsElement = this.element.getElementsByClassName(SHOW_IF_NO_RESULTS);
     if (showIfNoResultsElement.length > 0) {
-      showIfNoResultsElement[0].classList.remove('coveo-hidden');
+      showIfNoResultsElement[0].classList.remove('coveo-no-results-found-page-hidden');
     }
   }
 
