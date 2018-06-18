@@ -237,7 +237,7 @@ export class QuerySummary extends Component {
   private parseNoResultsFoundMessage(noResultsFoundMessage: string) {
     if (this.isQuerySummaryTagInMessage(noResultsFoundMessage)) {
       const messageSections = noResultsFoundMessage.split(QUERY_TAG);
-      const messageElements: Dom[] = [];
+      let messageElements: Dom[] = [];
       _.each(messageSections, section => {
         messageElements.push(this.createTextElement(section));
       });
@@ -325,10 +325,10 @@ export class QuerySummary extends Component {
     const isQueryTagInMessage = this.isQuerySummaryTagInMessage(this.options.noResultsFoundMessage);
     let queryEscapedValue: string;
 
-    if (!isQueryTagInMessage) {
-      queryEscapedValue = '';
-    } else {
+    if (isQueryTagInMessage) {
       queryEscapedValue = queryEscaped;
+    } else {
+      queryEscapedValue = '';
     }
 
     const query = $$(
