@@ -39,6 +39,7 @@ gulp.task('cleanDefs', function() {
       .pipe(replace(/agGridModule\.[a-zA-Z]+/g, 'any'))
       .pipe(replace(/\(this: [A-Za-z_-]+, /gm, '('))
       .pipe(replace(/\| null/gm, '| void'))
+      .pipe(replace(/namespace MagicBox {([\s\S]+)}/gm, removeTempFromModuleNames)) // rewrite MagicBox module names without the ending Temp
       .pipe(gulp.dest('bin/ts/')) );
 });
 
@@ -53,6 +54,11 @@ function getEnumRegex() {
   const enumDeclaration = '\\n^\\s*[a-zA-Z_$]+ = "[a-zA-Z_$\\s]+",?$';
   const documentation = '\\n^\\s*[@{}\\[\\]\\w\\/*.,\\s]+$';
   return new RegExp(`${enumIdentifier}((?:${enumDeclaration}|${documentation})*)`, 'gm');
+}
+
+function removeTempFromModuleNames(match, lines) {
+  lines = lines.split('\n').map(line => line.replace(/typeof (\w+)Temp/, 'typeof $1'));
+  return `namespace MagicBox {${lines.join('\n')}\}`;
 }
 
 gulp.task('externalDefs', function() {

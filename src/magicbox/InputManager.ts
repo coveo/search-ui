@@ -1,7 +1,7 @@
 import { Result } from './Result/Result';
 import { $$ } from '../utils/Dom';
-import { MagicBoxInstance } from './MagicBox';
 import _ = require('underscore');
+import { MagicBoxInstance } from './MagicBox';
 
 export class InputManager {
   private input: HTMLInputElement;
