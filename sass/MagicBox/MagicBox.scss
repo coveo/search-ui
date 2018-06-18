@@ -1,4 +1,5 @@
 @import 'Colors';
+
 @mixin magic-box($height: 48px) {
   $padding: floor(1/4 * $height);
   $lineHeight: $height - $padding * 2;
