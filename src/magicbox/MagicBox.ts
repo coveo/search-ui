@@ -6,7 +6,6 @@ import { doMagicBoxExport } from './doMagicBoxExport';
 import { Suggestion, SuggestionsManager } from './SuggestionsManager';
 import _ = require('underscore');
 import { InputManager } from './InputManager';
-import 'styling/MagicBox/MagicBox';
 
 export interface Options {
   inline?: boolean;
