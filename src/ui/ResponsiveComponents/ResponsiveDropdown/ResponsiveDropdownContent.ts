@@ -1,5 +1,5 @@
 import { $$, Dom } from '../../../utils/Dom';
-import { PopupUtils, PopupHorizontalAlignment, PopupVerticalAlignment } from '../../../utils/PopupUtils';
+import PopperJs from 'popper.js';
 import { ResponsiveComponentsManager } from '../ResponsiveComponentsManager';
 
 export interface IResponsiveDropdownContent {
@@ -18,6 +18,7 @@ export class ResponsiveDropdownContent implements IResponsiveDropdownContent {
 
   private widthRatio: number;
   private minWidth: number;
+  private popperReference: PopperJs;
 
   public static isTargetInsideOpenedDropdown(target: Dom) {
     const targetParentDropdown = target.parent(ResponsiveDropdownContent.DEFAULT_CSS_CLASS_NAME);
@@ -45,16 +46,18 @@ export class ResponsiveDropdownContent implements IResponsiveDropdownContent {
     }
     this.element.el.style.width = width.toString() + 'px';
 
-    PopupUtils.positionPopup(
-      this.element.el,
-      $$(this.coveoRoot.find(`.${ResponsiveComponentsManager.DROPDOWN_HEADER_WRAPPER_CSS_CLASS}`)).el,
-      this.coveoRoot.el,
-      { horizontal: PopupHorizontalAlignment.INNERRIGHT, vertical: PopupVerticalAlignment.BOTTOM, verticalOffset: 15 },
-      this.coveoRoot.el
-    );
+    const referenceElement = $$(this.coveoRoot.find(`.${ResponsiveComponentsManager.DROPDOWN_HEADER_WRAPPER_CSS_CLASS}`)).el;
+
+    this.popperReference = new PopperJs(referenceElement, this.element.el, {
+      placement: 'left'
+    });
   }
 
   public hideDropdown() {
+    if (this.popperReference) {
+      this.popperReference.destroy();
+    }
+
     this.element.el.style.display = 'none';
     this.element.removeClass(this.cssClassName);
     this.element.removeClass(ResponsiveDropdownContent.DEFAULT_CSS_CLASS_NAME);

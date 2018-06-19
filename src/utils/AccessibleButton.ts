@@ -11,7 +11,9 @@ export class AccessibleButton {
   private clickAction: (e: Event) => void;
   private enterKeyboardAction: (e: Event) => void;
   private blurAction: (e: Event) => void;
+  private mouseleaveAction: (e: Event) => void;
   private focusAction: (e: Event) => void;
+  private mouseenterAction: (e: Event) => void;
 
   private logger: Logger;
   private eventOwner: ComponentEvents;
@@ -55,13 +57,35 @@ export class AccessibleButton {
     return this;
   }
 
-  public withBlurAction(action: (e: Event) => void) {
-    this.blurAction = action;
+  public withFocusAndMouseEnterAction(action: (e: Event) => void) {
+    this.focusAction = action;
+    this.mouseenterAction = action;
     return this;
   }
 
   public withFocusAction(action: (e: Event) => void) {
     this.focusAction = action;
+    return this;
+  }
+
+  public withMouseEnterAction(action: (e: Event) => void) {
+    this.mouseenterAction = action;
+    return this;
+  }
+
+  public withBlurAndMouseLeaveAction(action: (e: Event) => void) {
+    this.mouseleaveAction = action;
+    this.blurAction = action;
+    return this;
+  }
+
+  public withMouseLeaveAction(action: (e: Event) => void) {
+    this.mouseleaveAction = action;
+    return this;
+  }
+
+  public withBlurAction(action: (e: Event) => void) {
+    this.blurAction = action;
     return this;
   }
 
@@ -72,10 +96,10 @@ export class AccessibleButton {
 
     this.ensureCorrectRole();
     this.ensureCorrectLabel();
-    this.ensureClickAction();
-    this.ensureKeyboardEnterAction();
-    this.ensureFocusAction();
-    this.ensureBlurAction();
+    this.ensureSelectAction();
+    this.ensureUnselectAction();
+    this.ensureMouseenterAndFocusAction();
+    this.ensureMouseleaveAndBlurAction();
     this.ensureDifferentiationBetweenKeyboardAndMouseFocus();
 
     return this;
@@ -85,6 +109,7 @@ export class AccessibleButton {
     const classOnPress = 'coveo-accessible-button-pressed';
     const classOnFocus = 'coveo-accessible-button-focused';
     $$(this.element).addClass('coveo-accessible-button');
+
     $$(this.element).on('mousedown', () => {
       $$(this.element).addClass(classOnPress);
       $$(this.element).removeClass(classOnFocus);
@@ -96,6 +121,7 @@ export class AccessibleButton {
         $$(this.element).addClass(classOnFocus);
       }
     });
+
     $$(this.element).on('blur', () => $$(this.element).removeClass(classOnFocus));
   }
 
@@ -116,34 +142,42 @@ export class AccessibleButton {
     this.element.setAttribute('tabindex', '0');
   }
 
-  private ensureClickAction() {
-    if (!this.clickAction) {
-      this.logger.warn('Missing click action on accessible button !');
-    } else {
+  private ensureSelectAction() {
+    if (this.enterKeyboardAction) {
+      this.ensureTabIndex();
+      this.bindEvent('keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, (e: Event) => this.enterKeyboardAction(e)));
+    }
+
+    if (this.clickAction) {
       this.bindEvent('click', this.clickAction);
     }
   }
 
-  private ensureKeyboardEnterAction() {
-    if (!this.enterKeyboardAction) {
-      this.logger.warn('Missing enter keyboard action on accessible button !');
-    } else {
-      this.ensureTabIndex();
-      this.bindEvent('keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, (e: Event) => this.enterKeyboardAction(e)));
-    }
-  }
-
-  private ensureBlurAction() {
+  private ensureUnselectAction() {
     if (this.blurAction) {
-      this.bindEvent('mouseleave', this.blurAction);
       this.bindEvent('blur', this.blurAction);
     }
+
+    if (this.mouseleaveAction) {
+      this.bindEvent('mouseleave', this.mouseleaveAction);
+    }
   }
 
-  private ensureFocusAction() {
+  private ensureMouseenterAndFocusAction() {
+    if (this.mouseenterAction) {
+      this.bindEvent('mouseenter', this.mouseenterAction);
+    }
     if (this.focusAction) {
-      this.bindEvent('mouseenter', this.focusAction);
       this.bindEvent('focus', this.focusAction);
+    }
+  }
+
+  private ensureMouseleaveAndBlurAction() {
+    if (this.mouseleaveAction) {
+      this.bindEvent('mouseleave', this.mouseleaveAction);
+    }
+    if (this.blurAction) {
+      this.bindEvent('blur', this.blurAction);
     }
   }
 

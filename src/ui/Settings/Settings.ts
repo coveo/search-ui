@@ -125,8 +125,8 @@ export class Settings extends Component {
       .withElement(this.element)
       .withOwner(this.bind)
       .withSelectAction(() => this.toggle())
-      .withBlurAction(() => this.onblur())
-      .withFocusAction(() => this.onfocus())
+      .withFocusAndMouseEnterAction(() => this.onfocus())
+      .withBlurAndMouseLeaveAction(() => this.onblur())
       .withLabel(l('Settings'))
       .build();
   }
@@ -166,8 +166,8 @@ export class Settings extends Component {
     new AccessibleButton()
       .withElement(menuItemElement)
       .withSelectAction(selectAction)
-      .withFocusAction(() => this.onfocus())
-      .withBlurAction(() => this.onblur())
+      .withFocusAndMouseEnterAction(() => this.onfocus())
+      .withBlurAndMouseLeaveAction(() => this.onblur())
       .withLabel(menuItem.tooltip || menuItem.text)
       .build();
 

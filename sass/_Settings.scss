@@ -46,7 +46,7 @@
     content: '';
     position: absolute;
     top: -13px;
-    right: 11px;
+    right: 10px;
     @include triangle(12px, $color-light-grey, up);
   }
 }
