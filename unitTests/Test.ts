@@ -629,3 +629,9 @@ CategoryFacetBreadcrumbTest();
 
 import { CategoryValueTest } from './ui/CategoryFacet/CategoryValueTest';
 CategoryValueTest();
+
+import { GrammarTest } from './magicbox/GrammarTest';
+GrammarTest();
+
+import { SuggestionsManagerTest } from './magicbox/SuggestionsManagerTest';
+SuggestionsManagerTest();

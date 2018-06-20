@@ -113,7 +113,7 @@ export class ResultActionsMenu extends Component {
   }
 
   private bindEvents() {
-    $$(this.parentResult).on('click', () => this.isOpened ? this.hide() : this.show());
+    $$(this.parentResult).on('click', () => (this.isOpened ? this.hide() : this.show()));
 
     $$(this.parentResult).on('mouseleave', () => this.hide());
     if (this.options.openOnMouseOver) {
