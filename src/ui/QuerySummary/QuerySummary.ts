@@ -27,6 +27,7 @@ export interface IQuerySummaryOptions {
 }
 
 const noResultsCssClass: string = 'coveo-show-if-no-results';
+const queryTagCssClass: string = 'coveo-query-tag';
 
 /**
  * The QuerySummary component can display information about the currently displayed range of results (e.g., "Results
@@ -134,6 +135,7 @@ export class QuerySummary extends Component {
     this.show();
 
     this.hideCustomNoResultsFoundPage();
+    this.updateQueryTagsInNoResultsContainer();
 
     if (!this.options.onlyDisplaySearchTips) {
       if (this.isInfiniteScrollingMode()) {
@@ -231,13 +233,31 @@ export class QuerySummary extends Component {
     }
   }
 
-  private parseNoResultsFoundMessage(noResultsFoundMessage: string) {
-    if (!noResultsFoundMessage) {
+  private updateQueryTagsInNoResultsContainer() {
+    const noResultsContainer = $$(this.element).find(`.${noResultsCssClass}`);
+    if (noResultsContainer) {
+      const content = noResultsContainer.innerHTML;
+      noResultsContainer.innerHTML = this.parseQueryTags(content);
+    }
+
+    $$(noResultsContainer)
+      .findAll(`.${queryTagCssClass}`)
+      .forEach(queryTagContainer => {
+        queryTagContainer.innerHTML = this.queryEscaped;
+      });
+  }
+
+  private parseQueryTags(content: string) {
+    if (!content) {
       return '';
     }
-    const queryEscaped = escape(this.queryStateModel.get(QueryStateModel.attributesEnum.q));
+    const queryTagContainer = `<span class='coveo-highlight ${queryTagCssClass}'>${this.queryEscaped}</span>`;
 
-    return noResultsFoundMessage.replace(new RegExp(/\$\{query\}/g), `<span class='coveo-highlight'>${queryEscaped}</span>`);
+    return content.replace(new RegExp(/\$\{query\}/g), queryTagContainer);
+  }
+
+  private get queryEscaped() {
+    return escape(this.queryStateModel.get(QueryStateModel.attributesEnum.q));
   }
 
   private displayInfoOnNoResults() {
@@ -263,21 +283,21 @@ export class QuerySummary extends Component {
   }
 
   private hideCustomNoResultsFoundPage() {
-    const showIfNoResultsElement = $$(this.element).find(`.${noResultsCssClass}`);
-    if (showIfNoResultsElement) {
-      $$(showIfNoResultsElement).addClass('coveo-no-results-found-page-hidden');
+    const noResultsContainer = $$(this.element).find(`.${noResultsCssClass}`);
+    if (noResultsContainer) {
+      $$(noResultsContainer).addClass('coveo-no-results-found-page-hidden');
     }
   }
 
   private showCustomNoResultsFoundPage() {
-    const showIfNoResultsElement = $$(this.element).find(`.${noResultsCssClass}`);
-    if (showIfNoResultsElement) {
-      $$(showIfNoResultsElement).removeClass('coveo-no-results-found-page-hidden');
+    const noResultsContainer = $$(this.element).find(`.${noResultsCssClass}`);
+    if (noResultsContainer) {
+      $$(noResultsContainer).removeClass('coveo-no-results-found-page-hidden');
     }
   }
 
   private getNoResultsFoundMessageElement() {
-    const parsedNoResultsFoundMessage = this.parseNoResultsFoundMessage(this.options.noResultsFoundMessage);
+    const parsedNoResultsFoundMessage = this.parseQueryTags(this.options.noResultsFoundMessage);
 
     const noResultsFoundMessage = $$(
       'div',
