@@ -6,8 +6,8 @@ import { Simulate } from '../Simulate';
 import { $$ } from '../../src/utils/Dom';
 import { l } from '../../src/strings/Strings';
 import { InitializationEvents } from '../../src/events/InitializationEvents';
-import Suggestion = Coveo.MagicBox.Suggestion;
 import { IFieldDescription } from '../../src/rest/FieldDescription';
+import { Suggestion } from '../../src/magicbox/SuggestionsManager';
 
 export function OmniboxTest() {
   describe('Omnibox', () => {

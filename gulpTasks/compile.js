@@ -12,8 +12,7 @@ gulp.task('prepareSass', ['fileTypes'], () => {
       gulp
         .src('./node_modules/modal-box/bin/modalBox.css')
         .pipe(rename('_ModalBox.scss'))
-        .pipe(gulp.dest('./bin/sass/')),
-      gulp.src('./node_modules/coveomagicbox/sass/**/*.scss').pipe(gulp.dest('./bin/sass/MagicBox'))
+        .pipe(gulp.dest('./bin/sass/'))
     )
     .pipe(event_stream.wait());
 });
