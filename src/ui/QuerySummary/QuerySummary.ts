@@ -289,9 +289,6 @@ export class QuerySummary extends Component {
 
   private hideCustomNoResultsFoundPage() {
     const showIfNoResultsElement = $$(this.element).find(noResultsCssClass);
-    console.log('hideCustomNoResultsFoundPage');
-    console.log(showIfNoResultsElement);
-
     if (showIfNoResultsElement) {
       $$(showIfNoResultsElement).addClass('coveo-no-results-found-page-hidden');
     }
@@ -299,9 +296,6 @@ export class QuerySummary extends Component {
 
   private showCustomNoResultsFoundPage() {
     const showIfNoResultsElement = $$(this.element).find(noResultsCssClass);
-    console.log('showCustomNoResultsFoundPage');
-    console.log(showIfNoResultsElement);
-
     if (showIfNoResultsElement) {
       $$(showIfNoResultsElement).removeClass('coveo-no-results-found-page-hidden');
     }
