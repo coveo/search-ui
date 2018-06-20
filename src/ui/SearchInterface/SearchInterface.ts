@@ -542,7 +542,6 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     const components = this.getComponents(type);
     const index = indexOf(components, component);
     if (index > -1) {
-      console.log('deleting ' + component.type);
       components.splice(index, 1);
     }
   }

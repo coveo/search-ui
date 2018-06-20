@@ -446,7 +446,6 @@ export class ResultList extends Component {
         }
         this.currentlyDisplayedResults.push(result);
         return this.autoCreateComponentsInsideResult(resultElement, result).initResult.then(() => {
-          console.log('create');
           return resultElement;
         });
       });
