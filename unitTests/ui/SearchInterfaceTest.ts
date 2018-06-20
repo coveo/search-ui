@@ -71,6 +71,8 @@ export function SearchInterfaceTest() {
       const querybox = Mock.mockComponent(Querybox);
       const quickview = Mock.mockComponent(Quickview);
       const container = $$('div', {}, querybox.element, quickview.element);
+      cmp.attachComponent('Querybox', querybox);
+      cmp.attachComponent('Quickview', quickview);
 
       cmp.detachComponentsInside(container.el);
 
