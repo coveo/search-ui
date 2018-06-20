@@ -27,9 +27,8 @@ export interface IQuerySummaryOptions {
   enableSearchTips?: boolean;
 }
 
-const QUERY_TAG: string = '${query}';
-
-const SHOW_IF_NO_RESULTS: string = 'coveo-show-if-no-results';
+const queryTag: string = '${query}';
+const noResultsCssClass: string = '.coveo-show-if-no-results';
 
 /**
  * The QuerySummary component can display information about the currently displayed range of results (e.g., "Results
@@ -82,7 +81,7 @@ export class QuerySummary extends Component {
      * Default value is `No results for ${query}`.
      */
     noResultsFoundMessage: ComponentOptions.buildStringOption({
-      defaultValue: l('noResultFor', QUERY_TAG),
+      defaultValue: l('noResultFor', queryTag),
       depend: 'enableNoResultsFoundMessage'
     }),
 
@@ -236,7 +235,7 @@ export class QuerySummary extends Component {
 
   private parseNoResultsFoundMessage(noResultsFoundMessage: string) {
     if (this.isQuerySummaryTagInMessage(noResultsFoundMessage)) {
-      const messageSections = noResultsFoundMessage.split(QUERY_TAG);
+      const messageSections = noResultsFoundMessage.split(queryTag);
       let messageElements: Dom[] = [];
       _.each(messageSections, section => {
         messageElements.push(this.createTextElement(section));
@@ -263,7 +262,7 @@ export class QuerySummary extends Component {
   }
 
   private isQuerySummaryTagInMessage(noResultsFoundMessage: string) {
-    return noResultsFoundMessage.split(QUERY_TAG).length > 0;
+    return noResultsFoundMessage.split(queryTag).length > 0;
   }
 
   private displayInfoOnNoResults() {
@@ -289,16 +288,22 @@ export class QuerySummary extends Component {
   }
 
   private hideCustomNoResultsFoundPage() {
-    const showIfNoResultsElement = this.element.getElementsByClassName(SHOW_IF_NO_RESULTS);
-    if (showIfNoResultsElement.length > 0) {
-      showIfNoResultsElement[0].classList.add('coveo-no-results-found-page-hidden');
+    const showIfNoResultsElement = $$(this.element).find(noResultsCssClass);
+    console.log('hideCustomNoResultsFoundPage');
+    console.log(showIfNoResultsElement);
+
+    if (showIfNoResultsElement) {
+      $$(showIfNoResultsElement).addClass('coveo-no-results-found-page-hidden');
     }
   }
 
   private showCustomNoResultsFoundPage() {
-    const showIfNoResultsElement = this.element.getElementsByClassName(SHOW_IF_NO_RESULTS);
-    if (showIfNoResultsElement.length > 0) {
-      showIfNoResultsElement[0].classList.remove('coveo-no-results-found-page-hidden');
+    const showIfNoResultsElement = $$(this.element).find(noResultsCssClass);
+    console.log('showCustomNoResultsFoundPage');
+    console.log(showIfNoResultsElement);
+
+    if (showIfNoResultsElement) {
+      $$(showIfNoResultsElement).removeClass('coveo-no-results-found-page-hidden');
     }
   }
 
