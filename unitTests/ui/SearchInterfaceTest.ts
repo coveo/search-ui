@@ -5,7 +5,7 @@ import { QueryStateModel } from '../../src/models/QueryStateModel';
 import { ComponentOptionsModel } from '../../src/models/ComponentOptionsModel';
 import { ComponentStateModel } from '../../src/models/ComponentStateModel';
 import { Querybox } from '../../src/ui/Querybox/Querybox';
-import { $$, Dom } from '../../src/utils/Dom';
+import { $$ } from '../../src/utils/Dom';
 import { QueryEvents, IDoneBuildingQueryEventArgs } from '../../src/events/QueryEvents';
 import { Component } from '../../src/ui/Base/Component';
 import { HistoryController } from '../../src/controllers/HistoryController';
