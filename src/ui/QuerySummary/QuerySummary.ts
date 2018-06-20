@@ -2,7 +2,7 @@ import { Component } from '../Base/Component';
 import { ComponentOptions } from '../Base/ComponentOptions';
 import { QueryEvents, IQuerySuccessEventArgs } from '../../events/QueryEvents';
 import { IComponentBindings } from '../Base/ComponentBindings';
-import { $$, Dom } from '../../utils/Dom';
+import { $$ } from '../../utils/Dom';
 import { Assert } from '../../misc/Assert';
 import { l } from '../../strings/Strings';
 import { analyticsActionCauseList, IAnalyticsNoMeta } from '../Analytics/AnalyticsActionListMeta';
@@ -17,7 +17,6 @@ import ResultListModule = require('../ResultList/ResultList');
 import 'styling/_QuerySummary';
 import { IQuery } from '../../rest/Query';
 import { IQueryResults } from '../../rest/QueryResults';
-import * as _ from 'underscore';
 
 export interface IQuerySummaryOptions {
   onlyDisplaySearchTips?: boolean;
@@ -27,8 +26,7 @@ export interface IQuerySummaryOptions {
   enableSearchTips?: boolean;
 }
 
-const queryTag: string = '${query}';
-const noResultsCssClass: string = '.coveo-show-if-no-results';
+const noResultsCssClass: string = 'coveo-show-if-no-results';
 
 /**
  * The QuerySummary component can display information about the currently displayed range of results (e.g., "Results
@@ -81,7 +79,7 @@ export class QuerySummary extends Component {
      * Default value is `No results for ${query}`.
      */
     noResultsFoundMessage: ComponentOptions.buildStringOption({
-      defaultValue: l('noResultFor', queryTag),
+      defaultValue: l('noResultFor', '${query}'),
       depend: 'enableNoResultsFoundMessage'
     }),
 
@@ -234,35 +232,12 @@ export class QuerySummary extends Component {
   }
 
   private parseNoResultsFoundMessage(noResultsFoundMessage: string) {
-    if (this.isQuerySummaryTagInMessage(noResultsFoundMessage)) {
-      const messageSections = noResultsFoundMessage.split(queryTag);
-      let messageElements: Dom[] = [];
-      _.each(messageSections, section => {
-        messageElements.push(this.createTextElement(section));
-      });
-
-      for (let i = 0, j = messageElements.length - 1; i < j; i++) {
-        if (messageElements[i].el.innerHTML != '' && messageElements[i + 1].el.innerHTML != '') {
-          messageElements.splice(i + 1, 0, this.getQueryElement());
-          i++;
-          j++;
-        }
-      }
-
-      _.each(messageElements, message => {
-        if (message.el.innerHTML == '') {
-          message = this.getQueryElement();
-        }
-      });
-
-      return messageElements;
-    } else {
-      return [this.createTextElement(noResultsFoundMessage)];
+    if (!noResultsFoundMessage) {
+      return '';
     }
-  }
+    const queryEscaped = escape(this.queryStateModel.get(QueryStateModel.attributesEnum.q));
 
-  private isQuerySummaryTagInMessage(noResultsFoundMessage: string) {
-    return noResultsFoundMessage.split(queryTag).length > 0;
+    return noResultsFoundMessage.replace(new RegExp(/\$\{query\}/g), `<span class='coveo-highlight'>${queryEscaped}</span>`);
   }
 
   private displayInfoOnNoResults() {
@@ -288,14 +263,14 @@ export class QuerySummary extends Component {
   }
 
   private hideCustomNoResultsFoundPage() {
-    const showIfNoResultsElement = $$(this.element).find(noResultsCssClass);
+    const showIfNoResultsElement = $$(this.element).find(`.${noResultsCssClass}`);
     if (showIfNoResultsElement) {
       $$(showIfNoResultsElement).addClass('coveo-no-results-found-page-hidden');
     }
   }
 
   private showCustomNoResultsFoundPage() {
-    const showIfNoResultsElement = $$(this.element).find(noResultsCssClass);
+    const showIfNoResultsElement = $$(this.element).find(`.${noResultsCssClass}`);
     if (showIfNoResultsElement) {
       $$(showIfNoResultsElement).removeClass('coveo-no-results-found-page-hidden');
     }
@@ -309,38 +284,11 @@ export class QuerySummary extends Component {
       {
         className: 'coveo-query-summary-no-results-string'
       },
-      ...parsedNoResultsFoundMessage
+      parsedNoResultsFoundMessage
     );
 
     return noResultsFoundMessage;
   }
-
-  private createTextElement(text: string) {
-    return $$('span', {}, text);
-  }
-
-  private getQueryElement() {
-    const queryEscaped = escape(this.queryStateModel.get(QueryStateModel.attributesEnum.q));
-    const isQueryTagInMessage = this.isQuerySummaryTagInMessage(this.options.noResultsFoundMessage);
-    let queryEscapedValue: string;
-
-    if (isQueryTagInMessage) {
-      queryEscapedValue = queryEscaped;
-    } else {
-      queryEscapedValue = '';
-    }
-
-    const query = $$(
-      'span',
-      {
-        className: 'coveo-highlight'
-      },
-      queryEscapedValue
-    );
-
-    return query;
-  }
-
   private getCancelLastActionElement() {
     const cancelLastAction = $$(
       'div',
