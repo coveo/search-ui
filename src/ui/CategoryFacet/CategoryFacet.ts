@@ -53,43 +53,43 @@ export type CategoryValueDescriptor = {
   path: string[];
 };
 
-/**
- * The _CategoryFacet_ component is a facet that renders values in a hierarchical fashion. It determines the filter to apply depending on the
- * current selected path of values.
- *
- * The path is a sequence of values that leads to a specific value in the hierarchy.
- * It is an array listing all the parents of a file (e.g., `['c', 'folder1']` for the `c:\folder1\text1.txt` file).
- *
- * This facet requires a field with a special format to work correctly.
- *
- * **Example:**
- *
- * You have the following files indexed on a file system:
- *
- * ```
- * c:\
- *   folder1\
- *     text1.txt
- *   folder2\
- *     folder3\
- *       text2.txt
- * ```
- *
- * The `text1.txt` item would have a field with the following value:
- * `c; c|folder1;`
- *
- * The `text2.txt` item would have a field with the following value:
- * `c; c|folder2; c|folder2|folder3;`
- *
- * By default, the `|` character determines the hierarchy (`folder3` inside `folder2` inside `c`).
- *
- * Since both items contain the `c` value, selecting it value in the facet would return both items.
- *
- * Selecting the `folder3` value in the facet would only return the `text2.txt` item.
- *
- * To help you verify if your fields are setup correctly, see the {@link CategoryFacet.options.debug} option
- * and the {@link CategoryFacet.debugValue} method.
- */
+// /**
+//  * The _CategoryFacet_ component is a facet that renders values in a hierarchical fashion. It determines the filter to apply depending on the
+//  * current selected path of values.
+//  *
+//  * The path is a sequence of values that leads to a specific value in the hierarchy.
+//  * It is an array listing all the parents of a file (e.g., `['c', 'folder1']` for the `c:\folder1\text1.txt` file).
+//  *
+//  * This facet requires a field with a special format to work correctly.
+//  *
+//  * **Example:**
+//  *
+//  * You have the following files indexed on a file system:
+//  *
+//  * ```
+//  * c:\
+//  *   folder1\
+//  *     text1.txt
+//  *   folder2\
+//  *     folder3\
+//  *       text2.txt
+//  * ```
+//  *
+//  * The `text1.txt` item would have a field with the following value:
+//  * `c; c|folder1;`
+//  *
+//  * The `text2.txt` item would have a field with the following value:
+//  * `c; c|folder2; c|folder2|folder3;`
+//  *
+//  * By default, the `|` character determines the hierarchy (`folder3` inside `folder2` inside `c`).
+//  *
+//  * Since both items contain the `c` value, selecting it value in the facet would return both items.
+//  *
+//  * Selecting the `folder3` value in the facet would only return the `text2.txt` item.
+//  *
+//  * To help you verify if your fields are setup correctly, see the {@link CategoryFacet.options.debug} option
+//  * and the {@link CategoryFacet.debugValue} method.
+//  */
 export class CategoryFacet extends Component {
   static doExport = () => {
     exportGlobally({
