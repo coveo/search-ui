@@ -17,6 +17,7 @@ import _ = require('underscore');
 import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
 import { PipelineContext } from '../../src/ui/PipelineContext/PipelineContext';
 import { SearchEndpoint } from '../Test';
+import { Quickview } from '../../src/ui/Quickview/Quickview';
 
 export function SearchInterfaceTest() {
   describe('SearchInterface', () => {
@@ -64,6 +65,17 @@ export function SearchInterfaceTest() {
       expect(cmp.getComponents('Querybox')).toContain(cmpToAttach);
       cmp.detachComponent('Querybox', cmpToAttach);
       expect(cmp.getComponents('Querybox')).not.toContain(cmpToAttach);
+    });
+
+    it('should allow to detach every component inside a given element', () => {
+      const querybox = Mock.mockComponent(Querybox);
+      const quickview = Mock.mockComponent(Quickview);
+      const container = $$('div', {}, querybox.element, quickview.element);
+
+      cmp.detachComponentsInside(container.el);
+
+      expect(cmp.getComponents('Querybox')).not.toContain(querybox);
+      expect(cmp.getComponents('Quickview')).not.toContain(quickview);
     });
 
     describe('usage analytics', () => {

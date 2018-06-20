@@ -542,6 +542,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     const components = this.getComponents(type);
     const index = indexOf(components, component);
     if (index > -1) {
+      console.log('deleting ' + component.type);
       components.splice(index, 1);
     }
   }
@@ -619,6 +620,18 @@ export class SearchInterface extends RootComponent implements IComponentBindings
       this.attachedComponents[type] = [];
     }
     return this.attachedComponents[type];
+  }
+
+  /**
+   * Detaches from the SearchInterface every component that is inside the given element.
+   * @param element
+   */
+  public detachComponentsInside(element: HTMLElement) {
+    each(this.attachedComponents, (components, type) => {
+      components
+        .filter(component => element != component.element && element.contains(component.element))
+        .forEach(component => this.detachComponent(type, component));
+    });
   }
 
   protected initializeAnalytics(): IAnalyticsClient {

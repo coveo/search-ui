@@ -233,7 +233,7 @@ export class Quickview extends Component {
   ) {
     super(element, Quickview.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, Quickview, options);
-
+    console.log('new quickview');
     if (this.options.contentTemplate == null) {
       this.options.contentTemplate = new DefaultQuickviewTemplate();
     }

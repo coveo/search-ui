@@ -44,6 +44,7 @@ import { TemplateComponentOptions } from '../Base/TemplateComponentOptions';
 import { CoreHelpers } from '../Templates/CoreHelpers';
 import { without, compact, map, chain, each, pluck, sortBy, flatten, unique, contains } from 'underscore';
 import { ResultLayoutSelector } from '../ResultLayoutSelector/ResultLayoutSelector';
+import { ResultContainer } from './ResultContainer';
 
 CoreHelpers.exportAllHelpersGlobally(window['Coveo']);
 export interface IResultListOptions {
@@ -273,6 +274,7 @@ export class ResultList extends Component {
   private reachedTheEndOfResults = false;
   private disableLayoutChange = false;
   private renderer: ResultListRenderer;
+  private resultContainer: ResultContainer;
 
   // This variable serves to block some setup where the framework fails to correctly identify the "real" scrolling container.
   // Since it's not technically feasible to correctly identify the scrolling container in every possible scenario without some very complex logic, we instead try to add some kind of mechanism to
@@ -357,7 +359,7 @@ export class ResultList extends Component {
 
   private setupTemplatesVersusLayouts() {
     const layoutClassToAdd = `coveo-${this.options.layout}-layout-container`;
-    $$(this.options.resultContainer).addClass(layoutClassToAdd);
+    this.resultContainer.addClass(layoutClassToAdd);
 
     if (this.options.layout === 'table') {
       this.options.resultTemplate = new TableTemplate((<TemplateList>this.options.resultTemplate).templates || []);
@@ -390,7 +392,7 @@ export class ResultList extends Component {
    */
   public renderResults(resultElements: HTMLElement[], append = false): Promise<void> {
     if (!append) {
-      this.options.resultContainer.innerHTML = '';
+      this.resultContainer.empty();
     }
 
     return this.renderer
@@ -444,6 +446,7 @@ export class ResultList extends Component {
         }
         this.currentlyDisplayedResults.push(result);
         return this.autoCreateComponentsInsideResult(resultElement, result).initResult.then(() => {
+          console.log('create');
           return resultElement;
         });
       });
@@ -523,7 +526,7 @@ export class ResultList extends Component {
    * @returns {HTMLElement[]}
    */
   public getDisplayedResultsElements(): HTMLElement[] {
-    return $$(this.options.resultContainer).findAll('.CoveoResult');
+    return this.resultContainer.getResultElements();
   }
 
   public enable(): void {
@@ -574,7 +577,7 @@ export class ResultList extends Component {
 
   private handleQueryError() {
     this.hideWaitingAnimation();
-    $$(this.options.resultContainer).empty();
+    this.resultContainer.empty();
     this.currentlyDisplayedResults = [];
     this.reachedTheEndOfResults = true;
   }
@@ -674,7 +677,7 @@ export class ResultList extends Component {
       if (args.results) {
         // Prevent flickering when switching to a new layout that is empty
         // add a temporary placeholder, the same that is used on initialization
-        if (this.options.resultContainer.innerHTML == '') {
+        if (this.resultContainer.isEmpty()) {
           new InitializationPlaceholder(this.root).withVisibleRootElement().withPlaceholderForResultList();
         }
         Defer.defer(() => {
@@ -686,6 +689,7 @@ export class ResultList extends Component {
     } else {
       this.disableLayoutChange = true;
       this.disable();
+      this.resultContainer.empty();
     }
   }
 
@@ -763,9 +767,7 @@ export class ResultList extends Component {
         $$(this.options.waitAnimationContainer).addClass('coveo-fade-out');
         break;
       case 'spinner':
-        each(this.options.resultContainer.children, (child: HTMLElement) => {
-          $$(child).hide();
-        });
+        this.resultContainer.hideChildren();
         if ($$(this.options.waitAnimationContainer).find('.coveo-wait-animation') == undefined) {
           this.options.waitAnimationContainer.appendChild(DomUtils.getBasicLoadingAnimation());
         }
@@ -815,11 +817,12 @@ export class ResultList extends Component {
       this.options.resultContainer = $$(elemType, { className: 'coveo-result-list-container' }).el;
       this.element.appendChild(this.options.resultContainer);
     }
+    this.resultContainer = new ResultContainer(this.options.resultContainer, this.searchInterface);
   }
 
   private initWaitAnimationContainer() {
     if (!this.options.waitAnimationContainer) {
-      this.options.waitAnimationContainer = this.options.resultContainer;
+      this.options.waitAnimationContainer = this.resultContainer.resultContainerElement.el;
     }
   }
 
