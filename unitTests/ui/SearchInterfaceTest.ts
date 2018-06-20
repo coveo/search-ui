@@ -5,7 +5,7 @@ import { QueryStateModel } from '../../src/models/QueryStateModel';
 import { ComponentOptionsModel } from '../../src/models/ComponentOptionsModel';
 import { ComponentStateModel } from '../../src/models/ComponentStateModel';
 import { Querybox } from '../../src/ui/Querybox/Querybox';
-import { $$ } from '../../src/utils/Dom';
+import { $$, Dom } from '../../src/utils/Dom';
 import { QueryEvents, IDoneBuildingQueryEventArgs } from '../../src/events/QueryEvents';
 import { Component } from '../../src/ui/Base/Component';
 import { HistoryController } from '../../src/controllers/HistoryController';
@@ -67,17 +67,36 @@ export function SearchInterfaceTest() {
       expect(cmp.getComponents('Querybox')).not.toContain(cmpToAttach);
     });
 
-    it('should allow to detach every component inside a given element', () => {
-      const querybox = Mock.mockComponent(Querybox);
-      const quickview = Mock.mockComponent(Quickview);
-      const container = $$('div', {}, querybox.element, quickview.element);
-      cmp.attachComponent('Querybox', querybox);
-      cmp.attachComponent('Quickview', quickview);
+    describe('detachComponentsInside', () => {
+      let querybox: Querybox;
+      let quickview: Quickview;
 
-      cmp.detachComponentsInside(container.el);
+      beforeEach(() => {
+        querybox = Mock.mockComponent(Querybox);
+        quickview = Mock.mockComponent(Quickview);
+        querybox.element = $$('div').el;
+        quickview.element = $$('div').el;
+        cmp.attachComponent('Querybox', querybox);
+        cmp.attachComponent('Quickview', quickview);
+      });
 
-      expect(cmp.getComponents('Querybox')).not.toContain(querybox);
-      expect(cmp.getComponents('Quickview')).not.toContain(quickview);
+      it('should detach every component inside a given element', () => {
+        const container = $$('div', {}, querybox.element, quickview.element);
+
+        cmp.detachComponentsInside(container.el);
+
+        expect(cmp.getComponents('Querybox')).not.toContain(querybox);
+        expect(cmp.getComponents('Quickview')).not.toContain(quickview);
+      });
+
+      it('should not detach components outside the given element', () => {
+        const container = $$('div', {}, quickview.element);
+
+        cmp.detachComponentsInside(container.el);
+
+        expect(cmp.getComponents('Querybox')).toContain(querybox);
+        expect(cmp.getComponents('Quickview')).not.toContain(quickview);
+      });
     });
 
     describe('usage analytics', () => {
