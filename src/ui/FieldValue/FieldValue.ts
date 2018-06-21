@@ -15,6 +15,7 @@ import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 import { StringUtils } from '../../utils/StringUtils';
 import { FacetUtils } from '../Facet/FacetUtils';
+import { AccessibleButton } from '../../utils/AccessibleButton';
 
 export interface IFieldValueOptions {
   field?: IFieldOption;
@@ -403,26 +404,33 @@ export class FieldValue extends Component {
         const facetValue = facet.values.get(value);
         return facetValue && facetValue.selected;
       });
-      $$(element).on('click', () => {
-        if (selected != null) {
-          _.each(facets, (facet: Facet) => facet.deselectValue(value));
-        } else {
-          _.each(facets, (facet: Facet) => facet.selectValue(value));
-        }
-        this.queryController.deferExecuteQuery({
-          beforeExecuteQuery: () =>
-            this.usageAnalytics.logSearchEvent<IAnalyticsFieldValueMeta>(analyticsActionCauseList.documentField, {
-              facetId: this.options.facet,
-              facetValue: value.toLowerCase()
-            })
-        });
-      });
+
+      new AccessibleButton()
+        .withLabel(value)
+        .withElement(element)
+        .withSelectAction(() => this.handleSelection(selected as Facet, facets as Facet[], value))
+        .build();
 
       if (selected) {
         $$(element).addClass('coveo-selected');
       }
       $$(element).addClass('coveo-clickable');
     }
+  }
+
+  private handleSelection(selected: Facet, facets: Facet[], value: string) {
+    if (selected != null) {
+      _.each(facets, (facet: Facet) => facet.deselectValue(value));
+    } else {
+      _.each(facets, (facet: Facet) => facet.selectValue(value));
+    }
+    this.queryController.deferExecuteQuery({
+      beforeExecuteQuery: () =>
+        this.usageAnalytics.logSearchEvent<IAnalyticsFieldValueMeta>(analyticsActionCauseList.documentField, {
+          facetId: this.options.facet,
+          facetValue: value.toLowerCase()
+        })
+    });
   }
 }
 
