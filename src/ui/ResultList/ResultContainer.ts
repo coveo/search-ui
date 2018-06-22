@@ -37,4 +37,8 @@ export class ResultContainer {
   public getResultElements() {
     return this.resultContainerElement.findAll('.CoveoResult');
   }
+
+  public get el() {
+    return this.resultContainerElement.el;
+  }
 }

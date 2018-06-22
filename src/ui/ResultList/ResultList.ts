@@ -821,7 +821,7 @@ export class ResultList extends Component {
 
   private initWaitAnimationContainer() {
     if (!this.options.waitAnimationContainer) {
-      this.options.waitAnimationContainer = this.resultContainer.resultContainerElement.el;
+      this.options.waitAnimationContainer = this.resultContainer.el;
     }
   }
 
