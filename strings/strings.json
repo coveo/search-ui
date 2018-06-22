@@ -7377,5 +7377,9 @@
   "UnitMeasurement": {
     "en": "Unit of measurement",
     "fr": "Unité de taille"
+  },
+  "Toggle": {
+    "en": "Toggle",
+    "fr": "Basculer"
   }
 }

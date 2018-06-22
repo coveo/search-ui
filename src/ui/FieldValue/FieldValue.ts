@@ -1,21 +1,21 @@
+import { contains, each, escape, extend, filter, find, isArray, isObject, isString, keys, map, omit } from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
+import { Assert } from '../../misc/Assert';
+import { QueryStateModel } from '../../models/QueryStateModel';
+import { IQueryResult } from '../../rest/QueryResult';
+import { AccessibleButton } from '../../utils/AccessibleButton';
+import { DateUtils, IDateToStringOptions } from '../../utils/DateUtils';
+import { $$ } from '../../utils/Dom';
+import { StringUtils } from '../../utils/StringUtils';
+import { Utils } from '../../utils/Utils';
+import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
-import { ComponentOptions, IFieldOption, IComponentOptionsObjectOptionArgs } from '../Base/ComponentOptions';
-import { IQueryResult } from '../../rest/QueryResult';
+import { ComponentOptions, IComponentOptionsObjectOptionArgs, IFieldOption } from '../Base/ComponentOptions';
 import { Initialization } from '../Base/Initialization';
-import { TemplateHelpers } from '../Templates/TemplateHelpers';
-import { Assert } from '../../misc/Assert';
-import { DateUtils, IDateToStringOptions } from '../../utils/DateUtils';
-import { QueryStateModel } from '../../models/QueryStateModel';
-import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
-import { Utils } from '../../utils/Utils';
 import { Facet } from '../Facet/Facet';
-import { $$ } from '../../utils/Dom';
-import * as _ from 'underscore';
-import { exportGlobally } from '../../GlobalExports';
-import { StringUtils } from '../../utils/StringUtils';
 import { FacetUtils } from '../Facet/FacetUtils';
-import { AccessibleButton } from '../../utils/AccessibleButton';
+import { TemplateHelpers } from '../Templates/TemplateHelpers';
 
 export interface IFieldValueOptions {
   field?: IFieldOption;
@@ -192,7 +192,7 @@ export class FieldValue extends Component {
     textCaption: ComponentOptions.buildLocalizedStringOption()
   };
 
-  static simpleOptions = _.omit(FieldValue.options, 'helperOptions');
+  static simpleOptions = omit(FieldValue.options, 'helperOptions');
 
   static helperOptions = <any>{
     helperOptions: FieldValue.options.helperOptions
@@ -233,11 +233,11 @@ export class FieldValue extends Component {
     } else {
       let values: string[];
 
-      if (_.isArray(loadedValueFromComponent)) {
+      if (isArray(loadedValueFromComponent)) {
         values = loadedValueFromComponent;
       } else if (this.options.splitValues) {
-        if (_.isString(loadedValueFromComponent)) {
-          values = _.map(loadedValueFromComponent.split(this.options.separator), (v: string) => {
+        if (isString(loadedValueFromComponent)) {
+          values = map(loadedValueFromComponent.split(this.options.separator), (v: string) => {
             return v.trim();
           });
         }
@@ -259,7 +259,7 @@ export class FieldValue extends Component {
    */
   public getValue() {
     let value = Utils.getFieldValue(this.result, <string>this.options.field);
-    if (!_.isArray(value) && _.isObject(value)) {
+    if (!isArray(value) && isObject(value)) {
       value = null;
     }
     return value;
@@ -283,7 +283,7 @@ export class FieldValue extends Component {
       } else {
         this.logger.warn(
           `Helper ${this.options.helper} is not found in available helpers. The list of supported helpers is :`,
-          _.keys(TemplateHelpers.getHelpers())
+          keys(TemplateHelpers.getHelpers())
         );
       }
 
@@ -311,24 +311,24 @@ export class FieldValue extends Component {
 
   private normalizeHelperAndOptions() {
     this.options = ComponentOptions.initOptions(this.element, FieldValue.helperOptions, this.options);
-    const toFilter = _.keys(FieldValue.options.helperOptions['subOptions']);
-    const toKeep = _.filter(toFilter, optionKey => {
+    const toFilter = keys(FieldValue.options.helperOptions['subOptions']);
+    const toKeep = filter(toFilter, optionKey => {
       const optionDefinition = FieldValue.options.helperOptions['subOptions'][optionKey];
       if (optionDefinition) {
         const helpers = optionDefinition.helpers;
-        return helpers != null && _.contains(helpers, this.options.helper);
+        return helpers != null && contains(helpers, this.options.helper);
       }
       return false;
     });
-    this.options.helperOptions = _.omit(this.options.helperOptions, (value, key) => {
-      return !_.contains(toKeep, key);
+    this.options.helperOptions = omit(this.options.helperOptions, (value, key) => {
+      return !contains(toKeep, key);
     });
   }
 
   private getHelperOptions() {
     const inlineOptions = ComponentOptions.loadStringOption(this.element, 'helperOptions', {});
     if (Utils.isNonEmptyString(inlineOptions)) {
-      return _.extend({}, this.options.helperOptions, eval('(' + inlineOptions + ')'));
+      return extend({}, this.options.helperOptions, eval('(' + inlineOptions + ')'));
     }
     return this.options.helperOptions;
   }
@@ -350,7 +350,7 @@ export class FieldValue extends Component {
   }
 
   private appendValuesToDom(values: string[]): void {
-    _.each(values, (value, index) => {
+    each(values, (value, index) => {
       if (value != undefined) {
         this.getValueContainer().appendChild(this.renderOneValue(value));
         if (index !== values.length - 1) {
@@ -361,7 +361,7 @@ export class FieldValue extends Component {
   }
 
   private renderTextCaption(): HTMLElement {
-    const element = $$('span', { className: 'coveo-field-caption' }, _.escape(this.options.textCaption));
+    const element = $$('span', { className: 'coveo-field-caption' }, escape(this.options.textCaption));
     return element.el;
   }
 
@@ -374,7 +374,7 @@ export class FieldValue extends Component {
 
   private bindEventOnValue(element: HTMLElement, value: string) {
     const facetAttributeName = QueryStateModel.getFacetId(this.options.facet);
-    const facets: Component[] = _.filter(this.componentStateModel.get(facetAttributeName), (possibleFacetComponent: Component) => {
+    const facets: Component[] = filter(this.componentStateModel.get(facetAttributeName), (possibleFacetComponent: Component) => {
       // Here, we need to check if a potential facet component (as returned by the component state model) is a "standard" facet.
       // It's also possible that the FacetRange and FacetSlider constructor are not available (lazy loading mode)
       // For that reason we also need to check that the constructor event exist before calling the instanceof operator or an exception would explode (cannot use instanceof "undefined")
@@ -400,7 +400,7 @@ export class FieldValue extends Component {
     const atLeastOneFacetIsEnabled = facets.length > 0;
 
     if (atLeastOneFacetIsEnabled) {
-      const selected = _.find(facets, (facet: Facet) => {
+      const selected = find(facets, (facet: Facet) => {
         const facetValue = facet.values.get(value);
         return facetValue && facetValue.selected;
       });
@@ -420,9 +420,9 @@ export class FieldValue extends Component {
 
   private handleSelection(selected: Facet, facets: Facet[], value: string) {
     if (selected != null) {
-      _.each(facets, (facet: Facet) => facet.deselectValue(value));
+      each(facets, (facet: Facet) => facet.deselectValue(value));
     } else {
-      _.each(facets, (facet: Facet) => facet.selectValue(value));
+      each(facets, (facet: Facet) => facet.selectValue(value));
     }
     this.queryController.deferExecuteQuery({
       beforeExecuteQuery: () =>
