@@ -161,6 +161,13 @@ export function FacetSliderTest() {
           expect(slider.onMoving).toHaveBeenCalled();
         });
 
+        it('should not execute the onMoving function of the slider if it is not instantiated', () => {
+          facetSlider['slider'] = null;
+          facetSlider.onResize(new Event('resize'));
+          jasmine.clock().tick(FacetSlider.DEBOUNCED_RESIZE_DELAY + 1);
+          expect(slider.onMoving).not.toHaveBeenCalled();
+        });
+
         it('should not draw the graph on resize when there are no results', () => {
           $$(env.root).trigger(QueryEvents.noResults);
           facetSlider.onResize(new Event('resize'));
