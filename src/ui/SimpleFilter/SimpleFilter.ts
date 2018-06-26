@@ -291,7 +291,7 @@ export class SimpleFilter extends Component {
     // Navigating "inside" the SimpleFilter (relatedTarget.parent) should not close the container, but will simply navigate to the next filter selection
     $$(this.element).on('blur', (e: MouseEvent) => {
       const relatedTarget = e.relatedTarget as HTMLElement;
-      if (!$$(relatedTarget).parent(Component.computeCssClassName(SimpleFilter))) {
+      if (relatedTarget && !$$(relatedTarget).parent(Component.computeCssClassName(SimpleFilter))) {
         this.closeContainer();
       }
     });

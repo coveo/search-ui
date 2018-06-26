@@ -234,7 +234,6 @@ export class ResultLayoutSelector extends Component {
 
   private setLayout(layout: ValidLayout, results?: IQueryResults) {
     if (layout) {
-      this.isLayoutDisplayedByButton(layout);
       if (this.currentLayout) {
         $$(this.currentActiveLayouts[this.currentLayout].button.el).removeClass('coveo-selected');
       }
