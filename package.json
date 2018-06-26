@@ -39,7 +39,7 @@
   "bugs": {
     "url": "https://github.com/coveo/search-ui/issues"
   },
-  "files": ["bin", "pages", "gulpTasks", "docgen", "images", "templates", "strings", "filetypes", "lib", "src", "typings"],
+  "files": ["bin", "pages", "gulpTasks", "images", "templates", "strings", "filetypes", "lib", "src", "typings"],
   "homepage": "https://github.com/coveo/search-ui#readme",
   "devDependencies": {
     "@salesforce-ux/design-system": "^2.6.0",

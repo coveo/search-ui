@@ -17,6 +17,7 @@ import _ = require('underscore');
 import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
 import { PipelineContext } from '../../src/ui/PipelineContext/PipelineContext';
 import { SearchEndpoint } from '../Test';
+import { Quickview } from '../../src/ui/Quickview/Quickview';
 
 export function SearchInterfaceTest() {
   describe('SearchInterface', () => {
@@ -64,6 +65,38 @@ export function SearchInterfaceTest() {
       expect(cmp.getComponents('Querybox')).toContain(cmpToAttach);
       cmp.detachComponent('Querybox', cmpToAttach);
       expect(cmp.getComponents('Querybox')).not.toContain(cmpToAttach);
+    });
+
+    describe('detachComponentsInside', () => {
+      let querybox: Querybox;
+      let quickview: Quickview;
+
+      beforeEach(() => {
+        querybox = Mock.mockComponent(Querybox);
+        quickview = Mock.mockComponent(Quickview);
+        querybox.element = $$('div').el;
+        quickview.element = $$('div').el;
+        cmp.attachComponent('Querybox', querybox);
+        cmp.attachComponent('Quickview', quickview);
+      });
+
+      it('should detach every component inside a given element', () => {
+        const container = $$('div', {}, querybox.element, quickview.element);
+
+        cmp.detachComponentsInside(container.el);
+
+        expect(cmp.getComponents('Querybox')).not.toContain(querybox);
+        expect(cmp.getComponents('Quickview')).not.toContain(quickview);
+      });
+
+      it('should not detach components outside the given element', () => {
+        const container = $$('div', {}, quickview.element);
+
+        cmp.detachComponentsInside(container.el);
+
+        expect(cmp.getComponents('Querybox')).toContain(querybox);
+        expect(cmp.getComponents('Quickview')).not.toContain(quickview);
+      });
     });
 
     describe('usage analytics', () => {
