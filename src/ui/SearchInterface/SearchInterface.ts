@@ -621,6 +621,18 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     return this.attachedComponents[type];
   }
 
+  /**
+   * Detaches from the SearchInterface every component that is inside the given element.
+   * @param element
+   */
+  public detachComponentsInside(element: HTMLElement) {
+    each(this.attachedComponents, (components, type) => {
+      components
+        .filter(component => element != component.element && element.contains(component.element))
+        .forEach(component => this.detachComponent(type, component));
+    });
+  }
+
   protected initializeAnalytics(): IAnalyticsClient {
     const analyticsRef = BaseComponent.getComponentRef('Analytics');
     if (analyticsRef) {
