@@ -44,9 +44,10 @@
 .coveo-facet-search-selectable {
   margin: 0;
   padding: 0 10px;
-  &.coveo-current {
-    background-color: $color-blueish-white-grey;
-  }
+}
+
+.coveo-facet-search-current-result {
+  background-color: $color-blueish-white-grey;
 }
 
 .coveo-facet-search-select-all {
@@ -145,7 +146,7 @@
 }
 
 .coveo-facet-value.coveo-facet-search-button {
-  color: $color-coveo-for-salesforce;
+  color: $coveo-blue;
   .coveo-facet-value-checkbox {
     border-style: dashed;
   }

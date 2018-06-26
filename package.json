@@ -6,7 +6,9 @@
   "types": "./bin/ts/CoveoJsSearch.d.ts",
   "scripts": {
     "precommit": "lint-staged",
-    "test": "gulp test && gulp coverage",
+    "test": "npm run unitTests",
+    "unitTests": "gulp unitTests && gulp coverage",
+    "accessibilityTests": "gulp accessibilityTests",
     "testChunks": "node chunkTesters/chunk.tester.js",
     "build": "gulp",
     "tsonly": "gulp compileTSOnly",
@@ -17,7 +19,8 @@
     "heroku-postbuild": "npm run build",
     "start": "node index.js",
     "zipForGitReleases": "gulp zip",
-    "uploadCoverage": "gulp uploadCoverage"
+    "uploadCoverage": "gulp uploadCoverage",
+    "validateTypeDefinitions": "gulp validateDefs"
   },
   "lint-staged": {
     "*.{js,ts,json,scss}": ["prettier --write", "git add"]
@@ -36,17 +39,21 @@
   "bugs": {
     "url": "https://github.com/coveo/search-ui/issues"
   },
-  "files": ["bin", "pages", "gulpTasks", "docgen", "images", "templates", "strings", "filetypes", "lib", "src", "typings"],
+  "files": ["bin", "pages", "gulpTasks", "images", "templates", "strings", "filetypes", "lib", "src", "typings"],
   "homepage": "https://github.com/coveo/search-ui#readme",
   "devDependencies": {
-    "@salesforce-ux/design-system": "2.4.4",
+    "@salesforce-ux/design-system": "^2.6.0",
+    "@types/axe-core": "^2.0.7",
+    "@types/bluebird": "^3.5.20",
     "@types/d3": "3.5.36",
     "@types/d3-scale": "1.0.4",
     "@types/fastclick": "^1.0.28",
-    "@types/jasmine": "^2.6.0",
+    "@types/jasmine": "^2.8.7",
+    "@types/jasmine-ajax": "^3.1.37",
     "@types/pikaday": "0.0.31",
     "@types/underscore": "1.8.3",
     "aws-sdk": "^2.155.0",
+    "axe-core": "^3.0.2",
     "bluebird": "^3.4.7",
     "body-parser": "^1.18.2",
     "cheerio": "^0.20.0",
@@ -127,7 +134,6 @@
     "@types/ag-grid": "^3.2.0",
     "coveo-styleguide": "1.13.4",
     "coveo.analytics": "^0.7.0",
-    "coveomagicbox": "^1.0.33",
     "d3": "^4.2.1",
     "d3-scale": "^1.0.3",
     "es6-promise": "^4.0.5",

@@ -141,7 +141,7 @@
       }
     },
     "txt": {
-      "icon": "salesforce-doctype-gdoc",
+      "icon": "salesforce-doctype-txt",
       "captions": {
         "en": "Text",
         "fr": "Texte",
@@ -166,11 +166,10 @@
         "tr": "Metin",
         "zh-cn": "文本",
         "zh-tw": "文本"
-      },
-      "shouldDisplayLabel": true
+      }
     },
     "zip": {
-      "icon": "salesforce-doctype-pack",
+      "icon": "salesforce-doctype-zip",
       "captions": {
         "en": "Zip File",
         "fr": "Fichier Zip",
@@ -195,8 +194,7 @@
         "tr": "Zip Dosyası",
         "zh-cn": "Zip 文件",
         "zh-tw": "Zip文件"
-      },
-      "shouldDisplayLabel": true
+      }
     },
     "oleFile": {
       "icon": "file",
@@ -280,8 +278,7 @@
         "tr": "PDF Dosyası",
         "zh-cn": "PDF 文件",
         "zh-tw": "PDF文件"
-      },
-      "shouldDisplayLabel": true
+      }
     },
     "swf": {
       "icon": "salesforce-doctype-flash",
@@ -312,7 +309,7 @@
       }
     },
     "xml": {
-      "icon": "salesforce-doctype-html",
+      "icon": "salesforce-doctype-xml",
       "captions": {
         "en": "XML File",
         "fr": "Fichier XML",
@@ -337,8 +334,7 @@
         "tr": "XML Dosyası",
         "zh-cn": "XML 文件",
         "zh-tw": "XML文件"
-      },
-      "shouldDisplayLabel": true
+      }
     },
     "vsd": {
       "icon": "salesforce-doctype-visio",
@@ -450,8 +446,7 @@
         "tr": "RSS beslemesi",
         "zh-cn": "RSS 源",
         "zh-tw": "RSS 訂閱"
-      },
-      "shouldDisplayLabel": true
+      }
     },
     "doc": {
       "icon": "salesforce-doctype-word",
@@ -479,8 +474,7 @@
         "tr": "Belge",
         "zh-cn": "文档",
         "zh-tw": "文檔"
-      },
-      "shouldDisplayLabel": true
+      }
     },
     "docx": {
       "icon": "salesforce-doctype-word",
@@ -508,8 +502,7 @@
         "tr": "Microsoft Word Belgesi",
         "zh-cn": "Microsoft Word 文档",
         "zh-tw": "Microsoft Word 文檔"
-      },
-      "shouldDisplayLabel": true
+      }
     },
     "xls": {
       "icon": "salesforce-doctype-excel",
@@ -537,8 +530,7 @@
         "tr": "Spreadsheet Belgesi",
         "zh-cn": "电子数据表文档",
         "zh-tw": "試算表文文件"
-      },
-      "shouldDisplayLabel": true
+      }
     },
     "ppt": {
       "icon": "salesforce-doctype-ppt",
@@ -566,8 +558,7 @@
         "tr": "Sunum Belgesi",
         "zh-cn": "演示文档",
         "zh-tw": "演示視窗"
-      },
-      "shouldDisplayLabel": true
+      }
     },
     "video": {
       "icon": "video",
@@ -735,8 +726,7 @@
         "tr": "Open Text Belgesi",
         "zh-cn": "打开文本文档",
         "zh-tw": "打開文本文檔"
-      },
-      "shouldDisplayLabel": true
+      }
     },
     "box": {
       "icon": "user",

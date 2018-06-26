@@ -1,9 +1,9 @@
-/// <reference path="../../lib/magic-box/index.d.ts" />
-
 // The reference to magic-box with the triple slash is needed for dts-generator
 
 import { IOmniboxData, IOmniboxDataRow } from '../ui/Omnibox/OmniboxInterface';
 import { Omnibox } from '../ui/Omnibox/Omnibox';
+import { Suggestion } from '../magicbox/SuggestionsManager';
+import { Result } from '../magicbox/Result/Result';
 
 /**
  * The `IPopulateOmniboxSuggestionsEventArgs` interface describes the object that all
@@ -18,7 +18,7 @@ export interface IPopulateOmniboxSuggestionsEventArgs {
   /**
    * The list of resolved query completion suggestions, and/or query completion suggestion promises.
    */
-  suggestions: Array<Coveo.MagicBox.Suggestion[] | Promise<Coveo.MagicBox.Suggestion[]>>;
+  suggestions: Array<Suggestion[] | Promise<Suggestion[]>>;
 }
 
 export interface IPopulateOmniboxEventArgs extends IOmniboxData {}
@@ -26,7 +26,7 @@ export interface IPopulateOmniboxEventArgs extends IOmniboxData {}
 export interface IPopulateOmniboxEventRow extends IOmniboxDataRow {}
 
 export interface IOmniboxPreprocessResultForQueryEventArgs {
-  result: Coveo.MagicBox.Result;
+  result: Result;
 }
 
 /**

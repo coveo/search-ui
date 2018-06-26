@@ -19,10 +19,10 @@ export class AdvancedFieldInput extends DocumentInput {
   }
 
   public build(): HTMLElement {
-    let fieldInput = $$(super.build());
-    this.mode = new Dropdown(this.onChange.bind(this), ['Contains', 'DoesNotContain', 'Matches']);
+    const fieldInput = $$(super.build());
+    this.mode = new Dropdown(this.onChange.bind(this), ['Contains', 'DoesNotContain', 'Matches'], undefined, this.inputName);
     fieldInput.append(this.mode.getElement());
-    this.input = new TextInput(this.onChange.bind(this), '');
+    this.input = new TextInput(this.onChange.bind(this), this.inputName);
     fieldInput.append(this.input.getElement());
     this.element = fieldInput.el;
     return this.element;

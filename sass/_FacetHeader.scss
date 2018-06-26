@@ -1,4 +1,6 @@
 @import 'Variables';
+@import 'mixins/_facetHeaderAnimation';
+
 .coveo-facet-header {
   padding: 10px 20px;
   background: $color-blueish-white;
@@ -82,12 +84,6 @@
   margin-left: 10px;
   position: relative;
   .coveo-facet-header-wait-animation-svg {
-    color: $color-greyish-teal-blue;
-    display: inline-block;
-    vertical-align: middle;
-    @include animation-name(coveo-spin);
-    @include animation-timing-function(linear);
-    @include animation-duration(1s);
-    @include animation-iteration-count(infinite);
+    @include facet-header-animation;
   }
 }

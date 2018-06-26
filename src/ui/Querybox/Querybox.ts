@@ -1,19 +1,22 @@
+import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
+import { IBuildingQueryEventArgs, QueryEvents } from '../../events/QueryEvents';
+import { StandaloneSearchInterfaceEvents } from '../../events/StandaloneSearchInterfaceEvents';
+import { Assert } from '../../misc/Assert';
 import { ComponentOptionsModel } from '../../models/ComponentOptionsModel';
-export const MagicBox: any = require('exports-loader?Coveo.MagicBox!magic-box');
-import { Initialization } from '../Base/Initialization';
+import { IAttributeChangedEventArg, MODEL_EVENTS } from '../../models/Model';
+import { QUERY_STATE_ATTRIBUTES, QueryStateModel } from '../../models/QueryStateModel';
+import { l } from '../../strings/Strings';
+import { $$ } from '../../utils/Dom';
+import { IAnalyticsNoMeta, analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { ComponentOptions } from '../Base/ComponentOptions';
-import { QueryEvents, IBuildingQueryEventArgs } from '../../events/QueryEvents';
-import { MODEL_EVENTS, IAttributeChangedEventArg } from '../../models/Model';
-import { QUERY_STATE_ATTRIBUTES, QueryStateModel } from '../../models/QueryStateModel';
-import { StandaloneSearchInterfaceEvents } from '../../events/StandaloneSearchInterfaceEvents';
-import { IAnalyticsNoMeta, analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
-import { $$ } from '../../utils/Dom';
-import { Assert } from '../../misc/Assert';
+import { Initialization } from '../Base/Initialization';
 import { QueryboxQueryParameters } from './QueryboxQueryParameters';
-import * as _ from 'underscore';
-import { exportGlobally } from '../../GlobalExports';
+import { Result } from '../../magicbox/Result/Result';
+import { MagicBoxInstance, createMagicBox } from '../../magicbox/MagicBox';
+import { Grammar } from '../../magicbox/Grammar';
 
 export interface IQueryboxOptions {
   enableSearchAsYouType?: boolean;
@@ -47,7 +50,6 @@ export class Querybox extends Component {
   static doExport = () => {
     exportGlobally({
       Querybox: Querybox,
-      MagicBox: MagicBox,
       QueryboxQueryParameters: QueryboxQueryParameters
     });
   };
@@ -233,8 +235,9 @@ export class Querybox extends Component {
      */
     triggerQueryOnClear: ComponentOptions.buildBooleanOption({ defaultValue: false })
   };
+  MagicBoxImpl;
 
-  public magicBox: Coveo.MagicBox.Instance;
+  public magicBox: MagicBoxInstance;
   private lastQuery: string;
   private searchAsYouTypeTimeout: number;
 
@@ -257,9 +260,10 @@ export class Querybox extends Component {
     this.options = ComponentOptions.initComponentOptions(element, Querybox, options);
     this.options = _.extend({}, this.options, this.componentOptionsModel.get(ComponentOptionsModel.attributesEnum.searchBox));
 
-    this.magicBox = MagicBox.create(
+    $$(this.element).toggleClass('coveo-query-syntax-disabled', this.options.enableQuerySyntax == false);
+    this.magicBox = createMagicBox(
       element,
-      new MagicBox.Grammar('Query', {
+      new Grammar('Query', {
         Query: '[Term*][Spaces?]',
         Term: '[Spaces?][Word]',
         Spaces: / +/,
@@ -269,6 +273,11 @@ export class Querybox extends Component {
         inline: true
       }
     );
+
+    const input = $$(this.magicBox.element).find('input');
+    if (input) {
+      $$(input).setAttribute('aria-label', this.options.placeholder || l('Search'));
+    }
 
     this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => this.handleBuildingQuery(args));
     this.bind.onRootElement(StandaloneSearchInterfaceEvents.beforeRedirect, () => this.updateQueryState());
@@ -355,7 +364,7 @@ export class Querybox extends Component {
    *
    * @returns {Result} The displayed result.
    */
-  public getDisplayedResult() {
+  public getDisplayedResult(): Result {
     return this.magicBox.getDisplayedResult();
   }
 

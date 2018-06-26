@@ -99,10 +99,12 @@ export class HistoryController extends RootComponent {
     if (this.initialHashChange) {
       this.initialHashChange = false;
       if (hashHasChanged) {
+        // Using replace avoids adding an entry in the History of the browser.
+        // This means that this new URL will become the new initial URL.
         this.window.location.replace(hash);
         this.logger.trace('History hash modified', hash);
       }
-    } else if (this.ignoreNextHashChange) {
+    } else if (hashHasChanged) {
       this.window.location.hash = hash;
       this.logger.trace('History hash created', hash);
     }
