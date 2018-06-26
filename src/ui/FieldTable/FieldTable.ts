@@ -1,17 +1,18 @@
+import 'styling/_FieldTable';
+import { exportGlobally } from '../../GlobalExports';
+import { IQueryResult } from '../../rest/QueryResult';
+import { l } from '../../strings/Strings';
+import { AccessibleButton } from '../../utils/AccessibleButton';
+import { $$ } from '../../utils/Dom';
+import { QueryUtils } from '../../utils/QueryUtils';
+import { SVGDom } from '../../utils/SVGDom';
+import { SVGIcons } from '../../utils/SVGIcons';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { ComponentOptions } from '../Base/ComponentOptions';
-import { QueryUtils } from '../../utils/QueryUtils';
-import { IQueryResult } from '../../rest/QueryResult';
 import { Initialization } from '../Base/Initialization';
 import { FieldValue, IFieldValueOptions } from '../FieldValue/FieldValue';
-import { $$ } from '../../utils/Dom';
-import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
-import * as _ from 'underscore';
-import { exportGlobally } from '../../GlobalExports';
-import 'styling/_FieldTable';
-import { SVGIcons } from '../../utils/SVGIcons';
-import { SVGDom } from '../../utils/SVGDom';
+import { each } from 'underscore';
 
 export interface IFieldTableOptions {
   allowMinimization: boolean;
@@ -123,7 +124,7 @@ export class FieldTable extends Component {
     this.options = ComponentOptions.initComponentOptions(element, FieldTable, options);
 
     var rows = $$(this.element).findAll('tr[data-field]');
-    _.each(rows, (e: HTMLElement) => {
+    each(rows, (e: HTMLElement) => {
       new ValueRow(e, {}, bindings, result);
     });
 
@@ -199,7 +200,9 @@ export class FieldTable extends Component {
   }
 
   private buildToggle() {
-    this.toggleCaption = $$('span', { className: 'coveo-field-table-toggle-caption', tabindex: 0 }).el;
+    this.toggleCaption = $$('span', {
+      className: 'coveo-field-table-toggle-caption'
+    }).el;
 
     this.toggleButton = $$('div', { className: 'coveo-field-table-toggle coveo-field-table-toggle-down' }).el;
     this.toggleButtonSVGContainer = $$('span', null, SVGIcons.icons.arrowDown).el;
@@ -228,9 +231,15 @@ export class FieldTable extends Component {
     }); // Wait until toggleContainer.scrollHeight is computed.
 
     const toggleAction = () => this.toggle(true);
-    $$(this.toggleButton).on('click', toggleAction);
+
+    new AccessibleButton()
+      .withElement(this.toggleButton)
+      .withSelectAction(() => toggleAction())
+      .withOwner(this.bind)
+      .withLabel(l('Toggle'))
+      .build();
+
     $$(this.toggleButtonInsideTable).on('click', toggleAction);
-    $$(this.toggleButton).on('keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, toggleAction));
   }
 
   private slideToggle(visible: boolean = true, anim: boolean = true) {

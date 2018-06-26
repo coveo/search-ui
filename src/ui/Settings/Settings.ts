@@ -1,16 +1,18 @@
+import PopperJs from 'popper.js';
+import 'styling/_Settings';
+import { each, escape, times } from 'underscore';
+import { InitializationEvents } from '../../events/InitializationEvents';
+import { SettingsEvents } from '../../events/SettingsEvents';
+import { exportGlobally } from '../../GlobalExports';
+import { l } from '../../strings/Strings';
+import { AccessibleButton } from '../../utils/AccessibleButton';
+import { $$ } from '../../utils/Dom';
+import { SVGDom } from '../../utils/SVGDom';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { ComponentOptions } from '../Base/ComponentOptions';
-import { InitializationEvents } from '../../events/InitializationEvents';
-import { $$ } from '../../utils/Dom';
-import { PopupUtils, IPopupPosition, PopupHorizontalAlignment, PopupVerticalAlignment } from '../../utils/PopupUtils';
-import { IMenuItem } from '../Menu/MenuItem';
-import { SettingsEvents } from '../../events/SettingsEvents';
 import { Initialization } from '../Base/Initialization';
-import * as _ from 'underscore';
-import { exportGlobally } from '../../GlobalExports';
-import 'styling/_Settings';
-import { SVGDom } from '../../utils/SVGDom';
+import { IMenuItem } from '../Menu/MenuItem';
 
 export interface ISettingsPopulateMenuArgs {
   settings: Settings;
@@ -80,10 +82,18 @@ export class Settings extends Component {
     if (this.menu != null) {
       $$(this.menu).detach();
     }
+
     this.menu = this.buildMenu();
-    $$(this.menu).on('mouseleave', () => this.mouseleave());
-    $$(this.menu).on('mouseenter', () => this.mouseenter());
-    PopupUtils.positionPopup(this.menu, this.element, this.root, this.getPopupPositioning(), this.root);
+    $$(this.menu).insertAfter(this.element);
+
+    new PopperJs(this.element, this.menu, {
+      placement: 'bottom-end',
+      modifiers: {
+        offset: {
+          offset: '0, 5'
+        }
+      }
+    });
   }
 
   /**
@@ -97,75 +107,114 @@ export class Settings extends Component {
     }
   }
 
+  private toggle() {
+    if (this.isOpened) {
+      this.close();
+    } else {
+      this.open();
+    }
+  }
+
   private init() {
-    var square = $$('span', { className: 'coveo-settings-square' }).el;
-    var squares = $$('span', { className: 'coveo-settings-squares' }).el;
-    _.times(3, () => squares.appendChild(square.cloneNode()));
+    const square = $$('span', { className: 'coveo-settings-square' }).el;
+    const squares = $$('span', { className: 'coveo-settings-squares' }).el;
+    times(3, () => squares.appendChild(square.cloneNode()));
     this.element.appendChild(squares);
 
-    $$(this.element).on('click', () => {
-      if (this.isOpened) {
-        this.close();
-      } else {
-        this.open();
-      }
-    });
-
-    $$(this.element).on('mouseleave', () => this.mouseleave());
-    $$(this.element).on('mouseenter', () => this.mouseenter());
+    new AccessibleButton()
+      .withElement(this.element)
+      .withOwner(this.bind)
+      .withSelectAction(() => this.toggle())
+      .withFocusAndMouseEnterAction(() => this.onfocus())
+      .withBlurAndMouseLeaveAction(() => this.onblur())
+      .withLabel(l('Settings'))
+      .build();
   }
 
   private buildMenu(): HTMLElement {
-    var menu = $$('div', { className: 'coveo-settings-advanced-menu' }).el;
-    var settingsPopulateMenuArgs: ISettingsPopulateMenuArgs = {
+    const menu = $$('div', { className: 'coveo-settings-advanced-menu' }).el;
+    const settingsPopulateMenuArgs: ISettingsPopulateMenuArgs = {
       settings: this,
       menuData: []
     };
     $$(this.root).trigger(SettingsEvents.settingsPopulateMenu, settingsPopulateMenuArgs);
-    _.each(settingsPopulateMenuArgs.menuData, menuItem => {
-      var menuItemDom = $$('div', {
-        className: `coveo-settings-item ${menuItem.className}`,
-        title: _.escape(menuItem.tooltip || ''),
-        role: 'button'
-      }).el;
-      let icon = $$('div', { className: 'coveo-icon' }).el;
-      if (menuItem.svgIcon) {
-        icon.innerHTML = menuItem.svgIcon;
-        if (menuItem.svgIconClassName) {
-          SVGDom.addClassToSVGInContainer(icon, menuItem.svgIconClassName);
-        }
-      }
-      menuItemDom.appendChild(icon);
-      menuItemDom.appendChild($$('div', { className: 'coveo-settings-text' }, _.escape(menuItem.text)).el);
-      $$(menuItemDom).on('click', () => {
-        this.close();
-        _.each(settingsPopulateMenuArgs.menuData, menuItem => {
-          menuItem.onClose && menuItem.onClose();
-        });
-        menuItem.onOpen();
-      });
-      menu.appendChild(menuItemDom);
+
+    each(settingsPopulateMenuArgs.menuData, menuItem => {
+      const { menuItemElement, menuItemIcon, menuItemText } = this.buildMenuItem(menuItem, settingsPopulateMenuArgs);
+
+      menuItemElement.appendChild(menuItemIcon);
+      menuItemElement.appendChild(menuItemText);
+
+      menu.appendChild(menuItemElement);
     });
     return menu;
   }
 
-  private mouseleave() {
+  private buildMenuItem(menuItem: IMenuItem, settingsPopulateMenuArgs: ISettingsPopulateMenuArgs) {
+    const menuItemElement = $$('div', {
+      className: `coveo-settings-item ${menuItem.className}`
+    }).el;
+
+    const selectAction = () => {
+      each(settingsPopulateMenuArgs.menuData, menuItem => {
+        menuItem.onClose && menuItem.onClose();
+      });
+      this.close();
+      menuItem.onOpen();
+    };
+
+    new AccessibleButton()
+      .withElement(menuItemElement)
+      .withSelectAction(selectAction)
+      .withFocusAndMouseEnterAction(() => this.onfocus())
+      .withBlurAndMouseLeaveAction(() => this.onblur())
+      .withLabel(menuItem.tooltip || menuItem.text)
+      .build();
+
+    return {
+      menuItemElement,
+      menuItemIcon: this.buildMenuItemIcon(menuItem),
+      menuItemText: this.buildMenuItemText(menuItem)
+    };
+  }
+
+  private buildMenuItemIcon(menuItem: IMenuItem) {
+    const iconElement = $$('div', {
+      className: 'coveo-icon'
+    }).el;
+
+    if (menuItem.svgIcon) {
+      iconElement.innerHTML = menuItem.svgIcon;
+    }
+
+    if (menuItem.svgIconClassName) {
+      SVGDom.addClassToSVGInContainer(iconElement, menuItem.svgIconClassName);
+    }
+
+    return iconElement;
+  }
+
+  private buildMenuItemText(menuItem: IMenuItem) {
+    const textElement = $$(
+      'div',
+      {
+        className: 'coveo-settings-text'
+      },
+      escape(menuItem.text)
+    ).el;
+
+    return textElement;
+  }
+
+  private onblur() {
     clearTimeout(this.closeTimeout);
     this.closeTimeout = window.setTimeout(() => {
       this.close();
     }, this.options.menuDelay);
   }
 
-  private mouseenter() {
+  private onfocus() {
     clearTimeout(this.closeTimeout);
-  }
-
-  private getPopupPositioning(): IPopupPosition {
-    return {
-      horizontal: PopupHorizontalAlignment.INNERRIGHT,
-      vertical: PopupVerticalAlignment.BOTTOM,
-      verticalOffset: 8
-    };
   }
 }
 Initialization.registerAutoCreateComponent(Settings);

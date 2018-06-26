@@ -1,27 +1,27 @@
-import { Component } from '../Base/Component';
-import { ComponentOptions, ComponentOptionsType } from '../Base/ComponentOptions';
-import { IResultsComponentBindings } from '../Base/ResultsComponentBindings';
-import { Template } from '../Templates/Template';
-import { DomUtils } from '../../utils/DomUtils';
-import { IQueryResult } from '../../rest/QueryResult';
-import { $$, Dom } from '../../utils/Dom';
-import { DefaultQuickviewTemplate } from './DefaultQuickviewTemplate';
-import { ResultListEvents } from '../../events/ResultListEvents';
-import { StringUtils } from '../../utils/StringUtils';
-import { QuickviewDocument } from './QuickviewDocument';
-import { QueryStateModel } from '../../models/QueryStateModel';
+import 'styling/_Quickview';
 import { QuickviewEvents } from '../../events/QuickviewEvents';
-import { Initialization, IInitializationParameters } from '../Base/Initialization';
-import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
+import { ResultListEvents } from '../../events/ResultListEvents';
 import { ModalBox as ModalBoxModule } from '../../ExternalModulesShim';
 import { exportGlobally } from '../../GlobalExports';
-
-import 'styling/_Quickview';
-import { SVGIcons } from '../../utils/SVGIcons';
+import { QueryStateModel } from '../../models/QueryStateModel';
+import { IQueryResult } from '../../rest/QueryResult';
+import { l } from '../../strings/Strings';
+import { AccessibleButton } from '../../utils/AccessibleButton';
+import { $$, Dom } from '../../utils/Dom';
+import { DomUtils } from '../../utils/DomUtils';
+import { StringUtils } from '../../utils/StringUtils';
 import { SVGDom } from '../../utils/SVGDom';
-import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
+import { SVGIcons } from '../../utils/SVGIcons';
 import { Utils } from '../../utils/Utils';
+import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
+import { Component } from '../Base/Component';
+import { ComponentOptions, ComponentOptionsType } from '../Base/ComponentOptions';
+import { IInitializationParameters, Initialization } from '../Base/Initialization';
+import { IResultsComponentBindings } from '../Base/ResultsComponentBindings';
 import { TemplateComponentOptions } from '../Base/TemplateComponentOptions';
+import { Template } from '../Templates/Template';
+import { DefaultQuickviewTemplate } from './DefaultQuickviewTemplate';
+import { QuickviewDocument } from './QuickviewDocument';
 
 export interface IQuickviewOptions {
   title?: string;
@@ -309,8 +309,13 @@ export class Quickview extends Component {
   private bindClick(result: IQueryResult) {
     if (typeof result.hasHtmlVersion == 'undefined' || result.hasHtmlVersion || this.options.alwaysShow) {
       const clickAction = () => this.open();
-      $$(this.element).on('click', clickAction);
-      this.bind.on(this.element, 'keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, clickAction));
+
+      new AccessibleButton()
+        .withElement(this.element)
+        .withSelectAction(clickAction)
+        .withLabel(l('Quickview'))
+        .withOwner(this.bind)
+        .build();
     } else {
       this.element.style.display = 'none';
     }

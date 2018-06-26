@@ -13,7 +13,6 @@ import { QueryStateModel, QUERY_STATE_ATTRIBUTES } from '../../models/QueryState
 import { MODEL_EVENTS, IAttributesChangedEventArg } from '../../models/Model';
 import { analyticsActionCauseList, IAnalyticsResultsLayoutChange } from '../Analytics/AnalyticsActionListMeta';
 import { IQueryResults } from '../../rest/QueryResults';
-import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
 import { ResponsiveResultLayout } from '../ResponsiveComponents/ResponsiveResultLayout';
 import { Utils } from '../../utils/Utils';
 import * as _ from 'underscore';
@@ -23,6 +22,7 @@ import 'styling/_ResultLayoutSelector';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { SVGDom } from '../../utils/SVGDom';
 import { ValidLayout } from './ValidLayout';
+import { AccessibleButton } from '../../utils/AccessibleButton';
 
 export interface IActiveLayouts {
   button: {
@@ -293,23 +293,29 @@ export class ResultLayoutSelector extends Component {
   }
 
   private addButton(layout: string) {
-    const btn = $$(
-      'span',
-      {
-        className: 'coveo-result-layout-selector',
-        tabindex: 0
-      },
-      $$('span', { className: 'coveo-result-layout-selector-caption' }, l(layout))
-    );
+    const btn = $$('span', {
+      className: 'coveo-result-layout-selector'
+    });
+    const caption = $$('span', { className: 'coveo-result-layout-selector-caption' }, l(layout));
+    btn.append(caption.el);
+
     const icon = $$('span', { className: `coveo-icon coveo-${layout}-layout-icon` }, SVGIcons.icons[`${layout}Layout`]);
     SVGDom.addClassToSVGInContainer(icon.el, `coveo-${layout}-svg`);
     btn.prepend(icon.el);
+
+    const selectAction = () => this.changeLayout(<ValidLayout>layout);
+
+    new AccessibleButton()
+      .withElement(btn)
+      .withLabel(l(layout))
+      .withSelectAction(selectAction)
+      .withOwner(this.bind)
+      .build();
+
     if (layout === this.currentLayout) {
       btn.addClass('coveo-selected');
     }
-    const activateAction = () => this.changeLayout(<ValidLayout>layout);
-    btn.on('click', activateAction);
-    btn.on('keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, activateAction));
+
     $$(this.element).append(btn.el);
     this.currentActiveLayouts[layout] = {
       button: {
