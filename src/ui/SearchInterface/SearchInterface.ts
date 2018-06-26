@@ -310,7 +310,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
      *
      * It also modifies the {@link IQuery.allowQueriesWithoutKeywords} query parameter.
      *
-     * Default value is `true`
+     * Default value is `true`, except in Coveo for Salesforce Free edition in which it is `false`.
      */
     allowQueriesWithoutKeywords: ComponentOptions.buildBooleanOption({ defaultValue: true }),
     endpoint: ComponentOptions.buildCustomOption(
