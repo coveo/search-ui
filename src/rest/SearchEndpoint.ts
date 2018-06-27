@@ -1,12 +1,5 @@
 import { ISearchEndpointOptions, ISearchEndpoint, IViewAsHtmlOptions } from './SearchEndpointInterface';
-import {
-  EndpointCaller,
-  IEndpointCallParameters,
-  IErrorResponse,
-  IRequestInfo,
-  IEndpointCallerOptions,
-  ISuccessResponse
-} from '../rest/EndpointCaller';
+import { EndpointCaller, IEndpointCallParameters, IErrorResponse, IRequestInfo, IEndpointCallerOptions } from '../rest/EndpointCaller';
 import { IEndpointCallOptions } from '../rest/SearchEndpointInterface';
 import { IStringMap } from './GenericParam';
 import { Logger } from '../misc/Logger';
@@ -37,7 +30,7 @@ import { TimeSpan } from '../utils/TimeSpanUtils';
 import { UrlUtils } from '../utils/UrlUtils';
 import { IGroupByResult } from './GroupByResult';
 import { AccessToken } from './AccessToken';
-import * as PromiseRetry from 'promise-retry';
+import { BackOff } from './BackOff';
 
 export class DefaultSearchEndpointOptions implements ISearchEndpointOptions {
   restUri: string;
@@ -1081,9 +1074,10 @@ export class SearchEndpoint implements ISearchEndpoint {
       }
     });
 
+    const request = () => this.caller.call(params);
+
     try {
-      const request = () => this.caller.call(params);
-      const response = await this.backOff(request);
+      const response = await request();
       return response.data as T;
     } catch (error) {
       const tokenWasRenewed = await this.renewAccessTokenIfExpired(error);
@@ -1092,25 +1086,13 @@ export class SearchEndpoint implements ISearchEndpoint {
         return this.performOneCall(params, callOptions) as Promise<T>;
       }
 
+      if (BackOff.is429Error(error)) {
+        const response = await BackOff.request(request);
+        return response.data as T;
+      }
+
       throw this.handleErrorResponse(error) as any;
     }
-  }
-
-  private backOff(fn: () => Promise<ISuccessResponse<{}>>) {
-    return PromiseRetry((retry, attemptNumber) => fn().catch(e => this.handleBackOffError(e, retry, attemptNumber)));
-  }
-
-  private handleBackOffError(e: IErrorResponse, retry: (e: IErrorResponse) => Promise<any>, attempt: number) {
-    if (this.is429Error(e)) {
-      this.logger.info(`Resending the request because it was throttled. Retry attempt ${attempt}`);
-      return retry(e);
-    }
-
-    throw e;
-  }
-
-  private is429Error(error: IErrorResponse) {
-    return error && error.statusCode === 429;
   }
 
   private renewAccessTokenIfExpired(e: IErrorResponse) {
