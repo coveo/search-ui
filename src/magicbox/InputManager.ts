@@ -13,7 +13,6 @@ export class InputManager {
   private wordCompletion: string;
 
   private hasFocus: boolean = false;
-  private justPressedTab: boolean = false;
 
   /**
    * Binding event
@@ -183,6 +182,7 @@ export class InputManager {
       this.keydown(e);
     };
     this.input.onkeyup = e => {
+      console.log(e);
       this.keyup(e);
     };
     this.input.onclick = () => {
@@ -218,14 +218,15 @@ export class InputManager {
   private keydown(e: KeyboardEvent) {
     switch (e.keyCode || e.which) {
       case 9: // Tab key
-        if (!this.justPressedTab && this.magicBox.hasSuggestions()) {
-          e.preventDefault();
-        }
-        this.justPressedTab = true;
+        // Take care of not "preventing" the default event behaviour : For accessibility reasons, it is much simpler
+        // to simply let the browser do it's standard action (which is to focus out of the input).
+        // Instead, handle "tabPress" immediately instead of "keyup".
+        // The focus will be on the next element in the page when the key is released, so keyup on the input will never be triggered.
+        this.tabPress();
+        this.magicBox.clearSuggestion();
         break;
       default:
         e.stopPropagation();
-        this.justPressedTab = false;
         if (this.onkeydown == null || this.onkeydown(e.keyCode || e.which)) {
           requestAnimationFrame(() => {
             this.onInputChange();
@@ -239,10 +240,6 @@ export class InputManager {
 
   private keyup(e: KeyboardEvent) {
     switch (e.keyCode || e.which) {
-      // TAB
-      case 9:
-        this.tabPress();
-        break;
       case 37: // Left
       case 39: // Right
         this.onchangecursor();
@@ -258,11 +255,8 @@ export class InputManager {
   }
 
   private tabPress() {
-    if (this.wordCompletion != null) {
-      this.input.value = this.wordCompletion;
-    }
     this.ontabpress && this.ontabpress();
-    this.magicBox.showSuggestion();
+    this.onblur && this.onblur();
   }
 
   private onInputChange() {
