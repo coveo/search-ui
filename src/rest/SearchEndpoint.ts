@@ -1,5 +1,12 @@
 import { ISearchEndpointOptions, ISearchEndpoint, IViewAsHtmlOptions } from './SearchEndpointInterface';
-import { EndpointCaller, IEndpointCallParameters, IErrorResponse, IRequestInfo, IEndpointCallerOptions } from '../rest/EndpointCaller';
+import {
+  EndpointCaller,
+  IEndpointCallParameters,
+  IErrorResponse,
+  IRequestInfo,
+  IEndpointCallerOptions,
+  ISuccessResponse
+} from '../rest/EndpointCaller';
 import { IEndpointCallOptions } from '../rest/SearchEndpointInterface';
 import { IStringMap } from './GenericParam';
 import { Logger } from '../misc/Logger';
@@ -30,6 +37,7 @@ import { TimeSpan } from '../utils/TimeSpanUtils';
 import { UrlUtils } from '../utils/UrlUtils';
 import { IGroupByResult } from './GroupByResult';
 import { AccessToken } from './AccessToken';
+import * as PromiseRetry from 'promise-retry';
 
 export class DefaultSearchEndpointOptions implements ISearchEndpointOptions {
   restUri: string;
@@ -1064,7 +1072,7 @@ export class SearchEndpoint implements ISearchEndpoint {
     };
   }
 
-  private async performOneCall<T>(params: IEndpointCallParameters, callOptions?: IEndpointCallOptions, autoRenewToken = true): Promise<T> {
+  private async performOneCall<T>(params: IEndpointCallParameters, callOptions?: IEndpointCallOptions): Promise<T> {
     params = UrlUtils.merge(params, {
       paths: params.url,
       queryAsString: params.queryString,
@@ -1074,23 +1082,39 @@ export class SearchEndpoint implements ISearchEndpoint {
     });
 
     try {
-      const response = await this.caller.call(params);
+      const request = () => this.caller.call(params);
+      const response = await this.backOff(request);
       return response.data as T;
     } catch (error) {
-      if (autoRenewToken && this.accessToken.isExpired(error)) {
-        const renewSuccess = await this.accessToken.doRenew();
-        if (renewSuccess) {
-          return this.performOneCall(params, callOptions, autoRenewToken) as Promise<T>;
-        }
-      } else if (error.statusCode == 0 && this.isRedirecting) {
-        // The page is getting redirected
-        // Set timeout on return with empty string, since it does not really matter
-        _.defer(function() {
-          return '';
-        });
+      const tokenWasRenewed = await this.renewAccessTokenIfExpired(error);
+
+      if (tokenWasRenewed) {
+        return this.performOneCall(params, callOptions) as Promise<T>;
       }
+
       throw this.handleErrorResponse(error) as any;
     }
+  }
+
+  private backOff(fn: () => Promise<ISuccessResponse<{}>>) {
+    return PromiseRetry((retry, attemptNumber) => fn().catch(e => this.handleBackOffError(e, retry, attemptNumber)));
+  }
+
+  private handleBackOffError(e: IErrorResponse, retry: (e: IErrorResponse) => Promise<any>, attempt: number) {
+    if (this.is429Error(e)) {
+      this.logger.info(`Resending the request because it was throttled. Retry attempt ${attempt}`);
+      return retry(e);
+    }
+
+    throw e;
+  }
+
+  private is429Error(error: IErrorResponse) {
+    return error && error.statusCode === 429;
+  }
+
+  private renewAccessTokenIfExpired(e: IErrorResponse) {
+    return this.accessToken.isExpired(e) && this.accessToken.doRenew();
   }
 
   private handleErrorResponse(errorResponse: IErrorResponse): Error {

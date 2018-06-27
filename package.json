@@ -142,6 +142,7 @@
     "latinize": "^0.4.0",
     "modal-box": "^2.0.10",
     "pikaday": "^1.4.0",
+    "promise-retry": "^1.1.1",
     "underscore": "^1.8.3"
   }
 }
