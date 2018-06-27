@@ -5009,7 +5009,7 @@ var Playground = /** @class */ (function () {
             this.initializePreview();
         }
         else {
-            previewContainer.remove();
+            previewContainer && previewContainer.remove();
         }
     }
     Playground.prototype.getTitle = function () {
@@ -5756,8 +5756,8 @@ exports.ResponsiveComponents = ResponsiveComponents;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    lib: '2.4382.5-beta',
-    product: '2.4382.5-beta',
+    lib: '2.4382.6-beta',
+    product: '2.4382.6-beta',
     supportedApiVersion: 2
 };
 
