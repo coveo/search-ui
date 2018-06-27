@@ -26,7 +26,7 @@ export interface IQuerySummaryOptions {
   enableSearchTips?: boolean;
 }
 
-const noResultsCssClass: string = 'coveo-show-if-no-results';
+export const noResultsCssClass: string = 'coveo-show-if-no-results';
 const queryTagCssClass: string = 'coveo-query-tag';
 
 /**
@@ -238,13 +238,13 @@ export class QuerySummary extends Component {
     if (noResultsContainer) {
       const content = noResultsContainer.innerHTML;
       noResultsContainer.innerHTML = this.parseQueryTags(content);
-    }
 
-    $$(noResultsContainer)
-      .findAll(`.${queryTagCssClass}`)
-      .forEach(queryTagContainer => {
-        queryTagContainer.innerHTML = this.queryEscaped;
-      });
+      $$(noResultsContainer)
+        .findAll(`.${queryTagCssClass}`)
+        .forEach(queryTagContainer => {
+          queryTagContainer.innerHTML = this.queryEscaped;
+        });
+    }
   }
 
   private parseQueryTags(content: string) {

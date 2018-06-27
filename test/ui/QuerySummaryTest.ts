@@ -1,11 +1,13 @@
 import * as Mock from '../MockEnvironment';
-import { QuerySummary } from '../../src/ui/QuerySummary/QuerySummary';
+import { QuerySummary, noResultsCssClass } from '../../src/ui/QuerySummary/QuerySummary';
 import { FakeResults } from '../Fake';
 import { Simulate } from '../Simulate';
 import { $$ } from '../../src/utils/Dom';
 import { IQuerySummaryOptions } from '../../src/ui/QuerySummary/QuerySummary';
 import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
 import { ResultList } from '../../src/ui/ResultList/ResultList';
+
+const queryTag = '${query}';
 
 export function QuerySummaryTest() {
   describe('QuerySummary', () => {
@@ -198,6 +200,114 @@ export function QuerySummaryTest() {
         });
 
         expect($$(test.cmp.element).text()).not.toEqual(jasmine.stringMatching(/^Results.*of.*/));
+      });
+    });
+
+    describe('when the option enableNoResultsFoundMessage is set to true', () => {
+      it(`when the noResultsFoundMessage is not specified
+          it should return the default message`, () => {
+        test = Mock.optionsComponentSetup<QuerySummary, IQuerySummaryOptions>(QuerySummary, {
+          enableNoResultsFoundMessage: true
+        });
+        expect(test.cmp.options.noResultsFoundMessage).toBe(`No results for ${queryTag}`);
+      });
+
+      it(`when the noResultsFoundMessage is specified 
+          it should return the custom message`, () => {
+        test = Mock.optionsComponentSetup<QuerySummary, IQuerySummaryOptions>(QuerySummary, {
+          enableNoResultsFoundMessage: true,
+          noResultsFoundMessage: 'customMessage'
+        });
+        expect(test.cmp.options.noResultsFoundMessage).toBe('customMessage');
+      });
+
+      describe('when the noResultsFoundMessage is parsed', () => {
+        it(`when there is no query tag in the noResultsFoundMessage
+            it should not change the initial message`, () => {
+          test = Mock.optionsComponentSetup<QuerySummary, IQuerySummaryOptions>(QuerySummary, {
+            enableNoResultsFoundMessage: true,
+            noResultsFoundMessage: 'customMessage'
+          });
+
+          test.env.queryStateModel.get = () => 'querySearched';
+          Simulate.query(test.env, { results: FakeResults.createFakeResults(0) });
+
+          const customMessageElement = $$(test.cmp.element).find('.coveo-query-summary-no-results-string');
+
+          expect(customMessageElement.textContent).toBe('customMessage');
+        });
+
+        it(`when there is one query tag in the noResultsFoundMessage
+            it should replace the query tag by the query searched`, () => {
+          test = Mock.optionsComponentSetup<QuerySummary, IQuerySummaryOptions>(QuerySummary, {
+            enableNoResultsFoundMessage: true,
+            noResultsFoundMessage: `customMessage ${queryTag}`
+          });
+
+          test.env.queryStateModel.get = () => 'querySearched';
+          Simulate.query(test.env, { results: FakeResults.createFakeResults(0) });
+
+          const customMessageElement = $$(test.cmp.element).find('.coveo-query-summary-no-results-string');
+
+          expect(customMessageElement.textContent).toBe('customMessage querySearched');
+        });
+
+        it(`when there is multiple query tags in the noResultsFoundMessage
+            it should replace all the query tags by the query searched`, () => {
+          test = Mock.optionsComponentSetup<QuerySummary, IQuerySummaryOptions>(QuerySummary, {
+            enableNoResultsFoundMessage: true,
+            noResultsFoundMessage: `custom ${queryTag} Message ${queryTag}`
+          });
+
+          test.env.queryStateModel.get = () => 'querySearched';
+          Simulate.query(test.env, { results: FakeResults.createFakeResults(0) });
+
+          const customMessageElement = $$(test.cmp.element).find('.coveo-query-summary-no-results-string');
+
+          expect(customMessageElement.textContent).toBe('custom querySearched Message querySearched');
+        });
+      });
+    });
+
+    describe('when a custom no results found page is added inside the QuerySummary component', () => {
+      it(`when there are results
+          it should not display the custom no results found page`, () => {
+        test.cmp.element.innerHTML = `<div class="${noResultsCssClass}">Custom No Results Found Page</div>`;
+        Simulate.query(test.env, { results: FakeResults.createFakeResults(10) });
+
+        expect($$(test.cmp.element).find('.coveo-no-results-found-page-hidden')).not.toBeNull();
+      });
+
+      it(`when there are no results
+          it should display the custom no results found page`, () => {
+        test.cmp.element.innerHTML = `<div class="${noResultsCssClass}">Custom No Results Found Page</div>`;
+
+        Simulate.query(test.env, { results: FakeResults.createFakeResults(0) });
+
+        expect($$(test.cmp.element).find('.coveo-no-results-found-page-hidden')).toBeNull();
+      });
+
+      it(`when a query tag is added in the custom no results found page
+          it should replace the query tag by the query searched`, () => {
+        test.env.queryStateModel.get = () => 'querySearched';
+        test.cmp.element.innerHTML = `<div class="${noResultsCssClass}">${queryTag}</div>`;
+
+        Simulate.query(test.env, { results: FakeResults.createFakeResults(0) });
+
+        const customNoResultsFoundPageElement = $$(test.cmp.element).find(`.${noResultsCssClass}`);
+
+        expect(customNoResultsFoundPageElement.textContent).toBe('querySearched');
+      });
+
+      it(`when mutiple query tags are added in the custom no results found page
+          it should replace all the query tags by the query searched`, () => {
+        test.env.queryStateModel.get = () => 'querySearched';
+        test.cmp.element.innerHTML = `<div class="${noResultsCssClass}">${queryTag} ${queryTag}</div>`;
+        Simulate.query(test.env, { results: FakeResults.createFakeResults(0) });
+
+        const customNoResultsFoundPageElement = $$(test.cmp.element).find(`.${noResultsCssClass}`);
+
+        expect(customNoResultsFoundPageElement.textContent).toBe('querySearched querySearched');
       });
     });
   });
