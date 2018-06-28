@@ -265,8 +265,8 @@ export class QuerySummary extends Component {
 
     const noResultsFoundMessage = this.getNoResultsFoundMessageElement();
     const cancelLastAction = this.getCancelLastActionElement();
-    const searchTipsInfo = this.getSearchTipsInfoElement();
-    const searchTips = this.getSearchTipsElement();
+    const searchTipsTitle = this.getSearchTipsTitleElement();
+    const searchTipsList = this.getSearchTipsListElement();
 
     if (noResultsFoundMessage && this.options.enableNoResultsFoundMessage) {
       this.textContainer.appendChild(noResultsFoundMessage.el);
@@ -277,8 +277,8 @@ export class QuerySummary extends Component {
     }
 
     if (this.options.enableSearchTips) {
-      this.textContainer.appendChild(searchTipsInfo.el);
-      this.textContainer.appendChild(searchTips.el);
+      this.textContainer.appendChild(searchTipsTitle.el);
+      this.textContainer.appendChild(searchTipsList.el);
     }
   }
 
@@ -334,15 +334,16 @@ export class QuerySummary extends Component {
     return cancelLastAction;
   }
 
-  private getSearchTipsInfoElement() {
+  private getSearchTipsTitleElement() {
     const searchTipsInfo = $$('div', {
       className: 'coveo-query-summary-search-tips-info'
     });
+    searchTipsInfo.text(l('SearchTips'));
 
     return searchTipsInfo;
   }
 
-  private getSearchTipsElement() {
+  private getSearchTipsListElement() {
     const searchTips = $$('ul');
 
     const checkSpelling = $$('li');
