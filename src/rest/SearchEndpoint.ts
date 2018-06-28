@@ -1,5 +1,12 @@
 import { ISearchEndpointOptions, ISearchEndpoint, IViewAsHtmlOptions } from './SearchEndpointInterface';
-import { EndpointCaller, IEndpointCallParameters, IErrorResponse, IRequestInfo, IEndpointCallerOptions } from '../rest/EndpointCaller';
+import {
+  EndpointCaller,
+  IEndpointCallParameters,
+  IErrorResponse,
+  IRequestInfo,
+  IEndpointCallerOptions,
+  ISuccessResponse
+} from '../rest/EndpointCaller';
 import { IEndpointCallOptions } from '../rest/SearchEndpointInterface';
 import { IStringMap } from './GenericParam';
 import { Logger } from '../misc/Logger';
@@ -1087,8 +1094,7 @@ export class SearchEndpoint implements ISearchEndpoint {
       }
 
       if (BackOff.is429Error(error)) {
-        const response = await BackOff.request(request);
-        return response.data as T;
+        return this.backOff429Request<T>(request);
       }
 
       throw this.handleErrorResponse(error) as any;
@@ -1097,6 +1103,15 @@ export class SearchEndpoint implements ISearchEndpoint {
 
   private renewAccessTokenIfExpired(e: IErrorResponse) {
     return this.accessToken.isExpired(e) && this.accessToken.doRenew();
+  }
+
+  private async backOff429Request<T>(request: () => Promise<ISuccessResponse<{}>>) {
+    try {
+      const response = await BackOff.request(request);
+      return response.data as T;
+    } catch (e) {
+      throw this.handleErrorResponse(e) as any;
+    }
   }
 
   private handleErrorResponse(errorResponse: IErrorResponse): Error {

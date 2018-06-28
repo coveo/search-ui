@@ -9,19 +9,20 @@ export class BackOff {
   private static clearingQueue = false;
 
   public static request(fn: Request): Promise<ISuccessResponse<{}>> {
-    return new Promise(resolve => {
-      const request = BackOff.getBackOffRequest(fn, resolve);
+    return new Promise((resolve, reject) => {
+      const request = BackOff.getBackOffRequest(fn, resolve, reject);
       BackOff.enqueueRequest(request);
       BackOff.clearQueueIfNotAlready();
     });
   }
 
-  private static getBackOffRequest(fn: Request, resolve: (value?: {} | Thenable<{}>) => void): Request {
+  private static getBackOffRequest(fn: Request, resolve, reject): Request {
     return () =>
       PromiseRetry((retry, attemptNumber) => {
         return fn()
           .then(resolve)
-          .catch(e => BackOff.handleError(e, retry, attemptNumber));
+          .catch(e => BackOff.handleIf429Error(e, retry, attemptNumber))
+          .catch(reject);
       });
   }
 
@@ -44,7 +45,7 @@ export class BackOff {
     BackOff.clearingQueue = false;
   }
 
-  private static handleError(e: IErrorResponse, retry: (e: IErrorResponse) => Promise<any>, attempt: number) {
+  private static handleIf429Error(e: IErrorResponse, retry: (e: IErrorResponse) => Promise<any>, attempt: number) {
     if (BackOff.is429Error(e)) {
       new Logger(BackOff).info(`Resending the request because it was throttled. Retry attempt ${attempt}`);
       return retry(e);
