@@ -12,6 +12,9 @@ defaultLanguage();
 import { SearchEndpointTest } from './rest/SearchEndpointTest';
 SearchEndpointTest();
 
+import { BackOffTest } from './rest/BackOffTest';
+BackOffTest();
+
 import { CookieUtilsTest } from './utils/CookieUtilsTest';
 CookieUtilsTest();
 
