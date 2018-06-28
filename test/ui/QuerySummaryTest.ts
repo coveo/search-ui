@@ -310,5 +310,13 @@ export function QuerySummaryTest() {
         expect(customNoResultsPageElement.textContent).toBe('querySearched querySearched');
       });
     });
+
+    it(`when a query tag is replaced in the no results found message
+        it should escape the HTML against XSS`, () => {
+      test.env.queryStateModel.get = () => '<script>alert("XSS")</script>';
+      Simulate.query(test.env, { results: FakeResults.createFakeResults(0) });
+
+      expect($$(test.cmp.element).find('.coveo-query-tag').innerHTML).toBe('&lt;script&gt;alert("XSS")&lt;/script&gt;');
+    });
   });
 }
