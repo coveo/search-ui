@@ -269,45 +269,45 @@ export function QuerySummaryTest() {
       });
     });
 
-    describe('when a custom no results found page is added inside the QuerySummary component', () => {
+    describe('when a custom no results page is added inside the QuerySummary component', () => {
       it(`when there are results
-          it should not display the custom no results found page`, () => {
-        test.cmp.element.innerHTML = `<div class="${noResultsCssClass}">Custom No Results Found Page</div>`;
+          it should not display the custom no results page`, () => {
+        test.cmp.element.innerHTML = `<div class="${noResultsCssClass}">Custom No Results Page</div>`;
         Simulate.query(test.env, { results: FakeResults.createFakeResults(10) });
 
-        expect($$(test.cmp.element).find('.coveo-no-results-found-page-hidden')).not.toBeNull();
+        expect($$(test.cmp.element).find('.coveo-no-results-page-hidden')).not.toBeNull();
       });
 
       it(`when there are no results
-          it should display the custom no results found page`, () => {
-        test.cmp.element.innerHTML = `<div class="${noResultsCssClass}">Custom No Results Found Page</div>`;
+          it should display the custom no results page`, () => {
+        test.cmp.element.innerHTML = `<div class="${noResultsCssClass}">Custom No Results Page</div>`;
 
         Simulate.query(test.env, { results: FakeResults.createFakeResults(0) });
 
-        expect($$(test.cmp.element).find('.coveo-no-results-found-page-hidden')).toBeNull();
+        expect($$(test.cmp.element).find('.coveo-no-results-page-hidden')).toBeNull();
       });
 
-      it(`when a query tag is added in the custom no results found page
+      it(`when a query tag is added in the custom no results page
           it should replace the query tag by the query searched`, () => {
         test.env.queryStateModel.get = () => 'querySearched';
         test.cmp.element.innerHTML = `<div class="${noResultsCssClass}">${queryTag}</div>`;
 
         Simulate.query(test.env, { results: FakeResults.createFakeResults(0) });
 
-        const customNoResultsFoundPageElement = $$(test.cmp.element).find(`.${noResultsCssClass}`);
+        const customNoResultsPageElement = $$(test.cmp.element).find(`.${noResultsCssClass}`);
 
-        expect(customNoResultsFoundPageElement.textContent).toBe('querySearched');
+        expect(customNoResultsPageElement.textContent).toBe('querySearched');
       });
 
-      it(`when mutiple query tags are added in the custom no results found page
+      it(`when mutiple query tags are added in the custom no results page
           it should replace all the query tags by the query searched`, () => {
         test.env.queryStateModel.get = () => 'querySearched';
         test.cmp.element.innerHTML = `<div class="${noResultsCssClass}">${queryTag} ${queryTag}</div>`;
         Simulate.query(test.env, { results: FakeResults.createFakeResults(0) });
 
-        const customNoResultsFoundPageElement = $$(test.cmp.element).find(`.${noResultsCssClass}`);
+        const customNoResultsPageElement = $$(test.cmp.element).find(`.${noResultsCssClass}`);
 
-        expect(customNoResultsFoundPageElement.textContent).toBe('querySearched querySearched');
+        expect(customNoResultsPageElement.textContent).toBe('querySearched querySearched');
       });
     });
   });

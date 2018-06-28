@@ -134,7 +134,7 @@ export class QuerySummary extends Component {
     $$(this.textContainer).empty();
     this.show();
 
-    this.hideCustomNoResultsFoundPage();
+    this.hideCustomNoResultsPage();
     this.updateQueryTagsInNoResultsContainer();
 
     if (!this.options.onlyDisplaySearchTips) {
@@ -261,7 +261,7 @@ export class QuerySummary extends Component {
   }
 
   private displayInfoOnNoResults() {
-    this.showCustomNoResultsFoundPage();
+    this.showCustomNoResultsPage();
 
     const noResultsFoundMessage = this.getNoResultsFoundMessageElement();
     const cancelLastAction = this.getCancelLastActionElement();
@@ -282,17 +282,17 @@ export class QuerySummary extends Component {
     }
   }
 
-  private hideCustomNoResultsFoundPage() {
+  private hideCustomNoResultsPage() {
     const noResultsContainer = $$(this.element).find(`.${noResultsCssClass}`);
     if (noResultsContainer) {
-      $$(noResultsContainer).addClass('coveo-no-results-found-page-hidden');
+      $$(noResultsContainer).addClass('coveo-no-results-page-hidden');
     }
   }
 
-  private showCustomNoResultsFoundPage() {
+  private showCustomNoResultsPage() {
     const noResultsContainer = $$(this.element).find(`.${noResultsCssClass}`);
     if (noResultsContainer) {
-      $$(noResultsContainer).removeClass('coveo-no-results-found-page-hidden');
+      $$(noResultsContainer).removeClass('coveo-no-results-page-hidden');
     }
   }
 
