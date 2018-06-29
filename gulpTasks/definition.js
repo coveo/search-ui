@@ -61,7 +61,6 @@ gulp.task('externalDefs', function() {
       './node_modules/@types/underscore/index.d.ts',
       './lib/es6-promise/index.d.ts',
       './lib/modal-box/index.d.ts',
-      './lib/magic-box/index.d.ts',
       './node_modules/@types/d3/index.d.ts',
       './lib/globalize/index.d.ts',
       './lib/jstimezonedetect/index.d.ts',

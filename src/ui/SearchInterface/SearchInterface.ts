@@ -310,7 +310,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
      *
      * It also modifies the {@link IQuery.allowQueriesWithoutKeywords} query parameter.
      *
-     * Default value is `true`
+     * Default value is `true`, except in Coveo for Salesforce Free edition in which it is `false`.
      */
     allowQueriesWithoutKeywords: ComponentOptions.buildBooleanOption({ defaultValue: true }),
     endpoint: ComponentOptions.buildCustomOption(
@@ -619,6 +619,18 @@ export class SearchInterface extends RootComponent implements IComponentBindings
       this.attachedComponents[type] = [];
     }
     return this.attachedComponents[type];
+  }
+
+  /**
+   * Detaches from the SearchInterface every component that is inside the given element.
+   * @param element
+   */
+  public detachComponentsInside(element: HTMLElement) {
+    each(this.attachedComponents, (components, type) => {
+      components
+        .filter(component => element != component.element && element.contains(component.element))
+        .forEach(component => this.detachComponent(type, component));
+    });
   }
 
   protected initializeAnalytics(): IAnalyticsClient {

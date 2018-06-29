@@ -38,13 +38,14 @@ export class QuickviewDocumentIframe {
     }
 
     return new Promise((resolve, reject) => {
-      this.addClientSideTweaksToIFrameStyling(htmlDocument);
-
-      this.writeToIFrame(htmlDocument);
-
+      // Take care to bind the onload function before actually writing to the iframe :
+      // Safari, IE, Edge need this, otherwise the onload function is never called
       this.iframeElement.onload = () => {
         resolve(this.iframeElement);
       };
+
+      this.addClientSideTweaksToIFrameStyling(htmlDocument);
+      this.writeToIFrame(htmlDocument);
     });
   }
 

@@ -365,6 +365,7 @@ export class FacetSlider extends Component {
   public facetQueryController: FacetSliderQueryController;
   public facetHeader: FacetHeader;
   public onResize: EventListener;
+  public isSimpleSliderConfig = false;
 
   private rangeQueryStateAttribute: string;
   private isEmpty = false;
@@ -382,7 +383,7 @@ export class FacetSlider extends Component {
   constructor(public element: HTMLElement, public options: IFacetSliderOptions, bindings?: IComponentBindings, private slider?: Slider) {
     super(element, FacetSlider.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, FacetSlider, options);
-
+    this.isSimpleSliderConfig = this.options.start != null && this.options.end != null;
     ResponsiveFacetSlider.init(this.root, this, this.options);
 
     if (this.options.excludeOuterBounds == null) {
@@ -510,10 +511,6 @@ export class FacetSlider extends Component {
     this.delayedGraphData = null;
   }
 
-  public isSimpleSliderConfig() {
-    return this.options.start != null && this.options.end != null;
-  }
-
   public hasAGraph() {
     return this.options.graph != undefined;
   }
@@ -549,7 +546,9 @@ export class FacetSlider extends Component {
           this.slider.drawGraph();
         }
       }
-      this.slider.onMoving();
+      if (this.slider) {
+        this.slider.onMoving();
+      }
     };
     window.addEventListener('resize', this.onResize);
     this.bind.onRootElement(ResponsiveDropdownEvent.OPEN, this.onResize);
@@ -825,7 +824,7 @@ export class FacetSlider extends Component {
       // Special corner case for "simple slider facet" : Do not only handle the group by results,
       // but also look for the complete result set when determining if we should show the facet.
       // This allows simple slider facet to still show with query function fields
-      if (this.isSimpleSliderConfig()) {
+      if (this.isSimpleSliderConfig) {
         this.isEmpty = data.results.results.length == 0;
       } else {
         this.isEmpty = true;

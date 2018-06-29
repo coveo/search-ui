@@ -1,27 +1,32 @@
-import { Component } from '../Base/Component';
-import { ComponentOptions } from '../Base/ComponentOptions';
-import { IComponentBindings } from '../Base/ComponentBindings';
-import { QueryEvents } from '../../events/QueryEvents';
-import { Initialization } from '../Base/Initialization';
+import 'styling/_ResultLayoutSelector';
+import { contains, difference, each, filter, find, isEmpty, keys, uniq } from 'underscore';
 import { InitializationEvents } from '../../events/InitializationEvents';
+import { IQueryErrorEventArgs, IQuerySuccessEventArgs, QueryEvents } from '../../events/QueryEvents';
+import { IResultLayoutPopulateArgs, ResultLayoutEvents } from '../../events/ResultLayoutEvents';
+import { IChangeLayoutEventArgs, ResultListEvents } from '../../events/ResultListEvents';
+import { exportGlobally } from '../../GlobalExports';
 import { Assert } from '../../misc/Assert';
-import { ResultListEvents, IChangeLayoutEventArgs } from '../../events/ResultListEvents';
-import { ResultLayoutEvents, IResultLayoutPopulateArgs } from '../../events/ResultLayoutEvents';
-import { $$ } from '../../utils/Dom';
-import { IQueryErrorEventArgs, IQuerySuccessEventArgs } from '../../events/QueryEvents';
+import { IAttributesChangedEventArg, MODEL_EVENTS } from '../../models/Model';
 import { QueryStateModel, QUERY_STATE_ATTRIBUTES } from '../../models/QueryStateModel';
-import { MODEL_EVENTS, IAttributesChangedEventArg } from '../../models/Model';
-import { analyticsActionCauseList, IAnalyticsResultsLayoutChange } from '../Analytics/AnalyticsActionListMeta';
 import { IQueryResults } from '../../rest/QueryResults';
 import { ResponsiveResultLayout } from '../ResponsiveComponents/ResponsiveResultLayout';
 import { Utils } from '../../utils/Utils';
 import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 import { l } from '../../strings/Strings';
-import 'styling/_ResultLayoutSelector';
-import { SVGIcons } from '../../utils/SVGIcons';
+import { $$ } from '../../utils/Dom';
+import { KEYBOARD, KeyboardUtils } from '../../utils/KeyboardUtils';
 import { SVGDom } from '../../utils/SVGDom';
+import { SVGIcons } from '../../utils/SVGIcons';
+import { Utils } from '../../utils/Utils';
+import { analyticsActionCauseList, IAnalyticsResultsLayoutChange } from '../Analytics/AnalyticsActionListMeta';
+import { Component } from '../Base/Component';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { Initialization } from '../Base/Initialization';
+import { ResponsiveResultLayout } from '../ResponsiveComponents/ResponsiveResultLayout';
 import { ValidLayout } from './ValidLayout';
+import ResultListModule = require('../ResultList/ResultList');
 import { AccessibleButton } from '../../utils/AccessibleButton';
 
 export interface IActiveLayouts {
@@ -166,7 +171,9 @@ export class ResultLayoutSelector extends Component {
         this.usageAnalytics.logSearchEvent<IAnalyticsResultsLayoutChange>(analyticsActionCauseList.resultsLayoutChange, {
           resultsLayoutChangeTo: layout
         });
-        this.queryController.executeQuery();
+        if (!this.queryController.firstQuery) {
+          this.queryController.executeQuery();
+        }
       }
     }
   }
@@ -181,15 +188,15 @@ export class ResultLayoutSelector extends Component {
 
   public disableLayouts(layouts: ValidLayout[]) {
     if (Utils.isNonEmptyArray(layouts)) {
-      _.each(layouts, layout => this.disableLayout(layout));
+      each(layouts, layout => this.disableLayout(layout));
 
-      let remainingValidLayouts = _.difference(_.keys(this.currentActiveLayouts), layouts);
-      if (!_.isEmpty(remainingValidLayouts)) {
-        const newLayout = _.contains(remainingValidLayouts, this.currentLayout) ? this.currentLayout : remainingValidLayouts[0];
+      let remainingValidLayouts = difference(keys(this.currentActiveLayouts), layouts);
+      if (!isEmpty(remainingValidLayouts)) {
+        const newLayout = contains(remainingValidLayouts, this.currentLayout) ? this.currentLayout : remainingValidLayouts[0];
         this.changeLayout(<ValidLayout>newLayout);
       } else {
         this.logger.error('Cannot disable the last valid layout ... Re-enabling the first one possible');
-        let firstPossibleValidLayout = <ValidLayout>_.keys(this.currentActiveLayouts)[0];
+        let firstPossibleValidLayout = <ValidLayout>keys(this.currentActiveLayouts)[0];
         this.enableLayout(firstPossibleValidLayout);
         this.setLayout(firstPossibleValidLayout);
       }
@@ -197,7 +204,7 @@ export class ResultLayoutSelector extends Component {
   }
 
   public enableLayouts(layouts: ValidLayout[]) {
-    _.each(layouts, layout => {
+    each(layouts, layout => {
       this.enableLayout(layout);
     });
   }
@@ -209,10 +216,20 @@ export class ResultLayoutSelector extends Component {
   }
 
   private enableLayout(layout: ValidLayout) {
-    if (this.isLayoutDisplayedByButton(layout)) {
+    const allResultLists = this.activeResultLists;
+    const atLeastOneResultListCanShowLayout = find(allResultLists, resultList => resultList.options.layout == layout);
+    if (atLeastOneResultListCanShowLayout && this.isLayoutDisplayedByButton(layout)) {
       this.showButton(layout);
       this.updateSelectorAppearance();
     }
+  }
+
+  private get resultLists(): ResultListModule.ResultList[] {
+    return this.searchInterface.getComponents('ResultList');
+  }
+
+  private get activeResultLists(): ResultListModule.ResultList[] {
+    return filter(this.resultLists, list => !list.disabled);
   }
 
   private hideButton(layout: ValidLayout) {
@@ -234,7 +251,6 @@ export class ResultLayoutSelector extends Component {
 
   private setLayout(layout: ValidLayout, results?: IQueryResults) {
     if (layout) {
-      this.isLayoutDisplayedByButton(layout);
       if (this.currentLayout) {
         $$(this.currentActiveLayouts[this.currentLayout].button.el).removeClass('coveo-selected');
       }
@@ -258,11 +274,11 @@ export class ResultLayoutSelector extends Component {
 
   private handleQueryStateChanged(args?: IAttributesChangedEventArg) {
     const modelLayout = this.getModelValue();
-    const newLayout = _.find(_.keys(this.currentActiveLayouts), l => l === modelLayout);
+    const newLayout = find(keys(this.currentActiveLayouts), l => l === modelLayout);
     if (newLayout !== undefined) {
       this.setLayout(<ValidLayout>newLayout);
     } else {
-      this.setLayout(<ValidLayout>_.keys(this.currentActiveLayouts)[0]);
+      this.setLayout(<ValidLayout>keys(this.currentActiveLayouts)[0]);
     }
   }
 
@@ -282,11 +298,11 @@ export class ResultLayoutSelector extends Component {
   private populate() {
     let populateArgs: IResultLayoutPopulateArgs = { layouts: [] };
     $$(this.root).trigger(ResultLayoutEvents.populateResultLayout, populateArgs);
-    const layouts = _.uniq(populateArgs.layouts.map(layout => layout.toLowerCase()));
+    const layouts = uniq(populateArgs.layouts.map(layout => layout.toLowerCase()));
 
-    _.each(layouts, layout => Assert.check(_.contains(ResultLayoutSelector.validLayouts, layout), 'Invalid layout'));
-    if (!_.isEmpty(layouts)) {
-      _.each(layouts, layout => this.addButton(layout));
+    each(layouts, layout => Assert.check(contains(ResultLayoutSelector.validLayouts, layout), 'Invalid layout'));
+    if (!isEmpty(layouts)) {
+      each(layouts, layout => this.addButton(layout));
       if (!this.shouldShowSelector()) {
         this.hide();
       }
@@ -347,14 +363,14 @@ export class ResultLayoutSelector extends Component {
 
   private shouldShowSelector() {
     return (
-      _.keys(this.currentActiveLayouts).length > 1 &&
-      _.filter(this.currentActiveLayouts, (activeLayout: IActiveLayouts) => activeLayout.button.visible).length > 1 &&
+      keys(this.currentActiveLayouts).length > 1 &&
+      filter(this.currentActiveLayouts, (activeLayout: IActiveLayouts) => activeLayout.button.visible).length > 1 &&
       !this.hasNoResults
     );
   }
 
   private isLayoutDisplayedByButton(layout: ValidLayout) {
-    return _.contains(_.keys(this.currentActiveLayouts), layout);
+    return contains(keys(this.currentActiveLayouts), layout);
   }
 }
 

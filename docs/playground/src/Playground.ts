@@ -19,7 +19,7 @@ export class Playground {
     if (this.isComponentPage() && this.shouldInitialize()) {
       this.initializePreview();
     } else {
-      previewContainer.remove();
+      previewContainer && previewContainer.remove();
     }
   }
 
