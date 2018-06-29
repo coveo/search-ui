@@ -471,8 +471,15 @@ export function OmniboxTest() {
       });
 
       it('should execute tabpress on keydown', () => {
+        spyOn(test.cmp.magicBox, 'ontabpress');
         Simulate.keyDown(test.cmp.getInput(), KEYBOARD.TAB);
         expect(test.cmp.magicBox.ontabpress).toHaveBeenCalled();
+      });
+
+      it('should not execute tabpress on keyup', () => {
+        spyOn(test.cmp.magicBox, 'ontabpress');
+        Simulate.keyUp(test.cmp.getInput(), KEYBOARD.TAB);
+        expect(test.cmp.magicBox.ontabpress).not.toHaveBeenCalled();
       });
     });
   });
