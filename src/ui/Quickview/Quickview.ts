@@ -42,7 +42,10 @@ interface IQuickviewOpenerObject {
  * information about a result. Most of the time, this component references a
  * [`QuickviewDocument`]{@link QuickviewDocument} in its [`contentTemplate`]{@link Quickview.options.contentTemplate}.
  *
- * **Note:**
+ * **Notes:**
+ * > - The `Quickview` component is implemented as a sandboxed `iframe`, and therefore should not be expected to function
+ * as a full-fledged web page. It is intended only for previewing a document. Further functionalities such as embedded images, links and
+ * custom style may not work as expected.
  * > - You can change the appearance of the `Quickview` link/button by adding elements in the inner HTML of its `div`.
  * > - You can change the content of the `Quickview` modal box link by specifying a template `id` or CSS selector (see
  * > the [`contentTemplate`]{@link Quickview.options.contentTemplate} option).
