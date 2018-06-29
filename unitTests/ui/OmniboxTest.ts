@@ -8,6 +8,7 @@ import { l } from '../../src/strings/Strings';
 import { InitializationEvents } from '../../src/events/InitializationEvents';
 import Suggestion = Coveo.MagicBox.Suggestion;
 import { IFieldDescription } from '../../src/rest/FieldDescription';
+import { KEYBOARD } from '../../src/Core';
 
 export function OmniboxTest() {
   describe('Omnibox', () => {
@@ -467,6 +468,18 @@ export function OmniboxTest() {
       it('should update the content on state change', () => {
         test.env.queryStateModel.set('q', 'trololo');
         expect(test.cmp.getText()).toEqual('trololo');
+      });
+
+      it('should execute tabpress on keydown', () => {
+        spyOn(test.cmp.magicBox, 'ontabpress');
+        Simulate.keyDown(test.cmp.getInput(), KEYBOARD.TAB);
+        expect(test.cmp.magicBox.ontabpress).toHaveBeenCalled();
+      });
+
+      it('should not execute tabpress on keyup', () => {
+        spyOn(test.cmp.magicBox, 'ontabpress');
+        Simulate.keyUp(test.cmp.getInput(), KEYBOARD.TAB);
+        expect(test.cmp.magicBox.ontabpress).not.toHaveBeenCalled();
       });
     });
   });

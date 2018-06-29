@@ -1479,9 +1479,9 @@ coveo.analytics@^0.7.0:
   dependencies:
     whatwg-fetch "^2.0.0"
 
-coveomagicbox@^1.0.33:
-  version "1.0.36"
-  resolved "https://registry.yarnpkg.com/coveomagicbox/-/coveomagicbox-1.0.36.tgz#b623078217b91ba1b281c45a797832cf88520823"
+coveomagicbox@^1.0.37:
+  version "1.0.37"
+  resolved "https://registry.yarnpkg.com/coveomagicbox/-/coveomagicbox-1.0.37.tgz#4dbee7c43e44762d068fca038bf5e7fc3b306b14"
 
 coveralls@^2.11.15:
   version "2.13.3"
