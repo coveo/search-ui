@@ -1,12 +1,12 @@
-import { IResponsiveComponent, IResponsiveComponentOptions, ResponsiveComponentsManager } from './ResponsiveComponentsManager';
-import { Dom, $$ } from '../../utils/Dom';
-import { ResponsiveDropdown } from './ResponsiveDropdown/ResponsiveDropdown';
+import { difference, intersection } from 'underscore';
+import { Logger } from '../../misc/Logger';
+import { $$, Dom } from '../../utils/Dom';
 import { Component } from '../Base/Component';
 import { ResultLayoutSelector } from '../ResultLayoutSelector/ResultLayoutSelector';
-import { Logger } from '../../misc/Logger';
-import { SearchInterface } from '../SearchInterface/SearchInterface';
-import * as _ from 'underscore';
 import { ValidLayout } from '../ResultLayoutSelector/ValidLayout';
+import { SearchInterface } from '../SearchInterface/SearchInterface';
+import { IResponsiveComponent, IResponsiveComponentOptions, ResponsiveComponentsManager } from './ResponsiveComponentsManager';
+import { ResponsiveDropdown } from './ResponsiveDropdown/ResponsiveDropdown';
 
 export class ResponsiveResultLayout implements IResponsiveComponent {
   private searchInterface: SearchInterface;
@@ -44,8 +44,8 @@ export class ResponsiveResultLayout implements IResponsiveComponent {
   }
 
   private enableAndDisableLayouts(validLayouts: ValidLayout[]) {
-    const layoutsToDisable = _.difference<any>(ResultLayoutSelector.validLayouts, validLayouts);
-    const layoutsToEnable = _.intersection<any>(ResultLayoutSelector.validLayouts, validLayouts);
+    const layoutsToDisable = difference<any>(ResultLayoutSelector.validLayouts, validLayouts);
+    const layoutsToEnable = intersection<any>(ResultLayoutSelector.validLayouts, validLayouts);
     this.resultLayout.disableLayouts(layoutsToDisable);
     this.resultLayout.enableLayouts(layoutsToEnable);
   }
