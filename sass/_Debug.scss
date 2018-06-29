@@ -149,6 +149,7 @@ $color_duration: #33b;
     }
     .coveo-section-container {
       padding: 16px 8px;
+      overflow: auto;
       .coveo-property {
         line-height: 18px;
         font-family: Consolas, Menlo, Monaco, monospace;
@@ -196,11 +197,10 @@ $color_duration: #33b;
         }
         &.coveo-property-basic {
           .coveo-property-value {
-            overflow: hidden;
             color: #212121;
             &.coveo-property-value-string {
               color: #d50000;
-              white-space: pre;
+              white-space: pre-wrap;
               word-wrap: break-word;
               &:before {
                 content: '"';
