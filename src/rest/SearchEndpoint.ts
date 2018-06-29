@@ -37,7 +37,7 @@ import { TimeSpan } from '../utils/TimeSpanUtils';
 import { UrlUtils } from '../utils/UrlUtils';
 import { IGroupByResult } from './GroupByResult';
 import { AccessToken } from './AccessToken';
-import { BackOff } from './BackOff';
+import { BackOffRequest } from './BackOffRequest';
 
 export class DefaultSearchEndpointOptions implements ISearchEndpointOptions {
   restUri: string;
@@ -1093,12 +1093,16 @@ export class SearchEndpoint implements ISearchEndpoint {
         return this.performOneCall(params, callOptions) as Promise<T>;
       }
 
-      if (BackOff.is429Error(error)) {
+      if (this.is429Error(error)) {
         return this.backOff429Request<T>(request);
       }
 
       throw this.handleErrorResponse(error) as any;
     }
+  }
+
+  private is429Error(error: IErrorResponse) {
+    return error && error.statusCode === 429;
   }
 
   private renewAccessTokenIfExpired(e: IErrorResponse) {
@@ -1107,11 +1111,21 @@ export class SearchEndpoint implements ISearchEndpoint {
 
   private async backOff429Request<T>(request: () => Promise<ISuccessResponse<{}>>) {
     try {
-      const response = await BackOff.request(request);
+      const backOffRequest = { fn: request, retry: this.retryIf429Error };
+      const response = await BackOffRequest.enqueue(backOffRequest);
       return response.data as T;
     } catch (e) {
       throw this.handleErrorResponse(e) as any;
     }
+  }
+
+  private retryIf429Error(e: IErrorResponse, attempt: number) {
+    if (this.is429Error(e)) {
+      new Logger(this).info(`Resending the request because it was throttled. Retry attempt ${attempt}`);
+      return true;
+    }
+
+    return false;
   }
 
   private handleErrorResponse(errorResponse: IErrorResponse): Error {
