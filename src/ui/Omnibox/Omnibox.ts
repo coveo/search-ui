@@ -696,6 +696,8 @@ export class Omnibox extends Component {
         this.buildCustomDataForPartialQueries(0, suggestions),
         this.element
       );
+    } else {
+      this.setText(this.getQuery(true));
     }
   }
 
@@ -747,7 +749,7 @@ export class Omnibox extends Component {
       return wordCompletion;
     }
 
-    return this.magicBox.getWordCompletion() || this.getFirstSuggestion() || this.magicBox.getText();
+    return this.magicBox.getWordCompletion() || this.getFirstSuggestion() || this.lastQuery || this.magicBox.getText();
   }
 
   private getFirstSuggestion() {
