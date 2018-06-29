@@ -7,6 +7,7 @@ import { IResultLayoutPopulateArgs } from '../../src/events/ResultLayoutEvents';
 import { FakeResults } from '../Fake';
 import { QueryStateModel } from '../../src/models/QueryStateModel';
 import { $$ } from '../../src/utils/Dom';
+import { ResultList } from '../../src/ui/ResultList/ResultList';
 
 export function ResultLayoutTest() {
   describe('ResultLayout', () => {
@@ -83,6 +84,17 @@ export function ResultLayoutTest() {
         expect(test.cmp.getCurrentLayout()).toBe('card');
       });
 
+      it('changeLayout should execute a new query', () => {
+        test.cmp.changeLayout('card');
+        expect(test.env.queryController.executeQuery).toHaveBeenCalled();
+      });
+
+      it('changeLayout should not execute a query if it is the first query', () => {
+        test.env.queryController.firstQuery = true;
+        test.cmp.changeLayout('card');
+        expect(test.env.queryController.executeQuery).not.toHaveBeenCalled();
+      });
+
       it('changeLayout should throw an error when switching to a valid but unavailable layout', () => {
         expect(() => test.cmp.changeLayout('table')).toThrow();
       });
@@ -125,6 +137,60 @@ export function ResultLayoutTest() {
           results: FakeResults.createFakeResults(3)
         });
         expect(spy).toHaveBeenCalled();
+      });
+
+      describe('when enablingLayouts', () => {
+        let resultListCard: ResultList;
+        let resultListList: ResultList;
+        let spy: jasmine.Spy;
+
+        beforeEach(() => {
+          resultListCard = Mock.mockComponent(ResultList);
+          resultListCard.options = {
+            layout: 'card'
+          };
+
+          resultListList = Mock.mockComponent(ResultList);
+          resultListList.options = {
+            layout: 'list'
+          };
+
+          test.cmp.disableLayouts(['card']);
+          spy = jasmine.createSpy('spy');
+          test.env.searchInterface.getComponents = spy;
+        });
+
+        const getBtns = () => {
+          return $$(test.cmp.element).findAll('.coveo-result-layout-selector');
+        };
+
+        it('should not allow to enable layouts for which there is no result list available', () => {
+          spy.and.returnValue([resultListList]);
+
+          test.cmp.enableLayouts(['card']);
+          const btns = getBtns();
+          expect(btns[0].textContent).toBe('Card');
+          expect($$(btns[0]).hasClass('coveo-hidden')).toBeTruthy();
+        });
+
+        it('should not allow to enable layouts for which there is a disabled resulst list', () => {
+          spy.and.returnValue([resultListList, resultListCard]);
+          resultListCard.disabled = true;
+
+          test.cmp.enableLayouts(['card']);
+          const btns = getBtns();
+          expect(btns[0].textContent).toBe('Card');
+          expect($$(btns[0]).hasClass('coveo-hidden')).toBeTruthy();
+        });
+
+        it('should allow to enable layouts for which there is a result list available', () => {
+          spy.and.returnValue([resultListList, resultListCard]);
+
+          test.cmp.enableLayouts(['card']);
+          const btns = getBtns();
+          expect(btns[0].textContent).toBe('Card');
+          expect($$(btns[0]).hasClass('coveo-hidden')).toBeFalsy();
+        });
       });
 
       describe('with live queryStateModel', () => {
