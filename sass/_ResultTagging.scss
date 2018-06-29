@@ -1,4 +1,4 @@
-@import "Variables";
+@import 'Variables';
 
 .coveo-result-tagging-add-tag {
   display: inline-block;
@@ -6,7 +6,7 @@
 }
 
 .coveo-result-tagging-add-tag-text {
-  color: #DDD;
+  color: #ddd;
   font-size: 11px;
 }
 
@@ -15,7 +15,7 @@
   position: relative;
 }
 
-.coveo-result-tagging-coveo-tag {
+.CoveoResult .coveo-result-tagging-coveo-tag {
   display: inline-block;
   margin: 0 2px;
   font-size: 12px;
@@ -31,13 +31,13 @@
     color: white;
   }
   a:hover {
-    color: #DDD;
+    color: #ddd;
   }
 }
 
 .coveo-result-tagging-add-tag-tick-icon {
   display: inline-block;
-  background: #B0B3AE;
+  background: #b0b3ae;
   padding: 0 5px;
   line-height: 22px;
   height: 22px;
@@ -53,7 +53,7 @@
 
 .coveo-result-tagging-clear-icon {
   display: inline-block;
-  background: #B0B3AE;
+  background: #b0b3ae;
   padding: 0 6px 0 5px;
   height: 22px;
   line-height: 22px;
@@ -73,7 +73,7 @@
 
 .coveo-result-tagging-add-tag-textbox {
   margin: 0;
-  border: 1px solid #B0B3AE;
+  border: 1px solid #b0b3ae;
   background: transparent;
   padding: 3px;
   z-index: 10;
@@ -98,8 +98,8 @@
   margin-left: 2px;
 }
 .coveo-result-tagging-delete-icon-svg {
-   width: 8px;
-   height: 8px;
+  width: 8px;
+  height: 8px;
   .coveo-exclusion-svg {
     fill: $color-white-transparent;
   }
@@ -111,9 +111,9 @@
   top: 18px;
   left: 0;
   background-color: white;
-  border-left: 1px solid #B0B3AE;
-  border-bottom: 1px solid #B0B3AE;
-  border-right: 1px solid #B0B3AE;
+  border-left: 1px solid #b0b3ae;
+  border-bottom: 1px solid #b0b3ae;
+  border-right: 1px solid #b0b3ae;
   border-bottom-left-radius: 2px;
   border-bottom-right-radius: 2px;
   z-index: 5;
@@ -140,14 +140,14 @@
 .CoveoResultTagging {
   display: inline-block;
   &.coveo-opened {
-    .coveo-result-tagging-add-tag{
+    .coveo-result-tagging-add-tag {
       display: none;
     }
     .coveo-result-tagging-auto-complete-zone {
       display: inline-block;
-      .coveo-add-tag-textbox{
+      .coveo-add-tag-textbox {
         font-size: 11px;
-        line-height: 16px
+        line-height: 16px;
       }
     }
     .coveo-result-tagging-coveo-tag {

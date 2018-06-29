@@ -549,7 +549,9 @@ export class FacetSlider extends Component {
           this.slider.drawGraph();
         }
       }
-      this.slider.onMoving();
+      if (this.slider) {
+        this.slider.onMoving();
+      }
     };
     window.addEventListener('resize', this.onResize);
     this.bind.onRootElement(ResponsiveDropdownEvent.OPEN, this.onResize);
