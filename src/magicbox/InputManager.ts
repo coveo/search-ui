@@ -2,6 +2,7 @@ import { Result } from './Result/Result';
 import { $$ } from '../utils/Dom';
 import _ = require('underscore');
 import { MagicBoxInstance } from './MagicBox';
+import { KEYBOARD } from '../utils/KeyboardUtils';
 
 export class InputManager {
   private input: HTMLInputElement;
@@ -182,7 +183,6 @@ export class InputManager {
       this.keydown(e);
     };
     this.input.onkeyup = e => {
-      console.log(e);
       this.keyup(e);
     };
     this.input.onclick = () => {
@@ -217,7 +217,7 @@ export class InputManager {
 
   private keydown(e: KeyboardEvent) {
     switch (e.keyCode || e.which) {
-      case 9: // Tab key
+      case KEYBOARD.TAB:
         // Take care of not "preventing" the default event behaviour : For accessibility reasons, it is much simpler
         // to simply let the browser do it's standard action (which is to focus out of the input).
         // Instead, handle "tabPress" immediately instead of "keyup".
