@@ -903,7 +903,8 @@ export class SearchInterface extends RootComponent implements IComponentBindings
 
     const numberOfRequestedResults = data.query.numberOfResults;
     const numberOfResultsActuallyReturned = data.results.results.length;
-    const moreResultsAvailable = data.results.totalCountFiltered > numberOfResultsActuallyReturned;
+    const areLastPageResults = data.results.totalCountFiltered - data.query.firstResult === numberOfResultsActuallyReturned;
+    const moreResultsAvailable = !areLastPageResults && data.results.totalCountFiltered > numberOfResultsActuallyReturned;
 
     if (numberOfRequestedResults != numberOfResultsActuallyReturned && moreResultsAvailable) {
       this.isResultsPerPageModifiedByPipeline = true;
