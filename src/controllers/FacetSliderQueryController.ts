@@ -129,7 +129,7 @@ export class FacetSliderQueryController {
     this.graphGroupByQueriesIndex = queryBuilder.groupByRequests.length;
     const basicGroupByRequestForGraph = this.createBasicGroupByRequest();
 
-    if (this.facet.isSimpleSliderConfig()) {
+    if (this.facet.isSimpleSliderConfig) {
       basicGroupByRequestForGraph.rangeValues = this.createRangeValuesForGraphUsingStartAndEnd();
       basicGroupByRequestForGraph.generateAutomaticRanges = false;
     } else {
@@ -154,7 +154,7 @@ export class FacetSliderQueryController {
 
     let rangeValues = undefined;
     const { start, end } = this.formatStartAndEnd();
-    if (this.facet.isSimpleSliderConfig()) {
+    if (this.facet.isSimpleSliderConfig) {
       rangeValues = [
         {
           start: start,
@@ -170,7 +170,7 @@ export class FacetSliderQueryController {
     const basicGroupByRequestForSlider = this.createBasicGroupByRequest();
     basicGroupByRequestForSlider.maximumNumberOfValues = maximumNumberOfValues;
     basicGroupByRequestForSlider.sortCriteria = 'nosort';
-    basicGroupByRequestForSlider.generateAutomaticRanges = !this.facet.isSimpleSliderConfig();
+    basicGroupByRequestForSlider.generateAutomaticRanges = !this.facet.isSimpleSliderConfig;
     basicGroupByRequestForSlider.rangeValues = rangeValues;
     const filter = this.computeOurFilterExpression(this.facet.getSliderBoundaryForQuery());
     this.processQueryOverride(filter, basicGroupByRequestForSlider, queryBuilder);

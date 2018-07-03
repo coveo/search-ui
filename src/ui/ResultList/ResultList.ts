@@ -1,50 +1,50 @@
-import { Template } from '../Templates/Template';
-import { TableTemplate } from '../Templates/TableTemplate';
-import { DefaultResultTemplate } from '../Templates/DefaultResultTemplate';
+import 'styling/_Result';
+import 'styling/_ResultFrame';
+import 'styling/_ResultList';
+import { chain, compact, contains, each, flatten, map, pluck, sortBy, unique, without } from 'underscore';
+import {
+  IBuildingQueryEventArgs,
+  IDuringQueryEventArgs,
+  INewQueryEventArgs,
+  IQueryErrorEventArgs,
+  IQuerySuccessEventArgs,
+  QueryEvents
+} from '../../events/QueryEvents';
+import { IResultLayoutPopulateArgs, ResultLayoutEvents } from '../../events/ResultLayoutEvents';
+import { IChangeLayoutEventArgs, IDisplayedNewResultEventArgs, ResultListEvents } from '../../events/ResultListEvents';
+import { exportGlobally } from '../../GlobalExports';
+import { Assert } from '../../misc/Assert';
+import { Defer } from '../../misc/Defer';
+import { MODEL_EVENTS } from '../../models/Model';
+import { QUERY_STATE_ATTRIBUTES } from '../../models/QueryStateModel';
+import { IQueryResult } from '../../rest/QueryResult';
+import { IQueryResults } from '../../rest/QueryResults';
+import { DeviceUtils } from '../../utils/DeviceUtils';
+import { $$, Doc, Win } from '../../utils/Dom';
+import { DomUtils } from '../../utils/DomUtils';
+import { QueryUtils } from '../../utils/QueryUtils';
+import { Utils } from '../../utils/Utils';
+import { analyticsActionCauseList, IAnalyticsNoMeta } from '../Analytics/AnalyticsActionListMeta';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
-import { IQueryResult } from '../../rest/QueryResult';
-import { IQueryResults } from '../../rest/QueryResults';
-import { Assert } from '../../misc/Assert';
-import {
-  QueryEvents,
-  INewQueryEventArgs,
-  IBuildingQueryEventArgs,
-  IQuerySuccessEventArgs,
-  IDuringQueryEventArgs,
-  IQueryErrorEventArgs
-} from '../../events/QueryEvents';
-import { MODEL_EVENTS } from '../../models/Model';
-import { QUERY_STATE_ATTRIBUTES } from '../../models/QueryStateModel';
-import { QueryUtils } from '../../utils/QueryUtils';
-import { $$, Win, Doc } from '../../utils/Dom';
-import { analyticsActionCauseList, IAnalyticsNoMeta } from '../Analytics/AnalyticsActionListMeta';
-import { Initialization, IInitResult, IInitializationParameters } from '../Base/Initialization';
-import { Defer } from '../../misc/Defer';
-import { DeviceUtils } from '../../utils/DeviceUtils';
-import { ResultListEvents, IDisplayedNewResultEventArgs, IChangeLayoutEventArgs } from '../../events/ResultListEvents';
-import { ResultLayoutEvents, IResultLayoutPopulateArgs } from '../../events/ResultLayoutEvents';
-import { Utils } from '../../utils/Utils';
-import { DomUtils } from '../../utils/DomUtils';
-import { DefaultRecommendationTemplate } from '../Templates/DefaultRecommendationTemplate';
-import { TemplateList } from '../Templates/TemplateList';
-import { TemplateCache } from '../Templates/TemplateCache';
+import { IInitializationParameters, IInitResult, Initialization } from '../Base/Initialization';
+import { InitializationPlaceholder } from '../Base/InitializationPlaceholder';
+import { TemplateComponentOptions } from '../Base/TemplateComponentOptions';
 import { ResponsiveDefaultResultTemplate } from '../ResponsiveComponents/ResponsiveDefaultResultTemplate';
+import { ValidLayout } from '../ResultLayoutSelector/ValidLayout';
+import { CoreHelpers } from '../Templates/CoreHelpers';
+import { DefaultRecommendationTemplate } from '../Templates/DefaultRecommendationTemplate';
+import { DefaultResultTemplate } from '../Templates/DefaultResultTemplate';
+import { TableTemplate } from '../Templates/TableTemplate';
+import { Template } from '../Templates/Template';
+import { TemplateCache } from '../Templates/TemplateCache';
+import { TemplateList } from '../Templates/TemplateList';
+import { ResultContainer } from './ResultContainer';
+import { ResultListCardRenderer } from './ResultListCardRenderer';
 import { ResultListRenderer } from './ResultListRenderer';
 import { ResultListTableRenderer } from './ResultListTableRenderer';
-import { ResultListCardRenderer } from './ResultListCardRenderer';
-import { exportGlobally } from '../../GlobalExports';
-import 'styling/_ResultList';
-import 'styling/_ResultFrame';
-import 'styling/_Result';
-import { InitializationPlaceholder } from '../Base/InitializationPlaceholder';
-import { ValidLayout } from '../ResultLayoutSelector/ValidLayout';
-import { TemplateComponentOptions } from '../Base/TemplateComponentOptions';
-import { CoreHelpers } from '../Templates/CoreHelpers';
-import { without, compact, map, chain, each, pluck, sortBy, flatten, unique, contains } from 'underscore';
-import { ResultLayoutSelector } from '../ResultLayoutSelector/ResultLayoutSelector';
-import { ResultContainer } from './ResultContainer';
+import ResultLayoutSelectorModule = require('../ResultLayoutSelector/ResultLayoutSelector');
 
 CoreHelpers.exportAllHelpersGlobally(window['Coveo']);
 export interface IResultListOptions {
@@ -648,7 +648,7 @@ export class ResultList extends Component {
   }
 
   private get resultLayoutSelectors() {
-    return this.searchInterface.getComponents(ResultLayoutSelector.ID) as ResultLayoutSelector[];
+    return this.searchInterface.getComponents('ResultLayoutSelector') as ResultLayoutSelectorModule.ResultLayoutSelector[];
   }
 
   private handleBuildingQuery(args: IBuildingQueryEventArgs) {

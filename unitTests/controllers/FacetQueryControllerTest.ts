@@ -47,6 +47,132 @@ export function FacetQueryControllerTest() {
       expect(facetQueryController.computeOurFilterExpression()).toBe(expectedBuilder.build());
     });
 
+    describe('when handling query overrides', () => {
+      let queryBuilder: QueryBuilder;
+
+      beforeEach(() => {
+        queryBuilder = new QueryBuilder();
+        mockFacet.numberOfValues = 5;
+      });
+
+      describe('if no values are selected or excluded in the facet', () => {
+        beforeEach(() => {
+          (mockFacet.values.hasSelectedOrExcludedValues as jasmine.Spy).and.returnValue(false);
+          (mockFacet.values.getSelected as jasmine.Spy).and.returnValue([]);
+          (mockFacet.values.getExcluded as jasmine.Spy).and.returnValue([]);
+        });
+
+        it('should not add a query override by default', () => {
+          facetQueryController.putGroupByIntoQueryBuilder(queryBuilder);
+          const groupByRequest = queryBuilder.build().groupBy[0];
+
+          expect(groupByRequest.queryOverride).toBeUndefined();
+          expect(groupByRequest.constantQueryOverride).toBeUndefined();
+          expect(groupByRequest.advancedQueryOverride).toBeUndefined();
+        });
+
+        it('should not add a query override if the facet is using "and"', () => {
+          mockFacet.options.useAnd = true;
+
+          facetQueryController.putGroupByIntoQueryBuilder(queryBuilder);
+          const groupByRequest = queryBuilder.build().groupBy[0];
+
+          expect(groupByRequest.queryOverride).toBeUndefined();
+          expect(groupByRequest.constantQueryOverride).toBeUndefined();
+          expect(groupByRequest.advancedQueryOverride).toBeUndefined();
+        });
+
+        it('should add a query override if the facet is configured with an additional filter', () => {
+          mockFacet.options.additionalFilter = 'an additional filter';
+
+          facetQueryController.putGroupByIntoQueryBuilder(queryBuilder);
+          const groupByRequest = queryBuilder.build().groupBy[0];
+
+          expect(groupByRequest.queryOverride).toBeUndefined();
+          expect(groupByRequest.constantQueryOverride).toBe('an additional filter');
+          expect(groupByRequest.advancedQueryOverride).toBeUndefined();
+        });
+      });
+
+      describe('when at least one value is selected', () => {
+        beforeEach(() => {
+          (mockFacet.values.hasSelectedOrExcludedValues as jasmine.Spy).and.returnValue(true);
+          (mockFacet.values.getSelected as jasmine.Spy).and.returnValue([FacetValue.create('foo'), FacetValue.create('bar')]);
+          (mockFacet.values.getExcluded as jasmine.Spy).and.returnValue([]);
+        });
+
+        it('should add a query override by default', () => {
+          facetQueryController.putGroupByIntoQueryBuilder(queryBuilder);
+          const groupByRequest = queryBuilder.build().groupBy[0];
+
+          expect(groupByRequest.queryOverride).toBeUndefined();
+          expect(groupByRequest.constantQueryOverride).toBeUndefined();
+          expect(groupByRequest.advancedQueryOverride).toBe('@uri');
+        });
+
+        it('should not add a query override if the facet is using "and"', () => {
+          mockFacet.options.useAnd = true;
+
+          facetQueryController.putGroupByIntoQueryBuilder(queryBuilder);
+          const groupByRequest = queryBuilder.build().groupBy[0];
+
+          expect(groupByRequest.queryOverride).toBeUndefined();
+          expect(groupByRequest.constantQueryOverride).toBeUndefined();
+          expect(groupByRequest.advancedQueryOverride).toBeUndefined();
+        });
+
+        it('should add a query override if the facet is configured with an additional filter', () => {
+          mockFacet.options.additionalFilter = 'an additional filter';
+
+          facetQueryController.putGroupByIntoQueryBuilder(queryBuilder);
+          const groupByRequest = queryBuilder.build().groupBy[0];
+
+          expect(groupByRequest.queryOverride).toBeUndefined();
+          expect(groupByRequest.constantQueryOverride).toBe('an additional filter');
+          expect(groupByRequest.advancedQueryOverride).toBe('@uri');
+        });
+      });
+
+      describe('when at least one value is excluded', () => {
+        beforeEach(() => {
+          (mockFacet.values.hasSelectedOrExcludedValues as jasmine.Spy).and.returnValue(true);
+          (mockFacet.values.getSelected as jasmine.Spy).and.returnValue([]);
+          (mockFacet.values.getExcluded as jasmine.Spy).and.returnValue([FacetValue.create('foo'), FacetValue.create('bar')]);
+        });
+
+        it('should add a query override by default', () => {
+          facetQueryController.putGroupByIntoQueryBuilder(queryBuilder);
+          const groupByRequest = queryBuilder.build().groupBy[0];
+
+          expect(groupByRequest.queryOverride).toBeUndefined();
+          expect(groupByRequest.constantQueryOverride).toBeUndefined();
+          expect(groupByRequest.advancedQueryOverride).toBe('@uri');
+        });
+
+        it('should not add a query override if the facet is using "and"', () => {
+          mockFacet.options.useAnd = true;
+
+          facetQueryController.putGroupByIntoQueryBuilder(queryBuilder);
+          const groupByRequest = queryBuilder.build().groupBy[0];
+
+          expect(groupByRequest.queryOverride).toBeUndefined();
+          expect(groupByRequest.constantQueryOverride).toBeUndefined();
+          expect(groupByRequest.advancedQueryOverride).toBeUndefined();
+        });
+
+        it('should add a query override if the facet is configured with an additional filter', () => {
+          mockFacet.options.additionalFilter = 'an additional filter';
+
+          facetQueryController.putGroupByIntoQueryBuilder(queryBuilder);
+          const groupByRequest = queryBuilder.build().groupBy[0];
+
+          expect(groupByRequest.queryOverride).toBeUndefined();
+          expect(groupByRequest.constantQueryOverride).toBe('an additional filter');
+          expect(groupByRequest.advancedQueryOverride).toBe('@uri');
+        });
+      });
+    });
+
     describe('should push a group by into a query builder', () => {
       let queryBuilder;
       beforeEach(() => {
