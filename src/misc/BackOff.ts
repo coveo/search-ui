@@ -1,38 +1,54 @@
+export interface IBackOffRequest<T> {
+  fn: () => Promise<T>;
+  retry?: (e, attemptNumber: number) => boolean;
+}
+
 export interface IBackOffOptions {
-  numOfAttempts: number;
-  timeStep: number;
-  startingDelay: number;
-  retryCondition: (e: any, attemptNumber: number) => boolean;
+  numOfAttempts?: number;
+  timeMultiple?: number;
+  startingDelay?: number;
 }
 
 const defaultOptions: IBackOffOptions = {
   numOfAttempts: 10,
-  timeStep: 2,
-  startingDelay: 100,
-  retryCondition: () => true
+  timeMultiple: 2,
+  startingDelay: 100
 };
 
-export async function backOff(func, options?: Partial<IBackOffOptions>) {
-  options = { ...defaultOptions, ...options };
-  let attemptNumber = 0;
-  let delay = options.startingDelay;
+export async function backOff<T>(request: IBackOffRequest<T>, options?: IBackOffOptions): Promise<T> {
+  const sanitizedOptions = getSanitizedOptions(options);
 
-  while (attemptNumber < options.numOfAttempts) {
+  let attemptNumber = 0;
+  let delay = sanitizedOptions.startingDelay;
+
+  while (attemptNumber < sanitizedOptions.numOfAttempts) {
     try {
-      await new Promise(resolve => setTimeout(resolve, delay));
+      await delayBeforeExecuting(delay);
       attemptNumber++;
-      return await func();
+      return await request.fn();
     } catch (e) {
-      const shouldRetry = options.retryCondition(e, attemptNumber);
-      const reachedRetryLimit = attemptNumber >= options.numOfAttempts;
+      const shouldRetry = request.retry ? request.retry(e, attemptNumber) : true;
+      const reachedRetryLimit = attemptNumber >= sanitizedOptions.numOfAttempts;
 
       if (!shouldRetry || reachedRetryLimit) {
         throw e;
       }
 
-      delay *= options.timeStep;
+      delay *= sanitizedOptions.timeMultiple;
     }
   }
+}
 
-  throw {};
+function getSanitizedOptions(options: IBackOffOptions) {
+  options = { ...defaultOptions, ...options };
+
+  if (options.numOfAttempts < 1) {
+    options.numOfAttempts = 1;
+  }
+
+  return options;
+}
+
+function delayBeforeExecuting(delay: number) {
+  return new Promise(resolve => setTimeout(resolve, delay));
 }

@@ -1,21 +1,17 @@
-import { BackOffRequest, setBackOffModule } from '../../src/rest/BackOffRequest';
-import { ISuccessResponse } from '../../src/rest/EndpointCaller';
+import { BackOffRequest, setBackOffModule, IBackOffRequest } from '../../src/rest/BackOffRequest';
 
 export function BackOffRequestTest() {
   describe('BackOffRequest', () => {
     const oneTimeUnit = 100;
-    const mockSuccessResponse: ISuccessResponse<{}> = {
-      duration: 1,
-      data: {}
-    };
+    const mockSuccessResponse = { success: true } as any;
 
     beforeAll(() => stubBackOffDependency());
 
     function stubBackOffDependency() {
-      setBackOffModule(fn => fn());
+      setBackOffModule((request: IBackOffRequest<{}>) => request.fn());
     }
 
-    function resolveInOneTimeUnit(): Promise<ISuccessResponse<{}>> {
+    function resolveInOneTimeUnit(): Promise<any> {
       return new Promise(resolve => setTimeout(() => resolve(mockSuccessResponse), oneTimeUnit));
     }
 

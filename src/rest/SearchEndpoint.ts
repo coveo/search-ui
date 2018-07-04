@@ -1093,8 +1093,8 @@ export class SearchEndpoint implements ISearchEndpoint {
         return this.performOneCall(params, callOptions) as Promise<T>;
       }
 
-      if (this.is429Error(error)) {
-        const response = await this.backOff429Request<ISuccessResponse<T>>(request);
+      if (this.isThrottled(error)) {
+        const response = await this.backOffThrottledRequest<ISuccessResponse<T>>(request);
         return response.data;
       }
 
@@ -1102,7 +1102,7 @@ export class SearchEndpoint implements ISearchEndpoint {
     }
   }
 
-  private is429Error(error: IErrorResponse) {
+  private isThrottled(error: IErrorResponse) {
     return error && error.statusCode === 429;
   }
 
@@ -1110,9 +1110,12 @@ export class SearchEndpoint implements ISearchEndpoint {
     return this.accessToken.isExpired(e) && this.accessToken.doRenew();
   }
 
-  private async backOff429Request<T>(request: () => Promise<T>) {
+  private async backOffThrottledRequest<T>(request: () => Promise<T>) {
     try {
-      const backOffRequest: IBackOffRequest<T> = { fn: request, retry: this.retryIf429Error };
+      const backOffRequest: IBackOffRequest<T> = {
+        fn: () => request(),
+        retry: (e, attempt) => this.retryIf429Error(e, attempt)
+      };
       return await BackOffRequest.enqueue<T>(backOffRequest);
     } catch (e) {
       throw this.handleErrorResponse(e);
@@ -1120,8 +1123,8 @@ export class SearchEndpoint implements ISearchEndpoint {
   }
 
   private retryIf429Error(e: IErrorResponse, attempt: number) {
-    if (this.is429Error(e)) {
-      new Logger(this).info(`Resending the request because it was throttled. Retry attempt ${attempt}`);
+    if (this.isThrottled(e)) {
+      this.logger.info(`Resending the request because it was throttled. Retry attempt ${attempt}`);
       return true;
     }
 

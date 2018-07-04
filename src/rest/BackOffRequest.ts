@@ -8,27 +8,22 @@ export function setBackOffModule(newModule) {
 }
 
 export class BackOffRequest {
-  private static queue: (<T>() => Promise<T>)[] = [];
+  private static queue: (() => Promise<any>)[] = [];
   private static clearingQueue = false;
 
   public static enqueue<T>(request: IBackOffRequest<T>): Promise<T> {
     return new Promise((resolve, reject) => {
-      const req = BackOffRequest.getBackOffRequest<T>(request, resolve, reject);
-      BackOffRequest.enqueueRequest<T>(req);
+      BackOffRequest.enqueueRequest<T>(request, resolve, reject);
       BackOffRequest.clearQueueIfNotAlready();
     });
   }
 
-  private static getBackOffRequest<T>(request: IBackOffRequest<T>, resolve, reject): <T>() => Promise<T> {
-    return () => {
-      return backOff<T>(request)
+  private static enqueueRequest<T>(request: IBackOffRequest<T>, resolve, reject) {
+    const req = () =>
+      backOff<T>(request)
         .then(resolve)
         .catch(reject);
-    };
-  }
-
-  private static enqueueRequest<T>(request: <T>() => Promise<T>) {
-    BackOffRequest.queue.push(request);
+    BackOffRequest.queue.push(req);
   }
 
   private static async clearQueueIfNotAlready() {
