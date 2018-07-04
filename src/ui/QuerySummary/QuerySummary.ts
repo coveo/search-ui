@@ -94,7 +94,7 @@ export class QuerySummary extends Component {
     enableCancelLastAction: ComponentOptions.buildBooleanOption({ defaultValue: true }),
 
     /**
-     * Specifies whether to display the search tips to the end user when there are no search results.
+     * Specifies whether to display search tips when there are no search results.
      *
      * Default value is `true`.
      */
