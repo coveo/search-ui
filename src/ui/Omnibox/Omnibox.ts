@@ -749,7 +749,16 @@ export class Omnibox extends Component {
       return wordCompletion;
     }
 
-    return this.magicBox.getWordCompletion() || this.getFirstSuggestion() || this.lastQuery || this.magicBox.getText();
+    const currentOmniboxSuggestion = this.magicBox.getWordCompletion() || this.getFirstSuggestion();
+    if (currentOmniboxSuggestion) {
+      return currentOmniboxSuggestion;
+    }
+
+    if (this.isAutoSuggestion()) {
+      return this.lastQuery || this.magicBox.getText();
+    }
+
+    return this.magicBox.getText();
   }
 
   private getFirstSuggestion() {
