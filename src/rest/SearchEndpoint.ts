@@ -37,7 +37,7 @@ import { TimeSpan } from '../utils/TimeSpanUtils';
 import { UrlUtils } from '../utils/UrlUtils';
 import { IGroupByResult } from './GroupByResult';
 import { AccessToken } from './AccessToken';
-import { BackOffRequest } from './BackOffRequest';
+import { BackOffRequest, IBackOffRequest } from './BackOffRequest';
 
 export class DefaultSearchEndpointOptions implements ISearchEndpointOptions {
   restUri: string;
@@ -1081,11 +1081,11 @@ export class SearchEndpoint implements ISearchEndpoint {
       }
     });
 
-    const request = () => this.caller.call(params);
+    const request = () => this.caller.call<T>(params);
 
     try {
       const response = await request();
-      return response.data as T;
+      return response.data;
     } catch (error) {
       const tokenWasRenewed = await this.renewAccessTokenIfExpired(error);
 
@@ -1094,10 +1094,11 @@ export class SearchEndpoint implements ISearchEndpoint {
       }
 
       if (this.is429Error(error)) {
-        return this.backOff429Request<T>(request);
+        const response = await this.backOff429Request<ISuccessResponse<T>>(request);
+        return response.data;
       }
 
-      throw this.handleErrorResponse(error) as any;
+      throw this.handleErrorResponse(error);
     }
   }
 
@@ -1109,13 +1110,12 @@ export class SearchEndpoint implements ISearchEndpoint {
     return this.accessToken.isExpired(e) && this.accessToken.doRenew();
   }
 
-  private async backOff429Request<T>(request: () => Promise<ISuccessResponse<{}>>) {
+  private async backOff429Request<T>(request: () => Promise<T>) {
     try {
-      const backOffRequest = { fn: request, retry: this.retryIf429Error };
-      const response = await BackOffRequest.enqueue(backOffRequest);
-      return response.data as T;
+      const backOffRequest: IBackOffRequest<T> = { fn: request, retry: this.retryIf429Error };
+      return await BackOffRequest.enqueue<T>(backOffRequest);
     } catch (e) {
-      throw this.handleErrorResponse(e) as any;
+      throw this.handleErrorResponse(e);
     }
   }
 

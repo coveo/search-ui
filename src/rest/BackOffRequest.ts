@@ -1,5 +1,5 @@
-import { ISuccessResponse } from './EndpointCaller';
-import { backOff as backOffModule } from '../misc/BackOff';
+import { backOff as backOffModule, IBackOffRequest } from '../misc/BackOff';
+export type IBackOffRequest<T> = IBackOffRequest<T>;
 
 let backOff = backOffModule;
 
@@ -7,36 +7,27 @@ export function setBackOffModule(newModule) {
   backOff = newModule;
 }
 
-type Request = () => Promise<ISuccessResponse<{}>>;
-
-export interface IBackOffRequest {
-  fn: Request;
-  retry?: (e, attemptNumber: number) => boolean;
-}
-
 export class BackOffRequest {
-  private static queue: Request[] = [];
+  private static queue: (<T>() => Promise<T>)[] = [];
   private static clearingQueue = false;
 
-  public static enqueue(request: IBackOffRequest): Promise<ISuccessResponse<{}>> {
+  public static enqueue<T>(request: IBackOffRequest<T>): Promise<T> {
     return new Promise((resolve, reject) => {
-      const req = BackOffRequest.getBackOffRequest(request, resolve, reject);
-      BackOffRequest.enqueueRequest(req);
+      const req = BackOffRequest.getBackOffRequest<T>(request, resolve, reject);
+      BackOffRequest.enqueueRequest<T>(req);
       BackOffRequest.clearQueueIfNotAlready();
     });
   }
 
-  private static getBackOffRequest(request: IBackOffRequest, resolve, reject): Request {
+  private static getBackOffRequest<T>(request: IBackOffRequest<T>, resolve, reject): <T>() => Promise<T> {
     return () => {
-      const options = { retryCondition: request.retry };
-
-      return backOff(request.fn, options)
+      return backOff<T>(request)
         .then(resolve)
         .catch(reject);
     };
   }
 
-  private static enqueueRequest(request: Request) {
+  private static enqueueRequest<T>(request: <T>() => Promise<T>) {
     BackOffRequest.queue.push(request);
   }
 
