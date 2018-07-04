@@ -95,7 +95,7 @@ export function FacetSliderQueryControllerTest() {
     });
 
     it('should allow to put the group by into a query builder with simple slider config', () => {
-      facet.isSimpleSliderConfig = () => true;
+      facet.isSimpleSliderConfig = true;
       const builder = new QueryBuilder();
       controller.putGroupByIntoQueryBuilder(builder);
       expect(builder.groupByRequests).toEqual(
@@ -117,7 +117,7 @@ export function FacetSliderQueryControllerTest() {
     });
 
     it("should add a group by for graph if needed if it's not a simple slider config", () => {
-      facet.isSimpleSliderConfig = () => false;
+      facet.isSimpleSliderConfig = false;
       facet.options.graph = {};
       facet.options.graph.steps = 10;
       facet.getSliderBoundaryForQuery = () => [5, 99];
@@ -136,7 +136,7 @@ export function FacetSliderQueryControllerTest() {
     });
 
     it('should add a group by for graph using the query override if specified', () => {
-      facet.isSimpleSliderConfig = () => false;
+      facet.isSimpleSliderConfig = false;
       facet.options.graph = {};
       facet.options.graph.steps = 10;
       facet.options.queryOverride = 'my query override';
@@ -156,7 +156,7 @@ export function FacetSliderQueryControllerTest() {
     });
 
     it('should add a range request if needed for graph', () => {
-      facet.isSimpleSliderConfig = () => true;
+      facet.isSimpleSliderConfig = true;
       facet.options.graph = {};
       facet.options.graph.steps = 10;
       facet.options.start = 0;
@@ -184,7 +184,7 @@ export function FacetSliderQueryControllerTest() {
     });
 
     it("should add a group by for graph if it's a date", () => {
-      facet.isSimpleSliderConfig = () => true;
+      facet.isSimpleSliderConfig = true;
       facet.options.graph = {};
       facet.options.graph.steps = 10;
       facet.options.start = 1;
