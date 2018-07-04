@@ -135,7 +135,6 @@ export class QuerySummary extends Component {
     this.show();
 
     this.hideCustomNoResultsPage();
-    this.updateQueryTagsInNoResultsContainer();
 
     if (!this.options.onlyDisplaySearchTips) {
       if (this.isInfiniteScrollingMode()) {
@@ -149,6 +148,7 @@ export class QuerySummary extends Component {
       const code: string = ('QueryException' + queryResults.exception.code).toLocaleString();
       this.textContainer.innerHTML = l('QueryException', code);
     } else if (queryResults.results.length == 0) {
+      this.updateQueryTagsInNoResultsContainer();
       this.displayInfoOnNoResults();
     } else {
       this.lastKnownGoodState = this.queryStateModel.getAttributes();
@@ -263,20 +263,19 @@ export class QuerySummary extends Component {
   private displayInfoOnNoResults() {
     this.showCustomNoResultsPage();
 
-    const noResultsFoundMessage = this.getNoResultsFoundMessageElement();
-    const cancelLastAction = this.getCancelLastActionElement();
-    const searchTipsTitle = this.getSearchTipsTitleElement();
-    const searchTipsList = this.getSearchTipsListElement();
-
-    if (noResultsFoundMessage && this.options.enableNoResultsFoundMessage) {
+    if (this.options.enableNoResultsFoundMessage) {
+      const noResultsFoundMessage = this.getNoResultsFoundMessageElement();
       this.textContainer.appendChild(noResultsFoundMessage.el);
     }
 
     if (this.options.enableCancelLastAction) {
+      const cancelLastAction = this.getCancelLastActionElement();
       this.textContainer.appendChild(cancelLastAction.el);
     }
 
     if (this.options.enableSearchTips) {
+      const searchTipsTitle = this.getSearchTipsTitleElement();
+      const searchTipsList = this.getSearchTipsListElement();
       this.textContainer.appendChild(searchTipsTitle.el);
       this.textContainer.appendChild(searchTipsList.el);
     }
@@ -309,6 +308,7 @@ export class QuerySummary extends Component {
 
     return noResultsFoundMessage;
   }
+
   private getCancelLastActionElement() {
     const cancelLastAction = $$(
       'div',
