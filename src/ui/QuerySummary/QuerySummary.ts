@@ -285,14 +285,14 @@ export class QuerySummary extends Component {
   private hideCustomNoResultsPage() {
     const noResultsContainer = $$(this.element).find(`.${noResultsCssClass}`);
     if (noResultsContainer) {
-      $$(noResultsContainer).addClass('coveo-no-results-page-hidden');
+      $$(noResultsContainer).removeClass('coveo-no-results');
     }
   }
 
   private showCustomNoResultsPage() {
     const noResultsContainer = $$(this.element).find(`.${noResultsCssClass}`);
     if (noResultsContainer) {
-      $$(noResultsContainer).removeClass('coveo-no-results-page-hidden');
+      $$(noResultsContainer).addClass('coveo-no-results');
     }
   }
 

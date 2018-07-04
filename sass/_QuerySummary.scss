@@ -16,8 +16,12 @@
   }
   text-align: left;
 
-  .coveo-no-results-page-hidden {
+  .coveo-show-if-no-results {
     display: none;
+  }
+
+  .coveo-show-if-no-results.coveo-no-results {
+    display: block;
   }
 }
 

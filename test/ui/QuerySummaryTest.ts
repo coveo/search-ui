@@ -275,7 +275,7 @@ export function QuerySummaryTest() {
         test.cmp.element.innerHTML = `<div class="${noResultsCssClass}">Custom No Results Page</div>`;
         Simulate.query(test.env, { results: FakeResults.createFakeResults(10) });
 
-        expect($$(test.cmp.element).find('.coveo-no-results-page-hidden')).not.toBeNull();
+        expect($$(test.cmp.element).find('.coveo-no-results')).not.toBeNull();
       });
 
       it(`when there are no results
@@ -284,7 +284,7 @@ export function QuerySummaryTest() {
 
         Simulate.query(test.env, { results: FakeResults.createFakeResults(0) });
 
-        expect($$(test.cmp.element).find('.coveo-no-results-page-hidden')).toBeNull();
+        expect($$(test.cmp.element).find('.coveo-no-results')).toBeNull();
       });
 
       it(`when a query tag is added in the custom no results page
