@@ -7381,5 +7381,13 @@
   "Toggle": {
     "en": "Toggle",
     "fr": "Basculer"
+  },
+  "FilterOn": {
+    "en": "Filter on {0}",
+    "fr": "Filtrer sur {0}"
+  },
+  "RemoveFilterOn": {
+    "en": "Remove filter on {0}",
+    "fr": "Enlever le filtre sur {0}"
   }
 }

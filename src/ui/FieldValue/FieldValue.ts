@@ -16,6 +16,7 @@ import { Initialization } from '../Base/Initialization';
 import { Facet } from '../Facet/Facet';
 import { FacetUtils } from '../Facet/FacetUtils';
 import { TemplateHelpers } from '../Templates/TemplateHelpers';
+import { l } from '../../strings/Strings';
 
 export interface IFieldValueOptions {
   field?: IFieldOption;
@@ -406,7 +407,7 @@ export class FieldValue extends Component {
       });
 
       new AccessibleButton()
-        .withLabel(value)
+        .withLabel(selected ? l('RemoveFilterOn', value) : l('FilterOn', value))
         .withElement(element)
         .withSelectAction(() => this.handleSelection(selected as Facet, facets as Facet[], value))
         .build();
