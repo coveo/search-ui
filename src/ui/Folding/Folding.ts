@@ -94,8 +94,9 @@ export class Folding extends Component {
      * Specifies the field that determines whether a certain result is a child of another top result.
      *
      * **Note:**
-     * > In the index, the values of the corresponding field must contain alphanumerical characters only. Using a
-     * > `child` whose values contain non-indexable characters (such as underscores) will make folding fail.
+     * > In the index, the values of the corresponding field must:
+     * > - Contain alphanumerical characters only.
+     * > - Contain no more than 60 characters.
      *
      * Default value is `@foldingchild`.
      */
@@ -104,8 +105,9 @@ export class Folding extends Component {
      * Specifies the field that determines whether a certain result is a top result containing other child results.
      *
      * **Note:**
-     * > In the index, the values of the corresponding field must contain alphanumerical characters only. Using a
-     * > `parent` whose values contain non-indexable characters (such as underscores) will make folding fail.
+     * > In the index, the values of the corresponding field must:
+     * > - Contain alphanumerical characters only.
+     * > - Contain no more than 60 characters.
      *
      * Default value is `@foldingparent`.
      */
