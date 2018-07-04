@@ -159,6 +159,7 @@ export class AccessibleButton {
     }
 
     if (this.mouseleaveAction) {
+      debugger;
       this.bindEvent('mouseleave', this.mouseleaveAction);
     }
   }
