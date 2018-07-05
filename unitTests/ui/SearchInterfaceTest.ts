@@ -282,6 +282,30 @@ export function SearchInterfaceTest() {
 
           expect(searchInterface.isResultsPerPageModifiedByPipeline).toBeFalsy();
         });
+
+        it(`when the actual number of results is less than requested due to being on the last page,
+        it should mark #isResultsPerPageModifiedByPipeline as false`, () => {
+          const totalNumberOfResults = 13;
+          const resultsPerPage = 10;
+          const numOfResultsToReturn = totalNumberOfResults - resultsPerPage;
+          const fakeResults = FakeResults.createFakeResults(numOfResultsToReturn);
+          fakeResults.totalCountFiltered = fakeResults.totalCount = totalNumberOfResults;
+
+          searchInterface.resultsPerPage = resultsPerPage;
+          const builder = new QueryBuilder();
+          builder.numberOfResults = resultsPerPage;
+          builder.firstResult = resultsPerPage;
+
+          Simulate.query(
+            { element: searchInterface.root, result: null, searchEndpoint: null, ...searchInterface.getBindings() },
+            {
+              results: fakeResults,
+              query: builder.build()
+            }
+          );
+
+          expect(searchInterface.isResultsPerPageModifiedByPipeline).toBeFalsy();
+        });
       });
 
       it('should return undefined if no query context exists', () => {
