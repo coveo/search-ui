@@ -113,205 +113,306 @@ export function QuerySummaryTest() {
     });
 
     describe('exposes options', () => {
-      it('enableSearchTips allow to display search tips on no results', () => {
-        test = Mock.optionsComponentSetup<QuerySummary, IQuerySummaryOptions>(QuerySummary, {
-          enableSearchTips: false
-        });
-
-        let results = FakeResults.createFakeResults(0);
-        Simulate.query(test.env, {
-          results: results
-        });
-        expect($$(test.cmp.element).find('.coveo-query-summary-search-tips-info')).toBeNull();
-
+      it(`when enableSearchTips is set to true 
+          it should display the search tips on no results`, () => {
         test = Mock.optionsComponentSetup<QuerySummary, IQuerySummaryOptions>(QuerySummary, {
           enableSearchTips: true
         });
 
-        results = FakeResults.createFakeResults(0);
-        Simulate.query(test.env, {
-          results: results
-        });
+        Simulate.query(test.env, { results: FakeResults.createFakeResults(0) });
+
         expect($$(test.cmp.element).find('.coveo-query-summary-search-tips-info')).not.toBeNull();
       });
 
-      it('enableNoResultsFoundMessage allow to display the no results found message on no results', () => {
+      it(`when enableSearchTips is set to false 
+          it should not display the search tips on no results`, () => {
+        test = Mock.optionsComponentSetup<QuerySummary, IQuerySummaryOptions>(QuerySummary, {
+          enableSearchTips: false
+        });
+
+        Simulate.query(test.env, { results: FakeResults.createFakeResults(0) });
+
+        expect($$(test.cmp.element).find('.coveo-query-summary-search-tips-info')).toBeNull();
+      });
+
+      it(`when enableNoResultsFoundMessage is set to true 
+          it should display the no results found message on no results`, () => {
+        test = Mock.optionsComponentSetup<QuerySummary, IQuerySummaryOptions>(QuerySummary, {
+          enableNoResultsFoundMessage: true
+        });
+
+        Simulate.query(test.env, { results: FakeResults.createFakeResults(0) });
+
+        expect($$(test.cmp.element).find('.coveo-query-summary-no-results-string')).not.toBeNull();
+      });
+
+      it(`when enableNoResultsFoundMessage is set to false 
+          it should not display the no results found message on no results`, () => {
         test = Mock.optionsComponentSetup<QuerySummary, IQuerySummaryOptions>(QuerySummary, {
           enableNoResultsFoundMessage: false
         });
 
-        let results = FakeResults.createFakeResults(0);
-        Simulate.query(test.env, {
-          results: results
-        });
+        Simulate.query(test.env, { results: FakeResults.createFakeResults(0) });
+
         expect($$(test.cmp.element).find('.coveo-query-summary-no-results-string')).toBeNull();
-
-        test = Mock.optionsComponentSetup<QuerySummary, IQuerySummaryOptions>(QuerySummary, {
-          enableNoResultsFoundMessage: true
-        });
-
-        results = FakeResults.createFakeResults(0);
-        Simulate.query(test.env, {
-          results: results
-        });
-        expect($$(test.cmp.element).find('.coveo-query-summary-no-results-string')).not.toBeNull();
       });
 
-      it('enableCancelLastAction allow to display the cancel last action link on no results', () => {
-        test = Mock.optionsComponentSetup<QuerySummary, IQuerySummaryOptions>(QuerySummary, {
-          enableCancelLastAction: false
-        });
-
-        let results = FakeResults.createFakeResults(0);
-        Simulate.query(test.env, {
-          results: results
-        });
-        expect($$(test.cmp.element).find('.coveo-query-summary-cancel-last')).toBeNull();
-
+      it(`when enableCancelLastAction is set to true 
+          it should display the cancel last action link on no results`, () => {
         test = Mock.optionsComponentSetup<QuerySummary, IQuerySummaryOptions>(QuerySummary, {
           enableCancelLastAction: true
         });
 
-        results = FakeResults.createFakeResults(0);
-        Simulate.query(test.env, {
-          results: results
-        });
+        Simulate.query(test.env, { results: FakeResults.createFakeResults(0) });
+
         expect($$(test.cmp.element).find('.coveo-query-summary-cancel-last')).not.toBeNull();
       });
 
-      it('onlyDisplaySearchTips allow to not render the results range', () => {
+      it(`when enableCancelLastAction is set to false 
+          it should not display the cancel last action link on no results`, () => {
         test = Mock.optionsComponentSetup<QuerySummary, IQuerySummaryOptions>(QuerySummary, {
-          onlyDisplaySearchTips: false
+          enableCancelLastAction: false
         });
 
-        let results = FakeResults.createFakeResults(10);
-        Simulate.query(test.env, {
-          results: results
-        });
-        expect($$(test.cmp.element).text()).toEqual(jasmine.stringMatching(/^Results.*of.*/));
+        Simulate.query(test.env, { results: FakeResults.createFakeResults(0) });
 
+        expect($$(test.cmp.element).find('.coveo-query-summary-cancel-last')).toBeNull();
+      });
+
+      it(`when onlyDisplaySearchTips is set to true 
+          it should not display the results range when there are results`, () => {
         test = Mock.optionsComponentSetup<QuerySummary, IQuerySummaryOptions>(QuerySummary, {
           onlyDisplaySearchTips: true
         });
 
-        results = FakeResults.createFakeResults(10);
-        Simulate.query(test.env, {
-          results: results
-        });
+        Simulate.query(test.env, { results: FakeResults.createFakeResults(10) });
 
         expect($$(test.cmp.element).text()).not.toEqual(jasmine.stringMatching(/^Results.*of.*/));
+      });
+
+      it(`when onlyDisplaySearchTips is set to false 
+          it should display the results range when there are results`, () => {
+        test = Mock.optionsComponentSetup<QuerySummary, IQuerySummaryOptions>(QuerySummary, {
+          onlyDisplaySearchTips: false
+        });
+
+        Simulate.query(test.env, { results: FakeResults.createFakeResults(10) });
+
+        expect($$(test.cmp.element).text()).toEqual(jasmine.stringMatching(/^Results.*of.*/));
       });
     });
 
     describe('when the option enableNoResultsFoundMessage is set to true', () => {
-      it(`when the noResultsFoundMessage is not specified
-          it should return the default message`, () => {
-        test = Mock.optionsComponentSetup<QuerySummary, IQuerySummaryOptions>(QuerySummary, {
-          enableNoResultsFoundMessage: true
-        });
-        expect(test.cmp.options.noResultsFoundMessage).toBe(`No results for ${queryTag}`);
-      });
+      function getCustomMessageElement() {
+        return $$(test.cmp.element).find('.coveo-query-summary-no-results-string');
+      }
 
-      it(`when the noResultsFoundMessage is specified 
-          it should return the custom message`, () => {
+      it(`when there is no query tag in the noResultsFoundMessage
+          it should not change the initial message`, () => {
         test = Mock.optionsComponentSetup<QuerySummary, IQuerySummaryOptions>(QuerySummary, {
           enableNoResultsFoundMessage: true,
           noResultsFoundMessage: 'customMessage'
         });
-        expect(test.cmp.options.noResultsFoundMessage).toBe('customMessage');
+
+        test.env.queryStateModel.get = () => 'querySearched';
+        Simulate.query(test.env, { results: FakeResults.createFakeResults(0) });
+
+        expect(getCustomMessageElement().textContent).toBe('customMessage');
       });
 
-      describe('when the noResultsFoundMessage is parsed', () => {
-        it(`when there is no query tag in the noResultsFoundMessage
-            it should not change the initial message`, () => {
-          test = Mock.optionsComponentSetup<QuerySummary, IQuerySummaryOptions>(QuerySummary, {
-            enableNoResultsFoundMessage: true,
-            noResultsFoundMessage: 'customMessage'
-          });
-
-          test.env.queryStateModel.get = () => 'querySearched';
-          Simulate.query(test.env, { results: FakeResults.createFakeResults(0) });
-
-          const customMessageElement = $$(test.cmp.element).find('.coveo-query-summary-no-results-string');
-
-          expect(customMessageElement.textContent).toBe('customMessage');
+      it(`when there is one query tag in the noResultsFoundMessage
+          it should replace the query tag with the query searched`, () => {
+        test = Mock.optionsComponentSetup<QuerySummary, IQuerySummaryOptions>(QuerySummary, {
+          enableNoResultsFoundMessage: true,
+          noResultsFoundMessage: `customMessage ${queryTag}`
         });
 
-        it(`when there is one query tag in the noResultsFoundMessage
-            it should replace the query tag by the query searched`, () => {
-          test = Mock.optionsComponentSetup<QuerySummary, IQuerySummaryOptions>(QuerySummary, {
-            enableNoResultsFoundMessage: true,
-            noResultsFoundMessage: `customMessage ${queryTag}`
-          });
+        test.env.queryStateModel.get = () => 'querySearched';
+        Simulate.query(test.env, { results: FakeResults.createFakeResults(0) });
 
-          test.env.queryStateModel.get = () => 'querySearched';
-          Simulate.query(test.env, { results: FakeResults.createFakeResults(0) });
+        expect(getCustomMessageElement().textContent).toBe('customMessage querySearched');
+      });
 
-          const customMessageElement = $$(test.cmp.element).find('.coveo-query-summary-no-results-string');
-
-          expect(customMessageElement.textContent).toBe('customMessage querySearched');
+      it(`when there is multiple query tags in the noResultsFoundMessage
+          it should replace all the query tags with the query searched`, () => {
+        test = Mock.optionsComponentSetup<QuerySummary, IQuerySummaryOptions>(QuerySummary, {
+          enableNoResultsFoundMessage: true,
+          noResultsFoundMessage: `custom ${queryTag} Message ${queryTag}`
         });
 
-        it(`when there is multiple query tags in the noResultsFoundMessage
-            it should replace all the query tags by the query searched`, () => {
-          test = Mock.optionsComponentSetup<QuerySummary, IQuerySummaryOptions>(QuerySummary, {
-            enableNoResultsFoundMessage: true,
-            noResultsFoundMessage: `custom ${queryTag} Message ${queryTag}`
-          });
+        test.env.queryStateModel.get = () => 'querySearched';
+        Simulate.query(test.env, { results: FakeResults.createFakeResults(0) });
 
-          test.env.queryStateModel.get = () => 'querySearched';
-          Simulate.query(test.env, { results: FakeResults.createFakeResults(0) });
+        expect(getCustomMessageElement().textContent).toBe('custom querySearched Message querySearched');
+      });
 
-          const customMessageElement = $$(test.cmp.element).find('.coveo-query-summary-no-results-string');
-
-          expect(customMessageElement.textContent).toBe('custom querySearched Message querySearched');
+      it(`when mutiple no results page are triggered consicutively with different querySearched
+          it should update the query tags with the new query searched`, () => {
+        test = Mock.optionsComponentSetup<QuerySummary, IQuerySummaryOptions>(QuerySummary, {
+          enableNoResultsFoundMessage: true,
+          noResultsFoundMessage: `${queryTag}`
         });
+
+        test.env.queryStateModel.get = () => 'firstQuerySearched';
+        Simulate.query(test.env, { results: FakeResults.createFakeResults(0) });
+
+        test.env.queryStateModel.get = () => 'SecondQuerySearched';
+        Simulate.query(test.env, { results: FakeResults.createFakeResults(0) });
+
+        expect(getCustomMessageElement().textContent).toBe('SecondQuerySearched');
+      });
+
+      it(`when the queryTag is in the attributes of a direct child element
+          it should not replace this queryTag by the querySearched`, () => {
+        const customMessage: string = `<a href="${queryTag}"></a>`;
+
+        test = Mock.optionsComponentSetup<QuerySummary, IQuerySummaryOptions>(QuerySummary, {
+          enableNoResultsFoundMessage: true,
+          noResultsFoundMessage: customMessage
+        });
+
+        test.env.queryStateModel.get = () => 'querySearched';
+        Simulate.query(test.env, { results: FakeResults.createFakeResults(0) });
+
+        expect(getCustomMessageElement().innerHTML).toBe(customMessage);
+      });
+
+      it(`when the queryTag is in the attributes of a non direct child element
+          it should not replace this queryTag by the querySearched`, () => {
+        const customMessage: string = `<div><a href="${queryTag}"></a></div>`;
+
+        test = Mock.optionsComponentSetup<QuerySummary, IQuerySummaryOptions>(QuerySummary, {
+          enableNoResultsFoundMessage: true,
+          noResultsFoundMessage: customMessage
+        });
+
+        test.env.queryStateModel.get = () => 'querySearched';
+        Simulate.query(test.env, { results: FakeResults.createFakeResults(0) });
+
+        expect(getCustomMessageElement().innerHTML).toBe(customMessage);
+      });
+
+      it(`when the query searched is an empty string
+          it should replace the query tag with the query searched`, () => {
+        test = Mock.optionsComponentSetup<QuerySummary, IQuerySummaryOptions>(QuerySummary, {
+          enableNoResultsFoundMessage: true,
+          noResultsFoundMessage: `${queryTag}`
+        });
+
+        test.env.queryStateModel.get = () => '';
+        Simulate.query(test.env, { results: FakeResults.createFakeResults(0) });
+
+        expect(getCustomMessageElement().textContent).toBe('');
+      });
+
+      it(`when the query searched is the same as the queryTag
+          it should replace the query tag with the query searched`, () => {
+        test = Mock.optionsComponentSetup<QuerySummary, IQuerySummaryOptions>(QuerySummary, {
+          enableNoResultsFoundMessage: true,
+          noResultsFoundMessage: `${queryTag}`
+        });
+
+        test.env.queryStateModel.get = () => `${queryTag}`;
+        Simulate.query(test.env, { results: FakeResults.createFakeResults(0) });
+
+        expect(getCustomMessageElement().textContent).toBe(`${queryTag}`);
       });
     });
 
     describe('when a custom no results page is added inside the QuerySummary component', () => {
+      function getcustomNoResultsPageElement() {
+        return $$(test.cmp.element).find(`.${noResultsCssClass}`);
+      }
+
       it(`when there are results
           it should not display the custom no results page`, () => {
         test.cmp.element.innerHTML = `<div class="${noResultsCssClass}">Custom No Results Page</div>`;
         Simulate.query(test.env, { results: FakeResults.createFakeResults(10) });
 
-        expect($$(test.cmp.element).find('.coveo-no-results')).not.toBeNull();
+        expect($$(test.cmp.element).find('.coveo-no-results')).toBeNull();
       });
 
       it(`when there are no results
           it should display the custom no results page`, () => {
         test.cmp.element.innerHTML = `<div class="${noResultsCssClass}">Custom No Results Page</div>`;
-
         Simulate.query(test.env, { results: FakeResults.createFakeResults(0) });
 
-        expect($$(test.cmp.element).find('.coveo-no-results')).toBeNull();
+        expect($$(test.cmp.element).find('.coveo-no-results')).not.toBeNull();
       });
 
       it(`when a query tag is added in the custom no results page
-          it should replace the query tag by the query searched`, () => {
-        test.env.queryStateModel.get = () => 'querySearched';
+          it should replace the query tag with the query searched`, () => {
         test.cmp.element.innerHTML = `<div class="${noResultsCssClass}">${queryTag}</div>`;
-
+        test.env.queryStateModel.get = () => 'querySearched';
         Simulate.query(test.env, { results: FakeResults.createFakeResults(0) });
 
-        const customNoResultsPageElement = $$(test.cmp.element).find(`.${noResultsCssClass}`);
-
-        expect(customNoResultsPageElement.textContent).toBe('querySearched');
+        expect(getcustomNoResultsPageElement().textContent).toBe('querySearched');
       });
 
       it(`when mutiple query tags are added in the custom no results page
-          it should replace all the query tags by the query searched`, () => {
-        test.env.queryStateModel.get = () => 'querySearched';
+          it should replace all the query tags with the query searched`, () => {
         test.cmp.element.innerHTML = `<div class="${noResultsCssClass}">${queryTag} ${queryTag}</div>`;
+        test.env.queryStateModel.get = () => 'querySearched';
         Simulate.query(test.env, { results: FakeResults.createFakeResults(0) });
 
-        const customNoResultsPageElement = $$(test.cmp.element).find(`.${noResultsCssClass}`);
+        expect(getcustomNoResultsPageElement().textContent).toBe('querySearched querySearched');
+      });
 
-        expect(customNoResultsPageElement.textContent).toBe('querySearched querySearched');
+      it(`when mutiple no results page are triggered consicutively with different querySearched
+          it should update the query tags with the new query searched`, () => {
+        test.cmp.element.innerHTML = `<div class="${noResultsCssClass}">${queryTag}</div>`;
+
+        test.env.queryStateModel.get = () => 'firstQuerySearched';
+        Simulate.query(test.env, { results: FakeResults.createFakeResults(0) });
+
+        test.env.queryStateModel.get = () => 'SecondQuerySearched';
+        Simulate.query(test.env, { results: FakeResults.createFakeResults(0) });
+
+        expect(getcustomNoResultsPageElement().textContent).toBe('SecondQuerySearched');
+      });
+
+      it(`when the queryTag is in the attributes of a direct child element 
+          it should not replace this queryTag by the querySearched`, () => {
+        const customNoResultsPage = `<a href="${queryTag}"></a>`;
+        test.cmp.element.innerHTML = `<div class="${noResultsCssClass}">${customNoResultsPage}</div>`;
+
+        test.env.queryStateModel.get = () => 'querySearched';
+        Simulate.query(test.env, { results: FakeResults.createFakeResults(0) });
+
+        expect(getcustomNoResultsPageElement().innerHTML).toBe(customNoResultsPage);
+      });
+
+      it(`when the queryTag is in the attributes of a non direct child element
+          it should not replace this queryTag by the querySearched`, () => {
+        const customNoResultsPage = `<div><a href="${queryTag}"></a></div>`;
+        test.cmp.element.innerHTML = `<div class="${noResultsCssClass}">${customNoResultsPage}</div>`;
+
+        test.env.queryStateModel.get = () => 'querySearched';
+        Simulate.query(test.env, { results: FakeResults.createFakeResults(0) });
+
+        expect(getcustomNoResultsPageElement().innerHTML).toBe(customNoResultsPage);
+      });
+
+      it(`when the query searched is an empty string
+          it should replace the query tag with the query searched`, () => {
+        test.env.queryStateModel.get = () => '';
+        test.cmp.element.innerHTML = `<div class="${noResultsCssClass}">${queryTag}</div>`;
+        Simulate.query(test.env, { results: FakeResults.createFakeResults(0) });
+
+        expect(getcustomNoResultsPageElement().textContent).toBe('');
+      });
+
+      it(`when the query searched is the same as the queryTag
+          it should replace the query tag with the query searched`, () => {
+        test.env.queryStateModel.get = () => `${queryTag}`;
+        test.cmp.element.innerHTML = `<div class="${noResultsCssClass}">${queryTag}</div>`;
+        Simulate.query(test.env, { results: FakeResults.createFakeResults(0) });
+
+        expect(getcustomNoResultsPageElement().textContent).toBe(`${queryTag}`);
       });
     });
 
-    it(`when a query tag is replaced in the no results found message
+    it(`when a query tag is replaced
         it should escape the HTML against XSS`, () => {
       test.env.queryStateModel.get = () => '<script>alert("XSS")</script>';
       Simulate.query(test.env, { results: FakeResults.createFakeResults(0) });

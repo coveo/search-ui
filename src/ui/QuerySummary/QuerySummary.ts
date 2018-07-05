@@ -236,8 +236,7 @@ export class QuerySummary extends Component {
   private updateQueryTagsInNoResultsContainer() {
     const noResultsContainer = $$(this.element).find(`.${noResultsCssClass}`);
     if (noResultsContainer) {
-      const content = noResultsContainer.innerHTML;
-      noResultsContainer.innerHTML = this.parseQueryTags(content);
+      this.parseQueryTagsInContainer(noResultsContainer);
 
       $$(noResultsContainer)
         .findAll(`.${queryTagCssClass}`)
@@ -245,6 +244,30 @@ export class QuerySummary extends Component {
           queryTagContainer.innerHTML = this.queryEscaped;
         });
     }
+  }
+
+  private parseQueryTagsInContainer(node: Node) {
+    let nextNode: Node;
+    if (node.nodeType === Node.ELEMENT_NODE) {
+      node = node.firstChild;
+      while (node) {
+        nextNode = node.nextSibling;
+        this.parseQueryTagsInContainer(node);
+        node = nextNode;
+      }
+    } else if (node.nodeType === Node.TEXT_NODE) {
+      this.parseQueryTagsInTextNode(node);
+    }
+  }
+
+  private parseQueryTagsInTextNode(textNode: Node) {
+    const tempContainer = document.createElement('div');
+    tempContainer.innerHTML = this.parseQueryTags(textNode.nodeValue);
+
+    while (tempContainer.firstChild) {
+      textNode.parentNode.insertBefore(tempContainer.firstChild, textNode);
+    }
+    textNode.parentNode.removeChild(textNode);
   }
 
   private parseQueryTags(content: string) {
@@ -296,7 +319,10 @@ export class QuerySummary extends Component {
   }
 
   private getNoResultsFoundMessageElement() {
-    const parsedNoResultsFoundMessage = this.parseQueryTags(this.options.noResultsFoundMessage);
+    const tempContainer = document.createElement('div');
+    tempContainer.innerHTML = this.options.noResultsFoundMessage;
+    this.parseQueryTagsInContainer(tempContainer);
+    const parsedNoResultsFoundMessage = tempContainer.innerHTML;
 
     const noResultsFoundMessage = $$(
       'div',
