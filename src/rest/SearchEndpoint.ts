@@ -1087,27 +1087,30 @@ export class SearchEndpoint implements ISearchEndpoint {
       const response = await request();
       return response.data;
     } catch (error) {
-      const tokenWasRenewed = await this.renewAccessTokenIfExpired(error);
-
-      if (tokenWasRenewed) {
-        return this.performOneCall(params, callOptions) as Promise<T>;
+      if (!error) {
+        throw new Error('Request failed but it did not return an error.');
       }
 
-      if (this.isThrottled(error)) {
-        const response = await this.backOffThrottledRequest<ISuccessResponse<T>>(request);
-        return response.data;
-      }
+      const errorCode = (error as IErrorResponse).statusCode;
 
-      throw this.handleErrorResponse(error);
+      switch (errorCode) {
+        case 419:
+          const tokenWasRenewed = await this.accessToken.doRenew();
+
+          if (!tokenWasRenewed) {
+            throw this.handleErrorResponse(error);
+          }
+
+          return this.performOneCall(params, callOptions) as Promise<T>;
+
+        case 429:
+          const response = await this.backOffThrottledRequest<ISuccessResponse<T>>(request);
+          return response.data;
+
+        default:
+          throw this.handleErrorResponse(error);
+      }
     }
-  }
-
-  private isThrottled(error: IErrorResponse) {
-    return error && error.statusCode === 429;
-  }
-
-  private renewAccessTokenIfExpired(e: IErrorResponse) {
-    return this.accessToken.isExpired(e) && this.accessToken.doRenew();
   }
 
   private async backOffThrottledRequest<T>(request: () => Promise<T>) {
@@ -1129,6 +1132,10 @@ export class SearchEndpoint implements ISearchEndpoint {
     }
 
     return false;
+  }
+
+  private isThrottled(error: IErrorResponse) {
+    return error && error.statusCode === 429;
   }
 
   private handleErrorResponse(errorResponse: IErrorResponse): Error {
