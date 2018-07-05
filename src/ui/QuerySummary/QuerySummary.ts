@@ -27,7 +27,6 @@ export interface IQuerySummaryOptions {
 }
 
 export const noResultsCssClass: string = 'coveo-show-if-no-results';
-const queryTagCssClass: string = 'coveo-query-tag';
 
 /**
  * The QuerySummary component can display information about the currently displayed range of results (e.g., "Results
@@ -103,6 +102,7 @@ export class QuerySummary extends Component {
 
   private textContainer: HTMLElement;
   private lastKnownGoodState: any;
+  private noResultsContainerSnapshot: string;
 
   /**
    * Creates a new QuerySummary component.
@@ -134,7 +134,8 @@ export class QuerySummary extends Component {
     $$(this.textContainer).empty();
     this.show();
 
-    this.hideCustomNoResultsPage();
+    this.updateNoResultsContainerSnapshot();
+    this.hideNoResultsPage();
 
     if (!this.options.onlyDisplaySearchTips) {
       if (this.isInfiniteScrollingMode()) {
@@ -233,16 +234,18 @@ export class QuerySummary extends Component {
     }
   }
 
-  private updateQueryTagsInNoResultsContainer() {
-    const noResultsContainer = $$(this.element).find(`.${noResultsCssClass}`);
-    if (noResultsContainer) {
-      this.parseQueryTagsInContainer(noResultsContainer);
+  private updateNoResultsContainerSnapshot() {
+    const noResultsContainer = this.getNoResultsContainer();
+    if (this.noResultsContainerSnapshot == null && noResultsContainer) {
+      this.noResultsContainerSnapshot = noResultsContainer.innerHTML;
+    }
+  }
 
-      $$(noResultsContainer)
-        .findAll(`.${queryTagCssClass}`)
-        .forEach(queryTagContainer => {
-          queryTagContainer.innerHTML = this.queryEscaped;
-        });
+  private updateQueryTagsInNoResultsContainer() {
+    const noResultsContainer = this.getNoResultsContainer();
+    if (noResultsContainer) {
+      noResultsContainer.innerHTML = this.noResultsContainerSnapshot;
+      this.parseQueryTagsInContainer(noResultsContainer);
     }
   }
 
@@ -274,7 +277,7 @@ export class QuerySummary extends Component {
     if (!content) {
       return '';
     }
-    const queryTagContainer = `<span class='coveo-highlight ${queryTagCssClass}'>${this.queryEscaped}</span>`;
+    const queryTagContainer = `<span class="coveo-highlight">${this.queryEscaped}</span>`;
 
     return content.replace(new RegExp(/\$\{query\}/g), queryTagContainer);
   }
@@ -284,7 +287,7 @@ export class QuerySummary extends Component {
   }
 
   private displayInfoOnNoResults() {
-    this.showCustomNoResultsPage();
+    this.showNoResultsPage();
 
     if (this.options.enableNoResultsFoundMessage) {
       const noResultsFoundMessage = this.getNoResultsFoundMessageElement();
@@ -304,18 +307,30 @@ export class QuerySummary extends Component {
     }
   }
 
-  private hideCustomNoResultsPage() {
-    const noResultsContainer = $$(this.element).find(`.${noResultsCssClass}`);
-    if (noResultsContainer) {
-      $$(noResultsContainer).removeClass('coveo-no-results');
+  private hideNoResultsPage() {
+    const noResultsContainers = this.getAllNoResultsContainer();
+    if (noResultsContainers.length > 0) {
+      noResultsContainers.forEach(noResultsContainer => {
+        $$(noResultsContainer).removeClass('coveo-no-results');
+      });
     }
   }
 
-  private showCustomNoResultsPage() {
-    const noResultsContainer = $$(this.element).find(`.${noResultsCssClass}`);
-    if (noResultsContainer) {
-      $$(noResultsContainer).addClass('coveo-no-results');
+  private showNoResultsPage() {
+    const noResultsContainers = this.getAllNoResultsContainer();
+    if (noResultsContainers.length > 0) {
+      noResultsContainers.forEach(noResultsContainer => {
+        $$(noResultsContainer).addClass('coveo-no-results');
+      });
     }
+  }
+
+  private getNoResultsContainer(): HTMLElement {
+    return $$(this.element).find(`.${noResultsCssClass}`);
+  }
+
+  private getAllNoResultsContainer(): HTMLElement[] {
+    return $$(this.element).findAll(`.${noResultsCssClass}`);
   }
 
   private getNoResultsFoundMessageElement() {

@@ -317,6 +317,18 @@ export function QuerySummaryTest() {
 
         expect(getCustomMessageElement().textContent).toBe(`${queryTag}`);
       });
+
+      it(`when a query tag is replaced
+          it should escape the HTML against XSS`, () => {
+        test = Mock.optionsComponentSetup<QuerySummary, IQuerySummaryOptions>(QuerySummary, {
+          enableNoResultsFoundMessage: true,
+          noResultsFoundMessage: `${queryTag}`
+        });
+        test.env.queryStateModel.get = () => '<script>alert("XSS")</script>';
+        Simulate.query(test.env, { results: FakeResults.createFakeResults(0) });
+
+        expect(getCustomMessageElement().innerHTML).toBe(`<span class="coveo-highlight">&lt;script&gt;alert("XSS")&lt;/script&gt;</span>`);
+      });
     });
 
     describe('when a custom no results page is added inside the QuerySummary component', () => {
@@ -410,14 +422,17 @@ export function QuerySummaryTest() {
 
         expect(getcustomNoResultsPageElement().textContent).toBe(`${queryTag}`);
       });
-    });
 
-    it(`when a query tag is replaced
-        it should escape the HTML against XSS`, () => {
-      test.env.queryStateModel.get = () => '<script>alert("XSS")</script>';
-      Simulate.query(test.env, { results: FakeResults.createFakeResults(0) });
+      it(`when a query tag is replaced
+          it should escape the HTML against XSS`, () => {
+        test.env.queryStateModel.get = () => '<script>alert("XSS")</script>';
+        test.cmp.element.innerHTML = `<div class="${noResultsCssClass}">${queryTag}</div>`;
+        Simulate.query(test.env, { results: FakeResults.createFakeResults(0) });
 
-      expect($$(test.cmp.element).find('.coveo-query-tag').innerHTML).toBe('&lt;script&gt;alert("XSS")&lt;/script&gt;');
+        expect(getcustomNoResultsPageElement().innerHTML).toBe(
+          `<span class="coveo-highlight">&lt;script&gt;alert("XSS")&lt;/script&gt;</span>`
+        );
+      });
     });
   });
 }
