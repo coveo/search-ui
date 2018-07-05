@@ -1,10 +1,10 @@
-import { backOff as backOffModule, IBackOffRequest } from '../misc/BackOff';
+import { backOff as originalBackOff, IBackOffRequest } from '../misc/BackOff';
 export type IBackOffRequest<T> = IBackOffRequest<T>;
 
-let backOff = backOffModule;
+let backOff = originalBackOff;
 
-export function setBackOffModule(newModule) {
-  backOff = newModule;
+export function setBackOffModule(newModule?: (request: IBackOffRequest<any>) => Promise<any>) {
+  backOff = newModule || originalBackOff;
 }
 
 export class BackOffRequest {

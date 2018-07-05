@@ -2,22 +2,22 @@ import { BackOffRequest, setBackOffModule, IBackOffRequest } from '../../src/res
 
 export function BackOffRequestTest() {
   describe('BackOffRequest', () => {
-    const oneTimeUnit = 100;
     const mockSuccessResponse = { success: true } as any;
 
     beforeAll(() => stubBackOffDependency());
+    afterAll(() => restoreBackOffDependency());
 
     function stubBackOffDependency() {
       setBackOffModule((request: IBackOffRequest<{}>) => request.fn());
     }
 
-    function resolveInOneTimeUnit(): Promise<any> {
-      return new Promise(resolve => setTimeout(() => resolve(mockSuccessResponse), oneTimeUnit));
+    function restoreBackOffDependency() {
+      setBackOffModule();
     }
 
-    function roundToNearestTimeUnit(duration: number) {
-      const numOfUnits = Math.round(duration / oneTimeUnit);
-      return numOfUnits * oneTimeUnit;
+    function timeUnitsToResolveIn(num: number): Promise<any> {
+      const oneTimeUnit = 10;
+      return new Promise(resolve => setTimeout(() => resolve(mockSuccessResponse), num * oneTimeUnit));
     }
 
     it(`when calling #enqueue with a request that resolves successfully,
@@ -32,17 +32,14 @@ export function BackOffRequestTest() {
 
     it(`when calling #enqueue with two requests that resolve in one time unit each,
     it processes the requests in series`, done => {
-      const startTime = Date.now();
+      let firstRequestEnded = false;
 
-      BackOffRequest.enqueue({ fn: () => resolveInOneTimeUnit() });
-      const secondRequest = BackOffRequest.enqueue({ fn: () => resolveInOneTimeUnit() });
+      const firstRequest = BackOffRequest.enqueue({ fn: () => timeUnitsToResolveIn(2) });
+      const secondRequest = BackOffRequest.enqueue({ fn: () => timeUnitsToResolveIn(1) });
 
-      secondRequest.then(response => {
-        const endTime = Date.now();
-        const duration = roundToNearestTimeUnit(endTime - startTime);
-
-        expect(response).toBe(mockSuccessResponse);
-        expect(duration).toBe(2 * oneTimeUnit);
+      firstRequest.then(() => (firstRequestEnded = true));
+      secondRequest.then(() => {
+        expect(firstRequestEnded).toBe(true);
         done();
       });
     });
