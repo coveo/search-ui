@@ -28,7 +28,7 @@ import { HashUtils } from '../../utils/HashUtils';
 import { SentryLogger } from '../../misc/SentryLogger';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
-import { ResponsiveComponents } from '../ResponsiveComponents/ResponsiveComponents';
+import { ResponsiveComponents, MEDIUM_SCREEN_WIDTH, SMALL_SCREEN_WIDTH } from '../ResponsiveComponents/ResponsiveComponents';
 import { Context, IPipelineContextProvider } from '../PipelineContext/PipelineGlobalExports';
 import { InitializationPlaceholder } from '../Base/InitializationPlaceholder';
 import { Debug } from '../Debug/Debug';
@@ -67,6 +67,8 @@ export interface ISearchInterfaceOptions {
   endpoint?: SearchEndpoint;
   originalOptionsObject?: any;
   allowQueriesWithoutKeywords?: boolean;
+  responsiveMediumBreakpoint?: number;
+  responsiveSmallBreakpoint?: number;
 }
 
 /**
@@ -406,13 +408,32 @@ export class SearchInterface extends RootComponent implements IComponentBindings
      * [Query Parameters - maximumAge](https://developers.coveo.com/x/iwEv#QueryParameters-maximumAge)).
      */
     maximumAge: ComponentOptions.buildNumberOption(),
-
     /**
      * Specifies the search page you wish to navigate to when instantiating a standalone search box interface.
      *
      * Default value is `undefined`, which means that the search interface does not redirect.
      */
-    searchPageUri: ComponentOptions.buildStringOption()
+    searchPageUri: ComponentOptions.buildStringOption(),
+    /**
+     * Specifies the search interface width that should be considered "medium" size, in pixel.
+     *
+     * This is at this breakpoint that, for examples, facets and filters in the "coveo-facet-column" will switch to display inside a dropdown above the result list instead of next to the result list.
+     *
+     * This also implies that {@link SearchInterface.options.enableAutomaticResponsiveMode} is set to `true`.
+     *
+     * The default value is `800`.
+     */
+    responsiveMediumBreakpoint: ComponentOptions.buildNumberOption({ defaultValue: MEDIUM_SCREEN_WIDTH }),
+    /**
+     * Specifies the search interface width that should be considered "small" size, in pixel.
+     *
+     * This is at this breakpoint that, for examples, some layouts in the result list will get disabled as they are not suited to display properly at smaller screen size.
+     *
+     * This also implies that {@link SearchInterface.options.enableAutomaticResponsiveMode} is set to `true`.
+     *
+     * The default value is `480`.
+     */
+    responsiveSmallBreakpoint: ComponentOptions.buildNumberOption({ defaultValue: SMALL_SCREEN_WIDTH })
   };
 
   public static SMALL_INTERFACE_CLASS_NAME = 'coveo-small-search-interface';
@@ -500,8 +521,9 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     const eventNameQuickview = this.queryStateModel.getEventName(Model.eventTypes.changeOne + QueryStateModel.attributesEnum.quickview);
     $$(this.element).on(eventNameQuickview, (e, args) => this.handleQuickviewChanged(args));
     this.element.style.display = element.style.display || 'block';
+
     this.setupDebugInfo();
-    this.responsiveComponents = new ResponsiveComponents();
+    this.setupResponsiveComponents();
   }
 
   public set resultsPerPage(resultsPerPage: number) {
@@ -666,6 +688,12 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     if (this.options.enableDebugInfo) {
       setTimeout(() => new Debug(this.element, this.getBindings()));
     }
+  }
+
+  private setupResponsiveComponents() {
+    this.responsiveComponents = new ResponsiveComponents();
+    this.responsiveComponents.setMediumScreenWidth(this.options.responsiveMediumBreakpoint);
+    this.responsiveComponents.setSmallScreenWidth(this.options.responsiveSmallBreakpoint);
   }
 
   private handlePreprocessQueryStateModel(args: Record<string, any>) {

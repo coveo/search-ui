@@ -12,6 +12,7 @@ import * as Mock from '../../MockEnvironment';
 import { QueryEvents } from '../../../src/events/QueryEvents';
 import { FakeResults } from '../../Fake';
 import { ResponsiveComponents } from '../../../src/ui/ResponsiveComponents/ResponsiveComponents';
+import { SearchInterface } from '../../../src/ui/SearchInterface/SearchInterface';
 
 export function ResponsiveFacetsTest() {
   describe('ResponsiveFacets', () => {
@@ -218,6 +219,17 @@ export function ResponsiveFacetsTest() {
       root.width = <any>spy;
 
       expect(responsiveFacets.needDropdownWrapper()).toBe(false);
+    });
+
+    it('should use the breakpoint set from the search interface if not specified explicitely', () => {
+      new SearchInterface(root.el, {
+        responsiveMediumBreakpoint: 1234567
+      });
+      responsiveFacets = new ResponsiveFacets(root, '', {});
+      let spy = jasmine.createSpy('width').and.returnValue(1234567 - 1);
+      root.width = <any>spy;
+
+      expect(responsiveFacets.needDropdownWrapper()).toBe(true);
     });
   });
 }

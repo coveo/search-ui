@@ -75,6 +75,8 @@ export class ResultLayoutSelector extends Component {
      *
      * By default, the mobile mode breakpoint is at 480 px screen width.
      *
+     * To change this default value, use the {@link SearchInterface.options.responsiveSmallBreakpoint} option.
+     *
      * When the breakpoint is reached, layouts that are not specified becomes inactive and the linked result list will be disabled.
      *
      * The possible values for layouts are `list`, `card`, `table`.
@@ -87,6 +89,8 @@ export class ResultLayoutSelector extends Component {
      *
      * By default, the tablet mode breakpoint is at 800 px screen width.
      *
+     * To change this default value, use the {@link SearchInterface.options.responsiveMediumBreakpoint} option.
+     *
      *  When the breakpoint is reached, layouts that are not specified becomes inactive and the linked result list will be disabled.
      *
      * The possible values for layouts are `list`, `card`, `table`.
@@ -98,6 +102,8 @@ export class ResultLayoutSelector extends Component {
      * Specifies the layouts that should be available when the search page is displayed in desktop mode.
      *
      * By default, the desktop mode breakpoint is any screen size over 800 px.
+     *
+     * To change this default value, use the {@link SearchInterface.options.responsiveMediumBreakpoint} option.
      *
      *  When the breakpoint is reached, layouts that are not specified becomes inactive and the linked result list will be disabled.
      *
