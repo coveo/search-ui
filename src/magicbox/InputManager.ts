@@ -5,7 +5,7 @@ import { MagicBoxInstance } from './MagicBox';
 import { KEYBOARD } from '../utils/KeyboardUtils';
 
 export class InputManager {
-  private input: HTMLInputElement;
+  public input: HTMLInputElement;
   private underlay: HTMLElement;
   private highlightContainer: HTMLElement;
   private ghostTextContainer: HTMLElement;
@@ -49,6 +49,8 @@ export class InputManager {
     this.input.spellcheck = false;
     this.input.setAttribute('form', 'coveo-dummy-form');
     this.input.setAttribute('autocomplete', 'off');
+    this.input.setAttribute('aria-autocomplete', 'list');
+    this.input.setAttribute('aria-controls', 'coveo-magibox-suggestions');
 
     this.setupHandler();
   }

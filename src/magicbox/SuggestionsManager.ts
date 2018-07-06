@@ -1,5 +1,6 @@
 import { $$ } from '../utils/Dom';
 import _ = require('underscore');
+import { InputManager } from './InputManager';
 
 export interface Suggestion {
   text?: string;
@@ -21,7 +22,12 @@ export class SuggestionsManager {
   private options: SuggestionsManagerOptions;
   public hasSuggestions: boolean;
 
-  constructor(private element: HTMLElement, options?: SuggestionsManagerOptions) {
+  constructor(
+    private element: HTMLElement,
+    private magicBoxContainer: HTMLElement,
+    private inputManager: InputManager,
+    options?: SuggestionsManagerOptions
+  ) {
     this.options = _.defaults(options, <SuggestionsManagerOptions>{
       selectableClass: 'magic-box-suggestion',
       selectedClass: 'magic-box-selected'
@@ -40,6 +46,8 @@ export class SuggestionsManager {
     $$(this.element).on('mouseout', e => {
       this.handleMouseOut(e);
     });
+
+    this.addAccessibilitiesProperties();
   }
 
   public handleMouseOver(e) {
@@ -90,7 +98,12 @@ export class SuggestionsManager {
       index = 0;
     }
     selected = selectables.item(index);
-    if (selected != null) $$(selected).addClass(this.options.selectedClass);
+    if (selected != null) {
+      $$(selected).addClass(this.options.selectedClass);
+      this.inputManager.input.setAttribute('aria-activedescendant', selected.getAttribute('id'));
+    } else {
+      this.inputManager.input.setAttribute('aria-activedescendant', '');
+    }
 
     return this.returnMoved(selected);
   }
@@ -112,7 +125,13 @@ export class SuggestionsManager {
       index = selectables.length - 1;
     }
     selected = selectables.item(index);
-    if (selected != null) $$(selected).addClass(this.options.selectedClass);
+
+    if (selected != null) {
+      $$(selected).addClass(this.options.selectedClass);
+      this.inputManager.input.setAttribute('aria-activedescendant', selected.getAttribute('id'));
+    } else {
+      this.inputManager.input.setAttribute('aria-activedescendant', '');
+    }
 
     return this.returnMoved(selected);
   }
@@ -202,6 +221,8 @@ export class SuggestionsManager {
       if (!dom) {
         dom = document.createElement('div');
         dom.className = 'magic-box-suggestion';
+        dom.setAttribute('id', `magic-box-suggestion-${_.indexOf(suggestions, suggestion)}`);
+
         if (suggestion.html != null) {
           dom.innerHTML = suggestion.html;
         } else if (suggestion.text != null) {
@@ -231,9 +252,11 @@ export class SuggestionsManager {
     });
     if (suggestions.length > 0) {
       $$(this.element).addClass('magic-box-hasSuggestion');
+      $$(this.magicBoxContainer).setAttribute('aria-expanded', 'true');
       this.hasSuggestions = true;
     } else {
       $$(this.element).removeClass('magic-box-hasSuggestion');
+      $$(this.magicBoxContainer).setAttribute('aria-expanded', 'false');
       this.hasSuggestions = false;
     }
   }
@@ -262,5 +285,16 @@ export class SuggestionsManager {
       $$(elem).removeClass(this.options.selectedClass);
     }
     $$(suggestion).addClass(this.options.selectedClass);
+  }
+
+  private addAccessibilitiesProperties() {
+    $$(this.element).setAttribute('role', 'listbox');
+    $$(this.element).setAttribute('id', 'coveo-magicbox-suggestions');
+
+    $$(this.magicBoxContainer).setAttribute('aria-expanded', 'false');
+    $$(this.magicBoxContainer).setAttribute('aria-haspopup', 'listbox');
+    $$(this.magicBoxContainer).setAttribute('aria-owns', 'coveo-magibox-suggestions');
+
+    $$(this.inputManager.input).setAttribute('aria-activedescendant', '');
   }
 }
