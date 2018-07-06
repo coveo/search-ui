@@ -226,8 +226,7 @@ export function ResponsiveFacetsTest() {
         responsiveMediumBreakpoint: 1234567
       });
       responsiveFacets = new ResponsiveFacets(root, '', {});
-      let spy = jasmine.createSpy('width').and.returnValue(1234567 - 1);
-      root.width = <any>spy;
+      root.width = jasmine.createSpy('width').and.returnValue(1234567 - 1) as any;
 
       expect(responsiveFacets.needDropdownWrapper()).toBe(true);
     });
