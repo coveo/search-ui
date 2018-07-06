@@ -27,9 +27,6 @@ DomTests();
 import { HighlightUtilsTest } from './utils/HighlightUtilsTest';
 HighlightUtilsTest();
 
-import { BackOffTest } from './misc/BackOffTest';
-BackOffTest();
-
 import { L10NTest } from './misc/L10NTest';
 L10NTest();
 
