@@ -556,7 +556,7 @@ export class FacetSlider extends Component {
     // This is used inside SF integration
     this.bind.onRootElement('onPopupOpen', this.onResize);
 
-    $$(this.root).on(InitializationEvents.nuke, this.handleNuke);
+    $$(this.root).on(InitializationEvents.nuke, () => this.handleNuke());
   }
 
   private bindBreadcrumbEvents() {
