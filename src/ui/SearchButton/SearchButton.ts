@@ -1,13 +1,14 @@
+import { exportGlobally } from '../../GlobalExports';
+import { l } from '../../strings/Strings';
+import { AccessibleButton } from '../../utils/AccessibleButton';
+import { $$ } from '../../utils/Dom';
+import { SVGDom } from '../../utils/SVGDom';
+import { SVGIcons } from '../../utils/SVGIcons';
+import { Utils } from '../../utils/Utils';
+import { IAnalyticsNoMeta, analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
-import { Utils } from '../../utils/Utils';
-import { $$ } from '../../utils/Dom';
-import { l } from '../../strings/Strings';
-import { IAnalyticsNoMeta, analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
 import { Initialization } from '../Base/Initialization';
-import { exportGlobally } from '../../GlobalExports';
-import { SVGIcons } from '../../utils/SVGIcons';
-import { SVGDom } from '../../utils/SVGDom';
 
 export interface ISearchButtonOptions {}
 
@@ -38,8 +39,13 @@ export class SearchButton extends Component {
   constructor(public element: HTMLElement, public options?: ISearchButtonOptions, bindings?: IComponentBindings) {
     super(element, SearchButton.ID, bindings);
 
-    $$(element).setAttribute('aria-label', l('Search'));
-    this.bind.on(element, 'click', () => this.handleClick());
+    new AccessibleButton()
+      .withElement(element)
+      .withOwner(this.bind)
+      .withLabel(l('Search'))
+      .withSelectAction(() => this.handleClick())
+      .build();
+
     // Provide a magnifier icon if element contains nothing
     if (Utils.trim($$(this.element).text()) == '') {
       const svgMagnifierContainer = $$('span', { className: 'coveo-search-button' }, SVGIcons.icons.search).el;

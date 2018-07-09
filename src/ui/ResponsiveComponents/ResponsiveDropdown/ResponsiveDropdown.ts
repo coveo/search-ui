@@ -3,6 +3,7 @@ import { IResponsiveDropdownContent } from './ResponsiveDropdownContent';
 import { $$, Dom } from '../../../utils/Dom';
 import { EventsUtils } from '../../../utils/EventsUtils';
 import * as _ from 'underscore';
+import { AccessibleButton } from '../../../utils/AccessibleButton';
 export enum ResponsiveDropdownEvent {
   OPEN = 'responsiveDropdownOpen',
   CLOSE = 'responsiveDropdownClose'
@@ -72,13 +73,18 @@ export class ResponsiveDropdown {
   }
 
   private bindOnClickDropdownHeaderEvent() {
-    this.dropdownHeader.element.on('click', () => {
-      if (this.isOpened) {
-        this.close();
-      } else {
-        this.open();
-      }
-    });
+    new AccessibleButton()
+      .withElement(this.dropdownHeader.element)
+      .withSelectAction(() => {
+        if (this.isOpened) {
+          this.close();
+        } else {
+          this.open();
+        }
+      })
+      .withBlurAction(() => this.close())
+      .withLabel('yo')
+      .build();
   }
 
   private showPopupBackground() {

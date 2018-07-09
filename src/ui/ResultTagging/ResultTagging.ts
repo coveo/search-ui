@@ -1,25 +1,24 @@
-import { Component } from '../Base/Component';
-import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
-import { IFieldDescription } from '../../rest/FieldDescription';
-import { IComponentBindings } from '../Base/ComponentBindings';
-import { Assert } from '../../misc/Assert';
-import { Utils } from '../../utils/Utils';
-import { Initialization } from '../Base/Initialization';
-import { IIndexFieldValue } from '../../rest/FieldValue';
-import { StringUtils } from '../../utils/StringUtils';
-import { l } from '../../strings/Strings';
-import { KEYBOARD, KeyboardUtils } from '../../utils/KeyboardUtils';
-import { QueryStateModel } from '../../models/QueryStateModel';
-import { ITaggingRequest } from '../../rest/TaggingRequest';
-import { $$ } from '../../utils/Dom';
-import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
-import { IQueryResult } from '../../rest/QueryResult';
+import 'styling/_ResultTagging';
 import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
-
-import 'styling/_ResultTagging';
-import { SVGIcons } from '../../utils/SVGIcons';
+import { Assert } from '../../misc/Assert';
+import { QueryStateModel } from '../../models/QueryStateModel';
+import { IFieldDescription } from '../../rest/FieldDescription';
+import { IIndexFieldValue } from '../../rest/FieldValue';
+import { IQueryResult } from '../../rest/QueryResult';
+import { ITaggingRequest } from '../../rest/TaggingRequest';
+import { l } from '../../strings/Strings';
+import { $$ } from '../../utils/Dom';
+import { KEYBOARD, KeyboardUtils } from '../../utils/KeyboardUtils';
+import { StringUtils } from '../../utils/StringUtils';
 import { SVGDom } from '../../utils/SVGDom';
+import { SVGIcons } from '../../utils/SVGIcons';
+import { Utils } from '../../utils/Utils';
+import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
+import { Component } from '../Base/Component';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
+import { Initialization } from '../Base/Initialization';
 
 export interface IResultTaggingOptions {
   field: IFieldOption;

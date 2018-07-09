@@ -14,6 +14,7 @@ import { StandaloneSearchInterface } from '../SearchInterface/SearchInterface';
 import { IStringMap } from '../../rest/GenericParam';
 import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
+import { AccessibleButton } from '../../utils/AccessibleButton';
 
 export interface IAnalyticsSuggestionsOptions extends ISuggestionForOmniboxOptions {}
 
@@ -99,10 +100,16 @@ export class AnalyticsSuggestions extends Component {
 
     this.options = ComponentOptions.initComponentOptions(element, AnalyticsSuggestions, this.options);
 
-    let rowTemplate = (toRender: IStringMap<any>) => {
-      let rowElement = $$('div', {
+    const rowTemplate = (toRender: IStringMap<any>) => {
+      const rowElement = $$('div', {
         className: 'magic-box-suggestion coveo-omnibox-selectable coveo-top-analytics-suggestion-row'
       });
+
+      new AccessibleButton()
+        .withElement(rowElement)
+        .withLabel(toRender.rawValue)
+        .build();
+
       if (toRender['data']) {
         rowElement.el.innerHTML = toRender['data'];
       }
@@ -111,7 +118,7 @@ export class AnalyticsSuggestions extends Component {
 
     this.options.onSelect = this.options.onSelect || this.onRowSelection;
 
-    let suggestionStructure: ISuggestionForOmniboxTemplate = {
+    const suggestionStructure: ISuggestionForOmniboxTemplate = {
       row: rowTemplate
     };
 
@@ -144,7 +151,7 @@ export class AnalyticsSuggestions extends Component {
           $$(this.currentlyDisplayedSuggestions[suggestion].element).trigger('click');
         }
       } else {
-        let currentlySuggested = <{ element: HTMLElement; pos: number }>_.findWhere(<any>this.currentlyDisplayedSuggestions, {
+        const currentlySuggested = <{ element: HTMLElement; pos: number }>_.findWhere(<any>this.currentlyDisplayedSuggestions, {
           pos: suggestion
         });
         if (currentlySuggested) {
@@ -158,7 +165,7 @@ export class AnalyticsSuggestions extends Component {
     Assert.exists(args);
 
     var promise = new Promise((resolve, reject) => {
-      let searchPromise = this.usageAnalytics.getTopQueries({
+      const searchPromise = this.usageAnalytics.getTopQueries({
         pageSize: this.options.numberOfSuggestions,
         queryText: args.completeQueryExpression.word
       });
@@ -173,7 +180,7 @@ export class AnalyticsSuggestions extends Component {
         if (!_.isEmpty(this.resultsToBuildWith) && args.completeQueryExpression.word != '') {
           this.partialQueries.push(args.completeQueryExpression.word);
         }
-        let element = this.suggestionForOmnibox.buildOmniboxElement(this.resultsToBuildWith, args);
+        const element = this.suggestionForOmnibox.buildOmniboxElement(this.resultsToBuildWith, args);
         this.currentlyDisplayedSuggestions = {};
         if (element) {
           _.map($$(element).findAll('.coveo-omnibox-selectable'), (selectable, i?) => {
@@ -242,11 +249,11 @@ export class AnalyticsSuggestions extends Component {
     });
 
     // Reduce right to get the last X words that adds to less then rejectLength
-    let reducedToRejectLengthOrLess = [];
+    const reducedToRejectLengthOrLess = [];
     _.reduceRight(
       toClean,
       (memo: number, partial: string) => {
-        let totalSoFar = memo + partial.length;
+        const totalSoFar = memo + partial.length;
         if (totalSoFar <= rejectLength) {
           reducedToRejectLengthOrLess.push(partial);
         }
@@ -255,7 +262,7 @@ export class AnalyticsSuggestions extends Component {
       0
     );
     toClean = reducedToRejectLengthOrLess.reverse();
-    let ret = toClean.join(';');
+    const ret = toClean.join(';');
 
     // analytics service can store max 256 char in a custom event
     // if we're over that, call cleanup again with an arbitrary 10 less char accepted

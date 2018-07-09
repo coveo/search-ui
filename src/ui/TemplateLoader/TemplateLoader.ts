@@ -1,14 +1,14 @@
-import { Template } from '../Templates/Template';
-import { Component } from '../Base/Component';
-import { ComponentOptions } from '../Base/ComponentOptions';
-import { IComponentBindings } from '../Base/ComponentBindings';
-import { IQueryResult } from '../../rest/QueryResult';
-import { Assert } from '../../misc/Assert';
-import { Initialization, IInitializationParameters } from '../Base/Initialization';
-import { $$ } from '../../utils/Dom';
-import * as _ from 'underscore';
+import { each } from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
+import { Assert } from '../../misc/Assert';
+import { IQueryResult } from '../../rest/QueryResult';
+import { $$ } from '../../utils/Dom';
+import { Component } from '../Base/Component';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { IInitializationParameters, Initialization } from '../Base/Initialization';
 import { TemplateComponentOptions } from '../Base/TemplateComponentOptions';
+import { Template } from '../Templates/Template';
 
 export interface ITemplateLoaderOptions {
   template: Template;
@@ -136,7 +136,7 @@ export class TemplateLoader extends Component {
       };
 
       var parents = $$(this.element).parents(Component.computeCssClassName(TemplateLoader));
-      _.each(parents, (parent: HTMLElement) => {
+      each(parents, (parent: HTMLElement) => {
         let clone = <HTMLElement>parent.cloneNode();
         $$(clone).empty();
         let outerHTMLParent = clone.outerHTML;

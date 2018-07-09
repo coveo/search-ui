@@ -19,7 +19,7 @@ export const AccessibilityTab = () => {
       done();
     });
 
-    it('should be accessibl when configured as a div', async done => {
+    it('should be accessible when configured as a div', async done => {
       const tab = $$('div', {
         className: Component.computeCssClassName(Tab),
         'data-caption': 'All Content',
@@ -34,7 +34,7 @@ export const AccessibilityTab = () => {
       done();
     });
 
-    it('should be accessibl when configured as a span', async done => {
+    it('should be accessible when configured as a span', async done => {
       const tab = $$('span', {
         className: Component.computeCssClassName(Tab),
         'data-caption': 'All Content',

@@ -20,6 +20,7 @@ import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 
 import 'styling/_ResultLink';
+import { AccessibleButton } from '../../utils/AccessibleButton';
 
 /**
  * The `ResultLink` component automatically transform a search result title into a clickable link pointing to the
@@ -365,9 +366,11 @@ export class ResultLink extends Component {
         this.options.onClick.call(this, e, this.result);
       };
 
-      $$(this.element).on('click', (e: MouseEvent) => {
-        this.toExecuteOnOpen(e);
-      });
+      new AccessibleButton()
+        .withElement(this.element)
+        .withLabel(this.result.title)
+        .withSelectAction((e: Event) => this.toExecuteOnOpen(e))
+        .build();
 
       return true;
     } else {

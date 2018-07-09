@@ -1,15 +1,15 @@
 /// <reference path="Facet.ts" />
 
-import { FacetValue } from './FacetValues';
-import { Facet } from './Facet';
-import { Assert } from '../../misc/Assert';
-import { DeviceUtils } from '../../utils/DeviceUtils';
-import { IAnalyticsFacetMeta, analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
-import { $$, Dom } from '../../utils/Dom';
-import * as _ from 'underscore';
 import 'styling/_FacetBreadcrumb';
-import { SVGIcons } from '../../utils/SVGIcons';
+import { compact } from 'underscore';
+import { Assert } from '../../misc/Assert';
+import { AccessibleButton } from '../../utils/AccessibleButton';
+import { $$, Dom } from '../../utils/Dom';
 import { SVGDom } from '../../utils/SVGDom';
+import { SVGIcons } from '../../utils/SVGIcons';
+import { analyticsActionCauseList, IAnalyticsFacetMeta } from '../Analytics/AnalyticsActionListMeta';
+import { Facet } from './Facet';
+import { FacetValue } from './FacetValues';
 
 export interface IBreadcrumbValueElementKlass {
   new (facet: Facet, facetValue: FacetValue): BreadcrumbValueElement;
@@ -18,51 +18,15 @@ export interface IBreadcrumbValueElementKlass {
 export class BreadcrumbValueElement {
   constructor(public facet: Facet, public facetValue: FacetValue) {}
 
-  public build(tooltip = true): Dom {
+  public build(): Dom {
     Assert.exists(this.facetValue);
 
-    const elem = DeviceUtils.isMobileDevice() ? $$('div') : $$('span');
-    elem.addClass('coveo-facet-breadcrumb-value');
-    elem.toggleClass('coveo-selected', this.facetValue.selected);
-    elem.toggleClass('coveo-excluded', this.facetValue.excluded);
-    elem.el.setAttribute('title', this.getBreadcrumbTooltip());
+    const { container, caption, clear } = this.buildElements();
 
-    const caption = $$('span', {
-      className: 'coveo-facet-breadcrumb-caption'
-    });
-    caption.text(this.facet.getValueCaption(this.facetValue));
-    elem.el.appendChild(caption.el);
+    container.append(caption.el);
+    container.append(clear.el);
 
-    const clear = $$(
-      'span',
-      {
-        className: 'coveo-facet-breadcrumb-clear'
-      },
-      SVGIcons.icons.checkboxHookExclusionMore
-    );
-    SVGDom.addClassToSVGInContainer(clear.el, 'coveo-facet-breadcrumb-clear-svg');
-    elem.el.appendChild(clear.el);
-
-    let clicked = false;
-    elem.on('click', () => {
-      if (!clicked) {
-        clicked = true;
-        if (this.facetValue.excluded) {
-          this.facet.unexcludeValue(this.facetValue.value);
-        } else {
-          this.facet.deselectValue(this.facetValue.value);
-        }
-        this.facet.triggerNewQuery(() =>
-          this.facet.usageAnalytics.logSearchEvent<IAnalyticsFacetMeta>(analyticsActionCauseList.breadcrumbFacet, {
-            facetId: this.facet.options.id,
-            facetValue: this.facetValue.value,
-            facetTitle: this.facet.options.title
-          })
-        );
-      }
-    });
-
-    return elem;
+    return container;
   }
 
   public getBreadcrumbTooltip(): string {
@@ -71,6 +35,67 @@ export class BreadcrumbValueElement {
       this.facetValue.getFormattedCount(),
       this.facetValue.getFormattedComputedField(this.facet.options.computedFieldFormat)
     ];
-    return _.compact(tooltipParts).join(' ');
+    return compact(tooltipParts).join(' ');
+  }
+
+  private buildElements() {
+    return {
+      container: this.buildContainer(),
+      clear: this.buildClear(),
+      caption: this.buildCaption()
+    };
+  }
+
+  private buildContainer() {
+    const container = $$('div', {
+      className: 'coveo-facet-breadcrumb-value'
+    });
+
+    container.toggleClass('coveo-selected', this.facetValue.selected);
+    container.toggleClass('coveo-excluded', this.facetValue.excluded);
+
+    new AccessibleButton()
+      .withElement(container)
+      .withLabel(this.getBreadcrumbTooltip())
+      .withSelectAction(() => this.selectAction())
+      .build();
+
+    return container;
+  }
+
+  private buildClear() {
+    const clear = $$(
+      'span',
+      {
+        className: 'coveo-facet-breadcrumb-clear'
+      },
+      SVGIcons.icons.checkboxHookExclusionMore
+    );
+    SVGDom.addClassToSVGInContainer(clear.el, 'coveo-facet-breadcrumb-clear-svg');
+
+    return clear;
+  }
+
+  private buildCaption() {
+    const caption = $$('span', {
+      className: 'coveo-facet-breadcrumb-caption'
+    });
+    caption.text(this.facet.getValueCaption(this.facetValue));
+    return caption;
+  }
+
+  private selectAction() {
+    if (this.facetValue.excluded) {
+      this.facet.unexcludeValue(this.facetValue.value);
+    } else {
+      this.facet.deselectValue(this.facetValue.value);
+    }
+    this.facet.triggerNewQuery(() =>
+      this.facet.usageAnalytics.logSearchEvent<IAnalyticsFacetMeta>(analyticsActionCauseList.breadcrumbFacet, {
+        facetId: this.facet.options.id,
+        facetValue: this.facetValue.value,
+        facetTitle: this.facet.options.title
+      })
+    );
   }
 }

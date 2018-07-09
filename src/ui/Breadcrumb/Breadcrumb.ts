@@ -1,19 +1,19 @@
+import 'styling/_Breadcrumb';
+import { each } from 'underscore';
+import { BreadcrumbEvents, IBreadcrumbItem, IClearBreadcrumbEventArgs, IPopulateBreadcrumbEventArgs } from '../../events/BreadcrumbEvents';
+import { InitializationEvents } from '../../events/InitializationEvents';
+import { QueryEvents } from '../../events/QueryEvents';
+import { exportGlobally } from '../../GlobalExports';
+import { l } from '../../strings/Strings';
+import { AccessibleButton } from '../../utils/AccessibleButton';
+import { $$ } from '../../utils/Dom';
+import { SVGDom } from '../../utils/SVGDom';
+import { SVGIcons } from '../../utils/SVGIcons';
+import { analyticsActionCauseList, IAnalyticsNoMeta } from '../Analytics/AnalyticsActionListMeta';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { ComponentOptions } from '../Base/ComponentOptions';
-import { InitializationEvents } from '../../events/InitializationEvents';
-import { BreadcrumbEvents, IBreadcrumbItem, IPopulateBreadcrumbEventArgs, IClearBreadcrumbEventArgs } from '../../events/BreadcrumbEvents';
-import { analyticsActionCauseList, IAnalyticsNoMeta } from '../Analytics/AnalyticsActionListMeta';
-import { $$ } from '../../utils/Dom';
-import { l } from '../../strings/Strings';
 import { Initialization } from '../Base/Initialization';
-import { QueryEvents } from '../../events/QueryEvents';
-import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
-import * as _ from 'underscore';
-import { exportGlobally } from '../../GlobalExports';
-import 'styling/_Breadcrumb';
-import { SVGIcons } from '../../utils/SVGIcons';
-import { SVGDom } from '../../utils/SVGDom';
 
 export interface IBreadcrumbOptions {}
 
@@ -105,7 +105,7 @@ export class Breadcrumb extends Component {
     const breadcrumbItems = document.createElement('div');
     $$(breadcrumbItems).addClass('coveo-breadcrumb-items');
     this.element.appendChild(breadcrumbItems);
-    _.each(breadcrumbs, (bcrumb: IBreadcrumbItem) => {
+    each(breadcrumbs, (bcrumb: IBreadcrumbItem) => {
       const elem = bcrumb.element;
       $$(elem).addClass('coveo-breadcrumb-item');
       breadcrumbItems.appendChild(elem);
@@ -113,21 +113,31 @@ export class Breadcrumb extends Component {
 
     const clear = $$('div', {
       className: 'coveo-breadcrumb-clear-all',
-      title: l('ClearAllFilters'),
-      tabindex: 0
+      title: l('ClearAllFilters')
     }).el;
 
-    const clearIcon = $$('div', { className: 'coveo-icon coveo-breadcrumb-clear-all-icon' }, SVGIcons.icons.checkboxHookExclusionMore).el;
+    new AccessibleButton()
+      .withElement(clear)
+      .withSelectAction(() => this.clearBreadcrumbs())
+      .withOwner(this.bind)
+      .withLabel(l('ClearAllFilters'))
+      .build();
+
+    const clearIcon = $$(
+      'div',
+      {
+        className: 'coveo-icon coveo-breadcrumb-clear-all-icon'
+      },
+      SVGIcons.icons.checkboxHookExclusionMore
+    ).el;
+
     SVGDom.addClassToSVGInContainer(clearIcon, 'coveo-breadcrumb-clear-all-svg');
+
     clear.appendChild(clearIcon);
-    const clearText = document.createElement('div');
-    $$(clearText).text(l('Clear', ''));
+    const clearText = $$('div', undefined, l('Clear', '')).el;
+
     clear.appendChild(clearText);
     this.element.appendChild(clear);
-
-    const clearAction = () => this.clearBreadcrumbs();
-    this.bind.on(clear, 'click', clearAction);
-    this.bind.on(clear, 'keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, clearAction));
   }
 
   private redrawBreadcrumb() {

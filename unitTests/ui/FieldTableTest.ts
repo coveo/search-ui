@@ -81,7 +81,7 @@ export function FieldTableTest() {
         it('should put the tabindex to 0 on the toggle caption', function() {
           expect(
             $$(test.env.root)
-              .find('.coveo-field-table-toggle-caption')
+              .find('.coveo-field-table-toggle')
               .getAttribute('tabindex')
           ).toBe('0');
         });
