@@ -1,0 +1,13 @@
+.coveo-accessible-button {
+  &:hover {
+    cursor: pointer;
+  }
+  &:focus {
+    outline-width: 0;
+  }
+  &.coveo-accessible-button-focused {
+    &:focus {
+      outline-width: initial;
+    }
+  }
+}

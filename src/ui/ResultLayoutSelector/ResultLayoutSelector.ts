@@ -4,14 +4,13 @@ import { InitializationEvents } from '../../events/InitializationEvents';
 import { IQueryErrorEventArgs, IQuerySuccessEventArgs, QueryEvents } from '../../events/QueryEvents';
 import { IResultLayoutPopulateArgs, ResultLayoutEvents } from '../../events/ResultLayoutEvents';
 import { IChangeLayoutEventArgs, ResultListEvents } from '../../events/ResultListEvents';
-import { exportGlobally } from '../../GlobalExports';
 import { Assert } from '../../misc/Assert';
 import { IAttributesChangedEventArg, MODEL_EVENTS } from '../../models/Model';
 import { QueryStateModel, QUERY_STATE_ATTRIBUTES } from '../../models/QueryStateModel';
 import { IQueryResults } from '../../rest/QueryResults';
+import { exportGlobally } from '../../GlobalExports';
 import { l } from '../../strings/Strings';
 import { $$ } from '../../utils/Dom';
-import { KEYBOARD, KeyboardUtils } from '../../utils/KeyboardUtils';
 import { SVGDom } from '../../utils/SVGDom';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { Utils } from '../../utils/Utils';
@@ -23,6 +22,7 @@ import { Initialization } from '../Base/Initialization';
 import { ResponsiveResultLayout } from '../ResponsiveComponents/ResponsiveResultLayout';
 import { ValidLayout } from './ValidLayout';
 import ResultListModule = require('../ResultList/ResultList');
+import { AccessibleButton } from '../../utils/AccessibleButton';
 
 export interface IActiveLayouts {
   button: {
@@ -305,23 +305,29 @@ export class ResultLayoutSelector extends Component {
   }
 
   private addButton(layout: string) {
-    const btn = $$(
-      'span',
-      {
-        className: 'coveo-result-layout-selector',
-        tabindex: 0
-      },
-      $$('span', { className: 'coveo-result-layout-selector-caption' }, l(layout))
-    );
+    const btn = $$('span', {
+      className: 'coveo-result-layout-selector'
+    });
+    const caption = $$('span', { className: 'coveo-result-layout-selector-caption' }, l(layout));
+    btn.append(caption.el);
+
     const icon = $$('span', { className: `coveo-icon coveo-${layout}-layout-icon` }, SVGIcons.icons[`${layout}Layout`]);
     SVGDom.addClassToSVGInContainer(icon.el, `coveo-${layout}-svg`);
     btn.prepend(icon.el);
+
+    const selectAction = () => this.changeLayout(<ValidLayout>layout);
+
+    new AccessibleButton()
+      .withElement(btn)
+      .withLabel(l(layout))
+      .withSelectAction(selectAction)
+      .withOwner(this.bind)
+      .build();
+
     if (layout === this.currentLayout) {
       btn.addClass('coveo-selected');
     }
-    const activateAction = () => this.changeLayout(<ValidLayout>layout);
-    btn.on('click', activateAction);
-    btn.on('keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, activateAction));
+
     $$(this.element).append(btn.el);
     this.currentActiveLayouts[layout] = {
       button: {

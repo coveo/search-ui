@@ -90,7 +90,7 @@ export class DatePicker implements IFormWidget, IFormWidgetSettable {
   }
 
   private buildContent() {
-    this.element = <HTMLInputElement>$$('input', { className: 'coveo-button' }).el;
+    this.element = <HTMLInputElement>$$('input', { className: 'coveo-button', 'aria-label': l('Date') }).el;
     this.element.readOnly = true;
     this.picker = new Pikaday({
       field: this.element,

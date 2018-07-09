@@ -30,6 +30,7 @@ import { ModalBox as ModalBoxModule } from '../../ExternalModulesShim';
 import { BreadcrumbEvents, IPopulateBreadcrumbEventArgs, IClearBreadcrumbEventArgs } from '../../events/BreadcrumbEvents';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { SVGDom } from '../../utils/SVGDom';
+import { AccessibleButton } from '../../utils/AccessibleButton';
 
 export interface IAdvancedSearchOptions {
   includeKeywords?: boolean;
@@ -166,34 +167,65 @@ export class AdvancedSearch extends Component {
 
   private handlePopulateBreadcrumb(args: IPopulateBreadcrumbEventArgs) {
     if (this.needToPopulateBreadcrumb) {
-      const elem = $$('div', {
-        className: 'coveo-advanced-search-breadcrumb'
-      });
-      const title = $$('span', {
-        className: 'coveo-title'
-      });
-      title.text(l('FiltersInAdvancedSearch') + ' : ');
-      const clear = $$(
-        'span',
-        {
-          className: 'coveo-advanced-search-breadcrumb-clear'
-        },
-        SVGIcons.icons.checkboxHookExclusionMore
-      );
-      SVGDom.addClassToSVGInContainer(clear.el, 'coveo-advanced-search-breadcrumb-clear-svg');
-      clear.on('click', () => {
-        this.handleClearBreadcrumb();
-        this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.breadcrumbAdvancedSearch, {});
-        this.queryController.executeQuery();
-      });
+      const { container, title, clear } = this.buildBreadcrumbElements();
 
-      elem.append(title.el);
-      elem.append(clear.el);
+      container.append(title.el);
+      container.append(clear.el);
 
       args.breadcrumbs.push({
-        element: elem.el
+        element: container.el
       });
     }
+  }
+
+  private buildBreadcrumbElements() {
+    return {
+      container: this.buildBreadcrumbContainer(),
+      title: this.buildBreadcrumbTitle(),
+      clear: this.buildBreacrumbClear()
+    };
+  }
+
+  private buildBreadcrumbContainer() {
+    return $$('div', {
+      className: 'coveo-advanced-search-breadcrumb'
+    });
+  }
+
+  private buildBreadcrumbTitle() {
+    return $$(
+      'span',
+      {
+        className: 'coveo-advanced-search-breadcrumb-title'
+      },
+      l('FiltersInAdvancedSearch') + ' : '
+    );
+  }
+
+  private buildBreacrumbClear() {
+    const clear = $$(
+      'span',
+      {
+        className: 'coveo-advanced-search-breadcrumb-clear'
+      },
+      SVGIcons.icons.checkboxHookExclusionMore
+    );
+
+    SVGDom.addClassToSVGInContainer(clear.el, 'coveo-advanced-search-breadcrumb-clear-svg');
+
+    const selectAction = () => {
+      this.handleClearBreadcrumb();
+      this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.breadcrumbAdvancedSearch, {});
+      this.queryController.executeQuery();
+    };
+
+    new AccessibleButton()
+      .withElement(clear)
+      .withLabel(l('Clear'))
+      .withSelectAction(() => selectAction())
+      .build();
+
+    return clear;
   }
 
   private handleClearBreadcrumb() {
