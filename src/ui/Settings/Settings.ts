@@ -207,6 +207,7 @@ export class Settings extends Component {
   }
 
   private onblur() {
+    debugger;
     clearTimeout(this.closeTimeout);
     this.closeTimeout = window.setTimeout(() => {
       this.close();
