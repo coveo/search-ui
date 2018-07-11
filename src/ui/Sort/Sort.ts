@@ -6,7 +6,6 @@ import { Assert } from '../../misc/Assert';
 import { IAttributesChangedEventArg, MODEL_EVENTS } from '../../models/Model';
 import { QUERY_STATE_ATTRIBUTES, QueryStateModel } from '../../models/QueryStateModel';
 import { $$ } from '../../utils/Dom';
-import { KEYBOARD, KeyboardUtils } from '../../utils/KeyboardUtils';
 import { SVGDom } from '../../utils/SVGDom';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { Utils } from '../../utils/Utils';
@@ -16,6 +15,8 @@ import { IComponentBindings } from '../Base/ComponentBindings';
 import { ComponentOptions } from '../Base/ComponentOptions';
 import { Initialization } from '../Base/Initialization';
 import { SortCriteria } from './SortCriteria';
+import { AccessibleButton } from '../../utils/AccessibleButton';
+import { l } from '../../strings/Strings';
 
 export interface ISortOptions {
   sortCriteria?: SortCriteria[];
@@ -112,10 +113,13 @@ export class Sort extends Component {
     this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => this.handleBuildingQuery(args));
     this.bind.onRootElement(QueryEvents.queryError, (args: IQueryErrorEventArgs) => this.handleQueryError(args));
     const clickAction = () => this.handleClick();
-    this.bind.on(this.element, 'click', clickAction);
-    this.bind.on(this.element, 'keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, clickAction));
 
-    this.element.setAttribute('tabindex', '0');
+    new AccessibleButton()
+      .withElement(this.element)
+      .withSelectAction(clickAction)
+      .withLabel(this.options.caption || l('Sort'))
+      .build();
+
     if (Utils.isNonEmptyString(this.options.caption)) {
       $$(this.element).text(this.options.caption);
     }

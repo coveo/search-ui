@@ -17,7 +17,8 @@ var configuration = {
     },
     {
       pattern: './bin/css/CoveoFullSearch.css',
-      watched: false
+      type: 'css',
+      watched: true
     },
     {
       pattern: './bin/js/CoveoJsSearch.js',

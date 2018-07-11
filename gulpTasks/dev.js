@@ -56,6 +56,7 @@ gulp.task('dev', ['setup', 'deleteCssFile'], done => {
     contentBase: 'bin/',
     publicPath: `http://localhost:${port}/js/`,
     disableHostCheck: true,
+    compress: true,
     stats: {
       colors: true,
       publicPath: true

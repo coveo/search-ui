@@ -1,15 +1,16 @@
+import 'styling/_ResultRating';
+import { exportGlobally } from '../../GlobalExports';
+import { IQueryResult } from '../../rest/QueryResult';
+import { IRatingRequest } from '../../rest/RatingRequest';
+import { AccessibleButton } from '../../utils/AccessibleButton';
+import { $$, Dom } from '../../utils/Dom';
+import { SVGDom } from '../../utils/SVGDom';
+import { SVGIcons } from '../../utils/SVGIcons';
+import { Utils } from '../../utils/Utils';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { ComponentOptions } from '../Base/ComponentOptions';
-import { IQueryResult } from '../../rest/QueryResult';
-import { $$, Dom } from '../../utils/Dom';
 import { Initialization } from '../Base/Initialization';
-import { Utils } from '../../utils/Utils';
-import { IRatingRequest } from '../../rest/RatingRequest';
-import { exportGlobally } from '../../GlobalExports';
-import { SVGIcons } from '../../utils/SVGIcons';
-import { SVGDom } from '../../utils/SVGDom';
-import 'styling/_ResultRating';
 
 export enum RatingValues {
   Undefined,
@@ -76,10 +77,14 @@ export class ResultRating extends Component {
       element.appendChild(star.el);
 
       if (this.bindings.searchInterface.options.enableCollaborativeRating) {
-        star.on('click', e => {
-          const targetElement: HTMLElement = <HTMLElement>e.currentTarget;
-          this.rateDocument(parseInt(targetElement.getAttribute('rating-value')));
-        });
+        new AccessibleButton()
+          .withElement(star)
+          .withSelectAction(e => {
+            const targetElement: HTMLElement = <HTMLElement>e.currentTarget;
+            this.rateDocument(parseInt(targetElement.getAttribute('rating-value')));
+          })
+          .withLabel(value.toString())
+          .build();
 
         star.on('mouseover', e => {
           const targetElement: HTMLElement = <HTMLElement>e.currentTarget;
