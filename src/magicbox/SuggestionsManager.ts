@@ -1,6 +1,7 @@
 import { $$ } from '../utils/Dom';
-import _ = require('underscore');
 import { InputManager } from './InputManager';
+import { each, defaults, indexOf, compact } from 'underscore';
+import { l } from '../strings/Strings';
 
 export interface Suggestion {
   text?: string;
@@ -28,7 +29,7 @@ export class SuggestionsManager {
     private inputManager: InputManager,
     options?: SuggestionsManagerOptions
   ) {
-    this.options = _.defaults(options, <SuggestionsManagerOptions>{
+    this.options = defaults(options, <SuggestionsManagerOptions>{
       selectableClass: 'magic-box-suggestion',
       selectedClass: 'magic-box-selected'
     });
@@ -81,63 +82,42 @@ export class SuggestionsManager {
     }
   }
 
-  public moveDown(): Suggestion {
-    var selected = <HTMLElement>this.element.getElementsByClassName(this.options.selectedClass).item(0);
-    var selectables = <NodeListOf<HTMLElement>>this.element.getElementsByClassName(this.options.selectableClass);
-    var index: number = -1;
-    if (selected != null) {
-      $$(selected).removeClass(this.options.selectedClass);
-      for (var i = 0; i < selectables.length; i++) {
-        if (selected == selectables.item(i)) {
-          index = i;
-          break;
-        }
-      }
-      index = index == -1 ? 0 : index + 1;
-    } else {
+  private move(direction: 'up' | 'down') {
+    const currentlySelected = $$(this.element).find(`.${this.options.selectedClass}`);
+    const selectables = $$(this.element).findAll(`.${this.options.selectableClass}`);
+    const currentIndex = indexOf(selectables, currentlySelected);
+
+    let index = direction == 'up' ? currentIndex - 1 : currentIndex + 1;
+    if (index < -1) {
+      index = selectables.length - 1;
+    }
+    if (index > selectables.length) {
       index = 0;
     }
-    selected = selectables.item(index);
-    if (selected != null) {
-      $$(selected).addClass(this.options.selectedClass);
-      this.inputManager.input.setAttribute('aria-activedescendant', selected.getAttribute('id'));
+
+    const newlySelected = selectables[index];
+
+    if (newlySelected) {
+      this.addSelectedClass(newlySelected);
+      $$(newlySelected).addClass(this.options.selectedClass);
+      $$(this.inputManager.input).setAttribute('aria-activedescendant', $$(newlySelected).getAttribute('id'));
     } else {
-      this.inputManager.input.setAttribute('aria-activedescendant', '');
+      $$(this.inputManager.input).setAttribute('aria-activedescendant', '');
     }
 
-    return this.returnMoved(selected);
+    return newlySelected;
+  }
+
+  public moveDown(): Suggestion {
+    return this.returnMoved(this.move('down'));
   }
 
   public moveUp(): Suggestion {
-    var selected = <HTMLElement>this.element.getElementsByClassName(this.options.selectedClass).item(0);
-    var selectables = <NodeListOf<HTMLElement>>this.element.getElementsByClassName(this.options.selectableClass);
-    var index: number = -1;
-    if (selected != null) {
-      $$(selected).removeClass(this.options.selectedClass);
-      for (var i = 0; i < selectables.length; i++) {
-        if (selected == selectables.item(i)) {
-          index = i;
-          break;
-        }
-      }
-      index = index == -1 ? selectables.length - 1 : index - 1;
-    } else {
-      index = selectables.length - 1;
-    }
-    selected = selectables.item(index);
-
-    if (selected != null) {
-      $$(selected).addClass(this.options.selectedClass);
-      this.inputManager.input.setAttribute('aria-activedescendant', selected.getAttribute('id'));
-    } else {
-      this.inputManager.input.setAttribute('aria-activedescendant', '');
-    }
-
-    return this.returnMoved(selected);
+    return this.returnMoved(this.move('up'));
   }
 
   public select() {
-    var selected = <HTMLElement>this.element.getElementsByClassName(this.options.selectedClass).item(0);
+    const selected = <HTMLElement>this.element.getElementsByClassName(this.options.selectedClass).item(0);
     if (selected != null) {
       $$(selected).trigger('keyboardSelect');
     }
@@ -145,16 +125,16 @@ export class SuggestionsManager {
   }
 
   public mergeSuggestions(suggestions: Array<Promise<Suggestion[]> | Suggestion[]>, callback?: (suggestions: Suggestion[]) => void) {
-    var results: Suggestion[] = [];
-    var timeout;
-    var stillNeedToResolve = true;
+    let results: Suggestion[] = [];
+    let timeout;
+    let stillNeedToResolve = true;
     // clean empty / null values in the array of suggestions
-    suggestions = _.compact(suggestions);
-    var promise = (this.pendingSuggestion = new Promise<Suggestion[]>((resolve, reject) => {
+    suggestions = compact(suggestions);
+    const promise = (this.pendingSuggestion = new Promise<Suggestion[]>((resolve, reject) => {
       // Concat all promises results together in one flat array.
       // If one promise take too long to resolve, simply skip it
-      _.each(suggestions, (suggestion: Promise<Suggestion[]>) => {
-        var shouldRejectPart = false;
+      each(suggestions, (suggestion: Promise<Suggestion[]>) => {
+        let shouldRejectPart = false;
         setTimeout(function() {
           shouldRejectPart = true;
           stillNeedToResolve = false;
@@ -170,7 +150,7 @@ export class SuggestionsManager {
       // - All suggestions resolved
       // - Timeout is reached before all promises have processed -> resolve with what we have so far
       // - No suggestions given (length 0 or undefined)
-      var onResolve = () => {
+      const onResolve = () => {
         if (stillNeedToResolve) {
           if (timeout) {
             clearTimeout(timeout);
@@ -216,12 +196,13 @@ export class SuggestionsManager {
   public updateSuggestions(suggestions: Suggestion[]) {
     $$(this.element).empty();
     this.element.className = 'magic-box-suggestions';
-    _.each(suggestions, (suggestion: Suggestion) => {
-      var dom = suggestion.dom;
+    this.element.setAttribute('id', 'magic-box-suggestions');
+    each(suggestions, (suggestion: Suggestion) => {
+      let dom = suggestion.dom;
       if (!dom) {
         dom = document.createElement('div');
         dom.className = 'magic-box-suggestion';
-        dom.setAttribute('id', `magic-box-suggestion-${_.indexOf(suggestions, suggestion)}`);
+        dom.setAttribute('id', `magic-box-suggestion-${indexOf(suggestions, suggestion)}`);
 
         if (suggestion.html != null) {
           dom.innerHTML = suggestion.html;
@@ -229,7 +210,7 @@ export class SuggestionsManager {
           dom.appendChild(document.createTextNode(suggestion.text));
         } else if (suggestion.separator != null) {
           dom.className = 'magic-box-suggestion-seperator';
-          var suggestionLabel = document.createElement('div');
+          const suggestionLabel = document.createElement('div');
           suggestionLabel.className = 'magic-box-suggestion-seperator-label';
           suggestionLabel.appendChild(document.createTextNode(suggestion.separator));
           dom.appendChild(suggestionLabel);
@@ -244,7 +225,7 @@ export class SuggestionsManager {
       } else {
         // this need to be done if the selection is in cache and the dom is set in the suggestion
         $$(dom).removeClass(this.options.selectedClass);
-        var found = $$(dom).find('.' + this.options.selectableClass);
+        const found = $$(dom).find('.' + this.options.selectableClass);
         $$(found).removeClass(this.options.selectedClass);
       }
       dom['suggestion'] = suggestion;
@@ -279,9 +260,9 @@ export class SuggestionsManager {
   }
 
   private addSelectedClass(suggestion: HTMLElement): void {
-    var selected = this.element.getElementsByClassName(this.options.selectedClass);
-    for (var i = 0; i < selected.length; i++) {
-      var elem = <HTMLElement>selected.item(i);
+    const selected = this.element.getElementsByClassName(this.options.selectedClass);
+    for (let i = 0; i < selected.length; i++) {
+      const elem = <HTMLElement>selected.item(i);
       $$(elem).removeClass(this.options.selectedClass);
     }
     $$(suggestion).addClass(this.options.selectedClass);
@@ -290,6 +271,7 @@ export class SuggestionsManager {
   private addAccessibilitiesProperties() {
     $$(this.element).setAttribute('role', 'listbox');
     $$(this.element).setAttribute('id', 'coveo-magicbox-suggestions');
+    $$(this.element).setAttribute('aria-label', l('SuggestedQueries'));
 
     $$(this.magicBoxContainer).setAttribute('aria-expanded', 'false');
     $$(this.magicBoxContainer).setAttribute('aria-haspopup', 'listbox');
