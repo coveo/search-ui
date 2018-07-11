@@ -1,7 +1,6 @@
 import { $$ } from '../utils/Dom';
 import { InputManager } from './InputManager';
 import { each, defaults, indexOf, compact } from 'underscore';
-import { l } from '../strings/Strings';
 
 export interface Suggestion {
   text?: string;
@@ -48,7 +47,7 @@ export class SuggestionsManager {
       this.handleMouseOut(e);
     });
 
-    this.addAccessibilitiesProperties();
+    this.addAccessibilityProperties();
   }
 
   public handleMouseOver(e) {
@@ -80,32 +79,6 @@ export class SuggestionsManager {
         $$(targetParents[0]).removeClass(this.options.selectedClass);
       }
     }
-  }
-
-  private move(direction: 'up' | 'down') {
-    const currentlySelected = $$(this.element).find(`.${this.options.selectedClass}`);
-    const selectables = $$(this.element).findAll(`.${this.options.selectableClass}`);
-    const currentIndex = indexOf(selectables, currentlySelected);
-
-    let index = direction == 'up' ? currentIndex - 1 : currentIndex + 1;
-    if (index < -1) {
-      index = selectables.length - 1;
-    }
-    if (index > selectables.length) {
-      index = 0;
-    }
-
-    const newlySelected = selectables[index];
-
-    if (newlySelected) {
-      this.addSelectedClass(newlySelected);
-      $$(newlySelected).addClass(this.options.selectedClass);
-      $$(this.inputManager.input).setAttribute('aria-activedescendant', $$(newlySelected).getAttribute('id'));
-    } else {
-      $$(this.inputManager.input).setAttribute('aria-activedescendant', '');
-    }
-
-    return newlySelected;
   }
 
   public moveDown(): Suggestion {
@@ -196,50 +169,104 @@ export class SuggestionsManager {
   public updateSuggestions(suggestions: Suggestion[]) {
     $$(this.element).empty();
     this.element.className = 'magic-box-suggestions';
-    this.element.setAttribute('id', 'magic-box-suggestions');
-    each(suggestions, (suggestion: Suggestion) => {
-      let dom = suggestion.dom;
-      if (!dom) {
-        dom = document.createElement('div');
-        dom.className = 'magic-box-suggestion';
-        dom.setAttribute('id', `magic-box-suggestion-${indexOf(suggestions, suggestion)}`);
 
-        if (suggestion.html != null) {
-          dom.innerHTML = suggestion.html;
-        } else if (suggestion.text != null) {
-          dom.appendChild(document.createTextNode(suggestion.text));
-        } else if (suggestion.separator != null) {
-          dom.className = 'magic-box-suggestion-seperator';
-          const suggestionLabel = document.createElement('div');
-          suggestionLabel.className = 'magic-box-suggestion-seperator-label';
-          suggestionLabel.appendChild(document.createTextNode(suggestion.separator));
-          dom.appendChild(suggestionLabel);
-        }
-        $$(dom).on('click', () => {
-          suggestion.onSelect();
-        });
-        $$(dom).on('keyboardSelect', () => {
-          suggestion.onSelect();
-        });
-        $$(dom).addClass(this.options.selectableClass);
-      } else {
-        // this need to be done if the selection is in cache and the dom is set in the suggestion
-        $$(dom).removeClass(this.options.selectedClass);
-        const found = $$(dom).find('.' + this.options.selectableClass);
-        $$(found).removeClass(this.options.selectedClass);
-      }
+    const suggestionsContainer = this.buildSuggestionsContainer();
+    $$(this.element).append(suggestionsContainer.el);
+
+    each(suggestions, (suggestion: Suggestion) => {
+      const dom = suggestion.dom ? this.modifyDomFromExistingSuggestion(suggestion.dom) : this.createDomFromSuggestion(suggestion);
+
+      dom.setAttribute('id', `magic-box-suggestion-${indexOf(suggestions, suggestion)}`);
+      dom.setAttribute('role', 'option');
+
       dom['suggestion'] = suggestion;
-      this.element.appendChild(dom);
+      suggestionsContainer.append(dom.el);
     });
-    if (suggestions.length > 0) {
-      $$(this.element).addClass('magic-box-hasSuggestion');
-      $$(this.magicBoxContainer).setAttribute('aria-expanded', 'true');
-      this.hasSuggestions = true;
-    } else {
-      $$(this.element).removeClass('magic-box-hasSuggestion');
-      $$(this.magicBoxContainer).setAttribute('aria-expanded', 'false');
-      this.hasSuggestions = false;
+
+    this.hasSuggestions = suggestions.length > 0;
+
+    $$(this.element).toggleClass('magic-box-hasSuggestion', this.hasSuggestions);
+    $$(this.magicBoxContainer).setAttribute('aria-expanded', this.hasSuggestions.toString());
+  }
+
+  private buildSuggestionsContainer() {
+    return $$('div', {
+      id: 'coveo-magicbox-suggestions',
+      role: 'listbox'
+    });
+  }
+
+  private createDomFromSuggestion(suggestion: Suggestion) {
+    const dom = $$('div', {
+      className: `magic-box-suggestion ${this.options.selectableClass}`
+    });
+
+    dom.on('click', () => {
+      suggestion.onSelect();
+    });
+
+    dom.on('keyboardSelect', () => {
+      suggestion.onSelect();
+    });
+
+    if (suggestion.html) {
+      dom.el.innerHTML = suggestion.html;
+      return dom;
     }
+
+    if (suggestion.text) {
+      dom.text(suggestion.text);
+      return dom;
+    }
+
+    if (suggestion.separator) {
+      dom.addClass('magic-box-suggestion-seperator');
+      const suggestionLabel = $$(
+        'div',
+        {
+          className: 'magic-box-suggestion-seperator-label'
+        },
+        suggestion.separator
+      );
+      dom.append(suggestionLabel.el);
+      return dom;
+    }
+
+    return dom;
+  }
+
+  private modifyDomFromExistingSuggestion(dom: HTMLElement) {
+    // this need to be done if the selection is in cache and the dom is set in the suggestion
+    $$(dom).removeClass(this.options.selectedClass);
+    const found = $$(dom).find('.' + this.options.selectableClass);
+    $$(found).removeClass(this.options.selectedClass);
+    return $$(dom);
+  }
+
+  private move(direction: 'up' | 'down') {
+    const currentlySelected = $$(this.element).find(`.${this.options.selectedClass}`);
+    const selectables = $$(this.element).findAll(`.${this.options.selectableClass}`);
+    const currentIndex = indexOf(selectables, currentlySelected);
+
+    let index = direction == 'up' ? currentIndex - 1 : currentIndex + 1;
+    if (index < -1) {
+      index = selectables.length - 1;
+    }
+    if (index > selectables.length) {
+      index = 0;
+    }
+
+    const newlySelected = selectables[index];
+
+    if (newlySelected) {
+      this.addSelectedClass(newlySelected);
+      $$(newlySelected).addClass(this.options.selectedClass);
+      $$(this.inputManager.input).setAttribute('aria-activedescendant', $$(newlySelected).getAttribute('id'));
+    } else {
+      this.inputManager.input.removeAttribute('aria-activedescendant');
+    }
+
+    return newlySelected;
   }
 
   private returnMoved(selected) {
@@ -268,15 +295,9 @@ export class SuggestionsManager {
     $$(suggestion).addClass(this.options.selectedClass);
   }
 
-  private addAccessibilitiesProperties() {
-    $$(this.element).setAttribute('role', 'listbox');
-    $$(this.element).setAttribute('id', 'coveo-magicbox-suggestions');
-    $$(this.element).setAttribute('aria-label', l('SuggestedQueries'));
-
+  private addAccessibilityProperties() {
     $$(this.magicBoxContainer).setAttribute('aria-expanded', 'false');
     $$(this.magicBoxContainer).setAttribute('aria-haspopup', 'listbox');
-    $$(this.magicBoxContainer).setAttribute('aria-owns', 'coveo-magibox-suggestions');
-
-    $$(this.inputManager.input).setAttribute('aria-activedescendant', '');
+    this.inputManager.input.removeAttribute('aria-activedescendant');
   }
 }

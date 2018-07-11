@@ -203,7 +203,6 @@ export class InputManager {
     this.input.setAttribute('form', 'coveo-dummy-form');
     this.input.setAttribute('autocomplete', 'off');
     this.input.setAttribute('aria-autocomplete', 'list');
-    this.input.setAttribute('aria-controls', 'coveo-magibox-suggestions');
     this.input.setAttribute('aria-label', l('Search'));
   }
 

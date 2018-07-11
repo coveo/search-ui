@@ -1,6 +1,8 @@
 import * as axe from 'axe-core';
 import { $$, Component, Omnibox, get, Dom, Facet, AnalyticsSuggestions, Analytics, OmniboxResultList } from 'coveo-search-ui';
 import { afterQuerySuccess, getRoot, getSearchSection, afterDelay, getResultsColumn } from './Testing';
+import { KEYBOARD } from '../src/utils/KeyboardUtils';
+import { times } from 'underscore';
 
 export const AccessibilityOmnibox = () => {
   describe('Omnibox', () => {
@@ -36,6 +38,67 @@ export const AccessibilityOmnibox = () => {
       const axeResults = await axe.run(getRoot());
       expect(axeResults).toBeAccessible();
       done();
+    });
+
+    describe('with keyboard navigation', () => {
+      let input: HTMLInputElement;
+
+      const triggerEvent = (key: KEYBOARD) => {
+        const event = new KeyboardEvent('keyup');
+        Object.defineProperty(event, 'keyCode', {
+          get: () => {
+            return key;
+          }
+        });
+        Object.defineProperty(event, 'which', {
+          get: () => {
+            return key;
+          }
+        });
+        input.dispatchEvent(event);
+      };
+
+      const down = () => triggerEvent(KEYBOARD.DOWN_ARROW);
+      const up = () => triggerEvent(KEYBOARD.UP_ARROW);
+
+      beforeEach(async done => {
+        const omniboxElement = getOmniboxElement();
+        getSearchSection().appendChild(omniboxElement.el);
+        await afterQuerySuccess();
+        showSuggestions(omniboxElement);
+        await afterDelay(500);
+        input = omniboxElement.find('input') as HTMLInputElement;
+        input.focus();
+        done();
+      });
+
+      it('should be accessible when navigating using keyboard down arrow once', async done => {
+        down();
+        const axeResults = await axe.run(getRoot());
+        expect(axeResults).toBeAccessible();
+        done();
+      });
+
+      it('should be accessible when navigating using keyboard up arrow once', async done => {
+        up();
+        const axeResults = await axe.run(getRoot());
+        expect(axeResults).toBeAccessible();
+        done();
+      });
+
+      it('should be accessible when navigating using keyboard down arrow multiple time (wrapping around)', async done => {
+        times(10, () => down());
+        const axeResults = await axe.run(getRoot());
+        expect(axeResults).toBeAccessible();
+        done();
+      });
+
+      it('should be accessible when navigating using keyboard up arrow multiple time (wrapping around)', async done => {
+        times(10, () => up());
+        const axeResults = await axe.run(getRoot());
+        expect(axeResults).toBeAccessible();
+        done();
+      });
     });
 
     describe('with disabled standard query suggestions', () => {
