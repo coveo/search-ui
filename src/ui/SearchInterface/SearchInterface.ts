@@ -415,25 +415,31 @@ export class SearchInterface extends RootComponent implements IComponentBindings
      */
     searchPageUri: ComponentOptions.buildStringOption(),
     /**
-     * Specifies the search interface width that should be considered "medium" size, in pixel.
+     * Specifies the search interface width that should be considered "medium" size, in pixels.
      *
-     * This is at this breakpoint that, for examples, facets and filters in the "coveo-facet-column" will switch to display inside a dropdown above the result list instead of next to the result list.
+     * When the width of the window/device that displays the search page reaches or falls short of this threshold (but still exceeds the [responsiveSmallBreakpoint]{@link SearchInterface.options.responsiveSmallBreakpoint} value), the search page layout will change so that, for instance, facets within the element that has the coveo-facet-column class will be accessible from a dropdown menu on top of the result list rather than being fully rendered next to the result list.
      *
-     * This also implies that {@link SearchInterface.options.enableAutomaticResponsiveMode} is set to `true`.
+     * This option is only taken into account when [enableAutomaticResponsiveMode]{@link SearchInterface.options.enableAutomaticResponsiveMode} is set to true.
      *
-     * The default value is `800`.
+     * Default value is `800`.
      */
-    responsiveMediumBreakpoint: ComponentOptions.buildNumberOption({ defaultValue: MEDIUM_SCREEN_WIDTH }),
+    responsiveMediumBreakpoint: ComponentOptions.buildNumberOption({
+      defaultValue: MEDIUM_SCREEN_WIDTH,
+      depend: 'enableAutomaticResponsiveMode'
+    }),
     /**
-     * Specifies the search interface width that should be considered "small" size, in pixel.
+     * Specifies the search interface width that should be considered "small" size, in pixels.
      *
-     * This is at this breakpoint that, for examples, some layouts in the result list will get disabled as they are not suited to display properly at smaller screen size.
+     * When the width of the window/device that displays the search page reaches or falls short of this threshold, the search page layout will change so that, for instance, some result list layouts which are not suited for being rendered on a small screen/area will be disabled.
      *
-     * This also implies that {@link SearchInterface.options.enableAutomaticResponsiveMode} is set to `true`.
+     * This option is only taken into account when [enableAutomaticResponsiveMode]{@link SearchInterface.options.enableAutomaticResponsiveMode} is set to true.
      *
-     * The default value is `480`.
+     * Default value is `480`.
      */
-    responsiveSmallBreakpoint: ComponentOptions.buildNumberOption({ defaultValue: SMALL_SCREEN_WIDTH })
+    responsiveSmallBreakpoint: ComponentOptions.buildNumberOption({
+      defaultValue: SMALL_SCREEN_WIDTH,
+      depend: 'enableAutomaticResponsiveMode'
+    })
   };
 
   public static SMALL_INTERFACE_CLASS_NAME = 'coveo-small-search-interface';

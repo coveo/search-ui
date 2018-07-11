@@ -230,5 +230,15 @@ export function ResponsiveFacetsTest() {
 
       expect(responsiveFacets.needDropdownWrapper()).toBe(true);
     });
+
+    it('should not override values set locally on the facet', () => {
+      new SearchInterface(root.el, {
+        responsiveMediumBreakpoint: 1234567
+      });
+      responsiveFacets = new ResponsiveFacets(root, '', { responsiveBreakpoint: 7654321 });
+      root.width = jasmine.createSpy('width').and.returnValue(1234567 - 1) as any;
+
+      expect(responsiveFacets.needDropdownWrapper()).toBe(true);
+    });
   });
 }
