@@ -262,23 +262,8 @@ export function QuerySummaryTest() {
         expect(getCustomMessageElement().textContent).toBe('SecondQuerySearched');
       });
 
-      it(`when the queryTag is in the attributes of a direct child element
-          it should not replace this queryTag by the querySearched`, () => {
-        const customMessage: string = `<a href="${queryTag}"></a>`;
-
-        test = Mock.optionsComponentSetup<QuerySummary, IQuerySummaryOptions>(QuerySummary, {
-          enableNoResultsFoundMessage: true,
-          noResultsFoundMessage: customMessage
-        });
-
-        test.env.queryStateModel.get = () => 'querySearched';
-        Simulate.query(test.env, { results: FakeResults.createFakeResults(0) });
-
-        expect(getCustomMessageElement().innerHTML).toBe(customMessage);
-      });
-
-      it(`when the queryTag is in the attributes of a non direct child element
-          it should not replace this queryTag by the querySearched`, () => {
+      it(`when the queryTag is in the attributes of an element
+          it should replace this queryTag by the querySearched`, () => {
         const customMessage: string = `<div><a href="${queryTag}"></a></div>`;
 
         test = Mock.optionsComponentSetup<QuerySummary, IQuerySummaryOptions>(QuerySummary, {
@@ -289,7 +274,8 @@ export function QuerySummaryTest() {
         test.env.queryStateModel.get = () => 'querySearched';
         Simulate.query(test.env, { results: FakeResults.createFakeResults(0) });
 
-        expect(getCustomMessageElement().innerHTML).toBe(customMessage);
+        const parsedCustomMessage: string = '<div><a href="&lt;span class=" coveo-highlight"="">querySearched"&gt;</a></div>';
+        expect(getCustomMessageElement().innerHTML).toBe(parsedCustomMessage);
       });
 
       it(`when the query searched is an empty string
@@ -383,26 +369,16 @@ export function QuerySummaryTest() {
         expect(getcustomNoResultsPageElement().textContent).toBe('SecondQuerySearched');
       });
 
-      it(`when the queryTag is in the attributes of a direct child element 
-          it should not replace this queryTag by the querySearched`, () => {
-        const customNoResultsPage = `<a href="${queryTag}"></a>`;
-        test.cmp.element.innerHTML = `<div class="${noResultsCssClass}">${customNoResultsPage}</div>`;
-
-        test.env.queryStateModel.get = () => 'querySearched';
-        Simulate.query(test.env, { results: FakeResults.createFakeResults(0) });
-
-        expect(getcustomNoResultsPageElement().innerHTML).toBe(customNoResultsPage);
-      });
-
-      it(`when the queryTag is in the attributes of a non direct child element
-          it should not replace this queryTag by the querySearched`, () => {
+      it(`when the queryTag is in the attributes of an element
+          it should replace this queryTag by the querySearched`, () => {
         const customNoResultsPage = `<div><a href="${queryTag}"></a></div>`;
         test.cmp.element.innerHTML = `<div class="${noResultsCssClass}">${customNoResultsPage}</div>`;
 
         test.env.queryStateModel.get = () => 'querySearched';
         Simulate.query(test.env, { results: FakeResults.createFakeResults(0) });
 
-        expect(getcustomNoResultsPageElement().innerHTML).toBe(customNoResultsPage);
+        const parsedCustomNoResultsPage: string = '<div><a href="&lt;span class=" coveo-highlight"="">querySearched"&gt;</a></div>';
+        expect(getcustomNoResultsPageElement().innerHTML).toBe(parsedCustomNoResultsPage);
       });
 
       it(`when the query searched is an empty string

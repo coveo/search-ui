@@ -102,7 +102,7 @@ export class QuerySummary extends Component {
 
   private textContainer: HTMLElement;
   private lastKnownGoodState: any;
-  private noResultsContainerSnapshot: string;
+  private noResultsSnapshot: string;
 
   /**
    * Creates a new QuerySummary component.
@@ -134,7 +134,7 @@ export class QuerySummary extends Component {
     $$(this.textContainer).empty();
     this.show();
 
-    this.updateNoResultsContainerSnapshot();
+    this.updateNoResultsSnapshot();
     this.hideNoResultsPage();
 
     if (!this.options.onlyDisplaySearchTips) {
@@ -234,43 +234,18 @@ export class QuerySummary extends Component {
     }
   }
 
-  private updateNoResultsContainerSnapshot() {
+  private updateNoResultsSnapshot() {
     const noResultsContainer = this.getNoResultsContainer();
-    if (this.noResultsContainerSnapshot == null && noResultsContainer) {
-      this.noResultsContainerSnapshot = noResultsContainer.innerHTML;
+    if (this.noResultsSnapshot == null && noResultsContainer) {
+      this.noResultsSnapshot = noResultsContainer.innerHTML;
     }
   }
 
   private updateQueryTagsInNoResultsContainer() {
     const noResultsContainer = this.getNoResultsContainer();
     if (noResultsContainer) {
-      noResultsContainer.innerHTML = this.noResultsContainerSnapshot;
-      this.parseQueryTagsInContainer(noResultsContainer);
+      noResultsContainer.innerHTML = this.parseQueryTags(this.noResultsSnapshot);
     }
-  }
-
-  private parseQueryTagsInContainer(node: Node) {
-    let nextNode: Node;
-    if (node.nodeType === Node.ELEMENT_NODE) {
-      node = node.firstChild;
-      while (node) {
-        nextNode = node.nextSibling;
-        this.parseQueryTagsInContainer(node);
-        node = nextNode;
-      }
-    } else if (node.nodeType === Node.TEXT_NODE) {
-      this.parseQueryTagsInTextNode(node);
-    }
-  }
-
-  private parseQueryTagsInTextNode(textNode: Node) {
-    const tempContainer = document.createElement('div');
-    tempContainer.innerHTML = this.parseQueryTags(textNode.nodeValue);
-
-    while (tempContainer.firstChild) {
-      textNode.parentNode.insertBefore(tempContainer.firstChild, textNode);
-    }
-    textNode.parentNode.removeChild(textNode);
   }
 
   private parseQueryTags(content: string) {
@@ -334,10 +309,7 @@ export class QuerySummary extends Component {
   }
 
   private getNoResultsFoundMessageElement() {
-    const tempContainer = document.createElement('div');
-    tempContainer.innerHTML = this.options.noResultsFoundMessage;
-    this.parseQueryTagsInContainer(tempContainer);
-    const parsedNoResultsFoundMessage = tempContainer.innerHTML;
+    const parsedNoResultsFoundMessage = this.parseQueryTags(this.options.noResultsFoundMessage);
 
     const noResultsFoundMessage = $$(
       'div',
