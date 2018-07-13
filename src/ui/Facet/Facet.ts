@@ -673,9 +673,8 @@ export class Facet extends Component {
      */
     enableResponsiveMode: ComponentOptions.buildBooleanOption({ defaultValue: true, section: 'ResponsiveOptions' }),
     responsiveBreakpoint: ComponentOptions.buildNumberOption({
-      defaultValue: 800,
       deprecated:
-        'This option is exposed for legacy reasons. It is not recommended to use this option. Instead, use `ResponsiveComponents` methods exposed on the `SearchInterface`.'
+        'This option is exposed for legacy reasons. It is not recommended to use this option. Instead, use `SearchInterface.options.responsiveMediumBreakpoint` options exposed on the `SearchInterface`.'
     }),
     /**
      * If the [`enableResponsiveMode`]{@link Facet.options.enableResponsiveMode} option is `true` for all facets and
