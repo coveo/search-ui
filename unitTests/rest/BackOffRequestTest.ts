@@ -1,4 +1,5 @@
-import { BackOffRequest, setBackOffModule, IBackOffRequest } from '../../src/rest/BackOffRequest';
+import { IBackOffRequest } from 'exponential-backoff';
+import { BackOffRequest, setBackOffModule } from '../../src/rest/BackOffRequest';
 
 export function BackOffRequestTest() {
   describe('BackOffRequest', () => {
