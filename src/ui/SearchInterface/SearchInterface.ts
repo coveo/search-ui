@@ -2,7 +2,7 @@ import { SearchEndpoint } from '../../rest/SearchEndpoint';
 import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
 import { $$ } from '../../utils/Dom';
 import { Assert } from '../../misc/Assert';
-import { QueryStateModel /* QUERY_STATE_ATTRIBUTES */ } from '../../models/QueryStateModel';
+import { QueryStateModel } from '../../models/QueryStateModel';
 import { ComponentStateModel } from '../../models/ComponentStateModel';
 import { ComponentOptionsModel } from '../../models/ComponentOptionsModel';
 import { QueryController } from '../../controllers/QueryController';

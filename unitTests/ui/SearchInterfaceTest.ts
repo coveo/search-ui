@@ -590,31 +590,66 @@ export function SearchInterfaceTest() {
           });
         });
 
-        it('should put the interface in waiting for first query mode during initialization', () => {
-          $$(cmp.element).trigger(InitializationEvents.restoreHistoryState);
-          expect($$(cmp.element).hasClass('coveo-waiting-for-query')).toBe(true);
-        });
-
-        it('should remove the waiting for first query mode after the first query is performed', done => {
-          $$(cmp.element).trigger(InitializationEvents.restoreHistoryState);
-          expect($$(cmp.element).hasClass('coveo-waiting-for-query')).toBe(true);
-
-          $$(div).on(QueryEvents.deferredQuerySuccess, (e, args: IDoneBuildingQueryEventArgs) => {
-            expect($$(cmp.element).hasClass('coveo-waiting-for-query')).toBe(false);
-            done();
-          });
-
-          const queryBuilder = new QueryBuilder();
-          queryBuilder.expression.add('foo');
-
-          Simulate.query(env, {
-            queryBuilder
-          });
-        });
-
         it('it should set a flag in the query', () => {
           const simulation = Simulate.query(env);
           expect(simulation.queryBuilder.build().allowQueriesWithoutKeywords).toBe(false);
+        });
+
+        describe('using css classes', () => {
+          const isInWaitingForQueryModeInitially = () => {
+            $$(cmp.element).trigger(InitializationEvents.restoreHistoryState);
+            return $$(cmp.element).hasClass('coveo-waiting-for-query');
+          };
+
+          const isInWaitingForQueryModeAfterQuery = (query: string) => {
+            return new Promise<boolean>(resolve => {
+              $$(div).one(QueryEvents.deferredQuerySuccess, (e, args: IDoneBuildingQueryEventArgs) => {
+                resolve($$(cmp.element).hasClass('coveo-waiting-for-query'));
+              });
+
+              $$(div).one(QueryEvents.doneBuildingQuery, (e, args: IDoneBuildingQueryEventArgs) => {
+                if (args.cancel) {
+                  resolve($$(cmp.element).hasClass('coveo-waiting-for-query'));
+                }
+              });
+              const queryBuilder = new QueryBuilder();
+
+              if (query) {
+                queryBuilder.expression.add(query);
+              }
+
+              Simulate.query(env, {
+                queryBuilder
+              });
+            });
+          };
+
+          it('should put the interface in waiting for first query mode during initialization', () => {
+            expect(isInWaitingForQueryModeInitially()).toBe(true);
+          });
+
+          it('should put the interface in standard mode after the first non empty query is performed', async done => {
+            expect(await isInWaitingForQueryModeAfterQuery('foo')).toBe(false);
+            done();
+          });
+
+          it('should not put the interface in standard mode after the first empty query is performed', async done => {
+            expect(await isInWaitingForQueryModeAfterQuery('')).toBe(true);
+            done();
+          });
+
+          it('should allow to switch back to a waiting mode if a new empty query is performed', async done => {
+            await isInWaitingForQueryModeAfterQuery('foo');
+            expect(await isInWaitingForQueryModeAfterQuery('')).toBe(true);
+            done();
+          });
+
+          it('should allow to switch back to standard mode after an empty query is performed', async done => {
+            await isInWaitingForQueryModeAfterQuery('foo');
+            await isInWaitingForQueryModeAfterQuery('');
+            expect(await isInWaitingForQueryModeAfterQuery('bar')).toBe(false);
+            done();
+          });
         });
       });
     });
