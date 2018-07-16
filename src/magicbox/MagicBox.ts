@@ -44,6 +44,7 @@ export class MagicBoxInstance {
     if (this.options.inline) {
       $$(element).addClass('magic-box-inline');
     }
+    $$(this.element).setAttribute('role', 'combobox');
 
     this.result = this.grammar.parse('');
     this.displayedResult = this.result.clean();
@@ -96,7 +97,7 @@ export class MagicBoxInstance {
     suggestionsContainer.className = 'magic-box-suggestions';
     this.element.appendChild(suggestionsContainer);
 
-    this.suggestionsManager = new SuggestionsManager(suggestionsContainer, {
+    this.suggestionsManager = new SuggestionsManager(suggestionsContainer, this.element, this.inputManager, {
       selectableClass: this.options.selectableSuggestionClass,
       selectedClass: this.options.selectedSuggestionClass,
       timeout: this.options.suggestionTimeout
