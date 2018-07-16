@@ -115,6 +115,10 @@ export class Simulate {
     $$(env.root).trigger(QueryEvents.buildingQuery, buildingQueryEventArgs);
     $$(env.root).trigger(QueryEvents.doneBuildingQuery, buildingQueryEventArgs);
 
+    if (newQueryEventArgs.cancel || buildingQueryEventArgs.cancel) {
+      return options;
+    }
+
     var duringQueryEventArgs: IDuringQueryEventArgs = {
       query: options.query,
       queryBuilder: options.queryBuilder,
