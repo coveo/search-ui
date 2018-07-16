@@ -8,5 +8,10 @@ export function FormGroupTest() {
         'fieldset'
       );
     });
+
+    it('should not allow to create a form group with stored XSS', () => {
+      const group = new FormGroup([new Checkbox(() => {}, '1'), new Checkbox(() => {}, '2')], '<svg/onload=alert(document.domain)>');
+      expect(group.labelElement.text()).toBe('<svg/onload=alert(document.domain)>');
+    });
   });
 }
