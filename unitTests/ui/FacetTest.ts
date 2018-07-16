@@ -294,10 +294,19 @@ export function FacetTest() {
 
         test = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, {
           field: '@mycoolfield2',
-          id: 'something else'
+          id: 'somethingelse'
         });
 
-        expect(test.cmp.options.id).toBe('something else');
+        expect(test.cmp.options.id).toBe('somethingelse');
+      });
+
+      it('id should trim all spaces', () => {
+        test = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, {
+          field: '@mycoolfield2',
+          id: ' another random value '
+        });
+
+        expect(test.cmp.options.id).toBe('anotherrandomvalue');
       });
 
       it('isMultiValueField should trigger another query to update delta', () => {
