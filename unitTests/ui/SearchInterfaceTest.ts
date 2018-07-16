@@ -13,7 +13,6 @@ import { Debug } from '../../src/ui/Debug/Debug';
 import { PipelineContext } from '../../src/ui/PipelineContext/PipelineContext';
 import { Querybox } from '../../src/ui/Querybox/Querybox';
 import { Quickview } from '../../src/ui/Quickview/Quickview';
-import { MEDIUM_SCREEN_WIDTH, SMALL_SCREEN_WIDTH } from '../../src/ui/ResponsiveComponents/ResponsiveComponents';
 import { ISearchInterfaceOptions, SearchInterface } from '../../src/ui/SearchInterface/SearchInterface';
 import { $$ } from '../../src/utils/Dom';
 import { FakeResults } from '../Fake';
