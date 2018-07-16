@@ -7,6 +7,7 @@ import * as _ from 'underscore';
 import { QueryEvents } from '../../events/QueryEvents';
 import { Logger } from '../../misc/Logger';
 import { DeviceUtils } from '../../utils/DeviceUtils';
+import { debounce } from 'underscore';
 
 export interface IResponsiveComponentOptions {
   enableResponsiveMode?: boolean;
@@ -122,7 +123,7 @@ export class ResponsiveComponentsManager {
     });
     this.searchBoxElement = this.getSearchBoxElement();
     this.logger = new Logger(this);
-    this.resizeListener = () => {
+    this.resizeListener = debounce(() => {
       if (this.coveoRoot.width() != 0) {
         this.addDropdownHeaderWrapperIfNeeded();
         if (this.shouldSwitchToSmallMode()) {
@@ -140,7 +141,7 @@ export class ResponsiveComponentsManager {
         interface display property be none? Could its visibility property be set to hidden? Also, if either of these scenarios happen during
         loading, it could be the cause of this issue.`);
       }
-    };
+    }, 250);
     // On many android devices, focusing on an input (eg: facet search input) causes the device to "zoom in"
     // and this triggers the window resize event. Since this class modify HTML nodes, Android has the quirks of removing the focus on the input.
     // As a net result, users focus on the text input, the keyboard appears for a few milliseconds, then dissapears instantly when the DOM is modified.

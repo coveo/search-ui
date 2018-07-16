@@ -13,6 +13,7 @@ export function ResponsiveComponentsManagerTest() {
 
   describe('ResponsiveComponentsManager', () => {
     beforeEach(() => {
+      jasmine.clock().install();
       let searchInterfaceMock = Mock.optionsSearchInterfaceSetup<SearchInterface, ISearchInterfaceOptions>(SearchInterface, {
         enableAutomaticResponsiveMode: true
       });
@@ -29,28 +30,26 @@ export function ResponsiveComponentsManagerTest() {
       responsiveComponentsManager = new ResponsiveComponentsManager(root);
     });
 
-    it('calls handle resize event when resize listener is called', done => {
-      root.width = () => 400;
-      responsiveComponentsManager.register(responsiveComponent, root, 'id', component, {});
-
-      responsiveComponentsManager.resizeListener();
-
-      setTimeout(() => {
-        expect(handleResizeEvent).toHaveBeenCalled();
-        done();
-      });
+    afterEach(() => {
+      jasmine.clock().uninstall();
     });
 
-    it('does not calls handle resize event when resize listener is called and width is zero', done => {
+    it('calls handle resize event when resize listener is called', () => {
+      root.width = () => 400;
+      responsiveComponentsManager.register(responsiveComponent, root, 'id', component, {});
+      responsiveComponentsManager.resizeListener();
+      jasmine.clock().tick(250);
+      expect(handleResizeEvent).toHaveBeenCalled();
+    });
+
+    it('does not calls handle resize event when resize listener is called and width is zero', () => {
       root.width = () => 0;
       responsiveComponentsManager.register(responsiveComponent, root, 'id', component, {});
+      jasmine.clock().tick(250);
 
       responsiveComponentsManager.resizeListener();
 
-      setTimeout(() => {
-        expect(handleResizeEvent).not.toHaveBeenCalled();
-        done();
-      });
+      expect(handleResizeEvent).not.toHaveBeenCalled();
     });
 
     it('registers component even when the corresponding responsive class has already been instanciated', () => {
