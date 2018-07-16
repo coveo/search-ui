@@ -1,6 +1,6 @@
-@import "Variables";
+@import 'Variables';
 
-.CoveoResult {
+@mixin omniboxSelectableResult {
   &.coveo-omnibox-selectable {
     padding: 10px 10px 10px 36px;
     margin: 0;
@@ -12,6 +12,18 @@
     border: $default-border;
     border-width: 3px;
   }
+}
+
+.coveo-list-layout,
+.coveo-card-layout,
+.coveo-table-layout {
+  &.CoveoResult {
+    @include omniboxSelectableResult();
+  }
+}
+
+.CoveoResult {
+  @include omniboxSelectableResult();
 }
 
 .coveo-omnibox-result-list-header {
