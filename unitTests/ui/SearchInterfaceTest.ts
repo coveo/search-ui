@@ -1,23 +1,25 @@
-import * as Mock from '../MockEnvironment';
-import { SearchInterface, ISearchInterfaceOptions } from '../../src/ui/SearchInterface/SearchInterface';
-import { QueryController } from '../../src/controllers/QueryController';
-import { QueryStateModel } from '../../src/models/QueryStateModel';
-import { ComponentOptionsModel } from '../../src/models/ComponentOptionsModel';
-import { ComponentStateModel } from '../../src/models/ComponentStateModel';
-import { Querybox } from '../../src/ui/Querybox/Querybox';
-import { $$ } from '../../src/utils/Dom';
-import { QueryEvents, IDoneBuildingQueryEventArgs } from '../../src/events/QueryEvents';
-import { Component } from '../../src/ui/Base/Component';
+import { defer } from 'underscore';
 import { HistoryController } from '../../src/controllers/HistoryController';
 import { LocalStorageHistoryController } from '../../src/controllers/LocalStorageHistoryController';
-import { Simulate } from '../Simulate';
-import { Debug } from '../../src/ui/Debug/Debug';
-import { FakeResults } from '../Fake';
-import _ = require('underscore');
+import { QueryController } from '../../src/controllers/QueryController';
+import { InitializationEvents } from '../../src/Core';
+import { IDoneBuildingQueryEventArgs, QueryEvents } from '../../src/events/QueryEvents';
+import { ComponentOptionsModel } from '../../src/models/ComponentOptionsModel';
+import { ComponentStateModel } from '../../src/models/ComponentStateModel';
+import { QueryStateModel } from '../../src/models/QueryStateModel';
+import { Component } from '../../src/ui/Base/Component';
 import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
+import { Debug } from '../../src/ui/Debug/Debug';
 import { PipelineContext } from '../../src/ui/PipelineContext/PipelineContext';
-import { SearchEndpoint } from '../Test';
+import { Querybox } from '../../src/ui/Querybox/Querybox';
 import { Quickview } from '../../src/ui/Quickview/Quickview';
+import { MEDIUM_SCREEN_WIDTH, SMALL_SCREEN_WIDTH } from '../../src/ui/ResponsiveComponents/ResponsiveComponents';
+import { ISearchInterfaceOptions, SearchInterface } from '../../src/ui/SearchInterface/SearchInterface';
+import { $$ } from '../../src/utils/Dom';
+import { FakeResults } from '../Fake';
+import * as Mock from '../MockEnvironment';
+import { Simulate } from '../Simulate';
+import { SearchEndpoint } from '../Test';
 
 export function SearchInterfaceTest() {
   describe('SearchInterface', () => {
@@ -439,7 +441,7 @@ export function SearchInterfaceTest() {
             undefined,
             mockWindow
           );
-          _.defer(() => {
+          defer(() => {
             expect(Component.resolveBinding(cmp.element, Debug)).toBeDefined();
             done();
           });
@@ -454,7 +456,7 @@ export function SearchInterfaceTest() {
             undefined,
             mockWindow
           );
-          _.defer(() => {
+          defer(() => {
             expect(Component.resolveBinding(cmp.element, Debug)).toBeUndefined();
             done();
           });
@@ -547,6 +549,63 @@ export function SearchInterfaceTest() {
         it('it should set a flag in the query', () => {
           const simulation = Simulate.query(env);
           expect(simulation.queryBuilder.build().allowQueriesWithoutKeywords).toBe(false);
+        });
+
+        describe('using css classes', () => {
+          const isInWaitingForQueryModeInitially = () => {
+            $$(cmp.element).trigger(InitializationEvents.restoreHistoryState);
+            return $$(cmp.element).hasClass('coveo-waiting-for-query');
+          };
+
+          const isInWaitingForQueryModeAfterQuery = (query: string) => {
+            return new Promise<boolean>(resolve => {
+              $$(div).one(QueryEvents.deferredQuerySuccess, (e, args: IDoneBuildingQueryEventArgs) => {
+                resolve($$(cmp.element).hasClass('coveo-waiting-for-query'));
+              });
+
+              $$(div).one(QueryEvents.doneBuildingQuery, (e, args: IDoneBuildingQueryEventArgs) => {
+                if (args.cancel) {
+                  resolve($$(cmp.element).hasClass('coveo-waiting-for-query'));
+                }
+              });
+              const queryBuilder = new QueryBuilder();
+
+              if (query) {
+                queryBuilder.expression.add(query);
+              }
+
+              Simulate.query(env, {
+                queryBuilder
+              });
+            });
+          };
+
+          it('should put the interface in waiting for first query mode during initialization', () => {
+            expect(isInWaitingForQueryModeInitially()).toBe(true);
+          });
+
+          it('should put the interface in standard mode after the first non empty query is performed', async done => {
+            expect(await isInWaitingForQueryModeAfterQuery('foo')).toBe(false);
+            done();
+          });
+
+          it('should not put the interface in standard mode after the first empty query is performed', async done => {
+            expect(await isInWaitingForQueryModeAfterQuery('')).toBe(true);
+            done();
+          });
+
+          it('should allow to switch back to a waiting mode if a new empty query is performed', async done => {
+            await isInWaitingForQueryModeAfterQuery('foo');
+            expect(await isInWaitingForQueryModeAfterQuery('')).toBe(true);
+            done();
+          });
+
+          it('should allow to switch back to standard mode after an empty query is performed', async done => {
+            await isInWaitingForQueryModeAfterQuery('foo');
+            await isInWaitingForQueryModeAfterQuery('');
+            expect(await isInWaitingForQueryModeAfterQuery('bar')).toBe(false);
+            done();
+          });
         });
       });
     });

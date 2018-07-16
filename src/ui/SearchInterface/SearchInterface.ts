@@ -1,49 +1,49 @@
-import { SearchEndpoint } from '../../rest/SearchEndpoint';
-import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
-import { $$ } from '../../utils/Dom';
-import { Assert } from '../../misc/Assert';
-import { QueryStateModel } from '../../models/QueryStateModel';
-import { ComponentStateModel } from '../../models/ComponentStateModel';
-import { ComponentOptionsModel } from '../../models/ComponentOptionsModel';
-import { QueryController } from '../../controllers/QueryController';
-import { Model, IAttributeChangedEventArg } from '../../models/Model';
-import {
-  QueryEvents,
-  IBuildingQueryEventArgs,
-  INewQueryEventArgs,
-  IQuerySuccessEventArgs,
-  IQueryErrorEventArgs,
-  IDoneBuildingQueryEventArgs
-} from '../../events/QueryEvents';
-import { IBeforeRedirectEventArgs, StandaloneSearchInterfaceEvents } from '../../events/StandaloneSearchInterfaceEvents';
+import * as fastclick from 'fastclick';
+import * as jstz from 'jstimezonedetect';
+import 'styling/Globals';
+import 'styling/_SearchButton';
+import 'styling/_SearchInterface';
+import 'styling/_SearchModalBox';
+import { any, chain, each, find, first, indexOf, isEmpty, partition, tail } from 'underscore';
 import { HistoryController } from '../../controllers/HistoryController';
 import { LocalStorageHistoryController } from '../../controllers/LocalStorageHistoryController';
+import { QueryController } from '../../controllers/QueryController';
 import { InitializationEvents } from '../../events/InitializationEvents';
+import {
+  IBuildingQueryEventArgs,
+  IDoneBuildingQueryEventArgs,
+  INewQueryEventArgs,
+  IQueryErrorEventArgs,
+  IQuerySuccessEventArgs,
+  QueryEvents
+} from '../../events/QueryEvents';
+import { IBeforeRedirectEventArgs, StandaloneSearchInterfaceEvents } from '../../events/StandaloneSearchInterfaceEvents';
+import { Assert } from '../../misc/Assert';
+import { SentryLogger } from '../../misc/SentryLogger';
+import { ComponentOptionsModel } from '../../models/ComponentOptionsModel';
+import { ComponentStateModel } from '../../models/ComponentStateModel';
+import { IAttributeChangedEventArg, Model } from '../../models/Model';
+import { QueryStateModel } from '../../models/QueryStateModel';
+import { SearchEndpoint } from '../../rest/SearchEndpoint';
+import { $$ } from '../../utils/Dom';
+import { HashUtils } from '../../utils/HashUtils';
+import { Utils } from '../../utils/Utils';
+import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
 import { IAnalyticsClient } from '../Analytics/AnalyticsClient';
 import { NoopAnalyticsClient } from '../Analytics/NoopAnalyticsClient';
-import { Utils } from '../../utils/Utils';
-import { RootComponent } from '../Base/RootComponent';
 import { BaseComponent } from '../Base/BaseComponent';
-import { HashUtils } from '../../utils/HashUtils';
-import { SentryLogger } from '../../misc/SentryLogger';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
 import { ResponsiveComponents } from '../ResponsiveComponents/ResponsiveComponents';
 import { Context, IPipelineContextProvider } from '../PipelineContext/PipelineGlobalExports';
 import { InitializationPlaceholder } from '../Base/InitializationPlaceholder';
+import { RootComponent } from '../Base/RootComponent';
 import { Debug } from '../Debug/Debug';
+import { Context, IPipelineContextProvider } from '../PipelineContext/PipelineGlobalExports';
+import { MEDIUM_SCREEN_WIDTH, ResponsiveComponents, SMALL_SCREEN_WIDTH } from '../ResponsiveComponents/ResponsiveComponents';
+import { FacetColumnAutoLayoutAdjustment } from './FacetColumnAutoLayoutAdjustment';
 import { FacetValueStateHandler } from './FacetValueStateHandler';
 import RelevanceInspectorModule = require('../RelevanceInspector/RelevanceInspector');
-
-import * as fastclick from 'fastclick';
-import * as jstz from 'jstimezonedetect';
-
-import 'styling/Globals';
-import 'styling/_SearchInterface';
-import 'styling/_SearchModalBox';
-import 'styling/_SearchButton';
-import { each, indexOf, isEmpty, chain, any, find, partition, first, tail } from 'underscore';
-import { FacetColumnAutoLayoutAdjustment } from './FacetColumnAutoLayoutAdjustment';
 
 export interface ISearchInterfaceOptions {
   enableHistory?: boolean;
@@ -981,6 +981,15 @@ export class SearchInterface extends RootComponent implements IComponentBindings
       if (!args.queryBuilder.containsEndUserKeywords()) {
         this.logger.info('Query cancelled by the Search Interface', 'Configuration does not allow empty query', this, this.options);
         args.cancel = true;
+        this.queryStateModel.reset();
+
+        new InitializationPlaceholder(this.element)
+          .withEventToRemovePlaceholder(QueryEvents.newQuery)
+          .withFullInitializationStyling()
+          .withVisibleRootElement()
+          .withPlaceholderForFacets()
+          .withPlaceholderForResultList()
+          .withWaitingForFirstQueryMode();
       }
     });
   }
