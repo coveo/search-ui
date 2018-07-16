@@ -2,7 +2,7 @@ import { SearchEndpoint } from '../../rest/SearchEndpoint';
 import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
 import { $$ } from '../../utils/Dom';
 import { Assert } from '../../misc/Assert';
-import { QueryStateModel } from '../../models/QueryStateModel';
+import { QueryStateModel /* QUERY_STATE_ATTRIBUTES */ } from '../../models/QueryStateModel';
 import { ComponentStateModel } from '../../models/ComponentStateModel';
 import { ComponentOptionsModel } from '../../models/ComponentOptionsModel';
 import { QueryController } from '../../controllers/QueryController';
@@ -44,6 +44,7 @@ import 'styling/_SearchModalBox';
 import 'styling/_SearchButton';
 import { each, indexOf, isEmpty, chain, any, find, partition, first, tail } from 'underscore';
 import { FacetColumnAutoLayoutAdjustment } from './FacetColumnAutoLayoutAdjustment';
+//import { Defer } from '../../misc/Defer';
 
 export interface ISearchInterfaceOptions {
   enableHistory?: boolean;
@@ -1016,6 +1017,15 @@ export class SearchInterface extends RootComponent implements IComponentBindings
       if (!args.queryBuilder.containsEndUserKeywords()) {
         this.logger.info('Query cancelled by the Search Interface', 'Configuration does not allow empty query', this, this.options);
         args.cancel = true;
+        this.queryStateModel.reset();
+
+        new InitializationPlaceholder(this.element)
+          .withEventToRemovePlaceholder(QueryEvents.newQuery)
+          .withFullInitializationStyling()
+          .withVisibleRootElement()
+          .withPlaceholderForFacets()
+          .withPlaceholderForResultList()
+          .withWaitingForFirstQueryMode();
       }
     });
   }

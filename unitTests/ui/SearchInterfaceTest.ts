@@ -1,24 +1,25 @@
-import * as Mock from '../MockEnvironment';
-import { SearchInterface, ISearchInterfaceOptions } from '../../src/ui/SearchInterface/SearchInterface';
-import { QueryController } from '../../src/controllers/QueryController';
-import { QueryStateModel } from '../../src/models/QueryStateModel';
-import { ComponentOptionsModel } from '../../src/models/ComponentOptionsModel';
-import { ComponentStateModel } from '../../src/models/ComponentStateModel';
-import { Querybox } from '../../src/ui/Querybox/Querybox';
-import { $$ } from '../../src/utils/Dom';
-import { QueryEvents, IDoneBuildingQueryEventArgs } from '../../src/events/QueryEvents';
-import { Component } from '../../src/ui/Base/Component';
+import { defer } from 'underscore';
 import { HistoryController } from '../../src/controllers/HistoryController';
 import { LocalStorageHistoryController } from '../../src/controllers/LocalStorageHistoryController';
-import { Simulate } from '../Simulate';
-import { Debug } from '../../src/ui/Debug/Debug';
-import { FakeResults } from '../Fake';
-import _ = require('underscore');
+import { QueryController } from '../../src/controllers/QueryController';
+import { InitializationEvents } from '../../src/Core';
+import { IDoneBuildingQueryEventArgs, QueryEvents } from '../../src/events/QueryEvents';
+import { ComponentOptionsModel } from '../../src/models/ComponentOptionsModel';
+import { ComponentStateModel } from '../../src/models/ComponentStateModel';
+import { QueryStateModel } from '../../src/models/QueryStateModel';
+import { Component } from '../../src/ui/Base/Component';
 import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
+import { Debug } from '../../src/ui/Debug/Debug';
 import { PipelineContext } from '../../src/ui/PipelineContext/PipelineContext';
-import { SearchEndpoint } from '../Test';
+import { Querybox } from '../../src/ui/Querybox/Querybox';
 import { Quickview } from '../../src/ui/Quickview/Quickview';
 import { MEDIUM_SCREEN_WIDTH, SMALL_SCREEN_WIDTH } from '../../src/ui/ResponsiveComponents/ResponsiveComponents';
+import { ISearchInterfaceOptions, SearchInterface } from '../../src/ui/SearchInterface/SearchInterface';
+import { $$ } from '../../src/utils/Dom';
+import { FakeResults } from '../Fake';
+import * as Mock from '../MockEnvironment';
+import { Simulate } from '../Simulate';
+import { SearchEndpoint } from '../Test';
 
 export function SearchInterfaceTest() {
   describe('SearchInterface', () => {
@@ -464,7 +465,7 @@ export function SearchInterfaceTest() {
             undefined,
             mockWindow
           );
-          _.defer(() => {
+          defer(() => {
             expect(Component.resolveBinding(cmp.element, Debug)).toBeDefined();
             done();
           });
@@ -479,7 +480,7 @@ export function SearchInterfaceTest() {
             undefined,
             mockWindow
           );
-          _.defer(() => {
+          defer(() => {
             expect(Component.resolveBinding(cmp.element, Debug)).toBeUndefined();
             done();
           });
@@ -586,6 +587,28 @@ export function SearchInterfaceTest() {
 
           Simulate.query(env, {
             queryBuilder: queryBuilder
+          });
+        });
+
+        it('should put the interface in waiting for first query mode during initialization', () => {
+          $$(cmp.element).trigger(InitializationEvents.restoreHistoryState);
+          expect($$(cmp.element).hasClass('coveo-waiting-for-query')).toBe(true);
+        });
+
+        it('should remove the waiting for first query mode after the first query is performed', done => {
+          $$(cmp.element).trigger(InitializationEvents.restoreHistoryState);
+          expect($$(cmp.element).hasClass('coveo-waiting-for-query')).toBe(true);
+
+          $$(div).on(QueryEvents.deferredQuerySuccess, (e, args: IDoneBuildingQueryEventArgs) => {
+            expect($$(cmp.element).hasClass('coveo-waiting-for-query')).toBe(false);
+            done();
+          });
+
+          const queryBuilder = new QueryBuilder();
+          queryBuilder.expression.add('foo');
+
+          Simulate.query(env, {
+            queryBuilder
           });
         });
 
