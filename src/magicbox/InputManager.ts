@@ -3,9 +3,10 @@ import { $$ } from '../utils/Dom';
 import _ = require('underscore');
 import { MagicBoxInstance } from './MagicBox';
 import { KEYBOARD } from '../utils/KeyboardUtils';
+import { l } from '../strings/Strings';
 
 export class InputManager {
-  private input: HTMLInputElement;
+  public input: HTMLInputElement;
   private underlay: HTMLElement;
   private highlightContainer: HTMLElement;
   private ghostTextContainer: HTMLElement;
@@ -46,11 +47,8 @@ export class InputManager {
       element.insertBefore(this.underlay, this.input);
     }
 
-    this.input.spellcheck = false;
-    this.input.setAttribute('form', 'coveo-dummy-form');
-    this.input.setAttribute('autocomplete', 'off');
-
     this.setupHandler();
+    this.addAccessibilitiesProperties();
   }
 
   /**
@@ -198,6 +196,14 @@ export class InputManager {
         this.onInputChange();
       });
     };
+  }
+
+  private addAccessibilitiesProperties() {
+    this.input.spellcheck = false;
+    this.input.setAttribute('form', 'coveo-dummy-form');
+    this.input.setAttribute('autocomplete', 'off');
+    this.input.setAttribute('aria-autocomplete', 'list');
+    this.input.setAttribute('aria-label', l('Search'));
   }
 
   public focus() {
