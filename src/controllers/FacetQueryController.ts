@@ -270,18 +270,25 @@ export class FacetQueryController {
 
     if (this.queryOverrideIsNeededForMultiSelection()) {
       queryBuilderExpression = this.processQueryOverrideForMultiSelection(queryBuilder, queryBuilderExpression);
+    } else {
+      queryBuilderExpression.reset();
     }
     if (this.queryOverrideIsNeededForAdditionalFilter()) {
       queryBuilderExpression = this.processQueryOverrideForAdditionalFilter(queryBuilder, queryBuilderExpression);
     }
 
     queryBuilderExpression = this.processQueryOverrideForEmptyValues(queryBuilder, queryBuilderExpression);
-
     return queryBuilderExpression;
   }
 
   private queryOverrideIsNeededForMultiSelection() {
-    return !(this.facet.options.useAnd || (this.facet.options.isMultiValueField && this.facet.values.hasSelectedAndExcludedValues()));
+    if (this.facet.options.useAnd) {
+      return false;
+    }
+    if (this.facet.values.hasSelectedOrExcludedValues()) {
+      return true;
+    }
+    return false;
   }
 
   private queryOverrideIsNeededForAdditionalFilter() {

@@ -49,6 +49,13 @@ export class QueryBuilderExpression implements QueryBuilderExpression {
     private disjunctionExpression: string
   ) {}
 
+  public reset() {
+    this.basicExpression = '';
+    this.advancedExpression = '';
+    this.constantExpression = '';
+    this.disjunctionExpression = '';
+  }
+
   public get withoutConstant(): string {
     return this.expressionBuilders.withoutConstantExpression.build();
   }

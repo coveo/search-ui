@@ -380,6 +380,7 @@ export class Omnibox extends Component {
     });
 
     const input = $$(this.magicBox.element).find('input');
+
     if (input) {
       $$(input).setAttribute('aria-label', this.options.placeholder || l('Search'));
     }
@@ -696,6 +697,8 @@ export class Omnibox extends Component {
         this.buildCustomDataForPartialQueries(0, suggestions),
         this.element
       );
+    } else {
+      this.setText(this.getQuery(true));
     }
   }
 
@@ -747,7 +750,16 @@ export class Omnibox extends Component {
       return wordCompletion;
     }
 
-    return this.magicBox.getWordCompletion() || this.getFirstSuggestion() || this.magicBox.getText();
+    const currentOmniboxSuggestion = this.magicBox.getWordCompletion() || this.getFirstSuggestion();
+    if (currentOmniboxSuggestion) {
+      return currentOmniboxSuggestion;
+    }
+
+    if (this.isAutoSuggestion()) {
+      return this.lastQuery || this.magicBox.getText();
+    }
+
+    return this.magicBox.getText();
   }
 
   private getFirstSuggestion() {

@@ -161,6 +161,13 @@ export function FacetSliderTest() {
           expect(slider.onMoving).toHaveBeenCalled();
         });
 
+        it('should not execute the onMoving function of the slider if it is not instantiated', () => {
+          facetSlider['slider'] = null;
+          facetSlider.onResize(new Event('resize'));
+          jasmine.clock().tick(FacetSlider.DEBOUNCED_RESIZE_DELAY + 1);
+          expect(slider.onMoving).not.toHaveBeenCalled();
+        });
+
         it('should not draw the graph on resize when there are no results', () => {
           $$(env.root).trigger(QueryEvents.noResults);
           facetSlider.onResize(new Event('resize'));
@@ -302,6 +309,26 @@ export function FacetSliderTest() {
 
         test.cmp.ensureDom();
         expect($$($$(test.cmp.facetHeader.build()).find('.coveo-facet-header-title')).text()).toBe('nice title');
+      });
+
+      it('should have a "simpleSliderConfig" attribute if the start and end attribute is specified', () => {
+        test = Mock.optionsComponentSetup<FacetSlider, IFacetSliderOptions>(FacetSlider, {
+          start: 0,
+          end: 100,
+          field: '@foo',
+          title: 'nice title'
+        });
+
+        expect(test.cmp.isSimpleSliderConfig).toBeTruthy();
+      });
+
+      it('should not have a "simpleSliderConfig" attribute if the start and end attribute is not specified', () => {
+        test = Mock.optionsComponentSetup<FacetSlider, IFacetSliderOptions>(FacetSlider, {
+          field: '@foo',
+          title: 'nice title'
+        });
+
+        expect(test.cmp.isSimpleSliderConfig).toBeFalsy();
       });
     });
   });

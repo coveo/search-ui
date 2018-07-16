@@ -1,28 +1,28 @@
-import { Component } from '../Base/Component';
-import { ComponentOptions } from '../Base/ComponentOptions';
-import { IComponentBindings } from '../Base/ComponentBindings';
-import { QueryEvents } from '../../events/QueryEvents';
-import { Initialization } from '../Base/Initialization';
+import 'styling/_ResultLayoutSelector';
+import { contains, difference, each, filter, find, isEmpty, keys, uniq } from 'underscore';
 import { InitializationEvents } from '../../events/InitializationEvents';
+import { IQueryErrorEventArgs, IQuerySuccessEventArgs, QueryEvents } from '../../events/QueryEvents';
+import { IResultLayoutPopulateArgs, ResultLayoutEvents } from '../../events/ResultLayoutEvents';
+import { IChangeLayoutEventArgs, ResultListEvents } from '../../events/ResultListEvents';
 import { Assert } from '../../misc/Assert';
-import { ResultListEvents, IChangeLayoutEventArgs } from '../../events/ResultListEvents';
-import { ResultLayoutEvents, IResultLayoutPopulateArgs } from '../../events/ResultLayoutEvents';
-import { $$ } from '../../utils/Dom';
-import { IQueryErrorEventArgs, IQuerySuccessEventArgs } from '../../events/QueryEvents';
+import { IAttributesChangedEventArg, MODEL_EVENTS } from '../../models/Model';
 import { QueryStateModel, QUERY_STATE_ATTRIBUTES } from '../../models/QueryStateModel';
-import { MODEL_EVENTS, IAttributesChangedEventArg } from '../../models/Model';
-import { analyticsActionCauseList, IAnalyticsResultsLayoutChange } from '../Analytics/AnalyticsActionListMeta';
 import { IQueryResults } from '../../rest/QueryResults';
-import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
-import { ResponsiveResultLayout } from '../ResponsiveComponents/ResponsiveResultLayout';
-import { Utils } from '../../utils/Utils';
-import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 import { l } from '../../strings/Strings';
-import 'styling/_ResultLayoutSelector';
-import { SVGIcons } from '../../utils/SVGIcons';
+import { $$ } from '../../utils/Dom';
 import { SVGDom } from '../../utils/SVGDom';
+import { SVGIcons } from '../../utils/SVGIcons';
+import { Utils } from '../../utils/Utils';
+import { analyticsActionCauseList, IAnalyticsResultsLayoutChange } from '../Analytics/AnalyticsActionListMeta';
+import { Component } from '../Base/Component';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { Initialization } from '../Base/Initialization';
+import { ResponsiveResultLayout } from '../ResponsiveComponents/ResponsiveResultLayout';
 import { ValidLayout } from './ValidLayout';
+import ResultListModule = require('../ResultList/ResultList');
+import { AccessibleButton } from '../../utils/AccessibleButton';
 
 export interface IActiveLayouts {
   button: {
@@ -75,6 +75,8 @@ export class ResultLayoutSelector extends Component {
      *
      * By default, the mobile mode breakpoint is at 480 px screen width.
      *
+     * To change this default value, use the [responsiveSmallBreakpoint]{@link SearchInterface.options.responsiveSmallBreakpoint} option.
+     *
      * When the breakpoint is reached, layouts that are not specified becomes inactive and the linked result list will be disabled.
      *
      * The possible values for layouts are `list`, `card`, `table`.
@@ -87,6 +89,8 @@ export class ResultLayoutSelector extends Component {
      *
      * By default, the tablet mode breakpoint is at 800 px screen width.
      *
+     * To change this default value, use the [responsiveMediumBreakpoint]{@link SearchInterface.options.responsiveMediumBreakpoint} option.
+     *
      *  When the breakpoint is reached, layouts that are not specified becomes inactive and the linked result list will be disabled.
      *
      * The possible values for layouts are `list`, `card`, `table`.
@@ -98,6 +102,8 @@ export class ResultLayoutSelector extends Component {
      * Specifies the layouts that should be available when the search page is displayed in desktop mode.
      *
      * By default, the desktop mode breakpoint is any screen size over 800 px.
+     *
+     * To change this default value, use the [responsiveMediumBreakpoint]{@link SearchInterface.options.responsiveMediumBreakpoint} option.
      *
      *  When the breakpoint is reached, layouts that are not specified becomes inactive and the linked result list will be disabled.
      *
@@ -166,7 +172,9 @@ export class ResultLayoutSelector extends Component {
         this.usageAnalytics.logSearchEvent<IAnalyticsResultsLayoutChange>(analyticsActionCauseList.resultsLayoutChange, {
           resultsLayoutChangeTo: layout
         });
-        this.queryController.executeQuery();
+        if (!this.queryController.firstQuery) {
+          this.queryController.executeQuery();
+        }
       }
     }
   }
@@ -181,15 +189,15 @@ export class ResultLayoutSelector extends Component {
 
   public disableLayouts(layouts: ValidLayout[]) {
     if (Utils.isNonEmptyArray(layouts)) {
-      _.each(layouts, layout => this.disableLayout(layout));
+      each(layouts, layout => this.disableLayout(layout));
 
-      let remainingValidLayouts = _.difference(_.keys(this.currentActiveLayouts), layouts);
-      if (!_.isEmpty(remainingValidLayouts)) {
-        const newLayout = _.contains(remainingValidLayouts, this.currentLayout) ? this.currentLayout : remainingValidLayouts[0];
+      let remainingValidLayouts = difference(keys(this.currentActiveLayouts), layouts);
+      if (!isEmpty(remainingValidLayouts)) {
+        const newLayout = contains(remainingValidLayouts, this.currentLayout) ? this.currentLayout : remainingValidLayouts[0];
         this.changeLayout(<ValidLayout>newLayout);
       } else {
         this.logger.error('Cannot disable the last valid layout ... Re-enabling the first one possible');
-        let firstPossibleValidLayout = <ValidLayout>_.keys(this.currentActiveLayouts)[0];
+        let firstPossibleValidLayout = <ValidLayout>keys(this.currentActiveLayouts)[0];
         this.enableLayout(firstPossibleValidLayout);
         this.setLayout(firstPossibleValidLayout);
       }
@@ -197,7 +205,7 @@ export class ResultLayoutSelector extends Component {
   }
 
   public enableLayouts(layouts: ValidLayout[]) {
-    _.each(layouts, layout => {
+    each(layouts, layout => {
       this.enableLayout(layout);
     });
   }
@@ -209,10 +217,20 @@ export class ResultLayoutSelector extends Component {
   }
 
   private enableLayout(layout: ValidLayout) {
-    if (this.isLayoutDisplayedByButton(layout)) {
+    const allResultLists = this.activeResultLists;
+    const atLeastOneResultListCanShowLayout = find(allResultLists, resultList => resultList.options.layout == layout);
+    if (atLeastOneResultListCanShowLayout && this.isLayoutDisplayedByButton(layout)) {
       this.showButton(layout);
       this.updateSelectorAppearance();
     }
+  }
+
+  private get resultLists(): ResultListModule.ResultList[] {
+    return this.searchInterface.getComponents('ResultList');
+  }
+
+  private get activeResultLists(): ResultListModule.ResultList[] {
+    return filter(this.resultLists, list => !list.disabled);
   }
 
   private hideButton(layout: ValidLayout) {
@@ -257,11 +275,11 @@ export class ResultLayoutSelector extends Component {
 
   private handleQueryStateChanged(args?: IAttributesChangedEventArg) {
     const modelLayout = this.getModelValue();
-    const newLayout = _.find(_.keys(this.currentActiveLayouts), l => l === modelLayout);
+    const newLayout = find(keys(this.currentActiveLayouts), l => l === modelLayout);
     if (newLayout !== undefined) {
       this.setLayout(<ValidLayout>newLayout);
     } else {
-      this.setLayout(<ValidLayout>_.keys(this.currentActiveLayouts)[0]);
+      this.setLayout(<ValidLayout>keys(this.currentActiveLayouts)[0]);
     }
   }
 
@@ -281,11 +299,11 @@ export class ResultLayoutSelector extends Component {
   private populate() {
     let populateArgs: IResultLayoutPopulateArgs = { layouts: [] };
     $$(this.root).trigger(ResultLayoutEvents.populateResultLayout, populateArgs);
-    const layouts = _.uniq(populateArgs.layouts.map(layout => layout.toLowerCase()));
+    const layouts = uniq(populateArgs.layouts.map(layout => layout.toLowerCase()));
 
-    _.each(layouts, layout => Assert.check(_.contains(ResultLayoutSelector.validLayouts, layout), 'Invalid layout'));
-    if (!_.isEmpty(layouts)) {
-      _.each(layouts, layout => this.addButton(layout));
+    each(layouts, layout => Assert.check(contains(ResultLayoutSelector.validLayouts, layout), 'Invalid layout'));
+    if (!isEmpty(layouts)) {
+      each(layouts, layout => this.addButton(layout));
       if (!this.shouldShowSelector()) {
         this.hide();
       }
@@ -293,23 +311,29 @@ export class ResultLayoutSelector extends Component {
   }
 
   private addButton(layout: string) {
-    const btn = $$(
-      'span',
-      {
-        className: 'coveo-result-layout-selector',
-        tabindex: 0
-      },
-      $$('span', { className: 'coveo-result-layout-selector-caption' }, l(layout))
-    );
+    const btn = $$('span', {
+      className: 'coveo-result-layout-selector'
+    });
+    const caption = $$('span', { className: 'coveo-result-layout-selector-caption' }, l(layout));
+    btn.append(caption.el);
+
     const icon = $$('span', { className: `coveo-icon coveo-${layout}-layout-icon` }, SVGIcons.icons[`${layout}Layout`]);
     SVGDom.addClassToSVGInContainer(icon.el, `coveo-${layout}-svg`);
     btn.prepend(icon.el);
+
+    const selectAction = () => this.changeLayout(<ValidLayout>layout);
+
+    new AccessibleButton()
+      .withElement(btn)
+      .withLabel(l(layout))
+      .withSelectAction(selectAction)
+      .withOwner(this.bind)
+      .build();
+
     if (layout === this.currentLayout) {
       btn.addClass('coveo-selected');
     }
-    const activateAction = () => this.changeLayout(<ValidLayout>layout);
-    btn.on('click', activateAction);
-    btn.on('keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, activateAction));
+
     $$(this.element).append(btn.el);
     this.currentActiveLayouts[layout] = {
       button: {
@@ -340,14 +364,14 @@ export class ResultLayoutSelector extends Component {
 
   private shouldShowSelector() {
     return (
-      _.keys(this.currentActiveLayouts).length > 1 &&
-      _.filter(this.currentActiveLayouts, (activeLayout: IActiveLayouts) => activeLayout.button.visible).length > 1 &&
+      keys(this.currentActiveLayouts).length > 1 &&
+      filter(this.currentActiveLayouts, (activeLayout: IActiveLayouts) => activeLayout.button.visible).length > 1 &&
       !this.hasNoResults
     );
   }
 
   private isLayoutDisplayedByButton(layout: ValidLayout) {
-    return _.contains(_.keys(this.currentActiveLayouts), layout);
+    return contains(keys(this.currentActiveLayouts), layout);
   }
 }
 

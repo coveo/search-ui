@@ -32,11 +32,6 @@
   &:hover {
     color: $color-greyish-dark-blue;
   }
-  &:active,
-  &:active:focus,
-  &.coveo-selected {
-    outline: none;
-  }
 }
 
 .coveo-tab-section {

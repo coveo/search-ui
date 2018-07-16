@@ -6304,6 +6304,10 @@ plop@^1.5.0:
     node-plop "=0.9.0"
     v8flags "^2.0.10"
 
+popper.js@^1.14.3:
+  version "1.14.3"
+  resolved "https://registry.yarnpkg.com/popper.js/-/popper.js-1.14.3.tgz#1438f98d046acf7b4d78cd502bf418ac64d4f095"
+
 portfinder@^1.0.9:
   version "1.0.13"
   resolved "https://registry.yarnpkg.com/portfinder/-/portfinder-1.0.13.tgz#bb32ecd87c27104ae6ee44b5a3ccbf0ebb1aede9"
@@ -8249,7 +8253,7 @@ typedoc-default-themes@^0.5.0:
 
 "typedoc@https://github.com/coveord/typedoc":
   version "0.10.0"
-  resolved "https://github.com/coveord/typedoc#9c9abcedaa462b88fe06ede452d1727b11eccd73"
+  resolved "https://github.com/coveord/typedoc#ee0d400a8dd2a333b19bff4a86cbc1e6882bbe9a"
   dependencies:
     "@types/fs-extra" "5.0.0"
     "@types/handlebars" "4.0.36"

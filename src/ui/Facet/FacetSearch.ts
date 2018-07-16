@@ -51,7 +51,7 @@ export class FacetSearch implements IFacetSearch {
     this.onDocumentClick = (e: Event) => {
       this.handleClickElsewhere(e);
     };
-    window.addEventListener('resize', () => this.onResize());
+    window.addEventListener('resize', this.onResize);
     document.addEventListener('click', (e: Event) => this.onDocumentClick(e));
     $$(facet.root).on(InitializationEvents.nuke, () => this.handleNuke());
   }

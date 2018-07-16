@@ -1,54 +1,53 @@
-import { Component } from '../Base/Component';
-import { IComponentBindings } from '../Base/ComponentBindings';
-import { FacetValue, FacetValues } from './FacetValues';
-import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
-import { DeviceUtils } from '../../utils/DeviceUtils';
-import { l } from '../../strings/Strings';
-import { FacetQueryController } from '../../controllers/FacetQueryController';
-import { FacetSearch } from './FacetSearch';
-import { FacetSettings } from './FacetSettings';
-import { FacetSort } from './FacetSort';
-import { FacetValuesList } from './FacetValuesList';
-import { FacetHeader } from './FacetHeader';
-import { FacetUtils } from './FacetUtils';
-import { QueryEvents, INewQueryEventArgs, IQuerySuccessEventArgs, IDoneBuildingQueryEventArgs } from '../../events/QueryEvents';
-import { Assert } from '../../misc/Assert';
-import { ISearchEndpoint } from '../../rest/SearchEndpointInterface';
-import { $$, Win } from '../../utils/Dom';
-import { IAnalyticsFacetMeta, analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
-import { Utils } from '../../utils/Utils';
-import { IIndexFieldValue } from '../../rest/FieldValue';
-import { IPopulateBreadcrumbEventArgs } from '../../events/BreadcrumbEvents';
-import { BreadcrumbValueElement } from './BreadcrumbValueElement';
-import { BreadcrumbValueList } from './BreadcrumbValuesList';
-import { FacetValueElement } from './FacetValueElement';
-import { FacetSearchValuesList } from './FacetSearchValuesList';
-import { Defer } from '../../misc/Defer';
-import { QueryStateModel, IQueryStateIncludedAttribute, IQueryStateExcludedAttribute } from '../../models/QueryStateModel';
-import { MODEL_EVENTS, IAttributesChangedEventArg } from '../../models/Model';
-import { OmniboxEvents, IPopulateOmniboxEventArgs } from '../../events/OmniboxEvents';
-import { OmniboxValueElement } from './OmniboxValueElement';
-import { OmniboxValuesList } from './OmniboxValuesList';
-import { IGroupByResult } from '../../rest/GroupByResult';
-import { IGroupByValue } from '../../rest/GroupByValue';
-import { ValueElementRenderer } from './ValueElementRenderer';
-import { FacetSearchParameters } from './FacetSearchParameters';
-import { IOmniboxDataRow } from '../Omnibox/OmniboxInterface';
-import { Initialization } from '../Base/Initialization';
-import { BreadcrumbEvents, IClearBreadcrumbEventArgs } from '../../events/BreadcrumbEvents';
-import { ResponsiveFacets } from '../ResponsiveComponents/ResponsiveFacets';
-import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
-import { IStringMap } from '../../rest/GenericParam';
-import { FacetValuesOrder } from './FacetValuesOrder';
-import { ValueElement } from './ValueElement';
-import { SearchAlertsEvents, ISearchAlertsPopulateMessageEventArgs } from '../../events/SearchAlertEvents';
-import * as _ from 'underscore';
-import { exportGlobally } from '../../GlobalExports';
 import 'styling/_Facet';
 import 'styling/_FacetFooter';
-import { SVGIcons } from '../../utils/SVGIcons';
-import { SVGDom } from '../../utils/SVGDom';
+import * as _ from 'underscore';
+import { FacetQueryController } from '../../controllers/FacetQueryController';
+import { BreadcrumbEvents, IClearBreadcrumbEventArgs, IPopulateBreadcrumbEventArgs } from '../../events/BreadcrumbEvents';
+import { IPopulateOmniboxEventArgs, OmniboxEvents } from '../../events/OmniboxEvents';
+import { IDoneBuildingQueryEventArgs, INewQueryEventArgs, IQuerySuccessEventArgs, QueryEvents } from '../../events/QueryEvents';
+import { ISearchAlertsPopulateMessageEventArgs, SearchAlertsEvents } from '../../events/SearchAlertEvents';
+import { exportGlobally } from '../../GlobalExports';
+import { Assert } from '../../misc/Assert';
+import { Defer } from '../../misc/Defer';
+import { IAttributesChangedEventArg, MODEL_EVENTS } from '../../models/Model';
+import { IQueryStateExcludedAttribute, IQueryStateIncludedAttribute, QueryStateModel } from '../../models/QueryStateModel';
+import { IIndexFieldValue } from '../../rest/FieldValue';
+import { IStringMap } from '../../rest/GenericParam';
+import { IGroupByResult } from '../../rest/GroupByResult';
+import { IGroupByValue } from '../../rest/GroupByValue';
 import { IQueryResults } from '../../rest/QueryResults';
+import { ISearchEndpoint } from '../../rest/SearchEndpointInterface';
+import { l } from '../../strings/Strings';
+import { DeviceUtils } from '../../utils/DeviceUtils';
+import { $$, Win } from '../../utils/Dom';
+import { KEYBOARD, KeyboardUtils } from '../../utils/KeyboardUtils';
+import { SVGDom } from '../../utils/SVGDom';
+import { SVGIcons } from '../../utils/SVGIcons';
+import { Utils } from '../../utils/Utils';
+import { analyticsActionCauseList, IAnalyticsFacetMeta } from '../Analytics/AnalyticsActionListMeta';
+import { Component } from '../Base/Component';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
+import { Initialization } from '../Base/Initialization';
+import { IOmniboxDataRow } from '../Omnibox/OmniboxInterface';
+import { ResponsiveFacets } from '../ResponsiveComponents/ResponsiveFacets';
+import { BreadcrumbValueElement } from './BreadcrumbValueElement';
+import { BreadcrumbValueList } from './BreadcrumbValuesList';
+import { FacetHeader } from './FacetHeader';
+import { FacetSearch } from './FacetSearch';
+import { FacetSearchParameters } from './FacetSearchParameters';
+import { FacetSearchValuesList } from './FacetSearchValuesList';
+import { FacetSettings } from './FacetSettings';
+import { FacetSort } from './FacetSort';
+import { FacetUtils } from './FacetUtils';
+import { FacetValueElement } from './FacetValueElement';
+import { FacetValue, FacetValues } from './FacetValues';
+import { FacetValuesList } from './FacetValuesList';
+import { FacetValuesOrder } from './FacetValuesOrder';
+import { OmniboxValueElement } from './OmniboxValueElement';
+import { OmniboxValuesList } from './OmniboxValuesList';
+import { ValueElement } from './ValueElement';
+import { ValueElementRenderer } from './ValueElementRenderer';
 
 export interface IFacetOptions {
   title?: string;
@@ -674,9 +673,8 @@ export class Facet extends Component {
      */
     enableResponsiveMode: ComponentOptions.buildBooleanOption({ defaultValue: true, section: 'ResponsiveOptions' }),
     responsiveBreakpoint: ComponentOptions.buildNumberOption({
-      defaultValue: 800,
       deprecated:
-        'This option is exposed for legacy reasons. It is not recommended to use this option. Instead, use `ResponsiveComponents` methods exposed on the `SearchInterface`.'
+        'This option is exposed for legacy reasons. It is not recommended to use this option. Instead, use `SearchInterface.options.responsiveMediumBreakpoint` options exposed on the `SearchInterface`.'
     }),
     /**
      * If the [`enableResponsiveMode`]{@link Facet.options.enableResponsiveMode} option is `true` for all facets and

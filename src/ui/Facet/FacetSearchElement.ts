@@ -236,7 +236,8 @@ export class FacetSearchElement {
       className: 'coveo-facet-search-input',
       type: 'test',
       autocapitalize: 'off',
-      autocorrect: 'off'
+      autocorrect: 'off',
+      'aria-label': l('Search')
     }).el;
   }
 

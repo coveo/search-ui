@@ -18,6 +18,7 @@ import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
 import { PipelineContext } from '../../src/ui/PipelineContext/PipelineContext';
 import { SearchEndpoint } from '../Test';
 import { Quickview } from '../../src/ui/Quickview/Quickview';
+import { MEDIUM_SCREEN_WIDTH, SMALL_SCREEN_WIDTH } from '../../src/ui/ResponsiveComponents/ResponsiveComponents';
 
 export function SearchInterfaceTest() {
   describe('SearchInterface', () => {
@@ -282,6 +283,30 @@ export function SearchInterfaceTest() {
 
           expect(searchInterface.isResultsPerPageModifiedByPipeline).toBeFalsy();
         });
+
+        it(`when the actual number of results is less than requested due to being on the last page,
+        it should mark #isResultsPerPageModifiedByPipeline as false`, () => {
+          const totalNumberOfResults = 13;
+          const resultsPerPage = 10;
+          const numOfResultsToReturn = totalNumberOfResults - resultsPerPage;
+          const fakeResults = FakeResults.createFakeResults(numOfResultsToReturn);
+          fakeResults.totalCountFiltered = fakeResults.totalCount = totalNumberOfResults;
+
+          searchInterface.resultsPerPage = resultsPerPage;
+          const builder = new QueryBuilder();
+          builder.numberOfResults = resultsPerPage;
+          builder.firstResult = resultsPerPage;
+
+          Simulate.query(
+            { element: searchInterface.root, result: null, searchEndpoint: null, ...searchInterface.getBindings() },
+            {
+              results: fakeResults,
+              query: builder.build()
+            }
+          );
+
+          expect(searchInterface.isResultsPerPageModifiedByPipeline).toBeFalsy();
+        });
       });
 
       it('should return undefined if no query context exists', () => {
@@ -495,6 +520,26 @@ export function SearchInterfaceTest() {
           setupSearchInterface({ maximumAge: 123 });
           const simulation = Simulate.query(env);
           expect(simulation.queryBuilder.maximumAge).toBe(123);
+        });
+
+        it('responsiveMediumBreakpoint will set the value properly in the underlying ResponsiveComponent', () => {
+          const searchInterface = setupSearchInterface({ responsiveMediumBreakpoint: 12345 });
+          expect(searchInterface.responsiveComponents.getMediumScreenWidth()).toBe(12345);
+        });
+
+        it('responsiveMediumBreakpoint will default to a proper value', () => {
+          const searchInterface = setupSearchInterface({});
+          expect(searchInterface.responsiveComponents.getMediumScreenWidth()).toBe(MEDIUM_SCREEN_WIDTH);
+        });
+
+        it('responsiveSmallBreakpoint will set the value properly in the underlying ResponsiveComponent', () => {
+          const searchInterface = setupSearchInterface({ responsiveSmallBreakpoint: 123 });
+          expect(searchInterface.responsiveComponents.getSmallScreenWidth()).toBe(123);
+        });
+
+        it('responsiveSmallBreakpoint will default to a proper value', () => {
+          const searchInterface = setupSearchInterface({});
+          expect(searchInterface.responsiveComponents.getSmallScreenWidth()).toBe(SMALL_SCREEN_WIDTH);
         });
       });
 

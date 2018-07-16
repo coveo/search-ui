@@ -251,7 +251,15 @@ export class Simulate {
   }
 
   static keyUp(element: HTMLElement, key: number, shiftKey?: boolean) {
-    var event = new KeyboardEvent('keyup', { shiftKey: shiftKey });
+    return Simulate.keyEvent(element, key, 'keyup', shiftKey);
+  }
+
+  static keyDown(element: HTMLElement, key: number, shiftKey?: boolean) {
+    return Simulate.keyEvent(element, key, 'keydown', shiftKey);
+  }
+
+  static keyEvent(element: HTMLElement, key: number, eventName: string, shiftKey?: boolean) {
+    const event = new KeyboardEvent(eventName, { shiftKey: shiftKey });
     Object.defineProperty(event, 'keyCode', {
       get: () => {
         return key;

@@ -374,7 +374,7 @@ export class QueryBuilder {
    * Return only the expression(s) part(s) of the query, as an object.
    * @returns {{full: string, withoutConstant: string, constant: string}}
    */
-  public computeCompleteExpressionParts(): any {
+  public computeCompleteExpressionParts(): QueryBuilderExpression {
     return new QueryBuilderExpression(
       this.expression.build(),
       this.advancedExpression.build(),

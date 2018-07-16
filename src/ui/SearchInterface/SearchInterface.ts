@@ -28,7 +28,7 @@ import { HashUtils } from '../../utils/HashUtils';
 import { SentryLogger } from '../../misc/SentryLogger';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
-import { ResponsiveComponents } from '../ResponsiveComponents/ResponsiveComponents';
+import { ResponsiveComponents, MEDIUM_SCREEN_WIDTH, SMALL_SCREEN_WIDTH } from '../ResponsiveComponents/ResponsiveComponents';
 import { Context, IPipelineContextProvider } from '../PipelineContext/PipelineGlobalExports';
 import { InitializationPlaceholder } from '../Base/InitializationPlaceholder';
 import { Debug } from '../Debug/Debug';
@@ -67,6 +67,8 @@ export interface ISearchInterfaceOptions {
   endpoint?: SearchEndpoint;
   originalOptionsObject?: any;
   allowQueriesWithoutKeywords?: boolean;
+  responsiveMediumBreakpoint?: number;
+  responsiveSmallBreakpoint?: number;
 }
 
 /**
@@ -310,7 +312,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
      *
      * It also modifies the {@link IQuery.allowQueriesWithoutKeywords} query parameter.
      *
-     * Default value is `true`
+     * Default value is `true`, except in Coveo for Salesforce Free edition in which it is `false`.
      */
     allowQueriesWithoutKeywords: ComponentOptions.buildBooleanOption({ defaultValue: true }),
     endpoint: ComponentOptions.buildCustomOption(
@@ -406,13 +408,38 @@ export class SearchInterface extends RootComponent implements IComponentBindings
      * [Query Parameters - maximumAge](https://developers.coveo.com/x/iwEv#QueryParameters-maximumAge)).
      */
     maximumAge: ComponentOptions.buildNumberOption(),
-
     /**
      * Specifies the search page you wish to navigate to when instantiating a standalone search box interface.
      *
      * Default value is `undefined`, which means that the search interface does not redirect.
      */
-    searchPageUri: ComponentOptions.buildStringOption()
+    searchPageUri: ComponentOptions.buildStringOption(),
+    /**
+     * Specifies the search interface width that should be considered "medium" size, in pixels.
+     *
+     * When the width of the window/device that displays the search page reaches or falls short of this threshold (but still exceeds the [responsiveSmallBreakpoint]{@link SearchInterface.options.responsiveSmallBreakpoint} value), the search page layout will change so that, for instance, facets within the element that has the coveo-facet-column class will be accessible from a dropdown menu on top of the result list rather than being fully rendered next to the result list.
+     *
+     * This option is only taken into account when [enableAutomaticResponsiveMode]{@link SearchInterface.options.enableAutomaticResponsiveMode} is set to true.
+     *
+     * Default value is `800`.
+     */
+    responsiveMediumBreakpoint: ComponentOptions.buildNumberOption({
+      defaultValue: MEDIUM_SCREEN_WIDTH,
+      depend: 'enableAutomaticResponsiveMode'
+    }),
+    /**
+     * Specifies the search interface width that should be considered "small" size, in pixels.
+     *
+     * When the width of the window/device that displays the search page reaches or falls short of this threshold, the search page layout will change so that, for instance, some result list layouts which are not suited for being rendered on a small screen/area will be disabled.
+     *
+     * This option is only taken into account when [enableAutomaticResponsiveMode]{@link SearchInterface.options.enableAutomaticResponsiveMode} is set to true.
+     *
+     * Default value is `480`.
+     */
+    responsiveSmallBreakpoint: ComponentOptions.buildNumberOption({
+      defaultValue: SMALL_SCREEN_WIDTH,
+      depend: 'enableAutomaticResponsiveMode'
+    })
   };
 
   public static SMALL_INTERFACE_CLASS_NAME = 'coveo-small-search-interface';
@@ -500,8 +527,9 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     const eventNameQuickview = this.queryStateModel.getEventName(Model.eventTypes.changeOne + QueryStateModel.attributesEnum.quickview);
     $$(this.element).on(eventNameQuickview, (e, args) => this.handleQuickviewChanged(args));
     this.element.style.display = element.style.display || 'block';
+
     this.setupDebugInfo();
-    this.responsiveComponents = new ResponsiveComponents();
+    this.setupResponsiveComponents();
   }
 
   public set resultsPerPage(resultsPerPage: number) {
@@ -666,6 +694,12 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     if (this.options.enableDebugInfo) {
       setTimeout(() => new Debug(this.element, this.getBindings()));
     }
+  }
+
+  private setupResponsiveComponents() {
+    this.responsiveComponents = new ResponsiveComponents();
+    this.responsiveComponents.setMediumScreenWidth(this.options.responsiveMediumBreakpoint);
+    this.responsiveComponents.setSmallScreenWidth(this.options.responsiveSmallBreakpoint);
   }
 
   private handlePreprocessQueryStateModel(args: Record<string, any>) {
@@ -903,7 +937,8 @@ export class SearchInterface extends RootComponent implements IComponentBindings
 
     const numberOfRequestedResults = data.query.numberOfResults;
     const numberOfResultsActuallyReturned = data.results.results.length;
-    const moreResultsAvailable = data.results.totalCountFiltered > numberOfResultsActuallyReturned;
+    const areLastPageResults = data.results.totalCountFiltered - data.query.firstResult === numberOfResultsActuallyReturned;
+    const moreResultsAvailable = !areLastPageResults && data.results.totalCountFiltered > numberOfResultsActuallyReturned;
 
     if (numberOfRequestedResults != numberOfResultsActuallyReturned && moreResultsAvailable) {
       this.isResultsPerPageModifiedByPipeline = true;

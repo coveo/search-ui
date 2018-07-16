@@ -1,21 +1,21 @@
-import { ResponsiveTabs } from '../ResponsiveComponents/ResponsiveTabs';
-import { Component } from '../Base/Component';
-import { ComponentOptions } from '../Base/ComponentOptions';
-import { IComponentBindings } from '../Base/ComponentBindings';
-import { MODEL_EVENTS, IAttributeChangedEventArg } from '../../models/Model';
-import { QueryEvents, IBuildingQueryEventArgs } from '../../events/QueryEvents';
-import { InitializationEvents } from '../../events/InitializationEvents';
-import { QueryStateModel, QUERY_STATE_ATTRIBUTES } from '../../models/QueryStateModel';
-import { analyticsActionCauseList, IAnalyticsInterfaceChange } from '../Analytics/AnalyticsActionListMeta';
-import { SearchEndpoint } from '../../rest/SearchEndpoint';
-import { Initialization } from '../Base/Initialization';
-import { Utils } from '../../utils/Utils';
-import { Assert } from '../../misc/Assert';
-import { $$ } from '../../utils/Dom';
-import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
-import * as _ from 'underscore';
-import { exportGlobally } from '../../GlobalExports';
 import 'styling/_Tab';
+import { each, indexOf, map } from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
+import { InitializationEvents } from '../../events/InitializationEvents';
+import { IBuildingQueryEventArgs, QueryEvents } from '../../events/QueryEvents';
+import { Assert } from '../../misc/Assert';
+import { IAttributeChangedEventArg, MODEL_EVENTS } from '../../models/Model';
+import { QUERY_STATE_ATTRIBUTES, QueryStateModel } from '../../models/QueryStateModel';
+import { SearchEndpoint } from '../../rest/SearchEndpoint';
+import { AccessibleButton } from '../../utils/AccessibleButton';
+import { $$ } from '../../utils/Dom';
+import { Utils } from '../../utils/Utils';
+import { IAnalyticsInterfaceChange, analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
+import { Component } from '../Base/Component';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { Initialization } from '../Base/Initialization';
+import { ResponsiveTabs } from '../ResponsiveComponents/ResponsiveTabs';
 
 export interface ITabOptions {
   expression?: string;
@@ -241,9 +241,14 @@ export class Tab extends Component {
     this.bind.onQueryState(MODEL_EVENTS.CHANGE_ONE, QUERY_STATE_ATTRIBUTES.T, (args: IAttributeChangedEventArg) =>
       this.handleQueryStateChanged(args)
     );
-    const clickAction = () => this.handleClick();
-    this.bind.on(element, 'click', clickAction);
-    this.bind.on(element, 'keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, clickAction));
+
+    new AccessibleButton()
+      .withElement(element)
+      .withSelectAction(() => this.select())
+      .withLabel(this.options.caption)
+      .withOwner(this.bind)
+      .build();
+
     this.render();
     ResponsiveTabs.init(this.root, this, this.options);
   }
@@ -291,14 +296,10 @@ export class Tab extends Component {
     );
 
     return (
-      (includedTabs.length != 0 && _.indexOf(includedTabs, this.options.id) != -1) ||
-      (excludedTabs.length != 0 && _.indexOf(excludedTabs, this.options.id) == -1) ||
+      (includedTabs.length != 0 && indexOf(includedTabs, this.options.id) != -1) ||
+      (excludedTabs.length != 0 && indexOf(excludedTabs, this.options.id) == -1) ||
       (includedTabs.length == 0 && excludedTabs.length == 0)
     );
-  }
-
-  private handleClick() {
-    this.select();
   }
 
   private render() {
@@ -315,7 +316,6 @@ export class Tab extends Component {
       $$(captionP).text(caption);
       this.element.appendChild(captionP);
     }
-    this.element.setAttribute('tabindex', '0');
   }
 
   protected handleBuildingQuery(data: IBuildingQueryEventArgs) {
@@ -371,7 +371,7 @@ export class Tab extends Component {
     const showElements = [];
     const hideElements = [];
 
-    _.each($$(this.root).findAll('[data-tab],[data-tab-not]'), element => {
+    each($$(this.root).findAll('[data-tab],[data-tab-not]'), element => {
       if (this.isElementIncludedInTab(element)) {
         this.toggleAllComponentsUnder(element, true);
         showElements.push(element);
@@ -382,14 +382,14 @@ export class Tab extends Component {
     });
 
     $$(this.root).one(QueryEvents.querySuccess, () => {
-      _.each(showElements, elem => $$(elem).removeClass('coveo-tab-disabled'));
-      _.each(hideElements, elem => $$(elem).addClass('coveo-tab-disabled'));
+      each(showElements, elem => $$(elem).removeClass('coveo-tab-disabled'));
+      each(hideElements, elem => $$(elem).addClass('coveo-tab-disabled'));
     });
   }
 
   private splitListOfTabs(value: string): string[] {
     if (Utils.exists(value)) {
-      return _.map(value.split(','), tab => Utils.trim(tab));
+      return map(value.split(','), tab => Utils.trim(tab));
     } else {
       return [];
     }
@@ -410,7 +410,7 @@ export class Tab extends Component {
     };
 
     togglePossibleComponent(element);
-    _.each($$(element).findAll('*'), el => {
+    each($$(element).findAll('*'), el => {
       togglePossibleComponent(el);
     });
   }

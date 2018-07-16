@@ -638,3 +638,6 @@ GrammarTest();
 
 import { SuggestionsManagerTest } from './magicbox/SuggestionsManagerTest';
 SuggestionsManagerTest();
+
+import { AccessibleButtonTest } from './utils/AccessibleButtonTest';
+AccessibleButtonTest();

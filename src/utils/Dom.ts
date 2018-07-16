@@ -486,7 +486,13 @@ export class Dom {
           eventHandle(e, e.detail);
         };
         Dom.handlers.set(eventHandle, fn);
-        this.el.addEventListener(modifiedType, fn, false);
+        // Mark touch events as passive for performance reasons:
+        // https://github.com/WICG/EventListenerOptions/blob/gh-pages/explainer.md
+        if (modifiedType && modifiedType.indexOf('touch') != -1) {
+          this.el.addEventListener(modifiedType, fn, { passive: true });
+        } else {
+          this.el.addEventListener(modifiedType, fn, false);
+        }
       } else if (this.el['on']) {
         this.el['on']('on' + modifiedType, eventHandle);
       }
