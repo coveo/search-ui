@@ -1,6 +1,8 @@
 import { SuggestionsManager } from '../../src/magicbox/SuggestionsManager';
 import { Dom } from '../../src/utils/Dom';
 import { $$ } from '../../src/utils/Dom';
+import { InputManager } from '../../src/magicbox/InputManager';
+import { MagicBoxInstance } from '../../src/magicbox/MagicBox';
 
 export function SuggestionsManagerTest() {
   describe('Suggestions manager', () => {
@@ -14,7 +16,9 @@ export function SuggestionsManagerTest() {
 
     beforeEach(() => {
       buildContainer();
-      suggestionManager = new SuggestionsManager(suggestionContainer.el, {
+      const inputManager = new InputManager(document.createElement('div'), () => {}, {} as MagicBoxInstance);
+
+      suggestionManager = new SuggestionsManager(suggestionContainer.el, document.createElement('div'), inputManager, {
         selectedClass: selectedClass,
         selectableClass: selectableClass
       });
