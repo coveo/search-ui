@@ -37,7 +37,8 @@ import { TimeSpan } from '../utils/TimeSpanUtils';
 import { UrlUtils } from '../utils/UrlUtils';
 import { IGroupByResult } from './GroupByResult';
 import { AccessToken } from './AccessToken';
-import { BackOffRequest, IBackOffRequest } from './BackOffRequest';
+import { BackOffRequest } from './BackOffRequest';
+import { IBackOffRequest } from 'exponential-backoff';
 
 export class DefaultSearchEndpointOptions implements ISearchEndpointOptions {
   restUri: string;
