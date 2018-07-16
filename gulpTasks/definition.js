@@ -80,6 +80,7 @@ gulp.task('externalDefs', function() {
     .pipe(replace(/\n\t\s*(\n\t\s*)/g, '$1'))
     .pipe(replace(/never/gm, 'void'))
     .pipe(replace(/undefined/g, 'any'))
+    .pipe(replace(/Partial<[A-z]*>/g, 'any'))
     .pipe(gulp.dest('./bin/ts'));
 });
 
