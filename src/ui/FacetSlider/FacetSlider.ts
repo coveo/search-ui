@@ -2,7 +2,7 @@
 /// <reference path="../../controllers/FacetSliderQueryController.ts" />
 
 import 'styling/_FacetSlider';
-import { map } from 'underscore';
+import { map, debounce } from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 import { Defer } from '../../MiscModules';
 import { FacetSliderQueryController } from '../../controllers/FacetSliderQueryController';
@@ -538,7 +538,7 @@ export class FacetSlider extends Component {
   }
 
   private bindResizeEvents() {
-    this.onResize = () => {
+    this.onResize = debounce(() => {
       if (ResponsiveComponentsUtils.shouldDrawFacetSlider($$(this.root), $$(this.element)) && this.slider && !this.isEmpty) {
         if (this.delayedGraphData) {
           this.drawDelayedGraphData();
@@ -549,7 +549,7 @@ export class FacetSlider extends Component {
       if (this.slider) {
         this.slider.onMoving();
       }
-    };
+    }, 250);
     window.addEventListener('resize', this.onResize);
     this.bind.onRootElement(ResponsiveDropdownEvent.OPEN, this.onResize);
 
