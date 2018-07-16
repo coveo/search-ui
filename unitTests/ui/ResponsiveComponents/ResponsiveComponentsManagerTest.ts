@@ -38,7 +38,7 @@ export function ResponsiveComponentsManagerTest() {
       setTimeout(() => {
         expect(handleResizeEvent).toHaveBeenCalled();
         done();
-      });
+      }, 250);
     });
 
     it('does not calls handle resize event when resize listener is called and width is zero', done => {
