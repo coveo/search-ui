@@ -19,6 +19,7 @@ import { PipelineContext } from '../../src/ui/PipelineContext/PipelineContext';
 import { SearchEndpoint } from '../Test';
 import { Quickview } from '../../src/ui/Quickview/Quickview';
 import { MEDIUM_SCREEN_WIDTH, SMALL_SCREEN_WIDTH } from '../../src/ui/ResponsiveComponents/ResponsiveComponents';
+import { NoopHistoryController } from '../../src/controllers/NoopHistoryController';
 
 export function SearchInterfaceTest() {
   describe('SearchInterface', () => {
@@ -370,11 +371,25 @@ export function SearchInterfaceTest() {
           expect(Component.resolveBinding(cmp.element, HistoryController)).toBeDefined();
         });
 
+        it("enableHistory uses a full fledge HistoryController by default as it's manager", () => {
+          const searchInterface = setupSearchInterface({
+            enableHistory: true
+          });
+          expect(searchInterface.historyManager instanceof HistoryController).toBe(true);
+        });
+
         it("enableHistory can be disabled and won't save history in the url", () => {
           setupSearchInterface({
             enableHistory: false
           });
           expect(Component.resolveBinding(cmp.element, HistoryController)).toBeUndefined();
+        });
+
+        it('enableHistory can be disabled and there will still be an history manager to access', () => {
+          const searchInterface = setupSearchInterface({
+            enableHistory: false
+          });
+          expect(searchInterface.historyManager instanceof NoopHistoryController).toBe(true);
         });
 
         it('useLocalStorageForHistory allow to use local storage for history', () => {
@@ -384,6 +399,14 @@ export function SearchInterfaceTest() {
           });
           expect(Component.resolveBinding(cmp.element, HistoryController)).toBeUndefined();
           expect(Component.resolveBinding(cmp.element, LocalStorageHistoryController)).toBeDefined();
+        });
+
+        it("useLocalStorageForHistory uses a LocalStorageHistoryController as it's manager", () => {
+          const searchInterface = setupSearchInterface({
+            enableHistory: true,
+            useLocalStorageForHistory: true
+          });
+          expect(searchInterface.historyManager instanceof LocalStorageHistoryController).toBe(true);
         });
 
         it('useLocalStorageForHistory allow to use local storage for history, but not if history is disabled', () => {

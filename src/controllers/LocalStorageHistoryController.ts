@@ -7,13 +7,14 @@ import { InitializationEvents } from '../events/InitializationEvents';
 import { RootComponent } from '../ui/Base/RootComponent';
 import { $$ } from '../utils/Dom';
 import * as _ from 'underscore';
+import { IHistoryManager } from './HistoryManager';
 
 /**
  * This component acts like the {@link HistoryController} excepts that is saves the {@link QueryStateModel} in the local storage.<br/>
  * This will not allow 'back' and 'forward' navigation in the history, like the standard {@link HistoryController} allows. Instead, it load the query state only on page load.<br/>
  * To enable this component, you should set the {@link SearchInterface.options.useLocalStorageForHistory} as well as the {@link SearchInterface.options.enableHistory} options to true.
  */
-export class LocalStorageHistoryController extends RootComponent {
+export class LocalStorageHistoryController extends RootComponent implements IHistoryManager {
   static ID = 'LocalStorageHistoryController';
 
   public storage: LocalStorageUtils<{ [key: string]: any }>;
@@ -42,6 +43,10 @@ export class LocalStorageHistoryController extends RootComponent {
     }
   }
 
+  public replaceState(state: Record<string, any>) {
+    return this.storage.save(state);
+  }
+
   /**
    * Specifies an array of attributes from the query state model that should not be persisted in the local storage
    * @param attributes
@@ -52,7 +57,7 @@ export class LocalStorageHistoryController extends RootComponent {
 
   private updateLocalStorageFromModel() {
     const attributes = _.omit(this.model.getAttributes(), this.omit);
-    this.setStorageValues(attributes);
+    this.setState(attributes);
     this.logger.debug('Saving state to localstorage', attributes);
   }
 
@@ -69,7 +74,7 @@ export class LocalStorageHistoryController extends RootComponent {
     this.model.setMultiple(toSet);
   }
 
-  public setStorageValues(values: { [key: string]: any }) {
+  public setState(values: Record<string, any>) {
     this.storage.save(values);
   }
 }

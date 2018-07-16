@@ -44,6 +44,8 @@ import 'styling/_SearchModalBox';
 import 'styling/_SearchButton';
 import { each, indexOf, isEmpty, chain, any, find, partition, first, tail } from 'underscore';
 import { FacetColumnAutoLayoutAdjustment } from './FacetColumnAutoLayoutAdjustment';
+import { IHistoryManager } from '../../controllers/HistoryManager';
+import { NoopHistoryController } from '../../controllers/NoopHistoryController';
 
 export interface ISearchInterfaceOptions {
   enableHistory?: boolean;
@@ -450,6 +452,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
   public queryController: QueryController;
   public componentOptionsModel: ComponentOptionsModel;
   public usageAnalytics: IAnalyticsClient;
+  public historyManager: IHistoryManager;
   /**
    * Allows to get and set the different breakpoints for mobile and tablet devices.
    *
@@ -482,16 +485,8 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     Assert.exists(this.options);
     this.root = element;
 
-    if (this.options.allowQueriesWithoutKeywords) {
-      this.initializeEmptyQueryAllowed();
-    } else {
-      this.initializeEmptyQueryNotAllowed();
-    }
-
-    // The definition file for fastclick does not match the way that fast click gets loaded (AMD)
-    if ((<any>fastclick).attach) {
-      (<any>fastclick).attach(element);
-    }
+    this.setupWithEmptyQueryMode();
+    this.setupMobileFastclick(element);
 
     this.queryStateModel = new QueryStateModel(element);
     this.componentStateModel = new ComponentStateModel(element);
@@ -501,31 +496,9 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     this.facetValueStateHandler = new FacetValueStateHandler((componentId: string) => this.getComponents(componentId));
     new SentryLogger(this.queryController);
 
-    const eventName = this.queryStateModel.getEventName(Model.eventTypes.preprocess);
-    $$(this.element).on(eventName, (e, args) => this.handlePreprocessQueryStateModel(args));
-    $$(this.element).on(QueryEvents.buildingQuery, (e, args) => this.handleBuildingQuery(args));
-    $$(this.element).on(QueryEvents.querySuccess, (e, args) => this.handleQuerySuccess(args));
-    $$(this.element).on(QueryEvents.queryError, (e, args) => this.handleQueryError(args));
-    $$(this.element).on(InitializationEvents.afterComponentsInitialization, () => this.handleAfterComponentsInitialization());
-    const debugChanged = this.queryStateModel.getEventName(Model.eventTypes.changeOne + QueryStateModel.attributesEnum.debug);
-    $$(this.element).on(debugChanged, (e, args: IAttributeChangedEventArg) => this.handleDebugModeChange(args));
+    this.setupEventsHandlers();
+    this.setupHistoryManager(element, _window);
 
-    this.queryStateModel.registerNewAttribute(QueryStateModel.attributesEnum.fv, {});
-
-    if (this.options.enableHistory) {
-      if (!this.options.useLocalStorageForHistory) {
-        this.initializeHistoryController();
-      } else {
-        new LocalStorageHistoryController(element, _window, this.queryStateModel, this.queryController);
-      }
-    } else {
-      $$(this.element).on(InitializationEvents.restoreHistoryState, () =>
-        this.queryStateModel.setMultiple({ ...this.queryStateModel.defaultAttributes })
-      );
-    }
-
-    const eventNameQuickview = this.queryStateModel.getEventName(Model.eventTypes.changeOne + QueryStateModel.attributesEnum.quickview);
-    $$(this.element).on(eventNameQuickview, (e, args) => this.handleQuickviewChanged(args));
     this.element.style.display = element.style.display || 'block';
 
     this.setupDebugInfo();
@@ -669,6 +642,69 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     return new NoopAnalyticsClient();
   }
 
+  private setupHistoryManager(element: HTMLElement, _window: Window) {
+    if (!this.options.enableHistory) {
+      this.historyManager = new NoopHistoryController();
+
+      $$(this.element).on(InitializationEvents.restoreHistoryState, () =>
+        this.queryStateModel.setMultiple({ ...this.queryStateModel.defaultAttributes })
+      );
+      return;
+    }
+
+    if (this.options.useLocalStorageForHistory) {
+      this.historyManager = new LocalStorageHistoryController(element, _window, this.queryStateModel, this.queryController);
+      return;
+    }
+
+    this.historyManager = new HistoryController(element, _window, this.queryStateModel, this.queryController, this.usageAnalytics);
+  }
+
+  private setupWithEmptyQueryMode() {
+    if (this.options.allowQueriesWithoutKeywords) {
+      this.initializeEmptyQueryAllowed();
+    } else {
+      this.initializeEmptyQueryNotAllowed();
+    }
+  }
+
+  private setupMobileFastclick(element: HTMLElement) {
+    // The definition file for fastclick does not match the way that fast click gets loaded (AMD)
+    // So we have to do some typecasting gymnastics
+    const attachFastclick = (fastclick as any).attach;
+    if (attachFastclick) {
+      attachFastclick(element);
+    }
+  }
+
+  private setupEventsHandlers() {
+    const eventName = this.queryStateModel.getEventName(Model.eventTypes.preprocess);
+    $$(this.element).on(eventName, (e, args) => this.handlePreprocessQueryStateModel(args));
+    $$(this.element).on(QueryEvents.buildingQuery, (e, args) => this.handleBuildingQuery(args));
+    $$(this.element).on(QueryEvents.querySuccess, (e, args) => this.handleQuerySuccess(args));
+    $$(this.element).on(QueryEvents.queryError, (e, args) => this.handleQueryError(args));
+    $$(this.element).on(InitializationEvents.afterComponentsInitialization, () => this.handleAfterComponentsInitialization());
+    const debugChanged = this.queryStateModel.getEventName(Model.eventTypes.changeOne + QueryStateModel.attributesEnum.debug);
+    $$(this.element).on(debugChanged, (e, args: IAttributeChangedEventArg) => this.handleDebugModeChange(args));
+
+    this.queryStateModel.registerNewAttribute(QueryStateModel.attributesEnum.fv, {});
+
+    const eventNameQuickview = this.queryStateModel.getEventName(Model.eventTypes.changeOne + QueryStateModel.attributesEnum.quickview);
+    $$(this.element).on(eventNameQuickview, (e, args) => this.handleQuickviewChanged(args));
+  }
+
+  private setupDebugInfo() {
+    if (this.options.enableDebugInfo) {
+      setTimeout(() => new Debug(this.element, this.getBindings()));
+    }
+  }
+
+  private setupResponsiveComponents() {
+    this.responsiveComponents = new ResponsiveComponents();
+    this.responsiveComponents.setMediumScreenWidth(this.options.responsiveMediumBreakpoint);
+    this.responsiveComponents.setSmallScreenWidth(this.options.responsiveSmallBreakpoint);
+  }
+
   private async handleDebugModeChange(args: IAttributeChangedEventArg) {
     if (args.value && !this.relevanceInspector && this.options.enableDebugInfo) {
       require.ensure(
@@ -684,22 +720,6 @@ export class SearchInterface extends RootComponent implements IComponentBindings
         'RelevanceInspector'
       );
     }
-  }
-
-  private initializeHistoryController() {
-    new HistoryController(this.element, window, this.queryStateModel, this.queryController, this.usageAnalytics);
-  }
-
-  private setupDebugInfo() {
-    if (this.options.enableDebugInfo) {
-      setTimeout(() => new Debug(this.element, this.getBindings()));
-    }
-  }
-
-  private setupResponsiveComponents() {
-    this.responsiveComponents = new ResponsiveComponents();
-    this.responsiveComponents.setMediumScreenWidth(this.options.responsiveMediumBreakpoint);
-    this.responsiveComponents.setSmallScreenWidth(this.options.responsiveSmallBreakpoint);
   }
 
   private handlePreprocessQueryStateModel(args: Record<string, any>) {
