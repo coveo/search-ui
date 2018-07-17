@@ -1,5 +1,12 @@
 import { ISearchEndpointOptions, ISearchEndpoint, IViewAsHtmlOptions } from './SearchEndpointInterface';
-import { EndpointCaller, IEndpointCallParameters, IErrorResponse, IRequestInfo, IEndpointCallerOptions } from '../rest/EndpointCaller';
+import {
+  EndpointCaller,
+  IEndpointCallParameters,
+  IErrorResponse,
+  IRequestInfo,
+  IEndpointCallerOptions,
+  ISuccessResponse
+} from '../rest/EndpointCaller';
 import { IEndpointCallOptions } from '../rest/SearchEndpointInterface';
 import { IStringMap } from './GenericParam';
 import { Logger } from '../misc/Logger';
@@ -30,6 +37,8 @@ import { TimeSpan } from '../utils/TimeSpanUtils';
 import { UrlUtils } from '../utils/UrlUtils';
 import { IGroupByResult } from './GroupByResult';
 import { AccessToken } from './AccessToken';
+import { BackOffRequest } from './BackOffRequest';
+import { IBackOffRequest } from 'exponential-backoff';
 
 export class DefaultSearchEndpointOptions implements ISearchEndpointOptions {
   restUri: string;
@@ -109,16 +118,19 @@ export class SearchEndpoint implements ISearchEndpoint {
    *
    * @param otherOptions A set of additional options to use when configuring this endpoint.
    */
-  static configureSampleEndpointV2(optionsOPtions?: ISearchEndpointOptions) {
+  static configureSampleEndpointV2(otherOptions?: ISearchEndpointOptions) {
     SearchEndpoint.endpoints['default'] = new SearchEndpoint(
-      _.extend({
-        restUri: 'https://platform.cloud.coveo.com/rest/search',
-        accessToken: 'xx564559b1-0045-48e1-953c-3addd1ee4457',
-        queryStringArguments: {
-          organizationId: 'searchuisamples',
-          viewAllContent: 1
-        }
-      })
+      _.extend(
+        {
+          restUri: 'https://platform.cloud.coveo.com/rest/search',
+          accessToken: 'xx564559b1-0045-48e1-953c-3addd1ee4457',
+          queryStringArguments: {
+            organizationId: 'searchuisamples',
+            viewAllContent: 1
+          }
+        },
+        otherOptions
+      )
     );
   }
 
@@ -1061,7 +1073,7 @@ export class SearchEndpoint implements ISearchEndpoint {
     };
   }
 
-  private async performOneCall<T>(params: IEndpointCallParameters, callOptions?: IEndpointCallOptions, autoRenewToken = true): Promise<T> {
+  private async performOneCall<T>(params: IEndpointCallParameters, callOptions?: IEndpointCallOptions): Promise<T> {
     params = UrlUtils.merge(params, {
       paths: params.url,
       queryAsString: params.queryString,
@@ -1070,24 +1082,61 @@ export class SearchEndpoint implements ISearchEndpoint {
       }
     });
 
+    const request = () => this.caller.call<T>(params);
+
     try {
-      const response = await this.caller.call(params);
-      return response.data as T;
+      const response = await request();
+      return response.data;
     } catch (error) {
-      if (autoRenewToken && this.accessToken.isExpired(error)) {
-        const renewSuccess = await this.accessToken.doRenew();
-        if (renewSuccess) {
-          return this.performOneCall(params, callOptions, autoRenewToken) as Promise<T>;
-        }
-      } else if (error.statusCode == 0 && this.isRedirecting) {
-        // The page is getting redirected
-        // Set timeout on return with empty string, since it does not really matter
-        _.defer(function() {
-          return '';
-        });
+      if (!error) {
+        throw new Error('Request failed but it did not return an error.');
       }
-      throw this.handleErrorResponse(error) as any;
+
+      const errorCode = (error as IErrorResponse).statusCode;
+
+      switch (errorCode) {
+        case 419:
+          const tokenWasRenewed = await this.accessToken.doRenew();
+
+          if (!tokenWasRenewed) {
+            throw this.handleErrorResponse(error);
+          }
+
+          return this.performOneCall(params, callOptions) as Promise<T>;
+
+        case 429:
+          const response = await this.backOffThrottledRequest<ISuccessResponse<T>>(request);
+          return response.data;
+
+        default:
+          throw this.handleErrorResponse(error);
+      }
     }
+  }
+
+  private async backOffThrottledRequest<T>(request: () => Promise<T>) {
+    try {
+      const backOffRequest: IBackOffRequest<T> = {
+        fn: () => request(),
+        retry: (e, attempt) => this.retryIf429Error(e, attempt)
+      };
+      return await BackOffRequest.enqueue<T>(backOffRequest);
+    } catch (e) {
+      throw this.handleErrorResponse(e);
+    }
+  }
+
+  private retryIf429Error(e: IErrorResponse, attempt: number) {
+    if (this.isThrottled(e)) {
+      this.logger.info(`Resending the request because it was throttled. Retry attempt ${attempt}`);
+      return true;
+    }
+
+    return false;
+  }
+
+  private isThrottled(error: IErrorResponse) {
+    return error && error.statusCode === 429;
   }
 
   private handleErrorResponse(errorResponse: IErrorResponse): Error {

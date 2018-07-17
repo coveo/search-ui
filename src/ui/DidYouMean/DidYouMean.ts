@@ -111,6 +111,7 @@ export class DidYouMean extends Component {
       this.correctedTerm = data.results.queryCorrections[0].correctedQuery;
       let correctedSentence = this.buildCorrectedSentence(data.results.queryCorrections[0]);
       this.queryStateModel.set(QueryStateModel.attributesEnum.q, data.results.queryCorrections[0].correctedQuery);
+      this.searchInterface.historyManager.replaceState(this.queryStateModel.getAttributes());
       data.retryTheQuery = true;
       this.hideNext = false;
 

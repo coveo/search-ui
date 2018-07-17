@@ -128,6 +128,7 @@ export class InitializationPlaceholder {
 
   public withFullInitializationStyling() {
     $$(this.root).addClass(InitializationPlaceholder.INITIALIZATION_CLASS);
+    $$(this.root).removeClass(InitializationPlaceholder.AFTER_INITIALIZATION_CLASS);
     $$(this.root).one(this.eventToRemovePlaceholder, () => {
       $$(this.root).removeClass(InitializationPlaceholder.INITIALIZATION_CLASS);
       $$(this.root).addClass(InitializationPlaceholder.AFTER_INITIALIZATION_CLASS);
@@ -314,7 +315,14 @@ export class InitializationPlaceholder {
   }
 
   private getAllFacetsElements(): HTMLElement[] {
-    const toSelect = ['.CoveoFacet', '.CoveoFacetRange', '.CoveoTimespanFacet', '.CoveoFacetSlider', '.CoveoHierarchicalFacet'].join(', ');
+    const toSelect = [
+      '.CoveoFacet',
+      '.CoveoFacetRange',
+      '.CoveoTimespanFacet',
+      '.CoveoFacetSlider',
+      '.CoveoHierarchicalFacet',
+      '.CoveoCategoryFacet'
+    ].join(', ');
     return $$(this.root).findAll(toSelect);
   }
 }

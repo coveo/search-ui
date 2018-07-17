@@ -1,18 +1,16 @@
-import { IOmniboxOptions } from '../Omnibox/Omnibox';
+import 'styling/_Searchbox';
+import { exportGlobally } from '../../GlobalExports';
+import { $$ } from '../../utils/Dom';
+import { SVGDom } from '../../utils/SVGDom';
+import { SVGIcons } from '../../utils/SVGIcons';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
-import { Omnibox } from '../Omnibox/Omnibox';
 import { ComponentOptions } from '../Base/ComponentOptions';
-import { SearchButton } from '../SearchButton/SearchButton';
-import { Querybox } from '../Querybox/Querybox';
-import { $$ } from '../../utils/Dom';
 import { Initialization } from '../Base/Initialization';
-import * as _ from 'underscore';
-import { exportGlobally } from '../../GlobalExports';
-
-import 'styling/_Searchbox';
-import { SVGIcons } from '../../utils/SVGIcons';
-import { SVGDom } from '../../utils/SVGDom';
+import { IOmniboxOptions, Omnibox } from '../Omnibox/Omnibox';
+import { Querybox } from '../Querybox/Querybox';
+import { SearchButton } from '../SearchButton/SearchButton';
+import { each, extend } from 'underscore';
 
 export interface ISearchboxOptions extends IOmniboxOptions {
   addSearchButton?: boolean;
@@ -118,12 +116,12 @@ export class Searchbox extends Component {
     }
 
     if (this.options.addSearchButton) {
-      var anchor = document.createElement('a');
-      this.element.appendChild(anchor);
-      this.searchButton = new SearchButton(anchor, undefined, bindings);
+      const anchor = $$('a');
+      this.element.appendChild(anchor.el);
+      this.searchButton = new SearchButton(anchor.el, undefined, bindings);
     }
 
-    var div = document.createElement('div');
+    const div = document.createElement('div');
     this.element.appendChild(div);
 
     if (this.options.enableOmnibox) {
@@ -138,12 +136,12 @@ export class Searchbox extends Component {
   }
 }
 
-Searchbox.options = _.extend({}, Searchbox.options, Omnibox.options, Querybox.options);
+Searchbox.options = { ...Searchbox.options, ...Omnibox.options, ...Querybox.options };
 
 // Only parse omnibox option if omnibox is enabled
-_.each(<any>Searchbox.options, (value, key: string) => {
+each(<any>Searchbox.options, (value, key: string) => {
   if (key in Omnibox.options && !(key in Querybox.options)) {
-    Searchbox.options[key] = _.extend({ depend: 'enableOmnibox' }, value);
+    Searchbox.options[key] = extend({ depend: 'enableOmnibox' }, value);
   }
 });
 

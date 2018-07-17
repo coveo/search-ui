@@ -1,19 +1,18 @@
-import { $$, Dom } from '../../utils/Dom';
-import { IResponsiveComponent, ResponsiveComponentsManager, IResponsiveComponentOptions } from './ResponsiveComponentsManager';
-import { ResponsiveComponentsUtils } from './ResponsiveComponentsUtils';
-import { Component } from '../Base/Component';
+import 'styling/_ResponsiveFacets';
+import { IQuerySuccessEventArgs, QueryEvents } from '../../events/QueryEvents';
 import { Logger } from '../../misc/Logger';
 import { l } from '../../strings/Strings';
+import { $$, Dom } from '../../utils/Dom';
 import { Utils } from '../../utils/Utils';
+import { Component } from '../Base/Component';
+import { SearchInterface } from '../SearchInterface/SearchInterface';
+import { ResponsiveComponents } from './ResponsiveComponents';
+import { IResponsiveComponent, IResponsiveComponentOptions, ResponsiveComponentsManager } from './ResponsiveComponentsManager';
+import { ResponsiveComponentsUtils } from './ResponsiveComponentsUtils';
 import { ResponsiveDropdown } from './ResponsiveDropdown/ResponsiveDropdown';
 import { ResponsiveDropdownContent } from './ResponsiveDropdown/ResponsiveDropdownContent';
 import { ResponsiveDropdownHeader } from './ResponsiveDropdown/ResponsiveDropdownHeader';
-import { QueryEvents, IQuerySuccessEventArgs } from '../../events/QueryEvents';
-import { SearchInterface } from '../SearchInterface/SearchInterface';
-import { ResponsiveComponents } from './ResponsiveComponents';
-import * as _ from 'underscore';
-
-import 'styling/_ResponsiveFacets';
+import { each, debounce } from 'underscore';
 
 export class ResponsiveFacetColumn implements IResponsiveComponent {
   public static DEBOUNCE_SCROLL_WAIT = 250;
@@ -86,9 +85,9 @@ export class ResponsiveFacetColumn implements IResponsiveComponent {
   }
 
   public dismissFacetSearches() {
-    _.each(this.componentsInFacetColumn, component => {
+    each(this.componentsInFacetColumn, component => {
       if (component.facetSearch && component.facetSearch.currentlyDisplayedResults) {
-        component.facetSearch.completelyDismissSearch();
+        component.facetSearch.dismissSearchResults();
       }
     });
   }
@@ -158,8 +157,8 @@ export class ResponsiveFacetColumn implements IResponsiveComponent {
   private bindDropdownContentEvents() {
     this.dropdown.dropdownContent.element.on(
       'scroll',
-      _.debounce(() => {
-        _.each(this.componentsInFacetColumn, component => {
+      debounce(() => {
+        each(this.componentsInFacetColumn, component => {
           let facetSearch = component.facetSearch;
           if (facetSearch && facetSearch.currentlyDisplayedResults && !this.isFacetSearchScrolledIntoView(facetSearch.search)) {
             component.facetSearch.positionSearchResults(this.dropdown.dropdownContent.element.el);
@@ -172,7 +171,7 @@ export class ResponsiveFacetColumn implements IResponsiveComponent {
   }
 
   private restoreFacetPreservePositionValue() {
-    _.each(this.componentsInFacetColumn, (component, index) => {
+    each(this.componentsInFacetColumn, (component, index) => {
       if (component.options) {
         component.options.preservePosition = this.preservePositionOriginalValues[index];
       }
@@ -180,7 +179,7 @@ export class ResponsiveFacetColumn implements IResponsiveComponent {
   }
 
   private disableFacetPreservePosition() {
-    _.each(this.componentsInFacetColumn, component => {
+    each(this.componentsInFacetColumn, component => {
       if (component.options) {
         component.options.preservePosition = false;
       }
@@ -201,7 +200,7 @@ export class ResponsiveFacetColumn implements IResponsiveComponent {
   private getDropdownHeaderLabel() {
     let dropdownHeaderLabel: string;
     let selector = `.${Component.computeCssClassNameForType('Facet')}, .${Component.computeCssClassNameForType('FacetSlider')}`;
-    _.each($$(this.coveoRoot.find('.coveo-facet-column')).findAll(selector), facetElement => {
+    each($$(this.coveoRoot.find('.coveo-facet-column')).findAll(selector), facetElement => {
       let facet;
       if ($$(facetElement).hasClass(Component.computeCssClassNameForType('Facet'))) {
         facet = Component.get(facetElement);

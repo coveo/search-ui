@@ -1,40 +1,40 @@
 /// <reference path="../Facet/FacetHeader.ts" />
 /// <reference path="../../controllers/FacetSliderQueryController.ts" />
 
-import { ISliderOptions, Slider, IEndSlideEventArgs, IDuringSlideEventArgs, ISliderGraphData } from '../Misc/Slider';
-import { Component } from '../Base/Component';
-import { IComponentBindings } from '../Base/ComponentBindings';
-import { ComponentOptions, IFieldOption, IComponentOptionsObjectOptionArgs } from '../Base/ComponentOptions';
-import { FacetHeader } from '../Facet/FacetHeader';
-import { l } from '../../strings/Strings';
-import { InitializationEvents } from '../../events/InitializationEvents';
+import 'styling/_FacetSlider';
+import { map, debounce } from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
+import { Defer } from '../../MiscModules';
 import { FacetSliderQueryController } from '../../controllers/FacetSliderQueryController';
-import { QueryEvents, IQuerySuccessEventArgs, IBuildingQueryEventArgs, IDoneBuildingQueryEventArgs } from '../../events/QueryEvents';
-import { BreadcrumbEvents, IPopulateBreadcrumbEventArgs, IBreadcrumbItem } from '../../events/BreadcrumbEvents';
+import { BreadcrumbEvents, IBreadcrumbItem, IPopulateBreadcrumbEventArgs } from '../../events/BreadcrumbEvents';
+import { InitializationEvents } from '../../events/InitializationEvents';
+import { IBuildingQueryEventArgs, IDoneBuildingQueryEventArgs, IQuerySuccessEventArgs, QueryEvents } from '../../events/QueryEvents';
+import { ISearchAlertsPopulateMessageEventArgs, SearchAlertsEvents } from '../../events/SearchAlertEvents';
+import { IGraphValueSelectedArgs, SliderEvents } from '../../events/SliderEvents';
+import { Assert } from '../../misc/Assert';
 import { IAttributeChangedEventArg, Model } from '../../models/Model';
+import { QueryStateModel } from '../../models/QueryStateModel';
+import { IGroupByResult } from '../../rest/GroupByResult';
+import { l } from '../../strings/Strings';
 import { $$ } from '../../utils/Dom';
+import { SVGDom } from '../../utils/SVGDom';
+import { SVGIcons } from '../../utils/SVGIcons';
+import { Utils } from '../../utils/Utils';
 import {
-  analyticsActionCauseList,
+  IAnalyticsFacetGraphSelectedMeta,
   IAnalyticsFacetMeta,
   IAnalyticsFacetSliderChangeMeta,
-  IAnalyticsFacetGraphSelectedMeta
+  analyticsActionCauseList
 } from '../Analytics/AnalyticsActionListMeta';
-import { QueryStateModel } from '../../models/QueryStateModel';
-import { SliderEvents, IGraphValueSelectedArgs } from '../../events/SliderEvents';
-import { Assert } from '../../misc/Assert';
-import { Utils } from '../../utils/Utils';
-import { ResponsiveComponentsUtils } from '../ResponsiveComponents/ResponsiveComponentsUtils';
+import { Component } from '../Base/Component';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { ComponentOptions, IComponentOptionsObjectOptionArgs, IFieldOption } from '../Base/ComponentOptions';
 import { Initialization } from '../Base/Initialization';
-import { SearchAlertsEvents, ISearchAlertsPopulateMessageEventArgs } from '../../events/SearchAlertEvents';
-import * as _ from 'underscore';
-import { exportGlobally } from '../../GlobalExports';
-import { ResponsiveFacetSlider } from '../ResponsiveComponents/ResponsiveFacetSlider';
-import 'styling/_FacetSlider';
-import { IGroupByResult } from '../../rest/GroupByResult';
-import { Defer } from '../../MiscModules';
-import { SVGIcons } from '../../utils/SVGIcons';
-import { SVGDom } from '../../utils/SVGDom';
+import { FacetHeader } from '../Facet/FacetHeader';
+import { IDuringSlideEventArgs, IEndSlideEventArgs, ISliderGraphData, ISliderOptions, Slider } from '../Misc/Slider';
+import { ResponsiveComponentsUtils } from '../ResponsiveComponents/ResponsiveComponentsUtils';
 import { ResponsiveDropdownEvent } from '../ResponsiveComponents/ResponsiveDropdown/ResponsiveDropdown';
+import { ResponsiveFacetSlider } from '../ResponsiveComponents/ResponsiveFacetSlider';
 
 export interface IFacetSliderOptions extends ISliderOptions {
   dateField?: boolean;
@@ -344,7 +344,11 @@ export class FacetSlider extends Component {
      *
      * Default value is "Filters".
      */
-    dropdownHeaderLabel: ComponentOptions.buildLocalizedStringOption({ section: 'ResponsiveOptions' })
+    dropdownHeaderLabel: ComponentOptions.buildLocalizedStringOption({ section: 'ResponsiveOptions' }),
+    responsiveBreakpoint: ComponentOptions.buildNumberOption({
+      deprecated:
+        'This option is exposed for legacy reasons. It is not recommended to use this option. Instead, use `SearchInterface.options.responsiveMediumBreakpoint` options exposed on the `SearchInterface`.'
+    })
   };
 
   static ID = 'FacetSlider';
@@ -365,6 +369,7 @@ export class FacetSlider extends Component {
   public facetQueryController: FacetSliderQueryController;
   public facetHeader: FacetHeader;
   public onResize: EventListener;
+  public isSimpleSliderConfig = false;
 
   private rangeQueryStateAttribute: string;
   private isEmpty = false;
@@ -382,7 +387,7 @@ export class FacetSlider extends Component {
   constructor(public element: HTMLElement, public options: IFacetSliderOptions, bindings?: IComponentBindings, private slider?: Slider) {
     super(element, FacetSlider.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, FacetSlider, options);
-
+    this.isSimpleSliderConfig = this.options.start != null && this.options.end != null;
     ResponsiveFacetSlider.init(this.root, this, this.options);
 
     if (this.options.excludeOuterBounds == null) {
@@ -510,10 +515,6 @@ export class FacetSlider extends Component {
     this.delayedGraphData = null;
   }
 
-  public isSimpleSliderConfig() {
-    return this.options.start != null && this.options.end != null;
-  }
-
   public hasAGraph() {
     return this.options.graph != undefined;
   }
@@ -541,7 +542,7 @@ export class FacetSlider extends Component {
   }
 
   private bindResizeEvents() {
-    this.onResize = () => {
+    this.onResize = debounce(() => {
       if (ResponsiveComponentsUtils.shouldDrawFacetSlider($$(this.root), $$(this.element)) && this.slider && !this.isEmpty) {
         if (this.delayedGraphData) {
           this.drawDelayedGraphData();
@@ -549,14 +550,17 @@ export class FacetSlider extends Component {
           this.slider.drawGraph();
         }
       }
-    };
+      if (this.slider) {
+        this.slider.onMoving();
+      }
+    }, 250);
     window.addEventListener('resize', this.onResize);
     this.bind.onRootElement(ResponsiveDropdownEvent.OPEN, this.onResize);
 
     // This is used inside SF integration
     this.bind.onRootElement('onPopupOpen', this.onResize);
 
-    $$(this.root).on(InitializationEvents.nuke, this.handleNuke);
+    $$(this.root).on(InitializationEvents.nuke, () => this.handleNuke());
   }
 
   private bindBreadcrumbEvents() {
@@ -685,7 +689,7 @@ export class FacetSlider extends Component {
 
     this.slider = this.slider
       ? this.slider
-      : new Slider(sliderDiv, _.extend({}, this.options, { dateField: this.options.dateField }), this.root);
+      : new Slider(sliderDiv, { ...this.options, ...{ dateField: this.options.dateField } } as ISliderOptions, this.root);
     $$(sliderDiv).on(SliderEvents.endSlide, (e: MouseEvent, args: IEndSlideEventArgs) => {
       this.handleEndSlide(args);
     });
@@ -800,7 +804,7 @@ export class FacetSlider extends Component {
     let graphData: ISliderGraphData[];
     let totalGraphResults = 0;
     if (rawGroupByResults) {
-      graphData = _.map(rawGroupByResults.values, value => {
+      graphData = map(rawGroupByResults.values, value => {
         totalGraphResults += value.numberOfResults;
         let start: any = value.value.split('..')[0];
         let end: any = value.value.split('..')[1];
@@ -821,14 +825,7 @@ export class FacetSlider extends Component {
       });
     }
     if (totalGraphResults == 0) {
-      // Special corner case for "simple slider facet" : Do not only handle the group by results,
-      // but also look for the complete result set when determining if we should show the facet.
-      // This allows simple slider facet to still show with query function fields
-      if (this.isSimpleSliderConfig()) {
-        this.isEmpty = data.results.results.length == 0;
-      } else {
-        this.isEmpty = true;
-      }
+      this.isEmpty = true;
       this.updateAppearanceDependingOnState();
     }
 

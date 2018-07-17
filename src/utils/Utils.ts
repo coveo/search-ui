@@ -196,6 +196,22 @@ export class Utils {
     return value;
   }
 
+  /**
+   * Get the value of the first field from the array and defined in the result.
+   *
+   * @param result a QueryResult in which to ge the fieldvalue.
+   * @param name One or multiple fieldNames to get the value.
+   */
+  static getFirstAvailableFieldValue(result: IQueryResult, fieldNames: Array<string>): string | undefined {
+    for (let i = 0; i < fieldNames.length; i++) {
+      let value = Utils.getFieldValue(result, fieldNames[i]);
+      if (value !== undefined) {
+        return value;
+      }
+    }
+    return undefined;
+  }
+
   static getFieldValue(result: IQueryResult, name: string): any {
     // Be as forgiving as possible about the field name, since we expect
     // user provided values.

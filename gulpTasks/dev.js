@@ -11,15 +11,20 @@ const glob = require('glob');
 const args = require('yargs').argv;
 
 const port = args.port || 8080;
-const testsPort = args.port || 8081;
+const unitTestsPort = args.port || 8081;
+const accessibilityTestsPort = args.port || 8082;
 
 const webpackConfig = require('../webpack.config.js');
 webpackConfig.entry['CoveoJsSearch.Lazy'].unshift(`webpack-dev-server/client?http://localhost:${port}/`);
 const compiler = webpack(webpackConfig);
 
-const webpackConfigTest = require('../webpack.test.config.js');
-webpackConfigTest.entry['tests'].unshift(`webpack-dev-server/client?http://localhost:${testsPort}/`);
-const compilerTest = webpack(webpackConfigTest);
+const webpackConfigUnitTest = require('../webpack.unit.test.config.js');
+webpackConfigUnitTest.entry['unitTests'].unshift(`webpack-dev-server/client?http://localhost:${unitTestsPort}/`);
+const compilerUnitTest = webpack(webpackConfigUnitTest);
+
+const webpackConfigAccessibilityTest = require('../webpack.accessibility.test.config.js');
+webpackConfigAccessibilityTest.entry['accessibilityTests'].unshift(`webpack-dev-server/client?http://localhost:${accessibilityTestsPort}/`);
+const compilerAccessibilityTest = webpack(webpackConfigAccessibilityTest);
 
 let server;
 
@@ -51,6 +56,7 @@ gulp.task('dev', ['setup', 'deleteCssFile'], done => {
     contentBase: 'bin/',
     publicPath: `http://localhost:${port}/js/`,
     disableHostCheck: true,
+    compress: true,
     stats: {
       colors: true,
       publicPath: true
@@ -62,17 +68,27 @@ gulp.task('dev', ['setup', 'deleteCssFile'], done => {
 
 gulp.task('deleteCssFile', done => {
   // Rely on dynamically loaded style.
-  // fs.unlink('./bin/css/CoveoFullSearchNewDesign.css', () => {
-  done();
-  // });
+  fs.unlink('./bin/css/CoveoFullSearchNewDesign.css', () => {
+    done();
+  });
 });
 
 gulp.task('devTest', ['setupTests'], function(done) {
-  var serverTests = new WebpackDevServer(compilerTest, {
+  var serverTests = new WebpackDevServer(compilerUnitTest, {
     contentBase: 'bin/',
     publicPath: '/tests/',
     compress: true
   });
-  serverTests.listen(testsPort, 'localhost', () => {});
+  serverTests.listen(unitTestsPort, 'localhost', () => {});
+  done();
+});
+
+gulp.task('devAccessibilityTest', ['setupTests'], done => {
+  var serverTests = new WebpackDevServer(compilerAccessibilityTest, {
+    contentBase: 'bin/',
+    publicPath: '/tests/',
+    compress: true
+  });
+  serverTests.listen(accessibilityTestsPort, 'localhost', () => {});
   done();
 });
