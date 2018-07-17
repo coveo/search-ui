@@ -164,10 +164,17 @@ export class Facet extends Component {
      * If you have two facets with the same field on the same page, you should specify an `id` value for at least one of
      * those two facets. This `id` must be unique among the facets.
      *
+     * Whitespace characters are automatically removed from the `id` value.
+     *
      * Default value is the [`field`]{@link Facet.options.field} option value.
      */
     id: ComponentOptions.buildStringOption({
-      postProcessing: (value, options: IFacetOptions) => value || <string>options.field
+      postProcessing: (value: string, options: IFacetOptions) => {
+        if (value) {
+          return value.replace(/\s/g, '');
+        }
+        return options.field as string;
+      }
     }),
     /**
      * Specifies whether the facet [`field`]{@link Facet.options.field} is configured in the index as a multi-value

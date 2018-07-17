@@ -70,9 +70,16 @@ export function TimespanFacetTest() {
 
       it('id should pass the correct id option to the underlying facet', () => {
         test = Mock.optionsComponentSetup<TimespanFacet, ITimespanFacetOptions>(TimespanFacet, {
+          id: 'Anewid'
+        });
+        expect(test.cmp.facet.options.id).toBe('Anewid');
+      });
+
+      it('id with spaces should get properly trimmed by the underlying facet', () => {
+        test = Mock.optionsComponentSetup<TimespanFacet, ITimespanFacetOptions>(TimespanFacet, {
           id: 'A new id'
         });
-        expect(test.cmp.facet.options.id).toBe('A new id');
+        expect(test.cmp.facet.options.id).toBe('Anewid');
       });
 
       it('id should default to the field of the facet', () => {
