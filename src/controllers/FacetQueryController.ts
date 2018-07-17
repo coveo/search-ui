@@ -76,7 +76,7 @@ export class FacetQueryController {
     const groupByRequest = this.createBasicGroupByRequest(allowedValues);
 
     const queryOverrideObject = this.createGroupByQueryOverride(queryBuilder);
-    if (!Utils.isNullOrUndefined(queryOverrideObject)) {
+    if (!Utils.isNullOrUndefined(queryOverrideObject) || !QueryBuilderExpression.isEmpty(queryOverrideObject)) {
       groupByRequest.queryOverride = queryOverrideObject.basic;
       groupByRequest.advancedQueryOverride = queryOverrideObject.advanced;
       groupByRequest.constantQueryOverride = queryOverrideObject.constant;
@@ -278,6 +278,9 @@ export class FacetQueryController {
     }
 
     queryBuilderExpression = this.processQueryOverrideForEmptyValues(queryBuilder, queryBuilderExpression);
+    if (QueryBuilderExpression.isEmpty(queryBuilderExpression)) {
+      return null;
+    }
     return queryBuilderExpression;
   }
 
