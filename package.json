@@ -137,6 +137,7 @@
     "d3": "^4.2.1",
     "d3-scale": "^1.0.3",
     "es6-promise": "^4.0.5",
+    "exponential-backoff": "^1.0.5",
     "fastclick": "1.0.6",
     "jstimezonedetect": "^1.0.6",
     "latinize": "^0.4.0",
