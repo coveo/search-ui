@@ -27,6 +27,11 @@ export function CheckboxTest() {
       expect(checkbox.getValue()).toEqual('hello');
     });
 
+    it('should not allow to create a checkbox with stored XSS', () => {
+      checkbox = new Checkbox(spyChange, '<svg/onload=alert(document.domain)>');
+      expect(checkbox.getLabel().textContent).toBe('<svg/onload=alert(document.domain)>');
+    });
+
     describe('select', () => {
       it('should allow to select', () => {
         checkbox.select();
