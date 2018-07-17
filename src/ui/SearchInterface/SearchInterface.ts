@@ -6,7 +6,9 @@ import 'styling/_SearchInterface';
 import 'styling/_SearchModalBox';
 import { any, chain, each, find, first, indexOf, isEmpty, partition, tail } from 'underscore';
 import { HistoryController } from '../../controllers/HistoryController';
+import { IHistoryManager } from '../../controllers/HistoryManager';
 import { LocalStorageHistoryController } from '../../controllers/LocalStorageHistoryController';
+import { NoopHistoryController } from '../../controllers/NoopHistoryController';
 import { QueryController } from '../../controllers/QueryController';
 import { InitializationEvents } from '../../events/InitializationEvents';
 import {
@@ -42,18 +44,6 @@ import { MEDIUM_SCREEN_WIDTH, ResponsiveComponents, SMALL_SCREEN_WIDTH } from '.
 import { FacetColumnAutoLayoutAdjustment } from './FacetColumnAutoLayoutAdjustment';
 import { FacetValueStateHandler } from './FacetValueStateHandler';
 import RelevanceInspectorModule = require('../RelevanceInspector/RelevanceInspector');
-
-import * as fastclick from 'fastclick';
-import * as jstz from 'jstimezonedetect';
-
-import 'styling/Globals';
-import 'styling/_SearchInterface';
-import 'styling/_SearchModalBox';
-import 'styling/_SearchButton';
-import { each, indexOf, isEmpty, chain, any, find, partition, first, tail } from 'underscore';
-import { FacetColumnAutoLayoutAdjustment } from './FacetColumnAutoLayoutAdjustment';
-import { IHistoryManager } from '../../controllers/HistoryManager';
-import { NoopHistoryController } from '../../controllers/NoopHistoryController';
 
 export interface ISearchInterfaceOptions {
   enableHistory?: boolean;
@@ -493,7 +483,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     Assert.exists(this.options);
     this.root = element;
 
-    this.setupWithEmptyQueryMode();
+    this.setupQueryMode();
     this.setupMobileFastclick(element);
 
     this.queryStateModel = new QueryStateModel(element);
@@ -668,7 +658,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     this.historyManager = new HistoryController(element, _window, this.queryStateModel, this.queryController, this.usageAnalytics);
   }
 
-  private setupWithEmptyQueryMode() {
+  private setupQueryMode() {
     if (this.options.allowQueriesWithoutKeywords) {
       this.initializeEmptyQueryAllowed();
     } else {
@@ -680,9 +670,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     // The definition file for fastclick does not match the way that fast click gets loaded (AMD)
     // So we have to do some typecasting gymnastics
     const attachFastclick = (fastclick as any).attach;
-    if (attachFastclick) {
-      attachFastclick(element);
-    }
+    attachFastclick(element);
   }
 
   private setupEventsHandlers() {
@@ -713,7 +701,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     this.responsiveComponents.setSmallScreenWidth(this.options.responsiveSmallBreakpoint);
   }
 
-  private async handleDebugModeChange(args: IAttributeChangedEventArg) {
+  private handleDebugModeChange(args: IAttributeChangedEventArg) {
     if (args.value && !this.relevanceInspector && this.options.enableDebugInfo) {
       require.ensure(
         ['../RelevanceInspector/RelevanceInspector'],

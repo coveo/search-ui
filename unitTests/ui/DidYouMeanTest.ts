@@ -76,15 +76,15 @@ export function DidYouMeanTest() {
           });
 
           it('should autocorrect the query when no results are found', () => {
-            const qsmSpy = jasmine.createSpy('queryStateModelSpy');
-            test.env.queryStateModel.set = qsmSpy;
+            const spy = jasmine.createSpy('queryStateModelSpy');
+            test.env.queryStateModel.set = spy;
 
             Simulate.query(test.env, {
               results: FakeResults.createFakeResults(0),
               queryCorrections: [fakeQueryCorrection]
             });
 
-            expect(qsmSpy).toHaveBeenCalledWith(QueryStateModel.attributesEnum.q, 'this is the corrected query');
+            expect(spy).toHaveBeenCalledWith(QueryStateModel.attributesEnum.q, 'this is the corrected query');
           });
 
           it('should send an analytics event when query is autocorrected', () => {
@@ -97,7 +97,7 @@ export function DidYouMeanTest() {
             });
 
             expect(analyticsSpy).toHaveBeenCalledWith(analyticsActionCauseList.didyoumeanAutomatic, {});
-            expect(analyticsSpy.calls.count()).toBe(1);
+            expect(analyticsSpy).toHaveBeenCalledTimes(1);
           });
 
           it('should replace the state in history manager when query is autocorrected', () => {
@@ -108,7 +108,7 @@ export function DidYouMeanTest() {
               queryCorrections: [fakeQueryCorrection]
             });
 
-            expect(test.env.searchInterface.historyManager.replaceState).toHaveBeenCalled();
+            expect(test.env.searchInterface.historyManager.replaceState).toHaveBeenCalledTimes(1);
           });
         });
 
@@ -121,15 +121,15 @@ export function DidYouMeanTest() {
 
           it('should not autocorrect the query when no results are found', () => {
             test.env.queryStateModel.get = () => 'foobar';
-            const qsmSpy = jasmine.createSpy('queryStateModelSpy');
-            test.env.queryStateModel.set = qsmSpy;
+            const spy = jasmine.createSpy('queryStateModelSpy');
+            test.env.queryStateModel.set = spy;
 
             Simulate.query(test.env, {
               results: FakeResults.createFakeResults(0),
               queryCorrections: [fakeQueryCorrection]
             });
 
-            expect(qsmSpy).not.toHaveBeenCalled();
+            expect(spy).not.toHaveBeenCalled();
           });
 
           it('should not replace the state in history manager', () => {
@@ -147,8 +147,8 @@ export function DidYouMeanTest() {
     });
 
     it('should not autocorrect search-as-you-type queries', () => {
-      const qsmSpy = jasmine.createSpy('queryStateModelSpy');
-      test.env.queryStateModel.set = qsmSpy;
+      const spy = jasmine.createSpy('queryStateModelSpy');
+      test.env.queryStateModel.set = spy;
 
       Simulate.query(test.env, {
         results: FakeResults.createFakeResults(0),
@@ -156,7 +156,7 @@ export function DidYouMeanTest() {
         queryCorrections: [fakeQueryCorrection]
       });
 
-      expect(qsmSpy).not.toHaveBeenCalled();
+      expect(spy).not.toHaveBeenCalled();
     });
 
     it('correctedTerm should be null before a query', () => {
@@ -189,12 +189,12 @@ export function DidYouMeanTest() {
           queryCorrections: [fakeQueryCorrection]
         });
 
-        const qsmSpy = jasmine.createSpy('queryStateModelSpy');
-        test.env.queryStateModel.set = qsmSpy;
+        const spy = jasmine.createSpy('queryStateModelSpy');
+        test.env.queryStateModel.set = spy;
         test.cmp.doQueryWithCorrectedTerm();
 
-        expect(qsmSpy).toHaveBeenCalledWith(QueryStateModel.attributesEnum.q, fakeQueryCorrection.correctedQuery);
-        expect(qsmSpy.calls.count()).toBe(1);
+        expect(spy).toHaveBeenCalledWith(QueryStateModel.attributesEnum.q, fakeQueryCorrection.correctedQuery);
+        expect(spy.calls.count()).toBe(1);
       });
     });
 

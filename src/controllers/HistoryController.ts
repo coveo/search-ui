@@ -83,7 +83,7 @@ export class HistoryController extends RootComponent implements IHistoryManager 
   }
 
   public setState(state: Record<string, any>) {
-    return this.setHashValues(state);
+    this.setHashValues(state);
   }
 
   public replaceState(state: Record<string, any>) {

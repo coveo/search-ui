@@ -44,7 +44,7 @@ export class LocalStorageHistoryController extends RootComponent implements IHis
   }
 
   public replaceState(state: Record<string, any>) {
-    return this.storage.save(state);
+    this.storage.save(state);
   }
 
   /**
