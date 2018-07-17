@@ -10,6 +10,7 @@ import { exportGlobally } from '../../GlobalExports';
  */
 export class FormGroup {
   private element: Dom;
+  public labelElement: Dom;
 
   static doExport() {
     exportGlobally({
@@ -23,7 +24,9 @@ export class FormGroup {
    * @param label The label to display for the form group.
    */
   constructor(contents: IFormWidget[], label: string) {
-    this.element = $$('fieldset', { className: 'coveo-form-group' }, $$('span', { className: 'coveo-form-group-label' }, label));
+    this.labelElement = $$('span', { className: 'coveo-form-group-label' });
+    this.labelElement.text(label);
+    this.element = $$('fieldset', { className: 'coveo-form-group' }, this.labelElement);
     _.each(contents, (content: IFormWidget) => {
       this.element.append(content.build());
     });

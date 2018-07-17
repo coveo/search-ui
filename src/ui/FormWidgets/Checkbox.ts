@@ -1,7 +1,7 @@
-import { IFormWidgetWithLabel, IFormWidgetSelectable } from './FormWidgets';
-import { $$ } from '../../utils/Dom';
 import 'styling/vapor/_Checkbox';
 import { exportGlobally } from '../../GlobalExports';
+import { $$ } from '../../utils/Dom';
+import { IFormWidgetSelectable, IFormWidgetWithLabel } from './FormWidgets';
 
 /**
  * A checkbox widget with standard styling.
@@ -108,7 +108,8 @@ export class Checkbox implements IFormWidgetWithLabel, IFormWidgetSelectable {
       value: this.label
     }).el;
     const button = $$('button', { type: 'button', className: 'coveo-checkbox-button', 'aria-label': this.label });
-    const labelSpan = $$('span', { className: 'coveo-checkbox-span-label' }, this.label);
+    const labelSpan = $$('span', { className: 'coveo-checkbox-span-label' });
+    labelSpan.text(this.label);
 
     label.append(this.checkbox);
     label.append(button.el);

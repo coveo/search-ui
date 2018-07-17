@@ -1,49 +1,49 @@
-import { SearchEndpoint } from '../../rest/SearchEndpoint';
-import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
-import { $$ } from '../../utils/Dom';
-import { Assert } from '../../misc/Assert';
-import { QueryStateModel } from '../../models/QueryStateModel';
-import { ComponentStateModel } from '../../models/ComponentStateModel';
-import { ComponentOptionsModel } from '../../models/ComponentOptionsModel';
-import { QueryController } from '../../controllers/QueryController';
-import { Model, IAttributeChangedEventArg } from '../../models/Model';
-import {
-  QueryEvents,
-  IBuildingQueryEventArgs,
-  INewQueryEventArgs,
-  IQuerySuccessEventArgs,
-  IQueryErrorEventArgs,
-  IDoneBuildingQueryEventArgs
-} from '../../events/QueryEvents';
-import { IBeforeRedirectEventArgs, StandaloneSearchInterfaceEvents } from '../../events/StandaloneSearchInterfaceEvents';
-import { HistoryController } from '../../controllers/HistoryController';
-import { LocalStorageHistoryController } from '../../controllers/LocalStorageHistoryController';
-import { InitializationEvents } from '../../events/InitializationEvents';
-import { IAnalyticsClient } from '../Analytics/AnalyticsClient';
-import { NoopAnalyticsClient } from '../Analytics/NoopAnalyticsClient';
-import { Utils } from '../../utils/Utils';
-import { RootComponent } from '../Base/RootComponent';
-import { BaseComponent } from '../Base/BaseComponent';
-import { HashUtils } from '../../utils/HashUtils';
-import { SentryLogger } from '../../misc/SentryLogger';
-import { IComponentBindings } from '../Base/ComponentBindings';
-import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
-import { ResponsiveComponents, MEDIUM_SCREEN_WIDTH, SMALL_SCREEN_WIDTH } from '../ResponsiveComponents/ResponsiveComponents';
-import { Context, IPipelineContextProvider } from '../PipelineContext/PipelineGlobalExports';
-import { InitializationPlaceholder } from '../Base/InitializationPlaceholder';
-import { Debug } from '../Debug/Debug';
-import { FacetValueStateHandler } from './FacetValueStateHandler';
-import RelevanceInspectorModule = require('../RelevanceInspector/RelevanceInspector');
-
 import * as fastclick from 'fastclick';
 import * as jstz from 'jstimezonedetect';
-
 import 'styling/Globals';
+import 'styling/_SearchButton';
 import 'styling/_SearchInterface';
 import 'styling/_SearchModalBox';
-import 'styling/_SearchButton';
-import { each, indexOf, isEmpty, chain, any, find, partition, first, tail } from 'underscore';
+import { any, chain, each, find, first, indexOf, isEmpty, partition, tail } from 'underscore';
+import { HistoryController } from '../../controllers/HistoryController';
+import { IHistoryManager } from '../../controllers/HistoryManager';
+import { LocalStorageHistoryController } from '../../controllers/LocalStorageHistoryController';
+import { NoopHistoryController } from '../../controllers/NoopHistoryController';
+import { QueryController } from '../../controllers/QueryController';
+import { InitializationEvents } from '../../events/InitializationEvents';
+import {
+  IBuildingQueryEventArgs,
+  IDoneBuildingQueryEventArgs,
+  INewQueryEventArgs,
+  IQueryErrorEventArgs,
+  IQuerySuccessEventArgs,
+  QueryEvents
+} from '../../events/QueryEvents';
+import { IBeforeRedirectEventArgs, StandaloneSearchInterfaceEvents } from '../../events/StandaloneSearchInterfaceEvents';
+import { Assert } from '../../misc/Assert';
+import { SentryLogger } from '../../misc/SentryLogger';
+import { ComponentOptionsModel } from '../../models/ComponentOptionsModel';
+import { ComponentStateModel } from '../../models/ComponentStateModel';
+import { IAttributeChangedEventArg, Model } from '../../models/Model';
+import { QueryStateModel } from '../../models/QueryStateModel';
+import { SearchEndpoint } from '../../rest/SearchEndpoint';
+import { $$ } from '../../utils/Dom';
+import { HashUtils } from '../../utils/HashUtils';
+import { Utils } from '../../utils/Utils';
+import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
+import { IAnalyticsClient } from '../Analytics/AnalyticsClient';
+import { NoopAnalyticsClient } from '../Analytics/NoopAnalyticsClient';
+import { BaseComponent } from '../Base/BaseComponent';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
+import { InitializationPlaceholder } from '../Base/InitializationPlaceholder';
+import { RootComponent } from '../Base/RootComponent';
+import { Debug } from '../Debug/Debug';
+import { Context, IPipelineContextProvider } from '../PipelineContext/PipelineGlobalExports';
+import { MEDIUM_SCREEN_WIDTH, ResponsiveComponents, SMALL_SCREEN_WIDTH } from '../ResponsiveComponents/ResponsiveComponents';
 import { FacetColumnAutoLayoutAdjustment } from './FacetColumnAutoLayoutAdjustment';
+import { FacetValueStateHandler } from './FacetValueStateHandler';
+import RelevanceInspectorModule = require('../RelevanceInspector/RelevanceInspector');
 
 export interface ISearchInterfaceOptions {
   enableHistory?: boolean;
@@ -450,6 +450,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
   public queryController: QueryController;
   public componentOptionsModel: ComponentOptionsModel;
   public usageAnalytics: IAnalyticsClient;
+  public historyManager: IHistoryManager;
   /**
    * Allows to get and set the different breakpoints for mobile and tablet devices.
    *
@@ -482,16 +483,8 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     Assert.exists(this.options);
     this.root = element;
 
-    if (this.options.allowQueriesWithoutKeywords) {
-      this.initializeEmptyQueryAllowed();
-    } else {
-      this.initializeEmptyQueryNotAllowed();
-    }
-
-    // The definition file for fastclick does not match the way that fast click gets loaded (AMD)
-    if ((<any>fastclick).attach) {
-      (<any>fastclick).attach(element);
-    }
+    this.setupQueryMode();
+    this.setupMobileFastclick(element);
 
     this.queryStateModel = new QueryStateModel(element);
     this.componentStateModel = new ComponentStateModel(element);
@@ -501,31 +494,9 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     this.facetValueStateHandler = new FacetValueStateHandler((componentId: string) => this.getComponents(componentId));
     new SentryLogger(this.queryController);
 
-    const eventName = this.queryStateModel.getEventName(Model.eventTypes.preprocess);
-    $$(this.element).on(eventName, (e, args) => this.handlePreprocessQueryStateModel(args));
-    $$(this.element).on(QueryEvents.buildingQuery, (e, args) => this.handleBuildingQuery(args));
-    $$(this.element).on(QueryEvents.querySuccess, (e, args) => this.handleQuerySuccess(args));
-    $$(this.element).on(QueryEvents.queryError, (e, args) => this.handleQueryError(args));
-    $$(this.element).on(InitializationEvents.afterComponentsInitialization, () => this.handleAfterComponentsInitialization());
-    const debugChanged = this.queryStateModel.getEventName(Model.eventTypes.changeOne + QueryStateModel.attributesEnum.debug);
-    $$(this.element).on(debugChanged, (e, args: IAttributeChangedEventArg) => this.handleDebugModeChange(args));
+    this.setupEventsHandlers();
+    this.setupHistoryManager(element, _window);
 
-    this.queryStateModel.registerNewAttribute(QueryStateModel.attributesEnum.fv, {});
-
-    if (this.options.enableHistory) {
-      if (!this.options.useLocalStorageForHistory) {
-        this.initializeHistoryController();
-      } else {
-        new LocalStorageHistoryController(element, _window, this.queryStateModel, this.queryController);
-      }
-    } else {
-      $$(this.element).on(InitializationEvents.restoreHistoryState, () =>
-        this.queryStateModel.setMultiple({ ...this.queryStateModel.defaultAttributes })
-      );
-    }
-
-    const eventNameQuickview = this.queryStateModel.getEventName(Model.eventTypes.changeOne + QueryStateModel.attributesEnum.quickview);
-    $$(this.element).on(eventNameQuickview, (e, args) => this.handleQuickviewChanged(args));
     this.element.style.display = element.style.display || 'block';
 
     this.setupDebugInfo();
@@ -669,7 +640,68 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     return new NoopAnalyticsClient();
   }
 
-  private async handleDebugModeChange(args: IAttributeChangedEventArg) {
+  private setupHistoryManager(element: HTMLElement, _window: Window) {
+    if (!this.options.enableHistory) {
+      this.historyManager = new NoopHistoryController();
+
+      $$(this.element).on(InitializationEvents.restoreHistoryState, () =>
+        this.queryStateModel.setMultiple({ ...this.queryStateModel.defaultAttributes })
+      );
+      return;
+    }
+
+    if (this.options.useLocalStorageForHistory) {
+      this.historyManager = new LocalStorageHistoryController(element, _window, this.queryStateModel, this.queryController);
+      return;
+    }
+
+    this.historyManager = new HistoryController(element, _window, this.queryStateModel, this.queryController, this.usageAnalytics);
+  }
+
+  private setupQueryMode() {
+    if (this.options.allowQueriesWithoutKeywords) {
+      this.initializeEmptyQueryAllowed();
+    } else {
+      this.initializeEmptyQueryNotAllowed();
+    }
+  }
+
+  private setupMobileFastclick(element: HTMLElement) {
+    // The definition file for fastclick does not match the way that fast click gets loaded (AMD)
+    // So we have to do some typecasting gymnastics
+    const attachFastclick = (fastclick as any).attach;
+    attachFastclick(element);
+  }
+
+  private setupEventsHandlers() {
+    const eventName = this.queryStateModel.getEventName(Model.eventTypes.preprocess);
+    $$(this.element).on(eventName, (e, args) => this.handlePreprocessQueryStateModel(args));
+    $$(this.element).on(QueryEvents.buildingQuery, (e, args) => this.handleBuildingQuery(args));
+    $$(this.element).on(QueryEvents.querySuccess, (e, args) => this.handleQuerySuccess(args));
+    $$(this.element).on(QueryEvents.queryError, (e, args) => this.handleQueryError(args));
+    $$(this.element).on(InitializationEvents.afterComponentsInitialization, () => this.handleAfterComponentsInitialization());
+    const debugChanged = this.queryStateModel.getEventName(Model.eventTypes.changeOne + QueryStateModel.attributesEnum.debug);
+    $$(this.element).on(debugChanged, (e, args: IAttributeChangedEventArg) => this.handleDebugModeChange(args));
+
+    this.queryStateModel.registerNewAttribute(QueryStateModel.attributesEnum.fv, {});
+
+    const eventNameQuickview = this.queryStateModel.getEventName(Model.eventTypes.changeOne + QueryStateModel.attributesEnum.quickview);
+    $$(this.element).on(eventNameQuickview, (e, args) => this.handleQuickviewChanged(args));
+  }
+
+  private setupDebugInfo() {
+    if (this.options.enableDebugInfo) {
+      setTimeout(() => new Debug(this.element, this.getBindings()));
+    }
+  }
+
+  private setupResponsiveComponents() {
+    this.responsiveComponents = new ResponsiveComponents();
+    this.responsiveComponents.setMediumScreenWidth(this.options.responsiveMediumBreakpoint);
+    this.responsiveComponents.setSmallScreenWidth(this.options.responsiveSmallBreakpoint);
+  }
+
+  private handleDebugModeChange(args: IAttributeChangedEventArg) {
     if (args.value && !this.relevanceInspector && this.options.enableDebugInfo) {
       require.ensure(
         ['../RelevanceInspector/RelevanceInspector'],
@@ -684,22 +716,6 @@ export class SearchInterface extends RootComponent implements IComponentBindings
         'RelevanceInspector'
       );
     }
-  }
-
-  private initializeHistoryController() {
-    new HistoryController(this.element, window, this.queryStateModel, this.queryController, this.usageAnalytics);
-  }
-
-  private setupDebugInfo() {
-    if (this.options.enableDebugInfo) {
-      setTimeout(() => new Debug(this.element, this.getBindings()));
-    }
-  }
-
-  private setupResponsiveComponents() {
-    this.responsiveComponents = new ResponsiveComponents();
-    this.responsiveComponents.setMediumScreenWidth(this.options.responsiveMediumBreakpoint);
-    this.responsiveComponents.setSmallScreenWidth(this.options.responsiveSmallBreakpoint);
   }
 
   private handlePreprocessQueryStateModel(args: Record<string, any>) {
@@ -1016,6 +1032,15 @@ export class SearchInterface extends RootComponent implements IComponentBindings
       if (!args.queryBuilder.containsEndUserKeywords()) {
         this.logger.info('Query cancelled by the Search Interface', 'Configuration does not allow empty query', this, this.options);
         args.cancel = true;
+        this.queryStateModel.reset();
+
+        new InitializationPlaceholder(this.element)
+          .withEventToRemovePlaceholder(QueryEvents.newQuery)
+          .withFullInitializationStyling()
+          .withVisibleRootElement()
+          .withPlaceholderForFacets()
+          .withPlaceholderForResultList()
+          .withWaitingForFirstQueryMode();
       }
     });
   }

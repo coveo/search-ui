@@ -128,6 +128,7 @@ export class InitializationPlaceholder {
 
   public withFullInitializationStyling() {
     $$(this.root).addClass(InitializationPlaceholder.INITIALIZATION_CLASS);
+    $$(this.root).removeClass(InitializationPlaceholder.AFTER_INITIALIZATION_CLASS);
     $$(this.root).one(this.eventToRemovePlaceholder, () => {
       $$(this.root).removeClass(InitializationPlaceholder.INITIALIZATION_CLASS);
       $$(this.root).addClass(InitializationPlaceholder.AFTER_INITIALIZATION_CLASS);
