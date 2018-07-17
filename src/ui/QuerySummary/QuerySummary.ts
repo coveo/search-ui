@@ -284,20 +284,16 @@ export class QuerySummary extends Component {
 
   private hideNoResultsPage() {
     const noResultsContainers = this.getAllNoResultsContainer();
-    if (noResultsContainers.length > 0) {
-      noResultsContainers.forEach(noResultsContainer => {
-        $$(noResultsContainer).removeClass('coveo-no-results');
-      });
-    }
+    noResultsContainers.forEach(noResultsContainer => {
+      $$(noResultsContainer).removeClass('coveo-no-results');
+    });
   }
 
   private showNoResultsPage() {
     const noResultsContainers = this.getAllNoResultsContainer();
-    if (noResultsContainers.length > 0) {
-      noResultsContainers.forEach(noResultsContainer => {
-        $$(noResultsContainer).addClass('coveo-no-results');
-      });
-    }
+    noResultsContainers.forEach(noResultsContainer => {
+      $$(noResultsContainer).addClass('coveo-no-results');
+    });
   }
 
   private getNoResultsContainer(): HTMLElement {
