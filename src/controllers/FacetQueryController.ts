@@ -86,8 +86,8 @@ export class FacetQueryController {
       this.constantExpressionToUseForFacetSearch = queryOverrideObject.constant;
     } else {
       const parts = queryBuilder.computeCompleteExpressionParts();
-      this.expressionToUseForFacetSearch = parts.withoutConstant == null ? '@uri' : parts.withoutConstant;
-      this.basicExpressionToUseForFacetSearch = parts.basic == null ? '@uri' : parts.basic;
+      this.expressionToUseForFacetSearch = parts.withoutConstant == null ? '' : parts.withoutConstant;
+      this.basicExpressionToUseForFacetSearch = parts.basic == null ? '' : parts.basic;
       this.advancedExpressionToUseForFacetSearch = parts.advanced;
       this.constantExpressionToUseForFacetSearch = parts.constant;
     }
