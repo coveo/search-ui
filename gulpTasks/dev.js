@@ -50,7 +50,7 @@ compiler.plugin('done', () => {
   watchHtmlPagesOnce();
 });
 
-gulp.task('dev', ['setup', 'deleteCssFile'], done => {
+gulp.task('dev', ['setup'], done => {
   server = new WebpackDevServer(compiler, {
     compress: true,
     contentBase: 'bin/',
@@ -64,13 +64,6 @@ gulp.task('dev', ['setup', 'deleteCssFile'], done => {
   });
   server.listen(port, 'localhost', () => {});
   done();
-});
-
-gulp.task('deleteCssFile', done => {
-  // Rely on dynamically loaded style.
-  // fs.unlink('./bin/css/CoveoFullSearchNewDesign.css', () => {
-  done();
-  // });
 });
 
 gulp.task('devTest', ['setupTests'], function(done) {

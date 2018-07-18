@@ -113,7 +113,7 @@ export function QuerySummaryTest() {
     });
 
     describe('exposes options', () => {
-      it(`when enableSearchTips is set to true 
+      it(`when enableSearchTips is set to true,
           it should display the search tips on no results`, () => {
         test = Mock.optionsComponentSetup<QuerySummary, IQuerySummaryOptions>(QuerySummary, {
           enableSearchTips: true
@@ -124,7 +124,7 @@ export function QuerySummaryTest() {
         expect($$(test.cmp.element).find('.coveo-query-summary-search-tips-info')).not.toBeNull();
       });
 
-      it(`when enableSearchTips is set to false 
+      it(`when enableSearchTips is set to false,
           it should not display the search tips on no results`, () => {
         test = Mock.optionsComponentSetup<QuerySummary, IQuerySummaryOptions>(QuerySummary, {
           enableSearchTips: false
@@ -135,7 +135,7 @@ export function QuerySummaryTest() {
         expect($$(test.cmp.element).find('.coveo-query-summary-search-tips-info')).toBeNull();
       });
 
-      it(`when enableNoResultsFoundMessage is set to true 
+      it(`when enableNoResultsFoundMessage is set to true,
           it should display the no results found message on no results`, () => {
         test = Mock.optionsComponentSetup<QuerySummary, IQuerySummaryOptions>(QuerySummary, {
           enableNoResultsFoundMessage: true
@@ -146,7 +146,7 @@ export function QuerySummaryTest() {
         expect($$(test.cmp.element).find('.coveo-query-summary-no-results-string')).not.toBeNull();
       });
 
-      it(`when enableNoResultsFoundMessage is set to false 
+      it(`when enableNoResultsFoundMessage is set to false,
           it should not display the no results found message on no results`, () => {
         test = Mock.optionsComponentSetup<QuerySummary, IQuerySummaryOptions>(QuerySummary, {
           enableNoResultsFoundMessage: false
@@ -157,7 +157,7 @@ export function QuerySummaryTest() {
         expect($$(test.cmp.element).find('.coveo-query-summary-no-results-string')).toBeNull();
       });
 
-      it(`when enableCancelLastAction is set to true 
+      it(`when enableCancelLastAction is set to true,
           it should display the cancel last action link on no results`, () => {
         test = Mock.optionsComponentSetup<QuerySummary, IQuerySummaryOptions>(QuerySummary, {
           enableCancelLastAction: true
@@ -168,7 +168,7 @@ export function QuerySummaryTest() {
         expect($$(test.cmp.element).find('.coveo-query-summary-cancel-last')).not.toBeNull();
       });
 
-      it(`when enableCancelLastAction is set to false 
+      it(`when enableCancelLastAction is set to false,
           it should not display the cancel last action link on no results`, () => {
         test = Mock.optionsComponentSetup<QuerySummary, IQuerySummaryOptions>(QuerySummary, {
           enableCancelLastAction: false
@@ -179,7 +179,7 @@ export function QuerySummaryTest() {
         expect($$(test.cmp.element).find('.coveo-query-summary-cancel-last')).toBeNull();
       });
 
-      it(`when onlyDisplaySearchTips is set to true 
+      it(`when onlyDisplaySearchTips is set to true,
           it should not display the results range when there are results`, () => {
         test = Mock.optionsComponentSetup<QuerySummary, IQuerySummaryOptions>(QuerySummary, {
           onlyDisplaySearchTips: true
@@ -190,7 +190,7 @@ export function QuerySummaryTest() {
         expect($$(test.cmp.element).text()).not.toEqual(jasmine.stringMatching(/^Results.*of.*/));
       });
 
-      it(`when onlyDisplaySearchTips is set to false 
+      it(`when onlyDisplaySearchTips is set to false,
           it should display the results range when there are results`, () => {
         test = Mock.optionsComponentSetup<QuerySummary, IQuerySummaryOptions>(QuerySummary, {
           onlyDisplaySearchTips: false
@@ -207,7 +207,7 @@ export function QuerySummaryTest() {
         return $$(test.cmp.element).find('.coveo-query-summary-no-results-string');
       }
 
-      it(`when there is no query tag in the noResultsFoundMessage
+      it(`when there is no query tag in the noResultsFoundMessage,
           it should not change the initial message`, () => {
         test = Mock.optionsComponentSetup<QuerySummary, IQuerySummaryOptions>(QuerySummary, {
           enableNoResultsFoundMessage: true,
@@ -220,7 +220,7 @@ export function QuerySummaryTest() {
         expect(getCustomMessageElement().textContent).toBe('customMessage');
       });
 
-      it(`when there is one query tag in the noResultsFoundMessage
+      it(`when there is one query tag in the noResultsFoundMessage,
           it should replace the query tag with the query searched`, () => {
         test = Mock.optionsComponentSetup<QuerySummary, IQuerySummaryOptions>(QuerySummary, {
           enableNoResultsFoundMessage: true,
@@ -233,7 +233,7 @@ export function QuerySummaryTest() {
         expect(getCustomMessageElement().textContent).toBe('customMessage querySearched');
       });
 
-      it(`when there is multiple query tags in the noResultsFoundMessage
+      it(`when there is multiple query tags in the noResultsFoundMessage,
           it should replace all the query tags with the query searched`, () => {
         test = Mock.optionsComponentSetup<QuerySummary, IQuerySummaryOptions>(QuerySummary, {
           enableNoResultsFoundMessage: true,
@@ -246,7 +246,7 @@ export function QuerySummaryTest() {
         expect(getCustomMessageElement().textContent).toBe('custom querySearched Message querySearched');
       });
 
-      it(`when mutiple no results page are triggered consicutively with different querySearched
+      it(`when mutiple no results page are triggered consicutively with different querySearched,
           it should update the query tags with the new query searched`, () => {
         test = Mock.optionsComponentSetup<QuerySummary, IQuerySummaryOptions>(QuerySummary, {
           enableNoResultsFoundMessage: true,
@@ -262,7 +262,7 @@ export function QuerySummaryTest() {
         expect(getCustomMessageElement().textContent).toBe('SecondQuerySearched');
       });
 
-      it(`when the queryTag is in the attributes of an element
+      it(`when the queryTag is in the attributes of an element,
           it should replace this queryTag by the querySearched`, () => {
         const customMessage: string = `<div><a href="${queryTag}"></a></div>`;
 
@@ -278,7 +278,7 @@ export function QuerySummaryTest() {
         expect(getCustomMessageElement().innerHTML).toBe(parsedCustomMessage);
       });
 
-      it(`when the query searched is an empty string
+      it(`when the query searched is an empty string,
           it should replace the query tag with the query searched`, () => {
         test = Mock.optionsComponentSetup<QuerySummary, IQuerySummaryOptions>(QuerySummary, {
           enableNoResultsFoundMessage: true,
@@ -291,7 +291,7 @@ export function QuerySummaryTest() {
         expect(getCustomMessageElement().textContent).toBe('');
       });
 
-      it(`when the query searched is the same as the queryTag
+      it(`when the query searched is the same as the queryTag,
           it should replace the query tag with the query searched`, () => {
         test = Mock.optionsComponentSetup<QuerySummary, IQuerySummaryOptions>(QuerySummary, {
           enableNoResultsFoundMessage: true,
@@ -304,7 +304,7 @@ export function QuerySummaryTest() {
         expect(getCustomMessageElement().textContent).toBe(`${queryTag}`);
       });
 
-      it(`when a query tag is replaced
+      it(`when a query tag is replaced,
           it should escape the HTML against XSS`, () => {
         test = Mock.optionsComponentSetup<QuerySummary, IQuerySummaryOptions>(QuerySummary, {
           enableNoResultsFoundMessage: true,
@@ -322,7 +322,7 @@ export function QuerySummaryTest() {
         return $$(test.cmp.element).find(`.${noResultsCssClass}`);
       }
 
-      it(`when there are results
+      it(`when there are results,
           it should not display the custom no results page`, () => {
         test.cmp.element.innerHTML = `<div class="${noResultsCssClass}">Custom No Results Page</div>`;
         Simulate.query(test.env, { results: FakeResults.createFakeResults(10) });
@@ -330,7 +330,7 @@ export function QuerySummaryTest() {
         expect($$(test.cmp.element).find('.coveo-no-results')).toBeNull();
       });
 
-      it(`when there are no results
+      it(`when there are no results,
           it should display the custom no results page`, () => {
         test.cmp.element.innerHTML = `<div class="${noResultsCssClass}">Custom No Results Page</div>`;
         Simulate.query(test.env, { results: FakeResults.createFakeResults(0) });
@@ -338,7 +338,7 @@ export function QuerySummaryTest() {
         expect($$(test.cmp.element).find('.coveo-no-results')).not.toBeNull();
       });
 
-      it(`when a query tag is added in the custom no results page
+      it(`when a query tag is added in the custom no results page,
           it should replace the query tag with the query searched`, () => {
         test.cmp.element.innerHTML = `<div class="${noResultsCssClass}">${queryTag}</div>`;
         test.env.queryStateModel.get = () => 'querySearched';
@@ -347,7 +347,7 @@ export function QuerySummaryTest() {
         expect(getcustomNoResultsPageElement().textContent).toBe('querySearched');
       });
 
-      it(`when mutiple query tags are added in the custom no results page
+      it(`when mutiple query tags are added in the custom no results page,
           it should replace all the query tags with the query searched`, () => {
         test.cmp.element.innerHTML = `<div class="${noResultsCssClass}">${queryTag} ${queryTag}</div>`;
         test.env.queryStateModel.get = () => 'querySearched';
@@ -356,7 +356,7 @@ export function QuerySummaryTest() {
         expect(getcustomNoResultsPageElement().textContent).toBe('querySearched querySearched');
       });
 
-      it(`when mutiple no results page are triggered consicutively with different querySearched
+      it(`when mutiple no results page are triggered consicutively with different querySearched,
           it should update the query tags with the new query searched`, () => {
         test.cmp.element.innerHTML = `<div class="${noResultsCssClass}">${queryTag}</div>`;
 
@@ -369,7 +369,7 @@ export function QuerySummaryTest() {
         expect(getcustomNoResultsPageElement().textContent).toBe('SecondQuerySearched');
       });
 
-      it(`when the queryTag is in the attributes of an element
+      it(`when the queryTag is in the attributes of an element,
           it should replace this queryTag by the querySearched`, () => {
         const customNoResultsPage = `<div><a href="${queryTag}"></a></div>`;
         test.cmp.element.innerHTML = `<div class="${noResultsCssClass}">${customNoResultsPage}</div>`;
@@ -381,7 +381,7 @@ export function QuerySummaryTest() {
         expect(getcustomNoResultsPageElement().innerHTML).toBe(parsedCustomNoResultsPage);
       });
 
-      it(`when the query searched is an empty string
+      it(`when the query searched is an empty string,
           it should replace the query tag with the query searched`, () => {
         test.env.queryStateModel.get = () => '';
         test.cmp.element.innerHTML = `<div class="${noResultsCssClass}">${queryTag}</div>`;
@@ -390,7 +390,7 @@ export function QuerySummaryTest() {
         expect(getcustomNoResultsPageElement().textContent).toBe('');
       });
 
-      it(`when the query searched is the same as the queryTag
+      it(`when the query searched is the same as the queryTag,
           it should replace the query tag with the query searched`, () => {
         test.env.queryStateModel.get = () => `${queryTag}`;
         test.cmp.element.innerHTML = `<div class="${noResultsCssClass}">${queryTag}</div>`;
@@ -399,7 +399,7 @@ export function QuerySummaryTest() {
         expect(getcustomNoResultsPageElement().textContent).toBe(`${queryTag}`);
       });
 
-      it(`when a query tag is replaced
+      it(`when a query tag is replaced,
           it should escape the HTML against XSS`, () => {
         test.env.queryStateModel.get = () => '<script>alert("XSS")</script>';
         test.cmp.element.innerHTML = `<div class="${noResultsCssClass}">${queryTag}</div>`;
