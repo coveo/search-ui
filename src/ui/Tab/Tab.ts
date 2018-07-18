@@ -13,12 +13,12 @@ import { Utils } from '../../utils/Utils';
 import { IAnalyticsInterfaceChange, analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
-import { ComponentOptions } from '../Base/ComponentOptions';
+import { ComponentOptions, IQueryExpression } from '../Base/ComponentOptions';
 import { Initialization } from '../Base/Initialization';
 import { ResponsiveTabs } from '../ResponsiveComponents/ResponsiveTabs';
 
 export interface ITabOptions {
-  expression?: string;
+  expression?: IQueryExpression;
   constant?: boolean;
   id?: string;
   icon?: string;
@@ -103,7 +103,7 @@ export class Tab extends Component {
      *
      * Default value is `undefined` and the Tab applies no additional expression or filter to the query.
      */
-    expression: ComponentOptions.buildStringOption({ section: 'Filtering' }),
+    expression: ComponentOptions.buildQueryExpressionOption({ section: 'Filtering' }),
 
     /**
      * Specifies the {@link SearchEndpoint} to point to when performing queries from within the Tab.

@@ -17,6 +17,11 @@ import { Template } from '../Templates/Template';
  */
 export interface IFieldOption extends String {}
 
+/**
+ * TODO : Documentation
+ */
+export type IQueryExpression = string;
+
 export interface IComponentOptionsLoadOption<T> {
   (element: HTMLElement, name: string, option: IComponentOptionsOption<T>): T;
 }
@@ -257,7 +262,8 @@ export enum ComponentOptionsType {
   LONG_STRING,
   JSON,
   JAVASCRIPT,
-  NONE
+  NONE,
+  QUERY_EXPRESSION
 }
 
 const camelCaseToHyphenRegex = /([A-Z])|\W+(\w)/g;
@@ -493,6 +499,17 @@ export class ComponentOptions {
    */
   static buildFieldsOption(optionArgs?: IComponentOptionsFieldsOptionArgs): IFieldOption[] {
     return ComponentOptions.buildOption<string[]>(ComponentOptionsType.FIELDS, ComponentOptions.loadFieldsOption, optionArgs);
+  }
+
+  /**
+   * TODO : documentation
+   */
+  static buildQueryExpressionOption(optionArgs?: IComponentOptions<string>): IQueryExpression {
+    return ComponentOptions.buildOption<string>(
+      ComponentOptionsType.QUERY_EXPRESSION,
+      ComponentOptions.loadQueryExpressionOption,
+      optionArgs
+    );
   }
 
   /**
@@ -740,6 +757,13 @@ export class ComponentOptions {
     const field = ComponentOptions.loadStringOption(element, name, option);
     Assert.check(!Utils.isNonEmptyString(field) || Utils.isCoveoField(field), field + ' is not a valid field');
     return field;
+  }
+
+  static loadQueryExpressionOption(element: HTMLElement, name: string, option: IComponentOptionsOption<any>): string {
+    const queryExpression = ComponentOptions.loadStringOption(element, name, option);
+    // TODO REVIEW : Will we want to make a specific loading process?
+    // If not we could use loadStringOption directly in #buildQueryExpressionOption.
+    return queryExpression;
   }
 
   static loadFieldsOption(element: HTMLElement, name: string, option: IComponentOptionsOption<any>): string[] {

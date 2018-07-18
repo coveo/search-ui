@@ -35,7 +35,7 @@ import { IAnalyticsClient } from '../Analytics/AnalyticsClient';
 import { NoopAnalyticsClient } from '../Analytics/NoopAnalyticsClient';
 import { BaseComponent } from '../Base/BaseComponent';
 import { IComponentBindings } from '../Base/ComponentBindings';
-import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
+import { ComponentOptions, IFieldOption, IQueryExpression } from '../Base/ComponentOptions';
 import { InitializationPlaceholder } from '../Base/InitializationPlaceholder';
 import { RootComponent } from '../Base/RootComponent';
 import { Debug } from '../Debug/Debug';
@@ -51,7 +51,7 @@ export interface ISearchInterfaceOptions {
   useLocalStorageForHistory?: boolean;
   resultsPerPage?: number;
   excerptLength?: number;
-  expression?: string;
+  expression?: IQueryExpression;
   filterField?: IFieldOption;
   autoTriggerQuery?: boolean;
   timezone?: string;
@@ -206,7 +206,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
      *
      * Default value is `''`.
      */
-    expression: ComponentOptions.buildStringOption({ defaultValue: '' }),
+    expression: ComponentOptions.buildQueryExpressionOption({ defaultValue: '' }),
 
     /**
      * Specifies the name of a field to use as a custom filter when executing the query (also referred to as

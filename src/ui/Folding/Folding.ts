@@ -9,7 +9,7 @@ import { $$ } from '../../utils/Dom';
 import { Utils } from '../../utils/Utils';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
-import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
+import { ComponentOptions, IFieldOption, IQueryExpression } from '../Base/ComponentOptions';
 import { Initialization } from '../Base/Initialization';
 import { QueryBuilder } from '../Base/QueryBuilder';
 import { SortCriteria } from '../Sort/SortCriteria';
@@ -26,7 +26,7 @@ export interface IFoldingOptions {
   rearrange?: SortCriteria;
 
   enableExpand?: boolean;
-  expandExpression?: string;
+  expandExpression?: IQueryExpression;
   maximumExpandedResults?: number;
 
   /**
@@ -179,7 +179,7 @@ export class Folding extends Component {
      *
      * Default value is `undefined`.
      */
-    expandExpression: ComponentOptions.buildStringOption({ depend: 'enableExpand' }),
+    expandExpression: ComponentOptions.buildQueryExpressionOption({ depend: 'enableExpand' }),
 
     /**
      * If the [`enableExpand`]{@link Folding.options.enableExpand} option is `true`, specifies the maximum number of
