@@ -19,7 +19,7 @@ export function ResultActionsMenuTest() {
       return component.hasClass(ResultActionsMenu.SHOW_CLASS);
     }
 
-    it('should add and remove show class on concecutive clicks', () => {
+    it('should not remove show class on concecutive clicks', () => {
       const component = $$(test.cmp.element);
 
       component.trigger('click');
@@ -27,7 +27,7 @@ export function ResultActionsMenuTest() {
 
       component.trigger('click');
 
-      expect(componentHasShowClass()).toBe(false);
+      expect(componentHasShowClass()).toBe(true);
     });
 
     it('should add show class on mouseenter when openOnMouseOver option is true', () => {
