@@ -2,7 +2,7 @@ import { Component } from '../Base/Component';
 import { ComponentOptions } from '../Base/ComponentOptions';
 import { QueryEvents, IQuerySuccessEventArgs } from '../../events/QueryEvents';
 import { IComponentBindings } from '../Base/ComponentBindings';
-import { $$, Dom } from '../../utils/Dom';
+import { $$ } from '../../utils/Dom';
 import { Assert } from '../../misc/Assert';
 import { l } from '../../strings/Strings';
 import { analyticsActionCauseList, IAnalyticsNoMeta } from '../Analytics/AnalyticsActionListMeta';
@@ -19,16 +19,22 @@ import { IQuery } from '../../rest/Query';
 import { IQueryResults } from '../../rest/QueryResults';
 
 export interface IQuerySummaryOptions {
-  enableSearchTips?: boolean;
   onlyDisplaySearchTips?: boolean;
+  enableNoResultsFoundMessage?: boolean;
+  noResultsFoundMessage?: string;
+  enableCancelLastAction?: boolean;
+  enableSearchTips?: boolean;
 }
+
+export const noResultsCssClass: string = 'coveo-show-if-no-results';
 
 /**
  * The QuerySummary component can display information about the currently displayed range of results (e.g., "Results
  * 1-10 of 123").
  *
- * If the query matches no item, the QuerySummary component can instead display tips to help the end user formulate
- * a better query.
+ * When the query does not match any items, the QuerySummary component can instead display information to the end users.
+ *
+ * The information displayed to the end user is customizable through this component.
  */
 export class QuerySummary extends Component {
   static ID = 'QuerySummary';
@@ -45,23 +51,58 @@ export class QuerySummary extends Component {
    */
   static options: IQuerySummaryOptions = {
     /**
-     * Specifies whether to display the search tips to the end user when there are no search results.
+     * Specifies whether to hide the number of returned results.
      *
-     * Default value is `true`.
-     */
-    enableSearchTips: ComponentOptions.buildBooleanOption({ defaultValue: true }),
-
-    /**
-     * Specifies whether to hide the information about the currently displayed range of results and only display the
-     * search tips instead.
+     * When this option is set to true, the number of returned results will be hidden from the page, meaning that your end users will not know how many results were returned for their query.
      *
      * Default value is `false`.
      */
-    onlyDisplaySearchTips: ComponentOptions.buildBooleanOption({ defaultValue: false })
+    onlyDisplaySearchTips: ComponentOptions.buildBooleanOption({ defaultValue: false }),
+
+    /**
+     * Specifies whether to display the {@link QuerySummary.options.noResultsFoundMessage} message when there are no search results.
+     *
+     * Default value is `true`.
+     */
+    enableNoResultsFoundMessage: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+
+    /**
+     * Specifies a custom message to display when there are no search results.
+     *
+     * You can refer to the query the end user has entered using the `${query}` query tag.
+     *
+     * **Example**
+     * > For the `noResultFoundMessage` option, you enter `There were no results found for "${query}"`.
+     * > Your end user searches for `query without results`, which does not return any result.
+     * > On your page, they see this message: `There were no results found for "query without results"`.
+     *
+     * Default value is `No results for ${query}`.
+     */
+    noResultsFoundMessage: ComponentOptions.buildStringOption({
+      defaultValue: l('noResultFor', '${query}'),
+      depend: 'enableNoResultsFoundMessage'
+    }),
+
+    /**
+     * Specifies whether to display the `Cancel last action` link when there are no search results.
+     *
+     * When clicked, the link restores the previous query that contained results.
+     *
+     * Default value is `true`.
+     */
+    enableCancelLastAction: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+
+    /**
+     * Specifies whether to display search tips when there are no search results.
+     *
+     * Default value is `true`.
+     */
+    enableSearchTips: ComponentOptions.buildBooleanOption({ defaultValue: true })
   };
 
   private textContainer: HTMLElement;
   private lastKnownGoodState: any;
+  private noResultsSnapshot: string;
 
   /**
    * Creates a new QuerySummary component.
@@ -78,7 +119,7 @@ export class QuerySummary extends Component {
     this.bind.onRootElement(QueryEvents.queryError, () => this.hide());
     this.hide();
     this.textContainer = $$('span').el;
-    this.element.appendChild(this.textContainer);
+    $$(this.element).prepend(this.textContainer);
   }
 
   private hide() {
@@ -93,6 +134,9 @@ export class QuerySummary extends Component {
     $$(this.textContainer).empty();
     this.show();
 
+    this.updateNoResultsSnapshot();
+    this.hideNoResultsPage();
+
     if (!this.options.onlyDisplaySearchTips) {
       if (this.isInfiniteScrollingMode()) {
         this.renderSummaryInInfiniteScrollingMode(queryPerformed, queryResults);
@@ -105,6 +149,7 @@ export class QuerySummary extends Component {
       const code: string = ('QueryException' + queryResults.exception.code).toLocaleString();
       this.textContainer.innerHTML = l('QueryException', code);
     } else if (queryResults.results.length == 0) {
+      this.updateQueryTagsInNoResultsContainer();
       this.displayInfoOnNoResults();
     } else {
       this.lastKnownGoodState = this.queryStateModel.getAttributes();
@@ -189,19 +234,91 @@ export class QuerySummary extends Component {
     }
   }
 
-  private displayInfoOnNoResults() {
-    const queryEscaped = escape(this.queryStateModel.get(QueryStateModel.attributesEnum.q));
-    let noResultsForString: Dom;
-
-    if (queryEscaped != '') {
-      noResultsForString = $$(
-        'div',
-        {
-          className: 'coveo-query-summary-no-results-string'
-        },
-        l('noResultFor', $$('span', { className: 'coveo-highlight' }, queryEscaped).el.outerHTML)
-      );
+  private updateNoResultsSnapshot() {
+    const noResultsContainer = this.getNoResultsContainer();
+    if (this.noResultsSnapshot == null && noResultsContainer) {
+      this.noResultsSnapshot = noResultsContainer.innerHTML;
     }
+  }
+
+  private updateQueryTagsInNoResultsContainer() {
+    const noResultsContainer = this.getNoResultsContainer();
+    if (noResultsContainer) {
+      noResultsContainer.innerHTML = this.parseQueryTags(this.noResultsSnapshot);
+    }
+  }
+
+  private parseQueryTags(content: string) {
+    if (!content) {
+      return '';
+    }
+    const queryTagContainer = `<span class="coveo-highlight">${this.queryEscaped}</span>`;
+
+    return content.replace(new RegExp(/\$\{query\}/g), queryTagContainer);
+  }
+
+  private get queryEscaped() {
+    return escape(this.queryStateModel.get(QueryStateModel.attributesEnum.q));
+  }
+
+  private displayInfoOnNoResults() {
+    this.showNoResultsPage();
+
+    if (this.options.enableNoResultsFoundMessage) {
+      const noResultsFoundMessage = this.getNoResultsFoundMessageElement();
+      this.textContainer.appendChild(noResultsFoundMessage.el);
+    }
+
+    if (this.options.enableCancelLastAction) {
+      const cancelLastAction = this.getCancelLastActionElement();
+      this.textContainer.appendChild(cancelLastAction.el);
+    }
+
+    if (this.options.enableSearchTips) {
+      const searchTipsTitle = this.getSearchTipsTitleElement();
+      const searchTipsList = this.getSearchTipsListElement();
+      this.textContainer.appendChild(searchTipsTitle.el);
+      this.textContainer.appendChild(searchTipsList.el);
+    }
+  }
+
+  private hideNoResultsPage() {
+    const noResultsContainers = this.getAllNoResultsContainer();
+    noResultsContainers.forEach(noResultsContainer => {
+      $$(noResultsContainer).removeClass('coveo-no-results');
+    });
+  }
+
+  private showNoResultsPage() {
+    const noResultsContainers = this.getAllNoResultsContainer();
+    noResultsContainers.forEach(noResultsContainer => {
+      $$(noResultsContainer).addClass('coveo-no-results');
+    });
+  }
+
+  private getNoResultsContainer(): HTMLElement {
+    return $$(this.element).find(`.${noResultsCssClass}`);
+  }
+
+  private getAllNoResultsContainer(): HTMLElement[] {
+    return $$(this.element).findAll(`.${noResultsCssClass}`);
+  }
+
+  private getNoResultsFoundMessageElement() {
+    const parsedNoResultsFoundMessage = this.parseQueryTags(this.options.noResultsFoundMessage);
+
+    const noResultsFoundMessage = $$(
+      'div',
+      {
+        className: 'coveo-query-summary-no-results-string'
+      },
+      parsedNoResultsFoundMessage
+    );
+
+    return noResultsFoundMessage;
+  }
+
+  private getCancelLastActionElement() {
     const cancelLastAction = $$(
       'div',
       {
@@ -223,10 +340,19 @@ export class QuerySummary extends Component {
       }
     });
 
+    return cancelLastAction;
+  }
+
+  private getSearchTipsTitleElement() {
     const searchTipsInfo = $$('div', {
       className: 'coveo-query-summary-search-tips-info'
     });
     searchTipsInfo.text(l('SearchTips'));
+
+    return searchTipsInfo;
+  }
+
+  private getSearchTipsListElement() {
     const searchTips = $$('ul');
 
     const checkSpelling = $$('li');
@@ -244,19 +370,7 @@ export class QuerySummary extends Component {
       searchTips.el.appendChild(fewerFilter.el);
     }
 
-    if (this.options.enableSearchTips) {
-      if (noResultsForString) {
-        this.textContainer.appendChild(noResultsForString.el);
-      }
-      this.textContainer.appendChild(cancelLastAction.el);
-      this.textContainer.appendChild(searchTipsInfo.el);
-      this.textContainer.appendChild(searchTips.el);
-    } else {
-      if (noResultsForString) {
-        this.textContainer.appendChild(noResultsForString.el);
-      }
-      this.textContainer.appendChild(cancelLastAction.el);
-    }
+    return searchTips;
   }
 }
 Initialization.registerAutoCreateComponent(QuerySummary);
