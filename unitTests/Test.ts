@@ -639,5 +639,8 @@ GrammarTest();
 import { SuggestionsManagerTest } from './magicbox/SuggestionsManagerTest';
 SuggestionsManagerTest();
 
+import { MagicBoxClearTest } from './magicbox/MagicBoxClearTest';
+MagicBoxClearTest();
+
 import { AccessibleButtonTest } from './utils/AccessibleButtonTest';
 AccessibleButtonTest();
