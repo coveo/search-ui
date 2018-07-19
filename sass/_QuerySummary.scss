@@ -15,6 +15,14 @@
     display: none;
   }
   text-align: left;
+
+  .coveo-show-if-no-results {
+    display: none;
+  }
+
+  .coveo-show-if-no-results.coveo-no-results {
+    display: block;
+  }
 }
 
 .coveo-query-summary-no-results-string {
