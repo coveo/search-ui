@@ -25,7 +25,7 @@ import { SentryLogger } from '../../misc/SentryLogger';
 import { ComponentOptionsModel } from '../../models/ComponentOptionsModel';
 import { ComponentStateModel } from '../../models/ComponentStateModel';
 import { IAttributeChangedEventArg, Model } from '../../models/Model';
-import { QueryStateModel } from '../../models/QueryStateModel';
+import { QueryStateModel, QUERY_STATE_ATTRIBUTES } from '../../models/QueryStateModel';
 import { SearchEndpoint } from '../../rest/SearchEndpoint';
 import { $$ } from '../../utils/Dom';
 import { HashUtils } from '../../utils/HashUtils';
@@ -1030,17 +1030,23 @@ export class SearchInterface extends RootComponent implements IComponentBindings
 
     $$(this.element).on(QueryEvents.doneBuildingQuery, (e, args: IDoneBuildingQueryEventArgs) => {
       if (!args.queryBuilder.containsEndUserKeywords()) {
-        this.logger.info('Query cancelled by the Search Interface', 'Configuration does not allow empty query', this, this.options);
-        args.cancel = true;
-        this.queryStateModel.reset();
+        const lastQuery = this.queryController.getLastQuery();
+        if (Utils.isNonEmptyString(lastQuery.q)) {
+          this.queryStateModel.set(QUERY_STATE_ATTRIBUTES.Q, lastQuery.q);
+          args.queryBuilder.expression.add(lastQuery.q);
+        } else {
+          this.logger.info('Query cancelled by the Search Interface', 'Configuration does not allow empty query', this, this.options);
+          args.cancel = true;
+          this.queryStateModel.reset();
 
-        new InitializationPlaceholder(this.element)
-          .withEventToRemovePlaceholder(QueryEvents.newQuery)
-          .withFullInitializationStyling()
-          .withVisibleRootElement()
-          .withPlaceholderForFacets()
-          .withPlaceholderForResultList()
-          .withWaitingForFirstQueryMode();
+          new InitializationPlaceholder(this.element)
+            .withEventToRemovePlaceholder(QueryEvents.newQuery)
+            .withFullInitializationStyling()
+            .withVisibleRootElement()
+            .withPlaceholderForFacets()
+            .withPlaceholderForResultList()
+            .withWaitingForFirstQueryMode();
+        }
       }
     });
   }
