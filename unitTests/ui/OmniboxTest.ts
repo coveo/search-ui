@@ -361,6 +361,39 @@ export function OmniboxTest() {
         test = Mock.advancedComponentSetup<Omnibox>(Omnibox, advancedSetup);
         expect(test.cmp.options.triggerQueryOnClear).toBe(false);
       });
+
+      it('triggerQueryOnClear should be forced to false if the search interface is configured to not allowQueriesWithoutKeywords', () => {
+        const advancedSetup = new Mock.AdvancedComponentSetupOptions(
+          null,
+          {
+            triggerQueryOnClear: true
+          },
+          env => {
+            env.searchInterface.options.allowQueriesWithoutKeywords = false;
+            return env;
+          }
+        );
+
+        test = Mock.advancedComponentSetup<Omnibox>(Omnibox, advancedSetup);
+        expect(test.cmp.options.triggerQueryOnClear).toBe(false);
+      });
+
+      it('triggerQueryOnClear should be forced to true if configured with search as you type', () => {
+        const advancedSetup = new Mock.AdvancedComponentSetupOptions(
+          null,
+          {
+            triggerQueryOnClear: false,
+            enableSearchAsYouType: true
+          },
+          env => {
+            env.searchInterface.options.allowQueriesWithoutKeywords = true;
+            return env;
+          }
+        );
+
+        test = Mock.advancedComponentSetup<Omnibox>(Omnibox, advancedSetup);
+        expect(test.cmp.options.triggerQueryOnClear).toBe(true);
+      });
     });
 
     it('should execute query automatically when confidence level is > 0.8 on suggestion', done => {

@@ -22,7 +22,7 @@ export class QueryboxOptionsProcessing {
   private processQueryOnClearVersusEmptyQuery() {
     if (this.options.triggerQueryOnClear && this.owner.searchInterface.options.allowQueriesWithoutKeywords === false) {
       this.owner.logger.warn(
-        'Setting option triggerQueryOnClear to false, as it is not supported when the search interface is configured to not allow queries without keywords (data-allow-queries-without-keywords="false")',
+        'Forcing option triggerQueryOnClear to false, as it is not supported when the search interface is configured to not allow queries without keywords (data-allow-queries-without-keywords="false")',
         this.owner
       );
       this.options.triggerQueryOnClear = false;
@@ -35,11 +35,8 @@ export class QueryboxOptionsProcessing {
       this.options.triggerQueryOnClear === false &&
       this.options.enableSearchAsYouType === true
     ) {
-      this.owner.logger.warn(
-        'Setting option triggerQueryOnClear to true, as it is not supported when the searchbox is configured with search as you type',
-        this.owner
-      );
-      this.options.triggerQueryOnClear = false;
+      this.owner.logger.warn('Forcing option triggerQueryOnClear to true, since search as you type is enabled', this.owner);
+      this.options.triggerQueryOnClear = true;
     }
   }
 }

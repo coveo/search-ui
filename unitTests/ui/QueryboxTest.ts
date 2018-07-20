@@ -335,6 +335,23 @@ export function QueryboxTest() {
         test = Mock.advancedComponentSetup<Querybox>(Querybox, advancedSetup);
         expect(test.cmp.options.triggerQueryOnClear).toBe(false);
       });
+
+      it('triggerQueryOnClear should be forced to true if configured with search as you type', () => {
+        const advancedSetup = new Mock.AdvancedComponentSetupOptions(
+          null,
+          {
+            triggerQueryOnClear: false,
+            enableSearchAsYouType: true
+          },
+          env => {
+            env.searchInterface.options.allowQueriesWithoutKeywords = true;
+            return env;
+          }
+        );
+
+        test = Mock.advancedComponentSetup<Querybox>(Querybox, advancedSetup);
+        expect(test.cmp.options.triggerQueryOnClear).toBe(true);
+      });
     });
   });
 }
