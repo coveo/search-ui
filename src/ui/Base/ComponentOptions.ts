@@ -18,7 +18,9 @@ import { Template } from '../Templates/Template';
 export interface IFieldOption extends String {}
 
 /**
- * TODO : Documentation
+ * The `IQueryExpression` type is a string type dedicated to query expressions.
+ *
+ * This type is used to build a specific option for query expressions.
  */
 export type IQueryExpression = string;
 
@@ -502,14 +504,19 @@ export class ComponentOptions {
   }
 
   /**
-   * TODO : documentation
+   * Builds a query expression option.
+   *
+   * A query expression option can be any arbitrary string in the markup.
+   *
+   * **Markup Example:**
+   *
+   * > `data-foo="@bar==baz"`
+   *
+   * @param optionArgs The arguments to apply when building the option.
+   * @returns {IQueryExpression} The resulting option value.
    */
   static buildQueryExpressionOption(optionArgs?: IComponentOptions<string>): IQueryExpression {
-    return ComponentOptions.buildOption<string>(
-      ComponentOptionsType.QUERY_EXPRESSION,
-      ComponentOptions.loadQueryExpressionOption,
-      optionArgs
-    );
+    return ComponentOptions.buildOption<string>(ComponentOptionsType.QUERY_EXPRESSION, ComponentOptions.loadStringOption, optionArgs);
   }
 
   /**
@@ -757,13 +764,6 @@ export class ComponentOptions {
     const field = ComponentOptions.loadStringOption(element, name, option);
     Assert.check(!Utils.isNonEmptyString(field) || Utils.isCoveoField(field), field + ' is not a valid field');
     return field;
-  }
-
-  static loadQueryExpressionOption(element: HTMLElement, name: string, option: IComponentOptionsOption<any>): string {
-    const queryExpression = ComponentOptions.loadStringOption(element, name, option);
-    // TODO REVIEW : Will we want to make a specific loading process?
-    // If not we could use loadStringOption directly in #buildQueryExpressionOption.
-    return queryExpression;
   }
 
   static loadFieldsOption(element: HTMLElement, name: string, option: IComponentOptionsOption<any>): string[] {
