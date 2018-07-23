@@ -1030,10 +1030,10 @@ export class SearchInterface extends RootComponent implements IComponentBindings
 
     $$(this.element).on(QueryEvents.doneBuildingQuery, (e, args: IDoneBuildingQueryEventArgs) => {
       if (!args.queryBuilder.containsEndUserKeywords()) {
-        const lastQuery = this.queryController.getLastQuery();
-        if (Utils.isNonEmptyString(lastQuery.q)) {
-          this.queryStateModel.set(QUERY_STATE_ATTRIBUTES.Q, lastQuery.q);
-          args.queryBuilder.expression.add(lastQuery.q);
+        const lastQuery = this.queryController.getLastQuery().q;
+        if (Utils.isNonEmptyString(lastQuery)) {
+          this.queryStateModel.set(QUERY_STATE_ATTRIBUTES.Q, lastQuery);
+          args.queryBuilder.expression.add(lastQuery);
         } else {
           this.logger.info('Query cancelled by the Search Interface', 'Configuration does not allow empty query', this, this.options);
           args.cancel = true;
