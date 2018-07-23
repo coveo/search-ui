@@ -319,6 +319,39 @@ export function QueryboxTest() {
         test.cmp.magicBox.clear();
         expect(test.cmp.queryController.executeQuery).not.toHaveBeenCalled();
       });
+
+      it('triggerQueryOnClear should be forced to false if the search interface is configured to not allowQueriesWithoutKeywords', () => {
+        const advancedSetup = new Mock.AdvancedComponentSetupOptions(
+          null,
+          {
+            triggerQueryOnClear: true
+          },
+          env => {
+            env.searchInterface.options.allowQueriesWithoutKeywords = false;
+            return env;
+          }
+        );
+
+        test = Mock.advancedComponentSetup<Querybox>(Querybox, advancedSetup);
+        expect(test.cmp.options.triggerQueryOnClear).toBe(false);
+      });
+
+      it('triggerQueryOnClear should be forced to true if configured with search as you type and allowQueriesWithoutKeywords is true', () => {
+        const advancedSetup = new Mock.AdvancedComponentSetupOptions(
+          null,
+          {
+            triggerQueryOnClear: false,
+            enableSearchAsYouType: true
+          },
+          env => {
+            env.searchInterface.options.allowQueriesWithoutKeywords = true;
+            return env;
+          }
+        );
+
+        test = Mock.advancedComponentSetup<Querybox>(Querybox, advancedSetup);
+        expect(test.cmp.options.triggerQueryOnClear).toBe(true);
+      });
     });
   });
 }
