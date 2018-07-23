@@ -3,7 +3,7 @@
 ///<reference path="QuerySuggestAddon.ts" />
 ///<reference path="OldOmniboxAddon.ts" />
 
-import { ComponentOptionsModel, COMPONENT_OPTIONS_ATTRIBUTES } from '../../models/ComponentOptionsModel';
+import { COMPONENT_OPTIONS_ATTRIBUTES } from '../../models/ComponentOptionsModel';
 export const MagicBox: any = require('exports-loader?Coveo.MagicBox!magic-box');
 import { IQueryboxOptions } from '../Querybox/Querybox';
 import { Component } from '../Base/Component';
@@ -35,6 +35,7 @@ import { exportGlobally } from '../../GlobalExports';
 import 'styling/_Omnibox';
 import { logSearchBoxSubmitEvent } from '../Analytics/SharedAnalyticsCalls';
 import { Dom } from '../../Core';
+import { QueryboxOptionsProcessing } from '../Querybox/QueryboxOptionsProcessing';
 
 export interface IOmniboxSuggestion extends Coveo.MagicBox.Suggestion {
   executableConfidence?: number;
@@ -241,9 +242,8 @@ export class Omnibox extends Component {
     super(element, Omnibox.ID, bindings);
 
     this.options = ComponentOptions.initComponentOptions(element, Omnibox, options);
-
     const originalValueForQuerySyntax = this.options.enableQuerySyntax;
-    this.options = _.extend({}, this.options, this.componentOptionsModel.get(ComponentOptionsModel.attributesEnum.searchBox));
+    new QueryboxOptionsProcessing(this).postProcess();
 
     $$(this.element).toggleClass('coveo-query-syntax-disabled', this.options.enableQuerySyntax == false);
 
@@ -829,6 +829,9 @@ export class Omnibox extends Component {
 
   private shouldExecuteQuery(searchAsYouType: boolean) {
     const text = this.getQuery(searchAsYouType);
+    if (this.searchInterface.options.allowQueriesWithoutKeywords === false) {
+      return this.lastQuery != text && Utils.isNonEmptyString(text);
+    }
     return this.lastQuery != text && text != null;
   }
 
@@ -862,5 +865,5 @@ export class Omnibox extends Component {
   }
 }
 
-Omnibox.options = _.extend({}, Omnibox.options, Querybox.options);
+Omnibox.options = { ...Omnibox.options, ...Querybox.options };
 Initialization.registerAutoCreateComponent(Omnibox);

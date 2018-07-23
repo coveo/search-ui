@@ -518,9 +518,10 @@ export function SearchInterfaceTest() {
         });
       });
 
-      describe('when allowQueriesWithoutKeywords if false', () => {
+      describe('when allowQueriesWithoutKeywords is false', () => {
+        let searchInterface: SearchInterface;
         beforeEach(() => {
-          setupSearchInterface({ allowQueriesWithoutKeywords: false });
+          searchInterface = setupSearchInterface({ allowQueriesWithoutKeywords: false });
         });
 
         it('it does cancel the query if there are no keywords', done => {
@@ -548,6 +549,25 @@ export function SearchInterfaceTest() {
         it('it should set a flag in the query', () => {
           const simulation = Simulate.query(env);
           expect(simulation.queryBuilder.build().allowQueriesWithoutKeywords).toBe(false);
+        });
+
+        it('should not cancel the query if there is no keyword currently, but there is a previous query available which contains keyword', done => {
+          searchInterface.queryController.getLastQuery = () => {
+            const queryBuilder = new QueryBuilder();
+            queryBuilder.expression.add('foo');
+            return queryBuilder.build();
+          };
+
+          $$(div).on(QueryEvents.doneBuildingQuery, (e, args: IDoneBuildingQueryEventArgs) => {
+            expect(args.cancel).toBe(false);
+            expect(args.queryBuilder.build().q).toBe('foo');
+            done();
+          });
+
+          const currentlyEmptyQueryBuilder = new QueryBuilder();
+          Simulate.query(env, {
+            queryBuilder: currentlyEmptyQueryBuilder
+          });
         });
 
         describe('using css classes', () => {

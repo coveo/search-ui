@@ -1,4 +1,3 @@
-import { ComponentOptionsModel } from '../../models/ComponentOptionsModel';
 export const MagicBox: any = require('exports-loader?Coveo.MagicBox!magic-box');
 import { Initialization } from '../Base/Initialization';
 import { Component } from '../Base/Component';
@@ -12,8 +11,8 @@ import { IAnalyticsNoMeta, analyticsActionCauseList } from '../Analytics/Analyti
 import { $$ } from '../../utils/Dom';
 import { Assert } from '../../misc/Assert';
 import { QueryboxQueryParameters } from './QueryboxQueryParameters';
-import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
+import { QueryboxOptionsProcessing } from './QueryboxOptionsProcessing';
 
 export interface IQueryboxOptions {
   enableSearchAsYouType?: boolean;
@@ -255,7 +254,7 @@ export class Querybox extends Component {
     }
 
     this.options = ComponentOptions.initComponentOptions(element, Querybox, options);
-    this.options = _.extend({}, this.options, this.componentOptionsModel.get(ComponentOptionsModel.attributesEnum.searchBox));
+    new QueryboxOptionsProcessing(this).postProcess();
 
     $$(this.element).toggleClass('coveo-query-syntax-disabled', this.options.enableQuerySyntax == false);
 
