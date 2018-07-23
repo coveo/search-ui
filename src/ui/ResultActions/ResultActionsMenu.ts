@@ -53,8 +53,6 @@ export class ResultActionsMenu extends Component {
     openOnMouseOver: ComponentOptions.buildBooleanOption({ defaultValue: true })
   };
 
-  private isOpened: boolean;
-
   /**
    * The rendered result that contains this menu.
    */
@@ -92,7 +90,6 @@ export class ResultActionsMenu extends Component {
    * Shows the floating menu.
    */
   public show() {
-    this.isOpened = true;
     $$(this.element).addClass(ResultActionsMenu.SHOW_CLASS);
   }
 
@@ -100,7 +97,6 @@ export class ResultActionsMenu extends Component {
    * Hides the floating menu.
    */
   public hide() {
-    this.isOpened = false;
     $$(this.element).removeClass(ResultActionsMenu.SHOW_CLASS);
   }
 
@@ -113,7 +109,7 @@ export class ResultActionsMenu extends Component {
   }
 
   private bindEvents() {
-    $$(this.parentResult).on('click', () => (this.isOpened ? this.hide() : this.show()));
+    $$(this.parentResult).on('click', () => this.show());
 
     $$(this.parentResult).on('mouseleave', () => this.hide());
     if (this.options.openOnMouseOver) {
