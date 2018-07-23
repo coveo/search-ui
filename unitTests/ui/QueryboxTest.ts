@@ -336,7 +336,7 @@ export function QueryboxTest() {
         expect(test.cmp.options.triggerQueryOnClear).toBe(false);
       });
 
-      it('triggerQueryOnClear should be forced to true if configured with search as you type', () => {
+      it('triggerQueryOnClear should be forced to true if configured with search as you type and allowQueriesWithoutKeywords is true', () => {
         const advancedSetup = new Mock.AdvancedComponentSetupOptions(
           null,
           {
