@@ -1,9 +1,7 @@
-import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 import { IBuildingQueryEventArgs, QueryEvents } from '../../events/QueryEvents';
 import { StandaloneSearchInterfaceEvents } from '../../events/StandaloneSearchInterfaceEvents';
 import { Assert } from '../../misc/Assert';
-import { ComponentOptionsModel } from '../../models/ComponentOptionsModel';
 import { IAttributeChangedEventArg, MODEL_EVENTS } from '../../models/Model';
 import { QUERY_STATE_ATTRIBUTES, QueryStateModel } from '../../models/QueryStateModel';
 import { l } from '../../strings/Strings';
@@ -17,6 +15,7 @@ import { QueryboxQueryParameters } from './QueryboxQueryParameters';
 import { Result } from '../../magicbox/Result/Result';
 import { MagicBoxInstance, createMagicBox } from '../../magicbox/MagicBox';
 import { Grammar } from '../../magicbox/Grammar';
+import { QueryboxOptionsProcessing } from './QueryboxOptionsProcessing';
 
 export interface IQueryboxOptions {
   enableSearchAsYouType?: boolean;
@@ -258,7 +257,7 @@ export class Querybox extends Component {
     }
 
     this.options = ComponentOptions.initComponentOptions(element, Querybox, options);
-    this.options = _.extend({}, this.options, this.componentOptionsModel.get(ComponentOptionsModel.attributesEnum.searchBox));
+    new QueryboxOptionsProcessing(this).postProcess();
 
     $$(this.element).toggleClass('coveo-query-syntax-disabled', this.options.enableQuerySyntax == false);
     this.magicBox = createMagicBox(
