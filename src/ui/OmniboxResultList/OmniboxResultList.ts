@@ -4,7 +4,7 @@ import { l } from '../../strings/Strings';
 import { IResultListOptions, ResultList } from '../ResultList/ResultList';
 import { IQueryResult } from '../../rest/QueryResult';
 import { IPopulateOmniboxEventArgs, OmniboxEvents } from '../../events/OmniboxEvents';
-import { ComponentOptions } from '../Base/ComponentOptions';
+import { ComponentOptions, IQueryExpression } from '../Base/ComponentOptions';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { QueryEvents, IBuildingQueryEventArgs } from '../../events/QueryEvents';
 import { analyticsActionCauseList, IAnalyticsNoMeta } from '../Analytics/AnalyticsActionListMeta';
@@ -25,7 +25,7 @@ export interface IOmniboxResultListOptions extends IResultListOptions {
   omniboxZIndex?: number;
   onSelect?: (result: IQueryResult, resultElement: HTMLElement, omniboxObject: IPopulateOmniboxEventArgs, event?: Event) => void;
   headerTitle?: string;
-  queryOverride?: string;
+  queryOverride?: IQueryExpression;
 }
 
 /**
@@ -109,7 +109,7 @@ export class OmniboxResultList extends ResultList implements IComponentBindings 
      *
      * Default value is `undefined`, which means no default override is specified.
      */
-    queryOverride: ComponentOptions.buildStringOption(),
+    queryOverride: ComponentOptions.buildQueryExpressionOption(),
 
     /**
      * Specifies the function to execute when the user selects a result suggestion.

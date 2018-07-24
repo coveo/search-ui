@@ -23,7 +23,7 @@ export const MagicBoxClearTest = () => {
       expect($$(clear.element).find('.magic-box-icon')).toBeDefined();
     });
 
-    it('should clear text content on click', () => {
+    it('When the magicBox contains text, it should clear it on click', () => {
       const clear = new MagicBoxClear(magicBox);
       magicBox.setText('foo');
       expect(magicBox.getText()).toBe('foo');
