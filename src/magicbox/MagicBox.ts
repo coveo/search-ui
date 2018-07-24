@@ -1,11 +1,11 @@
-/// <reference path="./MagicBox.d.ts"/>
 import { $$ } from '../utils/Dom';
 import { Result } from './Result/Result';
 import { Grammar } from './Grammar';
 import { doMagicBoxExport } from './doMagicBoxExport';
 import { Suggestion, SuggestionsManager } from './SuggestionsManager';
-import _ = require('underscore');
 import { InputManager } from './InputManager';
+import { isUndefined, each, find } from 'underscore';
+import { MagicBoxClear } from './MagicBoxClear';
 
 export interface Options {
   inline?: boolean;
@@ -29,7 +29,6 @@ export class MagicBoxInstance {
 
   private inputManager: InputManager;
   private suggestionsManager: SuggestionsManager;
-  private clearDom: HTMLElement;
 
   private lastSuggestions: Suggestion[] = [];
 
@@ -37,7 +36,7 @@ export class MagicBoxInstance {
   private displayedResult: Result;
 
   constructor(public element: HTMLElement, public grammar: Grammar, public options: Options = {}) {
-    if (_.isUndefined(this.options.inline)) {
+    if (isUndefined(this.options.inline)) {
       this.options.inline = false;
     }
     $$(element).addClass('magic-box');
@@ -49,22 +48,11 @@ export class MagicBoxInstance {
     this.result = this.grammar.parse('');
     this.displayedResult = this.result.clean();
 
-    this.clearDom = document.createElement('div');
-    this.clearDom.className = 'magic-box-clear';
-
-    const icon = document.createElement('div');
-    icon.className = 'magic-box-icon';
-    this.clearDom.appendChild(icon);
-
     let inputContainer = $$(element).find('.magic-box-input');
     if (!inputContainer) {
       inputContainer = document.createElement('div');
       inputContainer.className = 'magic-box-input';
-
-      element.appendChild(this.clearDom);
       element.appendChild(inputContainer);
-    } else {
-      element.insertBefore(this.clearDom, inputContainer);
     }
 
     this.inputManager = new InputManager(
@@ -103,6 +91,7 @@ export class MagicBoxInstance {
       timeout: this.options.suggestionTimeout
     });
 
+    new MagicBoxClear(this);
     this.setupHandler();
   }
 
@@ -190,10 +179,6 @@ export class MagicBoxInstance {
       }
       return false;
     };
-
-    this.clearDom.onclick = () => {
-      this.clear();
-    };
   }
 
   public showSuggestion() {
@@ -207,7 +192,7 @@ export class MagicBoxInstance {
     const firstSuggestion = this.getFirstSuggestionText();
     this.inputManager.setWordCompletion(firstSuggestion && firstSuggestion.text);
     this.onsuggestions && this.onsuggestions(suggestions);
-    _.each(suggestions, (suggestion: Suggestion) => {
+    each(suggestions, (suggestion: Suggestion) => {
       if (suggestion.onSelect == null && suggestion.text != null) {
         suggestion.onSelect = () => {
           this.setText(suggestion.text);
@@ -243,7 +228,7 @@ export class MagicBoxInstance {
   }
 
   private getFirstSuggestionText(): Suggestion {
-    return _.find(this.lastSuggestions, suggestion => suggestion.text != null);
+    return find(this.lastSuggestions, suggestion => suggestion.text != null);
   }
 
   public getText() {
