@@ -506,7 +506,7 @@ export class ComponentOptions {
   /**
    * Builds a query expression option.
    *
-   * A query expression option can be any arbitrary string in the markup.
+   * The query expression option should follow the [Coveo Cloud Query Syntax Reference](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=357).
    *
    * **Markup Example:**
    *
