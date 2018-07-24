@@ -10,7 +10,7 @@ import { IOmniboxPreprocessResultForQueryEventArgs, IPopulateOmniboxSuggestionsE
 import { IBuildingQueryEventArgs, IDuringQueryEventArgs, QueryEvents } from '../../events/QueryEvents';
 import { StandaloneSearchInterfaceEvents } from '../../events/StandaloneSearchInterfaceEvents';
 import { Assert } from '../../misc/Assert';
-import { COMPONENT_OPTIONS_ATTRIBUTES, ComponentOptionsModel } from '../../models/ComponentOptionsModel';
+import { COMPONENT_OPTIONS_ATTRIBUTES } from '../../models/ComponentOptionsModel';
 import { IAttributeChangedEventArg, MODEL_EVENTS } from '../../models/Model';
 import { QUERY_STATE_ATTRIBUTES, QueryStateModel } from '../../models/QueryStateModel';
 import { l } from '../../strings/Strings';
@@ -42,6 +42,7 @@ import { Suggestion } from '../../magicbox/SuggestionsManager';
 import { ExpressionDef } from '../../magicbox/Expression/Expression';
 import { Result } from '../../magicbox/Result/Result';
 import { MagicBoxInstance, createMagicBox } from '../../magicbox/MagicBox';
+import { QueryboxOptionsProcessing } from '../Querybox/QueryboxOptionsProcessing';
 
 export interface IOmniboxSuggestion extends Suggestion {
   executableConfidence?: number;
@@ -247,9 +248,8 @@ export class Omnibox extends Component {
     super(element, Omnibox.ID, bindings);
 
     this.options = ComponentOptions.initComponentOptions(element, Omnibox, options);
-
     const originalValueForQuerySyntax = this.options.enableQuerySyntax;
-    this.options = _.extend({}, this.options, this.componentOptionsModel.get(ComponentOptionsModel.attributesEnum.searchBox));
+    new QueryboxOptionsProcessing(this).postProcess();
 
     $$(this.element).toggleClass('coveo-query-syntax-disabled', this.options.enableQuerySyntax == false);
 
@@ -842,6 +842,9 @@ export class Omnibox extends Component {
 
   private shouldExecuteQuery(searchAsYouType: boolean) {
     const text = this.getQuery(searchAsYouType);
+    if (this.searchInterface.options.allowQueriesWithoutKeywords === false) {
+      return this.lastQuery != text && Utils.isNonEmptyString(text);
+    }
     return this.lastQuery != text && text != null;
   }
 
@@ -875,5 +878,5 @@ export class Omnibox extends Component {
   }
 }
 
-Omnibox.options = _.extend({}, Omnibox.options, Querybox.options);
+Omnibox.options = { ...Omnibox.options, ...Querybox.options };
 Initialization.registerAutoCreateComponent(Omnibox);

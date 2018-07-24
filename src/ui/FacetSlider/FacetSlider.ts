@@ -28,7 +28,7 @@ import {
 } from '../Analytics/AnalyticsActionListMeta';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
-import { ComponentOptions, IComponentOptionsObjectOptionArgs, IFieldOption } from '../Base/ComponentOptions';
+import { ComponentOptions, IComponentOptionsObjectOptionArgs, IFieldOption, IQueryExpression } from '../Base/ComponentOptions';
 import { Initialization } from '../Base/Initialization';
 import { FacetHeader } from '../Facet/FacetHeader';
 import { IDuringSlideEventArgs, IEndSlideEventArgs, ISliderGraphData, ISliderOptions, Slider } from '../Misc/Slider';
@@ -38,7 +38,7 @@ import { ResponsiveFacetSlider } from '../ResponsiveComponents/ResponsiveFacetSl
 
 export interface IFacetSliderOptions extends ISliderOptions {
   dateField?: boolean;
-  queryOverride?: string;
+  queryOverride?: IQueryExpression;
   id?: string;
   field?: IFieldOption;
   title?: string;
@@ -129,7 +129,7 @@ export class FacetSlider extends Component {
      * <div class="CoveoFacetSlider" data-field="@date" data-date-field="true" data-query-override="@date>2000/01/01"></div>
      * ```
      */
-    queryOverride: ComponentOptions.buildStringOption({ section: 'Filtering' }),
+    queryOverride: ComponentOptions.buildQueryExpressionOption({ section: 'Filtering' }),
 
     /**
      * Specifies the starting boundary of the slider.
