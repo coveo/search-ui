@@ -1,6 +1,6 @@
 import { ISuggestionForOmniboxOptions, SuggestionForOmnibox, ISuggestionForOmniboxTemplate } from '../Misc/SuggestionForOmnibox';
 import { Component } from '../Base/Component';
-import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
+import { ComponentOptions, IFieldOption, IQueryExpression } from '../Base/ComponentOptions';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { Assert } from '../../misc/Assert';
 import { Utils } from '../../utils/Utils';
@@ -19,7 +19,7 @@ import 'styling/_FieldSuggestions';
 
 export interface IFieldSuggestionsOptions extends ISuggestionForOmniboxOptions {
   field?: IFieldOption;
-  queryOverride?: string;
+  queryOverride?: IQueryExpression;
 }
 
 /**
@@ -54,7 +54,7 @@ export class FieldSuggestions extends Component {
      *
      * Default value is the empty string, and the component applies no query override.
      */
-    queryOverride: ComponentOptions.buildStringOption({ defaultValue: '' }),
+    queryOverride: ComponentOptions.buildQueryExpressionOption({ defaultValue: '' }),
 
     /**
      * Specifies the z-index position at which the suggestions render themselves in the [`Omnibox`]{@link Omnibox}.

@@ -17,6 +17,13 @@ import { Template } from '../Templates/Template';
  */
 export interface IFieldOption extends String {}
 
+/**
+ * The `IQueryExpression` type is a string type dedicated to query expressions.
+ *
+ * This type is used to build a specific option for query expressions.
+ */
+export type IQueryExpression = string;
+
 export interface IComponentOptionsLoadOption<T> {
   (element: HTMLElement, name: string, option: IComponentOptionsOption<T>): T;
 }
@@ -257,7 +264,8 @@ export enum ComponentOptionsType {
   LONG_STRING,
   JSON,
   JAVASCRIPT,
-  NONE
+  NONE,
+  QUERY_EXPRESSION
 }
 
 const camelCaseToHyphenRegex = /([A-Z])|\W+(\w)/g;
@@ -493,6 +501,22 @@ export class ComponentOptions {
    */
   static buildFieldsOption(optionArgs?: IComponentOptionsFieldsOptionArgs): IFieldOption[] {
     return ComponentOptions.buildOption<string[]>(ComponentOptionsType.FIELDS, ComponentOptions.loadFieldsOption, optionArgs);
+  }
+
+  /**
+   * Builds a query expression option.
+   *
+   * The query expression option should follow the [Coveo Cloud Query Syntax Reference](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=357).
+   *
+   * **Markup Example:**
+   *
+   * > `data-foo="@bar==baz"`
+   *
+   * @param optionArgs The arguments to apply when building the option.
+   * @returns {IQueryExpression} The resulting option value.
+   */
+  static buildQueryExpressionOption(optionArgs?: IComponentOptions<string>): IQueryExpression {
+    return ComponentOptions.buildOption<string>(ComponentOptionsType.QUERY_EXPRESSION, ComponentOptions.loadStringOption, optionArgs);
   }
 
   /**

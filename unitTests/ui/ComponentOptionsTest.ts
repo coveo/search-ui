@@ -52,6 +52,11 @@ export function ComponentOptionsTest() {
         expect((<any>option).type).toBe(ComponentOptionsType.FIELDS);
       });
 
+      it('a query expression option', () => {
+        const option = ComponentOptions.buildQueryExpressionOption();
+        expect((<any>option).type).toBe(ComponentOptionsType.QUERY_EXPRESSION);
+      });
+
       it('a list option', () => {
         const option = ComponentOptions.buildListOption();
         expect((<any>option).type).toBe(ComponentOptionsType.LIST);

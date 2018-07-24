@@ -27,7 +27,7 @@ import { Utils } from '../../utils/Utils';
 import { analyticsActionCauseList, IAnalyticsFacetMeta } from '../Analytics/AnalyticsActionListMeta';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
-import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
+import { ComponentOptions, IFieldOption, IQueryExpression } from '../Base/ComponentOptions';
 import { Initialization } from '../Base/Initialization';
 import { IOmniboxDataRow } from '../Omnibox/OmniboxInterface';
 import { ResponsiveFacets } from '../ResponsiveComponents/ResponsiveFacets';
@@ -87,7 +87,7 @@ export interface IFacetOptions {
   allowedValues?: string[];
   headerIcon?: string;
   valueIcon?: (facetValue: FacetValue) => string;
-  additionalFilter?: string;
+  additionalFilter?: IQueryExpression;
   dependsOn?: string;
   enableResponsiveMode?: boolean;
   responsiveBreakpoint?: number;
@@ -593,7 +593,7 @@ export class Facet extends Component {
      * Example: `@date>=2014/01/01`
      * @notSupportedIn salesforcefree
      */
-    additionalFilter: ComponentOptions.buildStringOption({ section: 'Filtering' }),
+    additionalFilter: ComponentOptions.buildQueryExpressionOption({ section: 'Filtering' }),
     /**
      * Specifies whether this facet only appears when a value is selected in its "parent" facet.
      *
