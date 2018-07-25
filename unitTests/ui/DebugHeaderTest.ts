@@ -73,9 +73,8 @@ export function DebugHeaderTest() {
     it('should add the proper origin when executing a query with debug enabled', () => {
       getDebugCheckbox(elem.el).setAttribute('checked', 'checked');
       $$(getDebugCheckbox(elem.el)).trigger('change');
+      Simulate.query(env);
       expect(env.queryController.executeQuery).toHaveBeenCalledWith(jasmine.objectContaining({ origin: debug }));
-      const simulation = Simulate.query(env);
-      expect(simulation.queryBuilder.enableDebug).toBe(true);
     });
 
     it('should modify the fieldsToInclude if enabled', () => {
