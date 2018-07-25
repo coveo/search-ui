@@ -89,28 +89,38 @@ export function PagerTest() {
       expect($$(anchors[anchors.length - 1]).text()).toBe('10');
     });
 
-    it('should reset page number on a new query if the origin is not a pager', () => {
-      // origin not available -> reset
-      test.cmp.setPage(5);
-      expect(test.cmp.currentPage).toBe(5);
-      $$(test.env.root).trigger(QueryEvents.newQuery, {});
-      expect(test.cmp.currentPage).toBe(1);
-
-      // origin not the pager -> reset
-      test.cmp.setPage(10);
-      expect(test.cmp.currentPage).toBe(10);
-      $$(test.env.root).trigger(QueryEvents.newQuery, {
-        origin: 'nope not the pager'
-      });
-      expect(test.cmp.currentPage).toBe(1);
-
-      // origin is pager -> no reset
+    it('should not reset page number on a new query if the origin is a pager', () => {
       test.cmp.setPage(6);
       expect(test.cmp.currentPage).toBe(6);
       $$(test.env.root).trigger(QueryEvents.newQuery, {
         origin: test.cmp
       });
       expect(test.cmp.currentPage).toBe(6);
+    });
+
+    it('should not reset page number on a new query of the origin is a debug panel', () => {
+      test.cmp.setPage(10);
+      expect(test.cmp.currentPage).toBe(10);
+      $$(test.env.root).trigger(QueryEvents.newQuery, {
+        origin: { type: 'Debug' }
+      });
+      expect(test.cmp.currentPage).toBe(10);
+    });
+
+    it('should reset the page number on a new query if the origin is not set', () => {
+      test.cmp.setPage(5);
+      expect(test.cmp.currentPage).toBe(5);
+      $$(test.env.root).trigger(QueryEvents.newQuery, {});
+      expect(test.cmp.currentPage).toBe(1);
+    });
+
+    it('should reset the page number on a new query of the origin is something not recognized', () => {
+      test.cmp.setPage(10);
+      expect(test.cmp.currentPage).toBe(10);
+      $$(test.env.root).trigger(QueryEvents.newQuery, {
+        origin: 'nope not the pager'
+      });
+      expect(test.cmp.currentPage).toBe(1);
     });
 
     describe('when queries are performed', () => {
