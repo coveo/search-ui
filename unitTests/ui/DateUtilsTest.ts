@@ -6,6 +6,10 @@ import { l } from '../../src/strings/Strings';
 export function DateUtilsTest() {
   describe('DateUtils', () => {
     let options: IDateToStringOptions;
+    const containsTime = (result: string) => {
+      return /am/i.test(result) || /pm/i.test(result);
+    };
+
     beforeEach(() => {
       options = {
         now: moment('1980-02-11').toDate(),
@@ -81,52 +85,39 @@ export function DateUtilsTest() {
 
     it('dateTimeToString should respect the option to includeTime if set to true', () => {
       const now = new Date();
-      const hour = moment(now).hour();
-      const minutes = moment(now).minutes();
-
       const result = DateUtils.dateTimeToString(now, { includeTimeIfToday: true, includeTimeIfThisWeek: true });
-      expect(result).toContain(hour.toString());
-      expect(result).toContain(minutes.toString());
+      expect(containsTime(result)).toBe(true);
     });
 
     it('dateTimeToString should respect the option to includeTime if set to false', () => {
-      const now = new Date();
-      const hour = moment(now).hour();
-      const minutes = moment(now).minutes();
+      const now = moment(new Date()).toDate();
 
       const result = DateUtils.dateTimeToString(now, { includeTimeIfToday: false, includeTimeIfThisWeek: false });
-      expect(result).not.toContain(hour.toString());
-      expect(result).not.toContain(minutes.toString());
+      expect(containsTime(result)).toBe(false);
     });
 
     it('dateTimeToString should respect includeTimeIfToday if the date is not today', () => {
       const notToday = moment(new Date())
         .subtract(2, 'days')
         .toDate();
-      const hour = moment(notToday).hour();
-      const minutes = moment(notToday).minutes();
 
       const result = DateUtils.dateTimeToString(notToday, { includeTimeIfToday: true, includeTimeIfThisWeek: false });
-      expect(result).not.toContain(hour.toString());
-      expect(result).not.toContain(minutes.toString());
+      expect(containsTime(result)).toBe(false);
     });
 
     it('dateTimeToString should respect includeTimeIfThisWeek if the date is not this week', () => {
       const notThisWeek = moment(new Date())
         .subtract(2, 'week')
         .toDate();
-      const hour = moment(notThisWeek).hour();
-      const minutes = moment(notThisWeek).minutes();
 
       const result = DateUtils.dateTimeToString(notThisWeek, { includeTimeIfToday: false, includeTimeIfThisWeek: true });
-      expect(result).not.toContain(hour.toString());
-      expect(result).not.toContain(minutes.toString());
+      expect(containsTime(result)).toBe(false);
     });
 
     it('dateTimeToString should respect the predefinedFormat without stripping minutes', () => {
       const oneAmInTheMorning = new Date(1512021600000);
       const result = DateUtils.dateTimeToString(oneAmInTheMorning, { predefinedFormat: 'MMMM DD, YYYY [at] h:mm' });
-      expect(result).toBe('November 30, 2017 at 1:00');
+      expect(result).toContain(':00');
     });
 
     it('dateTimeToString should properly return an empty string when the date is null', () => {
