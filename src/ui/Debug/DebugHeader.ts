@@ -1,11 +1,13 @@
+import { each } from 'underscore';
+import { IQueryOptions } from '../../controllers/QueryController';
+import { IDoneBuildingQueryEventArgs, QueryEvents } from '../../events/QueryEvents';
+import { IDisplayedNewResultEventArgs, ResultListEvents } from '../../events/ResultListEvents';
+import { COMPONENT_OPTIONS_ATTRIBUTES } from '../../models/ComponentOptionsModel';
+import { $$ } from '../../utils/Dom';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { Checkbox } from '../FormWidgets/Checkbox';
-import { COMPONENT_OPTIONS_ATTRIBUTES } from '../../models/ComponentOptionsModel';
 import { TextInput } from '../FormWidgets/TextInput';
-import { $$ } from '../../utils/Dom';
-import { ResultListEvents, IDisplayedNewResultEventArgs } from '../../events/ResultListEvents';
-import { QueryEvents, IDoneBuildingQueryEventArgs } from '../../events/QueryEvents';
-import * as _ from 'underscore';
+import { Debug } from './Debug';
 
 export class DebugHeader {
   private debug = false;
@@ -15,13 +17,7 @@ export class DebugHeader {
   private search: HTMLElement;
   private widgets: HTMLElement[] = [];
 
-  constructor(
-    public root: HTMLElement,
-    public element: HTMLElement,
-    public bindings: IComponentBindings,
-    public onSearch: (value: string) => void,
-    public infoToDebug: any
-  ) {
+  constructor(public debugInstance: Debug, public element: HTMLElement, public onSearch: (value: string) => void, public infoToDebug: any) {
     this.widgets.push(this.buildEnabledHighlightRecommendation());
     this.widgets.push(this.buildEnableDebugCheckbox());
     this.widgets.push(this.buildEnableQuerySyntaxCheckbox());
@@ -34,7 +30,7 @@ export class DebugHeader {
   }
 
   public moveTo(newElement: HTMLElement) {
-    _.each(this.widgets, (widget: HTMLElement) => newElement.appendChild(widget));
+    each(this.widgets, (widget: HTMLElement) => newElement.appendChild(widget));
     this.element = newElement;
   }
 
@@ -44,6 +40,21 @@ export class DebugHeader {
 
   public setNewInfoToDebug(newInfoToDebug) {
     this.infoToDebug = newInfoToDebug;
+  }
+
+  private get bindings(): IComponentBindings {
+    return this.debugInstance.bindings;
+  }
+
+  private get root(): HTMLElement {
+    return this.debugInstance.element;
+  }
+
+  private get executeQueryOptions(): IQueryOptions {
+    return {
+      closeModalBox: false,
+      origin: this.debugInstance
+    };
   }
 
   private handleNewResultDisplayed(args: IDisplayedNewResultEventArgs) {
@@ -73,9 +84,7 @@ export class DebugHeader {
     const checkbox = new Checkbox(checkboxInstance => {
       this.debug = checkboxInstance.isSelected();
 
-      this.bindings.queryController.executeQuery({
-        closeModalBox: false
-      });
+      this.bindings.queryController.executeQuery(this.executeQueryOptions);
       let input = this.search.querySelector('input') as HTMLInputElement;
       input.value = '';
     }, 'Enable query debug');
@@ -93,9 +102,7 @@ export class DebugHeader {
         enableQuerySyntax: this.enableQuerySyntax
       });
 
-      this.bindings.queryController.executeQuery({
-        closeModalBox: false
-      });
+      this.bindings.queryController.executeQuery(this.executeQueryOptions);
     }, 'Enable query syntax in search box');
     if (this.enableQuerySyntax) {
       checkbox.select();
@@ -106,9 +113,7 @@ export class DebugHeader {
   private buildRequestAllFieldsCheckbox() {
     const checkbox = new Checkbox(checkboxInstance => {
       this.requestAllFields = checkboxInstance.isSelected();
-      this.bindings.queryController.executeQuery({
-        closeModalBox: false
-      });
+      this.bindings.queryController.executeQuery(this.executeQueryOptions);
     }, 'Request all fields available');
     if (this.requestAllFields) {
       checkbox.select();
@@ -119,9 +124,7 @@ export class DebugHeader {
   private buildEnabledHighlightRecommendation() {
     const checkbox = new Checkbox(checkboxInstance => {
       this.highlightRecommendation = checkboxInstance.isSelected();
-      this.bindings.queryController.executeQuery({
-        closeModalBox: false
-      });
+      this.bindings.queryController.executeQuery(this.executeQueryOptions);
     }, 'Highlight recommendation');
     if (this.highlightRecommendation) {
       checkbox.select();

@@ -5,17 +5,20 @@ import { Simulate } from '../Simulate';
 import { InitializationEvents } from '../../src/events/InitializationEvents';
 import { ResultListEvents } from '../../src/events/ResultListEvents';
 import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
+import { Debug } from '../../src/ui/Debug/Debug';
 export function DebugHeaderTest() {
   describe('DebugHeader', () => {
     let env: IMockEnvironment;
     let elem: Dom;
     let searchSpy: jasmine.Spy;
+    let debug: Debug;
 
     beforeEach(() => {
       env = new MockEnvironmentBuilder().build();
       elem = $$('div');
       searchSpy = jasmine.createSpy('search');
-      new DebugHeader(env.root, elem.el, env, searchSpy, {
+      debug = new Debug(env.root, env, null, null);
+      new DebugHeader(debug, elem.el, searchSpy, {
         foo: 'bar'
       });
     });
@@ -63,6 +66,14 @@ export function DebugHeaderTest() {
     it('should add debug if enabled', () => {
       getDebugCheckbox(elem.el).setAttribute('checked', 'checked');
       $$(getDebugCheckbox(elem.el)).trigger('change');
+      const simulation = Simulate.query(env);
+      expect(simulation.queryBuilder.enableDebug).toBe(true);
+    });
+
+    it('should add the proper origin when executing a query with debug enabled', () => {
+      getDebugCheckbox(elem.el).setAttribute('checked', 'checked');
+      $$(getDebugCheckbox(elem.el)).trigger('change');
+      expect(env.queryController.executeQuery).toHaveBeenCalledWith(jasmine.objectContaining({ origin: debug }));
       const simulation = Simulate.query(env);
       expect(simulation.queryBuilder.enableDebug).toBe(true);
     });
