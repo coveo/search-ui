@@ -1011,6 +1011,7 @@ export class Facet extends Component {
     this.rebuildValueElements();
     this.updateAppearanceDependingOnState();
     this.updateQueryStateModel();
+    this.clearDependentFacetsIfNoSelectedValuesRemain();
   }
 
   /**
@@ -1285,9 +1286,32 @@ export class Facet extends Component {
   protected facetValueHasChanged() {
     this.updateQueryStateModel();
     this.rebuildValueElements();
+    this.clearDependentFacetsIfNoSelectedValuesRemain();
     Defer.defer(() => {
       this.updateAppearanceDependingOnState();
     });
+  }
+
+  private clearDependentFacetsIfNoSelectedValuesRemain() {
+    if (this.getSelectedValues().length) {
+      return;
+    }
+
+    this.getDependentFacets().forEach(facet => facet.reset());
+  }
+
+  private getDependentFacets() {
+    const fieldOption = this.options.field;
+    const facets = this.searchInterface.getComponents<Facet>(Facet.ID) || [];
+    const dependentFacets: Facet[] = [];
+
+    facets.forEach(facet => {
+      const dependsOn = facet.options.dependsOn;
+      const isDependentFacet = dependsOn && dependsOn === fieldOption;
+      isDependentFacet && dependentFacets.push(facet);
+    });
+
+    return dependentFacets;
   }
 
   protected updateAppearanceDependingOnState() {
@@ -1930,14 +1954,11 @@ export class Facet extends Component {
 
   private updateVisibilityBasedOnDependsOn() {
     if (Utils.isNonEmptyString(this.options.dependsOn)) {
-      $$(this.element).toggleClass(
-        'coveo-facet-dependent',
-        !this.doesParentFacetHasSelectedValue() && !this.values.hasSelectedOrExcludedValues()
-      );
+      $$(this.element).toggleClass('coveo-facet-dependent', !this.parentFacetHasSelectedValue());
     }
   }
 
-  private doesParentFacetHasSelectedValue(): boolean {
+  private parentFacetHasSelectedValue(): boolean {
     const id = QueryStateModel.getFacetId(this.options.dependsOn);
     const values = this.queryStateModel.get(id);
     return values != null && values.length != 0;

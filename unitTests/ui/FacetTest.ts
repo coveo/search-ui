@@ -759,37 +759,96 @@ export function FacetTest() {
         );
       });
 
-      it('dependsOn should specify a facet to depend on another one', () => {
-        test = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, {
-          field: '@field',
-          dependsOn: '@masterFacet'
+      describe('when a facet has the dependsOn option set to the field of another facet', () => {
+        let masterFacet: { env: Mock.IMockEnvironment; cmp: Facet };
+        const masterFacetField = '@masterFacet';
+
+        function getMasterAndDependentFacetResults() {
+          const results = FakeResults.createFakeResults();
+          results.groupByResults = [
+            FakeResults.createFakeGroupByResult('@field', 'foo', 15),
+            FakeResults.createFakeGroupByResult(masterFacetField, 'foo', 15)
+          ];
+
+          return results;
+        }
+
+        beforeEach(() => {
+          masterFacet = Mock.advancedComponentSetup<Facet>(
+            Facet,
+            new Mock.AdvancedComponentSetupOptions(
+              undefined,
+              {
+                field: masterFacetField
+              },
+              (builder: Mock.MockEnvironmentBuilder) => {
+                return builder.withRoot(test.env.root);
+              }
+            )
+          );
+
+          test = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, {
+            field: '@field',
+            dependsOn: masterFacetField
+          });
+
+          masterFacet.cmp.searchInterface.getComponents = () => [test.cmp, masterFacet.cmp] as any;
+          Simulate.query(test.env, { results: getMasterAndDependentFacetResults() });
         });
 
-        var masterFacet = Mock.advancedComponentSetup<Facet>(
-          Facet,
-          new Mock.AdvancedComponentSetupOptions(
-            undefined,
-            {
-              field: '@masterFacet'
-            },
-            (builder: Mock.MockEnvironmentBuilder) => {
-              return builder.withRoot(test.env.root);
-            }
-          )
-        );
-
-        var results = FakeResults.createFakeResults();
-        results.groupByResults = [
-          FakeResults.createFakeGroupByResult('@field', 'foo', 15),
-          FakeResults.createFakeGroupByResult('@masterFacet', 'foo', 15)
-        ];
-
-        Simulate.query(test.env, {
-          results: results
+        it('adds the coveo-facet-dependent class to the dependent facet', () => {
+          expect($$(test.cmp.element).hasClass('coveo-facet-dependent')).toBe(true);
         });
 
-        expect($$(test.cmp.element).hasClass('coveo-facet-dependent')).toBe(true);
-        expect($$(masterFacet.cmp.element).hasClass('coveo-facet-dependent')).toBe(false);
+        it('does not add the coveo-facet-dependent class to the master facet', () => {
+          expect($$(masterFacet.cmp.element).hasClass('coveo-facet-dependent')).toBe(false);
+        });
+
+        it(`when the master facet has one value selected,
+        it removes the coveo-facet-dependent class from the dependent facet`, () => {
+          test.cmp.queryStateModel.get = attribute => {
+            const attributes = { [`f:${masterFacetField}`]: ['master value'] };
+            return attributes[attribute];
+          };
+
+          Simulate.query(test.env);
+
+          expect($$(test.cmp.element).hasClass('coveo-facet-dependent')).toBe(false);
+        });
+
+        describe(`given the master and dependent facet both have one value selected`, () => {
+          const masterValue = 'master value';
+
+          beforeEach(() => {
+            masterFacet.cmp.selectValue(masterValue);
+            test.cmp.selectValue('dependent value');
+          });
+
+          it(`when resetting the master facet,
+          it unselects the values from the dependent facet`, () => {
+            masterFacet.cmp.reset();
+            expect(test.cmp.getSelectedValues().length).toBe(0);
+          });
+
+          it(`when deselecting the master facet option,
+          it deselects the values of the dependent facet`, () => {
+            masterFacet.cmp.deselectValue(masterValue);
+            expect(test.cmp.getSelectedValues().length).toBe(0);
+          });
+        });
+
+        it(`given the master facet has two values selected, and the dependent facet has one value selected,
+        when deselecting one of the master facet options,
+        it does not deselect the values of the dependent facet`, () => {
+          const masterValue = 'masterValue';
+
+          masterFacet.cmp.selectValue(masterValue);
+          masterFacet.cmp.selectValue(`${masterValue}1`);
+          test.cmp.selectValue('dependent value');
+
+          masterFacet.cmp.deselectValue(masterValue);
+          expect(test.cmp.getSelectedValues().length).toBe(1);
+        });
       });
 
       it('padding container should default to coveo-facet-column', () => {
