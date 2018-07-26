@@ -18,9 +18,10 @@ export interface SuggestionsManagerOptions {
 }
 
 export class SuggestionsManager {
+  public hasSuggestions: boolean;
   private pendingSuggestion: Promise<Suggestion[]>;
   private options: SuggestionsManagerOptions;
-  public hasSuggestions: boolean;
+  private focusedSuggestionWithKeyboard: HTMLElement;
 
   constructor(
     private element: HTMLElement,
@@ -54,9 +55,9 @@ export class SuggestionsManager {
     let target = $$(<HTMLElement>e.target);
     let parents = target.parents(this.options.selectableClass);
     if (target.hasClass(this.options.selectableClass)) {
-      this.addSelectedClass(target.el);
+      this.flagAsActiveSelection(target.el);
     } else if (parents.length > 0 && this.element.contains(parents[0])) {
-      this.addSelectedClass(parents[0]);
+      this.flagAsActiveSelection(parents[0]);
     }
   }
 
@@ -89,8 +90,8 @@ export class SuggestionsManager {
     return this.returnMoved(this.move('up'));
   }
 
-  public select() {
-    const selected = <HTMLElement>this.element.getElementsByClassName(this.options.selectedClass).item(0);
+  public getCurrentlyFocusedWithKeyboardElement(): HTMLElement {
+    const selected = this.focusedSuggestionWithKeyboard;
     if (selected != null) {
       $$(selected).trigger('keyboardSelect');
     }
@@ -189,6 +190,16 @@ export class SuggestionsManager {
     $$(this.magicBoxContainer).setAttribute('aria-expanded', this.hasSuggestions.toString());
   }
 
+  private flagAsActiveSelection(suggestion: HTMLElement, usingKeyboard = false) {
+    this.addSelectedClass(suggestion);
+    if (usingKeyboard) {
+      this.focusedSuggestionWithKeyboard = suggestion;
+      $$(this.inputManager.input).setAttribute('aria-activedescendant', $$(suggestion).getAttribute('id'));
+    } else {
+      this.focusedSuggestionWithKeyboard = null;
+    }
+  }
+
   private buildSuggestionsContainer() {
     return $$('div', {
       id: 'coveo-magicbox-suggestions',
@@ -259,10 +270,9 @@ export class SuggestionsManager {
     const newlySelected = selectables[index];
 
     if (newlySelected) {
-      this.addSelectedClass(newlySelected);
-      $$(newlySelected).addClass(this.options.selectedClass);
-      $$(this.inputManager.input).setAttribute('aria-activedescendant', $$(newlySelected).getAttribute('id'));
+      this.flagAsActiveSelection(newlySelected, true);
     } else {
+      this.focusedSuggestionWithKeyboard = null;
       this.inputManager.input.removeAttribute('aria-activedescendant');
     }
 
