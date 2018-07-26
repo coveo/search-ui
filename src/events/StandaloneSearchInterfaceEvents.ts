@@ -1,5 +1,6 @@
 /**
- *
+ * The `IBeforeRedirectEventArgs` interface describes the object that all
+ * [`beforeRedirect`]{@link StandaloneSearchInterfaceEvents.beforeRedirect} event handlers receive as an argument.
  */
 export interface IBeforeRedirectEventArgs {
   /**
