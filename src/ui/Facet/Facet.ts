@@ -1011,7 +1011,6 @@ export class Facet extends Component {
     this.rebuildValueElements();
     this.updateAppearanceDependingOnState();
     this.updateQueryStateModel();
-    this.clearDependentFacetsIfNoSelectedValuesRemain();
   }
 
   /**
@@ -1286,32 +1285,9 @@ export class Facet extends Component {
   protected facetValueHasChanged() {
     this.updateQueryStateModel();
     this.rebuildValueElements();
-    this.clearDependentFacetsIfNoSelectedValuesRemain();
     Defer.defer(() => {
       this.updateAppearanceDependingOnState();
     });
-  }
-
-  private clearDependentFacetsIfNoSelectedValuesRemain() {
-    if (this.getSelectedValues().length) {
-      return;
-    }
-
-    this.getDependentFacets().forEach(facet => facet.reset());
-  }
-
-  private getDependentFacets() {
-    const fieldOption = this.options.field;
-    const facets = this.searchInterface.getComponents<Facet>(Facet.ID) || [];
-    const dependentFacets: Facet[] = [];
-
-    facets.forEach(facet => {
-      const dependsOn = facet.options.dependsOn;
-      const isDependentFacet = dependsOn && dependsOn === fieldOption;
-      isDependentFacet && dependentFacets.push(facet);
-    });
-
-    return dependentFacets;
   }
 
   protected updateAppearanceDependingOnState() {
@@ -1340,6 +1316,27 @@ export class Facet extends Component {
     this.queryStateModel.registerNewAttribute(this.lookupValueAttributeId, {});
 
     this.bind.onQueryState(MODEL_EVENTS.CHANGE, undefined, (args: IAttributesChangedEventArg) => this.handleQueryStateChanged(args));
+    this.listenToParentIfDependentFacet();
+  }
+
+  private listenToParentIfDependentFacet() {
+    if (!this.isDependentFacet) {
+      return;
+    }
+
+    this.bind.onQueryState(MODEL_EVENTS.CHANGE, undefined, () => this.resetIfParentFacetHasNoActiveValues());
+  }
+
+  private get isDependentFacet() {
+    return Utils.isNonEmptyString(this.options.dependsOn);
+  }
+
+  private resetIfParentFacetHasNoActiveValues() {
+    if (this.parentFacetHasActiveValues) {
+      return;
+    }
+
+    this.reset();
   }
 
   protected initComponentStateEvents() {
@@ -1953,13 +1950,26 @@ export class Facet extends Component {
   }
 
   private updateVisibilityBasedOnDependsOn() {
-    if (Utils.isNonEmptyString(this.options.dependsOn)) {
-      $$(this.element).toggleClass('coveo-facet-dependent', !this.parentFacetHasSelectedValue());
+    if (this.isDependentFacet) {
+      $$(this.element).toggleClass('coveo-facet-dependent', !this.parentFacetHasActiveValues);
     }
   }
 
-  private parentFacetHasSelectedValue(): boolean {
-    const id = QueryStateModel.getFacetId(this.options.dependsOn);
+  private get parentFacetHasActiveValues() {
+    return this.parentFacetHasSelectedValues || this.parentFacetHasExcludedValues;
+  }
+
+  private get parentFacetHasSelectedValues() {
+    const parentSelectedValuesId = QueryStateModel.getFacetId(this.options.dependsOn);
+    return this.valuesExistForFacetWithId(parentSelectedValuesId);
+  }
+
+  private get parentFacetHasExcludedValues() {
+    const parentExcludedValuesId = QueryStateModel.getFacetId(this.options.dependsOn, false);
+    return this.valuesExistForFacetWithId(parentExcludedValuesId);
+  }
+
+  private valuesExistForFacetWithId(id: string) {
     const values = this.queryStateModel.get(id);
     return values != null && values.length != 0;
   }
