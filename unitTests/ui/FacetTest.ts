@@ -762,15 +762,37 @@ export function FacetTest() {
       describe('when a facet has the dependsOn option set to the field of another facet', () => {
         let masterFacet: { env: Mock.IMockEnvironment; cmp: Facet };
         const masterFacetField = '@masterFacet';
+        const dependentFacetField = '@field';
 
         function getMasterAndDependentFacetResults() {
           const results = FakeResults.createFakeResults();
           results.groupByResults = [
-            FakeResults.createFakeGroupByResult('@field', 'foo', 15),
+            FakeResults.createFakeGroupByResult(dependentFacetField, 'foo', 15),
             FakeResults.createFakeGroupByResult(masterFacetField, 'foo', 15)
           ];
 
           return results;
+        }
+
+        function getMasterDependentFacetStateAttributes() {
+          return {
+            ...getMasterFacetStateAttributes(),
+            ...getDependentFacetStateAttributes()
+          };
+        }
+
+        function getMasterFacetStateAttributes() {
+          return {
+            [`f:${masterFacetField}`]: masterFacet.cmp.getSelectedValues(),
+            [`f:${masterFacetField}:not`]: masterFacet.cmp.getExcludedValues()
+          };
+        }
+
+        function getDependentFacetStateAttributes() {
+          return {
+            [`f:${dependentFacetField}`]: test.cmp.getSelectedValues(),
+            [`f:${dependentFacetField}:not`]: test.cmp.getExcludedValues()
+          };
         }
 
         beforeEach(() => {
@@ -788,11 +810,15 @@ export function FacetTest() {
           );
 
           test = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, {
-            field: '@field',
+            field: dependentFacetField,
             dependsOn: masterFacetField
           });
 
-          masterFacet.cmp.searchInterface.getComponents = () => [test.cmp, masterFacet.cmp] as any;
+          test.cmp.queryStateModel.get = key => {
+            const attributes = getMasterDependentFacetStateAttributes();
+            return attributes[key];
+          };
+
           Simulate.query(test.env, { results: getMasterAndDependentFacetResults() });
         });
 
@@ -804,50 +830,71 @@ export function FacetTest() {
           expect($$(masterFacet.cmp.element).hasClass('coveo-facet-dependent')).toBe(false);
         });
 
-        it(`when the master facet has one value selected,
+        it(`when the master facet has one selected value,
         it removes the coveo-facet-dependent class from the dependent facet`, () => {
-          test.cmp.queryStateModel.get = attribute => {
-            const attributes = { [`f:${masterFacetField}`]: ['master value'] };
-            return attributes[attribute];
-          };
-
+          masterFacet.cmp.selectValue('master value');
           Simulate.query(test.env);
 
           expect($$(test.cmp.element).hasClass('coveo-facet-dependent')).toBe(false);
         });
 
-        describe(`given the master and dependent facet both have one value selected`, () => {
-          const masterValue = 'master value';
+        it(`when the master facet has one excluded value,
+        it removes the coveo-facet-dependent class from the dependent facet`, () => {
+          masterFacet.cmp.excludeValue('excluded master value');
+          Simulate.query(test.env);
+
+          expect($$(test.cmp.element).hasClass('coveo-facet-dependent')).toBe(false);
+        });
+
+        describe(`given the master and dependent facet both have one selected and one excluded value`, () => {
+          const selectedMasterValue = 'selected master value';
+          const excludedMasterValue = 'excluded master value';
+
+          function triggerStateChangeOnDependentFacet() {
+            rebindDependentFacetStateChangeListeners();
+            $$(test.env.root).trigger('change', { attributes: {} });
+          }
+
+          function rebindDependentFacetStateChangeListeners() {
+            test.cmp.queryStateModel.getEventName = name => name;
+            test.cmp['initQueryStateEvents']();
+          }
 
           beforeEach(() => {
-            masterFacet.cmp.selectValue(masterValue);
-            test.cmp.selectValue('dependent value');
+            masterFacet.cmp.selectValue(selectedMasterValue);
+            masterFacet.cmp.excludeValue(excludedMasterValue);
+
+            test.cmp.selectValue('selected dependent value');
+            test.cmp.excludeValue('excluded dependent value');
           });
 
           it(`when resetting the master facet,
-          it unselects the values from the dependent facet`, () => {
+          it resets the dependent facet`, () => {
             masterFacet.cmp.reset();
+            triggerStateChangeOnDependentFacet();
+
             expect(test.cmp.getSelectedValues().length).toBe(0);
+            expect(test.cmp.getExcludedValues().length).toBe(0);
           });
 
-          it(`when deselecting the master facet option,
-          it deselects the values of the dependent facet`, () => {
-            masterFacet.cmp.deselectValue(masterValue);
-            expect(test.cmp.getSelectedValues().length).toBe(0);
+          it(`when deselecting one of the master facet active options,
+          it does not reset the dependent facet`, () => {
+            masterFacet.cmp.deselectValue(selectedMasterValue);
+            triggerStateChangeOnDependentFacet();
+
+            expect(test.cmp.getSelectedValues().length).toBe(1);
+            expect(test.cmp.getExcludedValues().length).toBe(1);
           });
-        });
 
-        it(`given the master facet has two values selected, and the dependent facet has one value selected,
-        when deselecting one of the master facet options,
-        it does not deselect the values of the dependent facet`, () => {
-          const masterValue = 'masterValue';
+          it(`when deselecting both the master facet active options,
+          it resets the dependent facet`, () => {
+            masterFacet.cmp.deselectValue(selectedMasterValue);
+            masterFacet.cmp.deselectValue(excludedMasterValue);
+            triggerStateChangeOnDependentFacet();
 
-          masterFacet.cmp.selectValue(masterValue);
-          masterFacet.cmp.selectValue(`${masterValue}1`);
-          test.cmp.selectValue('dependent value');
-
-          masterFacet.cmp.deselectValue(masterValue);
-          expect(test.cmp.getSelectedValues().length).toBe(1);
+            expect(test.cmp.getSelectedValues().length).toBe(0);
+            expect(test.cmp.getExcludedValues().length).toBe(0);
+          });
         });
       });
 
