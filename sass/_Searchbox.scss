@@ -1,6 +1,5 @@
 @import 'Variables';
 @import './mixins/mediaQuery';
-
 .CoveoSearchbox {
   &.coveo-inline {
     overflow: hidden;
@@ -15,7 +14,6 @@
     border-top-right-radius: $default-border-radius;
     border-bottom-right-radius: $default-border-radius;
   }
-
   .magic-box {
     @include defaultRoundedBorder();
     .magic-box-clear-svg {
@@ -59,5 +57,12 @@
         display: none;
       }
     }
+  }
+}
+
+.coveo-query-syntax-disabled {
+  &.magic-box .magic-box-input .magic-box-underlay span,
+  .magic-box-highlight-container {
+    display: none;
   }
 }

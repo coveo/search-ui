@@ -297,7 +297,6 @@ export class QueryController extends RootComponent {
 
         this.logger.error('Query triggered an error', query, error);
 
-        // this.currentPendingQuery.reject(error);
         this.currentPendingQuery = undefined;
         let dataToSendOnError: IQueryErrorEventArgs = {
           queryBuilder: queryBuilder,

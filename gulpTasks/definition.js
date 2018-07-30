@@ -8,7 +8,7 @@ const shell = require('gulp-shell');
 const tvm = require('tvm');
 
 gulp.task('definitions', function(done) {
-  runsequence('externalDefs', 'internalDefs', 'cleanDefs', 'validateDefs', done);
+  runsequence('externalDefs', 'internalDefs', 'cleanDefs', done);
 });
 
 gulp.task('cleanDefs', function() {
@@ -61,12 +61,12 @@ gulp.task('externalDefs', function() {
       './node_modules/@types/underscore/index.d.ts',
       './lib/es6-promise/index.d.ts',
       './lib/modal-box/index.d.ts',
-      './lib/magic-box/index.d.ts',
       './node_modules/@types/d3/index.d.ts',
       './lib/globalize/index.d.ts',
       './lib/jstimezonedetect/index.d.ts',
       './lib/coveoanalytics/index.d.ts',
-      './lib/map/index.d.ts'
+      './lib/map/index.d.ts',
+      './node_modules/exponential-backoff/dist/backoff.d.ts'
     ])
     .pipe(concat('Externals.d.ts'))
     .pipe(replace(/import.*$/gm, ''))
@@ -80,6 +80,7 @@ gulp.task('externalDefs', function() {
     .pipe(replace(/\n\t\s*(\n\t\s*)/g, '$1'))
     .pipe(replace(/never/gm, 'void'))
     .pipe(replace(/undefined/g, 'any'))
+    .pipe(replace(/Partial<[A-z]*>/g, 'any'))
     .pipe(gulp.dest('./bin/ts'));
 });
 

@@ -22,6 +22,7 @@ import { exportGlobally } from '../../GlobalExports';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { SVGDom } from '../../utils/SVGDom';
 import 'styling/_Pager';
+import { AccessibleButton } from '../../utils/AccessibleButton';
 
 export interface IPagerOptions {
   numberOfPages: number;
@@ -186,8 +187,8 @@ export class Pager extends Component {
   }
 
   private handleNewQuery(data: INewQueryEventArgs) {
-    const triggeredByPager = data && data.origin && data.origin.type == Pager.ID;
-    if (this.needToReset && !triggeredByPager) {
+    const triggeredByPagerOrDebugMode = data && data.origin && (data.origin.type == Pager.ID || data.origin.type == 'Debug');
+    if (this.needToReset && !triggeredByPagerOrDebugMode) {
       this.currentPage = 1;
       this.updateQueryStateModel(this.getFirstResultNumber(this.currentPage));
     }
@@ -238,7 +239,7 @@ export class Pager extends Component {
         }
 
         if (this.options.enableNavigationButton && pagerBoundary.lastResultPage > 1) {
-          this.renderNavigationButton(pagerBoundary, this.list);
+          this.renderNavigationButton(pagerBoundary);
         }
       }
     }
@@ -307,35 +308,78 @@ export class Pager extends Component {
     };
   }
 
-  private renderNavigationButton(
-    pagerBoundary: { start: number; end: number; lastResultPage: number; currentPage: number },
-    list: HTMLElement
-  ) {
+  private renderNavigationButton(pagerBoundary: { start: number; end: number; lastResultPage: number; currentPage: number }) {
     if (this.currentPage > 1) {
-      const previous = document.createElement('li');
-      $$(previous).addClass(['coveo-pager-previous', 'coveo-pager-anchor', 'coveo-pager-list-item']);
-      const buttonLink = document.createElement('a');
-      const buttonIcon = $$('span', { className: 'coveo-pager-previous-icon' }, SVGIcons.icons.pagerLeftArrow).el;
-      SVGDom.addClassToSVGInContainer(buttonIcon, 'coveo-pager-previous-icon-svg');
-      buttonLink.appendChild(buttonIcon);
-      buttonLink.setAttribute('title', l('Previous'));
-      previous.appendChild(buttonLink);
-      $$(previous).on('click', () => this.handleClickPrevious());
-      this.list.insertBefore(previous, this.list.firstChild);
+      const previous = this.renderPreviousButton();
+      this.list.insertBefore(previous.el, this.list.firstChild);
     }
 
     if (this.currentPage < pagerBoundary.lastResultPage) {
-      const next = document.createElement('li');
-      $$(next).addClass(['coveo-pager-next', 'coveo-pager-anchor', 'coveo-pager-list-item']);
-      const buttonLink = document.createElement('a');
-      const buttonIcon = $$('span', { className: 'coveo-pager-next-icon' }, SVGIcons.icons.pagerRightArrow).el;
-      SVGDom.addClassToSVGInContainer(buttonIcon, 'coveo-pager-next-icon-svg');
-      buttonLink.appendChild(buttonIcon);
-      buttonLink.setAttribute('title', l('Next'));
-      next.appendChild(buttonLink);
-      $$(next).on('click', () => this.handleClickNext());
-      this.list.appendChild(next);
+      const next = this.renderNextButton();
+      this.list.appendChild(next.el);
     }
+  }
+
+  private renderPreviousButton() {
+    const previousButton = $$('li', {
+      className: 'coveo-pager-previous coveo-pager-anchor coveo-pager-list-item'
+    });
+
+    const previousLink = $$('a', {
+      title: l('Previous')
+    });
+
+    const previousIcon = $$(
+      'span',
+      {
+        className: 'coveo-pager-previous-icon'
+      },
+      SVGIcons.icons.pagerLeftArrow
+    );
+
+    SVGDom.addClassToSVGInContainer(previousIcon.el, 'coveo-pager-previous-icon-svg');
+
+    previousLink.append(previousIcon.el);
+    previousButton.append(previousLink.el);
+
+    new AccessibleButton()
+      .withElement(previousButton)
+      .withLabel(l('Previous'))
+      .withSelectAction(() => this.handleClickPrevious())
+      .build();
+
+    return previousButton;
+  }
+
+  private renderNextButton() {
+    const nextButton = $$('li', {
+      className: 'coveo-pager-next coveo-pager-anchor coveo-pager-list-item'
+    });
+
+    const nextLink = $$('a', {
+      title: l('Next')
+    });
+
+    const nextIcon = $$(
+      'span',
+      {
+        className: 'coveo-pager-next-icon'
+      },
+      SVGIcons.icons.pagerRightArrow
+    );
+
+    SVGDom.addClassToSVGInContainer(nextIcon.el, 'coveo-pager-next-icon-svg');
+
+    nextLink.append(nextIcon.el);
+    nextButton.append(nextLink.el);
+
+    new AccessibleButton()
+      .withElement(nextButton)
+      .withLabel(l('Next'))
+      .withSelectAction(() => this.handleClickNext())
+      .build();
+
+    return nextButton;
   }
 
   private handleQueryStateModelChanged(data: IAttributeChangedEventArg) {

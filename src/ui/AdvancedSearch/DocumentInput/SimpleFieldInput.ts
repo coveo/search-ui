@@ -1,11 +1,11 @@
-import { Dropdown } from '../../FormWidgets/Dropdown';
-import { FacetUtils } from '../../../ui/Facet/FacetUtils';
+import * as _ from 'underscore';
 import { IIndexFieldValue } from '../../../rest/FieldValue';
 import { ISearchEndpoint } from '../../../rest/SearchEndpointInterface';
-import { DocumentInput } from './DocumentInput';
+import { FacetUtils } from '../../../ui/Facet/FacetUtils';
 import { $$ } from '../../../utils/Dom';
-import * as _ from 'underscore';
 import { QueryBuilder } from '../../Base/QueryBuilder';
+import { Dropdown } from '../../FormWidgets/Dropdown';
+import { DocumentInput } from './DocumentInput';
 
 export class SimpleFieldInput extends DocumentInput {
   protected element: HTMLElement;
@@ -50,9 +50,14 @@ export class SimpleFieldInput extends DocumentInput {
         _.each(values, (value: IIndexFieldValue) => {
           options.push(value.value);
         });
-        this.dropDown = new Dropdown(this.onChange.bind(this), options, (str: string) => {
-          return FacetUtils.tryToGetTranslatedCaption(this.fieldName, str);
-        });
+        this.dropDown = new Dropdown(
+          this.onChange.bind(this),
+          options,
+          (str: string) => {
+            return FacetUtils.tryToGetTranslatedCaption(this.fieldName, str);
+          },
+          this.inputName
+        );
       });
   }
 }

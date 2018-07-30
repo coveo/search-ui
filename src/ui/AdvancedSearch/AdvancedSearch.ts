@@ -30,6 +30,7 @@ import { ModalBox as ModalBoxModule } from '../../ExternalModulesShim';
 import { BreadcrumbEvents, IPopulateBreadcrumbEventArgs, IClearBreadcrumbEventArgs } from '../../events/BreadcrumbEvents';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { SVGDom } from '../../utils/SVGDom';
+import { AccessibleButton } from '../../utils/AccessibleButton';
 
 export interface IAdvancedSearchOptions {
   includeKeywords?: boolean;
@@ -166,34 +167,65 @@ export class AdvancedSearch extends Component {
 
   private handlePopulateBreadcrumb(args: IPopulateBreadcrumbEventArgs) {
     if (this.needToPopulateBreadcrumb) {
-      const elem = $$('div', {
-        className: 'coveo-advanced-search-breadcrumb'
-      });
-      const title = $$('span', {
-        className: 'coveo-title'
-      });
-      title.text(l('FiltersInAdvancedSearch') + ' : ');
-      const clear = $$(
-        'span',
-        {
-          className: 'coveo-advanced-search-breadcrumb-clear'
-        },
-        SVGIcons.icons.checkboxHookExclusionMore
-      );
-      SVGDom.addClassToSVGInContainer(clear.el, 'coveo-advanced-search-breadcrumb-clear-svg');
-      clear.on('click', () => {
-        this.handleClearBreadcrumb();
-        this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.breadcrumbAdvancedSearch, {});
-        this.queryController.executeQuery();
-      });
+      const { container, title, clear } = this.buildBreadcrumbElements();
 
-      elem.append(title.el);
-      elem.append(clear.el);
+      container.append(title.el);
+      container.append(clear.el);
 
       args.breadcrumbs.push({
-        element: elem.el
+        element: container.el
       });
     }
+  }
+
+  private buildBreadcrumbElements() {
+    return {
+      container: this.buildBreadcrumbContainer(),
+      title: this.buildBreadcrumbTitle(),
+      clear: this.buildBreacrumbClear()
+    };
+  }
+
+  private buildBreadcrumbContainer() {
+    return $$('div', {
+      className: 'coveo-advanced-search-breadcrumb'
+    });
+  }
+
+  private buildBreadcrumbTitle() {
+    return $$(
+      'span',
+      {
+        className: 'coveo-advanced-search-breadcrumb-title'
+      },
+      l('FiltersInAdvancedSearch') + ' : '
+    );
+  }
+
+  private buildBreacrumbClear() {
+    const clear = $$(
+      'span',
+      {
+        className: 'coveo-advanced-search-breadcrumb-clear'
+      },
+      SVGIcons.icons.checkboxHookExclusionMore
+    );
+
+    SVGDom.addClassToSVGInContainer(clear.el, 'coveo-advanced-search-breadcrumb-clear-svg');
+
+    const selectAction = () => {
+      this.handleClearBreadcrumb();
+      this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.breadcrumbAdvancedSearch, {});
+      this.queryController.executeQuery();
+    };
+
+    new AccessibleButton()
+      .withElement(clear)
+      .withLabel(l('Clear'))
+      .withSelectAction(() => selectAction())
+      .build();
+
+    return clear;
   }
 
   private handleClearBreadcrumb() {
@@ -238,8 +270,8 @@ export class AdvancedSearch extends Component {
   }
 
   private buildContent() {
-    let component = $$('div');
-    let inputSections: IAdvancedSearchSection[] = [];
+    const component = $$('div');
+    const inputSections: IAdvancedSearchSection[] = [];
     if (this.options.includeKeywords) {
       inputSections.push(this.getKeywordsSection());
     }
@@ -271,8 +303,8 @@ export class AdvancedSearch extends Component {
   }
 
   private getKeywordsSection(): IAdvancedSearchSection {
-    let sectionName = l('Keywords');
-    let keywordsInputs = [];
+    const sectionName = l('Keywords');
+    const keywordsInputs = [];
     keywordsInputs.push(this.inputFactory.createAllKeywordsInput());
     keywordsInputs.push(this.inputFactory.createExactKeywordsInput());
     keywordsInputs.push(this.inputFactory.createAnyKeywordsInput());
@@ -281,8 +313,8 @@ export class AdvancedSearch extends Component {
   }
 
   private getDateSection(): IAdvancedSearchSection {
-    let sectionName = l('Date');
-    let dateInputs = [];
+    const sectionName = l('Date');
+    const dateInputs = [];
     dateInputs.push(this.inputFactory.createAnytimeDateInput());
     dateInputs.push(this.inputFactory.createInTheLastDateInput());
     dateInputs.push(this.inputFactory.createBetweenDateInput());
@@ -290,8 +322,8 @@ export class AdvancedSearch extends Component {
   }
 
   private getDocumentSection(): IAdvancedSearchSection {
-    let sectionName = l('Document');
-    let documentInputs = [];
+    const sectionName = l('Document');
+    const documentInputs = [];
     documentInputs.push(this.inputFactory.createSimpleFieldInput(l('FileType'), '@filetype'));
     documentInputs.push(this.inputFactory.createSimpleFieldInput(l('Language'), '@language'));
     documentInputs.push(this.inputFactory.createSizeInput());
@@ -301,32 +333,44 @@ export class AdvancedSearch extends Component {
   }
 
   private buildExternalSection(section: IExternalAdvancedSearchSection): HTMLElement {
-    let sectionHTML = this.buildSectionTitle(section);
+    const { el } = this.buildSectionTitle(section);
     this.inputs = _.union(this.inputs, <any>section.inputs);
-    sectionHTML.appendChild(section.content);
-    return sectionHTML;
+    el.appendChild(section.content);
+    return el;
   }
 
   private buildInternalSection(section: IAdvancedSearchSection): HTMLElement {
-    let sectionHTML = this.buildSectionTitle(section);
-    let sectionInputs = [];
+    const { el, id } = this.buildSectionTitle(section);
+    const sectionInputs = [];
     _.each(section.inputs, input => {
       sectionInputs.push(this.buildDefaultInput(input));
     });
     this.inputs = _.union(this.inputs, sectionInputs);
     _.each(sectionInputs, input => {
-      $$(sectionHTML).append(input.build());
+      const built: HTMLElement = input.build();
+      const inputElement = built.querySelector('input');
+      if (inputElement) {
+        inputElement.setAttribute('aria-labelledby', id);
+      }
+
+      $$(el).append(built);
     });
 
-    return sectionHTML;
+    return el;
   }
 
-  private buildSectionTitle(section: IAdvancedSearchSection): HTMLElement {
-    let sectionHTML = $$('div', { className: 'coveo-advanced-search-section' });
-    let title = $$('div', { className: 'coveo-advanced-search-section-title' });
+  private buildSectionTitle(section: IAdvancedSearchSection) {
+    const sectionHTML = $$('div', { className: 'coveo-advanced-search-section' });
+    const title = $$('div', { className: 'coveo-advanced-search-section-title' });
+
     title.text(section.name);
+    const id = `coveo-advanced-search-section-${section.name}`;
+    title.el.id = id;
     sectionHTML.append(title.el);
-    return sectionHTML.el;
+    return {
+      el: sectionHTML.el,
+      id
+    };
   }
 
   private buildDefaultInput(input: IAdvancedSearchInput | IAdvancedSearchPrebuiltInput): IAdvancedSearchInput {

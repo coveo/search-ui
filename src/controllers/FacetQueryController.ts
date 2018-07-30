@@ -76,7 +76,7 @@ export class FacetQueryController {
     const groupByRequest = this.createBasicGroupByRequest(allowedValues);
 
     const queryOverrideObject = this.createGroupByQueryOverride(queryBuilder);
-    if (!Utils.isNullOrUndefined(queryOverrideObject)) {
+    if (!Utils.isNullOrUndefined(queryOverrideObject) || !QueryBuilderExpression.isEmpty(queryOverrideObject)) {
       groupByRequest.queryOverride = queryOverrideObject.basic;
       groupByRequest.advancedQueryOverride = queryOverrideObject.advanced;
       groupByRequest.constantQueryOverride = queryOverrideObject.constant;
@@ -86,8 +86,8 @@ export class FacetQueryController {
       this.constantExpressionToUseForFacetSearch = queryOverrideObject.constant;
     } else {
       const parts = queryBuilder.computeCompleteExpressionParts();
-      this.expressionToUseForFacetSearch = parts.withoutConstant == null ? '@uri' : parts.withoutConstant;
-      this.basicExpressionToUseForFacetSearch = parts.basic == null ? '@uri' : parts.basic;
+      this.expressionToUseForFacetSearch = parts.withoutConstant == null ? '' : parts.withoutConstant;
+      this.basicExpressionToUseForFacetSearch = parts.basic == null ? '' : parts.basic;
       this.advancedExpressionToUseForFacetSearch = parts.advanced;
       this.constantExpressionToUseForFacetSearch = parts.constant;
     }
@@ -270,18 +270,28 @@ export class FacetQueryController {
 
     if (this.queryOverrideIsNeededForMultiSelection()) {
       queryBuilderExpression = this.processQueryOverrideForMultiSelection(queryBuilder, queryBuilderExpression);
+    } else {
+      queryBuilderExpression.reset();
     }
     if (this.queryOverrideIsNeededForAdditionalFilter()) {
       queryBuilderExpression = this.processQueryOverrideForAdditionalFilter(queryBuilder, queryBuilderExpression);
     }
 
     queryBuilderExpression = this.processQueryOverrideForEmptyValues(queryBuilder, queryBuilderExpression);
-
+    if (QueryBuilderExpression.isEmpty(queryBuilderExpression)) {
+      return null;
+    }
     return queryBuilderExpression;
   }
 
   private queryOverrideIsNeededForMultiSelection() {
-    return !(this.facet.options.useAnd || (this.facet.options.isMultiValueField && this.facet.values.hasSelectedAndExcludedValues()));
+    if (this.facet.options.useAnd) {
+      return false;
+    }
+    if (this.facet.values.hasSelectedOrExcludedValues()) {
+      return true;
+    }
+    return false;
   }
 
   private queryOverrideIsNeededForAdditionalFilter() {

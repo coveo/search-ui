@@ -10,6 +10,7 @@ import { IRelevanceInspectorTab } from './RelevanceInspector';
 import agGridModule = require('ag-grid/main');
 import { ExecutionReportRankingModifiers } from './ExecutionReportRankingModifiers';
 import { IResultsComponentBindings, Logger } from '../../Core';
+import { ExecutionReportITDSection } from './ExecutionReportITDSection';
 
 export interface IExecutionReport {
   duration: number;
@@ -34,7 +35,10 @@ export enum EXECUTION_REPORT_SECTION {
   RANKING = 'ApplyRankingFeature',
   TOP_RESULT = 'ApplyTopResultFeature',
   RANKING_WEIGHT = 'ApplyRankingWeightFeature',
-  INDEX_QUERY = 'Send query to index'
+  INDEX_QUERY = 'Send query to index',
+  TOP_CLICKS = 'EvaluatingTopClicks',
+  PARTIAL_MATCH = 'PartialMatch',
+  NONE = 'NONE'
 }
 
 export interface IExecutionReportSection {
@@ -158,8 +162,16 @@ export class ExecutionReport implements IRelevanceInspectorTab {
       'Featured Results'
     ).build(this.results.executionReport);
     container.append(topResultsSection.container.el);
+
     if (topResultsSection.gridOptions) {
       gridOptions.push(topResultsSection.gridOptions);
+    }
+
+    const itdSection = await new ExecutionReportITDSection().build(this.results.executionReport);
+    container.append(itdSection.container.el);
+
+    if (itdSection.gridOptions) {
+      gridOptions.push(itdSection.gridOptions);
     }
 
     const rankingWeightsSection = await new ExecutionReportSimpleSection(

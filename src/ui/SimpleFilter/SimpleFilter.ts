@@ -1,22 +1,22 @@
+import 'styling/_SimpleFilter';
+import { contains, each, filter, keys, map } from 'underscore';
+import { BreadcrumbEvents, IPopulateBreadcrumbEventArgs } from '../../events/BreadcrumbEvents';
+import { IBuildingQueryEventArgs, IDoneBuildingQueryEventArgs, IQuerySuccessEventArgs, QueryEvents } from '../../events/QueryEvents';
+import { exportGlobally } from '../../GlobalExports';
+import { Assert } from '../../misc/Assert';
+import { l } from '../../strings/Strings';
+import { AccessibleButton } from '../../utils/AccessibleButton';
+import { $$, Dom } from '../../utils/Dom';
+import { SVGDom } from '../../utils/SVGDom';
+import { SVGIcons } from '../../utils/SVGIcons';
+import { analyticsActionCauseList, IAnalyticsSimpleFilterMeta } from '../Analytics/AnalyticsActionListMeta';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
-import { Initialization } from '../Base/Initialization';
-import { exportGlobally } from '../../GlobalExports';
-import 'styling/_SimpleFilter';
-import { $$, Dom } from '../../utils/Dom';
-import { IBuildingQueryEventArgs, IDoneBuildingQueryEventArgs, IQuerySuccessEventArgs, QueryEvents } from '../../events/QueryEvents';
 import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
-import { l } from '../../strings/Strings';
-import { Assert } from '../../misc/Assert';
-import * as _ from 'underscore';
-import { Checkbox } from '../FormWidgets/Checkbox';
-import { BreadcrumbEvents, IPopulateBreadcrumbEventArgs } from '../../events/BreadcrumbEvents';
-import { SVGIcons } from '../../utils/SVGIcons';
-import { SVGDom } from '../../utils/SVGDom';
-import { SimpleFilterValues } from './SimpleFilterValues';
+import { Initialization } from '../Base/Initialization';
 import { FacetUtils } from '../Facet/FacetUtils';
-import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
-import { analyticsActionCauseList, IAnalyticsSimpleFilterMeta } from '../Analytics/AnalyticsActionListMeta';
+import { Checkbox } from '../FormWidgets/Checkbox';
+import { SimpleFilterValues } from './SimpleFilterValues';
 
 export interface ISimpleFilterOptions {
   title: string;
@@ -43,7 +43,7 @@ export class SimpleFilter extends Component {
   static ID = 'SimpleFilter';
   static doExport = () => {
     exportGlobally({
-      SimpleFilter: SimpleFilter
+      SimpleFilter
     });
   };
   /**
@@ -140,9 +140,15 @@ export class SimpleFilter extends Component {
     this.options = ComponentOptions.initComponentOptions(element, SimpleFilter, options);
     this.element.title = this.options.title;
     this.buildContent();
-    $$(this.element).on('click', (e: Event) => this.handleClick(e));
-    $$(this.element).setAttribute('tabindex', '0');
-    this.bindKeyboardEvents();
+
+    new AccessibleButton()
+      .withElement(this.element)
+      .withClickAction((e: Event) => this.handleClick(e))
+      .withEnterKeyboardAction((e: KeyboardEvent) => this.handleKeyboardSelect(e))
+      .withBlurAction((e: MouseEvent) => this.handleBlur(e))
+      .withLabel(this.options.title)
+      .build();
+
     this.bind.onRootElement(BreadcrumbEvents.populateBreadcrumb, (args: IPopulateBreadcrumbEventArgs) =>
       this.handlePopulateBreadcrumb(args)
     );
@@ -168,7 +174,7 @@ export class SimpleFilter extends Component {
   public getValueCaption(value: string): string {
     let ret = value;
 
-    if (_.contains(_.keys(this.options.valueCaption), value)) {
+    if (contains(keys(this.options.valueCaption), value)) {
       ret = this.options.valueCaption[ret] || ret;
       return l(ret);
     } else {
@@ -181,7 +187,7 @@ export class SimpleFilter extends Component {
    * @returns {string[]} An array containing the selected captions.
    */
   public getSelectedCaptions(): string[] {
-    return _.map(this.getSelectedValues(), (selectedValue: string) => this.getValueCaption(selectedValue));
+    return map(this.getSelectedValues(), (selectedValue: string) => this.getValueCaption(selectedValue));
   }
 
   /**
@@ -197,7 +203,7 @@ export class SimpleFilter extends Component {
    * @param triggerQuery `true` by default. If set to `false`, the method triggers no query.
    */
   public selectValue(value: string, triggerQuery = true) {
-    _.each(this.checkboxes, (labeledCheckbox: ILabeledCheckbox) => {
+    each(this.checkboxes, (labeledCheckbox: ILabeledCheckbox) => {
       const translated = this.getValueCaption(labeledCheckbox.label);
       if (labeledCheckbox.label == value || translated == value) {
         labeledCheckbox.checkbox.select(triggerQuery);
@@ -210,7 +216,7 @@ export class SimpleFilter extends Component {
    * @param value The value whose state the method should reset.
    */
   public deselectValue(value: string) {
-    _.each(this.checkboxes, (labeledCheckbox: ILabeledCheckbox) => {
+    each(this.checkboxes, (labeledCheckbox: ILabeledCheckbox) => {
       const translated = this.getValueCaption(labeledCheckbox.label);
       if (labeledCheckbox.label == value || translated == value) {
         labeledCheckbox.checkbox.reset();
@@ -223,7 +229,7 @@ export class SimpleFilter extends Component {
    * @param value The value whose state the method should toggle.
    */
   public toggleValue(value: string) {
-    _.each(this.checkboxes, (labeledCheckbox: ILabeledCheckbox) => {
+    each(this.checkboxes, (labeledCheckbox: ILabeledCheckbox) => {
       const translated = this.getValueCaption(labeledCheckbox.label);
       if (labeledCheckbox.label == value || translated == value) {
         labeledCheckbox.checkbox.toggle();
@@ -235,7 +241,7 @@ export class SimpleFilter extends Component {
    * Resets the component to its original state.
    */
   public resetSimpleFilter() {
-    _.each(this.checkboxes, (labeledCheckbox: ILabeledCheckbox) => {
+    each(this.checkboxes, (labeledCheckbox: ILabeledCheckbox) => {
       if (labeledCheckbox.checkbox.isSelected()) {
         this.deselectValue(labeledCheckbox.label);
       }
@@ -270,37 +276,31 @@ export class SimpleFilter extends Component {
   }
 
   private getSelectedValues() {
-    return _.map(this.getSelectedLabeledCheckboxes(), (labeledCheckbox: ILabeledCheckbox) => labeledCheckbox.label);
-  }
-
-  private bindKeyboardEvents() {
-    // On "ENTER" keypress, we can either toggle the container if that is the top level element (this.element)
-    // Or toggle a filter selection, using the text of the label.
-    $$(this.element).on(
-      'keyup',
-      KeyboardUtils.keypressAction(KEYBOARD.ENTER, e => {
-        if (e.target == this.element) {
-          this.toggleContainer();
-        } else {
-          this.toggleValue($$(e.target).text());
-        }
-      })
-    );
-
-    // When navigating with "TAB" keypress, close the container if we are navigating out of the top level element.
-    // Navigating "inside" the SimpleFilter (relatedTarget.parent) should not close the container, but will simply navigate to the next filter selection
-    $$(this.element).on('blur', (e: MouseEvent) => {
-      const relatedTarget = e.relatedTarget as HTMLElement;
-      if (!$$(relatedTarget).parent(Component.computeCssClassName(SimpleFilter))) {
-        this.closeContainer();
-      }
-    });
+    return map(this.getSelectedLabeledCheckboxes(), (labeledCheckbox: ILabeledCheckbox) => labeledCheckbox.label);
   }
 
   private handleClick(e: Event) {
     e.stopPropagation();
     if (e.target == this.element) {
       this.toggleContainer();
+    }
+  }
+
+  private handleKeyboardSelect(e: Event) {
+    if (e.target == this.element) {
+      this.toggleContainer();
+    } else {
+      this.toggleValue($$(e.target as HTMLElement).text());
+    }
+  }
+
+  private handleBlur(e: MouseEvent) {
+    const relatedTarget = e.relatedTarget as HTMLElement;
+    if (!relatedTarget) {
+      return;
+    }
+    if (!$$(relatedTarget).parent(Component.computeCssClassName(SimpleFilter))) {
+      this.closeContainer();
     }
   }
 
@@ -319,6 +319,11 @@ export class SimpleFilter extends Component {
         this.circleElement.addClass('coveo-simplefilter-circle-hidden');
       }
     }
+
+    if (selectedValues.length == 0) {
+      this.isSticky = false;
+    }
+
     const action = checkbox.isSelected()
       ? analyticsActionCauseList.simpleFilterSelectValue
       : analyticsActionCauseList.simpleFilterDeselectValue;
@@ -343,18 +348,18 @@ export class SimpleFilter extends Component {
 
   private createCheckboxes() {
     if (this.previouslySelected.length > 0) {
-      this.checkboxes = _.map(this.previouslySelected, caption => this.createCheckbox(caption));
-      _.each(this.checkboxes, checkbox => {
+      this.checkboxes = map(this.previouslySelected, caption => this.createCheckbox(caption));
+      each(this.checkboxes, checkbox => {
         if (this.previouslySelected.indexOf(checkbox.label) >= 0) {
           this.selectValue(checkbox.label, false);
         }
       });
     } else if (this.options.values != undefined) {
-      this.checkboxes = _.map(this.options.values, caption => this.createCheckbox(caption));
+      this.checkboxes = map(this.options.values, caption => this.createCheckbox(caption));
     } else if (this.groupByRequestValues != undefined) {
-      this.checkboxes = _.map(this.groupByRequestValues, caption => this.createCheckbox(caption));
+      this.checkboxes = map(this.groupByRequestValues, caption => this.createCheckbox(caption));
     }
-    _.each(this.checkboxes, result => {
+    each(this.checkboxes, result => {
       this.valueContainer.append(result.checkbox.getElement());
     });
     if (this.checkboxes.length > 0) {
@@ -420,7 +425,7 @@ export class SimpleFilter extends Component {
       const values = $$('span', { className: 'coveo-simplefilter-breadcrumb-values' });
       elem.append(values.el);
 
-      _.each(this.getSelectedLabeledCheckboxes(), selectedlabeledCheckbox => {
+      each(this.getSelectedLabeledCheckboxes(), selectedlabeledCheckbox => {
         const value = $$('span', { className: 'coveo-simplefilter-breadcrumb-value' }, this.getValueCaption(selectedlabeledCheckbox.label));
         values.append(value.el);
         const svgContainer = $$('span', { className: 'coveo-simplefilter-breadcrumb-clear' }, SVGIcons.icons.checkboxHookExclusionMore);
@@ -487,7 +492,7 @@ export class SimpleFilter extends Component {
   }
 
   private getSelectedLabeledCheckboxes(): ILabeledCheckbox[] {
-    return _.filter(this.checkboxes, (labeledCheckbox: ILabeledCheckbox) => labeledCheckbox.checkbox.isSelected());
+    return filter(this.checkboxes, (labeledCheckbox: ILabeledCheckbox) => labeledCheckbox.checkbox.isSelected());
   }
 
   private setDisplayedTitle(title: string) {

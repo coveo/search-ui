@@ -9,7 +9,7 @@ import { $$ } from '../../utils/Dom';
 import { Utils } from '../../utils/Utils';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
-import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
+import { ComponentOptions, IFieldOption, IQueryExpression } from '../Base/ComponentOptions';
 import { Initialization } from '../Base/Initialization';
 import { QueryBuilder } from '../Base/QueryBuilder';
 import { SortCriteria } from '../Sort/SortCriteria';
@@ -26,7 +26,7 @@ export interface IFoldingOptions {
   rearrange?: SortCriteria;
 
   enableExpand?: boolean;
-  expandExpression?: string;
+  expandExpression?: IQueryExpression;
   maximumExpandedResults?: number;
 
   /**
@@ -94,8 +94,9 @@ export class Folding extends Component {
      * Specifies the field that determines whether a certain result is a child of another top result.
      *
      * **Note:**
-     * > In the index, the values of the corresponding field must contain alphanumerical characters only. Using a
-     * > `child` whose values contain non-indexable characters (such as underscores) will make folding fail.
+     * > In the index, the values of the corresponding field must:
+     * > - Contain alphanumerical characters only.
+     * > - Contain no more than 60 characters.
      *
      * Default value is `@foldingchild`.
      */
@@ -104,8 +105,9 @@ export class Folding extends Component {
      * Specifies the field that determines whether a certain result is a top result containing other child results.
      *
      * **Note:**
-     * > In the index, the values of the corresponding field must contain alphanumerical characters only. Using a
-     * > `parent` whose values contain non-indexable characters (such as underscores) will make folding fail.
+     * > In the index, the values of the corresponding field must:
+     * > - Contain alphanumerical characters only.
+     * > - Contain no more than 60 characters.
      *
      * Default value is `@foldingparent`.
      */
@@ -177,7 +179,7 @@ export class Folding extends Component {
      *
      * Default value is `undefined`.
      */
-    expandExpression: ComponentOptions.buildStringOption({ depend: 'enableExpand' }),
+    expandExpression: ComponentOptions.buildQueryExpressionOption({ depend: 'enableExpand' }),
 
     /**
      * If the [`enableExpand`]{@link Folding.options.enableExpand} option is `true`, specifies the maximum number of

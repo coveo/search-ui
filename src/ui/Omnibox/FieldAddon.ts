@@ -1,9 +1,11 @@
 ///<reference path='Omnibox.ts'/>
-import { Omnibox, IOmniboxSuggestion, MagicBox } from './Omnibox';
+import { Omnibox, IOmniboxSuggestion } from './Omnibox';
 import { OmniboxEvents, IPopulateOmniboxSuggestionsEventArgs } from '../../events/OmniboxEvents';
 import { IFieldDescription } from '../../rest/FieldDescription';
 import { IEndpointError } from '../../rest/EndpointError';
 import * as _ from 'underscore';
+import { Result } from '../../magicbox/Result/Result';
+import { MagicBoxUtils } from '../../magicbox/MagicBoxUtils';
 
 interface IFieldAddonHash {
   type: string;
@@ -50,7 +52,7 @@ export class FieldAddon {
   }
 
   private getHash(): IFieldAddonHash {
-    let fieldName: Coveo.MagicBox.Result = _.last(this.omnibox.resultAtCursor('FieldName'));
+    let fieldName: Result = _.last(this.omnibox.resultAtCursor('FieldName'));
     if (fieldName != null) {
       fieldName = fieldName.findParent('Field') || fieldName;
       const currentField = fieldName.toString();
@@ -58,7 +60,7 @@ export class FieldAddon {
       const after = fieldName.after();
       return { type: 'FieldName', current: currentField, before: before, after: after };
     }
-    const fieldValue: Coveo.MagicBox.Result = _.last(this.omnibox.resultAtCursor('FieldValue'));
+    const fieldValue: Result = _.last(this.omnibox.resultAtCursor('FieldValue'));
     if (fieldValue) {
       const fieldQuery =
         fieldValue.findParent('FieldQuery') || (this.omnibox.options.enableSimpleFieldAddon && fieldValue.findParent('FieldSimpleQuery'));
@@ -76,7 +78,7 @@ export class FieldAddon {
       }
     }
     if (this.omnibox.options.enableSimpleFieldAddon) {
-      const word: Coveo.MagicBox.Result = _.last(this.omnibox.resultAtCursor('Word'));
+      const word: Result = _.last(this.omnibox.resultAtCursor('Word'));
       if (word != null) {
         const current = word.toString();
         const before = word.before();
@@ -101,7 +103,7 @@ export class FieldAddon {
             hash.before +
             (hash.current.toLowerCase().indexOf(value.toLowerCase()) == 0 ? hash.current + value.substr(hash.current.length) : value) +
             hash.after,
-          html: MagicBox.Utils.highlightText(value, hash.current, true),
+          html: MagicBoxUtils.highlightText(value, hash.current, true),
           index: FieldAddon.INDEX - i / values.length
         };
         return suggestion;

@@ -31,7 +31,7 @@ export class Dom {
     this.el = el;
   }
 
-  private static handlers: { eventHandle: Function; fn: EventListener }[] = [];
+  private static handlers: WeakMap<(evt: Event, data: any) => void, (e: CustomEvent) => void> = new WeakMap();
 
   /**
    * Helper function to quickly create an HTMLElement
@@ -485,11 +485,14 @@ export class Dom {
         const fn = (e: CustomEvent) => {
           eventHandle(e, e.detail);
         };
-        Dom.handlers.push({
-          eventHandle: eventHandle,
-          fn: fn
-        });
-        this.el.addEventListener(modifiedType, fn, false);
+        Dom.handlers.set(eventHandle, fn);
+        // Mark touch events as passive for performance reasons:
+        // https://github.com/WICG/EventListenerOptions/blob/gh-pages/explainer.md
+        if (modifiedType && modifiedType.indexOf('touch') != -1) {
+          this.el.addEventListener(modifiedType, fn, { passive: true });
+        } else {
+          this.el.addEventListener(modifiedType, fn, false);
+        }
       } else if (this.el['on']) {
         this.el['on']('on' + modifiedType, eventHandle);
       }
@@ -537,16 +540,9 @@ export class Dom {
       if (jq) {
         jq(this.el).off(modifiedType, eventHandle);
       } else if (this.el.removeEventListener) {
-        let idx = 0;
-        const found = _.find(Dom.handlers, (handlerObj: { eventHandle: Function; fn: EventListener }, i) => {
-          if (handlerObj.eventHandle == eventHandle) {
-            idx = i;
-            return true;
-          }
-        });
-        if (found) {
-          this.el.removeEventListener(modifiedType, found.fn, false);
-          Dom.handlers.splice(idx, 1);
+        const handler = Dom.handlers.get(eventHandle);
+        if (handler) {
+          this.el.removeEventListener(modifiedType, handler, false);
         }
       } else if (this.el['off']) {
         this.el['off']('on' + modifiedType, eventHandle);

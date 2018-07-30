@@ -60,7 +60,7 @@ export class ErrorReport extends Component {
     super(element, ErrorReport.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, ErrorReport, options);
     this.container = $$('div', { className: 'coveo-error-report-container' });
-    const title = $$('div', { className: 'coveo-error-report-title' }, '<h1></h1><h3></h3>');
+    const title = $$('div', { className: 'coveo-error-report-title' }, '<h1></h1><h2></h2>');
     this.element.appendChild(this.container.el);
     this.container.append(title.el);
 
@@ -114,14 +114,14 @@ export class ErrorReport extends Component {
   private setErrorTitle(errorName?: string, helpSuggestion?: string): void {
     const errorTitle = {
       h1: errorName ? l(errorName) : l('OopsError'),
-      h3: helpSuggestion ? l(helpSuggestion) : l('ProblemPersists')
+      h2: helpSuggestion ? l(helpSuggestion) : l('ProblemPersists')
     };
 
     const h1 = $$(this.element).find('h1');
-    const h3 = $$(this.element).find('h3');
-    if (h1 && h3) {
+    const h2 = $$(this.element).find('h2');
+    if (h1 && h2) {
       $$(h1).text(errorTitle.h1);
-      $$(h3).text(errorTitle.h3);
+      $$(h2).text(errorTitle.h2);
     }
   }
 

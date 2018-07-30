@@ -1,8 +1,9 @@
-import { $$ } from '../../utils/Dom';
-import { IFormWidget, IFormWidgetSettable } from './FormWidgets';
 import { exportGlobally } from '../../GlobalExports';
-import { SVGIcons } from '../../utils/SVGIcons';
+import { l } from '../../strings/Strings';
+import { $$ } from '../../utils/Dom';
 import { SVGDom } from '../../utils/SVGDom';
+import { SVGIcons } from '../../utils/SVGIcons';
+import { IFormWidget, IFormWidgetSettable } from './FormWidgets';
 
 /**
  * A numeric spinner widget with standard styling.
@@ -23,11 +24,13 @@ export class NumericSpinner implements IFormWidget, IFormWidgetSettable {
    * `NumericSpinner` instance as an argument.
    * @param min The minimum possible value of the numeric spinner.
    * @param max The maximum possible value of the numeric spinner.
+   * @param label The label to use for the input for accessibility purposes.
    */
   constructor(
     public onChange: (numericSpinner: NumericSpinner) => void = (numericSpinner: NumericSpinner) => {},
     public min: number = 0,
-    public max?: number
+    public max?: number,
+    private label?: string
   ) {
     this.buildContent();
     this.bindEvents();
@@ -100,9 +103,14 @@ export class NumericSpinner implements IFormWidget, IFormWidgetSettable {
   }
 
   private buildContent() {
-    let numericSpinner = $$('div', { className: 'coveo-numeric-spinner' });
-    let numberInput = $$('input', { className: 'coveo-number-input', type: 'text' });
-    let addOn = $$('span', { className: 'coveo-add-on' });
+    const numericSpinner = $$('div', { className: 'coveo-numeric-spinner' });
+    const numberInput = $$('input', {
+      className: 'coveo-number-input',
+      type: 'text',
+      'aria-label': this.label ? l(this.label) : ''
+    });
+
+    const addOn = $$('span', { className: 'coveo-add-on' });
     const arrowUp = $$('div', { className: 'coveo-spinner-up' }, SVGIcons.icons.arrowUp);
     SVGDom.addClassToSVGInContainer(arrowUp.el, 'coveo-spinner-up-svg');
     const arrowDown = $$('div', { className: 'coveo-spinner-down' }, SVGIcons.icons.arrowDown);
@@ -115,17 +123,17 @@ export class NumericSpinner implements IFormWidget, IFormWidgetSettable {
   }
 
   private bindEvents() {
-    let up = $$(this.element).find('.coveo-spinner-up');
+    const up = $$(this.element).find('.coveo-spinner-up');
     $$(up).on('click', () => {
       this.setValue(this.getFloatValue() + 1);
     });
 
-    let down = $$(this.element).find('.coveo-spinner-down');
+    const down = $$(this.element).find('.coveo-spinner-down');
     $$(down).on('click', () => {
       this.setValue(this.getFloatValue() - 1);
     });
 
-    let numberInput = <HTMLInputElement>$$(this.element).find('input');
+    const numberInput = <HTMLInputElement>$$(this.element).find('input');
     $$(numberInput).on('input', () => {
       if (numberInput.value.match(/[0-9]*/)) {
         this.onChange(this);

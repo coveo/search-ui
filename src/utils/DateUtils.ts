@@ -3,6 +3,7 @@ import { Utils } from './Utils';
 import { l } from '../strings/Strings';
 import * as _ from 'underscore';
 import * as moment from 'moment';
+import { Logger } from '../misc/Logger';
 /**
  * The `IDateToStringOptions` interface describes a set of options to use when converting a standard Date object to a
  * string using the [ `dateToString` ]{@link DateUtils.dateToString}, or the
@@ -278,6 +279,7 @@ export class DateUtils {
     DateUtils.setLocale();
 
     if (Utils.isNullOrUndefined(date)) {
+      new Logger(this).warn(`Impossible to format an undefined or null date.`);
       return '';
     }
 
@@ -345,27 +347,47 @@ export class DateUtils {
    */
   static dateTimeToString(date: Date, options?: IDateToStringOptions): string {
     DateUtils.setLocale();
+    options = new DefaultDateToStringOptions().merge(options);
 
     if (Utils.isNullOrUndefined(date)) {
+      new Logger(this).warn(`Impossible to format an undefined or null date.`);
       return '';
     }
 
-    options = new DefaultDateToStringOptions().merge(options);
+    if (!moment(date).isValid()) {
+      new Logger(this).warn(`Impossible to format an invalid date: ${date}`);
+      return '';
+    }
+
+    if (options.predefinedFormat) {
+      return moment(date).format(options.predefinedFormat);
+    }
+
     const today = DateUtils.keepOnlyDatePart(options.now);
-    const isThisWeek = moment(date).diff(moment(today), 'weeks') == 0;
     const datePart = DateUtils.dateToString(date, options);
     const dateWithoutTime = DateUtils.keepOnlyDatePart(date);
+    const isThisWeek = moment(date).diff(moment(today), 'weeks') == 0;
+    const isToday = dateWithoutTime.valueOf() == today.valueOf();
 
-    if (
-      moment(date).isValid() &&
-      (options.alwaysIncludeTime == true ||
-        (options.includeTimeIfThisWeek == true && isThisWeek) ||
-        (options.includeTimeIfToday == true && dateWithoutTime.valueOf() == today.valueOf()))
-    ) {
-      return datePart + ', ' + DateUtils.timeToString(date);
-    } else {
-      return datePart;
+    const shouldIncludeTime = () => {
+      if (options.alwaysIncludeTime) {
+        return true;
+      }
+      if (options.includeTimeIfThisWeek && isThisWeek) {
+        return true;
+      }
+      if (options.includeTimeIfToday && isToday) {
+        return true;
+      }
+
+      return false;
+    };
+
+    if (shouldIncludeTime()) {
+      return `${datePart}, ${DateUtils.timeToString(date)}`;
     }
+
+    return datePart;
   }
 
   /**
