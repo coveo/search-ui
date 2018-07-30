@@ -390,7 +390,10 @@ export class Quickview extends Component {
 
     await Initialization.automaticallyCreateComponentsInside(domContent.el, initParameters).initResult;
 
-    if (domContent.find('.' + Component.computeCssClassName(QuickviewDocument)) != undefined && this.options.enableLoadingAnimation) {
+    const containsQuickviewDocumentAndCustomAnimation = () =>
+      domContent.find('.' + Component.computeCssClassName(QuickviewDocument)) != undefined && this.options.enableLoadingAnimation;
+
+    if (containsQuickviewDocumentAndCustomAnimation()) {
       if (loadingAnimation instanceof HTMLElement) {
         domContent.prepend(loadingAnimation);
       } else if (loadingAnimation instanceof Promise) {
