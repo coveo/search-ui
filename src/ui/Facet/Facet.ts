@@ -48,6 +48,7 @@ import { OmniboxValueElement } from './OmniboxValueElement';
 import { OmniboxValuesList } from './OmniboxValuesList';
 import { ValueElement } from './ValueElement';
 import { ValueElementRenderer } from './ValueElementRenderer';
+import { DependentFacetManager } from './DependentFacetManager';
 
 export interface IFacetOptions {
   title?: string;
@@ -725,6 +726,7 @@ export class Facet extends Component {
   protected footerElement: HTMLElement;
   private canFetchMore: boolean = true;
   private nbAvailableValues: number;
+  private dependentFacetManager: DependentFacetManager;
 
   private showingWaitAnimation = false;
   private pinnedViewportPosition: number;
@@ -765,6 +767,7 @@ export class Facet extends Component {
     this.checkForComputedFieldAndSort();
     this.checkForValueCaptionType();
     this.checkForCustomSort();
+    this.initDependentFacetManager();
     this.initFacetQueryController();
     this.initQueryEvents();
     this.initQueryStateEvents();
@@ -1213,7 +1216,7 @@ export class Facet extends Component {
     Assert.exists(data);
     this.unfadeInactiveValuesInMainList();
     this.hideWaitingAnimation();
-    this.updateVisibilityBasedOnDependsOn();
+    this.dependentFacetManager.updateVisibilityBasedOnDependsOn();
     const groupByResult = data.results.groupByResults[this.facetQueryController.lastGroupByRequestIndex];
     this.facetQueryController.lastGroupByResult = groupByResult;
     // Two corner case to handle regarding the "sticky" aspect of facets :
@@ -1316,27 +1319,7 @@ export class Facet extends Component {
     this.queryStateModel.registerNewAttribute(this.lookupValueAttributeId, {});
 
     this.bind.onQueryState(MODEL_EVENTS.CHANGE, undefined, (args: IAttributesChangedEventArg) => this.handleQueryStateChanged(args));
-    this.listenToParentIfDependentFacet();
-  }
-
-  private listenToParentIfDependentFacet() {
-    if (!this.isDependentFacet) {
-      return;
-    }
-
-    this.bind.onQueryState(MODEL_EVENTS.CHANGE, undefined, () => this.resetIfParentFacetHasNoActiveValues());
-  }
-
-  private get isDependentFacet() {
-    return Utils.isNonEmptyString(this.options.dependsOn);
-  }
-
-  private resetIfParentFacetHasNoActiveValues() {
-    if (this.parentFacetHasActiveValues) {
-      return;
-    }
-
-    this.reset();
+    this.dependentFacetManager.listenToParentIfDependentFacet();
   }
 
   protected initComponentStateEvents() {
@@ -1516,6 +1499,10 @@ export class Facet extends Component {
     if (this.options.availableSorts[0] == 'custom') {
       this.options.sortCriteria = 'nosort';
     }
+  }
+
+  private initDependentFacetManager() {
+    this.dependentFacetManager = new DependentFacetManager(this);
   }
 
   private initBottomAndTopSpacer() {
@@ -1947,31 +1934,6 @@ export class Facet extends Component {
       });
       this.nbAvailableValues = this.values.getAll().length;
     }
-  }
-
-  private updateVisibilityBasedOnDependsOn() {
-    if (this.isDependentFacet) {
-      $$(this.element).toggleClass('coveo-facet-dependent', !this.parentFacetHasActiveValues);
-    }
-  }
-
-  private get parentFacetHasActiveValues() {
-    return this.parentFacetHasSelectedValues || this.parentFacetHasExcludedValues;
-  }
-
-  private get parentFacetHasSelectedValues() {
-    const parentSelectedValuesId = QueryStateModel.getFacetId(this.options.dependsOn);
-    return this.valuesExistForFacetWithId(parentSelectedValuesId);
-  }
-
-  private get parentFacetHasExcludedValues() {
-    const parentExcludedValuesId = QueryStateModel.getFacetId(this.options.dependsOn, false);
-    return this.valuesExistForFacetWithId(parentExcludedValuesId);
-  }
-
-  private valuesExistForFacetWithId(id: string) {
-    const values = this.queryStateModel.get(id);
-    return values != null && values.length != 0;
   }
 
   private shouldRenderFacetSearch() {
