@@ -50,7 +50,7 @@ export class DebugHeader {
     return this.debugInstance.element;
   }
 
-  private get executeQueryOptions(): IQueryOptions {
+  private get queryOptions(): IQueryOptions {
     return {
       closeModalBox: false,
       origin: this.debugInstance
@@ -84,7 +84,7 @@ export class DebugHeader {
     const checkbox = new Checkbox(checkboxInstance => {
       this.debug = checkboxInstance.isSelected();
 
-      this.bindings.queryController.executeQuery(this.executeQueryOptions);
+      this.bindings.queryController.executeQuery(this.queryOptions);
       let input = this.search.querySelector('input') as HTMLInputElement;
       input.value = '';
     }, 'Enable query debug');
@@ -102,7 +102,7 @@ export class DebugHeader {
         enableQuerySyntax: this.enableQuerySyntax
       });
 
-      this.bindings.queryController.executeQuery(this.executeQueryOptions);
+      this.bindings.queryController.executeQuery(this.queryOptions);
     }, 'Enable query syntax in search box');
     if (this.enableQuerySyntax) {
       checkbox.select();
@@ -113,7 +113,7 @@ export class DebugHeader {
   private buildRequestAllFieldsCheckbox() {
     const checkbox = new Checkbox(checkboxInstance => {
       this.requestAllFields = checkboxInstance.isSelected();
-      this.bindings.queryController.executeQuery(this.executeQueryOptions);
+      this.bindings.queryController.executeQuery(this.queryOptions);
     }, 'Request all fields available');
     if (this.requestAllFields) {
       checkbox.select();
@@ -124,7 +124,7 @@ export class DebugHeader {
   private buildEnabledHighlightRecommendation() {
     const checkbox = new Checkbox(checkboxInstance => {
       this.highlightRecommendation = checkboxInstance.isSelected();
-      this.bindings.queryController.executeQuery(this.executeQueryOptions);
+      this.bindings.queryController.executeQuery(this.queryOptions);
     }, 'Highlight recommendation');
     if (this.highlightRecommendation) {
       checkbox.select();

@@ -98,7 +98,7 @@ export function PagerTest() {
       expect(test.cmp.currentPage).toBe(6);
     });
 
-    it('should not reset page number on a new query of the origin is a debug panel', () => {
+    it('should not reset page number on a new query if the origin is a debug panel', () => {
       test.cmp.setPage(10);
       expect(test.cmp.currentPage).toBe(10);
       $$(test.env.root).trigger(QueryEvents.newQuery, {
@@ -114,7 +114,7 @@ export function PagerTest() {
       expect(test.cmp.currentPage).toBe(1);
     });
 
-    it('should reset the page number on a new query of the origin is something not recognized', () => {
+    it('should reset the page number on a new query if the origin is something not recognized', () => {
       test.cmp.setPage(10);
       expect(test.cmp.currentPage).toBe(10);
       $$(test.env.root).trigger(QueryEvents.newQuery, {
