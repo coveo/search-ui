@@ -187,8 +187,8 @@ export class Pager extends Component {
   }
 
   private handleNewQuery(data: INewQueryEventArgs) {
-    const triggeredByPager = data && data.origin && data.origin.type == Pager.ID;
-    if (this.needToReset && !triggeredByPager) {
+    const triggeredByPagerOrDebugMode = data && data.origin && (data.origin.type == Pager.ID || data.origin.type == 'Debug');
+    if (this.needToReset && !triggeredByPagerOrDebugMode) {
       this.currentPage = 1;
       this.updateQueryStateModel(this.getFirstResultNumber(this.currentPage));
     }
