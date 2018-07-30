@@ -920,7 +920,7 @@ export class ComponentOptions {
   }
 
   static isElementScrollable(element: HTMLElement) {
-    const overflowProperty = $$(element).css('overflow-y') || element.style.overflowY;
+    const overflowProperty = $$(element).css('overflow-y');
     return overflowProperty == 'scroll' || overflowProperty == 'auto';
   }
 
