@@ -86,6 +86,10 @@ export interface IAnalyticsFacetMeta {
   facetTitle: string;
 }
 
+export interface IAnalyticsFacetSortMeta extends IAnalyticsFacetMeta {
+  criteria: string;
+}
+
 export interface IAnalyticsCategoryFacetMeta {
   categoryFacetId: string;
   categoryFacetPath?: string[];
@@ -682,6 +686,10 @@ export var analyticsActionCauseList = {
     name: 'facetUnexclude',
     type: 'facet',
     metaMap: { facetId: 1, facetValue: 2, facetTitle: 3 }
+  },
+  facetUpdateSort: <IAnalyticsActionCause>{
+    name: 'facetUpdateSort',
+    type: 'facet'
   },
   categoryFacetSelect: <IAnalyticsActionCause>{
     name: 'categoryFacetSelect',
