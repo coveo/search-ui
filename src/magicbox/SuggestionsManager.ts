@@ -55,9 +55,9 @@ export class SuggestionsManager {
     let target = $$(<HTMLElement>e.target);
     let parents = target.parents(this.options.selectableClass);
     if (target.hasClass(this.options.selectableClass)) {
-      this.flagAsActiveSelection(target.el);
+      this.processActiveSelection(target.el);
     } else if (parents.length > 0 && this.element.contains(parents[0])) {
-      this.flagAsActiveSelection(parents[0]);
+      this.processActiveSelection(parents[0]);
     }
   }
 
@@ -190,7 +190,7 @@ export class SuggestionsManager {
     $$(this.magicBoxContainer).setAttribute('aria-expanded', this.hasSuggestions.toString());
   }
 
-  private flagAsActiveSelection(suggestion: HTMLElement, usingKeyboard = false) {
+  private processActiveSelection(suggestion: HTMLElement, usingKeyboard = false) {
     this.addSelectedClass(suggestion);
     if (usingKeyboard) {
       this.focusedSuggestionWithKeyboard = suggestion;
@@ -270,7 +270,7 @@ export class SuggestionsManager {
     const newlySelected = selectables[index];
 
     if (newlySelected) {
-      this.flagAsActiveSelection(newlySelected, true);
+      this.processActiveSelection(newlySelected, true);
     } else {
       this.focusedSuggestionWithKeyboard = null;
       this.inputManager.input.removeAttribute('aria-activedescendant');
