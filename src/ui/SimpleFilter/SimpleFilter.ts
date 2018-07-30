@@ -296,6 +296,9 @@ export class SimpleFilter extends Component {
 
   private handleBlur(e: MouseEvent) {
     const relatedTarget = e.relatedTarget as HTMLElement;
+    if (!relatedTarget) {
+      return;
+    }
     if (!$$(relatedTarget).parent(Component.computeCssClassName(SimpleFilter))) {
       this.closeContainer();
     }
@@ -316,6 +319,11 @@ export class SimpleFilter extends Component {
         this.circleElement.addClass('coveo-simplefilter-circle-hidden');
       }
     }
+
+    if (selectedValues.length == 0) {
+      this.isSticky = false;
+    }
+
     const action = checkbox.isSelected()
       ? analyticsActionCauseList.simpleFilterSelectValue
       : analyticsActionCauseList.simpleFilterDeselectValue;
