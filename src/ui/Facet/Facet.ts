@@ -24,7 +24,7 @@ import { KEYBOARD, KeyboardUtils } from '../../utils/KeyboardUtils';
 import { SVGDom } from '../../utils/SVGDom';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { Utils } from '../../utils/Utils';
-import { analyticsActionCauseList, IAnalyticsFacetMeta } from '../Analytics/AnalyticsActionListMeta';
+import { analyticsActionCauseList, IAnalyticsFacetMeta, IAnalyticsFacetSortMeta } from '../Analytics/AnalyticsActionListMeta';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { ComponentOptions, IFieldOption, IQueryExpression } from '../Base/ComponentOptions';
@@ -1058,6 +1058,15 @@ export class Facet extends Component {
     this.ensureDom();
     if (this.options.sortCriteria != criteria) {
       this.options.sortCriteria = criteria;
+      this.usageAnalytics.logCustomEvent<IAnalyticsFacetSortMeta>(
+        analyticsActionCauseList.facetUpdateSort,
+        {
+          criteria,
+          facetId: this.options.id,
+          facetTitle: this.options.title
+        },
+        this.element
+      );
       this.triggerNewQuery();
     }
   }

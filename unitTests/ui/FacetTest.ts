@@ -9,6 +9,7 @@ import { OmniboxEvents } from '../../src/events/OmniboxEvents';
 import { BreadcrumbEvents } from '../../src/events/BreadcrumbEvents';
 import { IPopulateBreadcrumbEventArgs } from '../../src/events/BreadcrumbEvents';
 import { IPopulateOmniboxEventArgs } from '../../src/events/OmniboxEvents';
+import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
 
 export function FacetTest() {
   describe('Facet', () => {
@@ -164,6 +165,20 @@ export function FacetTest() {
       test.cmp.updateSort('score');
       expect(test.cmp.options.sortCriteria).toBe('score');
       expect(test.env.queryController.executeQuery).toHaveBeenCalled();
+    });
+
+    it('should log an analytics event when updating sort', () => {
+      test.cmp.updateSort('score');
+      const expectedMetadata = jasmine.objectContaining({
+        criteria: 'score',
+        facetId: test.cmp.options.id,
+        facetTitle: test.cmp.options.title
+      });
+      expect(test.env.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(
+        analyticsActionCauseList.facetUpdateSort,
+        expectedMetadata,
+        test.cmp.element
+      );
     });
 
     it('allows to collapse', () => {
