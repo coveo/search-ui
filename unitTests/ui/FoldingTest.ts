@@ -217,6 +217,19 @@ export function FoldingTest() {
         queryData = null;
       });
 
+      it('should trap the error if a query error happens when getting more results', () => {
+        (test.env.searchEndpoint.search as jasmine.Spy).and.returnValue(Promise.reject("That's a bad query"));
+        expect(() => queryData.results.results[0].moreResults()).not.toThrowError();
+      });
+
+      it('should log an error message if a query error happens when getting more results', async done => {
+        (test.env.searchEndpoint.search as jasmine.Spy).and.returnValue(Promise.reject("That's a bad query"));
+        spyOn(test.cmp.logger, 'error');
+        await queryData.results.results[0].moreResults();
+        expect(test.cmp.logger.error).toHaveBeenCalled();
+        done();
+      });
+
       describe('should clone the original query', () => {
         let query: QueryBuilder;
 
