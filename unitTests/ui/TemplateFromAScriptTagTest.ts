@@ -1,6 +1,6 @@
-import { TemplateFromAScriptTag } from '../../src/ui/Templates/TemplateFromAScriptTag';
-import { Template } from '../../src/ui/Templates/Template';
 import { ValidLayout } from '../../src/ui/ResultLayoutSelector/ValidLayout';
+import { Template } from '../../src/ui/Templates/Template';
+import { TemplateFromAScriptTag } from '../../src/ui/Templates/TemplateFromAScriptTag';
 import { $$ } from '../../src/utils/Dom';
 export function TemplateFromAScriptTagTest() {
   describe('TemplateFromAScriptTag', () => {
@@ -77,7 +77,7 @@ export function TemplateFromAScriptTagTest() {
       let tmplString: string;
 
       beforeEach(() => {
-        tmplString = `<div class="CoveoResultLink"></div>`;
+        tmplString = `<script class="CoveoResultLink" data-field-animal="cat,dog" data-field-coveo="index"></script>`;
       });
 
       afterEach(() => {
@@ -160,6 +160,23 @@ export function TemplateFromAScriptTagTest() {
               values: undefined
             })
           ])
+        );
+      });
+
+      it('should work with fields in the HTMLElement', () => {
+        let createdScriptElement = TemplateFromAScriptTag.fromString(tmplString, {});
+        let created = new TemplateFromAScriptTag(tmpl, createdScriptElement);
+        expect(created.template.fieldsToMatch[0]).toEqual(
+          jasmine.objectContaining({
+            field: 'animal',
+            values: ['cat', 'dog']
+          })
+        );
+        expect(created.template.fieldsToMatch[1]).toEqual(
+          jasmine.objectContaining({
+            field: 'coveo',
+            values: ['index']
+          })
         );
       });
     });
