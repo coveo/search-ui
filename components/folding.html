@@ -634,8 +634,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L102">ui/Folding/Folding.ts
-							:102</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L103">ui/Folding/Folding.ts
+							:103</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -644,8 +644,11 @@
 						</div>
 						<p><strong>Note:</strong></p>
 						<blockquote>
-							<p>In the index, the values of the corresponding field must contain alphanumerical characters only. Using a
-							<code>child</code> whose values contain non-indexable characters (such as underscores) will make folding fail.</p>
+							<p>In the index, the values of the corresponding field must:</p>
+							<ul>
+								<li>Contain alphanumerical characters only.</li>
+								<li>Contain no more than 60 characters.</li>
+							</ul>
 						</blockquote>
 						<p>Default value is <code>@foldingchild</code>.</p>
 					</div>
@@ -661,8 +664,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L118">ui/Folding/Folding.ts
-							:118</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L120">ui/Folding/Folding.ts
+							:120</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -688,8 +691,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L173">ui/Folding/Folding.ts
-							:173</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L175">ui/Folding/Folding.ts
+							:175</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -715,8 +718,8 @@ data-enable-expand&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L180">ui/Folding/Folding.ts
-							:180</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L182">ui/Folding/Folding.ts
+							:182</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -767,8 +770,8 @@ data-enable-expand&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L239">ui/Folding/Folding.ts
-							:239</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L241">ui/Folding/Folding.ts
+							:241</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -811,8 +814,8 @@ data-enable-expand&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L223">ui/Folding/Folding.ts
-							:223</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L225">ui/Folding/Folding.ts
+							:225</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -873,8 +876,8 @@ topResult.childResults = results;
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L188">ui/Folding/Folding.ts
-							:188</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L190">ui/Folding/Folding.ts
+							:190</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -896,8 +899,8 @@ topResult.childResults = results;
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L112">ui/Folding/Folding.ts
-							:112</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L114">ui/Folding/Folding.ts
+							:114</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -906,8 +909,11 @@ topResult.childResults = results;
 						</div>
 						<p><strong>Note:</strong></p>
 						<blockquote>
-							<p>In the index, the values of the corresponding field must contain alphanumerical characters only. Using a
-							<code>parent</code> whose values contain non-indexable characters (such as underscores) will make folding fail.</p>
+							<p>In the index, the values of the corresponding field must:</p>
+							<ul>
+								<li>Contain alphanumerical characters only.</li>
+								<li>Contain no more than 60 characters.</li>
+							</ul>
 						</blockquote>
 						<p>Default value is <code>@foldingparent</code>.</p>
 					</div>
@@ -923,8 +929,8 @@ topResult.childResults = results;
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L125">ui/Folding/Folding.ts
-							:125</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L127">ui/Folding/Folding.ts
+							:127</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -950,8 +956,8 @@ topResult.childResults = results;
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L140">ui/Folding/Folding.ts
-							:140</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L142">ui/Folding/Folding.ts
+							:142</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -979,8 +985,8 @@ topResult.childResults = results;
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L160">ui/Folding/Folding.ts
-							:160</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L162">ui/Folding/Folding.ts
+							:162</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1032,8 +1038,8 @@ topResult.childResults = results;
 						<aside class="tsd-sources">
 							<ul>
 								<li>Defined in
-									<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L102">ui/Folding/Folding.ts
-								:102</a></li>
+									<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L103">ui/Folding/Folding.ts
+								:103</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1042,8 +1048,11 @@ topResult.childResults = results;
 							</div>
 							<p><strong>Note:</strong></p>
 							<blockquote>
-								<p>In the index, the values of the corresponding field must contain alphanumerical characters only. Using a
-								<code>child</code> whose values contain non-indexable characters (such as underscores) will make folding fail.</p>
+								<p>In the index, the values of the corresponding field must:</p>
+								<ul>
+									<li>Contain alphanumerical characters only.</li>
+									<li>Contain no more than 60 characters.</li>
+								</ul>
 							</blockquote>
 							<p>Default value is <code>@foldingchild</code>.</p>
 						</div>
@@ -1059,8 +1068,8 @@ topResult.childResults = results;
 						<aside class="tsd-sources">
 							<ul>
 								<li>Defined in
-									<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L118">ui/Folding/Folding.ts
-								:118</a></li>
+									<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L120">ui/Folding/Folding.ts
+								:120</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1086,8 +1095,8 @@ topResult.childResults = results;
 						<aside class="tsd-sources">
 							<ul>
 								<li>Defined in
-									<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L173">ui/Folding/Folding.ts
-								:173</a></li>
+									<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L175">ui/Folding/Folding.ts
+								:175</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1113,8 +1122,8 @@ data-enable-expand&#x3D;&#x27;false&#x27;</pre>
 						<aside class="tsd-sources">
 							<ul>
 								<li>Defined in
-									<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L180">ui/Folding/Folding.ts
-								:180</a></li>
+									<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L182">ui/Folding/Folding.ts
+								:182</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1165,8 +1174,8 @@ data-enable-expand&#x3D;&#x27;false&#x27;</pre>
 						<aside class="tsd-sources">
 							<ul>
 								<li>Defined in
-									<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L239">ui/Folding/Folding.ts
-								:239</a></li>
+									<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L241">ui/Folding/Folding.ts
+								:241</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1209,8 +1218,8 @@ data-enable-expand&#x3D;&#x27;false&#x27;</pre>
 						<aside class="tsd-sources">
 							<ul>
 								<li>Defined in
-									<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L223">ui/Folding/Folding.ts
-								:223</a></li>
+									<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L225">ui/Folding/Folding.ts
+								:225</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1271,8 +1280,8 @@ topResult.childResults = results;
 						<aside class="tsd-sources">
 							<ul>
 								<li>Defined in
-									<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L188">ui/Folding/Folding.ts
-								:188</a></li>
+									<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L190">ui/Folding/Folding.ts
+								:190</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1294,8 +1303,8 @@ topResult.childResults = results;
 						<aside class="tsd-sources">
 							<ul>
 								<li>Defined in
-									<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L112">ui/Folding/Folding.ts
-								:112</a></li>
+									<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L114">ui/Folding/Folding.ts
+								:114</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1304,8 +1313,11 @@ topResult.childResults = results;
 							</div>
 							<p><strong>Note:</strong></p>
 							<blockquote>
-								<p>In the index, the values of the corresponding field must contain alphanumerical characters only. Using a
-								<code>parent</code> whose values contain non-indexable characters (such as underscores) will make folding fail.</p>
+								<p>In the index, the values of the corresponding field must:</p>
+								<ul>
+									<li>Contain alphanumerical characters only.</li>
+									<li>Contain no more than 60 characters.</li>
+								</ul>
 							</blockquote>
 							<p>Default value is <code>@foldingparent</code>.</p>
 						</div>
@@ -1321,8 +1333,8 @@ topResult.childResults = results;
 						<aside class="tsd-sources">
 							<ul>
 								<li>Defined in
-									<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L125">ui/Folding/Folding.ts
-								:125</a></li>
+									<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L127">ui/Folding/Folding.ts
+								:127</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1348,8 +1360,8 @@ topResult.childResults = results;
 						<aside class="tsd-sources">
 							<ul>
 								<li>Defined in
-									<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L140">ui/Folding/Folding.ts
-								:140</a></li>
+									<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L142">ui/Folding/Folding.ts
+								:142</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1377,8 +1389,8 @@ topResult.childResults = results;
 						<aside class="tsd-sources">
 							<ul>
 								<li>Defined in
-									<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L160">ui/Folding/Folding.ts
-								:160</a></li>
+									<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L162">ui/Folding/Folding.ts
+								:162</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1416,8 +1428,8 @@ topResult.childResults = results;
 								<p>Overwrites <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#constructor">constructor</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L242">ui/Folding/Folding.ts
-									:242</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L244">ui/Folding/Folding.ts
+									:244</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
