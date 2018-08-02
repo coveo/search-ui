@@ -324,14 +324,9 @@ export class Quickview extends Component {
   }
 
   private bindQuickviewEvents(openerObject: IQuickviewOpenerObject) {
-    $$(this.modalbox.content).on(QuickviewEvents.quickviewLoaded, () => {
-      if (openerObject.loadingAnimation instanceof HTMLElement) {
-        $$(openerObject.loadingAnimation).remove();
-      } else if (openerObject.loadingAnimation instanceof Promise) {
-        openerObject.loadingAnimation.then(anim => {
-          $$(anim).remove();
-        });
-      }
+    $$(this.modalbox.content).on(QuickviewEvents.quickviewLoaded, async () => {
+      const anim = await openerObject.loadingAnimation;
+      $$(anim).remove();
     });
   }
 

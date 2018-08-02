@@ -79,57 +79,39 @@ export function QuickviewTest() {
     });
 
     describe('when instantiating invalid templates', () => {
+      const verifyThatOpeningQuickViewDoesNotThrow = (quickview: Quickview, done) => {
+        spyOn(quickview.logger, 'warn');
+
+        quickview
+          .open()
+          .then(() => {
+            expect(quickview.logger.warn).toHaveBeenCalled();
+            done();
+          })
+          .catch(e => {
+            fail(e);
+            done();
+          });
+      };
+
       it('should not throw an error when opening a template that throws an error', done => {
         const badTemplate = new Template(() => {
           throw 'Oh, the Humanity!';
         });
         quickview = buildQuickview(badTemplate);
-        spyOn(quickview.logger, 'warn');
-
-        quickview
-          .open()
-          .then(() => {
-            expect(quickview.logger.warn).toHaveBeenCalled();
-            done();
-          })
-          .catch(e => {
-            fail(e);
-            done();
-          });
+        verifyThatOpeningQuickViewDoesNotThrow(quickview, done);
       });
 
       it('should not throw an error when opening a template that returns null', done => {
         const badTemplate = new Template(() => null);
         quickview = buildQuickview(badTemplate);
-        spyOn(quickview.logger, 'warn');
-
-        quickview
-          .open()
-          .then(() => {
-            expect(quickview.logger.warn).toHaveBeenCalled();
-            done();
-          })
-          .catch(e => {
-            fail(e);
-            done();
-          });
+        verifyThatOpeningQuickViewDoesNotThrow(quickview, done);
       });
 
       it('should not throw an error when opening a template that returns undefined', done => {
         const badTemplate = new Template(() => undefined);
         quickview = buildQuickview(badTemplate);
-        spyOn(quickview.logger, 'warn');
-
-        quickview
-          .open()
-          .then(() => {
-            expect(quickview.logger.warn).toHaveBeenCalled();
-            done();
-          })
-          .catch(e => {
-            fail(e);
-            done();
-          });
+        verifyThatOpeningQuickViewDoesNotThrow(quickview, done);
       });
     });
   });
