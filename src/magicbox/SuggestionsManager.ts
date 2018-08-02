@@ -21,7 +21,7 @@ export class SuggestionsManager {
   public hasSuggestions: boolean;
   private pendingSuggestion: Promise<Suggestion[]>;
   private options: SuggestionsManagerOptions;
-  private focusedSuggestionWithKeyboard: HTMLElement;
+  private keyboardFocusedSuggestion: HTMLElement;
 
   constructor(
     private element: HTMLElement,
@@ -55,9 +55,9 @@ export class SuggestionsManager {
     let target = $$(<HTMLElement>e.target);
     let parents = target.parents(this.options.selectableClass);
     if (target.hasClass(this.options.selectableClass)) {
-      this.processActiveSelection(target.el);
+      this.processMouseSelection(target.el);
     } else if (parents.length > 0 && this.element.contains(parents[0])) {
-      this.processActiveSelection(parents[0]);
+      this.processMouseSelection(parents[0]);
     }
   }
 
@@ -90,8 +90,8 @@ export class SuggestionsManager {
     return this.returnMoved(this.move('up'));
   }
 
-  public getCurrentlyFocusedWithKeyboardElement(): HTMLElement {
-    const selected = this.focusedSuggestionWithKeyboard;
+  public getKeyboardFocusedElement(): HTMLElement {
+    const selected = this.keyboardFocusedSuggestion;
     if (selected != null) {
       $$(selected).trigger('keyboardSelect');
     }
@@ -190,14 +190,15 @@ export class SuggestionsManager {
     $$(this.magicBoxContainer).setAttribute('aria-expanded', this.hasSuggestions.toString());
   }
 
-  private processActiveSelection(suggestion: HTMLElement, usingKeyboard = false) {
+  private processKeyboardSelection(suggestion: HTMLElement) {
     this.addSelectedClass(suggestion);
-    if (usingKeyboard) {
-      this.focusedSuggestionWithKeyboard = suggestion;
-      $$(this.inputManager.input).setAttribute('aria-activedescendant', $$(suggestion).getAttribute('id'));
-    } else {
-      this.focusedSuggestionWithKeyboard = null;
-    }
+    this.keyboardFocusedSuggestion = suggestion;
+    $$(this.inputManager.input).setAttribute('aria-activedescendant', $$(suggestion).getAttribute('id'));
+  }
+
+  private processMouseSelection(suggestion: HTMLElement) {
+    this.addSelectedClass(suggestion);
+    this.keyboardFocusedSuggestion = null;
   }
 
   private buildSuggestionsContainer() {
@@ -270,9 +271,9 @@ export class SuggestionsManager {
     const newlySelected = selectables[index];
 
     if (newlySelected) {
-      this.processActiveSelection(newlySelected, true);
+      this.processKeyboardSelection(newlySelected);
     } else {
-      this.focusedSuggestionWithKeyboard = null;
+      this.keyboardFocusedSuggestion = null;
       this.inputManager.input.removeAttribute('aria-activedescendant');
     }
 

@@ -26,14 +26,14 @@ export function SuggestionsManagerTest() {
 
     it('returns the correct selected element with keyboard on move down', () => {
       suggestionManager.moveDown();
-      const selectedWithKeyboard = suggestionManager.getCurrentlyFocusedWithKeyboardElement();
+      const selectedWithKeyboard = suggestionManager.getKeyboardFocusedElement();
       expect($$(selectedWithKeyboard).hasClass(selectedClass)).toBe(true);
       expect(selectedWithKeyboard).toBe(suggestion.el);
     });
 
     it('returns the correct selected element with keyboard on move up', () => {
       suggestionManager.moveUp();
-      const selectedWithKeyboard = suggestionManager.getCurrentlyFocusedWithKeyboardElement();
+      const selectedWithKeyboard = suggestionManager.getKeyboardFocusedElement();
       expect($$(selectedWithKeyboard).hasClass(selectedClass)).toBe(true);
       expect(selectedWithKeyboard).toBe(suggestion.el);
     });
@@ -42,7 +42,7 @@ export function SuggestionsManagerTest() {
       suggestionManager.handleMouseOver({
         target: suggestion.el
       });
-      const selectedWithKeyboard = suggestionManager.getCurrentlyFocusedWithKeyboardElement();
+      const selectedWithKeyboard = suggestionManager.getKeyboardFocusedElement();
       expect(selectedWithKeyboard).toBeNull();
     });
 
@@ -51,7 +51,7 @@ export function SuggestionsManagerTest() {
       suggestionManager.handleMouseOver({
         target: suggestion.el
       });
-      const selectedWithKeyboard = suggestionManager.getCurrentlyFocusedWithKeyboardElement();
+      const selectedWithKeyboard = suggestionManager.getKeyboardFocusedElement();
       expect(selectedWithKeyboard).toBeNull();
     });
 
@@ -60,7 +60,7 @@ export function SuggestionsManagerTest() {
       suggestionManager.handleMouseOver({
         target: suggestion.el
       });
-      const selectedWithKeyboard = suggestionManager.getCurrentlyFocusedWithKeyboardElement();
+      const selectedWithKeyboard = suggestionManager.getKeyboardFocusedElement();
       expect(selectedWithKeyboard).toBeNull();
     });
 

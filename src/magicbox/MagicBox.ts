@@ -146,7 +146,7 @@ export class MagicBoxInstance {
       }
       if (key == 13) {
         // Enter
-        const suggestion = this.suggestionsManager.getCurrentlyFocusedWithKeyboardElement();
+        const suggestion = this.suggestionsManager.getKeyboardFocusedElement();
         if (suggestion == null) {
           this.onsubmit && this.onsubmit();
         }
