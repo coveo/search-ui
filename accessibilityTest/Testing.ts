@@ -1,5 +1,3 @@
-/// <reference types="../bin/ts/CoveoJsSearch" />
-
 import {
   $$,
   init,
