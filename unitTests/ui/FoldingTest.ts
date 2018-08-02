@@ -9,6 +9,7 @@ import { FakeResults } from '../Fake';
 import * as Mock from '../MockEnvironment';
 import { ISimulateQueryData, Simulate } from '../Simulate';
 import _ = require('underscore');
+import { Utils } from '../../src/Core';
 
 export function FoldingTest() {
   describe('Folding', () => {
@@ -222,11 +223,10 @@ export function FoldingTest() {
         expect(() => queryData.results.results[0].moreResults()).not.toThrowError();
       });
 
-      it('should log an error message if a query error happens when getting more results', async done => {
+      it('should return an empty array if a query error happens when getting more results', async done => {
         (test.env.searchEndpoint.search as jasmine.Spy).and.returnValue(Promise.reject("That's a bad query"));
-        spyOn(test.cmp.logger, 'error');
-        await queryData.results.results[0].moreResults();
-        expect(test.cmp.logger.error).toHaveBeenCalled();
+        const results = await queryData.results.results[0].moreResults();
+        expect(Utils.isEmptyArray(results)).toBe(true);
         done();
       });
 
