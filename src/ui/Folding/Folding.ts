@@ -515,6 +515,10 @@ export class Folding extends Component {
       .then((results: IQueryResults) => {
         this.handlePreprocessMoreResults(results);
         return results.results;
+      })
+      .catch(e => {
+        this.logger.error(`Invalid query performed while trying to retrieve more results for folding.`, e);
+        return [];
       });
   }
 

@@ -151,8 +151,8 @@
   resolved "https://registry.yarnpkg.com/@types/minimatch/-/minimatch-3.0.3.tgz#3dca0e3f33b200fc7d1139c0cd96c1268cadfd9d"
 
 "@types/node@*":
-  version "10.3.6"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-10.3.6.tgz#ea8aab9439b59f40d19ec5f13b44642344872b11"
+  version "10.5.4"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-10.5.4.tgz#6eccc158504357d1da91434d75e86acde94bb10b"
 
 "@types/pikaday@0.0.31":
   version "0.0.31"
@@ -8863,7 +8863,7 @@ typedoc-default-themes@^0.5.0:
 
 "typedoc@https://github.com/coveord/typedoc":
   version "0.10.0"
-  resolved "https://github.com/coveord/typedoc#ee0d400a8dd2a333b19bff4a86cbc1e6882bbe9a"
+  resolved "https://github.com/coveord/typedoc#15723bfb3fb42119f99be9a76c64962ab623db3a"
   dependencies:
     "@types/fs-extra" "5.0.0"
     "@types/handlebars" "4.0.36"

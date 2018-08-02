@@ -146,8 +146,8 @@
     "modal-box": "^2.0.10",
     "pikaday": "^1.4.0",
     "popper.js": "^1.14.3",
-    "underscore": "^1.8.3",
-    "snyk": "^1.89.0"
+    "snyk": "^1.89.0",
+    "underscore": "^1.8.3"
   },
   "snyk": true
 }
