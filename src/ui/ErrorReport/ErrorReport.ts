@@ -112,28 +112,32 @@ export class ErrorReport extends Component {
 
   private buildOrGetTitleElements() {
     const titleElement = $$(this.element).find('.coveo-error-report-title');
-    if (titleElement) {
-      const firstHeading = $$(titleElement).find('h1');
-      const secondHeading = $$(titleElement).find('h2');
 
-      return {
-        title: $$(titleElement),
-        h1: $$(firstHeading),
-        h2: $$(secondHeading)
-      };
+    let title: Dom;
+    if (titleElement) {
+      title = $$(titleElement);
+    } else {
+      title = $$('div', { className: 'coveo-error-report-title' });
+      this.container.prepend(title.el);
     }
 
-    const title = $$('div', { className: 'coveo-error-report-title' });
-    const h1 = $$('h1');
-    const h2 = $$('h2');
-    title.append(h1.el);
-    title.append(h2.el);
-    $$(this.element).append(title.el);
+    let firstHeading = title.find('h1');
+
+    if (!firstHeading) {
+      firstHeading = $$('h1').el;
+      title.append(firstHeading);
+    }
+
+    let secondHeading = title.find('h2');
+    if (!secondHeading) {
+      secondHeading = $$('h2').el;
+      title.append(secondHeading);
+    }
 
     return {
       title,
-      h1,
-      h2
+      h1: $$(firstHeading),
+      h2: $$(secondHeading)
     };
   }
 
@@ -206,6 +210,9 @@ export class ErrorReport extends Component {
 
   private handleNewQuery(): void {
     $$(this.element).hide();
+    const { h1, h2 } = this.buildOrGetTitleElements();
+    h1.remove();
+    h2.remove();
     if (this.closePopup != null) {
       this.closePopup();
     }
