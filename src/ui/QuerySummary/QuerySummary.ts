@@ -1,22 +1,22 @@
-import { Component } from '../Base/Component';
-import { ComponentOptions } from '../Base/ComponentOptions';
-import { QueryEvents, IQuerySuccessEventArgs } from '../../events/QueryEvents';
-import { IComponentBindings } from '../Base/ComponentBindings';
-import { $$ } from '../../utils/Dom';
-import { Assert } from '../../misc/Assert';
-import { l } from '../../strings/Strings';
-import { analyticsActionCauseList, IAnalyticsNoMeta } from '../Analytics/AnalyticsActionListMeta';
-import { Initialization } from '../Base/Initialization';
-import { QueryStateModel } from '../../models/QueryStateModel';
 import * as Globalize from 'globalize';
+import 'styling/_QuerySummary';
+import { any, escape } from 'underscore';
+import { IQuerySuccessEventArgs, QueryEvents } from '../../events/QueryEvents';
 import { QuerySummaryEvents } from '../../events/QuerySummaryEvents';
 import { exportGlobally } from '../../GlobalExports';
-import { escape, any } from 'underscore';
-import { get } from '../../ui/Base/RegisteredNamedMethods';
-import ResultListModule = require('../ResultList/ResultList');
-import 'styling/_QuerySummary';
+import { Assert } from '../../misc/Assert';
+import { QueryStateModel } from '../../models/QueryStateModel';
 import { IQuery } from '../../rest/Query';
 import { IQueryResults } from '../../rest/QueryResults';
+import { l } from '../../strings/Strings';
+import { get } from '../../ui/Base/RegisteredNamedMethods';
+import { $$ } from '../../utils/Dom';
+import { analyticsActionCauseList, IAnalyticsNoMeta } from '../Analytics/AnalyticsActionListMeta';
+import { Component } from '../Base/Component';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { Initialization } from '../Base/Initialization';
+import ResultListModule = require('../ResultList/ResultList');
 
 export interface IQuerySummaryOptions {
   onlyDisplaySearchTips?: boolean;
@@ -80,7 +80,10 @@ export class QuerySummary extends Component {
      */
     noResultsFoundMessage: ComponentOptions.buildStringOption({
       defaultValue: l('noResultFor', '${query}'),
-      depend: 'enableNoResultsFoundMessage'
+      depend: 'enableNoResultsFoundMessage',
+      postProcessing: (value: string, options: IQuerySummaryOptions) => {
+        return escape(value);
+      }
     }),
 
     /**
@@ -253,7 +256,6 @@ export class QuerySummary extends Component {
       return '';
     }
     const queryTagContainer = `<span class="coveo-highlight">${this.queryEscaped}</span>`;
-
     return content.replace(new RegExp(/\$\{query\}/g), queryTagContainer);
   }
 

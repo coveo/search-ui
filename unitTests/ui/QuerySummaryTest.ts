@@ -6,6 +6,7 @@ import { $$ } from '../../src/utils/Dom';
 import { IQuerySummaryOptions } from '../../src/ui/QuerySummary/QuerySummary';
 import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
 import { ResultList } from '../../src/ui/ResultList/ResultList';
+import { escape } from 'underscore';
 
 const queryTag = '${query}';
 
@@ -263,7 +264,7 @@ export function QuerySummaryTest() {
       });
 
       it(`when the queryTag is in the attributes of an element,
-          it should replace this queryTag by the querySearched`, () => {
+          it should replace this queryTag by the querySearched while escaping the tags`, () => {
         const customMessage: string = `<div><a href="${queryTag}"></a></div>`;
 
         test = Mock.optionsComponentSetup<QuerySummary, IQuerySummaryOptions>(QuerySummary, {
@@ -273,8 +274,8 @@ export function QuerySummaryTest() {
 
         test.env.queryStateModel.get = () => 'querySearched';
         Simulate.query(test.env, { results: FakeResults.createFakeResults(0) });
-
-        const parsedCustomMessage: string = '<div><a href="&lt;span class=" coveo-highlight"="">querySearched"&gt;</a></div>';
+        const highlightedText = '<span class="coveo-highlight">querySearched</span>';
+        const parsedCustomMessage: string = `${escape('<div><a href=')}"${highlightedText}"${escape('></a></div>')}`;
         expect(getCustomMessageElement().innerHTML).toBe(parsedCustomMessage);
       });
 
