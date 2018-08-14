@@ -48,6 +48,7 @@ interface IQuickviewOpenerObject {
  * > - You can change the appearance of the `Quickview` link/button by adding elements in the inner HTML of its `div`.
  * > - You can change the content of the `Quickview` modal box link by specifying a template `id` or CSS selector (see
  * > the [`contentTemplate`]{@link Quickview.options.contentTemplate} option).
+ * > - As of Coveo for Salesforce 3.16, you have to replace `CoveoQuickview` by `CoveoSalesforceQuickview`.
  *
  * **Example:**
  * ```html
