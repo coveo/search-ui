@@ -68,7 +68,7 @@ export declare namespace MagicBox {
   export const ExpressionEndOfInput;
   export type Instance = MagicBoxInstance;
   export type Suggestion = SuggestionImportedLocally;
-  //export const Grammars = Grammars
+
   export namespace Grammars {
     export const Basic: typeof GrammarsImportedLocally.Basic;
     export const notInWord: typeof GrammarsImportedLocally.notInWord;
@@ -82,6 +82,7 @@ export declare namespace MagicBox {
     export const QueryExtension: typeof GrammarsImportedLocally.QueryExtension;
     export const SubExpression: typeof GrammarsImportedLocally.SubExpression;
   }
+
   export const createMagicBox;
   export const create;
   export const requestAnimationFrame;
