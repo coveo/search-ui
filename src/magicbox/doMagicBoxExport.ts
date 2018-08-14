@@ -35,7 +35,7 @@ export function doMagicBoxExport() {
       ExpressionRef,
       ExpressionRegExp,
       Grammar,
-      Grammars: GrammarsImportedLocally,
+      Grammars,
       InputManager,
       Instance: MagicBoxInstance,
       OptionResult,
