@@ -149,7 +149,7 @@
     font-size: $font-size-smaller;
     display: inline-block;
     @include clearButton('.coveo-clear');
-    @include clickableVibrant();
+    @include clickable();
     & + & {
       margin-left: 10px;
     }
