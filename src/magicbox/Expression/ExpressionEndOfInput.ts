@@ -1,6 +1,6 @@
 import { Expression } from './Expression';
 
-export var ExpressionEndOfInput: Expression = {
+export const ExpressionEndOfInput: Expression = {
   id: 'end of input',
   parse: null
 };

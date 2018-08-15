@@ -87,6 +87,7 @@ export class HistoryController extends RootComponent implements IHistoryManager 
   }
 
   public replaceState(state: Record<string, any>) {
+    this.ignoreNextHashChange = true;
     const hash = '#' + this.hashUtils.encodeValues(state);
     this.window.location.replace(hash);
   }
