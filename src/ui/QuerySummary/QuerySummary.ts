@@ -81,7 +81,7 @@ export class QuerySummary extends Component {
     noResultsFoundMessage: ComponentOptions.buildStringOption({
       defaultValue: l('noResultFor', '${query}'),
       depend: 'enableNoResultsFoundMessage',
-      postProcessing: (value: string, options: IQuerySummaryOptions) => {
+      postProcessing: (value: string) => {
         return escape(value);
       }
     }),
