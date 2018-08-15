@@ -137,7 +137,7 @@ export function InitializationTest() {
       });
     });
 
-    it('allows to register default options ahead of init call, and merge them', done => {
+    it('allows to register default options ahead of init call, and merge them', async done => {
       Initialization.registerDefaultOptions(root, {
         Querybox: {
           enableSearchAsYouType: true
@@ -150,18 +150,17 @@ export function InitializationTest() {
       });
 
       expect(Component.get(queryBox) instanceof Querybox).toBe(false);
-      Initialization.initializeFramework(root, searchInterfaceOptions, () => {
+      await Initialization.initializeFramework(root, searchInterfaceOptions, () => {
         return Initialization.initSearchInterface(root, searchInterfaceOptions);
-      }).then(() => {
-        expect(Component.get(queryBox) instanceof Querybox).toBe(true);
-        const sBox = <Querybox>Component.get(queryBox);
-        expect(sBox.options.enableSearchAsYouType).toBe(true);
-        expect(sBox.options.enablePartialMatch).toBe(true);
-        done();
       });
+      expect(Component.get(queryBox) instanceof Querybox).toBe(true);
+      const sBox = <Querybox>Component.get(queryBox);
+      expect(sBox.options.enableSearchAsYouType).toBe(true);
+      expect(sBox.options.enablePartialMatch).toBe(true);
+      done();
     });
 
-    it('allows to registerAutoCreateComponent', done => {
+    it('allows to registerAutoCreateComponent', async done => {
       const dummyCmp: any = jasmine.createSpy('foobar');
       dummyCmp.ID = 'FooBar';
       const dummyElem = document.createElement('div');
@@ -169,15 +168,15 @@ export function InitializationTest() {
       root.appendChild(dummyElem);
 
       Initialization.registerAutoCreateComponent(dummyCmp);
-      Initialization.initializeFramework(root, searchInterfaceOptions, () => {
+      await Initialization.initializeFramework(root, searchInterfaceOptions, () => {
         return Initialization.initSearchInterface(root, searchInterfaceOptions);
-      }).then(() => {
-        expect(dummyCmp).toHaveBeenCalled();
-        done();
       });
+
+      expect(dummyCmp).toHaveBeenCalled();
+      done();
     });
 
-    it('allows to registerAutoCreateComponent with aliases', done => {
+    it('allows to registerAutoCreateComponent with aliases', async done => {
       const aliasedComponent: any = jasmine.createSpy('aliasedComponent');
       aliasedComponent.ID = 'OriginalId';
       aliasedComponent.aliases = ['AliasedId'];
@@ -186,12 +185,12 @@ export function InitializationTest() {
       $$(root).append(dummyElem.el);
 
       Initialization.registerAutoCreateComponent(aliasedComponent);
-      Initialization.initializeFramework(root, searchInterfaceOptions, () => {
+      await Initialization.initializeFramework(root, searchInterfaceOptions, () => {
         return Initialization.initSearchInterface(root, searchInterfaceOptions);
-      }).then(() => {
-        expect(aliasedComponent).toHaveBeenCalled();
-        done();
       });
+
+      expect(aliasedComponent).toHaveBeenCalled();
+      done();
     });
 
     it('allows to check if isComponentClassIdRegistered', () => {
@@ -380,9 +379,10 @@ export function InitializationTest() {
       done();
     });
 
-    it('should throw when dispatchNamedMethodCallOrComponentCreation is called with something that does not exist', () => {
-      init(root, searchInterfaceOptions);
+    it('should throw when dispatchNamedMethodCallOrComponentCreation is called with something that does not exist', async done => {
+      await init(root, searchInterfaceOptions);
       expect(() => Initialization.dispatchNamedMethodCallOrComponentCreation('nope', root, [])).toThrow();
+      done();
     });
 
     it('can initialize external components', async done => {
