@@ -65,7 +65,8 @@ gulp.task('externalDefs', function() {
       './lib/globalize/index.d.ts',
       './lib/jstimezonedetect/index.d.ts',
       './lib/coveoanalytics/index.d.ts',
-      './lib/map/index.d.ts'
+      './lib/map/index.d.ts',
+      './node_modules/exponential-backoff/dist/backoff.d.ts'
     ])
     .pipe(concat('Externals.d.ts'))
     .pipe(replace(/import.*$/gm, ''))
@@ -79,6 +80,7 @@ gulp.task('externalDefs', function() {
     .pipe(replace(/\n\t\s*(\n\t\s*)/g, '$1'))
     .pipe(replace(/never/gm, 'void'))
     .pipe(replace(/undefined/g, 'any'))
+    .pipe(replace(/Partial<[A-z]*>/g, 'any'))
     .pipe(gulp.dest('./bin/ts'));
 });
 

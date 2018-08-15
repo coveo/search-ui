@@ -14,6 +14,7 @@ import { IAnalyticsClient } from '../ui/Analytics/AnalyticsClient';
 import { analyticsActionCauseList, IAnalyticsFacetMeta, IAnalyticsActionCause } from '../ui/Analytics/AnalyticsActionListMeta';
 import { logSearchBoxSubmitEvent, logSortEvent } from '../ui/Analytics/SharedAnalyticsCalls';
 import { Model } from '../models/Model';
+import { IHistoryManager } from './HistoryManager';
 
 /**
  * This component is instantiated automatically by the framework on the root if the {@link SearchInterface}.<br/>
@@ -21,7 +22,7 @@ import { Model } from '../models/Model';
  * It's only job is to apply changes in the {@link QueryStateModel} to the hash in the URL, and vice versa.<br/>
  * This component does *not* hold the state of the interface, it only represent it in the URL.
  */
-export class HistoryController extends RootComponent {
+export class HistoryController extends RootComponent implements IHistoryManager {
   static ID = 'HistoryController';
 
   static attributesThatDoNotTriggerQuery = ['quickview'];
@@ -81,6 +82,15 @@ export class HistoryController extends RootComponent {
     return this.hashUtilsModule ? this.hashUtilsModule : HashUtils;
   }
 
+  public setState(state: Record<string, any>) {
+    this.setHashValues(state);
+  }
+
+  public replaceState(state: Record<string, any>) {
+    const hash = '#' + this.hashUtils.encodeValues(state);
+    this.window.location.replace(hash);
+  }
+
   /**
    * Set the given map of key value in the hash of the URL
    * @param values
@@ -101,7 +111,7 @@ export class HistoryController extends RootComponent {
       if (hashHasChanged) {
         // Using replace avoids adding an entry in the History of the browser.
         // This means that this new URL will become the new initial URL.
-        this.window.location.replace(hash);
+        this.replaceState(values);
         this.logger.trace('History hash modified', hash);
       }
     } else if (hashHasChanged) {

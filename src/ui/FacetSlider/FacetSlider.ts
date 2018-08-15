@@ -2,7 +2,7 @@
 /// <reference path="../../controllers/FacetSliderQueryController.ts" />
 
 import 'styling/_FacetSlider';
-import { map } from 'underscore';
+import { map, debounce } from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 import { Defer } from '../../MiscModules';
 import { FacetSliderQueryController } from '../../controllers/FacetSliderQueryController';
@@ -28,7 +28,7 @@ import {
 } from '../Analytics/AnalyticsActionListMeta';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
-import { ComponentOptions, IComponentOptionsObjectOptionArgs, IFieldOption } from '../Base/ComponentOptions';
+import { ComponentOptions, IComponentOptionsObjectOptionArgs, IFieldOption, IQueryExpression } from '../Base/ComponentOptions';
 import { Initialization } from '../Base/Initialization';
 import { FacetHeader } from '../Facet/FacetHeader';
 import { IDuringSlideEventArgs, IEndSlideEventArgs, ISliderGraphData, ISliderOptions, Slider } from '../Misc/Slider';
@@ -38,7 +38,7 @@ import { ResponsiveFacetSlider } from '../ResponsiveComponents/ResponsiveFacetSl
 
 export interface IFacetSliderOptions extends ISliderOptions {
   dateField?: boolean;
-  queryOverride?: string;
+  queryOverride?: IQueryExpression;
   id?: string;
   field?: IFieldOption;
   title?: string;
@@ -129,7 +129,7 @@ export class FacetSlider extends Component {
      * <div class="CoveoFacetSlider" data-field="@date" data-date-field="true" data-query-override="@date>2000/01/01"></div>
      * ```
      */
-    queryOverride: ComponentOptions.buildStringOption({ section: 'Filtering' }),
+    queryOverride: ComponentOptions.buildQueryExpressionOption({ section: 'Filtering' }),
 
     /**
      * Specifies the starting boundary of the slider.
@@ -542,7 +542,7 @@ export class FacetSlider extends Component {
   }
 
   private bindResizeEvents() {
-    this.onResize = () => {
+    this.onResize = debounce(() => {
       if (ResponsiveComponentsUtils.shouldDrawFacetSlider($$(this.root), $$(this.element)) && this.slider && !this.isEmpty) {
         if (this.delayedGraphData) {
           this.drawDelayedGraphData();
@@ -553,7 +553,7 @@ export class FacetSlider extends Component {
       if (this.slider) {
         this.slider.onMoving();
       }
-    };
+    }, 250);
     window.addEventListener('resize', this.onResize);
     this.bind.onRootElement(ResponsiveDropdownEvent.OPEN, this.onResize);
 

@@ -12,6 +12,9 @@ defaultLanguage();
 import { SearchEndpointTest } from './rest/SearchEndpointTest';
 SearchEndpointTest();
 
+import { BackOffRequestTest } from './rest/BackOffRequestTest';
+BackOffRequestTest();
+
 import { CookieUtilsTest } from './utils/CookieUtilsTest';
 CookieUtilsTest();
 
@@ -635,6 +638,9 @@ GrammarTest();
 
 import { SuggestionsManagerTest } from './magicbox/SuggestionsManagerTest';
 SuggestionsManagerTest();
+
+import { MagicBoxClearTest } from './magicbox/MagicBoxClearTest';
+MagicBoxClearTest();
 
 import { AccessibleButtonTest } from './utils/AccessibleButtonTest';
 AccessibleButtonTest();

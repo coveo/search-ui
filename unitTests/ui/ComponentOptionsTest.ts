@@ -1,8 +1,7 @@
-import { ComponentOptions } from '../../src/ui/Base/ComponentOptions';
-import { ComponentOptionsType, IComponentOptions } from '../../src/ui/Base/ComponentOptions';
-import { Dom } from '../../src/utils/Dom';
-import { TemplateCache } from '../../src/ui/Templates/TemplateCache';
+import { ComponentOptions, ComponentOptionsType, IComponentOptions } from '../../src/ui/Base/ComponentOptions';
 import { TemplateComponentOptions } from '../../src/ui/Base/TemplateComponentOptions';
+import { TemplateCache } from '../../src/ui/Templates/TemplateCache';
+import { Dom } from '../../src/utils/Dom';
 
 export function ComponentOptionsTest() {
   describe('ComponentOptions', () => {
@@ -50,6 +49,11 @@ export function ComponentOptionsTest() {
       it('a fields option', () => {
         const option = ComponentOptions.buildFieldsOption();
         expect((<any>option).type).toBe(ComponentOptionsType.FIELDS);
+      });
+
+      it('a query expression option', () => {
+        const option = ComponentOptions.buildQueryExpressionOption();
+        expect((<any>option).type).toBe(ComponentOptionsType.QUERY_EXPRESSION);
       });
 
       it('a list option', () => {
@@ -570,9 +574,28 @@ export function ComponentOptionsTest() {
       });
 
       describe('findParentScrolling', () => {
-        it('which finds a scrollable parent', () => {
+        it('which finds a scrollable parent with overflow scroll', () => {
+          scrollElem.style.overflowY = 'scroll';
           const option = ComponentOptions.findParentScrolling(elem, doc);
           expect(option).toBe(scrollElem);
+        });
+
+        it('which finds a scrollable parent with overflow auto', () => {
+          scrollElem.style.overflowY = 'auto';
+          const option = ComponentOptions.findParentScrolling(elem, doc);
+          expect(option).toBe(scrollElem);
+        });
+
+        it("which won't detect overflow visible as scrollable", () => {
+          scrollElem.style.overflowY = 'visible';
+          const option = ComponentOptions.findParentScrolling(elem, doc);
+          expect(option).not.toBe(scrollElem);
+        });
+
+        it("which won't detect overflow inherit as scrollable", () => {
+          scrollElem.style.overflowY = 'inherit';
+          const option = ComponentOptions.findParentScrolling(elem, doc);
+          expect(option).not.toBe(scrollElem);
         });
       });
 

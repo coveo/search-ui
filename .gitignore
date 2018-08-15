@@ -9,4 +9,4 @@ chunkTesters/gen
 environments/conf.js
 docs/theme/assets/gen
 .vscode/
-
+package-lock.json

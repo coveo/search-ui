@@ -76,7 +76,7 @@ export class FacetQueryController {
     const groupByRequest = this.createBasicGroupByRequest(allowedValues);
 
     const queryOverrideObject = this.createGroupByQueryOverride(queryBuilder);
-    if (!Utils.isNullOrUndefined(queryOverrideObject)) {
+    if (!Utils.isNullOrUndefined(queryOverrideObject) || !QueryBuilderExpression.isEmpty(queryOverrideObject)) {
       groupByRequest.queryOverride = queryOverrideObject.basic;
       groupByRequest.advancedQueryOverride = queryOverrideObject.advanced;
       groupByRequest.constantQueryOverride = queryOverrideObject.constant;
@@ -86,8 +86,8 @@ export class FacetQueryController {
       this.constantExpressionToUseForFacetSearch = queryOverrideObject.constant;
     } else {
       const parts = queryBuilder.computeCompleteExpressionParts();
-      this.expressionToUseForFacetSearch = parts.withoutConstant == null ? '@uri' : parts.withoutConstant;
-      this.basicExpressionToUseForFacetSearch = parts.basic == null ? '@uri' : parts.basic;
+      this.expressionToUseForFacetSearch = parts.withoutConstant == null ? '' : parts.withoutConstant;
+      this.basicExpressionToUseForFacetSearch = parts.basic == null ? '' : parts.basic;
       this.advancedExpressionToUseForFacetSearch = parts.advanced;
       this.constantExpressionToUseForFacetSearch = parts.constant;
     }
@@ -278,6 +278,9 @@ export class FacetQueryController {
     }
 
     queryBuilderExpression = this.processQueryOverrideForEmptyValues(queryBuilder, queryBuilderExpression);
+    if (QueryBuilderExpression.isEmpty(queryBuilderExpression)) {
+      return null;
+    }
     return queryBuilderExpression;
   }
 

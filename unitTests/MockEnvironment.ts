@@ -1,21 +1,22 @@
-import { IComponentBindings } from '../src/ui/Base/ComponentBindings';
-import { IQueryResult } from '../src/rest/QueryResult';
-import { SearchInterface } from '../src/ui/SearchInterface/SearchInterface';
-import { QueryStateModel } from '../src/models/QueryStateModel';
-import { IAnalyticsClient } from '../src/ui/Analytics/AnalyticsClient';
-import { $$ } from '../src/utils/Dom';
-import { ComponentStateModel } from '../src/models/ComponentStateModel';
+import { NoopHistoryController } from '../src/controllers/NoopHistoryController';
+import { QueryController } from '../src/controllers/QueryController';
 import { ComponentOptionsModel } from '../src/models/ComponentOptionsModel';
+import { ComponentStateModel } from '../src/models/ComponentStateModel';
+import { QueryStateModel } from '../src/models/QueryStateModel';
+import { AnalyticsEndpoint } from '../src/rest/AnalyticsEndpoint';
+import { IQueryResult } from '../src/rest/QueryResult';
+import { SearchEndpoint } from '../src/rest/SearchEndpoint';
+import { IAnalyticsClient } from '../src/ui/Analytics/AnalyticsClient';
+import { NoopAnalyticsClient } from '../src/ui/Analytics/NoopAnalyticsClient';
+import { BaseComponent } from '../src/ui/Base/BaseComponent';
+import { Component } from '../src/ui/Base/Component';
+import { IComponentBindings } from '../src/ui/Base/ComponentBindings';
+import { QueryBuilder } from '../src/ui/Base/QueryBuilder';
+import { ResponsiveComponents } from '../src/ui/ResponsiveComponents/ResponsiveComponents';
+import { SearchInterface } from '../src/ui/SearchInterface/SearchInterface';
+import { $$ } from '../src/utils/Dom';
 import { OS_NAME } from '../src/utils/OSUtils';
 import { FakeResults } from './Fake';
-import { Component } from '../src/ui/Base/Component';
-import { BaseComponent } from '../src/ui/Base/BaseComponent';
-import { NoopAnalyticsClient } from '../src/ui/Analytics/NoopAnalyticsClient';
-import { AnalyticsEndpoint } from '../src/rest/AnalyticsEndpoint';
-import { SearchEndpoint } from '../src/rest/SearchEndpoint';
-import { QueryController } from '../src/controllers/QueryController';
-import { ResponsiveComponents } from '../src/ui/ResponsiveComponents/ResponsiveComponents';
-import { QueryBuilder } from '../src/ui/Base/QueryBuilder';
 import { Simulate } from './Simulate';
 import ModalBox = Coveo.ModalBox.ModalBox;
 
@@ -45,6 +46,7 @@ export class MockEnvironmentBuilder {
   public componentStateModel = mockComponent<ComponentStateModel>(ComponentStateModel, ComponentStateModel.ID);
   public usageAnalytics = mockUsageAnalytics();
   public componentOptionsModel = mockComponent<ComponentOptionsModel>(ComponentOptionsModel, ComponentOptionsModel.ID);
+  public historyManager = new NoopHistoryController();
   public os: OS_NAME;
   private built = false;
 
@@ -108,6 +110,7 @@ export class MockEnvironmentBuilder {
     this.searchInterface.componentOptionsModel = this.componentOptionsModel;
     this.searchInterface.element = this.root;
     this.searchInterface.getBindings = () => this.getBindings() as any;
+    this.searchInterface.historyManager = this.historyManager;
 
     if (!this.searchEndpoint) {
       this.searchEndpoint = mockSearchEndpoint();

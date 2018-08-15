@@ -6,6 +6,10 @@ import { l } from '../../src/strings/Strings';
 export function DateUtilsTest() {
   describe('DateUtils', () => {
     let options: IDateToStringOptions;
+    const containsTime = (result: string) => {
+      return /am/i.test(result) || /pm/i.test(result);
+    };
+
     beforeEach(() => {
       options = {
         now: moment('1980-02-11').toDate(),
@@ -77,6 +81,58 @@ export function DateUtilsTest() {
 
     it('should display the right amount of time between two dates using `timeBetween`', () => {
       expect(DateUtils.timeBetween(new Date('2017-03-07T16:17:43'), new Date('2017-03-07T16:45:45'))).toEqual(l('00:28:02'));
+    });
+
+    it('dateTimeToString should respect the option to includeTime if set to true', () => {
+      const now = new Date();
+      const result = DateUtils.dateTimeToString(now, { includeTimeIfToday: true, includeTimeIfThisWeek: true });
+      expect(containsTime(result)).toBe(true);
+    });
+
+    it('dateTimeToString should respect the option to includeTime if set to false', () => {
+      const now = moment(new Date()).toDate();
+
+      const result = DateUtils.dateTimeToString(now, { includeTimeIfToday: false, includeTimeIfThisWeek: false });
+      expect(containsTime(result)).toBe(false);
+    });
+
+    it('dateTimeToString should respect includeTimeIfToday if the date is not today', () => {
+      const notToday = moment(new Date())
+        .subtract(2, 'days')
+        .toDate();
+
+      const result = DateUtils.dateTimeToString(notToday, { includeTimeIfToday: true, includeTimeIfThisWeek: false });
+      expect(containsTime(result)).toBe(false);
+    });
+
+    it('dateTimeToString should respect includeTimeIfThisWeek if the date is not this week', () => {
+      const notThisWeek = moment(new Date())
+        .subtract(2, 'week')
+        .toDate();
+
+      const result = DateUtils.dateTimeToString(notThisWeek, { includeTimeIfToday: false, includeTimeIfThisWeek: true });
+      expect(containsTime(result)).toBe(false);
+    });
+
+    it('dateTimeToString should respect the predefinedFormat without stripping minutes', () => {
+      const oneAmInTheMorning = new Date(1512021600000);
+      const result = DateUtils.dateTimeToString(oneAmInTheMorning, { predefinedFormat: 'MMMM DD, YYYY [at] h:mm' });
+      expect(result).toContain(':00');
+    });
+
+    it('dateTimeToString should properly return an empty string when the date is null', () => {
+      const result = DateUtils.dateTimeToString(null);
+      expect(result).toBe('');
+    });
+
+    it('dateTimeToString should properly return an empty string when the date is undefined', () => {
+      const result = DateUtils.dateTimeToString(undefined);
+      expect(result).toBe('');
+    });
+
+    it('dateTimeToString should properly return an empty string when passing in an invalid date', () => {
+      const result = DateUtils.dateTimeToString(new Date('totally not a date'));
+      expect(result).toBe('');
     });
   });
 }
