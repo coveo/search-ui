@@ -4,7 +4,7 @@ import { ExpressionRef } from '../../src/magicbox/Expression/ExpressionRef';
 import { ExpressionOptions } from '../../src/magicbox/Expression/ExpressionOptions';
 import { ExpressionList } from '../../src/magicbox/Expression/ExpressionList';
 import { ExpressionRegExp } from '../../src/magicbox/Expression/ExpressionRegExp';
-import * as Grammars from '../../src/magicbox/Grammars/Grammars';
+import { Grammars } from '../../src/magicbox/Grammars/Grammars';
 
 export function GrammarTest() {
   describe('Grammar Expression Builder build expression of type', () => {
