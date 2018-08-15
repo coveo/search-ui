@@ -142,6 +142,7 @@ export class Dom {
    */
   public show(): void {
     this.el.style.display = 'block';
+    $$(this.el).setAttribute('aria-hidden', 'false');
   }
 
   /**
@@ -149,6 +150,7 @@ export class Dom {
    */
   public hide(): void {
     this.el.style.display = 'none';
+    $$(this.el).setAttribute('aria-hidden', 'true');
   }
 
   /**

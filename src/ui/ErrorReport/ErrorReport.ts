@@ -11,6 +11,7 @@ import { IEndpointError } from '../../rest/EndpointError';
 import { MissingAuthenticationError } from '../../rest/MissingAuthenticationError';
 import { exportGlobally } from '../../GlobalExports';
 import 'styling/_ErrorReport';
+import { AccessibleButton } from '../../utils/AccessibleButton';
 
 export interface IErrorReportOptions {
   showDetailedError: boolean;
@@ -60,9 +61,7 @@ export class ErrorReport extends Component {
     super(element, ErrorReport.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, ErrorReport, options);
     this.container = $$('div', { className: 'coveo-error-report-container' });
-    const title = $$('div', { className: 'coveo-error-report-title' }, '<h1></h1><h2></h2>');
     this.element.appendChild(this.container.el);
-    this.container.append(title.el);
 
     if (this.options.showDetailedError) {
       this.message = $$('div', {
@@ -111,14 +110,44 @@ export class ErrorReport extends Component {
     this.queryController.executeQuery();
   }
 
+  private buildOrGetTitleElements() {
+    const titleElement = $$(this.element).find('.coveo-error-report-title');
+
+    let title: Dom;
+    if (titleElement) {
+      title = $$(titleElement);
+    } else {
+      title = $$('div', { className: 'coveo-error-report-title' });
+      this.container.prepend(title.el);
+    }
+
+    let firstHeading = title.find('h1');
+
+    if (!firstHeading) {
+      firstHeading = $$('h1').el;
+      title.append(firstHeading);
+    }
+
+    let secondHeading = title.find('h2');
+    if (!secondHeading) {
+      secondHeading = $$('h2').el;
+      title.append(secondHeading);
+    }
+
+    return {
+      title,
+      h1: $$(firstHeading),
+      h2: $$(secondHeading)
+    };
+  }
+
   private setErrorTitle(errorName?: string, helpSuggestion?: string): void {
     const errorTitle = {
       h1: errorName ? l(errorName) : l('OopsError'),
       h2: helpSuggestion ? l(helpSuggestion) : l('ProblemPersists')
     };
 
-    const h1 = $$(this.element).find('h1');
-    const h2 = $$(this.element).find('h2');
+    const { h1, h2 } = this.buildOrGetTitleElements();
     if (h1 && h2) {
       $$(h1).text(errorTitle.h1);
       $$(h2).text(errorTitle.h2);
@@ -126,8 +155,20 @@ export class ErrorReport extends Component {
   }
 
   private buildPrevious(): HTMLElement {
-    const previous = $$('span', { className: 'coveo-error-report-previous' }, l('GoBack'));
-    previous.on('click', () => this.back());
+    const previous = $$(
+      'span',
+      {
+        className: 'coveo-error-report-previous'
+      },
+      l('GoBack')
+    );
+
+    new AccessibleButton()
+      .withElement(previous)
+      .withSelectAction(() => this.back())
+      .withLabel(l('GoBack'))
+      .build();
+
     return previous.el;
   }
 
@@ -140,7 +181,11 @@ export class ErrorReport extends Component {
       l('Reset')
     );
 
-    reset.on('click', () => this.reset());
+    new AccessibleButton()
+      .withElement(reset)
+      .withSelectAction(() => this.reset())
+      .withLabel(l('Reset'))
+      .build();
 
     return reset.el;
   }
@@ -154,13 +199,20 @@ export class ErrorReport extends Component {
       l('Retry')
     );
 
-    retry.on('click', () => this.retry());
+    new AccessibleButton()
+      .withElement(retry)
+      .withSelectAction(() => this.retry())
+      .withLabel(l('Retry'))
+      .build();
 
     return retry.el;
   }
 
   private handleNewQuery(): void {
     $$(this.element).hide();
+    const { h1, h2 } = this.buildOrGetTitleElements();
+    h1.remove();
+    h2.remove();
     if (this.closePopup != null) {
       this.closePopup();
     }
