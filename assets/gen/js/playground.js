@@ -2557,12 +2557,14 @@ var Dom = /** @class */ (function () {
      */
     Dom.prototype.show = function () {
         this.el.style.display = 'block';
+        $$(this.el).setAttribute('aria-hidden', 'false');
     };
     /**
      * Hide the element;
      */
     Dom.prototype.hide = function () {
         this.el.style.display = 'none';
+        $$(this.el).setAttribute('aria-hidden', 'true');
     };
     /**
      * Toggle the element visibility.<br/>
@@ -5802,8 +5804,8 @@ exports.ResponsiveComponents = ResponsiveComponents;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    lib: '2.4609.2-beta',
-    product: '2.4609.2-beta',
+    lib: '2.4609.3-beta',
+    product: '2.4609.3-beta',
     supportedApiVersion: 2
 };
 
