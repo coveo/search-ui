@@ -12,7 +12,7 @@
     text-decoration: line-through;
   }
   @include clearButton('.coveo-facet-breadcrumb-clear');
-  @include clickableVibrant();
+  @include clickable();
   & + & {
     margin-left: 20px;
   }
