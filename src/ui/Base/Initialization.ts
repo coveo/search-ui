@@ -1,6 +1,6 @@
 import * as _ from 'underscore';
 import { QueryController } from '../../controllers/QueryController';
-import { InitializationEvents } from '../../events/InitializationEvents';
+import { InitializationEvents, IInitializationEventArgs } from '../../events/InitializationEvents';
 import { Assert } from '../../misc/Assert';
 import { Logger } from '../../misc/Logger';
 import { ComponentOptionsModel } from '../../models/ComponentOptionsModel';
@@ -233,7 +233,7 @@ export class Initialization {
    * @param options The options for all components (eg: {Searchbox : {enableSearchAsYouType : true}}).
    * @param initSearchInterfaceFunction The function to execute to create the {@link SearchInterface} component. Different init call will create different {@link SearchInterface}.
    */
-  public static initializeFramework(
+  public static async initializeFramework(
     element: HTMLElement,
     options: any,
     initSearchInterfaceFunction: (...args: any[]) => IInitResult
@@ -242,41 +242,66 @@ export class Initialization {
     const alreadyInitialized = Component.get(element, QueryController, true);
     if (alreadyInitialized) {
       this.logger.error('This DOM element has already been initialized as a search interface, skipping initialization', element);
-      return new Promise((resolve, reject) => {
-        resolve({ elem: element });
-      });
+      return {
+        elem: element
+      };
     }
 
     options = Initialization.resolveDefaultOptions(element, options);
 
-    Initialization.performInitFunctionsOption(options, InitializationEvents.beforeInitialization);
-    $$(element).trigger(InitializationEvents.beforeInitialization);
-
-    const toExecuteOnceSearchInterfaceIsInitialized = () => {
-      return Initialization.initExternalComponents(element, options).then(result => {
-        Initialization.performInitFunctionsOption(options, InitializationEvents.afterComponentsInitialization);
-        $$(element).trigger(InitializationEvents.afterComponentsInitialization);
-
-        $$(element).trigger(InitializationEvents.restoreHistoryState);
-
-        Initialization.performInitFunctionsOption(options, InitializationEvents.afterInitialization);
-        $$(element).trigger(InitializationEvents.afterInitialization);
-
-        const searchInterface = <SearchInterface>Component.get(element, SearchInterface);
-        if (Initialization.shouldExecuteFirstQueryAutomatically(searchInterface)) {
-          Initialization.logFirstQueryCause(searchInterface);
-          let shouldLogInActionHistory = true;
-          // We should not log an action history if the interface is a standalone recommendation component.
-          if (Coveo['Recommendation']) {
-            shouldLogInActionHistory = !(searchInterface instanceof Coveo['Recommendation']);
-          }
-          (<QueryController>Component.get(element, QueryController)).executeQuery({
-            logInActionsHistory: shouldLogInActionHistory,
-            isFirstQuery: true
-          });
-        }
-        return result;
+    const waitForAllPromisesToFinish = async (eventType: string, promises: Promise<any>[]) => {
+      const promisesWithErrorsHandledIndividually = promises.map(p => {
+        return p.catch(error =>
+          this.logger.warn(
+            `An error occurred when trying to defer the \"${eventType}\" event. The defer will be ignored.`,
+            `Error: ${error}`
+          )
+        );
       });
+      return await Promise.all(promisesWithErrorsHandledIndividually).catch(error =>
+        this.logger.error(
+          `An unexpected error occurred when trying to defer the \"${event}\" event. All defers will be ignored.`,
+          `Error: ${error}`
+        )
+      );
+    };
+
+    const triggerInitializationEventWithArguments = async (eventType: string) => {
+      const initializationEventArgs: IInitializationEventArgs = {
+        defer: []
+      };
+      $$(element).trigger(eventType, initializationEventArgs);
+      await waitForAllPromisesToFinish(eventType, initializationEventArgs.defer);
+    };
+
+    Initialization.performInitFunctionsOption(options, InitializationEvents.beforeInitialization);
+    await triggerInitializationEventWithArguments(InitializationEvents.beforeInitialization);
+
+    const toExecuteOnceSearchInterfaceIsInitialized = async () => {
+      const result = await Initialization.initExternalComponents(element, options);
+
+      Initialization.performInitFunctionsOption(options, InitializationEvents.afterComponentsInitialization);
+      await triggerInitializationEventWithArguments(InitializationEvents.afterComponentsInitialization);
+
+      $$(element).trigger(InitializationEvents.restoreHistoryState);
+
+      Initialization.performInitFunctionsOption(options, InitializationEvents.afterInitialization);
+      await triggerInitializationEventWithArguments(InitializationEvents.afterInitialization);
+
+      const searchInterface = <SearchInterface>Component.get(element, SearchInterface);
+      if (Initialization.shouldExecuteFirstQueryAutomatically(searchInterface)) {
+        Initialization.logFirstQueryCause(searchInterface);
+        let shouldLogInActionHistory = true;
+        // We should not log an action history if the interface is a standalone recommendation component.
+        if (Coveo['Recommendation']) {
+          shouldLogInActionHistory = !(searchInterface instanceof Coveo['Recommendation']);
+        }
+        (<QueryController>Component.get(element, QueryController)).executeQuery({
+          logInActionsHistory: shouldLogInActionHistory,
+          isFirstQuery: true
+        });
+      }
+      return result;
     };
 
     const resultOfSearchInterfaceInitialization = initSearchInterfaceFunction(element, options);
@@ -285,20 +310,19 @@ export class Initialization {
     // eg : CoveoJsSearch.Lazy.js was included in the page
     // this means that we can only execute the function after the promise has resolved
     if (resultOfSearchInterfaceInitialization.isLazyInit) {
-      return resultOfSearchInterfaceInitialization.initResult.then(toExecuteOnceSearchInterfaceIsInitialized).then(() => {
-        return {
-          elem: element
-        };
-      });
+      await resultOfSearchInterfaceInitialization.initResult;
+      await toExecuteOnceSearchInterfaceIsInitialized();
+      return {
+        elem: element
+      };
     } else {
       // Else, we are executing an "eager" initialization, which returns void;
       // eg : CoveoJsSearch.js was included in the page
       // this mean that this function gets executed immediately
-      return toExecuteOnceSearchInterfaceIsInitialized().then(() => {
-        return {
-          elem: element
-        };
-      });
+      await toExecuteOnceSearchInterfaceIsInitialized();
+      return {
+        elem: element
+      };
     }
   }
 

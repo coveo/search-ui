@@ -1,4 +1,11 @@
 /**
+ * Argument sent to all handlers bound on {@link InitializationEvents.beforeInitialization}, {@link InitializationEvents.afterComponentsInitialization}, and {@link InitializationEvents.afterInitialization}.
+ */
+export interface IInitializationEventArgs {
+  defer: Promise<any>[];
+}
+
+/**
  * This static class is there to contain the different string definitions for all the events related to initialization.
  *
  * Note that these events will only be triggered when the {@link init} function is called.

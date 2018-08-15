@@ -8,7 +8,7 @@ import { Facet } from '../../src/ui/Facet/Facet';
 import { Pager } from '../../src/ui/Pager/Pager';
 import { ResultList } from '../../src/ui/ResultList/ResultList';
 import { Simulate } from '../Simulate';
-import { InitializationEvents } from '../../src/events/InitializationEvents';
+import { InitializationEvents, IInitializationEventArgs } from '../../src/events/InitializationEvents';
 import { init } from '../../src/ui/Base/RegisteredNamedMethods';
 import { NoopComponent } from '../../src/ui/NoopComponent/NoopComponent';
 import { state } from '../../src/ui/Base/RegisteredNamedMethods';
@@ -137,7 +137,7 @@ export function InitializationTest() {
       });
     });
 
-    it('allows to register default options ahead of init call, and merge them', () => {
+    it('allows to register default options ahead of init call, and merge them', done => {
       Initialization.registerDefaultOptions(root, {
         Querybox: {
           enableSearchAsYouType: true
@@ -152,14 +152,16 @@ export function InitializationTest() {
       expect(Component.get(queryBox) instanceof Querybox).toBe(false);
       Initialization.initializeFramework(root, searchInterfaceOptions, () => {
         return Initialization.initSearchInterface(root, searchInterfaceOptions);
+      }).then(() => {
+        expect(Component.get(queryBox) instanceof Querybox).toBe(true);
+        const sBox = <Querybox>Component.get(queryBox);
+        expect(sBox.options.enableSearchAsYouType).toBe(true);
+        expect(sBox.options.enablePartialMatch).toBe(true);
+        done();
       });
-      expect(Component.get(queryBox) instanceof Querybox).toBe(true);
-      const sBox = <Querybox>Component.get(queryBox);
-      expect(sBox.options.enableSearchAsYouType).toBe(true);
-      expect(sBox.options.enablePartialMatch).toBe(true);
     });
 
-    it('allows to registerAutoCreateComponent', () => {
+    it('allows to registerAutoCreateComponent', done => {
       const dummyCmp: any = jasmine.createSpy('foobar');
       dummyCmp.ID = 'FooBar';
       const dummyElem = document.createElement('div');
@@ -169,11 +171,13 @@ export function InitializationTest() {
       Initialization.registerAutoCreateComponent(dummyCmp);
       Initialization.initializeFramework(root, searchInterfaceOptions, () => {
         return Initialization.initSearchInterface(root, searchInterfaceOptions);
+      }).then(() => {
+        expect(dummyCmp).toHaveBeenCalled();
+        done();
       });
-      expect(dummyCmp).toHaveBeenCalled();
     });
 
-    it('allows to registerAutoCreateComponent with aliases', () => {
+    it('allows to registerAutoCreateComponent with aliases', done => {
       const aliasedComponent: any = jasmine.createSpy('aliasedComponent');
       aliasedComponent.ID = 'OriginalId';
       aliasedComponent.aliases = ['AliasedId'];
@@ -184,8 +188,10 @@ export function InitializationTest() {
       Initialization.registerAutoCreateComponent(aliasedComponent);
       Initialization.initializeFramework(root, searchInterfaceOptions, () => {
         return Initialization.initSearchInterface(root, searchInterfaceOptions);
+      }).then(() => {
+        expect(aliasedComponent).toHaveBeenCalled();
+        done();
       });
-      expect(aliasedComponent).toHaveBeenCalled();
     });
 
     it('allows to check if isComponentClassIdRegistered', () => {
@@ -315,24 +321,26 @@ export function InitializationTest() {
       });
     });
 
-    it('allow to monkeyPatchComponentMethod', () => {
-      Initialization.initializeFramework(root, searchInterfaceOptions, () => {
+    it('allow to monkeyPatchComponentMethod', async done => {
+      await Initialization.initializeFramework(root, searchInterfaceOptions, () => {
         return Initialization.initSearchInterface(root, searchInterfaceOptions);
       });
       const patch = jasmine.createSpy('patch');
       Initialization.monkeyPatchComponentMethod('submit', queryBox, patch);
       (<Querybox>Component.get(queryBox)).submit();
       expect(patch).toHaveBeenCalled();
+      done();
     });
 
-    it('allow to monkeyPatchComponentMethod with the component name', () => {
-      Initialization.initializeFramework(root, searchInterfaceOptions, () => {
+    it('allow to monkeyPatchComponentMethod with the component name', async done => {
+      await Initialization.initializeFramework(root, searchInterfaceOptions, () => {
         return Initialization.initSearchInterface(root, searchInterfaceOptions);
       });
       const patch = jasmine.createSpy('patch');
       Initialization.monkeyPatchComponentMethod('Querybox.submit', queryBox, patch);
       (<Querybox>Component.get(queryBox)).submit();
       expect(patch).toHaveBeenCalled();
+      done();
     });
 
     it('allows to determine if a top level method is already registed', () => {
@@ -350,23 +358,26 @@ export function InitializationTest() {
       });
     });
 
-    it('should allow to dispatch a named method call', () => {
-      init(root, searchInterfaceOptions);
+    it('should allow to dispatch a named method call', async done => {
+      await init(root, searchInterfaceOptions);
       Initialization.dispatchNamedMethodCall('executeQuery', root, []);
       expect(endpoint.search).toHaveBeenCalled();
+      done();
     });
 
-    it('should throw when calling a named method that does not exist', () => {
-      init(root, searchInterfaceOptions);
+    it('should throw when calling a named method that does not exist', async done => {
+      await init(root, searchInterfaceOptions);
       expect(() => Initialization.dispatchNamedMethodCall('nope', root, [])).toThrow();
+      done();
     });
 
-    it('should allow to dispatchNamedMethodCallOrComponentCreation', () => {
-      init(root, searchInterfaceOptions);
+    it('should allow to dispatchNamedMethodCallOrComponentCreation', async done => {
+      await init(root, searchInterfaceOptions);
       Initialization.dispatchNamedMethodCallOrComponentCreation('executeQuery', root, []);
       expect(endpoint.search).toHaveBeenCalled();
       Initialization.dispatchNamedMethodCallOrComponentCreation('submit', queryBox, []);
       expect(endpoint.search).toHaveBeenCalled();
+      done();
     });
 
     it('should throw when dispatchNamedMethodCallOrComponentCreation is called with something that does not exist', () => {
@@ -374,29 +385,111 @@ export function InitializationTest() {
       expect(() => Initialization.dispatchNamedMethodCallOrComponentCreation('nope', root, [])).toThrow();
     });
 
-    it('can initialize external components', () => {
+    it('can initialize external components', async done => {
       const external = $$('div', {
         className: 'CoveoPager'
       }).el;
 
       searchInterfaceOptions['externalComponents'] = [external];
       searchInterfaceOptions['SearchInterface'].autoTriggerQuery = false;
-      Initialization.initializeFramework(root, searchInterfaceOptions, () => {
+      await Initialization.initializeFramework(root, searchInterfaceOptions, () => {
         return Initialization.initSearchInterface(root, searchInterfaceOptions);
       });
+
       expect(Component.get(external) instanceof Pager).toBe(true);
+      done();
     });
 
-    it('can initialize external components passed in as a jquery instance', () => {
+    it('can initialize external components passed in as a jquery instance', async done => {
       Simulate.addJQuery();
       const external = $('<div class="CoveoPager"></div>');
       searchInterfaceOptions['externalComponents'] = [external];
       searchInterfaceOptions['SearchInterface'].autoTriggerQuery = false;
-      Initialization.initializeFramework(root, searchInterfaceOptions, () => {
+      await Initialization.initializeFramework(root, searchInterfaceOptions, () => {
         return Initialization.initSearchInterface(root, searchInterfaceOptions);
       });
       expect(Component.get(external.get(0)) instanceof Pager).toBe(true);
       Simulate.removeJQuery();
+      done();
+    });
+
+    describe('when initializing a Search Interface', () => {
+      let spyAfterComponentsInitialized;
+
+      const doInit = () => {
+        return Initialization.initializeFramework(root, searchInterfaceOptions, () => {
+          const initResult = Initialization.initSearchInterface(root, searchInterfaceOptions);
+          return initResult;
+        });
+      };
+
+      beforeEach(() => {
+        spyAfterComponentsInitialized = jasmine.createSpy('afterComponentsInitialized');
+        $$(root).on(InitializationEvents.afterComponentsInitialization, spyAfterComponentsInitialized);
+      });
+
+      afterEach(() => {
+        spyAfterComponentsInitialized = null;
+      });
+
+      it('will trigger the afterComponentsInitialized event handler', async done => {
+        await doInit();
+        expect(spyAfterComponentsInitialized).toHaveBeenCalled();
+        done();
+      });
+
+      describe('when afterComponentsInitialized is deferred by a component', () => {
+        let deferSpy;
+
+        beforeEach(() => {
+          deferSpy = jasmine.createSpy('initializationSpy');
+          $$(root).on(InitializationEvents.afterComponentsInitialization, (event, data: IInitializationEventArgs) => {
+            data.defer.push(
+              new Promise(resolve => {
+                deferSpy();
+                resolve();
+              })
+            );
+          });
+        });
+
+        afterEach(() => {
+          deferSpy = null;
+        });
+
+        it('will trigger the deferred promise', async done => {
+          await doInit();
+          expect(deferSpy).toHaveBeenCalled();
+          done();
+        });
+      });
+
+      describe('when afterComponentsInitialized is deferred by a failing promise', () => {
+        let deferSpy;
+
+        beforeEach(() => {
+          deferSpy = jasmine.createSpy('initializationSpy');
+          $$(root).on(InitializationEvents.afterComponentsInitialization, (event, data: IInitializationEventArgs) => {
+            data.defer.push(Promise.reject('It failed badly!'));
+            data.defer.push(
+              new Promise(resolve => {
+                deferSpy();
+                resolve();
+              })
+            );
+          });
+        });
+
+        afterEach(() => {
+          deferSpy = null;
+        });
+
+        it('will skip the rejected promise and wait for the working one', async done => {
+          await doInit();
+          expect(deferSpy).toHaveBeenCalled();
+          done();
+        });
+      });
     });
 
     describe('with automatic first query', () => {
@@ -418,19 +511,19 @@ export function InitializationTest() {
         spyOnQuery = null;
       });
 
-      it('will trigger a query automatically by default', done => {
-        doInit().then(() => {
-          expect(spyOnQuery).toHaveBeenCalled();
-          done();
-        });
+      it('will trigger a query automatically by default', async done => {
+        await doInit();
+
+        expect(spyOnQuery).toHaveBeenCalled();
+        done();
       });
 
-      it('will not trigger a query automatically if specified', done => {
+      it('will not trigger a query automatically if specified', async done => {
         searchInterfaceOptions['SearchInterface'].autoTriggerQuery = false;
-        doInit().then(() => {
-          expect(spyOnQuery).not.toHaveBeenCalled();
-          done();
-        });
+        await doInit();
+
+        expect(spyOnQuery).not.toHaveBeenCalled();
+        done();
       });
 
       describe('when query with no keywords are not allowed', () => {
@@ -438,41 +531,38 @@ export function InitializationTest() {
           searchInterfaceOptions['SearchInterface'].allowQueriesWithoutKeywords = false;
         });
 
-        it('will trigger a query automatically if the interface contains keywords', done => {
+        it('will trigger a query automatically if the interface contains keywords', async done => {
           $$(root).on(InitializationEvents.afterInitialization, () => {
             state(root, 'q', 'foo');
           });
 
-          doInit().then(() => {
-            expect(spyOnQuery).toHaveBeenCalled();
-            done();
-          });
+          await doInit();
+          expect(spyOnQuery).toHaveBeenCalled();
+          done();
         });
 
-        it('will not trigger a query automatically if the interface contains no keywords', done => {
+        it('will not trigger a query automatically if the interface contains no keywords', async done => {
           $$(root).on(InitializationEvents.afterInitialization, () => {
             state(root, 'q', '');
           });
 
-          doInit().then(() => {
-            expect(spyOnQuery).not.toHaveBeenCalled();
-            done();
-          });
+          await doInit();
+          expect(spyOnQuery).not.toHaveBeenCalled();
+          done();
         });
       });
     });
 
-    it('will send action history on automatic query', done => {
+    it('will send action history on automatic query', async done => {
       localStorage.removeItem('__coveo.analytics.history');
       expect(localStorage.getItem('__coveo.analytics.history')).toBeNull();
-      Initialization.initializeFramework(root, searchInterfaceOptions, () => {
+      await Initialization.initializeFramework(root, searchInterfaceOptions, () => {
         return Initialization.initSearchInterface(root, searchInterfaceOptions);
-      }).then(() => {
-        const actionHistory = localStorage.getItem('__coveo.analytics.history');
-        expect(actionHistory).not.toBeNull();
-        expect(JSON.parse(actionHistory)[0].name).toEqual('Query');
-        done();
       });
+      const actionHistory = localStorage.getItem('__coveo.analytics.history');
+      expect(actionHistory).not.toBeNull();
+      expect(JSON.parse(actionHistory)[0].name).toEqual('Query');
+      done();
     });
 
     describe('when initializing recommendation interface', () => {
