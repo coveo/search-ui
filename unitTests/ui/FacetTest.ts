@@ -879,9 +879,9 @@ export function FacetTest() {
           expect($$(test.cmp.element).hasClass('coveo-facet-dependent')).toBe(true);
         });
 
-        describe(`given the master and dependent facet both have one selected and one excluded value`, () => {
-          const selectedMasterValue = 'selected master value';
-          const excludedMasterValue = 'excluded master value';
+        describe(`given the master facet has two selected values and the dependent facet has one selected and one excluded value`, () => {
+          const selectedMasterValue1 = 'selected master value 1';
+          const selectedMasterValue2 = 'selected master value 2';
 
           function triggerStateChangeOnDependentFacet() {
             rebindDependentFacetStateChangeListeners();
@@ -894,8 +894,8 @@ export function FacetTest() {
           }
 
           beforeEach(() => {
-            masterFacet.cmp.selectValue(selectedMasterValue);
-            masterFacet.cmp.excludeValue(excludedMasterValue);
+            masterFacet.cmp.selectValue(selectedMasterValue1);
+            masterFacet.cmp.selectValue(selectedMasterValue2);
 
             test.cmp.selectValue('selected dependent value');
             test.cmp.excludeValue('excluded dependent value');
@@ -910,18 +910,19 @@ export function FacetTest() {
             expect(test.cmp.getExcludedValues().length).toBe(0);
           });
 
-          it(`when deselecting the master facet excluded option,
+          it(`when deselecting one of the master facet selected options,
           it does not reset the dependent facet`, () => {
-            masterFacet.cmp.deselectValue(excludedMasterValue);
+            masterFacet.cmp.deselectValue(selectedMasterValue1);
             triggerStateChangeOnDependentFacet();
 
             expect(test.cmp.getSelectedValues().length).toBe(1);
             expect(test.cmp.getExcludedValues().length).toBe(1);
           });
 
-          it(`when deselecting the master facet selected option,
+          it(`when deselecting both master facet selected options,
           it resets the dependent facet`, () => {
-            masterFacet.cmp.deselectValue(selectedMasterValue);
+            masterFacet.cmp.deselectValue(selectedMasterValue1);
+            masterFacet.cmp.deselectValue(selectedMasterValue2);
             triggerStateChangeOnDependentFacet();
 
             expect(test.cmp.getSelectedValues().length).toBe(0);
