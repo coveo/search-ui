@@ -146,7 +146,7 @@ export class MagicBoxInstance {
       }
       if (key == 13) {
         // Enter
-        const suggestion = this.suggestionsManager.select();
+        const suggestion = this.suggestionsManager.getKeyboardFocusedElement();
         if (suggestion == null) {
           this.onsubmit && this.onsubmit();
         }
@@ -261,4 +261,5 @@ export function requestAnimationFrame(callback: () => void) {
   }
   return setTimeout(callback);
 }
+
 doMagicBoxExport();

@@ -11,7 +11,7 @@
 }
 
 .coveo-hidden-query-breadcrumb-value {
-  @include clickableVibrant();
+  @include clickable();
 }
 
 .coveo-hidden-query-breadcrumb-clear {

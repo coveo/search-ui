@@ -17,11 +17,7 @@ export function QuickviewTest() {
     let modalBox;
 
     beforeEach(() => {
-      let mockBuilder = new Mock.MockEnvironmentBuilder();
-      env = mockBuilder.build();
-      result = FakeResults.createFakeResult();
-      modalBox = Simulate.modalBoxModule();
-      quickview = new Quickview(env.element, { contentTemplate: buildTemplate() }, <any>mockBuilder.getBindings(), result, modalBox);
+      quickview = buildQuickview();
     });
 
     afterEach(() => {
@@ -29,6 +25,19 @@ export function QuickviewTest() {
       env = null;
       modalBox = null;
     });
+
+    const buildQuickview = (template = simpleTestTemplate()) => {
+      let mockBuilder = new Mock.MockEnvironmentBuilder();
+      env = mockBuilder.build();
+      result = FakeResults.createFakeResult();
+      modalBox = Simulate.modalBoxModule();
+      return new Quickview(env.element, { contentTemplate: template }, <any>mockBuilder.getBindings(), result, modalBox);
+    };
+
+    const simpleTestTemplate = () => {
+      let template = new Template(() => '<div class="coveo-quick-view-full-height"></div>');
+      return template;
+    };
 
     it('creates a modal box on open', done => {
       quickview.open();
@@ -69,9 +78,41 @@ export function QuickviewTest() {
       expect(hash).toBe(result.queryUid + '.' + result.index + '.' + StringUtils.hashCode(result.uniqueId));
     });
 
-    function buildTemplate() {
-      let template = new Template(() => '<div class="coveo-quick-view-full-height"></div>');
-      return template;
-    }
+    describe('when instantiating invalid templates', () => {
+      const verifyThatOpeningQuickViewDoesNotThrow = (quickview: Quickview, done) => {
+        spyOn(quickview.logger, 'warn');
+
+        quickview
+          .open()
+          .then(() => {
+            expect(quickview.logger.warn).toHaveBeenCalled();
+            done();
+          })
+          .catch(e => {
+            fail(e);
+            done();
+          });
+      };
+
+      it('should not throw an error when opening a template that throws an error', done => {
+        const badTemplate = new Template(() => {
+          throw 'Oh, the Humanity!';
+        });
+        quickview = buildQuickview(badTemplate);
+        verifyThatOpeningQuickViewDoesNotThrow(quickview, done);
+      });
+
+      it('should not throw an error when opening a template that returns null', done => {
+        const badTemplate = new Template(() => null);
+        quickview = buildQuickview(badTemplate);
+        verifyThatOpeningQuickViewDoesNotThrow(quickview, done);
+      });
+
+      it('should not throw an error when opening a template that returns undefined', done => {
+        const badTemplate = new Template(() => undefined);
+        quickview = buildQuickview(badTemplate);
+        verifyThatOpeningQuickViewDoesNotThrow(quickview, done);
+      });
+    });
   });
 }

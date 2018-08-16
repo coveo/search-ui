@@ -61,6 +61,13 @@ export function HistoryControllerTest() {
       expect(historyController.window.location.replace).not.toHaveBeenCalled();
     });
 
+    it('should not update the model hen simply replacing the state from an old value', () => {
+      historyController = new HistoryController(env.root, Mock.mockWindow(), env.queryStateModel, env.queryController);
+      spyOn(env.queryStateModel, 'setMultiple');
+      historyController.replaceState({ q: 'bar' });
+      expect(env.queryStateModel.setMultiple).not.toHaveBeenCalled();
+    });
+
     describe('with a fake HashUtilsModule', () => {
       let fakeHashUtils;
       beforeEach(() => {

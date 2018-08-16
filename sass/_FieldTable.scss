@@ -113,6 +113,6 @@
     }
   }
   .coveo-clickable {
-    @include clickableVibrant($dark-background: true);
+    @include clickable($dark-background: true);
   }
 }

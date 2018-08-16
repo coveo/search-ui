@@ -154,7 +154,7 @@
 
 .coveo-simplefilter-breadcrumb-value {
   @include clearButton('.coveo-simplefilter-breadcrumb-clear');
-  @include clickableVibrant();
+  @include clickable();
   display: inline-block;
   font-size: $font-size-smaller;
   margin-right: 20px;

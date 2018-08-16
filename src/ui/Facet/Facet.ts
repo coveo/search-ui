@@ -24,7 +24,7 @@ import { KEYBOARD, KeyboardUtils } from '../../utils/KeyboardUtils';
 import { SVGDom } from '../../utils/SVGDom';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { Utils } from '../../utils/Utils';
-import { analyticsActionCauseList, IAnalyticsFacetMeta } from '../Analytics/AnalyticsActionListMeta';
+import { analyticsActionCauseList, IAnalyticsFacetMeta, IAnalyticsFacetSortMeta } from '../Analytics/AnalyticsActionListMeta';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { ComponentOptions, IFieldOption, IQueryExpression } from '../Base/ComponentOptions';
@@ -165,14 +165,19 @@ export class Facet extends Component {
      * If you have two facets with the same field on the same page, you should specify an `id` value for at least one of
      * those two facets. This `id` must be unique among the facets.
      *
-     * Whitespace characters are automatically removed from the `id` value.
+     * Non-word characters except @ ( `[^a-zA-Z0-9@]+` ) are automatically removed from the `id` value.
      *
      * Default value is the [`field`]{@link Facet.options.field} option value.
      */
     id: ComponentOptions.buildStringOption({
       postProcessing: (value: string, options: IFacetOptions) => {
         if (value) {
-          return value.replace(/\s/g, '');
+          // All non word characters, except @ (the default character that specifies a field in the index)
+          const modified = value.replace(/[^a-zA-Z0-9@]+/g, '');
+          if (Utils.isNullOrEmptyString(modified)) {
+            return options.field as string;
+          }
+          return modified;
         }
         return options.field as string;
       }
@@ -1061,6 +1066,15 @@ export class Facet extends Component {
     this.ensureDom();
     if (this.options.sortCriteria != criteria) {
       this.options.sortCriteria = criteria;
+      this.usageAnalytics.logCustomEvent<IAnalyticsFacetSortMeta>(
+        analyticsActionCauseList.facetUpdateSort,
+        {
+          criteria,
+          facetId: this.options.id,
+          facetTitle: this.options.title
+        },
+        this.element
+      );
       this.triggerNewQuery();
     }
   }

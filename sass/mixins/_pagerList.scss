@@ -12,7 +12,7 @@
   list-style: none;
   display: inline-block;
   vertical-align: baseline;
-  @include clickableVibrant();
+  @include clickable();
   font-size: $font-size-smaller;
   &.coveo-active,
   &:hover {

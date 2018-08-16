@@ -217,13 +217,7 @@ export class Debug extends RootComponent {
     const title = $$(this.modalBox.wrapper).find('.coveo-modal-header');
     if (title) {
       if (!this.debugHeader) {
-        this.debugHeader = new DebugHeader(
-          this.element,
-          title,
-          this.bindings,
-          (value: string) => this.search(value, build.body),
-          this.stackDebug
-        );
+        this.debugHeader = new DebugHeader(this, title, (value: string) => this.search(value, build.body), this.stackDebug);
       } else {
         this.debugHeader.moveTo(title);
         this.updateSearchFunctionnality(build);
