@@ -324,6 +324,24 @@ export function FacetTest() {
         expect(test.cmp.options.id).toBe('anotherrandomvalue');
       });
 
+      it('id should trim all non alpha-numeric characters except @', () => {
+        test = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, {
+          field: '@mycoolfield2',
+          id: '&!@#$%^&*()qwerty*/\\=+-12345'
+        });
+
+        expect(test.cmp.options.id).toBe('@qwerty12345');
+      });
+
+      it('id should fallback to the facet field if it contains only non alpha-numeric characters', () => {
+        test = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, {
+          field: '@mycoolfield2',
+          id: '!#$%^&*()-='
+        });
+
+        expect(test.cmp.options.id).toBe('@mycoolfield2');
+      });
+
       it('isMultiValueField should trigger another query to update delta', () => {
         test = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, {
           field: '@field',

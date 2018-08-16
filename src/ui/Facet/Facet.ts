@@ -165,14 +165,19 @@ export class Facet extends Component {
      * If you have two facets with the same field on the same page, you should specify an `id` value for at least one of
      * those two facets. This `id` must be unique among the facets.
      *
-     * Whitespace characters are automatically removed from the `id` value.
+     * Non-word characters except @ ( `[^a-zA-Z0-9@]+` ) are automatically removed from the `id` value.
      *
      * Default value is the [`field`]{@link Facet.options.field} option value.
      */
     id: ComponentOptions.buildStringOption({
       postProcessing: (value: string, options: IFacetOptions) => {
         if (value) {
-          return value.replace(/\s/g, '');
+          // All non word characters, except @ (the default character that specifies a field in the index)
+          const modified = value.replace(/[^a-zA-Z0-9@]+/g, '');
+          if (Utils.isNullOrEmptyString(modified)) {
+            return options.field as string;
+          }
+          return modified;
         }
         return options.field as string;
       }
