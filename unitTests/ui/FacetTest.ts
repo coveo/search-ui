@@ -839,11 +839,11 @@ export function FacetTest() {
         });
 
         it(`when the master facet has one excluded value,
-        it removes the coveo-facet-dependent class from the dependent facet`, () => {
+        it does not remove the coveo-facet-dependent class from the dependent facet`, () => {
           masterFacet.cmp.excludeValue('excluded master value');
           Simulate.query(test.env);
 
-          expect($$(test.cmp.element).hasClass('coveo-facet-dependent')).toBe(false);
+          expect($$(test.cmp.element).hasClass('coveo-facet-dependent')).toBe(true);
         });
 
         describe(`given the master and dependent facet both have one selected and one excluded value`, () => {
@@ -877,19 +877,18 @@ export function FacetTest() {
             expect(test.cmp.getExcludedValues().length).toBe(0);
           });
 
-          it(`when deselecting one of the master facet active options,
+          it(`when deselecting the master facet excluded option,
           it does not reset the dependent facet`, () => {
-            masterFacet.cmp.deselectValue(selectedMasterValue);
+            masterFacet.cmp.deselectValue(excludedMasterValue);
             triggerStateChangeOnDependentFacet();
 
             expect(test.cmp.getSelectedValues().length).toBe(1);
             expect(test.cmp.getExcludedValues().length).toBe(1);
           });
 
-          it(`when deselecting both the master facet active options,
+          it(`when deselecting the master facet selected option,
           it resets the dependent facet`, () => {
             masterFacet.cmp.deselectValue(selectedMasterValue);
-            masterFacet.cmp.deselectValue(excludedMasterValue);
             triggerStateChangeOnDependentFacet();
 
             expect(test.cmp.getSelectedValues().length).toBe(0);
