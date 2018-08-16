@@ -1,5 +1,5 @@
 /**
- * Argument sent to all handlers bound on {@link InitializationEvents.beforeInitialization}, {@link InitializationEvents.afterComponentsInitialization}, and {@link InitializationEvents.afterInitialization}.
+ * Argument sent to all handlers bound on {@link InitializationEvents.afterComponentsInitialization}, and {@link InitializationEvents.afterInitialization}.
  */
 export interface IInitializationEventArgs {
   defer: Promise<any>[];

@@ -233,7 +233,7 @@ export class Initialization {
    * @param options The options for all components (eg: {Searchbox : {enableSearchAsYouType : true}}).
    * @param initSearchInterfaceFunction The function to execute to create the {@link SearchInterface} component. Different init call will create different {@link SearchInterface}.
    */
-  public static async initializeFramework(
+  public static initializeFramework(
     element: HTMLElement,
     options: any,
     initSearchInterfaceFunction: (...args: any[]) => IInitResult
@@ -242,9 +242,9 @@ export class Initialization {
     const alreadyInitialized = Component.get(element, QueryController, true);
     if (alreadyInitialized) {
       this.logger.error('This DOM element has already been initialized as a search interface, skipping initialization', element);
-      return {
+      return Promise.resolve({
         elem: element
-      };
+      });
     }
 
     options = Initialization.resolveDefaultOptions(element, options);
@@ -258,7 +258,7 @@ export class Initialization {
           )
         );
       });
-      return await Promise.all(promisesWithErrorsHandledIndividually).catch(error =>
+      return Promise.all(promisesWithErrorsHandledIndividually).catch(error =>
         this.logger.error(
           `An unexpected error occurred when trying to defer the \"${event}\" event. All defers will be ignored.`,
           `Error: ${error}`
@@ -271,11 +271,13 @@ export class Initialization {
         defer: []
       };
       $$(element).trigger(eventType, initializationEventArgs);
-      await waitForAllPromisesToFinish(eventType, initializationEventArgs.defer);
+      if (initializationEventArgs.defer.length > 0) {
+        await waitForAllPromisesToFinish(eventType, initializationEventArgs.defer);
+      }
     };
 
-    Initialization.performInitFunctionsOption(options, InitializationEvents.beforeInitialization);
-    await triggerInitializationEventWithArguments(InitializationEvents.beforeInitialization);
+    Initialization.performInitFunctionsOption(options, InitializationEvents.afterComponentsInitialization);
+    $$(element).trigger(InitializationEvents.beforeInitialization);
 
     const toExecuteOnceSearchInterfaceIsInitialized = async () => {
       const result = await Initialization.initExternalComponents(element, options);
@@ -310,19 +312,20 @@ export class Initialization {
     // eg : CoveoJsSearch.Lazy.js was included in the page
     // this means that we can only execute the function after the promise has resolved
     if (resultOfSearchInterfaceInitialization.isLazyInit) {
-      await resultOfSearchInterfaceInitialization.initResult;
-      await toExecuteOnceSearchInterfaceIsInitialized();
-      return {
-        elem: element
-      };
+      return resultOfSearchInterfaceInitialization.initResult.then(toExecuteOnceSearchInterfaceIsInitialized).then(() => {
+        return {
+          elem: element
+        };
+      });
     } else {
       // Else, we are executing an "eager" initialization, which returns void;
       // eg : CoveoJsSearch.js was included in the page
       // this mean that this function gets executed immediately
-      await toExecuteOnceSearchInterfaceIsInitialized();
-      return {
-        elem: element
-      };
+      return toExecuteOnceSearchInterfaceIsInitialized().then(() => {
+        return {
+          elem: element
+        };
+      });
     }
   }
 

@@ -68,43 +68,46 @@ export function RegisteredNamedMethodsTest() {
       expect(env.queryStateModel.get).toHaveBeenCalledWith('q');
     });
 
-    it('should allow to call init correctly', async done => {
-      await RegisteredNamedMethod.init(root, {
-        Searchbox: { addSearchButton: false },
-        SearchInterface: { autoTriggerQuery: false }
-      });
+    it('should allow to call init correctly', () => {
+      expect(() =>
+        RegisteredNamedMethod.init(root, {
+          Searchbox: { addSearchButton: false },
+          SearchInterface: { autoTriggerQuery: false }
+        })
+      ).not.toThrow();
       expect((<Component>Component.get(searchbox)).options.addSearchButton).toBe(false);
-      done();
     });
 
-    it('should allow to call initSearchbox correctly', async done => {
-      await RegisteredNamedMethod.initSearchbox(root, '/search', {
-        Searchbox: { addSearchButton: false },
-        SearchInterface: { autoTriggerQuery: false }
-      });
+    it('should allow to call initSearchbox correctly', () => {
+      expect(() =>
+        RegisteredNamedMethod.initSearchbox(root, '/search', {
+          Searchbox: { addSearchButton: false },
+          SearchInterface: { autoTriggerQuery: false }
+        })
+      ).not.toThrow();
+
       expect((<Component>Component.get(searchbox)).options.addSearchButton).toBe(false);
       expect((<Component>Component.get(searchbox)).options.triggerQueryOnClear).toBe(false);
-      done();
     });
 
-    it('should allow to call initSearchbox if the searchbox is on the root of the element', async done => {
-      await RegisteredNamedMethod.initSearchbox(searchbox, '/search', {
-        Searchbox: { addSearchButton: false },
-        SearchInterface: { autoTriggerQuery: false }
-      });
+    it('should allow to call initSearchbox if the searchbox is on the root of the element', () => {
+      expect(() =>
+        RegisteredNamedMethod.initSearchbox(searchbox, '/search', {
+          Searchbox: { addSearchButton: false },
+          SearchInterface: { autoTriggerQuery: false }
+        })
+      ).not.toThrow();
 
       expect(<Component>Component.get(searchbox, Searchbox) instanceof Searchbox).toBe(true);
       expect(<Component>Component.get(searchbox, SearchInterface) instanceof SearchInterface).toBe(true);
-      done();
     });
 
     it('should allow to call init recommendation correctly', done => {
-      expect(
-        async () =>
-          await RegisteredNamedMethod.initRecommendation(root, undefined, undefined, {
-            Searchbox: { addSearchButton: false },
-            SearchInterface: { autoTriggerQuery: false }
-          })
+      expect(() =>
+        RegisteredNamedMethod.initRecommendation(root, undefined, undefined, {
+          Searchbox: { addSearchButton: false },
+          SearchInterface: { autoTriggerQuery: false }
+        })
       ).not.toThrow();
 
       Defer.defer(() => {
@@ -118,14 +121,13 @@ export function RegisteredNamedMethodsTest() {
       expect(env.queryController.executeQuery).toHaveBeenCalled();
     });
 
-    it('should allow to call get', async done => {
-      await RegisteredNamedMethod.init(root, {
+    it('should allow to call get', () => {
+      RegisteredNamedMethod.init(root, {
         Searchbox: { addSearchButton: false },
         SearchInterface: { autoTriggerQuery: false }
       });
 
       expect(RegisteredNamedMethod.get(searchbox) instanceof Searchbox).toBe(true);
-      done();
     });
 
     it('should allow to call result', () => {
@@ -143,18 +145,17 @@ export function RegisteredNamedMethodsTest() {
       expect(RegisteredNamedMethod.result(searchbox)).toBe(fakeResult);
     });
 
-    it('should allow to pass options ahead of init', async done => {
+    it('should allow to pass options ahead of init', () => {
       RegisteredNamedMethod.options(root, { Searchbox: { enableOmnibox: true } });
-      await RegisteredNamedMethod.init(root, {
+      RegisteredNamedMethod.init(root, {
         Searchbox: { addSearchButton: false },
         SearchInterface: { autoTriggerQuery: false }
       });
       expect((<Component>Component.get(searchbox)).options.enableOmnibox).toBe(true);
-      done();
     });
 
-    it('should allow to patch', async done => {
-      await RegisteredNamedMethod.init(root, {
+    it('should allow to patch', () => {
+      RegisteredNamedMethod.init(root, {
         Searchbox: { addSearchButton: false },
         SearchInterface: { autoTriggerQuery: false }
       });
@@ -162,7 +163,6 @@ export function RegisteredNamedMethodsTest() {
       RegisteredNamedMethod.patch(searchbox, 'disable', spy);
       (<Searchbox>Component.get(searchbox)).disable();
       expect(spy).toHaveBeenCalled();
-      done();
     });
 
     describe('with analytics', () => {
