@@ -400,27 +400,32 @@ export function InitializationTest() {
     });
 
     describe('when initializing a Search Interface', () => {
-      let spyAfterComponentsInitialized;
+      let spyAfterComponentsInitialized: jasmine.Spy;
       const doInit = () => {
         return Initialization.initializeFramework(root, searchInterfaceOptions, () => {
-          const initResult = Initialization.initSearchInterface(root, searchInterfaceOptions);
-          return initResult;
+          return Initialization.initSearchInterface(root, searchInterfaceOptions);
         });
       };
+
       beforeEach(() => {
         spyAfterComponentsInitialized = jasmine.createSpy('afterComponentsInitialized');
         $$(root).on(InitializationEvents.afterComponentsInitialization, spyAfterComponentsInitialized);
       });
+
       afterEach(() => {
         spyAfterComponentsInitialized = null;
       });
+
       it('will trigger the afterComponentsInitialized event handler', async done => {
         await doInit();
         expect(spyAfterComponentsInitialized).toHaveBeenCalled();
         done();
       });
+
       describe('when afterComponentsInitialized is deferred by a component', () => {
-        let deferSpy;
+        let deferSpy: jasmine.Spy;
+        let afterDeferInitializationSpy: jasmine.Spy;
+
         beforeEach(() => {
           deferSpy = jasmine.createSpy('initializationSpy');
           $$(root).on(InitializationEvents.afterComponentsInitialization, (event, data: IInitializationEventArgs) => {
@@ -431,18 +436,61 @@ export function InitializationTest() {
               })
             );
           });
+          afterDeferInitializationSpy = jasmine.createSpy('afterInitializationSpy');
+          $$(root).on(InitializationEvents.afterInitialization, afterDeferInitializationSpy);
         });
+
         afterEach(() => {
           deferSpy = null;
         });
+
         it('will trigger the deferred promise', async done => {
           await doInit();
           expect(deferSpy).toHaveBeenCalled();
           done();
         });
+
+        it('will execute the rest of the pipeline after the promises', async done => {
+          await doInit();
+          (<any>expect(deferSpy)).toHaveBeenCalledBefore(afterDeferInitializationSpy);
+          done();
+        });
       });
+
+      describe('when afterComponentsInitialized is deferred by multiple components', () => {
+        let deferSpy: jasmine.Spy;
+        let afterDeferInitializationSpy: jasmine.Spy;
+
+        beforeEach(() => {
+          deferSpy = jasmine.createSpy('initializationSpy');
+          $$(root).on(InitializationEvents.afterComponentsInitialization, (event, data: IInitializationEventArgs) => {
+            data.defer.push(Promise.resolve());
+            data.defer.push(
+              new Promise(resolve => {
+                deferSpy();
+                resolve();
+              })
+            );
+          });
+          afterDeferInitializationSpy = jasmine.createSpy('afterInitializationSpy');
+          $$(root).on(InitializationEvents.afterInitialization, afterDeferInitializationSpy);
+        });
+
+        afterEach(() => {
+          afterDeferInitializationSpy = null;
+        });
+
+        it('will wait for all the promises before executing the rest of the pipeline after the promises', async done => {
+          await doInit();
+          (<any>expect(deferSpy)).toHaveBeenCalledBefore(afterDeferInitializationSpy);
+          done();
+        });
+      });
+
       describe('when afterComponentsInitialized is deferred by a failing promise', () => {
-        let deferSpy;
+        let deferSpy: jasmine.Spy;
+        let afterDeferInitializationSpy: jasmine.Spy;
+
         beforeEach(() => {
           deferSpy = jasmine.createSpy('initializationSpy');
           $$(root).on(InitializationEvents.afterComponentsInitialization, (event, data: IInitializationEventArgs) => {
@@ -454,13 +502,46 @@ export function InitializationTest() {
               })
             );
           });
+          afterDeferInitializationSpy = jasmine.createSpy('afterInitializationSpy');
+          $$(root).on(InitializationEvents.afterInitialization, afterDeferInitializationSpy);
         });
+
         afterEach(() => {
           deferSpy = null;
+          afterDeferInitializationSpy = null;
         });
+
         it('will skip the rejected promise and wait for the working one', async done => {
           await doInit();
           expect(deferSpy).toHaveBeenCalled();
+          done();
+        });
+
+        it('will execute the rest of the pipeline after the promises', async done => {
+          await doInit();
+          (<any>expect(deferSpy)).toHaveBeenCalledBefore(afterDeferInitializationSpy);
+          done();
+        });
+      });
+
+      describe('when afterComponentsInitialized is deferred by an invalid promise that triggers a fatal error', () => {
+        let afterComponentsInitializationSpy;
+
+        beforeEach(() => {
+          afterComponentsInitializationSpy = jasmine.createSpy('initializationSpy');
+          $$(root).on(InitializationEvents.afterComponentsInitialization, (event, data: IInitializationEventArgs) => {
+            data.defer.push(null);
+          });
+          $$(root).on(InitializationEvents.afterComponentsInitialization, afterComponentsInitializationSpy);
+        });
+
+        afterEach(() => {
+          afterComponentsInitializationSpy = null;
+        });
+
+        it('will continue the execution of the pipeline without crashing', async done => {
+          await doInit();
+          expect(afterComponentsInitializationSpy).toHaveBeenCalled();
           done();
         });
       });

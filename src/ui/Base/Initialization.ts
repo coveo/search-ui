@@ -250,33 +250,37 @@ export class Initialization {
     options = Initialization.resolveDefaultOptions(element, options);
 
     const waitForAllPromisesToFinish = async (eventType: string, promises: Promise<any>[]) => {
-      const promisesWithErrorsHandledIndividually = promises.map(p => {
-        return p.catch(error =>
-          this.logger.warn(
-            `An error occurred when trying to defer the \"${eventType}\" event. The defer will be ignored.`,
-            `Error: ${error}`
-          )
-        );
-      });
-      return Promise.all(promisesWithErrorsHandledIndividually).catch(error =>
+      try {
+        const promisesWithErrorsHandledIndividually = promises.map(p => {
+          return p.catch(error =>
+            this.logger.warn(
+              `An error occurred when trying to defer the \"${eventType}\" event. The defer will be ignored.`,
+              `Error: ${error}`
+            )
+          );
+        });
+        return Promise.all(promisesWithErrorsHandledIndividually);
+      } catch (error) {
         this.logger.error(
           `An unexpected error occurred when trying to defer the \"${event}\" event. All defers will be ignored.`,
           `Error: ${error}`
-        )
-      );
+        );
+      }
     };
 
-    const triggerInitializationEventWithArguments = async (eventType: string) => {
+    const triggerInitializationEventWithArguments = (eventType: string) => {
       const initializationEventArgs: IInitializationEventArgs = {
         defer: []
       };
       $$(element).trigger(eventType, initializationEventArgs);
       if (initializationEventArgs.defer.length > 0) {
-        await waitForAllPromisesToFinish(eventType, initializationEventArgs.defer);
+        return waitForAllPromisesToFinish(eventType, initializationEventArgs.defer);
+      } else {
+        return Promise.resolve();
       }
     };
 
-    Initialization.performInitFunctionsOption(options, InitializationEvents.afterComponentsInitialization);
+    Initialization.performInitFunctionsOption(options, InitializationEvents.beforeInitialization);
     $$(element).trigger(InitializationEvents.beforeInitialization);
 
     const toExecuteOnceSearchInterfaceIsInitialized = async () => {
