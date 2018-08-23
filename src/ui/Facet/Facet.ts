@@ -173,7 +173,7 @@ export class Facet extends Component {
       postProcessing: (value: string, options: IFacetOptions) => {
         if (value) {
           // All non-word characters, except @ (the default character that specifies a field in the index)
-          // and characters that do no need to ne encoded in the URL : - @ $ _ . + ! * ' ( ) , ,
+          // and characters that do no need to be encoded in the URL : - @ $ _ . + ! * ' ( ) , ,
           const modified = value.replace(/[^a-zA-Z0-9-@$_.+!*'(),,]+/g, '');
           if (Utils.isNullOrEmptyString(modified)) {
             return options.field as string;
