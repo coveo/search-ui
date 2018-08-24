@@ -82,8 +82,7 @@ export class ResponsiveDropdown {
           this.open();
         }
       })
-      .withBlurAction(() => this.close())
-      .withLabel('yo')
+      .withLabel('Filters')
       .build();
   }
 
