@@ -75,15 +75,8 @@ export class ResponsiveDropdown {
   private bindOnClickDropdownHeaderEvent() {
     new AccessibleButton()
       .withElement(this.dropdownHeader.element)
-      .withSelectAction(() => {
-        if (this.isOpened) {
-          this.close();
-        } else {
-          this.open();
-        }
-      })
-      .withBlurAction(() => this.close())
-      .withLabel('yo')
+      .withSelectAction(() => (this.isOpened ? this.close() : this.open()))
+      .withLabel('Filters')
       .build();
   }
 
