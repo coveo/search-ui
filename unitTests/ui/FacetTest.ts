@@ -324,19 +324,19 @@ export function FacetTest() {
         expect(test.cmp.options.id).toBe('anotherrandomvalue');
       });
 
-      it('id should trim all non alpha-numeric characters except @', () => {
+      it("id should trim all non alpha-numeric characters except - @ $ _ . + ! * ' ( ) , , ", () => {
         test = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, {
           field: '@mycoolfield2',
-          id: '&!@#$%^&*()qwerty*/\\=+-12345'
+          id: "&@!#$%^&*(')._qwerty,,/\\=+-12345"
         });
 
-        expect(test.cmp.options.id).toBe('@qwerty12345');
+        expect(test.cmp.options.id).toBe("@!$*(')._qwerty,,+-12345");
       });
 
-      it('id should fallback to the facet field if it contains only non alpha-numeric characters', () => {
+      it('id should fallback to the facet field if it contains only characters that need to be encoded in the URL', () => {
         test = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, {
           field: '@mycoolfield2',
-          id: '!#$%^&*()-='
+          id: ';/?:=& "<>#%{}|^~[]`'
         });
 
         expect(test.cmp.options.id).toBe('@mycoolfield2');
