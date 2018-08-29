@@ -1,6 +1,6 @@
 {
   "name": "coveo-search-ui",
-  "version": "2.0.4",
+  "version": "2.0.5",
   "description": "Coveo JavaScript Search Framework",
   "main": "./bin/js/CoveoJsSearch.js",
   "types": "./bin/ts/CoveoJsSearch.d.ts",
@@ -18,14 +18,18 @@
     "injectTag": "gulp injectTag",
     "heroku-postbuild": "npm run build",
     "start": "node index.js",
-    "zipForGitReleases": "gulp zip",
+    "zipForGitReleases": "gulp zipForGitReleases",
+    "zipForVeracode": "gulp zipForVeracode",
     "uploadCoverage": "gulp uploadCoverage",
     "validateTypeDefinitions": "gulp validateDefs",
     "snyk-protect": "snyk protect",
     "prepare": "npm run snyk-protect"
   },
   "lint-staged": {
-    "*.{js,ts,json,scss}": ["prettier --write", "git add"]
+    "*.{js,ts,json,scss}": [
+      "prettier --write",
+      "git add"
+    ]
   },
   "prettier": {
     "printWidth": 140,
@@ -35,13 +39,33 @@
     "type": "git",
     "url": "git+https://github.com/coveo/search-ui.git"
   },
-  "keywords": ["coveo", "search", "ui", "framework", "js", "typescript", "jssearch", "jsui"],
+  "keywords": [
+    "coveo",
+    "search",
+    "ui",
+    "framework",
+    "js",
+    "typescript",
+    "jssearch",
+    "jsui"
+  ],
   "author": "Coveo <sandbox_JSUI@coveo.com> (http://source.coveo.com/)",
   "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/coveo/search-ui/issues"
   },
-  "files": ["bin", "pages", "gulpTasks", "images", "templates", "strings", "filetypes", "lib", "src", "typings"],
+  "files": [
+    "bin",
+    "pages",
+    "gulpTasks",
+    "images",
+    "templates",
+    "strings",
+    "filetypes",
+    "lib",
+    "src",
+    "typings"
+  ],
   "homepage": "https://github.com/coveo/search-ui#readme",
   "devDependencies": {
     "@salesforce-ux/design-system": "^2.6.0",
@@ -123,7 +147,7 @@
     "ts-loader": "^2.0.3",
     "tvm": "^0.8.14",
     "typedoc": "https://github.com/coveord/typedoc",
-    "typescript": "^2.8.1",
+    "typescript": "2.8.1",
     "walk": "^2.3.9",
     "webpack": "^3.10.0",
     "webpack-bundle-analyzer": "^2.9.1",

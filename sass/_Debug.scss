@@ -16,7 +16,7 @@ $color_duration: #33b;
   }
   .coveo-modal-header {
     a {
-      @include clickableVibrant();
+      @include clickable();
     }
     height: auto;
     min-height: 80px;

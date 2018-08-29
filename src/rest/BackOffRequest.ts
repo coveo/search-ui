@@ -1,4 +1,4 @@
-import { backOff as originalBackOff, IBackOffRequest} from 'exponential-backoff';
+import { backOff as originalBackOff, IBackOffRequest } from 'exponential-backoff';
 
 let backOff = originalBackOff;
 

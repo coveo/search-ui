@@ -261,4 +261,5 @@ export function requestAnimationFrame(callback: () => void) {
   }
   return setTimeout(callback);
 }
+
 doMagicBoxExport();
