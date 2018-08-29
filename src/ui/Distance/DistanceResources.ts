@@ -53,7 +53,7 @@ export class DistanceResources extends Component {
   };
   private latitude: number;
   private longitude: number;
-  private lastPositionRequest: Promise<IGeolocationPosition | void>;
+  private lastPositionRequest: Promise<void>;
   private isFirstPositionResolved = false;
 
   /**
@@ -242,8 +242,16 @@ export class DistanceResources extends Component {
    *
    * @returns {Promise<IGeolocationPosition>} A promise of the last resolved position value.
    */
-  public getLastPositionRequest(): Promise<IGeolocationPosition> {
-    return this.lastPositionRequest || Promise.reject('No position request was executed yet.');
+  public async getLastPositionRequest(): Promise<IGeolocationPosition> {
+    if (!!this.lastPositionRequest) {
+      await this.lastPositionRequest;
+      return {
+        latitude: this.latitude,
+        longitude: this.longitude
+      };
+    } else {
+      Promise.reject('No position request was executed yet.');
+    }
   }
 
   private sendAnalytics() {
@@ -269,7 +277,7 @@ export class DistanceResources extends Component {
     }
   }
 
-  private async tryToSetPositionFromProviders(providers: IGeolocationPositionProvider[]): Promise<IGeolocationPosition> {
+  private async tryToSetPositionFromProviders(providers: IGeolocationPositionProvider[]): Promise<void> {
     try {
       const position = await this.tryGetPositionFromProviders(providers);
       if (position) {
@@ -277,7 +285,6 @@ export class DistanceResources extends Component {
       } else {
         this.triggerDistanceNotSet();
       }
-      return position;
     } catch (error) {
       this.logger.error('An error occurred while trying to resolve the current position.', error);
       this.triggerDistanceNotSet();

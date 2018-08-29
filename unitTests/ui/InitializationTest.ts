@@ -412,10 +412,6 @@ export function InitializationTest() {
         $$(root).on(InitializationEvents.afterComponentsInitialization, spyAfterComponentsInitialized);
       });
 
-      afterEach(() => {
-        spyAfterComponentsInitialized = null;
-      });
-
       it('will trigger the afterComponentsInitialized event handler', async done => {
         await doInit();
         expect(spyAfterComponentsInitialized).toHaveBeenCalled();
@@ -438,10 +434,6 @@ export function InitializationTest() {
           });
           afterDeferInitializationSpy = jasmine.createSpy('afterInitializationSpy');
           $$(root).on(InitializationEvents.afterInitialization, afterDeferInitializationSpy);
-        });
-
-        afterEach(() => {
-          deferSpy = null;
         });
 
         it('will trigger the deferred promise', async done => {
@@ -476,10 +468,6 @@ export function InitializationTest() {
           $$(root).on(InitializationEvents.afterInitialization, afterDeferInitializationSpy);
         });
 
-        afterEach(() => {
-          afterDeferInitializationSpy = null;
-        });
-
         it('will wait for all the promises before executing the rest of the pipeline after the promises', async done => {
           await doInit();
           (<any>expect(deferSpy)).toHaveBeenCalledBefore(afterDeferInitializationSpy);
@@ -506,11 +494,6 @@ export function InitializationTest() {
           $$(root).on(InitializationEvents.afterInitialization, afterDeferInitializationSpy);
         });
 
-        afterEach(() => {
-          deferSpy = null;
-          afterDeferInitializationSpy = null;
-        });
-
         it('will skip the rejected promise and wait for the working one', async done => {
           await doInit();
           expect(deferSpy).toHaveBeenCalled();
@@ -535,10 +518,6 @@ export function InitializationTest() {
           $$(root).on(InitializationEvents.afterComponentsInitialization, afterComponentsInitializationSpy);
         });
 
-        afterEach(() => {
-          afterComponentsInitializationSpy = null;
-        });
-
         it('will continue the execution of the pipeline without crashing', async done => {
           await doInit();
           expect(afterComponentsInitializationSpy).toHaveBeenCalled();
@@ -560,10 +539,6 @@ export function InitializationTest() {
 
       beforeEach(() => {
         searchInterfaceOptions['SearchInterface'].autoTriggerQuery = true;
-      });
-
-      afterEach(() => {
-        spyOnQuery = null;
       });
 
       it('will trigger a query automatically by default', done => {

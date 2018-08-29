@@ -87,7 +87,7 @@ export function DistanceResourcesTest() {
         test = Mock.optionsComponentSetup<DistanceResources, IDistanceOptions>(DistanceResources, defaultMockOptions);
       });
 
-      it('should should register an afterComponentsInitialization defer', () => {
+      it('should register an afterComponentsInitialization defer', () => {
         triggerAfterComponentsInitialization();
 
         expect(afterComponentsInitialization.defer.length).toBe(1);
@@ -118,7 +118,7 @@ export function DistanceResourcesTest() {
         expect(test.env.queryController.executeQuery).toHaveBeenCalledTimes(2);
       });
 
-      it('should send a search event triggered caused by the positionSet', () => {
+      it('should send an analytics search event with "positionSet" as the cause', () => {
         test.cmp.setPosition(latitudeForANicePlace, longitudeForANicePlace);
 
         triggerOnBuildingQuery();
