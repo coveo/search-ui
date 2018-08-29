@@ -1,11 +1,11 @@
-import { Template, IFieldsToMatch, TemplateRole } from './Template';
-import { Utils } from '../../utils/Utils';
-import { TemplateConditionEvaluator } from './TemplateConditionEvaluator';
-import { ComponentOptions, IComponentOptionsFieldsOption } from '../Base/ComponentOptions';
+import { chain, each, map } from 'underscore';
 import { $$, Dom } from '../../utils/Dom';
+import { Utils } from '../../utils/Utils';
+import { ComponentOptions, IComponentOptionsFieldsOption } from '../Base/ComponentOptions';
 import { Initialization } from '../Base/Initialization';
 import { ValidLayout } from '../ResultLayoutSelector/ValidLayout';
-import { map, chain, each } from 'underscore';
+import { IFieldsToMatch, Template, TemplateRole } from './Template';
+import { TemplateConditionEvaluator } from './TemplateConditionEvaluator';
 
 export interface ITemplateFromStringProperties {
   condition?: string;
@@ -83,6 +83,10 @@ export class TemplateFromAScriptTag {
 
   parseFieldsAttributes(): IFieldsToMatch[] {
     const dataSet = this.scriptTag.dataset;
+    return TemplateFromAScriptTag.parseFieldsAttributes(dataSet);
+  }
+
+  static parseFieldsAttributes(dataSet: DOMStringMap): IFieldsToMatch[] {
     return chain(dataSet)
       .map((value, key: string) => {
         const match = key.match(/field([a-zA-Z0-9_\.]*)/i);
@@ -118,6 +122,11 @@ export class TemplateFromAScriptTag {
     container = document.createElement('code')
   ): HTMLElement {
     container.innerHTML = template;
+    const scriptTag = container.querySelector('script');
+    if (scriptTag && scriptTag.dataset) {
+      const parsedFields = TemplateFromAScriptTag.parseFieldsAttributes(scriptTag.dataset);
+      properties.fieldsToMatch = properties.fieldsToMatch ? [...properties.fieldsToMatch, ...parsedFields] : parsedFields;
+    }
     if (properties.condition != null) {
       container.setAttribute('data-condition', properties.condition);
     }
