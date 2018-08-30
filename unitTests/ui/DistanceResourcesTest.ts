@@ -14,6 +14,7 @@ import { InitializationEvents } from '../../src/EventsModules';
 import { QueryEvents, IBuildingQueryEventArgs } from '../../src/events/QueryEvents';
 import { IQueryFunction } from '../../src/rest/QueryFunction';
 import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
+import { IInitializationEventArgs } from '../../src/events/InitializationEvents';
 
 export function DistanceResourcesTest() {
   describe('DistanceResources', () => {
@@ -39,9 +40,15 @@ export function DistanceResourcesTest() {
 
     function triggerOnBuildingQuery() {
       $$(test.env.root).trigger(QueryEvents.buildingQuery, buildingQueryArgs);
+      test.env.queryController.firstQuery = false;
+    }
+
+    function triggerAfterComponentsInitialization() {
+      $$(test.env.root).trigger(InitializationEvents.afterComponentsInitialization, afterComponentsInitialization);
     }
 
     let buildingQueryArgs: IBuildingQueryEventArgs;
+    let afterComponentsInitialization: IInitializationEventArgs;
     let defaultMockOptions: IDistanceOptions;
     let test: Mock.IBasicComponentSetup<DistanceResources>;
 
@@ -50,6 +57,9 @@ export function DistanceResourcesTest() {
         cancel: false,
         queryBuilder: new QueryBuilder(),
         searchAsYouType: false
+      };
+      afterComponentsInitialization = <IInitializationEventArgs>{
+        defer: []
       };
       defaultMockOptions = <IDistanceOptions>{
         distanceField: distanceField,
@@ -77,17 +87,10 @@ export function DistanceResourcesTest() {
         test = Mock.optionsComponentSetup<DistanceResources, IDistanceOptions>(DistanceResources, defaultMockOptions);
       });
 
-      it('should cancel the query when the position is not set', () => {
-        triggerOnBuildingQuery();
+      it('should register an afterComponentsInitialization defer', () => {
+        triggerAfterComponentsInitialization();
 
-        expect(buildingQueryArgs.cancel).toBe(true);
-      });
-
-      it('should trigger a query the first time the position is resolved', () => {
-        test.cmp.setPosition(latitudeForANicePlace, longitudeForANicePlace);
-        test.cmp.setPosition(1.1, 2.3);
-
-        expect(test.env.queryController.executeQuery).toHaveBeenCalledTimes(1);
+        expect(afterComponentsInitialization.defer.length).toBe(1);
       });
 
       it('should add a new query function with the given position after the position is set', () => {
@@ -96,47 +99,6 @@ export function DistanceResourcesTest() {
         triggerOnBuildingQuery();
 
         expect(buildingQueryArgs.queryBuilder.queryFunctions).toContain(expectedQueryFunctionForANicePlace);
-      });
-
-      describe('with usage analytics', () => {
-        let fakePendingSearchEvent;
-
-        beforeEach(() => {
-          fakePendingSearchEvent = {};
-          fakePendingSearchEvent.templateSearchEvent = {
-            actionCause: 'foo',
-            actionType: 'bar'
-          };
-          fakePendingSearchEvent.getEventMeta = () => ({ baz: 'buzz' });
-        });
-
-        afterEach(() => {
-          fakePendingSearchEvent = null;
-        });
-
-        it('should send the event associated with the blocked query', () => {
-          const spy = jasmine.createSpy('getPendingSearchEvent').and.returnValue(fakePendingSearchEvent);
-          test.env.usageAnalytics.getPendingSearchEvent = <any>spy;
-          triggerOnBuildingQuery();
-          test.cmp.setPosition(latitudeForANicePlace, longitudeForANicePlace);
-
-          expect(test.env.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(
-            jasmine.objectContaining({
-              type: fakePendingSearchEvent.templateSearchEvent.actionType,
-              name: fakePendingSearchEvent.templateSearchEvent.actionCause
-            }),
-            jasmine.objectContaining({
-              baz: 'buzz'
-            })
-          );
-        });
-
-        it('should send basic event if there are none sent before the blocked query', () => {
-          triggerOnBuildingQuery();
-          test.cmp.setPosition(latitudeForANicePlace, longitudeForANicePlace);
-
-          expect(test.env.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(analyticsActionCauseList.positionSet, jasmine.any(Object));
-        });
       });
     });
 
@@ -154,6 +116,14 @@ export function DistanceResourcesTest() {
         test.cmp.setPosition(latitudeForANicePlace, longitudeForANicePlace);
 
         expect(test.env.queryController.executeQuery).toHaveBeenCalledTimes(2);
+      });
+
+      it('should send an analytics search event with "positionSet" as the cause', () => {
+        test.cmp.setPosition(latitudeForANicePlace, longitudeForANicePlace);
+
+        triggerOnBuildingQuery();
+
+        expect(test.env.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(analyticsActionCauseList.positionSet, jasmine.any(Object));
       });
     });
 
@@ -214,7 +184,7 @@ export function DistanceResourcesTest() {
         let spy = jasmine.createSpy('onPositionResolved');
         $$(test.env.element).on(DistanceEvents.onPositionResolved, spy);
 
-        $$(test.env.root).trigger(InitializationEvents.afterComponentsInitialization);
+        triggerAfterComponentsInitialization();
 
         test.cmp.getLastPositionRequest().then(() => {
           expect(spy).toHaveBeenCalledWith(jasmine.any(Object), <IPositionResolvedEventArgs>{
@@ -241,7 +211,7 @@ export function DistanceResourcesTest() {
         let spy = jasmine.createSpy('onPositionResolved');
         $$(test.env.element).on(DistanceEvents.onPositionResolved, spy);
 
-        $$(test.env.root).trigger(InitializationEvents.afterComponentsInitialization);
+        triggerAfterComponentsInitialization();
 
         test.cmp.getLastPositionRequest().then(() => {
           expect(spy).toHaveBeenCalledWith(jasmine.any(Object), <IPositionResolvedEventArgs>{
@@ -263,7 +233,7 @@ export function DistanceResourcesTest() {
         let spy = jasmine.createSpy('onPositionNotResolved');
         $$(test.env.element).on(DistanceEvents.onPositionNotResolved, spy);
 
-        $$(test.env.root).trigger(InitializationEvents.afterComponentsInitialization);
+        triggerAfterComponentsInitialization();
 
         test.cmp.getLastPositionRequest().then(() => {
           expect(spy).toHaveBeenCalled();
@@ -271,19 +241,9 @@ export function DistanceResourcesTest() {
         });
       });
 
-      it('should re-trigger a query when no position resolves and the cancelQueryUntilPositionResolved option is set', done => {
-        test.cmp.options.cancelQueryUntilPositionResolved = true;
-        $$(test.env.root).trigger(InitializationEvents.afterComponentsInitialization);
-        triggerOnBuildingQuery();
-        test.cmp.getLastPositionRequest().then(() => {
-          expect(test.cmp.queryController.executeQuery).toHaveBeenCalledTimes(1);
-          done();
-        });
-      });
-
       it('should disable the component when no position resolves', done => {
         test.cmp.options.cancelQueryUntilPositionResolved = true;
-        $$(test.env.root).trigger(InitializationEvents.afterComponentsInitialization);
+        triggerAfterComponentsInitialization();
         triggerOnBuildingQuery();
         test.cmp.getLastPositionRequest().then(() => {
           expect(test.cmp.disabled).toBe(true);
@@ -296,7 +256,7 @@ export function DistanceResourcesTest() {
       let spy = jasmine.createSpy('onPositionNotResolved');
       $$(test.env.element).on(DistanceEvents.onPositionNotResolved, spy);
 
-      $$(test.env.root).trigger(InitializationEvents.afterComponentsInitialization);
+      triggerAfterComponentsInitialization();
 
       test.cmp.getLastPositionRequest().then(() => {
         expect(spy).toHaveBeenCalled();
