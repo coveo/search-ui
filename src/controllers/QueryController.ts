@@ -220,7 +220,6 @@ export class QueryController extends RootComponent {
     promise
       .then(queryResults => {
         Assert.exists(queryResults);
-        let firstQuery = this.firstQuery;
         if (this.firstQuery) {
           this.firstQuery = false;
         }
@@ -231,9 +230,8 @@ export class QueryController extends RootComponent {
         }
 
         this.logger.debug('Query results received', query, queryResults);
-        let enableHistory = this.searchInterface && this.searchInterface.options && this.searchInterface.options.enableHistory;
 
-        if ((!firstQuery || enableHistory) && this.keepLastSearchUid(query, queryResults)) {
+        if (this.keepLastSearchUid(query, queryResults, options)) {
           queryResults.searchUid = this.getLastSearchUid();
           queryResults._reusedSearchUid = true;
           QueryUtils.setPropertyOnResults(queryResults, 'queryUid', this.getLastSearchUid());
@@ -522,8 +520,13 @@ export class QueryController extends RootComponent {
     }
   }
 
-  private keepLastSearchUid(query: IQuery, queryResults: IQueryResults) {
-    return this.getLastQueryHash() == this.queryHash(query, queryResults);
+  private keepLastSearchUid(query: IQuery, queryResults: IQueryResults, options: IQueryOptions) {
+    if (options.keepLastSearchUid === true) {
+      return true;
+    }
+
+    const enableHistory = this.searchInterface && this.searchInterface.options && this.searchInterface.options.enableHistory;
+    return enableHistory && this.getLastQueryHash() == this.queryHash(query, queryResults);
   }
 
   private queryHash(query: IQuery, queryResults?: IQueryResults): string {
