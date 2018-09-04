@@ -1,35 +1,35 @@
-import { RootComponent } from '../ui/Base/RootComponent';
-import { IQueryResults } from '../rest/QueryResults';
-import { QueryBuilder } from '../ui/Base/QueryBuilder';
-import { IQuery } from '../rest/Query';
-import { ISearchEndpoint, IEndpointCallOptions } from '../rest/SearchEndpointInterface';
-import { SearchEndpoint } from '../rest/SearchEndpoint';
-import { LocalStorageUtils } from '../utils/LocalStorageUtils';
-import { ISearchInterfaceOptions } from '../ui/SearchInterface/SearchInterface';
-import { Assert } from '../misc/Assert';
-import { SearchEndpointWithDefaultCallOptions } from '../rest/SearchEndpointWithDefaultCallOptions';
-import {
-  INewQueryEventArgs,
-  IPreprocessResultsEventArgs,
-  INoResultsEventArgs,
-  IQuerySuccessEventArgs,
-  IQueryErrorEventArgs,
-  IDuringQueryEventArgs,
-  QueryEvents,
-  IFetchMoreSuccessEventArgs,
-  IDoneBuildingQueryEventArgs,
-  IBuildingQueryEventArgs,
-  IBuildingCallOptionsEventArgs
-} from '../events/QueryEvents';
-import { QueryUtils } from '../utils/QueryUtils';
-import { Defer } from '../misc/Defer';
-import { $$, Dom } from '../utils/Dom';
-import { Utils } from '../utils/Utils';
-import { BaseComponent } from '../ui/Base/BaseComponent';
-import { ModalBox } from '../ExternalModulesShim';
 import { history } from 'coveo.analytics';
 import * as _ from 'underscore';
+import {
+  IBuildingCallOptionsEventArgs,
+  IBuildingQueryEventArgs,
+  IDoneBuildingQueryEventArgs,
+  IDuringQueryEventArgs,
+  IFetchMoreSuccessEventArgs,
+  INewQueryEventArgs,
+  INoResultsEventArgs,
+  IPreprocessResultsEventArgs,
+  IQueryErrorEventArgs,
+  IQuerySuccessEventArgs,
+  QueryEvents
+} from '../events/QueryEvents';
+import { ModalBox } from '../ExternalModulesShim';
+import { Assert } from '../misc/Assert';
+import { Defer } from '../misc/Defer';
+import { IQuery } from '../rest/Query';
+import { IQueryResults } from '../rest/QueryResults';
+import { SearchEndpoint } from '../rest/SearchEndpoint';
+import { IEndpointCallOptions, ISearchEndpoint } from '../rest/SearchEndpointInterface';
+import { SearchEndpointWithDefaultCallOptions } from '../rest/SearchEndpointWithDefaultCallOptions';
+import { BaseComponent } from '../ui/Base/BaseComponent';
+import { QueryBuilder } from '../ui/Base/QueryBuilder';
+import { RootComponent } from '../ui/Base/RootComponent';
+import { ISearchInterfaceOptions } from '../ui/SearchInterface/SearchInterface';
+import { $$, Dom } from '../utils/Dom';
+import { LocalStorageUtils } from '../utils/LocalStorageUtils';
+import { QueryUtils } from '../utils/QueryUtils';
 import { UrlUtils } from '../utils/UrlUtils';
+import { Utils } from '../utils/Utils';
 
 /**
  * Possible options when performing a query with the query controller

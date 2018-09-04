@@ -1,9 +1,9 @@
-import * as Mock from '../MockEnvironment';
 import { QueryController } from '../../src/controllers/QueryController';
+import { IBuildingQueryEventArgs, QueryEvents } from '../../src/events/QueryEvents';
+import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
 import { $$ } from '../../src/utils/Dom';
 import { FakeResults } from '../Fake';
-import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
-import { QueryEvents, IBuildingQueryEventArgs } from '../../src/events/QueryEvents';
+import * as Mock from '../MockEnvironment';
 import { Simulate } from '../Simulate';
 
 export function QueryControllerTest() {
