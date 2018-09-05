@@ -48,13 +48,16 @@ gulp.task('buildPlayground', shell.task(['node node_modules/webpack/bin/webpack.
 
 gulp.task('testDoc', () => {
   const docgenJson = JSON.parse(fs.readFileSync(docgenJsonPath));
-
-  // Check if object is defined and non-empty
   if (!docgenJson || !docgenJson.length) {
     throw new Error('Invalid object');
   }
 
-  // Check that all attributes are defined correctly
+  checkAllAttributesAreDefinedCorrectly(docgenJson);
+  checkSpecificKeywords(docgenJson);
+  checkSpecificElements(docgenJson);
+});
+
+function checkAllAttributesAreDefinedCorrectly(docgenJson) {
   const attributes = [
     { name: 'name', types: ['string'] },
     { name: 'notSupportedIn', types: ['string', 'object'] },
@@ -71,27 +74,23 @@ gulp.task('testDoc', () => {
       }
     })
   );
+}
 
-  // Check that some specific doc elements are present
-  const elements = [
-    {
-      name: 'SearchAlerts.usageAnalytics',
-      notSupportedIn: '',
-      comment:
-        '<p>A reference to the <a href="https://coveo.github.io/search-ui/components/analytics.html#client">Analytics.client</a>.</p>\n',
-      type: 'IAnalyticsClient'
-    },
-    {
-      name: 'Thumbnail.options',
-      notSupportedIn: '',
-      comment: '<p>Options for the Thumbnail</p>\n',
-      type: 'object'
-    }
-  ];
-
-  _.each(elements, element => {
-    if (!_.findWhere(docgenJson, element)) {
-      throw new Error(`Can't find doc element "${JSON.stringify(element)}"`);
+function checkSpecificKeywords(docgenJson) {
+  const keywords = ['Analytics', 'QueryBuilder', 'Recommendation'];
+  _.each(keywords, keyword => {
+    if (!_.find(docgenJson, doc => doc.name.includes(keyword))) {
+      throw new Error(`Can't find keyword "${keyword}" in name`);
     }
   });
-});
+}
+
+function checkSpecificElements(docgenJson) {
+  const notSupportedInElement = _.findWhere(docgenJson, { name: 'Thumbnail' }).notSupportedIn.length;
+  const constrainedValuesElement = _.findWhere(docgenJson, { name: 'Facet.options.availableSorts' }).constrainedValues.length;
+  const miscAttributesElement = _.findWhere(docgenJson, { name: 'Querybox.options.searchAsYouTypeDelay' }).miscAttributes.defaultValue;
+
+  if (!notSupportedInElement || !constrainedValuesElement || !miscAttributesElement) {
+    throw new Error(`Can't validate specific elements`);
+  }
+}
