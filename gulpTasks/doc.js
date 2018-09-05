@@ -12,7 +12,7 @@ const baseTsConfig = require('../tsconfig.json');
 const docgenJsonPath = './bin/docgen/docgen.json';
 
 gulp.task('doc', done => {
-  runsequence('testDoc', done);
+  runsequence('buildDoc', 'testDoc', done);
 });
 
 gulp.task('buildDoc', ['copyBinToDoc', 'buildPlayground'], () => {
