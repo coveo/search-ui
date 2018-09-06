@@ -1,4 +1,4 @@
-import { isArray, pairs, compact, uniq, rest, first } from 'underscore';
+import { isArray, pairs, compact, uniq, rest, first, isString } from 'underscore';
 import { Utils } from './Utils';
 import { IEndpointCallParameters } from '../rest/EndpointCaller';
 
@@ -102,6 +102,9 @@ export class UrlUtils {
         const [key, value] = pair;
 
         if (Utils.isNullOrUndefined(value) || Utils.isNullOrUndefined(key)) {
+          return '';
+        }
+        if (isString(value) && Utils.isEmptyString(value)) {
           return '';
         }
 
