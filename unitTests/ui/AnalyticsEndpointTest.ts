@@ -122,8 +122,8 @@ export function AnalyticsEndpointTest() {
       expect(jasmine.Ajax.requests.mostRecent().url.indexOf('org=organization') != -1).toBe(true);
     });
 
-    it('send visitor as parameter when sending a search event and there is a cookie value', () => {
-      let fakeSearchEvent = FakeResults.createFakeSearchEvent();
+    it('sends visitor as parameter when sending a search event and there is a cookie value', () => {
+      const fakeSearchEvent = FakeResults.createFakeSearchEvent();
       Cookie.set('visitorId', 'omNomNomNom');
       endpoint.sendSearchEvents([fakeSearchEvent]);
 
@@ -131,7 +131,7 @@ export function AnalyticsEndpointTest() {
     });
 
     it('does not send visitor as parameter when sending a search event and there is no cookie value', () => {
-      let fakeSearchEvent = FakeResults.createFakeSearchEvent();
+      const fakeSearchEvent = FakeResults.createFakeSearchEvent();
       Cookie.erase('visitorId');
       endpoint.sendSearchEvents([fakeSearchEvent]);
 
