@@ -69,7 +69,10 @@ function checkAllAttributesAreDefinedCorrectly(docgenJson) {
 
   _.each(docgenJson, element =>
     _.each(attributes, ({ name, types }) => {
-      if (!_.has(element, name) || !_.contains(types, typeof element[name])) {
+      const propertyMissing = !_.has(element, name);
+      const valueTypeIsInvalid = !_.contains(types, typeof element[name]);
+
+      if (propertyMissing || valueTypeIsInvalid) {
         throw new Error(`Invalid or missing attribute "${name}" for doc element "${JSON.stringify(element)}"`);
       }
     })
