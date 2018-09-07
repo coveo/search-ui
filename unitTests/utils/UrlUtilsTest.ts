@@ -111,6 +111,39 @@ export function UrlUtilsTest() {
       expect(url).toBe(`https://a.com?123=4${Utils.safeEncodeURIComponent(' ')}56&abc=${Utils.safeEncodeURIComponent('&')}def`);
     });
 
+    it('should remove query string parameter that are an empty string', () => {
+      const url = UrlUtils.normalizeAsString({
+        paths: ['https://a.com/'],
+        queryAsString: [`123=456`],
+        query: {
+          abc: ''
+        }
+      });
+      expect(url).toBe(`https://a.com?123=456`);
+    });
+
+    it('should remove query string parameter that are null', () => {
+      const url = UrlUtils.normalizeAsString({
+        paths: ['https://a.com/'],
+        queryAsString: [`123=456`],
+        query: {
+          abc: null
+        }
+      });
+      expect(url).toBe(`https://a.com?123=456`);
+    });
+
+    it('should remove query string parameter that are undefined', () => {
+      const url = UrlUtils.normalizeAsString({
+        paths: ['https://a.com/'],
+        queryAsString: [`123=456`],
+        query: {
+          abc: undefined
+        }
+      });
+      expect(url).toBe(`https://a.com?123=456`);
+    });
+
     it('should remove incoherent "?" character', () => {
       const url = UrlUtils.normalizeAsString({
         paths: ['https://a.com/?'],
