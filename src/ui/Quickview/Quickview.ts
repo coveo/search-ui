@@ -245,41 +245,60 @@ export class Quickview extends Component {
     // If there is no content inside the Quickview div,
     // we need to add something that will show up in the result template itself
     if (/^\s*$/.test(this.element.innerHTML)) {
-      const iconForQuickview = $$('div', { className: 'coveo-icon-for-quickview' }, SVGIcons.icons.quickview);
-      SVGDom.addClassToSVGInContainer(iconForQuickview.el, 'coveo-icon-for-quickview-svg');
-      const captionForQuickview = $$('div', { className: 'coveo-caption-for-icon', tabindex: 0 }, 'Quickview'.toLocaleString()).el;
-      const captionForQuickviewArrow = $$('div').el;
-      captionForQuickview.appendChild(captionForQuickviewArrow);
-      const div = $$('div');
-      div.append(iconForQuickview.el);
-      div.append(captionForQuickview);
-      $$(this.element).append(div.el);
-
-      const captionForQuickviewPopper = new PopperJs(iconForQuickview.el, captionForQuickview, {
-        placement: 'bottom',
-        modifiers: {
-          preventOverflow: {
-            boundariesElement: $$(this.root).el,
-            padding: 0
-          },
-          arrow: {
-            element: captionForQuickviewArrow
-          },
-          offset: {
-            offset: '0,8'
-          }
-        }
-      });
-
-      $$(this.element).on('mouseover', () => {
-        captionForQuickviewPopper.update();
-      });
+      this.buildContent();
     }
 
     this.bindClick(result);
     if (this.bindings.resultElement) {
       this.bind.on(this.bindings.resultElement, ResultListEvents.openQuickview, () => this.open());
     }
+  }
+
+  private buildContent() {
+    const icon = this.buildIcon();
+    const { caption, arrow } = this.buildCaption();
+    const content = $$('div');
+
+    content.append(icon);
+    content.append(caption);
+    $$(this.element).append(content.el);
+
+    const popperReference = this.buildPopper(icon, caption, arrow);
+    $$(this.element).on('mouseover', () => {
+      popperReference.update();
+    });
+  }
+
+  private buildIcon() {
+    const icon = $$('div', { className: 'coveo-icon-for-quickview' }, SVGIcons.icons.quickview).el;
+    SVGDom.addClassToSVGInContainer(icon, 'coveo-icon-for-quickview-svg');
+    return icon;
+  }
+
+  private buildCaption() {
+    const caption = $$('div', { className: 'coveo-caption-for-icon', tabindex: 0 }, 'Quickview'.toLocaleString()).el;
+    const arrow = $$('div').el;
+    caption.appendChild(arrow);
+    return { caption, arrow };
+  }
+
+  private buildPopper(icon, caption, arrow) {
+    return new PopperJs(icon, caption, {
+      placement: 'bottom',
+      modifiers: {
+        preventOverflow: {
+          boundariesElement: $$(this.root).el,
+          padding: 0
+        },
+        arrow: {
+          element: arrow
+        },
+        // X,Y offset of the tooltip relative to the icon
+        offset: {
+          offset: '0,8'
+        }
+      }
+    });
   }
 
   /**
