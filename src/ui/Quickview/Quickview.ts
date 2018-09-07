@@ -245,7 +245,6 @@ export class Quickview extends Component {
     // If there is no content inside the Quickview div,
     // we need to add something that will show up in the result template itself
     if (/^\s*$/.test(this.element.innerHTML)) {
-      const resultsSection = $$(this.root).find('.coveo-results-column');
       const iconForQuickview = $$('div', { className: 'coveo-icon-for-quickview' }, SVGIcons.icons.quickview);
       SVGDom.addClassToSVGInContainer(iconForQuickview.el, 'coveo-icon-for-quickview-svg');
       const captionForQuickview = $$('div', { className: 'coveo-caption-for-icon', tabindex: 0 }, 'Quickview'.toLocaleString()).el;
@@ -260,7 +259,7 @@ export class Quickview extends Component {
         placement: 'bottom',
         modifiers: {
           preventOverflow: {
-            boundariesElement: resultsSection,
+            boundariesElement: $$(this.root).el,
             padding: 0
           },
           arrow: {
