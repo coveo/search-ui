@@ -101,7 +101,7 @@ export class UrlUtils {
       const mapped = paired.map(pair => {
         const [key, value] = pair;
 
-        if (Utils.isNullOrUndefined(value) || Utils.isNullOrUndefined(key)) {
+        if (!value || !key) {
           return '';
         }
 

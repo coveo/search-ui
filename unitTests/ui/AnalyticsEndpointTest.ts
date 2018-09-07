@@ -1,9 +1,11 @@
-import { AnalyticsEndpoint } from '../../src/rest/AnalyticsEndpoint';
-import { IErrorResponse } from '../../src/rest/EndpointCaller';
-import { FakeResults } from '../Fake';
-import { IAPIAnalyticsSearchEventsResponse } from '../../src/rest/APIAnalyticsSearchEventsResponse';
-import { IAPIAnalyticsEventResponse } from '../../src/rest/APIAnalyticsEventResponse';
 import { AccessToken } from '../../src/rest/AccessToken';
+import { AnalyticsEndpoint } from '../../src/rest/AnalyticsEndpoint';
+import { IAPIAnalyticsEventResponse } from '../../src/rest/APIAnalyticsEventResponse';
+import { IAPIAnalyticsSearchEventsResponse } from '../../src/rest/APIAnalyticsSearchEventsResponse';
+import { IErrorResponse } from '../../src/rest/EndpointCaller';
+import { Cookie } from '../../src/utils/CookieUtils';
+import { FakeResults } from '../Fake';
+
 export function AnalyticsEndpointTest() {
   function buildUrl(endpoint: AnalyticsEndpoint, path: string) {
     return endpoint.options.serviceUrl + '/rest/' + AnalyticsEndpoint.DEFAULT_ANALYTICS_VERSION + path;
@@ -118,6 +120,22 @@ export function AnalyticsEndpointTest() {
       endpoint.sendSearchEvents([fakeSearchEvent]);
 
       expect(jasmine.Ajax.requests.mostRecent().url.indexOf('org=organization') != -1).toBe(true);
+    });
+
+    it('sends visitor as parameter when sending a search event and there is a cookie value', () => {
+      const fakeSearchEvent = FakeResults.createFakeSearchEvent();
+      Cookie.set('visitorId', 'omNomNomNom');
+      endpoint.sendSearchEvents([fakeSearchEvent]);
+
+      expect(jasmine.Ajax.requests.mostRecent().url.indexOf('visitor=omNomNomNom') != -1).toBe(true);
+    });
+
+    it('does not send visitor as parameter when sending a search event and there is no cookie value', () => {
+      const fakeSearchEvent = FakeResults.createFakeSearchEvent();
+      Cookie.erase('visitorId');
+      endpoint.sendSearchEvents([fakeSearchEvent]);
+
+      expect(jasmine.Ajax.requests.mostRecent().url.indexOf('visitor=') == -1).toBe(true);
     });
 
     it('allow to getTopQueries', done => {
