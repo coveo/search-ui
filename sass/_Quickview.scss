@@ -7,9 +7,6 @@
   }
   .coveo-list-layout &:hover .coveo-caption-for-icon {
     display: inline;
-    top: 26px;
-    transform: translateX(-50%);
-    left: 50%;
   }
   .coveo-caption-for-icon {
     font-size: $font-size-smallest;
@@ -21,7 +18,7 @@
     position: absolute;
     white-space: nowrap;
     z-index: 1;
-    &:before {
+    > div {
       border: solid;
       border-color: $color-greyish-dark-blue transparent;
       border-width: 0 6px 7px;

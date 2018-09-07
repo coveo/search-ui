@@ -1,4 +1,5 @@
 import 'styling/_Quickview';
+import PopperJs from 'popper.js';
 import { QuickviewEvents } from '../../events/QuickviewEvents';
 import { ResultListEvents } from '../../events/ResultListEvents';
 import { ModalBox as ModalBoxModule } from '../../ExternalModulesShim';
@@ -244,13 +245,36 @@ export class Quickview extends Component {
     // If there is no content inside the Quickview div,
     // we need to add something that will show up in the result template itself
     if (/^\s*$/.test(this.element.innerHTML)) {
+      const resultsSection = $$(this.root).find('.coveo-results-column');
       const iconForQuickview = $$('div', { className: 'coveo-icon-for-quickview' }, SVGIcons.icons.quickview);
       SVGDom.addClassToSVGInContainer(iconForQuickview.el, 'coveo-icon-for-quickview-svg');
       const captionForQuickview = $$('div', { className: 'coveo-caption-for-icon', tabindex: 0 }, 'Quickview'.toLocaleString()).el;
+      const captionForQuickviewArrow = $$('div').el;
+      captionForQuickview.appendChild(captionForQuickviewArrow);
       const div = $$('div');
       div.append(iconForQuickview.el);
       div.append(captionForQuickview);
       $$(this.element).append(div.el);
+
+      const captionForQuickviewPopper = new PopperJs(iconForQuickview.el, captionForQuickview, {
+        placement: 'bottom',
+        modifiers: {
+          preventOverflow: {
+            boundariesElement: resultsSection,
+            padding: 0
+          },
+          arrow: {
+            element: captionForQuickviewArrow
+          },
+          offset: {
+            offset: '0,8'
+          }
+        }
+      });
+
+      $$(this.element).on('mouseover', () => {
+        captionForQuickviewPopper.update();
+      });
     }
 
     this.bindClick(result);
