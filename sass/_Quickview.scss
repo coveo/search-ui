@@ -7,9 +7,6 @@
   }
   .coveo-list-layout &:hover .coveo-caption-for-icon {
     display: inline;
-    top: 26px;
-    transform: translateX(-50%);
-    left: 50%;
   }
   .coveo-caption-for-icon {
     font-size: $font-size-smallest;
@@ -21,15 +18,25 @@
     position: absolute;
     white-space: nowrap;
     z-index: 1;
-    &:before {
+    > div {
       border: solid;
       border-color: $color-greyish-dark-blue transparent;
-      border-width: 0 6px 7px;
       content: '';
       position: absolute;
       z-index: 99;
-      top: -6px;
       left: calc(50% - 6px);
+    }
+
+    // Tooltip under element, arrow on top
+    &[x-placement^='bottom'] > div {
+      top: -6px;
+      border-width: 0 6px 7px;
+    }
+
+    // Tooltip over element, arrow on bottom
+    &[x-placement^='top'] > div {
+      bottom: -6px;
+      border-width: 7px 6px 0;
     }
   }
 }
