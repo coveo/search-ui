@@ -1,4 +1,3 @@
-import 'styling/_Quickview';
 import PopperJs from 'popper.js';
 import { QuickviewEvents } from '../../events/QuickviewEvents';
 import { ResultListEvents } from '../../events/ResultListEvents';
@@ -256,17 +255,13 @@ export class Quickview extends Component {
 
   private buildContent() {
     const icon = this.buildIcon();
-    const { caption, arrow } = this.buildCaption();
+    const tooltip = this.buildTootip(icon);
+
     const content = $$('div');
-
     content.append(icon);
-    content.append(caption);
-    $$(this.element).append(content.el);
+    content.append(tooltip);
 
-    const popperReference = this.buildPopper(icon, caption, arrow);
-    $$(this.element).on('mouseover', () => {
-      popperReference.update();
-    });
+    $$(this.element).append(content.el);
   }
 
   private buildIcon() {
@@ -275,15 +270,17 @@ export class Quickview extends Component {
     return icon;
   }
 
-  private buildCaption() {
-    const caption = $$('div', { className: 'coveo-caption-for-icon', tabindex: 0 }, 'Quickview'.toLocaleString()).el;
+  private buildTootip(icon: HTMLElement) {
+    const tooltip = $$('div', { className: 'coveo-caption-for-icon', tabindex: 0 }, 'Quickview'.toLocaleString()).el;
     const arrow = $$('div').el;
-    caption.appendChild(arrow);
-    return { caption, arrow };
+    tooltip.appendChild(arrow);
+
+    this.buildPopper(icon, tooltip, arrow);
+    return tooltip;
   }
 
-  private buildPopper(icon, caption, arrow) {
-    return new PopperJs(icon, caption, {
+  private buildPopper(icon: HTMLElement, tooltip: HTMLElement, arrow: HTMLElement) {
+    const popperReference = new PopperJs(icon, tooltip, {
       placement: 'bottom',
       modifiers: {
         preventOverflow: {
@@ -298,6 +295,10 @@ export class Quickview extends Component {
           offset: '0,8'
         }
       }
+    });
+
+    $$(this.element).on('mouseover', () => {
+      popperReference.update();
     });
   }
 
