@@ -123,6 +123,7 @@ export function HistoryControllerTest() {
         const assertFacetAnalyticsCall = (cause: IAnalyticsActionCause) => {
           expect(historyController.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(cause, {
             facetId: '@foo',
+            facetField: '@foo',
             facetTitle: '@foo',
             facetValue: 'bar'
           } as IAnalyticsFacetMeta);

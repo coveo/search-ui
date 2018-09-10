@@ -67,6 +67,7 @@ export interface IAnalyticsDocumentViewMeta {
 
 export interface IAnalyticsOmniboxFacetMeta {
   facetId: string;
+  facetField: string;
   facetTitle: string;
   facetValue?: string;
   suggestions: string;
@@ -82,6 +83,7 @@ export interface IAnalyticsSimpleFilterMeta {
 
 export interface IAnalyticsFacetMeta {
   facetId: string;
+  facetField: string;
   facetValue?: string;
   facetTitle: string;
 }
@@ -92,6 +94,7 @@ export interface IAnalyticsFacetSortMeta extends IAnalyticsFacetMeta {
 
 export interface IAnalyticsCategoryFacetMeta {
   categoryFacetId: string;
+  categoryFacetField: string;
   categoryFacetPath?: string[];
   categoryFacetTitle: string;
 }
@@ -121,6 +124,7 @@ export interface IAnalyticsOmniboxSuggestionMeta {
 
 export interface IAnalyticsFacetSliderChangeMeta {
   facetId: string;
+  facetField: string;
   facetRangeStart: any;
   facetRangeEnd: any;
 }
@@ -377,11 +381,12 @@ export var analyticsActionCauseList = {
    * `"facetId":`: <correspondingFacetId>
    * `"facetValue":`: <correspondingFacetValue>
    * `"facetTitle":`: <correspondingFacetTitle>
+   * `"facetField":`: <correspondingFacetField>
    */
   documentField: <IAnalyticsActionCause>{
     name: 'documentField',
     type: 'document',
-    metaMap: { facetId: 1, facetValue: 2, facetTitle: 3 }
+    metaMap: { facetId: 1, facetValue: 2, facetTitle: 3, facetField: 4 }
   },
   /**
    * Identifies the click event that gets logged when the Quick View element is selected and a Quick View modal of the document is displayed.
@@ -423,11 +428,12 @@ export var analyticsActionCauseList = {
    * `"facetId":`: <correspondingFacetId>
    * `"facetValue":`: <correspondingFacetValue>
    * `"facetTitle":`: <correspondingFacetTitle>
+   * `"facetField":`: <correspondingFacetField>
    */
   omniboxFacetSelect: <IAnalyticsActionCause>{
     name: 'omniboxFacetSelect',
     type: 'omnibox',
-    metaMap: { facetId: 1, facetValue: 2, facetTitle: 3 }
+    metaMap: { facetId: 1, facetValue: 2, facetTitle: 3, facetField: 4 }
   },
   /**
    * Identifies the search event that gets logged when a user clicks a facet value to filter out results containing this value from the Omnibox.
@@ -439,11 +445,12 @@ export var analyticsActionCauseList = {
    * `"facetId":`: <correspondingFacetId>
    * `"facetValue":`: <correspondingFacetValue>
    * `"facetTitle":`: <correspondingFacetTitle>
+   * `"facetField":`: <correspondingFacetField>
    */
   omniboxFacetExclude: <IAnalyticsActionCause>{
     name: 'omniboxFacetExclude',
     type: 'omnibox',
-    metaMap: { facetId: 1, facetValue: 2, facetTitle: 3 }
+    metaMap: { facetId: 1, facetValue: 2, facetTitle: 3, facetField: 4 }
   },
   /**
    * Identifies the search event that gets logged when a user selects or deselects a facet filter from the Omnibox.
@@ -455,11 +462,12 @@ export var analyticsActionCauseList = {
    * `"facetId":`: <correspondingFacetId>
    * `"facetValue":`: <correspondingFacetValue>
    * `"facetTitle":`: <correspondingFacetTitle>
+   * `"facetField":`: <correspondingFacetField>
    */
   omniboxFacetDeselect: <IAnalyticsActionCause>{
     name: 'omniboxFacetDeselect',
     type: 'omnibox',
-    metaMap: { facetId: 1, facetValue: 2, facetTitle: 3 }
+    metaMap: { facetId: 1, facetValue: 2, facetTitle: 3, facetField: 4 }
   },
   /**
    * Identifies the search event that gets logged when a user clicks a facet value to not filter out results containing this value from the Omnibox.
@@ -471,11 +479,12 @@ export var analyticsActionCauseList = {
    * `"facetId":`: <correspondingFacetId>
    * `"facetValue":`: <correspondingFacetValue>
    * `"facetTitle":`: <correspondingFacetTitle>
+   * `"facetField":`: <correspondingFacetField>
    */
   omniboxFacetUnexclude: <IAnalyticsActionCause>{
     name: 'omniboxFacetUnexclude',
     type: 'omnibox',
-    metaMap: { faceId: 1, facetValue: 2, facetTitle: 3 }
+    metaMap: { faceId: 1, facetValue: 2, facetTitle: 3, facetField: 4 }
   },
   /**
    * Identifies the search event that gets logged when a user clicks a query suggestion based on the usage analytics recorded queries.
@@ -539,11 +548,12 @@ export var analyticsActionCauseList = {
    *
    * Logging an event with this actionType also adds the following key-value pair in the custom data property of the Usage Analytics HTTP service request.
    * `"facetId":`: <correspondingFacetId>
+   * `"facetField":`: <correspondingFacetField>
    */
   facetClearAll: <IAnalyticsActionCause>{
     name: 'facetClearAll',
     type: 'facet',
-    metaMap: { facetId: 1 }
+    metaMap: { facetId: 1, facetField: 2 }
   },
   /**
    * Identifies the custom event that gets logged when a query is being typed into the facet search box.
@@ -553,11 +563,12 @@ export var analyticsActionCauseList = {
    *
    * Logging an event with this actionType also adds the following key-value pair in the custom data property of the Usage Analytics HTTP service request.
    * `"facetId":`: <correspondingFacetId>
+   * `"facetField":`: <correspondingFacetField>
    */
   facetSearch: <IAnalyticsActionCause>{
     name: 'facetSearch',
     type: 'facet',
-    metaMap: { facetId: 1 }
+    metaMap: { facetId: 1, facetField: 2 }
   },
   /**
    * Identifies the search event that gets logged when the user toggles the facet operator.
@@ -569,11 +580,12 @@ export var analyticsActionCauseList = {
    * `"facetId":`: <correspondingFacetId>
    * `"facetOperatorBefore":`: <facetOperatorBeforeToggle>
    * `"facetOperatorAfter":`: <facetOperatorAfterToggle>
+   * `"facetField":`: <correspondingFacetField>
    */
   facetToggle: <IAnalyticsActionCause>{
     name: 'facetToggle',
     type: 'facet',
-    metaMap: { facetId: 1, facetOperatorBefore: 2, facetOperatorAfter: 3 }
+    metaMap: { facetId: 1, facetOperatorBefore: 2, facetOperatorAfter: 3, facetField: 4 }
   },
   /**
    * Identifies the search event that gets logged when a facet slider changes range values.
@@ -585,11 +597,12 @@ export var analyticsActionCauseList = {
    * `"facetId":`: <correspondingFacetId>
    * `"facetRangeStart":`: <correspondingRangeStart>
    * `"facetRangeEnd":`: <correspondingRangeEnd>
+   * `"facetField":`: <correspondingFacetField>
    */
   facetRangeSlider: <IAnalyticsActionCause>{
     name: 'facetRangeSlider',
     type: 'facet',
-    metaMap: { facetId: 1, facetRangeStart: 2, facetRangeEnd: 3 }
+    metaMap: { facetId: 1, facetRangeStart: 2, facetRangeEnd: 3, facetField: 4 }
   },
   /**
    * Identifies the search event that gets logged when a facet graph changes range values.
@@ -601,11 +614,12 @@ export var analyticsActionCauseList = {
    * `"facetId":`: <correspondingFacetId>
    * `"facetRangeStart":`: <correspondingRangeStart>
    * `"facetRangeEnd":`: <correspondingRangeEnd>
+   * `"facetField":`: <correspondingFacetField>
    */
   facetRangeGraph: <IAnalyticsActionCause>{
     name: 'facetRangeGraph',
     type: 'facet',
-    metaMap: { facetId: 1, facetRangeStart: 2, facetRangeEnd: 3 }
+    metaMap: { facetId: 1, facetRangeStart: 2, facetRangeEnd: 3, facetField: 4 }
   },
   /**
    * Identifies the search event that gets logged when a facet check box is selected and the query is updated.
@@ -617,11 +631,12 @@ export var analyticsActionCauseList = {
    * `"facetId":`: <correspondingFacetId>
    * `"facetValue":`: <correspondingFacetValue>
    * `"facetTitle":`: <correspondingFacetTitle>
+   * `"facetField":`: <correspondingFacetField>
    */
   facetSelect: <IAnalyticsActionCause>{
     name: 'facetSelect',
     type: 'facet',
-    metaMap: { facetId: 1, facetValue: 2, facetTitle: 3 }
+    metaMap: { facetId: 1, facetValue: 2, facetTitle: 3, facetField: 4 }
   },
   /**
    * Identifies the search event that gets logged when all filters on a facet are selected.
@@ -633,11 +648,12 @@ export var analyticsActionCauseList = {
    * `"facetId":`: <correspondingFacetId>
    * `"facetValue":`: <correspondingFacetValue>
    * `"facetTitle":`: <correspondingFacetTitle>
+   * `"facetField":`: <correspondingFacetField>
    */
   facetSelectAll: <IAnalyticsActionCause>{
     name: 'facetSelectAll',
     type: 'facet',
-    metaMap: { facetId: 1, facetValue: 2, facetTitle: 3 }
+    metaMap: { facetId: 1, facetValue: 2, facetTitle: 3, facetField: 4 }
   },
   /**
    * Identifies the search event that gets logged when a facet check box is deselected and the query is updated.
@@ -649,11 +665,12 @@ export var analyticsActionCauseList = {
    * `"facetId":`: <correspondingFacetId>
    * `"facetValue":`: <correspondingFacetValue>
    * `"facetTitle":`: <correspondingFacetTitle>
+   * `"facetField":`: <correspondingFacetField>
    */
   facetDeselect: <IAnalyticsActionCause>{
     name: 'facetDeselect',
     type: 'facet',
-    metaMap: { facetId: 1, facetValue: 2, facetTitle: 3 }
+    metaMap: { facetId: 1, facetValue: 2, facetTitle: 3, facetField: 4 }
   },
   /**
    * Identifies the search event that gets logged when a user clicks a facet value to filter out results containing the facet value.
@@ -665,11 +682,12 @@ export var analyticsActionCauseList = {
    * `"facetId":`: <correspondingFacetId>
    * `"facetValue":`: <correspondingFacetValue>
    * `"facetTitle":`: <correspondingFacetTitle>
+   * `"facetField":`: <correspondingFacetField>
    */
   facetExclude: <IAnalyticsActionCause>{
     name: 'facetExclude',
     type: 'facet',
-    metaMap: { facetId: 1, facetValue: 2, facetTitle: 3 }
+    metaMap: { facetId: 1, facetValue: 2, facetTitle: 3, facetField: 4 }
   },
   /**
    * Identifies the search event that gets logged when a user clicks a facet value to not filter out results containing the facet value.
@@ -681,11 +699,12 @@ export var analyticsActionCauseList = {
    * `"facetId":`: <correspondingFacetId>
    * `"facetValue":`: <correspondingFacetValue>
    * `"facetTitle":`: <correspondingFacetTitle>
+   * `"facetField":`: <correspondingFacetField>
    */
   facetUnexclude: <IAnalyticsActionCause>{
     name: 'facetUnexclude',
     type: 'facet',
-    metaMap: { facetId: 1, facetValue: 2, facetTitle: 3 }
+    metaMap: { facetId: 1, facetValue: 2, facetTitle: 3, facetField: 4 }
   },
   facetUpdateSort: <IAnalyticsActionCause>{
     name: 'facetUpdateSort',
