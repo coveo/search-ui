@@ -148,10 +148,10 @@ General reference documentation is generated using TypeDoc (see
 generated reference documentation lists and describes all available options and public methods for each component.
 
 Handwritten documentation with more examples is also available (see
-[JavaScript Search Framework Home](https://developers.coveo.com/display/JsSearchV1/JavaScript+Search+Framework+V1+Home)).
+[Coveo JavaScript Search UI Framework Home](https://docs.coveo.com/en/375/javascript-search-framework/javascript-search-framework-home)).
 
 A tutorial is available (see
-[JavaScript Search Framework Getting Started Tutorial](https://developers.coveo.com/display/JsSearchV1/JavaScript+Search+Framework+V1+Getting+Started+Tutorial)).
+[Coveo JavaScript Search UI Framework Getting Started Tutorial](https://developers.coveo.com/x/J4okAg)).
 If you are new to the Coveo JavaScript Search UI Framework, you should definitely consult this tutorial, as it contains
 valuable information.
 
