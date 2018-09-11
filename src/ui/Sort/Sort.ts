@@ -117,7 +117,7 @@ export class Sort extends Component {
     new AccessibleButton()
       .withElement(this.element)
       .withSelectAction(clickAction)
-      .withLabel(`${l('SortResultsBy')} ${l(this.options.caption)}`)
+      .withLabel(l('SortResultsBy', l(this.options.caption)))
       .build();
 
     if (Utils.isNonEmptyString(this.options.caption)) {

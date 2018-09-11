@@ -275,6 +275,9 @@ export function SortTest() {
         modifyBuilder: builder => {
           (<jasmine.Spy>builder.queryStateModel.get).and.returnValue('date ascending');
           return builder;
+        },
+        cmpOptions: {
+          caption: 'caption'
         }
       });
       expect(test.cmp.getCurrentCriteria().toString()).toEqual('date ascending');
