@@ -135,7 +135,6 @@ export class AccessibleButton {
       return;
     }
     this.element.setAttribute('aria-label', this.label);
-    this.element.setAttribute('title', this.label);
   }
 
   private ensureTabIndex() {
