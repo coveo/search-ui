@@ -16,12 +16,12 @@ export interface IPipelineContextOptions {}
 /**
  * A PipelineContext is used to add contextual information about the environment inside which the query is executed.
  *
- * It allows to pass arbitrary key values pairs ( think `JSON` ), which can then be leveraged by the [Query Pipeline](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=108),
+ * It allows you to pass arbitrary key values pairs ( think `JSON` ), which can then be leveraged by the [Query Pipeline](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=108),
  * or by Coveo Machine Learning.
  *
  * This can be any arbitrary information that you can use to contextualize the query and help Coveo improve relevance by returning results tailored to a specific context.
  *
- * This component is meant to be configured using a script tag, with a JSON content.
+ * This component is meant to be created with a script tag, possibly configuring it with JSON content.
  *
  * The values can be either a `string` or an array of `string`.
  *
@@ -32,20 +32,30 @@ export interface IPipelineContextOptions {}
  *      "foobar" : ["foo", "bar"]
  *   }
  * </script>
+ * // context: {"foo":"bar","foobar":["foo","bar"]}
  * ```
  *
- * You can also simply use JavaScript code to pass context values, using the {@link QueryBuilder.addContextValue} method.
+ * **Note:**
  *
- * This means you do not necessarily need to use this component to pass context.
+ * Configuring the component within a script tag implies you will be able to leverage the interface editor.
+ *
+ *
+ * Once the component is created, you can also use JavaScript code to set/overwrite context values, using the {@link setContext} and {@link setContextValue} methods.
+ *
  * ```
- * Coveo.$$(root).on('buildingQuery', function(args) {
- *     args.queryBuilder.addContextValue('foo', 'bar');
- * })
+ * ...
+ * Coveo.get(Coveo.$$(document).find('.CoveoPipelineContext')).setContext('{}');
+ * // context has been erased
+ * ...
+ * Coveo.get(Coveo.$$(document).find('.CoveoPipelineContext')).setContextValue('{"foo":"foobar"}');
+ * // context: {"foo":"foobar"}
+ * ...
+ * Coveo.get(Coveo.$$(document).find('.CoveoPipelineContext')).setContext('{"myKey1":"myValue1","mykey2":["myValue2","myValue2"],"myKeyN":"myValueN"}')
+ * // context: {"myKey1":"myValue1","mykey2":["myValue2","myValue2"],"myKeyN":"myValueN"}
+ * ...
  * ```
  *
- * Using this component as opposed to JavaScript code means you will be able to leverage the interface editor.
- *
- * Regardless of if you use this component or JavaScript to add context, both will add the needed data in the [Query.Context]{@link IQuery.context} parameter.
+ * The data is added to the [Query.Context]{@link IQuery.context} parameter.
  *
  * **Note:**
  *
