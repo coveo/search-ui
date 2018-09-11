@@ -7389,5 +7389,13 @@
   "RemoveFilterOn": {
     "en": "Remove filter on {0}",
     "fr": "Enlever le filtre sur {0}"
+  },
+  "SortResultsBy": {
+    "en": "Sort results by",
+    "fr": "Trier les résultats par"
+  },
+  "DisplayResultsAs": {
+    "en": "Display results as",
+    "fr": "Afficher les résultats comme"
   }
 }
