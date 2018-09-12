@@ -1,3 +1,4 @@
+import 'styling/_Quickview';
 import PopperJs from 'popper.js';
 import { QuickviewEvents } from '../../events/QuickviewEvents';
 import { ResultListEvents } from '../../events/ResultListEvents';
