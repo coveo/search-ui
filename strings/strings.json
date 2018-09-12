@@ -7374,7 +7374,7 @@
     "fr": "Trier les résultats par {0}"
   },
   "DisplayResultsAs": {
-    "en": "Display results as",
-    "fr": "Afficher les résultats comme"
+    "en": "Display results as {0}",
+    "fr": "Afficher les résultats comme {0}"
   }
 }
