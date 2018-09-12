@@ -112,11 +112,7 @@ export class Sort extends Component {
     this.bind.onRootElement(QueryEvents.querySuccess, (args: IQuerySuccessEventArgs) => this.handleQuerySuccess(args));
     this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => this.handleBuildingQuery(args));
     this.bind.onRootElement(QueryEvents.queryError, (args: IQueryErrorEventArgs) => this.handleQueryError(args));
-
-    if (Utils.isNonEmptyString(this.options.caption)) {
-      $$(this.element).text(this.options.caption);
-    }
-
+    this.setTextToCaptionIfDefined();
     this.addAccessiblityAttributes();
 
     if (this.isToggle()) {
@@ -200,15 +196,26 @@ export class Sort extends Component {
     this.updateAppearance();
   }
 
+  private setTextToCaptionIfDefined() {
+    this.captionIsDefined && $$(this.element).text(this.options.caption);
+  }
+
+  private get captionIsDefined() {
+    return Utils.isNonEmptyString(this.options.caption);
+  }
+
   private addAccessiblityAttributes() {
-    const clickAction = () => this.handleClick();
-    const caption = this.element.textContent;
+    const localizedCaption = l(this.displayedSortText);
 
     new AccessibleButton()
       .withElement(this.element)
-      .withSelectAction(clickAction)
-      .withLabel(l('SortResultsBy', l(caption)))
+      .withSelectAction(() => this.handleClick())
+      .withLabel(l('SortResultsBy', localizedCaption))
       .build();
+  }
+
+  private get displayedSortText() {
+    return this.captionIsDefined ? this.options.caption : this.element.textContent;
   }
 
   private handleBuildingQuery(data: IBuildingQueryEventArgs) {
