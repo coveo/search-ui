@@ -724,6 +724,7 @@ export class Facet extends Component {
   public facetSort: FacetSort;
   public facetValuesList: FacetValuesList;
   public facetHeader: FacetHeader;
+  public searchContainer: ValueElementRenderer;
 
   protected omniboxZIndex;
   protected moreElement: HTMLElement;
@@ -1429,32 +1430,27 @@ export class Facet extends Component {
   }
 
   protected updateSearchElement(moreValuesAvailable = true) {
-    if (moreValuesAvailable) {
-      const renderer = new ValueElementRenderer(this, FacetValue.create(l('Search')));
-      const searchButton = renderer.build().withNo([renderer.excludeIcon, renderer.icon]);
-      $$(searchButton.listItem).addClass('coveo-facet-search-button');
-      searchButton.stylishCheckbox.removeAttribute('tabindex');
-
-      // Mobile do not like label. Use click event
-      if (DeviceUtils.isMobileDevice()) {
-        $$(searchButton.label).on('click', (e: Event) => {
-          if (searchButton.checkbox.getAttribute('checked')) {
-            searchButton.checkbox.removeAttribute('checked');
-          } else {
-            searchButton.checkbox.setAttribute('checked', 'checked');
-          }
-          $$(searchButton.checkbox).trigger('change');
-          e.stopPropagation();
-          e.preventDefault();
-        });
-      }
-
-      $$(searchButton.checkbox).on('change', () => {
-        $$(this.element).addClass('coveo-facet-searching');
-        this.facetSearch.focus();
-      });
-      this.facetValuesList.valueContainer.appendChild(searchButton.listItem);
+    if (!moreValuesAvailable) {
+      return;
     }
+
+    const renderer = new ValueElementRenderer(this, FacetValue.create(l('Search')));
+    this.searchContainer = renderer.build().withNo([renderer.excludeIcon, renderer.icon]);
+    $$(this.searchContainer.listItem).addClass('coveo-facet-search-button');
+
+    // Mobile do not like label. Use click event
+    if (DeviceUtils.isMobileDevice()) {
+      $$(this.searchContainer.label).on('click', e => this.toggleSearchMenu(e));
+    }
+
+    const handleKeyUp = KeyboardUtils.keypressAction(KEYBOARD.ENTER, e => this.toggleSearchMenu(e));
+    $$(this.searchContainer.listItem).on('keyup', handleKeyUp);
+
+    $$(this.searchContainer.checkbox).on('change', () => {
+      $$(this.element).addClass('coveo-facet-searching');
+      this.facetSearch.focus();
+    });
+    this.facetValuesList.valueContainer.appendChild(this.searchContainer.listItem);
   }
 
   protected updateMoreLess(
@@ -1486,6 +1482,21 @@ export class Facet extends Component {
 
   protected handleClickLess() {
     this.showLess();
+  }
+
+  private toggleSearchMenu(e: Event) {
+    const searchButton = this.searchContainer;
+
+    if (searchButton.checkbox.getAttribute('checked')) {
+      searchButton.checkbox.removeAttribute('checked');
+    } else {
+      searchButton.checkbox.setAttribute('checked', 'checked');
+    }
+
+    $$(searchButton.checkbox).trigger('change');
+
+    e.stopPropagation();
+    e.preventDefault();
   }
 
   private checkForComputedFieldAndSort() {

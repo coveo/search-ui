@@ -613,6 +613,64 @@ export function FacetTest() {
         expect(test.cmp.facetSearch).toBeUndefined();
       });
 
+      describe(`given enableFacetSearch is set to 'true',
+      given that searching is not active`, () => {
+        const searchingCssClass = 'coveo-facet-searching';
+        const oneMoreThanNumberOfDisplayedValues = 6;
+
+        function triggerChangeOnCheckbox() {
+          const changeEvent = new Event('change');
+          test.cmp.searchContainer.checkbox.dispatchEvent(changeEvent);
+        }
+
+        function triggerEnterKeyOnListItem() {
+          const enterKeyEvent = new Event('keyup') as any;
+          enterKeyEvent.which = 13;
+          enterKeyEvent.keyCode = 13;
+
+          test.cmp.searchContainer.listItem.dispatchEvent(enterKeyEvent);
+        }
+
+        beforeEach(() => {
+          const options = { field: '@field', enableFacetSearch: true };
+          test = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, options);
+          test.cmp['nbAvailableValues'] = oneMoreThanNumberOfDisplayedValues;
+          test.cmp.reset();
+
+          expect(test.cmp.element.className).not.toContain(searchingCssClass);
+        });
+
+        it(`when triggering a 'change' event on the searchContainer checkbox,
+        it actives searching`, () => {
+          triggerChangeOnCheckbox();
+          expect(test.cmp.element.className).toContain(searchingCssClass);
+        });
+
+        describe(`when triggering an 'Enter' keyup event on the searchContainer listItem`, () => {
+          beforeEach(triggerEnterKeyOnListItem);
+
+          it('activates searching', () => {
+            expect(test.cmp.element.className).toContain(searchingCssClass);
+          });
+
+          it(`sets the checkbox 'checked' attribute`, () => {
+            const checkbox = test.cmp.searchContainer.checkbox;
+            const checkedAttribute = checkbox.getAttribute('checked');
+            expect(checkedAttribute).toBeTruthy();
+          });
+
+          it(`when triggering a second 'Enter' keyup event,
+          it removes the checkbox 'checked' attribute`, () => {
+            triggerEnterKeyOnListItem();
+
+            const checkbox = test.cmp.searchContainer.checkbox;
+            const checkedAttribute = checkbox.getAttribute('checked');
+
+            expect(checkedAttribute).toBeFalsy();
+          });
+        });
+      });
+
       it('facetSearchDelay should be passed to the facet search component', function(done) {
         test = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, {
           field: '@field',
