@@ -61,7 +61,7 @@ export function ValueElementRendererTest() {
       facetValue.selected = false;
       valueRenderer = new ValueElementRenderer(facet, facetValue).build();
 
-      const ariaLabel = valueRenderer.stylishCheckbox.getAttribute('aria-label');
+      const ariaLabel = valueRenderer.accessibleElement.getAttribute('aria-label');
       expect(ariaLabel).toContain('Select');
     });
 
@@ -71,7 +71,7 @@ export function ValueElementRendererTest() {
       facetValue.selected = true;
       valueRenderer = new ValueElementRenderer(facet, facetValue).build();
 
-      const ariaLabel = valueRenderer.stylishCheckbox.getAttribute('aria-label');
+      const ariaLabel = valueRenderer.accessibleElement.getAttribute('aria-label');
       expect(ariaLabel).toContain('Unselect');
     });
 

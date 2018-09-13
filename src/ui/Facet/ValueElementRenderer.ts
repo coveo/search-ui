@@ -44,12 +44,17 @@ export class ValueElementRenderer {
     this.initAndAppendLabel();
     this.initAndAppendExcludeIcon();
     this.setCssClassOnListValueElement();
+    this.addAccessibilityAttributesToTargetElement();
     return this;
   }
 
   public setCssClassOnListValueElement(): void {
     $$(this.listItem).toggleClass('coveo-selected', this.facetValue.selected);
     $$(this.listItem).toggleClass('coveo-excluded', this.facetValue.excluded);
+  }
+
+  public get accessibleElement() {
+    return this.stylishCheckbox;
   }
 
   protected buildExcludeIcon(): HTMLElement {
@@ -101,7 +106,6 @@ export class ValueElementRenderer {
       tabindex: 0
     }).el;
     checkbox.innerHTML = SVGIcons.icons.checkboxHookExclusionMore;
-    this.addAccessibilityAttributesTo(checkbox);
     SVGDom.addClassToSVGInContainer(checkbox, 'coveo-facet-value-checkbox-svg');
     this.addFocusAndBlurEventListeners(checkbox);
     return checkbox;
@@ -248,10 +252,11 @@ export class ValueElementRenderer {
     this.facetValueLabelWrapper.appendChild(this.valueCaption);
   }
 
-  private addAccessibilityAttributesTo(el: HTMLElement) {
+  private addAccessibilityAttributesToTargetElement() {
+    const el = this.accessibleElement;
     el.setAttribute('aria-label', this.ariaLabel);
-    // el.setAttribute('role', 'heading');
-    // el.setAttribute('aria-level', '3');
+    el.setAttribute('role', 'heading');
+    el.setAttribute('aria-level', '3');
   }
 
   private get ariaLabel() {
