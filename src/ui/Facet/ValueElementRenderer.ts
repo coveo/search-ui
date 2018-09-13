@@ -18,6 +18,7 @@ export class ValueElementRenderer {
   public icon: HTMLElement;
   public excludeIcon: HTMLElement;
   public computedField: HTMLElement;
+  private facetValueLabelWrapper: HTMLElement;
 
   constructor(public facet: Facet, public facetValue: FacetValue) {}
 
@@ -39,53 +40,9 @@ export class ValueElementRenderer {
   }
 
   public build(): ValueElementRenderer {
-    this.listItem = $$('li', {
-      className: 'coveo-facet-value coveo-facet-selectable'
-    }).el;
-    this.listItem.setAttribute('data-value', this.facetValue.value);
-    this.excludeIcon = this.buildExcludeIcon();
-    this.listItem.appendChild(this.excludeIcon);
-
-    this.label = $$('label', {
-      className: 'coveo-facet-value-label'
-    }).el;
-    this.listItem.appendChild(this.label);
-
-    this.excludeIcon = this.buildExcludeIcon();
-    this.listItem.appendChild(this.excludeIcon);
-
-    $$(this.excludeIcon).on('mouseover', () => {
-      $$(this.listItem).addClass('coveo-facet-value-will-exclude');
-    });
-
-    $$(this.excludeIcon).on('mouseout', () => {
-      $$(this.listItem).removeClass('coveo-facet-value-will-exclude');
-    });
-
-    if (Utils.exists(this.facetValue.computedField)) {
-      this.computedField = this.buildValueComputedField();
-      if (this.computedField) {
-        this.label.appendChild(this.computedField);
-      }
-      $$(this.label).addClass('coveo-with-computed-field');
-    }
-    const labelDiv = $$('div', {
-      className: 'coveo-facet-value-label-wrapper'
-    }).el;
-    this.label.appendChild(labelDiv);
-    this.checkbox = this.buildValueCheckbox();
-    labelDiv.appendChild(this.checkbox);
-
-    this.stylishCheckbox = this.buildValueStylishCheckbox();
-    labelDiv.appendChild(this.stylishCheckbox);
-
-    this.valueCount = this.buildValueCount();
-    if (this.valueCount) {
-      labelDiv.appendChild(this.valueCount);
-    }
-    this.valueCaption = this.buildValueCaption();
-    labelDiv.appendChild(this.valueCaption);
-
+    this.buildListItem();
+    this.initAndAppendLabel();
+    this.initAndAppendExcludeIcon();
     this.setCssClassOnListValueElement();
     return this;
   }
@@ -144,6 +101,7 @@ export class ValueElementRenderer {
       tabindex: 0
     }).el;
     checkbox.innerHTML = SVGIcons.icons.checkboxHookExclusionMore;
+    this.addAccessibilityAttributesTo(checkbox);
     SVGDom.addClassToSVGInContainer(checkbox, 'coveo-facet-value-checkbox-svg');
     this.addFocusAndBlurEventListeners(checkbox);
     return checkbox;
@@ -176,32 +134,128 @@ export class ValueElementRenderer {
   }
 
   protected buildValueCaption(): HTMLElement {
-    const caption = this.facet.getValueCaption(this.facetValue);
     const valueCaption = $$('span', {
       className: 'coveo-facet-value-caption',
-      title: caption,
+      title: this.caption,
       'data-original-value': this.facetValue.value
     }).el;
 
-    $$(valueCaption).text(caption);
+    $$(valueCaption).text(this.caption);
     return valueCaption;
   }
 
   protected buildValueCount(): HTMLElement {
-    const count = this.facetValue.getFormattedCount();
-    if (Utils.isNonEmptyString(count)) {
+    if (Utils.isNonEmptyString(this.count)) {
       const countElement = $$('span', {
         className: 'coveo-facet-value-count'
       }).el;
-      $$(countElement).text(count);
+      $$(countElement).text(this.count);
       return countElement;
     } else {
       return undefined;
     }
   }
 
+  private get caption() {
+    return this.facet.getValueCaption(this.facetValue);
+  }
+
+  private get count() {
+    return this.facetValue.getFormattedCount();
+  }
+
   private addFocusAndBlurEventListeners(elem: HTMLElement) {
     $$(elem).on('focus', () => $$(this.listItem).addClass('coveo-focused'));
     $$(elem).on('blur', () => $$(this.listItem).removeClass('coveo-focused'));
+  }
+
+  private buildListItem() {
+    this.listItem = $$('li', { className: 'coveo-facet-value coveo-facet-selectable' }).el;
+    this.listItem.setAttribute('data-value', this.facetValue.value);
+  }
+
+  private initAndAppendLabel() {
+    this.label = $$('label', { className: 'coveo-facet-value-label' }).el;
+    this.tryToInitAndAppendComputedField();
+    this.initAndAppendFacetValueLabelWrapper();
+    this.listItem.appendChild(this.label);
+  }
+
+  private initAndAppendExcludeIcon() {
+    this.excludeIcon = this.buildExcludeIcon();
+    this.attachExcludeIconEventHandlers();
+    this.listItem.appendChild(this.excludeIcon);
+  }
+
+  private attachExcludeIconEventHandlers() {
+    $$(this.excludeIcon).on('mouseover', () => {
+      $$(this.listItem).addClass('coveo-facet-value-will-exclude');
+    });
+
+    $$(this.excludeIcon).on('mouseout', () => {
+      $$(this.listItem).removeClass('coveo-facet-value-will-exclude');
+    });
+  }
+
+  private tryToInitAndAppendComputedField() {
+    if (!Utils.exists(this.facetValue.computedField)) {
+      return;
+    }
+
+    this.computedField = this.buildValueComputedField();
+
+    if (!this.computedField) {
+      return;
+    }
+
+    this.label.appendChild(this.computedField);
+    $$(this.label).addClass('coveo-with-computed-field');
+  }
+
+  private initAndAppendFacetValueLabelWrapper() {
+    this.facetValueLabelWrapper = $$('div', { className: 'coveo-facet-value-label-wrapper' }).el;
+
+    this.initAndAppendCheckbox();
+    this.initAndAppendStylishCheckbox();
+    this.initAndAppendValueCount();
+    this.initAndAppendValueCaption();
+
+    this.label.appendChild(this.facetValueLabelWrapper);
+  }
+
+  private initAndAppendCheckbox() {
+    this.checkbox = this.buildValueCheckbox();
+    this.facetValueLabelWrapper.appendChild(this.checkbox);
+  }
+
+  private initAndAppendStylishCheckbox() {
+    this.stylishCheckbox = this.buildValueStylishCheckbox();
+    this.facetValueLabelWrapper.appendChild(this.stylishCheckbox);
+  }
+
+  private initAndAppendValueCount() {
+    this.valueCount = this.buildValueCount();
+
+    if (!this.valueCount) {
+      return;
+    }
+
+    this.facetValueLabelWrapper.appendChild(this.valueCount);
+  }
+
+  private initAndAppendValueCaption() {
+    this.valueCaption = this.buildValueCaption();
+    this.facetValueLabelWrapper.appendChild(this.valueCaption);
+  }
+
+  private addAccessibilityAttributesTo(el: HTMLElement) {
+    el.setAttribute('aria-label', this.ariaLabel);
+    // el.setAttribute('role', 'heading');
+    // el.setAttribute('aria-level', '3');
+  }
+
+  private get ariaLabel() {
+    const selectOrUnselect = !this.facetValue.selected ? 'Select' : 'Unselect';
+    return `${selectOrUnselect} ${this.caption} with ${this.count} results`;
   }
 }
