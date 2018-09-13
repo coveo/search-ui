@@ -256,6 +256,6 @@ export class ValueElementRenderer {
 
   private get ariaLabel() {
     const selectOrUnselect = !this.facetValue.selected ? 'Select' : 'Unselect';
-    return `${selectOrUnselect} ${this.caption} with ${this.count} results`;
+    return `${l(selectOrUnselect)} ${this.caption} ${l('With')} ${l('ResultCount', this.count)}`;
   }
 }
