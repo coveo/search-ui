@@ -49,6 +49,7 @@ import { OmniboxValuesList } from './OmniboxValuesList';
 import { ValueElement } from './ValueElement';
 import { ValueElementRenderer } from './ValueElementRenderer';
 import { DependentFacetManager } from './DependentFacetManager';
+import { AccessibleButton } from '../../utils/AccessibleButton';
 
 export interface IFacetOptions {
   title?: string;
@@ -1831,27 +1832,36 @@ export class Facet extends Component {
   }
 
   private buildMore(): HTMLElement {
-    let more: HTMLElement;
     const svgContainer = $$('span', { className: 'coveo-facet-more-icon' }, SVGIcons.icons.arrowDown).el;
     SVGDom.addClassToSVGInContainer(svgContainer, 'coveo-facet-more-icon-svg');
-    more = $$('div', { className: 'coveo-facet-more', tabindex: 0 }, svgContainer).el;
+    const more: HTMLElement = $$('div', { className: 'coveo-facet-more', tabindex: 0 }, svgContainer).el;
 
     const moreAction = () => this.handleClickMore();
     $$(more).on('click', moreAction);
     $$(more).on('keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, moreAction));
+    this.makeButtonAccessible(more, l('ExpandFacetValues'));
+
     return more;
   }
 
   private buildLess(): HTMLElement {
-    let less: HTMLElement;
     const svgContainer = $$('span', { className: 'coveo-facet-less-icon' }, SVGIcons.icons.arrowUp).el;
     SVGDom.addClassToSVGInContainer(svgContainer, 'coveo-facet-less-icon-svg');
-    less = $$('div', { className: 'coveo-facet-less', tabIndex: 0 }, svgContainer).el;
+    const less: HTMLElement = $$('div', { className: 'coveo-facet-less', tabindex: 0 }, svgContainer).el;
 
     const lessAction = () => this.handleClickLess();
     $$(less).on('click', lessAction);
     $$(less).on('keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, lessAction));
+    this.makeButtonAccessible(less, l('CollapseFacetValues'));
+
     return less;
+  }
+
+  private makeButtonAccessible(button: HTMLElement, label: string) {
+    new AccessibleButton()
+      .withElement(button)
+      .withLabel(label)
+      .build();
   }
 
   private triggerMoreQuery() {

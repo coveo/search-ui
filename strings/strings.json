@@ -7380,5 +7380,13 @@
   "With": {
     "en": "With",
     "fr": "Avec"
+  },
+  "ExpandFacetValues": {
+    "en": "Expand facet values",
+    "fr": "Étendre les valeurs de facette"
+  },
+  "CollapseFacetValues": {
+    "en": "Collapse facet values",
+    "fr": "Réduire les valeurs de facette"
   }
 }
