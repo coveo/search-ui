@@ -55,6 +55,26 @@ export function ValueElementRendererTest() {
       expect(valueRenderer.build().stylishCheckbox).toBeDefined();
     });
 
+    it(`when the facetValue is not selected,
+    the aria-label attribute contains the word 'Select'`, () => {
+      const facetValue = FacetValue.createFromFieldValue(FakeResults.createFakeFieldValue('foo', 123));
+      facetValue.selected = false;
+      valueRenderer = new ValueElementRenderer(facet, facetValue).build();
+
+      const ariaLabel = valueRenderer.stylishCheckbox.getAttribute('aria-label');
+      expect(ariaLabel).toContain('Select');
+    });
+
+    it(`when the facetValue is selected,
+    the aria-label attribute contains the word 'Unselect'`, () => {
+      const facetValue = FacetValue.createFromFieldValue(FakeResults.createFakeFieldValue('foo', 123));
+      facetValue.selected = true;
+      valueRenderer = new ValueElementRenderer(facet, facetValue).build();
+
+      const ariaLabel = valueRenderer.stylishCheckbox.getAttribute('aria-label');
+      expect(ariaLabel).toContain('Unselect');
+    });
+
     it('should build a caption', () => {
       valueRenderer = new ValueElementRenderer(
         facet,
