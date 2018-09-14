@@ -22,6 +22,17 @@ export const AccessibleButtonTest = () => {
       expect(element.getAttribute('aria-label')).toBe('qwerty');
     });
 
+    it('should add the specified title', () => {
+      const title = 'title';
+
+      new AccessibleButton()
+        .withElement(element)
+        .withTitle(title)
+        .build();
+
+      expect(element.getAttribute('title')).toBe(title);
+    });
+
     it('should add the correct role', () => {
       new AccessibleButton().withElement(element).build();
 

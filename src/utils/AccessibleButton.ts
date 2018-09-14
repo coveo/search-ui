@@ -7,6 +7,7 @@ import 'styling/_AccessibleButton';
 export class AccessibleButton {
   private element: Dom;
   private label: string;
+  private title: string;
 
   private clickAction: (e: Event) => void;
   private enterKeyboardAction: (e: Event) => void;
@@ -38,6 +39,11 @@ export class AccessibleButton {
 
   public withLabel(label: string) {
     this.label = label;
+    return this;
+  }
+
+  public withTitle(title: string) {
+    this.title = title;
     return this;
   }
 
@@ -96,6 +102,7 @@ export class AccessibleButton {
 
     this.ensureCorrectRole();
     this.ensureCorrectLabel();
+    this.ensureTitle();
     this.ensureSelectAction();
     this.ensureUnselectAction();
     this.ensureMouseenterAndFocusAction();
@@ -136,6 +143,10 @@ export class AccessibleButton {
     }
     this.element.setAttribute('aria-label', this.label);
     this.element.setAttribute('title', this.label);
+  }
+
+  private ensureTitle() {
+    this.title && this.element.setAttribute('title', this.title);
   }
 
   private ensureTabIndex() {
