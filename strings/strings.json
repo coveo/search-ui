@@ -7388,5 +7388,13 @@
   "CollapseFacetValues": {
     "en": "Collapse facet values",
     "fr": "Réduire les valeurs de facette"
+  },
+  "PressKeyToActivateFacetValueSearch": {
+    "en": "Press {0} to activate facet value search",
+    "fr": "Appuyez sur {0} pour activer la recherche de valeurs de facette"
+  },
+  "Enter": {
+    "en": "Enter",
+    "fr": "Entrée"
   }
 }
