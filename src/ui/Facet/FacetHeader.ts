@@ -8,6 +8,7 @@ import { IAnalyticsFacetOperatorMeta, IAnalyticsFacetMeta, analyticsActionCauseL
 import 'styling/_FacetHeader';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { SVGDom } from '../../utils/SVGDom';
+import { AccessibleButton } from '../../utils/AccessibleButton';
 
 export interface IFacetHeaderOptions {
   facetElement: HTMLElement;
@@ -188,18 +189,27 @@ export class FacetHeader {
   }
 
   public buildEraser(): HTMLElement {
-    const eraser = $$('div', { title: l('Clear', this.options.title), className: 'coveo-facet-header-eraser' }, SVGIcons.icons.mainClear);
+    const eraser = $$('div', { className: 'coveo-facet-header-eraser' }, SVGIcons.icons.mainClear);
+
     SVGDom.addClassToSVGInContainer(eraser.el, 'coveo-facet-header-eraser-svg');
 
-    eraser.on('click', () => {
-      const cmp = this.options.facet || this.options.facetSlider;
-      cmp.reset();
-      cmp.usageAnalytics.logSearchEvent<IAnalyticsFacetMeta>(analyticsActionCauseList.facetClearAll, {
-        facetId: cmp.options.id,
-        facetTitle: cmp.options.title
-      });
-      cmp.queryController.executeQuery();
-    });
+    new AccessibleButton()
+      .withElement(eraser.el)
+      .withLabel(l('ResetFacet'))
+      .withClickAction(() => this.onEraserClick())
+      .withEnterKeyboardAction(() => this.onEraserClick())
+      .build();
+
     return eraser.el;
+  }
+
+  private onEraserClick() {
+    const cmp = this.options.facet || this.options.facetSlider;
+    cmp.reset();
+    cmp.usageAnalytics.logSearchEvent<IAnalyticsFacetMeta>(analyticsActionCauseList.facetClearAll, {
+      facetId: cmp.options.id,
+      facetTitle: cmp.options.title
+    });
+    cmp.queryController.executeQuery();
   }
 }

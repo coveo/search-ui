@@ -7396,5 +7396,9 @@
   "Enter": {
     "en": "Enter",
     "fr": "Entrée"
+  },
+  "ResetFacet": {
+    "en": "Reset facet",
+    "fr": "Réinitialiser la facette"
   }
 }
