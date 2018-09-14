@@ -4,6 +4,8 @@ import { FacetSettings } from '../../src/ui/Facet/FacetSettings';
 import { IFacetOptions } from '../../src/ui/Facet/Facet';
 import { registerCustomMatcher } from '../CustomMatchers';
 import { $$ } from '../../src/utils/Dom';
+import { Simulate } from '../Simulate';
+import { KEYBOARD } from '../../src/Core';
 
 export function FacetSettingsTest() {
   describe('FacetSettings', () => {
@@ -55,17 +57,40 @@ export function FacetSettingsTest() {
       expect(facet.queryStateModel.setMultiple).toHaveBeenCalled();
     });
 
-    it('allow to open and close the popup', () => {
-      initFacetSettings();
+    describe('given the FacetSettings is initialized and appended to a facet', () => {
+      function settingsPopup() {
+        return $$(facetSettings.facet.root).find('.coveo-facet-settings-popup');
+      }
 
-      facet.root.appendChild(facetSettings.settingsButton);
-      expect($$(facetSettings.facet.root).find('.coveo-facet-settings-popup')).toBeNull();
+      beforeEach(() => {
+        initFacetSettings();
+        facet.root.appendChild(facetSettings.settingsButton);
+        expect(settingsPopup()).toBeNull();
+      });
 
-      facetSettings.open();
-      expect($$(facetSettings.facet.root).find('.coveo-facet-settings-popup')).not.toBeNull();
+      it('allow to open and close the popup using the #open and #close methods', () => {
+        facetSettings.open();
+        expect(settingsPopup()).not.toBeNull();
 
-      facetSettings.close();
-      expect($$(facetSettings.facet.root).find('.coveo-facet-settings-popup')).toBeNull();
+        facetSettings.close();
+        expect(settingsPopup()).toBeNull();
+      });
+
+      it('allows open and closing the popup by clicking the facetSetting button', () => {
+        facetSettings.settingsButton.click();
+        expect(settingsPopup()).not.toBeNull();
+
+        facetSettings.settingsButton.click();
+        expect(settingsPopup()).toBeNull();
+      });
+
+      it('allows open and closing the popup by pressing enter on the facetSetting button', () => {
+        Simulate.keyUp(facetSettings.settingsButton, KEYBOARD.ENTER);
+        expect(settingsPopup()).not.toBeNull();
+
+        Simulate.keyUp(facetSettings.settingsButton, KEYBOARD.ENTER);
+        expect(settingsPopup()).toBeNull();
+      });
     });
 
     it('should show collapse/expand section if it is not disabled from the facet', () => {
