@@ -623,14 +623,6 @@ export function FacetTest() {
           test.cmp.searchContainer.checkbox.dispatchEvent(changeEvent);
         }
 
-        function triggerEnterKeyOnListItem() {
-          const enterKeyEvent = new Event('keyup') as any;
-          enterKeyEvent.which = 13;
-          enterKeyEvent.keyCode = 13;
-
-          test.cmp.searchContainer.listItem.dispatchEvent(enterKeyEvent);
-        }
-
         beforeEach(() => {
           const options = { field: '@field', enableFacetSearch: true };
           test = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, options);
@@ -647,6 +639,14 @@ export function FacetTest() {
         });
 
         describe(`when triggering an 'Enter' keyup event on the searchContainer listItem`, () => {
+          function triggerEnterKeyOnListItem() {
+            const enterKeyEvent = new Event('keyup') as any;
+            enterKeyEvent.which = 13;
+            enterKeyEvent.keyCode = 13;
+
+            test.cmp.searchContainer.listItem.dispatchEvent(enterKeyEvent);
+          }
+
           beforeEach(triggerEnterKeyOnListItem);
 
           it('activates searching', () => {
