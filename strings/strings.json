@@ -7400,5 +7400,9 @@
   "ResetFacet": {
     "en": "Reset facet",
     "fr": "Réinitialiser la facette"
+  },
+  "FacetSettings": {
+    "en": "Facet settings",
+    "fr": "Paramètres de facette"
   }
 }

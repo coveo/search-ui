@@ -13,6 +13,7 @@ import { Utils } from '../../utils/Utils';
 import { IAnalyticsFacetMeta, analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
 import { Facet } from './Facet';
 import { FacetSort, IFacetSortDescription } from './FacetSort';
+import { AccessibleButton } from '../../utils/AccessibleButton';
 
 export interface IFacetSettingsKlass {
   new (sorts: string[], facet: Facet): FacetSettings;
@@ -43,7 +44,8 @@ export class FacetSettings extends FacetSort {
   private showSection: HTMLElement;
   private sortSection: { element: HTMLElement; sortItems: HTMLElement[] };
   private customSortDirectionChange = false;
-  private onDocumentClick: (e: Event) => void;
+  private onDocumentClick = () => this.close();
+  private closeTimeout: number;
   private enabledSortsIgnoreRenderBecauseOfPairs: IFacetSortDescription[] = [];
 
   constructor(public sorts: string[], public facet: Facet) {
@@ -56,14 +58,8 @@ export class FacetSettings extends FacetSort {
    * @returns {HTMLElement}
    */
   public build() {
-    this.settingsButton = $$('div', {
-      className: 'coveo-facet-header-settings',
-      title: l('Settings')
-    }).el;
-    this.settingsButton.innerHTML = SVGIcons.icons.more;
-    SVGDom.addClassToSVGInContainer(this.settingsButton, 'coveo-facet-settings-more-svg');
-
-    this.settingsPopup = $$('div', { className: 'coveo-facet-settings-popup' }).el;
+    this.buildSettingsButton();
+    this.buildSettingsPopup();
 
     if (Utils.isNonEmptyArray(this.enabledSorts)) {
       this.sortSection = this.buildSortSection();
@@ -87,7 +83,7 @@ export class FacetSettings extends FacetSort {
       this.appendIfNotUndefined(this.showSection);
     };
 
-    this.handleMouseEventOnButton(this.sortSection);
+    this.addMiscellaneousEventHandlers();
     if (Utils.isNonEmptyArray(this.enabledSorts)) {
       this.settingsPopup.appendChild(this.sortSection.element);
       _.each(this.directionSection, d => {
@@ -187,6 +183,37 @@ export class FacetSettings extends FacetSort {
 
   public get button() {
     return this.settingsButton;
+  }
+
+  private buildSettingsButton() {
+    this.settingsButton = $$('div', { className: 'coveo-facet-header-settings' }).el;
+    this.settingsButton.innerHTML = SVGIcons.icons.more;
+    SVGDom.addClassToSVGInContainer(this.settingsButton, 'coveo-facet-settings-more-svg');
+
+    this.hideElementOnMouseEnterLeave(this.settingsButton);
+    this.makeSettingsButtonAccessible();
+  }
+
+  private hideElementOnMouseEnterLeave(el: HTMLElement) {
+    const mouseLeave = () => (this.closeTimeout = window.setTimeout(() => this.close(), 300));
+    const mouseEnter = () => clearTimeout(this.closeTimeout);
+
+    $$(el).on('mouseleave', mouseLeave);
+    $$(el).on('mouseenter', mouseEnter);
+  }
+
+  private makeSettingsButtonAccessible() {
+    new AccessibleButton()
+      .withElement(this.settingsButton)
+      .withLabel(l('FacetSettings'))
+      .withClickAction(e => this.handleSettingsButtonClick(e))
+      .withEnterKeyboardAction(e => this.handleSettingsButtonClick(e))
+      .build();
+  }
+
+  private buildSettingsPopup() {
+    this.settingsPopup = $$('div', { className: 'coveo-facet-settings-popup' }).el;
+    this.hideElementOnMouseEnterLeave(this.settingsPopup);
   }
 
   private buildSortSection() {
@@ -386,13 +413,10 @@ export class FacetSettings extends FacetSort {
     return section;
   }
 
-  private handleClickSettingsButtons(event: Event, sortSection?: { element: HTMLElement; sortItems: HTMLElement[] }) {
+  private handleSettingsButtonClick(event: Event) {
     event.stopPropagation();
-    if (!Utils.isNullOrUndefined(this.settingsPopup.parentElement)) {
-      this.close();
-    } else {
-      this.open();
-    }
+    const settingsPopupIsOpen = !Utils.isNullOrUndefined(this.settingsPopup.parentElement);
+    settingsPopupIsOpen ? this.close() : this.open();
   }
 
   private handleClickSortButton(e: Event, enabledSort: IFacetSortDescription) {
@@ -443,27 +467,9 @@ export class FacetSettings extends FacetSort {
     );
   }
 
-  private handleMouseEventOnButton(sortSection: { element: HTMLElement; sortItems: HTMLElement[] }) {
-    let closeTimeout: number;
-    $$(this.settingsButton).on('click', (e: Event) => this.handleClickSettingsButtons(e, sortSection));
-
-    const mouseLeave = () => {
-      closeTimeout = window.setTimeout(() => {
-        this.close();
-      }, 300);
-    };
-    const mouseEnter = () => {
-      clearTimeout(closeTimeout);
-    };
-
-    this.onDocumentClick = (e: Event) => this.close();
-    document.addEventListener('click', (e: Event) => this.onDocumentClick(e));
+  private addMiscellaneousEventHandlers() {
+    document.addEventListener('click', () => this.onDocumentClick());
     $$(this.facet.root).on(InitializationEvents.nuke, () => this.handleNuke());
-
-    $$(this.settingsButton).on('mouseleave', mouseLeave);
-    $$(this.settingsPopup).on('mouseleave', mouseLeave);
-    $$(this.settingsButton).on('mouseenter', mouseEnter);
-    $$(this.settingsPopup).on('mouseenter', mouseEnter);
   }
 
   public getCurrentDirectionItem(directionSection = this.directionSection) {
