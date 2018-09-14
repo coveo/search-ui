@@ -6,14 +6,20 @@ import { IFacetOptions } from '../../src/ui/Facet/Facet';
 import { registerCustomMatcher } from '../CustomMatchers';
 import * as Mock from '../MockEnvironment';
 import { FacetSettings } from '../../src/ui/Facet/FacetSettings';
-import _ = require('underscore');
+import { Simulate } from '../Simulate';
+import { KEYBOARD } from '../../src/Core';
 
 export function FacetHeaderTest() {
-  describe('FacetHeader', function() {
-    var facetHeader: FacetHeader;
-    var baseOptions: IFacetHeaderOptions;
+  describe('FacetHeader', () => {
+    let facetHeader: FacetHeader;
+    let baseOptions: IFacetHeaderOptions;
 
-    beforeEach(function() {
+    function initFacetHeader() {
+      facetHeader = new FacetHeader(baseOptions);
+      facetHeader.build();
+    }
+
+    beforeEach(() => {
       baseOptions = {
         facetElement: document.createElement('div'),
         title: 'foo',
@@ -23,90 +29,66 @@ export function FacetHeaderTest() {
       };
     });
 
-    afterEach(function() {
+    afterEach(() => {
       baseOptions = null;
       facetHeader = null;
     });
 
-    it('should build a title', function() {
-      facetHeader = new FacetHeader(
-        _.extend(baseOptions, {
-          title: 'this is a title'
-        })
-      );
+    it('should build a title', () => {
+      baseOptions.title = 'this is a title';
+      initFacetHeader();
 
-      var title = $$(facetHeader.build()).find('.coveo-facet-header-title');
+      const title = $$(facetHeader.element).find('.coveo-facet-header-title');
       expect($$(title).text()).toBe('this is a title');
     });
 
-    it('should build an icon if specified', function() {
-      facetHeader = new FacetHeader(
-        _.extend(baseOptions, {
-          icon: 'this-is-an-icon'
-        })
-      );
-      var icon = $$(facetHeader.build()).find('.coveo-icon-custom.this-is-an-icon');
+    it('should build an icon if specified', () => {
+      baseOptions.icon = 'this-is-an-icon';
+      initFacetHeader();
+
+      const icon = $$(facetHeader.element).find('.coveo-icon-custom.this-is-an-icon');
       expect(icon).not.toBeNull();
     });
 
-    describe('with a facet', function() {
-      var facet: Facet;
-
-      beforeEach(function() {
-        facet = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, {
+    describe('with a facet', () => {
+      beforeEach(() => {
+        baseOptions.facet = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, {
           field: '@field'
         }).cmp;
         registerCustomMatcher();
       });
 
-      it('toggle operator should be available if the facet has the option', function() {
-        facet.options.enableTogglingOperator = true;
-        facetHeader = new FacetHeader(
-          _.extend(baseOptions, {
-            facet: facet
-          })
-        );
-        facetHeader.build();
+      it('toggle operator should be available if the facet has the option', () => {
+        baseOptions.facet.options.enableTogglingOperator = true;
+        initFacetHeader();
+
         expect(facetHeader.operatorElement.style.display).toEqual('block');
 
-        facet.options.enableTogglingOperator = false;
-        facetHeader = new FacetHeader(
-          _.extend(baseOptions, {
-            facet: facet
-          })
-        );
-        facetHeader.build();
+        baseOptions.facet.options.enableTogglingOperator = false;
+        initFacetHeader();
+
         expect(facetHeader.operatorElement.style.display).toEqual('none');
       });
 
-      it('allow to collapse and expand a facet', function() {
-        facetHeader = new FacetHeader(
-          _.extend(baseOptions, {
-            facet: facet,
-            settingsKlass: FacetSettings
-          })
-        );
+      it('allow to collapse and expand a facet', () => {
+        baseOptions.settingsKlass = FacetSettings;
+        initFacetHeader();
 
-        facetHeader.build();
         facetHeader.collapseFacet();
         expect($$(facetHeader.options.facetElement).hasClass('coveo-facet-collapsed')).toBe(true);
+
         facetHeader.expandFacet();
         expect($$(facetHeader.options.facetElement).hasClass('coveo-facet-collapsed')).not.toBe(true);
       });
 
-      it('allow to switch or and and', function() {
+      it('allow to switch or and and', () => {
+        const facet = baseOptions.facet;
         facet.options.enableTogglingOperator = true;
         facet.getSelectedValues = jasmine.createSpy('spy');
         (<jasmine.Spy>facet.getSelectedValues).and.returnValue(['a', 'b']);
+        baseOptions.settingsKlass = FacetSettings;
 
-        facetHeader = new FacetHeader(
-          _.extend(baseOptions, {
-            facet: facet,
-            settingsKlass: FacetSettings
-          })
-        );
-
-        facetHeader.build();
+        initFacetHeader();
         facetHeader.switchToOr();
         expect(facet.queryStateModel.set).toHaveBeenCalledWith(facet.operatorAttributeId, 'or');
 
@@ -116,6 +98,23 @@ export function FacetHeaderTest() {
         facetHeader.operatorElement.click();
         facetHeader.operatorElement.click();
         expect(facet.queryController.executeQuery).toHaveBeenCalledTimes(2);
+      });
+
+      describe('when the facet has one selected value', () => {
+        beforeEach(() => {
+          baseOptions.facet.selectValue('foobar');
+          initFacetHeader();
+        });
+
+        it('when clicking the eraser, it resets the facet', () => {
+          facetHeader.eraserElement.click();
+          expect(baseOptions.facet.getSelectedValues().length).toBe(0);
+        });
+
+        it('when pressing Enter key on the eraser, it resets the facet', () => {
+          Simulate.keyUp(facetHeader.eraserElement, KEYBOARD.ENTER);
+          expect(baseOptions.facet.getSelectedValues().length).toBe(0);
+        });
       });
     });
   });

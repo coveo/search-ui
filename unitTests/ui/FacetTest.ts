@@ -10,6 +10,7 @@ import { BreadcrumbEvents } from '../../src/events/BreadcrumbEvents';
 import { IPopulateBreadcrumbEventArgs } from '../../src/events/BreadcrumbEvents';
 import { IPopulateOmniboxEventArgs } from '../../src/events/OmniboxEvents';
 import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
+import { KEYBOARD } from '../../src/Core';
 
 export function FacetTest() {
   describe('Facet', () => {
@@ -640,11 +641,7 @@ export function FacetTest() {
 
         describe(`when triggering an 'Enter' keyup event on the searchContainer listItem`, () => {
           function triggerEnterKeyOnAccessibleElement() {
-            const enterKeyEvent = new Event('keyup') as any;
-            enterKeyEvent.which = 13;
-            enterKeyEvent.keyCode = 13;
-
-            test.cmp.searchContainer.accessibleElement.dispatchEvent(enterKeyEvent);
+            Simulate.keyUp(test.cmp.searchContainer.accessibleElement, KEYBOARD.ENTER);
           }
 
           beforeEach(triggerEnterKeyOnAccessibleElement);
