@@ -639,15 +639,15 @@ export function FacetTest() {
         });
 
         describe(`when triggering an 'Enter' keyup event on the searchContainer listItem`, () => {
-          function triggerEnterKeyOnListItem() {
+          function triggerEnterKeyOnAccessibleElement() {
             const enterKeyEvent = new Event('keyup') as any;
             enterKeyEvent.which = 13;
             enterKeyEvent.keyCode = 13;
 
-            test.cmp.searchContainer.listItem.dispatchEvent(enterKeyEvent);
+            test.cmp.searchContainer.accessibleElement.dispatchEvent(enterKeyEvent);
           }
 
-          beforeEach(triggerEnterKeyOnListItem);
+          beforeEach(triggerEnterKeyOnAccessibleElement);
 
           it('activates searching', () => {
             expect(test.cmp.element.className).toContain(searchingCssClass);
@@ -661,7 +661,7 @@ export function FacetTest() {
 
           it(`when triggering a second 'Enter' keyup event,
           it removes the checkbox 'checked' attribute`, () => {
-            triggerEnterKeyOnListItem();
+            triggerEnterKeyOnAccessibleElement();
 
             const checkbox = test.cmp.searchContainer.checkbox;
             const checkedAttribute = checkbox.getAttribute('checked');

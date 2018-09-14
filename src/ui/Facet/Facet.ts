@@ -1437,15 +1437,18 @@ export class Facet extends Component {
     const renderer = new ValueElementRenderer(this, FacetValue.create(l('Search')));
     this.searchContainer = renderer.build().withNo([renderer.excludeIcon, renderer.icon]);
     $$(this.searchContainer.listItem).addClass('coveo-facet-search-button');
-    renderer.accessibleElement.setAttribute('title', l('PressKeyToActivateFacetValueSearch', l('Enter')));
+
+    new AccessibleButton()
+      .withElement(this.searchContainer.accessibleElement)
+      .withLabel(l('FacetSearch'))
+      .withTitle(l('PressKeyToActivateFacetSearch', l('Enter')))
+      .withEnterKeyboardAction(e => this.toggleSearchMenu(e))
+      .build();
 
     // Mobile do not like label. Use click event
     if (DeviceUtils.isMobileDevice()) {
       $$(this.searchContainer.label).on('click', e => this.toggleSearchMenu(e));
     }
-
-    const handleKeyUp = KeyboardUtils.keypressAction(KEYBOARD.ENTER, e => this.toggleSearchMenu(e));
-    $$(this.searchContainer.listItem).on('keyup', handleKeyUp);
 
     $$(this.searchContainer.checkbox).on('change', () => {
       $$(this.element).addClass('coveo-facet-searching');
