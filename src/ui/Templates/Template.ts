@@ -188,7 +188,7 @@ export class Template implements ITemplateProperties {
       return null;
     }
 
-    await this.allComponentsInHtmlStringHaveLoaded(html);
+    await this.ensureComponentsInHtmlStringHaveLoaded(html);
 
     const template = this.buildTemplate(html, mergedOptions);
     this.makeTemplateAccessible(template, result);
@@ -224,10 +224,9 @@ export class Template implements ITemplateProperties {
     return this.conditionToParse != undefined ? this.conditionToParse : this.condition != undefined ? this.condition : this.fieldsToMatch;
   }
 
-  private async allComponentsInHtmlStringHaveLoaded(html: string) {
-    const componentDefinitions = this.getComponentsInside(html).map(component => LazyInitialization.getLazyRegisteredComponent(component));
-
-    await Promise.all(componentDefinitions);
+  private ensureComponentsInHtmlStringHaveLoaded(html: string) {
+    const components = this.getComponentsInside(html).map(component => LazyInitialization.getLazyRegisteredComponent(component));
+    return Promise.all(components);
   }
 
   private buildTemplate(html: string, templateOptions: IInstantiateTemplateOptions) {
@@ -252,6 +251,6 @@ export class Template implements ITemplateProperties {
     template.setAttribute('role', 'heading');
     template.setAttribute('aria-level', '2');
     template.setAttribute('aria-label', `Result`);
-    template.setAttribute('title', result.title);
+    result && result.title && template.setAttribute('title', result.title);
   }
 }
