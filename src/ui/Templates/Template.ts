@@ -172,13 +172,9 @@ export class Template implements ITemplateProperties {
   }
 
   public getComponentsInside(tmplString: string): string[] {
-    let allComponentsInsideCurrentTemplate = _.map(Initialization.getListOfRegisteredComponents(), (componentId: string) => {
-      let regex = new RegExp(`Coveo${componentId}`, 'g');
-      if (regex.exec(tmplString)) {
-        return componentId;
-      } else {
-        return null;
-      }
+    const allComponentsInsideCurrentTemplate = _.map(Initialization.getListOfRegisteredComponents(), (componentId: string) => {
+      const regex = new RegExp(`Coveo${componentId}`, 'g');
+      return regex.exec(tmplString) ? componentId : null;
     });
 
     return _.compact(allComponentsInsideCurrentTemplate);
