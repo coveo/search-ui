@@ -1,9 +1,8 @@
-@import "bourbon/bourbon";
-@import "Variables";
-@import "mixins/mediaQuery";
+@import 'bourbon/bourbon';
+@import 'Variables';
+@import 'mixins/mediaQuery';
 
 .coveo-small-tabs {
-
   &.coveo-tab-section {
     .coveo-tab-dropdown-header {
       margin-left: auto;
@@ -13,7 +12,7 @@
 
   .CoveoTab {
     @include transition-property(opacity);
-    @include transition-duration(0.250s);
+    @include transition-duration(0.25s);
     @include transition-timing-function(ease);
     font-size: $font-size-smallest;
     color: $color-greyish-teal-blue;
@@ -27,7 +26,7 @@
     &.coveo-selected:hover {
       border-bottom: 0;
       p {
-          border-bottom: 2px solid $color-greyish-dark-blue;
+        border-bottom: 2px solid $color-greyish-dark-blue;
       }
     }
   }
@@ -56,7 +55,6 @@
 }
 
 .coveo-tab-list-container {
-  position: absolute;
   overflow: hidden;
   z-index: 11;
   ol {
