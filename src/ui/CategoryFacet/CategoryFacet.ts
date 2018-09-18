@@ -488,6 +488,7 @@ export class CategoryFacet extends Component {
   public logAnalyticsEvent(eventName: IAnalyticsActionCause) {
     this.usageAnalytics.logSearchEvent<IAnalyticsCategoryFacetMeta>(eventName, {
       categoryFacetId: this.options.id,
+      categoryFacetField: this.options.field.toString(),
       categoryFacetPath: this.activePath,
       categoryFacetTitle: this.options.title
     });

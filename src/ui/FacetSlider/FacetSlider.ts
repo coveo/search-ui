@@ -651,6 +651,7 @@ export class FacetSlider extends Component {
       this.reset();
       this.usageAnalytics.logSearchEvent<IAnalyticsFacetMeta>(analyticsActionCauseList.facetClearAll, {
         facetId: this.options.id,
+        facetField: this.options.field.toString(),
         facetTitle: this.options.title
       });
       this.queryController.executeQuery();
@@ -744,6 +745,7 @@ export class FacetSlider extends Component {
       this.updateAppearanceDependingOnState();
       this.usageAnalytics.logSearchEvent<IAnalyticsFacetSliderChangeMeta>(analyticsActionCauseList.facetRangeSlider, {
         facetId: this.options.id,
+        facetField: this.options.field.toString(),
         facetRangeStart: this.startOfSlider.toString(),
         facetRangeEnd: this.endOfSlider.toString()
       });
@@ -769,6 +771,7 @@ export class FacetSlider extends Component {
       this.updateQueryState();
       this.usageAnalytics.logSearchEvent<IAnalyticsFacetGraphSelectedMeta>(analyticsActionCauseList.facetRangeGraph, {
         facetId: this.options.id,
+        facetField: this.options.field.toString(),
         facetRangeStart: this.startOfSlider.toString(),
         facetRangeEnd: this.endOfSlider.toString()
       });

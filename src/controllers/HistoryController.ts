@@ -223,6 +223,7 @@ export class HistoryController extends RootComponent implements IHistoryManager 
         if (facetInfo) {
           this.usageAnalytics.logSearchEvent<IAnalyticsFacetMeta>(facetInfo.actionCause, {
             facetId: facetInfo.fieldName,
+            facetField: facetInfo.fieldName,
             facetTitle: facetInfo.fieldName,
             facetValue: facetInfo.valueModified
           });
