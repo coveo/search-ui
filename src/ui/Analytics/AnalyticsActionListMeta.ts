@@ -360,6 +360,7 @@ export var analyticsActionCauseList = {
    * `"facetId":`: <correspondingFacetId>
    * `"facetValue":`: <correspondingFacetValue>
    * `"facetTitle":`: <correspondingFacetTitle>
+   * `"facetField":`: <correspondingFacetField>
    */
   documentTag: <IAnalyticsActionCause>{
     name: 'documentTag',
