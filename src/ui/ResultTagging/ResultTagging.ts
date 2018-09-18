@@ -28,6 +28,7 @@ export interface IResultTaggingOptions {
 
 export interface IAnalyticsResultTaggingMeta {
   facetId: string;
+  facetField: string;
   facetValue?: string;
   facetTitle?: string;
 }
@@ -286,6 +287,7 @@ export class ResultTagging extends Component {
           beforeExecuteQuery: () =>
             this.usageAnalytics.logSearchEvent<IAnalyticsResultTaggingMeta>(analyticsActionCauseList.documentTag, {
               facetId: <string>this.options.field,
+              facetField: <string>this.options.field,
               facetValue: value
             })
         });

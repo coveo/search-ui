@@ -93,6 +93,7 @@ export class BreadcrumbValueElement {
     this.facet.triggerNewQuery(() =>
       this.facet.usageAnalytics.logSearchEvent<IAnalyticsFacetMeta>(analyticsActionCauseList.breadcrumbFacet, {
         facetId: this.facet.options.id,
+        facetField: this.facet.options.field.toString(),
         facetValue: this.facetValue.value,
         facetTitle: this.facet.options.title
       })
