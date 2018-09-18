@@ -276,7 +276,9 @@ export class Quickview extends Component {
     const arrow = $$('div').el;
     tooltip.appendChild(arrow);
 
-    this.buildPopper(icon, tooltip, arrow);
+    if (!$$(this.element).parent('.CoveoCardActionBar')) {
+      this.buildPopper(icon, tooltip, arrow);
+    }
     return tooltip;
   }
 
