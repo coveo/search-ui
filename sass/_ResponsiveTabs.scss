@@ -55,10 +55,21 @@
 }
 
 .coveo-tab-list-container {
-  overflow: hidden;
+  max-width: 80%;
   z-index: 11;
+
   ol {
     margin: 0;
+
+    a {
+      width: 100%;
+
+      p {
+        width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
   }
 }
 
