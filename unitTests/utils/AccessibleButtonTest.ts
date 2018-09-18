@@ -12,13 +12,12 @@ export const AccessibleButtonTest = () => {
       Simulate.removeJQuery();
     });
 
-    it('should add the specified label', () => {
+    it('should add the specified label as the aria-label attribute', () => {
       new AccessibleButton()
         .withElement(element)
         .withLabel('qwerty')
         .build();
 
-      expect(element.getAttribute('title')).toBe('qwerty');
       expect(element.getAttribute('aria-label')).toBe('qwerty');
     });
 

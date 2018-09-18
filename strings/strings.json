@@ -7376,5 +7376,13 @@
   "PressEnterToSend": {
     "en": "Press enter to send",
     "fr": "Appuyez sur Entrée pour envoyer"
+  },
+  "SortResultsBy": {
+    "en": "Sort results by {0}",
+    "fr": "Trier les résultats par {0}"
+  },
+  "DisplayResultsAs": {
+    "en": "Display results as {0}",
+    "fr": "Afficher les résultats comme {0}"
   }
 }

@@ -92,6 +92,7 @@ export class OmniboxValuesList {
     elem.facet.usageAnalytics.logSearchEvent<IAnalyticsOmniboxFacetMeta>(cause, {
       query: this.omniboxObject.completeQueryExpression.word,
       facetId: elem.facet.options.id,
+      facetField: elem.facet.options.field.toString(),
       facetTitle: elem.facet.options.title,
       facetValue: elem.facetValue.value,
       suggestions: strippedFacetValues.join(';'),
