@@ -291,8 +291,8 @@ export class Analytics extends Component {
    * @param element The HTMLElement that the user has interacted with for this custom event. Default value is the
    * element on which the `Analytics` component is bound.
    */
-  public logCustomEvent<T>(actionCause: IAnalyticsActionCause, meta: T, element: HTMLElement = this.element) {
-    this.client.logCustomEvent(actionCause, meta, element);
+  public logCustomEvent<T>(actionCause: IAnalyticsActionCause, meta: T, element: HTMLElement = this.element, result?: IQueryResult) {
+    this.client.logCustomEvent(actionCause, meta, element, result);
   }
 
   /**
