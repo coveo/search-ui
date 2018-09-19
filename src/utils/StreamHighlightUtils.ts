@@ -82,14 +82,7 @@ export function getRestHighlightsForAllTerms(
   opts: IStreamHighlightOptions
 ): IHighlight[] {
   const indexes = [];
-  const sortedTerms = _.keys(termsToHighlight).sort(termsSorting);
-
-  const phrasesTerms = _.chain(phrasesToHighlight)
-    .values()
-    .map(_.keys)
-    .flatten()
-    .value();
-  const uniqueTerms = _.difference(sortedTerms, phrasesTerms);
+  const uniqueTerms = getUniqueTerms(termsToHighlight, phrasesToHighlight);
 
   _.each(uniqueTerms, (term: string) => {
     let termsToIterate = _.compact([term].concat(termsToHighlight[term]).sort(termsSorting));
@@ -142,6 +135,17 @@ export function getRestHighlightsForAllTerms(
       return _.extend(highlight, { dataHighlightGroup: group });
     })
     .value();
+}
+
+function getUniqueTerms(termsToHighlight, phrasesToHighlight): string[] {
+  const sortedTerms = _.keys(termsToHighlight).sort(termsSorting);
+  const phrasesTerms = _.chain(phrasesToHighlight)
+    .values()
+    .map(_.keys)
+    .flatten()
+    .value();
+
+  return _.difference(sortedTerms, phrasesTerms);
 }
 
 function termsSorting(first: string, second: string) {

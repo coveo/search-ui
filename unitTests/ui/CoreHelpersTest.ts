@@ -108,7 +108,8 @@ export function CoreHelperTest() {
       );
     });
 
-    it("highlightStreamTextv2 should only highlight a phrase's term once", () => {
+    it(`when the termsToHighlight contains words that are part of phrasesToHighlight,
+        highlightStreamTextv2 should only highlight a phrase's term once`, () => {
       const toHighlight = 'A test phrase';
       const termsToHighlight: IHighlightTerm = { phrase: [], test: [] };
       const phrasesToHighlight: IHighlightPhrase = { 'test phrase': { phrase: [], test: [] } };
