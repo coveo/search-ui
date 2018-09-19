@@ -1,5 +1,6 @@
 import { $$, Dom } from '../../utils/Dom';
 import { InitializationEvents } from '../../events/InitializationEvents';
+import { PopupUtils, PopupHorizontalAlignment, PopupVerticalAlignment } from '../../utils/PopupUtils';
 import { EventsUtils } from '../../utils/EventsUtils';
 import { Utils } from '../../utils/Utils';
 import { Logger } from '../../misc/Logger';
@@ -11,7 +12,6 @@ import { ResponsiveComponentsUtils } from './ResponsiveComponentsUtils';
 import { l } from '../../strings/Strings';
 import { ResponsiveComponents } from './ResponsiveComponents';
 import * as _ from 'underscore';
-import PopperJs from 'popper.js';
 
 import 'styling/_ResponsiveTabs';
 import { SVGIcons } from '../../utils/SVGIcons';
@@ -329,9 +329,13 @@ export class ResponsiveTabs implements IResponsiveComponent {
   }
 
   private positionPopup() {
-    this.coveoRoot.el.appendChild(this.dropdownContent.el);
-    const options: PopperJs.PopperOptions = { placement: 'bottom-end' };
-    new PopperJs(this.dropdownHeader.el, this.dropdownContent.el, options);
+    PopupUtils.positionPopup(
+      this.dropdownContent.el,
+      this.dropdownHeader.el,
+      this.coveoRoot.el,
+      { horizontal: PopupHorizontalAlignment.INNERRIGHT, vertical: PopupVerticalAlignment.BOTTOM },
+      this.coveoRoot.el
+    );
   }
 
   private getTabsInTabSection(): HTMLElement[] {
