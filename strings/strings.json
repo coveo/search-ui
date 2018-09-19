@@ -7369,6 +7369,14 @@
     "en": "Remove filter on {0}",
     "fr": "Enlever le filtre sur {0}"
   },
+  "InsertAQuery": {
+    "en": "Insert a query",
+    "fr": "Insérer une requête"
+  },
+  "PressEnterToSend": {
+    "en": "Press enter to send",
+    "fr": "Appuyez sur Entrée pour envoyer"
+  },
   "SortResultsBy": {
     "en": "Sort results by {0}",
     "fr": "Trier les résultats par {0}"
