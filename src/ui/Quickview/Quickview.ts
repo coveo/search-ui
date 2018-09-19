@@ -256,11 +256,12 @@ export class Quickview extends Component {
 
   private buildContent() {
     const icon = this.buildIcon();
-    const tooltip = this.buildTootip(icon);
+    const caption = this.buildCaption();
+    this.buildTooltipIfNotInCardLayout(icon, caption);
 
     const content = $$('div');
     content.append(icon);
-    content.append(tooltip);
+    content.append(caption);
 
     $$(this.element).append(content.el);
   }
@@ -271,19 +272,23 @@ export class Quickview extends Component {
     return icon;
   }
 
-  private buildTootip(icon: HTMLElement) {
-    const tooltip = $$('div', { className: 'coveo-caption-for-icon', tabindex: 0 }, 'Quickview'.toLocaleString()).el;
-    const arrow = $$('div').el;
-    tooltip.appendChild(arrow);
-
-    if (!$$(this.element).parent('.CoveoCardActionBar')) {
-      this.buildPopper(icon, tooltip, arrow);
-    }
-    return tooltip;
+  private buildCaption() {
+    return $$('div', { className: 'coveo-caption-for-icon', tabindex: 0 }, 'Quickview'.toLocaleString()).el;
   }
 
-  private buildPopper(icon: HTMLElement, tooltip: HTMLElement, arrow: HTMLElement) {
-    const popperReference = new PopperJs(icon, tooltip, {
+  private buildTooltipIfNotInCardLayout(icon: HTMLElement, caption: HTMLElement) {
+    const layout = this.queryStateModel.get(QueryStateModel.attributesEnum.layout);
+    if (layout === 'card') {
+      return;
+    }
+
+    const arrow = $$('div').el;
+    caption.appendChild(arrow);
+    this.buildPopper(icon, caption, arrow);
+  }
+
+  private buildPopper(icon: HTMLElement, caption: HTMLElement, arrow: HTMLElement) {
+    const popperReference = new PopperJs(icon, caption, {
       placement: 'bottom',
       modifiers: {
         preventOverflow: {
