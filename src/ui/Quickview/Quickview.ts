@@ -277,14 +277,17 @@ export class Quickview extends Component {
   }
 
   private buildTooltipIfNotInCardLayout(icon: HTMLElement, caption: HTMLElement) {
-    const layout = this.queryStateModel.get(QueryStateModel.attributesEnum.layout);
-    if (layout === 'card') {
+    if (this.resultsAreInCardLayout) {
       return;
     }
 
     const arrow = $$('div').el;
     caption.appendChild(arrow);
     this.buildPopper(icon, caption, arrow);
+  }
+
+  private get resultsAreInCardLayout() {
+    return this.queryStateModel.get(QueryStateModel.attributesEnum.layout) === 'card';
   }
 
   private buildPopper(icon: HTMLElement, caption: HTMLElement, arrow: HTMLElement) {
