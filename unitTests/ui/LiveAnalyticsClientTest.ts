@@ -428,6 +428,30 @@ export function LiveAnalyticsClientTest() {
       );
     });
 
+    it(`when specifying a result having a #permanentid as an argument for #logCustomEvent,
+    it adds the result contentIDKey and contentIDValue to the metadata object`, () => {
+      const spy = jasmine.createSpy('spy');
+      $$(env.root).on(AnalyticsEvents.changeAnalyticsCustomData, spy);
+
+      const id = {
+        key: 'permanentid',
+        value: '123'
+      };
+      const result = FakeResults.createFakeResult();
+      result[id.key] = id.value;
+      client.logCustomEvent<IAnalyticsNoMeta>(analyticsActionCauseList.documentOpen, {}, document.createElement('div'), result);
+
+      expect(spy).toHaveBeenCalledWith(
+        jasmine.any(Object),
+        jasmine.objectContaining({
+          metaObject: jasmine.objectContaining({
+            contentIDKey: id.key,
+            contentIDValue: id.value
+          })
+        })
+      );
+    });
+
     describe('with click event', () => {
       let spy: jasmine.Spy;
       let fakeResult: IQueryResult;
