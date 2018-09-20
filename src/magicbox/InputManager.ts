@@ -201,9 +201,10 @@ export class InputManager {
   private addAccessibilitiesProperties() {
     this.input.spellcheck = false;
     this.input.setAttribute('form', 'coveo-dummy-form');
+    this.input.setAttribute('role', 'combobox');
     this.input.setAttribute('autocomplete', 'off');
     this.input.setAttribute('aria-autocomplete', 'list');
-    this.input.setAttribute('aria-label', l('Search'));
+    this.input.setAttribute('title', `${l('InsertAQuery')}. ${l('PressEnterToSend')}`);
   }
 
   public focus() {
