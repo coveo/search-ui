@@ -82,9 +82,9 @@ export function getRestHighlightsForAllTerms(
   opts: IStreamHighlightOptions
 ): IHighlight[] {
   const indexes = [];
-  const uniqueTerms = getUniqueTerms(termsToHighlight, phrasesToHighlight);
+  const uniqueTermsToHighlight = getUniqueTermsToHighlight(termsToHighlight, phrasesToHighlight);
 
-  _.each(uniqueTerms, (term: string) => {
+  _.each(uniqueTermsToHighlight, (term: string) => {
     let termsToIterate = _.compact([term].concat(termsToHighlight[term]).sort(termsSorting));
     termsToIterate = _.map(termsToIterate, term => Utils.escapeRegexCharacter(term));
     let regex = regexStart;
@@ -137,15 +137,15 @@ export function getRestHighlightsForAllTerms(
     .value();
 }
 
-function getUniqueTerms(termsToHighlight, phrasesToHighlight): string[] {
+function getUniqueTermsToHighlight(termsToHighlight: IHighlightTerm, phrasesToHighlight: IHighlightPhrase): string[] {
   const sortedTerms = _.keys(termsToHighlight).sort(termsSorting);
-  const phrasesTerms = _.chain(phrasesToHighlight)
+  const termsFromPhrases = _.chain(phrasesToHighlight)
     .values()
     .map(_.keys)
     .flatten()
     .value();
 
-  return _.difference(sortedTerms, phrasesTerms);
+  return _.difference(sortedTerms, termsFromPhrases);
 }
 
 function termsSorting(first: string, second: string) {
