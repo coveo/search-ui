@@ -2,7 +2,7 @@ import { Options } from '../misc/Options';
 import { HighlightUtils } from './HighlightUtils';
 import { StringUtils } from './StringUtils';
 import { Utils } from './Utils';
-import { IHighlight } from '../rest/Highlight';
+import { IHighlight, IHighlightTerm, IHighlightPhrase } from '../rest/Highlight';
 import { $$ } from './Dom';
 import * as _ from 'underscore';
 
@@ -36,8 +36,8 @@ export class DefaultStreamHighlightOptions extends Options implements IStreamHig
 export class StreamHighlightUtils {
   static highlightStreamHTML(
     stream: string,
-    termsToHighlight: { [originalTerm: string]: string[] },
-    phrasesToHighlight: { [phrase: string]: { [originalTerm: string]: string[] } },
+    termsToHighlight: IHighlightTerm,
+    phrasesToHighlight: IHighlightPhrase,
     options?: IStreamHighlightOptions
   ) {
     const opts = new DefaultStreamHighlightOptions().merge(options);
@@ -61,8 +61,8 @@ export class StreamHighlightUtils {
 
   static highlightStreamText(
     stream: string,
-    termsToHighlight: { [originalTerm: string]: string[] },
-    phrasesToHighlight: { [phrase: string]: { [originalTerm: string]: string[] } },
+    termsToHighlight: IHighlightTerm,
+    phrasesToHighlight: IHighlightPhrase,
     options?: IStreamHighlightOptions
   ) {
     const opts = new DefaultStreamHighlightOptions().merge(options);
@@ -77,13 +77,14 @@ export class StreamHighlightUtils {
 
 export function getRestHighlightsForAllTerms(
   toHighlight: string,
-  termsToHighlight: { [originalTerm: string]: string[] },
-  phrasesToHighlight: { [phrase: string]: { [originalTerm: string]: string[] } },
+  termsToHighlight: IHighlightTerm,
+  phrasesToHighlight: IHighlightPhrase,
   opts: IStreamHighlightOptions
 ): IHighlight[] {
   const indexes = [];
-  const sortedTerms = _.keys(termsToHighlight).sort(termsSorting);
-  _.each(sortedTerms, (term: string) => {
+  const uniqueTermsToHighlight = getUniqueTermsToHighlight(termsToHighlight, phrasesToHighlight);
+
+  _.each(uniqueTermsToHighlight, (term: string) => {
     let termsToIterate = _.compact([term].concat(termsToHighlight[term]).sort(termsSorting));
     termsToIterate = _.map(termsToIterate, term => Utils.escapeRegexCharacter(term));
     let regex = regexStart;
@@ -134,6 +135,17 @@ export function getRestHighlightsForAllTerms(
       return _.extend(highlight, { dataHighlightGroup: group });
     })
     .value();
+}
+
+function getUniqueTermsToHighlight(termsToHighlight: IHighlightTerm, phrasesToHighlight: IHighlightPhrase): string[] {
+  const sortedTerms = _.keys(termsToHighlight).sort(termsSorting);
+  const termsFromPhrases = _.chain(phrasesToHighlight)
+    .values()
+    .map(_.keys)
+    .flatten()
+    .value();
+
+  return _.difference(sortedTerms, termsFromPhrases);
 }
 
 function termsSorting(first: string, second: string) {
