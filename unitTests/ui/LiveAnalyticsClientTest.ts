@@ -429,7 +429,7 @@ export function LiveAnalyticsClientTest() {
     });
 
     it(`when specifying a result having a #permanentid as an argument for #logCustomEvent,
-    it adds the result contentIDKey and contentIDValue to the metadata object`, () => {
+    it adds contentIDKey and contentIDValue properties to the metadata object`, () => {
       const spy = jasmine.createSpy('spy');
       $$(env.root).on(AnalyticsEvents.changeAnalyticsCustomData, spy);
 
