@@ -8,6 +8,9 @@ import { Simulate } from '../Simulate';
 import { Defer } from '../../src/misc/Defer';
 import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
 import { Utils } from '../../src/utils/Utils';
+import { $$ } from '../../src/utils/Dom';
+import { QueryStateModel } from '../../src/models/QueryStateModel';
+import { ValidLayout } from '../../src/ui/ResultLayoutSelector/ValidLayout';
 
 export function QuickviewTest() {
   describe('Quickview', () => {
@@ -26,9 +29,10 @@ export function QuickviewTest() {
       modalBox = null;
     });
 
-    const buildQuickview = (template = simpleTestTemplate()) => {
-      let mockBuilder = new Mock.MockEnvironmentBuilder();
+    const buildQuickview = (template = simpleTestTemplate(), layout: ValidLayout = 'list') => {
+      let mockBuilder = new Mock.MockEnvironmentBuilder().withLiveQueryStateModel();
       env = mockBuilder.build();
+      env.queryStateModel.set(QueryStateModel.attributesEnum.layout, layout);
       result = FakeResults.createFakeResult();
       modalBox = Simulate.modalBoxModule();
       return new Quickview(env.element, { contentTemplate: template }, <any>mockBuilder.getBindings(), result, modalBox);
@@ -38,6 +42,32 @@ export function QuickviewTest() {
       let template = new Template(() => '<div class="coveo-quick-view-full-height"></div>');
       return template;
     };
+
+    it('should render button correctly', done => {
+      expect($$(quickview.element).hasClass('coveo-accessible-button')).toBe(true);
+      expect($$(quickview.element).find('.coveo-icon-for-quickview')).not.toBeNull();
+      expect($$(quickview.element).find('.coveo-caption-for-icon')).not.toBeNull();
+      done();
+    });
+
+    it('should have a tooltip when layout is list', done => {
+      expect(
+        $$(quickview.element)
+          .find('.coveo-caption-for-icon')
+          .hasAttribute('x-placement')
+      ).toBe(true);
+      done();
+    });
+
+    it('should not have a tooltip when layout is card', done => {
+      quickview = buildQuickview(undefined, 'card');
+      expect(
+        $$(quickview.element)
+          .find('.coveo-caption-for-icon')
+          .hasAttribute('x-placement')
+      ).toBe(false);
+      done();
+    });
 
     it('creates a modal box on open', done => {
       quickview.open();
