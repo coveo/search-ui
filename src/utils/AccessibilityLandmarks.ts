@@ -24,7 +24,7 @@ export class AccessibilityLandmarks {
     }
 
     tabSection.setAttribute('role', LandmarkRoles.Navigation);
-    tabSection.setAttribute('aria-label', l('Tabs'));
+    tabSection.setAttribute('aria-label', this.localizeAndAppendPeriod('Tabs'));
   }
 
   private tryToSetFacetColumnLandmark() {
@@ -35,7 +35,7 @@ export class AccessibilityLandmarks {
     }
 
     facetColumn.setAttribute('role', LandmarkRoles.Search);
-    facetColumn.setAttribute('aria-label', l('Facets'));
+    facetColumn.setAttribute('aria-label', this.localizeAndAppendPeriod('Facets'));
   }
 
   private tryToSetSearchBoxLandmark() {
@@ -46,7 +46,7 @@ export class AccessibilityLandmarks {
     }
 
     searchBox.setAttribute('role', LandmarkRoles.Search);
-    searchBox.setAttribute('aria-label', l('SearchBox'));
+    searchBox.setAttribute('aria-label', this.localizeAndAppendPeriod('SearchBox'));
   }
 
   private tryToSetResultsColumnLandmark() {
@@ -57,7 +57,7 @@ export class AccessibilityLandmarks {
     }
 
     resultsColumn.setAttribute('role', LandmarkRoles.Main);
-    resultsColumn.setAttribute('aria-label', l('ResultsColumn'));
+    resultsColumn.setAttribute('aria-label', this.localizeAndAppendPeriod('ResultsColumn'));
   }
 
   private tryToSetPagerLandmark() {
@@ -68,6 +68,10 @@ export class AccessibilityLandmarks {
     }
 
     pager.setAttribute('role', LandmarkRoles.Navigation);
-    pager.setAttribute('aria-label', l('ResultsPager'));
+    pager.setAttribute('aria-label', this.localizeAndAppendPeriod('ResultsPager'));
+  }
+
+  private localizeAndAppendPeriod(key: string) {
+    return `${l(key)}.`;
   }
 }
