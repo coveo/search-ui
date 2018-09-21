@@ -7385,8 +7385,16 @@
     "en": "Display results as {0}",
     "fr": "Afficher les résultats comme {0}"
   },
-  "Searchbox": {
+  "SearchBox": {
     "en": "Search box",
     "fr": "Barre de recherche"
+  },
+  "ResultsColumn": {
+    "en": "Results column",
+    "fr": "Colonne de résultats"
+  },
+  "ResultsPager": {
+    "en": "Results Pager",
+    "fr": "Pagination de résultats"
   }
 }

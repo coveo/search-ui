@@ -3,7 +3,8 @@ import { l } from '../strings/Strings';
 
 export enum LandmarkRoles {
   Navigation = 'navigation',
-  Search = 'search'
+  Search = 'search',
+  Main = 'main'
 }
 
 export class AccessibilityLandmarks {
@@ -11,6 +12,8 @@ export class AccessibilityLandmarks {
     this.tryToSetTabSectionLandmark();
     this.tryToSetFacetColumnLandmark();
     this.tryToSetSearchBoxLandmark();
+    this.tryToSetResultsColumnLandmark();
+    this.tryToSetPagerLandmark();
   }
 
   private tryToSetTabSectionLandmark() {
@@ -44,5 +47,27 @@ export class AccessibilityLandmarks {
 
     searchBox.setAttribute('role', LandmarkRoles.Search);
     searchBox.setAttribute('aria-label', l('SearchBox'));
+  }
+
+  private tryToSetResultsColumnLandmark() {
+    const resultsColumn = $$(this.element).find('.coveo-results-column');
+
+    if (!resultsColumn) {
+      return;
+    }
+
+    resultsColumn.setAttribute('role', LandmarkRoles.Main);
+    resultsColumn.setAttribute('aria-label', l('ResultsColumn'));
+  }
+
+  private tryToSetPagerLandmark() {
+    const pager = $$(this.element).find('.CoveoPager');
+
+    if (!pager) {
+      return;
+    }
+
+    pager.setAttribute('role', LandmarkRoles.Navigation);
+    pager.setAttribute('aria-label', l('ResultsPager'));
   }
 }

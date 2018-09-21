@@ -69,8 +69,46 @@ export const AccessibilityLandmarksTest = () => {
         expect(searchBox.getAttribute('role')).toBe(LandmarkRoles.Search);
       });
 
-      it(`adds a label to the searchBox`, () => {
+      it(`adds an aria-label to the searchBox`, () => {
         expect(searchBox.getAttribute('aria-label')).toBeTruthy();
+      });
+    });
+
+    describe(`when a div with class 'coveo-results-column' is a child of the root`, () => {
+      let resultsColumn: Dom;
+
+      beforeEach(() => {
+        resultsColumn = buildDivWithClass('coveo-results-column');
+        root.append(resultsColumn.el);
+
+        initAccessibilityLandmarks();
+      });
+
+      it(`adds role="${LandmarkRoles.Main}" to the resultsColumn`, () => {
+        expect(resultsColumn.getAttribute('role')).toBe(LandmarkRoles.Main);
+      });
+
+      it(`adds an aria-label to the resultsColumn`, () => {
+        expect(resultsColumn.getAttribute('aria-label')).toBeTruthy();
+      });
+    });
+
+    describe(`when a dive with class 'CoveoPager' is a child of the root`, () => {
+      let pager: Dom;
+
+      beforeEach(() => {
+        pager = buildDivWithClass('CoveoPager');
+        root.append(pager.el);
+
+        initAccessibilityLandmarks();
+      });
+
+      it(`adds role="${LandmarkRoles.Navigation}" to the Pager`, () => {
+        expect(pager.getAttribute('role')).toBe(LandmarkRoles.Navigation);
+      });
+
+      it(`adds an aria-label to the pager`, () => {
+        expect(pager.getAttribute('aria-label')).toBeTruthy();
       });
     });
   });
