@@ -257,13 +257,13 @@ export class Quickview extends Component {
   private buildContent() {
     const icon = this.buildIcon();
     const caption = this.buildCaption();
-    this.buildTooltipIfNotInCardLayout(icon, caption);
-
     const content = $$('div');
+
     content.append(icon);
     content.append(caption);
-
     $$(this.element).append(content.el);
+
+    this.buildTooltipIfNotInCardLayout(icon, caption);
   }
 
   private buildIcon() {
