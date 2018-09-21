@@ -1074,6 +1074,7 @@ export class Facet extends Component {
         {
           criteria,
           facetId: this.options.id,
+          facetField: this.options.field.toString(),
           facetTitle: this.options.title
         },
         this.element
@@ -1133,6 +1134,7 @@ export class Facet extends Component {
     this.triggerNewQuery(() =>
       this.usageAnalytics.logSearchEvent<IAnalyticsFacetMeta>(analyticsActionCauseList.facetSelectAll, {
         facetId: this.options.id,
+        facetField: this.options.field.toString(),
         facetTitle: this.options.title
       })
     );

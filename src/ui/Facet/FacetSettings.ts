@@ -462,6 +462,7 @@ export class FacetSettings extends FacetSort {
     this.facet.triggerNewQuery(() =>
       this.facet.usageAnalytics.logSearchEvent<IAnalyticsFacetMeta>(analyticsActionCauseList.facetClearAll, {
         facetId: this.facet.options.id,
+        facetField: this.facet.options.field.toString(),
         facetTitle: this.facet.options.title
       })
     );

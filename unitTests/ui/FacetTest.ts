@@ -173,6 +173,7 @@ export function FacetTest() {
       const expectedMetadata = jasmine.objectContaining({
         criteria: 'score',
         facetId: test.cmp.options.id,
+        facetField: test.cmp.options.field.toString(),
         facetTitle: test.cmp.options.title
       });
       expect(test.env.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(

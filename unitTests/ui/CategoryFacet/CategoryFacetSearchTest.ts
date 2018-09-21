@@ -62,7 +62,9 @@ export function CategoryFacetSearchTest() {
           func.apply(this, arguments);
         };
       });
-      categoryFacetMock = basicComponentSetup<CategoryFacet>(CategoryFacet).cmp;
+      categoryFacetMock = basicComponentSetup<CategoryFacet>(CategoryFacet, {
+        field: '@field'
+      }).cmp;
       fakeGroupByValues = FakeResults.createFakeGroupByResult('@field', 'value', 10).values;
       categoryFacetMock.categoryFacetQueryController = mock(CategoryFacetQueryController);
       categoryFacetMock.categoryFacetQueryController.searchFacetValues = () => new Promise(resolve => resolve(fakeGroupByValues));

@@ -171,6 +171,7 @@ export class FacetHeader {
       this.options.facet.triggerNewQuery(() =>
         this.options.facet.usageAnalytics.logSearchEvent<IAnalyticsFacetOperatorMeta>(analyticsActionCauseList.facetToggle, {
           facetId: this.options.facet.options.id,
+          facetField: this.options.field.toString(),
           facetOperatorBefore: operatorBefore,
           facetOperatorAfter: operatorNow,
           facetTitle: this.options.title
@@ -208,6 +209,7 @@ export class FacetHeader {
     cmp.reset();
     cmp.usageAnalytics.logSearchEvent<IAnalyticsFacetMeta>(analyticsActionCauseList.facetClearAll, {
       facetId: cmp.options.id,
+      facetField: cmp.options.field.toString(),
       facetTitle: cmp.options.title
     });
     cmp.queryController.executeQuery();
