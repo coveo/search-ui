@@ -7424,5 +7424,9 @@
   "DisplayResultsAs": {
     "en": "Display results as {0}",
     "fr": "Afficher les résultats comme {0}"
+  },
+  "FacetTitle": {
+    "en": "{0} facet",
+    "fr": "Facette {0}"
   }
 }

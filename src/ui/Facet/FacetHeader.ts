@@ -181,11 +181,11 @@ export class FacetHeader {
   }
 
   private buildTitle(): HTMLElement {
-    const title = $$('div', {
-      title: this.options.title,
-      className: 'coveo-facet-header-title'
-    });
+    const title = $$('div', { className: 'coveo-facet-header-title' });
     title.text(this.options.title);
+    title.setAttribute('role', 'heading');
+    title.setAttribute('aria-level', '2');
+    title.setAttribute('aria-label', `${l('FacetTitle', this.options.title)}.`);
     return title.el;
   }
 

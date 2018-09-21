@@ -42,6 +42,16 @@ export function FacetHeaderTest() {
       expect($$(title).text()).toBe('this is a title');
     });
 
+    it('the title should be accessible', () => {
+      baseOptions.title = 'this is a title';
+      initFacetHeader();
+
+      const title = $$(facetHeader.element).find('.coveo-facet-header-title');
+      expect($$(title).getAttribute('role')).toBe('heading');
+      expect($$(title).getAttribute('aria-level')).toBe('2');
+      expect($$(title).getAttribute('aria-label')).toBeTruthy();
+    });
+
     it('should build an icon if specified', () => {
       baseOptions.icon = 'this-is-an-icon';
       initFacetHeader();
