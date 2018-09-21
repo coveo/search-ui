@@ -6,7 +6,7 @@ import { DefaultFoldingTemplate } from './DefaultFoldingTemplate';
 import { IQueryResult } from '../../rest/QueryResult';
 import { Utils } from '../../utils/Utils';
 import { QueryUtils } from '../../utils/QueryUtils';
-import { Initialization, IInitializationParameters, IInitResult } from '../Base/Initialization';
+import { Initialization, IInitResult } from '../Base/Initialization';
 import { Assert } from '../../misc/Assert';
 import { $$, Win } from '../../utils/Dom';
 import { l } from '../../strings/Strings';
@@ -208,9 +208,10 @@ export class ResultFolding extends Component {
       this.getAnalyticsMetadata(),
       this.element
     );
-    this.displayThoseResults(this.result.childResults);
-    this.updateElementVisibility();
-    this.scrollToResultElement();
+    this.displayThoseResults(this.result.childResults).then(() => {
+      this.updateElementVisibility();
+      this.scrollToResultElement();
+    });
   }
 
   private buildElements() {
@@ -339,14 +340,7 @@ export class ResultFolding extends Component {
 
   private autoCreateComponentsInsideResult(element: HTMLElement, result: IQueryResult): IInitResult {
     Assert.exists(element);
-
-    let initOptions = this.searchInterface.options;
-    let initParameters: IInitializationParameters = {
-      options: initOptions,
-      bindings: this.getBindings(),
-      result: result
-    };
-    return Initialization.automaticallyCreateComponentsInside(element, initParameters);
+    return Initialization.automaticallyCreateComponentsInsideResult(element, result);
   }
 
   private cancelAnyPendingShowMore() {

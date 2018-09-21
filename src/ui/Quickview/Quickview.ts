@@ -250,7 +250,11 @@ export class Quickview extends Component {
 
     this.bindClick(result);
     if (this.bindings.resultElement) {
-      this.bind.on(this.bindings.resultElement, ResultListEvents.openQuickview, () => this.open());
+      this.bind.on(this.bindings.resultElement, ResultListEvents.openQuickview, (e: Event) => {
+        // Prevents parent result from opening quickview when in a folded result
+        e.stopPropagation();
+        this.open();
+      });
     }
   }
 
@@ -317,7 +321,7 @@ export class Quickview extends Component {
    * Opens the `Quickview` modal box.
    */
   public open() {
-    if (this.modalbox == null) {
+    if (Utils.isNullOrUndefined(this.modalbox)) {
       // To prevent the keyboard from opening on mobile if the search bar has focus
       Quickview.resultCurrentlyBeingRendered = this.result;
       // activeElement does not exist in LockerService
