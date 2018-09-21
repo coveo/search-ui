@@ -45,12 +45,12 @@ export function QuickviewTest() {
 
     it('should render button correctly', done => {
       expect($$(quickview.element).hasClass('coveo-accessible-button')).toBe(true);
-      expect($$(quickview.element).find('.coveo-icon-for-quickview')).not.toBeNull();
-      expect($$(quickview.element).find('.coveo-caption-for-icon')).not.toBeNull();
+      expect($$(quickview.element).find('.coveo-icon-for-quickview')).toBeTruthy();
+      expect($$(quickview.element).find('.coveo-caption-for-icon')).toBeTruthy();
       done();
     });
 
-    it('should have a tooltip when layout is list', done => {
+    it('when the layout is list, the caption should be positioned (i.e. appear as a tooltip)', done => {
       expect(
         $$(quickview.element)
           .find('.coveo-caption-for-icon')
@@ -59,7 +59,7 @@ export function QuickviewTest() {
       done();
     });
 
-    it('should not have a tooltip when layout is card', done => {
+    it('when the layout is card, the caption should not be positioned (i.e. be inline)', done => {
       quickview = buildQuickview(undefined, 'card');
       expect(
         $$(quickview.element)
