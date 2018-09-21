@@ -20,7 +20,6 @@ import { ISearchEndpoint } from '../../rest/SearchEndpointInterface';
 import { l } from '../../strings/Strings';
 import { DeviceUtils } from '../../utils/DeviceUtils';
 import { $$, Win } from '../../utils/Dom';
-import { KEYBOARD, KeyboardUtils } from '../../utils/KeyboardUtils';
 import { SVGDom } from '../../utils/SVGDom';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { Utils } from '../../utils/Utils';
@@ -50,6 +49,13 @@ import { ValueElement } from './ValueElement';
 import { ValueElementRenderer } from './ValueElementRenderer';
 import { DependentFacetManager } from './DependentFacetManager';
 import { AccessibleButton } from '../../utils/AccessibleButton';
+
+export interface IAccessibleButtonOptions {
+  element: HTMLElement;
+  label: string;
+  clickAction: () => void;
+  enterAction: () => void;
+}
 
 export interface IFacetOptions {
   title?: string;
@@ -1854,9 +1860,13 @@ export class Facet extends Component {
     const more: HTMLElement = $$('div', { className: 'coveo-facet-more', tabindex: 0 }, svgContainer).el;
 
     const moreAction = () => this.handleClickMore();
-    $$(more).on('click', moreAction);
-    $$(more).on('keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, moreAction));
-    this.makeButtonAccessible(more, l('ExpandFacetValues'));
+
+    this.makeButtonAccessible({
+      element: more,
+      label: l('ExpandFacetValues'),
+      clickAction: moreAction,
+      enterAction: moreAction
+    });
 
     return more;
   }
@@ -1867,17 +1877,23 @@ export class Facet extends Component {
     const less: HTMLElement = $$('div', { className: 'coveo-facet-less', tabindex: 0 }, svgContainer).el;
 
     const lessAction = () => this.handleClickLess();
-    $$(less).on('click', lessAction);
-    $$(less).on('keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, lessAction));
-    this.makeButtonAccessible(less, l('CollapseFacetValues'));
+
+    this.makeButtonAccessible({
+      element: less,
+      label: l('CollapseFacetValues'),
+      clickAction: lessAction,
+      enterAction: lessAction
+    });
 
     return less;
   }
 
-  private makeButtonAccessible(button: HTMLElement, label: string) {
+  private makeButtonAccessible(options: IAccessibleButtonOptions) {
     new AccessibleButton()
-      .withElement(button)
-      .withLabel(label)
+      .withElement(options.element)
+      .withLabel(options.label)
+      .withClickAction(options.clickAction)
+      .withEnterKeyboardAction(options.enterAction)
       .build();
   }
 
