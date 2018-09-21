@@ -7384,5 +7384,9 @@
   "DisplayResultsAs": {
     "en": "Display results as {0}",
     "fr": "Afficher les résultats comme {0}"
+  },
+  "Searchbox": {
+    "en": "Search box",
+    "fr": "Barre de recherche"
   }
 }

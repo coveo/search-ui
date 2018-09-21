@@ -644,3 +644,6 @@ MagicBoxClearTest();
 
 import { AccessibleButtonTest } from './utils/AccessibleButtonTest';
 AccessibleButtonTest();
+
+import { AccessibilityLandmarksTest } from './utils/AccessibilityLandmarksTest';
+AccessibilityLandmarksTest();
