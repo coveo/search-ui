@@ -112,17 +112,8 @@ export class Sort extends Component {
     this.bind.onRootElement(QueryEvents.querySuccess, (args: IQuerySuccessEventArgs) => this.handleQuerySuccess(args));
     this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => this.handleBuildingQuery(args));
     this.bind.onRootElement(QueryEvents.queryError, (args: IQueryErrorEventArgs) => this.handleQueryError(args));
-    const clickAction = () => this.handleClick();
-
-    new AccessibleButton()
-      .withElement(this.element)
-      .withSelectAction(clickAction)
-      .withLabel(this.options.caption || l('Sort'))
-      .build();
-
-    if (Utils.isNonEmptyString(this.options.caption)) {
-      $$(this.element).text(this.options.caption);
-    }
+    this.setTextToCaptionIfDefined();
+    this.addAccessiblityAttributes();
 
     if (this.isToggle()) {
       this.icon = $$('span', { className: 'coveo-icon' }).el;
@@ -203,6 +194,28 @@ export class Sort extends Component {
       this.currentCriteria = null;
     }
     this.updateAppearance();
+  }
+
+  private setTextToCaptionIfDefined() {
+    this.captionIsDefined && $$(this.element).text(this.options.caption);
+  }
+
+  private get captionIsDefined() {
+    return Utils.isNonEmptyString(this.options.caption);
+  }
+
+  private addAccessiblityAttributes() {
+    const localizedCaption = l(this.displayedSortText);
+
+    new AccessibleButton()
+      .withElement(this.element)
+      .withSelectAction(() => this.handleClick())
+      .withLabel(l('SortResultsBy', localizedCaption))
+      .build();
+  }
+
+  private get displayedSortText() {
+    return this.captionIsDefined ? this.options.caption : this.element.textContent;
   }
 
   private handleBuildingQuery(data: IBuildingQueryEventArgs) {
