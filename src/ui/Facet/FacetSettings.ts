@@ -83,7 +83,9 @@ export class FacetSettings extends FacetSort {
       this.appendIfNotUndefined(this.showSection);
     };
 
-    this.addMiscellaneousEventHandlers();
+    this.addOnDocumentClickHandler();
+    this.addOnNukeHandler();
+
     if (Utils.isNonEmptyArray(this.enabledSorts)) {
       this.settingsPopup.appendChild(this.sortSection.element);
       _.each(this.directionSection, d => {
@@ -468,9 +470,12 @@ export class FacetSettings extends FacetSort {
     );
   }
 
-  private addMiscellaneousEventHandlers() {
-    document.addEventListener('click', () => this.onDocumentClick());
+  private addOnNukeHandler() {
     $$(this.facet.root).on(InitializationEvents.nuke, () => this.handleNuke());
+  }
+
+  private addOnDocumentClickHandler() {
+    document.addEventListener('click', () => this.onDocumentClick());
   }
 
   public getCurrentDirectionItem(directionSection = this.directionSection) {
