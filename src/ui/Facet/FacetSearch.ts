@@ -108,7 +108,11 @@ export class FacetSearch implements IFacetSearch {
         .then((fieldValues: IIndexFieldValue[]) => {
           this.facet.usageAnalytics.logCustomEvent<IAnalyticsFacetMeta>(
             analyticsActionCauseList.facetSearch,
-            { facetId: this.facet.options.id, facetTitle: this.facet.options.title },
+            {
+              facetId: this.facet.options.id,
+              facetField: this.facet.options.field.toString(),
+              facetTitle: this.facet.options.title
+            },
             this.facet.root
           );
           this.facet.logger.debug('Received field values', fieldValues);

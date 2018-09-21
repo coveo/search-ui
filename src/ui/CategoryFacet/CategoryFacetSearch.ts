@@ -195,6 +195,7 @@ export class CategoryFacetSearch implements IFacetSearch {
       analyticsActionCauseList.categoryFacetSearch,
       {
         categoryFacetId: this.categoryFacet.options.id,
+        categoryFacetField: this.categoryFacet.options.field.toString(),
         categoryFacetTitle: this.categoryFacet.options.title
       },
       this.categoryFacet.root
