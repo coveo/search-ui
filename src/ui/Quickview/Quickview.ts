@@ -250,9 +250,8 @@ export class Quickview extends Component {
 
     this.bindClick(result);
     if (this.bindings.resultElement) {
-      this.bind.on(this.bindings.resultElement, ResultListEvents.openQuickview, (e: Event) => {
-        // Prevents parent result from opening quickview when in a folded result
-        e.stopPropagation();
+      this.bind.on(this.bindings.resultElement, ResultListEvents.openQuickview, (e?: Event) => {
+        e && e.stopPropagation();
         this.open();
       });
     }

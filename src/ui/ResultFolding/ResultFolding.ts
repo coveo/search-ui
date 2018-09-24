@@ -6,11 +6,11 @@ import { DefaultFoldingTemplate } from './DefaultFoldingTemplate';
 import { IQueryResult } from '../../rest/QueryResult';
 import { Utils } from '../../utils/Utils';
 import { QueryUtils } from '../../utils/QueryUtils';
-import { Initialization, IInitResult } from '../Base/Initialization';
+import { Initialization } from '../Base/Initialization';
 import { Assert } from '../../misc/Assert';
 import { $$, Win } from '../../utils/Dom';
 import { l } from '../../strings/Strings';
-import * as _ from 'underscore';
+import { each, map } from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 import { analyticsActionCauseList, IAnalyticsDocumentViewMeta } from '../Analytics/AnalyticsActionListMeta';
 
@@ -163,7 +163,7 @@ export class ResultFolding extends Component {
     this.results.appendChild(this.waitAnimation);
     this.updateElementVisibility();
 
-    const results: IQueryResult[] = await this.moreResultsPromise;
+    const results = await this.moreResultsPromise;
     this.childResults = results;
     this.showingMoreResults = true;
     this.usageAnalytics.logClickEvent<IAnalyticsDocumentViewMeta>(
@@ -172,8 +172,11 @@ export class ResultFolding extends Component {
       this.result,
       this.element
     );
-    await this.displayThoseResults(results);
-    this.updateElementVisibility(results.length);
+
+    try {
+      await this.displayThoseResults(results);
+      this.updateElementVisibility(results.length);
+    } catch (e) {}
 
     this.moreResultsPromise = undefined;
     $$(this.waitAnimation).detach();
@@ -301,13 +304,13 @@ export class ResultFolding extends Component {
   }
 
   private async displayThoseResults(results: IQueryResult[]): Promise<boolean> {
-    const childResultsPromises = _.map(results, result => {
+    const childResultsPromises = map(results, result => {
       return this.renderChildResult(result);
     });
 
     const childsToAppend: HTMLElement[] = await Promise.all(childResultsPromises);
     $$(this.results).empty();
-    _.each(childsToAppend, oneChild => {
+    each(childsToAppend, oneChild => {
       this.results.appendChild(oneChild);
     });
     return true;
@@ -327,13 +330,8 @@ export class ResultFolding extends Component {
     $$(oneChild).toggleClass('coveo-normal-child-result', !this.showingMoreResults);
     $$(oneChild).toggleClass('coveo-expanded-child-result', this.showingMoreResults);
 
-    await this.autoCreateComponentsInsideResult(oneChild, childResult).initResult;
+    await Initialization.automaticallyCreateComponentsInsideResult(oneChild, childResult).initResult;
     return oneChild;
-  }
-
-  private autoCreateComponentsInsideResult(element: HTMLElement, result: IQueryResult): IInitResult {
-    Assert.exists(element);
-    return Initialization.automaticallyCreateComponentsInsideResult(element, result);
   }
 
   private cancelAnyPendingShowMore() {
