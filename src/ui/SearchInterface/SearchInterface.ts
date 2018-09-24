@@ -69,6 +69,7 @@ export interface ISearchInterfaceOptions {
   allowQueriesWithoutKeywords?: boolean;
   responsiveMediumBreakpoint?: number;
   responsiveSmallBreakpoint?: number;
+  closeModalBox?: boolean;
 }
 
 /**

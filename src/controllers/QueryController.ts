@@ -168,6 +168,9 @@ export class QueryController extends RootComponent {
    * @returns {Promise<IQueryResults>}
    */
   public executeQuery(options?: IQueryOptions): Promise<IQueryResults> {
+    if (options && options.closeModalBox == undefined && this.options.closeModalBox != undefined) {
+      options.closeModalBox = this.options.closeModalBox;
+    }
     options = <IQueryOptions>_.extend(new DefaultQueryOptions(), options);
 
     if (options.closeModalBox) {
