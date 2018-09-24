@@ -1,23 +1,27 @@
 import 'styling/accessibility/_ScreenReader.scss';
 
 export class AriaLive {
-  private ariaLiveDiv: HTMLElement;
+  private ariaLiveEl: HTMLElement;
 
-  constructor() {
-    this.initAriaLive();
+  constructor(private searchInterface: HTMLElement) {
+    this.initAriaLiveEl();
+    this.appendToSearchInterface();
+    this.addQueryEventListeners();
   }
 
   public updateText(text: string) {
-    this.ariaLiveDiv.innerText = text;
+    this.ariaLiveEl.innerText = text;
   }
 
-  public appendTo(el: HTMLElement) {
-    el.appendChild(this.ariaLiveDiv);
+  private appendToSearchInterface() {
+    this.searchInterface.appendChild(this.ariaLiveEl);
   }
 
-  private initAriaLive() {
-    this.ariaLiveDiv = document.createElement('div');
-    this.ariaLiveDiv.setAttribute('aria-live', 'polite');
-    this.ariaLiveDiv.setAttribute('class', 'coveo-visible-to-screen-reader-only');
+  private initAriaLiveEl() {
+    this.ariaLiveEl = document.createElement('div');
+    this.ariaLiveEl.setAttribute('aria-live', 'polite');
+    this.ariaLiveEl.setAttribute('class', 'coveo-visible-to-screen-reader-only');
   }
+
+  private addQueryEventListeners() {}
 }

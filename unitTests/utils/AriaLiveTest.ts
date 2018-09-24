@@ -7,25 +7,21 @@ export const AriaLiveTest = () => {
     let root: HTMLElement;
 
     beforeEach(() => {
-      ariaLive = new AriaLive();
       root = document.createElement('div');
+      ariaLive = new AriaLive(root);
     });
 
     function getAriaLiveEl() {
       return $$(root).find('[aria-live]');
     }
-    it(`when calling #appendTo,
-    it adds a div with attribute aria-live as a child`, () => {
-      ariaLive.appendTo(root);
+    it(`adds a div with attribute aria-live as a child`, () => {
       const ariaLiveEl = getAriaLiveEl();
-
       expect(ariaLiveEl.getAttribute('aria-live')).toBe('polite');
     });
 
     it(`when calling #updateText with a value,
     it sets the ariaLive element text to the value`, () => {
       const text = 'text';
-      ariaLive.appendTo(root);
       ariaLive.updateText(text);
 
       expect(getAriaLiveEl().textContent).toBe(text);
