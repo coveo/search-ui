@@ -250,8 +250,8 @@ export class Quickview extends Component {
 
     this.bindClick(result);
     if (this.bindings.resultElement) {
-      this.bind.on(this.bindings.resultElement, ResultListEvents.openQuickview, (e?: Event) => {
-        e && e.stopPropagation();
+      this.bind.on(this.bindings.resultElement, ResultListEvents.openQuickview, (event?: Event) => {
+        event && event.stopPropagation();
         this.open();
       });
     }
