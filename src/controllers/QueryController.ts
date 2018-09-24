@@ -79,7 +79,6 @@ interface ILastQueryLocalStorage {
 class DefaultQueryOptions implements IQueryOptions {
   searchAsYouType = false;
   beforeExecuteQuery: () => void;
-  closeModalBox = true;
   cancel = false;
   logInActionsHistory = false;
   shouldRedirectStandaloneSearchbox = true;
@@ -95,6 +94,8 @@ export class QueryController extends RootComponent {
   static ID = 'QueryController';
   public historyStore: CoveoAnalytics.HistoryStore;
   public firstQuery: boolean;
+  public modalBox = ModalBox;
+  public closeModalBox = true;
 
   private currentPendingQuery: Promise<IQueryResults>;
   private lastQueryBuilder: QueryBuilder;
@@ -168,13 +169,11 @@ export class QueryController extends RootComponent {
    * @returns {Promise<IQueryResults>}
    */
   public executeQuery(options?: IQueryOptions): Promise<IQueryResults> {
-    if (options && options.closeModalBox == undefined && this.options.closeModalBox != undefined) {
-      options.closeModalBox = this.options.closeModalBox;
-    }
+    this.closeModalBox = options && options.closeModalBox != null ? options.closeModalBox : this.closeModalBox;
     options = <IQueryOptions>_.extend(new DefaultQueryOptions(), options);
 
-    if (options.closeModalBox) {
-      ModalBox.close(true);
+    if (this.closeModalBox) {
+      this.modalBox.close(true);
     }
 
     this.logger.debug('Executing new query');
