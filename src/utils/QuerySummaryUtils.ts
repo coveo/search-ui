@@ -4,21 +4,6 @@ import { $$ } from './Dom';
 import { l } from '../strings/Strings';
 
 export class QuerySummaryUtils {
-  public static infiniteScrollModeMessage(data: IQuerySuccessEventArgs) {
-    if (!data.results.results.length) {
-      return '';
-    }
-
-    const { query, highlightQuery, highlightTotal } = QuerySummaryUtils.formatSummary(data);
-    const queryResults = data.results;
-
-    if (query) {
-      return l('ShowingResultsWithQuery', highlightTotal.outerHTML, highlightQuery.outerHTML, queryResults.results.length);
-    } else {
-      return l('ShowingResults', highlightTotal.outerHTML, queryResults.results.length);
-    }
-  }
-
   public static standardModeMessage(data: IQuerySuccessEventArgs) {
     if (!data.results.results.length) {
       return '';
@@ -36,15 +21,24 @@ export class QuerySummaryUtils {
         highlightQuery.outerHTML,
         queryResults.results.length
       );
-    } else {
-      return l(
-        'ShowingResultsOf',
-        highlightFirst.outerHTML,
-        highlightLast.outerHTML,
-        highlightTotal.outerHTML,
-        queryResults.results.length
-      );
     }
+
+    return l('ShowingResultsOf', highlightFirst.outerHTML, highlightLast.outerHTML, highlightTotal.outerHTML, queryResults.results.length);
+  }
+
+  public static infiniteScrollModeMessage(data: IQuerySuccessEventArgs) {
+    if (!data.results.results.length) {
+      return '';
+    }
+
+    const { query, highlightQuery, highlightTotal } = QuerySummaryUtils.formatSummary(data);
+    const queryResults = data.results;
+
+    if (query) {
+      return l('ShowingResultsWithQuery', highlightTotal.outerHTML, highlightQuery.outerHTML, queryResults.results.length);
+    }
+
+    return l('ShowingResults', highlightTotal.outerHTML, queryResults.results.length);
   }
 
   private static formatSummary(data: IQuerySuccessEventArgs) {

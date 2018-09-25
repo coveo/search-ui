@@ -647,3 +647,6 @@ AccessibleButtonTest();
 
 import { AriaLiveTest } from './utils/AriaLiveTest';
 AriaLiveTest();
+
+import { QuerySummaryUtilsTest } from './utils/QuerySummaryUtilsTest';
+QuerySummaryUtilsTest();
