@@ -44,6 +44,7 @@ import { MEDIUM_SCREEN_WIDTH, ResponsiveComponents, SMALL_SCREEN_WIDTH } from '.
 import { FacetColumnAutoLayoutAdjustment } from './FacetColumnAutoLayoutAdjustment';
 import { FacetValueStateHandler } from './FacetValueStateHandler';
 import RelevanceInspectorModule = require('../RelevanceInspector/RelevanceInspector');
+import { AriaLive } from '../../utils/AriaLive';
 
 export interface ISearchInterfaceOptions {
   enableHistory?: boolean;
@@ -451,6 +452,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
   public componentOptionsModel: ComponentOptionsModel;
   public usageAnalytics: IAnalyticsClient;
   public historyManager: IHistoryManager;
+  public ariaLive: AriaLive;
   /**
    * Allows to get and set the different breakpoints for mobile and tablet devices.
    *
@@ -501,6 +503,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
 
     this.setupDebugInfo();
     this.setupResponsiveComponents();
+    this.ariaLive = new AriaLive(element);
   }
 
   public set resultsPerPage(resultsPerPage: number) {
