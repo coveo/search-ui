@@ -17,12 +17,12 @@ interface ISummaryMessage {
 }
 
 export class QuerySummaryUtils {
-  public static standardModeMessage(data: IQuerySuccessEventArgs) {
+  public static standardHtmlMessage(data: IQuerySuccessEventArgs) {
     const strings = QuerySummaryUtils.getHtmlSummaryStrings(data);
     return QuerySummaryUtils.buildStandardMessage(data, strings);
   }
 
-  public static infiniteScrollModeMessage(data: IQuerySuccessEventArgs) {
+  public static infiniteScrollHtmlMessage(data: IQuerySuccessEventArgs) {
     const strings = QuerySummaryUtils.getHtmlSummaryStrings(data);
     return QuerySummaryUtils.buildInfiniteScrollMessage(data, strings);
   }

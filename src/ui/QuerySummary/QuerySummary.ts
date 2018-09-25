@@ -173,7 +173,7 @@ export class QuerySummary extends Component {
       return;
     }
 
-    const messageFn = this.isInfiniteScrollingMode ? QuerySummaryUtils.infiniteScrollModeMessage : QuerySummaryUtils.standardModeMessage;
+    const messageFn = this.isInfiniteScrollingMode ? QuerySummaryUtils.infiniteScrollHtmlMessage : QuerySummaryUtils.standardHtmlMessage;
     this.textContainer.innerHTML = messageFn(data);
   }
 

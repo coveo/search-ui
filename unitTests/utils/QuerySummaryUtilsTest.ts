@@ -25,13 +25,13 @@ export const QuerySummaryUtilsTest = () => {
         data = buildQuerySuccessData({ results });
       });
 
-      it(`when calling #standardModeMessage, it returns an empty string`, () => {
-        const message = utils.standardModeMessage(data);
+      it(`when calling #standardHtmlMessage, it returns an empty string`, () => {
+        const message = utils.standardHtmlMessage(data);
         expect(message).toBe('');
       });
 
-      it(`when calling #infiniteScrollModeMessage, it returns an empty string`, () => {
-        const message = utils.infiniteScrollModeMessage(data);
+      it(`when calling #infiniteScrollHtmlMessage, it returns an empty string`, () => {
+        const message = utils.infiniteScrollHtmlMessage(data);
         expect(message).toBe('');
       });
     });
@@ -46,16 +46,16 @@ export const QuerySummaryUtilsTest = () => {
         data = buildQuerySuccessData({ query, results });
       });
 
-      it(`when calling #standardModeMessage,
+      it(`when calling #standardHtmlMessage,
       it returns the expected message`, () => {
-        const message = utils.standardModeMessage(data);
+        const message = utils.standardHtmlMessage(data);
         const expected = 'Result <span class="coveo-highlight">1</span> of <span class="coveo-highlight">1</span>';
         expect(message).toBe(expected);
       });
 
-      it(`when calling #infiniteScrollModeMessage,
+      it(`when calling #infiniteScrollHtmlMessage,
       it returns the expected message`, () => {
-        const message = utils.infiniteScrollModeMessage(data);
+        const message = utils.infiniteScrollHtmlMessage(data);
         const expected = '<span class="coveo-highlight">1</span> result';
         expect(message).toBe(expected);
       });
@@ -71,15 +71,15 @@ export const QuerySummaryUtilsTest = () => {
         data = buildQuerySuccessData({ query, results });
       });
 
-      it(`when calling #standardModeMessage,
+      it(`when calling #standardHtmlMessage,
       it includes the query in the message`, () => {
-        const message = utils.standardModeMessage(data);
+        const message = utils.standardHtmlMessage(data);
         expect(message).toContain(data.query.q);
       });
 
-      it(`when calling #infiniteScrollModeMessage,
+      it(`when calling #infiniteScrollHtmlMessage,
       it includes the query in the message`, () => {
-        const message = utils.infiniteScrollModeMessage(data);
+        const message = utils.infiniteScrollHtmlMessage(data);
         expect(message).toContain(data.query.q);
       });
     });
