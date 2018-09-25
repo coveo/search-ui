@@ -2,68 +2,78 @@ import * as Globalize from 'globalize';
 import { IQuerySuccessEventArgs } from '../events/QueryEvents';
 import { $$ } from './Dom';
 import { l } from '../strings/Strings';
+import { IQuery } from '../rest/Query';
+
+interface ISummaryStrings {
+  first: string;
+  last: string;
+  totalCount: string;
+  query: string;
+}
 
 export class QuerySummaryUtils {
   public static standardModeMessage(data: IQuerySuccessEventArgs) {
-    if (!data.results.results.length) {
+    const numOfResults = data.results.results.length;
+
+    if (!numOfResults) {
       return '';
     }
 
-    const { query, highlightFirst, highlightLast, highlightTotal, highlightQuery } = QuerySummaryUtils.formatSummary(data);
-    const queryResults = data.results;
+    const strings = QuerySummaryUtils.getHtmlSummaryStrings(data);
+    const sanitizedQuery = QuerySummaryUtils.sanitizeQuery(data.query);
 
-    if (query) {
-      return l(
-        'ShowingResultsOfWithQuery',
-        highlightFirst.outerHTML,
-        highlightLast.outerHTML,
-        highlightTotal.outerHTML,
-        highlightQuery.outerHTML,
-        queryResults.results.length
-      );
+    if (sanitizedQuery) {
+      return l('ShowingResultsOfWithQuery', strings.first, strings.last, strings.totalCount, strings.query, numOfResults);
     }
 
-    return l('ShowingResultsOf', highlightFirst.outerHTML, highlightLast.outerHTML, highlightTotal.outerHTML, queryResults.results.length);
+    return l('ShowingResultsOf', strings.first, strings.last, strings.totalCount, numOfResults);
   }
 
   public static infiniteScrollModeMessage(data: IQuerySuccessEventArgs) {
-    if (!data.results.results.length) {
+    const numOfResults = data.results.results.length;
+
+    if (!numOfResults) {
       return '';
     }
 
-    const { query, highlightQuery, highlightTotal } = QuerySummaryUtils.formatSummary(data);
-    const queryResults = data.results;
+    const strings = QuerySummaryUtils.getHtmlSummaryStrings(data);
+    const sanitizedQuery = QuerySummaryUtils.sanitizeQuery(data.query);
 
-    if (query) {
-      return l('ShowingResultsWithQuery', highlightTotal.outerHTML, highlightQuery.outerHTML, queryResults.results.length);
+    if (sanitizedQuery) {
+      return l('ShowingResultsWithQuery', strings.totalCount, strings.query, numOfResults);
     }
 
-    return l('ShowingResults', highlightTotal.outerHTML, queryResults.results.length);
+    return l('ShowingResults', strings.totalCount, numOfResults);
   }
 
-  private static formatSummary(data: IQuerySuccessEventArgs) {
+  private static getHtmlSummaryStrings(data: IQuerySuccessEventArgs): ISummaryStrings {
+    const strings = QuerySummaryUtils.getSummaryStrings(data);
+
+    return {
+      first: QuerySummaryUtils.wrapWithSpanTag(strings.first),
+      last: QuerySummaryUtils.wrapWithSpanTag(strings.last),
+      totalCount: QuerySummaryUtils.wrapWithSpanTag(strings.totalCount),
+      query: QuerySummaryUtils.wrapWithSpanTag(strings.query)
+    };
+  }
+
+  private static wrapWithSpanTag(word: string) {
+    return $$('span', { className: 'coveo-highlight' }, word).el.outerHTML;
+  }
+
+  private static getSummaryStrings(data: IQuerySuccessEventArgs): ISummaryStrings {
     const queryPerformed = data.query;
     const queryResults = data.results;
 
     const first = Globalize.format(queryPerformed.firstResult + 1, 'n0');
     const last = Globalize.format(queryPerformed.firstResult + queryResults.results.length, 'n0');
     const totalCount = Globalize.format(queryResults.totalCountFiltered, 'n0');
-    const query = queryPerformed.q ? escape(queryPerformed.q.trim()) : '';
+    const query = QuerySummaryUtils.sanitizeQuery(queryPerformed);
 
-    const highlightFirst = $$('span', { className: 'coveo-highlight' }, first).el;
-    const highlightLast = $$('span', { className: 'coveo-highlight' }, last).el;
-    const highlightTotal = $$('span', { className: 'coveo-highlight' }, totalCount).el;
-    const highlightQuery = $$('span', { className: 'coveo-highlight' }, query).el;
+    return { first, last, totalCount, query };
+  }
 
-    return {
-      first,
-      last,
-      totalCount,
-      query,
-      highlightFirst,
-      highlightLast,
-      highlightTotal,
-      highlightQuery
-    };
+  private static sanitizeQuery(query: IQuery) {
+    return query.q ? escape(query.q.trim()) : '';
   }
 }
