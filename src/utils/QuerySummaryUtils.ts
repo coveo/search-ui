@@ -17,6 +17,16 @@ interface ISummaryMessage {
 }
 
 export class QuerySummaryUtils {
+  public static standardMessage(data: IQuerySuccessEventArgs) {
+    const strings = QuerySummaryUtils.getSummaryStrings(data);
+    return QuerySummaryUtils.buildStandardMessage(data, strings);
+  }
+
+  public static infiniteScrollMessage(data: IQuerySuccessEventArgs) {
+    const strings = QuerySummaryUtils.getSummaryStrings(data);
+    return QuerySummaryUtils.buildInfiniteScrollMessage(data, strings);
+  }
+
   public static standardHtmlMessage(data: IQuerySuccessEventArgs) {
     const strings = QuerySummaryUtils.getHtmlSummaryStrings(data);
     return QuerySummaryUtils.buildStandardMessage(data, strings);

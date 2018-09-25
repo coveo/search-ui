@@ -46,6 +46,16 @@ export const QuerySummaryUtilsTest = () => {
         data = buildQuerySuccessData({ query, results });
       });
 
+      it(`when calling #standardMessage, it returns the expected message`, () => {
+        const message = utils.standardMessage(data);
+        expect(message).toBe('Result 1 of 1');
+      });
+
+      it(`when calling #infiniteScrollMessage, it returns the expected message`, () => {
+        const message = utils.infiniteScrollMessage(data);
+        expect(message).toBe('1 result');
+      });
+
       it(`when calling #standardHtmlMessage,
       it returns the expected message`, () => {
         const message = utils.standardHtmlMessage(data);
