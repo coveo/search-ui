@@ -35,8 +35,6 @@ export interface IPipelineContextOptions {}
  * // context: {"foo":"bar","foobar":["foo","bar"]}
  * ```
  *
- * **Note:**
- *
  * Configuring the component within a script tag implies you will be able to leverage the interface editor.
  *
  *
@@ -55,7 +53,7 @@ export interface IPipelineContextOptions {}
  * ...
  * ```
  *
- * The data is added to the [Query.Context]{@link IQuery.context} parameter.
+ * Whether you configure the component within a script tag or using JavaScript code, the data is added to the [Query.Context]{@link IQuery.context} parameter.
  *
  * **Note:**
  *
