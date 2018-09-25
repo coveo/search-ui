@@ -11,39 +11,51 @@ interface ISummaryStrings {
   query: string;
 }
 
+interface ISummaryMessage {
+  includingQuery: string;
+  excludingQuery: string;
+}
+
 export class QuerySummaryUtils {
   public static standardModeMessage(data: IQuerySuccessEventArgs) {
-    const numOfResults = data.results.results.length;
-
-    if (!numOfResults) {
-      return '';
-    }
-
     const strings = QuerySummaryUtils.getHtmlSummaryStrings(data);
-    const sanitizedQuery = QuerySummaryUtils.sanitizeQuery(data.query);
-
-    if (sanitizedQuery) {
-      return l('ShowingResultsOfWithQuery', strings.first, strings.last, strings.totalCount, strings.query, numOfResults);
-    }
-
-    return l('ShowingResultsOf', strings.first, strings.last, strings.totalCount, numOfResults);
+    return QuerySummaryUtils.buildStandardMessage(data, strings);
   }
 
   public static infiniteScrollModeMessage(data: IQuerySuccessEventArgs) {
+    const strings = QuerySummaryUtils.getHtmlSummaryStrings(data);
+    return QuerySummaryUtils.buildInfiniteScrollMessage(data, strings);
+  }
+
+  private static buildStandardMessage(data: IQuerySuccessEventArgs, strings: ISummaryStrings) {
     const numOfResults = data.results.results.length;
+    const messages: ISummaryMessage = {
+      includingQuery: l('ShowingResultsOfWithQuery', strings.first, strings.last, strings.totalCount, strings.query, numOfResults),
+      excludingQuery: l('ShowingResultsOf', strings.first, strings.last, strings.totalCount, numOfResults)
+    };
+
+    return QuerySummaryUtils.buildMessage(data, messages);
+  }
+
+  private static buildInfiniteScrollMessage(data: IQuerySuccessEventArgs, strings: ISummaryStrings) {
+    const numOfResults = data.results.results.length;
+    const messages: ISummaryMessage = {
+      includingQuery: l('ShowingResultsWithQuery', strings.totalCount, strings.query, numOfResults),
+      excludingQuery: l('ShowingResults', strings.totalCount, numOfResults)
+    };
+
+    return QuerySummaryUtils.buildMessage(data, messages);
+  }
+
+  private static buildMessage(data: IQuerySuccessEventArgs, message: ISummaryMessage) {
+    const numOfResults = data.results.results.length;
+    const sanitizedQuery = QuerySummaryUtils.sanitizeQuery(data.query);
 
     if (!numOfResults) {
       return '';
     }
 
-    const strings = QuerySummaryUtils.getHtmlSummaryStrings(data);
-    const sanitizedQuery = QuerySummaryUtils.sanitizeQuery(data.query);
-
-    if (sanitizedQuery) {
-      return l('ShowingResultsWithQuery', strings.totalCount, strings.query, numOfResults);
-    }
-
-    return l('ShowingResults', strings.totalCount, numOfResults);
+    return sanitizedQuery ? message.includingQuery : message.excludingQuery;
   }
 
   private static getHtmlSummaryStrings(data: IQuerySuccessEventArgs): ISummaryStrings {
