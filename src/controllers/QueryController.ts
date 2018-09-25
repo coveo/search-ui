@@ -169,12 +169,9 @@ export class QueryController extends RootComponent {
    * @returns {Promise<IQueryResults>}
    */
   public executeQuery(options?: IQueryOptions): Promise<IQueryResults> {
-    this.closeModalBox = options && options.closeModalBox != null ? options.closeModalBox : this.closeModalBox;
     options = <IQueryOptions>_.extend(new DefaultQueryOptions(), options);
 
-    if (this.closeModalBox) {
-      this.modalBox.close(true);
-    }
+    this.closeModalBoxIfNeeded(options ? options.closeModalBox : undefined);
 
     this.logger.debug('Executing new query');
 
@@ -469,6 +466,12 @@ export class QueryController extends RootComponent {
     }
     this.loadLastQueryHash();
     return this.lastQueryHash || this.queryHash(new QueryBuilder().build());
+  }
+
+  private closeModalBoxIfNeeded(needed?: boolean) {
+    if (needed != undefined ? needed : this.closeModalBox) {
+      this.modalBox.close(true);
+    }
   }
 
   private getLastSearchUid(): string {

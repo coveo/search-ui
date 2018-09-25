@@ -102,50 +102,55 @@ export function QueryControllerTest() {
     });
 
     describe('closeModalBox', () => {
-      let modalBoxCloseSpy: jasmine.Spy;
-      beforeEach(() => {
-        modalBoxCloseSpy = jasmine.createSpy('modal');
-        test.cmp.modalBox = {
-          close: modalBoxCloseSpy
-        };
+      it('should close the modal if the closeModalBox is set to true in the executeQuery options', () => {
+        let spy = jasmine.createSpy('spy');
+        test.cmp.modalBox = { close: spy };
+        test.cmp.executeQuery({ closeModalBox: true });
+        expect(spy).toHaveBeenCalled();
       });
 
-      afterEach(() => {
-        modalBoxCloseSpy = null;
-        test.cmp.modalBox = null;
-        delete test.cmp;
-        delete test.env;
+      it('should not close the modal if the closeModalBox is set to false in the executeQuery options', () => {
+        let spy = jasmine.createSpy('spy');
+        test.cmp.modalBox = { close: spy };
+        test.cmp.executeQuery({ closeModalBox: false });
+        expect(spy).not.toHaveBeenCalled();
       });
 
-      it('should close the modals if the closeModalBox is set to true in the executeQuery options', () => {
-        test.cmp.executeQuery({
-          closeModalBox: true
-        });
-        expect(modalBoxCloseSpy).toHaveBeenCalled();
-      });
-
-      it('should not close the modals if the closeModalBox is set to false in the executeQuery options', () => {
-        test.cmp.executeQuery({
-          closeModalBox: false
-        });
-        expect(modalBoxCloseSpy).not.toHaveBeenCalled();
-      });
-
-      it('should close the modals if the closeModalBox is set to true', () => {
+      it('should close the modal if the closeModalBox is set to true on the QueryController', () => {
+        let spy = jasmine.createSpy('spy');
+        test.cmp.modalBox = { close: spy };
         test.cmp.closeModalBox = true;
         test.cmp.executeQuery();
-        expect(modalBoxCloseSpy).toHaveBeenCalled();
+        expect(spy).toHaveBeenCalled();
       });
 
-      it('should not close the modals if the closeModalBox is set to false', () => {
+      it('should not close the modal if the closeModalBox is set to false on the QueryController', () => {
+        let spy = jasmine.createSpy('spy');
+        test.cmp.modalBox = { close: spy };
         test.cmp.closeModalBox = false;
         test.cmp.executeQuery();
-        expect(modalBoxCloseSpy).not.toHaveBeenCalled();
+        expect(spy).not.toHaveBeenCalled();
       });
 
-      it('should close the modals if the closeModalBox is unset', () => {
+      it('should priorize executeQuery options', () => {
+        let spy = jasmine.createSpy('spy');
+        test.cmp.modalBox = { close: spy };
+        test.cmp.closeModalBox = false;
+        test.cmp.executeQuery({ closeModalBox: true });
+        expect(spy).toHaveBeenCalled();
+
+        let spy2 = jasmine.createSpy('spy2');
+        test.cmp.modalBox = { close: spy2 };
+        test.cmp.closeModalBox = true;
+        test.cmp.executeQuery({ closeModalBox: false });
+        expect(spy2).not.toHaveBeenCalled();
+      });
+
+      it('should close the modals by default', () => {
+        let spy = jasmine.createSpy('spy');
+        test.cmp.modalBox = { close: spy };
         test.cmp.executeQuery();
-        expect(modalBoxCloseSpy).toHaveBeenCalled();
+        expect(spy).toHaveBeenCalled();
       });
     });
 
