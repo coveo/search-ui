@@ -1,4 +1,3 @@
-import * as Globalize from 'globalize';
 import 'styling/_QuerySummary';
 import { any, escape } from 'underscore';
 import { IQuerySuccessEventArgs, QueryEvents } from '../../events/QueryEvents';
@@ -6,8 +5,6 @@ import { QuerySummaryEvents } from '../../events/QuerySummaryEvents';
 import { exportGlobally } from '../../GlobalExports';
 import { Assert } from '../../misc/Assert';
 import { QueryStateModel } from '../../models/QueryStateModel';
-import { IQuery } from '../../rest/Query';
-import { IQueryResults } from '../../rest/QueryResults';
 import { l } from '../../strings/Strings';
 import { get } from '../../ui/Base/RegisteredNamedMethods';
 import { $$ } from '../../utils/Dom';
@@ -17,6 +14,7 @@ import { IComponentBindings } from '../Base/ComponentBindings';
 import { ComponentOptions } from '../Base/ComponentOptions';
 import { Initialization } from '../Base/Initialization';
 import ResultListModule = require('../ResultList/ResultList');
+import { QuerySummaryUtils } from '../../utils/QuerySummaryUtils';
 
 export interface IQuerySummaryOptions {
   onlyDisplaySearchTips?: boolean;
@@ -133,7 +131,7 @@ export class QuerySummary extends Component {
     $$(this.element).removeClass('coveo-hidden');
   }
 
-  private render(queryPerformed: IQuery, queryResults: IQueryResults) {
+  private render(data: IQuerySuccessEventArgs) {
     $$(this.textContainer).empty();
     this.show();
 
@@ -141,12 +139,10 @@ export class QuerySummary extends Component {
     this.hideNoResultsPage();
 
     if (!this.options.onlyDisplaySearchTips) {
-      if (this.isInfiniteScrollingMode()) {
-        this.renderSummaryInInfiniteScrollingMode(queryPerformed, queryResults);
-      } else {
-        this.renderSummaryInStandardMode(queryPerformed, queryResults);
-      }
+      this.updateSummaryIfResultsWereReceived(data);
     }
+
+    const queryResults = data.results;
 
     if (queryResults.exception != null && queryResults.exception.code != null) {
       const code: string = ('QueryException' + queryResults.exception.code).toLocaleString();
@@ -161,10 +157,10 @@ export class QuerySummary extends Component {
 
   private handleQuerySuccess(data: IQuerySuccessEventArgs) {
     Assert.exists(data);
-    this.render(data.query, data.results);
+    this.render(data);
   }
 
-  private isInfiniteScrollingMode() {
+  private get isInfiniteScrollingMode() {
     const allResultsLists = $$(this.root).findAll(`.${Component.computeCssClassNameForType('ResultList')}`);
     const anyResultListIsUsingInfiniteScroll = any(allResultsLists, resultList => {
       return (get(resultList) as ResultListModule.ResultList).options.enableInfiniteScroll;
@@ -172,69 +168,13 @@ export class QuerySummary extends Component {
     return anyResultListIsUsingInfiniteScroll;
   }
 
-  private formatSummary(queryPerformed: IQuery, queryResults: IQueryResults) {
-    const first = Globalize.format(queryPerformed.firstResult + 1, 'n0');
-    const last = Globalize.format(queryPerformed.firstResult + queryResults.results.length, 'n0');
-    const totalCount = Globalize.format(queryResults.totalCountFiltered, 'n0');
-    const query = queryPerformed.q ? escape(queryPerformed.q.trim()) : '';
-
-    const highlightFirst = $$('span', { className: 'coveo-highlight' }, first).el;
-    const highlightLast = $$('span', { className: 'coveo-highlight' }, last).el;
-    const highlightTotal = $$('span', { className: 'coveo-highlight' }, totalCount).el;
-    const highlightQuery = $$('span', { className: 'coveo-highlight' }, query).el;
-
-    return {
-      first,
-      last,
-      totalCount,
-      query,
-      highlightFirst,
-      highlightLast,
-      highlightTotal,
-      highlightQuery
-    };
-  }
-
-  private renderSummaryInStandardMode(queryPerformed: IQuery, queryResults: IQueryResults) {
-    if (queryResults.results.length > 0) {
-      const { query, highlightFirst, highlightLast, highlightTotal, highlightQuery } = this.formatSummary(queryPerformed, queryResults);
-
-      if (query) {
-        this.textContainer.innerHTML = l(
-          'ShowingResultsOfWithQuery',
-          highlightFirst.outerHTML,
-          highlightLast.outerHTML,
-          highlightTotal.outerHTML,
-          highlightQuery.outerHTML,
-          queryResults.results.length
-        );
-      } else {
-        this.textContainer.innerHTML = l(
-          'ShowingResultsOf',
-          highlightFirst.outerHTML,
-          highlightLast.outerHTML,
-          highlightTotal.outerHTML,
-          queryResults.results.length
-        );
-      }
+  private updateSummaryIfResultsWereReceived(data: IQuerySuccessEventArgs) {
+    if (!data.results.results.length) {
+      return;
     }
-  }
 
-  private renderSummaryInInfiniteScrollingMode(queryPerformed: IQuery, queryResults: IQueryResults) {
-    if (queryResults.results.length > 0) {
-      const { query, highlightQuery, highlightTotal } = this.formatSummary(queryPerformed, queryResults);
-
-      if (query) {
-        this.textContainer.innerHTML = l(
-          'ShowingResultsWithQuery',
-          highlightTotal.outerHTML,
-          highlightQuery.outerHTML,
-          queryResults.results.length
-        );
-      } else {
-        this.textContainer.innerHTML = l('ShowingResults', highlightTotal.outerHTML, queryResults.results.length);
-      }
-    }
+    const messageFn = this.isInfiniteScrollingMode ? QuerySummaryUtils.infiniteScrollModeMessage : QuerySummaryUtils.standardModeMessage;
+    this.textContainer.innerHTML = messageFn(data);
   }
 
   private updateNoResultsSnapshot() {
