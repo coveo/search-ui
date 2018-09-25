@@ -13,6 +13,7 @@ import { l } from '../../strings/Strings';
 import { each, map } from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 import { analyticsActionCauseList, IAnalyticsDocumentViewMeta } from '../Analytics/AnalyticsActionListMeta';
+import { Logger } from '../../misc/Logger';
 
 import 'styling/_ResultFolding';
 import { SVGIcons } from '../../utils/SVGIcons';
@@ -176,7 +177,10 @@ export class ResultFolding extends Component {
     try {
       await this.displayThoseResults(results);
       this.updateElementVisibility(results.length);
-    } catch (e) {}
+    } catch (e) {
+      const logger = new Logger(this);
+      logger.warn('An error occured when trying to display more results');
+    }
 
     this.moreResultsPromise = undefined;
     $$(this.waitAnimation).detach();
