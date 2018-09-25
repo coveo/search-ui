@@ -14,7 +14,7 @@ declare const Coveo;
 export interface IPipelineContextOptions {}
 
 /**
- * A PipelineContext is used to add custom context information to a query (see [Adding Custom Context Information to Queries](https://docs.coveo.com/en/399])).
+ * A PipelineContext is used to add custom context information to a query (see [Adding Custom Context Information to Queries](https://docs.coveo.com/en/399)).
  *
  * This component is meant to be initialized with a script tag, possibly configuring it with JSON content.
  *
@@ -66,7 +66,7 @@ export class PipelineContext extends Component implements IPipelineContextProvid
   }
 
   /**
-   * **Available since the [December 2017 Release](https://docs.coveo.com/en/373)**
+   * **Available since the [December 2017 Release](https://docs.coveo.com/en/373).**
    *
    * Sets a new context, replacing the previous one.
    *
@@ -90,7 +90,7 @@ export class PipelineContext extends Component implements IPipelineContextProvid
   }
 
   /**
-   * **Available since the [December 2017 Release](https://docs.coveo.com/en/373)**
+   * **Available since the [December 2017 Release](https://docs.coveo.com/en/373).**
    *
    * Sets a value for a context key, replacing the previous value if applicable.
    * @param contextKey
