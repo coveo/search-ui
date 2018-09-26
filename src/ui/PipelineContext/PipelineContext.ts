@@ -68,7 +68,7 @@ export class PipelineContext extends Component implements IPipelineContextProvid
   /**
    * **Available since the [December 2017 Release](https://docs.coveo.com/en/373).**
    *
-   * Sets a new context, replacing the previous one.
+   * Sets a new context, replacing the previous context if applicable.
    *
    * @param newContext The new context to set, which can be directly passed as a JSON, or as a stringified JSON.
    */
