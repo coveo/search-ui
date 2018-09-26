@@ -49,6 +49,14 @@ export const QuerySummaryUtilsTest = () => {
 
     beforeEach(() => (root = $$('div').el));
 
+    it('when calling #replaceQueryTags with a template', () => {
+      const template = '${query}';
+      const replacement = 'replacement';
+      const result = utils.replaceQueryTags(template, replacement);
+
+      expect(result).toBe(replacement);
+    });
+
     describe('when the result list enableInfiniteScroll is disabled', () => {
       beforeEach(() => appendResultListToRoot({ enableInfiniteScroll: false }));
 

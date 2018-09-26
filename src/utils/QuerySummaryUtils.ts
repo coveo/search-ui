@@ -6,7 +6,6 @@ import { IQuery } from '../rest/Query';
 import { Component } from '../ui/Base/Component';
 import { any } from 'underscore';
 import { get } from '../ui/Base/RegisteredNamedMethods';
-import { ResultList } from '../ui/ResultList/ResultList';
 
 interface ISummaryStrings {
   first: string;
@@ -35,6 +34,11 @@ export class QuerySummaryUtils {
     return messageBuilder(data, strings);
   }
 
+  public static replaceQueryTags(template: string, replacement: string) {
+    const queryTag = /\$\{query\}/g;
+    return template ? template.replace(queryTag, replacement) : '';
+  }
+
   private static messageBuilderForMode(root: HTMLElement) {
     if (QuerySummaryUtils.isInfiniteScrollMode(root)) {
       return QuerySummaryUtils.buildInfiniteScrollMessage;
@@ -44,10 +48,10 @@ export class QuerySummaryUtils {
   }
 
   private static isInfiniteScrollMode(root: HTMLElement) {
-    const resultListSelector = `.${Component.computeCssClassNameForType(ResultList.ID)}`;
+    const resultListSelector = `.${Component.computeCssClassNameForType('ResultList')}`;
     const resultLists = $$(root).findAll(resultListSelector);
 
-    return any(resultLists, resultList => (get(resultList) as ResultList).options.enableInfiniteScroll);
+    return any(resultLists, resultList => (get(resultList) as any).options.enableInfiniteScroll);
   }
 
   private static buildStandardMessage(data: IQuerySuccessEventArgs, strings: ISummaryStrings) {

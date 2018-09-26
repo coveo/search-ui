@@ -177,19 +177,16 @@ export class QuerySummary extends Component {
   private updateQueryTagsInNoResultsContainer() {
     const noResultsContainer = this.getNoResultsContainer();
     if (noResultsContainer) {
-      noResultsContainer.innerHTML = this.parseQueryTags(this.noResultsSnapshot);
+      noResultsContainer.innerHTML = this.replaceQueryTagsWithHighlightedQuery(this.noResultsSnapshot);
     }
   }
 
-  private parseQueryTags(content: string) {
-    if (!content) {
-      return '';
-    }
-    const queryTagContainer = `<span class="coveo-highlight">${this.queryEscaped}</span>`;
-    return content.replace(new RegExp(/\$\{query\}/g), queryTagContainer);
+  private replaceQueryTagsWithHighlightedQuery(template: string) {
+    const highlightedQuery = `<span class="coveo-highlight">${this.sanitizedQuery}</span>`;
+    return QuerySummaryUtils.replaceQueryTags(template, highlightedQuery);
   }
 
-  private get queryEscaped() {
+  private get sanitizedQuery() {
     return escape(this.queryStateModel.get(QueryStateModel.attributesEnum.q));
   }
 
@@ -237,7 +234,7 @@ export class QuerySummary extends Component {
   }
 
   private getNoResultsFoundMessageElement() {
-    const parsedNoResultsFoundMessage = this.parseQueryTags(this.options.noResultsFoundMessage);
+    const parsedNoResultsFoundMessage = this.replaceQueryTagsWithHighlightedQuery(this.options.noResultsFoundMessage);
 
     const noResultsFoundMessage = $$(
       'div',
