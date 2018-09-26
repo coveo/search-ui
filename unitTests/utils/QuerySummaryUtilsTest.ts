@@ -1,12 +1,21 @@
+import * as Mock from '../MockEnvironment';
 import { QuerySummaryUtils } from '../../src/utils/QuerySummaryUtils';
 import { IQuerySuccessEventArgs } from '../../src/events/QueryEvents';
-import { QueryBuilder } from '../../src/Core';
+import { QueryBuilder, $$ } from '../../src/Core';
 import { FakeResults } from '../Fake';
+import { ResultList, IResultListOptions } from '../../src/ui/ResultList/ResultList';
 
 export const QuerySummaryUtilsTest = () => {
   describe('QuerySummaryUtils', () => {
     const utils = QuerySummaryUtils;
     let data: IQuerySuccessEventArgs;
+    let root: HTMLElement;
+
+    function appendResultListToRoot(options: IResultListOptions = {}) {
+      const resultList = Mock.optionsComponentSetup<ResultList, IResultListOptions>(ResultList, options).cmp.element;
+
+      root.appendChild(resultList);
+    }
 
     function buildQuerySuccessData(config: Partial<IQuerySuccessEventArgs> = {}) {
       const data: IQuerySuccessEventArgs = {
@@ -19,78 +28,96 @@ export const QuerySummaryUtilsTest = () => {
       return { ...data, ...config } as IQuerySuccessEventArgs;
     }
 
-    describe('when the #data object does not have any results', () => {
-      beforeEach(() => {
-        const results = FakeResults.createFakeResults(0);
-        data = buildQuerySuccessData({ results });
+    function initDataWithZeroResults() {
+      const results = FakeResults.createFakeResults(0);
+      data = buildQuerySuccessData({ results });
+    }
+
+    function initDataWithOneResultAndFalsyQuery() {
+      const query = { q: '', firstResult: 0 };
+      const results = FakeResults.createFakeResults(1);
+
+      data = buildQuerySuccessData({ query, results });
+    }
+
+    function initDataWithOneResultAndTruthyQuery() {
+      const query = { q: 'query', firstResult: 0 };
+      const results = FakeResults.createFakeResults(1);
+
+      data = buildQuerySuccessData({ query, results });
+    }
+
+    beforeEach(() => (root = $$('div').el));
+
+    describe('when the result list enableInfiniteScroll is disabled', () => {
+      beforeEach(() => appendResultListToRoot({ enableInfiniteScroll: false }));
+
+      describe('when the #data object does not have any results', () => {
+        beforeEach(initDataWithZeroResults);
+
+        it(`when calling #message, it returns an empty string`, () => {
+          const message = utils.message(root, data);
+          expect(message).toBe('');
+        });
+
+        it(`when calling #htmlMessage, it returns an empty string`, () => {
+          const message = utils.htmlMessage(root, data);
+          expect(message).toBe('');
+        });
       });
 
-      it(`when calling #standardHtmlMessage, it returns an empty string`, () => {
-        const message = utils.standardHtmlMessage(data);
-        expect(message).toBe('');
+      describe(`given the #data object has one result,
+      when the query #q is falsy (e.g. an empty string)`, () => {
+        beforeEach(initDataWithOneResultAndFalsyQuery);
+
+        it(`when calling #message, it returns the expected message`, () => {
+          const message = utils.message(root, data);
+          expect(message).toBe('Result 1 of 1');
+        });
+
+        it(`when calling #htmlMessage,
+        it returns the expected message`, () => {
+          const message = utils.htmlMessage(root, data);
+          const expected = 'Result <span class="coveo-highlight">1</span> of <span class="coveo-highlight">1</span>';
+          expect(message).toBe(expected);
+        });
       });
 
-      it(`when calling #infiniteScrollHtmlMessage, it returns an empty string`, () => {
-        const message = utils.infiniteScrollHtmlMessage(data);
-        expect(message).toBe('');
+      describe(`given the #data object has one result,
+      when the query #q is truthy`, () => {
+        beforeEach(initDataWithOneResultAndTruthyQuery);
+
+        it(`when calling #message,
+        it includes the query in the message`, () => {
+          const message = utils.message(root, data);
+          expect(message).toContain(data.query.q);
+        });
+
+        it(`when calling #htmlMessage,
+        it includes the query in the message`, () => {
+          const message = utils.htmlMessage(root, data);
+          expect(message).toContain(data.query.q);
+        });
       });
     });
 
-    describe(`given the #data object has one result,
-    when the query #q is falsy (e.g. an empty string),
-    when the query #firstResult is defined (e.g. 0)`, () => {
-      beforeEach(() => {
-        const query = { q: '', firstResult: 0 };
-        const results = FakeResults.createFakeResults(1);
+    describe(`when the result list has enableInfiniteScroll enabled`, () => {
+      beforeEach(() => appendResultListToRoot({ enableInfiniteScroll: true }));
 
-        data = buildQuerySuccessData({ query, results });
-      });
+      describe(`given the #data object has one result,
+      when the query #q is falsy (e.g. an empty string)`, () => {
+        beforeEach(initDataWithOneResultAndFalsyQuery);
 
-      it(`when calling #standardMessage, it returns the expected message`, () => {
-        const message = utils.standardMessage(data);
-        expect(message).toBe('Result 1 of 1');
-      });
+        it(`when calling #message, it returns the expected message`, () => {
+          const message = utils.message(root, data);
+          expect(message).toBe('1 result');
+        });
 
-      it(`when calling #infiniteScrollMessage, it returns the expected message`, () => {
-        const message = utils.infiniteScrollMessage(data);
-        expect(message).toBe('1 result');
-      });
-
-      it(`when calling #standardHtmlMessage,
-      it returns the expected message`, () => {
-        const message = utils.standardHtmlMessage(data);
-        const expected = 'Result <span class="coveo-highlight">1</span> of <span class="coveo-highlight">1</span>';
-        expect(message).toBe(expected);
-      });
-
-      it(`when calling #infiniteScrollHtmlMessage,
-      it returns the expected message`, () => {
-        const message = utils.infiniteScrollHtmlMessage(data);
-        const expected = '<span class="coveo-highlight">1</span> result';
-        expect(message).toBe(expected);
-      });
-    });
-
-    describe(`given the #data object has one result,
-    when the query #q is truthy,
-    when the query #firstResult is defined (e.g. 0)`, () => {
-      beforeEach(() => {
-        const query = { q: 'query', firstResult: 0 };
-        const results = FakeResults.createFakeResults(1);
-
-        data = buildQuerySuccessData({ query, results });
-      });
-
-      it(`when calling #standardHtmlMessage,
-      it includes the query in the message`, () => {
-        const message = utils.standardHtmlMessage(data);
-        expect(message).toContain(data.query.q);
-      });
-
-      it(`when calling #infiniteScrollHtmlMessage,
-      it includes the query in the message`, () => {
-        const message = utils.infiniteScrollHtmlMessage(data);
-        expect(message).toContain(data.query.q);
+        it(`when calling #htmlMessage, it returns the expected message`, () => {
+          const message = utils.htmlMessage(root, data);
+          const expected = '<span class="coveo-highlight">1</span> result';
+          expect(message).toBe(expected);
+        });
       });
     });
   });

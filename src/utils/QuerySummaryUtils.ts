@@ -3,6 +3,10 @@ import { IQuerySuccessEventArgs } from '../events/QueryEvents';
 import { $$ } from './Dom';
 import { l } from '../strings/Strings';
 import { IQuery } from '../rest/Query';
+import { Component } from '../ui/Base/Component';
+import { any } from 'underscore';
+import { get } from '../ui/Base/RegisteredNamedMethods';
+import { ResultList } from '../ui/ResultList/ResultList';
 
 interface ISummaryStrings {
   first: string;
@@ -17,24 +21,33 @@ interface ISummaryMessage {
 }
 
 export class QuerySummaryUtils {
-  public static standardMessage(data: IQuerySuccessEventArgs) {
+  public static message(root: HTMLElement, data: IQuerySuccessEventArgs) {
+    const messageBuilder = QuerySummaryUtils.messageBuilderForMode(root);
     const strings = QuerySummaryUtils.getSummaryStrings(data);
-    return QuerySummaryUtils.buildStandardMessage(data, strings);
+
+    return messageBuilder(data, strings);
   }
 
-  public static infiniteScrollMessage(data: IQuerySuccessEventArgs) {
-    const strings = QuerySummaryUtils.getSummaryStrings(data);
-    return QuerySummaryUtils.buildInfiniteScrollMessage(data, strings);
-  }
-
-  public static standardHtmlMessage(data: IQuerySuccessEventArgs) {
+  public static htmlMessage(root: HTMLElement, data: IQuerySuccessEventArgs) {
+    const messageBuilder = QuerySummaryUtils.messageBuilderForMode(root);
     const strings = QuerySummaryUtils.getHtmlSummaryStrings(data);
-    return QuerySummaryUtils.buildStandardMessage(data, strings);
+
+    return messageBuilder(data, strings);
   }
 
-  public static infiniteScrollHtmlMessage(data: IQuerySuccessEventArgs) {
-    const strings = QuerySummaryUtils.getHtmlSummaryStrings(data);
-    return QuerySummaryUtils.buildInfiniteScrollMessage(data, strings);
+  private static messageBuilderForMode(root: HTMLElement) {
+    if (QuerySummaryUtils.isInfiniteScrollMode(root)) {
+      return QuerySummaryUtils.buildInfiniteScrollMessage;
+    }
+
+    return QuerySummaryUtils.buildStandardMessage;
+  }
+
+  private static isInfiniteScrollMode(root: HTMLElement) {
+    const resultListSelector = `.${Component.computeCssClassNameForType(ResultList.ID)}`;
+    const resultLists = $$(root).findAll(resultListSelector);
+
+    return any(resultLists, resultList => (get(resultList) as ResultList).options.enableInfiniteScroll);
   }
 
   private static buildStandardMessage(data: IQuerySuccessEventArgs, strings: ISummaryStrings) {

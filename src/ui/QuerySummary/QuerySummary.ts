@@ -1,19 +1,17 @@
 import 'styling/_QuerySummary';
-import { any, escape } from 'underscore';
+import { escape } from 'underscore';
 import { IQuerySuccessEventArgs, QueryEvents } from '../../events/QueryEvents';
 import { QuerySummaryEvents } from '../../events/QuerySummaryEvents';
 import { exportGlobally } from '../../GlobalExports';
 import { Assert } from '../../misc/Assert';
 import { QueryStateModel } from '../../models/QueryStateModel';
 import { l } from '../../strings/Strings';
-import { get } from '../../ui/Base/RegisteredNamedMethods';
 import { $$ } from '../../utils/Dom';
 import { analyticsActionCauseList, IAnalyticsNoMeta } from '../Analytics/AnalyticsActionListMeta';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { ComponentOptions } from '../Base/ComponentOptions';
 import { Initialization } from '../Base/Initialization';
-import ResultListModule = require('../ResultList/ResultList');
 import { QuerySummaryUtils } from '../../utils/QuerySummaryUtils';
 
 export interface IQuerySummaryOptions {
@@ -160,21 +158,13 @@ export class QuerySummary extends Component {
     this.render(data);
   }
 
-  private get isInfiniteScrollingMode() {
-    const allResultsLists = $$(this.root).findAll(`.${Component.computeCssClassNameForType('ResultList')}`);
-    const anyResultListIsUsingInfiniteScroll = any(allResultsLists, resultList => {
-      return (get(resultList) as ResultListModule.ResultList).options.enableInfiniteScroll;
-    });
-    return anyResultListIsUsingInfiniteScroll;
-  }
-
   private updateSummaryIfResultsWereReceived(data: IQuerySuccessEventArgs) {
     if (!data.results.results.length) {
       return;
     }
 
-    const messageFn = this.isInfiniteScrollingMode ? QuerySummaryUtils.infiniteScrollHtmlMessage : QuerySummaryUtils.standardHtmlMessage;
-    this.textContainer.innerHTML = messageFn(data);
+    const message = QuerySummaryUtils.htmlMessage(this.root, data);
+    this.textContainer.innerHTML = message;
   }
 
   private updateNoResultsSnapshot() {
