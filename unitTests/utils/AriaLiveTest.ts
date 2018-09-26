@@ -1,22 +1,26 @@
 import { AriaLive } from '../../src/utils/AriaLive';
 import { $$ } from '../../src/Core';
+import { Simulate } from '../Simulate';
+import { MockEnvironmentBuilder, IMockEnvironment } from '../MockEnvironment';
+import { FakeResults } from '../Fake';
 
 export const AriaLiveTest = () => {
   describe('AriaLive', () => {
     let ariaLive: AriaLive;
-    let root: HTMLElement;
+    let env: IMockEnvironment;
 
     beforeEach(() => {
-      root = document.createElement('div');
+      const root = document.createElement('div');
+      env = new MockEnvironmentBuilder().withRoot(root).build();
       ariaLive = new AriaLive(root);
     });
 
-    function getAriaLiveEl() {
-      return $$(root).find('[aria-live]');
+    function ariaLiveEl() {
+      return $$(env.root).find('[aria-live]');
     }
+
     it(`adds a div with attribute aria-live as a child`, () => {
-      const ariaLiveEl = getAriaLiveEl();
-      expect(ariaLiveEl.getAttribute('aria-live')).toBe('polite');
+      expect(ariaLiveEl().getAttribute('aria-live')).toBe('polite');
     });
 
     it(`when calling #updateText with a value,
@@ -24,7 +28,39 @@ export const AriaLiveTest = () => {
       const text = 'text';
       ariaLive.updateText(text);
 
-      expect(getAriaLiveEl().textContent).toBe(text);
+      expect(ariaLiveEl().textContent).toBe(text);
+    });
+
+    it(`when triggering a successful query with results,
+    it updates the text with the number of results`, () => {
+      Simulate.query(env);
+      expect(ariaLiveEl().textContent).toMatch(/^Results/);
+    });
+
+    describe(`when triggering a successful query with unsafe characters and no results`, () => {
+      const dangerousChar = '<';
+
+      beforeEach(() => {
+        const options = {
+          query: { q: dangerousChar },
+          results: FakeResults.createFakeResults(0)
+        };
+        Simulate.query(env, options);
+      });
+
+      it('updates the text to a no results message', () => expect(ariaLiveEl().textContent).toMatch(/^No results/));
+
+      it('the message contains a sanitized form of the query', () => {
+        const message = ariaLiveEl().textContent;
+        expect(message).not.toContain(dangerousChar);
+      });
+    });
+
+    it('when triggering a query that errors, it updates the text to an error message', () => {
+      Simulate.queryError(env);
+      const message = ariaLiveEl().textContent;
+
+      expect(message).toContain('error');
     });
   });
 };
