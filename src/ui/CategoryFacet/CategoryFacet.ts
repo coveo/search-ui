@@ -732,7 +732,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
 
   private isActive() {
     if (this.options.basePath) {
-      return !Utils.arrayEqual(this.activePath, [this.options.basePath]);
+      return !Utils.arrayEqual(this.activePath, this.options.basePath);
     }
     return !Utils.isEmptyArray(this.activePath);
   }
