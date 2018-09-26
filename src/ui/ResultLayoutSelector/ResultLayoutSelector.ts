@@ -325,7 +325,7 @@ export class ResultLayoutSelector extends Component {
 
     new AccessibleButton()
       .withElement(btn)
-      .withLabel(l(layout))
+      .withLabel(l('DisplayResultsAs', l(layout)))
       .withSelectAction(selectAction)
       .withOwner(this.bind)
       .build();
