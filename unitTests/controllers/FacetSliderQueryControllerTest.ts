@@ -116,13 +116,6 @@ export function FacetSliderQueryControllerTest() {
         expect(requestForFullRange.constantQueryOverride).toContain('a constant expression');
       });
 
-      it('should not use any query override if there is none set as an option on the component', () => {
-        controller.facet.options.queryOverride = undefined;
-        controller.putGroupByIntoQueryBuilder(builder);
-        requestForFullRange = builder.groupByRequests[controller.groupByRequestForFullRange];
-        expect(requestForFullRange.advancedQueryOverride).toBeUndefined();
-      });
-
       it('should contain a special expression to filter out invalid document if the field is a date', () => {
         controller.facet.options.dateField = true;
         controller.putGroupByIntoQueryBuilder(builder);

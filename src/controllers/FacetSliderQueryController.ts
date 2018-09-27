@@ -15,7 +15,7 @@ export class FacetSliderQueryController {
   public graphGroupByQueriesIndex: number;
   private rangeValuesForGraphToUse: { start: any; end: any }[];
   public lastGroupByRequestIndex: number;
-  public groupByRequestForFullRange: number;
+  public lastGroupByRequestForFullRangeIndex: number;
 
   constructor(public facet: FacetSlider) {
     this.facet.bind.onRootElement(QueryEvents.querySuccess, (args: IQuerySuccessEventArgs) => this.handleQuerySuccess(args));
@@ -141,7 +141,7 @@ export class FacetSliderQueryController {
 
     basicGroupByRequestForGraph.sortCriteria = 'nosort';
     basicGroupByRequestForGraph.maximumNumberOfValues = this.facet.options.graph.steps;
-    this.addExpressionToPotentiallyRemoveInvalidDocumentDates(basicGroupByRequestForGraph);
+    this.addExpressionToExcludeInvalidDates(basicGroupByRequestForGraph);
     queryBuilder.groupByRequests.push(basicGroupByRequestForGraph);
   }
 
@@ -170,7 +170,7 @@ export class FacetSliderQueryController {
   }
 
   private createRangeValuesForGraphUsingStartAndEnd() {
-    const { start, end } = this.formatStartAndEnd();
+    const { start, end } = this.getFormattedStartAndEnd();
     const oneRange: IRangeValue = {
       start: start,
       end: end,
@@ -224,7 +224,7 @@ export class FacetSliderQueryController {
     });
   }
 
-  private formatStartAndEnd() {
+  private getFormattedStartAndEnd() {
     let start = this.facet.options.start;
     let end = this.facet.options.end;
     if (this.facet.options.dateField) {
@@ -232,8 +232,8 @@ export class FacetSliderQueryController {
       end = this.getISOFormat(end);
     }
     return {
-      start: start,
-      end: end
+      start,
+      end
     };
   }
 
@@ -277,7 +277,7 @@ export class FacetSliderQueryController {
     // The goal is to obtain a query wich return the whole range of results without taking into account what the users typed in the search box,
     // so that the X range of the slider is static between each queries.
 
-    this.groupByRequestForFullRange = queryBuilder.groupByRequests.length;
+    this.lastGroupByRequestForFullRangeIndex = queryBuilder.groupByRequests.length;
     const groupByRequestForFullRange = clone(basicGroupByRequest);
 
     // This removes the "basic" query override. ie: user input
@@ -290,7 +290,7 @@ export class FacetSliderQueryController {
       groupByRequestForFullRange.advancedQueryOverride = this.facet.options.queryOverride;
     }
 
-    this.addExpressionToPotentiallyRemoveInvalidDocumentDates(groupByRequestForFullRange);
+    this.addExpressionToExcludeInvalidDates(groupByRequestForFullRange);
     queryBuilder.groupByRequests.push(groupByRequestForFullRange);
   }
 
@@ -301,13 +301,11 @@ export class FacetSliderQueryController {
       maximumNumberOfValues = this.facet.options.graph.steps;
     }
 
-    let rangeValues = undefined;
-    const { start, end } = this.formatStartAndEnd();
+    let rangeValues: IRangeValue[];
     if (this.facet.isSimpleSliderConfig) {
       rangeValues = [
         {
-          start: start,
-          end: end,
+          ...this.getFormattedStartAndEnd(),
           label: 'slider',
           endInclusive: false
         }
@@ -323,22 +321,26 @@ export class FacetSliderQueryController {
     basicGroupByRequestForSlider.rangeValues = rangeValues;
     const filter = this.computeOurFilterExpression(this.facet.getSliderBoundaryForQuery());
     this.processQueryOverride(filter, basicGroupByRequestForSlider, queryBuilder);
-    this.addExpressionToPotentiallyRemoveInvalidDocumentDates(basicGroupByRequestForSlider);
+    this.addExpressionToExcludeInvalidDates(basicGroupByRequestForSlider);
 
     queryBuilder.groupByRequests.push(basicGroupByRequestForSlider);
 
     return basicGroupByRequestForSlider;
   }
 
-  private addExpressionToPotentiallyRemoveInvalidDocumentDates(groupByRequest: IGroupByRequest) {
+  private addExpressionToExcludeInvalidDates(groupByRequest: IGroupByRequest) {
     if (this.facet.options.dateField) {
-      // When a connector sets an invalid or un-existing date, the Coveo index will automatically set its value to 1400/01/01 (the "minimum" value in the Boost C++ library).
-      // Here, we try to always force those values out, by putting a filter on dates above Unix epoch, otherwise all kinds of weird stuff will happen for the end users
+      // When a connector sets an invalid or un-existing date,
+      // the Coveo index will automatically set its value to 1400/01/01 (the "minimum" value in the Boost C++ library).
+      // Here, we try to always force those values out,
+      // by putting a filter on dates above Unix epoch, otherwise all kinds of weird stuff will happen for the end users
       // For example :
-      // - We'll get extremely huge range of dates, all with no values (because it turns out not many document were actually produced in the medieval ages).
+      // - We'll get extremely huge range of dates, all with no values
+      //   (because it turns out not many document were actually produced in the medieval ages).
       // - Graphs might get all out of bound, with very tiny slices.
       // - Moment js will incorrectly evaluate the date.
-      // - You cannot actually query for those invalid document using date queries anyway, meaning playing with the slider will always return "no results" if you try and filter on those invalid documents.
+      // - You cannot actually query for those invalid document using date queries anyway,
+      //   meaning playing with the slider will always return "no results" if you try and filter on those invalid documents.
       // Instead of taking the approach of garbage in/garbage out, this tries to do something a bit more sane for end users ...
 
       const builderToRemoveInvalidRange = new QueryBuilder();
