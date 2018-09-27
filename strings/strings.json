@@ -7369,18 +7369,6 @@
     "en": "Remove filter on {0}",
     "fr": "Enlever le filtre sur {0}"
   },
-  "Select": {
-    "en": "Select",
-    "fr": "Sélectionnez"
-  },
-  "Unselect": {
-    "en": "Unselect",
-    "fr": "Désélectionnez"
-  },
-  "With": {
-    "en": "With",
-    "fr": "Avec"
-  },
   "ExpandFacetValues": {
     "en": "Expand facet values",
     "fr": "Étendre les valeurs de facette"
@@ -7428,5 +7416,13 @@
   "FacetTitle": {
     "en": "{0} facet",
     "fr": "Facette {0}"
+  },
+  "SelectValueWithResultCount": {
+    "en": "Select {0} with {1}",
+    "fr": "Sélectionnez {0} avec {1}"
+  },
+  "UnselectValueWithResultCount": {
+    "en": "Unselect {0} with {1}",
+    "fr": "Désélectionnez {0} avec {1}"
   }
 }
