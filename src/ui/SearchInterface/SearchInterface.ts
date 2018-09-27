@@ -44,6 +44,7 @@ import { MEDIUM_SCREEN_WIDTH, ResponsiveComponents, SMALL_SCREEN_WIDTH } from '.
 import { FacetColumnAutoLayoutAdjustment } from './FacetColumnAutoLayoutAdjustment';
 import { FacetValueStateHandler } from './FacetValueStateHandler';
 import RelevanceInspectorModule = require('../RelevanceInspector/RelevanceInspector');
+import { AccessibilityLandmarks } from '../../utils/AccessibilityLandmarks';
 
 export interface ISearchInterfaceOptions {
   enableHistory?: boolean;
@@ -501,6 +502,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
 
     this.setupDebugInfo();
     this.setupResponsiveComponents();
+    new AccessibilityLandmarks(element);
   }
 
   public set resultsPerPage(resultsPerPage: number) {
