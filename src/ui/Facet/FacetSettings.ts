@@ -193,7 +193,13 @@ export class FacetSettings extends FacetSort {
     SVGDom.addClassToSVGInContainer(this.settingsButton, 'coveo-facet-settings-more-svg');
 
     this.hideElementOnMouseEnterLeave(this.settingsButton);
-    this.makeSettingsButtonAccessible();
+
+    new AccessibleButton()
+      .withElement(this.settingsButton)
+      .withLabel(l('FacetSettings'))
+      .withClickAction(e => this.handleSettingsButtonClick(e))
+      .withEnterKeyboardAction(e => this.handleSettingsButtonClick(e))
+      .build();
   }
 
   private hideElementOnMouseEnterLeave(el: HTMLElement) {
@@ -202,15 +208,6 @@ export class FacetSettings extends FacetSort {
 
     $$(el).on('mouseleave', mouseLeave);
     $$(el).on('mouseenter', mouseEnter);
-  }
-
-  private makeSettingsButtonAccessible() {
-    new AccessibleButton()
-      .withElement(this.settingsButton)
-      .withLabel(l('FacetSettings'))
-      .withClickAction(e => this.handleSettingsButtonClick(e))
-      .withEnterKeyboardAction(e => this.handleSettingsButtonClick(e))
-      .build();
   }
 
   private buildSettingsPopup() {
