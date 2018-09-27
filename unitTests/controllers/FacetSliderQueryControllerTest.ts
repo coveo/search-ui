@@ -73,7 +73,7 @@ export function FacetSliderQueryControllerTest() {
       describe('with an empty query to clone', () => {
         beforeEach(() => {
           controller.putGroupByIntoQueryBuilder(builder);
-          requestForFullRange = builder.groupByRequests[controller.groupByRequestForFullRange];
+          requestForFullRange = builder.groupByRequests[controller.lastGroupByRequestForFullRangeIndex];
         });
 
         it('should use nosort', () => {
@@ -105,21 +105,21 @@ export function FacetSliderQueryControllerTest() {
         controller.facet.options.queryOverride = 'an override';
 
         controller.putGroupByIntoQueryBuilder(builder);
-        requestForFullRange = builder.groupByRequests[controller.groupByRequestForFullRange];
+        requestForFullRange = builder.groupByRequests[controller.lastGroupByRequestForFullRangeIndex];
         expect(requestForFullRange.advancedQueryOverride).toContain('an override');
       });
 
       it('should add the constant query override from the existing query', () => {
         builder.constantExpression.add('a constant expression');
         controller.putGroupByIntoQueryBuilder(builder);
-        requestForFullRange = builder.groupByRequests[controller.groupByRequestForFullRange];
+        requestForFullRange = builder.groupByRequests[controller.lastGroupByRequestForFullRangeIndex];
         expect(requestForFullRange.constantQueryOverride).toContain('a constant expression');
       });
 
       it('should contain a special expression to filter out invalid document if the field is a date', () => {
         controller.facet.options.dateField = true;
         controller.putGroupByIntoQueryBuilder(builder);
-        requestForFullRange = builder.groupByRequests[controller.groupByRequestForFullRange];
+        requestForFullRange = builder.groupByRequests[controller.lastGroupByRequestForFullRangeIndex];
         expect(requestForFullRange.constantQueryOverride).toContain('@foo>1970');
       });
     });
