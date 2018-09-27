@@ -19,15 +19,8 @@ export interface IOffset {
 export class Dom {
   private static CLASS_NAME_REGEX = /-?[_a-zA-Z]+[_a-zA-Z0-9-]*/g;
   private static ONLY_WHITE_SPACE_REGEX = /^\s*$/;
-  private static forceNativeEvent = false;
-
   // Force the use of native javascript event.
-  public static native(value?: boolean) {
-    if (typeof value === 'boolean') {
-      Dom.forceNativeEvent = value;
-    }
-    return Dom.forceNativeEvent;
-  }
+  public static useNativeJavascriptEvents = false;
 
   public el: HTMLElement;
 
@@ -490,7 +483,7 @@ export class Dom {
     } else {
       const modifiedType = this.processEventTypeToBeJQueryCompatible(type);
       const jq = JQueryUtils.getJQuery();
-      if (jq && !Dom.forceNativeEvent) {
+      if (this.shouldUseJQueryEvent()) {
         jq(this.el).on(modifiedType, eventHandle);
       } else if (this.el.addEventListener) {
         const fn = (e: CustomEvent) => {
@@ -548,7 +541,7 @@ export class Dom {
     } else {
       const modifiedType = this.processEventTypeToBeJQueryCompatible(type);
       const jq = JQueryUtils.getJQuery();
-      if (jq && !Dom.forceNativeEvent) {
+      if (this.shouldUseJQueryEvent()) {
         jq(this.el).off(modifiedType, eventHandle);
       } else if (this.el.removeEventListener) {
         const handler = Dom.handlers.get(eventHandle);
@@ -568,18 +561,14 @@ export class Dom {
    */
   public trigger(type: string, data?: { [key: string]: any }): void {
     const modifiedType = this.processEventTypeToBeJQueryCompatible(type);
-    const jq = JQueryUtils.getJQuery();
-    if (jq && !Dom.forceNativeEvent) {
-      jq(this.el).trigger(modifiedType, data);
+    if (this.shouldUseJQueryEvent()) {
+      JQueryUtils.getJQuery()(this.el).trigger(modifiedType, data);
     } else if (window['CustomEvent'] !== undefined) {
       const event = new CustomEvent(modifiedType, { detail: data, bubbles: true });
       this.el.dispatchEvent(event);
     } else {
       try {
-        // IE11 compatibility
-        const event = document.createEvent('CustomEvent');
-        event.initCustomEvent(modifiedType, true, true, data);
-        this.el.dispatchEvent(event);
+        this.el.dispatchEvent(this.buildIE11CustomEvent(modifiedType, data));
       } catch {
         this.oldBrowserError();
       }
@@ -719,6 +708,16 @@ export class Dom {
    */
   public clone(deep = false): Dom {
     return $$(<HTMLElement>this.el.cloneNode(deep));
+  }
+
+  private buildIE11CustomEvent(type: string, data?: { [key: string]: any }) {
+    const event = document.createEvent('CustomEvent');
+    event.initCustomEvent(type, true, true, data);
+    return event;
+  }
+
+  private shouldUseJQueryEvent() {
+    return JQueryUtils.getJQuery() && !Dom.useNativeJavascriptEvents;
   }
 
   private processEventTypeToBeJQueryCompatible(event: string): string {

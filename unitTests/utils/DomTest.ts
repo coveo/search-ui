@@ -33,12 +33,12 @@ export function DomTests() {
 
       describe('without custom event (IE11)', () => {
         let customEvent;
-        beforeEach(() => {
+        beforeAll(() => {
           customEvent = CustomEvent;
           delete window['CustomEvent'];
         });
 
-        afterEach(() => {
+        afterAll(() => {
           window['CustomEvent'] = customEvent;
         });
 
@@ -649,44 +649,34 @@ export function DomTests() {
 
       describe('with native set to true', () => {
         beforeEach(() => {
-          Dom.native(true);
+          Dom.useNativeJavascriptEvents = true;
         });
 
         afterEach(() => {
-          Dom.native(false);
+          Dom.useNativeJavascriptEvents = false;
         });
 
-        it('using "on" should work properly', () => {
+        it('when using "on" to bind a click event, when triggering a click, it calls the click handler', () => {
           const spy = jasmine.createSpy('spy');
           new Dom(el).on('click', spy);
           el.click();
           expect(spy).toHaveBeenCalled();
+        });
 
+        it('when using "on" to bind a custom event, when triggering the custom event with a payload, it calls the handler with the payload', () => {
           const spy2 = jasmine.createSpy('spy2');
+          const test = { detail: { lorem: 'ipsum' } };
           new Dom(el).on('foo', spy2);
-          new Dom(el).trigger('foo', {
-            detail: {
-              lorem: 'ipsum'
-            }
-          });
+          new Dom(el).trigger('foo', test);
 
-          expect(spy2).toHaveBeenCalledWith(
-            jasmine.any(Event),
-            jasmine.objectContaining({
-              detail: {
-                lorem: 'ipsum'
-              }
-            })
-          );
+          expect(spy2).toHaveBeenCalledWith(jasmine.any(Event), jasmine.objectContaining(test));
+        });
 
+        it('when using "on" to bind three different events having the same handler, when triggering the three events, it calls the handler three times', () => {
           const spy3 = jasmine.createSpy('spy3');
-          new Dom(el).on(['1', '2', '3'], spy3);
-          const events = ['1', '2', '3'].map(evt => {
-            return new CustomEvent(evt);
-          });
-          events.forEach(evt => {
-            el.dispatchEvent(evt);
-          });
+          const eventNames = ['1', '2', '3'];
+          new Dom(el).on(eventNames, spy3);
+          eventNames.map(evt => new CustomEvent(evt)).forEach(evt => el.dispatchEvent(evt));
           expect(spy3).toHaveBeenCalledTimes(3);
         });
 
@@ -781,8 +771,7 @@ export function DomTests() {
       it('using "on" with non alpha numeric character should work properly', () => {
         const spy = jasmine.createSpy('spy');
         new Dom(el).on('this contains space', spy);
-        let event = new CustomEvent('thiscontainsspace');
-        el.dispatchEvent(event);
+        window['Coveo']['$'](el).trigger('thiscontainsspace');
         expect(spy).toHaveBeenCalledTimes(1);
       });
 
@@ -792,7 +781,6 @@ export function DomTests() {
         el.click();
         el.click();
         el.click();
-        expect(spy).toHaveBeenCalled();
         expect(spy).toHaveBeenCalledTimes(1);
       });
 
