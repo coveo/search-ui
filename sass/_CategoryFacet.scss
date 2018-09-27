@@ -2,7 +2,6 @@
 @import 'mixins/breadcrumb';
 @import 'mixins/_facetHeaderAnimation';
 @import 'bourbon/bourbon';
-
 @mixin facetValueLabelPadding {
   padding: 5px 19px 5px 20px;
 }
@@ -35,7 +34,9 @@
 .coveo-category-facet-value-label {
   @include display(flex);
   @include facetValueLabelPadding();
-  @include clickableCategoryFacetValue();
+  &.coveo-selectable {
+    @include clickableCategoryFacetValue();
+  }
 }
 
 .coveo-active-category-facet-parent {

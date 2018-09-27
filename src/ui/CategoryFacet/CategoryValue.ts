@@ -4,6 +4,8 @@ import { CategoryChildrenValueRenderer } from './CategoryValueChildrenRenderer';
 import { CategoryFacet, CategoryValueDescriptor } from './CategoryFacet';
 import { ICategoryFacetValue } from '../../rest/CategoryFacetValue';
 import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
+import { AccessibleButton } from '../../utils/AccessibleButton';
+import { l } from '../../strings/Strings';
 
 export interface CategoryValueParent {
   listRoot: Dom;
@@ -32,10 +34,8 @@ export class CategoryValue implements CategoryValueParent {
       value: this.categoryValueDescriptor.value,
       count: this.categoryValueDescriptor.count
     });
-    this.label = $$(this.element.find('.coveo-category-facet-value-label'));
     this.collapseArrow = this.categoryFacetTemplates.buildCollapseArrow();
     this.categoryChildrenValueRenderer = new CategoryChildrenValueRenderer(this.element, categoryFacetTemplates, this, this.categoryFacet);
-    this.label.one('click', () => this.onLabelClick());
     this.path = this.categoryValueDescriptor.path;
   }
 
@@ -80,14 +80,29 @@ export class CategoryValue implements CategoryValueParent {
     return this.categoryChildrenValueRenderer.children;
   }
 
+  public makeSelectable() {
+    this.label = $$(this.element.find('.coveo-category-facet-value-label'));
+    this.label.addClass('coveo-selectable');
+
+    new AccessibleButton()
+      .withElement(this.label)
+      .withSelectAction(() => this.onSelect())
+      .withLabel(`${l(this.categoryValueDescriptor.value)} ${this.categoryValueDescriptor.count}`)
+      .build();
+
+    return this;
+  }
+
   public showCollapseArrow() {
     if (!this.collapseArrow.el.parentElement) {
       const label = this.element.find('label');
       $$(label).prepend(this.collapseArrow.el);
     }
+
+    return this;
   }
 
-  private onLabelClick() {
+  private onSelect() {
     if (!this.pastMaximumDepth()) {
       this.categoryFacet.logAnalyticsEvent(analyticsActionCauseList.categoryFacetSelect);
       this.categoryFacet.changeActivePath(this.path);

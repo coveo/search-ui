@@ -8,7 +8,7 @@ import { FakeResults } from '../../Fake';
 import { QueryBuilder } from '../../../src/Core';
 import { CategoryFacetQueryController } from '../../../src/controllers/CategoryFacetQueryController';
 import { IBuildingQueryEventArgs } from '../../../src/events/QueryEvents';
-import { first, range, pluck, shuffle } from 'underscore';
+import { first, range, pluck, shuffle, partition } from 'underscore';
 
 export function CategoryFacetTest() {
   function buildSimulateQueryData(numberOfResults = 11, numberOfRequestedValues = 11): ISimulateQueryData {
@@ -276,6 +276,15 @@ export function CategoryFacetTest() {
         }
       }
 
+      function splitSelectableParents() {
+        const parentValuesLabel = $$(test.cmp.element).findAll('.coveo-category-facet-parent-value label');
+        const splitOnSelectableOrNot = partition(parentValuesLabel, parentLabel => $$(parentLabel).hasClass('coveo-selectable'));
+        return {
+          selectables: splitOnSelectableOrNot[0],
+          notSelectable: splitOnSelectableOrNot[1]
+        };
+      }
+
       beforeEach(() => {
         Object.defineProperty(test.cmp, 'activePath', {
           get: () => simulateQueryData.query.categoryFacets[0].path
@@ -338,6 +347,30 @@ export function CategoryFacetTest() {
         simulateQueryData.query.categoryFacets[0].path = [];
         Simulate.query(test.env, simulateQueryData);
         expect($$(test.cmp.element).find('.coveo-category-facet-all-categories')).toBeNull();
+      });
+
+      it('should make child values label selectable', () => {
+        Simulate.query(test.env, simulateQueryData);
+        const childValuesLabel = $$(test.cmp.element).findAll('.coveo-category-facet-child-value label');
+        childValuesLabel.forEach(childValue => expect($$(childValue).hasClass('coveo-selectable')).toBe(true));
+      });
+
+      it('should make parent values label selectable except the current active filter', () => {
+        Simulate.query(test.env, simulateQueryData);
+
+        const { selectables, notSelectable } = splitSelectableParents();
+        expect(notSelectable.length).toBe(1);
+
+        const currentActiveFilterLabel = notSelectable[0];
+        expect($$(currentActiveFilterLabel).text()).toContain(test.cmp.activeCategoryValue.categoryValueDescriptor.value);
+        expect(selectables.length).toBeGreaterThan(1);
+      });
+
+      it('should add a collapsible arrow to all parent values except the current active filter', () => {
+        Simulate.query(test.env, simulateQueryData);
+        const { selectables, notSelectable } = splitSelectableParents();
+        expect($$(notSelectable[0]).find('.coveo-category-facet-collapse-children')).toBeNull();
+        selectables.forEach(selectable => expect($$(selectable).find('.coveo-category-facet-collapse-children')).toBeDefined());
       });
     });
 
