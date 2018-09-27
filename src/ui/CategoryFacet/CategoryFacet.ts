@@ -271,6 +271,7 @@ export class CategoryFacet extends Component {
     this.bind.onRootElement(QueryEvents.duringQuery, () => this.addFading());
     this.bind.onRootElement(QueryEvents.deferredQuerySuccess, () => this.removeFading());
     this.bind.onRootElement<IPopulateBreadcrumbEventArgs>(BreadcrumbEvents.populateBreadcrumb, args => this.handlePopulateBreadCrumb(args));
+    this.bind.onRootElement(BreadcrumbEvents.clearBreadcrumb, () => this.handleClearBreadcrumb());
     this.buildFacetHeader();
     this.initQueryStateEvents();
   }
@@ -324,12 +325,16 @@ export class CategoryFacet extends Component {
    *
    * @returns the query promise.
    */
-  public changeActivePath(path: string[]) {
+  public changeActivePath(path: string[], executeQuery = true) {
     this.listenToQueryStateChange = false;
     this.queryStateModel.set(this.queryStateAttribute, path);
     this.listenToQueryStateChange = true;
 
     this.activePath = path;
+
+    if (!executeQuery) {
+      return;
+    }
 
     this.showWaitingAnimation();
     return this.queryController.executeQuery().then((queryResults: IQueryResults) => {
@@ -359,7 +364,7 @@ export class CategoryFacet extends Component {
     }
     let currentParentvalue = this.categoryValueRoot.children[0];
     const parentValues = [currentParentvalue];
-    while (currentParentvalue.children.length != 0) {
+    while (currentParentvalue.children.length != 0 && !Utils.arrayEqual(currentParentvalue.path, this.activePath)) {
       currentParentvalue = currentParentvalue.children[0];
       parentValues.push(currentParentvalue);
     }
@@ -438,8 +443,8 @@ export class CategoryFacet extends Component {
   /**
    * Reset the facet to its initial state.
    */
-  public reset() {
-    this.changeActivePath(this.options.basePath);
+  public reset(executeQuery = true) {
+    this.changeActivePath(this.options.basePath, executeQuery);
   }
 
   public disable() {
@@ -699,6 +704,10 @@ export class CategoryFacet extends Component {
       const categoryFacetBreadcrumbBuilder = new CategoryFacetBreadcrumb(this.options.title, resetFacet, lastParentValue);
       args.breadcrumbs.push({ element: categoryFacetBreadcrumbBuilder.build() });
     }
+  }
+
+  private handleClearBreadcrumb() {
+    this.reset(false);
   }
 }
 

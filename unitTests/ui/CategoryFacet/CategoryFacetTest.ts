@@ -9,6 +9,7 @@ import { QueryBuilder } from '../../../src/Core';
 import { CategoryFacetQueryController } from '../../../src/controllers/CategoryFacetQueryController';
 import { IBuildingQueryEventArgs } from '../../../src/events/QueryEvents';
 import { first, range, pluck, shuffle } from 'underscore';
+import { analyticsActionCauseList } from '../../../src/ui/Analytics/AnalyticsActionListMeta';
 
 export function CategoryFacetTest() {
   function buildSimulateQueryData(numberOfResults = 11, numberOfRequestedValues = 11): ISimulateQueryData {
@@ -362,6 +363,62 @@ export function CategoryFacetTest() {
         .map(el => $$(el).text());
       expect(values).not.toContain('parent0');
       expect(values).not.toContain('parent1');
+    });
+
+    describe('when populating the breadcrumb', () => {
+      const populateBreadcrumb = () => {
+        Simulate.query(test.env, simulateQueryData);
+        test.cmp.selectValue('value0');
+        return Simulate.breadcrumb(test.env);
+      };
+
+      const getClearElement = () => {
+        return $$(populateBreadcrumb()[0].element).find('.coveo-facet-breadcrumb-clear');
+      };
+
+      it('should populate the correct title', () => {
+        test.cmp.options.title = 'My Category Facet';
+        expect(populateBreadcrumb()[0].element.textContent).toContain('My Category Facet');
+      });
+
+      it('should populate the correct breadcrumb value', () => {
+        expect(populateBreadcrumb()[0].element.textContent).toContain('parent0/parent1/parent2');
+        expect(populateBreadcrumb()[0].element.textContent).toContain('/value0');
+      });
+
+      it('should clear the facet when the clear button is clicked', () => {
+        $$(getClearElement()).trigger('click');
+        expect(test.cmp.activePath).toEqual([]);
+      });
+
+      it('should log an analytics event when the clear button is clicked', () => {
+        $$(getClearElement()).trigger('click');
+        expect(test.env.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(
+          analyticsActionCauseList.breadcrumbFacet,
+          jasmine.objectContaining({
+            categoryFacetId: test.cmp.options.id,
+            categoryFacetField: test.cmp.options.field,
+            categoryFacetPath: jasmine.arrayContaining(['value0']),
+            categoryFacetTitle: test.cmp.options.title
+          })
+        );
+      });
+
+      it('should clear the facet when the clearBreadcrumb event is triggered', () => {
+        populateBreadcrumb();
+        expect(test.cmp.activePath).not.toEqual([]);
+        Simulate.clearBreadcrumb(test.env);
+        expect(test.cmp.activePath).toEqual([]);
+      });
+
+      it('should not trigger a query when clearBreadcrumb event is triggered', () => {
+        populateBreadcrumb();
+        // Reset since it's called once inside "populateBreadcrumb()"
+        (test.env.queryController.executeQuery as jasmine.Spy).calls.reset();
+
+        Simulate.clearBreadcrumb(test.env);
+        expect(test.env.queryController.executeQuery).not.toHaveBeenCalled();
+      });
     });
   });
 }
