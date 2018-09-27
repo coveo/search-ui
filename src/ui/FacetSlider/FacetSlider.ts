@@ -969,7 +969,7 @@ export class FacetSlider extends Component {
   }
 
   private trySetSliderBoundaryFromQueryResult(data: IQuerySuccessEventArgs) {
-    const groupByResults = data.results.groupByResults[this.facetQueryController.groupByRequestForFullRange];
+    const groupByResults = data.results.groupByResults[this.facetQueryController.lastGroupByRequestForFullRangeIndex];
     if (groupByResults && groupByResults.values.length > 0 && groupByResults.values[0].numberOfResults != 0) {
       this.setupInitialSliderStateStart(groupByResults.values[0].value.split('..')[0]);
       this.setupInitialSliderStateEnd(groupByResults.values[groupByResults.values.length - 1].value.split('..')[1]);
