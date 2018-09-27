@@ -131,7 +131,7 @@ export function CategoryFacetTest() {
       let queryPromise: Promise<IQueryResults>;
       beforeEach(() => {
         newPath = ['new', 'path'];
-        queryPromise = test.cmp.changeActivePath(newPath);
+        test.cmp.changeActivePath(newPath);
       });
 
       it('sets the new path', () => {
@@ -147,17 +147,9 @@ export function CategoryFacetTest() {
       });
 
       it('shows a wait animation', () => {
+        test.cmp.executeQuery();
         const waitIcon = $$(test.cmp.element).find('.' + CategoryFacet.WAIT_ELEMENT_CLASS);
         expect(waitIcon.style.visibility).toEqual('visible');
-      });
-
-      it('hides the wait animation after the query', done => {
-        queryPromise.then(() => {
-          const waitIcon = $$(test.cmp.element).find('.' + CategoryFacet.WAIT_ELEMENT_CLASS);
-          expect(waitIcon).not.toBeNull();
-          expect(waitIcon.style.visibility).toEqual('hidden');
-          done();
-        });
       });
     });
 

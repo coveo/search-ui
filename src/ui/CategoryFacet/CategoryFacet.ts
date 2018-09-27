@@ -23,7 +23,6 @@ import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
 import { ICategoryFacetResult } from '../../rest/CategoryFacetResult';
 import { BreadcrumbEvents, IPopulateBreadcrumbEventArgs } from '../../events/BreadcrumbEvents';
 import { CategoryFacetBreadcrumb } from './CategoryFacetBreadcrumb';
-import { IQueryResults } from '../../rest/QueryResults';
 import { ICategoryFacetValue } from '../../rest/CategoryFacetValue';
 import { ISearchEndpoint } from '../../rest/SearchEndpointInterface';
 import { IAnalyticsCategoryFacetMeta, analyticsActionCauseList, IAnalyticsActionCause } from '../Analytics/AnalyticsActionListMeta';
@@ -225,10 +224,8 @@ export class CategoryFacet extends Component {
 
   public categoryFacetQueryController: CategoryFacetQueryController;
   public listenToQueryStateChange = true;
-  public queryStateAttribute: string;
   public categoryFacetSearch: CategoryFacetSearch;
   public activeCategoryValue: CategoryValue | undefined;
-  public activePath: string[] = [];
   public positionInQuery: number;
 
   private categoryValueRoot: CategoryValueRoot;
@@ -249,7 +246,6 @@ export class CategoryFacet extends Component {
   constructor(public element: HTMLElement, public options: ICategoryFacetOptions, bindings?: IComponentBindings) {
     super(element, 'CategoryFacet', bindings);
     this.options = ComponentOptions.initComponentOptions(element, CategoryFacet, options);
-    this.activePath = this.options.basePath;
 
     this.categoryFacetQueryController = new CategoryFacetQueryController(this);
     this.categoryFacetTemplates = new CategoryFacetTemplates();
@@ -274,6 +270,20 @@ export class CategoryFacet extends Component {
     this.bind.onRootElement(BreadcrumbEvents.clearBreadcrumb, () => this.handleClearBreadcrumb());
     this.buildFacetHeader();
     this.initQueryStateEvents();
+  }
+
+  public get activePath() {
+    return this.queryStateModel.get(this.queryStateAttribute) || this.options.basePath;
+  }
+
+  public set activePath(newPath: string[]) {
+    this.listenToQueryStateChange = false;
+    this.queryStateModel.set(this.queryStateAttribute, newPath);
+    this.listenToQueryStateChange = true;
+  }
+
+  public get queryStateAttribute() {
+    return QueryStateModel.getCategoryFacetId(this.options.id);
   }
 
   public handleBuildingQuery(args: IBuildingQueryEventArgs) {
@@ -325,14 +335,10 @@ export class CategoryFacet extends Component {
    *
    */
   public changeActivePath(path: string[]) {
-    this.listenToQueryStateChange = false;
-    this.queryStateModel.set(this.queryStateAttribute, path);
-    this.listenToQueryStateChange = true;
-
     this.activePath = path;
   }
 
-  private async executeQuery() {
+  public async executeQuery() {
     this.showWaitingAnimation();
     try {
       await this.queryController.executeQuery();
@@ -618,8 +624,7 @@ export class CategoryFacet extends Component {
   }
 
   private initQueryStateEvents() {
-    this.queryStateAttribute = QueryStateModel.getCategoryFacetId(this.options.id);
-    this.queryStateModel.registerNewAttribute(QueryStateModel.getCategoryFacetId(this.options.id), this.options.basePath);
+    this.queryStateModel.registerNewAttribute(this.queryStateAttribute, this.options.basePath);
     this.bind.onQueryState<IAttributesChangedEventArg>(MODEL_EVENTS.CHANGE, undefined, data => this.handleQueryStateChanged(data));
   }
 
