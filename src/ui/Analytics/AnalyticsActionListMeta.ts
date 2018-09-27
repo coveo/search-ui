@@ -696,6 +696,10 @@ export var analyticsActionCauseList = {
     type: 'categoryFacet',
     metaMap: { categoryFacetId: 1, categoryFacetValue: 2, categoryFacetTitle: 3 }
   },
+  categoryFacetReload: <IAnalyticsActionCause>{
+    name: 'categoryFacetReload',
+    type: 'categoryFacet'
+  },
   categoryFacetClear: <IAnalyticsActionCause>{
     name: 'categoryFacetClear',
     type: 'categoryFacet',

@@ -87,6 +87,7 @@ export class CategoryFacetSearch implements IFacetSearch {
       const currentResultPathData = this.facetSearchElement.currentResult.el.dataset.path;
       const delimiter = this.categoryFacet.options.delimitingCharacter;
       this.categoryFacet.changeActivePath(currentResultPathData.split(delimiter));
+      this.categoryFacet.executeQuery();
     }
   }
 
@@ -169,6 +170,7 @@ export class CategoryFacetSearch implements IFacetSearch {
     item.el.dataset.path = categoryFacetValue.value;
     item.on('click', () => {
       this.categoryFacet.changeActivePath(categoryFacetValue.value.split(this.categoryFacet.options.delimitingCharacter));
+      this.categoryFacet.executeQuery();
     });
     return item;
   }
