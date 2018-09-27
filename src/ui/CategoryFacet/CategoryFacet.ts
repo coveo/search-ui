@@ -321,26 +321,24 @@ export class CategoryFacet extends Component {
   }
 
   /**
-   * Changes the active path and triggers a new query.
+   * Changes the active path.
    *
-   * @returns the query promise.
    */
-  public changeActivePath(path: string[], executeQuery = true) {
+  public changeActivePath(path: string[]) {
     this.listenToQueryStateChange = false;
     this.queryStateModel.set(this.queryStateAttribute, path);
     this.listenToQueryStateChange = true;
 
     this.activePath = path;
+  }
 
-    if (!executeQuery) {
-      return;
-    }
-
+  private async executeQuery() {
     this.showWaitingAnimation();
-    return this.queryController.executeQuery().then((queryResults: IQueryResults) => {
+    try {
+      await this.queryController.executeQuery();
+    } finally {
       this.hideWaitAnimation();
-      return queryResults;
-    });
+    }
   }
 
   /**
@@ -348,6 +346,8 @@ export class CategoryFacet extends Component {
    */
   public reload() {
     this.changeActivePath(this.activePath);
+    this.logAnalyticsEvent(analyticsActionCauseList.categoryFacetReload);
+    this.executeQuery();
   }
 
   /**
@@ -425,6 +425,8 @@ export class CategoryFacet extends Component {
     const newPath = this.activePath.slice(0);
     newPath.push(value);
     this.changeActivePath(newPath);
+    this.logAnalyticsEvent(analyticsActionCauseList.categoryFacetSelect);
+    this.executeQuery();
   }
 
   /**
@@ -438,13 +440,17 @@ export class CategoryFacet extends Component {
     const newPath = this.activePath.slice(0);
     newPath.pop();
     this.changeActivePath(newPath);
+    this.logAnalyticsEvent(analyticsActionCauseList.categoryFacetSelect);
+    this.executeQuery();
   }
 
   /**
    * Reset the facet to its initial state.
    */
-  public reset(executeQuery = true) {
-    this.changeActivePath(this.options.basePath, executeQuery);
+  public reset() {
+    this.changeActivePath(this.options.basePath);
+    this.logAnalyticsEvent(analyticsActionCauseList.categoryFacetClear);
+    this.executeQuery();
   }
 
   public disable() {
@@ -707,7 +713,7 @@ export class CategoryFacet extends Component {
   }
 
   private handleClearBreadcrumb() {
-    this.reset(false);
+    this.changeActivePath(this.options.basePath);
   }
 }
 
