@@ -428,6 +428,19 @@ export function LiveAnalyticsClientTest() {
       );
     });
 
+    it(`when calling #logCustomEvent without the result argument,
+    it does not add contentIDKey and contentIDValue to the metadata object`, () => {
+      const spy = jasmine.createSpy('spy');
+      $$(env.root).on(AnalyticsEvents.changeAnalyticsCustomData, spy);
+
+      client.logCustomEvent<IAnalyticsNoMeta>(analyticsActionCauseList.documentOpen, {}, document.createElement('div'));
+      const metaData = spy.calls.mostRecent().args[1].metaObject;
+      const metaDataKeys = Object.keys(metaData);
+
+      expect(metaDataKeys).not.toContain('contentIDKey');
+      expect(metaDataKeys).not.toContain('contentIDValue');
+    });
+
     it(`when specifying a result having a #permanentid as an argument for #logCustomEvent,
     it adds contentIDKey and contentIDValue properties to the metadata object`, () => {
       const spy = jasmine.createSpy('spy');
@@ -440,16 +453,10 @@ export function LiveAnalyticsClientTest() {
       const result = FakeResults.createFakeResult();
       result[id.key] = id.value;
       client.logCustomEvent<IAnalyticsNoMeta>(analyticsActionCauseList.documentOpen, {}, document.createElement('div'), result);
+      const metaData = spy.calls.mostRecent().args[1].metaObject;
 
-      expect(spy).toHaveBeenCalledWith(
-        jasmine.any(Object),
-        jasmine.objectContaining({
-          metaObject: jasmine.objectContaining({
-            contentIDKey: id.key,
-            contentIDValue: id.value
-          })
-        })
-      );
+      expect(metaData.contentIDKey).toBe(id.key);
+      expect(metaData.contentIDValue).toBe(id.value);
     });
 
     describe('with click event', () => {
