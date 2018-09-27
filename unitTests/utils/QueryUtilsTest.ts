@@ -25,7 +25,7 @@ export function QueryUtilsTest() {
       expect(result['foo']).toBe('bar');
     });
 
-    it('should allow to set property on chilResults if available', () => {
+    it('should allow to set property on childResults if available', () => {
       result = FakeResults.createFakeResultWithChildResult('result', 5, 10);
       QueryUtils.setPropertyOnResult(result, 'foo', 'bar');
       result.childResults.forEach(child => {
