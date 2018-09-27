@@ -50,13 +50,6 @@ import { ValueElementRenderer } from './ValueElementRenderer';
 import { DependentFacetManager } from './DependentFacetManager';
 import { AccessibleButton } from '../../utils/AccessibleButton';
 
-export interface IAccessibleButtonOptions {
-  element: HTMLElement;
-  label: string;
-  clickAction: () => void;
-  enterAction: () => void;
-}
-
 export interface IFacetOptions {
   title?: string;
   field?: IFieldOption;
@@ -1857,16 +1850,13 @@ export class Facet extends Component {
   private buildMore(): HTMLElement {
     const svgContainer = $$('span', { className: 'coveo-facet-more-icon' }, SVGIcons.icons.arrowDown).el;
     SVGDom.addClassToSVGInContainer(svgContainer, 'coveo-facet-more-icon-svg');
-    const more: HTMLElement = $$('div', { className: 'coveo-facet-more', tabindex: 0 }, svgContainer).el;
+    const more = $$('div', { className: 'coveo-facet-more', tabindex: 0 }, svgContainer).el;
 
-    const moreAction = () => this.handleClickMore();
-
-    this.makeButtonAccessible({
-      element: more,
-      label: l('ExpandFacetValues'),
-      clickAction: moreAction,
-      enterAction: moreAction
-    });
+    new AccessibleButton()
+      .withElement(more)
+      .withLabel(l('ExpandFacetValues'))
+      .withSelectAction(() => this.handleClickMore())
+      .build();
 
     return more;
   }
@@ -1874,27 +1864,15 @@ export class Facet extends Component {
   private buildLess(): HTMLElement {
     const svgContainer = $$('span', { className: 'coveo-facet-less-icon' }, SVGIcons.icons.arrowUp).el;
     SVGDom.addClassToSVGInContainer(svgContainer, 'coveo-facet-less-icon-svg');
-    const less: HTMLElement = $$('div', { className: 'coveo-facet-less', tabindex: 0 }, svgContainer).el;
+    const less = $$('div', { className: 'coveo-facet-less', tabindex: 0 }, svgContainer).el;
 
-    const lessAction = () => this.handleClickLess();
-
-    this.makeButtonAccessible({
-      element: less,
-      label: l('CollapseFacetValues'),
-      clickAction: lessAction,
-      enterAction: lessAction
-    });
+    new AccessibleButton()
+      .withElement(less)
+      .withLabel(l('CollapseFacetValues'))
+      .withSelectAction(() => this.handleClickLess())
+      .build();
 
     return less;
-  }
-
-  private makeButtonAccessible(options: IAccessibleButtonOptions) {
-    new AccessibleButton()
-      .withElement(options.element)
-      .withLabel(options.label)
-      .withClickAction(options.clickAction)
-      .withEnterKeyboardAction(options.enterAction)
-      .build();
   }
 
   private triggerMoreQuery() {
