@@ -11,6 +11,7 @@ import { StringUtils } from '../../utils/StringUtils';
 import { analyticsActionCauseList, IAnalyticsCategoryFacetMeta } from '../Analytics/AnalyticsActionListMeta';
 import { IFacetSearch } from '../Facet/IFacetSearch';
 import { IIndexFieldValue } from '../../rest/FieldValue';
+import { AccessibleButton } from '../../utils/AccessibleButton';
 
 export class CategoryFacetSearch implements IFacetSearch {
   public container: Dom | undefined;
@@ -86,7 +87,9 @@ export class CategoryFacetSearch implements IFacetSearch {
     if (this.facetSearchElement.currentResult) {
       const currentResultPathData = this.facetSearchElement.currentResult.el.dataset.path;
       const delimiter = this.categoryFacet.options.delimitingCharacter;
-      this.categoryFacet.changeActivePath(currentResultPathData.split(delimiter));
+      const path = currentResultPathData.split(delimiter);
+      this.categoryFacet.logAnalyticsEvent(analyticsActionCauseList.categoryFacetSelect, path);
+      this.categoryFacet.changeActivePath(path);
     }
   }
 
@@ -167,9 +170,16 @@ export class CategoryFacetSearch implements IFacetSearch {
     const secondRow = $$('div', { className: 'coveo-category-facet-search-second-row' }, pathToValueCaption);
     const item = $$('li', { className: 'coveo-category-facet-search-value' }, firstRow, secondRow);
     item.el.dataset.path = categoryFacetValue.value;
-    item.on('click', () => {
-      this.categoryFacet.changeActivePath(categoryFacetValue.value.split(this.categoryFacet.options.delimitingCharacter));
-    });
+
+    new AccessibleButton()
+      .withElement(item)
+      .withSelectAction(() => {
+        this.categoryFacet.logAnalyticsEvent(analyticsActionCauseList.categoryFacetSelect, path);
+        this.categoryFacet.changeActivePath(path);
+      })
+      .withLabel(`${l(last(path))} ${categoryFacetValue.numberOfResults}`)
+      .build();
+
     return item;
   }
 
