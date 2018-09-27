@@ -3,6 +3,7 @@ import * as Mock from '../MockEnvironment';
 import { FacetSlider } from '../../src/ui/FacetSlider/FacetSlider';
 import { IFieldOption } from '../../src/ui/Base/ComponentOptions';
 import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
+import { IGroupByRequest } from '../../src/rest/GroupByRequest';
 
 export function FacetSliderQueryControllerTest() {
   describe('FacetSliderQueryController', () => {
@@ -62,35 +63,64 @@ export function FacetSliderQueryControllerTest() {
 
     describe('when cloning the request to determine the full range in the index', () => {
       let requestForFullRange;
+      let builder: QueryBuilder;
 
       beforeEach(() => {
-        const builder = new QueryBuilder();
+        builder = new QueryBuilder();
+        (controller.facet.getSliderBoundaryForQuery as jasmine.Spy).and.returnValue([25, 50]);
+      });
+
+      describe('with an empty query to clone', () => {
+        beforeEach(() => {
+          controller.putGroupByIntoQueryBuilder(builder);
+          requestForFullRange = builder.groupByRequests[controller.lastGroupByRequestForFullRangeIndex];
+        });
+
+        it('should use nosort', () => {
+          expect(requestForFullRange.sortCriteria).toBe('nosort');
+        });
+
+        it('should use the same field', () => {
+          expect(requestForFullRange.field).toBe(facet.options.field);
+        });
+
+        it('should request only one value', () => {
+          expect(requestForFullRange.maximumNumberOfValues).toBe(1);
+        });
+
+        it('should not use any query override', () => {
+          expect(requestForFullRange.queryOverride).toBeUndefined();
+        });
+
+        it('should not use any constant query override', () => {
+          expect(requestForFullRange.constantQueryOverride).toBeUndefined();
+        });
+
+        it('should not use any advanced query override', () => {
+          expect(requestForFullRange.advancedQueryOverride).toBeUndefined();
+        });
+      });
+
+      it('should use the advanced query override passed in as an option on the component', () => {
+        controller.facet.options.queryOverride = 'an override';
+
         controller.putGroupByIntoQueryBuilder(builder);
-        requestForFullRange = builder.groupByRequests[controller.groupByRequestForFullRange];
+        requestForFullRange = builder.groupByRequests[controller.lastGroupByRequestForFullRangeIndex];
+        expect(requestForFullRange.advancedQueryOverride).toContain('an override');
       });
 
-      it('should use nosort', () => {
-        expect(requestForFullRange.sortCriteria).toBe('nosort');
+      it('should add the constant query override from the existing query', () => {
+        builder.constantExpression.add('a constant expression');
+        controller.putGroupByIntoQueryBuilder(builder);
+        requestForFullRange = builder.groupByRequests[controller.lastGroupByRequestForFullRangeIndex];
+        expect(requestForFullRange.constantQueryOverride).toContain('a constant expression');
       });
 
-      it('should use the same field', () => {
-        expect(requestForFullRange.field).toBe(facet.options.field);
-      });
-
-      it('should request only one value', () => {
-        expect(requestForFullRange.maximumNumberOfValues).toBe(1);
-      });
-
-      it('should set @uri in the advanced query override', () => {
-        expect(requestForFullRange.advancedQueryOverride).toBe('@uri');
-      });
-
-      it('should not use any constant query override', () => {
-        expect(requestForFullRange.constantQueryOverride).toBeUndefined();
-      });
-
-      it('should not use any simple query override', () => {
-        expect(requestForFullRange.queryOverride).toBeUndefined();
+      it('should contain a special expression to filter out invalid document if the field is a date', () => {
+        controller.facet.options.dateField = true;
+        controller.putGroupByIntoQueryBuilder(builder);
+        requestForFullRange = builder.groupByRequests[controller.lastGroupByRequestForFullRangeIndex];
+        expect(requestForFullRange.constantQueryOverride).toContain('@foo>1970');
       });
     });
 
@@ -183,32 +213,43 @@ export function FacetSliderQueryControllerTest() {
       );
     });
 
-    it("should add a group by for graph if it's a date", () => {
-      facet.isSimpleSliderConfig = true;
-      facet.options.graph = {};
-      facet.options.graph.steps = 10;
-      facet.options.start = 1;
-      facet.options.end = 100;
-      facet.getSliderBoundaryForQuery = () => [5, 99];
-      facet.options.dateField = true;
+    describe('when requesting a graph for a date', () => {
+      let groupByRequest: IGroupByRequest;
 
-      const builder = new QueryBuilder();
-      controller.putGroupByIntoQueryBuilder(builder);
-      expect(builder.groupByRequests[0]).toEqual(
-        jasmine.objectContaining({
-          field: '@foo',
-          maximumNumberOfValues: 10,
-          sortCriteria: 'nosort',
-          generateAutomaticRanges: false,
-          rangeValues: jasmine.arrayContaining([
-            jasmine.objectContaining({
-              start: jasmine.stringMatching('1970'),
-              end: jasmine.stringMatching('1970'),
-              endInclusive: true
-            })
-          ])
-        })
-      );
+      beforeEach(() => {
+        facet.isSimpleSliderConfig = true;
+        facet.options.graph = {};
+        facet.options.graph.steps = 10;
+        facet.options.start = 1;
+        facet.options.end = 100;
+        facet.getSliderBoundaryForQuery = () => [5, 99];
+        facet.options.dateField = true;
+        const builder = new QueryBuilder();
+        controller.putGroupByIntoQueryBuilder(builder);
+        groupByRequest = builder.groupByRequests[0];
+      });
+
+      it('should contain the basic group by data', () => {
+        expect(groupByRequest).toEqual(
+          jasmine.objectContaining({
+            field: '@foo',
+            maximumNumberOfValues: 10,
+            sortCriteria: 'nosort',
+            generateAutomaticRanges: false,
+            rangeValues: jasmine.arrayContaining([
+              jasmine.objectContaining({
+                start: jasmine.stringMatching('1970'),
+                end: jasmine.stringMatching('1970'),
+                endInclusive: true
+              })
+            ])
+          } as any)
+        );
+      });
+
+      it('should contain a filter for invalid document dates', () => {
+        expect(groupByRequest.constantQueryOverride).toContain('@foo>1970');
+      });
     });
   });
 }
