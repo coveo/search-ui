@@ -1,7 +1,6 @@
 import { CategoryFacet, ICategoryFacetOptions } from '../../../src/ui/CategoryFacet/CategoryFacet';
 import * as Mock from '../../MockEnvironment';
 import { $$ } from '../../../src/utils/Dom';
-import { IQueryResults } from '../../../src/rest/QueryResults';
 import { IBasicComponentSetup, mock } from '../../MockEnvironment';
 import { Simulate, ISimulateQueryData } from '../../Simulate';
 import { FakeResults } from '../../Fake';
@@ -128,7 +127,6 @@ export function CategoryFacetTest() {
 
     describe('calling changeActivePath', () => {
       let newPath: string[];
-      let queryPromise: Promise<IQueryResults>;
       beforeEach(() => {
         newPath = ['new', 'path'];
         test.cmp.changeActivePath(newPath);
