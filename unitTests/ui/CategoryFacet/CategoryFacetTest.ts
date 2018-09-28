@@ -418,7 +418,6 @@ export function CategoryFacetTest() {
           analyticsActionCauseList.breadcrumbFacet,
           jasmine.objectContaining({
             categoryFacetId: test.cmp.options.id,
-            categoryFacetField: test.cmp.options.field,
             categoryFacetPath: jasmine.arrayContaining(['value0']),
             categoryFacetTitle: test.cmp.options.title
           })
