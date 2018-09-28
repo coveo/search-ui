@@ -29,9 +29,10 @@ export function CategoryFacetTest() {
 
     beforeEach(() => {
       simulateQueryData = buildSimulateQueryData();
-      test = Mock.optionsComponentSetup<CategoryFacet, ICategoryFacetOptions>(CategoryFacet, {
-        field: '@field'
-      });
+      test = Mock.advancedComponentSetup<CategoryFacet>(
+        CategoryFacet,
+        new Mock.AdvancedComponentSetupOptions(null, { field: '@field' }, env => env.withLiveQueryStateModel())
+      );
       test.cmp.activePath = simulateQueryData.query.categoryFacets[0].path;
     });
 
@@ -129,6 +130,7 @@ export function CategoryFacetTest() {
       let newPath: string[];
       beforeEach(() => {
         newPath = ['new', 'path'];
+        spyOn(test.cmp.queryStateModel, 'set').and.callThrough();
         test.cmp.changeActivePath(newPath);
       });
 
@@ -136,8 +138,8 @@ export function CategoryFacetTest() {
         expect(test.cmp.activePath).toEqual(['new', 'path']);
       });
 
-      it('triggers a new query', () => {
-        expect(test.cmp.queryController.executeQuery).toHaveBeenCalled();
+      it('does not trigger a new query', () => {
+        expect(test.cmp.queryController.executeQuery).not.toHaveBeenCalled();
       });
 
       it('sets the path in the query state', () => {
