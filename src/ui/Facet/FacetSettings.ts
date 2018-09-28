@@ -196,7 +196,7 @@ export class FacetSettings extends FacetSort {
 
     new AccessibleButton()
       .withElement(this.settingsButton)
-      .withLabel(l('FacetSettings'))
+      .withLabel(l('Settings'))
       .withClickAction(e => this.handleSettingsButtonClick(e))
       .withEnterKeyboardAction(e => this.handleSettingsButtonClick(e))
       .build();

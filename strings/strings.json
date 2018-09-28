@@ -7369,18 +7369,6 @@
     "en": "Remove filter on {0}",
     "fr": "Enlever le filtre sur {0}"
   },
-  "ExpandFacetValues": {
-    "en": "Expand facet values",
-    "fr": "Étendre les valeurs de facette"
-  },
-  "CollapseFacetValues": {
-    "en": "Collapse facet values",
-    "fr": "Réduire les valeurs de facette"
-  },
-  "FacetSearch": {
-    "en": "Facet search",
-    "fr": "Recherche de facette"
-  },
   "PressKeyToActivateFacetSearch": {
     "en": "Press {0} to activate facet search",
     "fr": "Appuyez sur {0} pour activer la recherche de facette"
@@ -7388,14 +7376,6 @@
   "Enter": {
     "en": "Enter",
     "fr": "Entrée"
-  },
-  "ResetFacet": {
-    "en": "Reset facet",
-    "fr": "Réinitialiser la facette"
-  },
-  "FacetSettings": {
-    "en": "Facet settings",
-    "fr": "Paramètres de facette"
   },
   "InsertAQuery": {
     "en": "Insert a query",

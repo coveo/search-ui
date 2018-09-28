@@ -196,7 +196,7 @@ export class FacetHeader {
 
     new AccessibleButton()
       .withElement(eraser.el)
-      .withLabel(l('ResetFacet'))
+      .withLabel(l('Reset'))
       .withClickAction(() => this.onEraserClick())
       .withEnterKeyboardAction(() => this.onEraserClick())
       .build();

@@ -1441,7 +1441,7 @@ export class Facet extends Component {
 
     new AccessibleButton()
       .withElement(this.searchContainer.accessibleElement)
-      .withLabel(l('FacetSearch'))
+      .withLabel(l('Search'))
       .withTitle(l('PressKeyToActivateFacetSearch', l('Enter')))
       .withEnterKeyboardAction(e => this.toggleSearchMenu(e))
       .build();
@@ -1854,7 +1854,7 @@ export class Facet extends Component {
 
     new AccessibleButton()
       .withElement(more)
-      .withLabel(l('ExpandFacetValues'))
+      .withLabel(l('Expand'))
       .withSelectAction(() => this.handleClickMore())
       .build();
 
@@ -1868,7 +1868,7 @@ export class Facet extends Component {
 
     new AccessibleButton()
       .withElement(less)
-      .withLabel(l('CollapseFacetValues'))
+      .withLabel(l('Collapse'))
       .withSelectAction(() => this.handleClickLess())
       .build();
 
