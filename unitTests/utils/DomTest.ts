@@ -787,10 +787,9 @@ export function DomTests() {
       it('using "one" with non alpha numeric character should work properly', () => {
         const spy = jasmine.createSpy('spy');
         new Dom(el).one('this contains space', spy);
-        let event = new CustomEvent('thiscontainsspace');
-        el.dispatchEvent(event);
-        el.dispatchEvent(event);
-        el.dispatchEvent(event);
+        window['Coveo']['$'](el).trigger('thiscontainsspace');
+        window['Coveo']['$'](el).trigger('thiscontainsspace');
+        window['Coveo']['$'](el).trigger('thiscontainsspace');
         expect(spy).toHaveBeenCalledTimes(1);
       });
 
@@ -805,7 +804,7 @@ export function DomTests() {
         new Dom(el).on(['1', '2', '3'], spy2);
         new Dom(el).off(['1', '2', '3'], spy2);
         ['1', '2', '3'].forEach(evt => {
-          el.dispatchEvent(new CustomEvent(evt));
+          new Dom(el).trigger(evt);
         });
         expect(spy).not.toHaveBeenCalled();
       });
