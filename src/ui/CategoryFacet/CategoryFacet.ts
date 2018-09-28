@@ -23,7 +23,6 @@ import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
 import { ICategoryFacetResult } from '../../rest/CategoryFacetResult';
 import { BreadcrumbEvents, IPopulateBreadcrumbEventArgs } from '../../events/BreadcrumbEvents';
 import { CategoryFacetBreadcrumb } from './CategoryFacetBreadcrumb';
-import { IQueryResults } from '../../rest/QueryResults';
 import { ICategoryFacetValue } from '../../rest/CategoryFacetValue';
 import { ISearchEndpoint } from '../../rest/SearchEndpointInterface';
 import { IAnalyticsCategoryFacetMeta, analyticsActionCauseList, IAnalyticsActionCause } from '../Analytics/AnalyticsActionListMeta';
@@ -226,10 +225,8 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
 
   public categoryFacetQueryController: CategoryFacetQueryController;
   public listenToQueryStateChange = true;
-  public queryStateAttribute: string;
   public categoryFacetSearch: CategoryFacetSearch;
   public activeCategoryValue: CategoryValue | undefined;
-  public activePath: string[] = [];
   public positionInQuery: number;
 
   private categoryValueRoot: CategoryValueRoot;
@@ -250,7 +247,6 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   constructor(public element: HTMLElement, public options: ICategoryFacetOptions, bindings?: IComponentBindings) {
     super(element, 'CategoryFacet', bindings);
     this.options = ComponentOptions.initComponentOptions(element, CategoryFacet, options);
-    this.activePath = this.options.basePath;
 
     this.categoryFacetQueryController = new CategoryFacetQueryController(this);
     this.categoryFacetTemplates = new CategoryFacetTemplates();
@@ -272,12 +268,27 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     this.bind.onRootElement(QueryEvents.duringQuery, () => this.addFading());
     this.bind.onRootElement(QueryEvents.deferredQuerySuccess, () => this.removeFading());
     this.bind.onRootElement<IPopulateBreadcrumbEventArgs>(BreadcrumbEvents.populateBreadcrumb, args => this.handlePopulateBreadCrumb(args));
+    this.bind.onRootElement(BreadcrumbEvents.clearBreadcrumb, () => this.handleClearBreadcrumb());
     this.buildFacetHeader();
     this.initQueryStateEvents();
   }
 
   public isCurrentlyDisplayed() {
-    return this.isActive() || this.getAvailableValues().length != 0;
+    return this.getAvailableValues().length != 0;
+  }
+
+  public get activePath() {
+    return this.queryStateModel.get(this.queryStateAttribute) || this.options.basePath;
+  }
+
+  public set activePath(newPath: string[]) {
+    this.listenToQueryStateChange = false;
+    this.queryStateModel.set(this.queryStateAttribute, newPath);
+    this.listenToQueryStateChange = true;
+  }
+
+  public get queryStateAttribute() {
+    return QueryStateModel.getCategoryFacetId(this.options.id);
   }
 
   public handleBuildingQuery(args: IBuildingQueryEventArgs) {
@@ -289,7 +300,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   }
 
   private handleNoResults() {
-    if (!this.isActive()) {
+    if (this.isPristine()) {
       this.hide();
       return;
     }
@@ -346,22 +357,20 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   }
 
   /**
-   * Changes the active path and triggers a new query.
+   * Changes the active path.
    *
-   * @returns the query promise.
    */
   public changeActivePath(path: string[]) {
-    this.listenToQueryStateChange = false;
-    this.queryStateModel.set(this.queryStateAttribute, path);
-    this.listenToQueryStateChange = true;
-
     this.activePath = path;
+  }
 
+  public async executeQuery() {
     this.showWaitingAnimation();
-    return this.queryController.executeQuery().then((queryResults: IQueryResults) => {
+    try {
+      await this.queryController.executeQuery();
+    } finally {
       this.hideWaitAnimation();
-      return queryResults;
-    });
+    }
   }
 
   /**
@@ -369,6 +378,8 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
    */
   public reload() {
     this.changeActivePath(this.activePath);
+    this.logAnalyticsEvent(analyticsActionCauseList.categoryFacetReload);
+    this.executeQuery();
   }
 
   /**
@@ -385,7 +396,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     }
     let currentParentvalue = this.categoryValueRoot.children[0];
     const parentValues = [currentParentvalue];
-    while (currentParentvalue.children.length != 0) {
+    while (currentParentvalue.children.length != 0 && !Utils.arrayEqual(currentParentvalue.path, this.activePath)) {
       currentParentvalue = currentParentvalue.children[0];
       parentValues.push(currentParentvalue);
     }
@@ -449,6 +460,8 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     const newPath = this.activePath.slice(0);
     newPath.push(value);
     this.changeActivePath(newPath);
+    this.logAnalyticsEvent(analyticsActionCauseList.categoryFacetSelect);
+    this.executeQuery();
   }
 
   /**
@@ -462,6 +475,8 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     const newPath = this.activePath.slice(0);
     newPath.pop();
     this.changeActivePath(newPath);
+    this.logAnalyticsEvent(analyticsActionCauseList.categoryFacetSelect);
+    this.executeQuery();
   }
 
   /**
@@ -469,6 +484,8 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
    */
   public reset() {
     this.changeActivePath(this.options.basePath);
+    this.logAnalyticsEvent(analyticsActionCauseList.categoryFacetClear);
+    this.executeQuery();
   }
 
   public disable() {
@@ -514,11 +531,11 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     }
   }
 
-  public logAnalyticsEvent(eventName: IAnalyticsActionCause) {
+  public logAnalyticsEvent(eventName: IAnalyticsActionCause, path = this.activePath) {
     this.usageAnalytics.logSearchEvent<IAnalyticsCategoryFacetMeta>(eventName, {
       categoryFacetId: this.options.id,
       categoryFacetField: this.options.field.toString(),
-      categoryFacetPath: this.activePath,
+      categoryFacetPath: path,
       categoryFacetTitle: this.options.title
     });
   }
@@ -557,6 +574,13 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
 
     for (let i = 0; i < sortedParentValues.length; i++) {
       currentParentValue = currentParentValue.renderAsParent(sortedParentValues[i]);
+
+      // We do not want to make the "last" parent selectable, as clicking it would be a noop (re-selecting the same filter)
+      const isLastParent = i == sortedParentValues.length - 1;
+      if (!isLastParent) {
+        (currentParentValue as CategoryValue).makeSelectable().showCollapseArrow();
+      }
+
       if (needToTruncate && i == numberOfItemsInFirstSlice) {
         this.addEllipsis(currentParentValue, pathOfLastTruncatedParentValue, sortedParentValues[i].value);
       }
@@ -636,8 +660,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   }
 
   private initQueryStateEvents() {
-    this.queryStateAttribute = QueryStateModel.getCategoryFacetId(this.options.id);
-    this.queryStateModel.registerNewAttribute(QueryStateModel.getCategoryFacetId(this.options.id), this.options.basePath);
+    this.queryStateModel.registerNewAttribute(this.queryStateAttribute, this.options.basePath);
     this.bind.onQueryState<IAttributesChangedEventArg>(MODEL_EVENTS.CHANGE, undefined, data => this.handleQueryStateChanged(data));
   }
 
@@ -730,11 +753,8 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     }
   }
 
-  private isActive() {
-    if (this.options.basePath) {
-      return !Utils.arrayEqual(this.activePath, this.options.basePath);
-    }
-    return !Utils.isEmptyArray(this.activePath);
+  private handleClearBreadcrumb() {
+    this.changeActivePath(this.options.basePath);
   }
 }
 

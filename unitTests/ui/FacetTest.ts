@@ -10,6 +10,7 @@ import { BreadcrumbEvents } from '../../src/events/BreadcrumbEvents';
 import { IPopulateBreadcrumbEventArgs } from '../../src/events/BreadcrumbEvents';
 import { IPopulateOmniboxEventArgs } from '../../src/events/OmniboxEvents';
 import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
+import { KEYBOARD } from '../../src/Core';
 
 export function FacetTest() {
   describe('Facet', () => {
@@ -612,6 +613,60 @@ export function FacetTest() {
 
         test.cmp.ensureDom();
         expect(test.cmp.facetSearch).toBeUndefined();
+      });
+
+      describe(`given enableFacetSearch is set to 'true',
+      given that searching is not active`, () => {
+        const searchingCssClass = 'coveo-facet-searching';
+        const oneMoreThanNumberOfDisplayedValues = 6;
+
+        function triggerChangeOnCheckbox() {
+          const changeEvent = new Event('change');
+          test.cmp.searchContainer.checkbox.dispatchEvent(changeEvent);
+        }
+
+        beforeEach(() => {
+          const options = { field: '@field', enableFacetSearch: true };
+          test = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, options);
+          test.cmp['nbAvailableValues'] = oneMoreThanNumberOfDisplayedValues;
+          test.cmp.reset();
+
+          expect(test.cmp.element.className).not.toContain(searchingCssClass);
+        });
+
+        it(`when triggering a 'change' event on the searchContainer checkbox,
+        it actives searching`, () => {
+          triggerChangeOnCheckbox();
+          expect(test.cmp.element.className).toContain(searchingCssClass);
+        });
+
+        describe(`when triggering an 'Enter' keyup event on the searchContainer listItem`, () => {
+          function triggerEnterKeyOnAccessibleElement() {
+            Simulate.keyUp(test.cmp.searchContainer.accessibleElement, KEYBOARD.ENTER);
+          }
+
+          beforeEach(triggerEnterKeyOnAccessibleElement);
+
+          it('activates searching', () => {
+            expect(test.cmp.element.className).toContain(searchingCssClass);
+          });
+
+          it(`sets the checkbox 'checked' attribute`, () => {
+            const checkbox = test.cmp.searchContainer.checkbox;
+            const checkedAttribute = checkbox.getAttribute('checked');
+            expect(checkedAttribute).toBeTruthy();
+          });
+
+          it(`when triggering a second 'Enter' keyup event,
+          it removes the checkbox 'checked' attribute`, () => {
+            triggerEnterKeyOnAccessibleElement();
+
+            const checkbox = test.cmp.searchContainer.checkbox;
+            const checkedAttribute = checkbox.getAttribute('checked');
+
+            expect(checkedAttribute).toBeFalsy();
+          });
+        });
       });
 
       it('facetSearchDelay should be passed to the facet search component', function(done) {
