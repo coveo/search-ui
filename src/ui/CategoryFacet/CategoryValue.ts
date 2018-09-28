@@ -89,7 +89,7 @@ export class CategoryValue implements CategoryValueParent {
 
   private onLabelClick() {
     if (!this.pastMaximumDepth()) {
-      this.categoryFacet.logAnalyticsEvent(analyticsActionCauseList.categoryFacetSelect);
+      this.categoryFacet.logAnalyticsEvent(analyticsActionCauseList.categoryFacetSelect, this.path);
       this.categoryFacet.changeActivePath(this.path);
       this.categoryFacet.executeQuery();
     }
