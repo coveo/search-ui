@@ -1442,7 +1442,6 @@ export class Facet extends Component {
     new AccessibleButton()
       .withElement(this.searchContainer.accessibleElement)
       .withLabel(l('Search'))
-      .withTitle(l('PressKeyToActivateFacetSearch', l('Enter')))
       .withEnterKeyboardAction(e => this.toggleSearchMenu(e))
       .build();
 
