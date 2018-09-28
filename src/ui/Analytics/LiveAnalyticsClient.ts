@@ -110,8 +110,13 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
     return this.pushClickEvent(actionCause, metaObject, result, element);
   }
 
-  public logCustomEvent<TMeta>(actionCause: IAnalyticsActionCause, meta: TMeta, element: HTMLElement): Promise<IAPIAnalyticsEventResponse> {
-    var metaObject = this.buildMetaObject(meta);
+  public logCustomEvent<TMeta>(
+    actionCause: IAnalyticsActionCause,
+    meta: TMeta,
+    element: HTMLElement,
+    result?: IQueryResult
+  ): Promise<IAPIAnalyticsEventResponse> {
+    const metaObject = this.buildMetaObject(meta, result);
     return this.pushCustomEvent(actionCause, metaObject, element);
   }
 

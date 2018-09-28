@@ -88,8 +88,9 @@ export class CategoryFacetSearch implements IFacetSearch {
       const currentResultPathData = this.facetSearchElement.currentResult.el.dataset.path;
       const delimiter = this.categoryFacet.options.delimitingCharacter;
       const path = currentResultPathData.split(delimiter);
-      this.categoryFacet.logAnalyticsEvent(analyticsActionCauseList.categoryFacetSelect, path);
       this.categoryFacet.changeActivePath(path);
+      this.categoryFacet.logAnalyticsEvent(analyticsActionCauseList.categoryFacetSelect, path);
+      this.categoryFacet.executeQuery();
     }
   }
 
@@ -174,8 +175,9 @@ export class CategoryFacetSearch implements IFacetSearch {
     new AccessibleButton()
       .withElement(item)
       .withSelectAction(() => {
-        this.categoryFacet.logAnalyticsEvent(analyticsActionCauseList.categoryFacetSelect, path);
         this.categoryFacet.changeActivePath(path);
+        this.categoryFacet.logAnalyticsEvent(analyticsActionCauseList.categoryFacetSelect, path);
+        this.categoryFacet.executeQuery();
       })
       .withLabel(`${l(last(path))} ${categoryFacetValue.numberOfResults}`)
       .build();
