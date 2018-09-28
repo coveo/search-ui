@@ -412,5 +412,45 @@ export function CategoryFacetTest() {
         expect(test.env.queryController.executeQuery).not.toHaveBeenCalled();
       });
     });
+
+    describe("when there's many parent values to display", () => {
+      beforeEach(() => {
+        simulateQueryData = buildSimulateQueryData(30, 30);
+        Simulate.query(test.env, simulateQueryData);
+      });
+
+      it('should only return the non-ellipsed values as visible', () => {
+        const visibles = test.cmp.getVisibleParentValues();
+
+        // NUMBER_OF_VALUES_TO_KEEP_AFTER_TRUNCATING parents + 1 child value
+        expect(visibles.length).toBe(CategoryFacet.NUMBER_OF_VALUES_TO_KEEP_AFTER_TRUNCATING + 1);
+      });
+
+      it('should properly build the ellipse boundaries', () => {
+        const visibles = test.cmp.getVisibleParentValues();
+
+        // Check first value
+        expect(visibles[0].value).toContain('parent0');
+
+        // Check value right before ellipse
+        expect(visibles[CategoryFacet.NUMBER_OF_VALUES_TO_KEEP_AFTER_TRUNCATING / 2 - 1].value).toContain('parent4');
+
+        // Check value right after ellipse
+        expect(visibles[CategoryFacet.NUMBER_OF_VALUES_TO_KEEP_AFTER_TRUNCATING / 2].value).toContain('parent25');
+
+        // Check last parent value
+        expect(visibles[visibles.length - 2].value).toBe('parent29');
+
+        // Check last child value
+        expect(visibles[visibles.length - 1].value).toBe('value0');
+      });
+
+      it('should properly render an ellipse section', () => {
+        const ellipsis = $$(test.cmp.element).find('.coveo-category-facet-ellipsis');
+        expect(ellipsis).toBeDefined();
+        expect(ellipsis.previousSibling.textContent).toContain('parent4');
+        expect(ellipsis.nextSibling.textContent).toContain('parent25');
+      });
+    });
   });
 }

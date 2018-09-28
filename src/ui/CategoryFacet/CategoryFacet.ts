@@ -227,6 +227,8 @@ export class CategoryFacet extends Component {
   public categoryFacetSearch: CategoryFacetSearch;
   public activeCategoryValue: CategoryValue | undefined;
   public positionInQuery: number;
+  public static MAXIMUM_NUMBER_OF_VALUES_BEFORE_TRUNCATING = 15;
+  public static NUMBER_OF_VALUES_TO_KEEP_AFTER_TRUNCATING = 10;
 
   private categoryValueRoot: CategoryValueRoot;
   private categoryFacetTemplates: CategoryFacetTemplates;
@@ -239,9 +241,6 @@ export class CategoryFacet extends Component {
   private numberOfValues: number;
 
   public static WAIT_ELEMENT_CLASS = 'coveo-category-facet-header-wait-animation';
-
-  private static MAXIMUM_NUMBER_OF_VALUES_BEFORE_TRUNCATING = 15;
-  private static NUMBER_OF_VALUES_TO_KEEP_AFTER_TRUNCATING = 10;
 
   constructor(public element: HTMLElement, public options: ICategoryFacetOptions, bindings?: IComponentBindings) {
     super(element, 'CategoryFacet', bindings);
@@ -545,8 +544,15 @@ export class CategoryFacet extends Component {
 
     for (let i = 0; i < sortedParentValues.length; i++) {
       currentParentValue = currentParentValue.renderAsParent(sortedParentValues[i]);
-      if (needToTruncate && i == numberOfItemsInFirstSlice) {
-        this.addEllipsis(currentParentValue, pathOfLastTruncatedParentValue, sortedParentValues[i].value);
+
+      if (needToTruncate) {
+        if (i == numberOfItemsInFirstSlice - 1) {
+          this.addEllipsis();
+        }
+
+        if (i == numberOfItemsInFirstSlice) {
+          currentParentValue.path = [...pathOfLastTruncatedParentValue, sortedParentValues[i].value];
+        }
       }
     }
 
@@ -571,9 +577,8 @@ export class CategoryFacet extends Component {
     return parentValues.length > CategoryFacet.MAXIMUM_NUMBER_OF_VALUES_BEFORE_TRUNCATING;
   }
 
-  private addEllipsis(parentValue: CategoryValueParent, pathOfLastTruncatedParentValue: string[], valueToAddToPath: string) {
+  private addEllipsis() {
     this.categoryValueRoot.listRoot.append(this.categoryFacetTemplates.buildEllipsis().el);
-    parentValue.path = [...pathOfLastTruncatedParentValue, valueToAddToPath];
   }
 
   private findPathOfLastTruncatedParentValue(sortedParentValues: ICategoryFacetValue[], numberOfItemsInSecondSlice: number) {
