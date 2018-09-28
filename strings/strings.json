@@ -7326,7 +7326,7 @@
     "fr": "{0} résultat<pl>s</pl>"
   },
   "ShowingResultsWithQuery": {
-    "en": "{0} result<pl></pl> for {1}",
+    "en": "{0} result<pl>s</pl> for {1}",
     "fr": "{0} résultat<pl>s</pl> pour {1}"
   },
   "NumberOfVideos": {
