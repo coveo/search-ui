@@ -545,6 +545,13 @@ export class CategoryFacet extends Component {
 
     for (let i = 0; i < sortedParentValues.length; i++) {
       currentParentValue = currentParentValue.renderAsParent(sortedParentValues[i]);
+
+      // We do not want to make the "last" parent selectable, as clicking it would be a noop (re-selecting the same filter)
+      const isLastParent = i == sortedParentValues.length - 1;
+      if (!isLastParent) {
+        (currentParentValue as CategoryValue).makeSelectable().showCollapseArrow();
+      }
+
       if (needToTruncate && i == numberOfItemsInFirstSlice) {
         this.addEllipsis(currentParentValue, pathOfLastTruncatedParentValue, sortedParentValues[i].value);
       }

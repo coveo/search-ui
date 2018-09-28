@@ -35,7 +35,9 @@
 .coveo-category-facet-value-label {
   @include display(flex);
   @include facetValueLabelPadding();
-  @include clickableCategoryFacetValue();
+  &.coveo-selectable {
+    @include clickableCategoryFacetValue();
+  }
 }
 
 .coveo-active-category-facet-parent {
