@@ -3,6 +3,8 @@ import { IQueryResult } from '../../src/rest/QueryResult';
 import { FakeResults } from '../Fake';
 import { ResponsiveComponents } from '../../src/ui/ResponsiveComponents/ResponsiveComponents';
 import { $$ } from '../../src/utils/Dom';
+import { ResultLink } from '../../src/ui/ResultLink/ResultLink';
+import { Component } from '../../src/Core';
 export function TemplateTest() {
   describe('Template', () => {
     let result: IQueryResult;
@@ -102,17 +104,26 @@ export function TemplateTest() {
         });
       });
 
-      it('should set the title attribute to the result title', async done => {
-        const created = await tmpl.instantiateToElement(result);
-        expect(created.title).toBe(result.title);
-        done();
-      });
+      describe(`when the template contains a ${ResultLink.ID}`, () => {
+        const resultLinkClass = Component.computeCssClassNameForType(ResultLink.ID);
 
-      it('when the result title is null, it sets the title attribute to an empty string', async done => {
-        result.title = null;
-        const created = await tmpl.instantiateToElement(result);
-        expect(created.title).toBe('');
-        done();
+        async function initTemplateAndReturnResultLink() {
+          const created = await tmpl.instantiateToElement(result);
+          return $$(created).find(`.${resultLinkClass}`);
+        }
+        beforeEach(() => (tmpl = new Template(() => `<div class="${resultLinkClass}"></div>`)));
+
+        it('adds a role attribute with value "heading"', async done => {
+          const resultLink = await initTemplateAndReturnResultLink();
+          expect(resultLink.getAttribute('role')).toBe('heading');
+          done();
+        });
+
+        it('sets the aria-level attribute to "2"', async done => {
+          const resultLink = await initTemplateAndReturnResultLink();
+          expect(resultLink.getAttribute('aria-level')).toBe('2');
+          done();
+        });
       });
 
       it('should return the correct type', () => {

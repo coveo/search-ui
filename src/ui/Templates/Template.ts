@@ -191,7 +191,7 @@ export class Template implements ITemplateProperties {
     await this.ensureComponentsInHtmlStringHaveLoaded(html);
 
     const template = this.buildTemplate(html, mergedOptions);
-    this.makeTemplateAccessible(template, result);
+    this.makeTemplateAccessible(template);
     this.logger.trace('Instantiated result template', result, template);
 
     return template;
@@ -246,11 +246,14 @@ export class Template implements ITemplateProperties {
     return element;
   }
 
-  private makeTemplateAccessible(template: HTMLElement, result: IQueryResult) {
-    template.tabIndex = 0;
-    template.setAttribute('role', 'heading');
-    template.setAttribute('aria-level', '2');
-    template.setAttribute('aria-label', `Result`);
-    result && result.title && template.setAttribute('title', result.title);
+  private makeTemplateAccessible(template: HTMLElement) {
+    const resultLink = $$(template).find('.CoveoResultLink');
+
+    if (!resultLink) {
+      return;
+    }
+
+    resultLink.setAttribute('role', 'heading');
+    resultLink.setAttribute('aria-level', '2');
   }
 }
