@@ -274,7 +274,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   }
 
   public isCurrentlyDisplayed() {
-    return this.getAvailableValues().length != 0;
+    return this.hasValues;
   }
 
   public get activePath() {
@@ -288,7 +288,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   }
 
   public get queryStateAttribute() {
-    return QueryStateModel.getCategoryFacetId(this.options.id);
+    return QueryStateModel.getFacetId(this.options.id);
   }
 
   public handleBuildingQuery(args: IBuildingQueryEventArgs) {
@@ -305,12 +305,10 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
       return;
     }
 
-    if (this.getAvailableValues().length != 0) {
+    if (this.hasValues) {
       this.show();
       return;
     }
-
-    this.queryStateModel.set(QueryStateModel.getCategoryFacetId(this.options.id), this.options.basePath);
     this.activePath = this.options.basePath;
     this.hide();
   }
@@ -755,6 +753,10 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
 
   private handleClearBreadcrumb() {
     this.changeActivePath(this.options.basePath);
+  }
+
+  private get hasValues(): boolean {
+    return this.getAvailableValues().length > 0;
   }
 }
 

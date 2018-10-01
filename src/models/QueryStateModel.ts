@@ -101,10 +101,6 @@ export class QueryStateModel extends Model {
     return QueryStateModel.getFacetId(id) + ':lookupvalues';
   }
 
-  static getCategoryFacetId(id: string) {
-    return 'cf:' + id;
-  }
-
   /**
    * Creates a new `QueryStateModel` instance.
    * @param element The HTMLElement on which to instantiate the `QueryStateModel`.
@@ -123,7 +119,7 @@ export class QueryStateModel extends Model {
   public atLeastOneFacetIsActive() {
     return !_.isUndefined(
       _.find(this.attributes, (value, key: any) => {
-        return /^c?f:/.test(key) && !Utils.arrayEqual(this.getDefault(key), value);
+        return key.indexOf('f:') == 0 && !Utils.arrayEqual(this.getDefault(key), value);
       })
     );
   }
