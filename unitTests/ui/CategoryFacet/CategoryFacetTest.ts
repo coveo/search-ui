@@ -1,14 +1,14 @@
 import { CategoryFacet, ICategoryFacetOptions } from '../../../src/ui/CategoryFacet/CategoryFacet';
 import * as Mock from '../../MockEnvironment';
 import { $$ } from '../../../src/utils/Dom';
-import { IQueryResults } from '../../../src/rest/QueryResults';
 import { IBasicComponentSetup, mock } from '../../MockEnvironment';
 import { Simulate, ISimulateQueryData } from '../../Simulate';
 import { FakeResults } from '../../Fake';
 import { QueryBuilder } from '../../../src/Core';
 import { CategoryFacetQueryController } from '../../../src/controllers/CategoryFacetQueryController';
 import { IBuildingQueryEventArgs } from '../../../src/events/QueryEvents';
-import { first, range, pluck, shuffle } from 'underscore';
+import { first, range, pluck, shuffle, partition } from 'underscore';
+import { analyticsActionCauseList } from '../../../src/ui/Analytics/AnalyticsActionListMeta';
 
 export function CategoryFacetTest() {
   function buildSimulateQueryData(numberOfResults = 11, numberOfRequestedValues = 11): ISimulateQueryData {
@@ -29,9 +29,10 @@ export function CategoryFacetTest() {
 
     beforeEach(() => {
       simulateQueryData = buildSimulateQueryData();
-      test = Mock.optionsComponentSetup<CategoryFacet, ICategoryFacetOptions>(CategoryFacet, {
-        field: '@field'
-      });
+      test = Mock.advancedComponentSetup<CategoryFacet>(
+        CategoryFacet,
+        new Mock.AdvancedComponentSetupOptions(null, { field: '@field' }, env => env.withLiveQueryStateModel())
+      );
       test.cmp.activePath = simulateQueryData.query.categoryFacets[0].path;
     });
 
@@ -127,18 +128,18 @@ export function CategoryFacetTest() {
 
     describe('calling changeActivePath', () => {
       let newPath: string[];
-      let queryPromise: Promise<IQueryResults>;
       beforeEach(() => {
         newPath = ['new', 'path'];
-        queryPromise = test.cmp.changeActivePath(newPath);
+        spyOn(test.cmp.queryStateModel, 'set').and.callThrough();
+        test.cmp.changeActivePath(newPath);
       });
 
       it('sets the new path', () => {
         expect(test.cmp.activePath).toEqual(['new', 'path']);
       });
 
-      it('triggers a new query', () => {
-        expect(test.cmp.queryController.executeQuery).toHaveBeenCalled();
+      it('does not trigger a new query', () => {
+        expect(test.cmp.queryController.executeQuery).not.toHaveBeenCalled();
       });
 
       it('sets the path in the query state', () => {
@@ -146,17 +147,9 @@ export function CategoryFacetTest() {
       });
 
       it('shows a wait animation', () => {
+        test.cmp.executeQuery();
         const waitIcon = $$(test.cmp.element).find('.' + CategoryFacet.WAIT_ELEMENT_CLASS);
         expect(waitIcon.style.visibility).toEqual('visible');
-      });
-
-      it('hides the wait animation after the query', done => {
-        queryPromise.then(() => {
-          const waitIcon = $$(test.cmp.element).find('.' + CategoryFacet.WAIT_ELEMENT_CLASS);
-          expect(waitIcon).not.toBeNull();
-          expect(waitIcon.style.visibility).toEqual('hidden');
-          done();
-        });
       });
     });
 
@@ -276,6 +269,11 @@ export function CategoryFacetTest() {
         }
       }
 
+      function splitSelectableParents() {
+        const parentValuesLabel = $$(test.cmp.element).findAll('.coveo-category-facet-parent-value label');
+        return partition(parentValuesLabel, parentLabel => $$(parentLabel).hasClass('coveo-selectable'));
+      }
+
       beforeEach(() => {
         Object.defineProperty(test.cmp, 'activePath', {
           get: () => simulateQueryData.query.categoryFacets[0].path
@@ -339,6 +337,30 @@ export function CategoryFacetTest() {
         Simulate.query(test.env, simulateQueryData);
         expect($$(test.cmp.element).find('.coveo-category-facet-all-categories')).toBeNull();
       });
+
+      it('should make child values label selectable', () => {
+        Simulate.query(test.env, simulateQueryData);
+        const childValuesLabel = $$(test.cmp.element).findAll('.coveo-category-facet-child-value label');
+        childValuesLabel.forEach(childValue => expect($$(childValue).hasClass('coveo-selectable')).toBe(true));
+      });
+
+      it('should make parent values label selectable except the current active filter', () => {
+        Simulate.query(test.env, simulateQueryData);
+
+        const [selectables, notSelectable] = splitSelectableParents();
+        expect(notSelectable.length).toBe(1);
+
+        const currentActiveFilterLabel = notSelectable[0];
+        expect($$(currentActiveFilterLabel).text()).toContain(test.cmp.activeCategoryValue.categoryValueDescriptor.value);
+        expect(selectables.length).toBeGreaterThan(1);
+      });
+
+      it('should add a collapsible arrow to all parent values except the current active filter', () => {
+        Simulate.query(test.env, simulateQueryData);
+        const [selectables, notSelectable] = splitSelectableParents();
+        expect($$(notSelectable[0]).find('.coveo-category-facet-collapse-children')).toBeNull();
+        selectables.forEach(selectable => expect($$(selectable).find('.coveo-category-facet-collapse-children')).toBeDefined());
+      });
     });
 
     it('when default path is specified, sends the correct path in the query', () => {
@@ -362,6 +384,62 @@ export function CategoryFacetTest() {
         .map(el => $$(el).text());
       expect(values).not.toContain('parent0');
       expect(values).not.toContain('parent1');
+    });
+
+    describe('when populating the breadcrumb', () => {
+      const populateBreadcrumb = () => {
+        Simulate.query(test.env, simulateQueryData);
+        test.cmp.selectValue('value0');
+        return Simulate.breadcrumb(test.env);
+      };
+
+      const getClearElement = () => {
+        return $$(populateBreadcrumb()[0].element).find('.coveo-facet-breadcrumb-clear');
+      };
+
+      it('should populate the correct title', () => {
+        test.cmp.options.title = 'My Category Facet';
+        expect(populateBreadcrumb()[0].element.textContent).toContain('My Category Facet');
+      });
+
+      it('should populate the correct breadcrumb value', () => {
+        expect(populateBreadcrumb()[0].element.textContent).toContain('parent0/parent1/parent2');
+        expect(populateBreadcrumb()[0].element.textContent).toContain('/value0');
+      });
+
+      it('should clear the facet when the clear button is clicked', () => {
+        $$(getClearElement()).trigger('click');
+        expect(test.cmp.activePath).toEqual([]);
+      });
+
+      it('should log an analytics event when the clear button is clicked', () => {
+        $$(getClearElement()).trigger('click');
+        expect(test.env.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(
+          analyticsActionCauseList.breadcrumbFacet,
+          jasmine.objectContaining({
+            categoryFacetId: test.cmp.options.id,
+            categoryFacetField: test.cmp.options.field,
+            categoryFacetPath: jasmine.arrayContaining(['value0']),
+            categoryFacetTitle: test.cmp.options.title
+          })
+        );
+      });
+
+      it('should clear the facet when the clearBreadcrumb event is triggered', () => {
+        populateBreadcrumb();
+        expect(test.cmp.activePath).not.toEqual([]);
+        Simulate.clearBreadcrumb(test.env);
+        expect(test.cmp.activePath).toEqual([]);
+      });
+
+      it('should not trigger a query when clearBreadcrumb event is triggered', () => {
+        populateBreadcrumb();
+        // Reset since it's called once inside "populateBreadcrumb()"
+        (test.env.queryController.executeQuery as jasmine.Spy).calls.reset();
+
+        Simulate.clearBreadcrumb(test.env);
+        expect(test.env.queryController.executeQuery).not.toHaveBeenCalled();
+      });
     });
   });
 }

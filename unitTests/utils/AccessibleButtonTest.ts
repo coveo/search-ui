@@ -12,14 +12,24 @@ export const AccessibleButtonTest = () => {
       Simulate.removeJQuery();
     });
 
-    it('should add the specified label', () => {
+    it('should add the specified label as the aria-label attribute', () => {
       new AccessibleButton()
         .withElement(element)
         .withLabel('qwerty')
         .build();
 
-      expect(element.getAttribute('title')).toBe('qwerty');
       expect(element.getAttribute('aria-label')).toBe('qwerty');
+    });
+
+    it('should add the specified title', () => {
+      const title = 'title';
+
+      new AccessibleButton()
+        .withElement(element)
+        .withTitle(title)
+        .build();
+
+      expect(element.getAttribute('title')).toBe(title);
     });
 
     it('should add the correct role', () => {

@@ -25,13 +25,12 @@ export class CategoryChildrenValueRenderer {
 
   public renderChildren(values: ICategoryFacetValue[]) {
     each(values, value => {
-      this.renderValue(value, true);
+      this.renderValue(value, true).makeSelectable();
     });
   }
 
   public renderAsParent(value: ICategoryFacetValue) {
     const categoryValue = this.renderValue(value, false);
-    categoryValue.showCollapseArrow();
     return categoryValue;
   }
 

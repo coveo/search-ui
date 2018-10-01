@@ -250,19 +250,23 @@ export class Quickview extends Component {
 
     this.bindClick(result);
     if (this.bindings.resultElement) {
-      this.bind.on(this.bindings.resultElement, ResultListEvents.openQuickview, () => this.open());
+      this.bind.on(this.bindings.resultElement, ResultListEvents.openQuickview, (event?: Event) => {
+        event && event.stopPropagation();
+        this.open();
+      });
     }
   }
 
   private buildContent() {
     const icon = this.buildIcon();
-    const tooltip = this.buildTootip(icon);
-
+    const caption = this.buildCaption();
     const content = $$('div');
-    content.append(icon);
-    content.append(tooltip);
 
+    content.append(icon);
+    content.append(caption);
     $$(this.element).append(content.el);
+
+    this.buildTooltipIfNotInCardLayout(icon, caption);
   }
 
   private buildIcon() {
@@ -271,17 +275,26 @@ export class Quickview extends Component {
     return icon;
   }
 
-  private buildTootip(icon: HTMLElement) {
-    const tooltip = $$('div', { className: 'coveo-caption-for-icon', tabindex: 0 }, 'Quickview'.toLocaleString()).el;
-    const arrow = $$('div').el;
-    tooltip.appendChild(arrow);
-
-    this.buildPopper(icon, tooltip, arrow);
-    return tooltip;
+  private buildCaption() {
+    return $$('div', { className: 'coveo-caption-for-icon', tabindex: 0 }, 'Quickview'.toLocaleString()).el;
   }
 
-  private buildPopper(icon: HTMLElement, tooltip: HTMLElement, arrow: HTMLElement) {
-    const popperReference = new PopperJs(icon, tooltip, {
+  private buildTooltipIfNotInCardLayout(icon: HTMLElement, caption: HTMLElement) {
+    if (this.resultsAreInCardLayout) {
+      return;
+    }
+
+    const arrow = $$('div').el;
+    caption.appendChild(arrow);
+    this.buildPopper(icon, caption, arrow);
+  }
+
+  private get resultsAreInCardLayout() {
+    return this.queryStateModel.get(QueryStateModel.attributesEnum.layout) === 'card';
+  }
+
+  private buildPopper(icon: HTMLElement, caption: HTMLElement, arrow: HTMLElement) {
+    const popperReference = new PopperJs(icon, caption, {
       placement: 'bottom',
       modifiers: {
         preventOverflow: {
@@ -307,7 +320,7 @@ export class Quickview extends Component {
    * Opens the `Quickview` modal box.
    */
   public open() {
-    if (this.modalbox == null) {
+    if (Utils.isNullOrUndefined(this.modalbox)) {
       // To prevent the keyboard from opening on mobile if the search bar has focus
       Quickview.resultCurrentlyBeingRendered = this.result;
       // activeElement does not exist in LockerService

@@ -32,6 +32,7 @@ export interface IFieldValueOptions {
 
 export interface IAnalyticsFieldValueMeta {
   facetId: string;
+  facetField: string;
   facetValue?: string;
   facetTitle?: string;
 }
@@ -429,6 +430,7 @@ export class FieldValue extends Component {
       beforeExecuteQuery: () =>
         this.usageAnalytics.logSearchEvent<IAnalyticsFieldValueMeta>(analyticsActionCauseList.documentField, {
           facetId: this.options.facet,
+          facetField: this.options.field.toString(),
           facetValue: value.toLowerCase()
         })
     });

@@ -651,6 +651,7 @@ export class FacetSlider extends Component {
       this.reset();
       this.usageAnalytics.logSearchEvent<IAnalyticsFacetMeta>(analyticsActionCauseList.facetClearAll, {
         facetId: this.options.id,
+        facetField: this.options.field.toString(),
         facetTitle: this.options.title
       });
       this.queryController.executeQuery();
@@ -744,6 +745,7 @@ export class FacetSlider extends Component {
       this.updateAppearanceDependingOnState();
       this.usageAnalytics.logSearchEvent<IAnalyticsFacetSliderChangeMeta>(analyticsActionCauseList.facetRangeSlider, {
         facetId: this.options.id,
+        facetField: this.options.field.toString(),
         facetRangeStart: this.startOfSlider.toString(),
         facetRangeEnd: this.endOfSlider.toString()
       });
@@ -769,6 +771,7 @@ export class FacetSlider extends Component {
       this.updateQueryState();
       this.usageAnalytics.logSearchEvent<IAnalyticsFacetGraphSelectedMeta>(analyticsActionCauseList.facetRangeGraph, {
         facetId: this.options.id,
+        facetField: this.options.field.toString(),
         facetRangeStart: this.startOfSlider.toString(),
         facetRangeEnd: this.endOfSlider.toString()
       });
@@ -969,7 +972,7 @@ export class FacetSlider extends Component {
   }
 
   private trySetSliderBoundaryFromQueryResult(data: IQuerySuccessEventArgs) {
-    const groupByResults = data.results.groupByResults[this.facetQueryController.groupByRequestForFullRange];
+    const groupByResults = data.results.groupByResults[this.facetQueryController.lastGroupByRequestForFullRangeIndex];
     if (groupByResults && groupByResults.values.length > 0 && groupByResults.values[0].numberOfResults != 0) {
       this.setupInitialSliderStateStart(groupByResults.values[0].value.split('..')[0]);
       this.setupInitialSliderStateEnd(groupByResults.values[groupByResults.values.length - 1].value.split('..')[1]);

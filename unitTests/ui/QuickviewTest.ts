@@ -3,11 +3,15 @@ import { Quickview } from '../../src/ui/Quickview/Quickview';
 import { FakeResults } from '../Fake';
 import { IQueryResult } from '../../src/rest/QueryResult';
 import { Template } from '../../src/ui/Templates/Template';
+import { ResultListEvents } from '../../src/events/ResultListEvents';
 import { StringUtils } from '../../src/utils/StringUtils';
 import { Simulate } from '../Simulate';
 import { Defer } from '../../src/misc/Defer';
 import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
 import { Utils } from '../../src/utils/Utils';
+import { $$ } from '../../src/utils/Dom';
+import { QueryStateModel } from '../../src/models/QueryStateModel';
+import { ValidLayout } from '../../src/ui/ResultLayoutSelector/ValidLayout';
 
 export function QuickviewTest() {
   describe('Quickview', () => {
@@ -26,18 +30,46 @@ export function QuickviewTest() {
       modalBox = null;
     });
 
-    const buildQuickview = (template = simpleTestTemplate()) => {
-      let mockBuilder = new Mock.MockEnvironmentBuilder();
+    const buildQuickview = (template = simpleTestTemplate(), layout: ValidLayout = 'list') => {
+      const mockBuilder = new Mock.MockEnvironmentBuilder().withLiveQueryStateModel();
+      const bindings = { ...(<any>mockBuilder.getBindings()), resultElement: $$('div').el };
       env = mockBuilder.build();
+      env.queryStateModel.set(QueryStateModel.attributesEnum.layout, layout);
       result = FakeResults.createFakeResult();
       modalBox = Simulate.modalBoxModule();
-      return new Quickview(env.element, { contentTemplate: template }, <any>mockBuilder.getBindings(), result, modalBox);
+      return new Quickview(env.element, { contentTemplate: template }, bindings, result, modalBox);
     };
 
     const simpleTestTemplate = () => {
       let template = new Template(() => '<div class="coveo-quick-view-full-height"></div>');
       return template;
     };
+
+    it('should render button correctly', done => {
+      expect($$(quickview.element).hasClass('coveo-accessible-button')).toBe(true);
+      expect($$(quickview.element).find('.coveo-icon-for-quickview')).toBeTruthy();
+      expect($$(quickview.element).find('.coveo-caption-for-icon')).toBeTruthy();
+      done();
+    });
+
+    it('when the layout is list, the caption should be positioned (i.e. appear as a tooltip)', done => {
+      expect(
+        $$(quickview.element)
+          .find('.coveo-caption-for-icon')
+          .hasAttribute('x-placement')
+      ).toBe(true);
+      done();
+    });
+
+    it('when the layout is card, the caption should not be positioned (i.e. be inline)', done => {
+      quickview = buildQuickview(undefined, 'card');
+      expect(
+        $$(quickview.element)
+          .find('.coveo-caption-for-icon')
+          .hasAttribute('x-placement')
+      ).toBe(false);
+      done();
+    });
 
     it('creates a modal box on open', done => {
       quickview.open();
@@ -76,6 +108,15 @@ export function QuickviewTest() {
     it('computes the hash id', () => {
       let hash = quickview.getHashId();
       expect(hash).toBe(result.queryUid + '.' + result.index + '.' + StringUtils.hashCode(result.uniqueId));
+    });
+
+    it('calls event.stopPropagation on openQuickview', () => {
+      const stopPropagation = jasmine.createSpy('stopPropagation');
+      $$(quickview.bindings.resultElement).trigger(ResultListEvents.openQuickview, {
+        stopPropagation
+      });
+
+      expect(stopPropagation).toHaveBeenCalled();
     });
 
     describe('when instantiating invalid templates', () => {
