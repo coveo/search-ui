@@ -452,7 +452,6 @@ export class SearchInterface extends RootComponent implements IComponentBindings
   public componentOptionsModel: ComponentOptionsModel;
   public usageAnalytics: IAnalyticsClient;
   public historyManager: IHistoryManager;
-  public ariaLive: AriaLive;
   /**
    * Allows to get and set the different breakpoints for mobile and tablet devices.
    *
@@ -503,7 +502,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
 
     this.setupDebugInfo();
     this.setupResponsiveComponents();
-    this.ariaLive = new AriaLive(element);
+    new AriaLive(element);
   }
 
   public set resultsPerPage(resultsPerPage: number) {

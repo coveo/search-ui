@@ -21,7 +21,6 @@ import * as Mock from '../MockEnvironment';
 import { Simulate } from '../Simulate';
 import { SearchEndpoint } from '../Test';
 import { NoopHistoryController } from '../../src/controllers/NoopHistoryController';
-import { AriaLive } from '../../src/utils/AriaLive';
 
 export function SearchInterfaceTest() {
   describe('SearchInterface', () => {
@@ -53,10 +52,6 @@ export function SearchInterfaceTest() {
 
     it('should create a component state model', () => {
       expect(cmp.componentStateModel instanceof ComponentStateModel).toBe(true, 'Not a component state model');
-    });
-
-    it('should create an AriaLive instance', () => {
-      expect(cmp.ariaLive instanceof AriaLive).toBe(true);
     });
 
     it('should create a search interface', () => {
