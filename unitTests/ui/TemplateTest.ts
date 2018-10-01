@@ -104,24 +104,42 @@ export function TemplateTest() {
         });
       });
 
-      describe(`when the template contains a ${ResultLink.ID}`, () => {
+      describe(`when the template contains two ${ResultLink.ID} elements`, () => {
         const resultLinkClass = Component.computeCssClassNameForType(ResultLink.ID);
 
-        async function initTemplateAndReturnResultLink() {
+        async function initTemplateAndReturnResultLinks() {
           const created = await tmpl.instantiateToElement(result);
-          return $$(created).find(`.${resultLinkClass}`);
+          return $$(created).findAll(`.${resultLinkClass}`);
         }
-        beforeEach(() => (tmpl = new Template(() => `<div class="${resultLinkClass}"></div>`)));
 
-        it('adds a role attribute with value "heading"', async done => {
-          const resultLink = await initTemplateAndReturnResultLink();
-          expect(resultLink.getAttribute('role')).toBe('heading');
+        beforeEach(() =>
+          (tmpl = new Template(() => {
+            return `
+          <div class="${resultLinkClass}"></div>
+          <div class="${resultLinkClass}"></div>
+          `;
+          })));
+
+        it('adds a role attribute with value "heading" to the first result link', async done => {
+          const resultLinks = await initTemplateAndReturnResultLinks();
+          const firstLink = resultLinks[0];
+          expect(firstLink.getAttribute('role')).toBe('heading');
           done();
         });
 
-        it('sets the aria-level attribute to "2"', async done => {
-          const resultLink = await initTemplateAndReturnResultLink();
-          expect(resultLink.getAttribute('aria-level')).toBe('2');
+        it('sets the aria-level attribute to "2" to the first result link', async done => {
+          const resultLinks = await initTemplateAndReturnResultLinks();
+          const firstLink = resultLinks[0];
+          expect(firstLink.getAttribute('aria-level')).toBe('2');
+          done();
+        });
+
+        it(`does not add accessibility attributes to the second result link`, async done => {
+          const resultLinks = await initTemplateAndReturnResultLinks();
+          const secondLink = resultLinks[1];
+
+          expect(secondLink.getAttribute('role')).toBeNull();
+          expect(secondLink.getAttribute('aria-level')).toBeNull();
           done();
         });
       });
