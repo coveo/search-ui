@@ -1,4 +1,4 @@
-import { AriaLive } from '../../src/utils/AriaLive';
+import { AriaLive } from '../../src/ui/AriaLive/AriaLive';
 import { $$ } from '../../src/Core';
 import { Simulate } from '../Simulate';
 import { MockEnvironmentBuilder, IMockEnvironment } from '../MockEnvironment';

@@ -1,8 +1,8 @@
 import 'styling/accessibility/_ScreenReader.scss';
-import { $$ } from './Dom';
-import { QueryEvents, IQuerySuccessEventArgs, IQueryErrorEventArgs } from '../events/QueryEvents';
-import { QuerySummaryUtils } from './QuerySummaryUtils';
-import { l } from '../strings/Strings';
+import { $$ } from '../../utils/Dom';
+import { QueryEvents, IQuerySuccessEventArgs, IQueryErrorEventArgs } from '../../events/QueryEvents';
+import { QuerySummaryUtils } from '../../utils/QuerySummaryUtils';
+import { l } from '../../strings/Strings';
 
 export class AriaLive {
   private ariaLiveEl: HTMLElement;
