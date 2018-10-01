@@ -122,11 +122,6 @@ export function CategoryFacetTest() {
       });
     });
 
-    it('should correctly evaluate isCurrentlyDisplayed() when the facet is in an active state', () => {
-      test.cmp.activePath = ['value1'];
-      expect(test.cmp.isCurrentlyDisplayed()).toBe(true);
-    });
-
     it('should correctly evaluate isCurrentlyDisplayed() when the facet is not in an active state, but has available values', () => {
       spyOn(test.cmp, 'getAvailableValues').and.returnValue(['value1']);
       test.cmp.activePath = [];
