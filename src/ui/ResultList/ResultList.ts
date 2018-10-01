@@ -45,10 +45,24 @@ import { ResultListCardRenderer } from './ResultListCardRenderer';
 import { ResultListRenderer } from './ResultListRenderer';
 import { ResultListTableRenderer } from './ResultListTableRenderer';
 import ResultLayoutSelectorModule = require('../ResultLayoutSelector/ResultLayoutSelector');
-import { IResultListOptions } from './IResultListOptions';
 import { resultListId } from './ResultListConstants';
+import { IFieldOption } from '../Base/ComponentOptions';
 
-export { IResultListOptions };
+export interface IResultListOptions {
+  resultContainer?: HTMLElement;
+  resultTemplate?: Template;
+  resultOptions?: {};
+  waitAnimationContainer?: HTMLElement;
+  enableInfiniteScroll?: boolean;
+  infiniteScrollPageSize?: number;
+  infiniteScrollContainer?: HTMLElement | Window;
+  waitAnimation?: string;
+  mobileScrollContainer?: HTMLElement;
+  enableInfiniteScrollWaitingAnimation?: boolean;
+  fieldsToInclude?: IFieldOption[];
+  autoSelectFieldsToInclude?: boolean;
+  layout?: string;
+}
 
 CoreHelpers.exportAllHelpersGlobally(window['Coveo']);
 
