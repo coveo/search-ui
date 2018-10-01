@@ -101,10 +101,6 @@ export class QueryStateModel extends Model {
     return QueryStateModel.getFacetId(id) + ':lookupvalues';
   }
 
-  static getCategoryFacetId(id: string) {
-    return 'cf:' + id;
-  }
-
   /**
    * Creates a new `QueryStateModel` instance.
    * @param element The HTMLElement on which to instantiate the `QueryStateModel`.
