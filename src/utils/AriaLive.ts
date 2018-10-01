@@ -7,28 +7,29 @@ import { l } from '../strings/Strings';
 export class AriaLive {
   private ariaLiveEl: HTMLElement;
 
-  constructor(private searchInterface: HTMLElement) {
+  constructor(private root: HTMLElement) {
     this.initAriaLiveEl();
-    this.appendToSearchInterface();
+    this.appendToRoot();
     this.addQueryEventListeners();
   }
 
   public updateText(text: string) {
-    this.ariaLiveEl.innerText = text;
+    $$(this.ariaLiveEl).text(text);
   }
 
-  private appendToSearchInterface() {
-    this.searchInterface.appendChild(this.ariaLiveEl);
+  private appendToRoot() {
+    this.root.appendChild(this.ariaLiveEl);
   }
 
   private initAriaLiveEl() {
-    this.ariaLiveEl = document.createElement('div');
-    this.ariaLiveEl.setAttribute('aria-live', 'polite');
-    this.ariaLiveEl.setAttribute('class', 'coveo-visible-to-screen-reader-only');
+    this.ariaLiveEl = $$('div', {
+      'aria-live': 'polite',
+      className: 'coveo-visible-to-screen-reader-only'
+    }).el;
   }
 
   private addQueryEventListeners() {
-    const root = $$(this.searchInterface);
+    const root = $$(this.root);
     root.on(QueryEvents.querySuccess, (e, args: IQuerySuccessEventArgs) => this.onQuerySuccess(args));
     root.on(QueryEvents.queryError, (e, args: IQueryErrorEventArgs) => this.onQueryError(args));
   }
@@ -42,7 +43,7 @@ export class AriaLive {
     const hasResults = args.results.results.length;
 
     if (hasResults) {
-      return QuerySummaryUtils.message(this.searchInterface, args);
+      return QuerySummaryUtils.message(this.root, args);
     }
 
     return this.noResultMessage(args.query.q);
