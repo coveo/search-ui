@@ -34,12 +34,12 @@ export class AriaLive {
   }
 
   private onQuerySuccess(args: IQuerySuccessEventArgs) {
-    let message = this.messageForResultCount(args);
+    const message = this.messageForResultCount(args);
     this.updateText(message);
   }
 
   private messageForResultCount(args: IQuerySuccessEventArgs) {
-    let hasResults = args.results.results.length;
+    const hasResults = args.results.results.length;
 
     if (hasResults) {
       return QuerySummaryUtils.message(this.searchInterface, args);
