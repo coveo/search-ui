@@ -10,9 +10,8 @@ export const AriaLiveTest = () => {
     let env: IMockEnvironment;
 
     beforeEach(() => {
-      const root = document.createElement('div');
-      env = new MockEnvironmentBuilder().withRoot(root).build();
-      ariaLive = new AriaLive(root);
+      env = new MockEnvironmentBuilder().build();
+      ariaLive = new AriaLive(env.root);
     });
 
     function ariaLiveEl() {
