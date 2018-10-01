@@ -49,12 +49,6 @@ export function QueryStateModelTest() {
       expect(queryState.atLeastOneFacetIsActive()).toBe(false);
     });
 
-    it('can determine if a category facet is active', () => {
-      queryState.registerNewAttribute('cf:@foobar', ['foo']);
-      queryState.set('cf:@foobar', ['foo|somethingelse']);
-      expect(queryState.atLeastOneFacetIsActive()).toBe(true);
-    });
-
     it('can validate on the first attribute', () => {
       expect(() => queryState.set('first', -1)).toThrow();
       expect(() => queryState.set('first', 'haha')).toThrow();
