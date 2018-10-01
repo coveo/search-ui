@@ -93,14 +93,50 @@ export function CategoryFacetTest() {
       expect($$(test.cmp.element).hasClass('coveo-hidden')).toBeTruthy();
     });
 
-    it('hides the component when there is no results', () => {
-      const emptyCategoryFacetResults = FakeResults.createFakeCategoryFacetResult('@field', [], undefined, 0);
-      simulateQueryData.results = { ...simulateQueryData.results, categoryFacets: [emptyCategoryFacetResults] };
-      spyOn(test.cmp, 'hide');
+    describe('when there is no results', () => {
+      const simulateNoResults = () => {
+        const emptyCategoryFacetResults = FakeResults.createFakeCategoryFacetResult('@field', [], undefined, 0);
+        simulateQueryData.results = { ...simulateQueryData.results, categoryFacets: [emptyCategoryFacetResults] };
+        spyOn(test.cmp, 'hide');
 
-      Simulate.query(test.env, simulateQueryData);
+        Simulate.query(test.env, simulateQueryData);
+      };
 
-      expect(test.cmp.hide).toHaveBeenCalled();
+      it('hides the component by default', () => {
+        simulateNoResults();
+        expect(test.cmp.hide).toHaveBeenCalled();
+      });
+
+      it('does not hide the component when the facet is in an "active" state and has available values', () => {
+        test.cmp.activePath = ['value1'];
+        spyOn(test.cmp, 'getAvailableValues').and.returnValue(['value1', 'value2']);
+        simulateNoResults();
+        expect(test.cmp.hide).not.toHaveBeenCalled();
+      });
+
+      it('hides the component when the facet is in an "active" state but has no available values', () => {
+        test.cmp.activePath = ['value1'];
+        spyOn(test.cmp, 'getAvailableValues').and.returnValue([]);
+        simulateNoResults();
+        expect(test.cmp.hide).toHaveBeenCalled();
+      });
+    });
+
+    it('should correctly evaluate isCurrentlyDisplayed() when the facet is in an active state', () => {
+      test.cmp.activePath = ['value1'];
+      expect(test.cmp.isCurrentlyDisplayed()).toBe(true);
+    });
+
+    it('should correctly evaluate isCurrentlyDisplayed() when the facet is not in an active state, but has available values', () => {
+      spyOn(test.cmp, 'getAvailableValues').and.returnValue(['value1']);
+      test.cmp.activePath = [];
+      expect(test.cmp.isCurrentlyDisplayed()).toBe(true);
+    });
+
+    it('should correctly evaluate isCurrentlyDisplayed() when the facet is not in an active state and has no available values', () => {
+      spyOn(test.cmp, 'getAvailableValues').and.returnValue([]);
+      test.cmp.activePath = [];
+      expect(test.cmp.isCurrentlyDisplayed()).toBe(false);
     });
 
     describe('when categoryFacet is not implemented on the endpoint', () => {

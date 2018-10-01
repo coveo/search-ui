@@ -28,6 +28,7 @@ import { ISearchEndpoint } from '../../rest/SearchEndpointInterface';
 import { IAnalyticsCategoryFacetMeta, analyticsActionCauseList, IAnalyticsActionCause } from '../Analytics/AnalyticsActionListMeta';
 import { CategoryFacetDebug } from './CategoryFacetDebug';
 import { QueryBuilder } from '../Base/QueryBuilder';
+import { IAutoLayoutAdjustableInsideFacetColumn } from '../SearchInterface/FacetColumnAutoLayoutAdjustment';
 
 export interface ICategoryFacetOptions {
   field: IFieldOption;
@@ -89,7 +90,7 @@ export type CategoryValueDescriptor = {
 //  * To help you verify if your fields are setup correctly, see the {@link CategoryFacet.options.debug} option
 //  * and the {@link CategoryFacet.debugValue} method.
 //  */
-export class CategoryFacet extends Component {
+export class CategoryFacet extends Component implements IAutoLayoutAdjustableInsideFacetColumn {
   static doExport = () => {
     exportGlobally({
       CategoryFacet
@@ -271,6 +272,10 @@ export class CategoryFacet extends Component {
     this.initQueryStateEvents();
   }
 
+  public isCurrentlyDisplayed() {
+    return this.hasValues;
+  }
+
   public get activePath() {
     return this.queryStateModel.get(this.queryStateAttribute) || this.options.basePath;
   }
@@ -282,7 +287,7 @@ export class CategoryFacet extends Component {
   }
 
   public get queryStateAttribute() {
-    return QueryStateModel.getCategoryFacetId(this.options.id);
+    return QueryStateModel.getFacetId(this.options.id);
   }
 
   public handleBuildingQuery(args: IBuildingQueryEventArgs) {
@@ -293,14 +298,31 @@ export class CategoryFacet extends Component {
     );
   }
 
+  private handleNoResults() {
+    if (this.isPristine()) {
+      this.hide();
+      return;
+    }
+
+    if (this.hasValues) {
+      this.show();
+      return;
+    }
+    this.activePath = this.options.basePath;
+    this.hide();
+  }
+
   public handleQuerySuccess(args: IQuerySuccessEventArgs) {
-    if (
-      Utils.isNullOrUndefined(args.results.categoryFacets) ||
-      Utils.isNullOrUndefined(args.results.categoryFacets[this.positionInQuery])
-    ) {
+    if (Utils.isNullOrUndefined(args.results.categoryFacets)) {
       this.notImplementedError();
       return;
     }
+
+    if (Utils.isNullOrUndefined(args.results.categoryFacets[this.positionInQuery])) {
+      this.handleNoResults();
+      return;
+    }
+
     const numberOfRequestedValues = args.query.categoryFacets[this.positionInQuery].maximumNumberOfValues;
     const categoryFacetResult = args.results.categoryFacets[this.positionInQuery];
     this.moreValuesToFetch = numberOfRequestedValues == categoryFacetResult.values.length;
@@ -309,12 +331,14 @@ export class CategoryFacet extends Component {
     if (categoryFacetResult.notImplemented) {
       this.notImplementedError();
       return;
-    } else if (categoryFacetResult.values.length != 0 || categoryFacetResult.parentValues.length != 0) {
-      this.renderValues(categoryFacetResult, numberOfRequestedValues);
-    } else {
-      this.hide();
     }
 
+    if (categoryFacetResult.values.length == 0 && categoryFacetResult.parentValues.length == 0) {
+      this.handleNoResults();
+      return;
+    }
+
+    this.renderValues(categoryFacetResult, numberOfRequestedValues);
     if (this.options.enableFacetSearch) {
       const facetSearch = this.categoryFacetSearch.build();
       $$(facetSearch).insertAfter(this.categoryValueRoot.listRoot.el);
@@ -409,6 +433,9 @@ export class CategoryFacet extends Component {
    * @returns simple object with three fields: `value`, `count` and `path`.
    */
   public getAvailableValues() {
+    if (!this.activeCategoryValue) {
+      return [];
+    }
     return this.activeCategoryValue.children.map(categoryValue => {
       return {
         value: categoryValue.categoryValueDescriptor.value,
@@ -731,6 +758,10 @@ export class CategoryFacet extends Component {
 
   private handleClearBreadcrumb() {
     this.changeActivePath(this.options.basePath);
+  }
+
+  private get hasValues(): boolean {
+    return this.getAvailableValues().length > 0;
   }
 }
 
