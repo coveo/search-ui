@@ -191,7 +191,7 @@ export class Template implements ITemplateProperties {
     await this.ensureComponentsInHtmlStringHaveLoaded(html);
 
     const template = this.buildTemplate(html, mergedOptions);
-    this.makeTemplateAccessible(template);
+    this.makeFirstResultLinkAccessible(template);
     this.logger.trace('Instantiated result template', result, template);
 
     return template;
@@ -246,7 +246,7 @@ export class Template implements ITemplateProperties {
     return element;
   }
 
-  private makeTemplateAccessible(template: HTMLElement) {
+  private makeFirstResultLinkAccessible(template: HTMLElement) {
     const resultLink = $$(template).find('.CoveoResultLink');
 
     if (!resultLink) {
