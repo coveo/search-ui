@@ -20,10 +20,10 @@ export class Dom {
   private static CLASS_NAME_REGEX = /-?[_a-zA-Z]+[_a-zA-Z0-9-]*/g;
   private static ONLY_WHITE_SPACE_REGEX = /^\s*$/;
   /**
-   * Use javascript events intead of Jquery events.
+   * Whether to always register, remove, and trigger events using standard JavaScript rather than attempting to use jQuery first.
    * @type boolean
    */
-  public static useNativeJavascriptEvents = false;
+  public static useNativeJavaScriptEvents = false;
 
   public el: HTMLElement;
 
@@ -720,7 +720,7 @@ export class Dom {
   }
 
   private shouldUseJQueryEvent() {
-    return JQueryUtils.getJQuery() && !Dom.useNativeJavascriptEvents;
+    return JQueryUtils.getJQuery() && !Dom.useNativeJavaScriptEvents;
   }
 
   private processEventTypeToBeJQueryCompatible(event: string): string {

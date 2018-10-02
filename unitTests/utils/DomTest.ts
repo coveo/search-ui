@@ -649,11 +649,11 @@ export function DomTests() {
 
       describe('with native set to true', () => {
         beforeEach(() => {
-          Dom.useNativeJavascriptEvents = true;
+          Dom.useNativeJavaScriptEvents = true;
         });
 
         afterEach(() => {
-          Dom.useNativeJavascriptEvents = false;
+          Dom.useNativeJavaScriptEvents = false;
         });
 
         it('when using "on" to bind a click event, when triggering a click, it calls the click handler', () => {
