@@ -38,6 +38,15 @@ export function SuggestionsManagerTest() {
       expect(selectedWithKeyboard).toBe(suggestion.el);
     });
 
+    it('return no selected element with successive call to getKeyboardFocusedElement()', () => {
+      suggestionManager.moveDown();
+      const selectedWithKeyboard = suggestionManager.getKeyboardFocusedElement();
+      expect(selectedWithKeyboard).toBeDefined();
+
+      const repeatCallToSelectedWithKeyboard = suggestionManager.getKeyboardFocusedElement();
+      expect(repeatCallToSelectedWithKeyboard).toBeNull();
+    });
+
     it('return no selected element with keyboard on mouse over', () => {
       suggestionManager.handleMouseOver({
         target: suggestion.el
