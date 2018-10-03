@@ -226,6 +226,23 @@ export function CategoryFacetTest() {
       });
     });
 
+    it('adds a facet search functionality by default', () => {
+      Simulate.query(test.env, simulateQueryData);
+      expect(test.cmp.categoryFacetSearch).toBeDefined();
+      expect($$(test.cmp.element).find('.coveo-category-facet-search-container')).toBeDefined();
+    });
+
+    it('render properly when the facet search functionality is disabled', () => {
+      test = Mock.optionsComponentSetup<CategoryFacet, ICategoryFacetOptions>(CategoryFacet, {
+        enableFacetSearch: false,
+        field: '@someField'
+      });
+
+      Simulate.query(test.env, simulateQueryData);
+      expect(test.cmp.categoryFacetSearch).toBeUndefined();
+      expect($$(test.cmp.element).find('.coveo-category-facet-search-container')).toBeNull();
+    });
+
     it('calls putCategoryFacetInQueryBuilder when building the query', () => {
       const queryBuilder = mock(QueryBuilder);
       const buildingQueryArgs = { queryBuilder } as IBuildingQueryEventArgs;

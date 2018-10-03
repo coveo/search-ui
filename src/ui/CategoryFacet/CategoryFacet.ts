@@ -681,7 +681,9 @@ export class CategoryFacet extends Component {
 
   private clear() {
     this.categoryValueRoot.clear();
-    this.categoryFacetSearch.clear();
+    if (this.options.enableFacetSearch) {
+      this.categoryFacetSearch.clear();
+    }
     this.moreLessContainer && this.moreLessContainer.detach();
     $$(this.element).removeClass('coveo-category-facet-non-empty-path');
   }
