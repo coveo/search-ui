@@ -644,3 +644,6 @@ MagicBoxClearTest();
 
 import { AccessibleButtonTest } from './utils/AccessibleButtonTest';
 AccessibleButtonTest();
+
+import { CategoryFacetQueryControllerTest } from './controllers/CategoryFacetQueryControlllerTest';
+CategoryFacetQueryControllerTest();
