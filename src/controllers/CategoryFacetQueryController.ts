@@ -42,12 +42,15 @@ export class CategoryFacetQueryController {
     lastQuery.groupBy = [groupByRequest];
     lastQuery.categoryFacets.splice(this.categoryFacet.positionInQuery, 1);
     const results = await this.categoryFacet.queryController.getEndpoint().search(lastQuery);
-    return results.groupByResults[0].values.sort((firstGroupByValue, secondGroupByValue) => {
+
+    const sortByNumberOfResultsThenPathLength = (firstGroupByValue: IGroupByValue, secondGroupByValue: IGroupByValue) => {
       if (firstGroupByValue.numberOfResults == secondGroupByValue.numberOfResults) {
         return firstGroupByValue.value.length - secondGroupByValue.value.length;
       }
       return secondGroupByValue.numberOfResults - firstGroupByValue.numberOfResults;
-    });
+    };
+
+    return results.groupByResults[0].values.sort(sortByNumberOfResultsThenPathLength);
   }
 
   public addDebugGroupBy(queryBuilder: QueryBuilder, value: string) {
