@@ -680,6 +680,10 @@ export var analyticsActionCauseList = {
     name: 'categoryFacetSelect',
     type: 'categoryFacet'
   },
+  categoryFacetReload: <IAnalyticsActionCause>{
+    name: 'categoryFacetReload',
+    type: 'categoryFacet'
+  },
   categoryFacetClear: <IAnalyticsActionCause>{
     name: 'categoryFacetClear',
     type: 'categoryFacet'

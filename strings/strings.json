@@ -7369,6 +7369,10 @@
     "en": "Remove filter on {0}",
     "fr": "Enlever le filtre sur {0}"
   },
+  "Enter": {
+    "en": "Enter",
+    "fr": "Entrée"
+  },
   "InsertAQuery": {
     "en": "Insert a query",
     "fr": "Insérer une requête"
@@ -7384,5 +7388,17 @@
   "DisplayResultsAs": {
     "en": "Display results as {0}",
     "fr": "Afficher les résultats comme {0}"
+  },
+  "FacetTitle": {
+    "en": "{0} facet",
+    "fr": "Facette {0}"
+  },
+  "SelectValueWithResultCount": {
+    "en": "Select {0} with {1}",
+    "fr": "Sélectionnez {0} avec {1}"
+  },
+  "UnselectValueWithResultCount": {
+    "en": "Unselect {0} with {1}",
+    "fr": "Désélectionnez {0} avec {1}"
   }
 }

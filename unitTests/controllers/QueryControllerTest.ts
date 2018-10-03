@@ -101,6 +101,59 @@ export function QueryControllerTest() {
       }, 10);
     });
 
+    describe('closeModalBox', () => {
+      it('should close the modal if the closeModalBox is set to true in the executeQuery options', () => {
+        let spy = jasmine.createSpy('spy');
+        test.cmp.modalBox = { close: spy };
+        test.cmp.executeQuery({ closeModalBox: true });
+        expect(spy).toHaveBeenCalled();
+      });
+
+      it('should not close the modal if the closeModalBox is set to false in the executeQuery options', () => {
+        let spy = jasmine.createSpy('spy');
+        test.cmp.modalBox = { close: spy };
+        test.cmp.executeQuery({ closeModalBox: false });
+        expect(spy).not.toHaveBeenCalled();
+      });
+
+      it('should close the modal if the closeModalBox is set to true on the QueryController', () => {
+        let spy = jasmine.createSpy('spy');
+        test.cmp.modalBox = { close: spy };
+        test.cmp.closeModalBox = true;
+        test.cmp.executeQuery();
+        expect(spy).toHaveBeenCalled();
+      });
+
+      it('should not close the modal if the closeModalBox is set to false on the QueryController', () => {
+        let spy = jasmine.createSpy('spy');
+        test.cmp.modalBox = { close: spy };
+        test.cmp.closeModalBox = false;
+        test.cmp.executeQuery();
+        expect(spy).not.toHaveBeenCalled();
+      });
+
+      it('should priorize executeQuery options', () => {
+        let spy = jasmine.createSpy('spy');
+        test.cmp.modalBox = { close: spy };
+        test.cmp.closeModalBox = false;
+        test.cmp.executeQuery({ closeModalBox: true });
+        expect(spy).toHaveBeenCalled();
+
+        let spy2 = jasmine.createSpy('spy2');
+        test.cmp.modalBox = { close: spy2 };
+        test.cmp.closeModalBox = true;
+        test.cmp.executeQuery({ closeModalBox: false });
+        expect(spy2).not.toHaveBeenCalled();
+      });
+
+      it('should close the modals by default', () => {
+        let spy = jasmine.createSpy('spy');
+        test.cmp.modalBox = { close: spy };
+        test.cmp.executeQuery();
+        expect(spy).toHaveBeenCalled();
+      });
+    });
+
     describe('trigger query events', () => {
       it('should trigger newQuery', done => {
         const spy = jasmine.createSpy('spy');
