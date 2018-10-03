@@ -62,11 +62,7 @@ export class DefaultResultTemplate extends Template {
       className: 'coveo-title'
     });
 
-    let resultLink = $$('a', {
-      className: 'CoveoResultLink',
-      role: 'heading',
-      'aria-level': '2'
-    });
+    let resultLink = $$('a', { className: 'CoveoResultLink' });
 
     titleContainer.append(resultLink.el);
 
