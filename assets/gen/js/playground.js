@@ -4613,7 +4613,7 @@ var UrlUtils = /** @class */ (function () {
             var paired = underscore_1.pairs(toNormalize.query);
             var mapped = paired.map(function (pair) {
                 var key = pair[0], value = pair[1];
-                if (Utils_1.Utils.isNullOrUndefined(value) || Utils_1.Utils.isNullOrUndefined(key)) {
+                if (!value || !key) {
                     return '';
                 }
                 if (!_this.isEncoded(value)) {
@@ -5804,8 +5804,8 @@ exports.ResponsiveComponents = ResponsiveComponents;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    lib: '2.4609.8',
-    product: '2.4609.8',
+    lib: '2.4710.2-beta',
+    product: '2.4710.2-beta',
     supportedApiVersion: 2
 };
 
@@ -8608,6 +8608,14 @@ var dict = {
     "Toggle": "Toggle",
     "FilterOn": "Filter on {0}",
     "RemoveFilterOn": "Remove filter on {0}",
+    "Enter": "Enter",
+    "InsertAQuery": "Insert a query",
+    "PressEnterToSend": "Press enter to send",
+    "SortResultsBy": "Sort results by {0}",
+    "DisplayResultsAs": "Display results as {0}",
+    "FacetTitle": "{0} facet",
+    "SelectValueWithResultCount": "Select {0} with {1}",
+    "UnselectValueWithResultCount": "Unselect {0} with {1}",
 };
 function defaultLanguage() {
     var locales = String["locales"] || (String["locales"] = {});
