@@ -133,7 +133,9 @@ export class AccessibleButton {
   }
 
   private ensureCorrectRole() {
-    this.element.setAttribute('role', 'button');
+    if (!this.element.getAttribute('role')) {
+      this.element.setAttribute('role', 'button');
+    }
   }
 
   private ensureCorrectLabel() {
