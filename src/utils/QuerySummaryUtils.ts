@@ -6,8 +6,7 @@ import { IQuery } from '../rest/Query';
 import { Component } from '../ui/Base/Component';
 import { any } from 'underscore';
 import { get } from '../ui/Base/RegisteredNamedMethods';
-import { resultListId } from '../ui/ResultList/ResultListConstants';
-import { IResultListOptions } from '../ui/ResultList/ResultList';
+import { IResultListOptions } from '../ui/ResultList/ResultListOptions';
 
 interface ISummaryStrings {
   first: string;
@@ -50,7 +49,7 @@ export class QuerySummaryUtils {
   }
 
   private static isInfiniteScrollMode(root: HTMLElement) {
-    const resultListSelector = `.${Component.computeCssClassNameForType(resultListId)}`;
+    const resultListSelector = `.${Component.computeCssClassNameForType('ResultList')}`;
     const resultLists = $$(root).findAll(resultListSelector);
 
     return any(resultLists, resultList => {
