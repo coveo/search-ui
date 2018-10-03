@@ -3,8 +3,7 @@ import { IQueryResult } from '../../src/rest/QueryResult';
 import { FakeResults } from '../Fake';
 import { ResponsiveComponents } from '../../src/ui/ResponsiveComponents/ResponsiveComponents';
 import { $$ } from '../../src/utils/Dom';
-import { ResultLink } from '../../src/ui/ResultLink/ResultLink';
-import { Component } from '../../src/Core';
+
 export function TemplateTest() {
   describe('Template', () => {
     let result: IQueryResult;
@@ -100,46 +99,6 @@ export function TemplateTest() {
       it('should add the correct layout class when specified in instantiateOptions', done => {
         tmpl.instantiateToElement(result, { currentLayout: 'table' }).then(created => {
           expect($$(created).hasClass('coveo-table-layout')).toBe(true);
-          done();
-        });
-      });
-
-      describe(`when the template contains two ${ResultLink.ID} elements`, () => {
-        const resultLinkClass = Component.computeCssClassNameForType(ResultLink.ID);
-
-        async function initTemplateAndReturnResultLinks() {
-          const created = await tmpl.instantiateToElement(result);
-          return $$(created).findAll(`.${resultLinkClass}`);
-        }
-
-        beforeEach(() =>
-          (tmpl = new Template(() => {
-            return `
-          <div class="${resultLinkClass}"></div>
-          <div class="${resultLinkClass}"></div>
-          `;
-          })));
-
-        it('adds a role attribute with value "heading" to the first result link', async done => {
-          const resultLinks = await initTemplateAndReturnResultLinks();
-          const firstLink = resultLinks[0];
-          expect(firstLink.getAttribute('role')).toBe('heading');
-          done();
-        });
-
-        it('sets the aria-level attribute to "2" to the first result link', async done => {
-          const resultLinks = await initTemplateAndReturnResultLinks();
-          const firstLink = resultLinks[0];
-          expect(firstLink.getAttribute('aria-level')).toBe('2');
-          done();
-        });
-
-        it(`does not add accessibility attributes to the second result link`, async done => {
-          const resultLinks = await initTemplateAndReturnResultLinks();
-          const secondLink = resultLinks[1];
-
-          expect(secondLink.getAttribute('role')).toBeNull();
-          expect(secondLink.getAttribute('aria-level')).toBeNull();
           done();
         });
       });
