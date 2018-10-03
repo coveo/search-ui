@@ -228,6 +228,8 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   public categoryFacetSearch: CategoryFacetSearch;
   public activeCategoryValue: CategoryValue | undefined;
   public positionInQuery: number;
+  public static MAXIMUM_NUMBER_OF_VALUES_BEFORE_TRUNCATING = 15;
+  public static NUMBER_OF_VALUES_TO_KEEP_AFTER_TRUNCATING = 10;
 
   private categoryValueRoot: CategoryValueRoot;
   private categoryFacetTemplates: CategoryFacetTemplates;
@@ -240,9 +242,6 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   private numberOfValues: number;
 
   public static WAIT_ELEMENT_CLASS = 'coveo-category-facet-header-wait-animation';
-
-  private static MAXIMUM_NUMBER_OF_VALUES_BEFORE_TRUNCATING = 15;
-  private static NUMBER_OF_VALUES_TO_KEEP_AFTER_TRUNCATING = 10;
 
   constructor(public element: HTMLElement, public options: ICategoryFacetOptions, bindings?: IComponentBindings) {
     super(element, 'CategoryFacet', bindings);
@@ -579,8 +578,14 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
         (currentParentValue as CategoryValue).makeSelectable().showCollapseArrow();
       }
 
-      if (needToTruncate && i == numberOfItemsInFirstSlice) {
-        this.addEllipsis(currentParentValue, pathOfLastTruncatedParentValue, sortedParentValues[i].value);
+      if (needToTruncate) {
+        if (i == numberOfItemsInFirstSlice - 1) {
+          this.addEllipsis();
+        }
+
+        if (i == numberOfItemsInFirstSlice) {
+          currentParentValue.path = [...pathOfLastTruncatedParentValue, sortedParentValues[i].value];
+        }
       }
     }
 
@@ -605,9 +610,8 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     return parentValues.length > CategoryFacet.MAXIMUM_NUMBER_OF_VALUES_BEFORE_TRUNCATING;
   }
 
-  private addEllipsis(parentValue: CategoryValueParent, pathOfLastTruncatedParentValue: string[], valueToAddToPath: string) {
+  private addEllipsis() {
     this.categoryValueRoot.listRoot.append(this.categoryFacetTemplates.buildEllipsis().el);
-    parentValue.path = [...pathOfLastTruncatedParentValue, valueToAddToPath];
   }
 
   private findPathOfLastTruncatedParentValue(sortedParentValues: ICategoryFacetValue[], numberOfItemsInSecondSlice: number) {
@@ -709,7 +713,9 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
 
   private clear() {
     this.categoryValueRoot.clear();
-    this.categoryFacetSearch.clear();
+    if (this.options.enableFacetSearch) {
+      this.categoryFacetSearch.clear();
+    }
     this.moreLessContainer && this.moreLessContainer.detach();
     $$(this.element).removeClass('coveo-category-facet-non-empty-path');
   }
