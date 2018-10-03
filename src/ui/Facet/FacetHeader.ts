@@ -8,6 +8,7 @@ import { IAnalyticsFacetOperatorMeta, IAnalyticsFacetMeta, analyticsActionCauseL
 import 'styling/_FacetHeader';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { SVGDom } from '../../utils/SVGDom';
+import { AccessibleButton } from '../../utils/AccessibleButton';
 
 export interface IFacetHeaderOptions {
   facetElement: HTMLElement;
@@ -180,28 +181,37 @@ export class FacetHeader {
   }
 
   private buildTitle(): HTMLElement {
-    const title = $$('div', {
-      title: this.options.title,
-      className: 'coveo-facet-header-title'
-    });
+    const title = $$('div', { className: 'coveo-facet-header-title' });
     title.text(this.options.title);
+    title.setAttribute('role', 'heading');
+    title.setAttribute('aria-level', '2');
+    title.setAttribute('aria-label', `${l('FacetTitle', this.options.title)}.`);
     return title.el;
   }
 
   public buildEraser(): HTMLElement {
-    const eraser = $$('div', { title: l('Clear', this.options.title), className: 'coveo-facet-header-eraser' }, SVGIcons.icons.mainClear);
+    const eraser = $$('div', { className: 'coveo-facet-header-eraser' }, SVGIcons.icons.mainClear);
+
     SVGDom.addClassToSVGInContainer(eraser.el, 'coveo-facet-header-eraser-svg');
 
-    eraser.on('click', () => {
-      const cmp = this.options.facet || this.options.facetSlider;
-      cmp.reset();
-      cmp.usageAnalytics.logSearchEvent<IAnalyticsFacetMeta>(analyticsActionCauseList.facetClearAll, {
-        facetId: cmp.options.id,
-        facetField: cmp.options.field.toString(),
-        facetTitle: cmp.options.title
-      });
-      cmp.queryController.executeQuery();
-    });
+    new AccessibleButton()
+      .withElement(eraser.el)
+      .withLabel(l('Reset'))
+      .withClickAction(() => this.onEraserClick())
+      .withEnterKeyboardAction(() => this.onEraserClick())
+      .build();
+
     return eraser.el;
+  }
+
+  private onEraserClick() {
+    const cmp = this.options.facet || this.options.facetSlider;
+    cmp.reset();
+    cmp.usageAnalytics.logSearchEvent<IAnalyticsFacetMeta>(analyticsActionCauseList.facetClearAll, {
+      facetId: cmp.options.id,
+      facetField: cmp.options.field.toString(),
+      facetTitle: cmp.options.title
+    });
+    cmp.queryController.executeQuery();
   }
 }
