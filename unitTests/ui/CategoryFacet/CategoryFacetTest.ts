@@ -488,21 +488,19 @@ export function CategoryFacetTest() {
 
       it('should properly build the ellipse boundaries', () => {
         const visibles = test.cmp.getVisibleParentValues();
+        const indexBeforeEllipse = CategoryFacet.NUMBER_OF_VALUES_TO_KEEP_AFTER_TRUNCATING / 2 - 1;
 
-        // Check first value
-        expect(visibles[0].value).toContain('parent0');
+        const firstValue = visibles[0].value;
+        const beforeEllipse = visibles[indexBeforeEllipse].value;
+        const afterEllipse = visibles[indexBeforeEllipse + 1].value;
+        const lastParent = visibles[visibles.length - 2].value;
+        const lastChild = visibles[visibles.length - 1].value;
 
-        // Check value right before ellipse
-        expect(visibles[CategoryFacet.NUMBER_OF_VALUES_TO_KEEP_AFTER_TRUNCATING / 2 - 1].value).toContain('parent4');
-
-        // Check value right after ellipse
-        expect(visibles[CategoryFacet.NUMBER_OF_VALUES_TO_KEEP_AFTER_TRUNCATING / 2].value).toContain('parent25');
-
-        // Check last parent value
-        expect(visibles[visibles.length - 2].value).toBe('parent29');
-
-        // Check last child value
-        expect(visibles[visibles.length - 1].value).toBe('value0');
+        expect(firstValue).toContain('parent0');
+        expect(beforeEllipse).toContain('parent4');
+        expect(afterEllipse).toContain('parent25');
+        expect(lastParent).toBe('parent29');
+        expect(lastChild).toBe('value0');
       });
 
       it('should properly render an ellipse section', () => {
