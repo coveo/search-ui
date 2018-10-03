@@ -26,24 +26,24 @@ export function SuggestionsManagerTest() {
 
     it('returns the correct selected element with keyboard on move down', () => {
       suggestionManager.moveDown();
-      const selectedWithKeyboard = suggestionManager.getKeyboardFocusedElement();
+      const selectedWithKeyboard = suggestionManager.selectAndReturnKeyboardFocusedElement();
       expect($$(selectedWithKeyboard).hasClass(selectedClass)).toBe(true);
       expect(selectedWithKeyboard).toBe(suggestion.el);
     });
 
     it('returns the correct selected element with keyboard on move up', () => {
       suggestionManager.moveUp();
-      const selectedWithKeyboard = suggestionManager.getKeyboardFocusedElement();
+      const selectedWithKeyboard = suggestionManager.selectAndReturnKeyboardFocusedElement();
       expect($$(selectedWithKeyboard).hasClass(selectedClass)).toBe(true);
       expect(selectedWithKeyboard).toBe(suggestion.el);
     });
 
-    it('return no selected element with successive call to getKeyboardFocusedElement()', () => {
+    it('return no selected element with successive call to selectAndReturnKeyboardFocusedElement()', () => {
       suggestionManager.moveDown();
-      const selectedWithKeyboard = suggestionManager.getKeyboardFocusedElement();
+      const selectedWithKeyboard = suggestionManager.selectAndReturnKeyboardFocusedElement();
       expect(selectedWithKeyboard).toBeDefined();
 
-      const repeatCallToSelectedWithKeyboard = suggestionManager.getKeyboardFocusedElement();
+      const repeatCallToSelectedWithKeyboard = suggestionManager.selectAndReturnKeyboardFocusedElement();
       expect(repeatCallToSelectedWithKeyboard).toBeNull();
     });
 
@@ -51,7 +51,7 @@ export function SuggestionsManagerTest() {
       suggestionManager.handleMouseOver({
         target: suggestion.el
       });
-      const selectedWithKeyboard = suggestionManager.getKeyboardFocusedElement();
+      const selectedWithKeyboard = suggestionManager.selectAndReturnKeyboardFocusedElement();
       expect(selectedWithKeyboard).toBeNull();
     });
 
@@ -60,7 +60,7 @@ export function SuggestionsManagerTest() {
       suggestionManager.handleMouseOver({
         target: suggestion.el
       });
-      const selectedWithKeyboard = suggestionManager.getKeyboardFocusedElement();
+      const selectedWithKeyboard = suggestionManager.selectAndReturnKeyboardFocusedElement();
       expect(selectedWithKeyboard).toBeNull();
     });
 
@@ -69,7 +69,7 @@ export function SuggestionsManagerTest() {
       suggestionManager.handleMouseOver({
         target: suggestion.el
       });
-      const selectedWithKeyboard = suggestionManager.getKeyboardFocusedElement();
+      const selectedWithKeyboard = suggestionManager.selectAndReturnKeyboardFocusedElement();
       expect(selectedWithKeyboard).toBeNull();
     });
 

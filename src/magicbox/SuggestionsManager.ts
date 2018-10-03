@@ -90,7 +90,7 @@ export class SuggestionsManager {
     return this.returnMoved(this.move('up'));
   }
 
-  public getKeyboardFocusedElement(): HTMLElement {
+  public selectAndReturnKeyboardFocusedElement(): HTMLElement {
     const selected = this.keyboardFocusedSuggestion;
     if (selected != null) {
       $$(selected).trigger('keyboardSelect');
