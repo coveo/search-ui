@@ -169,7 +169,15 @@ export class CategoryFacetSearch implements IFacetSearch {
 
     const firstRow = $$('div', { className: 'coveo-category-facet-search-first-row' }, value, number);
     const secondRow = $$('div', { className: 'coveo-category-facet-search-second-row' }, pathToValueCaption);
-    const item = $$('li', { className: 'coveo-category-facet-search-value' }, firstRow, secondRow);
+    const item = $$(
+      'li',
+      {
+        className: 'coveo-category-facet-search-value',
+        title: path
+      },
+      firstRow,
+      secondRow
+    );
     item.el.dataset.path = categoryFacetValue.value;
 
     new AccessibleButton()
