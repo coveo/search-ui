@@ -90,10 +90,13 @@ export class SuggestionsManager {
     return this.returnMoved(this.move('up'));
   }
 
-  public getKeyboardFocusedElement(): HTMLElement {
+  public selectAndReturnKeyboardFocusedElement(): HTMLElement {
     const selected = this.keyboardFocusedSuggestion;
     if (selected != null) {
       $$(selected).trigger('keyboardSelect');
+      // By definition, once an element has been "selected" with the keyboard,
+      // it is not longer "active" since the event has been processed.
+      this.keyboardFocusedSuggestion = null;
     }
     return selected;
   }
