@@ -1,4 +1,4 @@
-import { IResultListOptions } from './ResultList';
+import { IResultListOptions } from './ResultListOptions';
 import { ResultListRenderer } from './ResultListRenderer';
 import { TemplateRole } from '../Templates/Template';
 import { TableTemplate } from '../Templates/TableTemplate';

@@ -46,7 +46,6 @@ import { ResultListRenderer } from './ResultListRenderer';
 import { ResultListTableRenderer } from './ResultListTableRenderer';
 import ResultLayoutSelectorModule = require('../ResultLayoutSelector/ResultLayoutSelector');
 import { IResultListOptions } from './ResultListOptions';
-export { IResultListOptions };
 
 CoreHelpers.exportAllHelpersGlobally(window['Coveo']);
 
