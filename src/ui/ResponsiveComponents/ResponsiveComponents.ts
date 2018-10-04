@@ -33,7 +33,7 @@ export class ResponsiveComponents {
    */
   public setSmallScreenWidth(width: number) {
     Assert.check(
-      this.responsiveModes === ResponsiveModes.AUTO,
+      this.responsiveModes !== ResponsiveModes.AUTO,
       `Cannot modify medium screen width if responsiveMode is locked on ${this.responsiveModes}.`
     );
     Assert.check(
@@ -49,7 +49,7 @@ export class ResponsiveComponents {
    */
   public setMediumScreenWidth(width: number) {
     Assert.check(
-      this.responsiveModes === ResponsiveModes.AUTO,
+      this.responsiveModes !== ResponsiveModes.AUTO,
       `Cannot modify medium screen width if responsiveMode is locked on ${this.responsiveModes}.`
     );
     Assert.check(
