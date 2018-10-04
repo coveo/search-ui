@@ -31,6 +31,7 @@ export interface IQuickviewOptions {
   enableLoadingAnimation?: boolean;
   loadingAnimation?: HTMLElement | Promise<HTMLElement>;
   alwaysShow?: boolean;
+  tooltipPlacement?: PopperJs.Placement;
 }
 
 interface IQuickviewOpenerObject {
@@ -212,7 +213,19 @@ export class Quickview extends Component {
         }
         return DomUtils.getBasicLoadingAnimation();
       }
-    )
+    ),
+
+    /**
+     * Specifies where to position the tooltip compared to the element
+     * Default value is `bottom`. Other values are `auto`, `top`, `left`, `right`.
+     * You can also append these variations: `-start`, `-end` which correspond to the alignment (by default they are centered)
+     *
+     * **Example:**
+     * `top-start` tooltip is on top of the `Quickview` button, aligned on the left (start)
+     */
+    tooltipPlacement: ComponentOptions.buildCustomOption<PopperJs.Placement>((value: PopperJs.Placement) => value, {
+      defaultValue: 'bottom'
+    })
   };
 
   public static resultCurrentlyBeingRendered: IQueryResult = null;
@@ -295,7 +308,7 @@ export class Quickview extends Component {
 
   private buildPopper(icon: HTMLElement, caption: HTMLElement, arrow: HTMLElement) {
     const popperReference = new PopperJs(icon, caption, {
-      placement: 'bottom',
+      placement: this.options.tooltipPlacement,
       modifiers: {
         preventOverflow: {
           boundariesElement: $$(this.root).el,
