@@ -24,6 +24,23 @@ import { Template } from '../Templates/Template';
 import { DefaultQuickviewTemplate } from './DefaultQuickviewTemplate';
 import { QuickviewDocument } from './QuickviewDocument';
 
+export type Placement =
+  | 'auto-start'
+  | 'auto'
+  | 'auto-end'
+  | 'top-start'
+  | 'top'
+  | 'top-end'
+  | 'right-start'
+  | 'right'
+  | 'right-end'
+  | 'bottom-end'
+  | 'bottom'
+  | 'bottom-start'
+  | 'left-end'
+  | 'left'
+  | 'left-start';
+
 export interface IQuickviewOptions {
   title?: string;
   showDate?: boolean;
@@ -31,7 +48,7 @@ export interface IQuickviewOptions {
   enableLoadingAnimation?: boolean;
   loadingAnimation?: HTMLElement | Promise<HTMLElement>;
   alwaysShow?: boolean;
-  tooltipPlacement?: PopperJs.Placement;
+  tooltipPlacement?: Placement;
 }
 
 interface IQuickviewOpenerObject {
@@ -223,7 +240,7 @@ export class Quickview extends Component {
      * **Example:**
      * `top-start` tooltip is on top of the `Quickview` button, aligned on the left (start)
      */
-    tooltipPlacement: ComponentOptions.buildCustomOption<PopperJs.Placement>((value: PopperJs.Placement) => value, {
+    tooltipPlacement: ComponentOptions.buildCustomOption<Placement>((value: Placement) => value, {
       defaultValue: 'bottom'
     })
   };
