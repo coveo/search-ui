@@ -191,7 +191,6 @@ export class Template implements ITemplateProperties {
     await this.ensureComponentsInHtmlStringHaveLoaded(html);
 
     const template = this.buildTemplate(html, mergedOptions);
-    this.makeTemplateAccessible(template, result);
     this.logger.trace('Instantiated result template', result, template);
 
     return template;
@@ -244,13 +243,5 @@ export class Template implements ITemplateProperties {
 
     element['template'] = this;
     return element;
-  }
-
-  private makeTemplateAccessible(template: HTMLElement, result: IQueryResult) {
-    template.tabIndex = 0;
-    template.setAttribute('role', 'heading');
-    template.setAttribute('aria-level', '2');
-    template.setAttribute('aria-label', `Result`);
-    result && result.title && template.setAttribute('title', result.title);
   }
 }

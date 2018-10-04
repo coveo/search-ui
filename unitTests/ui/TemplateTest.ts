@@ -3,6 +3,7 @@ import { IQueryResult } from '../../src/rest/QueryResult';
 import { FakeResults } from '../Fake';
 import { ResponsiveComponents } from '../../src/ui/ResponsiveComponents/ResponsiveComponents';
 import { $$ } from '../../src/utils/Dom';
+
 export function TemplateTest() {
   describe('Template', () => {
     let result: IQueryResult;
@@ -100,19 +101,6 @@ export function TemplateTest() {
           expect($$(created).hasClass('coveo-table-layout')).toBe(true);
           done();
         });
-      });
-
-      it('should set the title attribute to the result title', async done => {
-        const created = await tmpl.instantiateToElement(result);
-        expect(created.title).toBe(result.title);
-        done();
-      });
-
-      it('when the result title is null, it sets the title attribute to an empty string', async done => {
-        result.title = null;
-        const created = await tmpl.instantiateToElement(result);
-        expect(created.title).toBe('');
-        done();
       });
 
       it('should return the correct type', () => {
