@@ -3,7 +3,8 @@ import { QuerySummaryUtils } from '../../src/utils/QuerySummaryUtils';
 import { IQuerySuccessEventArgs } from '../../src/events/QueryEvents';
 import { QueryBuilder, $$ } from '../../src/Core';
 import { FakeResults } from '../Fake';
-import { ResultList, IResultListOptions } from '../../src/ui/ResultList/ResultList';
+import { ResultList } from '../../src/ui/ResultList/ResultList';
+import { IResultListOptions } from '../../src/ui/ResultList/ResultListOptions';
 
 export const QuerySummaryUtilsTest = () => {
   describe('QuerySummaryUtils', () => {
