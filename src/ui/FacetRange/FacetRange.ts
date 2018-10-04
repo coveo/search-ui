@@ -14,6 +14,8 @@ import * as Globalize from 'globalize';
 import { exportGlobally } from '../../GlobalExports';
 import { IIndexFieldValue } from '../../rest/FieldValue';
 import { IGroupByValue } from '../../rest/GroupByValue';
+import { ResponsiveFacetOptions } from '../ResponsiveComponents/ResponsiveFacetOptions';
+import { ResponsiveFacets } from '../ResponsiveComponents/ResponsiveFacets';
 
 export interface IFacetRangeOptions extends IFacetOptions {
   ranges?: IRangeValue[];
@@ -127,7 +129,8 @@ export class FacetRange extends Facet implements IComponentBindings {
      * function (see [Query Function](https://developers.coveo.com/x/XQCq)). When this is the case, you must specify the
      * ranges at query time.
      */
-    ranges: ComponentOptions.buildJsonOption<IRangeValue[]>()
+    ranges: ComponentOptions.buildJsonOption<IRangeValue[]>(),
+    ...ResponsiveFacetOptions
   };
 
   public options: IFacetRangeOptions;
@@ -146,6 +149,7 @@ export class FacetRange extends Facet implements IComponentBindings {
     this.options.enableSettings = false;
     this.options.includeInOmnibox = false;
     this.options.enableMoreLess = false;
+    ResponsiveFacets.init(this.root, this, this.options);
   }
 
   public getValueCaption(facetValue: any): string {

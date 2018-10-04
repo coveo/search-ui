@@ -1,6 +1,5 @@
 import { $$, Dom } from '../../../utils/Dom';
 import PopperJs from 'popper.js';
-import { ResponsiveComponentsManager } from '../ResponsiveComponentsManager';
 
 export interface IResponsiveDropdownContent {
   element: Dom;
@@ -46,10 +45,11 @@ export class ResponsiveDropdownContent implements IResponsiveDropdownContent {
     }
     this.element.el.style.width = width.toString() + 'px';
 
-    const referenceElement = $$(this.coveoRoot.find(`.${ResponsiveComponentsManager.DROPDOWN_HEADER_WRAPPER_CSS_CLASS}`)).el;
+    const referenceElement = $$(this.coveoRoot.find(`.coveo-facet-dropdown-header`)).el;
 
     this.popperReference = new PopperJs(referenceElement, this.element.el, {
-      placement: 'left'
+      placement: 'bottom-start',
+      positionFixed: true
     });
   }
 

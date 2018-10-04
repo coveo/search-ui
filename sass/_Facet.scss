@@ -1,10 +1,7 @@
 @import 'bourbon/bourbon';
 @import 'Variables';
-.CoveoFacet,
-.CoveoFacetRange,
-.CoveoFacetSlider,
-.CoveoHierarchicalFacet,
-.CoveoCategoryFacet {
+
+#{$allFacetsType} {
   margin: 10px 0;
   padding: 0;
   @include defaultRoundedBorder();
