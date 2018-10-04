@@ -3,6 +3,12 @@ import 'styling/_ResponsiveComponents';
 
 export const MEDIUM_SCREEN_WIDTH = 800;
 export const SMALL_SCREEN_WIDTH = 480;
+export enum ResponsiveModes {
+  AUTO= 'auto',
+  SMALL= 'small',
+  MEDIUM = 'medium',
+  LARGE = 'large'
+}
 
 /**
  * This class serves as a way to get and set the different screen size breakpoints for the interface.
@@ -18,7 +24,7 @@ export const SMALL_SCREEN_WIDTH = 480;
 export class ResponsiveComponents {
   private smallScreenWidth: number;
   private mediumScreenWidth: number;
-
+  private responsiveModes: ResponsiveModes
   constructor(public windoh: Window = window) {}
 
   /**
@@ -26,6 +32,10 @@ export class ResponsiveComponents {
    * @param width
    */
   public setSmallScreenWidth(width: number) {
+    Assert.check(
+      this.responsiveModes === ResponsiveModes.AUTO,
+      `Cannot modify medium screen width if responsiveMode is locked on ${this.responsiveModes}.`
+    );
     Assert.check(
       width < this.getMediumScreenWidth(),
       `Cannot set small screen width (${width}) larger or equal to the current medium screen width (${this.getMediumScreenWidth()})`
@@ -39,10 +49,18 @@ export class ResponsiveComponents {
    */
   public setMediumScreenWidth(width: number) {
     Assert.check(
+      this.responsiveModes === ResponsiveModes.AUTO,
+      `Cannot modify medium screen width if responsiveMode is locked on ${this.responsiveModes}.`
+    );
+    Assert.check(
       width > this.getSmallScreenWidth(),
       `Cannot set medium screen width (${width}) smaller or equal to the current small screen width (${this.getSmallScreenWidth()})`
     );
     this.mediumScreenWidth = width;
+  }
+
+  public setResponsiveMode(responsiveModes: ResponsiveModes) {
+    this.responsiveModes = responsiveModes;
   }
 
   /**
@@ -52,6 +70,12 @@ export class ResponsiveComponents {
    * @returns {number}
    */
   public getSmallScreenWidth() {
+    if(this.responsiveModes === ResponsiveModes.SMALL) {
+      return Number.POSITIVE_INFINITY
+    }
+    if(this.responsiveModes !== ResponsiveModes.AUTO) {
+      return 0;
+    }
     if (this.smallScreenWidth == null) {
       return SMALL_SCREEN_WIDTH;
     }
@@ -65,6 +89,12 @@ export class ResponsiveComponents {
    * @returns {number}
    */
   public getMediumScreenWidth() {
+    if(this.responsiveModes === ResponsiveModes.MEDIUM) {
+      return Number.POSITIVE_INFINITY;
+    }
+    if(this.responsiveModes !== ResponsiveModes.AUTO) {
+      return 0;
+    }
     if (this.mediumScreenWidth == null) {
       return MEDIUM_SCREEN_WIDTH;
     }
