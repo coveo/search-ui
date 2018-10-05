@@ -1,9 +1,9 @@
-import { Utils } from '../utils/Utils';
-import { JQueryUtils } from '../utils/JQueryutils';
+import * as _ from 'underscore';
 import { Assert } from '../misc/Assert';
 import { Logger } from '../misc/Logger';
-import * as _ from 'underscore';
 import { IStringMap } from '../rest/GenericParam';
+import { JQueryUtils } from '../utils/JQueryutils';
+import { Utils } from '../utils/Utils';
 
 export interface IOffset {
   left: number;
@@ -19,6 +19,11 @@ export interface IOffset {
 export class Dom {
   private static CLASS_NAME_REGEX = /-?[_a-zA-Z]+[_a-zA-Z0-9-]*/g;
   private static ONLY_WHITE_SPACE_REGEX = /^\s*$/;
+  /**
+   * Whether to always register, remove, and trigger events using standard JavaScript rather than attempting to use jQuery first.
+   * @type boolean
+   */
+  public static useNativeJavaScriptEvents = false;
 
   public el: HTMLElement;
 
@@ -481,7 +486,7 @@ export class Dom {
     } else {
       const modifiedType = this.processEventTypeToBeJQueryCompatible(type);
       const jq = JQueryUtils.getJQuery();
-      if (jq) {
+      if (this.shouldUseJQueryEvent()) {
         jq(this.el).on(modifiedType, eventHandle);
       } else if (this.el.addEventListener) {
         const fn = (e: CustomEvent) => {
@@ -539,7 +544,7 @@ export class Dom {
     } else {
       const modifiedType = this.processEventTypeToBeJQueryCompatible(type);
       const jq = JQueryUtils.getJQuery();
-      if (jq) {
+      if (this.shouldUseJQueryEvent()) {
         jq(this.el).off(modifiedType, eventHandle);
       } else if (this.el.removeEventListener) {
         const handler = Dom.handlers.get(eventHandle);
@@ -559,14 +564,17 @@ export class Dom {
    */
   public trigger(type: string, data?: { [key: string]: any }): void {
     const modifiedType = this.processEventTypeToBeJQueryCompatible(type);
-    const jq = JQueryUtils.getJQuery();
-    if (jq) {
-      jq(this.el).trigger(modifiedType, data);
-    } else if (CustomEvent !== undefined) {
+    if (this.shouldUseJQueryEvent()) {
+      JQueryUtils.getJQuery()(this.el).trigger(modifiedType, data);
+    } else if (window['CustomEvent'] !== undefined) {
       const event = new CustomEvent(modifiedType, { detail: data, bubbles: true });
       this.el.dispatchEvent(event);
     } else {
-      new Logger(this).error('CANNOT TRIGGER EVENT FOR OLDER BROWSER');
+      try {
+        this.el.dispatchEvent(this.buildIE11CustomEvent(modifiedType, data));
+      } catch {
+        this.oldBrowserError();
+      }
     }
   }
 
@@ -705,6 +713,16 @@ export class Dom {
     return $$(<HTMLElement>this.el.cloneNode(deep));
   }
 
+  private buildIE11CustomEvent(type: string, data?: { [key: string]: any }) {
+    const event = document.createEvent('CustomEvent');
+    event.initCustomEvent(type, true, true, data);
+    return event;
+  }
+
+  private shouldUseJQueryEvent() {
+    return JQueryUtils.getJQuery() && !Dom.useNativeJavaScriptEvents;
+  }
+
   private processEventTypeToBeJQueryCompatible(event: string): string {
     // From https://api.jquery.com/on/
     // [...]
@@ -738,6 +756,10 @@ export class Dom {
       return current;
     }
     return undefined;
+  }
+
+  private oldBrowserError() {
+    new Logger(this).error('CANNOT TRIGGER EVENT FOR OLDER BROWSER');
   }
 }
 

@@ -72,6 +72,11 @@ export function TemplateTest() {
         });
       });
 
+      it('should return null when calling instantiate to element with a false condition', () => {
+        tmpl.condition = () => false;
+        expect(tmpl.instantiateToElement(result)).toBeNull();
+      });
+
       it('should correctly return the root HTMLElement when not wrapping in a div', done => {
         tmpl = new Template(() => '<div class="my-stuff"></div>');
         tmpl.instantiateToElement(result, { wrapInDiv: false }).then(created => {
