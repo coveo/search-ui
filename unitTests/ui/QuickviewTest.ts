@@ -1,5 +1,5 @@
 import * as Mock from '../MockEnvironment';
-import { Quickview, IQuickviewOptions, Placement } from '../../src/ui/Quickview/Quickview';
+import { Quickview, IQuickviewOptions, ValidTooltipPlacement } from '../../src/ui/Quickview/Quickview';
 import { FakeResults } from '../Fake';
 import { IQueryResult } from '../../src/rest/QueryResult';
 import { Template } from '../../src/ui/Templates/Template';
@@ -72,7 +72,7 @@ export function QuickviewTest() {
     });
 
     it('when the tooltipPlacement option is set, the tooltip has to be positionned accordingly', done => {
-      const placements: Placement[] = ['left', 'top-end', 'right-start', 'bottom'];
+      const placements: ValidTooltipPlacement[] = ['left', 'top-end', 'right-start', 'bottom'];
       for (const placement of placements) {
         quickview = buildQuickview(undefined, undefined, { tooltipPlacement: placement });
         expect(
