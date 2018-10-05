@@ -7,6 +7,7 @@ import _ = require('underscore');
 import { IGroupByValue } from '../../../src/rest/GroupByValue';
 import { $$ } from '../../../src/Core';
 import { KEYBOARD } from '../../../src/utils/KeyboardUtils';
+import { analyticsActionCauseList } from '../../../src/ui/Analytics/AnalyticsActionListMeta';
 
 export function CategoryFacetSearchTest() {
   describe('CategoryFacetSearch', () => {
@@ -165,16 +166,44 @@ export function CategoryFacetSearchTest() {
         done();
       });
     });
-    it('pressing enter selects the current result', done => {
-      const keyboardEvent = { which: KEYBOARD.ENTER } as KeyboardEvent;
-      spyOn(categoryFacetMock, 'changeActivePath');
+
+    it('sends an analytics event on selection', done => {
+      spyOn(categoryFacetMock, 'logAnalyticsEvent');
       categoryFacetSearch.build();
       categoryFacetSearch.displayNewValues();
 
       setTimeout(() => {
-        getInputHandler().handleKeyboardEvent(keyboardEvent);
-        expect(categoryFacetMock.changeActivePath).toHaveBeenCalledWith(['value0']);
+        $$(getFacetSearchValues()[0]).trigger('click');
+        expect(categoryFacetMock.logAnalyticsEvent).toHaveBeenCalledWith(analyticsActionCauseList.categoryFacetSelect, ['value0']);
         done();
+      });
+    });
+
+    describe('when selecting with the keyboard (using ENTER)', () => {
+      let keyboardEvent: KeyboardEvent;
+
+      beforeEach(() => {
+        keyboardEvent = { which: KEYBOARD.ENTER } as KeyboardEvent;
+        spyOn(categoryFacetMock, 'changeActivePath');
+        spyOn(categoryFacetMock, 'logAnalyticsEvent');
+        categoryFacetSearch.build();
+        categoryFacetSearch.displayNewValues();
+      });
+
+      it('it selects the current result', done => {
+        setTimeout(() => {
+          getInputHandler().handleKeyboardEvent(keyboardEvent);
+          expect(categoryFacetMock.changeActivePath).toHaveBeenCalledWith(['value0']);
+          done();
+        });
+      });
+
+      it('it sends an analytics event', done => {
+        setTimeout(() => {
+          getInputHandler().handleKeyboardEvent(keyboardEvent);
+          expect(categoryFacetMock.logAnalyticsEvent).toHaveBeenCalledWith(analyticsActionCauseList.categoryFacetSelect, ['value0']);
+          done();
+        });
       });
     });
 

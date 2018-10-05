@@ -7,6 +7,7 @@ import { IResultLinkOptions } from '../../src/ui/ResultLink/ResultLinkOptions';
 import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
 import { OS_NAME } from '../../src/utils/OSUtils';
 import { FakeResults } from '../Fake';
+import { Initialization } from '../../src/Core';
 
 export function ResultLinkTest() {
   describe('ResultLink', function() {
@@ -27,6 +28,49 @@ export function ResultLinkTest() {
 
     it('should have its tabindex value set to 0', () => {
       expect(test.cmp.element.getAttribute('tabindex')).toBe('0');
+    });
+
+    describe(`when the template contains two ${ResultLink.ID} elements`, () => {
+      let template: HTMLElement;
+
+      function buildResultWithTwoResultLinks() {
+        const result = $$('div', { className: 'CoveoResult' }).el;
+        $$(result).append(buildResultLink());
+        $$(result).append(buildResultLink());
+
+        return result;
+      }
+
+      function buildResultLink() {
+        return $$('div', { className: 'CoveoResultLink' }).el;
+      }
+
+      function getResultLinks() {
+        return $$(template).findAll('.CoveoResultLink');
+      }
+
+      beforeEach(() => {
+        template = buildResultWithTwoResultLinks();
+        const result = FakeResults.createFakeResult();
+        Initialization.automaticallyCreateComponentsInsideResult(template, result);
+      });
+
+      it('adds a role attribute with value "heading" to the first result link', () => {
+        const [firstLink] = getResultLinks();
+        expect(firstLink.getAttribute('role')).toBe('heading');
+      });
+
+      it('sets the aria-level attribute to "2" to the first result link', () => {
+        const [firstLink] = getResultLinks();
+        expect(firstLink.getAttribute('aria-level')).toBe('2');
+      });
+
+      it(`does not add accessibility attributes to the second result link`, () => {
+        const secondLink = getResultLinks()[1];
+
+        expect(secondLink.getAttribute('role')).toBeNull();
+        expect(secondLink.getAttribute('aria-level')).toBeNull();
+      });
     });
 
     it('should hightlight the result title', () => {

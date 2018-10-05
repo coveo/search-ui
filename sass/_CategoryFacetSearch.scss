@@ -1,11 +1,9 @@
 @import 'Variables';
 @import 'bourbon/bourbon';
-
 .coveo-category-facet-search-container {
   padding: 0 20px;
   height: 32px;
   line-height: 30px;
-
   .coveo-facet-search {
     margin: 0;
   }
@@ -54,7 +52,7 @@
 .coveo-category-facet-search-label {
   vertical-align: middle;
   display: inline-block;
-  color: $color-vibrant-blue;
+  color: $coveo-blue;
 }
 
 .coveo-category-facet-search-value {
@@ -71,6 +69,7 @@
   @include display(flex);
   @include justify-content(space-between);
 }
+
 .coveo-category-facet-search-value-caption {
   line-height: 17px;
 }
@@ -82,10 +81,20 @@
 .coveo-category-facet-search-path {
   display: block;
   font-size: 11px;
+  @include display(flex);
 }
 
 .coveo-category-facet-search-path-parents {
   color: $color-blueish-gray;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-right: 5px;
+  direction: rtl;
+}
+
+.coveo-category-facet-search-path-last-value {
+  white-space: nowrap;
 }
 
 .coveo-category-facet-search-second-row {

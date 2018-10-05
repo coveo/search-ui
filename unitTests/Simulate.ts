@@ -254,6 +254,10 @@ export class Simulate {
     return args.breadcrumbs;
   }
 
+  static clearBreadcrumb(env: IMockEnvironment) {
+    $$(env.root).trigger(BreadcrumbEvents.clearBreadcrumb);
+  }
+
   static keyUp(element: HTMLElement, key: number, shiftKey?: boolean) {
     return Simulate.keyEvent(element, key, 'keyup', shiftKey);
   }

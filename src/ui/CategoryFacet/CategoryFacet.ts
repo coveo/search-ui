@@ -23,12 +23,12 @@ import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
 import { ICategoryFacetResult } from '../../rest/CategoryFacetResult';
 import { BreadcrumbEvents, IPopulateBreadcrumbEventArgs } from '../../events/BreadcrumbEvents';
 import { CategoryFacetBreadcrumb } from './CategoryFacetBreadcrumb';
-import { IQueryResults } from '../../rest/QueryResults';
 import { ICategoryFacetValue } from '../../rest/CategoryFacetValue';
 import { ISearchEndpoint } from '../../rest/SearchEndpointInterface';
 import { IAnalyticsCategoryFacetMeta, analyticsActionCauseList, IAnalyticsActionCause } from '../Analytics/AnalyticsActionListMeta';
 import { CategoryFacetDebug } from './CategoryFacetDebug';
 import { QueryBuilder } from '../Base/QueryBuilder';
+import { IAutoLayoutAdjustableInsideFacetColumn } from '../SearchInterface/FacetColumnAutoLayoutAdjustment';
 
 export interface ICategoryFacetOptions {
   field: IFieldOption;
@@ -90,7 +90,7 @@ export type CategoryValueDescriptor = {
 //  * To help you verify if your fields are setup correctly, see the {@link CategoryFacet.options.debug} option
 //  * and the {@link CategoryFacet.debugValue} method.
 //  */
-export class CategoryFacet extends Component {
+export class CategoryFacet extends Component implements IAutoLayoutAdjustableInsideFacetColumn {
   static doExport = () => {
     exportGlobally({
       CategoryFacet
@@ -225,11 +225,11 @@ export class CategoryFacet extends Component {
 
   public categoryFacetQueryController: CategoryFacetQueryController;
   public listenToQueryStateChange = true;
-  public queryStateAttribute: string;
   public categoryFacetSearch: CategoryFacetSearch;
   public activeCategoryValue: CategoryValue | undefined;
-  public activePath: string[] = [];
   public positionInQuery: number;
+  public static MAXIMUM_NUMBER_OF_VALUES_BEFORE_TRUNCATING = 15;
+  public static NUMBER_OF_VALUES_TO_KEEP_AFTER_TRUNCATING = 10;
 
   private categoryValueRoot: CategoryValueRoot;
   private categoryFacetTemplates: CategoryFacetTemplates;
@@ -243,13 +243,9 @@ export class CategoryFacet extends Component {
 
   public static WAIT_ELEMENT_CLASS = 'coveo-category-facet-header-wait-animation';
 
-  private static MAXIMUM_NUMBER_OF_VALUES_BEFORE_TRUNCATING = 15;
-  private static NUMBER_OF_VALUES_TO_KEEP_AFTER_TRUNCATING = 10;
-
   constructor(public element: HTMLElement, public options: ICategoryFacetOptions, bindings?: IComponentBindings) {
     super(element, 'CategoryFacet', bindings);
     this.options = ComponentOptions.initComponentOptions(element, CategoryFacet, options);
-    this.activePath = this.options.basePath;
 
     this.categoryFacetQueryController = new CategoryFacetQueryController(this);
     this.categoryFacetTemplates = new CategoryFacetTemplates();
@@ -271,8 +267,27 @@ export class CategoryFacet extends Component {
     this.bind.onRootElement(QueryEvents.duringQuery, () => this.addFading());
     this.bind.onRootElement(QueryEvents.deferredQuerySuccess, () => this.removeFading());
     this.bind.onRootElement<IPopulateBreadcrumbEventArgs>(BreadcrumbEvents.populateBreadcrumb, args => this.handlePopulateBreadCrumb(args));
+    this.bind.onRootElement(BreadcrumbEvents.clearBreadcrumb, () => this.handleClearBreadcrumb());
     this.buildFacetHeader();
     this.initQueryStateEvents();
+  }
+
+  public isCurrentlyDisplayed() {
+    return this.hasValues;
+  }
+
+  public get activePath() {
+    return this.queryStateModel.get(this.queryStateAttribute) || this.options.basePath;
+  }
+
+  public set activePath(newPath: string[]) {
+    this.listenToQueryStateChange = false;
+    this.queryStateModel.set(this.queryStateAttribute, newPath);
+    this.listenToQueryStateChange = true;
+  }
+
+  public get queryStateAttribute() {
+    return QueryStateModel.getFacetId(this.options.id);
   }
 
   public handleBuildingQuery(args: IBuildingQueryEventArgs) {
@@ -283,14 +298,31 @@ export class CategoryFacet extends Component {
     );
   }
 
+  private handleNoResults() {
+    if (this.isPristine()) {
+      this.hide();
+      return;
+    }
+
+    if (this.hasValues) {
+      this.show();
+      return;
+    }
+    this.activePath = this.options.basePath;
+    this.hide();
+  }
+
   public handleQuerySuccess(args: IQuerySuccessEventArgs) {
-    if (
-      Utils.isNullOrUndefined(args.results.categoryFacets) ||
-      Utils.isNullOrUndefined(args.results.categoryFacets[this.positionInQuery])
-    ) {
+    if (Utils.isNullOrUndefined(args.results.categoryFacets)) {
       this.notImplementedError();
       return;
     }
+
+    if (Utils.isNullOrUndefined(args.results.categoryFacets[this.positionInQuery])) {
+      this.handleNoResults();
+      return;
+    }
+
     const numberOfRequestedValues = args.query.categoryFacets[this.positionInQuery].maximumNumberOfValues;
     const categoryFacetResult = args.results.categoryFacets[this.positionInQuery];
     this.moreValuesToFetch = numberOfRequestedValues == categoryFacetResult.values.length;
@@ -299,12 +331,14 @@ export class CategoryFacet extends Component {
     if (categoryFacetResult.notImplemented) {
       this.notImplementedError();
       return;
-    } else if (categoryFacetResult.values.length != 0 || categoryFacetResult.parentValues.length != 0) {
-      this.renderValues(categoryFacetResult, numberOfRequestedValues);
-    } else {
-      this.hide();
     }
 
+    if (categoryFacetResult.values.length == 0 && categoryFacetResult.parentValues.length == 0) {
+      this.handleNoResults();
+      return;
+    }
+
+    this.renderValues(categoryFacetResult, numberOfRequestedValues);
     if (this.options.enableFacetSearch) {
       const facetSearch = this.categoryFacetSearch.build();
       $$(facetSearch).insertAfter(this.categoryValueRoot.listRoot.el);
@@ -320,22 +354,20 @@ export class CategoryFacet extends Component {
   }
 
   /**
-   * Changes the active path and triggers a new query.
+   * Changes the active path.
    *
-   * @returns the query promise.
    */
   public changeActivePath(path: string[]) {
-    this.listenToQueryStateChange = false;
-    this.queryStateModel.set(this.queryStateAttribute, path);
-    this.listenToQueryStateChange = true;
-
     this.activePath = path;
+  }
 
+  public async executeQuery() {
     this.showWaitingAnimation();
-    return this.queryController.executeQuery().then((queryResults: IQueryResults) => {
+    try {
+      await this.queryController.executeQuery();
+    } finally {
       this.hideWaitAnimation();
-      return queryResults;
-    });
+    }
   }
 
   /**
@@ -343,6 +375,8 @@ export class CategoryFacet extends Component {
    */
   public reload() {
     this.changeActivePath(this.activePath);
+    this.logAnalyticsEvent(analyticsActionCauseList.categoryFacetReload);
+    this.executeQuery();
   }
 
   /**
@@ -359,7 +393,7 @@ export class CategoryFacet extends Component {
     }
     let currentParentvalue = this.categoryValueRoot.children[0];
     const parentValues = [currentParentvalue];
-    while (currentParentvalue.children.length != 0) {
+    while (currentParentvalue.children.length != 0 && !Utils.arrayEqual(currentParentvalue.path, this.activePath)) {
       currentParentvalue = currentParentvalue.children[0];
       parentValues.push(currentParentvalue);
     }
@@ -399,6 +433,9 @@ export class CategoryFacet extends Component {
    * @returns simple object with three fields: `value`, `count` and `path`.
    */
   public getAvailableValues() {
+    if (!this.activeCategoryValue) {
+      return [];
+    }
     return this.activeCategoryValue.children.map(categoryValue => {
       return {
         value: categoryValue.categoryValueDescriptor.value,
@@ -420,6 +457,8 @@ export class CategoryFacet extends Component {
     const newPath = this.activePath.slice(0);
     newPath.push(value);
     this.changeActivePath(newPath);
+    this.logAnalyticsEvent(analyticsActionCauseList.categoryFacetSelect);
+    this.executeQuery();
   }
 
   /**
@@ -433,6 +472,8 @@ export class CategoryFacet extends Component {
     const newPath = this.activePath.slice(0);
     newPath.pop();
     this.changeActivePath(newPath);
+    this.logAnalyticsEvent(analyticsActionCauseList.categoryFacetSelect);
+    this.executeQuery();
   }
 
   /**
@@ -440,6 +481,8 @@ export class CategoryFacet extends Component {
    */
   public reset() {
     this.changeActivePath(this.options.basePath);
+    this.logAnalyticsEvent(analyticsActionCauseList.categoryFacetClear);
+    this.executeQuery();
   }
 
   public disable() {
@@ -485,11 +528,11 @@ export class CategoryFacet extends Component {
     }
   }
 
-  public logAnalyticsEvent(eventName: IAnalyticsActionCause) {
+  public logAnalyticsEvent(eventName: IAnalyticsActionCause, path = this.activePath) {
     this.usageAnalytics.logSearchEvent<IAnalyticsCategoryFacetMeta>(eventName, {
       categoryFacetId: this.options.id,
       categoryFacetField: this.options.field.toString(),
-      categoryFacetPath: this.activePath,
+      categoryFacetPath: path,
       categoryFacetTitle: this.options.title
     });
   }
@@ -528,8 +571,21 @@ export class CategoryFacet extends Component {
 
     for (let i = 0; i < sortedParentValues.length; i++) {
       currentParentValue = currentParentValue.renderAsParent(sortedParentValues[i]);
-      if (needToTruncate && i == numberOfItemsInFirstSlice) {
-        this.addEllipsis(currentParentValue, pathOfLastTruncatedParentValue, sortedParentValues[i].value);
+
+      // We do not want to make the "last" parent selectable, as clicking it would be a noop (re-selecting the same filter)
+      const isLastParent = i == sortedParentValues.length - 1;
+      if (!isLastParent) {
+        (currentParentValue as CategoryValue).makeSelectable().showCollapseArrow();
+      }
+
+      if (needToTruncate) {
+        if (i == numberOfItemsInFirstSlice - 1) {
+          this.addEllipsis();
+        }
+
+        if (i == numberOfItemsInFirstSlice) {
+          currentParentValue.path = [...pathOfLastTruncatedParentValue, sortedParentValues[i].value];
+        }
       }
     }
 
@@ -554,9 +610,8 @@ export class CategoryFacet extends Component {
     return parentValues.length > CategoryFacet.MAXIMUM_NUMBER_OF_VALUES_BEFORE_TRUNCATING;
   }
 
-  private addEllipsis(parentValue: CategoryValueParent, pathOfLastTruncatedParentValue: string[], valueToAddToPath: string) {
+  private addEllipsis() {
     this.categoryValueRoot.listRoot.append(this.categoryFacetTemplates.buildEllipsis().el);
-    parentValue.path = [...pathOfLastTruncatedParentValue, valueToAddToPath];
   }
 
   private findPathOfLastTruncatedParentValue(sortedParentValues: ICategoryFacetValue[], numberOfItemsInSecondSlice: number) {
@@ -607,8 +662,7 @@ export class CategoryFacet extends Component {
   }
 
   private initQueryStateEvents() {
-    this.queryStateAttribute = QueryStateModel.getCategoryFacetId(this.options.id);
-    this.queryStateModel.registerNewAttribute(QueryStateModel.getCategoryFacetId(this.options.id), this.options.basePath);
+    this.queryStateModel.registerNewAttribute(this.queryStateAttribute, this.options.basePath);
     this.bind.onQueryState<IAttributesChangedEventArg>(MODEL_EVENTS.CHANGE, undefined, data => this.handleQueryStateChanged(data));
   }
 
@@ -659,7 +713,9 @@ export class CategoryFacet extends Component {
 
   private clear() {
     this.categoryValueRoot.clear();
-    this.categoryFacetSearch.clear();
+    if (this.options.enableFacetSearch) {
+      this.categoryFacetSearch.clear();
+    }
     this.moreLessContainer && this.moreLessContainer.detach();
     $$(this.element).removeClass('coveo-category-facet-non-empty-path');
   }
@@ -699,6 +755,14 @@ export class CategoryFacet extends Component {
       const categoryFacetBreadcrumbBuilder = new CategoryFacetBreadcrumb(this.options.title, resetFacet, lastParentValue);
       args.breadcrumbs.push({ element: categoryFacetBreadcrumbBuilder.build() });
     }
+  }
+
+  private handleClearBreadcrumb() {
+    this.changeActivePath(this.options.basePath);
+  }
+
+  private get hasValues(): boolean {
+    return this.getAvailableValues().length > 0;
   }
 }
 

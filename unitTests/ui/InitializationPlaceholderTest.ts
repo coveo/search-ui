@@ -60,6 +60,13 @@ export function InitializationPlaceholderTest() {
         expect(oneFacet.hasClass(InitializationPlaceholder.INITIALIZATION_CLASS)).toBe(true);
       });
 
+      it('should add correct css class for category facet', () => {
+        const oneFacet = $$('div', { className: 'CoveoCategoryFacet' });
+        root.append(oneFacet.el);
+        new InitializationPlaceholder(root.el).withPlaceholderForFacets();
+        expect(oneFacet.hasClass(InitializationPlaceholder.INITIALIZATION_CLASS)).toBe(true);
+      });
+
       it('should transform the first 3 facets as a placeholder', () => {
         const oneFacet = $$('div', { className: 'CoveoFacet' });
         const twoFacet = $$('div', { className: 'CoveoFacet' });
