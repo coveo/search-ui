@@ -650,3 +650,6 @@ AriaLiveTest();
 
 import { QuerySummaryUtilsTest } from './utils/QuerySummaryUtilsTest';
 QuerySummaryUtilsTest();
+
+import { CategoryFacetQueryControllerTest } from './controllers/CategoryFacetQueryControlllerTest';
+CategoryFacetQueryControllerTest();
