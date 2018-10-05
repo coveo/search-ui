@@ -25,37 +25,41 @@
       z-index: 99;
     }
 
+    $arrow-width: 6px;
+    $arrow-height: 7px;
+    $arrow-color: $color-greyish-dark-blue;
+
     // Tooltip under element, arrow on top
     &[x-placement^='bottom'] > div {
-      top: -6px;
-      left: calc(50% - 6px);
-      border-width: 0 6px 7px;
-      border-color: $color-greyish-dark-blue transparent;
+      top: -$arrow-width;
+      left: calc(50% - $arrow-width);
+      border-width: 0 $arrow-width $arrow-height;
+      border-color: $arrow-color transparent;
     }
 
     // Tooltip over element, arrow on bottom
     &[x-placement^='top'] > div {
-      bottom: -6px;
-      left: calc(50% - 6px);
-      border-width: 7px 6px 0;
-      border-color: $color-greyish-dark-blue transparent;
+      bottom: -$arrow-width;
+      left: calc(50% - $arrow-width);
+      border-width: $arrow-height $arrow-width 0;
+      border-color: $arrow-color transparent;
     }
 
     // Tooltip on the right of element, arrow on the left
     &[x-placement^='right'] > div {
-      top: calc(50% - 5px);
-      left: -6px;
-      border-width: 6px 7px 6px 0;
-      border-color: transparent $color-greyish-dark-blue;
+      top: calc(50% - $arrow-width);
+      left: -$arrow-width;
+      border-width: $arrow-width $arrow-height $arrow-width 0;
+      border-color: transparent $arrow-color;
     }
 
     // Tooltip on the left of element, arrow on the right
     &[x-placement^='left'] > div {
-      top: calc(50% - 5px);
-      right: -6px;
+      top: calc(50% - $arrow-width);
+      right: -$arrow-width;
       left: auto;
-      border-width: 6px 0 6px 7px;
-      border-color: transparent $color-greyish-dark-blue;
+      border-width: $arrow-width 0 $arrow-width $arrow-height;
+      border-color: transparent $arrow-color;
     }
   }
 }
