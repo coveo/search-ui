@@ -644,3 +644,9 @@ MagicBoxClearTest();
 
 import { AccessibleButtonTest } from './utils/AccessibleButtonTest';
 AccessibleButtonTest();
+
+import { AriaLiveTest } from './ui/AriaLiveTest';
+AriaLiveTest();
+
+import { QuerySummaryUtilsTest } from './utils/QuerySummaryUtilsTest';
+QuerySummaryUtilsTest();

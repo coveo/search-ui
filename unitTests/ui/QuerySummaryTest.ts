@@ -36,7 +36,7 @@ export function QuerySummaryTest() {
       Simulate.query(test.env, {
         results: results
       });
-      expect($$(test.cmp.element).text()).toEqual(jasmine.stringMatching(/^Results 1-10 of 11/));
+      expect($$(test.cmp.element).text()).toEqual(jasmine.stringMatching(/^Results 1-10 of 10/));
 
       results = FakeResults.createFakeResults(0);
       Simulate.query(test.env, {

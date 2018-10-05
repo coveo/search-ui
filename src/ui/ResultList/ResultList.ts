@@ -27,7 +27,7 @@ import { Utils } from '../../utils/Utils';
 import { analyticsActionCauseList, IAnalyticsNoMeta } from '../Analytics/AnalyticsActionListMeta';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
-import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
+import { ComponentOptions } from '../Base/ComponentOptions';
 import { IInitializationParameters, IInitResult, Initialization } from '../Base/Initialization';
 import { InitializationPlaceholder } from '../Base/InitializationPlaceholder';
 import { TemplateComponentOptions } from '../Base/TemplateComponentOptions';
@@ -45,23 +45,9 @@ import { ResultListCardRenderer } from './ResultListCardRenderer';
 import { ResultListRenderer } from './ResultListRenderer';
 import { ResultListTableRenderer } from './ResultListTableRenderer';
 import ResultLayoutSelectorModule = require('../ResultLayoutSelector/ResultLayoutSelector');
+import { IResultListOptions } from './ResultListOptions';
 
 CoreHelpers.exportAllHelpersGlobally(window['Coveo']);
-export interface IResultListOptions {
-  resultContainer?: HTMLElement;
-  resultTemplate?: Template;
-  resultOptions?: {};
-  waitAnimationContainer?: HTMLElement;
-  enableInfiniteScroll?: boolean;
-  infiniteScrollPageSize?: number;
-  infiniteScrollContainer?: HTMLElement | Window;
-  waitAnimation?: string;
-  mobileScrollContainer?: HTMLElement;
-  enableInfiniteScrollWaitingAnimation?: boolean;
-  fieldsToInclude?: IFieldOption[];
-  autoSelectFieldsToInclude?: boolean;
-  layout?: string;
-}
 
 /**
  * The `ResultList` component is responsible for displaying query results by applying one or several result templates
