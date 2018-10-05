@@ -24,7 +24,10 @@ import { Template } from '../Templates/Template';
 import { DefaultQuickviewTemplate } from './DefaultQuickviewTemplate';
 import { QuickviewDocument } from './QuickviewDocument';
 
-export type Placement =
+/**
+ * The allowed [`Quickview`]{@link Quickview} [`tooltipPlacement`]{@link Quickview.options.tooltipPlacement} option values. The `-start` and `-end` variations indicate relative alignement. Horizontally (`top`, `bottom`), `-start` means _left_ and `-end` means _right_. Vertically (`left`, `right`), `-start` means _top_ and `-end` means _bottom_. No variation means _center_.
+ */
+export type ValidTooltipPlacement =
   | 'auto-start'
   | 'auto'
   | 'auto-end'
@@ -48,7 +51,7 @@ export interface IQuickviewOptions {
   enableLoadingAnimation?: boolean;
   loadingAnimation?: HTMLElement | Promise<HTMLElement>;
   alwaysShow?: boolean;
-  tooltipPlacement?: Placement;
+  tooltipPlacement?: ValidTooltipPlacement;
 }
 
 interface IQuickviewOpenerObject {
@@ -233,16 +236,14 @@ export class Quickview extends Component {
     ),
 
     /**
-     * Specifies where to position the tooltip compared to the element
-     * Values are `auto`, `top`, `left`, `right`, `bottom`.
-     * You can also append these variations: `-start`, `-end` which correspond to the alignment (by default they are centered)
-     *
-     * Default value is `bottom`.
+     * Specifies the emplacement of the tooltip in relation to the `Quickview` HTML element.
      *
      * **Example:**
-     * `top-start` tooltip is on top of the `Quickview` button, aligned on the left (start)
+     * > Setting this option to `top-start` will make the tooltip appear on top of the `Quickview` button, aligned to the left.
+     *
+     * Default value is `bottom`.
      */
-    tooltipPlacement: ComponentOptions.buildCustomOption<Placement>((value: Placement) => value, {
+    tooltipPlacement: ComponentOptions.buildCustomOption<ValidTooltipPlacement>((value: ValidTooltipPlacement) => value, {
       defaultValue: 'bottom'
     })
   };
