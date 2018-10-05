@@ -180,7 +180,7 @@ export class Template implements ITemplateProperties {
     return _.compact(allComponentsInsideCurrentTemplate);
   }
 
-  public async instantiateToElement(result: IQueryResult, templateOptions: IInstantiateTemplateOptions = {}): Promise<HTMLElement> {
+  public instantiateToElement(result: IQueryResult, templateOptions: IInstantiateTemplateOptions = {}): Promise<HTMLElement> | null {
     const mergedOptions = new DefaultInstantiateTemplateOptions().merge(templateOptions);
     const html = this.instantiateToString(result, mergedOptions);
 
@@ -188,12 +188,11 @@ export class Template implements ITemplateProperties {
       return null;
     }
 
-    await this.ensureComponentsInHtmlStringHaveLoaded(html);
-
-    const template = this.buildTemplate(html, mergedOptions);
-    this.logger.trace('Instantiated result template', result, template);
-
-    return template;
+    return this.ensureComponentsInHtmlStringHaveLoaded(html).then(() => {
+      const template = this.buildTemplate(html, mergedOptions);
+      this.logger.trace('Instantiated result template', result, template);
+      return template;
+    });
   }
 
   public toHtmlElement(): HTMLElement {
