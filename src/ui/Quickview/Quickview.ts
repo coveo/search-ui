@@ -234,8 +234,10 @@ export class Quickview extends Component {
 
     /**
      * Specifies where to position the tooltip compared to the element
-     * Default value is `bottom`. Other values are `auto`, `top`, `left`, `right`.
+     * Values are `auto`, `top`, `left`, `right`, `bottom`.
      * You can also append these variations: `-start`, `-end` which correspond to the alignment (by default they are centered)
+     *
+     * Default value is `bottom`.
      *
      * **Example:**
      * `top-start` tooltip is on top of the `Quickview` button, aligned on the left (start)
