@@ -1,7 +1,8 @@
 import { Component } from '../Base/Component';
 import { $$ } from '../../utils/Dom';
 import { l } from '../../strings/Strings';
-import { IResultListOptions, ResultList } from '../ResultList/ResultList';
+import { ResultList } from '../ResultList/ResultList';
+import { IResultListOptions } from '../ResultList/ResultListOptions';
 import { IQueryResult } from '../../rest/QueryResult';
 import { IPopulateOmniboxEventArgs, OmniboxEvents } from '../../events/OmniboxEvents';
 import { ComponentOptions, IQueryExpression } from '../Base/ComponentOptions';
