@@ -31,6 +31,7 @@ import { exportGlobally } from '../../GlobalExports';
 import 'styling/_HierarchicalFacet';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { SVGDom } from '../../utils/SVGDom';
+import { ResponsiveFacetOptions } from '../ResponsiveComponents/ResponsiveFacetOptions';
 
 export interface IHierarchicalFacetOptions extends IFacetOptions {
   delimitingCharacter?: string;
@@ -161,7 +162,8 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
      *
      * Default value is `10`.
      */
-    marginByLevel: ComponentOptions.buildNumberOption({ defaultValue: 10, min: 0 })
+    marginByLevel: ComponentOptions.buildNumberOption({ defaultValue: 10, min: 0 }),
+    ...ResponsiveFacetOptions
   };
 
   static parent = Facet;

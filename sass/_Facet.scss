@@ -1,6 +1,5 @@
 @import 'bourbon/bourbon';
 @import 'Variables';
-
 #{$allFacetsType} {
   margin: 10px 0;
   padding: 0;
@@ -14,7 +13,10 @@
   .coveo-bottomSpace.coveo-with-animation {
     @include transition(height 0.5s);
   }
-  &.coveo-no-visible-facet {
+}
+
+.coveo-no-visible-facet {
+  .coveo-facet-columns {
     display: none;
   }
 }

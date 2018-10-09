@@ -1,5 +1,8 @@
 import { ComponentOptions } from '../Base/ComponentOptions';
 
+/**
+ * ResponsiveFacets options
+ */
 export const ResponsiveFacetOptions = {
   /**
    * Specifies whether to enable *responsive mode* for facets. Setting this options to `false` on any `Facet`, or

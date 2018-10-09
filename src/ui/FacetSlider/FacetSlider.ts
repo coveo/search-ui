@@ -36,6 +36,7 @@ import { ResponsiveComponentsUtils } from '../ResponsiveComponents/ResponsiveCom
 import { ResponsiveDropdownEvent } from '../ResponsiveComponents/ResponsiveDropdown/ResponsiveDropdown';
 import { ResponsiveFacetSlider } from '../ResponsiveComponents/ResponsiveFacetSlider';
 import { IResponsiveComponentOptions } from '../ResponsiveComponents/ResponsiveComponentsManager';
+import { ResponsiveFacetOptions } from '../ResponsiveComponents/ResponsiveFacetOptions';
 
 export interface IFacetSliderOptions extends ISliderOptions, IResponsiveComponentOptions {
   dateField?: boolean;
@@ -319,7 +320,8 @@ export class FacetSlider extends Component {
      */
     valueCaption: ComponentOptions.buildCustomOption<(values: number[]) => string>(() => {
       return null;
-    })
+    }),
+    ...ResponsiveFacetOptions
   };
 
   static ID = 'FacetSlider';
