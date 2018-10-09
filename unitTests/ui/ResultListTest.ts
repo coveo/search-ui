@@ -5,7 +5,7 @@ import { FakeResults } from '../Fake';
 import { Simulate } from '../Simulate';
 import { $$ } from '../../src/utils/Dom';
 import { ResultListEvents } from '../../src/events/ResultListEvents';
-import { IResultListOptions } from '../../src/ui/ResultList/ResultList';
+import { IResultListOptions } from '../../src/ui/ResultList/ResultListOptions';
 import { UnderscoreTemplate } from '../../src/ui/Templates/UnderscoreTemplate';
 import { ResultLayoutEvents } from '../../src/events/ResultLayoutEvents';
 import { AdvancedComponentSetupOptions } from '../MockEnvironment';

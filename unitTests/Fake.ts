@@ -27,7 +27,7 @@ export class FakeResults {
       pipeline: 'pipeline',
       splitTestRun: 'splitTestRunName',
       totalCount: count != 0 ? count + 1 : 0,
-      totalCountFiltered: count != 0 ? count + 1 : 0,
+      totalCountFiltered: count,
       duration: 321,
       indexDuration: 123,
       clientDuration: 456,
