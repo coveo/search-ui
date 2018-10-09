@@ -2429,11 +2429,11 @@ exports.Logger = Logger;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var Utils_1 = __webpack_require__(2);
-var JQueryutils_1 = __webpack_require__(6);
+var _ = __webpack_require__(0);
 var Assert_1 = __webpack_require__(1);
 var Logger_1 = __webpack_require__(3);
-var _ = __webpack_require__(0);
+var JQueryutils_1 = __webpack_require__(6);
+var Utils_1 = __webpack_require__(2);
 /**
  * This is essentially an helper class for dom manipulation.<br/>
  * This is intended to provide some basic functionality normally offered by jQuery.<br/>
@@ -2864,7 +2864,7 @@ var Dom = /** @class */ (function () {
         else {
             var modifiedType = this.processEventTypeToBeJQueryCompatible(type);
             var jq = JQueryutils_1.JQueryUtils.getJQuery();
-            if (jq) {
+            if (this.shouldUseJQueryEvent()) {
                 jq(this.el).on(modifiedType, eventHandle);
             }
             else if (this.el.addEventListener) {
@@ -2912,7 +2912,7 @@ var Dom = /** @class */ (function () {
         else {
             var modifiedType = this.processEventTypeToBeJQueryCompatible(type);
             var jq = JQueryutils_1.JQueryUtils.getJQuery();
-            if (jq) {
+            if (this.shouldUseJQueryEvent()) {
                 jq(this.el).off(modifiedType, eventHandle);
             }
             else if (this.el.removeEventListener) {
@@ -2933,16 +2933,20 @@ var Dom = /** @class */ (function () {
      */
     Dom.prototype.trigger = function (type, data) {
         var modifiedType = this.processEventTypeToBeJQueryCompatible(type);
-        var jq = JQueryutils_1.JQueryUtils.getJQuery();
-        if (jq) {
-            jq(this.el).trigger(modifiedType, data);
+        if (this.shouldUseJQueryEvent()) {
+            JQueryutils_1.JQueryUtils.getJQuery()(this.el).trigger(modifiedType, data);
         }
-        else if (CustomEvent !== undefined) {
+        else if (window['CustomEvent'] !== undefined) {
             var event_1 = new CustomEvent(modifiedType, { detail: data, bubbles: true });
             this.el.dispatchEvent(event_1);
         }
         else {
-            new Logger_1.Logger(this).error('CANNOT TRIGGER EVENT FOR OLDER BROWSER');
+            try {
+                this.el.dispatchEvent(this.buildIE11CustomEvent(modifiedType, data));
+            }
+            catch (_a) {
+                this.oldBrowserError();
+            }
         }
     };
     /**
@@ -3062,6 +3066,14 @@ var Dom = /** @class */ (function () {
         if (deep === void 0) { deep = false; }
         return $$(this.el.cloneNode(deep));
     };
+    Dom.prototype.buildIE11CustomEvent = function (type, data) {
+        var event = document.createEvent('CustomEvent');
+        event.initCustomEvent(type, true, true, data);
+        return event;
+    };
+    Dom.prototype.shouldUseJQueryEvent = function () {
+        return JQueryutils_1.JQueryUtils.getJQuery() && !Dom.useNativeJavaScriptEvents;
+    };
     Dom.prototype.processEventTypeToBeJQueryCompatible = function (event) {
         // From https://api.jquery.com/on/
         // [...]
@@ -3096,8 +3108,16 @@ var Dom = /** @class */ (function () {
         }
         return undefined;
     };
+    Dom.prototype.oldBrowserError = function () {
+        new Logger_1.Logger(this).error('CANNOT TRIGGER EVENT FOR OLDER BROWSER');
+    };
     Dom.CLASS_NAME_REGEX = /-?[_a-zA-Z]+[_a-zA-Z0-9-]*/g;
     Dom.ONLY_WHITE_SPACE_REGEX = /^\s*$/;
+    /**
+     * Whether to always register, remove, and trigger events using standard JavaScript rather than attempting to use jQuery first.
+     * @type boolean
+     */
+    Dom.useNativeJavaScriptEvents = false;
     Dom.handlers = new WeakMap();
     return Dom;
 }());
@@ -5804,8 +5824,8 @@ exports.ResponsiveComponents = ResponsiveComponents;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    lib: '2.4710.3-beta',
-    product: '2.4710.3-beta',
+    lib: '2.4710.4-beta',
+    product: '2.4710.4-beta',
     supportedApiVersion: 2
 };
 
@@ -8597,7 +8617,7 @@ var dict = {
     "KeywordInCategory": "{0} in {1}",
     "ResultCount": "{0} results",
     "ShowingResults": "{0} result<pl>s</pl>",
-    "ShowingResultsWithQuery": "{0} result<pl></pl> for {1}",
+    "ShowingResultsWithQuery": "{0} result<pl>s</pl> for {1}",
     "NumberOfVideos": "Number of videos",
     "AllCategories": "All Categories",
     "Recommended": "Recommended",
