@@ -8,7 +8,7 @@ export class ComponentsTypes {
   }
 
   public static get allFacetsClassname() {
-    return ComponentsTypes.allFacetsType.map(type => `Coveo${type}`);
+    return ComponentsTypes.allFacetsType.map(type => Component.computeCssClassNameForType(type));
   }
 
   public static getAllFacetsElements(root: HTMLElement | Dom) {
