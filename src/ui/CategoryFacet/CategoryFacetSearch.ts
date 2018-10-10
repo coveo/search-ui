@@ -145,7 +145,7 @@ export class CategoryFacetSearch implements IFacetSearch {
       this.removeNoResultsCssClasses();
       this.setFacetSearchResults(categoryFacetValues);
 
-      if (this.shouldPositionSearchResults()) {
+      if (this.shouldPositionSearchResults) {
         this.facetSearchElement.positionSearchResults(
           this.categoryFacet.root,
           this.categoryFacet.element.clientWidth,
@@ -236,7 +236,8 @@ export class CategoryFacetSearch implements IFacetSearch {
     );
   }
 
-  private shouldPositionSearchResults() {
-    return this.facetSearchElement.searchResults != null && this.facetSearchElement.searchResults.parentElement == null;
+  private get shouldPositionSearchResults() {
+    const searchResults = this.facetSearchElement.searchResults;
+    return searchResults && !searchResults.parentElement;
   }
 }
