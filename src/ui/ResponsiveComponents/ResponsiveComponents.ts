@@ -19,9 +19,9 @@ export type ValidResponsiveMode = 'auto' | 'small' | 'medium' | 'large';
 export class ResponsiveComponents {
   private smallScreenWidth: number;
   private mediumScreenWidth: number;
-  private responsiveMode: ValidResponsiveMode
+  private responsiveMode: ValidResponsiveMode;
   constructor(public windoh: Window = window) {
-    this.responsiveMode = "auto";
+    this.responsiveMode = 'auto';
   }
 
   /**
@@ -67,10 +67,10 @@ export class ResponsiveComponents {
    * @returns {number}
    */
   public getSmallScreenWidth() {
-    if(this.responsiveMode === 'small') {
-      return Number.POSITIVE_INFINITY
+    if (this.responsiveMode === 'small') {
+      return Number.POSITIVE_INFINITY;
     }
-    if(this.responsiveMode !== 'auto') {
+    if (this.responsiveMode !== 'auto') {
       return 0;
     }
     if (this.smallScreenWidth == null) {
@@ -86,16 +86,23 @@ export class ResponsiveComponents {
    * @returns {number}
    */
   public getMediumScreenWidth() {
-    if(this.responsiveMode === 'medium') {
+    if (this.responsiveMode === 'medium') {
       return Number.POSITIVE_INFINITY;
     }
-    if(this.responsiveMode !== 'auto') {
+    if (this.responsiveMode !== 'auto') {
       return 0;
     }
     if (this.mediumScreenWidth == null) {
       return MEDIUM_SCREEN_WIDTH;
     }
     return this.mediumScreenWidth;
+  }
+
+  /** Return the current responsive mode.
+   * @returns {ValidResponsiveMode}
+   */
+  public getResponsiveMode(): ValidResponsiveMode {
+    return this.responsiveMode;
   }
 
   /**
