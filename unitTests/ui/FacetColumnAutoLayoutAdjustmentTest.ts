@@ -61,7 +61,7 @@ export function FacetColumnAutoLayoutAdjustmentTest() {
       let dropDownHeader: Dom;
 
       const isHidden = () => {
-        return $$(column).hasClass('coveo-no-visible-facet') && $$(dropDownHeader).hasClass('coveo-no-visible-facet');
+        return $$(root).hasClass('coveo-no-visible-facet');
       };
 
       beforeEach(() => {
