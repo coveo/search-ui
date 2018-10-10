@@ -656,3 +656,6 @@ CategoryFacetQueryControllerTest();
 
 import { ComponentsTypesTest } from './utils/ComponentsTypesTest';
 ComponentsTypesTest();
+
+import { PromotedResultsBadgeTest } from './ui/PromotedResultsBadgeTest';
+PromotedResultsBadgeTest();
