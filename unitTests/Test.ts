@@ -653,3 +653,6 @@ QuerySummaryUtilsTest();
 
 import { CategoryFacetQueryControllerTest } from './controllers/CategoryFacetQueryControlllerTest';
 CategoryFacetQueryControllerTest();
+
+import { ComponentsTypesTest } from './utils/ComponentsTypesTest';
+ComponentsTypesTest();

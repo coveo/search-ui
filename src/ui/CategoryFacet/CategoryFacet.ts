@@ -29,8 +29,11 @@ import { IAnalyticsCategoryFacetMeta, analyticsActionCauseList, IAnalyticsAction
 import { CategoryFacetDebug } from './CategoryFacetDebug';
 import { QueryBuilder } from '../Base/QueryBuilder';
 import { IAutoLayoutAdjustableInsideFacetColumn } from '../SearchInterface/FacetColumnAutoLayoutAdjustment';
+import { ResponsiveFacets } from '../ResponsiveComponents/ResponsiveFacets';
+import { IResponsiveComponentOptions } from '../ResponsiveComponents/ResponsiveComponentsManager';
+import { ResponsiveFacetOptions } from '../ResponsiveComponents/ResponsiveFacetOptions';
 
-export interface ICategoryFacetOptions {
+export interface ICategoryFacetOptions extends IResponsiveComponentOptions {
   field: IFieldOption;
   title?: string;
   numberOfResultsInFacetSearch?: number;
@@ -220,7 +223,8 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
      * This options logs messages in the console for any potential encountered issues.
      * This option can have negative effects on performance, and should only be activated when debugging.
      */
-    debug: ComponentOptions.buildBooleanOption({ defaultValue: false })
+    debug: ComponentOptions.buildBooleanOption({ defaultValue: false }),
+    ...ResponsiveFacetOptions
   };
 
   public categoryFacetQueryController: CategoryFacetQueryController;
@@ -261,6 +265,8 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     if (this.options.debug) {
       new CategoryFacetDebug(this);
     }
+
+    ResponsiveFacets.init(this.root, this, this.options);
 
     this.bind.onRootElement<IBuildingQueryEventArgs>(QueryEvents.buildingQuery, args => this.handleBuildingQuery(args));
     this.bind.onRootElement<IQuerySuccessEventArgs>(QueryEvents.querySuccess, args => this.handleQuerySuccess(args));

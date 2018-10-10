@@ -9,8 +9,10 @@ import { IRangeValue } from '../../rest/RangeValue';
 import { pluck } from 'underscore';
 import { Dom, $$ } from '../../utils/Dom';
 import { Initialization } from '../Base/Initialization';
+import { IResponsiveComponentOptions } from '../ResponsiveComponents/ResponsiveComponentsManager';
+import { ResponsiveFacetOptions } from '../ResponsiveComponents/ResponsiveFacetOptions';
 
-export interface ITimespanFacetOptions {
+export interface ITimespanFacetOptions extends IResponsiveComponentOptions {
   title?: string;
   field?: IFieldOption;
   id?: string;
@@ -61,7 +63,8 @@ export class TimespanFacet extends Component {
      */
     id: ComponentOptions.buildStringOption({
       postProcessing: (value, options: ITimespanFacetOptions) => value || <string>options.field
-    })
+    }),
+    ...ResponsiveFacetOptions
   };
 
   static doExport = () => {

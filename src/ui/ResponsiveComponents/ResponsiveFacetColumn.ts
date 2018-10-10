@@ -13,6 +13,7 @@ import { ResponsiveDropdown } from './ResponsiveDropdown/ResponsiveDropdown';
 import { ResponsiveDropdownContent } from './ResponsiveDropdown/ResponsiveDropdownContent';
 import { ResponsiveDropdownHeader } from './ResponsiveDropdown/ResponsiveDropdownHeader';
 import { each, debounce } from 'underscore';
+import { ComponentsTypes } from '../../utils/ComponentsTypes';
 
 export class ResponsiveFacetColumn implements IResponsiveComponent {
   public static DEBOUNCE_SCROLL_WAIT = 250;
@@ -199,16 +200,11 @@ export class ResponsiveFacetColumn implements IResponsiveComponent {
 
   private getDropdownHeaderLabel() {
     let dropdownHeaderLabel: string;
-    let selector = `.${Component.computeCssClassNameForType('Facet')}, .${Component.computeCssClassNameForType('FacetSlider')}`;
-    each($$(this.coveoRoot.find('.coveo-facet-column')).findAll(selector), facetElement => {
-      let facet;
-      if ($$(facetElement).hasClass(Component.computeCssClassNameForType('Facet'))) {
-        facet = Component.get(facetElement);
-      } else {
-        facet = Component.get(facetElement);
-      }
-      if (!dropdownHeaderLabel && facet.options.dropdownHeaderLabel) {
-        dropdownHeaderLabel = facet.options.dropdownHeaderLabel;
+    ComponentsTypes.getAllFacetsInstance(this.coveoRoot.find('.coveo-facet-column')).forEach(facet => {
+      const options = facet.options as IResponsiveComponentOptions;
+
+      if (!dropdownHeaderLabel && options.dropdownHeaderLabel) {
+        dropdownHeaderLabel = options.dropdownHeaderLabel;
       }
     });
 

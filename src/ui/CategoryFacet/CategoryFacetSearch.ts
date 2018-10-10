@@ -31,7 +31,20 @@ export class CategoryFacetSearch implements IFacetSearch {
   }
 
   public build() {
-    this.container = $$('div', { className: 'coveo-category-facet-search-container' });
+    this.container = $$('div', {
+      className: 'coveo-category-facet-search-container',
+      role: 'heading',
+      'aria-level': 3
+    });
+
+    new AccessibleButton()
+      .withElement(this.container)
+      .withSelectAction(() => {
+        $$(this.categoryFacet.element).addClass('coveo-category-facet-searching');
+        this.focus();
+      })
+      .withLabel(l('Search'))
+      .build();
 
     const search = this.facetSearchElement.build();
     const searchPlaceholder = this.buildfacetSearchPlaceholder();
@@ -102,10 +115,7 @@ export class CategoryFacetSearch implements IFacetSearch {
 
   private buildfacetSearchPlaceholder() {
     const placeholder = $$('div', { className: 'coveo-category-facet-search-placeholder' });
-    placeholder.on('click', () => {
-      $$(this.categoryFacet.element).addClass('coveo-category-facet-searching');
-      this.focus();
-    });
+
     const icon = $$('div', { className: 'coveo-category-facet-search-icon' }, SVGIcons.icons.checkboxHookExclusionMore);
     SVGDom.addClassToSVGInContainer(icon.el, 'coveo-category-facet-search-icon-svg');
 
