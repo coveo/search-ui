@@ -246,6 +246,7 @@ export class Tab extends Component {
       .withElement(element)
       .withSelectAction(() => this.select())
       .withLabel(this.options.caption)
+      .withTitle(this.options.caption)
       .withOwner(this.bind)
       .build();
 
