@@ -6,6 +6,7 @@ import { QueryEvents } from '../../events/QueryEvents';
 import { InitializationEvents } from '../../events/InitializationEvents';
 import { ResultListEvents } from '../../events/ResultListEvents';
 import { HashUtils } from '../../utils/HashUtils';
+import { ComponentsTypes } from '../../utils/ComponentsTypes';
 
 export interface InitializationPlaceholderOption {
   searchInterface?: boolean;
@@ -166,7 +167,7 @@ export class InitializationPlaceholder {
     // Render an arbitrary number of placeholder facet.
     // Facets should become usable on the first deferredQuerySuccess
 
-    const facetElements = this.getAllFacetsElements();
+    const facetElements = ComponentsTypes.getAllFacetsElements(this.root);
     if (Utils.isNonEmptyArray(facetElements)) {
       const placeholders: Dom[] = [];
       _.each(facetElements, (facetElement: HTMLElement) => $$(facetElement).addClass(InitializationPlaceholder.INITIALIZATION_CLASS));
@@ -312,17 +313,5 @@ export class InitializationPlaceholder {
 
   private isRecommendationRoot(): boolean {
     return $$(this.root).hasClass('CoveoRecommendation');
-  }
-
-  private getAllFacetsElements(): HTMLElement[] {
-    const toSelect = [
-      '.CoveoFacet',
-      '.CoveoFacetRange',
-      '.CoveoTimespanFacet',
-      '.CoveoFacetSlider',
-      '.CoveoHierarchicalFacet',
-      '.CoveoCategoryFacet'
-    ].join(', ');
-    return $$(this.root).findAll(toSelect);
   }
 }
