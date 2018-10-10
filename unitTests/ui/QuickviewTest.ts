@@ -1,5 +1,5 @@
 import * as Mock from '../MockEnvironment';
-import { Quickview } from '../../src/ui/Quickview/Quickview';
+import { Quickview, IQuickviewOptions, ValidTooltipPlacement } from '../../src/ui/Quickview/Quickview';
 import { FakeResults } from '../Fake';
 import { IQueryResult } from '../../src/rest/QueryResult';
 import { Template } from '../../src/ui/Templates/Template';
@@ -30,14 +30,14 @@ export function QuickviewTest() {
       modalBox = null;
     });
 
-    const buildQuickview = (template = simpleTestTemplate(), layout: ValidLayout = 'list') => {
+    const buildQuickview = (template = simpleTestTemplate(), layout: ValidLayout = 'list', options?: IQuickviewOptions) => {
       const mockBuilder = new Mock.MockEnvironmentBuilder().withLiveQueryStateModel();
       const bindings = { ...(<any>mockBuilder.getBindings()), resultElement: $$('div').el };
       env = mockBuilder.build();
       env.queryStateModel.set(QueryStateModel.attributesEnum.layout, layout);
       result = FakeResults.createFakeResult();
       modalBox = Simulate.modalBoxModule();
-      return new Quickview(env.element, { contentTemplate: template }, bindings, result, modalBox);
+      return new Quickview(env.element, { contentTemplate: template, ...options }, bindings, result, modalBox);
     };
 
     const simpleTestTemplate = () => {
@@ -68,6 +68,19 @@ export function QuickviewTest() {
           .find('.coveo-caption-for-icon')
           .hasAttribute('x-placement')
       ).toBe(false);
+      done();
+    });
+
+    it('when the tooltipPlacement option is set, the tooltip has to be positionned accordingly', done => {
+      const placements: ValidTooltipPlacement[] = ['left', 'top-end', 'right-start', 'bottom'];
+      for (const placement of placements) {
+        quickview = buildQuickview(undefined, undefined, { tooltipPlacement: placement });
+        expect(
+          $$(quickview.element)
+            .find('.coveo-caption-for-icon')
+            .getAttribute('x-placement')
+        ).toBe(placement);
+      }
       done();
     });
 

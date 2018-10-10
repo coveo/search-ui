@@ -24,6 +24,26 @@ import { Template } from '../Templates/Template';
 import { DefaultQuickviewTemplate } from './DefaultQuickviewTemplate';
 import { QuickviewDocument } from './QuickviewDocument';
 
+/**
+ * The allowed [`Quickview`]{@link Quickview} [`tooltipPlacement`]{@link Quickview.options.tooltipPlacement} option values. The `-start` and `-end` variations indicate relative alignement. Horizontally (`top`, `bottom`), `-start` means _left_ and `-end` means _right_. Vertically (`left`, `right`), `-start` means _top_ and `-end` means _bottom_. No variation means _center_.
+ */
+export type ValidTooltipPlacement =
+  | 'auto-start'
+  | 'auto'
+  | 'auto-end'
+  | 'top-start'
+  | 'top'
+  | 'top-end'
+  | 'right-start'
+  | 'right'
+  | 'right-end'
+  | 'bottom-end'
+  | 'bottom'
+  | 'bottom-start'
+  | 'left-end'
+  | 'left'
+  | 'left-start';
+
 export interface IQuickviewOptions {
   title?: string;
   showDate?: boolean;
@@ -31,6 +51,7 @@ export interface IQuickviewOptions {
   enableLoadingAnimation?: boolean;
   loadingAnimation?: HTMLElement | Promise<HTMLElement>;
   alwaysShow?: boolean;
+  tooltipPlacement?: ValidTooltipPlacement;
 }
 
 interface IQuickviewOpenerObject {
@@ -212,7 +233,19 @@ export class Quickview extends Component {
         }
         return DomUtils.getBasicLoadingAnimation();
       }
-    )
+    ),
+
+    /**
+     * Specifies the emplacement of the tooltip in relation to the `Quickview` HTML element.
+     *
+     * **Example:**
+     * > Setting this option to `top-start` will make the tooltip appear on top of the `Quickview` button, aligned to the left.
+     *
+     * Default value is `bottom`.
+     */
+    tooltipPlacement: ComponentOptions.buildCustomOption<ValidTooltipPlacement>((value: ValidTooltipPlacement) => value, {
+      defaultValue: 'bottom'
+    })
   };
 
   public static resultCurrentlyBeingRendered: IQueryResult = null;
@@ -295,7 +328,7 @@ export class Quickview extends Component {
 
   private buildPopper(icon: HTMLElement, caption: HTMLElement, arrow: HTMLElement) {
     const popperReference = new PopperJs(icon, caption, {
-      placement: 'bottom',
+      placement: this.options.tooltipPlacement,
       modifiers: {
         preventOverflow: {
           boundariesElement: $$(this.root).el,
