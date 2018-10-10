@@ -44,7 +44,6 @@ export class CategoryFacetSearch implements IFacetSearch {
         this.focus();
       })
       .withLabel(l('Search'))
-      .withTitle(l('Search'))
       .build();
 
     const search = this.facetSearchElement.build();
