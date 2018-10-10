@@ -31,14 +31,11 @@ export class FacetColumnAutoLayoutAdjustment {
     const handler = () =>
       $$(root).on(QueryEvents.deferredQuerySuccess, () => {
         const column = this.findColumn(root);
-        const dropDownHeader = this.findDropdownHeader(root);
 
         if (this.everyStandardComponentsAreInvisible(root) && this.columnsDoesNotContainVisibleCustomElement(column)) {
-          column ? $$(column).addClass(hiddenClass) : null;
-          dropDownHeader ? $$(dropDownHeader).addClass(hiddenClass) : null;
+          $$(root).addClass(hiddenClass);
         } else {
-          column ? $$(column).removeClass(hiddenClass) : null;
-          dropDownHeader ? $$(dropDownHeader).removeClass(hiddenClass) : null;
+          $$(root).removeClass(hiddenClass);
         }
       });
 
@@ -80,10 +77,6 @@ export class FacetColumnAutoLayoutAdjustment {
   private static everyStandardComponentsAreInvisible(root: HTMLElement) {
     const components = this.autoLayoutAdjustmentComponent.get(root);
     return every(components, component => !component.isCurrentlyDisplayed());
-  }
-
-  private static findDropdownHeader(root: HTMLElement) {
-    return $$(root).find('.coveo-facet-dropdown-header');
   }
 
   private static findColumn(root: HTMLElement) {
