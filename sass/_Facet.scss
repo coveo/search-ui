@@ -1,10 +1,6 @@
 @import 'bourbon/bourbon';
 @import 'Variables';
-.CoveoFacet,
-.CoveoFacetRange,
-.CoveoFacetSlider,
-.CoveoHierarchicalFacet,
-.CoveoCategoryFacet {
+#{$allFacetsType} {
   margin: 10px 0;
   padding: 0;
   @include defaultRoundedBorder();
@@ -17,7 +13,10 @@
   .coveo-bottomSpace.coveo-with-animation {
     @include transition(height 0.5s);
   }
-  &.coveo-no-visible-facet {
+}
+
+.coveo-no-visible-facet {
+  .coveo-facet-column {
     display: none;
   }
 }
