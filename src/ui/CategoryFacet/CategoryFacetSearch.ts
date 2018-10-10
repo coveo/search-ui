@@ -144,11 +144,15 @@ export class CategoryFacetSearch implements IFacetSearch {
       }
       this.removeNoResultsCssClasses();
       this.setFacetSearchResults(categoryFacetValues);
-      this.facetSearchElement.positionSearchResults(
-        this.categoryFacet.root,
-        this.categoryFacet.element.clientWidth,
-        this.facetSearchElement.search
-      );
+
+      if (this.shouldPositionSearchResults) {
+        this.facetSearchElement.positionSearchResults(
+          this.categoryFacet.root,
+          this.categoryFacet.element.clientWidth,
+          this.facetSearchElement.search
+        );
+      }
+
       this.facetSearchElement.hideFacetSearchWaitingAnimation();
     };
   }
@@ -229,5 +233,10 @@ export class CategoryFacetSearch implements IFacetSearch {
       },
       this.categoryFacet.root
     );
+  }
+
+  private get shouldPositionSearchResults() {
+    const searchResults = this.facetSearchElement.searchResults;
+    return searchResults && !searchResults.parentElement;
   }
 }
