@@ -40,7 +40,12 @@ import { InitializationPlaceholder } from '../Base/InitializationPlaceholder';
 import { RootComponent } from '../Base/RootComponent';
 import { Debug } from '../Debug/Debug';
 import { Context, IPipelineContextProvider } from '../PipelineContext/PipelineGlobalExports';
-import { MEDIUM_SCREEN_WIDTH, ResponsiveComponents, SMALL_SCREEN_WIDTH, ValidResponsiveMode } from '../ResponsiveComponents/ResponsiveComponents';
+import {
+  MEDIUM_SCREEN_WIDTH,
+  ResponsiveComponents,
+  SMALL_SCREEN_WIDTH,
+  ValidResponsiveMode
+} from '../ResponsiveComponents/ResponsiveComponents';
 import { FacetColumnAutoLayoutAdjustment } from './FacetColumnAutoLayoutAdjustment';
 import { FacetValueStateHandler } from './FacetValueStateHandler';
 import RelevanceInspectorModule = require('../RelevanceInspector/RelevanceInspector');
@@ -70,7 +75,7 @@ export interface ISearchInterfaceOptions {
   allowQueriesWithoutKeywords?: boolean;
   responsiveMediumBreakpoint?: number;
   responsiveSmallBreakpoint?: number;
-  responsiveMode?: ResponsiveModes
+  responsiveMode?: ValidResponsiveMode;
 }
 
 /**
@@ -449,18 +454,20 @@ export class SearchInterface extends RootComponent implements IComponentBindings
      *
      * When it's not on auto, the width is ignored and the the layout used depends on this option (e.g. If set to "small", then the search interface layout will be the same as if it was on a narrow window/device)
      */
-    responsiveMode: ComponentOptions.buildCustomOption<ValidResponsiveMode>((value)=> {
-      // Validator function for the string passed, verify it's one of the accepted values.
-      if(value === 'auto' ||value === 'small' ||value === 'medium' ||value === 'large') {
-        return value
-      } else {
-        console.warn(`${value} is not a proper value for responsiveMode, auto has been used instead.`);
-        return 'auto'
+    responsiveMode: ComponentOptions.buildCustomOption<ValidResponsiveMode>(
+      value => {
+        // Validator function for the string passed, verify it's one of the accepted values.
+        if (value === 'auto' || value === 'small' || value === 'medium' || value === 'large') {
+          return value;
+        } else {
+          console.warn(`${value} is not a proper value for responsiveMode, auto has been used instead.`);
+          return 'auto';
+        }
+      },
+      {
+        defaultValue: 'auto'
       }
-    }, {
-     defaultValue : 'auto'
-    })
-    
+    )
   };
 
   public static SMALL_INTERFACE_CLASS_NAME = 'coveo-small-search-interface';
