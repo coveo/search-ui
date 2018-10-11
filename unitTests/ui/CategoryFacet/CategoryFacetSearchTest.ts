@@ -127,7 +127,7 @@ export function CategoryFacetSearchTest() {
 
       setTimeout(() => {
         const pathCaption = $$(getSearchResults()).find('.coveo-category-facet-search-path');
-        expect($$(pathCaption).text()).toEqual('a/b/c0');
+        expect($$(pathCaption).text()).toEqual('a/b/');
         done();
       });
     });
