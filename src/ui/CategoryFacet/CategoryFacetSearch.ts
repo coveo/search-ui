@@ -172,14 +172,14 @@ export class CategoryFacetSearch implements IFacetSearch {
 
   private buildFacetSearchValue(categoryFacetValue: IGroupByValue) {
     const path = categoryFacetValue.value.split(this.categoryFacet.options.delimitingCharacter);
-    const pathLastValue = path.length > 1 ? last(path) : '';
+
     const pathParents = path.slice(0, -1).length != 0 ? `${path.slice(0, -1).join('/')}/` : '';
 
     const value = $$('span', { className: 'coveo-category-facet-search-value-caption' }, last(path));
     const number = $$('span', { className: 'coveo-category-facet-search-value-number' }, categoryFacetValue.numberOfResults.toString(10));
     const pathParentsCaption = $$('span', { className: 'coveo-category-facet-search-path-parents' }, pathParents);
-    const pathValue = $$('span', { className: 'coveo-category-facet-search-path-last-value' }, pathLastValue);
-    const pathToValueCaption = $$('span', { className: 'coveo-category-facet-search-path' }, pathParentsCaption, pathValue);
+
+    const pathToValueCaption = $$('span', { className: 'coveo-category-facet-search-path' }, pathParentsCaption);
 
     const firstRow = $$('div', { className: 'coveo-category-facet-search-first-row' }, value, number);
     const secondRow = $$('div', { className: 'coveo-category-facet-search-second-row' }, pathToValueCaption);
