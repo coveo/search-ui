@@ -7,6 +7,7 @@ import { Component } from '../ui/Base/Component';
 import { any } from 'underscore';
 import { get } from '../ui/Base/RegisteredNamedMethods';
 import { IResultListOptions } from '../ui/ResultList/ResultListOptions';
+import { escape } from 'underscore';
 
 interface ISummaryStrings {
   first: string;
