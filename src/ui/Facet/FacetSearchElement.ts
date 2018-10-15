@@ -206,6 +206,7 @@ export class FacetSearchElement {
 
   public hideSearchResultsElement() {
     $$(this.searchResults).hide();
+    $$(this.searchResults).remove();
   }
 
   public clearSearchInput() {

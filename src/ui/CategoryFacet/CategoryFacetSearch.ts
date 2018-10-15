@@ -31,7 +31,20 @@ export class CategoryFacetSearch implements IFacetSearch {
   }
 
   public build() {
-    this.container = $$('div', { className: 'coveo-category-facet-search-container' });
+    this.container = $$('div', {
+      className: 'coveo-category-facet-search-container',
+      role: 'heading',
+      'aria-level': 3
+    });
+
+    new AccessibleButton()
+      .withElement(this.container)
+      .withSelectAction(() => {
+        $$(this.categoryFacet.element).addClass('coveo-category-facet-searching');
+        this.focus();
+      })
+      .withLabel(l('Search'))
+      .build();
 
     const search = this.facetSearchElement.build();
     const searchPlaceholder = this.buildfacetSearchPlaceholder();
@@ -102,10 +115,7 @@ export class CategoryFacetSearch implements IFacetSearch {
 
   private buildfacetSearchPlaceholder() {
     const placeholder = $$('div', { className: 'coveo-category-facet-search-placeholder' });
-    placeholder.on('click', () => {
-      $$(this.categoryFacet.element).addClass('coveo-category-facet-searching');
-      this.focus();
-    });
+
     const icon = $$('div', { className: 'coveo-category-facet-search-icon' }, SVGIcons.icons.checkboxHookExclusionMore);
     SVGDom.addClassToSVGInContainer(icon.el, 'coveo-category-facet-search-icon-svg');
 
@@ -134,11 +144,15 @@ export class CategoryFacetSearch implements IFacetSearch {
       }
       this.removeNoResultsCssClasses();
       this.setFacetSearchResults(categoryFacetValues);
-      this.facetSearchElement.positionSearchResults(
-        this.categoryFacet.root,
-        this.categoryFacet.element.clientWidth,
-        this.facetSearchElement.search
-      );
+
+      if (this.shouldPositionSearchResults) {
+        this.facetSearchElement.positionSearchResults(
+          this.categoryFacet.root,
+          this.categoryFacet.element.clientWidth,
+          this.facetSearchElement.search
+        );
+      }
+
       this.facetSearchElement.hideFacetSearchWaitingAnimation();
     };
   }
@@ -158,14 +172,14 @@ export class CategoryFacetSearch implements IFacetSearch {
 
   private buildFacetSearchValue(categoryFacetValue: IGroupByValue) {
     const path = categoryFacetValue.value.split(this.categoryFacet.options.delimitingCharacter);
-    const pathLastValue = path.length > 1 ? last(path) : '';
+
     const pathParents = path.slice(0, -1).length != 0 ? `${path.slice(0, -1).join('/')}/` : '';
 
     const value = $$('span', { className: 'coveo-category-facet-search-value-caption' }, last(path));
     const number = $$('span', { className: 'coveo-category-facet-search-value-number' }, categoryFacetValue.numberOfResults.toString(10));
     const pathParentsCaption = $$('span', { className: 'coveo-category-facet-search-path-parents' }, pathParents);
-    const pathValue = $$('span', { className: 'coveo-category-facet-search-path-last-value' }, pathLastValue);
-    const pathToValueCaption = $$('span', { className: 'coveo-category-facet-search-path' }, pathParentsCaption, pathValue);
+
+    const pathToValueCaption = $$('span', { className: 'coveo-category-facet-search-path' }, pathParentsCaption);
 
     const firstRow = $$('div', { className: 'coveo-category-facet-search-first-row' }, value, number);
     const secondRow = $$('div', { className: 'coveo-category-facet-search-second-row' }, pathToValueCaption);
@@ -220,5 +234,10 @@ export class CategoryFacetSearch implements IFacetSearch {
       },
       this.categoryFacet.root
     );
+  }
+
+  private get shouldPositionSearchResults() {
+    const searchResults = this.facetSearchElement.searchResults;
+    return searchResults && !searchResults.parentElement;
   }
 }

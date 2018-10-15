@@ -20,6 +20,9 @@
   &.coveo-hidden {
     display: none;
   }
+  .coveo-accessible-button {
+    outline: none;
+  }
 }
 
 .coveo-category-facet-values-fade .coveo-category-facet-child-value {
@@ -42,6 +45,7 @@
 
 .coveo-active-category-facet-parent {
   font-weight: bold;
+  margin-left: 15px;
 }
 
 .coveo-category-facet-non-empty-path .coveo-category-facet-child-value .coveo-category-facet-value-label {

@@ -9,8 +9,11 @@
   }
 }
 
-.CoveoCategoryFacet:not(.coveo-category-facet-searching) .coveo-category-facet-search-container:hover {
-  background-color: $color-blueish-white-grey;
+.CoveoCategoryFacet:not(.coveo-category-facet-searching) .coveo-category-facet-search-container {
+  &:hover,
+  &:focus {
+    background-color: $color-blueish-white-grey;
+  }
 }
 
 .coveo-category-facet-search-icon {

@@ -65,6 +65,18 @@ export function QuerySummaryTest() {
       expect($$(test.cmp.element).text()).toEqual(jasmine.stringMatching(/for foo/));
     });
 
+    it('should display query recall with spaces properly if there is a query', () => {
+      const queryBuilder = new QueryBuilder();
+      queryBuilder.expression.add('foo bar');
+      const results = FakeResults.createFakeResults(10);
+
+      Simulate.query(test.env, {
+        results: results,
+        query: queryBuilder.build()
+      });
+      expect($$(test.cmp.element).text()).toEqual(jasmine.stringMatching(/for foo bar/));
+    });
+
     describe('when there are result lists in the page', () => {
       let resultListOne: ResultList;
       let resultListTwo: ResultList;
