@@ -1,21 +1,20 @@
-import { $$, Dom } from '../../utils/Dom';
+import 'styling/_ResponsiveTabs';
+import { reject, each, find } from 'underscore';
 import { InitializationEvents } from '../../events/InitializationEvents';
-import { PopupUtils, PopupHorizontalAlignment, PopupVerticalAlignment } from '../../utils/PopupUtils';
-import { EventsUtils } from '../../utils/EventsUtils';
-import { Utils } from '../../utils/Utils';
 import { Logger } from '../../misc/Logger';
+import { l } from '../../strings/Strings';
+import { $$, Dom } from '../../utils/Dom';
+import { EventsUtils } from '../../utils/EventsUtils';
+import { PopupHorizontalAlignment, PopupUtils, PopupVerticalAlignment } from '../../utils/PopupUtils';
+import { SVGDom } from '../../utils/SVGDom';
+import { SVGIcons } from '../../utils/SVGIcons';
+import { Utils } from '../../utils/Utils';
 import { Component } from '../Base/Component';
 import { SearchInterface } from '../SearchInterface/SearchInterface';
 import { Tab } from '../Tab/Tab';
-import { IResponsiveComponent, ResponsiveComponentsManager, IResponsiveComponentOptions } from './ResponsiveComponentsManager';
-import { ResponsiveComponentsUtils } from './ResponsiveComponentsUtils';
-import { l } from '../../strings/Strings';
 import { ResponsiveComponents } from './ResponsiveComponents';
-import * as _ from 'underscore';
-
-import 'styling/_ResponsiveTabs';
-import { SVGIcons } from '../../utils/SVGIcons';
-import { SVGDom } from '../../utils/SVGDom';
+import { IResponsiveComponent, IResponsiveComponentOptions, ResponsiveComponentsManager } from './ResponsiveComponentsManager';
+import { ResponsiveComponentsUtils } from './ResponsiveComponentsUtils';
 
 export class ResponsiveTabs implements IResponsiveComponent {
   private static DROPDOWN_HEADER_LABEL_DEFAULT_VALUE = 'More';
@@ -27,6 +26,8 @@ export class ResponsiveTabs implements IResponsiveComponent {
   private searchInterface: SearchInterface;
   private dropdownHeaderLabel: string;
 
+  private _initialTabsOrder: HTMLElement[];
+
   constructor(private coveoRoot: Dom, public ID: string) {
     this.dropdownHeaderLabel = this.getDropdownHeaderLabel();
     this.searchInterface = <SearchInterface>Component.get(this.coveoRoot.el, SearchInterface, false);
@@ -37,6 +38,13 @@ export class ResponsiveTabs implements IResponsiveComponent {
     this.tabSection = $$(<HTMLElement>this.coveoRoot.find('.coveo-tab-section'));
     this.manageTabSwapping();
     this.bindNukeEvents();
+  }
+
+  private get initialTabsOrder(): HTMLElement[] {
+    if (!this._initialTabsOrder) {
+      this._initialTabsOrder = [...this.getTabsInTabSection()];
+    }
+    return this._initialTabsOrder;
   }
 
   public static init(root: HTMLElement, component: Component, options: IResponsiveComponentOptions) {
@@ -55,11 +63,10 @@ export class ResponsiveTabs implements IResponsiveComponent {
       this.changeToLargeMode();
     }
 
-    const tabs = this.getTabsInTabSection();
     if (this.shouldAddTabsToDropdown()) {
-      this.addTabsToDropdown(tabs);
+      this.addTabsToDropdown();
     } else if (this.shouldRemoveTabsFromDropdown()) {
-      this.removeTabsFromDropdown(tabs);
+      this.removeTabsFromDropdown();
     }
 
     if (this.dropdownHeader.hasClass('coveo-dropdown-header-active')) {
@@ -94,7 +101,7 @@ export class ResponsiveTabs implements IResponsiveComponent {
     return this.isOverflowing(this.tabSection.el) && ResponsiveComponentsUtils.isSmallTabsActivated(this.coveoRoot);
   }
 
-  private addTabsToDropdown(tabs: HTMLElement[]): void {
+  private addTabsToDropdown(): void {
     let currentTab;
     if (!this.tabSection.find('.coveo-tab-dropdown-header')) {
       const facetDropdownHeader = this.tabSection.find('.coveo-facet-dropdown-header');
@@ -104,11 +111,11 @@ export class ResponsiveTabs implements IResponsiveComponent {
         this.tabSection.el.appendChild(this.dropdownHeader.el);
       }
     }
-    for (let i = tabs.length - 1; i >= 0; i--) {
-      currentTab = tabs[i];
+    for (let i = this.initialTabsOrder.length - 1; i >= 0; i--) {
+      currentTab = this.initialTabsOrder[i];
 
-      if ($$(currentTab).hasClass('coveo-selected') && i > 0) {
-        currentTab = tabs[--i];
+      if (this.isSelectedTab(currentTab) && i > 0) {
+        currentTab = this.initialTabsOrder[--i];
       }
 
       this.addToDropdown(currentTab);
@@ -125,22 +132,19 @@ export class ResponsiveTabs implements IResponsiveComponent {
     );
   }
 
-  private removeTabsFromDropdown(tabs: HTMLElement[]) {
+  private removeTabsFromDropdown() {
     const dropdownTabs = this.dropdownContent.findAll('.coveo-tab-dropdown');
-    let lastTabInSection: HTMLElement, current: HTMLElement;
-    if (tabs) {
-      lastTabInSection = tabs.pop();
-    }
+    const currentlySelectedTab = find(this.getTabsInTabSection(), tab => this.isSelectedTab(tab));
 
+    let current: HTMLElement;
     while (!this.isOverflowing(this.tabSection.el) && !this.isDropdownEmpty()) {
       current = dropdownTabs.shift();
       this.removeFromDropdown(current);
-      this.fromDropdownToTabSection($$(current), lastTabInSection);
-      lastTabInSection = _.clone(current);
+      this.fromDropdownToTabSection($$(current), currentlySelectedTab);
     }
 
     if (this.isOverflowing(this.tabSection.el)) {
-      const tabs = this.getTabsInTabSection();
+      const tabs = reject(this.getTabsInTabSection(), tab => this.isSelectedTab(tab));
       this.addToDropdown(tabs.pop());
     }
 
@@ -152,18 +156,11 @@ export class ResponsiveTabs implements IResponsiveComponent {
   private emptyDropdown(): void {
     if (!this.isDropdownEmpty()) {
       const dropdownTabs = this.dropdownContent.findAll('.coveo-tab-dropdown');
-      const tabs = this.getTabsInTabSection();
-      let lastTabInSection: HTMLElement;
-      if (tabs) {
-        lastTabInSection = tabs.pop();
-      }
       while (!this.isDropdownEmpty()) {
         const current = dropdownTabs.shift();
         this.removeFromDropdown(current);
-        $$(current).insertBefore(this.dropdownHeader.el);
-        this.fromDropdownToTabSection($$(current), lastTabInSection);
-        lastTabInSection = _.clone(current);
       }
+      this.initialTabsOrder.forEach(tab => this.tabSection.append(tab));
     }
   }
 
@@ -179,7 +176,7 @@ export class ResponsiveTabs implements IResponsiveComponent {
     virtualTabSection.el.style.visibility = 'hidden';
 
     if (!this.isDropdownEmpty()) {
-      _.each(this.dropdownContent.findAll('.CoveoTab'), tab => {
+      each(this.dropdownContent.findAll('.CoveoTab'), tab => {
         virtualTabSection.el.appendChild(tab.cloneNode(true));
       });
     }
@@ -281,7 +278,7 @@ export class ResponsiveTabs implements IResponsiveComponent {
   }
 
   private manageTabSwapping() {
-    _.each(this.coveoRoot.findAll('.' + Component.computeCssClassNameForType(this.ID)), tabElement => {
+    each(this.coveoRoot.findAll('.' + Component.computeCssClassNameForType(this.ID)), tabElement => {
       const tab = $$(tabElement);
       const fadeOutFadeIn = event => {
         const tabsInSection = this.getTabsInTabSection();
@@ -340,7 +337,7 @@ export class ResponsiveTabs implements IResponsiveComponent {
 
   private getTabsInTabSection(): HTMLElement[] {
     let tabsInSection = [];
-    _.each(this.tabSection.el.children, childElement => {
+    each(this.tabSection.el.children, childElement => {
       if (Utils.isHtmlElement(childElement)) {
         let child = $$(<HTMLElement>childElement);
         if (!child.hasClass('coveo-tab-dropdown') && child.hasClass(Component.computeCssClassNameForType(this.ID))) {
@@ -353,7 +350,11 @@ export class ResponsiveTabs implements IResponsiveComponent {
 
   private fromDropdownToTabSection(tab: Dom, lastTabInTabSection: HTMLElement) {
     if (lastTabInTabSection) {
-      tab.insertAfter(<HTMLElement>lastTabInTabSection);
+      if (this.initialTabsOrder.indexOf(tab.el) > this.initialTabsOrder.indexOf(lastTabInTabSection)) {
+        tab.insertAfter(<HTMLElement>lastTabInTabSection);
+      } else {
+        tab.insertBefore(<HTMLElement>lastTabInTabSection);
+      }
     } else {
       this.tabSection.prepend(tab.el);
     }
@@ -361,7 +362,7 @@ export class ResponsiveTabs implements IResponsiveComponent {
 
   private getDropdownHeaderLabel() {
     let dropdownHeaderLabel: string;
-    _.each($$(this.coveoRoot.find('.coveo-tab-section')).findAll('.' + Component.computeCssClassName(Tab)), tabElement => {
+    each($$(this.coveoRoot.find('.coveo-tab-section')).findAll('.' + Component.computeCssClassName(Tab)), tabElement => {
       let tab = <Tab>Component.get(tabElement, Tab);
       if (!dropdownHeaderLabel && tab.options.dropdownHeaderLabel) {
         dropdownHeaderLabel = tab.options.dropdownHeaderLabel;
@@ -373,5 +374,9 @@ export class ResponsiveTabs implements IResponsiveComponent {
     }
 
     return dropdownHeaderLabel;
+  }
+
+  private isSelectedTab(tab: Dom | HTMLElement) {
+    return $$(tab as HTMLElement).hasClass('coveo-selected');
   }
 }
