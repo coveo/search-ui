@@ -19,7 +19,7 @@ import { ResponsiveComponentsUtils } from './ResponsiveComponentsUtils';
 export class ResponsiveTabs implements IResponsiveComponent {
   private static DROPDOWN_HEADER_LABEL_DEFAULT_VALUE = 'More';
   private static TAB_IN_DROPDOWN_CSS_CLASS = 'coveo-tab-dropdown';
-  private static TAB_IN_DROPDOWN_HEADER_CSS_CLASS = `${ResponsiveTabs.TAB_IN_DROPDOWN_CSS_CLASS}-header`;
+  private static TAB_IN_DROPDOWN_HEADER_CSS_CLASS = `${ResponsiveTabs.TAB_IN_DROPDOWN_HEADER_CSS_CLASS}`;
   private static logger: Logger;
   private dropdownHeader: Dom;
   private dropdownContent: Dom;
@@ -351,14 +351,16 @@ export class ResponsiveTabs implements IResponsiveComponent {
 
   private fromDropdownToTabSection(tab: Dom) {
     const lastTabInTabSection = last(this.tabsInTabSection);
-    if (lastTabInTabSection) {
-      if (this.initialTabsOrder.indexOf(tab.el) > this.initialTabsOrder.indexOf(lastTabInTabSection)) {
-        tab.insertAfter(<HTMLElement>lastTabInTabSection);
-      } else {
-        tab.insertBefore(<HTMLElement>lastTabInTabSection);
-      }
-    } else {
+    if (!lastTabInTabSection) {
       this.tabSection.prepend(tab.el);
+    }
+
+    const comesAfterInInitialTabsOrder = this.initialTabsOrder.indexOf(tab.el) > this.initialTabsOrder.indexOf(lastTabInTabSection);
+
+    if (comesAfterInInitialTabsOrder) {
+      tab.insertAfter(lastTabInTabSection);
+    } else {
+      tab.insertBefore(lastTabInTabSection);
     }
   }
 
