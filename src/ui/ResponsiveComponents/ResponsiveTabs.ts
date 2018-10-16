@@ -19,7 +19,7 @@ import { ResponsiveComponentsUtils } from './ResponsiveComponentsUtils';
 export class ResponsiveTabs implements IResponsiveComponent {
   private static DROPDOWN_HEADER_LABEL_DEFAULT_VALUE = 'More';
   private static TAB_IN_DROPDOWN_CSS_CLASS = 'coveo-tab-dropdown';
-  private static TAB_IN_DROPDOWN_HEADER_CSS_CLASS = `${ResponsiveTabs.TAB_IN_DROPDOWN_HEADER_CSS_CLASS}`;
+  private static TAB_IN_DROPDOWN_HEADER_CSS_CLASS = `${ResponsiveTabs.TAB_IN_DROPDOWN_CSS_CLASS}-header`;
   private static logger: Logger;
   private dropdownHeader: Dom;
   private dropdownContent: Dom;
