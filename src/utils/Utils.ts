@@ -53,7 +53,7 @@ export class Utils {
     return !Utils.isNonEmptyArray(obj);
   }
 
-  static isHtmlElement(obj: any): boolean {
+  static isHtmlElement(obj: any): obj is HTMLElement {
     if (window['HTMLElement'] != undefined) {
       return obj instanceof HTMLElement;
     } else {

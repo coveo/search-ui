@@ -102,19 +102,21 @@ export function ResponsiveTabsTest() {
           const lastTabInDropdown = container.find(`div[data-id="4"]`);
           expect(lastTabInDropdown).not.toBeNull();
 
-          range(0, 4).forEach(otherTabsNotInsideDropdown => {
-            const otherTabWhichShouldNotBeInDropdown = container.find(`div[data-id="${otherTabsNotInsideDropdown}"]`);
-            expect(otherTabWhichShouldNotBeInDropdown).toBeNull();
+          range(0, 4).forEach(tabOutsideDropdownId => {
+            const tabInIncorrectPosition = container.find(`div[data-id="${tabOutsideDropdownId}"]`);
+            expect(tabInIncorrectPosition).toBeNull();
           });
         });
 
         it('should not place a selected tab inside the dropdown', () => {
-          last(tabs).addClass('coveo-selected');
+          const lastTab = last(tabs);
+          lastTab.addClass('coveo-selected');
+          const lastId = lastTab.getAttribute('data-id');
 
           responsiveTabs.handleResizeEvent();
           const container = openTabContainer();
 
-          const selectedTabInDropdown = container.find(`div[data-id="4"]`);
+          const selectedTabInDropdown = container.find(`div[data-id="${lastId}"]`);
           expect(selectedTabInDropdown).toBeNull();
         });
       });
@@ -156,10 +158,9 @@ export function ResponsiveTabsTest() {
           responsiveTabs.handleResizeEvent();
 
           const allTabsReplacedInTheirOriginalSection = tabSection.findAll(`.${Component.computeCssClassName(Tab)}`);
-          range(0, 5).forEach(allTabsInExpectedOrder => {
-            expect(allTabsReplacedInTheirOriginalSection[allTabsInExpectedOrder].getAttribute('data-id')).toEqual(
-              allTabsInExpectedOrder.toString()
-            );
+          range(0, 5).forEach(tabId => {
+            const tab = allTabsReplacedInTheirOriginalSection[tabId];
+            expect(tab.getAttribute('data-id')).toEqual(tabId.toString());
           });
         });
       });
