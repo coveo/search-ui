@@ -303,7 +303,7 @@ export class FieldValue extends Component {
     } else {
       element.appendChild(document.createTextNode(toRender));
     }
-    this.bindEventOnValue(element, value);
+    this.bindEventOnValue(element, value, toRender);
     return element;
   }
 
@@ -374,7 +374,7 @@ export class FieldValue extends Component {
     $$(elem).addClass('coveo-with-label');
   }
 
-  private bindEventOnValue(element: HTMLElement, value: string) {
+  private bindEventOnValue(element: HTMLElement, originalFacetValue: string, renderedFacetValue: string) {
     const facetAttributeName = QueryStateModel.getFacetId(this.options.facet);
     const facets: Component[] = filter(this.componentStateModel.get(facetAttributeName), (possibleFacetComponent: Component) => {
       // Here, we need to check if a potential facet component (as returned by the component state model) is a "standard" facet.
@@ -403,14 +403,16 @@ export class FieldValue extends Component {
 
     if (atLeastOneFacetIsEnabled) {
       const selected = find(facets, (facet: Facet) => {
-        const facetValue = facet.values.get(value);
+        const facetValue = facet.values.get(originalFacetValue);
         return facetValue && facetValue.selected;
       });
 
+      const label = selected ? l('RemoveFilterOn', renderedFacetValue) : l('FilterOn', renderedFacetValue);
       new AccessibleButton()
-        .withLabel(selected ? l('RemoveFilterOn', value) : l('FilterOn', value))
+        .withLabel(label)
+        .withTitle(label)
         .withElement(element)
-        .withSelectAction(() => this.handleSelection(selected as Facet, facets as Facet[], value))
+        .withSelectAction(() => this.handleSelection(selected as Facet, facets as Facet[], originalFacetValue))
         .build();
 
       if (selected) {
