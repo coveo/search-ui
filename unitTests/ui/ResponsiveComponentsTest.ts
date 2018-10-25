@@ -103,7 +103,7 @@ export function ResponsiveComponentsTest() {
 
     describe('with a large screen width and auto responsive mode', () => {
       beforeEach(() => {
-        windoh['clientWidth'] = MEDIUM_SCREEN_WIDTH;
+        windoh['clientWidth'] = MEDIUM_SCREEN_WIDTH + 1;
         responsiveComponent = new ResponsiveComponents(windoh);
         responsiveComponent.setResponsiveMode('auto');
       });
