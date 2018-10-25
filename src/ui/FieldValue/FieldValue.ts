@@ -302,7 +302,7 @@ export class FieldValue extends Component {
     } else {
       element.appendChild(document.createTextNode(toRender));
     }
-    this.bindEventOnValue(element, value);
+    this.bindEventOnValue(element, value, toRender);
     return element;
   }
 
@@ -373,9 +373,9 @@ export class FieldValue extends Component {
     $$(elem).addClass('coveo-with-label');
   }
 
-  private bindEventOnValue(element: HTMLElement, value: string) {
+  private bindEventOnValue(element: HTMLElement, originalFacetValue: string, renderedFacetValue: string) {
     const facetAttributeName = QueryStateModel.getFacetId(this.options.facet);
-    const facets: Component[] = filter(this.componentStateModel.get(facetAttributeName), (possibleFacetComponent: Component) => {
+    const facets = filter<Facet>(this.componentStateModel.get(facetAttributeName), (possibleFacetComponent: Component) => {
       // Here, we need to check if a potential facet component (as returned by the component state model) is a "standard" facet.
       // It's also possible that the FacetRange and FacetSlider constructor are not available (lazy loading mode)
       // For that reason we also need to check that the constructor event exist before calling the instanceof operator or an exception would explode (cannot use instanceof "undefined")
@@ -401,15 +401,16 @@ export class FieldValue extends Component {
     const atLeastOneFacetIsEnabled = facets.length > 0;
 
     if (atLeastOneFacetIsEnabled) {
-      const selected = find(facets, (facet: Facet) => {
-        const facetValue = facet.values.get(value);
+      const selected = find<Facet>(facets, (facet: Facet) => {
+        const facetValue = facet.values.get(originalFacetValue);
         return facetValue && facetValue.selected;
       });
 
+      const label = selected ? l('RemoveFilterOn', renderedFacetValue) : l('FilterOn', renderedFacetValue);
       new AccessibleButton()
-        .withLabel(selected ? l('RemoveFilterOn', value) : l('FilterOn', value))
+        .withTitle(label)
         .withElement(element)
-        .withSelectAction(() => this.handleSelection(selected as Facet, facets as Facet[], value))
+        .withSelectAction(() => this.handleSelection(selected, facets, originalFacetValue))
         .build();
 
       if (selected) {
