@@ -376,7 +376,7 @@ export class FieldValue extends Component {
 
   private bindEventOnValue(element: HTMLElement, originalFacetValue: string, renderedFacetValue: string) {
     const facetAttributeName = QueryStateModel.getFacetId(this.options.facet);
-    const facets: Component[] = filter(this.componentStateModel.get(facetAttributeName), (possibleFacetComponent: Component) => {
+    const facets = filter<Facet>(this.componentStateModel.get(facetAttributeName), (possibleFacetComponent: Component) => {
       // Here, we need to check if a potential facet component (as returned by the component state model) is a "standard" facet.
       // It's also possible that the FacetRange and FacetSlider constructor are not available (lazy loading mode)
       // For that reason we also need to check that the constructor event exist before calling the instanceof operator or an exception would explode (cannot use instanceof "undefined")
@@ -402,17 +402,16 @@ export class FieldValue extends Component {
     const atLeastOneFacetIsEnabled = facets.length > 0;
 
     if (atLeastOneFacetIsEnabled) {
-      const selected = find(facets, (facet: Facet) => {
+      const selected = find<Facet>(facets, (facet: Facet) => {
         const facetValue = facet.values.get(originalFacetValue);
         return facetValue && facetValue.selected;
       });
 
       const label = selected ? l('RemoveFilterOn', renderedFacetValue) : l('FilterOn', renderedFacetValue);
       new AccessibleButton()
-        .withLabel(label)
         .withTitle(label)
         .withElement(element)
-        .withSelectAction(() => this.handleSelection(selected as Facet, facets as Facet[], originalFacetValue))
+        .withSelectAction(() => this.handleSelection(selected, facets, originalFacetValue))
         .build();
 
       if (selected) {

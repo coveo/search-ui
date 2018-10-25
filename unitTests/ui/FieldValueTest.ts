@@ -21,12 +21,6 @@ export function FieldValueTest() {
       return $$(test.cmp.element).find('span').textContent;
     };
 
-    const getLabel = () => {
-      return $$(test.cmp.element)
-        .find('span')
-        .getAttribute('aria-label');
-    };
-
     const getTitle = () => {
       return $$(test.cmp.element)
         .find('span')
@@ -350,10 +344,6 @@ export function FieldValueTest() {
 
         it('should use the translated value', () => {
           expect(getText()).toBe(l('opportunityproduct'));
-        });
-
-        it('should use the translated value for the label', () => {
-          expect(getLabel()).toContain(l('opportunityproduct'));
         });
 
         it('should use the translated value for the title', () => {
