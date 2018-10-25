@@ -1,4 +1,4 @@
-import { ResponsiveComponents } from '../../src/ui/ResponsiveComponents/ResponsiveComponents';
+import { ResponsiveComponents, SMALL_SCREEN_WIDTH, MEDIUM_SCREEN_WIDTH } from '../../src/ui/ResponsiveComponents/ResponsiveComponents';
 import * as Mock from '../MockEnvironment';
 export function ResponsiveComponentsTest() {
   describe('ResponsiveComponents', () => {
@@ -63,130 +63,136 @@ export function ResponsiveComponentsTest() {
 
     describe('with a small screen width and auto responsive mode', () => {
       beforeEach(() => {
-        windoh['clientWidth'] = 100;
+        windoh['clientWidth'] = SMALL_SCREEN_WIDTH;
         responsiveComponent = new ResponsiveComponents(windoh);
         responsiveComponent.setResponsiveMode('auto');
       });
 
-      it('should return isSmallScreenWidth', () => {
+      it('isSmallScreenWidth should return true', () => {
         expect(responsiveComponent.isSmallScreenWidth()).toBe(true);
       });
 
-      it('should not return isMediumScreenWidth', () => {
+      it('isMediumScreenWidth should return false', () => {
         expect(responsiveComponent.isMediumScreenWidth()).toBe(false);
       });
 
-      it('should not return isLargeScreenWidth', () => {
+      it('isLargeScreenWidth should return false', () => {
         expect(responsiveComponent.isLargeScreenWidth()).toBe(false);
       });
     });
 
     describe('with a medium screen width and auto responsive mode', () => {
       beforeEach(() => {
-        windoh['clientWidth'] = 600;
+        windoh['clientWidth'] = MEDIUM_SCREEN_WIDTH;
         responsiveComponent = new ResponsiveComponents(windoh);
         responsiveComponent.setResponsiveMode('auto');
       });
 
-      it('should not return isSmallScreenWidth', () => {
+      it('isSmallScreenWidth should return false', () => {
         expect(responsiveComponent.isSmallScreenWidth()).toBe(false);
       });
 
-      it('should return isMediumScreenWidth', () => {
+      it('isMediumScreenWidth should return true', () => {
         expect(responsiveComponent.isMediumScreenWidth()).toBe(true);
       });
 
-      it('should not return isLargeScreenWidth', () => {
+      it('isLargeScreenWidth should return false', () => {
         expect(responsiveComponent.isLargeScreenWidth()).toBe(false);
       });
     });
 
     describe('with a large screen width and auto responsive mode', () => {
       beforeEach(() => {
-        windoh['clientWidth'] = 2000;
+        windoh['clientWidth'] = MEDIUM_SCREEN_WIDTH;
         responsiveComponent = new ResponsiveComponents(windoh);
         responsiveComponent.setResponsiveMode('auto');
       });
 
-      it('should not return isSmallScreenWidth', () => {
+      it('isSmallScreenWidth should return false', () => {
         expect(responsiveComponent.isSmallScreenWidth()).toBe(false);
       });
 
-      it('should not return isMediumScreenWidth', () => {
+      it('isMediumScreenWidth should return false', () => {
         expect(responsiveComponent.isMediumScreenWidth()).toBe(false);
       });
 
-      it('should return isLargeScreenWidth', () => {
+      it('isLargeScreenWidth should return true', () => {
         expect(responsiveComponent.isLargeScreenWidth()).toBe(true);
       });
     });
 
-    describe('with a small responsiveMode and auto responsive mode', () => {
+    describe('with a small responsiveMode and a screen width outside the small range', () => {
       beforeEach(() => {
-        windoh['clientWidth'] = 600;
+        windoh['clientWidth'] = MEDIUM_SCREEN_WIDTH;
         responsiveComponent = new ResponsiveComponents(windoh);
         responsiveComponent.setResponsiveMode('small');
       });
 
-      it('should return 0 for medium breakpoint and positive infinity for small', () => {
+      it('should return positive infinity for small breakpoint', () => {
         expect(responsiveComponent.getSmallScreenWidth()).toBe(Number.POSITIVE_INFINITY);
+      });
+
+      it('should return 0 for medium breakpoint', () => {
         expect(responsiveComponent.getMediumScreenWidth()).toBe(0);
       });
 
-      it('should return isSmallScreenWidth', () => {
+      it('isSmallScreenWidth should return true', () => {
         expect(responsiveComponent.isSmallScreenWidth()).toBe(true);
       });
 
-      it('should not return isMediumScreenWidth', () => {
+      it('isMediumScreenWidth should return false', () => {
         expect(responsiveComponent.isMediumScreenWidth()).toBe(false);
       });
 
-      it('should not return isLargeScreenWidth', () => {
+      it('isLargeScreenWidth should return false', () => {
         expect(responsiveComponent.isLargeScreenWidth()).toBe(false);
       });
     });
 
-    describe('with a medium responsiveMode', () => {
+    describe('with a medium responsiveMode and a screen width outside the medium range', () => {
       beforeEach(() => {
-        windoh['clientWidth'] = 400;
+        windoh['clientWidth'] = SMALL_SCREEN_WIDTH;
         responsiveComponent = new ResponsiveComponents(windoh);
         responsiveComponent.setResponsiveMode('medium');
       });
 
-      it('should return 0 for small breakpoint and positive infinity for medium', () => {
+      it('should return 0 for small breakpoint', () => {
         expect(responsiveComponent.getSmallScreenWidth()).toBe(0);
+      });
+
+      it('should return positive infinity for medium breakpoint', () => {
         expect(responsiveComponent.getMediumScreenWidth()).toBe(Number.POSITIVE_INFINITY);
       });
 
-      it('should not return isSmallScreenWidth', () => {
+      it('isSmallScreenWidth should return false', () => {
         expect(responsiveComponent.isSmallScreenWidth()).toBe(false);
       });
 
-      it('should return isMediumScreenWidth', () => {
+      it('isMediumScreenWdith should return true', () => {
         expect(responsiveComponent.isMediumScreenWidth()).toBe(true);
       });
 
-      it('should not return isLargeScreenWidth', () => {
+      it('isLargeScreenWidth should return false', () => {
         expect(responsiveComponent.isLargeScreenWidth()).toBe(false);
       });
     });
 
-    describe('with a large responsiveMode', () => {
+    describe('with a large responsiveMode and a screen width outside the large range', () => {
       beforeEach(() => {
-        windoh['clientWidth'] = 400;
+        windoh['clientWidth'] = SMALL_SCREEN_WIDTH;
         responsiveComponent = new ResponsiveComponents(windoh);
         responsiveComponent.setResponsiveMode('large');
       });
 
-      it('should not return isSmallScreenWidth', () => {
+      it('isSmallScreenWidth should return false', () => {
         expect(responsiveComponent.isSmallScreenWidth()).toBe(false);
       });
 
-      it('should not return isMediumScreenWidth', () => {
+      it('isMediumScreenWidth should return false', () => {
         expect(responsiveComponent.isMediumScreenWidth()).toBe(false);
       });
 
-      it('should return isLargeScreenWidth', () => {
+      it('isLargeScreenWidth should return true', () => {
         expect(responsiveComponent.isLargeScreenWidth()).toBe(true);
       });
     });
