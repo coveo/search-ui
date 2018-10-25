@@ -450,9 +450,12 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     /**
      * Specifies the search interface responsive mode that should be used.
      *
-     * When the mode is auto, the width of the window/device that displays the search page is used to determine which layout the search page should use (see [enableAutomaticResponsiveMode]{@link SearchInterface.options.enableAutomaticResponsiveMode}, [responsiveMediumBreakpoint]{@link SearchInterface.options.responsiveMediumBreakpoint} and [responsiveSmallBreakpoint{@link SearchInterface.options.responsiveSmallBreakpoint}])
+     * When the mode is auto, the width of the window/device that displays the search page is used to determine which layout the search page should use
+     * (see [enableAutomaticResponsiveMode]{@link SearchInterface.options.enableAutomaticResponsiveMode}, [responsiveMediumBreakpoint]{@link SearchInterface.options.responsiveMediumBreakpoint}
+     * and [responsiveSmallBreakpoint{@link SearchInterface.options.responsiveSmallBreakpoint}])
      *
-     * When it's not on auto, the width is ignored and the the layout used depends on this option (e.g. If set to "small", then the search interface layout will be the same as if it was on a narrow window/device)
+     * When it's not on auto, the width is ignored and the the layout used depends on this option
+     * (e.g. If set to "small", then the search interface layout will be the same as if it was on a narrow window/device)
      */
     responsiveMode: ComponentOptions.buildCustomOption<ValidResponsiveMode>(
       value => {
