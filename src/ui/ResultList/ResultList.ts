@@ -468,7 +468,7 @@ export class ResultList extends Component {
       this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(analyticsActionCauseList.pagerScrolling, {}, this.element);
       const results = data.results;
       this.reachedTheEndOfResults = count > data.results.length;
-      this.buildResults(data).then((elements: HTMLElement[]) => {
+      this.buildResults(data).then(async (elements: HTMLElement[]) => {
         this.renderResults(elements, true);
         each(results, result => {
           this.currentlyDisplayedResults.push(result);
@@ -578,8 +578,8 @@ export class ResultList extends Component {
     this.reachedTheEndOfResults = data.query.numberOfResults > data.results.results.length;
 
     this.currentlyDisplayedResults = [];
-    this.buildResults(data.results).then((elements: HTMLElement[]) => {
-      this.renderResults(elements);
+    this.buildResults(data.results).then(async (elements: HTMLElement[]) => {
+      await this.renderResults(elements);
 
       this.showOrHideElementsDependingOnState(true, this.currentlyDisplayedResults.length != 0);
 
@@ -666,7 +666,7 @@ export class ResultList extends Component {
           new InitializationPlaceholder(this.root).withVisibleRootElement().withPlaceholderForResultList();
         }
         Defer.defer(() => {
-          this.buildResults(args.results).then((elements: HTMLElement[]) => {
+          this.buildResults(args.results).then(async (elements: HTMLElement[]) => {
             this.renderResults(elements);
           });
         });
