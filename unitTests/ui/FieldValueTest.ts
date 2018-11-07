@@ -10,11 +10,22 @@ import { FacetValue } from '../../src/ui/Facet/FacetValues';
 import { IDateToStringOptions } from '../../src/utils/DateUtils';
 import { DateUtils } from '../../src/utils/DateUtils';
 import * as _ from 'underscore';
+import { l } from '../../src/Core';
 
 export function FieldValueTest() {
   describe('FieldValue', () => {
     let test: Mock.IBasicComponentSetup<FieldValue>;
     let element: HTMLElement;
+
+    const getText = () => {
+      return $$(test.cmp.element).find('span').textContent;
+    };
+
+    const getTitle = () => {
+      return $$(test.cmp.element)
+        .find('span')
+        .getAttribute('title');
+    };
 
     beforeEach(() => {
       test = Mock.advancedResultComponentSetup<FieldValue>(FieldValue, FakeResults.createFakeResult(), <Mock.AdvancedComponentSetupOptions>{
@@ -291,7 +302,7 @@ export function FieldValueTest() {
     });
 
     it('should display the proper field value', () => {
-      expect($$(test.cmp.element).find('span').textContent).toBe('string value');
+      expect(getText()).toBe('string value');
     });
 
     describe('with a related facet', () => {
@@ -310,6 +321,34 @@ export function FieldValueTest() {
 
       afterEach(() => {
         facet = null;
+      });
+
+      describe('when translating standard field values', () => {
+        beforeEach(() => {
+          const fakeResults = FakeResults.createFakeResult();
+          fakeResults.raw['objecttype'] = 'opportunityproduct';
+
+          test = Mock.advancedResultComponentSetup<FieldValue>(FieldValue, fakeResults, <Mock.AdvancedComponentSetupOptions>{
+            element: $$('span').el,
+            cmpOptions: <IFieldValueOptions>{
+              field: '@objecttype'
+            },
+            modifyBuilder: (builder: Mock.MockEnvironmentBuilder) => {
+              builder.componentStateModel.get = () => [facet];
+              builder.queryStateModel.get = () => [];
+              return builder;
+            }
+          });
+          element = $$('span').el;
+        });
+
+        it('should use the translated value', () => {
+          expect(getText()).toBe(l('opportunityproduct'));
+        });
+
+        it('should use the translated value for the title', () => {
+          expect(getTitle()).toContain(l('opportunityproduct'));
+        });
       });
 
       it('should display the field value as clickable when its facet is enabled', () => {
