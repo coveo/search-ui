@@ -1,4 +1,4 @@
-import { isArray, pairs, compact, uniq, rest, first } from 'underscore';
+import { isArray, pairs, compact, uniq, rest, first, isNumber, isBoolean } from 'underscore';
 import { Utils } from './Utils';
 import { IEndpointCallParameters } from '../rest/EndpointCaller';
 
@@ -101,7 +101,7 @@ export class UrlUtils {
       const mapped = paired.map(pair => {
         const [key, value] = pair;
 
-        if (!value || !key) {
+        if (UrlUtils.valueShouldBeRemovedFromQueryString(value) || UrlUtils.valueShouldBeRemovedFromQueryString(key)) {
           return '';
         }
 
@@ -186,5 +186,16 @@ export class UrlUtils {
 
   private static isEncoded(value: string) {
     return value != decodeURIComponent(value);
+  }
+
+  private static valueShouldBeRemovedFromQueryString(value: string | number | boolean) {
+    if (isNumber(value)) {
+      return false;
+    }
+    if (isBoolean(value)) {
+      return false;
+    }
+
+    return Utils.isEmptyString(value) || Utils.isNullOrUndefined(value);
   }
 }

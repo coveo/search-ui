@@ -64,6 +64,26 @@ export function UrlUtilsTest() {
       expect(url).toBe('https://a.com?123=4&456=7');
     });
 
+    it('should support passing in query string 0 as a dictionary', () => {
+      const url = UrlUtils.normalizeAsString({
+        paths: ['https://a.com/'],
+        query: {
+          123: 0
+        }
+      });
+      expect(url).toBe('https://a.com?123=0');
+    });
+
+    it('should support passing in query string false as a dictionary', () => {
+      const url = UrlUtils.normalizeAsString({
+        paths: ['https://a.com/'],
+        query: {
+          123: false
+        }
+      });
+      expect(url).toBe('https://a.com?123=false');
+    });
+
     it('should use both query string as an array of strings and a dictionary', () => {
       const url = UrlUtils.normalizeAsString({
         paths: ['https://a.com/'],
@@ -142,6 +162,61 @@ export function UrlUtilsTest() {
         }
       });
       expect(url).toBe(`https://a.com?123=456`);
+    });
+
+    it('should not remove query string parameter that are 0', () => {
+      const url = UrlUtils.normalizeAsString({
+        paths: ['https://a.com/'],
+        queryAsString: [`123=0`],
+        query: {
+          abc: undefined
+        }
+      });
+      expect(url).toBe(`https://a.com?123=0`);
+    });
+
+    it('should not remove query string parameter that are "null" as string', () => {
+      const url = UrlUtils.normalizeAsString({
+        paths: ['https://a.com/'],
+        queryAsString: [`123=null`],
+        query: {
+          abc: 'null'
+        }
+      });
+      expect(url).toBe(`https://a.com?123=null&abc=null`);
+    });
+
+    it('should not remove query string parameter that are "undefined" as string', () => {
+      const url = UrlUtils.normalizeAsString({
+        paths: ['https://a.com/'],
+        queryAsString: [`123=undefined`],
+        query: {
+          abc: 'undefined'
+        }
+      });
+      expect(url).toBe(`https://a.com?123=undefined&abc=undefined`);
+    });
+
+    it('should not remove query string parameter that are "false" as string', () => {
+      const url = UrlUtils.normalizeAsString({
+        paths: ['https://a.com/'],
+        queryAsString: [`123=false`],
+        query: {
+          abc: 'false'
+        }
+      });
+      expect(url).toBe(`https://a.com?123=false&abc=false`);
+    });
+
+    it('should not remove query string parameter that are "true" as string', () => {
+      const url = UrlUtils.normalizeAsString({
+        paths: ['https://a.com/'],
+        queryAsString: [`123=true`],
+        query: {
+          abc: 'true'
+        }
+      });
+      expect(url).toBe(`https://a.com?123=true&abc=true`);
     });
 
     it('should remove incoherent "?" character', () => {
