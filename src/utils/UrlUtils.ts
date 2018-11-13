@@ -101,7 +101,7 @@ export class UrlUtils {
       const mapped = paired.map(pair => {
         const [key, value] = pair;
 
-        if (UrlUtils.isValidQueryStringValue(value) || UrlUtils.isValidQueryStringValue(key)) {
+        if (UrlUtils.isInvalidQueryStringValue(value) || UrlUtils.isInvalidQueryStringValue(key)) {
           return '';
         }
 
@@ -188,7 +188,7 @@ export class UrlUtils {
     return value != decodeURIComponent(value);
   }
 
-  private static isValidQueryStringValue(value: any) {
+  private static isInvalidQueryStringValue(value: any) {
     if (isString(value)) {
       return Utils.isEmptyString(value);
     }
