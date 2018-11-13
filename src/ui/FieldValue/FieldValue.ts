@@ -410,6 +410,7 @@ export class FieldValue extends Component {
       const label = selected ? l('RemoveFilterOn', renderedFacetValue) : l('FilterOn', renderedFacetValue);
       new AccessibleButton()
         .withTitle(label)
+        .withLabel(label)
         .withElement(element)
         .withSelectAction(() => this.handleSelection(selected, facets, originalFacetValue))
         .build();
