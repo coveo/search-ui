@@ -1,4 +1,4 @@
-import { isArray, pairs, compact, uniq, rest, first, isNumber, isBoolean } from 'underscore';
+import { isArray, pairs, compact, uniq, rest, first, isString } from 'underscore';
 import { Utils } from './Utils';
 import { IEndpointCallParameters } from '../rest/EndpointCaller';
 
@@ -188,14 +188,11 @@ export class UrlUtils {
     return value != decodeURIComponent(value);
   }
 
-  private static valueShouldBeRemovedFromQueryString(value: string | number | boolean) {
-    if (isNumber(value)) {
-      return false;
-    }
-    if (isBoolean(value)) {
-      return false;
+  private static valueShouldBeRemovedFromQueryString(value: any) {
+    if (isString(value)) {
+      return Utils.isEmptyString(value);
     }
 
-    return Utils.isEmptyString(value) || Utils.isNullOrUndefined(value);
+    return Utils.isNullOrUndefined(value);
   }
 }
