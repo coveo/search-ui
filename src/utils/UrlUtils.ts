@@ -101,7 +101,7 @@ export class UrlUtils {
       const mapped = paired.map(pair => {
         const [key, value] = pair;
 
-        if (UrlUtils.valueShouldBeRemovedFromQueryString(value) || UrlUtils.valueShouldBeRemovedFromQueryString(key)) {
+        if (UrlUtils.isValidQueryStringValue(value) || UrlUtils.isValidQueryStringValue(key)) {
           return '';
         }
 
@@ -188,7 +188,7 @@ export class UrlUtils {
     return value != decodeURIComponent(value);
   }
 
-  private static valueShouldBeRemovedFromQueryString(value: any) {
+  private static isValidQueryStringValue(value: any) {
     if (isString(value)) {
       return Utils.isEmptyString(value);
     }
