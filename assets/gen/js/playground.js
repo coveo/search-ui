@@ -4633,7 +4633,7 @@ var UrlUtils = /** @class */ (function () {
             var paired = underscore_1.pairs(toNormalize.query);
             var mapped = paired.map(function (pair) {
                 var key = pair[0], value = pair[1];
-                if (!value || !key) {
+                if (UrlUtils.isInvalidQueryStringValue(value) || UrlUtils.isInvalidQueryStringValue(key)) {
                     return '';
                 }
                 if (!_this.isEncoded(value)) {
@@ -4703,6 +4703,12 @@ var UrlUtils = /** @class */ (function () {
     };
     UrlUtils.isEncoded = function (value) {
         return value != decodeURIComponent(value);
+    };
+    UrlUtils.isInvalidQueryStringValue = function (value) {
+        if (underscore_1.isString(value)) {
+            return Utils_1.Utils.isEmptyString(value);
+        }
+        return Utils_1.Utils.isNullOrUndefined(value);
     };
     return UrlUtils;
 }());
@@ -5732,12 +5738,14 @@ var ResponsiveComponents = /** @class */ (function () {
     function ResponsiveComponents(windoh) {
         if (windoh === void 0) { windoh = window; }
         this.windoh = windoh;
+        this.responsiveMode = 'auto';
     }
     /**
      * Set the breakpoint for small screen size.
      * @param width
      */
     ResponsiveComponents.prototype.setSmallScreenWidth = function (width) {
+        Assert_1.Assert.check(this.responsiveMode === 'auto', "Cannot modify medium screen width if responsiveMode is locked on " + this.responsiveMode + ".");
         Assert_1.Assert.check(width < this.getMediumScreenWidth(), "Cannot set small screen width (" + width + ") larger or equal to the current medium screen width (" + this.getMediumScreenWidth() + ")");
         this.smallScreenWidth = width;
     };
@@ -5746,8 +5754,12 @@ var ResponsiveComponents = /** @class */ (function () {
      * @param width
      */
     ResponsiveComponents.prototype.setMediumScreenWidth = function (width) {
+        Assert_1.Assert.check(this.responsiveMode === 'auto', "Cannot modify medium screen width if responsiveMode is locked on " + this.responsiveMode + ".");
         Assert_1.Assert.check(width > this.getSmallScreenWidth(), "Cannot set medium screen width (" + width + ") smaller or equal to the current small screen width (" + this.getSmallScreenWidth() + ")");
         this.mediumScreenWidth = width;
+    };
+    ResponsiveComponents.prototype.setResponsiveMode = function (responsiveMode) {
+        this.responsiveMode = responsiveMode;
     };
     /**
      * Get the current breakpoint for small screen size.
@@ -5756,6 +5768,12 @@ var ResponsiveComponents = /** @class */ (function () {
      * @returns {number}
      */
     ResponsiveComponents.prototype.getSmallScreenWidth = function () {
+        if (this.responsiveMode === 'small') {
+            return Number.POSITIVE_INFINITY;
+        }
+        if (this.responsiveMode !== 'auto') {
+            return 0;
+        }
         if (this.smallScreenWidth == null) {
             return exports.SMALL_SCREEN_WIDTH;
         }
@@ -5768,10 +5786,22 @@ var ResponsiveComponents = /** @class */ (function () {
      * @returns {number}
      */
     ResponsiveComponents.prototype.getMediumScreenWidth = function () {
+        if (this.responsiveMode === 'medium') {
+            return Number.POSITIVE_INFINITY;
+        }
+        if (this.responsiveMode !== 'auto') {
+            return 0;
+        }
         if (this.mediumScreenWidth == null) {
             return exports.MEDIUM_SCREEN_WIDTH;
         }
         return this.mediumScreenWidth;
+    };
+    /** Return the current responsive mode.
+     * @returns {ValidResponsiveMode}
+     */
+    ResponsiveComponents.prototype.getResponsiveMode = function () {
+        return this.responsiveMode;
     };
     /**
      * Return true if the current screen size is smaller than the current breakpoint set for small screen width.
@@ -5824,8 +5854,8 @@ exports.ResponsiveComponents = ResponsiveComponents;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    lib: '2.4710.8',
-    product: '2.4710.8',
+    lib: '2.4710.9-beta',
+    product: '2.4710.9-beta',
     supportedApiVersion: 2
 };
 
