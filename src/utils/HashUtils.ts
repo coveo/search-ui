@@ -9,10 +9,8 @@ export class HashUtils {
     objectEnd: '}',
     arrayStart: '[',
     arrayEnd: ']',
-    objectStartRegExp: '^{',
-    objectEndRegExp: '}+$',
-    arrayStartRegExp: '^[',
-    arrayEndRegExp: ']+$'
+    arrayStartRegExp: /^\[/,
+    arrayEndRegExp: /\]$/
   };
 
   public static getHash(w = window): string {
@@ -111,30 +109,28 @@ export class HashUtils {
       return 'other';
     } else if (HashUtils.isObject(paramValue)) {
       return 'object';
-    } else if (HashUtils.isArray(paramValue)) {
+    } else if (HashUtils.startsOrEndsWithSquareBracket(paramValue)) {
       return 'array';
     } else {
       return 'other';
     }
   }
 
-  private static isArrayStartNotEncoded(value: string) {
-    return value.substr(0, 1) == HashUtils.DELIMITER.arrayStart;
+  private static startsWithLeftSquareBracket(value: string) {
+    return HashUtils.DELIMITER.arrayStartRegExp.test(value);
   }
 
-  private static isArrayStartEncoded(value: string) {
+  private static startsWithEncodedLeftSquareBracket(value: string) {
     return value.indexOf(Utils.safeEncodeURIComponent(HashUtils.DELIMITER.arrayStart)) == 0;
   }
 
-  private static isArrayEndNotEncoded(value: string) {
-    return value.substr(value.length - 1);
+  private static endsWithRightSquareBracket(value: string) {
+    return HashUtils.DELIMITER.arrayEndRegExp.test(value);
   }
 
-  private static isArrayEndEncoded(value: string) {
-    return (
-      value.indexOf(Utils.safeEncodeURIComponent(HashUtils.DELIMITER.arrayEnd)) ==
-      value.length - Utils.safeEncodeURIComponent(HashUtils.DELIMITER.arrayEnd).length
-    );
+  private static endsWithEncodedRightSquareBracket(value: string) {
+    const encodedBracket = Utils.safeEncodeURIComponent(HashUtils.DELIMITER.arrayEnd);
+    return value.indexOf(encodedBracket) == value.length - encodedBracket.length;
   }
 
   private static isObjectStartNotEncoded(value: string) {
@@ -162,10 +158,10 @@ export class HashUtils {
     return isObjectStart && isObjectEnd;
   }
 
-  private static isArray(value: string) {
-    const isArrayStart = HashUtils.isArrayStartNotEncoded(value) || HashUtils.isArrayStartEncoded(value);
-    const isArrayEnd = HashUtils.isArrayEndNotEncoded(value) || HashUtils.isArrayEndEncoded(value);
-    return isArrayStart && isArrayEnd;
+  private static startsOrEndsWithSquareBracket(value: string) {
+    const isArrayStart = HashUtils.startsWithLeftSquareBracket(value) || HashUtils.startsWithEncodedLeftSquareBracket(value);
+    const isArrayEnd = HashUtils.endsWithRightSquareBracket(value) || HashUtils.endsWithEncodedRightSquareBracket(value);
+    return isArrayStart || isArrayEnd;
   }
 
   public static encodeArray(array: string[]): string {
@@ -222,13 +218,8 @@ export class HashUtils {
   }
 
   private static decodeArray(value: string): any[] {
-    if (HashUtils.isArrayStartEncoded(value) && HashUtils.isArrayEndEncoded(value)) {
-      value = value.replace(Utils.safeEncodeURIComponent(HashUtils.DELIMITER.arrayStart), HashUtils.DELIMITER.arrayStart);
-      value = value.replace(Utils.safeEncodeURIComponent(HashUtils.DELIMITER.arrayEnd), HashUtils.DELIMITER.arrayEnd);
-    }
-    value = value.substr(1);
-    value = value.substr(0, value.length - 1);
-    const array = value.split(',');
+    const valueWithoutSquareBrackets = HashUtils.removeSquareBrackets(value);
+    const array = valueWithoutSquareBrackets.split(',');
     return _.chain(array)
       .map(val => {
         try {
@@ -240,5 +231,25 @@ export class HashUtils {
       })
       .compact()
       .value();
+  }
+
+  private static removeSquareBrackets(value: string) {
+    if (HashUtils.startsWithEncodedLeftSquareBracket(value)) {
+      value = value.replace(Utils.safeEncodeURIComponent(HashUtils.DELIMITER.arrayStart), '');
+    }
+
+    if (HashUtils.endsWithEncodedRightSquareBracket(value)) {
+      value = value.replace(Utils.safeEncodeURIComponent(HashUtils.DELIMITER.arrayEnd), '');
+    }
+
+    if (HashUtils.startsWithLeftSquareBracket(value)) {
+      value = value.replace(HashUtils.DELIMITER.arrayStart, '');
+    }
+
+    if (HashUtils.endsWithRightSquareBracket(value)) {
+      value = value.replace(HashUtils.DELIMITER.arrayEnd, '');
+    }
+
+    return value;
   }
 }
