@@ -56,43 +56,43 @@ export type CategoryValueDescriptor = {
   path: string[];
 };
 
-// /**
-//  * The _CategoryFacet_ component is a facet that renders values in a hierarchical fashion. It determines the filter to apply depending on the
-//  * current selected path of values.
-//  *
-//  * The path is a sequence of values that leads to a specific value in the hierarchy.
-//  * It is an array listing all the parents of a file (e.g., `['c', 'folder1']` for the `c:\folder1\text1.txt` file).
-//  *
-//  * This facet requires a field with a special format to work correctly.
-//  *
-//  * **Example:**
-//  *
-//  * You have the following files indexed on a file system:
-//  *
-//  * ```
-//  * c:\
-//  *   folder1\
-//  *     text1.txt
-//  *   folder2\
-//  *     folder3\
-//  *       text2.txt
-//  * ```
-//  *
-//  * The `text1.txt` item would have a field with the following value:
-//  * `c; c|folder1;`
-//  *
-//  * The `text2.txt` item would have a field with the following value:
-//  * `c; c|folder2; c|folder2|folder3;`
-//  *
-//  * By default, the `|` character determines the hierarchy (`folder3` inside `folder2` inside `c`).
-//  *
-//  * Since both items contain the `c` value, selecting it value in the facet would return both items.
-//  *
-//  * Selecting the `folder3` value in the facet would only return the `text2.txt` item.
-//  *
-//  * To help you verify if your fields are setup correctly, see the {@link CategoryFacet.options.debug} option
-//  * and the {@link CategoryFacet.debugValue} method.
-//  */
+/**
+ * The _CategoryFacet_ component is a facet that renders values in a hierarchical fashion. It determines the filter to apply depending on the
+ * current selected path of values.
+ *
+ * The path is a sequence of values that leads to a specific value in the hierarchy.
+ * It is an array listing all the parents of a file (e.g., `['c', 'folder1']` for the `c:\folder1\text1.txt` file).
+ *
+ * This facet requires a field with a special format to work correctly.
+ *
+ * **Example:**
+ *
+ * You have the following files indexed on a file system:
+ *
+ * ```
+ * c:\
+ *   folder1\
+ *     text1.txt
+ *   folder2\
+ *     folder3\
+ *       text2.txt
+ * ```
+ *
+ * The `text1.txt` item would have a field with the following value:
+ * `c; c|folder1;`
+ *
+ * The `text2.txt` item would have a field with the following value:
+ * `c; c|folder2; c|folder2|folder3;`
+ *
+ * By default, the `|` character determines the hierarchy (`folder3` inside `folder2` inside `c`).
+ *
+ * Since both items contain the `c` value, selecting `c` in the facet would return both items.
+ *
+ * Selecting the `folder3` value in the facet would only return the `text2.txt` item.
+ *
+ * To help you verify whether your fields are setup correctly, see the {@link CategoryFacet.options.debug} option
+ * and the {@link CategoryFacet.debugValue} method.
+ */
 export class CategoryFacet extends Component implements IAutoLayoutAdjustableInsideFacetColumn {
   static doExport = () => {
     exportGlobally({
@@ -102,6 +102,10 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
 
   static ID = 'CategoryFacet';
 
+  /**
+   * The options for the component
+   * @componentOptions
+   */
   static options: ICategoryFacetOptions = {
     field: ComponentOptions.buildFieldOption({ required: true }),
     title: ComponentOptions.buildLocalizedStringOption({
@@ -513,7 +517,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   /**
    * This method goes through any value that contains the value parameter, and verifies if there are missing parents.
    * Issues are then logged in the console.
-   * If you do not want to specify a value, you can simply enable {@link CategoryFacet.option.debug} and do an empty query.
+   * If you do not want to specify a value, you can simply enable {@link CategoryFacet.options.debug} and do an empty query.
    */
   public async debugValue(value: string) {
     const queryBuilder = new QueryBuilder();
