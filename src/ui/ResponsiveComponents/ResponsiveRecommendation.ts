@@ -95,13 +95,15 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
   }
 
   private needSmallMode(): boolean {
-    switch (this.searchInterface.responsiveComponents.getResponsiveMode()) {
-      case 'small':
-        return true;
-      case 'auto':
-        break;
-      default:
-        return false;
+    if (this.searchInterface) {
+      switch (this.searchInterface.responsiveComponents.getResponsiveMode()) {
+        case 'small':
+          return true;
+        case 'auto':
+          break;
+        default:
+          return false;
+      }
     }
     return this.coveoRoot.width() <= this.breakpoint;
   }
