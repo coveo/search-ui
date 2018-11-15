@@ -27,6 +27,7 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
   private facetSliders: any[];
   private facets: any[];
   private dropdownHeaderLabel: string;
+  private searchInterface: SearchInterface;
 
   public static init(root: HTMLElement, component, options: IResponsiveComponentOptions) {
     let logger = new Logger('ResponsiveRecommendation');
@@ -35,6 +36,7 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
       logger.info('Recommendation component has no parent interface. Disabling responsive mode for this component.');
       return;
     }
+
     if (!$$(coveoRoot).find('.coveo-results-column')) {
       logger.info('Cannot find element with class coveo-results-column. Disabling responsive mode for this component.');
       return;
@@ -66,6 +68,7 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
     this.recommendationRoot = this.getRecommendationRoot();
     this.dropdownHeaderLabel = options.dropdownHeaderLabel;
     this.breakpoint = this.defineResponsiveBreakpoint(options);
+    this.searchInterface = <SearchInterface>Component.get(this.coveoRoot.el, SearchInterface, false);
     this.dropdown = this.buildDropdown(responsiveDropdown);
     this.facets = this.getFacets();
     this.facetSliders = this.getFacetSliders();
@@ -92,6 +95,14 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
   }
 
   private needSmallMode(): boolean {
+    switch (this.searchInterface.responsiveComponents.getResponsiveMode()) {
+      case 'small':
+        return true;
+      case 'auto':
+        break;
+      default:
+        return false;
+    }
     return this.coveoRoot.width() <= this.breakpoint;
   }
 
