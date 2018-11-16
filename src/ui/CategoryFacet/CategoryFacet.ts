@@ -107,7 +107,41 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
    * @componentOptions
    */
   static options: ICategoryFacetOptions = {
+    /**
+     * Specifies the index field whose values the facet should use. The field values should have the form:
+     * `the; the|path; the|path|to; the|path|to|given; the|path|to|given|item;`
+     *
+     *  * **Example:**
+     *
+     * You have the following files indexed on a file system:
+     *
+     * ```
+     * c:\
+     *   folder1\
+     *     text1.txt
+     *   folder2\
+     *     folder3\
+     *       text2.txt
+     * ```
+     *
+     * The `text1.txt` item would have a field with the following value:
+     * `c; c|folder1;`
+     *
+     * The `text2.txt` item would have a field with the following value:
+     * `c; c|folder2; c|folder2|folder3;`
+     *
+     * By default, the `|` character determines the hierarchy (`folder3` inside `folder2` inside `c`).
+     *
+     * Since both items contain the `c` value, selecting `c` in the facet would return both items.
+     *
+     * Selecting the `folder3` value in the facet would only return the `text2.txt` item.
+     */
     field: ComponentOptions.buildFieldOption({ required: true }),
+    /**
+     * Specifies the title to display at the top of the facet.
+     *
+     * Default value is the localized string for `NoTitle`.
+     */
     title: ComponentOptions.buildLocalizedStringOption({
       defaultValue: l('NoTitle')
     }),
@@ -123,7 +157,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
      * [`field`]{@link CategoryFacet.options.field} values.
      *
      * See also the [`facetSearchDelay`]{@link CategoryFacet.options.facetSearchDelay}, and
-     * [`numberOfValuesInFacetSearch`]{@link CategoryFacet.options.numberOfValuesInFacetSearch} options.
+     * [`numberOfResultsInFacetSearch`]{@link CategoryFacet.options.numberOfResultsInFacetSearch} options.
      *
      *
      * Default value is `true`.
