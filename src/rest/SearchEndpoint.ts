@@ -1024,10 +1024,16 @@ export class SearchEndpoint implements ISearchEndpoint {
 
   private buildBaseQueryString(callOptions?: IEndpointCallOptions) {
     callOptions = { ...callOptions };
-    return {
-      ...this.options.queryStringArguments,
-      authentication: _.isArray(callOptions.authentication) ? callOptions.authentication.join(',') : null
-    };
+    if (_.isArray(callOptions.authentication) && Utils.isNonEmptyArray(callOptions.authentication)) {
+      return {
+        ...this.options.queryStringArguments,
+        authentication: callOptions.authentication.join(',')
+      };
+    } else {
+      return {
+        ...this.options.queryStringArguments
+      };
+    }
   }
 
   private buildQueryAsQueryString(query: string, queryObject: IQuery): Record<string, any> {
