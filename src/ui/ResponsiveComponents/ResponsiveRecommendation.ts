@@ -95,17 +95,19 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
   }
 
   private needSmallMode(): boolean {
-    if (this.searchInterface) {
-      switch (this.searchInterface.responsiveComponents.getResponsiveMode()) {
-        case 'small':
-          return true;
-        case 'auto':
-          break;
-        default:
-          return false;
-      }
+    const isWidthSmallerThanBreakpoint = this.coveoRoot.width() <= this.breakpoint;
+    if (!this.searchInterface) {
+      return isWidthSmallerThanBreakpoint;
     }
-    return this.coveoRoot.width() <= this.breakpoint;
+
+    switch (this.searchInterface.responsiveComponents.getResponsiveMode()) {
+      case 'small':
+        return true;
+      case 'auto':
+        return isWidthSmallerThanBreakpoint;
+      default:
+        return false;
+    }
   }
 
   private changeToSmallMode() {

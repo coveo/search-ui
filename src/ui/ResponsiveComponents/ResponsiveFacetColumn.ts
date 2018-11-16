@@ -88,23 +88,23 @@ export class ResponsiveFacetColumn implements IResponsiveComponent {
   }
 
   private needSmallMode(): boolean {
-    if (this.searchInterface) {
-      switch (this.searchInterface.responsiveComponents.getResponsiveMode()) {
-        case 'small':
-          return true;
-        case 'auto':
-          return (
-            this.coveoRoot.width() <=
-            (Utils.isNullOrUndefined(this.breakpoint) ? this.searchInterface.responsiveComponents.getMediumScreenWidth() : this.breakpoint)
-          );
-        default:
-          return false;
-      }
+    if (!this.searchInterface) {
+      return (
+        this.coveoRoot.width() <=
+        (Utils.isNullOrUndefined(this.breakpoint) ? new ResponsiveComponents().getMediumScreenWidth() : this.breakpoint)
+      );
     }
-    return (
-      this.coveoRoot.width() <=
-      (Utils.isNullOrUndefined(this.breakpoint) ? new ResponsiveComponents().getMediumScreenWidth() : this.breakpoint)
-    );
+    switch (this.searchInterface.responsiveComponents.getResponsiveMode()) {
+      case 'small':
+        return true;
+      case 'auto':
+        return (
+          this.coveoRoot.width() <=
+          (Utils.isNullOrUndefined(this.breakpoint) ? this.searchInterface.responsiveComponents.getMediumScreenWidth() : this.breakpoint)
+        );
+      default:
+        return false;
+    }
   }
 
   private changeToSmallMode() {
