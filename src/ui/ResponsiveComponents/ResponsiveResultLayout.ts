@@ -51,10 +51,24 @@ export class ResponsiveResultLayout implements IResponsiveComponent {
   }
 
   private needSmallMode(): boolean {
-    return this.coveoRoot.width() <= this.searchInterface.responsiveComponents.getSmallScreenWidth();
+    switch (this.searchInterface.responsiveComponents.getResponsiveMode()) {
+      case 'small':
+        return true;
+      case 'auto':
+        return this.coveoRoot.width() <= this.searchInterface.responsiveComponents.getSmallScreenWidth();
+      default:
+        return false;
+    }
   }
 
   private needMediumMode(): boolean {
-    return this.coveoRoot.width() <= this.searchInterface.responsiveComponents.getMediumScreenWidth();
+    switch (this.searchInterface.responsiveComponents.getResponsiveMode()) {
+      case 'medium':
+        return true;
+      case 'auto':
+        return this.coveoRoot.width() <= this.searchInterface.responsiveComponents.getMediumScreenWidth();
+      default:
+        return false;
+    }
   }
 }

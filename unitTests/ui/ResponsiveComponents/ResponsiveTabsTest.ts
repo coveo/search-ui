@@ -5,6 +5,7 @@ import { ResponsiveComponentsUtils } from '../../../src/ui/ResponsiveComponents/
 import { ResponsiveTabs } from '../../../src/ui/ResponsiveComponents/ResponsiveTabs';
 import { Tab } from '../../../src/ui/Tab/Tab';
 import { $$, Dom } from '../../../src/utils/Dom';
+import { SearchInterface } from '../../../src/ui/SearchInterface/SearchInterface';
 
 export function ResponsiveTabsTest() {
   let root: Dom;
@@ -40,6 +41,18 @@ export function ResponsiveTabsTest() {
       expect(ResponsiveComponentsUtils.activateSmallTabs).toHaveBeenCalled();
     });
 
+    it("doesn't activates small tabs when the screen is narrow and the responsiveMode is medium (or large)", () => {
+      const mediumBreakpoint = 800;
+      new SearchInterface(root.el, { responsiveMode: 'medium', responsiveMediumBreakpoint: mediumBreakpoint });
+      responsiveTabs = new ResponsiveTabs(root, Tab.ID);
+      spyOn(ResponsiveComponentsUtils, 'activateSmallTabs');
+      spyOn(root, 'width').and.returnValue(mediumBreakpoint - 1);
+
+      responsiveTabs.handleResizeEvent();
+
+      expect(ResponsiveComponentsUtils.activateSmallTabs).not.toHaveBeenCalled();
+    });
+
     it('deactivates small tabs when it should switch to large mode', () => {
       spyOn(ResponsiveComponentsUtils, 'deactivateSmallTabs');
       spyOn(root, 'width').and.returnValue(new ResponsiveComponents().getMediumScreenWidth() + 1);
@@ -48,6 +61,20 @@ export function ResponsiveTabsTest() {
       responsiveTabs.handleResizeEvent();
 
       expect(ResponsiveComponentsUtils.deactivateSmallTabs).toHaveBeenCalled();
+    });
+
+    it("doesn't deactivates small tabs when the screen is wide and the responsiveMode is small", () => {
+      const mediumBreakpoint = 800;
+      new SearchInterface(root.el, { responsiveMode: 'small', responsiveMediumBreakpoint: mediumBreakpoint });
+      responsiveTabs = new ResponsiveTabs(root, Tab.ID);
+
+      spyOn(ResponsiveComponentsUtils, 'deactivateSmallTabs');
+      spyOn(root, 'width').and.returnValue(mediumBreakpoint + 1);
+      ResponsiveComponentsUtils.activateSmallTabs(root);
+
+      responsiveTabs.handleResizeEvent();
+
+      expect(ResponsiveComponentsUtils.deactivateSmallTabs).not.toHaveBeenCalled();
     });
 
     describe('when moving tabs to different section', () => {

@@ -221,6 +221,30 @@ export function ResponsiveFacetsTest() {
       expect(responsiveFacets.needDropdownWrapper()).toBe(false);
     });
 
+    it('should need the dropdown wrapper when the responsiveMode of the search interface is small even if the screen is large', () => {
+      const mediumBreakpoint = 481;
+      new SearchInterface(root.el, {
+        responsiveMediumBreakpoint: mediumBreakpoint,
+        responsiveMode: 'small'
+      });
+      responsiveFacets = new ResponsiveFacets(root, '', {});
+      root.width = jasmine.createSpy('width').and.returnValue(mediumBreakpoint + 1) as any;
+
+      expect(responsiveFacets.needDropdownWrapper()).toBe(true);
+    });
+
+    it('should not need the dropdown wrapper when the responsiveMode of the search interface is medium even if the screen is small', () => {
+      const smallBreakpoint = 481;
+      new SearchInterface(root.el, {
+        responsiveSmallBreakpoint: smallBreakpoint,
+        responsiveMode: 'medium'
+      });
+      responsiveFacets = new ResponsiveFacets(root, '', {});
+      root.width = jasmine.createSpy('width').and.returnValue(smallBreakpoint - 1) as any;
+
+      expect(responsiveFacets.needDropdownWrapper()).toBe(false);
+    });
+
     it('should use the breakpoint set from the search interface if not specified explicitely', () => {
       new SearchInterface(root.el, {
         responsiveMediumBreakpoint: 1234567
