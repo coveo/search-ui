@@ -13,6 +13,8 @@ import { exportGlobally } from '../../GlobalExports';
 import { l } from '../../strings/Strings';
 
 import 'styling/_ResultsPerPage';
+import { ResultListEvents } from '../../events/ResultListEvents';
+import { ResultListUtils } from '../../utils/ResultListUtils';
 
 export interface IResultsPerPageOptions {
   choicesDisplayed?: number[];
@@ -93,6 +95,8 @@ export class ResultsPerPage extends Component {
     this.bind.onRootElement(QueryEvents.querySuccess, (args: IQuerySuccessEventArgs) => this.handleQuerySuccess(args));
     this.bind.onRootElement(QueryEvents.queryError, () => this.handleQueryError());
     this.bind.onRootElement(QueryEvents.noResults, (args: INoResultsEventArgs) => this.handleNoResults());
+    this.bind.onRootElement(ResultListEvents.newResultsDisplayed, () => this.hideIfResultListHasInfiniteScrollEnabled());
+
     this.initComponent(element);
   }
 
@@ -215,6 +219,11 @@ export class ResultsPerPage extends Component {
   private reset() {
     $$(this.span).addClass('coveo-results-per-page-no-results');
     $$(this.list).empty();
+  }
+
+  private hideIfResultListHasInfiniteScrollEnabled() {
+    const infiniteScrollEnabled = ResultListUtils.isInfiniteScrollActive(this.searchInterface.element);
+    return infiniteScrollEnabled ? $$(this.element).addClass('coveo-hidden') : $$(this.element).removeClass('coveo-hidden');
   }
 }
 
