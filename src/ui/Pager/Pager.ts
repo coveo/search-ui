@@ -23,6 +23,8 @@ import { SVGIcons } from '../../utils/SVGIcons';
 import { SVGDom } from '../../utils/SVGDom';
 import 'styling/_Pager';
 import { AccessibleButton } from '../../utils/AccessibleButton';
+import { ResultListEvents } from '../../events/ResultListEvents';
+import { ResultListUtils } from '../../utils/ResultListUtils';
 
 export interface IPagerOptions {
   numberOfPages: number;
@@ -139,6 +141,8 @@ export class Pager extends Component {
       this.handleQueryStateModelChanged(data)
     );
 
+    this.bind.onRootElement(ResultListEvents.newResultsDisplayed, () => this.hideIfResultListHasInfiniteScrollEnabled());
+
     this.list = document.createElement('ul');
     $$(this.list).addClass('coveo-pager-list');
     element.appendChild(this.list);
@@ -243,6 +247,11 @@ export class Pager extends Component {
         }
       }
     }
+  }
+
+  private hideIfResultListHasInfiniteScrollEnabled() {
+    const infiniteScrollEnabled = ResultListUtils.isInfiniteScrollActive(this.searchInterface.element);
+    return infiniteScrollEnabled ? $$(this.element).addClass('coveo-hidden') : $$(this.element).removeClass('coveo-hidden');
   }
 
   private handleNoResults(data: INoResultsEventArgs) {

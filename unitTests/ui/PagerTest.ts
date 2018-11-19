@@ -10,6 +10,9 @@ import { QueryEvents, INoResultsEventArgs } from '../../src/events/QueryEvents';
 import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
 import { IPagerOptions } from '../../src/ui/Pager/Pager';
 import { Defer } from '../../src/misc/Defer';
+import { ResultList } from '../../src/ui/ResultList/ResultList';
+import { IResultListOptions } from '../../src/ui/ResultList/ResultListOptions';
+import { ResultListEvents } from '../../src/Core';
 
 export function PagerTest() {
   describe('Pager', () => {
@@ -290,6 +293,41 @@ export function PagerTest() {
         // divided by 10 results per page
         // means 4 pages
         expect($$(anchors[anchors.length - 1]).text()).toBe('4');
+      });
+    });
+
+    describe(`when a result list with enableInfiniteScroll set to 'true' is appended to the root,
+    when triggering ${ResultListEvents.newResultsDisplayed} event`, () => {
+      let resultList: ResultList;
+
+      function buildResultList(options: IResultListOptions = {}) {
+        return Mock.optionsComponentSetup<ResultList, IResultListOptions>(ResultList, options).cmp;
+      }
+
+      function triggerNewResultsDisplayedEvent() {
+        $$(test.env.root).trigger(ResultListEvents.newResultsDisplayed);
+      }
+
+      beforeEach(() => {
+        resultList = buildResultList({ enableInfiniteScroll: true });
+        $$(test.env.root).append(resultList.element);
+
+        triggerNewResultsDisplayedEvent();
+      });
+
+      it('hides to the pager element', () => {
+        const isHidden = $$(test.cmp.element).hasClass('coveo-hidden');
+        expect(isHidden).toBe(true);
+      });
+
+      it(`when the result list is disabled (i.e. user has navigated to another result list that has enableInfiniteScroll 'false'),
+      when triggering a${ResultListEvents.newResultsDisplayed} event,
+      it shows the pager element`, () => {
+        resultList.disable();
+        triggerNewResultsDisplayedEvent();
+
+        const isHidden = $$(test.cmp.element).hasClass('coveo-hidden');
+        expect(isHidden).toBe(false);
       });
     });
   });
