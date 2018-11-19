@@ -3955,7 +3955,12 @@ var SearchEndpoint = /** @class */ (function () {
     };
     SearchEndpoint.prototype.buildBaseQueryString = function (callOptions) {
         callOptions = __assign({}, callOptions);
-        return __assign({}, this.options.queryStringArguments, { authentication: _.isArray(callOptions.authentication) ? callOptions.authentication.join(',') : null });
+        if (_.isArray(callOptions.authentication) && Utils_1.Utils.isNonEmptyArray(callOptions.authentication)) {
+            return __assign({}, this.options.queryStringArguments, { authentication: callOptions.authentication.join(',') });
+        }
+        else {
+            return __assign({}, this.options.queryStringArguments);
+        }
     };
     SearchEndpoint.prototype.buildQueryAsQueryString = function (query, queryObject) {
         queryObject = __assign({}, queryObject);
@@ -4633,9 +4638,6 @@ var UrlUtils = /** @class */ (function () {
             var paired = underscore_1.pairs(toNormalize.query);
             var mapped = paired.map(function (pair) {
                 var key = pair[0], value = pair[1];
-                if (UrlUtils.isInvalidQueryStringValue(value) || UrlUtils.isInvalidQueryStringValue(key)) {
-                    return '';
-                }
                 if (!_this.isEncoded(value)) {
                     return [_this.removeProblematicChars(key), Utils_1.Utils.safeEncodeURIComponent(value)].join('=');
                 }
@@ -4703,12 +4705,6 @@ var UrlUtils = /** @class */ (function () {
     };
     UrlUtils.isEncoded = function (value) {
         return value != decodeURIComponent(value);
-    };
-    UrlUtils.isInvalidQueryStringValue = function (value) {
-        if (underscore_1.isString(value)) {
-            return Utils_1.Utils.isEmptyString(value);
-        }
-        return Utils_1.Utils.isNullOrUndefined(value);
     };
     return UrlUtils;
 }());
@@ -5854,8 +5850,8 @@ exports.ResponsiveComponents = ResponsiveComponents;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    lib: '2.4710.9-beta',
-    product: '2.4710.9-beta',
+    lib: '2.4710.10-beta',
+    product: '2.4710.10-beta',
     supportedApiVersion: 2
 };
 
