@@ -76,11 +76,11 @@ export class ResponsiveTabs implements IResponsiveComponent {
     }
     switch (this.searchInterface.responsiveComponents.getResponsiveMode()) {
       case 'small':
+      case 'medium':
         return true;
       case 'auto':
-        return this.shouldAutoModeResolveToSmall();
       default:
-        return false;
+        return this.shouldAutoModeResolveToSmall();
     }
   }
 

@@ -233,7 +233,7 @@ export function ResponsiveFacetsTest() {
       expect(responsiveFacets.needDropdownWrapper()).toBe(true);
     });
 
-    it('should not need the dropdown wrapper when the responsiveMode of the search interface is medium even if the screen is small', () => {
+    it('should need the dropdown wrapper when the responsiveMode of the search interface is medium even if the screen is small', () => {
       const smallBreakpoint = 481;
       new SearchInterface(root.el, {
         responsiveSmallBreakpoint: smallBreakpoint,
@@ -242,7 +242,7 @@ export function ResponsiveFacetsTest() {
       responsiveFacets = new ResponsiveFacets(root, '', {});
       root.width = jasmine.createSpy('width').and.returnValue(smallBreakpoint - 1) as any;
 
-      expect(responsiveFacets.needDropdownWrapper()).toBe(false);
+      expect(responsiveFacets.needDropdownWrapper()).toBe(true);
     });
 
     it('should use the breakpoint set from the search interface if not specified explicitely', () => {
