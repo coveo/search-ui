@@ -1,4 +1,4 @@
-import { isArray, pairs, compact, uniq, rest, first, isString } from 'underscore';
+import { isArray, pairs, compact, uniq, rest, first } from 'underscore';
 import { Utils } from './Utils';
 import { IEndpointCallParameters } from '../rest/EndpointCaller';
 
@@ -101,10 +101,6 @@ export class UrlUtils {
       const mapped = paired.map(pair => {
         const [key, value] = pair;
 
-        if (UrlUtils.isInvalidQueryStringValue(value) || UrlUtils.isInvalidQueryStringValue(key)) {
-          return '';
-        }
-
         if (!this.isEncoded(value)) {
           return [this.removeProblematicChars(key), Utils.safeEncodeURIComponent(value)].join('=');
         } else {
@@ -186,13 +182,5 @@ export class UrlUtils {
 
   private static isEncoded(value: string) {
     return value != decodeURIComponent(value);
-  }
-
-  private static isInvalidQueryStringValue(value: any) {
-    if (isString(value)) {
-      return Utils.isEmptyString(value);
-    }
-
-    return Utils.isNullOrUndefined(value);
   }
 }
