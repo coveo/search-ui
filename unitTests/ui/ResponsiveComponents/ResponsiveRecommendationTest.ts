@@ -10,6 +10,7 @@ import { $$, Dom } from '../../../src/utils/Dom';
 import { QueryEvents } from '../../../src/events/QueryEvents';
 import { mockComponent } from '../../MockEnvironment';
 import { FakeResults } from '../../Fake';
+import { SearchInterface } from '../../../src/ui/SearchInterface/SearchInterface';
 
 export function ResponsiveRecommendationTest() {
   describe('ResponsiveRecommendation', () => {
@@ -68,6 +69,26 @@ export function ResponsiveRecommendationTest() {
       responsiveDropdown.isOpened = true;
       responsiveRecommendation.handleResizeEvent();
       expect(responsiveDropdownContent.positionDropdown).toHaveBeenCalled();
+    });
+
+    describe('when it should switch to small mode but the responsiveMode is on medium (or large)', () => {
+      it('returns false when needDropdownWrapper is called', () => {
+        new SearchInterface(root.el, { responsiveMode: 'medium' });
+        responsiveRecommendation = new ResponsiveRecommendation(root, '', { dropdownHeaderLabel: 'label' }, responsiveDropdown);
+        shouldSwitchToSmallMode();
+        expect(responsiveRecommendation.needDropdownWrapper()).toBe(false);
+      });
+    });
+
+    describe('when it should switch to small mode but the responsiveMode is on small', () => {
+      it('returns false when needDropdownWrapper is called', () => {
+        new SearchInterface(root.el, { responsiveMode: 'medium' });
+        responsiveRecommendation = new ResponsiveRecommendation(root, '', { dropdownHeaderLabel: 'label' }, responsiveDropdown);
+        shouldSwitchToLargeMode();
+        ResponsiveComponentsUtils.activateSmallRecommendation(root);
+
+        expect(responsiveRecommendation.needDropdownWrapper()).toBe(false);
+      });
     });
 
     describe('when it should switch to small mode', () => {

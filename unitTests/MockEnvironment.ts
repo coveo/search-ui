@@ -235,6 +235,7 @@ export function mockResponsiveComponents(): ResponsiveComponents {
   m.isSmallScreenWidth = () => false;
   m.isMediumScreenWidth = () => false;
   m.isLargeScreenWidth = () => true;
+  m.getResponsiveMode = () => 'auto';
   return m;
 }
 
