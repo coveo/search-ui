@@ -223,7 +223,7 @@ export class ResultsPerPage extends Component {
 
   private hideIfResultListHasInfiniteScrollEnabled() {
     const infiniteScrollEnabled = ResultListUtils.isInfiniteScrollActive(this.searchInterface.element);
-    return infiniteScrollEnabled ? $$(this.element).addClass('coveo-hidden') : $$(this.element).removeClass('coveo-hidden');
+    return infiniteScrollEnabled ? $$(this.element).hide() : $$(this.element).show();
   }
 }
 
