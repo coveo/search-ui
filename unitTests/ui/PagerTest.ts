@@ -316,8 +316,7 @@ export function PagerTest() {
       });
 
       it('hides to the pager element', () => {
-        const isHidden = $$(test.cmp.element).hasClass('coveo-hidden');
-        expect(isHidden).toBe(true);
+        expect(test.cmp.element.style.display).toBe('none');
       });
 
       it(`when the result list is disabled (i.e. user has navigated to another result list that has enableInfiniteScroll 'false'),
@@ -326,8 +325,7 @@ export function PagerTest() {
         resultList.disable();
         triggerNewResultsDisplayedEvent();
 
-        const isHidden = $$(test.cmp.element).hasClass('coveo-hidden');
-        expect(isHidden).toBe(false);
+        expect(test.cmp.element.style.display).not.toBe('none');
       });
     });
   });
