@@ -128,7 +128,7 @@ export function DomTests() {
         });
 
         it('sets display to an empty string', () => {
-          expect(div.style.display).toBe('');
+          expect(div.style.display).toBe('block');
         });
 
         it(`sets the aria-hidden attribute to 'false'`, () => {
@@ -150,6 +150,23 @@ export function DomTests() {
 
         it(`sets the aria-hidden attribute to 'true'`, () => {
           expect(div.getAttribute('aria-hidden')).toBe('true');
+        });
+      });
+
+      describe(`when calling #unhide`, () => {
+        let div: HTMLElement;
+
+        beforeEach(() => {
+          div = document.createElement('div');
+          $$(div).unhide();
+        });
+
+        it('sets display to an empty string', () => {
+          expect(div.style.display).toBe('');
+        });
+
+        it(`sets the aria-hidden attribute to 'false'`, () => {
+          expect(div.getAttribute('aria-hidden')).toBe('false');
         });
       });
 
