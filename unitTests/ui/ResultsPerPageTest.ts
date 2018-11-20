@@ -151,11 +151,11 @@ export function ResultsPerPageTest() {
 
       it(`when the result list is disabled (i.e. user has navigated to another result list that has enableInfiniteScroll 'false'),
       when triggering a${ResultListEvents.newResultsDisplayed} event,
-      it shows the ResultsPerPage element`, () => {
+      it does not hide the ResultsPerPage element`, () => {
         resultList.disable();
         triggerNewResultsDisplayedEvent();
 
-        expect(test.cmp.element.style.display).not.toBe('none');
+        expect(test.cmp.element.style.display).toBe('');
       });
     });
   });
