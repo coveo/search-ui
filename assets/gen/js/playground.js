@@ -4638,6 +4638,13 @@ var UrlUtils = /** @class */ (function () {
             var paired = underscore_1.pairs(toNormalize.query);
             var mapped = paired.map(function (pair) {
                 var key = pair[0], value = pair[1];
+                var exceptions = ['pipeline'];
+                var isAnException = underscore_1.isString(key) && underscore_1.contains(exceptions, key.toLowerCase());
+                if (!isAnException) {
+                    if (UrlUtils.isInvalidQueryStringValue(value) || UrlUtils.isInvalidQueryStringValue(key)) {
+                        return '';
+                    }
+                }
                 if (!_this.isEncoded(value)) {
                     return [_this.removeProblematicChars(key), Utils_1.Utils.safeEncodeURIComponent(value)].join('=');
                 }
@@ -4705,6 +4712,12 @@ var UrlUtils = /** @class */ (function () {
     };
     UrlUtils.isEncoded = function (value) {
         return value != decodeURIComponent(value);
+    };
+    UrlUtils.isInvalidQueryStringValue = function (value) {
+        if (underscore_1.isString(value)) {
+            return Utils_1.Utils.isEmptyString(value);
+        }
+        return Utils_1.Utils.isNullOrUndefined(value);
     };
     return UrlUtils;
 }());
@@ -5850,8 +5863,8 @@ exports.ResponsiveComponents = ResponsiveComponents;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    lib: '2.4710.13',
-    product: '2.4710.13',
+    lib: '2.4710.14-beta',
+    product: '2.4710.14-beta',
     supportedApiVersion: 2
 };
 
