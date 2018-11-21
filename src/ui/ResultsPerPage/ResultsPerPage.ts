@@ -129,7 +129,7 @@ export class ResultsPerPage extends Component {
   }
 
   private addAlwaysActiveListeners() {
-    this.searchInterface.root.addEventListener(ResultListEvents.newResultsDisplayed, () =>
+    this.searchInterface.element.addEventListener(ResultListEvents.newResultsDisplayed, () =>
       ResultListUtils.hideIfInfiniteScrollEnabled(this)
     );
   }
