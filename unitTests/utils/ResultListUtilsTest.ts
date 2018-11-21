@@ -18,24 +18,24 @@ export const ResultListUtilsTest = () => {
     beforeEach(() => (root = $$('div').el));
 
     it(`when a result list with enableInfiniteScroll set to 'false' is appended to the root,
-    when calling #isInfiniteScrollActive,
+    when calling #isInfiniteScrollEnabled,
     it returns 'false'`, () => {
       appendResultListToRoot({ enableInfiniteScroll: false });
-      expect(utils.isInfiniteScrollActive(root)).toBe(false);
+      expect(utils.isInfiniteScrollEnabled(root)).toBe(false);
     });
 
     it(`when a result list with enableInfiniteScroll set to 'true' is appended to the root,
-    when calling #isInfiniteScrollActive,
+    when calling #isInfiniteScrollEnabled,
     it returns 'true'`, () => {
       appendResultListToRoot({ enableInfiniteScroll: true });
-      expect(utils.isInfiniteScrollActive(root)).toBe(true);
+      expect(utils.isInfiniteScrollEnabled(root)).toBe(true);
     });
 
     it(`when appending a result list where enableInfiniteScroll is 'true' but is disabled,
-    when calling #isInfiniteScrollActive,
+    when calling #isInfiniteScrollEnabled,
     it returns 'false'`, () => {
       appendResultListToRoot({ enableInfiniteScroll: true }, true);
-      expect(utils.isInfiniteScrollActive(root)).toBe(false);
+      expect(utils.isInfiniteScrollEnabled(root)).toBe(false);
     });
   });
 };

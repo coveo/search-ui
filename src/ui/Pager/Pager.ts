@@ -140,8 +140,7 @@ export class Pager extends Component {
     this.bind.onQueryState(MODEL_EVENTS.CHANGE_ONE, QUERY_STATE_ATTRIBUTES.FIRST, (data: IAttributeChangedEventArg) =>
       this.handleQueryStateModelChanged(data)
     );
-
-    this.bind.onRootElement(ResultListEvents.newResultsDisplayed, () => this.hideIfResultListHasInfiniteScrollEnabled());
+    this.addAlwaysActiveListeners();
 
     this.list = document.createElement('ul');
     $$(this.list).addClass('coveo-pager-list');
@@ -184,6 +183,12 @@ export class Pager extends Component {
    */
   public nextPage() {
     this.setPage(this.currentPage + 1, analyticsActionCauseList.pagerNext);
+  }
+
+  private addAlwaysActiveListeners() {
+    this.searchInterface.root.addEventListener(ResultListEvents.newResultsDisplayed, () =>
+      ResultListUtils.hideIfInfiniteScrollEnabled(this)
+    );
   }
 
   private getMaxNumberOfPagesForCurrentResultsPerPage() {
@@ -247,11 +252,6 @@ export class Pager extends Component {
         }
       }
     }
-  }
-
-  private hideIfResultListHasInfiniteScrollEnabled() {
-    const infiniteScrollEnabled = ResultListUtils.isInfiniteScrollActive(this.searchInterface.element);
-    return infiniteScrollEnabled ? $$(this.element).hide() : $$(this.element).unhide();
   }
 
   private handleNoResults(data: INoResultsEventArgs) {
