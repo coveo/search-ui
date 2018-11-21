@@ -55,10 +55,9 @@ export class ResultListUtils {
 
   private static notNeededComponentWarning(cmp: Component) {
     const cmpCssClass = Component.computeCssClassNameForType(cmp.type);
-    const message = `
-    The ${cmpCssClass} component is not needed because all ${ResultListUtils.cssClass()} components have enableInfiniteScroll set to 'true'.
-    For the best performance, remove the ${cmpCssClass} component from your search page.
-    `;
+    const message = `The ${cmpCssClass} component is not needed because all ${ResultListUtils.cssClass()} components have enableInfiniteScroll set to 'true'.
+    For the best performance, remove the ${cmpCssClass} component from your search page.`;
+
     new Logger(cmp).warn(message);
   }
 }
