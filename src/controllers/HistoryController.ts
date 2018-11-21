@@ -185,7 +185,8 @@ export class HistoryController extends RootComponent implements IHistoryManager 
     Assert.isNonEmptyString(key);
     let value;
     try {
-      value = this.hashUtils.getValue(key, this.hashUtils.getHash(this.window));
+      const hash = this.hashUtils.getHash(this.window);
+      value = this.hashUtils.getValue(key, hash);
     } catch (error) {
       this.logger.error(`Could not parse parameter ${key} from URI`);
     }

@@ -32,13 +32,42 @@ export function HashUtilsTest() {
       expect(value).toEqual(expectedValue);
     });
 
-    it('parses arrays correctly', () => {
+    it('parses unencoded arrays correctly', () => {
       const toParse = '#a=[1]';
       const expectedValue = ['1'];
 
       const value = HashUtils.getValue('a', toParse);
 
       expect(value).toEqual(expectedValue);
+    });
+
+    it('parses encoded arrays correctly', () => {
+      const encodedLeftBracket = '%5B';
+      const encodedRightBracket = '%5D';
+      const toParse = `#a=${encodedLeftBracket}1${encodedRightBracket}`;
+      const expectedValue = ['1'];
+
+      const value = HashUtils.getValue('a', toParse);
+
+      expect(value).toEqual(expectedValue);
+    });
+
+    it('parses arrays with only a left bracket correctly', () => {
+      const value = 'value';
+      const toParse = `#f=[${value}`;
+      const expectedValue = [value];
+
+      const result = HashUtils.getValue('f', toParse);
+      expect(result).toEqual(expectedValue);
+    });
+
+    it('parses arrays with only a right bracket correctly', () => {
+      const value = 'value';
+      const toParse = `#f=${value}]`;
+      const expectedValue = [value];
+
+      const result = HashUtils.getValue('f', toParse);
+      expect(result).toEqual(expectedValue);
     });
 
     it('parses strings correctly', () => {
@@ -67,7 +96,7 @@ export function HashUtilsTest() {
       expect(encodedValue).toEqual(expectedEncodedValue);
     });
 
-    it('encodes arrays correcttly', () => {
+    it('encodes arrays correctly', () => {
       const toEncode = [1];
       const expectEncodedValue = 'a=[1]';
 

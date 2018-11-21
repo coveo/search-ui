@@ -70,6 +70,21 @@ export class ResponsiveTabs implements IResponsiveComponent {
   }
 
   private needSmallMode(): boolean {
+    // Ignore everything if the responsiveMode is not auto.
+    if (!this.searchInterface) {
+      return this.shouldAutoModeResolveToSmall();
+    }
+    switch (this.searchInterface.responsiveComponents.getResponsiveMode()) {
+      case 'small':
+      case 'medium':
+        return true;
+      case 'auto':
+      default:
+        return this.shouldAutoModeResolveToSmall();
+    }
+  }
+
+  private shouldAutoModeResolveToSmall() {
     const mediumWidth = this.searchInterface
       ? this.searchInterface.responsiveComponents.getMediumScreenWidth()
       : new ResponsiveComponents().getMediumScreenWidth();
