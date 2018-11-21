@@ -29,6 +29,12 @@
         border-bottom: 2px solid $color-greyish-dark-blue;
       }
     }
+
+    p {
+      max-width: 240px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
   }
   .coveo-tab-list {
     list-style: none;
