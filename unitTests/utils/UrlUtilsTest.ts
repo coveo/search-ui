@@ -131,7 +131,7 @@ export function UrlUtilsTest() {
       expect(url).toBe(`https://a.com?123=4${Utils.safeEncodeURIComponent(' ')}56&abc=${Utils.safeEncodeURIComponent('&')}def`);
     });
 
-    it('should not remove query string parameter that are an empty string', () => {
+    it('should remove query string parameter that are an empty string', () => {
       const url = UrlUtils.normalizeAsString({
         paths: ['https://a.com/'],
         queryAsString: [`123=456`],
@@ -139,10 +139,10 @@ export function UrlUtilsTest() {
           abc: ''
         }
       });
-      expect(url).toBe(`https://a.com?123=456&abc=`);
+      expect(url).toBe(`https://a.com?123=456`);
     });
 
-    it('should not remove query string parameter that are null', () => {
+    it('should nremove query string parameter that are null', () => {
       const url = UrlUtils.normalizeAsString({
         paths: ['https://a.com/'],
         queryAsString: [`123=456`],
@@ -150,10 +150,10 @@ export function UrlUtilsTest() {
           abc: null
         }
       });
-      expect(url).toBe(`https://a.com?123=456&abc=`);
+      expect(url).toBe(`https://a.com?123=456`);
     });
 
-    it('should not remove query string parameter that are undefined', () => {
+    it('should remove query string parameter that are undefined', () => {
       const url = UrlUtils.normalizeAsString({
         paths: ['https://a.com/'],
         queryAsString: [`123=456`],
@@ -161,7 +161,7 @@ export function UrlUtilsTest() {
           abc: undefined
         }
       });
-      expect(url).toBe(`https://a.com?123=456&abc=`);
+      expect(url).toBe(`https://a.com?123=456`);
     });
 
     it('should not remove query string parameter that are 0', () => {
@@ -217,6 +217,29 @@ export function UrlUtilsTest() {
         }
       });
       expect(url).toBe(`https://a.com?123=true&abc=true`);
+    });
+
+    it('should not remove pipeline query string parameter that is empty', () => {
+      const url = UrlUtils.normalizeAsString({
+        paths: ['https://a.com/'],
+        queryAsString: [`123=true`],
+        query: {
+          pipeline: ''
+        }
+      });
+      expect(url).toBe(`https://a.com?123=true&pipeline=`);
+    });
+
+    it('should not remove pipeline query string parameter that is empty', () => {
+      const url = UrlUtils.normalizeAsString({
+        paths: ['https://a.com/'],
+        queryAsString: [`pipeline=`],
+        query: {
+          abc: '',
+          def: 'hij'
+        }
+      });
+      expect(url).toBe(`https://a.com?pipeline&def=hij`);
     });
 
     it('should remove incoherent "?" character', () => {
