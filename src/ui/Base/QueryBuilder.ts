@@ -191,6 +191,12 @@ export class QueryBuilder {
    */
   public firstResult: number = 0;
   /**
+   * The number of results to display on a page.
+   *
+   * If not specified, this parameter defaults to 10.
+   */
+  public resultsPerPage: number = 10;
+  /**
    * This is the number of results to return, starting from {@link IQuery.firstResult}.
    *
    * If not specified, this parameter defaults to 10.

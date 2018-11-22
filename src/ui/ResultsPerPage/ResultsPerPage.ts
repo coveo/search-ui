@@ -13,6 +13,8 @@ import { exportGlobally } from '../../GlobalExports';
 import { l } from '../../strings/Strings';
 
 import 'styling/_ResultsPerPage';
+import { MODEL_EVENTS } from '../../models/Model';
+import { QUERY_STATE_ATTRIBUTES, QueryStateModel } from '../../models/QueryStateModel';
 
 export interface IResultsPerPageOptions {
   choicesDisplayed?: number[];
@@ -73,6 +75,7 @@ export class ResultsPerPage extends Component {
   };
 
   private currentResultsPerPage: number;
+  private listenToQueryStateModel = true;
   private span: HTMLElement;
   private list: HTMLElement;
 
@@ -93,7 +96,9 @@ export class ResultsPerPage extends Component {
     this.bind.onRootElement(QueryEvents.querySuccess, (args: IQuerySuccessEventArgs) => this.handleQuerySuccess(args));
     this.bind.onRootElement(QueryEvents.queryError, () => this.handleQueryError());
     this.bind.onRootElement(QueryEvents.noResults, (args: INoResultsEventArgs) => this.handleNoResults());
-    this.initComponent(element);
+    this.bind.onQueryState(MODEL_EVENTS.CHANGE_ONE, QUERY_STATE_ATTRIBUTES.RPP, () => this.handleQueryStateModelChanged());
+
+    this.initComponent();
   }
 
   /**
@@ -106,12 +111,12 @@ export class ResultsPerPage extends Component {
    */
   public setResultsPerPage(resultsPerPage: number, analyticCause: IAnalyticsActionCause = analyticsActionCauseList.pagerResize) {
     Assert.exists(resultsPerPage);
-    Assert.check(
-      this.options.choicesDisplayed.indexOf(resultsPerPage) != -1,
-      'The specified number of results is not available in the options.'
-    );
+    Assert.check(this.isValidChoice(resultsPerPage), 'The specified number of results is not available in the options.');
+
     this.searchInterface.resultsPerPage = resultsPerPage;
     this.currentResultsPerPage = resultsPerPage;
+    this.updateQueryStateModelResultsPerPage();
+
     this.usageAnalytics.logCustomEvent<IAnalyticsResultsPerPageMeta>(
       analyticCause,
       { currentResultsPerPage: this.currentResultsPerPage },
@@ -124,21 +129,47 @@ export class ResultsPerPage extends Component {
     });
   }
 
-  private getInitialChoice(): number {
-    let initialChoice = this.options.choicesDisplayed[0];
-    if (this.options.initialChoice !== undefined) {
-      if (this.options.choicesDisplayed.indexOf(this.options.initialChoice) > -1) {
-        initialChoice = this.options.initialChoice;
-      } else {
-        this.logger.warn(
-          'The initial number of results is not within the choices displayed. Consider setting a value that can be selected. The first choice will be selected instead.'
-        );
-      }
-    }
-    return initialChoice;
+  private updateQueryStateModelResultsPerPage() {
+    this.listenToQueryStateModel = false;
+    this.queryStateModel.set(QueryStateModel.attributesEnum.rpp, this.currentResultsPerPage);
+    this.listenToQueryStateModel = true;
   }
 
-  private initComponent(element: HTMLElement) {
+  private handleQueryStateModelChanged() {
+    this.listenToQueryStateModel && this.setResultsPerPage(this.getInitialChoice());
+  }
+
+  private getInitialChoice(): number {
+    const firstDisplayedChoice = this.options.choicesDisplayed[0];
+    const configuredChoice = this.options.initialChoice;
+    const queryStateModelChoice = this.queryStateModel.get(QueryStateModel.attributesEnum.rpp);
+    const queryStateModelChoiceIsNotDefault = queryStateModelChoice !== firstDisplayedChoice;
+
+    if (queryStateModelChoiceIsNotDefault && this.isValidChoice(queryStateModelChoice)) {
+      return queryStateModelChoice;
+    }
+
+    if (configuredChoice !== undefined) {
+      if (this.isValidChoice(configuredChoice)) {
+        return configuredChoice;
+      }
+      this.logInvalidChoiceWarning();
+    }
+
+    return firstDisplayedChoice;
+  }
+
+  private isValidChoice(choice: number) {
+    return this.options.choicesDisplayed.indexOf(choice) !== -1;
+  }
+
+  private logInvalidChoiceWarning() {
+    this.logger.warn(
+      'The initial number of results is not within the choices displayed. Consider setting a value that can be selected. The first choice will be selected instead.'
+    );
+  }
+
+  private initComponent() {
     this.span = $$(
       'span',
       {
@@ -146,11 +177,11 @@ export class ResultsPerPage extends Component {
       },
       l('ResultsPerPage')
     ).el;
-    element.appendChild(this.span);
+    this.element.appendChild(this.span);
     this.list = $$('ul', {
       className: 'coveo-results-per-page-list'
     }).el;
-    element.appendChild(this.list);
+    this.element.appendChild(this.list);
   }
 
   private render() {

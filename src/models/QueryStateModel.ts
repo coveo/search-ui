@@ -14,7 +14,8 @@ export const QUERY_STATE_ATTRIBUTES = {
   HD: 'hd',
   HQ: 'hq',
   QUICKVIEW: 'quickview',
-  DEBUG: 'debug'
+  DEBUG: 'debug',
+  RPP: 'rpp'
 };
 
 export interface IQueryStateIncludedAttribute {
@@ -72,7 +73,8 @@ export class QueryStateModel extends Model {
     layout: 'list',
     tg: '',
     quickview: '',
-    debug: false
+    debug: false,
+    rpp: 10
   };
 
   static attributesEnum = {
@@ -86,7 +88,8 @@ export class QueryStateModel extends Model {
     hq: 'hq',
     tg: 'tg',
     quickview: 'quickview',
-    debug: 'debug'
+    debug: 'debug',
+    rpp: 'rpp'
   };
 
   static getFacetId(id: string, include: boolean = true) {
