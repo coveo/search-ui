@@ -57,41 +57,13 @@ export type CategoryValueDescriptor = {
 };
 
 /**
- * The _CategoryFacet_ component is a facet that renders values in a hierarchical fashion. It determines the filter to apply depending on the
+ * The `CategoryFacet` component is a facet that renders values in a hierarchical fashion. It determines the filter to apply depending on the
  * current selected path of values.
  *
  * The path is a sequence of values that leads to a specific value in the hierarchy.
  * It is an array listing all the parents of a file (e.g., `['c', 'folder1']` for the `c:\folder1\text1.txt` file).
  *
- * This facet requires a field with a special format to work correctly.
- *
- * **Example:**
- *
- * You have the following files indexed on a file system:
- *
- * ```
- * c:\
- *   folder1\
- *     text1.txt
- *   folder2\
- *     folder3\
- *       text2.txt
- * ```
- *
- * The `text1.txt` item would have a field with the following value:
- * `c; c|folder1;`
- *
- * The `text2.txt` item would have a field with the following value:
- * `c; c|folder2; c|folder2|folder3;`
- *
- * By default, the `|` character determines the hierarchy (`folder3` inside `folder2` inside `c`).
- *
- * Since both items contain the `c` value, selecting `c` in the facet would return both items.
- *
- * Selecting the `folder3` value in the facet would only return the `text2.txt` item.
- *
- * To help you verify whether your fields are setup correctly, see the {@link CategoryFacet.options.debug} option
- * and the {@link CategoryFacet.debugValue} method.
+ * This facet requires a [`field`]{@link CategoryFacet.options.field} with a special format to work correctly (see [Using the Category Facet Component](https://docs.coveo.com/en/2667)).
  */
 export class CategoryFacet extends Component implements IAutoLayoutAdjustableInsideFacetColumn {
   static doExport = () => {
@@ -108,37 +80,18 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
    */
   static options: ICategoryFacetOptions = {
     /**
-     * Specifies the index field whose values the facet should use. The field values should have the form:
+     * The index field whose values the facet should use. The field values should have the form:
      * `the; the|path; the|path|to; the|path|to|given; the|path|to|given|item;`
+     * where the delimiting character is `|`. This default delimiting character can be changed using the [delimitingCharacter]{@link CategoryFacet.options.delimitingCharacter} option.
      *
-     *  * **Example:**
+     * To help you verify whether your fields are setup correctly, see the {@link CategoryFacet.options.debug} option
+     * and the {@link CategoryFacet.debugValue} method.
      *
-     * You have the following files indexed on a file system:
-     *
-     * ```
-     * c:\
-     *   folder1\
-     *     text1.txt
-     *   folder2\
-     *     folder3\
-     *       text2.txt
-     * ```
-     *
-     * The `text1.txt` item would have a field with the following value:
-     * `c; c|folder1;`
-     *
-     * The `text2.txt` item would have a field with the following value:
-     * `c; c|folder2; c|folder2|folder3;`
-     *
-     * By default, the `|` character determines the hierarchy (`folder3` inside `folder2` inside `c`).
-     *
-     * Since both items contain the `c` value, selecting `c` in the facet would return both items.
-     *
-     * Selecting the `folder3` value in the facet would only return the `text2.txt` item.
+     * See [Using the Category Facet Component](https://docs.coveo.com/en/2667).
      */
     field: ComponentOptions.buildFieldOption({ required: true }),
     /**
-     * Specifies the title to display at the top of the facet.
+     * The title to display at the top of the facet.
      *
      * Default value is the localized string for `NoTitle`.
      */
@@ -146,14 +99,14 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
       defaultValue: l('NoTitle')
     }),
     /**
-     * Specifies the maximum number of field values to display by default in the facet before the user
+     * The maximum number of field values to display by default in the facet before the user
      * clicks the arrow to show more.
      *
      * See also the [`enableMoreLess`]{@link CategoryFacet.options.enableMoreLess} option.
      */
     numberOfValues: ComponentOptions.buildNumberOption({ defaultValue: 5, min: 0, section: 'CommonOptions' }),
     /**
-     * Specifies whether to display a search box at the bottom of the facet for searching among the available facet
+     * Whether to display a search box at the bottom of the facet for searching among the available facet
      * [`field`]{@link CategoryFacet.options.field} values.
      *
      * See also the [`facetSearchDelay`]{@link CategoryFacet.options.facetSearchDelay}, and
@@ -164,7 +117,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
      */
     enableFacetSearch: ComponentOptions.buildBooleanOption({ defaultValue: true }),
     /**
-     * Specifies a unique identifier for the facet. Among other things, this identifier serves the purpose of saving
+     * A unique identifier for the facet. Among other things, this identifier serves the purpose of saving
      * the facet state in the URL hash.
      *
      * If you have two facets with the same field on the same page, you should specify an `id` value for at least one of
@@ -176,7 +129,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
       postProcessing: (value, options: ICategoryFacetOptions) => value || (options.field as string)
     }),
     /**
-     * Specifies the *injection depth* to use.
+     * The *injection depth* to use.
      *
      * The injection depth determines how many results to scan in the index to ensure that the category facet lists all potential
      * facet values. Increasing this value enhances the accuracy of the listed values at the cost of performance.
@@ -203,7 +156,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
      */
     facetSearchDelay: ComponentOptions.buildNumberOption({ defaultValue: 100, min: 0 }),
     /**
-     * Specifies whether to enable the **More** and **Less** buttons in the Facet.
+     * Whether to enable the **More** and **Less** buttons in the Facet.
      *
      * See also the [`pageSize`]{@link CategoryFacet.options.pageSize} option.
      *
@@ -218,7 +171,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
      */
     pageSize: ComponentOptions.buildNumberOption({ defaultValue: 10, min: 1, depend: 'enableMoreLess' }),
     /**
-     * The character that specifies the hierarhical dependency.
+     * The character that specifies the hierarchical dependency.
      *
      * **Example:**
      *
@@ -257,7 +210,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
      */
     maximumDepth: ComponentOptions.buildNumberOption({ min: 1, defaultValue: Number.MAX_VALUE }),
     /**
-     * Specifies whether field format debugging is activated.
+     * Whether to activate field format debugging.
      * This options logs messages in the console for any potential encountered issues.
      * This option can have negative effects on performance, and should only be activated when debugging.
      */
@@ -521,7 +474,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   }
 
   /**
-   * Reset the facet to its initial state.
+   * Resets the facet to its initial state.
    */
   public reset() {
     this.changeActivePath(this.options.basePath);
@@ -549,7 +502,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   }
 
   /**
-   * This method goes through any value that contains the value parameter, and verifies if there are missing parents.
+   * Goes through any value that contains the value parameter, and verifies whether there are missing parents.
    * Issues are then logged in the console.
    * If you do not want to specify a value, you can simply enable {@link CategoryFacet.options.debug} and do an empty query.
    */
