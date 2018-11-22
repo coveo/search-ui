@@ -75,7 +75,6 @@ export class ResultsPerPage extends Component {
   };
 
   private currentResultsPerPage: number;
-  private listenToQueryStateModel = true;
   private span: HTMLElement;
   private list: HTMLElement;
 
@@ -113,10 +112,10 @@ export class ResultsPerPage extends Component {
     Assert.exists(resultsPerPage);
     Assert.check(this.isValidChoice(resultsPerPage), 'The specified number of results is not available in the options.');
 
-    this.searchInterface.resultsPerPage = resultsPerPage;
-    this.currentResultsPerPage = resultsPerPage;
+    this.updateResultsPerPage(resultsPerPage);
     this.updateQueryStateModelResultsPerPage();
 
+    console.log('logging RPP event');
     this.usageAnalytics.logCustomEvent<IAnalyticsResultsPerPageMeta>(
       analyticCause,
       { currentResultsPerPage: this.currentResultsPerPage },
@@ -129,14 +128,18 @@ export class ResultsPerPage extends Component {
     });
   }
 
+  private updateResultsPerPage(resultsPerPage: number) {
+    this.searchInterface.resultsPerPage = resultsPerPage;
+    this.currentResultsPerPage = resultsPerPage;
+  }
+
   private updateQueryStateModelResultsPerPage() {
-    this.listenToQueryStateModel = false;
     this.queryStateModel.set(QueryStateModel.attributesEnum.rpp, this.currentResultsPerPage);
-    this.listenToQueryStateModel = true;
   }
 
   private handleQueryStateModelChanged() {
-    this.listenToQueryStateModel && this.setResultsPerPage(this.getInitialChoice());
+    const resultsPerPage = this.getInitialChoice();
+    this.updateResultsPerPage(resultsPerPage);
   }
 
   private getInitialChoice(): number {
@@ -227,8 +230,8 @@ export class ResultsPerPage extends Component {
     if (this.searchInterface.isResultsPerPageModifiedByPipeline) {
       this.logger.info('Results per page was modified by backend code (query pipeline). ResultsPerPage component will be hidden', this);
       this.reset();
-      this.currentResultsPerPage = this.getInitialChoice();
-      this.searchInterface.resultsPerPage = this.currentResultsPerPage;
+      const resultsPerPage = this.getInitialChoice();
+      this.updateResultsPerPage(resultsPerPage);
       return;
     }
 
