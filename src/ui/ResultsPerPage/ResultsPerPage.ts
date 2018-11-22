@@ -115,7 +115,6 @@ export class ResultsPerPage extends Component {
     this.updateResultsPerPage(resultsPerPage);
     this.updateQueryStateModelResultsPerPage();
 
-    console.log('logging RPP event');
     this.usageAnalytics.logCustomEvent<IAnalyticsResultsPerPageMeta>(
       analyticCause,
       { currentResultsPerPage: this.currentResultsPerPage },
