@@ -114,17 +114,8 @@ export class ResultsPerPage extends Component {
 
     this.updateResultsPerPage(resultsPerPage);
     this.updateQueryStateModelResultsPerPage();
-
-    this.usageAnalytics.logCustomEvent<IAnalyticsResultsPerPageMeta>(
-      analyticCause,
-      { currentResultsPerPage: this.currentResultsPerPage },
-      this.element
-    );
-    this.queryController.executeQuery({
-      ignoreWarningSearchEvent: true,
-      keepLastSearchUid: true,
-      origin: this
-    });
+    this.logAnalyticsEvent(analyticCause);
+    this.executeQuery();
   }
 
   private updateResultsPerPage(resultsPerPage: number) {
@@ -134,6 +125,22 @@ export class ResultsPerPage extends Component {
 
   private updateQueryStateModelResultsPerPage() {
     this.queryStateModel.set(QueryStateModel.attributesEnum.rpp, this.currentResultsPerPage);
+  }
+
+  private logAnalyticsEvent(analyticCause: IAnalyticsActionCause) {
+    this.usageAnalytics.logCustomEvent<IAnalyticsResultsPerPageMeta>(
+      analyticCause,
+      { currentResultsPerPage: this.currentResultsPerPage },
+      this.element
+    );
+  }
+
+  private executeQuery() {
+    this.queryController.executeQuery({
+      ignoreWarningSearchEvent: true,
+      keepLastSearchUid: true,
+      origin: this
+    });
   }
 
   private handleQueryStateModelChanged() {
