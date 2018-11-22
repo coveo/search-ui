@@ -6,8 +6,6 @@ import { Simulate } from '../Simulate';
 import { FakeResults } from '../Fake';
 import { $$ } from '../../src/utils/Dom';
 import { QueryStateModel } from '../../src/Core';
-// import { MODEL_EVENTS } from '../../src/models/Model';
-// import { QUERY_STATE_ATTRIBUTES } from '../../src/models/QueryStateModel';
 
 export function ResultsPerPageTest() {
   describe('ResultsPerPage', () => {
@@ -48,15 +46,6 @@ export function ResultsPerPageTest() {
         );
       });
     });
-
-    // it(`when triggering "${MODEL_EVENTS.CHANGE_ONE}:${QUERY_STATE_ATTRIBUTES.RPP}" event,
-    // it updates the resultsPerPage option in the SearchInterface`, () => {
-    //   const numOfResults = 50;
-    //   test.cmp.queryStateModel.set(QUERY_STATE_ATTRIBUTES.RPP, numOfResults);
-    //   // $$(test.cmp.element).trigger(event);
-
-    //   expect(test.cmp.searchInterface.resultsPerPage).toBe(numOfResults);
-    // })
 
     describe('should be able to activate and deactivate', () => {
       const isActivated = (test: Mock.IBasicComponentSetup<ResultsPerPage>) => {
