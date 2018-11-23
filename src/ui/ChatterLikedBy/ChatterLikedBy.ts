@@ -1,12 +1,13 @@
-import {Initialization} from '../Base/Initialization';
-import {ComponentOptions} from '../Base/ComponentOptions';
-import {Component} from '../Base/Component';
-import {IComponentBindings} from '../Base/ComponentBindings';
-import {IQueryResult} from '../../rest/QueryResult';
-import {Utils} from '../../utils/Utils';
-import {$$} from '../../utils/Dom';
-import {l} from '../../strings/Strings';
-import {ChatterUtils} from '../../utils/ChatterUtils';
+import { Initialization } from '../Base/Initialization';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { Component } from '../Base/Component';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { IQueryResult } from '../../rest/QueryResult';
+import { Utils } from '../../utils/Utils';
+import { $$ } from '../../utils/Dom';
+import { l } from '../../strings/Strings';
+import { ChatterUtils } from '../../utils/ChatterUtils';
+import { exportGlobally } from '../../GlobalExports';
 
 export interface IChatterLikedByOptions {
   nbLikesToRender: number;
@@ -17,26 +18,33 @@ export interface IChatterLikedByOptions {
 export class ChatterLikedBy extends Component {
   static ID = 'ChatterLikedBy';
 
+  static doExport = () => {
+    exportGlobally({
+      ChatterLikedBy: ChatterLikedBy
+    });
+  };
+
   static options: IChatterLikedByOptions = {
     nbLikesToRender: ComponentOptions.buildNumberOption({ defaultValue: 2, min: 0 }),
     openInPrimaryTab: ComponentOptions.buildBooleanOption({ defaultValue: false }),
     openInSubTab: ComponentOptions.buildBooleanOption({ defaultValue: true })
   };
 
-  static fields = [
-    'sflikedby',
-    'sflikedbyid',
-    'clickableuri',
-    'sffeeditemid'
-  ];
-
-  constructor(public element: HTMLElement, public options?: IChatterLikedByOptions, public bindings?: IComponentBindings, public result?: IQueryResult) {
+  constructor(
+    public element: HTMLElement,
+    public options?: IChatterLikedByOptions,
+    public bindings?: IComponentBindings,
+    public result?: IQueryResult
+  ) {
     super(element, ChatterLikedBy.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, ChatterLikedBy, options);
 
-    if (!Utils.isNullOrUndefined(result.raw.sflikedby) && !Utils.isNullOrUndefined(result.raw.sflikedbyid)) {
-      let likeNames = result.raw.sflikedby.split(';');
-      let likeIds = result.raw.sflikedbyid.split(';');
+    if (
+      !Utils.isNullOrUndefined(Utils.getFieldValue(result, 'sflikedby')) &&
+      !Utils.isNullOrUndefined(Utils.getFieldValue(result, 'sflikedbyid'))
+    ) {
+      let likeNames = Utils.getFieldValue(result, 'sflikedby').split(';');
+      let likeIds = Utils.getFieldValue(result, 'sflikedbyid').split(';');
 
       let rootElement = $$('div', {
         className: 'coveo-chatter-result-box-row'
@@ -93,7 +101,7 @@ export class ChatterLikedBy extends Component {
 
   private renderLikeLink(result: IQueryResult, likeName: string, likeId: string): HTMLElement {
     let link = $$('a', {
-      href: ChatterUtils.buildURI(result.clickUri, result.raw.sffeeditemid, likeId)
+      href: ChatterUtils.buildURI(result.clickUri, Utils.getFieldValue(result, 'sffeeditemid'), likeId)
     });
     link.text(likeName);
     return link.el;

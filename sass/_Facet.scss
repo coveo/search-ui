@@ -1,8 +1,7 @@
-@import "bourbon/bourbon";
-@import "_Variables.scss";
-
-.CoveoFacet, .CoveoFacetRange, .CoveoFacetSlider, .CoveoHierarchicalFacet {
-  margin: 10px 0px 10px 0px;
+@import 'bourbon/bourbon';
+@import 'Variables';
+#{$allFacetsType} {
+  margin: 10px 0;
   padding: 0;
   @include defaultRoundedBorder();
   background: white;
@@ -10,18 +9,23 @@
 }
 
 .coveo-facet-column {
-  .coveo-topSpace.coveo-with-animation, .coveo-bottomSpace.coveo-with-animation {
+  .coveo-topSpace.coveo-with-animation,
+  .coveo-bottomSpace.coveo-with-animation {
     @include transition(height 0.5s);
   }
 }
 
-.ie8or9 .coveo-facet-header-wait-animation, .ie8or9 .coveo-facet-search-wait-animation {
-  background: url(../image/wait_facet.gif) no-repeat;
-  background-size: 100%;
+.coveo-no-visible-facet {
+  .coveo-facet-column {
+    display: none;
+  }
 }
 
 .coveo-facet-empty {
   display: none;
+  &.coveo-with-placeholder {
+    display: block;
+  }
 }
 
 .coveo-facet-dependent {
@@ -31,7 +35,8 @@
 .coveo-facet-collapsed {
   .coveo-facet-value.coveo-facet-value {
     display: none;
-    &.coveo-selected, &.coveo-excluded {
+    &.coveo-selected,
+    &.coveo-excluded {
       display: inherit;
     }
   }
@@ -43,7 +48,9 @@
 .coveo-facet-fade {
   .coveo-facet-value {
     opacity: 0.5;
-    &.coveo-selected, &.coveo-excluded, &.coveo-facet-search-selectable {
+    &.coveo-selected,
+    &.coveo-excluded,
+    &.coveo-facet-search-selectable {
       opacity: 1;
     }
   }

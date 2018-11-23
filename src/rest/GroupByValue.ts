@@ -1,4 +1,4 @@
-import {IIndexFieldValue} from './FieldValue';
+import { IIndexFieldValue } from './FieldValue';
 
 /**
  * Describe a single group by value, returned by a {@link IGroupByResult}

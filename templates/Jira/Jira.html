@@ -1,72 +1,59 @@
 <div class="coveo-result-frame">
-  <div class="coveo-result-row">
-    <div class="coveo-result-cell" style="width:85px;text-align:center">
-      <span class="CoveoIcon"></span>
-      <div class="CoveoQuickview"></div>
-    </div>
-    <div class="coveo-result-cell">
-      <div class="coveo-result-row">
-        <div class="coveo-result-cell" style="font-size:18px">
-          <a class="CoveoResultLink"></a>
-        </div>
-        <div class="coveo-result-cell" style="width:120px;text-align:right;font-size:12px">
+  <div class="coveo-result-cell" style="vertical-align:top;text-align:center;width:32px;">
+    <span class="CoveoIcon" data-small="true" data-with-label="false"></span>
+    <div class="CoveoQuickview"></div>
+  </div>
+  <div class="coveo-result-cell" style="vertical-align: top;padding-left: 16px;">
+    <div class="coveo-result-row" style="margin-top:0;">
+      <div class="coveo-result-cell" style="vertical-align:top;font-size:16px;">
+        <a class="CoveoResultLink"></a>
+        <span class="CoveoText" data-value=" - "></span>
+        <a class="CoveoResultLink" data-title-template="${raw.jikey}"></a>
+      </div>
+      <div class="coveo-result-cell" style="width:120px;text-align:right;font-size:12px">
+        <div class="coveo-result-row">
           <span class="CoveoFieldValue" data-field="@date" data-helper="date"></span>
         </div>
       </div>
-      <div class="coveo-result-row">
-        <div class="coveo-result-cell" style="padding-top:5px; padding-bottom:5px;">
-          <span class="CoveoExcerpt"></span>
-        </div>
+    </div>
+    <div class="coveo-result-row"  style="margin-top:10px;">
+      <div class="coveo-result-cell">
+        <span class="CoveoBadge" data-field="@jifieldspriorityname" data-colors='{"icon":"#039BE5","text":"#039BE5"}'></span>
+		    <span class="CoveoBadge" data-field="@jifieldsstatusname" data-colors='{"icon":"#388E3C","text":"#388E3C"}'></span>
       </div>
-      <div class="coveo-result-row">
-        <div class="coveo-result-cell" style="padding-top:5px; padding-bottom:5px;">
-          <span class="CoveoResultAttachments" data-result-template-id="JiraAttachment"></span>
-        </div>
+    </div>
+    <div class="coveo-result-row" style="margin-top:10px;">
+      <div class="coveo-result-cell">
+        <span class="CoveoExcerpt"></span>
       </div>
-      <div class="coveo-result-row">
-        <div class="coveo-result-cell" style="padding-top:5px; padding-bottom:5px; font-size:13px;">
-          <table class="CoveoFieldTable">
-            <tr data-field="@jikey" data-caption="Key"></tr>
-            <tr data-field="@jifieldsprojectname" data-caption="Project name"></tr>
-            <tr data-field="@jifieldsissuetypename" data-caption="Issue type"></tr>
-            <tr data-field="@jifieldstimetrackingoriginalestimatehours" data-caption="Time tracking Estimated"></tr>
-            <tr data-field="@jifieldstimetrackingremainingestimatehours" data-caption="Time tracking Remaining"></tr>
-            <tr data-field="@jifieldstimetrackingtimespenthours" data-caption="Time tracking Logged"></tr>
-            <tr data-field="@jifieldspriorityname" data-caption="Priority"></tr>
-            <tr data-field="@jifieldsversionsname" data-caption="Version"></tr>
-            <tr data-field="@jifieldslabels" data-caption="Labels"></tr>
-            <tr data-field="@jifieldsenvironment" data-caption="Environment"></tr>
-            <tr data-field="@jifieldsstatusname" data-caption="Status"></tr>
-            <tr data-field="@jifieldsReporterDisplayName" data-caption="Reporter"></tr>
-            <tr data-field="@jifieldsAssigneeDisplayName" data-caption="Assignee"></tr>
-            <tr data-field="@jifieldsfixVersionsname" data-caption="Fix Vesions"></tr>
-            <tr data-field="@jifieldsresolution" data-caption="Resolution"></tr>
-            <tr data-field="@jifieldscreated" data-caption="Created Date" data-helper="dateTime"></tr>
-            <tr data-field="@jifieldsupdated" data-caption="Updated Date" data-helper="dateTime"></tr>
-            <tr data-field="@jifieldsduedate" data-caption="Due Date" data-helper="dateTime"></tr>
-            <tr data-field="@jifieldsissuelinkstypename" data-caption="Links"></tr>
-            <tr data-field="@jifieldsissuelinkstypeoutward" data-caption="Outward links"></tr>
-            <tr data-field="@jifieldsissuelinkstypeinward" data-caption="Inward links"></tr>
-            <tr data-field="@jiprojectname" data-caption="Project name"></tr>
-            <tr data-field="@jiissuename" data-caption="Issue name"></tr>
-            <tr data-field="@jiauthordisplayname" data-caption="Author"></tr>
-            <tr data-field="@jisize" data-caption="Size"></tr>
-            <tr data-field="@jiupdateauthordisplayname" data-caption="Update Author"></tr>
-            <tr data-field="@jicreated" data-caption="Created Date" data-helper="dateTime"></tr>
-            <tr data-field="@jiupdated" data-caption="Updated Date" data-helper="dateTime"></tr>
-            <tr data-field="@jibody" data-caption="Comment"></tr>
-            <tr data-field="@jistarted" data-caption="Started Date" data-helper="dateTime"></tr>
-            <tr data-field="@jitimespent" data-caption="TimeSpent"></tr>
-            <tr data-field="@jicomment" data-caption="Comment"></tr>
-          </table>
-        </div>
+    </div>
+    <div class="coveo-result-row" style="margin-top:10px;">
+      <div class="coveo-result-cell">
+        <span class="CoveoFieldValue" data-field="@jiprojectname" data-text-caption="Project" style="margin-right:30px;"></span>
+        <span class="CoveoFieldValue" data-field="@jifieldsissuetypename" data-text-caption="Issue type" style="margin-right:30px;"></span>
+        <span class="CoveoFieldValue" data-field="@jifieldsassigneedisplayname" data-text-caption="Assigned to" style="margin-right:30px;"></span>
+        <span class="CoveoFieldValue" data-field="@jifieldsduedate" data-text-caption="Due date" data-helper="date" style="margin-right:30px;"></span>
       </div>
-      <div class="coveo-result-row">
-        <div class="coveo-result-cell" style="padding-top:5px; padding-bottom:5px">
-          <span class="CoveoPrintableUri"></span>
-        </div>
+    </div>
+    <div class="coveo-result-row" style="margin-top:10px;">
+      <div class="coveo-result-cell" >
+        <span class="CoveoResultAttachments" data-result-template-id="JiraAttachment"></span>
       </div>
-      <div class="coveo-result-row"></div>
+    </div>
+    <div class="coveo-result-row">
+      <div class="coveo-result-cell" style="padding-top:5px; padding-bottom:5px; font-size:13px;">
+        <table class="CoveoFieldTable">
+          <tr data-field="@jifieldscreated" data-caption="Created Date" data-helper="dateTime"></tr>
+          <tr data-field="@jifieldsReporterDisplayName" data-caption="Reporter"></tr>
+          <tr data-field="@jifieldsupdated" data-caption="Updated Date" data-helper="dateTime"></tr>
+          <tr data-field="@jifieldstimetrackingoriginalestimate" data-caption="Time estimated"></tr>
+          <tr data-field="@jifieldstimetrackingremainingestimate" data-caption="Time remaining"></tr>
+          <tr data-field="@jifieldstimetrackingtimespent" data-caption="Time logged"></tr>
+          <tr data-field="@jifieldsversionsname" data-caption="Version"></tr>
+          <tr data-field="@jifieldslabels" data-caption="Labels"></tr>
+          <tr data-field="@jifieldsdescription" data-caption="Description"></tr>
+        </table>
+      </div>
     </div>
   </div>
 </div>

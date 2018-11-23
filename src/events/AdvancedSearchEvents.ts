@@ -1,6 +1,6 @@
-import {IExternalAdvancedSearchSection} from '../ui/AdvancedSearch/AdvancedSearchInput';
-import {IQueryOptions} from '../controllers/QueryController';
-import {IQueryResults} from '../rest/QueryResults';
+import { IExternalAdvancedSearchSection } from '../ui/AdvancedSearch/AdvancedSearchInput';
+import { IQueryOptions } from '../controllers/QueryController';
+import { IQueryResults } from '../rest/QueryResults';
 
 /**
  * Argument sent to all handlers bound on {@link AdvancedSearchEvents.buildingAdvancedSearch}
@@ -22,11 +22,12 @@ export interface IBuildingAdvancedSearchEventArgs {
  */
 export class AdvancedSearchEvents {
   /**
-   * Triggered when the advanced search component is being built.
+   * Triggered when the {@link AdvancedSearch} component is being built.
    *
-   * Allows external code to add new sections in the advanced search panel.
+   * Allows external code to add new sections in the **Advanced Search** panel.
    *
-   * All handlers bound will receive {@link IBuildingAdvancedSearchEventArgs} as an argument
+   * All bound handlers receive {@link IBuildingAdvancedSearchEventArgs} as an argument
+   *
    * @type {string}
    */
   public static buildingAdvancedSearch = 'buildingAdvancedSearch';

@@ -1,5 +1,6 @@
-import {Assert} from '../../misc/Assert';
-import {QueryUtils} from '../../utils/QueryUtils';
+import { Assert } from '../../misc/Assert';
+import { QueryUtils } from '../../utils/QueryUtils';
+import * as _ from 'underscore';
 
 /**
  * An `ExpressionBuilder` that is mostly used by the {@link QueryBuilder}.<br/>
@@ -92,6 +93,13 @@ export class ExpressionBuilder {
     } else {
       return this.parts.join(exp);
     }
+  }
+
+  /**
+   * @returns array containing the differents parts of the expression
+   */
+  public getParts(): string[] {
+    return this.parts;
   }
 
   /**

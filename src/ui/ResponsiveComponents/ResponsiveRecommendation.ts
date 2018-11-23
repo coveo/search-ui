@@ -1,31 +1,33 @@
-import {ResponsiveComponentsManager, IResponsiveComponent, IResponsiveComponentOptions} from './ResponsiveComponentsManager';
-import {ResponsiveComponentsUtils} from './ResponsiveComponentsUtils';
-import {SearchInterface} from '../SearchInterface/SearchInterface';
-import {Utils} from '../../utils/Utils';
-import {$$, Dom} from '../../utils/Dom';
-import {Logger} from '../../misc/Logger';
-import {Recommendation} from '../Recommendation/Recommendation';
-import {RecommendationDropdownContent} from './ResponsiveDropdown/RecommendationDropdownContent';
-import {ResponsiveDropdownHeader} from './ResponsiveDropdown/ResponsiveDropdownHeader';
-import {ResponsiveDropdown} from './ResponsiveDropdown/ResponsiveDropdown';
-import {l} from '../../strings/Strings';
-import {FacetSlider} from '../FacetSlider/FacetSlider';
-import {Facet} from '../Facet/Facet';
-import {Component} from '../Base/Component';
+import { ResponsiveComponentsManager, IResponsiveComponent, IResponsiveComponentOptions } from './ResponsiveComponentsManager';
+import { ResponsiveComponentsUtils } from './ResponsiveComponentsUtils';
+import { SearchInterface } from '../SearchInterface/SearchInterface';
+import { Utils } from '../../utils/Utils';
+import { $$, Dom } from '../../utils/Dom';
+import { Logger } from '../../misc/Logger';
+import { Recommendation } from '../Recommendation/Recommendation';
+import { RecommendationDropdownContent } from './ResponsiveDropdown/RecommendationDropdownContent';
+import { ResponsiveDropdownHeader } from './ResponsiveDropdown/ResponsiveDropdownHeader';
+import { ResponsiveDropdown } from './ResponsiveDropdown/ResponsiveDropdown';
+import { l } from '../../strings/Strings';
+import { Component } from '../Base/Component';
+import { get } from '../Base/RegisteredNamedMethods';
+import { QueryEvents, IQuerySuccessEventArgs, INoResultsEventArgs } from '../../events/QueryEvents';
+import * as _ from 'underscore';
+
+import 'styling/_ResponsiveRecommendation';
+import { Defer } from '../../MiscModules';
 
 export class ResponsiveRecommendation implements IResponsiveComponent {
-
   public static DROPDOWN_CONTAINER_CSS_CLASS_NAME: string = 'coveo-recommendation-dropdown-container';
   public static RESPONSIVE_BREAKPOINT = 1000;
 
   public recommendationRoot: Dom;
   private breakpoint: number;
   private dropdown: ResponsiveDropdown;
-  private logger: Logger;
-  private facetSliders: FacetSlider[];
-  private facets: Facet[];
-  private dropdownContainer: Dom;
+  private facetSliders: any[];
+  private facets: any[];
   private dropdownHeaderLabel: string;
+  private searchInterface: SearchInterface;
 
   public static init(root: HTMLElement, component, options: IResponsiveComponentOptions) {
     let logger = new Logger('ResponsiveRecommendation');
@@ -34,12 +36,19 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
       logger.info('Recommendation component has no parent interface. Disabling responsive mode for this component.');
       return;
     }
+
     if (!$$(coveoRoot).find('.coveo-results-column')) {
       logger.info('Cannot find element with class coveo-results-column. Disabling responsive mode for this component.');
       return;
     }
 
-    ResponsiveComponentsManager.register(ResponsiveRecommendation, $$(coveoRoot), Recommendation.ID, component, options);
+    ResponsiveComponentsManager.register(
+      ResponsiveRecommendation,
+      $$(coveoRoot),
+      Recommendation.ID,
+      component,
+      _.extend({}, options, { initializationEventRoot: $$(root) })
+    );
   }
 
   private static findParentRootOfRecommendationComponent(root: HTMLElement): Dom {
@@ -50,17 +59,23 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
     return null;
   }
 
-  constructor(public coveoRoot: Dom, public ID: string, options: IResponsiveComponentOptions) {
+  constructor(
+    public coveoRoot: Dom,
+    public ID: string,
+    options: IResponsiveComponentOptions,
+    public responsiveDropdown?: ResponsiveDropdown
+  ) {
     this.recommendationRoot = this.getRecommendationRoot();
     this.dropdownHeaderLabel = options.dropdownHeaderLabel;
     this.breakpoint = this.defineResponsiveBreakpoint(options);
-    this.logger = new Logger(this);
-    this.dropdown = this.buildDropdown();
+    this.searchInterface = <SearchInterface>Component.get(this.coveoRoot.el, SearchInterface, false);
+    this.dropdown = this.buildDropdown(responsiveDropdown);
     this.facets = this.getFacets();
     this.facetSliders = this.getFacetSliders();
     this.registerOnOpenHandler();
     this.registerOnCloseHandler();
-    this.dropdownContainer = $$('div', { className: ResponsiveRecommendation.DROPDOWN_CONTAINER_CSS_CLASS_NAME });
+    this.registerQueryEvents();
+    this.handleResizeEvent();
   }
 
   public handleResizeEvent(): void {
@@ -80,15 +95,34 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
   }
 
   private needSmallMode(): boolean {
-    return this.coveoRoot.width() <= this.breakpoint;
+    const isWidthSmallerThanBreakpoint = this.coveoRoot.width() <= this.breakpoint;
+    if (!this.searchInterface) {
+      return isWidthSmallerThanBreakpoint;
+    }
+
+    switch (this.searchInterface.responsiveComponents.getResponsiveMode()) {
+      case 'small':
+        return true;
+      case 'auto':
+        return isWidthSmallerThanBreakpoint;
+      default:
+        return false;
+    }
   }
 
   private changeToSmallMode() {
     this.dropdown.close();
-    $$(this.coveoRoot.find('.coveo-dropdown-header-wrapper')).el.appendChild(this.dropdown.dropdownHeader.element.el);
-    this.disableFacetPreservePosition();
-    ResponsiveComponentsUtils.activateSmallRecommendation(this.coveoRoot);
-    ResponsiveComponentsUtils.activateSmallRecommendation(this.recommendationRoot);
+    const header = this.coveoRoot.find(`.${ResponsiveComponentsManager.DROPDOWN_HEADER_WRAPPER_CSS_CLASS}`);
+    if (!header) {
+      // It's possible that recommendation gets initialized before the main interface is completed.
+      // We defer the resize event execution in that case.
+      Defer.defer(() => this.handleResizeEvent());
+    } else {
+      $$(header).append(this.dropdown.dropdownHeader.element.el);
+      this.disableFacetPreservePosition();
+      ResponsiveComponentsUtils.activateSmallRecommendation(this.coveoRoot);
+      ResponsiveComponentsUtils.activateSmallRecommendation(this.recommendationRoot);
+    }
   }
 
   private changeToLargeMode() {
@@ -98,10 +132,10 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
     ResponsiveComponentsUtils.deactivateSmallRecommendation(this.recommendationRoot);
   }
 
-  private buildDropdown(): ResponsiveDropdown {
+  private buildDropdown(responsiveDropdown?: ResponsiveDropdown): ResponsiveDropdown {
     let dropdownContent = this.buildDropdownContent();
     let dropdownHeader = this.buildDropdownHeader();
-    let dropdown = new ResponsiveDropdown(dropdownContent, dropdownHeader, this.coveoRoot);
+    let dropdown = responsiveDropdown ? responsiveDropdown : new ResponsiveDropdown(dropdownContent, dropdownHeader, this.coveoRoot);
     dropdown.disablePopupBackground();
     return dropdown;
   }
@@ -138,24 +172,20 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
     return breakpoint;
   }
 
-  private getFacetSliders(): FacetSlider[] {
+  private getFacetSliders(): any[] {
     let facetSliders = [];
-    _.each(this.coveoRoot.findAll('.' + Component.computeCssClassName(FacetSlider)), facetSliderElement => {
-      let facetSlider = Component.get(facetSliderElement, FacetSlider);
-      if (facetSlider instanceof FacetSlider) {
-        facetSliders.push(facetSlider);
-      }
+    _.each(this.coveoRoot.findAll('.' + Component.computeCssClassNameForType(`FacetSlider`)), facetSliderElement => {
+      let facetSlider = Component.get(facetSliderElement);
+      facetSliders.push(facetSlider);
     });
     return facetSliders;
   }
 
-  private getFacets(): Facet[] {
+  private getFacets(): any[] {
     let facets = [];
-    _.each(this.coveoRoot.findAll('.' + Component.computeCssClassName(Facet)), facetElement => {
-      let facet = Component.get(facetElement, Facet);
-      if (facet instanceof Facet) {
-        facets.push(facet);
-      }
+    _.each(this.coveoRoot.findAll('.' + Component.computeCssClassNameForType('Facet')), facetElement => {
+      let facet = Component.get(facetElement);
+      facets.push(facet);
     });
     return facets;
   }
@@ -169,11 +199,11 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
   }
 
   private enableFacetPreservePosition(): void {
-    _.each(this.facets, facet => facet.options.preservePosition = true);
+    _.each(this.facets, facet => (facet.options.preservePosition = true));
   }
 
   private disableFacetPreservePosition(): void {
-    _.each(this.facets, facet => facet.options.preservePosition = false);
+    _.each(this.facets, facet => (facet.options.preservePosition = false));
   }
 
   private drawFacetSliderGraphs(): void {
@@ -181,18 +211,42 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
   }
 
   private registerOnOpenHandler(): void {
-    this.dropdown.registerOnOpenHandler(() => {
-      this.drawFacetSliderGraphs();
-    });
+    this.dropdown.registerOnOpenHandler(this.drawFacetSliderGraphs, this);
   }
 
   private registerOnCloseHandler(): void {
-    this.dropdown.registerOnCloseHandler(() => {
-      this.dismissFacetSearches();
-    });
+    this.dropdown.registerOnCloseHandler(this.dismissFacetSearches, this);
   }
 
   private getRecommendationRoot(): Dom {
     return $$(this.coveoRoot.find('.' + Component.computeCssClassName(Recommendation)));
+  }
+
+  private registerQueryEvents() {
+    let recommendationInstance = <Recommendation>get(this.recommendationRoot.el, SearchInterface);
+    if (recommendationInstance && recommendationInstance.options.hideIfNoResults) {
+      this.coveoRoot.on(QueryEvents.querySuccess, (e: Event, data: IQuerySuccessEventArgs) => this.handleRecommnendationQuerySucess(data));
+      this.coveoRoot.on(QueryEvents.noResults, (e: Event, data: INoResultsEventArgs) => this.handleRecommendationNoResults());
+    }
+    this.coveoRoot.on(QueryEvents.queryError, () => this.handleRecommendationQueryError());
+  }
+
+  private handleRecommnendationQuerySucess(data: IQuerySuccessEventArgs) {
+    if (data.results.totalCount === 0) {
+      this.dropdown.close();
+      this.dropdown.dropdownHeader.hide();
+    } else {
+      this.dropdown.dropdownHeader.show();
+    }
+  }
+
+  private handleRecommendationNoResults() {
+    this.dropdown.close();
+    this.dropdown.dropdownHeader.hide();
+  }
+
+  private handleRecommendationQueryError() {
+    this.dropdown.close();
+    this.dropdown.dropdownHeader.hide();
   }
 }

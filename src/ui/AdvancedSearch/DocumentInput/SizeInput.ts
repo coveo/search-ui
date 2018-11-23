@@ -1,11 +1,11 @@
-import {Dropdown} from '../Form/Dropdown';
-import {NumericSpinner} from '../Form/NumericSpinner';
-import {$$} from '../../../utils/Dom';
-import {DocumentInput} from './DocumentInput';
-
+import { l } from '../../../strings/Strings';
+import { $$ } from '../../../utils/Dom';
+import { QueryBuilder } from '../../Base/QueryBuilder';
+import { Dropdown } from '../../FormWidgets/Dropdown';
+import { NumericSpinner } from '../../FormWidgets/NumericSpinner';
+import { DocumentInput } from './DocumentInput';
 
 export class SizeInput extends DocumentInput {
-
   public static modes = ['AtLeast', 'AtMost'];
   public static sizes = ['KB', 'MB', 'Bytes'];
 
@@ -14,8 +14,8 @@ export class SizeInput extends DocumentInput {
   public sizeInput: NumericSpinner;
   public sizeSelect: Dropdown;
 
-  constructor() {
-    super('Size');
+  constructor(public root: HTMLElement) {
+    super('Size', root);
   }
 
   public reset() {
@@ -24,15 +24,17 @@ export class SizeInput extends DocumentInput {
   }
 
   public build(): HTMLElement {
-    let sizeInput = $$(super.build());
-    let sizeInputSection = $$('div', { className: 'coveo-size-input-mode-section' });
+    const sizeInput = $$(super.build());
+    const sizeInputSection = $$('div', { className: 'coveo-size-input-mode-section' });
 
-    this.modeSelect = new Dropdown(this.onChange.bind(this), SizeInput.modes);
+    this.modeSelect = new Dropdown(this.onChange.bind(this), SizeInput.modes, undefined, l('Size'));
     this.modeSelect.setId('coveo-size-input-mode');
     sizeInputSection.append(this.modeSelect.getElement());
-    this.sizeInput = new NumericSpinner(this.onChange.bind(this));
+
+    this.sizeInput = new NumericSpinner(this.onChange.bind(this), undefined, undefined, l('SizeValue'));
     sizeInputSection.append(this.sizeInput.getElement());
-    this.sizeSelect = new Dropdown(this.onChange.bind(this), SizeInput.sizes);
+
+    this.sizeSelect = new Dropdown(this.onChange.bind(this), SizeInput.sizes, undefined, l('UnitMeasurement'));
     this.sizeSelect.setId('coveo-size-input-select');
     sizeInputSection.append(this.sizeSelect.getElement());
     sizeInput.append(sizeInputSection.el);
@@ -42,12 +44,15 @@ export class SizeInput extends DocumentInput {
 
   public getValue(): string {
     let size = this.getSizeInBytes();
+    let queryBuilder = new QueryBuilder();
     if (size) {
       switch (this.modeSelect.getValue()) {
         case 'AtLeast':
-          return '@size>=' + this.getSizeInBytes();
+          queryBuilder.advancedExpression.addFieldExpression('@size', '>=', [this.getSizeInBytes().toString()]);
+          return queryBuilder.build().aq;
         default:
-          return '@size<=' + this.getSizeInBytes();
+          queryBuilder.advancedExpression.addFieldExpression('@size', '<=', [this.getSizeInBytes().toString()]);
+          return queryBuilder.build().aq;
       }
     }
     return '';
@@ -64,5 +69,4 @@ export class SizeInput extends DocumentInput {
         return size;
     }
   }
-
 }

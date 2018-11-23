@@ -1,5 +1,6 @@
-import {$$, Dom} from '../../../utils/Dom';
-import {PopupUtils, HorizontalAlignment, VerticalAlignment} from '../../../utils/PopupUtils';
+import { Dom } from '../../../utils/Dom';
+import PopperJs from 'popper.js';
+import { ResponsiveComponentsManager } from '../ResponsiveComponentsManager';
 
 export interface IResponsiveDropdownContent {
   element: Dom;
@@ -17,6 +18,15 @@ export class ResponsiveDropdownContent implements IResponsiveDropdownContent {
 
   private widthRatio: number;
   private minWidth: number;
+  private popperReference: PopperJs;
+
+  public static isTargetInsideOpenedDropdown(target: Dom) {
+    const targetParentDropdown = target.parent(ResponsiveDropdownContent.DEFAULT_CSS_CLASS_NAME);
+    if (targetParentDropdown) {
+      return targetParentDropdown.style.display != 'none';
+    }
+    return false;
+  }
 
   constructor(componentName: string, public element: Dom, coveoRoot: Dom, minWidth: number, widthRatio: number) {
     this.cssClassName = `coveo-${componentName}-dropdown-content`;
@@ -30,17 +40,25 @@ export class ResponsiveDropdownContent implements IResponsiveDropdownContent {
     this.element.addClass(ResponsiveDropdownContent.DEFAULT_CSS_CLASS_NAME);
     this.element.el.style.display = '';
 
-    let width = this.widthRatio * this.coveoRoot.el.offsetWidth;
+    let width = this.widthRatio * this.coveoRoot.width();
     if (width <= this.minWidth) {
       width = this.minWidth;
     }
     this.element.el.style.width = width.toString() + 'px';
 
-    PopupUtils.positionPopup(this.element.el, $$(this.coveoRoot.find('.coveo-dropdown-header-wrapper')).el, this.coveoRoot.el,
-      { horizontal: HorizontalAlignment.INNERRIGHT, vertical: VerticalAlignment.BOTTOM, verticalOffset: 15 }, this.coveoRoot.el);
+    const referenceElement = this.coveoRoot.find(`.${ResponsiveComponentsManager.DROPDOWN_HEADER_WRAPPER_CSS_CLASS}`);
+
+    this.popperReference = new PopperJs(referenceElement, this.element.el, {
+      placement: 'bottom-end',
+      positionFixed: true
+    });
   }
 
   public hideDropdown() {
+    if (this.popperReference) {
+      this.popperReference.destroy();
+    }
+
     this.element.el.style.display = 'none';
     this.element.removeClass(this.cssClassName);
     this.element.removeClass(ResponsiveDropdownContent.DEFAULT_CSS_CLASS_NAME);
@@ -49,7 +67,4 @@ export class ResponsiveDropdownContent implements IResponsiveDropdownContent {
   public cleanUp() {
     this.element.el.removeAttribute('style');
   }
-
-
-
 }

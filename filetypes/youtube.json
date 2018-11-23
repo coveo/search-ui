@@ -18,7 +18,14 @@
       "icon": "video",
       "captions": {
         "en": "YouTube playlist item",
-        "fr": "Élément de piste de lecture"
+        "fr": "Élément de liste de lecture"
+      }
+    },
+    "youtubeplaylist": {
+      "icon": "video",
+      "captions": {
+        "en": "YouTube playlist",
+        "fr": "Liste de lecture"
       }
     }
   }

@@ -1,13 +1,10 @@
-import {QueryController} from '../controllers/QueryController';
-import {Logger} from './Logger';
-import {ISentryLog} from '../rest/SentryLog';
-import {DeviceUtils} from '../utils/DeviceUtils';
+import { QueryController } from '../controllers/QueryController';
+import { ISentryLog } from '../rest/SentryLog';
+import { DeviceUtils } from '../utils/DeviceUtils';
+import * as _ from 'underscore';
 
 export class SentryLogger {
-  private logger: Logger;
-
   constructor(private queryController: QueryController, private windoh: Window = window) {
-    this.logger = new Logger(this);
     this.bindErrorHandler();
   }
 
@@ -16,8 +13,8 @@ export class SentryLogger {
     let oldHandler = this.windoh.onerror;
     if (_.isFunction(oldHandler)) {
       this.windoh.onerror = (...args: any[]) => {
-        oldHandler.apply(oldHandler, args);
         this.handleError.apply(this, args);
+        return oldHandler.apply(oldHandler, args);
       };
     } else {
       this.windoh.onerror = this.handleError.bind(this);

@@ -1,10 +1,9 @@
-import {Component} from '../ui/Base/Component';
-import {QueryBuilder} from '../ui/Base/QueryBuilder';
-import {IQueryResults} from '../rest/QueryResults';
-import {IQuery} from '../rest/Query';
-import {ISearchEndpoint, IEndpointCallOptions} from '../rest/SearchEndpointInterface';
-import {IEndpointError} from '../rest/EndpointError';
-import {Promise} from 'es6-promise';
+import { IEndpointError } from '../rest/EndpointError';
+import { IQuery } from '../rest/Query';
+import { IQueryResults } from '../rest/QueryResults';
+import { IEndpointCallOptions, ISearchEndpoint } from '../rest/SearchEndpointInterface';
+import { Component } from '../ui/Base/Component';
+import { QueryBuilder } from '../ui/Base/QueryBuilder';
 
 /**
  * Argument sent to all handlers bound on {@link QueryEvents.newQuery}
@@ -18,6 +17,7 @@ export interface INewQueryEventArgs {
    * If this property is set to true by any handlers, the query will not be executed.
    */
   cancel: boolean;
+  shouldRedirectStandaloneSearchbox: boolean;
   origin?: Component;
 }
 

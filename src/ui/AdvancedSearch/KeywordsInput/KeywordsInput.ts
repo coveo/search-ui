@@ -1,15 +1,13 @@
-import {IAdvancedSearchInput} from '../AdvancedSearchInput';
-import {TextInput} from '../Form/TextInput';
-import {QueryBuilder} from '../../Base/QueryBuilder';
-import {AdvancedSearchEvents} from '../../../events/AdvancedSearchEvents';
-import {$$} from '../../../utils/Dom';
+import { IAdvancedSearchInput } from '../AdvancedSearchInput';
+import { TextInput } from '../../FormWidgets/TextInput';
+import { QueryBuilder } from '../../Base/QueryBuilder';
+import { AdvancedSearchEvents } from '../../../events/AdvancedSearchEvents';
+import { $$ } from '../../../utils/Dom';
 
 export class KeywordsInput implements IAdvancedSearchInput {
-
   protected input: TextInput;
 
-  constructor(public inputName: string) {
-  }
+  constructor(public inputName: string, public root: HTMLElement) {}
 
   public reset() {
     this.clear();
@@ -40,7 +38,9 @@ export class KeywordsInput implements IAdvancedSearchInput {
   }
 
   protected onChange() {
-    if (this.input) {
+    if (this.root) {
+      $$(this.root).trigger(AdvancedSearchEvents.executeAdvancedSearch);
+    } else if (this.input) {
       $$(this.input.getElement()).trigger(AdvancedSearchEvents.executeAdvancedSearch);
     }
   }

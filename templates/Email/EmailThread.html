@@ -1,51 +1,39 @@
-<div class="coveo-result-frame coveo-email-result">
-  <div class="coveo-result-row">
-    <div class="coveo-result-cell" style="width:85px; text-align:center; padding-top:7px">
-      <span class="CoveoIcon">
-      </span>
-      <div class="CoveoQuickview" data-template-id="EmailQuickviewContent">
+<div class="coveo-result-frame">
+  <div class="coveo-result-cell" style="vertical-align:top;text-align:center;width:32px;">
+    <span class="CoveoIcon" data-small="true" data-with-label="false"></span>
+    <div class="CoveoQuickview" data-template-id="EmailQuickviewContent"></div>
+  </div>
+  <div class="coveo-result-cell" style="vertical-align: top;padding-left: 16px;">
+    <div class="coveo-result-row" style="margin-top:0;">
+      <div class="coveo-result-cell" style="vertical-align:top;font-size:16px;">
+        <a class="CoveoResultLink"></a>
+      </div>
+      <div class="coveo-result-cell" style="width:120px;text-align:right;font-size:12px">
+        <div class="coveo-result-row">
+          <span class="CoveoFieldValue" data-field="@date" data-helper="date"></span>
+        </div>
       </div>
     </div>
-    <div class="coveo-result-cell" style="padding-left:15px">
-      <div class="coveo-result-row">
-        <div class="coveo-result-cell" style="font-size:18px">
-          <a class="CoveoResultLink">
-          </a>
-        </div>
-        <div class="coveo-result-cell" style="width:120px; text-align:right; font-size:12px">
-          <span class="CoveoFieldValue" data-field="@date" data-helper="emailDateTime">
-          </span>
-        </div>
+    <div class="coveo-result-row" style="margin-top:12px;">
+      <div class="coveo-result-cell">
+        <span class="CoveoFieldValue" data-field="@from" data-helper="email" data-html-value="true" data-text-caption="From:" style="margin-right:30px;"></span>
+        <span class="CoveoFieldValue" data-field="@recipients" data-helper="email" data-html-value="true" data-text-caption="To:" style="margin-right:30px;"></span>
       </div>
-      <div class="coveo-result-row">
-        <div class="coveo-result-cell" style="font-size:13px;padding-top:5px;padding-bottom:5px;">
-          <span class="CoveoText" data-value="From:">
-          </span>
-          <span class="CoveoFieldValue" data-field="@from" data-helper="email" data-html-value="true">
-          </span>
-          <span class="CoveoText" data-value="To:">
-          </span>
-          <span class="CoveoFieldValue" data-field="@recipients" data-helper="email" data-html-value="true">
-          </span>
-        </div>
+    </div>
+    <div class="coveo-result-row" style="margin-top:12px;">
+      <div class="coveo-result-cell">
+        <span class="CoveoExcerpt"></span>
       </div>
-      <div class="coveo-result-row">
-        <div class="coveo-result-cell" style="padding-top:5px; padding-bottom:5px">
-          <span class="CoveoExcerpt">
-          </span>
-        </div>
+    </div>
+    <div class="coveo-result-row" style="margin-top:12px;">
+      <div class="coveo-result-cell" style="padding-top:5px; padding-bottom:5px; font-size:13px;">
+        <span class="CoveoResultAttachments" data-result-template-id="EmailResultAttachment">
+        </span>
       </div>
-      <div class="coveo-result-row">
-        <div class="coveo-result-cell" style="padding-top:5px; padding-bottom:5px; font-size:13px;">
-          <span class="CoveoResultAttachments" data-result-template-id="EmailResultAttachment">
-          </span>
-        </div>
-      </div>
-      <div class="coveo-result-row">
-        <div class="coveo-result-cell" style="padding-top:5px; padding-bottom:5px;  font-size:13px;">
-          <span class="CoveoResultFolding" data-result-template-id="EmailChildResult" data-more-caption="ShowAllReplies" data-less-caption="ShowOnlyMostRelevantReplies">
-          </span>
-        </div>
+    </div>
+    <div class="coveo-result-row" style="margin-top:12px;">
+      <div class="coveo-result-cell" style="padding-top:5px; padding-bottom:5px; font-size:13px;">
+        <span class="CoveoResultFolding" data-result-template-id="EmailChildResult" data-more-caption="ShowAllReplies" data-less-caption="ShowOnlyMostRelevantReplies"></span>
       </div>
     </div>
   </div>

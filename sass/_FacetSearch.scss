@@ -1,12 +1,12 @@
-@import "FacetValues";
-
+@import 'Variables';
+@import 'FacetValues';
 .coveo-facet-search-results {
   position: absolute;
   @include defaultRoundedBorder();
   background-color: white;
   list-style: none;
-  margin: 0px 0 3px 0;
-  padding: 0px 0px 10px 0px;
+  margin: 0 0 3px;
+  padding: 0 0 10px;
   z-index: 999;
   input[type='checkbox'] {
     display: none;
@@ -16,17 +16,16 @@
   overflow-y: scroll;
   -ms-overflow-style: scrollbar;
   font-size: $font-size-smallest;
-
   .coveo-with-computed-field {
-    .coveo-facet-value-count, .coveo-facet-value-computed-field {
-      top: 0px;
+    .coveo-facet-value-count,
+    .coveo-facet-value-computed-field {
+      top: 0;
     }
   }
   &.coveo-no-results {
     display: none;
     visibility: hidden;
   }
-
   .coveo-facet-value {
     @include facetValuesCheckboxes('smaller');
     .coveo-facet-value-checkbox {
@@ -34,21 +33,21 @@
       top: 5px;
     }
   }
-
   .coveo-facet-value-exclude {
-    right: 2px;
+    right: 10px;
   }
   .coveo-facet-value-label {
-    padding-right: 5px;
+    padding-right: 15px;
   }
 }
 
 .coveo-facet-search-selectable {
   margin: 0;
-  padding: 0px 10px;
-  &.coveo-current {
-    background-color: $color-blueish-white-grey;
-  }
+  padding: 0 10px;
+}
+
+.coveo-facet-search-current-result {
+  background-color: $color-blueish-white-grey;
 }
 
 .coveo-facet-search-select-all {
@@ -60,29 +59,25 @@
 
 .coveo-facet-search-clear {
   float: right;
-  margin: 2px 4px 0px 0px;
+  margin-right: 3px;
   cursor: pointer;
   opacity: 0.5;
   clear: none;
-  .coveo-icon {
-    @include clearButton('&', 'smallest');
-  }
-
+  @include clearButton('&', 'small');
   &:hover {
     opacity: 1;
   }
 }
 
 .coveo-facet-search-input {
-  border: 0px;
-  padding: 1px 0px 0px 0px;
-  margin: 0px;
+  border: 0;
+  padding: 1px 0 0;
+  margin: 0;
   font-size: 13px;
   width: 100%;
   background-color: inherit;
   line-height: 15px;
-
-  &[value=""] {
+  &[value=''] {
     color: $color-light-grey;
   }
 }
@@ -101,7 +96,7 @@
   position: relative;
   background: white;
   display: none;
-  margin: 2px 20px 1px 20px;
+  margin: 2px 20px 1px;
   padding: 4px;
   @include animation(grow 0.3s linear);
 }
@@ -121,14 +116,24 @@
 
 .coveo-facet-search-magnifier {
   float: left;
+}
+
+.coveo-facet-search-magnifier-svg {
   margin: 5px 6px 5px 10px;
-  @extend .coveo-sprites-facet-search;
+  width: 10px;
+  height: 10px;
+  color: $color-light-greyish-blue;
 }
 
 .coveo-facet-search-wait-animation {
   float: left;
+}
+
+.coveo-facet-search-wait-animation-svg {
+  width: 13px;
+  height: 13px;
+  color: $color-greyish-teal-blue;
   margin: 3px 3px 5px 10px;
-  @extend .coveo-sprites-facet-search-loading;
   @include animation-name(coveo-spin);
   @include animation-timing-function(linear);
   @include animation-duration(1s);
@@ -141,11 +146,10 @@
 }
 
 .coveo-facet-value.coveo-facet-search-button {
-  color: $color-coveo-for-salesforce;
+  color: $coveo-blue;
   .coveo-facet-value-checkbox {
     border-style: dashed;
   }
-
   &:hover .coveo-facet-value-checkbox,
   .coveo-facet-value-checkbox:focus {
     border-style: solid;
@@ -159,8 +163,19 @@
 }
 
 .coveo-facet-value.coveo-facet-search-button {
-  .coveo-facet-value-checkbox > span, &:hover .coveo-facet-value-checkbox > span {
-    @extend .coveo-sprites-checkbox-more-values;
+  .coveo-facet-value-checkbox {
     bottom: 1px;
+    svg {
+      bottom: 4px;
+      .coveo-more-svg {
+        fill: $color-light-grey;
+      }
+    }
+  }
+  .coveo-facet-value-checkbox > .coveo-facet-value-checkbox-svg,
+  &:hover .coveo-facet-value-checkbox > .coveo-facet-value-checkbox-svg {
+    color: $color-light-grey;
+    width: 16px;
+    height: 11px;
   }
 }

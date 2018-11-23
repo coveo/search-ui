@@ -3,8 +3,8 @@ const strings = require('../strings/strings');
 const stringValidations = require('../strings/stringsValidations');
 
 gulp.task('strings', [ 'fileTypes' ], function (done) {
-  var dict = strings.load('./strings/strings.json', { module: 'Coveo' });
-  dict.merge(strings.load('./bin/strings/filetypesNew.json'));
+  const dict = strings.load('./bin/strings/filetypesNew.json');
+  dict.merge(strings.load('./strings/strings.json', { module: 'Coveo' }));
 
   dict.writeDeclarationFile('./src/strings/Strings.ts');
   dict.writeDefaultLanguage('./src/strings/DefaultLanguage.ts', 'en', './strings/cultures/globalize.culture.en-US.js', true);

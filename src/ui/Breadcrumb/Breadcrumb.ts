@@ -1,42 +1,56 @@
-import {Component} from '../Base/Component';
-import {IComponentBindings} from '../Base/ComponentBindings';
-import {ComponentOptions} from '../Base/ComponentOptions';
-import {InitializationEvents} from '../../events/InitializationEvents';
-import {BreadcrumbEvents, IBreadcrumbItem, IPopulateBreadcrumbEventArgs, IClearBreadcrumbEventArgs} from '../../events/BreadcrumbEvents';
-import {analyticsActionCauseList, IAnalyticsNoMeta} from '../Analytics/AnalyticsActionListMeta';
-import {$$} from '../../utils/Dom';
-import {l} from '../../strings/Strings';
-import {Initialization} from '../Base/Initialization';
-import {QueryEvents} from '../../events/QueryEvents';
-import {KeyboardUtils, KEYBOARD} from '../../utils/KeyboardUtils';
+import 'styling/_Breadcrumb';
+import { each } from 'underscore';
+import { BreadcrumbEvents, IBreadcrumbItem, IClearBreadcrumbEventArgs, IPopulateBreadcrumbEventArgs } from '../../events/BreadcrumbEvents';
+import { InitializationEvents } from '../../events/InitializationEvents';
+import { QueryEvents } from '../../events/QueryEvents';
+import { exportGlobally } from '../../GlobalExports';
+import { l } from '../../strings/Strings';
+import { AccessibleButton } from '../../utils/AccessibleButton';
+import { $$ } from '../../utils/Dom';
+import { SVGDom } from '../../utils/SVGDom';
+import { SVGIcons } from '../../utils/SVGIcons';
+import { analyticsActionCauseList, IAnalyticsNoMeta } from '../Analytics/AnalyticsActionListMeta';
+import { Component } from '../Base/Component';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { Initialization } from '../Base/Initialization';
 
-export interface IBreadcrumbOptions {
-}
+export interface IBreadcrumbOptions {}
 
 /**
- * This component displays a summary of the filters currently active in the query.
+ * The Breadcrumb component displays a summary of the currently active query filters.
  *
- * For example, when the user selects a facet value, the value is displayed in the breadcrumbs.
+ * For example, when the user selects a {@link Facet} value, the breadcrumbs display this value.
  *
- * The active filters are obtained by the component by firing an event in the breadcrumb component.
+ * The active filters are obtained by the component by firing an event in the Breadcrumb component.
  *
- * All other components having an active state can answer to this event by providing custom bits of HTML that will be displayed inside the breadcrumb.
+ * All other components having an active state can react to this event by providing custom bits of HTML to display
+ * inside the breadcrumbs.
  *
- * Thus, the breadcrumb can easily be extended by custom code to display information about custom state and filters.
+ * Thus, it is possible to easily extend the Breadcrumb component using custom code to display information about custom
+ * states and filters.
  *
- * See {@link BreadcrumbEvents} for the list of events and parameters sent when a breadcrumb is populated.
+ * See {@link BreadcrumbEvents} for the list of events and parameters sent when a Breadcrumb component is populated.
  */
 export class Breadcrumb extends Component {
   static ID = 'Breadcrumb';
   static options: IBreadcrumbOptions = {};
 
+  static doExport = () => {
+    exportGlobally({
+      Breadcrumb: Breadcrumb
+    });
+  };
+
   private lastBreadcrumbs: IBreadcrumbItem[];
 
   /**
-   * Create a new breadcrumb element, bind event on `deferredQuerySuccess` to draw the breadcrumb.
-   * @param element
-   * @param options
-   * @param bindings
+   * Creates a new Breadcrumb component. Binds event on {@link QueryEvents.deferredQuerySuccess} to draw the
+   * breadcrumbs.
+   * @param element The HTMLElement on which to instantiate the component.
+   * @param options The options for the Breadcrumb component.
+   * @param bindings The bindings that the component requires to function normally. If not set, these will be
+   * automatically resolved (with a slower execution time).
    */
   constructor(public element: HTMLElement, public options?: IBreadcrumbOptions, bindings?: IComponentBindings) {
     super(element, Breadcrumb.ID, bindings);
@@ -49,12 +63,14 @@ export class Breadcrumb extends Component {
   }
 
   /**
-   * Trigger the event to populate breadcrumb, which component such as {@link Facet} can populate.<br/>
-   * Will trigger an event with {@link IPopulateBreadcrumbEventArgs} object (an array) which other components or code can populate.
-   * @returns {IBreadcrumbItem[]}
+   * Triggers the event to populate the breadcrumbs. Components such as {@link Facet} can populate the breadcrumbs.
+   *
+   * This method triggers a {@link BreadcrumbEvents.populateBreadcrumb} event with an
+   * {@link IPopulateBreadcrumbEventArgs} object (an array) that other components or code can populate.
+   * @returns {IBreadcrumbItem[]} A populated breadcrumb item list.
    */
   public getBreadcrumbs(): IBreadcrumbItem[] {
-    let args = <IPopulateBreadcrumbEventArgs>{ breadcrumbs: [] };
+    const args = <IPopulateBreadcrumbEventArgs>{ breadcrumbs: [] };
     this.bind.trigger(this.root, BreadcrumbEvents.populateBreadcrumb, args);
     this.logger.debug('Retrieved breadcrumbs', args.breadcrumbs);
     this.lastBreadcrumbs = args.breadcrumbs;
@@ -62,11 +78,12 @@ export class Breadcrumb extends Component {
   }
 
   /**
-   * Trigger the event to clear the current breadcrumbs, that {@link Facet} can populate.<br/>
-   * Trigger a new query, and log a search event.
+   * Triggers the event to clear the current breadcrumbs that components such as {@link Facet} can populate.
+   *
+   * Also triggers a new query and logs the `breadcrumbResetAll` event in the usage analytics.
    */
   public clearBreadcrumbs() {
-    let args = <IClearBreadcrumbEventArgs>{};
+    const args = <IClearBreadcrumbEventArgs>{};
     this.bind.trigger(this.root, BreadcrumbEvents.clearBreadcrumb, args);
     this.logger.debug('Clearing breadcrumbs');
     this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.breadcrumbResetAll, {});
@@ -74,8 +91,8 @@ export class Breadcrumb extends Component {
   }
 
   /**
-   * Draw the given breadcrumbs items.
-   * @param breadcrumbs
+   * Draws the specified breadcrumb items.
+   * @param breadcrumbs The breadcrumb items to draw.
    */
   public drawBreadcrumb(breadcrumbs: IBreadcrumbItem[]) {
     $$(this.element).empty();
@@ -85,36 +102,42 @@ export class Breadcrumb extends Component {
       this.element.style.display = 'none';
     }
 
-    let breadcrumbItems = document.createElement('div');
+    const breadcrumbItems = document.createElement('div');
     $$(breadcrumbItems).addClass('coveo-breadcrumb-items');
     this.element.appendChild(breadcrumbItems);
-    _.each(breadcrumbs, (bcrumb: IBreadcrumbItem) => {
-      let elem = bcrumb.element;
+    each(breadcrumbs, (bcrumb: IBreadcrumbItem) => {
+      const elem = bcrumb.element;
       $$(elem).addClass('coveo-breadcrumb-item');
       breadcrumbItems.appendChild(elem);
     });
 
-    let clear = $$('div', {
+    const clear = $$('div', {
       className: 'coveo-breadcrumb-clear-all',
-      title: l('ClearAllFilters'),
-      tabindex: 0
+      title: l('ClearAllFilters')
     }).el;
 
-    let clearIcon = $$('div', { className: 'coveo-icon coveo-breadcrumb-icon-clear-all' }).el;
+    new AccessibleButton()
+      .withElement(clear)
+      .withSelectAction(() => this.clearBreadcrumbs())
+      .withOwner(this.bind)
+      .withLabel(l('ClearAllFilters'))
+      .build();
+
+    const clearIcon = $$(
+      'div',
+      {
+        className: 'coveo-icon coveo-breadcrumb-clear-all-icon'
+      },
+      SVGIcons.icons.checkboxHookExclusionMore
+    ).el;
+
+    SVGDom.addClassToSVGInContainer(clearIcon, 'coveo-breadcrumb-clear-all-svg');
+
     clear.appendChild(clearIcon);
+    const clearText = $$('div', undefined, l('Clear', '')).el;
 
-    if (this.searchInterface.isNewDesign()) {
-      let clearText = document.createElement('div');
-      $$(clearText).text(l('Clear', ''));
-      clear.appendChild(clearText);
-      this.element.appendChild(clear);
-    } else {
-      this.element.insertBefore(clear, this.element.firstChild);
-    }
-
-    const clearAction = () => this.clearBreadcrumbs();
-    this.bind.on(clear, 'click', clearAction);
-    this.bind.on(clear, 'keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, clearAction));
+    clear.appendChild(clearText);
+    this.element.appendChild(clear);
   }
 
   private redrawBreadcrumb() {
@@ -125,10 +148,15 @@ export class Breadcrumb extends Component {
     this.drawBreadcrumb(this.getBreadcrumbs());
   }
 
+  private handleQueryError() {
+    this.drawBreadcrumb(this.getBreadcrumbs());
+  }
+
   private handleAfterInitialization() {
     // We must bind to these events after the initialization to make sure the breadcrumb generation
     // is made with updated components. (E.G facet, facetrange, ...)
     this.bind.onRootElement(QueryEvents.deferredQuerySuccess, () => this.handleDeferredQuerySuccess());
+    this.bind.onRootElement(QueryEvents.queryError, () => this.handleQueryError());
   }
 }
 

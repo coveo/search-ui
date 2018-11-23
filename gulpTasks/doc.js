@@ -3,56 +3,97 @@ const gulp = require('gulp');
 const TypeDoc = require('typedoc');
 const fs = require('fs');
 const shell = require('gulp-shell');
+const notSupportedFeaturesConfig = require('./notSupportedFeaturesConfig');
+const del = require('del');
+const runsequence = require('run-sequence');
+const _ = require('underscore');
+const baseTsConfig = require('../tsconfig.json');
 
-gulp.task('doc', ['copyBinToDoc', 'buildPlayground'], function () {
+const docgenJsonPath = './bin/docgen/docgen.json';
 
-  var app = new TypeDoc.Application({
-    mode: 'file',
-    target: 'ES5',
-    experimentalDecorators: true,
-    module: 'CommonJS',
-    includeDeclarations: true,
-    theme: 'docs/theme',
-    name: 'Coveo search ui documentation',
-    readme: 'README.md',
-    externalPattern: '**/{typings,lib,node_modules}/**',
-    ignoreCompilerErrors: true
-  });
-  var src = app.expandInputFiles(['src/Doc.ts']);
-  var project = app.convert(src);
-  app.generateDocs(project, 'docgen');
-  app.generateJson(project, './bin/docgen/docgen.json', 'https://coveo.github.io/search-ui/');
+gulp.task('doc', done => {
+  runsequence('buildDoc', 'testDoc', done);
 });
 
-gulp.task('copyBinToDoc', function () {
-  return gulp.src('./bin/{js,image,css}/**/*')
-      .pipe(gulp.dest('./docs/theme/assets/gen'))
-})
+gulp.task('buildDoc', ['copyBinToDoc', 'buildPlayground'], () => {
+  const typedocConfig = {
+    ...baseTsConfig.compilerOptions,
+    mode: 'file',
+    theme: 'docs/theme',
+    name: 'Coveo JavaScript Search Framework - Reference Documentation',
+    readme: 'README.md',
+    excludePrivate: true,
+    excludeProtected: true,
+    ignoreCompilerErrors: true,
+    notSupportedFeaturesConfig
+  };
 
-gulp.task('buildPlayground', shell.task([
-  'node node_modules/webpack/bin/webpack.js --config webpackConfigFiles/webpack.playground.config.js'
-]));
+  const app = new TypeDoc.Application(typedocConfig);
+  const src = app.expandInputFiles(['src']);
+  const project = app.convert(src);
+  app.generateDocs(project, 'docgen');
+  app.generateJson(project, docgenJsonPath, 'https://coveo.github.io/search-ui/');
+  return gulp.src('./readme.png').pipe(gulp.dest('./docgen'));
+});
 
-function copyFile(source, target, cb) {
-  var cbCalled = false;
+gulp.task('cleanGeneratedThemesFiles', () => {
+  return del(['./docs/theme/assets/gen/**/*']);
+});
 
-  var rd = fs.createReadStream(source);
-  rd.on("error", function (err) {
-    done(err);
-  });
-  var wr = fs.createWriteStream(target);
-  wr.on("error", function (err) {
-    done(err);
-  });
-  wr.on("close", function (ex) {
-    done();
-  });
-  rd.pipe(wr);
+gulp.task('copyBinToDoc', ['cleanGeneratedThemesFiles'], () => {
+  return gulp.src('./bin/{js,image,css}/**/*').pipe(gulp.dest('./docs/theme/assets/gen'));
+});
 
-  function done(err) {
-    if (!cbCalled) {
-      cb(err);
-      cbCalled = true;
+gulp.task('buildPlayground', shell.task(['node node_modules/webpack/bin/webpack.js --config ./webpack.playground.config.js']));
+
+gulp.task('testDoc', () => {
+  const docgenJson = JSON.parse(fs.readFileSync(docgenJsonPath));
+  if (!docgenJson || !docgenJson.length) {
+    throw new Error('Invalid object');
+  }
+
+  checkAllAttributesAreDefinedCorrectly(docgenJson);
+  checkSpecificKeywords(docgenJson);
+  checkSpecificElements(docgenJson);
+});
+
+function checkAllAttributesAreDefinedCorrectly(docgenJson) {
+  const attributes = [
+    { name: 'name', types: ['string'] },
+    { name: 'notSupportedIn', types: ['string', 'object'] },
+    { name: 'comment', types: ['string'] },
+    { name: 'type', types: ['string'] },
+    { name: 'constrainedValues', types: ['object'] },
+    { name: 'miscAttributes', types: ['object'] }
+  ];
+
+  _.each(docgenJson, element =>
+    _.each(attributes, ({ name, types }) => {
+      const propertyMissing = !_.has(element, name);
+      const valueTypeIsInvalid = !_.contains(types, typeof element[name]);
+
+      if (propertyMissing || valueTypeIsInvalid) {
+        throw new Error(`Invalid or missing attribute "${name}" for doc element "${JSON.stringify(element)}"`);
+      }
+    })
+  );
+}
+
+function checkSpecificKeywords(docgenJson) {
+  const keywords = ['Analytics', 'QueryBuilder', 'Recommendation'];
+  _.each(keywords, keyword => {
+    if (!_.find(docgenJson, doc => doc.name.includes(keyword))) {
+      throw new Error(`Can't find keyword "${keyword}" in name`);
     }
+  });
+}
+
+function checkSpecificElements(docgenJson) {
+  const notSupportedInElement = _.findWhere(docgenJson, { name: 'Thumbnail' }).notSupportedIn.length;
+  const constrainedValuesElement = _.findWhere(docgenJson, { name: 'Facet.options.availableSorts' }).constrainedValues.length;
+  const miscAttributesElement = _.findWhere(docgenJson, { name: 'Querybox.options.searchAsYouTypeDelay' }).miscAttributes.defaultValue;
+
+  if (!notSupportedInElement || !constrainedValuesElement || !miscAttributesElement) {
+    throw new Error(`Can't validate specific elements`);
   }
 }

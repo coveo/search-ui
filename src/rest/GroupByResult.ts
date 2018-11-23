@@ -1,4 +1,4 @@
-import {IGroupByValue} from './GroupByValue';
+import { IGroupByValue } from './GroupByValue';
 
 /**
  * A result for a {@link IGroupByRequest}.

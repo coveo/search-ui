@@ -1,4 +1,4 @@
-
+@import 'Variables';
 .CoveoFieldTable {
   @include defaultRoundedBorder();
   width: 100%;
@@ -6,41 +6,41 @@
   padding-bottom: 10px;
   position: relative;
   word-break: break-all;
-  th, td {
+  margin-top: 1px;
+  th,
+  td {
     font-size: $font-size-smaller;
   }
   td {
     width: 99%;
-    padding: 10px 20px 0px 0px;
-    .coveo-clickable {
-      @include clickable();
-      &.coveo-selected {
-        font-weight: bold;
-      }
-    }
+    padding: 10px 20px 0 0;
   }
-
   th {
-    color: $color-blueish-gray;
     text-align: left;
     font-weight: normal;
     white-space: nowrap;
-    padding: 10px 10px 0px 20px;
+    padding: 10px 10px 0 20px;
   }
   border-collapse: separate;
   margin-bottom: 20px;
-
+  .coveo-clickable {
+    @include clickable();
+    &.coveo-selected {
+      font-weight: bold;
+    }
+  }
 }
 
 .coveo-field-table-toggle {
   @include clickable();
-  margin: 0px 5px 5px 0px;
+  margin: 0 5px 5px 0;
   .coveo-field-table-toggle-caption {
     margin-right: 5px;
   }
 }
 
 .coveo-field-table-toggle-container {
+  position: relative;
   overflow: hidden;
   height: 0;
   transition: height 0.5s ease-in-out;
@@ -49,27 +49,40 @@
   }
 }
 
-.coveo-field-table-toggle-icon {
+.coveo-field-table-toggle-down {
   position: relative;
   top: 2px;
+}
 
-  @extend .coveo-sprites-arrow-down;
-  @include transition(opacity 0.5s);
-  opacity: 1;
+.coveo-field-table-toggle-down-svg {
+  color: $color-greyish-teal-blue;
+  width: 10px;
+  height: 6px;
+  @include transition(fill-opacity 0.5s);
+  fill-opacity: 1;
   &.coveo-opened {
-    opacity: 0;
+    fill-opacity: 0;
   }
 }
 
-.coveo-field-table-toggle-icon-up {
+.coveo-field-table-toggle-up {
   position: absolute;
-  bottom: 10px;
+  bottom: 44px;
   right: 10px;
   margin: 0;
-  @extend .coveo-sprites-arrow-up;
-  display: none;
+  height: 0;
+}
+
+.coveo-field-table-toggle-up-svg {
+  color: $color-greyish-teal-blue;
+  width: 10px;
+  height: 6px;
+  @include transition(fill-opacity 0s);
+  fill-opacity: 0;
   &.coveo-opened {
-    display: inline-block;
+    fill-opacity: 1;
+    height: 13px;
+    @include transition(fill-opacity cubic-bezier(1, 0, 1, 0) 0.4s);
   }
 }
 
@@ -79,5 +92,27 @@
     &.coveo-selected {
       font-weight: bold;
     }
+  }
+  &.coveo-with-label {
+    display: inline-block;
+  }
+  .coveo-field-caption {
+    color: $color-blueish-gray;
+    margin-right: 10px;
+  }
+}
+
+.coveo-card-overlay {
+  .CoveoFieldTable {
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    margin: 10px 0 0;
+    th {
+      color: $color-light-grey;
+    }
+  }
+  .coveo-clickable {
+    @include clickable($dark-background: true);
   }
 }

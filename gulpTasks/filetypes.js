@@ -1,178 +1,175 @@
-const fs = require('fs');
-const path = require('path');
-const _ = require('underscore');
-const glob = require('glob');
+'use strict';
+
 const gulp = require('gulp');
+const Promise = require('bluebird');
+const glob = Promise.promisify(require('glob'));
+const read = Promise.promisify(require('fs').readFile);
+const write = Promise.promisify(require('fs').write);
+const exists = Promise.promisify(require('fs').exists);
+const _ = require('underscore');
+const xmlParser = Promise.promisify(new require('xml2js').Parser({ async: false }).parseString);
 const utilities = require('./buildUtilities');
 
+gulp.task('fileTypes', async done => {
+  gulp.src('./image/svg/filetypes/*.svg').pipe(gulp.dest('./bin/image'));
 
-gulp.task('fileTypes', [ 'sprites' ], function (done) {
-  readJsonForAllRepositories(function (json) {
-    var sass = generateSass(json);
-    fs.writeFileSync('bin/sass/_GeneratedIconsNew.scss', sass);
+  const svgFiles = await glob('./image/svg/filetypes/*.svg');
+  const jsonFiles = await glob('./filetypes/*.json');
 
-    var str = generateStrings(json);
-    utilities.ensureDirectory('bin/strings');
-    fs.writeFileSync('bin/strings/filetypesNew.json', str);
+  const generatedIconsForObjecttypeLarge = await Promise.all(
+    jsonFiles.map(file => generateSassExtendsForStandaloneImageVersion(file, 'objecttype', false))
+  );
+  const generatedIconsForObjecttypeSmall = await Promise.all(
+    jsonFiles.map(file => generateSassExtendsForStandaloneImageVersion(file, 'objecttype', true))
+  );
+  const generatedIconsForFiletypeLarge = await Promise.all(
+    jsonFiles.map(file => generateSassExtendsForStandaloneImageVersion(file, 'filetype', false))
+  );
+  const generatedIconsForFiletypeSmall = await Promise.all(
+    jsonFiles.map(file => generateSassExtendsForStandaloneImageVersion(file, 'filetype', true))
+  );
 
-    done();
-  }, './filetypes/*.json');
+  const sass = `
+  ${await generateSassForStandaloneImages(svgFiles.map(file => getSvgNameFromFile(file)))}
+  @mixin GeneratedIcons() {
+    .coveo-icon-caption-overlay { display: none; };
+    &.objecttype {
+      ${generatedIconsForObjecttypeLarge.join('\n')}
+    }
+    &.objecttype.coveo-small {
+      ${generatedIconsForObjecttypeSmall.join('\n')}
+    }
+    &.filetype {
+      ${generatedIconsForFiletypeLarge.join('\n')}
+    }
+    &.filetype.coveo-small {
+      ${generatedIconsForFiletypeSmall.join('\n')}
+    }
+  }`;
+
+  const stringsForFileTypesAndObjecttypes = await generateStrings(jsonFiles);
+
+  utilities.ensureDirectory('bin/sass');
+  utilities.ensureDirectory('bin/strings');
+
+  require('fs').writeFileSync('bin/sass/_GeneratedIconsNew.scss', sass);
+  require('fs').writeFileSync('bin/strings/filetypesNew.json', JSON.stringify(stringsForFileTypesAndObjecttypes));
 });
 
-gulp.task('fileTypesLegacy', [ 'spritesLegacy' ], function (done) {
-  readJsonForAllRepositories(function (json) {
-    var sass = generateSass(json, true);
-    fs.writeFileSync('bin/sasslegacy/_GeneratedIcons.scss', sass);
-
-    var str = generateStrings(json);
-    utilities.ensureDirectory('bin/strings');
-    fs.writeFileSync('bin/strings/filetypes.json', str);
-
-    done();
-  }, './breakingchanges/redesign/filetypes/*.json');
-});
-
-function readJsonForAllRepositories(callback, path) {
-  glob(path, function (err, files) {
-    var json = {};
-    _.each(files, function (file) {
-      var data = JSON.parse(fs.readFileSync(file));
-      json.objecttype = _.extend(json.objecttype || {}, data.objecttype);
-      json.filetype = _.extend(json.filetype || {}, data.filetype);
+const generateSassForStandaloneImages = async svgFiles => {
+  const extractFileSize = smallVersion =>
+    svgFiles.map(async fileName => {
+      const { width, height } = await getSVGSize(fileName, smallVersion);
+      return {
+        fileName,
+        width,
+        height
+      };
     });
 
-    callback(json);
-  });
-}
+  const fileWithSizes = await Promise.all(extractFileSize(false));
+  const fileWithSizesSmallVersion = await Promise.all(extractFileSize(true));
+  const groupedBySameDimension = _.groupBy(fileWithSizes, fileSize => `${fileSize.width}::${fileSize.height}`);
+  const groupedBySameDimensionSmallVersion = _.groupBy(fileWithSizesSmallVersion, fileSize => `${fileSize.width}::${fileSize.height}`);
 
-function generateSass(json, legacy) {
-  // Be careful to output lowercase object types, since the JS UI helpers do the same,
-  // and CSS class names are case sensitive. I do that because I can't expect to
-  // match all the time the casing output by the connectors.
+  const generateCssForSizes = (groupToGenerate, smallVersion) => {
+    return _.map(groupToGenerate, group => {
+      let width, height;
+      const cssClasses = _.map(group, valueInGroup => {
+        width = valueInGroup.width;
+        height = valueInGroup.height;
+        return `.${getCssClassNameForSvgName(valueInGroup.fileName, smallVersion)}`;
+      }).join(',\n');
+      return `${cssClasses} { ${svgTemplateForSize(width, height)} };`;
+    }).join('\n');
+  };
 
-  if (legacy == undefined) {
-    legacy = false;
-  }
-  var sass = '@mixin GeneratedIcons() {\n';
-  sass += '  .coveo-icon-caption-overlay { display: none; }';
+  const sizes = `
+  ${generateCssForSizes(groupedBySameDimension, false)}
+  ${generateCssForSizes(groupedBySameDimensionSmallVersion, true)}
+  `;
 
-  var defaultIcon = legacy ? '.coveo-sprites-fileType-default' : '.coveo-sprites-custom';
+  const backgroundUrl = `${svgFiles.map(svgFile => svgTemplateForUrl(svgFile)).join('\n')}`;
 
-  sass += '  &.objecttype {\n';
-  sass += '    @extend ' + defaultIcon + ';\n';
-  sass += generateInnerObjecttype(json, legacy, false);
-  sass += '  }\n';
+  return `
+  ${sizes}
+  ${backgroundUrl}  
+  `;
+};
 
-  if (!legacy) {
-    sass += '  &.objecttype.coveo-small {\n';
-    sass += '    @extend ' + defaultIcon + '-small;\n';
-    sass += generateInnerObjecttype(json, legacy, true);
-    sass += '  }\n';
-  }
+const generateSassExtendsForStandaloneImageVersion = async (jsonFile, keyForWhichToGenerate, smallVersion) => {
+  const fileContent = await read(jsonFile);
+  const fileParsed = JSON.parse(fileContent);
 
-  sass += '  &.filetype, &.sysfiletype {\n'; // we include the version with a sys prefix for backward compatibility
-  sass += '    @extend ' + defaultIcon + ';\n';
-  sass += generateInnerFiletype(json, legacy, false)
-  sass += '  }\n';
+  return _.map(fileParsed[keyForWhichToGenerate], (objectDescription, objectKey) => {
+    return ` 
+    @extend .${getCssClassNameForSvgName('custom', smallVersion)};
 
-  if (!legacy) {
-    sass += '  &.filetype.coveo-small, &.sysfiletype.coveo-small {\n';
-    sass += '    @extend ' + defaultIcon + '-small;\n';
-    sass += generateInnerFiletype(json, legacy, true);
-    sass += '  }\n';
-  }
+    &.${capitalizeAndTrim(objectKey)} , &.${objectKey.toLowerCase()} {
+        @extend .${getCssClassNameForSvgName(objectDescription.icon, smallVersion)};
+        ${objectDescription.shouldDisplayLabel ? '.coveo-icon-caption-overlay {display: block}' : ''}
+      }`;
+  }).join('\n');
+};
 
-  sass += '}\n';
+const generateStrings = async jsonFiles => {
+  const ret = {};
 
-  return sass;
-}
+  const createCaptionsObject = (fileParsed, fileKey) => {
+    _.each(fileParsed[fileKey], (objectDescription, objectKey) => {
+      ret[`${objectKey.toLowerCase()}`] = objectDescription.captions;
+      ret[`${fileKey}_${objectKey.toLowerCase()}`] = objectDescription.captions;
+    });
+  };
 
-function generateInnerObjecttype(json, legacy, small) {
-  var ret = '';
-  _.each(_.keys(json.objecttype), function (objecttype) {
-    ensureImageIsValid(objecttype, json.objecttype[objecttype].icon, legacy);
-    // This is a special case that we still need to support
-    // Old templates in salesforce are using something like this
-    // <div class="coveo-icon objecttype <%-raw.objecttype%> "></div>
-    // instead of the template helper : <%= fromFileTypeToIcon() %>
-    ret += '    &.' + capitalizeFirstLetter(objecttype) + " , ";
-    ret += '    &.' + objecttype.toLowerCase() +
-        ' { @extend .coveo-sprites-' + (legacy ? 'fileType-' : '' ) +
-        json.objecttype[objecttype].icon + (small ? '-small; ' : '; ') +
-        generateShouldDisplayLabel(json.objecttype[objecttype].shouldDisplayLabel) +
-        ' }\n';
-  });
+  const stringsForAllFiles = await Promise.all(
+    jsonFiles.map(async jsonFile => {
+      const fileContent = await read(jsonFile);
+      const fileParsed = JSON.parse(fileContent);
+      createCaptionsObject(fileParsed, 'filetype');
+      createCaptionsObject(fileParsed, 'objecttype');
+      return ret;
+    })
+  );
+
   return ret;
-}
+};
 
-function generateInnerFiletype(json, legacy, small) {
-  var ret = '';
-  _.each(_.keys(json.filetype), function (filetype) {
-    // Be careful to output lowercase filetypes, since the JS UI helpers do the same,
-    // and CSS class names are case sensitive. I do that because I can't expect to
-    // match all the time the casing output by the connectors.
-    ensureImageIsValid(filetype, json.filetype[filetype].icon, legacy);
-    ret += '    &.' + filetype.toLowerCase() +
-        ' { @extend .coveo-sprites-' + (legacy ? 'fileType-' : '' ) +
-        json.filetype[filetype].icon + (small ? '-small; ' : '; ') +
-        generateShouldDisplayLabel(json.filetype[filetype].shouldDisplayLabel) +
-        '}\n';
+const getCssClassNameForSvgName = (svgName, smallVersion) => {
+  return `coveo-filetype-${svgName}${smallVersion ? '-small' : ''}`;
+};
 
-  });
-  return ret;
-}
-
-function generateStrings(json) {
-  var out = {};
-
-  // Be careful to output lowercase filetypes and objecttypes, since the JS UI
-  // helpers do the same, and string lookups are case sensitive. I do that because
-  // I can't expect to match all the time the casing output by the connectors.
-  _.each(_.keys(json.objecttype), function (objecttype) {
-
-    out['objecttype_' + objecttype.toLowerCase()] = json.objecttype[objecttype].captions;
-  });
-
-  _.each(_.keys(json.filetype), function (filetype) {
-    out['filetype_' + filetype.toLowerCase()] = json.filetype[filetype].captions;
-  });
-
-  return JSON.stringify(out, undefined, ' ');
-}
-
-function generateShouldDisplayLabel(shouldDisplayLabel) {
-  if (shouldDisplayLabel) {
-    return '    .coveo-icon-caption-overlay { display: block; }'
-  } else {
-    return '';
+const getSVGSize = async (svgName, small) => {
+  const svgPath = getSVGPath(svgName);
+  const svgContent = await read(svgPath);
+  const svg = await xmlParser(svgContent.toString());
+  const width = small ? Math.floor(svg.svg.$.width / 2) : svg.svg.$.width;
+  const height = small ? Math.floor(svg.svg.$.height / 2) : svg.svg.$.height;
+  if (isNaN(width) || isNaN(height)) {
+    console.warn(`${svgName} has no width or/and height attribute.`);
   }
-}
+  return { width, height };
+};
 
-function ensureImageIsValid(filetype, image, legacy) {
-  var path = './image/sprites/' + image.replace('-', '/') + '.png';
+const getSVGPath = svgName => {
+  return `${__dirname}/../image/svg/filetypes/${svgName}.svg`;
+};
 
-  // DO not validate legacy because this pollutes the build console
-  // with useless stuff
-  if (!legacy) {
-    if (!fs.existsSync(path)) {
-      console.trace();
-      throw ('Icon ' + path + ' is referenced by file type ' + filetype + ' but cannot be found!');
-    }
-  }
+const getSvgNameFromFile = svgFile => {
+  return /(([\w-])+)\.svg$/.exec(svgFile)[1];
+};
 
+const svgTemplateForSize = (width, height) => {
+  return `display: inline-block; width: ${width}px; height: ${height}px; background-size: ${width}px ${height}px;`;
+};
 
-  var retinaPath = './image/retina/' + image.replace('-', '/') + '.png';
-  // DO not validate legacy because this pollutes the build console
-  // with useless stuff
-  if (!legacy) {
-    if (!legacy) {
-      if (!fs.existsSync(retinaPath)) {
-        console.warn('WARNING: Icon ' + path + ' is referenced by file type ' + filetype + ' but cannot be found in Retina sprites!');
-      }
-    }
-  }
-}
+const svgTemplateForUrl = svgName => {
+  return `.${getCssClassNameForSvgName(svgName, false)}, .${getCssClassNameForSvgName(
+    svgName,
+    true
+  )} {background-image: url(../../image/svg/filetypes/${svgName}.svg)};`;
+};
 
-function capitalizeFirstLetter(str) {
-  return str.charAt(0).toUpperCase() + str.slice(1);
-}
+const capitalizeAndTrim = rawValue => {
+  return `${rawValue.charAt(0).toUpperCase()}${rawValue.slice(1)}`.replace(' ', '-');
+};

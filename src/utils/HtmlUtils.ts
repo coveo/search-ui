@@ -1,6 +1,6 @@
-import {DeviceUtils} from './DeviceUtils';
-import {IQueryResult} from '../rest/QueryResult';
-import {SearchEndpoint} from '../rest/SearchEndpoint';
+import { IQueryResult } from '../rest/QueryResult';
+import { SearchEndpoint } from '../rest/SearchEndpoint';
+import * as _ from 'underscore';
 
 /**
  * Options for building an `<a>` tag.
@@ -59,7 +59,7 @@ export class AnchorUtils {
       text = options.text;
       options.text = undefined;
     }
-    return `<a href='${href} ${HTMLUtils.buildAttributeString(options)} '>${text}</a>`;
+    return `<a href='${href}' ${HTMLUtils.buildAttributeString(options)}>${text}</a>`;
   }
 }
 
@@ -85,8 +85,9 @@ export class ImageUtils {
   }
 
   static buildImageWithBase64SrcAttribute(endpoint: SearchEndpoint, result: IQueryResult) {
-    endpoint.getRawDataStream(result.uniqueId, '$Thumbnail$')
-      .then((response) => {
+    endpoint
+      .getRawDataStream(result.uniqueId, '$Thumbnail$')
+      .then(response => {
         var rawBinary = String.fromCharCode.apply(null, new Uint8Array(response));
         ImageUtils.selectImageFromResult(result).setAttribute('src', 'data:image/png;base64, ' + btoa(rawBinary));
       })
@@ -99,8 +100,8 @@ export class ImageUtils {
     options = options ? options : <IImageUtilsOptions>{};
 
     let img = ImageUtils.buildImage(undefined, _.extend(options, { 'data-coveo-uri-hash': result.raw['urihash'] }));
-    if (endpoint.isJsonp() || DeviceUtils.isIE8or9()) {
-      // For jsonp and IE8-9 (XDomain) we can't GET/POST for binary data. We are limited to only setting the src attribute directly on the img.
+    if (endpoint.isJsonp()) {
+      // For jsonp we can't GET/POST for binary data. We are limited to only setting the src attribute directly on the img.
       ImageUtils.buildImageWithDirectSrcAttribute(endpoint, result);
     } else {
       // Base 64 img allows us to GET/POST the image as raw binary, so that we can also pass the credential of the user

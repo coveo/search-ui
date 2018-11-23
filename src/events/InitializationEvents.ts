@@ -1,4 +1,11 @@
 /**
+ * Argument sent to all handlers bound on {@link InitializationEvents.afterComponentsInitialization}, and {@link InitializationEvents.afterInitialization}.
+ */
+export interface IInitializationEventArgs {
+  defer: Promise<any>[];
+}
+
+/**
  * This static class is there to contain the different string definitions for all the events related to initialization.
  *
  * Note that these events will only be triggered when the {@link init} function is called.
@@ -15,7 +22,7 @@ export class InitializationEvents {
   public static beforeInitialization = 'beforeInitialization';
   /**
    * Triggered after the components are initialized (eg: After the constructor of each component is executed)
-   * but before their state is set from the hash portion of the URL (e.g., http://mysearchinterface#q=myQuery ).
+   * but before their state is set from the hash portion of the URL (e.g., `http://mysearchinterface#q=myQuery`).
    *
    * This is also before the first query is launched (if the {@link SearchInterface.options.autoTriggerQuery} is `true`).
    *
@@ -24,7 +31,7 @@ export class InitializationEvents {
    */
   public static afterComponentsInitialization = 'afterComponentsInitialization';
   /**
-   * Triggered right before the state from the URL (e.g., http://mysearchinterface#q=myQuery ) gets applied in the interface.
+   * Triggered right before the state from the URL (e.g., `http://mysearchinterface#q=myQuery`) gets applied in the interface.
    *
    * This will typically only be useful if the {@link SearchInterface.options.enableHistory} is set to `true`.
    *
@@ -35,7 +42,7 @@ export class InitializationEvents {
   /**
    * Triggered right after the UI is fully initialized.
    *
-   * Concretely this means that the constructor of each component has been executed, and that the state coming for the URL (e.g., http://mysearchinterface#q=myquery) has been applied.
+   * Concretely this means that the constructor of each component has been executed, and that the state coming for the URL (e.g., `http://mysearchinterface#q=myquery`) has been applied.
    *
    * It is triggered *before* the first query is launched, and if the {@link SearchInterface.options.autoTriggerQuery} is `true`.
    *

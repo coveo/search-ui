@@ -1,21 +1,20 @@
+@import 'Variables';
+@import 'mixins/pagerList';
 .CoveoResultsPerPage {
-  margin: -10px 0px 0 15px;
-  display: inline-block;
+  margin: 0 0 0 15px;
   float: right;
-
 }
 
 .coveo-results-per-page-text {
   padding-left: 0;
-  color: $color-light-grey;
 }
 
 .coveo-results-per-page-list {
-  @extend .coveo-pager-list;
+  @include pager-list;
 }
 
 .coveo-results-per-page-list-item {
-  @extend .coveo-pager-list-item;
+  @include pager-list-item;
   padding: 4px;
 }
 

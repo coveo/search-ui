@@ -1,41 +1,35 @@
 <div class="coveo-result-frame">
-  <div class="coveo-result-row">
-    <div class="coveo-result-cell" style="width:85px;text-align:center;">
-      <span class="CoveoIcon"></span>
-      <div class="CoveoQuickview"></div>
-    </div>
-    <div class="coveo-result-cell">
-      <div class="coveo-result-row">
-        <div class="coveo-result-cell" style="font-size:18px">
-          <a class="CoveoResultLink"></a>
-        </div>
-        <div class="coveo-result-cell" style="width:120px;font-size:12px;">
+  <div class="coveo-result-cell" style="vertical-align: top;text-align:center;width:32px;">
+    <span class="CoveoIcon" data-small="true" data-with-label="false"></span>
+    <div class="CoveoQuickview"></div>
+  </div>
+  <div class="coveo-result-cell" style="vertical-align: top;padding-left: 16px;">
+    <div class="coveo-result-row" style="margin-top:0;">
+      <div class="coveo-result-cell" style="vertical-align:top;font-size:16px;">
+        <a class="CoveoResultLink"></a>
+      </div>
+      <div class="coveo-result-cell" style="width:80px;text-align:right;font-size:12px">
+        <div class="coveo-result-row">
           <span class="CoveoFieldValue" data-field="@date" data-helper="date"></span>
         </div>
       </div>
-      <div class="coveo-result-row">
-        <div class="coveo-result-cell" style="padding-top:5px; padding-bottom:5px">
-          <span class="CoveoExcerpt"></span>
-        </div>
+    </div>
+    <div class="coveo-result-row" style="margin-top:10px;">
+      <div class="coveo-result-cell">
+        <span class="CoveoExcerpt"></span>
       </div>
-      <div class="coveo-result-row">
-        <div class="coveo-result-cell" style="padding-top:5px; padding-bottom:5px; font-size:13px;">
-          <table class="CoveoFieldTable">
-            <tbody>
-              <tr data-field="@author" data-caption="Author"></tr>
-              <tr data-field="@site" data-caption="Site"></tr>
-              <tr data-field="@sptagnames" data-caption="Tags"></tr>
-              <tr data-field="@spcontenttype" data-caption="Content Type"></tr>
-              <tr data-field="@spitemtype" data-caption="Item Type"></tr>
-              <tr data-field="@spparentname" data-caption="Parent"></tr>
-            </tbody>
-          </table>
-        </div>
+    </div>
+    <div class="coveo-result-row" style="margin-top:10px;">
+      <div class="coveo-result-cell">
+        <span class="CoveoFieldValue" data-field="@author" data-text-caption="Author" style="margin-right:30px;"></span>
+        <span class="CoveoFieldValue" data-field="@filetype" data-text-caption="File" style="margin-right:30px;"></span>
+        <span class="CoveoFieldValue" data-field="@language" data-text-caption="Language" style="margin-right:30px;"></span>
+        <span class="CoveoFieldValue" data-field="@size" data-text-caption="Size" data-helper="size" style="margin-right:30px;"></span>
       </div>
-      <div class="coveo-result-row">
-        <div class="coveo-result-cell" style="padding-top:5px; padding-bottom:5px; font-size:13px;">
-          <span class="CoveoPrintableUri"></span>
-        </div>
+    </div>
+    <div class="coveo-result-row" style="margin-top:10px;">
+      <div class="coveo-result-cell">
+        <div class="CoveoPrintableUri"></div>
       </div>
     </div>
   </div>

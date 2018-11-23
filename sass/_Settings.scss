@@ -1,3 +1,4 @@
+@import 'Variables';
 .CoveoSettings {
   float: right;
   margin: 0 0 0 36px;
@@ -29,12 +30,11 @@
     margin-left: 5px;
     margin-right: 5px;
     & + .coveo-settings-square {
-      margin-left: 0px;
-      margin-right: 0px;
+      margin-left: 0;
+      margin-right: 0;
     }
   }
 }
-
 
 .coveo-settings-advanced-menu {
   position: absolute;
@@ -42,66 +42,66 @@
   @include defaultRoundedBorder();
   min-width: 160px;
   z-index: 11;
-
   &:before {
-    content: "";
-    position:absolute;
+    content: '';
+    position: absolute;
     top: -13px;
-    right: 13px;
+    right: 10px;
     @include triangle(12px, $color-light-grey, up);
   }
 }
 
 .coveo-settings-item {
-  clear:both;
+  clear: both;
   overflow: hidden;
-
-  .coveo-icon{
-    margin:7px 10px 0px 10px;
+  .coveo-icon {
+    min-width: 18px;
+    display: inline-block;
+    margin: 0 10px;
+    vertical-align: middle;
   }
-
   @include hoverEffectForDropdown();
-
   .coveo-settings-text {
-    overflow:hidden;
-    padding:8px 8px 8px 8px;
+    overflow: hidden;
+    display: inline-block;
+    vertical-align: middle;
+    padding: 8px;
   }
-
   &:first-child {
     border-top-left-radius: $default-border-radius;
     border-top-right-radius: $default-border-radius;
   }
-
   &:last-child {
     border-bottom-left-radius: $default-border-radius;
     border-bottom-right-radius: $default-border-radius;
   }
-
   &.coveo-share-query {
-    @include iconWithHoverState('.coveo-sprites-dropdown-share-query');
+    @include iconWithHoverState('coveo-share-query-svg', 'none');
   }
-
-  &.coveo-preferences-panel {
-    @include iconWithHoverState('.coveo-sprites-dropdown-preferences');
-  }
-
   &.coveo-advanced-search {
-    @include iconWithHoverState('.coveo-sprites-dropdown-preferences');
+    @include iconWithHoverState('coveo-advanced-search-svg', 'none');
   }
-
+  &.coveo-preferences-panel {
+    @include iconWithHoverState('coveo-preferences-panel-svg', 'none');
+  }
   &.coveo-authentication-provider {
-    @include iconWithHoverState('.coveo-sprites-dropdown-authenticate');
+    .coveo-icon {
+      margin-left: 12px;
+      margin-right: 8px;
+    }
+    @include iconWithHoverState('coveo-authentication-provider-svg', 'none');
   }
-
   &.coveo-export-to-excel {
-    @include iconWithHoverState('.coveo-sprites-dropdown-export-to-excel');
+    .coveo-icon {
+      margin-left: 12px;
+      margin-right: 8px;
+    }
+    @include iconWithHoverState('coveo-export-to-excel-svg', 'none');
   }
-
-  &.coveo-follow-query {
-    @include iconWithHoverState('.coveo-sprites-dropdown-follow-query');
-  }
-
   &.coveo-subscriptions-panel {
-    @include iconWithHoverState('.coveo-sprites-dropdown-follow-query');
+    @include iconWithHoverState('coveo-subscription-panel-svg', 'none');
+  }
+  &.coveo-follow-query {
+    @include iconWithHoverState('coveo-follow-query-svg', 'none');
   }
 }

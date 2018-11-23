@@ -1,9 +1,15 @@
 // Not sure about this : In year 2033 who's to say that this list won't be 50 pages long !
+import { ResponsiveComponents } from '../ui/ResponsiveComponents/ResponsiveComponents';
 const mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
 export class DeviceUtils {
-  static getDeviceName(): string {
-    var userAgent = navigator.userAgent;
+  static getDeviceName(userAgent = navigator.userAgent): string {
+    if (userAgent.match(/Edge/i)) {
+      return 'Edge';
+    }
+    if (userAgent.match(/Opera Mini/i)) {
+      return 'Opera Mini';
+    }
     if (userAgent.match(/Android/i)) {
       return 'Android';
     }
@@ -18,12 +24,6 @@ export class DeviceUtils {
     }
     if (userAgent.match(/iPod/i)) {
       return 'iPod';
-    }
-    if (userAgent.match(/Opera Mini/i)) {
-      return 'Opera Mini';
-    }
-    if (userAgent.match(/IEMobile/i)) {
-      return 'IE Mobile';
     }
     if (userAgent.match(/Chrome/i)) {
       return 'Chrome';
@@ -52,26 +52,16 @@ export class DeviceUtils {
     return deviceName == 'iPhone' || deviceName == 'iPad' || deviceName == 'iPod';
   }
 
-  static isIE8or9(): boolean {
-    var myNav = navigator.userAgent.toLowerCase();
-    if (myNav.indexOf('msie') == -1) {
-      return false;
-    }
-    return parseInt(myNav.split('msie')[1]) < 10;
-  }
-
   static isMobileDevice() {
     return mobile;
   }
 
+  /**
+   * @deprecated
+   *
+   * Use ResponsiveComponents.isSmallScreenWidth() instead
+   */
   static isSmallScreenWidth() {
-    if (window['clientWidth'] != null && window['clientWidth'] <= 480) {
-      return true;
-    }
-    return document.body.clientWidth <= 480;
-  }
-
-  static isSmallScreenHeight() {
-    return document.body.clientHeight <= 640;
+    return new ResponsiveComponents().isSmallScreenWidth();
   }
 }

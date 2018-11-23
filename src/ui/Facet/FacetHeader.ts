@@ -1,28 +1,27 @@
-/// <reference path="Facet.ts" />
-/// <reference path="FacetSettings.ts" />
-
-import {Facet} from './Facet';
-import {FacetSlider} from '../FacetSlider/FacetSlider';
-import {IFacetSettingsKlass, FacetSettings} from './FacetSettings';
-import {IFacetSortKlass, FacetSort} from './FacetSort';
-import {$$} from '../../utils/Dom';
-import {FacetUtils} from './FacetUtils';
-import {l} from '../../strings/Strings';
-import {IAnalyticsFacetOperatorMeta, IAnalyticsFacetMeta, analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
+import FacetSliderModuleDefinition = require('../FacetSlider/FacetSlider');
+import FacetModuleDefinition = require('./Facet');
+import { IFacetSettingsKlass, FacetSettings } from './FacetSettings';
+import { IFacetSortKlass, FacetSort } from './FacetSort';
+import { $$ } from '../../utils/Dom';
+import { l } from '../../strings/Strings';
+import { IAnalyticsFacetOperatorMeta, IAnalyticsFacetMeta, analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
+import 'styling/_FacetHeader';
+import { SVGIcons } from '../../utils/SVGIcons';
+import { SVGDom } from '../../utils/SVGDom';
+import { AccessibleButton } from '../../utils/AccessibleButton';
 
 export interface IFacetHeaderOptions {
   facetElement: HTMLElement;
+  facet?: FacetModuleDefinition.Facet;
   title: string;
   field: string;
   enableClearElement: boolean;
   enableCollapseElement: boolean;
   icon?: string;
-  facet?: Facet;
-  facetSlider?: FacetSlider;
+  facetSlider?: FacetSliderModuleDefinition.FacetSlider;
   settingsKlass?: IFacetSettingsKlass;
   sortKlass?: IFacetSortKlass;
   availableSorts?: string[];
-  isNewDesign: boolean;
 }
 
 export class FacetHeader {
@@ -42,45 +41,39 @@ export class FacetHeader {
   }
 
   public build(): HTMLElement {
-    if (this.options.isNewDesign && this.options.icon != undefined) {
-      this.element.appendChild(this.buildIcon());
-    } else if (!this.options.isNewDesign) {
-      this.element.appendChild(this.buildIcon());
+    let titleSection = $$('div', {
+      className: 'coveo-facet-header-title-section'
+    });
+    if (this.options.icon != undefined) {
+      this.iconElement = this.buildIcon();
+      titleSection.append(this.iconElement);
     }
+    titleSection.append(this.buildTitle());
+    this.waitElement = this.buildWaitAnimation();
+    titleSection.append(this.waitElement);
+    this.element.appendChild(titleSection.el);
 
-    if (!this.options.isNewDesign) {
-      this.element.appendChild(this.buildWaitAnimation());
+    let settingsSection = $$('div', {
+      className: 'coveo-facet-header-settings-section'
+    });
+
+    this.eraserElement = this.buildEraser();
+    settingsSection.append(this.eraserElement);
+
+    if (this.options.facet) {
+      this.operatorElement = this.buildOperatorToggle();
+      settingsSection.append(this.operatorElement);
+      $$(this.operatorElement).toggle(this.options.facet.options.enableTogglingOperator);
     }
 
     if (this.options.settingsKlass) {
       this.sort = this.settings = new this.options.settingsKlass(this.options.availableSorts, this.options.facet);
-      this.element.appendChild(this.settings.build());
+      settingsSection.append(this.settings.build());
     } else if (this.options.sortKlass) {
       this.sort = new this.options.sortKlass(this.options.availableSorts, this.options.facet);
     }
+    this.element.appendChild(settingsSection.el);
 
-    if (this.options.enableCollapseElement && !this.options.isNewDesign) {
-      this.collapseElement = this.buildCollapse();
-      this.element.appendChild(this.collapseElement);
-
-      this.expandElement = this.buildExpand();
-      this.element.appendChild(this.expandElement);
-    }
-
-    if (this.options.facet) {
-      this.operatorElement = this.buildOperatorToggle();
-      this.element.appendChild(this.operatorElement);
-      $$(this.operatorElement).toggle(this.options.facet.options.enableTogglingOperator);
-    }
-
-    this.eraserElement = this.buildEraser();
-    this.element.appendChild(this.eraserElement);
-
-    this.element.appendChild(this.buildTitle());
-
-    if (this.options.isNewDesign) {
-      this.element.appendChild(this.buildWaitAnimation());
-    }
     return this.element;
   }
 
@@ -114,14 +107,11 @@ export class FacetHeader {
       $$(this.collapseElement).show();
     }
     $$(this.options.facetElement).removeClass('coveo-facet-collapsed');
-    if (this.options.facet) {
-      FacetUtils.clipCaptionsToAvoidOverflowingTheirContainer(this.options.facet);
-    }
   }
 
   public updateOperatorQueryStateModel(): void {
     if (this.options.facet && this.options.facet.options.enableTogglingOperator) {
-      var valueToSet = '';
+      let valueToSet = '';
       if (this.options.facet.getSelectedValues().length != 0 || this.options.facet.getExcludedValues().length != 0) {
         valueToSet = this.options.facet.options.useAnd ? 'and' : 'or';
       }
@@ -130,7 +120,7 @@ export class FacetHeader {
   }
 
   private rebuildOperatorToggle(): void {
-    var newElement = this.buildOperatorToggle();
+    const newElement = this.buildOperatorToggle();
     if (this.operatorElement) {
       $$(this.operatorElement).replaceWith(newElement);
     }
@@ -138,7 +128,7 @@ export class FacetHeader {
   }
 
   private buildIcon(): HTMLElement {
-    var cssClassForIcon;
+    let cssClassForIcon;
     if (this.options.icon) {
       cssClassForIcon = 'coveo-icon-custom ' + this.options.icon;
     } else {
@@ -150,50 +140,23 @@ export class FacetHeader {
   }
 
   private buildWaitAnimation(): HTMLElement {
-    this.waitElement = document.createElement('div');
-    $$(this.waitElement).addClass('coveo-facet-header-wait-animation');
-    $$(this.waitElement).hide();
+    this.waitElement = $$('div', { className: 'coveo-facet-header-wait-animation' }, SVGIcons.icons.loading).el;
+    SVGDom.addClassToSVGInContainer(this.waitElement, 'coveo-facet-header-wait-animation-svg');
+    this.waitElement.style.visibility = 'hidden';
     return this.waitElement;
   }
 
-  private buildCollapse(): HTMLElement {
-    var icon = document.createElement('span');
-    $$(icon).addClass('coveo-icon');
-
-    var collapse = document.createElement('div');
-    collapse.setAttribute('title', l('Collapse'));
-    $$(collapse).addClass('coveo-facet-header-collapse');
-    collapse.appendChild(icon);
-
-    $$(collapse).on('click', () => this.collapseFacet());
-
-    return collapse;
-  }
-
-  private buildExpand(): HTMLElement {
-    var icon = document.createElement('span');
-    $$(icon).addClass('coveo-icon');
-
-    var expand = document.createElement('div');
-    expand.setAttribute('title', l('Expand'));
-    $$(expand).hide();
-    $$(expand).addClass('coveo-facet-header-expand');
-    expand.appendChild(icon);
-    $$(expand).on('click', () => this.expandFacet());
-    return expand;
-  }
-
   private buildOperatorToggle(): HTMLElement {
-    var icon = document.createElement('span');
-    $$(icon).addClass(['coveo-' + (this.options.facet.options.useAnd ? 'and' : 'or'), 'coveo-icon']);
-
-    var toggle = document.createElement('div');
-    toggle.setAttribute('title', l('SwitchTo', this.options.facet.options.useAnd ? l('Or') : l('And')));
-    $$(toggle).addClass('coveo-facet-header-operator');
-    toggle.appendChild(icon);
+    const icon = $$('span', { className: 'coveo-' + (this.options.facet.options.useAnd ? 'and' : 'or') }, SVGIcons.icons.orAnd);
+    SVGDom.addClassToSVGInContainer(icon.el, 'coveo-or-and-svg');
+    const toggle = $$('div', {
+      className: 'coveo-facet-header-operator',
+      title: l('SwitchTo', this.options.facet.options.useAnd ? l('Or') : l('And'))
+    });
+    toggle.append(icon.el);
     $$(toggle).on('click', () => this.handleOperatorClick());
 
-    return toggle;
+    return toggle.el;
   }
 
   private handleOperatorClick(): void {
@@ -203,41 +166,52 @@ export class FacetHeader {
       this.options.facet.switchToAnd();
     }
     if (this.options.facet.getSelectedValues().length != 0) {
-      var operatorNow = this.options.facet.options.useAnd ? 'AND' : 'OR';
-      var operatorBefore = this.options.facet.options.useAnd ? 'OR' : 'AND';
-      this.options.facet.triggerNewQuery(() => this.options.facet.usageAnalytics.logSearchEvent<IAnalyticsFacetOperatorMeta>(analyticsActionCauseList.facetToggle, {
-        facetId: this.options.facet.options.id,
-        facetOperatorBefore: operatorBefore,
-        facetOperatorAfter: operatorNow,
-        facetTitle: this.options.title
-      }));
+      const operatorNow = this.options.facet.options.useAnd ? 'AND' : 'OR';
+      const operatorBefore = this.options.facet.options.useAnd ? 'OR' : 'AND';
+      this.options.facet.triggerNewQuery(() =>
+        this.options.facet.usageAnalytics.logSearchEvent<IAnalyticsFacetOperatorMeta>(analyticsActionCauseList.facetToggle, {
+          facetId: this.options.facet.options.id,
+          facetField: this.options.field.toString(),
+          facetOperatorBefore: operatorBefore,
+          facetOperatorAfter: operatorNow,
+          facetTitle: this.options.title
+        })
+      );
     }
   }
 
   private buildTitle(): HTMLElement {
-    var title = document.createElement('div');
-    $$(title).text(this.options.title);
-    $$(title).addClass('coveo-facet-header-title');
-    return title;
+    const title = $$('div', { className: 'coveo-facet-header-title' });
+    title.text(this.options.title);
+    title.setAttribute('role', 'heading');
+    title.setAttribute('aria-level', '2');
+    title.setAttribute('aria-label', `${l('FacetTitle', this.options.title)}.`);
+    return title.el;
   }
 
   public buildEraser(): HTMLElement {
-    var icon = document.createElement('span');
-    $$(icon).addClass('coveo-icon');
+    const eraser = $$('div', { className: 'coveo-facet-header-eraser' }, SVGIcons.icons.mainClear);
 
-    var eraser = document.createElement('div');
-    eraser.setAttribute('title', l('Clear', this.options.title));
-    eraser.appendChild(icon);
-    $$(eraser).addClass('coveo-facet-header-eraser');
-    $$(eraser).on('click', () => {
-      var cmp = this.options.facet || this.options.facetSlider;
-      cmp.reset();
-      cmp.usageAnalytics.logSearchEvent<IAnalyticsFacetMeta>(analyticsActionCauseList.facetClearAll, {
-        facetId: cmp.options.id,
-        facetTitle: cmp.options.title
-      });
-      cmp.queryController.executeQuery();
+    SVGDom.addClassToSVGInContainer(eraser.el, 'coveo-facet-header-eraser-svg');
+
+    new AccessibleButton()
+      .withElement(eraser.el)
+      .withLabel(l('Reset'))
+      .withClickAction(() => this.onEraserClick())
+      .withEnterKeyboardAction(() => this.onEraserClick())
+      .build();
+
+    return eraser.el;
+  }
+
+  private onEraserClick() {
+    const cmp = this.options.facet || this.options.facetSlider;
+    cmp.reset();
+    cmp.usageAnalytics.logSearchEvent<IAnalyticsFacetMeta>(analyticsActionCauseList.facetClearAll, {
+      facetId: cmp.options.id,
+      facetField: cmp.options.field.toString(),
+      facetTitle: cmp.options.title
     });
-    return eraser;
+    cmp.queryController.executeQuery();
   }
 }

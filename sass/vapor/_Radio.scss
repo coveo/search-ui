@@ -1,3 +1,6 @@
+@import "../Variables";
+@import "Input";
+
 .coveo-radio {
   position: relative;
 
@@ -87,6 +90,10 @@
       }
     }
   }
+}
+
+.coveo-radio + .coveo-radio {
+  margin-top: 10px;
 }
 
 .radio-select {

@@ -31,15 +31,15 @@
     "exchangeperson": {
       "icon": "user",
       "captions": {
-        "en": "Exchange user",
-        "fr": "Utilisateur exchange"
+        "en": "Exchange User",
+        "fr": "Utilisateur Exchange"
       }
     },
     "activedirperson": {
       "icon": "user",
       "captions": {
-        "en": "Active Directory user",
-        "fr": "Utilisateur active directory"
+        "en": "Active Directory User",
+        "fr": "Utilisateur Active Directory"
       }
     },
     "exchangeactivity": {
@@ -52,28 +52,44 @@
     "exchangecalendarmessage": {
       "icon": "calendar",
       "captions": {
-        "en": "Calendar message",
-        "fr": "Message calendrier"
+        "en": "Calendar Message",
+        "fr": "Message de calendrier"
       }
     },
     "exchangedocument": {
       "icon": "file",
       "captions": {
-        "en": "Exchange document",
-        "fr": "Document exchange"
+        "en": "Exchange Document",
+        "fr": "Document Exchange"
       }
     },
     "exchangedsn": {
-      "icon": "mail"
+      "icon": "mail",
+      "captions": {
+        "en": "DSN",
+        "fr": "DSN"
+      }
     },
     "exchangefreebusy": {
-      "icon": "custom"
+      "icon": "custom",
+      "captions": {
+        "en": "Free/Busy",
+        "fr": "Disponibilité"
+      }
     },
     "exchangegroup": {
-      "icon": "user"
+      "icon": "user",
+      "captions": {
+        "en": "Group",
+        "fr": "Groupe"
+      }
     },
     "exchangemdn": {
-      "icon": "custom"
+      "icon": "custom",
+      "caption": {
+        "en": "MDN",
+        "fr": "MDN"
+      }
     },
     "exchangerecallmessage": {
       "icon": "mail"
@@ -94,7 +110,7 @@
     "exchangejunkmessage": {
       "icon": "mail",
       "captions": {
-        "en": "Junk email",
+        "en": "Junk Email",
         "fr": "Courrier indésirable"
       }
     },

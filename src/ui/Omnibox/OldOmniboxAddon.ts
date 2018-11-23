@@ -1,45 +1,42 @@
 ///<reference path="Omnibox.ts"/>
-import {Omnibox, IPopulateOmniboxSuggestionsEventArgs, IOmniboxSuggestion} from './Omnibox';
-import {IOmniboxDataRow} from './OmniboxInterface';
-import {OmniboxEvents, IPopulateOmniboxEventArgs, IPopulateOmniboxEventRow} from '../../events/OmniboxEvents';
-import {$$} from '../../utils/Dom';
-import {Utils} from '../../utils/Utils';
+import { Omnibox, IOmniboxSuggestion } from './Omnibox';
+import { IOmniboxDataRow } from './OmniboxInterface';
+import {
+  OmniboxEvents,
+  IPopulateOmniboxEventArgs,
+  IPopulateOmniboxEventRow,
+  IPopulateOmniboxSuggestionsEventArgs
+} from '../../events/OmniboxEvents';
+import { $$ } from '../../utils/Dom';
+import { Utils } from '../../utils/Utils';
+import * as _ from 'underscore';
 
 export class OldOmniboxAddon {
   constructor(public omnibox: Omnibox) {
     this.omnibox.bind.on(this.omnibox.element, OmniboxEvents.populateOmniboxSuggestions, (args: IPopulateOmniboxSuggestionsEventArgs) => {
-      _.each(this.getSuggestion(), (suggestion) => {
+      _.each(this.getSuggestion(), suggestion => {
         args.suggestions.push(suggestion);
       });
     });
   }
 
-  private lastQuery: string;
-  private lastSuggestions: Promise<IOmniboxSuggestion[]>[];
-
   public getSuggestion(): Promise<IOmniboxSuggestion[]>[] {
-    let text = this.omnibox.magicBox.getText();
+    const text = this.omnibox.magicBox.getText();
 
     if (text.length == 0) {
       return null;
     }
 
-    if (this.lastQuery == text) {
-      return this.lastSuggestions;
-    }
+    const eventArgs = this.buildPopulateOmniboxEventArgs();
+    $$(this.omnibox.root).trigger(OmniboxEvents.populateOmnibox, eventArgs);
 
-    this.lastQuery = text;
-
-    let eventArgs = this.buildPopulateOmniboxEventArgs();
-    $$(this.omnibox.element).trigger(OmniboxEvents.populateOmnibox, eventArgs);
-
-    return this.lastSuggestions = this.rowsToSuggestions(eventArgs.rows);
+    return this.rowsToSuggestions(eventArgs.rows);
   }
 
   private getCurrentQueryExpression() {
-    let cursorPos = this.omnibox.getCursor();
-    let value = this.omnibox.getText();
-    let length = value.length;
+    const cursorPos = this.omnibox.getCursor();
+    const value = this.omnibox.getText();
+    const length = value.length;
     let start = cursorPos;
     let end = cursorPos;
     if (value[start] == ' ') {
@@ -62,9 +59,9 @@ export class OldOmniboxAddon {
   }
 
   private getQueryExpressionBreakDown() {
-    let ret = [];
-    let queryWords = this.omnibox.getText().split(' ');
-    _.each(queryWords, (word) => {
+    const ret = [];
+    const queryWords = this.omnibox.getText().split(' ');
+    _.each(queryWords, word => {
       ret.push({
         word: word,
         regex: this.getRegexToSearch(word)
@@ -82,8 +79,8 @@ export class OldOmniboxAddon {
   }
 
   private insertAt(at: number, toInsert: string) {
-    let oldValue = this.omnibox.getText();
-    let newValue = [oldValue.slice(0, at), toInsert, oldValue.slice(at)].join('');
+    const oldValue = this.omnibox.getText();
+    const newValue = [oldValue.slice(0, at), toInsert, oldValue.slice(at)].join('');
     this.omnibox.setText(newValue);
   }
 
@@ -92,8 +89,8 @@ export class OldOmniboxAddon {
   }
 
   private buildPopulateOmniboxEventArgs() {
-    let currentQueryExpression = this.getCurrentQueryExpression();
-    let ret: IPopulateOmniboxEventArgs = {
+    const currentQueryExpression = this.getCurrentQueryExpression();
+    const ret: IPopulateOmniboxEventArgs = {
       rows: [],
       completeQueryExpression: {
         word: this.omnibox.getText(),
@@ -130,20 +127,24 @@ export class OldOmniboxAddon {
   private rowsToSuggestions(rows: IOmniboxDataRow[]): Promise<IOmniboxSuggestion[]>[] {
     return _.map(rows, (row: IPopulateOmniboxEventRow) => {
       if (!Utils.isNullOrUndefined(row.element)) {
-        return new Promise<IOmniboxSuggestion[]>((resolve) => {
-          resolve([{
-            dom: row.element,
-            index: row.zIndex
-          }]);
+        return new Promise<IOmniboxSuggestion[]>(resolve => {
+          resolve([
+            {
+              dom: row.element,
+              index: row.zIndex
+            }
+          ]);
         });
       } else if (!Utils.isNullOrUndefined(row.deferred)) {
-        return new Promise<IOmniboxSuggestion[]>((resolve) => {
-          row.deferred.then((row) => {
+        return new Promise<IOmniboxSuggestion[]>(resolve => {
+          row.deferred.then(row => {
             if (row.element != null) {
-              resolve([{
-                dom: row.element,
-                index: row.zIndex
-              }]);
+              resolve([
+                {
+                  dom: row.element,
+                  index: row.zIndex
+                }
+              ]);
             } else {
               resolve(null);
             }

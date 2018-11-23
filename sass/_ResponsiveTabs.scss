@@ -1,12 +1,18 @@
-.coveo-small-tabs {
+@import 'bourbon/bourbon';
+@import 'Variables';
+@import 'mixins/mediaQuery';
 
-  .coveo-tab-dropdown-header {
-    margin-left: auto;
+.coveo-small-tabs {
+  &.coveo-tab-section {
+    .coveo-tab-dropdown-header {
+      margin-left: auto;
+      line-height: 22px;
+    }
   }
 
   .CoveoTab {
     @include transition-property(opacity);
-    @include transition-duration(0.250s);
+    @include transition-duration(0.25s);
     @include transition-timing-function(ease);
     font-size: $font-size-smallest;
     color: $color-greyish-teal-blue;
@@ -16,16 +22,18 @@
     &.coveo-selected:hover {
       font-weight: 700;
     }
-    height: 40px;
-    * {
-      line-height: 40px;
-    }
     &.coveo-selected,
     &.coveo-selected:hover {
       border-bottom: 0;
       p {
-          border-bottom: 2px solid $color-greyish-dark-blue;
+        border-bottom: 2px solid $color-greyish-dark-blue;
       }
+    }
+
+    p {
+      max-width: 240px;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
   }
   .coveo-tab-list {
@@ -53,10 +61,26 @@
 }
 
 .coveo-tab-list-container {
-  position: absolute;
-  overflow: hidden;
+  max-width: 80%;
   z-index: 11;
+
   ol {
     margin: 0;
+
+    a {
+      width: 100%;
+
+      p {
+        width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
   }
+}
+
+.coveo-more-tabs-svg {
+  width: 7px;
+  height: 4px;
+  color: $color-greyish-teal-blue;
 }

@@ -17,5 +17,5 @@ export interface IAPIDocumentViewEvent {
   collectionName: string;
   sourceName: string;
   documentPosition: number;
-  customMetadatas: { [name: string]: string; };
+  customMetadatas: { [name: string]: string };
 }

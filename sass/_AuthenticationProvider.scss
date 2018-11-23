@@ -1,14 +1,17 @@
-﻿.coveo-modalBox.coveo-authentication-popup {
-  > .coveo-wrapper {
-    width: 90%;
-    height: 90%;
-    max-width: 90%;
-    max-height: 90%;
-    position: relative;
+﻿@import "Variables";
 
-    > .coveo-body {
+.coveo-modal-container.coveo-authentication-popup {
+  .coveo-modal-body {
+    height: 90%;
+    div {
       height: 100%;
-      overflow-y: hidden;
+      width: 100%;
+    }
+    iframe {
+      height: 100%;
+      width: 100%;
+      @include defaultRoundedBorder();
+      padding: 10px 0 0 10px;
     }
   }
 }
@@ -21,4 +24,26 @@
 
 .coveo-waiting-for-authentication-popup {
   padding: 50px 150px;
+}
+
+.coveo-authentication-provider {
+  &:hover {
+    .coveo-dropdown-authenticate-hover-svg {
+      fill: $color-greyish-teal-blue;
+    }
+    .coveo-dropdown-authenticate-svg {
+      fill: none;
+    }
+    .coveo-authentication-provider-svg {
+      width: 12px;
+      height: 16px;
+    }
+  }
+}
+.coveo-authentication-provider-svg {
+  .coveo-dropdown-authenticate-svg {
+    fill: $color-greyish-teal-blue;
+  }
+  width: 12px;
+  height: 14px;
 }

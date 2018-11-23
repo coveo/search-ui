@@ -6,5 +6,5 @@ export interface IAPICustomEvent {
   responseTime: number;
   actionType: string;
   actionCause: string;
-  customMetadatas: { [name: string]: string; };
+  customMetadatas: { [name: string]: string };
 }

@@ -1,17 +1,19 @@
-import {$$, Dom} from '../../utils/Dom';
-import {InitializationEvents} from '../../events/InitializationEvents';
-import {Component} from '../Base/Component';
-import {SearchInterface} from '../SearchInterface/SearchInterface';
-import {ResponsiveComponentsUtils} from './ResponsiveComponentsUtils';
-import {Utils} from '../../utils/Utils';
-import {Facet} from '../Facet/Facet';
-import {Tab} from '../Tab/Tab';
-import {ResponsiveFacets} from './ResponsiveFacets';
+import { $$, Dom } from '../../utils/Dom';
+import { InitializationEvents } from '../../events/InitializationEvents';
+import { Component } from '../Base/Component';
+import { SearchInterface } from '../SearchInterface/SearchInterface';
+import { Utils } from '../../utils/Utils';
+import * as _ from 'underscore';
+import { QueryEvents } from '../../events/QueryEvents';
+import { Logger } from '../../misc/Logger';
+import { DeviceUtils } from '../../utils/DeviceUtils';
+import { debounce } from 'underscore';
 
 export interface IResponsiveComponentOptions {
   enableResponsiveMode?: boolean;
   responsiveBreakpoint?: number;
   dropdownHeaderLabel?: string;
+  initializationEventRoot?: Dom;
 }
 
 export interface IResponsiveComponentConstructor {
@@ -22,6 +24,7 @@ export interface IResponsiveComponent {
   ID: string;
   handleResizeEvent(): void;
   needDropdownWrapper?(): boolean;
+  registerComponent?(accept: Component): boolean;
 }
 
 interface IComponentInitialization {
@@ -30,24 +33,36 @@ interface IComponentInitialization {
 }
 
 export class ResponsiveComponentsManager {
+  public static DROPDOWN_HEADER_WRAPPER_CSS_CLASS = 'coveo-dropdown-header-wrapper';
 
   private static componentManagers: ResponsiveComponentsManager[] = [];
   private static remainingComponentInitializations: number = 0;
   private static componentInitializations: IComponentInitialization[] = [];
 
+  public resizeListener;
+
   private disabledComponents: string[] = [];
   private coveoRoot: Dom;
-  private resizeListener;
   private responsiveComponents: IResponsiveComponent[] = [];
   private searchBoxElement: HTMLElement;
-  private responsiveFacets: ResponsiveFacets;
   private dropdownHeadersWrapper: Dom;
+  private searchInterface: SearchInterface;
+  private logger: Logger;
 
   // Register takes a class and will instantiate it after framework initialization has completed.
-  public static register(responsiveComponentConstructor: IResponsiveComponentConstructor, root: Dom, ID: string, component: Component, options: IResponsiveComponentOptions): void {
-    root.on(InitializationEvents.afterInitialization, () => {
+  public static register(
+    responsiveComponentConstructor: IResponsiveComponentConstructor,
+    root: Dom,
+    ID: string,
+    component: Component,
+    options: IResponsiveComponentOptions
+  ): void {
+    // options.initializationEventRoot can be set in some instance (like recommendation) where the root of the interface triggering the init event
+    // is different from the one that will be used for calculation size.
+    const initEventRoot = options.initializationEventRoot || root;
+    initEventRoot.on(InitializationEvents.afterInitialization, () => {
       if (this.shouldEnableResponsiveMode(root)) {
-        let responsiveComponentsManager = _.find(this.componentManagers, (componentManager) => root.el == componentManager.coveoRoot.el);
+        let responsiveComponentsManager = _.find(this.componentManagers, componentManager => root.el == componentManager.coveoRoot.el);
         if (!responsiveComponentsManager) {
           responsiveComponentsManager = new ResponsiveComponentsManager(root);
           this.componentManagers.push(responsiveComponentsManager);
@@ -66,8 +81,17 @@ export class ResponsiveComponentsManager {
 
       this.remainingComponentInitializations--;
       if (this.remainingComponentInitializations == 0) {
-        this.resizeAllComponentsManager();
         this.instantiateResponsiveComponents(); // necessary to verify if all components are disabled before they are initialized.
+        if (root.width() == 0) {
+          let logger = new Logger('ResponsiveComponentsManager');
+          logger.info(`Search interface width is 0, cannot dispatch resize events to responsive components. Will try again after first
+          query success.`);
+          root.one(QueryEvents.querySuccess, () => {
+            this.resizeAllComponentsManager();
+          });
+        } else {
+          this.resizeAllComponentsManager();
+        }
       }
     });
     this.remainingComponentInitializations++;
@@ -75,7 +99,7 @@ export class ResponsiveComponentsManager {
 
   private static shouldEnableResponsiveMode(root: Dom): boolean {
     let searchInterface = <SearchInterface>Component.get(root.el, SearchInterface, true);
-    return searchInterface instanceof SearchInterface && searchInterface.options.enableAutomaticResponsiveMode && searchInterface.isNewDesign();
+    return searchInterface instanceof SearchInterface && searchInterface.options.enableAutomaticResponsiveMode;
   }
 
   private static instantiateResponsiveComponents() {
@@ -93,33 +117,55 @@ export class ResponsiveComponentsManager {
 
   constructor(root: Dom) {
     this.coveoRoot = root;
-    this.dropdownHeadersWrapper = $$('div', { className: 'coveo-dropdown-header-wrapper' });
+    this.searchInterface = <SearchInterface>Component.get(this.coveoRoot.el, SearchInterface, false);
+    this.dropdownHeadersWrapper = $$('div', {
+      className: ResponsiveComponentsManager.DROPDOWN_HEADER_WRAPPER_CSS_CLASS
+    });
     this.searchBoxElement = this.getSearchBoxElement();
-    this.resizeListener = _.debounce(() => {
-      this.addDropdownHeaderWrapperIfNeeded();
-      if (this.shouldSwitchToSmallMode()) {
-        this.coveoRoot.addClass('coveo-small-interface');
-      } else if (!this.shouldSwitchToSmallMode()) {
-        this.coveoRoot.removeClass('coveo-small-interface');
+    this.logger = new Logger(this);
+    this.resizeListener = debounce(() => {
+      if (this.coveoRoot.width() != 0) {
+        this.addDropdownHeaderWrapperIfNeeded();
+        if (this.shouldSwitchToSmallMode()) {
+          this.coveoRoot.addClass('coveo-small-interface');
+        } else if (!this.shouldSwitchToSmallMode()) {
+          this.coveoRoot.removeClass('coveo-small-interface');
+        }
+        _.each(this.responsiveComponents, responsiveComponent => {
+          responsiveComponent.handleResizeEvent();
+        });
+      } else {
+        this.logger
+          .warn(`The width of the search interface is 0, cannot dispatch resize events to responsive components. This means that the tabs will not
+        automatically fit in the tab section. Also, the facet and recommendation component will not hide in a menu. Could the search
+        interface display property be none? Could its visibility property be set to hidden? Also, if either of these scenarios happen during
+        loading, it could be the cause of this issue.`);
       }
-      _.each(this.responsiveComponents, responsiveComponent => {
-        responsiveComponent.handleResizeEvent();
-      });
-    }, 200);
-    window.addEventListener('resize', this.resizeListener);
+    }, 250);
+    // On many android devices, focusing on an input (eg: facet search input) causes the device to "zoom in"
+    // and this triggers the window resize event. Since this class modify HTML nodes, Android has the quirks of removing the focus on the input.
+    // As a net result, users focus on the text input, the keyboard appears for a few milliseconds, then dissapears instantly when the DOM is modified.
+    // Since on a mobile device resizing the page is not something that should really happen, we disable it here.
+    if (!DeviceUtils.isMobileDevice()) {
+      window.addEventListener('resize', this.resizeListener);
+    }
+
     this.bindNukeEvents();
   }
 
-  public register(responsiveComponentConstructor: IResponsiveComponentConstructor, root: Dom, ID: string, component: Component, options: IResponsiveComponentOptions): void {
+  public register(
+    responsiveComponentConstructor: IResponsiveComponentConstructor,
+    root: Dom,
+    ID: string,
+    component: Component,
+    options: IResponsiveComponentOptions
+  ): void {
     if (this.isDisabled(ID)) {
       return;
     }
 
     if (!this.isActivated(ID)) {
       let responsiveComponent = new responsiveComponentConstructor(root, ID, options);
-      if (this.isFacet(ID)) {
-        this.responsiveFacets = <ResponsiveFacets>responsiveComponent;
-      }
 
       if (this.isTabs(ID)) {
         this.responsiveComponents.push(responsiveComponent);
@@ -128,10 +174,11 @@ export class ResponsiveComponentsManager {
         this.responsiveComponents.unshift(responsiveComponent);
       }
     }
-
-    if (this.isFacet(ID)) {
-      this.responsiveFacets.registerComponent(component);
-    }
+    _.each(this.responsiveComponents, (responsiveComponent: IResponsiveComponent) => {
+      if (responsiveComponent.registerComponent != null) {
+        responsiveComponent.registerComponent(component);
+      }
+    });
   }
 
   public disableComponent(ID: string) {
@@ -144,7 +191,7 @@ export class ResponsiveComponentsManager {
 
   private shouldSwitchToSmallMode(): boolean {
     let aComponentNeedsTabSection = this.needDropdownWrapper();
-    let reachedBreakpoint = this.coveoRoot.width() <= ResponsiveComponentsUtils.MEDIUM_MOBILE_WIDTH;
+    let reachedBreakpoint = this.coveoRoot.width() <= this.searchInterface.responsiveComponents.getMediumScreenWidth();
     return aComponentNeedsTabSection || reachedBreakpoint;
   }
 
@@ -171,12 +218,8 @@ export class ResponsiveComponentsManager {
     }
   }
 
-  private isFacet(ID: string): boolean {
-    return ID == Facet.ID;
-  }
-
   private isTabs(ID: string): boolean {
-    return ID == Tab.ID;
+    return ID == 'Tab';
   }
 
   private isActivated(ID: string): boolean {
@@ -195,6 +238,12 @@ export class ResponsiveComponentsManager {
   private bindNukeEvents(): void {
     $$(this.coveoRoot).on(InitializationEvents.nuke, () => {
       window.removeEventListener('resize', this.resizeListener);
+
+      // If the interface gets nuked, we need to remove all reference to componentManagers stored which match the current search interface
+      ResponsiveComponentsManager.componentManagers = _.filter(
+        ResponsiveComponentsManager.componentManagers,
+        manager => manager.coveoRoot.el != this.coveoRoot.el
+      );
     });
   }
 }

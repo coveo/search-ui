@@ -1,9 +1,10 @@
-import {KeywordsInput} from './KeywordsInput';
-import {l} from '../../../strings/Strings';
+import { KeywordsInput } from './KeywordsInput';
+import { l } from '../../../strings/Strings';
+import * as _ from 'underscore';
 
 export class NoneKeywordsInput extends KeywordsInput {
-  constructor() {
-    super(l('NoneOfTheseWords'));
+  constructor(public root: HTMLElement) {
+    super(l('NoneOfTheseWords'), root);
   }
 
   public getValue(): string {
@@ -12,7 +13,7 @@ export class NoneKeywordsInput extends KeywordsInput {
 
     if (value) {
       let splitValues = value.split(' ');
-      _.each(splitValues, (splitValue) => {
+      _.each(splitValues, splitValue => {
         generatedValue += ' NOT ' + splitValue;
       });
       generatedValue = generatedValue.substr(1);

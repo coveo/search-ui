@@ -1,6 +1,6 @@
-import {Assert} from '../../misc/Assert';
-import {UnderscoreTemplate} from './UnderscoreTemplate';
-import {Utils} from '../../utils/Utils';
+import { Assert } from '../../misc/Assert';
+import { UnderscoreTemplate } from './UnderscoreTemplate';
+import { Utils } from '../../utils/Utils';
 
 /**
  * A function that describe a templates.
@@ -15,10 +15,10 @@ export interface ITemplateHelperFunction {
  * Allow to register and return template helpers (essentially: Utility functions that can be executed in the context of a template to render complex elements).
  */
 export class TemplateHelpers {
-  private static helpers: { [templateName: string]: ITemplateHelperFunction; } = {};
+  private static helpers: { [templateName: string]: ITemplateHelperFunction } = {};
   public static fieldHelpers: string[] = [];
 
-  static registerFieldHelper<T1>(name: string, helper: (value: string, options?: any) => string) {
+  static registerFieldHelper(name: string, helper: (value: string, options?: any) => string) {
     TemplateHelpers.fieldHelpers.push(name);
     TemplateHelpers.registerTemplateHelper(name, helper);
   }
@@ -44,7 +44,7 @@ export class TemplateHelpers {
   /**
    * Return a template helper function
    * @param name
-   * @returns {any}
+   * @returns {ITemplateHelperFunction}
    */
   static getHelper(name: string): ITemplateHelperFunction {
     return Utils.getCaseInsensitiveProperty(TemplateHelpers.helpers, name);
@@ -52,9 +52,8 @@ export class TemplateHelpers {
 
   /**
    * Get all available helpers
-   * @returns {{}}
    */
-  static getHelpers() {
+  static getHelpers(): { [templateName: string]: ITemplateHelperFunction } {
     return TemplateHelpers.helpers;
   }
 

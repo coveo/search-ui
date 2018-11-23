@@ -1,198 +1,237 @@
 /// <reference path="../Facet/FacetHeader.ts" />
 /// <reference path="../../controllers/FacetSliderQueryController.ts" />
 
-import {ISliderOptions, Slider, IEndSlideEventArgs, IDuringSlideEventArgs, ISliderGraphData} from '../Misc/Slider';
-import {Component} from '../Base/Component';
-import {IComponentBindings} from '../Base/ComponentBindings';
-import {ComponentOptions, IFieldOption} from '../Base/ComponentOptions';
-import {ResponsiveFacets} from '../ResponsiveComponents/ResponsiveFacets';
-import {FacetHeader} from '../Facet/FacetHeader';
-import {l} from '../../strings/Strings';
-import {InitializationEvents} from '../../events/InitializationEvents';
-import {FeatureDetectionUtils} from '../../utils/FeatureDetectionUtils';
-import {FacetSliderQueryController} from '../../controllers/FacetSliderQueryController';
-import {QueryEvents, IQuerySuccessEventArgs, IBuildingQueryEventArgs, IDoneBuildingQueryEventArgs} from '../../events/QueryEvents';
-import {BreadcrumbEvents, IPopulateBreadcrumbEventArgs, IBreadcrumbItem} from '../../events/BreadcrumbEvents';
-import {IAttributeChangedEventArg, Model} from '../../models/Model';
-import {$$} from '../../utils/Dom';
-import {analyticsActionCauseList, IAnalyticsFacetMeta, IAnalyticsFacetSliderChangeMeta, IAnalyticsFacetGraphSelectedMeta} from '../Analytics/AnalyticsActionListMeta';
-import {QueryStateModel} from '../../models/QueryStateModel';
-import {SliderEvents, IGraphValueSelectedArgs} from '../../events/SliderEvents';
-import {Assert} from '../../misc/Assert';
-import {Utils} from '../../utils/Utils';
-import {ResponsiveComponentsUtils} from '../ResponsiveComponents/ResponsiveComponentsUtils';
-import {Initialization} from '../Base/Initialization';
-import d3 = require('d3');
-import {SearchAlertsEvents, ISearchAlertsPopulateMessageEventArgs} from '../../events/SearchAlertEvents';
+import 'styling/_FacetSlider';
+import { map, debounce } from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
+import { Defer } from '../../MiscModules';
+import { FacetSliderQueryController } from '../../controllers/FacetSliderQueryController';
+import { BreadcrumbEvents, IBreadcrumbItem, IPopulateBreadcrumbEventArgs } from '../../events/BreadcrumbEvents';
+import { InitializationEvents } from '../../events/InitializationEvents';
+import { IBuildingQueryEventArgs, IDoneBuildingQueryEventArgs, IQuerySuccessEventArgs, QueryEvents } from '../../events/QueryEvents';
+import { ISearchAlertsPopulateMessageEventArgs, SearchAlertsEvents } from '../../events/SearchAlertEvents';
+import { IGraphValueSelectedArgs, SliderEvents } from '../../events/SliderEvents';
+import { Assert } from '../../misc/Assert';
+import { IAttributeChangedEventArg, Model } from '../../models/Model';
+import { QueryStateModel } from '../../models/QueryStateModel';
+import { IGroupByResult } from '../../rest/GroupByResult';
+import { l } from '../../strings/Strings';
+import { $$ } from '../../utils/Dom';
+import { SVGDom } from '../../utils/SVGDom';
+import { SVGIcons } from '../../utils/SVGIcons';
+import { Utils } from '../../utils/Utils';
+import {
+  IAnalyticsFacetGraphSelectedMeta,
+  IAnalyticsFacetMeta,
+  IAnalyticsFacetSliderChangeMeta,
+  analyticsActionCauseList
+} from '../Analytics/AnalyticsActionListMeta';
+import { Component } from '../Base/Component';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { ComponentOptions, IComponentOptionsObjectOptionArgs, IFieldOption, IQueryExpression } from '../Base/ComponentOptions';
+import { Initialization } from '../Base/Initialization';
+import { FacetHeader } from '../Facet/FacetHeader';
+import { IDuringSlideEventArgs, IEndSlideEventArgs, ISliderGraphData, ISliderOptions, Slider } from '../Misc/Slider';
+import { ResponsiveComponentsUtils } from '../ResponsiveComponents/ResponsiveComponentsUtils';
+import { ResponsiveDropdownEvent } from '../ResponsiveComponents/ResponsiveDropdown/ResponsiveDropdown';
+import { ResponsiveFacetSlider } from '../ResponsiveComponents/ResponsiveFacetSlider';
+import { IResponsiveComponentOptions } from '../ResponsiveComponents/ResponsiveComponentsManager';
+import { ResponsiveFacetOptions } from '../ResponsiveComponents/ResponsiveFacetOptions';
 
-export interface IFacetSliderOptions extends ISliderOptions {
+export interface IFacetSliderOptions extends ISliderOptions, IResponsiveComponentOptions {
   dateField?: boolean;
-  queryOverride?: string;
+  queryOverride?: IQueryExpression;
   id?: string;
   field?: IFieldOption;
   title?: string;
-  enableResponsiveMode?: boolean;
-  responsiveBreakpoint?: number;
-  dropdownHeaderLabel?: string;
 }
 
 /**
- * The FacetSlider component allows to create a facet that renders a slider widget to filter on a range of numerical values
- * rather than the classic multi-select facet with a label and a count for each values.<br/>
- * Note that this component does *NOT* inherit from a standard {@link Facet}, and thus does not offer all the same options.
- * Also note that many options for the slider component cannot be set as an HTML attribute on the component, and must be configured in JavaScript.
+ * The `FacetSlider` component creates a facet which contains a slider widget that allows the end user to filter results
+ * based on a range of numerical values (e.g., a date range, a price range, etc.).
  *
- * ## A generic example on how to initialize a complex slider
- * ```
- * // Using a JSON object inside the init call. Note that the JSON object follows the options described in this page.
- * Coveo.init(document.querySelector('#search'), {
- *    FacetSlider: {
- *      field: "@size",
- *      start: 1000,
- *      end: 5000,
- *      rangeSlider: true,
- *      graph: {
- *        steps: 10
- *      }
- *    }
- * })
- *
- * // OR using the jquery extension
- *
- * $('#search').coveo('init', {
- *    FacetSlider: {
- *      field: "@size",
- *      start: 1000,
- *      end: 5000,
- *      rangeSlider: true,
- *      graph: {
- *        steps: 10
- *      }
- *    }
- * })
- *
- * // Same configuration, but using attribute directly on the element instead
- * <div class='CoveoFacetSlider' data-field='@syssize' data-start='1000' data-end='5000' data-range-slider='true' data-graph-steps='10'></div>
- * ```
+ * **Note:**
+ * > This component does **not** inherit from the [`Facet`]{@link Facet} component. Consequently, it does not offer the
+ * > same configuration options. Moreover, some of the `FacetSlider` options (see
+ * > [`getSteps`]{@link FacetSlider.options.getSteps} and [`valueCaption`]{@link FacetSlider.options.valueCaption})
+ * > cannot be configured as `data-` attributes in the markup. If you wish to configure those options, you must either
+ * > do so in the [`init`]{@link init} call of your search interface (see
+ * > [Components - Passing Component Options in the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsintheinitCall)),
+ * > or before the `init` call, using the `options` top-level function (see
+ * > [Components - Passing Component Options Before the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsBeforetheinitCall)).
+ * @notSupportedIn salesforcefree
  */
 export class FacetSlider extends Component {
-
   /**
    * The component options
    * @componentOptions
    */
   static options: IFacetSliderOptions = {
     /**
-     * The title on top of the facet component.<br/>
-     * Default value is the localized string for 'No title'.
+     * Specifies the title to display on top of the `FacetSlider`.
+     *
+     * Default value is the localized string for `NoTitle`.
      */
-    title: ComponentOptions.buildLocalizedStringOption({ defaultValue: l('NoTitle') }),
+    title: ComponentOptions.buildLocalizedStringOption({ defaultValue: l('NoTitle'), section: 'CommonOptions' }),
+
     /**
-     * Specifies whether the field for which you are requesting a range is a date field.<br/>
-     * This allows the facet to correctly build the outgoing group by request, as well as render it correctly.<br/>
-     */
-    dateField: ComponentOptions.buildBooleanOption({ defaultValue: false }),
-    /**
-     * Specifies the index field whose values will be use in the facet.<br/>
-     * This require the given field to be configured correctly in the index as a facet field.<br/>
-     * This is a required option and cannot be omitted, otherwise the facet component will not work.
-     */
-    field: ComponentOptions.buildFieldOption({ groupByField: true, required: true }),
-    /**
-     * Specifies a unique identifier for a facet. This identifier will be used to save the facet state in the URL hash, for example.<br/>
-     * Optional, since the default will be the {@link FacetSlider.options.field} option.<br/>
-     * If you have two facets with the same field on the same page, you should specify an ID for at least one of those two facets.<br/>
-     * That ID needs to be unique on the page.
-     */
-    id: ComponentOptions.buildStringOption({
-      postProcessing: (value, options: IFacetSliderOptions) => value || options.field
-    }),
-    /**
-     * Specifies the format used to display values if they are dates.<br/>
-     * Default value is <code>MMM dd, yyyy</code>.
-     */
-    dateFormat: ComponentOptions.buildStringOption(),
-    /**
-     * Specifies the query to filter automatic minimum and maximum range of the slider.<br/>
-     * This is especially useful for date range, where the index may contain values which are not set, and thus the automatic range will return values from the year 1400 (min date from the boost C++ library).<br/>
-     * Can be used to do something like queryOverride : @date>2000/01/01 or some arbitrary date which will filter out unwanted values.
-     */
-    queryOverride: ComponentOptions.buildStringOption(),
-    /**
-     * Specifies the starting boundary of the slider.<br/>
-     * Dates values are rounded on the year when the field used is a date type.<br/>
-     * Optional: Takes the lowest value available in the index by default.
-     */
-    start: ComponentOptions.buildStringOption(),
-    /**
-     * Specifies the ending boundary of the slider.<br/>
-     * Dates values are rounded on the year when the field used is a date type.<br/>
-     * Optional: Takes the highest value available in the index by default.
-     */
-    end: ComponentOptions.buildStringOption(),
-    /**
-     * Specifies if you want to exclude the outer bounds of your slider in the generated query, when they are not active.<br/>
+     * Specifies whether the [`field`]{@link FacetSlider.options.field} for which you are requesting a range is a date
+     * field. This allows the `FacetSlider` to correctly build the outgoing [GroupByRequest]{@link IGroupByRequest} and
+     * render itself properly.
+     *
      * Default value is `false`.
      */
-    excludeOuterBounds: ComponentOptions.buildBooleanOption({ defaultValue: false }),
+    dateField: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'CommonOptions' }),
+
     /**
-     * Specifies to how many decimal digit displayed numerical values are rounded.<br/>
-     * Optional. By default, the number rounds to 0 decimal digits.
+     * Specifies the index field whose values the `FacetSlider` should use.
+     *
+     * The field must be configured correctly as a Facet field in the index (see
+     * [Adding Fields to a Source](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=137)).
+     *
+     * Specifying a value for this option is required for the `FacetSlider` component to work.
      */
-    rounded: ComponentOptions.buildNumberOption({ min: 0 }),
+    field: ComponentOptions.buildFieldOption({ groupByField: true, required: true, section: 'CommonOptions' }),
+
     /**
-     * Specifies the number of steps that you want in your slider.<br/>
-     * For example, if your range is [ 0 , 100 ] and you specify 10 steps, then the end user is allowed to move the slider only to the values [ 0, 10, 20. 30 ... , 100 ].<br/>
-     * Optional: By default the slider will allow all values.
+     * Specifies a unique identifier for the `FacetSlider`. Among other things, this identifier serves the purpose of
+     * saving the facet state in the URL hash.
+     *
+     * If you have two facets with the same field in the same page, you should specify a unique `id` value for at least
+     * one of those two facets. This `id` must be unique in the page.
+     *
+     * Default value is the [`field`]{@link FacetSlider.options.field} option value.
+     */
+    id: ComponentOptions.buildStringOption({
+      postProcessing: (value, options: IFacetSliderOptions) => value || <string>options.field
+    }),
+
+    /**
+     * Specifies the format to use when displaying date values.
+     *
+     * See also the [`dateField`]{@link FacetSlider.options.dateField} option.
+     *
+     * Default value is `MMM dd, yyyy`.
+     */
+    dateFormat: ComponentOptions.buildStringOption({ section: 'Display' }),
+
+    /**
+     * Specifies a query to filter automatic minimum and maximum values for the slider range.
+     *
+     * This is especially useful in the case of date ranges since the index may contain values which are not set, and
+     * thus return values from the year 1400 (the earliest date from the boost C++ library).
+     *
+     * **Example:**
+     *
+     * The query override in the following markup filters out any `@date` value anterior to January 1st 2000.
+     * ```html
+     * <div class="CoveoFacetSlider" data-field="@date" data-date-field="true" data-query-override="@date>2000/01/01"></div>
+     * ```
+     */
+    queryOverride: ComponentOptions.buildQueryExpressionOption({ section: 'Filtering' }),
+
+    /**
+     * Specifies the starting boundary of the slider.
+     *
+     * Date values are rounded to the nearest year when you set the [`dateField`]{@link FacetSlider.options.dateField}
+     * option to `true`.
+     *
+     * Default value is the lowest available field value in the index.
+     */
+    start: ComponentOptions.buildStringOption({ section: 'Filtering' }),
+
+    /**
+     * Specifies the ending boundary of the slider.
+     *
+     * Date values are rounded to the nearest year when you set the [`dateField`]{@link FacetSlider.options.dateField}
+     * option to `true`.
+     *
+     * Default value is the highest available field value in the index.
+     */
+    end: ComponentOptions.buildStringOption({ section: 'Filtering' }),
+
+    /**
+     * Specifies whether to exclude the outer bounds of the slider in the generated query when they are not active.
+     *
+     * Default value is `false`.
+     */
+    excludeOuterBounds: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'Filtering' }),
+
+    /**
+     * Specifies the number of decimal places to round the displayed numerical values to.
+     *
+     * Default (and minimum) value is `0`.
+     */
+    rounded: ComponentOptions.buildNumberOption({ min: 0, section: 'Filtering' }),
+
+    /**
+     * Specifies the number of steps to split the slider into.
+     *
+     * For example, if your range is [ 0 , 100 ] and you specify `10` steps, then the end user can move the slider only
+     * to the values [ 0, 10, 20, 30 ... , 100 ].
+     *
+     * For performance reasons, the maximum value for this option is `100`
+     *
+     * Default value is `undefined`, and the slider allows up to 100 steps. Minimum value is `2`.
      */
     steps: ComponentOptions.buildNumberOption({ min: 2 }),
+
     /**
-     * Specifies whether you want a slider with two buttons, or only one.<br/>
-     * Optional: By default only one button appears in the slider.
+     * Specifies whether you want a slider with two buttons instead of a slider with a single button.
+     *
+     * By default, only one button appears in the slider.
      */
     rangeSlider: ComponentOptions.buildBooleanOption(),
+
     /**
-     * Specifies the caption that you want to display the field values.<br/>
-     * Available options are :
-     * <ul>
-     *   <li>enable : (data-display-as-value-enable) <code>boolean</code> : Specifies whether the caption should be displayed as a value or not. Default is <code>true</code></li>.
-     *   <li>unitSign : (data-display-as-value-unit-sign) <code>string</code> : Specifies the unit sign for this value.</li>
-     *   <li>separator : (data-display-as-value-separator) <code>string</code> : Specifies the character(s) to use as a separator in the caption. Default is `-.`</li>.
-     * </ul>
+     * Specifies the caption options to use when displaying the field values.
+     *
+     * Available options are:
+     * - enable (`data-display-as-value-enable`): boolean; specifies whether to display the caption as a value. Default
+     * value is `true`.
+     * - unitSign (`data-display-as-value-unit-sign`): string; specifies the unit sign for this value (e.g., `$`).
+     * Default value is `undefined`.
+     * - separator (`data-display-as-value-separator`): string; specifies the character(s) to use as a separator in the
+     * caption. Default value is `"-"`.
      */
-    displayAsValue: ComponentOptions.buildObjectOption({
+    displayAsValue: ComponentOptions.buildObjectOption(<IComponentOptionsObjectOptionArgs>{
       subOptions: {
         enable: ComponentOptions.buildBooleanOption({ defaultValue: true }),
         unitSign: ComponentOptions.buildStringOption(),
         separator: ComponentOptions.buildStringOption({ defaultValue: '-' })
-      }
+      },
+      section: 'Display'
     }),
+
     /**
-     * Specifies the percentage caption that you want to display the field values.<br/>
-     * Available options are :
-     * <ul>
-     *   <li>enable : (data-display-as-percent-enable) <code>boolean</code> : Specifies whether the caption should be displayed as a percentage. Default is <code>false</code></li>.
-     *   <li>separator : (data-display-as-percent-separator) <code>string</code> : Specifies the character(s) to use as a separator in the caption. Default is `-.`</li>.
-     * </ul>
+     * Specifies the percentage caption options to use when displaying the field values.
+     *
+     * Available options are:
+     * - enable (`data-display-as-percent-enable`): boolean; specifies whether to display the caption as a percentage.
+     * Default value is `false`.
+     * separator (`data-display-as-percent-separator`): string; specifies the character(s) to use as a separator in the
+     * caption. Default value is `"-"`.
      */
-    displayAsPercent: ComponentOptions.buildObjectOption({
+    displayAsPercent: ComponentOptions.buildObjectOption(<IComponentOptionsObjectOptionArgs>{
       subOptions: {
         enable: ComponentOptions.buildBooleanOption({ defaultValue: false }),
         separator: ComponentOptions.buildStringOption({ defaultValue: '-' })
-      }
+      },
+      section: 'Display'
     }),
+
     /**
-     * Specifies that you wish to display a small graph on top of the slider.<br/>
-     * Available options are :
+     * Specifies whether to display a small graph on top of the slider.
      *
-     *   <li>steps: (data-graph-steps) <code>number</code> : Specifies the number of steps/columns to display in your graph. The default value is `10`</li>.
-     * </ul>
+     * Available options are:
+     * - steps (`data-graph-steps`): number; specifies the number of steps/columns to display in your graph. Default
+     * value is `10`. Minimum value is `2`.
      */
-    graph: ComponentOptions.buildObjectOption({
+    graph: ComponentOptions.buildObjectOption(<IComponentOptionsObjectOptionArgs>{
       subOptions: {
         steps: ComponentOptions.buildNumberOption({ min: 2 }),
         animationDuration: ComponentOptions.buildNumberOption({ min: 0 }),
-        margin: ComponentOptions.buildObjectOption({
+        margin: ComponentOptions.buildObjectOption(<IComponentOptionsObjectOptionArgs>{
           subOptions: {
             top: ComponentOptions.buildNumberOption({ min: 0 }),
             bottom: ComponentOptions.buildNumberOption({ min: 0 }),
@@ -200,87 +239,100 @@ export class FacetSlider extends Component {
             right: ComponentOptions.buildNumberOption({ min: 0 })
           }
         })
-      }
+      },
+      section: 'Graph'
     }),
+
     /**
-     * Specifies a function that will generate the steps for the slider. The function receives the slider boundaries and must return an array of number (the steps).
+     * Specifies a function to generate the `FacetSlider` steps (see the [`steps`]{@link FacetSlider.options.steps}
+     * option). This function receives the `FacetSlider` boundaries (see the [`start`]{@link FacetSlider.options.start}
+     * and [`end`]{@link FacetSlider.options.end} options), and must return an array of numbers (the steps).
      *
-     * ```
-     * Coveo.init(document.querySelector('#search'), {
+     * **Note:**
+     * > You cannot set this option directly in the component markup as an HTML attribute. You must either set it in the
+     * > [`init`]{@link init} call of your search interface (see
+     * > [Components - Passing Component Options in the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsintheinitCall)),
+     * > or before the `init` call, using the `options` top-level function (see
+     * > [Components - Passing Component Options Before the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsBeforetheinitCall)).
+     *
+     * **Example:**
+     * ```javascript
+     *
+     * var myGetStepsFunction = function(start, end) {
+     *   var result = [];
+     *   for (i = start; i < end; i += 2) {
+     *     result.push(i);
+     *   }
+     *   return result;
+     * }
+     *
+     * // You can set the option in the 'init' call:
+     * Coveo.init(document.querySelector("#search"), {
      *    FacetSlider: {
-     *      field: "@size",
-     *      getSteps: function(start, end) {
-     *        return [0,2,4,6,8,10];
-     *      }
+     *      getSteps: myGetStepsFunction
      *    }
-     * })
+     * });
      *
-     * // OR using the jQuery extension
-     *
-     * $('#search').coveo('init', {
-     *    FacetSlider: {
-     *        field: "@size",
-     *        getSteps: function(start, end) {
-     *            return [0,2,4,6,8,10];
-     *        }
-     *    }
-     * })
+     * // Or before the 'init' call, using the 'options' top-level function:
+     * // Coveo.options(document.querySelector("#search"), {
+     * //   FacetSlider : {
+     * //     valueCaption : myGetStepsFunction
+     * //   }
+     * // });
      * ```
      */
     getSteps: ComponentOptions.buildCustomOption<(start: number, end: number) => number[]>(() => {
       return null;
     }),
+
     /**
-     * Specifies a function that will generate the caption for the slider. Receives the current slider values (number[]) and must return the caption (string).
+     * Specifies a function to generate the value caption for the `FacetSlider`. This function receives the current
+     * slider values (number[]), and must return the caption (string).
      *
-     * ```
-     * Coveo.init(document.querySelector('#search'), {
-     *    FacetSlider: {
-     *      field: "@size",
-     *      valueCaption: function(values) {
-     *        return values[0] + " hello" + ", " + values[1] + " world";
-     *      }
-     *    }
-     * })
+     * **Note:**
+     * > You cannot set this option directly in the component markup as an HTML attribute. You must either set it in the
+     * > [`init`]{@link init} call of your search interface (see
+     * > [Components - Passing Component Options in the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsintheinitCall)),
+     * > or before the `init` call, using the `options` top-level function (see
+     * > [Components - Passing Component Options Before the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsBeforetheinitCall)).
      *
-     * // OR using the jQuery extension
+     * **Example:**
+     * ```javascript
      *
-     * $('#search').coveo('init', {
-     *    FacetSlider: {
-     *      field: "@size",
-     *      valueCaption: function(values) {
-     *        return values[0] + " hello" + ", " + values[1] + " world";
-     *      }
-     *    }
-     * })
+     * var myValueCaptionFunction = function(values) {
+     *   return "From " + values[0] + " to " + values[1];
+     * }
+     *
+     * // You can set the option in the 'init' call:
+     * Coveo.init(document.querySelector("#search"), {
+     *   FacetSlider: {
+     *     valueCaption: myValueCaptionFunction
+     *   }
+     * });
+     *
+     * // Or before the 'init' call, using the 'options' top-level function:
+     * // Coveo.options(document.querySelector("#search"), {
+     * //   FacetSlider : {
+     * //     valueCaption : myValueCaptionFunction
+     * //   }
+     * // });
      * ```
      */
     valueCaption: ComponentOptions.buildCustomOption<(values: number[]) => string>(() => {
       return null;
     }),
-    /**
-     * Specifies if the responsive mode should be enabled on the facets. Responsive mode will make the facet dissapear and instead be
-     * availaible using a dropdown button. Responsive facets are enabled when the width of the element the search interface is bound to
-     * reaches 800 pixels. This value can be modified using {@link Facet.options.responsiveBreakpoint}.
-     * The default value is `true`.
-     */
-    enableResponsiveMode: ComponentOptions.buildBooleanOption({ defaultValue: true }),
-    /**
-     * Specifies the width of the search interface, in pixels, at which the facets will go into responsive mode. The responsive mode will
-     * be triggered when the width is equal or below this value. The search interface corresponds to the element with the class
-     * `CoveoSearchInterface`.
-     * The default value is `800`.
-     */
-    responsiveBreakpoint: ComponentOptions.buildNumberOption({ defaultValue: 800 }),
-    /**
-     * Specifies the label of the button that allows to show the facets when in responsive mode. If it is specified more than once, the
-     * first occurence of the option will be used.
-     * The default value is "Filters". 
-     */
-    dropdownHeaderLabel: ComponentOptions.buildLocalizedStringOption()
+    ...ResponsiveFacetOptions
   };
 
   static ID = 'FacetSlider';
+
+  static doExport = () => {
+    exportGlobally({
+      FacetSlider: FacetSlider,
+      Slider: Slider
+    });
+  };
+
   public static DEBOUNCED_RESIZE_DELAY = 250;
 
   public startOfSlider: number;
@@ -290,60 +342,53 @@ export class FacetSlider extends Component {
   public facetQueryController: FacetSliderQueryController;
   public facetHeader: FacetHeader;
   public onResize: EventListener;
+  public isSimpleSliderConfig = false;
 
   private rangeQueryStateAttribute: string;
   private isEmpty = false;
   private rangeFromUrlState: number[];
   private delayedGraphData: ISliderGraphData[];
 
-
+  /**
+   * Creates a new `FacetSlider` component. Binds multiple query events as well.
+   * @param element The HTMLElement on which to instantiate the component.
+   * @param options The options for the `FacetSlider` component.
+   * @param bindings The bindings that the component requires to function normally. If not set, these will be
+   * automatically resolved (with a slower execution time).
+   * @param slider
+   */
   constructor(public element: HTMLElement, public options: IFacetSliderOptions, bindings?: IComponentBindings, private slider?: Slider) {
     super(element, FacetSlider.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, FacetSlider, options);
-
-    ResponsiveFacets.init(this.root, this, this.options);
+    this.isSimpleSliderConfig = this.options.start != null && this.options.end != null;
+    ResponsiveFacetSlider.init(this.root, this, this.options);
 
     if (this.options.excludeOuterBounds == null) {
       this.options.excludeOuterBounds = false;
     }
 
-    if (this.options.start) {
-      this.options.start = this.options.dateField ? <any>new Date(this.options.start.replace(/-/g, '/')).getTime() : <any>Number(this.options.start);
-    }
-
-    if (this.options.end) {
-      this.options.end = this.options.dateField ? <any>new Date(this.options.end.replace(/-/g, '/')).getTime() : <any>Number(this.options.end);
-    }
-
-    if (this.hasAGraph()) {
-      if (!FeatureDetectionUtils.supportSVG()) {
-        this.options.graph = undefined;
-        this.logger.info('Your browser does not support SVG. Cannot add graphic to your facet range', this);
-      }
-      if (typeof d3 == 'undefined') {
-        this.options.graph = undefined;
-        this.logger.info('Cannot find the required dependencies d3.js. Cannot add graphic to your facet range', this);
-      }
-    }
+    this.normalizeStartAndEndOptionsValues();
 
     this.facetQueryController = new FacetSliderQueryController(this);
-    this.initQueryStateEvents();
-    this.bind.onRootElement(QueryEvents.newQuery, () => this.handleNewQuery());
-    this.bind.onRootElement(QueryEvents.noResults, () => this.handleNoresults());
-    this.bind.onRootElement(QueryEvents.deferredQuerySuccess, (args: IQuerySuccessEventArgs) => this.handleDeferredQuerySuccess(args));
-    this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => this.handleBuildingQuery(args));
-    this.bind.onRootElement(QueryEvents.doneBuildingQuery, (args: IDoneBuildingQueryEventArgs) => this.handleDoneBuildingQuery(args));
-    this.bind.onRootElement(BreadcrumbEvents.populateBreadcrumb, (args: IPopulateBreadcrumbEventArgs) => this.handlePopulateBreadcrumb(args));
-    this.bind.onRootElement(SearchAlertsEvents.searchAlertsPopulateMessage, (args: ISearchAlertsPopulateMessageEventArgs) => this.handlePopulateSearchAlerts(args));
-    this.bind.onRootElement(BreadcrumbEvents.clearBreadcrumb, () => this.reset());
 
-    this.onResize = _.debounce(() => {
-      if (ResponsiveComponentsUtils.shouldDrawFacetSlider($$(this.root)) && this.slider && !this.isEmpty) {
-        this.slider.drawGraph();
-      }
-    }, FacetSlider.DEBOUNCED_RESIZE_DELAY);
-    window.addEventListener('resize', this.onResize);
-    $$(this.root).on(InitializationEvents.nuke, this.handleNuke);
+    this.bindQueryStateEvents();
+    this.bindQueryEvents();
+    this.bindResizeEvents();
+    this.bindBreadcrumbEvents();
+    this.bind.onRootElement(SearchAlertsEvents.searchAlertsPopulateMessage, (args: ISearchAlertsPopulateMessageEventArgs) =>
+      this.handlePopulateSearchAlerts(args)
+    );
+  }
+
+  public isCurrentlyDisplayed() {
+    if (!$$(this.element).isVisible()) {
+      return false;
+    }
+
+    if ($$(this.element).hasClass('coveo-disabled-empty')) {
+      return false;
+    }
+    return true;
   }
 
   public createDom() {
@@ -353,14 +398,13 @@ export class FacetSlider extends Component {
       title: this.options.title,
       enableClearElement: true,
       enableCollapseElement: true,
-      isNewDesign: this.getBindings().searchInterface.isNewDesign(),
       facetSlider: this
     });
     this.element.appendChild(this.facetHeader.build());
   }
 
   /**
-   * Reset the facet (meaning that you need to set the range value as inactive).
+   * Resets the `FacetSlider` (meaning that you need to set the range value as inactive).
    */
   public reset() {
     if (this.slider) {
@@ -371,9 +415,15 @@ export class FacetSlider extends Component {
   }
 
   /**
-   * Return the current selection in the facet, as an array of number (e.g.: [start, end] ).<br/>
-   * If it is not available, return [undefined, undefined]
-   * @returns {any}
+   * Gets the current selection in the slider.
+   *
+   * **Note:**
+   * > This method returns an array of number for selected date values. These numbers represent a number of milliseconds
+   * > before or after January 1, 1970. Therefore, you can use these numbers to instantiate standard JavaScript Date
+   * > objects.
+   *
+   * @returns {any} An array of number containing the first and last selected values, if possible. An array containing
+   * two `undefined` values otherwise.
    */
   public getSelectedValues(): number[] {
     if (this.startOfSlider != undefined && this.endOfSlider != undefined) {
@@ -384,8 +434,13 @@ export class FacetSlider extends Component {
   }
 
   /**
-   * Set the selected values in the slider.
-   * @param values [start, end]
+   * Sets the selected values in the slider.
+   *
+   * **Note:**
+   * > You must set date values with numbers representing a number of milliseconds before or after January 1, 1970. You
+   * > can easily extract such numbers from standard JavaScript Date objects.
+   *
+   * @param values [start, end] An array containing the first and last values to select in the slider.
    */
   public setSelectedValues(values: number[]): void {
     this.setupSliderIfNeeded(undefined);
@@ -396,15 +451,18 @@ export class FacetSlider extends Component {
   }
 
   /**
-   * Return true if the slider is "active" (will output an expression in the query when a search is performed).
-   * @returns {boolean}
+   * Indicates whether the `FacetSlider` is active. An active `FacetSlider` outputs an expression in the query when a
+   * search is performed.
+   * @returns {boolean} `true` if the FacetSlider is active; `false` otherwise.
    */
   public isActive(): boolean {
-    return !isNaN(this.startOfSlider)
-      && !isNaN(this.endOfSlider)
-      && !isNaN(this.initialStartOfSlider)
-      && !isNaN(this.initialEndOfSlider)
-      && (this.startOfSlider != this.initialStartOfSlider || this.endOfSlider != this.initialEndOfSlider);
+    return (
+      !isNaN(this.startOfSlider) &&
+      !isNaN(this.endOfSlider) &&
+      !isNaN(this.initialStartOfSlider) &&
+      !isNaN(this.initialEndOfSlider) &&
+      (this.startOfSlider != this.initialStartOfSlider || this.endOfSlider != this.initialEndOfSlider)
+    );
   }
 
   public getSliderBoundaryForQuery(): number[] {
@@ -421,12 +479,68 @@ export class FacetSlider extends Component {
     }
   }
 
-  // There is delayed graph data if at the time the facet slider tried to draw the facet was hidden in the
+  // There is delayed graph data if at the time the facet slider tried to draw, the facet was hidden in the
   // facet dropdown. This method will draw delayed graph data if it exists.
   public drawDelayedGraphData() {
-    if (this.delayedGraphData != undefined && !this.isEmpty) {
+    if (this.delayedGraphData != null && !this.isEmpty) {
       this.slider.drawGraph(this.delayedGraphData);
     }
+    this.delayedGraphData = null;
+  }
+
+  public hasAGraph() {
+    return this.options.graph != undefined;
+  }
+
+  private normalizeStartAndEndOptionsValues() {
+    if (this.options.start) {
+      this.options.start = this.options.dateField
+        ? <any>new Date(this.options.start.replace(/-/g, '/')).getTime()
+        : <any>Number(this.options.start);
+    }
+
+    if (this.options.end) {
+      this.options.end = this.options.dateField
+        ? <any>new Date(this.options.end.replace(/-/g, '/')).getTime()
+        : <any>Number(this.options.end);
+    }
+  }
+
+  private bindQueryEvents() {
+    this.bind.onRootElement(QueryEvents.newQuery, () => this.handleNewQuery());
+    this.bind.onRootElement(QueryEvents.noResults, () => this.handleNoresults());
+    this.bind.onRootElement(QueryEvents.deferredQuerySuccess, (args: IQuerySuccessEventArgs) => this.handleDeferredQuerySuccess(args));
+    this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => this.handleBuildingQuery(args));
+    this.bind.onRootElement(QueryEvents.doneBuildingQuery, (args: IDoneBuildingQueryEventArgs) => this.handleDoneBuildingQuery(args));
+  }
+
+  private bindResizeEvents() {
+    this.onResize = debounce(() => {
+      if (ResponsiveComponentsUtils.shouldDrawFacetSlider($$(this.root), $$(this.element)) && this.slider && !this.isEmpty) {
+        if (this.delayedGraphData) {
+          this.drawDelayedGraphData();
+        } else {
+          this.slider.drawGraph();
+        }
+      }
+      if (this.slider) {
+        this.slider.onMoving();
+      }
+    }, 250);
+    window.addEventListener('resize', this.onResize);
+    this.bind.onRootElement(ResponsiveDropdownEvent.OPEN, this.onResize);
+
+    // This is used inside SF integration
+    this.bind.onRootElement('onPopupOpen', this.onResize);
+
+    $$(this.root).on(InitializationEvents.nuke, () => this.handleNuke());
+  }
+
+  private bindBreadcrumbEvents() {
+    this.bind.onRootElement(BreadcrumbEvents.clearBreadcrumb, () => this.reset());
+    this.bind.onRootElement(BreadcrumbEvents.populateBreadcrumb, (args: IPopulateBreadcrumbEventArgs) =>
+      this.handlePopulateBreadcrumb(args)
+    );
   }
 
   private handleNoresults(): void {
@@ -446,7 +560,7 @@ export class FacetSlider extends Component {
   }
 
   private handlePopulateBreadcrumb(args: IPopulateBreadcrumbEventArgs): void {
-    let populateBreadcrumb = () => {
+    const populateBreadcrumb = () => {
       if (this.isActive()) {
         args.breadcrumbs.push(<IBreadcrumbItem>{
           element: this.buildBreadcrumbFacetSlider()
@@ -470,36 +584,47 @@ export class FacetSlider extends Component {
   }
 
   private buildBreadcrumbFacetSlider(): HTMLElement {
-    let elem = $$('div', {
+    const elem = $$('div', {
       className: 'coveo-facet-slider-breadcrumb'
     }).el;
 
-    let title = $$('span', {
+    const title = $$('span', {
       className: 'coveo-facet-slider-breadcrumb-title'
     });
     title.text(this.options.title + ': ');
     elem.appendChild(title.el);
 
-    let values = $$('span', {
+    const values = $$('span', {
       className: 'coveo-facet-slider-breadcrumb-values'
     });
     elem.appendChild(values.el);
 
-    let value = $$('span', {
+    const value = $$('span', {
       className: 'coveo-facet-slider-breadcrumb-value'
     });
-    value.text(this.slider.getCaption());
+    const caption = $$('span', {
+      clasName: 'coveo-facet-slider-breadcrumb-caption'
+    });
+    caption.text(this.slider.getCaption());
+    value.append(caption.el);
     values.el.appendChild(value.el);
 
-    let clear = $$('span', {
-      className: 'coveo-facet-slider-breadcrumb-clear'
-    });
+    const clear = $$(
+      'span',
+      {
+        className: 'coveo-facet-slider-breadcrumb-clear'
+      },
+      SVGIcons.icons.checkboxHookExclusionMore
+    );
+    SVGDom.addClassToSVGInContainer(clear.el, 'coveo-facet-slider-clear-svg');
+
     value.el.appendChild(clear.el);
 
     value.on('click', () => {
       this.reset();
       this.usageAnalytics.logSearchEvent<IAnalyticsFacetMeta>(analyticsActionCauseList.facetClearAll, {
         facetId: this.options.id,
+        facetField: this.options.field.toString(),
         facetTitle: this.options.title
       });
       this.queryController.executeQuery();
@@ -513,10 +638,10 @@ export class FacetSlider extends Component {
     this.updateAppearanceDependingOnState();
   }
 
-  private initQueryStateEvents() {
+  private bindQueryStateEvents() {
     this.rangeQueryStateAttribute = QueryStateModel.getFacetId(this.options.id) + ':range';
     this.queryStateModel.registerNewAttribute(this.rangeQueryStateAttribute, [undefined, undefined]);
-    let eventName = this.queryStateModel.getEventName(Model.eventTypes.changeOne + this.rangeQueryStateAttribute);
+    const eventName = this.queryStateModel.getEventName(Model.eventTypes.changeOne + this.rangeQueryStateAttribute);
     this.bind.onRootElement(eventName, (args: IAttributeChangedEventArg) => {
       this.slider ? this.handleRangeQueryStateChanged(args) : this.setRangeStateSliderStillNotCreated(args);
     });
@@ -527,16 +652,18 @@ export class FacetSlider extends Component {
   }
 
   private buildSlider() {
-    let sliderContainer = $$('div', {
-      className: 'coveo-facet-values coveo-slider-container'
+    const sliderContainer = $$('div', {
+      className: 'coveo-slider-container'
     }).el;
 
     if (this.hasAGraph()) {
       $$(sliderContainer).addClass('coveo-with-graph');
     }
-    let sliderDiv = $$('div').el;
+    const sliderDiv = $$('div').el;
 
-    this.slider = this.slider ? this.slider : new Slider(sliderDiv, _.extend({}, this.options, { dateField: this.options.dateField }), this.root);
+    this.slider = this.slider
+      ? this.slider
+      : new Slider(sliderDiv, { ...this.options, ...{ dateField: this.options.dateField } } as ISliderOptions, this.root);
     $$(sliderDiv).on(SliderEvents.endSlide, (e: MouseEvent, args: IEndSlideEventArgs) => {
       this.handleEndSlide(args);
     });
@@ -556,10 +683,10 @@ export class FacetSlider extends Component {
   private handleBuildingQuery(data: IBuildingQueryEventArgs) {
     Assert.exists(data);
     Assert.exists(data.queryBuilder);
-    let boundary = this.getSliderBoundaryForQuery();
+    const boundary = this.getSliderBoundaryForQuery();
     if (boundary != undefined) {
       this.facetQueryController.prepareForNewQuery();
-      let expression = this.facetQueryController.computeOurFilterExpression(boundary);
+      const expression = this.facetQueryController.computeOurFilterExpression(boundary);
       if (Utils.isNonEmptyString(expression)) {
         this.logger.trace('Putting filter in query', expression);
         data.queryBuilder.advancedExpression.add(expression);
@@ -568,17 +695,15 @@ export class FacetSlider extends Component {
   }
 
   private handleDoneBuildingQuery(data: IDoneBuildingQueryEventArgs) {
-    let queryBuilder = data.queryBuilder;
+    const queryBuilder = data.queryBuilder;
     this.facetQueryController.putGroupByIntoQueryBuilder(queryBuilder);
   }
 
   private handleDeferredQuerySuccess(data: IQuerySuccessEventArgs) {
     this.ensureDom();
     this.setupSliderIfNeeded(data);
-    let groupByResults = data.results.groupByResults[this.facetQueryController.lastGroupByRequestIndex];
-    if (groupByResults == undefined || groupByResults.values[0] == undefined) {
-      this.isEmpty = true;
-    }
+    const groupByResults = data.results.groupByResults[this.facetQueryController.lastGroupByRequestIndex];
+    this.isEmpty = this.isFacetEmpty(groupByResults, data);
     this.updateAppearanceDependingOnState();
     if (this.hasAGraph()) {
       this.renderToSliderGraph(data);
@@ -586,13 +711,14 @@ export class FacetSlider extends Component {
   }
 
   private handleEndSlide(args: IEndSlideEventArgs) {
-    let values = args.slider.getValues();
+    const values = args.slider.getValues();
     this.startOfSlider = values[0];
     this.endOfSlider = values[1];
     if (this.updateQueryState(values)) {
       this.updateAppearanceDependingOnState();
       this.usageAnalytics.logSearchEvent<IAnalyticsFacetSliderChangeMeta>(analyticsActionCauseList.facetRangeSlider, {
         facetId: this.options.id,
+        facetField: this.options.field.toString(),
         facetRangeStart: this.startOfSlider.toString(),
         facetRangeEnd: this.endOfSlider.toString()
       });
@@ -601,7 +727,7 @@ export class FacetSlider extends Component {
   }
 
   private handleDuringSlide(args: IDuringSlideEventArgs) {
-    let values = args.slider.getValues();
+    const values = args.slider.getValues();
     this.startOfSlider = values[0];
     this.endOfSlider = values[1];
     this.slider.setValues([this.startOfSlider, this.endOfSlider]);
@@ -618,6 +744,7 @@ export class FacetSlider extends Component {
       this.updateQueryState();
       this.usageAnalytics.logSearchEvent<IAnalyticsFacetGraphSelectedMeta>(analyticsActionCauseList.facetRangeGraph, {
         facetId: this.options.id,
+        facetField: this.options.field.toString(),
         facetRangeStart: this.startOfSlider.toString(),
         facetRangeEnd: this.endOfSlider.toString()
       });
@@ -626,10 +753,10 @@ export class FacetSlider extends Component {
   }
 
   private updateQueryState(values = this.slider.getValues(), silent = false) {
-    let copyOfValues = this.copyValues(values);
-    let start = values[0] + 0.0;
-    let end = values[1] + 0.0;
-    let model: number[] = this.queryStateModel.get(this.rangeQueryStateAttribute);
+    const copyOfValues = this.copyValues(values);
+    const start = values[0] + 0.0;
+    const end = values[1] + 0.0;
+    const model: number[] = this.queryStateModel.get(this.rangeQueryStateAttribute);
     if (model == null || copyOfValues[0] != model[0] || copyOfValues[1] != model[1]) {
       copyOfValues[0] = start;
       copyOfValues[1] = end;
@@ -642,18 +769,18 @@ export class FacetSlider extends Component {
   private copyValues(values: number[]) {
     // Creating a copy of the values prevents an unwanted automatic update of the state while sliding
     // That's the cleanest way I found to copy that array correctly
-    let copyOfValues = [];
+    const copyOfValues = [];
     copyOfValues[0] = Number(values[0]) + 0.0;
     copyOfValues[1] = Number(values[1]) + 0.0;
     return copyOfValues;
   }
 
   private renderToSliderGraph(data: IQuerySuccessEventArgs) {
-    let rawGroupByResults = data.results.groupByResults[this.facetQueryController.graphGroupByQueriesIndex];
+    const rawGroupByResults = data.results.groupByResults[this.facetQueryController.graphGroupByQueriesIndex];
     let graphData: ISliderGraphData[];
     let totalGraphResults = 0;
     if (rawGroupByResults) {
-      graphData = _.map(rawGroupByResults.values, (value) => {
+      graphData = map(rawGroupByResults.values, value => {
         totalGraphResults += value.numberOfResults;
         let start: any = value.value.split('..')[0];
         let end: any = value.value.split('..')[1];
@@ -664,7 +791,7 @@ export class FacetSlider extends Component {
           start = new Date(start.split('@')[0]).getTime();
           end = new Date(end.split('@')[0]).getTime();
         }
-        let y = value.numberOfResults;
+        const y = value.numberOfResults;
         return {
           start: start,
           y: y,
@@ -676,20 +803,24 @@ export class FacetSlider extends Component {
     if (totalGraphResults == 0) {
       this.isEmpty = true;
       this.updateAppearanceDependingOnState();
-    } else if (graphData != undefined && !this.isDropdownHidden()) {
-      this.slider.drawGraph(graphData);
+    }
+
+    if (graphData != undefined && !this.isDropdownHidden()) {
+      // This is deferred since it might be called on initialization with a placehoder over the facet during load time
+      // We need to wait that the animation is gone so that the width/height calculation done by the graph are okay.
+      Defer.defer(() => this.slider.drawGraph(graphData));
     } else if (graphData != undefined && this.isDropdownHidden()) {
       this.delayedGraphData = graphData;
     }
   }
 
   private isDropdownHidden() {
-    let facetDropdown = this.root.querySelector('.coveo-facet-column');
+    const facetDropdown = this.root.querySelector('.coveo-facet-column');
     if (facetDropdown) {
       return $$(<HTMLElement>facetDropdown).css('display') == 'none';
     }
     if ($$(this.root).hasClass('CoveoRecommendation')) {
-      let recommendationDropdown = $$(this.root).parents('.coveo-recommendation-column')[0] || this.root;
+      const recommendationDropdown = $$(this.root).parents('.coveo-recommendation-column')[0] || this.root;
       return $$(<HTMLElement>recommendationDropdown).css('display') == 'none';
     }
 
@@ -702,7 +833,7 @@ export class FacetSlider extends Component {
       return this.generateBoundaryFromState();
     } else {
       // Else, try to get one from the slider itself. If we cant, try to return one from the state.
-      let boundary = this.generateBoundaryFromSlider();
+      const boundary = this.generateBoundaryFromSlider();
       if (boundary[0] == undefined && boundary[1] == undefined) {
         return this.generateBoundaryFromState();
       } else {
@@ -724,15 +855,18 @@ export class FacetSlider extends Component {
 
   private generateBoundaryFromState() {
     let start, end;
-    let startFromState = this.queryStateModel.get(this.rangeQueryStateAttribute)[0];
+    const startFromState = this.queryStateModel.get(this.rangeQueryStateAttribute)[0];
     if (startFromState != undefined) {
       start = startFromState;
     }
-    let endFromState = this.queryStateModel.get(this.rangeQueryStateAttribute)[1];
+    const endFromState = this.queryStateModel.get(this.rangeQueryStateAttribute)[1];
     if (endFromState != undefined) {
       end = endFromState;
     }
-    if (start != this.queryStateModel.getDefault(this.rangeQueryStateAttribute)[0] || end != this.queryStateModel.getDefault(this.rangeQueryStateAttribute)[1]) {
+    if (
+      start != this.queryStateModel.getDefault(this.rangeQueryStateAttribute)[0] ||
+      end != this.queryStateModel.getDefault(this.rangeQueryStateAttribute)[1]
+    ) {
       return [start, end];
     } else {
       return [undefined, undefined];
@@ -750,7 +884,7 @@ export class FacetSlider extends Component {
       }
       this.trySetSliderBoundaryFromState();
       this.setupSliderStateVariables();
-      let isInError = this.verifySetup();
+      const isInError = this.verifySetup();
       if (isInError) {
         this.logger.warn('Unable to initialize slider with current values', this);
       } else {
@@ -771,7 +905,9 @@ export class FacetSlider extends Component {
 
   private setupSliderStateVariables() {
     if (isNaN(this.initialStartOfSlider) || isNaN(this.initialEndOfSlider)) {
-      this.logger.warn('Cannnot initialize slider with those values : start: ' + this.initialStartOfSlider + ' end: ' + this.initialEndOfSlider);
+      this.logger.warn(
+        'Cannnot initialize slider with those values : start: ' + this.initialStartOfSlider + ' end: ' + this.initialEndOfSlider
+      );
     } else {
       this.initialStartOfSlider = Number(this.initialStartOfSlider);
       this.initialEndOfSlider = Number(this.initialEndOfSlider);
@@ -797,7 +933,7 @@ export class FacetSlider extends Component {
   }
 
   private trySetSliderBoundaryFromState() {
-    let stateValues = this.rangeFromUrlState || this.queryStateModel.get(this.rangeQueryStateAttribute);
+    const stateValues = this.rangeFromUrlState || this.queryStateModel.get(this.rangeQueryStateAttribute);
     if (stateValues && stateValues[0] != undefined && stateValues[1] != undefined) {
       stateValues[0] = Number(stateValues[0]);
       stateValues[1] = Number(stateValues[1]);
@@ -809,8 +945,8 @@ export class FacetSlider extends Component {
   }
 
   private trySetSliderBoundaryFromQueryResult(data: IQuerySuccessEventArgs) {
-    let groupByResults = data.results.groupByResults[this.facetQueryController.lastGroupByRequestIndex];
-    if (groupByResults && groupByResults.values.length > 0) {
+    const groupByResults = data.results.groupByResults[this.facetQueryController.lastGroupByRequestForFullRangeIndex];
+    if (groupByResults && groupByResults.values.length > 0 && groupByResults.values[0].numberOfResults != 0) {
       this.setupInitialSliderStateStart(groupByResults.values[0].value.split('..')[0]);
       this.setupInitialSliderStateEnd(groupByResults.values[groupByResults.values.length - 1].value.split('..')[1]);
     }
@@ -828,32 +964,48 @@ export class FacetSlider extends Component {
   private setupInitialSliderStateEnd(value: any) {
     if (this.initialEndOfSlider == undefined) {
       this.initialEndOfSlider = value;
-      if (this.options.dateField && isNaN((value))) {
+      if (this.options.dateField && isNaN(value)) {
         this.initialEndOfSlider = new Date(value.replace('@', ' ')).getTime();
       }
     }
   }
 
-  private hasAGraph() {
-    return this.options.graph != undefined;
-  }
-
   private updateAppearanceDependingOnState(sliding = false) {
-    if (this.isEmpty && !this.isActive() && !sliding) {
-      $$(this.element).addClass('coveo-disabled-empty');
-    } else {
-      $$(this.element).removeClass('coveo-disabled-empty');
-      $$(this.facetHeader.eraserElement).toggle(this.isActive());
-    }
-    if (!this.isActive() && !sliding) {
-      $$(this.element).addClass('coveo-disabled');
-    } else {
-      $$(this.element).removeClass('coveo-disabled');
-    }
+    // Defer the visual update so that we can execute it after the current call stack has resolved.
+    // Since this component is closely linked to DOM size calculation (width), this allows to cover some corner cases
+    // where the component would be visually hidden, leading to incorrect width calculation.
+    // For example, first query placeholder animation hiding the component, or switching between different tabs would affect the calculation otherwise.
+    Defer.defer(() => {
+      if (this.isEmpty && !this.isActive() && !sliding) {
+        $$(this.element).addClass('coveo-disabled-empty');
+      } else {
+        $$(this.element).removeClass('coveo-disabled-empty');
+        $$(this.facetHeader.eraserElement).toggle(this.isActive());
+      }
+      if (!this.isActive() && !sliding) {
+        $$(this.element).addClass('coveo-disabled');
+      } else {
+        $$(this.element).removeClass('coveo-disabled');
+      }
+
+      if (this.isActive() && this.slider) {
+        this.slider.onMoving();
+      }
+    });
   }
 
   private handleNuke() {
     window.removeEventListener('resize', this.onResize);
   }
+
+  private isFacetEmpty(groupByResults: IGroupByResult, data: IQuerySuccessEventArgs) {
+    return (
+      groupByResults == null ||
+      groupByResults.values[0] == null ||
+      groupByResults.values[0].numberOfResults == 0 ||
+      data.results.results.length == 0
+    );
+  }
 }
+
 Initialization.registerAutoCreateComponent(FacetSlider);

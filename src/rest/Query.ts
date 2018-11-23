@@ -1,11 +1,15 @@
-import {IQueryFunction} from './QueryFunction';
-import {IRankingFunction} from './RankingFunction';
-import {IGroupByRequest} from './GroupByRequest';
+import { IQueryFunction } from './QueryFunction';
+import { IRankingFunction } from './RankingFunction';
+import { IGroupByRequest } from './GroupByRequest';
+import { Context } from '../ui/PipelineContext/PipelineGlobalExports';
+import { ICategoryFacetRequest } from './CategoryFacetRequest';
 
 /**
- * Describe a query that can be performed on the Coveo Search API.<br/>
- * For basic usage, see the {@link IQuery.q} and {@link IQuery.aq} properties.<br/>
- * In a normal scenario, a query is built using the {@link QueryBuilder}
+ * The IQuery interface describes a query that can be performed on the Coveo REST Search API.
+ *
+ * For basic usage, see the {@link IQuery.q} and {@link IQuery.aq} properties.
+ *
+ * In a normal scenario, a query is built by the {@link QueryBuilder} class.
  */
 export interface IQuery {
   /**
@@ -29,6 +33,14 @@ export interface IQuery {
    */
   cq?: string;
   /**
+   * The contextual text.<br/>
+   * This is the contextual text part of the query. It uses the Coveo Machine Learning service to pick key keywords from
+   * the text and add them to the basic expression.
+   * This field is mainly used to pass context such a case description, long textual query or any other form of text that might help in
+   * refining the query.
+   */
+  lq?: string;
+  /**
    * The disjunction query expression.<br/>
    * This is the disjunctive part of the query expression that is merged with the other expression parts using an OR boolean operator.<br/>
    * When specified, the final expression evaluated by the index ends up being (q aq cq) OR (dq).
@@ -43,10 +55,10 @@ export interface IQuery {
    * The tab value set from the {@link Tab} component.
    */
   tab?: string;
-  language?: string;
+  locale?: string;
   /**
    * Name of the query pipeline to use.<br/>
-   * This specifies the name of the query pipeline to use for the query. If not specified, the default value is default, which means the default query pipeline will be used.
+   * Specifies the name of the query pipeline to use for the query. If not specified, the default value is default, which means the default query pipeline will be used.
    */
   pipeline?: string;
   /**
@@ -58,7 +70,7 @@ export interface IQuery {
   /**
    * Whether to enable wildcards on the basic expression keywords.<br/>
    * This enables the wildcard features of the index. Coveo Platform will expand keywords containing wildcard characters to the possible matching keywords to broaden the query.<br/>
-   * See : https://onlinehelp.coveo.com/en/ces/7.0/user/using_wildcards_in_queries.htm<br/>
+   * See [Using Wildcards in Queries](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=359).<br/>
    * If not specified, this parameter defaults to false.
    */
   wildcards?: boolean;
@@ -73,21 +85,21 @@ export interface IQuery {
   lowercaseOperators?: boolean;
   /**
    * Whether to enable partial matching of the basic expression keywords.<br/>
-   * By activating this, when the basic expression contains at least {@link IQuery.partialMatchKeywords}, documents containing only the number of keywords specified by {@link IQuery.partialMatchThreshold} will also match the query.<br/>
-   * Without this option, documents are required to contain all the keywords in order to match the query.<br/>
+   * By activating this, when the basic expression contains at least {@link IQuery.partialMatchKeywords}, items containing only the number of keywords specified by {@link IQuery.partialMatchThreshold} will also match the query.<br/>
+   * Without this option, items are required to contain all the keywords in order to match the query.<br/>
    * If not specified, this parameter defaults to false.
    */
   partialMatch?: boolean;
   /**
    * The minimum number of keywords needed to activate partial match.<br/>
-   * This specifies the minimum number of keywords needed for the partial match feature to activate.<br/>
+   * Specifies the minimum number of keywords needed for the partial match feature to activate.<br/>
    * If the basic expression contains less than this number of keywords, no transformation is applied on the query.<br/>
    * If not specified, this parameter defaults to 5.
    */
   partialMatchKeywords?: number;
   /**
-   * The threshold to use for matching documents when partial match is enabled.<br/>
-   * This specifies the minimum number of query keywords that a document must contain when partial match is enabled. This value can either be an absolute number or a percentage value based on the total number of keywords.<br/>
+   * The threshold to use for matching items when partial match is enabled.<br/>
+   * Specifies the minimum number of query keywords that an item must contain when partial match is enabled. This value can either be an absolute number or a percentage value based on the total number of keywords.<br/>
    * If not specified, this parameter defaults to 50%.
    */
   partialMatchThreshold?: string;
@@ -102,7 +114,7 @@ export interface IQuery {
    */
   numberOfResults?: number;
   /**
-   * This specifies the sort criterion(s) to use to sort results. If not specified, this parameter defaults to Relevancy.<br/>
+   * Specifies the sort criterion(s) to use to sort results. If not specified, this parameter defaults to Relevancy.<br/>
    * Possible values are : <br/>
    * -- relevancy :  This uses all the configured ranking weights as well as any specified ranking expressions to rank results.<br/>
    * -- dateascending / datedescending : Sort using the value of the @date field, which is typically the last modification date of an item in the index.<br/>
@@ -113,7 +125,7 @@ export interface IQuery {
   sortCriteria?: string;
   sortField?: string;
   /**
-   * This specifies a field on which {@link Folding} should be performed.<br/>
+   * Specifies a field on which {@link Folding} should be performed.<br/>
    * Folding is a kind of duplicate filtering where only the first result with any given value of the field is included in the result set.<br/>
    * It's typically used to return only one result in a conversation, for example when forum posts in a thread are indexed as separate items.
    */
@@ -123,25 +135,25 @@ export interface IQuery {
    */
   filterFieldRange?: number;
   /**
-   * This specifies an array of fields that should be returned for each result.<br/>
+   * Specifies an array of fields that should be returned for each result.<br/>
    * eg: ['@foo','@bar']
    *
    */
   fieldsToInclude?: string[];
   /**
-   * This specifies an array of fields that should be excluded from the query results.<br/>
+   * Specifies an array of fields that should be excluded from the query results.<br/>
    * eg: ['@foo','@bar']
    *
    */
   fieldsToExclude?: string[];
   /**
-   * This specifies the length (in number of characters) of the excerpts generated by the indexer based on the keywords present in the query.<br/>
-   * The index includes the top most interesting sentences (in the order they appear in the document) that fit in the specified number of characters.<br/>
+   * Specifies the length (in number of characters) of the excerpts generated by the indexer based on the keywords present in the query.<br/>
+   * The index includes the top most interesting sentences (in the order they appear in the item) that fit in the specified number of characters.<br/>
    * When not specified, the default value is 200.
    */
   excerptLength?: number;
   /**
-   * This specifies whether the first sentences of the document should be included in the results.<br/>
+   * Specifies whether the first sentences of the item should be included in the results.<br/>
    * The retrieveFirstSentences option is typically used instead of excerpts when displaying email items, where the first sentence of the email might be of more interest than a contextually generated excerpt.
    */
   retrieveFirstSentences?: boolean;
@@ -151,31 +163,38 @@ export interface IQuery {
    */
   enableDidYouMean?: boolean;
   /**
-   * This specifies an array of Query Function operation that will be executed on the results.
+   * Specifies an array of Query Function operation that will be executed on the results.
    */
   queryFunctions?: IQueryFunction[];
   /**
-   * This specifies an array of Ranking Function operations that will be executed on the result
+   * Specifies an array of Ranking Function operations that will be executed on the result
    */
   rankingFunctions?: IRankingFunction[];
   /**
-   * This specifies an array of Group By operations that can be performed on the query results to extract facets
+   * Specifies an array of Group By operations that can be performed on the query results to extract facets
    */
   groupBy?: IGroupByRequest[];
   /**
-   * Setting this property to true will return more debugging information from both the index and the search API.
-   * Use this with care as this will negatively impact the performance of the query.
+   * Specifies an array of request to retrieve facet values for the CategoryFacet component
+   */
+  categoryFacets?: ICategoryFacetRequest[];
+  /**
+   * Whether to include debug information from the Search API in the query response.
    *
-   * It should probably never be set to `true` in production mode...
+   * **Note:**
+   * > This debug information does not include ranking information.
+   *
+   * Setting this property to `true` can have an adverse effect on query performance, so it should always be left to
+   * `false` in a production environment.
    */
   debug?: boolean;
   timezone?: string;
   /**
-   * Whether to disable the special query syntax such as field references for the basic query expression (parameter q).
+   * Whether to enable the special query syntax such as field references for the basic query expression (parameter q).
    * It is equivalent to a No syntax block applied to the basic query expression.
    * If not specified, the parameter defaults to false
    */
-  disableQuerySyntax?: boolean;
+  enableQuerySyntax?: boolean;
   enableDuplicateFiltering?: boolean;
   /**
    * Whether the index should take collaborative rating in account when ranking result. See : {@link ResultRating}
@@ -192,11 +211,11 @@ export interface IQuery {
   /**
    * The context is a map of key_value that can be used in the Query pipeline in the Coveo platform.<br/>
    */
-  context?: { [name: string]: any };
+  context?: Context;
 
   /**
-   * The actions history represents the past actions a user made and is used by reveal to suggest recommendations.
-   * It is generated by the page view script (https://github.com/coveo/coveo.analytics.js)
+   * The actions history represents the past actions a user made and is used by the Coveo Machine Learning service to
+   * suggest recommendations. It is generated by the page view script (https://github.com/coveo/coveo.analytics.js)
    */
   actionsHistory?: string;
 
@@ -204,4 +223,13 @@ export interface IQuery {
    * This is the id of the recommendation interface that generated the query.
    */
   recommendation?: string;
+
+  /**
+   * Specifies if the Search API should perform queries even when no keywords were entered by the end user.
+   *
+   * End user keywords are present in either the {@link IQuery.q} or {@link IQuery.lq} part of the query.
+   *
+   * This parameter is normally controlled by {@link SearchInterface.options.allowEmptyQuery} option.
+   */
+  allowQueriesWithoutKeywords?: boolean;
 }

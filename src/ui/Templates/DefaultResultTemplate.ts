@@ -1,59 +1,78 @@
-import {Template} from './Template';
-import {UnderscoreTemplate} from './UnderscoreTemplate';
-import {TemplateCache} from './TemplateCache';
-import {IQueryResult} from '../../rest/QueryResult';
-import {Assert} from '../../misc/Assert';
+import { Template, IInstantiateTemplateOptions, DefaultInstantiateTemplateOptions } from './Template';
+import { UnderscoreTemplate } from './UnderscoreTemplate';
+import { TemplateCache } from './TemplateCache';
+import { IQueryResult } from '../../rest/QueryResult';
+import { Assert } from '../../misc/Assert';
+import { $$ } from '../../utils/Dom';
+import * as _ from 'underscore';
+import { Initialization } from '../Base/Initialization';
 
-
+/*
+ * This renders the appropriate result template, found in TemplateCache,
+ * according to its condition.
+ *
+ * For example, a result with a filetype of `YoutubeVideo` will get rendered
+ * with the `YoutubeVideo` template, because the latter is registered with a
+ * `condition` of `raw.filetype == 'YoutubeVideo'`.
+ */
 export class DefaultResultTemplate extends Template {
-
   constructor() {
     super();
+    // For default result template, register everything since it's not possible to "scan" them before they are rendered.
+
+    this.addFields(Initialization.getRegisteredFieldsForQuery());
   }
 
-  instantiateToString(queryResult?: IQueryResult): string {
-    Assert.exists(queryResult);
-    queryResult = _.extend({}, queryResult, UnderscoreTemplate.templateHelpers);
+  public instantiateToString(object: IQueryResult, instantiateOptions: IInstantiateTemplateOptions = {}): string {
+    Assert.exists(object);
+    let mergedOptions = new DefaultInstantiateTemplateOptions().merge(instantiateOptions);
+    object = _.extend({}, object, UnderscoreTemplate.templateHelpers);
 
-    var defaultTemplates = _.map(TemplateCache.getDefaultTemplates(), (name) => TemplateCache.getTemplate(name));
+    const templates = _.chain(TemplateCache.getDefaultTemplates())
+      .map(name => TemplateCache.getTemplate(name))
+      .value();
 
-    // We want to put templates with conditions first
-    defaultTemplates.sort((a, b) => {
-      if (a.condition == null && b.condition != null) {
-        return 1;
-      } else if (a.condition != null && b.condition == null) {
-        return -1;
-      }
-      return 0;
-    });
+    // Put templates with conditions first
+    const sortedTemplates = _.chain(templates)
+      .sortBy(template => template.condition == null)
+      .sortBy(template => template.fieldsToMatch == null)
+      .value();
 
-    for (var i = 0; i < defaultTemplates.length; i++) {
-      var result = defaultTemplates[i].instantiateToString(queryResult);
+    for (let i = 0; i < sortedTemplates.length; i++) {
+      const result = sortedTemplates[i].instantiateToString(object, mergedOptions);
       if (result != null) {
         return result;
       }
     }
 
-    return _.template('<div>' +
-      '<div class="coveo-title"><a class="CoveoResultLink"><%= title?Coveo.TemplateHelpers.getHelper("highlight").call(title, titleHighlights):clickUri %></a></div>' +
-      '<% if(excerpt){ %><div class="coveo-excerpt"><%= Coveo.TemplateHelpers.getHelper("highlight").call(excerpt, excerptHighlights) %></div><% } %>' +
-      '<table class="CoveoFieldTable"><%= Coveo.TemplateHelpers.getHelper("highlight").call() %></table>' +
-      '</div>')(queryResult);
+    return this.getFallbackTemplate();
   }
 
-  instantiateToElement(queryResult?: IQueryResult): HTMLElement {
-    var div = document.createElement('div');
-    div.innerHTML = this.instantiateToString(queryResult);
-    return div;
-  }
-
-
-  getFields() {
-    var defaultTemplates = _.map(TemplateCache.getDefaultTemplates(), (name) => TemplateCache.getTemplate(name));
+  public getFields() {
+    var defaultTemplates = _.map(TemplateCache.getDefaultTemplates(), name => TemplateCache.getTemplate(name));
     return _.flatten(_.map(defaultTemplates, (template: Template) => template.getFields()));
   }
 
-  getType() {
+  public getType() {
     return 'DefaultResultTemplate';
+  }
+
+  public getFallbackTemplate(): string {
+    let titleContainer = $$('div', {
+      className: 'coveo-title'
+    });
+
+    let resultLink = $$('a', { className: 'CoveoResultLink' });
+
+    titleContainer.append(resultLink.el);
+
+    let excerpt = $$('div', {
+      className: 'CoveoExcerpt'
+    });
+
+    let resultContainer = $$('div');
+    resultContainer.append(titleContainer.el);
+    resultContainer.append(excerpt.el);
+    return resultContainer.el.outerHTML;
   }
 }

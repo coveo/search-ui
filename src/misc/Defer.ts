@@ -1,3 +1,5 @@
+import * as _ from 'underscore';
+
 export class Defer {
   private static functions = [];
 
@@ -7,8 +9,7 @@ export class Defer {
   }
 
   static flush() {
-    while (Defer.popOne()) {
-    }
+    while (Defer.popOne()) {}
   }
 
   private static arm() {

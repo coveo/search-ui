@@ -1,8 +1,5 @@
-import {Initialization} from './Initialization';
-
-interface IWindow {
-  $: any;
-}
+import { Initialization } from './Initialization';
+import * as _ from 'underscore';
 
 export interface IJQuery {
   fn: any;
@@ -12,7 +9,7 @@ export var jQueryInstance: IJQuery;
 
 if (!initCoveoJQuery()) {
   // Adding a check in case jQuery was added after the jsSearch
-  // Since this event listener is registered before the Coveo.init call, JQuery should always be initiated before the Coveo.init call  
+  // Since this event listener is registered before the Coveo.init call, JQuery should always be initiated before the Coveo.init call
   document.addEventListener('DOMContentLoaded', () => {
     initCoveoJQuery();
   });
@@ -32,7 +29,7 @@ export function initCoveoJQuery() {
     window['Coveo']['$'] = jQueryInstance;
   }
 
-  jQueryInstance.fn.coveo = function (...args: any[]) {
+  jQueryInstance.fn.coveo = function(...args: any[]) {
     var returnValue: any;
     this.each((index: number, element: HTMLElement) => {
       var returnValueForThisElement: any;

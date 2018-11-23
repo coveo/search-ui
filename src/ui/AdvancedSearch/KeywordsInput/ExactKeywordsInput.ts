@@ -1,13 +1,13 @@
-import {KeywordsInput} from './KeywordsInput';
-import {l} from '../../../strings/Strings';
+import { KeywordsInput } from './KeywordsInput';
+import { l } from '../../../strings/Strings';
 
 export class ExactKeywordsInput extends KeywordsInput {
-  constructor() {
-    super(l('ExactPhrase'));
+  constructor(public root: HTMLElement) {
+    super(l('ExactPhrase'), root);
   }
 
   public getValue(): string {
     let value = super.getValue();
-    return value ? '\"' + value + '\"' : '';
+    return value ? '"' + value + '"' : '';
   }
 }

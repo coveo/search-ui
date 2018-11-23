@@ -1,18 +1,20 @@
-import {Assert} from '../../misc/Assert';
-import {IQueryResult} from '../../rest/QueryResult';
-import {Utils} from '../../utils/Utils';
-import {JQueryUtils} from '../../utils/JQueryutils';
-import {$$, Dom} from '../../utils/Dom';
-import {QueryStateModel} from '../../models/QueryStateModel';
-import {ComponentStateModel} from '../../models/ComponentStateModel';
-import {ComponentOptionsModel} from '../../models/ComponentOptionsModel';
-import {QueryController} from '../../controllers/QueryController';
-import {SearchInterface} from '../../ui/SearchInterface/SearchInterface';
-import {IAnalyticsClient} from '../../ui/Analytics/AnalyticsClient';
-import {NoopAnalyticsClient} from '../../ui/Analytics/NoopAnalyticsClient';
-import {BaseComponent} from './BaseComponent';
-import {IComponentBindings} from './ComponentBindings';
-import {DebugEvents} from '../../events/DebugEvents';
+import { Assert } from '../../misc/Assert';
+import { IQueryResult } from '../../rest/QueryResult';
+import { Utils } from '../../utils/Utils';
+import { JQueryUtils } from '../../utils/JQueryutils';
+import { $$, Dom } from '../../utils/Dom';
+import { QueryStateModel } from '../../models/QueryStateModel';
+import { ComponentStateModel } from '../../models/ComponentStateModel';
+import { ComponentOptionsModel } from '../../models/ComponentOptionsModel';
+import { QueryController } from '../../controllers/QueryController';
+import { SearchInterface } from '../../ui/SearchInterface/SearchInterface';
+import { IAnalyticsClient } from '../../ui/Analytics/AnalyticsClient';
+import { NoopAnalyticsClient } from '../../ui/Analytics/NoopAnalyticsClient';
+import { BaseComponent } from './BaseComponent';
+import { IComponentBindings } from './ComponentBindings';
+import { DebugEvents } from '../../events/DebugEvents';
+import * as _ from 'underscore';
+import { Model } from '../../models/Model';
 
 /**
  * Definition for a Component.
@@ -23,11 +25,16 @@ export interface IComponentDefinition {
    * For example, SearchButton -> static ID : SearchButton -> className : CoveoSearchButton
    */
   ID: string;
+  aliases?: string[];
   /**
    * The generated `className` for this component.<br/>
    * For example, SearchButton -> static ID : SearchButton -> className : CoveoSearchButton
    */
   className?: string;
+  /**
+   * Function that can be called to export one or multiple module in the global scope.
+   */
+  doExport?: () => void;
   /**
    * Constructor for each component
    * @param element The HTMLElement on which the component will instantiate.
@@ -88,7 +95,7 @@ export class Component extends BaseComponent {
    */
   public componentOptionsModel: ComponentOptionsModel;
   public ensureDom: Function;
-  public options: any;
+  public options?: any;
 
   /**
    * Create a new Component. Resolve all {@link IComponentBindings} if not provided.<br/>
@@ -163,7 +170,7 @@ export class Component extends BaseComponent {
 
   public resolveUA(): IAnalyticsClient {
     var searchInterface = this.resolveSearchInterface();
-    return (searchInterface && searchInterface.usageAnalytics) ? searchInterface.usageAnalytics : new NoopAnalyticsClient();
+    return searchInterface && searchInterface.usageAnalytics ? searchInterface.usageAnalytics : new NoopAnalyticsClient();
   }
 
   public resolveResult(): IQueryResult {
@@ -202,7 +209,10 @@ export class Component extends BaseComponent {
       // if there is exactly one.
       var boundComponents = BaseComponent.getBoundComponentsForElement(element);
       if (!noThrow) {
-        Assert.check(boundComponents.length <= 1, 'More than one component is bound to this element. You need to specify the component type.');
+        Assert.check(
+          boundComponents.length <= 1,
+          'More than one component is bound to this element. You need to specify the component type.'
+        );
       }
       return boundComponents[0];
     }
@@ -219,69 +229,81 @@ export class Component extends BaseComponent {
     Assert.exists(result);
     $$(element).addClass('CoveoResult');
     element['CoveoResult'] = result;
+    let jQuery = JQueryUtils.getJQuery();
+    if (jQuery) {
+      jQuery(element).data(result);
+    }
   }
 
   static resolveBinding(element: HTMLElement, componentClass: any): BaseComponent {
     Assert.exists(element);
     Assert.exists(componentClass);
     Assert.exists(componentClass.ID);
-    // first, look down
-    var found;
-    if ($$(element).is('.' + Component.computeCssClassNameForType(componentClass.ID))) {
+
+    const targetClassName = Component.computeCssClassNameForType(componentClass.ID);
+    let found: HTMLElement;
+
+    if ($$(element).is('.' + targetClassName)) {
       found = element;
     } else {
-      var findDown = $$(element).findClass(Component.computeCssClassNameForType(componentClass.ID));
-      if (!findDown || findDown.length == 0) {
-        var findUp = $$(element).closest(Component.computeCssClassNameForType(componentClass.ID));
+      // first, look down
+      const findDown = $$(element).findClass(targetClassName);
+
+      if (findDown && findDown.length !== 0) {
+        found = findDown[0];
+      } else {
+        const findUp = $$(element).closest(targetClassName);
+
         if (findUp) {
           found = findUp;
         }
-      } else {
-        found = findDown;
       }
     }
     if (found) {
-      return <BaseComponent>found[Component.computeCssClassNameForType(componentClass.ID)];
+      return <BaseComponent>found[targetClassName];
     } else {
       return undefined;
     }
   }
 
-
   static pointElementsToDummyForm(element: HTMLElement) {
     let inputs = $$(element).is('input') ? [element] : [];
     inputs = inputs.concat($$(element).findAll('input'));
-    _.each(_.compact(inputs), (input) => {
+    _.each(_.compact(inputs), input => {
       input.setAttribute('form', 'coveo-dummy-form');
     });
   }
 }
 
 /**
- * Used by the various Coveo Component to trigger and bind event.<br/>
- * It adds a small logic to execute handler or triggers only when the component is "enabled".<br/>
- * A component is disabled by calling {Component.disable}<br/>
- * Typically, a component is disabled when it is not active in the current {Tab}.<br/>
- * It can also be disabled by external code.<br/>
- * The class serves as a way to not execute handler on component that are invisible and inactive in the query.
+ * The `ComponentEvents` class is used by the various Coveo Component to trigger events and bind event handlers. It adds
+ * logic to execute handlers or triggers only when a component is "enabled", which serves as a way to avoid executing
+ * handlers on components that are invisible and inactive in the query.
+ *
+ * Typically, a component is disabled when it is not active in the current [`Tab`]{@link Tab}. It can also be disabled
+ * by external code, however.
+ *
+ * To manually enable or disable a component, simply use its [`enable`]{@link Component.enable} or
+ * [`disable`]{@link Component.disable} method.
  */
 export class ComponentEvents {
   /**
-   * Create a new `ComponentEvents` for the given {@link Component}.
-   * @param owner The {@link Component} which owns those events handler and trigger.
+   * Creates a new `ComponentEvents` instance for a [`Component`]{@link Component}.
+   * @param owner The [`Component`]{@link Component} that owns the event handlers and triggers.
    */
   constructor(public owner: Component) {
     Assert.exists(owner);
   }
 
   /**
-   * Execute the handler for the given event on the given target element.<br/>
-   * Execute only if the component is "enabled" (see {@link Component.enable}).
-   * @param el The target on which the event will originate.
-   * @param event The event for which to register an handler.
+   * Executes the handler for an event on a target element.
+   *
+   * Executes only if the component is enabled (see the [`enable`]{@link Component.enable} method).
+   * @param el The element from which the event originates.
+   * @param event The event for which to register a handler.
    * @param handler The function to execute when the event is triggered.
    */
-  public on(el: HTMLElement, event: string, handler: Function);
+  public on(el: HTMLElement | Window | Document, event: string, handler: Function);
   public on(el: Dom, event: string, handler: Function);
   public on(arg: any, event: string, handler: Function) {
     if (!JQueryUtils.getJQuery() || !JQueryUtils.isInstanceOfJQuery(arg)) {
@@ -294,7 +316,7 @@ export class ComponentEvents {
   }
 
   /**
-   * Execute the handler for the given event on the given target element.<br/>
+   * Executes the handler for the given event on the given target element.<br/>
    * Execute only if the component is "enabled" (see {@link Component.enable}).<br/>
    * Execute the handler only ONE time.
    * @param el The target on which the event will originate.
@@ -343,6 +365,17 @@ export class ComponentEvents {
    */
   public onQueryState<T>(eventType: string, attribute?: string, handler?: (args: T) => any) {
     this.onRootElement(this.getQueryStateEventName(eventType, attribute), handler);
+  }
+
+  /**
+   * Bind an event related specially to the component option model.
+   * This will build the correct string event and execute the handler only if the component is activated.
+   * @param eventType The event type for which to register an event.
+   * @param attribute The attribute for which to register an event.
+   * @param handler The handler to execute when the query state event is triggered.
+   */
+  public onComponentOptions<T>(eventType: string, attribute?: string, handler?: (args: T) => any) {
+    this.onRootElement(this.getComponentOptionEventName(eventType, attribute), handler);
   }
 
   /**
@@ -402,11 +435,19 @@ export class ComponentEvents {
   }
 
   private getQueryStateEventName(eventType: string, attribute?: string): string {
+    return this.getModelEvent(this.owner.queryStateModel, eventType, attribute);
+  }
+
+  private getComponentOptionEventName(eventType: string, attribute?: string): string {
+    return this.getModelEvent(this.owner.componentOptionsModel, eventType, attribute);
+  }
+
+  private getModelEvent(model: Model, eventType: string, attribute?: string) {
     var evtName;
     if (eventType && attribute) {
-      evtName = this.owner.queryStateModel.getEventName(eventType + attribute);
+      evtName = model.getEventName(eventType + attribute);
     } else {
-      evtName = this.owner.queryStateModel.getEventName(eventType);
+      evtName = model.getEventName(eventType);
     }
     return evtName;
   }

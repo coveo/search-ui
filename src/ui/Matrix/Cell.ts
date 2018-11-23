@@ -1,4 +1,5 @@
-import {$$} from '../../utils/Dom';
+import { $$ } from '../../utils/Dom';
+import * as _ from 'underscore';
 
 /**
  * Represent a single cell of data in the {@link Matrix} component.

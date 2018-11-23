@@ -1,16 +1,16 @@
-import {Dropdown} from '../Form/Dropdown';
-import {TextInput} from '../Form/TextInput';
-import {$$} from '../../../utils/Dom';
-import {DocumentInput} from './DocumentInput';
+import { Dropdown } from '../../FormWidgets/Dropdown';
+import { TextInput } from '../../FormWidgets/TextInput';
+import { $$ } from '../../../utils/Dom';
+import { DocumentInput } from './DocumentInput';
+import { QueryBuilder } from '../../Base/QueryBuilder';
 
 export class AdvancedFieldInput extends DocumentInput {
-
   protected element: HTMLElement;
   public mode: Dropdown;
   public input: TextInput;
 
-  constructor(public inputName: string, public fieldName: string) {
-    super(inputName);
+  constructor(public inputName: string, public fieldName: string, public root: HTMLElement) {
+    super(inputName, root);
   }
 
   public reset() {
@@ -19,10 +19,10 @@ export class AdvancedFieldInput extends DocumentInput {
   }
 
   public build(): HTMLElement {
-    let fieldInput = $$(super.build());
-    this.mode = new Dropdown(this.onChange.bind(this), ['Contains', 'DoesNotContain', 'Matches']);
+    const fieldInput = $$(super.build());
+    this.mode = new Dropdown(this.onChange.bind(this), ['Contains', 'DoesNotContain', 'Matches'], undefined, this.inputName);
     fieldInput.append(this.mode.getElement());
-    this.input = new TextInput(this.onChange.bind(this), '');
+    this.input = new TextInput(this.onChange.bind(this), this.inputName);
     fieldInput.append(this.input.getElement());
     this.element = fieldInput.el;
     return this.element;
@@ -30,17 +30,21 @@ export class AdvancedFieldInput extends DocumentInput {
 
   public getValue(): string {
     let inputValue = this.input.getValue();
+    let builder = new QueryBuilder();
     if (inputValue) {
       switch (this.mode.getValue()) {
         case 'Contains':
-          return this.fieldName + '=' + inputValue;
+          builder.advancedExpression.addFieldExpression(this.fieldName, '=', [inputValue]);
+          return builder.build().aq;
+
         case 'DoesNotContain':
-          return this.fieldName + '<>' + inputValue;
+          builder.advancedExpression.addFieldExpression(this.fieldName, '<>', [inputValue]);
+          return builder.build().aq;
         default:
-          return this.fieldName + '==\"' + inputValue + '\"';
+          builder.advancedExpression.addFieldExpression(this.fieldName, '==', [inputValue]);
+          return builder.build().aq;
       }
     }
     return '';
   }
-
 }

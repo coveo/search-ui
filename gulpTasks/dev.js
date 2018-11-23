@@ -5,67 +5,83 @@ const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
 const buildUtilities = require('../gulpTasks/buildUtilities.js');
 const _ = require('underscore');
+const path = require('path');
+const fs = require('fs');
+const glob = require('glob');
+const args = require('yargs').argv;
 
-let webpackConfig = require('../webpack.config.js');
-webpackConfig.entry['CoveoJsSearch'].unshift('webpack-dev-server/client?http://localhost:8080/');
+const port = args.port || 8080;
+const unitTestsPort = args.port || 8081;
+const accessibilityTestsPort = args.port || 8082;
+
+const webpackConfig = require('../webpack.config.js');
+webpackConfig.entry['CoveoJsSearch.Lazy'].unshift(`webpack-dev-server/client?http://localhost:${port}/`);
 const compiler = webpack(webpackConfig);
 
-let webpackConfigTest = require('../webpackConfigFiles/webpack.test.config');
-webpackConfigTest.entry['tests'].unshift('webpack-dev-server/client?http://localhost:8081/');
-const compilerTest = webpack(webpackConfigTest);
+const webpackConfigUnitTest = require('../webpack.unit.test.config.js');
+webpackConfigUnitTest.entry['unitTests'].unshift(`webpack-dev-server/client?http://localhost:${unitTestsPort}/`);
+const compilerUnitTest = webpack(webpackConfigUnitTest);
 
-let webpackConfigPlayground = require('../webpackConfigFiles/webpack.playground.config');
-webpackConfigPlayground.entry['playground'].unshift('webpack-dev-server/client?http://localhost:8082/');
-const compilerPlayground = webpack(webpackConfigPlayground);
+const webpackConfigAccessibilityTest = require('../webpack.accessibility.test.config.js');
+webpackConfigAccessibilityTest.entry['accessibilityTests'].unshift(`webpack-dev-server/client?http://localhost:${accessibilityTestsPort}/`);
+const compilerAccessibilityTest = webpack(webpackConfigAccessibilityTest);
 
-let debouncedLinkToExternal = _.debounce(()=> {
+let server;
+
+const debouncedLinkToExternal = _.debounce(() => {
   console.log('... Compiler done ... Linking external projects'.black.bgGreen);
-  buildUtilities.exec('node', ['./environments/link.externally.js'], undefined, function () {
-  })
+  buildUtilities.exec('node', ['./environments/link.externally.js'], undefined, function() {});
 }, 1000);
 
-let debouncedGenerateDoc = _.debounce(()=> {
-  buildUtilities.exec('gulp', ['doc'], undefined, function () {
-  })
-}, 1000);
+const watchHtmlPagesOnce = _.once(() => {
+  glob('bin/*.html', (err, files) => {
+    files.forEach(file => {
+      fs.watch(file, () => {
+        if (server.sockets && server.sockets[0]) {
+          server.sockets[0].write(JSON.stringify({ type: 'ok' }));
+        }
+      });
+    });
+  });
+});
 
-compiler.plugin('done', ()=> {
+compiler.plugin('done', () => {
   debouncedLinkToExternal();
-})
+  watchHtmlPagesOnce();
+});
 
-compilerPlayground.plugin('done', ()=> {
-  debouncedGenerateDoc();
-})
-
-gulp.task('dev', ['setup', 'prepareSass'], (done)=> {
-  let server = new WebpackDevServer(compiler, {
+gulp.task('dev', ['setup'], done => {
+  server = new WebpackDevServer(compiler, {
+    compress: true,
     contentBase: 'bin/',
-    publicPath: '/js/',
-    compress: true
+    publicPath: `http://localhost:${port}/js/`,
+    disableHostCheck: true,
+    compress: true,
+    stats: {
+      colors: true,
+      publicPath: true
+    }
   });
-  server.listen(8080, 'localhost', ()=> {
-  });
+  server.listen(port, 'localhost', () => {});
   done();
-})
+});
 
-gulp.task('devTest', ['setupTests'], function (done) {
-  var serverTests = new WebpackDevServer(compilerTest, {
+gulp.task('devTest', ['setupTests'], function(done) {
+  var serverTests = new WebpackDevServer(compilerUnitTest, {
     contentBase: 'bin/',
     publicPath: '/tests/',
     compress: true
   });
-  serverTests.listen(8081, 'localhost', ()=> {
-  })
+  serverTests.listen(unitTestsPort, 'localhost', () => {});
   done();
-})
+});
 
-gulp.task('devPlayground', function (done) {
-  var serverPlayground = new WebpackDevServer(compilerPlayground, {
-    contentBase: 'docgen/',
-    publicPath: '/assets/gen/js/',
+gulp.task('devAccessibilityTest', ['setupTests'], done => {
+  var serverTests = new WebpackDevServer(compilerAccessibilityTest, {
+    contentBase: 'bin/',
+    publicPath: '/tests/',
     compress: true
-  })
-  serverPlayground.listen(8082, 'localhost', ()=> {
-  })
+  });
+  serverTests.listen(accessibilityTestsPort, 'localhost', () => {});
   done();
-})
+});

@@ -1,8 +1,11 @@
 ///<reference path='Omnibox.ts'/>
-import {OmniboxEvents} from '../../events/OmniboxEvents';
-import {Omnibox, IPopulateOmniboxSuggestionsEventArgs, IOmniboxSuggestion} from './Omnibox';
-import {IExtension} from '../../rest/Extension';
-import {MagicBox} from '../../ExternalModulesShim';
+import { OmniboxEvents, IPopulateOmniboxSuggestionsEventArgs } from '../../events/OmniboxEvents';
+import { Omnibox, IOmniboxSuggestion } from './Omnibox';
+import { IExtension } from '../../rest/Extension';
+import * as _ from 'underscore';
+import { MagicBoxInstance } from '../../magicbox/MagicBox';
+import { MagicBoxUtils } from '../../magicbox/MagicBoxUtils';
+import { Result } from '../../magicbox/Result/Result';
 
 interface IQueryExtensionAddonHash {
   type: string;
@@ -33,7 +36,7 @@ export class QueryExtensionAddon {
     if (this.cache[hashString] != null) {
       return this.hashValueToSuggestion(hash, this.cache[hashString]);
     }
-    var values = (hash.type == 'QueryExtensionName' ? this.names(hash.current) : this.attributeNames(hash.name, hash.current, hash.used));
+    var values = hash.type == 'QueryExtensionName' ? this.names(hash.current) : this.attributeNames(hash.name, hash.current, hash.used);
     this.cache[hashString] = values;
     values.catch(() => {
       delete this.cache[hashString];
@@ -41,8 +44,8 @@ export class QueryExtensionAddon {
     return this.hashValueToSuggestion(hash, values);
   }
 
-  private getHash(magicBox: Coveo.MagicBox.Instance): IQueryExtensionAddonHash {
-    var queryExtension: Coveo.MagicBox.Result = _.last(magicBox.resultAtCursor('QueryExtension'));
+  private getHash(magicBox: MagicBoxInstance): IQueryExtensionAddonHash {
+    var queryExtension: Result = _.last(magicBox.resultAtCursor('QueryExtension'));
     if (queryExtension != null) {
       var queryExtensionArgumentResults = queryExtension.findAll('QueryExtensionArgument');
       var current = _.last(magicBox.resultAtCursor('QueryExtensionName'));
@@ -57,9 +60,8 @@ export class QueryExtensionAddon {
 
       current = _.last(magicBox.resultAtCursor('QueryExtensionArgumentName'));
       if (current != null) {
-
         var used: string[] = _.chain(queryExtensionArgumentResults)
-          .map((result) => {
+          .map(result => {
             var name = result.find('QueryExtensionArgumentName');
             return name && name.toString();
           })
@@ -85,14 +87,14 @@ export class QueryExtensionAddon {
     if (hash == null) {
       return null;
     }
-    return [hash.type, hash.current, (hash.name || ''), (hash.used ? hash.used.join() : '')].join();
+    return [hash.type, hash.current, hash.name || '', hash.used ? hash.used.join() : ''].join();
   }
 
   private hashValueToSuggestion(hash: IQueryExtensionAddonHash, promise: Promise<string[]>): Promise<IOmniboxSuggestion[]> {
-    return promise.then((values) => {
+    return promise.then(values => {
       var suggestions: IOmniboxSuggestion[] = _.map(values, (value, i) => {
         return {
-          html: MagicBox.Utils.highlightText(value, hash.current, true),
+          html: MagicBoxUtils.highlightText(value, hash.current, true),
           text: hash.before + value + hash.after,
           index: QueryExtensionAddon.INDEX - i / values.length
         };
@@ -120,7 +122,7 @@ export class QueryExtensionAddon {
             extension: extension.name
           };
         })
-        .filter((extension) => {
+        .filter(extension => {
           return extension.index != -1 && extension.extension.length > extensionName.length;
         })
         .sortBy('index')

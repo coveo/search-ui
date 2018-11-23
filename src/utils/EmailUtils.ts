@@ -1,5 +1,6 @@
-import {Utils} from './Utils';
-import {l} from '../strings/Strings';
+import { Utils } from './Utils';
+import { l } from '../strings/Strings';
+import * as _ from 'underscore';
 
 export class EmailUtils {
   static splitSemicolonSeparatedListOfEmailAddresses(addresses: string): string[] {
@@ -9,11 +10,17 @@ export class EmailUtils {
     });
   }
 
-  static emailAddressesToHyperlinks(addresses: string[], companyDomain?: string, me?: string, lengthLimit = 2, truncateName = false): string {
+  static emailAddressesToHyperlinks(
+    addresses: string[],
+    companyDomain?: string,
+    me?: string,
+    lengthLimit = 2,
+    truncateName = false
+  ): string {
     addresses = _.filter(addresses, (s: string) => {
       return Utils.exists(s) && Utils.isNonEmptyString(Utils.trim(s));
     });
-    var hyperlinks = _.map(addresses, (item) => {
+    var hyperlinks = _.map(addresses, item => {
       var emailArray = EmailUtils.parseEmail(item);
       var email = emailArray[1];
       var name = emailArray[0];
@@ -32,7 +39,7 @@ export class EmailUtils {
         name += ' (' + domain + ')';
       }
 
-      return '<a title="' + item.replace(/'/g, '&quot;') + 'href="mailto:' + encodeURI(email) + '">' + name + '</a>';
+      return '<a title="' + item.replace(/'/g, '&quot;') + '" href="mailto:' + encodeURI(email) + '">' + name + '</a>';
     });
     var excess = hyperlinks.length - lengthLimit;
     var andOthers = excess > 0 ? EmailUtils.buildEmailAddressesAndOthers(_.last(hyperlinks, excess)) : '';
@@ -40,8 +47,14 @@ export class EmailUtils {
   }
 
   static buildEmailAddressesAndOthers(excessHyperLinks: string[]) {
-    return '<span class="coveo-emails-excess-collapsed coveo-active" onclick="Coveo.TemplateHelpers.getHelper(\'excessEmailToggle\')(this);"> ' + l('AndOthers', excessHyperLinks.length.toString(), excessHyperLinks.length) + '</span>' +
-      '<span class="coveo-emails-excess-expanded"> , ' + excessHyperLinks.join(' , ') + '</span>';
+    return (
+      '<span class="coveo-emails-excess-collapsed coveo-active" onclick="Coveo.TemplateHelpers.getHelper(\'excessEmailToggle\')(this);"> ' +
+      l('AndOthers', excessHyperLinks.length.toString(), excessHyperLinks.length) +
+      '</span>' +
+      '<span class="coveo-emails-excess-expanded"> , ' +
+      excessHyperLinks.join(' , ') +
+      '</span>'
+    );
   }
 
   static parseEmail(email: string): string[] {

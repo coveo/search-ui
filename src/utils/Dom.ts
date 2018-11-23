@@ -1,7 +1,9 @@
-import {Utils} from '../utils/Utils';
-import {JQueryUtils} from '../utils/JQueryutils';
-import {Assert} from '../misc/Assert';
-import {Logger} from '../misc/Logger';
+import * as _ from 'underscore';
+import { Assert } from '../misc/Assert';
+import { Logger } from '../misc/Logger';
+import { IStringMap } from '../rest/GenericParam';
+import { JQueryUtils } from '../utils/JQueryutils';
+import { Utils } from '../utils/Utils';
 
 export interface IOffset {
   left: number;
@@ -17,6 +19,11 @@ export interface IOffset {
 export class Dom {
   private static CLASS_NAME_REGEX = /-?[_a-zA-Z]+[_a-zA-Z0-9-]*/g;
   private static ONLY_WHITE_SPACE_REGEX = /^\s*$/;
+  /**
+   * Whether to always register, remove, and trigger events using standard JavaScript rather than attempting to use jQuery first.
+   * @type boolean
+   */
+  public static useNativeJavaScriptEvents = false;
 
   public el: HTMLElement;
 
@@ -29,7 +36,7 @@ export class Dom {
     this.el = el;
   }
 
-  private static handlers: { eventHandle: Function, fn: EventListener }[] = [];
+  private static handlers: WeakMap<(evt: Event, data: any) => void, (e: CustomEvent) => void> = new WeakMap();
 
   /**
    * Helper function to quickly create an HTMLElement
@@ -40,13 +47,13 @@ export class Dom {
    * @param innerHTML The contents of the new HTMLElement, either in string form or as another HTMLElement
    */
   static createElement(type: string, props?: Object, ...children: Array<string | HTMLElement | Dom>): HTMLElement {
-    var elem: HTMLElement = document.createElement(type);
+    const elem: HTMLElement = document.createElement(type);
 
-    for (var key in props) {
+    for (const key in props) {
       if (key === 'className') {
         elem.className = props['className'];
       } else {
-        let attr = key.indexOf('-') !== -1 ? key : Utils.toDashCase(key);
+        const attr = key.indexOf('-') !== -1 ? key : Utils.toDashCase(key);
         elem.setAttribute(attr, props[key]);
       }
     }
@@ -109,8 +116,8 @@ export class Dom {
    * @returns {HTMLElement[]}
    */
   public nodeListToArray(nodeList: NodeList): HTMLElement[] {
-    var i = nodeList.length;
-    var arr: HTMLElement[] = new Array(i);
+    let i = nodeList.length;
+    const arr: HTMLElement[] = new Array(i);
     while (i--) {
       arr[i] = <HTMLElement>nodeList.item(i);
     }
@@ -130,7 +137,9 @@ export class Dom {
    * Empty the element and all childs from the dom;
    */
   public remove(): void {
-    this.el.parentNode.removeChild(this.el);
+    if (this.el.parentNode) {
+      this.el.parentNode.removeChild(this.el);
+    }
   }
 
   /**
@@ -138,6 +147,7 @@ export class Dom {
    */
   public show(): void {
     this.el.style.display = 'block';
+    $$(this.el).setAttribute('aria-hidden', 'false');
   }
 
   /**
@@ -145,6 +155,7 @@ export class Dom {
    */
   public hide(): void {
     this.el.style.display = 'none';
+    $$(this.el).setAttribute('aria-hidden', 'true');
   }
 
   /**
@@ -166,6 +177,27 @@ export class Dom {
         this.hide();
       }
     }
+  }
+
+  /**
+   * Tries to determine if an element is "visible", in a generic manner.
+   *
+   * This is not meant to be a "foolproof" method, but only a superficial "best effort" detection is performed.
+   */
+  public isVisible() {
+    if (this.el.style.display == 'none') {
+      return false;
+    }
+
+    if (this.el.style.visibility == 'hidden') {
+      return false;
+    }
+
+    if (this.hasClass('coveo-tab-disabled')) {
+      return false;
+    }
+
+    return true;
   }
 
   /**
@@ -249,7 +281,7 @@ export class Dom {
    * @returns {HTMLElement[]}
    */
   public parents(className: string): HTMLElement[] {
-    let parentsFound = [];
+    const parentsFound = [];
     let parentFound = this.parent(className);
     while (parentFound) {
       parentsFound.push(parentFound);
@@ -271,7 +303,7 @@ export class Dom {
    * @returns {HTMLElement[]}
    */
   public siblings(selector: string): HTMLElement[] {
-    let sibs = [];
+    const sibs = [];
     let currentElement = <HTMLElement>this.el.parentNode.firstChild;
     for (; currentElement; currentElement = <HTMLElement>currentElement.nextSibling) {
       if (currentElement != this.el) {
@@ -284,8 +316,8 @@ export class Dom {
   }
 
   private matches(element: HTMLElement, selector: string) {
-    var all = document.querySelectorAll(selector);
-    for (var i = 0; i < all.length; i++) {
+    const all = document.querySelectorAll(selector);
+    for (let i = 0; i < all.length; i++) {
       if (all[i] === element) {
         return true;
       }
@@ -311,8 +343,6 @@ export class Dom {
     if ('getElementsByClassName' in this.el) {
       return this.nodeListToArray(this.el.getElementsByClassName(className));
     }
-    // For ie 8
-    return this.nodeListToArray(this.el.querySelectorAll('.' + className));
   }
 
   /**
@@ -351,13 +381,13 @@ export class Dom {
    * @param className Classname to remove on the the element
    */
   public removeClass(className: string): void {
-    this.el.className = this.el.className.replace(new RegExp(`(^|\\s)${className}(\\s|\\b)`, 'g'), '$1').trim();
+    this.el.className = this.el.className.replace(new RegExp(`(^|\\s)${className}(\\s|$)`, 'g'), '$1').trim();
   }
 
   /**
    * Toggle the class on the element.
    * @param className Classname to toggle
-   * @swtch If true, add the class regardless and if false, remove the class
+   * @param swtch If true, add the class regardless and if false, remove the class
    */
   public toggleClass(className: string, swtch?: boolean): void {
     if (Utils.isNullOrUndefined(swtch)) {
@@ -388,7 +418,13 @@ export class Dom {
    * @returns {any|Array}
    */
   public getClass(): string[] {
-    return this.el.className.match(Dom.CLASS_NAME_REGEX) || [];
+    // SVG elements got a className property, but it's not a string, it's an object
+    const className = this.getAttribute('class');
+    if (className && className.match) {
+      return className.match(Dom.CLASS_NAME_REGEX) || [];
+    } else {
+      return [];
+    }
   }
 
   /**
@@ -448,20 +484,24 @@ export class Dom {
         this.on(t, eventHandle);
       });
     } else {
-      var jq = JQueryUtils.getJQuery();
-      if (jq) {
-        jq(this.el).on(type, eventHandle);
+      const modifiedType = this.processEventTypeToBeJQueryCompatible(type);
+      const jq = JQueryUtils.getJQuery();
+      if (this.shouldUseJQueryEvent()) {
+        jq(this.el).on(modifiedType, eventHandle);
       } else if (this.el.addEventListener) {
-        var fn = (e: CustomEvent) => {
+        const fn = (e: CustomEvent) => {
           eventHandle(e, e.detail);
         };
-        Dom.handlers.push({
-          eventHandle: eventHandle,
-          fn: fn
-        });
-        this.el.addEventListener(type, fn, false);
+        Dom.handlers.set(eventHandle, fn);
+        // Mark touch events as passive for performance reasons:
+        // https://github.com/WICG/EventListenerOptions/blob/gh-pages/explainer.md
+        if (modifiedType && modifiedType.indexOf('touch') != -1) {
+          this.el.addEventListener(modifiedType, fn, { passive: true });
+        } else {
+          this.el.addEventListener(modifiedType, fn, false);
+        }
       } else if (this.el['on']) {
-        this.el['on']('on' + type, eventHandle);
+        this.el['on']('on' + modifiedType, eventHandle);
       }
     }
   }
@@ -480,11 +520,12 @@ export class Dom {
         this.one(t, eventHandle);
       });
     } else {
-      var once = (e: Event, args: any) => {
-        this.off(type, once);
+      const modifiedType = this.processEventTypeToBeJQueryCompatible(type);
+      const once = (e: Event, args: any) => {
+        this.off(modifiedType, once);
         return eventHandle(e, args);
       };
-      this.on(type, once);
+      this.on(modifiedType, once);
     }
   }
 
@@ -501,23 +542,17 @@ export class Dom {
         this.off(t, eventHandle);
       });
     } else {
-      var jq = JQueryUtils.getJQuery();
-      if (jq) {
-        jq(this.el).off(type, eventHandle);
+      const modifiedType = this.processEventTypeToBeJQueryCompatible(type);
+      const jq = JQueryUtils.getJQuery();
+      if (this.shouldUseJQueryEvent()) {
+        jq(this.el).off(modifiedType, eventHandle);
       } else if (this.el.removeEventListener) {
-        var idx = 0;
-        var found = _.find(Dom.handlers, (handlerObj: { eventHandle: Function, fn: EventListener }, i) => {
-          if (handlerObj.eventHandle == eventHandle) {
-            idx = i;
-            return true;
-          }
-        });
-        if (found) {
-          this.el.removeEventListener(type, found.fn, false);
-          Dom.handlers.splice(idx, 1);
+        const handler = Dom.handlers.get(eventHandle);
+        if (handler) {
+          this.el.removeEventListener(modifiedType, handler, false);
         }
       } else if (this.el['off']) {
-        this.el['off']('on' + type, eventHandle);
+        this.el['off']('on' + modifiedType, eventHandle);
       }
     }
   }
@@ -528,15 +563,18 @@ export class Dom {
    * @param data
    */
   public trigger(type: string, data?: { [key: string]: any }): void {
-    var jq = JQueryUtils.getJQuery();
-    if (jq) {
-      jq(this.el).trigger(type, data);
-    } else if (CustomEvent !== undefined) {
-      var event = new CustomEvent(type, { detail: data, bubbles: true });
+    const modifiedType = this.processEventTypeToBeJQueryCompatible(type);
+    if (this.shouldUseJQueryEvent()) {
+      JQueryUtils.getJQuery()(this.el).trigger(modifiedType, data);
+    } else if (window['CustomEvent'] !== undefined) {
+      const event = new CustomEvent(modifiedType, { detail: data, bubbles: true });
       this.el.dispatchEvent(event);
     } else {
-      // TODO Support for older browser ?
-      new Logger(this).error('CANNOT TRIGGER EVENT FOR OLDER BROWSER');
+      try {
+        this.el.dispatchEvent(this.buildIE11CustomEvent(modifiedType, data));
+      } catch {
+        this.oldBrowserError();
+      }
     }
   }
 
@@ -553,7 +591,7 @@ export class Dom {
    * @param other
    */
   public isDescendant(parent: HTMLElement): boolean {
-    var node = this.el.parentNode;
+    let node = this.el.parentNode;
     while (node != null) {
       if (node == parent) {
         return true;
@@ -568,7 +606,7 @@ export class Dom {
    * @param otherElem
    */
   public replaceWith(otherElem: HTMLElement): void {
-    var parent = this.el.parentNode;
+    const parent = this.el.parentNode;
     if (parent) {
       new Dom(otherElem).insertAfter(this.el);
     }
@@ -580,10 +618,10 @@ export class Dom {
    * Return the position relative to the offset parent.
    */
   public position(): IOffset {
-    let offsetParent = this.offsetParent();
+    const offsetParent = this.offsetParent();
+    const offset = this.offset();
     let parentOffset: IOffset = { top: 0, left: 0 };
 
-    let offset = this.offset();
     if (!$$(offsetParent).is('html')) {
       parentOffset = $$(offsetParent).offset();
     }
@@ -638,8 +676,7 @@ export class Dom {
       return { top: 0, left: 0 };
     }
 
-
-    let rect = this.el.getBoundingClientRect();
+    const rect = this.el.getBoundingClientRect();
 
     if (rect.width || rect.height) {
       let doc = this.el.ownerDocument;
@@ -656,21 +693,51 @@ export class Dom {
   /**
    * Returns the offset width of the element
    */
-  public width() {
+  public width(): number {
     return this.el.offsetWidth;
   }
 
   /**
    * Returns the offset height of the element
    */
-  public height() {
+  public height(): number {
     return this.el.offsetHeight;
   }
+
+  /**
+   * Clone the node
+   * @param deep true if the children of the node should also be cloned, or false to clone only the specified node.
+   * @returns {Dom}
+   */
+  public clone(deep = false): Dom {
+    return $$(<HTMLElement>this.el.cloneNode(deep));
+  }
+
+  private buildIE11CustomEvent(type: string, data?: { [key: string]: any }) {
+    const event = document.createEvent('CustomEvent');
+    event.initCustomEvent(type, true, true, data);
+    return event;
+  }
+
+  private shouldUseJQueryEvent() {
+    return JQueryUtils.getJQuery() && !Dom.useNativeJavaScriptEvents;
+  }
+
+  private processEventTypeToBeJQueryCompatible(event: string): string {
+    // From https://api.jquery.com/on/
+    // [...]
+    // > In addition, the .trigger() method can trigger both standard browser event names and custom event names to call attached handlers. Event names should only contain alphanumerics, underscore, and colon characters.
+    if (event) {
+      return event.replace(/[^a-zA-Z0-9\:\_]/g, '');
+    }
+    return event;
+  }
+
   private traverseAncestorForClass(current = this.el, className: string): HTMLElement {
     if (className.indexOf('.') == 0) {
       className = className.substr(1);
     }
-    var found = false;
+    let found = false;
     while (!found) {
       if ($$(current).hasClass(className)) {
         found = true;
@@ -690,11 +757,14 @@ export class Dom {
     }
     return undefined;
   }
+
+  private oldBrowserError() {
+    new Logger(this).error('CANNOT TRIGGER EVENT FOR OLDER BROWSER');
+  }
 }
 
 export class Win {
-  constructor(public win: Window) {
-  }
+  constructor(public win: Window) {}
 
   public height(): number {
     return this.win.innerHeight;
@@ -703,19 +773,38 @@ export class Win {
   public width(): number {
     return this.win.innerWidth;
   }
+
+  public scrollY(): number {
+    return this.supportPageOffset()
+      ? this.win.pageYOffset
+      : this.isCSS1Compat() ? this.win.document.documentElement.scrollTop : this.win.document.body.scrollTop;
+  }
+
+  public scrollX(): number {
+    return this.supportPageOffset()
+      ? window.pageXOffset
+      : this.isCSS1Compat() ? document.documentElement.scrollLeft : document.body.scrollLeft;
+  }
+
+  private isCSS1Compat() {
+    return (this.win.document.compatMode || '') === 'CSS1Compat';
+  }
+
+  private supportPageOffset() {
+    return this.win.pageXOffset !== undefined;
+  }
 }
 
 export class Doc {
-  constructor(public doc: Document) {
-  }
+  constructor(public doc: Document) {}
 
   public height(): number {
-    var body = this.doc.body;
+    const body = this.doc.body;
     return Math.max(body.scrollHeight, body.offsetHeight);
   }
 
   public width(): number {
-    var body = this.doc.body;
+    const body = this.doc.body;
     return Math.max(body.scrollWidth, body.offsetWidth);
   }
 }
@@ -730,24 +819,13 @@ export class Doc {
  */
 export function $$(dom: Dom): Dom;
 export function $$(html: HTMLElement): Dom;
-export function $$(type: string, props?: Object, ...children: Array<string | HTMLElement | Dom>): Dom;
+export function $$(type: string, props?: IStringMap<any>, ...children: Array<string | HTMLElement | Dom>): Dom;
 export function $$(...args: any[]): Dom {
   if (args.length === 1 && args[0] instanceof Dom) {
     return args[0];
-  } else if (args.length === 1 && (!_.isString(args[0]))) {
+  } else if (args.length === 1 && !_.isString(args[0])) {
     return new Dom(<HTMLElement>args[0]);
   } else {
     return new Dom(Dom.createElement.apply(Dom, args));
   }
-}
-
-export function htmlToDom(html: string): Element {
-  var parsedHtml = document.createElement('div');
-  parsedHtml.innerHTML = html;
-  // If the template has a single root element, we return it directly. Otherwise
-  // we'll have to wrap this thing in a div as ResultList expects a single element.
-  if (parsedHtml.children.length == 1) {
-    return parsedHtml.children.item(0);
-  }
-  return parsedHtml;
 }

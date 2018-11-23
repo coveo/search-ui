@@ -1,8 +1,7 @@
-import {IResponsiveDropdownContent, ResponsiveDropdownContent} from './ResponsiveDropdownContent';
-import {$$, Dom} from '../../../utils/Dom';
+import { IResponsiveDropdownContent, ResponsiveDropdownContent } from './ResponsiveDropdownContent';
+import { $$, Dom } from '../../../utils/Dom';
 
 export class RecommendationDropdownContent implements IResponsiveDropdownContent {
-
   public static OPENED_DROPDOWN_CSS_CLASS_NAME = 'coveo-open-dropdown-content';
 
   private cssClassName: string;
@@ -16,8 +15,8 @@ export class RecommendationDropdownContent implements IResponsiveDropdownContent
   public positionDropdown() {
     this.element.el.style.display = '';
 
-    let dropdownHeaderWrapper = this.coveoRoot.find('.coveo-results-column');
-    $$(dropdownHeaderWrapper).prepend(this.element.el);
+    let dropdownContentWrapper = this.coveoRoot.find('.coveo-results-column');
+    $$(dropdownContentWrapper).prepend(this.element.el);
     this.element.addClass(ResponsiveDropdownContent.DEFAULT_CSS_CLASS_NAME);
     this.element.addClass(this.cssClassName);
 
