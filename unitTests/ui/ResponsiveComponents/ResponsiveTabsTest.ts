@@ -41,7 +41,7 @@ export function ResponsiveTabsTest() {
       expect(ResponsiveComponentsUtils.activateSmallTabs).toHaveBeenCalled();
     });
 
-    it("doesn't activates small tabs when the screen is narrow and the responsiveMode is medium (or large)", () => {
+    it('does activates small tabs when the screen is narrow and the responsiveMode is medium (or large)', () => {
       const mediumBreakpoint = 800;
       new SearchInterface(root.el, { responsiveMode: 'medium', responsiveMediumBreakpoint: mediumBreakpoint });
       responsiveTabs = new ResponsiveTabs(root, Tab.ID);
@@ -50,7 +50,7 @@ export function ResponsiveTabsTest() {
 
       responsiveTabs.handleResizeEvent();
 
-      expect(ResponsiveComponentsUtils.activateSmallTabs).not.toHaveBeenCalled();
+      expect(ResponsiveComponentsUtils.activateSmallTabs).toHaveBeenCalled();
     });
 
     it('deactivates small tabs when it should switch to large mode', () => {

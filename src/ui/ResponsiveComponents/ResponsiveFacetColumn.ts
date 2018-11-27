@@ -96,6 +96,7 @@ export class ResponsiveFacetColumn implements IResponsiveComponent {
     }
     switch (this.searchInterface.responsiveComponents.getResponsiveMode()) {
       case 'small':
+      case 'medium':
         return true;
       case 'auto':
         return (
