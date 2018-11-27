@@ -143,7 +143,7 @@ export class Dom {
   }
 
   /**
-   * Show the element;
+   * Show the element by setting display to block;
    */
   public show(): void {
     this.el.style.display = 'block';
@@ -156,6 +156,14 @@ export class Dom {
   public hide(): void {
     this.el.style.display = 'none';
     $$(this.el).setAttribute('aria-hidden', 'true');
+  }
+
+  /**
+   * Show the element by setting display to an empty string.
+   */
+  public unhide(): void {
+    this.el.style.display = '';
+    $$(this.el).setAttribute('aria-hidden', 'false');
   }
 
   /**
@@ -777,13 +785,17 @@ export class Win {
   public scrollY(): number {
     return this.supportPageOffset()
       ? this.win.pageYOffset
-      : this.isCSS1Compat() ? this.win.document.documentElement.scrollTop : this.win.document.body.scrollTop;
+      : this.isCSS1Compat()
+        ? this.win.document.documentElement.scrollTop
+        : this.win.document.body.scrollTop;
   }
 
   public scrollX(): number {
     return this.supportPageOffset()
       ? window.pageXOffset
-      : this.isCSS1Compat() ? document.documentElement.scrollLeft : document.body.scrollLeft;
+      : this.isCSS1Compat()
+        ? document.documentElement.scrollLeft
+        : document.body.scrollLeft;
   }
 
   private isCSS1Compat() {
