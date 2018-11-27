@@ -95,7 +95,7 @@ export class ResultsPerPage extends Component {
     this.bind.onRootElement(QueryEvents.querySuccess, (args: IQuerySuccessEventArgs) => this.handleQuerySuccess(args));
     this.bind.onRootElement(QueryEvents.queryError, () => this.handleQueryError());
     this.bind.onRootElement(QueryEvents.noResults, (args: INoResultsEventArgs) => this.handleNoResults());
-    this.bind.onQueryState(MODEL_EVENTS.CHANGE_ONE, QUERY_STATE_ATTRIBUTES.RPP, () => this.handleQueryStateModelChanged());
+    this.bind.onQueryState(MODEL_EVENTS.CHANGE_ONE, QUERY_STATE_ATTRIBUTES.NUMBER_OF_RESULTS, () => this.handleQueryStateModelChanged());
 
     this.initComponent();
   }
@@ -124,7 +124,7 @@ export class ResultsPerPage extends Component {
   }
 
   private updateQueryStateModelResultsPerPage() {
-    this.queryStateModel.set(QueryStateModel.attributesEnum.rpp, this.currentResultsPerPage);
+    this.queryStateModel.set(QueryStateModel.attributesEnum.numberOfResults, this.currentResultsPerPage);
   }
 
   private logAnalyticsEvent(analyticCause: IAnalyticsActionCause) {
@@ -151,7 +151,7 @@ export class ResultsPerPage extends Component {
   private getInitialChoice(): number {
     const firstDisplayedChoice = this.options.choicesDisplayed[0];
     const configuredChoice = this.options.initialChoice;
-    const queryStateModelChoice = this.queryStateModel.get(QueryStateModel.attributesEnum.rpp);
+    const queryStateModelChoice = this.queryStateModel.get(QueryStateModel.attributesEnum.numberOfResults);
     const queryStateModelChoiceIsNotDefault = queryStateModelChoice !== firstDisplayedChoice;
 
     if (queryStateModelChoiceIsNotDefault && this.isValidChoice(queryStateModelChoice)) {
@@ -162,7 +162,7 @@ export class ResultsPerPage extends Component {
       if (this.isValidChoice(configuredChoice)) {
         return configuredChoice;
       }
-      this.logInvalidChoiceWarning();
+      this.logInvalidConfiguredChoiceWarning();
     }
 
     return firstDisplayedChoice;
@@ -172,9 +172,12 @@ export class ResultsPerPage extends Component {
     return this.options.choicesDisplayed.indexOf(choice) !== -1;
   }
 
-  private logInvalidChoiceWarning() {
+  private logInvalidConfiguredChoiceWarning() {
+    const configuredChoice = this.options.initialChoice;
+    const validChoices = this.options.choicesDisplayed;
+
     this.logger.warn(
-      'The initial number of results is not within the choices displayed. Consider setting a value that can be selected. The first choice will be selected instead.'
+      `The choice ${configuredChoice} is not within the choices displayed. Consider setting a value that is valid: ${validChoices}. The first choice will be selected instead.`
     );
   }
 

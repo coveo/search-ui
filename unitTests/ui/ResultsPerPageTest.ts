@@ -31,7 +31,7 @@ export function ResultsPerPageTest() {
       });
 
       it('sets number if results in the QueryStateModel', () => {
-        expect(test.cmp.queryStateModel.set).toHaveBeenCalledWith(QueryStateModel.attributesEnum.rpp, numOfResults);
+        expect(test.cmp.queryStateModel.set).toHaveBeenCalledWith(QueryStateModel.attributesEnum.numberOfResults, numOfResults);
       });
 
       it('should trigger a query', () => {
