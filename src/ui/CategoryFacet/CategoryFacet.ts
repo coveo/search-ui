@@ -741,7 +741,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   private buildLessButton() {
     const svgContainer = $$('span', { className: 'coveo-facet-less-icon' }, SVGIcons.icons.arrowUp).el;
     SVGDom.addClassToSVGInContainer(svgContainer, 'coveo-facet-less-icon-svg');
-    const less = $$('div', { className: 'coveo-category-facet-less', tabIndex: 0 }, svgContainer);
+    const less = $$('div', { className: 'coveo-category-facet-less', tabindex: 0 }, svgContainer);
 
     const showLessHandler = () => this.showLess();
     less.on('click', showLessHandler);

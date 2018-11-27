@@ -29,7 +29,7 @@ export class CategoryFacetTemplates {
   }
 
   public buildAllCategoriesButton() {
-    const allCategoriesCaption = $$('span', { className: 'coveo-category-facet-all-categories-caption' }, l('AllCategories'));
+    const allCategoriesCaption = $$('span', { className: 'coveo-category-facet-all-categories-caption', tabindex: 0 }, l('AllCategories'));
     const allCategories = $$(
       'li',
       { className: 'coveo-category-facet-value coveo-category-facet-all-categories' },
