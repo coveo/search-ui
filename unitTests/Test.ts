@@ -659,3 +659,6 @@ ComponentsTypesTest();
 
 import { PromotedResultsBadgeTest } from './ui/PromotedResultsBadgeTest';
 PromotedResultsBadgeTest();
+
+import { ResultListUtilsTest } from './utils/ResultListUtilsTest';
+ResultListUtilsTest();

@@ -119,6 +119,57 @@ export function DomTests() {
         expect(other.nextSibling).toBe(otherSibling);
       });
 
+      describe(`when calling #show`, () => {
+        let div: HTMLElement;
+
+        beforeEach(() => {
+          div = document.createElement('div');
+          $$(div).show();
+        });
+
+        it('sets display to an empty string', () => {
+          expect(div.style.display).toBe('block');
+        });
+
+        it(`sets the aria-hidden attribute to 'false'`, () => {
+          expect(div.getAttribute('aria-hidden')).toBe('false');
+        });
+      });
+
+      describe(`when calling #hide`, () => {
+        let div: HTMLElement;
+
+        beforeEach(() => {
+          div = document.createElement('div');
+          $$(div).hide();
+        });
+
+        it(`sets display to 'none'`, () => {
+          expect(div.style.display).toBe('none');
+        });
+
+        it(`sets the aria-hidden attribute to 'true'`, () => {
+          expect(div.getAttribute('aria-hidden')).toBe('true');
+        });
+      });
+
+      describe(`when calling #unhide`, () => {
+        let div: HTMLElement;
+
+        beforeEach(() => {
+          div = document.createElement('div');
+          $$(div).unhide();
+        });
+
+        it('sets display to an empty string', () => {
+          expect(div.style.display).toBe('');
+        });
+
+        it(`sets the aria-hidden attribute to 'false'`, () => {
+          expect(div.getAttribute('aria-hidden')).toBe('false');
+        });
+      });
+
       describe('prepend', () => {
         it('should work properly', () => {
           const firstChild = document.createElement('div');
