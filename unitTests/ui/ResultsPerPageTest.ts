@@ -11,15 +11,16 @@ export function ResultsPerPageTest() {
   describe('ResultsPerPage', () => {
     let test: Mock.IBasicComponentSetup<ResultsPerPage>;
 
-    beforeEach(() => {
-      test = Mock.basicComponentSetup<ResultsPerPage>(ResultsPerPage);
-      test.env.queryController.options = {};
-      test.env.queryController.options.resultsPerPage = 10;
-    });
+    function buildResultsPerPage() {
+      const cmp = Mock.basicComponentSetup<ResultsPerPage>(ResultsPerPage);
+      cmp.env.queryController.options = {};
+      cmp.env.queryController.options.resultsPerPage = 10;
+      return cmp;
+    }
 
-    afterEach(() => {
-      test = null;
-    });
+    beforeEach(() => (test = buildResultsPerPage()));
+
+    afterEach(() => (test = null));
 
     describe('when calling #setResultsPerPage', () => {
       const numOfResults = 50;
@@ -45,6 +46,22 @@ export function ResultsPerPageTest() {
           test.cmp.element
         );
       });
+    });
+
+    it(`when there are two ResultsPerPage components,
+    when calling #setResultsPerPage on one,
+    it updates the second component to the same number of results`, () => {
+      const numOfResults = 50;
+      const bindings = new Mock.MockEnvironmentBuilder().withLiveQueryStateModel().getBindings();
+
+      const firstResultsPerPage = new ResultsPerPage($$('div').el, {}, bindings);
+      const secondResultsPerPage = new ResultsPerPage($$('div').el, {}, bindings);
+
+      expect(secondResultsPerPage.resultsPerPage).not.toBe(numOfResults);
+
+      firstResultsPerPage.setResultsPerPage(numOfResults);
+
+      expect(secondResultsPerPage.resultsPerPage).toBe(secondResultsPerPage.resultsPerPage);
     });
 
     describe('should be able to activate and deactivate', () => {

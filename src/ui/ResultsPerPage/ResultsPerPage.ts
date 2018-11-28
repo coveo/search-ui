@@ -118,6 +118,13 @@ export class ResultsPerPage extends Component {
     this.executeQuery();
   }
 
+  /**
+   * Returns the current number of results per page.
+   */
+  public get resultsPerPage() {
+    return this.currentResultsPerPage;
+  }
+
   private updateResultsPerPage(resultsPerPage: number) {
     this.searchInterface.resultsPerPage = resultsPerPage;
     this.currentResultsPerPage = resultsPerPage;
