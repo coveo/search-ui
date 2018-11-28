@@ -23,6 +23,8 @@ import { SVGIcons } from '../../utils/SVGIcons';
 import { SVGDom } from '../../utils/SVGDom';
 import 'styling/_Pager';
 import { AccessibleButton } from '../../utils/AccessibleButton';
+import { ResultListEvents } from '../../events/ResultListEvents';
+import { ResultListUtils } from '../../utils/ResultListUtils';
 
 export interface IPagerOptions {
   numberOfPages: number;
@@ -138,6 +140,7 @@ export class Pager extends Component {
     this.bind.onQueryState(MODEL_EVENTS.CHANGE_ONE, QUERY_STATE_ATTRIBUTES.FIRST, (data: IAttributeChangedEventArg) =>
       this.handleQueryStateModelChanged(data)
     );
+    this.addAlwaysActiveListeners();
 
     this.list = document.createElement('ul');
     $$(this.list).addClass('coveo-pager-list');
@@ -180,6 +183,12 @@ export class Pager extends Component {
    */
   public nextPage() {
     this.setPage(this.currentPage + 1, analyticsActionCauseList.pagerNext);
+  }
+
+  private addAlwaysActiveListeners() {
+    this.searchInterface.element.addEventListener(ResultListEvents.newResultsDisplayed, () =>
+      ResultListUtils.hideIfInfiniteScrollEnabled(this)
+    );
   }
 
   private getMaxNumberOfPagesForCurrentResultsPerPage() {

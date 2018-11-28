@@ -13,6 +13,8 @@ import { exportGlobally } from '../../GlobalExports';
 import { l } from '../../strings/Strings';
 
 import 'styling/_ResultsPerPage';
+import { ResultListEvents } from '../../events/ResultListEvents';
+import { ResultListUtils } from '../../utils/ResultListUtils';
 
 export interface IResultsPerPageOptions {
   choicesDisplayed?: number[];
@@ -93,6 +95,8 @@ export class ResultsPerPage extends Component {
     this.bind.onRootElement(QueryEvents.querySuccess, (args: IQuerySuccessEventArgs) => this.handleQuerySuccess(args));
     this.bind.onRootElement(QueryEvents.queryError, () => this.handleQueryError());
     this.bind.onRootElement(QueryEvents.noResults, (args: INoResultsEventArgs) => this.handleNoResults());
+    this.addAlwaysActiveListeners();
+
     this.initComponent(element);
   }
 
@@ -122,6 +126,12 @@ export class ResultsPerPage extends Component {
       keepLastSearchUid: true,
       origin: this
     });
+  }
+
+  private addAlwaysActiveListeners() {
+    this.searchInterface.element.addEventListener(ResultListEvents.newResultsDisplayed, () =>
+      ResultListUtils.hideIfInfiniteScrollEnabled(this)
+    );
   }
 
   private getInitialChoice(): number {

@@ -1,4 +1,4 @@
-import { isArray, pairs, compact, uniq, rest, first, isString } from 'underscore';
+import { isArray, pairs, compact, uniq, rest, first, isString, contains } from 'underscore';
 import { Utils } from './Utils';
 import { IEndpointCallParameters } from '../rest/EndpointCaller';
 
@@ -99,10 +99,15 @@ export class UrlUtils {
     if (toNormalize.query) {
       const paired: string[][] = pairs(toNormalize.query);
       const mapped = paired.map(pair => {
-        const [key, value] = pair;
+        let [key, value] = pair;
 
-        if (UrlUtils.isInvalidQueryStringValue(value) || UrlUtils.isInvalidQueryStringValue(key)) {
-          return '';
+        const exceptions = ['pipeline'];
+        const isAnException = isString(key) && contains(exceptions, key.toLowerCase());
+
+        if (!isAnException) {
+          if (UrlUtils.isInvalidQueryStringValue(value) || UrlUtils.isInvalidQueryStringValue(key)) {
+            return '';
+          }
         }
 
         if (!this.isEncoded(value)) {

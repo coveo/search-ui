@@ -55,13 +55,7 @@ export class ResponsiveFacetColumn implements IResponsiveComponent {
     this.bindDropdownContentEvents();
     this.registerOnCloseHandler();
     this.registerQueryEvents();
-    if (Utils.isNullOrUndefined(options.responsiveBreakpoint)) {
-      this.breakpoint = this.searchInterface
-        ? this.searchInterface.responsiveComponents.getMediumScreenWidth()
-        : new ResponsiveComponents().getMediumScreenWidth();
-    } else {
-      this.breakpoint = options.responsiveBreakpoint;
-    }
+    this.breakpoint = options.responsiveBreakpoint;
   }
 
   public registerComponent(accept: Component) {
@@ -94,7 +88,24 @@ export class ResponsiveFacetColumn implements IResponsiveComponent {
   }
 
   private needSmallMode(): boolean {
-    return this.coveoRoot.width() <= this.breakpoint;
+    if (!this.searchInterface) {
+      return (
+        this.coveoRoot.width() <=
+        (Utils.isNullOrUndefined(this.breakpoint) ? new ResponsiveComponents().getMediumScreenWidth() : this.breakpoint)
+      );
+    }
+    switch (this.searchInterface.responsiveComponents.getResponsiveMode()) {
+      case 'small':
+      case 'medium':
+        return true;
+      case 'auto':
+        return (
+          this.coveoRoot.width() <=
+          (Utils.isNullOrUndefined(this.breakpoint) ? this.searchInterface.responsiveComponents.getMediumScreenWidth() : this.breakpoint)
+        );
+      default:
+        return false;
+    }
   }
 
   private changeToSmallMode() {
