@@ -15,6 +15,8 @@ import { l } from '../../strings/Strings';
 import 'styling/_ResultsPerPage';
 import { MODEL_EVENTS } from '../../models/Model';
 import { QUERY_STATE_ATTRIBUTES, QueryStateModel } from '../../models/QueryStateModel';
+import { ResultListEvents } from '../../events/ResultListEvents';
+import { ResultListUtils } from '../../utils/ResultListUtils';
 
 export interface IResultsPerPageOptions {
   choicesDisplayed?: number[];
@@ -96,6 +98,7 @@ export class ResultsPerPage extends Component {
     this.bind.onRootElement(QueryEvents.queryError, () => this.handleQueryError());
     this.bind.onRootElement(QueryEvents.noResults, (args: INoResultsEventArgs) => this.handleNoResults());
     this.bind.onQueryState(MODEL_EVENTS.CHANGE_ONE, QUERY_STATE_ATTRIBUTES.NUMBER_OF_RESULTS, () => this.handleQueryStateModelChanged());
+    this.addAlwaysActiveListeners();
 
     this.initComponent();
   }
@@ -153,6 +156,12 @@ export class ResultsPerPage extends Component {
   private handleQueryStateModelChanged() {
     const resultsPerPage = this.getInitialChoice();
     this.updateResultsPerPage(resultsPerPage);
+  }
+
+  private addAlwaysActiveListeners() {
+    this.searchInterface.element.addEventListener(ResultListEvents.newResultsDisplayed, () =>
+      ResultListUtils.hideIfInfiniteScrollEnabled(this)
+    );
   }
 
   private getInitialChoice(): number {
