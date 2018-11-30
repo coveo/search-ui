@@ -328,7 +328,7 @@ export class SliderButton {
   public getPosition() {
     const left = this.element.style.left;
     if (left.indexOf('%') != -1) {
-      return parseFloat(left) / 100 * this.slider.element.clientWidth;
+      return (parseFloat(left) / 100) * this.slider.element.clientWidth;
     } else {
       return parseFloat(left);
     }
@@ -394,7 +394,7 @@ export class SliderButton {
     const position = this.getMousePosition(e);
     this.isMouseDown = true;
     this.startPositionX = position.x;
-    this.lastElementLeft = parseInt(this.element.style.left, 10) / 100 * this.slider.element.clientWidth;
+    this.lastElementLeft = (parseInt(this.element.style.left, 10) / 100) * this.slider.element.clientWidth;
     this.origUserSelect = document.body.style[this.getUserSelect()];
     this.origCursor = document.body.style.cursor;
     document.body.style[this.getUserSelect()] = 'none';
@@ -756,7 +756,7 @@ class SliderGraph {
   }
 
   private padGraphWithEmptyData(data: ISliderGraphData[]) {
-    let oneStepOfGraph = data[0].end - data[0].start;
+    const oneStepOfGraph = data[0].end - data[0].start;
     this.padBeginningOfGraphWithEmptyData(data, oneStepOfGraph);
     this.padEndOfGraphWithEmptyData(data, oneStepOfGraph);
   }
@@ -764,7 +764,7 @@ class SliderGraph {
   private padBeginningOfGraphWithEmptyData(data: ISliderGraphData[], oneStepOfGraph: number) {
     if (data[0].start > this.slider.options.start && data[0].start > oneStepOfGraph) {
       const difToFillAtStart = data[0].start - this.slider.options.start;
-      const nbOfStepsAtStart = Math.round(difToFillAtStart / oneStepOfGraph);
+      const nbOfStepsAtStart = Math.round(difToFillAtStart / (oneStepOfGraph || 1));
       let currentStep = data[0].start;
       for (let i = nbOfStepsAtStart; i > 0; i--) {
         data.unshift(<ISliderGraphData>{ start: currentStep - oneStepOfGraph, end: currentStep, y: 0 });
@@ -777,7 +777,7 @@ class SliderGraph {
     const lastDataIndex = data.length - 1;
     if (data[lastDataIndex].end < this.slider.options.end) {
       const diffToFillAtEnd = this.slider.options.end - data[lastDataIndex].end;
-      const nbOfStepsAtEnd = Math.round(diffToFillAtEnd / oneStepOfGraph);
+      const nbOfStepsAtEnd = Math.round(diffToFillAtEnd / (oneStepOfGraph || 1));
       let currentStep = data[lastDataIndex].end;
       for (let i = 0; i < nbOfStepsAtEnd; i++) {
         data.push(<ISliderGraphData>{ start: currentStep, end: currentStep + oneStepOfGraph, y: 0 });
