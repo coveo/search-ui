@@ -785,17 +785,13 @@ export class Win {
   public scrollY(): number {
     return this.supportPageOffset()
       ? this.win.pageYOffset
-      : this.isCSS1Compat()
-        ? this.win.document.documentElement.scrollTop
-        : this.win.document.body.scrollTop;
+      : this.isCSS1Compat() ? this.win.document.documentElement.scrollTop : this.win.document.body.scrollTop;
   }
 
   public scrollX(): number {
     return this.supportPageOffset()
       ? window.pageXOffset
-      : this.isCSS1Compat()
-        ? document.documentElement.scrollLeft
-        : document.body.scrollLeft;
+      : this.isCSS1Compat() ? document.documentElement.scrollLeft : document.body.scrollLeft;
   }
 
   private isCSS1Compat() {
