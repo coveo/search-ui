@@ -7400,5 +7400,13 @@
   "UnselectValueWithResultCount": {
     "en": "Unselect {0} with {1}",
     "fr": "Désélectionnez {0} avec {1}"
+  },
+  "PageNumber": {
+    "en": "Page {0}",
+    "fr": "Page {0}"
+  },
+  "DisplayResultsPerPage": {
+    "en": "Show {0} results per page",
+    "fr": "Affichez {0} résultats par page"
   }
 }
