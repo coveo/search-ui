@@ -755,8 +755,13 @@ class SliderGraph {
     ]);
   }
 
+  private calculateOneStepOfGraph(data: ISliderGraphData[]) {
+    const oneStep = Math.abs(data[0].end - data[0].start);
+    return oneStep || 1;
+  }
+
   private padGraphWithEmptyData(data: ISliderGraphData[]) {
-    const oneStepOfGraph = data[0].end - data[0].start;
+    const oneStepOfGraph = this.calculateOneStepOfGraph(data);
     this.padBeginningOfGraphWithEmptyData(data, oneStepOfGraph);
     this.padEndOfGraphWithEmptyData(data, oneStepOfGraph);
   }
@@ -764,7 +769,7 @@ class SliderGraph {
   private padBeginningOfGraphWithEmptyData(data: ISliderGraphData[], oneStepOfGraph: number) {
     if (data[0].start > this.slider.options.start && data[0].start > oneStepOfGraph) {
       const difToFillAtStart = data[0].start - this.slider.options.start;
-      const nbOfStepsAtStart = Math.round(difToFillAtStart / (oneStepOfGraph || 1));
+      const nbOfStepsAtStart = Math.min(MAX_NUMBER_OF_STEPS, Math.round(difToFillAtStart / oneStepOfGraph));
       let currentStep = data[0].start;
       for (let i = nbOfStepsAtStart; i > 0; i--) {
         data.unshift(<ISliderGraphData>{ start: currentStep - oneStepOfGraph, end: currentStep, y: 0 });
@@ -777,7 +782,7 @@ class SliderGraph {
     const lastDataIndex = data.length - 1;
     if (data[lastDataIndex].end < this.slider.options.end) {
       const diffToFillAtEnd = this.slider.options.end - data[lastDataIndex].end;
-      const nbOfStepsAtEnd = Math.round(diffToFillAtEnd / (oneStepOfGraph || 1));
+      const nbOfStepsAtEnd = Math.min(MAX_NUMBER_OF_STEPS, Math.round(diffToFillAtEnd / oneStepOfGraph));
       let currentStep = data[lastDataIndex].end;
       for (let i = 0; i < nbOfStepsAtEnd; i++) {
         data.push(<ISliderGraphData>{ start: currentStep, end: currentStep + oneStepOfGraph, y: 0 });

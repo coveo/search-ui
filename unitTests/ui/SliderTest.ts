@@ -319,8 +319,8 @@ export function SliderTest() {
           expect($$(getSliderGraph(slider.element)).findAll('rect').length).toBe(10);
         });
 
-        it(`when slider & data starts equals ends with data being greater,
-        should not cause infinite loop issue`, () => {
+        it(`when the slider data #starts and #ends properties are equal,
+        it should not cause an infinite loop`, () => {
           slider = new Slider(
             el,
             {
