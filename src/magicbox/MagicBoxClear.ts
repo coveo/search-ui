@@ -26,8 +26,8 @@ export class MagicBoxClear {
     this.toggleTabindex(false);
   }
 
-  public toggleTabindex(enabled: boolean) {
-    const tabindex = enabled ? '0' : '-1';
+  public toggleTabindex(hasText: boolean) {
+    const tabindex = hasText ? '0' : '-1';
     this.element.setAttribute('tabindex', tabindex);
   }
 }
