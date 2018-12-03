@@ -99,8 +99,6 @@ export function PagerTest() {
       const anchors = $$(test.cmp.element).findAll('a.coveo-pager-list-item-text');
       expect($$(anchors[0]).text()).toBe('1');
       expect(anchors[0].parentElement.getAttribute('aria-label')).toBe('Page 1');
-      expect($$(anchors[2]).text()).toBe('3');
-      expect(anchors[2].parentElement.getAttribute('aria-label')).toBe('Page 3');
     });
 
     it('should not reset page number on a new query if the origin is a pager', () => {
