@@ -1,6 +1,8 @@
 @import 'Variables';
 @import './mixins/mediaQuery';
 .CoveoSearchbox {
+  @include display(flex);
+
   &.coveo-inline {
     overflow: hidden;
     .magic-box {
@@ -8,13 +10,12 @@
     }
   }
   .CoveoSearchButton {
-    float: right;
     z-index: 2;
-    position: relative;
     border-top-right-radius: $default-border-radius;
     border-bottom-right-radius: $default-border-radius;
   }
   .magic-box {
+    @include flex-grow(1);
     @include defaultRoundedBorder();
     .magic-box-clear-svg {
       width: 15px;

@@ -223,7 +223,11 @@ export class Pager extends Component {
           $$(listItemValue).addClass(['coveo-pager-list-item-text', 'coveo-pager-anchor']);
           $$(listItemValue).text(i.toString(10));
 
-          let listItem = $$('li', { className: 'coveo-pager-list-item', tabindex: 0 }).el;
+          let listItem = $$('li', {
+            className: 'coveo-pager-list-item',
+            tabindex: 0,
+            ariaLabel: l('PageNumber', i.toString(10))
+          }).el;
           if (i == this.currentPage) {
             $$(listItem).addClass('coveo-active');
           }

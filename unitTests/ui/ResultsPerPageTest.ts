@@ -80,10 +80,23 @@ export function ResultsPerPageTest() {
           choicesDisplayed: [15, 25, 35, 75]
         });
         Simulate.query(test.env, {
-          results: FakeResults.createFakeResults(1000)
+          results: FakeResults.createFakeResults(100)
         });
         expect($$(test.cmp.element).findAll('a.coveo-results-per-page-list-item-text').length).toBe(4);
         expect(test.env.queryController.options.resultsPerPage).toBe(15);
+      });
+
+      it('choicesDisplayed links display the right aria-label', () => {
+        test = Mock.optionsComponentSetup<ResultsPerPage, IResultsPerPageOptions>(ResultsPerPage, {
+          choicesDisplayed: [10, 25, 50]
+        });
+        Simulate.query(test.env, {
+          results: FakeResults.createFakeResults(100)
+        });
+
+        const anchors = $$(test.cmp.element).findAll('a.coveo-results-per-page-list-item-text');
+        expect($$(anchors[0]).text()).toBe('10');
+        expect(anchors[0].parentElement.getAttribute('aria-label')).toBe('Display 10 results per page');
       });
 
       it('initialChoice allows to choose the first choice of the number of results per page options', () => {
@@ -92,7 +105,7 @@ export function ResultsPerPageTest() {
           choicesDisplayed: [3, 5, 7, 13]
         });
         Simulate.query(test.env, {
-          results: FakeResults.createFakeResults(1000)
+          results: FakeResults.createFakeResults(100)
         });
         expect(test.env.queryController.options.resultsPerPage).toBe(13);
       });
@@ -104,7 +117,7 @@ export function ResultsPerPageTest() {
           choicesDisplayed: [firstChoice, 5, 7, 13]
         });
         Simulate.query(test.env, {
-          results: FakeResults.createFakeResults(1000)
+          results: FakeResults.createFakeResults(100)
         });
         expect(test.env.queryController.options.resultsPerPage).toBe(firstChoice);
       });
@@ -117,7 +130,7 @@ export function ResultsPerPageTest() {
           choicesDisplayed: [firstChoice, 5, 7, 13]
         });
         Simulate.query(test.env, {
-          results: FakeResults.createFakeResults(1000)
+          results: FakeResults.createFakeResults(100)
         });
         expect(test.env.queryController.options.resultsPerPage).toBe(firstChoice);
       });
