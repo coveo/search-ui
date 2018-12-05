@@ -158,7 +158,6 @@
   "dependencies": {
     "@material/select": "^0.3.3",
     "@types/ag-grid": "^3.2.0",
-    "coveo-styleguide": "1.13.4",
     "coveo.analytics": "^0.7.0",
     "d3": "^4.2.1",
     "d3-scale": "^1.0.3",
