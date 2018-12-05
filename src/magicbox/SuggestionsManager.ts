@@ -308,12 +308,18 @@ export class SuggestionsManager {
       this.removeSelectedStatus(elem);
     }
     $$(suggestion).addClass(this.options.selectedClass);
-    $$(suggestion).setAttribute('aria-selected', 'true');
+    this.updateAreaSelectedIfDefined(suggestion, 'true');
   }
 
   private removeSelectedStatus(suggestion: HTMLElement): void {
     $$(suggestion).removeClass(this.options.selectedClass);
-    $$(suggestion).setAttribute('aria-selected', 'false');
+    this.updateAreaSelectedIfDefined(suggestion, 'false');
+  }
+
+  private updateAreaSelectedIfDefined(suggestion: HTMLElement, value: string): void {
+    if ($$(suggestion).getAttribute('aria-selected')) {
+      $$(suggestion).setAttribute('aria-selected', value);
+    }
   }
 
   private addAccessibilityProperties() {
