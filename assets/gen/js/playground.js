@@ -5863,8 +5863,8 @@ exports.ResponsiveComponents = ResponsiveComponents;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    lib: '2.4710.15',
-    product: '2.4710.15',
+    lib: '2.4710.17-beta',
+    product: '2.4710.17-beta',
     supportedApiVersion: 2
 };
 
@@ -8675,6 +8675,8 @@ var dict = {
     "FacetTitle": "{0} facet",
     "SelectValueWithResultCount": "Select {0} with {1}",
     "UnselectValueWithResultCount": "Unselect {0} with {1}",
+    "PageNumber": "Page {0}",
+    "DisplayResultsPerPage": "Display {0} results per page",
 };
 function defaultLanguage() {
     var locales = String["locales"] || (String["locales"] = {});
