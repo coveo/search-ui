@@ -119,6 +119,7 @@ export function SuggestionsManagerTest() {
 
     it('removes selected class and sets aria-selected to false when moving from a selected element to off the browser window', () => {
       suggestion.addClass(selectedClass);
+      suggestion.setAttribute('aria-selected', 'true');
 
       suggestionManager.handleMouseOut({
         target: suggestion.el
@@ -130,6 +131,7 @@ export function SuggestionsManagerTest() {
 
     it('removes selected class and sets aria-selected to false when moving from an element inside a selected element to off the browser window', () => {
       suggestion.addClass(selectedClass);
+      suggestion.setAttribute('aria-selected', 'true');
 
       suggestionManager.handleMouseOut({
         target: elementInsideSuggestion.el
@@ -161,6 +163,7 @@ export function SuggestionsManagerTest() {
       elementInsideSuggestion = $$(document.createElement('div'));
 
       suggestion.addClass(selectableClass);
+      suggestion.setAttribute('aria-selected', 'false');
       suggestion.el.appendChild(elementInsideSuggestion.el);
       suggestionContainer.el.appendChild(suggestion.el);
       container.el.appendChild(suggestionContainer.el);
