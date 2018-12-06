@@ -20,9 +20,9 @@ script:
 - echo $PACKAGE_JSON_VERSION
 - yarn run injectTag
 - yarn run build
-- yarn run minimize
+- if [ "x$TRAVIS_TAG" != "x" ]; then yarn run minimize ; fi
 - yarn run unitTests
-- yarn run accessibilityTests
+- if [ "x$TRAVIS_TAG" != "x" ]; then yarn run accessibilityTests ; fi
 - yarn run uploadCoverage
 - yarn run testChunks
 - yarn run validateTypeDefinitions
