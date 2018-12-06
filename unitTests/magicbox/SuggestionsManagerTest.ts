@@ -19,8 +19,8 @@ export function SuggestionsManagerTest() {
       const inputManager = new InputManager(document.createElement('div'), () => {}, {} as MagicBoxInstance);
 
       suggestionManager = new SuggestionsManager(suggestionContainer.el, document.createElement('div'), inputManager, {
-        selectedClass: selectedClass,
-        selectableClass: selectableClass
+        selectedClass,
+        selectableClass
       });
     });
 
@@ -28,6 +28,7 @@ export function SuggestionsManagerTest() {
       suggestionManager.moveDown();
       const selectedWithKeyboard = suggestionManager.selectAndReturnKeyboardFocusedElement();
       expect($$(selectedWithKeyboard).hasClass(selectedClass)).toBe(true);
+      expect($$(selectedWithKeyboard).getAttribute('aria-selected')).toBe('true');
       expect(selectedWithKeyboard).toBe(suggestion.el);
     });
 
@@ -35,6 +36,7 @@ export function SuggestionsManagerTest() {
       suggestionManager.moveUp();
       const selectedWithKeyboard = suggestionManager.selectAndReturnKeyboardFocusedElement();
       expect($$(selectedWithKeyboard).hasClass(selectedClass)).toBe(true);
+      expect($$(selectedWithKeyboard).getAttribute('aria-selected')).toBe('true');
       expect(selectedWithKeyboard).toBe(suggestion.el);
     });
 
@@ -73,22 +75,25 @@ export function SuggestionsManagerTest() {
       expect(selectedWithKeyboard).toBeNull();
     });
 
-    it('adds selected class when moving on element that is selectable', () => {
+    it('adds selected class and sets aria-selected to true when moving on element that is selectable', () => {
       suggestionManager.handleMouseOver({
         target: suggestion.el
       });
       expect(suggestion.hasClass(selectedClass)).toBe(true);
+      expect(suggestion.getAttribute('aria-selected')).toBe('true');
     });
 
-    it('adds selected class when moving on element that is inside a selectable element', () => {
+    it('adds selected class and sets aria-selected to true when moving on element that is inside a selectable element', () => {
       suggestionManager.handleMouseOver({
         target: elementInsideSuggestion.el
       });
       expect(suggestion.hasClass(selectedClass)).toBe(true);
+      expect(suggestion.getAttribute('aria-selected')).toBe('true');
     });
 
-    it('removes selected class when moving off a selected element', () => {
+    it('removes selected class and sets aria-selected to false when moving off a selected element', () => {
       suggestion.addClass(selectedClass);
+      suggestion.setAttribute('aria-selected', 'true');
 
       suggestionManager.handleMouseOut({
         target: suggestion.el,
@@ -96,10 +101,12 @@ export function SuggestionsManagerTest() {
       });
 
       expect(suggestion.hasClass(selectedClass)).toBe(false);
+      expect(suggestion.getAttribute('aria-selected')).toBe('false');
     });
 
-    it('removes selected class when moving off an element that is inside a selected element', () => {
+    it('removes selected class and sets aria-selected to false when moving off an element that is inside a selected element', () => {
       suggestion.addClass(selectedClass);
+      suggestion.setAttribute('aria-selected', 'true');
 
       suggestionManager.handleMouseOut({
         target: elementInsideSuggestion.el,
@@ -107,32 +114,38 @@ export function SuggestionsManagerTest() {
       });
 
       expect(suggestion.hasClass(selectedClass)).toBe(false);
+      expect(suggestion.getAttribute('aria-selected')).toBe('false');
     });
 
-    it('removes selected class when moving from a selected element to off the browser window', () => {
+    it('removes selected class and sets aria-selected to false when moving from a selected element to off the browser window', () => {
       suggestion.addClass(selectedClass);
+      suggestion.setAttribute('aria-selected', 'true');
 
       suggestionManager.handleMouseOut({
         target: suggestion.el
       });
 
       expect(suggestion.hasClass(selectedClass)).toBe(false);
+      expect(suggestion.getAttribute('aria-selected')).toBe('false');
     });
 
-    it('removes selected class when moving from an element inside a selected element to off the browser window', () => {
+    it('removes selected class and sets aria-selected to false when moving from an element inside a selected element to off the browser window', () => {
       suggestion.addClass(selectedClass);
+      suggestion.setAttribute('aria-selected', 'true');
 
       suggestionManager.handleMouseOut({
         target: elementInsideSuggestion.el
       });
 
       expect(suggestion.hasClass(selectedClass)).toBe(false);
+      expect(suggestion.getAttribute('aria-selected')).toBe('false');
     });
 
-    it('does not remove selected class when moving element between two element inside the suggestion', () => {
+    it('does not remove selected class or set aria-selected to false when moving element between two element inside the suggestion', () => {
       let someDeepElement = document.createElement('div');
       elementInsideSuggestion.el.appendChild(someDeepElement);
       suggestion.addClass(selectedClass);
+      suggestion.setAttribute('aria-selected', 'true');
 
       suggestionManager.handleMouseOut({
         target: elementInsideSuggestion.el,
@@ -140,6 +153,7 @@ export function SuggestionsManagerTest() {
       });
 
       expect(suggestion.hasClass(selectedClass)).toBe(true);
+      expect(suggestion.getAttribute('aria-selected')).toBe('true');
     });
 
     function buildContainer() {
@@ -149,6 +163,7 @@ export function SuggestionsManagerTest() {
       elementInsideSuggestion = $$(document.createElement('div'));
 
       suggestion.addClass(selectableClass);
+      suggestion.setAttribute('aria-selected', 'false');
       suggestion.el.appendChild(elementInsideSuggestion.el);
       suggestionContainer.el.appendChild(suggestion.el);
       container.el.appendChild(suggestionContainer.el);
