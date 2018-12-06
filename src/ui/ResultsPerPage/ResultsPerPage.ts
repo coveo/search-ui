@@ -218,8 +218,7 @@ export class ResultsPerPage extends Component {
     for (var i = 0; i < numResultsList.length; i++) {
       const listItem = $$('li', {
         className: 'coveo-results-per-page-list-item',
-        tabindex: 0,
-        ariaLabel: l('DisplayResultsPerPage', numResultsList[i].toString())
+        tabindex: 0
       });
       if (numResultsList[i] == this.currentResultsPerPage) {
         listItem.addClass('coveo-active');
@@ -235,7 +234,8 @@ export class ResultsPerPage extends Component {
         $$(
           'a',
           {
-            className: 'coveo-results-per-page-list-item-text'
+            className: 'coveo-results-per-page-list-item-text',
+            ariaLabel: l('DisplayResultsPerPage', numResultsList[i].toString())
           },
           numResultsList[i].toString()
         ).el

@@ -229,13 +229,13 @@ export class Pager extends Component {
       if (pagerBoundary.end - pagerBoundary.start > 0) {
         for (let i = pagerBoundary.start; i <= pagerBoundary.end; i++) {
           const listItemValue = document.createElement('a');
+          $$(listItemValue).setAttribute('aria-label', l('PageNumber', i.toString(10)));
           $$(listItemValue).addClass(['coveo-pager-list-item-text', 'coveo-pager-anchor']);
           $$(listItemValue).text(i.toString(10));
 
           let listItem = $$('li', {
             className: 'coveo-pager-list-item',
-            tabindex: 0,
-            ariaLabel: l('PageNumber', i.toString(10))
+            tabindex: 0
           }).el;
           if (i == this.currentPage) {
             $$(listItem).addClass('coveo-active');

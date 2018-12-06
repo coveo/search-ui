@@ -124,7 +124,7 @@ export function ResultsPerPageTest() {
 
         const anchors = $$(test.cmp.element).findAll('a.coveo-results-per-page-list-item-text');
         expect($$(anchors[0]).text()).toBe('10');
-        expect(anchors[0].parentElement.getAttribute('aria-label')).toBe('Display 10 results per page');
+        expect(anchors[0].getAttribute('aria-label')).toBe('Display 10 results per page');
       });
 
       it('initialChoice allows to choose the first choice of the number of results per page options', () => {
