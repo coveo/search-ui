@@ -17,7 +17,6 @@ import { Initialization } from '../Base/Initialization';
 import { Assert } from '../../misc/Assert';
 import { l } from '../../strings/Strings';
 import { $$ } from '../../utils/Dom';
-import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
 import { exportGlobally } from '../../GlobalExports';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { SVGDom } from '../../utils/SVGDom';
@@ -223,20 +222,23 @@ export class Pager extends Component {
           $$(listItemValue).addClass(['coveo-pager-list-item-text', 'coveo-pager-anchor']);
           $$(listItemValue).text(i.toString(10));
 
-          let listItem = $$('li', {
+          const page = i;
+          const listItem = $$('li', {
             className: 'coveo-pager-list-item',
-            tabindex: 0,
-            ariaLabel: l('PageNumber', i.toString(10))
+            tabindex: 0
           }).el;
-          if (i == this.currentPage) {
+          if (page === this.currentPage) {
             $$(listItem).addClass('coveo-active');
           }
 
-          ((pageNumber: number) => {
-            let clickAction = () => this.handleClickPage(pageNumber);
-            $$(listItem).on('click', clickAction);
-            $$(listItem).on('keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, clickAction));
-          })(i);
+          const clickAction = () => this.handleClickPage(page);
+
+          new AccessibleButton()
+            .withElement(listItem)
+            .withLabel(l('PageNumber', i.toString(10)))
+            .withClickAction(clickAction)
+            .withEnterKeyboardAction(clickAction)
+            .build();
 
           listItem.appendChild(listItemValue);
           this.list.appendChild(listItem);

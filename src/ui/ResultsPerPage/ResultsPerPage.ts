@@ -6,11 +6,11 @@ import { QueryEvents, IQuerySuccessEventArgs, INoResultsEventArgs } from '../../
 import { analyticsActionCauseList, IAnalyticsResultsPerPageMeta, IAnalyticsActionCause } from '../Analytics/AnalyticsActionListMeta';
 import { Assert } from '../../misc/Assert';
 import { $$ } from '../../utils/Dom';
-import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
 import { DeviceUtils } from '../../utils/DeviceUtils';
 import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 import { l } from '../../strings/Strings';
+import { AccessibleButton } from '../../utils/AccessibleButton';
 
 import 'styling/_ResultsPerPage';
 import { MODEL_EVENTS } from '../../models/Model';
@@ -209,20 +209,23 @@ export class ResultsPerPage extends Component {
     for (var i = 0; i < numResultsList.length; i++) {
       const listItem = $$('li', {
         className: 'coveo-results-per-page-list-item',
-        tabindex: 0,
-        ariaLabel: l('DisplayResultsPerPage', numResultsList[i].toString())
-      });
-      if (numResultsList[i] == this.currentResultsPerPage) {
-        listItem.addClass('coveo-active');
+        tabindex: 0
+      }).el;
+      const resultsPerPage = numResultsList[i];
+      if (resultsPerPage === this.currentResultsPerPage) {
+        $$(listItem).addClass('coveo-active');
       }
 
-      ((resultsPerPage: number) => {
-        const clickAction = () => this.handleClickPage(numResultsList[resultsPerPage]);
-        listItem.on('click', clickAction);
-        listItem.on('keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, clickAction));
-      })(i);
+      const clickAction = () => this.handleClickPage(resultsPerPage);
 
-      listItem.el.appendChild(
+      new AccessibleButton()
+        .withElement(listItem)
+        .withLabel(l('DisplayResultsPerPage', numResultsList[i].toString()))
+        .withClickAction(clickAction)
+        .withEnterKeyboardAction(clickAction)
+        .build();
+
+      listItem.appendChild(
         $$(
           'a',
           {
@@ -231,7 +234,7 @@ export class ResultsPerPage extends Component {
           numResultsList[i].toString()
         ).el
       );
-      this.list.appendChild(listItem.el);
+      this.list.appendChild(listItem);
     }
   }
 
