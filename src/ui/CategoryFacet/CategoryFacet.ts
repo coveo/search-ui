@@ -32,7 +32,7 @@ import { IAutoLayoutAdjustableInsideFacetColumn } from '../SearchInterface/Facet
 import { ResponsiveFacets } from '../ResponsiveComponents/ResponsiveFacets';
 import { IResponsiveComponentOptions } from '../ResponsiveComponents/ResponsiveComponentsManager';
 import { ResponsiveFacetOptions } from '../ResponsiveComponents/ResponsiveFacetOptions';
-import { AccessibleButton } from '../../utils/AccessibleButton';
+import { CategoryFacetHeader } from './CategoryFacetHeader';
 
 export interface ICategoryFacetOptions extends IResponsiveComponentOptions {
   field: IFieldOption;
@@ -229,11 +229,11 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
 
   private categoryValueRoot: CategoryValueRoot;
   private categoryFacetTemplates: CategoryFacetTemplates;
-  private facetHeader: Dom;
-  private waitElement: Dom;
+  private headerElement: HTMLElement;
   private currentPage: number;
   private moreLessContainer: Dom;
   private moreValuesToFetch: boolean = true;
+  private showingWaitAnimation = false;
   private numberOfChildValuesCurrentlyDisplayed = 0;
   private numberOfValues: number;
 
@@ -364,7 +364,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     try {
       await this.queryController.executeQuery();
     } finally {
-      this.hideWaitAnimation();
+      this.hideWaitingAnimation();
     }
   }
 
@@ -515,14 +515,18 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   }
 
   public showWaitingAnimation() {
-    if (this.waitElement.el.style.visibility == 'hidden') {
-      this.waitElement.el.style.visibility = 'visible';
+    this.ensureDom();
+    if (!this.showingWaitAnimation) {
+      $$(this.headerElement).find('.coveo-category-facet-header-wait-animation').style.visibility = 'visible';
+      this.showingWaitAnimation = true;
     }
   }
 
-  public hideWaitAnimation() {
-    if (this.waitElement.el.style.visibility == 'visible') {
-      this.waitElement.el.style.visibility = 'hidden';
+  public hideWaitingAnimation() {
+    this.ensureDom();
+    if (this.showingWaitAnimation) {
+      $$(this.headerElement).find('.coveo-category-facet-header-wait-animation').style.visibility = 'hidden';
+      this.showingWaitAnimation = false;
     }
   }
 
@@ -627,49 +631,10 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     return Utils.arrayEqual(this.activePath, this.options.basePath);
   }
 
-  private buildClearIcon() {
-    const title = l('Clear', this.options.title);
-    const clearIcon = $$('div', { className: 'coveo-category-facet-header-eraser coveo-facet-header-eraser' }, SVGIcons.icons.mainClear);
-
-    SVGDom.addClassToSVGInContainer(clearIcon.el, 'coveo-facet-header-eraser-svg');
-
-    const onClearClick = () => {
-      this.logAnalyticsEvent(analyticsActionCauseList.categoryFacetClear);
-      this.reset();
-    };
-
-    new AccessibleButton()
-      .withElement(clearIcon.el)
-      .withTitle(title)
-      .withLabel(title)
-      .withClickAction(onClearClick)
-      .withEnterKeyboardAction(onClearClick)
-      .build();
-
-    return clearIcon;
-  }
-
   private buildFacetHeader() {
-    this.waitElement = $$('div', { className: CategoryFacet.WAIT_ELEMENT_CLASS }, SVGIcons.icons.loading);
-    SVGDom.addClassToSVGInContainer(this.waitElement.el, 'coveo-category-facet-header-wait-animation-svg');
-    this.waitElement.el.style.visibility = 'hidden';
-
-    const titleSection = $$(
-      'div',
-      {
-        className: 'coveo-category-facet-title',
-        role: 'heading',
-        'aria-level': '2',
-        'aria-label': `${l('FacetTitle', this.options.title)}.`
-      },
-      this.options.title
-    );
-    this.facetHeader = $$('div', { className: 'coveo-category-facet-header' }, titleSection);
-    $$(this.element).prepend(this.facetHeader.el);
-    this.facetHeader.append(this.waitElement.el);
-
-    const clearIcon = this.buildClearIcon();
-    this.facetHeader.append(clearIcon.el);
+    const facetHeader = new CategoryFacetHeader({ categoryFacet: this, title: this.options.title });
+    this.headerElement = facetHeader.build();
+    $$(this.element).prepend(this.headerElement);
   }
 
   private handleQueryStateChanged(data: IAttributesChangedEventArg) {
