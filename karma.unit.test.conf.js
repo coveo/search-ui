@@ -8,10 +8,11 @@ var configuration = {
   singleRun: true,
   browsers: ['ChromeHeadless'],
   frameworks: ['jasmine'],
-  browserDisconnectTimeout: 90000,
-  browserDisconnectTolerance: 10,
+  browserDisconnectTimeout: 120000,
+  browserNoActivityTimeout: 120000,
   captureTimeout: 120000,
-  processKillTimeout: 90000,
+  processKillTimeout: 120000,
+  browserDisconnectTolerance: 10,
   files: [
     {
       pattern: './node_modules/es6-promise/dist/es6-promise.auto.js',
