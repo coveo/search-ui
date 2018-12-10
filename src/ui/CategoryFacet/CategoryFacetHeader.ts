@@ -49,7 +49,6 @@ export class CategoryFacetHeader {
   }
 
   private buildClearIcon() {
-    const title = l('Clear', this.options.title);
     this.eraserElement = $$(
       'div',
       { className: 'coveo-category-facet-header-eraser coveo-facet-header-eraser' },
@@ -64,8 +63,7 @@ export class CategoryFacetHeader {
 
     new AccessibleButton()
       .withElement(this.eraserElement)
-      .withTitle(title)
-      .withLabel(title)
+      .withLabel(l('Clear', this.options.title))
       .withClickAction(onClearClick)
       .withEnterKeyboardAction(onClearClick)
       .build();

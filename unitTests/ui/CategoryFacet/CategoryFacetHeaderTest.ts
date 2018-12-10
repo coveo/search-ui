@@ -57,6 +57,11 @@ export function CategoryFacetHeaderTest() {
         expect(baseOptions.categoryFacet.activePath).toEqual(['value9']);
       });
 
+      it('eraser bouton should be accessible', () => {
+        expect($$(categoryFacetHeader.eraserElement).getAttribute('role')).toBe('bouton');
+        expect($$(categoryFacetHeader.eraserElement).getAttribute('aria-label')).toBeTruthy();
+      });
+
       it('when clicking the eraser, it should reset the value', () => {
         categoryFacetHeader.eraserElement.click();
         expect(baseOptions.categoryFacet.activePath).toEqual([]);
