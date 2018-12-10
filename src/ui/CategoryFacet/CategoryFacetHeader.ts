@@ -12,16 +12,14 @@ export interface ICategoryFacetHeaderOptions {
 
 export class CategoryFacetHeader {
   public element: HTMLElement;
-  public eraserElement: HTMLElement;
-  public waitElement: HTMLElement;
 
-  constructor(public options: ICategoryFacetHeaderOptions) {
+  constructor(private options: ICategoryFacetHeaderOptions) {
     this.element = document.createElement('div');
     $$(this.element).addClass('coveo-facet-header');
   }
 
   public build(): HTMLElement {
-    this.waitElement = this.buildWaitAnimation();
+    const waitElement = this.buildWaitAnimation();
 
     const titleSection = $$(
       'div',
@@ -34,38 +32,37 @@ export class CategoryFacetHeader {
       this.options.title
     );
     this.element = $$('div', { className: 'coveo-category-facet-header' }, titleSection).el;
-    $$(this.element).append(this.waitElement);
+    $$(this.element).append(waitElement);
 
-    this.buildClearIcon();
-    $$(this.element).append(this.eraserElement);
+    const eraserElement = this.buildEraser();
+    $$(this.element).append(eraserElement);
     return this.element;
   }
 
   private buildWaitAnimation(): HTMLElement {
-    this.waitElement = $$('div', { className: CategoryFacet.WAIT_ELEMENT_CLASS }, SVGIcons.icons.loading).el;
-    SVGDom.addClassToSVGInContainer(this.waitElement, 'coveo-category-facet-header-wait-animation-svg');
-    this.waitElement.style.visibility = 'hidden';
-    return this.waitElement;
+    const waitElement = $$('div', { className: CategoryFacet.WAIT_ELEMENT_CLASS }, SVGIcons.icons.loading).el;
+    SVGDom.addClassToSVGInContainer(waitElement, 'coveo-category-facet-header-wait-animation-svg');
+    waitElement.style.visibility = 'hidden';
+    return waitElement;
   }
 
-  private buildClearIcon() {
-    this.eraserElement = $$(
-      'div',
-      { className: 'coveo-category-facet-header-eraser coveo-facet-header-eraser' },
-      SVGIcons.icons.mainClear
-    ).el;
+  private buildEraser() {
+    const eraserElement = $$('div', { className: 'coveo-category-facet-header-eraser coveo-facet-header-eraser' }, SVGIcons.icons.mainClear)
+      .el;
 
-    SVGDom.addClassToSVGInContainer(this.eraserElement, 'coveo-facet-header-eraser-svg');
+    SVGDom.addClassToSVGInContainer(eraserElement, 'coveo-facet-header-eraser-svg');
 
     const onClearClick = () => {
       this.options.categoryFacet.reset();
     };
 
     new AccessibleButton()
-      .withElement(this.eraserElement)
+      .withElement(eraserElement)
       .withLabel(l('Clear', this.options.title))
       .withClickAction(onClearClick)
       .withEnterKeyboardAction(onClearClick)
       .build();
+
+    return eraserElement;
   }
 }

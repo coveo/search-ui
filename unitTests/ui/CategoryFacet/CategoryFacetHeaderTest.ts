@@ -1,5 +1,5 @@
 import { CategoryFacetHeader, ICategoryFacetHeaderOptions } from '../../../src/ui/CategoryFacet/CategoryFacetHeader';
-import { buildSimulateCategoryFacetQueryData } from './CategoryFacetTest';
+import { buildCategoryFacetResults } from './CategoryFacetTest';
 import { $$ } from '../../../src/utils/Dom';
 import { CategoryFacet } from '../../../src/ui/CategoryFacet/CategoryFacet';
 import * as Mock from '../../MockEnvironment';
@@ -18,7 +18,7 @@ export function CategoryFacetHeaderTest() {
     }
 
     beforeEach(() => {
-      simulateQueryData = buildSimulateCategoryFacetQueryData();
+      simulateQueryData = buildCategoryFacetResults();
       test = Mock.advancedComponentSetup<CategoryFacet>(
         CategoryFacet,
         new Mock.AdvancedComponentSetupOptions(null, { field: '@field' }, env => env.withLiveQueryStateModel())
@@ -58,12 +58,14 @@ export function CategoryFacetHeaderTest() {
       });
 
       it('eraser bouton should be accessible', () => {
-        expect($$(categoryFacetHeader.eraserElement).getAttribute('role')).toBe('button');
-        expect($$(categoryFacetHeader.eraserElement).getAttribute('aria-label')).toBeTruthy();
+        const eraserElement = $$(categoryFacetHeader.element).find('.coveo-category-facet-header-eraser');
+        expect(eraserElement.getAttribute('role')).toBe('button');
+        expect(eraserElement.getAttribute('aria-label')).toBeTruthy();
       });
 
       it('when clicking the eraser, it should reset the value', () => {
-        categoryFacetHeader.eraserElement.click();
+        const eraserElement = $$(categoryFacetHeader.element).find('.coveo-category-facet-header-eraser');
+        eraserElement.click();
         expect(baseOptions.categoryFacet.activePath).toEqual([]);
       });
     });
