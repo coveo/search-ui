@@ -58,7 +58,7 @@ export function CategoryFacetHeaderTest() {
       });
 
       it('eraser bouton should be accessible', () => {
-        expect($$(categoryFacetHeader.eraserElement).getAttribute('role')).toBe('bouton');
+        expect($$(categoryFacetHeader.eraserElement).getAttribute('role')).toBe('button');
         expect($$(categoryFacetHeader.eraserElement).getAttribute('aria-label')).toBeTruthy();
       });
 
