@@ -10,6 +10,8 @@
 }
 
 .CoveoCategoryFacet:not(.coveo-category-facet-searching) .coveo-category-facet-search-container {
+  outline: none;
+
   &:hover,
   &:focus {
     background-color: $color-blueish-white-grey;

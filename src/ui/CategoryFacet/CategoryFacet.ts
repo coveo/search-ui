@@ -32,6 +32,7 @@ import { IAutoLayoutAdjustableInsideFacetColumn } from '../SearchInterface/Facet
 import { ResponsiveFacets } from '../ResponsiveComponents/ResponsiveFacets';
 import { IResponsiveComponentOptions } from '../ResponsiveComponents/ResponsiveComponentsManager';
 import { ResponsiveFacetOptions } from '../ResponsiveComponents/ResponsiveFacetOptions';
+import { CategoryFacetHeader } from './CategoryFacetHeader';
 
 export interface ICategoryFacetOptions extends IResponsiveComponentOptions {
   field: IFieldOption;
@@ -228,11 +229,11 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
 
   private categoryValueRoot: CategoryValueRoot;
   private categoryFacetTemplates: CategoryFacetTemplates;
-  private facetHeader: Dom;
-  private waitElement: Dom;
+  private headerElement: HTMLElement;
   private currentPage: number;
   private moreLessContainer: Dom;
   private moreValuesToFetch: boolean = true;
+  private showingWaitAnimation = false;
   private numberOfChildValuesCurrentlyDisplayed = 0;
   private numberOfValues: number;
 
@@ -363,7 +364,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     try {
       await this.queryController.executeQuery();
     } finally {
-      this.hideWaitAnimation();
+      this.hideWaitingAnimation();
     }
   }
 
@@ -514,14 +515,18 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   }
 
   public showWaitingAnimation() {
-    if (this.waitElement.el.style.visibility == 'hidden') {
-      this.waitElement.el.style.visibility = 'visible';
+    this.ensureDom();
+    if (!this.showingWaitAnimation) {
+      $$(this.headerElement).find('.coveo-category-facet-header-wait-animation').style.visibility = 'visible';
+      this.showingWaitAnimation = true;
     }
   }
 
-  public hideWaitAnimation() {
-    if (this.waitElement.el.style.visibility == 'visible') {
-      this.waitElement.el.style.visibility = 'hidden';
+  public hideWaitingAnimation() {
+    this.ensureDom();
+    if (this.showingWaitAnimation) {
+      $$(this.headerElement).find('.coveo-category-facet-header-wait-animation').style.visibility = 'hidden';
+      this.showingWaitAnimation = false;
     }
   }
 
@@ -627,26 +632,9 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   }
 
   private buildFacetHeader() {
-    this.waitElement = $$('div', { className: CategoryFacet.WAIT_ELEMENT_CLASS }, SVGIcons.icons.loading);
-    SVGDom.addClassToSVGInContainer(this.waitElement.el, 'coveo-category-facet-header-wait-animation-svg');
-    this.waitElement.el.style.visibility = 'hidden';
-
-    const titleSection = $$('div', { className: 'coveo-category-facet-title' }, this.options.title);
-    this.facetHeader = $$('div', { className: 'coveo-category-facet-header' }, titleSection);
-    $$(this.element).prepend(this.facetHeader.el);
-    this.facetHeader.append(this.waitElement.el);
-
-    const clearIcon = $$(
-      'div',
-      { title: l('Clear', this.options.title), className: 'coveo-category-facet-header-eraser coveo-facet-header-eraser' },
-      SVGIcons.icons.mainClear
-    );
-    SVGDom.addClassToSVGInContainer(clearIcon.el, 'coveo-facet-header-eraser-svg');
-    clearIcon.on('click', () => {
-      this.logAnalyticsEvent(analyticsActionCauseList.categoryFacetClear);
-      this.reset();
-    });
-    this.facetHeader.append(clearIcon.el);
+    const facetHeader = new CategoryFacetHeader({ categoryFacet: this, title: this.options.title });
+    this.headerElement = facetHeader.build();
+    $$(this.element).prepend(this.headerElement);
   }
 
   private handleQueryStateChanged(data: IAttributesChangedEventArg) {
