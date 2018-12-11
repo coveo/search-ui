@@ -89,7 +89,7 @@ export function getRestHighlightsForAllTerms(
     .value();
 
   _.each(termsToHighlight, (terms: string[], term: string) => {
-    const termsToIterate = _.chain([term])
+    const uniqueTermsToHighlight = _.chain([term])
       .concat(terms)
       .compact()
       .difference(termsFromPhrases)
@@ -97,7 +97,7 @@ export function getRestHighlightsForAllTerms(
       .sortBy('length')
       .value();
 
-    const regex = `${regexStart}${termsToIterate.join('|')})(?=(?:${wordBoundary}|$)+)`;
+    const regex = `${regexStart}${uniqueTermsToHighlight.join('|')})(?=(?:${wordBoundary}|$)+)`;
     const indexesFound = StringUtils.getHighlights(toHighlight, new RegExp(regex, opts.regexFlags), term);
     if (indexesFound != undefined && Utils.isNonEmptyArray(indexesFound)) {
       indexes.push(indexesFound);
