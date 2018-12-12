@@ -82,13 +82,22 @@ export function getRestHighlightsForAllTerms(
   opts: IStreamHighlightOptions
 ): IHighlight[] {
   const indexes = [];
-  const uniqueTermsToHighlight = getUniqueTermsToHighlight(termsToHighlight, phrasesToHighlight);
+  const termsFromPhrases = _.chain(phrasesToHighlight)
+    .values()
+    .map(_.keys)
+    .flatten()
+    .value();
 
-  _.each(uniqueTermsToHighlight, (term: string) => {
-    let termsToIterate = _.compact([term].concat(termsToHighlight[term]).sort(termsSorting));
-    termsToIterate = _.map(termsToIterate, term => Utils.escapeRegexCharacter(term));
-    let regex = regexStart;
-    regex += termsToIterate.join('|') + ')(?=(?:' + wordBoundary + '|$)+)';
+  _.each(termsToHighlight, (terms: string[], term: string) => {
+    const uniqueTermsToHighlight = _.chain([term])
+      .concat(terms)
+      .compact()
+      .difference(termsFromPhrases)
+      .map(Utils.escapeRegexCharacter)
+      .sortBy('length')
+      .value();
+
+    const regex = `${regexStart}${uniqueTermsToHighlight.join('|')})(?=(?:${wordBoundary}|$)+)`;
     const indexesFound = StringUtils.getHighlights(toHighlight, new RegExp(regex, opts.regexFlags), term);
     if (indexesFound != undefined && Utils.isNonEmptyArray(indexesFound)) {
       indexes.push(indexesFound);
@@ -135,21 +144,6 @@ export function getRestHighlightsForAllTerms(
       return _.extend(highlight, { dataHighlightGroup: group });
     })
     .value();
-}
-
-function getUniqueTermsToHighlight(termsToHighlight: IHighlightTerm, phrasesToHighlight: IHighlightPhrase): string[] {
-  const sortedTerms = _.keys(termsToHighlight).sort(termsSorting);
-  const termsFromPhrases = _.chain(phrasesToHighlight)
-    .values()
-    .map(_.keys)
-    .flatten()
-    .value();
-
-  return _.difference(sortedTerms, termsFromPhrases);
-}
-
-function termsSorting(first: string, second: string) {
-  return first.length - second.length;
 }
 
 function createStreamHTMLContainer(stream: string) {
