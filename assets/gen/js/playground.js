@@ -3305,19 +3305,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var EndpointCaller_1 = __webpack_require__(19);
 var Logger_1 = __webpack_require__(3);
 var Assert_1 = __webpack_require__(1);
-var Version_1 = __webpack_require__(23);
-var AjaxError_1 = __webpack_require__(24);
-var MissingAuthenticationError_1 = __webpack_require__(25);
-var QueryUtils_1 = __webpack_require__(26);
-var QueryError_1 = __webpack_require__(27);
+var Version_1 = __webpack_require__(28);
+var AjaxError_1 = __webpack_require__(29);
+var MissingAuthenticationError_1 = __webpack_require__(30);
+var QueryUtils_1 = __webpack_require__(31);
+var QueryError_1 = __webpack_require__(32);
 var Utils_1 = __webpack_require__(2);
 var _ = __webpack_require__(0);
-var coveo_analytics_1 = __webpack_require__(28);
-var CookieUtils_1 = __webpack_require__(35);
+var coveo_analytics_1 = __webpack_require__(33);
+var CookieUtils_1 = __webpack_require__(40);
 var TimeSpanUtils_1 = __webpack_require__(8);
 var UrlUtils_1 = __webpack_require__(9);
-var AccessToken_1 = __webpack_require__(36);
-var BackOffRequest_1 = __webpack_require__(37);
+var AccessToken_1 = __webpack_require__(41);
+var BackOffRequest_1 = __webpack_require__(42);
 var DefaultSearchEndpointOptions = /** @class */ (function () {
     function DefaultSearchEndpointOptions() {
         this.version = 'v2';
@@ -4731,7 +4731,7 @@ exports.UrlUtils = UrlUtils;
 "use strict";
 
 var history_1 = __webpack_require__(11);
-__webpack_require__(30);
+__webpack_require__(35);
 exports.Version = 'v15';
 exports.Endpoints = {
     default: 'https://usageanalytics.coveo.com',
@@ -4924,7 +4924,7 @@ exports.default = HistoryStore;
 "use strict";
 
 var detector = __webpack_require__(13);
-var cookieutils_1 = __webpack_require__(29);
+var cookieutils_1 = __webpack_require__(34);
 exports.preferredStorage = null;
 function getAvailableStorage() {
     if (exports.preferredStorage) {
@@ -5079,9 +5079,9 @@ document.addEventListener('DOMContentLoaded', function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(4);
 var SearchEndpoint_1 = __webpack_require__(7);
-var PlaygroundConfiguration_1 = __webpack_require__(39);
-var QueryEvents_1 = __webpack_require__(41);
-var DefaultLanguage_1 = __webpack_require__(42);
+var PlaygroundConfiguration_1 = __webpack_require__(44);
+var QueryEvents_1 = __webpack_require__(46);
+var DefaultLanguage_1 = __webpack_require__(47);
 DefaultLanguage_1.setLanguageAfterPageLoaded();
 var Playground = /** @class */ (function () {
     function Playground(body) {
@@ -5851,12 +5851,586 @@ exports.ResponsiveComponents = ResponsiveComponents;
 
 /***/ }),
 /* 22 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-// removed by extract-text-webpack-plugin
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(23);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// Prepare cssTransformation
+var transform;
+transform = __webpack_require__(25);
+var options = {"publicPath":"","transform":"./style.transform.js","hmr":true}
+options.transform = transform
+// add the styles to the DOM
+var update = __webpack_require__(26)(content, options);
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../node_modules/css-loader/index.js??ref--0-1!../node_modules/resolve-url-loader/index.js??ref--0-2!../node_modules/sass-loader/lib/loader.js??ref--0-3!./_ResponsiveComponents.scss", function() {
+			var newContent = require("!!../node_modules/css-loader/index.js??ref--0-1!../node_modules/resolve-url-loader/index.js??ref--0-2!../node_modules/sass-loader/lib/loader.js??ref--0-3!./_ResponsiveComponents.scss");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
 
 /***/ }),
 /* 23 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(24)();
+// imports
+
+
+// module
+exports.push([module.i, "/*\n* @param direction vertical or horizontal\n* @param position type of positioning to apply (relative/absolute)\n*/\n\n/*\n* @param $selector css selector on which to apply the icon. Can be '&' if the icon should be applied on the current element;\n* @param $size size of the icon to use\n*/\n\n.CoveoSearchInterface.coveo-small-tabs .coveo-dropdown-content,\n.CoveoSearchInterface.coveo-small-facets .coveo-dropdown-content,\n.CoveoSearchInterface.coveo-small-recommendation .coveo-dropdown-content {\n  padding: 0;\n}\n\n.CoveoSearchInterface.coveo-small-tabs .coveo-dropdown-header,\n.CoveoSearchInterface.coveo-small-facets .coveo-dropdown-header,\n.CoveoSearchInterface.coveo-small-recommendation .coveo-dropdown-header {\n  font-size: 12px;\n  display: inline-block;\n  padding: 0 7px;\n  height: 22px;\n  font-weight: 700;\n  line-height: 20px;\n  letter-spacing: 0.09px;\n  vertical-align: middle;\n  white-space: normal;\n  color: #1d4f76;\n  cursor: pointer;\n  text-transform: uppercase;\n}\n\n.CoveoSearchInterface.coveo-small-tabs .coveo-dropdown-header *,\n.CoveoSearchInterface.coveo-small-facets .coveo-dropdown-header *,\n.CoveoSearchInterface.coveo-small-recommendation .coveo-dropdown-header * {\n  display: inline-block;\n  margin: 0;\n}\n\n.CoveoSearchInterface.coveo-small-tabs .coveo-dropdown-header p,\n.CoveoSearchInterface.coveo-small-facets .coveo-dropdown-header p,\n.CoveoSearchInterface.coveo-small-recommendation .coveo-dropdown-header p {\n  line-height: 16px;\n}\n\n.CoveoSearchInterface.coveo-small-tabs .coveo-dropdown-header .coveo-more-tabs,\n.CoveoSearchInterface.coveo-small-facets .coveo-dropdown-header .coveo-more-tabs,\n.CoveoSearchInterface.coveo-small-recommendation .coveo-dropdown-header .coveo-more-tabs {\n  margin-left: 10px;\n}\n\n.CoveoSearchInterface.coveo-small-tabs .coveo-dropdown-header.coveo-hidden,\n.CoveoSearchInterface.coveo-small-facets .coveo-dropdown-header.coveo-hidden,\n.CoveoSearchInterface.coveo-small-recommendation .coveo-dropdown-header.coveo-hidden {\n  display: none;\n}\n\n.CoveoSearchInterface.coveo-small-tabs .coveo-tab-section > a:last-of-type,\n.CoveoSearchInterface.coveo-small-facets .coveo-tab-section > a:last-of-type,\n.CoveoSearchInterface.coveo-small-recommendation .coveo-tab-section > a:last-of-type {\n  margin-right: 20px;\n}\n\n.CoveoSearchInterface.coveo-small-tabs .coveo-dropdown-header-wrapper,\n.CoveoSearchInterface.coveo-small-facets .coveo-dropdown-header-wrapper,\n.CoveoSearchInterface.coveo-small-recommendation .coveo-dropdown-header-wrapper {\n  width: 100%;\n  margin: 0;\n  padding: 0;\n  display: -webkit-inline-box;\n  display: -moz-inline-box;\n  display: inline-box;\n  display: -webkit-inline-flex;\n  display: -moz-inline-flex;\n  display: -ms-inline-flexbox;\n  display: inline-flex;\n  -webkit-box-lines: single;\n  -moz-box-lines: single;\n  box-lines: single;\n  -webkit-flex-wrap: nowrap;\n  -moz-flex-wrap: nowrap;\n  -ms-flex-wrap: nowrap;\n  flex-wrap: nowrap;\n  -webkit-box-pack: end;\n  -moz-box-pack: end;\n  box-pack: end;\n  -webkit-justify-content: flex-end;\n  -moz-justify-content: flex-end;\n  -ms-justify-content: flex-end;\n  -o-justify-content: flex-end;\n  justify-content: flex-end;\n  -ms-flex-pack: end;\n}\n\n.CoveoSearchInterface.coveo-small-tabs .coveo-dropdown-header-wrapper a,\n.CoveoSearchInterface.coveo-small-facets .coveo-dropdown-header-wrapper a,\n.CoveoSearchInterface.coveo-small-recommendation .coveo-dropdown-header-wrapper a {\n  margin-right: 10px;\n}\n\n.coveo-dropdown-background {\n  -webkit-transition-property: opacity;\n  -moz-transition-property: opacity;\n  transition-property: opacity;\n  -webkit-transition-duration: 0.3s;\n  -moz-transition-duration: 0.3s;\n  transition-duration: 0.3s;\n  background: rgba(255, 255, 255, 0.85);\n  opacity: 0;\n  position: fixed;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  z-index: 15;\n}\n\n.coveo-media-max-width-480 .CoveoSearchInterface .coveo-tab-section {\n  background-color: #f7f8f9;\n}\n\n.coveo-media-max-width-480 .CoveoSearchInterface .CoveoSearchbox {\n  max-width: 800px;\n  margin-right: 50px;\n}\n\n.coveo-media-max-width-480 .CoveoSearchInterface .CoveoSettings {\n  margin-left: 0;\n}\n\n.coveo-media-max-width-480 .CoveoSearchInterface .CoveoSettings + .CoveoSearchbox {\n  margin-right: 50px;\n}\n\n@media (max-width: 480px) {\n  .CoveoSearchInterface .coveo-tab-section {\n    background-color: #f7f8f9;\n  }\n\n  .CoveoSearchInterface .CoveoSearchbox {\n    max-width: 800px;\n    margin-right: 50px;\n  }\n\n  .CoveoSearchInterface .CoveoSettings {\n    margin-left: 0;\n  }\n\n  .CoveoSearchInterface .CoveoSettings + .CoveoSearchbox {\n    margin-right: 50px;\n  }\n}\n\n", "", {"version":3,"sources":["/./sass/_Variables.scss","/./sass/_ResponsiveComponents.scss","/./sass/_ResponsiveComponents.scss","/./sass/bourbon/css3/_flex-box.scss","/./sass/bourbon/addons/_prefixer.scss","/./sass/bourbon/css3/_transition.scss","/./sass/mixins/_mediaQuery.scss"],"names":[],"mappings":"AAgDA;;;EC7CE;;ADmHF;;;EC9GE;;ACHA;;;EACE,WAAA;CDQH;;ACNC;;;EACE,gBAAA;EACA,sBAAA;EACA,eAAA;EACA,aAAA;EACA,iBAAA;EACA,kBAAA;EACA,uBAAA;EACA,uBAAA;EACA,oBAAA;EACA,eAAA;EACA,gBAAA;EACA,0BAAA;CDWH;;ACVG;;;EACE,sBAAA;EACA,UAAA;CDeL;;ACpCD;;;EAwBM,kBAAA;CDkBL;;AChBG;;;EACE,kBAAA;CDqBL;;AC1CC;;;EAwBI,cAAA;CDwBL;;ACpBK;;;EACA,mBAAA;CDyBL;;AC5DD;;;EAuCI,YAAA;EACA,UAAA;EACA,WAAA;ECoBA,4BAAA;EACA,yBAAA;EACA,oBAAA;EAEA,6BAAA;EACA,0BAAA;EACA,4BAAA;EACA,qBAAA;ECzDI,0BAAA;EAKA,uBAAA;EAeA,kBAAA;EApBA,0BAAA;EAKA,uBAAA;EAKA,sBAAA;EAUA,kBAAA;EApBA,sBAAA;EAKA,mBAAA;EAeA,cAAA;EApBA,kCAAA;EAKA,+BAAA;EAKA,8BAAA;EAKA,6BAAA;EAKA,0BAAA;ED0KN,mBAAA;CF9GD;;AC3FD;;;EA8CM,mBAAA;CDmDL;;AC9CD;EGpCG,qCAAA;EACG,kCAAA;EACK,6BAAA;EDNH,kCAAA;EAKA,+BAAA;EAeA,0BAAA;EFuBN,sCAAA;EACA,WAAA;EACA,gBAAA;EACA,OAAA;EACA,SAAA;EACA,UAAA;EACA,QAAA;EACA,YAAA;CDqDD;;AChDG;EACE,0BAAA;CDmDL;;AKpHC;EJoEI,iBAAA;EACA,mBAAA;CDoDL;;AClDG;EACE,eAAA;CDqDL;;ACnDoB;EACf,mBAAA;CDsDL;;AK9HC;EJ6DE;IACE,0BAAA;GDqEH;;ECvED;IAKI,iBAAA;IACA,mBAAA;GDsEH;;ECpEC;IACE,eAAA;GDuEH;;EChFD;IAYI,mBAAA;GDwEH;CACF","file":"_ResponsiveComponents.scss","sourcesContent":["@import 'bourbon/bourbon';\n// https://app.frontify.com/d/GthysWU8RY0Q/brand-guidelines#/basics/colors\n// Corporate Main Colors\n$coveo-orange: #f58020;\n$coveo-blue: #004990;\n$coveo-red: #dc291e;\n// Complementary Colors Set 1\n$color-dark-grey: #313a45;\n$color-purple: #609;\n$color-grey: #4f5658;\n$color-greyish-dark-blue: #263e55;\n$color-greyish-teal-blue: #1d4f76;\n$color-blueish-gray: #67768b;\n$color-vibrant-blue: #009ddc;\n// Complementary Colors Set 2\n$color-teal: #296896;\n$color-greyish-cyan: #cddee9;\n$color-greyish-light-cyan: #cddee9;\n$color-light-grey: #bcc3ca;\n$color-blueish-white-grey: #e6ecf0;\n$color-blueish-white: #f7f8f9;\n$color-light-greyish-blue: #9cb4cb;\n// Coveo Partners Colors\n$color-coveo-for-sitecore: #dc291e;\n$color-coveo-for-salesforce: #009ddc;\n$color-green: #4caf50;\n$color-red: #cc0d00;\n$color-active-yellow: #ecad00;\n$color-transparent-background: rgba(255, 255, 255, 0.85);\n$color-white-transparent: rgba(255, 255, 255, 0.5);\n$color-light-grey-transparent: rgba($color-light-grey, 0.74);\n// Font sizes\n$font-size-huge: 24px;\n$font-size-biggest: 18px;\n$font-size-bigger: 16px;\n$font-size-regular: 15px;\n$font-size-smaller: 14px;\n$font-size-smallest: 12px;\n// Border\n$default-border-radius: 2px;\n$small-border-radius: 1px;\n$default-border: thin solid $color-light-grey;\n@mixin defaultRoundedBorder {\n  border: $default-border;\n  border-radius: $default-border-radius;\n}\n\n$standard-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);\n/*\n* @param direction vertical or horizontal\n* @param position type of positioning to apply (relative/absolute)\n*/\n\n@mixin align($direction: 'vertical', $position: relative) {\n  position: $position;\n  @if $direction=='vertical' {\n    top: 50%;\n    @include transform(translateY(-50%));\n  } @else {\n    left: 50%;\n    @include transform(translateX(-50%));\n  }\n}\n\n@mixin hoverEffectForDropdown($target: '&') {\n  @include clickable();\n  cursor: pointer;\n  #{$target} {\n    background: white;\n  }\n  #{$target}:hover {\n    background: $color-blueish-white-grey;\n  }\n}\n\n@mixin iconWithHoverState($iconClass, $float:'left', $inactive: 'coveo-disabled') {\n  .#{$iconClass} {\n    float: #{$float};\n  }\n  &:hover {\n    .coveo-active-shape-svg {\n      fill: $color-active-yellow;\n    }\n  }\n  &:hover.#{$inactive} {\n    .coveo-active-shape-svg {\n      fill: currentColor;\n    }\n  }\n}\n\n@mixin clickable($dark-background: false) {\n  color: $coveo-blue;\n  text-decoration: none;\n  cursor: pointer;\n  @if $dark-background==true {\n    color: $color-blueish-white;\n    text-decoration: underline;\n  }\n  &:visited,\n  &:visited:hover {\n    color: $color-purple;\n    @if $dark-background==true {\n      color: $color-blueish-white;\n    }\n  }\n  &:hover,\n  &:hover a {\n    text-decoration: underline;\n  }\n  &.coveo-selected * {\n    color: $coveo-blue;\n    @if $dark-background==true {\n      color: $color-blueish-white;\n    }\n  }\n}\n\n/*\n* @param $selector css selector on which to apply the icon. Can be '&' if the icon should be applied on the current element;\n* @param $size size of the icon to use\n*/\n\n@mixin clearButton($selector, $size:'normal') {\n  cursor: pointer;\n  color: $color-greyish-teal-blue;\n  .coveo-exclusion-svg {\n    fill: $color-greyish-teal-blue;\n  }\n  #{$selector} svg {\n    @if $size=='normal' {\n      width: 12px;\n      height: 12px;\n    } @else if $size=='small' {\n      width: 8px;\n      height: 8px;\n    } @else if $size=='big' {\n      width: 15px;\n      height: 15px;\n    }\n  }\n  &:hover {\n    #{$selector} {\n      color: $color-red;\n      .coveo-exclusion-svg {\n        fill: $color-red;\n      }\n    }\n  }\n}\n\n@mixin breadcrumbTitle {\n  color: $color-blueish-gray;\n  margin-right: 14px;\n}\n\n@mixin coveo-email-to-and-from {\n  font-size: 13px;\n  a {\n    @include clickable();\n    white-space: nowrap;\n  }\n}\n","/*\n* @param direction vertical or horizontal\n* @param position type of positioning to apply (relative/absolute)\n*/\n\n/*\n* @param $selector css selector on which to apply the icon. Can be '&' if the icon should be applied on the current element;\n* @param $size size of the icon to use\n*/\n\n.CoveoSearchInterface.coveo-small-tabs .coveo-dropdown-content,\n.CoveoSearchInterface.coveo-small-facets .coveo-dropdown-content,\n.CoveoSearchInterface.coveo-small-recommendation .coveo-dropdown-content {\n  padding: 0;\n}\n\n.CoveoSearchInterface.coveo-small-tabs .coveo-dropdown-header,\n.CoveoSearchInterface.coveo-small-facets .coveo-dropdown-header,\n.CoveoSearchInterface.coveo-small-recommendation .coveo-dropdown-header {\n  font-size: 12px;\n  display: inline-block;\n  padding: 0 7px;\n  height: 22px;\n  font-weight: 700;\n  line-height: 20px;\n  letter-spacing: 0.09px;\n  vertical-align: middle;\n  white-space: normal;\n  color: #1d4f76;\n  cursor: pointer;\n  text-transform: uppercase;\n}\n\n.CoveoSearchInterface.coveo-small-tabs .coveo-dropdown-header *,\n.CoveoSearchInterface.coveo-small-facets .coveo-dropdown-header *,\n.CoveoSearchInterface.coveo-small-recommendation .coveo-dropdown-header * {\n  display: inline-block;\n  margin: 0;\n}\n\n.CoveoSearchInterface.coveo-small-tabs .coveo-dropdown-header p,\n.CoveoSearchInterface.coveo-small-facets .coveo-dropdown-header p,\n.CoveoSearchInterface.coveo-small-recommendation .coveo-dropdown-header p {\n  line-height: 16px;\n}\n\n.CoveoSearchInterface.coveo-small-tabs .coveo-dropdown-header .coveo-more-tabs,\n.CoveoSearchInterface.coveo-small-facets .coveo-dropdown-header .coveo-more-tabs,\n.CoveoSearchInterface.coveo-small-recommendation .coveo-dropdown-header .coveo-more-tabs {\n  margin-left: 10px;\n}\n\n.CoveoSearchInterface.coveo-small-tabs .coveo-dropdown-header.coveo-hidden,\n.CoveoSearchInterface.coveo-small-facets .coveo-dropdown-header.coveo-hidden,\n.CoveoSearchInterface.coveo-small-recommendation .coveo-dropdown-header.coveo-hidden {\n  display: none;\n}\n\n.CoveoSearchInterface.coveo-small-tabs .coveo-tab-section > a:last-of-type,\n.CoveoSearchInterface.coveo-small-facets .coveo-tab-section > a:last-of-type,\n.CoveoSearchInterface.coveo-small-recommendation .coveo-tab-section > a:last-of-type {\n  margin-right: 20px;\n}\n\n.CoveoSearchInterface.coveo-small-tabs .coveo-dropdown-header-wrapper,\n.CoveoSearchInterface.coveo-small-facets .coveo-dropdown-header-wrapper,\n.CoveoSearchInterface.coveo-small-recommendation .coveo-dropdown-header-wrapper {\n  width: 100%;\n  margin: 0;\n  padding: 0;\n  display: -webkit-inline-box;\n  display: -moz-inline-box;\n  display: inline-box;\n  display: -webkit-inline-flex;\n  display: -moz-inline-flex;\n  display: -ms-inline-flexbox;\n  display: inline-flex;\n  -webkit-box-lines: single;\n  -moz-box-lines: single;\n  box-lines: single;\n  -webkit-flex-wrap: nowrap;\n  -moz-flex-wrap: nowrap;\n  -ms-flex-wrap: nowrap;\n  flex-wrap: nowrap;\n  -webkit-box-pack: end;\n  -moz-box-pack: end;\n  box-pack: end;\n  -webkit-justify-content: flex-end;\n  -moz-justify-content: flex-end;\n  -ms-justify-content: flex-end;\n  -o-justify-content: flex-end;\n  justify-content: flex-end;\n  -ms-flex-pack: end;\n}\n\n.CoveoSearchInterface.coveo-small-tabs .coveo-dropdown-header-wrapper a,\n.CoveoSearchInterface.coveo-small-facets .coveo-dropdown-header-wrapper a,\n.CoveoSearchInterface.coveo-small-recommendation .coveo-dropdown-header-wrapper a {\n  margin-right: 10px;\n}\n\n.coveo-dropdown-background {\n  -webkit-transition-property: opacity;\n  -moz-transition-property: opacity;\n  transition-property: opacity;\n  -webkit-transition-duration: 0.3s;\n  -moz-transition-duration: 0.3s;\n  transition-duration: 0.3s;\n  background: rgba(255, 255, 255, 0.85);\n  opacity: 0;\n  position: fixed;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  z-index: 15;\n}\n\n.coveo-media-max-width-480 .CoveoSearchInterface .coveo-tab-section {\n  background-color: #f7f8f9;\n}\n\n.coveo-media-max-width-480 .CoveoSearchInterface .CoveoSearchbox {\n  max-width: 800px;\n  margin-right: 50px;\n}\n\n.coveo-media-max-width-480 .CoveoSearchInterface .CoveoSettings {\n  margin-left: 0;\n}\n\n.coveo-media-max-width-480 .CoveoSearchInterface .CoveoSettings + .CoveoSearchbox {\n  margin-right: 50px;\n}\n\n@media (max-width: 480px) {\n  .CoveoSearchInterface .coveo-tab-section {\n    background-color: #f7f8f9;\n  }\n\n  .CoveoSearchInterface .CoveoSearchbox {\n    max-width: 800px;\n    margin-right: 50px;\n  }\n\n  .CoveoSearchInterface .CoveoSettings {\n    margin-left: 0;\n  }\n\n  .CoveoSearchInterface .CoveoSettings + .CoveoSearchbox {\n    margin-right: 50px;\n  }\n}\n\n","@import 'Variables';\n@import 'mixins/mediaQuery';\n.CoveoSearchInterface.coveo-small-tabs,\n.CoveoSearchInterface.coveo-small-facets,\n.CoveoSearchInterface.coveo-small-recommendation {\n  .coveo-dropdown-content {\n    padding: 0;\n  }\n  .coveo-dropdown-header {\n    font-size: $font-size-smallest;\n    display: inline-block;\n    padding: 0 7px;\n    height: 22px;\n    font-weight: 700;\n    line-height: 20px;\n    letter-spacing: 0.09px;\n    vertical-align: middle;\n    white-space: normal;\n    color: $color-greyish-teal-blue;\n    cursor: pointer;\n    text-transform: uppercase;\n    * {\n      display: inline-block;\n      margin: 0;\n    }\n    p {\n      line-height: 16px;\n    }\n    .coveo-more-tabs {\n      margin-left: 10px;\n    }\n    &.coveo-hidden {\n      display: none;\n    }\n  }\n  .coveo-tab-section {\n    > a:last-of-type {\n      margin-right: 20px;\n    }\n  }\n  .coveo-dropdown-header-wrapper {\n    width: 100%;\n    margin: 0;\n    padding: 0;\n    @include display(inline-flex);\n    @include flex-wrap(nowrap);\n    @include justify-content(flex-end);\n    a {\n      margin-right: 10px;\n    }\n  }\n}\n\n.coveo-dropdown-background {\n  @include transition-property(opacity);\n  @include transition-duration(0.3s);\n  background: $color-transparent-background;\n  opacity: 0;\n  position: fixed;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  z-index: 15;\n}\n\n@include smallScreenWidth {\n  .CoveoSearchInterface {\n    .coveo-tab-section {\n      background-color: $color-blueish-white;\n    }\n    .CoveoSearchbox {\n      max-width: $medium_screen_width + unquote('px');\n      margin-right: 50px;\n    }\n    .CoveoSettings {\n      margin-left: 0;\n    }\n    .CoveoSettings + .CoveoSearchbox {\n      margin-right: 50px;\n    }\n  }\n}\n","// CSS3 Flexible Box Model and property defaults\n\n@mixin box-orient($orient: inline-axis) {\n  // horizontal|vertical|inline-axis|block-axis|inherit\n  @include prefixer(box-orient, $orient, webkit moz spec);\n}\n\n@mixin box-pack($pack: start) {\n  // start|end|center|justify\n  @include prefixer(box-pack, $pack, webkit moz spec);\n  -ms-flex-pack: $pack; // IE 10\n}\n\n@mixin box-align($align: stretch) {\n  // start|end|center|baseline|stretch\n  @include prefixer(box-align, $align, webkit moz spec);\n  -ms-flex-align: $align; // IE 10\n}\n\n@mixin box-direction($direction: normal) {\n  // normal|reverse|inherit\n  @include prefixer(box-direction, $direction, webkit moz spec);\n  -ms-flex-direction: $direction; // IE 10\n}\n\n@mixin box-lines($lines: single) {\n  // single|multiple\n  @include prefixer(box-lines, $lines, webkit moz spec);\n}\n\n@mixin box-ordinal-group($int: 1) {\n  @include prefixer(box-ordinal-group, $int, webkit moz spec);\n  -ms-flex-order: $int; // IE 10\n}\n\n@mixin box-flex($value: 0) {\n  @include prefixer(box-flex, $value, webkit moz spec);\n  -ms-flex: $value; // IE 10\n}\n\n@mixin box-flex-group($int: 1) {\n  @include prefixer(box-flex-group, $int, webkit moz spec);\n}\n\n// CSS3 Flexible Box Model and property defaults\n// Unified attributes for 2009, 2011, and 2012 flavours.\n\n// 2009 - display (box | inline-box)\n// 2011 - display (flexbox | inline-flexbox)\n// 2012 - display (flex | inline-flex)\n@mixin display($value) {\n  // flex | inline-flex\n  @if $value == 'flex' {\n    // 2009\n    display: -webkit-box;\n    display: -moz-box;\n\n    // 2012\n    display: -webkit-flex;\n    display: -moz-flex;\n    display: -ms-flexbox; // 2011 (IE 10)\n    display: flex;\n  } @else if $value == 'inline-flex' {\n    display: -webkit-inline-box;\n    display: -moz-inline-box;\n    display: inline-box;\n\n    display: -webkit-inline-flex;\n    display: -moz-inline-flex;\n    display: -ms-inline-flexbox;\n    display: inline-flex;\n  } @else {\n    display: $value;\n  }\n}\n\n// 2009 - box-flex (integer)\n// 2011 - flex (decimal | width decimal)\n// 2012 - flex (integer integer width)\n@mixin flex($value) {\n  // Grab flex-grow for older browsers.\n  $flex-grow: nth($value, 1);\n\n  // 2009\n  @include prefixer(box-flex, $flex-grow, webkit moz spec);\n\n  // 2011 (IE 10), 2012\n  @include prefixer(flex, $value, webkit moz ms spec);\n}\n\n// 2009 - box-orient ( horizontal | vertical | inline-axis | block-axis)\n//      - box-direction (normal | reverse)\n// 2011 - flex-direction (row | row-reverse | column | column-reverse)\n// 2012 - flex-direction (row | row-reverse | column | column-reverse)\n@mixin flex-direction($value: row) {\n  // Alt values.\n  $value-2009: $value;\n  $value-2011: $value;\n  $direction: normal;\n\n  @if $value == row {\n    $value-2009: horizontal;\n  } @else if $value == 'row-reverse' {\n    $value-2009: horizontal;\n    $direction: reverse;\n  } @else if $value == column {\n    $value-2009: vertical;\n  } @else if $value == 'column-reverse' {\n    $value-2009: vertical;\n    $direction: reverse;\n  }\n\n  // 2009\n  @include prefixer(box-orient, $value-2009, webkit moz spec);\n  @include prefixer(box-direction, $direction, webkit moz spec);\n\n  // 2012\n  @include prefixer(flex-direction, $value, webkit moz spec);\n\n  // 2011 (IE 10)\n  -ms-flex-direction: $value;\n}\n\n// 2009 - box-lines (single | multiple)\n// 2011 - flex-wrap (nowrap | wrap | wrap-reverse)\n// 2012 - flex-wrap (nowrap | wrap | wrap-reverse)\n@mixin flex-wrap($value: nowrap) {\n  // Alt values\n  $alt-value: $value;\n  @if $value == nowrap {\n    $alt-value: single;\n  } @else if $value == wrap {\n    $alt-value: multiple;\n  } @else if $value == 'wrap-reverse' {\n    $alt-value: multiple;\n  }\n\n  @include prefixer(box-lines, $alt-value, webkit moz spec);\n  @include prefixer(flex-wrap, $value, webkit moz ms spec);\n}\n\n// 2009 - TODO: parse values into flex-direction/flex-wrap\n// 2011 - TODO: parse values into flex-direction/flex-wrap\n// 2012 - flex-flow (flex-direction || flex-wrap)\n@mixin flex-flow($value) {\n  @include prefixer(flex-flow, $value, webkit moz spec);\n}\n\n// 2009 - box-ordinal-group (integer)\n// 2011 - flex-order (integer)\n// 2012 - order (integer)\n@mixin order($int: 0) {\n  // 2009\n  @include prefixer(box-ordinal-group, $int, webkit moz spec);\n\n  // 2012\n  @include prefixer(order, $int, webkit moz spec);\n\n  // 2011 (IE 10)\n  -ms-flex-order: $int;\n}\n\n// 2012 - flex-grow (number)\n@mixin flex-grow($number: 0) {\n  @include prefixer(flex-grow, $number, webkit moz spec);\n  -ms-flex-positive: $number;\n}\n\n// 2012 - flex-shrink (number)\n@mixin flex-shrink($number: 1) {\n  @include prefixer(flex-shrink, $number, webkit moz spec);\n  -ms-flex-negative: $number;\n}\n\n// 2012 - flex-basis (number)\n@mixin flex-basis($width: auto) {\n  @include prefixer(flex-basis, $width, webkit moz spec);\n  -ms-flex-preferred-size: $width;\n}\n\n// 2009 - box-pack (start | end | center | justify)\n// 2011 - flex-pack (start | end | center | justify)\n// 2012 - justify-content (flex-start | flex-end | center | space-between | space-around)\n@mixin justify-content($value: flex-start) {\n  // Alt values.\n  $alt-value: $value;\n  @if $value == 'flex-start' {\n    $alt-value: start;\n  } @else if $value == 'flex-end' {\n    $alt-value: end;\n  } @else if $value == 'space-between' {\n    $alt-value: justify;\n  } @else if $value == 'space-around' {\n    $alt-value: distribute;\n  }\n\n  // 2009\n  @include prefixer(box-pack, $alt-value, webkit moz spec);\n\n  // 2012\n  @include prefixer(justify-content, $value, webkit moz ms o spec);\n\n  // 2011 (IE 10)\n  -ms-flex-pack: $alt-value;\n}\n\n// 2009 - box-align (start | end | center | baseline | stretch)\n// 2011 - flex-align (start | end | center | baseline | stretch)\n// 2012 - align-items (flex-start | flex-end | center | baseline | stretch)\n@mixin align-items($value: stretch) {\n  $alt-value: $value;\n\n  @if $value == 'flex-start' {\n    $alt-value: start;\n  } @else if $value == 'flex-end' {\n    $alt-value: end;\n  }\n\n  // 2009\n  @include prefixer(box-align, $alt-value, webkit moz spec);\n\n  // 2012\n  @include prefixer(align-items, $value, webkit moz ms o spec);\n\n  // 2011 (IE 10)\n  -ms-flex-align: $alt-value;\n}\n\n// 2011 - flex-item-align (auto | start | end | center | baseline | stretch)\n// 2012 - align-self (auto | flex-start | flex-end | center | baseline | stretch)\n@mixin align-self($value: auto) {\n  $value-2011: $value;\n  @if $value == 'flex-start' {\n    $value-2011: start;\n  } @else if $value == 'flex-end' {\n    $value-2011: end;\n  }\n\n  // 2012\n  @include prefixer(align-self, $value, webkit moz spec);\n\n  // 2011 (IE 10)\n  -ms-flex-item-align: $value-2011;\n}\n\n// 2011 - flex-line-pack (start | end | center | justify | distribute | stretch)\n// 2012 - align-content (flex-start | flex-end | center | space-between | space-around | stretch)\n@mixin align-content($value: stretch) {\n  $value-2011: $value;\n  @if $value == 'flex-start' {\n    $value-2011: start;\n  } @else if $value == 'flex-end' {\n    $value-2011: end;\n  } @else if $value == 'space-between' {\n    $value-2011: justify;\n  } @else if $value == 'space-around' {\n    $value-2011: distribute;\n  }\n\n  // 2012\n  @include prefixer(align-content, $value, webkit moz spec);\n\n  // 2011 (IE 10)\n  -ms-flex-line-pack: $value-2011;\n}\n","//************************************************************************//\n// Example: @include prefixer(border-radius, $radii, webkit ms spec);\n//************************************************************************//\n$prefix-for-webkit:    true !default;\n$prefix-for-mozilla:   true !default;\n$prefix-for-microsoft: true !default;\n$prefix-for-opera:     true !default;\n$prefix-for-spec:      true !default; // required for keyframe mixin\n\n@mixin prefixer ($property, $value, $prefixes) {\n  @each $prefix in $prefixes {\n    @if $prefix == webkit {\n      @if $prefix-for-webkit {\n        -webkit-#{$property}: $value;\n      }\n    }\n    @else if $prefix == moz {\n      @if $prefix-for-mozilla {\n        -moz-#{$property}: $value;\n      }\n    }\n    @else if $prefix == ms {\n      @if $prefix-for-microsoft {\n        -ms-#{$property}: $value;\n      }\n    }\n    @else if $prefix == o {\n      @if $prefix-for-opera {\n        -o-#{$property}: $value;\n      }\n    }\n    @else if $prefix == spec {\n      @if $prefix-for-spec {\n        #{$property}: $value;\n      }\n    }\n    @else  {\n      @warn \"Unrecognized prefix: #{$prefix}\";\n    }\n  }\n}\n\n@mixin disable-prefix-for-all() {\n  $prefix-for-webkit:    false;\n  $prefix-for-mozilla:   false;\n  $prefix-for-microsoft: false;\n  $prefix-for-opera:     false;\n  $prefix-for-spec:      false;\n}\n","// Shorthand mixin. Supports multiple parentheses-deliminated values for each variable.\n// Example: @include transition (all, 2.0s, ease-in-out);\n//          @include transition ((opacity, width), (1.0s, 2.0s), ease-in, (0, 2s));\n//          @include transition ($property:(opacity, width), $delay: (1.5s, 2.5s));\n\n@mixin transition ($properties...) {\n  @if length($properties) >= 1 {\n    @include prefixer(transition, $properties, webkit moz spec);\n  }\n\n  @else {\n    $properties: all 0.15s ease-out 0;\n    @include prefixer(transition, $properties, webkit moz spec);\n  }\n}\n\n@mixin transition-property ($properties...) {\n   -webkit-transition-property: transition-property-names($properties, 'webkit');\n      -moz-transition-property: transition-property-names($properties, 'moz');\n           transition-property: transition-property-names($properties, false);\n}\n\n@mixin transition-duration ($times...) {\n  @include prefixer(transition-duration, $times, webkit moz spec);\n}\n\n@mixin transition-timing-function ($motions...) {\n// ease | linear | ease-in | ease-out | ease-in-out | cubic-bezier()\n  @include prefixer(transition-timing-function, $motions, webkit moz spec);\n}\n\n@mixin transition-delay ($times...) {\n  @include prefixer(transition-delay, $times, webkit moz spec);\n}\n","$medium_screen_width: 800;\n$small_screen_width: 480;\n$large_screen_with: 1020;\n@mixin mediaSelector($max) {\n  .coveo-media-max-width-#{$max} {\n    @content;\n  }\n  @media (max-width: $max * 1px) {\n    @content;\n  }\n}\n\n@mixin smallScreenWidth() {\n  @include mediaSelector($small_screen_width) {\n    @content;\n  }\n}\n\n@mixin mediumScreenWidth() {\n  @include mediaSelector($medium_screen_width) {\n    @content;\n  }\n}\n\n@mixin largeScreenWidth() {\n  @include mediaSelector($large_screen_with) {\n    @content;\n  }\n}\n"],"sourceRoot":"webpack://"}]);
+
+// exports
+
+
+/***/ }),
+/* 24 */
+/***/ (function(module, exports) {
+
+/*
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Tobias Koppers @sokra
+*/
+// css base code, injected by the css-loader
+module.exports = function() {
+	var list = [];
+
+	// return the list of modules as css string
+	list.toString = function toString() {
+		var result = [];
+		for(var i = 0; i < this.length; i++) {
+			var item = this[i];
+			if(item[2]) {
+				result.push("@media " + item[2] + "{" + item[1] + "}");
+			} else {
+				result.push(item[1]);
+			}
+		}
+		return result.join("");
+	};
+
+	// import a list of modules into the list
+	list.i = function(modules, mediaQuery) {
+		if(typeof modules === "string")
+			modules = [[null, modules, ""]];
+		var alreadyImportedModules = {};
+		for(var i = 0; i < this.length; i++) {
+			var id = this[i][0];
+			if(typeof id === "number")
+				alreadyImportedModules[id] = true;
+		}
+		for(i = 0; i < modules.length; i++) {
+			var item = modules[i];
+			// skip already imported module
+			// this implementation is not 100% perfect for weird media query combinations
+			//  when a module is imported multiple times with different media queries.
+			//  I hope this will never occur (Hey this way we have smaller bundles)
+			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
+				if(mediaQuery && !item[2]) {
+					item[2] = mediaQuery;
+				} else if(mediaQuery) {
+					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
+				}
+				list.push(item);
+			}
+		}
+	};
+	return list;
+};
+
+
+/***/ }),
+/* 25 */
+/***/ (function(module, exports) {
+
+module.exports = function (css) {
+  if (window.COVEO_LOAD_DYNAMIC_STYLE === false) {
+    return false;
+  }
+  return css;
+}
+
+
+/***/ }),
+/* 26 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/*
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Tobias Koppers @sokra
+*/
+
+var stylesInDom = {};
+
+var	memoize = function (fn) {
+	var memo;
+
+	return function () {
+		if (typeof memo === "undefined") memo = fn.apply(this, arguments);
+		return memo;
+	};
+};
+
+var isOldIE = memoize(function () {
+	// Test for IE <= 9 as proposed by Browserhacks
+	// @see http://browserhacks.com/#hack-e71d8692f65334173fee715c222cb805
+	// Tests for existence of standard globals is to allow style-loader
+	// to operate correctly into non-standard environments
+	// @see https://github.com/webpack-contrib/style-loader/issues/177
+	return window && document && document.all && !window.atob;
+});
+
+var getElement = (function (fn) {
+	var memo = {};
+
+	return function(selector) {
+		if (typeof memo[selector] === "undefined") {
+			var styleTarget = fn.call(this, selector);
+			// Special case to return head of iframe instead of iframe itself
+			if (styleTarget instanceof window.HTMLIFrameElement) {
+				try {
+					// This will throw an exception if access to iframe is blocked
+					// due to cross-origin restrictions
+					styleTarget = styleTarget.contentDocument.head;
+				} catch(e) {
+					styleTarget = null;
+				}
+			}
+			memo[selector] = styleTarget;
+		}
+		return memo[selector]
+	};
+})(function (target) {
+	return document.querySelector(target)
+});
+
+var singleton = null;
+var	singletonCounter = 0;
+var	stylesInsertedAtTop = [];
+
+var	fixUrls = __webpack_require__(27);
+
+module.exports = function(list, options) {
+	if (typeof DEBUG !== "undefined" && DEBUG) {
+		if (typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
+	}
+
+	options = options || {};
+
+	options.attrs = typeof options.attrs === "object" ? options.attrs : {};
+
+	// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
+	// tags it will allow on a page
+	if (!options.singleton && typeof options.singleton !== "boolean") options.singleton = isOldIE();
+
+	// By default, add <style> tags to the <head> element
+	if (!options.insertInto) options.insertInto = "head";
+
+	// By default, add <style> tags to the bottom of the target
+	if (!options.insertAt) options.insertAt = "bottom";
+
+	var styles = listToStyles(list, options);
+
+	addStylesToDom(styles, options);
+
+	return function update (newList) {
+		var mayRemove = [];
+
+		for (var i = 0; i < styles.length; i++) {
+			var item = styles[i];
+			var domStyle = stylesInDom[item.id];
+
+			domStyle.refs--;
+			mayRemove.push(domStyle);
+		}
+
+		if(newList) {
+			var newStyles = listToStyles(newList, options);
+			addStylesToDom(newStyles, options);
+		}
+
+		for (var i = 0; i < mayRemove.length; i++) {
+			var domStyle = mayRemove[i];
+
+			if(domStyle.refs === 0) {
+				for (var j = 0; j < domStyle.parts.length; j++) domStyle.parts[j]();
+
+				delete stylesInDom[domStyle.id];
+			}
+		}
+	};
+};
+
+function addStylesToDom (styles, options) {
+	for (var i = 0; i < styles.length; i++) {
+		var item = styles[i];
+		var domStyle = stylesInDom[item.id];
+
+		if(domStyle) {
+			domStyle.refs++;
+
+			for(var j = 0; j < domStyle.parts.length; j++) {
+				domStyle.parts[j](item.parts[j]);
+			}
+
+			for(; j < item.parts.length; j++) {
+				domStyle.parts.push(addStyle(item.parts[j], options));
+			}
+		} else {
+			var parts = [];
+
+			for(var j = 0; j < item.parts.length; j++) {
+				parts.push(addStyle(item.parts[j], options));
+			}
+
+			stylesInDom[item.id] = {id: item.id, refs: 1, parts: parts};
+		}
+	}
+}
+
+function listToStyles (list, options) {
+	var styles = [];
+	var newStyles = {};
+
+	for (var i = 0; i < list.length; i++) {
+		var item = list[i];
+		var id = options.base ? item[0] + options.base : item[0];
+		var css = item[1];
+		var media = item[2];
+		var sourceMap = item[3];
+		var part = {css: css, media: media, sourceMap: sourceMap};
+
+		if(!newStyles[id]) styles.push(newStyles[id] = {id: id, parts: [part]});
+		else newStyles[id].parts.push(part);
+	}
+
+	return styles;
+}
+
+function insertStyleElement (options, style) {
+	var target = getElement(options.insertInto)
+
+	if (!target) {
+		throw new Error("Couldn't find a style target. This probably means that the value for the 'insertInto' parameter is invalid.");
+	}
+
+	var lastStyleElementInsertedAtTop = stylesInsertedAtTop[stylesInsertedAtTop.length - 1];
+
+	if (options.insertAt === "top") {
+		if (!lastStyleElementInsertedAtTop) {
+			target.insertBefore(style, target.firstChild);
+		} else if (lastStyleElementInsertedAtTop.nextSibling) {
+			target.insertBefore(style, lastStyleElementInsertedAtTop.nextSibling);
+		} else {
+			target.appendChild(style);
+		}
+		stylesInsertedAtTop.push(style);
+	} else if (options.insertAt === "bottom") {
+		target.appendChild(style);
+	} else if (typeof options.insertAt === "object" && options.insertAt.before) {
+		var nextSibling = getElement(options.insertInto + " " + options.insertAt.before);
+		target.insertBefore(style, nextSibling);
+	} else {
+		throw new Error("[Style Loader]\n\n Invalid value for parameter 'insertAt' ('options.insertAt') found.\n Must be 'top', 'bottom', or Object.\n (https://github.com/webpack-contrib/style-loader#insertat)\n");
+	}
+}
+
+function removeStyleElement (style) {
+	if (style.parentNode === null) return false;
+	style.parentNode.removeChild(style);
+
+	var idx = stylesInsertedAtTop.indexOf(style);
+	if(idx >= 0) {
+		stylesInsertedAtTop.splice(idx, 1);
+	}
+}
+
+function createStyleElement (options) {
+	var style = document.createElement("style");
+
+	options.attrs.type = "text/css";
+
+	addAttrs(style, options.attrs);
+	insertStyleElement(options, style);
+
+	return style;
+}
+
+function createLinkElement (options) {
+	var link = document.createElement("link");
+
+	options.attrs.type = "text/css";
+	options.attrs.rel = "stylesheet";
+
+	addAttrs(link, options.attrs);
+	insertStyleElement(options, link);
+
+	return link;
+}
+
+function addAttrs (el, attrs) {
+	Object.keys(attrs).forEach(function (key) {
+		el.setAttribute(key, attrs[key]);
+	});
+}
+
+function addStyle (obj, options) {
+	var style, update, remove, result;
+
+	// If a transform function was defined, run it on the css
+	if (options.transform && obj.css) {
+	    result = options.transform(obj.css);
+
+	    if (result) {
+	    	// If transform returns a value, use that instead of the original css.
+	    	// This allows running runtime transformations on the css.
+	    	obj.css = result;
+	    } else {
+	    	// If the transform function returns a falsy value, don't add this css.
+	    	// This allows conditional loading of css
+	    	return function() {
+	    		// noop
+	    	};
+	    }
+	}
+
+	if (options.singleton) {
+		var styleIndex = singletonCounter++;
+
+		style = singleton || (singleton = createStyleElement(options));
+
+		update = applyToSingletonTag.bind(null, style, styleIndex, false);
+		remove = applyToSingletonTag.bind(null, style, styleIndex, true);
+
+	} else if (
+		obj.sourceMap &&
+		typeof URL === "function" &&
+		typeof URL.createObjectURL === "function" &&
+		typeof URL.revokeObjectURL === "function" &&
+		typeof Blob === "function" &&
+		typeof btoa === "function"
+	) {
+		style = createLinkElement(options);
+		update = updateLink.bind(null, style, options);
+		remove = function () {
+			removeStyleElement(style);
+
+			if(style.href) URL.revokeObjectURL(style.href);
+		};
+	} else {
+		style = createStyleElement(options);
+		update = applyToTag.bind(null, style);
+		remove = function () {
+			removeStyleElement(style);
+		};
+	}
+
+	update(obj);
+
+	return function updateStyle (newObj) {
+		if (newObj) {
+			if (
+				newObj.css === obj.css &&
+				newObj.media === obj.media &&
+				newObj.sourceMap === obj.sourceMap
+			) {
+				return;
+			}
+
+			update(obj = newObj);
+		} else {
+			remove();
+		}
+	};
+}
+
+var replaceText = (function () {
+	var textStore = [];
+
+	return function (index, replacement) {
+		textStore[index] = replacement;
+
+		return textStore.filter(Boolean).join('\n');
+	};
+})();
+
+function applyToSingletonTag (style, index, remove, obj) {
+	var css = remove ? "" : obj.css;
+
+	if (style.styleSheet) {
+		style.styleSheet.cssText = replaceText(index, css);
+	} else {
+		var cssNode = document.createTextNode(css);
+		var childNodes = style.childNodes;
+
+		if (childNodes[index]) style.removeChild(childNodes[index]);
+
+		if (childNodes.length) {
+			style.insertBefore(cssNode, childNodes[index]);
+		} else {
+			style.appendChild(cssNode);
+		}
+	}
+}
+
+function applyToTag (style, obj) {
+	var css = obj.css;
+	var media = obj.media;
+
+	if(media) {
+		style.setAttribute("media", media)
+	}
+
+	if(style.styleSheet) {
+		style.styleSheet.cssText = css;
+	} else {
+		while(style.firstChild) {
+			style.removeChild(style.firstChild);
+		}
+
+		style.appendChild(document.createTextNode(css));
+	}
+}
+
+function updateLink (link, options, obj) {
+	var css = obj.css;
+	var sourceMap = obj.sourceMap;
+
+	/*
+		If convertToAbsoluteUrls isn't defined, but sourcemaps are enabled
+		and there is no publicPath defined then lets turn convertToAbsoluteUrls
+		on by default.  Otherwise default to the convertToAbsoluteUrls option
+		directly
+	*/
+	var autoFixUrls = options.convertToAbsoluteUrls === undefined && sourceMap;
+
+	if (options.convertToAbsoluteUrls || autoFixUrls) {
+		css = fixUrls(css);
+	}
+
+	if (sourceMap) {
+		// http://stackoverflow.com/a/26603875
+		css += "\n/*# sourceMappingURL=data:application/json;base64," + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + " */";
+	}
+
+	var blob = new Blob([css], { type: "text/css" });
+
+	var oldSrc = link.href;
+
+	link.href = URL.createObjectURL(blob);
+
+	if(oldSrc) URL.revokeObjectURL(oldSrc);
+}
+
+
+/***/ }),
+/* 27 */
+/***/ (function(module, exports) {
+
+
+/**
+ * When source maps are enabled, `style-loader` uses a link element with a data-uri to
+ * embed the css on the page. This breaks all relative urls because now they are relative to a
+ * bundle instead of the current page.
+ *
+ * One solution is to only use full urls, but that may be impossible.
+ *
+ * Instead, this function "fixes" the relative urls to be absolute according to the current page location.
+ *
+ * A rudimentary test suite is located at `test/fixUrls.js` and can be run via the `npm test` command.
+ *
+ */
+
+module.exports = function (css) {
+  // get current location
+  var location = typeof window !== "undefined" && window.location;
+
+  if (!location) {
+    throw new Error("fixUrls requires window.location");
+  }
+
+	// blank or null?
+	if (!css || typeof css !== "string") {
+	  return css;
+  }
+
+  var baseUrl = location.protocol + "//" + location.host;
+  var currentDir = baseUrl + location.pathname.replace(/\/[^\/]*$/, "/");
+
+	// convert each url(...)
+	/*
+	This regular expression is just a way to recursively match brackets within
+	a string.
+
+	 /url\s*\(  = Match on the word "url" with any whitespace after it and then a parens
+	   (  = Start a capturing group
+	     (?:  = Start a non-capturing group
+	         [^)(]  = Match anything that isn't a parentheses
+	         |  = OR
+	         \(  = Match a start parentheses
+	             (?:  = Start another non-capturing groups
+	                 [^)(]+  = Match anything that isn't a parentheses
+	                 |  = OR
+	                 \(  = Match a start parentheses
+	                     [^)(]*  = Match anything that isn't a parentheses
+	                 \)  = Match a end parentheses
+	             )  = End Group
+              *\) = Match anything and then a close parens
+          )  = Close non-capturing group
+          *  = Match anything
+       )  = Close capturing group
+	 \)  = Match a close parens
+
+	 /gi  = Get all matches, not the first.  Be case insensitive.
+	 */
+	var fixedCss = css.replace(/url\s*\(((?:[^)(]|\((?:[^)(]+|\([^)(]*\))*\))*)\)/gi, function(fullMatch, origUrl) {
+		// strip quotes (if they exist)
+		var unquotedOrigUrl = origUrl
+			.trim()
+			.replace(/^"(.*)"$/, function(o, $1){ return $1; })
+			.replace(/^'(.*)'$/, function(o, $1){ return $1; });
+
+		// already a full url? no change
+		if (/^(#|data:|http:\/\/|https:\/\/|file:\/\/\/)/i.test(unquotedOrigUrl)) {
+		  return fullMatch;
+		}
+
+		// convert the url to a full url
+		var newUrl;
+
+		if (unquotedOrigUrl.indexOf("//") === 0) {
+		  	//TODO: should we add protocol?
+			newUrl = unquotedOrigUrl;
+		} else if (unquotedOrigUrl.indexOf("/") === 0) {
+			// path should be relative to the base url
+			newUrl = baseUrl + unquotedOrigUrl; // already starts with '/'
+		} else {
+			// path should be relative to current directory
+			newUrl = currentDir + unquotedOrigUrl.replace(/^\.\//, ""); // Strip leading './'
+		}
+
+		// send back the fixed url(...)
+		return "url(" + JSON.stringify(newUrl) + ")";
+	});
+
+	// send back the fixed css
+	return fixedCss;
+};
+
+
+/***/ }),
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5870,7 +6444,7 @@ exports.version = {
 
 
 /***/ }),
-/* 24 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5891,7 +6465,7 @@ exports.AjaxError = AjaxError;
 
 
 /***/ }),
-/* 25 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5909,7 +6483,7 @@ exports.MissingAuthenticationError = MissingAuthenticationError;
 
 
 /***/ }),
-/* 26 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6116,7 +6690,7 @@ exports.QueryUtils = QueryUtils;
 
 
 /***/ }),
-/* 27 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6139,25 +6713,25 @@ exports.QueryError = QueryError;
 
 
 /***/ }),
-/* 28 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 var analytics = __webpack_require__(10);
 exports.analytics = analytics;
-var SimpleAnalytics = __webpack_require__(31);
+var SimpleAnalytics = __webpack_require__(36);
 exports.SimpleAnalytics = SimpleAnalytics;
 var history = __webpack_require__(11);
 exports.history = history;
-var donottrack = __webpack_require__(34);
+var donottrack = __webpack_require__(39);
 exports.donottrack = donottrack;
 var storage = __webpack_require__(12);
 exports.storage = storage;
 
 
 /***/ }),
-/* 29 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6211,7 +6785,7 @@ exports.Cookie = Cookie;
 
 
 /***/ }),
-/* 30 */
+/* 35 */
 /***/ (function(module, exports) {
 
 (function(self) {
@@ -6678,14 +7252,14 @@ exports.Cookie = Cookie;
 
 
 /***/ }),
-/* 31 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 var analytics = __webpack_require__(10);
-var objectassign_1 = __webpack_require__(32);
-var utils_1 = __webpack_require__(33);
+var objectassign_1 = __webpack_require__(37);
+var utils_1 = __webpack_require__(38);
 var SimpleAPI = (function () {
     function SimpleAPI() {
     }
@@ -6757,7 +7331,7 @@ exports.default = exports.SimpleAnalytics;
 
 
 /***/ }),
-/* 32 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6799,7 +7373,7 @@ exports.default = exports.assign;
 
 
 /***/ }),
-/* 33 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6815,7 +7389,7 @@ exports.popFromObject = popFromObject;
 
 
 /***/ }),
-/* 34 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6826,7 +7400,7 @@ exports.default = exports.doNotTrack;
 
 
 /***/ }),
-/* 35 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6898,7 +7472,7 @@ exports.Cookie = Cookie;
 
 
 /***/ }),
-/* 36 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7022,7 +7596,7 @@ exports.AccessToken = AccessToken;
 
 
 /***/ }),
-/* 37 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7063,7 +7637,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var exponential_backoff_1 = __webpack_require__(38);
+var exponential_backoff_1 = __webpack_require__(43);
 var backOff = exponential_backoff_1.backOff;
 function setBackOffModule(newModule) {
     backOff = newModule || exponential_backoff_1.backOff;
@@ -7119,7 +7693,7 @@ exports.BackOffRequest = BackOffRequest;
 
 
 /***/ }),
-/* 38 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7224,7 +7798,7 @@ function delayBeforeExecuting(delay) {
 //# sourceMappingURL=backoff.js.map
 
 /***/ }),
-/* 39 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7232,7 +7806,7 @@ function delayBeforeExecuting(delay) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(4);
 var SearchEndpoint_1 = __webpack_require__(7);
-var SearchSectionBuilder_1 = __webpack_require__(40);
+var SearchSectionBuilder_1 = __webpack_require__(45);
 var SectionBuilder_1 = __webpack_require__(14);
 var getComponentContainerElement = function () {
     return Dom_1.$$(document.body).find('.component-container');
@@ -7675,7 +8249,7 @@ exports.PlaygroundConfiguration = {
 
 
 /***/ }),
-/* 40 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7741,7 +8315,7 @@ exports.SearchSectionBuilder = SearchSectionBuilder;
 
 
 /***/ }),
-/* 41 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7884,13 +8458,13 @@ exports.QueryEvents = QueryEvents;
 
 
 /***/ }),
-/* 42 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var Globalize = __webpack_require__(43);
+var Globalize = __webpack_require__(48);
 var merge = function (obj1, obj2) {
     var obj3 = {};
     for (var attrname in obj1) {
@@ -7960,46 +8534,6 @@ var dict = {
     "filetype_box": "User",
     "jiraissue": "Jira Issue",
     "filetype_jiraissue": "Jira Issue",
-    "exchangemessage": "Message",
-    "filetype_exchangemessage": "Message",
-    "exchangeappointment": "Appointment",
-    "filetype_exchangeappointment": "Appointment",
-    "exchangenote": "Note",
-    "filetype_exchangenote": "Note",
-    "exchangetask": "Task",
-    "filetype_exchangetask": "Task",
-    "exchangeperson": "Exchange User",
-    "filetype_exchangeperson": "Exchange User",
-    "activedirperson": "Active Directory User",
-    "filetype_activedirperson": "Active Directory User",
-    "exchangeactivity": "Activity",
-    "filetype_exchangeactivity": "Activity",
-    "exchangecalendarmessage": "Calendar Message",
-    "filetype_exchangecalendarmessage": "Calendar Message",
-    "exchangedocument": "Exchange Document",
-    "filetype_exchangedocument": "Exchange Document",
-    "exchangedsn": "DSN",
-    "filetype_exchangedsn": "DSN",
-    "exchangefreebusy": "Free/Busy",
-    "filetype_exchangefreebusy": "Free/Busy",
-    "exchangegroup": "Group",
-    "filetype_exchangegroup": "Group",
-    "exchangerssfeed": "RSS Feed",
-    "filetype_exchangerssfeed": "RSS Feed",
-    "exchangejunkmessage": "Junk Email",
-    "filetype_exchangejunkmessage": "Junk Email",
-    "exchangeofficecom": "Communications",
-    "filetype_exchangeofficecom": "Communications",
-    "lithiummessage": "Lithium Message",
-    "filetype_lithiummessage": "Lithium Message",
-    "lithiumthread": "Lithium Thread",
-    "filetype_lithiumthread": "Lithium Thread",
-    "lithiumboard": "Lithium Board",
-    "filetype_lithiumboard": "Lithium Board",
-    "lithiumcategory": "Lithium Category",
-    "filetype_lithiumcategory": "Lithium Category",
-    "lithiumcommunity": "Lithium Community",
-    "filetype_lithiumcommunity": "Lithium Community",
     "people": "User",
     "objecttype_people": "User",
     "message": "Message",
@@ -8106,6 +8640,52 @@ var dict = {
     "objecttype_phonecall": "Phone call",
     "appointment": "Appointment",
     "objecttype_appointment": "Appointment",
+    "exchangemessage": "Message",
+    "filetype_exchangemessage": "Message",
+    "exchangeappointment": "Appointment",
+    "filetype_exchangeappointment": "Appointment",
+    "exchangenote": "Note",
+    "filetype_exchangenote": "Note",
+    "exchangetask": "Task",
+    "filetype_exchangetask": "Task",
+    "exchangeperson": "Exchange User",
+    "filetype_exchangeperson": "Exchange User",
+    "activedirperson": "Active Directory User",
+    "filetype_activedirperson": "Active Directory User",
+    "exchangeactivity": "Activity",
+    "filetype_exchangeactivity": "Activity",
+    "exchangecalendarmessage": "Calendar Message",
+    "filetype_exchangecalendarmessage": "Calendar Message",
+    "exchangedocument": "Exchange Document",
+    "filetype_exchangedocument": "Exchange Document",
+    "exchangedsn": "DSN",
+    "filetype_exchangedsn": "DSN",
+    "exchangefreebusy": "Free/Busy",
+    "filetype_exchangefreebusy": "Free/Busy",
+    "exchangegroup": "Group",
+    "filetype_exchangegroup": "Group",
+    "exchangerssfeed": "RSS Feed",
+    "filetype_exchangerssfeed": "RSS Feed",
+    "exchangejunkmessage": "Junk Email",
+    "filetype_exchangejunkmessage": "Junk Email",
+    "exchangeofficecom": "Communications",
+    "filetype_exchangeofficecom": "Communications",
+    "lithiummessage": "Lithium Message",
+    "filetype_lithiummessage": "Lithium Message",
+    "lithiumthread": "Lithium Thread",
+    "filetype_lithiumthread": "Lithium Thread",
+    "lithiumboard": "Lithium Board",
+    "filetype_lithiumboard": "Lithium Board",
+    "lithiumcategory": "Lithium Category",
+    "filetype_lithiumcategory": "Lithium Category",
+    "lithiumcommunity": "Lithium Community",
+    "filetype_lithiumcommunity": "Lithium Community",
+    "youtubevideo": "YouTube video",
+    "filetype_youtubevideo": "YouTube video",
+    "youtubeplaylistitem": "YouTube playlist item",
+    "filetype_youtubeplaylistitem": "YouTube playlist item",
+    "youtubeplaylist": "YouTube playlist",
+    "filetype_youtubeplaylist": "YouTube playlist",
     "cfpage": "Confluence Page",
     "filetype_cfpage": "Confluence Page",
     "cfcomment": "Confluence Comment",
@@ -8116,12 +8696,6 @@ var dict = {
     "filetype_cfblogentry": "Confluence Blog Entry",
     "confluencespace": "Confluence Space",
     "filetype_confluencespace": "Confluence Space",
-    "youtubevideo": "YouTube video",
-    "filetype_youtubevideo": "YouTube video",
-    "youtubeplaylistitem": "YouTube playlist item",
-    "filetype_youtubeplaylistitem": "YouTube playlist item",
-    "youtubeplaylist": "YouTube playlist",
-    "filetype_youtubeplaylist": "YouTube playlist",
     "spportal": "Portal",
     "filetype_spportal": "Portal",
     "spsite": "SharePoint Site",
@@ -8699,14 +9273,14 @@ exports.setLanguageAfterPageLoaded = setLanguageAfterPageLoaded;
 
 
 /***/ }),
-/* 43 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(global) {module.exports = global["Globalize"] = __webpack_require__(44);
+/* WEBPACK VAR INJECTION */(function(global) {module.exports = global["Globalize"] = __webpack_require__(49);
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
 
 /***/ }),
-/* 44 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! globalize - v0.1.1 - 2013-04-30
