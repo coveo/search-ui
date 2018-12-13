@@ -315,6 +315,9 @@ export class FacetQueryController {
     } else {
       mergeWith.constant = `${mergeWith.constant} ${this.additionalFilter}`;
     }
+    if (Utils.isEmptyString(mergeWith.basic)) {
+      mergeWith.basic = queryBuilder.expression.build();
+    }
     return mergeWith;
   }
 
