@@ -207,18 +207,8 @@ export class DateUtils {
   }
 
   public static setLocale(): void {
-    let currentLocale = String['locale'];
-
-    // Our cultures.js directory contains 'no' which is the equivalent to 'nn' for momentJS
-    if (currentLocale.toLowerCase() == 'no') {
-      currentLocale = 'nn';
-    } else if (currentLocale.toLowerCase() == 'es-es') {
-      // Our cultures.js directory contains 'es-es' which is the equivalent to 'es' for momentJS
-      currentLocale = 'es';
-    }
-
-    moment.updateLocale(currentLocale, DateUtils.transformGlobalizeCalendarToMomentCalendar());
-    moment.locale(currentLocale);
+    moment.updateLocale(DateUtils.currentLocale, DateUtils.transformGlobalizeCalendarToMomentCalendar());
+    moment.locale(DateUtils.currentLocale);
   }
 
   /**
@@ -452,20 +442,23 @@ export class DateUtils {
   }
 
   static transformGlobalizeCalendarToMomentCalendar(): moment.LocaleSpecification {
+    const cldrToMomentFormat = (cldrFormat: string) => {
+      return cldrFormat.replace(/y/g, 'Y').replace(/d/g, 'D');
+    };
+
     return {
       months: DateUtils.currentGlobalizeCalendar.months.names,
       monthsShort: DateUtils.currentGlobalizeCalendar.months.namesAbbr,
-      monthsParseExact: true,
       weekdays: DateUtils.currentGlobalizeCalendar.days.names,
       weekdaysShort: DateUtils.currentGlobalizeCalendar.days.namesAbbr,
       weekdaysMin: DateUtils.currentGlobalizeCalendar.days.namesShort,
       longDateFormat: {
-        LT: DateUtils.currentGlobalizeCalendar.patterns.t.replace(/y/g, 'Y').replace(/d/g, 'D'),
-        LTS: DateUtils.currentGlobalizeCalendar.patterns.T.replace(/y/g, 'Y').replace(/d/g, 'D'),
-        L: DateUtils.currentGlobalizeCalendar.patterns.d.replace(/y/g, 'Y').replace(/d/g, 'D'),
-        LL: DateUtils.currentGlobalizeCalendar.patterns.M.replace(/y/g, 'Y').replace(/d/g, 'D'),
-        LLL: DateUtils.currentGlobalizeCalendar.patterns.f.replace(/y/g, 'Y'),
-        LLLL: DateUtils.currentGlobalizeCalendar.patterns.F.replace(/y/g, 'Y').replace(/d/g, 'D')
+        LT: cldrToMomentFormat(DateUtils.currentGlobalizeCalendar.patterns.t),
+        LTS: cldrToMomentFormat(DateUtils.currentGlobalizeCalendar.patterns.T),
+        L: cldrToMomentFormat(DateUtils.currentGlobalizeCalendar.patterns.d),
+        LL: cldrToMomentFormat(DateUtils.currentGlobalizeCalendar.patterns.M),
+        LLL: cldrToMomentFormat(DateUtils.currentGlobalizeCalendar.patterns.f),
+        LLLL: cldrToMomentFormat(DateUtils.currentGlobalizeCalendar.patterns.F)
       },
       calendar: {
         lastDay: `[${l('Yesterday')}]`,
