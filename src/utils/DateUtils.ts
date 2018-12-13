@@ -4,6 +4,9 @@ import { l } from '../strings/Strings';
 import * as _ from 'underscore';
 import * as moment from 'moment';
 import { Logger } from '../misc/Logger';
+
+declare const Globalize;
+
 /**
  * The `IDateToStringOptions` interface describes a set of options to use when converting a standard Date object to a
  * string using the [ `dateToString` ]{@link DateUtils.dateToString}, or the
@@ -214,15 +217,8 @@ export class DateUtils {
       currentLocale = 'es';
     }
 
+    moment.updateLocale(currentLocale, DateUtils.transformGlobalizeCalendarToMomentCalendar());
     moment.locale(currentLocale);
-
-    moment.updateLocale(currentLocale, {
-      calendar: {
-        lastDay: `[${l('Yesterday')}]`,
-        sameDay: `[${l('Today')}]`,
-        nextDay: `[${l('Tomorrow')}]`
-      }
-    });
   }
 
   /**
@@ -303,23 +299,23 @@ export class DateUtils {
 
     if (options.useWeekdayIfThisWeek && isThisWeek) {
       if (dateOnly.valueOf() > today.valueOf()) {
-        return l('NextDay', dateOnly.format('dddd'));
+        return l('NextDay', l(dateOnly.format('dddd')));
       } else if (dateOnly.valueOf() < today.valueOf()) {
-        return l('LastDay', dateOnly.format('dddd'));
+        return l('LastDay', l(dateOnly.format('dddd')));
       } else {
         return dateOnly.format('dddd');
       }
     }
 
     if (options.omitYearIfCurrentOne && dateOnly.year() === today.year()) {
-      return dateOnly.format('MMMM DD');
+      return dateOnly.format('LL');
     }
 
     if (options.useLongDateFormat) {
-      return dateOnly.format('dddd, MMMM DD, YYYY');
+      return `${dateOnly.format('dddd')} ${dateOnly.format('LL')} ${dateOnly.format('YYYY')}`;
     }
 
-    return dateOnly.format('M/D/YYYY');
+    return dateOnly.format('L');
   }
 
   /**
@@ -436,5 +432,46 @@ export class DateUtils {
       ':' +
       ('0' + (((moment(to).valueOf() - moment(from).valueOf()) % (1000 * 60)) / 1000).toFixed()).slice(-2)
     );
+  }
+
+  static get currentGlobalizeCalendar(): GlobalizeCalendar {
+    return Globalize.culture(DateUtils.currentLocale).calendar as GlobalizeCalendar;
+  }
+
+  static get currentLocale(): string {
+    let currentLocale = String['locale'];
+
+    // Our cultures.js directory contains 'no' which is the equivalent to 'nn' for momentJS
+    if (currentLocale.toLowerCase() == 'no') {
+      currentLocale = 'nn';
+    } else if (currentLocale.toLowerCase() == 'es-es') {
+      // Our cultures.js directory contains 'es-es' which is the equivalent to 'es' for momentJS
+      currentLocale = 'es';
+    }
+    return currentLocale;
+  }
+
+  static transformGlobalizeCalendarToMomentCalendar(): moment.LocaleSpecification {
+    return {
+      months: DateUtils.currentGlobalizeCalendar.months.names,
+      monthsShort: DateUtils.currentGlobalizeCalendar.months.namesAbbr,
+      monthsParseExact: true,
+      weekdays: DateUtils.currentGlobalizeCalendar.days.names,
+      weekdaysShort: DateUtils.currentGlobalizeCalendar.days.namesAbbr,
+      weekdaysMin: DateUtils.currentGlobalizeCalendar.days.namesShort,
+      longDateFormat: {
+        LT: DateUtils.currentGlobalizeCalendar.patterns.t.replace(/y/g, 'Y').replace(/d/g, 'D'),
+        LTS: DateUtils.currentGlobalizeCalendar.patterns.T.replace(/y/g, 'Y').replace(/d/g, 'D'),
+        L: DateUtils.currentGlobalizeCalendar.patterns.d.replace(/y/g, 'Y').replace(/d/g, 'D'),
+        LL: DateUtils.currentGlobalizeCalendar.patterns.M.replace(/y/g, 'Y').replace(/d/g, 'D'),
+        LLL: DateUtils.currentGlobalizeCalendar.patterns.f.replace(/y/g, 'Y'),
+        LLLL: DateUtils.currentGlobalizeCalendar.patterns.F.replace(/y/g, 'Y').replace(/d/g, 'D')
+      },
+      calendar: {
+        lastDay: `[${l('Yesterday')}]`,
+        sameDay: `[${l('Today')}]`,
+        nextDay: `[${l('Tomorrow')}]`
+      }
+    };
   }
 }

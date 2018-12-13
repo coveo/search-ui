@@ -218,7 +218,7 @@ export function CoreHelperTest() {
 
         it('should work correctly with useLongDateFormat', () => {
           options.useLongDateFormat = true;
-          expect(TemplateHelpers.getHelper('date')(new Date(1981, 3, 11), options)).toEqual('Saturday, April 11, 1981');
+          expect(TemplateHelpers.getHelper('date')(new Date(1981, 3, 11), options)).toEqual('Saturday April 11 1981');
         });
 
         it('should work correctly with correct default options ', () => {
