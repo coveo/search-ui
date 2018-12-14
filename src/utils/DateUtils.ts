@@ -207,8 +207,8 @@ export class DateUtils {
   }
 
   public static setLocale(): void {
-    moment.updateLocale(DateUtils.currentLocale, DateUtils.transformGlobalizeCalendarToMomentCalendar());
-    moment.locale(DateUtils.currentLocale);
+    moment.updateLocale(DateUtils.momentjsCompatibleLocale, DateUtils.transformGlobalizeCalendarToMomentCalendar());
+    moment.locale(DateUtils.momentjsCompatibleLocale);
   }
 
   /**
@@ -425,10 +425,10 @@ export class DateUtils {
   }
 
   static get currentGlobalizeCalendar(): GlobalizeCalendar {
-    return Globalize.culture(DateUtils.currentLocale).calendar as GlobalizeCalendar;
+    return Globalize.culture(DateUtils.momentjsCompatibleLocale).calendar as GlobalizeCalendar;
   }
 
-  static get currentLocale(): string {
+  static get momentjsCompatibleLocale(): string {
     let currentLocale = String['locale'];
 
     // Our cultures.js directory contains 'no' which is the equivalent to 'nn' for momentJS
