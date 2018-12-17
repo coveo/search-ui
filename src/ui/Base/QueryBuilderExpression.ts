@@ -69,7 +69,7 @@ export class QueryBuilderExpression implements QueryBuilderExpression {
   }
 
   public set basic(value: string) {
-    this.basic = value;
+    this.basicExpression = value;
   }
 
   public get advanced(): string {
