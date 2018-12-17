@@ -31,7 +31,7 @@ export class CategoryFacetQueryController {
     const lastQuery = { ...this.categoryFacet.queryController.getLastQuery() };
 
     const groupByRequest: IGroupByRequest = {
-      allowedValues: [`*${value}*`],
+      allowedValues: [this.getAllowedValuesPattern(value)],
       allowedValuesPatternType: AllowedValuesPatternType.Wildcards,
       maximumNumberOfValues: numberOfValues,
       field: this.categoryFacet.options.field as string,
@@ -59,5 +59,15 @@ export class CategoryFacetQueryController {
       allowedValues: [`.*${Utils.escapeRegexCharacter(value)}.*`],
       allowedValuesPatternType: AllowedValuesPatternType.Regex
     });
+  }
+
+  private getAllowedValuesPattern(value: string) {
+    const basePath = this.categoryFacet.options.basePath;
+    const delimiter = this.categoryFacet.options.delimitingCharacter;
+
+    if (Utils.isNonEmptyArray(basePath)) {
+      return `${basePath.join(delimiter)}${delimiter}*${value}*`;
+    }
+    return `*${value}*`;
   }
 }
