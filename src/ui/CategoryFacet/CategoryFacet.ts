@@ -271,6 +271,9 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   }
 
   public isCurrentlyDisplayed() {
+    if (!this.isPristine()) {
+      return true;
+    }
     return this.hasValues;
   }
 
@@ -737,7 +740,12 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
         this.reset();
       };
 
-      const categoryFacetBreadcrumbBuilder = new CategoryFacetBreadcrumb(this.options.title, resetFacet, lastParentValue);
+      const categoryFacetBreadcrumbBuilder = new CategoryFacetBreadcrumb(
+        this.options.title,
+        resetFacet,
+        lastParentValue,
+        this.options.basePath
+      );
       args.breadcrumbs.push({ element: categoryFacetBreadcrumbBuilder.build() });
     }
   }

@@ -11,19 +11,8 @@ export class CategoryFacetQueryController {
 
   public putCategoryFacetInQueryBuilder(queryBuilder: QueryBuilder, path: string[], maximumNumberOfValues: number): number {
     const positionInQuery = queryBuilder.categoryFacets.length;
-    if (path.length != 0) {
-      queryBuilder.advancedExpression.addFieldExpression(this.categoryFacet.options.field as string, '==', [
-        path.join(this.categoryFacet.options.delimitingCharacter)
-      ]);
-    }
-    const categoryFacetsRequest: ICategoryFacetRequest = {
-      field: this.categoryFacet.options.field as string,
-      path,
-      injectionDepth: this.categoryFacet.options.injectionDepth,
-      maximumNumberOfValues,
-      delimitingCharacter: this.categoryFacet.options.delimitingCharacter
-    };
-    queryBuilder.categoryFacets.push(categoryFacetsRequest);
+    this.addQueryFilter(queryBuilder, path);
+    this.addCategoryFacetRequest(queryBuilder, path, maximumNumberOfValues);
     return positionInQuery;
   }
 
@@ -59,5 +48,28 @@ export class CategoryFacetQueryController {
       allowedValues: [`.*${Utils.escapeRegexCharacter(value)}.*`],
       allowedValuesPatternType: AllowedValuesPatternType.Regex
     });
+  }
+
+  private shouldAddFilterToQuery(path: string[]) {
+    return path.length != 0 && !Utils.arrayEqual(path, this.categoryFacet.options.basePath);
+  }
+
+  private addQueryFilter(queryBuilder: QueryBuilder, path: string[]) {
+    if (this.shouldAddFilterToQuery(path)) {
+      queryBuilder.advancedExpression.addFieldExpression(this.categoryFacet.options.field as string, '==', [
+        path.join(this.categoryFacet.options.delimitingCharacter)
+      ]);
+    }
+  }
+
+  private addCategoryFacetRequest(queryBuilder: QueryBuilder, path: string[], maximumNumberOfValues: number) {
+    const categoryFacetsRequest: ICategoryFacetRequest = {
+      field: this.categoryFacet.options.field as string,
+      path,
+      injectionDepth: this.categoryFacet.options.injectionDepth,
+      maximumNumberOfValues,
+      delimitingCharacter: this.categoryFacet.options.delimitingCharacter
+    };
+    queryBuilder.categoryFacets.push(categoryFacetsRequest);
   }
 }
