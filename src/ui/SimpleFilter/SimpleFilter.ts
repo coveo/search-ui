@@ -78,7 +78,7 @@ export class SimpleFilter extends Component {
      *
      * Default value is the localized string for `NoTitle`.
      */
-    title: ComponentOptions.buildStringOption({ defaultValue: l('NoTitle') }),
+    title: ComponentOptions.buildLocalizedStringOption({ defaultValue: 'NoTitle' }),
 
     /**
      * Specifies a JSON object describing a mapping of `SimpleFilter` values to their desired captions.
@@ -383,7 +383,7 @@ export class SimpleFilter extends Component {
 
   private buildSelect(): HTMLElement {
     const select = $$('span', { className: 'coveo-simplefilter-select' });
-    this.selectTitle = $$('span', { className: 'coveo-simplefilter-selecttext' }, this.getValueCaption(this.options.title));
+    this.selectTitle = $$('span', { className: 'coveo-simplefilter-selecttext' }, this.options.title);
     select.append(this.selectTitle.el);
     select.append(this.buildCircleElement());
     select.append(this.buildSvgToggleUpIcon());
