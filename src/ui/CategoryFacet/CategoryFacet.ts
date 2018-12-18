@@ -306,6 +306,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
       this.show();
       return;
     }
+
     this.activePath = this.options.basePath;
     this.hide();
   }

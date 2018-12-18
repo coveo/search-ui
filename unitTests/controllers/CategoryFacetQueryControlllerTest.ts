@@ -38,6 +38,40 @@ export function CategoryFacetQueryControllerTest() {
       );
     });
 
+    it('should create a valid allowed value parameter when searching with a base path with a single value', () => {
+      testCategoryFacet.cmp.options.basePath = ['a_base_path'];
+      testCategoryFacet.cmp.options.delimitingCharacter = '/';
+      categoryFacetController.searchFacetValues('some value', 15);
+
+      expect(testCategoryFacet.env.searchEndpoint.search).toHaveBeenCalledWith(
+        jasmine.objectContaining({
+          groupBy: jasmine.arrayContaining([
+            jasmine.objectContaining({
+              allowedValues: ['a_base_path/*some value*'],
+              allowedValuesPatternType: AllowedValuesPatternType.Wildcards
+            } as IGroupByRequest)
+          ])
+        })
+      );
+    });
+
+    it('should create a valid allowed value parameter when searching with a base path with multiple parts', () => {
+      testCategoryFacet.cmp.options.basePath = ['a_base_path', 'another_part'];
+      testCategoryFacet.cmp.options.delimitingCharacter = '|';
+      categoryFacetController.searchFacetValues('some value', 15);
+
+      expect(testCategoryFacet.env.searchEndpoint.search).toHaveBeenCalledWith(
+        jasmine.objectContaining({
+          groupBy: jasmine.arrayContaining([
+            jasmine.objectContaining({
+              allowedValues: ['a_base_path|another_part|*some value*'],
+              allowedValuesPatternType: AllowedValuesPatternType.Wildcards
+            } as IGroupByRequest)
+          ])
+        })
+      );
+    });
+
     describe('when searching and getting values back from the endpoint', () => {
       beforeEach(() => {
         const fakeResults = FakeResults.createFakeResults();
