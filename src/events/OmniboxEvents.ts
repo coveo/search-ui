@@ -4,6 +4,7 @@ import { IOmniboxData, IOmniboxDataRow } from '../ui/Omnibox/OmniboxInterface';
 import { Omnibox } from '../ui/Omnibox/Omnibox';
 import { Suggestion } from '../magicbox/SuggestionsManager';
 import { Result } from '../magicbox/Result/Result';
+import { IQuerySuggestRequest, IQuerySuggestCompletion } from '../rest/QuerySuggest';
 
 /**
  * The `IPopulateOmniboxSuggestionsEventArgs` interface describes the object that all
@@ -27,6 +28,14 @@ export interface IPopulateOmniboxEventRow extends IOmniboxDataRow {}
 
 export interface IOmniboxPreprocessResultForQueryEventArgs {
   result: Result;
+}
+
+export interface IBuildingQuerySuggestionsArgs {
+  payload: IQuerySuggestRequest;
+}
+
+export interface IQuerySuggestionsSuccessArgs {
+  completions: IQuerySuggestCompletion[];
 }
 
 /**
@@ -53,4 +62,22 @@ export class OmniboxEvents {
   public static populateOmniboxSuggestions = 'populateOmniboxSuggestions';
 
   public static omniboxPreprocessResultForQuery = 'omniboxPreprocessResultForQuery';
+
+  /**
+   * Triggered by the [`Omnibox`]{@link Omnibox} component before sending a query suggestion request to the Coveo platform.
+   *
+   * Allows external function to modify and tweak the payload before sending it.
+   *
+   * This event is only triggered by standard ML powered query suggestions, and not {@link AnalyticsSuggestions} or {@link FieldSuggestions}.
+   */
+  public static buildingQuerySuggestions = 'buildingQuerySuggestions';
+
+  /**
+   * Triggered by the [`Omnibox`]{@link Omnibox} component when query suggestions are received from the Coveo platform.
+   *
+   * Allows external function to look into the received query suggestions, and modify them if needed.
+   *
+   * This event is only triggered by standard ML powered query suggestions, and not {@link AnalyticsSuggestions} or {@link FieldSuggestions}.
+   */
+  public static querySuggestionsSuccess = 'querySuggestionsSuccess';
 }
