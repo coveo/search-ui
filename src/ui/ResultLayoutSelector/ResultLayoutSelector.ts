@@ -217,7 +217,7 @@ export class ResultLayoutSelector extends Component {
   }
 
   private enableLayout(layout: ValidLayout) {
-    const allResultLists = this.activeResultLists;
+    const allResultLists = this.resultLists;
     const atLeastOneResultListCanShowLayout = find(allResultLists, resultList => resultList.options.layout == layout);
     if (atLeastOneResultListCanShowLayout && this.isLayoutDisplayedByButton(layout)) {
       this.showButton(layout);
@@ -227,10 +227,6 @@ export class ResultLayoutSelector extends Component {
 
   private get resultLists(): ResultListModule.ResultList[] {
     return this.searchInterface.getComponents('ResultList');
-  }
-
-  private get activeResultLists(): ResultListModule.ResultList[] {
-    return filter(this.resultLists, list => !list.disabled);
   }
 
   private hideButton(layout: ValidLayout) {
