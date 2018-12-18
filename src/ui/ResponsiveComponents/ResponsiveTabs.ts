@@ -268,8 +268,9 @@ export class ResponsiveTabs implements IResponsiveComponent {
     }
 
     $$(tab).addClass(ResponsiveTabs.TAB_IN_DROPDOWN_CSS_CLASS);
+    const list = $$(this.dropdownContent.find('ol'));
     const listElement = $$('li', null, tab);
-    this.list.prepend(listElement.el);
+    list.prepend(listElement.el);
   }
 
   private removeFromDropdownIfNeeded(tab: HTMLElement) {
@@ -344,7 +345,9 @@ export class ResponsiveTabs implements IResponsiveComponent {
       tab.on('click', () => swapOnSelect());
       tab.on('keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, swapOnSelect));
       tab.on('blur', (e: FocusEvent) => {
-        if (!this.tabIsInDropdown(e.relatedTarget as HTMLElement)) this.closeDropdown();
+        if (!this.tabIsInDropdown(e.relatedTarget as HTMLElement)) {
+          this.closeDropdown();
+        }
       });
     });
   }
@@ -425,9 +428,5 @@ export class ResponsiveTabs implements IResponsiveComponent {
       return [];
     }
     return this.dropdownContent.findAll(`.${ResponsiveTabs.TAB_IN_DROPDOWN_CSS_CLASS}`);
-  }
-
-  private get list(): Dom {
-    return $$(this.dropdownContent.find('ol'));
   }
 }
