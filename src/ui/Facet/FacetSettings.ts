@@ -145,7 +145,7 @@ export class FacetSettings extends FacetSort {
    * Close the settings menu
    */
   public close() {
-    //$$(this.settingsPopup).detach();
+    $$(this.settingsPopup).detach();
   }
 
   /**
