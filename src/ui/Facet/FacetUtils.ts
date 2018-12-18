@@ -95,16 +95,30 @@ export class FacetUtils {
       found = FileTypes.getFileType(value).caption;
     } else if (QueryUtils.isStratusAgnosticField(field.toLowerCase(), '@objecttype')) {
       found = FileTypes.getObjectType(value).caption;
-    } else if (QueryUtils.isStratusAgnosticField(field.toLowerCase(), '@month') && value != 'Search') {
-      try {
-        let month = parseInt(value);
-        found = DateUtils.monthToString(month - 1);
-      } catch (ex) {
-        // Do nothing
-      }
+    } else if (FacetUtils.isMonthFieldValue(field, value)) {
+      const month = parseInt(value, 10);
+      found = DateUtils.monthToString(month - 1);
     } else {
       found = l(value);
     }
     return found != undefined && Utils.isNonEmptyString(found) ? found : value;
+  }
+
+  static isMonthFieldValue(field: string, value: string) {
+    if (!QueryUtils.isStratusAgnosticField(field.toLowerCase(), '@month')) {
+      return false;
+    }
+
+    const asInt = parseInt(value, 10);
+
+    if (isNaN(asInt)) {
+      return false;
+    }
+
+    if (asInt < 1 || asInt > 12) {
+      return false;
+    }
+
+    return true;
   }
 }

@@ -665,3 +665,6 @@ PromotedResultsBadgeTest();
 
 import { ResultListUtilsTest } from './utils/ResultListUtilsTest';
 ResultListUtilsTest();
+
+import { FacetUtilsTest } from './utils/FacetUtilsTest';
+FacetUtilsTest();
