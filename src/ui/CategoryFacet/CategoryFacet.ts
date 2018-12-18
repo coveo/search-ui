@@ -271,10 +271,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   }
 
   public isCurrentlyDisplayed() {
-    if (!this.isPristine()) {
-      return true;
-    }
-    return this.hasValues;
+    return this.isPristine() ? this.hasValues : true;
   }
 
   public get activePath() {
