@@ -64,20 +64,20 @@ export class OmniboxEvents {
   public static omniboxPreprocessResultForQuery = 'omniboxPreprocessResultForQuery';
 
   /**
-   * Triggered by the [`Omnibox`]{@link Omnibox} component before sending a query suggestion request to the Coveo platform.
+   * Triggered by the [`Omnibox`]{@link Omnibox} component before sending a query suggestion request to the Search API.
    *
-   * Allows external function to modify and tweak the payload before sending it.
+   * Allows external functions to refine the payload before sending the request.
    *
-   * This event is only triggered by standard ML powered query suggestions, and not {@link AnalyticsSuggestions} or {@link FieldSuggestions}.
+   * This event is only triggered by standard ML-powered query suggestions, and not {@link AnalyticsSuggestions} or {@link FieldSuggestions}.
    */
   public static buildingQuerySuggestions = 'buildingQuerySuggestions';
 
   /**
-   * Triggered by the [`Omnibox`]{@link Omnibox} component when query suggestions are received from the Coveo platform.
+   * Triggered by the [`Omnibox`]{@link Omnibox} component when query suggestions are received from the Search API.
    *
-   * Allows external function to look into the received query suggestions, and modify them if needed.
+   * Allows external functions to look into the received query suggestions, and modify them if needed.
    *
-   * This event is only triggered by standard ML powered query suggestions, and not {@link AnalyticsSuggestions} or {@link FieldSuggestions}.
+   * This event is only triggered by standard ML-powered query suggestions, and not {@link AnalyticsSuggestions} or {@link FieldSuggestions}.
    */
   public static querySuggestionsSuccess = 'querySuggestionsSuccess';
 }

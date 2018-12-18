@@ -67,11 +67,11 @@ export interface IQuerySuggestRequest {
    */
   context?: IStringMap<any>;
   /**
-   * Specifies the second level of origin of the request, the identifier of the selected tab from which the request originates.
+   * Specifies the second level of origin of the request, typically the identifier of the selected tab from which the request originates.
    */
   tab?: string;
   /**
-   * Specifies the third level of origin of the request, typically the URL of the page that linked to the search interface from which the request originates (e.g., in JavaScript, this would correspond to the document.referrer value).
+   * Specifies the third level of origin of the request, typically the URL of the page that linked to the search interface from which the request originates (e.g., in JavaScript, this would correspond to the `document.referrer` value).
    */
   referrer?: string;
   /**

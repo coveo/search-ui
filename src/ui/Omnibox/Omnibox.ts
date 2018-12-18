@@ -226,11 +226,11 @@ export class Omnibox extends Component {
       section: 'QuerySyntax'
     }),
     /**
-     * Specifies the number of suggestions that should appear in standard ML powered query suggestions.
+     * Specifies the number of suggestions that should appear in standard ML-powered query suggestions.
      *
-     * This option only affect the number of suggestions that appears with {@link Omnibox.options.enableQuerySuggestAddon} option.
+     * This option only affect the number of suggestions that appear with the {@link Omnibox.options.enableQuerySuggestAddon} option.
      *
-     * This options does not affect the {@link AnalyticsSuggestions} or the {@link FieldSuggestions} component, which exposes their own dedicated option for this parameter.
+     * This options does not affect the {@link AnalyticsSuggestions} or the {@link FieldSuggestions} component, which expose their own dedicated options for this parameter.
      *
      * Default value is `5`.
      *
