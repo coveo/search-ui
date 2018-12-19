@@ -89,11 +89,10 @@ export function SimpleFilterTest() {
       aSimpleFilter.cmp.toggleValue('foo');
       (aSimpleFilter.env.usageAnalytics.logSearchEvent as jasmine.Spy).calls.reset();
       aSimpleFilter.cmp.toggleValue('foo');
-      const eventName = 'deselectValue';
 
       expect(aSimpleFilter.env.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(
         jasmine.objectContaining({
-          name: eventName
+          name: 'deselectValue'
         }),
         jasmine.objectContaining({
           simpleFilterTitle: aSimpleFilter.cmp.options.title
