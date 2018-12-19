@@ -19,9 +19,7 @@ export function FacetSettingsTest() {
     }
 
     const waitForPopperJS = () => {
-      return new Promise((resolve, reject) => {
-        setTimeout(() => resolve(true), 100);
-      });
+      return Promise.resolve(resolve => setTimeout(() => resolve(true), 100));
     };
 
     beforeEach(() => {
