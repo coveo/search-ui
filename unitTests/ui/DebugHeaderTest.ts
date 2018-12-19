@@ -12,13 +12,14 @@ export function DebugHeaderTest() {
     let elem: Dom;
     let searchSpy: jasmine.Spy;
     let debug: Debug;
+    let debugHeader: DebugHeader;
 
     beforeEach(() => {
       env = new MockEnvironmentBuilder().build();
       elem = $$('div');
       searchSpy = jasmine.createSpy('search');
       debug = new Debug(env.root, env, null, null);
-      new DebugHeader(debug, elem.el, searchSpy, {
+      debugHeader = new DebugHeader(debug, elem.el, searchSpy, {
         foo: 'bar'
       });
     });
@@ -61,6 +62,12 @@ export function DebugHeaderTest() {
 
     it('should create a request field checkbox', () => {
       expect(getRequestFieldCheckbox(elem.el)).not.toBeNull();
+    });
+
+    it('should reset search input when changing search function', () => {
+      getSearchInput(elem.el).value = 'foo';
+      debugHeader.setSearch((value: string) => {});
+      expect(getSearchInput(elem.el).value).toBe('');
     });
 
     it('should add debug if enabled', () => {

@@ -14,7 +14,7 @@ export class DebugHeader {
   private enableQuerySyntax = false;
   private highlightRecommendation = false;
   private requestAllFields = false;
-  private search: HTMLElement;
+  private search: TextInput;
   private widgets: HTMLElement[] = [];
 
   constructor(public debugInstance: Debug, public element: HTMLElement, public onSearch: (value: string) => void, public infoToDebug: any) {
@@ -36,10 +36,17 @@ export class DebugHeader {
 
   public setSearch(onSearch: (value: string) => void) {
     this.onSearch = onSearch;
+    this.resetSearchbox();
   }
 
   public setNewInfoToDebug(newInfoToDebug) {
     this.infoToDebug = newInfoToDebug;
+  }
+
+  private resetSearchbox() {
+    if (this.search) {
+      this.search.reset();
+    }
   }
 
   private get bindings(): IComponentBindings {
@@ -72,12 +79,12 @@ export class DebugHeader {
   }
 
   private buildSearch() {
-    const txtInput = new TextInput(txtInputInstance => {
+    this.search = new TextInput(txtInputInstance => {
       const value = txtInputInstance.getValue().toLowerCase();
       this.onSearch(value);
     }, 'Search in debug');
-    this.search = txtInput.build();
-    return this.search;
+    this.search.build();
+    return this.search.getElement();
   }
 
   private buildEnableDebugCheckbox() {
@@ -85,8 +92,7 @@ export class DebugHeader {
       this.debug = checkboxInstance.isSelected();
 
       this.bindings.queryController.executeQuery(this.queryOptions);
-      let input = this.search.querySelector('input') as HTMLInputElement;
-      input.value = '';
+      this.resetSearchbox();
     }, 'Enable query debug');
     if (this.debug) {
       checkbox.select();
