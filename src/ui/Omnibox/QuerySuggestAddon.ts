@@ -1,12 +1,20 @@
 ///<reference path="Omnibox.ts"/>
 import { Omnibox, IOmniboxSuggestion } from './Omnibox';
 import { $$, Dom } from '../../utils/Dom';
-import { IQuerySuggestCompletion, IQuerySuggestRequest, IQuerySuggestResponse } from '../../rest/QuerySuggest';
+import { IQuerySuggestCompletion, IQuerySuggestRequest } from '../../rest/QuerySuggest';
 import { ComponentOptionsModel } from '../../models/ComponentOptionsModel';
-import { OmniboxEvents, IPopulateOmniboxSuggestionsEventArgs } from '../../events/OmniboxEvents';
+import {
+  OmniboxEvents,
+  IPopulateOmniboxSuggestionsEventArgs,
+  IBuildingQuerySuggestArgs,
+  IQuerySuggestSuccessArgs
+} from '../../events/OmniboxEvents';
 import { StringUtils } from '../../utils/StringUtils';
 import { SuggestionsCache } from '../../misc/SuggestionsCache';
-import * as _ from 'underscore';
+import { map, every, last, indexOf, find } from 'underscore';
+import { QUERY_STATE_ATTRIBUTES } from '../../models/QueryStateModel';
+import { history } from 'coveo.analytics';
+import { Cookie } from '../../utils/CookieUtils';
 
 export interface IQuerySuggestAddon {
   getSuggestion(): Promise<IOmniboxSuggestion[]>;
@@ -41,13 +49,13 @@ export class QuerySuggestAddon implements IQuerySuggestAddon {
   private static isPartialMatch(suggestion: IQuerySuggestCompletion) {
     // groups : 1=notMatched, 2=matched, 3=corrected
     var parts = StringUtils.match(suggestion.highlighted, /\[(.*?)\]|\{(.*?)\}|\((.*?)\)/g);
-    var firstFail = _.find(parts, (part: string[]) => part[1] != null);
+    var firstFail = find(parts, (part: string[]) => part[1] != null);
     // if no fail found, this is a partial or a full match
     if (firstFail == null) {
       return true;
     }
     // if all right parts are notMatched, the right parts is autocomplete
-    return _.every(_.last(parts, _.indexOf(parts, firstFail) - parts.length), (part: string[]) => part[1] != null);
+    return every(last(parts, indexOf(parts, firstFail) - parts.length), (part: string[]) => part[1] != null);
   }
 
   private cache: SuggestionsCache<IOmniboxSuggestion[]> = new SuggestionsCache();
@@ -64,48 +72,92 @@ export class QuerySuggestAddon implements IQuerySuggestAddon {
     return this.cache.getSuggestions(text, () => this.getQuerySuggest(text));
   }
 
-  private getQuerySuggest(text: string): Promise<IOmniboxSuggestion[]> {
-    let payload = <IQuerySuggestRequest>{ q: text };
-    let locale = <string>String['locale'];
-    let searchHub = this.omnibox.getBindings().componentOptionsModel.get(ComponentOptionsModel.attributesEnum.searchHub);
-    let pipeline = this.omnibox.getBindings().searchInterface.options.pipeline;
-    let enableWordCompletion = this.omnibox.options.enableSearchAsYouType;
-    let context = this.omnibox.getBindings().searchInterface.getQueryContext();
+  private async getQuerySuggest(text: string): Promise<IOmniboxSuggestion[]> {
+    const payload: IQuerySuggestRequest = {
+      q: text,
+      locale: this.locale,
+      searchHub: this.searchHub,
+      pipeline: this.pipeline,
+      enableWordCompletion: this.enableWordCompletion,
+      context: this.context,
+      count: this.count,
+      tab: this.tab,
+      referrer: document.referrer,
+      actionsHistory: this.actionsHistory,
+      timezone: this.timezone,
+      visitorId: this.visitorId,
+      isGuestUser: this.isGuestUser
+    };
 
-    if (locale) {
-      payload.locale = locale;
+    $$(this.omnibox.getBindings().searchInterface.element).trigger(OmniboxEvents.buildingQuerySuggest, <IBuildingQuerySuggestArgs>{
+      payload
+    });
+
+    const results = await this.omnibox.queryController.getEndpoint().getQuerySuggest(payload);
+    const completions = results.completions;
+
+    $$(this.omnibox.getBindings().searchInterface.element).trigger(OmniboxEvents.querySuggestSuccess, <IQuerySuggestSuccessArgs>{
+      completions
+    });
+
+    return map(completions, (completion, i) => {
+      return {
+        html: QuerySuggestAddon.suggestiontHtml(completion),
+        text: completion.expression,
+        index: QuerySuggestAddon.INDEX - i / completions.length,
+        partial: QuerySuggestAddon.isPartialMatch(completion),
+        executableConfidence: completion.executableConfidence
+      };
+    });
+  }
+
+  private get tab() {
+    return this.omnibox.getBindings().queryStateModel.get(QUERY_STATE_ATTRIBUTES.T) as string;
+  }
+
+  private get locale() {
+    return String['locale'];
+  }
+
+  private get searchHub() {
+    return this.omnibox.getBindings().componentOptionsModel.get(ComponentOptionsModel.attributesEnum.searchHub);
+  }
+
+  private get pipeline() {
+    return this.omnibox.getBindings().searchInterface.options.pipeline;
+  }
+
+  private get enableWordCompletion() {
+    return this.omnibox.options.enableSearchAsYouType;
+  }
+
+  private get context() {
+    return this.omnibox.getBindings().searchInterface.getQueryContext();
+  }
+
+  private get count() {
+    return this.omnibox.options.numberOfSuggestions;
+  }
+
+  private get actionsHistory() {
+    const historyStore = new history.HistoryStore();
+    const historyFromStore = historyStore.getHistory();
+    if (historyFromStore == null) {
+      return [];
     }
+    return historyFromStore;
+  }
 
-    if (searchHub) {
-      payload.searchHub = searchHub;
-    }
+  private get timezone() {
+    return this.omnibox.getBindings().searchInterface.options.timezone;
+  }
 
-    if (pipeline) {
-      payload.pipeline = pipeline;
-    }
+  private get visitorId() {
+    return Cookie.get('visitorId');
+  }
 
-    if (context) {
-      payload.context = context;
-    }
-
-    payload.enableWordCompletion = enableWordCompletion;
-
-    return this.omnibox.queryController
-      .getEndpoint()
-      .getQuerySuggest(payload)
-      .then((result: IQuerySuggestResponse) => {
-        var completions = result.completions;
-        var results: IOmniboxSuggestion[] = _.map(completions, (completion, i) => {
-          return {
-            html: QuerySuggestAddon.suggestiontHtml(completion),
-            text: completion.expression,
-            index: QuerySuggestAddon.INDEX - i / completions.length,
-            partial: QuerySuggestAddon.isPartialMatch(completion),
-            executableConfidence: completion.executableConfidence
-          };
-        });
-        return results;
-      });
+  private get isGuestUser() {
+    return this.omnibox.getBindings().queryController.getEndpoint().options.isGuestUser;
   }
 }
 
