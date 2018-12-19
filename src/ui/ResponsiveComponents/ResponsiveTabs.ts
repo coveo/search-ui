@@ -5,7 +5,6 @@ import { Logger } from '../../misc/Logger';
 import { l } from '../../strings/Strings';
 import { $$, Dom } from '../../utils/Dom';
 import { EventsUtils } from '../../utils/EventsUtils';
-import { PopupHorizontalAlignment, PopupUtils, PopupVerticalAlignment } from '../../utils/PopupUtils';
 import { SVGDom } from '../../utils/SVGDom';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { Utils } from '../../utils/Utils';
@@ -15,6 +14,9 @@ import { Tab } from '../Tab/Tab';
 import { ResponsiveComponents } from './ResponsiveComponents';
 import { IResponsiveComponent, IResponsiveComponentOptions, ResponsiveComponentsManager } from './ResponsiveComponentsManager';
 import { ResponsiveComponentsUtils } from './ResponsiveComponentsUtils';
+import { AccessibleButton } from '../../utils/AccessibleButton';
+import Popper from 'popper.js';
+import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
 
 export class ResponsiveTabs implements IResponsiveComponent {
   private static DROPDOWN_HEADER_LABEL_DEFAULT_VALUE = 'More';
@@ -215,14 +217,19 @@ export class ResponsiveTabs implements IResponsiveComponent {
   }
 
   private bindDropdownHeaderEvents() {
-    this.dropdownHeader.on('click', () => {
+    const toggle = () => {
       if (!this.dropdownHeader.hasClass('coveo-dropdown-header-active')) {
         this.positionPopup();
         this.dropdownHeader.addClass('coveo-dropdown-header-active');
       } else {
         this.closeDropdown();
       }
-    });
+    };
+    new AccessibleButton()
+      .withElement(this.dropdownHeader)
+      .withSelectAction(toggle)
+      .withLabel(this.getDropdownHeaderLabel())
+      .build();
   }
 
   private buildDropdownContent() {
@@ -325,13 +332,21 @@ export class ResponsiveTabs implements IResponsiveComponent {
         }
       };
 
-      tab.on('click', () => {
+      const swapOnSelect = () => {
         if (this.tabIsInDropdown(tab)) {
           let lastTabInSection = this.tabsInTabSection.pop();
           if (lastTabInSection) {
             EventsUtils.addPrefixedEvent(tab.el, 'TransitionEnd', fadeOutFadeIn);
             tab.el.style.opacity = lastTabInSection.style.opacity = '0';
           }
+        }
+      };
+
+      tab.on('click', () => swapOnSelect());
+      tab.on('keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, swapOnSelect));
+      tab.on('blur', (e: FocusEvent) => {
+        if (!this.tabIsInDropdown(e.relatedTarget as HTMLElement)) {
+          this.closeDropdown();
         }
       });
     });
@@ -344,13 +359,15 @@ export class ResponsiveTabs implements IResponsiveComponent {
   }
 
   private positionPopup() {
-    PopupUtils.positionPopup(
-      this.dropdownContent.el,
-      this.dropdownHeader.el,
-      this.coveoRoot.el,
-      { horizontal: PopupHorizontalAlignment.INNERRIGHT, vertical: PopupVerticalAlignment.BOTTOM },
-      this.coveoRoot.el
-    );
+    this.dropdownContent.insertAfter(this.dropdownHeader.el);
+
+    new Popper(this.dropdownHeader.el, this.dropdownContent.el, {
+      modifiers: {
+        preventOverflow: {
+          boundariesElement: this.coveoRoot.el
+        }
+      }
+    });
   }
 
   private fromDropdownToTabSection(tab: Dom) {
