@@ -53,6 +53,7 @@ export class TextInput implements IFormWidget, IFormWidgetSettable {
     if (currentValue != value) {
       this.onChange(this);
     }
+    this.lastQueryText = this.getInput().value;
   }
 
   /**
@@ -64,6 +65,7 @@ export class TextInput implements IFormWidget, IFormWidgetSettable {
     if (currentValue != '') {
       this.onChange(this);
     }
+    this.lastQueryText = this.getInput().value;
   }
 
   /**
