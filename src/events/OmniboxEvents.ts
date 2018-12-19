@@ -30,11 +30,11 @@ export interface IOmniboxPreprocessResultForQueryEventArgs {
   result: Result;
 }
 
-export interface IBuildingQuerySuggestionsArgs {
+export interface IBuildingQuerySuggestArgs {
   payload: IQuerySuggestRequest;
 }
 
-export interface IQuerySuggestionsSuccessArgs {
+export interface IQuerySuggestSuccessArgs {
   completions: IQuerySuggestCompletion[];
 }
 
@@ -66,11 +66,11 @@ export class OmniboxEvents {
   /**
    * Triggered by the [`Omnibox`]{@link Omnibox} component before sending a query suggestion request to the Search API.
    *
-   * Allows external functions to refine the payload before sending the request.
+   * Allows external functions to refine the payload b3efore sending the request.
    *
    * This event is only triggered by standard ML-powered query suggestions, and not {@link AnalyticsSuggestions} or {@link FieldSuggestions}.
    */
-  public static buildingQuerySuggestions = 'buildingQuerySuggestions';
+  public static buildingQuerySuggest = 'buildingQuerySuggest';
 
   /**
    * Triggered by the [`Omnibox`]{@link Omnibox} component when query suggestions are received from the Search API.
@@ -79,5 +79,5 @@ export class OmniboxEvents {
    *
    * This event is only triggered by standard ML-powered query suggestions, and not {@link AnalyticsSuggestions} or {@link FieldSuggestions}.
    */
-  public static querySuggestionsSuccess = 'querySuggestionsSuccess';
+  public static querySuggestSuccess = 'querySuggestSuccess';
 }

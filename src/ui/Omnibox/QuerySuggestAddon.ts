@@ -6,8 +6,8 @@ import { ComponentOptionsModel } from '../../models/ComponentOptionsModel';
 import {
   OmniboxEvents,
   IPopulateOmniboxSuggestionsEventArgs,
-  IBuildingQuerySuggestionsArgs,
-  IQuerySuggestionsSuccessArgs
+  IBuildingQuerySuggestArgs,
+  IQuerySuggestSuccessArgs
 } from '../../events/OmniboxEvents';
 import { StringUtils } from '../../utils/StringUtils';
 import { SuggestionsCache } from '../../misc/SuggestionsCache';
@@ -89,14 +89,14 @@ export class QuerySuggestAddon implements IQuerySuggestAddon {
       isGuestUser: this.isGuestUser
     };
 
-    $$(this.omnibox.getBindings().searchInterface.element).trigger(OmniboxEvents.buildingQuerySuggestions, <IBuildingQuerySuggestionsArgs>{
+    $$(this.omnibox.getBindings().searchInterface.element).trigger(OmniboxEvents.buildingQuerySuggest, <IBuildingQuerySuggestArgs>{
       payload
     });
 
     const results = await this.omnibox.queryController.getEndpoint().getQuerySuggest(payload);
     const completions = results.completions;
 
-    $$(this.omnibox.getBindings().searchInterface.element).trigger(OmniboxEvents.querySuggestionsSuccess, <IQuerySuggestionsSuccessArgs>{
+    $$(this.omnibox.getBindings().searchInterface.element).trigger(OmniboxEvents.querySuggestSuccess, <IQuerySuggestSuccessArgs>{
       completions
     });
 
