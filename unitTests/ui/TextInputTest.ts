@@ -77,6 +77,20 @@ export function TextInputTest() {
       expect(spy).toHaveBeenCalledTimes(2);
     });
 
+    it('should call on change after reset with the same original value', () => {
+      textInput.setValue('test');
+      textInput.reset();
+      textInput.setValue('test');
+      expect(spy).toHaveBeenCalledTimes(3);
+    });
+
+    it('should call on change after changing values back to the same original value', () => {
+      textInput.setValue('test');
+      textInput.setValue('');
+      textInput.setValue('test');
+      expect(spy).toHaveBeenCalledTimes(3);
+    });
+
     it('should not call on change on reset multiple time', () => {
       textInput.setValue('test');
       textInput.reset();
