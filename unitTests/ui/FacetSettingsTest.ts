@@ -18,6 +18,10 @@ export function FacetSettingsTest() {
       facetSettings.build();
     }
 
+    const waitForPopperJS = () => {
+      return Promise.resolve(resolve => setTimeout(() => resolve(true), 100));
+    };
+
     beforeEach(() => {
       facet = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, {
         field: '@field'
@@ -93,19 +97,19 @@ export function FacetSettingsTest() {
       });
     });
 
-    it('should show collapse/expand section if it is not disabled from the facet', () => {
+    it('should show collapse/expand section if it is not disabled from the facet', async done => {
       facet.options.enableCollapse = true;
       initFacetSettings();
-
-      facetSettings.open();
       facet.root.appendChild(facetSettings.settingsButton);
+      facetSettings.open();
+      await waitForPopperJS();
       expect($$(facetSettings.facet.root).find('.coveo-facet-settings-section-hide')).not.toBeNull();
       expect($$(facetSettings.facet.root).find('.coveo-facet-settings-section-show')).not.toBeNull();
-
       facet.collapse();
       facetSettings.open();
+      await waitForPopperJS();
       expect($$(facetSettings.facet.root).find('.coveo-facet-settings-section-hide')).not.toBeNull();
-      expect($$(facetSettings.facet.root).find('.coveo-facet-settings-section-show')).not.toBeNull();
+      done();
     });
 
     it('should not show collapse/expand section if it is disabled from the facet', () => {
