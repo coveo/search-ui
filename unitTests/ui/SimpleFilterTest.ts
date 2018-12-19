@@ -85,6 +85,21 @@ export function SimpleFilterTest() {
       );
     });
 
+    it('should log an analytics event when a checkbox is unselected', () => {
+      aSimpleFilter.cmp.toggleValue('foo');
+      (aSimpleFilter.env.usageAnalytics.logSearchEvent as jasmine.Spy).calls.reset();
+      aSimpleFilter.cmp.toggleValue('foo');
+
+      expect(aSimpleFilter.env.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(
+        jasmine.objectContaining({
+          name: 'deselectValue'
+        }),
+        jasmine.objectContaining({
+          simpleFilterTitle: aSimpleFilter.cmp.options.title
+        })
+      );
+    });
+
     it('should set the field in the query', () => {
       aSimpleFilter.cmp.options.values = undefined;
       let simulation = Simulate.query(aSimpleFilter.env);
