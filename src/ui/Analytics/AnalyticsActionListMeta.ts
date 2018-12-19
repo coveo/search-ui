@@ -1158,7 +1158,7 @@ export var analyticsActionCauseList = {
   /**
    * Identifies the search event that gets logged when a user deselects a simple filter value under the search box.
    *
-   * `actionCause`: `'selectValue'`
+   * `actionCause`: `'deselectValue'`
    * `actionType`: `'simpleFilter'`
    *
    * Logging an event with this actionType also adds the following key-value pairs in the custom data property of the Usage Analytics HTTP service request.
@@ -1167,7 +1167,7 @@ export var analyticsActionCauseList = {
    * `"simpleFilterField":`: <correspondingSimpleFilterField>
    */
   simpleFilterDeselectValue: <IAnalyticsActionCause>{
-    name: 'selectValue',
+    name: 'deselectValue',
     type: 'simpleFilter'
   },
   /**
