@@ -173,6 +173,7 @@ export class SuggestionsManager {
   public updateSuggestions(suggestions: Suggestion[]) {
     $$(this.element).empty();
     this.element.className = 'magic-box-suggestions';
+    this.hasSuggestions = suggestions.length > 0;
 
     const suggestionsContainer = this.buildSuggestionsContainer();
     $$(this.element).append(suggestionsContainer.el);
@@ -187,8 +188,6 @@ export class SuggestionsManager {
       dom['suggestion'] = suggestion;
       suggestionsContainer.append(dom.el);
     });
-
-    this.hasSuggestions = suggestions.length > 0;
 
     $$(this.element).toggleClass('magic-box-hasSuggestion', this.hasSuggestions);
     $$(this.magicBoxContainer).setAttribute('aria-expanded', this.hasSuggestions.toString());
@@ -206,10 +205,13 @@ export class SuggestionsManager {
   }
 
   private buildSuggestionsContainer() {
-    return $$('div', {
-      id: 'coveo-magicbox-suggestions',
-      role: 'listbox'
+    const suggestionsContainer = $$('div', {
+      id: 'coveo-magicbox-suggestions'
     });
+    if (this.hasSuggestions) {
+      suggestionsContainer.setAttribute('role', 'listbox');
+    }
+    return suggestionsContainer;
   }
 
   private createDomFromSuggestion(suggestion: Suggestion) {
