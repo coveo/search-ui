@@ -38,6 +38,12 @@
   margin: 0;
 }
 
+.CoveoSearchInterface.coveo-small-tabs .coveo-dropdown-header li,
+.CoveoSearchInterface.coveo-small-facets .coveo-dropdown-header li,
+.CoveoSearchInterface.coveo-small-recommendation .coveo-dropdown-header li {
+  display: list-item;
+}
+
 .CoveoSearchInterface.coveo-small-tabs .coveo-dropdown-header p,
 .CoveoSearchInterface.coveo-small-facets .coveo-dropdown-header p,
 .CoveoSearchInterface.coveo-small-recommendation .coveo-dropdown-header p {

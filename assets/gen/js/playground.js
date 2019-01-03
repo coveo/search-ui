@@ -2553,7 +2553,7 @@ var Dom = /** @class */ (function () {
         }
     };
     /**
-     * Show the element;
+     * Show the element by setting display to block;
      */
     Dom.prototype.show = function () {
         this.el.style.display = 'block';
@@ -2565,6 +2565,13 @@ var Dom = /** @class */ (function () {
     Dom.prototype.hide = function () {
         this.el.style.display = 'none';
         $$(this.el).setAttribute('aria-hidden', 'true');
+    };
+    /**
+     * Show the element by setting display to an empty string.
+     */
+    Dom.prototype.unhide = function () {
+        this.el.style.display = '';
+        $$(this.el).setAttribute('aria-hidden', 'false');
     };
     /**
      * Toggle the element visibility.<br/>
@@ -5863,8 +5870,8 @@ exports.ResponsiveComponents = ResponsiveComponents;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    lib: '2.4710.20-beta',
-    product: '2.4710.20-beta',
+    lib: '2.5395.1-beta',
+    product: '2.5395.1-beta',
     supportedApiVersion: 2
 };
 

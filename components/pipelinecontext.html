@@ -191,26 +191,19 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>A PipelineContext is used to add contextual information about the environment inside which the query is executed.</p>
+						<p>A PipelineContext is used to add custom context information to a query (see <a href="https://docs.coveo.com/en/399">Adding Custom Context Information to Queries</a>).</p>
 					</div>
-					<p>It allows to pass arbitrary key values pairs ( think <code>JSON</code> ), which can then be leveraged by the <a href="http://www.coveo.com/go?dest=cloudhelp&amp;lcid=9&amp;context=108">Query Pipeline</a>,
-					or by Coveo Machine Learning.</p>
-					<p>This can be any arbitrary information that you can use to contextualize the query and help Coveo improve relevance by returning results tailored to a specific context.</p>
-					<p>This component is meant to be configured using a script tag, with a JSON content.</p>
-					<p>The values can be either a <code>string</code> or an array of <code>string</code>.</p>
+					<p>This component is meant to be initialized with a script tag, possibly configuring it with JSON content.</p>
+					<p>The values can be either string or string array.</p>
 					<pre><code><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoPipelineContext'</span> <span class="hljs-attr">type</span>=<span class="hljs-string">'text/context'</span>&gt;</span><span class="actionscript">
   {
      <span class="hljs-string">"foo"</span> : <span class="hljs-string">"bar"</span>,
      <span class="hljs-string">"foobar"</span> : [<span class="hljs-string">"foo"</span>, <span class="hljs-string">"bar"</span>]
   }
 </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
-</code></pre><p>You can also simply use JavaScript code to pass context values, using the <a href="../classes/querybuilder.html#addcontextvalue">QueryBuilder.addContextValue</a> method.</p>
-					<p>This means you do not necessarily need to use this component to pass context.</p>
-					<pre><code>Coveo.$$(root).on(<span class="hljs-string">'buildingQuery'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">args</span>) </span>{
-    args.queryBuilder.addContextValue(<span class="hljs-string">'foo'</span>, <span class="hljs-string">'bar'</span>);
-})
-</code></pre><p>Using this component as opposed to JavaScript code means you will be able to leverage the interface editor.</p>
-					<p>Regardless of if you use this component or JavaScript to add context, both will add the needed data in the <a href="../interfaces/iquery.html#context">Query.Context</a> parameter.</p>
+</code></pre><p>Configuring the component within a script tag implies you will be able to leverage the interface editor.</p>
+					<p>Once the component is created, you can also use JavaScript code to set/overwrite context values, using the <a href="pipelinecontext.html#setcontext">setContext</a> and <a href="pipelinecontext.html#setcontextvalue">setContextValue</a> methods.</p>
+					<p>Whether you configure the component within a script tag or using JavaScript code, the data is added to the <a href="../interfaces/iquery.html#context">Query.Context</a> parameter.</p>
 					<p><strong>Note:</strong></p>
 					<p>This component also ensures that the framework properly determines the context in all corner cases, including when a standalone search box (<a href="../globals.html#initsearchbox">initSearchbox</a>) is displaying query suggestions.</p>
 					<p>In most cases, if you do not use this component, the context will not be resolved and leveraged properly in the query pipeline (see <a href="http://www.coveo.com/go?dest=cloudhelp&amp;lcid=9&amp;context=252">What Is a Query Pipeline?</a>).</p>
@@ -380,8 +373,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/PipelineContext/PipelineContext.ts#L97">ui/PipelineContext/PipelineContext.ts
-									:97</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/PipelineContext/PipelineContext.ts#L87">ui/PipelineContext/PipelineContext.ts
+									:87</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -404,8 +397,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/PipelineContext/PipelineContext.ts#L115">ui/PipelineContext/PipelineContext.ts
-									:115</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/PipelineContext/PipelineContext.ts#L107">ui/PipelineContext/PipelineContext.ts
+									:107</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -428,8 +421,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/PipelineContext/PipelineContext.ts#L128">ui/PipelineContext/PipelineContext.ts
-									:128</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/PipelineContext/PipelineContext.ts#L120">ui/PipelineContext/PipelineContext.ts
+									:120</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -463,14 +456,15 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/PipelineContext/PipelineContext.ts#L85">ui/PipelineContext/PipelineContext.ts
-									:85</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/PipelineContext/PipelineContext.ts#L75">ui/PipelineContext/PipelineContext.ts
+									:75</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Set a new context, replacing any value previously set.</p>
+									<p><strong>Available since the <a href="https://docs.coveo.com/en/373">December 2017 Release</a>.</strong></p>
 								</div>
+								<p>Sets a new context, replacing the previous context if applicable.</p>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -496,14 +490,15 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/PipelineContext/PipelineContext.ts#L107">ui/PipelineContext/PipelineContext.ts
-									:107</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/PipelineContext/PipelineContext.ts#L99">ui/PipelineContext/PipelineContext.ts
+									:99</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Sets a value for a context key, replacing the previous value if applicable.</p>
+									<p><strong>Available since the <a href="https://docs.coveo.com/en/373">December 2017 Release</a>.</strong></p>
 								</div>
+								<p>Sets a value for a context key, replacing the previous value if applicable.</p>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">

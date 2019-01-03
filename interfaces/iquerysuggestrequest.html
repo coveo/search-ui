@@ -96,10 +96,22 @@
 						<a href="iquerysuggestrequest.html" class="tsd-kind-icon">IQuery<wbr>Suggest<wbr>Request</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="iquerysuggestrequest.html#actionshistory" class="tsd-kind-icon">actions<wbr>History</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="iquerysuggestrequest.html#context" class="tsd-kind-icon">context</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="iquerysuggestrequest.html#count" class="tsd-kind-icon">count</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="iquerysuggestrequest.html#enablewordcompletion" class="tsd-kind-icon">enable<wbr>Word<wbr>Completion</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="iquerysuggestrequest.html#isguestuser" class="tsd-kind-icon">is<wbr>Guest<wbr>User</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="iquerysuggestrequest.html#locale" class="tsd-kind-icon">locale</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="iquerysuggestrequest.html#pipeline" class="tsd-kind-icon">pipeline</a>
@@ -108,7 +120,19 @@
 								<a href="iquerysuggestrequest.html#q" class="tsd-kind-icon">q</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="iquerysuggestrequest.html#referrer" class="tsd-kind-icon">referrer</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="iquerysuggestrequest.html#searchhub" class="tsd-kind-icon">search<wbr>Hub</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="iquerysuggestrequest.html#tab" class="tsd-kind-icon">tab</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="iquerysuggestrequest.html#timezone" class="tsd-kind-icon">timezone</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="iquerysuggestrequest.html#visitorid" class="tsd-kind-icon">visitor<wbr>Id</a>
 							</li>
 						</ul>
 					</li>
@@ -154,11 +178,19 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iquerysuggestrequest.html#actionshistory" class="tsd-kind-icon">actions<wbr>History</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iquerysuggestrequest.html#context" class="tsd-kind-icon">context</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iquerysuggestrequest.html#count" class="tsd-kind-icon">count</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iquerysuggestrequest.html#enablewordcompletion" class="tsd-kind-icon">enable<wbr>Word<wbr>Completion</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iquerysuggestrequest.html#isguestuser" class="tsd-kind-icon">is<wbr>Guest<wbr>User</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iquerysuggestrequest.html#locale" class="tsd-kind-icon">locale</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iquerysuggestrequest.html#pipeline" class="tsd-kind-icon">pipeline</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iquerysuggestrequest.html#q" class="tsd-kind-icon">q</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iquerysuggestrequest.html#referrer" class="tsd-kind-icon">referrer</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iquerysuggestrequest.html#searchhub" class="tsd-kind-icon">search<wbr>Hub</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iquerysuggestrequest.html#tab" class="tsd-kind-icon">tab</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iquerysuggestrequest.html#timezone" class="tsd-kind-icon">timezone</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iquerysuggestrequest.html#visitorid" class="tsd-kind-icon">visitor<wbr>Id</a></li>
 							</ul>
 						</section>
 					</div>
@@ -166,6 +198,23 @@
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="actionshistory" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> actions<wbr>History</h3>
+					<div class="tsd-signature tsd-kind-icon">actions<wbr>History<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any[]</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/QuerySuggest.ts#L92">rest/QuerySuggest.ts
+							:92</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Specfies the actions history which represents the past actions a user made. It is generated by the page view script (<a href="https://github.com/coveo/coveo.analytics.js">https://github.com/coveo/coveo.analytics.js</a>)</p>
+						</div>
+					</div>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="context" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagOptional">Optional</span> context</h3>
@@ -199,6 +248,57 @@
 							<p>Specifies the number of suggestions that the Coveo Machine Learning service should return.</p>
 						</div>
 						<p>Default value is <code>5</code>.</p>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="enablewordcompletion" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> enable<wbr>Word<wbr>Completion</h3>
+					<div class="tsd-signature tsd-kind-icon">enable<wbr>Word<wbr>Completion<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/QuerySuggest.ts#L87">rest/QuerySuggest.ts
+							:87</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Specifies whether to attempt to complete the last word of the current &quot;q&quot; parameter and boost the ranking score of the resulting expression so that it is returned as the first query suggestion.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="isguestuser" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> is<wbr>Guest<wbr>User</h3>
+					<div class="tsd-signature tsd-kind-icon">is<wbr>Guest<wbr>User<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/QuerySuggest.ts#L107">rest/QuerySuggest.ts
+							:107</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Whether the current user is anonymous. This can be specified when configuring the <a href="../classes/searchendpoint.html">SearchEndpoint</a>.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="locale" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> locale</h3>
+					<div class="tsd-signature tsd-kind-icon">locale<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/QuerySuggest.ts#L82">rest/QuerySuggest.ts
+							:82</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The locale of the current user. Will typically match the &quot;language&quot; parameter that is used to perform standard queries.</p>
+						</div>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
@@ -236,6 +336,23 @@
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="referrer" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> referrer</h3>
+					<div class="tsd-signature tsd-kind-icon">referrer<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/QuerySuggest.ts#L77">rest/QuerySuggest.ts
+							:77</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Specifies the third level of origin of the request, typically the URL of the page that linked to the search interface from which the request originates (e.g., in JavaScript, this would correspond to the <code>document.referrer</code> value).</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="searchhub" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagOptional">Optional</span> search<wbr>Hub</h3>
 					<div class="tsd-signature tsd-kind-icon">search<wbr>Hub<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
@@ -249,6 +366,57 @@
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>Specifies the search hub for which to get suggestions.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="tab" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> tab</h3>
+					<div class="tsd-signature tsd-kind-icon">tab<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/QuerySuggest.ts#L72">rest/QuerySuggest.ts
+							:72</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Specifies the second level of origin of the request, typically the identifier of the selected tab from which the request originates.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="timezone" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> timezone</h3>
+					<div class="tsd-signature tsd-kind-icon">timezone<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/QuerySuggest.ts#L97">rest/QuerySuggest.ts
+							:97</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The tz database identifier of the time zone to use to correctly interpret dates in the query expression and result items.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="visitorid" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> visitor<wbr>Id</h3>
+					<div class="tsd-signature tsd-kind-icon">visitor<wbr>Id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/QuerySuggest.ts#L102">rest/QuerySuggest.ts
+							:102</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>A GUID representing the current user, who can be authenticated or anonymous. This GUID is normally generated by the usage analytics service and stored in a non-expiring browser cookie.</p>
 						</div>
 					</div>
 				</section>
