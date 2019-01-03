@@ -174,6 +174,15 @@ export class SuggestionsManager {
     $$(this.element).empty();
     this.element.className = 'magic-box-suggestions';
 
+    this.hasSuggestions = suggestions.length > 0;
+
+    $$(this.element).toggleClass('magic-box-hasSuggestion', this.hasSuggestions);
+    $$(this.magicBoxContainer).setAttribute('aria-expanded', this.hasSuggestions.toString());
+
+    if (!this.hasSuggestions) {
+      return;
+    }
+
     const suggestionsContainer = this.buildSuggestionsContainer();
     $$(this.element).append(suggestionsContainer.el);
 
@@ -187,11 +196,6 @@ export class SuggestionsManager {
       dom['suggestion'] = suggestion;
       suggestionsContainer.append(dom.el);
     });
-
-    this.hasSuggestions = suggestions.length > 0;
-
-    $$(this.element).toggleClass('magic-box-hasSuggestion', this.hasSuggestions);
-    $$(this.magicBoxContainer).setAttribute('aria-expanded', this.hasSuggestions.toString());
   }
 
   private processKeyboardSelection(suggestion: HTMLElement) {
