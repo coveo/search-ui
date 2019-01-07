@@ -241,6 +241,10 @@ export class QueryBuilder {
    */
   public enableDebug: boolean = false;
   /**
+   * **Note:**
+   *
+   * > The Coveo Cloud V2 platform does not support collaborative rating. Therefore, this property is obsolete in Coveo Cloud V2.
+   *
    * Whether the index should take collaborative rating in account when ranking result (see : {@link ResultRating}).
    */
   public enableCollaborativeRating: boolean;

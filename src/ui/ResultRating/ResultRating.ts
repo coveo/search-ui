@@ -23,6 +23,10 @@ export enum RatingValues {
 
 export interface IResultRatingOptions {}
 /**
+ * **Note:**
+ *
+ * > The Coveo Cloud V2 platform does not support collaborative rating. Therefore, this component is obsolete in Coveo Cloud V2.
+ *
  * The `ResultRating` component renders a 5-star rating widget. Interactive rating is possible if
  * the [`enableCollaborativeRating`]{@link SearchInterface.options.enableCollaborativeRating} option of your
  * search interface is `true`, and if collaborative rating is enabled on your Coveo index.
