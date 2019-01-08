@@ -90,6 +90,17 @@ export function ResultsFiltersPreferencesTest() {
         expect($$(breadcrumbItems[0].element).text()).toContain('Test filter');
       });
 
+      it('breadcrumb element should have the right accessibility attributes', () => {
+        test.cmp.createDom();
+        const breadcrumbItems: IBreadcrumbItem[] = [];
+        $$(test.env.root).trigger(BreadcrumbEvents.populateBreadcrumb, { breadcrumbs: breadcrumbItems });
+
+        const breadcrumbValue = $$(breadcrumbItems[0].element).find('.coveo-value');
+        expect(breadcrumbValue.getAttribute('aria-label')).toBe('Remove filter on Test filter');
+        expect(breadcrumbValue.getAttribute('role')).toBe('button');
+        expect(breadcrumbValue.getAttribute('tabindex')).toBe('0');
+      });
+
       it('should validate and save on form submit', () => {
         test.cmp.createDom();
         let form = $$(test.cmp.element).find('form');
