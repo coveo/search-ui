@@ -14,11 +14,22 @@ export function CategoryFacetBreadcrumbTest() {
       expect($$(breadcrumb).hasClass('coveo-category-facet-breadcrumb')).toBe(true);
     });
 
+    it('has the right accessibility attributes', () => {
+      categoryValueDescriptor.path = ['path_one', 'path_two'];
+      const breadcrumb = new CategoryFacetBreadcrumb('title', () => {}, categoryValueDescriptor, []).build();
+      const breadcrumbValues = $$(breadcrumb).find('.coveo-category-facet-breadcrumb-values');
+      expect(breadcrumbValues.getAttribute('aria-label')).toBe('Remove filter on path_one/path_two');
+      expect(breadcrumbValues.getAttribute('role')).toBe('button');
+      expect(breadcrumbValues.getAttribute('tabindex')).toBe('0');
+    });
+
     it('calls the given click handler on click', () => {
       const clickHandler = jasmine.createSpy('handler');
       const breadcrumb = new CategoryFacetBreadcrumb('title', clickHandler, categoryValueDescriptor, []).build();
 
-      $$(breadcrumb).trigger('click');
+      $$(breadcrumb)
+        .find('.coveo-category-facet-breadcrumb-values')
+        .click();
 
       expect(clickHandler).toHaveBeenCalled();
     });
