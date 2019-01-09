@@ -153,6 +153,7 @@
 
 .coveo-category-facet-breadcrumb-values {
   @include clickable();
+  font-size: $font-size-smaller;
   &:hover {
     .coveo-exclusion-svg {
       fill: $color-red;

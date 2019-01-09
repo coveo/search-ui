@@ -150,16 +150,13 @@
     display: inline-block;
     @include clearButton('.coveo-clear');
     @include clickable();
-    & + & {
+    & + .coveo-value {
       margin-left: 10px;
     }
     .coveo-clear {
-      position: relative;
+      display: inline-block;
+      vertical-align: middle;
       margin-left: 5px;
     }
-  }
-  .coveo-clear-svg {
-    position: absolute;
-    top: 4px;
   }
 }
