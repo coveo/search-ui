@@ -350,6 +350,10 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     enableDebugInfo: ComponentOptions.buildBooleanOption({ defaultValue: true }),
 
     /**
+     * **Note:**
+     *
+     * > The Coveo Cloud V2 platform does not support collaborative rating. Therefore, this option is obsolete in Coveo Cloud V2.
+     *
      * Specifies whether to enable collaborative rating, which you can leverage using the
      * [`ResultRating`]{@link ResultRating} component.
      *
