@@ -406,9 +406,6 @@ export class ResponsiveTabs implements IResponsiveComponent {
   }
 
   private tabIsInDropdown(tab: Dom | HTMLElement) {
-    if (!tab) {
-      debugger;
-    }
     return $$(tab as HTMLElement).hasClass(ResponsiveTabs.TAB_IN_DROPDOWN_CSS_CLASS);
   }
 
