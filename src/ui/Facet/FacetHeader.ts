@@ -147,14 +147,20 @@ export class FacetHeader {
   }
 
   private buildOperatorToggle(): HTMLElement {
+    const label = l('SwitchTo', this.options.facet.options.useAnd ? l('Or') : l('And'));
     const icon = $$('span', { className: 'coveo-' + (this.options.facet.options.useAnd ? 'and' : 'or') }, SVGIcons.icons.orAnd);
     SVGDom.addClassToSVGInContainer(icon.el, 'coveo-or-and-svg');
     const toggle = $$('div', {
       className: 'coveo-facet-header-operator',
-      title: l('SwitchTo', this.options.facet.options.useAnd ? l('Or') : l('And'))
+      title: label
     });
     toggle.append(icon.el);
-    $$(toggle).on('click', () => this.handleOperatorClick());
+
+    new AccessibleButton()
+      .withElement(toggle)
+      .withLabel(label)
+      .withSelectAction(() => this.handleOperatorClick())
+      .build();
 
     return toggle.el;
   }
