@@ -345,7 +345,7 @@ export class ResponsiveTabs implements IResponsiveComponent {
       tab.on('click', () => swapOnSelect());
       tab.on('keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, swapOnSelect));
       tab.on('blur', (e: FocusEvent) => {
-        if (!this.tabIsInDropdown(e.relatedTarget as HTMLElement)) {
+        if (e.relatedTarget && !this.tabIsInDropdown(e.relatedTarget as HTMLElement)) {
           this.closeDropdown();
         }
       });
