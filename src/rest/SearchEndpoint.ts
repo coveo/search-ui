@@ -705,6 +705,10 @@ export class SearchEndpoint implements ISearchEndpoint {
   }
 
   /**
+   * **Note:**
+   *
+   * > The Coveo Cloud V2 platform does not support collaborative rating. Therefore, this method is obsolete in Coveo Cloud V2.
+   *
    * Rates a single item in the index (granted that collaborative rating is enabled on your index)
    * @param ratingRequest The item id, and the rating to add.
    * @param callOptions An additional set of options to use for this call.

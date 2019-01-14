@@ -24,6 +24,38 @@ export function SuggestionsManagerTest() {
       });
     });
 
+    it('builds suggestions parent correctly when adding a suggestion', () => {
+      suggestionManager.updateSuggestions([{}]);
+
+      expect(suggestionManager.hasSuggestions).toBe(true);
+      expect($$(suggestionContainer).hasClass('magic-box-hasSuggestion')).toBe(true);
+
+      const suggestionsElement = $$(suggestionContainer).find('#coveo-magicbox-suggestions');
+      expect(suggestionsElement).toBeTruthy();
+      expect(suggestionsElement.children.length).toBe(1);
+      expect(suggestionsElement.getAttribute('role')).toBe('listbox');
+    });
+
+    it('does not build suggestion parent correctly when emptying sugggestions', () => {
+      // Start by adding a suggestion so that elements are correctly created first
+      suggestionManager.updateSuggestions([{}]);
+      suggestionManager.updateSuggestions([]);
+
+      expect(suggestionManager.hasSuggestions).toBe(false);
+      expect($$(suggestionContainer).hasClass('magic-box-hasSuggestion')).toBe(false);
+
+      const suggestionsElement = $$(suggestionContainer).find('#coveo-magicbox-suggestions');
+      expect(suggestionsElement).toBeNull();
+    });
+
+    it('builds suggestion children correctly when adding a suggestion', () => {
+      suggestionManager.updateSuggestions([{}]);
+
+      const suggestionElement = $$(suggestionContainer).find('#magic-box-suggestion-0');
+      expect(suggestionElement).toBeTruthy();
+      expect(suggestionElement.getAttribute('role')).toBe('option');
+    });
+
     it('returns the correct selected element with keyboard on move down', () => {
       suggestionManager.moveDown();
       const selectedWithKeyboard = suggestionManager.selectAndReturnKeyboardFocusedElement();
