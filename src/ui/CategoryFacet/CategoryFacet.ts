@@ -201,9 +201,9 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
      * ```
      * Setting the `basePath` to `c` would display `folder1` and `folder2` in the `CategoryFacet`, but omit `c`.
      *
-     * This options accepts an array of values. To specify a "deeper" starting path in your tree, you need to use comma separated values.
+     * This options accepts an array of values. To specify a "deeper" starting path in your tree, you need to use comma-separated values.
      *
-     * For example, setting `data-base-path="c,folder2"` on the component markup would display `folder3` in the `CategoryFacet`, but omit `c` and `folder1`.
+     * For example, setting `data-base-path="c,folder1"` on the component markup would display `folder3` in the `CategoryFacet`, but omit `c` and `folder1`.
      *
      */
     basePath: ComponentOptions.buildListOption<string>({ defaultValue: [] }),
