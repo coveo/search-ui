@@ -665,10 +665,10 @@ export class ResultList extends Component {
         if (this.resultContainer.isEmpty()) {
           new InitializationPlaceholder(this.root).withVisibleRootElement().withPlaceholderForResultList();
         }
-        Defer.defer(() => {
-          this.buildResults(args.results).then(async (elements: HTMLElement[]) => {
-            this.renderResults(elements);
-          });
+        Defer.defer(async () => {
+          const elements = await this.buildResults(args.results);
+          this.renderResults(elements);
+          this.showOrHideElementsDependingOnState(true, this.currentlyDisplayedResults.length !== 0);
         });
       }
     } else {
