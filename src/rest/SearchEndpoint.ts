@@ -1047,7 +1047,7 @@ export class SearchEndpoint implements ISearchEndpoint {
     // In this reality however, we must support GET calls (ex: GET /html) for CORS/JSONP/IE reasons.
     // Therefore, we cherry-pick parts of the query to include in a 'query string' instead of a body payload.
     const queryParameters: Record<string, any> = {};
-    ['q', 'aq', 'cq', 'dq', 'searchHub', 'tab', 'locale', 'pipeline', 'lowercaseOperators'].forEach(key => {
+    ['q', 'aq', 'cq', 'dq', 'searchHub', 'tab', 'locale', 'pipeline', 'lowercaseOperators', 'timezone'].forEach(key => {
       queryParameters[key] = queryObject[key];
     });
 
