@@ -4,7 +4,7 @@ import { registerCustomMatcher } from '../CustomMatchers';
 import { FakeResults } from '../Fake';
 import { Simulate } from '../Simulate';
 import { $$ } from '../../src/utils/Dom';
-import { ResultListEvents } from '../../src/events/ResultListEvents';
+import { ResultListEvents, IChangeLayoutEventArgs } from '../../src/events/ResultListEvents';
 import { IResultListOptions } from '../../src/ui/ResultList/ResultListOptions';
 import { UnderscoreTemplate } from '../../src/ui/Templates/UnderscoreTemplate';
 import { ResultLayoutEvents } from '../../src/events/ResultLayoutEvents';
@@ -353,7 +353,59 @@ export function ResultListTest() {
       expect($$(test.cmp.element).hasClass('coveo-hidden')).toBe(false);
     });
 
-    it('should hide and show specific css class correctly', done => {
+    describe(`when triggering a layout change event with one result`, () => {
+      const layout = 'list';
+
+      const showIfQuery = $$('div', { className: 'coveo-show-if-query' });
+      const showIfNoQuery = $$('div', { className: 'coveo-show-if-no-query' });
+      const showIfResults = $$('div', { className: 'coveo-show-if-results' });
+      const showIfNoResults = $$('div', { className: 'coveo-show-if-no-results' });
+
+      function triggerLayoutChange() {
+        const changeLayoutArgs: IChangeLayoutEventArgs = { layout, results: FakeResults.createFakeResults(1) };
+        $$(test.env.root).trigger(ResultListEvents.changeLayout, changeLayoutArgs);
+      }
+
+      beforeEach(() => {
+        test.cmp.options.layout = layout;
+
+        const nodes = [showIfQuery, showIfNoQuery, showIfResults, showIfNoResults];
+        nodes.forEach(node => test.cmp.element.appendChild(node.el));
+
+        triggerLayoutChange();
+      });
+
+      it(`should add "display: block" style to the showIfQuery element`, done => {
+        Defer.defer(() => {
+          expect(showIfQuery.el.style.display).toBe('block');
+          done();
+        });
+      });
+
+      it(`should add "display: none" style to the showIfNoQuery element`, done => {
+        Defer.defer(() => {
+          expect(showIfNoQuery.el.style.display).toBe('none');
+          done();
+        });
+      });
+
+      it(`should add "display: block" style to the showIfResults element`, done => {
+        Defer.defer(() => {
+          expect(showIfResults.el.style.display).toBe('block');
+          done();
+        });
+      });
+
+      it(`should add "display: none" style to the showIfNoResults element`, done => {
+        Defer.defer(() => {
+          expect(showIfNoResults.el.style.display).toBe('none');
+          done();
+        });
+      });
+    });
+
+    it(`when triggering a query,
+    it should hide and show specific css class correctly`, done => {
       const showIfQuery = $$('div', {
         className: 'coveo-show-if-query'
       });
