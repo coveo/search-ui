@@ -161,4 +161,4 @@ You can also use Coveo Search to find answers to any specific issues/questions (
 
 ## Issues and questions
 
-Please use the [Coveo community](https://answers.coveo.com) to ask questions or to search for existings solutions.
+Please use the [Coveo community](https://answers.coveo.com) to ask questions or to search for existing solutions.
