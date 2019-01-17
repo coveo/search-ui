@@ -158,3 +158,7 @@ valuable information.
 
 You can also use Coveo Search to find answers to any specific issues/questions (see the
 [Coveo Community Portal](https://support.coveo.com/s/search/All/Home/%40uri)).
+
+## Issues and questions
+
+Please use the [Coveo community](https://answers.coveo.com) to ask questions or to search for existing solutions.
