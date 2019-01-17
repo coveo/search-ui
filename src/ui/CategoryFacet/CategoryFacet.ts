@@ -735,8 +735,17 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   }
 
   private handlePopulateBreadCrumb(args: IPopulateBreadcrumbEventArgs) {
-    const lastParentValue = this.getVisibleParentValues().pop();
-    if (!this.isPristine() && lastParentValue) {
+    if (!this.isPristine()) {
+      let lastParentValue = this.getVisibleParentValues().pop();
+
+      if (!lastParentValue) {
+        // This means we're in a special corner case where the current base path is configured
+        // to one level before the last values in the tree.
+        // In that case, there's simply no parent, so we must tweak things a bit so it plays nicely with the breadcrumb.
+        // We can simulate the "last parent value" as being the current active path itself.
+        lastParentValue = this.activeCategoryValue.getDescriptor();
+      }
+
       const resetFacet = () => {
         this.logAnalyticsEvent(analyticsActionCauseList.breadcrumbFacet);
         this.reset();
