@@ -7,7 +7,7 @@ import { FakeResults } from '../../Fake';
 import { QueryBuilder } from '../../../src/Core';
 import { CategoryFacetQueryController } from '../../../src/controllers/CategoryFacetQueryController';
 import { IBuildingQueryEventArgs } from '../../../src/events/QueryEvents';
-import { first, range, pluck, shuffle, partition } from 'underscore';
+import { first, range, pluck, shuffle, partition, chain } from 'underscore';
 import { analyticsActionCauseList } from '../../../src/ui/Analytics/AnalyticsActionListMeta';
 
 export function buildCategoryFacetResults(numberOfResults = 11, numberOfRequestedValues = 11): ISimulateQueryData {
@@ -453,6 +453,29 @@ export function CategoryFacetTest() {
       it('should populate the correct breadcrumb value', () => {
         expect(populateBreadcrumb()[0].element.textContent).toContain('parent0/parent1/parent2');
         expect(populateBreadcrumb()[0].element.textContent).toContain('/value0');
+      });
+
+      it('should populate the correct breadcrumb value if the facet is configured with a base path that points to the last parent', () => {
+        const completeBasePathUntilLastParent = chain(range(0, 10)).map(val => `parent${val}`);
+
+        test = Mock.advancedComponentSetup<CategoryFacet>(
+          CategoryFacet,
+          new Mock.AdvancedComponentSetupOptions(
+            undefined,
+            {
+              field: '@field',
+              basePath: completeBasePathUntilLastParent
+            },
+            env => env.withLiveQueryStateModel()
+          )
+        );
+
+        const breadcrumbBuilt = populateBreadcrumb()[0];
+
+        expect(breadcrumbBuilt.element.textContent).toContain('value0');
+        // Also do a check on a leading /, to ensure the test is building the "right" full path hierarchy
+        // If the base path is not "full", there would otherwise be a leading /
+        expect(breadcrumbBuilt.element.textContent).not.toContain('/value0');
       });
 
       it('should clear the facet when the clear button is clicked', () => {
