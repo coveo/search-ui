@@ -735,30 +735,32 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   }
 
   private handlePopulateBreadCrumb(args: IPopulateBreadcrumbEventArgs) {
-    if (!this.isPristine()) {
-      let lastParentValue = this.getVisibleParentValues().pop();
-
-      if (!lastParentValue) {
-        // This means we're in a special corner case where the current base path is configured
-        // to one level before the last values in the tree.
-        // In that case, there's simply no parent, so we must tweak things a bit so it plays nicely with the breadcrumb.
-        // We can simulate the "last parent value" as being the current active path itself.
-        lastParentValue = this.activeCategoryValue.getDescriptor();
-      }
-
-      const resetFacet = () => {
-        this.logAnalyticsEvent(analyticsActionCauseList.breadcrumbFacet);
-        this.reset();
-      };
-
-      const categoryFacetBreadcrumbBuilder = new CategoryFacetBreadcrumb(
-        this.options.title,
-        resetFacet,
-        lastParentValue,
-        this.options.basePath
-      );
-      args.breadcrumbs.push({ element: categoryFacetBreadcrumbBuilder.build() });
+    if (this.isPristine()) {
+      return;
     }
+
+    let lastParentValue = this.getVisibleParentValues().pop();
+
+    if (!lastParentValue) {
+      // This means we're in a special corner case where the current base path is configured
+      // to one level before the last values in the tree.
+      // In that case, there's simply no parent, so we must tweak things a bit so it plays nicely with the breadcrumb.
+      // We can simulate the "last parent value" as being the current active path itself.
+      lastParentValue = this.activeCategoryValue.getDescriptor();
+    }
+
+    const resetFacet = () => {
+      this.logAnalyticsEvent(analyticsActionCauseList.breadcrumbFacet);
+      this.reset();
+    };
+
+    const categoryFacetBreadcrumbBuilder = new CategoryFacetBreadcrumb(
+      this.options.title,
+      resetFacet,
+      lastParentValue,
+      this.options.basePath
+    );
+    args.breadcrumbs.push({ element: categoryFacetBreadcrumbBuilder.build() });
   }
 
   private handleClearBreadcrumb() {
