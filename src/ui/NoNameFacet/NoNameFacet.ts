@@ -3,6 +3,7 @@ import { IComponentBindings } from '../Base/ComponentBindings';
 import { ComponentOptions } from '../Base/ComponentOptions';
 import { Initialization } from '../Base/Initialization';
 import { ResponsiveFacets } from '../ResponsiveComponents/ResponsiveFacets';
+import { ResponsiveFacetOptions } from '../ResponsiveComponents/ResponsiveFacetOptions';
 import { exportGlobally } from '../../GlobalExports';
 import { NoNameFacetHeader } from './NoNameFacetHeader';
 import { NoNameFacetOptions, INoNameFacetOptions } from './NoNameFacetOptions';
@@ -10,7 +11,7 @@ import { NoNameFacetOptions, INoNameFacetOptions } from './NoNameFacetOptions';
 export class NoNameFacet extends Component {
   static ID = 'NoNameFacet';
   static doExport = () => exportGlobally({ NoNameFacet });
-  static options: INoNameFacetOptions = NoNameFacetOptions;
+  static options: INoNameFacetOptions = { ...NoNameFacetOptions, ...ResponsiveFacetOptions };
 
   private header: NoNameFacetHeader;
 
@@ -39,7 +40,6 @@ export class NoNameFacet extends Component {
 
   private createHeader() {
     return new NoNameFacetHeader({
-      title: this.options.title,
       rootFacetOptions: this.options
     });
   }

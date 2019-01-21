@@ -3,10 +3,9 @@ import { l } from '../../strings/Strings';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { SVGDom } from '../../utils/SVGDom';
 import { AccessibleButton } from '../../utils/AccessibleButton';
-import { INoNameFacetOptions } from './NoNameFacet';
+import { INoNameFacetOptions } from './NoNameFacetOptions';
 
 export interface INoNameFacetHeaderOptions {
-  title: string;
   rootFacetOptions: INoNameFacetOptions;
 }
 
@@ -47,10 +46,10 @@ export class NoNameFacetHeader {
   }
 
   private createTitle() {
-    const title = $$('div', { className: 'coveo-facet-header-title' }, this.options.title);
+    const title = $$('div', { className: 'coveo-facet-header-title' }, this.options.rootFacetOptions.title);
     title.setAttribute('role', 'heading');
     title.setAttribute('aria-level', '2');
-    title.setAttribute('aria-label', `${l('FacetTitle', this.options.title)}.`);
+    title.setAttribute('aria-label', `${l('FacetTitle', this.options.rootFacetOptions.title)}`);
     return title.el;
   }
 

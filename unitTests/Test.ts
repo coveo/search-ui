@@ -668,3 +668,6 @@ ResultListUtilsTest();
 
 import { FacetUtilsTest } from './utils/FacetUtilsTest';
 FacetUtilsTest();
+
+import { NoNameFacetHeaderTest } from './ui/NoNameFacet/NoNameFacetHeaderTest';
+NoNameFacetHeaderTest();
