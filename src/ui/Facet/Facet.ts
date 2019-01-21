@@ -227,8 +227,8 @@ export class Facet extends Component {
      * Possible values are:
      * - `"occurrences"`
      * - `"score"`
-     * - `"alphaAscending"`
-     * - `alphaDescending`
+     * - `"alphaascending"`
+     * - `"alphadescending"`
      * - `"computedfieldascending"`
      * - `"computedfielddescending"`
      * - `"custom"`
@@ -240,7 +240,7 @@ export class Facet extends Component {
      *
      * > * Using value captions will disable alphabetical sorts (see the [valueCaption]{@link Facet.options.valueCaption} option).
      *
-     * Default value is `occurrences,score,alphaAscending,alphaDescending`.
+     * Default value is `occurrences,score,alphaascending,alphadescending`.
      */
     availableSorts: ComponentOptions.buildListOption<
       | 'occurrences'
@@ -252,7 +252,7 @@ export class Facet extends Component {
       | 'chisquare'
       | 'nosort'
     >({
-      defaultValue: ['occurrences', 'score', 'alphaAscending', 'alphaDescending'],
+      defaultValue: ['occurrences', 'score', 'alphaascending', 'alphadescending'],
       depend: 'enableSettings',
       section: 'Sorting',
       values: ['AlphaAscending', 'AlphaDescending', 'ComputedFieldAscending', 'ComputedFieldDescending', 'ChiSquare', 'NoSort']
