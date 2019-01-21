@@ -2,7 +2,6 @@ import { $$ } from '../../utils/Dom';
 import { l } from '../../strings/Strings';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { SVGDom } from '../../utils/SVGDom';
-import { AccessibleButton } from '../../utils/AccessibleButton';
 import { INoNameFacetOptions } from './NoNameFacetOptions';
 
 export interface INoNameFacetHeaderOptions {
@@ -60,37 +59,32 @@ export class NoNameFacetHeader {
   }
 
   private createClear() {
-    const clearElement = $$('div', { className: 'coveo-facet-header-eraser' }, SVGIcons.icons.mainClear).el;
-    SVGDom.addClassToSVGInContainer(clearElement, 'coveo-facet-header-eraser-svg');
+    const clearBtn = $$('button', { className: 'coveo-facet-header-eraser' }, SVGIcons.icons.mainClear);
+    SVGDom.addClassToSVGInContainer(clearBtn.el, 'coveo-facet-header-eraser-svg');
 
-    new AccessibleButton()
-      .withElement(clearElement)
-      .withLabel(l('Reset'))
-      .withTitle(l('Reset'))
-      .withSelectAction(this.clearAction)
-      .build();
+    clearBtn.setAttribute('aria-label', l('Reset'));
+    clearBtn.setAttribute('title', l('Reset'));
 
-    return clearElement;
+    clearBtn.on('click', this.clearAction);
+
+    return clearBtn.el;
   }
 
   private createOperator() {
     const { useAnd, enableTogglingOperator } = this.options.rootFacetOptions;
-    const label = l('SwitchTo', useAnd ? l('Or') : l('And'));
-
-    const operatorElement = $$('div', { className: 'coveo-facet-header-operator' }).el;
+    const operatorBtn = $$('button', { className: 'coveo-facet-header-operator' });
     const orAndIconElement = $$('span', { className: 'coveo-' + (useAnd ? 'and' : 'or') }, SVGIcons.icons.orAnd).el;
-    operatorElement.appendChild(orAndIconElement);
     SVGDom.addClassToSVGInContainer(orAndIconElement, 'coveo-or-and-svg');
+    operatorBtn.append(orAndIconElement);
 
-    new AccessibleButton()
-      .withElement(operatorElement)
-      .withTitle(label)
-      .withLabel(label)
-      .withSelectAction(this.toggleOperatorAction)
-      .build();
+    const label = l('SwitchTo', useAnd ? l('Or') : l('And'));
+    operatorBtn.setAttribute('aria-label', label);
+    operatorBtn.setAttribute('title', label);
 
-    $$(operatorElement).toggle(enableTogglingOperator);
-    return operatorElement;
+    operatorBtn.on('click', this.toggleOperatorAction);
+    operatorBtn.toggle(enableTogglingOperator);
+
+    return operatorBtn.el;
   }
 
   private recreateOperator() {

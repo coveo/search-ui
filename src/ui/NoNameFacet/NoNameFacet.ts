@@ -15,13 +15,8 @@ export class NoNameFacet extends Component {
 
   private header: NoNameFacetHeader;
 
-  constructor(
-    public element: HTMLElement,
-    public options: INoNameFacetOptions,
-    bindings?: IComponentBindings,
-    noNameFacetClassId: string = NoNameFacet.ID
-  ) {
-    super(element, noNameFacetClassId, bindings);
+  constructor(public element: HTMLElement, public options?: INoNameFacetOptions, bindings?: IComponentBindings) {
+    super(element, NoNameFacet.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, NoNameFacet, options);
 
     ResponsiveFacets.init(this.root, this, this.options);

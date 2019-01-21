@@ -45,9 +45,8 @@ export function NoNameFacetHeaderTest() {
     it('should create an accessible hidden clear button', () => {
       const clearElement = $$(noNameFacetHeader.element).find('.coveo-facet-header-eraser');
 
-      expect($$(clearElement).getAttribute('role')).toBe('button');
-      expect($$(clearElement).getAttribute('tabindex')).toBe('0');
       expect($$(clearElement).getAttribute('aria-label')).toBeTruthy();
+      expect($$(clearElement).getAttribute('title')).toBeTruthy();
       expect($$(clearElement).hasClass('coveo-facet-header-eraser-visible')).toBe(false);
     });
 
@@ -66,9 +65,8 @@ export function NoNameFacetHeaderTest() {
       initializeComponent();
       const operatorElement = $$(noNameFacetHeader.element).find('.coveo-facet-header-operator');
 
-      expect($$(operatorElement).getAttribute('role')).toBe('button');
-      expect($$(operatorElement).getAttribute('tabindex')).toBe('0');
       expect($$(operatorElement).getAttribute('aria-label')).toBeTruthy();
+      expect($$(operatorElement).getAttribute('title')).toBeTruthy();
       expect($$(operatorElement).findClass('coveo-and')).toBeTruthy();
     });
 
