@@ -120,6 +120,12 @@ export function DateUtilsTest() {
       expect(result).toContain(':00');
     });
 
+    it('dateTimeToString should work with the predefinedFormat yyyy (lowercase)', () => {
+      const now = moment(new Date()).toDate();
+      const result = DateUtils.dateTimeToString(now, { predefinedFormat: 'yyyy' });
+      expect(result).toBe(moment(now).format('YYYY'));
+    });
+
     it('dateTimeToString should properly return an empty string when the date is null', () => {
       const result = DateUtils.dateTimeToString(null);
       expect(result).toBe('');

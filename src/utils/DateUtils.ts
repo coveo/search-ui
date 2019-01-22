@@ -346,7 +346,7 @@ export class DateUtils {
     }
 
     if (options.predefinedFormat) {
-      return moment(date).format(options.predefinedFormat);
+      return moment(date).format(options.predefinedFormat.replace(/yyyy/g, 'YYYY'));
     }
 
     const today = DateUtils.keepOnlyDatePart(options.now);
