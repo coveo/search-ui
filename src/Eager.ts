@@ -272,9 +272,8 @@ SimpleFilter.doExport();
 import { TimespanFacet } from './ui/TimespanFacet/TimespanFacet';
 TimespanFacet.doExport();
 
-// TODO: comment
-import { NoNameFacet } from './ui/NoNameFacet/NoNameFacet';
-NoNameFacet.doExport();
+// import { NoNameFacet } from './ui/NoNameFacet/NoNameFacet';
+// NoNameFacet.doExport();
 
 import { PromotedResultsBadge } from './ui/PromotedResultsBadge/PromotedResultsBadge';
 PromotedResultsBadge.doExport();
