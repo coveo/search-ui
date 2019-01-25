@@ -126,6 +126,12 @@ export function DateUtilsTest() {
       expect(result).toBe(moment(now).format('YYYY'));
     });
 
+    it('dateTimeToString should work with the predefinedFormat YYYY (uppercase)', () => {
+      const now = moment(new Date()).toDate();
+      const result = DateUtils.dateTimeToString(now, { predefinedFormat: 'YYYY' });
+      expect(result).toBe(moment(now).format('YYYY'));
+    });
+
     it('dateTimeToString should properly return an empty string when the date is null', () => {
       const result = DateUtils.dateTimeToString(null);
       expect(result).toBe('');
