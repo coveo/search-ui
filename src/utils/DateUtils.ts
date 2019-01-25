@@ -252,6 +252,11 @@ export class DateUtils {
     return daysDifference == 0 || daysDifference == 1 || daysDifference == -1;
   }
 
+  private static getMomentJsFormat(format: string) {
+    // yyyy was used to format dates before implementing moment.js, which only recognizes YYYY.
+    return format.replace(/yyyy/g, 'YYYY');
+  }
+
   /**
    * Creates a string from a Date object. The resulting string is formatted according to a set of options.
    * This method calls [ `keepOnlyDatePart` ]{@link DateUtils.keepOnlyDatePart} to remove time information from the date.
@@ -275,8 +280,7 @@ export class DateUtils {
     const today = moment(DateUtils.keepOnlyDatePart(options.now));
 
     if (options.predefinedFormat) {
-      // yyyy was used to format dates before implementing moment.js, which only recognizes YYYY.
-      return dateOnly.format(options.predefinedFormat.replace(/yyyy/g, 'YYYY'));
+      return dateOnly.format(this.getMomentJsFormat(options.predefinedFormat));
     }
 
     if (options.useTodayYesterdayAndTomorrow) {
@@ -346,7 +350,7 @@ export class DateUtils {
     }
 
     if (options.predefinedFormat) {
-      return moment(date).format(options.predefinedFormat);
+      return moment(date).format(this.getMomentJsFormat(options.predefinedFormat));
     }
 
     const today = DateUtils.keepOnlyDatePart(options.now);
