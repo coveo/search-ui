@@ -320,6 +320,10 @@ export class FacetQueryController {
       mergeWith.constant = `${mergeWith.constant} ${this.additionalFilter}`;
     }
 
+    if (!mergeWith.advanced) {
+      mergeWith.advanced = queryBuilder.advancedExpression.build();
+    }
+
     return mergeWith;
   }
 
