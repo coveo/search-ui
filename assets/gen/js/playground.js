@@ -3774,6 +3774,10 @@ var SearchEndpoint = /** @class */ (function () {
         });
     };
     /**
+     * **Note:**
+     *
+     * > The Coveo Cloud V2 platform does not support collaborative rating. Therefore, this method is obsolete in Coveo Cloud V2.
+     *
      * Rates a single item in the index (granted that collaborative rating is enabled on your index)
      * @param ratingRequest The item id, and the rating to add.
      * @param callOptions An additional set of options to use for this call.
@@ -3975,7 +3979,7 @@ var SearchEndpoint = /** @class */ (function () {
         // In this reality however, we must support GET calls (ex: GET /html) for CORS/JSONP/IE reasons.
         // Therefore, we cherry-pick parts of the query to include in a 'query string' instead of a body payload.
         var queryParameters = {};
-        ['q', 'aq', 'cq', 'dq', 'searchHub', 'tab', 'locale', 'pipeline', 'lowercaseOperators'].forEach(function (key) {
+        ['q', 'aq', 'cq', 'dq', 'searchHub', 'tab', 'locale', 'pipeline', 'lowercaseOperators', 'timezone'].forEach(function (key) {
             queryParameters[key] = queryObject[key];
         });
         var context = {};
@@ -5870,8 +5874,8 @@ exports.ResponsiveComponents = ResponsiveComponents;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    lib: '2.5395.6',
-    product: '2.5395.6',
+    lib: '2.5549.0-beta',
+    product: '2.5549.0-beta',
     supportedApiVersion: 2
 };
 

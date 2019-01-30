@@ -1638,8 +1638,8 @@
 						<ul>
 							<li><code>&quot;occurrences&quot;</code></li>
 							<li><code>&quot;score&quot;</code></li>
-							<li><code>&quot;alphaAscending&quot;</code></li>
-							<li><code>alphaDescending</code></li>
+							<li><code>&quot;alphaascending&quot;</code></li>
+							<li><code>&quot;alphadescending&quot;</code></li>
 							<li><code>&quot;computedfieldascending&quot;</code></li>
 							<li><code>&quot;computedfielddescending&quot;</code></li>
 							<li><code>&quot;custom&quot;</code></li>
@@ -1656,7 +1656,7 @@
 								<li>Using value captions will disable alphabetical sorts (see the <a href="facet.html#options.valuecaption">valueCaption</a> option).</li>
 							</ul>
 						</blockquote>
-						<p>Default value is <code>occurrences,score,alphaAscending,alphaDescending</code>.</p>
+						<p>Default value is <code>occurrences,score,alphaascending,alphadescending</code>.</p>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
@@ -1858,7 +1858,7 @@
 <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoFacet'</span> <span class="hljs-attr">data-field</span>=<span class="hljs-string">'@myfield'</span> <span class="hljs-attr">data-title</span>=<span class="hljs-string">'My Parent Facet'</span> <span class="hljs-attr">data-id</span>=<span class="hljs-string">'myParentCustomId'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
 
 <span class="hljs-comment">&lt;!-- The "dependent" Facet must refer to the custom `id` of its "parent" Facet, which is 'myParentCustomId'. --&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoFacet'</span> <span class="hljs-attr">data-field</span>=<span class="hljs-string">'@myotherfield data-title='</span><span class="hljs-attr">My</span> <span class="hljs-attr">Dependent</span> <span class="hljs-attr">Facet</span>' <span class="hljs-attr">data-depends-on</span>=<span class="hljs-string">'myParentCustomId'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoFacet'</span> <span class="hljs-attr">data-field</span>=<span class="hljs-string">'@myotherfield'</span> <span class="hljs-attr">data-title</span>=<span class="hljs-string">'My Dependent Facet'</span> <span class="hljs-attr">data-depends-on</span>=<span class="hljs-string">'myParentCustomId'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
 </code></pre>
 						<p>Default value is <code>undefined</code></p>
 					</div>
