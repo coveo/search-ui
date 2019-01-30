@@ -6,6 +6,8 @@ export interface INoNameFacetOptions extends IResponsiveComponentOptions {
   title?: string;
   useAnd?: boolean;
   enableTogglingOperator?: boolean;
+  enableTogglingCollapse?: boolean;
+  isCollapsed?: boolean;
 }
 
 export const NoNameFacetOptions = {
@@ -40,7 +42,22 @@ export const NoNameFacetOptions = {
    */
   enableTogglingOperator: ComponentOptions.buildBooleanOption({
     defaultValue: false,
-    alias: 'allowTogglingOperator',
+    section: 'Filtering'
+  }),
+  /**
+   * Specifies whether to allow the user to toggle between the **Collapse** and **Expand** modes in the facet.
+   * Default value is `false`.
+   */
+  enableTogglingCollapse: ComponentOptions.buildBooleanOption({
+    defaultValue: false,
+    section: 'Filtering'
+  }),
+  /**
+   * Specifies whether to allow the facet should be in the **Collapse** mode.
+   * Default value is `false`.
+   */
+  isCollapsed: ComponentOptions.buildBooleanOption({
+    defaultValue: false,
     section: 'Filtering'
   })
 };

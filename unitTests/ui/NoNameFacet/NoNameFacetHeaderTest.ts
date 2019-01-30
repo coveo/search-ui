@@ -79,5 +79,46 @@ export function NoNameFacetHeaderTest() {
 
       expect($$(operatorElement).findClass('coveo-or')).toBeTruthy();
     });
+
+    it(`when clicking on the toggle Operator button
+      should switch the option correctly`, () => {
+      baseOptions.rootFacetOptions.enableTogglingOperator = true;
+      initializeComponent();
+      const operatorElement = $$(noNameFacetHeader.element).find('.coveo-facet-header-operator');
+      $$(operatorElement).trigger('click');
+
+      expect($$(operatorElement).findClass('coveo-or')).toBeTruthy();
+    });
+
+    it(`when passing the option enableTogglingCollapse (true)
+      should display the accessible Collapse button`, () => {
+      baseOptions.rootFacetOptions.enableTogglingCollapse = true;
+      initializeComponent();
+      const collapseElement = $$(noNameFacetHeader.element).find('.coveo-facet-header-collapse');
+
+      expect($$(collapseElement).getAttribute('aria-label')).toBeTruthy();
+      expect($$(collapseElement).getAttribute('title')).toBeTruthy();
+      expect($$(collapseElement).findClass('coveo-facet-settings-section-show-svg')).toBeTruthy();
+    });
+
+    it(`when passing the option enableTogglingOperator (true) & useAnd (false)
+      should display the operator OR button`, () => {
+      baseOptions.rootFacetOptions.enableTogglingCollapse = true;
+      baseOptions.rootFacetOptions.isCollapsed = true;
+      initializeComponent();
+      const collapseElement = $$(noNameFacetHeader.element).find('.coveo-facet-header-collapse');
+
+      expect($$(collapseElement).findClass('coveo-facet-settings-section-hide-svg')).toBeTruthy();
+    });
+
+    it(`when clicking on the toggle Operator button
+      should switch the option correctly`, () => {
+      baseOptions.rootFacetOptions.enableTogglingCollapse = true;
+      initializeComponent();
+      const collapseElement = $$(noNameFacetHeader.element).find('.coveo-facet-header-collapse');
+      $$(collapseElement).trigger('click');
+
+      expect($$(collapseElement).findClass('coveo-facet-settings-section-hide-svg')).toBeTruthy();
+    });
   });
 }
