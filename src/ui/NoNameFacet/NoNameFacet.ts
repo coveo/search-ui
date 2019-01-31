@@ -5,7 +5,7 @@ import { Initialization } from '../Base/Initialization';
 import { ResponsiveFacets } from '../ResponsiveComponents/ResponsiveFacets';
 import { ResponsiveFacetOptions } from '../ResponsiveComponents/ResponsiveFacetOptions';
 import { exportGlobally } from '../../GlobalExports';
-import { NoNameFacetHeader } from './NoNameFacetHeader';
+import { NoNameFacetHeader } from './NoNameFacetHeader/NoNameFacetHeader';
 import { NoNameFacetOptions, INoNameFacetOptions } from './NoNameFacetOptions';
 
 export class NoNameFacet extends Component {

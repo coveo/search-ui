@@ -1,5 +1,5 @@
 import { $$ } from '../../../src/utils/Dom';
-import { NoNameFacetHeader, INoNameFacetHeaderOptions } from '../../../src/ui/NoNameFacet/NoNameFacetHeader';
+import { NoNameFacetHeader, INoNameFacetHeaderOptions } from '../../../src/ui/NoNameFacet/NoNameFacetHeader/NoNameFacetHeader';
 
 export function NoNameFacetHeaderTest() {
   describe('NoNameFacetHeader', () => {
@@ -37,7 +37,7 @@ export function NoNameFacetHeaderTest() {
     it(`when calling showWaitAnimation
       waitAnimationElement show be visible`, () => {
       const waitAnimationElement = $$(noNameFacetHeader.element).find('.coveo-facet-header-wait-animation');
-      noNameFacetHeader.showWaitAnimation();
+      noNameFacetHeader.toggleLoading(true);
 
       expect($$(waitAnimationElement).isVisible()).toBe(true);
     });
@@ -47,78 +47,128 @@ export function NoNameFacetHeaderTest() {
 
       expect($$(clearElement).getAttribute('aria-label')).toBeTruthy();
       expect($$(clearElement).getAttribute('title')).toBeTruthy();
-      expect($$(clearElement).hasClass('coveo-facet-header-eraser-visible')).toBe(false);
+      expect($$(clearElement).isVisible()).toBe(false);
     });
 
     it(`when calling showClear
-      the clear button show be visible`, () => {
+      the clear button should be visible`, () => {
       const clearElement = $$(noNameFacetHeader.element).find('.coveo-facet-header-eraser');
 
-      noNameFacetHeader.showClear();
+      noNameFacetHeader.toggleClear(true);
 
-      expect($$(clearElement).hasClass('coveo-facet-header-eraser-visible')).toBe(true);
+      expect(clearElement.style.display).toBe('block');
     });
 
     it(`when passing the option enableOperator (true)
-      should display the accessible operator AND button`, () => {
+      should display the accessible operator "Or" button`, () => {
       baseOptions.rootFacetOptions.enableOperator = true;
       initializeComponent();
-      const operatorElement = $$(noNameFacetHeader.element).find('.coveo-facet-header-operator');
 
-      expect($$(operatorElement).getAttribute('aria-label')).toBeTruthy();
-      expect($$(operatorElement).getAttribute('title')).toBeTruthy();
-      expect($$(operatorElement).findClass('coveo-and')).toBeTruthy();
+      const orElement = $$(noNameFacetHeader.element).find('.coveo-or').parentElement;
+      const andElement = $$(noNameFacetHeader.element).find('.coveo-and').parentElement;
+
+      expect($$(orElement).getAttribute('aria-label')).toBeTruthy();
+      expect($$(orElement).getAttribute('title')).toBeTruthy();
+      expect($$(orElement).isVisible()).toBe(true);
+      expect($$(andElement).isVisible()).toBe(false);
     });
 
-    it(`when passing the option enableOperator (true) & useAnd (false)
-      should display the operator OR button`, () => {
+    it(`when passing the option enableOperator (true) & useAnd (true)
+      should display the operator "And" button`, () => {
       baseOptions.rootFacetOptions.enableOperator = true;
-      baseOptions.rootFacetOptions.useAnd = false;
+      baseOptions.rootFacetOptions.useAnd = true;
       initializeComponent();
-      const operatorElement = $$(noNameFacetHeader.element).find('.coveo-facet-header-operator');
 
-      expect($$(operatorElement).findClass('coveo-or')).toBeTruthy();
+      const orElement = $$(noNameFacetHeader.element).find('.coveo-or').parentElement;
+      const andElement = $$(noNameFacetHeader.element).find('.coveo-and').parentElement;
+
+      expect($$(andElement).getAttribute('aria-label')).toBeTruthy();
+      expect($$(andElement).getAttribute('title')).toBeTruthy();
+      expect($$(orElement).isVisible()).toBe(false);
+      expect($$(andElement).isVisible()).toBe(true);
     });
 
-    it(`when clicking on the operator button
+    it(`when clicking on the "Or" operator button
       should switch the option correctly`, () => {
       baseOptions.rootFacetOptions.enableOperator = true;
       initializeComponent();
-      const operatorElement = $$(noNameFacetHeader.element).find('.coveo-facet-header-operator');
-      $$(operatorElement).trigger('click');
 
-      expect($$(operatorElement).findClass('coveo-or')).toBeTruthy();
+      const orElement = $$(noNameFacetHeader.element).find('.coveo-or').parentElement;
+      const andElement = $$(noNameFacetHeader.element).find('.coveo-and').parentElement;
+
+      $$(orElement).trigger('click');
+      expect($$(orElement).isVisible()).toBe(false);
+      expect($$(andElement).isVisible()).toBe(true);
+    });
+
+    it(`when clicking on the "And" operator button
+      should switch the option correctly`, () => {
+      baseOptions.rootFacetOptions.enableOperator = true;
+      baseOptions.rootFacetOptions.useAnd = true;
+      initializeComponent();
+
+      const orElement = $$(noNameFacetHeader.element).find('.coveo-or').parentElement;
+      const andElement = $$(noNameFacetHeader.element).find('.coveo-and').parentElement;
+
+      $$(andElement).trigger('click');
+      expect($$(orElement).isVisible()).toBe(true);
+      expect($$(andElement).isVisible()).toBe(false);
     });
 
     it(`when passing the option enableCollapse (true)
       should display the accessible collapse button`, () => {
       baseOptions.rootFacetOptions.enableCollapse = true;
       initializeComponent();
+
       const collapseElement = $$(noNameFacetHeader.element).find('.coveo-facet-header-collapse');
+      const expandElement = $$(noNameFacetHeader.element).find('.coveo-facet-header-expand');
 
       expect($$(collapseElement).getAttribute('aria-label')).toBeTruthy();
       expect($$(collapseElement).getAttribute('title')).toBeTruthy();
-      expect($$(collapseElement).findClass('coveo-facet-settings-section-show-svg')).toBeTruthy();
+      expect($$(collapseElement).isVisible()).toBe(true);
+      expect($$(expandElement).isVisible()).toBe(false);
     });
 
-    it(`when passing the option enableCollapse (true) & isCollapsed (false)
-      should display the collapse/hide button`, () => {
+    it(`when passing the option enableCollapse (true) & isCollapsed (true)
+      should display the accessible expand button`, () => {
       baseOptions.rootFacetOptions.enableCollapse = true;
       baseOptions.rootFacetOptions.isCollapsed = true;
       initializeComponent();
-      const collapseElement = $$(noNameFacetHeader.element).find('.coveo-facet-header-collapse');
 
-      expect($$(collapseElement).findClass('coveo-facet-settings-section-hide-svg')).toBeTruthy();
+      const collapseElement = $$(noNameFacetHeader.element).find('.coveo-facet-header-collapse');
+      const expandElement = $$(noNameFacetHeader.element).find('.coveo-facet-header-expand');
+
+      expect($$(expandElement).getAttribute('aria-label')).toBeTruthy();
+      expect($$(expandElement).getAttribute('title')).toBeTruthy();
+      expect($$(collapseElement).isVisible()).toBe(false);
+      expect($$(expandElement).isVisible()).toBe(true);
     });
 
     it(`when clicking on the collapse button
       should switch the option correctly`, () => {
       baseOptions.rootFacetOptions.enableCollapse = true;
       initializeComponent();
+
       const collapseElement = $$(noNameFacetHeader.element).find('.coveo-facet-header-collapse');
+      const expandElement = $$(noNameFacetHeader.element).find('.coveo-facet-header-expand');
       $$(collapseElement).trigger('click');
 
-      expect($$(collapseElement).findClass('coveo-facet-settings-section-hide-svg')).toBeTruthy();
+      expect($$(collapseElement).isVisible()).toBe(false);
+      expect($$(expandElement).isVisible()).toBe(true);
+    });
+
+    it(`when clicking on the expand button
+      should switch the option correctly`, () => {
+      baseOptions.rootFacetOptions.enableCollapse = true;
+      baseOptions.rootFacetOptions.isCollapsed = true;
+      initializeComponent();
+
+      const collapseElement = $$(noNameFacetHeader.element).find('.coveo-facet-header-collapse');
+      const expandElement = $$(noNameFacetHeader.element).find('.coveo-facet-header-expand');
+      $$(expandElement).trigger('click');
+
+      expect($$(collapseElement).isVisible()).toBe(true);
+      expect($$(expandElement).isVisible()).toBe(false);
     });
   });
 }
