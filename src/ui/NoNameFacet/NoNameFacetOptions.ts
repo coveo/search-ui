@@ -4,9 +4,9 @@ import { l } from '../../strings/Strings';
 
 export interface INoNameFacetOptions extends IResponsiveComponentOptions {
   title?: string;
+  enableOperator?: boolean;
   useAnd?: boolean;
-  enableTogglingOperator?: boolean;
-  enableTogglingCollapse?: boolean;
+  enableCollapse?: boolean;
   isCollapsed?: boolean;
 }
 
@@ -22,6 +22,15 @@ export const NoNameFacetOptions = {
     priority: 10
   }),
   /**
+   * Specifies whether to allow the user to toggle between the `OR` and `AND` modes in the facet.
+   *
+   * Setting this option to `true` displays an icon in the top right corner of the facet. The user can click this icon
+   * to toggle between between the two modes.
+   *
+   * Default value is `false`.
+   */
+  enableOperator: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'Filtering' }),
+  /**
    * Specifies whether to use the `AND` operator in the resulting filter when multiple values are selected in the
    * facet.
    *
@@ -33,31 +42,13 @@ export const NoNameFacetOptions = {
    */
   useAnd: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'Filtering' }),
   /**
-   * Specifies whether to allow the user to toggle between the `OR` and `AND` modes in the facet.
-   *
-   * Setting this option to `true` displays an icon in the top right corner of the facet. The user can click this icon
-   * to toggle between between the two modes.
-   *
-   * Default value is `false`.
-   */
-  enableTogglingOperator: ComponentOptions.buildBooleanOption({
-    defaultValue: false,
-    section: 'Filtering'
-  }),
-  /**
    * Specifies whether to allow the user to toggle between the **Collapse** and **Expand** modes in the facet.
    * Default value is `false`.
    */
-  enableTogglingCollapse: ComponentOptions.buildBooleanOption({
-    defaultValue: false,
-    section: 'Filtering'
-  }),
+  enableCollapse: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'Filtering' }),
   /**
    * Specifies whether to allow the facet should be in the **Collapse** mode.
    * Default value is `false`.
    */
-  isCollapsed: ComponentOptions.buildBooleanOption({
-    defaultValue: false,
-    section: 'Filtering'
-  })
+  isCollapsed: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'Filtering' })
 };

@@ -75,7 +75,7 @@ export class NoNameFacetHeader {
   }
 
   private createOperator() {
-    const { useAnd, enableTogglingOperator } = this.options.rootFacetOptions;
+    const { useAnd, enableOperator } = this.options.rootFacetOptions;
     const operatorBtn = $$('button', { className: 'coveo-facet-header-operator' });
     const orAndIconElement = $$('span', { className: 'coveo-' + (useAnd ? 'and' : 'or') }, SVGIcons.icons.orAnd).el;
     SVGDom.addClassToSVGInContainer(orAndIconElement, 'coveo-or-and-svg');
@@ -86,7 +86,7 @@ export class NoNameFacetHeader {
     operatorBtn.setAttribute('title', label);
 
     operatorBtn.on('click', this.toggleOperatorAction);
-    operatorBtn.toggle(enableTogglingOperator);
+    operatorBtn.toggle(enableOperator);
 
     return operatorBtn.el;
   }
@@ -98,7 +98,7 @@ export class NoNameFacetHeader {
   }
 
   private createCollapse() {
-    const { enableTogglingCollapse, isCollapsed } = this.options.rootFacetOptions;
+    const { enableCollapse, isCollapsed } = this.options.rootFacetOptions;
     const svgIcon = isCollapsed ? SVGIcons.icons.facetExpand : SVGIcons.icons.facetCollapse;
     const collapseBtn = $$('button', { className: 'coveo-facet-header-collapse' }, svgIcon);
     const className = `coveo-facet-settings-section-${isCollapsed ? 'show' : 'hide'}-svg`;
@@ -109,7 +109,7 @@ export class NoNameFacetHeader {
     collapseBtn.setAttribute('title', label);
 
     collapseBtn.on('click', this.toggleCollapseAction);
-    collapseBtn.toggle(enableTogglingCollapse);
+    collapseBtn.toggle(enableCollapse);
 
     return collapseBtn.el;
   }

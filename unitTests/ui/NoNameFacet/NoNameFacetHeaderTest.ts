@@ -59,9 +59,9 @@ export function NoNameFacetHeaderTest() {
       expect($$(clearElement).hasClass('coveo-facet-header-eraser-visible')).toBe(true);
     });
 
-    it(`when passing the option enableTogglingOperator (true)
+    it(`when passing the option enableOperator (true)
       should display the accessible operator AND button`, () => {
-      baseOptions.rootFacetOptions.enableTogglingOperator = true;
+      baseOptions.rootFacetOptions.enableOperator = true;
       initializeComponent();
       const operatorElement = $$(noNameFacetHeader.element).find('.coveo-facet-header-operator');
 
@@ -70,9 +70,9 @@ export function NoNameFacetHeaderTest() {
       expect($$(operatorElement).findClass('coveo-and')).toBeTruthy();
     });
 
-    it(`when passing the option enableTogglingOperator (true) & useAnd (false)
+    it(`when passing the option enableOperator (true) & useAnd (false)
       should display the operator OR button`, () => {
-      baseOptions.rootFacetOptions.enableTogglingOperator = true;
+      baseOptions.rootFacetOptions.enableOperator = true;
       baseOptions.rootFacetOptions.useAnd = false;
       initializeComponent();
       const operatorElement = $$(noNameFacetHeader.element).find('.coveo-facet-header-operator');
@@ -80,9 +80,9 @@ export function NoNameFacetHeaderTest() {
       expect($$(operatorElement).findClass('coveo-or')).toBeTruthy();
     });
 
-    it(`when clicking on the toggle Operator button
+    it(`when clicking on the operator button
       should switch the option correctly`, () => {
-      baseOptions.rootFacetOptions.enableTogglingOperator = true;
+      baseOptions.rootFacetOptions.enableOperator = true;
       initializeComponent();
       const operatorElement = $$(noNameFacetHeader.element).find('.coveo-facet-header-operator');
       $$(operatorElement).trigger('click');
@@ -90,9 +90,9 @@ export function NoNameFacetHeaderTest() {
       expect($$(operatorElement).findClass('coveo-or')).toBeTruthy();
     });
 
-    it(`when passing the option enableTogglingCollapse (true)
-      should display the accessible Collapse button`, () => {
-      baseOptions.rootFacetOptions.enableTogglingCollapse = true;
+    it(`when passing the option enableCollapse (true)
+      should display the accessible collapse button`, () => {
+      baseOptions.rootFacetOptions.enableCollapse = true;
       initializeComponent();
       const collapseElement = $$(noNameFacetHeader.element).find('.coveo-facet-header-collapse');
 
@@ -101,9 +101,9 @@ export function NoNameFacetHeaderTest() {
       expect($$(collapseElement).findClass('coveo-facet-settings-section-show-svg')).toBeTruthy();
     });
 
-    it(`when passing the option enableTogglingOperator (true) & useAnd (false)
-      should display the operator OR button`, () => {
-      baseOptions.rootFacetOptions.enableTogglingCollapse = true;
+    it(`when passing the option enableCollapse (true) & isCollapsed (false)
+      should display the collapse/hide button`, () => {
+      baseOptions.rootFacetOptions.enableCollapse = true;
       baseOptions.rootFacetOptions.isCollapsed = true;
       initializeComponent();
       const collapseElement = $$(noNameFacetHeader.element).find('.coveo-facet-header-collapse');
@@ -111,9 +111,9 @@ export function NoNameFacetHeaderTest() {
       expect($$(collapseElement).findClass('coveo-facet-settings-section-hide-svg')).toBeTruthy();
     });
 
-    it(`when clicking on the toggle Operator button
+    it(`when clicking on the collapse button
       should switch the option correctly`, () => {
-      baseOptions.rootFacetOptions.enableTogglingCollapse = true;
+      baseOptions.rootFacetOptions.enableCollapse = true;
       initializeComponent();
       const collapseElement = $$(noNameFacetHeader.element).find('.coveo-facet-header-collapse');
       $$(collapseElement).trigger('click');
