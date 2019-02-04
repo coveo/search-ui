@@ -1,3 +1,4 @@
+import { debounce } from 'underscore';
 import { $$ } from '../../../utils/Dom';
 import { l } from '../../../strings/Strings';
 import { SVGIcons } from '../../../utils/SVGIcons';
@@ -7,6 +8,7 @@ import { NoNameFacetHeaderClear } from './NoNameFacetHeaderClear';
 import { NoNameFacetHeaderCollapseToggle } from './NoNameFacetHeaderCollapseToggle';
 
 export class NoNameFacetHeader {
+  public static showLoadingDelay = 2000;
   public element: HTMLElement;
   private waitAnimationElement: HTMLElement;
   private clearButton: NoNameFacetHeaderClear;
@@ -25,7 +27,7 @@ export class NoNameFacetHeader {
 
     this.waitAnimationElement = this.createWaitAnimation();
     section.append(this.waitAnimationElement);
-    this.toggleLoading(false);
+    this.hideLoading();
 
     return section.el;
   }
@@ -56,11 +58,18 @@ export class NoNameFacetHeader {
     return waitAnimationElement;
   }
 
-  public toggleClear(visible: boolean) {
-    this.clearButton.toggle(visible);
+  public showClear() {
+    this.clearButton.toggle(true);
   }
 
-  public toggleLoading(visible: boolean) {
-    $$(this.waitAnimationElement).toggle(visible);
+  public hideClear() {
+    this.clearButton.toggle(false);
+  }
+
+  public showLoading = debounce(() => $$(this.waitAnimationElement).toggle(true), NoNameFacetHeader.showLoadingDelay);
+
+  public hideLoading() {
+    this.showLoading.cancel();
+    $$(this.waitAnimationElement).toggle(false);
   }
 }

@@ -33,10 +33,10 @@ export function NoNameFacetHeaderTest() {
       expect($$(waitAnimationElement).isVisible()).toBe(false);
     });
 
-    it(`when calling showWaitAnimation
+    it(`when calling showLoading
       waitAnimationElement show be visible`, () => {
       const waitAnimationElement = $$(noNameFacetHeader.element).find('.coveo-facet-header-wait-animation');
-      noNameFacetHeader.toggleLoading(true);
+      noNameFacetHeader.showLoading();
 
       expect($$(waitAnimationElement).isVisible()).toBe(true);
     });
@@ -53,7 +53,7 @@ export function NoNameFacetHeaderTest() {
       the clear button should be visible`, () => {
       const clearElement = $$(noNameFacetHeader.element).find('.coveo-facet-header-eraser');
 
-      noNameFacetHeader.toggleClear(true);
+      noNameFacetHeader.showClear();
 
       expect(clearElement.style.display).toBe('block');
     });
