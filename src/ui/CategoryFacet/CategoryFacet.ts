@@ -713,7 +713,11 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   private buildMoreButton() {
     const svgContainer = $$('span', { className: 'coveo-facet-more-icon' }, SVGIcons.icons.arrowDown).el;
     SVGDom.addClassToSVGInContainer(svgContainer, 'coveo-facet-more-icon-svg');
-    const more = $$('div', { className: 'coveo-category-facet-more', tabindex: 0 }, svgContainer);
+    const more = $$(
+      'div',
+      { className: 'coveo-category-facet-more', tabindex: 0, ariaLabel: l('ExpandFacet', this.options.title) },
+      svgContainer
+    );
 
     const showMoreHandler = () => this.showMore();
     more.on('click', () => this.showMore());
@@ -725,7 +729,11 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   private buildLessButton() {
     const svgContainer = $$('span', { className: 'coveo-facet-less-icon' }, SVGIcons.icons.arrowUp).el;
     SVGDom.addClassToSVGInContainer(svgContainer, 'coveo-facet-less-icon-svg');
-    const less = $$('div', { className: 'coveo-category-facet-less', tabindex: 0 }, svgContainer);
+    const less = $$(
+      'div',
+      { className: 'coveo-category-facet-less', tabindex: 0, ariaLabel: l('CollapseFacet', this.options.title) },
+      svgContainer
+    );
 
     const showLessHandler = () => this.showLess();
     less.on('click', showLessHandler);

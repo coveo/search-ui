@@ -1824,7 +1824,7 @@ export class Facet extends Component {
 
     new AccessibleButton()
       .withElement(more)
-      .withLabel(l('Expand'))
+      .withLabel(l('ExpandFacet', this.options.title))
       .withSelectAction(() => this.handleClickMore())
       .build();
 
@@ -1838,7 +1838,7 @@ export class Facet extends Component {
 
     new AccessibleButton()
       .withElement(less)
-      .withLabel(l('Collapse'))
+      .withLabel(l('CollapseFacet', this.options.title))
       .withSelectAction(() => this.handleClickLess())
       .build();
 
