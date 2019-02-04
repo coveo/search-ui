@@ -35,13 +35,13 @@ export class NoNameFacetHeader {
   }
 
   private createSettingsSection() {
-    const { isCollapsed, enableCollapse } = this.options.rootFacetOptions;
+    const { collapsedByDefault, enableCollapse } = this.options.rootFacetOptions;
     const section = $$('div', { className: 'coveo-facet-header-settings-section' });
 
     this.clearButton = new NoNameFacetHeaderClear();
     section.append(this.clearButton.create());
 
-    this.collapseToggle = new NoNameFacetHeaderCollapseToggle({ isCollapsed });
+    this.collapseToggle = new NoNameFacetHeaderCollapseToggle({ collapsed });
     enableCollapse && section.append(this.collapseToggle.create());
 
     return section.el;

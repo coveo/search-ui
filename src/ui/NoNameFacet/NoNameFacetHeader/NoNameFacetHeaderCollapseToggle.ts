@@ -3,7 +3,7 @@ import { NoNameFacetHeaderCollapse } from './NoNameFacetHeaderCollapse';
 import { NoNameFacetHeaderExpand } from './NoNameFacetHeaderExpand';
 
 export interface INoNameFacetCollapseToggleOptions {
-  isCollapsed: boolean;
+  collapsed: boolean;
 }
 
 export class NoNameFacetHeaderCollapseToggle {
@@ -19,14 +19,14 @@ export class NoNameFacetHeaderCollapseToggle {
     const parent = $$('div');
     parent.append(this.collapseButton.create());
     parent.append(this.expandButton.create());
-    this.toggle(this.options.isCollapsed);
+    this.toggle(this.options.collapsed);
 
     return parent.el;
   }
 
-  private toggle = (isCollapsed: boolean) => {
-    this.collapseButton.toggle(!isCollapsed);
-    this.expandButton.toggle(isCollapsed);
+  private toggle = (collapsed: boolean) => {
+    this.collapseButton.toggle(!collapsed);
+    this.expandButton.toggle(collapsed);
   };
 
   private collapse = () => {

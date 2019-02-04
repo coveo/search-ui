@@ -6,7 +6,7 @@ export interface INoNameFacetOptions extends IResponsiveComponentOptions {
   title?: string;
   useAnd?: boolean;
   enableCollapse?: boolean;
-  isCollapsed?: boolean;
+  collapsedByDefault?: boolean;
 }
 
 export const NoNameFacetOptions = {
@@ -40,5 +40,5 @@ export const NoNameFacetOptions = {
    * Specifies whether to allow the facet should be in the **Collapse** mode.
    * Default value is `false`.
    */
-  isCollapsed: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'Filtering' })
+  collapsedByDefault: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'Filtering' })
 };

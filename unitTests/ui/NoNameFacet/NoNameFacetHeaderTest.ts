@@ -73,10 +73,10 @@ export function NoNameFacetHeaderTest() {
       expect($$(expandElement).isVisible()).toBe(false);
     });
 
-    it(`when passing the option enableCollapse (true) & isCollapsed (true)
+    it(`when passing the option enableCollapse (true) & collapsedByDefault (true)
       should display the accessible expand button`, () => {
       baseOptions.rootFacetOptions.enableCollapse = true;
-      baseOptions.rootFacetOptions.isCollapsed = true;
+      baseOptions.rootFacetOptions.collapsedByDefault = true;
       initializeComponent();
 
       const collapseElement = $$(noNameFacetHeader.element).find('.coveo-facet-header-collapse');
@@ -104,7 +104,7 @@ export function NoNameFacetHeaderTest() {
     it(`when clicking on the expand button
       should switch the option correctly`, () => {
       baseOptions.rootFacetOptions.enableCollapse = true;
-      baseOptions.rootFacetOptions.isCollapsed = true;
+      baseOptions.rootFacetOptions.collapsedByDefault = true;
       initializeComponent();
 
       const collapseElement = $$(noNameFacetHeader.element).find('.coveo-facet-header-collapse');
