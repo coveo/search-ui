@@ -41,7 +41,7 @@ export class NoNameFacetHeader {
     this.clearButton = new NoNameFacetHeaderClear();
     section.append(this.clearButton.create());
 
-    this.collapseToggle = new NoNameFacetHeaderCollapseToggle({ collapsed });
+    this.collapseToggle = new NoNameFacetHeaderCollapseToggle({ collapsed: collapsedByDefault });
     enableCollapse && section.append(this.collapseToggle.create());
 
     return section.el;
