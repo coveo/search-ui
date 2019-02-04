@@ -34,9 +34,7 @@ export class NoNameFacet extends Component {
   }
 
   private createHeader() {
-    return new NoNameFacetHeader({
-      rootFacetOptions: this.options
-    });
+    return new NoNameFacetHeader(this.options);
   }
 }
 

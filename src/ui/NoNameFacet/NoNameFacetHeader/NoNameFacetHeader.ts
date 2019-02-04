@@ -6,17 +6,13 @@ import { INoNameFacetOptions } from '../NoNameFacetOptions';
 import { NoNameFacetHeaderClear } from './NoNameFacetHeaderClear';
 import { NoNameFacetHeaderCollapseToggle } from './NoNameFacetHeaderCollapseToggle';
 
-export interface INoNameFacetHeaderOptions {
-  rootFacetOptions: INoNameFacetOptions;
-}
-
 export class NoNameFacetHeader {
   public element: HTMLElement;
   private waitAnimationElement: HTMLElement;
   private clearButton: NoNameFacetHeaderClear;
   private collapseToggle: NoNameFacetHeaderCollapseToggle;
 
-  constructor(private options: INoNameFacetHeaderOptions) {
+  constructor(private options: INoNameFacetOptions) {
     this.element = $$('div', { className: 'coveo-facet-header' }).el;
     $$(this.element).append(this.createTitleSection());
     $$(this.element).append(this.createSettingsSection());
@@ -35,23 +31,22 @@ export class NoNameFacetHeader {
   }
 
   private createSettingsSection() {
-    const { collapsedByDefault, enableCollapse } = this.options.rootFacetOptions;
     const section = $$('div', { className: 'coveo-facet-header-settings-section' });
 
     this.clearButton = new NoNameFacetHeaderClear();
     section.append(this.clearButton.create());
 
-    this.collapseToggle = new NoNameFacetHeaderCollapseToggle({ collapsed: collapsedByDefault });
-    enableCollapse && section.append(this.collapseToggle.create());
+    this.collapseToggle = new NoNameFacetHeaderCollapseToggle({ collapsed: this.options.collapsedByDefault });
+    this.options.enableCollapse && section.append(this.collapseToggle.create());
 
     return section.el;
   }
 
   private createTitle() {
-    const title = $$('div', { className: 'coveo-facet-header-title' }, this.options.rootFacetOptions.title);
+    const title = $$('div', { className: 'coveo-facet-header-title' }, this.options.title);
     title.setAttribute('role', 'heading');
     title.setAttribute('aria-level', '2');
-    title.setAttribute('aria-label', `${l('FacetTitle', this.options.rootFacetOptions.title)}`);
+    title.setAttribute('aria-label', `${l('FacetTitle', this.options.title)}`);
     return title.el;
   }
 

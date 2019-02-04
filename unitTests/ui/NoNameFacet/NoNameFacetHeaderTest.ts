@@ -1,16 +1,15 @@
 import { $$ } from '../../../src/utils/Dom';
-import { NoNameFacetHeader, INoNameFacetHeaderOptions } from '../../../src/ui/NoNameFacet/NoNameFacetHeader/NoNameFacetHeader';
+import { NoNameFacetHeader } from '../../../src/ui/NoNameFacet/NoNameFacetHeader/NoNameFacetHeader';
+import { INoNameFacetOptions } from '../../../src/ui/NoNameFacet/NoNameFacetOptions';
 
 export function NoNameFacetHeaderTest() {
   describe('NoNameFacetHeader', () => {
     let noNameFacetHeader: NoNameFacetHeader;
-    let baseOptions: INoNameFacetHeaderOptions;
+    let baseOptions: INoNameFacetOptions;
 
     beforeEach(() => {
       baseOptions = {
-        rootFacetOptions: {
-          title: 'Best facet'
-        }
+        title: 'Best facet'
       };
       initializeComponent();
     });
@@ -22,7 +21,7 @@ export function NoNameFacetHeaderTest() {
     it('should create an accessible title', () => {
       const titleElement = $$(noNameFacetHeader.element).find('.coveo-facet-header-title');
 
-      expect($$(titleElement).text()).toBe(baseOptions.rootFacetOptions.title);
+      expect($$(titleElement).text()).toBe(baseOptions.title);
       expect($$(titleElement).getAttribute('role')).toBe('heading');
       expect($$(titleElement).getAttribute('aria-level')).toBe('2');
       expect($$(titleElement).getAttribute('aria-label')).toBeTruthy();
@@ -61,7 +60,7 @@ export function NoNameFacetHeaderTest() {
 
     it(`when passing the option enableCollapse (true)
       should display the accessible collapse button`, () => {
-      baseOptions.rootFacetOptions.enableCollapse = true;
+      baseOptions.enableCollapse = true;
       initializeComponent();
 
       const collapseElement = $$(noNameFacetHeader.element).find('.coveo-facet-header-collapse');
@@ -75,8 +74,8 @@ export function NoNameFacetHeaderTest() {
 
     it(`when passing the option enableCollapse (true) & collapsedByDefault (true)
       should display the accessible expand button`, () => {
-      baseOptions.rootFacetOptions.enableCollapse = true;
-      baseOptions.rootFacetOptions.collapsedByDefault = true;
+      baseOptions.enableCollapse = true;
+      baseOptions.collapsedByDefault = true;
       initializeComponent();
 
       const collapseElement = $$(noNameFacetHeader.element).find('.coveo-facet-header-collapse');
@@ -90,7 +89,7 @@ export function NoNameFacetHeaderTest() {
 
     it(`when clicking on the collapse button
       should switch the option correctly`, () => {
-      baseOptions.rootFacetOptions.enableCollapse = true;
+      baseOptions.enableCollapse = true;
       initializeComponent();
 
       const collapseElement = $$(noNameFacetHeader.element).find('.coveo-facet-header-collapse');
@@ -103,8 +102,8 @@ export function NoNameFacetHeaderTest() {
 
     it(`when clicking on the expand button
       should switch the option correctly`, () => {
-      baseOptions.rootFacetOptions.enableCollapse = true;
-      baseOptions.rootFacetOptions.collapsedByDefault = true;
+      baseOptions.enableCollapse = true;
+      baseOptions.collapsedByDefault = true;
       initializeComponent();
 
       const collapseElement = $$(noNameFacetHeader.element).find('.coveo-facet-header-collapse');
