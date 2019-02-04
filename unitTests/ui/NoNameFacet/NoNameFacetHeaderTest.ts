@@ -34,11 +34,15 @@ export function NoNameFacetHeaderTest() {
     });
 
     it(`when calling showLoading
-      waitAnimationElement show be visible`, () => {
+      waitAnimationElement show be visible after the delay`, done => {
       const waitAnimationElement = $$(noNameFacetHeader.element).find('.coveo-facet-header-wait-animation');
       noNameFacetHeader.showLoading();
+      expect($$(waitAnimationElement).isVisible()).toBe(false);
 
-      expect($$(waitAnimationElement).isVisible()).toBe(true);
+      setTimeout(() => {
+        expect($$(waitAnimationElement).isVisible()).toBe(true);
+        done();
+      }, NoNameFacetHeader.showLoadingDelay + 1);
     });
 
     it('should create an accessible hidden clear button', () => {
