@@ -4,7 +4,6 @@ import { l } from '../../strings/Strings';
 
 export interface INoNameFacetOptions extends IResponsiveComponentOptions {
   title?: string;
-  enableOperator?: boolean;
   useAnd?: boolean;
   enableCollapse?: boolean;
   isCollapsed?: boolean;
@@ -21,15 +20,6 @@ export const NoNameFacetOptions = {
     section: 'CommonOptions',
     priority: 10
   }),
-  /**
-   * Specifies whether to allow the user to toggle between the `OR` and `AND` modes in the facet.
-   *
-   * Setting this option to `true` displays an icon in the top right corner of the facet. The user can click this icon
-   * to toggle between between the two modes.
-   *
-   * Default value is `false`.
-   */
-  enableOperator: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'Filtering' }),
   /**
    * Specifies whether to use the `AND` operator in the resulting filter when multiple values are selected in the
    * facet.

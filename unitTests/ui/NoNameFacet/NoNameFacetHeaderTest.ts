@@ -59,62 +59,6 @@ export function NoNameFacetHeaderTest() {
       expect(clearElement.style.display).toBe('block');
     });
 
-    it(`when passing the option enableOperator (true)
-      should display the accessible operator "Or" button`, () => {
-      baseOptions.rootFacetOptions.enableOperator = true;
-      initializeComponent();
-
-      const orElement = $$(noNameFacetHeader.element).find('.coveo-or').parentElement;
-      const andElement = $$(noNameFacetHeader.element).find('.coveo-and').parentElement;
-
-      expect($$(orElement).getAttribute('aria-label')).toBeTruthy();
-      expect($$(orElement).getAttribute('title')).toBeTruthy();
-      expect($$(orElement).isVisible()).toBe(true);
-      expect($$(andElement).isVisible()).toBe(false);
-    });
-
-    it(`when passing the option enableOperator (true) & useAnd (true)
-      should display the operator "And" button`, () => {
-      baseOptions.rootFacetOptions.enableOperator = true;
-      baseOptions.rootFacetOptions.useAnd = true;
-      initializeComponent();
-
-      const orElement = $$(noNameFacetHeader.element).find('.coveo-or').parentElement;
-      const andElement = $$(noNameFacetHeader.element).find('.coveo-and').parentElement;
-
-      expect($$(andElement).getAttribute('aria-label')).toBeTruthy();
-      expect($$(andElement).getAttribute('title')).toBeTruthy();
-      expect($$(orElement).isVisible()).toBe(false);
-      expect($$(andElement).isVisible()).toBe(true);
-    });
-
-    it(`when clicking on the "Or" operator button
-      should switch the option correctly`, () => {
-      baseOptions.rootFacetOptions.enableOperator = true;
-      initializeComponent();
-
-      const orElement = $$(noNameFacetHeader.element).find('.coveo-or').parentElement;
-      const andElement = $$(noNameFacetHeader.element).find('.coveo-and').parentElement;
-
-      $$(orElement).trigger('click');
-      expect($$(orElement).isVisible()).toBe(false);
-      expect($$(andElement).isVisible()).toBe(true);
-    });
-
-    it(`when clicking on the "And" operator button
-      should switch the option correctly`, () => {
-      baseOptions.rootFacetOptions.enableOperator = true;
-      baseOptions.rootFacetOptions.useAnd = true;
-      initializeComponent();
-
-      const orElement = $$(noNameFacetHeader.element).find('.coveo-or').parentElement;
-      const andElement = $$(noNameFacetHeader.element).find('.coveo-and').parentElement;
-
-      $$(andElement).trigger('click');
-      expect($$(orElement).isVisible()).toBe(true);
-      expect($$(andElement).isVisible()).toBe(false);
-    });
-
     it(`when passing the option enableCollapse (true)
       should display the accessible collapse button`, () => {
       baseOptions.rootFacetOptions.enableCollapse = true;

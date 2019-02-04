@@ -5,7 +5,6 @@ import { SVGDom } from '../../../utils/SVGDom';
 import { INoNameFacetOptions } from '../NoNameFacetOptions';
 import { NoNameFacetHeaderClear } from './NoNameFacetHeaderClear';
 import { NoNameFacetHeaderCollapseToggle } from './NoNameFacetHeaderCollapseToggle';
-import { NoNameFacetHeaderOperatorToggle } from './NoNameFacetHeaderOperatorToggle';
 
 export interface INoNameFacetHeaderOptions {
   rootFacetOptions: INoNameFacetOptions;
@@ -15,7 +14,6 @@ export class NoNameFacetHeader {
   public element: HTMLElement;
   private waitAnimationElement: HTMLElement;
   private clearButton: NoNameFacetHeaderClear;
-  private operatorToggle: NoNameFacetHeaderOperatorToggle;
   private collapseToggle: NoNameFacetHeaderCollapseToggle;
 
   constructor(private options: INoNameFacetHeaderOptions) {
@@ -37,14 +35,11 @@ export class NoNameFacetHeader {
   }
 
   private createSettingsSection() {
-    const { useAnd, isCollapsed, enableCollapse, enableOperator } = this.options.rootFacetOptions;
+    const { isCollapsed, enableCollapse } = this.options.rootFacetOptions;
     const section = $$('div', { className: 'coveo-facet-header-settings-section' });
 
     this.clearButton = new NoNameFacetHeaderClear();
     section.append(this.clearButton.create());
-
-    this.operatorToggle = new NoNameFacetHeaderOperatorToggle({ useAnd });
-    enableOperator && section.append(this.operatorToggle.create());
 
     this.collapseToggle = new NoNameFacetHeaderCollapseToggle({ isCollapsed });
     enableCollapse && section.append(this.collapseToggle.create());
