@@ -5,7 +5,7 @@ import { Initialization } from '../Base/Initialization';
 import { ResponsiveFacets } from '../ResponsiveComponents/ResponsiveFacets';
 import { ResponsiveFacetOptions } from '../ResponsiveComponents/ResponsiveFacetOptions';
 import { exportGlobally } from '../../GlobalExports';
-import { NoNameFacetHeader } from './NoNameFacetHeader';
+import { NoNameFacetHeader } from './NoNameFacetHeader/NoNameFacetHeader';
 import { NoNameFacetOptions, INoNameFacetOptions } from './NoNameFacetOptions';
 
 export class NoNameFacet extends Component {
@@ -34,9 +34,7 @@ export class NoNameFacet extends Component {
   }
 
   private createHeader() {
-    return new NoNameFacetHeader({
-      rootFacetOptions: this.options
-    });
+    return new NoNameFacetHeader(this.options);
   }
 }
 

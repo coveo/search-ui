@@ -671,3 +671,9 @@ FacetUtilsTest();
 
 import { NoNameFacetHeaderTest } from './ui/NoNameFacet/NoNameFacetHeaderTest';
 NoNameFacetHeaderTest();
+
+import { NoNameFacetHeaderButtonTest } from './ui/NoNameFacet/NoNameFacetHeaderButtonTest';
+NoNameFacetHeaderButtonTest();
+
+import { NoNameFacetHeaderCollapseToggleTest } from './ui/NoNameFacet/NoNameFacetHeaderCollapseToggleTest';
+NoNameFacetHeaderCollapseToggleTest();
