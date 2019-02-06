@@ -51,8 +51,7 @@ export class FacetSearchElement {
     this.clear.style.display = 'none';
     this.search.appendChild(this.clear);
 
-    const middle = document.createElement('div');
-    $$(middle).addClass('coveo-facet-search-middle');
+    const middle = this.buildCombobox();
     this.search.appendChild(middle);
 
     this.input = this.buildInputElement();
@@ -71,6 +70,24 @@ export class FacetSearchElement {
 
     this.detectSearchBarAnimation();
     return this.search;
+  }
+
+  private buildCombobox() {
+    return $$('div', {
+      className: 'coveo-facet-search-middle',
+      role: 'combobox',
+      ariaHaspopup: 'listbox',
+      ariaExpanded: 'true'
+    }).el;
+  }
+
+  private updateSelectedOption(option: Dom) {
+    this.input.setAttribute('aria-activedescendant', option.getAttribute('id'));
+
+    const previouslySelectedOption = $$(this.searchResults).find('[aria-selected^="true"]');
+    previouslySelectedOption && previouslySelectedOption.setAttribute('aria-selected', 'false');
+
+    option.setAttribute('aria-selected', 'true');
   }
 
   public showFacetSearchWaitingAnimation() {
@@ -104,7 +121,7 @@ export class FacetSearchElement {
   public positionSearchResults(root: HTMLElement, facetWidth: number, nextTo: HTMLElement) {
     if (this.searchResults != null) {
       root.appendChild(this.searchResults);
-      this.searchResults.style.display = 'block';
+      $$(this.searchResults).show();
       this.searchResults.style.width = facetWidth - FacetSearchElement.FACET_SEARCH_PADDING + 'px';
 
       if ($$(this.searchResults).css('display') == 'none') {
@@ -129,6 +146,7 @@ export class FacetSearchElement {
     this.currentResult && this.currentResult.removeClass('coveo-facet-search-current-result');
     this.currentResult = toSet;
     toSet.addClass('coveo-facet-search-current-result');
+    this.updateSelectedOption(toSet);
   }
 
   public moveCurrentResultDown() {
@@ -235,10 +253,12 @@ export class FacetSearchElement {
   private buildInputElement() {
     return <HTMLInputElement>$$('input', {
       className: 'coveo-facet-search-input',
-      type: 'test',
+      type: 'text',
       autocapitalize: 'off',
       autocorrect: 'off',
-      'aria-label': l('Search')
+      ariaLabel: l('Search'),
+      ariaHaspopup: 'true',
+      ariaAutocomplete: 'list'
     }).el;
   }
 

@@ -188,6 +188,9 @@ export class CategoryFacetSearch implements IFacetSearch {
     const item = $$(
       'li',
       {
+        id: `coveo-category-facet-search-suggestion-${last(path)}`,
+        role: 'option',
+        ariaSelected: 'false',
         className: 'coveo-category-facet-search-value',
         title: path
       },
@@ -196,6 +199,9 @@ export class CategoryFacetSearch implements IFacetSearch {
     );
     item.el.dataset.path = categoryFacetValue.value;
 
+    const countLabel = l('ResultCount', categoryFacetValue.numberOfResults.toString());
+    const label = l('SelectValueWithResultCount', last(path), countLabel);
+
     new AccessibleButton()
       .withElement(item)
       .withSelectAction(() => {
@@ -203,7 +209,7 @@ export class CategoryFacetSearch implements IFacetSearch {
         this.categoryFacet.logAnalyticsEvent(analyticsActionCauseList.categoryFacetSelect, path);
         this.categoryFacet.executeQuery();
       })
-      .withLabel(`${l(last(path))} ${categoryFacetValue.numberOfResults}`)
+      .withLabel(label)
       .build();
 
     return item;
