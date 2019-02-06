@@ -1,34 +1,36 @@
-import { $$ } from '../../../utils/Dom';
+import { $$, Dom } from '../../../utils/Dom';
 import { SVGDom } from '../../../utils/SVGDom';
 
 export interface INoNameFacetHeaderButtonOptions {
   label: string;
-  action?: () => void;
   shouldDisplay: boolean;
   className: string;
-  iconSVG: string;
-  iconClassName: string;
+  iconSVG?: string;
+  iconClassName?: string;
+  action?: () => void;
 }
 
-export abstract class NoNameFacetHeaderButton {
-  private element: HTMLElement;
+export class NoNameFacetHeaderButton {
+  private button: Dom;
   constructor(private rootOptions: INoNameFacetHeaderButtonOptions) {}
 
   public create() {
-    const button = $$('button', { className: this.rootOptions.className }, this.rootOptions.iconSVG);
-    button.setAttribute('aria-label', this.rootOptions.label);
-    button.setAttribute('title', this.rootOptions.label);
-    button.on('click', () => this.onClick());
+    const hasIcon = this.rootOptions.iconSVG && this.rootOptions.iconClassName;
+    this.button = $$('button', { className: this.rootOptions.className }, hasIcon ? this.rootOptions.iconSVG : this.rootOptions.label);
 
-    this.element = button.el;
-    SVGDom.addClassToSVGInContainer(this.element, this.rootOptions.iconClassName);
+    this.rootOptions.action && this.button.on('click', () => this.rootOptions.action());
+
+    if (hasIcon) {
+      this.button.setAttribute('aria-label', this.rootOptions.label);
+      this.button.setAttribute('title', this.rootOptions.label);
+      SVGDom.addClassToSVGInContainer(this.button.el, this.rootOptions.iconClassName);
+    }
+
     this.toggle(this.rootOptions.shouldDisplay);
-    return this.element;
+    return this.button.el;
   }
 
   public toggle(shouldDisplay: boolean) {
-    $$(this.element).toggle(shouldDisplay);
+    this.button.toggle(shouldDisplay);
   }
-
-  protected abstract onClick(): void;
 }

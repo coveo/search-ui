@@ -1,20 +1,18 @@
-import { debounce } from 'underscore';
 import { $$ } from '../../../utils/Dom';
 import { l } from '../../../strings/Strings';
 import { SVGIcons } from '../../../utils/SVGIcons';
 import { SVGDom } from '../../../utils/SVGDom';
 import { INoNameFacetOptions } from '../NoNameFacetOptions';
-import { NoNameFacetHeaderClear } from './NoNameFacetHeaderClear';
+import { NoNameFacetHeaderButton } from './NoNameFacetHeaderButton';
 import { NoNameFacetHeaderCollapseToggle } from './NoNameFacetHeaderCollapseToggle';
-
-export { Cancelable } from 'underscore';
 
 export class NoNameFacetHeader {
   public static showLoadingDelay = 2000;
   public element: HTMLElement;
   private waitAnimationElement: HTMLElement;
-  private clearButton: NoNameFacetHeaderClear;
+  private clearButton: NoNameFacetHeaderButton;
   private collapseToggle: NoNameFacetHeaderCollapseToggle;
+  private showLoadingTimeout: number;
 
   constructor(private options: INoNameFacetOptions) {
     this.element = $$('div', { className: 'coveo-facet-header' }).el;
@@ -37,7 +35,14 @@ export class NoNameFacetHeader {
   private createSettingsSection() {
     const section = $$('div', { className: 'coveo-facet-header-settings-section' });
 
-    this.clearButton = new NoNameFacetHeaderClear();
+    this.clearButton = new NoNameFacetHeaderButton({
+      label: l('Reset'),
+      className: 'coveo-facet-header-eraser coveo-facet-header-eraser-visible',
+      iconSVG: SVGIcons.icons.mainClear,
+      iconClassName: 'coveo-facet-header-eraser-svg',
+      shouldDisplay: false,
+      action: this.hideClear
+    });
     section.append(this.clearButton.create());
 
     this.collapseToggle = new NoNameFacetHeaderCollapseToggle({ collapsed: this.options.collapsedByDefault });
@@ -60,18 +65,21 @@ export class NoNameFacetHeader {
     return waitAnimationElement;
   }
 
-  public showClear() {
+  public showClear = () => {
     this.clearButton.toggle(true);
-  }
+  };
 
-  public hideClear() {
+  public hideClear = () => {
     this.clearButton.toggle(false);
-  }
+  };
 
-  public showLoading = debounce(() => $$(this.waitAnimationElement).toggle(true), NoNameFacetHeader.showLoadingDelay);
+  public showLoading = () => {
+    clearTimeout(this.showLoadingTimeout);
+    this.showLoadingTimeout = window.setTimeout(() => $$(this.waitAnimationElement).toggle(true), NoNameFacetHeader.showLoadingDelay);
+  };
 
-  public hideLoading() {
-    this.showLoading.cancel();
+  public hideLoading = () => {
+    clearTimeout(this.showLoadingTimeout);
     $$(this.waitAnimationElement).toggle(false);
-  }
+  };
 }

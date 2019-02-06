@@ -1,18 +1,33 @@
+import { l } from '../../../strings/Strings';
+import { SVGIcons } from '../../../utils/SVGIcons';
 import { $$ } from '../../../utils/Dom';
-import { NoNameFacetHeaderCollapse } from './NoNameFacetHeaderCollapse';
-import { NoNameFacetHeaderExpand } from './NoNameFacetHeaderExpand';
+import { NoNameFacetHeaderButton } from './NoNameFacetHeaderButton';
 
 export interface INoNameFacetCollapseToggleOptions {
   collapsed: boolean;
 }
 
 export class NoNameFacetHeaderCollapseToggle {
-  private collapseButton: NoNameFacetHeaderCollapse;
-  private expandButton: NoNameFacetHeaderExpand;
+  private collapseButton: NoNameFacetHeaderButton;
+  private expandButton: NoNameFacetHeaderButton;
 
   constructor(private options: INoNameFacetCollapseToggleOptions) {
-    this.collapseButton = new NoNameFacetHeaderCollapse({ onClick: this.collapse });
-    this.expandButton = new NoNameFacetHeaderExpand({ onClick: this.expand });
+    this.collapseButton = new NoNameFacetHeaderButton({
+      label: l('Collapse'),
+      className: 'coveo-facet-header-collapse',
+      iconSVG: SVGIcons.icons.facetCollapse,
+      iconClassName: 'coveo-facet-settings-section-hide-svg',
+      shouldDisplay: true,
+      action: this.collapse
+    });
+    this.expandButton = new NoNameFacetHeaderButton({
+      label: l('Expand'),
+      className: 'coveo-facet-header-expand',
+      iconSVG: SVGIcons.icons.facetExpand,
+      iconClassName: 'coveo-facet-settings-section-show-svg',
+      shouldDisplay: true,
+      action: this.expand
+    });
   }
 
   public create() {
