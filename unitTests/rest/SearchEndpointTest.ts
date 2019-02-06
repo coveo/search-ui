@@ -246,7 +246,7 @@ export function SearchEndpointTest() {
 
         beforeEach(() => {
           fakeResult = FakeResults.createFakeResult();
-          fakeResult.uniqueId = '123.456$https://somwhere.on.the.internet.com?thisparameter=containsencodedstuff%20';
+          fakeResult.uniqueId = '123.456$https://somwehere.on.the.internet.com?thisparameter=containsencodedstuff%20';
         });
 
         it('allow to get an uri to view as html', () => {
