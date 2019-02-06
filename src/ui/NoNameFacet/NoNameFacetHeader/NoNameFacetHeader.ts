@@ -1,4 +1,4 @@
-import { debounce } from 'underscore';
+import { debounce, Cancelable } from 'underscore';
 import { $$ } from '../../../utils/Dom';
 import { l } from '../../../strings/Strings';
 import { SVGIcons } from '../../../utils/SVGIcons';
@@ -66,7 +66,10 @@ export class NoNameFacetHeader {
     this.clearButton.toggle(false);
   }
 
-  public showLoading = debounce(() => $$(this.waitAnimationElement).toggle(true), NoNameFacetHeader.showLoadingDelay);
+  public showLoading: Function & Cancelable = debounce(
+    () => $$(this.waitAnimationElement).toggle(true),
+    NoNameFacetHeader.showLoadingDelay
+  );
 
   public hideLoading() {
     this.showLoading.cancel();
