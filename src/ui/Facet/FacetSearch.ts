@@ -309,7 +309,10 @@ export class FacetSearch implements IFacetSearch {
       this.currentlyDisplayedResults = pluck(facetValues, 'value');
     }
 
-    each($$(this.searchResults).findAll('.coveo-facet-selectable'), (elem: HTMLElement) => {
+    each($$(this.searchResults).findAll('.coveo-facet-selectable'), (elem: HTMLElement, index: number) => {
+      $$(elem).setAttribute('id', `coveo-facet-search-${this.facet.options.id}-suggestion-${index}`);
+      $$(elem).setAttribute('role', 'option');
+      $$(elem).setAttribute('aria-selected', 'false');
       $$(elem).addClass('coveo-facet-search-selectable');
     });
   }

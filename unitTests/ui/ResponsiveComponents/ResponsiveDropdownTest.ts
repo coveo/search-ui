@@ -2,6 +2,8 @@ import { ResponsiveDropdown } from '../../../src/ui/ResponsiveComponents/Respons
 import { ResponsiveDropdownHeader } from '../../../src/ui/ResponsiveComponents/ResponsiveDropdown/ResponsiveDropdownHeader';
 import { ResponsiveDropdownContent } from '../../../src/ui/ResponsiveComponents/ResponsiveDropdown/ResponsiveDropdownContent';
 import { $$, Dom } from '../../../src/utils/Dom';
+import { Simulate } from '../../Simulate';
+import { KEYBOARD } from '../../../src/Core';
 
 export function ResponsiveDropdownTest() {
   describe('ResponsiveDropdown', () => {
@@ -80,6 +82,14 @@ export function ResponsiveDropdownTest() {
       responsiveDropdown.close();
 
       expect(handler).toHaveBeenCalled();
+    });
+
+    it('should call close when the dropdown is opened and the escape key is pressed', () => {
+      responsiveDropdown.close = jasmine.createSpy('close');
+      responsiveDropdown.open();
+      Simulate.keyUp(document.documentElement, KEYBOARD.ESCAPE);
+
+      expect(responsiveDropdown.close).toHaveBeenCalled();
     });
   });
 }
