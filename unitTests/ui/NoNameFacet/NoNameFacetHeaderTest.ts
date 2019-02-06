@@ -59,63 +59,19 @@ export function NoNameFacetHeaderTest() {
 
       noNameFacetHeader.showClear();
 
-      expect(clearElement.style.display).toBe('block');
+      expect($$(clearElement).isVisible()).toBe(true);
     });
 
     it(`when passing the option enableCollapse (true)
-      should display the accessible collapse button`, () => {
+      should display the accessible collapse & expand buttons`, () => {
       baseOptions.enableCollapse = true;
       initializeComponent();
 
       const collapseElement = $$(noNameFacetHeader.element).find('.coveo-facet-header-collapse');
       const expandElement = $$(noNameFacetHeader.element).find('.coveo-facet-header-expand');
 
-      expect($$(collapseElement).getAttribute('aria-label')).toBeTruthy();
-      expect($$(collapseElement).getAttribute('title')).toBeTruthy();
-      expect($$(collapseElement).isVisible()).toBe(true);
-      expect($$(expandElement).isVisible()).toBe(false);
-    });
-
-    it(`when passing the option enableCollapse (true) & collapsedByDefault (true)
-      should display the accessible expand button`, () => {
-      baseOptions.enableCollapse = true;
-      baseOptions.collapsedByDefault = true;
-      initializeComponent();
-
-      const collapseElement = $$(noNameFacetHeader.element).find('.coveo-facet-header-collapse');
-      const expandElement = $$(noNameFacetHeader.element).find('.coveo-facet-header-expand');
-
-      expect($$(expandElement).getAttribute('aria-label')).toBeTruthy();
-      expect($$(expandElement).getAttribute('title')).toBeTruthy();
-      expect($$(collapseElement).isVisible()).toBe(false);
-      expect($$(expandElement).isVisible()).toBe(true);
-    });
-
-    it(`when clicking on the collapse button
-      should switch the option correctly`, () => {
-      baseOptions.enableCollapse = true;
-      initializeComponent();
-
-      const collapseElement = $$(noNameFacetHeader.element).find('.coveo-facet-header-collapse');
-      const expandElement = $$(noNameFacetHeader.element).find('.coveo-facet-header-expand');
-      $$(collapseElement).trigger('click');
-
-      expect($$(collapseElement).isVisible()).toBe(false);
-      expect($$(expandElement).isVisible()).toBe(true);
-    });
-
-    it(`when clicking on the expand button
-      should switch the option correctly`, () => {
-      baseOptions.enableCollapse = true;
-      baseOptions.collapsedByDefault = true;
-      initializeComponent();
-
-      const collapseElement = $$(noNameFacetHeader.element).find('.coveo-facet-header-collapse');
-      const expandElement = $$(noNameFacetHeader.element).find('.coveo-facet-header-expand');
-      $$(expandElement).trigger('click');
-
-      expect($$(collapseElement).isVisible()).toBe(true);
-      expect($$(expandElement).isVisible()).toBe(false);
+      expect(collapseElement).toBeTruthy();
+      expect(expandElement).toBeTruthy();
     });
   });
 }

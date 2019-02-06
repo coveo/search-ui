@@ -3,8 +3,8 @@ import { SVGDom } from '../../../utils/SVGDom';
 
 export interface INoNameFacetHeaderButtonOptions {
   label: string;
-  shouldDisplay: boolean;
-  className: string;
+  shouldDisplay?: boolean;
+  className?: string;
   iconSVG?: string;
   iconClassName?: string;
   action?: () => void;
@@ -16,9 +16,14 @@ export class NoNameFacetHeaderButton {
 
   public create() {
     const hasIcon = this.rootOptions.iconSVG && this.rootOptions.iconClassName;
-    this.button = $$('button', { className: this.rootOptions.className }, hasIcon ? this.rootOptions.iconSVG : this.rootOptions.label);
 
-    this.rootOptions.action && this.button.on('click', () => this.rootOptions.action());
+    this.button = $$(
+      'button',
+      { className: this.rootOptions.className || '' },
+      hasIcon ? this.rootOptions.iconSVG : this.rootOptions.label
+    );
+
+    this.rootOptions.action && this.button.on('click', this.rootOptions.action);
 
     if (hasIcon) {
       this.button.setAttribute('aria-label', this.rootOptions.label);
@@ -26,7 +31,9 @@ export class NoNameFacetHeaderButton {
       SVGDom.addClassToSVGInContainer(this.button.el, this.rootOptions.iconClassName);
     }
 
-    this.toggle(this.rootOptions.shouldDisplay);
+    if (this.rootOptions.shouldDisplay !== undefined) {
+      this.toggle(this.rootOptions.shouldDisplay);
+    }
     return this.button.el;
   }
 

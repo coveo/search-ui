@@ -1,4 +1,4 @@
-import { $$ } from '../../../utils/Dom';
+import { $$, Dom } from '../../../utils/Dom';
 import { l } from '../../../strings/Strings';
 import { SVGIcons } from '../../../utils/SVGIcons';
 import { SVGDom } from '../../../utils/SVGDom';
@@ -9,7 +9,7 @@ import { NoNameFacetHeaderCollapseToggle } from './NoNameFacetHeaderCollapseTogg
 export class NoNameFacetHeader {
   public static showLoadingDelay = 2000;
   public element: HTMLElement;
-  private waitAnimationElement: HTMLElement;
+  private waitAnimation: Dom;
   private clearButton: NoNameFacetHeaderButton;
   private collapseToggle: NoNameFacetHeaderCollapseToggle;
   private showLoadingTimeout: number;
@@ -24,10 +24,7 @@ export class NoNameFacetHeader {
     const section = $$('div', { className: 'coveo-facet-header-title-section' });
 
     section.append(this.createTitle());
-
-    this.waitAnimationElement = this.createWaitAnimation();
-    section.append(this.waitAnimationElement);
-    this.hideLoading();
+    section.append(this.createWaitAnimation());
 
     return section.el;
   }
@@ -35,6 +32,13 @@ export class NoNameFacetHeader {
   private createSettingsSection() {
     const section = $$('div', { className: 'coveo-facet-header-settings-section' });
 
+    section.append(this.createClearButton());
+    this.options.enableCollapse && section.append(this.createCollapseToggle());
+
+    return section.el;
+  }
+
+  private createClearButton() {
     this.clearButton = new NoNameFacetHeaderButton({
       label: l('Reset'),
       className: 'coveo-facet-header-eraser coveo-facet-header-eraser-visible',
@@ -43,12 +47,13 @@ export class NoNameFacetHeader {
       shouldDisplay: false,
       action: this.hideClear
     });
-    section.append(this.clearButton.create());
 
+    return this.clearButton.create();
+  }
+
+  private createCollapseToggle() {
     this.collapseToggle = new NoNameFacetHeaderCollapseToggle({ collapsed: this.options.collapsedByDefault });
-    this.options.enableCollapse && section.append(this.collapseToggle.create());
-
-    return section.el;
+    return this.collapseToggle.create();
   }
 
   private createTitle() {
@@ -56,13 +61,16 @@ export class NoNameFacetHeader {
     title.setAttribute('role', 'heading');
     title.setAttribute('aria-level', '2');
     title.setAttribute('aria-label', `${l('FacetTitle', this.options.title)}`);
+
     return title.el;
   }
 
   private createWaitAnimation() {
-    const waitAnimationElement = $$('div', { className: 'coveo-facet-header-wait-animation' }, SVGIcons.icons.loading).el;
-    SVGDom.addClassToSVGInContainer(waitAnimationElement, 'coveo-facet-header-wait-animation-svg');
-    return waitAnimationElement;
+    this.waitAnimation = $$('div', { className: 'coveo-facet-header-wait-animation' }, SVGIcons.icons.loading);
+    SVGDom.addClassToSVGInContainer(this.waitAnimation.el, 'coveo-facet-header-wait-animation-svg');
+    this.hideLoading();
+
+    return this.waitAnimation.el;
   }
 
   public showClear = () => {
@@ -75,11 +83,11 @@ export class NoNameFacetHeader {
 
   public showLoading = () => {
     clearTimeout(this.showLoadingTimeout);
-    this.showLoadingTimeout = window.setTimeout(() => $$(this.waitAnimationElement).toggle(true), NoNameFacetHeader.showLoadingDelay);
+    this.showLoadingTimeout = window.setTimeout(() => this.waitAnimation.toggle(true), NoNameFacetHeader.showLoadingDelay);
   };
 
   public hideLoading = () => {
     clearTimeout(this.showLoadingTimeout);
-    $$(this.waitAnimationElement).toggle(false);
+    this.waitAnimation.toggle(false);
   };
 }
