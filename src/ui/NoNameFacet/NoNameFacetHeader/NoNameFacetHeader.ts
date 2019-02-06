@@ -68,10 +68,7 @@ export class NoNameFacetHeader {
     this.clearButton.toggle(false);
   }
 
-  public showLoading: Function & Cancelable = debounce(
-    () => $$(this.waitAnimationElement).toggle(true),
-    NoNameFacetHeader.showLoadingDelay
-  );
+  public showLoading = debounce(() => $$(this.waitAnimationElement).toggle(true), NoNameFacetHeader.showLoadingDelay);
 
   public hideLoading() {
     this.showLoading.cancel();
