@@ -1,4 +1,4 @@
-import { debounce, Cancelable } from 'underscore';
+import { debounce } from 'underscore';
 import { $$ } from '../../../utils/Dom';
 import { l } from '../../../strings/Strings';
 import { SVGIcons } from '../../../utils/SVGIcons';
@@ -6,6 +6,8 @@ import { SVGDom } from '../../../utils/SVGDom';
 import { INoNameFacetOptions } from '../NoNameFacetOptions';
 import { NoNameFacetHeaderClear } from './NoNameFacetHeaderClear';
 import { NoNameFacetHeaderCollapseToggle } from './NoNameFacetHeaderCollapseToggle';
+
+export { Cancelable } from 'underscore';
 
 export class NoNameFacetHeader {
   public static showLoadingDelay = 2000;
