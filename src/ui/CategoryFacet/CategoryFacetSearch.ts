@@ -163,7 +163,7 @@ export class CategoryFacetSearch implements IFacetSearch {
     $$(this.facetSearchElement.searchResults).empty();
     this.currentlyDisplayedResults = pluck(categoryFacetValues, 'value');
     for (let i = 0; i < categoryFacetValues.length; i++) {
-      const searchResult = this.buildFacetSearchValue(categoryFacetValues[i]);
+      const searchResult = this.buildFacetSearchValue(categoryFacetValues[i], i);
       if (i == 0) {
         this.facetSearchElement.setAsCurrentResult(searchResult);
       }
@@ -172,7 +172,7 @@ export class CategoryFacetSearch implements IFacetSearch {
     this.highlightCurrentQueryWithinSearchResults();
   }
 
-  private buildFacetSearchValue(categoryFacetValue: IGroupByValue) {
+  private buildFacetSearchValue(categoryFacetValue: IGroupByValue, index: number) {
     const path = categoryFacetValue.value.split(this.categoryFacet.options.delimitingCharacter);
 
     const pathParents = path.slice(0, -1).length != 0 ? `${path.slice(0, -1).join('/')}/` : '';
@@ -188,7 +188,7 @@ export class CategoryFacetSearch implements IFacetSearch {
     const item = $$(
       'li',
       {
-        id: `coveo-category-facet-search-suggestion-${last(path)}`,
+        id: `coveo-category-facet-search-suggestion-${index}`,
         role: 'option',
         ariaSelected: 'false',
         className: 'coveo-category-facet-search-value',
