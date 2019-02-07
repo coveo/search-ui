@@ -4,6 +4,8 @@ import { $$, Dom } from '../../../utils/Dom';
 import { EventsUtils } from '../../../utils/EventsUtils';
 import * as _ from 'underscore';
 import { AccessibleButton } from '../../../utils/AccessibleButton';
+import { KeyboardUtils, KEYBOARD } from '../../../utils/KeyboardUtils';
+import { InitializationEvents } from '../../../events/InitializationEvents';
 export enum ResponsiveDropdownEvent {
   OPEN = 'responsiveDropdownOpen',
   CLOSE = 'responsiveDropdownClose'
@@ -28,6 +30,8 @@ export class ResponsiveDropdown {
     this.popupBackground = this.buildPopupBackground();
     this.bindOnClickDropdownHeaderEvent();
     this.saveContentPosition();
+    this.bindOnKeyboardEscapeEvent();
+    this.bindNukeEvents();
   }
 
   public registerOnOpenHandler(handler: Function, context) {
@@ -78,6 +82,24 @@ export class ResponsiveDropdown {
       .withSelectAction(() => (this.isOpened ? this.close() : this.open()))
       .withLabel('Filters')
       .build();
+  }
+
+  private closeIfOpened = () => {
+    this.isOpened && this.close();
+  };
+
+  private bindOnKeyboardEscapeEvent() {
+    $$(document.documentElement).on('keyup', KeyboardUtils.keypressAction(KEYBOARD.ESCAPE, this.closeIfOpened));
+  }
+
+  private unbindOnKeyboardEscapeEvent() {
+    $$(document.documentElement).off('keyup', KeyboardUtils.keypressAction(KEYBOARD.ESCAPE, this.closeIfOpened));
+  }
+
+  private bindNukeEvents() {
+    $$(this.coveoRoot).on(InitializationEvents.nuke, () => {
+      this.unbindOnKeyboardEscapeEvent();
+    });
   }
 
   private showPopupBackground() {
