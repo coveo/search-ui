@@ -101,12 +101,10 @@ export class Pager extends Component {
     })
   };
 
-  /**
-   * The current page (1-based index).
-   */
-  public currentPage: number;
   private listenToQueryStateChange = true;
   private ignoreNextQuerySuccess = false;
+
+  private _currentPage: number;
 
   // The normal behavior of this component is to reset to page 1 when a new
   // query is performed by other components (i.e. not pagers).
@@ -144,6 +142,26 @@ export class Pager extends Component {
     this.list = document.createElement('ul');
     $$(this.list).addClass('coveo-pager-list');
     element.appendChild(this.list);
+  }
+
+  /**
+   * The current page (1-based index).
+   */
+  public get currentPage(): number {
+    return this._currentPage;
+  }
+
+  public set currentPage(value: number) {
+    let sanitizedValue = value;
+
+    if (isNaN(value)) {
+      this.logger.warn(`Unable to set pager current page to an invalid value: ${value}. Resetting to 1.`);
+      sanitizedValue = 1;
+    }
+
+    sanitizedValue = Math.round(sanitizedValue);
+
+    this._currentPage = sanitizedValue;
   }
 
   /**

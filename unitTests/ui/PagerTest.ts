@@ -38,6 +38,33 @@ export function PagerTest() {
       expect(test.env.queryController.executeQuery).toHaveBeenCalledTimes(4);
     });
 
+    it('should not be possible to set current page to an invalid value', () => {
+      test.cmp.setPage('a' as any);
+      expect(test.cmp.currentPage).toBe(1);
+      test.cmp.setPage('1' as any);
+      expect(test.cmp.currentPage).toBe(1);
+      test.cmp.setPage(2 as any);
+      expect(test.cmp.currentPage).toBe(2);
+      test.cmp.setPage(1.7 as any);
+      expect(test.cmp.currentPage).toBe(2);
+      test.cmp.setPage(1.5 as any);
+      expect(test.cmp.currentPage).toBe(2);
+      test.cmp.setPage(1.499999 as any);
+      expect(test.cmp.currentPage).toBe(1);
+      test.cmp.setPage('1.599999' as any);
+      expect(test.cmp.currentPage).toBe(2);
+      test.cmp.setPage('2.00000' as any);
+      expect(test.cmp.currentPage).toBe(2);
+      test.cmp.setPage({} as any);
+      expect(test.cmp.currentPage).toBe(1);
+      test.cmp.setPage(true as any);
+      expect(test.cmp.currentPage).toBe(1);
+      test.cmp.setPage(false as any);
+      expect(test.cmp.currentPage).toBe(1);
+      test.cmp.setPage(0 as any);
+      expect(test.cmp.currentPage).toBe(1);
+    });
+
     it('should update the state when changing page', () => {
       let currentPage = 1;
       test.cmp.setPage(++currentPage);
