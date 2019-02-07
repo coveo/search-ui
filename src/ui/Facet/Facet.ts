@@ -227,8 +227,8 @@ export class Facet extends Component {
      * Possible values are:
      * - `"occurrences"`
      * - `"score"`
-     * - `"alphaAscending"`
-     * - `alphaDescending`
+     * - `"alphaascending"`
+     * - `"alphadescending"`
      * - `"computedfieldascending"`
      * - `"computedfielddescending"`
      * - `"custom"`
@@ -240,7 +240,7 @@ export class Facet extends Component {
      *
      * > * Using value captions will disable alphabetical sorts (see the [valueCaption]{@link Facet.options.valueCaption} option).
      *
-     * Default value is `occurrences,score,alphaAscending,alphaDescending`.
+     * Default value is `occurrences,score,alphaascending,alphadescending`.
      */
     availableSorts: ComponentOptions.buildListOption<
       | 'occurrences'
@@ -252,7 +252,7 @@ export class Facet extends Component {
       | 'chisquare'
       | 'nosort'
     >({
-      defaultValue: ['occurrences', 'score', 'alphaAscending', 'alphaDescending'],
+      defaultValue: ['occurrences', 'score', 'alphaascending', 'alphadescending'],
       depend: 'enableSettings',
       section: 'Sorting',
       values: ['AlphaAscending', 'AlphaDescending', 'ComputedFieldAscending', 'ComputedFieldDescending', 'ChiSquare', 'NoSort']
@@ -1824,7 +1824,7 @@ export class Facet extends Component {
 
     new AccessibleButton()
       .withElement(more)
-      .withLabel(l('Expand'))
+      .withLabel(l('ExpandFacet', this.options.title))
       .withSelectAction(() => this.handleClickMore())
       .build();
 
@@ -1838,7 +1838,7 @@ export class Facet extends Component {
 
     new AccessibleButton()
       .withElement(less)
-      .withLabel(l('Collapse'))
+      .withLabel(l('CollapseFacet', this.options.title))
       .withSelectAction(() => this.handleClickLess())
       .build();
 

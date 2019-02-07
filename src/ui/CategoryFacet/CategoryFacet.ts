@@ -19,7 +19,6 @@ import { pluck, reduce, find, first, last, contains, isArray } from 'underscore'
 import { Assert } from '../../misc/Assert';
 import { QueryEvents, IBuildingQueryEventArgs, IQuerySuccessEventArgs } from '../../events/QueryEvents';
 import { CategoryFacetSearch } from './CategoryFacetSearch';
-import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
 import { ICategoryFacetResult } from '../../rest/CategoryFacetResult';
 import { BreadcrumbEvents, IPopulateBreadcrumbEventArgs } from '../../events/BreadcrumbEvents';
 import { CategoryFacetBreadcrumb } from './CategoryFacetBreadcrumb';
@@ -33,6 +32,7 @@ import { ResponsiveFacets } from '../ResponsiveComponents/ResponsiveFacets';
 import { IResponsiveComponentOptions } from '../ResponsiveComponents/ResponsiveComponentsManager';
 import { ResponsiveFacetOptions } from '../ResponsiveComponents/ResponsiveFacetOptions';
 import { CategoryFacetHeader } from './CategoryFacetHeader';
+import { AccessibleButton } from '../../utils/AccessibleButton';
 
 export interface ICategoryFacetOptions extends IResponsiveComponentOptions {
   field: IFieldOption;
@@ -713,11 +713,13 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   private buildMoreButton() {
     const svgContainer = $$('span', { className: 'coveo-facet-more-icon' }, SVGIcons.icons.arrowDown).el;
     SVGDom.addClassToSVGInContainer(svgContainer, 'coveo-facet-more-icon-svg');
-    const more = $$('div', { className: 'coveo-category-facet-more', tabindex: 0 }, svgContainer);
+    const more = $$('div', { className: 'coveo-category-facet-more' }, svgContainer);
 
-    const showMoreHandler = () => this.showMore();
-    more.on('click', () => this.showMore());
-    more.on('keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, showMoreHandler));
+    new AccessibleButton()
+      .withElement(more)
+      .withSelectAction(() => this.showMore())
+      .withLabel(l('ExpandFacet', this.options.title))
+      .build();
 
     return more.el;
   }
@@ -725,11 +727,13 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   private buildLessButton() {
     const svgContainer = $$('span', { className: 'coveo-facet-less-icon' }, SVGIcons.icons.arrowUp).el;
     SVGDom.addClassToSVGInContainer(svgContainer, 'coveo-facet-less-icon-svg');
-    const less = $$('div', { className: 'coveo-category-facet-less', tabindex: 0 }, svgContainer);
+    const less = $$('div', { className: 'coveo-category-facet-less' }, svgContainer);
 
-    const showLessHandler = () => this.showLess();
-    less.on('click', showLessHandler);
-    less.on('keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, showLessHandler));
+    new AccessibleButton()
+      .withElement(less)
+      .withSelectAction(() => this.showLess())
+      .withLabel(l('CollapseFacet', this.options.title))
+      .build();
 
     return less.el;
   }
