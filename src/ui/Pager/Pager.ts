@@ -159,7 +159,8 @@ export class Pager extends Component {
       sanitizedValue = 1;
     }
 
-    sanitizedValue = Math.round(sanitizedValue);
+    sanitizedValue = Math.max(Math.min(sanitizedValue, this.getMaxNumberOfPagesForCurrentResultsPerPage()), 1);
+    sanitizedValue = Math.floor(sanitizedValue);
 
     this._currentPage = sanitizedValue;
   }
@@ -174,7 +175,7 @@ export class Pager extends Component {
    */
   public setPage(pageNumber: number, analyticCause: IAnalyticsActionCause = analyticsActionCauseList.pagerNumber) {
     Assert.exists(pageNumber);
-    this.currentPage = Math.max(Math.min(pageNumber, this.getMaxNumberOfPagesForCurrentResultsPerPage()), 1);
+    this.currentPage = pageNumber;
     this.updateQueryStateModel(this.getFirstResultNumber(this.currentPage));
     this.usageAnalytics.logCustomEvent<IAnalyticsPagerMeta>(analyticCause, { pagerNumber: this.currentPage }, this.element);
     this.queryController.executeQuery({
