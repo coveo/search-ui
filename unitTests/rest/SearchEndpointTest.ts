@@ -241,6 +241,25 @@ export function SearchEndpointTest() {
         expect(ep.getViewAsHtmlUri(fakeResult.uniqueId)).toContain('uniqueId=' + fakeResult.uniqueId);
       });
 
+      describe('with a uniqueID that contains already encoded characters', () => {
+        let fakeResult: IQueryResult;
+
+        beforeEach(() => {
+          fakeResult = FakeResults.createFakeResult();
+          fakeResult.uniqueId = '123.456$https://somwehere.on.the.internet.com?thisparameter=containsencodedstuff%20';
+        });
+
+        it('allow to get an uri to view as html', () => {
+          expect(ep.getViewAsHtmlUri(fakeResult.uniqueId)).toContain('uniqueId=' + encodeURIComponent(fakeResult.uniqueId));
+        });
+
+        it('allow to get an uri to view as datastream', () => {
+          expect(ep.getViewAsDatastreamUri(fakeResult.uniqueId, '$Thumbnail')).toContain(
+            'uniqueId=' + encodeURIComponent(fakeResult.uniqueId)
+          );
+        });
+      });
+
       describe('will execute requests on the search api', () => {
         beforeEach(() => {
           jasmine.Ajax.install();

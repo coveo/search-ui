@@ -1076,7 +1076,7 @@ export class SearchEndpoint implements ISearchEndpoint {
     callOptions = _.extend({}, callOptions);
 
     return {
-      uniqueId,
+      uniqueId: Utils.safeEncodeURIComponent(uniqueId),
       enableNavigation: 'true',
       requestedOutputSize: callOptions.requestedOutputSize ? callOptions.requestedOutputSize.toString() : null,
       contentType: callOptions.contentType
