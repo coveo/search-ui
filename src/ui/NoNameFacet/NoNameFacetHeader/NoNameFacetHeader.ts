@@ -83,11 +83,14 @@ export class NoNameFacetHeader {
 
   public showLoading = () => {
     clearTimeout(this.showLoadingTimeout);
-    this.showLoadingTimeout = window.setTimeout(() => this.waitAnimation.toggle(true), NoNameFacetHeader.showLoadingDelay);
+    this.showLoadingTimeout = window.setTimeout(
+      () => (this.waitAnimation.el.style.visibility = 'visible'),
+      NoNameFacetHeader.showLoadingDelay
+    );
   };
 
   public hideLoading = () => {
     clearTimeout(this.showLoadingTimeout);
-    this.waitAnimation.toggle(false);
+    this.waitAnimation.el.style.visibility = 'hidden';
   };
 }
