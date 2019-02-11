@@ -48,12 +48,12 @@ export class NoNameFacetHeader {
       action: this.hideClear
     });
 
-    return this.clearButton.create();
+    return this.clearButton.element;
   }
 
   private createCollapseToggle() {
     this.collapseToggle = new NoNameFacetHeaderCollapseToggle({ collapsed: this.options.collapsedByDefault });
-    return this.collapseToggle.create();
+    return this.collapseToggle.element;
   }
 
   private createTitle() {
