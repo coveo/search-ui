@@ -1,16 +1,15 @@
 import { $$ } from '../../../src/utils/Dom';
-import { NoNameFacetHeader, INoNameFacetHeaderOptions } from '../../../src/ui/NoNameFacet/NoNameFacetHeader';
+import { NoNameFacetHeader } from '../../../src/ui/NoNameFacet/NoNameFacetHeader/NoNameFacetHeader';
+import { INoNameFacetOptions } from '../../../src/ui/NoNameFacet/NoNameFacetOptions';
 
 export function NoNameFacetHeaderTest() {
   describe('NoNameFacetHeader', () => {
     let noNameFacetHeader: NoNameFacetHeader;
-    let baseOptions: INoNameFacetHeaderOptions;
+    let baseOptions: INoNameFacetOptions;
 
     beforeEach(() => {
       baseOptions = {
-        rootFacetOptions: {
-          title: 'Best facet'
-        }
+        title: 'Best facet'
       };
       initializeComponent();
     });
@@ -22,7 +21,7 @@ export function NoNameFacetHeaderTest() {
     it('should create an accessible title', () => {
       const titleElement = $$(noNameFacetHeader.element).find('.coveo-facet-header-title');
 
-      expect($$(titleElement).text()).toBe(baseOptions.rootFacetOptions.title);
+      expect($$(titleElement).text()).toBe(baseOptions.title);
       expect($$(titleElement).getAttribute('role')).toBe('heading');
       expect($$(titleElement).getAttribute('aria-level')).toBe('2');
       expect($$(titleElement).getAttribute('aria-label')).toBeTruthy();
@@ -34,12 +33,16 @@ export function NoNameFacetHeaderTest() {
       expect($$(waitAnimationElement).isVisible()).toBe(false);
     });
 
-    it(`when calling showWaitAnimation
-      waitAnimationElement show be visible`, () => {
+    it(`when calling showLoading
+      waitAnimationElement show be visible after the delay`, done => {
       const waitAnimationElement = $$(noNameFacetHeader.element).find('.coveo-facet-header-wait-animation');
-      noNameFacetHeader.showWaitAnimation();
+      noNameFacetHeader.showLoading();
+      expect($$(waitAnimationElement).isVisible()).toBe(false);
 
-      expect($$(waitAnimationElement).isVisible()).toBe(true);
+      setTimeout(() => {
+        expect($$(waitAnimationElement).isVisible()).toBe(true);
+        done();
+      }, NoNameFacetHeader.showLoadingDelay + 1);
     });
 
     it('should create an accessible hidden clear button', () => {
@@ -47,37 +50,28 @@ export function NoNameFacetHeaderTest() {
 
       expect($$(clearElement).getAttribute('aria-label')).toBeTruthy();
       expect($$(clearElement).getAttribute('title')).toBeTruthy();
-      expect($$(clearElement).hasClass('coveo-facet-header-eraser-visible')).toBe(false);
+      expect($$(clearElement).isVisible()).toBe(false);
     });
 
     it(`when calling showClear
-      the clear button show be visible`, () => {
+      the clear button should be visible`, () => {
       const clearElement = $$(noNameFacetHeader.element).find('.coveo-facet-header-eraser');
 
       noNameFacetHeader.showClear();
 
-      expect($$(clearElement).hasClass('coveo-facet-header-eraser-visible')).toBe(true);
+      expect($$(clearElement).isVisible()).toBe(true);
     });
 
-    it(`when passing the option enableTogglingOperator (true)
-      should display the accessible operator AND button`, () => {
-      baseOptions.rootFacetOptions.enableTogglingOperator = true;
+    it(`when passing the option enableCollapse (true)
+      should display the accessible collapse & expand buttons`, () => {
+      baseOptions.enableCollapse = true;
       initializeComponent();
-      const operatorElement = $$(noNameFacetHeader.element).find('.coveo-facet-header-operator');
 
-      expect($$(operatorElement).getAttribute('aria-label')).toBeTruthy();
-      expect($$(operatorElement).getAttribute('title')).toBeTruthy();
-      expect($$(operatorElement).findClass('coveo-and')).toBeTruthy();
-    });
+      const collapseElement = $$(noNameFacetHeader.element).find('.coveo-facet-header-collapse');
+      const expandElement = $$(noNameFacetHeader.element).find('.coveo-facet-header-expand');
 
-    it(`when passing the option enableTogglingOperator (true) & useAnd (false)
-      should display the operator OR button`, () => {
-      baseOptions.rootFacetOptions.enableTogglingOperator = true;
-      baseOptions.rootFacetOptions.useAnd = false;
-      initializeComponent();
-      const operatorElement = $$(noNameFacetHeader.element).find('.coveo-facet-header-operator');
-
-      expect($$(operatorElement).findClass('coveo-or')).toBeTruthy();
+      expect(collapseElement).toBeTruthy();
+      expect(expandElement).toBeTruthy();
     });
   });
 }
