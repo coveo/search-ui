@@ -1,25 +1,27 @@
 import { $$ } from '../../../utils/Dom';
-import { INoNameFacetValue } from './NoNameFacetValue';
-
-export interface INoNameFacetValueCheckboxOptions {
-  label: string;
-}
+import { SVGIcons } from '../../../utils/SVGIcons';
+import { SVGDom } from '../../../utils/SVGDom';
 
 export class NoNameFacetValueCheckbox {
   public element: HTMLElement;
 
-  constructor(facetValue: INoNameFacetValue, private options: INoNameFacetValueCheckboxOptions) {
+  constructor(private label: string) {
     this.create();
-    // TODO: manage selection
   }
 
   private create() {
-    this.element = $$('div', {
-      className: 'coveo-facet-value-checkbox',
-      tabindex: 0,
-      role: 'heading',
-      ariaLevel: '3',
-      ariaLabel: this.options.label
-    }).el;
+    this.element = $$(
+      'div',
+      {
+        className: 'coveo-facet-value-checkbox',
+        tabindex: 0,
+        role: 'heading',
+        ariaLevel: '3',
+        ariaLabel: this.label
+      },
+      SVGIcons.icons.checkboxHookExclusionMore
+    ).el;
+
+    SVGDom.addClassToSVGInContainer(this.element, 'coveo-facet-value-checkbox-svg');
   }
 }

@@ -1,6 +1,7 @@
 import { $$ } from '../../../utils/Dom';
 import { INoNameFacetOptions } from '../NoNameFacetOptions';
 import { NoNameFacetValueCheckbox } from './NoNameFacetValueCheckbox';
+import { NoNameFacetValueUtils } from './NoNameFacetValueUtils';
 import { l } from '../../../strings/Strings';
 
 export interface INoNameFacetValue {
@@ -15,9 +16,9 @@ export class NoNameFacetValue {
   private labelWrapperElement: HTMLElement;
   private captionElement: HTMLElement;
   private countElement: HTMLElement;
-  private checkbox: NoNameFacetValueCheckbox;
+  private checkboxElement: HTMLElement;
 
-  constructor(options: INoNameFacetOptions, private facetValue: INoNameFacetValue) {
+  constructor(private options: INoNameFacetOptions, private facetValue: INoNameFacetValue) {
     this.create();
   }
 
@@ -28,6 +29,9 @@ export class NoNameFacetValue {
     this.createAndAppendCheckbox();
     this.createAndAppendCount();
     this.createAndAppendCaption();
+
+    this.toggleSelectedClass();
+    this.addFocusAndBlurEventListeners();
   }
 
   private createContainer() {
@@ -48,13 +52,12 @@ export class NoNameFacetValue {
   }
 
   private createAndAppendCheckbox() {
-    this.checkbox = new NoNameFacetValueCheckbox(this.facetValue, { label: this.label });
-    this.labelWrapperElement.appendChild(this.checkbox.element);
+    this.checkboxElement = new NoNameFacetValueCheckbox(this.label).element;
+    this.labelWrapperElement.appendChild(this.checkboxElement);
   }
 
   private createAndAppendCount() {
     this.countElement = $$('span', { className: 'coveo-facet-value-count' }, this.count).el;
-
     this.labelWrapperElement.appendChild(this.countElement);
   }
 
@@ -68,18 +71,24 @@ export class NoNameFacetValue {
       },
       this.caption
     ).el;
-
     this.labelWrapperElement.appendChild(this.captionElement);
   }
 
+  private toggleSelectedClass() {
+    $$(this.element).toggleClass('coveo-selected', this.facetValue.selected);
+  }
+
+  private addFocusAndBlurEventListeners() {
+    $$(this.checkboxElement).on('focus', () => $$(this.element).addClass('coveo-focused'));
+    $$(this.checkboxElement).on('blur', () => $$(this.element).removeClass('coveo-focused'));
+  }
+
   private get count() {
-    // TODO: call utils
-    return this.facetValue.numberOfResults.toString();
+    return NoNameFacetValueUtils.getFormattedCount(this.facetValue.numberOfResults);
   }
 
   private get caption() {
-    // TODO: call utils
-    return this.facetValue.value;
+    return NoNameFacetValueUtils.getValueCaption(this.facetValue.value, this.options);
   }
 
   private get label() {

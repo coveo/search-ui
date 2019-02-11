@@ -39,7 +39,7 @@ export class NoNameFacet extends Component {
 
     // TODO: Add mock values to the facet
     this.values.updateValues([
-      { value: 'test 1', selected: true, numberOfResults: 20 },
+      { value: 'test 1', selected: true, numberOfResults: 847324 },
       { value: 'test 2', selected: false, numberOfResults: 1 }
     ]);
   }
