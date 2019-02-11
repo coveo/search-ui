@@ -71,7 +71,7 @@ export class FacetRange extends Facet implements IComponentBindings {
     dateField: ComponentOptions.buildBooleanOption({ defaultValue: false }),
 
     /**
-     * The range values to request (see [Requesting Specific FacetRange Values](https://docs.coveo.com/en/2790/)).
+     * The list of [range values]{@link IRangeValue} to request (see [Requesting Specific FacetRange Values](https://docs.coveo.com/en/2790/)).
      *
      * By default, the index automatically generates range values.
      *
