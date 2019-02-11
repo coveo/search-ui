@@ -1,9 +1,9 @@
 /**
- * Describes a single range to request in a Group By operation.
+ * Describes a single range value to request in a [Group By](https://docs.coveo.com/en/203/) operation.
  */
 export interface IRangeValue {
   /**
-   * The value to start the range from.
+   * The value to start the range at.
    *
    * **Examples:**
    * > - `0`
@@ -21,7 +21,7 @@ export interface IRangeValue {
   end?: any;
 
   /**
-   * The label to associate with the range.
+   * The label to associate with the range value.
    *
    * **Examples:**
    * > - `0 - 500`
