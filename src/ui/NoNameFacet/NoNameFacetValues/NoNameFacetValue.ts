@@ -2,7 +2,9 @@ import { $$ } from '../../../utils/Dom';
 import { INoNameFacetOptions } from '../NoNameFacetOptions';
 import { NoNameFacetValueCheckbox } from './NoNameFacetValueCheckbox';
 import { NoNameFacetValueUtils } from './NoNameFacetValueUtils';
+import { NoNameFacet } from '../NoNameFacet';
 import { l } from '../../../strings/Strings';
+import { KeyboardUtils, KEYBOARD } from '../../../utils/KeyboardUtils';
 
 export interface INoNameFacetValue {
   value: string;
@@ -18,7 +20,7 @@ export class NoNameFacetValue {
   private countElement: HTMLElement;
   private checkboxElement: HTMLElement;
 
-  constructor(private options: INoNameFacetOptions, private facetValue: INoNameFacetValue) {
+  constructor(private options: INoNameFacetOptions, private facetValue: INoNameFacetValue, private facet: NoNameFacet) {
     this.create();
   }
 
@@ -32,6 +34,7 @@ export class NoNameFacetValue {
 
     this.toggleSelectedClass();
     this.addFocusAndBlurEventListeners();
+    this.addClickEventListeners();
   }
 
   private createContainer() {
@@ -83,6 +86,11 @@ export class NoNameFacetValue {
     $$(this.checkboxElement).on('blur', () => $$(this.element).removeClass('coveo-focused'));
   }
 
+  private addClickEventListeners() {
+    $$(this.element).on('click', this.selectAction);
+    $$(this.checkboxElement).on('keydown', KeyboardUtils.keypressAction([KEYBOARD.SPACEBAR, KEYBOARD.ENTER], this.selectAction));
+  }
+
   private get count() {
     return NoNameFacetValueUtils.getFormattedCount(this.facetValue.numberOfResults);
   }
@@ -97,4 +105,12 @@ export class NoNameFacetValue {
 
     return `${l(selectOrUnselect, this.caption, resultCount)}`;
   }
+
+  private selectAction = (event: Event) => {
+    this.facetValue.selected = !this.facetValue.selected;
+    this.toggleSelectedClass();
+    this.facet.triggerNewQuery();
+
+    event.preventDefault();
+  };
 }

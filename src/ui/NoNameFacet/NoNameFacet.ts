@@ -40,7 +40,10 @@ export class NoNameFacet extends Component {
     // TODO: Add mock values to the facet
     this.values.updateValues([
       { value: 'test 1', selected: true, numberOfResults: 847324 },
-      { value: 'test 2', selected: false, numberOfResults: 1 }
+      { value: 'test 2', selected: true, numberOfResults: 1 },
+      { value: 'test 3', selected: false, numberOfResults: 13 },
+      { value: 'test 4', selected: false, numberOfResults: 13134 },
+      { value: 'test 5', selected: false, numberOfResults: 2223 }
     ]);
   }
 
@@ -49,8 +52,10 @@ export class NoNameFacet extends Component {
   }
 
   private createValues() {
-    return new NoNameFacetValues(this.options);
+    return new NoNameFacetValues(this.options, this);
   }
+
+  public triggerNewQuery() {}
 }
 
 Initialization.registerAutoCreateComponent(NoNameFacet);
