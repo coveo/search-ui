@@ -6,8 +6,10 @@ import { ResponsiveFacets } from '../ResponsiveComponents/ResponsiveFacets';
 import { ResponsiveFacetOptions } from '../ResponsiveComponents/ResponsiveFacetOptions';
 import { exportGlobally } from '../../GlobalExports';
 import { NoNameFacetHeader } from './NoNameFacetHeader/NoNameFacetHeader';
-import { NoNameFacetValues } from './NoNameFacetValues/NoNameFacetValues';
+import { NoNameFacetValuesList } from './NoNameFacetValues/NoNameFacetValuesList';
 import { NoNameFacetOptions, INoNameFacetOptions } from './NoNameFacetOptions';
+import { NoNameFacetValues } from './NoNameFacetValues/NoNameFacetValues';
+import { INoNameFacetValue } from './NoNameFacetValues/NoNameFacetValue';
 
 export class NoNameFacet extends Component {
   static ID = 'NoNameFacet';
@@ -15,47 +17,79 @@ export class NoNameFacet extends Component {
   static options: INoNameFacetOptions = { ...NoNameFacetOptions, ...ResponsiveFacetOptions };
 
   private header: NoNameFacetHeader;
+  private valuesList: NoNameFacetValuesList;
   private values: NoNameFacetValues;
 
   constructor(public element: HTMLElement, public options?: INoNameFacetOptions, bindings?: IComponentBindings) {
     super(element, NoNameFacet.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, NoNameFacet, options);
 
-    ResponsiveFacets.init(this.root, this, this.options);
+    this.values = new NoNameFacetValues();
+    // TODO: get mock values from somewhere
+    this.values.createFromResults([
+      { value: 'test 1', selected: true, numberOfResults: 847324 },
+      { value: 'test 2', selected: false, numberOfResults: 1 },
+      { value: 'test 3', selected: false, numberOfResults: 13 },
+      { value: 'test 4', selected: false, numberOfResults: 13134 },
+      { value: 'test 5', selected: false, numberOfResults: 2223 }
+    ] as INoNameFacetValue[]);
 
+    ResponsiveFacets.init(this.root, this, this.options);
     this.ensureDom();
   }
 
   public createDom() {
     this.createContent();
+    this.updateAppearanceDependingOnState();
   }
 
   private createContent() {
     this.header = this.createHeader();
     this.element.appendChild(this.header.element);
 
-    this.values = this.createValues();
-    this.element.appendChild(this.values.element);
-
-    // TODO: Add mock values to the facet
-    this.values.updateValues([
-      { value: 'test 1', selected: true, numberOfResults: 847324 },
-      { value: 'test 2', selected: true, numberOfResults: 1 },
-      { value: 'test 3', selected: false, numberOfResults: 13 },
-      { value: 'test 4', selected: false, numberOfResults: 13134 },
-      { value: 'test 5', selected: false, numberOfResults: 2223 }
-    ]);
+    this.valuesList = this.createValues();
+    this.valuesList.renderValues(this.values.getAll());
+    this.element.appendChild(this.valuesList.element);
   }
 
   private createHeader() {
-    return new NoNameFacetHeader(this.options);
+    return new NoNameFacetHeader(this);
   }
 
   private createValues() {
-    return new NoNameFacetValues(this.options, this);
+    return new NoNameFacetValuesList(this);
   }
 
-  public triggerNewQuery() {}
+  private updateAppearanceDependingOnState() {
+    this.header.toggleClear(this.values.hasSelectedValues());
+    // TODO: toggle facet's visibility
+  }
+
+  public clearAllValues() {
+    this.values.clearAll();
+    this.valuesList.renderValues(this.values.getAll());
+
+    this.triggerNewQuery();
+  }
+
+  public triggerNewQuery() {
+    this.beforeSendingQuery();
+
+    // TODO: get mock values from somewhere
+    setTimeout(() => this.onQueryResponse([]), 3000);
+  }
+
+  private beforeSendingQuery() {
+    this.header.showLoading();
+    this.updateAppearanceDependingOnState();
+  }
+
+  private onQueryResponse(values: INoNameFacetValue[]) {
+    this.header.hideLoading();
+    this.values.createFromResults(values);
+    this.valuesList.renderValues(this.values.getAll());
+    this.updateAppearanceDependingOnState();
+  }
 }
 
 Initialization.registerAutoCreateComponent(NoNameFacet);

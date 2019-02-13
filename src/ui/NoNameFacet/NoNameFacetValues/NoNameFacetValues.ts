@@ -1,22 +1,22 @@
-import { $$, Dom } from '../../../utils/Dom';
-import { INoNameFacetOptions } from '../NoNameFacetOptions';
-import { NoNameFacet } from '../NoNameFacet';
+import { findWhere } from 'underscore';
 import { NoNameFacetValue, INoNameFacetValue } from './NoNameFacetValue';
 
 export class NoNameFacetValues {
-  private list: Dom;
-  public element: HTMLElement;
+  private values: NoNameFacetValue[] = [];
 
-  constructor(private options: INoNameFacetOptions, private facet: NoNameFacet) {
-    this.list = $$('ul', { className: 'coveo-facet-values' });
-    this.element = this.list.el;
+  public createFromResults(values: INoNameFacetValue[]) {
+    this.values = values.map(value => new NoNameFacetValue(value));
   }
 
-  public updateValues(facetValues: INoNameFacetValue[]) {
-    this.list.empty();
+  public getAll() {
+    return this.values;
+  }
 
-    facetValues.forEach(facetValue => {
-      this.list.append(new NoNameFacetValue(this.options, facetValue, this.facet).element);
-    });
+  public hasSelectedValues() {
+    return !!findWhere(this.values, { selected: true });
+  }
+
+  public clearAll() {
+    this.values.forEach(value => (value.selected = false));
   }
 }
