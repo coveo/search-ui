@@ -197,7 +197,7 @@ export class FacetSearchElement {
   private handleFacetSearchFocus() {
     if (this.facetSearch.currentlyDisplayedResults == null) {
       this.facetSearch.displayNewValues();
-      this.toggleAriaAttributes(true);
+      this.addAriaAttributes();
     }
   }
 
@@ -225,7 +225,7 @@ export class FacetSearchElement {
   }
 
   public hideSearchResultsElement() {
-    this.toggleAriaAttributes(false);
+    this.removeAriaAttributes();
     $$(this.searchResults).hide();
     $$(this.searchResults).remove();
   }
@@ -280,13 +280,24 @@ export class FacetSearchElement {
     }
   }
 
-  private toggleAriaAttributes(enable: boolean) {
+  private addAriaAttributes() {
     if (!this.input || !this.combobox) {
       return;
     }
 
-    $$(this.combobox).setAttribute('role', enable ? 'combobox' : '');
-    $$(this.combobox).setAttribute('aria-owns', enable ? this.facetSearchId : '');
-    $$(this.input).setAttribute('aria-controls', enable ? this.facetSearchId : '');
+    this.combobox.setAttribute('role', 'combobox');
+    this.combobox.setAttribute('aria-owns', this.facetSearchId);
+    this.input.setAttribute('aria-controls', this.facetSearchId);
+  }
+
+  private removeAriaAttributes() {
+    if (!this.input || !this.combobox) {
+      return;
+    }
+
+    this.combobox.removeAttribute('role');
+    this.combobox.removeAttribute('aria-owns');
+    this.input.removeAttribute('aria-controls');
+    this.input.removeAttribute('aria-activedescendant');
   }
 }
