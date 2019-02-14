@@ -7,7 +7,7 @@ import { EventsUtils } from '../../utils/EventsUtils';
 import { PopupUtils, PopupHorizontalAlignment, PopupVerticalAlignment } from '../../utils/PopupUtils';
 import { IFacetSearch } from './IFacetSearch';
 import { FacetSearchUserInputHandler } from './FacetSearchUserInputHandler';
-import { first, last } from 'underscore';
+import { first, last, uniqueId } from 'underscore';
 
 export class FacetSearchElement {
   public search: HTMLElement | undefined;
@@ -15,6 +15,7 @@ export class FacetSearchElement {
   public wait: HTMLElement | undefined;
   public clear: HTMLElement | undefined;
   public input: HTMLInputElement | undefined;
+  public combobox: HTMLElement | undefined;
   public searchBarIsAnimating: boolean = false;
   public searchResults: HTMLElement;
   public currentResult: Dom;
@@ -22,10 +23,11 @@ export class FacetSearchElement {
 
   private triggeredScroll = false;
   private static FACET_SEARCH_PADDING = 40;
+  private facetSearchId = uniqueId('coveo-facet-search-results');
 
   constructor(private facetSearch: IFacetSearch) {
     this.facetSearchUserInputHandler = new FacetSearchUserInputHandler(this.facetSearch);
-    this.searchResults = $$('ul', { className: 'coveo-facet-search-results' }).el;
+    this.searchResults = $$('ul', { id: this.facetSearchId, className: 'coveo-facet-search-results', role: 'listbox' }).el;
     $$(this.searchResults).on('scroll', () => this.handleScrollEvent());
     $$(this.searchResults).hide();
   }
@@ -51,12 +53,12 @@ export class FacetSearchElement {
     this.clear.style.display = 'none';
     this.search.appendChild(this.clear);
 
-    const middle = this.buildCombobox();
-    this.search.appendChild(middle);
+    this.combobox = this.buildCombobox();
+    this.search.appendChild(this.combobox);
 
     this.input = this.buildInputElement();
     Component.pointElementsToDummyForm(this.input);
-    middle.appendChild(this.input);
+    this.combobox.appendChild(this.input);
 
     $$(this.input).on('keyup', (e: KeyboardEvent) => {
       this.facetSearchUserInputHandler.handleKeyboardEvent(e);
@@ -75,7 +77,6 @@ export class FacetSearchElement {
   private buildCombobox() {
     return $$('div', {
       className: 'coveo-facet-search-middle',
-      role: 'combobox',
       ariaHaspopup: 'listbox',
       ariaExpanded: 'true'
     }).el;
@@ -196,6 +197,7 @@ export class FacetSearchElement {
   private handleFacetSearchFocus() {
     if (this.facetSearch.currentlyDisplayedResults == null) {
       this.facetSearch.displayNewValues();
+      this.addAriaAttributes();
     }
   }
 
@@ -223,6 +225,7 @@ export class FacetSearchElement {
   }
 
   public hideSearchResultsElement() {
+    this.removeAriaAttributes();
     $$(this.searchResults).hide();
     $$(this.searchResults).remove();
   }
@@ -275,5 +278,26 @@ export class FacetSearchElement {
     } else {
       this.facetSearchUserInputHandler.handleFacetSearchResultsScroll();
     }
+  }
+
+  private addAriaAttributes() {
+    if (!this.input || !this.combobox) {
+      return;
+    }
+
+    this.combobox.setAttribute('role', 'combobox');
+    this.combobox.setAttribute('aria-owns', this.facetSearchId);
+    this.input.setAttribute('aria-controls', this.facetSearchId);
+  }
+
+  private removeAriaAttributes() {
+    if (!this.input || !this.combobox) {
+      return;
+    }
+
+    this.combobox.removeAttribute('role');
+    this.combobox.removeAttribute('aria-owns');
+    this.input.removeAttribute('aria-controls');
+    this.input.removeAttribute('aria-activedescendant');
   }
 }
