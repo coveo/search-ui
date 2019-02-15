@@ -19,4 +19,8 @@ export class NoNameFacetValues {
   public clearAll() {
     this.values.forEach(value => (value.selected = false));
   }
+
+  public isEmpty() {
+    return !this.values.length;
+  }
 }

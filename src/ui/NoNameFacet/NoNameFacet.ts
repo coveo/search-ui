@@ -1,3 +1,4 @@
+import { $$ } from '../../utils/Dom';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { ComponentOptions } from '../Base/ComponentOptions';
@@ -24,6 +25,10 @@ export class NoNameFacet extends Component {
     super(element, NoNameFacet.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, NoNameFacet, options);
 
+    this.initQueryEvents();
+    this.initQueryStateEvents();
+    this.initComponentStateEvents();
+
     this.values = new NoNameFacetValues();
     // TODO: get mock values from somewhere
     this.values.createFromResults([
@@ -42,6 +47,12 @@ export class NoNameFacet extends Component {
     this.createContent();
     this.updateAppearanceDependingOnState();
   }
+
+  private initQueryEvents() {}
+
+  private initQueryStateEvents() {}
+
+  private initComponentStateEvents() {}
 
   private createContent() {
     this.header = this.createHeader();
@@ -62,7 +73,8 @@ export class NoNameFacet extends Component {
 
   private updateAppearanceDependingOnState() {
     this.header.toggleClear(this.values.hasSelectedValues());
-    // TODO: toggle facet's visibility
+    $$(this.element).toggleClass('coveo-active', this.values.hasSelectedValues());
+    $$(this.element).toggleClass('coveo-facet-empty', this.values.isEmpty());
   }
 
   public clearAllValues() {
@@ -76,7 +88,7 @@ export class NoNameFacet extends Component {
     this.beforeSendingQuery();
 
     // TODO: get mock values from somewhere
-    setTimeout(() => this.onQueryResponse([]), 3000);
+    this.onQueryResponse(this.values.getAll());
   }
 
   private beforeSendingQuery() {
