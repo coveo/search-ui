@@ -101,7 +101,7 @@ export class NoNameFacetValueElement {
   }
 
   private selectAction = () => {
-    this.facetValue.toggleSelection();
+    this.facet.toggleSelectValue(this.facetValue.value);
     this.toggleSelectedClass();
 
     this.facet.triggerNewQuery();

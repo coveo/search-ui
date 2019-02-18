@@ -146,4 +146,8 @@ export interface IQueryResults {
   refinedKeywords?: string[];
   _folded: boolean;
   _reusedSearchUid?: boolean;
+  /**
+   * TODO: add definition here
+   */
+  facets?: any;
 }

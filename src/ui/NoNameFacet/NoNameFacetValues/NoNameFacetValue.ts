@@ -10,13 +10,20 @@ export class NoNameFacetValue implements INoNameFacetValue {
   public numberOfResults: number;
 
   constructor({ value, selected, numberOfResults }: INoNameFacetValue) {
-    // TODO: add asserts
     this.value = value;
     this.selected = selected;
     this.numberOfResults = numberOfResults;
   }
 
-  public toggleSelection() {
+  public toggleSelect() {
     this.selected = !this.selected;
+  }
+
+  public select() {
+    this.selected = true;
+  }
+
+  public deselect() {
+    this.selected = false;
   }
 }

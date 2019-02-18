@@ -45,11 +45,16 @@ export class NoNameFacetHeader {
       iconSVG: SVGIcons.icons.mainClear,
       iconClassName: 'coveo-facet-header-eraser-svg',
       shouldDisplay: false,
-      action: () => this.facet.clearAllValues()
+      action: this.clearAction
     });
 
     return this.clearButton.element;
   }
+
+  private clearAction = () => {
+    this.facet.reset();
+    this.facet.triggerNewQuery();
+  };
 
   private createCollapseToggle() {
     this.collapseToggle = new NoNameFacetHeaderCollapseToggle({ collapsed: this.facet.options.collapsedByDefault });

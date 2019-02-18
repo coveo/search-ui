@@ -4,15 +4,27 @@ import { l } from '../../strings/Strings';
 import { IStringMap } from '../../rest/GenericParam';
 
 export interface INoNameFacetOptions extends IResponsiveComponentOptions {
+  id?: string;
   title?: string;
   field?: IFieldOption;
-  useAnd?: boolean;
   enableCollapse?: boolean;
   collapsedByDefault?: boolean;
   valueCaption?: any;
 }
 
 export const NoNameFacetOptions = {
+  /**
+   * A unique identifier for the facet. Among other things, this identifier serves the purpose of saving
+   * the facet state in the URL hash.
+   *
+   * If you have two facets with the same field on the same page, you should specify an `id` value for at least one of
+   * those two facets. This `id` must be unique among the facets.
+   *
+   * Default value is the [`field`]{@link NoNameFacet.options.field} option value.
+   */
+  id: ComponentOptions.buildStringOption({
+    postProcessing: (value, options: INoNameFacetOptions) => value || (options.field as string)
+  }),
   /**
    * Specifies the title to display at the top of the facet.
    *
@@ -32,17 +44,6 @@ export const NoNameFacetOptions = {
    * Specifying a value for this option is required for the `NoNameFacet` component to work.
    */
   field: ComponentOptions.buildFieldOption({ required: true, section: 'CommonOptions' }),
-  /**
-   * Specifies whether to use the `AND` operator in the resulting filter when multiple values are selected in the
-   * facet.
-   *
-   * Setting this option to `true` means that items must have all of the selected values to match the resulting
-   * query.
-   *
-   * Default value is `false`, which means that the filter uses the `OR` operator. Thus, by default, items must
-   * have at least one of the selected values to match the query.
-   */
-  useAnd: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'Filtering' }),
   /**
    * Specifies whether to allow the user to toggle between the **Collapse** and **Expand** modes in the facet.
    * Default value is `false`.

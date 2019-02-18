@@ -4,6 +4,10 @@ import { FacetUtils } from '../../Facet/FacetUtils';
 
 export class NoNameFacetValueUtils {
   static getFormattedCount(count: number): string {
+    if (count === 0) {
+      return '';
+    }
+
     return Globalize.format(count, 'n0');
   }
 
