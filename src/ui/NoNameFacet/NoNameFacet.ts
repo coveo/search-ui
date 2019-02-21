@@ -132,7 +132,7 @@ export class NoNameFacet extends Component {
     this.ensureDom();
     this.values.clearAll();
     this.valuesList.renderValues(this.values.allFacetValues);
-    this.updateAppearanceDependingOnState();
+    this.updateAppearance();
     this.updateQueryStateModel();
   }
 
@@ -203,7 +203,7 @@ export class NoNameFacet extends Component {
 
   public createDom() {
     this.createContent();
-    this.updateAppearanceDependingOnState();
+    this.updateAppearance();
   }
 
   private createContent() {
@@ -238,7 +238,7 @@ export class NoNameFacet extends Component {
     this.queryStateModel.set(this.includedAttributeId, selectedValues.included);
   }
 
-  private updateAppearanceDependingOnState() {
+  private updateAppearance() {
     this.header.toggleClear(this.values.hasSelectedValues());
     $$(this.element).toggleClass('coveo-active', this.values.hasSelectedValues());
     $$(this.element).toggleClass('coveo-facet-empty', this.values.isEmpty());
@@ -251,14 +251,14 @@ export class NoNameFacet extends Component {
 
   private beforeSendingQuery() {
     this.header.showLoading();
-    this.updateAppearanceDependingOnState();
+    this.updateAppearance();
   }
 
   private onQueryResponse(values: INoNameFacetValue[]) {
     this.header.hideLoading();
     this.values.createFromResults(values);
     this.valuesList.renderValues(this.values.allFacetValues);
-    this.updateAppearanceDependingOnState();
+    this.updateAppearance();
   }
 
   private notImplementedError() {
