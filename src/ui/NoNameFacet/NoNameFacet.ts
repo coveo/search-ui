@@ -234,8 +234,7 @@ export class NoNameFacet extends Component {
   }
 
   private updateIncludedQueryStateModel() {
-    const selectedValues: IQueryStateIncludedAttribute = { included: this.values.selectedValues, title: this.includedAttributeId };
-    this.queryStateModel.set(this.includedAttributeId, selectedValues.included);
+    this.queryStateModel.set(this.includedAttributeId, this.values.selectedValues);
   }
 
   private updateAppearance() {
