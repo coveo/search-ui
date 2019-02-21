@@ -136,6 +136,19 @@ export function SuggestionsManagerTest() {
       expect(suggestion.getAttribute('aria-selected')).toBe('false');
     });
 
+    it('removes selected class and sets aria-selected to false when moving off a selected element in LockerService', () => {
+      suggestion.addClass(selectedClass);
+      suggestion.setAttribute('aria-selected', 'true');
+
+      suggestionManager.handleMouseOut({
+        target: suggestion.el,
+        relatedTarget: {}
+      });
+
+      expect(suggestion.hasClass(selectedClass)).toBe(false);
+      expect(suggestion.getAttribute('aria-selected')).toBe('false');
+    });
+
     it('removes selected class and sets aria-selected to false when moving off an element that is inside a selected element', () => {
       suggestion.addClass(selectedClass);
       suggestion.setAttribute('aria-selected', 'true');
@@ -143,6 +156,19 @@ export function SuggestionsManagerTest() {
       suggestionManager.handleMouseOut({
         target: elementInsideSuggestion.el,
         relatedTarget: container.el
+      });
+
+      expect(suggestion.hasClass(selectedClass)).toBe(false);
+      expect(suggestion.getAttribute('aria-selected')).toBe('false');
+    });
+
+    it('removes selected class and sets aria-selected to false when moving off an element that is inside a selected element in LockerService', () => {
+      suggestion.addClass(selectedClass);
+      suggestion.setAttribute('aria-selected', 'true');
+
+      suggestionManager.handleMouseOut({
+        target: elementInsideSuggestion.el,
+        relatedTarget: {}
       });
 
       expect(suggestion.hasClass(selectedClass)).toBe(false);
