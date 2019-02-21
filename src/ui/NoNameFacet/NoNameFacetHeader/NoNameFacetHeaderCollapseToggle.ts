@@ -16,7 +16,7 @@ export class NoNameFacetHeaderCollapseToggle {
     this.create();
   }
 
-  public create() {
+  private create() {
     const parent = $$('div');
 
     this.collapseButton = new NoNameFacetHeaderButton({
