@@ -13,7 +13,7 @@ import { INoNameFacetValue } from './NoNameFacetValues/NoNameFacetValue';
 import { NoNameFacetValues } from './NoNameFacetValues/NoNameFacetValues';
 import { NoNameFacetValuesList } from './NoNameFacetValues/NoNameFacetValuesList';
 import { QueryEvents, IQuerySuccessEventArgs, IDoneBuildingQueryEventArgs } from '../../events/QueryEvents';
-import { QueryStateModel, IQueryStateIncludedAttribute } from '../../models/QueryStateModel';
+import { QueryStateModel } from '../../models/QueryStateModel';
 import { Utils } from '../../utils/Utils';
 import { MODEL_EVENTS, IAttributesChangedEventArg } from '../../models/Model';
 import { Assert } from '../../misc/Assert';
