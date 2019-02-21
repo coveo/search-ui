@@ -45,16 +45,16 @@ export class NoNameFacetHeader {
       iconSVG: SVGIcons.icons.mainClear,
       iconClassName: 'coveo-facet-header-eraser-svg',
       shouldDisplay: false,
-      action: this.clearAction
+      action: () => this.clear()
     });
 
     return this.clearButton.element;
   }
 
-  private clearAction = () => {
+  private clear() {
     this.facet.reset();
     this.facet.triggerNewQuery();
-  };
+  }
 
   private createCollapseToggle() {
     this.collapseToggle = new NoNameFacetHeaderCollapseToggle({ collapsed: this.facet.options.collapsedByDefault });
@@ -78,20 +78,20 @@ export class NoNameFacetHeader {
     return this.waitAnimation.el;
   }
 
-  public toggleClear = (visible: boolean) => {
+  public toggleClear(visible: boolean) {
     this.clearButton.toggle(visible);
-  };
+  }
 
-  public showLoading = () => {
+  public showLoading() {
     clearTimeout(this.showLoadingTimeout);
     this.showLoadingTimeout = window.setTimeout(
       () => (this.waitAnimation.el.style.visibility = 'visible'),
       NoNameFacetHeader.showLoadingDelay
     );
-  };
+  }
 
-  public hideLoading = () => {
+  public hideLoading() {
     clearTimeout(this.showLoadingTimeout);
     this.waitAnimation.el.style.visibility = 'hidden';
-  };
+  }
 }

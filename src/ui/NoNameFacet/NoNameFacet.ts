@@ -138,8 +138,8 @@ export class NoNameFacet extends Component {
 
   private initQueryEvents() {
     this.bind.onRootElement(QueryEvents.duringQuery, () => this.ensureDom());
-    this.bind.onRootElement(QueryEvents.doneBuildingQuery, this.handleDoneBuildingQuery);
-    this.bind.onRootElement(QueryEvents.querySuccess, this.handleQuerySuccess);
+    this.bind.onRootElement(QueryEvents.doneBuildingQuery, (data: IDoneBuildingQueryEventArgs) => this.handleDoneBuildingQuery(data));
+    this.bind.onRootElement(QueryEvents.querySuccess, (data: IQuerySuccessEventArgs) => this.handleQuerySuccess(data));
     this.bind.onRootElement(QueryEvents.queryError, () => this.onQueryResponse([]));
   }
 
@@ -149,7 +149,7 @@ export class NoNameFacet extends Component {
     this.bind.onQueryState(MODEL_EVENTS.CHANGE, undefined, this.handleQueryStateChanged);
   }
 
-  private handleDoneBuildingQuery = (data: IDoneBuildingQueryEventArgs) => {
+  private handleDoneBuildingQuery(data: IDoneBuildingQueryEventArgs) {
     // TODO: add facets attribute to the query here
     // TODO: remove update of the mock
     if (!this.mockedSavedValues) {
@@ -164,9 +164,9 @@ export class NoNameFacet extends Component {
     }
 
     this.mockedSavedValues = this.values.allFacetValues;
-  };
+  }
 
-  private handleQuerySuccess = (data: IQuerySuccessEventArgs) => {
+  private handleQuerySuccess(data: IQuerySuccessEventArgs) {
     // TODO: mock response elsewhere
     data.results.facets = this.mockedSavedValues;
 
@@ -175,7 +175,7 @@ export class NoNameFacet extends Component {
     }
 
     this.onQueryResponse(data.results.facets);
-  };
+  }
 
   private handleQueryStateChanged(data: IAttributesChangedEventArg) {
     if (!this.listenToQueryStateChange) {

@@ -25,7 +25,7 @@ export class NoNameFacetHeaderCollapseToggle {
       iconSVG: SVGIcons.icons.facetCollapse,
       iconClassName: 'coveo-facet-settings-section-hide-svg',
       shouldDisplay: true,
-      action: this.collapse
+      action: () => this.collapse()
     });
     this.expandButton = new NoNameFacetHeaderButton({
       label: l('Expand'),
@@ -33,7 +33,7 @@ export class NoNameFacetHeaderCollapseToggle {
       iconSVG: SVGIcons.icons.facetExpand,
       iconClassName: 'coveo-facet-settings-section-show-svg',
       shouldDisplay: true,
-      action: this.expand
+      action: () => this.expand()
     });
 
     parent.append(this.collapseButton.element);
@@ -48,13 +48,13 @@ export class NoNameFacetHeaderCollapseToggle {
     this.expandButton.toggle(collapsed);
   };
 
-  private collapse = () => {
+  private collapse() {
     this.toggle(true);
     // TODO: collapse facet
-  };
+  }
 
-  private expand = () => {
+  private expand() {
     this.toggle(false);
     // TODO: expand facet
-  };
+  }
 }
