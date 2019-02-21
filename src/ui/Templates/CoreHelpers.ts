@@ -94,6 +94,13 @@ export interface ICoreHelpers {
    * - `termsToHighlight`: The terms to highlight (see {@link IHighlightTerm})
    * - `phraseToHighlight`: The phrases to highlight (see {@link IHighlightPhrase})
    * - `options`: Optional. The options defined below as {@link IStreamHighlightOptions}
+   *
+   * **Note:**
+   * > `highlightStreamText` should only be used for very particular/specific use cases (e.g., augmenting the result template with additional information rather than the typical excerpt/title), and is not a proper replacement for actually having the correct title and excerpt on your results.
+   * >
+   * > Using incorrect result titles or excerpts on your search interface also causes relevancy to suffer greatly, as the index uses the title and excerpt to find relevant results. Consequently, end users are more likely to see results whose titles do not match their query.
+   * >
+   * > Moreover, the recommended method to implement simple title and/or excerpt highlighting is to simply use the {@link Excerpt} and {@link ResultLink} components.
    */
   highlightStreamText: (
     content: string,
@@ -110,6 +117,13 @@ export interface ICoreHelpers {
    * - `termsToHighlight`: The terms to highlight (see {@link IHighlightTerm})
    * - `phraseToHighlight`: The phrases to highlight (see {@link IHighlightPhrase})
    * - `options`: Optional. The options defined below as {@link IStreamHighlightOptions}
+   *
+   * **Note:**
+   * > `highlightStreamHTML` should only be used for very particular/specific use cases (e.g., augmenting the result template with additional information rather than the typical excerpt/title), and is not a proper replacement for actually having the correct title and excerpt on your results.
+   * >
+   * > Using incorrect result titles or excerpts on your search interface also causes relevancy to suffer greatly, as the index uses the title and excerpt to find relevant results. Consequently, end users are more likely to see results whose titles do not match their query.
+   * >
+   * > Moreover, the recommended method to implement simple title and/or excerpt highlighting is to simply use the {@link Excerpt} and {@link ResultLink} components.
    */
   highlightStreamHTML: (
     content: string,

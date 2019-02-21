@@ -22,36 +22,27 @@ export interface IFacetRangeOptions extends IFacetOptions {
   dateField?: boolean;
 }
 /**
- * The FacetRange component displays a {@link Facet} whose values are expressed as ranges. These ranges are computed
- * from the results of the current query.
+ * A `FacetRange` is a [facet](https://docs.coveo.com/en/198/) whose values are expressed as ranges.
  *
- * This component inherits from the Facet component. This implies that you must specify a valid
- * [field]{@link Facet.options.field} value for this component to work.
+ * You must set the [`field`]{@link Facet.options.field} option to a value targeting a numeric or date [field](https://docs.coveo.com/en/200/) in your index for this component to work.
  *
- * Most of the options available for a Facet component are also available for a FacetRange component. There are some
- * exceptions, however.
+ * This component extends the [`Facet`]{@link Facet} component and supports all `Facet` options except:
  *
- * Here is the list of Facet options which the FacetRange component does not support.
- * - The **Settings** menu options:
- *   - [enableSettings]{@link Facet.options.enableSettings}
- *   - [enableSettingsFacetState]{@link Facet.options.enableSettingsFacetState}
- *   - [enableCollapse]{@link Facet.options.enableCollapse}
- *   - [availableSorts]{@link Facet.options.availableSorts}
- *   - [customSort]{@link Facet.options.customSort}
- *   - [computedFieldCaption]{@link Facet.options.computedFieldCaption}
- * - The **Facet Search** options:
- *   - [enableFacetSearch]{@link Facet.options.enableFacetSearch}
- *   - [facetSearchDelay]{@link Facet.options.facetSearchDelay}
- *   - [facetSearchIgnoreAccents]{@link Facet.options.facetSearchIgnoreAccents}
- *   - [numberOfValuesInFacetSearch]{@link Facet.options.numberOfValuesInFacetSearch}
- * - The **More and Less** options:
- *   - [enableMoreLess]{@link Facet.options.enableMoreLess}
- *   - [pageSize]{@link Facet.options.pageSize}
- *
- *
- *  Moreover, while the [numberOfValues]{@link Facet.options.numberOfValues} option still allows you to specify the
- *  maximum number of values to display in a FacetRange component, it is not possible for the end to display additional
- *  values, since the component does not support the **More** button.
+ * - **Settings** menu options
+ *   - [`enableSettings`]{@link Facet.options.enableSettings}
+ *   - [`enableSettingsFacetState`]{@link Facet.options.enableSettingsFacetState}
+ *   - [`enableCollapse`]{@link Facet.options.enableCollapse}
+ *   - [`availableSorts`]{@link Facet.options.availableSorts}
+ *   - [`customSort`]{@link Facet.options.customSort}
+ *   - [`computedFieldCaption`]{@link Facet.options.computedFieldCaption}
+ * - **Facet Search** options
+ *   - [`enableFacetSearch`]{@link Facet.options.enableFacetSearch}
+ *   - [`facetSearchDelay`]{@link Facet.options.facetSearchDelay}
+ *   - [`facetSearchIgnoreAccents`]{@link Facet.options.facetSearchIgnoreAccents}
+ *   - [`numberOfValuesInFacetSearch`]{@link Facet.options.numberOfValuesInFacetSearch}
+ * - **More and Less** options
+ *   - [`enableMoreLess`]{@link Facet.options.enableMoreLess}
+ *   - [`pageSize`]{@link Facet.options.pageSize}
  *
  *  @notSupportedIn salesforcefree
  */
@@ -71,63 +62,21 @@ export class FacetRange extends Facet implements IComponentBindings {
    */
   static options: IFacetRangeOptions = {
     /**
-     * Specifies whether the field for which you require ranges is a date field.
+     * Whether the specified [`field`]{@link Facet.options.field} option value targets a date field in your index.
      *
-     * This allows the component to correctly build the outgoing {@link IGroupByRequest}.
+     * This allows the component to correctly build the outgoing [Group By](https://docs.coveo.com/en/203/).
      *
-     * Default value is `false`.
+     * **Default:** `false`.
      */
     dateField: ComponentOptions.buildBooleanOption({ defaultValue: false }),
 
     /**
-     * Specifies an array of {@link IRangeValue} to use as Facet values.
+     * The list of [range values]{@link IRangeValue} to request (see [Requesting Specific FacetRange Values](https://docs.coveo.com/en/2790/)).
      *
-     *
-     * **Examples:**
-     *
-     * You can set the option in the ['init']{@link init} call:
-     * ```javascript
-     * var myRanges = [
-     *   {
-     *      start: 0,
-     *      end: 100,
-     *      label: "0 - 100",
-     *      endInclusive: false
-     *    },
-     *    {
-     *      start: 100,
-     *      end: 200,
-     *      label: "100 - 200",
-     *      endInclusive: false
-     *    },
-     *    {
-     *      start: 200,
-     *      end: 300,
-     *      label: "200 - 300",
-     *      endInclusive: false
-     *    }
-     * ]
-     *
-     * Coveo.init(document.querySelector('#search'), {
-     *    FacetRange : {
-     *        ranges : myRanges
-     *    }
-     * })
-     * ```
-     *
-     * Or directly in the markup:
-     * ```html
-     * <!-- Ensure that the double quotes are properly handled in data-ranges. -->
-     * <div class='CoveoFacetRange' data-field='@myotherfield' data-ranges='[{"start": 0, "end": 100, "label": "0 - 100", "endInclusive": false}, {"start": 100, "end": 200, "label": "100 - 200", "endInclusive": false}]'></div>
-     * ```
+     * By default, the index automatically generates range values.
      *
      * **Note:**
-     * > Ranges can overlap.
-     *
-     * By default, the index automatically generates the ranges. However, the index cannot automatically generate the
-     * ranges if the [field]{@link Facet.options.field} you specify for the FacetRange component is generated by a query
-     * function (see [Query Function](https://developers.coveo.com/x/XQCq)). When this is the case, you must specify the
-     * ranges at query time.
+     * > The index cannot automatically generate range values for a `FacetRange` whose [`field`]{@link Facet.options.field} option value references a dynamic field generated by a [query function](https://docs.coveo.com/en/232/). In such a case, you _must_ use the `ranges` option.
      */
     ranges: ComponentOptions.buildJsonOption<IRangeValue[]>(),
     ...ResponsiveFacetOptions
@@ -136,11 +85,10 @@ export class FacetRange extends Facet implements IComponentBindings {
   public options: IFacetRangeOptions;
 
   /**
-   * Creates a new FacetRange component.
-   * @param element The HTMLElement on which to instantiate the component.
-   * @param options The options for the FacetRange component.
-   * @param bindings The bindings that the component requires to function normally. If not set, these will be
-   * automatically resolved (with a slower execution time).
+   * Creates a new `FacetRange`.
+   * @param element The HTML element on which to instantiate the component.
+   * @param options The configuration options to apply when creating the component.
+   * @param bindings The bindings required by the component.
    */
   constructor(public element: HTMLElement, options: IFacetRangeOptions, bindings?: IComponentBindings) {
     super(element, ComponentOptions.initComponentOptions(element, FacetRange, options), bindings, FacetRange.ID);

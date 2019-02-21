@@ -101,12 +101,10 @@ export class Pager extends Component {
     })
   };
 
-  /**
-   * The current page (1-based index).
-   */
-  public currentPage: number;
   private listenToQueryStateChange = true;
   private ignoreNextQuerySuccess = false;
+
+  private _currentPage: number;
 
   // The normal behavior of this component is to reset to page 1 when a new
   // query is performed by other components (i.e. not pagers).
@@ -147,6 +145,27 @@ export class Pager extends Component {
   }
 
   /**
+   * The current page (1-based index).
+   */
+  public get currentPage(): number {
+    return this._currentPage;
+  }
+
+  public set currentPage(value: number) {
+    let sanitizedValue = value;
+
+    if (isNaN(value)) {
+      this.logger.warn(`Unable to set pager current page to an invalid value: ${value}. Resetting to 1.`);
+      sanitizedValue = 1;
+    }
+
+    sanitizedValue = Math.max(Math.min(sanitizedValue, this.getMaxNumberOfPagesForCurrentResultsPerPage()), 1);
+    sanitizedValue = Math.floor(sanitizedValue);
+
+    this._currentPage = sanitizedValue;
+  }
+
+  /**
    * Sets the current page, then executes a query.
    *
    * Also logs an event in the usage analytics (`pageNumber` by default) with the new current page number as meta data.
@@ -156,7 +175,7 @@ export class Pager extends Component {
    */
   public setPage(pageNumber: number, analyticCause: IAnalyticsActionCause = analyticsActionCauseList.pagerNumber) {
     Assert.exists(pageNumber);
-    this.currentPage = Math.max(Math.min(pageNumber, this.getMaxNumberOfPagesForCurrentResultsPerPage()), 1);
+    this.currentPage = pageNumber;
     this.updateQueryStateModel(this.getFirstResultNumber(this.currentPage));
     this.usageAnalytics.logCustomEvent<IAnalyticsPagerMeta>(analyticCause, { pagerNumber: this.currentPage }, this.element);
     this.queryController.executeQuery({

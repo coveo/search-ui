@@ -109,9 +109,9 @@ export interface IFacetOptions extends IResponsiveComponentOptions {
  * This is probably the most complex component in the Coveo JavaScript Search Framework and as such, it allows for many
  * configuration options.
  *
- * See also the [`FacetRange`]{@link FacetRange} and [`HierarchicalFacet`]{@link HierarchicalFacet} components (which
- * extend this component), and the [`FacetSlider`]{@link FacetSlider} component (which does not properly extend this
- * component, but is very similar).
+ * See also the [`FacetRange`]{@link FacetRange} and [`TimespanFacet`]{@link TimespanFacet} components (which
+ * extend this component), and the [`FacetSlider`]{@link FacetSlider} and [`CategoryFacet`]{@link CategoryFacet} components (which do not extend this
+ * component, but are very similar).
  */
 export class Facet extends Component {
   static ID = 'Facet';
