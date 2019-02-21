@@ -261,7 +261,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
      * **Note:**
      * > Using value captions will disable alphabetical sorts (see the [availableSorts]{@link Facet.options.availableSorts} option).
      */
-    valueCaption: ComponentOptions.buildJsonOption<IStringMap<string>>(),
+    valueCaption: ComponentOptions.buildJsonOption<IStringMap<string>>({ defaultValue: {} }),
     ...ResponsiveFacetOptions
   };
 
@@ -296,7 +296,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     this.currentPage = 0;
     this.numberOfValues = this.options.numberOfValues;
 
-    if (this.options.enableFacetSearch) {
+    if (this.isFacetSearchAvailable) {
       this.categoryFacetSearch = new CategoryFacetSearch(this);
     }
 
@@ -342,6 +342,23 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     );
   }
 
+  private get isFacetSearchAvailable() {
+    if (this.areValueCaptionsSpecified) {
+      return false;
+    }
+
+    if (!this.options.enableFacetSearch) {
+      return false;
+    }
+
+    return true;
+  }
+
+  private get areValueCaptionsSpecified() {
+    const valueCaptions = this.options.valueCaption;
+    return Object.keys(valueCaptions).length !== 0;
+  }
+
   private handleNoResults() {
     if (this.isPristine()) {
       this.hide();
@@ -384,7 +401,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     }
 
     this.renderValues(categoryFacetResult, numberOfRequestedValues);
-    if (this.options.enableFacetSearch) {
+    if (this.isFacetSearchAvailable) {
       const facetSearch = this.categoryFacetSearch.build();
       $$(facetSearch).insertAfter(this.categoryValueRoot.listRoot.el);
     }
@@ -745,7 +762,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
 
   private clear() {
     this.categoryValueRoot.clear();
-    if (this.options.enableFacetSearch) {
+    if (this.isFacetSearchAvailable) {
       this.categoryFacetSearch.clear();
     }
     this.moreLessContainer && this.moreLessContainer.detach();
