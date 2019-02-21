@@ -187,8 +187,7 @@ export class NoNameFacet extends Component {
       return;
     }
 
-    const trimmedQuerySelectedValues = querySelectedValues.map(value => value.trim());
-    this.handleQueryStateChangedIncluded(trimmedQuerySelectedValues);
+    this.handleQueryStateChangedIncluded(querySelectedValues);
   }
 
   private handleQueryStateChangedIncluded = (querySelectedValues: string[]) => {
