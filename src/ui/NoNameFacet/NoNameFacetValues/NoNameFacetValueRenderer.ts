@@ -1,25 +1,25 @@
-import { $$ } from '../../../utils/Dom';
+import { $$, Dom } from '../../../utils/Dom';
 import { NoNameFacet } from '../NoNameFacet';
 import { NoNameFacetValueCheckbox } from './NoNameFacetValueCheckbox';
 import { NoNameFacetValue } from './NoNameFacetValue';
-import { NoNameFacetValueUtils } from './NoNameFacetValueUtils';
 import { l } from '../../../strings/Strings';
 import { KeyboardUtils, KEYBOARD } from '../../../utils/KeyboardUtils';
 
-export class NoNameFacetValueElement {
-  public element: HTMLElement;
+export class NoNameFacetValueRenderer {
+  private dom: Dom;
   private labelElement: HTMLElement;
   private labelWrapperElement: HTMLElement;
   private captionElement: HTMLElement;
   private countElement: HTMLElement;
   private checkboxElement: HTMLElement;
 
-  constructor(private facet: NoNameFacet, private facetValue: NoNameFacetValue) {
-    this.create();
-  }
+  constructor(private facetValue: NoNameFacetValue, private facet: NoNameFacet) {}
 
-  private create() {
-    this.createContainer();
+  public render() {
+    this.dom = $$('li', {
+      className: 'coveo-facet-value coveo-facet-selectable',
+      dataValue: this.facetValue.value
+    });
     this.createAndAppendLabel();
     this.createAndAppendLabelWrapper();
     this.createAndAppendCheckbox();
@@ -29,18 +29,13 @@ export class NoNameFacetValueElement {
     this.toggleSelectedClass();
     this.addFocusAndBlurEventListeners();
     this.addClickEventListeners();
-  }
 
-  private createContainer() {
-    this.element = $$('li', {
-      className: 'coveo-facet-value coveo-facet-selectable',
-      dataValue: this.facetValue.value
-    }).el;
+    return this.dom.el;
   }
 
   private createAndAppendLabel() {
     this.labelElement = $$('label', { className: 'coveo-facet-value-label' }).el;
-    this.element.appendChild(this.labelElement);
+    this.dom.append(this.labelElement);
   }
 
   private createAndAppendLabelWrapper() {
@@ -54,50 +49,43 @@ export class NoNameFacetValueElement {
   }
 
   private createAndAppendCount() {
-    this.countElement = $$('span', { className: 'coveo-facet-value-count' }, this.count).el;
+    this.countElement = $$('span', { className: 'coveo-facet-value-count' }, this.facetValue.formattedCount).el;
     this.labelWrapperElement.appendChild(this.countElement);
   }
 
   private createAndAppendCaption() {
+    const caption = this.facetValue.valueCaption;
     this.captionElement = $$(
       'span',
       {
         className: 'coveo-facet-value-caption',
-        title: this.caption,
+        title: caption,
         dataOriginalValue: this.facetValue.value
       },
-      this.caption
+      caption
     ).el;
     this.labelWrapperElement.appendChild(this.captionElement);
   }
 
   private toggleSelectedClass() {
-    $$(this.element).toggleClass('coveo-selected', this.facetValue.selected);
+    this.dom.toggleClass('coveo-selected', this.facetValue.selected);
   }
 
   private addFocusAndBlurEventListeners() {
-    $$(this.checkboxElement).on('focus', () => $$(this.element).addClass('coveo-focused'));
-    $$(this.checkboxElement).on('blur', () => $$(this.element).removeClass('coveo-focused'));
+    $$(this.checkboxElement).on('focus', () => this.dom.addClass('coveo-focused'));
+    $$(this.checkboxElement).on('blur', () => this.dom.removeClass('coveo-focused'));
   }
 
   private addClickEventListeners() {
-    $$(this.element).on('click', this.selectAction);
+    this.dom.on('click', this.selectAction);
     $$(this.checkboxElement).on('keydown', KeyboardUtils.keypressAction([KEYBOARD.SPACEBAR, KEYBOARD.ENTER], this.selectAction));
-  }
-
-  private get count() {
-    return NoNameFacetValueUtils.getFormattedCount(this.facetValue.numberOfResults);
-  }
-
-  private get caption() {
-    return NoNameFacetValueUtils.getValueCaption(this.facetValue.value, this.facet.options);
   }
 
   private get label() {
     const selectOrUnselect = !this.facetValue.selected ? 'SelectValueWithResultCount' : 'UnselectValueWithResultCount';
-    const resultCount = l('ResultCount', this.count);
+    const resultCount = l('ResultCount', this.facetValue.formattedCount);
 
-    return `${l(selectOrUnselect, this.caption, resultCount)}`;
+    return `${l(selectOrUnselect, this.facetValue.valueCaption, resultCount)}`;
   }
 
   private selectAction = () => {

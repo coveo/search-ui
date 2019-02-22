@@ -1,11 +1,16 @@
+import { $$ } from '../../../utils/Dom';
 import { findWhere, find } from 'underscore';
 import { NoNameFacetValue, INoNameFacetValue } from './NoNameFacetValue';
+import { NoNameFacet } from '../NoNameFacet';
 
 export class NoNameFacetValues {
   private facetValues: NoNameFacetValue[] = [];
+  private list = $$('ul', { className: 'coveo-facet-values' });
+
+  constructor(private facet: NoNameFacet) {}
 
   public createFromResults(facetValues: INoNameFacetValue[]) {
-    this.facetValues = facetValues.map(value => new NoNameFacetValue(value));
+    this.facetValues = facetValues.map(value => new NoNameFacetValue(value, this.facet));
   }
 
   public get allFacetValues() {
@@ -57,8 +62,17 @@ export class NoNameFacetValues {
       return facetValue;
     }
 
-    const newFacetValue = new NoNameFacetValue({ value, selected: false, numberOfResults: 0 });
+    const newFacetValue = new NoNameFacetValue({ value, selected: false, numberOfResults: 0 }, this.facet);
     this.facetValues.push(newFacetValue);
     return newFacetValue;
+  }
+
+  public render() {
+    this.list.empty();
+    this.facetValues.forEach(facetValue => {
+      this.list.append(facetValue.render());
+    });
+
+    return this.list.el;
   }
 }

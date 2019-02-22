@@ -11,7 +11,6 @@ import { NoNameFacetHeader } from './NoNameFacetHeader/NoNameFacetHeader';
 import { INoNameFacetOptions, NoNameFacetOptions } from './NoNameFacetOptions';
 import { INoNameFacetValue } from './NoNameFacetValues/NoNameFacetValue';
 import { NoNameFacetValues } from './NoNameFacetValues/NoNameFacetValues';
-import { NoNameFacetValuesList } from './NoNameFacetValues/NoNameFacetValuesList';
 import { QueryEvents, IQuerySuccessEventArgs, IDoneBuildingQueryEventArgs } from '../../events/QueryEvents';
 import { QueryStateModel } from '../../models/QueryStateModel';
 import { Utils } from '../../utils/Utils';
@@ -26,7 +25,6 @@ export class NoNameFacet extends Component {
   private includedAttributeId: string;
   private listenToQueryStateChange = true;
   private header: NoNameFacetHeader;
-  private valuesList: NoNameFacetValuesList;
   private values: NoNameFacetValues;
   // TODO: remove
   private mockedSavedValues: INoNameFacetValue[];
@@ -38,7 +36,7 @@ export class NoNameFacet extends Component {
     this.initQueryEvents();
     this.initQueryStateEvents();
 
-    this.values = new NoNameFacetValues();
+    this.values = new NoNameFacetValues(this);
 
     ResponsiveFacets.init(this.root, this, this.options);
   }
@@ -131,7 +129,7 @@ export class NoNameFacet extends Component {
   public reset() {
     this.ensureDom();
     this.values.clearAll();
-    this.valuesList.renderValues(this.values.allFacetValues);
+    this.values.render();
     this.updateAppearance();
     this.updateQueryStateModel();
   }
@@ -209,18 +207,11 @@ export class NoNameFacet extends Component {
   private createContent() {
     this.header = this.createHeader();
     this.element.appendChild(this.header.element);
-
-    this.valuesList = this.createValues();
-    this.valuesList.renderValues(this.values.allFacetValues);
-    this.element.appendChild(this.valuesList.element);
+    this.element.appendChild(this.values.render());
   }
 
   private createHeader() {
     return new NoNameFacetHeader(this);
-  }
-
-  private createValues() {
-    return new NoNameFacetValuesList(this);
   }
 
   private handleFacetValuesChanged() {
@@ -256,7 +247,7 @@ export class NoNameFacet extends Component {
   private onQueryResponse(values: INoNameFacetValue[]) {
     this.header.hideLoading();
     this.values.createFromResults(values);
-    this.valuesList.renderValues(this.values.allFacetValues);
+    this.values.render();
     this.updateAppearance();
   }
 
