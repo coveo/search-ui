@@ -84,16 +84,29 @@ export function CategoryValueTest() {
       expect(facetValue).toBe(categoryValueDescriptor.value);
     });
 
-    it(`when the categoryFacet #valueCaption option has a key that matches the categoryValueDescriptor #value,
-    it displays the caption instead of the original value`, () => {
+    describe(`when the categoryFacet #valueCaption option has a key that matches the categoryValueDescriptor #value`, () => {
       const caption = 'caption';
-      const valueCaption = { [categoryValueDescriptor.value]: caption };
-      categoryFacetOptions.valueCaption = valueCaption;
-      initCategoryFacet();
 
-      const categoryValue = buildCategoryValue();
-      const facetValue = categoryValue.element.find('.coveo-category-facet-value-caption').textContent;
-      expect(facetValue).toBe(caption);
+      beforeEach(() => {
+        const valueCaption = { [categoryValueDescriptor.value]: caption };
+        categoryFacetOptions.valueCaption = valueCaption;
+        initCategoryFacet();
+      });
+
+      it(`displays the caption instead of the original value`, () => {
+        const categoryValue = buildCategoryValue();
+        const facetValue = categoryValue.element.find('.coveo-category-facet-value-caption').textContent;
+        expect(facetValue).toBe(caption);
+      });
+
+      it(`when the categoryValue is selectable,
+      it adds a label containing the captioned value`, () => {
+        const categoryValue = buildCategoryValue().makeSelectable();
+        const labelElement = categoryValue.element.find('.coveo-category-facet-value-label');
+        const labelAttribute = labelElement.attributes['aria-label'];
+
+        expect(labelAttribute.value).toContain(caption);
+      });
     });
   });
 }

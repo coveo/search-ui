@@ -84,7 +84,7 @@ export class CategoryValue implements CategoryValueParent {
     element.addClass('coveo-selectable');
 
     const countLabel = l('ResultCount', this.categoryValueDescriptor.count.toString());
-    const label = l('SelectValueWithResultCount', this.categoryValueDescriptor.value, countLabel);
+    const label = l('SelectValueWithResultCount', this.captionedValueDescriptorValue, countLabel);
 
     new AccessibleButton()
       .withElement(element)
