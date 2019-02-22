@@ -226,6 +226,8 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
      * Specifies a JSON object describing a mapping of facet values to their desired captions. See
      * [Normalizing Facet Value Captions](https://developers.coveo.com/x/jBsvAg).
      *
+     * If this option is specified, the facet search box will be unavailable.
+     *
      * **Examples:**
      *
      * You can set the option in the ['init']{@link init} call:
