@@ -1,14 +1,14 @@
 import { $$ } from '../../utils/Dom';
 import { SVGDom } from '../../utils/SVGDom';
 import { SVGIcons } from '../../utils/SVGIcons';
-import { CategoryValueDescriptor, ICategoryFacetOptions } from './CategoryFacet';
+import { CategoryValueDescriptor, CategoryFacet } from './CategoryFacet';
 import { AccessibleButton } from '../../utils/AccessibleButton';
 import { l } from '../../strings/Strings';
 import { without } from 'underscore';
 
 export class CategoryFacetBreadcrumb {
   constructor(
-    private categoryFacetOptions: ICategoryFacetOptions,
+    private categoryFacet: CategoryFacet,
     private onClickHandler: (e: MouseEvent) => void,
     private categoryValueDescriptor: CategoryValueDescriptor
   ) {}
@@ -23,10 +23,10 @@ export class CategoryFacetBreadcrumb {
     );
 
     SVGDom.addClassToSVGInContainer(clear.el, 'coveo-facet-breadcrumb-clear-svg');
-    const pathToRender = without(this.categoryValueDescriptor.path, ...this.categoryFacetOptions.basePath);
+    const pathToRender = without(this.categoryValueDescriptor.path, ...this.categoryFacet.options.basePath);
     const captionLabel = pathToRender.join('/');
 
-    const breadcrumbTitle = $$('span', { className: 'coveo-category-facet-breadcrumb-title' }, `${this.categoryFacetOptions.title}: `);
+    const breadcrumbTitle = $$('span', { className: 'coveo-category-facet-breadcrumb-title' }, `${this.categoryFacet.options.title}: `);
     const valuesContainer = $$('span', { className: 'coveo-category-facet-breadcrumb-values' }, captionLabel, clear);
 
     new AccessibleButton()

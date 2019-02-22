@@ -819,7 +819,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
       this.reset();
     };
 
-    const categoryFacetBreadcrumbBuilder = new CategoryFacetBreadcrumb(this.options, resetFacet, lastParentValue);
+    const categoryFacetBreadcrumbBuilder = new CategoryFacetBreadcrumb(this, resetFacet, lastParentValue);
 
     args.breadcrumbs.push({ element: categoryFacetBreadcrumbBuilder.build() });
   }

@@ -1,14 +1,20 @@
 import { CategoryFacetBreadcrumb } from '../../../src/ui/CategoryFacet/CategoryFacetBreadcrumb';
 import { $$ } from '../../../src/Core';
-import { CategoryValueDescriptor, ICategoryFacetOptions } from '../../../src/ui/CategoryFacet/CategoryFacet';
+import { CategoryValueDescriptor, ICategoryFacetOptions, CategoryFacet } from '../../../src/ui/CategoryFacet/CategoryFacet';
+import { optionsComponentSetup } from '../../MockEnvironment';
 
 export function CategoryFacetBreadcrumbTest() {
   describe('CategoryFacetBreadcrumb', () => {
+    let categoryFacet: CategoryFacet;
     let categoryValueDescriptor: CategoryValueDescriptor;
     let categoryFacetOptions: ICategoryFacetOptions;
 
     function buildCategoryFacetBreadcrumb() {
-      return new CategoryFacetBreadcrumb(categoryFacetOptions, () => {}, categoryValueDescriptor).build();
+      return new CategoryFacetBreadcrumb(categoryFacet, () => {}, categoryValueDescriptor).build();
+    }
+
+    function initCategoryFacet() {
+      categoryFacet = optionsComponentSetup<CategoryFacet, ICategoryFacetOptions>(CategoryFacet, categoryFacetOptions).cmp;
     }
 
     beforeEach(() => {
@@ -18,6 +24,8 @@ export function CategoryFacetBreadcrumbTest() {
         title: 'title',
         basePath: []
       };
+
+      initCategoryFacet();
     });
 
     it('build a breadcrumb', () => {
@@ -36,7 +44,7 @@ export function CategoryFacetBreadcrumbTest() {
 
     it('calls the given click handler on click', () => {
       const clickHandler = jasmine.createSpy('handler');
-      const breadcrumb = new CategoryFacetBreadcrumb(categoryFacetOptions, clickHandler, categoryValueDescriptor).build();
+      const breadcrumb = new CategoryFacetBreadcrumb(categoryFacet, clickHandler, categoryValueDescriptor).build();
 
       $$(breadcrumb)
         .find('.coveo-category-facet-breadcrumb-values')
