@@ -583,6 +583,17 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     CategoryFacetDebug.analyzeResults(queryResults.groupByResults[0], this.options.delimitingCharacter);
   }
 
+  /**
+   *
+   * @param value The string to find a caption for.
+   * Returns the caption for a value or the value itself if no caption is available.
+   */
+  public getCaption(value: string) {
+    const valueCaptions = this.options.valueCaption;
+    const caption = valueCaptions[value];
+    return caption ? caption : value;
+  }
+
   public showWaitingAnimation() {
     this.ensureDom();
     if (!this.showingWaitAnimation) {

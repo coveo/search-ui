@@ -105,10 +105,8 @@ export class CategoryValue implements CategoryValueParent {
   }
 
   private get captionedValueDescriptorValue() {
-    const valueCaptions = this.categoryFacet.options.valueCaption;
     const value = this.categoryValueDescriptor.value;
-    const caption = valueCaptions[value];
-    return caption ? caption : value;
+    return this.categoryFacet.getCaption(value);
   }
 
   private onSelect() {

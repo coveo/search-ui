@@ -24,7 +24,7 @@ export class CategoryFacetBreadcrumb {
 
     SVGDom.addClassToSVGInContainer(clear.el, 'coveo-facet-breadcrumb-clear-svg');
     const pathToRender = without(this.categoryValueDescriptor.path, ...this.categoryFacet.options.basePath);
-    const captionLabel = pathToRender.join('/');
+    const captionLabel = pathToRender.map(pathPart => this.categoryFacet.getCaption(pathPart)).join('/');
 
     const breadcrumbTitle = $$('span', { className: 'coveo-category-facet-breadcrumb-title' }, `${this.categoryFacet.options.title}: `);
     const valuesContainer = $$('span', { className: 'coveo-category-facet-breadcrumb-values' }, captionLabel, clear);
