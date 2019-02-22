@@ -406,6 +406,9 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
       $$(facetSearch).insertAfter(this.categoryValueRoot.listRoot.el);
     }
 
+    this.moreLessContainer = $$('div', { className: 'coveo-category-facet-more-less-container' });
+    $$(this.element).append(this.moreLessContainer.el);
+
     if (this.options.enableMoreLess) {
       this.renderMoreLess();
     }
@@ -748,9 +751,6 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   }
 
   private renderMoreLess() {
-    this.moreLessContainer = $$('div', { className: 'coveo-category-facet-more-less-container' });
-    $$(this.element).append(this.moreLessContainer.el);
-
     if (this.numberOfChildValuesCurrentlyDisplayed > this.options.numberOfValues) {
       this.moreLessContainer.append(this.buildLessButton());
     }
