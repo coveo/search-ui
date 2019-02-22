@@ -77,5 +77,23 @@ export function CategoryValueTest() {
       Simulate.keyUp($$(categoryValue.element).find('.coveo-category-facet-value-label'), KEYBOARD.ENTER);
       expect(categoryFacet.changeActivePath).not.toHaveBeenCalled();
     });
+
+    it('displays the categoryValueDescriptor #value by default', () => {
+      const categoryValue = buildCategoryValue();
+      const facetValue = categoryValue.element.find('.coveo-category-facet-value-caption').textContent;
+      expect(facetValue).toBe(categoryValueDescriptor.value);
+    });
+
+    it(`when the categoryFacet #valueCaption option has a key that matches the categoryValueDescriptor #value,
+    it displays the caption instead of the original value`, () => {
+      const caption = 'caption';
+      const valueCaption = { [categoryValueDescriptor.value]: caption };
+      categoryFacetOptions.valueCaption = valueCaption;
+      initCategoryFacet();
+
+      const categoryValue = buildCategoryValue();
+      const facetValue = categoryValue.element.find('.coveo-category-facet-value-caption').textContent;
+      expect(facetValue).toBe(caption);
+    });
   });
 }
