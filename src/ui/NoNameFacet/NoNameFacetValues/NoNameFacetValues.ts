@@ -37,26 +37,9 @@ export class NoNameFacetValues {
     return !this.facetValues.length;
   }
 
-  public select(value: string) {
-    const facetValue = this.ensureValueExists(value);
-    facetValue.select();
-    return facetValue;
-  }
-
-  public deselect(value: string) {
-    const facetValue = this.ensureValueExists(value);
-    facetValue.deselect();
-    return facetValue;
-  }
-
-  public toggleSelect(value: string) {
-    const facetValue = this.ensureValueExists(value);
-    facetValue.toggleSelect();
-    return facetValue;
-  }
-
-  private ensureValueExists(value: string) {
-    const facetValue = find(this.facetValues, facetValue => facetValue.value.toLowerCase() === value.toLowerCase());
+  public get(arg: string | NoNameFacetValue) {
+    const value = typeof arg === 'string' ? arg : arg.value;
+    const facetValue = find(this.facetValues, facetValue => facetValue.equals(value));
 
     if (facetValue) {
       return facetValue;

@@ -51,9 +51,7 @@ export class NoNameFacet extends Component {
    */
   public selectValue(value: string) {
     Assert.exists(value);
-    this.ensureDom();
-    this.logger.info('Selecting facet value', this.values.select(value));
-    this.handleFacetValuesChanged();
+    this.selectMultipleValues([value]);
   }
 
   /**
@@ -68,7 +66,7 @@ export class NoNameFacet extends Component {
     Assert.exists(values);
     this.ensureDom();
     values.forEach(value => {
-      this.logger.info('Selecting facet value', this.values.select(value));
+      this.logger.info('Selecting facet value', this.values.get(value).select());
     });
     this.handleFacetValuesChanged();
   }
@@ -83,23 +81,7 @@ export class NoNameFacet extends Component {
    */
   public deselectValue(value: string) {
     Assert.exists(value);
-    this.ensureDom();
-    this.logger.info('Deselecting facet value', this.values.deselect(value));
-    this.handleFacetValuesChanged();
-  }
-
-  /**
-   * Toggles the selection state of a single value (selects the value if it is not already selected; un-selects the
-   * value if it is already selected).
-   *
-   * Does not trigger a query automatically.
-   * @param values is a string.
-   */
-  public toggleSelectValue(value: string): void {
-    Assert.exists(value);
-    this.ensureDom();
-    this.logger.info('Toggle select facet value', this.values.toggleSelect(value));
-    this.handleFacetValuesChanged();
+    this.deselectMultipleValues([value]);
   }
 
   /**
@@ -114,8 +96,22 @@ export class NoNameFacet extends Component {
     Assert.exists(values);
     this.ensureDom();
     values.forEach(value => {
-      this.logger.info('Deselecting facet value', this.values.deselect(value));
+      this.logger.info('Deselecting facet value', this.values.get(value).deselect());
     });
+    this.handleFacetValuesChanged();
+  }
+
+  /**
+   * Toggles the selection state of a single value (selects the value if it is not already selected; un-selects the
+   * value if it is already selected).
+   *
+   * Does not trigger a query automatically.
+   * @param values is a string.
+   */
+  public toggleSelectValue(value: string): void {
+    Assert.exists(value);
+    this.ensureDom();
+    this.logger.info('Toggle select facet value', this.values.get(value).toggleSelect());
     this.handleFacetValuesChanged();
   }
 

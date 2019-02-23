@@ -34,6 +34,11 @@ export class NoNameFacetValue implements INoNameFacetValue {
     this.selected = false;
   }
 
+  public equals(arg: string | NoNameFacetValue) {
+    const value = typeof arg === 'string' ? arg : arg.value;
+    return value.toLowerCase() === this.value.toLowerCase();
+  }
+
   public get formattedCount(): string {
     if (this.numberOfResults === 0) {
       return '';
