@@ -15,7 +15,7 @@ import 'styling/_CategoryFacet';
 import { IAttributesChangedEventArg, MODEL_EVENTS } from '../../models/Model';
 import { Utils } from '../../utils/Utils';
 import { CategoryValue, CategoryValueParent } from './CategoryValue';
-import { pluck, reduce, find, first, last, contains, isArray } from 'underscore';
+import { pluck, reduce, find, first, last, contains, isArray, keys } from 'underscore';
 import { Assert } from '../../misc/Assert';
 import { QueryEvents, IBuildingQueryEventArgs, IQuerySuccessEventArgs } from '../../events/QueryEvents';
 import { CategoryFacetSearch } from './CategoryFacetSearch';
@@ -358,7 +358,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
 
   private get areValueCaptionsSpecified() {
     const valueCaptions = this.options.valueCaption;
-    return Object.keys(valueCaptions).length !== 0;
+    return keys(valueCaptions).length !== 0;
   }
 
   private handleNoResults() {
