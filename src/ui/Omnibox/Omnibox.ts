@@ -740,15 +740,14 @@ export class Omnibox extends Component {
 
   private triggerNewQuery(searchAsYouType: boolean, analyticsEvent: () => void) {
     clearTimeout(this.searchAsYouTypeTimeout);
-    const text = this.getQuery(searchAsYouType);
-    if (this.shouldExecuteQuery(searchAsYouType)) {
-      this.lastQuery = text;
-      analyticsEvent();
-      this.queryController.executeQuery({
-        searchAsYouType: searchAsYouType,
-        logInActionsHistory: true
-      });
-    }
+    this.lastQuery = this.getQuery(searchAsYouType);
+    analyticsEvent();
+
+    this.queryController.executeQuery({
+      searchAsYouType: searchAsYouType,
+      logInActionsHistory: true,
+      cancel: !this.shouldExecuteQuery(searchAsYouType)
+    });
   }
 
   private getQuery(searchAsYouType: boolean) {
