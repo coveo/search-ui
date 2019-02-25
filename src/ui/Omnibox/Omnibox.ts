@@ -77,7 +77,7 @@ const MINIMUM_EXECUTABLE_CONFIDENCE = 0.8;
  *
  * Custom components and external code can also extend or customize the type-ahead feature and the query completion
  * suggestions it provides by attaching their own handlers to the
- * [`populateOmniboxSuggestions`]{@link OmniboxEvents.populateOmniboxSuggestions`] event.
+ * [`populateOmniboxSuggestions`]{@link OmniboxEvents.populateOmniboxSuggestions} event.
  *
  * See also the [`Searchbox`]{@link Searchbox} component, which can automatically instantiate an `Omnibox` along with an
  * optional {@link SearchButton}.
