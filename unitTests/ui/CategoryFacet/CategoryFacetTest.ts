@@ -289,6 +289,29 @@ export function CategoryFacetTest() {
       );
     });
 
+    it(`when the #valueCaption option is an empty object,
+    it displays the facet search box`, () => {
+      test = Mock.optionsComponentSetup<CategoryFacet, ICategoryFacetOptions>(CategoryFacet, {
+        field: '@field',
+        valueCaption: {}
+      });
+
+      expect(test.cmp.categoryFacetSearch).toBeTruthy();
+    });
+
+    describe(`when the #valueCaption option is defined`, () => {
+      beforeEach(() => {
+        test = Mock.optionsComponentSetup<CategoryFacet, ICategoryFacetOptions>(CategoryFacet, {
+          field: '@field',
+          valueCaption: { value: 'caption' }
+        });
+      });
+
+      it(`does not render the facet search box`, () => {
+        expect(test.cmp.categoryFacetSearch).toBe(undefined);
+      });
+    });
+
     describe('renders', () => {
       function removeAllCategoriesButton(element) {
         const allCategoriesButton = $$(element).find('.coveo-category-facet-all-categories');
