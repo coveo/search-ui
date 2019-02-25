@@ -105,15 +105,18 @@
   }
 }
 
-.coveo-category-facet-more,
-.coveo-category-facet-less {
+.coveo-category-facet-more-less-container {
   width: 100%;
   height: 15px;
   background: $color-blueish-white;
-  cursor: pointer;
   text-align: center;
   border-bottom-left-radius: $default-border-radius;
   border-bottom-right-radius: $default-border-radius;
+}
+
+.coveo-category-facet-more,
+.coveo-category-facet-less {
+  cursor: pointer;
   &:hover,
   &:focus {
     background: $color-light-grey;
