@@ -106,7 +106,6 @@ export function FacetQueryControllerTest() {
 
         it(`when the facet is not configured with an additional filter and there's a basic expression in the query
           it should not add a basic query override`, () => {
-          mockFacet.options.additionalFilter = undefined;
           queryBuilder.expression.add('foo');
 
           facetQueryController.putGroupByIntoQueryBuilder(queryBuilder);
