@@ -2,7 +2,6 @@ import { $$, Dom } from '../../../utils/Dom';
 import { NoNameFacet } from '../NoNameFacet';
 import { NoNameFacetValueCheckbox } from './NoNameFacetValueCheckbox';
 import { NoNameFacetValue } from './NoNameFacetValue';
-import { l } from '../../../strings/Strings';
 import { KeyboardUtils, KEYBOARD } from '../../../utils/KeyboardUtils';
 
 export class NoNameFacetValueRenderer {
@@ -44,7 +43,7 @@ export class NoNameFacetValueRenderer {
   }
 
   private createAndAppendCheckbox() {
-    this.checkboxElement = new NoNameFacetValueCheckbox(this.label).element;
+    this.checkboxElement = new NoNameFacetValueCheckbox(this.facetValue).element;
     this.labelWrapperElement.appendChild(this.checkboxElement);
   }
 
@@ -79,13 +78,6 @@ export class NoNameFacetValueRenderer {
   private addClickEventListeners() {
     this.dom.on('click', this.selectAction);
     $$(this.checkboxElement).on('keydown', KeyboardUtils.keypressAction([KEYBOARD.SPACEBAR, KEYBOARD.ENTER], this.selectAction));
-  }
-
-  private get label() {
-    const selectOrUnselect = !this.facetValue.selected ? 'SelectValueWithResultCount' : 'UnselectValueWithResultCount';
-    const resultCount = l('ResultCount', this.facetValue.formattedCount);
-
-    return `${l(selectOrUnselect, this.facetValue.valueCaption, resultCount)}`;
   }
 
   private selectAction = () => {
