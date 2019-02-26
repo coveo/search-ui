@@ -124,7 +124,7 @@ export class ResponsiveComponentsManager {
     this.searchBoxElement = this.getSearchBoxElement();
     this.logger = new Logger(this);
     this.resizeListener = debounce(() => {
-      if (this.coveoRoot.width() != 0) {
+      if (this.coveoRoot.width() != 0 || this.searchInterface.options.responsiveMode !== 'auto') {
         this.addDropdownHeaderWrapperIfNeeded();
         if (this.shouldSwitchToSmallMode()) {
           this.coveoRoot.addClass('coveo-small-interface');
