@@ -12,13 +12,8 @@ export function ResponsiveComponentsManagerTest() {
   let responsiveComponentsManager: ResponsiveComponentsManager;
   let responsiveComponent: any;
   let component: any;
-  const setupHandleResizeEventTest = (mode?: ValidResponsiveMode) => {
-    if (mode) {
-      (Component.get(root.el, SearchInterface) as SearchInterface).options.responsiveMode = mode;
-    }
-    responsiveComponentsManager.register(responsiveComponent, root, 'id', component, {});
-    responsiveComponentsManager.resizeListener();
-    jasmine.clock().tick(250);
+  const setResponsiveMode = (mode: ValidResponsiveMode) => {
+    (Component.get(root.el, SearchInterface) as SearchInterface).options.responsiveMode = mode;
   };
 
   describe('ResponsiveComponentsManager', () => {
@@ -44,30 +39,55 @@ export function ResponsiveComponentsManagerTest() {
       jasmine.clock().uninstall();
     });
 
-    it('calls handle resize event when resize listener is called', () => {
-      root.width = () => 400;
-      setupHandleResizeEventTest();
-      expect(handleResizeEvent).toHaveBeenCalled();
-    });
+    describe('when the search interface responsive mode is set to *auto*', () => {
+      beforeEach(() => {
+        setResponsiveMode('auto');
+      });
 
-    it('does not calls handle resize event when resize listener is called and width is zero', () => {
-      root.width = () => 0;
-      setupHandleResizeEventTest();
-      expect(handleResizeEvent).not.toHaveBeenCalled();
-    });
-
-    ['small', 'medium', 'large'].forEach((responsiveMode: ValidResponsiveMode) => {
-      it(`calls handle resize event when resize listener is called even if the width is zero when the responsiveMode is set to ${responsiveMode}`, () => {
-        root.width = () => 0;
-        setupHandleResizeEventTest(responsiveMode);
+      it('should calls handle resize event when resize listener is called', () => {
+        root.width = () => 400;
+        responsiveComponentsManager.register(responsiveComponent, root, 'id', component, {});
+        responsiveComponentsManager.resizeListener();
+        jasmine.clock().tick(250);
         expect(handleResizeEvent).toHaveBeenCalled();
+      });
+
+      describe('and the root element width is zero', () => {
+        beforeEach(() => {
+          root.width = () => 0;
+        });
+
+        it('should  not calls handle resize event when resize listener is called', () => {
+          responsiveComponentsManager.register(responsiveComponent, root, 'id', component, {});
+          responsiveComponentsManager.resizeListener();
+          jasmine.clock().tick(250);
+          expect(handleResizeEvent).not.toHaveBeenCalled();
+        });
+
+        it('should  not calls handle resize event when it registers component', () => {
+          responsiveComponentsManager.register(responsiveComponent, root, 'id', component, {});
+          expect(handleResizeEvent).not.toHaveBeenCalled();
+        });
       });
     });
 
-    it('does not calls handle resize event when resize listener is called and the width is zero and the responsiveMode is set to auto', () => {
-      root.width = () => 0;
-      setupHandleResizeEventTest('auto');
-      expect(handleResizeEvent).not.toHaveBeenCalled();
+    describe('when the search interface responsive mode is not set to *auto*', () => {
+      beforeEach(() => {
+        setResponsiveMode('small');
+      });
+
+      describe('and the root element width is zero', () => {
+        beforeEach(() => {
+          root.width = () => 0;
+        });
+
+        it('should calls handle resize event when resize listener is called', () => {
+          responsiveComponentsManager.register(responsiveComponent, root, 'id', component, {});
+          responsiveComponentsManager.resizeListener();
+          jasmine.clock().tick(250);
+          expect(handleResizeEvent).toHaveBeenCalled();
+        });
+      });
     });
 
     it('registers component even when the corresponding responsive class has already been instanciated', () => {
