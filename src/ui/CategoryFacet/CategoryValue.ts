@@ -17,7 +17,6 @@ export interface CategoryValueParent {
 
 export class CategoryValue implements CategoryValueParent {
   private collapseArrow: Dom;
-  private label: Dom;
 
   public path: string[];
   public element: Dom;
@@ -31,7 +30,7 @@ export class CategoryValue implements CategoryValueParent {
     private categoryFacet: CategoryFacet
   ) {
     this.element = this.categoryFacetTemplates.buildListElement({
-      value: this.categoryValueDescriptor.value,
+      value: this.captionedValueDescriptorValue,
       count: this.categoryValueDescriptor.count
     });
     this.collapseArrow = this.categoryFacetTemplates.buildCollapseArrow();
@@ -81,14 +80,14 @@ export class CategoryValue implements CategoryValueParent {
   }
 
   public makeSelectable() {
-    this.label = $$(this.element.find('.coveo-category-facet-value-label'));
-    this.label.addClass('coveo-selectable');
+    const element = $$(this.element.find('.coveo-category-facet-value-label'));
+    element.addClass('coveo-selectable');
 
     const countLabel = l('ResultCount', this.categoryValueDescriptor.count.toString());
-    const label = l('SelectValueWithResultCount', this.categoryValueDescriptor.value, countLabel);
+    const label = l('SelectValueWithResultCount', this.captionedValueDescriptorValue, countLabel);
 
     new AccessibleButton()
-      .withElement(this.label)
+      .withElement(element)
       .withSelectAction(() => this.onSelect())
       .withLabel(label)
       .build();
@@ -103,6 +102,11 @@ export class CategoryValue implements CategoryValueParent {
     }
 
     return this;
+  }
+
+  private get captionedValueDescriptorValue() {
+    const value = this.categoryValueDescriptor.value;
+    return this.categoryFacet.getCaption(value);
   }
 
   private onSelect() {

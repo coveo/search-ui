@@ -271,7 +271,7 @@ export class Recommendation extends SearchInterface implements IComponentBinding
       name: 'PageView',
       value: document.location.toString(),
       time: JSON.stringify(new Date()),
-      title: document.title
+      title: _.escape(document.title)
     };
     this.historyStore.addElement(historyElement);
   }

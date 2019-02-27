@@ -37,6 +37,13 @@ export function OmniboxTest() {
       expect(test.env.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(analyticsActionCauseList.searchboxSubmit, {});
     });
 
+    it(`when the magicbox text is equal to the #lastQuery property,
+    when calling #submit, it triggers a query`, () => {
+      test.cmp.submit();
+      test.cmp.submit();
+      expect(test.env.queryController.executeQuery).toHaveBeenCalledTimes(2);
+    });
+
     describe('exposes options', () => {
       it('inline should be passed down to magic box', () => {
         test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
