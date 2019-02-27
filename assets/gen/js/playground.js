@@ -3999,7 +3999,7 @@ var SearchEndpoint = /** @class */ (function () {
     SearchEndpoint.prototype.buildViewAsHtmlQueryString = function (uniqueId, callOptions) {
         callOptions = _.extend({}, callOptions);
         return {
-            uniqueId: Utils_1.Utils.safeEncodeURIComponent(uniqueId),
+            uniqueId: uniqueId,
             enableNavigation: 'true',
             requestedOutputSize: callOptions.requestedOutputSize ? callOptions.requestedOutputSize.toString() : null,
             contentType: callOptions.contentType
@@ -5874,8 +5874,8 @@ exports.ResponsiveComponents = ResponsiveComponents;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    lib: '2.5652.1-beta',
-    product: '2.5652.1-beta',
+    lib: '2.5549.3-beta',
+    product: '2.5549.3-beta',
     supportedApiVersion: 2
 };
 
@@ -8466,8 +8466,6 @@ var dict = {
     "Collapse": "Collapse",
     "Collapsable": "Collapsible",
     "Expand": "Expand",
-    "CollapseFacet": "Collapse {0} facet",
-    "ExpandFacet": "Expand {0} facet",
     "Today": "Today",
     "Yesterday": "Yesterday",
     "Tomorrow": "Tomorrow",
