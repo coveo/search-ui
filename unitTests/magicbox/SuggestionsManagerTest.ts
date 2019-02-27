@@ -6,6 +6,7 @@ import { MagicBoxInstance } from '../../src/magicbox/MagicBox';
 
 export function SuggestionsManagerTest() {
   describe('Suggestions manager', () => {
+    const LOCKED_LOCKER_SERVICE_ELEMENT = {};
     let container: Dom;
     let suggestionContainer: Dom;
     let suggestionManager: SuggestionsManager;
@@ -142,7 +143,7 @@ export function SuggestionsManagerTest() {
 
       suggestionManager.handleMouseOut({
         target: suggestion.el,
-        relatedTarget: {}
+        relatedTarget: LOCKED_LOCKER_SERVICE_ELEMENT
       });
 
       expect(suggestion.hasClass(selectedClass)).toBe(false);
@@ -168,7 +169,7 @@ export function SuggestionsManagerTest() {
 
       suggestionManager.handleMouseOut({
         target: elementInsideSuggestion.el,
-        relatedTarget: {}
+        relatedTarget: LOCKED_LOCKER_SERVICE_ELEMENT
       });
 
       expect(suggestion.hasClass(selectedClass)).toBe(false);

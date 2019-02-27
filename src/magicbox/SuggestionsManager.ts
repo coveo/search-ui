@@ -66,7 +66,7 @@ export class SuggestionsManager {
     let targetParents = target.parents(this.options.selectableClass);
 
     //e.relatedTarget is not available if moving off the browser window or is an empty object `{}` when moving out of namespace in LockerService.
-    if (e.relatedTarget && e.relatedTarget.getAttribute != undefined) {
+    if (e.relatedTarget && $$(e.relatedTarget).isValid()) {
       let relatedTargetParents = $$(<HTMLElement>e.relatedTarget).parents(this.options.selectableClass);
       if (target.hasClass(this.options.selectedClass) && !$$(<HTMLElement>e.relatedTarget).hasClass(this.options.selectableClass)) {
         this.removeSelectedStatus(target.el);
