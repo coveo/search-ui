@@ -277,7 +277,6 @@ export class FacetQueryController {
       queryBuilderExpression = this.processQueryOverrideForAdditionalFilter(queryBuilder, queryBuilderExpression);
     }
 
-    queryBuilderExpression = this.processQueryOverrideForBasicExpression(queryBuilder, queryBuilderExpression);
     queryBuilderExpression = this.processQueryOverrideForEmptyValues(queryBuilder, queryBuilderExpression);
     if (QueryBuilderExpression.isEmpty(queryBuilderExpression)) {
       return null;
@@ -311,6 +310,9 @@ export class FacetQueryController {
   }
 
   private processQueryOverrideForAdditionalFilter(queryBuilder: QueryBuilder, mergeWith: QueryBuilderExpression) {
+    if (Utils.isEmptyString(mergeWith.basic)) {
+      mergeWith.basic = queryBuilder.expression.build();
+    }
     if (Utils.isEmptyString(mergeWith.constant)) {
       const addExistingConstantExpressionIfNotEmpty = queryBuilder.constantExpression.isEmpty()
         ? ''
@@ -324,15 +326,6 @@ export class FacetQueryController {
       mergeWith.advanced = queryBuilder.advancedExpression.build();
     }
 
-    return mergeWith;
-  }
-
-  private processQueryOverrideForBasicExpression(queryBuilder: QueryBuilder, mergeWith: QueryBuilderExpression) {
-    // If any part of the query override built so far inside `mergeWith` is not empty
-    // we must ensure that the basic expression is copied properly
-    if (Utils.isEmptyString(mergeWith.basic) && mergeWith.full != '') {
-      mergeWith.basic = queryBuilder.expression.build();
-    }
     return mergeWith;
   }
 
