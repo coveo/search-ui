@@ -266,19 +266,19 @@ export class FacetQueryController {
   }
 
   private createGroupByQueryOverride(queryBuilder: QueryBuilder): QueryBuilderExpression {
-    let queryBuilderExpression = queryBuilder.computeCompleteExpressionParts();
+    const ourFilterExpression = this.computeOurFilterExpression();
+    let queryBuilderExpression = Utils.isNonEmptyString(ourFilterExpression)
+      ? queryBuilder.computeCompleteExpressionPartsExcept(ourFilterExpression)
+      : queryBuilder.computeCompleteExpressionParts();
 
-    if (this.queryOverrideIsNeededForMultiSelection()) {
-      queryBuilderExpression = this.processQueryOverrideForMultiSelection(queryBuilder, queryBuilderExpression);
-    } else {
-      queryBuilderExpression.reset();
-    }
     if (this.queryOverrideIsNeededForAdditionalFilter()) {
       queryBuilderExpression = this.processQueryOverrideForAdditionalFilter(queryBuilder, queryBuilderExpression);
     }
+    if (this.queryOverrideIsNeededForMultiSelection()) {
+      queryBuilderExpression = this.processQueryOverrideForMultiSelection(queryBuilderExpression);
+    }
 
-    queryBuilderExpression = this.processQueryOverrideForBasicExpression(queryBuilder, queryBuilderExpression);
-    queryBuilderExpression = this.processQueryOverrideForEmptyValues(queryBuilder, queryBuilderExpression);
+    queryBuilderExpression = this.processQueryOverrideForEmptyValues(queryBuilderExpression);
     if (QueryBuilderExpression.isEmpty(queryBuilderExpression)) {
       return null;
     }
@@ -299,12 +299,9 @@ export class FacetQueryController {
     return Utils.isNonEmptyString(this.additionalFilter);
   }
 
-  private processQueryOverrideForMultiSelection(queryBuilder: QueryBuilder, mergeWith: QueryBuilderExpression) {
-    if (this.facet.values.hasSelectedOrExcludedValues()) {
-      mergeWith = queryBuilder.computeCompleteExpressionPartsExcept(this.computeOurFilterExpression());
-      if (QueryBuilderExpression.isEmpty(mergeWith)) {
-        mergeWith.advanced = '@uri';
-      }
+  private processQueryOverrideForMultiSelection(mergeWith: QueryBuilderExpression) {
+    if (QueryBuilderExpression.isEmpty(mergeWith)) {
+      mergeWith.advanced = '@uri';
     }
 
     return mergeWith;
@@ -320,23 +317,10 @@ export class FacetQueryController {
       mergeWith.constant = `${mergeWith.constant} ${this.additionalFilter}`;
     }
 
-    if (!mergeWith.advanced) {
-      mergeWith.advanced = queryBuilder.advancedExpression.build();
-    }
-
     return mergeWith;
   }
 
-  private processQueryOverrideForBasicExpression(queryBuilder: QueryBuilder, mergeWith: QueryBuilderExpression) {
-    // If any part of the query override built so far inside `mergeWith` is not empty
-    // we must ensure that the basic expression is copied properly
-    if (Utils.isEmptyString(mergeWith.basic) && mergeWith.full != '') {
-      mergeWith.basic = queryBuilder.expression.build();
-    }
-    return mergeWith;
-  }
-
-  private processQueryOverrideForEmptyValues(queryBuilder: QueryBuilder, mergeWith: QueryBuilderExpression) {
+  private processQueryOverrideForEmptyValues(mergeWith: QueryBuilderExpression) {
     const withoutEmptyValues = _.chain(mergeWith)
       .keys()
       .each((key: string) => {
