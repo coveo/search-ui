@@ -9,6 +9,7 @@ import { InitializationEvents } from '../../src/events/InitializationEvents';
 import { IFieldDescription } from '../../src/rest/FieldDescription';
 import { Suggestion } from '../../src/magicbox/SuggestionsManager';
 import { KEYBOARD } from '../../src/Core';
+import { IQueryOptions } from '../../src/controllers/QueryController';
 
 export function OmniboxTest() {
   describe('Omnibox', () => {
@@ -27,21 +28,42 @@ export function OmniboxTest() {
       Simulate.removeJQuery();
     });
 
-    it('should trigger a query on submit', () => {
-      test.cmp.submit();
-      expect(test.env.queryController.executeQuery).toHaveBeenCalled();
+    describe('on submit', () => {
+      beforeEach(() => test.cmp.submit());
+
+      it('should trigger a query', () => {
+        expect(test.env.queryController.executeQuery).toHaveBeenCalled();
+      });
+
+      it(`the query #cancel arg is set to 'false'`, () => {
+        expect(test.env.queryController.executeQuery).toHaveBeenCalledWith(jasmine.objectContaining({ cancel: false }));
+      });
+
+      it('should log analytics event', () => {
+        expect(test.env.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(analyticsActionCauseList.searchboxSubmit, {});
+      });
     });
 
-    it('should log analytics event on submit', () => {
-      test.cmp.submit();
-      expect(test.env.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(analyticsActionCauseList.searchboxSubmit, {});
-    });
+    describe(`when the magicbox text is equal to the #lastQuery property,
+    when calling #submit a second time`, () => {
+      beforeEach(() => {
+        test.cmp.submit();
+        test.cmp.submit();
+      });
 
-    it(`when the magicbox text is equal to the #lastQuery property,
-    when calling #submit, it triggers a query`, () => {
-      test.cmp.submit();
-      test.cmp.submit();
-      expect(test.env.queryController.executeQuery).toHaveBeenCalledTimes(2);
+      it('triggers a query', () => {
+        expect(test.env.queryController.executeQuery).toHaveBeenCalledTimes(2);
+      });
+
+      it('should not log a second analytics event', () => {
+        expect(test.env.usageAnalytics.logSearchEvent).toHaveBeenCalledTimes(1);
+      });
+
+      it(`the query #cancel arg is set to 'true'`, () => {
+        const executeQuery = test.env.queryController.executeQuery as jasmine.Spy;
+        const lastQuery: IQueryOptions = executeQuery.calls.mostRecent().args[0];
+        expect(lastQuery.cancel).toBe(true);
+      });
     });
 
     describe('exposes options', () => {
