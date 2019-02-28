@@ -595,6 +595,14 @@ export class Dom {
   }
 
   /**
+   * Check if the element is not a locked node (`{ toString(): string }`) and thus have base element properties.
+   * @returns {boolean}
+   */
+  public isValid(): boolean {
+    return this.el != null && this.el.getAttribute != undefined;
+  }
+
+  /**
    * Check if the element is a descendant of parent
    * @param other
    */
