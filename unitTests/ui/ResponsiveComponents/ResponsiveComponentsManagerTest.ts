@@ -6,6 +6,7 @@ import { Component } from '../../../src/ui/Base/Component';
 import { ValidResponsiveMode } from '../../../src/ui/ResponsiveComponents/ResponsiveComponents';
 
 export function ResponsiveComponentsManagerTest() {
+  const SMALL_RESPONSIVE_MODE = 'small';
   let root: Dom;
   let handleResizeEvent: any;
   let registerComponent: any;
@@ -73,7 +74,7 @@ export function ResponsiveComponentsManagerTest() {
 
     describe('when the search interface responsive mode is not set to *auto*', () => {
       beforeEach(() => {
-        setResponsiveMode('small');
+        setResponsiveMode(SMALL_RESPONSIVE_MODE);
       });
 
       describe('and the root element width is zero', () => {
