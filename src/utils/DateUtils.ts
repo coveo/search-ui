@@ -429,11 +429,15 @@ export class DateUtils {
   }
 
   static get currentGlobalizeCalendar(): GlobalizeCalendar {
-    return Globalize.culture(DateUtils.momentjsCompatibleLocale).calendar as GlobalizeCalendar;
+    return Globalize.culture(DateUtils.currentLocale).calendar as GlobalizeCalendar;
+  }
+
+  static get currentLocale() {
+    return String['locale'];
   }
 
   static get momentjsCompatibleLocale(): string {
-    let currentLocale = String['locale'];
+    let currentLocale = DateUtils.currentLocale;
 
     // Our cultures.js directory contains 'no' which is the equivalent to 'nn' for momentJS
     if (currentLocale.toLowerCase() == 'no') {
