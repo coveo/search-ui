@@ -44,13 +44,7 @@ export function NoNameFacetValuesTest() {
     });
 
     it('when there are no selected values, hasSelectedValues should return false', () => {
-      mockFacetValues = [
-        {
-          value: 'test 1',
-          numberOfResults: 10,
-          selected: false
-        }
-      ];
+      mockFacetValues = NoNameFacetTestUtils.createFakeFacetValues();
       initializeComponent();
       expect(noNameFacetValues.hasSelectedValues()).toBe(false);
     });
