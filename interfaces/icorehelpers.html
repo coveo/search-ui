@@ -254,8 +254,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L196">ui/Templates/CoreHelpers.ts
-							:196</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L210">ui/Templates/CoreHelpers.ts
+							:210</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -299,8 +299,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L156">ui/Templates/CoreHelpers.ts
-							:156</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L170">ui/Templates/CoreHelpers.ts
+							:170</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -344,8 +344,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L134">ui/Templates/CoreHelpers.ts
-							:134</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L148">ui/Templates/CoreHelpers.ts
+							:148</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -389,8 +389,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L149">ui/Templates/CoreHelpers.ts
-							:149</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L163">ui/Templates/CoreHelpers.ts
+							:163</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -435,8 +435,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L189">ui/Templates/CoreHelpers.ts
-							:189</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L203">ui/Templates/CoreHelpers.ts
+							:203</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -507,8 +507,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L164">ui/Templates/CoreHelpers.ts
-							:164</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L178">ui/Templates/CoreHelpers.ts
+							:178</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -553,8 +553,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L310">ui/Templates/CoreHelpers.ts
-							:310</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L324">ui/Templates/CoreHelpers.ts
+							:324</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -594,8 +594,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L231">ui/Templates/CoreHelpers.ts
-							:231</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L245">ui/Templates/CoreHelpers.ts
+							:245</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -694,8 +694,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L114">ui/Templates/CoreHelpers.ts
-							:114</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L128">ui/Templates/CoreHelpers.ts
+							:128</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -710,6 +710,12 @@
 							<li><code>phraseToHighlight</code>: The phrases to highlight (see <a href="ihighlightphrase.html">IHighlightPhrase</a>)</li>
 							<li><code>options</code>: Optional. The options defined below as <a href="istreamhighlightoptions.html">IStreamHighlightOptions</a></li>
 						</ul>
+						<p><strong>Note:</strong></p>
+						<blockquote>
+							<p><code>highlightStreamHTML</code> should only be used for very particular/specific use cases (e.g., augmenting the result template with additional information rather than the typical excerpt/title), and is not a proper replacement for actually having the correct title and excerpt on your results.</p>
+							<p>Using incorrect result titles or excerpts on your search interface also causes relevancy to suffer greatly, as the index uses the title and excerpt to find relevant results. Consequently, end users are more likely to see results whose titles do not match their query.</p>
+							<p>Moreover, the recommended method to implement simple title and/or excerpt highlighting is to simply use the <a href="../components/excerpt.html">Excerpt</a> and <a href="../components/resultlink.html">ResultLink</a> components.</p>
+						</blockquote>
 					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
@@ -749,8 +755,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L98">ui/Templates/CoreHelpers.ts
-							:98</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L105">ui/Templates/CoreHelpers.ts
+							:105</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -767,6 +773,12 @@
 							<li><code>phraseToHighlight</code>: The phrases to highlight (see <a href="ihighlightphrase.html">IHighlightPhrase</a>)</li>
 							<li><code>options</code>: Optional. The options defined below as <a href="istreamhighlightoptions.html">IStreamHighlightOptions</a></li>
 						</ul>
+						<p><strong>Note:</strong></p>
+						<blockquote>
+							<p><code>highlightStreamText</code> should only be used for very particular/specific use cases (e.g., augmenting the result template with additional information rather than the typical excerpt/title), and is not a proper replacement for actually having the correct title and excerpt on your results.</p>
+							<p>Using incorrect result titles or excerpts on your search interface also causes relevancy to suffer greatly, as the index uses the title and excerpt to find relevant results. Consequently, end users are more likely to see results whose titles do not match their query.</p>
+							<p>Moreover, the recommended method to implement simple title and/or excerpt highlighting is to simply use the <a href="../components/excerpt.html">Excerpt</a> and <a href="../components/resultlink.html">ResultLink</a> components.</p>
+						</blockquote>
 					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
@@ -806,8 +818,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L203">ui/Templates/CoreHelpers.ts
-							:203</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L217">ui/Templates/CoreHelpers.ts
+							:217</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -851,8 +863,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L318">ui/Templates/CoreHelpers.ts
-							:318</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L332">ui/Templates/CoreHelpers.ts
+							:332</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -885,8 +897,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L248">ui/Templates/CoreHelpers.ts
-							:248</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L262">ui/Templates/CoreHelpers.ts
+							:262</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -943,8 +955,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L127">ui/Templates/CoreHelpers.ts
-							:127</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L141">ui/Templates/CoreHelpers.ts
+							:141</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1157,8 +1169,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L290">ui/Templates/CoreHelpers.ts
-							:290</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L304">ui/Templates/CoreHelpers.ts
+							:304</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1219,8 +1231,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L218">ui/Templates/CoreHelpers.ts
-							:218</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L232">ui/Templates/CoreHelpers.ts
+							:232</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1276,8 +1288,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L141">ui/Templates/CoreHelpers.ts
-							:141</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L155">ui/Templates/CoreHelpers.ts
+							:155</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1321,8 +1333,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L261">ui/Templates/CoreHelpers.ts
-							:261</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L275">ui/Templates/CoreHelpers.ts
+							:275</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1371,8 +1383,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L304">ui/Templates/CoreHelpers.ts
-							:304</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L318">ui/Templates/CoreHelpers.ts
+							:318</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
