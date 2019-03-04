@@ -2964,6 +2964,13 @@ var Dom = /** @class */ (function () {
         return Dom.ONLY_WHITE_SPACE_REGEX.test(this.el.innerHTML);
     };
     /**
+     * Check if the element is not a locked node (`{ toString(): string }`) and thus have base element properties.
+     * @returns {boolean}
+     */
+    Dom.prototype.isValid = function () {
+        return this.el != null && this.el.getAttribute != undefined;
+    };
+    /**
      * Check if the element is a descendant of parent
      * @param other
      */
@@ -3999,7 +4006,7 @@ var SearchEndpoint = /** @class */ (function () {
     SearchEndpoint.prototype.buildViewAsHtmlQueryString = function (uniqueId, callOptions) {
         callOptions = _.extend({}, callOptions);
         return {
-            uniqueId: uniqueId,
+            uniqueId: Utils_1.Utils.safeEncodeURIComponent(uniqueId),
             enableNavigation: 'true',
             requestedOutputSize: callOptions.requestedOutputSize ? callOptions.requestedOutputSize.toString() : null,
             contentType: callOptions.contentType
@@ -5874,8 +5881,8 @@ exports.ResponsiveComponents = ResponsiveComponents;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    lib: '2.5549.3-beta',
-    product: '2.5549.3-beta',
+    lib: '2.5652.2',
+    product: '2.5652.2',
     supportedApiVersion: 2
 };
 
@@ -8466,6 +8473,8 @@ var dict = {
     "Collapse": "Collapse",
     "Collapsable": "Collapsible",
     "Expand": "Expand",
+    "CollapseFacet": "Collapse {0} facet",
+    "ExpandFacet": "Expand {0} facet",
     "Today": "Today",
     "Yesterday": "Yesterday",
     "Tomorrow": "Tomorrow",
