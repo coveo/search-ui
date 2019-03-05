@@ -308,7 +308,7 @@ export var analyticsActionCauseList = {
     type: 'search box'
   },
   /**
-   * Identifies the search as you type event that gets logged when a query is automatically generated, and results are displayed while a user is entering text in the search box before they voluntarily submit the query.
+   * The search-as-you-type event that gets logged when a query is automatically generated, and results are displayed while a user is entering text in the search box before they voluntarily submit the query.
    *
    * `actionCause`: `'searchboxAsYouType'`
    * `actionType`: `'search box'`
@@ -318,7 +318,7 @@ export var analyticsActionCauseList = {
     type: 'search box'
   },
   /**
-   * Identifies the search as you type event that gets logged when a breadcrumb facet is selected and the query is updated.
+   * The search-as-you-type event that gets logged when a breadcrumb facet is selected and the query is updated.
    *
    * `actionCause`: `'breadcrumbFacet'`
    * `actionType`: `'breadcrumb'`
