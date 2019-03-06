@@ -298,9 +298,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     this.currentPage = 0;
     this.numberOfValues = this.options.numberOfValues;
 
-    if (this.isFacetSearchAvailable) {
-      this.categoryFacetSearch = new CategoryFacetSearch(this);
-    }
+    this.tryToInitFacetSearch();
 
     if (this.options.debug) {
       new CategoryFacetDebug(this);
@@ -342,6 +340,15 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
       this.activePath,
       this.numberOfValues + 1
     );
+  }
+
+  private tryToInitFacetSearch() {
+    if (!this.isFacetSearchAvailable) {
+      const field = this.options.field;
+      return this.logger.warn(`The search box is disabled on the ${field} CategoryFacet due to the options configured on the component.`);
+    }
+
+    this.categoryFacetSearch = new CategoryFacetSearch(this);
   }
 
   private get isFacetSearchAvailable() {
