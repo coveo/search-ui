@@ -1,4 +1,3 @@
-import * as fastclick from 'fastclick';
 import * as jstz from 'jstimezonedetect';
 import 'styling/Globals';
 import 'styling/_SearchButton';
@@ -519,7 +518,6 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     this.root = element;
 
     this.setupQueryMode();
-    this.setupMobileFastclick(element);
 
     this.queryStateModel = new QueryStateModel(element);
     this.componentStateModel = new ComponentStateModel(element);
@@ -700,13 +698,6 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     } else {
       this.initializeEmptyQueryNotAllowed();
     }
-  }
-
-  private setupMobileFastclick(element: HTMLElement) {
-    // The definition file for fastclick does not match the way that fast click gets loaded (AMD)
-    // So we have to do some typecasting gymnastics
-    const attachFastclick = (fastclick as any).attach;
-    attachFastclick(element);
   }
 
   private setupEventsHandlers() {
