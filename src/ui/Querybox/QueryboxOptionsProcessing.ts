@@ -35,7 +35,7 @@ export class QueryboxOptionsProcessing {
       this.options.triggerQueryOnClear === false &&
       this.options.enableSearchAsYouType === true
     ) {
-      this.owner.logger.warn('Forcing option triggerQueryOnClear to true, since search as you type is enabled', this.owner);
+      this.owner.logger.warn('Forcing option triggerQueryOnClear to true, since search-as-you-type is enabled', this.owner);
       this.options.triggerQueryOnClear = true;
     }
   }

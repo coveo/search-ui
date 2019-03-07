@@ -41,7 +41,7 @@ export interface IQueryOptions {
    */
   ignoreWarningSearchEvent?: boolean;
   /**
-   * Specify that the query to execute is a search as you type. This information will be passed down in the query events for component and external code to determine their behavior
+   * Whether the query to execute is a search-as-you-type. This information will be passed down in the query events for component and external code to determine their behavior
    */
   searchAsYouType?: boolean;
   /**
