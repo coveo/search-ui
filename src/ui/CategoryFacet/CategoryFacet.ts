@@ -344,11 +344,27 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
 
   private tryToInitFacetSearch() {
     if (!this.isFacetSearchAvailable) {
-      const field = this.options.field;
-      return this.logger.warn(`The search box is disabled on the ${field} CategoryFacet due to the options configured on the component.`);
+      return this.logDisabledFacetSearchWarning();
     }
 
     this.categoryFacetSearch = new CategoryFacetSearch(this);
+  }
+
+  private logDisabledFacetSearchWarning() {
+    if (this.isEnableFacetSearchFalsy) {
+      return;
+    }
+
+    const valueCaptionAttributeName = this.getOptionAttributeName('valueCaption');
+    const enableFacetSearchAttributeName = this.getOptionAttributeName('enableFacetSearch');
+    const field = this.options.field;
+
+    this.logger.warn(`The search box is disabled on the ${field} CategoryFacet. To hide this warning,
+    either remove the ${valueCaptionAttributeName} option or set the ${enableFacetSearchAttributeName} option to "false".`);
+  }
+
+  private getOptionAttributeName(optionName: keyof ICategoryFacetOptions) {
+    return ComponentOptions.attrNameFromName(optionName);
   }
 
   private get isFacetSearchAvailable() {
@@ -356,7 +372,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
       return false;
     }
 
-    if (!this.options.enableFacetSearch) {
+    if (this.isEnableFacetSearchFalsy) {
       return false;
     }
 
@@ -366,6 +382,10 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   private get areValueCaptionsSpecified() {
     const valueCaptions = this.options.valueCaption;
     return keys(valueCaptions).length !== 0;
+  }
+
+  private get isEnableFacetSearchFalsy() {
+    return !this.options.enableFacetSearch;
   }
 
   private handleNoResults() {
