@@ -27,7 +27,7 @@ export function FieldSuggestionsTest() {
     });
 
     it('should do a request on the endpoint', () => {
-      Simulate.omnibox(test.env);
+      Simulate.populateOmnibox(test.env);
       expect(test.env.searchEndpoint.listFieldValues).toHaveBeenCalledWith(
         jasmine.objectContaining({
           field: '@foobar'
@@ -50,7 +50,7 @@ export function FieldSuggestionsTest() {
           resolve([{ value: 'foo' }, { value: 'bar' }, { value: 'baz' }]);
         })
       );
-      var simulation = Simulate.omnibox(test.env);
+      var simulation = Simulate.populateOmnibox(test.env);
       test.cmp.selectSuggestion(0);
       simulation.rows[0].deferred.then(elementResolved => {
         test.cmp.selectSuggestion(0);
@@ -65,7 +65,7 @@ export function FieldSuggestionsTest() {
           field: '@foobar',
           queryOverride: 'some override'
         });
-        Simulate.omnibox(test.env);
+        Simulate.populateOmnibox(test.env);
         expect(test.env.searchEndpoint.listFieldValues).toHaveBeenCalledWith(
           jasmine.objectContaining({
             field: '@foobar',
@@ -85,7 +85,7 @@ export function FieldSuggestionsTest() {
             resolve([{ value: 'foo' }, { value: 'bar' }, { value: 'baz' }]);
           })
         );
-        var simulation = Simulate.omnibox(test.env);
+        var simulation = Simulate.populateOmnibox(test.env);
         test.cmp.selectSuggestion(0);
         simulation.rows[0].deferred.then(elementResolved => {
           expect(elementResolved.zIndex).toBe(333);
@@ -98,7 +98,7 @@ export function FieldSuggestionsTest() {
           field: '@foobar',
           numberOfSuggestions: 333
         });
-        Simulate.omnibox(test.env);
+        Simulate.populateOmnibox(test.env);
         expect(test.env.searchEndpoint.listFieldValues).toHaveBeenCalledWith(
           jasmine.objectContaining({
             field: '@foobar',
@@ -120,7 +120,7 @@ export function FieldSuggestionsTest() {
 
           (<jasmine.Spy>test.env.searchEndpoint.listFieldValues).and.returnValue(fakeListField);
 
-          const simulation = Simulate.omnibox(test.env);
+          const simulation = Simulate.populateOmnibox(test.env);
           simulation.rows[0].deferred.then(elementResolved => {
             expect($$(elementResolved.element).find('.coveo-top-field-suggestion-header')).toBeNull();
             done();
@@ -135,7 +135,7 @@ export function FieldSuggestionsTest() {
 
           (<jasmine.Spy>test.env.searchEndpoint.listFieldValues).and.returnValue(fakeListField);
 
-          const simulation = Simulate.omnibox(test.env);
+          const simulation = Simulate.populateOmnibox(test.env);
           simulation.rows[0].deferred.then(elementResolved => {
             const header = $$(elementResolved.element).find('.coveo-top-field-suggestion-header');
             expect(header).not.toBeNull();
