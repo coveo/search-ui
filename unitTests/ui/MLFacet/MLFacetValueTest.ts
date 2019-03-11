@@ -1,15 +1,15 @@
-import { NoNameFacetValue } from '../../../src/ui/NoNameFacet/NoNameFacetValues/NoNameFacetValue';
-import { NoNameFacetTestUtils } from './NoNameFacetTestUtils';
-import { NoNameFacet } from '../../../src/ui/NoNameFacet/NoNameFacet';
+import { MLFacetValue } from '../../../src/ui/MLFacet/MLFacetValues/MLFacetValue';
+import { MLFacetTestUtils } from './MLFacetTestUtils';
+import { MLFacet } from '../../../src/ui/MLFacet/MLFacet';
 
-export function NoNameFacetValueTest() {
-  describe('NoNameFacetValue', () => {
-    let noNameFacetValue: NoNameFacetValue;
-    let facet: NoNameFacet;
+export function MLFacetValueTest() {
+  describe('MLFacetValue', () => {
+    let noNameFacetValue: MLFacetValue;
+    let facet: MLFacet;
 
     beforeEach(() => {
-      facet = NoNameFacetTestUtils.createFakeFacet();
-      noNameFacetValue = new NoNameFacetValue(NoNameFacetTestUtils.createFakeFacetValues(1)[0], facet);
+      facet = MLFacetTestUtils.createFakeFacet();
+      noNameFacetValue = new MLFacetValue(MLFacetTestUtils.createFakeFacetValues(1)[0], facet);
     });
 
     it('should toggle selection correctly', () => {
@@ -30,16 +30,16 @@ export function NoNameFacetValueTest() {
       expect(noNameFacetValue.selected).toBe(false);
     });
 
-    it(`when comparing with another NoNameFacetValue with a different value
+    it(`when comparing with another MLFacetValue with a different value
       it should not equal`, () => {
-      const anotherNoNameFacetValue = new NoNameFacetValue(NoNameFacetTestUtils.createFakeFacetValues(2)[1], facet);
-      expect(noNameFacetValue.equals(anotherNoNameFacetValue)).toBe(false);
+      const anotherMLFacetValue = new MLFacetValue(MLFacetTestUtils.createFakeFacetValues(2)[1], facet);
+      expect(noNameFacetValue.equals(anotherMLFacetValue)).toBe(false);
     });
 
-    it(`when comparing with another NoNameFacetValue with the same value
+    it(`when comparing with another MLFacetValue with the same value
       it should equal`, () => {
-      const anotherNoNameFacetValue = new NoNameFacetValue(NoNameFacetTestUtils.createFakeFacetValues(1)[0], facet);
-      expect(noNameFacetValue.equals(anotherNoNameFacetValue)).toBe(true);
+      const anotherMLFacetValue = new MLFacetValue(MLFacetTestUtils.createFakeFacetValues(1)[0], facet);
+      expect(noNameFacetValue.equals(anotherMLFacetValue)).toBe(true);
     });
 
     it(`when comparing with a value that does not equal it's own value

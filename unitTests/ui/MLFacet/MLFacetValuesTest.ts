@@ -1,18 +1,18 @@
-import { NoNameFacetValues } from '../../../src/ui/NoNameFacet/NoNameFacetValues/NoNameFacetValues';
-import { INoNameFacetValue } from '../../../src/ui/NoNameFacet/NoNameFacetValues/NoNameFacetValue';
-import { NoNameFacet } from '../../../src/ui/NoNameFacet/NoNameFacet';
-import { NoNameFacetTestUtils } from './NoNameFacetTestUtils';
+import { MLFacetValues } from '../../../src/ui/MLFacet/MLFacetValues/MLFacetValues';
+import { IMLFacetValue } from '../../../src/ui/MLFacet/MLFacetValues/MLFacetValue';
+import { MLFacet } from '../../../src/ui/MLFacet/MLFacet';
+import { MLFacetTestUtils } from './MLFacetTestUtils';
 
-export function NoNameFacetValuesTest() {
-  describe('NoNameFacetValues', () => {
-    let noNameFacetValues: NoNameFacetValues;
-    let mockFacetValues: INoNameFacetValue[];
-    let facet: NoNameFacet;
+export function MLFacetValuesTest() {
+  describe('MLFacetValues', () => {
+    let noNameFacetValues: MLFacetValues;
+    let mockFacetValues: IMLFacetValue[];
+    let facet: MLFacet;
 
     beforeEach(() => {
-      facet = NoNameFacetTestUtils.createFakeFacet();
+      facet = MLFacetTestUtils.createFakeFacet();
 
-      mockFacetValues = NoNameFacetTestUtils.createFakeFacetValues();
+      mockFacetValues = MLFacetTestUtils.createFakeFacetValues();
       mockFacetValues[1].selected = true;
       mockFacetValues[3].selected = true;
 
@@ -20,7 +20,7 @@ export function NoNameFacetValuesTest() {
     });
 
     function initializeComponent() {
-      noNameFacetValues = new NoNameFacetValues(facet);
+      noNameFacetValues = new MLFacetValues(facet);
       noNameFacetValues.createFromResults(mockFacetValues);
     }
 
@@ -44,7 +44,7 @@ export function NoNameFacetValuesTest() {
     });
 
     it('when there are no selected values, hasSelectedValues should return false', () => {
-      mockFacetValues = NoNameFacetTestUtils.createFakeFacetValues();
+      mockFacetValues = MLFacetTestUtils.createFakeFacetValues();
       initializeComponent();
       expect(noNameFacetValues.hasSelectedValues()).toBe(false);
     });

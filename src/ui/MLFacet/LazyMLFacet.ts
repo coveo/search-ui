@@ -2,17 +2,17 @@ import { IComponentDefinition } from '../Base/Component';
 import { LazyInitialization } from '../Base/Initialization';
 import { lazyExport } from '../../GlobalExports';
 
-export function lazyNoNameFacet() {
-  LazyInitialization.registerLazyComponent('NoNameFacet', () => {
+export function lazyMLFacet() {
+  LazyInitialization.registerLazyComponent('MLFacet', () => {
     return new Promise((resolve, reject) => {
       require.ensure(
-        ['./NoNameFacet'],
+        ['./MLFacet'],
         () => {
-          let loaded = require<IComponentDefinition>('./NoNameFacet.ts')['NoNameFacet'];
+          let loaded = require<IComponentDefinition>('./MLFacet.ts')['MLFacet'];
           lazyExport(loaded, resolve);
         },
-        LazyInitialization.buildErrorCallback('NoNameFacet', resolve),
-        'NoNameFacet'
+        LazyInitialization.buildErrorCallback('MLFacet', resolve),
+        'MLFacet'
       );
     });
   });

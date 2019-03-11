@@ -669,17 +669,17 @@ ResultListUtilsTest();
 import { FacetUtilsTest } from './utils/FacetUtilsTest';
 FacetUtilsTest();
 
-import { NoNameFacetHeaderTest } from './ui/NoNameFacet/NoNameFacetHeaderTest';
-NoNameFacetHeaderTest();
+import { MLFacetHeaderTest } from './ui/MLFacet/MLFacetHeaderTest';
+MLFacetHeaderTest();
 
-import { NoNameFacetHeaderButtonTest } from './ui/NoNameFacet/NoNameFacetHeaderButtonTest';
-NoNameFacetHeaderButtonTest();
+import { MLFacetHeaderButtonTest } from './ui/MLFacet/MLFacetHeaderButtonTest';
+MLFacetHeaderButtonTest();
 
-import { NoNameFacetHeaderCollapseToggleTest } from './ui/NoNameFacet/NoNameFacetHeaderCollapseToggleTest';
-NoNameFacetHeaderCollapseToggleTest();
+import { MLFacetHeaderCollapseToggleTest } from './ui/MLFacet/MLFacetHeaderCollapseToggleTest';
+MLFacetHeaderCollapseToggleTest();
 
-import { NoNameFacetValuesTest } from './ui/NoNameFacet/NoNameFacetValuesTest';
-NoNameFacetValuesTest();
+import { MLFacetValuesTest } from './ui/MLFacet/MLFacetValuesTest';
+MLFacetValuesTest();
 
-import { NoNameFacetValueTest } from './ui/NoNameFacet/NoNameFacetValueTest';
-NoNameFacetValueTest();
+import { MLFacetValueTest } from './ui/MLFacet/MLFacetValueTest';
+MLFacetValueTest();

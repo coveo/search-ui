@@ -1,25 +1,25 @@
 import * as Globalize from 'globalize';
-import { NoNameFacetValueRenderer } from './NoNameFacetValueRenderer';
+import { MLFacetValueRenderer } from './MLFacetValueRenderer';
 import { FacetUtils } from '../../Facet/FacetUtils';
-import { NoNameFacet } from '../NoNameFacet';
+import { MLFacet } from '../MLFacet';
 
-export interface INoNameFacetValue {
+export interface IMLFacetValue {
   value: string;
   selected: boolean;
   numberOfResults: number;
 }
 
-export class NoNameFacetValue implements INoNameFacetValue {
+export class MLFacetValue implements IMLFacetValue {
   public value: string;
   public selected: boolean;
   public numberOfResults: number;
-  private renderer: NoNameFacetValueRenderer;
+  private renderer: MLFacetValueRenderer;
 
-  constructor({ value, selected, numberOfResults }: INoNameFacetValue, private facet: NoNameFacet) {
+  constructor({ value, selected, numberOfResults }: IMLFacetValue, private facet: MLFacet) {
     this.value = value;
     this.selected = selected;
     this.numberOfResults = numberOfResults;
-    this.renderer = new NoNameFacetValueRenderer(this, facet);
+    this.renderer = new MLFacetValueRenderer(this, facet);
   }
 
   public toggleSelect() {
@@ -34,7 +34,7 @@ export class NoNameFacetValue implements INoNameFacetValue {
     this.selected = false;
   }
 
-  public equals(arg: string | NoNameFacetValue) {
+  public equals(arg: string | MLFacetValue) {
     const value = typeof arg === 'string' ? arg : arg.value;
     return value.toLowerCase() === this.value.toLowerCase();
   }

@@ -1,14 +1,14 @@
 import { $$, Dom } from '../../../utils/Dom';
-import { NoNameFacet } from '../NoNameFacet';
-import { NoNameFacetValue } from './NoNameFacetValue';
+import { MLFacet } from '../MLFacet';
+import { MLFacetValue } from './MLFacetValue';
 import { Checkbox } from '../../FormWidgets/Checkbox';
 import { l } from '../../../strings/Strings';
 
-export class NoNameFacetValueRenderer {
+export class MLFacetValueRenderer {
   private dom: Dom;
   private checkbox: Checkbox;
 
-  constructor(private facetValue: NoNameFacetValue, private facet: NoNameFacet) {}
+  constructor(private facetValue: MLFacetValue, private facet: MLFacet) {}
 
   public render() {
     this.dom = $$('li', {

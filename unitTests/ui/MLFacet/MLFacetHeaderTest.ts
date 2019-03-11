@@ -1,12 +1,12 @@
 import { $$ } from '../../../src/utils/Dom';
-import { NoNameFacetHeader } from '../../../src/ui/NoNameFacet/NoNameFacetHeader/NoNameFacetHeader';
-import { NoNameFacet } from '../../../src/ui/NoNameFacet/NoNameFacet';
-import { INoNameFacetOptions } from '../../../src/ui/NoNameFacet/NoNameFacetOptions';
+import { MLFacetHeader } from '../../../src/ui/MLFacet/MLFacetHeader/MLFacetHeader';
+import { MLFacet } from '../../../src/ui/MLFacet/MLFacet';
+import { IMLFacetOptions } from '../../../src/ui/MLFacet/MLFacetOptions';
 
-export function NoNameFacetHeaderTest() {
-  describe('NoNameFacetHeader', () => {
-    let noNameFacetHeader: NoNameFacetHeader;
-    let baseOptions: INoNameFacetOptions;
+export function MLFacetHeaderTest() {
+  describe('MLFacetHeader', () => {
+    let noNameFacetHeader: MLFacetHeader;
+    let baseOptions: IMLFacetOptions;
 
     beforeEach(() => {
       baseOptions = {
@@ -16,7 +16,7 @@ export function NoNameFacetHeaderTest() {
     });
 
     function initializeComponent() {
-      noNameFacetHeader = new NoNameFacetHeader({ options: baseOptions } as NoNameFacet);
+      noNameFacetHeader = new MLFacetHeader({ options: baseOptions } as MLFacet);
     }
 
     it('should create an accessible title', () => {
@@ -43,7 +43,7 @@ export function NoNameFacetHeaderTest() {
       setTimeout(() => {
         expect($$(waitAnimationElement).isVisible()).toBe(true);
         done();
-      }, NoNameFacetHeader.showLoadingDelay + 1);
+      }, MLFacetHeader.showLoadingDelay + 1);
     });
 
     it('should create an accessible hidden clear button', () => {
