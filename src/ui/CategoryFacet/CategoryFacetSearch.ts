@@ -96,6 +96,10 @@ export class CategoryFacetSearch implements IFacetSearch {
     return captions;
   }
 
+  public updateAriaLive(text: string) {
+    this.categoryFacet.searchInterface.ariaLive.updateText(text);
+  }
+
   private selectCurrentResult() {
     if (this.facetSearchElement.currentResult) {
       const currentResultPathData = this.facetSearchElement.currentResult.el.dataset.path;

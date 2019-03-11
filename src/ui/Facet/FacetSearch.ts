@@ -172,7 +172,7 @@ export class FacetSearch implements IFacetSearch {
       this.triggerNewFacetSearch(this.buildParamsForNormalSearch());
     } else {
       if (this.searchResults.style.display != 'none') {
-        this.performSelectActionOnCurrentSearchResult();
+        this.performActionOnCurrentSearchResult();
         this.dismissSearchResults();
       } else if ($$(this.search).is('.coveo-facet-search-no-results')) {
         this.selectAllValuesMatchingSearch();
@@ -201,6 +201,10 @@ export class FacetSearch implements IFacetSearch {
 
   public getValueInInputForFacetSearch() {
     return this.facetSearchElement.getValueInInputForFacetSearch();
+  }
+
+  public updateAriaLive(text: string) {
+    this.facet.searchInterface.ariaLive.updateText(text);
   }
 
   private get input() {
@@ -355,14 +359,25 @@ export class FacetSearch implements IFacetSearch {
     return $$(target).findAll('.coveo-facet-selectable');
   }
 
-  private performSelectActionOnCurrentSearchResult() {
+  private performActionOnCurrentSearchResult() {
+    const excludeIconCssClass = 'coveo-facet-value-will-exclude';
     let current = $$(this.searchResults).find('.coveo-facet-search-current-result');
     Assert.check(current != undefined);
 
-    let checkbox = <HTMLInputElement>$$(current).find('input[type="checkbox"]');
-    if (checkbox != undefined) {
+    const shouldExclude = $$(current).hasClass(excludeIconCssClass);
+
+    if (shouldExclude) {
+      const excludeIcon = $$(current).find(`.${excludeIconCssClass}`);
+      excludeIcon.click();
+      return;
+    }
+
+    const checkbox = <HTMLInputElement>$$(current).find('input[type="checkbox"]');
+
+    if (checkbox) {
       checkbox.checked = true;
       $$(checkbox).trigger('change');
+      return;
     } else {
       current.click();
     }

@@ -493,6 +493,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
    */
   public responsiveComponents: ResponsiveComponents;
   public isResultsPerPageModifiedByPipeline = false;
+  public ariaLive: AriaLive;
 
   private attachedComponents: { [type: string]: BaseComponent[] };
   private facetValueStateHandler: FacetValueStateHandler;
@@ -536,7 +537,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
 
     this.setupDebugInfo();
     this.setupResponsiveComponents();
-    new AriaLive(element);
+    this.ariaLive = new AriaLive(element);
   }
 
   public set resultsPerPage(resultsPerPage: number) {

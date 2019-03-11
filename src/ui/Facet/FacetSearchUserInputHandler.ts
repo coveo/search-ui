@@ -15,10 +15,10 @@ export class FacetSearchUserInputHandler {
         this.facetSearch.dismissSearchResults();
         break;
       case KEYBOARD.DOWN_ARROW:
-        this.facetSearch.facetSearchElement.moveCurrentResultDown();
+        this.facetSearch.facetSearchElement.nextFocusableElement();
         break;
       case KEYBOARD.UP_ARROW:
-        this.facetSearch.facetSearchElement.moveCurrentResultUp();
+        this.facetSearch.facetSearchElement.previousFocusableElement();
         break;
       default:
         this.facetSearch.keyboardEventDefaultHandler();

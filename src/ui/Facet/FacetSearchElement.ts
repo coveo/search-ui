@@ -150,6 +150,47 @@ export class FacetSearchElement {
     this.updateSelectedOption(toSet);
   }
 
+  private get canExcludeCurrentResult() {
+    return this.currentResult.hasClass('coveo-facet-value-will-exclude');
+  }
+
+  private toggleCanExcludeCurrentResult() {
+    this.currentResult.toggleClass('coveo-facet-value-will-exclude', !this.canExcludeCurrentResult);
+  }
+
+  private announceCurrentResultCanBeExcluded() {
+    const excludeIconTitle = $$(this.currentResult).find('.coveo-facet-value-exclude').title;
+    this.facetSearch.updateAriaLive(excludeIconTitle);
+  }
+
+  private announceCurrentResultCanBeSelected() {
+    const checkbox = this.currentResult.find('.coveo-facet-value-checkbox');
+    const checkboxLabel = checkbox.getAttribute('aria-label');
+    this.facetSearch.updateAriaLive(checkboxLabel);
+  }
+
+  public nextFocusableElement() {
+    if (this.canExcludeCurrentResult) {
+      this.toggleCanExcludeCurrentResult();
+      this.moveCurrentResultDown();
+      this.announceCurrentResultCanBeSelected();
+    } else {
+      this.toggleCanExcludeCurrentResult();
+      this.announceCurrentResultCanBeExcluded();
+    }
+  }
+
+  public previousFocusableElement() {
+    if (!this.canExcludeCurrentResult) {
+      this.moveCurrentResultUp();
+      this.toggleCanExcludeCurrentResult();
+      this.announceCurrentResultCanBeExcluded();
+    } else {
+      this.toggleCanExcludeCurrentResult();
+      this.announceCurrentResultCanBeSelected();
+    }
+  }
+
   public moveCurrentResultDown() {
     let nextResult = this.currentResult.el.nextElementSibling;
     if (!nextResult) {
