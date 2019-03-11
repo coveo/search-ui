@@ -1,6 +1,6 @@
 {
   "name": "coveo-search-ui",
-  "version": "2.0.184",
+  "version": "2.0.195",
   "description": "Coveo JavaScript Search Framework",
   "main": "./bin/js/CoveoJsSearch.js",
   "types": "./bin/ts/CoveoJsSearch.d.ts",
@@ -73,7 +73,6 @@
     "@types/bluebird": "^3.5.20",
     "@types/d3": "3.5.36",
     "@types/d3-scale": "1.0.4",
-    "@types/fastclick": "^1.0.28",
     "@types/jasmine": "^2.8.7",
     "@types/jasmine-ajax": "^3.1.37",
     "@types/pikaday": "^1.7.0",
@@ -151,7 +150,7 @@
     "walk": "^2.3.9",
     "webpack": "^3.10.0",
     "webpack-bundle-analyzer": "^2.9.1",
-    "webpack-dev-server": "^2.9.1",
+    "webpack-dev-server": "3.0.0",
     "xml2js": "^0.4.17",
     "yargs": "^4.7.1"
   },
@@ -163,7 +162,6 @@
     "d3-scale": "^1.0.3",
     "es6-promise": "^4.0.5",
     "exponential-backoff": "^1.0.5",
-    "fastclick": "1.0.6",
     "jstimezonedetect": "^1.0.6",
     "latinize": "^0.4.0",
     "modal-box": "^2.0.10",
@@ -171,6 +169,18 @@
     "popper.js": "^1.14.3",
     "snyk": "^1.89.0",
     "underscore": "^1.8.3"
+  },
+  "resolutions": {
+    "extend": "3.0.2",
+    "minimatch": "3.0.2",
+    "randomatic": "3.0.0",
+    "atob": "2.1.0",
+    "deep-extend": "0.5.1",
+    "cryptiles": "4.1.2",
+    "macaddress": "0.2.9",
+    "url-parse": "1.4.3",
+    "lodash": "4.17.11",
+    "hoek": "4.2.1"
   },
   "snyk": true
 }
