@@ -1,8 +1,8 @@
-import { $$ } from '../../../src/utils/Dom';
+import { $$ } from '../../../../src/utils/Dom';
 import {
   MLFacetHeaderCollapseToggle,
   IMLFacetCollapseToggleOptions
-} from '../../../src/ui/MLFacet/MLFacetHeader/MLFacetHeaderCollapseToggle';
+} from '../../../../src/ui/MLFacet/MLFacetHeader/MLFacetHeaderCollapseToggle';
 
 export function MLFacetHeaderCollapseToggleTest() {
   describe('MLFacetHeaderCollapseToggle', () => {

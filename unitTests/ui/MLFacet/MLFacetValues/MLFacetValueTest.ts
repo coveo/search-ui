@@ -1,6 +1,6 @@
-import { MLFacetValue } from '../../../src/ui/MLFacet/MLFacetValues/MLFacetValue';
-import { MLFacetTestUtils } from './MLFacetTestUtils';
-import { MLFacet } from '../../../src/ui/MLFacet/MLFacet';
+import { MLFacetValue } from '../../../../src/ui/MLFacet/MLFacetValues/MLFacetValue';
+import { MLFacetTestUtils } from '../MLFacetTestUtils';
+import { MLFacet } from '../../../../src/ui/MLFacet/MLFacet';
 
 export function MLFacetValueTest() {
   describe('MLFacetValue', () => {
