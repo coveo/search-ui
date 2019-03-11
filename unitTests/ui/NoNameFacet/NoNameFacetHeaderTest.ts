@@ -1,5 +1,6 @@
 import { $$ } from '../../../src/utils/Dom';
 import { NoNameFacetHeader } from '../../../src/ui/NoNameFacet/NoNameFacetHeader/NoNameFacetHeader';
+import { NoNameFacet } from '../../../src/ui/NoNameFacet/NoNameFacet';
 import { INoNameFacetOptions } from '../../../src/ui/NoNameFacet/NoNameFacetOptions';
 
 export function NoNameFacetHeaderTest() {
@@ -15,7 +16,7 @@ export function NoNameFacetHeaderTest() {
     });
 
     function initializeComponent() {
-      noNameFacetHeader = new NoNameFacetHeader(baseOptions);
+      noNameFacetHeader = new NoNameFacetHeader({ options: baseOptions } as NoNameFacet);
     }
 
     it('should create an accessible title', () => {
@@ -57,7 +58,7 @@ export function NoNameFacetHeaderTest() {
       the clear button should be visible`, () => {
       const clearElement = $$(noNameFacetHeader.element).find('.coveo-facet-header-eraser');
 
-      noNameFacetHeader.showClear();
+      noNameFacetHeader.toggleClear(true);
 
       expect($$(clearElement).isVisible()).toBe(true);
     });

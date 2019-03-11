@@ -8,17 +8,24 @@ export interface INoNameFacetCollapseToggleOptions {
 }
 
 export class NoNameFacetHeaderCollapseToggle {
+  public element: HTMLElement;
   private collapseButton: NoNameFacetHeaderButton;
   private expandButton: NoNameFacetHeaderButton;
 
   constructor(private options: INoNameFacetCollapseToggleOptions) {
+    this.create();
+  }
+
+  private create() {
+    const parent = $$('div');
+
     this.collapseButton = new NoNameFacetHeaderButton({
       label: l('Collapse'),
       className: 'coveo-facet-header-collapse',
       iconSVG: SVGIcons.icons.facetCollapse,
       iconClassName: 'coveo-facet-settings-section-hide-svg',
       shouldDisplay: true,
-      action: this.collapse
+      action: () => this.collapse()
     });
     this.expandButton = new NoNameFacetHeaderButton({
       label: l('Expand'),
@@ -26,17 +33,14 @@ export class NoNameFacetHeaderCollapseToggle {
       iconSVG: SVGIcons.icons.facetExpand,
       iconClassName: 'coveo-facet-settings-section-show-svg',
       shouldDisplay: true,
-      action: this.expand
+      action: () => this.expand()
     });
-  }
 
-  public create() {
-    const parent = $$('div');
-    parent.append(this.collapseButton.create());
-    parent.append(this.expandButton.create());
+    parent.append(this.collapseButton.element);
+    parent.append(this.expandButton.element);
     this.toggle(this.options.collapsed);
 
-    return parent.el;
+    this.element = parent.el;
   }
 
   private toggle = (collapsed: boolean) => {
@@ -44,13 +48,13 @@ export class NoNameFacetHeaderCollapseToggle {
     this.expandButton.toggle(collapsed);
   };
 
-  private collapse = () => {
+  private collapse() {
     this.toggle(true);
     // TODO: collapse facet
-  };
+  }
 
-  private expand = () => {
+  private expand() {
     this.toggle(false);
     // TODO: expand facet
-  };
+  }
 }

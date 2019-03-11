@@ -20,7 +20,7 @@ export function NoNameFacetHeaderButtonTest() {
 
     function initializeComponent() {
       button = new NoNameFacetHeaderButton(baseOptions);
-      buttonElement = button.create();
+      buttonElement = button.element;
     }
 
     it('should initialize without errors', () => {
@@ -28,7 +28,7 @@ export function NoNameFacetHeaderButtonTest() {
     });
 
     it('should create without errors', () => {
-      expect(() => button.create()).not.toThrow();
+      expect(() => new NoNameFacetHeaderButton(baseOptions)).not.toThrow();
     });
 
     it(`when no icon options ("iconSVG" & "iconClassName") are passed

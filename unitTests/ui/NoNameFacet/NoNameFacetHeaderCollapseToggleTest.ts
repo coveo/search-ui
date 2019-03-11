@@ -19,7 +19,7 @@ export function NoNameFacetHeaderCollapseToggleTest() {
 
     function initializeComponent() {
       collapseToggle = new NoNameFacetHeaderCollapseToggle(baseOptions);
-      collapseToggleElement = collapseToggle.create();
+      collapseToggleElement = collapseToggle.element;
     }
 
     it(`when passing the option enableCollapse (true)

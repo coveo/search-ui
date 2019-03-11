@@ -677,3 +677,9 @@ NoNameFacetHeaderButtonTest();
 
 import { NoNameFacetHeaderCollapseToggleTest } from './ui/NoNameFacet/NoNameFacetHeaderCollapseToggleTest';
 NoNameFacetHeaderCollapseToggleTest();
+
+import { NoNameFacetValuesTest } from './ui/NoNameFacet/NoNameFacetValuesTest';
+NoNameFacetValuesTest();
+
+import { NoNameFacetValueTest } from './ui/NoNameFacet/NoNameFacetValueTest';
+NoNameFacetValueTest();
