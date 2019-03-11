@@ -1,25 +1,25 @@
 import { l } from '../../../strings/Strings';
 import { SVGIcons } from '../../../utils/SVGIcons';
 import { $$ } from '../../../utils/Dom';
-import { NoNameFacetHeaderButton } from './NoNameFacetHeaderButton';
+import { MLFacetHeaderButton } from './MLFacetHeaderButton';
 
-export interface INoNameFacetCollapseToggleOptions {
+export interface IMLFacetCollapseToggleOptions {
   collapsed: boolean;
 }
 
-export class NoNameFacetHeaderCollapseToggle {
+export class MLFacetHeaderCollapseToggle {
   public element: HTMLElement;
-  private collapseButton: NoNameFacetHeaderButton;
-  private expandButton: NoNameFacetHeaderButton;
+  private collapseButton: MLFacetHeaderButton;
+  private expandButton: MLFacetHeaderButton;
 
-  constructor(private options: INoNameFacetCollapseToggleOptions) {
+  constructor(private options: IMLFacetCollapseToggleOptions) {
     this.create();
   }
 
   private create() {
     const parent = $$('div');
 
-    this.collapseButton = new NoNameFacetHeaderButton({
+    this.collapseButton = new MLFacetHeaderButton({
       label: l('Collapse'),
       className: 'coveo-facet-header-collapse',
       iconSVG: SVGIcons.icons.facetCollapse,
@@ -27,7 +27,7 @@ export class NoNameFacetHeaderCollapseToggle {
       shouldDisplay: true,
       action: () => this.collapse()
     });
-    this.expandButton = new NoNameFacetHeaderButton({
+    this.expandButton = new MLFacetHeaderButton({
       label: l('Expand'),
       className: 'coveo-facet-header-expand',
       iconSVG: SVGIcons.icons.facetExpand,

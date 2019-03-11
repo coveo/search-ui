@@ -2,19 +2,19 @@ import { $$, Dom } from '../../../utils/Dom';
 import { l } from '../../../strings/Strings';
 import { SVGIcons } from '../../../utils/SVGIcons';
 import { SVGDom } from '../../../utils/SVGDom';
-import { NoNameFacet } from '../NoNameFacet';
-import { NoNameFacetHeaderButton } from './NoNameFacetHeaderButton';
-import { NoNameFacetHeaderCollapseToggle } from './NoNameFacetHeaderCollapseToggle';
+import { MLFacet } from '../MLFacet';
+import { MLFacetHeaderButton } from './MLFacetHeaderButton';
+import { MLFacetHeaderCollapseToggle } from './MLFacetHeaderCollapseToggle';
 
-export class NoNameFacetHeader {
+export class MLFacetHeader {
   public static showLoadingDelay = 2000;
   public element: HTMLElement;
   private waitAnimation: Dom;
-  private clearButton: NoNameFacetHeaderButton;
-  private collapseToggle: NoNameFacetHeaderCollapseToggle;
+  private clearButton: MLFacetHeaderButton;
+  private collapseToggle: MLFacetHeaderCollapseToggle;
   private showLoadingTimeout: number;
 
-  constructor(private facet: NoNameFacet) {
+  constructor(private facet: MLFacet) {
     this.element = $$('div', { className: 'coveo-facet-header' }).el;
     $$(this.element).append(this.createTitleSection());
     $$(this.element).append(this.createSettingsSection());
@@ -39,7 +39,7 @@ export class NoNameFacetHeader {
   }
 
   private createClearButton() {
-    this.clearButton = new NoNameFacetHeaderButton({
+    this.clearButton = new MLFacetHeaderButton({
       label: l('Reset'),
       className: 'coveo-facet-header-eraser coveo-facet-header-eraser-visible',
       iconSVG: SVGIcons.icons.mainClear,
@@ -57,7 +57,7 @@ export class NoNameFacetHeader {
   }
 
   private createCollapseToggle() {
-    this.collapseToggle = new NoNameFacetHeaderCollapseToggle({ collapsed: this.facet.options.collapsedByDefault });
+    this.collapseToggle = new MLFacetHeaderCollapseToggle({ collapsed: this.facet.options.collapsedByDefault });
     return this.collapseToggle.element;
   }
 
@@ -84,10 +84,7 @@ export class NoNameFacetHeader {
 
   public showLoading() {
     clearTimeout(this.showLoadingTimeout);
-    this.showLoadingTimeout = window.setTimeout(
-      () => (this.waitAnimation.el.style.visibility = 'visible'),
-      NoNameFacetHeader.showLoadingDelay
-    );
+    this.showLoadingTimeout = window.setTimeout(() => (this.waitAnimation.el.style.visibility = 'visible'), MLFacetHeader.showLoadingDelay);
   }
 
   public hideLoading() {

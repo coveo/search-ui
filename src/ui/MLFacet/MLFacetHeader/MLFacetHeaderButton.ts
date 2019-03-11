@@ -1,7 +1,7 @@
 import { $$, Dom } from '../../../utils/Dom';
 import { SVGDom } from '../../../utils/SVGDom';
 
-export interface INoNameFacetHeaderButtonOptions {
+export interface IMLFacetHeaderButtonOptions {
   label: string;
   shouldDisplay?: boolean;
   className?: string;
@@ -10,11 +10,11 @@ export interface INoNameFacetHeaderButtonOptions {
   action?: () => void;
 }
 
-export class NoNameFacetHeaderButton {
+export class MLFacetHeaderButton {
   private button: Dom;
   public element: HTMLElement;
 
-  constructor(private rootOptions: INoNameFacetHeaderButtonOptions) {
+  constructor(private rootOptions: IMLFacetHeaderButtonOptions) {
     this.create();
   }
 

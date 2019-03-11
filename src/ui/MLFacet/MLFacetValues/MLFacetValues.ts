@@ -1,16 +1,16 @@
 import { $$ } from '../../../utils/Dom';
 import { findWhere, find } from 'underscore';
-import { NoNameFacetValue, INoNameFacetValue } from './NoNameFacetValue';
-import { NoNameFacet } from '../NoNameFacet';
+import { MLFacetValue, IMLFacetValue } from './MLFacetValue';
+import { MLFacet } from '../MLFacet';
 
-export class NoNameFacetValues {
-  private facetValues: NoNameFacetValue[] = [];
+export class MLFacetValues {
+  private facetValues: MLFacetValue[] = [];
   private list = $$('ul', { className: 'coveo-facet-values' });
 
-  constructor(private facet: NoNameFacet) {}
+  constructor(private facet: MLFacet) {}
 
-  public createFromResults(facetValues: INoNameFacetValue[]) {
-    this.facetValues = facetValues.map(value => new NoNameFacetValue(value, this.facet));
+  public createFromResults(facetValues: IMLFacetValue[]) {
+    this.facetValues = facetValues.map(value => new MLFacetValue(value, this.facet));
   }
 
   public get allFacetValues() {
@@ -37,7 +37,7 @@ export class NoNameFacetValues {
     return !this.facetValues.length;
   }
 
-  public get(arg: string | NoNameFacetValue) {
+  public get(arg: string | MLFacetValue) {
     const value = typeof arg === 'string' ? arg : arg.value;
     const facetValue = find(this.facetValues, facetValue => facetValue.equals(value));
 
@@ -45,7 +45,7 @@ export class NoNameFacetValues {
       return facetValue;
     }
 
-    const newFacetValue = new NoNameFacetValue({ value, selected: false, numberOfResults: 0 }, this.facet);
+    const newFacetValue = new MLFacetValue({ value, selected: false, numberOfResults: 0 }, this.facet);
     this.facetValues.push(newFacetValue);
     return newFacetValue;
   }

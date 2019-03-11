@@ -7,36 +7,36 @@ import { ComponentOptions } from '../Base/ComponentOptions';
 import { Initialization } from '../Base/Initialization';
 import { ResponsiveFacetOptions } from '../ResponsiveComponents/ResponsiveFacetOptions';
 import { ResponsiveFacets } from '../ResponsiveComponents/ResponsiveFacets';
-import { NoNameFacetHeader } from './NoNameFacetHeader/NoNameFacetHeader';
-import { INoNameFacetOptions, NoNameFacetOptions } from './NoNameFacetOptions';
-import { INoNameFacetValue } from './NoNameFacetValues/NoNameFacetValue';
-import { NoNameFacetValues } from './NoNameFacetValues/NoNameFacetValues';
+import { MLFacetHeader } from './MLFacetHeader/MLFacetHeader';
+import { IMLFacetOptions, MLFacetOptions } from './MLFacetOptions';
+import { IMLFacetValue } from './MLFacetValues/MLFacetValue';
+import { MLFacetValues } from './MLFacetValues/MLFacetValues';
 import { QueryEvents, IQuerySuccessEventArgs, IDoneBuildingQueryEventArgs } from '../../events/QueryEvents';
 import { QueryStateModel } from '../../models/QueryStateModel';
 import { Utils } from '../../utils/Utils';
 import { MODEL_EVENTS, IAttributesChangedEventArg } from '../../models/Model';
 import { Assert } from '../../misc/Assert';
 
-export class NoNameFacet extends Component {
-  static ID = 'NoNameFacet';
-  static doExport = () => exportGlobally({ NoNameFacet });
-  static options: INoNameFacetOptions = { ...NoNameFacetOptions, ...ResponsiveFacetOptions };
+export class MLFacet extends Component {
+  static ID = 'MLFacet';
+  static doExport = () => exportGlobally({ MLFacet });
+  static options: IMLFacetOptions = { ...MLFacetOptions, ...ResponsiveFacetOptions };
 
   private includedAttributeId: string;
   private listenToQueryStateChange = true;
-  private header: NoNameFacetHeader;
-  private values: NoNameFacetValues;
+  private header: MLFacetHeader;
+  private values: MLFacetValues;
   // TODO: remove
-  private mockedSavedValues: INoNameFacetValue[];
+  private mockedSavedValues: IMLFacetValue[];
 
-  constructor(public element: HTMLElement, public options?: INoNameFacetOptions, bindings?: IComponentBindings) {
-    super(element, NoNameFacet.ID, bindings);
-    this.options = ComponentOptions.initComponentOptions(element, NoNameFacet, options);
+  constructor(public element: HTMLElement, public options?: IMLFacetOptions, bindings?: IComponentBindings) {
+    super(element, MLFacet.ID, bindings);
+    this.options = ComponentOptions.initComponentOptions(element, MLFacet, options);
 
     this.initQueryEvents();
     this.initQueryStateEvents();
 
-    this.values = new NoNameFacetValues(this);
+    this.values = new MLFacetValues(this);
 
     ResponsiveFacets.init(this.root, this, this.options);
   }
@@ -153,7 +153,7 @@ export class NoNameFacet extends Component {
         { value: 'test 3', selected: false, numberOfResults: 13 },
         { value: 'test 4', selected: false, numberOfResults: 13134 },
         { value: 'test 5', selected: false, numberOfResults: 2223 }
-      ] as INoNameFacetValue[];
+      ] as IMLFacetValue[];
       return;
     }
 
@@ -207,7 +207,7 @@ export class NoNameFacet extends Component {
   }
 
   private createHeader() {
-    return new NoNameFacetHeader(this);
+    return new MLFacetHeader(this);
   }
 
   private handleFacetValuesChanged() {
@@ -240,7 +240,7 @@ export class NoNameFacet extends Component {
     this.updateAppearance();
   }
 
-  private onQueryResponse(values: INoNameFacetValue[]) {
+  private onQueryResponse(values: IMLFacetValue[]) {
     this.header.hideLoading();
     this.values.createFromResults(values);
     this.values.render();
@@ -248,10 +248,10 @@ export class NoNameFacet extends Component {
   }
 
   private notImplementedError() {
-    this.logger.error('NoNameFacets are not supported by your current search endpoint. Disabling this component.');
+    this.logger.error('MLFacets are not supported by your current search endpoint. Disabling this component.');
     this.disable();
   }
 }
 
-Initialization.registerAutoCreateComponent(NoNameFacet);
-NoNameFacet.doExport();
+Initialization.registerAutoCreateComponent(MLFacet);
+MLFacet.doExport();
