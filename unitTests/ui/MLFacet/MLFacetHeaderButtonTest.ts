@@ -1,15 +1,12 @@
 import { $$ } from '../../../src/utils/Dom';
-import {
-  NoNameFacetHeaderButton,
-  INoNameFacetHeaderButtonOptions
-} from '../../../src/ui/NoNameFacet/NoNameFacetHeader/NoNameFacetHeaderButton';
+import { MLFacetHeaderButton, IMLFacetHeaderButtonOptions } from '../../../src/ui/MLFacet/MLFacetHeader/MLFacetHeaderButton';
 import { SVGIcons } from '../../../src/utils/SVGIcons';
 
-export function NoNameFacetHeaderButtonTest() {
-  describe('NoNameFacetHeaderButton', () => {
-    let button: NoNameFacetHeaderButton;
+export function MLFacetHeaderButtonTest() {
+  describe('MLFacetHeaderButton', () => {
+    let button: MLFacetHeaderButton;
     let buttonElement: HTMLElement;
-    let baseOptions: INoNameFacetHeaderButtonOptions;
+    let baseOptions: IMLFacetHeaderButtonOptions;
 
     beforeEach(() => {
       baseOptions = {
@@ -19,8 +16,8 @@ export function NoNameFacetHeaderButtonTest() {
     });
 
     function initializeComponent() {
-      button = new NoNameFacetHeaderButton(baseOptions);
-      buttonElement = button.create();
+      button = new MLFacetHeaderButton(baseOptions);
+      buttonElement = button.element;
     }
 
     it('should initialize without errors', () => {
@@ -28,7 +25,7 @@ export function NoNameFacetHeaderButtonTest() {
     });
 
     it('should create without errors', () => {
-      expect(() => button.create()).not.toThrow();
+      expect(() => new MLFacetHeaderButton(baseOptions)).not.toThrow();
     });
 
     it(`when no icon options ("iconSVG" & "iconClassName") are passed

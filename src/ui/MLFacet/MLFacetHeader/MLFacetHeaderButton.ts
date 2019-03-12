@@ -1,7 +1,7 @@
 import { $$, Dom } from '../../../utils/Dom';
 import { SVGDom } from '../../../utils/SVGDom';
 
-export interface INoNameFacetHeaderButtonOptions {
+export interface IMLFacetHeaderButtonOptions {
   label: string;
   shouldDisplay?: boolean;
   className?: string;
@@ -10,11 +10,15 @@ export interface INoNameFacetHeaderButtonOptions {
   action?: () => void;
 }
 
-export class NoNameFacetHeaderButton {
+export class MLFacetHeaderButton {
   private button: Dom;
-  constructor(private rootOptions: INoNameFacetHeaderButtonOptions) {}
+  public element: HTMLElement;
 
-  public create() {
+  constructor(private rootOptions: IMLFacetHeaderButtonOptions) {
+    this.create();
+  }
+
+  private create() {
     const hasIcon = this.rootOptions.iconSVG && this.rootOptions.iconClassName;
 
     this.button = $$(
@@ -34,7 +38,8 @@ export class NoNameFacetHeaderButton {
     if (this.rootOptions.shouldDisplay !== undefined) {
       this.toggle(this.rootOptions.shouldDisplay);
     }
-    return this.button.el;
+
+    this.element = this.button.el;
   }
 
   public toggle(shouldDisplay: boolean) {

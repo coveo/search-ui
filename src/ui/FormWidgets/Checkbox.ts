@@ -22,7 +22,11 @@ export class Checkbox implements IFormWidgetWithLabel, IFormWidgetSelectable {
    * instance as an argument.
    * @param label The label to display next to the checkbox.
    */
-  constructor(public onChange: (checkbox: Checkbox) => void = (checkbox: Checkbox) => {}, public label: string) {
+  constructor(
+    public onChange: (checkbox: Checkbox) => void = (checkbox: Checkbox) => {},
+    public label: string,
+    private ariaLabel?: string
+  ) {
     this.buildContent();
   }
 
@@ -107,7 +111,7 @@ export class Checkbox implements IFormWidgetWithLabel, IFormWidgetSelectable {
       className: 'coveo-checkbox',
       value: this.label
     }).el;
-    const button = $$('button', { type: 'button', className: 'coveo-checkbox-button', 'aria-label': this.label });
+    const button = $$('button', { type: 'button', className: 'coveo-checkbox-button', 'aria-label': this.ariaLabel || this.label });
     const labelSpan = $$('span', { className: 'coveo-checkbox-span-label' });
     labelSpan.text(this.label);
 

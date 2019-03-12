@@ -15,7 +15,7 @@ import 'styling/_CategoryFacet';
 import { IAttributesChangedEventArg, MODEL_EVENTS } from '../../models/Model';
 import { Utils } from '../../utils/Utils';
 import { CategoryValue, CategoryValueParent } from './CategoryValue';
-import { pluck, reduce, find, first, last, contains, isArray } from 'underscore';
+import { pluck, reduce, find, first, last, contains, isArray, keys } from 'underscore';
 import { Assert } from '../../misc/Assert';
 import { QueryEvents, IBuildingQueryEventArgs, IQuerySuccessEventArgs } from '../../events/QueryEvents';
 import { CategoryFacetSearch } from './CategoryFacetSearch';
@@ -33,6 +33,7 @@ import { IResponsiveComponentOptions } from '../ResponsiveComponents/ResponsiveC
 import { ResponsiveFacetOptions } from '../ResponsiveComponents/ResponsiveFacetOptions';
 import { CategoryFacetHeader } from './CategoryFacetHeader';
 import { AccessibleButton } from '../../utils/AccessibleButton';
+import { IStringMap } from '../../rest/GenericParam';
 
 export interface ICategoryFacetOptions extends IResponsiveComponentOptions {
   field: IFieldOption;
@@ -49,6 +50,7 @@ export interface ICategoryFacetOptions extends IResponsiveComponentOptions {
   debug?: boolean;
   basePath?: string[];
   maximumDepth?: number;
+  valueCaption?: IStringMap<string>;
 }
 
 export type CategoryValueDescriptor = {
@@ -220,6 +222,48 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
      * This option can have negative effects on performance, and should only be activated when debugging.
      */
     debug: ComponentOptions.buildBooleanOption({ defaultValue: false }),
+    /**
+     * Specifies a JSON object describing a mapping of facet values to their desired captions. See
+     * [Normalizing Facet Value Captions](https://developers.coveo.com/x/jBsvAg).
+     *
+     * If this option is specified, the facet search box will be unavailable.
+     *
+     * **Examples:**
+     *
+     * You can set the option in the ['init']{@link init} call:
+     * ```javascript
+     * var myValueCaptions = {
+     *   "txt" : "Text files",
+     *   "html" : "Web page",
+     *   [ ... ]
+     * };
+     *
+     * Coveo.init(document.querySelector("#search"), {
+     *   Facet : {
+     *     valueCaption : myValueCaptions
+     *   }
+     * });
+     * ```
+     *
+     * Or before the `init` call, using the ['options']{@link options} top-level function:
+     * ```javascript
+     * Coveo.options(document.querySelector("#search"), {
+     *   Facet : {
+     *     valueCaption : myValueCaptions
+     *   }
+     * });
+     * ```
+     *
+     * Or directly in the markup:
+     * ```html
+     * <!-- Ensure that the double quotes are properly handled in data-value-caption. -->
+     * <div class='CoveoCategoryFacet' data-field='@myotherfield' data-value-caption='{"txt":"Text files","html":"Web page"}'></div>
+     * ```
+     *
+     * **Note:**
+     * > Using value captions will disable alphabetical sorts (see the [availableSorts]{@link Facet.options.availableSorts} option).
+     */
+    valueCaption: ComponentOptions.buildJsonOption<IStringMap<string>>({ defaultValue: {} }),
     ...ResponsiveFacetOptions
   };
 
@@ -254,9 +298,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     this.currentPage = 0;
     this.numberOfValues = this.options.numberOfValues;
 
-    if (this.options.enableFacetSearch) {
-      this.categoryFacetSearch = new CategoryFacetSearch(this);
-    }
+    this.tryToInitFacetSearch();
 
     if (this.options.debug) {
       new CategoryFacetDebug(this);
@@ -298,6 +340,52 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
       this.activePath,
       this.numberOfValues + 1
     );
+  }
+
+  private tryToInitFacetSearch() {
+    if (!this.isFacetSearchAvailable) {
+      return this.logDisabledFacetSearchWarning();
+    }
+
+    this.categoryFacetSearch = new CategoryFacetSearch(this);
+  }
+
+  private logDisabledFacetSearchWarning() {
+    if (this.isEnableFacetSearchFalsy) {
+      return;
+    }
+
+    const valueCaptionAttributeName = this.getOptionAttributeName('valueCaption');
+    const enableFacetSearchAttributeName = this.getOptionAttributeName('enableFacetSearch');
+    const field = this.options.field;
+
+    this.logger.warn(`The search box is disabled on the ${field} CategoryFacet. To hide this warning,
+    either remove the ${valueCaptionAttributeName} option or set the ${enableFacetSearchAttributeName} option to "false".`);
+  }
+
+  private getOptionAttributeName(optionName: keyof ICategoryFacetOptions) {
+    return ComponentOptions.attrNameFromName(optionName);
+  }
+
+  private get isFacetSearchAvailable() {
+    if (this.areValueCaptionsSpecified) {
+      return false;
+    }
+
+    if (this.isEnableFacetSearchFalsy) {
+      return false;
+    }
+
+    return true;
+  }
+
+  private get areValueCaptionsSpecified() {
+    const valueCaptions = this.options.valueCaption;
+    return keys(valueCaptions).length !== 0;
+  }
+
+  private get isEnableFacetSearchFalsy() {
+    return !this.options.enableFacetSearch;
   }
 
   private handleNoResults() {
@@ -342,10 +430,13 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     }
 
     this.renderValues(categoryFacetResult, numberOfRequestedValues);
-    if (this.options.enableFacetSearch) {
+    if (this.isFacetSearchAvailable) {
       const facetSearch = this.categoryFacetSearch.build();
       $$(facetSearch).insertAfter(this.categoryValueRoot.listRoot.el);
     }
+
+    this.moreLessContainer = $$('div', { className: 'coveo-category-facet-more-less-container' });
+    $$(this.element).append(this.moreLessContainer.el);
 
     if (this.options.enableMoreLess) {
       this.renderMoreLess();
@@ -519,6 +610,17 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     CategoryFacetDebug.analyzeResults(queryResults.groupByResults[0], this.options.delimitingCharacter);
   }
 
+  /**
+   *
+   * @param value The string to find a caption for.
+   * Returns the caption for a value or the value itself if no caption is available.
+   */
+  public getCaption(value: string) {
+    const valueCaptions = this.options.valueCaption;
+    const caption = valueCaptions[value];
+    return caption ? caption : value;
+  }
+
   public showWaitingAnimation() {
     this.ensureDom();
     if (!this.showingWaitAnimation) {
@@ -689,9 +791,6 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   }
 
   private renderMoreLess() {
-    this.moreLessContainer = $$('div', { className: 'coveo-category-facet-more-less-container' });
-    $$(this.element).append(this.moreLessContainer.el);
-
     if (this.numberOfChildValuesCurrentlyDisplayed > this.options.numberOfValues) {
       this.moreLessContainer.append(this.buildLessButton());
     }
@@ -703,7 +802,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
 
   private clear() {
     this.categoryValueRoot.clear();
-    if (this.options.enableFacetSearch) {
+    if (this.isFacetSearchAvailable) {
       this.categoryFacetSearch.clear();
     }
     this.moreLessContainer && this.moreLessContainer.detach();
@@ -758,12 +857,8 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
       this.reset();
     };
 
-    const categoryFacetBreadcrumbBuilder = new CategoryFacetBreadcrumb(
-      this.options.title,
-      resetFacet,
-      lastParentValue,
-      this.options.basePath
-    );
+    const categoryFacetBreadcrumbBuilder = new CategoryFacetBreadcrumb(this, resetFacet, lastParentValue);
+
     args.breadcrumbs.push({ element: categoryFacetBreadcrumbBuilder.build() });
   }
 

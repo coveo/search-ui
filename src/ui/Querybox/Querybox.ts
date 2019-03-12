@@ -59,7 +59,7 @@ export class Querybox extends Component {
    */
   public static options: IQueryboxOptions = {
     /**
-     * Specifies whether to enable the search-as-you-type feature.
+     * Whether to enable the search-as-you-type feature.
      *
      * Default value is `false`.
      */

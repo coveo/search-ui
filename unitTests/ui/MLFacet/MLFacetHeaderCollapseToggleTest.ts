@@ -1,14 +1,14 @@
 import { $$ } from '../../../src/utils/Dom';
 import {
-  NoNameFacetHeaderCollapseToggle,
-  INoNameFacetCollapseToggleOptions
-} from '../../../src/ui/NoNameFacet/NoNameFacetHeader/NoNameFacetHeaderCollapseToggle';
+  MLFacetHeaderCollapseToggle,
+  IMLFacetCollapseToggleOptions
+} from '../../../src/ui/MLFacet/MLFacetHeader/MLFacetHeaderCollapseToggle';
 
-export function NoNameFacetHeaderCollapseToggleTest() {
-  describe('NoNameFacetHeaderCollapseToggle', () => {
-    let collapseToggle: NoNameFacetHeaderCollapseToggle;
+export function MLFacetHeaderCollapseToggleTest() {
+  describe('MLFacetHeaderCollapseToggle', () => {
+    let collapseToggle: MLFacetHeaderCollapseToggle;
     let collapseToggleElement: HTMLElement;
-    let baseOptions: INoNameFacetCollapseToggleOptions;
+    let baseOptions: IMLFacetCollapseToggleOptions;
 
     beforeEach(() => {
       baseOptions = {
@@ -18,8 +18,8 @@ export function NoNameFacetHeaderCollapseToggleTest() {
     });
 
     function initializeComponent() {
-      collapseToggle = new NoNameFacetHeaderCollapseToggle(baseOptions);
-      collapseToggleElement = collapseToggle.create();
+      collapseToggle = new MLFacetHeaderCollapseToggle(baseOptions);
+      collapseToggleElement = collapseToggle.element;
     }
 
     it(`when passing the option enableCollapse (true)

@@ -1,42 +1,46 @@
 import { l } from '../../../strings/Strings';
 import { SVGIcons } from '../../../utils/SVGIcons';
 import { $$ } from '../../../utils/Dom';
-import { NoNameFacetHeaderButton } from './NoNameFacetHeaderButton';
+import { MLFacetHeaderButton } from './MLFacetHeaderButton';
 
-export interface INoNameFacetCollapseToggleOptions {
+export interface IMLFacetCollapseToggleOptions {
   collapsed: boolean;
 }
 
-export class NoNameFacetHeaderCollapseToggle {
-  private collapseButton: NoNameFacetHeaderButton;
-  private expandButton: NoNameFacetHeaderButton;
+export class MLFacetHeaderCollapseToggle {
+  public element: HTMLElement;
+  private collapseButton: MLFacetHeaderButton;
+  private expandButton: MLFacetHeaderButton;
 
-  constructor(private options: INoNameFacetCollapseToggleOptions) {
-    this.collapseButton = new NoNameFacetHeaderButton({
+  constructor(private options: IMLFacetCollapseToggleOptions) {
+    this.create();
+  }
+
+  private create() {
+    const parent = $$('div');
+
+    this.collapseButton = new MLFacetHeaderButton({
       label: l('Collapse'),
       className: 'coveo-facet-header-collapse',
       iconSVG: SVGIcons.icons.facetCollapse,
       iconClassName: 'coveo-facet-settings-section-hide-svg',
       shouldDisplay: true,
-      action: this.collapse
+      action: () => this.collapse()
     });
-    this.expandButton = new NoNameFacetHeaderButton({
+    this.expandButton = new MLFacetHeaderButton({
       label: l('Expand'),
       className: 'coveo-facet-header-expand',
       iconSVG: SVGIcons.icons.facetExpand,
       iconClassName: 'coveo-facet-settings-section-show-svg',
       shouldDisplay: true,
-      action: this.expand
+      action: () => this.expand()
     });
-  }
 
-  public create() {
-    const parent = $$('div');
-    parent.append(this.collapseButton.create());
-    parent.append(this.expandButton.create());
+    parent.append(this.collapseButton.element);
+    parent.append(this.expandButton.element);
     this.toggle(this.options.collapsed);
 
-    return parent.el;
+    this.element = parent.el;
   }
 
   private toggle = (collapsed: boolean) => {
@@ -44,13 +48,13 @@ export class NoNameFacetHeaderCollapseToggle {
     this.expandButton.toggle(collapsed);
   };
 
-  private collapse = () => {
+  private collapse() {
     this.toggle(true);
     // TODO: collapse facet
-  };
+  }
 
-  private expand = () => {
+  private expand() {
     this.toggle(false);
     // TODO: expand facet
-  };
+  }
 }

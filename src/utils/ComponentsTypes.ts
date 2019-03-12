@@ -4,7 +4,7 @@ import { Component } from '../ui/Base/Component';
 
 export class ComponentsTypes {
   public static get allFacetsType() {
-    return ['Facet', 'FacetSlider', 'FacetRange', 'TimespanFacet', 'HierarchicalFacet', 'CategoryFacet', 'NoNameFacet'];
+    return ['Facet', 'FacetSlider', 'FacetRange', 'TimespanFacet', 'HierarchicalFacet', 'CategoryFacet', 'MLFacet'];
   }
 
   public static get allFacetsClassname() {
