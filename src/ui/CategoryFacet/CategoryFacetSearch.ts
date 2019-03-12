@@ -30,6 +30,10 @@ export class CategoryFacetSearch implements IFacetSearch {
     this.numberOfValuesToFetch = this.categoryFacet.options.numberOfResultsInFacetSearch;
   }
 
+  public get facetType() {
+    return CategoryFacet.ID;
+  }
+
   public build() {
     this.container = $$('div', {
       className: 'coveo-category-facet-search-container',

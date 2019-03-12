@@ -56,6 +56,10 @@ export class FacetSearch implements IFacetSearch {
     $$(facet.root).on(InitializationEvents.nuke, () => this.handleNuke());
   }
 
+  public get facetType() {
+    return Facet.ID;
+  }
+
   /**
    * Build the search component and return an `HTMLElement` which can be appended to the {@link Facet}.
    * @returns {HTMLElement}
@@ -360,14 +364,13 @@ export class FacetSearch implements IFacetSearch {
   }
 
   private performActionOnCurrentSearchResult() {
-    const excludeIconCssClass = 'coveo-facet-value-will-exclude';
     let current = $$(this.searchResults).find('.coveo-facet-search-current-result');
     Assert.check(current != undefined);
 
-    const shouldExclude = $$(current).hasClass(excludeIconCssClass);
+    const shouldExclude = $$(current).hasClass('coveo-facet-value-will-exclude');
 
     if (shouldExclude) {
-      const excludeIcon = $$(current).find(`.${excludeIconCssClass}`);
+      const excludeIcon = $$(current).find('.coveo-facet-value-exclude');
       excludeIcon.click();
       return;
     }

@@ -7,7 +7,9 @@ import { EventsUtils } from '../../utils/EventsUtils';
 import { PopupUtils, PopupHorizontalAlignment, PopupVerticalAlignment } from '../../utils/PopupUtils';
 import { IFacetSearch } from './IFacetSearch';
 import { FacetSearchUserInputHandler } from './FacetSearchUserInputHandler';
-import { first, last, uniqueId } from 'underscore';
+import { uniqueId } from 'underscore';
+import { ISearchDropdownNavigator, ISearchDropdownConfig } from '../FacetSearchDropdownNavigation/DefaultSearchDropdownNavigator';
+import { SearchDropdownNavigatorFactory } from '../FacetSearchDropdownNavigation/SearchDropdownNavigatorFactory';
 
 export class FacetSearchElement {
   public search: HTMLElement | undefined;
@@ -18,18 +20,16 @@ export class FacetSearchElement {
   public combobox: HTMLElement | undefined;
   public searchBarIsAnimating: boolean = false;
   public searchResults: HTMLElement;
-  public currentResult: Dom;
   public facetSearchUserInputHandler: FacetSearchUserInputHandler;
 
   private triggeredScroll = false;
   private static FACET_SEARCH_PADDING = 40;
   private facetSearchId = uniqueId('coveo-facet-search-results');
+  private searchDropdownNavigator: ISearchDropdownNavigator;
 
   constructor(private facetSearch: IFacetSearch) {
     this.facetSearchUserInputHandler = new FacetSearchUserInputHandler(this.facetSearch);
-    this.searchResults = $$('ul', { id: this.facetSearchId, className: 'coveo-facet-search-results', role: 'listbox' }).el;
-    $$(this.searchResults).on('scroll', () => this.handleScrollEvent());
-    $$(this.searchResults).hide();
+    this.initSearchResults();
   }
 
   public build(handleFacetSearchClear?: () => void) {
@@ -71,7 +71,25 @@ export class FacetSearchElement {
     });
 
     this.detectSearchBarAnimation();
+    this.initSearchDropdownNavigator();
+
     return this.search;
+  }
+
+  private initSearchResults() {
+    this.searchResults = $$('ul', { id: this.facetSearchId, className: 'coveo-facet-search-results', role: 'listbox' }).el;
+    $$(this.searchResults).on('scroll', () => this.handleScrollEvent());
+    $$(this.searchResults).hide();
+  }
+
+  private initSearchDropdownNavigator() {
+    const config: ISearchDropdownConfig = {
+      input: this.input,
+      searchResults: this.searchResults,
+      setScrollTrigger: (val: boolean) => (this.triggeredScroll = val)
+    };
+
+    this.searchDropdownNavigator = SearchDropdownNavigatorFactory(this.facetSearch, config);
   }
 
   private buildCombobox() {
@@ -80,15 +98,6 @@ export class FacetSearchElement {
       ariaHaspopup: 'listbox',
       ariaExpanded: 'true'
     }).el;
-  }
-
-  private updateSelectedOption(option: Dom) {
-    this.input.setAttribute('aria-activedescendant', option.getAttribute('id'));
-
-    const previouslySelectedOption = $$(this.searchResults).find('[aria-selected^="true"]');
-    previouslySelectedOption && previouslySelectedOption.setAttribute('aria-selected', 'false');
-
-    option.setAttribute('aria-selected', 'true');
   }
 
   public showFacetSearchWaitingAnimation() {
@@ -144,69 +153,19 @@ export class FacetSearchElement {
   }
 
   public setAsCurrentResult(toSet: Dom) {
-    this.currentResult && this.currentResult.removeClass('coveo-facet-search-current-result');
-    this.currentResult = toSet;
-    toSet.addClass('coveo-facet-search-current-result');
-    this.updateSelectedOption(toSet);
+    this.searchDropdownNavigator.setAsCurrentResult(toSet);
   }
 
-  private get canExcludeCurrentResult() {
-    return this.currentResult.hasClass('coveo-facet-value-will-exclude');
-  }
-
-  private toggleCanExcludeCurrentResult() {
-    this.currentResult.toggleClass('coveo-facet-value-will-exclude', !this.canExcludeCurrentResult);
-  }
-
-  private announceCurrentResultCanBeExcluded() {
-    const excludeIconTitle = $$(this.currentResult).find('.coveo-facet-value-exclude').title;
-    this.facetSearch.updateAriaLive(excludeIconTitle);
-  }
-
-  private announceCurrentResultCanBeSelected() {
-    const checkbox = this.currentResult.find('.coveo-facet-value-checkbox');
-    const checkboxLabel = checkbox.getAttribute('aria-label');
-    this.facetSearch.updateAriaLive(checkboxLabel);
+  public get currentResult() {
+    return this.searchDropdownNavigator.currentResult;
   }
 
   public nextFocusableElement() {
-    if (this.canExcludeCurrentResult) {
-      this.toggleCanExcludeCurrentResult();
-      this.moveCurrentResultDown();
-      this.announceCurrentResultCanBeSelected();
-    } else {
-      this.toggleCanExcludeCurrentResult();
-      this.announceCurrentResultCanBeExcluded();
-    }
+    this.searchDropdownNavigator.nextFocusableElement();
   }
 
   public previousFocusableElement() {
-    if (!this.canExcludeCurrentResult) {
-      this.moveCurrentResultUp();
-      this.toggleCanExcludeCurrentResult();
-      this.announceCurrentResultCanBeExcluded();
-    } else {
-      this.toggleCanExcludeCurrentResult();
-      this.announceCurrentResultCanBeSelected();
-    }
-  }
-
-  public moveCurrentResultDown() {
-    let nextResult = this.currentResult.el.nextElementSibling;
-    if (!nextResult) {
-      nextResult = first(this.searchResults.children);
-    }
-    this.setAsCurrentResult($$(<HTMLElement>nextResult));
-    this.highlightAndShowCurrentResultWithKeyboard();
-  }
-
-  public moveCurrentResultUp() {
-    let previousResult = this.currentResult.el.previousElementSibling;
-    if (!previousResult) {
-      previousResult = last(this.searchResults.children);
-    }
-    this.setAsCurrentResult($$(<HTMLElement>previousResult));
-    this.highlightAndShowCurrentResultWithKeyboard();
+    this.searchDropdownNavigator.previousFocusableElement();
   }
 
   public highlightCurrentQueryInSearchResults(regex: RegExp) {
@@ -226,13 +185,6 @@ export class FacetSearchElement {
   public focus() {
     this.input.focus();
     this.handleFacetSearchFocus();
-  }
-
-  private highlightAndShowCurrentResultWithKeyboard() {
-    this.currentResult.addClass('coveo-facet-search-current-result');
-
-    this.triggeredScroll = true;
-    this.searchResults.scrollTop = this.currentResult.el.offsetTop;
   }
 
   private handleFacetSearchFocus() {
