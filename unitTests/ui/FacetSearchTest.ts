@@ -130,8 +130,8 @@ export function FacetSearchTest() {
       // The KeyboardEvent constructor is not even defined ...
       if (!Simulate.isPhantomJs()) {
         describe('hook user events', function() {
-          var searchPromise: Promise<IIndexFieldValue[]>;
-          var built: HTMLElement;
+          let searchPromise: Promise<IIndexFieldValue[]>;
+          let built: HTMLElement;
 
           beforeEach(function() {
             Simulate.removeJQuery();
@@ -192,6 +192,56 @@ export function FacetSearchTest() {
               Simulate.keyUp($$(built).find('input'), KEYBOARD.UP_ARROW);
               expect(getSearchResult(9).hasClass('coveo-facet-search-current-result')).toBe(true);
               expect(getSearchResult(9).hasClass('coveo-facet-value-will-exclude')).toBe(true);
+              done();
+            });
+          });
+
+          function spyOnAndReturnFirstCheckbox() {
+            const checkbox = $$(facetSearch.searchResults).find('input[type="checkbox"]');
+            spyOn(checkbox, 'onchange');
+            return checkbox;
+          }
+
+          function spyOnAndReturnFirstExcludeIcon() {
+            const excludeIcon = $$(facetSearch.searchResults).find('.coveo-facet-value-exclude');
+            spyOn(excludeIcon, 'click');
+            return excludeIcon;
+          }
+
+          function triggerKeyboardEnter() {
+            const enterKeyPress = new KeyboardEvent('keypress');
+            facetSearch.keyboardNavigationEnterPressed(enterKeyPress);
+          }
+
+          it(`when the first result is currently selected,
+          when triggering the enter key,
+          it triggers the checkbox #onChange handler`, done => {
+            searchPromise.then(() => {
+              const checkbox = spyOnAndReturnFirstCheckbox();
+              const excludeIcon = spyOnAndReturnFirstExcludeIcon();
+
+              triggerKeyboardEnter();
+
+              expect(checkbox.onchange).toHaveBeenCalledTimes(1);
+              expect(excludeIcon.click).not.toHaveBeenCalled();
+              done();
+            });
+          });
+
+          it(`when the first result is currently selected,
+          when the first result is primed to be excluded (i.e. it has the class coveo-facet-value-will-exclude)
+          when triggering the enter key,
+          it triggers the excludeIcon #click handler`, done => {
+            searchPromise.then(() => {
+              getSearchResult(0).addClass('coveo-facet-value-will-exclude');
+
+              const checkbox = spyOnAndReturnFirstCheckbox();
+              const excludeIcon = spyOnAndReturnFirstExcludeIcon();
+
+              triggerKeyboardEnter();
+
+              expect(checkbox.onchange).not.toHaveBeenCalled();
+              expect(excludeIcon.click).toHaveBeenCalledTimes(1);
               done();
             });
           });

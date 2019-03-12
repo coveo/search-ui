@@ -380,7 +380,6 @@ export class FacetSearch implements IFacetSearch {
     if (checkbox) {
       checkbox.checked = true;
       $$(checkbox).trigger('change');
-      return;
     } else {
       current.click();
     }
