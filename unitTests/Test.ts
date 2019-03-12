@@ -683,3 +683,6 @@ MLFacetValuesTest();
 
 import { MLFacetValueTest } from './ui/MLFacet/MLFacetValues/MLFacetValueTest';
 MLFacetValueTest();
+
+import { MLFacetValueRendererTest } from './ui/MLFacet/MLFacetValues/MLFacetValueRendererTest';
+MLFacetValueRendererTest();
