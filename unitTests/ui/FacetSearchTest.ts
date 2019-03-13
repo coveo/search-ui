@@ -24,23 +24,6 @@ export function FacetSearchTest() {
       return $$(listItem);
     }
 
-    function spyOnAndReturnFirstCheckbox() {
-      const checkbox = $$(facetSearch.searchResults).find('input[type="checkbox"]');
-      spyOn(checkbox, 'onchange');
-      return checkbox;
-    }
-
-    function spyOnAndReturnFirstExcludeIcon() {
-      const excludeIcon = $$(facetSearch.searchResults).find('.coveo-facet-value-exclude');
-      spyOn(excludeIcon, 'click');
-      return excludeIcon;
-    }
-
-    function triggerKeyboardEnter() {
-      const enterKeyPress = new KeyboardEvent('keypress');
-      facetSearch.keyboardNavigationEnterPressed(enterKeyPress);
-    }
-
     beforeEach(function() {
       let options = {
         field: '@field'
@@ -148,6 +131,23 @@ export function FacetSearchTest() {
         describe('hook user events', function() {
           let searchPromise: Promise<IIndexFieldValue[]>;
           let built: HTMLElement;
+
+          function spyOnAndReturnFirstCheckbox() {
+            const checkbox = $$(facetSearch.searchResults).find('input[type="checkbox"]');
+            spyOn(checkbox, 'onchange');
+            return checkbox;
+          }
+
+          function spyOnAndReturnFirstExcludeIcon() {
+            const excludeIcon = $$(facetSearch.searchResults).find('.coveo-facet-value-exclude');
+            spyOn(excludeIcon, 'click');
+            return excludeIcon;
+          }
+
+          function triggerKeyboardEnter() {
+            const enterKeyPress = new KeyboardEvent('keypress');
+            facetSearch.keyboardNavigationEnterPressed(enterKeyPress);
+          }
 
           beforeEach(function() {
             Simulate.removeJQuery();
