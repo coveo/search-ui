@@ -52,8 +52,9 @@ export class MLFacetValueRenderer {
   }
 
   private addFocusAndBlurEventListeners() {
-    $$(this.checkbox.getElement()).on('focus', () => this.dom.addClass('coveo-focused'));
-    $$(this.checkbox.getElement()).on('blur', () => this.dom.removeClass('coveo-focused'));
+    const checkboxButton = $$(this.checkbox.getElement()).find('button');
+    $$(checkboxButton).on('focusin', () => this.dom.addClass('coveo-focused'));
+    $$(checkboxButton).on('focusout', () => this.dom.removeClass('coveo-focused'));
   }
 
   private createCount() {

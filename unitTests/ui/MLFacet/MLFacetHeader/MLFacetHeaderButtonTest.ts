@@ -1,6 +1,6 @@
-import { $$ } from '../../../src/utils/Dom';
-import { MLFacetHeaderButton, IMLFacetHeaderButtonOptions } from '../../../src/ui/MLFacet/MLFacetHeader/MLFacetHeaderButton';
-import { SVGIcons } from '../../../src/utils/SVGIcons';
+import { $$ } from '../../../../src/utils/Dom';
+import { MLFacetHeaderButton, IMLFacetHeaderButtonOptions } from '../../../../src/ui/MLFacet/MLFacetHeader/MLFacetHeaderButton';
+import { SVGIcons } from '../../../../src/utils/SVGIcons';
 
 export function MLFacetHeaderButtonTest() {
   describe('MLFacetHeaderButton', () => {

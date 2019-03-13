@@ -1,7 +1,7 @@
-import { MLFacetValues } from '../../../src/ui/MLFacet/MLFacetValues/MLFacetValues';
-import { IMLFacetValue } from '../../../src/ui/MLFacet/MLFacetValues/MLFacetValue';
-import { MLFacet } from '../../../src/ui/MLFacet/MLFacet';
-import { MLFacetTestUtils } from './MLFacetTestUtils';
+import { MLFacetValues } from '../../../../src/ui/MLFacet/MLFacetValues/MLFacetValues';
+import { IMLFacetValue } from '../../../../src/ui/MLFacet/MLFacetValues/MLFacetValue';
+import { MLFacet } from '../../../../src/ui/MLFacet/MLFacet';
+import { MLFacetTestUtils } from '../MLFacetTestUtils';
 
 export function MLFacetValuesTest() {
   describe('MLFacetValues', () => {
