@@ -15,6 +15,7 @@ export class FacetSearchDropdownNavigator implements ISearchDropdownNavigator {
 
   public setAsCurrentResult(dom: Dom) {
     this.searchDropdownNavigator.setAsCurrentResult(dom);
+    this.announceCurrentResultCanBeSelected();
   }
 
   public get currentResult() {
