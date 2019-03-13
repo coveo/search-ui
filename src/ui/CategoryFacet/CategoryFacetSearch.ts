@@ -30,6 +30,10 @@ export class CategoryFacetSearch implements IFacetSearch {
     this.numberOfValuesToFetch = this.categoryFacet.options.numberOfResultsInFacetSearch;
   }
 
+  public get facetType() {
+    return CategoryFacet.ID;
+  }
+
   public build() {
     this.container = $$('div', {
       className: 'coveo-category-facet-search-container',
@@ -94,6 +98,10 @@ export class CategoryFacetSearch implements IFacetSearch {
       .concat(searchResults.findAll('.coveo-category-facet-search-path-parents'))
       .concat(searchResults.findAll('.coveo-category-facet-search-path-last-value'));
     return captions;
+  }
+
+  public updateAriaLive(text: string) {
+    this.categoryFacet.searchInterface.ariaLive.updateText(text);
   }
 
   private selectCurrentResult() {

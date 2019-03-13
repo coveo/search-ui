@@ -20,7 +20,10 @@ export class FacetSearchValuesList {
       );
     });
     return _.map(valuesToBuildWith, facetValue => {
-      return new this.facetValueElementKlass(this.facet, facetValue, this.facet.keepDisplayedValuesNextTime).build().renderer.listItem;
+      const valueElement = new this.facetValueElementKlass(this.facet, facetValue, this.facet.keepDisplayedValuesNextTime).build();
+      valueElement.renderer.excludeIcon.setAttribute('aria-hidden', 'true');
+      valueElement.renderer.label.setAttribute('aria-hidden', 'true');
+      return valueElement.renderer.listItem;
     });
   }
 }

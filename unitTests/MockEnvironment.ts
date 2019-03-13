@@ -19,6 +19,7 @@ import { OS_NAME } from '../src/utils/OSUtils';
 import { FakeResults } from './Fake';
 import { Simulate } from './Simulate';
 import ModalBox = Coveo.ModalBox.ModalBox;
+import { IAriaLive } from '../src/ui/AriaLive/AriaLive';
 
 export interface IMockEnvironment extends IComponentBindings {
   root: HTMLElement;
@@ -227,7 +228,14 @@ export function mockSearchInterface(): SearchInterface {
   m.getBindings = () => {
     return new MockEnvironmentBuilder().build() as any;
   };
+  m.ariaLive = mockAriaLive();
   return m;
+}
+
+function mockAriaLive(): IAriaLive {
+  return {
+    updateText: () => {}
+  };
 }
 
 export function mockResponsiveComponents(): ResponsiveComponents {

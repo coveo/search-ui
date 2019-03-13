@@ -56,6 +56,10 @@ export class FacetSearch implements IFacetSearch {
     $$(facet.root).on(InitializationEvents.nuke, () => this.handleNuke());
   }
 
+  public get facetType() {
+    return Facet.ID;
+  }
+
   /**
    * Build the search component and return an `HTMLElement` which can be appended to the {@link Facet}.
    * @returns {HTMLElement}
@@ -172,7 +176,7 @@ export class FacetSearch implements IFacetSearch {
       this.triggerNewFacetSearch(this.buildParamsForNormalSearch());
     } else {
       if (this.searchResults.style.display != 'none') {
-        this.performSelectActionOnCurrentSearchResult();
+        this.performActionOnCurrentSearchResult();
         this.dismissSearchResults();
       } else if ($$(this.search).is('.coveo-facet-search-no-results')) {
         this.selectAllValuesMatchingSearch();
@@ -201,6 +205,10 @@ export class FacetSearch implements IFacetSearch {
 
   public getValueInInputForFacetSearch() {
     return this.facetSearchElement.getValueInInputForFacetSearch();
+  }
+
+  public updateAriaLive(text: string) {
+    this.facet.searchInterface.ariaLive.updateText(text);
   }
 
   private get input() {
@@ -355,12 +363,21 @@ export class FacetSearch implements IFacetSearch {
     return $$(target).findAll('.coveo-facet-selectable');
   }
 
-  private performSelectActionOnCurrentSearchResult() {
+  private performActionOnCurrentSearchResult() {
     let current = $$(this.searchResults).find('.coveo-facet-search-current-result');
     Assert.check(current != undefined);
 
-    let checkbox = <HTMLInputElement>$$(current).find('input[type="checkbox"]');
-    if (checkbox != undefined) {
+    const shouldExclude = $$(current).hasClass('coveo-facet-value-will-exclude');
+
+    if (shouldExclude) {
+      const excludeIcon = $$(current).find('.coveo-facet-value-exclude');
+      excludeIcon.click();
+      return;
+    }
+
+    const checkbox = <HTMLInputElement>$$(current).find('input[type="checkbox"]');
+
+    if (checkbox) {
       checkbox.checked = true;
       $$(checkbox).trigger('change');
     } else {
