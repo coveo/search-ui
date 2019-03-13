@@ -8,12 +8,14 @@ export function MLFacetValueTest() {
   describe('MLFacetValue', () => {
     let mLFacetValue: MLFacetValue;
     let facet: MLFacet;
+    let options: IMLFacetOptions;
 
     beforeEach(() => {
+      options = undefined;
       initializeComponent();
     });
 
-    function initializeComponent(options?: IMLFacetOptions) {
+    function initializeComponent() {
       facet = MLFacetTestUtils.createFakeFacet(options);
       mLFacetValue = new MLFacetValue(MLFacetTestUtils.createFakeFacetValues(1)[0], facet);
     }
@@ -79,19 +81,26 @@ export function MLFacetValueTest() {
 
     it(`when using the valueCaption option with a function
       should bypass it and return the original value`, () => {
-      initializeComponent({ valueCaption: () => 'allo' });
+      options = { valueCaption: () => 'allo' };
+      initializeComponent();
+
       expect(mLFacetValue.valueCaption).toBe(mLFacetValue.value);
     });
 
     it(`when using the valueCaption with an object that contains the original value
       should return the caption`, () => {
-      initializeComponent({ valueCaption: { [mLFacetValue.value]: 'allo' } });
-      expect(mLFacetValue.valueCaption).toBe('allo');
+      const captionValue = 'allo';
+      options = { valueCaption: { [mLFacetValue.value]: captionValue } };
+      initializeComponent();
+
+      expect(mLFacetValue.valueCaption).toBe(captionValue);
     });
 
     it(`when using the valueCaption with an object that does not contain the original value
       should return original value`, () => {
-      initializeComponent({ valueCaption: { randomValue: 'allo' } });
+      options = { valueCaption: { randomValue: 'allo' } };
+      initializeComponent();
+
       expect(mLFacetValue.valueCaption).toBe(mLFacetValue.value);
     });
 
