@@ -1,6 +1,7 @@
 import { ISearchDropdownNavigator, DefaultSearchDropdownNavigator, ISearchDropdownConfig } from './DefaultSearchDropdownNavigator';
 import { $$, Dom } from '../../utils/Dom';
 import { IFacetSearch } from '../Facet/IFacetSearch';
+import { debounce } from 'underscore';
 
 export interface IFacetSearchDropdownConfig extends ISearchDropdownConfig {
   facetSearch: IFacetSearch;
@@ -8,6 +9,7 @@ export interface IFacetSearchDropdownConfig extends ISearchDropdownConfig {
 
 export class FacetSearchDropdownNavigator implements ISearchDropdownNavigator {
   private searchDropdownNavigator: DefaultSearchDropdownNavigator;
+  private debounceAnnounceCurrentResultAction = debounce(() => this.announceCurrentResultAction(), 500);
 
   constructor(private config: IFacetSearchDropdownConfig) {
     this.searchDropdownNavigator = new DefaultSearchDropdownNavigator(config);
@@ -15,7 +17,7 @@ export class FacetSearchDropdownNavigator implements ISearchDropdownNavigator {
 
   public setAsCurrentResult(dom: Dom) {
     this.searchDropdownNavigator.setAsCurrentResult(dom);
-    this.announceCurrentResultCanBeSelected();
+    this.debounceAnnounceCurrentResultAction();
   }
 
   public get currentResult() {
@@ -50,6 +52,10 @@ export class FacetSearchDropdownNavigator implements ISearchDropdownNavigator {
 
   private toggleCanExcludeCurrentResult() {
     this.searchDropdownNavigator.currentResult.toggleClass('coveo-facet-value-will-exclude', !this.canExcludeCurrentResult);
+  }
+
+  private announceCurrentResultAction() {
+    this.canExcludeCurrentResult ? this.announceCurrentResultCanBeExcluded() : this.announceCurrentResultCanBeSelected();
   }
 
   private announceCurrentResultCanBeExcluded() {
