@@ -149,7 +149,7 @@ export function FacetSearchTest() {
             facetSearch.keyboardNavigationEnterPressed(enterKeyPress);
           }
 
-          beforeEach(() => {
+          beforeEach(async done => {
             Simulate.removeJQuery();
             mockFacet.options.facetSearchDelay = 50;
             searchPromise = new Promise((resolve, reject) => {
@@ -162,106 +162,92 @@ export function FacetSearchTest() {
             built = facetSearch.build();
             var params = new FacetSearchParameters(mockFacet);
             facetSearch.triggerNewFacetSearch(params);
+            await searchPromise;
+            done();
           });
 
-          afterEach(() => {
-            searchPromise = null;
+          afterEach(() => (searchPromise = null));
+
+          it('by default, the first result is set as the current result', () => {
+            expect(getSearchResult(0).hasClass('coveo-facet-search-current-result')).toBe(true);
+            expect(getSearchResult(0).hasClass('coveo-facet-value-will-exclude')).toBe(false);
           });
 
-          it('arrow navigation', done => {
-            searchPromise.then(() => {
-              expect(getSearchResult(0).hasClass('coveo-facet-search-current-result')).toBe(true);
-              expect(getSearchResult(0).hasClass('coveo-facet-value-will-exclude')).toBe(false);
+          it('pressing the down arrow once primes the result to be excluded', () => {
+            Simulate.keyUp($$(built).find('input'), KEYBOARD.DOWN_ARROW);
+            expect(getSearchResult(0).hasClass('coveo-facet-search-current-result')).toBe(true);
+            expect(getSearchResult(0).hasClass('coveo-facet-value-will-exclude')).toBe(true);
+          });
 
-              Simulate.keyUp($$(built).find('input'), KEYBOARD.DOWN_ARROW);
-              expect(getSearchResult(0).hasClass('coveo-facet-search-current-result')).toBe(true);
-              expect(getSearchResult(0).hasClass('coveo-facet-value-will-exclude')).toBe(true);
+          it('pressing the up arrow once loops around and primes the last result to be excluded', () => {
+            Simulate.keyUp($$(built).find('input'), KEYBOARD.UP_ARROW);
+            expect(getSearchResult(9).hasClass('coveo-facet-search-current-result')).toBe(true);
+            expect(getSearchResult(9).hasClass('coveo-facet-value-will-exclude')).toBe(true);
+          });
 
+          describe('pressing the down arrow once twice', () => {
+            beforeEach(() => {
               Simulate.keyUp($$(built).find('input'), KEYBOARD.DOWN_ARROW);
+              Simulate.keyUp($$(built).find('input'), KEYBOARD.DOWN_ARROW);
+            });
+
+            it('it sets the second result as the current result', () => {
               expect(getSearchResult(1).hasClass('coveo-facet-search-current-result')).toBe(true);
               expect(getSearchResult(1).hasClass('coveo-facet-value-will-exclude')).toBe(false);
+            });
 
-              Simulate.keyUp($$(built).find('input'), KEYBOARD.DOWN_ARROW);
-              expect(getSearchResult(1).hasClass('coveo-facet-search-current-result')).toBe(true);
-              expect(getSearchResult(1).hasClass('coveo-facet-value-will-exclude')).toBe(true);
-
-              Simulate.keyUp($$(built).find('input'), KEYBOARD.DOWN_ARROW);
-              expect(getSearchResult(2).hasClass('coveo-facet-search-current-result')).toBe(true);
-
-              Simulate.keyUp($$(built).find('input'), KEYBOARD.UP_ARROW);
-              expect(getSearchResult(1).hasClass('coveo-facet-search-current-result')).toBe(true);
-              expect(getSearchResult(1).hasClass('coveo-facet-value-will-exclude')).toBe(true);
-
-              Simulate.keyUp($$(built).find('input'), KEYBOARD.UP_ARROW);
-              expect(getSearchResult(1).hasClass('coveo-facet-search-current-result')).toBe(true);
-              expect(getSearchResult(1).hasClass('coveo-facet-value-will-exclude')).toBe(false);
-
+            it('when pressing the up arrow once, it primes the first result to be excluded', () => {
               Simulate.keyUp($$(built).find('input'), KEYBOARD.UP_ARROW);
               expect(getSearchResult(0).hasClass('coveo-facet-search-current-result')).toBe(true);
               expect(getSearchResult(0).hasClass('coveo-facet-value-will-exclude')).toBe(true);
+            });
 
+            it('when pressing the up arrow twice, it primes the first result to be selected', () => {
+              Simulate.keyUp($$(built).find('input'), KEYBOARD.UP_ARROW);
               Simulate.keyUp($$(built).find('input'), KEYBOARD.UP_ARROW);
               expect(getSearchResult(0).hasClass('coveo-facet-search-current-result')).toBe(true);
               expect(getSearchResult(0).hasClass('coveo-facet-value-will-exclude')).toBe(false);
-
-              // loop around !
-              Simulate.keyUp($$(built).find('input'), KEYBOARD.UP_ARROW);
-              expect(getSearchResult(9).hasClass('coveo-facet-search-current-result')).toBe(true);
-              expect(getSearchResult(9).hasClass('coveo-facet-value-will-exclude')).toBe(true);
-              done();
             });
           });
 
           it(`when the first result is currently selected,
           when triggering the enter key,
-          it triggers the checkbox #onChange handler`, done => {
-            searchPromise.then(() => {
-              const checkbox = spyOnAndReturnFirstCheckbox();
-              const excludeIcon = spyOnAndReturnFirstExcludeIcon();
+          it triggers the checkbox #onChange handler`, () => {
+            const checkbox = spyOnAndReturnFirstCheckbox();
+            const excludeIcon = spyOnAndReturnFirstExcludeIcon();
 
-              triggerKeyboardEnter();
+            triggerKeyboardEnter();
 
-              expect(checkbox.onchange).toHaveBeenCalledTimes(1);
-              expect(excludeIcon.click).not.toHaveBeenCalled();
-              done();
-            });
+            expect(checkbox.onchange).toHaveBeenCalledTimes(1);
+            expect(excludeIcon.click).not.toHaveBeenCalled();
           });
 
           it(`when the first result is currently selected,
           when the first result is primed to be excluded (i.e. it has the class coveo-facet-value-will-exclude)
           when triggering the enter key,
-          it triggers the excludeIcon #click handler`, done => {
-            searchPromise.then(() => {
-              getSearchResult(0).addClass('coveo-facet-value-will-exclude');
+          it triggers the excludeIcon #click handler`, () => {
+            getSearchResult(0).addClass('coveo-facet-value-will-exclude');
 
-              const checkbox = spyOnAndReturnFirstCheckbox();
-              const excludeIcon = spyOnAndReturnFirstExcludeIcon();
+            const checkbox = spyOnAndReturnFirstCheckbox();
+            const excludeIcon = spyOnAndReturnFirstExcludeIcon();
 
-              triggerKeyboardEnter();
+            triggerKeyboardEnter();
 
-              expect(checkbox.onchange).not.toHaveBeenCalled();
-              expect(excludeIcon.click).toHaveBeenCalledTimes(1);
-              done();
-            });
+            expect(checkbox.onchange).not.toHaveBeenCalled();
+            expect(excludeIcon.click).toHaveBeenCalledTimes(1);
           });
 
-          it('escape close results', done => {
-            searchPromise.then(() => {
-              expect(facetSearch.currentlyDisplayedResults.length).toBe(10);
+          it('escape close results', () => {
+            expect(facetSearch.currentlyDisplayedResults.length).toBe(10);
 
-              Simulate.keyUp($$(built).find('input'), KEYBOARD.ESCAPE);
+            Simulate.keyUp($$(built).find('input'), KEYBOARD.ESCAPE);
 
-              expect(facetSearch.currentlyDisplayedResults).toBeUndefined();
-              done();
-            });
+            expect(facetSearch.currentlyDisplayedResults).toBeUndefined();
           });
 
-          it('other key should start a search', done => {
+          it('other key should start a search', () => {
             Simulate.keyUp($$(built).find('input'), KEYBOARD.CTRL);
-            setTimeout(() => {
-              expect(facetSearch.facet.facetQueryController.search).toHaveBeenCalled();
-              done();
-            }, 55);
+            expect(facetSearch.facet.facetQueryController.search).toHaveBeenCalled();
           });
         });
       }
