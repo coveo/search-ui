@@ -34,17 +34,17 @@ export function DomTests() {
       describe('when calling #isValidElement', () => {
         it('should respond true when a valid element is given', () => {
           const NORMAL_ELEMENT = document.createElement('div');
-          expect($$(NORMAL_ELEMENT).isValid()).toBeTruthy;
+          expect($$(NORMAL_ELEMENT).isValid()).toBeTruthy();
         });
 
         it('should respond false when a invalid element is given', () => {
           const NOT_AN_ELEMENT = new Event('resize') as any;
-          expect($$(NOT_AN_ELEMENT).isValid()).toBeFalsy;
+          expect($$(NOT_AN_ELEMENT).isValid()).toBeFalsy();
         });
 
         it('should respond false when a locked element is given such as in a LockerService context', () => {
           const LOCKED_LOCKER_SERVICE_ELEMENT = {} as any;
-          expect($$(LOCKED_LOCKER_SERVICE_ELEMENT).isValid()).toBeFalsy;
+          expect($$(LOCKED_LOCKER_SERVICE_ELEMENT).isValid()).toBeFalsy();
         });
       });
 
