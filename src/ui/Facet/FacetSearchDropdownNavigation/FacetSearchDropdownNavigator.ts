@@ -24,7 +24,7 @@ export class FacetSearchDropdownNavigator implements ISearchDropdownNavigator {
     return this.searchDropdownNavigator.currentResult;
   }
 
-  public nextFocusableElement() {
+  public focusNextElement() {
     if (this.canExcludeCurrentResult) {
       this.toggleCanExcludeCurrentResult();
       this.searchDropdownNavigator.moveCurrentResultDown();
@@ -35,7 +35,7 @@ export class FacetSearchDropdownNavigator implements ISearchDropdownNavigator {
     }
   }
 
-  public previousFocusableElement() {
+  public focusPreviousElement() {
     if (!this.canExcludeCurrentResult) {
       this.searchDropdownNavigator.moveCurrentResultUp();
       this.toggleCanExcludeCurrentResult();

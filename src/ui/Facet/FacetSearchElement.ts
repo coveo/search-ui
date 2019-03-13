@@ -161,11 +161,11 @@ export class FacetSearchElement {
   }
 
   public moveCurrentResultDown() {
-    this.searchDropdownNavigator.nextFocusableElement();
+    this.searchDropdownNavigator.focusNextElement();
   }
 
   public moveCurrentResultUp() {
-    this.searchDropdownNavigator.previousFocusableElement();
+    this.searchDropdownNavigator.focusPreviousElement();
   }
 
   public highlightCurrentQueryInSearchResults(regex: RegExp) {

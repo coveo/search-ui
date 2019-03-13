@@ -2,8 +2,8 @@ import { first, last } from 'underscore';
 import { $$, Dom } from '../../../utils/Dom';
 
 export interface ISearchDropdownNavigator {
-  nextFocusableElement: () => void;
-  previousFocusableElement: () => void;
+  focusNextElement: () => void;
+  focusPreviousElement: () => void;
   currentResult: Dom;
   setAsCurrentResult: (el: Dom) => void;
 }
@@ -26,11 +26,11 @@ export class DefaultSearchDropdownNavigator implements ISearchDropdownNavigator 
     this.updateSelectedOption(toSet);
   }
 
-  public nextFocusableElement() {
+  public focusNextElement() {
     this.moveCurrentResultDown();
   }
 
-  public previousFocusableElement() {
+  public focusPreviousElement() {
     this.moveCurrentResultUp();
   }
 
