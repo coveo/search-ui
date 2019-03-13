@@ -1,6 +1,6 @@
 import { ISearchDropdownNavigator, DefaultSearchDropdownNavigator, ISearchDropdownConfig } from './DefaultSearchDropdownNavigator';
-import { $$, Dom } from '../../utils/Dom';
-import { IFacetSearch } from '../Facet/IFacetSearch';
+import { $$, Dom } from '../../../utils/Dom';
+import { IFacetSearch } from '../IFacetSearch';
 import { debounce } from 'underscore';
 
 export interface IFacetSearchDropdownConfig extends ISearchDropdownConfig {

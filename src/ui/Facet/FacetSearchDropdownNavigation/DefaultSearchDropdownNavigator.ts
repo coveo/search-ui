@@ -1,5 +1,5 @@
 import { first, last } from 'underscore';
-import { $$, Dom } from '../../utils/Dom';
+import { $$, Dom } from '../../../utils/Dom';
 
 export interface ISearchDropdownNavigator {
   nextFocusableElement: () => void;

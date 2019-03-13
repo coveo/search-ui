@@ -8,8 +8,8 @@ import { PopupUtils, PopupHorizontalAlignment, PopupVerticalAlignment } from '..
 import { IFacetSearch } from './IFacetSearch';
 import { FacetSearchUserInputHandler } from './FacetSearchUserInputHandler';
 import { uniqueId } from 'underscore';
-import { ISearchDropdownNavigator, ISearchDropdownConfig } from '../FacetSearchDropdownNavigation/DefaultSearchDropdownNavigator';
-import { SearchDropdownNavigatorFactory } from '../FacetSearchDropdownNavigation/SearchDropdownNavigatorFactory';
+import { ISearchDropdownNavigator, ISearchDropdownConfig } from './FacetSearchDropdownNavigation/DefaultSearchDropdownNavigator';
+import { SearchDropdownNavigatorFactory } from './FacetSearchDropdownNavigation/SearchDropdownNavigatorFactory';
 
 export class FacetSearchElement {
   public search: HTMLElement | undefined;
