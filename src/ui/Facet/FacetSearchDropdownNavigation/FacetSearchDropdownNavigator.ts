@@ -8,26 +8,26 @@ export interface IFacetSearchDropdownConfig extends ISearchDropdownConfig {
 }
 
 export class FacetSearchDropdownNavigator implements ISearchDropdownNavigator {
-  private searchDropdownNavigator: DefaultSearchDropdownNavigator;
+  private defaultDropdownNavigator: DefaultSearchDropdownNavigator;
   private debounceAnnounceCurrentResultAction = debounce(() => this.announceCurrentResultAction(), 500);
 
   constructor(private config: IFacetSearchDropdownConfig) {
-    this.searchDropdownNavigator = new DefaultSearchDropdownNavigator(config);
+    this.defaultDropdownNavigator = new DefaultSearchDropdownNavigator(config);
   }
 
   public setAsCurrentResult(dom: Dom) {
-    this.searchDropdownNavigator.setAsCurrentResult(dom);
+    this.defaultDropdownNavigator.setAsCurrentResult(dom);
     this.debounceAnnounceCurrentResultAction();
   }
 
   public get currentResult() {
-    return this.searchDropdownNavigator.currentResult;
+    return this.defaultDropdownNavigator.currentResult;
   }
 
   public focusNextElement() {
     if (this.canExcludeCurrentResult) {
       this.toggleCanExcludeCurrentResult();
-      this.searchDropdownNavigator.moveCurrentResultDown();
+      this.defaultDropdownNavigator.moveCurrentResultDown();
       this.announceCurrentResultCanBeSelected();
     } else {
       this.toggleCanExcludeCurrentResult();
@@ -37,7 +37,7 @@ export class FacetSearchDropdownNavigator implements ISearchDropdownNavigator {
 
   public focusPreviousElement() {
     if (!this.canExcludeCurrentResult) {
-      this.searchDropdownNavigator.moveCurrentResultUp();
+      this.defaultDropdownNavigator.moveCurrentResultUp();
       this.toggleCanExcludeCurrentResult();
       this.announceCurrentResultCanBeExcluded();
     } else {
@@ -47,11 +47,11 @@ export class FacetSearchDropdownNavigator implements ISearchDropdownNavigator {
   }
 
   private get canExcludeCurrentResult() {
-    return this.searchDropdownNavigator.currentResult.hasClass('coveo-facet-value-will-exclude');
+    return this.defaultDropdownNavigator.currentResult.hasClass('coveo-facet-value-will-exclude');
   }
 
   private toggleCanExcludeCurrentResult() {
-    this.searchDropdownNavigator.currentResult.toggleClass('coveo-facet-value-will-exclude', !this.canExcludeCurrentResult);
+    this.defaultDropdownNavigator.currentResult.toggleClass('coveo-facet-value-will-exclude', !this.canExcludeCurrentResult);
   }
 
   private announceCurrentResultAction() {
