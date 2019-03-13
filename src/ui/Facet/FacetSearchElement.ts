@@ -160,11 +160,11 @@ export class FacetSearchElement {
     return this.searchDropdownNavigator.currentResult;
   }
 
-  public nextFocusableElement() {
+  public moveCurrentResultDown() {
     this.searchDropdownNavigator.nextFocusableElement();
   }
 
-  public previousFocusableElement() {
+  public moveCurrentResultUp() {
     this.searchDropdownNavigator.previousFocusableElement();
   }
 
