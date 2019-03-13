@@ -48,7 +48,7 @@ import {
 import { FacetColumnAutoLayoutAdjustment } from './FacetColumnAutoLayoutAdjustment';
 import { FacetValueStateHandler } from './FacetValueStateHandler';
 import RelevanceInspectorModule = require('../RelevanceInspector/RelevanceInspector');
-import { AriaLive } from '../AriaLive/AriaLive';
+import { AriaLive, IAriaLive } from '../AriaLive/AriaLive';
 
 export interface ISearchInterfaceOptions {
   enableHistory?: boolean;
@@ -492,7 +492,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
    */
   public responsiveComponents: ResponsiveComponents;
   public isResultsPerPageModifiedByPipeline = false;
-  public ariaLive: AriaLive;
+  public ariaLive: IAriaLive;
 
   private attachedComponents: { [type: string]: BaseComponent[] };
   private facetValueStateHandler: FacetValueStateHandler;

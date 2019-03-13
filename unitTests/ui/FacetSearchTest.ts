@@ -30,7 +30,6 @@ export function FacetSearchTest() {
       };
       Simulate.removeJQuery();
       mockFacet = Mock.basicComponentSetup<Facet>(Facet, options).cmp;
-      mockFacet.searchInterface = <any>{};
       facetSearch = new FacetSearch(mockFacet, FacetSearchValuesList, mockFacet.root);
     });
 
