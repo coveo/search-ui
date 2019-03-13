@@ -25,7 +25,7 @@ export class MLFacet extends Component {
   private includedAttributeId: string;
   private listenToQueryStateChange = true;
   private header: MLFacetHeader;
-  private values: MLFacetValues;
+  public values: MLFacetValues;
   // TODO: remove
   private mockedSavedValues: IMLFacetValue[];
 
