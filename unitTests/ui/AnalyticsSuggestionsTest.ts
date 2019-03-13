@@ -26,7 +26,7 @@ export function AnalyticsSuggestionsTest() {
     });
 
     it('should trigger a call to get top query from the analytics', () => {
-      Simulate.omnibox(test.env);
+      Simulate.populateOmnibox(test.env);
       expect(test.env.usageAnalytics.getTopQueries).toHaveBeenCalled();
     });
 
@@ -38,7 +38,7 @@ export function AnalyticsSuggestionsTest() {
         })
       );
 
-      var simulation = Simulate.omnibox(test.env);
+      var simulation = Simulate.populateOmnibox(test.env);
       simulation.rows[0].deferred.then(elementResolved => {
         expect(simulation.rows.length).toBe(1);
         expect($$(elementResolved.element).text()).toEqual(jasmine.stringMatching('foo'));
@@ -55,7 +55,7 @@ export function AnalyticsSuggestionsTest() {
           resolve(['foo', 'bar', 'baz']);
         })
       );
-      var simulation = Simulate.omnibox(test.env);
+      var simulation = Simulate.populateOmnibox(test.env);
       simulation.rows[0].deferred.then(elementResolved => {
         test.cmp.selectSuggestion(0);
         expect(test.env.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(
@@ -79,19 +79,19 @@ export function AnalyticsSuggestionsTest() {
           resolve(['foo', 'bar', 'baz']);
         })
       );
-      Simulate.omnibox(test.env, {
+      Simulate.populateOmnibox(test.env, {
         completeQueryExpression: {
           word: 't',
           regex: /t/
         }
       });
-      Simulate.omnibox(test.env, {
+      Simulate.populateOmnibox(test.env, {
         completeQueryExpression: {
           word: 'tes',
           regex: /tes/
         }
       });
-      var simulation = Simulate.omnibox(test.env, {
+      var simulation = Simulate.populateOmnibox(test.env, {
         completeQueryExpression: {
           word: 'test',
           regex: /test/
@@ -114,19 +114,19 @@ export function AnalyticsSuggestionsTest() {
           resolve(['foo', 'bar', 'baz']);
         })
       );
-      Simulate.omnibox(test.env, {
+      Simulate.populateOmnibox(test.env, {
         completeQueryExpression: {
           word: 't',
           regex: /t/
         }
       });
-      Simulate.omnibox(test.env, {
+      Simulate.populateOmnibox(test.env, {
         completeQueryExpression: {
           word: 't',
           regex: /t/
         }
       });
-      var simulation = Simulate.omnibox(test.env, {
+      var simulation = Simulate.populateOmnibox(test.env, {
         completeQueryExpression: {
           word: 't',
           regex: /t/
@@ -149,7 +149,7 @@ export function AnalyticsSuggestionsTest() {
           resolve(['foo', 'bar', 'baz']);
         })
       );
-      var simulation = Simulate.omnibox(test.env, {
+      var simulation = Simulate.populateOmnibox(test.env, {
         completeQueryExpression: {
           word: 't;',
           regex: /t;/
@@ -172,7 +172,7 @@ export function AnalyticsSuggestionsTest() {
           resolve(['foo', 'bar', 'baz']);
         })
       );
-      var simulation = Simulate.omnibox(test.env, {
+      var simulation = Simulate.populateOmnibox(test.env, {
         completeQueryExpression: {
           word: _.range(0, 500).join(''),
           regex: /t;/
@@ -196,7 +196,7 @@ export function AnalyticsSuggestionsTest() {
             resolve(['foo', 'bar', 'baz']);
           })
         );
-        let simulation = Simulate.omnibox(test.env, {
+        let simulation = Simulate.populateOmnibox(test.env, {
           completeQueryExpression: {
             word: _.range(0, 500).join(''),
             regex: /t;/
@@ -212,7 +212,7 @@ export function AnalyticsSuggestionsTest() {
         test = Mock.optionsComponentSetup<AnalyticsSuggestions, IAnalyticsSuggestionsOptions>(AnalyticsSuggestions, {
           numberOfSuggestions: 333
         });
-        Simulate.omnibox(test.env);
+        Simulate.populateOmnibox(test.env);
         expect(test.env.usageAnalytics.getTopQueries).toHaveBeenCalledWith(jasmine.objectContaining({ pageSize: 333 }));
       });
     });

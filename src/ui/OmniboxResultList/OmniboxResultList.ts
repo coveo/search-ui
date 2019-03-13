@@ -213,33 +213,53 @@ export class OmniboxResultList extends ResultList implements IComponentBindings 
    * Creates a result container and appends each element from the received `HTMLElement` array to it. For each element
    * it appends to the result container, this method triggers a `newResultDisplayed` event. Once all elements have been
    * appended to the result container, the method triggers a `newResultsDisplayed` event.
-   * @param resultsElement The array of `HTMLElement` to render.
+   * @param resultElements The array of `HTMLElement` to render.
    * @param append
    */
-  public renderResults(resultsElement: HTMLElement[], append = false) {
+  public renderResults(resultElements: HTMLElement[], append = false) {
     $$(this.options.resultContainer).empty();
-    if (this.lastOmniboxRequest) {
-      if (this.options.headerTitle) {
-        this.options.resultContainer.appendChild(
-          $$(
-            'div',
-            { className: 'coveo-omnibox-result-list-header' },
-            $$('span', { className: 'coveo-icon-omnibox-result-list' }).el,
-            $$('span', { className: 'coveo-caption' }, l(this.options.headerTitle)).el
-          ).el
-        );
-      }
-      _.each(resultsElement, (resultElement: HTMLElement) => {
-        this.options.resultContainer.appendChild(resultElement);
-        this.triggerNewResultDisplayed(Component.getResult(resultElement), resultElement);
-      });
-      this.triggerNewResultsDisplayed();
-      if ($$(this.options.resultContainer).findAll('.coveo-omnibox-selectable').length == 0) {
-        this.lastOmniboxRequest.resolve({ element: null, zIndex: this.options.omniboxZIndex });
-      } else {
-        this.lastOmniboxRequest.resolve({ element: this.options.resultContainer, zIndex: this.options.omniboxZIndex });
-      }
+
+    if (!this.lastOmniboxRequest) {
       return Promise.resolve(null);
+    }
+
+    if (resultElements.length) {
+      this.appendHeaderIfTitleIsSpecified();
+      this.appendResults(resultElements);
+    }
+
+    this.resolveLastOmniboxRequest();
+
+    return Promise.resolve(null);
+  }
+
+  private appendHeaderIfTitleIsSpecified() {
+    if (this.options.headerTitle) {
+      this.options.resultContainer.appendChild(
+        $$(
+          'div',
+          { className: 'coveo-omnibox-result-list-header' },
+          $$('span', { className: 'coveo-icon-omnibox-result-list' }).el,
+          $$('span', { className: 'coveo-caption' }, l(this.options.headerTitle)).el
+        ).el
+      );
+    }
+  }
+
+  private appendResults(resultElements: HTMLElement[]) {
+    _.each(resultElements, (resultElement: HTMLElement) => {
+      this.options.resultContainer.appendChild(resultElement);
+      this.triggerNewResultDisplayed(Component.getResult(resultElement), resultElement);
+    });
+
+    this.triggerNewResultsDisplayed();
+  }
+
+  private resolveLastOmniboxRequest() {
+    if ($$(this.options.resultContainer).findAll('.coveo-omnibox-selectable').length == 0) {
+      this.lastOmniboxRequest.resolve({ element: null, zIndex: this.options.omniboxZIndex });
+    } else {
+      this.lastOmniboxRequest.resolve({ element: this.options.resultContainer, zIndex: this.options.omniboxZIndex });
     }
   }
 
