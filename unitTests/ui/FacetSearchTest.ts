@@ -24,6 +24,23 @@ export function FacetSearchTest() {
       return $$(listItem);
     }
 
+    function spyOnAndReturnFirstCheckbox() {
+      const checkbox = $$(facetSearch.searchResults).find('input[type="checkbox"]');
+      spyOn(checkbox, 'onchange');
+      return checkbox;
+    }
+
+    function spyOnAndReturnFirstExcludeIcon() {
+      const excludeIcon = $$(facetSearch.searchResults).find('.coveo-facet-value-exclude');
+      spyOn(excludeIcon, 'click');
+      return excludeIcon;
+    }
+
+    function triggerKeyboardEnter() {
+      const enterKeyPress = new KeyboardEvent('keypress');
+      facetSearch.keyboardNavigationEnterPressed(enterKeyPress);
+    }
+
     beforeEach(function() {
       let options = {
         field: '@field'
@@ -194,23 +211,6 @@ export function FacetSearchTest() {
               done();
             });
           });
-
-          function spyOnAndReturnFirstCheckbox() {
-            const checkbox = $$(facetSearch.searchResults).find('input[type="checkbox"]');
-            spyOn(checkbox, 'onchange');
-            return checkbox;
-          }
-
-          function spyOnAndReturnFirstExcludeIcon() {
-            const excludeIcon = $$(facetSearch.searchResults).find('.coveo-facet-value-exclude');
-            spyOn(excludeIcon, 'click');
-            return excludeIcon;
-          }
-
-          function triggerKeyboardEnter() {
-            const enterKeyPress = new KeyboardEvent('keypress');
-            facetSearch.keyboardNavigationEnterPressed(enterKeyPress);
-          }
 
           it(`when the first result is currently selected,
           when triggering the enter key,
