@@ -20,7 +20,7 @@ export class MLFacetTestUtils {
     for (let index = 0; index < count; index++) {
       const fakeValue: IMLFacetValue = {
         value: `fake value ${index}`,
-        numberOfResults: Math.ceil(Math.random() * 1000),
+        numberOfResults: Math.ceil(Math.random() * 100000),
         selected: false
       };
 
