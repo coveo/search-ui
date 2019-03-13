@@ -11,7 +11,7 @@ import { Simulate } from '../Simulate';
 import { KEYBOARD } from '../../src/utils/KeyboardUtils';
 
 export function FacetSearchTest() {
-  describe('FacetSearch', function() {
+  describe('FacetSearch', () => {
     var mockFacet: Facet;
     var facetSearch: FacetSearch;
 
@@ -24,7 +24,7 @@ export function FacetSearchTest() {
       return $$(listItem);
     }
 
-    beforeEach(function() {
+    beforeEach(() => {
       let options = {
         field: '@field'
       };
@@ -33,12 +33,12 @@ export function FacetSearchTest() {
       facetSearch = new FacetSearch(mockFacet, FacetSearchValuesList, mockFacet.root);
     });
 
-    afterEach(function() {
+    afterEach(() => {
       mockFacet = null;
       facetSearch = null;
     });
 
-    it('input should have correct attributes', function() {
+    it('input should have correct attributes', () => {
       var built = facetSearch.build();
       expect(
         $$(built)
@@ -57,18 +57,18 @@ export function FacetSearchTest() {
       ).toBe('coveo-dummy-form');
     });
 
-    describe('perform search on the index', function() {
-      beforeEach(function() {
+    describe('perform search on the index', () => {
+      beforeEach(() => {
         mockFacet.facetQueryController = Mock.mock<FacetQueryController>(FacetQueryController);
         facetSearch.build();
       });
 
-      afterEach(function() {
+      afterEach(() => {
         mockFacet = null;
         facetSearch = null;
       });
 
-      it('should display facet search results', function(done) {
+      it('should display facet search results', done => {
         var pr = new Promise((resolve, reject) => {
           var results = FakeResults.createFakeFieldValues('foo', 10);
           resolve(results);
@@ -87,7 +87,7 @@ export function FacetSearchTest() {
         });
       });
 
-      it('should hide facet search results', function(done) {
+      it('should hide facet search results', done => {
         var pr = new Promise((resolve, reject) => {
           var results = FakeResults.createFakeFieldValues('foo', 10);
           resolve(results);
@@ -109,7 +109,7 @@ export function FacetSearchTest() {
         });
       });
 
-      it('should handle error', function(done) {
+      it('should handle error', done => {
         var pr = new Promise((resolve, reject) => {
           reject(new Error('woops !'));
         });
@@ -128,7 +128,7 @@ export function FacetSearchTest() {
       // KeyboardEvent simulation does not work well in phantom js
       // The KeyboardEvent constructor is not even defined ...
       if (!Simulate.isPhantomJs()) {
-        describe('hook user events', function() {
+        describe('hook user events', () => {
           let searchPromise: Promise<IIndexFieldValue[]>;
           let built: HTMLElement;
 
@@ -149,7 +149,7 @@ export function FacetSearchTest() {
             facetSearch.keyboardNavigationEnterPressed(enterKeyPress);
           }
 
-          beforeEach(function() {
+          beforeEach(() => {
             Simulate.removeJQuery();
             mockFacet.options.facetSearchDelay = 50;
             searchPromise = new Promise((resolve, reject) => {
@@ -164,11 +164,11 @@ export function FacetSearchTest() {
             facetSearch.triggerNewFacetSearch(params);
           });
 
-          afterEach(function() {
+          afterEach(() => {
             searchPromise = null;
           });
 
-          it('arrow navigation', function(done) {
+          it('arrow navigation', done => {
             searchPromise.then(() => {
               expect(getSearchResult(0).hasClass('coveo-facet-search-current-result')).toBe(true);
               expect(getSearchResult(0).hasClass('coveo-facet-value-will-exclude')).toBe(false);
@@ -245,7 +245,7 @@ export function FacetSearchTest() {
             });
           });
 
-          it('escape close results', function(done) {
+          it('escape close results', done => {
             searchPromise.then(() => {
               expect(facetSearch.currentlyDisplayedResults.length).toBe(10);
 
@@ -256,7 +256,7 @@ export function FacetSearchTest() {
             });
           });
 
-          it('other key should start a search', function(done) {
+          it('other key should start a search', done => {
             Simulate.keyUp($$(built).find('input'), KEYBOARD.CTRL);
             setTimeout(() => {
               expect(facetSearch.facet.facetQueryController.search).toHaveBeenCalled();
