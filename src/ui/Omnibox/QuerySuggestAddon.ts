@@ -15,6 +15,7 @@ import { map, every, last, indexOf, find } from 'underscore';
 import { QUERY_STATE_ATTRIBUTES } from '../../models/QueryStateModel';
 import { history } from 'coveo.analytics';
 import { Cookie } from '../../utils/CookieUtils';
+import { Utils } from '../../utils/Utils';
 
 export interface IQuerySuggestAddon {
   getSuggestion(): Promise<IOmniboxSuggestion[]>;
@@ -112,7 +113,13 @@ export class QuerySuggestAddon implements IQuerySuggestAddon {
   }
 
   private get tab() {
-    return this.omnibox.getBindings().queryStateModel.get(QUERY_STATE_ATTRIBUTES.T) as string;
+    const tab = this.omnibox.getBindings().queryStateModel.get(QUERY_STATE_ATTRIBUTES.T) as string;
+
+    if (Utils.isNonEmptyString(tab)) {
+      return tab;
+    }
+
+    return undefined;
   }
 
   private get locale() {

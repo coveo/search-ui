@@ -75,6 +75,16 @@ export function QuerySuggestAddonTest() {
         done();
       });
 
+      it("without the tab if it's empty", async done => {
+        (omnibox.env.queryStateModel.get as jasmine.Spy).and.callFake(
+          (param: string) => (param == QUERY_STATE_ATTRIBUTES.T ? '' : 'something else')
+        );
+        querySuggest = new QuerySuggestAddon(omnibox.cmp);
+        await querySuggest.getSuggestion();
+        spyShouldHaveBeenCalledWith('tab', undefined);
+        done();
+      });
+
       it('with enableWordCompletion', async done => {
         omnibox.cmp.options.enableSearchAsYouType = true;
         querySuggest = new QuerySuggestAddon(omnibox.cmp);
