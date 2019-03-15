@@ -265,40 +265,33 @@
 					<dl class="tsd-deprecated">
 					</dl>
 					<div class="lead">
-						<p>The FacetRange component displays a <a href="facet.html">Facet</a> whose values are expressed as ranges. These ranges are computed
-						from the results of the current query.</p>
+						<p>A <code>FacetRange</code> is a <a href="https://docs.coveo.com/en/198/">facet</a> whose values are expressed as ranges.</p>
 					</div>
-					<p>This component inherits from the Facet component. This implies that you must specify a valid
-					<a href="facet.html#options.field">field</a> value for this component to work.</p>
-					<p>Most of the options available for a Facet component are also available for a FacetRange component. There are some
-					exceptions, however.</p>
-					<p>Here is the list of Facet options which the FacetRange component does not support.</p>
+					<p>You must set the <a href="facet.html#options.field"><code>field</code></a> option to a value targeting a numeric or date <a href="https://docs.coveo.com/en/200/">field</a> in your index for this component to work.</p>
+					<p>This component extends the <a href="facet.html"><code>Facet</code></a> component and supports all <code>Facet</code> options except:</p>
 					<ul>
-						<li>The <strong>Settings</strong> menu options:<ul>
-								<li><a href="facet.html#options.enablesettings">enableSettings</a></li>
-								<li><a href="facet.html#options.enablesettingsfacetstate">enableSettingsFacetState</a></li>
-								<li><a href="facet.html#options.enablecollapse">enableCollapse</a></li>
-								<li><a href="facet.html#options.availablesorts">availableSorts</a></li>
-								<li><a href="facet.html#options.customsort">customSort</a></li>
-								<li><a href="facet.html#options.computedfieldcaption">computedFieldCaption</a></li>
+						<li><strong>Settings</strong> menu options<ul>
+								<li><a href="facet.html#options.enablesettings"><code>enableSettings</code></a></li>
+								<li><a href="facet.html#options.enablesettingsfacetstate"><code>enableSettingsFacetState</code></a></li>
+								<li><a href="facet.html#options.enablecollapse"><code>enableCollapse</code></a></li>
+								<li><a href="facet.html#options.availablesorts"><code>availableSorts</code></a></li>
+								<li><a href="facet.html#options.customsort"><code>customSort</code></a></li>
+								<li><a href="facet.html#options.computedfieldcaption"><code>computedFieldCaption</code></a></li>
 							</ul>
 						</li>
-						<li>The <strong>Facet Search</strong> options:<ul>
-								<li><a href="facet.html#options.enablefacetsearch">enableFacetSearch</a></li>
-								<li><a href="facet.html#options.facetsearchdelay">facetSearchDelay</a></li>
-								<li><a href="facet.html#options.facetsearchignoreaccents">facetSearchIgnoreAccents</a></li>
-								<li><a href="facet.html#options.numberofvaluesinfacetsearch">numberOfValuesInFacetSearch</a></li>
+						<li><strong>Facet Search</strong> options<ul>
+								<li><a href="facet.html#options.enablefacetsearch"><code>enableFacetSearch</code></a></li>
+								<li><a href="facet.html#options.facetsearchdelay"><code>facetSearchDelay</code></a></li>
+								<li><a href="facet.html#options.facetsearchignoreaccents"><code>facetSearchIgnoreAccents</code></a></li>
+								<li><a href="facet.html#options.numberofvaluesinfacetsearch"><code>numberOfValuesInFacetSearch</code></a></li>
 							</ul>
 						</li>
-						<li>The <strong>More and Less</strong> options:<ul>
-								<li><a href="facet.html#options.enablemoreless">enableMoreLess</a></li>
-								<li><a href="facet.html#options.pagesize">pageSize</a></li>
+						<li><strong>More and Less</strong> options<ul>
+								<li><a href="facet.html#options.enablemoreless"><code>enableMoreLess</code></a></li>
+								<li><a href="facet.html#options.pagesize"><code>pageSize</code></a></li>
 							</ul>
 						</li>
 					</ul>
-					<p> Moreover, while the <a href="facet.html#options.numberofvalues">numberOfValues</a> option still allows you to specify the
-						maximum number of values to display in a FacetRange component, it is not possible for the end to display additional
-					values, since the component does not support the <strong>More</strong> button.</p>
 					<dl class="tsd-comment-tags">
 						<dt>not supported in</dt>
 						<dd><p><a href="https://developers.coveo.com/x/yRQvAg">Coveo for Salesforce Free</a></p>
@@ -1587,16 +1580,16 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetRange/FacetRange.ts#L80">ui/FacetRange/FacetRange.ts
-							:80</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetRange/FacetRange.ts#L71">ui/FacetRange/FacetRange.ts
+							:71</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies whether the field for which you require ranges is a date field.</p>
+							<p>Whether the specified <a href="facet.html#options.field"><code>field</code></a> option value targets a date field in your index.</p>
 						</div>
-						<p>This allows the component to correctly build the outgoing <a href="../interfaces/igroupbyrequest.html">IGroupByRequest</a>.</p>
-						<p>Default value is <code>false</code>.</p>
+						<p>This allows the component to correctly build the outgoing <a href="https://docs.coveo.com/en/203/">Group By</a>.</p>
+						<p><strong>Default:</strong> <code>false</code>.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -1611,55 +1604,19 @@ data-date-field&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetRange/FacetRange.ts#L132">ui/FacetRange/FacetRange.ts
-							:132</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetRange/FacetRange.ts#L81">ui/FacetRange/FacetRange.ts
+							:81</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies an array of <a href="../interfaces/irangevalue.html">IRangeValue</a> to use as Facet values.</p>
+							<p>The list of <a href="../interfaces/irangevalue.html">range values</a> to request (see <a href="https://docs.coveo.com/en/2790/">Requesting Specific FacetRange Values</a>).</p>
 						</div>
-						<p><strong>Examples:</strong></p>
-						<p>You can set the option in the <a href="../globals.html#init">&#39;init&#39;</a> call:</p>
-						<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> myRanges = [
-  {
-     <span class="hljs-attr">start</span>: <span class="hljs-number">0</span>,
-     <span class="hljs-attr">end</span>: <span class="hljs-number">100</span>,
-     <span class="hljs-attr">label</span>: <span class="hljs-string">"0 - 100"</span>,
-     <span class="hljs-attr">endInclusive</span>: <span class="hljs-literal">false</span>
-   },
-   {
-     <span class="hljs-attr">start</span>: <span class="hljs-number">100</span>,
-     <span class="hljs-attr">end</span>: <span class="hljs-number">200</span>,
-     <span class="hljs-attr">label</span>: <span class="hljs-string">"100 - 200"</span>,
-     <span class="hljs-attr">endInclusive</span>: <span class="hljs-literal">false</span>
-   },
-   {
-     <span class="hljs-attr">start</span>: <span class="hljs-number">200</span>,
-     <span class="hljs-attr">end</span>: <span class="hljs-number">300</span>,
-     <span class="hljs-attr">label</span>: <span class="hljs-string">"200 - 300"</span>,
-     <span class="hljs-attr">endInclusive</span>: <span class="hljs-literal">false</span>
-   }
-]
-
-Coveo.init(<span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">'#search'</span>), {
-   <span class="hljs-attr">FacetRange</span> : {
-       <span class="hljs-attr">ranges</span> : myRanges
-   }
-})
-</code></pre>
-						<p>Or directly in the markup:</p>
-						<pre><code class="lang-html"><span class="hljs-comment">&lt;!-- Ensure that the double quotes are properly handled in data-ranges. --&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoFacetRange'</span> <span class="hljs-attr">data-field</span>=<span class="hljs-string">'@myotherfield'</span> <span class="hljs-attr">data-ranges</span>=<span class="hljs-string">'[{"start": 0, "end": 100, "label": "0 - 100", "endInclusive": false}, {"start": 100, "end": 200, "label": "100 - 200", "endInclusive": false}]'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
-</code></pre>
+						<p>By default, the index automatically generates range values.</p>
 						<p><strong>Note:</strong></p>
 						<blockquote>
-							<p>Ranges can overlap.</p>
+							<p>The index cannot automatically generate range values for a <code>FacetRange</code> whose <a href="facet.html#options.field"><code>field</code></a> option value references a dynamic field generated by a <a href="https://docs.coveo.com/en/232/">query function</a>. In such a case, you <em>must</em> use the <code>ranges</code> option.</p>
 						</blockquote>
-						<p>By default, the index automatically generates the ranges. However, the index cannot automatically generate the
-							ranges if the <a href="facet.html#options.field">field</a> you specify for the FacetRange component is generated by a query
-							function (see <a href="https://developers.coveo.com/x/XQCq">Query Function</a>). When this is the case, you must specify the
-						ranges at query time.</p>
 					</div>
 				</section>
 			</section>
@@ -1677,13 +1634,13 @@ Coveo.init(<span class="hljs-built_in">document</span>.querySelector(<span class
 								<p>Overwrites <a href="facet.html">Facet</a>.<a href="facet.html#constructor">constructor</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetRange/FacetRange.ts#L136">ui/FacetRange/FacetRange.ts
-									:136</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetRange/FacetRange.ts#L85">ui/FacetRange/FacetRange.ts
+									:85</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Creates a new FacetRange component.</p>
+									<p>Creates a new <code>FacetRange</code>.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1692,7 +1649,7 @@ Coveo.init(<span class="hljs-built_in">document</span>.querySelector(<span class
 									<h5>element: <span class="tsd-signature-type">HTMLElement</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
-											<p>The HTMLElement on which to instantiate the component.</p>
+											<p>The HTML element on which to instantiate the component.</p>
 										</div>
 									</div>
 								</li>
@@ -1700,7 +1657,7 @@ Coveo.init(<span class="hljs-built_in">document</span>.querySelector(<span class
 									<h5>options: <span class="tsd-signature-type">IFacetRangeOptions</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
-											<p>The options for the FacetRange component.</p>
+											<p>The configuration options to apply when creating the component.</p>
 										</div>
 									</div>
 								</li>
@@ -1708,8 +1665,7 @@ Coveo.init(<span class="hljs-built_in">document</span>.querySelector(<span class
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> bindings: <a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
-											<p>The bindings that the component requires to function normally. If not set, these will be
-											automatically resolved (with a slower execution time).</p>
+											<p>The bindings required by the component.</p>
 										</div>
 									</div>
 								</li>
