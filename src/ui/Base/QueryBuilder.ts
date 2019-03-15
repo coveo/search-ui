@@ -7,6 +7,7 @@ import { QueryBuilderExpression } from './QueryBuilderExpression';
 import * as _ from 'underscore';
 import { Utils } from '../../utils/Utils';
 import { ICategoryFacetRequest } from '../../rest/CategoryFacetRequest';
+import { IFacetRequest } from '../../rest/Facet/FacetRequest';
 
 /**
  * The QueryBuilder is used to build a {@link IQuery} that will be able to be executed using the Search API.
@@ -280,6 +281,11 @@ export class QueryBuilder {
   public groupByRequests: IGroupByRequest[] = [];
 
   /**
+   * Specifies an array of request for the MLFacet component.
+   */
+  public facets: IFacetRequest[] = [];
+
+  /**
    * Specifies an array of request for the CategoryFacet component.
    */
   public categoryFacets: ICategoryFacetRequest[] = [];
@@ -348,7 +354,9 @@ export class QueryBuilder {
       sortField: this.sortField,
       queryFunctions: this.queryFunctions,
       rankingFunctions: this.rankingFunctions,
+      // TODO: don't send both groupBy & facets
       groupBy: this.groupByRequests,
+      facets: this.facets,
       categoryFacets: this.categoryFacets,
       retrieveFirstSentences: this.retrieveFirstSentences,
       timezone: this.timezone,

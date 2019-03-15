@@ -1,7 +1,9 @@
 import { $$ } from '../../../utils/Dom';
 import { findWhere, find } from 'underscore';
-import { MLFacetValue, IMLFacetValue } from './MLFacetValue';
+import { MLFacetValue } from './MLFacetValue';
 import { MLFacet } from '../MLFacet';
+import { IFacetResponseValue } from '../../../rest/Facet/FacetResponse';
+import { FacetValueState } from '../../../rest/Facet/FacetValueState';
 
 export class MLFacetValues {
   private facetValues: MLFacetValue[] = [];
@@ -9,8 +11,18 @@ export class MLFacetValues {
 
   constructor(private facet: MLFacet) {}
 
-  public createFromResults(facetValues: IMLFacetValue[]) {
-    this.facetValues = facetValues.map(value => new MLFacetValue(value, this.facet));
+  public createFromResults(facetValues: IFacetResponseValue[]) {
+    this.facetValues = facetValues.map(
+      facetValue =>
+        new MLFacetValue(
+          {
+            value: facetValue.value,
+            numberOfResults: facetValue.numberOfResults,
+            selected: facetValue.state === FacetValueState.selected
+          },
+          this.facet
+        )
+    );
   }
 
   public get allFacetValues() {
