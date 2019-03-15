@@ -160,25 +160,19 @@ export function MLFacetTest() {
       expect($$(test.cmp.element).find('.coveo-facet-header-title').innerHTML).toBe(options.title);
     });
 
-    describe('with a live query state model', () => {
-      beforeEach(() => {
-        initializeComponent();
-      });
+    it('should select the needed values using the field', () => {
+      test.env.queryStateModel.registerNewAttribute('f:@field', []);
+      test.env.queryStateModel.set('f:@field', ['a', 'b', 'c']);
+      expect(test.cmp.values.selectedValues).toEqual(['a', 'b', 'c']);
+    });
 
-      it('should select the needed values using the field', () => {
-        test.env.queryStateModel.registerNewAttribute('f:@field', []);
-        test.env.queryStateModel.set('f:@field', ['a', 'b', 'c']);
-        expect(test.cmp.values.selectedValues).toEqual(['a', 'b', 'c']);
-      });
+    it('should select the needed values using the id', () => {
+      options.id = 'my_secret_id';
+      initializeComponent();
+      test.env.queryStateModel.registerNewAttribute(`f:${options.id}`, []);
 
-      it('should select the needed values using the id', () => {
-        options.id = 'my_secret_id';
-        initializeComponent();
-        test.env.queryStateModel.registerNewAttribute(`f:${options.id}`, []);
-
-        test.env.queryStateModel.set(`f:${options.id}`, ['a', 'b', 'c']);
-        expect(test.cmp.values.selectedValues).toEqual(['a', 'b', 'c']);
-      });
+      test.env.queryStateModel.set(`f:${options.id}`, ['a', 'b', 'c']);
+      expect(test.cmp.values.selectedValues).toEqual(['a', 'b', 'c']);
     });
   });
 }
