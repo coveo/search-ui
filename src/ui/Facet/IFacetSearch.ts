@@ -1,6 +1,8 @@
 import { FacetSearchElement } from './FacetSearchElement';
 import { IIndexFieldValue } from '../../rest/FieldValue';
+
 export interface IFacetSearch {
+  facetType: string;
   currentlyDisplayedResults: string[];
   facetSearchElement: FacetSearchElement;
   facetSearchPromise: Promise<IIndexFieldValue[]>;
@@ -13,4 +15,5 @@ export interface IFacetSearch {
   keyboardNavigationDeletePressed?: (event: KeyboardEvent) => void;
   keyboardEventDefaultHandler: () => void;
   fetchMoreValues: () => void;
+  updateAriaLive: (text: string) => void;
 }

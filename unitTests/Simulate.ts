@@ -219,7 +219,7 @@ export class Simulate {
     };
   }
 
-  static omnibox(env: IMockEnvironment, options?): IOmniboxData {
+  static populateOmnibox(env: IMockEnvironment, options?): IOmniboxData {
     let expression = {
       word: 'foo',
       regex: /foo/
