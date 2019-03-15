@@ -669,6 +669,9 @@ ResultListUtilsTest();
 import { FacetUtilsTest } from './utils/FacetUtilsTest';
 FacetUtilsTest();
 
+import { MLFacetTest } from './ui/MLFacet/MLFacetTest';
+MLFacetTest();
+
 import { MLFacetHeaderTest } from './ui/MLFacet/MLFacetHeader/MLFacetHeaderTest';
 MLFacetHeaderTest();
 
