@@ -19,6 +19,7 @@ import { AccessibilityExportToExcel } from './AccessibilityExportToExcel';
 import { AccessibilityFacet } from './AccessibilityFacet';
 import { AccessibilityFacetRange } from './AccessibilityFacetRange';
 import { AccessibilityFacetSlider } from './AccessibilityFacetSlider';
+import { AccessibilityMLFacet } from './AccessibilityMLFacet';
 import { AccessibilityFieldTable } from './AccessibilityFieldTable';
 import { AccessibilityFieldValue } from './AccessibilityFieldValue';
 import { AccessibilityIcon } from './AccessibilityIcon';
@@ -117,6 +118,7 @@ describe('Testing ...', () => {
   AccessibilityIcon();
   AccessibilityLogo();
   AccessibilityMatrix();
+  AccessibilityMLFacet();
   AccessibilityOmnibox();
   AccessibilityPager();
   AccessibilityPreferencesPanel();
