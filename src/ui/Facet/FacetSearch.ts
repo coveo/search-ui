@@ -298,13 +298,13 @@ export class FacetSearch implements IFacetSearch {
     if (!facetSearchParameters.fetchMore) {
       $$(this.searchResults).empty();
     }
-    let selectAll = document.createElement('li');
-    if (Utils.isNonEmptyString(facetSearchParameters.valueToSearch)) {
-      $$(selectAll).addClass(['coveo-facet-selectable', 'coveo-facet-search-selectable', 'coveo-facet-search-select-all']);
-      $$(selectAll).text(l('SelectAll'));
-      $$(selectAll).on('click', () => this.selectAllValuesMatchingSearch());
-      this.facetSearchElement.appendToSearchResults(selectAll);
+
+    const facetSearchHasQuery = Utils.isNonEmptyString(facetSearchParameters.valueToSearch);
+
+    if (facetSearchHasQuery) {
+      this.appendSelectAllResultsButton();
     }
+
     let facetValues = map(fieldValues, fieldValue => {
       return FacetValue.create(fieldValue);
     });
@@ -323,6 +323,14 @@ export class FacetSearch implements IFacetSearch {
       $$(elem).setAttribute('aria-selected', 'false');
       $$(elem).addClass('coveo-facet-search-selectable');
     });
+  }
+
+  private appendSelectAllResultsButton() {
+    const selectAll = document.createElement('li');
+    $$(selectAll).addClass(['coveo-facet-selectable', 'coveo-facet-search-selectable', 'coveo-facet-search-select-all']);
+    $$(selectAll).text(l('SelectAll'));
+    $$(selectAll).on('click', () => this.selectAllValuesMatchingSearch());
+    this.facetSearchElement.appendToSearchResults(selectAll);
   }
 
   private buildParamsForNormalSearch() {
