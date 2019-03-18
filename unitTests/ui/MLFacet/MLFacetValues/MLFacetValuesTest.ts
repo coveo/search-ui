@@ -1,5 +1,5 @@
 import { MLFacetValues } from '../../../../src/ui/MLFacet/MLFacetValues/MLFacetValues';
-import { IMLFacetValue } from '../../../../src/ui/MLFacet/MLFacetValues/MLFacetValue';
+import { IMLFacetValue, MLFacetValueState } from '../../../../src/ui/MLFacet/MLFacetValues/MLFacetValue';
 import { MLFacet } from '../../../../src/ui/MLFacet/MLFacet';
 import { MLFacetTestUtils } from '../MLFacetTestUtils';
 
@@ -13,8 +13,8 @@ export function MLFacetValuesTest() {
       facet = MLFacetTestUtils.createFakeFacet();
 
       mockFacetValues = MLFacetTestUtils.createFakeFacetValues();
-      mockFacetValues[1].selected = true;
-      mockFacetValues[3].selected = true;
+      mockFacetValues[1].state = MLFacetValueState.selected;
+      mockFacetValues[3].state = MLFacetValueState.selected;
 
       initializeComponent();
     });

@@ -2,36 +2,42 @@ import * as Globalize from 'globalize';
 import { MLFacetValueRenderer } from './MLFacetValueRenderer';
 import { FacetUtils } from '../../Facet/FacetUtils';
 import { MLFacet } from '../MLFacet';
+import { FacetValueState as MLFacetValueState } from '../../../rest/Facet/FacetValueState';
+export { FacetValueState as MLFacetValueState } from '../../../rest/Facet/FacetValueState';
 
 export interface IMLFacetValue {
   value: string;
-  selected: boolean;
+  state: MLFacetValueState;
   numberOfResults: number;
 }
 
 export class MLFacetValue implements IMLFacetValue {
   public value: string;
-  public selected: boolean;
+  public state: MLFacetValueState;
   public numberOfResults: number;
   private renderer: MLFacetValueRenderer;
 
-  constructor({ value, selected, numberOfResults }: IMLFacetValue, private facet: MLFacet) {
+  constructor({ value, state, numberOfResults }: IMLFacetValue, private facet: MLFacet) {
     this.value = value;
-    this.selected = selected;
+    this.state = state;
     this.numberOfResults = numberOfResults;
     this.renderer = new MLFacetValueRenderer(this, facet);
   }
 
+  public get isSelected() {
+    return this.state === MLFacetValueState.selected;
+  }
+
   public toggleSelect() {
-    this.selected = !this.selected;
+    this.state = this.state === MLFacetValueState.selected ? MLFacetValueState.idle : MLFacetValueState.selected;
   }
 
   public select() {
-    this.selected = true;
+    this.state = MLFacetValueState.selected;
   }
 
   public deselect() {
-    this.selected = false;
+    this.state = MLFacetValueState.idle;
   }
 
   public equals(arg: string | MLFacetValue) {

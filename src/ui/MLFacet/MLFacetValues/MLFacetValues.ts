@@ -1,9 +1,8 @@
 import { $$ } from '../../../utils/Dom';
 import { findWhere, find } from 'underscore';
-import { MLFacetValue } from './MLFacetValue';
+import { MLFacetValue, MLFacetValueState } from './MLFacetValue';
 import { MLFacet } from '../MLFacet';
 import { IFacetResponseValue } from '../../../rest/Facet/FacetResponse';
-import { FacetValueState } from '../../../rest/Facet/FacetValueState';
 
 export class MLFacetValues {
   private facetValues: MLFacetValue[] = [];
@@ -18,7 +17,7 @@ export class MLFacetValues {
           {
             value: facetValue.value,
             numberOfResults: facetValue.numberOfResults,
-            selected: facetValue.state === FacetValueState.selected
+            state: facetValue.state
           },
           this.facet
         )
@@ -34,15 +33,15 @@ export class MLFacetValues {
   }
 
   public get selectedValues() {
-    return this.facetValues.filter(value => value.selected).map(value => value.value);
+    return this.facetValues.filter(value => value.isSelected).map(value => value.value);
   }
 
   public hasSelectedValues() {
-    return !!findWhere(this.facetValues, { selected: true });
+    return !!findWhere(this.facetValues, { state: MLFacetValueState.selected });
   }
 
   public clearAll() {
-    this.facetValues.forEach(value => (value.selected = false));
+    this.facetValues.forEach(value => value.deselect());
   }
 
   public isEmpty() {
@@ -57,7 +56,7 @@ export class MLFacetValues {
       return facetValue;
     }
 
-    const newFacetValue = new MLFacetValue({ value, selected: false, numberOfResults: 0 }, this.facet);
+    const newFacetValue = new MLFacetValue({ value, state: MLFacetValueState.idle, numberOfResults: 0 }, this.facet);
     this.facetValues.push(newFacetValue);
     return newFacetValue;
   }

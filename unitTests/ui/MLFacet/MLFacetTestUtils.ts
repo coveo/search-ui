@@ -1,6 +1,6 @@
 import { MLFacet } from '../../../src/ui/MLFacet/MLFacet';
 import { IMLFacetOptions } from '../../../src/ui/MLFacet/MLFacetOptions';
-import { IMLFacetValue } from '../../../src/ui/MLFacet/MLFacetValues/MLFacetValue';
+import { IMLFacetValue, MLFacetValueState } from '../../../src/ui/MLFacet/MLFacetValues/MLFacetValue';
 import * as Mock from '../../MockEnvironment';
 
 export class MLFacetTestUtils {
@@ -21,7 +21,7 @@ export class MLFacetTestUtils {
       const fakeValue: IMLFacetValue = {
         value: `fake value ${index}`,
         numberOfResults: Math.ceil(Math.random() * 100000),
-        selected: false
+        state: MLFacetValueState.idle
       };
 
       fakeValues.push(fakeValue);

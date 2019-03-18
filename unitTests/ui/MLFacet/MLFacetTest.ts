@@ -1,7 +1,7 @@
 import * as Mock from '../../MockEnvironment';
 import { MLFacet } from '../../../src/ui/MLFacet/MLFacet';
 import { IMLFacetOptions } from '../../../src/ui/MLFacet/MLFacetOptions';
-import { IMLFacetValue } from '../../../src/ui/MLFacet/MLFacetValues/MLFacetValue';
+import { IMLFacetValue, MLFacetValueState } from '../../../src/ui/MLFacet/MLFacetValues/MLFacetValue';
 import { MLFacetTestUtils } from './MLFacetTestUtils';
 import { $$ } from '../../../src/Core';
 
@@ -43,7 +43,7 @@ export function MLFacetTest() {
 
     it(`when facet has selected values
       should be seen as "active" & not as "empty"`, () => {
-      mockFacetValues[0].selected = true;
+      mockFacetValues[0].state = MLFacetValueState.selected;
       initializeComponent();
       test.cmp.ensureDom();
 
@@ -62,11 +62,11 @@ export function MLFacetTest() {
     });
 
     it('allows to select a value', () => {
-      expect(test.cmp.values.get(mockFacetValues[0].value).selected).toBe(false);
+      expect(test.cmp.values.get(mockFacetValues[0].value).isSelected).toBe(false);
 
       test.cmp.selectValue(mockFacetValues[0].value);
 
-      expect(test.cmp.values.get(mockFacetValues[0].value).selected).toBe(true);
+      expect(test.cmp.values.get(mockFacetValues[0].value).isSelected).toBe(true);
       testQueryStateModelValues();
     });
 
@@ -76,7 +76,7 @@ export function MLFacetTest() {
 
       test.cmp.selectValue(newFacetValue);
 
-      expect(test.cmp.values.get(newFacetValue).selected).toBe(true);
+      expect(test.cmp.values.get(newFacetValue).isSelected).toBe(true);
       testQueryStateModelValues();
     });
 
@@ -91,18 +91,18 @@ export function MLFacetTest() {
     });
 
     it('allows to deselect a value', () => {
-      mockFacetValues[2].selected = true;
+      mockFacetValues[2].state = MLFacetValueState.selected;
       initializeComponent();
 
       test.cmp.deselectValue(mockFacetValues[2].value);
 
-      expect(test.cmp.values.get(mockFacetValues[2].value).selected).toBe(false);
+      expect(test.cmp.values.get(mockFacetValues[2].value).isSelected).toBe(false);
       testQueryStateModelValues();
     });
 
     it('allows to deselect multiple values', () => {
-      mockFacetValues[1].selected = true;
-      mockFacetValues[3].selected = true;
+      mockFacetValues[1].state = MLFacetValueState.selected;
+      mockFacetValues[3].state = MLFacetValueState.selected;
       initializeComponent();
 
       test.cmp.deselectMultipleValues([mockFacetValues[1].value, mockFacetValues[3].value]);
@@ -113,15 +113,15 @@ export function MLFacetTest() {
 
     it('allows to toggle a value', () => {
       test.cmp.toggleSelectValue(mockFacetValues[1].value);
-      expect(test.cmp.values.get(mockFacetValues[1].value).selected).toBe(true);
+      expect(test.cmp.values.get(mockFacetValues[1].value).isSelected).toBe(true);
       testQueryStateModelValues();
 
       test.cmp.toggleSelectValue(mockFacetValues[1].value);
-      expect(test.cmp.values.get(mockFacetValues[1].value).selected).toBe(false);
+      expect(test.cmp.values.get(mockFacetValues[1].value).isSelected).toBe(false);
       testQueryStateModelValues();
 
       test.cmp.toggleSelectValue(mockFacetValues[1].value);
-      expect(test.cmp.values.get(mockFacetValues[1].value).selected).toBe(true);
+      expect(test.cmp.values.get(mockFacetValues[1].value).isSelected).toBe(true);
       testQueryStateModelValues();
     });
 
@@ -133,8 +133,8 @@ export function MLFacetTest() {
     });
 
     it('allows to reset', () => {
-      mockFacetValues[1].selected = true;
-      mockFacetValues[3].selected = true;
+      mockFacetValues[1].state = MLFacetValueState.selected;
+      mockFacetValues[3].state = MLFacetValueState.selected;
       initializeComponent();
       test.cmp.ensureDom();
       expect(test.cmp.values.selectedValues.length).toBe(2);

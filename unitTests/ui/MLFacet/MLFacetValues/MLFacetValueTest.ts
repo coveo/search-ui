@@ -1,5 +1,5 @@
 import * as Globalize from 'globalize';
-import { MLFacetValue } from '../../../../src/ui/MLFacet/MLFacetValues/MLFacetValue';
+import { MLFacetValue, MLFacetValueState } from '../../../../src/ui/MLFacet/MLFacetValues/MLFacetValue';
 import { IMLFacetOptions } from '../../../../src/ui/MLFacet/MLFacetOptions';
 import { MLFacetTestUtils } from '../MLFacetTestUtils';
 import { MLFacet } from '../../../../src/ui/MLFacet/MLFacet';
@@ -22,20 +22,20 @@ export function MLFacetValueTest() {
 
     it('should toggle selection correctly', () => {
       mLFacetValue.toggleSelect();
-      expect(mLFacetValue.selected).toBe(true);
+      expect(mLFacetValue.isSelected).toBe(true);
       mLFacetValue.toggleSelect();
-      expect(mLFacetValue.selected).toBe(false);
+      expect(mLFacetValue.isSelected).toBe(false);
     });
 
     it('should select correctly', () => {
       mLFacetValue.select();
-      expect(mLFacetValue.selected).toBe(true);
+      expect(mLFacetValue.isSelected).toBe(true);
     });
 
     it('should deselect correctly', () => {
-      mLFacetValue.selected = true;
+      mLFacetValue.state = MLFacetValueState.selected;
       mLFacetValue.deselect();
-      expect(mLFacetValue.selected).toBe(false);
+      expect(mLFacetValue.isSelected).toBe(false);
     });
 
     it(`when comparing with another MLFacetValue with a different value
