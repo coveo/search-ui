@@ -27,7 +27,7 @@ export class MLFacet extends Component {
   private includedAttributeId: string;
   private listenToQueryStateChange = true;
   private header: MLFacetHeader;
-  private values: MLFacetValues;
+  public values: MLFacetValues;
 
   constructor(public element: HTMLElement, public options?: IMLFacetOptions, bindings?: IComponentBindings) {
     super(element, MLFacet.ID, bindings);
