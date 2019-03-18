@@ -25,10 +25,11 @@ export class FacetSearchDropdownNavigator implements ISearchDropdownNavigator {
   }
 
   public focusNextElement() {
-    if (this.canExcludeCurrentResult) {
+    if (this.isCurrentResultSelectAllButton) {
+      this.moveResultDownAndAnnounce();
+    } else if (this.canExcludeCurrentResult) {
       this.toggleCanExcludeCurrentResult();
-      this.defaultDropdownNavigator.moveCurrentResultDown();
-      this.announceCurrentResultCanBeSelected();
+      this.moveResultDownAndAnnounce();
     } else {
       this.toggleCanExcludeCurrentResult();
       this.announceCurrentResultCanBeExcluded();
@@ -37,21 +38,39 @@ export class FacetSearchDropdownNavigator implements ISearchDropdownNavigator {
 
   public focusPreviousElement() {
     if (!this.canExcludeCurrentResult) {
-      this.defaultDropdownNavigator.moveCurrentResultUp();
-      this.toggleCanExcludeCurrentResult();
-      this.announceCurrentResultCanBeExcluded();
+      this.moveResultUpAndAnnounce();
     } else {
       this.toggleCanExcludeCurrentResult();
       this.announceCurrentResultCanBeSelected();
     }
   }
 
+  private moveResultDownAndAnnounce() {
+    this.defaultDropdownNavigator.moveCurrentResultDown();
+    this.announceCurrentResultCanBeSelected();
+  }
+
+  private moveResultUpAndAnnounce() {
+    this.defaultDropdownNavigator.moveCurrentResultUp();
+
+    if (this.isCurrentResultSelectAllButton) {
+      return;
+    }
+
+    this.toggleCanExcludeCurrentResult();
+    this.announceCurrentResultCanBeExcluded();
+  }
+
+  private get isCurrentResultSelectAllButton() {
+    return this.currentResult.hasClass('coveo-facet-search-select-all');
+  }
+
   private get canExcludeCurrentResult() {
-    return this.defaultDropdownNavigator.currentResult.hasClass('coveo-facet-value-will-exclude');
+    return this.currentResult.hasClass('coveo-facet-value-will-exclude');
   }
 
   private toggleCanExcludeCurrentResult() {
-    this.defaultDropdownNavigator.currentResult.toggleClass('coveo-facet-value-will-exclude', !this.canExcludeCurrentResult);
+    this.currentResult.toggleClass('coveo-facet-value-will-exclude', !this.canExcludeCurrentResult);
   }
 
   private announceCurrentResultAction() {
@@ -64,6 +83,10 @@ export class FacetSearchDropdownNavigator implements ISearchDropdownNavigator {
   }
 
   private announceCurrentResultCanBeSelected() {
+    if (this.isCurrentResultSelectAllButton) {
+      return;
+    }
+
     const checkbox = this.currentResult.find('.coveo-facet-value-checkbox');
     const checkboxLabel = checkbox.getAttribute('aria-label');
     this.config.facetSearch.updateAriaLive(checkboxLabel);
