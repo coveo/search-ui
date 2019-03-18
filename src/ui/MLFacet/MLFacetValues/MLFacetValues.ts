@@ -5,7 +5,7 @@ import { MLFacet } from '../MLFacet';
 
 export class MLFacetValues {
   private facetValues: MLFacetValue[] = [];
-  private list = $$('ul', { className: 'coveo-facet-values' });
+  private list = $$('ul', { className: 'coveo-ml-facet-values' });
 
   constructor(private facet: MLFacet) {}
 

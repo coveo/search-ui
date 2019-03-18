@@ -15,13 +15,13 @@ export class MLFacetHeader {
   private showLoadingTimeout: number;
 
   constructor(private facet: MLFacet) {
-    this.element = $$('div', { className: 'coveo-facet-header' }).el;
+    this.element = $$('div', { className: 'coveo-ml-facet-header' }).el;
     $$(this.element).append(this.createTitleSection());
     $$(this.element).append(this.createSettingsSection());
   }
 
   private createTitleSection() {
-    const section = $$('div', { className: 'coveo-facet-header-title-section' });
+    const section = $$('div', { className: 'coveo-ml-facet-header-title-section' });
 
     section.append(this.createTitle());
     section.append(this.createWaitAnimation());
@@ -30,7 +30,7 @@ export class MLFacetHeader {
   }
 
   private createSettingsSection() {
-    const section = $$('div', { className: 'coveo-facet-header-settings-section' });
+    const section = $$('div', { className: 'coveo-ml-facet-header-settings-section' });
 
     section.append(this.createClearButton());
     this.facet.options.enableCollapse && section.append(this.createCollapseToggle());
@@ -41,9 +41,9 @@ export class MLFacetHeader {
   private createClearButton() {
     this.clearButton = new MLFacetHeaderButton({
       label: l('Reset'),
-      className: 'coveo-facet-header-eraser coveo-facet-header-eraser-visible',
+      className: 'coveo-ml-facet-header-eraser coveo-ml-facet-header-eraser-visible',
       iconSVG: SVGIcons.icons.mainClear,
-      iconClassName: 'coveo-facet-header-eraser-svg',
+      iconClassName: 'coveo-ml-facet-header-eraser-svg',
       shouldDisplay: false,
       action: () => this.clear()
     });
@@ -62,7 +62,7 @@ export class MLFacetHeader {
   }
 
   private createTitle() {
-    const title = $$('div', { className: 'coveo-facet-header-title' }, this.facet.options.title);
+    const title = $$('div', { className: 'coveo-ml-facet-header-title' }, this.facet.options.title);
     title.setAttribute('role', 'heading');
     title.setAttribute('aria-level', '2');
     title.setAttribute('aria-label', `${l('FacetTitle', this.facet.options.title)}`);
@@ -71,8 +71,8 @@ export class MLFacetHeader {
   }
 
   private createWaitAnimation() {
-    this.waitAnimation = $$('div', { className: 'coveo-facet-header-wait-animation' }, SVGIcons.icons.loading);
-    SVGDom.addClassToSVGInContainer(this.waitAnimation.el, 'coveo-facet-header-wait-animation-svg');
+    this.waitAnimation = $$('div', { className: 'coveo-ml-facet-header-wait-animation' }, SVGIcons.icons.loading);
+    SVGDom.addClassToSVGInContainer(this.waitAnimation.el, 'coveo-ml-facet-header-wait-animation-svg');
     this.hideLoading();
 
     return this.waitAnimation.el;

@@ -12,7 +12,7 @@ export class MLFacetValueRenderer {
 
   public render() {
     this.dom = $$('li', {
-      className: 'coveo-facet-value coveo-facet-selectable',
+      className: 'coveo-ml-facet-value coveo-ml-facet-selectable',
       dataValue: this.facetValue.value
     });
 
@@ -39,11 +39,11 @@ export class MLFacetValueRenderer {
   }
 
   private createLabel() {
-    return $$('label', { className: 'coveo-facet-value-label' }).el;
+    return $$('label', { className: 'coveo-ml-facet-value-label' }).el;
   }
 
   private createLabelWrapper() {
-    return $$('div', { className: 'coveo-facet-value-label-wrapper' }).el;
+    return $$('div', { className: 'coveo-ml-facet-value-label-wrapper' }).el;
   }
 
   private createCheckbox() {
@@ -58,7 +58,7 @@ export class MLFacetValueRenderer {
   }
 
   private createCount() {
-    return $$('span', { className: 'coveo-facet-value-count' }, this.facetValue.formattedCount).el;
+    return $$('span', { className: 'coveo-ml-facet-value-count' }, this.facetValue.formattedCount).el;
   }
 
   private selectAction = () => {
