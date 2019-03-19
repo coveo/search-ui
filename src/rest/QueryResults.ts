@@ -150,5 +150,5 @@ export interface IQueryResults {
   /**
    * Facet results of the query
    */
-  facetResults?: IFacetResponse[];
+  facets?: IFacetResponse[];
 }

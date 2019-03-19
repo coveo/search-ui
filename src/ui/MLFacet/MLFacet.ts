@@ -156,11 +156,11 @@ export class MLFacet extends Component {
   }
 
   private handleQuerySuccess(data: IQuerySuccessEventArgs) {
-    if (Utils.isNullOrUndefined(data.results.facetResults)) {
+    if (Utils.isNullOrUndefined(data.results.facets)) {
       return this.notImplementedError();
     }
 
-    const facetResponse = findWhere(data.results.facetResults, { field: this.options.field.slice(1) });
+    const facetResponse = findWhere(data.results.facets, { field: this.options.field.slice(1) });
 
     if (!facetResponse) {
       this.fieldInexistantError();

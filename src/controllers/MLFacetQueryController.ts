@@ -15,7 +15,7 @@ export class MLFacetQueryController {
     Assert.exists(queryBuilder);
 
     const facetState: IFacetRequest = {
-      field: this.facet.options.field as string,
+      field: this.facet.options.field.slice(1) as string,
       sortCriteria: this.facet.options.sortCriteria as FacetSortCriteria,
       currentValues: this.currentValues,
       numberOfValues: this.facet.options.numberOfValues, // TODO: manage more/less
