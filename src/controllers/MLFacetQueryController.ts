@@ -1,7 +1,8 @@
 import { MLFacet } from '../ui/MLFacet/MLFacet';
 import { QueryBuilder } from '../ui/Base/QueryBuilder';
 import { Assert } from '../misc/Assert';
-import { IFacetRequest } from '../rest/Facet/FacetRequest';
+import { IFacetRequest, IFacetRequestValue } from '../rest/Facet/FacetRequest';
+import { FacetSortCriteria } from '../rest/Facet/FacetSortCriteria';
 
 export class MLFacetQueryController {
   constructor(public facet: MLFacet) {}
@@ -13,11 +14,21 @@ export class MLFacetQueryController {
   public putFacetsIntoQueryBuilder(queryBuilder: QueryBuilder) {
     Assert.exists(queryBuilder);
 
-    const facets: IFacetRequest = {
-      field: this.facet.options.field as string
-      // TODO: Add more parameters
+    const facetState: IFacetRequest = {
+      field: this.facet.options.field as string,
+      sortCriteria: this.facet.options.sortCriteria as FacetSortCriteria,
+      currentValues: this.currentValues,
+      numberOfValues: this.facet.options.numberOfValues, // TODO: manage more/less
+      isSticky: false // TODO: manage isSticky
     };
 
-    queryBuilder.facets.push(facets);
+    queryBuilder.facets.push(facetState);
+  }
+
+  private get currentValues(): IFacetRequestValue[] {
+    return this.facet.values.allFacetValues.map(({ value, state }) => ({
+      value,
+      state
+    }));
   }
 }

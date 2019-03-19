@@ -3,7 +3,7 @@ import { FacetSortCriteria } from './FacetSortCriteria';
 
 export interface IFacetRequestValue {
   value: string;
-  state?: FacetValueState;
+  state: FacetValueState;
 }
 
 export interface IFacetRequest {
