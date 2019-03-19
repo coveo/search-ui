@@ -2,11 +2,14 @@ import { IResponsiveComponentOptions } from '../ResponsiveComponents/ResponsiveC
 import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
 import { l } from '../../strings/Strings';
 import { IStringMap } from '../../rest/GenericParam';
+import { isFacetSortCriteria } from '../../rest/Facet/FacetSortCriteria';
 
 export interface IMLFacetOptions extends IResponsiveComponentOptions {
   id?: string;
   title?: string;
   field?: IFieldOption;
+  sortCriteria?: string;
+  numberOfValues?: number;
   enableCollapse?: boolean;
   collapsedByDefault?: boolean;
   valueCaption?: any;
@@ -45,12 +48,33 @@ export const MLFacetOptions = {
    */
   field: ComponentOptions.buildFieldOption({ required: true, section: 'CommonOptions' }),
   /**
+   * Specifies the criteria to use to sort the facet values.
+   *
+   * See {@link FacetSortCriteria} for the list and description of possible values.
+   *
+   * Default value is the `undefined`
+   */
+  sortCriteria: ComponentOptions.buildStringOption({
+    postProcessing: value => (isFacetSortCriteria(value) ? value : undefined),
+    section: 'Sorting'
+  }),
+  /**
+   * Specifies the maximum number of field values to display by default in the facet before the user
+   * clicks to show more.
+   *
+   * Minimum value is `0`.
+   */
+  numberOfValues: ComponentOptions.buildNumberOption({ min: 0, section: 'CommonOptions' }),
+  /**
    * Specifies whether to allow the user to toggle between the **Collapse** and **Expand** modes in the facet.
    * Default value is `false`.
    */
   enableCollapse: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'Filtering' }),
   /**
    * Specifies whether to allow the facet should be in the **Collapse** mode.
+   *
+   * See also the [`enableCollapse`]{@link MLFacet.options.enableCollapse}
+   *
    * Default value is `false`.
    */
   collapsedByDefault: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'Filtering' }),
