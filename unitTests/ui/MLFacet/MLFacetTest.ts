@@ -1,7 +1,8 @@
 import * as Mock from '../../MockEnvironment';
 import { MLFacet } from '../../../src/ui/MLFacet/MLFacet';
 import { IMLFacetOptions } from '../../../src/ui/MLFacet/MLFacetOptions';
-import { IMLFacetValue, MLFacetValueState } from '../../../src/ui/MLFacet/MLFacetValues/MLFacetValue';
+import { IMLFacetValue } from '../../../src/ui/MLFacet/MLFacetValues/MLFacetValue';
+import { FacetValueState } from '../../../src/rest/Facet/FacetValueState';
 import { MLFacetTestUtils } from './MLFacetTestUtils';
 import { $$ } from '../../../src/Core';
 
@@ -43,7 +44,7 @@ export function MLFacetTest() {
 
     it(`when facet has selected values
       should be seen as "active" & not as "empty"`, () => {
-      mockFacetValues[0].state = MLFacetValueState.selected;
+      mockFacetValues[0].state = FacetValueState.selected;
       initializeComponent();
       test.cmp.ensureDom();
 
@@ -91,7 +92,7 @@ export function MLFacetTest() {
     });
 
     it('allows to deselect a value', () => {
-      mockFacetValues[2].state = MLFacetValueState.selected;
+      mockFacetValues[2].state = FacetValueState.selected;
       initializeComponent();
 
       test.cmp.deselectValue(mockFacetValues[2].value);
@@ -101,8 +102,8 @@ export function MLFacetTest() {
     });
 
     it('allows to deselect multiple values', () => {
-      mockFacetValues[1].state = MLFacetValueState.selected;
-      mockFacetValues[3].state = MLFacetValueState.selected;
+      mockFacetValues[1].state = FacetValueState.selected;
+      mockFacetValues[3].state = FacetValueState.selected;
       initializeComponent();
 
       test.cmp.deselectMultipleValues([mockFacetValues[1].value, mockFacetValues[3].value]);
@@ -133,8 +134,8 @@ export function MLFacetTest() {
     });
 
     it('allows to reset', () => {
-      mockFacetValues[1].state = MLFacetValueState.selected;
-      mockFacetValues[3].state = MLFacetValueState.selected;
+      mockFacetValues[1].state = FacetValueState.selected;
+      mockFacetValues[3].state = FacetValueState.selected;
       initializeComponent();
       test.cmp.ensureDom();
       expect(test.cmp.values.selectedValues.length).toBe(2);

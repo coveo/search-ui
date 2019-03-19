@@ -1,8 +1,9 @@
 import { $$ } from '../../../utils/Dom';
 import { findWhere, find } from 'underscore';
-import { MLFacetValue, MLFacetValueState } from './MLFacetValue';
+import { MLFacetValue } from './MLFacetValue';
 import { MLFacet } from '../MLFacet';
 import { IFacetResponseValue } from '../../../rest/Facet/FacetResponse';
+import { FacetValueState } from '../../../rest/Facet/FacetValueState';
 
 export class MLFacetValues {
   private facetValues: MLFacetValue[] = [];
@@ -37,7 +38,7 @@ export class MLFacetValues {
   }
 
   public hasSelectedValues() {
-    return !!findWhere(this.facetValues, { state: MLFacetValueState.selected });
+    return !!findWhere(this.facetValues, { state: FacetValueState.selected });
   }
 
   public clearAll() {
@@ -56,7 +57,7 @@ export class MLFacetValues {
       return facetValue;
     }
 
-    const newFacetValue = new MLFacetValue({ value, state: MLFacetValueState.idle, numberOfResults: 0 }, this.facet);
+    const newFacetValue = new MLFacetValue({ value, state: FacetValueState.idle, numberOfResults: 0 }, this.facet);
     this.facetValues.push(newFacetValue);
     return newFacetValue;
   }

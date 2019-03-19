@@ -1,6 +1,7 @@
 import { MLFacet } from '../../../src/ui/MLFacet/MLFacet';
 import { IMLFacetOptions } from '../../../src/ui/MLFacet/MLFacetOptions';
-import { IMLFacetValue, MLFacetValueState } from '../../../src/ui/MLFacet/MLFacetValues/MLFacetValue';
+import { IMLFacetValue } from '../../../src/ui/MLFacet/MLFacetValues/MLFacetValue';
+import { FacetValueState } from '../../../src/rest/Facet/FacetValueState';
 import * as Mock from '../../MockEnvironment';
 
 export class MLFacetTestUtils {
@@ -21,7 +22,7 @@ export class MLFacetTestUtils {
       const fakeValue: IMLFacetValue = {
         value: `fake value ${index}`,
         numberOfResults: Math.ceil(Math.random() * 100000),
-        state: MLFacetValueState.idle
+        state: FacetValueState.idle
       };
 
       fakeValues.push(fakeValue);
