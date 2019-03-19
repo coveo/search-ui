@@ -354,9 +354,8 @@ export class QueryBuilder {
       sortField: this.sortField,
       queryFunctions: this.queryFunctions,
       rankingFunctions: this.rankingFunctions,
-      // TODO: don't send both groupBy & facets
-      groupBy: this.groupByRequests,
-      facets: this.facets,
+      groupBy: this.validateGroupBy(),
+      facets: this.validateFacets(),
       categoryFacets: this.categoryFacets,
       retrieveFirstSentences: this.retrieveFirstSentences,
       timezone: this.timezone,
@@ -506,5 +505,21 @@ export class QueryBuilder {
   public containsEndUserKeywords(): boolean {
     const query = this.build();
     return Utils.isNonEmptyString(query.q) || Utils.isNonEmptyString(query.lq);
+  }
+
+  private validateGroupBy() {
+    if (!this.groupByRequests.length && this.facets.length) {
+      return undefined;
+    }
+
+    return this.groupByRequests;
+  }
+
+  private validateFacets() {
+    if (!this.facets.length && this.groupByRequests.length) {
+      return undefined;
+    }
+
+    return this.facets;
   }
 }
