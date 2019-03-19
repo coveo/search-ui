@@ -5,7 +5,7 @@ export enum FacetSortCriteria {
   occurrences = 'occurrences'
 }
 
-export function isFacetSortCriteria(sortCriteria: string): sortCriteria is FacetSortCriteria {
+export function isFacetSortCriteria(sortCriteria: string) {
   return (
     Object.keys(FacetSortCriteria)
       .map(key => FacetSortCriteria[key])
