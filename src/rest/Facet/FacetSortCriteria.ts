@@ -6,9 +6,5 @@ export enum FacetSortCriteria {
 }
 
 export function isFacetSortCriteria(sortCriteria: string) {
-  return (
-    Object.keys(FacetSortCriteria)
-      .map(key => FacetSortCriteria[key])
-      .indexOf(sortCriteria) !== -1
-  );
+  return !!FacetSortCriteria[sortCriteria];
 }

@@ -42,6 +42,10 @@ export class MLFacet extends Component {
     ResponsiveFacets.init(this.root, this, this.options);
   }
 
+  public get fieldName() {
+    return this.options.field.slice(1);
+  }
+
   /**
    * Selects a single value.
    *
@@ -160,10 +164,10 @@ export class MLFacet extends Component {
       return this.notImplementedError();
     }
 
-    const facetResponse = findWhere(data.results.facets, { field: this.options.field.slice(1) });
+    const facetResponse = findWhere(data.results.facets, { field: this.fieldName });
 
     if (!facetResponse) {
-      this.fieldInexistantError();
+      this.fieldDoesNotExistError();
     }
 
     this.onQueryResponse(facetResponse.values);
@@ -250,8 +254,8 @@ export class MLFacet extends Component {
     this.disable();
   }
 
-  private fieldInexistantError() {
-    this.logger.error(`There are not facet result for field ${this.options.field}. Disabling this component.`);
+  private fieldDoesNotExistError() {
+    this.logger.error(`There are no facet results for the field ${this.options.field}. Disabling this component.`);
     this.disable();
   }
 }
