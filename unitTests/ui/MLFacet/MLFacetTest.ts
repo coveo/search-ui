@@ -5,6 +5,8 @@ import { IMLFacetValue } from '../../../src/ui/MLFacet/MLFacetValues/MLFacetValu
 import { FacetValueState } from '../../../src/rest/Facet/FacetValueState';
 import { MLFacetTestUtils } from './MLFacetTestUtils';
 import { $$ } from '../../../src/Core';
+import { FacetSortCriteria } from '../../../src/rest/Facet/FacetSortCriteria';
+import { Simulate } from '../../Simulate';
 
 export function MLFacetTest() {
   describe('MLFacet', () => {
@@ -174,6 +176,60 @@ export function MLFacetTest() {
 
       test.env.queryStateModel.set(`f:${options.id}`, ['a', 'b', 'c']);
       expect(test.cmp.values.selectedValues).toEqual(['a', 'b', 'c']);
+    });
+
+    it(`when not setting a sortCriteria option
+      should set it to undefined in the query`, () => {
+      const simulation = Simulate.query(test.env);
+      expect(simulation.queryBuilder.build().facets).toEqual(
+        jasmine.arrayContaining([
+          jasmine.objectContaining({
+            sortCriteria: undefined
+          })
+        ])
+      );
+    });
+
+    it(`when setting a sortCriteria option
+      should pass it down to the query`, () => {
+      options.sortCriteria = FacetSortCriteria.score;
+      initializeComponent();
+
+      const simulation = Simulate.query(test.env);
+      expect(simulation.queryBuilder.build().facets).toEqual(
+        jasmine.arrayContaining([
+          jasmine.objectContaining({
+            sortCriteria: FacetSortCriteria.score
+          })
+        ])
+      );
+    });
+
+    it(`when not setting a numberOfValues option
+      should set it to undefined in the query`, () => {
+      const simulation = Simulate.query(test.env);
+      expect(simulation.queryBuilder.build().facets).toEqual(
+        jasmine.arrayContaining([
+          jasmine.objectContaining({
+            numberOfValues: undefined
+          })
+        ])
+      );
+    });
+
+    it(`when setting a numberOfValues option
+      should pass it down to the query`, () => {
+      options.numberOfValues = 100;
+      initializeComponent();
+
+      const simulation = Simulate.query(test.env);
+      expect(simulation.queryBuilder.build().facets).toEqual(
+        jasmine.arrayContaining([
+          jasmine.objectContaining({
+            numberOfValues: 100
+          })
+        ])
+      );
     });
   });
 }
