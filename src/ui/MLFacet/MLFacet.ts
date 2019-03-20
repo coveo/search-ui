@@ -152,7 +152,7 @@ export class MLFacet extends Component {
     Assert.exists(data);
     Assert.exists(data.queryBuilder);
     const queryBuilder = data.queryBuilder;
-    this.mLFacetQueryController.putFacetsIntoQueryBuilder(queryBuilder);
+    this.mLFacetQueryController.putFacetIntoQueryBuilder(queryBuilder);
   }
 
   private handleQuerySuccess(data: IQuerySuccessEventArgs) {

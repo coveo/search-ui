@@ -21,13 +21,7 @@ export function MLFacetTest() {
     });
 
     function initializeComponent() {
-      test = Mock.advancedComponentSetup<MLFacet>(MLFacet, <Mock.AdvancedComponentSetupOptions>{
-        modifyBuilder: builder => {
-          return builder.withLiveQueryStateModel();
-        },
-        cmpOptions: options
-      });
-
+      test = MLFacetTestUtils.createAdvancedFakeFacet(options);
       test.cmp.values.createFromResults(mockFacetValues);
     }
 
@@ -181,13 +175,8 @@ export function MLFacetTest() {
     it(`when not setting a sortCriteria option
       should set it to undefined in the query`, () => {
       const simulation = Simulate.query(test.env);
-      expect(simulation.queryBuilder.build().facets).toEqual(
-        jasmine.arrayContaining([
-          jasmine.objectContaining({
-            sortCriteria: undefined
-          })
-        ])
-      );
+      const facetRequest = simulation.queryBuilder.build().facets[0];
+      expect(facetRequest.sortCriteria).toBeUndefined();
     });
 
     it(`when setting a sortCriteria option
@@ -196,25 +185,15 @@ export function MLFacetTest() {
       initializeComponent();
 
       const simulation = Simulate.query(test.env);
-      expect(simulation.queryBuilder.build().facets).toEqual(
-        jasmine.arrayContaining([
-          jasmine.objectContaining({
-            sortCriteria: FacetSortCriteria.score
-          })
-        ])
-      );
+      const facetRequest = simulation.queryBuilder.build().facets[0];
+      expect(facetRequest.sortCriteria).toBe(FacetSortCriteria.score);
     });
 
     it(`when not setting a numberOfValues option
       should set it to undefined in the query`, () => {
       const simulation = Simulate.query(test.env);
-      expect(simulation.queryBuilder.build().facets).toEqual(
-        jasmine.arrayContaining([
-          jasmine.objectContaining({
-            numberOfValues: undefined
-          })
-        ])
-      );
+      const facetRequest = simulation.queryBuilder.build().facets[0];
+      expect(facetRequest.numberOfValues).toBeUndefined();
     });
 
     it(`when setting a numberOfValues option
@@ -223,13 +202,8 @@ export function MLFacetTest() {
       initializeComponent();
 
       const simulation = Simulate.query(test.env);
-      expect(simulation.queryBuilder.build().facets).toEqual(
-        jasmine.arrayContaining([
-          jasmine.objectContaining({
-            numberOfValues: 100
-          })
-        ])
-      );
+      const facetRequest = simulation.queryBuilder.build().facets[0];
+      expect(facetRequest.numberOfValues).toBe(100);
     });
   });
 }

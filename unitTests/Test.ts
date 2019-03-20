@@ -692,3 +692,6 @@ MLFacetValueTest();
 
 import { MLFacetValueRendererTest } from './ui/MLFacet/MLFacetValues/MLFacetValueRendererTest';
 MLFacetValueRendererTest();
+
+import { MLFacetQueryControllerTest } from './controllers/MLFacetQueryControllerTest';
+MLFacetQueryControllerTest();

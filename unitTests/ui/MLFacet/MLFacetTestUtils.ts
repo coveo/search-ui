@@ -15,6 +15,15 @@ export class MLFacetTestUtils {
     return facet;
   }
 
+  static createAdvancedFakeFacet(options?: IMLFacetOptions, withQSM = true) {
+    return Mock.advancedComponentSetup<MLFacet>(MLFacet, <Mock.AdvancedComponentSetupOptions>{
+      modifyBuilder: builder => {
+        return withQSM ? builder.withLiveQueryStateModel() : builder;
+      },
+      cmpOptions: options
+    });
+  }
+
   static createFakeFacetValues(count = 5): IMLFacetValue[] {
     const fakeValues = [];
 

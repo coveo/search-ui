@@ -11,7 +11,7 @@ export class MLFacetQueryController {
    * Build the facets request for the MLFacet, and insert it in the query builder
    * @param queryBuilder
    */
-  public putFacetsIntoQueryBuilder(queryBuilder: QueryBuilder) {
+  public putFacetIntoQueryBuilder(queryBuilder: QueryBuilder) {
     Assert.exists(queryBuilder);
 
     const facetState: IFacetRequest = {
