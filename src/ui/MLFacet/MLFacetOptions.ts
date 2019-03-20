@@ -52,7 +52,8 @@ export const MLFacetOptions = {
    *
    * See {@link FacetSortCriteria} for the list and description of possible values.
    *
-   * Default value is the `undefined`
+   * Default value is `undefined`
+   * In that case, the Search API will use the Coveo Machine Learning sorting along with Coveo's UX principles.
    */
   sortCriteria: ComponentOptions.buildStringOption({
     postProcessing: value => (isFacetSortCriteria(value) ? value : undefined),
@@ -62,6 +63,8 @@ export const MLFacetOptions = {
    * Specifies the maximum number of field values to display by default in the facet before the user
    * clicks to show more.
    *
+   * Default value is `undefined`
+   * In that case, the Search API will define the number of field values which follows Coveo's UX principles.
    * Minimum value is `0`.
    */
   numberOfValues: ComponentOptions.buildNumberOption({ min: 0, section: 'CommonOptions' }),
