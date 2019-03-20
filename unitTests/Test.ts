@@ -15,6 +15,9 @@ SearchEndpointTest();
 import { BackOffRequestTest } from './rest/BackOffRequestTest';
 BackOffRequestTest();
 
+import { FacetSortCriteriaTest } from './rest/Facet/FacetSortCriteriaTest';
+FacetSortCriteriaTest();
+
 import { CookieUtilsTest } from './utils/CookieUtilsTest';
 CookieUtilsTest();
 
