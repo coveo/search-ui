@@ -44,6 +44,8 @@ export const MLFacetOptions = {
    * This requires the given field to be configured correctly in the index as a *Facet field* (see
    * [Adding Fields to a Source](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=137)).
    *
+   * Field name has to start with `@`
+   *
    * Specifying a value for this option is required for the `MLFacet` component to work.
    */
   field: ComponentOptions.buildFieldOption({ required: true, section: 'CommonOptions' }),
