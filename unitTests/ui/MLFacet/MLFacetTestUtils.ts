@@ -1,6 +1,7 @@
 import { MLFacet } from '../../../src/ui/MLFacet/MLFacet';
 import { IMLFacetOptions } from '../../../src/ui/MLFacet/MLFacetOptions';
 import { IMLFacetValue } from '../../../src/ui/MLFacet/MLFacetValues/MLFacetValue';
+import { FacetValueState } from '../../../src/rest/Facet/FacetValueState';
 import * as Mock from '../../MockEnvironment';
 
 export class MLFacetTestUtils {
@@ -14,6 +15,15 @@ export class MLFacetTestUtils {
     return facet;
   }
 
+  static createAdvancedFakeFacet(options?: IMLFacetOptions, withQSM = true) {
+    return Mock.advancedComponentSetup<MLFacet>(MLFacet, <Mock.AdvancedComponentSetupOptions>{
+      modifyBuilder: builder => {
+        return withQSM ? builder.withLiveQueryStateModel() : builder;
+      },
+      cmpOptions: options
+    });
+  }
+
   static createFakeFacetValues(count = 5): IMLFacetValue[] {
     const fakeValues = [];
 
@@ -21,7 +31,7 @@ export class MLFacetTestUtils {
       const fakeValue: IMLFacetValue = {
         value: `fake value ${index}`,
         numberOfResults: Math.ceil(Math.random() * 100000),
-        selected: false
+        state: FacetValueState.idle
       };
 
       fakeValues.push(fakeValue);

@@ -6,6 +6,7 @@ import { IGroupByResult } from './GroupByResult';
 import { IQueryCorrection } from './QueryCorrection';
 import { ITrigger } from './Trigger';
 import { ICategoryFacetResult } from './CategoryFacetResult';
+import { IFacetResponse } from './Facet/FacetResponse';
 
 /**
  * Describe a set a results returned by the Search API
@@ -147,7 +148,7 @@ export interface IQueryResults {
   _folded: boolean;
   _reusedSearchUid?: boolean;
   /**
-   * TODO: add definition here
+   * Facet results of the query
    */
-  facets?: any;
+  facets?: IFacetResponse[];
 }

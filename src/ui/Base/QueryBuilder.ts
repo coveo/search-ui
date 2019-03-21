@@ -7,6 +7,7 @@ import { QueryBuilderExpression } from './QueryBuilderExpression';
 import * as _ from 'underscore';
 import { Utils } from '../../utils/Utils';
 import { ICategoryFacetRequest } from '../../rest/CategoryFacetRequest';
+import { IFacetRequest } from '../../rest/Facet/FacetRequest';
 
 /**
  * The QueryBuilder is used to build a {@link IQuery} that will be able to be executed using the Search API.
@@ -280,6 +281,11 @@ export class QueryBuilder {
   public groupByRequests: IGroupByRequest[] = [];
 
   /**
+   * Specifies an array of request for the MLFacet component.
+   */
+  public facets: IFacetRequest[] = [];
+
+  /**
    * Specifies an array of request for the CategoryFacet component.
    */
   public categoryFacets: ICategoryFacetRequest[] = [];
@@ -348,7 +354,8 @@ export class QueryBuilder {
       sortField: this.sortField,
       queryFunctions: this.queryFunctions,
       rankingFunctions: this.rankingFunctions,
-      groupBy: this.groupByRequests,
+      groupBy: this.validateGroupBy(),
+      facets: this.validateFacets(),
       categoryFacets: this.categoryFacets,
       retrieveFirstSentences: this.retrieveFirstSentences,
       timezone: this.timezone,
@@ -498,5 +505,21 @@ export class QueryBuilder {
   public containsEndUserKeywords(): boolean {
     const query = this.build();
     return Utils.isNonEmptyString(query.q) || Utils.isNonEmptyString(query.lq);
+  }
+
+  private validateGroupBy() {
+    if (!this.groupByRequests.length && this.facets.length) {
+      return undefined;
+    }
+
+    return this.groupByRequests;
+  }
+
+  private validateFacets() {
+    if (!this.facets.length && this.groupByRequests.length) {
+      return undefined;
+    }
+
+    return this.facets;
   }
 }
