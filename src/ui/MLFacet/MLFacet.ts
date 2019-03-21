@@ -1,5 +1,5 @@
 import 'styling/_MLFacet';
-import { difference } from 'underscore';
+import { difference, findWhere } from 'underscore';
 import { $$ } from '../../utils/Dom';
 import { exportGlobally } from '../../GlobalExports';
 import { Component } from '../Base/Component';
@@ -10,36 +10,41 @@ import { ResponsiveFacetOptions } from '../ResponsiveComponents/ResponsiveFacetO
 import { ResponsiveFacets } from '../ResponsiveComponents/ResponsiveFacets';
 import { MLFacetHeader } from './MLFacetHeader/MLFacetHeader';
 import { IMLFacetOptions, MLFacetOptions } from './MLFacetOptions';
-import { IMLFacetValue } from './MLFacetValues/MLFacetValue';
 import { MLFacetValues } from './MLFacetValues/MLFacetValues';
 import { QueryEvents, IQuerySuccessEventArgs, IDoneBuildingQueryEventArgs } from '../../events/QueryEvents';
 import { QueryStateModel } from '../../models/QueryStateModel';
+import { MLFacetQueryController } from '../../controllers/MLFacetQueryController';
 import { Utils } from '../../utils/Utils';
 import { MODEL_EVENTS, IAttributesChangedEventArg } from '../../models/Model';
 import { Assert } from '../../misc/Assert';
+import { IFacetResponseValue } from '../../rest/Facet/FacetResponse';
 
 export class MLFacet extends Component {
   static ID = 'MLFacet';
   static doExport = () => exportGlobally({ MLFacet });
   static options: IMLFacetOptions = { ...MLFacetOptions, ...ResponsiveFacetOptions };
 
+  public mLFacetQueryController: MLFacetQueryController;
   private includedAttributeId: string;
   private listenToQueryStateChange = true;
   private header: MLFacetHeader;
   public values: MLFacetValues;
-  // TODO: remove
-  private mockedSavedValues: IMLFacetValue[];
 
   constructor(public element: HTMLElement, public options?: IMLFacetOptions, bindings?: IComponentBindings) {
     super(element, MLFacet.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, MLFacet, options);
 
+    this.initMLFacetQueryController();
     this.initQueryEvents();
     this.initQueryStateEvents();
 
     this.values = new MLFacetValues(this);
 
     ResponsiveFacets.init(this.root, this, this.options);
+  }
+
+  public get fieldName() {
+    return this.options.field.slice(1);
   }
 
   /**
@@ -144,32 +149,29 @@ export class MLFacet extends Component {
     this.bind.onQueryState(MODEL_EVENTS.CHANGE, undefined, this.handleQueryStateChanged);
   }
 
-  private handleDoneBuildingQuery(data: IDoneBuildingQueryEventArgs) {
-    // TODO: add facets attribute to the query here
-    // TODO: remove update of the mock
-    if (!this.mockedSavedValues) {
-      this.mockedSavedValues = [
-        { value: 'test 1', selected: false, numberOfResults: 847324 },
-        { value: 'test 2', selected: false, numberOfResults: 1 },
-        { value: 'test 3', selected: false, numberOfResults: 13 },
-        { value: 'test 4', selected: false, numberOfResults: 13134 },
-        { value: 'test 5', selected: false, numberOfResults: 2223 }
-      ] as IMLFacetValue[];
-      return;
-    }
+  private initMLFacetQueryController() {
+    this.mLFacetQueryController = new MLFacetQueryController(this);
+  }
 
-    this.mockedSavedValues = this.values.allFacetValues;
+  private handleDoneBuildingQuery(data: IDoneBuildingQueryEventArgs) {
+    Assert.exists(data);
+    Assert.exists(data.queryBuilder);
+    const queryBuilder = data.queryBuilder;
+    this.mLFacetQueryController.putFacetIntoQueryBuilder(queryBuilder);
   }
 
   private handleQuerySuccess(data: IQuerySuccessEventArgs) {
-    // TODO: mock response elsewhere
-    data.results.facets = this.mockedSavedValues;
-
     if (Utils.isNullOrUndefined(data.results.facets)) {
       return this.notImplementedError();
     }
 
-    this.onQueryResponse(data.results.facets);
+    const facetResponse = findWhere(data.results.facets, { field: this.fieldName });
+
+    if (!facetResponse) {
+      this.fieldDoesNotExistError();
+    }
+
+    this.onQueryResponse(facetResponse.values);
   }
 
   private handleQueryStateChanged(data: IAttributesChangedEventArg) {
@@ -215,7 +217,7 @@ export class MLFacet extends Component {
     this.updateQueryStateModel();
   }
 
-  protected updateQueryStateModel() {
+  private updateQueryStateModel() {
     this.listenToQueryStateChange = false;
     this.updateIncludedQueryStateModel();
     this.listenToQueryStateChange = true;
@@ -241,7 +243,7 @@ export class MLFacet extends Component {
     this.updateAppearance();
   }
 
-  private onQueryResponse(values: IMLFacetValue[]) {
+  private onQueryResponse(values: IFacetResponseValue[]) {
     this.header.hideLoading();
     this.values.createFromResults(values);
     this.values.render();
@@ -250,6 +252,11 @@ export class MLFacet extends Component {
 
   private notImplementedError() {
     this.logger.error('MLFacets are not supported by your current search endpoint. Disabling this component.');
+    this.disable();
+  }
+
+  private fieldDoesNotExistError() {
+    this.logger.error(`There are no facet results for the field ${this.options.field}. Disabling this component.`);
     this.disable();
   }
 }

@@ -35,7 +35,7 @@ export class MLFacetValueRenderer {
   }
 
   private toggleSelectedClass() {
-    this.dom.toggleClass('coveo-selected', this.facetValue.selected);
+    this.dom.toggleClass('coveo-selected', this.facetValue.isSelected);
   }
 
   private createLabel() {
@@ -48,7 +48,7 @@ export class MLFacetValueRenderer {
 
   private createCheckbox() {
     this.checkbox = new Checkbox(() => this.selectAction(), this.facetValue.valueCaption, this.ariaLabel);
-    this.facetValue.selected && this.checkbox.select(false);
+    this.facetValue.isSelected && this.checkbox.select(false);
   }
 
   private addFocusAndBlurEventListeners() {
@@ -68,7 +68,7 @@ export class MLFacetValueRenderer {
   };
 
   private get ariaLabel() {
-    const selectOrUnselect = !this.facetValue.selected ? 'SelectValueWithResultCount' : 'UnselectValueWithResultCount';
+    const selectOrUnselect = !this.facetValue.isSelected ? 'SelectValueWithResultCount' : 'UnselectValueWithResultCount';
     const resultCount = l('ResultCount', this.facetValue.formattedCount);
 
     return `${l(selectOrUnselect, this.facetValue.valueCaption, resultCount)}`;
