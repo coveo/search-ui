@@ -23,7 +23,7 @@ export class MLFacetHeaderButton {
 
     this.button = $$(
       'button',
-      { className: this.rootOptions.className || '' },
+      { className: `coveo-ml-facet-header-btn ${this.rootOptions.className || ''}` },
       hasIcon ? this.rootOptions.iconSVG : this.rootOptions.label
     );
 

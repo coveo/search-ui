@@ -29,7 +29,6 @@
 @import 'Excerpt';
 @import 'People';
 @import 'ErrorReport';
-@import 'MLFacet';
 @import 'FacetSearch';
 @import 'FacetValues';
 @import 'FacetBreadcrumb';
@@ -105,3 +104,6 @@
 @import 'vapor/Dropdown';
 @import 'vapor/Button';
 @import 'vapor/DatePicker';
+
+@import 'MLFacet/MLFacet';
+@import 'MLFacet/MLFacetHeader';

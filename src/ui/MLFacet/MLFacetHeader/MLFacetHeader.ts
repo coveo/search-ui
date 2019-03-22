@@ -1,3 +1,4 @@
+import 'styling/MLFacet/_MLFacetHeader';
 import { $$, Dom } from '../../../utils/Dom';
 import { l } from '../../../strings/Strings';
 import { SVGIcons } from '../../../utils/SVGIcons';
@@ -16,34 +17,17 @@ export class MLFacetHeader {
 
   constructor(private facet: MLFacet) {
     this.element = $$('div', { className: 'coveo-ml-facet-header' }).el;
-    $$(this.element).append(this.createTitleSection());
-    $$(this.element).append(this.createSettingsSection());
-  }
 
-  private createTitleSection() {
-    const section = $$('div', { className: 'coveo-ml-facet-header-title-section' });
-
-    section.append(this.createTitle());
-    section.append(this.createWaitAnimation());
-
-    return section.el;
-  }
-
-  private createSettingsSection() {
-    const section = $$('div', { className: 'coveo-ml-facet-header-settings-section' });
-
-    section.append(this.createClearButton());
-    this.facet.options.enableCollapse && section.append(this.createCollapseToggle());
-
-    return section.el;
+    $$(this.element).append(this.createTitle());
+    $$(this.element).append(this.createWaitAnimation());
+    $$(this.element).append(this.createClearButton());
+    this.facet.options.enableCollapse && $$(this.element).append(this.createCollapseToggle());
   }
 
   private createClearButton() {
     this.clearButton = new MLFacetHeaderButton({
-      label: l('Reset'),
-      className: 'coveo-ml-facet-header-eraser coveo-ml-facet-header-eraser-visible',
-      iconSVG: SVGIcons.icons.mainClear,
-      iconClassName: 'coveo-ml-facet-header-eraser-svg',
+      label: l('Clear'),
+      className: 'coveo-ml-facet-header-clear',
       shouldDisplay: false,
       action: () => this.clear()
     });
@@ -73,7 +57,6 @@ export class MLFacetHeader {
   private createWaitAnimation() {
     this.waitAnimation = $$('div', { className: 'coveo-ml-facet-header-wait-animation' }, SVGIcons.icons.loading);
     SVGDom.addClassToSVGInContainer(this.waitAnimation.el, 'coveo-ml-facet-header-wait-animation-svg');
-    this.hideLoading();
 
     return this.waitAnimation.el;
   }
@@ -84,11 +67,11 @@ export class MLFacetHeader {
 
   public showLoading() {
     clearTimeout(this.showLoadingTimeout);
-    this.showLoadingTimeout = window.setTimeout(() => (this.waitAnimation.el.style.visibility = 'visible'), MLFacetHeader.showLoadingDelay);
+    this.showLoadingTimeout = window.setTimeout(() => this.waitAnimation.removeClass('coveo-hidden'), MLFacetHeader.showLoadingDelay);
   }
 
   public hideLoading() {
     clearTimeout(this.showLoadingTimeout);
-    this.waitAnimation.el.style.visibility = 'hidden';
+    this.waitAnimation.addClass('coveo-hidden');
   }
 }

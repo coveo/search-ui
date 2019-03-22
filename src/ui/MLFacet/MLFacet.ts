@@ -1,4 +1,4 @@
-import 'styling/_MLFacet';
+import 'styling/MLFacet/_MLFacet';
 import { difference, findWhere } from 'underscore';
 import { $$ } from '../../utils/Dom';
 import { exportGlobally } from '../../GlobalExports';

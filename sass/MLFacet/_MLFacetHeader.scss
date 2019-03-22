@@ -1,0 +1,60 @@
+@import '../Variables';
+@import '../mixins/_facetHeaderAnimation';
+
+.coveo-ml-facet-header {
+  padding: 8px 0;
+  clear: both;
+  border-bottom: 1px solid $color-light-grey;
+  @include display(flex);
+  @include flex-wrap(nowrap);
+  @include justify-content(flex-end);
+}
+
+.coveo-ml-facet-header-title {
+  color: $coveo-blue;
+  font-size: $font-size-bigger;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+
+  @include flex-grow(1);
+}
+
+.coveo-ml-facet-header-wait-animation {
+  margin: 0 5px;
+  position: relative;
+
+  &.coveo-hidden {
+    display: none;
+  }
+}
+
+@mixin coveo-ml-facet-header-svg {
+  width: 16px;
+  height: 16px;
+  color: $coveo-blue;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.coveo-ml-facet-header-wait-animation-svg {
+  @include facet-header-animation;
+  @include coveo-ml-facet-header-svg;
+}
+
+.coveo-ml-facet-collapse-toggle-svg {
+  @include coveo-ml-facet-header-svg;
+}
+
+.coveo-ml-facet-header-btn {
+  padding: 0;
+  margin-left: 16px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: $color-vibrant-blue;
+  font-size: $font-size-smaller;
+
+  @include display(flex);
+  @include align-self(right);
+}
