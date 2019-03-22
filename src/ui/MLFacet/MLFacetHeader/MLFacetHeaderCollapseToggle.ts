@@ -17,12 +17,13 @@ export class MLFacetHeaderCollapseToggle {
   }
 
   private create() {
-    const parent = $$('div', { className: 'coveo-ml-facet-header-collapse-toggle' });
+    const parent = $$('div');
 
     this.collapseButton = new MLFacetHeaderButton({
       label: l('Collapse'),
       iconSVG: SVGIcons.icons.arrowUp,
       iconClassName: 'coveo-ml-facet-collapse-toggle-svg',
+      className: 'coveo-ml-facet-header-collapse',
       shouldDisplay: true,
       action: () => this.collapse()
     });
@@ -30,6 +31,7 @@ export class MLFacetHeaderCollapseToggle {
       label: l('Expand'),
       iconSVG: SVGIcons.icons.arrowDown,
       iconClassName: 'coveo-ml-facet-collapse-toggle-svg',
+      className: 'coveo-ml-facet-header-expand',
       shouldDisplay: true,
       action: () => this.expand()
     });

@@ -20,7 +20,7 @@ export function MLFacetHeaderTest() {
     }
 
     it('should create an accessible title', () => {
-      const titleElement = $$(mLFacetHeader.element).find('.coveo-facet-header-title');
+      const titleElement = $$(mLFacetHeader.element).find('.coveo-ml-facet-header-title');
 
       expect($$(titleElement).text()).toBe(baseOptions.title);
       expect($$(titleElement).getAttribute('role')).toBe('heading');
@@ -29,14 +29,13 @@ export function MLFacetHeaderTest() {
     });
 
     it('should create a hidden waitAnimationElement', () => {
-      const waitAnimationElement = $$(mLFacetHeader.element).find('.coveo-facet-header-wait-animation');
-
+      const waitAnimationElement = $$(mLFacetHeader.element).find('.coveo-ml-facet-header-wait-animation');
       expect($$(waitAnimationElement).isVisible()).toBe(false);
     });
 
     it(`when calling showLoading
       waitAnimationElement show be visible after the delay`, done => {
-      const waitAnimationElement = $$(mLFacetHeader.element).find('.coveo-facet-header-wait-animation');
+      const waitAnimationElement = $$(mLFacetHeader.element).find('.coveo-ml-facet-header-wait-animation');
       mLFacetHeader.showLoading();
       expect($$(waitAnimationElement).isVisible()).toBe(false);
 
@@ -46,17 +45,15 @@ export function MLFacetHeaderTest() {
       }, MLFacetHeader.showLoadingDelay + 1);
     });
 
-    it('should create an accessible hidden clear button', () => {
-      const clearElement = $$(mLFacetHeader.element).find('.coveo-facet-header-eraser');
+    it('should create an hidden clear button', () => {
+      const clearElement = $$(mLFacetHeader.element).find('.coveo-ml-facet-header-clear');
 
-      expect($$(clearElement).getAttribute('aria-label')).toBeTruthy();
-      expect($$(clearElement).getAttribute('title')).toBeTruthy();
       expect($$(clearElement).isVisible()).toBe(false);
     });
 
     it(`when calling showClear
       the clear button should be visible`, () => {
-      const clearElement = $$(mLFacetHeader.element).find('.coveo-facet-header-eraser');
+      const clearElement = $$(mLFacetHeader.element).find('.coveo-ml-facet-header-clear');
 
       mLFacetHeader.toggleClear(true);
 
@@ -68,8 +65,8 @@ export function MLFacetHeaderTest() {
       baseOptions.enableCollapse = true;
       initializeComponent();
 
-      const collapseElement = $$(mLFacetHeader.element).find('.coveo-facet-header-collapse');
-      const expandElement = $$(mLFacetHeader.element).find('.coveo-facet-header-expand');
+      const collapseElement = $$(mLFacetHeader.element).find('.coveo-ml-facet-header-collapse');
+      const expandElement = $$(mLFacetHeader.element).find('.coveo-ml-facet-header-expand');
 
       expect(collapseElement).toBeTruthy();
       expect(expandElement).toBeTruthy();

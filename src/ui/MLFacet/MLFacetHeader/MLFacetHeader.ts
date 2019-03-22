@@ -57,6 +57,7 @@ export class MLFacetHeader {
   private createWaitAnimation() {
     this.waitAnimation = $$('div', { className: 'coveo-ml-facet-header-wait-animation' }, SVGIcons.icons.loading);
     SVGDom.addClassToSVGInContainer(this.waitAnimation.el, 'coveo-ml-facet-header-wait-animation-svg');
+    this.waitAnimation.toggle(false);
 
     return this.waitAnimation.el;
   }
@@ -67,11 +68,11 @@ export class MLFacetHeader {
 
   public showLoading() {
     clearTimeout(this.showLoadingTimeout);
-    this.showLoadingTimeout = window.setTimeout(() => this.waitAnimation.removeClass('coveo-hidden'), MLFacetHeader.showLoadingDelay);
+    this.showLoadingTimeout = window.setTimeout(() => this.waitAnimation.toggle(true), MLFacetHeader.showLoadingDelay);
   }
 
   public hideLoading() {
     clearTimeout(this.showLoadingTimeout);
-    this.waitAnimation.addClass('coveo-hidden');
+    this.waitAnimation.toggle(false);
   }
 }
