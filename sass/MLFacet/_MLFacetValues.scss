@@ -9,21 +9,32 @@
   list-style: none;
   margin-bottom: 6px;
 
+  &.coveo-selected {
+    .coveo-checkbox-span-label,
+    .coveo-checkbox-span-label-suffix {
+      font-weight: bold;
+    }
+  }
+
+  .coveo-checkbox-label {
+    width: 100%;
+  }
+
+  .coveo-checkbox-span-label {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+
   .coveo-checkbox-span-label-suffix {
     margin-left: 8px;
     color: $color-light-grey;
   }
 
-  &.coveo-selected {
-    .coveo-checkbox-span-label {
-      font-weight: bold;
+  .coveo-checkbox-label:hover {
+    .coveo-checkbox-span-label,
+    .coveo-checkbox-span-label-suffix {
+      opacity: 0.5;
     }
-  }
-}
-
-.coveo-checkbox-label:hover {
-  .coveo-checkbox-span-label,
-  .coveo-checkbox-span-label-suffix {
-    opacity: 0.5;
   }
 }
