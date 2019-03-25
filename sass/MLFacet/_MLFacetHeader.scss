@@ -28,9 +28,12 @@
   vertical-align: middle;
 }
 
+.coveo-ml-facet-header-wait-animation {
+  @include coveo-ml-facet-header-svg;
+}
+
 .coveo-ml-facet-header-wait-animation-svg {
   @include facet-header-animation;
-  @include coveo-ml-facet-header-svg;
 }
 
 .coveo-ml-facet-collapse-toggle-svg {
