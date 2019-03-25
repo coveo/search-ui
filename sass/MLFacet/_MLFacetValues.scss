@@ -1,0 +1,29 @@
+@import '../Variables';
+
+.coveo-ml-facet-values {
+  margin: 15px 0;
+  padding: 0;
+}
+
+.coveo-ml-facet-value {
+  list-style: none;
+  margin-bottom: 6px;
+
+  .coveo-checkbox-span-label-suffix {
+    margin-left: 8px;
+    color: $color-light-grey;
+  }
+
+  &.coveo-selected {
+    .coveo-checkbox-span-label {
+      font-weight: bold;
+    }
+  }
+}
+
+.coveo-checkbox-label:hover {
+  .coveo-checkbox-span-label,
+  .coveo-checkbox-span-label-suffix {
+    opacity: 0.5;
+  }
+}

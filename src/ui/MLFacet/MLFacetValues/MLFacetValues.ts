@@ -1,3 +1,4 @@
+import 'styling/MLFacet/_MLFacetValues';
 import { $$ } from '../../../utils/Dom';
 import { findWhere, find } from 'underscore';
 import { MLFacetValue } from './MLFacetValue';

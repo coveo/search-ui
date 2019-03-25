@@ -23,10 +23,6 @@
 .coveo-ml-facet-header-wait-animation {
   margin: 0 5px;
   position: relative;
-
-  &.coveo-hidden {
-    display: none;
-  }
 }
 
 @mixin coveo-ml-facet-header-svg {
