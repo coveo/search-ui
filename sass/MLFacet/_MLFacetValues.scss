@@ -31,6 +31,13 @@
     color: $color-light-grey;
   }
 
+  .coveo-checkbox-button:focus {
+    & ~ .coveo-checkbox-span-label,
+    & ~ .coveo-checkbox-span-label-suffix {
+      opacity: 0.5;
+    }
+  }
+
   .coveo-checkbox-label:hover {
     .coveo-checkbox-span-label,
     .coveo-checkbox-span-label-suffix {

@@ -6,6 +6,7 @@ import { SVGDom } from '../../../utils/SVGDom';
 import { MLFacet } from '../MLFacet';
 import { MLFacetHeaderButton } from './MLFacetHeaderButton';
 import { MLFacetHeaderCollapseToggle } from './MLFacetHeaderCollapseToggle';
+import { TextEllipsisTooltip } from '../TextEllipsisTooltip';
 
 export class MLFacetHeader {
   public static showLoadingDelay = 2000;
@@ -18,7 +19,9 @@ export class MLFacetHeader {
   constructor(private facet: MLFacet) {
     this.element = $$('div', { className: 'coveo-ml-facet-header' }).el;
 
-    $$(this.element).append(this.createTitle());
+    const titleElement = this.createTitle();
+    $$(this.element).append(titleElement);
+    $$(this.element).append(this.createTitleTooltip(titleElement));
     $$(this.element).append(this.createWaitAnimation());
     $$(this.element).append(this.createClearButton());
     this.facet.options.enableCollapse && $$(this.element).append(this.createCollapseToggle());
@@ -52,6 +55,11 @@ export class MLFacetHeader {
     title.setAttribute('aria-label', `${l('FacetTitle', this.facet.options.title)}`);
 
     return title.el;
+  }
+
+  private createTitleTooltip(titleElement: HTMLElement) {
+    const tooltip = new TextEllipsisTooltip(titleElement, this.facet.options.title, this.facet.root);
+    return tooltip.element;
   }
 
   private createWaitAnimation() {

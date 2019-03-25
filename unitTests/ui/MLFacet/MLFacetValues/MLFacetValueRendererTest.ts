@@ -34,21 +34,6 @@ export function MLFacetValueRendererTest() {
         checkboxButton = $$(element).find('button');
       });
 
-      it(`when checkbox is focused
-        should add the coveo-focused class`, () => {
-        $$(checkboxButton).trigger('focusin');
-
-        expect($$(element).hasClass('coveo-focused')).toBe(true);
-      });
-
-      it(`when checkbox is focused and blurred
-        should remove the coveo-focused class`, () => {
-        $$(checkboxButton).trigger('focusin');
-        $$(checkboxButton).trigger('focusout');
-
-        expect($$(element).hasClass('coveo-focused')).toBe(false);
-      });
-
       describe('when being the facet value is not selected', () => {
         it('should not have the coveo-selected class', () => {
           expect($$(element).hasClass('coveo-selected')).toBe(false);

@@ -3,6 +3,7 @@ import { MLFacet } from '../MLFacet';
 import { MLFacetValue } from './MLFacetValue';
 import { Checkbox } from '../../FormWidgets/Checkbox';
 import { l } from '../../../strings/Strings';
+import { TextEllipsisTooltip } from '../TextEllipsisTooltip';
 
 export class MLFacetValueRenderer {
   private dom: Dom;
@@ -19,7 +20,7 @@ export class MLFacetValueRenderer {
     this.createCheckbox();
     this.dom.append(this.checkbox.getElement());
 
-    this.addFocusAndBlurEventListeners();
+    this.createTooltip();
 
     this.toggleSelectedClass();
 
@@ -40,10 +41,14 @@ export class MLFacetValueRenderer {
     this.facetValue.isSelected && this.checkbox.select(false);
   }
 
-  private addFocusAndBlurEventListeners() {
-    const checkboxButton = $$(this.checkbox.getElement()).find('button');
-    $$(checkboxButton).on('focusin', () => this.dom.addClass('coveo-focused'));
-    $$(checkboxButton).on('focusout', () => this.dom.removeClass('coveo-focused'));
+  private createTooltip() {
+    const labelElement = $$(this.checkbox.getElement()).find('.coveo-checkbox-span-label');
+    if (!labelElement) {
+      return;
+    }
+
+    const tooltip = new TextEllipsisTooltip(labelElement, this.facetValue.valueCaption, this.facet.root);
+    this.dom.append(tooltip.element);
   }
 
   private selectAction = () => {
