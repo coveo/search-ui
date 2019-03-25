@@ -16,17 +16,9 @@ export class MLFacetValueRenderer {
       dataValue: this.facetValue.value
     });
 
-    const labelElement = this.createLabel();
-    this.dom.append(labelElement);
-
-    const labelWrapperElement = this.createLabelWrapper();
-    labelElement.appendChild(labelWrapperElement);
-
     this.createCheckbox();
-    labelWrapperElement.appendChild(this.checkbox.getElement());
+    this.dom.append(this.checkbox.getElement());
 
-    const countElement = this.createCount();
-    labelWrapperElement.appendChild(countElement);
     this.addFocusAndBlurEventListeners();
 
     this.toggleSelectedClass();
@@ -38,16 +30,13 @@ export class MLFacetValueRenderer {
     this.dom.toggleClass('coveo-selected', this.facetValue.isSelected);
   }
 
-  private createLabel() {
-    return $$('label', { className: 'coveo-ml-facet-value-label' }).el;
-  }
-
-  private createLabelWrapper() {
-    return $$('div', { className: 'coveo-ml-facet-value-label-wrapper' }).el;
-  }
-
   private createCheckbox() {
-    this.checkbox = new Checkbox(() => this.selectAction(), this.facetValue.valueCaption, this.ariaLabel);
+    this.checkbox = new Checkbox(
+      () => this.selectAction(),
+      this.facetValue.valueCaption,
+      `(${this.facetValue.formattedCount})`,
+      this.ariaLabel
+    );
     this.facetValue.isSelected && this.checkbox.select(false);
   }
 
@@ -55,10 +44,6 @@ export class MLFacetValueRenderer {
     const checkboxButton = $$(this.checkbox.getElement()).find('button');
     $$(checkboxButton).on('focusin', () => this.dom.addClass('coveo-focused'));
     $$(checkboxButton).on('focusout', () => this.dom.removeClass('coveo-focused'));
-  }
-
-  private createCount() {
-    return $$('span', { className: 'coveo-ml-facet-value-count' }, this.facetValue.formattedCount).el;
   }
 
   private selectAction = () => {
