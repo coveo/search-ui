@@ -20,11 +20,6 @@
   @include flex-grow(1);
 }
 
-.coveo-ml-facet-header-wait-animation {
-  margin: 0 5px;
-  position: relative;
-}
-
 @mixin coveo-ml-facet-header-svg {
   width: 16px;
   height: 16px;
@@ -44,7 +39,7 @@
 
 .coveo-ml-facet-header-btn {
   padding: 0;
-  margin-left: 16px;
+  margin-left: 12px;
   background: none;
   border: none;
   cursor: pointer;
