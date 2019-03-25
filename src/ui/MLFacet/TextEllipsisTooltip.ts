@@ -21,7 +21,7 @@ export class TextEllipsisTooltip {
       modifiers: {
         preventOverflow: {
           boundariesElement: this.root,
-          padding: 0
+          padding: 10
         },
         arrow: {
           element: this.arrow
