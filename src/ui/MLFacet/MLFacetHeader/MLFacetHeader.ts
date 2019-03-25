@@ -6,7 +6,7 @@ import { SVGDom } from '../../../utils/SVGDom';
 import { MLFacet } from '../MLFacet';
 import { MLFacetHeaderButton } from './MLFacetHeaderButton';
 import { MLFacetHeaderCollapseToggle } from './MLFacetHeaderCollapseToggle';
-import { TextEllipsisTooltip } from '../TextEllipsisTooltip';
+import { TextEllipsisTooltip } from '../../Misc/TextEllipsisTooltip';
 
 export class MLFacetHeader {
   public static showLoadingDelay = 2000;

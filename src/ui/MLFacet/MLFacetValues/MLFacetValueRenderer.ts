@@ -3,7 +3,7 @@ import { MLFacet } from '../MLFacet';
 import { MLFacetValue } from './MLFacetValue';
 import { Checkbox } from '../../FormWidgets/Checkbox';
 import { l } from '../../../strings/Strings';
-import { TextEllipsisTooltip } from '../TextEllipsisTooltip';
+import { TextEllipsisTooltip } from '../../Misc/TextEllipsisTooltip';
 
 export class MLFacetValueRenderer {
   private dom: Dom;
