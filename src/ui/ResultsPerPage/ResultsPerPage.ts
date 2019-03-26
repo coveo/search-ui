@@ -13,10 +13,11 @@ import { l } from '../../strings/Strings';
 import { AccessibleButton } from '../../utils/AccessibleButton';
 
 import 'styling/_ResultsPerPage';
-import { MODEL_EVENTS } from '../../models/Model';
+import { MODEL_EVENTS, IAttributeChangedEventArg } from '../../models/Model';
 import { QUERY_STATE_ATTRIBUTES, QueryStateModel } from '../../models/QueryStateModel';
 import { ResultListEvents } from '../../events/ResultListEvents';
 import { ResultListUtils } from '../../utils/ResultListUtils';
+import { InitializationEvents } from '../../events/InitializationEvents';
 
 export interface IResultsPerPageOptions {
   choicesDisplayed?: number[];
@@ -91,13 +92,13 @@ export class ResultsPerPage extends Component {
     super(element, ResultsPerPage.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, ResultsPerPage, options);
 
-    this.currentResultsPerPage = this.getInitialChoice();
-    this.queryController.options.resultsPerPage = this.currentResultsPerPage;
-
+    this.bind.onRootElement(InitializationEvents.afterInitialization, () => this.resolveInitialState());
     this.bind.onRootElement(QueryEvents.querySuccess, (args: IQuerySuccessEventArgs) => this.handleQuerySuccess(args));
     this.bind.onRootElement(QueryEvents.queryError, () => this.handleQueryError());
     this.bind.onRootElement(QueryEvents.noResults, (args: INoResultsEventArgs) => this.handleNoResults());
-    this.bind.onQueryState(MODEL_EVENTS.CHANGE_ONE, QUERY_STATE_ATTRIBUTES.NUMBER_OF_RESULTS, () => this.handleQueryStateModelChanged());
+    this.bind.onQueryState(MODEL_EVENTS.CHANGE_ONE, QUERY_STATE_ATTRIBUTES.NUMBER_OF_RESULTS, (args: IAttributeChangedEventArg) =>
+      this.handleQueryStateModelChanged(args)
+    );
     this.addAlwaysActiveListeners();
 
     this.initComponent();
@@ -153,15 +154,20 @@ export class ResultsPerPage extends Component {
     });
   }
 
-  private handleQueryStateModelChanged() {
-    const resultsPerPage = this.getInitialChoice();
-    this.updateResultsPerPage(resultsPerPage);
+  private handleQueryStateModelChanged(args: IAttributeChangedEventArg) {
+    this.updateResultsPerPage(args.value);
   }
 
   private addAlwaysActiveListeners() {
     this.searchInterface.element.addEventListener(ResultListEvents.newResultsDisplayed, () =>
       ResultListUtils.hideIfInfiniteScrollEnabled(this)
     );
+  }
+
+  private resolveInitialState() {
+    this.currentResultsPerPage = this.getInitialChoice();
+    this.queryController.options.resultsPerPage = this.currentResultsPerPage;
+    this.updateQueryStateModelResultsPerPage();
   }
 
   private getInitialChoice(): number {

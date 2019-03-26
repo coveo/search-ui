@@ -107,6 +107,7 @@ export function ResultsPerPageTest() {
         test = Mock.optionsComponentSetup<ResultsPerPage, IResultsPerPageOptions>(ResultsPerPage, {
           choicesDisplayed: [15, 25, 35, 75]
         });
+        Simulate.initialization(test.env);
         Simulate.query(test.env, {
           results: FakeResults.createFakeResults(100)
         });
@@ -132,6 +133,7 @@ export function ResultsPerPageTest() {
           initialChoice: 13,
           choicesDisplayed: [3, 5, 7, 13]
         });
+        Simulate.initialization(test.env);
         Simulate.query(test.env, {
           results: FakeResults.createFakeResults(100)
         });
@@ -144,6 +146,7 @@ export function ResultsPerPageTest() {
           initialChoice: undefined,
           choicesDisplayed: [firstChoice, 5, 7, 13]
         });
+        Simulate.initialization(test.env);
         Simulate.query(test.env, {
           results: FakeResults.createFakeResults(100)
         });
@@ -157,6 +160,7 @@ export function ResultsPerPageTest() {
           initialChoice: aChoiceNotDisplayed,
           choicesDisplayed: [firstChoice, 5, 7, 13]
         });
+        Simulate.initialization(test.env);
         Simulate.query(test.env, {
           results: FakeResults.createFakeResults(100)
         });
