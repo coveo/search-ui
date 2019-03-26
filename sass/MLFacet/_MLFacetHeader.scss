@@ -3,7 +3,6 @@
 
 .coveo-ml-facet-header {
   padding: 8px 0;
-  clear: both;
   border-bottom: 1px solid $color-light-grey;
   @include display(flex);
   @include flex-wrap(nowrap);

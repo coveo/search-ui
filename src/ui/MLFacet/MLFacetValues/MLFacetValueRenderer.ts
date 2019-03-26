@@ -22,6 +22,8 @@ export class MLFacetValueRenderer {
 
     this.createTooltip();
 
+    this.addFocusAndBlurEventListeners();
+
     this.toggleSelectedClass();
 
     return this.dom.el;
@@ -39,6 +41,12 @@ export class MLFacetValueRenderer {
       this.ariaLabel
     );
     this.facetValue.isSelected && this.checkbox.select(false);
+  }
+
+  private addFocusAndBlurEventListeners() {
+    const checkboxButton = $$(this.checkbox.getElement()).find('button');
+    $$(checkboxButton).on('focusin', () => this.dom.addClass('coveo-focused'));
+    $$(checkboxButton).on('focusout', () => this.dom.removeClass('coveo-focused'));
   }
 
   private createTooltip() {

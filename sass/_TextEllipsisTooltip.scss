@@ -1,4 +1,7 @@
 @import 'Variables';
+$arrow-width: 6px;
+$arrow-height: 7px;
+$arrow-color: $color-greyish-dark-blue;
 
 .coveo-text-ellipsis-tooltip {
   font-size: $font-size-smallest;
@@ -9,18 +12,10 @@
   position: absolute;
   white-space: nowrap;
 
-  $arrow-width: 6px;
-  $arrow-height: 7px;
-  $arrow-color: $color-greyish-dark-blue;
-
   &.coveo-hidden {
     display: none;
   }
 }
-
-$arrow-width: 6px;
-$arrow-height: 7px;
-$arrow-color: $color-greyish-dark-blue;
 
 .coveo-text-ellipsis-tooltip-arrow {
   border: solid;

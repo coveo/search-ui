@@ -1,5 +1,7 @@
 @import '../Variables';
 
+$active-text-opacity: 0.5;
+
 .coveo-ml-facet-values {
   margin: 15px 0;
   padding: 0;
@@ -31,17 +33,17 @@
     color: $color-light-grey;
   }
 
-  .coveo-checkbox-button:focus {
-    & ~ .coveo-checkbox-span-label,
-    & ~ .coveo-checkbox-span-label-suffix {
-      opacity: 0.5;
-    }
-  }
-
   .coveo-checkbox-label:hover {
     .coveo-checkbox-span-label,
     .coveo-checkbox-span-label-suffix {
-      opacity: 0.5;
+      opacity: $active-text-opacity;
+    }
+  }
+
+  &.coveo-focused {
+    .coveo-checkbox-span-label,
+    .coveo-checkbox-span-label-suffix {
+      opacity: $active-text-opacity;
     }
   }
 }
