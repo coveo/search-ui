@@ -11,6 +11,7 @@ import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 import { l } from '../../strings/Strings';
 import { AccessibleButton } from '../../utils/AccessibleButton';
+import { Defer } from '../../misc/Defer';
 
 import 'styling/_ResultsPerPage';
 import { MODEL_EVENTS, IAttributeChangedEventArg } from '../../models/Model';
@@ -155,7 +156,14 @@ export class ResultsPerPage extends Component {
   }
 
   private handleQueryStateModelChanged(args: IAttributeChangedEventArg) {
-    this.updateResultsPerPage(args.value);
+    const valueToSet = args.value;
+
+    if (!this.isValidChoice(valueToSet)) {
+      this.logInvalidConfiguredChoiceWarning(valueToSet);
+      Defer.defer(() => this.resolveInitialState());
+    } else {
+      this.updateResultsPerPage(valueToSet);
+    }
   }
 
   private addAlwaysActiveListeners() {
@@ -184,7 +192,7 @@ export class ResultsPerPage extends Component {
       if (this.isValidChoice(configuredChoice)) {
         return configuredChoice;
       }
-      this.logInvalidConfiguredChoiceWarning();
+      this.logInvalidConfiguredChoiceWarning(configuredChoice);
     }
 
     return firstDisplayedChoice;
@@ -194,8 +202,7 @@ export class ResultsPerPage extends Component {
     return this.options.choicesDisplayed.indexOf(choice) !== -1;
   }
 
-  private logInvalidConfiguredChoiceWarning() {
-    const configuredChoice = this.options.initialChoice;
+  private logInvalidConfiguredChoiceWarning(configuredChoice: number) {
     const validChoices = this.options.choicesDisplayed;
 
     this.logger.warn(

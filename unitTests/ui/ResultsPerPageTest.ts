@@ -6,6 +6,7 @@ import { Simulate } from '../Simulate';
 import { FakeResults } from '../Fake';
 import { $$ } from '../../src/utils/Dom';
 import { QueryStateModel } from '../../src/Core';
+import { QUERY_STATE_ATTRIBUTES } from '../../src/models/QueryStateModel';
 
 export function ResultsPerPageTest() {
   describe('ResultsPerPage', () => {
@@ -45,6 +46,55 @@ export function ResultsPerPageTest() {
           { currentResultsPerPage: numOfResults },
           test.cmp.element
         );
+      });
+    });
+
+    describe('when modifying the query state model', () => {
+      const setQueryStateModelValue = (value: any) => {
+        test.env.queryStateModel.set(QUERY_STATE_ATTRIBUTES.NUMBER_OF_RESULTS, value);
+      };
+
+      const verifyStateForNumberOfResults = (value: any) => {
+        expect(test.cmp.resultsPerPage).toBe(value);
+        expect(test.env.queryStateModel.get(QUERY_STATE_ATTRIBUTES.NUMBER_OF_RESULTS)).toBe(value);
+      };
+
+      beforeEach(() => {
+        const advancedOptions = <IResultsPerPageOptions>{
+          choicesDisplayed: [10, 25, 50, 100],
+          initialChoice: 25
+        };
+
+        const advancedSetup = new Mock.AdvancedComponentSetupOptions(null, advancedOptions, builder => {
+          return builder.withLiveQueryStateModel();
+        });
+
+        test = Mock.advancedComponentSetup<ResultsPerPage>(ResultsPerPage, advancedSetup);
+        Simulate.initialization(test.env);
+      });
+
+      it('should accept setting the value to the original default 10', () => {
+        verifyStateForNumberOfResults(25);
+        setQueryStateModelValue(10);
+        verifyStateForNumberOfResults(10);
+      });
+
+      it('should accept setting the value to the a different value than the original', () => {
+        verifyStateForNumberOfResults(25);
+        setQueryStateModelValue(50);
+        verifyStateForNumberOfResults(50);
+      });
+
+      it('should revert to the initial state when setting an invalid value', () => {
+        verifyStateForNumberOfResults(25);
+        setQueryStateModelValue(123);
+        verifyStateForNumberOfResults(25);
+      });
+
+      it('should revert to the initial state when setting a NaN', () => {
+        verifyStateForNumberOfResults(25);
+        setQueryStateModelValue('foo');
+        verifyStateForNumberOfResults(25);
       });
     });
 
