@@ -1,3 +1,4 @@
+import 'styling/MLFacet/_MLFacetValues';
 import { $$ } from '../../../utils/Dom';
 import { findWhere, find } from 'underscore';
 import { MLFacetValue } from './MLFacetValue';
@@ -7,7 +8,7 @@ import { FacetValueState } from '../../../rest/Facet/FacetValueState';
 
 export class MLFacetValues {
   private facetValues: MLFacetValue[] = [];
-  private list = $$('ul', { className: 'coveo-facet-values' });
+  private list = $$('ul', { className: 'coveo-ml-facet-values' });
 
   constructor(private facet: MLFacet) {}
 

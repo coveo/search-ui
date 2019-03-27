@@ -35,13 +35,18 @@ export function MLFacetHeaderButtonTest() {
       expect(buttonElement.getAttribute('aria-label')).toBeFalsy();
     });
 
+    it(`when no option "classname" is passed
+      should at least put the base coveo-ml-facet-header-btn class`, () => {
+      expect(buttonElement.getAttribute('class')).toBe('coveo-ml-facet-header-btn');
+    });
+
     it(`when the option "classname" is passed
       should put it in the class of the element`, () => {
       const className = 'coveo-test-class';
       baseOptions.className = className;
       initializeComponent();
 
-      expect(buttonElement.getAttribute('class')).toBe(className);
+      expect(buttonElement.getAttribute('class')).toBe('coveo-ml-facet-header-btn coveo-test-class');
     });
 
     it(`when the option "action" is passed
@@ -92,7 +97,7 @@ export function MLFacetHeaderButtonTest() {
         baseOptions = {
           label: 'title',
           iconSVG: SVGIcons.icons.facetExpand,
-          iconClassName: 'coveo-facet-header-expand'
+          iconClassName: 'coveo-ml-facet-header-expand'
         };
         initializeComponent();
         svg = $$(buttonElement).children()[0];
