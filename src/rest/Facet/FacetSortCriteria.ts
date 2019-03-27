@@ -12,13 +12,13 @@ export enum FacetSortCriteria {
    * **Note:** The Coveo ML _Facet Sense_ feature only works with the `score`
    * sort criterion.
    */
-  score = 'score',
+  Score = 'score',
 
   /**
    * Sort facet values in ascending alphanumeric order.
    */
-  alphanumeric = 'alphanumeric',
-  occurrences = 'occurrences'
+  Alphanumeric = 'alphanumeric',
+  Occurrences = 'occurrences'
 }
 
 export function isFacetSortCriteria(sortCriteria: string) {
