@@ -52,20 +52,20 @@ input[type='checkbox'].coveo-checkbox {
 
   &:checked + button {
     &:before {
-      position: absolute; // Position it in the center of the box
+      position: absolute;
       top: 1px;
       left: 5px;
 
       box-sizing: content-box;
       display: block;
-      width: 4px; // Make it a small rectangle so the border will create an L-shape
+      width: 4px;
       height: 9px;
 
       content: '';
 
-      border: solid $coveo-blue; // Add a white border on the bottom and left, creating that 'L'
+      border: solid $coveo-blue;
       border-width: 0 2px 2px 0;
-      transform: rotate(43deg); // Rotate the L 43 degrees to turn it into a checkmark
+      transform: rotate(43deg);
     }
   }
 
