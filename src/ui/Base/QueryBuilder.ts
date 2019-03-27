@@ -282,8 +282,21 @@ export class QueryBuilder {
 
   /**
    * Specifies an array of request for the MLFacet component.
+   * Can not be used at the same time as [`groupByRequests`]{@link QueryBuilder.groupByRequests}
+   * Use the [`addFacetRequest`]{@link QueryBuilder.addFacetRequest} method to define this value
    */
-  public facets: IFacetRequest[] = [];
+  public facetRequests: IFacetRequest[] = undefined;
+
+  /**
+   * Defines and adds a value to the [`facetRequests`]{@link QueryBuilder.facetRequests}
+   */
+  public addFacetRequest(facetRequest: IFacetRequest) {
+    if (!this.facetRequests) {
+      this.facetRequests = [];
+    }
+
+    this.facetRequests.push(facetRequest);
+  }
 
   /**
    * Specifies an array of request for the CategoryFacet component.
@@ -355,7 +368,7 @@ export class QueryBuilder {
       queryFunctions: this.queryFunctions,
       rankingFunctions: this.rankingFunctions,
       groupBy: this.validateGroupBy(),
-      facets: this.validateFacets(),
+      facets: this.facetRequests,
       categoryFacets: this.categoryFacets,
       retrieveFirstSentences: this.retrieveFirstSentences,
       timezone: this.timezone,
@@ -508,18 +521,10 @@ export class QueryBuilder {
   }
 
   private validateGroupBy() {
-    if (!this.groupByRequests.length && this.facets.length) {
+    if (this.facetRequests && !this.groupByRequests.length) {
       return undefined;
     }
 
     return this.groupByRequests;
-  }
-
-  private validateFacets() {
-    if (!this.facets.length && this.groupByRequests.length) {
-      return undefined;
-    }
-
-    return this.facets;
   }
 }

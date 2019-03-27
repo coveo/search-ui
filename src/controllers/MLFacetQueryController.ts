@@ -14,7 +14,7 @@ export class MLFacetQueryController {
   public putFacetIntoQueryBuilder(queryBuilder: QueryBuilder) {
     Assert.exists(queryBuilder);
 
-    const facetState: IFacetRequest = {
+    const facetRequest: IFacetRequest = {
       field: this.facet.fieldName,
       sortCriteria: this.facet.options.sortCriteria as FacetSortCriteria,
       currentValues: this.currentValues,
@@ -22,7 +22,7 @@ export class MLFacetQueryController {
       isSticky: false // TODO: manage isSticky
     };
 
-    queryBuilder.facets.push(facetState);
+    queryBuilder.addFacetRequest(facetRequest);
   }
 
   private get currentValues(): IFacetRequestValue[] {
