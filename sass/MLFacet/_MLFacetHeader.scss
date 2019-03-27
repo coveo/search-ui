@@ -10,6 +10,8 @@
 }
 
 .coveo-ml-facet-header-title {
+  margin: 0;
+  font-size: $font-size-regular;
   color: $coveo-blue;
   font-weight: bold;
   white-space: nowrap;

@@ -3,7 +3,6 @@ import { MLFacet } from '../MLFacet';
 import { MLFacetValue } from './MLFacetValue';
 import { Checkbox } from '../../FormWidgets/Checkbox';
 import { l } from '../../../strings/Strings';
-import { TextEllipsisTooltip } from '../../Misc/TextEllipsisTooltip';
 
 export class MLFacetValueRenderer {
   private dom: Dom;
@@ -20,8 +19,6 @@ export class MLFacetValueRenderer {
     this.createCheckbox();
     this.dom.append(this.checkbox.getElement());
 
-    this.createTooltip();
-
     this.addFocusAndBlurEventListeners();
 
     this.toggleSelectedClass();
@@ -37,9 +34,19 @@ export class MLFacetValueRenderer {
     this.checkbox = new Checkbox(
       () => this.selectAction(),
       this.facetValue.valueCaption,
-      `(${this.facetValue.formattedCount})`,
-      this.ariaLabel
+      this.ariaLabel,
+      `(${this.facetValue.formattedCount})`
     );
+
+    const label = $$(this.checkbox.getElement()).find('.coveo-checkbox-span-label');
+    const labelSuffix = $$(this.checkbox.getElement()).find('.coveo-checkbox-span-label-suffix');
+
+    if (label && labelSuffix) {
+      label.setAttribute('title', this.facetValue.valueCaption);
+      label.setAttribute('aria-hidden', 'true');
+      labelSuffix.setAttribute('aria-hidden', 'true');
+    }
+
     this.facetValue.isSelected && this.checkbox.select(false);
   }
 
@@ -47,16 +54,6 @@ export class MLFacetValueRenderer {
     const checkboxButton = $$(this.checkbox.getElement()).find('button');
     $$(checkboxButton).on('focusin', () => this.dom.addClass('coveo-focused'));
     $$(checkboxButton).on('focusout', () => this.dom.removeClass('coveo-focused'));
-  }
-
-  private createTooltip() {
-    const labelElement = $$(this.checkbox.getElement()).find('.coveo-checkbox-span-label');
-    if (!labelElement) {
-      return;
-    }
-
-    const tooltip = new TextEllipsisTooltip(labelElement, this.facetValue.valueCaption, this.facet.root);
-    this.dom.append(tooltip.element);
   }
 
   private selectAction = () => {

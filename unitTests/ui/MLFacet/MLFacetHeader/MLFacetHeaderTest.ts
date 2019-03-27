@@ -22,10 +22,8 @@ export function MLFacetHeaderTest() {
     it('should create an accessible title', () => {
       const titleElement = $$(mLFacetHeader.element).find('.coveo-ml-facet-header-title');
 
-      expect($$(titleElement).text()).toBe(baseOptions.title);
-      expect($$(titleElement).getAttribute('role')).toBe('heading');
-      expect($$(titleElement).getAttribute('aria-level')).toBe('2');
       expect($$(titleElement).getAttribute('aria-label')).toBeTruthy();
+      expect($$(titleElement).find('span').innerHTML).toBe(baseOptions.title);
     });
 
     it('should create a hidden waitAnimationElement', () => {

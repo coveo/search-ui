@@ -695,6 +695,3 @@ MLFacetValueRendererTest();
 
 import { MLFacetQueryControllerTest } from './controllers/MLFacetQueryControllerTest';
 MLFacetQueryControllerTest();
-
-import { TextEllipsisTooltipTest } from './ui/TextEllipsisTooltipTest';
-TextEllipsisTooltipTest();

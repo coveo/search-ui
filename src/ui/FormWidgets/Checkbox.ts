@@ -25,8 +25,8 @@ export class Checkbox implements IFormWidgetWithLabel, IFormWidgetSelectable {
   constructor(
     public onChange: (checkbox: Checkbox) => void = (checkbox: Checkbox) => {},
     public label: string,
-    public labelSuffix?: string,
-    private ariaLabel?: string
+    public ariaLabel?: string,
+    public labelSuffix?: string
   ) {
     this.buildContent();
   }
