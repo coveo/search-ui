@@ -1,3 +1,4 @@
+import 'styling/MLFacet/_MLFacet';
 import { difference, findWhere } from 'underscore';
 import { $$ } from '../../utils/Dom';
 import { exportGlobally } from '../../GlobalExports';
@@ -358,7 +359,7 @@ export class MLFacet extends Component {
   private updateAppearance() {
     this.header.toggleClear(this.values.hasSelectedValues());
     $$(this.element).toggleClass('coveo-active', this.values.hasSelectedValues());
-    $$(this.element).toggleClass('coveo-facet-empty', this.values.isEmpty());
+    $$(this.element).toggleClass('coveo-hidden', this.values.isEmpty());
   }
 
   public triggerNewQuery() {

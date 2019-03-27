@@ -21,17 +21,17 @@ export class MLFacetHeaderCollapseToggle {
 
     this.collapseButton = new MLFacetHeaderButton({
       label: l('Collapse'),
-      className: 'coveo-facet-header-collapse',
-      iconSVG: SVGIcons.icons.facetCollapse,
-      iconClassName: 'coveo-facet-settings-section-hide-svg',
+      iconSVG: SVGIcons.icons.arrowUp,
+      iconClassName: 'coveo-ml-facet-collapse-toggle-svg',
+      className: 'coveo-ml-facet-header-collapse',
       shouldDisplay: true,
       action: () => this.collapse()
     });
     this.expandButton = new MLFacetHeaderButton({
       label: l('Expand'),
-      className: 'coveo-facet-header-expand',
-      iconSVG: SVGIcons.icons.facetExpand,
-      iconClassName: 'coveo-facet-settings-section-show-svg',
+      iconSVG: SVGIcons.icons.arrowDown,
+      iconClassName: 'coveo-ml-facet-collapse-toggle-svg',
+      className: 'coveo-ml-facet-header-expand',
       shouldDisplay: true,
       action: () => this.expand()
     });
