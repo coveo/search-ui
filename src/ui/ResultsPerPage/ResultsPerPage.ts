@@ -129,6 +129,7 @@ export class ResultsPerPage extends Component {
   }
 
   private updateResultsPerPage(resultsPerPage: number) {
+    this.queryController.options.resultsPerPage = resultsPerPage;
     this.searchInterface.resultsPerPage = resultsPerPage;
     this.currentResultsPerPage = resultsPerPage;
   }
@@ -171,8 +172,7 @@ export class ResultsPerPage extends Component {
   }
 
   private resolveInitialState() {
-    this.currentResultsPerPage = this.getInitialChoice();
-    this.queryController.options.resultsPerPage = this.currentResultsPerPage;
+    this.updateResultsPerPage(this.getInitialChoice());
     this.updateQueryStateModelResultsPerPage();
   }
 

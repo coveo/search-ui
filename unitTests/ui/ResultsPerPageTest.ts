@@ -71,28 +71,25 @@ export function ResultsPerPageTest() {
 
         test = Mock.advancedComponentSetup<ResultsPerPage>(ResultsPerPage, advancedSetup);
         Simulate.initialization(test.env);
+        verifyStateForNumberOfResults(25);
       });
 
       it('should accept setting the value to the original default 10', () => {
-        verifyStateForNumberOfResults(25);
         setQueryStateModelValue(10);
         verifyStateForNumberOfResults(10);
       });
 
       it('should accept setting the value to the a different value than the original', () => {
-        verifyStateForNumberOfResults(25);
         setQueryStateModelValue(50);
         verifyStateForNumberOfResults(50);
       });
 
       it('should revert to the initial state when setting an invalid value', () => {
-        verifyStateForNumberOfResults(25);
         setQueryStateModelValue(123);
         verifyStateForNumberOfResults(25);
       });
 
       it('should revert to the initial state when setting a NaN', () => {
-        verifyStateForNumberOfResults(25);
         setQueryStateModelValue('foo');
         verifyStateForNumberOfResults(25);
       });
