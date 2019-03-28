@@ -4,9 +4,7 @@ import { afterQuerySuccess, getFacetColumn, getRoot, inDesktopMode, resetMode } 
 
 export const AccessibilityMLFacet = () => {
   describe('MLFacet', () => {
-    const getFacetElement = () => {
-      return $$('div', { className: Component.computeCssClassName(MLFacet), 'data-field': '@objecttype' });
-    };
+    const mLFacet = $$('div', { className: Component.computeCssClassName(MLFacet), 'data-field': '@objecttype' }).el;
 
     beforeEach(() => {
       inDesktopMode();
@@ -17,7 +15,7 @@ export const AccessibilityMLFacet = () => {
     });
 
     it('should be accessible', async done => {
-      getFacetColumn().appendChild(getFacetElement().el);
+      getFacetColumn().appendChild(mLFacet);
       await afterQuerySuccess();
       const axeResults = await axe.run(getRoot());
       expect(axeResults).toBeAccessible();
