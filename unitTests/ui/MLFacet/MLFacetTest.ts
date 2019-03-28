@@ -2,8 +2,11 @@ import * as Mock from '../../MockEnvironment';
 import { MLFacet } from '../../../src/ui/MLFacet/MLFacet';
 import { IMLFacetOptions } from '../../../src/ui/MLFacet/MLFacetOptions';
 import { IMLFacetValue } from '../../../src/ui/MLFacet/MLFacetValues/MLFacetValue';
+import { FacetValueState } from '../../../src/rest/Facet/FacetValueState';
 import { MLFacetTestUtils } from './MLFacetTestUtils';
 import { $$ } from '../../../src/Core';
+import { FacetSortCriteria } from '../../../src/rest/Facet/FacetSortCriteria';
+import { Simulate } from '../../Simulate';
 
 export function MLFacetTest() {
   describe('MLFacet', () => {
@@ -18,13 +21,7 @@ export function MLFacetTest() {
     });
 
     function initializeComponent() {
-      test = Mock.advancedComponentSetup<MLFacet>(MLFacet, <Mock.AdvancedComponentSetupOptions>{
-        modifyBuilder: builder => {
-          return builder.withLiveQueryStateModel();
-        },
-        cmpOptions: options
-      });
-
+      test = MLFacetTestUtils.createAdvancedFakeFacet(options);
       test.cmp.values.createFromResults(mockFacetValues);
     }
 
@@ -37,17 +34,17 @@ export function MLFacetTest() {
       should not be seen as "active" or as "empty"`, () => {
       test.cmp.ensureDom();
 
-      expect($$(test.cmp.element).hasClass('coveo-facet-empty')).toBe(false);
+      expect($$(test.cmp.element).hasClass('coveo-hidden')).toBe(false);
       expect($$(test.cmp.element).hasClass('coveo-active')).toBe(false);
     });
 
     it(`when facet has selected values
       should be seen as "active" & not as "empty"`, () => {
-      mockFacetValues[0].selected = true;
+      mockFacetValues[0].state = FacetValueState.selected;
       initializeComponent();
       test.cmp.ensureDom();
 
-      expect($$(test.cmp.element).hasClass('coveo-facet-empty')).toBe(false);
+      expect($$(test.cmp.element).hasClass('coveo-hidden')).toBe(false);
       expect($$(test.cmp.element).hasClass('coveo-active')).toBe(true);
     });
 
@@ -57,16 +54,16 @@ export function MLFacetTest() {
       initializeComponent();
       test.cmp.ensureDom();
 
-      expect($$(test.cmp.element).hasClass('coveo-facet-empty')).toBe(true);
+      expect($$(test.cmp.element).hasClass('coveo-hidden')).toBe(true);
       expect($$(test.cmp.element).hasClass('coveo-active')).toBe(false);
     });
 
     it('allows to select a value', () => {
-      expect(test.cmp.values.get(mockFacetValues[0].value).selected).toBe(false);
+      expect(test.cmp.values.get(mockFacetValues[0].value).isSelected).toBe(false);
 
       test.cmp.selectValue(mockFacetValues[0].value);
 
-      expect(test.cmp.values.get(mockFacetValues[0].value).selected).toBe(true);
+      expect(test.cmp.values.get(mockFacetValues[0].value).isSelected).toBe(true);
       testQueryStateModelValues();
     });
 
@@ -76,7 +73,7 @@ export function MLFacetTest() {
 
       test.cmp.selectValue(newFacetValue);
 
-      expect(test.cmp.values.get(newFacetValue).selected).toBe(true);
+      expect(test.cmp.values.get(newFacetValue).isSelected).toBe(true);
       testQueryStateModelValues();
     });
 
@@ -91,18 +88,18 @@ export function MLFacetTest() {
     });
 
     it('allows to deselect a value', () => {
-      mockFacetValues[2].selected = true;
+      mockFacetValues[2].state = FacetValueState.selected;
       initializeComponent();
 
       test.cmp.deselectValue(mockFacetValues[2].value);
 
-      expect(test.cmp.values.get(mockFacetValues[2].value).selected).toBe(false);
+      expect(test.cmp.values.get(mockFacetValues[2].value).isSelected).toBe(false);
       testQueryStateModelValues();
     });
 
     it('allows to deselect multiple values', () => {
-      mockFacetValues[1].selected = true;
-      mockFacetValues[3].selected = true;
+      mockFacetValues[1].state = FacetValueState.selected;
+      mockFacetValues[3].state = FacetValueState.selected;
       initializeComponent();
 
       test.cmp.deselectMultipleValues([mockFacetValues[1].value, mockFacetValues[3].value]);
@@ -113,15 +110,15 @@ export function MLFacetTest() {
 
     it('allows to toggle a value', () => {
       test.cmp.toggleSelectValue(mockFacetValues[1].value);
-      expect(test.cmp.values.get(mockFacetValues[1].value).selected).toBe(true);
+      expect(test.cmp.values.get(mockFacetValues[1].value).isSelected).toBe(true);
       testQueryStateModelValues();
 
       test.cmp.toggleSelectValue(mockFacetValues[1].value);
-      expect(test.cmp.values.get(mockFacetValues[1].value).selected).toBe(false);
+      expect(test.cmp.values.get(mockFacetValues[1].value).isSelected).toBe(false);
       testQueryStateModelValues();
 
       test.cmp.toggleSelectValue(mockFacetValues[1].value);
-      expect(test.cmp.values.get(mockFacetValues[1].value).selected).toBe(true);
+      expect(test.cmp.values.get(mockFacetValues[1].value).isSelected).toBe(true);
       testQueryStateModelValues();
     });
 
@@ -133,8 +130,8 @@ export function MLFacetTest() {
     });
 
     it('allows to reset', () => {
-      mockFacetValues[1].selected = true;
-      mockFacetValues[3].selected = true;
+      mockFacetValues[1].state = FacetValueState.selected;
+      mockFacetValues[3].state = FacetValueState.selected;
       initializeComponent();
       test.cmp.ensureDom();
       expect(test.cmp.values.selectedValues.length).toBe(2);
@@ -149,7 +146,7 @@ export function MLFacetTest() {
     it('should have a default title', () => {
       test.cmp.ensureDom();
 
-      expect($$(test.cmp.element).find('.coveo-facet-header-title').innerHTML).toBe('No title');
+      expect($$(test.cmp.element).find('.coveo-ml-facet-header-title span').innerHTML).toBe('No title');
     });
 
     it('title option should set the title', () => {
@@ -157,7 +154,7 @@ export function MLFacetTest() {
       initializeComponent();
       test.cmp.ensureDom();
 
-      expect($$(test.cmp.element).find('.coveo-facet-header-title').innerHTML).toBe(options.title);
+      expect($$(test.cmp.element).find('.coveo-ml-facet-header-title span').innerHTML).toBe(options.title);
     });
 
     it('should select the needed values using the field', () => {
@@ -173,6 +170,40 @@ export function MLFacetTest() {
 
       test.env.queryStateModel.set(`f:${options.id}`, ['a', 'b', 'c']);
       expect(test.cmp.values.selectedValues).toEqual(['a', 'b', 'c']);
+    });
+
+    it(`when not setting a sortCriteria option
+      should set it to undefined in the query`, () => {
+      const simulation = Simulate.query(test.env);
+      const facetRequest = simulation.queryBuilder.build().facets[0];
+      expect(facetRequest.sortCriteria).toBeUndefined();
+    });
+
+    it(`when setting a sortCriteria option
+      should pass it down to the query`, () => {
+      options.sortCriteria = FacetSortCriteria.score;
+      initializeComponent();
+
+      const simulation = Simulate.query(test.env);
+      const facetRequest = simulation.queryBuilder.build().facets[0];
+      expect(facetRequest.sortCriteria).toBe(FacetSortCriteria.score);
+    });
+
+    it(`when not setting a numberOfValues option
+      should set it to undefined in the query`, () => {
+      const simulation = Simulate.query(test.env);
+      const facetRequest = simulation.queryBuilder.build().facets[0];
+      expect(facetRequest.numberOfValues).toBeUndefined();
+    });
+
+    it(`when setting a numberOfValues option
+      should pass it down to the query`, () => {
+      options.numberOfValues = 100;
+      initializeComponent();
+
+      const simulation = Simulate.query(test.env);
+      const facetRequest = simulation.queryBuilder.build().facets[0];
+      expect(facetRequest.numberOfValues).toBe(100);
     });
   });
 }

@@ -25,7 +25,8 @@ export class Checkbox implements IFormWidgetWithLabel, IFormWidgetSelectable {
   constructor(
     public onChange: (checkbox: Checkbox) => void = (checkbox: Checkbox) => {},
     public label: string,
-    private ariaLabel?: string
+    public ariaLabel?: string,
+    public labelSuffix?: string
   ) {
     this.buildContent();
   }
@@ -115,9 +116,13 @@ export class Checkbox implements IFormWidgetWithLabel, IFormWidgetSelectable {
     const labelSpan = $$('span', { className: 'coveo-checkbox-span-label' });
     labelSpan.text(this.label);
 
+    const labelSuffixSpan = $$('span', { className: 'coveo-checkbox-span-label-suffix' });
+    labelSuffixSpan.text(this.labelSuffix);
+
     label.append(this.checkbox);
     label.append(button.el);
     label.append(labelSpan.el);
+    this.labelSuffix && label.append(labelSuffixSpan.el);
 
     button.on('click', (e: Event) => {
       e.preventDefault();

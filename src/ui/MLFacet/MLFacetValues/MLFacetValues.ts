@@ -1,16 +1,29 @@
+import 'styling/MLFacet/_MLFacetValues';
 import { $$ } from '../../../utils/Dom';
 import { findWhere, find } from 'underscore';
-import { MLFacetValue, IMLFacetValue } from './MLFacetValue';
+import { MLFacetValue } from './MLFacetValue';
 import { MLFacet } from '../MLFacet';
+import { IFacetResponseValue } from '../../../rest/Facet/FacetResponse';
+import { FacetValueState } from '../../../rest/Facet/FacetValueState';
 
 export class MLFacetValues {
   private facetValues: MLFacetValue[] = [];
-  private list = $$('ul', { className: 'coveo-facet-values' });
+  private list = $$('ul', { className: 'coveo-ml-facet-values' });
 
   constructor(private facet: MLFacet) {}
 
-  public createFromResults(facetValues: IMLFacetValue[]) {
-    this.facetValues = facetValues.map(value => new MLFacetValue(value, this.facet));
+  public createFromResults(facetValues: IFacetResponseValue[]) {
+    this.facetValues = facetValues.map(
+      facetValue =>
+        new MLFacetValue(
+          {
+            value: facetValue.value,
+            numberOfResults: facetValue.numberOfResults,
+            state: facetValue.state
+          },
+          this.facet
+        )
+    );
   }
 
   public get allFacetValues() {
@@ -22,15 +35,15 @@ export class MLFacetValues {
   }
 
   public get selectedValues() {
-    return this.facetValues.filter(value => value.selected).map(value => value.value);
+    return this.facetValues.filter(value => value.isSelected).map(value => value.value);
   }
 
   public hasSelectedValues() {
-    return !!findWhere(this.facetValues, { selected: true });
+    return !!findWhere(this.facetValues, { state: FacetValueState.selected });
   }
 
   public clearAll() {
-    this.facetValues.forEach(value => (value.selected = false));
+    this.facetValues.forEach(value => value.deselect());
   }
 
   public isEmpty() {
@@ -45,7 +58,7 @@ export class MLFacetValues {
       return facetValue;
     }
 
-    const newFacetValue = new MLFacetValue({ value, selected: false, numberOfResults: 0 }, this.facet);
+    const newFacetValue = new MLFacetValue({ value, state: FacetValueState.idle, numberOfResults: 0 }, this.facet);
     this.facetValues.push(newFacetValue);
     return newFacetValue;
   }

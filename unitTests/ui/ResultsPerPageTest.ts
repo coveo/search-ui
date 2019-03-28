@@ -6,6 +6,7 @@ import { Simulate } from '../Simulate';
 import { FakeResults } from '../Fake';
 import { $$ } from '../../src/utils/Dom';
 import { QueryStateModel } from '../../src/Core';
+import { QUERY_STATE_ATTRIBUTES } from '../../src/models/QueryStateModel';
 
 export function ResultsPerPageTest() {
   describe('ResultsPerPage', () => {
@@ -45,6 +46,52 @@ export function ResultsPerPageTest() {
           { currentResultsPerPage: numOfResults },
           test.cmp.element
         );
+      });
+    });
+
+    describe('when modifying the query state model', () => {
+      const setQueryStateModelValue = (value: any) => {
+        test.env.queryStateModel.set(QUERY_STATE_ATTRIBUTES.NUMBER_OF_RESULTS, value);
+      };
+
+      const verifyStateForNumberOfResults = (value: any) => {
+        expect(test.cmp.resultsPerPage).toBe(value);
+        expect(test.env.queryStateModel.get(QUERY_STATE_ATTRIBUTES.NUMBER_OF_RESULTS)).toBe(value);
+      };
+
+      beforeEach(() => {
+        const advancedOptions = <IResultsPerPageOptions>{
+          choicesDisplayed: [10, 25, 50, 100],
+          initialChoice: 25
+        };
+
+        const advancedSetup = new Mock.AdvancedComponentSetupOptions(null, advancedOptions, builder => {
+          return builder.withLiveQueryStateModel();
+        });
+
+        test = Mock.advancedComponentSetup<ResultsPerPage>(ResultsPerPage, advancedSetup);
+        Simulate.initialization(test.env);
+        verifyStateForNumberOfResults(25);
+      });
+
+      it('should accept setting the value to the original default 10', () => {
+        setQueryStateModelValue(10);
+        verifyStateForNumberOfResults(10);
+      });
+
+      it('should accept setting the value to the a different value than the original', () => {
+        setQueryStateModelValue(50);
+        verifyStateForNumberOfResults(50);
+      });
+
+      it('should revert to the initial state when setting an invalid value', () => {
+        setQueryStateModelValue(123);
+        verifyStateForNumberOfResults(25);
+      });
+
+      it('should revert to the initial state when setting a NaN', () => {
+        setQueryStateModelValue('foo');
+        verifyStateForNumberOfResults(25);
       });
     });
 
@@ -107,6 +154,7 @@ export function ResultsPerPageTest() {
         test = Mock.optionsComponentSetup<ResultsPerPage, IResultsPerPageOptions>(ResultsPerPage, {
           choicesDisplayed: [15, 25, 35, 75]
         });
+        Simulate.initialization(test.env);
         Simulate.query(test.env, {
           results: FakeResults.createFakeResults(100)
         });
@@ -132,6 +180,7 @@ export function ResultsPerPageTest() {
           initialChoice: 13,
           choicesDisplayed: [3, 5, 7, 13]
         });
+        Simulate.initialization(test.env);
         Simulate.query(test.env, {
           results: FakeResults.createFakeResults(100)
         });
@@ -144,6 +193,7 @@ export function ResultsPerPageTest() {
           initialChoice: undefined,
           choicesDisplayed: [firstChoice, 5, 7, 13]
         });
+        Simulate.initialization(test.env);
         Simulate.query(test.env, {
           results: FakeResults.createFakeResults(100)
         });
@@ -157,6 +207,7 @@ export function ResultsPerPageTest() {
           initialChoice: aChoiceNotDisplayed,
           choicesDisplayed: [firstChoice, 5, 7, 13]
         });
+        Simulate.initialization(test.env);
         Simulate.query(test.env, {
           results: FakeResults.createFakeResults(100)
         });
