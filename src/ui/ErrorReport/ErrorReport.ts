@@ -247,6 +247,12 @@ export class ErrorReport extends Component {
         this.setErrorTitle(l('CannotAccess', this.organizationId), l('InvalidToken'));
         break;
 
+      case 'GroupByAndFacetBothExistingException':
+        this.options.showDetailedError = false;
+        // TODO: add MLFacet documentation
+        this.setErrorTitle(undefined, l('CannotUseBothFacetTypes'));
+        break;
+
       default:
         this.buildOptionsElement();
         this.setErrorTitle();
