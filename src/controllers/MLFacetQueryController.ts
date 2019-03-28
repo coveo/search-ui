@@ -22,7 +22,7 @@ export class MLFacetQueryController {
       isSticky: false // TODO: manage isSticky
     };
 
-    queryBuilder.addFacetRequest(facetRequest);
+    queryBuilder.facetRequests.push(facetRequest);
   }
 
   private get currentValues(): IFacetRequestValue[] {

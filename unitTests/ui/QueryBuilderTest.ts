@@ -189,7 +189,7 @@ export function QueryBuilderTest() {
       const facetRequest: IFacetRequest = { field: '@test' };
 
       beforeEach(() => {
-        queryBuilder.addFacetRequest(facetRequest);
+        queryBuilder.facetRequests.push(facetRequest);
       });
 
       it('should add the facets parameter correctly', () => {

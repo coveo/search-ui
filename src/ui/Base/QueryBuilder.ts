@@ -277,26 +277,15 @@ export class QueryBuilder {
   public rankingFunctions: IRankingFunction[] = [];
   /**
    * Specifies an array of Group By operations that can be performed on the query results to extract facets.
+   * Can not be used at the same time as [`facetRequests`]{@link QueryBuilder.facetRequests}
    */
   public groupByRequests: IGroupByRequest[] = [];
 
   /**
    * Specifies an array of request for the MLFacet component.
    * Can not be used at the same time as [`groupByRequests`]{@link QueryBuilder.groupByRequests}
-   * Use the [`addFacetRequest`]{@link QueryBuilder.addFacetRequest} method to define this value
    */
-  public facetRequests: IFacetRequest[] = undefined;
-
-  /**
-   * Defines and adds a value to the [`facetRequests`]{@link QueryBuilder.facetRequests}
-   */
-  public addFacetRequest(facetRequest: IFacetRequest) {
-    if (!this.facetRequests) {
-      this.facetRequests = [];
-    }
-
-    this.facetRequests.push(facetRequest);
-  }
+  public facetRequests: IFacetRequest[] = [];
 
   /**
    * Specifies an array of request for the CategoryFacet component.
@@ -367,8 +356,8 @@ export class QueryBuilder {
       sortField: this.sortField,
       queryFunctions: this.queryFunctions,
       rankingFunctions: this.rankingFunctions,
-      groupBy: this.validateGroupBy(),
-      facets: this.facetRequests,
+      groupBy: this.groupBy,
+      facets: this.facets,
       categoryFacets: this.categoryFacets,
       retrieveFirstSentences: this.retrieveFirstSentences,
       timezone: this.timezone,
@@ -520,11 +509,19 @@ export class QueryBuilder {
     return Utils.isNonEmptyString(query.q) || Utils.isNonEmptyString(query.lq);
   }
 
-  private validateGroupBy() {
-    if (this.facetRequests && !this.groupByRequests.length) {
+  private get groupBy() {
+    if (Utils.isEmptyArray(this.groupByRequests)) {
       return undefined;
     }
 
     return this.groupByRequests;
+  }
+
+  private get facets() {
+    if (Utils.isEmptyArray(this.facetRequests)) {
+      return undefined;
+    }
+
+    return this.facetRequests;
   }
 }
