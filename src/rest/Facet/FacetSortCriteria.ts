@@ -9,8 +9,7 @@ export enum FacetSortCriteria {
    * Facet value scores are based on number of occurrences and position in the
    * ranked query result set.
    *
-   * **Note:** The Coveo ML _Facet Sense_ feature only works with the `score`
-   * sort criterion.
+   * The Coveo ML _Facet Sense_ feature only works with the Score sort criterion.
    */
   Score = 'score',
 
