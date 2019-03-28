@@ -34,7 +34,7 @@ export function MLFacetTest() {
       should not be seen as "active" or as "empty"`, () => {
       test.cmp.ensureDom();
 
-      expect($$(test.cmp.element).hasClass('coveo-facet-empty')).toBe(false);
+      expect($$(test.cmp.element).hasClass('coveo-hidden')).toBe(false);
       expect($$(test.cmp.element).hasClass('coveo-active')).toBe(false);
     });
 
@@ -44,7 +44,7 @@ export function MLFacetTest() {
       initializeComponent();
       test.cmp.ensureDom();
 
-      expect($$(test.cmp.element).hasClass('coveo-facet-empty')).toBe(false);
+      expect($$(test.cmp.element).hasClass('coveo-hidden')).toBe(false);
       expect($$(test.cmp.element).hasClass('coveo-active')).toBe(true);
     });
 
@@ -54,7 +54,7 @@ export function MLFacetTest() {
       initializeComponent();
       test.cmp.ensureDom();
 
-      expect($$(test.cmp.element).hasClass('coveo-facet-empty')).toBe(true);
+      expect($$(test.cmp.element).hasClass('coveo-hidden')).toBe(true);
       expect($$(test.cmp.element).hasClass('coveo-active')).toBe(false);
     });
 
@@ -146,7 +146,7 @@ export function MLFacetTest() {
     it('should have a default title', () => {
       test.cmp.ensureDom();
 
-      expect($$(test.cmp.element).find('.coveo-facet-header-title').innerHTML).toBe('No title');
+      expect($$(test.cmp.element).find('.coveo-ml-facet-header-title span').innerHTML).toBe('No title');
     });
 
     it('title option should set the title', () => {
@@ -154,7 +154,7 @@ export function MLFacetTest() {
       initializeComponent();
       test.cmp.ensureDom();
 
-      expect($$(test.cmp.element).find('.coveo-facet-header-title').innerHTML).toBe(options.title);
+      expect($$(test.cmp.element).find('.coveo-ml-facet-header-title span').innerHTML).toBe(options.title);
     });
 
     it('should select the needed values using the field', () => {
