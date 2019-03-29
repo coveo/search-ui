@@ -277,13 +277,15 @@ export class QueryBuilder {
   public rankingFunctions: IRankingFunction[] = [];
   /**
    * Specifies an array of Group By operations that can be performed on the query results to extract facets.
+   * Cannot be used alongside [`facetRequests`]{@link QueryBuilder.facetRequests}
    */
   public groupByRequests: IGroupByRequest[] = [];
 
   /**
    * Specifies an array of request for the MLFacet component.
+   * Cannot be used alongside [`groupByRequests`]{@link QueryBuilder.groupByRequests}
    */
-  public facets: IFacetRequest[] = [];
+  public facetRequests: IFacetRequest[] = [];
 
   /**
    * Specifies an array of request for the CategoryFacet component.
@@ -354,8 +356,8 @@ export class QueryBuilder {
       sortField: this.sortField,
       queryFunctions: this.queryFunctions,
       rankingFunctions: this.rankingFunctions,
-      groupBy: this.validateGroupBy(),
-      facets: this.validateFacets(),
+      groupBy: this.groupBy,
+      facets: this.facets,
       categoryFacets: this.categoryFacets,
       retrieveFirstSentences: this.retrieveFirstSentences,
       timezone: this.timezone,
@@ -507,19 +509,19 @@ export class QueryBuilder {
     return Utils.isNonEmptyString(query.q) || Utils.isNonEmptyString(query.lq);
   }
 
-  private validateGroupBy() {
-    if (!this.groupByRequests.length && this.facets.length) {
+  private get groupBy() {
+    if (Utils.isEmptyArray(this.groupByRequests)) {
       return undefined;
     }
 
     return this.groupByRequests;
   }
 
-  private validateFacets() {
-    if (!this.facets.length && this.groupByRequests.length) {
+  private get facets() {
+    if (Utils.isEmptyArray(this.facetRequests)) {
       return undefined;
     }
 
-    return this.facets;
+    return this.facetRequests;
   }
 }

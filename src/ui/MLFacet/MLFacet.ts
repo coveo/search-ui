@@ -294,11 +294,7 @@ export class MLFacet extends Component {
 
     const facetResponse = findWhere(data.results.facets, { field: this.fieldName });
 
-    if (!facetResponse) {
-      this.fieldDoesNotExistError();
-    }
-
-    this.onQueryResponse(facetResponse.values);
+    this.onQueryResponse(facetResponse ? facetResponse.values : []);
   }
 
   private handleQueryStateChanged(data: IAttributesChangedEventArg) {
@@ -380,11 +376,7 @@ export class MLFacet extends Component {
   private notImplementedError() {
     this.logger.error('MLFacets are not supported by your current search endpoint. Disabling this component.');
     this.disable();
-  }
-
-  private fieldDoesNotExistError() {
-    this.logger.error(`There are no facet results for the field ${this.options.field}. Disabling this component.`);
-    this.disable();
+    this.updateAppearance();
   }
 }
 
