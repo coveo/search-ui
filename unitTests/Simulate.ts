@@ -28,6 +28,7 @@ import ModalBox = Coveo.ModalBox.ModalBox;
 import { NoopComponent } from '../src/ui/NoopComponent/NoopComponent';
 import { Component } from '../src/ui/Base/Component';
 import { QueryError } from '../src/rest/QueryError';
+import { InitializationEvents } from '../src/Core';
 
 export interface ISimulateQueryData {
   query?: IQuery;
@@ -189,6 +190,13 @@ export class Simulate {
     }
 
     return options;
+  }
+
+  static initialization(env: IMockEnvironment) {
+    $$(env.root).trigger(InitializationEvents.beforeInitialization);
+    $$(env.root).trigger(InitializationEvents.afterComponentsInitialization);
+    $$(env.root).trigger(InitializationEvents.restoreHistoryState);
+    $$(env.root).trigger(InitializationEvents.afterInitialization);
   }
 
   static modalBoxModule(): ModalBox {
