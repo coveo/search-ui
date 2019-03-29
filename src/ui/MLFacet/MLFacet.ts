@@ -35,8 +35,6 @@ export interface IMLFacetOptions extends IResponsiveComponentOptions {
 
 /**
  * Renders a facet in the search interface.
- *
- * The main difference between this component and the `Facet` component
  */
 export class MLFacet extends Component {
   static ID = 'MLFacet';
