@@ -209,7 +209,7 @@ export class Facet extends Component {
      *
      * Default value is `true`.
      */
-    enableSettings: ComponentOptions.buildBooleanOption({ defaultValue: true, section: 'SettingsMenu', priority: 9 }),
+    enableSettings: ComponentOptions.buildBooleanOption({ defaultValue: true, section: 'Sorting', priority: 9 }),
     /**
      * If the [`enableSettings`]{@link Facet.options.enableSettings} option is `true`, specifies whether the
      * **Save state** menu option is available in the facet **Settings** menu.
@@ -253,6 +253,7 @@ export class Facet extends Component {
       | 'nosort'
     >({
       defaultValue: ['occurrences', 'score', 'alphaascending', 'alphadescending'],
+      section: 'Sorting',
       depend: 'enableSettings',
       values: [
         'Occurrences',
@@ -275,7 +276,8 @@ export class Facet extends Component {
      */
     sortCriteria: ComponentOptions.buildStringOption({
       postProcessing: (value, options: IFacetOptions) =>
-        value || (options.availableSorts.length > 0 ? options.availableSorts[0] : 'occurrences')
+        value || (options.availableSorts.length > 0 ? options.availableSorts[0] : 'occurrences'),
+      section: 'Sorting'
     }),
     /**
      * Specifies a custom order by which to sort the facet values.
@@ -290,7 +292,7 @@ export class Facet extends Component {
      * **Note:**
      * > The [`FacetRange`]{@link FacetRange} component does not support this option.
      */
-    customSort: ComponentOptions.buildListOption<string>(),
+    customSort: ComponentOptions.buildListOption<string>({ section: 'Sorting' }),
     /**
      * Specifies the maximum number of field values to display by default in the facet before the user
      * clicks the arrow to show more.
