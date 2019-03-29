@@ -1,9 +1,8 @@
 import { $$ } from '../../../../src/utils/Dom';
 import { MLFacetValueRenderer } from '../../../../src/ui/MLFacet/MLFacetValues/MLFacetValueRenderer';
 import { MLFacetValue } from '../../../../src/ui/MLFacet/MLFacetValues/MLFacetValue';
-import { IMLFacetOptions } from '../../../../src/ui/MLFacet/MLFacetOptions';
 import { MLFacetTestUtils } from '../MLFacetTestUtils';
-import { MLFacet } from '../../../../src/ui/MLFacet/MLFacet';
+import { MLFacet, IMLFacetOptions } from '../../../../src/ui/MLFacet/MLFacet';
 
 export function MLFacetValueRendererTest() {
   describe('MLFacetValueRenderer', () => {

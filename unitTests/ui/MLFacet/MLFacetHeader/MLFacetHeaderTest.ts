@@ -1,7 +1,6 @@
 import { $$ } from '../../../../src/utils/Dom';
 import { MLFacetHeader } from '../../../../src/ui/MLFacet/MLFacetHeader/MLFacetHeader';
-import { MLFacet } from '../../../../src/ui/MLFacet/MLFacet';
-import { IMLFacetOptions } from '../../../../src/ui/MLFacet/MLFacetOptions';
+import { MLFacet, IMLFacetOptions } from '../../../../src/ui/MLFacet/MLFacet';
 
 export function MLFacetHeaderTest() {
   describe('MLFacetHeader', () => {

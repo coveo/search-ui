@@ -4,12 +4,11 @@ import { $$ } from '../../utils/Dom';
 import { exportGlobally } from '../../GlobalExports';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
-import { ComponentOptions } from '../Base/ComponentOptions';
+import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
 import { Initialization } from '../Base/Initialization';
 import { ResponsiveFacetOptions } from '../ResponsiveComponents/ResponsiveFacetOptions';
 import { ResponsiveFacets } from '../ResponsiveComponents/ResponsiveFacets';
 import { MLFacetHeader } from './MLFacetHeader/MLFacetHeader';
-import { IMLFacetOptions, MLFacetOptions } from './MLFacetOptions';
 import { MLFacetValues } from './MLFacetValues/MLFacetValues';
 import { QueryEvents, IQuerySuccessEventArgs, IDoneBuildingQueryEventArgs } from '../../events/QueryEvents';
 import { QueryStateModel } from '../../models/QueryStateModel';
@@ -18,11 +17,132 @@ import { Utils } from '../../utils/Utils';
 import { MODEL_EVENTS, IAttributesChangedEventArg } from '../../models/Model';
 import { Assert } from '../../misc/Assert';
 import { IFacetResponseValue } from '../../rest/Facet/FacetResponse';
+import { IResponsiveComponentOptions } from '../ResponsiveComponents/ResponsiveComponentsManager';
+import { IStringMap } from '../../rest/GenericParam';
+import { isFacetSortCriteria } from '../../rest/Facet/FacetSortCriteria';
+import { l } from '../../strings/Strings';
 
+export interface IMLFacetOptions extends IResponsiveComponentOptions {
+  id?: string;
+  title?: string;
+  field?: IFieldOption;
+  sortCriteria?: string;
+  numberOfValues?: number;
+  enableCollapse?: boolean;
+  collapsedByDefault?: boolean;
+  valueCaption?: any;
+}
+
+/**
+ * Renders a facet in the search interface.
+ */
 export class MLFacet extends Component {
   static ID = 'MLFacet';
   static doExport = () => exportGlobally({ MLFacet });
-  static options: IMLFacetOptions = { ...MLFacetOptions, ...ResponsiveFacetOptions };
+
+  /**
+   * The options for the MLFacet
+   * @componentOptions
+   */
+  static options: IMLFacetOptions = {
+    ...ResponsiveFacetOptions,
+
+    /**
+     * The unique identifier for this facet.
+     *
+     * Among other things, this is used to record and read the facet
+     * state in the URL fragment identifier (see the
+     * [`enableHistory`]{@link SearchInterface.options.enableHistory} `SearchInterface`
+     * option).
+     *
+     * **Tip:** When several facets in a given search interface are based on
+     * the same field, ensure that each of those facets has a distinct `id`.
+     *
+     * **Default:** The [`field`]{@link MLFacet.options.field} option value.
+     */
+    id: ComponentOptions.buildStringOption({
+      postProcessing: (value, options: IMLFacetOptions) => value || (options.field as string)
+    }),
+
+    /**
+     * The title to display for this facet.
+     *
+     * **Default:** The localized string for `NoTitle`.
+     */
+    title: ComponentOptions.buildLocalizedStringOption({
+      defaultValue: l('NoTitle'),
+      section: 'CommonOptions',
+      priority: 10
+    }),
+
+    /**
+     * The name of the field on which to base this facet.
+     *
+     * Must be prefixed by `@`, and must reference an existing field whose
+     * **Facet** option is enabled (see
+     * [Add or Edit Fields](https://docs.coveo.com/en/1982/)).
+     *
+     * **Required:** Specifying a value for this option is required for the
+     * component to work.
+     */
+    field: ComponentOptions.buildFieldOption({ required: true, section: 'CommonOptions' }),
+
+    /**
+     * The sort criterion to use for this facet.
+     *
+     * See [`FacetSortCriteria`]{@link FacetSortCriteria} for the list and
+     * description of allowed values.
+     *
+     * **Default:** `undefined`, and the following behavior applies:
+     * - If the requested [`numberOfValues`]{@link MLFacet.options.numberOfValues}
+     * is greater than or equal to the currently displayed number of values,
+     * the [`alphanumeric`]{@link FacetSortCriteria.alphanumeric} criterion is
+     * used.
+     * - If the requested `numberOfValues` is less than the currently displayed
+     * number of values and the facet is not currently expanded, the [`score`]{@link FacetSortCriteria.score}
+     * criterion is used.
+     * - Otherwise, the `alphanumeric` criterion is used.
+     */
+    sortCriteria: ComponentOptions.buildStringOption({
+      postProcessing: value => (isFacetSortCriteria(value) ? value : undefined),
+      section: 'Sorting'
+    }),
+
+    /**
+     * The maximum number of values to request for this facet.
+     *
+     * **Minimum:** `0`
+     *
+     * **Default:** `undefined`, and the default Search API value (`8`)
+     * is used.
+     */
+    numberOfValues: ComponentOptions.buildNumberOption({ min: 0, section: 'CommonOptions' }),
+
+    /**
+     * Whether to allow the end-user to expand and collapse this facet.
+     *
+     * **Default:** `false`
+     */
+    enableCollapse: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'Filtering' }),
+
+    /**
+     * Whether this facet should be collapsed by default.
+     *
+     * See also the [`enableCollapse`]{@link MLFacet.options.enableCollapse}
+     * option.
+     *
+     * Default value is `false`
+     */
+    collapsedByDefault: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'Filtering' }),
+
+    /**
+     * A mapping of facet values to their desired captions.
+     *
+     * See [Normalizing Facet Value Captions](https://developers.coveo.com/x/jBsvAg).
+     *
+     */
+    valueCaption: ComponentOptions.buildJsonOption<IStringMap<string>>()
+  };
 
   public mLFacetQueryController: MLFacetQueryController;
   private includedAttributeId: string;
@@ -30,6 +150,13 @@ export class MLFacet extends Component {
   private header: MLFacetHeader;
   public values: MLFacetValues;
 
+  /**
+   * Creates a new `MLFacet` instance.
+   *
+   * @param element The element from which to instantiate the component.
+   * @param options The component options.
+   * @param bindings The component bindings. Automatically resolved by default.
+   */
   constructor(public element: HTMLElement, public options?: IMLFacetOptions, bindings?: IComponentBindings) {
     super(element, MLFacet.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, MLFacet, options);
@@ -48,12 +175,12 @@ export class MLFacet extends Component {
   }
 
   /**
-   * Selects a single value.
+   * Selects a single value in this facet.
    *
-   * Does not trigger a query automatically.
-   * Does not update the visual of the facet until a query is performed.
+   * Does **not** trigger a query automatically.
+   * Does **not** update the visual of the facet until a query is performed.
    *
-   * @param value is a string.
+   * @param value The name of the facet value to select.
    */
   public selectValue(value: string) {
     Assert.exists(value);
@@ -61,12 +188,12 @@ export class MLFacet extends Component {
   }
 
   /**
-   * Selects multiple values.
+   * Selects multiple values in this facet.
    *
-   * Does not trigger a query automatically.
-   * Does not update the visual of the facet until a query is performed.
+   * Does **not** trigger a query automatically.
+   * Does **not** update the visual of the facet until a query is performed.
    *
-   * @param values is an array of strings.
+   * @param values The names of the facet values to select.
    */
   public selectMultipleValues(values: string[]) {
     Assert.exists(values);
@@ -78,12 +205,12 @@ export class MLFacet extends Component {
   }
 
   /**
-   * Deselects a single value.
+   * Deselects a single value in this facet.
    *
-   * Does not trigger a query automatically.
-   * Does not update the visual of the facet until a query is performed.
+   * Does **not** trigger a query automatically.
+   * Does **not** update the visual of the facet until a query is performed.
    *
-   * @param values is a string.
+   * @param values The name of the facet value to deselect.
    */
   public deselectValue(value: string) {
     Assert.exists(value);
@@ -91,12 +218,12 @@ export class MLFacet extends Component {
   }
 
   /**
-   * Deselects multiple values.
+   * Deselects multiple values in this facet.
    *
-   * Does not trigger a query automatically.
-   * Does not update the visual of the facet until a query is performed.
+   * Does **not** trigger a query automatically.
+   * Does **not** update the visual of the facet until a query is performed.
    *
-   * @param values is an array of strings.
+   * @param values The names of the facet values to deselect.
    */
   public deselectMultipleValues(values: string[]) {
     Assert.exists(values);
@@ -108,11 +235,11 @@ export class MLFacet extends Component {
   }
 
   /**
-   * Toggles the selection state of a single value (selects the value if it is not already selected; un-selects the
-   * value if it is already selected).
+   * Toggles the selection state of a single value in this facet.
    *
-   * Does not trigger a query automatically.
-   * @param values is a string.
+   * Does **not** trigger a query automatically.
+   *
+   * @param values The name of the facet value to toggle.
    */
   public toggleSelectValue(value: string): void {
     Assert.exists(value);
@@ -122,7 +249,7 @@ export class MLFacet extends Component {
   }
 
   /**
-   * Resets the facet by deselecting all values.
+   * Deselects all values in this facet.
    *
    * Does not trigger a query automatically.
    * Updates the visual of the facet.
