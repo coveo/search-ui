@@ -254,8 +254,16 @@ export class Facet extends Component {
     >({
       defaultValue: ['occurrences', 'score', 'alphaascending', 'alphadescending'],
       depend: 'enableSettings',
-      section: 'Sorting',
-      values: ['AlphaAscending', 'AlphaDescending', 'ComputedFieldAscending', 'ComputedFieldDescending', 'ChiSquare', 'NoSort']
+      values: [
+        'Occurrences',
+        'Score',
+        'AlphaAscending',
+        'AlphaDescending',
+        'ComputedFieldAscending',
+        'ComputedFieldDescending',
+        'ChiSquare',
+        'NoSort'
+      ]
     }),
     /**
      * Specifies the criteria to use to sort the facet values.
