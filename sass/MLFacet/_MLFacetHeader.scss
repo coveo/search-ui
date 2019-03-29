@@ -50,6 +50,10 @@
   color: $color-vibrant-blue;
   font-size: $font-size-smaller;
 
+  &:hover {
+    text-decoration: underline;
+  }
+
   @include display(flex);
   @include align-self(right);
 }
