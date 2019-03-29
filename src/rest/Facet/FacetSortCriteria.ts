@@ -9,15 +9,15 @@ export enum FacetSortCriteria {
    * Facet value scores are based on number of occurrences and position in the
    * ranked query result set.
    *
-   * The Coveo ML _Facet Sense_ feature only works with the Score sort criterion.
+   * The Coveo ML _Facet Sense_ feature only works with this sort criterion.
    */
-  Score = 'score',
+  score = 'score',
 
   /**
    * Sort facet values in ascending alphanumeric order.
    */
-  Alphanumeric = 'alphanumeric',
-  Occurrences = 'occurrences'
+  alphanumeric = 'alphanumeric',
+  occurrences = 'occurrences'
 }
 
 export function isFacetSortCriteria(sortCriteria: string) {

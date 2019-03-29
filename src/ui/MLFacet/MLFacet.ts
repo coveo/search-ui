@@ -98,10 +98,10 @@ export class MLFacet extends Component {
      * **Default:** `undefined`, and the following behavior applies:
      * - If the requested [`numberOfValues`]{@link MLFacet.options.numberOfValues}
      * is greater than or equal to the currently displayed number of values,
-     * the [`alphanumeric`]{@link FacetSortCriteria.Alphanumeric} criterion is
+     * the [`alphanumeric`]{@link FacetSortCriteria.alphanumeric} criterion is
      * used.
      * - If the requested `numberOfValues` is less than the currently displayed
-     * number of values and the facet is not currently expanded, the [`score`]{@link FacetSortCriteria.Score}
+     * number of values and the facet is not currently expanded, the [`score`]{@link FacetSortCriteria.score}
      * criterion is used.
      * - Otherwise, the `alphanumeric` criterion is used.
      */

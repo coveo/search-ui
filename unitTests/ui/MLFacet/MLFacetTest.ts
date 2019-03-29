@@ -180,12 +180,12 @@ export function MLFacetTest() {
 
     it(`when setting a sortCriteria option
       should pass it down to the query`, () => {
-      options.sortCriteria = FacetSortCriteria.Score;
+      options.sortCriteria = FacetSortCriteria.score;
       initializeComponent();
 
       const simulation = Simulate.query(test.env);
       const facetRequest = simulation.queryBuilder.build().facets[0];
-      expect(facetRequest.sortCriteria).toBe(FacetSortCriteria.Score);
+      expect(facetRequest.sortCriteria).toBe(FacetSortCriteria.score);
     });
 
     it(`when not setting a numberOfValues option

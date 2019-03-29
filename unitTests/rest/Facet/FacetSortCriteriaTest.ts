@@ -7,8 +7,8 @@ export function FacetSortCriteriaTest() {
     });
 
     it('should return true for values that are facet sort criterias', () => {
-      expect(isFacetSortCriteria(FacetSortCriteria.Score)).toBe(true);
-      expect(isFacetSortCriteria(FacetSortCriteria.Occurrences)).toBe(true);
+      expect(isFacetSortCriteria(FacetSortCriteria.score)).toBe(true);
+      expect(isFacetSortCriteria(FacetSortCriteria.occurrences)).toBe(true);
     });
   });
 }
