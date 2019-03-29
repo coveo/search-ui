@@ -135,7 +135,9 @@ export function ErrorReportTest() {
           }
         })
       });
-      expect($$($$(test.cmp.root).find('.coveo-error-report-title')).text()).toEqual(l('OopsError') + l('CannotUseBothFacetTypes'));
+      expect($$($$(test.cmp.root).find('.coveo-error-report-title')).text()).toEqual(
+        l('OopsError') + l('GroupByAndFacetRequestsCannotCoexist')
+      );
     });
 
     it('should display error report options with possible actions', () => {
