@@ -181,8 +181,18 @@ export function QueryBuilderTest() {
       expect(queryBuilder.build().facets).toBeUndefined();
     });
 
-    it('should have facets undefined if none have been added', () => {
-      expect(queryBuilder.build().facets).toBeUndefined();
+    it(`if groupByRequests is empty
+      should set groupBy to undefined`, () => {
+      expect(queryBuilder.groupByRequests.length).toBe(0);
+      expect(queryBuilder.build().groupBy).toBeUndefined();
+    });
+
+    it(`if groupByRequests is not empty
+      should set groupBy to groupByRequests`, () => {
+      const groupByRequest: IGroupByRequest = { field: '@allo' };
+      queryBuilder.groupByRequests.push(groupByRequest);
+
+      expect(queryBuilder.build().groupBy).toEqual([groupByRequest]);
     });
 
     describe('when adding a facet request', () => {
@@ -194,20 +204,6 @@ export function QueryBuilderTest() {
 
       it('should add the facets parameter correctly', () => {
         expect(queryBuilder.build().facets).toEqual([facetRequest]);
-      });
-
-      it(`if groupByRequests is empty
-        should set groupBy to undefined`, () => {
-        expect(queryBuilder.groupByRequests.length).toBe(0);
-        expect(queryBuilder.build().groupBy).toBeUndefined();
-      });
-
-      it(`if groupByRequests is not empty
-        should set groupBy to groupByRequests`, () => {
-        const groupByRequest: IGroupByRequest = { field: '@allo' };
-        queryBuilder.groupByRequests.push(groupByRequest);
-
-        expect(queryBuilder.build().groupBy).toEqual([groupByRequest]);
       });
     });
   });
