@@ -282,6 +282,13 @@ export const PlaygroundConfiguration: IStringMap<IComponentPlaygroundConfigurati
     },
     element: new SectionBuilder().withComponent('CoveoMatrix').build()
   },
+  MLFacet: {
+    show: true,
+    options: {
+      field: '@author',
+      title: 'Author'
+    }
+  },
   OmniboxResultList: {
     show: true,
     element: new SearchSectionBuilder()

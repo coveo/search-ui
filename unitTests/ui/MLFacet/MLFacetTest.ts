@@ -1,6 +1,5 @@
 import * as Mock from '../../MockEnvironment';
-import { MLFacet } from '../../../src/ui/MLFacet/MLFacet';
-import { IMLFacetOptions } from '../../../src/ui/MLFacet/MLFacetOptions';
+import { MLFacet, IMLFacetOptions } from '../../../src/ui/MLFacet/MLFacet';
 import { IMLFacetValue } from '../../../src/ui/MLFacet/MLFacetValues/MLFacetValue';
 import { FacetValueState } from '../../../src/rest/Facet/FacetValueState';
 import { MLFacetTestUtils } from './MLFacetTestUtils';
