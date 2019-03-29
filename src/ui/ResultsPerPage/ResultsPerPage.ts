@@ -1,22 +1,22 @@
+import 'styling/_ResultsPerPage';
+import * as _ from 'underscore';
+import { InitializationEvents } from '../../events/InitializationEvents';
+import { INoResultsEventArgs, IQuerySuccessEventArgs, QueryEvents } from '../../events/QueryEvents';
+import { ResultListEvents } from '../../events/ResultListEvents';
+import { exportGlobally } from '../../GlobalExports';
+import { Assert } from '../../misc/Assert';
+import { IAttributeChangedEventArg, MODEL_EVENTS } from '../../models/Model';
+import { QueryStateModel, QUERY_STATE_ATTRIBUTES } from '../../models/QueryStateModel';
+import { l } from '../../strings/Strings';
+import { AccessibleButton } from '../../utils/AccessibleButton';
+import { DeviceUtils } from '../../utils/DeviceUtils';
+import { $$ } from '../../utils/Dom';
+import { ResultListUtils } from '../../utils/ResultListUtils';
+import { analyticsActionCauseList, IAnalyticsActionCause, IAnalyticsResultsPerPageMeta } from '../Analytics/AnalyticsActionListMeta';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { ComponentOptions } from '../Base/ComponentOptions';
 import { Initialization } from '../Base/Initialization';
-import { QueryEvents, IQuerySuccessEventArgs, INoResultsEventArgs } from '../../events/QueryEvents';
-import { analyticsActionCauseList, IAnalyticsResultsPerPageMeta, IAnalyticsActionCause } from '../Analytics/AnalyticsActionListMeta';
-import { Assert } from '../../misc/Assert';
-import { $$ } from '../../utils/Dom';
-import { DeviceUtils } from '../../utils/DeviceUtils';
-import * as _ from 'underscore';
-import { exportGlobally } from '../../GlobalExports';
-import { l } from '../../strings/Strings';
-import { AccessibleButton } from '../../utils/AccessibleButton';
-
-import 'styling/_ResultsPerPage';
-import { MODEL_EVENTS } from '../../models/Model';
-import { QUERY_STATE_ATTRIBUTES, QueryStateModel } from '../../models/QueryStateModel';
-import { ResultListEvents } from '../../events/ResultListEvents';
-import { ResultListUtils } from '../../utils/ResultListUtils';
 
 export interface IResultsPerPageOptions {
   choicesDisplayed?: number[];
@@ -91,13 +91,13 @@ export class ResultsPerPage extends Component {
     super(element, ResultsPerPage.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, ResultsPerPage, options);
 
-    this.currentResultsPerPage = this.getInitialChoice();
-    this.queryController.options.resultsPerPage = this.currentResultsPerPage;
-
+    this.bind.onRootElement(InitializationEvents.afterInitialization, () => this.resolveInitialState());
     this.bind.onRootElement(QueryEvents.querySuccess, (args: IQuerySuccessEventArgs) => this.handleQuerySuccess(args));
     this.bind.onRootElement(QueryEvents.queryError, () => this.handleQueryError());
     this.bind.onRootElement(QueryEvents.noResults, (args: INoResultsEventArgs) => this.handleNoResults());
-    this.bind.onQueryState(MODEL_EVENTS.CHANGE_ONE, QUERY_STATE_ATTRIBUTES.NUMBER_OF_RESULTS, () => this.handleQueryStateModelChanged());
+    this.bind.onQueryState(MODEL_EVENTS.CHANGE_ONE, QUERY_STATE_ATTRIBUTES.NUMBER_OF_RESULTS, (args: IAttributeChangedEventArg) =>
+      this.handleQueryStateModelChanged(args)
+    );
     this.addAlwaysActiveListeners();
 
     this.initComponent();
@@ -129,6 +129,7 @@ export class ResultsPerPage extends Component {
   }
 
   private updateResultsPerPage(resultsPerPage: number) {
+    this.queryController.options.resultsPerPage = resultsPerPage;
     this.searchInterface.resultsPerPage = resultsPerPage;
     this.currentResultsPerPage = resultsPerPage;
   }
@@ -153,15 +154,26 @@ export class ResultsPerPage extends Component {
     });
   }
 
-  private handleQueryStateModelChanged() {
-    const resultsPerPage = this.getInitialChoice();
-    this.updateResultsPerPage(resultsPerPage);
+  private handleQueryStateModelChanged(args: IAttributeChangedEventArg) {
+    const valueToSet = args.value;
+
+    if (!this.isValidChoice(valueToSet)) {
+      this.logInvalidConfiguredChoiceWarning(valueToSet);
+      this.resolveInitialState();
+    } else {
+      this.updateResultsPerPage(valueToSet);
+    }
   }
 
   private addAlwaysActiveListeners() {
     this.searchInterface.element.addEventListener(ResultListEvents.newResultsDisplayed, () =>
       ResultListUtils.hideIfInfiniteScrollEnabled(this)
     );
+  }
+
+  private resolveInitialState() {
+    this.updateResultsPerPage(this.getInitialChoice());
+    this.updateQueryStateModelResultsPerPage();
   }
 
   private getInitialChoice(): number {
@@ -178,7 +190,7 @@ export class ResultsPerPage extends Component {
       if (this.isValidChoice(configuredChoice)) {
         return configuredChoice;
       }
-      this.logInvalidConfiguredChoiceWarning();
+      this.logInvalidConfiguredChoiceWarning(configuredChoice);
     }
 
     return firstDisplayedChoice;
@@ -188,8 +200,7 @@ export class ResultsPerPage extends Component {
     return this.options.choicesDisplayed.indexOf(choice) !== -1;
   }
 
-  private logInvalidConfiguredChoiceWarning() {
-    const configuredChoice = this.options.initialChoice;
+  private logInvalidConfiguredChoiceWarning(configuredChoice: number) {
     const validChoices = this.options.choicesDisplayed;
 
     this.logger.warn(
