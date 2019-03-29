@@ -250,7 +250,7 @@ export class ErrorReport extends Component {
       case 'GroupByAndFacetBothExistingException':
         this.options.showDetailedError = false;
         // TODO: add MLFacet documentation
-        this.setErrorTitle(undefined, l('CannotUseBothFacetTypes'));
+        this.setErrorTitle(undefined, l('GroupByAndFacetRequestsCannotCoexist'));
         break;
 
       default:

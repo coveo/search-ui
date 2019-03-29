@@ -277,13 +277,13 @@ export class QueryBuilder {
   public rankingFunctions: IRankingFunction[] = [];
   /**
    * Specifies an array of Group By operations that can be performed on the query results to extract facets.
-   * Can not be used at the same time as [`facetRequests`]{@link QueryBuilder.facetRequests}
+   * Cannot be used alongside [`facetRequests`]{@link QueryBuilder.facetRequests}
    */
   public groupByRequests: IGroupByRequest[] = [];
 
   /**
    * Specifies an array of request for the MLFacet component.
-   * Can not be used at the same time as [`groupByRequests`]{@link QueryBuilder.groupByRequests}
+   * Cannot be used alongside [`groupByRequests`]{@link QueryBuilder.groupByRequests}
    */
   public facetRequests: IFacetRequest[] = [];
 
