@@ -188,7 +188,7 @@ export class Facet extends Component {
      *
      * Default value is `false`.
      */
-    isMultiValueField: ComponentOptions.buildBooleanOption({ defaultValue: false }),
+    isMultiValueField: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'CommonOptions' }),
     /**
      * Specifies the field whose values the Facet should display.
      *
@@ -267,8 +267,7 @@ export class Facet extends Component {
      */
     sortCriteria: ComponentOptions.buildStringOption({
       postProcessing: (value, options: IFacetOptions) =>
-        value || (options.availableSorts.length > 0 ? options.availableSorts[0] : 'occurrences'),
-      section: 'Sorting'
+        value || (options.availableSorts.length > 0 ? options.availableSorts[0] : 'occurrences')
     }),
     /**
      * Specifies a custom order by which to sort the facet values.
@@ -283,7 +282,7 @@ export class Facet extends Component {
      * **Note:**
      * > The [`FacetRange`]{@link FacetRange} component does not support this option.
      */
-    customSort: ComponentOptions.buildListOption<string>({ section: 'Sorting' }),
+    customSort: ComponentOptions.buildListOption<string>(),
     /**
      * Specifies the maximum number of field values to display by default in the facet before the user
      * clicks the arrow to show more.
@@ -326,8 +325,7 @@ export class Facet extends Component {
      */
     enableTogglingOperator: ComponentOptions.buildBooleanOption({
       defaultValue: false,
-      alias: 'allowTogglingOperator',
-      section: 'Filtering'
+      alias: 'allowTogglingOperator'
     }),
     /**
      * Specifies whether to display a search box at the bottom of the facet for searching among the available facet
@@ -447,7 +445,7 @@ export class Facet extends Component {
      * [`computedFieldCaption`]{@link Facet.options.computedFieldCaption} options.
      * @notSupportedIn salesforcefree
      */
-    computedField: ComponentOptions.buildFieldOption({ section: 'ComputedField', priority: 7 }),
+    computedField: ComponentOptions.buildFieldOption({ priority: 7 }),
     /**
      * Specifies the type of aggregate operation to perform on the [`computedField`]{@link Facet.options.computedField}.
      *
@@ -599,7 +597,7 @@ export class Facet extends Component {
      * Example: `@date>=2014/01/01`
      * @notSupportedIn salesforcefree
      */
-    additionalFilter: ComponentOptions.buildQueryExpressionOption({ section: 'Filtering' }),
+    additionalFilter: ComponentOptions.buildQueryExpressionOption(),
     /**
      * Specifies whether this facet only appears when a value is selected in its "parent" facet.
      *
