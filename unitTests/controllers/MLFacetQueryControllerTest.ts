@@ -1,5 +1,5 @@
 import { MLFacetQueryController } from '../../src/controllers/MLFacetQueryController';
-import { MLFacet } from '../../src/ui/MLFacet/MLFacet';
+import { MLFacet, IMLFacetOptions } from '../../src/ui/MLFacet/MLFacet';
 import { MLFacetTestUtils } from '../ui/MLFacet/MLFacetTestUtils';
 import { QueryBuilder } from '../../src/Core';
 import { IFacetRequest } from '../../src/rest/Facet/FacetRequest';
@@ -7,20 +7,27 @@ import { IFacetRequest } from '../../src/rest/Facet/FacetRequest';
 export function MLFacetQueryControllerTest() {
   describe('MLFacetQueryController', () => {
     let facet: MLFacet;
+    let facetOptions: IMLFacetOptions;
     let mLFacetQueryController: MLFacetQueryController;
     let queryBuilder: QueryBuilder;
     let facetsRequest: IFacetRequest[];
     const mockFacetValues = MLFacetTestUtils.createFakeFacetValues(1);
 
     beforeEach(() => {
-      queryBuilder = new QueryBuilder();
-      facet = MLFacetTestUtils.createAdvancedFakeFacet({ field: '@field' }).cmp;
+      facetOptions = { field: '@field' };
 
+      initializeComponents();
+    });
+
+    function initializeComponents() {
+      facet = MLFacetTestUtils.createAdvancedFakeFacet(facetOptions).cmp;
+      facet.values.createFromResponse({ values: mockFacetValues });
+
+      queryBuilder = new QueryBuilder();
       mLFacetQueryController = new MLFacetQueryController(facet);
-      facet.values.createFromResults(mockFacetValues);
       mLFacetQueryController.putFacetIntoQueryBuilder(queryBuilder);
       facetsRequest = queryBuilder.build().facets;
-    });
+    }
 
     it('should put one facet request in the facets request parameter', () => {
       expect(facetsRequest.length).toBe(1);
@@ -37,6 +44,41 @@ export function MLFacetQueryControllerTest() {
         value: mockFacetValues[0].value,
         state: mockFacetValues[0].state
       });
+    });
+
+    it('should send the correct numberOfValues, which is initially the option', () => {
+      facetOptions.numberOfValues = 100;
+
+      initializeComponents();
+      expect(facetsRequest[0].numberOfValues).toBe(100);
+    });
+
+    it(`when increaseNumberOfValuesToRequest is called
+      it should increase the number of values in the request`, () => {
+      facetOptions.numberOfValues = 100;
+      initializeComponents();
+
+      mLFacetQueryController.increaseNumberOfValuesToRequest();
+
+      mLFacetQueryController.putFacetIntoQueryBuilder(queryBuilder);
+      facetsRequest = queryBuilder.build().facets;
+
+      expect(facetsRequest[1].numberOfValues).toBe(200);
+    });
+
+    it(`when resetNumberOfValuesToRequest is called
+      it should reset the number of values in the request`, () => {
+      facetOptions.numberOfValues = 100;
+      initializeComponents();
+
+      mLFacetQueryController.increaseNumberOfValuesToRequest();
+      mLFacetQueryController.increaseNumberOfValuesToRequest();
+      mLFacetQueryController.resetNumberOfValuesToRequest();
+
+      mLFacetQueryController.putFacetIntoQueryBuilder(queryBuilder);
+      facetsRequest = queryBuilder.build().facets;
+
+      expect(facetsRequest[1].numberOfValues).toBe(100);
     });
   });
 }

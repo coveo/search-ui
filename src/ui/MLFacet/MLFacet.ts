@@ -16,7 +16,7 @@ import { MLFacetQueryController } from '../../controllers/MLFacetQueryController
 import { Utils } from '../../utils/Utils';
 import { MODEL_EVENTS, IAttributesChangedEventArg } from '../../models/Model';
 import { Assert } from '../../misc/Assert';
-import { IFacetResponseValue } from '../../rest/Facet/FacetResponse';
+import { IFacetResponse } from '../../rest/Facet/FacetResponse';
 import { IResponsiveComponentOptions } from '../ResponsiveComponents/ResponsiveComponentsManager';
 import { IStringMap } from '../../rest/GenericParam';
 import { isFacetSortCriteria } from '../../rest/Facet/FacetSortCriteria';
@@ -109,11 +109,12 @@ export class MLFacet extends Component {
     }),
 
     /**
-     * The maximum number of values to request for this facet.
+     * The number of values to request for this facet.
      *
-     * **Minimum:** `0`
+     * Also determines the maximum number of additional values to request each time this facet is expanded,
+     * and the maximum number of values to display when this facet is collapsed (see [enableCollapse]{@link MLFacet.options.enableCollapse}).
      *
-     * **Default:** `8`, which is the same as the Search API default value (`8`).
+     * **Default:** `8`
      */
     numberOfValues: ComponentOptions.buildNumberOption({ min: 0, defaultValue: 8, section: 'CommonOptions' }),
 
@@ -254,18 +255,18 @@ export class MLFacet extends Component {
    */
   public showMoreValues(): void {
     this.ensureDom();
-    this.logger.info('Show more values', (this.mLFacetQueryController.numberOfValuesToRequest += this.options.numberOfValues));
+    this.logger.info('Show more values', this.mLFacetQueryController.increaseNumberOfValuesToRequest());
     this.triggerNewQuery();
   }
 
   /**
-   * Reduce the amount of values down to the [`number of values`]{@link MLFacet.options.numberOfValues}.
+   * Reduces the number of displayed facet values down to [numberOfValues]{@link MLFacet.options.numberOfValues}.
    *
-   * Does trigger a query automatically.
+   * Automatically triggers a query.
    */
   public showLessValues(): void {
     this.ensureDom();
-    this.logger.info('Show less values', (this.mLFacetQueryController.numberOfValuesToRequest = this.options.numberOfValues));
+    this.logger.info('Show less values', this.mLFacetQueryController.resetNumberOfValuesToRequest());
     this.triggerNewQuery();
   }
 
@@ -288,7 +289,7 @@ export class MLFacet extends Component {
     this.bind.onRootElement(QueryEvents.duringQuery, () => this.ensureDom());
     this.bind.onRootElement(QueryEvents.doneBuildingQuery, (data: IDoneBuildingQueryEventArgs) => this.handleDoneBuildingQuery(data));
     this.bind.onRootElement(QueryEvents.querySuccess, (data: IQuerySuccessEventArgs) => this.handleQuerySuccess(data));
-    this.bind.onRootElement(QueryEvents.queryError, () => this.onQueryResponse([], false));
+    this.bind.onRootElement(QueryEvents.queryError, () => this.onQueryResponse());
   }
 
   private initQueryStateEvents() {
@@ -313,9 +314,9 @@ export class MLFacet extends Component {
       return this.notImplementedError();
     }
 
-    const { values = [], moreValuesAvailable = false } = findWhere(data.results.facets, { field: this.fieldName });
+    const response = findWhere(data.results.facets, { field: this.fieldName });
 
-    this.onQueryResponse(values, moreValuesAvailable);
+    this.onQueryResponse(response);
   }
 
   private handleQueryStateChanged(data: IAttributesChangedEventArg) {
@@ -387,9 +388,9 @@ export class MLFacet extends Component {
     this.updateAppearance();
   }
 
-  private onQueryResponse(values: IFacetResponseValue[], moreValuesAvailable: boolean) {
+  private onQueryResponse(response?: IFacetResponse) {
     this.header.hideLoading();
-    this.values.createFromResults(values, moreValuesAvailable);
+    this.values.createFromResponse(response);
     this.values.render();
     this.updateAppearance();
   }

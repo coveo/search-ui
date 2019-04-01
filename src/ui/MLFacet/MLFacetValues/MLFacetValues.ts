@@ -3,7 +3,7 @@ import { $$ } from '../../../utils/Dom';
 import { findWhere, find } from 'underscore';
 import { MLFacetValue } from './MLFacetValue';
 import { MLFacet } from '../MLFacet';
-import { IFacetResponseValue } from '../../../rest/Facet/FacetResponse';
+import { IFacetResponse } from '../../../rest/Facet/FacetResponse';
 import { FacetValueState } from '../../../rest/Facet/FacetValueState';
 import { l } from '../../../strings/Strings';
 
@@ -14,9 +14,9 @@ export class MLFacetValues {
 
   constructor(private facet: MLFacet) {}
 
-  public createFromResults(facetValues: IFacetResponseValue[], moreValuesAvailable = false) {
+  public createFromResponse({ values = [], moreValuesAvailable = false }: Partial<IFacetResponse>) {
     this.moreValuesAvailable = moreValuesAvailable;
-    this.facetValues = facetValues.map(
+    this.facetValues = values.map(
       facetValue =>
         new MLFacetValue(
           {
@@ -27,10 +27,6 @@ export class MLFacetValues {
           this.facet
         )
     );
-  }
-
-  public get length() {
-    return this.facetValues.length;
   }
 
   public get allFacetValues() {
@@ -54,11 +50,11 @@ export class MLFacetValues {
   }
 
   public get isEmpty() {
-    return !this.length;
+    return !this.facetValues.length;
   }
 
   public get isExpanded() {
-    return this.length > this.facet.options.numberOfValues;
+    return this.facetValues.length > this.facet.options.numberOfValues;
   }
 
   public get(arg: string | MLFacetValue) {

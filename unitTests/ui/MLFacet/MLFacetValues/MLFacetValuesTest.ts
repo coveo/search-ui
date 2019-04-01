@@ -22,7 +22,7 @@ export function MLFacetValuesTest() {
 
     function initializeComponent() {
       mLFacetValues = new MLFacetValues(facet);
-      mLFacetValues.createFromResults(mockFacetValues);
+      mLFacetValues.createFromResponse({ values: mockFacetValues });
     }
 
     it('should return allFacetValues correctly', () => {

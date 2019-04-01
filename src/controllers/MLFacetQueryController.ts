@@ -5,10 +5,18 @@ import { IFacetRequest, IFacetRequestValue } from '../rest/Facet/FacetRequest';
 import { FacetSortCriteria } from '../rest/Facet/FacetSortCriteria';
 
 export class MLFacetQueryController {
-  public numberOfValuesToRequest: number;
+  private numberOfValuesToRequest: number;
 
-  constructor(public facet: MLFacet) {
-    this.numberOfValuesToRequest = facet.options.numberOfValues;
+  constructor(private facet: MLFacet) {
+    this.resetNumberOfValuesToRequest();
+  }
+
+  public increaseNumberOfValuesToRequest() {
+    this.numberOfValuesToRequest += this.facet.options.numberOfValues;
+  }
+
+  public resetNumberOfValuesToRequest() {
+    this.numberOfValuesToRequest = this.facet.options.numberOfValues;
   }
 
   /**
