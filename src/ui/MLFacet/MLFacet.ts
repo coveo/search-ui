@@ -113,10 +113,9 @@ export class MLFacet extends Component {
      *
      * **Minimum:** `0`
      *
-     * **Default:** `undefined`, and the default Search API value (`8`)
-     * is used.
+     * **Default:** `8`, which is the same as the Search API default value (`8`).
      */
-    numberOfValues: ComponentOptions.buildNumberOption({ min: 0, section: 'CommonOptions' }),
+    numberOfValues: ComponentOptions.buildNumberOption({ min: 0, defaultValue: 8, section: 'CommonOptions' }),
 
     /**
      * Whether to allow the end-user to expand and collapse this facet.
@@ -249,6 +248,28 @@ export class MLFacet extends Component {
   }
 
   /**
+   * Requests an additional amount of values equal to the [`number of values`]{@link MLFacet.options.numberOfValues}.
+   *
+   * Does trigger a query automatically.
+   */
+  public showMoreValues(): void {
+    this.ensureDom();
+    this.logger.info('Show more values', (this.mLFacetQueryController.numberOfValuesToRequest += this.options.numberOfValues));
+    this.triggerNewQuery();
+  }
+
+  /**
+   * Reduce the amount of values down to the [`number of values`]{@link MLFacet.options.numberOfValues}.
+   *
+   * Does trigger a query automatically.
+   */
+  public showLessValues(): void {
+    this.ensureDom();
+    this.logger.info('Show less values', (this.mLFacetQueryController.numberOfValuesToRequest = this.options.numberOfValues));
+    this.triggerNewQuery();
+  }
+
+  /**
    * Deselects all values in this facet.
    *
    * Does not trigger a query automatically.
@@ -267,7 +288,7 @@ export class MLFacet extends Component {
     this.bind.onRootElement(QueryEvents.duringQuery, () => this.ensureDom());
     this.bind.onRootElement(QueryEvents.doneBuildingQuery, (data: IDoneBuildingQueryEventArgs) => this.handleDoneBuildingQuery(data));
     this.bind.onRootElement(QueryEvents.querySuccess, (data: IQuerySuccessEventArgs) => this.handleQuerySuccess(data));
-    this.bind.onRootElement(QueryEvents.queryError, () => this.onQueryResponse([]));
+    this.bind.onRootElement(QueryEvents.queryError, () => this.onQueryResponse([], false));
   }
 
   private initQueryStateEvents() {
@@ -292,9 +313,9 @@ export class MLFacet extends Component {
       return this.notImplementedError();
     }
 
-    const facetResponse = findWhere(data.results.facets, { field: this.fieldName });
+    const { values = [], moreValuesAvailable = false } = findWhere(data.results.facets, { field: this.fieldName });
 
-    this.onQueryResponse(facetResponse ? facetResponse.values : []);
+    this.onQueryResponse(values, moreValuesAvailable);
   }
 
   private handleQueryStateChanged(data: IAttributesChangedEventArg) {
@@ -351,9 +372,9 @@ export class MLFacet extends Component {
   }
 
   private updateAppearance() {
-    this.header.toggleClear(this.values.hasSelectedValues());
-    $$(this.element).toggleClass('coveo-active', this.values.hasSelectedValues());
-    $$(this.element).toggleClass('coveo-hidden', this.values.isEmpty());
+    this.header.toggleClear(this.values.hasSelectedValues);
+    $$(this.element).toggleClass('coveo-active', this.values.hasSelectedValues);
+    $$(this.element).toggleClass('coveo-hidden', this.values.isEmpty);
   }
 
   public triggerNewQuery() {
@@ -366,9 +387,9 @@ export class MLFacet extends Component {
     this.updateAppearance();
   }
 
-  private onQueryResponse(values: IFacetResponseValue[]) {
+  private onQueryResponse(values: IFacetResponseValue[], moreValuesAvailable: boolean) {
     this.header.hideLoading();
-    this.values.createFromResults(values);
+    this.values.createFromResults(values, moreValuesAvailable);
     this.values.render();
     this.updateAppearance();
   }

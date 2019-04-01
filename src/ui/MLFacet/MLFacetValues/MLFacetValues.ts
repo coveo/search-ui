@@ -5,14 +5,17 @@ import { MLFacetValue } from './MLFacetValue';
 import { MLFacet } from '../MLFacet';
 import { IFacetResponseValue } from '../../../rest/Facet/FacetResponse';
 import { FacetValueState } from '../../../rest/Facet/FacetValueState';
+import { l } from '../../../strings/Strings';
 
 export class MLFacetValues {
   private facetValues: MLFacetValue[] = [];
   private list = $$('ul', { className: 'coveo-ml-facet-values' });
+  private moreValuesAvailable: boolean;
 
   constructor(private facet: MLFacet) {}
 
-  public createFromResults(facetValues: IFacetResponseValue[]) {
+  public createFromResults(facetValues: IFacetResponseValue[], moreValuesAvailable = false) {
+    this.moreValuesAvailable = moreValuesAvailable;
     this.facetValues = facetValues.map(
       facetValue =>
         new MLFacetValue(
@@ -24,6 +27,10 @@ export class MLFacetValues {
           this.facet
         )
     );
+  }
+
+  public get length() {
+    return this.facetValues.length;
   }
 
   public get allFacetValues() {
@@ -38,7 +45,7 @@ export class MLFacetValues {
     return this.facetValues.filter(value => value.isSelected).map(value => value.value);
   }
 
-  public hasSelectedValues() {
+  public get hasSelectedValues() {
     return !!findWhere(this.facetValues, { state: FacetValueState.selected });
   }
 
@@ -46,8 +53,12 @@ export class MLFacetValues {
     this.facetValues.forEach(value => value.deselect());
   }
 
-  public isEmpty() {
-    return !this.facetValues.length;
+  public get isEmpty() {
+    return !this.length;
+  }
+
+  public get isExpanded() {
+    return this.length > this.facet.options.numberOfValues;
   }
 
   public get(arg: string | MLFacetValue) {
@@ -63,11 +74,31 @@ export class MLFacetValues {
     return newFacetValue;
   }
 
+  private buildShowLess() {
+    const showLess = $$('button', { className: 'coveo-ml-facet-show-less', ariaLabel: l('ShowLess') }, `- ${l('ShowLess')}`);
+    showLess.on('click', () => this.facet.showLessValues());
+    return showLess.el;
+  }
+
+  private buildShowMore() {
+    const showMore = $$('button', { className: 'coveo-ml-facet-show-more', ariaLabel: l('ShowMore') }, `+ ${l('ShowMore')}`);
+    showMore.on('click', () => this.facet.showMoreValues());
+    return showMore.el;
+  }
+
   public render() {
     this.list.empty();
     this.facetValues.forEach(facetValue => {
       this.list.append(facetValue.render());
     });
+
+    if (this.isExpanded) {
+      this.list.append(this.buildShowLess());
+    }
+
+    if (this.moreValuesAvailable) {
+      this.list.append(this.buildShowMore());
+    }
 
     return this.list.el;
   }

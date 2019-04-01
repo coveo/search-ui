@@ -5,7 +5,11 @@ import { IFacetRequest, IFacetRequestValue } from '../rest/Facet/FacetRequest';
 import { FacetSortCriteria } from '../rest/Facet/FacetSortCriteria';
 
 export class MLFacetQueryController {
-  constructor(public facet: MLFacet) {}
+  public numberOfValuesToRequest: number;
+
+  constructor(public facet: MLFacet) {
+    this.numberOfValuesToRequest = facet.options.numberOfValues;
+  }
 
   /**
    * Build the facets request for the MLFacet, and insert it in the query builder
@@ -18,7 +22,7 @@ export class MLFacetQueryController {
       field: this.facet.fieldName,
       sortCriteria: this.facet.options.sortCriteria as FacetSortCriteria,
       currentValues: this.currentValues,
-      numberOfValues: this.facet.options.numberOfValues, // TODO: manage more/less
+      numberOfValues: this.numberOfValuesToRequest,
       isSticky: false // TODO: manage isSticky
     };
 
