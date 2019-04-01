@@ -142,6 +142,24 @@ export function MLFacetTest() {
       testQueryStateModelValues();
     });
 
+    it('allows to showMoreValues', () => {
+      spyOn(test.cmp.mLFacetQueryController, 'increaseNumberOfValuesToRequest');
+
+      test.cmp.showMoreValues();
+
+      expect(test.cmp.mLFacetQueryController.increaseNumberOfValuesToRequest).toHaveBeenCalled();
+      expect(test.cmp.queryController.executeQuery).toHaveBeenCalled();
+    });
+
+    it('allows to showLessValues', () => {
+      spyOn(test.cmp.mLFacetQueryController, 'resetNumberOfValuesToRequest');
+
+      test.cmp.showLessValues();
+
+      expect(test.cmp.mLFacetQueryController.resetNumberOfValuesToRequest).toHaveBeenCalled();
+      expect(test.cmp.queryController.executeQuery).toHaveBeenCalled();
+    });
+
     it('should have a default title', () => {
       test.cmp.ensureDom();
 
