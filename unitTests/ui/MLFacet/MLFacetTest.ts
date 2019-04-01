@@ -189,10 +189,10 @@ export function MLFacetTest() {
     });
 
     it(`when not setting a numberOfValues option
-      should set it to undefined in the query`, () => {
+      should set it to 8 in the query`, () => {
       const simulation = Simulate.query(test.env);
       const facetRequest = simulation.queryBuilder.build().facets[0];
-      expect(facetRequest.numberOfValues).toBeUndefined();
+      expect(facetRequest.numberOfValues).toBe(8);
     });
 
     it(`when setting a numberOfValues option

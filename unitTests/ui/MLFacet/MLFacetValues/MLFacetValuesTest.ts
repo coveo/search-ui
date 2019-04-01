@@ -41,28 +41,28 @@ export function MLFacetValuesTest() {
     });
 
     it('when there are selected values, hasSelectedValues should return true', () => {
-      expect(mLFacetValues.hasSelectedValues()).toBe(true);
+      expect(mLFacetValues.hasSelectedValues).toBe(true);
     });
 
     it('when there are no selected values, hasSelectedValues should return false', () => {
       mockFacetValues = MLFacetTestUtils.createFakeFacetValues();
       initializeComponent();
-      expect(mLFacetValues.hasSelectedValues()).toBe(false);
+      expect(mLFacetValues.hasSelectedValues).toBe(false);
     });
 
     it('when there are values, isEmpty should return false', () => {
-      expect(mLFacetValues.isEmpty()).toBe(false);
+      expect(mLFacetValues.isEmpty).toBe(false);
     });
 
     it('when there are no values, isEmpty should return true', () => {
       mockFacetValues = [];
       initializeComponent();
-      expect(mLFacetValues.isEmpty()).toBe(true);
+      expect(mLFacetValues.isEmpty).toBe(true);
     });
 
     it('clearAll should set all values to selected=false', () => {
       mLFacetValues.clearAll();
-      expect(mLFacetValues.hasSelectedValues()).toBe(false);
+      expect(mLFacetValues.hasSelectedValues).toBe(false);
     });
 
     it('get should return a value if it exists', () => {
