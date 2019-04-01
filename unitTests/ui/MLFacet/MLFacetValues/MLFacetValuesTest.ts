@@ -3,6 +3,7 @@ import { FacetValueState } from '../../../../src/rest/Facet/FacetValueState';
 import { IMLFacetValue } from '../../../../src/ui/MLFacet/MLFacetValues/MLFacetValue';
 import { MLFacet } from '../../../../src/ui/MLFacet/MLFacet';
 import { MLFacetTestUtils } from '../MLFacetTestUtils';
+import { $$ } from '../../../../src/Core';
 
 export function MLFacetValuesTest() {
   describe('MLFacetValues', () => {
@@ -11,7 +12,7 @@ export function MLFacetValuesTest() {
     let facet: MLFacet;
 
     beforeEach(() => {
-      facet = MLFacetTestUtils.createFakeFacet();
+      facet = MLFacetTestUtils.createFakeFacet({ numberOfValues: 5 });
 
       mockFacetValues = MLFacetTestUtils.createFakeFacetValues();
       mockFacetValues[1].state = FacetValueState.selected;
@@ -81,6 +82,33 @@ export function MLFacetValuesTest() {
     it('renders the correct number of children', () => {
       const element = mLFacetValues.render();
       expect(element.childElementCount).toBe(mockFacetValues.length);
+    });
+
+    it(`when moreValuesAvailable is false
+      should not render the "Show more" button`, () => {
+      const element = mLFacetValues.render();
+      expect($$(element).find('.coveo-ml-facet-show-more')).toBeFalsy();
+    });
+
+    it(`when moreValuesAvailable is true
+      should render the "Show more" button`, () => {
+      mLFacetValues.createFromResponse({ values: mockFacetValues, moreValuesAvailable: true });
+      const element = mLFacetValues.render();
+      expect($$(element).find('.coveo-ml-facet-show-more')).toBeTruthy();
+    });
+
+    it(`when there are less or an equal number of values as the numberOfValues option
+      should not render the "Show less" button`, () => {
+      const element = mLFacetValues.render();
+      expect($$(element).find('.coveo-ml-facet-show-less')).toBeFalsy();
+    });
+
+    it(`when there are more values than the numberOfValues option
+      should render the "Show less" button`, () => {
+      mockFacetValues = MLFacetTestUtils.createFakeFacetValues(10);
+      mLFacetValues.createFromResponse({ values: mockFacetValues });
+      const element = mLFacetValues.render();
+      expect($$(element).find('.coveo-ml-facet-show-less')).toBeTruthy();
     });
   });
 }
