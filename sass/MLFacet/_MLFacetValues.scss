@@ -26,6 +26,7 @@ $active-text-opacity: 0.6;
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
+    line-height: 1.2em;
   }
 
   .coveo-checkbox-span-label-suffix {
@@ -46,4 +47,19 @@ $active-text-opacity: 0.6;
       opacity: $active-text-opacity;
     }
   }
+}
+
+.coveo-ml-facet-show-more,
+.coveo-ml-facet-show-less {
+  @include linkButton();
+
+  width: 100%;
+  text-align: left;
+  margin-top: 2px;
+  padding: 3px 0;
+  font-size: $font-size-regular;
+}
+
+.coveo-ml-facet-show-less {
+  color: $color-dark-grey;
 }

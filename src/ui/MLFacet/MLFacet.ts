@@ -16,7 +16,7 @@ import { MLFacetQueryController } from '../../controllers/MLFacetQueryController
 import { Utils } from '../../utils/Utils';
 import { MODEL_EVENTS, IAttributesChangedEventArg } from '../../models/Model';
 import { Assert } from '../../misc/Assert';
-import { IFacetResponseValue } from '../../rest/Facet/FacetResponse';
+import { IFacetResponse } from '../../rest/Facet/FacetResponse';
 import { IResponsiveComponentOptions } from '../ResponsiveComponents/ResponsiveComponentsManager';
 import { IStringMap } from '../../rest/GenericParam';
 import { isFacetSortCriteria } from '../../rest/Facet/FacetSortCriteria';
@@ -109,14 +109,14 @@ export class MLFacet extends Component {
     }),
 
     /**
-     * The maximum number of values to request for this facet.
+     * The number of values to request for this facet.
      *
-     * **Minimum:** `0`
+     * Also determines the default maximum number of additional values to request each time this facet is expanded,
+     * and the maximum number of values to display when this facet is collapsed (see [enableCollapse]{@link MLFacet.options.enableCollapse}).
      *
-     * **Default:** `undefined`, and the default Search API value (`8`)
-     * is used.
+     * **Default:** `8`
      */
-    numberOfValues: ComponentOptions.buildNumberOption({ min: 0, section: 'CommonOptions' }),
+    numberOfValues: ComponentOptions.buildNumberOption({ min: 0, defaultValue: 8, section: 'CommonOptions' }),
 
     /**
      * Whether to allow the end-user to expand and collapse this facet.
@@ -249,9 +249,34 @@ export class MLFacet extends Component {
   }
 
   /**
+   * Requests additional values.
+   *
+   * Automatically triggers a query.
+   * @param additionalNumberOfValues The number of additional values to request. Minimum value is 1. Defaults to the [numberOfValues]{@link MLFacet.options.numberOfValues} option value.
+   */
+  public showMoreValues(additionalNumberOfValues = this.options.numberOfValues): void {
+    this.ensureDom();
+    this.logger.info('Show more values');
+    this.mLFacetQueryController.increaseNumberOfValuesToRequest(additionalNumberOfValues);
+    this.triggerNewQuery();
+  }
+
+  /**
+   * Reduces the number of displayed facet values down to [numberOfValues]{@link MLFacet.options.numberOfValues}.
+   *
+   * Automatically triggers a query.
+   */
+  public showLessValues(): void {
+    this.ensureDom();
+    this.logger.info('Show less values');
+    this.mLFacetQueryController.resetNumberOfValuesToRequest();
+    this.triggerNewQuery();
+  }
+
+  /**
    * Deselects all values in this facet.
    *
-   * Does not trigger a query automatically.
+   * Does **not** trigger a query automatically.
    * Updates the visual of the facet.
    *
    */
@@ -267,7 +292,7 @@ export class MLFacet extends Component {
     this.bind.onRootElement(QueryEvents.duringQuery, () => this.ensureDom());
     this.bind.onRootElement(QueryEvents.doneBuildingQuery, (data: IDoneBuildingQueryEventArgs) => this.handleDoneBuildingQuery(data));
     this.bind.onRootElement(QueryEvents.querySuccess, (data: IQuerySuccessEventArgs) => this.handleQuerySuccess(data));
-    this.bind.onRootElement(QueryEvents.queryError, () => this.onQueryResponse([]));
+    this.bind.onRootElement(QueryEvents.queryError, () => this.onQueryResponse());
   }
 
   private initQueryStateEvents() {
@@ -292,9 +317,9 @@ export class MLFacet extends Component {
       return this.notImplementedError();
     }
 
-    const facetResponse = findWhere(data.results.facets, { field: this.fieldName });
+    const response = findWhere(data.results.facets, { field: this.fieldName });
 
-    this.onQueryResponse(facetResponse ? facetResponse.values : []);
+    this.onQueryResponse(response);
   }
 
   private handleQueryStateChanged(data: IAttributesChangedEventArg) {
@@ -351,9 +376,9 @@ export class MLFacet extends Component {
   }
 
   private updateAppearance() {
-    this.header.toggleClear(this.values.hasSelectedValues());
-    $$(this.element).toggleClass('coveo-active', this.values.hasSelectedValues());
-    $$(this.element).toggleClass('coveo-hidden', this.values.isEmpty());
+    this.header.toggleClear(this.values.hasSelectedValues);
+    $$(this.element).toggleClass('coveo-active', this.values.hasSelectedValues);
+    $$(this.element).toggleClass('coveo-hidden', this.values.isEmpty);
   }
 
   public triggerNewQuery() {
@@ -366,9 +391,9 @@ export class MLFacet extends Component {
     this.updateAppearance();
   }
 
-  private onQueryResponse(values: IFacetResponseValue[]) {
+  private onQueryResponse(response?: IFacetResponse) {
     this.header.hideLoading();
-    this.values.createFromResults(values);
+    response ? this.values.createFromResponse(response) : this.values.resetValues();
     this.values.render();
     this.updateAppearance();
   }

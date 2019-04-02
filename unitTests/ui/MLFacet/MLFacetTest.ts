@@ -21,7 +21,7 @@ export function MLFacetTest() {
 
     function initializeComponent() {
       test = MLFacetTestUtils.createAdvancedFakeFacet(options);
-      test.cmp.values.createFromResults(mockFacetValues);
+      test.cmp.values.createFromResponse({ values: mockFacetValues, field: 'field', moreValuesAvailable: false });
     }
 
     function testQueryStateModelValues() {
@@ -142,6 +142,33 @@ export function MLFacetTest() {
       testQueryStateModelValues();
     });
 
+    it('allows to showMoreValues, uses numberOfValues by default as the amount', () => {
+      spyOn(test.cmp.mLFacetQueryController, 'increaseNumberOfValuesToRequest');
+
+      test.cmp.showMoreValues();
+
+      expect(test.cmp.mLFacetQueryController.increaseNumberOfValuesToRequest).toHaveBeenCalledWith(test.cmp.options.numberOfValues);
+      expect(test.cmp.queryController.executeQuery).toHaveBeenCalled();
+    });
+
+    it('allows to showMoreValues with a custom amount of values', () => {
+      spyOn(test.cmp.mLFacetQueryController, 'increaseNumberOfValuesToRequest');
+
+      test.cmp.showMoreValues(56);
+
+      expect(test.cmp.mLFacetQueryController.increaseNumberOfValuesToRequest).toHaveBeenCalledWith(56);
+      expect(test.cmp.queryController.executeQuery).toHaveBeenCalled();
+    });
+
+    it('allows to showLessValues', () => {
+      spyOn(test.cmp.mLFacetQueryController, 'resetNumberOfValuesToRequest');
+
+      test.cmp.showLessValues();
+
+      expect(test.cmp.mLFacetQueryController.resetNumberOfValuesToRequest).toHaveBeenCalled();
+      expect(test.cmp.queryController.executeQuery).toHaveBeenCalled();
+    });
+
     it('should have a default title', () => {
       test.cmp.ensureDom();
 
@@ -189,10 +216,10 @@ export function MLFacetTest() {
     });
 
     it(`when not setting a numberOfValues option
-      should set it to undefined in the query`, () => {
+      should set it to 8 in the query`, () => {
       const simulation = Simulate.query(test.env);
       const facetRequest = simulation.queryBuilder.build().facets[0];
-      expect(facetRequest.numberOfValues).toBeUndefined();
+      expect(facetRequest.numberOfValues).toBe(8);
     });
 
     it(`when setting a numberOfValues option
