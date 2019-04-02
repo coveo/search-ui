@@ -21,7 +21,7 @@ export function MLFacetTest() {
 
     function initializeComponent() {
       test = MLFacetTestUtils.createAdvancedFakeFacet(options);
-      test.cmp.values.createFromResponse({ values: mockFacetValues, field: 'field', moreValuesAvailable: false });
+      test.cmp.values.createFromResponse(MLFacetTestUtils.getCompleteFacetResponse(test.cmp, { values: mockFacetValues }));
     }
 
     function testQueryStateModelValues() {
