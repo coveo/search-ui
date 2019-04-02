@@ -14,9 +14,9 @@ export class MLFacetValues {
 
   constructor(private facet: MLFacet) {}
 
-  public createFromResponse({ values = [], moreValuesAvailable = false }: Partial<IFacetResponse>) {
-    this.moreValuesAvailable = moreValuesAvailable;
-    this.facetValues = values.map(
+  public createFromResponse(response: IFacetResponse) {
+    this.moreValuesAvailable = response.moreValuesAvailable;
+    this.facetValues = response.values.map(
       facetValue =>
         new MLFacetValue(
           {
