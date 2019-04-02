@@ -265,7 +265,8 @@ export class MLFacet extends Component {
    */
   public showMoreValues(): void {
     this.ensureDom();
-    this.logger.info('Show more values', this.mLFacetQueryController.increaseNumberOfValuesToRequest());
+    this.logger.info('Show more values');
+    this.mLFacetQueryController.increaseNumberOfValuesToRequest();
     this.triggerNewQuery();
   }
 
@@ -276,7 +277,8 @@ export class MLFacet extends Component {
    */
   public showLessValues(): void {
     this.ensureDom();
-    this.logger.info('Show less values', this.mLFacetQueryController.resetNumberOfValuesToRequest());
+    this.logger.info('Show less values');
+    this.mLFacetQueryController.resetNumberOfValuesToRequest();
     this.triggerNewQuery();
   }
 
@@ -398,7 +400,15 @@ export class MLFacet extends Component {
     this.updateAppearance();
   }
 
-  private onQueryResponse(response?: IFacetResponse) {
+  private get defaultResponse(): IFacetResponse {
+    return {
+      field: this.fieldName,
+      moreValuesAvailable: false,
+      values: []
+    };
+  }
+
+  private onQueryResponse(response = this.defaultResponse) {
     this.header.hideLoading();
     this.values.createFromResponse(response || {});
     this.values.render();

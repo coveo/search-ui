@@ -21,7 +21,7 @@ export function MLFacetQueryControllerTest() {
 
     function initializeComponents() {
       facet = MLFacetTestUtils.createAdvancedFakeFacet(facetOptions).cmp;
-      facet.values.createFromResponse({ values: mockFacetValues });
+      facet.values.createFromResponse({ values: mockFacetValues, field: 'field', moreValuesAvailable: false });
 
       queryBuilder = new QueryBuilder();
       mLFacetQueryController = new MLFacetQueryController(facet);
