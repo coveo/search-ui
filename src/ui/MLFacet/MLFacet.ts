@@ -65,13 +65,13 @@ export class MLFacet extends Component {
      */
     id: ComponentOptions.buildStringOption({
       postProcessing: (value = '', options: IMLFacetOptions) => {
+        const maxCharLength = 60;
         const sanitizedValue = value.replace(/[^A-Za-z0-9-_]+/g, '');
-        const indexLimit = 59;
         if (Utils.isNonEmptyString(sanitizedValue)) {
-          return sanitizedValue.slice(0, indexLimit);
+          return sanitizedValue.slice(0, maxCharLength - 1);
         }
 
-        return options.field.slice(1, indexLimit);
+        return options.field.slice(1, maxCharLength);
       }
     }),
 

@@ -183,7 +183,7 @@ export function MLFacetTest() {
       expect($$(test.cmp.element).find('.coveo-ml-facet-header-title span').innerHTML).toBe(options.title);
     });
 
-    it('should select the needed values using the field', () => {
+    it('should select the needed values using the id', () => {
       test.env.queryStateModel.registerNewAttribute(`f:${test.cmp.options.id}`, []);
       test.env.queryStateModel.set(`f:${test.cmp.options.id}`, ['a', 'b', 'c']);
       expect(test.cmp.values.selectedValues).toEqual(['a', 'b', 'c']);
