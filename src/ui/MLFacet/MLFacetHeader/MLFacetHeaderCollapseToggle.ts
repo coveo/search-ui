@@ -14,8 +14,8 @@ export class MLFacetHeaderCollapseToggle {
   private expandButton: MLFacetHeaderButton;
   private collapsed: boolean;
 
-  constructor(private facet: MLFacet, private options: IMLFacetCollapseToggleOptions) {
-    this.collapsed = this.options.collapsed;
+  constructor(private facet: MLFacet) {
+    this.collapsed = this.facet.options.collapsedByDefault;
     this.create();
   }
 

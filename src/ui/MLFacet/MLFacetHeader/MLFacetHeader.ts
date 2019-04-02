@@ -42,7 +42,7 @@ export class MLFacetHeader {
   }
 
   private createCollapseToggle() {
-    this.collapseToggle = new MLFacetHeaderCollapseToggle(this.facet, { collapsed: this.facet.options.collapsedByDefault });
+    this.collapseToggle = new MLFacetHeaderCollapseToggle(this.facet);
     return this.collapseToggle.element;
   }
 

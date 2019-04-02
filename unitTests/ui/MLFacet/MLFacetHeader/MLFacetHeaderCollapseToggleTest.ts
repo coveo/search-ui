@@ -1,25 +1,21 @@
 import { $$ } from '../../../../src/utils/Dom';
-import {
-  MLFacetHeaderCollapseToggle,
-  IMLFacetCollapseToggleOptions
-} from '../../../../src/ui/MLFacet/MLFacetHeader/MLFacetHeaderCollapseToggle';
+import { MLFacetHeaderCollapseToggle } from '../../../../src/ui/MLFacet/MLFacetHeader/MLFacetHeaderCollapseToggle';
 import { MLFacetTestUtils } from '../MLFacetTestUtils';
+import { MLFacet } from '../../../../src/ui/MLFacet/MLFacet';
 
 export function MLFacetHeaderCollapseToggleTest() {
   describe('MLFacetHeaderCollapseToggle', () => {
     let collapseToggle: MLFacetHeaderCollapseToggle;
     let collapseToggleElement: HTMLElement;
-    let baseOptions: IMLFacetCollapseToggleOptions;
+    let facet: MLFacet;
 
     beforeEach(() => {
-      baseOptions = {
-        collapsed: false
-      };
+      facet = MLFacetTestUtils.createFakeFacet();
       initializeComponent();
     });
 
     function initializeComponent() {
-      collapseToggle = new MLFacetHeaderCollapseToggle(MLFacetTestUtils.createFakeFacet(), baseOptions);
+      collapseToggle = new MLFacetHeaderCollapseToggle(facet);
       collapseToggleElement = collapseToggle.element;
     }
 
@@ -35,7 +31,7 @@ export function MLFacetHeaderCollapseToggleTest() {
 
     it(`when passing the option enableCollapse (true) & collapsedByDefault (true)
       should display the accessible expand button`, () => {
-      baseOptions.collapsed = true;
+      facet.options.collapsedByDefault = true;
       initializeComponent();
 
       const collapseElement = $$(collapseToggleElement).find('.coveo-ml-facet-header-collapse');
@@ -59,7 +55,7 @@ export function MLFacetHeaderCollapseToggleTest() {
 
     it(`when clicking on the expand button
       should switch the option correctly`, () => {
-      baseOptions.collapsed = true;
+      facet.options.collapsedByDefault = true;
       initializeComponent();
 
       const collapseElement = $$(collapseToggleElement).find('.coveo-ml-facet-header-collapse');
