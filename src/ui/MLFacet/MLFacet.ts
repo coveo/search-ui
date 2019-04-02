@@ -111,7 +111,7 @@ export class MLFacet extends Component {
     /**
      * The number of values to request for this facet.
      *
-     * Also determines the maximum number of additional values to request each time this facet is expanded,
+     * Also determines the default maximum number of additional values to request each time this facet is expanded,
      * and the maximum number of values to display when this facet is collapsed (see [enableCollapse]{@link MLFacet.options.enableCollapse}).
      *
      * **Default:** `8`
@@ -249,10 +249,10 @@ export class MLFacet extends Component {
   }
 
   /**
-   * Requests an additional amount of values equal to the [`number of values`]{@link MLFacet.options.numberOfValues}.
+   * Requests additional values.
    *
    * Automatically triggers a query.
-   * @param additionalNumberOfValues The additional number of values to fetch.
+   * @param additionalNumberOfValues The number of additional values to request. Minimum value is 1. Defaults to the [numberOfValues]{@link MLFacet.options.numberOfValues} option value.
    */
   public showMoreValues(additionalNumberOfValues = this.options.numberOfValues): void {
     this.ensureDom();
