@@ -10,6 +10,7 @@ import { MLFacetHeaderCollapseToggle } from './MLFacetHeaderCollapseToggle';
 export class MLFacetHeader {
   public static showLoadingDelay = 2000;
   public element: HTMLElement;
+  private title: Dom;
   private waitAnimation: Dom;
   private clearButton: MLFacetHeaderButton;
   private collapseToggle: MLFacetHeaderCollapseToggle;
@@ -17,11 +18,11 @@ export class MLFacetHeader {
 
   constructor(private facet: MLFacet) {
     this.element = $$('div', { className: 'coveo-ml-facet-header' }).el;
-    const titleElement = this.createTitle();
-    $$(this.element).append(titleElement);
+    this.title = this.createTitle();
+    $$(this.element).append(this.title.el);
     $$(this.element).append(this.createWaitAnimation());
     $$(this.element).append(this.createClearButton());
-    this.facet.options.enableCollapse && $$(this.element).append(this.createCollapseToggle());
+    this.facet.options.enableCollapse && this.enableCollapse();
   }
 
   private createClearButton() {
@@ -41,12 +42,18 @@ export class MLFacetHeader {
   }
 
   private createCollapseToggle() {
-    this.collapseToggle = new MLFacetHeaderCollapseToggle({ collapsed: this.facet.options.collapsedByDefault });
+    this.collapseToggle = new MLFacetHeaderCollapseToggle(this.facet, { collapsed: this.facet.options.collapsedByDefault });
     return this.collapseToggle.element;
   }
 
+  private enableCollapse() {
+    $$(this.element).append(this.createCollapseToggle());
+    $$(this.title).addClass('coveo-clickable');
+    $$(this.title).on('click', () => this.collapseToggle.toggle());
+  }
+
   private createTitle() {
-    const title = $$(
+    return $$(
       'h2',
       {
         className: 'coveo-ml-facet-header-title',
@@ -54,8 +61,6 @@ export class MLFacetHeader {
       },
       $$('span', { ariaHidden: true, title: this.facet.options.title }, this.facet.options.title)
     );
-
-    return title.el;
   }
 
   private createWaitAnimation() {
