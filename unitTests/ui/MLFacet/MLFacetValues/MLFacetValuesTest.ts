@@ -99,6 +99,11 @@ export function MLFacetValuesTest() {
       expect(moreButton()).toBeFalsy();
     });
 
+    it(`should reset the values correctly`, () => {
+      mLFacetValues.resetValues();
+      expect(mLFacetValues.allFacetValues.length).toBe(0);
+    });
+
     it(`when moreValuesAvailable is true
       should render the "Show more" button`, () => {
       mLFacetValues.createFromResponse({ values: mockFacetValues, field: facet.fieldName, moreValuesAvailable: true });

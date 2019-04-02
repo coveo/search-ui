@@ -11,8 +11,8 @@ export class MLFacetQueryController {
     this.resetNumberOfValuesToRequest();
   }
 
-  public increaseNumberOfValuesToRequest() {
-    this.numberOfValuesToRequest += this.facet.options.numberOfValues;
+  public increaseNumberOfValuesToRequest(additionalNumberOfValues: number) {
+    this.numberOfValuesToRequest += additionalNumberOfValues;
   }
 
   public resetNumberOfValuesToRequest() {

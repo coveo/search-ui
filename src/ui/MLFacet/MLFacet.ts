@@ -121,7 +121,7 @@ export class MLFacet extends Component {
     /**
      * The number of values to request for this facet.
      *
-     * Also determines the maximum number of additional values to request each time this facet is expanded,
+     * Also determines the default maximum number of additional values to request each time this facet is expanded,
      * and the maximum number of values to display when this facet is collapsed (see [enableCollapse]{@link MLFacet.options.enableCollapse}).
      *
      * **Default:** `8`
@@ -259,14 +259,15 @@ export class MLFacet extends Component {
   }
 
   /**
-   * Requests an additional amount of values equal to the [`number of values`]{@link MLFacet.options.numberOfValues}.
+   * Requests additional values.
    *
-   * Does trigger a query automatically.
+   * Automatically triggers a query.
+   * @param additionalNumberOfValues The number of additional values to request. Minimum value is 1. Defaults to the [numberOfValues]{@link MLFacet.options.numberOfValues} option value.
    */
-  public showMoreValues(): void {
+  public showMoreValues(additionalNumberOfValues = this.options.numberOfValues): void {
     this.ensureDom();
     this.logger.info('Show more values');
-    this.mLFacetQueryController.increaseNumberOfValuesToRequest();
+    this.mLFacetQueryController.increaseNumberOfValuesToRequest(additionalNumberOfValues);
     this.triggerNewQuery();
   }
 
@@ -285,7 +286,7 @@ export class MLFacet extends Component {
   /**
    * Deselects all values in this facet.
    *
-   * Does not trigger a query automatically.
+   * Does **not** trigger a query automatically.
    * Updates the visual of the facet.
    *
    */
@@ -400,17 +401,9 @@ export class MLFacet extends Component {
     this.updateAppearance();
   }
 
-  private get defaultResponse(): IFacetResponse {
-    return {
-      field: this.fieldName,
-      moreValuesAvailable: false,
-      values: []
-    };
-  }
-
-  private onQueryResponse(response = this.defaultResponse) {
+  private onQueryResponse(response?: IFacetResponse) {
     this.header.hideLoading();
-    this.values.createFromResponse(response || {});
+    response ? this.values.createFromResponse(response) : this.values.resetValues();
     this.values.render();
     this.updateAppearance();
   }

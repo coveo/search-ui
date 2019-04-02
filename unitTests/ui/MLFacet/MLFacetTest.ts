@@ -142,12 +142,21 @@ export function MLFacetTest() {
       testQueryStateModelValues();
     });
 
-    it('allows to showMoreValues', () => {
+    it('allows to showMoreValues, uses numberOfValues by default as the amount', () => {
       spyOn(test.cmp.mLFacetQueryController, 'increaseNumberOfValuesToRequest');
 
       test.cmp.showMoreValues();
 
-      expect(test.cmp.mLFacetQueryController.increaseNumberOfValuesToRequest).toHaveBeenCalled();
+      expect(test.cmp.mLFacetQueryController.increaseNumberOfValuesToRequest).toHaveBeenCalledWith(test.cmp.options.numberOfValues);
+      expect(test.cmp.queryController.executeQuery).toHaveBeenCalled();
+    });
+
+    it('allows to showMoreValues with a custom amount of values', () => {
+      spyOn(test.cmp.mLFacetQueryController, 'increaseNumberOfValuesToRequest');
+
+      test.cmp.showMoreValues(56);
+
+      expect(test.cmp.mLFacetQueryController.increaseNumberOfValuesToRequest).toHaveBeenCalledWith(56);
       expect(test.cmp.queryController.executeQuery).toHaveBeenCalled();
     });
 
