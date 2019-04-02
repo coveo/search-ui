@@ -8,11 +8,13 @@ import { FacetValueState } from '../../../rest/Facet/FacetValueState';
 import { l } from '../../../strings/Strings';
 
 export class MLFacetValues {
-  private facetValues: MLFacetValue[] = [];
+  private facetValues: MLFacetValue[];
   private list = $$('ul', { className: 'coveo-ml-facet-values' });
   private moreValuesAvailable: boolean;
 
-  constructor(private facet: MLFacet) {}
+  constructor(private facet: MLFacet) {
+    this.resetValues();
+  }
 
   public createFromResponse(response: IFacetResponse) {
     this.moreValuesAvailable = response.moreValuesAvailable;
@@ -27,6 +29,11 @@ export class MLFacetValues {
           this.facet
         )
     );
+  }
+
+  public resetValues() {
+    this.moreValuesAvailable = false;
+    this.facetValues = [];
   }
 
   public get allFacetValues() {

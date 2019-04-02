@@ -391,17 +391,9 @@ export class MLFacet extends Component {
     this.updateAppearance();
   }
 
-  private get defaultResponse(): IFacetResponse {
-    return {
-      field: this.fieldName,
-      moreValuesAvailable: false,
-      values: []
-    };
-  }
-
-  private onQueryResponse(response = this.defaultResponse) {
+  private onQueryResponse(response?: IFacetResponse) {
     this.header.hideLoading();
-    this.values.createFromResponse(response);
+    response ? this.values.createFromResponse(response) : this.values.resetValues();
     this.values.render();
     this.updateAppearance();
   }
