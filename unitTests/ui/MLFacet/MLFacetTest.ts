@@ -175,8 +175,8 @@ export function MLFacetTest() {
     });
 
     it('should select the needed values using the field', () => {
-      test.env.queryStateModel.registerNewAttribute('f:@field', []);
-      test.env.queryStateModel.set('f:@field', ['a', 'b', 'c']);
+      test.env.queryStateModel.registerNewAttribute(`f:${test.cmp.options.id}`, []);
+      test.env.queryStateModel.set(`f:${test.cmp.options.id}`, ['a', 'b', 'c']);
       expect(test.cmp.values.selectedValues).toEqual(['a', 'b', 'c']);
     });
 

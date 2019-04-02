@@ -7,6 +7,7 @@ export interface IFacetRequestValue {
 }
 
 export interface IFacetRequest {
+  facetId: string;
   field: string;
   sortCriteria?: FacetSortCriteria;
   numberOfValues?: number;

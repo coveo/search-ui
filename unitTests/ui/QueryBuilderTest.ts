@@ -196,7 +196,7 @@ export function QueryBuilderTest() {
     });
 
     describe('when adding a facet request', () => {
-      const facetRequest: IFacetRequest = { field: '@test' };
+      const facetRequest: IFacetRequest = { facetId: 'test', field: '@test' };
 
       beforeEach(() => {
         queryBuilder.facetRequests.push(facetRequest);
