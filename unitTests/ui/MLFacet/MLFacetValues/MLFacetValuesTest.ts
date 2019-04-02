@@ -99,7 +99,7 @@ export function MLFacetValuesTest() {
       expect(moreButton()).toBeFalsy();
     });
 
-    it(`show reset the values correctly`, () => {
+    it(`should reset the values correctly`, () => {
       mLFacetValues.resetValues();
       expect(mLFacetValues.allFacetValues.length).toBe(0);
     });
