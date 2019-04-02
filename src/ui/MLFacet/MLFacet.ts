@@ -251,12 +251,13 @@ export class MLFacet extends Component {
   /**
    * Requests an additional amount of values equal to the [`number of values`]{@link MLFacet.options.numberOfValues}.
    *
-   * Does trigger a query automatically.
+   * Automatically triggers a query.
+   * @param additionalNumberOfValues The additional number of values to fetch.
    */
-  public showMoreValues(): void {
+  public showMoreValues(additionalNumberOfValues = this.options.numberOfValues): void {
     this.ensureDom();
     this.logger.info('Show more values');
-    this.mLFacetQueryController.increaseNumberOfValuesToRequest();
+    this.mLFacetQueryController.increaseNumberOfValuesToRequest(additionalNumberOfValues);
     this.triggerNewQuery();
   }
 
@@ -275,7 +276,7 @@ export class MLFacet extends Component {
   /**
    * Deselects all values in this facet.
    *
-   * Does not trigger a query automatically.
+   * Does **not** trigger a query automatically.
    * Updates the visual of the facet.
    *
    */

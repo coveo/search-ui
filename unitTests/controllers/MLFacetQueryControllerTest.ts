@@ -58,7 +58,7 @@ export function MLFacetQueryControllerTest() {
       facetOptions.numberOfValues = 100;
       initializeComponents();
 
-      mLFacetQueryController.increaseNumberOfValuesToRequest();
+      mLFacetQueryController.increaseNumberOfValuesToRequest(facetOptions.numberOfValues);
 
       mLFacetQueryController.putFacetIntoQueryBuilder(queryBuilder);
       facetsRequest = queryBuilder.build().facets;
@@ -71,8 +71,8 @@ export function MLFacetQueryControllerTest() {
       facetOptions.numberOfValues = 100;
       initializeComponents();
 
-      mLFacetQueryController.increaseNumberOfValuesToRequest();
-      mLFacetQueryController.increaseNumberOfValuesToRequest();
+      mLFacetQueryController.increaseNumberOfValuesToRequest(facetOptions.numberOfValues);
+      mLFacetQueryController.increaseNumberOfValuesToRequest(facetOptions.numberOfValues);
       mLFacetQueryController.resetNumberOfValuesToRequest();
 
       mLFacetQueryController.putFacetIntoQueryBuilder(queryBuilder);
