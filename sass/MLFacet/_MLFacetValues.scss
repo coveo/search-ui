@@ -51,22 +51,13 @@ $active-text-opacity: 0.6;
 
 .coveo-ml-facet-show-more,
 .coveo-ml-facet-show-less {
+  @include linkButton();
+
   width: 100%;
   text-align: left;
   margin-top: 2px;
   padding: 3px 0;
-  background: none;
-  border: none;
   font-size: $font-size-regular;
-  cursor: pointer;
-
-  &:hover {
-    text-decoration: underline;
-  }
-}
-
-.coveo-ml-facet-show-more {
-  color: $color-vibrant-blue;
 }
 
 .coveo-ml-facet-show-less {

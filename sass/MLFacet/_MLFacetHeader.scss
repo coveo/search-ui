@@ -42,18 +42,10 @@
 }
 
 .coveo-ml-facet-header-btn {
-  padding: 0;
-  margin-left: 12px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: $color-vibrant-blue;
-  font-size: $font-size-smaller;
-
-  &:hover {
-    text-decoration: underline;
-  }
-
   @include display(flex);
   @include align-self(right);
+  @include linkButton();
+
+  margin-left: 12px;
+  font-size: $font-size-smaller;
 }
