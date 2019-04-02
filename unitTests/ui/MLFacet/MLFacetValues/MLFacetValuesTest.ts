@@ -100,7 +100,7 @@ export function MLFacetValuesTest() {
     });
 
     it(`show reset the values correctly`, () => {
-      mLFacetValues.resetValues;
+      mLFacetValues.resetValues();
       expect(mLFacetValues.allFacetValues.length).toBe(0);
     });
 
