@@ -1,6 +1,7 @@
 import { $$ } from '../../../../src/utils/Dom';
 import { MLFacetHeader } from '../../../../src/ui/MLFacet/MLFacetHeader/MLFacetHeader';
-import { MLFacet, IMLFacetOptions } from '../../../../src/ui/MLFacet/MLFacet';
+import { IMLFacetOptions } from '../../../../src/ui/MLFacet/MLFacet';
+import { MLFacetTestUtils } from '../MLFacetTestUtils';
 
 export function MLFacetHeaderTest() {
   describe('MLFacetHeader', () => {
@@ -15,7 +16,7 @@ export function MLFacetHeaderTest() {
     });
 
     function initializeComponent() {
-      mLFacetHeader = new MLFacetHeader({ options: baseOptions } as MLFacet);
+      mLFacetHeader = new MLFacetHeader(MLFacetTestUtils.createFakeFacet(baseOptions));
     }
 
     it('should create an accessible title', () => {

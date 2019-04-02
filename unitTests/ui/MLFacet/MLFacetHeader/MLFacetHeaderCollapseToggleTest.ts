@@ -3,6 +3,7 @@ import {
   MLFacetHeaderCollapseToggle,
   IMLFacetCollapseToggleOptions
 } from '../../../../src/ui/MLFacet/MLFacetHeader/MLFacetHeaderCollapseToggle';
+import { MLFacetTestUtils } from '../MLFacetTestUtils';
 
 export function MLFacetHeaderCollapseToggleTest() {
   describe('MLFacetHeaderCollapseToggle', () => {
@@ -18,12 +19,11 @@ export function MLFacetHeaderCollapseToggleTest() {
     });
 
     function initializeComponent() {
-      collapseToggle = new MLFacetHeaderCollapseToggle(baseOptions);
+      collapseToggle = new MLFacetHeaderCollapseToggle(MLFacetTestUtils.createFakeFacet(), baseOptions);
       collapseToggleElement = collapseToggle.element;
     }
 
-    it(`when passing the option enableCollapse (true)
-      should display the accessible collapse button`, () => {
+    it(`should display the accessible collapse & expand buttons`, () => {
       const collapseElement = $$(collapseToggleElement).find('.coveo-ml-facet-header-collapse');
       const expandElement = $$(collapseToggleElement).find('.coveo-ml-facet-header-expand');
 
