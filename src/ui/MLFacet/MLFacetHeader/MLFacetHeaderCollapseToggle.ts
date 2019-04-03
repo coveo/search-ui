@@ -12,10 +12,8 @@ export class MLFacetHeaderCollapseToggle {
   public element: HTMLElement;
   private collapseButton: MLFacetHeaderButton;
   private expandButton: MLFacetHeaderButton;
-  private collapsed: boolean;
 
   constructor(private facet: MLFacet) {
-    this.collapsed = this.facet.options.collapsedByDefault;
     this.create();
   }
 
@@ -28,32 +26,25 @@ export class MLFacetHeaderCollapseToggle {
       iconClassName: 'coveo-ml-facet-collapse-toggle-svg',
       className: 'coveo-ml-facet-header-collapse',
       shouldDisplay: true,
-      action: () => this.toggle()
+      action: () => this.facet.collapse()
     });
     this.expandButton = new MLFacetHeaderButton({
       label: l('Expand'),
       iconSVG: SVGIcons.icons.arrowDown,
       iconClassName: 'coveo-ml-facet-collapse-toggle-svg',
       className: 'coveo-ml-facet-header-expand',
-      shouldDisplay: true,
-      action: () => this.toggle()
+      shouldDisplay: false,
+      action: () => this.facet.expand()
     });
 
     parent.append(this.collapseButton.element);
     parent.append(this.expandButton.element);
-    this.updateVisibility();
 
     this.element = parent.el;
   }
 
-  public toggle() {
-    this.collapsed = !this.collapsed;
-    this.updateVisibility();
-  }
-
-  private updateVisibility() {
-    this.collapseButton.toggle(!this.collapsed);
-    this.expandButton.toggle(this.collapsed);
-    $$(this.facet.element).toggleClass('coveo-ml-facet-collapsed', this.collapsed);
+  public toggleButtons(isCollapsed: boolean) {
+    this.collapseButton.toggle(!isCollapsed);
+    this.expandButton.toggle(isCollapsed);
   }
 }

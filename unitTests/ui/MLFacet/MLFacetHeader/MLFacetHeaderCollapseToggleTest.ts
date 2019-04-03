@@ -7,6 +7,8 @@ export function MLFacetHeaderCollapseToggleTest() {
   describe('MLFacetHeaderCollapseToggle', () => {
     let collapseToggle: MLFacetHeaderCollapseToggle;
     let collapseToggleElement: HTMLElement;
+    let collapseBtnElement: HTMLElement;
+    let expandBtnElement: HTMLElement;
     let facet: MLFacet;
 
     beforeEach(() => {
@@ -20,56 +22,44 @@ export function MLFacetHeaderCollapseToggleTest() {
     function initializeComponent() {
       collapseToggle = new MLFacetHeaderCollapseToggle(facet);
       collapseToggleElement = collapseToggle.element;
+      collapseBtnElement = $$(collapseToggleElement).find('.coveo-ml-facet-header-collapse');
+      expandBtnElement = $$(collapseToggleElement).find('.coveo-ml-facet-header-expand');
     }
 
-    it(`should display the collapse & expand buttons`, () => {
-      const collapseElement = $$(collapseToggleElement).find('.coveo-ml-facet-header-collapse');
-      const expandElement = $$(collapseToggleElement).find('.coveo-ml-facet-header-expand');
-
-      expect($$(collapseElement).isVisible()).toBe(true);
-      expect($$(expandElement).isVisible()).toBe(false);
+    it(`should create the collapse & expand buttons
+      but only display the collapse button by default`, () => {
+      expect($$(collapseBtnElement).isVisible()).toBe(true);
+      expect($$(expandBtnElement).isVisible()).toBe(false);
     });
 
-    it(`should not add the "coveo-ml-facet-collapsed" class to the facet`, () => {
-      expect($$(facet.element).hasClass('coveo-ml-facet-collapsed')).toBe(false);
+    it(`when calling toggleButtons with isCollapsed to true
+      should display the expand button and hide the collapse button`, () => {
+      collapseToggle.toggleButtons(true);
+      expect($$(collapseBtnElement).isVisible()).toBe(false);
+      expect($$(expandBtnElement).isVisible()).toBe(true);
     });
 
-    it(`when passing the option enableCollapse (true) & collapsedByDefault (true)
-      should display the expand button and add the "coveo-ml-facet-collapsed" class to the facet`, () => {
-      facet.options.collapsedByDefault = true;
-      initializeComponent();
-
-      const collapseElement = $$(collapseToggleElement).find('.coveo-ml-facet-header-collapse');
-      const expandElement = $$(collapseToggleElement).find('.coveo-ml-facet-header-expand');
-
-      expect($$(collapseElement).isVisible()).toBe(false);
-      expect($$(expandElement).isVisible()).toBe(true);
-      expect($$(facet.element).hasClass('coveo-ml-facet-collapsed')).toBe(true);
+    it(`when calling toggleButtons with isCollapsed to false
+      should display the collapse button and hide the expand button`, () => {
+      collapseToggle.toggleButtons(true);
+      collapseToggle.toggleButtons(false);
+      expect($$(collapseBtnElement).isVisible()).toBe(true);
+      expect($$(expandBtnElement).isVisible()).toBe(false);
     });
 
     it(`when clicking on the collapse button
-      should switch the option correctly`, () => {
-      const collapseElement = $$(collapseToggleElement).find('.coveo-ml-facet-header-collapse');
-      const expandElement = $$(collapseToggleElement).find('.coveo-ml-facet-header-expand');
-      $$(collapseElement).trigger('click');
+      should call collapse on the MLFacet component`, () => {
+      $$(collapseBtnElement).trigger('click');
 
-      expect($$(collapseElement).isVisible()).toBe(false);
-      expect($$(expandElement).isVisible()).toBe(true);
-      expect($$(facet.element).hasClass('coveo-ml-facet-collapsed')).toBe(true);
+      expect(facet.collapse).toHaveBeenCalled();
     });
 
     it(`when clicking on the expand button
-      should switch the option correctly`, () => {
-      facet.options.collapsedByDefault = true;
-      initializeComponent();
+    should call expand on the MLFacet component`, () => {
+      collapseToggle.toggleButtons(true);
+      $$(expandBtnElement).trigger('click');
 
-      const collapseElement = $$(collapseToggleElement).find('.coveo-ml-facet-header-collapse');
-      const expandElement = $$(collapseToggleElement).find('.coveo-ml-facet-header-expand');
-      $$(expandElement).trigger('click');
-
-      expect($$(collapseElement).isVisible()).toBe(true);
-      expect($$(expandElement).isVisible()).toBe(false);
-      expect($$(facet.element).hasClass('coveo-ml-facet-collapsed')).toBe(false);
+      expect(facet.expand).toHaveBeenCalled();
     });
   });
 }

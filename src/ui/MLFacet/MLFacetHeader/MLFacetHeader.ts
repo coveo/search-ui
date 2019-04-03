@@ -49,7 +49,11 @@ export class MLFacetHeader {
   private enableCollapse() {
     $$(this.element).append(this.createCollapseToggle());
     $$(this.title).addClass('coveo-clickable');
-    $$(this.title).on('click', () => this.collapseToggle.toggle());
+    $$(this.title).on('click', () => this.facet.toggleCollapse());
+  }
+
+  public toggleCollapse(isCollapsed: boolean) {
+    this.facet.options.enableCollapse && this.collapseToggle.toggleButtons(isCollapsed);
   }
 
   private createTitle() {
