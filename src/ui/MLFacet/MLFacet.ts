@@ -302,10 +302,16 @@ export class MLFacet extends Component {
     this.updateQueryStateModel();
   }
 
+  /**
+   * Collapses or expands the facet depending on it's current state.
+   */
   public toggleCollapse() {
     this.isCollapsed ? this.expand() : this.collapse();
   }
 
+  /**
+   * Expands the facet. Displays all values.
+   */
   public expand() {
     this.ensureDom();
     this.logger.info('Expand facet values');
@@ -313,6 +319,9 @@ export class MLFacet extends Component {
     this.updateAppearance();
   }
 
+  /**
+   * Collapses the facet. Only displays selected values.
+   */
   public collapse() {
     this.ensureDom();
     this.logger.info('Collapse facet values');
