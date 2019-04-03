@@ -58,8 +58,8 @@ export class MLFacet extends Component {
      * **Tip:** When several facets in a given search interface are based on
      * the same field, ensure that each of those facets has a distinct `id`.
      *
-     * `id` should be at most 60 characters long.
-     * Non-word characters except "-" and "_" ( `^A-Za-z0-9-_` ) are automatically removed from the `id` value.
+     * If specified, must contain between 1 and 60 characters.
+     * Only alphanumeric (A-Za-z0-9), underscore (_), and hyphen (-) characters are kept; other characters are automatically removed.
      *
      * **Default:** The [`field`]{@link MLFacet.options.field} option value.
      */
