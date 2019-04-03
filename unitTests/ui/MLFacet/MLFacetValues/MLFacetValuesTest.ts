@@ -23,7 +23,7 @@ export function MLFacetValuesTest() {
 
     function initializeComponent() {
       mLFacetValues = new MLFacetValues(facet);
-      mLFacetValues.createFromResponse({ values: mockFacetValues, field: facet.fieldName, moreValuesAvailable: false });
+      mLFacetValues.createFromResponse(MLFacetTestUtils.getCompleteFacetResponse(facet, { values: mockFacetValues }));
     }
 
     function moreButton() {
@@ -106,7 +106,9 @@ export function MLFacetValuesTest() {
 
     it(`when moreValuesAvailable is true
       should render the "Show more" button`, () => {
-      mLFacetValues.createFromResponse({ values: mockFacetValues, field: facet.fieldName, moreValuesAvailable: true });
+      mLFacetValues.createFromResponse(
+        MLFacetTestUtils.getCompleteFacetResponse(facet, { values: mockFacetValues, moreValuesAvailable: true })
+      );
       expect(moreButton()).toBeTruthy();
     });
 
@@ -118,7 +120,7 @@ export function MLFacetValuesTest() {
     it(`when there are more values than the numberOfValues option
       should render the "Show less" button`, () => {
       mockFacetValues = MLFacetTestUtils.createFakeFacetValues(10);
-      mLFacetValues.createFromResponse({ values: mockFacetValues, field: facet.fieldName, moreValuesAvailable: false });
+      mLFacetValues.createFromResponse(MLFacetTestUtils.getCompleteFacetResponse(facet, { values: mockFacetValues }));
       expect(lessButton()).toBeTruthy();
     });
   });

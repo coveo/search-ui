@@ -40,6 +40,7 @@ export class MLFacetQueryController {
     console.table(this.currentValues);
 
     const facetRequest: IFacetRequest = {
+      facetId: this.facet.options.id,
       field: this.facet.fieldName,
       sortCriteria: this.facet.options.sortCriteria as FacetSortCriteria,
       currentValues: this.currentValues,
