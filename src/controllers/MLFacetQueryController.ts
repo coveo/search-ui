@@ -6,6 +6,7 @@ import { FacetSortCriteria } from '../rest/Facet/FacetSortCriteria';
 
 export class MLFacetQueryController {
   private numberOfValuesToRequest: number;
+  private freezeCurrentValues = false;
 
   constructor(private facet: MLFacet) {
     this.resetNumberOfValuesToRequest();
@@ -20,18 +21,30 @@ export class MLFacetQueryController {
   }
 
   /**
+   * Tells the API that the current facet values should be returned in the same order or not.
+   * For usability purposes, the facet values will not move when interacted with.
+   */
+  public setFreezeCurrentValuesFlag(freezeCurrentValues: boolean) {
+    this.freezeCurrentValues = freezeCurrentValues;
+  }
+
+  /**
    * Build the facets request for the MLFacet, and insert it in the query builder
    * @param queryBuilder
    */
   public putFacetIntoQueryBuilder(queryBuilder: QueryBuilder) {
     Assert.exists(queryBuilder);
 
+    console.log('freezeCurrentValues', this.freezeCurrentValues);
+    console.log('Sent values:');
+    console.table(this.currentValues);
+
     const facetRequest: IFacetRequest = {
       field: this.facet.fieldName,
       sortCriteria: this.facet.options.sortCriteria as FacetSortCriteria,
       currentValues: this.currentValues,
       numberOfValues: this.numberOfValuesToRequest,
-      isSticky: false // TODO: manage isSticky
+      freezeCurrentValues: this.freezeCurrentValues
     };
 
     queryBuilder.facetRequests.push(facetRequest);
