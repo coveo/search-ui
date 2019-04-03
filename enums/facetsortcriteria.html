@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>IBuildingQueryEventArgs | Coveo JavaScript Search Framework - Reference Documentation</title>
+	<title>FacetSortCriteria | Coveo JavaScript Search Framework - Reference Documentation</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link href='https://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'/>
@@ -92,17 +92,14 @@
 					<a id="globals-toc-link" href=../globals.html><b>Globals</b></a>
 				</ul>
 				<ul class="current">
-					<li class="current tsd-kind-interface">
-						<a href="ibuildingqueryeventargs.html" class="tsd-kind-icon">IBuilding<wbr>Query<wbr>Event<wbr>Args</a>
+					<li class="current tsd-kind-enum">
+						<a href="facetsortcriteria.html" class="tsd-kind-icon">Facet<wbr>Sort<wbr>Criteria</a>
 						<ul>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="ibuildingqueryeventargs.html#cancel" class="tsd-kind-icon">cancel</a>
+							<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
+								<a href="facetsortcriteria.html#alphanumeric" class="tsd-kind-icon">alphanumeric</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="ibuildingqueryeventargs.html#querybuilder" class="tsd-kind-icon">query<wbr>Builder</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="ibuildingqueryeventargs.html#searchasyoutype" class="tsd-kind-icon">search<wbr>AsYou<wbr>Type</a>
+							<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
+								<a href="facetsortcriteria.html#score" class="tsd-kind-icon">score</a>
 							</li>
 						</ul>
 					</li>
@@ -123,18 +120,19 @@
 							<a href="../globals.html">Globals</a>
 						</li>
 						<li>
-							<a href="ibuildingqueryeventargs.html">IBuildingQueryEventArgs</a>
+							<a href="facetsortcriteria.html">FacetSortCriteria</a>
 						</li>
 					</ul>
 					<!-- Has to remain here for the playground to work -->
-					<h1 style="visibility: collapse; font-size:0">Interface IBuildingQueryEventArgs</h1>
-					<h1>Interface IBuildingQueryEventArgs</h1>
+					<h1 style="visibility: collapse; font-size:0">Enumeration FacetSortCriteria</h1>
+					<h1>Enumeration FacetSortCriteria</h1>
 				</div>
 			</div>
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>Argument sent to all handlers bound on <a href="../classes/queryevents.html#buildingquery">QueryEvents.buildingQuery</a></p>
+						<p>The allowed <a href="../components/mlfacet.html#options.sortcriteria"><code>sortCriteria</code></a> option
+						values for the <code>MLFacet</code> component.</p>
 					</div>
 				</div>
 			</section>
@@ -146,77 +144,54 @@
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section ">
-							<h3>Properties</h3>
+							<h3>Enumeration members</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="ibuildingqueryeventargs.html#cancel" class="tsd-kind-icon">cancel</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="ibuildingqueryeventargs.html#querybuilder" class="tsd-kind-icon">query<wbr>Builder</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="ibuildingqueryeventargs.html#searchasyoutype" class="tsd-kind-icon">search<wbr>AsYou<wbr>Type</a></li>
+								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="facetsortcriteria.html#alphanumeric" class="tsd-kind-icon">alphanumeric</a></li>
+								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="facetsortcriteria.html#score" class="tsd-kind-icon">score</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
-				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="cancel" class="tsd-anchor"></a>
-					<h3>cancel</h3>
-					<div class="tsd-signature tsd-kind-icon">cancel<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+				<h2>Enumeration members</h2>
+				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum">
+					<a name="alphanumeric" class="tsd-anchor"></a>
+					<h3>alphanumeric</h3>
+					<div class="tsd-signature tsd-kind-icon">alphanumeric<span class="tsd-signature-symbol">:</span> </div>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/events/QueryEvents.ts#L39">events/QueryEvents.ts
-							:39</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Facet/FacetSortCriteria.ts#L19">rest/Facet/FacetSortCriteria.ts
+							:19</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>If this property is set to true by any handlers, the query will not be executed.</p>
+							<p>Sort facet values in ascending alphanumeric order.</p>
 						</div>
 					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="querybuilder" class="tsd-anchor"></a>
-					<h3>query<wbr>Builder</h3>
-					<div class="tsd-signature tsd-kind-icon">query<wbr>Builder<span class="tsd-signature-symbol">:</span> <a href="../classes/querybuilder.html" class="tsd-signature-type">QueryBuilder</a></div>
+				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum">
+					<a name="score" class="tsd-anchor"></a>
+					<h3>score</h3>
+					<div class="tsd-signature tsd-kind-icon">score<span class="tsd-signature-symbol">:</span> </div>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/events/QueryEvents.ts#L31">events/QueryEvents.ts
-							:31</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Facet/FacetSortCriteria.ts#L14">rest/Facet/FacetSortCriteria.ts
+							:14</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Allow handlers to modify the query by using the <a href="../classes/querybuilder.html">QueryBuilder</a></p>
+							<p>Sort facet values in descending score order.</p>
 						</div>
+						<p>Facet value scores are based on number of occurrences and position in the
+						ranked query result set.</p>
+						<p>The Coveo ML <em>Facet Sense</em> feature only works with this sort criterion.</p>
 					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="searchasyoutype" class="tsd-anchor"></a>
-					<h3>search<wbr>AsYou<wbr>Type</h3>
-					<div class="tsd-signature tsd-kind-icon">search<wbr>AsYou<wbr>Type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/events/QueryEvents.ts#L35">events/QueryEvents.ts
-							:35</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Determine if the query is a &quot;search-as-you-type&quot;</p>
-						</div>
-					</div>
-				</section>
-			</section>
-			<section class="tsd-panel tsd-hierarchy">
-				<h3>Hierarchy</h3>
-				<ul class="tsd-hierarchy">
-					<li>
-						<span class="target">IBuildingQueryEventArgs</span>
-					</li>
-				</ul>
 			</section>
 			<footer class="with-border-bottom">
 				<div class="container">

@@ -5881,8 +5881,8 @@ exports.ResponsiveComponents = ResponsiveComponents;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    lib: '2.5652.7',
-    product: '2.5652.7',
+    lib: '2.5926.0-beta',
+    product: '2.5926.0-beta',
     supportedApiVersion: 2
 };
 
@@ -7501,6 +7501,13 @@ exports.PlaygroundConfiguration = {
         },
         element: new SectionBuilder_1.SectionBuilder().withComponent('CoveoMatrix').build()
     },
+    MLFacet: {
+        show: true,
+        options: {
+            field: '@author',
+            title: 'Author'
+        }
+    },
     OmniboxResultList: {
         show: true,
         element: new SearchSectionBuilder_1.SearchSectionBuilder()
@@ -8697,6 +8704,7 @@ var dict = {
     "UnselectValueWithResultCount": "Unselect {0} with {1}",
     "PageNumber": "Page {0}",
     "DisplayResultsPerPage": "Display {0} results per page",
+    "GroupByAndFacetRequestsCannotCoexist": "The query is invalid because it contains both Group By and Facet requests. Ensure that the search interface does not initialize MLFacet components alongside Facet components (or alongside any component extending the Facet component, such as FacetRange or FacetSlider).",
 };
 function defaultLanguage() {
     var locales = String["locales"] || (String["locales"] = {});
