@@ -120,7 +120,7 @@ export class Omnibox extends Component {
      *
      * Default value is `false`.
      */
-    enableSearchAsYouType: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'SearchAsYouType' }),
+    enableSearchAsYouType: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'Advanced Options' }),
 
     /**
      * If {@link Omnibox.options.enableSearchAsYouType} is `true`, specifies the delay (in milliseconds) before
@@ -132,7 +132,7 @@ export class Omnibox extends Component {
       defaultValue: 2000,
       min: 0,
       depend: 'enableSearchAsYouType',
-      section: 'SearchAsYouType'
+      section: 'Advanced Options'
     }),
 
     /**
@@ -158,7 +158,7 @@ export class Omnibox extends Component {
         }
         return value;
       },
-      section: 'QuerySyntax'
+      section: 'Advanced Options'
     }),
     enableSimpleFieldAddon: ComponentOptions.buildBooleanOption({ defaultValue: false, depend: 'enableFieldAddon' }),
     listOfFields: ComponentOptions.buildFieldsOption({ depend: 'enableFieldAddon' }),
@@ -198,7 +198,7 @@ export class Omnibox extends Component {
         }
         return value;
       },
-      section: 'QuerySyntax'
+      section: 'Advanced Options'
     }),
 
     /**
@@ -223,7 +223,7 @@ export class Omnibox extends Component {
      */
     enableQuerySyntax: ComponentOptions.buildBooleanOption({
       defaultValue: false,
-      section: 'QuerySyntax'
+      section: 'Advanced Options'
     }),
     /**
      * Specifies the number of suggestions that should appear in standard ML-powered query suggestions.
