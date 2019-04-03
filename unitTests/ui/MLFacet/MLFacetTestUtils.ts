@@ -3,6 +3,7 @@ import { MLFacet, IMLFacetOptions } from '../../../src/ui/MLFacet/MLFacet';
 import { IMLFacetValue } from '../../../src/ui/MLFacet/MLFacetValues/MLFacetValue';
 import { FacetValueState } from '../../../src/rest/Facet/FacetValueState';
 import * as Mock from '../../MockEnvironment';
+import { IFacetResponse } from '../../../src/rest/Facet/FacetResponse';
 
 export class MLFacetTestUtils {
   static createFakeFacet(options?: IMLFacetOptions) {
@@ -39,5 +40,15 @@ export class MLFacetTestUtils {
     }
 
     return fakeValues;
+  }
+
+  static getCompleteFacetResponse(facet: MLFacet, partialResponse?: Partial<IFacetResponse>): IFacetResponse {
+    return {
+      facetId: facet.options.id,
+      field: facet.fieldName,
+      values: [],
+      moreValuesAvailable: false,
+      ...partialResponse
+    };
   }
 }

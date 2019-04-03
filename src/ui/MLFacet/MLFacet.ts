@@ -58,10 +58,21 @@ export class MLFacet extends Component {
      * **Tip:** When several facets in a given search interface are based on
      * the same field, ensure that each of those facets has a distinct `id`.
      *
+     * If specified, must contain between 1 and 60 characters.
+     * Only alphanumeric (A-Za-z0-9), underscore (_), and hyphen (-) characters are kept; other characters are automatically removed.
+     *
      * **Default:** The [`field`]{@link MLFacet.options.field} option value.
      */
     id: ComponentOptions.buildStringOption({
-      postProcessing: (value, options: IMLFacetOptions) => value || (options.field as string)
+      postProcessing: (value = '', options: IMLFacetOptions) => {
+        const maxCharLength = 60;
+        const sanitizedValue = value.replace(/[^A-Za-z0-9-_]+/g, '');
+        if (Utils.isNonEmptyString(sanitizedValue)) {
+          return sanitizedValue.slice(0, maxCharLength - 1);
+        }
+
+        return options.field.slice(1, maxCharLength);
+      }
     }),
 
     /**
@@ -338,7 +349,7 @@ export class MLFacet extends Component {
       return this.notImplementedError();
     }
 
-    const response = findWhere(data.results.facets, { field: this.fieldName });
+    const response = findWhere(data.results.facets, { facetId: this.options.id });
 
     this.onQueryResponse(response);
   }
