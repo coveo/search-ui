@@ -21,7 +21,7 @@ export function MLFacetTest() {
 
     function initializeComponent() {
       test = MLFacetTestUtils.createAdvancedFakeFacet(options);
-      test.cmp.values.createFromResponse({ values: mockFacetValues, field: 'field', moreValuesAvailable: false });
+      test.cmp.values.createFromResponse(MLFacetTestUtils.getCompleteFacetResponse(test.cmp, { values: mockFacetValues }));
     }
 
     function testQueryStateModelValues() {
@@ -183,9 +183,9 @@ export function MLFacetTest() {
       expect($$(test.cmp.element).find('.coveo-ml-facet-header-title span').innerHTML).toBe(options.title);
     });
 
-    it('should select the needed values using the field', () => {
-      test.env.queryStateModel.registerNewAttribute('f:@field', []);
-      test.env.queryStateModel.set('f:@field', ['a', 'b', 'c']);
+    it('should select the needed values using the id', () => {
+      test.env.queryStateModel.registerNewAttribute(`f:${test.cmp.options.id}`, []);
+      test.env.queryStateModel.set(`f:${test.cmp.options.id}`, ['a', 'b', 'c']);
       expect(test.cmp.values.selectedValues).toEqual(['a', 'b', 'c']);
     });
 

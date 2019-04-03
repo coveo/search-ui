@@ -7,6 +7,7 @@ export interface IFacetResponseValue {
 }
 
 export interface IFacetResponse {
+  facetId: string;
   field: string;
   moreValuesAvailable: boolean;
   values: IFacetResponseValue[];
