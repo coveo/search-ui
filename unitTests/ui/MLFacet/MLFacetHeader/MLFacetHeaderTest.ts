@@ -1,28 +1,38 @@
 import { $$ } from '../../../../src/utils/Dom';
 import { MLFacetHeader } from '../../../../src/ui/MLFacet/MLFacetHeader/MLFacetHeader';
 import { MLFacet, IMLFacetOptions } from '../../../../src/ui/MLFacet/MLFacet';
+import { MLFacetTestUtils } from '../MLFacetTestUtils';
 
 export function MLFacetHeaderTest() {
   describe('MLFacetHeader', () => {
     let mLFacetHeader: MLFacetHeader;
-    let baseOptions: IMLFacetOptions;
+    let facet: MLFacet;
+    let baseOptions: IMLFacetOptions = { title: 'hello' };
 
     beforeEach(() => {
-      baseOptions = {
-        title: 'Best facet'
-      };
       initializeComponent();
     });
 
     function initializeComponent() {
-      mLFacetHeader = new MLFacetHeader({ options: baseOptions } as MLFacet);
+      facet = MLFacetTestUtils.createFakeFacet(baseOptions);
+      mLFacetHeader = new MLFacetHeader(facet);
+    }
+
+    function collapseElement() {
+      return $$(mLFacetHeader.element).find('.coveo-ml-facet-header-collapse');
+    }
+
+    function expandElement() {
+      return $$(mLFacetHeader.element).find('.coveo-ml-facet-header-expand');
+    }
+
+    function titleElement() {
+      return $$(mLFacetHeader.element).find('.coveo-ml-facet-header-title');
     }
 
     it('should create an accessible title', () => {
-      const titleElement = $$(mLFacetHeader.element).find('.coveo-ml-facet-header-title');
-
-      expect($$(titleElement).getAttribute('aria-label')).toBeTruthy();
-      expect($$(titleElement).find('span').innerHTML).toBe(baseOptions.title);
+      expect($$(titleElement()).getAttribute('aria-label')).toBeTruthy();
+      expect($$(titleElement()).find('span').innerHTML).toBe(baseOptions.title);
     });
 
     it('should create a hidden waitAnimationElement', () => {
@@ -57,16 +67,38 @@ export function MLFacetHeaderTest() {
       expect($$(clearElement).isVisible()).toBe(true);
     });
 
-    it(`when passing the option enableCollapse (true)
-      should display the accessible collapse & expand buttons`, () => {
-      baseOptions.enableCollapse = true;
-      initializeComponent();
+    describe('when passing the option enableCollapse as true', () => {
+      it('should not create collapse & expand buttons', () => {
+        expect(collapseElement()).toBeFalsy();
+        expect(expandElement()).toBeFalsy();
+      });
 
-      const collapseElement = $$(mLFacetHeader.element).find('.coveo-ml-facet-header-collapse');
-      const expandElement = $$(mLFacetHeader.element).find('.coveo-ml-facet-header-expand');
+      it('should not throw an error when calling the toggleCollapse method', () => {
+        expect(() => mLFacetHeader.toggleCollapse(true)).not.toThrow();
+      });
+    });
 
-      expect(collapseElement).toBeTruthy();
-      expect(expandElement).toBeTruthy();
+    describe('when passing the option enableCollapse as true', () => {
+      beforeEach(() => {
+        baseOptions.enableCollapse = true;
+        initializeComponent();
+      });
+
+      it('should create collapse & expand buttons', () => {
+        expect(collapseElement()).toBeTruthy();
+        expect(expandElement()).toBeTruthy();
+      });
+
+      it('should add the coveo-clickable class to the title', () => {
+        expect($$(titleElement()).hasClass('coveo-clickable')).toBe(true);
+      });
+
+      it(`when clicking on the title
+        should call the toggleCollapse method of the MLFacet`, () => {
+        $$(titleElement()).trigger('click');
+
+        expect(facet.toggleCollapse).toHaveBeenCalled();
+      });
     });
   });
 }

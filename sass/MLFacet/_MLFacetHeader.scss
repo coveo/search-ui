@@ -19,6 +19,10 @@
   overflow: hidden;
 
   @include flex-grow(1);
+
+  &.coveo-clickable {
+    cursor: pointer;
+  }
 }
 
 @mixin coveo-ml-facet-header-svg {

@@ -169,6 +169,42 @@ export function MLFacetTest() {
       expect(test.cmp.queryController.executeQuery).toHaveBeenCalled();
     });
 
+    it(`when enableCollapse & collapsedByDefault options are true
+      facet should be collapsed`, () => {
+      options.enableCollapse = true;
+      options.collapsedByDefault = true;
+      initializeComponent();
+      test.cmp.ensureDom();
+
+      expect($$(test.cmp.element).hasClass('coveo-ml-facet-collapsed')).toBe(true);
+    });
+
+    it(`allows to collapse`, () => {
+      test.cmp.ensureDom();
+      test.cmp.collapse();
+
+      expect($$(test.cmp.element).hasClass('coveo-ml-facet-collapsed')).toBe(true);
+    });
+
+    it(`allows to expand`, () => {
+      test.cmp.ensureDom();
+      test.cmp.collapse();
+
+      test.cmp.expand();
+
+      expect($$(test.cmp.element).hasClass('coveo-ml-facet-collapsed')).toBe(false);
+    });
+
+    it(`allows to toggle between expand/collapse`, () => {
+      test.cmp.ensureDom();
+
+      test.cmp.toggleCollapse();
+      expect($$(test.cmp.element).hasClass('coveo-ml-facet-collapsed')).toBe(true);
+
+      test.cmp.toggleCollapse();
+      expect($$(test.cmp.element).hasClass('coveo-ml-facet-collapsed')).toBe(false);
+    });
+
     it('should have a default title', () => {
       test.cmp.ensureDom();
 
