@@ -4,9 +4,6 @@
   "description": "Coveo JavaScript Search Framework",
   "main": "./bin/js/CoveoJsSearch.js",
   "types": "./bin/ts/CoveoJsSearch.d.ts",
-  "engines": {
-    "node": "8.15.1"
-  },
   "scripts": {
     "precommit": "lint-staged",
     "test": "npm run unitTests",
