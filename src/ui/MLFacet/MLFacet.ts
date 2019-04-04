@@ -310,7 +310,7 @@ export class MLFacet extends Component {
   }
 
   /**
-   * Expands the facet. Displays all values.
+   * Expands the facet, displaying all of its currently fetched values.
    */
   public expand() {
     this.ensureDom();
@@ -320,7 +320,7 @@ export class MLFacet extends Component {
   }
 
   /**
-   * Collapses the facet. Only displays selected values.
+   * Collapses the facet, displaying only its currently selected values.
    */
   public collapse() {
     this.ensureDom();
