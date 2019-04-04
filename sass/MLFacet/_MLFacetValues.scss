@@ -63,3 +63,15 @@ $active-text-opacity: 0.6;
 .coveo-ml-facet-show-less {
   color: $color-dark-grey;
 }
+
+.coveo-ml-facet-collapsed {
+  .coveo-ml-facet-value,
+  .coveo-ml-facet-show-more,
+  .coveo-ml-facet-show-less {
+    display: none;
+  }
+
+  .coveo-ml-facet-value.coveo-selected {
+    display: inherit;
+  }
+}

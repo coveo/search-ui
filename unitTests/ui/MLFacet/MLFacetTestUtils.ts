@@ -1,3 +1,4 @@
+import { $$ } from '../../../src/utils/Dom';
 import { MLFacet, IMLFacetOptions } from '../../../src/ui/MLFacet/MLFacet';
 import { IMLFacetValue } from '../../../src/ui/MLFacet/MLFacetValues/MLFacetValue';
 import { FacetValueState } from '../../../src/rest/Facet/FacetValueState';
@@ -11,6 +12,7 @@ export class MLFacetTestUtils {
       field: '@dummy',
       ...options
     };
+    facet.element = $$('div').el;
 
     return facet;
   }

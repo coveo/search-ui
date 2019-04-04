@@ -159,6 +159,7 @@ export class MLFacet extends Component {
   private includedAttributeId: string;
   private listenToQueryStateChange = true;
   private header: MLFacetHeader;
+  private isCollapsed: boolean;
   public values: MLFacetValues;
 
   /**
@@ -177,6 +178,7 @@ export class MLFacet extends Component {
     this.initQueryStateEvents();
 
     this.values = new MLFacetValues(this);
+    this.isCollapsed = this.options.enableCollapse && this.options.collapsedByDefault;
 
     ResponsiveFacets.init(this.root, this, this.options);
   }
@@ -293,10 +295,38 @@ export class MLFacet extends Component {
    */
   public reset() {
     this.ensureDom();
+    this.logger.info('Deselect all values');
     this.values.clearAll();
     this.values.render();
     this.updateAppearance();
     this.updateQueryStateModel();
+  }
+
+  /**
+   * Collapses or expands the facet depending on it's current state.
+   */
+  public toggleCollapse() {
+    this.isCollapsed ? this.expand() : this.collapse();
+  }
+
+  /**
+   * Expands the facet, displaying all of its currently fetched values.
+   */
+  public expand() {
+    this.ensureDom();
+    this.logger.info('Expand facet values');
+    this.isCollapsed = false;
+    this.updateAppearance();
+  }
+
+  /**
+   * Collapses the facet, displaying only its currently selected values.
+   */
+  public collapse() {
+    this.ensureDom();
+    this.logger.info('Collapse facet values');
+    this.isCollapsed = true;
+    this.updateAppearance();
   }
 
   private initQueryEvents() {
@@ -389,6 +419,8 @@ export class MLFacet extends Component {
 
   private updateAppearance() {
     this.header.toggleClear(this.values.hasSelectedValues);
+    this.header.toggleCollapse(this.isCollapsed);
+    $$(this.element).toggleClass('coveo-ml-facet-collapsed', this.isCollapsed);
     $$(this.element).toggleClass('coveo-active', this.values.hasSelectedValues);
     $$(this.element).toggleClass('coveo-hidden', this.values.isEmpty);
   }

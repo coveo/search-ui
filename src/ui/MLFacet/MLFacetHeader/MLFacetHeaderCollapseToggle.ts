@@ -2,6 +2,7 @@ import { l } from '../../../strings/Strings';
 import { SVGIcons } from '../../../utils/SVGIcons';
 import { $$ } from '../../../utils/Dom';
 import { MLFacetHeaderButton } from './MLFacetHeaderButton';
+import { MLFacet } from '../MLFacet';
 
 export interface IMLFacetCollapseToggleOptions {
   collapsed: boolean;
@@ -12,7 +13,7 @@ export class MLFacetHeaderCollapseToggle {
   private collapseButton: MLFacetHeaderButton;
   private expandButton: MLFacetHeaderButton;
 
-  constructor(private options: IMLFacetCollapseToggleOptions) {
+  constructor(private facet: MLFacet) {
     this.create();
   }
 
@@ -25,36 +26,25 @@ export class MLFacetHeaderCollapseToggle {
       iconClassName: 'coveo-ml-facet-collapse-toggle-svg',
       className: 'coveo-ml-facet-header-collapse',
       shouldDisplay: true,
-      action: () => this.collapse()
+      action: () => this.facet.collapse()
     });
     this.expandButton = new MLFacetHeaderButton({
       label: l('Expand'),
       iconSVG: SVGIcons.icons.arrowDown,
       iconClassName: 'coveo-ml-facet-collapse-toggle-svg',
       className: 'coveo-ml-facet-header-expand',
-      shouldDisplay: true,
-      action: () => this.expand()
+      shouldDisplay: false,
+      action: () => this.facet.expand()
     });
 
     parent.append(this.collapseButton.element);
     parent.append(this.expandButton.element);
-    this.toggle(this.options.collapsed);
 
     this.element = parent.el;
   }
 
-  private toggle = (collapsed: boolean) => {
-    this.collapseButton.toggle(!collapsed);
-    this.expandButton.toggle(collapsed);
-  };
-
-  private collapse() {
-    this.toggle(true);
-    // TODO: collapse facet
-  }
-
-  private expand() {
-    this.toggle(false);
-    // TODO: expand facet
+  public toggleButtons(isCollapsed: boolean) {
+    this.collapseButton.toggle(!isCollapsed);
+    this.expandButton.toggle(isCollapsed);
   }
 }
