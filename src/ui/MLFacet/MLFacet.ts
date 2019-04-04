@@ -403,7 +403,6 @@ export class MLFacet extends Component {
   }
 
   private handleFacetValuesChanged() {
-    this.mLFacetQueryController.setFreezeCurrentValuesFlag(true);
     this.updateQueryStateModel();
   }
 
@@ -436,15 +435,10 @@ export class MLFacet extends Component {
   }
 
   private onQueryResponse(response?: IFacetResponse) {
-    this.mLFacetQueryController.setFreezeCurrentValuesFlag(false);
     this.header.hideLoading();
     response ? this.values.createFromResponse(response) : this.values.resetValues();
     this.values.render();
     this.updateAppearance();
-
-    // TODO: remove!
-    console.log('Returned values:');
-    console.table(this.values.allValues);
   }
 
   private notImplementedError() {

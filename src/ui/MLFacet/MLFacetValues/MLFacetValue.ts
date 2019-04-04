@@ -45,10 +45,6 @@ export class MLFacetValue implements IMLFacetValue {
   }
 
   public get formattedCount(): string {
-    if (this.numberOfResults === 0) {
-      return '';
-    }
-
     return Globalize.format(this.numberOfResults, 'n0');
   }
 

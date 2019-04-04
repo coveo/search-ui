@@ -5,7 +5,7 @@ import { IFacetRequest, IFacetRequestValue } from '../rest/Facet/FacetRequest';
 import { FacetSortCriteria } from '../rest/Facet/FacetSortCriteria';
 
 export class MLFacetQueryController {
-  private numberOfValuesToRequest: number;
+  private numberOfValues: number;
   private freezeCurrentValues = false;
 
   constructor(private facet: MLFacet) {
@@ -13,11 +13,11 @@ export class MLFacetQueryController {
   }
 
   public increaseNumberOfValuesToRequest(additionalNumberOfValues: number) {
-    this.numberOfValuesToRequest += additionalNumberOfValues;
+    this.numberOfValues += additionalNumberOfValues;
   }
 
   public resetNumberOfValuesToRequest() {
-    this.numberOfValuesToRequest = this.facet.options.numberOfValues;
+    this.numberOfValues = this.facet.options.numberOfValues;
   }
 
   /**
@@ -28,16 +28,20 @@ export class MLFacetQueryController {
     this.freezeCurrentValues = freezeCurrentValues;
   }
 
+  private get numberOfValuesToRequest() {
+    if (this.freezeCurrentValues) {
+      return this.currentValues.length;
+    }
+
+    return this.numberOfValues;
+  }
+
   /**
    * Build the facets request for the MLFacet, and insert it in the query builder
    * @param queryBuilder
    */
   public putFacetIntoQueryBuilder(queryBuilder: QueryBuilder) {
     Assert.exists(queryBuilder);
-
-    console.log('freezeCurrentValues', this.freezeCurrentValues);
-    console.log('Sent values:');
-    console.table(this.currentValues);
 
     const facetRequest: IFacetRequest = {
       facetId: this.facet.options.id,
@@ -49,6 +53,7 @@ export class MLFacetQueryController {
     };
 
     queryBuilder.facetRequests.push(facetRequest);
+    this.setFreezeCurrentValuesFlag(false);
   }
 
   private get currentValues(): IFacetRequestValue[] {
