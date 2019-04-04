@@ -9,14 +9,14 @@ export class MLFacetQueryController {
   private freezeCurrentValues = false;
 
   constructor(private facet: MLFacet) {
-    this.resetNumberOfValuesToRequest();
+    this.resetNumberOfValues();
   }
 
-  public increaseNumberOfValuesToRequest(additionalNumberOfValues: number) {
+  public increaseNumberOfValues(additionalNumberOfValues: number) {
     this.numberOfValues += additionalNumberOfValues;
   }
 
-  public resetNumberOfValuesToRequest() {
+  public resetNumberOfValues() {
     this.numberOfValues = this.facet.options.numberOfValues;
   }
 
@@ -33,7 +33,7 @@ export class MLFacetQueryController {
       return this.currentValues.length;
     }
 
-    return this.numberOfValues;
+    return Math.max(this.numberOfValues, this.facet.values.selectedValues.length);
   }
 
   /**

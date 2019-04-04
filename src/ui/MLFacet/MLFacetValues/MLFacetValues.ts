@@ -52,6 +52,10 @@ export class MLFacetValues {
     return !!findWhere(this.facetValues, { state: FacetValueState.selected });
   }
 
+  public get hasIdleValues() {
+    return !!findWhere(this.facetValues, { state: FacetValueState.idle });
+  }
+
   public clearAll() {
     this.facetValues.forEach(value => value.deselect());
   }
@@ -61,7 +65,9 @@ export class MLFacetValues {
   }
 
   public get isExpanded() {
-    return this.facetValues.length > this.facet.options.numberOfValues;
+    const hasMoreValuesThenDefault = this.facetValues.length > this.facet.options.numberOfValues;
+
+    return hasMoreValuesThenDefault && this.hasIdleValues;
   }
 
   public get(arg: string | MLFacetValue) {
