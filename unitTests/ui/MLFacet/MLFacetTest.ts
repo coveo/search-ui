@@ -6,14 +6,12 @@ import { MLFacetTestUtils } from './MLFacetTestUtils';
 import { $$ } from '../../../src/Core';
 import { FacetSortCriteria } from '../../../src/rest/Facet/FacetSortCriteria';
 import { Simulate } from '../../Simulate';
-import { IFacetRequest } from '../../../src/rest/Facet/FacetRequest';
 
 export function MLFacetTest() {
   describe('MLFacet', () => {
     let test: Mock.IBasicComponentSetup<MLFacet>;
     let mockFacetValues: IMLFacetValue[];
     let options: IMLFacetOptions;
-    let facetRequest: IFacetRequest;
 
     beforeEach(() => {
       options = { field: '@field' };
@@ -31,8 +29,8 @@ export function MLFacetTest() {
       expect(qsmValues).toEqual(test.cmp.values.selectedValues);
     }
 
-    function simulateRequest() {
-      facetRequest = Simulate.query(test.env).queryBuilder.build().facets[0];
+    function getFirstFacetRequest() {
+      return Simulate.query(test.env).queryBuilder.build().facets[0];
     }
 
     it(`when facet has values but none are selected
@@ -148,13 +146,11 @@ export function MLFacetTest() {
       testQueryStateModelValues();
     });
 
-    it('allows to showMoreValues, uses numberOfValues by default as the amount', () => {
+    it('showMoreValues adds by the numberOfValues option by default', () => {
       const additionalNumberOfValues = test.cmp.options.numberOfValues;
       test.cmp.showMoreValues();
-      expect(test.cmp.queryController.executeQuery).toHaveBeenCalled();
 
-      simulateRequest();
-      expect(facetRequest.numberOfValues).toBe(test.cmp.options.numberOfValues + additionalNumberOfValues);
+      expect(getFirstFacetRequest().numberOfValues).toBe(test.cmp.options.numberOfValues + additionalNumberOfValues);
     });
 
     it('allows to showMoreValues with a custom amount of values', () => {
@@ -162,18 +158,25 @@ export function MLFacetTest() {
       test.cmp.showMoreValues(additionalNumberOfValues);
       expect(test.cmp.queryController.executeQuery).toHaveBeenCalled();
 
-      simulateRequest();
-      expect(facetRequest.numberOfValues).toBe(test.cmp.options.numberOfValues + additionalNumberOfValues);
+      expect(getFirstFacetRequest().numberOfValues).toBe(test.cmp.options.numberOfValues + additionalNumberOfValues);
     });
 
-    it('allows to showLessValues', () => {
+    it('showMoreValues triggers a query', () => {
+      test.cmp.showMoreValues();
+      expect(test.cmp.queryController.executeQuery).toHaveBeenCalled();
+    });
+
+    it('showLessValues resets the amount of values to the numberOfValues option', () => {
       const additionalNumberOfValues = 38;
       test.cmp.showMoreValues(additionalNumberOfValues);
       test.cmp.showLessValues();
-      expect(test.cmp.queryController.executeQuery).toHaveBeenCalledTimes(2);
 
-      simulateRequest();
-      expect(facetRequest.numberOfValues).toBe(test.cmp.options.numberOfValues);
+      expect(getFirstFacetRequest().numberOfValues).toBe(test.cmp.options.numberOfValues);
+    });
+
+    it('showLessValues triggers a query', () => {
+      test.cmp.showLessValues();
+      expect(test.cmp.queryController.executeQuery).toHaveBeenCalled();
     });
 
     it(`when enableCollapse & collapsedByDefault options are true
@@ -243,8 +246,7 @@ export function MLFacetTest() {
 
     it(`when not setting a sortCriteria option
       should set it to undefined in the query`, () => {
-      simulateRequest();
-      expect(facetRequest.sortCriteria).toBeUndefined();
+      expect(getFirstFacetRequest().sortCriteria).toBeUndefined();
     });
 
     it(`when setting a sortCriteria option
@@ -252,14 +254,12 @@ export function MLFacetTest() {
       options.sortCriteria = FacetSortCriteria.score;
       initializeComponent();
 
-      simulateRequest();
-      expect(facetRequest.sortCriteria).toBe(FacetSortCriteria.score);
+      expect(getFirstFacetRequest().sortCriteria).toBe(FacetSortCriteria.score);
     });
 
     it(`when not setting a numberOfValues option
       should set it to 8 in the query`, () => {
-      simulateRequest();
-      expect(facetRequest.numberOfValues).toBe(8);
+      expect(getFirstFacetRequest().numberOfValues).toBe(8);
     });
 
     it(`when setting a numberOfValues option
@@ -267,8 +267,7 @@ export function MLFacetTest() {
       options.numberOfValues = 100;
       initializeComponent();
 
-      simulateRequest();
-      expect(facetRequest.numberOfValues).toBe(100);
+      expect(getFirstFacetRequest().numberOfValues).toBe(100);
     });
   });
 }
