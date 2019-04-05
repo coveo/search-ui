@@ -5,19 +5,19 @@ import { IFacetRequest, IFacetRequestValue } from '../rest/Facet/FacetRequest';
 import { FacetSortCriteria } from '../rest/Facet/FacetSortCriteria';
 
 export class MLFacetQueryController {
-  private numberOfValues: number;
+  private numberOfValuesToRequest: number;
   private freezeCurrentValues = false;
 
   constructor(private facet: MLFacet) {
-    this.resetNumberOfValues();
+    this.resetNumberOfValuesToRequest();
   }
 
-  public increaseNumberOfValues(additionalNumberOfValues: number) {
-    this.numberOfValues += additionalNumberOfValues;
+  public increaseNumberOfValuesToRequest(additionalNumberOfValues: number) {
+    this.numberOfValuesToRequest += additionalNumberOfValues;
   }
 
-  public resetNumberOfValues() {
-    this.numberOfValues = this.facet.options.numberOfValues;
+  public resetNumberOfValuesToRequest() {
+    this.numberOfValuesToRequest = this.facet.options.numberOfValues;
   }
 
   /**
@@ -26,14 +26,6 @@ export class MLFacetQueryController {
    */
   public setFreezeCurrentValuesFlag(freezeCurrentValues: boolean) {
     this.freezeCurrentValues = freezeCurrentValues;
-  }
-
-  private get numberOfValuesToRequest() {
-    if (this.freezeCurrentValues) {
-      return this.currentValues.length;
-    }
-
-    return Math.max(this.numberOfValues, this.facet.values.selectedValues.length);
   }
 
   /**
@@ -48,7 +40,7 @@ export class MLFacetQueryController {
       field: this.facet.fieldName,
       sortCriteria: this.facet.options.sortCriteria as FacetSortCriteria,
       currentValues: this.currentValues,
-      numberOfValues: this.numberOfValuesToRequest,
+      numberOfValues: this.numberOfValues,
       freezeCurrentValues: this.freezeCurrentValues
     };
 
@@ -61,5 +53,13 @@ export class MLFacetQueryController {
       value,
       state
     }));
+  }
+
+  private get numberOfValues() {
+    if (this.freezeCurrentValues) {
+      return this.currentValues.length;
+    }
+
+    return Math.max(this.numberOfValuesToRequest, this.facet.values.selectedValues.length);
   }
 }

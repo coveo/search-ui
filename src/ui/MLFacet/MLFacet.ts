@@ -270,7 +270,7 @@ export class MLFacet extends Component {
   public showMoreValues(additionalNumberOfValues = this.options.numberOfValues): void {
     this.ensureDom();
     this.logger.info('Show more values');
-    this.mLFacetQueryController.increaseNumberOfValues(additionalNumberOfValues);
+    this.mLFacetQueryController.increaseNumberOfValuesToRequest(additionalNumberOfValues);
     this.triggerNewQuery();
   }
 
@@ -282,7 +282,7 @@ export class MLFacet extends Component {
   public showLessValues(): void {
     this.ensureDom();
     this.logger.info('Show less values');
-    this.mLFacetQueryController.resetNumberOfValues();
+    this.mLFacetQueryController.resetNumberOfValuesToRequest();
     this.triggerNewQuery();
   }
 
