@@ -330,8 +330,11 @@ export class MLFacet extends Component {
   }
 
   /**
-   * Tells the API if the sent facet values should be returned in the same order or not.
-   * Flag is set back to `false` after the query is built.
+   * Sets a flag indicating whether the facet values should be returned in their current order.
+   *
+   * Setting the flag to true helps ensuring that the values do not move around while the end-user is interacting with them.
+   *
+   * The flag is automatically set back to false after a query is built.
    */
   public setFreezeCurrentValuesFlag(freezeCurrentValues: boolean) {
     Assert.exists(this.mLFacetQueryController);
