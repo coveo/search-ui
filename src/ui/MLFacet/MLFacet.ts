@@ -155,7 +155,7 @@ export class MLFacet extends Component {
     valueCaption: ComponentOptions.buildJsonOption<IStringMap<string>>()
   };
 
-  public mLFacetQueryController: MLFacetQueryController;
+  private mLFacetQueryController: MLFacetQueryController;
   private includedAttributeId: string;
   private listenToQueryStateChange = true;
   private header: MLFacetHeader;
