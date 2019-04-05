@@ -68,15 +68,9 @@ export function MLFacetValueTest() {
       expect(mLFacetValue.equals(value)).toBe(true);
     });
 
-    it(`when getting formattedCount with a non zero value
+    it(`when getting formattedCount
       it should return a string in the Globalize format`, () => {
       expect(mLFacetValue.formattedCount).toBe(Globalize.format(mLFacetValue.numberOfResults, 'n0'));
-    });
-
-    it(`when getting formattedCount with a zero value
-      it should return an empty string`, () => {
-      mLFacetValue.numberOfResults = 0;
-      expect(mLFacetValue.formattedCount).toBe('');
     });
 
     it(`when using the valueCaption option with a function

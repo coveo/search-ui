@@ -53,12 +53,12 @@ export function MLFacetQueryControllerTest() {
       expect(facetsRequest[0].numberOfValues).toBe(100);
     });
 
-    it(`when increaseNumberOfValuesToRequest is called
+    it(`when increaseNumberOfValues is called
       it should increase the number of values in the request`, () => {
       facetOptions.numberOfValues = 100;
       initializeComponents();
 
-      mLFacetQueryController.increaseNumberOfValuesToRequest(facetOptions.numberOfValues);
+      mLFacetQueryController.increaseNumberOfValues(facetOptions.numberOfValues);
 
       mLFacetQueryController.putFacetIntoQueryBuilder(queryBuilder);
       facetsRequest = queryBuilder.build().facets;
@@ -66,14 +66,14 @@ export function MLFacetQueryControllerTest() {
       expect(facetsRequest[1].numberOfValues).toBe(200);
     });
 
-    it(`when resetNumberOfValuesToRequest is called
+    it(`when resetNumberOfValues is called
       it should reset the number of values in the request`, () => {
       facetOptions.numberOfValues = 100;
       initializeComponents();
 
-      mLFacetQueryController.increaseNumberOfValuesToRequest(facetOptions.numberOfValues);
-      mLFacetQueryController.increaseNumberOfValuesToRequest(facetOptions.numberOfValues);
-      mLFacetQueryController.resetNumberOfValuesToRequest();
+      mLFacetQueryController.increaseNumberOfValues(facetOptions.numberOfValues);
+      mLFacetQueryController.increaseNumberOfValues(facetOptions.numberOfValues);
+      mLFacetQueryController.resetNumberOfValues();
 
       mLFacetQueryController.putFacetIntoQueryBuilder(queryBuilder);
       facetsRequest = queryBuilder.build().facets;

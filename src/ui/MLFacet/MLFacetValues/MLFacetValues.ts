@@ -67,7 +67,7 @@ export class MLFacetValues {
   public get isExpanded() {
     const hasMoreValuesThenDefault = this.facetValues.length > this.facet.options.numberOfValues;
 
-    return hasMoreValuesThenDefault; // TODO: Put this back? (&& this.hasIdleValues;)
+    return hasMoreValuesThenDefault && this.hasIdleValues;
   }
 
   public get(arg: string | MLFacetValue) {

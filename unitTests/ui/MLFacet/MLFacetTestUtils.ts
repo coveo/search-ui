@@ -4,6 +4,7 @@ import { IMLFacetValue } from '../../../src/ui/MLFacet/MLFacetValues/MLFacetValu
 import { FacetValueState } from '../../../src/rest/Facet/FacetValueState';
 import * as Mock from '../../MockEnvironment';
 import { IFacetResponse } from '../../../src/rest/Facet/FacetResponse';
+import { MLFacetQueryController } from '../../../src/controllers/MLFacetQueryController';
 
 export class MLFacetTestUtils {
   static createFakeFacet(options?: IMLFacetOptions) {
@@ -13,6 +14,7 @@ export class MLFacetTestUtils {
       ...options
     };
     facet.element = $$('div').el;
+    facet.mLFacetQueryController = new MLFacetQueryController(facet);
 
     return facet;
   }

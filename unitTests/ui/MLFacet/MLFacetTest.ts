@@ -143,29 +143,29 @@ export function MLFacetTest() {
     });
 
     it('allows to showMoreValues, uses numberOfValues by default as the amount', () => {
-      spyOn(test.cmp.mLFacetQueryController, 'increaseNumberOfValuesToRequest');
+      spyOn(test.cmp.mLFacetQueryController, 'increaseNumberOfValues');
 
       test.cmp.showMoreValues();
 
-      expect(test.cmp.mLFacetQueryController.increaseNumberOfValuesToRequest).toHaveBeenCalledWith(test.cmp.options.numberOfValues);
+      expect(test.cmp.mLFacetQueryController.increaseNumberOfValues).toHaveBeenCalledWith(test.cmp.options.numberOfValues);
       expect(test.cmp.queryController.executeQuery).toHaveBeenCalled();
     });
 
     it('allows to showMoreValues with a custom amount of values', () => {
-      spyOn(test.cmp.mLFacetQueryController, 'increaseNumberOfValuesToRequest');
+      spyOn(test.cmp.mLFacetQueryController, 'increaseNumberOfValues');
 
       test.cmp.showMoreValues(56);
 
-      expect(test.cmp.mLFacetQueryController.increaseNumberOfValuesToRequest).toHaveBeenCalledWith(56);
+      expect(test.cmp.mLFacetQueryController.increaseNumberOfValues).toHaveBeenCalledWith(56);
       expect(test.cmp.queryController.executeQuery).toHaveBeenCalled();
     });
 
     it('allows to showLessValues', () => {
-      spyOn(test.cmp.mLFacetQueryController, 'resetNumberOfValuesToRequest');
+      spyOn(test.cmp.mLFacetQueryController, 'resetNumberOfValues');
 
       test.cmp.showLessValues();
 
-      expect(test.cmp.mLFacetQueryController.resetNumberOfValuesToRequest).toHaveBeenCalled();
+      expect(test.cmp.mLFacetQueryController.resetNumberOfValues).toHaveBeenCalled();
       expect(test.cmp.queryController.executeQuery).toHaveBeenCalled();
     });
 
