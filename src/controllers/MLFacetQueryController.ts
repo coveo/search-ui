@@ -33,7 +33,9 @@ export class MLFacetQueryController {
       return this.currentValues.length;
     }
 
-    return Math.max(this.numberOfValues, this.facet.values.selectedValues.length);
+    // TODO: Put this back?
+    // return Math.max(this.numberOfValues, this.facet.values.selectedValues.length);
+    return this.numberOfValues;
   }
 
   /**
