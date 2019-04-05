@@ -27,6 +27,10 @@ export class MLFacetValue implements IMLFacetValue {
     return this.state === FacetValueState.selected;
   }
 
+  public get isIdle() {
+    return this.state === FacetValueState.idle;
+  }
+
   public toggleSelect() {
     this.state = this.state === FacetValueState.selected ? FacetValueState.idle : FacetValueState.selected;
   }

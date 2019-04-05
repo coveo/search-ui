@@ -48,6 +48,10 @@ export class MLFacetValues {
     return this.facetValues.filter(value => value.isSelected).map(value => value.value);
   }
 
+  public get nonIdleValues() {
+    return this.facetValues.filter(value => !value.isIdle).map(value => value.value);
+  }
+
   public get hasSelectedValues() {
     return !!findWhere(this.facetValues, { state: FacetValueState.selected });
   }

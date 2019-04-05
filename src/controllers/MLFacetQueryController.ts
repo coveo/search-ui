@@ -55,6 +55,6 @@ export class MLFacetQueryController {
       return this.currentValues.length;
     }
 
-    return Math.max(this.numberOfValuesToRequest, this.facet.values.selectedValues.length);
+    return Math.max(this.numberOfValuesToRequest, this.facet.values.nonIdleValues.length);
   }
 }

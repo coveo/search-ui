@@ -26,14 +26,14 @@ export class MLFacetTestUtils {
     });
   }
 
-  static createFakeFacetValues(count = 5): IMLFacetValue[] {
+  static createFakeFacetValues(count = 5, state = FacetValueState.idle): IMLFacetValue[] {
     const fakeValues = [];
 
     for (let index = 0; index < count; index++) {
       const fakeValue: IMLFacetValue = {
         value: `fake value ${index}`,
         numberOfResults: Math.ceil(Math.random() * 100000),
-        state: FacetValueState.idle
+        state
       };
 
       fakeValues.push(fakeValue);
