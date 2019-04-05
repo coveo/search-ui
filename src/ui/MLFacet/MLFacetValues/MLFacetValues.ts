@@ -64,12 +64,6 @@ export class MLFacetValues {
     return !this.facetValues.length;
   }
 
-  public get isExpanded() {
-    const hasMoreValuesThenDefault = this.facetValues.length > this.facet.options.numberOfValues;
-
-    return hasMoreValuesThenDefault && this.hasIdleValues;
-  }
-
   public get(arg: string | MLFacetValue) {
     const value = typeof arg === 'string' ? arg : arg.value;
     const facetValue = find(this.facetValues, facetValue => facetValue.equals(value));
@@ -95,13 +89,19 @@ export class MLFacetValues {
     return showMore.el;
   }
 
+  private get shouldEnableShowLess() {
+    const hasMoreValuesThenDefault = this.facetValues.length > this.facet.options.numberOfValues;
+
+    return hasMoreValuesThenDefault && this.hasIdleValues;
+  }
+
   public render() {
     this.list.empty();
     this.facetValues.forEach(facetValue => {
       this.list.append(facetValue.render());
     });
 
-    if (this.isExpanded) {
+    if (this.shouldEnableShowLess) {
       this.list.append(this.buildShowLess());
     }
 
