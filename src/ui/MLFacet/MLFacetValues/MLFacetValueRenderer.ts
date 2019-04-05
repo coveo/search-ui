@@ -3,6 +3,7 @@ import { MLFacet } from '../MLFacet';
 import { MLFacetValue } from './MLFacetValue';
 import { Checkbox } from '../../FormWidgets/Checkbox';
 import { l } from '../../../strings/Strings';
+import { Utils } from '../../../utils/Utils';
 
 export class MLFacetValueRenderer {
   private dom: Dom;
@@ -35,7 +36,7 @@ export class MLFacetValueRenderer {
       () => this.selectAction(),
       this.facetValue.valueCaption,
       this.ariaLabel,
-      `(${this.facetValue.formattedCount})`
+      Utils.parenthesize(this.facetValue.formattedCount)
     );
 
     const label = $$(this.checkbox.getElement()).find('.coveo-checkbox-span-label');

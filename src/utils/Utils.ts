@@ -371,6 +371,15 @@ export class Utils {
     return dashCased.replace(/-([a-z])/g, g => g[1].toUpperCase());
   }
 
+  static parenthesize(str: string) {
+    const trimmed = str.trim();
+    if (this.isNonEmptyString(trimmed)) {
+      return `(${trimmed})`;
+    }
+
+    return '';
+  }
+
   // Based on http://stackoverflow.com/a/8412989
   static parseXml(xml: string): XMLDocument {
     if (typeof DOMParser != 'undefined') {
