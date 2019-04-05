@@ -55,18 +55,6 @@ export function UtilsTest() {
           existingValue: [existingElement, nonExistingElement]
         });
       });
-
-      it('should parenthesize a string when it contains a value', () => {
-        const str = 'allo bonjour hello ';
-        const result = '(allo bonjour hello)';
-        expect(Utils.parenthesize(str)).toEqual(result);
-      });
-
-      it('should not parenthesize an empty string', () => {
-        const str = '';
-        const result = '';
-        expect(Utils.parenthesize(str)).toEqual(result);
-      });
     });
   });
 }
