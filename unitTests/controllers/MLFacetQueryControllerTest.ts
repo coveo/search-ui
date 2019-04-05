@@ -2,7 +2,6 @@ import { MLFacetQueryController } from '../../src/controllers/MLFacetQueryContro
 import { MLFacet, IMLFacetOptions } from '../../src/ui/MLFacet/MLFacet';
 import { MLFacetTestUtils } from '../ui/MLFacet/MLFacetTestUtils';
 import { QueryBuilder } from '../../src/Core';
-import { IFacetRequest } from '../../src/rest/Facet/FacetRequest';
 import { FacetValueState } from '../../src/rest/Facet/FacetValueState';
 
 export function MLFacetQueryControllerTest() {
@@ -11,8 +10,6 @@ export function MLFacetQueryControllerTest() {
     let facetOptions: IMLFacetOptions;
     let mLFacetQueryController: MLFacetQueryController;
     let queryBuilder: QueryBuilder;
-    let facetsRequests: IFacetRequest[];
-    let latestFacetRequest: IFacetRequest;
     let mockFacetValues = MLFacetTestUtils.createFakeFacetValues(1);
 
     beforeEach(() => {
@@ -32,20 +29,27 @@ export function MLFacetQueryControllerTest() {
 
     function buildRequest() {
       mLFacetQueryController.putFacetIntoQueryBuilder(queryBuilder);
-      facetsRequests = queryBuilder.build().facets;
-      latestFacetRequest = facetsRequests[facetsRequests.length - 1];
+    }
+
+    function facetRequests() {
+      return queryBuilder.build().facets;
+    }
+
+    function latestFacetRequest() {
+      const requests = facetRequests();
+      return requests[requests.length - 1];
     }
 
     it('should put one facet request in the facets request parameter', () => {
-      expect(facetsRequests.length).toBe(1);
+      expect(facetRequests().length).toBe(1);
     });
 
     it('should send the field without the "@"', () => {
-      expect(latestFacetRequest.field).toBe('field');
+      expect(latestFacetRequest().field).toBe('field');
     });
 
     it('should send the current values', () => {
-      const currentValues = latestFacetRequest.currentValues;
+      const currentValues = latestFacetRequest().currentValues;
 
       expect(currentValues[0]).toEqual({
         value: mockFacetValues[0].value,
@@ -57,7 +61,7 @@ export function MLFacetQueryControllerTest() {
       facetOptions.numberOfValues = 100;
 
       initializeComponents();
-      expect(latestFacetRequest.numberOfValues).toBe(100);
+      expect(latestFacetRequest().numberOfValues).toBe(100);
     });
 
     it(`when the number of non idle values is lower than the numberOfValuesToRequest
@@ -67,7 +71,7 @@ export function MLFacetQueryControllerTest() {
       mockFacetValues = MLFacetTestUtils.createFakeFacetValues(numberOfSelectedValues, FacetValueState.selected);
 
       initializeComponents();
-      expect(latestFacetRequest.numberOfValues).toBe(8);
+      expect(latestFacetRequest().numberOfValues).toBe(8);
     });
 
     it(`when the number of non idle values is greater than the numberOfValuesToRequest
@@ -77,7 +81,7 @@ export function MLFacetQueryControllerTest() {
       mockFacetValues = MLFacetTestUtils.createFakeFacetValues(numberOfSelectedValues, FacetValueState.selected);
 
       initializeComponents();
-      expect(latestFacetRequest.numberOfValues).toBe(numberOfSelectedValues);
+      expect(latestFacetRequest().numberOfValues).toBe(numberOfSelectedValues);
     });
 
     it(`when increaseNumberOfValuesToRequest is called
@@ -89,7 +93,7 @@ export function MLFacetQueryControllerTest() {
 
       buildRequest();
 
-      expect(latestFacetRequest.numberOfValues).toBe(200);
+      expect(latestFacetRequest().numberOfValues).toBe(200);
     });
 
     it(`when resetNumberOfValuesToRequest is called
@@ -103,18 +107,18 @@ export function MLFacetQueryControllerTest() {
 
       buildRequest();
 
-      expect(latestFacetRequest.numberOfValues).toBe(100);
+      expect(latestFacetRequest().numberOfValues).toBe(100);
     });
 
     it('freezeCurrentValues should be false by default', () => {
-      expect(latestFacetRequest.freezeCurrentValues).toBe(false);
+      expect(latestFacetRequest().freezeCurrentValues).toBe(false);
     });
 
     it('allows to setFreezeCurrentValuesFlag', () => {
       mLFacetQueryController.setFreezeCurrentValuesFlag(true);
       buildRequest();
 
-      expect(latestFacetRequest.freezeCurrentValues).toBe(true);
+      expect(latestFacetRequest().freezeCurrentValues).toBe(true);
     });
 
     it(`when freezeCurrentValues flag is set to true
@@ -125,7 +129,7 @@ export function MLFacetQueryControllerTest() {
       mLFacetQueryController.setFreezeCurrentValuesFlag(true);
       buildRequest();
 
-      expect(latestFacetRequest.numberOfValues).toBe(latestFacetRequest.currentValues.length);
+      expect(latestFacetRequest().numberOfValues).toBe(latestFacetRequest().currentValues.length);
     });
   });
 }
