@@ -20,10 +20,6 @@ export class MLFacetQueryController {
     this.numberOfValuesToRequest = this.facet.options.numberOfValues;
   }
 
-  /**
-   * Tells the API that the current facet values should be returned in the same order or not.
-   * For usability purposes, the facet values will not move when interacted with.
-   */
   public setFreezeCurrentValuesFlag(freezeCurrentValues: boolean) {
     this.freezeCurrentValues = freezeCurrentValues;
   }
@@ -45,7 +41,6 @@ export class MLFacetQueryController {
     };
 
     queryBuilder.facetRequests.push(facetRequest);
-    this.setFreezeCurrentValuesFlag(false);
   }
 
   private get currentValues(): IFacetRequestValue[] {

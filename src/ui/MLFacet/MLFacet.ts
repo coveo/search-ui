@@ -329,6 +329,16 @@ export class MLFacet extends Component {
     this.updateAppearance();
   }
 
+  /**
+   * Tells the API if the sent facet values should be returned in the same order or not.
+   * Flag is set back to `false` after the query is built.
+   */
+  public setFreezeCurrentValuesFlag(freezeCurrentValues: boolean) {
+    Assert.exists(this.mLFacetQueryController);
+    Assert.isNotUndefined(freezeCurrentValues);
+    this.mLFacetQueryController.setFreezeCurrentValuesFlag(freezeCurrentValues);
+  }
+
   private initQueryEvents() {
     this.bind.onRootElement(QueryEvents.duringQuery, () => this.ensureDom());
     this.bind.onRootElement(QueryEvents.doneBuildingQuery, (data: IDoneBuildingQueryEventArgs) => this.handleDoneBuildingQuery(data));
@@ -351,6 +361,7 @@ export class MLFacet extends Component {
     Assert.exists(data.queryBuilder);
     const queryBuilder = data.queryBuilder;
     this.mLFacetQueryController.putFacetIntoQueryBuilder(queryBuilder);
+    this.mLFacetQueryController.setFreezeCurrentValuesFlag(false);
   }
 
   private handleQuerySuccess(data: IQuerySuccessEventArgs) {
