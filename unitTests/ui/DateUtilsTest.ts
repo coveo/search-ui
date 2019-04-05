@@ -185,28 +185,28 @@ export function DateUtilsTest() {
       expect(DateUtils.dateTimeToString(date, options)).toBe('Wednesday');
     });
 
-    it(`when the #predefined format is 'ddd', it displays the shortened day name`, () => {
+    it(`when the #predefined format is 'ddd', it displays a shortened day name`, () => {
       const date = DateUtils.convertToStandardDate('2019-01-09');
       options.predefinedFormat = 'ddd';
 
       expect(DateUtils.dateTimeToString(date, options)).toBe('Wed');
     });
 
-    it(`when the #predefined format is 'dd', it displays a double digit day of month number`, () => {
+    it(`when the #predefined format is 'dd', it displays a double digit number for the day of month`, () => {
       const date = DateUtils.convertToStandardDate('2019-01-09');
       options.predefinedFormat = 'dd';
 
       expect(DateUtils.dateTimeToString(date, options)).toBe('09');
     });
 
-    it(`when the #predefined format is 'd', it displays a single digit day of month number`, () => {
+    it(`when the #predefined format is 'd', it displays a single digit number for the day of month`, () => {
       const dateNotInFirstWeek = DateUtils.convertToStandardDate('2019-01-09');
       options.predefinedFormat = 'd';
 
       expect(DateUtils.dateTimeToString(dateNotInFirstWeek, options)).toBe('9');
     });
 
-    it(`when the #predefined format is 'hh', it displays the hour using 24-hour format`, () => {
+    it(`when the #predefined format is 'hh', it displays the hour using a 24-hour format`, () => {
       const date = moment('2019-01-01 14:00').toDate();
       options.predefinedFormat = 'hh';
 
