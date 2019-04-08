@@ -27,6 +27,10 @@ export function MLFacetValueTest() {
       expect(mLFacetValue.isSelected).toBe(false);
     });
 
+    it('should be idle by default', () => {
+      expect(mLFacetValue.isIdle).toBe(true);
+    });
+
     it('should select correctly', () => {
       mLFacetValue.select();
       expect(mLFacetValue.isSelected).toBe(true);
@@ -36,6 +40,12 @@ export function MLFacetValueTest() {
       mLFacetValue.state = FacetValueState.selected;
       mLFacetValue.deselect();
       expect(mLFacetValue.isSelected).toBe(false);
+    });
+
+    it('should be idle when deselected', () => {
+      mLFacetValue.state = FacetValueState.selected;
+      mLFacetValue.deselect();
+      expect(mLFacetValue.isIdle).toBe(true);
     });
 
     it(`when comparing with another MLFacetValue with a different value
