@@ -103,7 +103,7 @@ export class Tab extends Component {
      *
      * Default value is `undefined` and the Tab applies no additional expression or filter to the query.
      */
-    expression: ComponentOptions.buildQueryExpressionOption({ section: 'Filtering' }),
+    expression: ComponentOptions.buildQueryExpressionOption({ section: 'Common Options' }),
 
     /**
      * Specifies the {@link SearchEndpoint} to point to when performing queries from within the Tab.
