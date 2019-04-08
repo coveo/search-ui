@@ -27,6 +27,10 @@ export class MLFacetValue implements IMLFacetValue {
     return this.state === FacetValueState.selected;
   }
 
+  public get isIdle() {
+    return this.state === FacetValueState.idle;
+  }
+
   public toggleSelect() {
     this.state = this.state === FacetValueState.selected ? FacetValueState.idle : FacetValueState.selected;
   }
@@ -45,10 +49,6 @@ export class MLFacetValue implements IMLFacetValue {
   }
 
   public get formattedCount(): string {
-    if (this.numberOfResults === 0) {
-      return '';
-    }
-
     return Globalize.format(this.numberOfResults, 'n0');
   }
 

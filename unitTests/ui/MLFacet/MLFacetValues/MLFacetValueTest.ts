@@ -27,6 +27,10 @@ export function MLFacetValueTest() {
       expect(mLFacetValue.isSelected).toBe(false);
     });
 
+    it('should be idle by default', () => {
+      expect(mLFacetValue.isIdle).toBe(true);
+    });
+
     it('should select correctly', () => {
       mLFacetValue.select();
       expect(mLFacetValue.isSelected).toBe(true);
@@ -36,6 +40,12 @@ export function MLFacetValueTest() {
       mLFacetValue.state = FacetValueState.selected;
       mLFacetValue.deselect();
       expect(mLFacetValue.isSelected).toBe(false);
+    });
+
+    it('should be idle when deselected', () => {
+      mLFacetValue.state = FacetValueState.selected;
+      mLFacetValue.deselect();
+      expect(mLFacetValue.isIdle).toBe(true);
     });
 
     it(`when comparing with another MLFacetValue with a different value
@@ -68,15 +78,9 @@ export function MLFacetValueTest() {
       expect(mLFacetValue.equals(value)).toBe(true);
     });
 
-    it(`when getting formattedCount with a non zero value
+    it(`when getting formattedCount
       it should return a string in the Globalize format`, () => {
       expect(mLFacetValue.formattedCount).toBe(Globalize.format(mLFacetValue.numberOfResults, 'n0'));
-    });
-
-    it(`when getting formattedCount with a zero value
-      it should return an empty string`, () => {
-      mLFacetValue.numberOfResults = 0;
-      expect(mLFacetValue.formattedCount).toBe('');
     });
 
     it(`when using the valueCaption option with a function

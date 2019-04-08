@@ -3,12 +3,19 @@ import { QueryBuilder } from '../ui/Base/QueryBuilder';
 import { Assert } from '../misc/Assert';
 import { IFacetRequest, IFacetRequestValue } from '../rest/Facet/FacetRequest';
 import { FacetSortCriteria } from '../rest/Facet/FacetSortCriteria';
+import { QueryEvents } from '../events/QueryEvents';
 
 export class MLFacetQueryController {
   private numberOfValuesToRequest: number;
+  private freezeCurrentValues = false;
 
   constructor(private facet: MLFacet) {
     this.resetNumberOfValuesToRequest();
+    this.resetFreezeCurrentValuesDuringQuery();
+  }
+
+  private resetFreezeCurrentValuesDuringQuery() {
+    this.facet.bind.onRootElement(QueryEvents.duringQuery, () => (this.freezeCurrentValues = false));
   }
 
   public increaseNumberOfValuesToRequest(additionalNumberOfValues: number) {
@@ -17,6 +24,10 @@ export class MLFacetQueryController {
 
   public resetNumberOfValuesToRequest() {
     this.numberOfValuesToRequest = this.facet.options.numberOfValues;
+  }
+
+  public enableFreezeCurrentValuesFlag() {
+    this.freezeCurrentValues = true;
   }
 
   /**
@@ -31,8 +42,8 @@ export class MLFacetQueryController {
       field: this.facet.fieldName,
       sortCriteria: this.facet.options.sortCriteria as FacetSortCriteria,
       currentValues: this.currentValues,
-      numberOfValues: this.numberOfValuesToRequest,
-      isSticky: false // TODO: manage isSticky
+      numberOfValues: this.numberOfValues,
+      freezeCurrentValues: this.freezeCurrentValues
     };
 
     queryBuilder.facetRequests.push(facetRequest);
@@ -43,5 +54,13 @@ export class MLFacetQueryController {
       value,
       state
     }));
+  }
+
+  private get numberOfValues() {
+    if (this.freezeCurrentValues) {
+      return this.currentValues.length;
+    }
+
+    return Math.max(this.numberOfValuesToRequest, this.facet.values.nonIdleValues.length);
   }
 }

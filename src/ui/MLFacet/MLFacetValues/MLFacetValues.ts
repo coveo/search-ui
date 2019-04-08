@@ -48,8 +48,16 @@ export class MLFacetValues {
     return this.facetValues.filter(value => value.isSelected).map(value => value.value);
   }
 
+  public get nonIdleValues() {
+    return this.facetValues.filter(value => !value.isIdle).map(value => value.value);
+  }
+
   public get hasSelectedValues() {
     return !!findWhere(this.facetValues, { state: FacetValueState.selected });
+  }
+
+  public get hasIdleValues() {
+    return !!findWhere(this.facetValues, { state: FacetValueState.idle });
   }
 
   public clearAll() {
@@ -58,10 +66,6 @@ export class MLFacetValues {
 
   public get isEmpty() {
     return !this.facetValues.length;
-  }
-
-  public get isExpanded() {
-    return this.facetValues.length > this.facet.options.numberOfValues;
   }
 
   public get(arg: string | MLFacetValue) {
@@ -89,13 +93,19 @@ export class MLFacetValues {
     return showMore.el;
   }
 
+  private get shouldEnableShowLess() {
+    const hasMoreValuesThenDefault = this.facetValues.length > this.facet.options.numberOfValues;
+
+    return hasMoreValuesThenDefault && this.hasIdleValues;
+  }
+
   public render() {
     this.list.empty();
     this.facetValues.forEach(facetValue => {
       this.list.append(facetValue.render());
     });
 
-    if (this.isExpanded) {
+    if (this.shouldEnableShowLess) {
       this.list.append(this.buildShowLess());
     }
 
