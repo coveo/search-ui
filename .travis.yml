@@ -7,7 +7,7 @@ notifications:
     on_success: change
     on_failure: always
 node_js:
-- 9.11.2
+- 8.15.1
 cache:
   yarn: true
   directories:

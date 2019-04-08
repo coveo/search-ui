@@ -1,73 +1,65 @@
 import { $$ } from '../../../../src/utils/Dom';
-import {
-  MLFacetHeaderCollapseToggle,
-  IMLFacetCollapseToggleOptions
-} from '../../../../src/ui/MLFacet/MLFacetHeader/MLFacetHeaderCollapseToggle';
+import { MLFacetHeaderCollapseToggle } from '../../../../src/ui/MLFacet/MLFacetHeader/MLFacetHeaderCollapseToggle';
+import { MLFacetTestUtils } from '../MLFacetTestUtils';
+import { MLFacet } from '../../../../src/ui/MLFacet/MLFacet';
 
 export function MLFacetHeaderCollapseToggleTest() {
   describe('MLFacetHeaderCollapseToggle', () => {
     let collapseToggle: MLFacetHeaderCollapseToggle;
     let collapseToggleElement: HTMLElement;
-    let baseOptions: IMLFacetCollapseToggleOptions;
+    let collapseBtnElement: HTMLElement;
+    let expandBtnElement: HTMLElement;
+    let facet: MLFacet;
 
     beforeEach(() => {
-      baseOptions = {
-        collapsed: false
-      };
+      facet = MLFacetTestUtils.createFakeFacet({
+        enableCollapse: true,
+        collapsedByDefault: false
+      });
       initializeComponent();
     });
 
     function initializeComponent() {
-      collapseToggle = new MLFacetHeaderCollapseToggle(baseOptions);
+      collapseToggle = new MLFacetHeaderCollapseToggle(facet);
       collapseToggleElement = collapseToggle.element;
+      collapseBtnElement = $$(collapseToggleElement).find('.coveo-ml-facet-header-collapse');
+      expandBtnElement = $$(collapseToggleElement).find('.coveo-ml-facet-header-expand');
     }
 
-    it(`when passing the option enableCollapse (true)
-      should display the accessible collapse button`, () => {
-      const collapseElement = $$(collapseToggleElement).find('.coveo-ml-facet-header-collapse');
-      const expandElement = $$(collapseToggleElement).find('.coveo-ml-facet-header-expand');
-
-      expect($$(collapseElement).getAttribute('aria-label')).toBeTruthy();
-      expect($$(collapseElement).getAttribute('title')).toBeTruthy();
-      expect($$(collapseElement).isVisible()).toBe(true);
-      expect($$(expandElement).isVisible()).toBe(false);
+    it(`should create the collapse & expand buttons
+      but only display the collapse button by default`, () => {
+      expect($$(collapseBtnElement).isVisible()).toBe(true);
+      expect($$(expandBtnElement).isVisible()).toBe(false);
     });
 
-    it(`when passing the option enableCollapse (true) & collapsedByDefault (true)
-      should display the accessible expand button`, () => {
-      baseOptions.collapsed = true;
-      initializeComponent();
+    it(`when calling toggleButtons with isCollapsed to true
+      should display the expand button and hide the collapse button`, () => {
+      collapseToggle.toggleButtons(true);
+      expect($$(collapseBtnElement).isVisible()).toBe(false);
+      expect($$(expandBtnElement).isVisible()).toBe(true);
+    });
 
-      const collapseElement = $$(collapseToggleElement).find('.coveo-ml-facet-header-collapse');
-      const expandElement = $$(collapseToggleElement).find('.coveo-ml-facet-header-expand');
-
-      expect($$(expandElement).getAttribute('aria-label')).toBeTruthy();
-      expect($$(expandElement).getAttribute('title')).toBeTruthy();
-      expect($$(collapseElement).isVisible()).toBe(false);
-      expect($$(expandElement).isVisible()).toBe(true);
+    it(`when calling toggleButtons with isCollapsed to false
+      should display the collapse button and hide the expand button`, () => {
+      collapseToggle.toggleButtons(true);
+      collapseToggle.toggleButtons(false);
+      expect($$(collapseBtnElement).isVisible()).toBe(true);
+      expect($$(expandBtnElement).isVisible()).toBe(false);
     });
 
     it(`when clicking on the collapse button
-      should switch the option correctly`, () => {
-      const collapseElement = $$(collapseToggleElement).find('.coveo-ml-facet-header-collapse');
-      const expandElement = $$(collapseToggleElement).find('.coveo-ml-facet-header-expand');
-      $$(collapseElement).trigger('click');
+      should call collapse on the MLFacet component`, () => {
+      $$(collapseBtnElement).trigger('click');
 
-      expect($$(collapseElement).isVisible()).toBe(false);
-      expect($$(expandElement).isVisible()).toBe(true);
+      expect(facet.collapse).toHaveBeenCalled();
     });
 
     it(`when clicking on the expand button
-      should switch the option correctly`, () => {
-      baseOptions.collapsed = true;
-      initializeComponent();
+    should call expand on the MLFacet component`, () => {
+      collapseToggle.toggleButtons(true);
+      $$(expandBtnElement).trigger('click');
 
-      const collapseElement = $$(collapseToggleElement).find('.coveo-ml-facet-header-collapse');
-      const expandElement = $$(collapseToggleElement).find('.coveo-ml-facet-header-expand');
-      $$(expandElement).trigger('click');
-
-      expect($$(collapseElement).isVisible()).toBe(true);
-      expect($$(expandElement).isVisible()).toBe(false);
+      expect(facet.expand).toHaveBeenCalled();
     });
   });
 }
