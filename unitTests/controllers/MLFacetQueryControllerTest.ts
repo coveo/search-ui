@@ -2,7 +2,7 @@ import { MLFacetQueryController } from '../../src/controllers/MLFacetQueryContro
 import { MLFacet, IMLFacetOptions } from '../../src/ui/MLFacet/MLFacet';
 import { MLFacetTestUtils } from '../ui/MLFacet/MLFacetTestUtils';
 import { QueryBuilder } from '../../src/Core';
-import { IFacetRequest } from '../../src/rest/Facet/FacetRequest';
+import { FacetValueState } from '../../src/rest/Facet/FacetValueState';
 
 export function MLFacetQueryControllerTest() {
   describe('MLFacetQueryController', () => {
@@ -10,8 +10,7 @@ export function MLFacetQueryControllerTest() {
     let facetOptions: IMLFacetOptions;
     let mLFacetQueryController: MLFacetQueryController;
     let queryBuilder: QueryBuilder;
-    let facetsRequest: IFacetRequest[];
-    const mockFacetValues = MLFacetTestUtils.createFakeFacetValues(1);
+    let mockFacetValues = MLFacetTestUtils.createFakeFacetValues(1);
 
     beforeEach(() => {
       facetOptions = { field: '@field' };
@@ -25,20 +24,32 @@ export function MLFacetQueryControllerTest() {
 
       queryBuilder = new QueryBuilder();
       mLFacetQueryController = new MLFacetQueryController(facet);
+      buildRequest();
+    }
+
+    function buildRequest() {
       mLFacetQueryController.putFacetIntoQueryBuilder(queryBuilder);
-      facetsRequest = queryBuilder.build().facets;
+    }
+
+    function facetRequests() {
+      return queryBuilder.build().facets;
+    }
+
+    function latestFacetRequest() {
+      const requests = facetRequests();
+      return requests[requests.length - 1];
     }
 
     it('should put one facet request in the facets request parameter', () => {
-      expect(facetsRequest.length).toBe(1);
+      expect(facetRequests().length).toBe(1);
     });
 
     it('should send the field without the "@"', () => {
-      expect(facetsRequest[0].field).toBe('field');
+      expect(latestFacetRequest().field).toBe('field');
     });
 
     it('should send the current values', () => {
-      const currentValues = facetsRequest[0].currentValues;
+      const currentValues = latestFacetRequest().currentValues;
 
       expect(currentValues[0]).toEqual({
         value: mockFacetValues[0].value,
@@ -50,7 +61,27 @@ export function MLFacetQueryControllerTest() {
       facetOptions.numberOfValues = 100;
 
       initializeComponents();
-      expect(facetsRequest[0].numberOfValues).toBe(100);
+      expect(latestFacetRequest().numberOfValues).toBe(100);
+    });
+
+    it(`when the number of non idle values is lower than the numberOfValuesToRequest
+      it should send the latter as the numberOfValues`, () => {
+      const numberOfSelectedValues = 5;
+      facetOptions.numberOfValues = 8;
+      mockFacetValues = MLFacetTestUtils.createFakeFacetValues(numberOfSelectedValues, FacetValueState.selected);
+
+      initializeComponents();
+      expect(latestFacetRequest().numberOfValues).toBe(8);
+    });
+
+    it(`when the number of non idle values is greater than the numberOfValuesToRequest
+      it should send the former as the numberOfValues`, () => {
+      const numberOfSelectedValues = 5;
+      facetOptions.numberOfValues = 3;
+      mockFacetValues = MLFacetTestUtils.createFakeFacetValues(numberOfSelectedValues, FacetValueState.selected);
+
+      initializeComponents();
+      expect(latestFacetRequest().numberOfValues).toBe(numberOfSelectedValues);
     });
 
     it(`when increaseNumberOfValuesToRequest is called
@@ -60,10 +91,9 @@ export function MLFacetQueryControllerTest() {
 
       mLFacetQueryController.increaseNumberOfValuesToRequest(facetOptions.numberOfValues);
 
-      mLFacetQueryController.putFacetIntoQueryBuilder(queryBuilder);
-      facetsRequest = queryBuilder.build().facets;
+      buildRequest();
 
-      expect(facetsRequest[1].numberOfValues).toBe(200);
+      expect(latestFacetRequest().numberOfValues).toBe(200);
     });
 
     it(`when resetNumberOfValuesToRequest is called
@@ -75,10 +105,31 @@ export function MLFacetQueryControllerTest() {
       mLFacetQueryController.increaseNumberOfValuesToRequest(facetOptions.numberOfValues);
       mLFacetQueryController.resetNumberOfValuesToRequest();
 
-      mLFacetQueryController.putFacetIntoQueryBuilder(queryBuilder);
-      facetsRequest = queryBuilder.build().facets;
+      buildRequest();
 
-      expect(facetsRequest[1].numberOfValues).toBe(100);
+      expect(latestFacetRequest().numberOfValues).toBe(100);
+    });
+
+    it('freezeCurrentValues should be false by default', () => {
+      expect(latestFacetRequest().freezeCurrentValues).toBe(false);
+    });
+
+    it('allows to enableFreezeCurrentValuesFlag', () => {
+      mLFacetQueryController.enableFreezeCurrentValuesFlag();
+      buildRequest();
+
+      expect(latestFacetRequest().freezeCurrentValues).toBe(true);
+    });
+
+    it(`when freezeCurrentValues flag is set to true
+      it should send a numberOfValues equal to the number of sent currentValues`, () => {
+      facetOptions.numberOfValues = 25;
+      initializeComponents();
+
+      mLFacetQueryController.enableFreezeCurrentValuesFlag();
+      buildRequest();
+
+      expect(latestFacetRequest().numberOfValues).toBe(latestFacetRequest().currentValues.length);
     });
   });
 }

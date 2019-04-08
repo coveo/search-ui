@@ -155,7 +155,7 @@ export class MLFacet extends Component {
     valueCaption: ComponentOptions.buildJsonOption<IStringMap<string>>()
   };
 
-  public mLFacetQueryController: MLFacetQueryController;
+  private mLFacetQueryController: MLFacetQueryController;
   private includedAttributeId: string;
   private listenToQueryStateChange = true;
   private header: MLFacetHeader;
@@ -327,6 +327,18 @@ export class MLFacet extends Component {
     this.logger.info('Collapse facet values');
     this.isCollapsed = true;
     this.updateAppearance();
+  }
+
+  /**
+   * Sets a flag indicating whether the facet values should be returned in their current order.
+   *
+   * Setting the flag to true helps ensuring that the values do not move around while the end-user is interacting with them.
+   *
+   * The flag is automatically set back to false after a query is built.
+   */
+  public enableFreezeCurrentValuesFlag() {
+    Assert.exists(this.mLFacetQueryController);
+    this.mLFacetQueryController.enableFreezeCurrentValuesFlag();
   }
 
   private initQueryEvents() {

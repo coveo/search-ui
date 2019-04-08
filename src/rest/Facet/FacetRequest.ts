@@ -12,6 +12,6 @@ export interface IFacetRequest {
   sortCriteria?: FacetSortCriteria;
   numberOfValues?: number;
   injectionDepth?: number;
-  isSticky?: boolean;
+  freezeCurrentValues?: boolean;
   currentValues?: IFacetRequestValue[];
 }

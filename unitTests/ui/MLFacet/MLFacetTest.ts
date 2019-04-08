@@ -29,6 +29,10 @@ export function MLFacetTest() {
       expect(qsmValues).toEqual(test.cmp.values.selectedValues);
     }
 
+    function getFirstFacetRequest() {
+      return Simulate.query(test.env).queryBuilder.build().facets[0];
+    }
+
     it(`when facet has values but none are selected
       should not be seen as "active" or as "empty"`, () => {
       test.cmp.ensureDom();
@@ -142,30 +146,36 @@ export function MLFacetTest() {
       testQueryStateModelValues();
     });
 
-    it('allows to showMoreValues, uses numberOfValues by default as the amount', () => {
-      spyOn(test.cmp.mLFacetQueryController, 'increaseNumberOfValuesToRequest');
-
+    it('showMoreValues adds by the numberOfValues option by default', () => {
+      const additionalNumberOfValues = test.cmp.options.numberOfValues;
       test.cmp.showMoreValues();
 
-      expect(test.cmp.mLFacetQueryController.increaseNumberOfValuesToRequest).toHaveBeenCalledWith(test.cmp.options.numberOfValues);
-      expect(test.cmp.queryController.executeQuery).toHaveBeenCalled();
+      expect(getFirstFacetRequest().numberOfValues).toBe(test.cmp.options.numberOfValues + additionalNumberOfValues);
     });
 
     it('allows to showMoreValues with a custom amount of values', () => {
-      spyOn(test.cmp.mLFacetQueryController, 'increaseNumberOfValuesToRequest');
+      const additionalNumberOfValues = 38;
+      test.cmp.showMoreValues(additionalNumberOfValues);
+      expect(test.cmp.queryController.executeQuery).toHaveBeenCalled();
 
-      test.cmp.showMoreValues(56);
+      expect(getFirstFacetRequest().numberOfValues).toBe(test.cmp.options.numberOfValues + additionalNumberOfValues);
+    });
 
-      expect(test.cmp.mLFacetQueryController.increaseNumberOfValuesToRequest).toHaveBeenCalledWith(56);
+    it('showMoreValues triggers a query', () => {
+      test.cmp.showMoreValues();
       expect(test.cmp.queryController.executeQuery).toHaveBeenCalled();
     });
 
-    it('allows to showLessValues', () => {
-      spyOn(test.cmp.mLFacetQueryController, 'resetNumberOfValuesToRequest');
-
+    it('showLessValues resets the amount of values to the numberOfValues option', () => {
+      const additionalNumberOfValues = 38;
+      test.cmp.showMoreValues(additionalNumberOfValues);
       test.cmp.showLessValues();
 
-      expect(test.cmp.mLFacetQueryController.resetNumberOfValuesToRequest).toHaveBeenCalled();
+      expect(getFirstFacetRequest().numberOfValues).toBe(test.cmp.options.numberOfValues);
+    });
+
+    it('showLessValues triggers a query', () => {
+      test.cmp.showLessValues();
       expect(test.cmp.queryController.executeQuery).toHaveBeenCalled();
     });
 
@@ -236,9 +246,7 @@ export function MLFacetTest() {
 
     it(`when not setting a sortCriteria option
       should set it to undefined in the query`, () => {
-      const simulation = Simulate.query(test.env);
-      const facetRequest = simulation.queryBuilder.build().facets[0];
-      expect(facetRequest.sortCriteria).toBeUndefined();
+      expect(getFirstFacetRequest().sortCriteria).toBeUndefined();
     });
 
     it(`when setting a sortCriteria option
@@ -246,16 +254,12 @@ export function MLFacetTest() {
       options.sortCriteria = FacetSortCriteria.score;
       initializeComponent();
 
-      const simulation = Simulate.query(test.env);
-      const facetRequest = simulation.queryBuilder.build().facets[0];
-      expect(facetRequest.sortCriteria).toBe(FacetSortCriteria.score);
+      expect(getFirstFacetRequest().sortCriteria).toBe(FacetSortCriteria.score);
     });
 
     it(`when not setting a numberOfValues option
       should set it to 8 in the query`, () => {
-      const simulation = Simulate.query(test.env);
-      const facetRequest = simulation.queryBuilder.build().facets[0];
-      expect(facetRequest.numberOfValues).toBe(8);
+      expect(getFirstFacetRequest().numberOfValues).toBe(8);
     });
 
     it(`when setting a numberOfValues option
@@ -263,9 +267,7 @@ export function MLFacetTest() {
       options.numberOfValues = 100;
       initializeComponent();
 
-      const simulation = Simulate.query(test.env);
-      const facetRequest = simulation.queryBuilder.build().facets[0];
-      expect(facetRequest.numberOfValues).toBe(100);
+      expect(getFirstFacetRequest().numberOfValues).toBe(100);
     });
   });
 }
