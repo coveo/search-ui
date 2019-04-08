@@ -336,10 +336,9 @@ export class MLFacet extends Component {
    *
    * The flag is automatically set back to false after a query is built.
    */
-  public setFreezeCurrentValuesFlag(freezeCurrentValues: boolean) {
+  public enableFreezeCurrentValuesFlag() {
     Assert.exists(this.mLFacetQueryController);
-    Assert.isNotUndefined(freezeCurrentValues);
-    this.mLFacetQueryController.setFreezeCurrentValuesFlag(freezeCurrentValues);
+    this.mLFacetQueryController.enableFreezeCurrentValuesFlag();
   }
 
   private initQueryEvents() {
@@ -364,7 +363,6 @@ export class MLFacet extends Component {
     Assert.exists(data.queryBuilder);
     const queryBuilder = data.queryBuilder;
     this.mLFacetQueryController.putFacetIntoQueryBuilder(queryBuilder);
-    this.mLFacetQueryController.setFreezeCurrentValuesFlag(false);
   }
 
   private handleQuerySuccess(data: IQuerySuccessEventArgs) {

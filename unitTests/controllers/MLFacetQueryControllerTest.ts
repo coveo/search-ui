@@ -114,8 +114,8 @@ export function MLFacetQueryControllerTest() {
       expect(latestFacetRequest().freezeCurrentValues).toBe(false);
     });
 
-    it('allows to setFreezeCurrentValuesFlag', () => {
-      mLFacetQueryController.setFreezeCurrentValuesFlag(true);
+    it('allows to enableFreezeCurrentValuesFlag', () => {
+      mLFacetQueryController.enableFreezeCurrentValuesFlag();
       buildRequest();
 
       expect(latestFacetRequest().freezeCurrentValues).toBe(true);
@@ -126,7 +126,7 @@ export function MLFacetQueryControllerTest() {
       facetOptions.numberOfValues = 25;
       initializeComponents();
 
-      mLFacetQueryController.setFreezeCurrentValuesFlag(true);
+      mLFacetQueryController.enableFreezeCurrentValuesFlag();
       buildRequest();
 
       expect(latestFacetRequest().numberOfValues).toBe(latestFacetRequest().currentValues.length);

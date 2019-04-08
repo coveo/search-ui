@@ -3,6 +3,7 @@ import { QueryBuilder } from '../ui/Base/QueryBuilder';
 import { Assert } from '../misc/Assert';
 import { IFacetRequest, IFacetRequestValue } from '../rest/Facet/FacetRequest';
 import { FacetSortCriteria } from '../rest/Facet/FacetSortCriteria';
+import { QueryEvents } from '../events/QueryEvents';
 
 export class MLFacetQueryController {
   private numberOfValuesToRequest: number;
@@ -10,6 +11,11 @@ export class MLFacetQueryController {
 
   constructor(private facet: MLFacet) {
     this.resetNumberOfValuesToRequest();
+    this.resetFreezeCurrentValuesDuringQuery();
+  }
+
+  private resetFreezeCurrentValuesDuringQuery() {
+    this.facet.bind.onRootElement(QueryEvents.duringQuery, () => (this.freezeCurrentValues = false));
   }
 
   public increaseNumberOfValuesToRequest(additionalNumberOfValues: number) {
@@ -20,8 +26,8 @@ export class MLFacetQueryController {
     this.numberOfValuesToRequest = this.facet.options.numberOfValues;
   }
 
-  public setFreezeCurrentValuesFlag(freezeCurrentValues: boolean) {
-    this.freezeCurrentValues = freezeCurrentValues;
+  public enableFreezeCurrentValuesFlag() {
+    this.freezeCurrentValues = true;
   }
 
   /**
