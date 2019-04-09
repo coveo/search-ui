@@ -13,10 +13,15 @@ import { ComponentOptions } from '../Base/ComponentOptions';
 export interface IMLFacetManagerOptions {
   enableReorder?: boolean;
   onUpdate?: IMLFacetManagerOnUpdate;
+  compareFacets?: IMLFacetManagerCompareFacet;
 }
 
 export interface IMLFacetManagerOnUpdate {
   (facet: MLFacet, index: number): void;
+}
+
+export interface IMLFacetManagerCompareFacet {
+  (facetA: MLFacet, facetB: MLFacet): number;
 }
 
 export class MLFacetManager extends Component {
@@ -76,6 +81,48 @@ export class MLFacetManager extends Component {
      */
     onUpdate: ComponentOptions.buildCustomOption<IMLFacetManagerOnUpdate>(() => {
       return null;
+    }),
+    /**
+     * Specifies a function that defines the sort order for the facets.
+     *
+     * Called on every successful query reponse.
+     *
+     * The implementation of this method is identical to the Javascript `compareFunction` of the sort method for arrays.
+     * (see [Array.prototype.sort()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort))
+     *
+     * **Note:**
+     * > You cannot set this option directly in the component markup as an HTML attribute. You must either set it in the
+     * > [`init`]{@link init} call of your search interface (see
+     * > [Components - Passing Component Options in the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsintheinitCall)),
+     * > or before the `init` call, using the `options` top-level function (see
+     * > [Components - Passing Component Options Before the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsBeforetheinitCall)).
+     *
+     * **Example:**
+     *
+     * ```javascript
+     *
+     * var myCompareFacetsMethodFunction = function(facetA, facetB) {
+     *     // Sort the facets by number of selected values
+     *     return facetB.values.selectedValues.length - facetA.values.selectedValues.length;
+     * };
+     *
+     * // You can set the option in the 'init' call:
+     * Coveo.init(document.querySelector("#search"), {
+     *    MLFacetManager : {
+     *      compareFacets : myCompareFacetsMethodFunction
+     *    }
+     * });
+     *
+     * // Or before the 'init' call, using the 'options' top-level function:
+     * // Coveo.options(document.querySelector("#search"), {
+     * //   MLFacetManager : {
+     * //     compareFacets : myCompareFacetsMethodFunction
+     * //   }
+     * // });
+     * ```
+     */
+    compareFacets: ComponentOptions.buildCustomOption<IMLFacetManagerCompareFacet>(() => {
+      return null;
     })
   };
 
@@ -114,41 +161,46 @@ export class MLFacetManager extends Component {
 
     if (this.options.enableReorder) {
       // TODO: remove shuffle for the results
-      this.reorderMLFacetsInDom(shuffle(data.results.facets));
+      this.mapResponseToComponents(shuffle(data.results.facets));
+      this.sortFacetsIfCompareOptionsProvided();
+      this.reorderMLFacetsInDom();
     }
+  }
+
+  private mapResponseToComponents(facetsResponse: IFacetResponse[]) {
+    this.mLFacets = facetsResponse.map(({ facetId }) => this.getMLFacetComponentById(facetId)).filter(Utils.exists);
+  }
+
+  private sortFacetsIfCompareOptionsProvided() {
+    if (this.options.compareFacets) {
+      this.mLFacets = this.mLFacets.sort(this.options.compareFacets);
+    }
+  }
+
+  private reorderMLFacetsInDom() {
+    $$(this.element).empty();
+    const fragment = document.createDocumentFragment();
+
+    this.mLFacets.forEach((mlFacet, index) => {
+      fragment.appendChild(mlFacet.element);
+
+      if (this.options.onUpdate) {
+        this.options.onUpdate(mlFacet, index);
+      }
+    });
+
+    this.element.appendChild(fragment);
   }
 
   private getMLFacetComponentById(id: string) {
     const mLFacet = find(this.mLFacets, mLFacet => mLFacet.options.id === id);
 
     if (!mLFacet) {
-      // Idea: here we could create a MLFacet component if it doesn't exist
       this.logger.error(`Cannot find MLFacet component with an id equal to "${id}".`);
       return null;
     }
 
     return mLFacet;
-  }
-
-  private reorderMLFacetsInDom(facetsResponse: IFacetResponse[]) {
-    $$(this.element).empty();
-    const fragment = document.createDocumentFragment();
-
-    facetsResponse.forEach((facetResponse, index) => {
-      const id = facetResponse.facetId;
-      const mLFacetComponent = this.getMLFacetComponentById(id);
-      if (!mLFacetComponent) {
-        return;
-      }
-
-      fragment.appendChild(mLFacetComponent.element);
-
-      if (this.options.onUpdate) {
-        this.options.onUpdate(mLFacetComponent, index);
-      }
-    });
-
-    this.element.appendChild(fragment);
   }
 
   private notImplementedError() {
