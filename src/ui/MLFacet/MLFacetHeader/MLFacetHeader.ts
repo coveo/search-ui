@@ -38,6 +38,7 @@ export class MLFacetHeader {
 
   private clear() {
     this.facet.reset();
+    this.facet.enableFreezeCurrentFacetsFlag();
     this.facet.triggerNewQuery();
   }
 
