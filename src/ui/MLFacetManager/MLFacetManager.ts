@@ -130,17 +130,10 @@ export class MLFacetManager extends Component {
     return mLFacet;
   }
 
-  private insertMLFacetComponentAfter(component: MLFacet, targetComponent: MLFacet) {
-    const previousSibling = component.element.previousElementSibling;
-    if (previousSibling && previousSibling.isEqualNode(targetComponent.element)) {
-      return;
-    }
-
-    $$(component.element).insertAfter(targetComponent.element);
-  }
-
   private reorderMLFacetsInDom(facetsResponse: IFacetResponse[]) {
-    let previousMLFacetComponent: MLFacet;
+    $$(this.element).empty();
+    const fragment = document.createDocumentFragment();
+
     facetsResponse.forEach((facetResponse, index) => {
       const id = facetResponse.facetId;
       const mLFacetComponent = this.getMLFacetComponentById(id);
@@ -148,16 +141,14 @@ export class MLFacetManager extends Component {
         return;
       }
 
-      if (previousMLFacetComponent) {
-        this.insertMLFacetComponentAfter(mLFacetComponent, previousMLFacetComponent);
-      }
+      fragment.appendChild(mLFacetComponent.element);
 
       if (this.options.onUpdate) {
         this.options.onUpdate(mLFacetComponent, index);
       }
-
-      previousMLFacetComponent = mLFacetComponent;
     });
+
+    this.element.appendChild(fragment);
   }
 
   private notImplementedError() {
