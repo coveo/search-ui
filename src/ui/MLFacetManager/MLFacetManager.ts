@@ -128,6 +128,7 @@ export class MLFacetManager extends Component {
 
   // Children MLFacet components of the MLFacetManager
   private mLFacets: MLFacet[];
+  private containerElement: HTMLElement;
   // TODO: Remove this when freezeCurrentFacets is implemented on the API
   public freezeCurrentFacets = false;
 
@@ -135,7 +136,21 @@ export class MLFacetManager extends Component {
     super(element, 'MLFacetManager');
     this.options = ComponentOptions.initComponentOptions(element, MLFacetManager, options);
 
+    this.moveChildrenIntoContainer();
     this.initEvents();
+  }
+
+  private resetContainer() {
+    this.containerElement && $$(this.containerElement).remove();
+    this.containerElement = $$('div', { className: 'coveo-ml-facet-manager-container' }).el;
+  }
+
+  private moveChildrenIntoContainer() {
+    this.resetContainer();
+    $$(this.element)
+      .children()
+      .forEach(child => this.containerElement.appendChild(child));
+    this.element.appendChild(this.containerElement);
   }
 
   private initEvents() {
@@ -184,7 +199,7 @@ export class MLFacetManager extends Component {
   }
 
   private reorderMLFacetsInDom() {
-    $$(this.element).empty();
+    this.resetContainer();
     const fragment = document.createDocumentFragment();
 
     this.mLFacets.forEach((mlFacet, index) => {
@@ -195,7 +210,8 @@ export class MLFacetManager extends Component {
       }
     });
 
-    this.element.appendChild(fragment);
+    this.containerElement.appendChild(fragment);
+    this.element.appendChild(this.containerElement);
   }
 
   private getMLFacetComponentById(id: string) {
