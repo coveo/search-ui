@@ -208,7 +208,7 @@ export interface IAnalyticsSearchAlertsUpdateMeta extends IAnalyticsSearchAlerts
 
 export interface IAnalyticsSearchAlertsFollowDocumentMeta extends IAnalyticsDocumentViewMeta {
   documentSource: string;
-  documentLanguage: string;
+  documentLanguage: string[];
   contentIDKey: string;
   contentIDValue: string;
 }

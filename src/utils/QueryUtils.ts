@@ -122,7 +122,7 @@ export class QueryUtils {
     return result.raw['source'];
   }
 
-  static getLanguage(result: IQueryResult): string {
+  static getLanguage(result: IQueryResult): string[] {
     return result.raw['language'];
   }
 
