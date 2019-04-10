@@ -6,10 +6,12 @@ export function TemplateFieldsEvaluatorTest() {
   describe('TemplateFieldsEvaluatorTest', () => {
     let result: IQueryResult;
     let fieldsToMatch: IFieldsToMatch[];
+    const field = 'foo';
+    const fieldValue = 'bar';
 
     beforeEach(() => {
       result = FakeResults.createFakeResult();
-      result.raw['foo'] = 'bar';
+      result.raw[field] = fieldValue;
     });
 
     afterEach(() => {
@@ -18,41 +20,38 @@ export function TemplateFieldsEvaluatorTest() {
     });
 
     it('should be able to evaluate fields to match', () => {
-      fieldsToMatch = [
-        {
-          field: 'foo',
-          values: ['bar', 'baz']
-        }
-      ];
+      fieldsToMatch = [{ field, values: [fieldValue, 'baz'] }];
       expect(TemplateFieldsEvaluator.evaluateFieldsToMatch(fieldsToMatch, result)).toBe(true);
     });
 
     it('should be able to evaluate fields that do not match', () => {
-      fieldsToMatch = [
-        {
-          field: 'foo',
-          values: ['brak']
-        }
-      ];
+      fieldsToMatch = [{ field: 'foo', values: ['brak'] }];
       expect(TemplateFieldsEvaluator.evaluateFieldsToMatch(fieldsToMatch, result)).toBe(false);
     });
 
     it('should be able to evaluate fields that are not null', () => {
-      fieldsToMatch = [
-        {
-          field: 'foo'
-        }
-      ];
+      fieldsToMatch = [{ field }];
       expect(TemplateFieldsEvaluator.evaluateFieldsToMatch(fieldsToMatch, result)).toBe(true);
     });
 
     it('should be able to evaluate fields that are null', () => {
-      fieldsToMatch = [
-        {
-          field: 'bar'
-        }
-      ];
+      fieldsToMatch = [{ field: 'bar' }];
       expect(TemplateFieldsEvaluator.evaluateFieldsToMatch(fieldsToMatch, result)).toBe(false);
+    });
+
+    it(`when the fieldsToMatch #values is an array containing the field value as uppercase,
+    it returns true`, () => {
+      fieldsToMatch = [{ field, values: [fieldValue.toUpperCase()] }];
+      expect(TemplateFieldsEvaluator.evaluateFieldsToMatch(fieldsToMatch, result)).toBe(true);
+    });
+
+    it(`given the result raw field has an uppercase value,
+    when the fieldsToMatch #values is an array containing the field value as lowercase,
+    it returns true`, () => {
+      result.raw[field] = fieldValue.toUpperCase();
+      fieldsToMatch = [{ field, values: [fieldValue.toLowerCase()] }];
+
+      expect(TemplateFieldsEvaluator.evaluateFieldsToMatch(fieldsToMatch, result)).toBe(true);
     });
 
     describe(`when the result raw has a field that has an array of values (e.g. a multi-value field)`, () => {
@@ -86,27 +85,6 @@ export function TemplateFieldsEvaluatorTest() {
       it returns false`, () => {
         fieldsToMatch = [{ field: multiValueField, values: ['english'] }];
         expect(TemplateFieldsEvaluator.evaluateFieldsToMatch(fieldsToMatch, result)).toBe(false);
-      });
-
-      it(`when the fieldsToMatch #field is the multi-value field
-      and the #values is an array containing the multi-value field value as uppercase,
-      it returns true`, () => {
-        const uppercaseValues = multiValueFieldValues.map(val => val.toUpperCase());
-        fieldsToMatch = [{ field: multiValueField, values: uppercaseValues }];
-        expect(TemplateFieldsEvaluator.evaluateFieldsToMatch(fieldsToMatch, result)).toBe(true);
-      });
-
-      it(`given the result raw multi-value field has uppercase values,
-      when the fieldsToMatch #field is the multi-value field
-      and the #values is an array containing the multi-value field value as lowercase,
-      it returns true`, () => {
-        const uppercaseValues = multiValueFieldValues.map(val => val.toUpperCase());
-        const lowercaseValues = multiValueFieldValues.map(val => val.toLowerCase());
-
-        result.raw[multiValueField] = uppercaseValues;
-        fieldsToMatch = [{ field: multiValueField, values: lowercaseValues }];
-
-        expect(TemplateFieldsEvaluator.evaluateFieldsToMatch(fieldsToMatch, result)).toBe(true);
       });
     });
   });
