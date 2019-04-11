@@ -45,11 +45,7 @@ export class MLFacetValues {
   }
 
   public get selectedValues() {
-    return this.facetValues.filter(value => value.isSelected).map(value => value.value);
-  }
-
-  public get nonIdleValues() {
-    return this.facetValues.filter(value => !value.isIdle).map(value => value.value);
+    return this.facetValues.filter(value => value.isSelected).map(({ value }) => value);
   }
 
   public get nonIdleFacetValues() {
