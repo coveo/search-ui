@@ -1,6 +1,6 @@
 import { IQueryResult } from '../../rest/QueryResult';
 import { IFieldsToMatch } from './Template';
-import { each, isArray } from 'underscore';
+import { each } from 'underscore';
 
 export class TemplateFieldsEvaluator {
   public static evaluateFieldsToMatch(toMatches: IFieldsToMatch[], result: IQueryResult): boolean {
@@ -24,15 +24,7 @@ export class TemplateFieldsEvaluator {
   }
 
   private static getFieldValueAsArray(fieldValue: string | string[]): string[] {
-    if (typeof fieldValue === 'string') {
-      return [fieldValue];
-    }
-
-    if (isArray(fieldValue)) {
-      return fieldValue;
-    }
-
-    return [];
+    return typeof fieldValue === 'string' ? [fieldValue] : fieldValue;
   }
 
   private static isMatch(fieldValues: string[], value: string) {
