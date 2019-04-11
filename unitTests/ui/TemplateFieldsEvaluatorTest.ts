@@ -86,6 +86,16 @@ export function TemplateFieldsEvaluatorTest() {
         fieldsToMatch = [{ field: multiValueField, values: ['english'] }];
         expect(TemplateFieldsEvaluator.evaluateFieldsToMatch(fieldsToMatch, result)).toBe(false);
       });
+
+      it(`when the result multi-value field has more than one value,
+      when the fieldsToMatch #field is the multi-value field
+      and the #values is a populated array containing the last result field value,
+      it returns 'true'`, () => {
+        result.raw[multiValueField] = ['francais', 'espanol', 'english'];
+        fieldsToMatch = [{ field: multiValueField, values: ['english'] }];
+
+        expect(TemplateFieldsEvaluator.evaluateFieldsToMatch(fieldsToMatch, result)).toBe(true);
+      });
     });
   });
 }
