@@ -1,13 +1,13 @@
 @import '../Variables';
 
 .coveo-ml-facet-breadcrumb {
-  line-height: 1.5em;
+  line-height: 1.2em;
 }
 
 .coveo-ml-facet-breadcrumb-title {
   color: $color-blueish-gray;
   margin: 0;
-  font-size: $font-size-regular;
+  font-size: $font-size-smaller;
   font-weight: normal;
   display: inline;
   margin-right: 8px;
@@ -15,7 +15,7 @@
 
 .coveo-ml-facet-breadcrumb-value {
   @include linkButton();
-  font-size: $font-size-regular;
+  font-size: $font-size-smaller;
   margin-right: 15px;
 }
 

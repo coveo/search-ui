@@ -28,7 +28,7 @@ export class MLFacetBreadcrumbs {
   }
 
   private createAndAppendTitle() {
-    const titleElement = $$('h2', { className: 'coveo-ml-facet-breadcrumb-title' }, `${this.facet.options.title}:`).el;
+    const titleElement = $$('h3', { className: 'coveo-ml-facet-breadcrumb-title' }, `${this.facet.options.title}:`).el;
     this.element.appendChild(titleElement);
   }
 
