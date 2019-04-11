@@ -15,12 +15,25 @@ export class MLFacetBreadcrumbs {
   private create() {
     this.element = $$('div', { className: 'coveo-ml-facet-breadcrumb coveo-breadcrumb-item' }).el;
     this.createAndAppendTitle();
-    this.facet.values.nonIdleFacetValues.forEach(facetValue => this.createAndAppendBreadcrumbValue(facetValue));
+
+    const nonIdleFacetValues = this.facet.values.nonIdleFacetValues;
+    const breadcrumbFacetValues = nonIdleFacetValues.slice(0, this.facet.options.numberOfValuesInBreadcrumb);
+    const collapsedFacetValues = nonIdleFacetValues.slice(this.facet.options.numberOfValuesInBreadcrumb);
+
+    this.createAndAppendBreadcrumbValues(breadcrumbFacetValues);
+
+    if (collapsedFacetValues.length) {
+      this.createAndAppendCollapsedBreadcrumbs(collapsedFacetValues);
+    }
   }
 
   private createAndAppendTitle() {
     const titleElement = $$('h2', { className: 'coveo-ml-facet-breadcrumb-title' }, `${this.facet.options.title}:`).el;
     this.element.appendChild(titleElement);
+  }
+
+  private createAndAppendBreadcrumbValues(facetValues: MLFacetValue[]) {
+    facetValues.forEach(facetValue => this.createAndAppendBreadcrumbValue(facetValue));
   }
 
   private createAndAppendBreadcrumbValue(facetValue: MLFacetValue) {
@@ -35,13 +48,26 @@ export class MLFacetBreadcrumbs {
     const clearElement = $$('span', { className: 'coveo-ml-facet-breadcrumb-value-clear' }, SVGIcons.icons.mainClear).el;
     valueElement.appendChild(clearElement);
 
-    $$(valueElement).on('click', () => this.selectAction(facetValue));
+    $$(valueElement).on('click', () => this.valueSelectAction(facetValue));
 
     this.element.appendChild(valueElement);
   }
 
-  private selectAction(facetValue: MLFacetValue) {
+  private valueSelectAction(facetValue: MLFacetValue) {
     this.facet.deselectValue(facetValue.value);
     this.facet.triggerNewQuery();
+  }
+
+  private createAndAppendCollapsedBreadcrumbs(facetValues: MLFacetValue[]) {
+    const label = l('NMore', `${facetValues.length}`);
+    const title = facetValues.map(({ value }) => value).join('\n');
+    const collapsedElement = $$('button', { className: 'coveo-ml-facet-breadcrumb-value', title }, label).el;
+
+    $$(collapsedElement).on('click', () => {
+      $$(collapsedElement).remove();
+      this.createAndAppendBreadcrumbValues(facetValues);
+    });
+
+    this.element.appendChild(collapsedElement);
   }
 }
