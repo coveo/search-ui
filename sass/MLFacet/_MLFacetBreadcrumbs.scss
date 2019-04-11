@@ -1,0 +1,29 @@
+@import '../Variables';
+
+.coveo-ml-facet-breadcrumb {
+  line-height: 1.3em;
+}
+
+.coveo-ml-facet-breadcrumb-title {
+  color: $color-blueish-gray;
+  margin: 0;
+  font-size: $font-size-regular;
+  font-weight: normal;
+  display: inline;
+  margin-right: 8px;
+}
+
+.coveo-ml-facet-breadcrumb-value {
+  @include linkButton();
+  font-size: $font-size-regular;
+  margin-right: 15px;
+}
+
+.coveo-ml-facet-breadcrumb-value-clear {
+  margin-left: 5px;
+
+  & svg {
+    width: 9px;
+    height: 9px;
+  }
+}

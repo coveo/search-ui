@@ -8,6 +8,7 @@ import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
 import { Initialization } from '../Base/Initialization';
 import { ResponsiveFacetOptions } from '../ResponsiveComponents/ResponsiveFacetOptions';
 import { ResponsiveFacets } from '../ResponsiveComponents/ResponsiveFacets';
+import { MLFacetBreadcrumbs } from './MLFacetBreadcrumbs';
 import { MLFacetHeader } from './MLFacetHeader/MLFacetHeader';
 import { MLFacetValues } from './MLFacetValues/MLFacetValues';
 import { QueryEvents, IQuerySuccessEventArgs, IDoneBuildingQueryEventArgs } from '../../events/QueryEvents';
@@ -21,6 +22,8 @@ import { IResponsiveComponentOptions } from '../ResponsiveComponents/ResponsiveC
 import { IStringMap } from '../../rest/GenericParam';
 import { isFacetSortCriteria } from '../../rest/Facet/FacetSortCriteria';
 import { l } from '../../strings/Strings';
+import { DeviceUtils } from '../../utils/DeviceUtils';
+import { BreadcrumbEvents, IPopulateBreadcrumbEventArgs } from '../../events/BreadcrumbEvents';
 
 export interface IMLFacetOptions extends IResponsiveComponentOptions {
   id?: string;
@@ -30,6 +33,8 @@ export interface IMLFacetOptions extends IResponsiveComponentOptions {
   numberOfValues?: number;
   enableCollapse?: boolean;
   collapsedByDefault?: boolean;
+  includeInBreadcrumb?: boolean;
+  numberOfValuesInBreadcrumb?: number;
   valueCaption?: any;
 }
 
@@ -147,6 +152,29 @@ export class MLFacet extends Component {
     collapsedByDefault: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'Filtering' }),
 
     /**
+     * Specifies whether the facet should push data to the [`Breadcrumb`]{@link Breadcrumb} component.
+     *
+     * See also the [`numberOfValuesInBreadcrumb`]{@link MLFacet.options.numberOfValuesInBreadcrumb} option.
+     *
+     * Default value is `true`.
+     */
+    includeInBreadcrumb: ComponentOptions.buildBooleanOption({ defaultValue: true, section: 'CommonOptions' }),
+
+    /**
+     * If the [`includeInBreadcrumb`]{@link MLFacet.options.includeInBreadcrumb} option is `true`, specifies the maximum
+     * number of values that the facet should display in the [`Breadcrumb`]{@link Breadcrumb} before outputting a
+     * **more...** button.
+     *
+     * Default value is `5` on a desktop computer and `3` on a mobile device. Minimum value is `0`.
+     */
+    numberOfValuesInBreadcrumb: ComponentOptions.buildNumberOption({
+      defaultFunction: () => (DeviceUtils.isMobileDevice() ? 3 : 5),
+      min: 0,
+      depend: 'includeInBreadcrumb',
+      section: 'CommonOptions'
+    }),
+
+    /**
      * A mapping of facet values to their desired captions.
      *
      * See [Normalizing Facet Value Captions](https://developers.coveo.com/x/jBsvAg).
@@ -176,6 +204,7 @@ export class MLFacet extends Component {
     this.initMLFacetQueryController();
     this.initQueryEvents();
     this.initQueryStateEvents();
+    this.initBreadCrumbEvents();
 
     this.values = new MLFacetValues(this);
     this.isCollapsed = this.options.enableCollapse && this.options.collapsedByDefault;
@@ -354,6 +383,15 @@ export class MLFacet extends Component {
     this.bind.onQueryState(MODEL_EVENTS.CHANGE, undefined, this.handleQueryStateChanged);
   }
 
+  protected initBreadCrumbEvents() {
+    if (this.options.includeInBreadcrumb) {
+      this.bind.onRootElement(BreadcrumbEvents.populateBreadcrumb, (args: IPopulateBreadcrumbEventArgs) =>
+        this.handlePopulateBreadcrumb(args)
+      );
+      this.bind.onRootElement(BreadcrumbEvents.clearBreadcrumb, () => this.reset());
+    }
+  }
+
   private initMLFacetQueryController() {
     this.mLFacetQueryController = new MLFacetQueryController(this);
   }
@@ -398,6 +436,17 @@ export class MLFacet extends Component {
       this.selectMultipleValues(querySelectedValues);
     }
   };
+
+  private handlePopulateBreadcrumb(args: IPopulateBreadcrumbEventArgs) {
+    Assert.exists(args);
+
+    if (!this.values.hasNonIdleValues) {
+      return;
+    }
+
+    const breadcrumbs = new MLFacetBreadcrumbs(this);
+    args.breadcrumbs.push({ element: breadcrumbs.element });
+  }
 
   public createDom() {
     this.createContent();
