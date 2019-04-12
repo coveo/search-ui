@@ -7,9 +7,10 @@ export function MLFacetHeaderTest() {
   describe('MLFacetHeader', () => {
     let mLFacetHeader: MLFacetHeader;
     let facet: MLFacet;
-    let baseOptions: IMLFacetOptions = { title: 'hello' };
+    let baseOptions: IMLFacetOptions;
 
     beforeEach(() => {
+      baseOptions = { title: 'hello' };
       initializeComponent();
     });
 

@@ -61,7 +61,14 @@ export class MLFacetBreadcrumbs {
   private createAndAppendCollapsedBreadcrumbs(facetValues: MLFacetValue[]) {
     const label = l('NMore', `${facetValues.length}`);
     const title = facetValues.map(({ value }) => value).join('\n');
-    const collapsedElement = $$('button', { className: 'coveo-ml-facet-breadcrumb-value', title }, label).el;
+    const collapsedElement = $$(
+      'button',
+      {
+        className: 'coveo-ml-facet-breadcrumb-collapse',
+        title
+      },
+      label
+    ).el;
 
     $$(collapsedElement).on('click', () => {
       $$(collapsedElement).remove();
