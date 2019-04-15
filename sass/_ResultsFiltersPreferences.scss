@@ -1,4 +1,6 @@
 @import 'Variables';
+@import './mixins/breadcrumb';
+
 .CoveoResultsFiltersPreferences {
   .coveo-title {
     display: inline-block;
@@ -143,20 +145,12 @@
 
 .coveo-results-filter-preferences-breadcrumb {
   .coveo-title {
-    @include breadcrumbTitle();
+    @include breadcrumb-title();
   }
   .coveo-value {
-    font-size: $font-size-smaller;
-    display: inline-block;
-    @include clearButton('.coveo-clear');
-    @include clickable();
-    & + .coveo-value {
-      margin-left: 10px;
-    }
+    @include breadcrumb-value();
     .coveo-clear {
-      display: inline-block;
-      vertical-align: middle;
-      margin-left: 5px;
+      @include breadcrumb-value-clear();
     }
   }
 }
