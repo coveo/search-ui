@@ -453,8 +453,7 @@ export class ResultsFiltersPreferences extends Component {
     caption.text(filter.caption);
     elem.el.appendChild(caption.el);
 
-    const clear = $$('span', { className: 'coveo-clear' }, SVGIcons.icons.checkboxHookExclusionMore);
-    SVGDom.addClassToSVGInContainer(clear.el, 'coveo-clear-svg');
+    const clear = $$('span', { className: 'coveo-clear' }, SVGIcons.icons.mainClear);
     elem.el.appendChild(clear.el);
 
     const onSelectAction = () => {

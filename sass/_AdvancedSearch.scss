@@ -1,4 +1,6 @@
 @import 'Variables';
+@import 'mixins/breadcrumb';
+
 $spaceBetween: 0 5px 5px 0;
 .coveo-advanced-search-section {
   margin: 20px 0;
@@ -123,17 +125,13 @@ $spaceBetween: 0 5px 5px 0;
   }
 }
 
-.coveo-advanced-search-breadcrumb {
-  .coveo-advanced-search-breadcrumb-clear {
-    position: relative;
-    vertical-align: middle;
-    @include clearButton('&');
-  }
+.coveo-advanced-search-breadcrumb-value {
+  @include breadcrumb-value();
 }
 
-.coveo-advanced-search-breadcrumb-clear-svg {
-  top: 5px;
-  left: 3px;
+.coveo-advanced-search-breadcrumb-clear {
+  @include breadcrumb-value();
+  @include breadcrumb-value-clear();
 }
 
 .coveo-advanced-search-svg {
@@ -143,7 +141,5 @@ $spaceBetween: 0 5px 5px 0;
 }
 
 .coveo-advanced-search-breadcrumb-title {
-  @include breadcrumbTitle();
-  display: inline-block;
-  vertical-align: middle;
+  @include breadcrumb-title();
 }
