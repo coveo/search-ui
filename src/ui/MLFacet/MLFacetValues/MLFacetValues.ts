@@ -3,17 +3,22 @@ import { $$ } from '../../../utils/Dom';
 import { findWhere, find } from 'underscore';
 import { MLFacetValue } from './MLFacetValue';
 import { MLFacet } from '../MLFacet';
-import { IFacetResponseValue } from '../../../rest/Facet/FacetResponse';
+import { IFacetResponse } from '../../../rest/Facet/FacetResponse';
 import { FacetValueState } from '../../../rest/Facet/FacetValueState';
+import { l } from '../../../strings/Strings';
 
 export class MLFacetValues {
-  private facetValues: MLFacetValue[] = [];
+  private facetValues: MLFacetValue[];
   private list = $$('ul', { className: 'coveo-ml-facet-values' });
+  private moreValuesAvailable: boolean;
 
-  constructor(private facet: MLFacet) {}
+  constructor(private facet: MLFacet) {
+    this.resetValues();
+  }
 
-  public createFromResults(facetValues: IFacetResponseValue[]) {
-    this.facetValues = facetValues.map(
+  public createFromResponse(response: IFacetResponse) {
+    this.moreValuesAvailable = response.moreValuesAvailable;
+    this.facetValues = response.values.map(
       facetValue =>
         new MLFacetValue(
           {
@@ -24,6 +29,11 @@ export class MLFacetValues {
           this.facet
         )
     );
+  }
+
+  public resetValues() {
+    this.moreValuesAvailable = false;
+    this.facetValues = [];
   }
 
   public get allFacetValues() {
@@ -38,15 +48,23 @@ export class MLFacetValues {
     return this.facetValues.filter(value => value.isSelected).map(value => value.value);
   }
 
-  public hasSelectedValues() {
+  public get nonIdleValues() {
+    return this.facetValues.filter(value => !value.isIdle).map(value => value.value);
+  }
+
+  public get hasSelectedValues() {
     return !!findWhere(this.facetValues, { state: FacetValueState.selected });
+  }
+
+  public get hasIdleValues() {
+    return !!findWhere(this.facetValues, { state: FacetValueState.idle });
   }
 
   public clearAll() {
     this.facetValues.forEach(value => value.deselect());
   }
 
-  public isEmpty() {
+  public get isEmpty() {
     return !this.facetValues.length;
   }
 
@@ -63,11 +81,37 @@ export class MLFacetValues {
     return newFacetValue;
   }
 
+  private buildShowLess() {
+    const showLess = $$('button', { className: 'coveo-ml-facet-show-less', ariaLabel: l('ShowLess') }, `- ${l('ShowLess')}`);
+    showLess.on('click', () => this.facet.showLessValues());
+    return showLess.el;
+  }
+
+  private buildShowMore() {
+    const showMore = $$('button', { className: 'coveo-ml-facet-show-more', ariaLabel: l('ShowMore') }, `+ ${l('ShowMore')}`);
+    showMore.on('click', () => this.facet.showMoreValues());
+    return showMore.el;
+  }
+
+  private get shouldEnableShowLess() {
+    const hasMoreValuesThenDefault = this.facetValues.length > this.facet.options.numberOfValues;
+
+    return hasMoreValuesThenDefault && this.hasIdleValues;
+  }
+
   public render() {
     this.list.empty();
     this.facetValues.forEach(facetValue => {
       this.list.append(facetValue.render());
     });
+
+    if (this.shouldEnableShowLess) {
+      this.list.append(this.buildShowLess());
+    }
+
+    if (this.moreValuesAvailable) {
+      this.list.append(this.buildShowMore());
+    }
 
     return this.list.el;
   }

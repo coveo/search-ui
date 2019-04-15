@@ -253,8 +253,33 @@ export class DateUtils {
   }
 
   private static getMomentJsFormat(format: string) {
-    // yyyy was used to format dates before implementing moment.js, which only recognizes YYYY.
-    return format.replace(/yyyy/g, 'YYYY');
+    let correctedFormat = format;
+
+    const fourLowercaseY = DateUtils.buildRegexMatchingExactCharSequence('y', 4);
+    correctedFormat = correctedFormat.replace(fourLowercaseY, 'YYYY');
+
+    const twoLowercaseY = DateUtils.buildRegexMatchingExactCharSequence('y', 2);
+    correctedFormat = correctedFormat.replace(twoLowercaseY, 'YY');
+
+    const twoLowercaseD = DateUtils.buildRegexMatchingExactCharSequence('d', 2);
+    correctedFormat = correctedFormat.replace(twoLowercaseD, 'DD');
+
+    const oneLowercaseD = DateUtils.buildRegexMatchingExactCharSequence('d', 1);
+    correctedFormat = correctedFormat.replace(oneLowercaseD, 'D');
+
+    const twoLowercaseH = DateUtils.buildRegexMatchingExactCharSequence('h', 2);
+    correctedFormat = correctedFormat.replace(twoLowercaseH, 'H');
+
+    return correctedFormat;
+  }
+
+  private static buildRegexMatchingExactCharSequence(char: string, sequenceLength: number) {
+    const negativeLookBehind = `(?<!${char})`;
+    const charSequence = `${char}{${sequenceLength}}`;
+    const negativeLookAhead = `(?!${char})`;
+    const exactSequence = `${negativeLookBehind}${charSequence}${negativeLookAhead}`;
+
+    return new RegExp(exactSequence, 'g');
   }
 
   /**

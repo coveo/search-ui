@@ -1,6 +1,5 @@
 import * as Mock from '../../MockEnvironment';
-import { MLFacet } from '../../../src/ui/MLFacet/MLFacet';
-import { IMLFacetOptions } from '../../../src/ui/MLFacet/MLFacetOptions';
+import { MLFacet, IMLFacetOptions } from '../../../src/ui/MLFacet/MLFacet';
 import { IMLFacetValue } from '../../../src/ui/MLFacet/MLFacetValues/MLFacetValue';
 import { FacetValueState } from '../../../src/rest/Facet/FacetValueState';
 import { MLFacetTestUtils } from './MLFacetTestUtils';
@@ -22,12 +21,16 @@ export function MLFacetTest() {
 
     function initializeComponent() {
       test = MLFacetTestUtils.createAdvancedFakeFacet(options);
-      test.cmp.values.createFromResults(mockFacetValues);
+      test.cmp.values.createFromResponse(MLFacetTestUtils.getCompleteFacetResponse(test.cmp, { values: mockFacetValues }));
     }
 
     function testQueryStateModelValues() {
       const qsmValues: string[] = test.env.queryStateModel.attributes[`f:${test.cmp.options.id}`];
       expect(qsmValues).toEqual(test.cmp.values.selectedValues);
+    }
+
+    function getFirstFacetRequest() {
+      return Simulate.query(test.env).queryBuilder.build().facets[0];
     }
 
     it(`when facet has values but none are selected
@@ -143,6 +146,75 @@ export function MLFacetTest() {
       testQueryStateModelValues();
     });
 
+    it('showMoreValues adds by the numberOfValues option by default', () => {
+      const additionalNumberOfValues = test.cmp.options.numberOfValues;
+      test.cmp.showMoreValues();
+
+      expect(getFirstFacetRequest().numberOfValues).toBe(test.cmp.options.numberOfValues + additionalNumberOfValues);
+    });
+
+    it('allows to showMoreValues with a custom amount of values', () => {
+      const additionalNumberOfValues = 38;
+      test.cmp.showMoreValues(additionalNumberOfValues);
+      expect(test.cmp.queryController.executeQuery).toHaveBeenCalled();
+
+      expect(getFirstFacetRequest().numberOfValues).toBe(test.cmp.options.numberOfValues + additionalNumberOfValues);
+    });
+
+    it('showMoreValues triggers a query', () => {
+      test.cmp.showMoreValues();
+      expect(test.cmp.queryController.executeQuery).toHaveBeenCalled();
+    });
+
+    it('showLessValues resets the amount of values to the numberOfValues option', () => {
+      const additionalNumberOfValues = 38;
+      test.cmp.showMoreValues(additionalNumberOfValues);
+      test.cmp.showLessValues();
+
+      expect(getFirstFacetRequest().numberOfValues).toBe(test.cmp.options.numberOfValues);
+    });
+
+    it('showLessValues triggers a query', () => {
+      test.cmp.showLessValues();
+      expect(test.cmp.queryController.executeQuery).toHaveBeenCalled();
+    });
+
+    it(`when enableCollapse & collapsedByDefault options are true
+      facet should be collapsed`, () => {
+      options.enableCollapse = true;
+      options.collapsedByDefault = true;
+      initializeComponent();
+      test.cmp.ensureDom();
+
+      expect($$(test.cmp.element).hasClass('coveo-ml-facet-collapsed')).toBe(true);
+    });
+
+    it(`allows to collapse`, () => {
+      test.cmp.ensureDom();
+      test.cmp.collapse();
+
+      expect($$(test.cmp.element).hasClass('coveo-ml-facet-collapsed')).toBe(true);
+    });
+
+    it(`allows to expand`, () => {
+      test.cmp.ensureDom();
+      test.cmp.collapse();
+
+      test.cmp.expand();
+
+      expect($$(test.cmp.element).hasClass('coveo-ml-facet-collapsed')).toBe(false);
+    });
+
+    it(`allows to toggle between expand/collapse`, () => {
+      test.cmp.ensureDom();
+
+      test.cmp.toggleCollapse();
+      expect($$(test.cmp.element).hasClass('coveo-ml-facet-collapsed')).toBe(true);
+
+      test.cmp.toggleCollapse();
+      expect($$(test.cmp.element).hasClass('coveo-ml-facet-collapsed')).toBe(false);
+    });
+
     it('should have a default title', () => {
       test.cmp.ensureDom();
 
@@ -157,9 +229,9 @@ export function MLFacetTest() {
       expect($$(test.cmp.element).find('.coveo-ml-facet-header-title span').innerHTML).toBe(options.title);
     });
 
-    it('should select the needed values using the field', () => {
-      test.env.queryStateModel.registerNewAttribute('f:@field', []);
-      test.env.queryStateModel.set('f:@field', ['a', 'b', 'c']);
+    it('should select the needed values using the id', () => {
+      test.env.queryStateModel.registerNewAttribute(`f:${test.cmp.options.id}`, []);
+      test.env.queryStateModel.set(`f:${test.cmp.options.id}`, ['a', 'b', 'c']);
       expect(test.cmp.values.selectedValues).toEqual(['a', 'b', 'c']);
     });
 
@@ -174,9 +246,7 @@ export function MLFacetTest() {
 
     it(`when not setting a sortCriteria option
       should set it to undefined in the query`, () => {
-      const simulation = Simulate.query(test.env);
-      const facetRequest = simulation.queryBuilder.build().facets[0];
-      expect(facetRequest.sortCriteria).toBeUndefined();
+      expect(getFirstFacetRequest().sortCriteria).toBeUndefined();
     });
 
     it(`when setting a sortCriteria option
@@ -184,16 +254,12 @@ export function MLFacetTest() {
       options.sortCriteria = FacetSortCriteria.score;
       initializeComponent();
 
-      const simulation = Simulate.query(test.env);
-      const facetRequest = simulation.queryBuilder.build().facets[0];
-      expect(facetRequest.sortCriteria).toBe(FacetSortCriteria.score);
+      expect(getFirstFacetRequest().sortCriteria).toBe(FacetSortCriteria.score);
     });
 
     it(`when not setting a numberOfValues option
-      should set it to undefined in the query`, () => {
-      const simulation = Simulate.query(test.env);
-      const facetRequest = simulation.queryBuilder.build().facets[0];
-      expect(facetRequest.numberOfValues).toBeUndefined();
+      should set it to 8 in the query`, () => {
+      expect(getFirstFacetRequest().numberOfValues).toBe(8);
     });
 
     it(`when setting a numberOfValues option
@@ -201,9 +267,7 @@ export function MLFacetTest() {
       options.numberOfValues = 100;
       initializeComponent();
 
-      const simulation = Simulate.query(test.env);
-      const facetRequest = simulation.queryBuilder.build().facets[0];
-      expect(facetRequest.numberOfValues).toBe(100);
+      expect(getFirstFacetRequest().numberOfValues).toBe(100);
     });
   });
 }
