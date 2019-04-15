@@ -147,25 +147,26 @@ export class MLFacet extends Component {
      * See also the [`enableCollapse`]{@link MLFacet.options.enableCollapse}
      * option.
      *
-     * Default value is `false`
+     * **Default:** `false`
      */
     collapsedByDefault: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'Filtering' }),
 
     /**
-     * Specifies whether the facet should push data to the [`Breadcrumb`]{@link Breadcrumb} component.
+     * Whether to notify the [Breadcrumb]{@link Breadcrumb} component when toggling values in the facet.
      *
-     * See also the [`numberOfValuesInBreadcrumb`]{@link MLFacet.options.numberOfValuesInBreadcrumb} option.
+     * See also the [numberOfValuesInBreadcrumb]{@link MLFacet.options.numberOfValuesInBreadcrumb} option.
      *
-     * Default value is `true`.
+     * **Default:** `true`
      */
     includeInBreadcrumb: ComponentOptions.buildBooleanOption({ defaultValue: true, section: 'CommonOptions' }),
 
     /**
-     * If the [`includeInBreadcrumb`]{@link MLFacet.options.includeInBreadcrumb} option is `true`, specifies the maximum
-     * number of values that the facet should display in the [`Breadcrumb`]{@link Breadcrumb} before outputting a
-     * **more...** button.
+     * The maximum number of selected values the [`Breadcrumb`]{@link Breadcrumb} component can display before outputting a **N more...** link for the facet.
      *
-     * Default value is `5` on a desktop computer and `3` on a mobile device. Minimum value is `0`.
+     * **Note:** This option only has a meaning when the [`includeInBreadcrumb`]{@link MLFacet.options.includeInBreadcrumb} option is set to `true`.
+     *
+     * **Minimum:** `0`
+     * **Default:** `5` (desktop), or `3` (mobile)
      */
     numberOfValuesInBreadcrumb: ComponentOptions.buildNumberOption({
       defaultFunction: () => (DeviceUtils.isMobileDevice() ? 3 : 5),
