@@ -14,7 +14,7 @@ cache:
   - node_modules
 before_install:
   - npm install -g npm@5.5.1
-  - if [ -n "${VERACODE_WRAPPER_VERSION}" ]; then wget https://repo1.maven.org/maven2/com/veracode/vosp/api/wrappers/vosp-api-wrappers-java/$VERACODE_WRAPPER_VERSION/vosp-api-wrappers-java-$VERACODE_WRAPPER_VERSION.jar ; fi
+  - if [ "x$TRAVIS_TAG" != "x" ]; then wget https://repo1.maven.org/maven2/com/veracode/vosp/api/wrappers/vosp-api-wrappers-java/$VERACODE_WRAPPER_VERSION/vosp-api-wrappers-java-$VERACODE_WRAPPER_VERSION.jar ; fi
 script:
 - source read.version.sh
 - echo $PACKAGE_JSON_VERSION
@@ -30,7 +30,7 @@ after_success:
 - yarn run docsitemap
 - yarn run zipForGitReleases
 - yarn run zipForVeracode
-- if [ -n "${VERACODE_WRAPPER_VERSION}" ]; then java -jar vosp-api-wrappers-java-$VERACODE_WRAPPER_VERSION.jar -vid $VERACODE_KEY_ID  -vkey $VERACODE_SECRET -action uploadandscan -appname Coveo -sandboxname "JS UI" -createprofile true -filepath veracode.zip -version "Travis build [ $TRAVIS_JOB_NUMBER ] on branch [ $TRAVIS_BRANCH ] ; else echo "Build was triggered from a fork; skipping Veracode" ; fi"
+- if [ "x$TRAVIS_TAG" != "x" ]; then java -jar vosp-api-wrappers-java-$VERACODE_WRAPPER_VERSION.jar -vid $VERACODE_KEY_ID  -vkey $VERACODE_SECRET -action uploadandscan -appname Coveo -sandboxname "JS UI" -createprofile true -filepath veracode.zip -version "Travis build [ $TRAVIS_JOB_NUMBER ] on branch [ $TRAVIS_BRANCH ]" ; else echo "Build was triggered from a fork; skipping Veracode" ; fi
 env:
   global:
   - COMMIT_AUTHOR_EMAIL: sandbox_JSUI@coveo.com
