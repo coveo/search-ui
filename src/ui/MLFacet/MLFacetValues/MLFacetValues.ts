@@ -48,7 +48,7 @@ export class MLFacetValues {
     return this.facetValues.filter(value => value.isSelected).map(({ value }) => value);
   }
 
-  public get nonIdleFacetValues() {
+  public get activeFacetValues() {
     return this.facetValues.filter(value => !value.isIdle);
   }
 
@@ -57,7 +57,7 @@ export class MLFacetValues {
   }
 
   public get hasActiveValues() {
-    return !!this.facetValues.filter(value => !value.isIdle).length;
+    return !!this.activeFacetValues.length;
   }
 
   public get hasIdleValues() {

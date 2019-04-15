@@ -16,9 +16,9 @@ export class MLFacetBreadcrumbs {
     this.element = $$('div', { className: 'coveo-ml-facet-breadcrumb coveo-breadcrumb-item' }).el;
     this.createAndAppendTitle();
 
-    const nonIdleFacetValues = this.facet.values.nonIdleFacetValues;
-    const breadcrumbFacetValues = nonIdleFacetValues.slice(0, this.facet.options.numberOfValuesInBreadcrumb);
-    const collapsedFacetValues = nonIdleFacetValues.slice(this.facet.options.numberOfValuesInBreadcrumb);
+    const activeFacetValues = this.facet.values.activeFacetValues;
+    const breadcrumbFacetValues = activeFacetValues.slice(0, this.facet.options.numberOfValuesInBreadcrumb);
+    const collapsedFacetValues = activeFacetValues.slice(this.facet.options.numberOfValuesInBreadcrumb);
 
     this.createAndAppendBreadcrumbValues(breadcrumbFacetValues);
 
