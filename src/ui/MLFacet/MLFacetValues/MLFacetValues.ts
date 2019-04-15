@@ -56,7 +56,7 @@ export class MLFacetValues {
     return !!findWhere(this.facetValues, { state: FacetValueState.selected });
   }
 
-  public get hasNonIdleValues() {
+  public get hasActiveValues() {
     return !!this.facetValues.filter(value => !value.isIdle).length;
   }
 

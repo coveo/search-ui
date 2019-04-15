@@ -440,7 +440,7 @@ export class MLFacet extends Component {
   private handlePopulateBreadcrumb(args: IPopulateBreadcrumbEventArgs) {
     Assert.exists(args);
 
-    if (!this.values.hasNonIdleValues) {
+    if (!this.values.hasActiveValues) {
       return;
     }
 
