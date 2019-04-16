@@ -1,3 +1,5 @@
+import { FacetValueState } from '../../rest/Facet/FacetValueState';
+
 /**
  * The IAnalyticsActionCause interface describes the cause of an event for the analytics service.
  *
@@ -126,6 +128,19 @@ export interface IAnalyticsFacetSliderChangeMeta {
   facetField: string;
   facetRangeStart: any;
   facetRangeEnd: any;
+}
+
+export interface IAnalyticsMLFacetMeta {
+  facetId: string;
+  facetField: string;
+  facetTitle: string;
+  facetValue: string;
+  facetDisplayValue: string;
+  facetState: FacetValueState;
+}
+
+export interface IAnalyticsMLFacetsMeta {
+  facets: IAnalyticsMLFacetMeta[];
 }
 
 export interface IAnalyticsFacetGraphSelectedMeta extends IAnalyticsFacetSliderChangeMeta {}
@@ -1214,5 +1229,47 @@ export var analyticsActionCauseList = {
   foldingShowLess: <IAnalyticsActionCause>{
     name: 'showLessFoldedResults',
     type: 'folding'
+  },
+  /**
+   * Identifies the search event that gets logged when a mLFacet check box is selected and the query is updated.
+   *
+   * `actionCause`: `'facetSelect'`
+   * `actionType`: `'mLFacet'`
+   *
+   * Logging an event with this actionType also adds the following key-value pair in the custom data property of the Usage Analytics HTTP service request.
+   * `"facets":`: <correspondingFacetsState>
+   *
+   * `"facets"` is an Array of objects containing following key-value pairs
+   * `"facetId":`: <correspondingFacetId>
+   * `"facetField":`: <correspondingFacetField>
+   * `"facetTitle":`: <correspondingFacetTitle>
+   * `"facetValue":`: <correspondingFacetValue>
+   * `"facetDisplayValue":`: <correspondingFacetDisplayValue>
+   * `"facetState":`: <correspondingFacetState>
+   */
+  mLFacetSelect: <IAnalyticsActionCause>{
+    name: 'mLFacetSelect',
+    type: 'mLFacet'
+  },
+  /**
+   * Identifies the search event that gets logged when a mLFacet check box is deselected and the query is updated.
+   *
+   * `actionCause`: `'mLFacetDeselect'`
+   * `actionType`: `'mLFacet'`
+   *
+   * Logging an event with this actionType also adds the following key-value pair in the custom data property of the Usage Analytics HTTP service request.
+   * `"facets":`: <correspondingFacetsState>
+   *
+   * `"facets"` is an Array of objects containing following key-value pairs
+   * `"facetId":`: <correspondingFacetId>
+   * `"facetField":`: <correspondingFacetField>
+   * `"facetTitle":`: <correspondingFacetTitle>
+   * `"facetValue":`: <correspondingFacetValue>
+   * `"facetDisplayValue":`: <correspondingFacetDisplayValue>
+   * `"facetState":`: <correspondingFacetState>
+   */
+  mLFacetDeselect: <IAnalyticsActionCause>{
+    name: 'mLFacetDeselect',
+    type: 'mLFacet'
   }
 };
