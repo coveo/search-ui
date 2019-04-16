@@ -379,7 +379,7 @@ export class MLFacet extends Component {
   }
 
   private initQueryStateEvents() {
-    this.includedAttributeId = QueryStateModel.getFacetId(this.options.id);
+    this.includedAttributeId = QueryStateModel.getMLFacetId(this.options.id);
     this.queryStateModel.registerNewAttribute(this.includedAttributeId, []);
     this.bind.onQueryState(MODEL_EVENTS.CHANGE, undefined, this.handleQueryStateChanged);
   }

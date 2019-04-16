@@ -26,7 +26,7 @@ export function MLFacetTest() {
     }
 
     function testQueryStateModelValues() {
-      const qsmValues: string[] = test.env.queryStateModel.attributes[`f:${test.cmp.options.id}`];
+      const qsmValues: string[] = test.env.queryStateModel.attributes[`mf:${test.cmp.options.id}`];
       expect(qsmValues).toEqual(test.cmp.values.selectedValues);
     }
 
@@ -237,17 +237,17 @@ export function MLFacetTest() {
     });
 
     it('should select the needed values using the id', () => {
-      test.env.queryStateModel.registerNewAttribute(`f:${test.cmp.options.id}`, []);
-      test.env.queryStateModel.set(`f:${test.cmp.options.id}`, ['a', 'b', 'c']);
+      test.env.queryStateModel.registerNewAttribute(`mf:${test.cmp.options.id}`, []);
+      test.env.queryStateModel.set(`mf:${test.cmp.options.id}`, ['a', 'b', 'c']);
       expect(test.cmp.values.selectedValues).toEqual(['a', 'b', 'c']);
     });
 
     it('should select the needed values using the id', () => {
       options.id = 'my_secret_id';
       initializeComponent();
-      test.env.queryStateModel.registerNewAttribute(`f:${options.id}`, []);
+      test.env.queryStateModel.registerNewAttribute(`mf:${options.id}`, []);
 
-      test.env.queryStateModel.set(`f:${options.id}`, ['a', 'b', 'c']);
+      test.env.queryStateModel.set(`mf:${options.id}`, ['a', 'b', 'c']);
       expect(test.cmp.values.selectedValues).toEqual(['a', 'b', 'c']);
     });
 

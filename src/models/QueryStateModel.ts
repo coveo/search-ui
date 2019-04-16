@@ -100,6 +100,10 @@ export class QueryStateModel extends Model {
     return 'f:' + id + ':operator';
   }
 
+  static getMLFacetId(id: string) {
+    return 'mf:' + id;
+  }
+
   static getFacetLookupValue(id: string) {
     return QueryStateModel.getFacetId(id) + ':lookupvalues';
   }
