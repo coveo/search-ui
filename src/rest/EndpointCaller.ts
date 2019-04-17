@@ -10,6 +10,11 @@ import { UrlUtils } from '../utils/UrlUtils';
 
 declare const XDomainRequest;
 
+export interface IEndpointCaller {
+  call<T>(params: IEndpointCallParameters): Promise<ISuccessResponse<T>>;
+  options: IEndpointCallerOptions;
+}
+
 /**
  * Parameters that can be used when calling an {@link EndpointCaller}
  */
@@ -186,7 +191,7 @@ enum XMLHttpRequestStatus {
  * * XDomainRequest for older IE browser that do not support CORS.
  * * Jsonp if all else fails, or is explicitly enabled.
  */
-export class EndpointCaller {
+export class EndpointCaller implements IEndpointCaller {
   public logger: Logger;
 
   /**
@@ -204,6 +209,27 @@ export class EndpointCaller {
    */
   constructor(public options: IEndpointCallerOptions = {}) {
     this.logger = new Logger(this);
+  }
+
+  public static convertJsonToQueryString(json: { [key: string]: any }): string[] {
+    Assert.exists(json);
+
+    const result: string[] = [];
+    _.each(json, (value, key) => {
+      if (value != null) {
+        if (_.isObject(value)) {
+          result.push(key + '=' + Utils.safeEncodeURIComponent(JSON.stringify(value)));
+        } else {
+          result.push(key + '=' + Utils.safeEncodeURIComponent(value.toString()));
+        }
+      }
+    });
+
+    return result;
+  }
+
+  public static convertJsonToFormBody(json: { [key: string]: any }): string {
+    return this.convertJsonToQueryString(json).join('&');
   }
 
   /**
@@ -283,7 +309,7 @@ export class EndpointCaller {
           } else if (requestInfo.requestDataType.indexOf('application/json') === 0) {
             xmlHttpRequest.send(JSON.stringify(requestInfo.requestData));
           } else {
-            xmlHttpRequest.send(this.convertJsonToFormBody(requestInfo.requestData));
+            xmlHttpRequest.send(EndpointCaller.convertJsonToFormBody(requestInfo.requestData));
           }
 
           // The "responseType" varies if the request is a success or not.
@@ -341,7 +367,7 @@ export class EndpointCaller {
 
       let queryString = requestInfo.queryString;
       if (requestInfo.method == 'GET') {
-        queryString = queryString.concat(this.convertJsonToQueryString(requestInfo.requestData));
+        queryString = queryString.concat(EndpointCaller.convertJsonToQueryString(requestInfo.requestData));
       }
       xmlHttpRequest.open(requestInfo.method, this.combineUrlAndQueryString(requestInfo.url, queryString));
     });
@@ -365,7 +391,7 @@ export class EndpointCaller {
 
       const xDomainRequest = new XDomainRequest();
       if (requestInfo.method == 'GET') {
-        queryString = queryString.concat(this.convertJsonToQueryString(requestInfo.requestData));
+        queryString = queryString.concat(EndpointCaller.convertJsonToQueryString(requestInfo.requestData));
       }
       xDomainRequest.open(requestInfo.method, this.combineUrlAndQueryString(requestInfo.url, queryString));
 
@@ -388,7 +414,7 @@ export class EndpointCaller {
         if (requestInfo.method == 'GET') {
           xDomainRequest.send();
         } else {
-          xDomainRequest.send(this.convertJsonToFormBody(requestInfo.requestData));
+          xDomainRequest.send(EndpointCaller.convertJsonToFormBody(requestInfo.requestData));
         }
       });
     });
@@ -404,7 +430,7 @@ export class EndpointCaller {
     let jQuery = JQueryUtils.getJQuery();
     Assert.check(jQuery, 'Using jsonp without having included jQuery is not supported.');
     return new Promise((resolve, reject) => {
-      const queryString = requestInfo.queryString.concat(this.convertJsonToQueryString(requestInfo.requestData));
+      const queryString = requestInfo.queryString.concat(EndpointCaller.convertJsonToQueryString(requestInfo.requestData));
 
       // JSONP don't support including stuff in the header, so we must
       // put the access token in the query string if we have one.
@@ -433,27 +459,6 @@ export class EndpointCaller {
   private getXmlHttpRequest(): XMLHttpRequest {
     const newXmlHttpRequest = this.options.xmlHttpRequest || XMLHttpRequest;
     return new newXmlHttpRequest();
-  }
-
-  private convertJsonToQueryString(json: { [key: string]: any }): string[] {
-    Assert.exists(json);
-
-    const result: string[] = [];
-    _.each(json, (value, key) => {
-      if (value != null) {
-        if (_.isObject(value)) {
-          result.push(key + '=' + Utils.safeEncodeURIComponent(JSON.stringify(value)));
-        } else {
-          result.push(key + '=' + Utils.safeEncodeURIComponent(value.toString()));
-        }
-      }
-    });
-
-    return result;
-  }
-
-  private convertJsonToFormBody(json: { [key: string]: any }): string {
-    return this.convertJsonToQueryString(json).join('&');
   }
 
   private handleSuccessfulResponseThatMightBeAnError<T>(requestInfo: IRequestInfo<T>, data: any, success, error) {

@@ -3,7 +3,8 @@ import { Assert } from '../misc/Assert';
 import { Logger } from '../misc/Logger';
 import { IAPIAnalyticsSearchEventsResponse } from '../rest/APIAnalyticsSearchEventsResponse';
 import { IClickEvent } from '../rest/ClickEvent';
-import { EndpointCaller, IEndpointCallerOptions, IErrorResponse, ISuccessResponse } from '../rest/EndpointCaller';
+import { IEndpointCallerOptions, IErrorResponse, ISuccessResponse } from '../rest/EndpointCaller';
+import { AnalyticsEndpointCaller } from '../rest/AnalyticsEndpointCaller';
 import { IStringMap } from '../rest/GenericParam';
 import { ISearchEvent } from '../rest/SearchEvent';
 import { Cookie } from '../utils/CookieUtils';
@@ -33,7 +34,7 @@ export class AnalyticsEndpoint {
 
   private visitId: string;
   private organization: string;
-  public endpointCaller: EndpointCaller;
+  public endpointCaller: AnalyticsEndpointCaller;
 
   constructor(public options: IAnalyticsEndpointOptions) {
     this.logger = new Logger(this);
@@ -42,7 +43,7 @@ export class AnalyticsEndpoint {
       accessToken: this.options.accessToken.token
     };
 
-    this.endpointCaller = new EndpointCaller(endpointCallerOptions);
+    this.endpointCaller = new AnalyticsEndpointCaller(endpointCallerOptions);
     this.organization = options.organization;
   }
 
