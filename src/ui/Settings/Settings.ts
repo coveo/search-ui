@@ -93,7 +93,7 @@ export class Settings extends Component {
           offset: '0, 5'
         },
         preventOverflow: {
-          boundariesElement: $$(this.root).el
+          boundariesElement: this.root
         }
       }
     });
