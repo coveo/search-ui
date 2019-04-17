@@ -91,6 +91,9 @@ export class Settings extends Component {
       modifiers: {
         offset: {
           offset: '0, 5'
+        },
+        preventOverflow: {
+          boundariesElement: this.root
         }
       }
     });
