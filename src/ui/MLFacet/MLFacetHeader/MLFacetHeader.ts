@@ -39,8 +39,7 @@ export class MLFacetHeader {
 
   private clear() {
     this.facet.reset();
-    this.facet.triggerNewQuery();
-    this.facet.sendUsageAnalyticsEvent(analyticsActionCauseList.mLFacetClearAll);
+    this.facet.triggerNewQuery(() => this.facet.sendUsageAnalyticsEvent(analyticsActionCauseList.mLFacetClearAll));
   }
 
   private createCollapseToggle() {
