@@ -3,6 +3,7 @@ import { MLFacetValueRenderer } from './MLFacetValueRenderer';
 import { FacetUtils } from '../../Facet/FacetUtils';
 import { MLFacet } from '../MLFacet';
 import { FacetValueState } from '../../../rest/Facet/FacetValueState';
+import { IAnalyticsMLFacetMeta } from '../../Analytics/AnalyticsActionListMeta';
 
 export interface IMLFacetValue {
   value: string;
@@ -60,6 +61,17 @@ export class MLFacetValue implements IMLFacetValue {
     }
 
     return returnValue;
+  }
+
+  public get analyticsMeta(): IAnalyticsMLFacetMeta {
+    return {
+      facetId: this.facet.options.id,
+      facetField: this.facet.options.field.toString(),
+      facetTitle: this.facet.options.title,
+      facetValue: this.value,
+      facetDisplayValue: this.valueCaption,
+      facetState: this.state
+    };
   }
 
   public render() {

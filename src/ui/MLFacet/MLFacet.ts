@@ -24,6 +24,7 @@ import { isFacetSortCriteria } from '../../rest/Facet/FacetSortCriteria';
 import { l } from '../../strings/Strings';
 import { DeviceUtils } from '../../utils/DeviceUtils';
 import { BreadcrumbEvents, IPopulateBreadcrumbEventArgs } from '../../events/BreadcrumbEvents';
+import { IAnalyticsMLFacetsMeta, IAnalyticsActionCause, IAnalyticsMLFacetMeta } from '../Analytics/AnalyticsActionListMeta';
 
 export interface IMLFacetOptions extends IResponsiveComponentOptions {
   id?: string;
@@ -371,6 +372,18 @@ export class MLFacet extends Component {
     this.mLFacetQueryController.enableFreezeCurrentValuesFlag();
   }
 
+  public sendUsageAnalyticsEvent(action: IAnalyticsActionCause) {
+    const allMLFacets = this.searchInterface.getComponents<MLFacet>(MLFacet.ID);
+    const facets: IAnalyticsMLFacetMeta[] = [];
+
+    allMLFacets.forEach(mLFacet => facets.push(...mLFacet.usageAnalyticsMeta));
+    this.usageAnalytics.logSearchEvent<IAnalyticsMLFacetsMeta>(action, { facets });
+  }
+
+  public get usageAnalyticsMeta(): IAnalyticsMLFacetMeta[] {
+    return this.values.activeFacetValues.map(facetValue => facetValue.analyticsMeta);
+  }
+
   private initQueryEvents() {
     this.bind.onRootElement(QueryEvents.duringQuery, () => this.ensureDom());
     this.bind.onRootElement(QueryEvents.doneBuildingQuery, (data: IDoneBuildingQueryEventArgs) => this.handleDoneBuildingQuery(data));
@@ -486,9 +499,14 @@ export class MLFacet extends Component {
     $$(this.element).toggleClass('coveo-hidden', this.values.isEmpty);
   }
 
-  public triggerNewQuery() {
+  public triggerNewQuery(beforeExecuteQuery?: () => void) {
     this.beforeSendingQuery();
-    this.queryController.executeQuery();
+
+    if (!beforeExecuteQuery) {
+      this.queryController.executeQuery({ ignoreWarningSearchEvent: true });
+    } else {
+      this.queryController.executeQuery({ beforeExecuteQuery });
+    }
   }
 
   private beforeSendingQuery() {
