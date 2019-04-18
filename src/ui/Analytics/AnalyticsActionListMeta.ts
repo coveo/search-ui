@@ -140,7 +140,7 @@ export interface IAnalyticsMLFacetMeta {
 }
 
 export interface IAnalyticsMLFacetsMeta {
-  target?: IAnalyticsMLFacetMeta;
+  targetFacet?: IAnalyticsMLFacetMeta;
 }
 
 export interface IAnalyticsFacetGraphSelectedMeta extends IAnalyticsFacetSliderChangeMeta {}

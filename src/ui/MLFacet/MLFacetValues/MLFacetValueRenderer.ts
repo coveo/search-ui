@@ -62,10 +62,10 @@ export class MLFacetValueRenderer {
     this.facet.toggleSelectValue(this.facetValue.value);
     this.toggleSelectedClass();
     this.facet.enableFreezeCurrentValuesFlag();
-    this.facet.triggerNewQuery(() => this.sendUsageAnalyticsEvent());
+    this.facet.triggerNewQuery(() => this.sendSelectionUAEvent());
   };
 
-  private sendUsageAnalyticsEvent() {
+  private sendSelectionUAEvent() {
     const action =
       this.facetValue.state === FacetValueState.selected
         ? analyticsActionCauseList.mLFacetSelect
