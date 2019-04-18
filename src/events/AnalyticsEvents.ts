@@ -76,14 +76,8 @@ export interface IChangeAnalyticsCustomDataEventArgs extends IChangeableAnalytic
 export interface IChangeableAnalyticsMetaObject {
   /**
    * A metadata key-value pair to send along with the usage analytics event.
-   *
-   * **Notes:**
-   * > * A metadata key must contain only alphanumeric characters and underscores (the Coveo Usage Analytics REST
-   * > service automatically converts white spaces to underscores and uppercase characters to lowercase characters in key
-   * > names).
-   * > * A metadata value must be a simple string (no other type is allowed).
    */
-  [name: string]: string;
+  [name: string]: any;
 }
 
 /**
