@@ -1271,5 +1271,19 @@ export var analyticsActionCauseList = {
   mLFacetDeselect: <IAnalyticsActionCause>{
     name: 'mLFacetDeselect',
     type: 'mLFacet'
+  },
+  /**
+   * Identifies the search event that gets logged when the **Clear** button of the MLFacet is selected.
+   *
+   * `actionCause`: `'mLFacetClearAll'`
+   * `actionType`: `'mLFacet'`
+   *
+   * Logging an event with this actionType also adds the following key-value pair in the custom data property of the Usage Analytics HTTP service request.
+   * `"facetId":`: <correspondingFacetId>
+   * `"facetField":`: <correspondingFacetField>
+   */
+  mLFacetClearAll: <IAnalyticsActionCause>{
+    name: 'mLFacetClearAll',
+    type: 'mLFacet'
   }
 };

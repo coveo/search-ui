@@ -6,6 +6,7 @@ import { SVGDom } from '../../../utils/SVGDom';
 import { MLFacet } from '../MLFacet';
 import { MLFacetHeaderButton } from './MLFacetHeaderButton';
 import { MLFacetHeaderCollapseToggle } from './MLFacetHeaderCollapseToggle';
+import { analyticsActionCauseList } from '../../Analytics/AnalyticsActionListMeta';
 
 export class MLFacetHeader {
   public static showLoadingDelay = 2000;
@@ -39,6 +40,7 @@ export class MLFacetHeader {
   private clear() {
     this.facet.reset();
     this.facet.triggerNewQuery();
+    this.facet.sendUsageAnalyticsEvent(analyticsActionCauseList.mLFacetClearAll);
   }
 
   private createCollapseToggle() {
