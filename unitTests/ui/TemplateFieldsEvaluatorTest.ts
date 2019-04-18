@@ -24,6 +24,11 @@ export function TemplateFieldsEvaluatorTest() {
       expect(TemplateFieldsEvaluator.evaluateFieldsToMatch(fieldsToMatch, result)).toBe(true);
     });
 
+    it('should not throw an error for a result with no value for a given field', () => {
+      fieldsToMatch = [{ field: 'doesNotExists', values: ['does not matter'] }];
+      expect(() => TemplateFieldsEvaluator.evaluateFieldsToMatch(fieldsToMatch, result)).not.toThrow();
+    });
+
     it('should be able to evaluate fields that do not match', () => {
       fieldsToMatch = [{ field: 'foo', values: ['brak'] }];
       expect(TemplateFieldsEvaluator.evaluateFieldsToMatch(fieldsToMatch, result)).toBe(false);

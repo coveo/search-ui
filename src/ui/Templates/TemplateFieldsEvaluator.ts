@@ -1,6 +1,6 @@
 import { IQueryResult } from '../../rest/QueryResult';
 import { IFieldsToMatch } from './Template';
-import { each } from 'underscore';
+import { each, find } from 'underscore';
 
 export class TemplateFieldsEvaluator {
   public static evaluateFieldsToMatch(toMatches: IFieldsToMatch[], result: IQueryResult): boolean {
@@ -28,6 +28,6 @@ export class TemplateFieldsEvaluator {
   }
 
   private static isMatch(fieldValues: string[], value: string) {
-    return fieldValues.map(fieldValue => fieldValue.toLowerCase()).indexOf(value.toLowerCase()) !== -1;
+    return find(fieldValues, fieldValue => fieldValue.toLowerCase() == value.toLowerCase()) != undefined;
   }
 }
