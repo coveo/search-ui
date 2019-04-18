@@ -373,11 +373,7 @@ export class MLFacet extends Component {
   }
 
   public sendUsageAnalyticsEvent(action: IAnalyticsActionCause, target?: IAnalyticsMLFacetMeta) {
-    const allMLFacets = this.searchInterface.getComponents<MLFacet>(MLFacet.ID);
-    const facetsState: IAnalyticsMLFacetMeta[] = [];
-
-    allMLFacets.forEach(mLFacet => facetsState.concat(mLFacet.analyticsFacetState));
-    this.usageAnalytics.logSearchEvent<IAnalyticsMLFacetsMeta>(action, { target, facetsState });
+    this.usageAnalytics.logSearchEvent<IAnalyticsMLFacetsMeta>(action, { target });
   }
 
   public get analyticsFacetState(): IAnalyticsMLFacetMeta[] {
