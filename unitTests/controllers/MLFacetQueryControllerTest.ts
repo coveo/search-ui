@@ -131,5 +131,21 @@ export function MLFacetQueryControllerTest() {
 
       expect(latestFacetRequest().numberOfValues).toBe(latestFacetRequest().currentValues.length);
     });
+
+    it('isFieldExpanded should be false by default', () => {
+      expect(latestFacetRequest().isFieldExpanded).toBe(false);
+    });
+
+    it(`when more values are requested than the numberOfValues options
+      isFieldExpanded should be false`, () => {
+      facetOptions.numberOfValues = 10;
+      initializeComponents();
+
+      mLFacetQueryController.increaseNumberOfValuesToRequest(facetOptions.numberOfValues);
+
+      buildRequest();
+
+      expect(latestFacetRequest().isFieldExpanded).toBe(true);
+    });
   });
 }
