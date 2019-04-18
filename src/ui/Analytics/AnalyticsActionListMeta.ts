@@ -134,13 +134,14 @@ export interface IAnalyticsMLFacetMeta {
   facetId: string;
   facetField: string;
   facetTitle: string;
-  facetValue: string;
-  facetDisplayValue: string;
-  facetState: FacetValueState;
+  facetValue?: string;
+  facetDisplayValue?: string;
+  facetValueState?: FacetValueState;
 }
 
 export interface IAnalyticsMLFacetsMeta {
-  facets: IAnalyticsMLFacetMeta[];
+  target?: IAnalyticsMLFacetMeta;
+  facetsState: IAnalyticsMLFacetMeta[];
 }
 
 export interface IAnalyticsFacetGraphSelectedMeta extends IAnalyticsFacetSliderChangeMeta {}

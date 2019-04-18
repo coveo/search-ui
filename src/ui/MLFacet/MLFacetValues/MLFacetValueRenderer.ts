@@ -71,7 +71,7 @@ export class MLFacetValueRenderer {
         ? analyticsActionCauseList.mLFacetSelect
         : analyticsActionCauseList.mLFacetDeselect;
 
-    this.facet.sendUsageAnalyticsEvent(action);
+    this.facet.sendUsageAnalyticsEvent(action, this.facetValue.analyticsMeta);
   }
 
   private get ariaLabel() {

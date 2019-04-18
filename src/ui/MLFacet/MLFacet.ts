@@ -372,15 +372,15 @@ export class MLFacet extends Component {
     this.mLFacetQueryController.enableFreezeCurrentValuesFlag();
   }
 
-  public sendUsageAnalyticsEvent(action: IAnalyticsActionCause) {
+  public sendUsageAnalyticsEvent(action: IAnalyticsActionCause, target?: IAnalyticsMLFacetMeta) {
     const allMLFacets = this.searchInterface.getComponents<MLFacet>(MLFacet.ID);
-    const facets: IAnalyticsMLFacetMeta[] = [];
+    const facetsState: IAnalyticsMLFacetMeta[] = [];
 
-    allMLFacets.forEach(mLFacet => facets.push(...mLFacet.usageAnalyticsMeta));
-    this.usageAnalytics.logSearchEvent<IAnalyticsMLFacetsMeta>(action, { facets });
+    allMLFacets.forEach(mLFacet => facetsState.concat(mLFacet.analyticsFacetState));
+    this.usageAnalytics.logSearchEvent<IAnalyticsMLFacetsMeta>(action, { target, facetsState });
   }
 
-  public get usageAnalyticsMeta(): IAnalyticsMLFacetMeta[] {
+  public get analyticsFacetState(): IAnalyticsMLFacetMeta[] {
     return this.values.activeFacetValues.map(facetValue => facetValue.analyticsMeta);
   }
 

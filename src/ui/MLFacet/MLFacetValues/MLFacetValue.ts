@@ -70,7 +70,7 @@ export class MLFacetValue implements IMLFacetValue {
       facetTitle: this.facet.options.title,
       facetValue: this.value,
       facetDisplayValue: this.valueCaption,
-      facetState: this.state
+      facetValueState: this.state
     };
   }
 
