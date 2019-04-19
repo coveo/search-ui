@@ -29,6 +29,7 @@ import { QueryUtils } from '../../utils/QueryUtils';
 import * as _ from 'underscore';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { MLFacet } from '../MLFacet/MLFacet';
+import { Utils } from '../../utils/Utils';
 
 export class LiveAnalyticsClient implements IAnalyticsClient {
   public isContextual: boolean = false;
@@ -336,7 +337,7 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
     modifiedMeta['JSUIVersion'] = version.lib + ';' + version.product;
 
     const facetsState = this.facetsState;
-    if (facetsState.length) {
+    if (facetsState) {
       modifiedMeta['facetsState'] = facetsState;
     }
 
@@ -351,9 +352,12 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
 
   private get facetsState() {
     const allMLFacets = this.bindings.searchInterface.getComponents<MLFacet>(MLFacet.ID);
+    if (Utils.isEmptyArray(allMLFacets)) {
+      return null;
+    }
+
     const facetsState: IAnalyticsMLFacetMeta[] = [];
     allMLFacets.forEach(mLFacet => facetsState.push(...mLFacet.analyticsFacetState));
-
     return facetsState;
   }
 
