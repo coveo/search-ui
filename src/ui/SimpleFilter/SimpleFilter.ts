@@ -420,7 +420,7 @@ export class SimpleFilter extends Component {
   private handlePopulateBreadcrumb(args: IPopulateBreadcrumbEventArgs) {
     if (this.getSelectedLabeledCheckboxes().length > 0) {
       const elem = $$('div', { className: 'coveo-simplefilter-breadcrumb' });
-      const title = $$('span', { className: 'coveo-simplefilter-breadcrumb-title' }, this.options.title);
+      const title = $$('span', { className: 'coveo-simplefilter-breadcrumb-title' }, `${this.options.title}:`);
       elem.append(title.el);
       const values = $$('span', { className: 'coveo-simplefilter-breadcrumb-values' });
       elem.append(values.el);
@@ -428,8 +428,7 @@ export class SimpleFilter extends Component {
       each(this.getSelectedLabeledCheckboxes(), selectedlabeledCheckbox => {
         const value = $$('span', { className: 'coveo-simplefilter-breadcrumb-value' }, this.getValueCaption(selectedlabeledCheckbox.label));
         values.append(value.el);
-        const svgContainer = $$('span', { className: 'coveo-simplefilter-breadcrumb-clear' }, SVGIcons.icons.checkboxHookExclusionMore);
-        SVGDom.addClassToSVGInContainer(svgContainer.el, 'coveo-simplefilter-breadcrumb-clear-svg');
+        const svgContainer = $$('span', { className: 'coveo-simplefilter-breadcrumb-clear' }, SVGIcons.icons.mainClear);
         value.append(svgContainer.el);
         value.el.title = this.getValueCaption(selectedlabeledCheckbox.label);
         $$(value).on('click', () => this.handleRemoveFromBreadcrumb(selectedlabeledCheckbox));

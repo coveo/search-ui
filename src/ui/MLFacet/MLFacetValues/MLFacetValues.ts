@@ -45,15 +45,19 @@ export class MLFacetValues {
   }
 
   public get selectedValues() {
-    return this.facetValues.filter(value => value.isSelected).map(value => value.value);
+    return this.facetValues.filter(value => value.isSelected).map(({ value }) => value);
   }
 
-  public get nonIdleValues() {
-    return this.facetValues.filter(value => !value.isIdle).map(value => value.value);
+  public get activeFacetValues() {
+    return this.facetValues.filter(value => !value.isIdle);
   }
 
   public get hasSelectedValues() {
     return !!findWhere(this.facetValues, { state: FacetValueState.selected });
+  }
+
+  public get hasActiveValues() {
+    return !!this.activeFacetValues.length;
   }
 
   public get hasIdleValues() {

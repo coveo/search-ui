@@ -7,9 +7,10 @@ export function MLFacetHeaderTest() {
   describe('MLFacetHeader', () => {
     let mLFacetHeader: MLFacetHeader;
     let facet: MLFacet;
-    let baseOptions: IMLFacetOptions = { title: 'hello' };
+    let baseOptions: IMLFacetOptions;
 
     beforeEach(() => {
+      baseOptions = { title: 'hello' };
       initializeComponent();
     });
 
@@ -67,7 +68,12 @@ export function MLFacetHeaderTest() {
       expect($$(clearElement).isVisible()).toBe(true);
     });
 
-    describe('when passing the option enableCollapse as true', () => {
+    describe('when passing the option enableCollapse as false', () => {
+      beforeEach(() => {
+        baseOptions.enableCollapse = false;
+        initializeComponent();
+      });
+
       it('should not create collapse & expand buttons', () => {
         expect(collapseElement()).toBeFalsy();
         expect(expandElement()).toBeFalsy();

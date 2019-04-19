@@ -3,9 +3,6 @@
 
 .CoveoBreadcrumb {
   padding: 10px 0;
-  &.coveo-small-display {
-    @include breadcrumb-small-display;
-  }
   position: relative;
   overflow: hidden;
   border-bottom: $default-border;
@@ -18,22 +15,13 @@
 }
 
 .coveo-breadcrumb-clear-all {
-  @include clickable();
+  @include linkButton();
+  @include flex-shrink(0);
+
   display: inline-block;
   font-size: $font-size-smaller;
-  & > div {
-    display: inline-block;
-  }
-  @include defaultRoundedBorder();
   padding: 5px;
   margin-left: 5px;
-  @include flex-shrink(0);
-  @include clearButton('.coveo-breadcrumb-clear-all-icon');
-}
-
-.coveo-breadcrumb-clear-all-icon {
-  top: 1px;
-  margin-right: 5px;
 }
 
 .coveo-breadcrumb-items {

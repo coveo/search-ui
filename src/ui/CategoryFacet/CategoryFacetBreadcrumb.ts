@@ -1,5 +1,4 @@
 import { $$ } from '../../utils/Dom';
-import { SVGDom } from '../../utils/SVGDom';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { CategoryValueDescriptor, CategoryFacet } from './CategoryFacet';
 import { AccessibleButton } from '../../utils/AccessibleButton';
@@ -19,14 +18,13 @@ export class CategoryFacetBreadcrumb {
       {
         className: 'coveo-facet-breadcrumb-clear'
       },
-      SVGIcons.icons.checkboxHookExclusionMore
+      SVGIcons.icons.mainClear
     );
 
-    SVGDom.addClassToSVGInContainer(clear.el, 'coveo-facet-breadcrumb-clear-svg');
     const pathToRender = without(this.categoryValueDescriptor.path, ...this.categoryFacet.options.basePath);
     const captionLabel = pathToRender.map(pathPart => this.categoryFacet.getCaption(pathPart)).join('/');
 
-    const breadcrumbTitle = $$('span', { className: 'coveo-category-facet-breadcrumb-title' }, `${this.categoryFacet.options.title}: `);
+    const breadcrumbTitle = $$('span', { className: 'coveo-category-facet-breadcrumb-title' }, `${this.categoryFacet.options.title}:`);
     const valuesContainer = $$('span', { className: 'coveo-category-facet-breadcrumb-values' }, captionLabel, clear);
 
     new AccessibleButton()

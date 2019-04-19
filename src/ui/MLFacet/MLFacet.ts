@@ -8,6 +8,7 @@ import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
 import { Initialization } from '../Base/Initialization';
 import { ResponsiveFacetOptions } from '../ResponsiveComponents/ResponsiveFacetOptions';
 import { ResponsiveFacets } from '../ResponsiveComponents/ResponsiveFacets';
+import { MLFacetBreadcrumbs } from './MLFacetBreadcrumbs';
 import { MLFacetHeader } from './MLFacetHeader/MLFacetHeader';
 import { MLFacetValues } from './MLFacetValues/MLFacetValues';
 import { QueryEvents, IQuerySuccessEventArgs, IDoneBuildingQueryEventArgs } from '../../events/QueryEvents';
@@ -22,6 +23,8 @@ import { IStringMap } from '../../rest/GenericParam';
 import { isFacetSortCriteria } from '../../rest/Facet/FacetSortCriteria';
 import { l } from '../../strings/Strings';
 import { MLFacetManager } from '../MLFacetManager/MLFacetManager';
+import { DeviceUtils } from '../../utils/DeviceUtils';
+import { BreadcrumbEvents, IPopulateBreadcrumbEventArgs } from '../../events/BreadcrumbEvents';
 
 export interface IMLFacetOptions extends IResponsiveComponentOptions {
   id?: string;
@@ -31,6 +34,8 @@ export interface IMLFacetOptions extends IResponsiveComponentOptions {
   numberOfValues?: number;
   enableCollapse?: boolean;
   collapsedByDefault?: boolean;
+  includeInBreadcrumb?: boolean;
+  numberOfValuesInBreadcrumb?: number;
   valueCaption?: any;
 }
 
@@ -143,9 +148,33 @@ export class MLFacet extends Component {
      * See also the [`enableCollapse`]{@link MLFacet.options.enableCollapse}
      * option.
      *
-     * Default value is `false`
+     * **Default:** `false`
      */
     collapsedByDefault: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'Filtering' }),
+
+    /**
+     * Whether to notify the [Breadcrumb]{@link Breadcrumb} component when toggling values in the facet.
+     *
+     * See also the [numberOfValuesInBreadcrumb]{@link MLFacet.options.numberOfValuesInBreadcrumb} option.
+     *
+     * **Default:** `true`
+     */
+    includeInBreadcrumb: ComponentOptions.buildBooleanOption({ defaultValue: true, section: 'CommonOptions' }),
+
+    /**
+     * The maximum number of selected values the [`Breadcrumb`]{@link Breadcrumb} component can display before outputting a **N more...** link for the facet.
+     *
+     * **Note:** This option only has a meaning when the [`includeInBreadcrumb`]{@link MLFacet.options.includeInBreadcrumb} option is set to `true`.
+     *
+     * **Minimum:** `0`
+     * **Default:** `5` (desktop), or `3` (mobile)
+     */
+    numberOfValuesInBreadcrumb: ComponentOptions.buildNumberOption({
+      defaultFunction: () => (DeviceUtils.isMobileDevice() ? 3 : 5),
+      min: 0,
+      depend: 'includeInBreadcrumb',
+      section: 'CommonOptions'
+    }),
 
     /**
      * A mapping of facet values to their desired captions.
@@ -178,6 +207,7 @@ export class MLFacet extends Component {
     this.initMLFacetQueryController();
     this.initQueryEvents();
     this.initQueryStateEvents();
+    this.initBreadCrumbEvents();
 
     this.values = new MLFacetValues(this);
     this.isCollapsed = this.options.enableCollapse && this.options.collapsedByDefault;
@@ -374,6 +404,15 @@ export class MLFacet extends Component {
     this.bind.onQueryState(MODEL_EVENTS.CHANGE, undefined, this.handleQueryStateChanged);
   }
 
+  protected initBreadCrumbEvents() {
+    if (this.options.includeInBreadcrumb) {
+      this.bind.onRootElement(BreadcrumbEvents.populateBreadcrumb, (args: IPopulateBreadcrumbEventArgs) =>
+        this.handlePopulateBreadcrumb(args)
+      );
+      this.bind.onRootElement(BreadcrumbEvents.clearBreadcrumb, () => this.reset());
+    }
+  }
+
   private initMLFacetQueryController() {
     this.mLFacetQueryController = new MLFacetQueryController(this);
   }
@@ -418,6 +457,17 @@ export class MLFacet extends Component {
       this.selectMultipleValues(querySelectedValues);
     }
   };
+
+  private handlePopulateBreadcrumb(args: IPopulateBreadcrumbEventArgs) {
+    Assert.exists(args);
+
+    if (!this.values.hasActiveValues) {
+      return;
+    }
+
+    const breadcrumbs = new MLFacetBreadcrumbs(this);
+    args.breadcrumbs.push({ element: breadcrumbs.element });
+  }
 
   public createDom() {
     this.createContent();
