@@ -4,7 +4,7 @@ import { InitializationEvents } from '../../events/InitializationEvents';
 import { QueryEvents, IQuerySuccessEventArgs } from '../../events/QueryEvents';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { exportGlobally } from '../../GlobalExports';
-import { shuffle, find } from 'underscore';
+import { find } from 'underscore';
 import { IFacetResponse } from '../../rest/Facet/FacetResponse';
 import { $$ } from '../../utils/Dom';
 import { Utils } from '../../utils/Utils';
@@ -179,8 +179,7 @@ export class MLFacetManager extends Component {
     }
 
     if (this.options.enableReorder) {
-      // TODO: remove shuffle for the results
-      !this.freezeCurrentFacets && this.mapResponseToComponents(shuffle(data.results.facets));
+      !this.freezeCurrentFacets && this.mapResponseToComponents(data.results.facets);
       this.sortFacetsIfCompareOptionsProvided();
       this.reorderMLFacetsInDom();
     }
