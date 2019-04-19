@@ -11,7 +11,8 @@ import { ITopQueries } from '../../rest/TopQueries';
 import {
   IChangeableAnalyticsMetaObject,
   IChangeableAnalyticsDataObject,
-  IChangeAnalyticsCustomDataEventArgs
+  IChangeAnalyticsCustomDataEventArgs,
+  ICoveoUAEventArgs
 } from '../../events/AnalyticsEvents';
 import { Defer } from '../../misc/Defer';
 import { $$ } from '../../utils/Dom';
@@ -174,8 +175,13 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
     var customEvent = this.buildCustomEvent(actionCause, metaObject, element);
     this.triggerChangeAnalyticsCustomData('CustomEvent', metaObject, customEvent);
     this.checkToSendAnyPendingSearchAsYouType(actionCause);
+    var convertedCustomEvent = APIAnalyticsBuilder.convertCustomEventToAPI(customEvent);
     $$(this.rootElement).trigger(AnalyticsEvents.customEvent, <IAnalyticsCustomEventArgs>{
-      customEvent: APIAnalyticsBuilder.convertCustomEventToAPI(customEvent)
+      customEvent: convertedCustomEvent
+    });
+    $$(this.rootElement).trigger(AnalyticsEvents.coveoUAEventReady, <ICoveoUAEventArgs>{
+      event: 'CoveoCustomEvent',
+      coveoUAEventData: convertedCustomEvent
     });
     return this.sendToCloud ? this.endpoint.sendCustomEvent(customEvent) : Promise.resolve(null);
   }
@@ -242,8 +248,13 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
     Assert.isNonEmptyString(event.sourceName);
     Assert.isNumber(event.documentPosition);
 
+    var convertedDocumentViewEvent = APIAnalyticsBuilder.convertDocumentViewToAPI(event);
     $$(this.rootElement).trigger(AnalyticsEvents.documentViewEvent, {
-      documentViewEvent: APIAnalyticsBuilder.convertDocumentViewToAPI(event)
+      documentViewEvent: convertedDocumentViewEvent
+    });
+    $$(this.rootElement).trigger(AnalyticsEvents.coveoUAEventReady, <ICoveoUAEventArgs>{
+      event: 'CoveoClickEvent',
+      coveoUAEventData: convertedDocumentViewEvent
     });
     return this.sendToCloud ? this.endpoint.sendDocumentViewEvent(event) : Promise.resolve(null);
   }
