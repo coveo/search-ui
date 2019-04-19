@@ -137,7 +137,7 @@ export function MLFacetQueryControllerTest() {
     });
 
     it(`when more values are requested than the numberOfValues options
-      isFieldExpanded should be false`, () => {
+      isFieldExpanded should be true`, () => {
       facetOptions.numberOfValues = 10;
       initializeComponents();
 
