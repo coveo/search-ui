@@ -21,6 +21,11 @@ export interface IAnalyticsCustomEventArgs {
   customEvent: IAPICustomEvent;
 }
 
+export interface ICoveoUAEventArgs {
+  event: string;
+  coveoUAEventData: IAPISearchEvent | IAPIDocumentViewEvent | IAPICustomEvent;
+}
+
 /**
  * The `IChangeAnalyticsCustomDataEventArgs` interface describes the object that all
  * [`changeAnalyticsCustomData`]{@link AnalyticsEvents.changeAnalyticsCustomData} event handlers receive as an argument.
@@ -167,6 +172,7 @@ export class AnalyticsEvents {
    */
   public static documentViewEvent = 'analyticsDocumentViewEvent';
   public static customEvent = 'analyticsCustomEvent';
+  public static coveoUAEventReady = 'coveoUAEventReady';
 
   /**
    * Triggered whenever an analytics event is about to be logged.
