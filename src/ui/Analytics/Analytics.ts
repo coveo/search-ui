@@ -22,6 +22,7 @@ import { exportGlobally } from '../../GlobalExports';
 import { PendingSearchEvent } from './PendingSearchEvent';
 import { PendingSearchAsYouTypeSearchEvent } from './PendingSearchAsYouTypeSearchEvent';
 import { AccessToken } from '../../rest/AccessToken';
+import { AnalyticsEvents, ICoveoUAEventArgs } from '../../events/AnalyticsEvents';
 
 export interface IAnalyticsOptions {
   user?: string;
@@ -34,6 +35,8 @@ export interface IAnalyticsOptions {
   splitTestRunVersion?: string;
   sendToCloud?: boolean;
   organization?: string;
+  populateDataLayer?: boolean;
+  dataLayerName?: string;
   renewAccessToken?: () => Promise<string>;
 }
 
@@ -158,7 +161,9 @@ export class Analytics extends Component {
      * Default value is `undefined`, and the value of this parameter will fallback to the organization used for the
      * search endpoint.
      */
-    organization: ComponentOptions.buildStringOption()
+    organization: ComponentOptions.buildStringOption(),
+    populateDataLayer: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+    dataLayerName: ComponentOptions.buildStringOption({ defaultValue: 'dataLayer' })
   };
 
   /**
@@ -199,6 +204,7 @@ export class Analytics extends Component {
 
     this.bind.onRootElement(QueryEvents.buildingQuery, (data: IBuildingQueryEventArgs) => this.handleBuildingQuery(data));
     this.bind.onRootElement(QueryEvents.queryError, (data: IQueryErrorEventArgs) => this.handleQueryError(data));
+    this.bind.onRootElement(AnalyticsEvents.coveoUAEventReady, (data: ICoveoUAEventArgs) => this.handleCoveoUAEventReady(data));
 
     // Analytics component is a bit special: It can be higher in the dom tree than the search interface
     // Need to resolve down to find the componentOptionsModel if we need to.
@@ -461,6 +467,14 @@ export class Analytics extends Component {
       },
       this.element
     );
+  }
+
+  private handleCoveoUAEventReady(data: ICoveoUAEventArgs) {
+    if (this.options.populateDataLayer) {
+      let dataLayerName = this.options.dataLayerName;
+      (<any>window)[dataLayerName] = (<any>window)[dataLayerName] || [];
+      (<any>window)[dataLayerName].push(data);
+    }
   }
 
   public static create(element: HTMLElement, options: IAnalyticsOptions, bindings: IComponentBindings): IAnalyticsClient {
