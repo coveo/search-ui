@@ -238,4 +238,9 @@ export interface IQuery {
    * Specifies an array of request to retrieve facet values for the MLFacet component
    */
   facets?: IFacetRequest[];
+
+  /**
+   * Indicates whether the facet values should be returned in their current order.
+   */
+  freezeFacetOrder?: Boolean;
 }

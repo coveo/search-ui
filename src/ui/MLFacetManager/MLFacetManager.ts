@@ -129,8 +129,6 @@ export class MLFacetManager extends Component {
   // Children MLFacet components of the MLFacetManager
   private mLFacets: MLFacet[];
   private containerElement: HTMLElement;
-  // TODO: Remove this when freezeCurrentFacets is implemented on the API
-  public freezeCurrentFacets = false;
 
   constructor(element: HTMLElement, public options?: IMLFacetManagerOptions, private bindings?: IComponentBindings) {
     super(element, 'MLFacetManager');
@@ -165,8 +163,6 @@ export class MLFacetManager extends Component {
     if (!this.mLFacets.length) {
       this.disable();
     }
-
-    this.mLFacets.forEach(mLFacet => mLFacet.registerManager(this));
   }
 
   private handleQuerySuccess(data: IQuerySuccessEventArgs) {
@@ -179,12 +175,10 @@ export class MLFacetManager extends Component {
     }
 
     if (this.options.enableReorder) {
-      !this.freezeCurrentFacets && this.mapResponseToComponents(data.results.facets);
+      this.mapResponseToComponents(data.results.facets);
       this.sortFacetsIfCompareOptionsProvided();
       this.reorderMLFacetsInDom();
     }
-
-    this.freezeCurrentFacets = false;
   }
 
   private mapResponseToComponents(facetsResponse: IFacetResponse[]) {

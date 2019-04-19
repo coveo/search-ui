@@ -22,7 +22,6 @@ import { IResponsiveComponentOptions } from '../ResponsiveComponents/ResponsiveC
 import { IStringMap } from '../../rest/GenericParam';
 import { isFacetSortCriteria } from '../../rest/Facet/FacetSortCriteria';
 import { l } from '../../strings/Strings';
-import { MLFacetManager } from '../MLFacetManager/MLFacetManager';
 import { DeviceUtils } from '../../utils/DeviceUtils';
 import { BreadcrumbEvents, IPopulateBreadcrumbEventArgs } from '../../events/BreadcrumbEvents';
 
@@ -186,7 +185,6 @@ export class MLFacet extends Component {
   };
 
   private mLFacetQueryController: MLFacetQueryController;
-  private mLFacetManager: MLFacetManager;
   private includedAttributeId: string;
   private listenToQueryStateChange = true;
   private header: MLFacetHeader;
@@ -380,15 +378,9 @@ export class MLFacet extends Component {
    *
    * The flag is automatically set back to false after a query is built.
    */
-  public enableFreezeCurrentFacetsFlag() {
-    // TODO: Implement this differently, maybe like the values flag
-    if (this.mLFacetManager) {
-      this.mLFacetManager.freezeCurrentFacets = true;
-    }
-  }
-
-  public registerManager(manager: MLFacetManager) {
-    this.mLFacetManager = manager;
+  public enableFreezeFacetOrderFlag() {
+    Assert.exists(this.mLFacetQueryController);
+    this.mLFacetQueryController.enableFreezeFacetOrderFlag();
   }
 
   private initQueryEvents() {

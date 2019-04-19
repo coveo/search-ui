@@ -288,6 +288,11 @@ export class QueryBuilder {
   public facetRequests: IFacetRequest[] = [];
 
   /**
+   * Indicates whether the facet values should be returned in their current order.
+   */
+  public freezeFacetOrder: boolean;
+
+  /**
    * Specifies an array of request for the CategoryFacet component.
    */
   public categoryFacets: ICategoryFacetRequest[] = [];
@@ -358,6 +363,7 @@ export class QueryBuilder {
       rankingFunctions: this.rankingFunctions,
       groupBy: this.groupBy,
       facets: this.facets,
+      freezeFacetOrder: this.freezeFacetOrder,
       categoryFacets: this.categoryFacets,
       retrieveFirstSentences: this.retrieveFirstSentences,
       timezone: this.timezone,

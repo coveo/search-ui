@@ -60,7 +60,7 @@ export class MLFacetValueRenderer {
     this.facet.toggleSelectValue(this.facetValue.value);
     this.toggleSelectedClass();
     this.facet.enableFreezeCurrentValuesFlag();
-    this.facet.enableFreezeCurrentFacetsFlag();
+    this.facet.enableFreezeFacetOrderFlag();
     this.facet.triggerNewQuery();
   };
 
