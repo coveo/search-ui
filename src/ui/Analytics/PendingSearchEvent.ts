@@ -10,7 +10,7 @@ import { Component } from '../Base/Component';
 import { QueryController } from '../../controllers/QueryController';
 import { Defer } from '../../misc/Defer';
 import { APIAnalyticsBuilder } from '../../rest/APIAnalyticsBuilder';
-import { IAnalyticsSearchEventsArgs, ICoveoUAEventArgs, AnalyticsEvents } from '../../events/AnalyticsEvents';
+import { IAnalyticsSearchEventsArgs, IAnalyticsEventArgs, AnalyticsEvents } from '../../events/AnalyticsEvents';
 import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
 import { QueryStateModel } from '../../models/QueryStateModel';
 import * as _ from 'underscore';
@@ -124,9 +124,9 @@ export class PendingSearchEvent {
         });
         if (apiSearchEvents.length) {
           apiSearchEvents.forEach(searchEvent => {
-            $$(this.root).trigger(AnalyticsEvents.coveoUAEventReady, <ICoveoUAEventArgs>{
+            $$(this.root).trigger(AnalyticsEvents.analyticsEventReady, <IAnalyticsEventArgs>{
               event: 'CoveoSearchEvent',
-              coveoUAEventData: searchEvent
+              coveoAnalyticsEventData: searchEvent
             });
           });
         }
