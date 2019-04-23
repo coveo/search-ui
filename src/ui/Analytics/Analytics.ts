@@ -162,7 +162,28 @@ export class Analytics extends Component {
      * search endpoint.
      */
     organization: ComponentOptions.buildStringOption(),
+
+    /**
+     * Whether to push Coveo usage analytics events to the Google Tag Manager [data layer](https://developers.google.com/tag-manager/devguide#datalayer)).
+     *
+     * **Note:**
+     * - This option has no effect unless a Google Tag Manager container snippet is present in the page (see [Google Tag Manager Quick Start Guide](https://developers.google.com/tag-manager/quickstart)).
+     *
+     * See also [`gtmDataLayerName`]{@link Analytics.options.gtmDataLayerName}.
+     *
+     * **Default:** `true`
+     */
     pushToGtmDataLayer: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+
+    /**
+     * The name of the Google Tag Manager data layer.
+     *
+     * **Notes:**
+     * - This option has no effect unless [`pushToGtmDataLayer`]{@link Analytics.options.pushToGtmDataLayer} is `true`.
+     * - Avoid setting this option unless you have [renamed the Google Tag Manager data layer](https://developers.google.com/tag-manager/devguide#renaming) in the page.
+     *
+     * **Default:** `dataLayer`
+     */
     gtmDataLayerName: ComponentOptions.buildStringOption({ depend: 'pushToGtmDataLayer', defaultValue: 'dataLayer' })
   };
 
