@@ -50,7 +50,12 @@ export class ResponsiveDropdownContent implements IResponsiveDropdownContent {
 
     this.popperReference = new PopperJs(referenceElement, this.element.el, {
       placement: 'bottom-end',
-      positionFixed: true
+      positionFixed: true,
+      modifiers: {
+        preventOverflow: {
+          boundariesElement: this.coveoRoot.el
+        }
+      }
     });
   }
 
