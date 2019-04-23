@@ -21,9 +21,9 @@ export interface IAnalyticsCustomEventArgs {
   customEvent: IAPICustomEvent;
 }
 
-export interface ICoveoUAEventArgs {
-  event: string;
-  coveoUAEventData: IAPISearchEvent | IAPIDocumentViewEvent | IAPICustomEvent;
+export interface IAnalyticsEventArgs {
+  event: 'CoveoCustomEvent' | 'CoveoClickEvent' | 'CoveoSearchEvent';
+  coveoAnalyticsEventData: IAPISearchEvent | IAPIDocumentViewEvent | IAPICustomEvent;
 }
 
 /**
@@ -172,7 +172,7 @@ export class AnalyticsEvents {
    */
   public static documentViewEvent = 'analyticsDocumentViewEvent';
   public static customEvent = 'analyticsCustomEvent';
-  public static coveoUAEventReady = 'coveoUAEventReady';
+  public static analyticsEventReady = 'analyticsEventReady';
 
   /**
    * Triggered whenever an analytics event is about to be logged.
