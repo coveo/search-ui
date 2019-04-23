@@ -164,7 +164,7 @@ export class Analytics extends Component {
     organization: ComponentOptions.buildStringOption(),
 
     /**
-     * Whether to push Coveo usage analytics events to the Google Tag Manager [data layer](https://developers.google.com/tag-manager/devguide#datalayer)).
+     * Whether to push Coveo usage analytics events to the Google Tag Manager [data layer](https://developers.google.com/tag-manager/devguide#datalayer).
      *
      * **Note:**
      * - This option has no effect unless a Google Tag Manager container snippet is present in the page (see [Google Tag Manager Quick Start Guide](https://developers.google.com/tag-manager/quickstart)).
