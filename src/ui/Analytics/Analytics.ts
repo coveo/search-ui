@@ -22,7 +22,7 @@ import { exportGlobally } from '../../GlobalExports';
 import { PendingSearchEvent } from './PendingSearchEvent';
 import { PendingSearchAsYouTypeSearchEvent } from './PendingSearchAsYouTypeSearchEvent';
 import { AccessToken } from '../../rest/AccessToken';
-import { AnalyticsEvents, ICoveoUAEventArgs } from '../../events/AnalyticsEvents';
+import { AnalyticsEvents, IAnalyticsEventArgs } from '../../events/AnalyticsEvents';
 
 export interface IAnalyticsOptions {
   user?: string;
@@ -35,8 +35,8 @@ export interface IAnalyticsOptions {
   splitTestRunVersion?: string;
   sendToCloud?: boolean;
   organization?: string;
-  populateDataLayer?: boolean;
-  dataLayerName?: string;
+  pushToGtmDataLayer?: boolean;
+  gtmDataLayerName?: string;
   renewAccessToken?: () => Promise<string>;
 }
 
@@ -162,8 +162,8 @@ export class Analytics extends Component {
      * search endpoint.
      */
     organization: ComponentOptions.buildStringOption(),
-    populateDataLayer: ComponentOptions.buildBooleanOption({ defaultValue: true }),
-    dataLayerName: ComponentOptions.buildStringOption({ defaultValue: 'dataLayer' })
+    pushToGtmDataLayer: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+    gtmDataLayerName: ComponentOptions.buildStringOption({ depend: 'pushToGtmDataLayer', defaultValue: 'dataLayer' })
   };
 
   /**
@@ -204,7 +204,9 @@ export class Analytics extends Component {
 
     this.bind.onRootElement(QueryEvents.buildingQuery, (data: IBuildingQueryEventArgs) => this.handleBuildingQuery(data));
     this.bind.onRootElement(QueryEvents.queryError, (data: IQueryErrorEventArgs) => this.handleQueryError(data));
-    this.bind.onRootElement(AnalyticsEvents.coveoUAEventReady, (data: ICoveoUAEventArgs) => this.handleCoveoUAEventReady(data));
+    if (this.isGtmScriptPresent()) {
+      this.bind.onRootElement(AnalyticsEvents.analyticsEventReady, (data: IAnalyticsEventArgs) => this.handleAnalyticsEventReady(data));
+    }
 
     // Analytics component is a bit special: It can be higher in the dom tree than the search interface
     // Need to resolve down to find the componentOptionsModel if we need to.
@@ -469,10 +471,26 @@ export class Analytics extends Component {
     );
   }
 
-  private handleCoveoUAEventReady(data: ICoveoUAEventArgs) {
-    if (this.options.populateDataLayer) {
-      let dataLayerName = this.options.dataLayerName;
-      (<any>window)[dataLayerName] = (<any>window)[dataLayerName] || [];
+  private isGtmScriptPresent() {
+    return _.some(document.querySelectorAll('script'), scriptElement => {
+      return /www\.googletagmanager\.com\/gtm\.js/.test(scriptElement.innerText);
+    });
+  }
+
+  private handleAnalyticsEventReady(data: IAnalyticsEventArgs) {
+    if (!this.options.pushToGtmDataLayer) {
+      return;
+    }
+
+    const dataLayerName = this.options.gtmDataLayerName;
+
+    if (!(<any>window)[dataLayerName]) {
+      (<any>window)[dataLayerName] = [];
+    } else if (
+      typeof (<any>window)[dataLayerName] === 'object' &&
+      (<any>window)[dataLayerName].length &&
+      'gtm.uniqueEventId' in (<any>window)[dataLayerName][0]
+    ) {
       (<any>window)[dataLayerName].push(data);
     }
   }
