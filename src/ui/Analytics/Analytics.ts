@@ -473,7 +473,8 @@ export class Analytics extends Component {
 
   private isGtmScriptPresent() {
     return _.some(document.querySelectorAll('script'), scriptElement => {
-      return /www\.googletagmanager\.com\/gtm\.js/.test(scriptElement.innerText);
+      const regex = new RegExp(`www\.googletagmanager\.com`);
+      return regex.test(scriptElement.innerText) || regex.test(scriptElement.src);
     });
   }
 
@@ -488,8 +489,8 @@ export class Analytics extends Component {
       (<any>window)[dataLayerName] = [];
     } else if (
       typeof (<any>window)[dataLayerName] === 'object' &&
-      (<any>window)[dataLayerName].length &&
-      'gtm.uniqueEventId' in (<any>window)[dataLayerName][0]
+      typeof (<any>window)[dataLayerName].push === 'function' &&
+      (<any>window)[dataLayerName].push !== Array.prototype.push
     ) {
       (<any>window)[dataLayerName].push(data);
     }
