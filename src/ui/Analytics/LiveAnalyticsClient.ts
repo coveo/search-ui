@@ -12,7 +12,7 @@ import {
   IChangeableAnalyticsMetaObject,
   IChangeableAnalyticsDataObject,
   IChangeAnalyticsCustomDataEventArgs,
-  ICoveoUAEventArgs
+  IAnalyticsEventArgs
 } from '../../events/AnalyticsEvents';
 import { Defer } from '../../misc/Defer';
 import { $$ } from '../../utils/Dom';
@@ -172,16 +172,16 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
     metaObject: IChangeableAnalyticsMetaObject,
     element?: HTMLElement
   ): Promise<IAPIAnalyticsEventResponse> {
-    var customEvent = this.buildCustomEvent(actionCause, metaObject, element);
+    const customEvent = this.buildCustomEvent(actionCause, metaObject, element);
     this.triggerChangeAnalyticsCustomData('CustomEvent', metaObject, customEvent);
     this.checkToSendAnyPendingSearchAsYouType(actionCause);
-    var convertedCustomEvent = APIAnalyticsBuilder.convertCustomEventToAPI(customEvent);
+    const convertedCustomEvent = APIAnalyticsBuilder.convertCustomEventToAPI(customEvent);
     $$(this.rootElement).trigger(AnalyticsEvents.customEvent, <IAnalyticsCustomEventArgs>{
       customEvent: convertedCustomEvent
     });
-    $$(this.rootElement).trigger(AnalyticsEvents.coveoUAEventReady, <ICoveoUAEventArgs>{
+    $$(this.rootElement).trigger(AnalyticsEvents.analyticsEventReady, <IAnalyticsEventArgs>{
       event: 'CoveoCustomEvent',
-      coveoUAEventData: convertedCustomEvent
+      coveoAnalyticsEventData: convertedCustomEvent
     });
     return this.sendToCloud ? this.endpoint.sendCustomEvent(customEvent) : Promise.resolve(null);
   }
@@ -248,13 +248,13 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
     Assert.isNonEmptyString(event.sourceName);
     Assert.isNumber(event.documentPosition);
 
-    var convertedDocumentViewEvent = APIAnalyticsBuilder.convertDocumentViewToAPI(event);
+    const convertedDocumentViewEvent = APIAnalyticsBuilder.convertDocumentViewToAPI(event);
     $$(this.rootElement).trigger(AnalyticsEvents.documentViewEvent, {
       documentViewEvent: convertedDocumentViewEvent
     });
-    $$(this.rootElement).trigger(AnalyticsEvents.coveoUAEventReady, <ICoveoUAEventArgs>{
+    $$(this.rootElement).trigger(AnalyticsEvents.analyticsEventReady, <IAnalyticsEventArgs>{
       event: 'CoveoClickEvent',
-      coveoUAEventData: convertedDocumentViewEvent
+      coveoAnalyticsEventData: convertedDocumentViewEvent
     });
     return this.sendToCloud ? this.endpoint.sendDocumentViewEvent(event) : Promise.resolve(null);
   }
