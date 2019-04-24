@@ -8,7 +8,7 @@ export class AnalyticsEndpointCaller implements IEndpointCaller {
     this.passthrough = new EndpointCaller(options);
   }
 
-  public call<T>(params: IEndpointCallParameters): Promise<ISuccessResponse<T>> | null {
+  public call<T>(params: IEndpointCallParameters): Promise<ISuccessResponse<T>> {
     if (this.shouldSendAsBeacon(params)) {
       this.sendBeacon(params);
       return;
