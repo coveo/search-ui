@@ -8,7 +8,7 @@ export class AnalyticsEndpointCaller implements IEndpointCaller {
     this.passthrough = new EndpointCaller(options);
   }
 
-  public call<T>(params: IEndpointCallParameters): Promise<ISuccessResponse<T>> {
+  public call<T>(params: IEndpointCallParameters): Promise<ISuccessResponse<T>> | null {
     if (this.shouldSendAsBeacon(params)) {
       this.sendBeacon(params);
       return;
@@ -24,10 +24,9 @@ export class AnalyticsEndpointCaller implements IEndpointCaller {
   private sendBeacon(params: IEndpointCallParameters) {
     const url = UrlUtils.normalizeAsString({
       paths: params.url,
-      queryAsString: params.queryString
+      queryAsString: params.queryString.concat(`access_token=${this.options.accessToken}`)
     });
-    const data = EndpointCaller.convertJsonToFormBody(params.requestData);
-
+    const data = EndpointCaller.convertJsonToFormBody({ clickEvent: params.requestData });
     navigator.sendBeacon(url, new Blob([data], { type: 'application/x-www-form-urlencoded' }));
   }
 
