@@ -70,7 +70,7 @@ export const AnalyticsEndpointCallerTest = () => {
         window.Blob = origBlob;
       });
 
-      it('should properly esnd the request type as application/x-www-form-urlencoded', () => {
+      it('should properly send the request type as application/x-www-form-urlencoded', () => {
         analyticsCaller.call(buildRequest('https://blah.analytics.com/click'));
         expect(spyBlob).toHaveBeenCalledWith(jasmine.anything(), jasmine.objectContaining({ type: 'application/x-www-form-urlencoded' }));
       });
