@@ -64,6 +64,7 @@ export const AnalyticsEndpointCallerTest = () => {
         navigator.sendBeacon = spyBeacon;
         window.Blob = spyBlob as any;
       });
+
       afterEach(() => {
         navigator.sendBeacon = origSendBeacon;
         window.Blob = origBlob;

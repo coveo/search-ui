@@ -211,24 +211,22 @@ export class EndpointCaller implements IEndpointCaller {
     this.logger = new Logger(this);
   }
 
-  public static convertJsonToQueryString(json: { [key: string]: any }): string[] {
+  public static convertJsonToQueryString(json: Record<string, any>): string[] {
     Assert.exists(json);
 
-    const result: string[] = [];
-    _.each(json, (value, key) => {
-      if (value != null) {
-        if (_.isObject(value)) {
-          result.push(key + '=' + Utils.safeEncodeURIComponent(JSON.stringify(value)));
-        } else {
-          result.push(key + '=' + Utils.safeEncodeURIComponent(value.toString()));
+    return _.chain(json)
+      .map((value, key) => {
+        if (value != null) {
+          const stringValue = _.isObject(value) ? JSON.stringify(value) : value.toString();
+          return `${key}=${Utils.safeEncodeURIComponent(stringValue)}`;
         }
-      }
-    });
-
-    return result;
+        return null;
+      })
+      .compact()
+      .value();
   }
 
-  public static convertJsonToFormBody(json: { [key: string]: any }): string {
+  public static convertJsonToFormBody(json: Record<string, any>): string {
     return this.convertJsonToQueryString(json).join('&');
   }
 
