@@ -5,11 +5,11 @@ import { compact } from 'underscore';
 import { Assert } from '../../misc/Assert';
 import { AccessibleButton } from '../../utils/AccessibleButton';
 import { $$, Dom } from '../../utils/Dom';
-import { SVGDom } from '../../utils/SVGDom';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { analyticsActionCauseList, IAnalyticsFacetMeta } from '../Analytics/AnalyticsActionListMeta';
 import { Facet } from './Facet';
 import { FacetValue } from './FacetValues';
+import { l } from '../../strings/Strings';
 
 export interface IBreadcrumbValueElementKlass {
   new (facet: Facet, facetValue: FacetValue): BreadcrumbValueElement;
@@ -54,9 +54,12 @@ export class BreadcrumbValueElement {
     container.toggleClass('coveo-selected', this.facetValue.selected);
     container.toggleClass('coveo-excluded', this.facetValue.excluded);
 
+    const labelString = this.facetValue.excluded ? 'Unexclude' : 'RemoveFilterOn';
+    const label = l(labelString, this.facet.getValueCaption(this.facetValue));
+
     new AccessibleButton()
       .withElement(container)
-      .withLabel(this.getBreadcrumbTooltip())
+      .withLabel(label)
       .withSelectAction(() => this.selectAction())
       .build();
 
@@ -69,9 +72,8 @@ export class BreadcrumbValueElement {
       {
         className: 'coveo-facet-breadcrumb-clear'
       },
-      SVGIcons.icons.checkboxHookExclusionMore
+      SVGIcons.icons.mainClear
     );
-    SVGDom.addClassToSVGInContainer(clear.el, 'coveo-facet-breadcrumb-clear-svg');
 
     return clear;
   }

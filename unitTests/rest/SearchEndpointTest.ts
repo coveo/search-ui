@@ -175,6 +175,19 @@ export function SearchEndpointTest() {
         expect(ep.getExportToExcelLink(qbuilder.build(), 56)).toContain(`fieldsToInclude=${Utils.safeEncodeURIComponent('["source"]')}`);
       });
 
+      it(`when the query contains a timezone, when calling #getExportToExcelLink,
+      it places the timezone in the link`, () => {
+        // JSUI-2341 https://coveord.atlassian.net/browse/JSUI-2341
+        // If the timezone field is missing, then not all documents for a query using @date=<start date>..<end date>
+        // will be in the Excel document.
+        const qbuilder = new QueryBuilder();
+        const timezone = 'EST';
+
+        qbuilder.timezone = timezone;
+
+        expect(ep.getExportToExcelLink(qbuilder.build(), 1)).toContain(`timezone=${timezone}`);
+      });
+
       it('allow to get an export to excel link with a context', () => {
         const qbuilder = new QueryBuilder();
         qbuilder.addContext({
@@ -226,6 +239,25 @@ export function SearchEndpointTest() {
         expect(ep.getViewAsHtmlUri(fakeResult.uniqueId)).toContain('organizationId=myOrgId');
         expect(ep.getViewAsHtmlUri(fakeResult.uniqueId)).toContain('potatoe=mashed');
         expect(ep.getViewAsHtmlUri(fakeResult.uniqueId)).toContain('uniqueId=' + fakeResult.uniqueId);
+      });
+
+      describe('with a uniqueID that contains already encoded characters', () => {
+        let fakeResult: IQueryResult;
+
+        beforeEach(() => {
+          fakeResult = FakeResults.createFakeResult();
+          fakeResult.uniqueId = '123.456$https://somwehere.on.the.internet.com?thisparameter=containsencodedstuff%20';
+        });
+
+        it('allow to get an uri to view as html', () => {
+          expect(ep.getViewAsHtmlUri(fakeResult.uniqueId)).toContain('uniqueId=' + encodeURIComponent(fakeResult.uniqueId));
+        });
+
+        it('allow to get an uri to view as datastream', () => {
+          expect(ep.getViewAsDatastreamUri(fakeResult.uniqueId, '$Thumbnail')).toContain(
+            'uniqueId=' + encodeURIComponent(fakeResult.uniqueId)
+          );
+        });
       });
 
       describe('will execute requests on the search api', () => {

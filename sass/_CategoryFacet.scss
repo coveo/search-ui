@@ -20,9 +20,6 @@
   &.coveo-hidden {
     display: none;
   }
-  .coveo-accessible-button {
-    outline: none;
-  }
 }
 
 .coveo-category-facet-values-fade .coveo-category-facet-child-value {
@@ -108,15 +105,18 @@
   }
 }
 
-.coveo-category-facet-more,
-.coveo-category-facet-less {
+.coveo-category-facet-more-less-container {
   width: 100%;
   height: 15px;
   background: $color-blueish-white;
-  cursor: pointer;
   text-align: center;
   border-bottom-left-radius: $default-border-radius;
   border-bottom-right-radius: $default-border-radius;
+}
+
+.coveo-category-facet-more,
+.coveo-category-facet-less {
+  cursor: pointer;
   &:hover,
   &:focus {
     background: $color-light-grey;
@@ -146,19 +146,10 @@
   display: block;
 }
 
-.coveo-category-facet-breadcrumb .coveo-exclusion-svg {
-  fill: $color-greyish-teal-blue;
-}
-
 .coveo-category-facet-breadcrumb-title {
-  @include breadcrumbTitle();
+  @include breadcrumb-title();
 }
 
 .coveo-category-facet-breadcrumb-values {
-  @include clickable();
-  &:hover {
-    .coveo-exclusion-svg {
-      fill: $color-red;
-    }
-  }
+  @include breadcrumb-value();
 }

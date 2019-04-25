@@ -70,6 +70,7 @@ export function CategoryFacetSearchTest() {
       categoryFacetMock.categoryFacetQueryController = mock(CategoryFacetQueryController);
       categoryFacetMock.categoryFacetQueryController.searchFacetValues = () => new Promise(resolve => resolve(fakeGroupByValues));
       categoryFacetSearch = new CategoryFacetSearch(categoryFacetMock);
+      categoryFacetSearch.build();
     });
 
     afterEach(() => {
@@ -82,7 +83,6 @@ export function CategoryFacetSearchTest() {
     });
 
     it('focus moves the focus to the input element', () => {
-      categoryFacetSearch.facetSearchElement.input = { focus: () => {} } as any;
       spyOn(getInput(), 'focus');
 
       categoryFacetSearch.focus();
@@ -91,7 +91,6 @@ export function CategoryFacetSearchTest() {
     });
 
     it('renders values on focus', done => {
-      categoryFacetSearch.build();
       categoryFacetSearch.focus();
       setTimeout(() => {
         expect(getSearchResults().innerHTML).not.toEqual('');
@@ -100,8 +99,6 @@ export function CategoryFacetSearchTest() {
     });
 
     it('renders values correctly', done => {
-      categoryFacetSearch.build();
-
       categoryFacetSearch.displayNewValues();
 
       setTimeout(() => {
@@ -121,7 +118,6 @@ export function CategoryFacetSearchTest() {
     it('renders the path correctly', done => {
       fakeGroupByValues = FakeResults.createFakeGroupByResult('@field', 'a|b|c', 10).values;
       searchWithValues(fakeGroupByValues);
-      categoryFacetSearch.build();
 
       categoryFacetSearch.displayNewValues();
 
@@ -134,7 +130,6 @@ export function CategoryFacetSearchTest() {
 
     it('sets the correct classes when there is no results', done => {
       searchWithNoValues();
-      categoryFacetSearch.build();
 
       categoryFacetSearch.displayNewValues();
 
@@ -145,7 +140,6 @@ export function CategoryFacetSearchTest() {
     });
 
     it('removes no results classes when there are results', done => {
-      categoryFacetSearch.build();
       $$(categoryFacetMock.element).addClass(noResultsClass);
       $$(getSearchElement()).addClass(facetSearchNoResultsClass);
 
@@ -158,7 +152,6 @@ export function CategoryFacetSearchTest() {
     });
 
     it('selects the first results when displaying new values', done => {
-      categoryFacetSearch.build();
       categoryFacetSearch.displayNewValues();
 
       setTimeout(() => {
@@ -169,7 +162,6 @@ export function CategoryFacetSearchTest() {
 
     it('sends an analytics event on selection', done => {
       spyOn(categoryFacetMock, 'logAnalyticsEvent');
-      categoryFacetSearch.build();
       categoryFacetSearch.displayNewValues();
 
       setTimeout(() => {
@@ -186,7 +178,6 @@ export function CategoryFacetSearchTest() {
         keyboardEvent = { which: KEYBOARD.ENTER } as KeyboardEvent;
         spyOn(categoryFacetMock, 'changeActivePath');
         spyOn(categoryFacetMock, 'logAnalyticsEvent');
-        categoryFacetSearch.build();
         categoryFacetSearch.displayNewValues();
       });
 
@@ -209,7 +200,6 @@ export function CategoryFacetSearchTest() {
 
     it('pressing down arrow moves current result down', done => {
       const keyboardEvent = { which: KEYBOARD.DOWN_ARROW } as KeyboardEvent;
-      categoryFacetSearch.build();
       categoryFacetSearch.displayNewValues();
 
       setTimeout(() => {
@@ -221,7 +211,6 @@ export function CategoryFacetSearchTest() {
 
     it('pressing up arrow moves current result up', done => {
       const keyboardEvent = { which: KEYBOARD.UP_ARROW } as KeyboardEvent;
-      categoryFacetSearch.build();
       categoryFacetSearch.displayNewValues();
 
       setTimeout(() => {
@@ -234,7 +223,6 @@ export function CategoryFacetSearchTest() {
     it('pressing escape closes the search input', done => {
       const keyboardEvent = { which: KEYBOARD.ESCAPE } as KeyboardEvent;
       spyOn(categoryFacetSearch.facetSearchElement, 'clearSearchInput');
-      categoryFacetSearch.build();
       categoryFacetSearch.displayNewValues();
 
       setTimeout(() => {
@@ -246,7 +234,6 @@ export function CategoryFacetSearchTest() {
 
     it('pressing any other key displays new values', done => {
       const keyboardEvent = { which: 1337 } as KeyboardEvent;
-      categoryFacetSearch.build();
       getInputHandler().handleKeyboardEvent(keyboardEvent);
       setTimeout(() => {
         expect(getSearchResults().innerHTML).not.toEqual('');

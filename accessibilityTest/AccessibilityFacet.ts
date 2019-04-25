@@ -35,6 +35,19 @@ export const AccessibilityFacet = () => {
       done();
     });
 
+    it('should still be accessible when search has been opened', async done => {
+      const facetElement = getFacetElement();
+      getFacetColumn().appendChild(facetElement.el);
+      await afterDeferredQuerySuccess();
+      (get(facetElement.el) as Facet).facetSearch.focus();
+      await afterDelay(500);
+      (get(facetElement.el) as Facet).facetSearch.dismissSearchResults();
+      await afterDelay(500);
+      const axeResults = await axe.run(getRoot());
+      expect(axeResults).toBeAccessible();
+      done();
+    });
+
     it('settings should be accessible', async done => {
       const facetElement = getFacetElement();
       getFacetColumn().appendChild(facetElement.el);

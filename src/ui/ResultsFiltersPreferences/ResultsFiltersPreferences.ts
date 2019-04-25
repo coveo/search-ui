@@ -13,6 +13,7 @@ import { Tab } from '../Tab/Tab';
 import { Initialization } from '../Base/Initialization';
 import { l } from '../../strings/Strings';
 import { Utils } from '../../utils/Utils';
+import { AccessibleButton } from '../../utils/AccessibleButton';
 import { $$ } from '../../utils/Dom';
 import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
@@ -241,13 +242,6 @@ export class ResultsFiltersPreferences extends Component {
       container.el.appendChild(valuesContainer.el);
 
       for (var i = 0; i < actives.length; i++) {
-        if (i != 0) {
-          const separator = $$('span', {
-            className: 'coveo-separator'
-          });
-          separator.text(', ');
-          valuesContainer.el.appendChild(separator.el);
-        }
         valuesContainer.el.appendChild(this.buildBreadcrumb(actives[i]));
       }
       args.breadcrumbs.push({ element: container.el });
@@ -459,15 +453,20 @@ export class ResultsFiltersPreferences extends Component {
     caption.text(filter.caption);
     elem.el.appendChild(caption.el);
 
-    const clear = $$('span', { className: 'coveo-clear' }, SVGIcons.icons.checkboxHookExclusionMore);
-    SVGDom.addClassToSVGInContainer(clear.el, 'coveo-clear-svg');
+    const clear = $$('span', { className: 'coveo-clear' }, SVGIcons.icons.mainClear);
     elem.el.appendChild(clear.el);
 
-    elem.on('click', () => {
+    const onSelectAction = () => {
       filter.selected = false;
       this.fromFilterToAnalyticsEvent(filter, 'cleared from breadcrumb');
       this.fromPreferencesToCheckboxInput();
-    });
+    };
+
+    new AccessibleButton()
+      .withElement(elem)
+      .withLabel(l('RemoveFilterOn', filter.caption))
+      .withSelectAction(onSelectAction)
+      .build();
 
     return elem.el;
   }

@@ -705,6 +705,10 @@ export class SearchEndpoint implements ISearchEndpoint {
   }
 
   /**
+   * **Note:**
+   *
+   * > The Coveo Cloud V2 platform does not support collaborative rating. Therefore, this method is obsolete in Coveo Cloud V2.
+   *
    * Rates a single item in the index (granted that collaborative rating is enabled on your index)
    * @param ratingRequest The item id, and the rating to add.
    * @param callOptions An additional set of options to use for this call.
@@ -1043,7 +1047,7 @@ export class SearchEndpoint implements ISearchEndpoint {
     // In this reality however, we must support GET calls (ex: GET /html) for CORS/JSONP/IE reasons.
     // Therefore, we cherry-pick parts of the query to include in a 'query string' instead of a body payload.
     const queryParameters: Record<string, any> = {};
-    ['q', 'aq', 'cq', 'dq', 'searchHub', 'tab', 'locale', 'pipeline', 'lowercaseOperators'].forEach(key => {
+    ['q', 'aq', 'cq', 'dq', 'searchHub', 'tab', 'locale', 'pipeline', 'lowercaseOperators', 'timezone'].forEach(key => {
       queryParameters[key] = queryObject[key];
     });
 
@@ -1072,7 +1076,7 @@ export class SearchEndpoint implements ISearchEndpoint {
     callOptions = _.extend({}, callOptions);
 
     return {
-      uniqueId,
+      uniqueId: Utils.safeEncodeURIComponent(uniqueId),
       enableNavigation: 'true',
       requestedOutputSize: callOptions.requestedOutputSize ? callOptions.requestedOutputSize.toString() : null,
       contentType: callOptions.contentType

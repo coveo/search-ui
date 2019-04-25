@@ -4,6 +4,9 @@ import { l } from '../strings/Strings';
 import * as _ from 'underscore';
 import * as moment from 'moment';
 import { Logger } from '../misc/Logger';
+
+declare const Globalize;
+
 /**
  * The `IDateToStringOptions` interface describes a set of options to use when converting a standard Date object to a
  * string using the [ `dateToString` ]{@link DateUtils.dateToString}, or the
@@ -204,25 +207,8 @@ export class DateUtils {
   }
 
   public static setLocale(): void {
-    let currentLocale = String['locale'];
-
-    // Our cultures.js directory contains 'no' which is the equivalent to 'nn' for momentJS
-    if (currentLocale.toLowerCase() == 'no') {
-      currentLocale = 'nn';
-    } else if (currentLocale.toLowerCase() == 'es-es') {
-      // Our cultures.js directory contains 'es-es' which is the equivalent to 'es' for momentJS
-      currentLocale = 'es';
-    }
-
-    moment.locale(currentLocale);
-
-    moment.updateLocale(currentLocale, {
-      calendar: {
-        lastDay: `[${l('Yesterday')}]`,
-        sameDay: `[${l('Today')}]`,
-        nextDay: `[${l('Tomorrow')}]`
-      }
-    });
+    moment.updateLocale(DateUtils.momentjsCompatibleLocale, DateUtils.transformGlobalizeCalendarToMomentCalendar());
+    moment.locale(DateUtils.momentjsCompatibleLocale);
   }
 
   /**
@@ -266,6 +252,36 @@ export class DateUtils {
     return daysDifference == 0 || daysDifference == 1 || daysDifference == -1;
   }
 
+  private static getMomentJsFormat(format: string) {
+    let correctedFormat = format;
+
+    const fourLowercaseY = DateUtils.buildRegexMatchingExactCharSequence('y', 4);
+    correctedFormat = correctedFormat.replace(fourLowercaseY, 'YYYY');
+
+    const twoLowercaseY = DateUtils.buildRegexMatchingExactCharSequence('y', 2);
+    correctedFormat = correctedFormat.replace(twoLowercaseY, 'YY');
+
+    const twoLowercaseD = DateUtils.buildRegexMatchingExactCharSequence('d', 2);
+    correctedFormat = correctedFormat.replace(twoLowercaseD, 'DD');
+
+    const oneLowercaseD = DateUtils.buildRegexMatchingExactCharSequence('d', 1);
+    correctedFormat = correctedFormat.replace(oneLowercaseD, 'D');
+
+    const twoLowercaseH = DateUtils.buildRegexMatchingExactCharSequence('h', 2);
+    correctedFormat = correctedFormat.replace(twoLowercaseH, 'H');
+
+    return correctedFormat;
+  }
+
+  private static buildRegexMatchingExactCharSequence(char: string, sequenceLength: number) {
+    const negativeLookBehind = `(?<!${char})`;
+    const charSequence = `${char}{${sequenceLength}}`;
+    const negativeLookAhead = `(?!${char})`;
+    const exactSequence = `${negativeLookBehind}${charSequence}${negativeLookAhead}`;
+
+    return new RegExp(exactSequence, 'g');
+  }
+
   /**
    * Creates a string from a Date object. The resulting string is formatted according to a set of options.
    * This method calls [ `keepOnlyDatePart` ]{@link DateUtils.keepOnlyDatePart} to remove time information from the date.
@@ -289,8 +305,7 @@ export class DateUtils {
     const today = moment(DateUtils.keepOnlyDatePart(options.now));
 
     if (options.predefinedFormat) {
-      // yyyy was used to format dates before implementing moment.js, which only recognizes YYYY.
-      return dateOnly.format(options.predefinedFormat.replace(/yyyy/g, 'YYYY'));
+      return dateOnly.format(this.getMomentJsFormat(options.predefinedFormat));
     }
 
     if (options.useTodayYesterdayAndTomorrow) {
@@ -303,23 +318,23 @@ export class DateUtils {
 
     if (options.useWeekdayIfThisWeek && isThisWeek) {
       if (dateOnly.valueOf() > today.valueOf()) {
-        return l('NextDay', dateOnly.format('dddd'));
+        return l('NextDay', l(dateOnly.format('dddd')));
       } else if (dateOnly.valueOf() < today.valueOf()) {
-        return l('LastDay', dateOnly.format('dddd'));
+        return l('LastDay', l(dateOnly.format('dddd')));
       } else {
         return dateOnly.format('dddd');
       }
     }
 
     if (options.omitYearIfCurrentOne && dateOnly.year() === today.year()) {
-      return dateOnly.format('MMMM DD');
+      return dateOnly.format('LL');
     }
 
     if (options.useLongDateFormat) {
-      return dateOnly.format('dddd, MMMM DD, YYYY');
+      return `${dateOnly.format('dddd')} ${dateOnly.format('LL')} ${dateOnly.format('YYYY')}`;
     }
 
-    return dateOnly.format('M/D/YYYY');
+    return dateOnly.format('L');
   }
 
   /**
@@ -360,7 +375,7 @@ export class DateUtils {
     }
 
     if (options.predefinedFormat) {
-      return moment(date).format(options.predefinedFormat);
+      return moment(date).format(this.getMomentJsFormat(options.predefinedFormat));
     }
 
     const today = DateUtils.keepOnlyDatePart(options.now);
@@ -436,5 +451,53 @@ export class DateUtils {
       ':' +
       ('0' + (((moment(to).valueOf() - moment(from).valueOf()) % (1000 * 60)) / 1000).toFixed()).slice(-2)
     );
+  }
+
+  static get currentGlobalizeCalendar(): GlobalizeCalendar {
+    return Globalize.culture(DateUtils.currentLocale).calendar as GlobalizeCalendar;
+  }
+
+  static get currentLocale() {
+    return String['locale'];
+  }
+
+  static get momentjsCompatibleLocale(): string {
+    let currentLocale = DateUtils.currentLocale;
+
+    // Our cultures.js directory contains 'no' which is the equivalent to 'nn' for momentJS
+    if (currentLocale.toLowerCase() == 'no') {
+      currentLocale = 'nn';
+    } else if (currentLocale.toLowerCase() == 'es-es') {
+      // Our cultures.js directory contains 'es-es' which is the equivalent to 'es' for momentJS
+      currentLocale = 'es';
+    }
+    return currentLocale;
+  }
+
+  static transformGlobalizeCalendarToMomentCalendar(): moment.LocaleSpecification {
+    const cldrToMomentFormat = (cldrFormat: string) => {
+      return cldrFormat.replace(/y/g, 'Y').replace(/d/g, 'D');
+    };
+
+    return {
+      months: DateUtils.currentGlobalizeCalendar.months.names,
+      monthsShort: DateUtils.currentGlobalizeCalendar.months.namesAbbr,
+      weekdays: DateUtils.currentGlobalizeCalendar.days.names,
+      weekdaysShort: DateUtils.currentGlobalizeCalendar.days.namesAbbr,
+      weekdaysMin: DateUtils.currentGlobalizeCalendar.days.namesShort,
+      longDateFormat: {
+        LT: cldrToMomentFormat(DateUtils.currentGlobalizeCalendar.patterns.t),
+        LTS: cldrToMomentFormat(DateUtils.currentGlobalizeCalendar.patterns.T),
+        L: cldrToMomentFormat(DateUtils.currentGlobalizeCalendar.patterns.d),
+        LL: cldrToMomentFormat(DateUtils.currentGlobalizeCalendar.patterns.M),
+        LLL: cldrToMomentFormat(DateUtils.currentGlobalizeCalendar.patterns.f),
+        LLLL: cldrToMomentFormat(DateUtils.currentGlobalizeCalendar.patterns.F)
+      },
+      calendar: {
+        lastDay: `[${l('Yesterday')}]`,
+        sameDay: `[${l('Today')}]`,
+        nextDay: `[${l('Tomorrow')}]`
+      }
+    };
   }
 }

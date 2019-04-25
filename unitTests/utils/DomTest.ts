@@ -31,6 +31,23 @@ export function DomTests() {
         Simulate.removeJQuery();
       });
 
+      describe('when calling #isValidElement', () => {
+        it('should respond true when a valid element is given', () => {
+          const NORMAL_ELEMENT = document.createElement('div');
+          expect($$(NORMAL_ELEMENT).isValid()).toBeTruthy();
+        });
+
+        it('should respond false when a invalid element is given', () => {
+          const NOT_AN_ELEMENT = new Event('resize') as any;
+          expect($$(NOT_AN_ELEMENT).isValid()).toBeFalsy();
+        });
+
+        it('should respond false when a locked element is given such as in a LockerService context', () => {
+          const LOCKED_LOCKER_SERVICE_ELEMENT = {} as any;
+          expect($$(LOCKED_LOCKER_SERVICE_ELEMENT).isValid()).toBeFalsy();
+        });
+      });
+
       describe('without custom event (IE11)', () => {
         let customEvent;
         beforeAll(() => {
@@ -117,6 +134,57 @@ export function DomTests() {
         expect(other.parentNode).toBe(parent);
         expect(other.previousSibling).toBe(sibling);
         expect(other.nextSibling).toBe(otherSibling);
+      });
+
+      describe(`when calling #show`, () => {
+        let div: HTMLElement;
+
+        beforeEach(() => {
+          div = document.createElement('div');
+          $$(div).show();
+        });
+
+        it('sets display to an empty string', () => {
+          expect(div.style.display).toBe('block');
+        });
+
+        it(`sets the aria-hidden attribute to 'false'`, () => {
+          expect(div.getAttribute('aria-hidden')).toBe('false');
+        });
+      });
+
+      describe(`when calling #hide`, () => {
+        let div: HTMLElement;
+
+        beforeEach(() => {
+          div = document.createElement('div');
+          $$(div).hide();
+        });
+
+        it(`sets display to 'none'`, () => {
+          expect(div.style.display).toBe('none');
+        });
+
+        it(`sets the aria-hidden attribute to 'true'`, () => {
+          expect(div.getAttribute('aria-hidden')).toBe('true');
+        });
+      });
+
+      describe(`when calling #unhide`, () => {
+        let div: HTMLElement;
+
+        beforeEach(() => {
+          div = document.createElement('div');
+          $$(div).unhide();
+        });
+
+        it('sets display to an empty string', () => {
+          expect(div.style.display).toBe('');
+        });
+
+        it(`sets the aria-hidden attribute to 'false'`, () => {
+          expect(div.getAttribute('aria-hidden')).toBe('false');
+        });
       });
 
       describe('prepend', () => {

@@ -109,9 +109,9 @@ export interface IFacetOptions extends IResponsiveComponentOptions {
  * This is probably the most complex component in the Coveo JavaScript Search Framework and as such, it allows for many
  * configuration options.
  *
- * See also the [`FacetRange`]{@link FacetRange} and [`HierarchicalFacet`]{@link HierarchicalFacet} components (which
- * extend this component), and the [`FacetSlider`]{@link FacetSlider} component (which does not properly extend this
- * component, but is very similar).
+ * See also the [`FacetRange`]{@link FacetRange} and [`TimespanFacet`]{@link TimespanFacet} components (which
+ * extend this component), and the [`FacetSlider`]{@link FacetSlider} and [`CategoryFacet`]{@link CategoryFacet} components (which do not extend this
+ * component, but are very similar).
  */
 export class Facet extends Component {
   static ID = 'Facet';
@@ -188,7 +188,7 @@ export class Facet extends Component {
      *
      * Default value is `false`.
      */
-    isMultiValueField: ComponentOptions.buildBooleanOption({ defaultValue: false }),
+    isMultiValueField: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'CommonOptions' }),
     /**
      * Specifies the field whose values the Facet should display.
      *
@@ -209,7 +209,7 @@ export class Facet extends Component {
      *
      * Default value is `true`.
      */
-    enableSettings: ComponentOptions.buildBooleanOption({ defaultValue: true, section: 'SettingsMenu', priority: 9 }),
+    enableSettings: ComponentOptions.buildBooleanOption({ defaultValue: true, section: 'Sorting', priority: 9 }),
     /**
      * If the [`enableSettings`]{@link Facet.options.enableSettings} option is `true`, specifies whether the
      * **Save state** menu option is available in the facet **Settings** menu.
@@ -227,8 +227,8 @@ export class Facet extends Component {
      * Possible values are:
      * - `"occurrences"`
      * - `"score"`
-     * - `"alphaAscending"`
-     * - `alphaDescending`
+     * - `"alphaascending"`
+     * - `"alphadescending"`
      * - `"computedfieldascending"`
      * - `"computedfielddescending"`
      * - `"custom"`
@@ -240,7 +240,7 @@ export class Facet extends Component {
      *
      * > * Using value captions will disable alphabetical sorts (see the [valueCaption]{@link Facet.options.valueCaption} option).
      *
-     * Default value is `occurrences,score,alphaAscending,alphaDescending`.
+     * Default value is `occurrences,score,alphaascending,alphadescending`.
      */
     availableSorts: ComponentOptions.buildListOption<
       | 'occurrences'
@@ -252,10 +252,19 @@ export class Facet extends Component {
       | 'chisquare'
       | 'nosort'
     >({
-      defaultValue: ['occurrences', 'score', 'alphaAscending', 'alphaDescending'],
-      depend: 'enableSettings',
+      defaultValue: ['occurrences', 'score', 'alphaascending', 'alphadescending'],
       section: 'Sorting',
-      values: ['AlphaAscending', 'AlphaDescending', 'ComputedFieldAscending', 'ComputedFieldDescending', 'ChiSquare', 'NoSort']
+      depend: 'enableSettings',
+      values: [
+        'Occurrences',
+        'Score',
+        'AlphaAscending',
+        'AlphaDescending',
+        'ComputedFieldAscending',
+        'ComputedFieldDescending',
+        'ChiSquare',
+        'NoSort'
+      ]
     }),
     /**
      * Specifies the criteria to use to sort the facet values.
@@ -326,8 +335,7 @@ export class Facet extends Component {
      */
     enableTogglingOperator: ComponentOptions.buildBooleanOption({
       defaultValue: false,
-      alias: 'allowTogglingOperator',
-      section: 'Filtering'
+      alias: 'allowTogglingOperator'
     }),
     /**
      * Specifies whether to display a search box at the bottom of the facet for searching among the available facet
@@ -447,7 +455,7 @@ export class Facet extends Component {
      * [`computedFieldCaption`]{@link Facet.options.computedFieldCaption} options.
      * @notSupportedIn salesforcefree
      */
-    computedField: ComponentOptions.buildFieldOption({ section: 'ComputedField', priority: 7 }),
+    computedField: ComponentOptions.buildFieldOption({ priority: 7 }),
     /**
      * Specifies the type of aggregate operation to perform on the [`computedField`]{@link Facet.options.computedField}.
      *
@@ -599,7 +607,7 @@ export class Facet extends Component {
      * Example: `@date>=2014/01/01`
      * @notSupportedIn salesforcefree
      */
-    additionalFilter: ComponentOptions.buildQueryExpressionOption({ section: 'Filtering' }),
+    additionalFilter: ComponentOptions.buildQueryExpressionOption(),
     /**
      * Specifies whether this facet only appears when a value is selected in its "parent" facet.
      *
@@ -625,7 +633,7 @@ export class Facet extends Component {
      * <div class='CoveoFacet' data-field='@myfield' data-title='My Parent Facet' data-id='myParentCustomId'></div>
      *
      * <!-- The "dependent" Facet must refer to the custom `id` of its "parent" Facet, which is 'myParentCustomId'. -->
-     * <div class='CoveoFacet' data-field='@myotherfield data-title='My Dependent Facet' data-depends-on='myParentCustomId'></div>
+     * <div class='CoveoFacet' data-field='@myotherfield' data-title='My Dependent Facet' data-depends-on='myParentCustomId'></div>
      * ```
      *
      * Default value is `undefined`
@@ -1824,7 +1832,7 @@ export class Facet extends Component {
 
     new AccessibleButton()
       .withElement(more)
-      .withLabel(l('Expand'))
+      .withLabel(l('ExpandFacet', this.options.title))
       .withSelectAction(() => this.handleClickMore())
       .build();
 
@@ -1838,7 +1846,7 @@ export class Facet extends Component {
 
     new AccessibleButton()
       .withElement(less)
-      .withLabel(l('Collapse'))
+      .withLabel(l('CollapseFacet', this.options.title))
       .withSelectAction(() => this.handleClickLess())
       .build();
 

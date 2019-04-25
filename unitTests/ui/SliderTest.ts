@@ -318,6 +318,39 @@ export function SliderTest() {
           // draw 10 rect, even if there's only 8 values to render
           expect($$(getSliderGraph(slider.element)).findAll('rect').length).toBe(10);
         });
+
+        it(`when the slider data #starts and #ends properties are equal,
+        it should not cause an infinite loop`, () => {
+          slider = new Slider(
+            el,
+            {
+              start: 0,
+              end: 0,
+              graph: {
+                steps: 10,
+                margin: {
+                  left: 0,
+                  right: 0,
+                  top: 0,
+                  bottom: 0
+                }
+              }
+            },
+            root
+          );
+          new SearchInterface(root);
+
+          graphData = [
+            {
+              start: 1,
+              end: 1,
+              y: Math.random()
+            }
+          ];
+          slider.drawGraph(graphData);
+          // draw 0 rect, and not cause any loops issues
+          expect($$(getSliderGraph(slider.element)).findAll('rect').length).toBe(0);
+        });
       });
     });
   });

@@ -68,6 +68,10 @@ export interface IQueryResult {
   rankingInfo: string;
 
   /**
+   * **Note:**
+   *
+   * > The Coveo Cloud V2 platform does not support collaborative rating. Therefore, this property is obsolete in Coveo Cloud V2.
+   *
    * Contains the collaborative rating value for the item.
    *
    * See the [`ResultRating`]{@link ResultRating} component.

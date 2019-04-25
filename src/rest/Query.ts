@@ -3,6 +3,7 @@ import { IRankingFunction } from './RankingFunction';
 import { IGroupByRequest } from './GroupByRequest';
 import { Context } from '../ui/PipelineContext/PipelineGlobalExports';
 import { ICategoryFacetRequest } from './CategoryFacetRequest';
+import { IFacetRequest } from './Facet/FacetRequest';
 
 /**
  * The IQuery interface describes a query that can be performed on the Coveo REST Search API.
@@ -232,4 +233,9 @@ export interface IQuery {
    * This parameter is normally controlled by {@link SearchInterface.options.allowEmptyQuery} option.
    */
   allowQueriesWithoutKeywords?: boolean;
+
+  /**
+   * Specifies an array of request to retrieve facet values for the MLFacet component
+   */
+  facets?: IFacetRequest[];
 }

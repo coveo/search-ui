@@ -1,4 +1,3 @@
-import * as fastclick from 'fastclick';
 import * as jstz from 'jstimezonedetect';
 import 'styling/Globals';
 import 'styling/_SearchButton';
@@ -49,7 +48,7 @@ import {
 import { FacetColumnAutoLayoutAdjustment } from './FacetColumnAutoLayoutAdjustment';
 import { FacetValueStateHandler } from './FacetValueStateHandler';
 import RelevanceInspectorModule = require('../RelevanceInspector/RelevanceInspector');
-import { AriaLive } from '../AriaLive/AriaLive';
+import { AriaLive, IAriaLive } from '../AriaLive/AriaLive';
 
 export interface ISearchInterfaceOptions {
   enableHistory?: boolean;
@@ -350,6 +349,10 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     enableDebugInfo: ComponentOptions.buildBooleanOption({ defaultValue: true }),
 
     /**
+     * **Note:**
+     *
+     * > The Coveo Cloud V2 platform does not support collaborative rating. Therefore, this option is obsolete in Coveo Cloud V2.
+     *
      * Specifies whether to enable collaborative rating, which you can leverage using the
      * [`ResultRating`]{@link ResultRating} component.
      *
@@ -489,6 +492,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
    */
   public responsiveComponents: ResponsiveComponents;
   public isResultsPerPageModifiedByPipeline = false;
+  public ariaLive: IAriaLive;
 
   private attachedComponents: { [type: string]: BaseComponent[] };
   private facetValueStateHandler: FacetValueStateHandler;
@@ -515,7 +519,6 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     this.root = element;
 
     this.setupQueryMode();
-    this.setupMobileFastclick(element);
 
     this.queryStateModel = new QueryStateModel(element);
     this.componentStateModel = new ComponentStateModel(element);
@@ -532,7 +535,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
 
     this.setupDebugInfo();
     this.setupResponsiveComponents();
-    new AriaLive(element);
+    this.ariaLive = new AriaLive(element);
   }
 
   public set resultsPerPage(resultsPerPage: number) {
@@ -696,13 +699,6 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     } else {
       this.initializeEmptyQueryNotAllowed();
     }
-  }
-
-  private setupMobileFastclick(element: HTMLElement) {
-    // The definition file for fastclick does not match the way that fast click gets loaded (AMD)
-    // So we have to do some typecasting gymnastics
-    const attachFastclick = (fastclick as any).attach;
-    attachFastclick(element);
   }
 
   private setupEventsHandlers() {

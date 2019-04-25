@@ -84,13 +84,59 @@ export function FacetQueryControllerTest() {
 
         it('should add a query override if the facet is configured with an additional filter', () => {
           mockFacet.options.additionalFilter = 'an additional filter';
-
           facetQueryController.putGroupByIntoQueryBuilder(queryBuilder);
           const groupByRequest = queryBuilder.build().groupBy[0];
 
           expect(groupByRequest.queryOverride).toBeUndefined();
           expect(groupByRequest.constantQueryOverride).toBe('an additional filter');
           expect(groupByRequest.advancedQueryOverride).toBeUndefined();
+        });
+
+        it(`when the facet is configured with an additional filter and there's a basic expression in the query
+          it should add a basic query override`, () => {
+          mockFacet.options.additionalFilter = 'an additional filter';
+          queryBuilder.expression.add('foo');
+
+          facetQueryController.putGroupByIntoQueryBuilder(queryBuilder);
+          const groupByRequest = queryBuilder.build().groupBy[0];
+
+          expect(groupByRequest.queryOverride).toBe('foo');
+          expect(groupByRequest.constantQueryOverride).toBe('an additional filter');
+        });
+
+        it(`when the facet is not configured with an additional filter and there's a basic expression in the query
+          it should not add a basic query override`, () => {
+          queryBuilder.expression.add('foo');
+
+          facetQueryController.putGroupByIntoQueryBuilder(queryBuilder);
+          const groupByRequest = queryBuilder.build().groupBy[0];
+
+          expect(groupByRequest.queryOverride).toBeUndefined();
+        });
+
+        it(`when the facet is configured with an additional filter and there's an advanced expression in the query
+          it should add an advanced query override`, () => {
+          mockFacet.options.additionalFilter = 'an additional filter';
+          queryBuilder.advancedExpression.add('advanced expression');
+
+          facetQueryController.putGroupByIntoQueryBuilder(queryBuilder);
+          const groupByRequest = queryBuilder.build().groupBy[0];
+
+          expect(groupByRequest.queryOverride).toBeUndefined();
+          expect(groupByRequest.constantQueryOverride).toBe('an additional filter');
+          expect(groupByRequest.advancedQueryOverride).toBe('advanced expression');
+        });
+
+        it(`when the facet is configured with an additional filter and there's a constant expression in the query
+          it should add the existing constant query override`, () => {
+          mockFacet.options.additionalFilter = 'an additional filter';
+          queryBuilder.constantExpression.add('foo');
+
+          facetQueryController.putGroupByIntoQueryBuilder(queryBuilder);
+          const groupByRequest = queryBuilder.build().groupBy[0];
+
+          expect(groupByRequest.queryOverride).toBeUndefined();
+          expect(groupByRequest.constantQueryOverride).toBe('foo an additional filter');
         });
       });
 
@@ -131,6 +177,45 @@ export function FacetQueryControllerTest() {
           expect(groupByRequest.constantQueryOverride).toBe('an additional filter');
           expect(groupByRequest.advancedQueryOverride).toBe('@uri');
         });
+
+        it(`when the facet is configured with an additional filter and there's a basic expression in the query
+          should add a basic query override`, () => {
+          mockFacet.options.additionalFilter = 'an additional filter';
+          queryBuilder.expression.add('foo');
+
+          facetQueryController.putGroupByIntoQueryBuilder(queryBuilder);
+          const groupByRequest = queryBuilder.build().groupBy[0];
+
+          expect(groupByRequest.queryOverride).toBe('foo');
+          expect(groupByRequest.constantQueryOverride).toBe('an additional filter');
+          expect(groupByRequest.advancedQueryOverride).toBeUndefined();
+        });
+
+        it(`when the facet is configured with an additional filter and there's a constant expression in the query
+          it should add a constant query override`, () => {
+          mockFacet.options.additionalFilter = 'an additional filter';
+          queryBuilder.constantExpression.add('foo');
+
+          facetQueryController.putGroupByIntoQueryBuilder(queryBuilder);
+          const groupByRequest = queryBuilder.build().groupBy[0];
+
+          expect(groupByRequest.queryOverride).toBeUndefined();
+          expect(groupByRequest.constantQueryOverride).toBe('foo an additional filter');
+          expect(groupByRequest.advancedQueryOverride).toBeUndefined();
+        });
+
+        it(`when the facet is configured with an additional filter and there's an advanced expression in the query
+          it should add an advanced query override`, () => {
+          mockFacet.options.additionalFilter = 'an additional filter';
+          queryBuilder.advancedExpression.add('advanced expression');
+
+          facetQueryController.putGroupByIntoQueryBuilder(queryBuilder);
+          const groupByRequest = queryBuilder.build().groupBy[0];
+
+          expect(groupByRequest.queryOverride).toBeUndefined();
+          expect(groupByRequest.constantQueryOverride).toBe('an additional filter');
+          expect(groupByRequest.advancedQueryOverride).toBe('advanced expression');
+        });
       });
 
       describe('when at least one value is excluded', () => {
@@ -169,6 +254,30 @@ export function FacetQueryControllerTest() {
           expect(groupByRequest.queryOverride).toBeUndefined();
           expect(groupByRequest.constantQueryOverride).toBe('an additional filter');
           expect(groupByRequest.advancedQueryOverride).toBe('@uri');
+        });
+
+        it("should add a basic query override if the facet is configured with an additional filter and there's a basic expression in the query", () => {
+          mockFacet.options.additionalFilter = 'an additional filter';
+          queryBuilder.expression.add('foo');
+
+          facetQueryController.putGroupByIntoQueryBuilder(queryBuilder);
+          const groupByRequest = queryBuilder.build().groupBy[0];
+
+          expect(groupByRequest.queryOverride).toBe('foo');
+          expect(groupByRequest.constantQueryOverride).toBe('an additional filter');
+          expect(groupByRequest.advancedQueryOverride).toBeUndefined();
+        });
+
+        it("should add a constant query override if the facet is configured with an additional filter and there's a constant expression in the query", () => {
+          mockFacet.options.additionalFilter = 'an additional filter';
+          queryBuilder.constantExpression.add('foo');
+
+          facetQueryController.putGroupByIntoQueryBuilder(queryBuilder);
+          const groupByRequest = queryBuilder.build().groupBy[0];
+
+          expect(groupByRequest.queryOverride).toBeUndefined();
+          expect(groupByRequest.constantQueryOverride).toBe('foo an additional filter');
+          expect(groupByRequest.advancedQueryOverride).toBeUndefined();
         });
       });
     });

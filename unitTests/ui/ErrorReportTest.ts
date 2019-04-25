@@ -124,6 +124,22 @@ export function ErrorReportTest() {
       expect($$($$(test.cmp.root).find('.coveo-error-report-title')).text()).toEqual(l('CannotAccess', 'foobar') + l('InvalidToken'));
     });
 
+    it('should display a different error message is cause by the usage of both Facet and MLFacet components', () => {
+      Simulate.query(test.env, {
+        error: new QueryError({
+          statusCode: 400,
+          data: {
+            message: 'the message',
+            type: 'GroupByAndFacetBothExistingException',
+            name: 'GroupByAndFacetBothExistingException'
+          }
+        })
+      });
+      expect($$($$(test.cmp.root).find('.coveo-error-report-title')).text()).toEqual(
+        l('OopsError') + l('GroupByAndFacetRequestsCannotCoexist')
+      );
+    });
+
     it('should display error report options with possible actions', () => {
       Simulate.query(test.env, {
         error: new QueryError({

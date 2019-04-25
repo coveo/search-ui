@@ -22,5 +22,12 @@ export class MagicBoxClear {
       .withLabel(l('Clear'))
       .withSelectAction(() => magicBox.clear())
       .build();
+
+    this.toggleTabindex(false);
+  }
+
+  public toggleTabindex(hasText: boolean) {
+    const tabindex = hasText ? '0' : '-1';
+    this.element.setAttribute('tabindex', tabindex);
   }
 }

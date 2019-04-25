@@ -143,7 +143,7 @@ export class Dom {
   }
 
   /**
-   * Show the element;
+   * Show the element by setting display to block;
    */
   public show(): void {
     this.el.style.display = 'block';
@@ -156,6 +156,14 @@ export class Dom {
   public hide(): void {
     this.el.style.display = 'none';
     $$(this.el).setAttribute('aria-hidden', 'true');
+  }
+
+  /**
+   * Show the element by setting display to an empty string.
+   */
+  public unhide(): void {
+    this.el.style.display = '';
+    $$(this.el).setAttribute('aria-hidden', 'false');
   }
 
   /**
@@ -584,6 +592,14 @@ export class Dom {
    */
   public isEmpty(): boolean {
     return Dom.ONLY_WHITE_SPACE_REGEX.test(this.el.innerHTML);
+  }
+
+  /**
+   * Check if the element is not a locked node (`{ toString(): string }`) and thus have base element properties.
+   * @returns {boolean}
+   */
+  public isValid(): boolean {
+    return this.el != null && this.el.getAttribute != undefined;
   }
 
   /**

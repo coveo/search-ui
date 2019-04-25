@@ -1,0 +1,15 @@
+@import '../Variables';
+@import '../mixins/breadcrumb';
+
+.coveo-ml-facet-breadcrumb-title {
+  @include breadcrumb-title();
+}
+
+.coveo-ml-facet-breadcrumb-value,
+.coveo-ml-facet-breadcrumb-collapse {
+  @include breadcrumb-value();
+}
+
+.coveo-ml-facet-breadcrumb-value-clear {
+  @include breadcrumb-value-clear();
+}

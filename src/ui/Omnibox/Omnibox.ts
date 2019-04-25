@@ -58,6 +58,7 @@ export interface IOmniboxOptions extends IQueryboxOptions {
   enableQueryExtensionAddon?: boolean;
   omniboxTimeout?: number;
   placeholder?: string;
+  numberOfSuggestions?: number;
   grammar?: (
     grammar: { start: string; expressions: { [id: string]: ExpressionDef } }
   ) => { start: string; expressions: { [id: string]: ExpressionDef } };
@@ -76,7 +77,7 @@ const MINIMUM_EXECUTABLE_CONFIDENCE = 0.8;
  *
  * Custom components and external code can also extend or customize the type-ahead feature and the query completion
  * suggestions it provides by attaching their own handlers to the
- * [`populateOmniboxSuggestions`]{@link OmniboxEvents.populateOmniboxSuggestions`] event.
+ * [`populateOmniboxSuggestions`]{@link OmniboxEvents.populateOmniboxSuggestions} event.
  *
  * See also the [`Searchbox`]{@link Searchbox} component, which can automatically instantiate an `Omnibox` along with an
  * optional {@link SearchButton}.
@@ -119,7 +120,7 @@ export class Omnibox extends Component {
      *
      * Default value is `false`.
      */
-    enableSearchAsYouType: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'SearchAsYouType' }),
+    enableSearchAsYouType: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'Advanced Options' }),
 
     /**
      * If {@link Omnibox.options.enableSearchAsYouType} is `true`, specifies the delay (in milliseconds) before
@@ -131,7 +132,7 @@ export class Omnibox extends Component {
       defaultValue: 2000,
       min: 0,
       depend: 'enableSearchAsYouType',
-      section: 'SearchAsYouType'
+      section: 'Advanced Options'
     }),
 
     /**
@@ -157,7 +158,7 @@ export class Omnibox extends Component {
         }
         return value;
       },
-      section: 'QuerySyntax'
+      section: 'Advanced Options'
     }),
     enableSimpleFieldAddon: ComponentOptions.buildBooleanOption({ defaultValue: false, depend: 'enableFieldAddon' }),
     listOfFields: ComponentOptions.buildFieldsOption({ depend: 'enableFieldAddon' }),
@@ -197,7 +198,7 @@ export class Omnibox extends Component {
         }
         return value;
       },
-      section: 'QuerySyntax'
+      section: 'Advanced Options'
     }),
 
     /**
@@ -222,7 +223,22 @@ export class Omnibox extends Component {
      */
     enableQuerySyntax: ComponentOptions.buildBooleanOption({
       defaultValue: false,
-      section: 'QuerySyntax'
+      section: 'Advanced Options'
+    }),
+    /**
+     * Specifies the number of suggestions that should appear in standard ML-powered query suggestions.
+     *
+     * This option only affects the number of suggestions that appear with the {@link Omnibox.options.enableQuerySuggestAddon} option.
+     *
+     * This options does not affect the {@link AnalyticsSuggestions} or the {@link FieldSuggestions} component, which expose their own dedicated options for this parameter.
+     *
+     * Default value is `5`.
+     *
+     * Minimum value is `1`.
+     */
+    numberOfSuggestions: ComponentOptions.buildNumberOption({
+      defaultValue: 5,
+      min: 1
     })
   };
 
@@ -724,15 +740,15 @@ export class Omnibox extends Component {
 
   private triggerNewQuery(searchAsYouType: boolean, analyticsEvent: () => void) {
     clearTimeout(this.searchAsYouTypeTimeout);
-    const text = this.getQuery(searchAsYouType);
-    if (this.shouldExecuteQuery(searchAsYouType)) {
-      this.lastQuery = text;
-      analyticsEvent();
-      this.queryController.executeQuery({
-        searchAsYouType: searchAsYouType,
-        logInActionsHistory: true
-      });
-    }
+    const shouldExecuteQuery = this.shouldExecuteQuery(searchAsYouType);
+    this.lastQuery = this.getQuery(searchAsYouType);
+    shouldExecuteQuery && analyticsEvent();
+
+    this.queryController.executeQuery({
+      searchAsYouType: searchAsYouType,
+      logInActionsHistory: true,
+      cancel: !shouldExecuteQuery
+    });
   }
 
   private getQuery(searchAsYouType: boolean) {

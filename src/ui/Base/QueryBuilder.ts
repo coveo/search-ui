@@ -7,6 +7,7 @@ import { QueryBuilderExpression } from './QueryBuilderExpression';
 import * as _ from 'underscore';
 import { Utils } from '../../utils/Utils';
 import { ICategoryFacetRequest } from '../../rest/CategoryFacetRequest';
+import { IFacetRequest } from '../../rest/Facet/FacetRequest';
 
 /**
  * The QueryBuilder is used to build a {@link IQuery} that will be able to be executed using the Search API.
@@ -241,6 +242,10 @@ export class QueryBuilder {
    */
   public enableDebug: boolean = false;
   /**
+   * **Note:**
+   *
+   * > The Coveo Cloud V2 platform does not support collaborative rating. Therefore, this property is obsolete in Coveo Cloud V2.
+   *
    * Whether the index should take collaborative rating in account when ranking result (see : {@link ResultRating}).
    */
   public enableCollaborativeRating: boolean;
@@ -272,8 +277,15 @@ export class QueryBuilder {
   public rankingFunctions: IRankingFunction[] = [];
   /**
    * Specifies an array of Group By operations that can be performed on the query results to extract facets.
+   * Cannot be used alongside [`facetRequests`]{@link QueryBuilder.facetRequests}
    */
   public groupByRequests: IGroupByRequest[] = [];
+
+  /**
+   * Specifies an array of request for the MLFacet component.
+   * Cannot be used alongside [`groupByRequests`]{@link QueryBuilder.groupByRequests}
+   */
+  public facetRequests: IFacetRequest[] = [];
 
   /**
    * Specifies an array of request for the CategoryFacet component.
@@ -344,7 +356,8 @@ export class QueryBuilder {
       sortField: this.sortField,
       queryFunctions: this.queryFunctions,
       rankingFunctions: this.rankingFunctions,
-      groupBy: this.groupByRequests,
+      groupBy: this.groupBy,
+      facets: this.facets,
       categoryFacets: this.categoryFacets,
       retrieveFirstSentences: this.retrieveFirstSentences,
       timezone: this.timezone,
@@ -494,5 +507,21 @@ export class QueryBuilder {
   public containsEndUserKeywords(): boolean {
     const query = this.build();
     return Utils.isNonEmptyString(query.q) || Utils.isNonEmptyString(query.lq);
+  }
+
+  private get groupBy() {
+    if (Utils.isEmptyArray(this.groupByRequests)) {
+      return undefined;
+    }
+
+    return this.groupByRequests;
+  }
+
+  private get facets() {
+    if (Utils.isEmptyArray(this.facetRequests)) {
+      return undefined;
+    }
+
+    return this.facetRequests;
   }
 }

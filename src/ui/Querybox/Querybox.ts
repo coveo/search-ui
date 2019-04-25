@@ -59,11 +59,11 @@ export class Querybox extends Component {
    */
   public static options: IQueryboxOptions = {
     /**
-     * Specifies whether to enable the search-as-you-type feature.
+     * Whether to enable the search-as-you-type feature.
      *
      * Default value is `false`.
      */
-    enableSearchAsYouType: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'SearchAsYouType' }),
+    enableSearchAsYouType: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'Advanced Options' }),
 
     /**
      * If the [`enableSearchAsYouType`]{@link Querybox.options.enableSearchAsYouType} option is `true`, specifies how
@@ -71,7 +71,7 @@ export class Querybox extends Component {
      *
      * Default value is `50`. Minimum value is `0`
      */
-    searchAsYouTypeDelay: ComponentOptions.buildNumberOption({ defaultValue: 50, min: 0, section: 'SearchAsYouType' }),
+    searchAsYouTypeDelay: ComponentOptions.buildNumberOption({ defaultValue: 50, min: 0, section: 'Advanced Options' }),
 
     /**
      * Specifies whether to interpret special query syntax (e.g., `@objecttype=message`) when the end user types
@@ -97,7 +97,7 @@ export class Querybox extends Component {
      *
      * Default value is `false`.
      */
-    enableQuerySyntax: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'QuerySyntax' }),
+    enableQuerySyntax: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'Advanced Options' }),
 
     /**
      * Specifies whether to expand basic expression keywords containing wildcards characters (`*`) to the possible
@@ -113,7 +113,7 @@ export class Querybox extends Component {
      *
      * Default value is `false`.
      */
-    enableWildcards: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'QuerySyntax' }),
+    enableWildcards: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'Advanced Options' }),
 
     /**
      * If [`enableWildcards`]{@link Querybox.options.enableWildcards} is `true`, specifies whether to expand basic

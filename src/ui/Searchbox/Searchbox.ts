@@ -115,14 +115,14 @@ export class Searchbox extends Component {
       $$(element).addClass('coveo-inline');
     }
 
+    const div = document.createElement('div');
+    this.element.appendChild(div);
+
     if (this.options.addSearchButton) {
       const anchor = $$('a');
       this.element.appendChild(anchor.el);
       this.searchButton = new SearchButton(anchor.el, undefined, bindings);
     }
-
-    const div = document.createElement('div');
-    this.element.appendChild(div);
 
     if (this.options.enableOmnibox) {
       this.searchbox = new Omnibox(div, this.options, bindings);

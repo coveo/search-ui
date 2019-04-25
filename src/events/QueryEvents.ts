@@ -10,7 +10,7 @@ import { QueryBuilder } from '../ui/Base/QueryBuilder';
  */
 export interface INewQueryEventArgs {
   /**
-   * Determine if the query is a "search as you type"
+   * Whether the query is a search-as-you-type
    */
   searchAsYouType: boolean;
   /**
@@ -30,7 +30,7 @@ export interface IBuildingQueryEventArgs {
    */
   queryBuilder: QueryBuilder;
   /**
-   * Determine if the query is a "search as you type"
+   * Determine if the query is a "search-as-you-type"
    */
   searchAsYouType: boolean;
   /**
@@ -48,7 +48,7 @@ export interface IDoneBuildingQueryEventArgs {
    */
   queryBuilder: QueryBuilder;
   /**
-   * Determine if the query is a "search as you type"
+   * Whether the query is a search-as-you-type
    */
   searchAsYouType: boolean;
   /**
@@ -74,7 +74,7 @@ export interface IDuringQueryEventArgs {
    */
   promise: Promise<IQueryResults>;
   /**
-   * Determine if the query is a "search as you type"
+   * Whether the query is a search-as-you-type
    */
   searchAsYouType: boolean;
 }
@@ -96,7 +96,7 @@ export interface IQuerySuccessEventArgs {
    */
   queryBuilder: QueryBuilder;
   /**
-   * Determine if the query is a "search as you type"
+   * Whether the query is a search-as-you-type
    */
   searchAsYouType: boolean;
 }
@@ -118,7 +118,7 @@ export interface IFetchMoreSuccessEventArgs {
    */
   queryBuilder: QueryBuilder;
   /**
-   * Determine if the query is a "search as you type"
+   * Whether the query is a search-as-you-type
    */
   searchAsYouType: boolean;
 }
@@ -144,7 +144,7 @@ export interface IQueryErrorEventArgs {
    */
   error: IEndpointError;
   /**
-   * Determine if the query is a "search as you type"
+   * Whether the query is a search-as-you-type
    */
   searchAsYouType: boolean;
 }
@@ -166,7 +166,7 @@ export interface IPreprocessResultsEventArgs {
    */
   results: IQueryResults;
   /**
-   * Determine if the query is a "search as you type"
+   * Whether the query is a search-as-you-type
    */
   searchAsYouType: boolean;
 }
@@ -198,7 +198,7 @@ export interface INoResultsEventArgs {
    */
   results: IQueryResults;
   /**
-   * Determine if the query is a "search as you type"
+   * Whether the query is a search-as-you-type
    */
   searchAsYouType: boolean;
   /**

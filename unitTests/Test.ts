@@ -15,6 +15,9 @@ SearchEndpointTest();
 import { BackOffRequestTest } from './rest/BackOffRequestTest';
 BackOffRequestTest();
 
+import { FacetSortCriteriaTest } from './rest/Facet/FacetSortCriteriaTest';
+FacetSortCriteriaTest();
+
 import { CookieUtilsTest } from './utils/CookieUtilsTest';
 CookieUtilsTest();
 
@@ -41,6 +44,9 @@ QueryStateModelTest();
 
 import { EndpointCallerTest } from './rest/EndpointCallerTest';
 EndpointCallerTest();
+
+import { AnalyticsEndpointCallerTest } from './rest/AnalyticsEndpointCallerTest';
+AnalyticsEndpointCallerTest();
 
 import { FacetQueryControllerTest } from './controllers/FacetQueryControllerTest';
 FacetQueryControllerTest();
@@ -633,6 +639,9 @@ CategoryFacetBreadcrumbTest();
 import { CategoryValueTest } from './ui/CategoryFacet/CategoryValueTest';
 CategoryValueTest();
 
+import { CategoryFacetHeaderTest } from './ui/CategoryFacet/CategoryFacetHeaderTest';
+CategoryFacetHeaderTest();
+
 import { GrammarTest } from './magicbox/GrammarTest';
 GrammarTest();
 
@@ -659,3 +668,36 @@ ComponentsTypesTest();
 
 import { PromotedResultsBadgeTest } from './ui/PromotedResultsBadgeTest';
 PromotedResultsBadgeTest();
+
+import { ResultListUtilsTest } from './utils/ResultListUtilsTest';
+ResultListUtilsTest();
+
+import { FacetUtilsTest } from './utils/FacetUtilsTest';
+FacetUtilsTest();
+
+import { MLFacetTest } from './ui/MLFacet/MLFacetTest';
+MLFacetTest();
+
+import { MLFacetHeaderTest } from './ui/MLFacet/MLFacetHeader/MLFacetHeaderTest';
+MLFacetHeaderTest();
+
+import { MLFacetHeaderButtonTest } from './ui/MLFacet/MLFacetHeader/MLFacetHeaderButtonTest';
+MLFacetHeaderButtonTest();
+
+import { MLFacetHeaderCollapseToggleTest } from './ui/MLFacet/MLFacetHeader/MLFacetHeaderCollapseToggleTest';
+MLFacetHeaderCollapseToggleTest();
+
+import { MLFacetValuesTest } from './ui/MLFacet/MLFacetValues/MLFacetValuesTest';
+MLFacetValuesTest();
+
+import { MLFacetValueTest } from './ui/MLFacet/MLFacetValues/MLFacetValueTest';
+MLFacetValueTest();
+
+import { MLFacetValueRendererTest } from './ui/MLFacet/MLFacetValues/MLFacetValueRendererTest';
+MLFacetValueRendererTest();
+
+import { MLFacetBreadcrumbsTest } from './ui/MLFacet/MLFacetBreadcrumbsTest';
+MLFacetBreadcrumbsTest();
+
+import { MLFacetQueryControllerTest } from './controllers/MLFacetQueryControllerTest';
+MLFacetQueryControllerTest();

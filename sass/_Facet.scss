@@ -8,6 +8,13 @@
   position: relative;
 }
 
+// Needed because this facet embeds FacetRange
+// Otherwise cause issue when selecting any facet, and getting no results
+// Would cause a small border to appear in the facet column
+.CoveoTimespanFacet {
+  border: none;
+}
+
 .coveo-facet-column {
   .coveo-topSpace.coveo-with-animation,
   .coveo-bottomSpace.coveo-with-animation {

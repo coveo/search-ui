@@ -29,7 +29,6 @@ import { RadioButton } from '../FormWidgets/RadioButton';
 import { ModalBox as ModalBoxModule } from '../../ExternalModulesShim';
 import { BreadcrumbEvents, IPopulateBreadcrumbEventArgs, IClearBreadcrumbEventArgs } from '../../events/BreadcrumbEvents';
 import { SVGIcons } from '../../utils/SVGIcons';
-import { SVGDom } from '../../utils/SVGDom';
 import { AccessibleButton } from '../../utils/AccessibleButton';
 
 export interface IAdvancedSearchOptions {
@@ -198,7 +197,7 @@ export class AdvancedSearch extends Component {
       {
         className: 'coveo-advanced-search-breadcrumb-title'
       },
-      l('FiltersInAdvancedSearch') + ' : '
+      `${l('FiltersInAdvancedSearch')}:`
     );
   }
 
@@ -208,10 +207,8 @@ export class AdvancedSearch extends Component {
       {
         className: 'coveo-advanced-search-breadcrumb-clear'
       },
-      SVGIcons.icons.checkboxHookExclusionMore
+      SVGIcons.icons.mainClear
     );
-
-    SVGDom.addClassToSVGInContainer(clear.el, 'coveo-advanced-search-breadcrumb-clear-svg');
 
     const selectAction = () => {
       this.handleClearBreadcrumb();

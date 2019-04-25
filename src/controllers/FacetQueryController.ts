@@ -310,11 +310,22 @@ export class FacetQueryController {
   }
 
   private processQueryOverrideForAdditionalFilter(queryBuilder: QueryBuilder, mergeWith: QueryBuilderExpression) {
+    if (Utils.isEmptyString(mergeWith.basic)) {
+      mergeWith.basic = queryBuilder.expression.build();
+    }
     if (Utils.isEmptyString(mergeWith.constant)) {
-      mergeWith.constant = `${this.additionalFilter}`;
+      const addExistingConstantExpressionIfNotEmpty = queryBuilder.constantExpression.isEmpty()
+        ? ''
+        : queryBuilder.constantExpression.build() + ' ';
+      mergeWith.constant = `${addExistingConstantExpressionIfNotEmpty}${this.additionalFilter}`;
     } else {
       mergeWith.constant = `${mergeWith.constant} ${this.additionalFilter}`;
     }
+
+    if (!mergeWith.advanced) {
+      mergeWith.advanced = queryBuilder.advancedExpression.build();
+    }
+
     return mergeWith;
   }
 

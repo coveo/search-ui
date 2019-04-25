@@ -41,6 +41,14 @@
         white-space: initial;
       }
     }
+    .CoveoMLFacet {
+      margin: 0;
+
+      .coveo-ml-facet-header,
+      .coveo-ml-facet-values {
+        padding: 5px;
+      }
+    }
   }
   .coveo-facet-header-filter-by-container {
     background: $color-blueish-white;

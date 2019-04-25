@@ -208,7 +208,7 @@ export interface IAnalyticsSearchAlertsUpdateMeta extends IAnalyticsSearchAlerts
 
 export interface IAnalyticsSearchAlertsFollowDocumentMeta extends IAnalyticsDocumentViewMeta {
   documentSource: string;
-  documentLanguage: string;
+  documentLanguage: string[];
   contentIDKey: string;
   contentIDValue: string;
 }
@@ -308,7 +308,7 @@ export var analyticsActionCauseList = {
     type: 'search box'
   },
   /**
-   * Identifies the search as you type event that gets logged when a query is automatically generated, and results are displayed while a user is entering text in the search box before they voluntarily submit the query.
+   * The search-as-you-type event that gets logged when a query is automatically generated, and results are displayed while a user is entering text in the search box before they voluntarily submit the query.
    *
    * `actionCause`: `'searchboxAsYouType'`
    * `actionType`: `'search box'`
@@ -318,7 +318,7 @@ export var analyticsActionCauseList = {
     type: 'search box'
   },
   /**
-   * Identifies the search as you type event that gets logged when a breadcrumb facet is selected and the query is updated.
+   * The search-as-you-type event that gets logged when a breadcrumb facet is selected and the query is updated.
    *
    * `actionCause`: `'breadcrumbFacet'`
    * `actionType`: `'breadcrumb'`
@@ -1158,7 +1158,7 @@ export var analyticsActionCauseList = {
   /**
    * Identifies the search event that gets logged when a user deselects a simple filter value under the search box.
    *
-   * `actionCause`: `'selectValue'`
+   * `actionCause`: `'deselectValue'`
    * `actionType`: `'simpleFilter'`
    *
    * Logging an event with this actionType also adds the following key-value pairs in the custom data property of the Usage Analytics HTTP service request.
@@ -1167,7 +1167,7 @@ export var analyticsActionCauseList = {
    * `"simpleFilterField":`: <correspondingSimpleFilterField>
    */
   simpleFilterDeselectValue: <IAnalyticsActionCause>{
-    name: 'selectValue',
+    name: 'deselectValue',
     type: 'simpleFilter'
   },
   /**

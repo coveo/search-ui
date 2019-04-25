@@ -38,6 +38,33 @@ export function PagerTest() {
       expect(test.env.queryController.executeQuery).toHaveBeenCalledTimes(4);
     });
 
+    it('should not be possible to set current page to an invalid value', () => {
+      test.cmp.setPage('a' as any);
+      expect(test.cmp.currentPage).toBe(1);
+      test.cmp.setPage('1' as any);
+      expect(test.cmp.currentPage).toBe(1);
+      test.cmp.setPage(2 as any);
+      expect(test.cmp.currentPage).toBe(2);
+      test.cmp.setPage(1.7 as any);
+      expect(test.cmp.currentPage).toBe(1);
+      test.cmp.setPage(1.5 as any);
+      expect(test.cmp.currentPage).toBe(1);
+      test.cmp.setPage(1.499999 as any);
+      expect(test.cmp.currentPage).toBe(1);
+      test.cmp.setPage('1.599999' as any);
+      expect(test.cmp.currentPage).toBe(1);
+      test.cmp.setPage('2.00000' as any);
+      expect(test.cmp.currentPage).toBe(2);
+      test.cmp.setPage({} as any);
+      expect(test.cmp.currentPage).toBe(1);
+      test.cmp.setPage(true as any);
+      expect(test.cmp.currentPage).toBe(1);
+      test.cmp.setPage(false as any);
+      expect(test.cmp.currentPage).toBe(1);
+      test.cmp.setPage(0 as any);
+      expect(test.cmp.currentPage).toBe(1);
+    });
+
     it('should update the state when changing page', () => {
       let currentPage = 1;
       test.cmp.setPage(++currentPage);
@@ -87,6 +114,18 @@ export function PagerTest() {
       expect($$(anchors[0]).text()).toBe('6');
       expect(anchors[0].parentElement.getAttribute('tabindex')).toBe('0');
       expect($$(anchors[anchors.length - 1]).text()).toBe('10');
+    });
+
+    it('should set the aria-label on elements correctly', () => {
+      const builder = new QueryBuilder();
+      Simulate.query(test.env, {
+        query: builder.build(),
+        results: FakeResults.createFakeResults(100)
+      });
+
+      const anchors = $$(test.cmp.element).findAll('a.coveo-pager-list-item-text');
+      expect($$(anchors[0]).text()).toBe('1');
+      expect(anchors[0].parentElement.getAttribute('aria-label')).toBe('Page 1');
     });
 
     it('should not reset page number on a new query if the origin is a pager', () => {
@@ -164,15 +203,6 @@ export function PagerTest() {
         anchors = $$(test.cmp.element).findAll('a.coveo-pager-list-item-text');
         expect($$(anchors[0]).text()).toBe('1');
         expect($$(anchors[anchors.length - 1]).text()).toBe('2');
-      });
-
-      it('should return to the last valid page when there is no results', () => {
-        $$(test.env.root).on(QueryEvents.noResults, (e, args: INoResultsEventArgs) => {
-          expect(args.retryTheQuery).toBe(true);
-        });
-        test.cmp.currentPage = 101;
-        execQuery(test, 10, 1000, 0, test.cmp);
-        expect(test.cmp.currentPage).toBe(100);
       });
 
       it('should return to the last valid page when there is no results and the numberOfResults per page is no standard', () => {

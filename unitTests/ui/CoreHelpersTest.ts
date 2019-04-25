@@ -109,17 +109,51 @@ export function CoreHelperTest() {
     });
 
     it(`when the termsToHighlight contains words that are part of phrasesToHighlight,
-        highlightStreamTextv2 should only highlight a phrase's term once`, () => {
-      const toHighlight = 'A test phrase';
-      const termsToHighlight: IHighlightTerm = { phrase: [], test: [] };
-      const phrasesToHighlight: IHighlightPhrase = { 'test phrase': { phrase: [], test: [] } };
+      highlightStreamTextv2 should only highlight a phrase's term once`, () => {
+      const toHighlight = 'e-file';
+      const termsToHighlight: IHighlightTerm = {
+        efile: [],
+        file: []
+      };
+      const phrasesToHighlight: IHighlightPhrase = {
+        'e file': {
+          e: [],
+          file: []
+        }
+      };
 
-      expect(
-        TemplateHelpers.getHelper('highlightStreamTextv2')(toHighlight, {
-          termsToHighlight,
-          phrasesToHighlight
-        })
-      ).toEqual('A <span class="coveo-highlight" data-highlight-group="3" data-highlight-group-term="test phrase">test phrase</span>');
+      const highlightedText = TemplateHelpers.getHelper('highlightStreamTextv2')(toHighlight, {
+        termsToHighlight,
+        phrasesToHighlight
+      });
+
+      expect(highlightedText).toEqual(
+        '<span class="coveo-highlight" data-highlight-group="3" data-highlight-group-term="e file">e-file</span>'
+      );
+    });
+
+    it(`when the termsToHighlight "synonyms" contains words that are part of phrasesToHighlight,
+      highlightStreamTextv2 should only highlight a phrase's term once`, () => {
+      const toHighlight = 'e-file';
+      const termsToHighlight: IHighlightTerm = {
+        efile: [],
+        filing: ['file']
+      };
+      const phrasesToHighlight: IHighlightPhrase = {
+        'e file': {
+          e: [],
+          file: []
+        }
+      };
+
+      const highlightedText = TemplateHelpers.getHelper('highlightStreamTextv2')(toHighlight, {
+        termsToHighlight,
+        phrasesToHighlight
+      });
+
+      expect(highlightedText).toEqual(
+        '<span class="coveo-highlight" data-highlight-group="3" data-highlight-group-term="e file">e-file</span>'
+      );
     });
 
     it('highlightStreamHTML should work correctly', () => {
@@ -184,7 +218,7 @@ export function CoreHelperTest() {
 
         it('should work correctly with useLongDateFormat', () => {
           options.useLongDateFormat = true;
-          expect(TemplateHelpers.getHelper('date')(new Date(1981, 3, 11), options)).toEqual('Saturday, April 11, 1981');
+          expect(TemplateHelpers.getHelper('date')(new Date(1981, 3, 11), options)).toEqual('Saturday April 11 1981');
         });
 
         it('should work correctly with correct default options ', () => {

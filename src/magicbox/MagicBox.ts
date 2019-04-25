@@ -29,6 +29,7 @@ export class MagicBoxInstance {
 
   private inputManager: InputManager;
   private suggestionsManager: SuggestionsManager;
+  private magicBoxClear: MagicBoxClear;
 
   private lastSuggestions: Suggestion[] = [];
 
@@ -91,7 +92,7 @@ export class MagicBoxInstance {
       timeout: this.options.suggestionTimeout
     });
 
-    new MagicBoxClear(this);
+    this.magicBoxClear = new MagicBoxClear(this);
     this.setupHandler();
   }
 
@@ -105,6 +106,7 @@ export class MagicBoxInstance {
 
   public setText(text: string) {
     $$(this.element).toggleClass('magic-box-notEmpty', text.length > 0);
+    this.magicBoxClear.toggleTabindex(text.length > 0);
 
     this.result = this.grammar.parse(text);
     this.displayedResult = this.result.clean();

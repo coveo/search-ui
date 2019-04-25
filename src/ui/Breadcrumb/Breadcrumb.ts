@@ -7,8 +7,6 @@ import { exportGlobally } from '../../GlobalExports';
 import { l } from '../../strings/Strings';
 import { AccessibleButton } from '../../utils/AccessibleButton';
 import { $$ } from '../../utils/Dom';
-import { SVGDom } from '../../utils/SVGDom';
-import { SVGIcons } from '../../utils/SVGIcons';
 import { analyticsActionCauseList, IAnalyticsNoMeta } from '../Analytics/AnalyticsActionListMeta';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
@@ -111,10 +109,15 @@ export class Breadcrumb extends Component {
       breadcrumbItems.appendChild(elem);
     });
 
-    const clear = $$('div', {
-      className: 'coveo-breadcrumb-clear-all',
-      title: l('ClearAllFilters')
-    }).el;
+    const clearText = $$('div', undefined, l('ClearAllFilters')).el;
+    const clear = $$(
+      'div',
+      {
+        className: 'coveo-breadcrumb-clear-all',
+        title: l('ClearAllFilters')
+      },
+      clearText
+    ).el;
 
     new AccessibleButton()
       .withElement(clear)
@@ -123,20 +126,6 @@ export class Breadcrumb extends Component {
       .withLabel(l('ClearAllFilters'))
       .build();
 
-    const clearIcon = $$(
-      'div',
-      {
-        className: 'coveo-icon coveo-breadcrumb-clear-all-icon'
-      },
-      SVGIcons.icons.checkboxHookExclusionMore
-    ).el;
-
-    SVGDom.addClassToSVGInContainer(clearIcon, 'coveo-breadcrumb-clear-all-svg');
-
-    clear.appendChild(clearIcon);
-    const clearText = $$('div', undefined, l('Clear', '')).el;
-
-    clear.appendChild(clearText);
     this.element.appendChild(clear);
   }
 

@@ -42,10 +42,13 @@ export function BreadcrumbValueListTest() {
       expect($$(title).text()).toContain('My facet title');
     });
 
-    it('should display a label for each selected values', () => {
+    it('should display a label with the right attributes for each selected values', () => {
       const built = new BreadcrumbValueList(facet, facetValues, BreadcrumbValueElement).build();
       const values = $$(built).findAll('.coveo-facet-breadcrumb-value');
       expect(values.length).toBe(3);
+      expect($$(values[0]).getAttribute('aria-label')).toBe('Remove filter on foo0');
+      expect($$(values[0]).getAttribute('role')).toBe('button');
+      expect($$(values[0]).getAttribute('tabindex')).toBe('0');
     });
 
     it('should display a caption for each selected values', () => {

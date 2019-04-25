@@ -4,6 +4,7 @@ import { IOmniboxData, IOmniboxDataRow } from '../ui/Omnibox/OmniboxInterface';
 import { Omnibox } from '../ui/Omnibox/Omnibox';
 import { Suggestion } from '../magicbox/SuggestionsManager';
 import { Result } from '../magicbox/Result/Result';
+import { IQuerySuggestRequest, IQuerySuggestCompletion } from '../rest/QuerySuggest';
 
 /**
  * The `IPopulateOmniboxSuggestionsEventArgs` interface describes the object that all
@@ -27,6 +28,14 @@ export interface IPopulateOmniboxEventRow extends IOmniboxDataRow {}
 
 export interface IOmniboxPreprocessResultForQueryEventArgs {
   result: Result;
+}
+
+export interface IBuildingQuerySuggestArgs {
+  payload: IQuerySuggestRequest;
+}
+
+export interface IQuerySuggestSuccessArgs {
+  completions: IQuerySuggestCompletion[];
 }
 
 /**
@@ -53,4 +62,22 @@ export class OmniboxEvents {
   public static populateOmniboxSuggestions = 'populateOmniboxSuggestions';
 
   public static omniboxPreprocessResultForQuery = 'omniboxPreprocessResultForQuery';
+
+  /**
+   * Triggered by the [`Omnibox`]{@link Omnibox} component before sending a query suggestion request to the Search API.
+   *
+   * Allows external functions to refine the payload b3efore sending the request.
+   *
+   * This event is only triggered by standard ML-powered query suggestions, and not {@link AnalyticsSuggestions} or {@link FieldSuggestions}.
+   */
+  public static buildingQuerySuggest = 'buildingQuerySuggest';
+
+  /**
+   * Triggered by the [`Omnibox`]{@link Omnibox} component when query suggestions are received from the Search API.
+   *
+   * Allows external functions to look into the received query suggestions, and modify them if needed.
+   *
+   * This event is only triggered by standard ML-powered query suggestions, and not {@link AnalyticsSuggestions} or {@link FieldSuggestions}.
+   */
+  public static querySuggestSuccess = 'querySuggestSuccess';
 }

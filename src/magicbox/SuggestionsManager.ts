@@ -65,19 +65,19 @@ export class SuggestionsManager {
     let target = $$(<HTMLElement>e.target);
     let targetParents = target.parents(this.options.selectableClass);
 
-    //e.relatedTarget is not available if moving off the browser window
-    if (e.relatedTarget) {
+    //e.relatedTarget is not available if moving off the browser window or is an empty object `{}` when moving out of namespace in LockerService.
+    if (e.relatedTarget && $$(e.relatedTarget).isValid()) {
       let relatedTargetParents = $$(<HTMLElement>e.relatedTarget).parents(this.options.selectableClass);
       if (target.hasClass(this.options.selectedClass) && !$$(<HTMLElement>e.relatedTarget).hasClass(this.options.selectableClass)) {
-        target.removeClass(this.options.selectedClass);
+        this.removeSelectedStatus(target.el);
       } else if (relatedTargetParents.length == 0 && targetParents.length > 0) {
-        $$(targetParents[0]).removeClass(this.options.selectedClass);
+        this.removeSelectedStatus(targetParents[0]);
       }
     } else {
       if (target.hasClass(this.options.selectedClass)) {
-        target.removeClass(this.options.selectedClass);
+        this.removeSelectedStatus(target.el);
       } else if (targetParents.length > 0) {
-        $$(targetParents[0]).removeClass(this.options.selectedClass);
+        this.removeSelectedStatus(targetParents[0]);
       }
     }
   }
@@ -174,6 +174,15 @@ export class SuggestionsManager {
     $$(this.element).empty();
     this.element.className = 'magic-box-suggestions';
 
+    this.hasSuggestions = suggestions.length > 0;
+
+    $$(this.element).toggleClass('magic-box-hasSuggestion', this.hasSuggestions);
+    $$(this.magicBoxContainer).setAttribute('aria-expanded', this.hasSuggestions.toString());
+
+    if (!this.hasSuggestions) {
+      return;
+    }
+
     const suggestionsContainer = this.buildSuggestionsContainer();
     $$(this.element).append(suggestionsContainer.el);
 
@@ -182,25 +191,21 @@ export class SuggestionsManager {
 
       dom.setAttribute('id', `magic-box-suggestion-${indexOf(suggestions, suggestion)}`);
       dom.setAttribute('role', 'option');
+      dom.setAttribute('aria-selected', 'false');
 
       dom['suggestion'] = suggestion;
       suggestionsContainer.append(dom.el);
     });
-
-    this.hasSuggestions = suggestions.length > 0;
-
-    $$(this.element).toggleClass('magic-box-hasSuggestion', this.hasSuggestions);
-    $$(this.magicBoxContainer).setAttribute('aria-expanded', this.hasSuggestions.toString());
   }
 
   private processKeyboardSelection(suggestion: HTMLElement) {
-    this.addSelectedClass(suggestion);
+    this.addSelectedStatus(suggestion);
     this.keyboardFocusedSuggestion = suggestion;
     $$(this.inputManager.input).setAttribute('aria-activedescendant', $$(suggestion).getAttribute('id'));
   }
 
   private processMouseSelection(suggestion: HTMLElement) {
-    this.addSelectedClass(suggestion);
+    this.addSelectedStatus(suggestion);
     this.keyboardFocusedSuggestion = null;
   }
 
@@ -252,9 +257,9 @@ export class SuggestionsManager {
 
   private modifyDomFromExistingSuggestion(dom: HTMLElement) {
     // this need to be done if the selection is in cache and the dom is set in the suggestion
-    $$(dom).removeClass(this.options.selectedClass);
+    this.removeSelectedStatus(dom);
     const found = $$(dom).find('.' + this.options.selectableClass);
-    $$(found).removeClass(this.options.selectedClass);
+    this.removeSelectedStatus(found);
     return $$(dom);
   }
 
@@ -300,13 +305,25 @@ export class SuggestionsManager {
     return null;
   }
 
-  private addSelectedClass(suggestion: HTMLElement): void {
+  private addSelectedStatus(suggestion: HTMLElement): void {
     const selected = this.element.getElementsByClassName(this.options.selectedClass);
     for (let i = 0; i < selected.length; i++) {
       const elem = <HTMLElement>selected.item(i);
-      $$(elem).removeClass(this.options.selectedClass);
+      this.removeSelectedStatus(elem);
     }
     $$(suggestion).addClass(this.options.selectedClass);
+    this.updateAreaSelectedIfDefined(suggestion, 'true');
+  }
+
+  private removeSelectedStatus(suggestion: HTMLElement): void {
+    $$(suggestion).removeClass(this.options.selectedClass);
+    this.updateAreaSelectedIfDefined(suggestion, 'false');
+  }
+
+  private updateAreaSelectedIfDefined(suggestion: HTMLElement, value: string): void {
+    if ($$(suggestion).getAttribute('aria-selected')) {
+      $$(suggestion).setAttribute('aria-selected', value);
+    }
   }
 
   private addAccessibilityProperties() {

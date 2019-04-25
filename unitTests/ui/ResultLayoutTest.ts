@@ -173,14 +173,14 @@ export function ResultLayoutTest() {
           expect($$(btns[0]).hasClass('coveo-hidden')).toBeTruthy();
         });
 
-        it('should not allow to enable layouts for which there is a disabled resulst list', () => {
+        it('should allow to enable layouts for which there is a disabled resulst list', () => {
           spy.and.returnValue([resultListList, resultListCard]);
           resultListCard.disabled = true;
 
           test.cmp.enableLayouts(['card']);
           const btns = getBtns();
           expect(btns[0].textContent).toBe('Card');
-          expect($$(btns[0]).hasClass('coveo-hidden')).toBeTruthy();
+          expect($$(btns[0]).hasClass('coveo-hidden')).toBeFalsy();
         });
 
         it('should allow to enable layouts for which there is a result list available', () => {

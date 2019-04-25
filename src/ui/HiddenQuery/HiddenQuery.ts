@@ -14,7 +14,6 @@ import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 import 'styling/_HiddenQuery';
 import { SVGIcons } from '../../utils/SVGIcons';
-import { SVGDom } from '../../utils/SVGDom';
 
 export interface IHiddenQueryOptions {
   maximumDescriptionLength: number;
@@ -58,7 +57,7 @@ export class HiddenQuery extends Component {
      * Default value is the localized string f
      * or `"Additional filters:"`
      */
-    title: ComponentOptions.buildLocalizedStringOption({ defaultValue: l('AdditionalFilters') + ': ' })
+    title: ComponentOptions.buildLocalizedStringOption({ defaultValue: l('AdditionalFilters') + ':' })
   };
 
   /**
@@ -117,20 +116,13 @@ export class HiddenQuery extends Component {
       $$(title).text(this.options.title);
       elem.appendChild(title);
 
-      const values = document.createElement('span');
-      $$(values).addClass('coveo-hidden-query-breadcrumb-values');
-      elem.appendChild(values);
+      const value = $$('span', { className: 'coveo-hidden-query-breadcrumb-value' }, description).el;
+      elem.appendChild(value);
 
-      const value = $$('span', { className: 'coveo-hidden-query-breadcrumb-value' }, description);
-      values.appendChild(value.el);
+      const clear = $$('span', { className: 'coveo-hidden-query-breadcrumb-clear' }, SVGIcons.icons.mainClear);
+      value.appendChild(clear.el);
 
-      const svgContainer = $$('span', { className: 'coveo-hidden-query-breadcrum-clear-icon' }, SVGIcons.icons.checkboxHookExclusionMore);
-      SVGDom.addClassToSVGInContainer(svgContainer.el, 'coveo-hidden-query-breadcrumb-clear-svg');
-      const clear = $$('span', { className: 'coveo-hidden-query-breadcrumb-clear' });
-      clear.append(svgContainer.el);
-      elem.appendChild(clear.el);
-
-      $$(elem).on('click', () => this.clear());
+      $$(value).on('click', () => this.clear());
 
       args.breadcrumbs.push({
         element: elem

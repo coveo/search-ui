@@ -30,6 +30,10 @@ export class CategoryFacetSearch implements IFacetSearch {
     this.numberOfValuesToFetch = this.categoryFacet.options.numberOfResultsInFacetSearch;
   }
 
+  public get facetType() {
+    return CategoryFacet.ID;
+  }
+
   public build() {
     this.container = $$('div', {
       className: 'coveo-category-facet-search-container',
@@ -96,6 +100,10 @@ export class CategoryFacetSearch implements IFacetSearch {
     return captions;
   }
 
+  public updateAriaLive(text: string) {
+    this.categoryFacet.searchInterface.ariaLive.updateText(text);
+  }
+
   private selectCurrentResult() {
     if (this.facetSearchElement.currentResult) {
       const currentResultPathData = this.facetSearchElement.currentResult.el.dataset.path;
@@ -108,7 +116,9 @@ export class CategoryFacetSearch implements IFacetSearch {
   }
 
   private handleClickElsewhere(e: MouseEvent) {
-    if (!$$(<HTMLElement>e.target).closest('.coveo-category-facet-search-container')) {
+    const closestContainer = $$(<HTMLElement>e.target).closest('.coveo-category-facet-search-container');
+
+    if (!closestContainer || closestContainer != this.container.el) {
       this.dismissSearchResults();
     }
   }
@@ -161,7 +171,7 @@ export class CategoryFacetSearch implements IFacetSearch {
     $$(this.facetSearchElement.searchResults).empty();
     this.currentlyDisplayedResults = pluck(categoryFacetValues, 'value');
     for (let i = 0; i < categoryFacetValues.length; i++) {
-      const searchResult = this.buildFacetSearchValue(categoryFacetValues[i]);
+      const searchResult = this.buildFacetSearchValue(categoryFacetValues[i], i);
       if (i == 0) {
         this.facetSearchElement.setAsCurrentResult(searchResult);
       }
@@ -170,7 +180,7 @@ export class CategoryFacetSearch implements IFacetSearch {
     this.highlightCurrentQueryWithinSearchResults();
   }
 
-  private buildFacetSearchValue(categoryFacetValue: IGroupByValue) {
+  private buildFacetSearchValue(categoryFacetValue: IGroupByValue, index: number) {
     const path = categoryFacetValue.value.split(this.categoryFacet.options.delimitingCharacter);
 
     const pathParents = path.slice(0, -1).length != 0 ? `${path.slice(0, -1).join('/')}/` : '';
@@ -186,6 +196,9 @@ export class CategoryFacetSearch implements IFacetSearch {
     const item = $$(
       'li',
       {
+        id: `coveo-category-facet-search-suggestion-${index}`,
+        role: 'option',
+        ariaSelected: 'false',
         className: 'coveo-category-facet-search-value',
         title: path
       },
@@ -194,6 +207,9 @@ export class CategoryFacetSearch implements IFacetSearch {
     );
     item.el.dataset.path = categoryFacetValue.value;
 
+    const countLabel = l('ResultCount', categoryFacetValue.numberOfResults.toString());
+    const label = l('SelectValueWithResultCount', last(path), countLabel);
+
     new AccessibleButton()
       .withElement(item)
       .withSelectAction(() => {
@@ -201,7 +217,7 @@ export class CategoryFacetSearch implements IFacetSearch {
         this.categoryFacet.logAnalyticsEvent(analyticsActionCauseList.categoryFacetSelect, path);
         this.categoryFacet.executeQuery();
       })
-      .withLabel(`${l(last(path))} ${categoryFacetValue.numberOfResults}`)
+      .withLabel(label)
       .build();
 
     return item;

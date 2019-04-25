@@ -1,22 +1,13 @@
 @import './mixins/breadcrumb';
-.coveo-hidden-query-breadcrumb-title {
-  @include breadcrumbTitle();
-  display: inline-block;
-  vertical-align: middle;
-}
 
-.coveo-hidden-query-breadcrumb-values {
-  display: inline-block;
-  vertical-align: middle;
+.coveo-hidden-query-breadcrumb-title {
+  @include breadcrumb-title();
 }
 
 .coveo-hidden-query-breadcrumb-value {
-  @include clickable();
+  @include breadcrumb-value();
 }
 
 .coveo-hidden-query-breadcrumb-clear {
-  display: inline-block;
-  vertical-align: middle;
-  margin-left: 5px;
-  @include clearButton('&');
+  @include breadcrumb-value-clear();
 }

@@ -7,28 +7,28 @@ import { FakeResults } from '../../Fake';
 import { QueryBuilder } from '../../../src/Core';
 import { CategoryFacetQueryController } from '../../../src/controllers/CategoryFacetQueryController';
 import { IBuildingQueryEventArgs } from '../../../src/events/QueryEvents';
-import { first, range, pluck, shuffle, partition } from 'underscore';
+import { first, range, pluck, shuffle, partition, chain } from 'underscore';
 import { analyticsActionCauseList } from '../../../src/ui/Analytics/AnalyticsActionListMeta';
 
-export function CategoryFacetTest() {
-  function buildSimulateQueryData(numberOfResults = 11, numberOfRequestedValues = 11): ISimulateQueryData {
-    const fakeResults = FakeResults.createFakeResults();
-    const queryBuilder = new QueryBuilder();
-    fakeResults.categoryFacets.push(FakeResults.createFakeCategoryFacetResult('@field', [], 'value', numberOfResults));
-    queryBuilder.categoryFacets.push({
-      field: '@field',
-      path: pluck(fakeResults.categoryFacets[0].parentValues, 'value'),
-      maximumNumberOfValues: numberOfRequestedValues
-    });
-    return { results: fakeResults, query: queryBuilder.build() };
-  }
+export function buildCategoryFacetResults(numberOfResults = 11, numberOfRequestedValues = 11): ISimulateQueryData {
+  const fakeResults = FakeResults.createFakeResults();
+  const queryBuilder = new QueryBuilder();
+  fakeResults.categoryFacets.push(FakeResults.createFakeCategoryFacetResult('@field', [], 'value', numberOfResults));
+  queryBuilder.categoryFacets.push({
+    field: '@field',
+    path: pluck(fakeResults.categoryFacets[0].parentValues, 'value'),
+    maximumNumberOfValues: numberOfRequestedValues
+  });
+  return { results: fakeResults, query: queryBuilder.build() };
+}
 
+export function CategoryFacetTest() {
   describe('CategoryFacet', () => {
     let test: IBasicComponentSetup<CategoryFacet>;
     let simulateQueryData: ISimulateQueryData;
 
     beforeEach(() => {
-      simulateQueryData = buildSimulateQueryData();
+      simulateQueryData = buildCategoryFacetResults();
       test = Mock.advancedComponentSetup<CategoryFacet>(
         CategoryFacet,
         new Mock.AdvancedComponentSetupOptions(null, { field: '@field' }, env => env.withLiveQueryStateModel())
@@ -207,7 +207,7 @@ export function CategoryFacetTest() {
 
       it('less arrow is appended when there are more results than the numberOfValues option', () => {
         const numberOfValues = test.cmp.options.numberOfValues + 2; // +1 for the fetchMoreValues and +1 to trigger the less values
-        Simulate.query(test.env, buildSimulateQueryData(numberOfValues, numberOfValues));
+        Simulate.query(test.env, buildCategoryFacetResults(numberOfValues, numberOfValues));
 
         const downArrow = $$(test.cmp.element).find('.coveo-category-facet-less');
         expect(downArrow).not.toBeNull();
@@ -215,7 +215,7 @@ export function CategoryFacetTest() {
 
       it('should not render the downward arrow when there are less values than the numberOfValues option', () => {
         test.cmp.changeActivePath(['path']);
-        Simulate.query(test.env, buildSimulateQueryData(3));
+        Simulate.query(test.env, buildCategoryFacetResults(3));
 
         const downArrow = $$(test.cmp.element).find('.coveo-category-facet-less');
         expect(downArrow).toBeNull();
@@ -236,7 +236,7 @@ export function CategoryFacetTest() {
         const pageSize = test.cmp.options.pageSize;
         const initialNumberOfValues = 20;
         test.cmp.showMore();
-        simulateQueryData = buildSimulateQueryData(21, 21);
+        simulateQueryData = buildCategoryFacetResults(21, 21);
         Simulate.query(test.env, simulateQueryData);
 
         test.cmp.showLess();
@@ -247,7 +247,7 @@ export function CategoryFacetTest() {
 
       it('showLess should not request less values than the numberOfValues option', () => {
         const initialNumberOfValues = test.cmp.options.numberOfValues;
-        simulateQueryData = buildSimulateQueryData(13, 13);
+        simulateQueryData = buildCategoryFacetResults(13, 13);
         Simulate.query(test.env, simulateQueryData);
 
         test.cmp.showLess();
@@ -287,6 +287,29 @@ export function CategoryFacetTest() {
         path,
         test.cmp.options.numberOfValues + 1
       );
+    });
+
+    it(`when the #valueCaption option is an empty object,
+    it displays the facet search box`, () => {
+      test = Mock.optionsComponentSetup<CategoryFacet, ICategoryFacetOptions>(CategoryFacet, {
+        field: '@field',
+        valueCaption: {}
+      });
+
+      expect(test.cmp.categoryFacetSearch).toBeTruthy();
+    });
+
+    describe(`when the #valueCaption option is defined`, () => {
+      beforeEach(() => {
+        test = Mock.optionsComponentSetup<CategoryFacet, ICategoryFacetOptions>(CategoryFacet, {
+          field: '@field',
+          valueCaption: { value: 'caption' }
+        });
+      });
+
+      it(`does not render the facet search box`, () => {
+        expect(test.cmp.categoryFacetSearch).toBe(undefined);
+      });
     });
 
     describe('renders', () => {
@@ -366,7 +389,7 @@ export function CategoryFacetTest() {
         // This makes sure we don't do it when there are less results than we queries for.
         const numberOfRequestedValues = test.cmp.options.numberOfValues - 1;
         const numberOfReturnedValues = numberOfRequestedValues - 1;
-        simulateQueryData = buildSimulateQueryData(numberOfReturnedValues, numberOfRequestedValues);
+        simulateQueryData = buildCategoryFacetResults(numberOfReturnedValues, numberOfRequestedValues);
         simulateQueryData.results.categoryFacets[0].parentValues = [];
 
         Simulate.query(test.env, simulateQueryData);
@@ -455,6 +478,29 @@ export function CategoryFacetTest() {
         expect(populateBreadcrumb()[0].element.textContent).toContain('/value0');
       });
 
+      it('should populate the correct breadcrumb value if the facet is configured with a base path that points to the last parent', () => {
+        const completeBasePathUntilLastParent = chain(range(0, 10)).map(val => `parent${val}`);
+
+        test = Mock.advancedComponentSetup<CategoryFacet>(
+          CategoryFacet,
+          new Mock.AdvancedComponentSetupOptions(
+            undefined,
+            {
+              field: '@field',
+              basePath: completeBasePathUntilLastParent
+            },
+            env => env.withLiveQueryStateModel()
+          )
+        );
+
+        const breadcrumbBuilt = populateBreadcrumb()[0];
+
+        expect(breadcrumbBuilt.element.textContent).toContain('value0');
+        // Also do a check on a leading /, to ensure the test is building the "right" full path hierarchy
+        // If the base path is not "full", there would otherwise be a leading /
+        expect(breadcrumbBuilt.element.textContent).not.toContain('/value0');
+      });
+
       it('should clear the facet when the clear button is clicked', () => {
         $$(getClearElement()).trigger('click');
         expect(test.cmp.activePath).toEqual([]);
@@ -492,7 +538,7 @@ export function CategoryFacetTest() {
 
     describe("when there's many parent values to display", () => {
       beforeEach(() => {
-        simulateQueryData = buildSimulateQueryData(30, 30);
+        simulateQueryData = buildCategoryFacetResults(30, 30);
         Simulate.query(test.env, simulateQueryData);
       });
 
