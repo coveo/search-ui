@@ -191,7 +191,7 @@ export class Analytics extends Component {
           if (gtmContainerSnippet) {
             const match = initializesGtmScript.exec(gtmContainerSnippet.innerText);
             // Attempt to extract data layer name from GTM container snippet
-            if (match.length > 2) {
+            if (typeof match.length[1] === 'string') {
               options.gtmDataLayerName = match[1];
             }
             optionValue = true;
