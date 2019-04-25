@@ -23,6 +23,7 @@ import { PendingSearchEvent } from './PendingSearchEvent';
 import { PendingSearchAsYouTypeSearchEvent } from './PendingSearchAsYouTypeSearchEvent';
 import { AccessToken } from '../../rest/AccessToken';
 import { AnalyticsEvents, IAnalyticsEventArgs } from '../../events/AnalyticsEvents';
+import { Logger } from '../../misc/Logger';
 
 export interface IAnalyticsOptions {
   user?: string;
@@ -166,25 +167,64 @@ export class Analytics extends Component {
     /**
      * Whether to push Coveo usage analytics events to the Google Tag Manager [data layer](https://developers.google.com/tag-manager/devguide#datalayer).
      *
-     * **Note:**
-     * - This option has no effect unless a Google Tag Manager container snippet is present in the page (see [Google Tag Manager Quick Start Guide](https://developers.google.com/tag-manager/quickstart)).
+     * **Notes:**
+     * - Set this option to `false` to ensure that the component does _not_ populate the data layer, even if a GTM container snippet is present in the page.
+     * - Set this option to `true` to ensure that the component populates the data layer even if a GTM container snippet cannot be found in the page.
      *
      * See also [`gtmDataLayerName`]{@link Analytics.options.gtmDataLayerName}.
      *
-     * **Default:** `true`
+     * By default, if a standard GTM container snippet is found in the page, the component automatically attempts to push to its initialized data layer (see [Google Tag Manager Quick Start Guide](https://developers.google.com/tag-manager/quickstart)).
      */
-    pushToGtmDataLayer: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+    pushToGtmDataLayer: ComponentOptions.buildBooleanOption({
+      postProcessing: (value?: boolean, options?: IAnalyticsOptions) => {
+        const logger = new Logger('Analytics');
+        let optionValue = false;
+        if (typeof value === 'boolean') {
+          optionValue = value;
+        } else {
+          const includesGtmScript = new RegExp(`https:\/\/www\.googletagmanager\.com\/gtm\.js`);
+          const initializesGtmScript = new RegExp(`\(window,document,'script','(\\w+)','GTM-[A-Z0-9]{7}'\)`);
+          const gtmContainerSnippet = _.find(document.querySelectorAll('script'), scriptElement => {
+            // Could yield false positives (e.g., if the innerText is commented out).
+            return includesGtmScript.test(scriptElement.innerText) && initializesGtmScript.test(scriptElement.innerText);
+          });
+          if (gtmContainerSnippet) {
+            const match = initializesGtmScript.exec(gtmContainerSnippet.innerText);
+            // Attempt to extract data layer name from GTM container snippet
+            if (match.length > 2) {
+              options.gtmDataLayerName = match[2];
+            }
+            optionValue = true;
+            logger.info(
+              `Standard Google Tag Manager container snippet found in page; automatically attempting to push to data layer '${
+                options.gtmDataLayerName
+              }'. Explicitly set the 'pushToGtmDataLayer' option of the 'Analytics' component to 'false' if you do not wish to push Coveo usage analytics events to the GTM data layer.`
+            );
+          }
+        }
+        return optionValue as boolean;
+      }
+    }),
 
     /**
-     * The name of the Google Tag Manager data layer.
+     * The name of the Google Tag Manager data layer initialized in the page.
      *
-     * **Notes:**
-     * - This option has no effect unless [`pushToGtmDataLayer`]{@link Analytics.options.pushToGtmDataLayer} is `true`.
-     * - Avoid setting this option unless you have [renamed the Google Tag Manager data layer](https://developers.google.com/tag-manager/devguide#renaming) in the page.
+     * **Note:**
+     * Setting this option is only useful if [`pushToGtmDataLayer`]{@link Analytics.options.pushToGtmDataLayer} is explicitly set to `true`, and the [GTM data layer was renamed](https://developers.google.com/tag-manager/devguide#renaming) in the page.
      *
-     * **Default:** `dataLayer`
+     * By default, if `pushToGtmDatalayer` is left `undefined` and a GTM container snippet is found in the page, the component attempts to extract the data layer name from the snippet. If it fails to do so, or if `pushToGtmDataLayer` is explicitly set to `true`, this option defaults to `dataLayer`.
      */
-    gtmDataLayerName: ComponentOptions.buildStringOption({ depend: 'pushToGtmDataLayer', defaultValue: 'dataLayer' })
+    gtmDataLayerName: ComponentOptions.buildStringOption({
+      depend: 'pushToGtmDataLayer',
+      postProcessing: (value?: string) => {
+        let optionValue = 'dataLayer';
+        // Passing an empty string as a data layer name would be a configuration mistake, so we use the default value if this is the case.
+        if (value && value.length > 0) {
+          optionValue = value;
+        }
+        return optionValue as string;
+      }
+    })
   };
 
   /**
@@ -225,7 +265,11 @@ export class Analytics extends Component {
 
     this.bind.onRootElement(QueryEvents.buildingQuery, (data: IBuildingQueryEventArgs) => this.handleBuildingQuery(data));
     this.bind.onRootElement(QueryEvents.queryError, (data: IQueryErrorEventArgs) => this.handleQueryError(data));
-    if (this.isGtmScriptPresent()) {
+
+    // Check if GTM data layer is initialized here to avoid repeatedly
+    // attempting to push to data layer when automatic GTM container snippet
+    // detection returned a false positive, or the data layer is undefined.
+    if (this.options.pushToGtmDataLayer && this.isGtmDataLayerInitialized()) {
       this.bind.onRootElement(AnalyticsEvents.analyticsEventReady, (data: IAnalyticsEventArgs) => this.handleAnalyticsEventReady(data));
     }
 
@@ -492,28 +536,24 @@ export class Analytics extends Component {
     );
   }
 
-  private isGtmScriptPresent() {
-    return _.some(document.querySelectorAll('script'), scriptElement => {
-      const regex = new RegExp(`www\.googletagmanager\.com`);
-      return regex.test(scriptElement.innerText) || regex.test(scriptElement.src);
-    });
+  private isGtmDataLayerInitialized(): boolean {
+    let retVal = false;
+    const dataLayerName = this.options.gtmDataLayerName;
+    if ((<any>window)[dataLayerName]) {
+      retVal = true;
+      s;
+    } else {
+      this.logger.warn(`Cannot push to Google Tag Manager data layer: '${dataLayerName}' is undefined.`);
+    }
+    return retVal as boolean;
   }
 
   private handleAnalyticsEventReady(data: IAnalyticsEventArgs) {
-    if (!this.options.pushToGtmDataLayer) {
-      return;
-    }
-
     const dataLayerName = this.options.gtmDataLayerName;
-
-    if (!(<any>window)[dataLayerName]) {
-      (<any>window)[dataLayerName] = [];
-    } else if (
-      typeof (<any>window)[dataLayerName] === 'object' &&
-      typeof (<any>window)[dataLayerName].push === 'function' &&
-      (<any>window)[dataLayerName].push !== Array.prototype.push
-    ) {
+    try {
       (<any>window)[dataLayerName].push(data);
+    } catch (error) {
+      this.logger.error(`Unexpected error when pushing to Google Tag Manager data layer '${dataLayerName}': '${error}'.`);
     }
   }
 
