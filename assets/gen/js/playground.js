@@ -5339,6 +5339,22 @@ var EndpointCaller = /** @class */ (function () {
         this.useJsonp = false;
         this.logger = new Logger_1.Logger(this);
     }
+    EndpointCaller.convertJsonToQueryString = function (json) {
+        Assert_1.Assert.exists(json);
+        return _.chain(json)
+            .map(function (value, key) {
+            if (value != null) {
+                var stringValue = _.isObject(value) ? JSON.stringify(value) : value.toString();
+                return key + "=" + Utils_1.Utils.safeEncodeURIComponent(stringValue);
+            }
+            return null;
+        })
+            .compact()
+            .value();
+    };
+    EndpointCaller.convertJsonToFormBody = function (json) {
+        return this.convertJsonToQueryString(json).join('&');
+    };
     /**
      * Generic call to the endpoint using the provided {@link IEndpointCallParameters}.<br/>
      * Internally, will decide which method to use to call the endpoint :<br/>
@@ -5414,7 +5430,7 @@ var EndpointCaller = /** @class */ (function () {
                         xmlHttpRequest.send(JSON.stringify(requestInfo.requestData));
                     }
                     else {
-                        xmlHttpRequest.send(_this.convertJsonToFormBody(requestInfo.requestData));
+                        xmlHttpRequest.send(EndpointCaller.convertJsonToFormBody(requestInfo.requestData));
                     }
                     // The "responseType" varies if the request is a success or not.
                     // Therefore we postpone setting "responseType" until we know if the
@@ -5472,7 +5488,7 @@ var EndpointCaller = /** @class */ (function () {
             };
             var queryString = requestInfo.queryString;
             if (requestInfo.method == 'GET') {
-                queryString = queryString.concat(_this.convertJsonToQueryString(requestInfo.requestData));
+                queryString = queryString.concat(EndpointCaller.convertJsonToQueryString(requestInfo.requestData));
             }
             xmlHttpRequest.open(requestInfo.method, _this.combineUrlAndQueryString(requestInfo.url, queryString));
         });
@@ -5494,7 +5510,7 @@ var EndpointCaller = /** @class */ (function () {
             }
             var xDomainRequest = new XDomainRequest();
             if (requestInfo.method == 'GET') {
-                queryString = queryString.concat(_this.convertJsonToQueryString(requestInfo.requestData));
+                queryString = queryString.concat(EndpointCaller.convertJsonToQueryString(requestInfo.requestData));
             }
             xDomainRequest.open(requestInfo.method, _this.combineUrlAndQueryString(requestInfo.url, queryString));
             xDomainRequest.onload = function () {
@@ -5514,7 +5530,7 @@ var EndpointCaller = /** @class */ (function () {
                     xDomainRequest.send();
                 }
                 else {
-                    xDomainRequest.send(_this.convertJsonToFormBody(requestInfo.requestData));
+                    xDomainRequest.send(EndpointCaller.convertJsonToFormBody(requestInfo.requestData));
                 }
             });
         });
@@ -5530,7 +5546,7 @@ var EndpointCaller = /** @class */ (function () {
         var jQuery = JQueryutils_1.JQueryUtils.getJQuery();
         Assert_1.Assert.check(jQuery, 'Using jsonp without having included jQuery is not supported.');
         return new Promise(function (resolve, reject) {
-            var queryString = requestInfo.queryString.concat(_this.convertJsonToQueryString(requestInfo.requestData));
+            var queryString = requestInfo.queryString.concat(EndpointCaller.convertJsonToQueryString(requestInfo.requestData));
             // JSONP don't support including stuff in the header, so we must
             // put the access token in the query string if we have one.
             if (_this.options.accessToken) {
@@ -5554,24 +5570,6 @@ var EndpointCaller = /** @class */ (function () {
     EndpointCaller.prototype.getXmlHttpRequest = function () {
         var newXmlHttpRequest = this.options.xmlHttpRequest || XMLHttpRequest;
         return new newXmlHttpRequest();
-    };
-    EndpointCaller.prototype.convertJsonToQueryString = function (json) {
-        Assert_1.Assert.exists(json);
-        var result = [];
-        _.each(json, function (value, key) {
-            if (value != null) {
-                if (_.isObject(value)) {
-                    result.push(key + '=' + Utils_1.Utils.safeEncodeURIComponent(JSON.stringify(value)));
-                }
-                else {
-                    result.push(key + '=' + Utils_1.Utils.safeEncodeURIComponent(value.toString()));
-                }
-            }
-        });
-        return result;
-    };
-    EndpointCaller.prototype.convertJsonToFormBody = function (json) {
-        return this.convertJsonToQueryString(json).join('&');
     };
     EndpointCaller.prototype.handleSuccessfulResponseThatMightBeAnError = function (requestInfo, data, success, error) {
         if (this.isErrorResponseBody(data)) {
@@ -5881,8 +5879,8 @@ exports.ResponsiveComponents = ResponsiveComponents;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    lib: '2.6063.0-beta',
-    product: '2.6063.0-beta',
+    lib: '2.6063.1-beta',
+    product: '2.6063.1-beta',
     supportedApiVersion: 2
 };
 
