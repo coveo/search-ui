@@ -196,7 +196,9 @@ export class Analytics extends Component {
             }
             optionValue = true;
             logger.info(
-              `Standard Google Tag Manager container snippet found in page; automatically attempting to push to data layer. Explicitly set the 'pushToGtmDataLayer' option of the 'Analytics' component to 'false' if you do not wish to push Coveo usage analytics events to the GTM data layer.`
+              `Standard Google Tag Manager container snippet found in page; automatically attempting to push to data layer '${
+                options.gtmDataLayerName
+              }'. Explicitly set the 'pushToGtmDataLayer' option of the 'Analytics' component to 'false' if you do not wish to push Coveo usage analytics events to the GTM data layer.`
             );
           }
         }
