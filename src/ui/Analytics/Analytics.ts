@@ -541,7 +541,6 @@ export class Analytics extends Component {
     const dataLayerName = this.options.gtmDataLayerName;
     if ((<any>window)[dataLayerName]) {
       retVal = true;
-      s;
     } else {
       this.logger.warn(`Cannot push to Google Tag Manager data layer: '${dataLayerName}' is undefined.`);
     }
