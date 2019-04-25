@@ -182,8 +182,8 @@ export class Analytics extends Component {
         if (typeof value === 'boolean') {
           optionValue = value;
         } else {
-          const includesGtmScript = new RegExp(`https:\/\/www\.googletagmanager\.com\/gtm\.js`);
-          const initializesGtmScript = new RegExp(`\(window,document,'script','(\\w+)','GTM-[A-Z0-9]{7}'\)`);
+          const includesGtmScript = new RegExp(`gtm\\.js\\?id='\\+i\\+dl;f\\.parentNode.insertBefore\\(j,f\\);`);
+          const initializesGtmScript = new RegExp(`\\(window,document,'script','(\\w+)','GTM-[A-Z0-9]{7}'\\)`);
           const gtmContainerSnippet = _.find(document.querySelectorAll('script'), scriptElement => {
             // Could yield false positives (e.g., if the innerText is commented out).
             return includesGtmScript.test(scriptElement.innerText) && initializesGtmScript.test(scriptElement.innerText);
@@ -192,7 +192,7 @@ export class Analytics extends Component {
             const match = initializesGtmScript.exec(gtmContainerSnippet.innerText);
             // Attempt to extract data layer name from GTM container snippet
             if (match.length > 2) {
-              options.gtmDataLayerName = match[2];
+              options.gtmDataLayerName = match[1];
             }
             optionValue = true;
             logger.info(
