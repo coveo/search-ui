@@ -7,6 +7,7 @@ import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsAction
 import { NoopAnalyticsClient } from '../../src/ui/Analytics/NoopAnalyticsClient';
 import { LiveAnalyticsClient } from '../../src/ui/Analytics/LiveAnalyticsClient';
 import { MultiAnalyticsClient } from '../../src/ui/Analytics/MultiAnalyticsClient';
+import { AnalyticsEvents, $$ } from '../../src/Core';
 
 export function AnalyticsTest() {
   describe('Analytics', () => {
@@ -155,6 +156,90 @@ export function AnalyticsTest() {
           env.root.appendChild(analytics);
           expect(Analytics.create(env.root, undefined, env) instanceof LiveAnalyticsClient).toBe(true);
           expect(Analytics.create(env2.root, undefined, env2) instanceof NoopAnalyticsClient).toBe(true);
+        });
+      });
+
+      describe('with data layer in page', () => {
+        let test: Mock.IBasicComponentSetup<Analytics>;
+        let defaultDataLayerName = 'dataLayer';
+        let customDataLayerName = 'myDataLayer';
+        let wronglyConfiguredDataLayerName = 'badDataLayer';
+        let nonExistingDataLayerName = 'myImaginaryDataLayer';
+        let data = {
+          event: 'CoveoCustomEvent',
+          coveoAnalyticsEventData: {
+            language: 'en',
+            device: 'test device',
+            searchInterface: 'test interface',
+            searchHub: 'test searchHub',
+            responseTime: 100,
+            actionType: 'testActionType',
+            actionCause: 'testActionCause',
+            customMetadatas: { testKey: 'testValue' }
+          }
+        };
+        beforeEach(() => {
+          (<any>window)[defaultDataLayerName] = [];
+          (<any>window)[customDataLayerName] = [];
+          (<any>window)[wronglyConfiguredDataLayerName] = [];
+          (<any>window)[wronglyConfiguredDataLayerName].push = 'April Fools!';
+        });
+
+        afterEach(() => {
+          delete (<any>window)[wronglyConfiguredDataLayerName];
+          delete (<any>window)[customDataLayerName];
+          delete (<any>window)[defaultDataLayerName];
+        });
+
+        it('should not push to default data layer if pushToGtmDataLayer is false', () => {
+          test = Mock.basicComponentSetup<Analytics>(Analytics);
+          $$(test.env.root).trigger(AnalyticsEvents.analyticsEventReady, data);
+          expect((<any>window)[defaultDataLayerName].length).toBe(0);
+        });
+
+        it('should not push to default data layer if pushToGtmDataLayer is true and gtmDataLayerName is the empty string', () => {
+          test = Mock.optionsComponentSetup<Analytics, IAnalyticsOptions>(Analytics, {
+            pushToGtmDataLayer: true,
+            gtmDataLayerName: ''
+          });
+          $$(test.env.root).trigger(AnalyticsEvents.analyticsEventReady, data);
+          expect((<any>window)[defaultDataLayerName].length).toBe(0);
+        });
+
+        it('should not push to undefined data layer if pushToGtmDataLayer is true', () => {
+          test = Mock.optionsComponentSetup<Analytics, IAnalyticsOptions>(Analytics, {
+            pushToGtmDataLayer: true,
+            gtmDataLayerName: nonExistingDataLayerName
+          });
+          $$(test.env.root).trigger(AnalyticsEvents.analyticsEventReady, data);
+          expect(typeof (<any>window)[nonExistingDataLayerName]).toBe('undefined');
+        });
+
+        it('should catch error attempting to push to invalid data layer', () => {
+          test = Mock.optionsComponentSetup<Analytics, IAnalyticsOptions>(Analytics, {
+            pushToGtmDataLayer: true,
+            gtmDataLayerName: wronglyConfiguredDataLayerName
+          });
+          expect(() => {
+            $$(test.env.root).trigger(AnalyticsEvents.analyticsEventReady, data);
+          }).not.toThrow();
+        });
+
+        it('should push to default valid data layer if pushToGtmDataLayer is true and gtmDataLayerName is unspecified', () => {
+          test = Mock.optionsComponentSetup<Analytics, IAnalyticsOptions>(Analytics, {
+            pushToGtmDataLayer: true
+          });
+          $$(test.env.root).trigger(AnalyticsEvents.analyticsEventReady, data);
+          expect((<any>window)[defaultDataLayerName][0]).toBe(data);
+        });
+
+        it('should push to specified valid data layer if pushToGtmDataLayer is true and gtmDataLayerName is specified', () => {
+          test = Mock.optionsComponentSetup<Analytics, IAnalyticsOptions>(Analytics, {
+            pushToGtmDataLayer: true,
+            gtmDataLayerName: customDataLayerName
+          });
+          $$(test.env.root).trigger(AnalyticsEvents.analyticsEventReady, data);
+          expect((<any>window)[customDataLayerName][0]).toBe(data);
         });
       });
 
