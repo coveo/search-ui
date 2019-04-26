@@ -51,10 +51,7 @@ export class CategoryFacetTemplates {
   }
 
   private getFormattedCount(count: number) {
-    if (count > 0) {
-      count = Globalize.format(count, 'n0');
-    }
-    return count;
+    return Globalize.format(count, 'n0');
   }
 
   private createListElement(data: CategoryFacetData) {
