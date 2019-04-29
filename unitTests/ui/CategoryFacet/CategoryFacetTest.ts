@@ -321,11 +321,13 @@ export function CategoryFacetTest() {
       function verifyParents(numberOfParents: number) {
         removeAllCategoriesButton(test.cmp.element);
         const parentCategoryValues = $$(test.cmp.element).findAll('.coveo-category-facet-parent-value');
+
+        const expectedValues = ['0', '251', '502', '753', '1,004', '1,255', '1,506', '1,757', '2,008', '2,259'];
         for (const i of range(numberOfParents)) {
           const valueCaption = $$(parentCategoryValues[i]).find('.coveo-category-facet-value-caption');
           const valueCount = $$(parentCategoryValues[i]).find('.coveo-category-facet-value-count');
           expect($$(valueCaption).text()).toEqual(`parent${i}`);
-          expect($$(valueCount).text()).toEqual('5');
+          expect($$(valueCount).text()).toEqual(expectedValues[i]);
         }
       }
 
