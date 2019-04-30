@@ -220,9 +220,9 @@ export function AnalyticsTest() {
             pushToGtmDataLayer: true,
             gtmDataLayerName: wronglyConfiguredDataLayerName
           });
-          expect(() => {
-            $$(test.env.root).trigger(AnalyticsEvents.analyticsEventReady, data);
-          }).not.toThrow();
+          spyOn(test.cmp.logger, 'error');
+          $$(test.env.root).trigger(AnalyticsEvents.analyticsEventReady, data);
+          expect(test.cmp.logger.error).toHaveBeenCalled();
         });
 
         it('should push to default valid data layer if pushToGtmDataLayer is true and gtmDataLayerName is unspecified', () => {
