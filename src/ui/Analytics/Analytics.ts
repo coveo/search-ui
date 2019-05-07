@@ -425,7 +425,7 @@ export class Analytics extends Component {
     }
 
     if (!this.options.organization && this.defaultEndpoint) {
-      this.options.organization = this.defaultEndpoint.options.queryStringArguments['workgroup'];
+      this.options.organization = this.defaultEndpoint.options.queryStringArguments['organizationId'];
     }
   }
 
