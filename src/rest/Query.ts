@@ -5,6 +5,13 @@ import { Context } from '../ui/PipelineContext/PipelineGlobalExports';
 import { ICategoryFacetRequest } from './CategoryFacetRequest';
 import { IFacetRequest } from './Facet/FacetRequest';
 
+export interface IFacetOptions {
+  /**
+   * Indicates whether the facet values should be returned in their current order.
+   */
+  freezeFacetOrder?: Boolean;
+}
+
 /**
  * The IQuery interface describes a query that can be performed on the Coveo REST Search API.
  *
@@ -240,7 +247,7 @@ export interface IQuery {
   facets?: IFacetRequest[];
 
   /**
-   * Indicates whether the facet values should be returned in their current order.
+   * Options for the facets parameter
    */
-  freezeFacetOrder?: Boolean;
+  facetOptions?: IFacetOptions;
 }

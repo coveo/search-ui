@@ -56,7 +56,7 @@ export class MLFacetQueryController {
 
     queryBuilder.facetRequests.push(facetRequest);
     if (this.freezeFacetOrder) {
-      queryBuilder.freezeFacetOrder = true;
+      queryBuilder.facetOptions.freezeFacetOrder = true;
     }
   }
 

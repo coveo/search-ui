@@ -2,7 +2,7 @@ import { ExpressionBuilder } from './ExpressionBuilder';
 import { IRankingFunction } from '../../rest/RankingFunction';
 import { IQueryFunction } from '../../rest/QueryFunction';
 import { IGroupByRequest } from '../../rest/GroupByRequest';
-import { IQuery } from '../../rest/Query';
+import { IQuery, IFacetOptions } from '../../rest/Query';
 import { QueryBuilderExpression } from './QueryBuilderExpression';
 import * as _ from 'underscore';
 import { Utils } from '../../utils/Utils';
@@ -288,9 +288,9 @@ export class QueryBuilder {
   public facetRequests: IFacetRequest[] = [];
 
   /**
-   * Indicates whether the facet values should be returned in their current order.
+   * Options for the facets parameter
    */
-  public freezeFacetOrder: boolean;
+  public facetOptions: IFacetOptions = {};
 
   /**
    * Specifies an array of request for the CategoryFacet component.
@@ -363,7 +363,7 @@ export class QueryBuilder {
       rankingFunctions: this.rankingFunctions,
       groupBy: this.groupBy,
       facets: this.facets,
-      freezeFacetOrder: this.freezeFacetOrder,
+      facetOptions: this.facetOptions,
       categoryFacets: this.categoryFacets,
       retrieveFirstSentences: this.retrieveFirstSentences,
       timezone: this.timezone,
