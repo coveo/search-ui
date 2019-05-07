@@ -24,7 +24,8 @@ import { isFacetSortCriteria } from '../../rest/Facet/FacetSortCriteria';
 import { l } from '../../strings/Strings';
 import { DeviceUtils } from '../../utils/DeviceUtils';
 import { BreadcrumbEvents, IPopulateBreadcrumbEventArgs } from '../../events/BreadcrumbEvents';
-import { IAnalyticsMLFacetsMeta, IAnalyticsActionCause, IAnalyticsMLFacetMeta } from '../Analytics/AnalyticsActionListMeta';
+import { IAnalyticsActionCause, IAnalyticsMLFacetMeta } from '../Analytics/AnalyticsActionListMeta';
+import { IQueryOptions } from '../../controllers/QueryController';
 
 export interface IMLFacetOptions extends IResponsiveComponentOptions {
   id?: string;
@@ -373,7 +374,7 @@ export class MLFacet extends Component {
   }
 
   public sendUsageAnalyticsEvent(action: IAnalyticsActionCause, targetFacet?: IAnalyticsMLFacetMeta) {
-    this.usageAnalytics.logSearchEvent<IAnalyticsMLFacetsMeta>(action, { targetFacet });
+    this.usageAnalytics.logSearchEvent<IAnalyticsMLFacetMeta>(action, targetFacet);
   }
 
   public get analyticsFacetState(): IAnalyticsMLFacetMeta[] {
@@ -498,11 +499,9 @@ export class MLFacet extends Component {
   public triggerNewQuery(beforeExecuteQuery?: () => void) {
     this.beforeSendingQuery();
 
-    if (!beforeExecuteQuery) {
-      this.queryController.executeQuery({ ignoreWarningSearchEvent: true });
-    } else {
-      this.queryController.executeQuery({ beforeExecuteQuery });
-    }
+    const options: IQueryOptions = beforeExecuteQuery ? { beforeExecuteQuery } : { ignoreWarningSearchEvent: true };
+
+    this.queryController.executeQuery(options);
   }
 
   private beforeSendingQuery() {

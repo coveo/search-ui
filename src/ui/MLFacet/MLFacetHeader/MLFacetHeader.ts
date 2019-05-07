@@ -39,13 +39,15 @@ export class MLFacetHeader {
 
   private clear() {
     this.facet.reset();
-    this.facet.triggerNewQuery(() =>
-      this.facet.sendUsageAnalyticsEvent(analyticsActionCauseList.mLFacetClearAll, {
-        facetId: this.facet.options.id,
-        facetField: this.facet.options.field.toString(),
-        facetTitle: this.facet.options.title
-      })
-    );
+    this.facet.triggerNewQuery(() => this.logClearAllToAnalytics());
+  }
+
+  private logClearAllToAnalytics() {
+    this.facet.sendUsageAnalyticsEvent(analyticsActionCauseList.mLFacetClearAll, {
+      facetId: this.facet.options.id,
+      facetField: this.facet.options.field.toString(),
+      facetTitle: this.facet.options.title
+    });
   }
 
   private createCollapseToggle() {

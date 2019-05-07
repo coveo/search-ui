@@ -139,10 +139,6 @@ export interface IAnalyticsMLFacetMeta {
   facetValueState?: FacetValueState;
 }
 
-export interface IAnalyticsMLFacetsMeta {
-  targetFacet?: IAnalyticsMLFacetMeta;
-}
-
 export interface IAnalyticsFacetGraphSelectedMeta extends IAnalyticsFacetSliderChangeMeta {}
 
 export interface IAnalyticsFacetOperatorMeta extends IAnalyticsFacetMeta {
