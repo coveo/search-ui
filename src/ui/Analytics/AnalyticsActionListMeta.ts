@@ -130,11 +130,16 @@ export interface IAnalyticsFacetSliderChangeMeta {
   facetRangeEnd: any;
 }
 
+export enum AnalyticsMLFacetType {
+  string = 'String'
+}
+
 export interface IAnalyticsMLFacetMeta {
   facetId: string;
   facetField: string;
   facetTitle: string;
   facetValue?: string;
+  facetType?: AnalyticsMLFacetType;
   facetDisplayValue?: string;
   facetValueState?: FacetValueState;
 }

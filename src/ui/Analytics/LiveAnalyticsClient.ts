@@ -5,7 +5,7 @@ import { PendingSearchAsYouTypeSearchEvent } from './PendingSearchAsYouTypeSearc
 import { AnalyticsEndpoint } from '../../rest/AnalyticsEndpoint';
 import { Assert } from '../../misc/Assert';
 import { Logger } from '../../misc/Logger';
-import { IAnalyticsActionCause, analyticsActionCauseList, IAnalyticsMLFacetMeta } from './AnalyticsActionListMeta';
+import { IAnalyticsActionCause, analyticsActionCauseList } from './AnalyticsActionListMeta';
 import { IQueryResult } from '../../rest/QueryResult';
 import { ITopQueries } from '../../rest/TopQueries';
 import {
@@ -28,8 +28,6 @@ import { version } from '../../misc/Version';
 import { QueryUtils } from '../../utils/QueryUtils';
 import * as _ from 'underscore';
 import { IComponentBindings } from '../Base/ComponentBindings';
-import { MLFacet } from '../MLFacet/MLFacet';
-import { Utils } from '../../utils/Utils';
 
 export class LiveAnalyticsClient implements IAnalyticsClient {
   public isContextual: boolean = false;
@@ -336,11 +334,6 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
     let modifiedMeta: IChangeableAnalyticsMetaObject = _.extend({}, meta);
     modifiedMeta['JSUIVersion'] = version.lib + ';' + version.product;
 
-    const facetsState = this.facetsState;
-    if (facetsState) {
-      modifiedMeta['facetsState'] = facetsState;
-    }
-
     if (result) {
       let uniqueId = QueryUtils.getPermanentId(result);
       modifiedMeta['contentIDKey'] = uniqueId.fieldUsed;
@@ -348,17 +341,6 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
     }
 
     return modifiedMeta;
-  }
-
-  private get facetsState() {
-    const allMLFacets = this.bindings.searchInterface.getComponents<MLFacet>(MLFacet.ID);
-    if (Utils.isEmptyArray(allMLFacets)) {
-      return null;
-    }
-
-    const facetsState: IAnalyticsMLFacetMeta[] = [];
-    allMLFacets.forEach(mLFacet => facetsState.push(...mLFacet.analyticsFacetState));
-    return facetsState;
   }
 
   private cancelAnyPendingSearchAsYouTypeEvent() {
