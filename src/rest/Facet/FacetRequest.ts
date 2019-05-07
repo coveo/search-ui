@@ -14,4 +14,5 @@ export interface IFacetRequest {
   injectionDepth?: number;
   freezeCurrentValues?: boolean;
   currentValues?: IFacetRequestValue[];
+  isFieldExpanded?: boolean;
 }
