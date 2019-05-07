@@ -43,7 +43,8 @@ export class MLFacetQueryController {
       sortCriteria: this.facet.options.sortCriteria as FacetSortCriteria,
       currentValues: this.currentValues,
       numberOfValues: this.numberOfValues,
-      freezeCurrentValues: this.freezeCurrentValues
+      freezeCurrentValues: this.freezeCurrentValues,
+      isFieldExpanded: this.numberOfValuesToRequest > this.facet.options.numberOfValues
     };
 
     queryBuilder.facetRequests.push(facetRequest);
@@ -61,6 +62,6 @@ export class MLFacetQueryController {
       return this.currentValues.length;
     }
 
-    return Math.max(this.numberOfValuesToRequest, this.facet.values.nonIdleValues.length);
+    return Math.max(this.numberOfValuesToRequest, this.facet.values.activeFacetValues.length);
   }
 }

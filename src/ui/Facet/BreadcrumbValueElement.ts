@@ -5,7 +5,6 @@ import { compact } from 'underscore';
 import { Assert } from '../../misc/Assert';
 import { AccessibleButton } from '../../utils/AccessibleButton';
 import { $$, Dom } from '../../utils/Dom';
-import { SVGDom } from '../../utils/SVGDom';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { analyticsActionCauseList, IAnalyticsFacetMeta } from '../Analytics/AnalyticsActionListMeta';
 import { Facet } from './Facet';
@@ -73,9 +72,8 @@ export class BreadcrumbValueElement {
       {
         className: 'coveo-facet-breadcrumb-clear'
       },
-      SVGIcons.icons.checkboxHookExclusionMore
+      SVGIcons.icons.mainClear
     );
-    SVGDom.addClassToSVGInContainer(clear.el, 'coveo-facet-breadcrumb-clear-svg');
 
     return clear;
   }

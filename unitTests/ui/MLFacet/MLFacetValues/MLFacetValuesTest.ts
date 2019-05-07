@@ -51,19 +51,29 @@ export function MLFacetValuesTest() {
       expect(mLFacetValues.selectedValues[1]).toBe(mockFacetValues[3].value);
     });
 
-    it('should return nonIdleValues correctly', () => {
-      expect(mLFacetValues.selectedValues[0]).toBe(mockFacetValues[1].value);
-      expect(mLFacetValues.selectedValues[1]).toBe(mockFacetValues[3].value);
+    it('should return activeFacetValues correctly', () => {
+      expect(mLFacetValues.activeFacetValues[0].value).toBe(mockFacetValues[1].value);
+      expect(mLFacetValues.activeFacetValues[1].value).toBe(mockFacetValues[3].value);
     });
 
     it('when there are selected values, hasSelectedValues should return true', () => {
       expect(mLFacetValues.hasSelectedValues).toBe(true);
     });
 
+    it('when there are selected values, hasActiveValues should return true', () => {
+      expect(mLFacetValues.hasActiveValues).toBe(true);
+    });
+
     it('when there are no selected values, hasSelectedValues should return false', () => {
       mockFacetValues = MLFacetTestUtils.createFakeFacetValues();
       initializeComponent();
       expect(mLFacetValues.hasSelectedValues).toBe(false);
+    });
+
+    it('when there are no selected values, hasActiveValues should return false', () => {
+      mockFacetValues = MLFacetTestUtils.createFakeFacetValues();
+      initializeComponent();
+      expect(mLFacetValues.hasActiveValues).toBe(false);
     });
 
     it('when there are idle values, hasIdleValues should return true', () => {

@@ -3,9 +3,10 @@ import { MLFacet, IMLFacetOptions } from '../../../src/ui/MLFacet/MLFacet';
 import { IMLFacetValue } from '../../../src/ui/MLFacet/MLFacetValues/MLFacetValue';
 import { FacetValueState } from '../../../src/rest/Facet/FacetValueState';
 import { MLFacetTestUtils } from './MLFacetTestUtils';
-import { $$ } from '../../../src/Core';
+import { $$, BreadcrumbEvents } from '../../../src/Core';
 import { FacetSortCriteria } from '../../../src/rest/Facet/FacetSortCriteria';
 import { Simulate } from '../../Simulate';
+import { IPopulateBreadcrumbEventArgs } from '../../../src/events/BreadcrumbEvents';
 
 export function MLFacetTest() {
   describe('MLFacet', () => {
@@ -31,6 +32,12 @@ export function MLFacetTest() {
 
     function getFirstFacetRequest() {
       return Simulate.query(test.env).queryBuilder.build().facets[0];
+    }
+
+    function triggerPopulateBreadcrumbs() {
+      const args: IPopulateBreadcrumbEventArgs = { breadcrumbs: [] };
+      $$(test.env.root).trigger(BreadcrumbEvents.populateBreadcrumb, args);
+      return args.breadcrumbs;
     }
 
     it(`when facet has values but none are selected
@@ -268,6 +275,34 @@ export function MLFacetTest() {
       initializeComponent();
 
       expect(getFirstFacetRequest().numberOfValues).toBe(100);
+    });
+
+    it('should populate breadcrumbs by default', () => {
+      test.cmp.selectValue('foo');
+      const breadcrumbs = triggerPopulateBreadcrumbs();
+
+      expect(breadcrumbs.length).toBe(1);
+    });
+
+    it('should not populate breadcrumbs if the option includeInBreadcrumb is set to "false"', () => {
+      options.includeInBreadcrumb = false;
+      initializeComponent();
+
+      test.cmp.selectValue('foo');
+      const breadcrumbs = triggerPopulateBreadcrumbs();
+
+      expect(breadcrumbs.length).toBe(0);
+    });
+
+    it('should respect the numberOfValuesInBreadcrumb option', () => {
+      options.numberOfValuesInBreadcrumb = 1;
+      initializeComponent();
+
+      test.cmp.selectValue('foo');
+      test.cmp.selectValue('bar');
+      const breadcrumbs = triggerPopulateBreadcrumbs();
+
+      expect(breadcrumbs.length).toBe(1);
     });
   });
 }
