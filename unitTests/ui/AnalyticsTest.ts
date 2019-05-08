@@ -16,7 +16,7 @@ export function AnalyticsTest() {
     beforeEach(() => {
       SearchEndpoint.endpoints['default'] = new SearchEndpoint({
         accessToken: 'some token',
-        queryStringArguments: { workgroup: 'organization' },
+        queryStringArguments: { organizationId: 'organization' },
         restUri: 'some/uri'
       });
     });
@@ -33,7 +33,7 @@ export function AnalyticsTest() {
           new Mock.AdvancedComponentSetupOptions(null, null, env => {
             env.searchInterface.options.endpoint = new SearchEndpoint({
               accessToken: 'another token',
-              queryStringArguments: { workgroup: 'another organization' },
+              queryStringArguments: { organizationId: 'another organization' },
               restUri: 'another/uri'
             });
             return env;
@@ -54,11 +54,12 @@ export function AnalyticsTest() {
       beforeEach(() => {
         SearchEndpoint.endpoints['default'] = new SearchEndpoint({
           accessToken: 'some token',
-          queryStringArguments: { workgroup: 'organization' },
+          queryStringArguments: { organizationId: 'organization' },
           restUri: 'some/uri'
         });
         test = Mock.basicComponentSetup<Analytics>(Analytics);
       });
+
       afterEach(() => {
         test = null;
       });

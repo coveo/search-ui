@@ -3,6 +3,7 @@ import { SVGIcons } from '../../utils/SVGIcons';
 import { SVGDom } from '../../utils/SVGDom';
 import { escape } from 'underscore';
 import { l } from '../../strings/Strings';
+import * as Globalize from 'globalize';
 
 export interface CategoryFacetData {
   value: string;
@@ -49,11 +50,15 @@ export class CategoryFacetTemplates {
     return this.collapseArrow.clone(true);
   }
 
+  private getFormattedCount(count: number) {
+    return Globalize.format(count, 'n0');
+  }
+
   private createListElement(data: CategoryFacetData) {
     return `<li class="coveo-category-facet-value">
         <label class="coveo-category-facet-value-label">
           <span title="${escape(data.value)}" class="coveo-category-facet-value-caption">${escape(data.value)}</span>
-          <span class="coveo-category-facet-value-count">${data.count}</span>
+          <span class="coveo-category-facet-value-count">${this.getFormattedCount(data.count)}</span>
         </label>
       </li>`;
   }

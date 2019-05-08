@@ -45,6 +45,9 @@ QueryStateModelTest();
 import { EndpointCallerTest } from './rest/EndpointCallerTest';
 EndpointCallerTest();
 
+import { AnalyticsEndpointCallerTest } from './rest/AnalyticsEndpointCallerTest';
+AnalyticsEndpointCallerTest();
+
 import { FacetQueryControllerTest } from './controllers/FacetQueryControllerTest';
 FacetQueryControllerTest();
 
