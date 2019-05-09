@@ -145,48 +145,6 @@ export function QuerySuggestAddonTest() {
         done();
       });
 
-      it('should receive suggestion when minCharForSuggestion is equal to the length of the text', async done => {
-        const spyOnEvent = jasmine.createSpy('spyOnEvent');
-        const magicBoxText = jasmine.createSpy('magicBoxText');
-        magicBoxText.and.returnValue('');
-        omnibox.cmp.options.minCharForSuggestions = 0;
-        omnibox.cmp.magicBox.getText = magicBoxText;
-        $$(omnibox.env.root).on(OmniboxEvents.buildingQuerySuggest, () => spyOnEvent());
-        querySuggest = new QuerySuggestAddon(omnibox.cmp);
-        await querySuggest.getSuggestion();
-        expect(magicBoxText).toHaveBeenCalled();
-        expect(spyOnEvent).toHaveBeenCalled();
-        done();
-      });
-
-      it('should receive suggestion when minCharForSuggestion is lower than the length of the text', async done => {
-        const spyOnEvent = jasmine.createSpy('spyOnEvent');
-        const magicBoxText = jasmine.createSpy('magicBoxText');
-        magicBoxText.and.returnValue('test');
-        omnibox.cmp.options.minCharForSuggestions = 3;
-        omnibox.cmp.magicBox.getText = magicBoxText;
-        $$(omnibox.env.root).on(OmniboxEvents.buildingQuerySuggest, () => spyOnEvent());
-        querySuggest = new QuerySuggestAddon(omnibox.cmp);
-        await querySuggest.getSuggestion();
-        expect(magicBoxText).toHaveBeenCalled();
-        expect(spyOnEvent).toHaveBeenCalled();
-        done();
-      });
-
-      it('should not receive suggestion when minCharForSuggestion is higher than the length of the text', async done => {
-        const spyOnEvent = jasmine.createSpy('spyOnEvent');
-        const magicBoxText = jasmine.createSpy('magicBoxText');
-        magicBoxText.and.returnValue('t');
-        omnibox.cmp.options.minCharForSuggestions = 3;
-        omnibox.cmp.magicBox.getText = magicBoxText;
-        $$(omnibox.env.root).on(OmniboxEvents.buildingQuerySuggest, () => spyOnEvent());
-        querySuggest = new QuerySuggestAddon(omnibox.cmp);
-        await querySuggest.getSuggestion();
-        expect(magicBoxText).toHaveBeenCalled();
-        expect(spyOnEvent).not.toHaveBeenCalled();
-        done();
-      });
-
       it('should trigger an event after suggestions are returned', async done => {
         const spyOnEvent = jasmine.createSpy('spyOnEvent');
 
@@ -227,6 +185,46 @@ export function QuerySuggestAddonTest() {
         querySuggest = new QuerySuggestAddon(omnibox.cmp);
         const suggestions = await querySuggest.getSuggestion();
         expect(suggestions[0].html).toBeDefined();
+        done();
+      });
+    });
+
+    describe('when the characterThresholdForSuggestions option is set to a value', () => {
+      let magicBoxText;
+      let spyOnEvent;
+      beforeEach(() => {
+        simulateFakeSuggestions({ completions: [{ executableConfidence: 1, expression: 'foo', highlighted: 'foo', score: 1 }] });
+        magicBoxText = jasmine.createSpy('magicBoxText');
+        spyOnEvent = jasmine.createSpy('spyOnEvent');
+        omnibox.cmp.options.characterThresholdForSuggestions = 3;
+        omnibox.cmp.magicBox.getText = magicBoxText;
+        $$(omnibox.env.root).on(OmniboxEvents.querySuggestSuccess, () => spyOnEvent());
+      });
+
+      it('when the magic box text length is equals to the minimumNumberOfCharactersForSuggestions option', async done => {
+        magicBoxText.and.returnValue('foo');
+        querySuggest = new QuerySuggestAddon(omnibox.cmp);
+        await querySuggest.getSuggestion();
+        expect(magicBoxText).toHaveBeenCalled();
+        expect(spyOnEvent).toHaveBeenCalled();
+        done();
+      });
+
+      it('when the magic box text length is greater than the minimumNumberOfCharactersForSuggestions option', async done => {
+        magicBoxText.and.returnValue('fooo');
+        querySuggest = new QuerySuggestAddon(omnibox.cmp);
+        await querySuggest.getSuggestion();
+        expect(magicBoxText).toHaveBeenCalled();
+        expect(spyOnEvent).toHaveBeenCalled();
+        done();
+      });
+
+      it('when the magic box text length is less than the minimumNumberOfCharactersForSuggestions option', async done => {
+        magicBoxText.and.returnValue('');
+        querySuggest = new QuerySuggestAddon(omnibox.cmp);
+        await querySuggest.getSuggestion();
+        expect(magicBoxText).toHaveBeenCalled();
+        expect(spyOnEvent).not.toHaveBeenCalled();
         done();
       });
     });

@@ -207,9 +207,9 @@ export function OmniboxTest() {
 
       it('minCharForSuggestions should be set', () => {
         test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
-          minCharForSuggestions: 5
+          characterThresholdForSuggestions: 5
         });
-        expect(test.cmp.options.minCharForSuggestions).toBe(5);
+        expect(test.cmp.options.characterThresholdForSuggestions).toBe(5);
       });
 
       describe('with field returned by the API', () => {

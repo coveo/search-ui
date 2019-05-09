@@ -59,7 +59,7 @@ export interface IOmniboxOptions extends IQueryboxOptions {
   omniboxTimeout?: number;
   placeholder?: string;
   numberOfSuggestions?: number;
-  minCharForSuggestions?: number;
+  characterThresholdForSuggestions?: number;
   grammar?: (
     grammar: { start: string; expressions: { [id: string]: ExpressionDef } }
   ) => { start: string; expressions: { [id: string]: ExpressionDef } };
@@ -246,7 +246,7 @@ export class Omnibox extends Component {
      *
      * Default value is `0`. Minimum value is `0`.
      */
-    minCharForSuggestions: ComponentOptions.buildNumberOption({
+    characterThresholdForSuggestions: ComponentOptions.buildNumberOption({
       defaultValue: 0,
       min: 0
     })
