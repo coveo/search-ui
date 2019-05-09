@@ -24,6 +24,10 @@ export interface IMLFacetManagerCompareFacet {
   (facetA: MLFacet, facetB: MLFacet): number;
 }
 
+/**
+ * The `MLFacetManager` component is meant to be a parent for multiple [MLFacet]{@link MLFacet} components.
+ * It allows more control over the rendering and ordering of the children [MLFacet]{@link MLFacet} components.
+ */
 export class MLFacetManager extends Component {
   static ID = 'MLFacetManager';
   static doExport = () => exportGlobally({ MLFacetManager });

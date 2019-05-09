@@ -39,7 +39,18 @@ export interface IMLFacetOptions extends IResponsiveComponentOptions {
 }
 
 /**
- * Renders a facet in the search interface.
+ * The `MLFacet` component displays a *facet* of the results for the current query. A facet is a list of values for a
+ * certain field occurring in the results, ordered using a configurable criteria (e.g., number of occurrences).
+ *
+ * The list of values is obtained using an array of [`FacetRequest`]{@link IFacetRequest} operation performed at the same time
+ * as the main query.
+ *
+ * The `MLFacet` component allows the end user to drill down inside a result set by restricting the result to certain
+ * field values. It also allows filtering out values from the facet itself, and can provide a search box to look for
+ * specific values inside larger sets.
+ *
+ * This facet is more easy to use than the original [`Facet`]{@link Facet} component. It implements additional Machine Learning features
+ * such as Dynamic Navigation Experience.
  */
 export class MLFacet extends Component {
   static ID = 'MLFacet';
@@ -372,6 +383,8 @@ export class MLFacet extends Component {
   }
 
   /**
+   * For this option to work, the component has to be the child of a [MLFacetManager]{@link MLFacetManager} component
+   *
    * Sets a flag indicating whether the facets should be returned in their current order.
    *
    * Setting the flag to true helps ensuring that the facets do not move around while the end-user is interacting with them.
