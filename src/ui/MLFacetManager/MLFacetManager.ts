@@ -38,13 +38,13 @@ export class MLFacetManager extends Component {
    */
   static options: IMLFacetManagerOptions = {
     /**
-     * Whether to allow the reordering of the facets depending on the server's response.
+     * Whether to allow the reordering of facets based on Coveo ML and index ranking scores.
      *
      * **Default:** `true`
      */
     enableReorder: ComponentOptions.buildBooleanOption({ defaultValue: true, section: 'Filtering' }),
     /**
-     * Specifies the event handler function to execute when the facets are updated on the query response
+     * The event handler function to execute when facets are updated in the query response.
      * For each `MLFacet`, you can provide a callback function to execute after the facet is reordered.
      *
      * **Note:**
@@ -87,7 +87,7 @@ export class MLFacetManager extends Component {
       return null;
     }),
     /**
-     * Specifies a function that defines the sort order for the facets.
+     * A function that defines the sort order for the facets.
      *
      * Called on every successful query reponse.
      *
@@ -134,6 +134,13 @@ export class MLFacetManager extends Component {
   private mLFacets: MLFacet[];
   private containerElement: HTMLElement;
 
+  /**
+   * Creates a new `MLFacetManager` instance.
+   *
+   * @param element The element from which to instantiate the component.
+   * @param options The component options.
+   * @param bindings The component bindings. Automatically resolved by default.
+   */
   constructor(element: HTMLElement, public options?: IMLFacetManagerOptions, private bindings?: IComponentBindings) {
     super(element, 'MLFacetManager');
     this.options = ComponentOptions.initComponentOptions(element, MLFacetManager, options);

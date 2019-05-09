@@ -288,7 +288,7 @@ export class QueryBuilder {
   public facetRequests: IFacetRequest[] = [];
 
   /**
-   * Options for the facets parameter
+   * The global configuration options to apply to the requests in the [facets]{@link QueryBuilder.facets} array.
    */
   public facetOptions: IFacetOptions = {};
 

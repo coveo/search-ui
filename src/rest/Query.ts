@@ -5,6 +5,9 @@ import { Context } from '../ui/PipelineContext/PipelineGlobalExports';
 import { ICategoryFacetRequest } from './CategoryFacetRequest';
 import { IFacetRequest } from './Facet/FacetRequest';
 
+/**
+ * The available global configuration options when requesting facets through the [facets]{IQuery.facets} array.
+ */
 export interface IFacetOptions {
   /**
    * Indicates whether the facet values should be returned in their current order.
@@ -242,12 +245,12 @@ export interface IQuery {
   allowQueriesWithoutKeywords?: boolean;
 
   /**
-   * Specifies an array of request to retrieve facet values for the MLFacet component
+   * Specifies an array of request to retrieve facet values for the MLFacet component.
    */
   facets?: IFacetRequest[];
 
   /**
-   * Options for the facets parameter
+   * The global configuration options to apply to the requests in the [facets]{@link IQuery.facets} array.
    */
   facetOptions?: IFacetOptions;
 }
