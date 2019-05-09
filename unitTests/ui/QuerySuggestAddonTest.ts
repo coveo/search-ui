@@ -145,6 +145,48 @@ export function QuerySuggestAddonTest() {
         done();
       });
 
+      it('should receive suggestion when minCharForSuggestion is equal to the length of the text', async done => {
+        const spyOnEvent = jasmine.createSpy('spyOnEvent');
+        const magicBoxText = jasmine.createSpy('magicBoxText');
+        magicBoxText.and.returnValue('');
+        omnibox.cmp.options.minCharForSuggestions = 0;
+        omnibox.cmp.magicBox.getText = magicBoxText;
+        $$(omnibox.env.root).on(OmniboxEvents.buildingQuerySuggest, () => spyOnEvent());
+        querySuggest = new QuerySuggestAddon(omnibox.cmp);
+        await querySuggest.getSuggestion();
+        expect(magicBoxText).toHaveBeenCalled();
+        expect(spyOnEvent).toHaveBeenCalled();
+        done();
+      });
+
+      it('should receive suggestion when minCharForSuggestion is lower than the length of the text', async done => {
+        const spyOnEvent = jasmine.createSpy('spyOnEvent');
+        const magicBoxText = jasmine.createSpy('magicBoxText');
+        magicBoxText.and.returnValue('test');
+        omnibox.cmp.options.minCharForSuggestions = 3;
+        omnibox.cmp.magicBox.getText = magicBoxText;
+        $$(omnibox.env.root).on(OmniboxEvents.buildingQuerySuggest, () => spyOnEvent());
+        querySuggest = new QuerySuggestAddon(omnibox.cmp);
+        await querySuggest.getSuggestion();
+        expect(magicBoxText).toHaveBeenCalled();
+        expect(spyOnEvent).toHaveBeenCalled();
+        done();
+      });
+
+      it('should not receive suggestion when minCharForSuggestion is higher than the length of the text', async done => {
+        const spyOnEvent = jasmine.createSpy('spyOnEvent');
+        const magicBoxText = jasmine.createSpy('magicBoxText');
+        magicBoxText.and.returnValue('t');
+        omnibox.cmp.options.minCharForSuggestions = 3;
+        omnibox.cmp.magicBox.getText = magicBoxText;
+        $$(omnibox.env.root).on(OmniboxEvents.buildingQuerySuggest, () => spyOnEvent());
+        querySuggest = new QuerySuggestAddon(omnibox.cmp);
+        await querySuggest.getSuggestion();
+        expect(magicBoxText).toHaveBeenCalled();
+        expect(spyOnEvent).not.toHaveBeenCalled();
+        done();
+      });
+
       it('should trigger an event after suggestions are returned', async done => {
         const spyOnEvent = jasmine.createSpy('spyOnEvent');
 

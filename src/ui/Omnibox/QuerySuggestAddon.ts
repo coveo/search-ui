@@ -70,7 +70,10 @@ export class QuerySuggestAddon implements IQuerySuggestAddon {
   public getSuggestion(): Promise<IOmniboxSuggestion[]> {
     const text = this.omnibox.magicBox.getText();
 
-    return this.cache.getSuggestions(text, () => this.getQuerySuggest(text));
+    if (text.length >= this.omnibox.options.minCharForSuggestions) {
+      return this.cache.getSuggestions(text, () => this.getQuerySuggest(text));
+    }
+    return Promise.resolve([]);
   }
 
   private async getQuerySuggest(text: string): Promise<IOmniboxSuggestion[]> {

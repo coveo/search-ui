@@ -205,6 +205,13 @@ export function OmniboxTest() {
         expect(test.env.searchEndpoint.listFieldValues).toHaveBeenCalled();
       });
 
+      it('minCharForSuggestions should be set', () => {
+        test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
+          minCharForSuggestions: 5
+        });
+        expect(test.cmp.options.minCharForSuggestions).toBe(5);
+      });
+
       describe('with field returned by the API', () => {
         const buildFieldDescription = (fields: string[]) => {
           const fieldsDescription: IFieldDescription[] = [];

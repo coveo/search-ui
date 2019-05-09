@@ -59,6 +59,7 @@ export interface IOmniboxOptions extends IQueryboxOptions {
   omniboxTimeout?: number;
   placeholder?: string;
   numberOfSuggestions?: number;
+  minCharForSuggestions?: number;
   grammar?: (
     grammar: { start: string; expressions: { [id: string]: ExpressionDef } }
   ) => { start: string; expressions: { [id: string]: ExpressionDef } };
@@ -239,6 +240,15 @@ export class Omnibox extends Component {
     numberOfSuggestions: ComponentOptions.buildNumberOption({
       defaultValue: 5,
       min: 1
+    }),
+    /**
+     * Specifies the number of characters that should be written before displaying the suggestions
+     *
+     * Default value is `0`. Minimum value is `0`.
+     */
+    minCharForSuggestions: ComponentOptions.buildNumberOption({
+      defaultValue: 0,
+      min: 0
     })
   };
 
