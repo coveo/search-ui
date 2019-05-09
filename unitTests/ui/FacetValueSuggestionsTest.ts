@@ -335,25 +335,5 @@ export function FacetValueSuggestionsTest() {
         });
       });
     });
-
-    it('caches results by keywords', async done => {
-      test.cmp.options.useValueFromSearchbox = true;
-      test.cmp.options.useQuerySuggestions = false;
-
-      const anotherKeyword = 'anotherkeyword';
-      await triggerPopulateOmniboxEvent();
-      await triggerPopulateOmniboxEvent();
-
-      expect(facetValueSuggestionsProvider.getSuggestions).toHaveBeenCalledTimes(1);
-      expect(facetValueSuggestionsProvider.getSuggestions).toHaveBeenCalledWith([aKeyword]);
-
-      setUpKeywordInOmnibox(anotherKeyword);
-      await triggerPopulateOmniboxEvent();
-
-      expect(facetValueSuggestionsProvider.getSuggestions).toHaveBeenCalledTimes(2);
-      expect(facetValueSuggestionsProvider.getSuggestions).toHaveBeenCalledWith([anotherKeyword]);
-
-      done();
-    });
   });
 }
