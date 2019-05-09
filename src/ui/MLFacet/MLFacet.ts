@@ -373,7 +373,7 @@ export class MLFacet extends Component {
     this.mLFacetQueryController.enableFreezeCurrentValuesFlag();
   }
 
-  public sendUsageAnalyticsEvent(action: IAnalyticsActionCause, targetFacet?: IAnalyticsMLFacetMeta) {
+  public logAnalyticsEvent(action: IAnalyticsActionCause, targetFacet?: IAnalyticsMLFacetMeta) {
     this.usageAnalytics.logSearchEvent<IAnalyticsMLFacetMeta>(action, targetFacet);
   }
 

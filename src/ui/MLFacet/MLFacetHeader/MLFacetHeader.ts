@@ -43,7 +43,7 @@ export class MLFacetHeader {
   }
 
   private logClearAllToAnalytics() {
-    this.facet.sendUsageAnalyticsEvent(analyticsActionCauseList.mLFacetClearAll, {
+    this.facet.logAnalyticsEvent(analyticsActionCauseList.mLFacetClearAll, {
       facetId: this.facet.options.id,
       facetField: this.facet.options.field.toString(),
       facetTitle: this.facet.options.title
