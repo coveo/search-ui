@@ -53,35 +53,6 @@ export class MLFacetManager extends Component {
      * > [Components - Passing Component Options in the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsintheinitCall)),
      * > or before the `init` call, using the `options` top-level function (see
      * > [Components - Passing Component Options Before the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsBeforetheinitCall)).
-     *
-     * **Example:**
-     *
-     * ```javascript
-     *
-     * var myOnUpdateFunction = function(mLFacetComponent, index) {
-     *     // Collapse every facet except the first one
-     *     if (index > 0) {
-     *       mLFacetComponent.collapse();
-     *     } else {
-     *       mLFacetComponent.expand();
-     *     }
-     *
-     * };
-     *
-     * // You can set the option in the 'init' call:
-     * Coveo.init(document.querySelector("#search"), {
-     *    MLFacetManager : {
-     *      onUpdate : myOnUpdateFunction
-     *    }
-     * });
-     *
-     * // Or before the 'init' call, using the 'options' top-level function:
-     * // Coveo.options(document.querySelector("#search"), {
-     * //   MLFacetManager : {
-     * //     onUpdate : myOnUpdateFunction
-     * //   }
-     * // });
-     * ```
      */
     onUpdate: ComponentOptions.buildCustomOption<IMLFacetManagerOnUpdate>(() => {
       return null;
@@ -100,30 +71,6 @@ export class MLFacetManager extends Component {
      * > [Components - Passing Component Options in the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsintheinitCall)),
      * > or before the `init` call, using the `options` top-level function (see
      * > [Components - Passing Component Options Before the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsBeforetheinitCall)).
-     *
-     * **Example:**
-     *
-     * ```javascript
-     *
-     * var myCompareFacetsMethodFunction = function(facetA, facetB) {
-     *     // Sort the facets by number of selected values
-     *     return facetB.values.selectedValues.length - facetA.values.selectedValues.length;
-     * };
-     *
-     * // You can set the option in the 'init' call:
-     * Coveo.init(document.querySelector("#search"), {
-     *    MLFacetManager : {
-     *      compareFacets : myCompareFacetsMethodFunction
-     *    }
-     * });
-     *
-     * // Or before the 'init' call, using the 'options' top-level function:
-     * // Coveo.options(document.querySelector("#search"), {
-     * //   MLFacetManager : {
-     * //     compareFacets : myCompareFacetsMethodFunction
-     * //   }
-     * // });
-     * ```
      */
     compareFacets: ComponentOptions.buildCustomOption<IMLFacetManagerCompareFacet>(() => {
       return null;
