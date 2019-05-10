@@ -353,6 +353,13 @@ export function ResultListTest() {
       expect($$(test.cmp.element).hasClass('coveo-hidden')).toBe(false);
     });
 
+    it('enableScrollBackTop should be set', () => {
+      test = Mock.optionsComponentSetup<ResultList, IResultListOptions>(ResultList, {
+        enableScrollToTop: false
+      });
+      expect(test.cmp.options.enableScrollToTop).toBe(false);
+    });
+
     describe(`when triggering a layout change event with one result`, () => {
       const layout = 'list';
 

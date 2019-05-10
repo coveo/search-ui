@@ -251,7 +251,14 @@ export class ResultList extends Component {
     layout: ComponentOptions.buildStringOption({
       defaultValue: 'list',
       required: true
-    })
+    }),
+
+    /**
+     * If this option is set to `true`, after changing page, a facet option or the number of results per page, the page will scroll to the top.
+     *
+     * Default value is `true`.
+     */
+    enableScrollToTop: ComponentOptions.buildBooleanOption({ defaultValue: true })
   };
 
   public static resultCurrentlyBeingRendered: IQueryResult = null;
@@ -589,7 +596,9 @@ export class ResultList extends Component {
 
       if (this.options.enableInfiniteScroll && results.results.length == data.queryBuilder.numberOfResults) {
         // This will check right away if we need to add more results to make the scroll container full & scrolling.
-        this.scrollBackToTop();
+        if (this.options.enableScrollToTop) {
+          this.scrollBackToTop();
+        }
         this.handleScrollOfResultList();
       }
     });
@@ -607,7 +616,9 @@ export class ResultList extends Component {
   private handlePageChanged() {
     this.bind.onRootElement(QueryEvents.deferredQuerySuccess, () => {
       setTimeout(() => {
-        this.scrollBackToTop();
+        if (this.options.enableScrollToTop) {
+          this.scrollBackToTop();
+        }
       }, 0);
     });
   }
