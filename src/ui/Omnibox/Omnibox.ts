@@ -59,7 +59,7 @@ export interface IOmniboxOptions extends IQueryboxOptions {
   omniboxTimeout?: number;
   placeholder?: string;
   numberOfSuggestions?: number;
-  characterThresholdForSuggestions?: number;
+  querySuggestCharacterThreshold?: number;
   grammar?: (
     grammar: { start: string; expressions: { [id: string]: ExpressionDef } }
   ) => { start: string; expressions: { [id: string]: ExpressionDef } };
@@ -242,11 +242,15 @@ export class Omnibox extends Component {
       min: 1
     }),
     /**
-     * Specifies the number of characters that should be written before displaying the suggestions
+     * The minimum number of characters required in the in the text input before displaying available query suggestions when focus is on the component.
      *
-     * Default value is `0`. Minimum value is `0`.
+     * Note: Only effective when [enableQuerySuggestAddon]{@link Omnibox.options.enableQuerySuggestAddon} is true.
+     *
+     * depend: 'enableQuerySuggestAddon'
+     *
+     * Default (and minimum): 0, meaning that trending query suggestions are displayed when focus is on the component, even if its text input is empty.
      */
-    characterThresholdForSuggestions: ComponentOptions.buildNumberOption({
+    querySuggestCharacterThreshold: ComponentOptions.buildNumberOption({
       defaultValue: 0,
       min: 0
     })

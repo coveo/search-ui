@@ -196,7 +196,7 @@ export function QuerySuggestAddonTest() {
         simulateFakeSuggestions({ completions: [{ executableConfidence: 1, expression: 'foo', highlighted: 'foo', score: 1 }] });
         magicBoxText = jasmine.createSpy('magicBoxText');
         querySuggestSuccessSpy = jasmine.createSpy('spyOnEvent');
-        omnibox.cmp.options.characterThresholdForSuggestions = 3;
+        omnibox.cmp.options.querySuggestCharacterThreshold = 3;
         omnibox.cmp.magicBox.getText = magicBoxText;
         $$(omnibox.env.root).on(OmniboxEvents.querySuggestSuccess, () => querySuggestSuccessSpy());
       });
@@ -204,27 +204,24 @@ export function QuerySuggestAddonTest() {
       it('when the magic box text length is equal to the minimumNumberOfCharactersForSuggestions option should trigger query suggestion', async done => {
         magicBoxText.and.returnValue('foo');
         querySuggest = new QuerySuggestAddon(omnibox.cmp);
-        await querySuggest.getSuggestion();
-        expect(magicBoxText).toHaveBeenCalled();
-        expect(querySuggestSuccessSpy).toHaveBeenCalled();
+        const suggestionReturned = await querySuggest.getSuggestion();
+        expect(suggestionReturned.length).toBe(1);
         done();
       });
 
       it('when the magic box text length is greater than the minimumNumberOfCharactersForSuggestions option should trigger query suggestion', async done => {
         magicBoxText.and.returnValue('fooo');
         querySuggest = new QuerySuggestAddon(omnibox.cmp);
-        await querySuggest.getSuggestion();
-        expect(magicBoxText).toHaveBeenCalled();
-        expect(querySuggestSuccessSpy).toHaveBeenCalled();
+        const suggestionReturned = await querySuggest.getSuggestion();
+        expect(suggestionReturned.length).toBe(1);
         done();
       });
 
       it('when the magic box text length is less than the minimumNumberOfCharactersForSuggestions option should not trigger query suggestion', async done => {
         magicBoxText.and.returnValue('');
         querySuggest = new QuerySuggestAddon(omnibox.cmp);
-        await querySuggest.getSuggestion();
-        expect(magicBoxText).toHaveBeenCalled();
-        expect(querySuggestSuccessSpy).not.toHaveBeenCalled();
+        const suggestionReturned = await querySuggest.getSuggestion();
+        expect(suggestionReturned.length).toBe(0);
         done();
       });
     });
