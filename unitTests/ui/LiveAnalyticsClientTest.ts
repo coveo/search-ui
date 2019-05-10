@@ -384,6 +384,19 @@ export function LiveAnalyticsClientTest() {
       expect(spy).toHaveBeenCalled();
     });
 
+    it('should trigger an analytics ready event on document view', function() {
+      var spy = jasmine.createSpy('spy');
+      $$(env.root).on(AnalyticsEvents.analyticsEventReady, spy);
+      client.logClickEvent<IAnalyticsNoMeta>(
+        analyticsActionCauseList.documentOpen,
+        {},
+        FakeResults.createFakeResult('foo'),
+        document.createElement('div')
+      );
+      Defer.flush();
+      expect(spy).toHaveBeenCalled();
+    });
+
     it('should trigger an analytics event on search event', function(done) {
       var spy = jasmine.createSpy('spy');
       $$(env.root).on(AnalyticsEvents.searchEvent, spy);
@@ -402,9 +415,35 @@ export function LiveAnalyticsClientTest() {
       });
     });
 
+    it('should trigger an analytics ready event on search event', function(done) {
+      var spy = jasmine.createSpy('spy');
+      $$(env.root).on(AnalyticsEvents.analyticsEventReady, spy);
+      client.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxSubmit, {});
+      Simulate.query(env, {
+        query: {
+          q: 'the query 1'
+        },
+        promise: new Promise((resolve, reject) => {
+          resolve(FakeResults.createFakeResults(3));
+        })
+      });
+      _.defer(function() {
+        expect(spy).toHaveBeenCalled();
+        done();
+      });
+    });
+
     it('should trigger an analytics event on custom event', function() {
       var spy = jasmine.createSpy('spy');
       $$(env.root).on(AnalyticsEvents.customEvent, spy);
+      client.logCustomEvent<IAnalyticsNoMeta>(analyticsActionCauseList.documentOpen, {}, document.createElement('div'));
+      Defer.flush();
+      expect(spy).toHaveBeenCalled();
+    });
+
+    it('should trigger an analytics ready event on custom event', function() {
+      var spy = jasmine.createSpy('spy');
+      $$(env.root).on(AnalyticsEvents.analyticsEventReady, spy);
       client.logCustomEvent<IAnalyticsNoMeta>(analyticsActionCauseList.documentOpen, {}, document.createElement('div'));
       Defer.flush();
       expect(spy).toHaveBeenCalled();
