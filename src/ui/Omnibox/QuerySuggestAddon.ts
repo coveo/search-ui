@@ -10,7 +10,6 @@ import {
   IQuerySuggestSuccessArgs
 } from '../../events/OmniboxEvents';
 import { StringUtils } from '../../utils/StringUtils';
-import { SuggestionsCache } from '../../misc/SuggestionsCache';
 import { map, every, last, indexOf, find } from 'underscore';
 import { QUERY_STATE_ATTRIBUTES } from '../../models/QueryStateModel';
 import { history } from 'coveo.analytics';
@@ -59,8 +58,6 @@ export class QuerySuggestAddon implements IQuerySuggestAddon {
     return every(last(parts, indexOf(parts, firstFail) - parts.length), (part: string[]) => part[1] != null);
   }
 
-  private cache: SuggestionsCache<IOmniboxSuggestion[]> = new SuggestionsCache();
-
   constructor(public omnibox: Omnibox) {
     $$(this.omnibox.element).on(OmniboxEvents.populateOmniboxSuggestions, (e: Event, args: IPopulateOmniboxSuggestionsEventArgs) => {
       args.suggestions.push(this.getSuggestion());
@@ -69,8 +66,7 @@ export class QuerySuggestAddon implements IQuerySuggestAddon {
 
   public getSuggestion(): Promise<IOmniboxSuggestion[]> {
     const text = this.omnibox.magicBox.getText();
-
-    return this.cache.getSuggestions(text, () => this.getQuerySuggest(text));
+    return this.getQuerySuggest(text);
   }
 
   private async getQuerySuggest(text: string): Promise<IOmniboxSuggestion[]> {

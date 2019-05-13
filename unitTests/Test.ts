@@ -525,9 +525,6 @@ FacetValueSuggestionsTest();
 import { FacetValueSuggestionsProviderTest } from './ui/FacetValueSuggestionsProviderTest';
 FacetValueSuggestionsProviderTest();
 
-import { SuggestionsCacheTest } from './misc/SuggestionsCacheTest';
-SuggestionsCacheTest();
-
 import { FacetColumnAutoLayoutAdjustmentTest } from './ui/FacetColumnAutoLayoutAdjustmentTest';
 FacetColumnAutoLayoutAdjustmentTest();
 
