@@ -661,16 +661,20 @@ export class Omnibox extends Component {
   }
 
   private handleSuggestions() {
-    const suggestionsEventArgs: IPopulateOmniboxSuggestionsEventArgs = {
-      suggestions: [],
-      omnibox: this
-    };
-    this.bind.trigger(this.element, OmniboxEvents.populateOmniboxSuggestions, suggestionsEventArgs);
     const text = this.getText();
-    if (!Utils.isNullOrEmptyString(text)) {
-      this.partialQueries.push(text);
+    if (this.options.querySuggestCharacterThreshold <= text.length) {
+      const suggestionsEventArgs: IPopulateOmniboxSuggestionsEventArgs = {
+        suggestions: [],
+        omnibox: this
+      };
+      this.bind.trigger(this.element, OmniboxEvents.populateOmniboxSuggestions, suggestionsEventArgs);
+      if (!Utils.isNullOrEmptyString(text)) {
+        this.partialQueries.push(text);
+      }
+      return _.compact(suggestionsEventArgs.suggestions);
+    } else {
+      return [];
     }
-    return _.compact(suggestionsEventArgs.suggestions);
   }
 
   private handleBeforeRedirect() {
