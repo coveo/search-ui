@@ -70,7 +70,7 @@ export class QuerySuggestAddon implements IQuerySuggestAddon {
     if (text.length >= this.omnibox.options.querySuggestCharacterThreshold) {
       return this.getQuerySuggest(text);
     }
-
+    return Promise.resolve([]);
   }
 
   private async getQuerySuggest(text: string): Promise<IOmniboxSuggestion[]> {
