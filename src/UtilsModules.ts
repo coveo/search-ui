@@ -1,3 +1,4 @@
+export { AccessibleButton } from './utils/AccessibleButton';
 export { ColorUtils } from './utils/ColorUtils';
 export { Cookie } from './utils/CookieUtils';
 export { CurrencyUtils } from './utils/CurrencyUtils';
