@@ -1,10 +1,11 @@
 import { $$ } from '../../src/utils/Dom';
 import * as Mock from '../MockEnvironment';
 import { MLFacetManager, IMLFacetManagerOptions } from '../../src/ui/MLFacetManager/MLFacetManager';
-import { InitializationEvents, QueryEvents } from '../../src/Core';
 import { MLFacetTestUtils } from './MLFacet/MLFacetTestUtils';
 import { IFacetResponse } from '../../src/rest/Facet/FacetResponse';
 import { MLFacet } from '../../src/ui/MLFacet/MLFacet';
+import { Simulate } from '../Simulate';
+import { FakeResults } from '../Fake';
 
 export function MLFacetManagerTest() {
   describe('MLFacetManager', () => {
@@ -22,7 +23,8 @@ export function MLFacetManagerTest() {
     function initializeFacets() {
       facets = [
         MLFacetTestUtils.createFakeFacet({ id: 'test1', field: '@test1', numberOfValues: 10 }),
-        MLFacetTestUtils.createFakeFacet({ id: 'test2', field: '@test2', numberOfValues: 5 })
+        MLFacetTestUtils.createFakeFacet({ id: 'test2', field: '@test2', numberOfValues: 5 }),
+        MLFacetTestUtils.createFakeFacet({ id: 'test3', field: '@test3', numberOfValues: 100 })
       ];
     }
 
@@ -32,6 +34,7 @@ export function MLFacetManagerTest() {
         modifyBuilder: builder => {
           builder.element.appendChild(facets[0].element);
           builder.element.appendChild(facets[1].element);
+          builder.element.appendChild(facets[2].element);
           return builder;
         }
       });
@@ -40,11 +43,16 @@ export function MLFacetManagerTest() {
     }
 
     function triggerAfterComponentsInitialization() {
-      $$(test.env.root).trigger(InitializationEvents.afterComponentsInitialization);
+      Simulate.initialization(test.env);
     }
 
     function triggerQuerySuccess(resultFacets: IFacetResponse[]) {
-      $$(test.env.root).trigger(QueryEvents.querySuccess, { results: { facets: resultFacets } });
+      const fakeResult = FakeResults.createFakeResults();
+      fakeResult.facets = resultFacets;
+
+      Simulate.query(test.env, {
+        results: fakeResult
+      });
     }
 
     function managerContainerChildren() {
@@ -52,7 +60,11 @@ export function MLFacetManagerTest() {
     }
 
     function queryFacetsResponse(): IFacetResponse[] {
-      return [MLFacetTestUtils.getCompleteFacetResponse(facets[1]), MLFacetTestUtils.getCompleteFacetResponse(facets[0])];
+      return [
+        MLFacetTestUtils.getCompleteFacetResponse(facets[1]),
+        MLFacetTestUtils.getCompleteFacetResponse(facets[2]),
+        MLFacetTestUtils.getCompleteFacetResponse(facets[0])
+      ];
     }
 
     it('should disable the component if it contains no MLFacet child', () => {
@@ -62,13 +74,16 @@ export function MLFacetManagerTest() {
     });
 
     it('should disable the component if a query response has no facets parameter', () => {
-      $$(test.env.root).trigger(QueryEvents.querySuccess, { results: {} });
+      Simulate.query(test.env, {
+        results: FakeResults.createFakeResults()
+      });
       expect(test.cmp.disabled).toBe(true);
     });
 
     it('should have the component in the right order', () => {
       expect(managerContainerChildren()[0]).toBe(facets[0].element);
       expect(managerContainerChildren()[1]).toBe(facets[1].element);
+      expect(managerContainerChildren()[2]).toBe(facets[2].element);
     });
 
     it('should not disable the component if a query response has no facets parameter', () => {
@@ -81,7 +96,8 @@ export function MLFacetManagerTest() {
       triggerQuerySuccess(queryFacetsResponse());
 
       expect(managerContainerChildren()[0]).toBe(facets[1].element);
-      expect(managerContainerChildren()[1]).toBe(facets[0].element);
+      expect(managerContainerChildren()[1]).toBe(facets[2].element);
+      expect(managerContainerChildren()[2]).toBe(facets[0].element);
     });
 
     it('should remove the facets not in the response', () => {
@@ -102,6 +118,7 @@ export function MLFacetManagerTest() {
 
       expect(managerContainerChildren()[0]).toBe(facets[0].element);
       expect(managerContainerChildren()[1]).toBe(facets[1].element);
+      expect(managerContainerChildren()[2]).toBe(facets[2].element);
     });
 
     it(`when the "onUpdate" option is defined
@@ -127,8 +144,9 @@ export function MLFacetManagerTest() {
       triggerAfterComponentsInitialization();
       triggerQuerySuccess(queryFacetsResponse());
 
-      expect(managerContainerChildren()[0]).toBe(facets[0].element);
-      expect(managerContainerChildren()[1]).toBe(facets[1].element);
+      expect(managerContainerChildren()[0]).toBe(facets[2].element);
+      expect(managerContainerChildren()[1]).toBe(facets[0].element);
+      expect(managerContainerChildren()[2]).toBe(facets[1].element);
     });
   });
 }

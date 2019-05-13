@@ -124,10 +124,6 @@ export class MLFacetManager extends Component {
   }
 
   private handleQuerySuccess(data: IQuerySuccessEventArgs) {
-    if (this.disabled) {
-      return;
-    }
-
     if (Utils.isNullOrUndefined(data.results.facets)) {
       return this.notImplementedError();
     }
