@@ -9,7 +9,6 @@ import { $$ } from '../../utils/Dom';
 import { exportGlobally } from '../../GlobalExports';
 import 'styling/_FieldSuggestions';
 import * as _ from 'underscore';
-import { SuggestionsCache } from '../../misc/SuggestionsCache';
 import { QueryStateModel } from '../../ModelsModules';
 import { DomUtils } from '../../UtilsModules';
 import { IFacetValueSuggestionRow, FacetValueSuggestionsProvider, IFacetValueSuggestionsProvider } from './FacetValueSuggestionsProvider';
@@ -135,8 +134,6 @@ export class FacetValueSuggestions extends Component {
     })
   };
 
-  public fieldValueCache: SuggestionsCache<IFacetValueSuggestionRow[]> = new SuggestionsCache();
-
   public facetValueSuggestionsProvider: IFacetValueSuggestionsProvider;
 
   private queryStateFieldFacetId;
@@ -210,9 +207,7 @@ export class FacetValueSuggestions extends Component {
 
   private async getSuggestionsForWords(wordsToQuery: string[], omnibox: Omnibox): Promise<IOmniboxSuggestion[]> {
     try {
-      const suggestions = await this.fieldValueCache.getSuggestions(`fv${wordsToQuery.join('')}`, () =>
-        this.facetValueSuggestionsProvider.getSuggestions(wordsToQuery)
-      );
+      const suggestions = await this.facetValueSuggestionsProvider.getSuggestions(wordsToQuery);
 
       this.logger.debug('FacetValue Suggestions Results', suggestions);
 
