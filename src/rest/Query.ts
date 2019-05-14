@@ -6,6 +6,16 @@ import { ICategoryFacetRequest } from './CategoryFacetRequest';
 import { IFacetRequest } from './Facet/FacetRequest';
 
 /**
+ * The available global configuration options when requesting facets through the [facets]{IQuery.facets} array.
+ */
+export interface IFacetOptions {
+  /**
+   * Indicates whether the facet values should be returned in their current order.
+   */
+  freezeFacetOrder?: Boolean;
+}
+
+/**
  * The IQuery interface describes a query that can be performed on the Coveo REST Search API.
  *
  * For basic usage, see the {@link IQuery.q} and {@link IQuery.aq} properties.
@@ -235,7 +245,12 @@ export interface IQuery {
   allowQueriesWithoutKeywords?: boolean;
 
   /**
-   * Specifies an array of request to retrieve facet values for the MLFacet component
+   * Specifies an array of request to retrieve facet values for the MLFacet component.
    */
   facets?: IFacetRequest[];
+
+  /**
+   * The global configuration options to apply to the requests in the [facets]{@link IQuery.facets} array.
+   */
+  facetOptions?: IFacetOptions;
 }

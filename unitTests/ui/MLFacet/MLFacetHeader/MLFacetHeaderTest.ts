@@ -31,6 +31,10 @@ export function MLFacetHeaderTest() {
       return $$(mLFacetHeader.element).find('.coveo-ml-facet-header-title');
     }
 
+    function clearElement() {
+      return $$(mLFacetHeader.element).find('.coveo-ml-facet-header-clear');
+    }
+
     it('should create an accessible title', () => {
       expect($$(titleElement()).getAttribute('aria-label')).toBeTruthy();
       expect($$(titleElement()).find('span').innerHTML).toBe(baseOptions.title);
@@ -61,11 +65,19 @@ export function MLFacetHeaderTest() {
 
     it(`when calling showClear
       the clear button should be visible`, () => {
-      const clearElement = $$(mLFacetHeader.element).find('.coveo-ml-facet-header-clear');
-
       mLFacetHeader.toggleClear(true);
 
-      expect($$(clearElement).isVisible()).toBe(true);
+      expect($$(clearElement()).isVisible()).toBe(true);
+    });
+
+    it(`when clicking on the clear button
+      should perform the correct actions on the facet`, () => {
+      mLFacetHeader.toggleClear(true);
+      $$(clearElement()).trigger('click');
+
+      expect(facet.reset).toHaveBeenCalledTimes(1);
+      expect(facet.enableFreezeFacetOrderFlag).toHaveBeenCalledTimes(1);
+      expect(facet.triggerNewQuery).toHaveBeenCalledTimes(1);
     });
 
     describe('when passing the option enableCollapse as false', () => {
@@ -103,7 +115,7 @@ export function MLFacetHeaderTest() {
         should call the toggleCollapse method of the MLFacet`, () => {
         $$(titleElement()).trigger('click');
 
-        expect(facet.toggleCollapse).toHaveBeenCalled();
+        expect(facet.toggleCollapse).toHaveBeenCalledTimes(1);
       });
     });
   });

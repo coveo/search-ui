@@ -90,6 +90,8 @@ export function MLFacetValueRendererTest() {
           $$(checkboxButton).trigger('click');
 
           expect(facet.toggleSelectValue).toHaveBeenCalledTimes(1);
+          expect(facet.enableFreezeCurrentValuesFlag).toHaveBeenCalledTimes(1);
+          expect(facet.enableFreezeFacetOrderFlag).toHaveBeenCalledTimes(1);
           expect(facet.triggerNewQuery).toHaveBeenCalledTimes(1);
           expect($$(element).hasClass('coveo-selected')).toBe(false);
         });
