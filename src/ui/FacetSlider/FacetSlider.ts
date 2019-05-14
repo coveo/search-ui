@@ -199,8 +199,7 @@ export class FacetSlider extends Component {
         enable: ComponentOptions.buildBooleanOption({ defaultValue: true }),
         unitSign: ComponentOptions.buildStringOption(),
         separator: ComponentOptions.buildStringOption({ defaultValue: '-' })
-      },
-      section: 'Display'
+      }
     }),
 
     /**
@@ -216,8 +215,7 @@ export class FacetSlider extends Component {
       subOptions: {
         enable: ComponentOptions.buildBooleanOption({ defaultValue: false }),
         separator: ComponentOptions.buildStringOption({ defaultValue: '-' })
-      },
-      section: 'Display'
+      }
     }),
 
     /**
@@ -239,8 +237,7 @@ export class FacetSlider extends Component {
             right: ComponentOptions.buildNumberOption({ min: 0 })
           }
         })
-      },
-      section: 'Graph'
+      }
     }),
 
     /**
