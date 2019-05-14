@@ -5,8 +5,6 @@
   padding: 8px 0;
   border-bottom: 1px solid $color-light-grey;
   @include display(flex);
-  @include flex-wrap(nowrap);
-  @include justify-content(flex-end);
 }
 
 .coveo-ml-facet-header-title {
@@ -25,6 +23,8 @@
   }
 }
 
+$header-element-margin: 12px;
+
 @mixin coveo-ml-facet-header-svg {
   width: 16px;
   height: 16px;
@@ -34,10 +34,11 @@
 }
 
 .coveo-ml-facet-header-wait-animation {
-  @include coveo-ml-facet-header-svg;
+  margin-left: $header-element-margin;
 }
 
 .coveo-ml-facet-header-wait-animation-svg {
+  @include coveo-ml-facet-header-svg;
   @include facet-header-animation;
 }
 
@@ -46,10 +47,8 @@
 }
 
 .coveo-ml-facet-header-btn {
-  @include display(flex);
-  @include align-self(right);
   @include linkButton();
 
-  margin-left: 12px;
+  margin-left: $header-element-margin;
   font-size: $font-size-smaller;
 }
