@@ -347,6 +347,24 @@ export var analyticsActionCauseList = {
     type: 'breadcrumb'
   },
   /**
+   * The search-as-you-type event that gets logged when a breadcrumb facet is selected and the query is updated.
+   *
+   * `actionCause`: `'breadcrumbMLFacet'`
+   * `actionType`: `'breadcrumb'`
+   *
+   * Logging an event with this actionType also adds the following key-value pair in the custom data property of the Usage Analytics HTTP service request.
+   * `"facetId":`: <correspondingFacetId>
+   * `"facetField":`: <correspondingFacetField>
+   * `"facetTitle":`: <correspondingFacetTitle>
+   * `"facetValue":`: <correspondingFacetValue>
+   * `"facetDisplayValue":`: <correspondingFacetDisplayValue>
+   * `"facetState":`: <correspondingFacetState>
+   */
+  breadcrumbMLFacet: <IAnalyticsActionCause>{
+    name: 'breadcrumbMLFacet',
+    type: 'breadcrumb'
+  },
+  /**
    * Identifies the search event that gets logged when a user clears all values from the advanced search filter summary.
    *
    * `actionCause`: `'breadcrumbAdvancedSearch'`
@@ -1238,9 +1256,6 @@ export var analyticsActionCauseList = {
    * `actionType`: `'mLFacet'`
    *
    * Logging an event with this actionType also adds the following key-value pair in the custom data property of the Usage Analytics HTTP service request.
-   * `"facets":`: <correspondingFacetsState>
-   *
-   * `"facets"` is an Array of objects containing following key-value pairs
    * `"facetId":`: <correspondingFacetId>
    * `"facetField":`: <correspondingFacetField>
    * `"facetTitle":`: <correspondingFacetTitle>
@@ -1259,9 +1274,6 @@ export var analyticsActionCauseList = {
    * `actionType`: `'mLFacet'`
    *
    * Logging an event with this actionType also adds the following key-value pair in the custom data property of the Usage Analytics HTTP service request.
-   * `"facets":`: <correspondingFacetsState>
-   *
-   * `"facets"` is an Array of objects containing following key-value pairs
    * `"facetId":`: <correspondingFacetId>
    * `"facetField":`: <correspondingFacetField>
    * `"facetTitle":`: <correspondingFacetTitle>
