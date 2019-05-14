@@ -24,7 +24,7 @@ import { isFacetSortCriteria } from '../../rest/Facet/FacetSortCriteria';
 import { l } from '../../strings/Strings';
 import { DeviceUtils } from '../../utils/DeviceUtils';
 import { BreadcrumbEvents, IPopulateBreadcrumbEventArgs } from '../../events/BreadcrumbEvents';
-import { IAnalyticsActionCause, IAnalyticsMLFacetMeta } from '../Analytics/AnalyticsActionListMeta';
+import { IAnalyticsActionCause, IAnalyticsMLFacetMeta, analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
 import { IQueryOptions } from '../../controllers/QueryController';
 
 export interface IMLFacetOptions extends IResponsiveComponentOptions {
@@ -244,7 +244,8 @@ export class MLFacet extends Component {
     Assert.exists(values);
     this.ensureDom();
     values.forEach(value => {
-      this.logger.info('Selecting facet value', this.values.get(value).select());
+      this.logger.info('Selecting facet value');
+      this.values.get(value).select();
     });
     this.handleFacetValuesChanged();
   }
@@ -274,7 +275,8 @@ export class MLFacet extends Component {
     Assert.exists(values);
     this.ensureDom();
     values.forEach(value => {
-      this.logger.info('Deselecting facet value', this.values.get(value).deselect());
+      this.logger.info('Deselecting facet value');
+      this.values.get(value).deselect();
     });
     this.handleFacetValuesChanged();
   }
@@ -439,12 +441,19 @@ export class MLFacet extends Component {
 
   private handleQueryStateChangedIncluded = (querySelectedValues: string[]) => {
     const currentSelectedValues = this.values.selectedValues;
+    const valuesToSelect = difference(querySelectedValues, currentSelectedValues);
     const valuesToDeselect = difference(currentSelectedValues, querySelectedValues);
+
+    if (Utils.isNonEmptyArray(valuesToSelect)) {
+      this.selectMultipleValues(valuesToSelect);
+      // Only one search event is sent, pick first facet value
+      this.logAnalyticsEvent(analyticsActionCauseList.mLFacetSelect, this.values.get(valuesToSelect[0]).analyticsMeta);
+    }
+
     if (Utils.isNonEmptyArray(valuesToDeselect)) {
       this.deselectMultipleValues(valuesToDeselect);
-    }
-    if (!Utils.arrayEqual(currentSelectedValues, querySelectedValues, false)) {
-      this.selectMultipleValues(querySelectedValues);
+      // Only one search event is sent, pick first facet value
+      this.logAnalyticsEvent(analyticsActionCauseList.mLFacetDeselect, this.values.get(valuesToDeselect[0]).analyticsMeta);
     }
   };
 
