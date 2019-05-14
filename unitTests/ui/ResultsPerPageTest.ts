@@ -214,8 +214,10 @@ export function ResultsPerPageTest() {
         expect(test.env.queryController.options.resultsPerPage).toBe(firstChoice);
       });
 
-      it('initialChoice set to non default value is use when default value is in choicesDisplayed', () => {
-        let initialChoice = 5;
+      it(`when the QSM numberOfResults is equal to the default QSM number of results,
+      when the initialChoice option is not equal to the default QSM numberOfResults,
+      it sets the resultsPerPage to the initialChoice`, () => {
+        const initialChoice = 5;
         test = Mock.optionsComponentSetup<ResultsPerPage, IResultsPerPageOptions>(ResultsPerPage, {
           initialChoice: initialChoice,
           choicesDisplayed: [initialChoice, 10, 15, 20]
