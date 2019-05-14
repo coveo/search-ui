@@ -254,9 +254,9 @@ export class ResultList extends Component {
     }),
 
     /**
-     * If this option is set to `true`, after changing page, a facet option or the number of results per page, the page will scroll to the top.
+     * Whether to scroll back to the top of the page whenever the end-user interacts with a facet or with the pager.
      *
-     * Default value is `true`.
+     * Default: `true`
      */
     enableScrollToTop: ComponentOptions.buildBooleanOption({ defaultValue: true })
   };
@@ -596,9 +596,7 @@ export class ResultList extends Component {
 
       if (this.options.enableInfiniteScroll && results.results.length == data.queryBuilder.numberOfResults) {
         // This will check right away if we need to add more results to make the scroll container full & scrolling.
-        if (this.options.enableScrollToTop) {
-          this.scrollBackToTop();
-        }
+        this.scrollToTopIfEnabled();
         this.handleScrollOfResultList();
       }
     });
@@ -616,14 +614,16 @@ export class ResultList extends Component {
   private handlePageChanged() {
     this.bind.onRootElement(QueryEvents.deferredQuerySuccess, () => {
       setTimeout(() => {
-        if (this.options.enableScrollToTop) {
-          this.scrollBackToTop();
-        }
+        this.scrollToTopIfEnabled();
       }, 0);
     });
   }
 
-  private scrollBackToTop() {
+  private scrollToTopIfEnabled() {
+    if (!this.options.enableScrollToTop) {
+      return;
+    }
+
     if (this.options.infiniteScrollContainer instanceof Window) {
       const win = <Window>this.options.infiniteScrollContainer;
       const searchInterfacePosition = win.pageYOffset + this.searchInterface.element.getBoundingClientRect().top;
