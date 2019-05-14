@@ -213,6 +213,19 @@ export function ResultsPerPageTest() {
         });
         expect(test.env.queryController.options.resultsPerPage).toBe(firstChoice);
       });
+
+      it('initialChoice set to non default value is use when default value is in choicesDisplayed', () => {
+        let initialChoice = 5;
+        test = Mock.optionsComponentSetup<ResultsPerPage, IResultsPerPageOptions>(ResultsPerPage, {
+          initialChoice: initialChoice,
+          choicesDisplayed: [initialChoice, 10, 15, 20]
+        });
+        Simulate.initialization(test.env);
+        Simulate.query(test.env, {
+          results: FakeResults.createFakeResults(100)
+        });
+        expect(test.env.queryController.options.resultsPerPage).toBe(initialChoice);
+      });
     });
   });
 }
