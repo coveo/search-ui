@@ -44,8 +44,7 @@ export class MLFacetManager extends Component {
      */
     enableReorder: ComponentOptions.buildBooleanOption({ defaultValue: true, section: 'Filtering' }),
     /**
-     * The event handler function to execute when facets are updated in the query response.
-     * For each `MLFacet`, you can provide a callback function to execute after the facet is reordered.
+     * A function to execute whenever facets are updated in the query response (see [Implementing Custom Dynamic Facet Behaviors](https://docs.coveo.com/en/2902/#implementing-custom-dynamic-facet-behaviors)).
      *
      * **Note:**
      * > You cannot set this option directly in the component markup as an HTML attribute. You must either set it in the
@@ -58,14 +57,10 @@ export class MLFacetManager extends Component {
       return null;
     }),
     /**
-     * A function that defines the sort order for the facets.
-     *
-     * Called on every successful query reponse.
-     *
-     * The implementation of this method is identical to the Javascript `compareFunction` of the sort method for arrays.
-     * (see [Array.prototype.sort()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort))
+     * A custom sort function to execute on facets on every successful query response (see [Implementing a Custom Dynamic Facet Sort Function](https://docs.coveo.com/en/2902/#implementing-a-custom-dynamic-facet-sort-function)).
      *
      * **Note:**
+     * > If specified, the function must implement the JavaScript compareFunction (see [Array.prototype.sort](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort).
      * > You cannot set this option directly in the component markup as an HTML attribute. You must either set it in the
      * > [`init`]{@link init} call of your search interface (see
      * > [Components - Passing Component Options in the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsintheinitCall)),
