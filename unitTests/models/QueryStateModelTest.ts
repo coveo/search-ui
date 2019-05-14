@@ -38,6 +38,12 @@ export function QueryStateModelTest() {
       expect(queryState.atLeastOneFacetIsActive()).toBe(true);
     });
 
+    it('can determine if a facet is active if one MLFacet has selected values', () => {
+      queryState.registerNewAttribute('mf:@foobar', ['foo', 'bar']);
+      queryState.set('mf:@foobar', ['not', 'default', 'value']);
+      expect(queryState.atLeastOneFacetIsActive()).toBe(true);
+    });
+
     it('can determine if no facet is active if nothing is selected', () => {
       queryState.registerNewAttribute('f:@foobar', []);
       expect(queryState.atLeastOneFacetIsActive()).toBe(false);

@@ -125,8 +125,8 @@ export class QueryStateModel extends Model {
    */
   public atLeastOneFacetIsActive() {
     return !_.isUndefined(
-      _.find(this.attributes, (value, key: any) => {
-        return key.indexOf('f:') == 0 && !Utils.arrayEqual(this.getDefault(key), value);
+      _.find(this.attributes, (value, key: string) => {
+        return key.match(/^m?f:/) && !Utils.arrayEqual(this.getDefault(key), value);
       })
     );
   }
