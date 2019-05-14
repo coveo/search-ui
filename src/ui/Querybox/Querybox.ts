@@ -63,7 +63,7 @@ export class Querybox extends Component {
      *
      * Default value is `false`.
      */
-    enableSearchAsYouType: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'Advanced Options' }),
+    enableSearchAsYouType: ComponentOptions.buildBooleanOption({ defaultValue: false }),
 
     /**
      * If the [`enableSearchAsYouType`]{@link Querybox.options.enableSearchAsYouType} option is `true`, specifies how
@@ -71,7 +71,7 @@ export class Querybox extends Component {
      *
      * Default value is `50`. Minimum value is `0`
      */
-    searchAsYouTypeDelay: ComponentOptions.buildNumberOption({ defaultValue: 50, min: 0, section: 'Advanced Options' }),
+    searchAsYouTypeDelay: ComponentOptions.buildNumberOption({ defaultValue: 50, min: 0 }),
 
     /**
      * Specifies whether to interpret special query syntax (e.g., `@objecttype=message`) when the end user types
@@ -97,7 +97,7 @@ export class Querybox extends Component {
      *
      * Default value is `false`.
      */
-    enableQuerySyntax: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'Advanced Options' }),
+    enableQuerySyntax: ComponentOptions.buildBooleanOption({ defaultValue: false }),
 
     /**
      * Specifies whether to expand basic expression keywords containing wildcards characters (`*`) to the possible
@@ -113,7 +113,7 @@ export class Querybox extends Component {
      *
      * Default value is `false`.
      */
-    enableWildcards: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'Advanced Options' }),
+    enableWildcards: ComponentOptions.buildBooleanOption({ defaultValue: false }),
 
     /**
      * If [`enableWildcards`]{@link Querybox.options.enableWildcards} is `true`, specifies whether to expand basic

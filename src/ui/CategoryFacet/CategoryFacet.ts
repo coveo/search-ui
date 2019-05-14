@@ -107,7 +107,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
      *
      * See also the [`enableMoreLess`]{@link CategoryFacet.options.enableMoreLess} option.
      */
-    numberOfValues: ComponentOptions.buildNumberOption({ defaultValue: 5, min: 0, section: 'CommonOptions' }),
+    numberOfValues: ComponentOptions.buildNumberOption({ defaultValue: 5, min: 0 }),
     /**
      * Whether to display a search box at the bottom of the facet for searching among the available facet
      * [`field`]{@link CategoryFacet.options.field} values.

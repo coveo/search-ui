@@ -107,11 +107,6 @@ export interface IComponentOptions<T> {
   alias?: string | string[];
 
   /**
-   * Specifies a section name inside which the option should appear in the Coveo JavaScript Interface Editor.
-   */
-  section?: string;
-
-  /**
    * Specifies the name of a boolean component option which must be `true` in order for this option to function
    * properly.
    *

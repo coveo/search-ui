@@ -72,7 +72,7 @@ export class FacetSlider extends Component {
      *
      * Default value is the localized string for `NoTitle`.
      */
-    title: ComponentOptions.buildLocalizedStringOption({ defaultValue: l('NoTitle'), section: 'CommonOptions' }),
+    title: ComponentOptions.buildLocalizedStringOption({ defaultValue: l('NoTitle') }),
 
     /**
      * Specifies whether the [`field`]{@link FacetSlider.options.field} for which you are requesting a range is a date
@@ -81,7 +81,7 @@ export class FacetSlider extends Component {
      *
      * Default value is `false`.
      */
-    dateField: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'CommonOptions' }),
+    dateField: ComponentOptions.buildBooleanOption({ defaultValue: false }),
 
     /**
      * Specifies the index field whose values the `FacetSlider` should use.
@@ -91,7 +91,7 @@ export class FacetSlider extends Component {
      *
      * Specifying a value for this option is required for the `FacetSlider` component to work.
      */
-    field: ComponentOptions.buildFieldOption({ groupByField: true, required: true, section: 'CommonOptions' }),
+    field: ComponentOptions.buildFieldOption({ groupByField: true, required: true }),
 
     /**
      * Specifies a unique identifier for the `FacetSlider`. Among other things, this identifier serves the purpose of
@@ -113,7 +113,7 @@ export class FacetSlider extends Component {
      *
      * Default value is `MMM dd, yyyy`.
      */
-    dateFormat: ComponentOptions.buildStringOption({ section: 'Display' }),
+    dateFormat: ComponentOptions.buildStringOption(),
 
     /**
      * Specifies a query to filter automatic minimum and maximum values for the slider range.
@@ -128,7 +128,7 @@ export class FacetSlider extends Component {
      * <div class="CoveoFacetSlider" data-field="@date" data-date-field="true" data-query-override="@date>2000/01/01"></div>
      * ```
      */
-    queryOverride: ComponentOptions.buildQueryExpressionOption({ section: 'Filtering' }),
+    queryOverride: ComponentOptions.buildQueryExpressionOption(),
 
     /**
      * Specifies the starting boundary of the slider.
@@ -138,7 +138,7 @@ export class FacetSlider extends Component {
      *
      * Default value is the lowest available field value in the index.
      */
-    start: ComponentOptions.buildStringOption({ section: 'Filtering' }),
+    start: ComponentOptions.buildStringOption(),
 
     /**
      * Specifies the ending boundary of the slider.
@@ -148,21 +148,21 @@ export class FacetSlider extends Component {
      *
      * Default value is the highest available field value in the index.
      */
-    end: ComponentOptions.buildStringOption({ section: 'Filtering' }),
+    end: ComponentOptions.buildStringOption(),
 
     /**
      * Specifies whether to exclude the outer bounds of the slider in the generated query when they are not active.
      *
      * Default value is `false`.
      */
-    excludeOuterBounds: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'Filtering' }),
+    excludeOuterBounds: ComponentOptions.buildBooleanOption({ defaultValue: false }),
 
     /**
      * Specifies the number of decimal places to round the displayed numerical values to.
      *
      * Default (and minimum) value is `0`.
      */
-    rounded: ComponentOptions.buildNumberOption({ min: 0, section: 'Filtering' }),
+    rounded: ComponentOptions.buildNumberOption({ min: 0 }),
 
     /**
      * Specifies the number of steps to split the slider into.

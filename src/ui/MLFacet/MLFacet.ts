@@ -87,7 +87,6 @@ export class MLFacet extends Component {
      */
     title: ComponentOptions.buildLocalizedStringOption({
       defaultValue: l('NoTitle'),
-      section: 'CommonOptions',
       priority: 10
     }),
 
@@ -101,7 +100,7 @@ export class MLFacet extends Component {
      * **Required:** Specifying a value for this option is required for the
      * component to work.
      */
-    field: ComponentOptions.buildFieldOption({ required: true, section: 'CommonOptions' }),
+    field: ComponentOptions.buildFieldOption({ required: true }),
 
     /**
      * The sort criterion to use for this facet.
@@ -120,8 +119,7 @@ export class MLFacet extends Component {
      * - Otherwise, the `alphanumeric` criterion is used.
      */
     sortCriteria: ComponentOptions.buildStringOption({
-      postProcessing: value => (isFacetSortCriteria(value) ? value : undefined),
-      section: 'Sorting'
+      postProcessing: value => (isFacetSortCriteria(value) ? value : undefined)
     }),
 
     /**
@@ -132,14 +130,14 @@ export class MLFacet extends Component {
      *
      * **Default:** `8`
      */
-    numberOfValues: ComponentOptions.buildNumberOption({ min: 0, defaultValue: 8, section: 'CommonOptions' }),
+    numberOfValues: ComponentOptions.buildNumberOption({ min: 0, defaultValue: 8 }),
 
     /**
      * Whether to allow the end-user to expand and collapse this facet.
      *
      * **Default:** `false`
      */
-    enableCollapse: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'Filtering' }),
+    enableCollapse: ComponentOptions.buildBooleanOption({ defaultValue: false }),
 
     /**
      * Whether this facet should be collapsed by default.
@@ -149,7 +147,7 @@ export class MLFacet extends Component {
      *
      * **Default:** `false`
      */
-    collapsedByDefault: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'Filtering' }),
+    collapsedByDefault: ComponentOptions.buildBooleanOption({ defaultValue: false }),
 
     /**
      * Whether to notify the [Breadcrumb]{@link Breadcrumb} component when toggling values in the facet.
@@ -158,7 +156,7 @@ export class MLFacet extends Component {
      *
      * **Default:** `true`
      */
-    includeInBreadcrumb: ComponentOptions.buildBooleanOption({ defaultValue: true, section: 'CommonOptions' }),
+    includeInBreadcrumb: ComponentOptions.buildBooleanOption({ defaultValue: true }),
 
     /**
      * The maximum number of selected values the [`Breadcrumb`]{@link Breadcrumb} component can display before outputting a **N more...** link for the facet.
@@ -171,8 +169,7 @@ export class MLFacet extends Component {
     numberOfValuesInBreadcrumb: ComponentOptions.buildNumberOption({
       defaultFunction: () => (DeviceUtils.isMobileDevice() ? 3 : 5),
       min: 0,
-      depend: 'includeInBreadcrumb',
-      section: 'CommonOptions'
+      depend: 'includeInBreadcrumb'
     }),
 
     /**

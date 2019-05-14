@@ -142,7 +142,6 @@ export class Facet extends Component {
      */
     title: ComponentOptions.buildLocalizedStringOption({
       defaultValue: l('NoTitle'),
-      section: 'CommonOptions',
       priority: 10
     }),
     /**
@@ -153,7 +152,7 @@ export class Facet extends Component {
      *
      * Specifying a value for this option is required for the `Facet` component to work.
      */
-    field: ComponentOptions.buildFieldOption({ required: true, groupByField: true, section: 'CommonOptions' }),
+    field: ComponentOptions.buildFieldOption({ required: true, groupByField: true }),
     headerIcon: ComponentOptions.buildStringOption({
       deprecated: 'This option is exposed for legacy reasons, and the recommendation is to not use this option.'
     }),
@@ -188,7 +187,7 @@ export class Facet extends Component {
      *
      * Default value is `false`.
      */
-    isMultiValueField: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'CommonOptions' }),
+    isMultiValueField: ComponentOptions.buildBooleanOption({ defaultValue: false }),
     /**
      * Specifies the field whose values the Facet should display.
      *
@@ -209,7 +208,7 @@ export class Facet extends Component {
      *
      * Default value is `true`.
      */
-    enableSettings: ComponentOptions.buildBooleanOption({ defaultValue: true, section: 'Sorting', priority: 9 }),
+    enableSettings: ComponentOptions.buildBooleanOption({ defaultValue: true, priority: 9 }),
     /**
      * If the [`enableSettings`]{@link Facet.options.enableSettings} option is `true`, specifies whether the
      * **Save state** menu option is available in the facet **Settings** menu.
@@ -253,7 +252,6 @@ export class Facet extends Component {
       | 'nosort'
     >({
       defaultValue: ['occurrences', 'score', 'alphaascending', 'alphadescending'],
-      section: 'Sorting',
       depend: 'enableSettings',
       values: [
         'Occurrences',
@@ -276,8 +274,7 @@ export class Facet extends Component {
      */
     sortCriteria: ComponentOptions.buildStringOption({
       postProcessing: (value, options: IFacetOptions) =>
-        value || (options.availableSorts.length > 0 ? options.availableSorts[0] : 'occurrences'),
-      section: 'Sorting'
+        value || (options.availableSorts.length > 0 ? options.availableSorts[0] : 'occurrences')
     }),
     /**
      * Specifies a custom order by which to sort the facet values.
@@ -292,14 +289,14 @@ export class Facet extends Component {
      * **Note:**
      * > The [`FacetRange`]{@link FacetRange} component does not support this option.
      */
-    customSort: ComponentOptions.buildListOption<string>({ section: 'Sorting' }),
+    customSort: ComponentOptions.buildListOption<string>(),
     /**
      * Specifies the maximum number of field values to display by default in the facet before the user
      * clicks the arrow to show more.
      *
      * See also the [`enableMoreLess`]{@link Facet.options.enableMoreLess} option.
      */
-    numberOfValues: ComponentOptions.buildNumberOption({ defaultValue: 5, min: 0, section: 'CommonOptions' }),
+    numberOfValues: ComponentOptions.buildNumberOption({ defaultValue: 5, min: 0 }),
     /**
      * Specifies the *injection depth* to use for the [`GroupByRequest`]{@link IGroupByRequest} operation.
      *
@@ -324,7 +321,7 @@ export class Facet extends Component {
      * Default value is `false`, which means that the filter uses the `OR` operator. Thus, by default, items must
      * have at least one of the selected values to match the query.
      */
-    useAnd: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'Filtering' }),
+    useAnd: ComponentOptions.buildBooleanOption({ defaultValue: false }),
     /**
      * Specifies whether to allow the user to toggle between the `OR` and `AND` modes in the facet.
      *
@@ -350,7 +347,7 @@ export class Facet extends Component {
      *
      * Default value is `true`.
      */
-    enableFacetSearch: ComponentOptions.buildBooleanOption({ defaultValue: true, section: 'FacetSearch', priority: 8 }),
+    enableFacetSearch: ComponentOptions.buildBooleanOption({ defaultValue: true, priority: 8 }),
     /**
      * If the [`enableFacetSearch`]{@link Facet.options.enableFacetSearch} option is `true`, specifies the delay (in
      * milliseconds) before sending a search request to the server when the user starts typing in the facet search box.
@@ -383,7 +380,7 @@ export class Facet extends Component {
      *
      * Default value is `15`. Minimum value is `1`.
      */
-    numberOfValuesInFacetSearch: ComponentOptions.buildNumberOption({ defaultValue: 15, min: 1, section: 'FacetSearch' }),
+    numberOfValuesInFacetSearch: ComponentOptions.buildNumberOption({ defaultValue: 15, min: 1 }),
     /**
      * Specifies whether [wildcards]{@link AllowedValuesPatternType.wildcards} are used as the [allowedValuesPatternType]{@link IGroupByRequest.allowedValuesPatternType}
      * in the [groupBy]{@link IGroupByRequest} for the facet search.
@@ -394,7 +391,7 @@ export class Facet extends Component {
      * > If you are experiencing slow facet search and/or timeouts when this option is set to `true`, consider enabling the **Use cache for nested queries**
      * > option on your facet [field]{@link Facet.options.field} in the Coveo Cloud Admninistration Console (see [Add/Edit a Field]{@link https://onlinehelp.coveo.com/en/cloud/add_edit_fields.htm}).
      */
-    useWildcardsInFacetSearch: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'FacetSearch' }),
+    useWildcardsInFacetSearch: ComponentOptions.buildBooleanOption({ defaultValue: false }),
     /**
      * Specifies whether the facet should push data to the [`Breadcrumb`]{@link Breadcrumb} component.
      *
@@ -468,7 +465,7 @@ export class Facet extends Component {
      * Default value is `sum`.
      * @notSupportedIn salesforcefree
      */
-    computedFieldOperation: ComponentOptions.buildStringOption({ defaultValue: 'sum', section: 'ComputedField' }),
+    computedFieldOperation: ComponentOptions.buildStringOption({ defaultValue: 'sum' }),
     /**
      * Specifies how to format the values resulting from a
      * [`computedFieldOperation`]{@link Facet.options.computedFieldOperation}.
@@ -484,7 +481,7 @@ export class Facet extends Component {
      * Default value is `"c0"`.
      * @notSupportedIn salesforcefree
      */
-    computedFieldFormat: ComponentOptions.buildStringOption({ defaultValue: 'c0', section: 'ComputedField' }),
+    computedFieldFormat: ComponentOptions.buildStringOption({ defaultValue: 'c0' }),
     /**
      * Specifies what the caption of the [`computedField`]{@link Facet.options.computedField} should be in the facet
      * **Settings** menu for sorting.
@@ -498,8 +495,7 @@ export class Facet extends Component {
      * @notSupportedIn salesforcefree
      */
     computedFieldCaption: ComponentOptions.buildLocalizedStringOption({
-      defaultValue: l('ComputedField'),
-      section: 'ComputedField'
+      defaultValue: l('ComputedField')
     }),
     /**
      * Specifies whether the facet should remain stable in its current position in the viewport while the mouse cursor

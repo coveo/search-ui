@@ -17,7 +17,7 @@ export const ResponsiveFacetOptions = {
    *
    * Default value is `true`.
    */
-  enableResponsiveMode: ComponentOptions.buildBooleanOption({ defaultValue: true, section: 'ResponsiveOptions' }),
+  enableResponsiveMode: ComponentOptions.buildBooleanOption({ defaultValue: true }),
   responsiveBreakpoint: ComponentOptions.buildNumberOption({
     deprecated:
       'This option is exposed for legacy reasons. It is not recommended to use this option. Instead, use `SearchInterface.options.responsiveMediumBreakpoint` options exposed on the `SearchInterface`.'
@@ -32,5 +32,5 @@ export const ResponsiveFacetOptions = {
    *
    * Default value is `Filters`.
    */
-  dropdownHeaderLabel: ComponentOptions.buildLocalizedStringOption({ section: 'ResponsiveOptions' })
+  dropdownHeaderLabel: ComponentOptions.buildLocalizedStringOption()
 };

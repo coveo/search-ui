@@ -78,14 +78,14 @@ export class Tab extends Component {
      *
      * Specifying a value for this option is necessary for this component to work.
      */
-    id: ComponentOptions.buildStringOption({ required: true, section: 'Common Options' }),
+    id: ComponentOptions.buildStringOption({ required: true }),
 
     /**
      * Specifies the caption of the Tab.
      *
      * Specifying a value for this option is necessary for this component to work.
      */
-    caption: ComponentOptions.buildLocalizedStringOption({ required: true, section: 'Common Options' }),
+    caption: ComponentOptions.buildLocalizedStringOption({ required: true }),
 
     /**
      * Specifies an icon to use for the Tab.
@@ -103,7 +103,7 @@ export class Tab extends Component {
      *
      * Default value is `undefined` and the Tab applies no additional expression or filter to the query.
      */
-    expression: ComponentOptions.buildQueryExpressionOption({ section: 'Common Options' }),
+    expression: ComponentOptions.buildQueryExpressionOption(),
 
     /**
      * Specifies the {@link SearchEndpoint} to point to when performing queries from within the Tab.
@@ -147,7 +147,7 @@ export class Tab extends Component {
      *
      * Default value is `true`.
      */
-    constant: ComponentOptions.buildBooleanOption({ defaultValue: true, section: 'Filtering' }),
+    constant: ComponentOptions.buildBooleanOption({ defaultValue: true }),
 
     /**
      * Specifies whether to filter duplicates in the search results when the user selects the Tab.
@@ -211,7 +211,7 @@ export class Tab extends Component {
      *
      * Default value is `true`.
      */
-    enableResponsiveMode: ComponentOptions.buildBooleanOption({ defaultValue: true, section: 'ResponsiveOptions' }),
+    enableResponsiveMode: ComponentOptions.buildBooleanOption({ defaultValue: true }),
 
     /**
      * Specifies the label of the button that allows to show the hidden tabs when in responsive mode.
@@ -221,7 +221,7 @@ export class Tab extends Component {
      *
      * The default value is `"More"`.
      */
-    dropdownHeaderLabel: ComponentOptions.buildLocalizedStringOption({ section: 'ResponsiveOptions' })
+    dropdownHeaderLabel: ComponentOptions.buildLocalizedStringOption()
   };
 
   /**
