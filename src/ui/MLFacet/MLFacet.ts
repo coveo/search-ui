@@ -386,9 +386,9 @@ export class MLFacet extends Component {
    *
    * Sets a flag indicating whether the facets should be returned in their current order.
    *
-   * Setting the flag to true helps ensuring that the facets do not move around while the end-user is interacting with them.
+   * Setting the flag to `true` helps ensuring that the facets do not move around while the end-user is interacting with them.
    *
-   * The flag is automatically set back to false after a query is built.
+   * The flag is automatically set back to `false` after a query is built.
    */
   public enableFreezeFacetOrderFlag() {
     Assert.exists(this.mLFacetQueryController);
