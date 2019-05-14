@@ -181,6 +181,10 @@ export function QueryBuilderTest() {
       expect(queryBuilder.build().facets).toBeUndefined();
     });
 
+    it('should have facetOptions defined as an empty object', () => {
+      expect(queryBuilder.build().facetOptions).toEqual({});
+    });
+
     it(`if groupByRequests is empty
       should set groupBy to undefined`, () => {
       expect(queryBuilder.groupByRequests.length).toBe(0);
