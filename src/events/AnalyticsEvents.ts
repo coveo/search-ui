@@ -22,6 +22,14 @@ export interface IAnalyticsCustomEventArgs {
 }
 
 /**
+ * The object that all [`analyticsEventReady`]{@link AnalyticsEvents.analyticsEventReady} handlers receive as an argument.
+ */
+export interface IAnalyticsEventArgs {
+  event: 'CoveoCustomEvent' | 'CoveoClickEvent' | 'CoveoSearchEvent';
+  coveoAnalyticsEventData: IAPISearchEvent | IAPIDocumentViewEvent | IAPICustomEvent;
+}
+
+/**
  * The `IChangeAnalyticsCustomDataEventArgs` interface describes the object that all
  * [`changeAnalyticsCustomData`]{@link AnalyticsEvents.changeAnalyticsCustomData} event handlers receive as an argument.
  *
@@ -167,6 +175,13 @@ export class AnalyticsEvents {
    */
   public static documentViewEvent = 'analyticsDocumentViewEvent';
   public static customEvent = 'analyticsCustomEvent';
+
+  /**
+   * Triggered when any event (i.e., `search`, `click`, or `custom`) is about to be logged.
+   *
+   * All `analyticsEventReady` event handlers receive an [`AnalyticsEventArgs`]{@link IAnalyticsEventArgs} object as an argument.
+   */
+  public static analyticsEventReady = 'analyticsEventReady';
 
   /**
    * Triggered whenever an analytics event is about to be logged.

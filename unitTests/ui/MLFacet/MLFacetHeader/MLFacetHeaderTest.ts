@@ -93,6 +93,16 @@ export function MLFacetHeaderTest() {
       });
     });
 
+    it(`when clicking on the clear button
+      should perform the correct actions on the facet`, () => {
+      mLFacetHeader.toggleClear(true);
+      $$(clearElement()).trigger('click');
+
+      expect(facet.reset).toHaveBeenCalledTimes(1);
+      expect(facet.enableFreezeFacetOrderFlag).toHaveBeenCalledTimes(1);
+      expect(facet.triggerNewQuery).toHaveBeenCalledTimes(1);
+    });
+
     describe('when passing the option enableCollapse as false', () => {
       beforeEach(() => {
         baseOptions.enableCollapse = false;
@@ -128,7 +138,7 @@ export function MLFacetHeaderTest() {
         should call the toggleCollapse method of the MLFacet`, () => {
         $$(titleElement()).trigger('click');
 
-        expect(facet.toggleCollapse).toHaveBeenCalled();
+        expect(facet.toggleCollapse).toHaveBeenCalledTimes(1);
       });
     });
   });

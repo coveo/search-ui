@@ -86,14 +86,20 @@ export class MLFacetValues {
   }
 
   private buildShowLess() {
-    const showLess = $$('button', { className: 'coveo-ml-facet-show-less', ariaLabel: l('ShowLess') }, `- ${l('ShowLess')}`);
-    showLess.on('click', () => this.facet.showLessValues());
+    const showLess = $$('button', { className: 'coveo-ml-facet-show-less' }, l('ShowLess'));
+    showLess.on('click', () => {
+      this.facet.enableFreezeFacetOrderFlag();
+      this.facet.showLessValues();
+    });
     return showLess.el;
   }
 
   private buildShowMore() {
-    const showMore = $$('button', { className: 'coveo-ml-facet-show-more', ariaLabel: l('ShowMore') }, `+ ${l('ShowMore')}`);
-    showMore.on('click', () => this.facet.showMoreValues());
+    const showMore = $$('button', { className: 'coveo-ml-facet-show-more' }, l('ShowMore'));
+    showMore.on('click', () => {
+      this.facet.enableFreezeFacetOrderFlag();
+      this.facet.showMoreValues();
+    });
     return showMore.el;
   }
 

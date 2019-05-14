@@ -43,10 +43,13 @@ export class MLFacetHeader {
   }
 
   private logClearAllToAnalytics() {
-    this.facet.logAnalyticsEvent(analyticsActionCauseList.mLFacetClearAll, {
-      facetId: this.facet.options.id,
-      facetField: this.facet.options.field.toString(),
-      facetTitle: this.facet.options.title
+    this.facet.enableFreezeFacetOrderFlag();
+    this.facet.triggerNewQuery(() => {
+      this.facet.logAnalyticsEvent(analyticsActionCauseList.mLFacetClearAll, {
+        facetId: this.facet.options.id,
+        facetField: this.facet.options.field.toString(),
+        facetTitle: this.facet.options.title
+      });
     });
   }
 
