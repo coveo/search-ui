@@ -7,6 +7,7 @@ import { $$, BreadcrumbEvents } from '../../../src/Core';
 import { FacetSortCriteria } from '../../../src/rest/Facet/FacetSortCriteria';
 import { Simulate } from '../../Simulate';
 import { IPopulateBreadcrumbEventArgs } from '../../../src/events/BreadcrumbEvents';
+import { analyticsActionCauseList } from '../../../src/ui/Analytics/AnalyticsActionListMeta';
 
 export function MLFacetTest() {
   describe('MLFacet', () => {
@@ -251,6 +252,29 @@ export function MLFacetTest() {
       expect(test.cmp.values.selectedValues).toEqual(['a', 'b', 'c']);
     });
 
+    it('should log an analytics event when selecting a value through the QSM', () => {
+      spyOn(test.cmp, 'logAnalyticsEvent');
+      test.env.queryStateModel.registerNewAttribute(`mf:${test.cmp.options.id}`, []);
+      test.env.queryStateModel.set(`mf:${test.cmp.options.id}`, ['a', 'b', 'c']);
+
+      expect(test.cmp.logAnalyticsEvent).toHaveBeenCalledWith(
+        analyticsActionCauseList.mLFacetSelect,
+        test.cmp.values.get('a').analyticsMeta
+      );
+    });
+
+    it('should log an analytics event when deselecting a value through the QSM', () => {
+      spyOn(test.cmp, 'logAnalyticsEvent');
+      test.env.queryStateModel.registerNewAttribute(`mf:${test.cmp.options.id}`, []);
+      test.env.queryStateModel.set(`mf:${test.cmp.options.id}`, ['a', 'b', 'c']);
+      test.env.queryStateModel.set(`mf:${test.cmp.options.id}`, []);
+
+      expect(test.cmp.logAnalyticsEvent).toHaveBeenCalledWith(
+        analyticsActionCauseList.mLFacetDeselect,
+        test.cmp.values.get('a').analyticsMeta
+      );
+    });
+
     it(`when not setting a sortCriteria option
       should set it to undefined in the query`, () => {
       expect(getFirstFacetRequest().sortCriteria).toBeUndefined();
@@ -303,6 +327,19 @@ export function MLFacetTest() {
       const breadcrumbs = triggerPopulateBreadcrumbs();
 
       expect(breadcrumbs.length).toBe(1);
+    });
+
+    it('logs an analytics search event when logAnalyticsEvent is called', () => {
+      test.cmp.logAnalyticsEvent(analyticsActionCauseList.mLFacetSelect);
+
+      expect(test.cmp.usageAnalytics.logSearchEvent).toHaveBeenCalled();
+    });
+
+    it('returns the correct analyticsFacetState', () => {
+      test.cmp.selectValue('bar');
+      test.cmp.selectValue('foo');
+
+      expect(test.cmp.analyticsFacetState).toEqual([test.cmp.values.get('bar').analyticsMeta, test.cmp.values.get('foo').analyticsMeta]);
     });
   });
 }

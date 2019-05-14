@@ -24,6 +24,12 @@ export function QueryStateModelTest() {
       expect(queryState.atLeastOneFacetIsActive()).toBe(true);
     });
 
+    it('can determine if a facet is active if one MLFacet has selected values', () => {
+      queryState.registerNewAttribute('mf:@foobar', ['foo', 'bar']);
+      queryState.set('mf:@foobar', ['not', 'default', 'value']);
+      expect(queryState.atLeastOneFacetIsActive()).toBe(true);
+    });
+
     it('can determine if a facet is active if more than one facet has selected values', () => {
       queryState.registerNewAttribute('f:@foobar', ['foo', 'bar']);
       queryState.registerNewAttribute('f:@foobar2', ['foo2']);
@@ -35,12 +41,6 @@ export function QueryStateModelTest() {
     it('can determine if a facet is active if one facet has excluded values', () => {
       queryState.registerNewAttribute('f:@foobar:not', ['foo', 'bar']);
       queryState.set('f:@foobar:not', ['not', 'default']);
-      expect(queryState.atLeastOneFacetIsActive()).toBe(true);
-    });
-
-    it('can determine if a facet is active if one MLFacet has selected values', () => {
-      queryState.registerNewAttribute('mf:@foobar', ['foo', 'bar']);
-      queryState.set('mf:@foobar', ['not', 'default', 'value']);
       expect(queryState.atLeastOneFacetIsActive()).toBe(true);
     });
 
