@@ -75,13 +75,15 @@ export interface IChangeAnalyticsCustomDataEventArgs extends IChangeableAnalytic
  */
 export interface IChangeableAnalyticsMetaObject {
   /**
-   * The user defined dimensions and their values. Keys can only contain alphanumeric or underscore characters.
-   * Whitespaces in keys are converted to underscores. Uppercase characters in keys are converted to lowercase characters.
+   * A metadata key-value pair to send along with the usage analytics event.
    *
-   * The value could be any valid JSON, but it is handled as string over Coveo usage analytics.
-   * It is highly recommended that you create your custom dimension before adding customData
+   * **Notes:**
+   * > * A metadata key must contain only alphanumeric characters and underscores (the Coveo Usage Analytics REST
+   * > service automatically converts white spaces to underscores and uppercase characters to lowercase characters in key
+   * > names).
+   * > * A metadata value must be a simple string (no other type is allowed).
    */
-  [name: string]: any;
+  [name: string]: string;
 }
 
 /**
