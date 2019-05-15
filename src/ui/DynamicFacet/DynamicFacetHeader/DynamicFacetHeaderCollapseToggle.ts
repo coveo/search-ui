@@ -23,16 +23,16 @@ export class DynamicFacetHeaderCollapseToggle {
     this.collapseButton = new DynamicFacetHeaderButton({
       label: l('Collapse'),
       iconSVG: SVGIcons.icons.arrowUp,
-      iconClassName: 'coveo-ml-facet-collapse-toggle-svg',
-      className: 'coveo-ml-facet-header-collapse',
+      iconClassName: 'coveo-dynamic-facet-collapse-toggle-svg',
+      className: 'coveo-dynamic-facet-header-collapse',
       shouldDisplay: true,
       action: () => this.facet.collapse()
     });
     this.expandButton = new DynamicFacetHeaderButton({
       label: l('Expand'),
       iconSVG: SVGIcons.icons.arrowDown,
-      iconClassName: 'coveo-ml-facet-collapse-toggle-svg',
-      className: 'coveo-ml-facet-header-expand',
+      iconClassName: 'coveo-dynamic-facet-collapse-toggle-svg',
+      className: 'coveo-dynamic-facet-header-expand',
       shouldDisplay: false,
       action: () => this.facet.expand()
     });

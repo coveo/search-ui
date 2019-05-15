@@ -28,12 +28,12 @@ export function DynamicFacetValuesTest() {
 
     function moreButton() {
       const element = dynamicFacetValues.render();
-      return $$(element).find('.coveo-ml-facet-show-more');
+      return $$(element).find('.coveo-dynamic-facet-show-more');
     }
 
     function lessButton() {
       const element = dynamicFacetValues.render();
-      return $$(element).find('.coveo-ml-facet-show-less');
+      return $$(element).find('.coveo-dynamic-facet-show-less');
     }
 
     it('should return allFacetValues correctly', () => {

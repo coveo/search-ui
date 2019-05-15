@@ -93,7 +93,7 @@ export class DynamicFacetManager extends Component {
 
   private resetContainer() {
     this.containerElement && $$(this.containerElement).remove();
-    this.containerElement = $$('div', { className: 'coveo-ml-facet-manager-container' }).el;
+    this.containerElement = $$('div', { className: 'coveo-dynamic-facet-manager-container' }).el;
   }
 
   private moveChildrenIntoContainer() {

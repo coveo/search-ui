@@ -14,7 +14,7 @@ export class DynamicFacetValueRenderer {
 
   public render() {
     this.dom = $$('li', {
-      className: 'coveo-ml-facet-value coveo-ml-facet-selectable',
+      className: 'coveo-dynamic-facet-value coveo-dynamic-facet-selectable',
       dataValue: this.facetValue.value
     });
 

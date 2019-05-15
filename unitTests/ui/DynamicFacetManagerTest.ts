@@ -56,7 +56,7 @@ export function DynamicFacetManagerTest() {
     }
 
     function managerContainerChildren() {
-      return $$(test.cmp.element).find('.coveo-ml-facet-manager-container').children;
+      return $$(test.cmp.element).find('.coveo-dynamic-facet-manager-container').children;
     }
 
     function queryFacetsResponse(): IFacetResponse[] {

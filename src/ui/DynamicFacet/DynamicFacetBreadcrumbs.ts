@@ -14,7 +14,7 @@ export class DynamicFacetBreadcrumbs {
   }
 
   private create() {
-    this.element = $$('div', { className: 'coveo-ml-facet-breadcrumb coveo-breadcrumb-item' }).el;
+    this.element = $$('div', { className: 'coveo-dynamic-facet-breadcrumb coveo-breadcrumb-item' }).el;
     this.createAndAppendTitle();
 
     const activeFacetValues = this.facet.values.activeFacetValues;
@@ -29,7 +29,7 @@ export class DynamicFacetBreadcrumbs {
   }
 
   private createAndAppendTitle() {
-    const titleElement = $$('h3', { className: 'coveo-ml-facet-breadcrumb-title' }, `${this.facet.options.title}:`).el;
+    const titleElement = $$('h3', { className: 'coveo-dynamic-facet-breadcrumb-title' }, `${this.facet.options.title}:`).el;
     this.element.appendChild(titleElement);
   }
 
@@ -41,12 +41,12 @@ export class DynamicFacetBreadcrumbs {
     const valueElement = $$(
       'button',
       {
-        className: 'coveo-ml-facet-breadcrumb-value',
+        className: 'coveo-dynamic-facet-breadcrumb-value',
         ariaLabel: l('RemoveFilterOn', facetValue.valueCaption)
       },
       facetValue.valueCaption
     ).el;
-    const clearElement = $$('span', { className: 'coveo-ml-facet-breadcrumb-value-clear' }, SVGIcons.icons.mainClear).el;
+    const clearElement = $$('span', { className: 'coveo-dynamic-facet-breadcrumb-value-clear' }, SVGIcons.icons.mainClear).el;
     valueElement.appendChild(clearElement);
 
     $$(valueElement).on('click', () => this.valueSelectAction(facetValue));
@@ -69,7 +69,7 @@ export class DynamicFacetBreadcrumbs {
     const collapsedElement = $$(
       'button',
       {
-        className: 'coveo-ml-facet-breadcrumb-collapse',
+        className: 'coveo-dynamic-facet-breadcrumb-collapse',
         title
       },
       label

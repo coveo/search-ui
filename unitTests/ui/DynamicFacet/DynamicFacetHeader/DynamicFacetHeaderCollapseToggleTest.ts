@@ -22,8 +22,8 @@ export function DynamicFacetHeaderCollapseToggleTest() {
     function initializeComponent() {
       collapseToggle = new DynamicFacetHeaderCollapseToggle(facet);
       collapseToggleElement = collapseToggle.element;
-      collapseBtnElement = $$(collapseToggleElement).find('.coveo-ml-facet-header-collapse');
-      expandBtnElement = $$(collapseToggleElement).find('.coveo-ml-facet-header-expand');
+      collapseBtnElement = $$(collapseToggleElement).find('.coveo-dynamic-facet-header-collapse');
+      expandBtnElement = $$(collapseToggleElement).find('.coveo-dynamic-facet-header-expand');
     }
 
     it(`should create the collapse & expand buttons

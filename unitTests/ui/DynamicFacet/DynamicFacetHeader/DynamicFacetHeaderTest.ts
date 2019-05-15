@@ -21,19 +21,19 @@ export function DynamicFacetHeaderTest() {
     }
 
     function collapseElement() {
-      return $$(dynamicFacetHeader.element).find('.coveo-ml-facet-header-collapse');
+      return $$(dynamicFacetHeader.element).find('.coveo-dynamic-facet-header-collapse');
     }
 
     function expandElement() {
-      return $$(dynamicFacetHeader.element).find('.coveo-ml-facet-header-expand');
+      return $$(dynamicFacetHeader.element).find('.coveo-dynamic-facet-header-expand');
     }
 
     function titleElement() {
-      return $$(dynamicFacetHeader.element).find('.coveo-ml-facet-header-title');
+      return $$(dynamicFacetHeader.element).find('.coveo-dynamic-facet-header-title');
     }
 
     function clearElement() {
-      return $$(dynamicFacetHeader.element).find('.coveo-ml-facet-header-clear');
+      return $$(dynamicFacetHeader.element).find('.coveo-dynamic-facet-header-clear');
     }
 
     it('should create an accessible title', () => {
@@ -42,13 +42,13 @@ export function DynamicFacetHeaderTest() {
     });
 
     it('should create a hidden waitAnimationElement', () => {
-      const waitAnimationElement = $$(dynamicFacetHeader.element).find('.coveo-ml-facet-header-wait-animation');
+      const waitAnimationElement = $$(dynamicFacetHeader.element).find('.coveo-dynamic-facet-header-wait-animation');
       expect($$(waitAnimationElement).isVisible()).toBe(false);
     });
 
     it(`when calling showLoading
       waitAnimationElement show be visible after the delay`, done => {
-      const waitAnimationElement = $$(dynamicFacetHeader.element).find('.coveo-ml-facet-header-wait-animation');
+      const waitAnimationElement = $$(dynamicFacetHeader.element).find('.coveo-dynamic-facet-header-wait-animation');
       dynamicFacetHeader.showLoading();
       expect($$(waitAnimationElement).isVisible()).toBe(false);
 

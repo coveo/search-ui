@@ -26,15 +26,15 @@ export function DynamicFacetBreadcrumbsTest() {
     }
 
     function titleElement() {
-      return $$(dynamicFacetBreadcrumbs.element).find('.coveo-ml-facet-breadcrumb-title');
+      return $$(dynamicFacetBreadcrumbs.element).find('.coveo-dynamic-facet-breadcrumb-title');
     }
 
     function valueElements() {
-      return $$(dynamicFacetBreadcrumbs.element).findAll('.coveo-ml-facet-breadcrumb-value');
+      return $$(dynamicFacetBreadcrumbs.element).findAll('.coveo-dynamic-facet-breadcrumb-value');
     }
 
     function collapseElement() {
-      return $$(dynamicFacetBreadcrumbs.element).find('.coveo-ml-facet-breadcrumb-collapse');
+      return $$(dynamicFacetBreadcrumbs.element).find('.coveo-dynamic-facet-breadcrumb-collapse');
     }
 
     it('should create a title', () => {

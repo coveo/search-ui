@@ -23,7 +23,7 @@ export class DynamicFacetHeaderButton {
 
     this.button = $$(
       'button',
-      { className: `coveo-ml-facet-header-btn ${this.rootOptions.className || ''}`.trim() },
+      { className: `coveo-dynamic-facet-header-btn ${this.rootOptions.className || ''}`.trim() },
       hasIcon ? this.rootOptions.iconSVG : this.rootOptions.label
     );
 

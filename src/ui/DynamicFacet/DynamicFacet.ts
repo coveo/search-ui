@@ -524,7 +524,7 @@ export class DynamicFacet extends Component {
   private updateAppearance() {
     this.header.toggleClear(this.values.hasSelectedValues);
     this.header.toggleCollapse(this.isCollapsed);
-    $$(this.element).toggleClass('coveo-ml-facet-collapsed', this.isCollapsed);
+    $$(this.element).toggleClass('coveo-dynamic-facet-collapsed', this.isCollapsed);
     $$(this.element).toggleClass('coveo-active', this.values.hasSelectedValues);
     $$(this.element).toggleClass('coveo-hidden', this.values.isEmpty);
   }

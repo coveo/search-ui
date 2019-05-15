@@ -194,14 +194,14 @@ export function DynamicFacetTest() {
       initializeComponent();
       test.cmp.ensureDom();
 
-      expect($$(test.cmp.element).hasClass('coveo-ml-facet-collapsed')).toBe(true);
+      expect($$(test.cmp.element).hasClass('coveo-dynamic-facet-collapsed')).toBe(true);
     });
 
     it(`allows to collapse`, () => {
       test.cmp.ensureDom();
       test.cmp.collapse();
 
-      expect($$(test.cmp.element).hasClass('coveo-ml-facet-collapsed')).toBe(true);
+      expect($$(test.cmp.element).hasClass('coveo-dynamic-facet-collapsed')).toBe(true);
     });
 
     it(`allows to expand`, () => {
@@ -210,23 +210,23 @@ export function DynamicFacetTest() {
 
       test.cmp.expand();
 
-      expect($$(test.cmp.element).hasClass('coveo-ml-facet-collapsed')).toBe(false);
+      expect($$(test.cmp.element).hasClass('coveo-dynamic-facet-collapsed')).toBe(false);
     });
 
     it(`allows to toggle between expand/collapse`, () => {
       test.cmp.ensureDom();
 
       test.cmp.toggleCollapse();
-      expect($$(test.cmp.element).hasClass('coveo-ml-facet-collapsed')).toBe(true);
+      expect($$(test.cmp.element).hasClass('coveo-dynamic-facet-collapsed')).toBe(true);
 
       test.cmp.toggleCollapse();
-      expect($$(test.cmp.element).hasClass('coveo-ml-facet-collapsed')).toBe(false);
+      expect($$(test.cmp.element).hasClass('coveo-dynamic-facet-collapsed')).toBe(false);
     });
 
     it('should have a default title', () => {
       test.cmp.ensureDom();
 
-      expect($$(test.cmp.element).find('.coveo-ml-facet-header-title span').innerHTML).toBe('No title');
+      expect($$(test.cmp.element).find('.coveo-dynamic-facet-header-title span').innerHTML).toBe('No title');
     });
 
     it('title option should set the title', () => {
@@ -234,7 +234,7 @@ export function DynamicFacetTest() {
       initializeComponent();
       test.cmp.ensureDom();
 
-      expect($$(test.cmp.element).find('.coveo-ml-facet-header-title span').innerHTML).toBe(options.title);
+      expect($$(test.cmp.element).find('.coveo-dynamic-facet-header-title span').innerHTML).toBe(options.title);
     });
 
     it('should select the needed values using the id', () => {

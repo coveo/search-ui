@@ -9,7 +9,7 @@ import { l } from '../../../strings/Strings';
 
 export class DynamicFacetValues {
   private facetValues: DynamicFacetValue[];
-  private list = $$('ul', { className: 'coveo-ml-facet-values' });
+  private list = $$('ul', { className: 'coveo-dynamic-facet-values' });
   private moreValuesAvailable: boolean;
 
   constructor(private facet: DynamicFacet) {
@@ -86,7 +86,7 @@ export class DynamicFacetValues {
   }
 
   private buildShowLess() {
-    const showLessBtn = $$('button', { className: 'coveo-ml-facet-show-less' }, l('ShowLess'));
+    const showLessBtn = $$('button', { className: 'coveo-dynamic-facet-show-less' }, l('ShowLess'));
     const showLess = $$('li', null, showLessBtn);
     showLessBtn.on('click', () => {
       this.facet.enableFreezeFacetOrderFlag();
@@ -96,7 +96,7 @@ export class DynamicFacetValues {
   }
 
   private buildShowMore() {
-    const showMoreBtn = $$('button', { className: 'coveo-ml-facet-show-more' }, l('ShowMore'));
+    const showMoreBtn = $$('button', { className: 'coveo-dynamic-facet-show-more' }, l('ShowMore'));
     const showMore = $$('li', null, showMoreBtn);
     showMoreBtn.on('click', () => {
       this.facet.enableFreezeFacetOrderFlag();

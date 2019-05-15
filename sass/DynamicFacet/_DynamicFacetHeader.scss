@@ -1,13 +1,13 @@
 @import '../Variables';
 @import '../mixins/_facetHeaderAnimation';
 
-.coveo-ml-facet-header {
+.coveo-dynamic-facet-header {
   padding: 8px 0;
   border-bottom: 1px solid $color-light-grey;
   @include display(flex);
 }
 
-.coveo-ml-facet-header-title {
+.coveo-dynamic-facet-header-title {
   margin: 0;
   font-size: $font-size-regular;
   color: $coveo-blue;
@@ -25,7 +25,7 @@
 
 $header-element-margin: 12px;
 
-@mixin coveo-ml-facet-header-svg {
+@mixin coveo-dynamic-facet-header-svg {
   width: 16px;
   height: 16px;
   color: $coveo-blue;
@@ -33,20 +33,20 @@ $header-element-margin: 12px;
   vertical-align: middle;
 }
 
-.coveo-ml-facet-header-wait-animation {
+.coveo-dynamic-facet-header-wait-animation {
   margin-left: $header-element-margin;
 }
 
-.coveo-ml-facet-header-wait-animation-svg {
-  @include coveo-ml-facet-header-svg;
+.coveo-dynamic-facet-header-wait-animation-svg {
+  @include coveo-dynamic-facet-header-svg;
   @include facet-header-animation;
 }
 
-.coveo-ml-facet-collapse-toggle-svg {
-  @include coveo-ml-facet-header-svg;
+.coveo-dynamic-facet-collapse-toggle-svg {
+  @include coveo-dynamic-facet-header-svg;
 }
 
-.coveo-ml-facet-header-btn {
+.coveo-dynamic-facet-header-btn {
   @include linkButton();
 
   margin-left: $header-element-margin;
