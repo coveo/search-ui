@@ -15,6 +15,7 @@ export class AccessibleButton {
   private mouseleaveAction: (e: Event) => void;
   private focusAction: (e: Event) => void;
   private mouseenterAction: (e: Event) => void;
+  private keyboardKeyActionPairs: [KEYBOARD, (e: Event) => void][] = [];
 
   private logger: Logger;
   private eventOwner: ComponentEvents;
@@ -63,6 +64,11 @@ export class AccessibleButton {
     return this;
   }
 
+  public withKeyboardAction(key: KEYBOARD, action: (e: Event) => void) {
+    this.keyboardKeyActionPairs.push([key, action]);
+    return this;
+  }
+
   public withFocusAndMouseEnterAction(action: (e: Event) => void) {
     this.focusAction = action;
     this.mouseenterAction = action;
@@ -105,6 +111,7 @@ export class AccessibleButton {
     this.ensureTitle();
     this.ensureSelectAction();
     this.ensureUnselectAction();
+    this.ensureKeyboardActions();
     this.ensureMouseenterAndFocusAction();
     this.ensureMouseleaveAndBlurAction();
     this.ensureDifferentiationBetweenKeyboardAndMouseFocus();
@@ -163,6 +170,13 @@ export class AccessibleButton {
     if (this.clickAction) {
       this.bindEvent('click', this.clickAction);
     }
+  }
+
+  private ensureKeyboardActions() {
+    this.keyboardKeyActionPairs.forEach(keyActionPair => {
+      const [key, action] = keyActionPair;
+      this.bindEvent('keyup', KeyboardUtils.keypressAction(key, action))
+    });
   }
 
   private ensureUnselectAction() {
