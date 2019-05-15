@@ -8,7 +8,7 @@ import { l } from '../../src/strings/Strings';
 import { InitializationEvents } from '../../src/events/InitializationEvents';
 import { IFieldDescription } from '../../src/rest/FieldDescription';
 import { Suggestion } from '../../src/magicbox/SuggestionsManager';
-import { KEYBOARD } from '../../src/Core';
+import { KEYBOARD, OmniboxEvents } from '../../src/Core';
 import { IQueryOptions } from '../../src/controllers/QueryController';
 
 export function OmniboxTest() {
@@ -203,6 +203,13 @@ export function OmniboxTest() {
         test.cmp.setText('@thisisafield=');
         test.cmp.magicBox.getSuggestions();
         expect(test.env.searchEndpoint.listFieldValues).toHaveBeenCalled();
+      });
+
+      it('minCharForSuggestions should be set', () => {
+        test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
+          querySuggestCharacterThreshold: 5
+        });
+        expect(test.cmp.options.querySuggestCharacterThreshold).toBe(5);
       });
 
       describe('with field returned by the API', () => {
@@ -542,6 +549,35 @@ export function OmniboxTest() {
         spyOn(test.cmp.magicBox, 'ontabpress');
         Simulate.keyUp(test.cmp.getInput(), KEYBOARD.TAB);
         expect(test.cmp.magicBox.ontabpress).not.toHaveBeenCalled();
+      });
+    });
+    describe('when the querySuggestCharacterThreshold option is set to a value', () => {
+      let querySuggestSuccessSpy;
+      beforeEach(() => {
+        test.cmp.options.querySuggestCharacterThreshold = 3;
+        querySuggestSuccessSpy = jasmine.createSpy('querySuggestSuccesSpy');
+        $$(test.env.root).on(OmniboxEvents.populateOmniboxSuggestions, () => querySuggestSuccessSpy());
+      });
+
+      it('inferior to the text in the magic box, we should not trigger the event to populate suggestion', async done => {
+        test.cmp.setText('f');
+        await test.cmp.magicBox.getSuggestions();
+        expect(querySuggestSuccessSpy).not.toHaveBeenCalled();
+        done();
+      });
+
+      it('equal to the text in the magic box, we should trigger the event to populate suggestion', async done => {
+        test.cmp.setText('foo');
+        await test.cmp.magicBox.getSuggestions();
+        expect(querySuggestSuccessSpy).toHaveBeenCalled();
+        done();
+      });
+
+      it('superior to the text in the magic box, we should trigger the event to populate suggestion', async done => {
+        test.cmp.setText('foobar');
+        await test.cmp.magicBox.getSuggestions();
+        expect(querySuggestSuccessSpy).toHaveBeenCalled();
+        done();
       });
     });
   });
