@@ -30,7 +30,18 @@ export function LiveAnalyticsClientTest() {
 
       env = new Mock.MockEnvironmentBuilder().build();
       endpoint = Mock.mockAnalyticsEndpoint();
-      client = new LiveAnalyticsClient(endpoint, env.root, 'foo', 'foo display', false, 'foo run name', 'foo run version', 'default', true);
+      client = new LiveAnalyticsClient(
+        endpoint,
+        env.root,
+        'foo',
+        'foo display',
+        false,
+        'foo run name',
+        'foo run version',
+        'default',
+        true,
+        { searchInterface: env.searchInterface }
+      );
       promise = new Promise((resolve, reject) => {
         resolve(FakeResults.createFakeResults(3));
       });
@@ -148,7 +159,9 @@ export function LiveAnalyticsClientTest() {
         root.appendChild(env.root);
         root.appendChild(env2.root);
         root.appendChild(env3.root);
-        client = new LiveAnalyticsClient(endpoint, root, 'foo', 'foo display', false, 'foo run name', 'foo run version', 'default', true);
+        client = new LiveAnalyticsClient(endpoint, root, 'foo', 'foo display', false, 'foo run name', 'foo run version', 'default', true, {
+          searchInterface: env.searchInterface
+        });
       });
 
       afterEach(function() {

@@ -3,6 +3,8 @@ import { MLFacet } from '../MLFacet';
 import { MLFacetValue } from './MLFacetValue';
 import { Checkbox } from '../../FormWidgets/Checkbox';
 import { l } from '../../../strings/Strings';
+import { analyticsActionCauseList } from '../../Analytics/AnalyticsActionListMeta';
+import { FacetValueState } from '../../../rest/Facet/FacetValueState';
 
 export class MLFacetValueRenderer {
   private dom: Dom;
@@ -61,8 +63,17 @@ export class MLFacetValueRenderer {
     this.toggleSelectedClass();
     this.facet.enableFreezeCurrentValuesFlag();
     this.facet.enableFreezeFacetOrderFlag();
-    this.facet.triggerNewQuery();
+    this.facet.triggerNewQuery(() => this.logActionToAnalytics());
   };
+
+  private logActionToAnalytics() {
+    const action =
+      this.facetValue.state === FacetValueState.selected
+        ? analyticsActionCauseList.mLFacetSelect
+        : analyticsActionCauseList.mLFacetDeselect;
+
+    this.facet.logAnalyticsEvent(action, this.facetValue.analyticsMeta);
+  }
 
   private get ariaLabel() {
     const selectOrUnselect = !this.facetValue.isSelected ? 'SelectValueWithResultCount' : 'UnselectValueWithResultCount';
