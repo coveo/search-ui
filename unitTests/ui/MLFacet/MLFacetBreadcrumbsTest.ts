@@ -2,8 +2,9 @@ import { MLFacetBreadcrumbs } from '../../../src/ui/MLFacet/MLFacetBreadcrumbs';
 import { $$ } from '../../../src/Core';
 import { MLFacetTestUtils } from './MLFacetTestUtils';
 import { MLFacet, IMLFacetOptions } from '../../../src/ui/MLFacet/MLFacet';
-import { IMLFacetValue } from '../../../src/ui/MLFacet/MLFacetValues/MLFacetValue';
+import { IMLFacetValue, MLFacetValue } from '../../../src/ui/MLFacet/MLFacetValues/MLFacetValue';
 import { FacetValueState } from '../../../src/rest/Facet/FacetValueState';
+import { analyticsActionCauseList } from '../../../src/ui/Analytics/AnalyticsActionListMeta';
 
 export function MLFacetBreadcrumbsTest() {
   describe('MLFacetBreadcrumbs', () => {
@@ -89,6 +90,20 @@ export function MLFacetBreadcrumbsTest() {
         it should trigger a new query`, () => {
         $$(valueElements()[0]).trigger('click');
         expect(facet.triggerNewQuery).toHaveBeenCalled();
+      });
+
+      it(`when clicking on a breadcrumb value element
+        it should log an analytics event`, () => {
+        spyOn(facet, 'logAnalyticsEvent');
+        facet.triggerNewQuery = beforeExecuteQuery => {
+          beforeExecuteQuery();
+        };
+
+        $$(valueElements()[0]).trigger('click');
+        expect(facet.logAnalyticsEvent).toHaveBeenCalledWith(
+          analyticsActionCauseList.breadcrumbMLFacet,
+          new MLFacetValue(mockFacetValues[0], facet).analyticsMeta
+        );
       });
     });
   });

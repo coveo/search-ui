@@ -9,7 +9,9 @@ export class MLFacetTestUtils {
   static createFakeFacet(options?: IMLFacetOptions) {
     const facet = Mock.mockComponent<MLFacet>(MLFacet);
     facet.options = {
+      id: 'dummy',
       field: '@dummy',
+      title: 'a title',
       ...options
     };
     facet.element = $$('div').el;
