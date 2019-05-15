@@ -122,10 +122,11 @@ export class SearchEndpoint implements ISearchEndpoint {
     SearchEndpoint.endpoints['default'] = new SearchEndpoint(
       _.extend(
         {
-          restUri: 'https://platformdev.cloud.coveo.com/rest/search',
-          accessToken: 'xfcec5a70-4a59-42e7-8639-c1fbb13f9524',
+          restUri: 'https://platform.cloud.coveo.com/rest/search',
+          accessToken: 'xx564559b1-0045-48e1-953c-3addd1ee4457',
           queryStringArguments: {
-            organizationId: 'jsuifacetsensedemo8fm8w12c'
+            organizationId: 'searchuisamples',
+            viewAllContent: 1
           }
         },
         otherOptions
