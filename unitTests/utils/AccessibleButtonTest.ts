@@ -92,7 +92,7 @@ export const AccessibleButtonTest = () => {
         beforeEach(() => {
           new AccessibleButton()
             .withElement(element)
-            .withKeyboardAction(action)
+            .withEnterKeyboardAction(action)
             .build();
         });
 
