@@ -331,7 +331,7 @@ export class DateUtils {
     }
 
     if (options.useLongDateFormat) {
-      return `${dateOnly.format('dddd')} ${dateOnly.format('LL')} ${dateOnly.format('YYYY')}`;
+      return `${dateOnly.format('dddd')}, ${dateOnly.format('LL')}, ${dateOnly.format('YYYY')}`;
     }
 
     return dateOnly.format('L');
