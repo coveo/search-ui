@@ -1,5 +1,3 @@
-import { FacetValueState } from '../../rest/Facet/FacetValueState';
-
 /**
  * The IAnalyticsActionCause interface describes the cause of an event for the analytics service.
  *
@@ -130,20 +128,6 @@ export interface IAnalyticsFacetSliderChangeMeta {
   facetRangeEnd: any;
 }
 
-export enum AnalyticsMLFacetType {
-  string = 'String'
-}
-
-export interface IAnalyticsMLFacetMeta {
-  facetId: string;
-  facetField: string;
-  facetTitle: string;
-  facetValue?: string;
-  facetType?: AnalyticsMLFacetType;
-  facetDisplayValue?: string;
-  facetValueState?: FacetValueState;
-}
-
 export interface IAnalyticsFacetGraphSelectedMeta extends IAnalyticsFacetSliderChangeMeta {}
 
 export interface IAnalyticsFacetOperatorMeta extends IAnalyticsFacetMeta {
@@ -250,7 +234,7 @@ export var analyticsActionCauseList = {
    * `actionCause`: `'interfaceChange'`
    * `actionType`: `'interface'`
    *
-   * Logging an event with this actionType also adds the following key-value pairs in the custom data property of the Usage Analytics HTTP service request.
+   * Logging an event with this actionType also adds the following key-value pair in the custom data property of the Usage Analytics HTTP service request.
    * `"interfaceChangeTo"`: <newTabId>
    */
   interfaceChange: <IAnalyticsActionCause>{
@@ -263,7 +247,7 @@ export var analyticsActionCauseList = {
    * `actionCause`: `'contextRemove'`
    * `actionType`: `'misc'`
    *
-   * Logging an event with this actionType also adds the following key-value pairs in the custom data property of the Usage Analytics HTTP service request.
+   * Logging an event with this actionType also adds the following key-value pair in the custom data property of the Usage Analytics HTTP service request.
    * `"contextName"`: <contextName>
    */
   contextRemove: <IAnalyticsActionCause>{
@@ -296,7 +280,7 @@ export var analyticsActionCauseList = {
    * `actionCause`: `'resultsSort'`
    * `actionType`: `'misc'`
    *
-   * Logging an event with this actionType also adds the following key-value pairs in the custom data property of the Usage Analytics HTTP service request.
+   * Logging an event with this actionType also adds the following key-value pair in the custom data property of the Usage Analytics HTTP service request.
    * `"resultsSortBy"`: <sortingCategory>
    */
   resultsSort: <IAnalyticsActionCause>{
@@ -347,24 +331,6 @@ export var analyticsActionCauseList = {
     type: 'breadcrumb'
   },
   /**
-   * The search-as-you-type event that gets logged when a MLFacet breadcrumb is selected and the query is updated.
-   *
-   * `actionCause`: `'breadcrumbMLFacet'`
-   * `actionType`: `'breadcrumb'`
-   *
-   * Logging an event with this actionType also adds the following key-value pairs in the custom data property of the Usage Analytics HTTP service request.
-   * `"facetId":`: <correspondingFacetId>
-   * `"facetField":`: <correspondingFacetField>
-   * `"facetTitle":`: <correspondingFacetTitle>
-   * `"facetValue":`: <correspondingFacetValue>
-   * `"facetDisplayValue":`: <correspondingFacetDisplayValue>
-   * `"facetState":`: <correspondingFacetState>
-   */
-  breadcrumbMLFacet: <IAnalyticsActionCause>{
-    name: 'breadcrumbMLFacet',
-    type: 'breadcrumb'
-  },
-  /**
    * Identifies the search event that gets logged when a user clears all values from the advanced search filter summary.
    *
    * `actionCause`: `'breadcrumbAdvancedSearch'`
@@ -406,7 +372,7 @@ export var analyticsActionCauseList = {
    * `actionCause`: `'documentField'`
    * `actionType`: `'document'`
    *
-   * Logging an event with this actionType also adds the following key-value pairs in the custom data property of the Usage Analytics HTTP service request.
+   * Logging an event with this actionType also adds the following key-value pair in the custom data property of the Usage Analytics HTTP service request.
    * `"facetId":`: <correspondingFacetId>
    * `"facetValue":`: <correspondingFacetValue>
    * `"facetTitle":`: <correspondingFacetTitle>
@@ -556,7 +522,7 @@ export var analyticsActionCauseList = {
    * `actionCause`: `'facetClearAll'`
    * `actionType`: `'facet'`
    *
-   * Logging an event with this actionType also adds the following key-value pairs in the custom data property of the Usage Analytics HTTP service request.
+   * Logging an event with this actionType also adds the following key-value pair in the custom data property of the Usage Analytics HTTP service request.
    * `"facetId":`: <correspondingFacetId>
    * `"facetField":`: <correspondingFacetField>
    */
@@ -570,7 +536,7 @@ export var analyticsActionCauseList = {
    * `actionCause`: `'facetSearch'`
    * `actionType`: `'facet'`
    *
-   * Logging an event with this actionType also adds the following key-value pairs in the custom data property of the Usage Analytics HTTP service request.
+   * Logging an event with this actionType also adds the following key-value pair in the custom data property of the Usage Analytics HTTP service request.
    * `"facetId":`: <correspondingFacetId>
    * `"facetField":`: <correspondingFacetField>
    */
@@ -839,7 +805,7 @@ export var analyticsActionCauseList = {
    * `actionCause`: `'casecontextRemove'`
    * `actionType`: `'casecontext'`
    *
-   * Logging an event with this actionType also adds the following key-value pairs in the custom data property of the Usage Analytics HTTP service request.
+   * Logging an event with this actionType also adds the following key-value pair in the custom data property of the Usage Analytics HTTP service request.
    * `"caseID":`: <correspondingCaseId>
    */
   casecontextRemove: <IAnalyticsActionCause>{
@@ -1248,55 +1214,5 @@ export var analyticsActionCauseList = {
   foldingShowLess: <IAnalyticsActionCause>{
     name: 'showLessFoldedResults',
     type: 'folding'
-  },
-  /**
-   * Identifies the search event that gets logged when a mLFacet check box is selected and the query is updated.
-   *
-   * `actionCause`: `'facetSelect'`
-   * `actionType`: `'mLFacet'`
-   *
-   * Logging an event with this actionType also adds the following key-value pairs in the custom data property of the Usage Analytics HTTP service request.
-   * `"facetId":`: <correspondingFacetId>
-   * `"facetField":`: <correspondingFacetField>
-   * `"facetTitle":`: <correspondingFacetTitle>
-   * `"facetValue":`: <correspondingFacetValue>
-   * `"facetDisplayValue":`: <correspondingFacetDisplayValue>
-   * `"facetState":`: <correspondingFacetState>
-   */
-  mLFacetSelect: <IAnalyticsActionCause>{
-    name: 'mLFacetSelect',
-    type: 'mLFacet'
-  },
-  /**
-   * Identifies the search event that gets logged when a mLFacet check box is deselected and the query is updated.
-   *
-   * `actionCause`: `'mLFacetDeselect'`
-   * `actionType`: `'mLFacet'`
-   *
-   * Logging an event with this actionType also adds the following key-value pairs in the custom data property of the Usage Analytics HTTP service request.
-   * `"facetId":`: <correspondingFacetId>
-   * `"facetField":`: <correspondingFacetField>
-   * `"facetTitle":`: <correspondingFacetTitle>
-   * `"facetValue":`: <correspondingFacetValue>
-   * `"facetDisplayValue":`: <correspondingFacetDisplayValue>
-   * `"facetState":`: <correspondingFacetState>
-   */
-  mLFacetDeselect: <IAnalyticsActionCause>{
-    name: 'mLFacetDeselect',
-    type: 'mLFacet'
-  },
-  /**
-   * Identifies the search event that gets logged when the **Clear** button of the MLFacet is selected.
-   *
-   * `actionCause`: `'mLFacetClearAll'`
-   * `actionType`: `'mLFacet'`
-   *
-   * Logging an event with this actionType also adds the following key-value pairs in the custom data property of the Usage Analytics HTTP service request.
-   * `"facetId":`: <correspondingFacetId>
-   * `"facetField":`: <correspondingFacetField>
-   */
-  mLFacetClearAll: <IAnalyticsActionCause>{
-    name: 'mLFacetClearAll',
-    type: 'mLFacet'
   }
 };

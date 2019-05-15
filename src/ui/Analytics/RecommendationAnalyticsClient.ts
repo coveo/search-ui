@@ -23,18 +23,7 @@ export class RecommendationAnalyticsClient extends LiveAnalyticsClient {
     public sendToCloud: boolean,
     public bindings: IComponentBindings
   ) {
-    super(
-      endpoint,
-      rootElement,
-      userId,
-      userDisplayName,
-      anonymous,
-      splitTestRunName,
-      splitTestRunVersion,
-      originLevel1,
-      sendToCloud,
-      bindings
-    );
+    super(endpoint, rootElement, userId, userDisplayName, anonymous, splitTestRunName, splitTestRunVersion, originLevel1, sendToCloud);
     this.recommendation = <Recommendation>this.bindings.searchInterface;
   }
 

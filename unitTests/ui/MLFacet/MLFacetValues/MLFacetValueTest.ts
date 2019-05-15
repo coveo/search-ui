@@ -3,7 +3,6 @@ import { MLFacetValue } from '../../../../src/ui/MLFacet/MLFacetValues/MLFacetVa
 import { MLFacetTestUtils } from '../MLFacetTestUtils';
 import { MLFacet, IMLFacetOptions } from '../../../../src/ui/MLFacet/MLFacet';
 import { FacetValueState } from '../../../../src/rest/Facet/FacetValueState';
-import { AnalyticsMLFacetType } from '../../../../src/ui/Analytics/AnalyticsActionListMeta';
 
 export function MLFacetValueTest() {
   describe('MLFacetValue', () => {
@@ -107,18 +106,6 @@ export function MLFacetValueTest() {
       initializeComponent();
 
       expect(mLFacetValue.valueCaption).toBe(mLFacetValue.value);
-    });
-
-    it(`should return the correct analyticsMeta`, () => {
-      expect(mLFacetValue.analyticsMeta).toEqual({
-        facetId: facet.options.id,
-        facetField: facet.options.field.toString(),
-        facetTitle: facet.options.title,
-        facetType: AnalyticsMLFacetType.string,
-        facetValue: mLFacetValue.value,
-        facetDisplayValue: mLFacetValue.valueCaption,
-        facetValueState: mLFacetValue.state
-      });
     });
 
     it(`should render without error`, () => {

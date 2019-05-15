@@ -2,7 +2,6 @@ import { $$ } from '../../../../src/utils/Dom';
 import { MLFacetHeader } from '../../../../src/ui/MLFacet/MLFacetHeader/MLFacetHeader';
 import { MLFacet, IMLFacetOptions } from '../../../../src/ui/MLFacet/MLFacet';
 import { MLFacetTestUtils } from '../MLFacetTestUtils';
-import { analyticsActionCauseList } from '../../../../src/ui/Analytics/AnalyticsActionListMeta';
 
 export function MLFacetHeaderTest() {
   describe('MLFacetHeader', () => {
@@ -59,7 +58,9 @@ export function MLFacetHeaderTest() {
     });
 
     it('should create an hidden clear button', () => {
-      expect($$(clearElement()).isVisible()).toBe(false);
+      const clearElement = $$(mLFacetHeader.element).find('.coveo-ml-facet-header-clear');
+
+      expect($$(clearElement).isVisible()).toBe(false);
     });
 
     it(`when calling showClear
@@ -67,30 +68,6 @@ export function MLFacetHeaderTest() {
       mLFacetHeader.toggleClear(true);
 
       expect($$(clearElement()).isVisible()).toBe(true);
-    });
-
-    it(`when clicking on the clear button
-      it should reset the facet & trigger a new query`, () => {
-      mLFacetHeader.toggleClear(true);
-      $$(clearElement()).trigger('click');
-
-      expect(facet.reset).toHaveBeenCalled();
-      expect(facet.triggerNewQuery).toHaveBeenCalled();
-    });
-
-    it(`when clicking on the clear button
-      it should log an analytics event`, () => {
-      mLFacetHeader.toggleClear(true);
-      facet.triggerNewQuery = beforeExecuteQuery => {
-        beforeExecuteQuery();
-      };
-
-      $$(clearElement()).trigger('click');
-      expect(facet.logAnalyticsEvent).toHaveBeenCalledWith(analyticsActionCauseList.mLFacetClearAll, {
-        facetId: facet.options.id,
-        facetField: facet.options.field.toString(),
-        facetTitle: facet.options.title
-      });
     });
 
     it(`when clicking on the clear button

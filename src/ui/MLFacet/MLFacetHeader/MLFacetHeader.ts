@@ -6,7 +6,6 @@ import { SVGDom } from '../../../utils/SVGDom';
 import { MLFacet } from '../MLFacet';
 import { MLFacetHeaderButton } from './MLFacetHeaderButton';
 import { MLFacetHeaderCollapseToggle } from './MLFacetHeaderCollapseToggle';
-import { analyticsActionCauseList } from '../../Analytics/AnalyticsActionListMeta';
 
 export class MLFacetHeader {
   public static showLoadingDelay = 2000;
@@ -40,15 +39,7 @@ export class MLFacetHeader {
   private clear() {
     this.facet.reset();
     this.facet.enableFreezeFacetOrderFlag();
-    this.facet.triggerNewQuery(() => this.logClearAllToAnalytics());
-  }
-
-  private logClearAllToAnalytics() {
-    this.facet.logAnalyticsEvent(analyticsActionCauseList.mLFacetClearAll, {
-      facetId: this.facet.options.id,
-      facetField: this.facet.options.field.toString(),
-      facetTitle: this.facet.options.title
-    });
+    this.facet.triggerNewQuery();
   }
 
   private createCollapseToggle() {

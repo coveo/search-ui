@@ -24,8 +24,6 @@ import { isFacetSortCriteria } from '../../rest/Facet/FacetSortCriteria';
 import { l } from '../../strings/Strings';
 import { DeviceUtils } from '../../utils/DeviceUtils';
 import { BreadcrumbEvents, IPopulateBreadcrumbEventArgs } from '../../events/BreadcrumbEvents';
-import { IAnalyticsActionCause, IAnalyticsMLFacetMeta, analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
-import { IQueryOptions } from '../../controllers/QueryController';
 
 export interface IMLFacetOptions extends IResponsiveComponentOptions {
   id?: string;
@@ -254,8 +252,7 @@ export class MLFacet extends Component {
     Assert.exists(values);
     this.ensureDom();
     values.forEach(value => {
-      this.logger.info('Selecting facet value');
-      this.values.get(value).select();
+      this.logger.info('Selecting facet value', this.values.get(value).select());
     });
     this.handleFacetValuesChanged();
   }
@@ -285,8 +282,7 @@ export class MLFacet extends Component {
     Assert.exists(values);
     this.ensureDom();
     values.forEach(value => {
-      this.logger.info('Deselecting facet value');
-      this.values.get(value).deselect();
+      this.logger.info('Deselecting facet value', this.values.get(value).deselect());
     });
     this.handleFacetValuesChanged();
   }
@@ -385,14 +381,6 @@ export class MLFacet extends Component {
     this.mLFacetQueryController.enableFreezeCurrentValuesFlag();
   }
 
-  public logAnalyticsEvent(action: IAnalyticsActionCause, targetFacet?: IAnalyticsMLFacetMeta) {
-    this.usageAnalytics.logSearchEvent<IAnalyticsMLFacetMeta>(action, targetFacet);
-  }
-
-  public get analyticsFacetState(): IAnalyticsMLFacetMeta[] {
-    return this.values.activeFacetValues.map(facetValue => facetValue.analyticsMeta);
-  }
-
   /**
    * For this method to work, the component has to be the child of a [MLFacetManager]{@link MLFacetManager} component.
    *
@@ -415,7 +403,7 @@ export class MLFacet extends Component {
   }
 
   private initQueryStateEvents() {
-    this.includedAttributeId = QueryStateModel.getMLFacetId(this.options.id);
+    this.includedAttributeId = QueryStateModel.getFacetId(this.options.id);
     this.queryStateModel.registerNewAttribute(this.includedAttributeId, []);
     this.bind.onQueryState(MODEL_EVENTS.CHANGE, undefined, this.handleQueryStateChanged);
   }
@@ -465,19 +453,12 @@ export class MLFacet extends Component {
 
   private handleQueryStateChangedIncluded = (querySelectedValues: string[]) => {
     const currentSelectedValues = this.values.selectedValues;
-    const valuesToSelect = difference(querySelectedValues, currentSelectedValues);
     const valuesToDeselect = difference(currentSelectedValues, querySelectedValues);
-
-    if (Utils.isNonEmptyArray(valuesToSelect)) {
-      this.selectMultipleValues(valuesToSelect);
-      // Only one search event is sent, pick first facet value
-      this.logAnalyticsEvent(analyticsActionCauseList.mLFacetSelect, this.values.get(valuesToSelect[0]).analyticsMeta);
-    }
-
     if (Utils.isNonEmptyArray(valuesToDeselect)) {
       this.deselectMultipleValues(valuesToDeselect);
-      // Only one search event is sent, pick first facet value
-      this.logAnalyticsEvent(analyticsActionCauseList.mLFacetDeselect, this.values.get(valuesToDeselect[0]).analyticsMeta);
+    }
+    if (!Utils.arrayEqual(currentSelectedValues, querySelectedValues, false)) {
+      this.selectMultipleValues(querySelectedValues);
     }
   };
 
@@ -529,12 +510,9 @@ export class MLFacet extends Component {
     $$(this.element).toggleClass('coveo-hidden', this.values.isEmpty);
   }
 
-  public triggerNewQuery(beforeExecuteQuery?: () => void) {
+  public triggerNewQuery() {
     this.beforeSendingQuery();
-
-    const options: IQueryOptions = beforeExecuteQuery ? { beforeExecuteQuery } : { ignoreWarningSearchEvent: true };
-
-    this.queryController.executeQuery(options);
+    this.queryController.executeQuery();
   }
 
   private beforeSendingQuery() {

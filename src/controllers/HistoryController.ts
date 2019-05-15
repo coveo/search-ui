@@ -234,10 +234,10 @@ export class HistoryController extends RootComponent implements IHistoryManager 
   }
 
   private extractFacetInfoFromStateDifference(key: string) {
-    const regexForFacetInclusion = /^f:(?!.*:not)(.*)/;
+    const regexForFacetInclusion = /f:(?!.*:not)(.*)/;
     const matchForInclusion = regexForFacetInclusion.exec(key);
 
-    const regexForFacetExclusion = /^f:(.*):not/;
+    const regexForFacetExclusion = /f:(.*):not/;
     const matchForExclusion = regexForFacetExclusion.exec(key);
 
     const currentValue = this.queryStateModel.get(key) || [];

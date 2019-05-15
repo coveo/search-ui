@@ -394,8 +394,7 @@ export class Analytics extends Component {
         this.options.splitTestRunName,
         this.options.splitTestRunVersion,
         this.options.searchHub,
-        this.options.sendToCloud,
-        this.getBindings()
+        this.options.sendToCloud
       );
     }
   }
