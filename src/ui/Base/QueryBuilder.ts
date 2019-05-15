@@ -282,7 +282,7 @@ export class QueryBuilder {
   public groupByRequests: IGroupByRequest[] = [];
 
   /**
-   * Specifies an array of request for the MLFacet component.
+   * Specifies an array of request for the DynamicFacet component.
    * Cannot be used alongside [`groupByRequests`]{@link QueryBuilder.groupByRequests}
    */
   public facetRequests: IFacetRequest[] = [];

@@ -279,8 +279,8 @@ lazyPromotedResultsBadge();
 import { lazyCategoryFacet } from './ui/CategoryFacet/LazyCategoryFacet';
 lazyCategoryFacet();
 
-// import { lazyMLFacet } from './ui/MLFacet/LazyMLFacet';
-// lazyMLFacet();
+// import { lazyDynamicFacet } fro./ui/DynamicFacet/LazyDynamicFacetcet';
+// lazyDynamicFacet();
 
 import { swapVar } from './SwapVar';
 swapVar(this);

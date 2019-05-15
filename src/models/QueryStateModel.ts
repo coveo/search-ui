@@ -100,8 +100,8 @@ export class QueryStateModel extends Model {
     return 'f:' + id + ':operator';
   }
 
-  static getMLFacetId(id: string) {
-    return 'mf:' + id;
+  static getDynamicFacetId(id: string) {
+    return 'df:' + id;
   }
 
   static getFacetLookupValue(id: string) {

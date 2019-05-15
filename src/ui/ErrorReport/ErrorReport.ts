@@ -249,7 +249,7 @@ export class ErrorReport extends Component {
 
       case 'GroupByAndFacetBothExistingException':
         this.options.showDetailedError = false;
-        // TODO: add MLFacet documentation
+        // TODO: add DynamicFacet documentation
         this.setErrorTitle(undefined, l('GroupByAndFacetRequestsCannotCoexist'));
         break;
 

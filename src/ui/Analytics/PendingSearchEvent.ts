@@ -14,7 +14,7 @@ import { IAnalyticsSearchEventsArgs, AnalyticsEvents, IAnalyticsEventArgs } from
 import { analyticsActionCauseList, IAnalyticsFacetMeta } from '../Analytics/AnalyticsActionListMeta';
 import { QueryStateModel } from '../../models/QueryStateModel';
 import * as _ from 'underscore';
-import { MLFacet } from '../MLFacet/MLFacet';
+import { DynamicFacet } from '../DynamicFacet/DynamicFacet';
 import { Utils } from '../../utils/Utils';
 
 export class PendingSearchEvent {
@@ -137,13 +137,13 @@ export class PendingSearchEvent {
   }
 
   private buildFacetsState(searchInterface: SearchInterface) {
-    const allMLFacets = searchInterface.getComponents<MLFacet>(MLFacet.ID);
-    if (Utils.isEmptyArray(allMLFacets)) {
+    const allDynamicFacets = searchInterface.getComponents<DynamicFacet>(DynamicFacet.ID);
+    if (Utils.isEmptyArray(allDynamicFacets)) {
       return undefined;
     }
 
     const facetsState: IAnalyticsFacetMeta[] = [];
-    allMLFacets.forEach(mLFacet => facetsState.push(...mLFacet.analyticsFacetState));
+    allDynamicFacets.forEach(dynamicFacet => facetsState.push(...dynamicFacet.analyticsFacetState));
     return facetsState;
   }
 
