@@ -62,6 +62,11 @@ export const AccessibleButtonTest = () => {
           Simulate.keyUp(element.el, KEYBOARD.ENTER);
           expect(action).toHaveBeenCalled();
         });
+
+        it('should be called on keyboard spacebar keypress', () => {
+          Simulate.keyUp(element.el, KEYBOARD.SPACEBAR);
+          expect(action).toHaveBeenCalled();
+        });
       });
 
       describe('configured as click', () => {
@@ -87,7 +92,7 @@ export const AccessibleButtonTest = () => {
         beforeEach(() => {
           new AccessibleButton()
             .withElement(element)
-            .withEnterKeyboardAction(action)
+            .withKeyboardAction(action)
             .build();
         });
 
@@ -98,6 +103,11 @@ export const AccessibleButtonTest = () => {
 
         it('should be called on keyboard enter keypress', () => {
           Simulate.keyUp(element.el, KEYBOARD.ENTER);
+          expect(action).toHaveBeenCalled();
+        });
+
+        it('should be called on keyboard spacebar keypress', () => {
+          Simulate.keyUp(element.el, KEYBOARD.SPACEBAR);
           expect(action).toHaveBeenCalled();
         });
       });
