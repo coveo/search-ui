@@ -24,6 +24,7 @@ export interface ISimpleFilterOptions {
   field: IFieldOption;
   valueCaption: any;
   maximumNumberOfValues: number;
+  sortCriteria: string;
 }
 
 interface ILabeledCheckbox {
@@ -115,7 +116,35 @@ export class SimpleFilter extends Component {
      * <div class='CoveoSimpleFilter' data-field='@myotherfield' data-value-caption='{"txt":"Text files","html":"Web page"}'></div>
      * ```
      */
-    valueCaption: ComponentOptions.buildJsonOption()
+    valueCaption: ComponentOptions.buildJsonOption(),
+    /**
+     *
+     * string
+     * The sort criteria to use.
+     *
+     * Default value: `score`
+     *
+     * The possible values are:
+     *
+     * `score`: sort using the score value which is computed from the number of occurrences of a field value, as well as from the position
+     * where query result items having this field value appear in the ranked query result set. When using this sort criterion, a field value
+     * with 100 occurrences might appear after one with only 10 occurrences, if the occurrences of the latter field value tend to appear higher
+     * in the ranked query result set.
+     *
+     * `occurrences`: sort by number of occurrences, with field values having the highest number of occurrences appearing first.
+     *
+     * `alphaascending/alphadescending`: sort alphabetically on the field values.
+     *
+     * `computedfieldascending/computedfielddescending`: sort on the value of the first computed field for each Group By operation result (see the ComputedFields Group By parameter).
+     *
+     * `chisquare`: sort based on the relative frequency of field values in the query result set compared to their frequency in the entire index. This means that a field value that does
+     * not appear often in the index, but does appear often in the query result set will tend to appear higher.
+     *
+     * `nosort`: do not sort the results of the Group By operation. The field values will be appear in a random order.
+     *
+     *
+     */
+    sortCriteria: ComponentOptions.buildStringOption({ defaultValue: 'score' })
   };
 
   private valueContainer: Dom;

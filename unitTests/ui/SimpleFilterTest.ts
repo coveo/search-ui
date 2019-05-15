@@ -16,6 +16,7 @@ export function SimpleFilterTest() {
         maximumNumberOfValues: 5,
         title: 'FooTitleBar',
         values: ['foo', 'bar'],
+        sortCriteria: 'score',
         valueCaption: {
           bar: 'baz',
           gmailmessage: 'Gmail Message',
@@ -47,6 +48,10 @@ export function SimpleFilterTest() {
 
     it('should set the values correctly', () => {
       expect(aSimpleFilter.cmp.options.values).toEqual(['foo', 'bar']);
+    });
+
+    it('should set the title sortCriteria', () => {
+      expect(aSimpleFilter.cmp.options.sortCriteria).toBe('score');
     });
 
     it('should expand the component correctly', () => {
@@ -107,6 +112,18 @@ export function SimpleFilterTest() {
         jasmine.arrayContaining([
           jasmine.objectContaining({
             field: '@field'
+          })
+        ])
+      );
+    });
+
+    it('should set the sortCriteria in the query', () => {
+      aSimpleFilter.cmp.options.values = undefined;
+      let simulation = Simulate.query(aSimpleFilter.env);
+      expect(simulation.queryBuilder.groupByRequests).toEqual(
+        jasmine.arrayContaining([
+          jasmine.objectContaining({
+            sortCriteria: 'score'
           })
         ])
       );
