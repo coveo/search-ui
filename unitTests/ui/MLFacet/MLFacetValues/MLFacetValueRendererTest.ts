@@ -3,6 +3,7 @@ import { MLFacetValueRenderer } from '../../../../src/ui/MLFacet/MLFacetValues/M
 import { MLFacetValue } from '../../../../src/ui/MLFacet/MLFacetValues/MLFacetValue';
 import { MLFacetTestUtils } from '../MLFacetTestUtils';
 import { MLFacet, IMLFacetOptions } from '../../../../src/ui/MLFacet/MLFacet';
+import { analyticsActionCauseList } from '../../../../src/ui/Analytics/AnalyticsActionListMeta';
 
 export function MLFacetValueRendererTest() {
   describe('MLFacetValueRenderer', () => {
@@ -65,6 +66,18 @@ export function MLFacetValueRendererTest() {
           expect($$(element).hasClass('coveo-selected')).toBe(true);
         });
 
+        it(`when checkbox is clicked
+        should log the select analytics action`, () => {
+          facet.triggerNewQuery = beforeExecuteQuery => {
+            beforeExecuteQuery();
+          };
+          // Toggling selection on value manualy because the facet is only a mock
+          mLFacetValue.toggleSelect();
+          $$(checkboxButton).trigger('click');
+
+          expect(facet.logAnalyticsEvent).toHaveBeenCalledWith(analyticsActionCauseList.mLFacetSelect, mLFacetValue.analyticsMeta);
+        });
+
         it('should contain an aria-label with the correct string', () => {
           const expectedAriaLabel = `Select ${mLFacetValue.value} with ${mLFacetValue.formattedCount} results`;
 
@@ -90,8 +103,22 @@ export function MLFacetValueRendererTest() {
           $$(checkboxButton).trigger('click');
 
           expect(facet.toggleSelectValue).toHaveBeenCalledTimes(1);
+          expect(facet.enableFreezeCurrentValuesFlag).toHaveBeenCalledTimes(1);
+          expect(facet.enableFreezeFacetOrderFlag).toHaveBeenCalledTimes(1);
           expect(facet.triggerNewQuery).toHaveBeenCalledTimes(1);
           expect($$(element).hasClass('coveo-selected')).toBe(false);
+        });
+
+        it(`when checkbox is clicked
+        should log the deselect analytics action`, () => {
+          facet.triggerNewQuery = beforeExecuteQuery => {
+            beforeExecuteQuery();
+          };
+          // Toggling selection on value manualy because the facet is only a mock
+          mLFacetValue.toggleSelect();
+          $$(checkboxButton).trigger('click');
+
+          expect(facet.logAnalyticsEvent).toHaveBeenCalledWith(analyticsActionCauseList.mLFacetDeselect, mLFacetValue.analyticsMeta);
         });
 
         it('should contain an aria-label with the correct string', () => {
