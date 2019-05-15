@@ -4,6 +4,7 @@ import { l } from '../../strings/Strings';
 import { MLFacet } from './MLFacet';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { MLFacetValue } from './MLFacetValues/MLFacetValue';
+import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
 
 export class MLFacetBreadcrumbs {
   public element: HTMLElement;
@@ -55,7 +56,11 @@ export class MLFacetBreadcrumbs {
 
   private valueSelectAction(facetValue: MLFacetValue) {
     this.facet.deselectValue(facetValue.value);
-    this.facet.triggerNewQuery();
+    this.facet.triggerNewQuery(() => this.logActionToAnalytics(facetValue));
+  }
+
+  private logActionToAnalytics(facetValue: MLFacetValue) {
+    this.facet.logAnalyticsEvent(analyticsActionCauseList.breadcrumbMLFacet, facetValue.analyticsMeta);
   }
 
   private createAndAppendCollapsedBreadcrumbs(facetValues: MLFacetValue[]) {

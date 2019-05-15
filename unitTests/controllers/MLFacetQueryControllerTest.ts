@@ -35,6 +35,10 @@ export function MLFacetQueryControllerTest() {
       return queryBuilder.build().facets;
     }
 
+    function facetOptionsRequest() {
+      return queryBuilder.build().facetOptions;
+    }
+
     function latestFacetRequest() {
       const requests = facetRequests();
       return requests[requests.length - 1];
@@ -130,6 +134,17 @@ export function MLFacetQueryControllerTest() {
       buildRequest();
 
       expect(latestFacetRequest().numberOfValues).toBe(latestFacetRequest().currentValues.length);
+    });
+
+    it('freezeFacetOrder should be undefined by default', () => {
+      expect(facetOptionsRequest().freezeFacetOrder).toBeUndefined();
+    });
+
+    it('allows to enableFreezeFacetOrderFlag', () => {
+      mLFacetQueryController.enableFreezeFacetOrderFlag();
+      buildRequest();
+
+      expect(facetOptionsRequest().freezeFacetOrder).toBe(true);
     });
 
     it('isFieldExpanded should be false by default', () => {
