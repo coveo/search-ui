@@ -50,7 +50,7 @@ export function SimpleFilterTest() {
       expect(aSimpleFilter.cmp.options.values).toEqual(['foo', 'bar']);
     });
 
-    it('should set the title sortCriteria', () => {
+    it('should set the sortCriteria correctly', () => {
       expect(aSimpleFilter.cmp.options.sortCriteria).toBe('score');
     });
 
