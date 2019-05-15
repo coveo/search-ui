@@ -86,8 +86,9 @@ export class DynamicFacetValues {
   }
 
   private buildShowLess() {
-    const showLess = $$('button', { className: 'coveo-ml-facet-show-less' }, l('ShowLess'));
-    showLess.on('click', () => {
+    const showLessBtn = $$('button', { className: 'coveo-ml-facet-show-less' }, l('ShowLess'));
+    const showLess = $$('li', null, showLessBtn);
+    showLessBtn.on('click', () => {
       this.facet.enableFreezeFacetOrderFlag();
       this.facet.showLessValues();
     });
@@ -95,8 +96,9 @@ export class DynamicFacetValues {
   }
 
   private buildShowMore() {
-    const showMore = $$('button', { className: 'coveo-ml-facet-show-more' }, l('ShowMore'));
-    showMore.on('click', () => {
+    const showMoreBtn = $$('button', { className: 'coveo-ml-facet-show-more' }, l('ShowMore'));
+    const showMore = $$('li', null, showMoreBtn);
+    showMoreBtn.on('click', () => {
       this.facet.enableFreezeFacetOrderFlag();
       this.facet.showMoreValues();
     });

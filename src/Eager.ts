@@ -272,8 +272,11 @@ SimpleFilter.doExport();
 import { TimespanFacet } from './ui/TimespanFacet/TimespanFacet';
 TimespanFacet.doExport();
 
-// import { DynamicFacet } fro./ui/DynamicFacet/DynamicFacetcet';
-// DynamicFacet.doExport();
+import { DynamicFacet } from './ui/DynamicFacet/DynamicFacet';
+DynamicFacet.doExport();
+
+import { DynamicFacetManager } from './ui/DynamicFacetManager/DynamicFacetManager';
+DynamicFacetManager.doExport();
 
 import { PromotedResultsBadge } from './ui/PromotedResultsBadge/PromotedResultsBadge';
 PromotedResultsBadge.doExport();
