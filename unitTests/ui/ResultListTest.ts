@@ -781,6 +781,50 @@ export function ResultListTest() {
             expect(mockResultLayoutSelector.enableLayouts).toHaveBeenCalledWith(['card']);
           });
         });
+        describe('enableScrollToTop set to', () => {
+          let infiniteScrollContainer: HTMLElement;
+          let allResult: IQueryResults;
+          beforeEach(() => {
+            infiniteScrollContainer = { scrollTop: 500 } as HTMLElement;
+            allResult = FakeResults.createFakeResults(50);
+          });
+
+          it('true, should change the value of ScrollTop the HTMLElement to 0', done => {
+            const option: IResultListOptions = {
+              enableInfiniteScroll: true,
+              infiniteScrollContainer: infiniteScrollContainer,
+              enableScrollToTop: true
+            };
+            test = Mock.basicComponentSetup<ResultList>(ResultList, option);
+            test.cmp.currentlyDisplayedResults.push(allResult.results[1]);
+            (test.cmp.queryController.fetchMore as jasmine.Spy).and.returnValue(Promise.resolve(allResult));
+            test.cmp.displayMoreResults(50).then(() => {
+              Simulate.query(test.env);
+              setTimeout(() => {
+                expect(infiniteScrollContainer.scrollTop).toBe(0);
+                done();
+              }, 0);
+            });
+          });
+
+          it('false, should not change the value ScrollTop of the HTMLElement', done => {
+            const option: IResultListOptions = {
+              enableInfiniteScroll: true,
+              infiniteScrollContainer: infiniteScrollContainer,
+              enableScrollToTop: false
+            };
+            test = Mock.basicComponentSetup<ResultList>(ResultList, option);
+            test.cmp.currentlyDisplayedResults.push(allResult.results[0]);
+            (test.cmp.queryController.fetchMore as jasmine.Spy).and.returnValue(Promise.resolve(allResult));
+            test.cmp.displayMoreResults(50).then(() => {
+              Simulate.query(test.env);
+              setTimeout(() => {
+                expect(infiniteScrollContainer.scrollTop).toBe(500);
+                done();
+              }, 0);
+            });
+          });
+        });
       });
     });
   });
