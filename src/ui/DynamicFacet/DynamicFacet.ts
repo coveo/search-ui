@@ -7,7 +7,7 @@ import { IComponentBindings } from '../Base/ComponentBindings';
 import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
 import { Initialization } from '../Base/Initialization';
 import { ResponsiveFacetOptions } from '../ResponsiveComponents/ResponsiveFacetOptions';
-import { ResponsiveFacets } from '../ResponsiveComponents/ResponsiveFacets';
+import { ResponsiveDynamicFacets } from '../ResponsiveComponents/ResponsiveDynamicFacets';
 import { DynamicFacetBreadcrumbs } from './DynamicFacetBreadcrumbs';
 import { DynamicFacetHeader } from './DynamicFacetHeader/DynamicFacetHeader';
 import { DynamicFacetValues } from './DynamicFacetValues/DynamicFacetValues';
@@ -222,7 +222,7 @@ export class DynamicFacet extends Component {
     this.values = new DynamicFacetValues(this);
     this.isCollapsed = this.options.enableCollapse && this.options.collapsedByDefault;
 
-    ResponsiveFacets.init(this.root, this, this.options);
+    ResponsiveDynamicFacets.init(this.root, this, this.options);
   }
 
   public get fieldName() {
