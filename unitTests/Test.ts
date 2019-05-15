@@ -701,6 +701,3 @@ MLFacetBreadcrumbsTest();
 
 import { MLFacetQueryControllerTest } from './controllers/MLFacetQueryControllerTest';
 MLFacetQueryControllerTest();
-
-import { MLFacetManagerTest } from './ui/MLFacetManagerTest';
-MLFacetManagerTest();

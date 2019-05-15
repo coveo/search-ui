@@ -130,23 +130,12 @@ export function MLFacetValuesTest() {
       expect(mLFacetValues.allFacetValues.length).toBe(0);
     });
 
-    describe('when moreValuesAvailable is true', () => {
-      beforeEach(() => {
-        mLFacetValues.createFromResponse(
-          MLFacetTestUtils.getCompleteFacetResponse(facet, { values: mockFacetValues, moreValuesAvailable: true })
-        );
-      });
-
-      it(`should render the "Show more" button`, () => {
-        expect(moreButton()).toBeTruthy();
-      });
-
-      it(`when clicking on the "Show more" button
-        should perform the correct actions on the facet`, () => {
-        $$(moreButton()).trigger('click');
-        expect(facet.enableFreezeFacetOrderFlag).toHaveBeenCalledTimes(1);
-        expect(facet.showMoreValues).toHaveBeenCalledTimes(1);
-      });
+    it(`when moreValuesAvailable is true
+      should render the "Show more" button`, () => {
+      mLFacetValues.createFromResponse(
+        MLFacetTestUtils.getCompleteFacetResponse(facet, { values: mockFacetValues, moreValuesAvailable: true })
+      );
+      expect(moreButton()).toBeTruthy();
     });
 
     it(`when there are less or an equal number of values as the numberOfValues option
@@ -154,22 +143,11 @@ export function MLFacetValuesTest() {
       expect(lessButton()).toBeFalsy();
     });
 
-    describe('when there are more values than the numberOfValues option', () => {
-      beforeEach(() => {
-        mockFacetValues = MLFacetTestUtils.createFakeFacetValues(10);
-        mLFacetValues.createFromResponse(MLFacetTestUtils.getCompleteFacetResponse(facet, { values: mockFacetValues }));
-      });
-
-      it(`should render the "Show less" button`, () => {
-        expect(lessButton()).toBeTruthy();
-      });
-
-      it(`when clicking on the "Show more" button
-        should perform the correct actions on the facet`, () => {
-        $$(lessButton()).trigger('click');
-        expect(facet.enableFreezeFacetOrderFlag).toHaveBeenCalledTimes(1);
-        expect(facet.showLessValues).toHaveBeenCalledTimes(1);
-      });
+    it(`when there are more values than the numberOfValues option
+      should render the "Show less" button`, () => {
+      mockFacetValues = MLFacetTestUtils.createFakeFacetValues(10);
+      mLFacetValues.createFromResponse(MLFacetTestUtils.getCompleteFacetResponse(facet, { values: mockFacetValues }));
+      expect(lessButton()).toBeTruthy();
     });
   });
 }

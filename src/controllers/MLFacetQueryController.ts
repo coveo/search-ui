@@ -8,7 +8,6 @@ import { QueryEvents } from '../events/QueryEvents';
 export class MLFacetQueryController {
   private numberOfValuesToRequest: number;
   private freezeCurrentValues = false;
-  private freezeFacetOrder = false;
 
   constructor(private facet: MLFacet) {
     this.resetNumberOfValuesToRequest();
@@ -16,10 +15,7 @@ export class MLFacetQueryController {
   }
 
   private resetFreezeCurrentValuesDuringQuery() {
-    this.facet.bind.onRootElement(QueryEvents.duringQuery, () => {
-      this.freezeCurrentValues = false;
-      this.freezeFacetOrder = false;
-    });
+    this.facet.bind.onRootElement(QueryEvents.duringQuery, () => (this.freezeCurrentValues = false));
   }
 
   public increaseNumberOfValuesToRequest(additionalNumberOfValues: number) {
@@ -32,10 +28,6 @@ export class MLFacetQueryController {
 
   public enableFreezeCurrentValuesFlag() {
     this.freezeCurrentValues = true;
-  }
-
-  public enableFreezeFacetOrderFlag() {
-    this.freezeFacetOrder = true;
   }
 
   /**
@@ -56,9 +48,6 @@ export class MLFacetQueryController {
     };
 
     queryBuilder.facetRequests.push(facetRequest);
-    if (this.freezeFacetOrder) {
-      queryBuilder.facetOptions.freezeFacetOrder = true;
-    }
   }
 
   private get currentValues(): IFacetRequestValue[] {
