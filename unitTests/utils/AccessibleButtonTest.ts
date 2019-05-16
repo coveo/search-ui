@@ -102,17 +102,6 @@ export const AccessibleButtonTest = () => {
         });
       });
 
-      it(`configured as keyboard escape press,
-      it should be called on keyboard escape keypress`, () => {
-        new AccessibleButton()
-        .withElement(element)
-        .withKeyboardAction(KEYBOARD.ESCAPE, action)
-        .build();
-
-        Simulate.keyUp(element.el, KEYBOARD.ESCAPE);
-        expect(action).toHaveBeenCalledTimes(1);
-      })
-
       describe('configured as focus and mouseenter', () => {
         beforeEach(() => {
           new AccessibleButton()
