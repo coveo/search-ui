@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>FacetSortCriteria | Coveo JavaScript Search Framework - Reference Documentation</title>
+	<title>IFacetOptions | Coveo JavaScript Search Framework - Reference Documentation</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link href='https://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'/>
@@ -92,14 +92,11 @@
 					<a id="globals-toc-link" href=../globals.html><b>Globals</b></a>
 				</ul>
 				<ul class="current">
-					<li class="current tsd-kind-enum">
-						<a href="facetsortcriteria.html" class="tsd-kind-icon">Facet<wbr>Sort<wbr>Criteria</a>
+					<li class="current tsd-kind-interface">
+						<a href="ifacetoptions.html" class="tsd-kind-icon">IFacet<wbr>Options</a>
 						<ul>
-							<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
-								<a href="facetsortcriteria.html#alphanumeric" class="tsd-kind-icon">alphanumeric</a>
-							</li>
-							<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
-								<a href="facetsortcriteria.html#score" class="tsd-kind-icon">score</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="ifacetoptions.html#freezefacetorder" class="tsd-kind-icon">freeze<wbr>Facet<wbr>Order</a>
 							</li>
 						</ul>
 					</li>
@@ -120,19 +117,18 @@
 							<a href="../globals.html">Globals</a>
 						</li>
 						<li>
-							<a href="facetsortcriteria.html">FacetSortCriteria</a>
+							<a href="ifacetoptions.html">IFacetOptions</a>
 						</li>
 					</ul>
 					<!-- Has to remain here for the playground to work -->
-					<h1 style="visibility: collapse; font-size:0">Enumeration FacetSortCriteria</h1>
-					<h1>Enumeration FacetSortCriteria</h1>
+					<h1 style="visibility: collapse; font-size:0">Interface IFacetOptions</h1>
+					<h1>Interface IFacetOptions</h1>
 				</div>
 			</div>
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>The allowed <a href="../components/dynamicfacet.html#options.sortcriteria"><code>sortCriteria</code></a> option
-						values for the <code>DynamicFacet</code> component.</p>
+						<p>The available global configuration options when requesting facets through the [facets]{IQuery.facets} array.</p>
 					</div>
 				</div>
 			</section>
@@ -144,54 +140,41 @@
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section ">
-							<h3>Enumeration members</h3>
+							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="facetsortcriteria.html#alphanumeric" class="tsd-kind-icon">alphanumeric</a></li>
-								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="facetsortcriteria.html#score" class="tsd-kind-icon">score</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="ifacetoptions.html#freezefacetorder" class="tsd-kind-icon">freeze<wbr>Facet<wbr>Order</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
-				<h2>Enumeration members</h2>
-				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum">
-					<a name="alphanumeric" class="tsd-anchor"></a>
-					<h3>alphanumeric</h3>
-					<div class="tsd-signature tsd-kind-icon">alphanumeric<span class="tsd-signature-symbol">:</span> </div>
+				<h2>Properties</h2>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="freezefacetorder" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> freeze<wbr>Facet<wbr>Order</h3>
+					<div class="tsd-signature tsd-kind-icon">freeze<wbr>Facet<wbr>Order<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Boolean</span></div>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Facet/FacetSortCriteria.ts#L19">rest/Facet/FacetSortCriteria.ts
-							:19</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Query.ts#L15">rest/Query.ts
+							:15</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Sort facet values in ascending alphanumeric order.</p>
+							<p>Indicates whether the facet values should be returned in their current order.</p>
 						</div>
 					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum">
-					<a name="score" class="tsd-anchor"></a>
-					<h3>score</h3>
-					<div class="tsd-signature tsd-kind-icon">score<span class="tsd-signature-symbol">:</span> </div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Facet/FacetSortCriteria.ts#L14">rest/Facet/FacetSortCriteria.ts
-							:14</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Sort facet values in descending score order.</p>
-						</div>
-						<p>Facet value scores are based on number of occurrences and position in the
-						ranked query result set.</p>
-						<p>The Coveo ML <em>Facet Sense</em> feature only works with this sort criterion.</p>
-					</div>
-				</section>
+			</section>
+			<section class="tsd-panel tsd-hierarchy">
+				<h3>Hierarchy</h3>
+				<ul class="tsd-hierarchy">
+					<li>
+						<span class="target">IFacetOptions</span>
+					</li>
+				</ul>
 			</section>
 			<footer class="with-border-bottom">
 				<div class="container">
