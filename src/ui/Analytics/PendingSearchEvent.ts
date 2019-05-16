@@ -10,10 +10,12 @@ import { Component } from '../Base/Component';
 import { QueryController } from '../../controllers/QueryController';
 import { Defer } from '../../misc/Defer';
 import { APIAnalyticsBuilder } from '../../rest/APIAnalyticsBuilder';
-import { IAnalyticsSearchEventsArgs, AnalyticsEvents } from '../../events/AnalyticsEvents';
-import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
+import { IAnalyticsSearchEventsArgs, AnalyticsEvents, IAnalyticsEventArgs } from '../../events/AnalyticsEvents';
+import { analyticsActionCauseList, IAnalyticsFacetMeta } from '../Analytics/AnalyticsActionListMeta';
 import { QueryStateModel } from '../../models/QueryStateModel';
 import * as _ from 'underscore';
+import { MLFacet } from '../MLFacet/MLFacet';
+import { Utils } from '../../utils/Utils';
 
 export class PendingSearchEvent {
   private handler: (evt: Event, arg: IDuringQueryEventArgs) => void;
@@ -122,8 +124,27 @@ export class PendingSearchEvent {
         $$(this.root).trigger(AnalyticsEvents.searchEvent, <IAnalyticsSearchEventsArgs>{
           searchEvents: apiSearchEvents
         });
+        if (apiSearchEvents.length) {
+          apiSearchEvents.forEach(searchEvent => {
+            $$(this.root).trigger(AnalyticsEvents.analyticsEventReady, <IAnalyticsEventArgs>{
+              event: 'CoveoSearchEvent',
+              coveoAnalyticsEventData: searchEvent
+            });
+          });
+        }
       });
     }
+  }
+
+  private buildFacetsState(searchInterface: SearchInterface) {
+    const allMLFacets = searchInterface.getComponents<MLFacet>(MLFacet.ID);
+    if (Utils.isEmptyArray(allMLFacets)) {
+      return undefined;
+    }
+
+    const facetsState: IAnalyticsFacetMeta[] = [];
+    allMLFacets.forEach(mLFacet => facetsState.push(...mLFacet.analyticsFacetState));
+    return facetsState;
   }
 
   private fillSearchEvent(
@@ -153,6 +174,7 @@ export class PendingSearchEvent {
     searchEvent.resultsPerPage = query.numberOfResults;
     searchEvent.searchQueryUid = queryResults.searchUid;
     searchEvent.queryPipeline = queryResults.pipeline;
+    searchEvent.facetsState = this.buildFacetsState(searchInterface);
 
     // The context_${key} format is important for the Analytics backend
     // This is what they use to recognize a custom data that will be used internally by other coveo's service.

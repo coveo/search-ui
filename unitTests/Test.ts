@@ -525,9 +525,6 @@ FacetValueSuggestionsTest();
 import { FacetValueSuggestionsProviderTest } from './ui/FacetValueSuggestionsProviderTest';
 FacetValueSuggestionsProviderTest();
 
-import { SuggestionsCacheTest } from './misc/SuggestionsCacheTest';
-SuggestionsCacheTest();
-
 import { FacetColumnAutoLayoutAdjustmentTest } from './ui/FacetColumnAutoLayoutAdjustmentTest';
 FacetColumnAutoLayoutAdjustmentTest();
 
@@ -701,3 +698,6 @@ MLFacetBreadcrumbsTest();
 
 import { MLFacetQueryControllerTest } from './controllers/MLFacetQueryControllerTest';
 MLFacetQueryControllerTest();
+
+import { MLFacetManagerTest } from './ui/MLFacetManagerTest';
+MLFacetManagerTest();

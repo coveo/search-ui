@@ -22,6 +22,7 @@ import { exportGlobally } from '../../GlobalExports';
 import { PendingSearchEvent } from './PendingSearchEvent';
 import { PendingSearchAsYouTypeSearchEvent } from './PendingSearchAsYouTypeSearchEvent';
 import { AccessToken } from '../../rest/AccessToken';
+import { AnalyticsEvents, IAnalyticsEventArgs } from '../../events/AnalyticsEvents';
 
 export interface IAnalyticsOptions {
   user?: string;
@@ -34,6 +35,8 @@ export interface IAnalyticsOptions {
   splitTestRunVersion?: string;
   sendToCloud?: boolean;
   organization?: string;
+  autoPushToGtmDataLayer?: boolean;
+  gtmDataLayerName?: string;
   renewAccessToken?: () => Promise<string>;
 }
 
@@ -158,7 +161,28 @@ export class Analytics extends Component {
      * Default value is `undefined`, and the value of this parameter will fallback to the organization used for the
      * search endpoint.
      */
-    organization: ComponentOptions.buildStringOption()
+    organization: ComponentOptions.buildStringOption(),
+
+    /**
+     * Whether to automatically attempt to push Coveo usage analytics events to the Google Tag Manager [data layer](https://developers.google.com/tag-manager/devguide#datalayer).
+     *
+     * See also [`gtmDataLayerName`]{@link Analytics.options.gtmDataLayerName}.
+     *
+     * **Default:** `false`
+     */
+    autoPushToGtmDataLayer: ComponentOptions.buildBooleanOption({ defaultValue: false }),
+
+    /**
+     * The name of the Google Tag Manager data layer initialized in the page.
+     *
+     * See also [`autoPushToGtmDataLayer`]{@link Analytics.options.autoPushToGtmDataLayer}.
+     *
+     * **Note:**
+     * Setting this option is only useful if the [GTM data layer was renamed](https://developers.google.com/tag-manager/devguide#renaming) in the page.
+     *
+     * **Default:** `dataLayer`
+     */
+    gtmDataLayerName: ComponentOptions.buildStringOption({ defaultValue: 'dataLayer' })
   };
 
   /**
@@ -199,6 +223,10 @@ export class Analytics extends Component {
 
     this.bind.onRootElement(QueryEvents.buildingQuery, (data: IBuildingQueryEventArgs) => this.handleBuildingQuery(data));
     this.bind.onRootElement(QueryEvents.queryError, (data: IQueryErrorEventArgs) => this.handleQueryError(data));
+
+    if (this.options.autoPushToGtmDataLayer && this.isGtmDataLayerInitialized) {
+      this.bind.onRootElement(AnalyticsEvents.analyticsEventReady, (data: IAnalyticsEventArgs) => this.pushToGtmDataLayer(data));
+    }
 
     // Analytics component is a bit special: It can be higher in the dom tree than the search interface
     // Need to resolve down to find the componentOptionsModel if we need to.
@@ -343,6 +371,25 @@ export class Analytics extends Component {
     this.client.setOriginContext(originContext);
   }
 
+  /**
+   * Attempts to push data representing a single Coveo usage analytics event to the Google Tag Manager data layer.
+   *
+   * **Note:**
+   * If the [`autoPushToGtmDataLayer`]{@link Analytics.options.autoPushToGtmDataLayer} option is set to `true` and the GTM data layer has been properly initialized in the page, this method is called automatically whenever an event is about to be logged to the Coveo Cloud usage analytics service.
+   *
+   * See also the [`gtmDataLayerName`]{@link Analytics.options.gtmDataLayerName} option.
+   *
+   * @param data The data to push.
+   */
+  public pushToGtmDataLayer(data: IAnalyticsEventArgs) {
+    const dataLayerName = this.options.gtmDataLayerName;
+    try {
+      (<any>window)[dataLayerName].push(data);
+    } catch (error) {
+      this.logger.error(`Unexpected error when pushing to Google Tag Manager data layer '${dataLayerName}': '${error}'.`);
+    }
+  }
+
   protected initializeAnalyticsEndpoint(): AnalyticsEndpoint {
     return new AnalyticsEndpoint({
       accessToken: this.accessToken,
@@ -394,7 +441,8 @@ export class Analytics extends Component {
         this.options.splitTestRunName,
         this.options.splitTestRunVersion,
         this.options.searchHub,
-        this.options.sendToCloud
+        this.options.sendToCloud,
+        this.getBindings()
       );
     }
   }
@@ -461,6 +509,18 @@ export class Analytics extends Component {
       },
       this.element
     );
+  }
+
+  private get isGtmDataLayerInitialized(): boolean {
+    const dataLayerName = this.options.gtmDataLayerName;
+    if (!dataLayerName) {
+      return false;
+    }
+    if (!(<any>window)[dataLayerName]) {
+      this.logger.warn(`Cannot automatically push to Google Tag Manager data layer: '${dataLayerName}' is undefined.`);
+      return false;
+    }
+    return true;
   }
 
   public static create(element: HTMLElement, options: IAnalyticsOptions, bindings: IComponentBindings): IAnalyticsClient {

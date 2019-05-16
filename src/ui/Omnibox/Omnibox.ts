@@ -59,6 +59,7 @@ export interface IOmniboxOptions extends IQueryboxOptions {
   omniboxTimeout?: number;
   placeholder?: string;
   numberOfSuggestions?: number;
+  querySuggestCharacterThreshold?: number;
   grammar?: (
     grammar: { start: string; expressions: { [id: string]: ExpressionDef } }
   ) => { start: string; expressions: { [id: string]: ExpressionDef } };
@@ -239,6 +240,19 @@ export class Omnibox extends Component {
     numberOfSuggestions: ComponentOptions.buildNumberOption({
       defaultValue: 5,
       min: 1
+    }),
+    /**
+     * The minimum number of characters required in the in the text input before displaying available query suggestions when focus is on the component.
+     *
+     * Note: Only effective when [enableQuerySuggestAddon]{@link Omnibox.options.enableQuerySuggestAddon} is true.
+     *
+     * depend: 'enableQuerySuggestAddon'
+     *
+     * Default (and minimum): 0, meaning that trending query suggestions are displayed when focus is on the component, even if its text input is empty.
+     */
+    querySuggestCharacterThreshold: ComponentOptions.buildNumberOption({
+      defaultValue: 0,
+      min: 0
     })
   };
 
@@ -647,16 +661,20 @@ export class Omnibox extends Component {
   }
 
   private handleSuggestions() {
-    const suggestionsEventArgs: IPopulateOmniboxSuggestionsEventArgs = {
-      suggestions: [],
-      omnibox: this
-    };
-    this.bind.trigger(this.element, OmniboxEvents.populateOmniboxSuggestions, suggestionsEventArgs);
     const text = this.getText();
-    if (!Utils.isNullOrEmptyString(text)) {
-      this.partialQueries.push(text);
+    if (this.options.querySuggestCharacterThreshold <= text.length) {
+      const suggestionsEventArgs: IPopulateOmniboxSuggestionsEventArgs = {
+        suggestions: [],
+        omnibox: this
+      };
+      this.bind.trigger(this.element, OmniboxEvents.populateOmniboxSuggestions, suggestionsEventArgs);
+      if (!Utils.isNullOrEmptyString(text)) {
+        this.partialQueries.push(text);
+      }
+      return _.compact(suggestionsEventArgs.suggestions);
+    } else {
+      return [];
     }
-    return _.compact(suggestionsEventArgs.suggestions);
   }
 
   private handleBeforeRedirect() {

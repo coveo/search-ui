@@ -24,6 +24,8 @@ import { isFacetSortCriteria } from '../../rest/Facet/FacetSortCriteria';
 import { l } from '../../strings/Strings';
 import { DeviceUtils } from '../../utils/DeviceUtils';
 import { BreadcrumbEvents, IPopulateBreadcrumbEventArgs } from '../../events/BreadcrumbEvents';
+import { IAnalyticsActionCause, IAnalyticsMLFacetMeta, analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
+import { IQueryOptions } from '../../controllers/QueryController';
 
 export interface IMLFacetOptions extends IResponsiveComponentOptions {
   id?: string;
@@ -39,7 +41,17 @@ export interface IMLFacetOptions extends IResponsiveComponentOptions {
 }
 
 /**
- * Renders a facet in the search interface.
+ * The `MLFacet` component displays a *facet* of the results for the current query. A facet is a list of values for a
+ * certain field occurring in the results, ordered using a configurable criteria (e.g., number of occurrences).
+ *
+ * The list of values is obtained using an array of [`FacetRequest`]{@link IFacetRequest} operations performed at the same time
+ * as the main query.
+ *
+ * The `MLFacet` component allows the end-user to drill down inside a result set by restricting the result to certain
+ * field values.
+ *
+ * This facet is more easy to use than the original [`Facet`]{@link Facet} component. It implements additional Machine Learning features
+ * such as Dynamic Navigation Experience.
  */
 export class MLFacet extends Component {
   static ID = 'MLFacet';
@@ -242,7 +254,8 @@ export class MLFacet extends Component {
     Assert.exists(values);
     this.ensureDom();
     values.forEach(value => {
-      this.logger.info('Selecting facet value', this.values.get(value).select());
+      this.logger.info('Selecting facet value');
+      this.values.get(value).select();
     });
     this.handleFacetValuesChanged();
   }
@@ -272,7 +285,8 @@ export class MLFacet extends Component {
     Assert.exists(values);
     this.ensureDom();
     values.forEach(value => {
-      this.logger.info('Deselecting facet value', this.values.get(value).deselect());
+      this.logger.info('Deselecting facet value');
+      this.values.get(value).deselect();
     });
     this.handleFacetValuesChanged();
   }
@@ -362,13 +376,35 @@ export class MLFacet extends Component {
   /**
    * Sets a flag indicating whether the facet values should be returned in their current order.
    *
-   * Setting the flag to true helps ensuring that the values do not move around while the end-user is interacting with them.
+   * Setting the flag to `true` helps ensuring that the values do not move around while the end-user is interacting with them.
    *
-   * The flag is automatically set back to false after a query is built.
+   * The flag is automatically set back to `false` after a query is built.
    */
   public enableFreezeCurrentValuesFlag() {
     Assert.exists(this.mLFacetQueryController);
     this.mLFacetQueryController.enableFreezeCurrentValuesFlag();
+  }
+
+  public logAnalyticsEvent(action: IAnalyticsActionCause, targetFacet?: IAnalyticsMLFacetMeta) {
+    this.usageAnalytics.logSearchEvent<IAnalyticsMLFacetMeta>(action, targetFacet);
+  }
+
+  public get analyticsFacetState(): IAnalyticsMLFacetMeta[] {
+    return this.values.activeFacetValues.map(facetValue => facetValue.analyticsMeta);
+  }
+
+  /**
+   * For this method to work, the component has to be the child of a [MLFacetManager]{@link MLFacetManager} component.
+   *
+   * Sets a flag indicating whether the facets should be returned in their current order.
+   *
+   * Setting the flag to `true` helps ensuring that the facets do not move around while the end-user is interacting with them.
+   *
+   * The flag is automatically set back to `false` after a query is built.
+   */
+  public enableFreezeFacetOrderFlag() {
+    Assert.exists(this.mLFacetQueryController);
+    this.mLFacetQueryController.enableFreezeFacetOrderFlag();
   }
 
   private initQueryEvents() {
@@ -379,7 +415,7 @@ export class MLFacet extends Component {
   }
 
   private initQueryStateEvents() {
-    this.includedAttributeId = QueryStateModel.getFacetId(this.options.id);
+    this.includedAttributeId = QueryStateModel.getMLFacetId(this.options.id);
     this.queryStateModel.registerNewAttribute(this.includedAttributeId, []);
     this.bind.onQueryState(MODEL_EVENTS.CHANGE, undefined, this.handleQueryStateChanged);
   }
@@ -429,12 +465,19 @@ export class MLFacet extends Component {
 
   private handleQueryStateChangedIncluded = (querySelectedValues: string[]) => {
     const currentSelectedValues = this.values.selectedValues;
+    const valuesToSelect = difference(querySelectedValues, currentSelectedValues);
     const valuesToDeselect = difference(currentSelectedValues, querySelectedValues);
+
+    if (Utils.isNonEmptyArray(valuesToSelect)) {
+      this.selectMultipleValues(valuesToSelect);
+      // Only one search event is sent, pick first facet value
+      this.logAnalyticsEvent(analyticsActionCauseList.mLFacetSelect, this.values.get(valuesToSelect[0]).analyticsMeta);
+    }
+
     if (Utils.isNonEmptyArray(valuesToDeselect)) {
       this.deselectMultipleValues(valuesToDeselect);
-    }
-    if (!Utils.arrayEqual(currentSelectedValues, querySelectedValues, false)) {
-      this.selectMultipleValues(querySelectedValues);
+      // Only one search event is sent, pick first facet value
+      this.logAnalyticsEvent(analyticsActionCauseList.mLFacetDeselect, this.values.get(valuesToDeselect[0]).analyticsMeta);
     }
   };
 
@@ -486,9 +529,12 @@ export class MLFacet extends Component {
     $$(this.element).toggleClass('coveo-hidden', this.values.isEmpty);
   }
 
-  public triggerNewQuery() {
+  public triggerNewQuery(beforeExecuteQuery?: () => void) {
     this.beforeSendingQuery();
-    this.queryController.executeQuery();
+
+    const options: IQueryOptions = beforeExecuteQuery ? { beforeExecuteQuery } : { ignoreWarningSearchEvent: true };
+
+    this.queryController.executeQuery(options);
   }
 
   private beforeSendingQuery() {
