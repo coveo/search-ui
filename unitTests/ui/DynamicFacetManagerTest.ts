@@ -74,6 +74,8 @@ export function DynamicFacetManagerTest() {
     });
 
     it('should disable the component if a query response has no facets parameter', () => {
+      triggerAfterComponentsInitialization();
+      test.cmp.enable();
       Simulate.query(test.env, {
         results: FakeResults.createFakeResults()
       });
