@@ -16,6 +16,7 @@ export function SimpleFilterTest() {
         maximumNumberOfValues: 5,
         title: 'FooTitleBar',
         values: ['foo', 'bar'],
+        availableSorts: ['score'],
         sortCriteria: 'score',
         valueCaption: {
           bar: 'baz',
