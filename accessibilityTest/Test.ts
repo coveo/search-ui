@@ -19,6 +19,7 @@ import { AccessibilityExportToExcel } from './AccessibilityExportToExcel';
 import { AccessibilityFacet } from './AccessibilityFacet';
 import { AccessibilityFacetRange } from './AccessibilityFacetRange';
 import { AccessibilityFacetSlider } from './AccessibilityFacetSlider';
+import { AccessibilityDynamicFacet } from './AccessibilityDynamicFacet';
 import { AccessibilityFieldTable } from './AccessibilityFieldTable';
 import { AccessibilityFieldValue } from './AccessibilityFieldValue';
 import { AccessibilityIcon } from './AccessibilityIcon';
@@ -112,6 +113,7 @@ describe('Testing ...', () => {
   AccessibilityFacet();
   AccessibilityFacetRange();
   AccessibilityFacetSlider();
+  AccessibilityDynamicFacet();
   AccessibilityFieldTable();
   AccessibilityFieldValue();
   AccessibilityIcon();
