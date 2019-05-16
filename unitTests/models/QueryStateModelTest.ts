@@ -24,9 +24,9 @@ export function QueryStateModelTest() {
       expect(queryState.atLeastOneFacetIsActive()).toBe(true);
     });
 
-    it('can determine if a facet is active if one MLFacet has selected values', () => {
-      queryState.registerNewAttribute('mf:@foobar', ['foo', 'bar']);
-      queryState.set('mf:@foobar', ['not', 'default', 'value']);
+    it('can determine if a facet is active if one DynamicFacet has selected values', () => {
+      queryState.registerNewAttribute('df:@foobar', ['foo', 'bar']);
+      queryState.set('df:@foobar', ['not', 'default', 'value']);
       expect(queryState.atLeastOneFacetIsActive()).toBe(true);
     });
 
