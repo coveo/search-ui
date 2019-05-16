@@ -1,9 +1,13 @@
 import { $$, Dom } from '../../../utils/Dom';
+import { Assert } from '../../../misc/Assert';
 export class ResponsiveDropdownHeader {
   public static DEFAULT_CSS_CLASS_NAME = 'coveo-dropdown-header';
   public static ACTIVE_HEADER_CSS_CLASS_NAME: string = 'coveo-dropdown-header-active';
 
   constructor(componentName: string, public element: Dom) {
+    Assert.isString(componentName);
+    Assert.exists(element);
+
     this.element.addClass(`coveo-${componentName}-dropdown-header`);
     this.element.addClass(ResponsiveDropdownHeader.DEFAULT_CSS_CLASS_NAME);
   }
