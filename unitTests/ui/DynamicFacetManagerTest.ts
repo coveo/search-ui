@@ -114,7 +114,9 @@ export function DynamicFacetManagerTest() {
       triggerQuerySuccess([]);
       triggerQuerySuccess(queryFacetsResponse());
 
-      expect(managerContainerChildren().length).toBe(3);
+      expect(managerContainerChildren()[0]).toBe(facets[1].element);
+      expect(managerContainerChildren()[1]).toBe(facets[2].element);
+      expect(managerContainerChildren()[2]).toBe(facets[0].element);
     });
 
     it(`when the "enableReorder" option is "false"
