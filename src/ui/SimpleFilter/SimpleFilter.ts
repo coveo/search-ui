@@ -24,6 +24,7 @@ export interface ISimpleFilterOptions {
   field: IFieldOption;
   valueCaption: any;
   maximumNumberOfValues: number;
+  availableSorts: string[];
   sortCriteria: string;
 }
 
@@ -118,33 +119,34 @@ export class SimpleFilter extends Component {
      */
     valueCaption: ComponentOptions.buildJsonOption(),
     /**
+     * See {@link IGroupByRequest.sortCriteria} for a description of each possible value.
      *
-     * string
-     * The sort criteria to use.
+     * **Allowed values:**
      *
-     * Default value: `score`
-     *
-     * The possible values are:
-     *
-     * `score`: sort using the score value which is computed from the number of occurrences of a field value, as well as from the position
-     * where query result items having this field value appear in the ranked query result set. When using this sort criterion, a field value
-     * with 100 occurrences might appear after one with only 10 occurrences, if the occurrences of the latter field value tend to appear higher
-     * in the ranked query result set.
-     *
-     * `occurrences`: sort by number of occurrences, with field values having the highest number of occurrences appearing first.
-     *
-     * `alphaascending/alphadescending`: sort alphabetically on the field values.
-     *
-     * `computedfieldascending/computedfielddescending`: sort on the value of the first computed field for each Group By operation result (see the ComputedFields Group By parameter).
-     *
-     * `chisquare`: sort based on the relative frequency of field values in the query result set compared to their frequency in the entire index. This means that a field value that does
-     * not appear often in the index, but does appear often in the query result set will tend to appear higher.
-     *
-     * `nosort`: do not sort the results of the Group By operation. The field values will be appear in a random order.
-     *
+     * - `"score"`
+     * - `"occurrences"`
+     * - `"alphaascending"`
+     * - `"alphadescending"`
+     * - `"chisquare"`
      *
      */
-    sortCriteria: ComponentOptions.buildStringOption({ defaultValue: 'score' })
+    availableSorts: ComponentOptions.buildListOption<'score' | 'occurrences' | 'alphaascending' | 'alphadescending' | 'chisquare'>({
+      defaultValue: ['score'],
+      values: ['score', 'occurrences', 'alphaascending', 'alphadescending', 'chisquare']
+    }),
+    /**
+     * string
+     * Specifies the criteria to use to sort the facet values.
+     *
+     * See {@link IGroupByRequest.sortCriteria} for the list and description of possible values.
+     *
+     * Default value is the first sort criteria specified in the [`availableSorts`]{@link SimpleFilter.options.availableSorts}
+     * option, or `occurrences` if no sort criteria is specified.
+     */
+    sortCriteria: ComponentOptions.buildStringOption({
+      postProcessing: (value, options: ISimpleFilterOptions) =>
+        value || (options.availableSorts.length > 0 ? options.availableSorts[0] : 'score')
+    })
   };
 
   private valueContainer: Dom;
@@ -387,6 +389,12 @@ export class SimpleFilter extends Component {
       this.checkboxes = map(this.options.values, caption => this.createCheckbox(caption));
     } else if (this.groupByRequestValues != undefined) {
       this.checkboxes = map(this.groupByRequestValues, caption => this.createCheckbox(caption));
+    }
+    if (this.options.sortCriteria === 'alphaascending' || this.options.sortCriteria === 'alphadescending') {
+      this.checkboxes.sort((a, b) => a.checkbox.label.localeCompare(b.checkbox.label));
+      if (this.options.sortCriteria === 'alphadescending') {
+        this.checkboxes.reverse();
+      }
     }
     each(this.checkboxes, result => {
       this.valueContainer.append(result.checkbox.getElement());
