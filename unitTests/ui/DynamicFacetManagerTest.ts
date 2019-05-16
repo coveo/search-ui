@@ -109,6 +109,14 @@ export function DynamicFacetManagerTest() {
       expect(managerContainerChildren().length).toBe(0);
     });
 
+    it('should retrieve the previously removed facets', () => {
+      triggerAfterComponentsInitialization();
+      triggerQuerySuccess([]);
+      triggerQuerySuccess(queryFacetsResponse());
+
+      expect(managerContainerChildren().length).toBe(3);
+    });
+
     it(`when the "enableReorder" option is "false"
     should not reorder the facets`, () => {
       options = {
