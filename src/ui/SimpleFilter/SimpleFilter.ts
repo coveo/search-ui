@@ -141,7 +141,7 @@ export class SimpleFilter extends Component {
      * See {@link IGroupByRequest.sortCriteria} for the list and description of possible values.
      *
      * Default value is the first sort criteria specified in the [`availableSorts`]{@link SimpleFilter.options.availableSorts}
-     * option, or `occurrences` if no sort criteria is specified.
+     * option, or `score` if no sort criteria is specified.
      */
     sortCriteria: ComponentOptions.buildStringOption({
       postProcessing: (value, options: ISimpleFilterOptions) =>
