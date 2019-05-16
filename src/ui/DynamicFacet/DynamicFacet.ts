@@ -26,6 +26,8 @@ import { DeviceUtils } from '../../utils/DeviceUtils';
 import { BreadcrumbEvents, IPopulateBreadcrumbEventArgs } from '../../events/BreadcrumbEvents';
 import { IAnalyticsActionCause, IAnalyticsDynamicFacetMeta, analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
 import { IQueryOptions } from '../../controllers/QueryController';
+import { DynamicFacetManager } from '../DynamicFacetManager/DynamicFacetManager';
+import { QueryBuilder } from '../Base/QueryBuilder';
 
 export interface IDynamicFacetOptions extends IResponsiveComponentOptions {
   id?: string;
@@ -201,6 +203,7 @@ export class DynamicFacet extends Component {
   private listenToQueryStateChange = true;
   private header: DynamicFacetHeader;
   private isCollapsed: boolean;
+  public dynamicFacetManager: DynamicFacetManager;
   public values: DynamicFacetValues;
 
   /**
@@ -434,9 +437,18 @@ export class DynamicFacet extends Component {
   }
 
   private handleDoneBuildingQuery(data: IDoneBuildingQueryEventArgs) {
+    // If there is a DynamicFacetManager, it will take care of adding the facet's state
+    if (this.dynamicFacetManager) {
+      return;
+    }
+
     Assert.exists(data);
     Assert.exists(data.queryBuilder);
     const queryBuilder = data.queryBuilder;
+    this.dynamicFacetQueryController.putFacetIntoQueryBuilder(queryBuilder);
+  }
+
+  public putStateIntoQueryBuilder(queryBuilder: QueryBuilder) {
     this.dynamicFacetQueryController.putFacetIntoQueryBuilder(queryBuilder);
   }
 

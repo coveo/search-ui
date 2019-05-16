@@ -1,7 +1,7 @@
 import { Component } from '../Base/Component';
 import { DynamicFacet } from '../DynamicFacet/DynamicFacet';
 import { InitializationEvents } from '../../events/InitializationEvents';
-import { QueryEvents, IQuerySuccessEventArgs } from '../../events/QueryEvents';
+import { QueryEvents, IQuerySuccessEventArgs, IDoneBuildingQueryEventArgs } from '../../events/QueryEvents';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { exportGlobally } from '../../GlobalExports';
 import { find } from 'underscore';
@@ -9,6 +9,7 @@ import { IFacetResponse } from '../../rest/Facet/FacetResponse';
 import { $$ } from '../../utils/Dom';
 import { Utils } from '../../utils/Utils';
 import { ComponentOptions } from '../Base/ComponentOptions';
+import { Assert } from '../../misc/Assert';
 
 export interface IDynamicFacetManagerOptions {
   enableReorder?: boolean;
@@ -106,16 +107,25 @@ export class DynamicFacetManager extends Component {
 
   private initEvents() {
     this.bind.onRootElement(InitializationEvents.afterComponentsInitialization, () => this.handleAfterComponentsInitialization());
+    this.bind.onRootElement(QueryEvents.doneBuildingQuery, (data: IDoneBuildingQueryEventArgs) => this.handleDoneBuildingQuery(data));
     this.bind.onRootElement(QueryEvents.querySuccess, (data: IQuerySuccessEventArgs) => this.handleQuerySuccess(data));
   }
 
   private handleAfterComponentsInitialization() {
     const allDynamicFacets = this.bindings.searchInterface.getComponents<DynamicFacet>('DynamicFacet');
     this.dynamicFacets = allDynamicFacets.filter(dynamicFacet => this.element.contains(dynamicFacet.element));
+    this.dynamicFacets.forEach(dynamicFacet => (dynamicFacet.dynamicFacetManager = this));
 
     if (!this.dynamicFacets.length) {
       this.disable();
     }
+  }
+
+  private handleDoneBuildingQuery(data: IDoneBuildingQueryEventArgs) {
+    Assert.exists(data);
+    Assert.exists(data.queryBuilder);
+
+    this.dynamicFacets.forEach(dynamicFacet => dynamicFacet.putStateIntoQueryBuilder(data.queryBuilder));
   }
 
   private handleQuerySuccess(data: IQuerySuccessEventArgs) {
