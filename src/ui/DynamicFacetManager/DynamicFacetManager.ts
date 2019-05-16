@@ -17,11 +17,6 @@ export interface IDynamicFacetManagerOptions {
   compareFacets?: IDynamicFacetManagerCompareFacet;
 }
 
-export interface IDynamicFacetState {
-  enabled: boolean;
-  dynamicFacet?: DynamicFacet;
-}
-
 export interface IDynamicFacetManagerOnUpdate {
   (facet: DynamicFacet, index: number): void;
 }
