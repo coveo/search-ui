@@ -337,9 +337,9 @@ export class OmniboxResultList extends ResultList implements IComponentBindings 
   }
 
   private removeDOMChildren() {
-    // We remove the DOM chidlren of this element because after initialisation, we have a children with the class name
-    // coveo-result-list-container witch all result of query will be appended to. The childrens dissapears after we start typing a query.
-    // but if we refresh the page, and execute a query directly.we reinitialise the component so the results will be appended to the OmniboxResultList.
+    // We remove the DOM children of this element because, after initialization, we have children with the class name
+    // coveo-result-list-container witch all result of the query will be appended to. The children dissapears after we start typing a query.
+    // but if we refresh the page, and execute a query directly. we reinitialize the component so the results will be appended to the OmniboxResultList.
     // That is why at the end of the init of the OmniboxResultList, we will remove all DOM children that were appended to this component.
     const DOMElement = $$(this.root).findAll('.CoveoOmniboxResultList');
     DOMElement.forEach(OmniboxResultList => {
