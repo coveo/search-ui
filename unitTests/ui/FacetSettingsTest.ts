@@ -88,6 +88,29 @@ export function FacetSettingsTest() {
         expect(settingsPopup()).toBeNull();
       });
 
+      describe('when the settings popup is visible', () => {
+        beforeEach(() => facetSettings.settingsButton.click())
+
+        it(`when triggering an escape event on the settings button,
+        it closes the settings popup`, () => {
+          Simulate.keyUp(facetSettings.settingsButton, KEYBOARD.ESCAPE);
+          expect(settingsPopup()).toBeNull();
+        });
+
+        it(`when triggering an escape event on the settings popup,
+        it closes the settings popup`, () => {
+          Simulate.keyUp(settingsPopup(), KEYBOARD.ESCAPE);
+          expect(settingsPopup()).toBeNull();
+        });
+        
+        it(`when triggering an escape event on the settings popup,
+        it focuses the settings button element`, () => {
+          spyOn(facetSettings.settingsButton, 'focus');
+          Simulate.keyUp(settingsPopup(), KEYBOARD.ESCAPE);
+          expect(facetSettings.settingsButton.focus).toHaveBeenCalledTimes(1);
+        })
+      })
+
       it('allows open and closing the popup by pressing enter on the facetSetting button', () => {
         Simulate.keyUp(facetSettings.settingsButton, KEYBOARD.ENTER);
         expect(settingsPopup()).not.toBeNull();

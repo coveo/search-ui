@@ -27,6 +27,18 @@ export function ResponsiveDropdownHeaderTest() {
       expect(responsiveDropdownHeader.element.hasClass(expectedToBeRemovedClass)).toBe(false);
     });
 
+    it('adds hide css class when hide is called', () => {
+      responsiveDropdownHeader.show();
+      responsiveDropdownHeader.hide();
+      expect(responsiveDropdownHeader.element.hasClass('coveo-hidden')).toBe(true);
+    });
+
+    it('removes active css class when show is called', () => {
+      responsiveDropdownHeader.hide();
+      responsiveDropdownHeader.show();
+      expect(responsiveDropdownHeader.element.hasClass('coveo-hidden')).toBe(false);
+    });
+
     it('detaches the element when clean up is called', () => {
       spyOn(responsiveDropdownHeader.element, 'detach');
       responsiveDropdownHeader.cleanUp();

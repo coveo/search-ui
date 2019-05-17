@@ -1,6 +1,7 @@
 import { Dom } from '../../../utils/Dom';
 import PopperJs from 'popper.js';
 import { ResponsiveComponentsManager } from '../ResponsiveComponentsManager';
+import { Assert } from '../../../misc/Assert';
 
 export interface IResponsiveDropdownContent {
   element: Dom;
@@ -21,6 +22,7 @@ export class ResponsiveDropdownContent implements IResponsiveDropdownContent {
   private popperReference: PopperJs;
 
   public static isTargetInsideOpenedDropdown(target: Dom) {
+    Assert.exists(target);
     const targetParentDropdown = target.parent(ResponsiveDropdownContent.DEFAULT_CSS_CLASS_NAME);
     if (targetParentDropdown) {
       return targetParentDropdown.style.display != 'none';
@@ -29,6 +31,13 @@ export class ResponsiveDropdownContent implements IResponsiveDropdownContent {
   }
 
   constructor(componentName: string, public element: Dom, coveoRoot: Dom, minWidth: number, widthRatio: number) {
+    Assert.isString(componentName);
+    Assert.exists(element);
+    Assert.exists(coveoRoot);
+    Assert.isLargerOrEqualsThan(0, minWidth);
+    Assert.isLargerOrEqualsThan(0, widthRatio);
+    Assert.isSmallerOrEqualsThan(1, widthRatio);
+
     this.cssClassName = `coveo-${componentName}-dropdown-content`;
     this.coveoRoot = coveoRoot;
     this.widthRatio = widthRatio;
