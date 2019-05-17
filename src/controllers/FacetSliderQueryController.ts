@@ -163,24 +163,15 @@ export class FacetSliderQueryController {
       expression = queryBuilder.computeCompleteExpressionParts();
     }
 
-    const appendOrSetGroupByOverrideParam = (param: string, value: string) => {
-      if (Utils.isNullOrUndefined(value)) {
-        return param;
-      }
-
-      if (Utils.isNullOrUndefined(param)) {
-        return value || '';
-      } else {
-        return param + ' ' + (value || '');
-      }
-    };
-
     const queryOverrideFromOptions = this.facet.options.queryOverride || '@uri';
 
-    groupByRequest.queryOverride = appendOrSetGroupByOverrideParam(groupByRequest.queryOverride, expression.basic);
-    groupByRequest.advancedQueryOverride = appendOrSetGroupByOverrideParam(groupByRequest.advancedQueryOverride, expression.advanced);
-    groupByRequest.constantQueryOverride = appendOrSetGroupByOverrideParam(groupByRequest.constantQueryOverride, expression.constant);
-    groupByRequest.advancedQueryOverride = appendOrSetGroupByOverrideParam(groupByRequest.advancedQueryOverride, queryOverrideFromOptions);
+    groupByRequest.queryOverride = this.appendOrSetGroupByOverrideParam(groupByRequest.queryOverride, expression.basic);
+    groupByRequest.advancedQueryOverride = this.appendOrSetGroupByOverrideParam(groupByRequest.advancedQueryOverride, expression.advanced);
+    groupByRequest.constantQueryOverride = this.appendOrSetGroupByOverrideParam(groupByRequest.constantQueryOverride, expression.constant);
+    groupByRequest.advancedQueryOverride = this.appendOrSetGroupByOverrideParam(
+      groupByRequest.advancedQueryOverride,
+      queryOverrideFromOptions
+    );
   }
 
   private createRangeValuesForGraphUsingStartAndEnd() {
@@ -366,6 +357,18 @@ export class FacetSliderQueryController {
       } else {
         groupByRequest.constantQueryOverride = builderToRemoveInvalidRange.expression.build();
       }
+    }
+  }
+
+  private appendOrSetGroupByOverrideParam(param: string, value: string) {
+    if (Utils.isNullOrUndefined(value)) {
+      return param;
+    }
+
+    if (Utils.isNullOrUndefined(param)) {
+      return value || '';
+    } else {
+      return param + ' ' + (value || '');
     }
   }
 }
