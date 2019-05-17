@@ -712,7 +712,7 @@
     "id": "Hasil {0}<pl>-{1}</pl> dari {2} untuk {3}",
     "it": "Risultat<sn>o</sn><pl>i</pl> {0}<pl>-{1}</pl> di {2} per {3}",
     "ja": "{3} の結果 {2} 件中 {0}<pl>~{1}</pl>件を表示",
-    "ko": "{3}에 대한 {2} 결과 {0}<pl>-{1}</pl>",
+    "ko": "{3} 에 대한 {2} 결과 {0}<pl>-{1}</pl>",
     "nl": "Resulta<sn>at</sn><pl>ten</pl> {0}<pl>-{1}</pl> van {2} voor {3}",
     "no": "Resultat<pl>er</pl>-{0}<pl>-{1}</pl> av {2} for {3}",
     "pl": "Wynik<pl>i</pl> {0}<pl>-{1}</pl> z {2} za {3}",
