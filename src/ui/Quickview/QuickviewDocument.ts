@@ -50,7 +50,6 @@ export class QuickviewDocument extends Component {
 
   private iframe: QuickviewDocumentIframe;
   private header: QuickviewDocumentHeader;
-  private termsToHighlightWereModified: boolean;
 
   /**
    * Creates a new `QuickviewDocument` component.
@@ -70,7 +69,6 @@ export class QuickviewDocument extends Component {
 
     this.options = ComponentOptions.initComponentOptions(element, QuickviewDocument, options);
     this.result = result || this.resolveResult();
-    this.termsToHighlightWereModified = false;
     Assert.exists(this.result);
   }
 
@@ -95,9 +93,9 @@ export class QuickviewDocument extends Component {
 
     this.triggerOpenQuickViewEvent({ termsToHighlight });
 
-    this.checkIfTermsToHighlightWereModified(termsToHighlight);
-
-    if (this.termsToHighlightWereModified) {
+    const termsWereModified = this.wereTermsToHighlightModified(termsToHighlight);
+    
+    if (termsWereModified) {
       this.handleTermsToHighlight(termsToHighlight, this.query);
     }
 
@@ -159,10 +157,8 @@ export class QuickviewDocument extends Component {
     queryObject.q = query;
   }
 
-  private checkIfTermsToHighlightWereModified(termsToHighlight: string[]) {
-    if (!Utils.arrayEqual(termsToHighlight, this.initialTermsToHighlight)) {
-      this.termsToHighlightWereModified = true;
-    }
+  private wereTermsToHighlightModified(termsToHighlight: string[]) {
+    return !Utils.arrayEqual(termsToHighlight, this.initialTermsToHighlight);
   }
 }
 
