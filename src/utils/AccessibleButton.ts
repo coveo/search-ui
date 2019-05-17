@@ -158,6 +158,18 @@ export class AccessibleButton {
     if (this.enterKeyboardAction) {
       this.ensureTabIndex();
       this.bindEvent('keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, (e: Event) => this.enterKeyboardAction(e)));
+      this.bindEvent(
+        'keydown',
+        KeyboardUtils.keypressAction(KEYBOARD.SPACEBAR, (e: Event) => {
+          e.preventDefault();
+        })
+      );
+      this.bindEvent(
+        'keyup',
+        KeyboardUtils.keypressAction(KEYBOARD.SPACEBAR, (e: Event) => {
+          this.enterKeyboardAction(e);
+        })
+      );
     }
 
     if (this.clickAction) {
