@@ -124,7 +124,7 @@ export function ErrorReportTest() {
       expect($$($$(test.cmp.root).find('.coveo-error-report-title')).text()).toEqual(l('CannotAccess', 'foobar') + l('InvalidToken'));
     });
 
-    it('should display a different error message is cause by the usage of both Facet and MLFacet components', () => {
+    it('should display a different error message is cause by the usage of both Facet and DynamicFacet components', () => {
       Simulate.query(test.env, {
         error: new QueryError({
           statusCode: 400,

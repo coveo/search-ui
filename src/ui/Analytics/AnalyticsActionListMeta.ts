@@ -130,16 +130,16 @@ export interface IAnalyticsFacetSliderChangeMeta {
   facetRangeEnd: any;
 }
 
-export enum AnalyticsMLFacetType {
+export enum AnalyticsDynamicFacetType {
   string = 'String'
 }
 
-export interface IAnalyticsMLFacetMeta {
+export interface IAnalyticsDynamicFacetMeta {
   facetId: string;
   facetField: string;
   facetTitle: string;
   facetValue?: string;
-  facetType?: AnalyticsMLFacetType;
+  facetType?: AnalyticsDynamicFacetType;
   facetDisplayValue?: string;
   facetValueState?: FacetValueState;
 }
@@ -347,9 +347,9 @@ export var analyticsActionCauseList = {
     type: 'breadcrumb'
   },
   /**
-   * The search-as-you-type event that gets logged when a MLFacet breadcrumb is selected and the query is updated.
+   * The search-as-you-type event that gets logged when a DynamicFacet breadcrumb is selected and the query is updated.
    *
-   * `actionCause`: `'breadcrumbMLFacet'`
+   * `actionCause`: `'breadcrumbDynamicFacet'`
    * `actionType`: `'breadcrumb'`
    *
    * Logging an event with this actionType also adds the following key-value pairs in the custom data property of the Usage Analytics HTTP service request.
@@ -360,8 +360,8 @@ export var analyticsActionCauseList = {
    * `"facetDisplayValue":`: <correspondingFacetDisplayValue>
    * `"facetState":`: <correspondingFacetState>
    */
-  breadcrumbMLFacet: <IAnalyticsActionCause>{
-    name: 'breadcrumbMLFacet',
+  breadcrumbDynamicFacet: <IAnalyticsActionCause>{
+    name: 'breadcrumbDynamicFacet',
     type: 'breadcrumb'
   },
   /**
@@ -1250,10 +1250,10 @@ export var analyticsActionCauseList = {
     type: 'folding'
   },
   /**
-   * Identifies the search event that gets logged when a mLFacet check box is selected and the query is updated.
+   * Identifies the search event that gets logged when a dynamicFacet check box is selected and the query is updated.
    *
    * `actionCause`: `'facetSelect'`
-   * `actionType`: `'mLFacet'`
+   * `actionType`: `'dynamicFacet'`
    *
    * Logging an event with this actionType also adds the following key-value pairs in the custom data property of the Usage Analytics HTTP service request.
    * `"facetId":`: <correspondingFacetId>
@@ -1263,15 +1263,15 @@ export var analyticsActionCauseList = {
    * `"facetDisplayValue":`: <correspondingFacetDisplayValue>
    * `"facetState":`: <correspondingFacetState>
    */
-  mLFacetSelect: <IAnalyticsActionCause>{
-    name: 'mLFacetSelect',
-    type: 'mLFacet'
+  dynamicFacetSelect: <IAnalyticsActionCause>{
+    name: 'dynamicFacetSelect',
+    type: 'dynamicFacet'
   },
   /**
-   * Identifies the search event that gets logged when a mLFacet check box is deselected and the query is updated.
+   * Identifies the search event that gets logged when a dynamicFacet check box is deselected and the query is updated.
    *
-   * `actionCause`: `'mLFacetDeselect'`
-   * `actionType`: `'mLFacet'`
+   * `actionCause`: `'dynamicFacetDeselect'`
+   * `actionType`: `'dynamicFacet'`
    *
    * Logging an event with this actionType also adds the following key-value pairs in the custom data property of the Usage Analytics HTTP service request.
    * `"facetId":`: <correspondingFacetId>
@@ -1281,22 +1281,22 @@ export var analyticsActionCauseList = {
    * `"facetDisplayValue":`: <correspondingFacetDisplayValue>
    * `"facetState":`: <correspondingFacetState>
    */
-  mLFacetDeselect: <IAnalyticsActionCause>{
-    name: 'mLFacetDeselect',
-    type: 'mLFacet'
+  dynamicFacetDeselect: <IAnalyticsActionCause>{
+    name: 'dynamicFacetDeselect',
+    type: 'dynamicFacet'
   },
   /**
-   * Identifies the search event that gets logged when the **Clear** button of the MLFacet is selected.
+   * Identifies the search event that gets logged when the **Clear** button of the DynamicFacet is selected.
    *
-   * `actionCause`: `'mLFacetClearAll'`
-   * `actionType`: `'mLFacet'`
+   * `actionCause`: `'dynamicFacetClearAll'`
+   * `actionType`: `'dynamicFacet'`
    *
    * Logging an event with this actionType also adds the following key-value pairs in the custom data property of the Usage Analytics HTTP service request.
    * `"facetId":`: <correspondingFacetId>
    * `"facetField":`: <correspondingFacetField>
    */
-  mLFacetClearAll: <IAnalyticsActionCause>{
-    name: 'mLFacetClearAll',
-    type: 'mLFacet'
+  dynamicFacetClearAll: <IAnalyticsActionCause>{
+    name: 'dynamicFacetClearAll',
+    type: 'dynamicFacet'
   }
 };
