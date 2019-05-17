@@ -15,6 +15,7 @@ import { each, extend } from 'underscore';
 export interface ISearchboxOptions extends IOmniboxOptions {
   addSearchButton?: boolean;
   enableOmnibox?: boolean;
+  small?: boolean;
 }
 
 /**
@@ -51,6 +52,12 @@ export class Searchbox extends Component {
      * Default value is `true`.
      */
     addSearchButton: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+    /**
+     * When this option is set to `true`, the created searchbox will be smaller
+     *
+     * Default value is `false`.
+     */
+    small: ComponentOptions.buildBooleanOption({ defaultValue: false }),
 
     /**
      * Specifies whether to instantiate an [`Omnibox`]{@link Omnibox} component.
@@ -113,6 +120,10 @@ export class Searchbox extends Component {
 
     if (this.options.inline) {
       $$(element).addClass('coveo-inline');
+    }
+
+    if (this.options.small) {
+      $$(element).addClass('coveo-small');
     }
 
     const div = document.createElement('div');
