@@ -7440,8 +7440,8 @@
   },
   "GroupByAndFacetRequestsCannotCoexist": {
     "en":
-      "The query is invalid because it contains both Group By and Facet requests. Ensure that the search interface does not initialize MLFacet components alongside Facet components (or alongside any component extending the Facet component, such as FacetRange or FacetSlider).",
+      "The query is invalid because it contains both Group By and Facet requests. Ensure that the search interface does not initialize DynamicFacet components alongside Facet components (or alongside any component extending the Facet component, such as FacetRange or FacetSlider).",
     "fr":
-      "La requête n'est pas valide car elle contient les requêtes Group By et Facet. Assurez-vous que l'interface de recherche n'initialise pas les composants MLFacet aux côtés des composants Facet (ou de tout composant d'extension du composant Facet, tel que FacetRange ou FacetSlider)."
+      "La requête n'est pas valide car elle contient les requêtes Group By et Facet. Assurez-vous que l'interface de recherche n'initialise pas les composants DynamicFacet aux côtés des composants Facet (ou de tout composant d'extension du composant Facet, tel que FacetRange ou FacetSlider)."
   }
 }

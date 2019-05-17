@@ -100,8 +100,8 @@ export class QueryStateModel extends Model {
     return 'f:' + id + ':operator';
   }
 
-  static getMLFacetId(id: string) {
-    return 'mf:' + id;
+  static getDynamicFacetId(id: string) {
+    return 'df:' + id;
   }
 
   static getFacetLookupValue(id: string) {
@@ -126,7 +126,7 @@ export class QueryStateModel extends Model {
   public atLeastOneFacetIsActive() {
     return !_.isUndefined(
       _.find(this.attributes, (value, key: string) => {
-        return key.match(/^m?f:/) && !Utils.arrayEqual(this.getDefault(key), value);
+        return key.match(/^d?f:/) && !Utils.arrayEqual(this.getDefault(key), value);
       })
     );
   }
