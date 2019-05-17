@@ -175,13 +175,12 @@ export class FacetSliderQueryController {
       }
     };
 
+    const queryOverrideFromOptions = this.facet.options.queryOverride || '@uri';
+
     groupByRequest.queryOverride = appendOrSetGroupByOverrideParam(groupByRequest.queryOverride, expression.basic);
     groupByRequest.advancedQueryOverride = appendOrSetGroupByOverrideParam(groupByRequest.advancedQueryOverride, expression.advanced);
     groupByRequest.constantQueryOverride = appendOrSetGroupByOverrideParam(groupByRequest.constantQueryOverride, expression.constant);
-    groupByRequest.advancedQueryOverride = appendOrSetGroupByOverrideParam(
-      groupByRequest.advancedQueryOverride,
-      this.facet.options.queryOverride || '@uri'
-    );
+    groupByRequest.advancedQueryOverride = appendOrSetGroupByOverrideParam(groupByRequest.advancedQueryOverride, queryOverrideFromOptions);
   }
 
   private createRangeValuesForGraphUsingStartAndEnd() {
