@@ -51,6 +51,8 @@ import { DependentFacetManager } from './DependentFacetManager';
 import { AccessibleButton } from '../../utils/AccessibleButton';
 import { IResponsiveComponentOptions } from '../ResponsiveComponents/ResponsiveComponentsManager';
 import { ResponsiveFacetOptions } from '../ResponsiveComponents/ResponsiveFacetOptions';
+import { QueryUtils } from '../../utils/QueryUtils';
+import { Logger } from '../../misc/Logger';
 
 export interface IFacetOptions extends IResponsiveComponentOptions {
   title?: string;
@@ -275,8 +277,16 @@ export class Facet extends Component {
      * option, or `occurrences` if no sort criteria is specified.
      */
     sortCriteria: ComponentOptions.buildStringOption({
-      postProcessing: (value, options: IFacetOptions) =>
-        value || (options.availableSorts.length > 0 ? options.availableSorts[0] : 'occurrences'),
+      postProcessing: (value, options: IFacetOptions) => {
+        const logger = new Logger(Facet);
+        const valueIfUndefined = value || (options.availableSorts.length > 0 ? options.availableSorts[0] : 'occurrences');
+        if (valueIfUndefined && QueryUtils.isValidSortCriteria(valueIfUndefined)) {
+          return valueIfUndefined;
+        } else {
+          logger.warn(`The Facet component doesn't accept ${valueIfUndefined} as the value for the sortCriteria option.`);
+          return options.availableSorts.length > 0 ? options.availableSorts[0] : 'occurrences';
+        }
+      },
       section: 'Sorting'
     }),
     /**

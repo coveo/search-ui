@@ -17,6 +17,8 @@ import { Initialization } from '../Base/Initialization';
 import { FacetUtils } from '../Facet/FacetUtils';
 import { Checkbox } from '../FormWidgets/Checkbox';
 import { SimpleFilterValues } from './SimpleFilterValues';
+import { QueryUtils } from '../../utils/QueryUtils';
+import { Logger } from '../../misc/Logger';
 
 export interface ISimpleFilterOptions {
   title: string;
@@ -24,7 +26,6 @@ export interface ISimpleFilterOptions {
   field: IFieldOption;
   valueCaption: any;
   maximumNumberOfValues: number;
-  availableSorts: string[];
   sortCriteria: string;
 }
 
@@ -119,33 +120,46 @@ export class SimpleFilter extends Component {
      */
     valueCaption: ComponentOptions.buildJsonOption(),
     /**
-     * See {@link IGroupByRequest.sortCriteria} for a description of each possible value.
      *
-     * **Allowed values:**
-     *
-     * - `"score"`
-     * - `"occurrences"`
-     * - `"alphaascending"`
-     * - `"alphadescending"`
-     * - `"chisquare"`
-     *
-     */
-    availableSorts: ComponentOptions.buildListOption<'score' | 'occurrences' | 'alphaascending' | 'alphadescending' | 'chisquare'>({
-      defaultValue: ['score'],
-      values: ['score', 'occurrences', 'alphaascending', 'alphadescending', 'chisquare']
-    }),
-    /**
      * string
-     * Specifies the criteria to use to sort the facet values.
+     * The sort criteria to use.
      *
-     * See {@link IGroupByRequest.sortCriteria} for the list and description of possible values.
+     * **Default:** `score`
      *
-     * Default value is the first sort criteria specified in the [`availableSorts`]{@link SimpleFilter.options.availableSorts}
-     * option, or `score` if no sort criteria is specified.
+     * **Allowed values :**
+     *
+     * `score`: sort using the score value which is computed from the number of occurrences of a field value, as well as from the position
+     * where query result items having this field value appear in the ranked query result set. When using this sort criterion, a field value
+     * with 100 occurrences might appear after one with only 10 occurrences, if the occurrences of the latter field value tend to appear higher
+     * in the ranked query result set.
+     *
+     * `occurrences`: sort by number of occurrences, with field values having the highest number of occurrences appearing first.
+     *
+     * `alphaascending/alphadescending`: sort alphabetically on the field values.
+     *
+     * `computedfieldascending/computedfielddescending`: sort on the value of the first computed field for each Group By operation result (see the ComputedFields Group By parameter).
+     *
+     * `chisquare`: sort based on the relative frequency of field values in the query result set compared to their frequency in the entire index. This means that a field value that does
+     * not appear often in the index, but does appear often in the query result set will tend to appear higher.
+     *
+     * `nosort`: do not sort the results of the Group By operation. The field values will be appear in a random order.
+     *
      */
     sortCriteria: ComponentOptions.buildStringOption({
-      postProcessing: (value, options: ISimpleFilterOptions) =>
-        value || (options.availableSorts.length > 0 ? options.availableSorts[0] : 'score')
+      postProcessing: (value, options: ISimpleFilterOptions) => {
+        const logger = new Logger(SimpleFilter);
+        if (
+          QueryUtils.isValidSortCriteria(value) &&
+          (value.toLowerCase() !== 'computedfieldascending' &&
+            value.toLowerCase() !== 'computedfielddescending' &&
+            value.toLowerCase() !== 'nosort')
+        ) {
+          return value;
+        } else {
+          logger.warn(`The simpleFilter component doesn't accept ${value} as the value for the sortCriteria option.`);
+          return 'score';
+        }
+      }
     })
   };
 
