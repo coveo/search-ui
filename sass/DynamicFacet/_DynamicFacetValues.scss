@@ -67,6 +67,14 @@ $active-text-opacity: 0.6;
     width: 15px;
     display: inline-block;
     content: '+';
+
+    // This next property is overwritten after, fixes an IE11 issue
+    text-decoration: underline;
+  }
+
+  &::before,
+  &:hover::before {
+    text-decoration: none;
   }
 }
 
