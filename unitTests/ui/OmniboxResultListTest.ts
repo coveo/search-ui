@@ -20,6 +20,11 @@ export function OmniboxResultListTest() {
       results = FakeResults.createFakeResults();
     });
 
+    it("HTMLElement, doesn't have a DOMChild", async done => {
+      expect(test.cmp.element.childElementCount).toBe(0);
+      done();
+    });
+
     it('should support building results', async done => {
       const built = await test.cmp.buildResults(results);
       expect(built.length).toEqual(results.results.length);
