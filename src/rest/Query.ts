@@ -245,7 +245,7 @@ export interface IQuery {
   allowQueriesWithoutKeywords?: boolean;
 
   /**
-   * Specifies an array of request to retrieve facet values for the MLFacet component.
+   * Specifies an array of request to retrieve facet values for the DynamicFacet component.
    */
   facets?: IFacetRequest[];
 

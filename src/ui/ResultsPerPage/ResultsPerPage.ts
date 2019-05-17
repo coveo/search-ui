@@ -180,7 +180,7 @@ export class ResultsPerPage extends Component {
     const firstDisplayedChoice = this.options.choicesDisplayed[0];
     const configuredChoice = this.options.initialChoice;
     const queryStateModelChoice = this.queryStateModel.get(QueryStateModel.attributesEnum.numberOfResults);
-    const queryStateModelChoiceIsNotDefault = queryStateModelChoice !== firstDisplayedChoice;
+    const queryStateModelChoiceIsNotDefault = queryStateModelChoice !== QueryStateModel.defaultAttributes.numberOfResults;
 
     if (queryStateModelChoiceIsNotDefault && this.isValidChoice(queryStateModelChoice)) {
       return queryStateModelChoice;

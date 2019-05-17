@@ -6,6 +6,7 @@ import * as _ from 'underscore';
 import { AccessibleButton } from '../../../utils/AccessibleButton';
 import { KeyboardUtils, KEYBOARD } from '../../../utils/KeyboardUtils';
 import { InitializationEvents } from '../../../events/InitializationEvents';
+import { Assert } from '../../../misc/Assert';
 export enum ResponsiveDropdownEvent {
   OPEN = 'responsiveDropdownOpen',
   CLOSE = 'responsiveDropdownClose'
@@ -18,7 +19,6 @@ export class ResponsiveDropdown {
   public static DROPDOWN_BACKGROUND_CSS_CLASS_NAME: string = 'coveo-dropdown-background';
 
   public isOpened: boolean = false;
-
   private onOpenHandlers: HandlerCall[] = [];
   private onCloseHandlers: HandlerCall[] = [];
   private popupBackground: Dom;
@@ -27,6 +27,10 @@ export class ResponsiveDropdown {
   private parent: Dom;
 
   constructor(public dropdownContent: IResponsiveDropdownContent, public dropdownHeader: ResponsiveDropdownHeader, public coveoRoot: Dom) {
+    Assert.exists(dropdownContent);
+    Assert.exists(dropdownHeader);
+    Assert.exists(coveoRoot);
+
     this.popupBackground = this.buildPopupBackground();
     this.bindOnClickDropdownHeaderEvent();
     this.saveContentPosition();
@@ -35,10 +39,12 @@ export class ResponsiveDropdown {
   }
 
   public registerOnOpenHandler(handler: Function, context) {
+    Assert.exists(handler);
     this.onOpenHandlers.push({ handler: handler, context: context });
   }
 
   public registerOnCloseHandler(handler: Function, context) {
+    Assert.exists(handler);
     this.onCloseHandlers.push({ handler: handler, context: context });
   }
 
