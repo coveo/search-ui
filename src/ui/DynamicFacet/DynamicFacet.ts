@@ -388,14 +388,6 @@ export class DynamicFacet extends Component {
     this.dynamicFacetQueryController.enableFreezeCurrentValuesFlag();
   }
 
-  public logAnalyticsEvent(action: IAnalyticsActionCause, targetFacet?: IAnalyticsDynamicFacetMeta) {
-    this.usageAnalytics.logSearchEvent<IAnalyticsDynamicFacetMeta>(action, targetFacet);
-  }
-
-  public get analyticsFacetState(): IAnalyticsDynamicFacetMeta[] {
-    return this.values.activeFacetValues.map(facetValue => facetValue.analyticsMeta);
-  }
-
   /**
    * For this method to work, the component has to be the child of a [DynamicFacetManager]{@link DynamicFacetManager} component.
    *
@@ -408,6 +400,36 @@ export class DynamicFacet extends Component {
   public enableFreezeFacetOrderFlag() {
     Assert.exists(this.dynamicFacetQueryController);
     this.dynamicFacetQueryController.enableFreezeFacetOrderFlag();
+  }
+
+  private get analyticsFacetState(): IAnalyticsDynamicFacetMeta[] {
+    return this.values.activeFacetValues.map(facetValue => facetValue.analyticsMeta);
+  }
+
+  /**
+   * Logs a `Search` usage analytics event containing the metadata of the facet.
+   * @param actionCause The cause of the event.
+   * @param facetMeta The metadata of the `DynamicFacet` component.
+   */
+  public logAnalyticsEvent(actionCause: IAnalyticsActionCause, facetMeta?: IAnalyticsDynamicFacetMeta) {
+    this.usageAnalytics.logSearchEvent<IAnalyticsDynamicFacetMeta>(actionCause, facetMeta);
+  }
+
+  /**
+   * Adds the state of the facet inside the query.
+   * @param queryBuilder [`QueryBuilder`]{@link QueryBuilder}
+   */
+  public putStateIntoQueryBuilder(queryBuilder: QueryBuilder) {
+    Assert.exists(queryBuilder);
+    this.dynamicFacetQueryController.putFacetIntoQueryBuilder(queryBuilder);
+  }
+
+  /**
+   * Adds the state of the facet inside the usage analytics `Search` event.
+   */
+  public putStateIntoAnalytics() {
+    const pendingEvent = this.usageAnalytics.getPendingSearchEvent();
+    pendingEvent && pendingEvent.addFacetsState(this.analyticsFacetState);
   }
 
   private initQueryEvents() {
@@ -444,12 +466,8 @@ export class DynamicFacet extends Component {
 
     Assert.exists(data);
     Assert.exists(data.queryBuilder);
-    const queryBuilder = data.queryBuilder;
-    this.dynamicFacetQueryController.putFacetIntoQueryBuilder(queryBuilder);
-  }
-
-  public putStateIntoQueryBuilder(queryBuilder: QueryBuilder) {
-    this.dynamicFacetQueryController.putFacetIntoQueryBuilder(queryBuilder);
+    this.putStateIntoQueryBuilder(data.queryBuilder);
+    this.putStateIntoAnalytics();
   }
 
   private handleQuerySuccess(data: IQuerySuccessEventArgs) {

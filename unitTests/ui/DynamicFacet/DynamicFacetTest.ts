@@ -334,12 +334,5 @@ export function DynamicFacetTest() {
 
       expect(test.cmp.usageAnalytics.logSearchEvent).toHaveBeenCalled();
     });
-
-    it('returns the correct analyticsFacetState', () => {
-      test.cmp.selectValue('bar');
-      test.cmp.selectValue('foo');
-
-      expect(test.cmp.analyticsFacetState).toEqual([test.cmp.values.get('bar').analyticsMeta, test.cmp.values.get('foo').analyticsMeta]);
-    });
   });
 }
