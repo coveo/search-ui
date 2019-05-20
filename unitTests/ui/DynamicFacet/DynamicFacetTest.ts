@@ -334,5 +334,31 @@ export function DynamicFacetTest() {
 
       expect(test.cmp.usageAnalytics.logSearchEvent).toHaveBeenCalled();
     });
+
+    it('returns the correct analyticsFacetState', () => {
+      test.cmp.selectValue('bar');
+      test.cmp.selectValue('foo');
+
+      expect(test.cmp.analyticsFacetState).toEqual([test.cmp.values.get('bar').analyticsMeta, test.cmp.values.get('foo').analyticsMeta]);
+    });
+
+    it(`when calling "putStateIntoAnalytics" 
+      should call "getPendingSearchEvent" on the "usageAnalytics" object`, () => {
+      test.cmp.putStateIntoAnalytics();
+
+      expect(test.cmp.usageAnalytics.getPendingSearchEvent).toHaveBeenCalled();
+    });
+
+    it(`when calling "putStateIntoAnalytics" 
+      should call "addFacetsState" on the "PendingSearchEvent" with the correct state`, () => {
+      const fakePendingSearchEvent = {
+        addFacetsState: jasmine.createSpy('addFacetsState')
+      };
+      test.cmp.usageAnalytics.getPendingSearchEvent = jasmine.createSpy('getPendingSearchEvent').and.callFake(() => fakePendingSearchEvent);
+
+      test.cmp.putStateIntoAnalytics();
+
+      expect(fakePendingSearchEvent.addFacetsState).toHaveBeenCalledWith(test.cmp.analyticsFacetState);
+    });
   });
 }

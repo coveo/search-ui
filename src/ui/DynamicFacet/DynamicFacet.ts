@@ -402,7 +402,10 @@ export class DynamicFacet extends Component {
     this.dynamicFacetQueryController.enableFreezeFacetOrderFlag();
   }
 
-  private get analyticsFacetState(): IAnalyticsDynamicFacetMeta[] {
+  /**
+   * Returns the facet's state metadata
+   */
+  public get analyticsFacetState(): IAnalyticsDynamicFacetMeta[] {
     return this.values.activeFacetValues.map(facetValue => facetValue.analyticsMeta);
   }
 
