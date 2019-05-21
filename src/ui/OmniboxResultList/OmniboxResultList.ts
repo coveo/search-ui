@@ -182,7 +182,6 @@ export class OmniboxResultList extends ResultList implements IComponentBindings 
         };
       });
     }
-    this.removeDOMChildren();
   }
 
   /**
@@ -334,19 +333,6 @@ export class OmniboxResultList extends ResultList implements IComponentBindings 
       this.root
     );
     window.location.href = result.clickUri;
-  }
-
-  private removeDOMChildren() {
-    // We remove the DOM children of this element because, after initialization, we have children with the class name
-    // coveo-result-list-container witch all result of the query will be appended to. The children dissapears after we start typing a query.
-    // but if we refresh the page, and execute a query directly. we reinitialize the component so the results will be appended to the OmniboxResultList.
-    // That is why at the end of the init of the OmniboxResultList, we will remove all DOM children that were appended to this component.
-    const DOMElement = $$(this.root).findAll('.CoveoOmniboxResultList');
-    DOMElement.forEach(OmniboxResultList => {
-      while (OmniboxResultList.firstChild) {
-        OmniboxResultList.removeChild(OmniboxResultList.firstChild);
-      }
-    });
   }
 }
 
