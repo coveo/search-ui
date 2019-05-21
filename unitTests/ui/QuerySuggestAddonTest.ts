@@ -188,5 +188,42 @@ export function QuerySuggestAddonTest() {
         done();
       });
     });
+
+    describe('when the querySuggestCharacterThreshold option is set to a value', () => {
+      let magicBoxText;
+      let querySuggestSuccessSpy;
+      beforeEach(() => {
+        simulateFakeSuggestions({ completions: [{ executableConfidence: 1, expression: 'foo', highlighted: 'foo', score: 1 }] });
+        magicBoxText = jasmine.createSpy('magicBoxText');
+        querySuggestSuccessSpy = jasmine.createSpy('querySuggestSuccessSpy');
+        omnibox.cmp.options.querySuggestCharacterThreshold = 3;
+        omnibox.cmp.magicBox.getText = magicBoxText;
+        $$(omnibox.env.root).on(OmniboxEvents.querySuggestSuccess, () => querySuggestSuccessSpy());
+      });
+
+      it('when the magic box text length is equal to the querySuggestCharacterThreshold option should trigger query suggestion', async done => {
+        magicBoxText.and.returnValue('foo');
+        querySuggest = new QuerySuggestAddon(omnibox.cmp);
+        const suggestionReturned = await querySuggest.getSuggestion();
+        expect(suggestionReturned.length).toBe(1);
+        done();
+      });
+
+      it('when the magic box text length is greater than the querySuggestCharacterThreshold option should trigger query suggestion', async done => {
+        magicBoxText.and.returnValue('fooo');
+        querySuggest = new QuerySuggestAddon(omnibox.cmp);
+        const suggestionReturned = await querySuggest.getSuggestion();
+        expect(suggestionReturned.length).toBe(1);
+        done();
+      });
+
+      it('when the magic box text length is less than the querySuggestCharacterThreshold option should not trigger query suggestion', async done => {
+        magicBoxText.and.returnValue('');
+        querySuggest = new QuerySuggestAddon(omnibox.cmp);
+        const suggestionReturned = await querySuggest.getSuggestion();
+        expect(suggestionReturned.length).toBe(0);
+        done();
+      });
+    });
   });
 }

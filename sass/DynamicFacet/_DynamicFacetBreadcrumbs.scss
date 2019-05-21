@@ -1,0 +1,15 @@
+@import '../Variables';
+@import '../mixins/breadcrumb';
+
+.coveo-dynamic-facet-breadcrumb-title {
+  @include breadcrumb-title();
+}
+
+.coveo-dynamic-facet-breadcrumb-value,
+.coveo-dynamic-facet-breadcrumb-collapse {
+  @include breadcrumb-value();
+}
+
+.coveo-dynamic-facet-breadcrumb-value-clear {
+  @include breadcrumb-value-clear();
+}

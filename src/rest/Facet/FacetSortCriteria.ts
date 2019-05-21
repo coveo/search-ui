@@ -1,6 +1,6 @@
 /**
- * The allowed [`sortCriteria`]{@link MLFacet.options.sortCriteria} option
- * values for the `MLFacet` component.
+ * The allowed [`sortCriteria`]{@link DynamicFacet.options.sortCriteria} option
+ * values for the `DynamicFacet` component.
  */
 export enum FacetSortCriteria {
   /**

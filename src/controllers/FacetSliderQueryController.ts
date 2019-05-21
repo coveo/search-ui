@@ -10,6 +10,8 @@ import { QueryBuilder } from '../ui/Base/QueryBuilder';
 import { FacetSlider } from '../ui/FacetSlider/FacetSlider';
 import { DateUtils } from '../utils/DateUtils';
 import { QueryUtils } from '../utils/QueryUtils';
+import { QueryBuilderExpression } from '../ui/Base/QueryBuilderExpression';
+import { Utils } from '../utils/Utils';
 
 export class FacetSliderQueryController {
   public graphGroupByQueriesIndex: number;
@@ -136,12 +138,13 @@ export class FacetSliderQueryController {
       basicGroupByRequestForGraph.generateAutomaticRanges = true;
     }
 
+    this.addExpressionToExcludeInvalidDates(basicGroupByRequestForGraph);
+
     const filter = this.computeOurFilterExpression(this.facet.getSliderBoundaryForQuery());
     this.processQueryOverride(filter, basicGroupByRequestForGraph, queryBuilder);
 
     basicGroupByRequestForGraph.sortCriteria = 'nosort';
     basicGroupByRequestForGraph.maximumNumberOfValues = this.facet.options.graph.steps;
-    this.addExpressionToExcludeInvalidDates(basicGroupByRequestForGraph);
     queryBuilder.groupByRequests.push(basicGroupByRequestForGraph);
   }
 
@@ -153,20 +156,22 @@ export class FacetSliderQueryController {
   }
 
   private processQueryOverride(filter: string, groupByRequest: IGroupByRequest, queryBuilder: QueryBuilder) {
+    let expression: QueryBuilderExpression;
     if (filter != undefined) {
-      const queryOverrideObject = queryBuilder.computeCompleteExpressionPartsExcept(filter);
-      groupByRequest.queryOverride = queryOverrideObject.basic;
-      groupByRequest.advancedQueryOverride = queryOverrideObject.advanced;
-      groupByRequest.constantQueryOverride = queryOverrideObject.constant;
-      if (groupByRequest.advancedQueryOverride == undefined) {
-        groupByRequest.advancedQueryOverride = this.facet.options.queryOverride || '@uri';
-      } else {
-        groupByRequest.advancedQueryOverride += this.facet.options.queryOverride ? ' ' + this.facet.options.queryOverride : '';
-      }
-    } else if (this.facet.options.queryOverride != null) {
-      const completeExpression = queryBuilder.computeCompleteExpression();
-      groupByRequest.queryOverride = (completeExpression != null ? completeExpression + ' ' : '') + this.facet.options.queryOverride;
+      expression = queryBuilder.computeCompleteExpressionPartsExcept(filter);
+    } else {
+      expression = queryBuilder.computeCompleteExpressionParts();
     }
+
+    const queryOverrideFromOptions = this.facet.options.queryOverride || '@uri';
+
+    groupByRequest.queryOverride = this.appendOrSetGroupByOverrideParam(groupByRequest.queryOverride, expression.basic);
+    groupByRequest.advancedQueryOverride = this.appendOrSetGroupByOverrideParam(groupByRequest.advancedQueryOverride, expression.advanced);
+    groupByRequest.constantQueryOverride = this.appendOrSetGroupByOverrideParam(groupByRequest.constantQueryOverride, expression.constant);
+    groupByRequest.advancedQueryOverride = this.appendOrSetGroupByOverrideParam(
+      groupByRequest.advancedQueryOverride,
+      queryOverrideFromOptions
+    );
   }
 
   private createRangeValuesForGraphUsingStartAndEnd() {
@@ -352,6 +357,18 @@ export class FacetSliderQueryController {
       } else {
         groupByRequest.constantQueryOverride = builderToRemoveInvalidRange.expression.build();
       }
+    }
+  }
+
+  private appendOrSetGroupByOverrideParam(param: string, value: string) {
+    if (Utils.isNullOrUndefined(value)) {
+      return param;
+    }
+
+    if (Utils.isNullOrUndefined(param)) {
+      return value || '';
+    } else {
+      return param + ' ' + (value || '');
     }
   }
 }

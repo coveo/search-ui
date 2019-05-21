@@ -2,7 +2,7 @@ import { ExpressionBuilder } from './ExpressionBuilder';
 import { IRankingFunction } from '../../rest/RankingFunction';
 import { IQueryFunction } from '../../rest/QueryFunction';
 import { IGroupByRequest } from '../../rest/GroupByRequest';
-import { IQuery } from '../../rest/Query';
+import { IQuery, IFacetOptions } from '../../rest/Query';
 import { QueryBuilderExpression } from './QueryBuilderExpression';
 import * as _ from 'underscore';
 import { Utils } from '../../utils/Utils';
@@ -282,10 +282,15 @@ export class QueryBuilder {
   public groupByRequests: IGroupByRequest[] = [];
 
   /**
-   * Specifies an array of request for the MLFacet component.
+   * Specifies an array of request for the DynamicFacet component.
    * Cannot be used alongside [`groupByRequests`]{@link QueryBuilder.groupByRequests}
    */
   public facetRequests: IFacetRequest[] = [];
+
+  /**
+   * The global configuration options to apply to the requests in the [facets]{@link QueryBuilder.facets} array.
+   */
+  public facetOptions: IFacetOptions = {};
 
   /**
    * Specifies an array of request for the CategoryFacet component.
@@ -358,6 +363,7 @@ export class QueryBuilder {
       rankingFunctions: this.rankingFunctions,
       groupBy: this.groupBy,
       facets: this.facets,
+      facetOptions: this.facetOptions,
       categoryFacets: this.categoryFacets,
       retrieveFirstSentences: this.retrieveFirstSentences,
       timezone: this.timezone,
