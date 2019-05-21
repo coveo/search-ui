@@ -19,6 +19,7 @@ import OmniboxModuleDefintion = require('../Omnibox/Omnibox');
 import { InitializationEvents } from '../../EventsModules';
 import { logSearchBoxSubmitEvent } from '../Analytics/SharedAnalyticsCalls';
 import { Logger } from '../../misc/Logger';
+import { ResultContainer } from '../ResultList/ResultContainer';
 
 import 'styling/_OmniboxResultList';
 
@@ -333,6 +334,14 @@ export class OmniboxResultList extends ResultList implements IComponentBindings 
       this.root
     );
     window.location.href = result.clickUri;
+  }
+
+  protected initResultContainer(): ResultContainer {
+    if (!this.options.resultContainer) {
+      const elemType = this.options.layout === 'table' ? 'table' : 'div';
+      this.options.resultContainer = $$(elemType, { className: 'coveo-result-list-container' }).el;
+    }
+    return new ResultContainer(this.options.resultContainer, this.searchInterface);
   }
 }
 
