@@ -121,12 +121,12 @@ export class SimpleFilter extends Component {
     valueCaption: ComponentOptions.buildJsonOption(),
     /**
      *
-     * string
+     * string?
      * The sort criteria to use.
      *
      * **Default:** `score`
      *
-     * **Allowed values :**
+     * **Allowed values:**
      *
      * `score`: sort using the score value which is computed from the number of occurrences of a field value, as well as from the position
      * where query result items having this field value appear in the ranked query result set. When using this sort criterion, a field value
