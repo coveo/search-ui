@@ -330,7 +330,7 @@ export function DynamicFacetTest() {
     });
 
     it('logs an analytics search event when logAnalyticsEvent is called', () => {
-      test.cmp.logAnalyticsEvent(analyticsActionCauseList.dynamicFacetSelect);
+      test.cmp.logAnalyticsEvent(analyticsActionCauseList.dynamicFacetSelect, test.cmp.analyticsFacetState[0]);
 
       expect(test.cmp.usageAnalytics.logSearchEvent).toHaveBeenCalled();
     });

@@ -402,19 +402,11 @@ export class DynamicFacet extends Component {
     this.dynamicFacetQueryController.enableFreezeFacetOrderFlag();
   }
 
-  /**
-   * Returns the facet's state metadata
-   */
   public get analyticsFacetState(): IAnalyticsDynamicFacetMeta[] {
     return this.values.activeFacetValues.map(facetValue => facetValue.analyticsMeta);
   }
 
-  /**
-   * Logs a `Search` usage analytics event containing the metadata of the facet.
-   * @param actionCause The cause of the event.
-   * @param facetMeta The metadata of the `DynamicFacet` component.
-   */
-  public logAnalyticsEvent(actionCause: IAnalyticsActionCause, facetMeta?: IAnalyticsDynamicFacetMeta) {
+  public logAnalyticsEvent(actionCause: IAnalyticsActionCause, facetMeta: IAnalyticsDynamicFacetMeta) {
     this.usageAnalytics.logSearchEvent<IAnalyticsDynamicFacetMeta>(actionCause, facetMeta);
   }
 
