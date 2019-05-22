@@ -410,18 +410,11 @@ export class DynamicFacet extends Component {
     this.usageAnalytics.logSearchEvent<IAnalyticsDynamicFacetMeta>(actionCause, facetMeta);
   }
 
-  /**
-   * Adds the state of the facet inside the query.
-   * @param queryBuilder [`QueryBuilder`]{@link QueryBuilder}
-   */
   public putStateIntoQueryBuilder(queryBuilder: QueryBuilder) {
     Assert.exists(queryBuilder);
     this.dynamicFacetQueryController.putFacetIntoQueryBuilder(queryBuilder);
   }
 
-  /**
-   * Adds the state of the facet inside the usage analytics `Search` event.
-   */
   public putStateIntoAnalytics() {
     const pendingEvent = this.usageAnalytics.getPendingSearchEvent();
     pendingEvent && pendingEvent.addFacetsState(this.analyticsFacetState);
