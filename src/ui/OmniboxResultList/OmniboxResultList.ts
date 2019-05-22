@@ -336,12 +336,10 @@ export class OmniboxResultList extends ResultList implements IComponentBindings 
     window.location.href = result.clickUri;
   }
 
-  protected initResultContainer(): ResultContainer {
-    if (!this.options.resultContainer) {
-      const elemType = this.options.layout === 'table' ? 'table' : 'div';
-      this.options.resultContainer = $$(elemType, { className: 'coveo-result-list-container' }).el;
-    }
-    return new ResultContainer(this.options.resultContainer, this.searchInterface);
+  protected initResultContainerAddToDom() {
+    //This function is overwritten and don't do anything because we don't want to append the result container
+    //to the DOM. If the resultContainer was to be appended to the DOM, this could lead to result appearing
+    //outside of the magicBox so the rest of the page would be push down
   }
 }
 
