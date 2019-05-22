@@ -67,6 +67,14 @@ $active-text-opacity: 0.6;
     width: 15px;
     display: inline-block;
     content: '+';
+
+    // IE11 hack: need to define "underline" before setting it to "none"
+    text-decoration: underline;
+  }
+
+  &::before,
+  &:hover::before {
+    text-decoration: none;
   }
 }
 
