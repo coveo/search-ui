@@ -67,14 +67,6 @@ $active-text-opacity: 0.6;
     width: 15px;
     display: inline-block;
     content: '+';
-
-    // This next property is overwritten after, fixes an IE11 issue
-    text-decoration: underline;
-  }
-
-  &::before,
-  &:hover::before {
-    text-decoration: none;
   }
 }
 
@@ -94,5 +86,18 @@ $active-text-opacity: 0.6;
 
   .coveo-dynamic-facet-value.coveo-selected {
     display: inherit;
+  }
+}
+
+// IE11 hack in order to prevent underlining the +/- sign
+.coveo-dynamic-facet-show-more,
+.coveo-dynamic-facet-show-less {
+  &::before {
+    text-decoration: underline;
+  }
+
+  &::before,
+  &:hover::before {
+    text-decoration: none;
   }
 }
