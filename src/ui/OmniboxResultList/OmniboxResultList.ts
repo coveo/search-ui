@@ -19,7 +19,6 @@ import OmniboxModuleDefintion = require('../Omnibox/Omnibox');
 import { InitializationEvents } from '../../EventsModules';
 import { logSearchBoxSubmitEvent } from '../Analytics/SharedAnalyticsCalls';
 import { Logger } from '../../misc/Logger';
-import { ResultContainer } from '../ResultList/ResultContainer';
 
 import 'styling/_OmniboxResultList';
 
