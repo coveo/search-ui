@@ -17,7 +17,6 @@ import { Initialization } from '../Base/Initialization';
 import { FacetUtils } from '../Facet/FacetUtils';
 import { Checkbox } from '../FormWidgets/Checkbox';
 import { SimpleFilterValues } from './SimpleFilterValues';
-import { QueryUtils } from '../../utils/QueryUtils';
 import { Logger } from '../../misc/Logger';
 
 export interface ISimpleFilterOptions {
@@ -49,6 +48,10 @@ export class SimpleFilter extends Component {
       SimpleFilter
     });
   };
+
+  static simpleFilterSortCritera() {
+    return ['score', 'occurrences', 'alphaascending', 'alphadescending', 'chisquare'];
+  }
   /**
    * The possible options for the SimpleFilter.
    * @componentOptions
@@ -137,26 +140,20 @@ export class SimpleFilter extends Component {
      *
      * `alphaascending/alphadescending`: sort alphabetically on the field values.
      *
-     * `computedfieldascending/computedfielddescending`: sort on the value of the first computed field for each Group By operation result (see the ComputedFields Group By parameter).
-     *
      * `chisquare`: sort based on the relative frequency of field values in the query result set compared to their frequency in the entire index. This means that a field value that does
      * not appear often in the index, but does appear often in the query result set will tend to appear higher.
-     *
-     * `nosort`: do not sort the results of the Group By operation. The field values will be appear in a random order.
      *
      */
     sortCriteria: ComponentOptions.buildStringOption({
       postProcessing: (value, options: ISimpleFilterOptions) => {
-        const logger = new Logger(SimpleFilter);
-        if (
-          QueryUtils.isValidSortCriteria(value) &&
-          (value.toLowerCase() !== 'computedfieldascending' &&
-            value.toLowerCase() !== 'computedfielddescending' &&
-            value.toLowerCase() !== 'nosort')
-        ) {
-          return value;
+        const sortCriteriaToValidate = value || 'score';
+        if (SimpleFilter.simpleFilterSortCritera().indexOf(sortCriteriaToValidate.toLowerCase()) !== -1) {
+          return sortCriteriaToValidate;
         } else {
-          logger.warn(`The simpleFilter component doesn't accept ${value} as the value for the sortCriteria option.`);
+          new Logger(SimpleFilter).warn(
+            `The simpleFilter component doesn't accept ${sortCriteriaToValidate} as the value for the sortCriteria option.`,
+            `Available option are : ${SimpleFilter.simpleFilterSortCritera().toString()}`
+          );
           return 'score';
         }
       }

@@ -229,18 +229,4 @@ export class QueryUtils {
     }
     return false;
   }
-
-  public static isValidSortCriteria(sortValue: string) {
-    let validSortOption = [
-      'occurrences',
-      'score',
-      'alphaascending',
-      'alphadescending',
-      'computedfieldascending',
-      'computedfielddescending',
-      'chisquare',
-      'nosort'
-    ];
-    return _.contains(validSortOption, sortValue.toLowerCase());
-  }
 }
