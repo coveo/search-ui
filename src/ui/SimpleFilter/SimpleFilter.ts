@@ -401,9 +401,12 @@ export class SimpleFilter extends Component {
     } else if (this.groupByRequestValues != undefined) {
       this.checkboxes = map(this.groupByRequestValues, caption => this.createCheckbox(caption));
     }
-    if (this.options.sortCriteria === 'alphaascending' || this.options.sortCriteria === 'alphadescending') {
+    if (
+      this.options.sortCriteria.toLocaleLowerCase() === 'alphaascending' ||
+      this.options.sortCriteria.toLowerCase() === 'alphadescending'
+    ) {
       this.checkboxes.sort((a, b) => a.checkbox.label.localeCompare(b.checkbox.label));
-      if (this.options.sortCriteria === 'alphadescending') {
+      if (this.options.sortCriteria.toLowerCase() === 'alphadescending') {
         this.checkboxes.reverse();
       }
     }
