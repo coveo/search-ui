@@ -71,6 +71,18 @@ export function DateUtilsTest() {
       expect(DateUtils.dateToString(testDate(), options)).toEqual(l('02/11/1980'));
     });
 
+    it(`when the #useLongDateFormat option is true, when calling #dateToString,
+    it returns a date with the correct form`, () => {
+      options.useTodayYesterdayAndTomorrow = false;
+      options.useWeekdayIfThisWeek = false;
+      options.omitYearIfCurrentOne = false;
+
+      options.useLongDateFormat = true;
+
+      const date = DateUtils.dateToString(testDate(), options);
+      expect(date).toBe('Monday, February 11, 1980');
+    });
+
     it('should return `Invalid Date` if the date input is incorrect', () => {
       expect(DateUtils.dateToString(DateUtils.convertToStandardDate('foobar'), options)).toEqual(l('Invalid date'));
     });

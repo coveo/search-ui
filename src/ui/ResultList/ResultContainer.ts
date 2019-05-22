@@ -19,7 +19,7 @@ export class ResultContainer {
 
   public empty() {
     this.searchInterface.detachComponentsInside(this.resultContainerElement.el);
-    this.resultContainerElement.el.innerHTML = '';
+    $$(this.resultContainerElement).empty();
   }
 
   public addClass(classToAdd: string) {

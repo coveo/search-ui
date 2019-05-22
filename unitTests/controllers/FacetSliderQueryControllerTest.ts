@@ -122,6 +122,17 @@ export function FacetSliderQueryControllerTest() {
         requestForFullRange = builder.groupByRequests[controller.lastGroupByRequestForFullRangeIndex];
         expect(requestForFullRange.constantQueryOverride).toContain('@foo>1970');
       });
+
+      it('should contain a special expression to filter out invalid document if the field is a date for the graph request', () => {
+        controller.facet.options.dateField = true;
+        controller.facet.options.graph = { steps: 10 };
+        builder.expression.add('something');
+
+        controller.putGroupByIntoQueryBuilder(builder);
+        const requestForGraph = builder.groupByRequests[controller.graphGroupByQueriesIndex];
+        expect(requestForGraph.constantQueryOverride).toContain('@foo>1970');
+        expect(requestForGraph.queryOverride).toContain('something');
+      });
     });
 
     it('should allow to put the group by into a query builder with simple slider config', () => {
