@@ -50,6 +50,15 @@ export function OmniboxResultListTest() {
       expect(test.cmp.disabled).toBeFalsy();
     });
 
+    it('should execute a search as you type query on populateOmnibox', () => {
+      Simulate.populateOmnibox(test.env);
+      expect(test.env.queryController.executeQuery).toHaveBeenCalledWith(
+        jasmine.objectContaining({
+          searchAsYouType: true
+        })
+      );
+    });
+
     describe('when selecting an element', () => {
       let spyOnSelect: jasmine.Spy;
 
