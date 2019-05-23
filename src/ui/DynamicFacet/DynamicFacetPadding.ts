@@ -4,68 +4,62 @@ import { $$, Win } from '../../utils/Dom';
 
 export class DynamicFacetPadding {
   private paddingContainer: HTMLElement;
-  private pinnedViewportPosition: number;
-  private unpinnedViewportPosition: number;
-  private pinnedTopSpace: HTMLElement;
-  private pinnedBottomSpace: HTMLElement;
+  private pinnedFacetPosition: number;
+  private unpinnedFacetPosition: number;
+  private topSpaceElement: HTMLElement;
 
   constructor(private facet: DynamicFacet) {
     this.initBottomAndTopSpacer();
   }
 
   private isFacetPinned(): boolean {
-    return Utils.exists(this.pinnedViewportPosition);
+    return Utils.exists(this.pinnedFacetPosition);
   }
 
   private shouldFacetUnpin(): boolean {
-    return Utils.exists(this.unpinnedViewportPosition);
+    return Utils.exists(this.unpinnedFacetPosition);
   }
 
   private initBottomAndTopSpacer() {
     this.paddingContainer = $$(this.facet.element).parent('coveo-facet-column');
     $$(this.paddingContainer).on('mouseleave', () => this.unpinFacetPosition());
 
-    this.pinnedTopSpace = $$(this.paddingContainer).find('.coveo-topSpace');
-    if (!this.pinnedTopSpace) {
+    this.topSpaceElement = $$(this.paddingContainer).find('.coveo-topSpace');
+    if (!this.topSpaceElement) {
       this.createTopSpace();
-    }
-
-    this.pinnedBottomSpace = $$(this.paddingContainer).find('.coveo-bottomSpace');
-    if (!this.pinnedBottomSpace) {
-      this.createBottomSpace();
     }
   }
 
   private createTopSpace() {
-    this.pinnedTopSpace = document.createElement('div');
-    $$(this.pinnedTopSpace).addClass('coveo-topSpace');
-    $$(this.pinnedTopSpace).insertBefore(<HTMLElement>this.paddingContainer.firstChild);
+    this.topSpaceElement = $$('div', { className: 'coveo-topSpace' }).el;
+    $$(this.topSpaceElement).insertBefore(<HTMLElement>this.paddingContainer.firstChild);
   }
 
-  private createBottomSpace() {
-    this.pinnedBottomSpace = document.createElement('div');
-    $$(this.pinnedBottomSpace).addClass('coveo-bottomSpace');
-    this.paddingContainer.appendChild(this.pinnedBottomSpace);
+  private get facetTopPosition() {
+    return this.facet.element.getBoundingClientRect().top;
   }
 
   public pinFacetPosition() {
-    this.pinnedViewportPosition = this.facet.element.getBoundingClientRect().top;
+    this.pinnedFacetPosition = this.facetTopPosition;
+    console.log('pinnedFacetPosition', this.pinnedFacetPosition);
   }
 
   private unpinFacetPosition() {
     if (this.shouldFacetUnpin()) {
-      $$(this.pinnedTopSpace).addClass('coveo-with-animation');
-      $$(this.pinnedBottomSpace).addClass('coveo-with-animation');
-      this.pinnedTopSpace.style.height = '0px';
-      this.pinnedBottomSpace.style.height = '0px';
+      $$(this.topSpaceElement).addClass('coveo-with-animation');
+      this.topSpaceElement.style.height = '0px';
     }
 
-    this.unpinnedViewportPosition = null;
-    this.pinnedViewportPosition = null;
+    this.unpinnedFacetPosition = null;
+    this.pinnedFacetPosition = null;
+  }
+
+  private get scrollYPosition() {
+    return new Win(window).scrollY();
   }
 
   private get offset() {
-    return this.facet.element.getBoundingClientRect().top - this.pinnedViewportPosition;
+    return this.facetTopPosition - this.pinnedFacetPosition;
   }
 
   public ensurePinnedFacetHasNotMoved() {
@@ -73,21 +67,18 @@ export class DynamicFacetPadding {
       return;
     }
 
-    $$(this.pinnedTopSpace).removeClass('coveo-with-animation');
-    $$(this.pinnedBottomSpace).removeClass('coveo-with-animation');
-    this.pinnedTopSpace.style.height = '0px';
-    this.pinnedBottomSpace.style.height = '0px';
+    $$(this.topSpaceElement).removeClass('coveo-with-animation');
+    this.topSpaceElement.style.height = '0px';
 
-    // First try to adjust position by scrolling the page
-    window.scrollTo(0, new Win(window).scrollY() + this.offset);
-
-    // If the facet element is scrolled up in the viewport,
-    // move it down by adding space in the top container
     if (this.offset < 0) {
-      this.pinnedTopSpace.style.height = this.offset * 1 + 'px';
+      this.topSpaceElement.style.height = `${Math.abs(this.offset)}px`;
     }
 
-    this.unpinnedViewportPosition = this.pinnedViewportPosition;
-    this.pinnedViewportPosition = null;
+    if (this.offset > 0) {
+      window.scrollTo(0, this.scrollYPosition + this.offset);
+    }
+
+    this.unpinnedFacetPosition = this.pinnedFacetPosition;
+    this.pinnedFacetPosition = null;
   }
 }

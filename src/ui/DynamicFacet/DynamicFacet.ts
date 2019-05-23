@@ -438,7 +438,8 @@ export class DynamicFacet extends Component {
   private initQueryEvents() {
     this.bind.onRootElement(QueryEvents.duringQuery, () => this.ensureDom());
     this.bind.onRootElement(QueryEvents.doneBuildingQuery, (data: IDoneBuildingQueryEventArgs) => this.handleDoneBuildingQuery(data));
-    this.bind.onRootElement(QueryEvents.deferredQuerySuccess, (data: IQuerySuccessEventArgs) => this.handleQuerySuccess(data));
+    this.bind.onRootElement(QueryEvents.querySuccess, (data: IQuerySuccessEventArgs) => this.handleQuerySuccess(data));
+    this.bind.onRootElement(QueryEvents.deferredQuerySuccess, () => this.handleDeferredQuerySuccess());
     this.bind.onRootElement(QueryEvents.queryError, () => this.onQueryResponse());
   }
 
@@ -485,6 +486,17 @@ export class DynamicFacet extends Component {
     const response = findWhere(data.results.facets, { facetId: this.options.id });
 
     this.onQueryResponse(response);
+  }
+
+  private handleDeferredQuerySuccess() {
+    this.header.hideLoading();
+    this.values.render();
+    this.updateAppearance();
+    this.padding && this.padding.ensurePinnedFacetHasNotMoved();
+  }
+
+  private onQueryResponse(response?: IFacetResponse) {
+    response ? this.values.createFromResponse(response) : this.values.resetValues();
   }
 
   private handleQueryStateChanged(data: IAttributesChangedEventArg) {
@@ -587,14 +599,6 @@ export class DynamicFacet extends Component {
   private beforeSendingQuery() {
     this.header.showLoading();
     this.updateAppearance();
-  }
-
-  private onQueryResponse(response?: IFacetResponse) {
-    this.header.hideLoading();
-    response ? this.values.createFromResponse(response) : this.values.resetValues();
-    this.values.render();
-    this.updateAppearance();
-    this.padding && this.padding.ensurePinnedFacetHasNotMoved();
   }
 
   private notImplementedError() {
