@@ -432,7 +432,7 @@ export class DynamicFacet extends Component {
   }
 
   public pinFacetPosition() {
-    this.padding && this.padding.pinFacetPosition();
+    this.padding && this.padding.pinPosition();
   }
 
   private initQueryEvents() {

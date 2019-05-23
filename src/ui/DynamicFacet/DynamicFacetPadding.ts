@@ -4,25 +4,25 @@ import { $$, Win } from '../../utils/Dom';
 
 export class DynamicFacetPadding {
   private paddingContainer: HTMLElement;
-  private pinnedFacetPosition: number;
-  private unpinnedFacetPosition: number;
+  private pinnedPosition: number;
+  private unpinnedPosition: number;
   private topSpaceElement: HTMLElement;
 
   constructor(private facet: DynamicFacet) {
     this.initBottomAndTopSpacer();
   }
 
-  private isFacetPinned(): boolean {
-    return Utils.exists(this.pinnedFacetPosition);
+  private isPinned(): boolean {
+    return Utils.exists(this.pinnedPosition);
   }
 
-  private shouldFacetUnpin(): boolean {
-    return Utils.exists(this.unpinnedFacetPosition);
+  private shouldUnpin(): boolean {
+    return Utils.exists(this.unpinnedPosition);
   }
 
   private initBottomAndTopSpacer() {
     this.paddingContainer = $$(this.facet.element).parent('coveo-facet-column');
-    $$(this.paddingContainer).on('mouseleave', () => this.unpinFacetPosition());
+    $$(this.paddingContainer).on('mouseleave', () => this.unpinPosition());
 
     this.topSpaceElement = $$(this.paddingContainer).find('.coveo-topSpace');
     if (!this.topSpaceElement) {
@@ -39,19 +39,18 @@ export class DynamicFacetPadding {
     return this.facet.element.getBoundingClientRect().top;
   }
 
-  public pinFacetPosition() {
-    this.pinnedFacetPosition = this.facetTopPosition;
-    console.log('pinnedFacetPosition', this.pinnedFacetPosition);
+  public pinPosition() {
+    this.pinnedPosition = this.facetTopPosition;
   }
 
-  private unpinFacetPosition() {
-    if (this.shouldFacetUnpin()) {
+  private unpinPosition() {
+    if (this.shouldUnpin()) {
       $$(this.topSpaceElement).addClass('coveo-with-animation');
       this.topSpaceElement.style.height = '0px';
     }
 
-    this.unpinnedFacetPosition = null;
-    this.pinnedFacetPosition = null;
+    this.unpinnedPosition = null;
+    this.pinnedPosition = null;
   }
 
   private get scrollYPosition() {
@@ -59,26 +58,24 @@ export class DynamicFacetPadding {
   }
 
   private get offset() {
-    return this.facetTopPosition - this.pinnedFacetPosition;
+    return this.facetTopPosition - this.pinnedPosition;
   }
 
   public ensurePinnedFacetHasNotMoved() {
-    if (!this.isFacetPinned()) {
+    if (!this.isPinned()) {
       return;
     }
 
     $$(this.topSpaceElement).removeClass('coveo-with-animation');
     this.topSpaceElement.style.height = '0px';
 
+    window.scrollTo(0, this.scrollYPosition + this.offset);
+
     if (this.offset < 0) {
-      this.topSpaceElement.style.height = `${Math.abs(this.offset)}px`;
+      this.topSpaceElement.style.height = `${this.offset * -1}px`;
     }
 
-    if (this.offset > 0) {
-      window.scrollTo(0, this.scrollYPosition + this.offset);
-    }
-
-    this.unpinnedFacetPosition = this.pinnedFacetPosition;
-    this.pinnedFacetPosition = null;
+    this.unpinnedPosition = this.pinnedPosition;
+    this.pinnedPosition = null;
   }
 }
