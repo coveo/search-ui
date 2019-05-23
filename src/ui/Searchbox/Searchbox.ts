@@ -3,6 +3,7 @@ import { exportGlobally } from '../../GlobalExports';
 import { $$ } from '../../utils/Dom';
 import { SVGDom } from '../../utils/SVGDom';
 import { SVGIcons } from '../../utils/SVGIcons';
+import { SearchBoxResize } from '../../utils/SearchBoxResize';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { ComponentOptions } from '../Base/ComponentOptions';
@@ -15,7 +16,7 @@ import { each, extend } from 'underscore';
 export interface ISearchboxOptions extends IOmniboxOptions {
   addSearchButton?: boolean;
   enableOmnibox?: boolean;
-  small?: boolean;
+  height?: number;
 }
 
 /**
@@ -53,11 +54,11 @@ export class Searchbox extends Component {
      */
     addSearchButton: ComponentOptions.buildBooleanOption({ defaultValue: true }),
     /**
-     * When this option is set to `true`, the created searchbox will be smaller
+     * This option change the height the SearchBox will be rendered with
      *
-     * Default value is `false`.
+     * Minimum value is `25`
      */
-    small: ComponentOptions.buildBooleanOption({ defaultValue: false }),
+    height: ComponentOptions.buildNumberOption({ min: 25 }),
 
     /**
      * Specifies whether to instantiate an [`Omnibox`]{@link Omnibox} component.
@@ -122,10 +123,6 @@ export class Searchbox extends Component {
       $$(element).addClass('coveo-inline');
     }
 
-    if (this.options.small) {
-      $$(element).addClass('coveo-small');
-    }
-
     const div = document.createElement('div');
     this.element.appendChild(div);
 
@@ -144,6 +141,10 @@ export class Searchbox extends Component {
     const magicBoxIcon = $$(this.element).find('.magic-box-icon');
     magicBoxIcon.innerHTML = SVGIcons.icons.mainClear;
     SVGDom.addClassToSVGInContainer(magicBoxIcon, 'magic-box-clear-svg');
+
+    if (this.options.height) {
+      SearchBoxResize.resize(this.element, options.height);
+    }
   }
 }
 

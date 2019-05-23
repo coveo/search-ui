@@ -1,42 +1,8 @@
 @import 'Variables';
 @import './mixins/mediaQuery';
-.CoveoSettings {
-  top: 0px;
-}
 .CoveoSearchbox {
   @include display(flex);
   flex-grow: 1;
-
-  &.coveo-small {
-    .CoveoOmnibox,
-    .CoveoSearchbox {
-      height: 40px;
-      line-height: 40px;
-    }
-    .CoveoSearchButton {
-      height: 40px;
-    }
-
-    .magic-box-icon {
-      height: 40px;
-      margin-top: -5px;
-    }
-
-    .magic-box .magic-box-input,
-    .magic-box .magic-box-clear {
-      height: 38px;
-    }
-
-    .magic-box .magic-box-input .magic-box-underlay,
-    .magic-box .magic-box-input > input {
-      height: 40px;
-    }
-
-    .magic-box-suggestions .magic-box-suggestion {
-      height: 40px;
-      line-height: 16px;
-    }
-  }
 
   &.coveo-inline {
     overflow: hidden;
