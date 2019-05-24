@@ -24,7 +24,7 @@ import { isFacetSortCriteria } from '../../rest/Facet/FacetSortCriteria';
 import { l } from '../../strings/Strings';
 import { DeviceUtils } from '../../utils/DeviceUtils';
 import { BreadcrumbEvents, IPopulateBreadcrumbEventArgs } from '../../events/BreadcrumbEvents';
-import { IAnalyticsActionCause, IAnalyticsDynamicFacetMeta, analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
+import { analyticsActionCauseList, IAnalyticsDynamicFacetMeta, IAnalyticsActionCause } from '../Analytics/AnalyticsActionListMeta';
 import { IQueryOptions } from '../../controllers/QueryController';
 import { DynamicFacetManager } from '../DynamicFacetManager/DynamicFacetManager';
 import { FacetPadding } from '../FacetPadding/FacetPadding';
@@ -409,14 +409,6 @@ export class DynamicFacet extends Component {
     this.dynamicFacetQueryController.enableFreezeCurrentValuesFlag();
   }
 
-  public logAnalyticsEvent(action: IAnalyticsActionCause, targetFacet?: IAnalyticsDynamicFacetMeta) {
-    this.usageAnalytics.logSearchEvent<IAnalyticsDynamicFacetMeta>(action, targetFacet);
-  }
-
-  public get analyticsFacetState(): IAnalyticsDynamicFacetMeta[] {
-    return this.values.activeFacetValues.map(facetValue => facetValue.analyticsMeta);
-  }
-
   /**
    * For this method to work, the component has to be the child of a [DynamicFacetManager]{@link DynamicFacetManager} component.
    *
@@ -433,6 +425,24 @@ export class DynamicFacet extends Component {
 
   public pinFacetPosition() {
     this.padding && this.padding.pinPosition();
+  }
+
+  public get analyticsFacetState(): IAnalyticsDynamicFacetMeta[] {
+    return this.values.activeFacetValues.map(facetValue => facetValue.analyticsMeta);
+  }
+
+  public logAnalyticsEvent(actionCause: IAnalyticsActionCause, facetMeta: IAnalyticsDynamicFacetMeta) {
+    this.usageAnalytics.logSearchEvent<IAnalyticsDynamicFacetMeta>(actionCause, facetMeta);
+  }
+
+  public putStateIntoQueryBuilder(queryBuilder: QueryBuilder) {
+    Assert.exists(queryBuilder);
+    this.dynamicFacetQueryController.putFacetIntoQueryBuilder(queryBuilder);
+  }
+
+  public putStateIntoAnalytics() {
+    const pendingEvent = this.usageAnalytics.getPendingSearchEvent();
+    pendingEvent && pendingEvent.addFacetsState(this.analyticsFacetState);
   }
 
   private initQueryEvents() {
@@ -470,12 +480,8 @@ export class DynamicFacet extends Component {
 
     Assert.exists(data);
     Assert.exists(data.queryBuilder);
-    const queryBuilder = data.queryBuilder;
-    this.dynamicFacetQueryController.putFacetIntoQueryBuilder(queryBuilder);
-  }
-
-  public putStateIntoQueryBuilder(queryBuilder: QueryBuilder) {
-    this.dynamicFacetQueryController.putFacetIntoQueryBuilder(queryBuilder);
+    this.putStateIntoQueryBuilder(data.queryBuilder);
+    this.putStateIntoAnalytics();
   }
 
   private handleQuerySuccess(data: IQuerySuccessEventArgs) {
