@@ -330,7 +330,7 @@ export function DynamicFacetTest() {
     });
 
     it('logs an analytics search event when logAnalyticsEvent is called', () => {
-      test.cmp.logAnalyticsEvent(analyticsActionCauseList.dynamicFacetSelect);
+      test.cmp.logAnalyticsEvent(analyticsActionCauseList.dynamicFacetSelect, test.cmp.analyticsFacetState[0]);
 
       expect(test.cmp.usageAnalytics.logSearchEvent).toHaveBeenCalled();
     });
@@ -340,6 +340,25 @@ export function DynamicFacetTest() {
       test.cmp.selectValue('foo');
 
       expect(test.cmp.analyticsFacetState).toEqual([test.cmp.values.get('bar').analyticsMeta, test.cmp.values.get('foo').analyticsMeta]);
+    });
+
+    it(`when calling "putStateIntoAnalytics" 
+      should call "getPendingSearchEvent" on the "usageAnalytics" object`, () => {
+      test.cmp.putStateIntoAnalytics();
+
+      expect(test.cmp.usageAnalytics.getPendingSearchEvent).toHaveBeenCalled();
+    });
+
+    it(`when calling "putStateIntoAnalytics" 
+      should call "addFacetsState" on the "PendingSearchEvent" with the correct state`, () => {
+      const fakePendingSearchEvent = {
+        addFacetsState: jasmine.createSpy('addFacetsState')
+      };
+      test.cmp.usageAnalytics.getPendingSearchEvent = jasmine.createSpy('getPendingSearchEvent').and.callFake(() => fakePendingSearchEvent);
+
+      test.cmp.putStateIntoAnalytics();
+
+      expect(fakePendingSearchEvent.addFacetsState).toHaveBeenCalledWith(test.cmp.analyticsFacetState);
     });
   });
 }

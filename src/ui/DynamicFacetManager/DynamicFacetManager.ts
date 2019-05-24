@@ -129,7 +129,10 @@ export class DynamicFacetManager extends Component {
     Assert.exists(data);
     Assert.exists(data.queryBuilder);
 
-    this.allFacets.forEach(dynamicFacet => dynamicFacet.putStateIntoQueryBuilder(data.queryBuilder));
+    this.allFacets.forEach(dynamicFacet => {
+      dynamicFacet.putStateIntoQueryBuilder(data.queryBuilder);
+      dynamicFacet.putStateIntoAnalytics();
+    });
   }
 
   private handleQuerySuccess(data: IQuerySuccessEventArgs) {
