@@ -143,6 +143,7 @@ export class Searchbox extends Component {
     SVGDom.addClassToSVGInContainer(magicBoxIcon, 'magic-box-clear-svg');
 
     if (this.options.height) {
+      $$(element).addClass('coveo-custom-height');
       SearchBoxResize.resize(this.element, options.height);
     }
   }
