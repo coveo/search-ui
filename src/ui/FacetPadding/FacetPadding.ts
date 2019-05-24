@@ -8,7 +8,7 @@ export class FacetPadding {
   private topSpaceElement: HTMLElement;
 
   constructor(private element: HTMLElement) {
-    this.initBottomAndTopSpacer();
+    this.initTopSpacer();
   }
 
   private isPinned(): boolean {
@@ -19,7 +19,7 @@ export class FacetPadding {
     return Utils.exists(this.unpinnedPosition);
   }
 
-  private initBottomAndTopSpacer() {
+  private initTopSpacer() {
     this.paddingContainer = $$(this.element).parent('coveo-facet-column');
     $$(this.paddingContainer).on('mouseleave', () => this.unpinPosition());
 
