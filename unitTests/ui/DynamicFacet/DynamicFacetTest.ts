@@ -41,6 +41,10 @@ export function DynamicFacetTest() {
       return args.breadcrumbs;
     }
 
+    function topSpaceElement() {
+      return $$(test.cmp.element.parentElement).find('.coveo-topSpace');
+    }
+
     it(`when facet has values but none are selected
       should not be seen as "active" or as "empty"`, () => {
       test.cmp.ensureDom();
@@ -327,6 +331,30 @@ export function DynamicFacetTest() {
       const breadcrumbs = triggerPopulateBreadcrumbs();
 
       expect(breadcrumbs.length).toBe(1);
+    });
+
+    it(`when setting a preservePosition to true (default) and having a facet column parent
+      should add a top space element`, () => {
+      $$(test.cmp.element.parentElement).addClass('coveo-facet-column');
+      test.cmp.ensureDom();
+      expect(topSpaceElement()).toBeTruthy();
+    });
+
+    it(`when setting a preservePosition to true (default) without having a facet column parent
+      should not add a top space element`, () => {
+      test.cmp.ensureDom();
+
+      expect(topSpaceElement()).toBeFalsy();
+    });
+
+    it(`when setting a preservePosition to false and having a facet column parent
+      should not add a top space element`, () => {
+      options.preservePosition = false;
+      initializeComponent();
+      $$(test.cmp.element.parentElement).addClass('coveo-facet-column');
+      test.cmp.ensureDom();
+
+      expect(topSpaceElement()).toBeFalsy();
     });
 
     it('logs an analytics search event when logAnalyticsEvent is called', () => {

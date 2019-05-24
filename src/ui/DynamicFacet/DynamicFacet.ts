@@ -41,7 +41,7 @@ export interface IDynamicFacetOptions extends IResponsiveComponentOptions {
   includeInBreadcrumb?: boolean;
   numberOfValuesInBreadcrumb?: number;
   valueCaption?: any;
-  preservePosition: boolean;
+  preservePosition?: boolean;
 }
 
 /**
