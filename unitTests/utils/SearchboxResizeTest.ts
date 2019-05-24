@@ -17,12 +17,12 @@ export function SearchboxResizeTest() {
   describe('SearchboxResize', () => {
     var test: Mock.IBasicComponentSetup<Searchbox>;
     let structHTMLElement = {
-      CoveoOmniboxOrQuery: HTMLElement,
-      CoveoSearchButton: HTMLElement,
-      input: HTMLElement,
-      magicBoxIcon: HTMLElement,
-      magicBoxClear: HTMLElement,
-      magicBoxInput: HTMLElement
+      CoveoOmniboxOrQuery: new HTMLElement(),
+      CoveoSearchButton: new HTMLElement(),
+      input: new HTMLElement(),
+      magicBoxIcon: new HTMLElement(),
+      magicBoxClear: new HTMLElement(),
+      magicBoxInput: new HTMLElement()
     };
     describe('with an Omnibox as the Searchbox', () => {
       it('should not be resize', () => {
