@@ -16,13 +16,13 @@ function findHtmlElement(element: HTMLElement, HTMLElements) {
 export function SearchboxResizeTest() {
   describe('SearchboxResize', () => {
     var test: Mock.IBasicComponentSetup<Searchbox>;
-    let structHTMLElement = {
-      CoveoOmniboxOrQuery: new HTMLElement(),
-      CoveoSearchButton: new HTMLElement(),
-      input: new HTMLElement(),
-      magicBoxIcon: new HTMLElement(),
-      magicBoxClear: new HTMLElement(),
-      magicBoxInput: new HTMLElement()
+    var structHTMLElement = {
+      CoveoOmniboxOrQuery: document.createElement('div'),
+      CoveoSearchButton: document.createElement('div'),
+      input: document.createElement('input'),
+      magicBoxIcon: document.createElement('div'),
+      magicBoxClear: document.createElement('div'),
+      magicBoxInput: document.createElement('div')
     };
     describe('with an Omnibox as the Searchbox', () => {
       it('should not be resize', () => {
