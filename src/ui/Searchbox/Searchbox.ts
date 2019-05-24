@@ -54,7 +54,7 @@ export class Searchbox extends Component {
      */
     addSearchButton: ComponentOptions.buildBooleanOption({ defaultValue: true }),
     /**
-     * This option change the height the SearchBox will be rendered with
+     * The height in pixel that the Searchbox will be rendered with
      *
      * Minimum value is `25`
      */
