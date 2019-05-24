@@ -27,7 +27,7 @@ import { BreadcrumbEvents, IPopulateBreadcrumbEventArgs } from '../../events/Bre
 import { IAnalyticsActionCause, IAnalyticsDynamicFacetMeta, analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
 import { IQueryOptions } from '../../controllers/QueryController';
 import { DynamicFacetManager } from '../DynamicFacetManager/DynamicFacetManager';
-import { DynamicFacetPadding } from './DynamicFacetPadding';
+import { FacetPadding } from '../FacetPadding/FacetPadding';
 import { QueryBuilder } from '../Base/QueryBuilder';
 
 export interface IDynamicFacetOptions extends IResponsiveComponentOptions {
@@ -220,7 +220,7 @@ export class DynamicFacet extends Component {
   private dynamicFacetQueryController: DynamicFacetQueryController;
   private includedAttributeId: string;
   private listenToQueryStateChange = true;
-  private padding: DynamicFacetPadding;
+  private padding: FacetPadding;
   private header: DynamicFacetHeader;
   private isCollapsed: boolean;
 
@@ -553,7 +553,7 @@ export class DynamicFacet extends Component {
       return;
     }
 
-    this.padding = new DynamicFacetPadding(this);
+    this.padding = new FacetPadding(this.element);
   }
 
   private createContent() {

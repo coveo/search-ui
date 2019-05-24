@@ -1,14 +1,13 @@
-import { DynamicFacet } from './DynamicFacet';
 import { Utils } from '../../utils/Utils';
 import { $$, Win } from '../../utils/Dom';
 
-export class DynamicFacetPadding {
+export class FacetPadding {
   private paddingContainer: HTMLElement;
   private pinnedPosition: number;
   private unpinnedPosition: number;
   private topSpaceElement: HTMLElement;
 
-  constructor(private facet: DynamicFacet) {
+  constructor(private element: HTMLElement) {
     this.initBottomAndTopSpacer();
   }
 
@@ -21,7 +20,7 @@ export class DynamicFacetPadding {
   }
 
   private initBottomAndTopSpacer() {
-    this.paddingContainer = $$(this.facet.element).parent('coveo-facet-column');
+    this.paddingContainer = $$(this.element).parent('coveo-facet-column');
     $$(this.paddingContainer).on('mouseleave', () => this.unpinPosition());
 
     this.topSpaceElement = $$(this.paddingContainer).find('.coveo-topSpace');
@@ -36,7 +35,7 @@ export class DynamicFacetPadding {
   }
 
   private get facetTopPosition() {
-    return this.facet.element.getBoundingClientRect().top;
+    return this.element.getBoundingClientRect().top;
   }
 
   public pinPosition() {
