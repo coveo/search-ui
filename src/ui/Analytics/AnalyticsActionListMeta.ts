@@ -731,6 +731,26 @@ export var analyticsActionCauseList = {
     type: 'categoryFacet'
   },
   /**
+   * Identifies the click event that gets logged when a user clicks the down arrow to show more result in the facet
+   *
+   * `actionCause`: `'showMoreFacetResults'`
+   * `actionType`: `'facet'`
+   */
+  facetShowMore: <IAnalyticsActionCause>{
+    name: 'showMoreFacetResults',
+    type: 'facet'
+  },
+  /**
+   * Identifies the click event that gets logged when a user clicks the up arrow to show less result in the facet
+   *
+   * `actionCause`: `'showLessFacetResults'`
+   * `actionType`: `'facet'`
+   */
+  facetShowLess: <IAnalyticsActionCause>{
+    name: 'showLessFacetResults',
+    type: 'facet'
+  },
+  /**
    * Identifies the search and custom event that gets logged when a user clicks the Go Back link after an error page.
    *
    * `actionCause`: `'errorBack'`

@@ -1178,6 +1178,15 @@ export class Facet extends Component {
     $$(this.moreElement).addClass('coveo-active');
     this.values.sortValuesDependingOnStatus(this.numberOfValues);
     this.rebuildValueElements();
+    this.usageAnalytics.logCustomEvent<IAnalyticsFacetMeta>(
+      analyticsActionCauseList.facetShowLess,
+      {
+        facetId: this.options.id,
+        facetField: this.options.field.toString(),
+        facetTitle: this.options.title
+      },
+      this.element
+    );
   }
 
   /**
@@ -1861,6 +1870,15 @@ export class Facet extends Component {
     this.facetQueryController
       .fetchMore(this.numberOfValues + 1)
       .then((queryResults: IQueryResults) => {
+        this.usageAnalytics.logCustomEvent<IAnalyticsFacetMeta>(
+          analyticsActionCauseList.facetShowMore,
+          {
+            facetId: this.options.id,
+            facetField: this.options.field.toString(),
+            facetTitle: this.options.title
+          },
+          this.element
+        );
         const facetValues = new FacetValues(queryResults.groupByResults[0]);
 
         facetValues.importActiveValuesFromOtherList(this.values);

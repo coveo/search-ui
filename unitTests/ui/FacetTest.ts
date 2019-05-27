@@ -183,6 +183,43 @@ export function FacetTest() {
       );
     });
 
+    it('should log an analytics event when showing more results', done => {
+      const results = FakeResults.createFakeResults(test.cmp.options.pageSize + 5);
+      const validation = Promise.resolve(results.results);
+      const spyFacetQueryConstroller = jasmine.createSpy('spyFacetQueryConstroller').and.returnValue(validation);
+      const expectedMetadata = jasmine.objectContaining({
+        facetId: test.cmp.options.id,
+        facetField: test.cmp.options.field.toString(),
+        facetTitle: test.cmp.options.title
+      });
+
+      test.cmp.facetQueryController.fetchMore = spyFacetQueryConstroller as any;
+      test.cmp.showMore();
+      validation.then(() => {
+        expect(test.env.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(
+          analyticsActionCauseList.facetShowMore,
+          expectedMetadata,
+          test.cmp.element
+        );
+        done();
+      });
+    });
+
+    it('should log an analytics event when showing less results', () => {
+      test.cmp.showMore();
+      test.cmp.showLess();
+      const expectedMetadata = jasmine.objectContaining({
+        facetId: test.cmp.options.id,
+        facetField: test.cmp.options.field.toString(),
+        facetTitle: test.cmp.options.title
+      });
+      expect(test.env.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(
+        analyticsActionCauseList.facetShowLess,
+        expectedMetadata,
+        test.cmp.element
+      );
+    });
+
     it('allows to collapse', () => {
       let spy = jasmine.createSpy('collapse');
       test.cmp.ensureDom();
