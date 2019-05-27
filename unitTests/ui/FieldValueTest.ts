@@ -12,6 +12,7 @@ import { DateUtils } from '../../src/utils/DateUtils';
 import * as _ from 'underscore';
 import { l } from '../../src/Core';
 import { DynamicFacet } from '../../src/ui/DynamicFacet/DynamicFacet';
+import { DynamicFacetValues } from '../../src/ui/DynamicFacet/DynamicFacetValues/DynamicFacetValues';
 
 export function FieldValueTest() {
   describe('FieldValue', () => {
@@ -40,8 +41,10 @@ export function FieldValueTest() {
         element: $$('span').el,
         cmpOptions: options,
         modifyBuilder: (builder: Mock.MockEnvironmentBuilder) => {
-          builder.componentStateModel.get = () => [facet];
-          builder.queryStateModel.get = () => [];
+          if (facet) {
+            builder.componentStateModel.get = () => [facet];
+            builder.queryStateModel.get = () => [];
+          }
           return builder;
         }
       });
@@ -241,6 +244,46 @@ export function FieldValueTest() {
           value.selected = true;
           return value;
         };
+      });
+
+      describe('when translating standard field values', () => {
+        beforeEach(() => {
+          const fakeResult = FakeResults.createFakeResult();
+          fakeResult.raw['objecttype'] = 'opportunityproduct';
+
+          initializeFieldValueComponent({ field: '@objecttype' }, fakeResult, facet);
+        });
+
+        it('should use the translated value', () => {
+          expect(getText()).toBe(l('opportunityproduct'));
+        });
+
+        it('should use the translated value for the title', () => {
+          expect(getTitle()).toContain(l('opportunityproduct'));
+        });
+      });
+
+      it('should display the field value as clickable when its facet is enabled', () => {
+        facet.disabled = false;
+        initializeFieldValueComponent({ field: '@string' }, FakeResults.createFakeResult(), facet);
+        expect($$($$(test.cmp.element).find('span')).hasClass('coveo-clickable')).toBe(true);
+      });
+
+      it('should not display the field value as clickable when its facet is disabled', () => {
+        facet.disabled = true;
+        initializeFieldValueComponent({ field: '@string' }, FakeResults.createFakeResult(), facet);
+        expect($$($$(test.cmp.element).find('span')).hasClass('coveo-clickable')).toBe(false);
+      });
+    });
+
+    describe('with a related dynamic facet', () => {
+      let facet: DynamicFacet;
+
+      beforeEach(() => {
+        facet = Mock.mock<DynamicFacet>(DynamicFacet);
+
+        facet.values = Mock.mock<DynamicFacetValues>(DynamicFacetValues);
+        facet.values.hasSelectedValue = () => true;
       });
 
       describe('when translating standard field values', () => {
