@@ -9,7 +9,7 @@ export enum FacetSortCriteria {
    * Facet value scores are based on number of occurrences and position in the
    * ranked query result set.
    *
-   * The Coveo Machine Learning (Coveo ML) Dynamic Navigation Experience (DNE)
+   * The Coveo Machine Learning (Coveo ML) dynamic navigation experience (DNE)
    * feature only works with this sort criterion.
    */
   score = 'score',
