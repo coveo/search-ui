@@ -200,19 +200,11 @@ export class DynamicFacet extends Component {
     valueCaption: ComponentOptions.buildJsonOption<IStringMap<string>>(),
 
     /**
-     * Specifies whether the facet should remain frozen in its current position in the viewport while the mouse cursor
-     * is over it.
+     * Whether the facet should remain in its current position in the viewport when the mouse cursor is over it.
      *
-     * Whenever the value selection changes in a facet, the search interface automatically performs a query. This new
-     * query might cause other elements in the page to resize themselves (typically, other facets above or below the
-     * one the user is interacting with).
+     * Leaving this to `true` ensures that the facet does not move around in the search interface while the end-user is interacting with it.
      *
-     * This option is responsible for adding the `<div class='coveo-topSpace'>` and
-     * `<div class='coveo-bottomSpace'>` around the Facet container `<div class='coveo-facet-column'>`.
-     * The Facet adjusts the scroll amount of the page to ensure that it does not move relatively
-     * to the mouse when the results are updated.
-     *
-     * Default value is `true`.
+     * Default: `true`
      */
     preservePosition: ComponentOptions.buildBooleanOption({ defaultValue: true })
   };
@@ -424,7 +416,7 @@ export class DynamicFacet extends Component {
   }
 
   public pinFacetPosition() {
-    this.padding && this.padding.pinPosition();
+    this.padding && this.padding.pin();
   }
 
   public get analyticsFacetState(): IAnalyticsDynamicFacetMeta[] {
@@ -554,12 +546,12 @@ export class DynamicFacet extends Component {
   }
 
   private createPadding() {
-    const hasFacetColumnParent = !!$$(this.element).parent('coveo-facet-column');
-    if (!this.options.preservePosition || !hasFacetColumnParent) {
-      return;
+    const columnParent = $$(this.element).parent('coveo-facet-column');
+    if (!this.options.preservePosition || !columnParent) {
+      return this.logger.info(`Padding feature deactivated because facet doesn't have a parent with the class "coveo-facet-column"`);
     }
 
-    this.padding = new FacetPadding(this.element);
+    this.padding = new FacetPadding(this.element, columnParent);
   }
 
   private createContent() {
