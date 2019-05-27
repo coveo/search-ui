@@ -1,0 +1,30 @@
+.CoveoMissingTerm {
+  margin: 0;
+  font-size: 12px;
+  padding: 0;
+  .coveo-field-caption {
+    margin-right: 5px;
+    color: #1e253f;
+    opacity: 0.5;
+  }
+  .coveo-missing-term {
+    color: #004990;
+    cursor: pointer;
+    text-decoration: line-through;
+    margin-right: 5px;
+    /* &:hover {
+            text-decoration: underline;
+        } */
+  }
+}
+.CoveoBreadcrumb {
+  .coveo-remove-term {
+    color: #004990;
+    cursor: pointer;
+    text-decoration: none;
+    margin-right: 5px;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}

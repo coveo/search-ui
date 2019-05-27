@@ -285,5 +285,8 @@ lazyDynamicFacet();
 import { lazyDynamicFacetManager } from './ui/DynamicFacetManager/LazyDynamicFacetManager';
 lazyDynamicFacetManager();
 
+import { lazyMissingTerm } from './ui/MissingTerm/LazyMissingTerm';
+lazyMissingTerm();
+
 import { swapVar } from './SwapVar';
 swapVar(this);
