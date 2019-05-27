@@ -11,10 +11,6 @@ export interface IFacetResponseValue {
 
   /**
    * The facet value state to display in the search interface.
-   *
-   * **Possible values (Search API):**
-   * - `idle`
-   * - `selected`
    */
   state: FacetValueState;
 
@@ -45,6 +41,8 @@ export interface IFacetResponse {
 
   /**
    * The returned facet values.
+   *
+   * See [IFacetResponseValue]{@link IFacetResponseValue}
    */
   values: IFacetResponseValue[];
 }
