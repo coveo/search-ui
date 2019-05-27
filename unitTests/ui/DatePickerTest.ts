@@ -66,5 +66,17 @@ export function DatePickerTest() {
         expect(spy).toHaveBeenCalledWith(picker);
       });
     });
+
+    describe('build', () => {
+      it('should return the element on which the date picker is bound.', () => {
+        expect(picker.build()).toEqual(picker.getElement());
+      });
+    });
+
+    describe('getElement', () => {
+      it('should return the element on which the date picker is bound.', () => {
+        expect(picker.getElement()).toEqual(picker['element']);
+      });
+    });
   });
 }

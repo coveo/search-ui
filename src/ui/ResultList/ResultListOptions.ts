@@ -15,4 +15,5 @@ export interface IResultListOptions {
   fieldsToInclude?: IFieldOption[];
   autoSelectFieldsToInclude?: boolean;
   layout?: string;
+  enableScrollToTop?: boolean;
 }

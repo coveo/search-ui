@@ -2,6 +2,7 @@
 @import './mixins/mediaQuery';
 .CoveoSearchbox {
   @include display(flex);
+  flex-grow: 1;
 
   &.coveo-inline {
     overflow: hidden;
@@ -35,10 +36,6 @@
       color: $color-blueish-gray;
     }
   }
-}
-
-.CoveoSettings ~ .CoveoSearchbox {
-  margin-right: 76px;
 }
 
 .CoveoSearchInterface.coveo-waiting-for-query {

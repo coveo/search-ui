@@ -11,3 +11,8 @@ export { IResultsComponentBindings } from './ui/Base/ResultsComponentBindings';
 export { Initialization } from './ui/Base/Initialization';
 export { Initialization as CoveoJQuery } from './ui/Base/Initialization';
 export { initCoveoJQuery } from './ui/Base/CoveoJQuery';
+export { DatePicker } from './ui/FormWidgets/DatePicker';
+export { ResponsiveComponentsManager } from './ui/ResponsiveComponents/ResponsiveComponentsManager';
+export { ResponsiveDropdown } from './ui/ResponsiveComponents/ResponsiveDropdown/ResponsiveDropdown';
+export { ResponsiveDropdownHeader } from './ui/ResponsiveComponents/ResponsiveDropdown/ResponsiveDropdownHeader';
+export { ResponsiveDropdownContent } from './ui/ResponsiveComponents/ResponsiveDropdown/ResponsiveDropdownContent';

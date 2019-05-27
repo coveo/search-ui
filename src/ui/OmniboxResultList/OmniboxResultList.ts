@@ -278,6 +278,7 @@ export class OmniboxResultList extends ResultList implements IComponentBindings 
   private handlePopulateOmnibox(args: IPopulateOmniboxEventArgs) {
     const promise = new Promise((resolve, reject) => {
       this.queryController.executeQuery({
+        searchAsYouType: true,
         shouldRedirectStandaloneSearchbox: false,
         beforeExecuteQuery: () => this.usageAnalytics.logSearchAsYouType<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxSubmit, {})
       });
