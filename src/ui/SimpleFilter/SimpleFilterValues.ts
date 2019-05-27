@@ -42,7 +42,8 @@ export class SimpleFilterValues {
     let groupByRequest: IGroupByRequest = {
       field: <string>this.options.field,
       maximumNumberOfValues: this.options.maximumNumberOfValues,
-      injectionDepth: 1000
+      injectionDepth: 1000,
+      sortCriteria: this.simpleFilter.options.sortCriteria
     };
     return groupByRequest;
   }
