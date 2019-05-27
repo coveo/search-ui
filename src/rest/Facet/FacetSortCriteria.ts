@@ -1,6 +1,5 @@
 /**
- * The allowed sort criteria for a Search API
- * [facet request]{@link IFacetRequest}.
+ * The allowed sort criteria for a Search API facet request.
  */
 export enum FacetSortCriteria {
   /**

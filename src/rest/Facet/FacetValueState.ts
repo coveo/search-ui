@@ -1,5 +1,5 @@
 /**
- * The allowed states of a facet value in a Search API facet [request]{@link IFacetRequestValue.state} or [response]{@link IFacetResponseValue.state}.
+ * The allowed states of a facet value in a Search API facet request or response.
  */
 export enum FacetValueState {
   /**
