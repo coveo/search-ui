@@ -28,6 +28,7 @@ import { Component } from '../Base/Component';
 import { version } from '../../misc/Version';
 import { QueryUtils } from '../../utils/QueryUtils';
 import * as _ from 'underscore';
+import { IComponentBindings } from '../Base/ComponentBindings';
 
 export class LiveAnalyticsClient implements IAnalyticsClient {
   public isContextual: boolean = false;
@@ -49,7 +50,8 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
     public splitTestRunName: string,
     public splitTestRunVersion: string,
     public originLevel1: string,
-    public sendToCloud: boolean
+    public sendToCloud: boolean,
+    public bindings: IComponentBindings
   ) {
     Assert.exists(endpoint);
     Assert.exists(rootElement);

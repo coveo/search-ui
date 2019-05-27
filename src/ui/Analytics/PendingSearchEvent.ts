@@ -10,8 +10,8 @@ import { Component } from '../Base/Component';
 import { QueryController } from '../../controllers/QueryController';
 import { Defer } from '../../misc/Defer';
 import { APIAnalyticsBuilder } from '../../rest/APIAnalyticsBuilder';
-import { IAnalyticsSearchEventsArgs, IAnalyticsEventArgs, AnalyticsEvents } from '../../events/AnalyticsEvents';
-import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
+import { IAnalyticsSearchEventsArgs, AnalyticsEvents, IAnalyticsEventArgs } from '../../events/AnalyticsEvents';
+import { analyticsActionCauseList, IAnalyticsDynamicFacetMeta } from '../Analytics/AnalyticsActionListMeta';
 import { QueryStateModel } from '../../models/QueryStateModel';
 import * as _ from 'underscore';
 
@@ -19,6 +19,7 @@ export class PendingSearchEvent {
   private handler: (evt: Event, arg: IDuringQueryEventArgs) => void;
   private searchPromises: Promise<IQueryResults>[] = [];
   private results: IQueryResults[] = [];
+  private facetsState: IAnalyticsDynamicFacetMeta[];
   protected cancelled = false;
   protected finished = false;
   protected searchEvents: ISearchEvent[] = [];
@@ -45,6 +46,14 @@ export class PendingSearchEvent {
 
   public getEventMeta() {
     return this.templateSearchEvent.customData;
+  }
+
+  public addFacetsState(state: IAnalyticsDynamicFacetMeta[]) {
+    if (!this.facetsState) {
+      this.facetsState = [];
+    }
+
+    this.facetsState.push(...state);
   }
 
   public cancel() {
@@ -161,6 +170,7 @@ export class PendingSearchEvent {
     searchEvent.resultsPerPage = query.numberOfResults;
     searchEvent.searchQueryUid = queryResults.searchUid;
     searchEvent.queryPipeline = queryResults.pipeline;
+    searchEvent.facetsState = this.facetsState;
 
     // The context_${key} format is important for the Analytics backend
     // This is what they use to recognize a custom data that will be used internally by other coveo's service.

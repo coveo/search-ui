@@ -672,29 +672,32 @@ ResultListUtilsTest();
 import { FacetUtilsTest } from './utils/FacetUtilsTest';
 FacetUtilsTest();
 
-import { MLFacetTest } from './ui/MLFacet/MLFacetTest';
-MLFacetTest();
+import { DynamicFacetTest } from './ui/DynamicFacet/DynamicFacetTest';
+DynamicFacetTest();
 
-import { MLFacetHeaderTest } from './ui/MLFacet/MLFacetHeader/MLFacetHeaderTest';
-MLFacetHeaderTest();
+import { DynamicFacetHeaderTest } from './ui/DynamicFacet/DynamicFacetHeader/DynamicFacetHeaderTest';
+DynamicFacetHeaderTest();
 
-import { MLFacetHeaderButtonTest } from './ui/MLFacet/MLFacetHeader/MLFacetHeaderButtonTest';
-MLFacetHeaderButtonTest();
+import { DynamicFacetHeaderButtonTest } from './ui/DynamicFacet/DynamicFacetHeader/DynamicFacetHeaderButtonTest';
+DynamicFacetHeaderButtonTest();
 
-import { MLFacetHeaderCollapseToggleTest } from './ui/MLFacet/MLFacetHeader/MLFacetHeaderCollapseToggleTest';
-MLFacetHeaderCollapseToggleTest();
+import { DynamicFacetHeaderCollapseToggleTest } from './ui/DynamicFacet/DynamicFacetHeader/DynamicFacetHeaderCollapseToggleTest';
+DynamicFacetHeaderCollapseToggleTest();
 
-import { MLFacetValuesTest } from './ui/MLFacet/MLFacetValues/MLFacetValuesTest';
-MLFacetValuesTest();
+import { DynamicFacetValuesTest } from './ui/DynamicFacet/DynamicFacetValues/DynamicFacetValuesTest';
+DynamicFacetValuesTest();
 
-import { MLFacetValueTest } from './ui/MLFacet/MLFacetValues/MLFacetValueTest';
-MLFacetValueTest();
+import { DynamicFacetValueTest } from './ui/DynamicFacet/DynamicFacetValues/DynamicFacetValueTest';
+DynamicFacetValueTest();
 
-import { MLFacetValueRendererTest } from './ui/MLFacet/MLFacetValues/MLFacetValueRendererTest';
-MLFacetValueRendererTest();
+import { DynamicFacetValueRendererTest } from './ui/DynamicFacet/DynamicFacetValues/DynamicFacetValueRendererTest';
+DynamicFacetValueRendererTest();
 
-import { MLFacetBreadcrumbsTest } from './ui/MLFacet/MLFacetBreadcrumbsTest';
-MLFacetBreadcrumbsTest();
+import { DynamicFacetBreadcrumbsTest } from './ui/DynamicFacet/DynamicFacetBreadcrumbsTest';
+DynamicFacetBreadcrumbsTest();
 
-import { MLFacetQueryControllerTest } from './controllers/MLFacetQueryControllerTest';
-MLFacetQueryControllerTest();
+import { DynamicFacetQueryControllerTest } from './controllers/DynamicFacetQueryControllerTest';
+DynamicFacetQueryControllerTest();
+
+import { DynamicFacetManagerTest } from './ui/DynamicFacetManagerTest';
+DynamicFacetManagerTest();

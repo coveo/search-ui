@@ -292,7 +292,7 @@ export function FacetSliderTest() {
         expect(simulation.queryBuilder.build().groupBy).toEqual(
           jasmine.arrayContaining([
             jasmine.objectContaining({
-              queryOverride: '@foo>50',
+              advancedQueryOverride: '@foo>50',
               field: '@foo'
             })
           ])

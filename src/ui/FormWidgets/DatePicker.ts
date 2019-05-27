@@ -4,6 +4,7 @@ import { $$ } from '../../utils/Dom';
 import { DateUtils } from '../../utils/DateUtils';
 import { exportGlobally } from '../../GlobalExports';
 import { l } from '../../strings/Strings';
+import { Assert } from '../../misc/Assert';
 const Globalize = require('globalize');
 const Pikaday = require('pikaday');
 
@@ -13,7 +14,6 @@ const Pikaday = require('pikaday');
 export class DatePicker implements IFormWidget, IFormWidgetSettable {
   private element: HTMLInputElement;
   private picker: Pikaday;
-  public name: string;
   private wasReset = true;
 
   static doExport = () => {
@@ -28,6 +28,7 @@ export class DatePicker implements IFormWidget, IFormWidgetSettable {
    * current `DatePicker` instance as an argument.
    */
   constructor(public onChange: (datePicker: DatePicker) => void = () => {}) {
+    Assert.exists(onChange);
     this.buildContent();
   }
 
@@ -77,6 +78,8 @@ export class DatePicker implements IFormWidget, IFormWidgetSettable {
    * [Date](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Date) object.
    */
   public setValue(date: Date) {
+    Assert.exists(date);
+
     this.picker.setDate(date);
     this.wasReset = false;
   }

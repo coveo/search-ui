@@ -18,13 +18,13 @@ export function QuickviewDocumentTest() {
 
     it('should trigger an openQuickview event when opening', () => {
       const openSpy = jasmine.createSpy('open');
-      $$(test.cmp.element).on(QuickviewEvents.openQuickview, openSpy);
+      $$(test.cmp.root).on(QuickviewEvents.openQuickview, openSpy);
       test.cmp.open();
       expect(openSpy).toHaveBeenCalled();
     });
 
     it('should properly modify the terms to highlight on the result', () => {
-      $$(test.cmp.element).on(QuickviewEvents.openQuickview, (e, args) => {
+      $$(test.cmp.root).on(QuickviewEvents.openQuickview, (e, args) => {
         args.termsToHighlight.push('bar');
         args.termsToHighlight.push('baz');
       });

@@ -1,4 +1,5 @@
 import { IAnalyticsEvent } from './AnalyticsEvent';
+import { IAnalyticsDynamicFacetMeta } from '../ui/Analytics/AnalyticsActionListMeta';
 
 export interface ISearchEvent extends IAnalyticsEvent {
   searchQueryUid: string;
@@ -14,4 +15,5 @@ export interface ISearchEvent extends IAnalyticsEvent {
   advancedQuery: string;
   didYouMean: boolean;
   contextual: boolean;
+  facetsState?: IAnalyticsDynamicFacetMeta[];
 }

@@ -1,0 +1,98 @@
+@import '../Variables';
+
+$active-text-opacity: 0.6;
+
+.coveo-dynamic-facet-values {
+  padding: 15px 0;
+  margin: 0;
+  white-space: normal;
+}
+
+.coveo-dynamic-facet-values li {
+  list-style: none;
+}
+
+.coveo-dynamic-facet-value {
+  margin-bottom: 6px;
+
+  &.coveo-selected {
+    .coveo-checkbox-span-label,
+    .coveo-checkbox-span-label-suffix {
+      font-weight: bold;
+    }
+  }
+
+  .coveo-checkbox-label {
+    width: 100%;
+  }
+
+  .coveo-checkbox-span-label {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    line-height: 1.2em;
+  }
+
+  .coveo-checkbox-span-label-suffix {
+    margin-left: 8px;
+    color: $color-blueish-gray;
+  }
+
+  .coveo-checkbox-label:hover {
+    .coveo-checkbox-span-label,
+    .coveo-checkbox-span-label-suffix {
+      opacity: $active-text-opacity;
+    }
+  }
+
+  &.coveo-focused {
+    .coveo-checkbox-span-label,
+    .coveo-checkbox-span-label-suffix {
+      opacity: $active-text-opacity;
+    }
+  }
+}
+
+.coveo-dynamic-facet-show-more,
+.coveo-dynamic-facet-show-less {
+  @include linkButton();
+
+  width: 100%;
+  text-align: left;
+  margin-top: 2px;
+  padding: 3px 0;
+  font-size: $font-size-regular;
+
+  &::before {
+    width: 15px;
+    display: inline-block;
+    content: '+';
+
+    // IE11 hack: need to define "underline" before setting it to "none"
+    text-decoration: underline;
+  }
+
+  &::before,
+  &:hover::before {
+    text-decoration: none;
+  }
+}
+
+.coveo-dynamic-facet-show-less {
+  color: $color-dark-grey;
+  &::before {
+    content: '-';
+  }
+}
+
+.coveo-dynamic-facet-collapsed {
+  .coveo-dynamic-facet-value,
+  .coveo-dynamic-facet-show-more,
+  .coveo-dynamic-facet-show-less {
+    display: none;
+  }
+
+  .coveo-dynamic-facet-value.coveo-selected {
+    display: inherit;
+  }
+}

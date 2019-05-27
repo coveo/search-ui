@@ -100,6 +100,10 @@ export class QueryStateModel extends Model {
     return 'f:' + id + ':operator';
   }
 
+  static getDynamicFacetId(id: string) {
+    return 'df:' + id;
+  }
+
   static getFacetLookupValue(id: string) {
     return QueryStateModel.getFacetId(id) + ':lookupvalues';
   }
@@ -121,8 +125,8 @@ export class QueryStateModel extends Model {
    */
   public atLeastOneFacetIsActive() {
     return !_.isUndefined(
-      _.find(this.attributes, (value, key: any) => {
-        return key.indexOf('f:') == 0 && !Utils.arrayEqual(this.getDefault(key), value);
+      _.find(this.attributes, (value, key: string) => {
+        return key.match(/^d?f:/) && !Utils.arrayEqual(this.getDefault(key), value);
       })
     );
   }

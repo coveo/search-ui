@@ -282,7 +282,7 @@ export const PlaygroundConfiguration: IStringMap<IComponentPlaygroundConfigurati
     },
     element: new SectionBuilder().withComponent('CoveoMatrix').build()
   },
-  MLFacet: {
+  DynamicFacet: {
     show: true,
     options: {
       field: '@author',
