@@ -3,7 +3,6 @@ import { $$, Win } from '../../utils/Dom';
 
 export class FacetPadding {
   private pinnedTopPosition: number;
-  private unpinnedTopPosition: number;
   private topSpaceElement: HTMLElement;
   private topSpaceClass = 'coveo-topSpace';
   private animationClass = 'coveo-with-animation';
@@ -14,10 +13,6 @@ export class FacetPadding {
 
   private get isPinned(): boolean {
     return Utils.exists(this.pinnedTopPosition);
-  }
-
-  private get shouldUnpin(): boolean {
-    return Utils.exists(this.unpinnedTopPosition);
   }
 
   private initTopSpacer() {
@@ -47,12 +42,11 @@ export class FacetPadding {
   }
 
   private unpin() {
-    if (this.shouldUnpin) {
+    if (!this.isPinned) {
       $$(this.topSpaceElement).addClass(this.animationClass);
       this.setTopSpaceHeight('0');
     }
 
-    this.unpinnedTopPosition = null;
     this.pinnedTopPosition = null;
   }
 
@@ -78,7 +72,6 @@ export class FacetPadding {
       this.setTopSpaceHeight(`${this.offset * -1}px`);
     }
 
-    this.unpinnedTopPosition = this.pinnedTopPosition;
     this.pinnedTopPosition = null;
   }
 }
