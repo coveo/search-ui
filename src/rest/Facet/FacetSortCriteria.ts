@@ -1,5 +1,6 @@
 /**
- * The allowed sort criteria for a Search API facet request.
+ * The allowed sort criteria for a Search API
+ * [facet request]{@link IFacetRequest}.
  */
 export enum FacetSortCriteria {
   /**
@@ -8,11 +9,10 @@ export enum FacetSortCriteria {
    * Facet value scores are based on number of occurrences and position in the
    * ranked query result set.
    *
-   * The Coveo Machine Learning (Coveo ML) dynamic navigation experience (DNE)
-   * feature only works with this sort criterion.
+   * The Coveo Machine Learning dynamic navigation experience feature only
+   * works with this sort criterion.
    */
   score = 'score',
-
   /**
    * Sort facet values in ascending alphanumeric order.
    */
