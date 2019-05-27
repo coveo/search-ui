@@ -2,7 +2,7 @@ import { FacetValueState } from './FacetValueState';
 import { FacetSortCriteria } from './FacetSortCriteria';
 
 /**
- * A Search API facet request value.
+ * A [`currentValues`]{@link IFacetRequest.currentValues} item in a Search API [facet request]{@link IFacetRequest}.
  */
 export interface IFacetRequestValue {
   /**
@@ -11,7 +11,7 @@ export interface IFacetRequestValue {
   value: string;
 
   /**
-   * The facet value state.
+   * The facet value state in the search interface.
    *
    * **Allowed values (Search API):**
    * - `idle`
@@ -27,7 +27,7 @@ export interface IFacetRequestValue {
  */
 export interface IFacetRequest {
   /**
-   * The unique facet identifier.
+   * The unique identifier of the facet in the search interface.
    *
    * **Note:** Must match `^[A-Za-z0-9-_]{1,60}$`.
    *
@@ -38,14 +38,14 @@ export interface IFacetRequest {
   /**
    * **Required (Search API).** The name of the field on which to base the facet request.
    *
-   * **Note:** Must correspond to a field whose **Facet** option is enabled in the index.
+   * **Note:** Must reference an index field whose **Facet** option is enabled.
    *
    * **Example:** `author`
    */
   field: string;
 
   /**
-   * The sort criterion to use for the facet request.
+   * The sort criterion to apply to the returned facet values.
    *
    * **Allowed values:**
    * - `score`
@@ -54,13 +54,13 @@ export interface IFacetRequest {
    * **Note:** The Coveo Machine Learning (Coveo ML) Dynamic Navigation Experience (DNE) feature only works with the `score` value.
    *
    * **Default behavior (Search API):**
-   * - When `isFieldExpanded` is `false` and additional facet values are available, use `score`.
+   * - When [`isFieldExpanded`]{@link IFacetRequest.isFieldExpanded} is `false` in the facet request, and [`moreValuesAvailable`]{@link IFacetResponse.moreValuesAvailable} is `true` in the corresponding [facet response]{@link IFacetResponse}, use `score`.
    * - Otherwise, use `alphanumeric`.
    */
   sortCriteria?: FacetSortCriteria;
 
   /**
-   * The number of facet values to request.
+   * The maximum number of facet values to fetch.
    *
    * **Note:** If [`freezeCurrentValues`]{@link IFacetRequest.freezeCurrentValues} is `true`, `numberOfValues` must be equal to the [`currentValues`]{@link IFacetRequest.currentValues} array length.
    *
@@ -69,16 +69,18 @@ export interface IFacetRequest {
   numberOfValues?: number;
 
   /**
-   * The maximum of items to scan for facet values.
+   * The maximum number of items to scan for facet values.
    *
-   * **Note:** A high `injectionDepth` may negatively impact performance.
+   * **Note:** A high `injectionDepth` may negatively impact the facet request performance.
    *
    * **Default (Search API):** `1000`
    */
   injectionDepth?: number;
 
   /**
-   * Whether to include the specified `currentValues` in the response.
+   * Whether to include the facet request's [`currentValues`]{@link IFacetRequest.currentValues} in the corresponding [facet response]{@link IFacetResponse}'s [`values`]{@link IFacetResponse.values} array.
+   *
+   * **Note:** Setting this to `true` is useful to ensure that the facet does not move around while the end-user is interacting with it in the search interface.
    *
    * **Default (Search API):** `false`
    */
