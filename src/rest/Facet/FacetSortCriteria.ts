@@ -1,6 +1,6 @@
 /**
- * The allowed [`sortCriteria`]{@link DynamicFacet.options.sortCriteria} option
- * values for the `DynamicFacet` component.
+ * The allowed sort criteria for a Search API
+ * [facet request]{@link IFacetRequest}.
  */
 export enum FacetSortCriteria {
   /**
@@ -9,7 +9,8 @@ export enum FacetSortCriteria {
    * Facet value scores are based on number of occurrences and position in the
    * ranked query result set.
    *
-   * The Coveo ML _Facet Sense_ feature only works with this sort criterion.
+   * The Coveo Machine Learning (Coveo ML) Dynamic Navigation Experience (DNE)
+   * feature only works with this sort criterion.
    */
   score = 'score',
 
