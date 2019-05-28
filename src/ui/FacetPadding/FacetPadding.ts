@@ -7,7 +7,7 @@ export class FacetPadding {
   private topSpaceClass = 'coveo-topSpace';
   private animationClass = 'coveo-with-animation';
 
-  constructor(private element: HTMLElement, private paddingContainer: HTMLElement, private _window: Window = window) {
+  constructor(private element: HTMLElement, private paddingContainer: HTMLElement) {
     this.initTopSpacer();
   }
 
@@ -51,7 +51,7 @@ export class FacetPadding {
   }
 
   private get scrollYPosition() {
-    return new Win(this._window).scrollY();
+    return new Win(window).scrollY();
   }
 
   private get offset() {
@@ -66,7 +66,7 @@ export class FacetPadding {
     $$(this.topSpaceElement).removeClass(this.animationClass);
     this.setTopSpaceHeight(0);
 
-    this._window.scrollTo(0, this.scrollYPosition + this.offset);
+    window.scrollTo(0, this.scrollYPosition + this.offset);
 
     if (this.offset < 0) {
       this.setTopSpaceHeight(this.offset * -1);
