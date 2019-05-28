@@ -1180,11 +1180,7 @@ export class Facet extends Component {
     this.rebuildValueElements();
     this.usageAnalytics.logCustomEvent<IAnalyticsFacetMeta>(
       analyticsActionCauseList.facetShowLess,
-      {
-        facetId: this.options.id,
-        facetField: this.options.field.toString(),
-        facetTitle: this.options.title
-      },
+      this.getShowMoreLessAnalyticsArgs(),
       this.element
     );
   }
@@ -1872,11 +1868,7 @@ export class Facet extends Component {
       .then((queryResults: IQueryResults) => {
         this.usageAnalytics.logCustomEvent<IAnalyticsFacetMeta>(
           analyticsActionCauseList.facetShowMore,
-          {
-            facetId: this.options.id,
-            facetField: this.options.field.toString(),
-            facetTitle: this.options.title
-          },
+          this.getShowMoreLessAnalyticsArgs(),
           this.element
         );
         const facetValues = new FacetValues(queryResults.groupByResults[0]);
@@ -1984,6 +1976,14 @@ export class Facet extends Component {
       groupByResult: this.facetQueryController.lastGroupByResult
     };
     return info;
+  }
+
+  private getShowMoreLessAnalyticsArgs() {
+    return {
+      facetId: this.options.id,
+      facetField: this.options.field.toString(),
+      facetTitle: this.options.title
+    };
   }
 }
 

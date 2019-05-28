@@ -731,7 +731,7 @@ export var analyticsActionCauseList = {
     type: 'categoryFacet'
   },
   /**
-   * Identifies the click event that gets logged when a user clicks the down arrow to show more result in the facet
+   * The custom event that gets logged when an end-user expands a dynamic facet to see additional values.
    *
    * `actionCause`: `'showMoreFacetResults'`
    * `actionType`: `'facet'`
@@ -741,7 +741,7 @@ export var analyticsActionCauseList = {
     type: 'facet'
   },
   /**
-   * Identifies the click event that gets logged when a user clicks the up arrow to show less result in the facet
+   * The custom event that gets logged when an end-user collapses a dynamic facet to see less values.
    *
    * `actionCause`: `'showLessFacetResults'`
    * `actionType`: `'facet'`
