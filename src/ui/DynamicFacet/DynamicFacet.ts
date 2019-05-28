@@ -24,9 +24,10 @@ import { isFacetSortCriteria } from '../../rest/Facet/FacetSortCriteria';
 import { l } from '../../strings/Strings';
 import { DeviceUtils } from '../../utils/DeviceUtils';
 import { BreadcrumbEvents, IPopulateBreadcrumbEventArgs } from '../../events/BreadcrumbEvents';
-import { IAnalyticsActionCause, IAnalyticsDynamicFacetMeta, analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
+import { analyticsActionCauseList, IAnalyticsDynamicFacetMeta, IAnalyticsActionCause } from '../Analytics/AnalyticsActionListMeta';
 import { IQueryOptions } from '../../controllers/QueryController';
 import { DynamicFacetManager } from '../DynamicFacetManager/DynamicFacetManager';
+import { FacetPadding } from '../FacetPadding/FacetPadding';
 import { QueryBuilder } from '../Base/QueryBuilder';
 
 export interface IDynamicFacetOptions extends IResponsiveComponentOptions {
@@ -40,6 +41,7 @@ export interface IDynamicFacetOptions extends IResponsiveComponentOptions {
   includeInBreadcrumb?: boolean;
   numberOfValuesInBreadcrumb?: number;
   valueCaption?: any;
+  preservePosition?: boolean;
 }
 
 /**
@@ -195,15 +197,26 @@ export class DynamicFacet extends Component {
      * See [Normalizing Facet Value Captions](https://developers.coveo.com/x/jBsvAg).
      *
      */
-    valueCaption: ComponentOptions.buildJsonOption<IStringMap<string>>()
+    valueCaption: ComponentOptions.buildJsonOption<IStringMap<string>>(),
+
+    /**
+     * Whether the facet should remain in its current position in the viewport when the mouse cursor is over it.
+     *
+     * Leaving this to `true` ensures that the facet does not move around in the search interface while the end-user is interacting with it.
+     *
+     * Default: `true`
+     */
+    preservePosition: ComponentOptions.buildBooleanOption({ defaultValue: true })
   };
 
   private dynamicFacetQueryController: DynamicFacetQueryController;
   private includedAttributeId: string;
   private componentStateId: string;
   private listenToQueryStateChange = true;
+  private padding: FacetPadding;
   private header: DynamicFacetHeader;
   private isCollapsed: boolean;
+
   public dynamicFacetManager: DynamicFacetManager;
   public values: DynamicFacetValues;
 
@@ -258,8 +271,8 @@ export class DynamicFacet extends Component {
   public selectMultipleValues(values: string[]) {
     Assert.exists(values);
     this.ensureDom();
+    this.logger.info('Selecting facet value(s)', values);
     values.forEach(value => {
-      this.logger.info('Selecting facet value');
       this.values.get(value).select();
     });
     this.handleFacetValuesChanged();
@@ -289,8 +302,8 @@ export class DynamicFacet extends Component {
   public deselectMultipleValues(values: string[]) {
     Assert.exists(values);
     this.ensureDom();
+    this.logger.info('Deselecting facet value(s)', values);
     values.forEach(value => {
-      this.logger.info('Deselecting facet value');
       this.values.get(value).deselect();
     });
     this.handleFacetValuesChanged();
@@ -404,6 +417,10 @@ export class DynamicFacet extends Component {
     this.dynamicFacetQueryController.enableFreezeFacetOrderFlag();
   }
 
+  public pinFacetPosition() {
+    this.padding && this.padding.pin();
+  }
+
   public get analyticsFacetState(): IAnalyticsDynamicFacetMeta[] {
     return this.values.activeFacetValues.map(facetValue => facetValue.analyticsMeta);
   }
@@ -426,6 +443,7 @@ export class DynamicFacet extends Component {
     this.bind.onRootElement(QueryEvents.duringQuery, () => this.ensureDom());
     this.bind.onRootElement(QueryEvents.doneBuildingQuery, (data: IDoneBuildingQueryEventArgs) => this.handleDoneBuildingQuery(data));
     this.bind.onRootElement(QueryEvents.querySuccess, (data: IQuerySuccessEventArgs) => this.handleQuerySuccess(data));
+    this.bind.onRootElement(QueryEvents.deferredQuerySuccess, () => this.handleDeferredQuerySuccess());
     this.bind.onRootElement(QueryEvents.queryError, () => this.onQueryResponse());
   }
 
@@ -475,6 +493,17 @@ export class DynamicFacet extends Component {
     this.onQueryResponse(response);
   }
 
+  private handleDeferredQuerySuccess() {
+    this.header.hideLoading();
+    this.values.render();
+    this.updateAppearance();
+    this.padding && this.padding.ensurePinnedFacetHasNotMoved();
+  }
+
+  private onQueryResponse(response?: IFacetResponse) {
+    response ? this.values.createFromResponse(response) : this.values.resetValues();
+  }
+
   private handleQueryStateChanged(data: IAttributesChangedEventArg) {
     if (!this.listenToQueryStateChange) {
       return;
@@ -518,8 +547,22 @@ export class DynamicFacet extends Component {
   }
 
   public createDom() {
+    this.createPadding();
     this.createContent();
     this.updateAppearance();
+  }
+
+  private createPadding() {
+    if (!this.options.preservePosition) {
+      return;
+    }
+
+    const columnParent = $$(this.element).parent('coveo-facet-column');
+    if (!columnParent) {
+      return this.logger.info(`Padding feature deactivated because facet doesn't have a parent with the class "coveo-facet-column"`);
+    }
+
+    this.padding = new FacetPadding(this.element, columnParent);
   }
 
   private createContent() {
@@ -564,13 +607,6 @@ export class DynamicFacet extends Component {
 
   private beforeSendingQuery() {
     this.header.showLoading();
-    this.updateAppearance();
-  }
-
-  private onQueryResponse(response?: IFacetResponse) {
-    this.header.hideLoading();
-    response ? this.values.createFromResponse(response) : this.values.resetValues();
-    this.values.render();
     this.updateAppearance();
   }
 

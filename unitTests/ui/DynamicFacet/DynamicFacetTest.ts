@@ -41,6 +41,10 @@ export function DynamicFacetTest() {
       return args.breadcrumbs;
     }
 
+    function paddingFeatureActive() {
+      return !!$$(test.cmp.element.parentElement).find('.coveo-topSpace');
+    }
+
     it(`when facet has values but none are selected
       should not be seen as "active" or as "empty"`, () => {
       test.cmp.ensureDom();
@@ -327,6 +331,30 @@ export function DynamicFacetTest() {
       const breadcrumbs = triggerPopulateBreadcrumbs();
 
       expect(breadcrumbs.length).toBe(1);
+    });
+
+    it(`when setting a preservePosition to true (default) and having a facet column parent
+      should activate the padding feature`, () => {
+      $$(test.cmp.element.parentElement).addClass('coveo-facet-column');
+      test.cmp.ensureDom();
+      expect(paddingFeatureActive()).toBe(true);
+    });
+
+    it(`when setting a preservePosition to true (default) without having a facet column parent
+      should not activate the padding feature`, () => {
+      test.cmp.ensureDom();
+
+      expect(paddingFeatureActive()).toBe(false);
+    });
+
+    it(`when setting a preservePosition to false and having a facet column parent
+      should not activate the padding feature`, () => {
+      options.preservePosition = false;
+      initializeComponent();
+      $$(test.cmp.element.parentElement).addClass('coveo-facet-column');
+      test.cmp.ensureDom();
+
+      expect(paddingFeatureActive()).toBe(false);
     });
 
     it('logs an analytics search event when logAnalyticsEvent is called', () => {

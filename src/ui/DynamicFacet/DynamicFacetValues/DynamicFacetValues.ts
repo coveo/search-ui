@@ -9,7 +9,7 @@ import { l } from '../../../strings/Strings';
 
 export class DynamicFacetValues {
   private facetValues: DynamicFacetValue[];
-  private list = $$('ul', { className: 'coveo-dynamic-facet-values' });
+  private list = $$('ul', { className: 'coveo-dynamic-facet-values' }).el;
   private moreValuesAvailable: boolean;
 
   constructor(private facet: DynamicFacet) {
@@ -118,19 +118,22 @@ export class DynamicFacetValues {
   }
 
   public render() {
-    this.list.empty();
+    const fragment = new DocumentFragment();
+    $$(this.list).empty();
+
     this.facetValues.forEach(facetValue => {
-      this.list.append(facetValue.render());
+      fragment.appendChild(facetValue.render());
     });
 
     if (this.shouldEnableShowLess) {
-      this.list.append(this.buildShowLess());
+      fragment.appendChild(this.buildShowLess());
     }
 
     if (this.moreValuesAvailable) {
-      this.list.append(this.buildShowMore());
+      fragment.appendChild(this.buildShowMore());
     }
 
-    return this.list.el;
+    this.list.appendChild(fragment);
+    return this.list;
   }
 }
