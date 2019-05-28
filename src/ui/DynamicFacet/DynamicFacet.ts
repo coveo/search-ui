@@ -211,7 +211,6 @@ export class DynamicFacet extends Component {
 
   private dynamicFacetQueryController: DynamicFacetQueryController;
   private includedAttributeId: string;
-  private componentStateId: string;
   private listenToQueryStateChange = true;
   private padding: FacetPadding;
   private header: DynamicFacetHeader;
@@ -463,8 +462,8 @@ export class DynamicFacet extends Component {
   }
 
   private initComponentStateEvents() {
-    this.componentStateId = QueryStateModel.getDynamicFacetId(this.options.id);
-    this.componentStateModel.registerComponent(this.componentStateId, this);
+    const componentStateId = QueryStateModel.getDynamicFacetId(this.options.id);
+    this.componentStateModel.registerComponent(componentStateId, this);
   }
 
   private initDynamicFacetQueryController() {

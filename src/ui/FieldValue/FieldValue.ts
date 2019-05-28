@@ -417,12 +417,16 @@ export class FieldValue extends Component {
     }
   }
 
-  private bindDynamicFacets(element: HTMLElement, originalFacetValue: string, renderedFacetValue: string) {
+  private getDynamicFacets() {
     const dynamicFacetAttributeName = QueryStateModel.getDynamicFacetId(this.options.facet.replace(/^@/, ''));
-    const dynamicFacets = filter<DynamicFacet>(
+    return filter<DynamicFacet>(
       this.componentStateModel.get(dynamicFacetAttributeName),
       (component: Component) => component.type === DynamicFacet.ID && !component.disabled
     );
+  }
+
+  private bindDynamicFacets(element: HTMLElement, originalFacetValue: string, renderedFacetValue: string) {
+    const dynamicFacets = this.getDynamicFacets();
 
     if (dynamicFacets.length) {
       const isValueSelected = !!find<DynamicFacet>(dynamicFacets, dynamicFacet => dynamicFacet.values.hasSelectedValue(originalFacetValue));
