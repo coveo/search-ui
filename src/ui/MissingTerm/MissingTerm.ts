@@ -26,16 +26,12 @@ export class MissingTerm extends Component {
       MissingTerm: MissingTerm
     });
   };
-
-  private termsCurrentlyForcedToAppear: string[];
-
   /**
    * The `MissingTerm` component is responsible for displaying the keyword that was not matched for a result
    */
   constructor(public element: HTMLElement, public options?: IMissingTermOptions, bindings?: IComponentBindings, public result?) {
     super(element, MissingTerm.ID, bindings);
 
-    this.termsCurrentlyForcedToAppear = [];
     this.options = ComponentOptions.initComponentOptions(element, MissingTerm, options);
     this.addMissingTerm();
   }
@@ -80,7 +76,6 @@ export class MissingTerm extends Component {
   }
 
   public includeTermInQuery(term: string) {
-    this.termsCurrentlyForcedToAppear.push(term);
     const query: string = this.queryStateModel.get('q');
     const keywordPosition: number = query.indexOf(term);
     const newQuery: string = [query.slice(0, keywordPosition), '"', term, '"', query.slice(keywordPosition + term.length)].join('');
