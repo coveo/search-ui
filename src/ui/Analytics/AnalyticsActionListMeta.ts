@@ -233,6 +233,10 @@ export interface IAnalyticsResultsLayoutChange {
   resultsLayoutChangeTo: string;
 }
 
+export interface IAnalyticsIncludeMissingTerm {
+  missingTerm: string;
+}
+
 export var analyticsActionCauseList = {
   /**
    * Identifies the search event that gets logged when the initial query is performed as a result of loading a search interface.
@@ -1298,5 +1302,15 @@ export var analyticsActionCauseList = {
   dynamicFacetClearAll: <IAnalyticsActionCause>{
     name: 'dynamicFacetClearAll',
     type: 'dynamicFacet'
+  },
+  /**
+   * Identifies the search event that gets logged when a user clears all values from the advanced search filter summary.
+   *
+   * `actionCause`: `'missingTermSearch'`
+   * `actionType`: `'miisingTerm'`
+   */
+  missingTermSearch: <IAnalyticsActionCause>{
+    name: 'missingTermSearch',
+    type: 'miisingTerm'
   }
 };
