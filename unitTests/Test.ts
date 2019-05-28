@@ -701,3 +701,6 @@ DynamicFacetQueryControllerTest();
 
 import { DynamicFacetManagerTest } from './ui/DynamicFacetManagerTest';
 DynamicFacetManagerTest();
+
+import { FacetPaddingTest } from './ui/FacetPaddingTest';
+FacetPaddingTest();

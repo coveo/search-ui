@@ -7,7 +7,7 @@ export class FacetPadding {
   private topSpaceClass = 'coveo-topSpace';
   private animationClass = 'coveo-with-animation';
 
-  constructor(private element: HTMLElement, private paddingContainer: HTMLElement) {
+  constructor(private element: HTMLElement, private paddingContainer: HTMLElement, private _window: Window = window) {
     this.initTopSpacer();
   }
 
@@ -37,21 +37,21 @@ export class FacetPadding {
     this.pinnedTopPosition = this.facetTopPosition;
   }
 
-  private setTopSpaceHeight(height: string) {
-    this.topSpaceElement.style.height = height;
+  private setTopSpaceHeight(height: number) {
+    this.topSpaceElement.style.height = `${height}px`;
   }
 
   private unpin() {
     if (!this.isPinned) {
       $$(this.topSpaceElement).addClass(this.animationClass);
-      this.setTopSpaceHeight('0');
+      this.setTopSpaceHeight(0);
     }
 
     this.pinnedTopPosition = null;
   }
 
   private get scrollYPosition() {
-    return new Win(window).scrollY();
+    return new Win(this._window).scrollY();
   }
 
   private get offset() {
@@ -64,12 +64,12 @@ export class FacetPadding {
     }
 
     $$(this.topSpaceElement).removeClass(this.animationClass);
-    this.setTopSpaceHeight('0');
+    this.setTopSpaceHeight(0);
 
-    window.scrollTo(0, this.scrollYPosition + this.offset);
+    this._window.scrollTo(0, this.scrollYPosition + this.offset);
 
     if (this.offset < 0) {
-      this.setTopSpaceHeight(`${this.offset * -1}px`);
+      this.setTopSpaceHeight(this.offset * -1);
     }
 
     this.pinnedTopPosition = null;

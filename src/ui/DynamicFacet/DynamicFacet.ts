@@ -546,8 +546,12 @@ export class DynamicFacet extends Component {
   }
 
   private createPadding() {
+    if (!this.options.preservePosition) {
+      return;
+    }
+
     const columnParent = $$(this.element).parent('coveo-facet-column');
-    if (!this.options.preservePosition || !columnParent) {
+    if (!columnParent) {
       return this.logger.info(`Padding feature deactivated because facet doesn't have a parent with the class "coveo-facet-column"`);
     }
 
