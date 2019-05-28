@@ -2,85 +2,101 @@ import * as Mock from '../MockEnvironment';
 import { Searchbox } from '../../src/ui/Searchbox/Searchbox';
 import { ISearchboxOptions } from '../../src/ui/Searchbox/Searchbox';
 import { $$ } from '../../src/utils/Dom';
-
-interface HTMLElements {
-  CoveoOmniboxOrQuery: HTMLElement;
-  CoveoSearchButton: HTMLElement;
-  input: HTMLElement;
-  magicBoxIcon: HTMLElement;
-  magicBoxClear: HTMLElement;
-  magicBoxInput: HTMLElement;
-}
-
-function findHtmlElement(element: HTMLElement): HTMLElements {
-  return {
-    CoveoOmniboxOrQuery: $$(element).find('.CoveoOmnibox') || $$(element).find('.CoveoQuerybox'),
-    CoveoSearchButton: $$(element).find('.CoveoSearchButton'),
-    input: $$($$(element).find('.magic-box-input')).find('input'),
-    magicBoxIcon: $$(element).find('.magic-box-icon'),
-    magicBoxClear: $$(element).find('.magic-box-clear'),
-    magicBoxInput: $$(element).find('.magic-box-input')
-  };
-}
+import { each } from 'underscore';
 
 export function SearchboxResizeTest() {
   describe('SearchboxResize', () => {
-    var test: Mock.IBasicComponentSetup<Searchbox>;
-    describe('with an Omnibox as the Searchbox', () => {
-      it('should not be resize', () => {
-        test = Mock.optionsComponentSetup<Searchbox, ISearchboxOptions>(Searchbox, {
-          enableOmnibox: true
+    let test: Mock.IBasicComponentSetup<Searchbox>;
+    const findHtmlElement = (element: HTMLElement) => {
+      return {
+        coveoOmniboxOrQuery: $$(element).find('.CoveoOmnibox') || $$(element).find('.CoveoQuerybox'),
+        coveoSearchButton: $$(element).find('.CoveoSearchButton'),
+        input: $$($$(element).find('.magic-box-input')).find('input'),
+        magicboxIcon: $$(element).find('.magic-box-icon'),
+        magicboxClear: $$(element).find('.magic-box-clear'),
+        magicboxInput: $$(element).find('.magic-box-input')
+      };
+    };
+
+    describe('with an Omnibox as the Searchbox,', () => {
+      describe('with the heigth option not set,', () => {
+        let structHTMLElement;
+        beforeEach(() => {
+          test = Mock.optionsComponentSetup<Searchbox, ISearchboxOptions>(Searchbox, {
+            enableOmnibox: true
+          });
+          structHTMLElement = findHtmlElement(test.cmp.element);
         });
-        var structHTMLElement: HTMLElements = findHtmlElement(test.cmp.element);
-        for (let element in structHTMLElement) {
-          expect(structHTMLElement[element].style.height).toBe('');
-        }
+        it('the Omnibox should not be resize', () => {
+          each(structHTMLElement, (element: HTMLElement) => {
+            expect(element.style.height).toBe('');
+          });
+        });
       });
 
-      it('should be resize', () => {
-        let height = 25;
-        let heightForInput = height - 2;
-        test = Mock.optionsComponentSetup<Searchbox, ISearchboxOptions>(Searchbox, {
-          enableOmnibox: true,
-          height: height
+      describe('with the heigth set to 25.', () => {
+        let structHTMLElement;
+        let height: number;
+        let heightForInput: number;
+        beforeEach(() => {
+          height = 25;
+          heightForInput = height - 2;
+          test = Mock.optionsComponentSetup<Searchbox, ISearchboxOptions>(Searchbox, {
+            enableOmnibox: true,
+            height: height
+          });
+          structHTMLElement = findHtmlElement(test.cmp.element);
         });
-        var structHTMLElement: HTMLElements = findHtmlElement(test.cmp.element);
-        for (let element in structHTMLElement) {
-          if (structHTMLElement[element] === structHTMLElement.magicBoxInput) {
-            expect(structHTMLElement[element].style.height).toBe(`${heightForInput}px`);
-          } else {
-            expect(structHTMLElement[element].style.height).toBe(`${height}px`);
-          }
-        }
+        it('the Omnibox should resize to 25px', () => {
+          each(structHTMLElement, (element: HTMLElement) => {
+            if (element === structHTMLElement.magicboxInput) {
+              expect(element.style.height).toBe(`${heightForInput}px`);
+            } else {
+              expect(element.style.height).toBe(`${height}px`);
+            }
+          });
+        });
       });
     });
 
-    describe('with a QueryBox as the Searchbox', () => {
-      it('should not be resize', () => {
-        test = Mock.optionsComponentSetup<Searchbox, ISearchboxOptions>(Searchbox, {
-          enableOmnibox: false
+    describe('with a Querybox as the Searchbox, ', () => {
+      describe('with the heigth option not set, ', () => {
+        let structHTMLElement;
+        beforeEach(() => {
+          test = Mock.optionsComponentSetup<Searchbox, ISearchboxOptions>(Searchbox, {
+            enableOmnibox: false
+          });
+          structHTMLElement = findHtmlElement(test.cmp.element);
         });
-        var structHTMLElement: HTMLElements = findHtmlElement(test.cmp.element);
-        for (let element in structHTMLElement) {
-          expect(structHTMLElement[element].style.height).toBe('');
-        }
+        it('the Querybox should not be resize', () => {
+          each(structHTMLElement, (element: HTMLElement) => {
+            expect(element.style.height).toBe('');
+          });
+        });
       });
 
-      it('should be resize', () => {
-        let height = 60;
-        let heightForInput = height - 2;
-        test = Mock.optionsComponentSetup<Searchbox, ISearchboxOptions>(Searchbox, {
-          enableOmnibox: false,
-          height: height
+      describe('with the heigth set to 60.', () => {
+        let structHTMLElement;
+        let height: number;
+        let heightForInput: number;
+        beforeEach(() => {
+          height = 60;
+          heightForInput = height - 2;
+          test = Mock.optionsComponentSetup<Searchbox, ISearchboxOptions>(Searchbox, {
+            enableOmnibox: false,
+            height: height
+          });
+          structHTMLElement = findHtmlElement(test.cmp.element);
         });
-        var structHTMLElement: HTMLElements = findHtmlElement(test.cmp.element);
-        for (let element in structHTMLElement) {
-          if (structHTMLElement[element] === structHTMLElement.magicBoxInput) {
-            expect(structHTMLElement[element].style.height).toBe(`${heightForInput}px`);
-          } else {
-            expect(structHTMLElement[element].style.height).toBe(`${height}px`);
-          }
-        }
+        it('the Querybox should resize to 60px', () => {
+          each(structHTMLElement, (element: HTMLElement) => {
+            if (element === structHTMLElement.magicboxInput) {
+              expect(element.style.height).toBe(`${heightForInput}px`);
+            } else {
+              expect(element.style.height).toBe(`${height}px`);
+            }
+          });
+        });
       });
     });
   });
