@@ -72,6 +72,12 @@ export class DynamicFacetValues {
     return !this.facetValues.length;
   }
 
+  public hasSelectedValue(arg: string | DynamicFacetValue) {
+    const value = typeof arg === 'string' ? arg : arg.value;
+    const foundValue = find(this.facetValues, facetValue => facetValue.equals(value));
+    return foundValue && foundValue.isSelected;
+  }
+
   public get(arg: string | DynamicFacetValue) {
     const value = typeof arg === 'string' ? arg : arg.value;
     const facetValue = find(this.facetValues, facetValue => facetValue.equals(value));

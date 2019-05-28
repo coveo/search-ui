@@ -234,6 +234,7 @@ export class DynamicFacet extends Component {
     this.initQueryEvents();
     this.initQueryStateEvents();
     this.initBreadCrumbEvents();
+    this.initComponentStateEvents();
 
     this.values = new DynamicFacetValues(this);
     this.isCollapsed = this.options.enableCollapse && this.options.collapsedByDefault;
@@ -458,6 +459,11 @@ export class DynamicFacet extends Component {
       );
       this.bind.onRootElement(BreadcrumbEvents.clearBreadcrumb, () => this.reset());
     }
+  }
+
+  private initComponentStateEvents() {
+    const componentStateId = QueryStateModel.getDynamicFacetId(this.options.id);
+    this.componentStateModel.registerComponent(componentStateId, this);
   }
 
   private initDynamicFacetQueryController() {
