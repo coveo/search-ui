@@ -9,6 +9,7 @@ import { Dom } from '../../utils/Dom';
 import { analyticsActionCauseList, IAnalyticsIncludeMissingTerm } from '../Analytics/AnalyticsActionListMeta';
 
 export interface IMissingTermOptions {
+  caption?: string;
   clickable?: boolean;
 }
 
@@ -18,7 +19,11 @@ export class MissingTerm extends Component {
     /**
      * Enable the user to click on a missing term to force it in the query
      */
-    clickable: ComponentOptions.buildBooleanOption({ defaultValue: true })
+    clickable: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+    /**
+     * Change the text that appears before the missing keywords
+     */
+    caption: ComponentOptions.buildLocalizedStringOption({ defaultValue: 'Missing' })
   };
 
   static doExport = () => {
@@ -63,7 +68,7 @@ export class MissingTerm extends Component {
   }
 
   private buildCaption(): Dom {
-    return $$('span', { className: 'coveo-field-caption' }, 'Missing:');
+    return $$('span', { className: 'coveo-field-caption' }, this.options.caption);
   }
 
   private buildMissingTerms(): Dom[] {

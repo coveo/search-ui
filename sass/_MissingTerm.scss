@@ -9,11 +9,11 @@
   }
   .coveo-missing-term {
     color: #004990;
-    cursor: pointer;
     text-decoration: line-through;
     margin-right: 5px;
     &.clickable {
       &:hover {
+        cursor: pointer;
         text-decoration: underline;
       }
     }
