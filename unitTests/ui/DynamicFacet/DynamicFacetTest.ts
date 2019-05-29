@@ -283,7 +283,7 @@ export function DynamicFacetTest() {
       });
       test.cmp.showMoreValues();
       expect(test.env.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(
-        analyticsActionCauseList.facetShowLess,
+        analyticsActionCauseList.facetShowMore,
         expectedMetadata,
         test.cmp.element
       );

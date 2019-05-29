@@ -325,7 +325,7 @@ export class DynamicFacet extends Component {
     this.dynamicFacetQueryController.increaseNumberOfValuesToRequest(additionalNumberOfValues);
     this.triggerNewQuery();
     this.usageAnalytics.logCustomEvent<IAnalyticsFacetMeta>(
-      analyticsActionCauseList.facetShowLess,
+      analyticsActionCauseList.facetShowMore,
       this.getShowMoreLessAnalyticsArgs(),
       this.element
     );

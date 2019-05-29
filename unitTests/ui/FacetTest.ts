@@ -209,7 +209,7 @@ export function FacetTest() {
         facetField: test.cmp.options.field.toString(),
         facetTitle: test.cmp.options.title
       });
-      test.cmp.reset();
+      test.cmp.showMore();
       test.cmp.showLess();
       expect(test.env.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(
         analyticsActionCauseList.facetShowLess,

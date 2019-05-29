@@ -255,6 +255,35 @@ export function CategoryFacetTest() {
 
         expect(queryBuilder.categoryFacets[0].maximumNumberOfValues).toBe(initialNumberOfValues + 1);
       });
+
+      it('showMore should log an analytics event when showing more results', () => {
+        const expectedMetadata = jasmine.objectContaining({
+          facetId: test.cmp.options.id,
+          facetField: test.cmp.options.field.toString(),
+          facetTitle: test.cmp.options.title
+        });
+        test.cmp.showMore();
+        expect(test.env.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(
+          analyticsActionCauseList.facetShowMore,
+          expectedMetadata,
+          test.cmp.element
+        );
+      });
+
+      it('showLess should log an analytics event when showing less results', () => {
+        const expectedMetadata = jasmine.objectContaining({
+          facetId: test.cmp.options.id,
+          facetField: test.cmp.options.field.toString(),
+          facetTitle: test.cmp.options.title
+        });
+        test.cmp.showMore();
+        test.cmp.showLess();
+        expect(test.env.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(
+          analyticsActionCauseList.facetShowLess,
+          expectedMetadata,
+          test.cmp.element
+        );
+      });
     });
 
     it('adds a facet search functionality by default', () => {
