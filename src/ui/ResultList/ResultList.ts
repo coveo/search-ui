@@ -325,7 +325,7 @@ export class ResultList extends Component {
     }
     this.bind.onQueryState(MODEL_EVENTS.CHANGE_ONE, QUERY_STATE_ATTRIBUTES.FIRST, () => this.handlePageChanged());
 
-    this.initResultContainer();
+    this.resultContainer = this.initResultContainer();
     Assert.exists(this.options.resultContainer);
 
     this.initWaitAnimationContainer();
@@ -807,13 +807,17 @@ export class ResultList extends Component {
     each(containers, container => $$(container).remove());
   }
 
-  private initResultContainer() {
+  private initResultContainer(): ResultContainer {
     if (!this.options.resultContainer) {
       const elemType = this.options.layout === 'table' ? 'table' : 'div';
       this.options.resultContainer = $$(elemType, { className: 'coveo-result-list-container' }).el;
-      this.element.appendChild(this.options.resultContainer);
+      this.initResultContainerAddToDom();
     }
-    this.resultContainer = new ResultContainer(this.options.resultContainer, this.searchInterface);
+    return new ResultContainer(this.options.resultContainer, this.searchInterface);
+  }
+
+  protected initResultContainerAddToDom() {
+    this.element.appendChild(this.options.resultContainer);
   }
 
   private initWaitAnimationContainer() {
