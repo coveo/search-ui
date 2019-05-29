@@ -1304,13 +1304,13 @@ export var analyticsActionCauseList = {
     type: 'dynamicFacet'
   },
   /**
-   * Identifies the search event that gets logged when a user clears all values from the advanced search filter summary.
+   * The search event that gets logged when an end-user triggers a new query by clicking a missing term in a result item.
    *
-   * `actionCause`: `'missingTermSearch'`
-   * `actionType`: `'miisingTerm'`
+   * `actionCause`: `'missingTermsSearch'`
+   * `actionType`: `'missingTerms'`
    */
-  missingTermSearch: <IAnalyticsActionCause>{
-    name: 'missingTermSearch',
-    type: 'miisingTerm'
+  missingTermsSearch: <IAnalyticsActionCause>{
+    name: 'missingTermsSearch',
+    type: 'missingTerms'
   }
 };
