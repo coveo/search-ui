@@ -1,5 +1,5 @@
 @import 'Variables';
-.CoveoMissingTerm {
+.CoveoMissingTerms {
   font-size: 12px;
   .coveo-field-caption {
     margin-right: 5px;
@@ -8,6 +8,7 @@
     &.clickable {
       @include clickable();
       text-decoration: line-through;
+      border: none;
     }
     text-decoration: line-through;
     margin-right: 5px;

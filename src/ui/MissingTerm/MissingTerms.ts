@@ -75,11 +75,20 @@ export class MissingTerms extends Component {
    * Re-injects a term as an exact phrase match expression in the query.
    */
   public includeTermInQuery(term: string) {
+    if (this.missingTerms.indexOf(term) === -1) {
+      return;
+    }
+
     let newQuery: string = this.queryStateModel.get('q');
     const regex = new RegExp(`${this.wordBoundary}${term}${this.wordBoundary}`, 'g');
+    let stillResults = true;
     let results;
-    while ((results = regex.exec(newQuery)) !== null) {
-      newQuery = [newQuery.slice(0, ++results.index), '"', term, '"', newQuery.slice(results.index + term.length)].join('');
+    while (stillResults) {
+      results = regex.exec(newQuery);
+      stillResults = results !== null;
+      if (stillResults) {
+        newQuery = [newQuery.slice(0, ++results.index), '"', term, '"', newQuery.slice(results.index + term.length)].join('');
+      }
     }
     this.queryStateModel.set('q', newQuery);
   }

@@ -2,17 +2,17 @@ import { IComponentDefinition } from '../Base/Component';
 import { LazyInitialization } from '../Base/Initialization';
 import { lazyExport } from '../../GlobalExports';
 
-export function lazyMissingTerm() {
-  LazyInitialization.registerLazyComponent('MissingTerm', () => {
+export function lazyMissingTerms() {
+  LazyInitialization.registerLazyComponent('MissingTerms', () => {
     return new Promise((resolve, reject) => {
       require.ensure(
-        ['./MissingTerm'],
+        ['./MissingTerms'],
         () => {
-          let loaded = require<IComponentDefinition>('./MissingTerm.ts')['MissingTerm'];
+          let loaded = require<IComponentDefinition>('./MissingTerms.ts')['MissingTerms'];
           lazyExport(loaded, resolve);
         },
-        LazyInitialization.buildErrorCallback('MissingTerm', resolve),
-        'MissingTerm'
+        LazyInitialization.buildErrorCallback('MissingTerms', resolve),
+        'MissingTerms'
       );
     });
   });
