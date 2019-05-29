@@ -20,15 +20,13 @@ export function SearchboxResizeTest() {
 
     describe('with an Omnibox as the Searchbox,', () => {
       describe('with the heigth option not set,', () => {
-        let structHTMLElement;
         beforeEach(() => {
           test = Mock.optionsComponentSetup<Searchbox, ISearchboxOptions>(Searchbox, {
             enableOmnibox: true
           });
-          structHTMLElement = findHtmlElement(test.cmp.element);
         });
         it('the Omnibox should not be resize', () => {
-          each(structHTMLElement, (element: HTMLElement) => {
+          each(findHtmlElement(test.cmp.element), (element: HTMLElement) => {
             expect(element.style.height).toBe('');
           });
         });
@@ -36,16 +34,13 @@ export function SearchboxResizeTest() {
 
       describe('with the heigth set to 25.', () => {
         let structHTMLElement;
-        let height: number;
-        let heightForInput: number;
+        const height = 25;
+        const heightForInput = height - 2;
         beforeEach(() => {
-          height = 25;
-          heightForInput = height - 2;
           test = Mock.optionsComponentSetup<Searchbox, ISearchboxOptions>(Searchbox, {
             enableOmnibox: true,
             height: height
           });
-          structHTMLElement = findHtmlElement(test.cmp.element);
         });
         it('the Omnibox should resize to 25px', () => {
           each(structHTMLElement, (element: HTMLElement) => {
@@ -60,28 +55,24 @@ export function SearchboxResizeTest() {
     });
 
     describe('with a Querybox as the Searchbox, ', () => {
-      describe('with the heigth option not set, ', () => {
-        let structHTMLElement;
+      describe('with the height option not set, ', () => {
         beforeEach(() => {
           test = Mock.optionsComponentSetup<Searchbox, ISearchboxOptions>(Searchbox, {
             enableOmnibox: false
           });
-          structHTMLElement = findHtmlElement(test.cmp.element);
         });
         it('the Querybox should not be resize', () => {
-          each(structHTMLElement, (element: HTMLElement) => {
+          each(findHtmlElement(test.cmp.element), (element: HTMLElement) => {
             expect(element.style.height).toBe('');
           });
         });
       });
 
-      describe('with the heigth set to 60.', () => {
+      describe('with the height set to 60.', () => {
         let structHTMLElement;
-        let height: number;
-        let heightForInput: number;
+        const height = 60;
+        const heightForInput = height - 2;
         beforeEach(() => {
-          height = 60;
-          heightForInput = height - 2;
           test = Mock.optionsComponentSetup<Searchbox, ISearchboxOptions>(Searchbox, {
             enableOmnibox: false,
             height: height
