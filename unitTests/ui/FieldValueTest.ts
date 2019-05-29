@@ -11,11 +11,12 @@ import { IDateToStringOptions } from '../../src/utils/DateUtils';
 import { DateUtils } from '../../src/utils/DateUtils';
 import * as _ from 'underscore';
 import { l } from '../../src/Core';
+import { DynamicFacet } from '../../src/ui/DynamicFacet/DynamicFacet';
+import { DynamicFacetValues } from '../../src/ui/DynamicFacet/DynamicFacetValues/DynamicFacetValues';
 
 export function FieldValueTest() {
   describe('FieldValue', () => {
     let test: Mock.IBasicComponentSetup<FieldValue>;
-    let element: HTMLElement;
 
     const getText = () => {
       return $$(test.cmp.element).find('span').textContent;
@@ -28,70 +29,45 @@ export function FieldValueTest() {
     };
 
     beforeEach(() => {
-      test = Mock.advancedResultComponentSetup<FieldValue>(FieldValue, FakeResults.createFakeResult(), <Mock.AdvancedComponentSetupOptions>{
-        element: $$('span').el,
-        cmpOptions: <IFieldValueOptions>{
-          field: '@string'
-        }
-      });
-      element = $$('span').el;
+      initializeFieldValueComponent({ field: '@string' });
     });
 
-    afterEach(() => {
-      test = null;
-      element = null;
-    });
+    function initializeFieldValueComponent(
+      options: IFieldValueOptions,
+      result = FakeResults.createFakeResult(),
+      facet?: Facet | DynamicFacet
+    ) {
+      test = Mock.advancedResultComponentSetup<FieldValue>(FieldValue, result, <Mock.AdvancedComponentSetupOptions>{
+        element: $$('span').el,
+        cmpOptions: options,
+        modifyBuilder: (builder: Mock.MockEnvironmentBuilder) => {
+          if (facet) {
+            builder.componentStateModel.get = () => [facet];
+            builder.queryStateModel.get = () => [];
+          }
+          return builder;
+        }
+      });
+    }
 
     describe('exposes options', () => {
       it('field not specified should default to @field', () => {
-        test = Mock.optionsResultComponentSetup<FieldValue, IFieldValueOptions>(
-          FieldValue,
-          <IFieldValueOptions>{
-            field: undefined
-          },
-          FakeResults.createFakeResult()
-        );
+        initializeFieldValueComponent({});
         expect(test.cmp.options.field).toBe('@field');
       });
 
       it('facet should use the field value by default', () => {
-        test = Mock.optionsResultComponentSetup<FieldValue, IFieldValueOptions>(
-          FieldValue,
-          <IFieldValueOptions>{
-            field: '@foobarde'
-          },
-          FakeResults.createFakeResult()
-        );
+        initializeFieldValueComponent({ field: '@foobarde' });
         expect(test.cmp.options.facet).toBe('@foobarde');
       });
 
       it("htmlValue set to true should set the element's innerHTML value properly", () => {
-        test = Mock.advancedResultComponentSetup<FieldValue>(
-          FieldValue,
-          FakeResults.createFakeResult(),
-          <Mock.AdvancedComponentSetupOptions>{
-            element: element,
-            cmpOptions: <IFieldValueOptions>{
-              field: '@foobarde',
-              htmlValue: true
-            }
-          }
-        );
+        initializeFieldValueComponent({ field: '@foobarde', htmlValue: true });
         expect(test.cmp.renderOneValue('<em>patatefrietz</em>').innerHTML).toBe('<em>patatefrietz</em>');
       });
 
       it('htmlValue set to false should set the value in text node', () => {
-        test = Mock.advancedResultComponentSetup<FieldValue>(
-          FieldValue,
-          FakeResults.createFakeResult(),
-          <Mock.AdvancedComponentSetupOptions>{
-            element: element,
-            cmpOptions: <IFieldValueOptions>{
-              field: '@foobarde',
-              htmlValue: false
-            }
-          }
-        );
+        initializeFieldValueComponent({ field: '@foobarde', htmlValue: false });
 
         expect(test.cmp.renderOneValue('<em>patatefrietz</em>').textContent).toBe('<em>patatefrietz</em>');
       });
@@ -100,14 +76,15 @@ export function FieldValueTest() {
         const result = FakeResults.createFakeResult();
         result.raw.foobarde = 'this;is;sparta';
 
-        test = Mock.advancedResultComponentSetup<FieldValue>(FieldValue, result, <Mock.AdvancedComponentSetupOptions>{
-          element: element,
-          cmpOptions: <IFieldValueOptions>{
+        initializeFieldValueComponent(
+          {
             field: '@foobarde',
             splitValues: true,
             separator: ';'
-          }
-        });
+          },
+          result
+        );
+
         expect(test.cmp.element.textContent).toBe('this, is, sparta');
       });
 
@@ -115,15 +92,16 @@ export function FieldValueTest() {
         const result = FakeResults.createFakeResult();
         result.raw.foobarde = 'this;is;sparta';
 
-        test = Mock.advancedResultComponentSetup<FieldValue>(FieldValue, result, <Mock.AdvancedComponentSetupOptions>{
-          element: element,
-          cmpOptions: <IFieldValueOptions>{
+        initializeFieldValueComponent(
+          {
             field: '@foobarde',
             splitValues: true,
             separator: ';',
             displaySeparator: '<->'
-          }
-        });
+          },
+          result
+        );
+
         expect(test.cmp.element.textContent).toBe('this<->is<->sparta');
       });
 
@@ -131,14 +109,15 @@ export function FieldValueTest() {
         const result = FakeResults.createFakeResult();
         result.raw.foobarde = 'this,is,sparta';
 
-        test = Mock.advancedResultComponentSetup<FieldValue>(FieldValue, result, <Mock.AdvancedComponentSetupOptions>{
-          element: element,
-          cmpOptions: <IFieldValueOptions>{
+        initializeFieldValueComponent(
+          {
             field: '@foobarde',
             splitValues: true,
             separator: ','
-          }
-        });
+          },
+          result
+        );
+
         expect(test.cmp.element.textContent).toBe('this, is, sparta');
       });
 
@@ -146,13 +125,14 @@ export function FieldValueTest() {
         const result = FakeResults.createFakeResult();
         result.raw.foobarde = 'this;is;sparta';
 
-        test = Mock.advancedResultComponentSetup<FieldValue>(FieldValue, result, <Mock.AdvancedComponentSetupOptions>{
-          element: element,
-          cmpOptions: <IFieldValueOptions>{
+        initializeFieldValueComponent(
+          {
             field: '@foobarde',
             splitValues: true
-          }
-        });
+          },
+          result
+        );
+
         expect(test.cmp.element.textContent).toBe('this, is, sparta');
       });
 
@@ -160,45 +140,33 @@ export function FieldValueTest() {
         const result = FakeResults.createFakeResult();
         result.raw.foobarde = ['this', 'is', 'sparta'];
 
-        test = Mock.advancedResultComponentSetup<FieldValue>(FieldValue, result, <Mock.AdvancedComponentSetupOptions>{
-          element: element,
-          cmpOptions: <IFieldValueOptions>{
+        initializeFieldValueComponent(
+          {
             field: '@foobarde',
             splitValues: true
-          }
-        });
+          },
+          result
+        );
+
         expect(test.cmp.element.textContent).toBe('this, is, sparta');
       });
 
       it('helper should render using the specified helper', () => {
-        test = Mock.advancedResultComponentSetup<FieldValue>(
-          FieldValue,
-          FakeResults.createFakeResult(),
-          <Mock.AdvancedComponentSetupOptions>{
-            element: element,
-            cmpOptions: <IFieldValueOptions>{
-              field: '@foobarde',
-              helper: 'hamburgerHelper'
-            }
-          }
-        );
+        initializeFieldValueComponent({
+          field: '@foobarde',
+          helper: 'hamburgerHelper'
+        });
+
         TemplateHelpers.registerFieldHelper('hamburgerHelper', value => 'ham' + value + 'burger');
         expect(test.cmp.renderOneValue('1337').textContent).toEqual('ham1337burger');
       });
 
       it('helper should eliminate helperOptions that do not match the current helper', () => {
-        test = Mock.advancedResultComponentSetup<FieldValue>(
-          FieldValue,
-          FakeResults.createFakeResult(),
-          <Mock.AdvancedComponentSetupOptions>{
-            element: element,
-            cmpOptions: <IFieldValueOptions>{
-              field: '@author',
-              helper: 'anchor',
-              htmlValue: true
-            }
-          }
-        );
+        initializeFieldValueComponent({
+          field: '@author',
+          helper: 'anchor',
+          htmlValue: true
+        });
 
         const anchor = $$(test.cmp.element).find('a');
 
@@ -206,97 +174,56 @@ export function FieldValueTest() {
       });
 
       it('helper should try and execute a version 2 of the helper if found', () => {
-        test = Mock.advancedResultComponentSetup<FieldValue>(
-          FieldValue,
-          FakeResults.createFakeResult(),
-          <Mock.AdvancedComponentSetupOptions>{
-            element: element,
-            cmpOptions: <IFieldValueOptions>{
-              field: '@foo',
-              helper: 'somehelper'
-            }
-          }
-        );
+        initializeFieldValueComponent({
+          field: '@foo',
+          helper: 'somehelper'
+        });
+
         TemplateHelpers.registerFieldHelper('somehelper', value => 'version1');
         TemplateHelpers.registerFieldHelper('somehelperv2', value => 'version2');
         expect(test.cmp.renderOneValue('somevalue').textContent).toEqual('version2');
       });
 
       it('should not crash and render the default value if the helper does not exist', () => {
-        test = Mock.advancedResultComponentSetup<FieldValue>(
-          FieldValue,
-          FakeResults.createFakeResult(),
-          <Mock.AdvancedComponentSetupOptions>{
-            element: element,
-            cmpOptions: <IFieldValueOptions>{
-              field: '@foo',
-              helper: 'somehelperwhichdoesnotexist'
-            }
-          }
-        );
+        initializeFieldValueComponent({
+          field: '@foo',
+          helper: 'somehelperwhichdoesnotexist'
+        });
 
         expect(test.cmp.renderOneValue('somevalue').textContent).toEqual('somevalue');
       });
 
       it('should support shorten helper', () => {
-        test = Mock.advancedResultComponentSetup<FieldValue>(
-          FieldValue,
-          FakeResults.createFakeResult(),
-          <Mock.AdvancedComponentSetupOptions>{
-            element: element,
-            cmpOptions: <IFieldValueOptions>{
-              field: '@longfieldvalue',
-              helper: 'shorten'
-            }
-          }
-        );
+        initializeFieldValueComponent({
+          field: '@longfieldvalue',
+          helper: 'shorten'
+        });
 
         expect(test.cmp.renderOneValue(_.range(0, 1000).join('-')).textContent.length).toBe(200);
       });
 
       it('textCaption should render a text value', () => {
-        test = Mock.advancedResultComponentSetup<FieldValue>(
-          FieldValue,
-          FakeResults.createFakeResult(),
-          <Mock.AdvancedComponentSetupOptions>{
-            element: element,
-            cmpOptions: <IFieldValueOptions>{
-              field: '@title',
-              textCaption: '<script>alert("Potatoes")</script>'
-            }
-          }
-        );
+        initializeFieldValueComponent({
+          field: '@title',
+          textCaption: '<script>alert("Potatoes")</script>'
+        });
 
         expect($$(test.cmp.element).text()).toContain('<script>alert("Potatoes")</script>');
       });
 
       it('textCaption should render in front of the fieldValue', () => {
-        test = Mock.advancedResultComponentSetup<FieldValue>(
-          FieldValue,
-          FakeResults.createFakeResult(),
-          <Mock.AdvancedComponentSetupOptions>{
-            element: element,
-            cmpOptions: <IFieldValueOptions>{
-              field: '@title',
-              textCaption: 'this is a test'
-            }
-          }
-        );
+        initializeFieldValueComponent({
+          field: '@title',
+          textCaption: 'this is a test'
+        });
         expect($$($$(test.cmp.element).children()[0]).hasClass('coveo-field-caption')).toBe(true);
       });
 
       it('textCaption option should add the class coveo-with-label to the CoveoFieldValue', () => {
-        test = Mock.advancedResultComponentSetup<FieldValue>(
-          FieldValue,
-          FakeResults.createFakeResult(),
-          <Mock.AdvancedComponentSetupOptions>{
-            element: element,
-            cmpOptions: <IFieldValueOptions>{
-              field: '@title',
-              textCaption: 'this is a test'
-            }
-          }
-        );
+        initializeFieldValueComponent({
+          field: '@title',
+          textCaption: 'this is a test'
+        });
         expect($$(test.cmp.element).hasClass('coveo-with-label')).toBe(true);
       });
     });
@@ -319,27 +246,12 @@ export function FieldValueTest() {
         };
       });
 
-      afterEach(() => {
-        facet = null;
-      });
-
       describe('when translating standard field values', () => {
         beforeEach(() => {
-          const fakeResults = FakeResults.createFakeResult();
-          fakeResults.raw['objecttype'] = 'opportunityproduct';
+          const fakeResult = FakeResults.createFakeResult();
+          fakeResult.raw['objecttype'] = 'opportunityproduct';
 
-          test = Mock.advancedResultComponentSetup<FieldValue>(FieldValue, fakeResults, <Mock.AdvancedComponentSetupOptions>{
-            element: $$('span').el,
-            cmpOptions: <IFieldValueOptions>{
-              field: '@objecttype'
-            },
-            modifyBuilder: (builder: Mock.MockEnvironmentBuilder) => {
-              builder.componentStateModel.get = () => [facet];
-              builder.queryStateModel.get = () => [];
-              return builder;
-            }
-          });
-          element = $$('span').el;
+          initializeFieldValueComponent({ field: '@objecttype' }, fakeResult, facet);
         });
 
         it('should use the translated value', () => {
@@ -353,41 +265,53 @@ export function FieldValueTest() {
 
       it('should display the field value as clickable when its facet is enabled', () => {
         facet.disabled = false;
-        test = Mock.advancedResultComponentSetup<FieldValue>(
-          FieldValue,
-          FakeResults.createFakeResult(),
-          <Mock.AdvancedComponentSetupOptions>{
-            element: element,
-            modifyBuilder: (builder: Mock.MockEnvironmentBuilder) => {
-              builder.componentStateModel.get = () => [facet];
-              builder.queryStateModel.get = () => [];
-              return builder;
-            },
-            cmpOptions: {
-              field: '@string'
-            }
-          }
-        );
+        initializeFieldValueComponent({ field: '@string' }, FakeResults.createFakeResult(), facet);
         expect($$($$(test.cmp.element).find('span')).hasClass('coveo-clickable')).toBe(true);
       });
 
       it('should not display the field value as clickable when its facet is disabled', () => {
         facet.disabled = true;
-        test = Mock.advancedResultComponentSetup<FieldValue>(
-          FieldValue,
-          FakeResults.createFakeResult(),
-          <Mock.AdvancedComponentSetupOptions>{
-            element: element,
-            modifyBuilder: (builder: Mock.MockEnvironmentBuilder) => {
-              builder.componentStateModel.get = () => [facet];
-              builder.queryStateModel.get = () => [];
-              return builder;
-            },
-            cmpOptions: {
-              field: '@string'
-            }
-          }
-        );
+        initializeFieldValueComponent({ field: '@string' }, FakeResults.createFakeResult(), facet);
+        expect($$($$(test.cmp.element).find('span')).hasClass('coveo-clickable')).toBe(false);
+      });
+    });
+
+    describe('with a related dynamic facet', () => {
+      let facet: DynamicFacet;
+
+      beforeEach(() => {
+        facet = Mock.mock<DynamicFacet>(DynamicFacet);
+
+        facet.values = Mock.mock<DynamicFacetValues>(DynamicFacetValues);
+        facet.values.hasSelectedValue = () => true;
+      });
+
+      describe('when translating standard field values', () => {
+        beforeEach(() => {
+          const fakeResult = FakeResults.createFakeResult();
+          fakeResult.raw['objecttype'] = 'opportunityproduct';
+
+          initializeFieldValueComponent({ field: '@objecttype' }, fakeResult, facet);
+        });
+
+        it('should use the translated value', () => {
+          expect(getText()).toBe(l('opportunityproduct'));
+        });
+
+        it('should use the translated value for the title', () => {
+          expect(getTitle()).toContain(l('opportunityproduct'));
+        });
+      });
+
+      it('should display the field value as clickable when its facet is enabled', () => {
+        facet.disabled = false;
+        initializeFieldValueComponent({ field: '@string' }, FakeResults.createFakeResult(), facet);
+        expect($$($$(test.cmp.element).find('span')).hasClass('coveo-clickable')).toBe(true);
+      });
+
+      it('should not display the field value as clickable when its facet is disabled', () => {
+        facet.disabled = true;
+        initializeFieldValueComponent({ field: '@string' }, FakeResults.createFakeResult(), facet);
         expect($$($$(test.cmp.element).find('span')).hasClass('coveo-clickable')).toBe(false);
       });
     });
@@ -409,7 +333,7 @@ export function FieldValueTest() {
       const dateString = DateUtils.dateToString(new Date(parseInt(fakeResult.raw.date)), fullDateOptions);
       const dateTimeString = DateUtils.dateTimeToString(new Date(parseInt(fakeResult.raw.date)), fullDateOptions);
 
-      test = Mock.optionsResultComponentSetup<FieldValue, IFieldValueOptions>(FieldValue, options, fakeResult);
+      initializeFieldValueComponent(options, fakeResult);
       expect(
         $$(test.cmp.element)
           .find('span')
@@ -417,7 +341,7 @@ export function FieldValueTest() {
       ).toEqual(dateString);
 
       options.helper = 'dateTime';
-      test = Mock.optionsResultComponentSetup<FieldValue, IFieldValueOptions>(FieldValue, options, fakeResult);
+      initializeFieldValueComponent(options, fakeResult);
       expect(
         $$(test.cmp.element)
           .find('span')
@@ -425,7 +349,7 @@ export function FieldValueTest() {
       ).toEqual(dateTimeString);
 
       options.helper = 'emailDateTime';
-      test = Mock.optionsResultComponentSetup<FieldValue, IFieldValueOptions>(FieldValue, options, fakeResult);
+      initializeFieldValueComponent(options, fakeResult);
       expect(
         $$(test.cmp.element)
           .find('span')
@@ -434,13 +358,8 @@ export function FieldValueTest() {
     });
 
     it("should not show a full date tooltip if it doesn't have the helper is not a date", () => {
-      test = Mock.optionsResultComponentSetup<FieldValue, IFieldValueOptions>(
-        FieldValue,
-        <IFieldValueOptions>{
-          field: '@string'
-        },
-        FakeResults.createFakeResult()
-      );
+      initializeFieldValueComponent({ field: '@string' });
+
       expect(
         $$(test.cmp.element)
           .find('span')
