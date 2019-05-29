@@ -704,3 +704,6 @@ DynamicFacetManagerTest();
 
 import { MissingTermTest } from './ui/MissingTermTest';
 MissingTermTest();
+
+import { FacetPaddingTest } from './ui/FacetPaddingTest';
+FacetPaddingTest();
