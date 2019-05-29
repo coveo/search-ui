@@ -10,7 +10,7 @@ import { BreadcrumbEvents } from '../../src/events/BreadcrumbEvents';
 import { IPopulateBreadcrumbEventArgs } from '../../src/events/BreadcrumbEvents';
 import { IPopulateOmniboxEventArgs } from '../../src/events/OmniboxEvents';
 import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
-import { KEYBOARD } from '../../src/Core';
+import { KEYBOARD, TemplateList } from '../../src/Core';
 
 export function FacetTest() {
   describe('Facet', () => {
@@ -182,7 +182,7 @@ export function FacetTest() {
       );
     });
 
-    it('should log an analytics event when showing more results', done => {
+    it('should log an analytics event when showing more results', async done => {
       const results = FakeResults.createFakeResults(test.cmp.options.pageSize + 5);
       const validation = Promise.resolve(results.results);
       const spyFacetQueryController = jasmine.createSpy('spyFacetQueryController').and.returnValue(validation);
@@ -194,24 +194,23 @@ export function FacetTest() {
 
       test.cmp.facetQueryController.fetchMore = spyFacetQueryController as any;
       test.cmp.showMore();
-      validation.then(() => {
-        expect(test.env.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(
-          analyticsActionCauseList.facetShowMore,
-          expectedMetadata,
-          test.cmp.element
-        );
-        done();
-      });
+      await validation;
+      expect(test.env.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(
+        analyticsActionCauseList.facetShowMore,
+        expectedMetadata,
+        test.cmp.element
+      );
+      done();
     });
 
     it('should log an analytics event when showing less results', () => {
-      test.cmp.showMore();
-      test.cmp.showLess();
       const expectedMetadata = jasmine.objectContaining({
         facetId: test.cmp.options.id,
         facetField: test.cmp.options.field.toString(),
         facetTitle: test.cmp.options.title
       });
+      test.cmp.reset();
+      test.cmp.showLess();
       expect(test.env.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(
         analyticsActionCauseList.facetShowLess,
         expectedMetadata,
