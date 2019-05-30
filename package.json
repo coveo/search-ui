@@ -1,6 +1,6 @@
 {
   "name": "coveo-search-ui",
-  "version": "2.0.267",
+  "version": "2.0.276",
   "description": "Coveo JavaScript Search Framework",
   "main": "./bin/js/CoveoJsSearch.js",
   "types": "./bin/ts/CoveoJsSearch.d.ts",
@@ -149,7 +149,7 @@
     "typescript": "2.8.1",
     "walk": "^2.3.9",
     "webpack": "^3.10.0",
-    "webpack-bundle-analyzer": "^2.9.1",
+    "webpack-bundle-analyzer": "^3.3.2",
     "webpack-dev-server": "3.0.0",
     "xml2js": "^0.4.17",
     "yargs": "^4.7.1"

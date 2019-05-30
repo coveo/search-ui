@@ -26,6 +26,7 @@ $page-width: 1000px;
     margin: 54px auto 47px;
     padding: 0 10px;
     display: flex;
+    align-items: center;
     @include smallScreenWidth {
       padding: 20px 10px;
       margin: 0 auto;

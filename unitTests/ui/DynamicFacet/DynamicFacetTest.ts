@@ -41,6 +41,10 @@ export function DynamicFacetTest() {
       return args.breadcrumbs;
     }
 
+    function paddingFeatureActive() {
+      return !!$$(test.cmp.element.parentElement).find('.coveo-topSpace');
+    }
+
     it(`when facet has values but none are selected
       should not be seen as "active" or as "empty"`, () => {
       test.cmp.ensureDom();
@@ -329,8 +333,32 @@ export function DynamicFacetTest() {
       expect(breadcrumbs.length).toBe(1);
     });
 
+    it(`when setting a preservePosition to true (default) and having a facet column parent
+      should activate the padding feature`, () => {
+      $$(test.cmp.element.parentElement).addClass('coveo-facet-column');
+      test.cmp.ensureDom();
+      expect(paddingFeatureActive()).toBe(true);
+    });
+
+    it(`when setting a preservePosition to true (default) without having a facet column parent
+      should not activate the padding feature`, () => {
+      test.cmp.ensureDom();
+
+      expect(paddingFeatureActive()).toBe(false);
+    });
+
+    it(`when setting a preservePosition to false and having a facet column parent
+      should not activate the padding feature`, () => {
+      options.preservePosition = false;
+      initializeComponent();
+      $$(test.cmp.element.parentElement).addClass('coveo-facet-column');
+      test.cmp.ensureDom();
+
+      expect(paddingFeatureActive()).toBe(false);
+    });
+
     it('logs an analytics search event when logAnalyticsEvent is called', () => {
-      test.cmp.logAnalyticsEvent(analyticsActionCauseList.dynamicFacetSelect);
+      test.cmp.logAnalyticsEvent(analyticsActionCauseList.dynamicFacetSelect, test.cmp.analyticsFacetState[0]);
 
       expect(test.cmp.usageAnalytics.logSearchEvent).toHaveBeenCalled();
     });
@@ -340,6 +368,25 @@ export function DynamicFacetTest() {
       test.cmp.selectValue('foo');
 
       expect(test.cmp.analyticsFacetState).toEqual([test.cmp.values.get('bar').analyticsMeta, test.cmp.values.get('foo').analyticsMeta]);
+    });
+
+    it(`when calling "putStateIntoAnalytics" 
+      should call "getPendingSearchEvent" on the "usageAnalytics" object`, () => {
+      test.cmp.putStateIntoAnalytics();
+
+      expect(test.cmp.usageAnalytics.getPendingSearchEvent).toHaveBeenCalled();
+    });
+
+    it(`when calling "putStateIntoAnalytics" 
+      should call "addFacetsState" on the "PendingSearchEvent" with the correct state`, () => {
+      const fakePendingSearchEvent = {
+        addFacetsState: jasmine.createSpy('addFacetsState')
+      };
+      test.cmp.usageAnalytics.getPendingSearchEvent = jasmine.createSpy('getPendingSearchEvent').and.callFake(() => fakePendingSearchEvent);
+
+      test.cmp.putStateIntoAnalytics();
+
+      expect(fakePendingSearchEvent.addFacetsState).toHaveBeenCalledWith(test.cmp.analyticsFacetState);
     });
   });
 }

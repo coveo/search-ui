@@ -17,6 +17,7 @@ import { Initialization } from '../Base/Initialization';
 import { FacetUtils } from '../Facet/FacetUtils';
 import { Checkbox } from '../FormWidgets/Checkbox';
 import { SimpleFilterValues } from './SimpleFilterValues';
+import { Logger } from '../../misc/Logger';
 
 export interface ISimpleFilterOptions {
   title: string;
@@ -24,6 +25,7 @@ export interface ISimpleFilterOptions {
   field: IFieldOption;
   valueCaption: any;
   maximumNumberOfValues: number;
+  sortCriteria: string;
 }
 
 interface ILabeledCheckbox {
@@ -46,6 +48,10 @@ export class SimpleFilter extends Component {
       SimpleFilter
     });
   };
+
+  static simpleFilterSortCritera() {
+    return ['score', 'occurrences', 'alphaascending', 'alphadescending', 'chisquare'];
+  }
   /**
    * The possible options for the SimpleFilter.
    * @componentOptions
@@ -115,7 +121,43 @@ export class SimpleFilter extends Component {
      * <div class='CoveoSimpleFilter' data-field='@myotherfield' data-value-caption='{"txt":"Text files","html":"Web page"}'></div>
      * ```
      */
-    valueCaption: ComponentOptions.buildJsonOption()
+    valueCaption: ComponentOptions.buildJsonOption(),
+    /**
+     *
+     * string?
+     * The sort criteria to use.
+     *
+     * **Default:** `score`
+     *
+     * **Allowed values:**
+     *
+     * `score`: sort using the score value which is computed from the number of occurrences of a field value, as well as from the position
+     * where query result items having this field value appear in the ranked query result set. When using this sort criterion, a field value
+     * with 100 occurrences might appear after one with only 10 occurrences, if the occurrences of the latter field value tend to appear higher
+     * in the ranked query result set.
+     *
+     * `occurrences`: sort by number of occurrences, with field values having the highest number of occurrences appearing first.
+     *
+     * `alphaascending/alphadescending`: sort alphabetically on the field values.
+     *
+     * `chisquare`: sort based on the relative frequency of field values in the query result set compared to their frequency in the entire index. This means that a field value that does
+     * not appear often in the index, but does appear often in the query result set will tend to appear higher.
+     *
+     */
+    sortCriteria: ComponentOptions.buildStringOption({
+      postProcessing: (value, options: ISimpleFilterOptions) => {
+        const sortCriteriaToValidate = value || 'score';
+        if (SimpleFilter.simpleFilterSortCritera().indexOf(sortCriteriaToValidate.toLowerCase()) !== -1) {
+          return sortCriteriaToValidate;
+        } else {
+          new Logger(SimpleFilter).warn(
+            `The simpleFilter component doesn't accept ${sortCriteriaToValidate} as the value for the sortCriteria option.`,
+            `Available option are : ${SimpleFilter.simpleFilterSortCritera().toString()}`
+          );
+          return 'score';
+        }
+      }
+    })
   };
 
   private valueContainer: Dom;
@@ -358,6 +400,15 @@ export class SimpleFilter extends Component {
       this.checkboxes = map(this.options.values, caption => this.createCheckbox(caption));
     } else if (this.groupByRequestValues != undefined) {
       this.checkboxes = map(this.groupByRequestValues, caption => this.createCheckbox(caption));
+    }
+    if (
+      this.options.sortCriteria.toLocaleLowerCase() === 'alphaascending' ||
+      this.options.sortCriteria.toLowerCase() === 'alphadescending'
+    ) {
+      this.checkboxes.sort((a, b) => a.checkbox.label.localeCompare(b.checkbox.label));
+      if (this.options.sortCriteria.toLowerCase() === 'alphadescending') {
+        this.checkboxes.reverse();
+      }
     }
     each(this.checkboxes, result => {
       this.valueContainer.append(result.checkbox.getElement());

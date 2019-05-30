@@ -9,7 +9,7 @@ import { l } from '../../../strings/Strings';
 
 export class DynamicFacetValues {
   private facetValues: DynamicFacetValue[];
-  private list = $$('ul', { className: 'coveo-dynamic-facet-values' });
+  private list = $$('ul', { className: 'coveo-dynamic-facet-values' }).el;
   private moreValuesAvailable: boolean;
 
   constructor(private facet: DynamicFacet) {
@@ -72,6 +72,12 @@ export class DynamicFacetValues {
     return !this.facetValues.length;
   }
 
+  public hasSelectedValue(arg: string | DynamicFacetValue) {
+    const value = typeof arg === 'string' ? arg : arg.value;
+    const foundValue = find(this.facetValues, facetValue => facetValue.equals(value));
+    return foundValue && foundValue.isSelected;
+  }
+
   public get(arg: string | DynamicFacetValue) {
     const value = typeof arg === 'string' ? arg : arg.value;
     const facetValue = find(this.facetValues, facetValue => facetValue.equals(value));
@@ -112,19 +118,22 @@ export class DynamicFacetValues {
   }
 
   public render() {
-    this.list.empty();
+    const fragment = new DocumentFragment();
+    $$(this.list).empty();
+
     this.facetValues.forEach(facetValue => {
-      this.list.append(facetValue.render());
+      fragment.appendChild(facetValue.render());
     });
 
     if (this.shouldEnableShowLess) {
-      this.list.append(this.buildShowLess());
+      fragment.appendChild(this.buildShowLess());
     }
 
     if (this.moreValuesAvailable) {
-      this.list.append(this.buildShowMore());
+      fragment.appendChild(this.buildShowMore());
     }
 
-    return this.list.el;
+    this.list.appendChild(fragment);
+    return this.list;
   }
 }
