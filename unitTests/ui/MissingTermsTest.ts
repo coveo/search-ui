@@ -67,7 +67,7 @@ export function MissingTermsTest() {
       });
 
       it('caption allows the user to change the title for the missing terms', () => {
-        const caption = 'The missing keyword';
+        const caption = 'The missing term';
         test = Mock.advancedResultComponentSetup<MissingTerms>(
           MissingTerms,
           fakeResult,

@@ -14,7 +14,7 @@ export interface IMissingTermsOptions {
 }
 
 /**
- * This [result template component](https://docs.coveo.com/en/513/#using-result-template-components) renders a list of query keywords
+ * This [result template component](https://docs.coveo.com/en/513/#using-result-template-components) renders a list of query terms
  * that were not matched by its associated result item.
  */
 export class MissingTerms extends Component {
@@ -63,7 +63,7 @@ export class MissingTerms extends Component {
     this.addMissingTerms();
   }
   /**
-   *Returns all original basic query expression keywords that were not matched by the result item the component instance is associated with.
+   *Returns all original basic query expression terms that were not matched by the result item the component instance is associated with.
    */
   public get missingTerms(): string[] {
     return this.result.absentTerms.filter(term => {
