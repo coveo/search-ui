@@ -8,12 +8,13 @@ export function MissingTermsTest() {
     let test: Mock.IBasicComponentSetup<MissingTerms>;
     let fakeResult = FakeResults.createFakeResult();
     fakeResult.state.q = 'This will be a really really really long query';
-    const randomWord = 'foo';
+    const wordNotInQuery = 'foo';
+    const wordPresent = 'will';
     const firstWord = 'This';
     const getSpy: any = jasmine.createSpy('getSpy').and.returnValue('This will be a really really really long query');
     beforeEach(() => {
       fakeResult.absentTerms = [];
-      fakeResult.absentTerms.push('will');
+      fakeResult.absentTerms.push(wordPresent);
     });
 
     describe('exposes options', () => {
@@ -103,40 +104,40 @@ export function MissingTermsTest() {
           });
 
           it('only the missing term present in the query', () => {
-            fakeResult.absentTerms.push(randomWord);
+            fakeResult.absentTerms.push(wordNotInQuery);
             expect(test.cmp.missingTerms.toString()).toBe(expectedResult.toString());
           });
         });
       });
 
       describe('re-injecting a term as an exact match', () => {
-        it('and the term is present in the query, it is re-injected as an exact match', () => {
-          test.cmp.includeTermInQuery(fakeResult.absentTerms[0]);
+        it('and the term is present in the query', () => {
+          test.cmp.includeTermInQuery(wordPresent);
           expect(test.cmp.queryStateModel.set).toHaveBeenCalledWith('q', 'This "will" be a really really really long query');
         });
 
-        it('and the term is the first word in the query, it is re-injected as an exact match', () => {
+        it('and the term is the first word in the query', () => {
           fakeResult.absentTerms.push(firstWord);
           test.cmp.includeTermInQuery(firstWord);
           expect(test.cmp.queryStateModel.set).toHaveBeenCalledWith('q', '"This" will be a really really really long query');
         });
 
-        it('and the term is the last word in the query, it is re-injected as an exact match', () => {
+        it('and the term is the last word in the query', () => {
           const lastWord = 'query';
           fakeResult.absentTerms.push(lastWord);
           test.cmp.includeTermInQuery(lastWord);
           expect(test.cmp.queryStateModel.set).toHaveBeenCalledWith('q', 'This will be a really really really long "query"');
         });
 
-        it('and the term is present in the query, it is re-injected as an exact match', () => {
-          const multipleWord = 'really';
-          fakeResult.absentTerms.push(multipleWord);
-          test.cmp.includeTermInQuery(multipleWord);
+        it('and the term is present multiple times in the query, they are all re-injected as an exact match', () => {
+          const wordPresentMultipleTimes = 'really';
+          fakeResult.absentTerms.push(wordPresentMultipleTimes);
+          test.cmp.includeTermInQuery(wordPresentMultipleTimes);
           expect(test.cmp.queryStateModel.set).toHaveBeenCalledWith('q', 'This will be a "really" "really" "really" long query');
         });
 
-        it('but the term is not present, the query should remain the same', () => {
-          test.cmp.includeTermInQuery(randomWord);
+        it('but the term is not present', () => {
+          test.cmp.includeTermInQuery(wordNotInQuery);
           expect(test.cmp.queryStateModel.set).not.toHaveBeenCalled();
         });
       });
