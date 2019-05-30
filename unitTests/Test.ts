@@ -702,8 +702,8 @@ DynamicFacetQueryControllerTest();
 import { DynamicFacetManagerTest } from './ui/DynamicFacetManagerTest';
 DynamicFacetManagerTest();
 
-import { MissingTermTest } from './ui/MissingTermTest';
-MissingTermTest();
+import { MissingTermsTest } from './ui/MissingTermsTest';
+MissingTermsTest();
 
 import { FacetPaddingTest } from './ui/FacetPaddingTest';
 FacetPaddingTest();

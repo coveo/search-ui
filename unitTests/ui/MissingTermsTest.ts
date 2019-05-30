@@ -4,7 +4,7 @@ import { IMissingTermsOptions } from '../../src/ui/MissingTerm/MissingTerms';
 import { $$ } from '../../src/Core';
 import { FakeResults } from '../Fake';
 
-export function MissingTermTest() {
+export function MissingTermsTest() {
   describe('MissingTerm', () => {
     let test: Mock.IBasicComponentSetup<MissingTerms>;
     describe('exposes options', () => {

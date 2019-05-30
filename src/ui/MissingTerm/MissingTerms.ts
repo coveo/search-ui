@@ -56,8 +56,7 @@ export class MissingTerms extends Component {
     this.addMissingTerms();
   }
   /**
-   *
-   *
+   *Returns all original basic query expression keywords that were not matched by the result item the component instance is associated with.
    */
   public get missingTerms(): string[] {
     let cleanMissingTerms: string[] = [];
