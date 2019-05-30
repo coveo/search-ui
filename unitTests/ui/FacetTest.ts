@@ -10,7 +10,7 @@ import { BreadcrumbEvents } from '../../src/events/BreadcrumbEvents';
 import { IPopulateBreadcrumbEventArgs } from '../../src/events/BreadcrumbEvents';
 import { IPopulateOmniboxEventArgs } from '../../src/events/OmniboxEvents';
 import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
-import { KEYBOARD, TemplateList } from '../../src/Core';
+import { KEYBOARD } from '../../src/Core';
 
 export function FacetTest() {
   describe('Facet', () => {
