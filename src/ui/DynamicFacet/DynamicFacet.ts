@@ -338,11 +338,7 @@ export class DynamicFacet extends Component {
     this.logger.info('Show more values');
     this.dynamicFacetQueryController.increaseNumberOfValuesToRequest(additionalNumberOfValues);
     this.triggerNewQuery();
-    this.usageAnalytics.logCustomEvent<IAnalyticsFacetMeta>(
-      analyticsActionCauseList.facetShowMore,
-      this.getShowMoreLessAnalyticsArgs(),
-      this.element
-    );
+    this.logAnalyticsFacetShowMoreLess(analyticsActionCauseList.facetShowMore);
   }
 
   /**
@@ -355,11 +351,7 @@ export class DynamicFacet extends Component {
     this.logger.info('Show less values');
     this.dynamicFacetQueryController.resetNumberOfValuesToRequest();
     this.triggerNewQuery();
-    this.usageAnalytics.logCustomEvent<IAnalyticsFacetMeta>(
-      analyticsActionCauseList.facetShowLess,
-      this.getShowMoreLessAnalyticsArgs(),
-      this.element
-    );
+    this.logAnalyticsFacetShowMoreLess(analyticsActionCauseList.facetShowLess);
   }
 
   /**
@@ -630,12 +622,16 @@ export class DynamicFacet extends Component {
     this.updateAppearance();
   }
 
-  private getShowMoreLessAnalyticsArgs() {
-    return {
-      facetId: this.options.id,
-      facetField: this.options.field.toString(),
-      facetTitle: this.options.title
-    };
+  private logAnalyticsFacetShowMoreLess(cause: IAnalyticsActionCause) {
+    this.usageAnalytics.logCustomEvent<IAnalyticsFacetMeta>(
+      cause,
+      {
+        facetId: this.options.id,
+        facetField: this.options.field.toString(),
+        facetTitle: this.options.title
+      },
+      this.element
+    );
   }
 }
 

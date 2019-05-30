@@ -510,11 +510,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
       this.currentPage++;
       this.numberOfValues = this.options.numberOfValues + this.currentPage * this.options.pageSize;
       this.reload();
-      this.usageAnalytics.logCustomEvent<IAnalyticsFacetMeta>(
-        analyticsActionCauseList.facetShowMore,
-        this.getShowMoreLessAnalyticsArgs(),
-        this.element
-      );
+      this.logAnalyticsFacetShowMoreLess(analyticsActionCauseList.facetShowMore);
     }
   }
 
@@ -529,11 +525,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
       this.currentPage--;
       this.numberOfValues = this.options.numberOfValues + this.currentPage * this.options.pageSize;
       this.reload();
-      this.usageAnalytics.logCustomEvent<IAnalyticsFacetMeta>(
-        analyticsActionCauseList.facetShowLess,
-        this.getShowMoreLessAnalyticsArgs(),
-        this.element
-      );
+      this.logAnalyticsFacetShowMoreLess(analyticsActionCauseList.facetShowLess);
     }
   }
 
@@ -885,12 +877,16 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     return this.getAvailableValues().length > 0;
   }
 
-  private getShowMoreLessAnalyticsArgs() {
-    return {
-      facetId: this.options.id,
-      facetField: this.options.field.toString(),
-      facetTitle: this.options.title
-    };
+  private logAnalyticsFacetShowMoreLess(cause: IAnalyticsActionCause) {
+    this.usageAnalytics.logCustomEvent<IAnalyticsFacetMeta>(
+      cause,
+      {
+        facetId: this.options.id,
+        facetField: this.options.field.toString(),
+        facetTitle: this.options.title
+      },
+      this.element
+    );
   }
 }
 
