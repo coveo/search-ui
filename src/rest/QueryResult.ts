@@ -154,4 +154,9 @@ export interface IQueryResult {
   orphan?: boolean;
 
   fields?: { [name: string]: any };
+
+  /**
+   * Contains the keyword that were not use to return this result
+   */
+  absentTerms: string[];
 }

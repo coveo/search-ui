@@ -3,10 +3,10 @@ import { exportGlobally } from '../../GlobalExports';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { ComponentOptions } from '../Base/ComponentOptions';
-import { each } from 'underscore';
 import { $$, Initialization } from '../../Core';
 import { Dom } from '../../utils/Dom';
 import { analyticsActionCauseList, IAnalyticsIncludeMissingTerm } from '../Analytics/AnalyticsActionListMeta';
+import { IQueryResult } from '../../rest/QueryResult';
 
 export interface IMissingTermsOptions {
   caption?: string;
@@ -40,6 +40,10 @@ export class MissingTerms extends Component {
       MissingTerms: MissingTerms
     });
   };
+  // \u2011: http://graphemica.com/%E2%80%91
+  // Used to split terms and phrases. Should match characters that can separate words.
+  private wordBoundary = "(|^|[\\.\\-\\u2011\\s~=,.\\|\\/:'`’;_()!?&+])";
+
   /**
    * Creates a new `MissingTerms` component instance.
    * @param element The element on which to instantiate the component.
@@ -47,9 +51,12 @@ export class MissingTerms extends Component {
    * @param bindings The bindings required by the component to function normally. If not set, these will be automatically resolved (with a slower execution time).
    * @param result The query result item to associate the component with.
    */
-
-  private wordBoundary = "[\\.\\-\\u2011\\s~=,.\\|\\/:'`’;_()!?&+]";
-  constructor(public element: HTMLElement, public options?: IMissingTermsOptions, bindings?: IComponentBindings, public result?) {
+  constructor(
+    public element: HTMLElement,
+    public options?: IMissingTermsOptions,
+    bindings?: IComponentBindings,
+    public result?: IQueryResult
+  ) {
     super(element, MissingTerms.ID, bindings);
 
     this.options = ComponentOptions.initComponentOptions(element, MissingTerms, options);
@@ -59,14 +66,11 @@ export class MissingTerms extends Component {
    *Returns all original basic query expression keywords that were not matched by the result item the component instance is associated with.
    */
   public get missingTerms(): string[] {
-    let cleanMissingTerms: string[] = [];
-    each(this.result.absentTerms, (term: string) => {
+    return this.result.absentTerms.filter(term => {
       const regex = new RegExp(`${this.wordBoundary}${term}${this.wordBoundary}`);
-      if (regex.test(this.result.state.q)) {
-        cleanMissingTerms.push(term);
-      }
+      const a = this.queryStateModel.get('q');
+      return regex.test(a);
     });
-    return cleanMissingTerms;
   }
   /**
    * @param term : The `string` to be re-injected in the query as exact match
@@ -80,13 +84,16 @@ export class MissingTerms extends Component {
 
     let newQuery: string = this.queryStateModel.get('q');
     const regex = new RegExp(`${this.wordBoundary}${term}${this.wordBoundary}`, 'g');
-    let stillResults = true;
-    let results;
-    while (stillResults) {
+    let stillhasResults = true;
+    let results: RegExpExecArray;
+    while (stillhasResults) {
       results = regex.exec(newQuery);
-      stillResults = results !== null;
-      if (stillResults) {
-        newQuery = [newQuery.slice(0, ++results.index), '"', term, '"', newQuery.slice(results.index + term.length)].join('');
+      stillhasResults = results !== null;
+      if (stillhasResults) {
+        const offset = results[1].length + results[2].length;
+        newQuery = [newQuery.slice(0, results.index + offset), '"', term, '"', newQuery.slice(results.index + term.length + offset)].join(
+          ''
+        );
       }
     }
     this.queryStateModel.set('q', newQuery);
