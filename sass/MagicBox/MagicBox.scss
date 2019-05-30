@@ -18,13 +18,13 @@
       color: $grey-900;
       text-align: left;
       padding: $padding $height+1 $padding 0;
-      text-indent: $padding;
+      text-indent: 0;
       font-family: arial, sans-serif;
       font-size: $fontSize;
       line-height: $lineHeight;
       position: absolute;
       top: 0;
-      left: 0;
+      left: $padding;
       width: 100%;
       height: $height;
       white-space: pre;
@@ -218,25 +218,25 @@
   position: relative;
   &:before {
     content: '';
-    position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
     background: $color;
+    padding-left: 1px;
   }
   @if ($left) {
     &:before {
       border-top-left-radius: 4px;
       border-bottom-left-radius: 4px;
-      left: -1px;
+      left: 1px;
     }
   }
   @if ($right) {
     &:before {
       border-top-right-radius: 4px;
       border-bottom-right-radius: 4px;
-      right: -1px;
+      right: 1px;
     }
   }
 }
