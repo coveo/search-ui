@@ -445,6 +445,11 @@ export class DynamicFacet extends Component {
     pendingEvent && pendingEvent.addFacetsState(this.analyticsFacetState);
   }
 
+  public get position() {
+    const allDynamicFacets = this.searchInterface.getComponents<DynamicFacet>(DynamicFacet.ID);
+    return allDynamicFacets.indexOf(this) + 1;
+  }
+
   private initQueryEvents() {
     this.bind.onRootElement(QueryEvents.duringQuery, () => this.ensureDom());
     this.bind.onRootElement(QueryEvents.doneBuildingQuery, (data: IDoneBuildingQueryEventArgs) => this.handleDoneBuildingQuery(data));

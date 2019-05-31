@@ -19,12 +19,13 @@ export class DynamicFacetValues {
   public createFromResponse(response: IFacetResponse) {
     this.moreValuesAvailable = response.moreValuesAvailable;
     this.facetValues = response.values.map(
-      facetValue =>
+      (facetValue, index) =>
         new DynamicFacetValue(
           {
             value: facetValue.value,
             numberOfResults: facetValue.numberOfResults,
-            state: facetValue.state
+            state: facetValue.state,
+            position: index + 1
           },
           this.facet
         )
@@ -86,7 +87,9 @@ export class DynamicFacetValues {
       return facetValue;
     }
 
-    const newFacetValue = new DynamicFacetValue({ value, state: FacetValueState.idle, numberOfResults: 0 }, this.facet);
+    const position = this.facetValues.length + 1;
+    const state = FacetValueState.idle;
+    const newFacetValue = new DynamicFacetValue({ value, state, numberOfResults: 0, position }, this.facet);
     this.facetValues.push(newFacetValue);
     return newFacetValue;
   }

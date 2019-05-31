@@ -18,6 +18,7 @@ export function DynamicFacetValueTest() {
 
     function initializeComponent() {
       facet = DynamicFacetTestUtils.createFakeFacet(options);
+      (facet.searchInterface.getComponents as jasmine.Spy).and.returnValue([facet]);
       dynamicFacetValue = new DynamicFacetValue(DynamicFacetTestUtils.createFakeFacetValues(1)[0], facet);
     }
 
@@ -117,7 +118,9 @@ export function DynamicFacetValueTest() {
         facetType: AnalyticsDynamicFacetType.string,
         facetValue: dynamicFacetValue.value,
         facetDisplayValue: dynamicFacetValue.valueCaption,
-        facetValueState: dynamicFacetValue.state
+        facetValueState: dynamicFacetValue.state,
+        facetValuePosition: dynamicFacetValue.position,
+        facetPositon: facet.position
       });
     });
 

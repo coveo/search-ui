@@ -23,6 +23,7 @@ export function DynamicFacetTest() {
 
     function initializeComponent() {
       test = DynamicFacetTestUtils.createAdvancedFakeFacet(options);
+      (test.env.searchInterface.getComponents as jasmine.Spy).and.returnValue([test.cmp]);
       test.cmp.values.createFromResponse(DynamicFacetTestUtils.getCompleteFacetResponse(test.cmp, { values: mockFacetValues }));
     }
 

@@ -9,18 +9,21 @@ export interface IDynamicFacetValue {
   value: string;
   state: FacetValueState;
   numberOfResults: number;
+  position: number;
 }
 
 export class DynamicFacetValue implements IDynamicFacetValue {
   public value: string;
   public state: FacetValueState;
   public numberOfResults: number;
+  public position: number;
   private renderer: DynamicFacetValueRenderer;
 
-  constructor({ value, state, numberOfResults }: IDynamicFacetValue, private facet: DynamicFacet) {
+  constructor({ value, state, numberOfResults, position }: IDynamicFacetValue, private facet: DynamicFacet) {
     this.value = value;
     this.state = state;
     this.numberOfResults = numberOfResults;
+    this.position = position;
     this.renderer = new DynamicFacetValueRenderer(this, facet);
   }
 
@@ -71,7 +74,9 @@ export class DynamicFacetValue implements IDynamicFacetValue {
       facetType: AnalyticsDynamicFacetType.string,
       facetValue: this.value,
       facetDisplayValue: this.valueCaption,
-      facetValueState: this.state
+      facetValueState: this.state,
+      facetValuePosition: this.position,
+      facetPositon: this.facet.position
     };
   }
 
