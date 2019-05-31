@@ -24,7 +24,12 @@ import { BreadcrumbEvents, IPopulateBreadcrumbEventArgs } from '../../events/Bre
 import { CategoryFacetBreadcrumb } from './CategoryFacetBreadcrumb';
 import { ICategoryFacetValue } from '../../rest/CategoryFacetValue';
 import { ISearchEndpoint } from '../../rest/SearchEndpointInterface';
-import { IAnalyticsCategoryFacetMeta, analyticsActionCauseList, IAnalyticsActionCause } from '../Analytics/AnalyticsActionListMeta';
+import {
+  IAnalyticsCategoryFacetMeta,
+  analyticsActionCauseList,
+  IAnalyticsActionCause,
+  IAnalyticsFacetMeta
+} from '../Analytics/AnalyticsActionListMeta';
 import { CategoryFacetDebug } from './CategoryFacetDebug';
 import { QueryBuilder } from '../Base/QueryBuilder';
 import { IAutoLayoutAdjustableInsideFacetColumn } from '../SearchInterface/FacetColumnAutoLayoutAdjustment';
@@ -505,6 +510,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
       this.currentPage++;
       this.numberOfValues = this.options.numberOfValues + this.currentPage * this.options.pageSize;
       this.reload();
+      this.logAnalyticsFacetShowMoreLess(analyticsActionCauseList.facetShowMore);
     }
   }
 
@@ -519,6 +525,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
       this.currentPage--;
       this.numberOfValues = this.options.numberOfValues + this.currentPage * this.options.pageSize;
       this.reload();
+      this.logAnalyticsFacetShowMoreLess(analyticsActionCauseList.facetShowLess);
     }
   }
 
@@ -868,6 +875,18 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
 
   private get hasValues(): boolean {
     return this.getAvailableValues().length > 0;
+  }
+
+  private logAnalyticsFacetShowMoreLess(cause: IAnalyticsActionCause) {
+    this.usageAnalytics.logCustomEvent<IAnalyticsFacetMeta>(
+      cause,
+      {
+        facetId: this.options.id,
+        facetField: this.options.field.toString(),
+        facetTitle: this.options.title
+      },
+      this.element
+    );
   }
 }
 

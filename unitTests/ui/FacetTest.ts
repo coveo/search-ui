@@ -171,13 +171,48 @@ export function FacetTest() {
     it('should log an analytics event when updating sort', () => {
       test.cmp.updateSort('score');
       const expectedMetadata = jasmine.objectContaining({
-        criteria: 'score',
         facetId: test.cmp.options.id,
         facetField: test.cmp.options.field.toString(),
         facetTitle: test.cmp.options.title
       });
       expect(test.env.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(
         analyticsActionCauseList.facetUpdateSort,
+        expectedMetadata,
+        test.cmp.element
+      );
+    });
+
+    it('should log an analytics event when showing more results', async done => {
+      const results = FakeResults.createFakeResults(test.cmp.options.pageSize + 5);
+      const validation = Promise.resolve(results.results);
+      const spyFacetQueryController = jasmine.createSpy('spyFacetQueryController').and.returnValue(validation);
+      const expectedMetadata = jasmine.objectContaining({
+        facetId: test.cmp.options.id,
+        facetField: test.cmp.options.field.toString(),
+        facetTitle: test.cmp.options.title
+      });
+
+      test.cmp.facetQueryController.fetchMore = spyFacetQueryController as any;
+      test.cmp.showMore();
+      await validation;
+      expect(test.env.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(
+        analyticsActionCauseList.facetShowMore,
+        expectedMetadata,
+        test.cmp.element
+      );
+      done();
+    });
+
+    it('should log an analytics event when showing less results', () => {
+      const expectedMetadata = jasmine.objectContaining({
+        facetId: test.cmp.options.id,
+        facetField: test.cmp.options.field.toString(),
+        facetTitle: test.cmp.options.title
+      });
+      test.cmp.showMore();
+      test.cmp.showLess();
+      expect(test.env.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(
+        analyticsActionCauseList.facetShowLess,
         expectedMetadata,
         test.cmp.element
       );

@@ -23,7 +23,12 @@ import { $$, Win } from '../../utils/Dom';
 import { SVGDom } from '../../utils/SVGDom';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { Utils } from '../../utils/Utils';
-import { analyticsActionCauseList, IAnalyticsFacetMeta, IAnalyticsFacetSortMeta } from '../Analytics/AnalyticsActionListMeta';
+import {
+  analyticsActionCauseList,
+  IAnalyticsFacetMeta,
+  IAnalyticsFacetSortMeta,
+  IAnalyticsActionCause
+} from '../Analytics/AnalyticsActionListMeta';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { ComponentOptions, IFieldOption, IQueryExpression } from '../Base/ComponentOptions';
@@ -1178,6 +1183,7 @@ export class Facet extends Component {
     $$(this.moreElement).addClass('coveo-active');
     this.values.sortValuesDependingOnStatus(this.numberOfValues);
     this.rebuildValueElements();
+    this.logAnalyticsFacetShowMoreLess(analyticsActionCauseList.facetShowLess);
   }
 
   /**
@@ -1861,6 +1867,7 @@ export class Facet extends Component {
     this.facetQueryController
       .fetchMore(this.numberOfValues + 1)
       .then((queryResults: IQueryResults) => {
+        this.logAnalyticsFacetShowMoreLess(analyticsActionCauseList.facetShowMore);
         const facetValues = new FacetValues(queryResults.groupByResults[0]);
 
         facetValues.importActiveValuesFromOtherList(this.values);
@@ -1966,6 +1973,18 @@ export class Facet extends Component {
       groupByResult: this.facetQueryController.lastGroupByResult
     };
     return info;
+  }
+
+  private logAnalyticsFacetShowMoreLess(cause: IAnalyticsActionCause) {
+    this.usageAnalytics.logCustomEvent<IAnalyticsFacetMeta>(
+      cause,
+      {
+        facetId: this.options.id,
+        facetField: this.options.field.toString(),
+        facetTitle: this.options.title
+      },
+      this.element
+    );
   }
 }
 

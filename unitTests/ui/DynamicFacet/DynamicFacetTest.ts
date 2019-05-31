@@ -279,6 +279,34 @@ export function DynamicFacetTest() {
       );
     });
 
+    it('should log an analytics event when showing more results', () => {
+      const expectedMetadata = jasmine.objectContaining({
+        facetId: test.cmp.options.id,
+        facetField: test.cmp.options.field.toString(),
+        facetTitle: test.cmp.options.title
+      });
+      test.cmp.showMoreValues();
+      expect(test.env.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(
+        analyticsActionCauseList.facetShowMore,
+        expectedMetadata,
+        test.cmp.element
+      );
+    });
+
+    it('should log an analytics event when showing less results', () => {
+      const expectedMetadata = jasmine.objectContaining({
+        facetId: test.cmp.options.id,
+        facetField: test.cmp.options.field.toString(),
+        facetTitle: test.cmp.options.title
+      });
+      test.cmp.showLessValues();
+      expect(test.env.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(
+        analyticsActionCauseList.facetShowLess,
+        expectedMetadata,
+        test.cmp.element
+      );
+    });
+
     it(`when not setting a sortCriteria option
       should set it to undefined in the query`, () => {
       expect(getFirstFacetRequest().sortCriteria).toBeUndefined();
