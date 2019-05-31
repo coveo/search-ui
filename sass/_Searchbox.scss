@@ -4,6 +4,21 @@
   @include display(flex);
   flex-grow: 1;
 
+  &.coveo-custom-height {
+    .CoveoOmnibox,
+    .CoveoQuerybox {
+      display: inline-block;
+      align-items: center;
+    }
+    .magic-box .magic-box-clear,
+    .magic-box .magic-box-clear .magic-box-icon {
+      display: flex;
+      align-items: center;
+      margin-top: 0;
+      margin-left: 15px;
+    }
+  }
+
   &.coveo-inline {
     overflow: hidden;
     .magic-box {

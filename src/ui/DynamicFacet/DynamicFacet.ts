@@ -59,8 +59,8 @@ export interface IDynamicFacetOptions extends IResponsiveComponentOptions {
  * The `DynamicFacet` component allows the end-user to drill down inside a result set by restricting the result to certain
  * field values.
  *
- * This facet is more easy to use than the original [`Facet`]{@link Facet} component. It implements additional Machine Learning features
- * such as Dynamic Navigation Experience.
+ * This facet is more easy to use than the original [`Facet`]{@link Facet} component. It implements additional Coveo Machine Learning (Coveo ML) features
+ * such as dynamic navigation experience (DNE).
  */
 export class DynamicFacet extends Component {
   static ID = 'DynamicFacet';
