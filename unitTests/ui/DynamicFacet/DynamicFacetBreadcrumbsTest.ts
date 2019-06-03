@@ -22,6 +22,7 @@ export function DynamicFacetBreadcrumbsTest() {
     function initializeComponent() {
       facet = DynamicFacetTestUtils.createAdvancedFakeFacet(baseOptions).cmp;
       facet.values.createFromResponse(DynamicFacetTestUtils.getCompleteFacetResponse(facet, { values: mockFacetValues }));
+      (facet.searchInterface.getComponents as jasmine.Spy).and.returnValue([facet]);
       dynamicFacetBreadcrumbs = new DynamicFacetBreadcrumbs(facet);
     }
 
