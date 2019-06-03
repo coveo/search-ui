@@ -142,7 +142,7 @@ export interface IAnalyticsDynamicFacetMeta {
   facetType?: AnalyticsDynamicFacetType;
   facetDisplayValue?: string;
   facetValueState?: FacetValueState;
-  facetPositon?: number;
+  facetPosition?: number;
   facetValuePosition?: number;
 }
 

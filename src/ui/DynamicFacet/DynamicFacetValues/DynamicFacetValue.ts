@@ -76,7 +76,7 @@ export class DynamicFacetValue implements IDynamicFacetValue {
       facetDisplayValue: this.valueCaption,
       facetValueState: this.state,
       facetValuePosition: this.position,
-      facetPositon: this.facet.position
+      facetPosition: this.facet.position
     };
   }
 

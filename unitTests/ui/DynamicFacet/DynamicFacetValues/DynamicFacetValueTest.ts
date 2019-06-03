@@ -120,7 +120,7 @@ export function DynamicFacetValueTest() {
         facetDisplayValue: dynamicFacetValue.valueCaption,
         facetValueState: dynamicFacetValue.state,
         facetValuePosition: dynamicFacetValue.position,
-        facetPositon: facet.position
+        facetPosition: facet.position
       });
     });
 
