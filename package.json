@@ -54,6 +54,8 @@
     "@types/jasmine-ajax": "^3.1.37",
     "@types/pikaday": "^1.7.0",
     "@types/underscore": "1.8.3",
+    "@types/ag-grid": "^3.2.0",
+    "@types/xregexp": "^3.0.30",
     "aws-sdk": "^2.155.0",
     "axe-core": "^3.0.2",
     "bluebird": "^3.4.7",
@@ -133,7 +135,6 @@
   },
   "dependencies": {
     "@material/select": "^0.3.3",
-    "@types/ag-grid": "^3.2.0",
     "coveo.analytics": "^0.7.0",
     "d3": "^4.2.1",
     "d3-scale": "^1.0.3",
@@ -145,7 +146,8 @@
     "pikaday": "^1.4.0",
     "popper.js": "^1.14.3",
     "snyk": "^1.148.0",
-    "underscore": "^1.8.3"
+    "underscore": "^1.8.3",
+    "xregexp": "^4.2.4"
   },
   "resolutions": {
     "extend": "3.0.2",

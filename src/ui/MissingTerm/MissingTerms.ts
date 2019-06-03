@@ -7,6 +7,7 @@ import { $$, Initialization } from '../../Core';
 import { Dom } from '../../utils/Dom';
 import { analyticsActionCauseList, IAnalyticsIncludeMissingTerm } from '../Analytics/AnalyticsActionListMeta';
 import { IQueryResult } from '../../rest/QueryResult';
+import XRegExp = require('xregexp');
 
 export interface IMissingTermsOptions {
   caption?: string;
@@ -40,9 +41,12 @@ export class MissingTerms extends Component {
       MissingTerms: MissingTerms
     });
   };
-  // \u2011: http://graphemica.com/%E2%80%91
-  // Used to split terms and phrases. Should match characters that can separate words.
-  private wordBoundary = "(|^|[\\.\\-\\u2011\\s~=,.\\|\\/:'`’;_()!?&+])";
+
+  /* Used to split terms and phrases. Match characters that can separate words or caracter for chinese, japanese and korean.
+  * Han: Unicode script for chinesse caracter
+  * We only need to import 1 asian script because what is important here is the space between the caracter and any script will contain it
+  */
+  private wordBoundary = '(([\\p{Han}])?([^(\\p{Latin}-)])|^|$)';
 
   /**
    * Creates a new `MissingTerms` component instance.
@@ -67,34 +71,25 @@ export class MissingTerms extends Component {
    */
   public get missingTerms(): string[] {
     return this.result.absentTerms.filter(term => {
-      const regex = new RegExp(`${this.wordBoundary}${term}${this.wordBoundary}`);
-      const a = this.queryStateModel.get('q');
-      return regex.test(a);
+      const regex = this.createRegex(false, term);
+      return regex.test(this.queryStateModel.get('q'));
     });
   }
   /**
-   * @param term : The `string` to be re-injected in the query as exact match
-   *
    * Re-injects a term as an exact phrase match expression in the query.
    */
   public includeTermInQuery(term: string) {
     if (this.missingTerms.indexOf(term) === -1) {
+      this.logger.warn('the term to re-inject is not present in the missing terms');
       return;
     }
 
     let newQuery: string = this.queryStateModel.get('q');
-    const regex = new RegExp(`${this.wordBoundary}${term}${this.wordBoundary}`, 'g');
-    let stillhasResults = true;
-    let results: RegExpExecArray;
-    while (stillhasResults) {
-      results = regex.exec(newQuery);
-      stillhasResults = results !== null;
-      if (stillhasResults) {
-        const offset = results[1].length + results[2].length;
-        newQuery = [newQuery.slice(0, results.index + offset), '"', term, '"', newQuery.slice(results.index + term.length + offset)].join(
-          ''
-        );
-      }
+    const regex = this.createRegex(true, term);
+    let match: RegExpExecArray;
+    while ((match = regex.exec(newQuery)) != null) {
+      const offset = match[0].indexOf(term);
+      newQuery = [newQuery.slice(0, match.index + offset), '"', term, '"', newQuery.slice(match.index + term.length + offset)].join('');
     }
     this.queryStateModel.set('q', newQuery);
   }
@@ -135,16 +130,19 @@ export class MissingTerms extends Component {
 
   private clickableButtonIfEnable(term: string): Dom {
     if (this.options.clickable) {
-      const termElement = $$('button', { className: 'coveo-missing-term' }, term);
+      const termElement = $$('button', { className: 'coveo-missing-term clickable' }, term);
       termElement.on('click', () => {
         this.includeTermInQuery(term);
         this.executeNewQuery(term);
       });
-      termElement.addClass('clickable');
       return termElement;
     } else {
       return $$('span', { className: 'coveo-missing-term' }, term);
     }
+  }
+
+  private createRegex(isGlobal: boolean, term: string): RegExp {
+    return XRegExp(`${this.wordBoundary}(${term})${this.wordBoundary}`, isGlobal ? 'gm' : 'm');
   }
 }
 Initialization.registerAutoCreateComponent(MissingTerms);
