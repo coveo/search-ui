@@ -18,6 +18,8 @@
     color: $black;
   }
   .magic-box-underlay {
+    display: flex;
+    align-items: center;
     [data-id='FieldQuery'],
     [data-id='FieldSimpleQuery'] {
       &[data-success='true'] {

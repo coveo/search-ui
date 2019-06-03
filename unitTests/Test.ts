@@ -705,5 +705,8 @@ DynamicFacetManagerTest();
 import { MissingTermsTest } from './ui/MissingTermsTest';
 MissingTermsTest();
 
+import { SearchboxResizeTest } from './utils/SearchboxResizeTest';
+SearchboxResizeTest();
+
 import { FacetPaddingTest } from './ui/FacetPaddingTest';
 FacetPaddingTest();
