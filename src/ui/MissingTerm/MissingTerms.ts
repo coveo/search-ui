@@ -86,10 +86,16 @@ export class MissingTerms extends Component {
 
     let newQuery: string = this.queryStateModel.get('q');
     const regex = this.createRegex(true, term);
-    let match: RegExpExecArray;
-    while ((match = regex.exec(newQuery)) != null) {
-      const offset = match[0].indexOf(term);
-      newQuery = [newQuery.slice(0, match.index + offset), '"', term, '"', newQuery.slice(match.index + term.length + offset)].join('');
+    let stillhasResults = true;
+    while (stillhasResults) {
+      const results = regex.exec(newQuery);
+      stillhasResults = results !== null;
+      if (stillhasResults) {
+        const offset = results[0].indexOf(term);
+        newQuery = [newQuery.slice(0, results.index + offset), '"', term, '"', newQuery.slice(results.index + term.length + offset)].join(
+          ''
+        );
+      }
     }
     this.queryStateModel.set('q', newQuery);
   }
