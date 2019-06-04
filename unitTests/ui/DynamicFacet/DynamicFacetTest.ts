@@ -23,6 +23,7 @@ export function DynamicFacetTest() {
 
     function initializeComponent() {
       test = DynamicFacetTestUtils.createAdvancedFakeFacet(options);
+      (test.env.searchInterface.getComponents as jasmine.Spy).and.returnValue([test.cmp]);
       test.cmp.values.createFromResponse(DynamicFacetTestUtils.getCompleteFacetResponse(test.cmp, { values: mockFacetValues }));
     }
 
@@ -276,6 +277,34 @@ export function DynamicFacetTest() {
       expect(test.cmp.logAnalyticsEvent).toHaveBeenCalledWith(
         analyticsActionCauseList.dynamicFacetDeselect,
         test.cmp.values.get('a').analyticsMeta
+      );
+    });
+
+    it('should log an analytics event when showing more results', () => {
+      const expectedMetadata = jasmine.objectContaining({
+        facetId: test.cmp.options.id,
+        facetField: test.cmp.options.field.toString(),
+        facetTitle: test.cmp.options.title
+      });
+      test.cmp.showMoreValues();
+      expect(test.env.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(
+        analyticsActionCauseList.facetShowMore,
+        expectedMetadata,
+        test.cmp.element
+      );
+    });
+
+    it('should log an analytics event when showing less results', () => {
+      const expectedMetadata = jasmine.objectContaining({
+        facetId: test.cmp.options.id,
+        facetField: test.cmp.options.field.toString(),
+        facetTitle: test.cmp.options.title
+      });
+      test.cmp.showLessValues();
+      expect(test.env.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(
+        analyticsActionCauseList.facetShowLess,
+        expectedMetadata,
+        test.cmp.element
       );
     });
 

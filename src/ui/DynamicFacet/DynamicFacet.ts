@@ -24,7 +24,12 @@ import { isFacetSortCriteria } from '../../rest/Facet/FacetSortCriteria';
 import { l } from '../../strings/Strings';
 import { DeviceUtils } from '../../utils/DeviceUtils';
 import { BreadcrumbEvents, IPopulateBreadcrumbEventArgs } from '../../events/BreadcrumbEvents';
-import { analyticsActionCauseList, IAnalyticsDynamicFacetMeta, IAnalyticsActionCause } from '../Analytics/AnalyticsActionListMeta';
+import {
+  IAnalyticsActionCause,
+  IAnalyticsDynamicFacetMeta,
+  analyticsActionCauseList,
+  IAnalyticsFacetMeta
+} from '../Analytics/AnalyticsActionListMeta';
 import { IQueryOptions } from '../../controllers/QueryController';
 import { DynamicFacetManager } from '../DynamicFacetManager/DynamicFacetManager';
 import { FacetPadding } from '../FacetPadding/FacetPadding';
@@ -333,6 +338,7 @@ export class DynamicFacet extends Component {
     this.logger.info('Show more values');
     this.dynamicFacetQueryController.increaseNumberOfValuesToRequest(additionalNumberOfValues);
     this.triggerNewQuery();
+    this.logAnalyticsFacetShowMoreLess(analyticsActionCauseList.facetShowMore);
   }
 
   /**
@@ -345,6 +351,7 @@ export class DynamicFacet extends Component {
     this.logger.info('Show less values');
     this.dynamicFacetQueryController.resetNumberOfValuesToRequest();
     this.triggerNewQuery();
+    this.logAnalyticsFacetShowMoreLess(analyticsActionCauseList.facetShowLess);
   }
 
   /**
@@ -436,6 +443,11 @@ export class DynamicFacet extends Component {
   public putStateIntoAnalytics() {
     const pendingEvent = this.usageAnalytics.getPendingSearchEvent();
     pendingEvent && pendingEvent.addFacetsState(this.analyticsFacetState);
+  }
+
+  public get position() {
+    const allDynamicFacets = this.searchInterface.getComponents<DynamicFacet>(DynamicFacet.ID);
+    return allDynamicFacets.indexOf(this) + 1;
   }
 
   private initQueryEvents() {
@@ -613,6 +625,18 @@ export class DynamicFacet extends Component {
     this.logger.error('DynamicFacets are not supported by your current search endpoint. Disabling this component.');
     this.disable();
     this.updateAppearance();
+  }
+
+  private logAnalyticsFacetShowMoreLess(cause: IAnalyticsActionCause) {
+    this.usageAnalytics.logCustomEvent<IAnalyticsFacetMeta>(
+      cause,
+      {
+        facetId: this.options.id,
+        facetField: this.options.field.toString(),
+        facetTitle: this.options.title
+      },
+      this.element
+    );
   }
 }
 

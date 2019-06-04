@@ -142,6 +142,8 @@ export interface IAnalyticsDynamicFacetMeta {
   facetType?: AnalyticsDynamicFacetType;
   facetDisplayValue?: string;
   facetValueState?: FacetValueState;
+  facetPosition?: number;
+  facetValuePosition?: number;
 }
 
 export interface IAnalyticsFacetGraphSelectedMeta extends IAnalyticsFacetSliderChangeMeta {}
@@ -729,6 +731,26 @@ export var analyticsActionCauseList = {
   categoryFacetSearch: <IAnalyticsActionCause>{
     name: 'categoryFacetSearch',
     type: 'categoryFacet'
+  },
+  /**
+   * The custom event that gets logged when an end-user expands a dynamic facet to see additional values.
+   *
+   * `actionCause`: `'showMoreFacetResults'`
+   * `actionType`: `'facet'`
+   */
+  facetShowMore: <IAnalyticsActionCause>{
+    name: 'showMoreFacetResults',
+    type: 'facet'
+  },
+  /**
+   * The custom event that gets logged when an end-user collapses a dynamic facet to see less values.
+   *
+   * `actionCause`: `'showLessFacetResults'`
+   * `actionType`: `'facet'`
+   */
+  facetShowLess: <IAnalyticsActionCause>{
+    name: 'showLessFacetResults',
+    type: 'facet'
   },
   /**
    * Identifies the search and custom event that gets logged when a user clicks the Go Back link after an error page.
