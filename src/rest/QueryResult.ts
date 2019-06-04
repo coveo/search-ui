@@ -156,7 +156,7 @@ export interface IQueryResult {
   fields?: { [name: string]: any };
 
   /**
-   * Contains the terms that were not use to return this result
+   * The query terms that are not matched by the result.
    */
   absentTerms: string[];
 }

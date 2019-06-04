@@ -18,17 +18,11 @@ export function MissingTermsTest() {
 
     let test: Mock.IBasicComponentSetup<MissingTerms>;
     let fakeResult = FakeResults.createFakeResult();
-    const termNotInQuery = 'foo';
-    const termPresent = 'will';
-    const termIsSubWord = 'is';
-    const getEnglishSpy: any = jasmine
-      .createSpy('getSpy')
-      .and.returnValue('This is and will be a really really really-really long query!!!');
-    const getKoreanSpy = jasmine.createSpy('getSpy').and.returnValue('이것은 정말 정말 긴 쿼리가 될 것입니다');
+    const getEnglishSpy: any = jasmine.createSpy('getSpy');
     describe('exposes options', () => {
       describe("when the 'clickable' option is set to", () => {
         let missingTermsClickableSpy: jasmine.Spy;
-        const clickOnMissingTerms = () => {
+        const clickFirstMissingTerm = () => {
           test.cmp.includeTermInQuery = missingTermsClickableSpy;
           const missingTermElement = $$(test.cmp.element).find('.coveo-missing-term');
           missingTermElement.click();
@@ -39,15 +33,20 @@ export function MissingTermsTest() {
         });
 
         it('true should allow the user to click on the missingTerm', () => {
-          fakeResult.absentTerms.push(termPresent);
+          const termPresent = 'my';
+          getEnglishSpy.and.returnValue('This is my query');
+          fakeResult.absentTerms = [termPresent];
           test = mockComponent({ clickable: true });
-          clickOnMissingTerms();
+          clickFirstMissingTerm();
           expect(missingTermsClickableSpy).toHaveBeenCalled();
         });
 
         it('false should not allow the user to click on the missingTerm', () => {
+          const termPresent = 'my';
+          getEnglishSpy.and.returnValue('This is my query');
+          fakeResult.absentTerms = [termPresent];
           test = mockComponent({ clickable: false });
-          clickOnMissingTerms();
+          clickFirstMissingTerm();
           expect(missingTermsClickableSpy).not.toHaveBeenCalled();
         });
       });
@@ -67,16 +66,19 @@ export function MissingTermsTest() {
         describe('return', () => {
           let expectedResult: string[];
           beforeEach(() => {
-            expectedResult = [...fakeResult.absentTerms];
+            expectedResult = [];
+            getEnglishSpy.and.returnValue('This is my query');
           });
           it('all the missing term present in the query', () => {
-            fakeResult.absentTerms.push(termIsSubWord);
+            const termIsSubWord = 'is';
+            fakeResult.absentTerms = [termIsSubWord];
             expectedResult.push(termIsSubWord);
             expect(test.cmp.missingTerms.toString()).toBe(expectedResult.toString());
           });
 
           it('only the missing term present in the query', () => {
-            fakeResult.absentTerms.push(termNotInQuery);
+            const termNotInQuery = 'foo';
+            fakeResult.absentTerms = [termNotInQuery];
             expect(test.cmp.missingTerms.toString()).toBe(expectedResult.toString());
           });
         });
@@ -84,107 +86,113 @@ export function MissingTermsTest() {
 
       describe('when re-injecting a term as an exact match', () => {
         it('and the term is present in the query, the term is re-injected as an exact match', () => {
+          const termPresent = 'my';
+          getEnglishSpy.and.returnValue('This is my query');
+          fakeResult.absentTerms = [termPresent];
           test.cmp.includeTermInQuery(termPresent);
-          expect(test.cmp.queryStateModel.set).toHaveBeenCalledWith(
-            'q',
-            'This is and "will" be a really really really-really long query!!!'
-          );
+          expect(test.cmp.queryStateModel.set).toHaveBeenCalledWith('q', 'This is "my" query');
         });
 
         it('and the term is the first word in the query, the term is re-injected as an exact match', () => {
           const firstWord = 'This';
-          fakeResult.absentTerms.push(firstWord);
+          getEnglishSpy.and.returnValue('This is my query');
+          fakeResult.absentTerms = [firstWord];
           test.cmp.includeTermInQuery(firstWord);
-          expect(test.cmp.queryStateModel.set).toHaveBeenCalledWith(
-            'q',
-            '"This" is and will be a really really really-really long query!!!'
-          );
+          expect(test.cmp.queryStateModel.set).toHaveBeenCalledWith('q', '"This" is my query');
         });
 
         it('and the term is the last word in the query, the term is re-injected as an exact match', () => {
           const lastWord = 'query';
-          fakeResult.absentTerms.push(lastWord);
+          getEnglishSpy.and.returnValue('This is my query');
+          fakeResult.absentTerms = [lastWord];
           test.cmp.includeTermInQuery(lastWord);
-          expect(test.cmp.queryStateModel.set).toHaveBeenCalledWith(
-            'q',
-            'This is and will be a really really really-really long "query"!!!'!!!
-          );
+          expect(test.cmp.queryStateModel.set).toHaveBeenCalledWith('q', 'This is my "query"');
         });
 
         it('and the term is present multiple times in the query, the term are all re-injected as an exact match', () => {
           const wordPresentMultipleTimes = 'really';
-          fakeResult.absentTerms.push(wordPresentMultipleTimes);
+          getEnglishSpy.and.returnValue('This is really really my query');
+          fakeResult.absentTerms = [wordPresentMultipleTimes];
           test.cmp.includeTermInQuery(wordPresentMultipleTimes);
-          expect(test.cmp.queryStateModel.set).toHaveBeenCalledWith(
-            'q',
-            'This is and will be a "really" "really" really-really long query!!!'
-          );
+          expect(test.cmp.queryStateModel.set).toHaveBeenCalledWith('q', 'This is "really" "really" my query');
         });
 
         it('and the term is not present, the query will not change', () => {
+          const termNotInQuery = 'foo';
+          getEnglishSpy.and.returnValue('This is my query');
           test.cmp.includeTermInQuery(termNotInQuery);
           expect(test.cmp.queryStateModel.set).not.toHaveBeenCalled();
         });
 
         it('and the term is present as a full match and sub word, only the full match will be re-injected as an exact match', () => {
-          fakeResult.absentTerms.push(termIsSubWord);
+          const termIsSubWord = 'is';
+          getEnglishSpy.and.returnValue('This is my query');
+          fakeResult.absentTerms = [termIsSubWord];
           test.cmp.includeTermInQuery(termIsSubWord);
-          expect(test.cmp.queryStateModel.set).toHaveBeenCalledWith(
-            'q',
-            'This "is" and will be a really really really-really long query!!!'
-          );
+          expect(test.cmp.queryStateModel.set).toHaveBeenCalledWith('q', 'This "is" my query');
         });
 
         it('and the term is present and contains hyphens, the term is re-injected as an exact match', () => {
           const hyphensWord = 'really-really';
-          fakeResult.absentTerms.push(hyphensWord);
+          getEnglishSpy.and.returnValue('This is really-really my query');
+          fakeResult.absentTerms = [hyphensWord];
           test.cmp.includeTermInQuery(hyphensWord);
-          expect(test.cmp.queryStateModel.set).toHaveBeenCalledWith(
-            'q',
-            'This is and will be a really really "really-really" long query!!!'
-          );
+          expect(test.cmp.queryStateModel.set).toHaveBeenCalledWith('q', 'This is "really-really" my query');
+        });
+
+        it('and the term is present and have special caracter beside him, the term is re-injected as an exact match', () => {
+          const hyphensWord = 'query';
+          getEnglishSpy.and.returnValue('This is really really my query!!!');
+          fakeResult.absentTerms = [hyphensWord];
+          test.cmp.includeTermInQuery(hyphensWord);
+          expect(test.cmp.queryStateModel.set).toHaveBeenCalledWith('q', 'This is really really my "query"!!!');
         });
       });
     });
 
     describe('when the languages is Korean', () => {
+      const getKoreanSpy = jasmine.createSpy('getSpy');
       beforeEach(() => {
-        fakeResult.absentTerms = [];
         test = mockComponent({}, getKoreanSpy);
       });
       describe('when re-injecting a term as an exact match', () => {
         it('and the term is present in the query', () => {
           const koreanWordPresent = '쿼리가';
-          fakeResult.absentTerms.push(koreanWordPresent);
+          getKoreanSpy.and.returnValue('긴 쿼리가 될');
+          fakeResult.absentTerms = [koreanWordPresent];
           test.cmp.includeTermInQuery(koreanWordPresent);
-          expect(test.cmp.queryStateModel.set).toHaveBeenCalledWith('q', '이것은 정말 정말 긴 "쿼리가" 될 것입니다');
+          expect(test.cmp.queryStateModel.set).toHaveBeenCalledWith('q', '긴 "쿼리가" 될');
         });
         it('and the term is the first word in the query', () => {
           const koreanFirstWord = '이것은';
-          fakeResult.absentTerms.push(koreanFirstWord);
+          getKoreanSpy.and.returnValue('이것은 정말');
+          fakeResult.absentTerms = [koreanFirstWord];
           test.cmp.includeTermInQuery(koreanFirstWord);
-          expect(test.cmp.queryStateModel.set).toHaveBeenCalledWith('q', '"이것은" 정말 정말 긴 쿼리가 될 것입니다');
+          expect(test.cmp.queryStateModel.set).toHaveBeenCalledWith('q', '"이것은" 정말');
         });
 
         it('and the term is the last word in the query', () => {
-          const KoreanlastWord = '것입니다';
-          fakeResult.absentTerms.push(KoreanlastWord);
+          const KoreanlastWord = '정말';
+          getKoreanSpy.and.returnValue('이것은 정말');
+          fakeResult.absentTerms = [KoreanlastWord];
           test.cmp.includeTermInQuery(KoreanlastWord);
-          expect(test.cmp.queryStateModel.set).toHaveBeenCalledWith('q', '이것은 정말 정말 긴 쿼리가 될 "것입니다"');
+          expect(test.cmp.queryStateModel.set).toHaveBeenCalledWith('q', '이것은 "정말"');
         });
 
         it('and the term is present multiple times in the query, they are all re-injected as an exact match', () => {
           const KoreanWordPresentMultipleTimes = '정말';
-          fakeResult.absentTerms.push(KoreanWordPresentMultipleTimes);
+          getKoreanSpy.and.returnValue('이것은 정말 정말 긴');
+          fakeResult.absentTerms = [KoreanWordPresentMultipleTimes];
           test.cmp.includeTermInQuery(KoreanWordPresentMultipleTimes);
-          expect(test.cmp.queryStateModel.set).toHaveBeenCalledWith('q', '이것은 "정말" "정말" 긴 쿼리가 될 것입니다');
+          expect(test.cmp.queryStateModel.set).toHaveBeenCalledWith('q', '이것은 "정말" "정말" 긴');
         });
 
         it('and the term is a single caracter and present multiple times in the query, they are all re-injected as an exact match', () => {
           const KoreanWordPresentMultipleTimes = '정';
-          fakeResult.absentTerms.push(KoreanWordPresentMultipleTimes);
+          getKoreanSpy.and.returnValue('이것은 정말 정말 긴');
+          fakeResult.absentTerms = [KoreanWordPresentMultipleTimes];
           test.cmp.includeTermInQuery(KoreanWordPresentMultipleTimes);
-          expect(test.cmp.queryStateModel.set).toHaveBeenCalledWith('q', '이것은 "정"말 "정"말 긴 쿼리가 될 것입니다');
+          expect(test.cmp.queryStateModel.set).toHaveBeenCalledWith('q', '이것은 "정"말 "정"말 긴');
         });
       });
     });

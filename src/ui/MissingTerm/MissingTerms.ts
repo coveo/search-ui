@@ -71,7 +71,7 @@ export class MissingTerms extends Component {
    */
   public get missingTerms(): string[] {
     return this.result.absentTerms.filter(term => {
-      const regex = this.createRegex(false, term);
+      const regex = this.createWordBoundryDelimitedRegex(term);
       return regex.test(this.queryStateModel.get('q'));
     });
   }
@@ -85,7 +85,7 @@ export class MissingTerms extends Component {
     }
 
     let newQuery: string = this.queryStateModel.get('q');
-    const regex = this.createRegex(true, term);
+    const regex = this.createWordBoundryDelimitedRegex(term);
     let stillhasResults = true;
     while (stillhasResults) {
       const results = regex.exec(newQuery);
@@ -122,7 +122,7 @@ export class MissingTerms extends Component {
 
   private buildMissingTerms(): Dom[] {
     const terms: Dom[] = this.missingTerms.map(term => {
-      return this.clickableButtonIfEnable(term);
+      return this.makeTermClickableIfEnabled(term);
     });
     return terms;
   }
@@ -134,7 +134,7 @@ export class MissingTerms extends Component {
     this.queryController.executeQuery();
   }
 
-  private clickableButtonIfEnable(term: string): Dom {
+  private makeTermClickableIfEnabled(term: string): Dom {
     if (this.options.clickable) {
       const termElement = $$('button', { className: 'coveo-missing-term clickable' }, term);
       termElement.on('click', () => {
@@ -147,8 +147,8 @@ export class MissingTerms extends Component {
     }
   }
 
-  private createRegex(isGlobal: boolean, term: string): RegExp {
-    return XRegExp(`${this.wordBoundary}(${term})${this.wordBoundary}`, isGlobal ? 'gm' : 'm');
+  private createWordBoundryDelimitedRegex(term: string): RegExp {
+    return XRegExp(`${this.wordBoundary}(${term})${this.wordBoundary}`, 'g');
   }
 }
 Initialization.registerAutoCreateComponent(MissingTerms);
