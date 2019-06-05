@@ -39,6 +39,7 @@ import { ResponsiveFacetOptions } from '../ResponsiveComponents/ResponsiveFacetO
 import { CategoryFacetHeader } from './CategoryFacetHeader';
 import { AccessibleButton } from '../../utils/AccessibleButton';
 import { IStringMap } from '../../rest/GenericParam';
+import { dependsOnManager } from '../../utils/dependsOnUtils';
 
 export interface ICategoryFacetOptions extends IResponsiveComponentOptions {
   field: IFieldOption;
@@ -56,6 +57,7 @@ export interface ICategoryFacetOptions extends IResponsiveComponentOptions {
   basePath?: string[];
   maximumDepth?: number;
   valueCaption?: IStringMap<string>;
+  dependsOn?: string;
 }
 
 export type CategoryValueDescriptor = {
@@ -269,6 +271,37 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
      * > Using value captions will disable alphabetical sorts (see the [availableSorts]{@link Facet.options.availableSorts} option).
      */
     valueCaption: ComponentOptions.buildJsonOption<IStringMap<string>>({ defaultValue: {} }),
+    /**
+     * Specifies whether this facet only appears when a value is selected in its "parent" facet.
+     *
+     * To specify the parent facet, use its [`id`]{@link Facet.options.id}.
+     *
+     * Remember that by default, a facet `id` value is the same as its [`field`]{@link Facet.options.field} option
+     * value.
+     *
+     * **Examples:**
+     *
+     * First case: the "parent" facet has no custom `id`:
+     * ```html
+     * <!-- "Parent" Facet: -->
+     * <div class='CoveoFacet' data-field='@myfield' data-title='My Parent Facet'></div>
+     *
+     * <!-- The "dependent" Facet must refer to the default `id` of its "parent" Facet, which is the name of its field. -->
+     * <div class='CoveoFacet' data-field='@myotherfield' data-title='My Dependent Facet' data-depends-on='@myfield'></div>
+     * ```
+     *
+     * Second case: the "parent" facet has a custom `id`:
+     * ```html
+     * <!-- "Parent" Facet: -->
+     * <div class='CoveoFacet' data-field='@myfield' data-title='My Parent Facet' data-id='myParentCustomId'></div>
+     *
+     * <!-- The "dependent" Facet must refer to the custom `id` of its "parent" Facet, which is 'myParentCustomId'. -->
+     * <div class='CoveoFacet' data-field='@myotherfield' data-title='My Dependent Facet' data-depends-on='myParentCustomId'></div>
+     * ```
+     *
+     * Default value is `undefined`
+     */
+    dependsOn: ComponentOptions.buildStringOption(),
     ...ResponsiveFacetOptions
   };
 
@@ -289,6 +322,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   private showingWaitAnimation = false;
   private numberOfChildValuesCurrentlyDisplayed = 0;
   private numberOfValues: number;
+  private dependsOnManager: dependsOnManager;
 
   public static WAIT_ELEMENT_CLASS = 'coveo-category-facet-header-wait-animation';
 
@@ -310,11 +344,11 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     }
 
     ResponsiveFacets.init(this.root, this, this.options);
-
+    this.initDependsOnManager();
     this.bind.onRootElement<IBuildingQueryEventArgs>(QueryEvents.buildingQuery, args => this.handleBuildingQuery(args));
     this.bind.onRootElement<IQuerySuccessEventArgs>(QueryEvents.querySuccess, args => this.handleQuerySuccess(args));
     this.bind.onRootElement(QueryEvents.duringQuery, () => this.addFading());
-    this.bind.onRootElement(QueryEvents.deferredQuerySuccess, () => this.removeFading());
+    this.bind.onRootElement(QueryEvents.deferredQuerySuccess, () => this.handleDeferredQuerySuccess());
     this.bind.onRootElement<IPopulateBreadcrumbEventArgs>(BreadcrumbEvents.populateBreadcrumb, args => this.handlePopulateBreadCrumb(args));
     this.bind.onRootElement(BreadcrumbEvents.clearBreadcrumb, () => this.handleClearBreadcrumb());
     this.buildFacetHeader();
@@ -763,10 +797,20 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   private initQueryStateEvents() {
     this.queryStateModel.registerNewAttribute(this.queryStateAttribute, this.options.basePath);
     this.bind.onQueryState<IAttributesChangedEventArg>(MODEL_EVENTS.CHANGE, undefined, data => this.handleQueryStateChanged(data));
+    this.dependsOnManager.listenToParentIfDependentFacet();
+  }
+
+  private initDependsOnManager() {
+    this.dependsOnManager = new dependsOnManager(this);
   }
 
   private addFading() {
     $$(this.element).addClass('coveo-category-facet-values-fade');
+  }
+
+  private handleDeferredQuerySuccess() {
+    this.removeFading();
+    this.dependsOnManager.updateVisibilityBasedOnDependsOn();
   }
 
   private removeFading() {

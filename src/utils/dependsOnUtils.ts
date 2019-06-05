@@ -1,11 +1,12 @@
-import { Facet } from './Facet';
-import { Utils } from '../../utils/Utils';
-import { MODEL_EVENTS } from '../../models/Model';
-import { QueryStateModel } from '../../models/QueryStateModel';
-import { $$ } from '../../utils/Dom';
+import { CategoryFacet } from '../ui/CategoryFacet/CategoryFacet';
+import { MODEL_EVENTS } from '../models/Model';
+import { Utils } from './Utils';
+import { $$ } from './Dom';
+import { QueryStateModel } from '../Core';
+import { Facet } from '../ui/Facet/Facet';
 
-export class DependentFacetManager {
-  constructor(private facet: Facet) {}
+export class dependsOnManager {
+  constructor(private facet: CategoryFacet | Facet) {}
 
   public listenToParentIfDependentFacet() {
     if (!this.isDependentFacet) {

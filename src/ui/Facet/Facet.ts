@@ -52,10 +52,10 @@ import { OmniboxValueElement } from './OmniboxValueElement';
 import { OmniboxValuesList } from './OmniboxValuesList';
 import { ValueElement } from './ValueElement';
 import { ValueElementRenderer } from './ValueElementRenderer';
-import { DependentFacetManager } from './DependentFacetManager';
 import { AccessibleButton } from '../../utils/AccessibleButton';
 import { IResponsiveComponentOptions } from '../ResponsiveComponents/ResponsiveComponentsManager';
 import { ResponsiveFacetOptions } from '../ResponsiveComponents/ResponsiveFacetOptions';
+import { dependsOnManager } from '../../utils/dependsOnUtils';
 
 export interface IFacetOptions extends IResponsiveComponentOptions {
   title?: string;
@@ -717,7 +717,7 @@ export class Facet extends Component {
   protected footerElement: HTMLElement;
   private canFetchMore: boolean = true;
   private nbAvailableValues: number;
-  private dependentFacetManager: DependentFacetManager;
+  private dependsOnManager: dependsOnManager;
 
   private showingWaitAnimation = false;
   private pinnedViewportPosition: number;
@@ -758,7 +758,7 @@ export class Facet extends Component {
     this.checkForComputedFieldAndSort();
     this.checkForValueCaptionType();
     this.checkForCustomSort();
-    this.initDependentFacetManager();
+    this.initDependsOnManager();
     this.initFacetQueryController();
     this.initQueryEvents();
     this.initQueryStateEvents();
@@ -1219,7 +1219,7 @@ export class Facet extends Component {
     Assert.exists(data);
     this.unfadeInactiveValuesInMainList();
     this.hideWaitingAnimation();
-    this.dependentFacetManager.updateVisibilityBasedOnDependsOn();
+    this.dependsOnManager.updateVisibilityBasedOnDependsOn();
     const groupByResult = data.results.groupByResults[this.facetQueryController.lastGroupByRequestIndex];
     this.facetQueryController.lastGroupByResult = groupByResult;
     // Two corner case to handle regarding the "sticky" aspect of facets :
@@ -1322,7 +1322,7 @@ export class Facet extends Component {
     this.queryStateModel.registerNewAttribute(this.lookupValueAttributeId, {});
 
     this.bind.onQueryState(MODEL_EVENTS.CHANGE, undefined, (args: IAttributesChangedEventArg) => this.handleQueryStateChanged(args));
-    this.dependentFacetManager.listenToParentIfDependentFacet();
+    this.dependsOnManager.listenToParentIfDependentFacet();
   }
 
   protected initComponentStateEvents() {
@@ -1517,8 +1517,8 @@ export class Facet extends Component {
     }
   }
 
-  private initDependentFacetManager() {
-    this.dependentFacetManager = new DependentFacetManager(this);
+  private initDependsOnManager() {
+    this.dependsOnManager = new dependsOnManager(this);
   }
 
   private initBottomAndTopSpacer() {
