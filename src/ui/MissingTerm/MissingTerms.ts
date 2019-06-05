@@ -80,7 +80,10 @@ export class MissingTerms extends Component {
    */
   public includeTermInQuery(term: string) {
     if (this.missingTerms.indexOf(term) === -1) {
-      this.logger.warn('the term to re-inject is not present in the missing terms');
+      this.logger.warn(
+        'The term to re-inject is not present in the missing terms',
+        `You tried to inject "${term}" but the possible term to inject are: ${this.missingTerms.toString()}`
+      );
       return;
     }
 
@@ -128,7 +131,7 @@ export class MissingTerms extends Component {
   }
 
   private executeNewQuery(missingTerm: string) {
-    this.usageAnalytics.logSearchEvent<IAnalyticsIncludeMissingTerm>(analyticsActionCauseList.missingTermsSearch, {
+    this.usageAnalytics.logSearchEvent<IAnalyticsIncludeMissingTerm>(analyticsActionCauseList.missingTermClick, {
       missingTerm: missingTerm
     });
     this.queryController.executeQuery();

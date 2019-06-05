@@ -1326,11 +1326,11 @@ export var analyticsActionCauseList = {
   /**
    * The search event that gets logged when an end-user triggers a new query by clicking a missing term in a result item.
    *
-   * `actionCause`: `'missingTermsSearch'`
-   * `actionType`: `'missingTerms'`
+   * `actionCause`: `'missingTermClick'`
+   * `actionType`: `'missingTerm'`
    */
-  missingTermsSearch: <IAnalyticsActionCause>{
-    name: 'missingTermsSearch',
-    type: 'missingTerms'
+  missingTermClick: <IAnalyticsActionCause>{
+    name: 'missingTermClick',
+    type: 'missingTerm'
   }
 };
