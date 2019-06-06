@@ -84,14 +84,14 @@
   @if $size=='smaller' {
     width: 11px;
     height: 9px;
-    bottom: 5px;
+    bottom: 4px;
     .coveo-hook-svg {
       fill: black;
     }
   } @else {
     width: 14px;
     height: 12px;
-    bottom: 3px;
+    bottom: 2px;
     .coveo-hook-svg {
       fill: $color-grey;
     }
