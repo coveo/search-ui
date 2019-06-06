@@ -102,11 +102,11 @@
   @if $size=='smaller' {
     width: 7px;
     height: 7px;
-    bottom: 6px;
+    bottom: 5px;
   } @else {
     width: 10px;
     height: 10px;
-    bottom: 4px;
+    bottom: 3px;
   }
   .coveo-exclusion-svg {
     fill: $color-red;
