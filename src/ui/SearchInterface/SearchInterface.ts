@@ -49,6 +49,7 @@ import { FacetColumnAutoLayoutAdjustment } from './FacetColumnAutoLayoutAdjustme
 import { FacetValueStateHandler } from './FacetValueStateHandler';
 import RelevanceInspectorModule = require('../RelevanceInspector/RelevanceInspector');
 import { AriaLive, IAriaLive } from '../AriaLive/AriaLive';
+import { MissingTermManager } from '../MissingTerm/MissingTermManager';
 
 export interface ISearchInterfaceOptions {
   enableHistory?: boolean;
@@ -527,6 +528,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     this.queryController = new QueryController(element, this.options, this.usageAnalytics, this);
     this.facetValueStateHandler = new FacetValueStateHandler((componentId: string) => this.getComponents(componentId));
     new SentryLogger(this.queryController);
+    new MissingTermManager(this.element, this.queryStateModel, this.queryController);
 
     this.setupEventsHandlers();
     this.setupHistoryManager(element, _window);

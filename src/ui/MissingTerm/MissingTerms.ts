@@ -12,6 +12,8 @@ import XRegExp = require('xregexp');
 export interface IMissingTermsOptions {
   caption?: string;
   clickable?: boolean;
+  includeInBreadcrumb?: boolean;
+  numberOfResults?: number;
 }
 
 /**
@@ -33,7 +35,17 @@ export class MissingTerms extends Component {
      *
      * **Default:** The localized string for `Missing`.
      */
-    caption: ComponentOptions.buildLocalizedStringOption({ defaultValue: 'Missing' })
+    caption: ComponentOptions.buildLocalizedStringOption({ defaultValue: 'Missing' }),
+    /**
+     * The maximum number of missing term to be displayed
+     *
+     * **Default:** `5`
+     * **Minimum value:** `1`
+     */
+    numberOfResults: ComponentOptions.buildNumberOption({
+      defaultValue: 5,
+      min: 1
+    })
   };
 
   static doExport = () => {
@@ -47,6 +59,7 @@ export class MissingTerms extends Component {
   * We only need to import 1 asian script because what is important here is the space between the caracter and any script will contain it
   */
   private wordBoundary = '(([\\p{Han}])?([^(\\p{Latin}-)])|^|$)';
+  private termForcedToAppear: Array<string> = [];
 
   /**
    * Creates a new `MissingTerms` component instance.
@@ -64,6 +77,7 @@ export class MissingTerms extends Component {
     super(element, MissingTerms.ID, bindings);
 
     this.options = ComponentOptions.initComponentOptions(element, MissingTerms, options);
+    this.result.absentTerms = [...this.result.absentTerms.splice(0, this.options.numberOfResults)];
     this.addMissingTerms();
   }
   /**
@@ -75,48 +89,46 @@ export class MissingTerms extends Component {
       return regex.test(this.queryStateModel.get('q'));
     });
   }
+
   /**
-   * Re-injects a term as an exact phrase match expression in the query.
+   * Inject a term in the advanced query.
    */
-  public includeTermInQuery(term: string) {
+  public addTermForcedToAppear(term: string) {
     if (this.missingTerms.indexOf(term) === -1) {
       this.logger.warn(
         'The term to re-inject is not present in the missing terms',
-        `You tried to inject "${term}" but the possible term to inject are: ${this.missingTerms.toString()}`
+        `You tried to inject "${term}" but the possible term to inject are: ${this.missingTerms.toString()}`,
+        'The query exited the function'
       );
       return;
     }
+    this.updateTermForcedToAppear();
+    this.termForcedToAppear.push(term);
+    this.queryStateModel.set('missingTerm', [...this.termForcedToAppear]);
+  }
 
-    let newQuery: string = this.queryStateModel.get('q');
-    const regex = this.createWordBoundryDelimitedRegex(term);
-    let stillhasResults = true;
-    while (stillhasResults) {
-      const results = regex.exec(newQuery);
-      stillhasResults = results !== null;
-      if (stillhasResults) {
-        const offset = results[0].indexOf(term);
-        newQuery = [newQuery.slice(0, results.index + offset), '"', term, '"', newQuery.slice(results.index + term.length + offset)].join(
-          ''
-        );
-      }
-    }
-    this.queryStateModel.set('q', newQuery);
+  private updateTermForcedToAppear() {
+    this.termForcedToAppear = [...this.queryStateModel.get('missingTerm')];
   }
 
   private addMissingTerms() {
     if (this.missingTerms.length === 0) {
       return;
     }
-    $$(this.element).append(this.buildContainer().el);
+    const missingTermelement = this.buildContainer();
+    if (missingTermelement) $$(this.element).append(missingTermelement.el);
   }
 
   private buildContainer(): Dom {
     const resultCell = $$('div', { className: 'coveo-result-cell' }, this.buildCaption());
     this.buildMissingTerms().forEach(term => {
-      resultCell.append(term.el);
+      if (term) {
+        resultCell.append(term.el);
+      }
     });
-
-    return $$('div', { className: 'coveo-result-row' }, resultCell);
+    if (resultCell.el.childElementCount > 1) {
+      return $$('div', { className: 'coveo-result-row' }, resultCell);
+    }
   }
 
   private buildCaption(): Dom {
@@ -125,12 +137,15 @@ export class MissingTerms extends Component {
 
   private buildMissingTerms(): Dom[] {
     const terms: Dom[] = this.missingTerms.map(term => {
+      if (this.hideMissingTermifFeaturedResults(term) || this.hideMissingTermIfWildcard(term)) {
+        return;
+      }
       return this.makeTermClickableIfEnabled(term);
     });
     return terms;
   }
 
-  private executeNewQuery(missingTerm: string) {
+  private executeNewQuery(missingTerm: string = this.queryStateModel.get('q')) {
     this.usageAnalytics.logSearchEvent<IAnalyticsIncludeMissingTerm>(analyticsActionCauseList.missingTermClick, {
       missingTerm: missingTerm
     });
@@ -141,7 +156,7 @@ export class MissingTerms extends Component {
     if (this.options.clickable) {
       const termElement = $$('button', { className: 'coveo-missing-term clickable' }, term);
       termElement.on('click', () => {
-        this.includeTermInQuery(term);
+        this.addTermForcedToAppear(term);
         this.executeNewQuery(term);
       });
       return termElement;
@@ -152,6 +167,22 @@ export class MissingTerms extends Component {
 
   private createWordBoundryDelimitedRegex(term: string): RegExp {
     return XRegExp(`${this.wordBoundary}(${term})${this.wordBoundary}`, 'g');
+  }
+
+  private hideMissingTermifFeaturedResults(term: string): boolean {
+    this.updateTermForcedToAppear();
+    return this.termForcedToAppear.indexOf(term) !== -1;
+  }
+
+  private hideMissingTermIfWildcard(term): boolean {
+    const query = this.queryStateModel.get('q');
+    const regxStarWildcard = XRegExp(`(\\*${term})|${term}\\*`);
+    const regxxQuestionMarkWildcard = XRegExp(`(\\?${term})|${term}\\?`);
+
+    const foundStar = this.queryController.getLastQuery().wildcards && regxStarWildcard.test(query);
+    const foundQuestionMark = this.queryController.getLastQuery().questionMark && regxxQuestionMarkWildcard.test(query);
+
+    return foundStar || foundQuestionMark;
   }
 }
 Initialization.registerAutoCreateComponent(MissingTerms);

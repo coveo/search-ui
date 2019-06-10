@@ -364,7 +364,8 @@ export class ComponentEvents {
    * @param handler The handler to execute when the query state event is triggered.
    */
   public onQueryState<T>(eventType: string, attribute?: string, handler?: (args: T) => any) {
-    this.onRootElement(this.getQueryStateEventName(eventType, attribute), handler);
+    const a = this.getQueryStateEventName(eventType, attribute);
+    this.onRootElement(a, handler);
   }
 
   /**
