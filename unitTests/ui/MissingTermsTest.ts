@@ -91,7 +91,7 @@ export function MissingTermsTest() {
           });
         });
 
-        describe('when re-injecting a term as an exact match', () => {
+        describe('when re-injecting a term', () => {
           var query: string;
 
           it('and the term is present in the query, the term is added to the url', () => {
@@ -123,7 +123,7 @@ export function MissingTermsTest() {
             expect(test.cmp.queryStateModel.get('missingTerm')).toContain(lastWord);
           });
 
-          it('and the term is not present, the term is not added to the url', () => {
+          it('and the term is not present, queryStateModel.set is never called', () => {
             const termNotInQuery = 'foo';
             query = 'This is my query';
             test = mockComponent(query);
@@ -132,7 +132,7 @@ export function MissingTermsTest() {
             expect(test.cmp.queryStateModel.set).not.toHaveBeenCalled();
           });
 
-          it('and the term is present and contains hyphens, the term is added to the url', () => {
+          it('and the term present contains hyphens, the term is added to the url', () => {
             const hyphensWord = 'really-really';
             query = 'This is really-really my query';
             fakeResult.absentTerms = [hyphensWord];
@@ -141,20 +141,20 @@ export function MissingTermsTest() {
             expect(test.cmp.queryStateModel.get('missingTerm')).toContain(hyphensWord);
           });
 
-          it('and the term is present and have special caracter beside it, the term is added to the url', () => {
-            const specialCaracter = 'query';
+          it('and the term present is surrounded by special character, the term is added to the url', () => {
+            const specialCharacter = 'query';
             query = 'This is really my !!!query!!!';
-            fakeResult.absentTerms = [specialCaracter];
+            fakeResult.absentTerms = [specialCharacter];
             test = mockComponent(query);
-            test.cmp.addTermForcedToAppear(specialCaracter);
-            expect(test.cmp.queryStateModel.get('missingTerm')).toContain(specialCaracter);
+            test.cmp.addTermForcedToAppear(specialCharacter);
+            expect(test.cmp.queryStateModel.get('missingTerm')).toContain(specialCharacter);
           });
         });
       });
 
       describe('Korean', () => {
-        describe('when re-injecting a term as an exact match, the term is added to the url', () => {
-          it('and the term is present in the query', () => {
+        describe('when re-injecting a term', () => {
+          it('and the term is present in the query, the term is added to the url', () => {
             const koreanWordPresent = '쿼리가';
             const query = '긴 쿼리가 될';
             fakeResult.absentTerms = [koreanWordPresent];
@@ -162,7 +162,7 @@ export function MissingTermsTest() {
             test.cmp.addTermForcedToAppear(koreanWordPresent);
             expect(test.cmp.queryStateModel.get('missingTerm')).toContain(koreanWordPresent);
           });
-          it('and the term is the first word in the query. the term is added to the url', () => {
+          it('and the term is the first word in the query, the term is added to the url', () => {
             const koreanFirstWord = '이것은';
             const query = '이것은 정말';
             fakeResult.absentTerms = [koreanFirstWord];
@@ -180,7 +180,7 @@ export function MissingTermsTest() {
             expect(test.cmp.queryStateModel.get('missingTerm')).toContain(KoreanlastWord);
           });
 
-          it('and the term is a single caracter surronded by other caracter, the term is added to the url', () => {
+          it('and the term is a single character surronded by other character, the term is added to the url', () => {
             const KoreanWordPresentMultipleTimes = '것';
             const query = '이것은 정말 정말 긴';
             fakeResult.absentTerms = [KoreanWordPresentMultipleTimes];
