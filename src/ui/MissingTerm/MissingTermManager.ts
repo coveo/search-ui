@@ -54,7 +54,7 @@ export class MissingTermManager {
         {
           className: 'coveo-missing-term-breadcrumb-value coveo-accessible-button'
         },
-        $$('span', { className: 'coveo-facet-breadcrumb-caption' }, term),
+        $$('span', { className: 'coveo-missing-term-breadcrumb-caption' }, term),
         $$('span', { className: 'coveo-missing-term-breadcrumb-clear' }, SVGIcons.icons.mainClear)
       );
 

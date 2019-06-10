@@ -4,7 +4,8 @@
   @include breadcrumb-title();
 }
 
-.coveo-missing-term-breadcrumb-value {
+.coveo-missing-term-breadcrumb-value,
+.coveo-facet-breadcrumb-caption {
   @include breadcrumb-value();
   display: inline-block;
 }
