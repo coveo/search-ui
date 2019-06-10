@@ -63,7 +63,7 @@ export class ResponsiveDropdownContent implements IResponsiveDropdownContent {
   }
 
   private setElementAttributes() {
-    this.element.el.style.display = '';
+    this.element.show();
     this.element.addClass(this.cssClassName);
     this.element.addClass(ResponsiveDropdownContent.DEFAULT_CSS_CLASS_NAME);
     this.element.setAttribute('role', 'group');
@@ -81,7 +81,7 @@ export class ResponsiveDropdownContent implements IResponsiveDropdownContent {
   }
 
   private unsetElementAttributes() {
-    this.element.el.style.display = 'none';
+    this.element.hide();
     this.element.removeClass(this.cssClassName);
     this.element.removeClass(ResponsiveDropdownContent.DEFAULT_CSS_CLASS_NAME);
     this.element.setAttribute('role', null);
