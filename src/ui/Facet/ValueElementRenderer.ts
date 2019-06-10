@@ -61,7 +61,8 @@ export class ValueElementRenderer {
     const excludeIcon = $$('div', {
       title: l('Exclude', this.facet.getValueCaption(this.facetValue)),
       className: 'coveo-facet-value-exclude',
-      tabindex: 0
+      tabindex: 0,
+      role: 'button'
     }).el;
     this.addFocusAndBlurEventListeners(excludeIcon);
     excludeIcon.innerHTML = SVGIcons.icons.checkboxHookExclusionMore;
@@ -255,8 +256,7 @@ export class ValueElementRenderer {
   private addAccessibilityAttributesToTargetElement() {
     const el = this.accessibleElement;
     el.setAttribute('aria-label', this.ariaLabel);
-    el.setAttribute('role', 'heading');
-    el.setAttribute('aria-level', '3');
+    el.setAttribute('role', 'button');
   }
 
   private get ariaLabel() {

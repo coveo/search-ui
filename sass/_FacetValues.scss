@@ -10,8 +10,8 @@
   .coveo-facet-value-checkbox {
     width: #{$pixel-size};
     height: #{$pixel-size};
+    box-sizing: content-box;
     @include defaultRoundedBorder();
-    display: inline-block;
     text-align: center;
     vertical-align: middle;
     margin-right: 15px;
@@ -42,7 +42,7 @@
       }
     }
   }
-  .coveo-facet-value-checkbox:focus {
+  .coveo-facet-value-checkbox:active {
     outline: none;
   }
   &:not(.coveo-facet-search-button) {
@@ -84,14 +84,14 @@
   @if $size=='smaller' {
     width: 11px;
     height: 9px;
-    bottom: 5px;
+    bottom: 4px;
     .coveo-hook-svg {
       fill: black;
     }
   } @else {
     width: 14px;
     height: 12px;
-    bottom: 3px;
+    bottom: 2px;
     .coveo-hook-svg {
       fill: $color-grey;
     }
@@ -102,11 +102,11 @@
   @if $size=='smaller' {
     width: 7px;
     height: 7px;
-    bottom: 6px;
+    bottom: 5px;
   } @else {
     width: 10px;
     height: 10px;
-    bottom: 4px;
+    bottom: 3px;
   }
   .coveo-exclusion-svg {
     fill: $color-red;
@@ -239,6 +239,8 @@
   &:hover,
   &:focus {
     opacity: 1;
+  }
+  &:active {
     outline: none;
   }
 }
