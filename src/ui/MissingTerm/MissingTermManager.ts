@@ -1,6 +1,6 @@
 import 'styling/_MissingTermsBreadcrumb';
 import { $$ } from '../../utils/Dom';
-import { QueryEvents, QueryStateModel, BreadcrumbEvents } from '../../Core';
+import { QueryEvents, QueryStateModel, BreadcrumbEvents, l } from '../../Core';
 import { IDoneBuildingQueryEventArgs } from '../../events/QueryEvents';
 import { IClearBreadcrumbEventArgs, IPopulateBreadcrumbEventArgs } from '../../events/BreadcrumbEvents';
 import { SVGIcons } from '../../utils/SVGIcons';
@@ -74,7 +74,7 @@ export class MissingTermManager {
         {
           className: 'coveo-missing-term-breadcrumb-title'
         },
-        'Missing Term' + ':'
+        l('MustContain')
       )
     );
   }
