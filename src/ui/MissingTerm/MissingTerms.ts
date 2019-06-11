@@ -77,7 +77,6 @@ export class MissingTerms extends Component {
     super(element, MissingTerms.ID, bindings);
 
     this.options = ComponentOptions.initComponentOptions(element, MissingTerms, options);
-    this.result.absentTerms = [...this.result.absentTerms.splice(0, this.options.numberOfResults)];
     this.addMissingTerms();
   }
   /**
@@ -115,8 +114,11 @@ export class MissingTerms extends Component {
     if (this.missingTerms.length === 0) {
       return;
     }
-    const missingTermelement = this.buildContainer();
-    if (missingTermelement) $$(this.element).append(missingTermelement.el);
+    const missingTermelement = this.buildContainer().el;
+    if (missingTermelement) {
+      this.hideMissingTermIfNumberOfResult(missingTermelement);
+      $$(this.element).append(missingTermelement);
+    }
   }
 
   private buildContainer(): Dom {
@@ -183,6 +185,35 @@ export class MissingTerms extends Component {
     const foundQuestionMark = this.queryController.getLastQuery().questionMark && regxxQuestionMarkWildcard.test(query);
 
     return foundStar || foundQuestionMark;
+  }
+
+  private hideMissingTermIfNumberOfResult(element: HTMLElement) {
+    const allMissingTerms = $$(element).findAll('.coveo-missing-term');
+    if (allMissingTerms.length <= this.options.numberOfResults) {
+      return;
+    }
+    for (let index = this.options.numberOfResults; index < allMissingTerms.length; index++) {
+      allMissingTerms[index].style.display = 'none';
+    }
+    const showMore = $$(
+      'button',
+      { className: 'coveo-missing-term-show-more' },
+      `${allMissingTerms.length - this.options.numberOfResults} more...`
+    );
+    const resultCell = $$(element).find('.coveo-result-cell');
+    showMore.on('click', () => {
+      this.showMissingTerm();
+    });
+    resultCell.appendChild(showMore.el);
+  }
+
+  private showMissingTerm() {
+    const showMore = $$(this.element).find('.coveo-missing-term-show-more');
+    showMore.parentNode.removeChild(showMore);
+    const allMissingTerms = $$(this.element).findAll('.coveo-missing-term');
+    for (let index = this.options.numberOfResults; index < allMissingTerms.length; index++) {
+      allMissingTerms[index].removeAttribute('style');
+    }
   }
 }
 Initialization.registerAutoCreateComponent(MissingTerms);

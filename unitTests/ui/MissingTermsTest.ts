@@ -58,12 +58,34 @@ export function MissingTermsTest() {
         expect(missingTermsElement.innerText).toBe(caption);
       });
 
-      it('numberOfResults allows the user to set the maximum number of MissingTerm to be displayed', () => {
-        const query = 'This is my query';
-        const numberOfResults = 1;
-        fakeResult.absentTerms = ['This', 'is'];
-        test = mockComponent(query, { numberOfResults });
-        expect(fakeResult.absentTerms.length).toBe(1);
+      describe('numberOfResults', () => {
+        beforeEach(() => {
+          const query = 'This is my query';
+          const numberOfResults = 1;
+          fakeResult.absentTerms = ['This', 'is'];
+          test = mockComponent(query, { numberOfResults });
+        });
+
+        it('allows the user to set the maximum number of MissingTerm to be displayed', () => {
+          const visibleMissingTerm = $$(test.cmp.element)
+            .findAll('.coveo-missing-term')
+            .filter(element => {
+              return element.style.display === '';
+            });
+          expect(visibleMissingTerm.length).toBe(1);
+        });
+
+        it('when the show more button is clicked, show all the missing terms', () => {
+          $$(test.cmp.element)
+            .find('.coveo-missing-term-show-more')
+            .click();
+          const visibleMissingTerm = $$(test.cmp.element)
+            .findAll('.coveo-missing-term')
+            .filter(element => {
+              return element.style.display === '';
+            });
+          expect(visibleMissingTerm.length).toBe(2);
+        });
       });
     });
     describe('when the langage is', () => {

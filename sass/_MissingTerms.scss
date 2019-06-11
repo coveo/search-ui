@@ -14,4 +14,10 @@
     text-decoration: line-through;
     margin-right: 5px;
   }
+  .coveo-missing-term-show-more {
+    @include clickable();
+    border: none;
+    padding: 0;
+    margin-right: 5px;
+  }
 }
