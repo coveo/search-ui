@@ -4,7 +4,7 @@ import { InitializationEvents } from '../../events/InitializationEvents';
 import { QueryEvents, IQuerySuccessEventArgs, IDoneBuildingQueryEventArgs } from '../../events/QueryEvents';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { exportGlobally } from '../../GlobalExports';
-import { without, find } from 'underscore';
+import { find } from 'underscore';
 import { IFacetResponse } from '../../rest/Facet/FacetResponse';
 import { $$ } from '../../utils/Dom';
 import { Utils } from '../../utils/Utils';
@@ -73,12 +73,11 @@ export class DynamicFacetManager extends Component {
     })
   };
 
-  private enabledFacets: DynamicFacet[] = [];
-  private disabledFacets: DynamicFacet[] = [];
+  private childrenFacets: DynamicFacet[] = [];
   private containerElement: HTMLElement;
 
-  private get allFacets() {
-    return [...this.enabledFacets, ...this.disabledFacets];
+  private get enabledFacets() {
+    return this.childrenFacets.filter(facet => !facet.disabled);
   }
 
   /**
@@ -117,10 +116,10 @@ export class DynamicFacetManager extends Component {
 
   private handleAfterComponentsInitialization() {
     const allDynamicFacets = this.bindings.searchInterface.getComponents<DynamicFacet>('DynamicFacet');
-    this.enabledFacets = allDynamicFacets.filter(dynamicFacet => this.element.contains(dynamicFacet.element));
-    this.enabledFacets.forEach(dynamicFacet => (dynamicFacet.dynamicFacetManager = this));
+    this.childrenFacets = allDynamicFacets.filter(dynamicFacet => this.element.contains(dynamicFacet.element));
+    this.childrenFacets.forEach(dynamicFacet => (dynamicFacet.dynamicFacetManager = this));
 
-    if (!this.enabledFacets.length) {
+    if (!this.childrenFacets.length) {
       this.disable();
     }
   }
@@ -129,7 +128,7 @@ export class DynamicFacetManager extends Component {
     Assert.exists(data);
     Assert.exists(data.queryBuilder);
 
-    this.allFacets.forEach(dynamicFacet => {
+    this.enabledFacets.forEach(dynamicFacet => {
       dynamicFacet.putStateIntoQueryBuilder(data.queryBuilder);
       dynamicFacet.putStateIntoAnalytics();
     });
@@ -149,13 +148,12 @@ export class DynamicFacetManager extends Component {
 
   private mapResponseToComponents(facetsResponse: IFacetResponse[]) {
     const responseFacets = facetsResponse.map(({ facetId }) => this.getFacetComponentById(facetId)).filter(Utils.exists);
-    this.disabledFacets = without(this.allFacets, ...responseFacets);
-    this.enabledFacets = responseFacets;
+    responseFacets.forEach(facet => facet.enable());
   }
 
   private sortFacetsIfCompareOptionsProvided() {
     if (this.options.compareFacets) {
-      this.enabledFacets = this.enabledFacets.sort(this.options.compareFacets);
+      this.childrenFacets = this.childrenFacets.sort(this.options.compareFacets);
     }
   }
 
@@ -163,7 +161,7 @@ export class DynamicFacetManager extends Component {
     this.resetContainer();
     const fragment = document.createDocumentFragment();
 
-    this.enabledFacets.forEach((dynamicFacet, index) => {
+    this.childrenFacets.forEach((dynamicFacet, index) => {
       fragment.appendChild(dynamicFacet.element);
 
       if (this.options.onUpdate) {
@@ -176,7 +174,7 @@ export class DynamicFacetManager extends Component {
   }
 
   private getFacetComponentById(id: string) {
-    const facet = find(this.allFacets, facet => facet.options.id === id);
+    const facet = find(this.childrenFacets, facet => facet.options.id === id);
 
     if (!facet) {
       this.logger.error(`Cannot find DynamicFacet component with an id equal to "${id}".`);
