@@ -1,7 +1,7 @@
 import * as Mock from '../MockEnvironment';
 import { MissingTermManager } from '../../src/ui/MissingTerm/MissingTermManager';
 import { Simulate } from '../Simulate';
-import { $$ } from '../Test';
+import { $$, l } from '../Test';
 
 export function MissingTermsManagerTest() {
   describe('MissingTermManager', () => {
@@ -42,7 +42,7 @@ export function MissingTermsManagerTest() {
       it('should populate when the event is triggered', () => {
         const breadcrumb = populateBreadcrumb();
         expect(breadcrumb.length).toBe(1);
-        expect($$(breadcrumb[0].element).find('.coveo-missing-term-breadcrumb-title').innerHTML).toBe('Missing Term:');
+        expect($$(breadcrumb[0].element).find('.coveo-missing-term-breadcrumb-title').innerHTML).toBe(l('MustContain'));
         expect($$(breadcrumb[0].element).find('.coveo-missing-term-breadcrumb-caption').innerHTML).toBe('is');
       });
 
