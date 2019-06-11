@@ -2,12 +2,8 @@
   &:hover {
     cursor: pointer;
   }
-  &:focus {
-    outline-width: 0;
-  }
-  &.coveo-accessible-button-focused {
-    &:focus {
-      outline-width: initial;
-    }
+  &.coveo-accessible-button-pressed:focus,
+  &:active {
+    outline: 0;
   }
 }

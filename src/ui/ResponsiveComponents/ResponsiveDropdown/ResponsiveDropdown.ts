@@ -7,6 +7,8 @@ import { AccessibleButton } from '../../../utils/AccessibleButton';
 import { KeyboardUtils, KEYBOARD } from '../../../utils/KeyboardUtils';
 import { InitializationEvents } from '../../../events/InitializationEvents';
 import { Assert } from '../../../misc/Assert';
+import { l } from '../../../strings/Strings';
+
 export enum ResponsiveDropdownEvent {
   OPEN = 'responsiveDropdownOpen',
   CLOSE = 'responsiveDropdownClose'
@@ -86,7 +88,7 @@ export class ResponsiveDropdown {
     new AccessibleButton()
       .withElement(this.dropdownHeader.element)
       .withSelectAction(() => (this.isOpened ? this.close() : this.open()))
-      .withLabel('Filters')
+      .withLabel(l(this.isOpened ? 'CloseFiltersDropdown' : 'OpenFiltersDropdown'))
       .build();
   }
 

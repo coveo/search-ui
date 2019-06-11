@@ -142,6 +142,8 @@ export interface IAnalyticsDynamicFacetMeta {
   facetType?: AnalyticsDynamicFacetType;
   facetDisplayValue?: string;
   facetValueState?: FacetValueState;
+  facetPosition?: number;
+  facetValuePosition?: number;
 }
 
 export interface IAnalyticsFacetGraphSelectedMeta extends IAnalyticsFacetSliderChangeMeta {}

@@ -23,11 +23,12 @@ export class MagicBoxClear {
       .withSelectAction(() => magicBox.clear())
       .build();
 
-    this.toggleTabindex(false);
+    this.toggleTabindexAndAriaHidden(false);
   }
 
-  public toggleTabindex(hasText: boolean) {
+  public toggleTabindexAndAriaHidden(hasText: boolean) {
     const tabindex = hasText ? '0' : '-1';
     this.element.setAttribute('tabindex', tabindex);
+    this.element.setAttribute('aria-hidden', `${!hasText}`);
   }
 }

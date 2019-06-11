@@ -7451,5 +7451,21 @@
   "Missing": {
     "en": "Missing:",
     "fr": "Manquant:"
+  },
+  "Filters": {
+    "en": "Filters",
+    "fr": "Filtres"
+  },
+  "FiltersDropdown": {
+    "en": "Filters dropdown",
+    "fr": "Menu déroulant de filtres"
+  },
+  "OpenFiltersDropdown": {
+    "en": "Open the filters dropdown",
+    "fr": "Ouvrir le menu déroulant de filtres"
+  },
+  "CloseFiltersDropdown": {
+    "en": "Close the filters dropdown",
+    "fr": "Fermer le menu déroulant de filtres"
   }
 }

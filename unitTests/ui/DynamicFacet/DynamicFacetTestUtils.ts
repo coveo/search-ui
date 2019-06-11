@@ -15,6 +15,7 @@ export class DynamicFacetTestUtils {
       ...options
     };
     facet.element = $$('div').el;
+    facet.searchInterface = Mock.mockSearchInterface();
 
     return facet;
   }
@@ -35,7 +36,8 @@ export class DynamicFacetTestUtils {
       const fakeValue: IDynamicFacetValue = {
         value: `fake value ${index}`,
         numberOfResults: Math.ceil(Math.random() * 100000),
-        state
+        state,
+        position: index + 1
       };
 
       fakeValues.push(fakeValue);
