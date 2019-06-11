@@ -34,7 +34,7 @@ export class MissingTerms extends Component {
      *
      * **Default:** The localized string for `Missing`.
      */
-    caption: ComponentOptions.buildLocalizedStringOption({ defaultValue: 'Missing:' }),
+    caption: ComponentOptions.buildLocalizedStringOption({ defaultValue: 'Missing' }),
     /**
      * The maximum number of missing term to be displayed
      *

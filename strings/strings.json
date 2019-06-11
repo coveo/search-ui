@@ -7447,5 +7447,9 @@
   "MustContain": {
     "en": "Must contain:",
     "fr": "Doit contenir:"
+  },
+  "Missing": {
+    "en": "Missing:",
+    "fr": "Manquant:"
   }
 }
