@@ -784,44 +784,81 @@ export function ResultListTest() {
         describe('enableScrollToTop set to', () => {
           let infiniteScrollContainer: HTMLElement;
           let allResult: IQueryResults;
-          beforeEach(() => {
-            infiniteScrollContainer = { scrollTop: 500 } as HTMLElement;
-            allResult = FakeResults.createFakeResults(50);
-          });
-
-          it('true, should change the value of ScrollTop the HTMLElement to 0', done => {
-            const option: IResultListOptions = {
+          let scrollToSpy: jasmine.Spy;
+          let scrollTopSpy: jasmine.Spy;
+          const setupResultList = (
+            option: IResultListOptions = {
               enableInfiniteScroll: true,
               infiniteScrollContainer: infiniteScrollContainer,
               enableScrollToTop: true
-            };
-            test = Mock.basicComponentSetup<ResultList>(ResultList, option);
+            }
+          ) => {
+            let test = Mock.basicComponentSetup<ResultList>(ResultList, option);
             test.cmp.currentlyDisplayedResults.push(allResult.results[1]);
             (test.cmp.queryController.fetchMore as jasmine.Spy).and.returnValue(Promise.resolve(allResult));
+            return test;
+          };
+
+          beforeEach(() => {
+            jasmine.clock().install();
+            document.createElement('div');
+            infiniteScrollContainer = document.createElement('div');
+
+            scrollToSpy = spyOn(infiniteScrollContainer, 'scrollTo');
+
+            // Inner value of scrollTop.
+            let innerValue = 500;
+            scrollTopSpy = jasmine.createSpy('scrollTop', v => (innerValue = v));
+            Object.defineProperty(infiniteScrollContainer, 'scrollTop', {
+              get: () => innerValue,
+              set: scrollTopSpy
+            });
+            allResult = FakeResults.createFakeResults(50);
+          });
+
+          afterEach(() => {
+            jasmine.clock().uninstall();
+          });
+
+          it('true, should set the value ScrollTop of the HTMLElement to 0 in IE11', done => {
+            infiniteScrollContainer.scrollTo = undefined;
+            test = setupResultList();
             test.cmp.displayMoreResults(50).then(() => {
               Simulate.query(test.env);
-              setTimeout(() => {
-                expect(infiniteScrollContainer.scrollTop).toBe(0);
-                done();
-              }, 0);
+              jasmine.clock().tick(0);
+
+              expect(scrollTopSpy).toHaveBeenCalledWith(0);
+
+              done();
             });
           });
 
-          it('false, should not change the value ScrollTop of the HTMLElement', done => {
-            const option: IResultListOptions = {
+          it('true, should call the ScrollTo method of the HTMLElement', done => {
+            test = setupResultList();
+            test.cmp.displayMoreResults(50).then(() => {
+              Simulate.query(test.env);
+              jasmine.clock().tick(0);
+
+              expect(scrollToSpy).toHaveBeenCalledWith(0, window.pageYOffset + test.cmp.element.getBoundingClientRect().top);
+
+              done();
+            });
+          });
+
+          it('false, should not set the value ScrollTop of the HTMLElement and should not call the ScrollTo method of the HTMLElement', done => {
+            test = setupResultList({
               enableInfiniteScroll: true,
               infiniteScrollContainer: infiniteScrollContainer,
               enableScrollToTop: false
-            };
-            test = Mock.basicComponentSetup<ResultList>(ResultList, option);
-            test.cmp.currentlyDisplayedResults.push(allResult.results[0]);
-            (test.cmp.queryController.fetchMore as jasmine.Spy).and.returnValue(Promise.resolve(allResult));
+            });
             test.cmp.displayMoreResults(50).then(() => {
               Simulate.query(test.env);
-              setTimeout(() => {
-                expect(infiniteScrollContainer.scrollTop).toBe(500);
-                done();
-              }, 0);
+              jasmine.clock().tick(0);
+
+              expect(scrollToSpy).not.toHaveBeenCalled();
+              expect(scrollTopSpy).not.toHaveBeenCalled();
+
+              done();
             });
           });
         });
