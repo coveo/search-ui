@@ -55,7 +55,7 @@ import { ValueElementRenderer } from './ValueElementRenderer';
 import { AccessibleButton } from '../../utils/AccessibleButton';
 import { IResponsiveComponentOptions } from '../ResponsiveComponents/ResponsiveComponentsManager';
 import { ResponsiveFacetOptions } from '../ResponsiveComponents/ResponsiveFacetOptions';
-import { DependsOnManager } from '../../utils/dependsOnUtils';
+import { DependsOnManager } from '../../utils/DependsOnManagerUtils';
 
 export interface IFacetOptions extends IResponsiveComponentOptions {
   title?: string;
@@ -1518,7 +1518,7 @@ export class Facet extends Component {
   }
 
   private initDependsOnManager() {
-    this.dependsOnManager = new DependsOnManager(this);
+    this.dependsOnManager = new DependsOnManager(this, () => this.reset());
   }
 
   private initBottomAndTopSpacer() {

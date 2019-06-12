@@ -39,7 +39,7 @@ import { ResponsiveFacetOptions } from '../ResponsiveComponents/ResponsiveFacetO
 import { CategoryFacetHeader } from './CategoryFacetHeader';
 import { AccessibleButton } from '../../utils/AccessibleButton';
 import { IStringMap } from '../../rest/GenericParam';
-import { DependsOnManager } from '../../utils/dependsOnUtils';
+import { DependsOnManager } from '../../utils/DependsOnManagerUtils';
 
 export interface ICategoryFacetOptions extends IResponsiveComponentOptions {
   field: IFieldOption;
@@ -801,7 +801,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   }
 
   private initDependsOnManager() {
-    this.dependsOnManager = new DependsOnManager(this);
+    this.dependsOnManager = new DependsOnManager(this, () => this.changeActivePath(this.options.basePath));
   }
 
   private addFading() {

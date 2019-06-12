@@ -6,7 +6,7 @@ import { QueryStateModel } from '../Core';
 import { Facet } from '../ui/Facet/Facet';
 
 export class DependsOnManager {
-  constructor(private facet: CategoryFacet | Facet) {}
+  constructor(private facet: CategoryFacet | Facet, private reset) {}
 
   public listenToParentIfDependentFacet() {
     if (!this.isDependentFacet) {
@@ -35,7 +35,7 @@ export class DependsOnManager {
       return;
     }
 
-    this.facet.reset();
+    this.reset();
   }
 
   private get parentFacetHasSelectedValues() {
