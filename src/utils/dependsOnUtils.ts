@@ -5,7 +5,7 @@ import { $$ } from './Dom';
 import { QueryStateModel } from '../Core';
 import { Facet } from '../ui/Facet/Facet';
 
-export class dependsOnManager {
+export class DependsOnManager {
   constructor(private facet: CategoryFacet | Facet) {}
 
   public listenToParentIfDependentFacet() {

@@ -707,3 +707,6 @@ SearchboxResizeTest();
 
 import { FacetPaddingTest } from './ui/FacetPaddingTest';
 FacetPaddingTest();
+
+import { DependsOnUtilsTest } from './utils/DependsOnUtilsTest';
+DependsOnUtilsTest();

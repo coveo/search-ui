@@ -27,6 +27,70 @@ export function CategoryFacetTest() {
     let test: IBasicComponentSetup<CategoryFacet>;
     let simulateQueryData: ISimulateQueryData;
 
+    describe('exposes options', () => {
+      describe('dependsOn', () => {
+        let master: IBasicComponentSetup<CategoryFacet>;
+        const masterFacetField = '@masterFacet';
+        const dependentFacetField = '@field';
+
+        function getMasterAndDependentFacetResults() {
+          const results = FakeResults.createFakeResults();
+          results.groupByResults = [
+            FakeResults.createFakeGroupByResult(dependentFacetField, 'foo', 15),
+            FakeResults.createFakeGroupByResult(masterFacetField, 'foo', 15)
+          ];
+
+          return results;
+        }
+
+        beforeEach(() => {
+          simulateQueryData = buildCategoryFacetResults();
+
+          master = Mock.advancedComponentSetup<CategoryFacet>(
+            CategoryFacet,
+            new Mock.AdvancedComponentSetupOptions(
+              undefined,
+              {
+                field: masterFacetField
+              },
+              (builder: Mock.MockEnvironmentBuilder) => {
+                builder = builder.withRoot(test.env.root);
+                return builder.withLiveQueryStateModel();
+              }
+            )
+          );
+
+          test = Mock.optionsComponentSetup<CategoryFacet, ICategoryFacetOptions>(CategoryFacet, {
+            field: dependentFacetField,
+            dependsOn: masterFacetField
+          });
+
+          Simulate.query(test.env, { results: getMasterAndDependentFacetResults() });
+        });
+        it('adds the coveo-facet-dependent class to the dependent facet', () => {
+          expect($$(test.cmp.element).hasClass('coveo-facet-dependent')).toBe(true);
+        });
+
+        it('does not add the coveo-facet-dependent class to the master facet', () => {
+          expect($$(master.cmp.element).hasClass('coveo-facet-dependent')).toBe(false);
+        });
+
+        it(`when the master facet has one selected value,
+        it removes the coveo-facet-dependent class from the dependent facet`, () => {
+          /*           Simulate.query(master.env, simulateQueryData);
+          master.cmp.selectValue('value9');
+
+          expect($$(test.cmp.element).hasClass('coveo-facet-dependent')).toBe(false); */
+          Simulate.query(master.env, simulateQueryData);
+
+          master.cmp.selectValue('value9');
+          Simulate.query(test.env);
+
+          expect($$(test.cmp.element).hasClass('coveo-facet-dependent')).toBe(false);
+        });
+      });
+    });
+
     beforeEach(() => {
       simulateQueryData = buildCategoryFacetResults();
       test = Mock.advancedComponentSetup<CategoryFacet>(

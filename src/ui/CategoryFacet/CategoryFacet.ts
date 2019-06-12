@@ -39,7 +39,7 @@ import { ResponsiveFacetOptions } from '../ResponsiveComponents/ResponsiveFacetO
 import { CategoryFacetHeader } from './CategoryFacetHeader';
 import { AccessibleButton } from '../../utils/AccessibleButton';
 import { IStringMap } from '../../rest/GenericParam';
-import { dependsOnManager } from '../../utils/dependsOnUtils';
+import { DependsOnManager } from '../../utils/dependsOnUtils';
 
 export interface ICategoryFacetOptions extends IResponsiveComponentOptions {
   field: IFieldOption;
@@ -322,7 +322,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   private showingWaitAnimation = false;
   private numberOfChildValuesCurrentlyDisplayed = 0;
   private numberOfValues: number;
-  private dependsOnManager: dependsOnManager;
+  private dependsOnManager: DependsOnManager;
 
   public static WAIT_ELEMENT_CLASS = 'coveo-category-facet-header-wait-animation';
 
@@ -801,7 +801,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   }
 
   private initDependsOnManager() {
-    this.dependsOnManager = new dependsOnManager(this);
+    this.dependsOnManager = new DependsOnManager(this);
   }
 
   private addFading() {
