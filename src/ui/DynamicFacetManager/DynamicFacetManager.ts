@@ -4,7 +4,7 @@ import { InitializationEvents } from '../../events/InitializationEvents';
 import { QueryEvents, IQuerySuccessEventArgs, IDoneBuildingQueryEventArgs } from '../../events/QueryEvents';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { exportGlobally } from '../../GlobalExports';
-import { find } from 'underscore';
+import { find, without } from 'underscore';
 import { IFacetResponse } from '../../rest/Facet/FacetResponse';
 import { $$ } from '../../utils/Dom';
 import { Utils } from '../../utils/Utils';
@@ -147,8 +147,12 @@ export class DynamicFacetManager extends Component {
   }
 
   private mapResponseToComponents(facetsResponse: IFacetResponse[]) {
-    const responseFacets = facetsResponse.map(({ facetId }) => this.getFacetComponentById(facetId)).filter(Utils.exists);
-    responseFacets.forEach(facet => facet.enable());
+    const facetsInResponse = facetsResponse.map(({ facetId }) => this.getFacetComponentById(facetId)).filter(Utils.exists);
+    const facetsNotInResponse = without(this.childrenFacets, ...facetsInResponse);
+
+    facetsInResponse.forEach(facet => facet.enable());
+
+    this.childrenFacets = [...facetsInResponse, ...facetsNotInResponse];
   }
 
   private sortFacetsIfCompareOptionsProvided() {
@@ -187,5 +191,9 @@ export class DynamicFacetManager extends Component {
   private notImplementedError() {
     this.logger.error('DynamicFacetManager is not supported by your current search endpoint. Disabling this component.');
     this.disable();
+  }
+
+  public isCurrentlyDisplayed() {
+    return !!find(this.childrenFacets, facet => facet.isCurrentlyDisplayed());
   }
 }

@@ -6,6 +6,8 @@ import { IFacetResponse } from '../../src/rest/Facet/FacetResponse';
 import { DynamicFacet } from '../../src/ui/DynamicFacet/DynamicFacet';
 import { Simulate } from '../Simulate';
 import { FakeResults } from '../Fake';
+import { findWhere } from 'underscore';
+import { QueryEvents, QueryBuilder } from '../../src/Core';
 
 export function DynamicFacetManagerTest() {
   describe('DynamicFacetManager', () => {
@@ -22,9 +24,9 @@ export function DynamicFacetManagerTest() {
 
     function initializeFacets() {
       facets = [
-        DynamicFacetTestUtils.createFakeFacet({ id: 'test1', field: '@test1', numberOfValues: 10 }),
-        DynamicFacetTestUtils.createFakeFacet({ id: 'test2', field: '@test2', numberOfValues: 5 }),
-        DynamicFacetTestUtils.createFakeFacet({ id: 'test3', field: '@test3', numberOfValues: 100 })
+        DynamicFacetTestUtils.createAdvancedFakeFacet({ id: 'test1', field: '@test1', numberOfValues: 10 }).cmp,
+        DynamicFacetTestUtils.createAdvancedFakeFacet({ id: 'test2', field: '@test2', numberOfValues: 5 }).cmp,
+        DynamicFacetTestUtils.createAdvancedFakeFacet({ id: 'test3', field: '@test3', numberOfValues: 100 }).cmp
       ];
     }
 
@@ -93,25 +95,21 @@ export function DynamicFacetManagerTest() {
       expect(test.cmp.disabled).toBe(false);
     });
 
+    it(`when a facet is disabled
+    should not be sent in the request`, () => {
+      facets[0].disable();
+      const queryBuilder = new QueryBuilder();
+      triggerAfterComponentsInitialization();
+      $$(test.env.root).trigger(QueryEvents.doneBuildingQuery, {
+        queryBuilder
+      });
+
+      const facetIsInRequest = !!findWhere(queryBuilder.facetRequests, { facetId: facets[0].options.id });
+      expect(facetIsInRequest).toBe(false);
+    });
+
     it('should reorder the facets correctly in the DOM depending on the query results', () => {
       triggerAfterComponentsInitialization();
-      triggerQuerySuccess(queryFacetsResponse());
-
-      expect(managerContainerChildren()[0]).toBe(facets[1].element);
-      expect(managerContainerChildren()[1]).toBe(facets[2].element);
-      expect(managerContainerChildren()[2]).toBe(facets[0].element);
-    });
-
-    it('should remove the facets not in the response', () => {
-      triggerAfterComponentsInitialization();
-      triggerQuerySuccess([]);
-
-      expect(managerContainerChildren().length).toBe(0);
-    });
-
-    it('should retrieve the previously removed facets', () => {
-      triggerAfterComponentsInitialization();
-      triggerQuerySuccess([]);
       triggerQuerySuccess(queryFacetsResponse());
 
       expect(managerContainerChildren()[0]).toBe(facets[1].element);

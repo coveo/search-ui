@@ -450,6 +450,18 @@ export class DynamicFacet extends Component {
     return allDynamicFacets.indexOf(this) + 1;
   }
 
+  public isCurrentlyDisplayed() {
+    if (!$$(this.element).isVisible()) {
+      return false;
+    }
+
+    if ($$(this.element).hasClass('coveo-active')) {
+      return true;
+    }
+
+    return true;
+  }
+
   private initQueryEvents() {
     this.bind.onRootElement(QueryEvents.duringQuery, () => this.ensureDom());
     this.bind.onRootElement(QueryEvents.doneBuildingQuery, (data: IDoneBuildingQueryEventArgs) => this.handleDoneBuildingQuery(data));
