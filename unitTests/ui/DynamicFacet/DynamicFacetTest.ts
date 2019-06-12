@@ -28,7 +28,7 @@ export function DynamicFacetTest() {
     }
 
     function testQueryStateModelValues() {
-      const qsmValues: string[] = test.env.queryStateModel.attributes[`df:${test.cmp.options.id}`];
+      const qsmValues: string[] = test.env.queryStateModel.attributes[`f:${test.cmp.options.id}`];
       expect(qsmValues).toEqual(test.cmp.values.selectedValues);
     }
 
@@ -243,24 +243,24 @@ export function DynamicFacetTest() {
     });
 
     it('should select the needed values using the id', () => {
-      test.env.queryStateModel.registerNewAttribute(`df:${test.cmp.options.id}`, []);
-      test.env.queryStateModel.set(`df:${test.cmp.options.id}`, ['a', 'b', 'c']);
+      test.env.queryStateModel.registerNewAttribute(`${test.cmp.options.id}`, []);
+      test.env.queryStateModel.set(`f:${test.cmp.options.id}`, ['a', 'b', 'c']);
       expect(test.cmp.values.selectedValues).toEqual(['a', 'b', 'c']);
     });
 
     it('should select the needed values using the id', () => {
       options.id = 'my_secret_id';
       initializeComponent();
-      test.env.queryStateModel.registerNewAttribute(`df:${options.id}`, []);
+      test.env.queryStateModel.registerNewAttribute(`f:${options.id}`, []);
 
-      test.env.queryStateModel.set(`df:${options.id}`, ['a', 'b', 'c']);
+      test.env.queryStateModel.set(`f:${options.id}`, ['a', 'b', 'c']);
       expect(test.cmp.values.selectedValues).toEqual(['a', 'b', 'c']);
     });
 
     it('should log an analytics event when selecting a value through the QSM', () => {
       spyOn(test.cmp, 'logAnalyticsEvent');
-      test.env.queryStateModel.registerNewAttribute(`df:${test.cmp.options.id}`, []);
-      test.env.queryStateModel.set(`df:${test.cmp.options.id}`, ['a', 'b', 'c']);
+      test.env.queryStateModel.registerNewAttribute(`f:${test.cmp.options.id}`, []);
+      test.env.queryStateModel.set(`f:${test.cmp.options.id}`, ['a', 'b', 'c']);
 
       expect(test.cmp.logAnalyticsEvent).toHaveBeenCalledWith(
         analyticsActionCauseList.dynamicFacetSelect,
@@ -270,9 +270,9 @@ export function DynamicFacetTest() {
 
     it('should log an analytics event when deselecting a value through the QSM', () => {
       spyOn(test.cmp, 'logAnalyticsEvent');
-      test.env.queryStateModel.registerNewAttribute(`df:${test.cmp.options.id}`, []);
-      test.env.queryStateModel.set(`df:${test.cmp.options.id}`, ['a', 'b', 'c']);
-      test.env.queryStateModel.set(`df:${test.cmp.options.id}`, []);
+      test.env.queryStateModel.registerNewAttribute(`f:${test.cmp.options.id}`, []);
+      test.env.queryStateModel.set(`f:${test.cmp.options.id}`, ['a', 'b', 'c']);
+      test.env.queryStateModel.set(`f:${test.cmp.options.id}`, []);
 
       expect(test.cmp.logAnalyticsEvent).toHaveBeenCalledWith(
         analyticsActionCauseList.dynamicFacetDeselect,
