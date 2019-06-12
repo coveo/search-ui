@@ -304,18 +304,18 @@ export const PlaygroundConfiguration: IStringMap<IComponentPlaygroundConfigurati
               className: 'result-template',
               type: 'text/underscore'
             },
-            new SectionBuilder()
-              .withComponent(
-                'CoveoIcon',
-                {
-                  'data-small': 'true',
-                  'data-with-label': 'false',
-                  style: 'display:inline-block; vertical-align:middle; margin-right:5px;'
-                },
-                'span'
-              )
-              .withComponent('CoveoResultLink', {}, 'a')
-              .build()
+            `<div class="coveo-result-frame">
+              <div class="coveo-result-cell" style="vertical-align:top;text-align:center;width:32px;">
+                <span class="CoveoIcon" data-small="true" data-with-label="false"></span>
+              </div>
+              <div class="coveo-result-cell" style="vertical-align: top;padding-left: 16px;">
+                <div class="coveo-result-row" style="margin-top:0;">
+                  <div class="coveo-result-cell" ">
+                    <a class="CoveoResultLink" ></a>
+                  </div>
+                </div>
+              </div>
+            </div>`
           )
         )
       )
@@ -325,7 +325,7 @@ export const PlaygroundConfiguration: IStringMap<IComponentPlaygroundConfigurati
       headerTitle: ''
     },
     toExecute: () => {
-      setMinHeightOnSearchInterface('500px');
+      setMinHeightOnSearchInterface('350px');
       getSearchInterfaceInstance().options.resultsPerPage = 5;
     }
   },
