@@ -2,9 +2,13 @@ import * as Mock from '../MockEnvironment';
 import { MissingTerms } from '../../src/ui/MissingTerm/MissingTerms';
 import { $$ } from '../../src/Core';
 import { FakeResults } from '../Fake';
+import { IQueryResult } from '../../src/rest/QueryResult';
 
 export function MissingTermsTest() {
   describe('MissingTerm', () => {
+    let test: Mock.IBasicComponentSetup<MissingTerms>;
+    let fakeResult: IQueryResult;
+
     const mockComponent = (query: string, option = {}) => {
       return Mock.advancedResultComponentSetup<MissingTerms>(
         MissingTerms,
@@ -16,8 +20,9 @@ export function MissingTermsTest() {
       );
     };
 
-    let test: Mock.IBasicComponentSetup<MissingTerms>;
-    let fakeResult = FakeResults.createFakeResult();
+    beforeEach(() => {
+      fakeResult = FakeResults.createFakeResult();
+    });
     describe('exposes options', () => {
       describe("when the 'clickable' option is set to", () => {
         let missingTermsClickableSpy: jasmine.Spy;
@@ -51,8 +56,10 @@ export function MissingTermsTest() {
       });
 
       it('caption allows the user to change the title for the missing terms', () => {
+        const termPresent = 'my';
         const query = 'This is my query';
         const caption = 'The missing term';
+        fakeResult.absentTerms = [termPresent];
         test = mockComponent(query, { caption });
         const missingTermsElement = $$(test.cmp.element).find('.coveo-field-caption');
         expect(missingTermsElement.innerText).toBe(caption);
@@ -91,30 +98,29 @@ export function MissingTermsTest() {
     describe('when the langage is', () => {
       describe('English', () => {
         describe('when fetching the missing terms from a query', () => {
-          describe('return', () => {
-            let expectedResult: string[];
-            beforeEach(() => {
-              const query = 'This is my query';
-              test = mockComponent(query);
-              expectedResult = [];
-            });
-            it('all the missing term present in the query', () => {
-              const termIsSubWord = 'is';
-              fakeResult.absentTerms = [termIsSubWord];
-              expectedResult.push(termIsSubWord);
-              expect(test.cmp.missingTerms.toString()).toBe(expectedResult.toString());
-            });
+          let expectedResult: string[];
+          beforeEach(() => {
+            const query = 'This is my query';
+            test = mockComponent(query);
+            expectedResult = [];
+          });
 
-            it('only the missing term present in the query', () => {
-              const termNotInQuery = 'foo';
-              fakeResult.absentTerms = [termNotInQuery];
-              expect(test.cmp.missingTerms.toString()).toBe(expectedResult.toString());
-            });
+          it('return all the missing term present in the query', () => {
+            const termIsSubWord = 'is';
+            fakeResult.absentTerms = [termIsSubWord];
+            expectedResult.push(termIsSubWord);
+            expect(test.cmp.missingTerms.toString()).toBe(expectedResult.toString());
+          });
+
+          it('return only the missing term present in the query', () => {
+            const termNotInQuery = 'foo';
+            fakeResult.absentTerms = [termNotInQuery];
+            expect(test.cmp.missingTerms.toString()).toBe(expectedResult.toString());
           });
         });
 
         describe('when re-injecting a term', () => {
-          var query: string;
+          let query: string;
 
           it('and the term is present in the query, the term is added to the url', () => {
             const termPresent = 'my';
@@ -184,6 +190,7 @@ export function MissingTermsTest() {
             test.cmp.addTermForcedToAppear(koreanWordPresent);
             expect(test.cmp.queryStateModel.get('missingTerm')).toEqual([koreanWordPresent]);
           });
+
           it('and the term is the first word in the query, the term is added to the url', () => {
             const koreanFirstWord = '이것은';
             const query = '이것은 정말';

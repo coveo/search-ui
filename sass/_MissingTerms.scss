@@ -1,21 +1,17 @@
 @import 'Variables';
 .CoveoMissingTerms {
   font-size: 12px;
+
   .coveo-field-caption {
     margin-right: 5px;
   }
+
+  .coveo-missing-term-show-more,
   .coveo-missing-term {
-    &.clickable {
+    &.coveo-clickable {
       @include clickable();
       text-decoration: line-through;
-      border: none;
-      padding: 0;
     }
-    text-decoration: line-through;
-    margin-right: 5px;
-  }
-  .coveo-missing-term-show-more {
-    @include clickable();
     border: none;
     padding: 0;
     margin-right: 5px;

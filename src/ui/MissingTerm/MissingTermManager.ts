@@ -15,10 +15,7 @@ export class MissingTermManager {
     });
 
     $$(root).on(BreadcrumbEvents.populateBreadcrumb, (evt, args: IPopulateBreadcrumbEventArgs) => {
-      this.updateTermForcedToAppear();
-      if (this.termForcedToAppear.length > 0) {
-        this.handlePopulateBreadcrumb(args);
-      }
+      this.handlePopulateBreadcrumb(args);
     });
     $$(root).on(BreadcrumbEvents.clearBreadcrumb, (evt, args: IClearBreadcrumbEventArgs) => this.handleClearBreadcrumb());
   }
@@ -30,17 +27,20 @@ export class MissingTermManager {
     });
   }
 
-  private updateTermForcedToAppear() {
+  private updateTermsForcedToAppear() {
     this.termForcedToAppear = [...this.queryStateModel.get('missingTerm')];
   }
 
   private handlePopulateBreadcrumb(args: IPopulateBreadcrumbEventArgs) {
+    this.updateTermsForcedToAppear();
+    if (this.termForcedToAppear.length === 0) {
+      return;
+    }
+
     const missingTerms = this.buildTermForcedToAppear();
     const BreadcrumbContainer = this.buildBreadcrumbContainer();
 
-    missingTerms.forEach(term => {
-      $$(BreadcrumbContainer).append(term.el);
-    });
+    missingTerms.forEach(term => $$(BreadcrumbContainer).append(term.el));
 
     args.breadcrumbs.push({
       element: BreadcrumbContainer.el
@@ -50,7 +50,7 @@ export class MissingTermManager {
   private buildTermForcedToAppear() {
     return this.termForcedToAppear.map(term => {
       const termContainer = $$(
-        'span',
+        'button',
         {
           className: 'coveo-missing-term-breadcrumb-value coveo-accessible-button'
         },
@@ -80,13 +80,11 @@ export class MissingTermManager {
   }
 
   private removeTermForcedToAppear(term: string) {
-    this.updateTermForcedToAppear();
+    this.updateTermsForcedToAppear();
     const termIndex = this.termForcedToAppear.indexOf(term);
-    if (termIndex !== -1) {
-      this.termForcedToAppear.splice(termIndex, 1);
-      this.queryStateModel.set('missingTerm', [...this.termForcedToAppear]);
-      this.queryController.executeQuery();
-    }
+    this.termForcedToAppear.splice(termIndex, 1);
+    this.queryStateModel.set('missingTerm', [...this.termForcedToAppear]);
+    this.queryController.executeQuery();
   }
 
   private handleClearBreadcrumb() {

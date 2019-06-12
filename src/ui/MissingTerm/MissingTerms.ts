@@ -53,12 +53,11 @@ export class MissingTerms extends Component {
     });
   };
 
-  /* Used to split terms and phrases. Match characters that can separate words or caracter for chinese, japanese and korean.
-  * Han: Unicode script for chinesse caracter
-  * We only need to import 1 asian script because what is important here is the space between the caracter and any script will contain it
-  */
+  // Used to split terms and phrases. Match characters that can separate words or caracter for chinese, japanese and korean.
+  // Han: Unicode script for chinesse caracter
+  // We only need to import 1 asian script because what is important here is the space between the caracter and any script will contain it
   private wordBoundary = '(([\\p{Han}])?([^(\\p{Latin}-)])|^|$)';
-  private termForcedToAppear: Array<string> = [];
+  private termForcedToAppear: string[];
 
   /**
    * Creates a new `MissingTerms` component instance.
@@ -90,6 +89,7 @@ export class MissingTerms extends Component {
 
   /**
    * Inject a term in the advanced query.
+   * This will make sure the term that are in the advance query appears in the results
    */
   public addTermForcedToAppear(term: string) {
     if (this.missingTerms.indexOf(term) === -1) {
@@ -113,22 +113,25 @@ export class MissingTerms extends Component {
     if (this.missingTerms.length === 0) {
       return;
     }
-    const missingTermelement = this.buildContainer().el;
-    if (missingTermelement) {
-      this.hideMissingTermIfNumberOfResult(missingTermelement);
-      $$(this.element).append(missingTermelement);
+    const missingTermElement = this.buildContainer();
+    if (missingTermElement) {
+      this.hideMissingTermIfNumberOfResult(missingTermElement);
+      missingTermElement.map(element => {
+        $$(this.element).append(element);
+      });
     }
   }
 
-  private buildContainer(): Dom {
-    const resultCell = $$('div', { className: 'coveo-result-cell' }, this.buildCaption());
+  private buildContainer(): HTMLElement[] {
+    const elements: HTMLElement[] = [];
+    elements.push(this.buildCaption().el);
     this.buildMissingTerms().forEach(term => {
       if (term) {
-        resultCell.append(term.el);
+        elements.push(term.el);
       }
     });
-    if (resultCell.el.childElementCount > 1) {
-      return $$('div', { className: 'coveo-result-row' }, resultCell);
+    if (elements.length > 1) {
+      return elements;
     }
   }
 
@@ -155,7 +158,7 @@ export class MissingTerms extends Component {
 
   private makeTermClickableIfEnabled(term: string): Dom {
     if (this.options.clickable) {
-      const termElement = $$('button', { className: 'coveo-missing-term clickable' }, term);
+      const termElement = $$('button', { className: 'coveo-missing-term coveo-clickable' }, term);
       termElement.on('click', () => {
         this.addTermForcedToAppear(term);
         this.executeNewQuery(term);
@@ -186,24 +189,26 @@ export class MissingTerms extends Component {
     return foundStar || foundQuestionMark;
   }
 
-  private hideMissingTermIfNumberOfResult(element: HTMLElement) {
-    const allMissingTerms = $$(element).findAll('.coveo-missing-term');
+  private hideMissingTermIfNumberOfResult(elements: HTMLElement[]) {
+    const allMissingTerms = elements.filter(element => {
+      return element.tagName === 'BUTTON';
+    });
     if (allMissingTerms.length <= this.options.numberOfResults) {
       return;
     }
     for (let index = this.options.numberOfResults; index < allMissingTerms.length; index++) {
-      allMissingTerms[index].style.display = 'none';
+      allMissingTerms[index].setAttribute('style', 'display: none');
     }
     const showMore = $$(
       'button',
       { className: 'coveo-missing-term-show-more' },
       `${allMissingTerms.length - this.options.numberOfResults} more...`
     );
-    const resultCell = $$(element).find('.coveo-result-cell');
+
     showMore.on('click', () => {
       this.showMissingTerm();
     });
-    resultCell.appendChild(showMore.el);
+    elements.push(showMore.el);
   }
 
   private showMissingTerm() {
