@@ -201,7 +201,7 @@ export class MissingTerms extends Component {
     }
     const showMore = $$(
       'button',
-      { className: 'coveo-missing-term-show-more' },
+      { className: 'coveo-missing-term-show-more coveo-clickable' },
       `${allMissingTerms.length - this.options.numberOfResults} more...`
     );
 

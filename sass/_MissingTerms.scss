@@ -6,14 +6,13 @@
     margin-right: 5px;
   }
 
-  .coveo-missing-term-show-more,
-  .coveo-missing-term {
-    &.coveo-clickable {
-      @include clickable();
-      text-decoration: line-through;
-    }
+  .coveo-clickable {
+    @include clickable();
     border: none;
     padding: 0;
     margin-right: 5px;
+  }
+  .coveo-missing-term {
+    text-decoration: line-through;
   }
 }
