@@ -108,7 +108,7 @@ export function DynamicFacetManagerTest() {
       expect(facetIsInRequest).toBe(false);
     });
 
-    it('should reorder the facets correctly in the DOM depending on the query results', () => {
+    it('should reorder the facets in the DOM according to order of the query results', () => {
       triggerAfterComponentsInitialization();
       triggerQuerySuccess(queryFacetsResponse());
 

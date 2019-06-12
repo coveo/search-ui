@@ -451,15 +451,7 @@ export class DynamicFacet extends Component {
   }
 
   public isCurrentlyDisplayed() {
-    if (!$$(this.element).isVisible()) {
-      return false;
-    }
-
-    if ($$(this.element).hasClass('coveo-active')) {
-      return true;
-    }
-
-    return true;
+    return $$(this.element).isVisible();
   }
 
   private initQueryEvents() {
