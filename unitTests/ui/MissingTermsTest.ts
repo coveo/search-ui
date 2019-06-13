@@ -65,12 +65,12 @@ export function MissingTermsTest() {
         expect(missingTermsElement.innerText).toBe(caption);
       });
 
-      describe('numberOfResults', () => {
+      describe('numberOfTerms', () => {
         beforeEach(() => {
           const query = 'This is my query';
-          const numberOfResults = 1;
+          const numberOfTerms = 1;
           fakeResult.absentTerms = ['This', 'is'];
-          test = mockComponent(query, { numberOfResults });
+          test = mockComponent(query, { numberOfTerms });
         });
 
         it('allows the user to set the maximum number of MissingTerm to be displayed', () => {
