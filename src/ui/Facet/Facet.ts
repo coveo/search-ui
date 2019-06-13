@@ -1528,6 +1528,35 @@ export class Facet extends Component {
     this.dependsOnManager = new DependsOnManager(facetInfo);
   }
 
+  private dependsOnUpdateDisplayValue() {
+    if (this.options.dependsOn) {
+      const masterFacetHTML = $$(this.root)
+        .findAll(`.CoveoFacet`)
+        .filter(HTMLFacet => {
+          const facet = <Facet>Facet.get(HTMLFacet);
+          return facet.options.id === this.options.dependsOn;
+        });
+      if (!masterFacetHTML.length) {
+        this.logger.warn(
+          `Unable to find a Facet with the id or field "${this.options.dependsOn}".`,
+          `The master Facet values can't be updated.`
+        );
+        return;
+      }
+      if (masterFacetHTML.length > 1) {
+        this.logger.warn(
+          `Mulltiple Facet with the id or field "${this.options.dependsOn}" found.`,
+          `A Facet can only depends on one other Facet.`,
+          `The master Facet values can't be updated.`,
+          masterFacetHTML
+        );
+        return;
+      }
+      const masterFacet = <Facet>Facet.get(masterFacetHTML[0]);
+      masterFacet.keepDisplayedValuesNextTime = false;
+    }
+  }
+
   private initBottomAndTopSpacer() {
     const bottomSpace = $$(this.options.paddingContainer).find('.coveo-bottomSpace');
     const topSpace = $$(this.options.paddingContainer).find('.coveo-topSpace');
@@ -1608,7 +1637,7 @@ export class Facet extends Component {
   private handleQueryStateChanged(data: IAttributesChangedEventArg) {
     Assert.exists(data);
     this.ensureDom();
-
+    this.dependsOnUpdateDisplayValue();
     const trimValuesFromModel = (values?: string[]) => {
       if (values) {
         values = _.map(values, value => value.trim());
