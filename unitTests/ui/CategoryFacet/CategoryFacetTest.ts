@@ -34,14 +34,6 @@ export function CategoryFacetTest() {
         const dependentFacetField = '@dependantFacet';
         let simulateQueryDataMaster: ISimulateQueryData;
         let simulateQueryDataDependant: ISimulateQueryData;
-        /*         const getMasterAndDependentFacetResults = () => {
-          const results = FakeResults.createFakeResults();
-          results.groupByResults = [
-            FakeResults.createFakeGroupByResult(dependentFacetField, 'foo', 15),
-            FakeResults.createFakeGroupByResult(masterFacetField, 'foo', 15)
-          ];
-          return results;
-        } */
 
         beforeEach(() => {
           simulateQueryDataMaster = buildCategoryFacetResults(11, 11, masterFacetField);
@@ -68,9 +60,6 @@ export function CategoryFacetTest() {
               env => env.withQueryStateModel(master.cmp.queryStateModel)
             )
           );
-
-          /*           Simulate.query(master.env, { results: getMasterAndDependentFacetResults() });
-          Simulate.query(test.env, { results: getMasterAndDependentFacetResults() }); */
         });
 
         it('adds the coveo-facet-dependent class to the dependent facet', () => {
@@ -107,6 +96,7 @@ export function CategoryFacetTest() {
             test.cmp.queryStateModel.getEventName = name => name;
             test.cmp['initQueryStateEvents']();
           }
+
           beforeEach(() => {
             Simulate.query(master.env, simulateQueryDataMaster);
             master.cmp.selectValue('value9');
@@ -115,16 +105,16 @@ export function CategoryFacetTest() {
           });
 
           it(`when resetting the master facet,
-          it resets the dependent facet`, () => {
+          it reset the dependent facet`, () => {
             expect(test.cmp.activePath.length).toBe(1);
             master.cmp.deselectCurrentValue();
             triggerStateChangeOnDependentFacet();
             expect(test.cmp.activePath.length).toBe(0);
           });
 
-          it(`when master value has 2 selected value,,
+          it(`when master value has 2 selected value,
           when we deselect one value
-          it doesn't resets the dependent facet`, () => {
+          it reset the dependent facet`, () => {
             master.cmp.selectValue('value1');
             expect(master.cmp.activePath.length).toBe(2);
             expect(test.cmp.activePath.length).toBe(1);

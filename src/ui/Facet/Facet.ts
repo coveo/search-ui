@@ -55,7 +55,7 @@ import { ValueElementRenderer } from './ValueElementRenderer';
 import { AccessibleButton } from '../../utils/AccessibleButton';
 import { IResponsiveComponentOptions } from '../ResponsiveComponents/ResponsiveComponentsManager';
 import { ResponsiveFacetOptions } from '../ResponsiveComponents/ResponsiveFacetOptions';
-import { DependsOnManager } from '../../utils/DependsOnManagerUtils';
+import { DependsOnManagerUtils } from '../../utils/DependsOnManagerUtils';
 
 export interface IFacetOptions extends IResponsiveComponentOptions {
   title?: string;
@@ -717,7 +717,7 @@ export class Facet extends Component {
   protected footerElement: HTMLElement;
   private canFetchMore: boolean = true;
   private nbAvailableValues: number;
-  private dependsOnManager: DependsOnManager;
+  private dependsOnManager: DependsOnManagerUtils;
 
   private showingWaitAnimation = false;
   private pinnedViewportPosition: number;
@@ -1518,7 +1518,7 @@ export class Facet extends Component {
   }
 
   private initDependsOnManager() {
-    this.dependsOnManager = new DependsOnManager(this, () => this.reset());
+    this.dependsOnManager = new DependsOnManagerUtils(this, () => this.reset());
   }
 
   private initBottomAndTopSpacer() {

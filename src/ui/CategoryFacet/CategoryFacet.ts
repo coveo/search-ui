@@ -39,7 +39,7 @@ import { ResponsiveFacetOptions } from '../ResponsiveComponents/ResponsiveFacetO
 import { CategoryFacetHeader } from './CategoryFacetHeader';
 import { AccessibleButton } from '../../utils/AccessibleButton';
 import { IStringMap } from '../../rest/GenericParam';
-import { DependsOnManager } from '../../utils/DependsOnManagerUtils';
+import { DependsOnManagerUtils } from '../../utils/DependsOnManagerUtils';
 
 export interface ICategoryFacetOptions extends IResponsiveComponentOptions {
   field: IFieldOption;
@@ -284,19 +284,19 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
      * First case: the "parent" facet has no custom `id`:
      * ```html
      * <!-- "Parent" Facet: -->
-     * <div class='CoveoFacet' data-field='@myfield' data-title='My Parent Facet'></div>
+     * <div class='CoveoCategoryFacet' data-field='@myfield' data-title='My Parent Facet'></div>
      *
      * <!-- The "dependent" Facet must refer to the default `id` of its "parent" Facet, which is the name of its field. -->
-     * <div class='CoveoFacet' data-field='@myotherfield' data-title='My Dependent Facet' data-depends-on='@myfield'></div>
+     * <div class='CoveoCategoryFacet' data-field='@myotherfield' data-title='My Dependent Facet' data-depends-on='@myfield'></div>
      * ```
      *
      * Second case: the "parent" facet has a custom `id`:
      * ```html
      * <!-- "Parent" Facet: -->
-     * <div class='CoveoFacet' data-field='@myfield' data-title='My Parent Facet' data-id='myParentCustomId'></div>
+     * <div class='CoveoCategoryFacet' data-field='@myfield' data-title='My Parent Facet' data-id='myParentCustomId'></div>
      *
      * <!-- The "dependent" Facet must refer to the custom `id` of its "parent" Facet, which is 'myParentCustomId'. -->
-     * <div class='CoveoFacet' data-field='@myotherfield' data-title='My Dependent Facet' data-depends-on='myParentCustomId'></div>
+     * <div class='CoveoCategoryFacet' data-field='@myotherfield' data-title='My Dependent Facet' data-depends-on='myParentCustomId'></div>
      * ```
      *
      * Default value is `undefined`
@@ -322,7 +322,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   private showingWaitAnimation = false;
   private numberOfChildValuesCurrentlyDisplayed = 0;
   private numberOfValues: number;
-  private dependsOnManager: DependsOnManager;
+  private dependsOnManager: DependsOnManagerUtils;
 
   public static WAIT_ELEMENT_CLASS = 'coveo-category-facet-header-wait-animation';
 
@@ -801,7 +801,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   }
 
   private initDependsOnManager() {
-    this.dependsOnManager = new DependsOnManager(this, () => this.changeActivePath(this.options.basePath));
+    this.dependsOnManager = new DependsOnManagerUtils(this, () => this.changeActivePath(this.options.basePath));
   }
 
   private addFading() {
