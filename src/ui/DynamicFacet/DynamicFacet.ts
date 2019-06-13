@@ -92,12 +92,12 @@ export class DynamicFacet extends Component {
     id: ComponentOptions.buildStringOption({
       postProcessing: (value = '', options: IDynamicFacetOptions) => {
         const maxCharLength = 60;
-        const sanitizedValue = value.replace(/[^A-Za-z0-9-_]+/g, '');
+        const sanitizedValue = value.replace(/[^A-Za-z0-9-_@]+/g, '');
         if (Utils.isNonEmptyString(sanitizedValue)) {
           return sanitizedValue.slice(0, maxCharLength - 1);
         }
 
-        return options.field.slice(1, maxCharLength);
+        return options.field.slice(0, maxCharLength - 1);
       }
     }),
 
@@ -459,7 +459,7 @@ export class DynamicFacet extends Component {
   }
 
   private initQueryStateEvents() {
-    this.includedAttributeId = QueryStateModel.getDynamicFacetId(this.options.id);
+    this.includedAttributeId = QueryStateModel.getFacetId(this.options.id);
     this.queryStateModel.registerNewAttribute(this.includedAttributeId, []);
     this.bind.onQueryState(MODEL_EVENTS.CHANGE, undefined, this.handleQueryStateChanged);
   }
@@ -474,7 +474,7 @@ export class DynamicFacet extends Component {
   }
 
   private initComponentStateEvents() {
-    const componentStateId = QueryStateModel.getDynamicFacetId(this.options.id);
+    const componentStateId = QueryStateModel.getFacetId(this.options.id);
     this.componentStateModel.registerComponent(componentStateId, this);
   }
 
