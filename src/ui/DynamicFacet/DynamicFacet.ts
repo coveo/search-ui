@@ -34,6 +34,7 @@ import { IQueryOptions } from '../../controllers/QueryController';
 import { DynamicFacetManager } from '../DynamicFacetManager/DynamicFacetManager';
 import { FacetPadding } from '../FacetPadding/FacetPadding';
 import { QueryBuilder } from '../Base/QueryBuilder';
+import { IAutoLayoutAdjustableInsideFacetColumn } from '../SearchInterface/FacetColumnAutoLayoutAdjustment';
 
 export interface IDynamicFacetOptions extends IResponsiveComponentOptions {
   id?: string;
@@ -62,7 +63,7 @@ export interface IDynamicFacetOptions extends IResponsiveComponentOptions {
  * This facet is more easy to use than the original [`Facet`]{@link Facet} component. It implements additional Coveo Machine Learning (Coveo ML) features
  * such as dynamic navigation experience (DNE).
  */
-export class DynamicFacet extends Component {
+export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsideFacetColumn {
   static ID = 'DynamicFacet';
   static doExport = () => exportGlobally({ DynamicFacet });
 
