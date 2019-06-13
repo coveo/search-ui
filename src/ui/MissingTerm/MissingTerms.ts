@@ -3,7 +3,7 @@ import { exportGlobally } from '../../GlobalExports';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { ComponentOptions } from '../Base/ComponentOptions';
-import { $$, Initialization } from '../../Core';
+import { $$, Initialization, l } from '../../Core';
 import { Dom } from '../../utils/Dom';
 import { analyticsActionCauseList, IAnalyticsIncludeMissingTerm } from '../Analytics/AnalyticsActionListMeta';
 import { IQueryResult } from '../../rest/QueryResult';
@@ -12,7 +12,7 @@ import XRegExp = require('xregexp');
 export interface IMissingTermsOptions {
   caption?: string;
   clickable?: boolean;
-  numberOfResults?: number;
+  numberOfTerms?: number;
 }
 
 /**
@@ -41,7 +41,7 @@ export class MissingTerms extends Component {
      * **Default:** `5`
      * **Minimum value:** `1`
      */
-    numberOfResults: ComponentOptions.buildNumberOption({
+    numberOfTerms: ComponentOptions.buildNumberOption({
       defaultValue: 5,
       min: 1
     })
@@ -53,9 +53,9 @@ export class MissingTerms extends Component {
     });
   };
 
-  // Used to split terms and phrases. Match characters that can separate words or caracter for chinese, japanese and korean.
-  // Han: Unicode script for chinesse caracter
-  // We only need to import 1 asian script because what is important here is the space between the caracter and any script will contain it
+  // Used to split terms and phrases. Match character that can separate words or caracter for Chinese, Japanese and Korean.
+  // Han: Unicode script for Chinesse character
+  // We only need to import 1 Asian, charcaters script because what is important here is the space between the caracter and any script will contain it
   private wordBoundary = '(([\\p{Han}])?([^(\\p{Latin}-)])|^|$)';
   private termForcedToAppear: string[];
 
@@ -82,7 +82,7 @@ export class MissingTerms extends Component {
    */
   public get missingTerms(): string[] {
     return this.result.absentTerms.filter(term => {
-      const regex = this.createWordBoundryDelimitedRegex(term);
+      const regex = this.createWordBoundaryDelimitedRegex(term);
       return regex.test(this.queryStateModel.get('q'));
     });
   }
@@ -114,8 +114,8 @@ export class MissingTerms extends Component {
       return;
     }
     const missingTermElement = this.buildContainer();
-    if (missingTermElement) {
-      this.hideMissingTermIfNumberOfResult(missingTermElement);
+    if (missingTermElement.length > 1) {
+      this.hideMissingTermsOverTheNumberOfResults(missingTermElement);
       missingTermElement.map(element => {
         $$(this.element).append(element);
       });
@@ -130,9 +130,7 @@ export class MissingTerms extends Component {
         elements.push(term.el);
       }
     });
-    if (elements.length > 1) {
-      return elements;
-    }
+    return elements;
   }
 
   private buildCaption(): Dom {
@@ -141,7 +139,7 @@ export class MissingTerms extends Component {
 
   private buildMissingTerms(): Dom[] {
     const terms: Dom[] = this.missingTerms.map(term => {
-      if (this.hideMissingTermifFeaturedResults(term) || this.hideMissingTermIfWildcard(term)) {
+      if (this.containsFeaturedResults(term) || this.containsWildcard(term)) {
         return;
       }
       return this.makeTermClickableIfEnabled(term);
@@ -169,53 +167,51 @@ export class MissingTerms extends Component {
     }
   }
 
-  private createWordBoundryDelimitedRegex(term: string): RegExp {
+  private createWordBoundaryDelimitedRegex(term: string): RegExp {
     return XRegExp(`${this.wordBoundary}(${term})${this.wordBoundary}`, 'g');
   }
 
-  private hideMissingTermifFeaturedResults(term: string): boolean {
+  private containsFeaturedResults(term: string): boolean {
     this.updateTermForcedToAppear();
     return this.termForcedToAppear.indexOf(term) !== -1;
   }
 
-  private hideMissingTermIfWildcard(term): boolean {
+  private containsWildcard(term): boolean {
     const query = this.queryStateModel.get('q');
     const regxStarWildcard = XRegExp(`(\\*${term})|${term}\\*`);
-    const regxxQuestionMarkWildcard = XRegExp(`(\\?${term})|${term}\\?`);
+    const regxQuestionMarkWildcard = XRegExp(`(\\?${term})|${term}\\?`);
 
     const foundStar = this.queryController.getLastQuery().wildcards && regxStarWildcard.test(query);
-    const foundQuestionMark = this.queryController.getLastQuery().questionMark && regxxQuestionMarkWildcard.test(query);
+    const foundQuestionMark = this.queryController.getLastQuery().questionMark && regxQuestionMarkWildcard.test(query);
 
     return foundStar || foundQuestionMark;
   }
 
-  private hideMissingTermIfNumberOfResult(elements: HTMLElement[]) {
+  private hideMissingTermsOverTheNumberOfResults(elements: HTMLElement[]) {
     const allMissingTerms = elements.filter(element => {
       return element.tagName === 'BUTTON';
     });
-    if (allMissingTerms.length <= this.options.numberOfResults) {
+    if (allMissingTerms.length <= this.options.numberOfTerms) {
       return;
     }
-    for (let index = this.options.numberOfResults; index < allMissingTerms.length; index++) {
-      allMissingTerms[index].setAttribute('style', 'display: none');
+    for (let index = this.options.numberOfTerms; index < allMissingTerms.length; index++) {
+      $$(allMissingTerms[index]).hide();
     }
-    const showMore = $$(
-      'button',
-      { className: 'coveo-missing-term-show-more coveo-clickable' },
-      `${allMissingTerms.length - this.options.numberOfResults} more...`
-    );
+    const nbMoreResults = allMissingTerms.length - this.options.numberOfTerms;
+    const showMore = $$('button', { className: 'coveo-missing-term-show-more coveo-clickable' }, l('NMore', [nbMoreResults]));
 
     showMore.on('click', () => {
-      this.showMissingTerm();
+      this.showAllHiddenMissingTerms();
     });
     elements.push(showMore.el);
   }
 
-  private showMissingTerm() {
+  private showAllHiddenMissingTerms() {
     const showMore = $$(this.element).find('.coveo-missing-term-show-more');
     showMore.parentNode.removeChild(showMore);
     const allMissingTerms = $$(this.element).findAll('.coveo-missing-term');
-    for (let index = this.options.numberOfResults; index < allMissingTerms.length; index++) {
+    for (let index = this.options.numberOfTerms; index < allMissingTerms.length; index++) {
+      $$(allMissingTerms[index]).show();
       allMissingTerms[index].removeAttribute('style');
     }
   }
