@@ -107,7 +107,8 @@ export class FakeResults {
       rating: 3,
       state: {},
       isRecommendation: false,
-      searchInterface: mockSearchInterface()
+      searchInterface: mockSearchInterface(),
+      absentTerms: []
     };
   }
 

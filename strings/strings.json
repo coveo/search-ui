@@ -7444,6 +7444,14 @@
     "fr":
       "La requête n'est pas valide car elle contient les requêtes Group By et Facet. Assurez-vous que l'interface de recherche n'initialise pas les composants DynamicFacet aux côtés des composants Facet (ou de tout composant d'extension du composant Facet, tel que FacetRange ou FacetSlider)."
   },
+  "MustContain": {
+    "en": "Must contain:",
+    "fr": "Doit contenir:"
+  },
+  "Missing": {
+    "en": "Missing:",
+    "fr": "Manquant(s):"
+  },
   "Filters": {
     "en": "Filters",
     "fr": "Filtres"
