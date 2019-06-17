@@ -97,7 +97,8 @@
   @include placeholderLoading();
 }
 
-#{$allFacetsType} {
+#{$allFacetsType},
+.CoveoDynamicFacet {
   &.coveo-during-initialization {
     display: none;
     &.coveo-with-placeholder {
