@@ -174,20 +174,6 @@ export function HistoryControllerTest() {
           window.dispatchEvent(new Event('hashchange'));
           assertFacetAnalyticsCall(analyticsActionCauseList.facetUnexclude);
         });
-
-        it('should not log an analytics event when a DynamicFacet changes to select a value', () => {
-          historyController.queryStateModel.registerNewAttribute('df:@foo', []);
-          simulateHashModule('df:@foo', ['bar']);
-          window.dispatchEvent(new Event('hashchange'));
-          expect(historyController.usageAnalytics.logSearchEvent).not.toHaveBeenCalled();
-        });
-
-        it('should not log an analytics event when a DynamicFacet changes to exclude a value', () => {
-          historyController.queryStateModel.registerNewAttribute('df:@foo:not', []);
-          simulateHashModule('df:@foo:not', ['bar']);
-          window.dispatchEvent(new Event('hashchange'));
-          expect(historyController.usageAnalytics.logSearchEvent).not.toHaveBeenCalled();
-        });
       });
     });
   });
