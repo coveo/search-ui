@@ -1528,7 +1528,7 @@ export class Facet extends Component {
     this.dependsOnManager = new DependsOnManager(facetInfo);
   }
 
-  private dependsOnUpdateDisplayValue() {
+  private dependsOnUpdateParentDisplayValue() {
     if (this.options.dependsOn) {
       const masterFacetHTML = $$(this.root)
         .findAll(`.CoveoFacet`)
@@ -1637,7 +1637,7 @@ export class Facet extends Component {
   private handleQueryStateChanged(data: IAttributesChangedEventArg) {
     Assert.exists(data);
     this.ensureDom();
-    this.dependsOnUpdateDisplayValue();
+    this.dependsOnUpdateParentDisplayValue();
     const trimValuesFromModel = (values?: string[]) => {
       if (values) {
         values = _.map(values, value => value.trim());
