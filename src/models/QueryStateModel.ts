@@ -16,7 +16,7 @@ export const QUERY_STATE_ATTRIBUTES = {
   QUICKVIEW: 'quickview',
   DEBUG: 'debug',
   NUMBER_OF_RESULTS: 'numberOfResults',
-  MISSING_TERM: 'missingTerm'
+  MISSING_TERMS: 'missingTerms'
 };
 
 export interface IQueryStateIncludedAttribute {

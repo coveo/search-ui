@@ -17,14 +17,13 @@ export interface IMissingTermsOptions {
 
 /**
  * This [result template component](https://docs.coveo.com/en/513/#using-result-template-components) renders a list of query terms
- * that were not matched by its associated result item.
+ * that were not matched by the associated result item.
  */
 export class MissingTerms extends Component {
   static ID = 'MissingTerms';
   static options: IMissingTermsOptions = {
     /**
-     * Whether to allow the end-user to click a missing term to re-inject it in the query as
-     * an exact phrase match (i.e., as an expression between double quote characters).
+     * Whether to allow the end-user to click a missing term to filter out items that do not match this term.
      *
      * **Default:** `true`
      */
@@ -88,15 +87,14 @@ export class MissingTerms extends Component {
   }
 
   /**
-   * Inject a term in the advanced query.
-   * This will make sure the term that are in the advance query appears in the results
+   * Injects a term in the advanced part of the query expression (aq) to filter out items that do not match the term.
+   * @param term The term to add to the advanced query expression.
    */
   public addTermForcedToAppear(term: string) {
     if (this.missingTerms.indexOf(term) === -1) {
       this.logger.warn(
-        'The term to re-inject is not present in the missing terms',
-        `You tried to inject "${term}" but the possible term to inject are: ${this.missingTerms.toString()}`,
-        'The query exited the function'
+        `Method execution aborted because the term to inject in aq ("${term}") is not a missing term.`,
+        `Allowed missing terms: ${this.missingTerms.toString()}.`
       );
       return;
     }
