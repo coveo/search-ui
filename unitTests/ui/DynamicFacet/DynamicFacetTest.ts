@@ -74,6 +74,22 @@ export function DynamicFacetTest() {
       expect($$(test.cmp.element).hasClass('coveo-active')).toBe(false);
     });
 
+    it(`when facet has values
+      isCurrentlyDisplayed should return true`, () => {
+      test.cmp.ensureDom();
+
+      expect(test.cmp.isCurrentlyDisplayed()).toBe(true);
+    });
+
+    it(`when facet has no values
+      isCurrentlyDisplayed should return false`, () => {
+      mockFacetValues = [];
+      initializeComponent();
+      test.cmp.ensureDom();
+
+      expect(test.cmp.isCurrentlyDisplayed()).toBe(false);
+    });
+
     it('allows to select a value', () => {
       expect(test.cmp.values.get(mockFacetValues[0].value).isSelected).toBe(false);
 
