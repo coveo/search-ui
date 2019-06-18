@@ -2,6 +2,7 @@ import * as Mock from '../MockEnvironment';
 import { NoopComponent } from '../../src/ui/NoopComponent/NoopComponent';
 import { registerCustomMatcher } from '../CustomMatchers';
 import { $$ } from '../../src/utils/Dom';
+import { JQuery as $ } from '../JQueryModule';
 
 export function ComponentEventsTest() {
   describe('ComponentEvent', () => {
@@ -25,6 +26,31 @@ export function ComponentEventsTest() {
       $$(test.env.root).trigger('foo');
       expect(spy).toHaveBeenCalled();
       $$(test.env.root).trigger('foo', { bar: 'baz' });
+      expect(spy).toHaveBeenCalledWith({ bar: 'baz' });
+    });
+
+    fit('should execute handler with the originalEvent if its wrapped by jQuery and does not have any param', function() {
+      // Setup.
+      test.cmp.enable();
+      test.cmp.bind.on(test.env.root, 'click', spy);
+
+      // Trigger native click event, expecting it to be wrapped by jQuery.
+      test.env.root.click();
+      // It should call the spy with the native Event for first and only param.
+      expect(spy).toHaveBeenCalled();
+      expect(spy.calls.argsFor(0)[0] instanceof MouseEvent).toBeTruthy();
+      expect((spy.calls.argsFor(0)[0] as MouseEvent).type).toBe('click');
+
+      // Trigger jQuery click event, without any params.
+      $(test.env.root).click();
+      // It should call the spy without any params.
+      expect(spy).toHaveBeenCalledTimes(2);
+      expect(spy.calls.argsFor(1).length).toBe(0);
+
+      // Trigger jQuery click event, with some param.
+      $$(test.env.root).trigger('click', { bar: 'baz' });
+      // It should call the spy with the aforementioned param.
+      expect(spy).toHaveBeenCalledTimes(3);
       expect(spy).toHaveBeenCalledWith({ bar: 'baz' });
     });
 
