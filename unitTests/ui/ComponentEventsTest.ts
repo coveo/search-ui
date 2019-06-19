@@ -29,7 +29,7 @@ export function ComponentEventsTest() {
       expect(spy).toHaveBeenCalledWith({ bar: 'baz' });
     });
 
-    fit('should execute handler with the originalEvent if its wrapped by jQuery and does not have any param', function() {
+    it('should execute handler with the originalEvent if its wrapped by jQuery and does not have any param', function() {
       // Setup.
       test.cmp.enable();
       test.cmp.bind.on(test.env.root, 'click', spy);
