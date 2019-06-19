@@ -10,6 +10,7 @@ export class FacetSearchController {
       numberOfValues: this.facet.options.numberOfValues,
       ignoreValues: this.facet.values.allValues,
       captions: this.facet.options.valueCaption,
+      searchContext: this.facet.queryController.getLastQuery(),
       query
     };
 

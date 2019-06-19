@@ -7,14 +7,9 @@ import { IQuery } from '../Query';
  */
 export interface IFacetSearchRequest {
   field: string;
-
   ignoreValues?: String[];
-
   numberOfValues?: number;
-
   query?: string;
-
   captions?: Record<string, string>;
-
   searchContext?: IQuery;
 }

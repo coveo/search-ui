@@ -820,8 +820,8 @@ export class SearchEndpoint implements ISearchEndpoint {
    * TODO: documentation
    */
   @path('/facet')
-  @requestDataType('application/json')
   @method('POST')
+  @requestDataType('application/json')
   @responseType('text')
   @includeActionsHistory()
   @includeReferrer()
