@@ -1,24 +1,31 @@
-import { CategoryFacet } from '../ui/CategoryFacet/CategoryFacet';
-import { MODEL_EVENTS } from '../models/Model';
 import { Utils } from './Utils';
 import { $$ } from './Dom';
 import { QueryStateModel } from '../Core';
-import { Facet } from '../ui/Facet/Facet';
+import { ComponentEvents } from '../ui/Base/Component';
+import { MODEL_EVENTS } from '../models/Model';
 
-export class DependsOnManagerUtils {
-  constructor(private facet: CategoryFacet | Facet, private reset) {}
+export interface IDependentFacet {
+  reset: () => void;
+  element: HTMLElement;
+  dependsOn: string;
+  queryStateModel: QueryStateModel;
+  bind: ComponentEvents;
+}
+
+export class DependsOnManager {
+  constructor(private dependantFacet: IDependentFacet) {}
 
   public listenToParentIfDependentFacet() {
     if (!this.isDependentFacet) {
       return;
     }
 
-    this.facet.bind.onQueryState(MODEL_EVENTS.CHANGE, undefined, () => this.resetIfParentFacetHasNoSelectedValues());
+    this.dependantFacet.bind.onQueryState(MODEL_EVENTS.CHANGE, undefined, () => this.resetIfParentFacetHasNoSelectedValues());
   }
 
   public updateVisibilityBasedOnDependsOn() {
     if (this.isDependentFacet) {
-      $$(this.facet.element).toggleClass('coveo-facet-dependent', !this.parentFacetHasSelectedValues);
+      $$(this.dependantFacet.element).toggleClass('coveo-facet-dependent', !this.parentFacetHasSelectedValues);
     }
   }
 
@@ -27,15 +34,15 @@ export class DependsOnManagerUtils {
   }
 
   private get facetDependsOnField() {
-    return this.facet.options.dependsOn;
+    return this.dependantFacet.dependsOn;
   }
 
-  private resetIfParentFacetHasNoSelectedValues() {
+  public resetIfParentFacetHasNoSelectedValues() {
     if (this.parentFacetHasSelectedValues) {
       return;
     }
 
-    this.reset();
+    this.dependantFacet.reset();
   }
 
   private get parentFacetHasSelectedValues() {
@@ -44,7 +51,7 @@ export class DependsOnManagerUtils {
   }
 
   private valuesExistForFacetWithId(id: string) {
-    const values = this.facet.queryStateModel.get(id);
+    const values = this.dependantFacet.queryStateModel.get(id);
     return values != null && values.length != 0;
   }
 }

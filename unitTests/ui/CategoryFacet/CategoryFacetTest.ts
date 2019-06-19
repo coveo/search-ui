@@ -15,7 +15,7 @@ export function buildCategoryFacetResults(numberOfResults = 11, numberOfRequeste
   const queryBuilder = new QueryBuilder();
   fakeResults.categoryFacets.push(FakeResults.createFakeCategoryFacetResult(field, [], 'value', numberOfResults));
   queryBuilder.categoryFacets.push({
-    field: field,
+    field,
     path: pluck(fakeResults.categoryFacets[0].parentValues, 'value'),
     maximumNumberOfValues: numberOfRequestedValues
   });
@@ -29,99 +29,20 @@ export function CategoryFacetTest() {
 
     describe('exposes options', () => {
       describe('dependsOn', () => {
-        let master: IBasicComponentSetup<CategoryFacet>;
         const masterFacetField = '@masterFacet';
         const dependentFacetField = '@dependantFacet';
-        let simulateQueryDataMaster: ISimulateQueryData;
-        let simulateQueryDataDependant: ISimulateQueryData;
 
         beforeEach(() => {
-          simulateQueryDataMaster = buildCategoryFacetResults(11, 11, masterFacetField);
-          simulateQueryDataDependant = buildCategoryFacetResults(11, 11, dependentFacetField);
-          master = Mock.advancedComponentSetup<CategoryFacet>(
-            CategoryFacet,
-            new Mock.AdvancedComponentSetupOptions(
-              undefined,
-              {
-                field: masterFacetField
-              },
-              env => env.withLiveQueryStateModel()
-            )
-          );
-
-          test = Mock.advancedComponentSetup<CategoryFacet>(
-            CategoryFacet,
-            new Mock.AdvancedComponentSetupOptions(
-              undefined,
-              {
-                field: dependentFacetField,
-                dependsOn: masterFacetField
-              },
-              env => env.withQueryStateModel(master.cmp.queryStateModel)
-            )
-          );
-        });
-
-        it('adds the coveo-facet-dependent class to the dependent facet', () => {
-          Simulate.query(test.env, simulateQueryDataDependant);
-          expect($$(test.cmp.element).hasClass('coveo-facet-dependent')).toBe(true);
-        });
-
-        it('does not add the coveo-facet-dependent class to the master facet', () => {
-          Simulate.query(master.env, simulateQueryDataMaster);
-          expect($$(master.cmp.element).hasClass('coveo-facet-dependent')).toBe(false);
-        });
-
-        it(`when the master facet has a selected value,
-        it removes the coveo-facet-dependent class from the dependent facet`, () => {
-          Simulate.query(master.env, simulateQueryDataMaster);
-          master.cmp.selectValue('value9');
-          expect($$(test.cmp.element).hasClass('.coveo-facet-dependent')).toBe(false);
-        });
-
-        it(`when the master facet has a selected value,
-        it adds the coveo-category-facet-non-empty-path class to the master facet`, () => {
-          Simulate.query(master.env, simulateQueryDataMaster);
-          master.cmp.selectValue('value9');
-          expect($$(master.cmp.element).hasClass('.coveo-category-facet-non-empty-path')).toBe(false);
-        });
-
-        describe('when the master and the depeandents have a selected value', () => {
-          function triggerStateChangeOnDependentFacet() {
-            rebindDependentFacetStateChangeListeners();
-            $$(test.env.root).trigger('change', { attributes: {} });
-          }
-
-          function rebindDependentFacetStateChangeListeners() {
-            test.cmp.queryStateModel.getEventName = name => name;
-            test.cmp['initQueryStateEvents']();
-          }
-
-          beforeEach(() => {
-            Simulate.query(master.env, simulateQueryDataMaster);
-            master.cmp.selectValue('value9');
-            Simulate.query(test.env, simulateQueryDataDependant);
-            test.cmp.selectValue('value5');
+          test = Mock.optionsComponentSetup<CategoryFacet, ICategoryFacetOptions>(CategoryFacet, {
+            field: dependentFacetField,
+            dependsOn: masterFacetField
           });
+        });
 
-          it(`when resetting the master facet,
-          it reset the dependent facet`, () => {
-            expect(test.cmp.activePath.length).toBe(1);
-            master.cmp.deselectCurrentValue();
-            triggerStateChangeOnDependentFacet();
-            expect(test.cmp.activePath.length).toBe(0);
-          });
-
-          it(`when master value has 2 selected value,
-          when we deselect one value
-          it reset the dependent facet`, () => {
-            master.cmp.selectValue('value1');
-            expect(master.cmp.activePath.length).toBe(2);
-            expect(test.cmp.activePath.length).toBe(1);
-            master.cmp.deselectCurrentValue();
-            triggerStateChangeOnDependentFacet();
-            expect(test.cmp.activePath.length).toBe(0);
-          });
+        it('update the visibility of the dependant category facet', () => {
+          spyOn(test.cmp['dependsOnManager'], 'updateVisibilityBasedOnDependsOn');
+          Simulate.query(test.env);
+          expect(test.cmp['dependsOnManager'].updateVisibilityBasedOnDependsOn).toHaveBeenCalledTimes(1);
         });
       });
     });

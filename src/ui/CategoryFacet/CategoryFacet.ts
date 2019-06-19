@@ -39,7 +39,7 @@ import { ResponsiveFacetOptions } from '../ResponsiveComponents/ResponsiveFacetO
 import { CategoryFacetHeader } from './CategoryFacetHeader';
 import { AccessibleButton } from '../../utils/AccessibleButton';
 import { IStringMap } from '../../rest/GenericParam';
-import { DependsOnManagerUtils } from '../../utils/DependsOnManagerUtils';
+import { DependsOnManager, IDependentFacet } from '../../utils/DependsOnManager';
 
 export interface ICategoryFacetOptions extends IResponsiveComponentOptions {
   field: IFieldOption;
@@ -272,34 +272,10 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
      */
     valueCaption: ComponentOptions.buildJsonOption<IStringMap<string>>({ defaultValue: {} }),
     /**
-     * Specifies whether this facet only appears when a value is selected in its "parent" facet.
+     * The [id](@link Facet.options.id) of another facet in which at least one value must be selected in order
+     * for the dependent category facet to be visible.
      *
-     * To specify the parent facet, use its [`id`]{@link Facet.options.id}.
-     *
-     * Remember that by default, a facet `id` value is the same as its [`field`]{@link Facet.options.field} option
-     * value.
-     *
-     * **Examples:**
-     *
-     * First case: the "parent" facet has no custom `id`:
-     * ```html
-     * <!-- "Parent" Facet: -->
-     * <div class='CoveoCategoryFacet' data-field='@myfield' data-title='My Parent Facet'></div>
-     *
-     * <!-- The "dependent" Facet must refer to the default `id` of its "parent" Facet, which is the name of its field. -->
-     * <div class='CoveoCategoryFacet' data-field='@myotherfield' data-title='My Dependent Facet' data-depends-on='@myfield'></div>
-     * ```
-     *
-     * Second case: the "parent" facet has a custom `id`:
-     * ```html
-     * <!-- "Parent" Facet: -->
-     * <div class='CoveoCategoryFacet' data-field='@myfield' data-title='My Parent Facet' data-id='myParentCustomId'></div>
-     *
-     * <!-- The "dependent" Facet must refer to the custom `id` of its "parent" Facet, which is 'myParentCustomId'. -->
-     * <div class='CoveoCategoryFacet' data-field='@myotherfield' data-title='My Dependent Facet' data-depends-on='myParentCustomId'></div>
-     * ```
-     *
-     * Default value is `undefined`
+     * **Default:** `undefined` and the category facet does not depend on any other facet to be displayed.
      */
     dependsOn: ComponentOptions.buildStringOption(),
     ...ResponsiveFacetOptions
@@ -322,7 +298,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   private showingWaitAnimation = false;
   private numberOfChildValuesCurrentlyDisplayed = 0;
   private numberOfValues: number;
-  private dependsOnManager: DependsOnManagerUtils;
+  private dependsOnManager: DependsOnManager;
 
   public static WAIT_ELEMENT_CLASS = 'coveo-category-facet-header-wait-animation';
 
@@ -801,7 +777,14 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   }
 
   private initDependsOnManager() {
-    this.dependsOnManager = new DependsOnManagerUtils(this, () => this.changeActivePath(this.options.basePath));
+    const facetInfo: IDependentFacet = {
+      reset: () => this.changeActivePath(this.options.basePath),
+      element: this.element,
+      dependsOn: this.options.dependsOn,
+      queryStateModel: this.queryStateModel,
+      bind: this.bind
+    };
+    this.dependsOnManager = new DependsOnManager(facetInfo);
   }
 
   private addFading() {
