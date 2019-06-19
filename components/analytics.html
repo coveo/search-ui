@@ -6,18 +6,18 @@
 	<title>Analytics | Coveo JavaScript Search Framework - Reference Documentation</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link href='https://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'/>
-	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-	<link rel="stylesheet" type="text/css" href="https://s3.amazonaws.com/coveostatic/community-unified-navigation/css/styles.css" media="screen" charset="utf-8">
+	<link href='https://fonts.googleapis.com/css?family=Lato:100,300,400,700' rel='stylesheet' type='text/css'/>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" />
+	<link rel="stylesheet" href="https://static.cloud.coveo.com/searchui/v2.6063/css/CoveoFullSearch.min.css" />
 	<link rel="stylesheet" href="../assets/css/main.css">
 	<link rel="stylesheet" href="../assets/css/overrides.css">
-	<link rel="stylesheet" href="https://static.cloud.coveo.com/searchui/v2.4094/css/CoveoFullSearch.min.css">
+	<link rel="stylesheet" href="../assets/css/coveo-connect-header.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 	<script type="text/javascript" src="https://static.cloud.coveo.com/coveo.analytics.js/coveoua.js"></script>
 	<script src="../assets/js/modernizr.js"></script>
-	<script src="https://static.cloud.coveo.com/searchui/v2.4382/js/CoveoJsSearch.min.js"></script>
+	<script class="coveo-script" src="https://static.cloud.coveo.com/searchui/v2.6063/js/CoveoJsSearch.min.js"></script>
 	<script src="https://static.cloud.coveo.com/searchui/v2.4382/js/templates/templates.js"></script>
-	<script src="../assets/js/header.js"></script>
+	<script src="../assets/js/coveo-connect-header.js"></script>
 	<script src="../assets/gen/js/playground.js"></script>
 	<script src="../assets/js/searchUIrefDoc.js"></script>
 	<link href="https://s3.amazonaws.com/coveostatic/Developers.png" rel="shortcut icon" type="image/png">
@@ -25,46 +25,77 @@
 </head>
 <body>
 <header>
-	<div class="upHeader clear">
-		<div class="logos">
-			<a href="http://www.coveo.com" class="logo" title="Coveo community"></a>
-			<h3>
-				<a href="https://support.coveo.com" id="communityLink" title="Coveo Community">Community</a>
-			</h3>
+	<div class="content">
+		<div class="logo">
+			<a class="logo-link" href="https://connect.coveo.com/s/"></a>
+			<div class="logo-img-wrap">
+				<div class="logo-imgbg"></div>
+			</div>
+			<div class="logo-text">
+				<span class="logo-text-bar">|</span>
+				<span> Connect</span>
+			</div>
 		</div>
-		<h1 class="currentSiteName"><em>Support</em> <span>Menu<i class="arrow"></i></span></h1>
-		<nav>
-			<ul id="siteSelection" class="menu floated">
-				<li><a id="jsSupport" href="https://support.coveo.com"  target="_blank">Support</a></li>
-				<li><a id="jsProductDocs" href="https://onlinehelp.coveo.com" target="_blank">Product docs</a></li>
-				<li><a id="jsDevDocs" href="https://developers.coveo.com" target="_blank">Developer docs</a></li>
-				<li><a id="jsAnswers" href="https://answers.coveo.com" target="_blank">Answers</a></li>
-				<li><a id="jsTraining" href="http://www.coveo.com/training" target="_blank">Training</a></li>
-			</ul>
-			<ul id="siteSelection2" class="externalbox with-sub">
-				<li>
-					<a href="#" class="sub">More <i class="arrow"></i></a>
-					<ul>
-						<li><a target="_blank" href="https://cloud.coveo.com">Cloud V1 Administration Console</a></li>
-						<li><a target="_blank" href="https://platform.cloud.coveo.com">Cloud V2 Administration Console</a></li>
-						<li><a target="_blank" href="http://source.coveo.com">Technical Blog</a></li>
+		<div class="search">
+			<div id="coveoConnectHeaderStandaloneSearchbox" class="searchbox">
+				<div class="CoveoSearchbox" type="text" data-auto-focus="false" data-enable-omnibox="true"
+				data-inline="false" data-enable-wildcards="true" data-enable-search-as-you-type="false"
+				data-enable-reveal-query-suggest-addon="true" data-enable-query-syntax="true"
+			data-enable-field-addon="true"></div>
+		</div>
+	</div>
+	<nav class="subnav">
+		<ul>
+			<li><a href="https://coveo.com" target="_blank">Coveo.com</a></li>
+			<li><a href="https://connect.coveo.com/s/community-guidelines" target="_blank">Community Guidelines</a>
+			</li>
+			<li><a href="https://coveo.co1.qualtrics.com/jfe/form/SV_0OFD8lvnckM3qtv?Q_JFE=qdg" target="_blank">Site
+			Feedback</a></li>
+		</ul>
+	</nav>
+	<nav class="navBar">
+		<ul>
+			<li><button class="dropdownButton">My Coveo<i class="fas fa-chevron-down"></i>
+					<ul class="dropdown">
+						<li><a href="https://connect.coveo.com/s/">Home</a></li>
+						<li><a href="https://platform.cloud.coveo.com/admin/" target="_blank">Coveo V2
+						Administration Console</a></li>
+						<li><a href="https://cloud.coveo.com" target="_blank">Coveo V1 Administration Console</a>
+						</li>
 					</ul>
-				</li>
-			</ul>
-		</nav>
+				</button>
+			</li>
+			<li>
+				<button class="dropdownButton">Learn<i class="fas fa-chevron-down"></i>
+					<ul class="dropdown">
+						<li><a href="https://docs.coveo.com" target="_blank">Product Docs</a></li>
+						<li><a
+							href="https://connect.coveo.com/s/global-search/%40uri#sort=relevancy&f:resourceType=[Support%20Article]">Knowledge
+						Articles</a></li>
+						<li><a href="https://academy.coveo.com" target="_blank">Academy</a></li>
+						<li><a href="https://source.coveo.com" target="_blank">Tech Blog</a></li>
+						<li><a href="https://blog.coveo.com" target="_blank">Blog</a></li>
+						<li><a href="https://connect.coveo.com/s/events">Events/Webinars</a></li>
+					</ul>
+				</button>
+			</li>
+			<li>
+				<button class="dropdownButton">Collaborate<i class="fas fa-chevron-down"></i>
+					<ul class="dropdown">
+						<li><a href="https://connect.coveo.com/s/discussions">Discussions</a></li>
+						<li><a href="https://connect.coveo.com/s/topic/0TO0d000000gGvUGAU">Administrator Topic</a>
+						</li>
+						<li><a href="https://connect.coveo.com/s/topic/0TO0d000000gGveGAE">Business User Topic</a>
+						</li>
+						<li><a href="https://connect.coveo.com/s/topic/0TO0d000000gGvZGAU">Developer Topic</a></li>
+						<li><a href="https://connect.coveo.com/s/groups">Groups</a></li>
+						<li><a href="https://connect.coveo.com/s/ideas">Ideas</a></li>
+					</ul>
+				</button>
+			</li>
+		</ul>
+	</nav>
 	</div>
-	<div class="bottomHeader">
-		<div id="searchBox">
-			<div class="CoveoSearchbox" data-enable-omnibox="true" data-inline="false" data-enable-wildcards="true" data-enable-search-as-you-type="false" data-enable-query-suggest-addon="false" data-enable-query-syntax="true" data-enable-field-addon="true"></div>
-			<div class="CoveoFieldSuggestions" data-field="@jsuipagetopic" data-header-title="Suggested topics"></div>
-		</div>
-	</div>
-	<!-- Do not focus on Querybox when URL contains hash to ensure page scrolls down to corresponding anchor. -->
-	<script>
-        if (document.location.hash) {
-            $('.CoveoSearchbox').attr('data-auto-focus', 'false');
-        }
-    </script>
 </header>
 <div class="container container-main">
 	<div class="row">
@@ -118,6 +149,9 @@
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-coveo-component tsd-has-type-parameter">
 								<a href="analytics.html#logsearchevent" class="tsd-kind-icon">log<wbr>Search<wbr>Event</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-coveo-component">
+								<a href="analytics.html#pushtogtmdatalayer" class="tsd-kind-icon">push<wbr>ToGtm<wbr>Data<wbr>Layer</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-coveo-component">
 								<a href="analytics.html#setorigincontext" class="tsd-kind-icon">set<wbr>Origin<wbr>Context</a>
@@ -225,6 +259,7 @@
 								<li class="tsd-kind-method tsd-parent-kind-coveo-component tsd-has-type-parameter"><a href="analytics.html#logcustomevent" class="tsd-kind-icon">log<wbr>Custom<wbr>Event</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-coveo-component tsd-has-type-parameter"><a href="analytics.html#logsearchasyoutype" class="tsd-kind-icon">log<wbr>Search<wbr>AsYou<wbr>Type</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-coveo-component tsd-has-type-parameter"><a href="analytics.html#logsearchevent" class="tsd-kind-icon">log<wbr>Search<wbr>Event</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-coveo-component"><a href="analytics.html#pushtogtmdatalayer" class="tsd-kind-icon">push<wbr>ToGtm<wbr>Data<wbr>Layer</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-coveo-component"><a href="analytics.html#setorigincontext" class="tsd-kind-icon">set<wbr>Origin<wbr>Context</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-coveo-component tsd-is-inherited tsd-is-static"><a href="analytics.html#get" class="tsd-kind-icon">get</a></li>
 							</ul>
@@ -250,7 +285,9 @@
 							<h3>Component Options</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="analytics.html#options.anonymous" class="tsd-kind-icon">anonymous</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="analytics.html#options.autopushtogtmdatalayer" class="tsd-kind-icon">auto<wbr>Push<wbr>ToGtm<wbr>Data<wbr>Layer</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="analytics.html#options.endpoint" class="tsd-kind-icon">endpoint</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="analytics.html#options.gtmdatalayername" class="tsd-kind-icon">gtm<wbr>Data<wbr>Layer<wbr>Name</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="analytics.html#options.organization" class="tsd-kind-icon">organization</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="analytics.html#options.searchhub" class="tsd-kind-icon">search<wbr>Hub</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="analytics.html#options.splittestrunname" class="tsd-kind-icon">split<wbr>Test<wbr>Run<wbr>Name</a></li>
@@ -386,8 +423,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L323">ui/Analytics/Analytics.ts
-									:323</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L351">ui/Analytics/Analytics.ts
+									:351</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -452,8 +489,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L295">ui/Analytics/Analytics.ts
-									:295</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L323">ui/Analytics/Analytics.ts
+									:323</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -524,8 +561,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L268">ui/Analytics/Analytics.ts
-									:268</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L296">ui/Analytics/Analytics.ts
+									:296</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -586,8 +623,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L239">ui/Analytics/Analytics.ts
-									:239</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L267">ui/Analytics/Analytics.ts
+									:267</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -634,6 +671,42 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-coveo-component">
+					<a name="pushtogtmdatalayer" class="tsd-anchor"></a>
+					<h3>push<wbr>ToGtm<wbr>Data<wbr>Layer</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-coveo-component">
+						<li class="tsd-signature tsd-kind-icon">push<wbr>ToGtm<wbr>Data<wbr>Layer<span class="tsd-signature-symbol">(</span>data<span class="tsd-signature-symbol">: </span><a href="../interfaces/ianalyticseventargs.html" class="tsd-signature-type">IAnalyticsEventArgs</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L384">ui/Analytics/Analytics.ts
+									:384</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Attempts to push data representing a single Coveo usage analytics event to the Google Tag Manager data layer.</p>
+								</div>
+								<p><strong>Note:</strong>
+								If the <a href="analytics.html#options.autopushtogtmdatalayer"><code>autoPushToGtmDataLayer</code></a> option is set to <code>true</code> and the GTM data layer has been properly initialized in the page, this method is called automatically whenever an event is about to be logged to the Coveo Cloud usage analytics service.</p>
+								<p>See also the <a href="analytics.html#options.gtmdatalayername"><code>gtmDataLayerName</code></a> option.</p>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>data: <a href="../interfaces/ianalyticseventargs.html" class="tsd-signature-type">IAnalyticsEventArgs</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The data to push.</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-coveo-component">
 					<a name="setorigincontext" class="tsd-anchor"></a>
 					<h3>set<wbr>Origin<wbr>Context</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-coveo-component">
@@ -644,8 +717,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L342">ui/Analytics/Analytics.ts
-									:342</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L370">ui/Analytics/Analytics.ts
+									:370</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -751,8 +824,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L168">ui/Analytics/Analytics.ts
-							:168</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L192">ui/Analytics/Analytics.ts
+							:192</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -960,8 +1033,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L115">ui/Analytics/Analytics.ts
-							:115</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L118">ui/Analytics/Analytics.ts
+							:118</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -981,14 +1054,38 @@ data-anonymous&#x3D;&#x27;false&#x27;</pre>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
+					<a name="options.autopushtogtmdatalayer" class="tsd-anchor"></a>
+					<h3>auto<wbr>Push<wbr>ToGtm<wbr>Data<wbr>Layer</h3>
+					<div class="tsd-signature tsd-kind-icon">auto<wbr>Push<wbr>ToGtm<wbr>Data<wbr>Layer<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L173">ui/Analytics/Analytics.ts
+							:173</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Whether to automatically attempt to push Coveo usage analytics events to the Google Tag Manager <a href="https://developers.google.com/tag-manager/devguide#datalayer">data layer</a>.</p>
+						</div>
+						<p>See also <a href="analytics.html#options.gtmdatalayername"><code>gtmDataLayerName</code></a>.</p>
+						<p><strong>Default:</strong> <code>false</code></p>
+					</div>
+					<div class="tsd-panel">
+						<div class="tsd-signature-type">Markup configuration example(s) :</div>
+						<pre>data-auto-push-to-gtm-data-layer&#x3D;&#x27;true&#x27;
+data-auto-push-to-gtm-data-layer&#x3D;&#x27;false&#x27;</pre>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
 					<a name="options.endpoint" class="tsd-anchor"></a>
 					<h3>endpoint</h3>
 					<div class="tsd-signature tsd-kind-icon">endpoint<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L103">ui/Analytics/Analytics.ts
-							:103</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L106">ui/Analytics/Analytics.ts
+							:106</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1004,14 +1101,39 @@ data-anonymous&#x3D;&#x27;false&#x27;</pre>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
+					<a name="options.gtmdatalayername" class="tsd-anchor"></a>
+					<h3>gtm<wbr>Data<wbr>Layer<wbr>Name</h3>
+					<div class="tsd-signature tsd-kind-icon">gtm<wbr>Data<wbr>Layer<wbr>Name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L185">ui/Analytics/Analytics.ts
+							:185</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The name of the Google Tag Manager data layer initialized in the page.</p>
+						</div>
+						<p>See also <a href="analytics.html#options.autopushtogtmdatalayer"><code>autoPushToGtmDataLayer</code></a>.</p>
+						<p><strong>Note:</strong>
+						Setting this option is only useful if the <a href="https://developers.google.com/tag-manager/devguide#renaming">GTM data layer was renamed</a> in the page.</p>
+						<p><strong>Default:</strong> <code>dataLayer</code></p>
+					</div>
+					<div class="tsd-panel">
+						<div class="tsd-signature-type">Markup configuration example(s) :</div>
+						<pre>data-gtm-data-layer-name&#x3D;&#x27;foo&#x27;</pre>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
 					<a name="options.organization" class="tsd-anchor"></a>
 					<h3>organization</h3>
 					<div class="tsd-signature tsd-kind-icon">organization<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L161">ui/Analytics/Analytics.ts
-							:161</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L164">ui/Analytics/Analytics.ts
+							:164</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1034,8 +1156,8 @@ data-anonymous&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L131">ui/Analytics/Analytics.ts
-							:131</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L134">ui/Analytics/Analytics.ts
+							:134</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1065,8 +1187,8 @@ data-anonymous&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L141">ui/Analytics/Analytics.ts
-							:141</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L144">ui/Analytics/Analytics.ts
+							:144</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1089,8 +1211,8 @@ data-anonymous&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L151">ui/Analytics/Analytics.ts
-							:151</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L154">ui/Analytics/Analytics.ts
+							:154</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1113,8 +1235,8 @@ data-anonymous&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L95">ui/Analytics/Analytics.ts
-							:95</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L98">ui/Analytics/Analytics.ts
+							:98</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1135,8 +1257,8 @@ data-anonymous&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L81">ui/Analytics/Analytics.ts
-							:81</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L84">ui/Analytics/Analytics.ts
+							:84</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1157,8 +1279,8 @@ data-anonymous&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L88">ui/Analytics/Analytics.ts
-							:88</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L91">ui/Analytics/Analytics.ts
+							:91</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1187,8 +1309,8 @@ data-anonymous&#x3D;&#x27;false&#x27;</pre>
 								<p>Overwrites <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#constructor">constructor</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L170">ui/Analytics/Analytics.ts
-									:170</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L194">ui/Analytics/Analytics.ts
+									:194</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">

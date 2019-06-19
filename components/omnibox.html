@@ -6,18 +6,18 @@
 	<title>Omnibox | Coveo JavaScript Search Framework - Reference Documentation</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link href='https://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'/>
-	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-	<link rel="stylesheet" type="text/css" href="https://s3.amazonaws.com/coveostatic/community-unified-navigation/css/styles.css" media="screen" charset="utf-8">
+	<link href='https://fonts.googleapis.com/css?family=Lato:100,300,400,700' rel='stylesheet' type='text/css'/>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" />
+	<link rel="stylesheet" href="https://static.cloud.coveo.com/searchui/v2.6063/css/CoveoFullSearch.min.css" />
 	<link rel="stylesheet" href="../assets/css/main.css">
 	<link rel="stylesheet" href="../assets/css/overrides.css">
-	<link rel="stylesheet" href="https://static.cloud.coveo.com/searchui/v2.4094/css/CoveoFullSearch.min.css">
+	<link rel="stylesheet" href="../assets/css/coveo-connect-header.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 	<script type="text/javascript" src="https://static.cloud.coveo.com/coveo.analytics.js/coveoua.js"></script>
 	<script src="../assets/js/modernizr.js"></script>
-	<script src="https://static.cloud.coveo.com/searchui/v2.4382/js/CoveoJsSearch.min.js"></script>
+	<script class="coveo-script" src="https://static.cloud.coveo.com/searchui/v2.6063/js/CoveoJsSearch.min.js"></script>
 	<script src="https://static.cloud.coveo.com/searchui/v2.4382/js/templates/templates.js"></script>
-	<script src="../assets/js/header.js"></script>
+	<script src="../assets/js/coveo-connect-header.js"></script>
 	<script src="../assets/gen/js/playground.js"></script>
 	<script src="../assets/js/searchUIrefDoc.js"></script>
 	<link href="https://s3.amazonaws.com/coveostatic/Developers.png" rel="shortcut icon" type="image/png">
@@ -25,46 +25,77 @@
 </head>
 <body>
 <header>
-	<div class="upHeader clear">
-		<div class="logos">
-			<a href="http://www.coveo.com" class="logo" title="Coveo community"></a>
-			<h3>
-				<a href="https://support.coveo.com" id="communityLink" title="Coveo Community">Community</a>
-			</h3>
+	<div class="content">
+		<div class="logo">
+			<a class="logo-link" href="https://connect.coveo.com/s/"></a>
+			<div class="logo-img-wrap">
+				<div class="logo-imgbg"></div>
+			</div>
+			<div class="logo-text">
+				<span class="logo-text-bar">|</span>
+				<span> Connect</span>
+			</div>
 		</div>
-		<h1 class="currentSiteName"><em>Support</em> <span>Menu<i class="arrow"></i></span></h1>
-		<nav>
-			<ul id="siteSelection" class="menu floated">
-				<li><a id="jsSupport" href="https://support.coveo.com"  target="_blank">Support</a></li>
-				<li><a id="jsProductDocs" href="https://onlinehelp.coveo.com" target="_blank">Product docs</a></li>
-				<li><a id="jsDevDocs" href="https://developers.coveo.com" target="_blank">Developer docs</a></li>
-				<li><a id="jsAnswers" href="https://answers.coveo.com" target="_blank">Answers</a></li>
-				<li><a id="jsTraining" href="http://www.coveo.com/training" target="_blank">Training</a></li>
-			</ul>
-			<ul id="siteSelection2" class="externalbox with-sub">
-				<li>
-					<a href="#" class="sub">More <i class="arrow"></i></a>
-					<ul>
-						<li><a target="_blank" href="https://cloud.coveo.com">Cloud V1 Administration Console</a></li>
-						<li><a target="_blank" href="https://platform.cloud.coveo.com">Cloud V2 Administration Console</a></li>
-						<li><a target="_blank" href="http://source.coveo.com">Technical Blog</a></li>
+		<div class="search">
+			<div id="coveoConnectHeaderStandaloneSearchbox" class="searchbox">
+				<div class="CoveoSearchbox" type="text" data-auto-focus="false" data-enable-omnibox="true"
+				data-inline="false" data-enable-wildcards="true" data-enable-search-as-you-type="false"
+				data-enable-reveal-query-suggest-addon="true" data-enable-query-syntax="true"
+			data-enable-field-addon="true"></div>
+		</div>
+	</div>
+	<nav class="subnav">
+		<ul>
+			<li><a href="https://coveo.com" target="_blank">Coveo.com</a></li>
+			<li><a href="https://connect.coveo.com/s/community-guidelines" target="_blank">Community Guidelines</a>
+			</li>
+			<li><a href="https://coveo.co1.qualtrics.com/jfe/form/SV_0OFD8lvnckM3qtv?Q_JFE=qdg" target="_blank">Site
+			Feedback</a></li>
+		</ul>
+	</nav>
+	<nav class="navBar">
+		<ul>
+			<li><button class="dropdownButton">My Coveo<i class="fas fa-chevron-down"></i>
+					<ul class="dropdown">
+						<li><a href="https://connect.coveo.com/s/">Home</a></li>
+						<li><a href="https://platform.cloud.coveo.com/admin/" target="_blank">Coveo V2
+						Administration Console</a></li>
+						<li><a href="https://cloud.coveo.com" target="_blank">Coveo V1 Administration Console</a>
+						</li>
 					</ul>
-				</li>
-			</ul>
-		</nav>
+				</button>
+			</li>
+			<li>
+				<button class="dropdownButton">Learn<i class="fas fa-chevron-down"></i>
+					<ul class="dropdown">
+						<li><a href="https://docs.coveo.com" target="_blank">Product Docs</a></li>
+						<li><a
+							href="https://connect.coveo.com/s/global-search/%40uri#sort=relevancy&f:resourceType=[Support%20Article]">Knowledge
+						Articles</a></li>
+						<li><a href="https://academy.coveo.com" target="_blank">Academy</a></li>
+						<li><a href="https://source.coveo.com" target="_blank">Tech Blog</a></li>
+						<li><a href="https://blog.coveo.com" target="_blank">Blog</a></li>
+						<li><a href="https://connect.coveo.com/s/events">Events/Webinars</a></li>
+					</ul>
+				</button>
+			</li>
+			<li>
+				<button class="dropdownButton">Collaborate<i class="fas fa-chevron-down"></i>
+					<ul class="dropdown">
+						<li><a href="https://connect.coveo.com/s/discussions">Discussions</a></li>
+						<li><a href="https://connect.coveo.com/s/topic/0TO0d000000gGvUGAU">Administrator Topic</a>
+						</li>
+						<li><a href="https://connect.coveo.com/s/topic/0TO0d000000gGveGAE">Business User Topic</a>
+						</li>
+						<li><a href="https://connect.coveo.com/s/topic/0TO0d000000gGvZGAU">Developer Topic</a></li>
+						<li><a href="https://connect.coveo.com/s/groups">Groups</a></li>
+						<li><a href="https://connect.coveo.com/s/ideas">Ideas</a></li>
+					</ul>
+				</button>
+			</li>
+		</ul>
+	</nav>
 	</div>
-	<div class="bottomHeader">
-		<div id="searchBox">
-			<div class="CoveoSearchbox" data-enable-omnibox="true" data-inline="false" data-enable-wildcards="true" data-enable-search-as-you-type="false" data-enable-query-suggest-addon="false" data-enable-query-syntax="true" data-enable-field-addon="true"></div>
-			<div class="CoveoFieldSuggestions" data-field="@jsuipagetopic" data-header-title="Suggested topics"></div>
-		</div>
-	</div>
-	<!-- Do not focus on Querybox when URL contains hash to ensure page scrolls down to corresponding anchor. -->
-	<script>
-        if (document.location.hash) {
-            $('.CoveoSearchbox').attr('data-auto-focus', 'false');
-        }
-    </script>
 </header>
 <div class="container container-main">
 	<div class="row">
@@ -258,6 +289,7 @@
 								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="omnibox.html#options.numberofsuggestions" class="tsd-kind-icon">number<wbr>OfSuggestions</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="omnibox.html#options.omniboxtimeout" class="tsd-kind-icon">omnibox<wbr>Timeout</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="omnibox.html#options.placeholder" class="tsd-kind-icon">placeholder</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="omnibox.html#options.querysuggestcharacterthreshold" class="tsd-kind-icon">query<wbr>Suggest<wbr>Character<wbr>Threshold</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="omnibox.html#options.searchasyoutypedelay" class="tsd-kind-icon">search<wbr>AsYou<wbr>Type<wbr>Delay</a></li>
 							</ul>
 						</section>
@@ -283,8 +315,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L330">ui/Omnibox/Omnibox.ts
-									:330</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L344">ui/Omnibox/Omnibox.ts
+									:344</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -411,8 +443,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L337">ui/Omnibox/Omnibox.ts
-									:337</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L351">ui/Omnibox/Omnibox.ts
+									:351</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -435,8 +467,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L314">ui/Omnibox/Omnibox.ts
-									:314</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L328">ui/Omnibox/Omnibox.ts
+									:328</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -460,8 +492,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L322">ui/Omnibox/Omnibox.ts
-									:322</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L336">ui/Omnibox/Omnibox.ts
+									:336</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -493,8 +525,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L301">ui/Omnibox/Omnibox.ts
-									:301</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L315">ui/Omnibox/Omnibox.ts
+									:315</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -781,8 +813,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L152">ui/Omnibox/Omnibox.ts
-							:152</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L153">ui/Omnibox/Omnibox.ts
+							:153</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -814,8 +846,8 @@ data-enable-field-addon&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L192">ui/Omnibox/Omnibox.ts
-							:192</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L193">ui/Omnibox/Omnibox.ts
+							:193</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -838,8 +870,8 @@ data-enable-query-extension-addon&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L180">ui/Omnibox/Omnibox.ts
-							:180</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L181">ui/Omnibox/Omnibox.ts
+							:181</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -870,8 +902,8 @@ data-enable-query-suggest-addon&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L224">ui/Omnibox/Omnibox.ts
-							:224</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L225">ui/Omnibox/Omnibox.ts
+							:225</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -896,8 +928,8 @@ data-enable-query-syntax&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L123">ui/Omnibox/Omnibox.ts
-							:123</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L124">ui/Omnibox/Omnibox.ts
+							:124</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -926,8 +958,8 @@ data-enable-search-as-you-type&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L109">ui/Omnibox/Omnibox.ts
-							:109</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L110">ui/Omnibox/Omnibox.ts
+							:110</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -952,8 +984,8 @@ data-inline&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L239">ui/Omnibox/Omnibox.ts
-							:239</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L240">ui/Omnibox/Omnibox.ts
+							:240</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -977,8 +1009,8 @@ data-inline&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L214">ui/Omnibox/Omnibox.ts
-							:214</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L215">ui/Omnibox/Omnibox.ts
+							:215</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -999,8 +1031,8 @@ data-inline&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L207">ui/Omnibox/Omnibox.ts
-							:207</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L208">ui/Omnibox/Omnibox.ts
+							:208</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1014,14 +1046,38 @@ data-inline&#x3D;&#x27;false&#x27;</pre>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
+					<a name="options.querysuggestcharacterthreshold" class="tsd-anchor"></a>
+					<h3>query<wbr>Suggest<wbr>Character<wbr>Threshold</h3>
+					<div class="tsd-signature tsd-kind-icon">query<wbr>Suggest<wbr>Character<wbr>Threshold<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L253">ui/Omnibox/Omnibox.ts
+							:253</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The minimum number of characters required in the in the text input before displaying available query suggestions when focus is on the component.</p>
+						</div>
+						<p>Note: Only effective when <a href="omnibox.html#options.enablequerysuggestaddon">enableQuerySuggestAddon</a> is true.</p>
+						<p>depend: &#39;enableQuerySuggestAddon&#39;</p>
+						<p>Default (and minimum): 0, meaning that trending query suggestions are displayed when focus is on the component, even if its text input is empty.</p>
+					</div>
+					<div class="tsd-panel">
+						<div class="tsd-signature-type">Markup configuration example(s) :</div>
+						<pre>data-query-suggest-character-threshold&#x3D;&#x27;10&#x27;</pre>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
 					<a name="options.searchasyoutypedelay" class="tsd-anchor"></a>
 					<h3>search<wbr>AsYou<wbr>Type<wbr>Delay</h3>
 					<div class="tsd-signature tsd-kind-icon">search<wbr>AsYou<wbr>Type<wbr>Delay<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L131">ui/Omnibox/Omnibox.ts
-							:131</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L132">ui/Omnibox/Omnibox.ts
+							:132</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1051,8 +1107,8 @@ data-inline&#x3D;&#x27;false&#x27;</pre>
 								<p>Overwrites <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#constructor">constructor</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L254">ui/Omnibox/Omnibox.ts
-									:254</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L268">ui/Omnibox/Omnibox.ts
+									:268</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">

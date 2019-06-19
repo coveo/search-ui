@@ -5879,8 +5879,8 @@ exports.ResponsiveComponents = ResponsiveComponents;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    lib: '2.6063.7',
-    product: '2.6063.7',
+    lib: '2.6459.0-beta',
+    product: '2.6459.0-beta',
     supportedApiVersion: 2
 };
 
@@ -7514,21 +7514,14 @@ exports.PlaygroundConfiguration = {
         }, Dom_1.$$('script', {
             className: 'result-template',
             type: 'text/underscore'
-        }, new SectionBuilder_1.SectionBuilder()
-            .withComponent('CoveoIcon', {
-            'data-small': 'true',
-            'data-with-label': 'false',
-            style: 'display:inline-block; vertical-align:middle; margin-right:5px;'
-        }, 'span')
-            .withComponent('CoveoResultLink', {}, 'a')
-            .build())))
+        }, "<div class=\"coveo-result-frame\">\n              <div class=\"coveo-result-cell\" style=\"vertical-align:top;text-align:center;width:32px;\">\n                <span class=\"CoveoIcon\" data-small=\"true\" data-with-label=\"false\"></span>\n              </div>\n              <div class=\"coveo-result-cell\" style=\"vertical-align: top;padding-left: 16px;\">\n                <div class=\"coveo-result-row\" style=\"margin-top:0;\">\n                  <div class=\"coveo-result-cell\" \">\n                    <a class=\"CoveoResultLink\" ></a>\n                  </div>\n                </div>\n              </div>\n            </div>")))
             .withoutQuerySuggest()
             .build(),
         options: {
             headerTitle: ''
         },
         toExecute: function () {
-            setMinHeightOnSearchInterface('500px');
+            setMinHeightOnSearchInterface('350px');
             getSearchInterfaceInstance().options.resultsPerPage = 5;
         }
     },
@@ -8703,6 +8696,12 @@ var dict = {
     "PageNumber": "Page {0}",
     "DisplayResultsPerPage": "Display {0} results per page",
     "GroupByAndFacetRequestsCannotCoexist": "The query is invalid because it contains both Group By and Facet requests. Ensure that the search interface does not initialize DynamicFacet components alongside Facet components (or alongside any component extending the Facet component, such as FacetRange or FacetSlider).",
+    "MustContain": "Must contain:",
+    "Missing": "Missing:",
+    "Filters": "Filters",
+    "FiltersDropdown": "Filters dropdown",
+    "OpenFiltersDropdown": "Open the filters dropdown",
+    "CloseFiltersDropdown": "Close the filters dropdown",
 };
 function defaultLanguage() {
     var locales = String["locales"] || (String["locales"] = {});
