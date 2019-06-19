@@ -39,6 +39,8 @@ import { IGroupByResult } from './GroupByResult';
 import { AccessToken } from './AccessToken';
 import { BackOffRequest } from './BackOffRequest';
 import { IBackOffRequest } from 'exponential-backoff';
+import { IFacetSearchRequest } from './Facet/FacetSearchRequest';
+import { IFacetSearchResponse } from './Facet/FacetSearchResponse';
 
 export class DefaultSearchEndpointOptions implements ISearchEndpointOptions {
   restUri: string;
@@ -812,6 +814,37 @@ export class SearchEndpoint implements ISearchEndpoint {
     callParams?: IEndpointCallParameters
   ): Promise<IQuerySuggestResponse> {
     return this.getQuerySuggest(request, callOptions, callParams);
+  }
+
+  /**
+   * TODO: documentation
+   */
+  @path('/facet')
+  @requestDataType('application/json')
+  @method('POST')
+  @responseType('text')
+  @includeActionsHistory()
+  @includeReferrer()
+  @includeVisitorId()
+  @includeIsGuestUser()
+  public async facetSearch(
+    request: IFacetSearchRequest,
+    callOptions?: IEndpointCallOptions,
+    callParams?: IEndpointCallParameters
+  ): Promise<IFacetSearchResponse> {
+    callParams = {
+      ...callParams,
+      requestData: {
+        ...callParams.requestData,
+        ..._.omit(request, parameter => Utils.isNullOrUndefined(parameter))
+      }
+    };
+
+    this.logger.info('Performing REST query to get facet search results', request);
+
+    const response = await this.performOneCall<IFacetSearchResponse>(callParams, callOptions);
+    this.logger.info('REST query successful', response);
+    return response;
   }
 
   /**
