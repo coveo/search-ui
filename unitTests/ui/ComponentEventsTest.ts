@@ -31,6 +31,8 @@ export function ComponentEventsTest() {
 
     it('should execute handler with the originalEvent if its wrapped by jQuery and does not have any param', function() {
       // Setup.
+      window['Coveo']['$'] = $;
+
       test.cmp.enable();
       test.cmp.bind.on(test.env.root, 'click', spy);
 
@@ -52,6 +54,9 @@ export function ComponentEventsTest() {
       // It should call the spy with the aforementioned param.
       expect(spy).toHaveBeenCalledTimes(3);
       expect(spy).toHaveBeenCalledWith({ bar: 'baz' });
+
+      // Clean-up.
+      window['Coveo']['$'] = undefined;
     });
 
     it('should execute handler only once if the component is enabled', function() {
