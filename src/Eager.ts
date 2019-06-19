@@ -26,6 +26,9 @@ Analytics.doExport();
 import { AnalyticsSuggestions } from './ui/AnalyticsSuggestions/AnalyticsSuggestions';
 AnalyticsSuggestions.doExport();
 
+import { ComponentEvents } from './ui/Base/Component';
+ComponentEvents.doExport();
+
 import { AuthenticationProvider } from './ui/AuthenticationProvider/AuthenticationProvider';
 AuthenticationProvider.doExport();
 
