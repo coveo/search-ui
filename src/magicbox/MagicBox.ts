@@ -106,7 +106,7 @@ export class MagicBoxInstance {
 
   public setText(text: string) {
     $$(this.element).toggleClass('magic-box-notEmpty', text.length > 0);
-    this.magicBoxClear.toggleTabindex(text.length > 0);
+    this.magicBoxClear.toggleTabindexAndAriaHidden(text.length > 0);
 
     this.result = this.grammar.parse(text);
     this.displayedResult = this.result.clean();
