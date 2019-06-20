@@ -1,10 +1,11 @@
 import { IFacetSearchRequest } from '../rest/Facet/FacetSearchRequest';
 import { DynamicFacet } from '../ui/DynamicFacet/DynamicFacet';
+import { IFacetSearchResponse } from '../rest/Facet/FacetSearchResponse';
 
 export class FacetSearchController {
   constructor(private facet: DynamicFacet) {}
 
-  public search(query?: string) {
+  public search(query?: string): Promise<IFacetSearchResponse> {
     const request: IFacetSearchRequest = {
       field: this.facet.fieldName,
       numberOfValues: this.facet.options.numberOfValues,
