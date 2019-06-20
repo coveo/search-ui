@@ -38,77 +38,11 @@ export const PlaygroundConfiguration: IStringMap<IComponentPlaygroundConfigurati
       autoTriggerQuery: false
     }
   },
-  Facet: {
+  AdvancedSearch: {
     show: true,
-    options: {
-      field: '@objecttype',
-      title: 'Type'
-    }
-  },
-  Searchbox: {
-    show: true,
-    options: {
-      enableOmnibox: true,
-      enableRevealQuerySuggestAddon: true,
-      inline: true
-    }
-  },
-  SearchButton: {
-    show: true
-  },
-  Omnibox: {
-    show: true,
-    options: {
-      enableQuerySuggestAddon: true,
-      inline: true
-    }
-  },
-  Excerpt: {
-    show: true,
-    isResultComponent: true,
-    basicExpression: 'technology'
-  },
-  Icon: {
-    show: true,
-    isResultComponent: true,
-    basicExpression: 'getting started pdf'
-  },
-  Tab: {
-    show: true,
-    element: new SectionBuilder($$('div', { className: 'coveo-tab-section' }))
-      .withComponent('CoveoTab', {
-        'data-caption': 'All content',
-        'data-id': 'All'
-      })
-      .withComponent('CoveoTab', {
-        'data-caption': 'YouTube videos',
-        'data-id': 'YouTube'
-      })
-      .withComponent('CoveoTab', {
-        'data-caption': 'Google Drive',
-        'data-id': 'GoogleDrive'
-      })
-      .withComponent('CoveoTab', {
-        'data-caption': 'Emails',
-        'data-id': 'Emails'
-      })
-      .withComponent('CoveoTab', {
-        'data-caption': 'Salesforce content',
-        'data-id': 'Salesforce'
-      })
-      .build()
-  },
-  FacetSlider: {
-    show: true,
-    options: {
-      field: '@date',
-      dateField: true,
-      queryOverride: '@date>2010/01/01',
-      graph: {
-        steps: 20
-      },
-      rangeSlider: true,
-      title: 'Date distribution'
+    element: new SearchSectionBuilder().withComponent('CoveoAdvancedSearch').build(),
+    toExecute: () => {
+      setMinHeightOnSearchInterface('300px');
     }
   },
   Badge: {
@@ -135,17 +69,36 @@ export const PlaygroundConfiguration: IStringMap<IComponentPlaygroundConfigurati
     basicExpression: 'testt',
     element: new SearchSectionBuilder().withComponent('CoveoDidYouMean').build()
   },
+  DynamicFacet: {
+    show: true,
+    options: {
+      field: '@author',
+      title: 'Author'
+    }
+  },
   ErrorReport: {
     show: true,
     toExecute: () => {
       Coveo['SearchEndpoint'].endpoints['default'].options.accessToken = 'invalid';
     }
   },
+  Excerpt: {
+    show: true,
+    isResultComponent: true,
+    basicExpression: 'technology'
+  },
   ExportToExcel: {
     show: true,
     element: new SearchSectionBuilder().withComponent('CoveoExportToExcel').build(),
     toExecute: () => {
       setMinHeightOnSearchInterface('300px');
+    }
+  },
+  Facet: {
+    show: true,
+    options: {
+      field: '@objecttype',
+      title: 'Type'
     }
   },
   FacetRange: {
@@ -180,6 +133,19 @@ export const PlaygroundConfiguration: IStringMap<IComponentPlaygroundConfigurati
         }
       ],
       sortCriteria: 'alphaascending'
+    }
+  },
+  FacetSlider: {
+    show: true,
+    options: {
+      field: '@date',
+      dateField: true,
+      queryOverride: '@date>2010/01/01',
+      graph: {
+        steps: 20
+      },
+      rangeSlider: true,
+      title: 'Date distribution'
     }
   },
   FieldSuggestions: {
@@ -263,6 +229,11 @@ export const PlaygroundConfiguration: IStringMap<IComponentPlaygroundConfigurati
     },
     advancedExpression: '@hierarchicfield'
   },
+  Icon: {
+    show: true,
+    isResultComponent: true,
+    basicExpression: 'getting started pdf'
+  },
   Logo: {
     show: true,
     toExecute: () => {
@@ -282,11 +253,22 @@ export const PlaygroundConfiguration: IStringMap<IComponentPlaygroundConfigurati
     },
     element: new SectionBuilder().withComponent('CoveoMatrix').build()
   },
-  DynamicFacet: {
+  MissingTerms: {
+    show: true,
+    toExecute: () => {
+      const searchInterface = getSearchInterfaceElement();
+      Coveo.$$(searchInterface).on('afterInitialization', () => {
+        Coveo.state(searchInterface, 'q', 'getting started klingon language');
+      });
+    },
+    isResultComponent: true,
+    basicExpression: 'getting started klingon language'
+  },
+  Omnibox: {
     show: true,
     options: {
-      field: '@author',
-      title: 'Author'
+      enableQuerySuggestAddon: true,
+      inline: true
     }
   },
   OmniboxResultList: {
@@ -358,13 +340,25 @@ export const PlaygroundConfiguration: IStringMap<IComponentPlaygroundConfigurati
     isResultComponent: true,
     advancedExpression: '@litopicid @filetype==lithiummessage'
   },
+  PromotedResultsBadge: {
+    show: true,
+    element: new SearchSectionBuilder()
+      .withComponent('CoveoResultList', {
+        'data-layout': 'list'
+      })
+      .withComponent('CoveoPromotedResultsBadge', {
+        'data-show-badge-for-featured-results': true,
+        'data-show-badge-for-recommended-results': true
+      })
+      .build()
+  },
+  Querybox: {
+    show: true
+  },
   QueryDuration: {
     show: true
   },
   QuerySummary: {
-    show: true
-  },
-  Querybox: {
     show: true
   },
   Quickview: {
@@ -427,6 +421,17 @@ export const PlaygroundConfiguration: IStringMap<IComponentPlaygroundConfigurati
       setMinHeightOnSearchInterface('300px');
     }
   },
+  Searchbox: {
+    show: true,
+    options: {
+      enableOmnibox: true,
+      enableRevealQuerySuggestAddon: true,
+      inline: true
+    }
+  },
+  SearchButton: {
+    show: true
+  },
   Settings: {
     show: true,
     element: new SearchSectionBuilder()
@@ -488,36 +493,42 @@ export const PlaygroundConfiguration: IStringMap<IComponentPlaygroundConfigurati
       });
     }
   },
+  Tab: {
+    show: true,
+    element: new SectionBuilder($$('div', { className: 'coveo-tab-section' }))
+      .withComponent('CoveoTab', {
+        'data-caption': 'All content',
+        'data-id': 'All'
+      })
+      .withComponent('CoveoTab', {
+        'data-caption': 'YouTube videos',
+        'data-id': 'YouTube'
+      })
+      .withComponent('CoveoTab', {
+        'data-caption': 'Google Drive',
+        'data-id': 'GoogleDrive'
+      })
+      .withComponent('CoveoTab', {
+        'data-caption': 'Emails',
+        'data-id': 'Emails'
+      })
+      .withComponent('CoveoTab', {
+        'data-caption': 'Salesforce content',
+        'data-id': 'Salesforce'
+      })
+      .build()
+  },
   Thumbnail: {
     show: true,
     isResultComponent: true,
     advancedExpression: '@filetype=="youtubevideo"'
   },
+  TimespanFacet: {
+    show: true
+  },
   YouTubeThumbnail: {
     show: true,
     isResultComponent: true,
     advancedExpression: '@filetype=="youtubevideo"'
-  },
-  AdvancedSearch: {
-    show: true,
-    element: new SearchSectionBuilder().withComponent('CoveoAdvancedSearch').build(),
-    toExecute: () => {
-      setMinHeightOnSearchInterface('300px');
-    }
-  },
-  TimespanFacet: {
-    show: true
-  },
-  PromotedResultsBadge: {
-    show: true,
-    element: new SearchSectionBuilder()
-      .withComponent('CoveoResultList', {
-        'data-layout': 'list'
-      })
-      .withComponent('CoveoPromotedResultsBadge', {
-        'data-show-badge-for-featured-results': true,
-        'data-show-badge-for-recommended-results': true
-      })
-      .build()
   }
 };
