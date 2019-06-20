@@ -73,12 +73,6 @@
                         {{#with model}}{{> breadcrumb}}{{/with}}
                     </ul>
 
-                    <!-- Has to remain here for the playground to work -->
-                    <h1 style="visibility: collapse; font-size:0">{{#compact}}
-                        {{model.kindString}}&nbsp;
-                        {{model.name}}
-                    {{/compact}}</h1>
-
                     <h1>{{#compact}}
                         {{#ifCond model.kindString "==" "Coveo component"}}
                             Coveo {{model.name}} Component (Coveo{{model.name}})
@@ -104,7 +98,6 @@
 </div>
 
 <script src="{{relativeURL "assets/js/main.js"}}"></script>
-<script>if (location.protocol == 'file:') document.write('<script src="{{relativeURL "assets/js/search.js"}}"><' + '/script>');</script>
 
 {{> analytics}}
 
