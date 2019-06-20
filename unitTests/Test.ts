@@ -702,6 +702,9 @@ DynamicFacetQueryControllerTest();
 import { DynamicFacetManagerTest } from './ui/DynamicFacetManagerTest';
 DynamicFacetManagerTest();
 
+import { FacetSearchControllerTest } from './controllers/FacetSearchControllerTest';
+FacetSearchControllerTest();
+
 import { SearchboxResizeTest } from './utils/SearchboxResizeTest';
 SearchboxResizeTest();
 

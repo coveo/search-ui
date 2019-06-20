@@ -6,12 +6,18 @@ import * as Mock from '../../MockEnvironment';
 import { IFacetResponse } from '../../../src/rest/Facet/FacetResponse';
 
 export class DynamicFacetTestUtils {
+  static get defaultOptions() {
+    return {
+      id: 'dummy',
+      field: '@dummy',
+      title: 'a title'
+    };
+  }
+
   static createFakeFacet(options?: IDynamicFacetOptions) {
     const facet = Mock.mockComponent<DynamicFacet>(DynamicFacet);
     facet.options = {
-      id: 'dummy',
-      field: '@dummy',
-      title: 'a title',
+      ...this.defaultOptions,
       ...options
     };
     facet.element = $$('div').el;
@@ -25,7 +31,7 @@ export class DynamicFacetTestUtils {
       modifyBuilder: builder => {
         return withQSM ? builder.withLiveQueryStateModel() : builder;
       },
-      cmpOptions: options
+      cmpOptions: { ...this.defaultOptions, ...options }
     });
   }
 
