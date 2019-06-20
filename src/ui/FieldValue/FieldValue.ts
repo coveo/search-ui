@@ -418,7 +418,7 @@ export class FieldValue extends Component {
   }
 
   private getDynamicFacets() {
-    const dynamicFacetAttributeName = QueryStateModel.getDynamicFacetId(this.options.facet.replace(/^@/, ''));
+    const dynamicFacetAttributeName = QueryStateModel.getFacetId(this.options.facet);
     return filter<DynamicFacet>(
       this.componentStateModel.get(dynamicFacetAttributeName),
       (component: Component) => component.type === DynamicFacet.ID && !component.disabled

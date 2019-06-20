@@ -284,5 +284,8 @@ PromotedResultsBadge.doExport();
 import { CategoryFacet } from './ui/CategoryFacet/CategoryFacet';
 CategoryFacet.doExport();
 
+import { MissingTerms } from './ui/MissingTerm/MissingTerms';
+MissingTerms.doExport();
+
 import { swapVar } from './SwapVar';
 swapVar(this);

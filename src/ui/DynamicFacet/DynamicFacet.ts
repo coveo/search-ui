@@ -34,6 +34,7 @@ import { IQueryOptions } from '../../controllers/QueryController';
 import { DynamicFacetManager } from '../DynamicFacetManager/DynamicFacetManager';
 import { FacetPadding } from '../FacetPadding/FacetPadding';
 import { QueryBuilder } from '../Base/QueryBuilder';
+import { IAutoLayoutAdjustableInsideFacetColumn } from '../SearchInterface/FacetColumnAutoLayoutAdjustment';
 
 export interface IDynamicFacetOptions extends IResponsiveComponentOptions {
   id?: string;
@@ -62,7 +63,7 @@ export interface IDynamicFacetOptions extends IResponsiveComponentOptions {
  * This facet is more easy to use than the original [`Facet`]{@link Facet} component. It implements additional Coveo Machine Learning (Coveo ML) features
  * such as dynamic navigation experience (DNE).
  */
-export class DynamicFacet extends Component {
+export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsideFacetColumn {
   static ID = 'DynamicFacet';
   static doExport = () => exportGlobally({ DynamicFacet });
 
@@ -92,12 +93,12 @@ export class DynamicFacet extends Component {
     id: ComponentOptions.buildStringOption({
       postProcessing: (value = '', options: IDynamicFacetOptions) => {
         const maxCharLength = 60;
-        const sanitizedValue = value.replace(/[^A-Za-z0-9-_]+/g, '');
+        const sanitizedValue = value.replace(/[^A-Za-z0-9-_@]+/g, '');
         if (Utils.isNonEmptyString(sanitizedValue)) {
           return sanitizedValue.slice(0, maxCharLength - 1);
         }
 
-        return options.field.slice(1, maxCharLength);
+        return options.field.slice(0, maxCharLength - 1);
       }
     }),
 
@@ -450,6 +451,18 @@ export class DynamicFacet extends Component {
     return allDynamicFacets.indexOf(this) + 1;
   }
 
+  public isCurrentlyDisplayed() {
+    if (!$$(this.element).isVisible()) {
+      return false;
+    }
+
+    if ($$(this.element).hasClass('coveo-hidden')) {
+      return false;
+    }
+
+    return true;
+  }
+
   private initQueryEvents() {
     this.bind.onRootElement(QueryEvents.duringQuery, () => this.ensureDom());
     this.bind.onRootElement(QueryEvents.doneBuildingQuery, (data: IDoneBuildingQueryEventArgs) => this.handleDoneBuildingQuery(data));
@@ -459,7 +472,7 @@ export class DynamicFacet extends Component {
   }
 
   private initQueryStateEvents() {
-    this.includedAttributeId = QueryStateModel.getDynamicFacetId(this.options.id);
+    this.includedAttributeId = QueryStateModel.getFacetId(this.options.id);
     this.queryStateModel.registerNewAttribute(this.includedAttributeId, []);
     this.bind.onQueryState(MODEL_EVENTS.CHANGE, undefined, this.handleQueryStateChanged);
   }
@@ -474,7 +487,7 @@ export class DynamicFacet extends Component {
   }
 
   private initComponentStateEvents() {
-    const componentStateId = QueryStateModel.getDynamicFacetId(this.options.id);
+    const componentStateId = QueryStateModel.getFacetId(this.options.id);
     this.componentStateModel.registerComponent(componentStateId, this);
   }
 

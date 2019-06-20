@@ -702,6 +702,12 @@ DynamicFacetQueryControllerTest();
 import { DynamicFacetManagerTest } from './ui/DynamicFacetManagerTest';
 DynamicFacetManagerTest();
 
+import { MissingTermsTest } from './ui/MissingTermsTest';
+MissingTermsTest();
+
+import { MissingTermsManagerTest } from './ui/MissingTermManagerTest';
+MissingTermsManagerTest();
+
 import { SearchboxResizeTest } from './utils/SearchboxResizeTest';
 SearchboxResizeTest();
 
