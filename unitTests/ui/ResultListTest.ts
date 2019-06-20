@@ -801,9 +801,7 @@ export function ResultListTest() {
 
           beforeEach(() => {
             jasmine.clock().install();
-            document.createElement('div');
             infiniteScrollContainer = document.createElement('div');
-
             scrollToSpy = spyOn(infiniteScrollContainer, 'scrollTo');
 
             // Inner value of scrollTop.

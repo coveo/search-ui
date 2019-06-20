@@ -625,9 +625,8 @@ export class ResultList extends Component {
     }
 
     if (typeof this.options.infiniteScrollContainer.scrollTo === 'function') {
-      const win = <Window>this.options.infiniteScrollContainer;
       const searchInterfacePosition = window.pageYOffset + this.searchInterface.element.getBoundingClientRect().top;
-      win.scrollTo(0, searchInterfacePosition);
+      this.options.infiniteScrollContainer.scrollTo(0, searchInterfacePosition);
     } else {
       const el = <HTMLElement>this.options.infiniteScrollContainer;
       el.scrollTop = 0;
