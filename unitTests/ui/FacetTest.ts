@@ -894,7 +894,7 @@ export function FacetTest() {
           });
         });
 
-        it('update the visibility of the dependant facet', () => {
+        it('update the visibility of the dependent facet', () => {
           spyOn(test.cmp['dependsOnManager'], 'updateVisibilityBasedOnDependsOn');
           Simulate.query(test.env);
           expect(test.cmp['dependsOnManager'].updateVisibilityBasedOnDependsOn).toHaveBeenCalledTimes(1);

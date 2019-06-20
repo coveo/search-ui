@@ -10,16 +10,16 @@ import { buildCategoryFacetResults } from '../ui/CategoryFacet/CategoryFacetTest
 export function DependsOnManagerTest() {
   describe('DependsOnManager', () => {
     const masterCategoryFacetField = '@masterFacet';
-    const dependentCategoryFacetField = '@dependantFacet';
+    const dependentCategoryFacetField = '@dependentFacet';
     let simulateQueryData: ISimulateQueryData;
-    let simulateQueryDataDependant: ISimulateQueryData;
+    let simulateQueryDataDependent: ISimulateQueryData;
     let testEnv: Mock.MockEnvironmentBuilder;
 
     beforeEach(() => {
       simulateQueryData = buildCategoryFacetResults(11, 11, masterCategoryFacetField);
-      simulateQueryDataDependant = buildCategoryFacetResults(11, 11, dependentCategoryFacetField);
-      simulateQueryData.results.categoryFacets.push(simulateQueryDataDependant.results.categoryFacets[0]);
-      simulateQueryData.query.categoryFacets.push(simulateQueryDataDependant.query.categoryFacets[0]);
+      simulateQueryDataDependent = buildCategoryFacetResults(11, 11, dependentCategoryFacetField);
+      simulateQueryData.results.categoryFacets.push(simulateQueryDataDependent.results.categoryFacets[0]);
+      simulateQueryData.query.categoryFacets.push(simulateQueryDataDependent.query.categoryFacets[0]);
 
       testEnv = new Mock.MockEnvironmentBuilder().withLiveQueryStateModel();
     });
@@ -29,9 +29,9 @@ export function DependsOnManagerTest() {
       let master: IBasicComponentSetup<CategoryFacet>;
       beforeEach(() => {
         const masterElement = document.createElement('div');
-        const dependantElement = document.createElement('div');
+        const dependentElement = document.createElement('div');
         testEnv.root.appendChild(masterElement);
-        testEnv.root.appendChild(dependantElement);
+        testEnv.root.appendChild(dependentElement);
 
         master = Mock.advancedComponentSetup<CategoryFacet>(
           CategoryFacet,
@@ -47,12 +47,12 @@ export function DependsOnManagerTest() {
         test = Mock.advancedComponentSetup<CategoryFacet>(
           CategoryFacet,
           new Mock.AdvancedComponentSetupOptions(
-            dependantElement,
+            dependentElement,
             {
               field: dependentCategoryFacetField,
               dependsOn: masterCategoryFacetField
             },
-            env => testEnv.withElement(dependantElement)
+            env => testEnv.withElement(dependentElement)
           )
         );
       });
@@ -84,7 +84,7 @@ export function DependsOnManagerTest() {
         expect($$(master.cmp.element).hasClass('.coveo-category-facet-non-empty-path')).toBeFalsy();
       });
 
-      describe('when the master and the dependant facet have a selected value', () => {
+      describe('when the master and the dependent facet have a selected value', () => {
         beforeEach(() => {
           Simulate.query(testEnv, simulateQueryData);
           master.cmp.selectValue('value9');

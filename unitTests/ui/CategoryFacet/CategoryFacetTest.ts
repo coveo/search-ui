@@ -39,7 +39,7 @@ export function CategoryFacetTest() {
           });
         });
 
-        it('update the visibility of the dependant category facet', () => {
+        it('update the visibility of the dependent category facet', () => {
           spyOn(test.cmp['dependsOnManager'], 'updateVisibilityBasedOnDependsOn');
           Simulate.query(test.env);
           expect(test.cmp['dependsOnManager'].updateVisibilityBasedOnDependsOn).toHaveBeenCalledTimes(1);
