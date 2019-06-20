@@ -8,9 +8,7 @@ import { IFacetResponse } from '../../../src/rest/Facet/FacetResponse';
 export class DynamicFacetTestUtils {
   static get defaultOptions() {
     return {
-      id: 'dummy',
-      field: '@dummy',
-      title: 'a title'
+      field: '@dummy'
     };
   }
 

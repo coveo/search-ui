@@ -4,7 +4,7 @@ import { DynamicFacet } from '../ui/DynamicFacet/DynamicFacet';
 export class FacetSearchController {
   constructor(private facet: DynamicFacet) {}
 
-  public async search(query?: string) {
+  public search(query?: string) {
     const request: IFacetSearchRequest = {
       field: this.facet.fieldName,
       numberOfValues: this.facet.options.numberOfValues,
@@ -14,6 +14,6 @@ export class FacetSearchController {
       query
     };
 
-    return await this.facet.queryController.getEndpoint().facetSearch(request);
+    return this.facet.queryController.getEndpoint().facetSearch(request);
   }
 }
