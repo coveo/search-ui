@@ -21,6 +21,10 @@ export interface IMissingTermsOptions {
  */
 export class MissingTerms extends Component {
   static ID = 'MissingTerms';
+
+  /**
+   * @componentOptions
+   */
   static options: IMissingTermsOptions = {
     /**
      * Whether to allow the end-user to click a missing term to filter out items that do not match this term.
