@@ -42,14 +42,14 @@ export class Playground {
       $$(this.getTitle())
         .text()
         .toLowerCase()
-        .indexOf('coveo component') != -1
+        .indexOf('component') != -1
     );
   }
 
   public getComponentName() {
     const match = $$(this.getTitle())
       .text()
-      .match(/([a-zA-Z]+)$/);
+      .match(/\(Coveo([a-zA-Z]+)\)$/);
     if (match) {
       return match[1];
     }
