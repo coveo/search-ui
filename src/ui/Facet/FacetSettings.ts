@@ -215,7 +215,7 @@ export class FacetSettings extends FacetSort {
 
     $$(el).on('mouseleave', mouseLeave);
     $$(el).on('mouseenter', mouseEnter);
-    $$(el).on('keyup', KeyboardUtils.keypressAction(KEYBOARD.ESCAPE, () => this.handleKeyboardClose()))
+    $$(el).on('keyup', KeyboardUtils.keypressAction(KEYBOARD.ESCAPE, () => this.handleKeyboardClose()));
   }
 
   private handleKeyboardClose() {
@@ -388,7 +388,7 @@ export class FacetSettings extends FacetSort {
         this.facet.facetHeader.collapseFacet();
         this.close();
       })
-      .withLabel(l('Collapse'))
+      .withLabel(l('CollapseFacet', this.facet.options.title))
       .build();
 
     return hideSection;
@@ -410,7 +410,7 @@ export class FacetSettings extends FacetSort {
         this.facet.facetHeader.expandFacet();
         this.close();
       })
-      .withLabel(l('Expand'))
+      .withLabel(l('ExpandFacet', this.facet.options.title))
       .build();
 
     return showSection;

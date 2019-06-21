@@ -29,6 +29,7 @@ export class DynamicFacetHeader {
   private createClearButton() {
     this.clearButton = new DynamicFacetHeaderButton({
       label: l('Clear'),
+      ariaLabel: l('Clear', this.facet.options.title),
       className: 'coveo-dynamic-facet-header-clear',
       shouldDisplay: false,
       action: () => this.clear()

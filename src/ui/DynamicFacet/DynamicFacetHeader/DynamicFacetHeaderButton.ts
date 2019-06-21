@@ -3,6 +3,7 @@ import { SVGDom } from '../../../utils/SVGDom';
 
 export interface IDynamicFacetHeaderButtonOptions {
   label: string;
+  ariaLabel?: string;
   shouldDisplay?: boolean;
   className?: string;
   iconSVG?: string;
@@ -33,6 +34,10 @@ export class DynamicFacetHeaderButton {
       this.button.setAttribute('aria-label', this.rootOptions.label);
       this.button.setAttribute('title', this.rootOptions.label);
       SVGDom.addClassToSVGInContainer(this.button.el, this.rootOptions.iconClassName);
+    }
+
+    if (this.rootOptions.ariaLabel) {
+      this.button.setAttribute('aria-label', this.rootOptions.ariaLabel);
     }
 
     if (this.rootOptions.shouldDisplay !== undefined) {

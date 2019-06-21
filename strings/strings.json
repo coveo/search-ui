@@ -2682,6 +2682,18 @@
     "en": "Expand {0} facet",
     "fr": "Agrandir la facette {0}"
   },
+  "ShowLessFacetResults": {
+    "en": "Show less results for {0} facet",
+    "fr": "Montrer moins de résultats pour la facette {0}"
+  },
+  "ShowMoreFacetResults": {
+    "en": "Show more results for {0} facet",
+    "fr": "Montrer plus de résultats pour la facette {0}"
+  },
+  "SearchFacetResults": {
+    "en": "Search results for {0} facet",
+    "fr": "Rechercher les résultats pour la facette {0}"
+  },
   "Today": {
     "en": "Today",
     "fr": "Aujourd'hui",
