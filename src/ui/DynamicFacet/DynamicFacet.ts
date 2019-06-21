@@ -35,6 +35,7 @@ import { DynamicFacetManager } from '../DynamicFacetManager/DynamicFacetManager'
 import { FacetPadding } from '../FacetPadding/FacetPadding';
 import { QueryBuilder } from '../Base/QueryBuilder';
 import { IAutoLayoutAdjustableInsideFacetColumn } from '../SearchInterface/FacetColumnAutoLayoutAdjustment';
+import { DynamicFacetSearch } from '../DynamicFacetSearch/DynamicFacetSearch';
 
 export interface IDynamicFacetOptions extends IResponsiveComponentOptions {
   id?: string;
@@ -43,6 +44,8 @@ export interface IDynamicFacetOptions extends IResponsiveComponentOptions {
   sortCriteria?: string;
   numberOfValues?: number;
   enableCollapse?: boolean;
+  enableFacetSearch?: boolean;
+  useLeadingWildcardInFacetSearch?: boolean;
   collapsedByDefault?: boolean;
   includeInBreadcrumb?: boolean;
   numberOfValuesInBreadcrumb?: number;
@@ -164,6 +167,20 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
     enableCollapse: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'Filtering' }),
 
     /**
+     * Whether to allow the end-user to search the facet values.
+     *
+     * **Default:** `false`
+     */
+    enableFacetSearch: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'Filtering' }),
+
+    /**
+     * Whether to use a leading wildcard in the facet search query.
+     *
+     * **Default:** `false`
+     */
+    useLeadingWildcardInFacetSearch: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'Filtering' }),
+
+    /**
      * Whether this facet should be collapsed by default.
      *
      * See also the [`enableCollapse`]{@link DynamicFacet.options.enableCollapse}
@@ -220,6 +237,7 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
   private listenToQueryStateChange = true;
   private padding: FacetPadding;
   private header: DynamicFacetHeader;
+  private search: DynamicFacetSearch;
   private isCollapsed: boolean;
 
   public dynamicFacetManager: DynamicFacetManager;
@@ -572,7 +590,7 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
 
   public createDom() {
     this.createPadding();
-    this.createContent();
+    this.createAndAppendContent();
     this.updateAppearance();
   }
 
@@ -589,14 +607,28 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
     this.padding = new FacetPadding(this.element, columnParent);
   }
 
-  private createContent() {
-    this.header = this.createHeader();
-    this.element.appendChild(this.header.element);
-    this.element.appendChild(this.values.render());
+  private createAndAppendContent() {
+    this.createAndAppendHeader();
+    this.createAndAppendSearch();
+    this.createAndAppendValues();
   }
 
-  private createHeader() {
-    return new DynamicFacetHeader(this);
+  private createAndAppendHeader() {
+    this.header = new DynamicFacetHeader(this);
+    this.element.appendChild(this.header.element);
+  }
+
+  private createAndAppendSearch() {
+    if (!this.options.enableFacetSearch) {
+      return;
+    }
+
+    this.search = new DynamicFacetSearch(this);
+    this.element.appendChild(this.search.element);
+  }
+
+  private createAndAppendValues() {
+    this.element.appendChild(this.values.render());
   }
 
   private handleFacetValuesChanged() {
