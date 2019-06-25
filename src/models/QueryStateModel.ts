@@ -15,7 +15,8 @@ export const QUERY_STATE_ATTRIBUTES = {
   HQ: 'hq',
   QUICKVIEW: 'quickview',
   DEBUG: 'debug',
-  NUMBER_OF_RESULTS: 'numberOfResults'
+  NUMBER_OF_RESULTS: 'numberOfResults',
+  MISSING_TERMS: 'missingTerms'
 };
 
 export interface IQueryStateIncludedAttribute {
@@ -74,7 +75,8 @@ export class QueryStateModel extends Model {
     tg: '',
     quickview: '',
     debug: false,
-    numberOfResults: 10
+    numberOfResults: 10,
+    missingTerm: []
   };
 
   static attributesEnum = {
@@ -89,7 +91,8 @@ export class QueryStateModel extends Model {
     tg: 'tg',
     quickview: 'quickview',
     debug: 'debug',
-    numberOfResults: 'numberOfResults'
+    numberOfResults: 'numberOfResults',
+    missingTerm: 'missingTerm'
   };
 
   static getFacetId(id: string, include: boolean = true) {
@@ -98,10 +101,6 @@ export class QueryStateModel extends Model {
 
   static getFacetOperator(id: string) {
     return 'f:' + id + ':operator';
-  }
-
-  static getDynamicFacetId(id: string) {
-    return 'df:' + id;
   }
 
   static getFacetLookupValue(id: string) {
@@ -126,7 +125,7 @@ export class QueryStateModel extends Model {
   public atLeastOneFacetIsActive() {
     return !_.isUndefined(
       _.find(this.attributes, (value, key: string) => {
-        return key.match(/^d?f:/) && !Utils.arrayEqual(this.getDefault(key), value);
+        return key.match(/^f:/) && !Utils.arrayEqual(this.getDefault(key), value);
       })
     );
   }

@@ -154,4 +154,9 @@ export interface IQueryResult {
   orphan?: boolean;
 
   fields?: { [name: string]: any };
+
+  /**
+   * The query terms that are not matched by the result.
+   */
+  absentTerms: string[];
 }

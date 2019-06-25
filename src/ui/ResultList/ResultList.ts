@@ -624,10 +624,9 @@ export class ResultList extends Component {
       return;
     }
 
-    if (this.options.infiniteScrollContainer instanceof Window) {
-      const win = <Window>this.options.infiniteScrollContainer;
-      const searchInterfacePosition = win.pageYOffset + this.searchInterface.element.getBoundingClientRect().top;
-      win.scrollTo(0, searchInterfacePosition);
+    if (typeof this.options.infiniteScrollContainer.scrollTo === 'function') {
+      const searchInterfacePosition = window.pageYOffset + this.searchInterface.element.getBoundingClientRect().top;
+      this.options.infiniteScrollContainer.scrollTo(0, searchInterfacePosition);
     } else {
       const el = <HTMLElement>this.options.infiniteScrollContainer;
       el.scrollTop = 0;
