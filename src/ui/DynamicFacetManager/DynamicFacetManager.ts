@@ -10,6 +10,7 @@ import { $$ } from '../../utils/Dom';
 import { Utils } from '../../utils/Utils';
 import { ComponentOptions } from '../Base/ComponentOptions';
 import { Assert } from '../../misc/Assert';
+import { Initialization } from '../Base/Initialization';
 
 export interface IDynamicFacetManagerOptions {
   enableReorder?: boolean;
@@ -93,6 +94,7 @@ export class DynamicFacetManager extends Component {
 
     this.moveChildrenIntoContainer();
     this.initEvents();
+    console.log('ALLLO');
   }
 
   private resetContainer() {
@@ -197,3 +199,6 @@ export class DynamicFacetManager extends Component {
     return !!find(this.childrenFacets, facet => facet.isCurrentlyDisplayed());
   }
 }
+
+Initialization.registerAutoCreateComponent(DynamicFacetManager);
+DynamicFacetManager.doExport();
