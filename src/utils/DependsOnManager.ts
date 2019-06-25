@@ -13,19 +13,19 @@ export interface IDependentFacet {
 }
 
 export class DependsOnManager {
-  constructor(private dependantFacet: IDependentFacet) {}
+  constructor(private dependentFacet: IDependentFacet) {}
 
   public listenToParentIfDependentFacet() {
     if (!this.isDependentFacet) {
       return;
     }
 
-    this.dependantFacet.bind.onQueryState(MODEL_EVENTS.CHANGE, undefined, () => this.resetIfParentFacetHasNoSelectedValues());
+    this.dependentFacet.bind.onQueryState(MODEL_EVENTS.CHANGE, undefined, () => this.resetIfParentFacetHasNoSelectedValues());
   }
 
   public updateVisibilityBasedOnDependsOn() {
     if (this.isDependentFacet) {
-      $$(this.dependantFacet.element).toggleClass('coveo-facet-dependent', !this.parentFacetHasSelectedValues);
+      $$(this.dependentFacet.element).toggleClass('coveo-facet-dependent', !this.parentFacetHasSelectedValues);
     }
   }
 
@@ -34,7 +34,7 @@ export class DependsOnManager {
   }
 
   private get facetDependsOnField() {
-    return this.dependantFacet.dependsOn;
+    return this.dependentFacet.dependsOn;
   }
 
   public resetIfParentFacetHasNoSelectedValues() {
@@ -42,7 +42,7 @@ export class DependsOnManager {
       return;
     }
 
-    this.dependantFacet.reset();
+    this.dependentFacet.reset();
   }
 
   private get parentFacetHasSelectedValues() {
@@ -51,7 +51,7 @@ export class DependsOnManager {
   }
 
   private valuesExistForFacetWithId(id: string) {
-    const values = this.dependantFacet.queryStateModel.get(id);
+    const values = this.dependentFacet.queryStateModel.get(id);
     return values != null && values.length != 0;
   }
 }
