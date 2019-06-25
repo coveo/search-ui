@@ -249,7 +249,7 @@ export class ErrorReport extends Component {
 
       case 'GroupByAndFacetBothExistingException':
         this.options.showDetailedError = false;
-        // TODO: add DynamicFacet documentation
+        this.buildEndpointErrorElements('https://docs.coveo.com/en/2917');
         this.setErrorTitle(undefined, l('GroupByAndFacetRequestsCannotCoexist'));
         break;
 
