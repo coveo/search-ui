@@ -1535,7 +1535,8 @@ export class Facet extends Component {
     }
 
     const masterFacetComponent = ComponentsTypes.getAllFacetsInstance(this.root).filter((cmp: Facet) => {
-      return cmp.options.id === this.options.dependsOn;
+      const idFacet = cmp instanceof Facet;
+      return idFacet && cmp.options.id === this.options.dependsOn;
     });
 
     if (!masterFacetComponent.length) {

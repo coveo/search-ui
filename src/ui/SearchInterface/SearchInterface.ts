@@ -51,7 +51,6 @@ import RelevanceInspectorModule = require('../RelevanceInspector/RelevanceInspec
 import { AriaLive, IAriaLive } from '../AriaLive/AriaLive';
 import { MissingTermManager } from '../MissingTerm/MissingTermManager';
 import { ComponentsTypes } from '../../utils/ComponentsTypes';
-import { Facet } from '../Facet/Facet';
 
 export interface ISearchInterfaceOptions {
   enableHistory?: boolean;
@@ -1023,11 +1022,11 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     }
   }
 
-  private get FacetDuplicate(): Facet[] {
-    const duplicate: Facet[] = [];
+  private get FacetDuplicate() {
+    const duplicate = [];
     const facets = ComponentsTypes.getAllFacetsInstance(this.root);
-    facets.forEach((facet: Facet) => {
-      facets.forEach((cmp: Facet) => {
+    facets.forEach(facet => {
+      facets.forEach(cmp => {
         if (facet == cmp) {
           return;
         }

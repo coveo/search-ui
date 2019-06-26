@@ -223,8 +223,8 @@ export function DependsOnManagerTest() {
             test.cmp.excludeValue('excluded dependent value');
           });
 
-          it(`when a third facet exist with the same id/field as the master facet,
-          it logs a waring message`, () => {
+          it(`when the master facet id is not unique,
+          it doesn't update keepDisplayedValuesNextTime`, () => {
             Mock.advancedComponentSetup<Facet>(
               Facet,
               new Mock.AdvancedComponentSetupOptions(
@@ -237,9 +237,18 @@ export function DependsOnManagerTest() {
                 }
               )
             );
-            spyOn(console, 'warn');
+            masterFacet.cmp.keepDisplayedValuesNextTime = undefined;
+            expect(masterFacet.cmp.keepDisplayedValuesNextTime).toBeUndefined();
             triggerStateChangeOnDependentFacet();
-            expect(console.warn).toHaveBeenCalledTimes(1);
+            expect(masterFacet.cmp.keepDisplayedValuesNextTime).toBeUndefined();
+          });
+
+          it(`when the master facet id is unique,
+          it update keepDisplayedValuesNextTime`, () => {
+            masterFacet.cmp.keepDisplayedValuesNextTime = undefined;
+            expect(masterFacet.cmp.keepDisplayedValuesNextTime).toBeUndefined();
+            triggerStateChangeOnDependentFacet();
+            expect(masterFacet.cmp.keepDisplayedValuesNextTime).toBe(false);
           });
 
           it(`when resetting the master facet,
