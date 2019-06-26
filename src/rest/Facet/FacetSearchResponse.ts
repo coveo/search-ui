@@ -2,15 +2,13 @@ export interface IFacetSearchResultValue {
   /**
    * The custom facet value display name, as specified in the `captions` argument of the facet request.
    *
-   * **Example:**
-   * > `ACME Product A`
+   * **Example:** `ACME Product A`
    */
   displayValue: string;
   /**
    * The original facet value, as retrieved from the field in the index.
    *
-   * **Example:**
-   * > `acme_productA`
+   * **Example:** `acme_productA`
    */
   rawValue: string;
   /**

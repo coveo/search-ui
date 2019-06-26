@@ -11,8 +11,7 @@ export interface IFacetSearchRequest {
   /**
    * A list of index field values to filter out from the facet search results.
    *
-   * **Example:**
-   * > `["blue", "green"]`
+   * **Example:** `["blue", "green"]`
    */
   ignoreValues?: String[];
   /**
@@ -26,8 +25,7 @@ export interface IFacetSearchRequest {
    *
    * Typically, the text entered by the end-user in the facet search box, to which one or more wildcard characters (`*`) may be added.
    *
-   * **Example:**
-   * > `"*oran*"`
+   * **Example:** `"*oran*"`
    */
   query?: string;
   /**
@@ -38,12 +36,9 @@ export interface IFacetSearchRequest {
    */
   captions?: Record<string, string>;
   /**
-   * The current query parameters representing the state of the search interface.
+   * The query parameters representing the current state of the search interface.
    *
    * See the [query]{@link IQuery} documentation.
-   *
-   * **Example:**
-   * > `{"q": "nutrition of tomatoes"}`
    */
   searchContext?: IQuery;
 }
