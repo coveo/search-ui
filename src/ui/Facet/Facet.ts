@@ -56,6 +56,7 @@ import { AccessibleButton } from '../../utils/AccessibleButton';
 import { IResponsiveComponentOptions } from '../ResponsiveComponents/ResponsiveComponentsManager';
 import { ResponsiveFacetOptions } from '../ResponsiveComponents/ResponsiveFacetOptions';
 import { DependsOnManager, IDependentFacet } from '../../utils/DependsOnManager';
+import { ComponentsTypes } from '../../utils/ComponentsTypes';
 
 export interface IFacetOptions extends IResponsiveComponentOptions {
   title?: string;
@@ -1529,32 +1530,33 @@ export class Facet extends Component {
   }
 
   private dependsOnUpdateParentDisplayValue() {
-    if (this.options.dependsOn) {
-      const masterFacetHTML = $$(this.root)
-        .findAll(`.CoveoFacet`)
-        .filter(HTMLFacet => {
-          const facet = <Facet>Facet.get(HTMLFacet);
-          return facet.options.id === this.options.dependsOn;
-        });
-      if (!masterFacetHTML.length) {
-        this.logger.warn(
-          `Unable to find a Facet with the id or field "${this.options.dependsOn}".`,
-          `The master Facet values can't be updated.`
-        );
-        return;
-      }
-      if (masterFacetHTML.length > 1) {
-        this.logger.warn(
-          `Mulltiple Facet with the id or field "${this.options.dependsOn}" found.`,
-          `A Facet can only depends on one other Facet.`,
-          `The master Facet values can't be updated.`,
-          masterFacetHTML
-        );
-        return;
-      }
-      const masterFacet = <Facet>Facet.get(masterFacetHTML[0]);
-      masterFacet.keepDisplayedValuesNextTime = false;
+    if (!this.options.dependsOn) {
+      return;
     }
+
+    const masterFacetComponent = ComponentsTypes.getAllFacetsInstance(this.root).filter((cmp: Facet) => {
+      return cmp.options.id === this.options.dependsOn;
+    });
+
+    if (!masterFacetComponent.length) {
+      this.logger.warn(
+        `Unable to find a Facet with the id or field "${this.options.dependsOn}".`,
+        `The master facet values can't be updated.`
+      );
+      return;
+    }
+    if (masterFacetComponent.length > 1) {
+      this.logger.warn(
+        `Multiple facets with id "${this.options.dependsOn}" found.`,
+        `A given facet may only depend on a single other facet.`,
+        `Ensure that each facet in your search interface has a unique id.`,
+        `The master facet cannot be updated.`,
+        masterFacetComponent
+      );
+      return;
+    }
+    const masterFacet = masterFacetComponent[0] as Facet;
+    masterFacet.keepDisplayedValuesNextTime = false;
   }
 
   private initBottomAndTopSpacer() {

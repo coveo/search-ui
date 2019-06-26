@@ -50,6 +50,8 @@ import { FacetValueStateHandler } from './FacetValueStateHandler';
 import RelevanceInspectorModule = require('../RelevanceInspector/RelevanceInspector');
 import { AriaLive, IAriaLive } from '../AriaLive/AriaLive';
 import { MissingTermManager } from '../MissingTerm/MissingTermManager';
+import { ComponentsTypes } from '../../utils/ComponentsTypes';
+import { Facet } from '../Facet/Facet';
 
 export interface ISearchInterfaceOptions {
   enableHistory?: boolean;
@@ -1012,6 +1014,30 @@ export class SearchInterface extends RootComponent implements IComponentBindings
         }
       });
     });
+    if (this.FacetDuplicate.length) {
+      this.logger.warn(
+        `The following facets have duplicate id/field:`,
+        this.FacetDuplicate,
+        `Ensure that each facet in your search interface has a unique id.`
+      );
+    }
+  }
+
+  private get FacetDuplicate(): Facet[] {
+    const duplicate: Facet[] = [];
+    const facets = ComponentsTypes.getAllFacetsInstance(this.root);
+    facets.forEach((facet: Facet) => {
+      facets.forEach((cmp: Facet) => {
+        if (facet == cmp) {
+          return;
+        }
+        if (facet.options.id === cmp.options.id) {
+          duplicate.push(facet);
+          return;
+        }
+      });
+    });
+    return duplicate;
   }
 
   private toggleSectionState(cssClass: string, toggle = true) {

@@ -223,6 +223,25 @@ export function DependsOnManagerTest() {
             test.cmp.excludeValue('excluded dependent value');
           });
 
+          it(`when a third facet exist with the same id/field as the master facet,
+          it logs a waring message`, () => {
+            Mock.advancedComponentSetup<Facet>(
+              Facet,
+              new Mock.AdvancedComponentSetupOptions(
+                undefined,
+                {
+                  field: masterFacetField
+                },
+                (builder: Mock.MockEnvironmentBuilder) => {
+                  return builder.withRoot(test.env.root);
+                }
+              )
+            );
+            spyOn(console, 'warn');
+            triggerStateChangeOnDependentFacet();
+            expect(console.warn).toHaveBeenCalledTimes(1);
+          });
+
           it(`when resetting the master facet,
         it resets the dependent facet`, () => {
             masterFacet.cmp.reset();
