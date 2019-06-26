@@ -1,5 +1,5 @@
 import 'styling/DynamicFacet/_DynamicFacet';
-import { difference, findWhere } from 'underscore';
+import { difference, findIndex } from 'underscore';
 import { $$ } from '../../utils/Dom';
 import { exportGlobally } from '../../GlobalExports';
 import { Component } from '../Base/Component';
@@ -242,6 +242,7 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
 
   public dynamicFacetManager: DynamicFacetManager;
   public values: DynamicFacetValues;
+  public position: number = null;
 
   /**
    * Creates a new `DynamicFacet` instance.
@@ -464,11 +465,6 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
     pendingEvent && pendingEvent.addFacetsState(this.analyticsFacetState);
   }
 
-  public get position() {
-    const allDynamicFacets = this.searchInterface.getComponents<DynamicFacet>(DynamicFacet.ID);
-    return allDynamicFacets.indexOf(this) + 1;
-  }
-
   public isCurrentlyDisplayed() {
     if (!$$(this.element).isVisible()) {
       return false;
@@ -530,7 +526,9 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
       return this.notImplementedError();
     }
 
-    const response = findWhere(data.results.facets, { facetId: this.options.id });
+    const index = findIndex(data.results.facets, { facetId: this.options.id });
+    const response = index !== -1 ? data.results.facets[index] : null;
+    this.position = index + 1;
 
     this.onQueryResponse(response);
   }

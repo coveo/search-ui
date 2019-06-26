@@ -650,7 +650,7 @@ export function SearchEndpointTest() {
           expect(jasmine.Ajax.requests.mostRecent().url).toContain('potatoe=mashed');
 
           expect(jasmine.Ajax.requests.mostRecent().method).toBe('POST');
-          expect(jasmine.Ajax.requests.mostRecent().params).toContain(JSON.stringify({ field: 'test' }));
+          expect(JSON.parse(jasmine.Ajax.requests.mostRecent().params)).toEqual(jasmine.objectContaining({ field: 'test' }));
 
           // Not real extensions, but will suffice for test purpose
           promiseSuccess

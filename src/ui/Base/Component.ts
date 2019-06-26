@@ -15,6 +15,7 @@ import { IComponentBindings } from './ComponentBindings';
 import { DebugEvents } from '../../events/DebugEvents';
 import * as _ from 'underscore';
 import { Model } from '../../models/Model';
+import { exportGlobally } from '../../GlobalExports';
 
 /**
  * Definition for a Component.
@@ -58,14 +59,199 @@ export interface IComponentDefinition {
 }
 
 /**
+ * The `ComponentEvents` class is used by the various Coveo Component to trigger events and bind event handlers. It adds
+ * logic to execute handlers or triggers only when a component is "enabled", which serves as a way to avoid executing
+ * handlers on components that are invisible and inactive in the query.
+ *
+ * Typically, a component is disabled when it is not active in the current [`Tab`]{@link Tab}. It can also be disabled
+ * by external code, however.
+ *
+ * To manually enable or disable a component, simply use its [`enable`]{@link Component.enable} or
+ * [`disable`]{@link Component.disable} method.
+ */
+export class ComponentEvents {
+  static doExport() {
+    exportGlobally({
+      ComponentEvents: ComponentEvents
+    });
+  }
+
+  /**
+   * Creates a new `ComponentEvents` instance for a [`Component`]{@link Component}.
+   * @param owner The [`Component`]{@link Component} that owns the event handlers and triggers.
+   */
+  constructor(public owner: Component) {
+    Assert.exists(owner);
+  }
+
+  /**
+   * Executes the handler for an event on a target element.
+   *
+   * Executes only if the component is enabled (see the [`enable`]{@link Component.enable} method).
+   * @param el The element from which the event originates.
+   * @param event The event for which to register a handler.
+   * @param handler The function to execute when the event is triggered.
+   */
+  public on(el: HTMLElement | Window | Document, event: string, handler: Function);
+  public on(el: Dom, event: string, handler: Function);
+  public on(arg: any, event: string, handler: Function) {
+    if (!JQueryUtils.getJQuery() || !JQueryUtils.isInstanceOfJQuery(arg)) {
+      var htmlEl: HTMLElement = arg;
+      $$(htmlEl).on(event, this.wrapToCallIfEnabled(handler));
+    } else {
+      var jq: Dom = arg;
+      jq.on(event, this.wrapToCallIfEnabled(handler));
+    }
+  }
+
+  /**
+   * Executes the handler for the given event on the given target element.<br/>
+   * Execute only if the component is "enabled" (see {@link Component.enable}).<br/>
+   * Execute the handler only ONE time.
+   * @param el The target on which the event will originate.
+   * @param event The event for which to register an handler.
+   * @param handler The function to execute when the event is triggered.
+   */
+  public one(el: HTMLElement, event: string, handler: Function);
+  public one(el: Dom, event: string, handler: Function);
+  public one(arg: any, event: string, handler: Function) {
+    if (arg instanceof HTMLElement) {
+      var htmlEl: HTMLElement = arg;
+      $$(htmlEl).one(event, this.wrapToCallIfEnabled(handler));
+    } else {
+      var jq: Dom = arg;
+      jq.one(event, this.wrapToCallIfEnabled(handler));
+    }
+  }
+
+  /**
+   * Bind on the "root" of the Component. The root is typically the {@link SearchInterface}.<br/>
+   * Bind an event using native javascript code.
+   * @param event The event for which to register an handler.
+   * @param handler The function to execute when the event is triggered.
+   */
+  public onRootElement<T>(event: string, handler: (args: T) => any) {
+    this.on(this.owner.root, event, handler);
+  }
+
+  /**
+   * Bind on the "root" of the Component. The root is typically the {@link SearchInterface}.<br/>
+   * Bind an event using native javascript code.
+   * The handler will execute only ONE time.
+   * @param event The event for which to register an handler.
+   * @param handler The function to execute when the event is triggered.
+   */
+  public oneRootElement<T>(event: string, handler: (args: T) => any) {
+    this.one(this.owner.root, event, handler);
+  }
+
+  /**
+   * Bind an event related specially to the query state model.<br/>
+   * This will build the correct string event and execute the handler only if the component is activated.
+   * @param eventType The event type for which to register an event.
+   * @param attribute The attribute for which to register an event.
+   * @param handler The handler to execute when the query state event is triggered.
+   */
+  public onQueryState<T>(eventType: string, attribute?: string, handler?: (args: T) => any) {
+    this.onRootElement(this.getQueryStateEventName(eventType, attribute), handler);
+  }
+
+  /**
+   * Bind an event related specially to the component option model.
+   * This will build the correct string event and execute the handler only if the component is activated.
+   * @param eventType The event type for which to register an event.
+   * @param attribute The attribute for which to register an event.
+   * @param handler The handler to execute when the query state event is triggered.
+   */
+  public onComponentOptions<T>(eventType: string, attribute?: string, handler?: (args: T) => any) {
+    this.onRootElement(this.getComponentOptionEventName(eventType, attribute), handler);
+  }
+
+  /**
+   * Bind an event related specially to the query state model.<br/>
+   * This will build the correct string event and execute the handler only if the component is activated.<br/>
+   * Will execute only once.
+   * @param eventType The event type for which to register an event.
+   * @param attribute The attribute for which to register an event.
+   * @param handler The handler to execute when the query state event is triggered.
+   */
+  public oneQueryState<T>(eventType: string, attribute?: string, handler?: (args: T) => any) {
+    this.oneRootElement(this.getQueryStateEventName(eventType, attribute), handler);
+  }
+
+  /**
+   * Trigger an event on the target element, with optional arguments.
+   * @param el The target HTMLElement on which to trigger the event.
+   * @param event The event to trigger.
+   * @param args The optional argument to pass to the handlers.
+   */
+  public trigger(el: HTMLElement, event: string, args?: Object);
+  public trigger(el: Dom, event: string, args?: Object);
+  public trigger(arg: any, event: string, args?: Object) {
+    this.wrapToCallIfEnabled(() => {
+      if (arg instanceof HTMLElement) {
+        var htmlEl: HTMLElement = arg;
+        $$(htmlEl).trigger(event, args);
+      } else {
+        var jq: Dom = arg;
+        jq.trigger(event, args);
+      }
+    })(args);
+  }
+
+  /**
+   * Execute the function only if the component is enabled.
+   * @param func The function to execute if the component is enabled.
+   * @returns {function(...[any]): *}
+   */
+  protected wrapToCallIfEnabled(func: Function) {
+    return (...args: any[]) => {
+      if (!this.owner.disabled) {
+        if (args && args[0] instanceof CustomEvent) {
+          if (args[0].detail) {
+            args = [args[0].detail];
+          }
+        } else if (args && JQueryUtils.isInstanceOfJqueryEvent(args[0])) {
+          if (args[1] != undefined) {
+            args = [args[1]];
+          } else {
+            args = [];
+          }
+        }
+        return func.apply(this.owner, args);
+      }
+    };
+  }
+
+  private getQueryStateEventName(eventType: string, attribute?: string): string {
+    return this.getModelEvent(this.owner.queryStateModel, eventType, attribute);
+  }
+
+  private getComponentOptionEventName(eventType: string, attribute?: string): string {
+    return this.getModelEvent(this.owner.componentOptionsModel, eventType, attribute);
+  }
+
+  private getModelEvent(model: Model, eventType: string, attribute?: string) {
+    var evtName;
+    if (eventType && attribute) {
+      evtName = model.getEventName(eventType + attribute);
+    } else {
+      evtName = model.getEventName(eventType);
+    }
+    return evtName;
+  }
+}
+
+/**
  * The base class for every component in the framework.
  */
 export class Component extends BaseComponent {
+  static ComponentEventClass: typeof ComponentEvents = ComponentEvents;
   /**
    * Allows the component to bind events and execute them only when it is enabled.
    * @type {Coveo.ComponentEvents}
    */
-  public bind = new ComponentEvents(this);
+  public bind: ComponentEvents;
   /**
    * A reference to the root HTMLElement (the {@link SearchInterface}).
    */
@@ -107,6 +293,7 @@ export class Component extends BaseComponent {
    */
   constructor(public element: HTMLElement, public type: string, bindings: IComponentBindings = {}) {
     super(element, type);
+    this.bind = new Component.ComponentEventClass(this);
     this.root = bindings.root || this.resolveRoot();
     this.queryStateModel = bindings.queryStateModel || this.resolveQueryStateModel();
     this.componentStateModel = bindings.componentStateModel || this.resolveComponentStateModel();
@@ -272,183 +459,5 @@ export class Component extends BaseComponent {
     _.each(_.compact(inputs), input => {
       input.setAttribute('form', 'coveo-dummy-form');
     });
-  }
-}
-
-/**
- * The `ComponentEvents` class is used by the various Coveo Component to trigger events and bind event handlers. It adds
- * logic to execute handlers or triggers only when a component is "enabled", which serves as a way to avoid executing
- * handlers on components that are invisible and inactive in the query.
- *
- * Typically, a component is disabled when it is not active in the current [`Tab`]{@link Tab}. It can also be disabled
- * by external code, however.
- *
- * To manually enable or disable a component, simply use its [`enable`]{@link Component.enable} or
- * [`disable`]{@link Component.disable} method.
- */
-export class ComponentEvents {
-  /**
-   * Creates a new `ComponentEvents` instance for a [`Component`]{@link Component}.
-   * @param owner The [`Component`]{@link Component} that owns the event handlers and triggers.
-   */
-  constructor(public owner: Component) {
-    Assert.exists(owner);
-  }
-
-  /**
-   * Executes the handler for an event on a target element.
-   *
-   * Executes only if the component is enabled (see the [`enable`]{@link Component.enable} method).
-   * @param el The element from which the event originates.
-   * @param event The event for which to register a handler.
-   * @param handler The function to execute when the event is triggered.
-   */
-  public on(el: HTMLElement | Window | Document, event: string, handler: Function);
-  public on(el: Dom, event: string, handler: Function);
-  public on(arg: any, event: string, handler: Function) {
-    if (!JQueryUtils.getJQuery() || !JQueryUtils.isInstanceOfJQuery(arg)) {
-      var htmlEl: HTMLElement = arg;
-      $$(htmlEl).on(event, this.wrapToCallIfEnabled(handler));
-    } else {
-      var jq: Dom = arg;
-      jq.on(event, this.wrapToCallIfEnabled(handler));
-    }
-  }
-
-  /**
-   * Executes the handler for the given event on the given target element.<br/>
-   * Execute only if the component is "enabled" (see {@link Component.enable}).<br/>
-   * Execute the handler only ONE time.
-   * @param el The target on which the event will originate.
-   * @param event The event for which to register an handler.
-   * @param handler The function to execute when the event is triggered.
-   */
-  public one(el: HTMLElement, event: string, handler: Function);
-  public one(el: Dom, event: string, handler: Function);
-  public one(arg: any, event: string, handler: Function) {
-    if (arg instanceof HTMLElement) {
-      var htmlEl: HTMLElement = arg;
-      $$(htmlEl).one(event, this.wrapToCallIfEnabled(handler));
-    } else {
-      var jq: Dom = arg;
-      jq.one(event, this.wrapToCallIfEnabled(handler));
-    }
-  }
-
-  /**
-   * Bind on the "root" of the Component. The root is typically the {@link SearchInterface}.<br/>
-   * Bind an event using native javascript code.
-   * @param event The event for which to register an handler.
-   * @param handler The function to execute when the event is triggered.
-   */
-  public onRootElement<T>(event: string, handler: (args: T) => any) {
-    this.on(this.owner.root, event, handler);
-  }
-
-  /**
-   * Bind on the "root" of the Component. The root is typically the {@link SearchInterface}.<br/>
-   * Bind an event using native javascript code.
-   * The handler will execute only ONE time.
-   * @param event The event for which to register an handler.
-   * @param handler The function to execute when the event is triggered.
-   */
-  public oneRootElement<T>(event: string, handler: (args: T) => any) {
-    this.one(this.owner.root, event, handler);
-  }
-
-  /**
-   * Bind an event related specially to the query state model.<br/>
-   * This will build the correct string event and execute the handler only if the component is activated.
-   * @param eventType The event type for which to register an event.
-   * @param attribute The attribute for which to register an event.
-   * @param handler The handler to execute when the query state event is triggered.
-   */
-  public onQueryState<T>(eventType: string, attribute?: string, handler?: (args: T) => any) {
-    this.onRootElement(this.getQueryStateEventName(eventType, attribute), handler);
-  }
-
-  /**
-   * Bind an event related specially to the component option model.
-   * This will build the correct string event and execute the handler only if the component is activated.
-   * @param eventType The event type for which to register an event.
-   * @param attribute The attribute for which to register an event.
-   * @param handler The handler to execute when the query state event is triggered.
-   */
-  public onComponentOptions<T>(eventType: string, attribute?: string, handler?: (args: T) => any) {
-    this.onRootElement(this.getComponentOptionEventName(eventType, attribute), handler);
-  }
-
-  /**
-   * Bind an event related specially to the query state model.<br/>
-   * This will build the correct string event and execute the handler only if the component is activated.<br/>
-   * Will execute only once.
-   * @param eventType The event type for which to register an event.
-   * @param attribute The attribute for which to register an event.
-   * @param handler The handler to execute when the query state event is triggered.
-   */
-  public oneQueryState<T>(eventType: string, attribute?: string, handler?: (args: T) => any) {
-    this.oneRootElement(this.getQueryStateEventName(eventType, attribute), handler);
-  }
-
-  /**
-   * Trigger an event on the target element, with optional arguments.
-   * @param el The target HTMLElement on which to trigger the event.
-   * @param event The event to trigger.
-   * @param args The optional argument to pass to the handlers.
-   */
-  public trigger(el: HTMLElement, event: string, args?: Object);
-  public trigger(el: Dom, event: string, args?: Object);
-  public trigger(arg: any, event: string, args?: Object) {
-    this.wrapToCallIfEnabled(() => {
-      if (arg instanceof HTMLElement) {
-        var htmlEl: HTMLElement = arg;
-        $$(htmlEl).trigger(event, args);
-      } else {
-        var jq: Dom = arg;
-        jq.trigger(event, args);
-      }
-    })(args);
-  }
-
-  /**
-   * Execute the function only if the component is enabled.
-   * @param func The function to execute if the component is enabled.
-   * @returns {function(...[any]): *}
-   */
-  private wrapToCallIfEnabled(func: Function) {
-    return (...args: any[]) => {
-      if (!this.owner.disabled) {
-        if (args && args[0] instanceof CustomEvent) {
-          if (args[0].detail) {
-            args = [args[0].detail];
-          }
-        } else if (args && JQueryUtils.isInstanceOfJqueryEvent(args[0])) {
-          if (args[1] != undefined) {
-            args = [args[1]];
-          } else {
-            args = [];
-          }
-        }
-        return func.apply(this.owner, args);
-      }
-    };
-  }
-
-  private getQueryStateEventName(eventType: string, attribute?: string): string {
-    return this.getModelEvent(this.owner.queryStateModel, eventType, attribute);
-  }
-
-  private getComponentOptionEventName(eventType: string, attribute?: string): string {
-    return this.getModelEvent(this.owner.componentOptionsModel, eventType, attribute);
-  }
-
-  private getModelEvent(model: Model, eventType: string, attribute?: string) {
-    var evtName;
-    if (eventType && attribute) {
-      evtName = model.getEventName(eventType + attribute);
-    } else {
-      evtName = model.getEventName(eventType);
-    }
-    return evtName;
   }
 }

@@ -817,12 +817,20 @@ export class SearchEndpoint implements ISearchEndpoint {
   }
 
   /**
-   * TODO: documentation
+   * Searches through the values of a facet.
+   * @param request The request for which to search through the values of a facet.
+   * @param callOptions An additional set of options to use for this call.
+   * @param callParams The options injected by the applied decorators.
+   * @returns {Promise<IFacetSearchResponse>} A Promise of facet search results.
    */
   @path('/facet')
   @method('POST')
   @requestDataType('application/json')
   @responseType('text')
+  @includeActionsHistory()
+  @includeReferrer()
+  @includeVisitorId()
+  @includeIsGuestUser()
   public async facetSearch(
     request: IFacetSearchRequest,
     callOptions?: IEndpointCallOptions,

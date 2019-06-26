@@ -10,12 +10,12 @@ import { IBuildingQueryEventArgs } from '../../../src/events/QueryEvents';
 import { first, range, pluck, shuffle, partition, chain } from 'underscore';
 import { analyticsActionCauseList } from '../../../src/ui/Analytics/AnalyticsActionListMeta';
 
-export function buildCategoryFacetResults(numberOfResults = 11, numberOfRequestedValues = 11): ISimulateQueryData {
+export function buildCategoryFacetResults(numberOfResults = 11, numberOfRequestedValues = 11, field = '@field'): ISimulateQueryData {
   const fakeResults = FakeResults.createFakeResults();
   const queryBuilder = new QueryBuilder();
-  fakeResults.categoryFacets.push(FakeResults.createFakeCategoryFacetResult('@field', [], 'value', numberOfResults));
+  fakeResults.categoryFacets.push(FakeResults.createFakeCategoryFacetResult(field, [], 'value', numberOfResults));
   queryBuilder.categoryFacets.push({
-    field: '@field',
+    field,
     path: pluck(fakeResults.categoryFacets[0].parentValues, 'value'),
     maximumNumberOfValues: numberOfRequestedValues
   });
@@ -26,6 +26,26 @@ export function CategoryFacetTest() {
   describe('CategoryFacet', () => {
     let test: IBasicComponentSetup<CategoryFacet>;
     let simulateQueryData: ISimulateQueryData;
+
+    describe('exposes options', () => {
+      describe('dependsOn', () => {
+        const masterFacetField = '@masterFacet';
+        const dependentFacetField = '@dependantFacet';
+
+        beforeEach(() => {
+          test = Mock.optionsComponentSetup<CategoryFacet, ICategoryFacetOptions>(CategoryFacet, {
+            field: dependentFacetField,
+            dependsOn: masterFacetField
+          });
+        });
+
+        it('update the visibility of the dependent category facet', () => {
+          spyOn(test.cmp['dependsOnManager'], 'updateVisibilityBasedOnDependsOn');
+          Simulate.query(test.env);
+          expect(test.cmp['dependsOnManager'].updateVisibilityBasedOnDependsOn).toHaveBeenCalledTimes(1);
+        });
+      });
+    });
 
     beforeEach(() => {
       simulateQueryData = buildCategoryFacetResults();
