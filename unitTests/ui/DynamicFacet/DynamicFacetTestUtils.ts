@@ -6,18 +6,16 @@ import * as Mock from '../../MockEnvironment';
 import { IFacetResponse } from '../../../src/rest/Facet/FacetResponse';
 
 export class DynamicFacetTestUtils {
-  static get defaultOptions() {
+  static allOptions(options?: IDynamicFacetOptions) {
     return {
-      field: '@dummy'
+      field: '@dummy',
+      ...options
     };
   }
 
   static createFakeFacet(options?: IDynamicFacetOptions) {
     const facet = Mock.mockComponent<DynamicFacet>(DynamicFacet);
-    facet.options = {
-      ...this.defaultOptions,
-      ...options
-    };
+    facet.options = this.allOptions(options);
     facet.element = $$('div').el;
     facet.searchInterface = Mock.mockSearchInterface();
 
@@ -29,7 +27,7 @@ export class DynamicFacetTestUtils {
       modifyBuilder: builder => {
         return withQSM ? builder.withLiveQueryStateModel() : builder;
       },
-      cmpOptions: { ...this.defaultOptions, ...options }
+      cmpOptions: this.allOptions(options)
     });
   }
 

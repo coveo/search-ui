@@ -827,6 +827,10 @@ export class SearchEndpoint implements ISearchEndpoint {
   @method('POST')
   @requestDataType('application/json')
   @responseType('text')
+  @includeActionsHistory()
+  @includeReferrer()
+  @includeVisitorId()
+  @includeIsGuestUser()
   public async facetSearch(
     request: IFacetSearchRequest,
     callOptions?: IEndpointCallOptions,
