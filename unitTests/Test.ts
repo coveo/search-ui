@@ -657,7 +657,7 @@ AriaLiveTest();
 import { QuerySummaryUtilsTest } from './utils/QuerySummaryUtilsTest';
 QuerySummaryUtilsTest();
 
-import { CategoryFacetQueryControllerTest } from './controllers/CategoryFacetQueryControlllerTest';
+import { CategoryFacetQueryControllerTest } from './controllers/CategoryFacetQueryControllerTest';
 CategoryFacetQueryControllerTest();
 
 import { ComponentsTypesTest } from './utils/ComponentsTypesTest';
@@ -716,3 +716,6 @@ SearchboxResizeTest();
 
 import { FacetPaddingTest } from './ui/FacetPaddingTest';
 FacetPaddingTest();
+
+import { DependsOnManagerTest } from './utils/DependsOnManagerTest';
+DependsOnManagerTest();

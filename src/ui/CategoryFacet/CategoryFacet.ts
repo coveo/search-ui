@@ -39,6 +39,7 @@ import { ResponsiveFacetOptions } from '../ResponsiveComponents/ResponsiveFacetO
 import { CategoryFacetHeader } from './CategoryFacetHeader';
 import { AccessibleButton } from '../../utils/AccessibleButton';
 import { IStringMap } from '../../rest/GenericParam';
+import { DependsOnManager, IDependentFacet } from '../../utils/DependsOnManager';
 
 export interface ICategoryFacetOptions extends IResponsiveComponentOptions {
   field: IFieldOption;
@@ -56,6 +57,7 @@ export interface ICategoryFacetOptions extends IResponsiveComponentOptions {
   basePath?: string[];
   maximumDepth?: number;
   valueCaption?: IStringMap<string>;
+  dependsOn?: string;
 }
 
 export type CategoryValueDescriptor = {
@@ -269,6 +271,13 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
      * > Using value captions will disable alphabetical sorts (see the [availableSorts]{@link Facet.options.availableSorts} option).
      */
     valueCaption: ComponentOptions.buildJsonOption<IStringMap<string>>({ defaultValue: {} }),
+    /**
+     * The [id](@link Facet.options.id) of another facet in which at least one value must be selected in order
+     * for the dependent category facet to be visible.
+     *
+     * **Default:** `undefined` and the category facet does not depend on any other facet to be displayed.
+     */
+    dependsOn: ComponentOptions.buildStringOption(),
     ...ResponsiveFacetOptions
   };
 
@@ -289,6 +298,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   private showingWaitAnimation = false;
   private numberOfChildValuesCurrentlyDisplayed = 0;
   private numberOfValues: number;
+  private dependsOnManager: DependsOnManager;
 
   public static WAIT_ELEMENT_CLASS = 'coveo-category-facet-header-wait-animation';
 
@@ -310,11 +320,11 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     }
 
     ResponsiveFacets.init(this.root, this, this.options);
-
+    this.initDependsOnManager();
     this.bind.onRootElement<IBuildingQueryEventArgs>(QueryEvents.buildingQuery, args => this.handleBuildingQuery(args));
     this.bind.onRootElement<IQuerySuccessEventArgs>(QueryEvents.querySuccess, args => this.handleQuerySuccess(args));
     this.bind.onRootElement(QueryEvents.duringQuery, () => this.addFading());
-    this.bind.onRootElement(QueryEvents.deferredQuerySuccess, () => this.removeFading());
+    this.bind.onRootElement(QueryEvents.deferredQuerySuccess, () => this.handleDeferredQuerySuccess());
     this.bind.onRootElement<IPopulateBreadcrumbEventArgs>(BreadcrumbEvents.populateBreadcrumb, args => this.handlePopulateBreadCrumb(args));
     this.bind.onRootElement(BreadcrumbEvents.clearBreadcrumb, () => this.handleClearBreadcrumb());
     this.buildFacetHeader();
@@ -763,10 +773,27 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   private initQueryStateEvents() {
     this.queryStateModel.registerNewAttribute(this.queryStateAttribute, this.options.basePath);
     this.bind.onQueryState<IAttributesChangedEventArg>(MODEL_EVENTS.CHANGE, undefined, data => this.handleQueryStateChanged(data));
+    this.dependsOnManager.listenToParentIfDependentFacet();
+  }
+
+  private initDependsOnManager() {
+    const facetInfo: IDependentFacet = {
+      reset: () => this.changeActivePath(this.options.basePath),
+      element: this.element,
+      dependsOn: this.options.dependsOn,
+      queryStateModel: this.queryStateModel,
+      bind: this.bind
+    };
+    this.dependsOnManager = new DependsOnManager(facetInfo);
   }
 
   private addFading() {
     $$(this.element).addClass('coveo-category-facet-values-fade');
+  }
+
+  private handleDeferredQuerySuccess() {
+    this.removeFading();
+    this.dependsOnManager.updateVisibilityBasedOnDependsOn();
   }
 
   private removeFading() {
