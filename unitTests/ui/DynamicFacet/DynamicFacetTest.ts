@@ -3,11 +3,12 @@ import { DynamicFacet, IDynamicFacetOptions } from '../../../src/ui/DynamicFacet
 import { IDynamicFacetValue } from '../../../src/ui/DynamicFacet/DynamicFacetValues/DynamicFacetValue';
 import { FacetValueState } from '../../../src/rest/Facet/FacetValueState';
 import { DynamicFacetTestUtils } from './DynamicFacetTestUtils';
-import { $$, BreadcrumbEvents } from '../../../src/Core';
+import { $$, BreadcrumbEvents, QueryEvents } from '../../../src/Core';
 import { FacetSortCriteria } from '../../../src/rest/Facet/FacetSortCriteria';
 import { Simulate } from '../../Simulate';
 import { IPopulateBreadcrumbEventArgs } from '../../../src/events/BreadcrumbEvents';
 import { analyticsActionCauseList } from '../../../src/ui/Analytics/AnalyticsActionListMeta';
+import { FakeResults } from '../../Fake';
 
 export function DynamicFacetTest() {
   describe('DynamicFacet', () => {
@@ -432,6 +433,19 @@ export function DynamicFacetTest() {
       test.cmp.putStateIntoAnalytics();
 
       expect(fakePendingSearchEvent.addFacetsState).toHaveBeenCalledWith(test.cmp.analyticsFacetState);
+    });
+
+    it('facet position should be null by default', () => {
+      expect(test.cmp.position).toBeNull();
+    });
+
+    it(`when getting successful results
+      facet position should be correct`, () => {
+      const fakeResultsWithFacets = FakeResults.createFakeResults();
+      fakeResultsWithFacets.facets = [DynamicFacetTestUtils.getCompleteFacetResponse(test.cmp)];
+      $$(test.env.root).trigger(QueryEvents.querySuccess, { results: fakeResultsWithFacets });
+
+      expect(test.cmp.position).toBe(1);
     });
   });
 }
