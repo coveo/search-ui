@@ -94,7 +94,6 @@ export class DynamicFacetManager extends Component {
 
     this.moveChildrenIntoContainer();
     this.initEvents();
-    console.log('ALLLO');
   }
 
   private resetContainer() {
