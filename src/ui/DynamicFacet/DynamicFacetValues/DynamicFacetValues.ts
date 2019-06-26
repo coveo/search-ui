@@ -121,7 +121,7 @@ export class DynamicFacetValues {
   }
 
   public render() {
-    const fragment = new DocumentFragment();
+    const fragment = document.createDocumentFragment();
     $$(this.list).empty();
 
     this.facetValues.forEach(facetValue => {
