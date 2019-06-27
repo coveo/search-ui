@@ -28,6 +28,8 @@ export interface ITimespanFacetOptions extends IResponsiveComponentOptions {
  * This component is meant to offer out of the box default ranges, so it can easily be inserted in a standard search page.
  *
  * To configure different ranges than those offered by this component, use the standard {@link FacetRange} component instead.
+ *
+ * @notSupportedIn salesforcefree
  */
 export class TimespanFacet extends Component {
   static ID = 'TimespanFacet';
