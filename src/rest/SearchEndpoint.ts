@@ -39,6 +39,8 @@ import { IGroupByResult } from './GroupByResult';
 import { AccessToken } from './AccessToken';
 import { BackOffRequest } from './BackOffRequest';
 import { IBackOffRequest } from 'exponential-backoff';
+import { IFacetSearchRequest } from './Facet/FacetSearchRequest';
+import { IFacetSearchResponse } from './Facet/FacetSearchResponse';
 
 export class DefaultSearchEndpointOptions implements ISearchEndpointOptions {
   restUri: string;
@@ -812,6 +814,41 @@ export class SearchEndpoint implements ISearchEndpoint {
     callParams?: IEndpointCallParameters
   ): Promise<IQuerySuggestResponse> {
     return this.getQuerySuggest(request, callOptions, callParams);
+  }
+
+  /**
+   * Searches through the values of a facet.
+   * @param request The request for which to search through the values of a facet.
+   * @param callOptions An additional set of options to use for this call.
+   * @param callParams The options injected by the applied decorators.
+   * @returns {Promise<IFacetSearchResponse>} A Promise of facet search results.
+   */
+  @path('/facet')
+  @method('POST')
+  @requestDataType('application/json')
+  @responseType('text')
+  @includeActionsHistory()
+  @includeReferrer()
+  @includeVisitorId()
+  @includeIsGuestUser()
+  public async facetSearch(
+    request: IFacetSearchRequest,
+    callOptions?: IEndpointCallOptions,
+    callParams?: IEndpointCallParameters
+  ): Promise<IFacetSearchResponse> {
+    callParams = {
+      ...callParams,
+      requestData: {
+        ...callParams.requestData,
+        ..._.omit(request, parameter => Utils.isNullOrUndefined(parameter))
+      }
+    };
+
+    this.logger.info('Performing REST query to get facet search results', request);
+
+    const response = await this.performOneCall<IFacetSearchResponse>(callParams, callOptions);
+    this.logger.info('REST query successful', response);
+    return response;
   }
 
   /**
