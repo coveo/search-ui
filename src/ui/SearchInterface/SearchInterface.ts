@@ -1013,16 +1013,16 @@ export class SearchInterface extends RootComponent implements IComponentBindings
         }
       });
     });
-    if (this.FacetDuplicate.length) {
+    if (this.duplicatesFacets.length) {
       this.logger.warn(
         `The following facets have duplicate id/field:`,
-        this.FacetDuplicate,
+        this.duplicatesFacets,
         `Ensure that each facet in your search interface has a unique id.`
       );
     }
   }
 
-  private get FacetDuplicate() {
+  private get duplicatesFacets() {
     const duplicate = [];
     const facets = ComponentsTypes.getAllFacetsInstance(this.root);
     facets.forEach(facet => {

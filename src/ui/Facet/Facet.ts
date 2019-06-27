@@ -1537,7 +1537,7 @@ export class Facet extends Component {
     const masterFacetComponent = ComponentsTypes.getAllFacetsInstance(this.root).filter((cmp: Facet) => {
       const idFacet = cmp instanceof Facet;
       return idFacet && cmp.options.id === this.options.dependsOn;
-    });
+    }) as Facet[];
 
     if (!masterFacetComponent.length) {
       this.logger.warn(
@@ -1556,7 +1556,7 @@ export class Facet extends Component {
       );
       return;
     }
-    const masterFacet = masterFacetComponent[0] as Facet;
+    const masterFacet = masterFacetComponent[0];
     masterFacet.keepDisplayedValuesNextTime = false;
   }
 
