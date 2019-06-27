@@ -15,5 +15,5 @@ export interface ISearchEvent extends IAnalyticsEvent {
   advancedQuery: string;
   didYouMean: boolean;
   contextual: boolean;
-  facetsState?: IAnalyticsDynamicFacetMeta[];
+  facetState?: IAnalyticsDynamicFacetMeta[];
 }

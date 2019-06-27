@@ -19,7 +19,7 @@ export class PendingSearchEvent {
   private handler: (evt: Event, arg: IDuringQueryEventArgs) => void;
   private searchPromises: Promise<IQueryResults>[] = [];
   private results: IQueryResults[] = [];
-  private facetsState: IAnalyticsDynamicFacetMeta[];
+  private facetState: IAnalyticsDynamicFacetMeta[];
   protected cancelled = false;
   protected finished = false;
   protected searchEvents: ISearchEvent[] = [];
@@ -48,12 +48,12 @@ export class PendingSearchEvent {
     return this.templateSearchEvent.customData;
   }
 
-  public addFacetsState(state: IAnalyticsDynamicFacetMeta[]) {
-    if (!this.facetsState) {
-      this.facetsState = [];
+  public addFacetState(state: IAnalyticsDynamicFacetMeta[]) {
+    if (!this.facetState) {
+      this.facetState = [];
     }
 
-    this.facetsState.push(...state);
+    this.facetState.push(...state);
   }
 
   public cancel() {
@@ -170,7 +170,7 @@ export class PendingSearchEvent {
     searchEvent.resultsPerPage = query.numberOfResults;
     searchEvent.searchQueryUid = queryResults.searchUid;
     searchEvent.queryPipeline = queryResults.pipeline;
-    searchEvent.facetsState = this.facetsState;
+    searchEvent.facetState = this.facetState;
 
     // The context_${key} format is important for the Analytics backend
     // This is what they use to recognize a custom data that will be used internally by other coveo's service.

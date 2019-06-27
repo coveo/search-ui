@@ -433,15 +433,15 @@ export function DynamicFacetTest() {
     });
 
     it(`when calling "putStateIntoAnalytics" 
-      should call "addFacetsState" on the "PendingSearchEvent" with the correct state`, () => {
+      should call "addFacetState" on the "PendingSearchEvent" with the correct state`, () => {
       const fakePendingSearchEvent = {
-        addFacetsState: jasmine.createSpy('addFacetsState')
+        addFacetState: jasmine.createSpy('addFacetState')
       };
       test.cmp.usageAnalytics.getPendingSearchEvent = jasmine.createSpy('getPendingSearchEvent').and.callFake(() => fakePendingSearchEvent);
 
       test.cmp.putStateIntoAnalytics();
 
-      expect(fakePendingSearchEvent.addFacetsState).toHaveBeenCalledWith(test.cmp.analyticsFacetState);
+      expect(fakePendingSearchEvent.addFacetState).toHaveBeenCalledWith(test.cmp.analyticsFacetState);
     });
 
     it('facet position should be null by default', () => {

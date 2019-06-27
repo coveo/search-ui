@@ -456,7 +456,7 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
 
   public putStateIntoAnalytics() {
     const pendingEvent = this.usageAnalytics.getPendingSearchEvent();
-    pendingEvent && pendingEvent.addFacetsState(this.analyticsFacetState);
+    pendingEvent && pendingEvent.addFacetState(this.analyticsFacetState);
   }
 
   public isCurrentlyDisplayed() {
