@@ -12,7 +12,6 @@ export class DynamicFacetSearch {
   private facetSearchController: FacetSearchController;
   private facetSearchTimeout: number;
   private facetSearchPromise: Promise<IFacetSearchResponse>;
-  private facetSearchDelay = 400;
 
   constructor(private facet: DynamicFacet) {
     this.element = $$('div', { className: 'coveo-dynamic-facet-search' }).el;
@@ -34,10 +33,10 @@ export class DynamicFacetSearch {
 
     this.facetSearchTimeout = window.setTimeout(() => {
       this.triggerNewFacetSearch(value);
-    }, this.facetSearchDelay);
+    }, this.facet.options.facetSearchDelay);
   }
 
-  public async triggerNewFacetSearch(terms: string) {
+  private async triggerNewFacetSearch(terms: string) {
     this.facetSearchPromise = this.facetSearchController.search(terms);
 
     if (this.facetSearchPromise) {

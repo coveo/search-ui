@@ -14,9 +14,7 @@ export function FacetSearchControllerTest() {
 
     function initializeComponents() {
       facet = DynamicFacetTestUtils.createAdvancedFakeFacet().cmp;
-      facet.values.createFromResponse(
-        DynamicFacetTestUtils.getCompleteFacetResponse(facet, { values: DynamicFacetTestUtils.createFakeFacetValues() })
-      );
+      facet.values.createFromResponse(DynamicFacetTestUtils.getCompleteFacetResponse(facet));
 
       facetSearchController = new FacetSearchController(facet);
     }
