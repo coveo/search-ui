@@ -3,7 +3,6 @@ import { DynamicFacetValue } from '../../../../src/ui/DynamicFacet/DynamicFacetV
 import { DynamicFacetTestUtils } from '../DynamicFacetTestUtils';
 import { DynamicFacet, IDynamicFacetOptions } from '../../../../src/ui/DynamicFacet/DynamicFacet';
 import { FacetValueState } from '../../../../src/rest/Facet/FacetValueState';
-import { AnalyticsDynamicFacetType } from '../../../../src/ui/Analytics/AnalyticsActionListMeta';
 
 export function DynamicFacetValueTest() {
   describe('DynamicFacetValue', () => {
@@ -112,15 +111,11 @@ export function DynamicFacetValueTest() {
 
     it(`should return the correct analyticsMeta`, () => {
       expect(dynamicFacetValue.analyticsMeta).toEqual({
-        facetId: facet.options.id,
-        facetField: facet.options.field.toString(),
-        facetTitle: facet.options.title,
-        facetType: AnalyticsDynamicFacetType.string,
-        facetValue: dynamicFacetValue.value,
-        facetDisplayValue: dynamicFacetValue.valueCaption,
-        facetValueState: dynamicFacetValue.state,
-        facetValuePosition: dynamicFacetValue.position,
-        facetPosition: facet.position
+        ...facet.basicAnalyticsFacetState,
+        value: dynamicFacetValue.value,
+        valuePosition: dynamicFacetValue.position,
+        displayValue: dynamicFacetValue.valueCaption,
+        state: dynamicFacetValue.state
       });
     });
 

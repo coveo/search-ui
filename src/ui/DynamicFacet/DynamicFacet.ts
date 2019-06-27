@@ -28,7 +28,8 @@ import {
   IAnalyticsActionCause,
   IAnalyticsDynamicFacetMeta,
   analyticsActionCauseList,
-  IAnalyticsFacetMeta
+  IAnalyticsFacetMeta,
+  AnalyticsDynamicFacetType
 } from '../Analytics/AnalyticsActionListMeta';
 import { IQueryOptions } from '../../controllers/QueryController';
 import { DynamicFacetManager } from '../DynamicFacetManager/DynamicFacetManager';
@@ -429,8 +430,19 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
     this.padding && this.padding.pin();
   }
 
+  // Complete facet analytics meta
   public get analyticsFacetState(): IAnalyticsDynamicFacetMeta[] {
     return this.values.activeFacetValues.map(facetValue => facetValue.analyticsMeta);
+  }
+
+  // Facet specific analytics meta
+  public get basicAnalyticsFacetState(): IAnalyticsDynamicFacetMeta {
+    return {
+      field: this.options.field.toString(),
+      id: this.options.id,
+      facetType: AnalyticsDynamicFacetType.string,
+      facetPosition: this.position
+    };
   }
 
   public logAnalyticsEvent(actionCause: IAnalyticsActionCause, facetMeta: IAnalyticsDynamicFacetMeta) {

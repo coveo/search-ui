@@ -135,15 +135,14 @@ export enum AnalyticsDynamicFacetType {
 }
 
 export interface IAnalyticsDynamicFacetMeta {
-  facetId: string;
-  facetField: string;
-  facetTitle: string;
-  facetValue?: string;
+  field: string;
+  id: string;
+  value?: string;
+  valuePosition?: number;
+  displayValue?: string;
   facetType?: AnalyticsDynamicFacetType;
-  facetDisplayValue?: string;
-  facetValueState?: FacetValueState;
+  state?: FacetValueState;
   facetPosition?: number;
-  facetValuePosition?: number;
 }
 
 export interface IAnalyticsFacetGraphSelectedMeta extends IAnalyticsFacetSliderChangeMeta {}
@@ -1282,12 +1281,14 @@ export var analyticsActionCauseList = {
    * `actionType`: `'dynamicFacet'`
    *
    * Logging an event with this actionType also adds the following key-value pairs in the custom data property of the Usage Analytics HTTP service request.
-   * `"facetId":`: <correspondingFacetId>
-   * `"facetField":`: <correspondingFacetField>
-   * `"facetTitle":`: <correspondingFacetTitle>
-   * `"facetValue":`: <correspondingFacetValue>
-   * `"facetDisplayValue":`: <correspondingFacetDisplayValue>
-   * `"facetState":`: <correspondingFacetState>
+   * `"field":`: <correspondingFacetField>
+   * `"id":`: <correspondingFacetId>
+   * `"value":`: <correspondingFacetValue>
+   * `"valuePosition":`: <correspondingFacetValuePosition>
+   * `"displayValue":`: <correspondingFacetDisplayValue>
+   * `"facetType":`: <correspondingFacetType>
+   * `"state":`: <correspondingFacetState>
+   * `"facetPosition":`: <correspondingFacetPosition>
    */
   dynamicFacetSelect: <IAnalyticsActionCause>{
     name: 'dynamicFacetSelect',
@@ -1300,12 +1301,14 @@ export var analyticsActionCauseList = {
    * `actionType`: `'dynamicFacet'`
    *
    * Logging an event with this actionType also adds the following key-value pairs in the custom data property of the Usage Analytics HTTP service request.
-   * `"facetId":`: <correspondingFacetId>
-   * `"facetField":`: <correspondingFacetField>
-   * `"facetTitle":`: <correspondingFacetTitle>
-   * `"facetValue":`: <correspondingFacetValue>
-   * `"facetDisplayValue":`: <correspondingFacetDisplayValue>
-   * `"facetState":`: <correspondingFacetState>
+   * `"field":`: <correspondingFacetField>
+   * `"id":`: <correspondingFacetId>
+   * `"value":`: <correspondingFacetValue>
+   * `"valuePosition":`: <correspondingFacetValuePosition>
+   * `"displayValue":`: <correspondingFacetDisplayValue>
+   * `"facetType":`: <correspondingFacetType>
+   * `"state":`: <correspondingFacetState>
+   * `"facetPosition":`: <correspondingFacetPosition>
    */
   dynamicFacetDeselect: <IAnalyticsActionCause>{
     name: 'dynamicFacetDeselect',
@@ -1318,8 +1321,10 @@ export var analyticsActionCauseList = {
    * `actionType`: `'dynamicFacet'`
    *
    * Logging an event with this actionType also adds the following key-value pairs in the custom data property of the Usage Analytics HTTP service request.
-   * `"facetId":`: <correspondingFacetId>
-   * `"facetField":`: <correspondingFacetField>
+   * `"field":`: <correspondingFacetField>
+   * `"id":`: <correspondingFacetId>
+   * `"facetType":`: <correspondingFacetType>
+   * `"facetPosition":`: <correspondingFacetPosition>
    */
   dynamicFacetClearAll: <IAnalyticsActionCause>{
     name: 'dynamicFacetClearAll',
