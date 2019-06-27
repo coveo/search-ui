@@ -223,6 +223,34 @@ export function DependsOnManagerTest() {
             test.cmp.excludeValue('excluded dependent value');
           });
 
+          it(`when the master facet id is not unique,
+          it doesn't update keepDisplayedValuesNextTime`, () => {
+            Mock.advancedComponentSetup<Facet>(
+              Facet,
+              new Mock.AdvancedComponentSetupOptions(
+                undefined,
+                {
+                  field: masterFacetField
+                },
+                (builder: Mock.MockEnvironmentBuilder) => {
+                  return builder.withRoot(test.env.root);
+                }
+              )
+            );
+            masterFacet.cmp.keepDisplayedValuesNextTime = undefined;
+            expect(masterFacet.cmp.keepDisplayedValuesNextTime).toBeUndefined();
+            triggerStateChangeOnDependentFacet();
+            expect(masterFacet.cmp.keepDisplayedValuesNextTime).toBeUndefined();
+          });
+
+          it(`when the master facet id is unique,
+          it update keepDisplayedValuesNextTime`, () => {
+            masterFacet.cmp.keepDisplayedValuesNextTime = undefined;
+            expect(masterFacet.cmp.keepDisplayedValuesNextTime).toBeUndefined();
+            triggerStateChangeOnDependentFacet();
+            expect(masterFacet.cmp.keepDisplayedValuesNextTime).toBe(false);
+          });
+
           it(`when resetting the master facet,
         it resets the dependent facet`, () => {
             masterFacet.cmp.reset();
