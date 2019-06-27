@@ -5,6 +5,8 @@
   z-index: 0;
 }
 .CoveoOmnibox.magic-box {
+  @include flex-grow(1);
+
   .coveo-omnibox-hightlight {
     font-weight: bold;
     color: $black;
