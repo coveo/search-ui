@@ -12,7 +12,6 @@ export class DynamicFacetSearchInput {
       usePlaceholder: true,
       className: 'coveo-dynamic-facet-search-input',
       triggerOnChangeAsYouType: true,
-      resetOnBlur: true,
       ariaLabel: l('SearchFacetResults', facet.options.title)
     };
 

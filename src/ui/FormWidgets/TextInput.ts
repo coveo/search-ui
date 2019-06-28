@@ -4,18 +4,35 @@ import { KEYBOARD } from '../../utils/KeyboardUtils';
 import { IFormWidget, IFormWidgetSettable } from './FormWidgets';
 
 export interface ITextInputOptions {
+  /**
+   * Uses a placeholder on the input instead of adding a label
+   *
+   * **Default:** `false`
+   */
   usePlaceholder?: boolean;
+  /**
+   * Set the element class name
+   *
+   * **Default:** `coveo-input`
+   */
   className?: string;
+  /**
+   * Instead of triggering the `onChange` method by pressing enter or blurring the input,
+   * triggers it on every key press
+   *
+   * **Default:** `false`
+   */
   triggerOnChangeAsYouType?: boolean;
-  resetOnBlur?: boolean;
+  /**
+   * Adds a custom aria-label attribute on the input
+   */
   ariaLabel?: string;
 }
 
 const defaultOptions: ITextInputOptions = {
   usePlaceholder: false,
   className: 'coveo-input',
-  triggerOnChangeAsYouType: false,
-  resetOnBlur: false
+  triggerOnChangeAsYouType: false
 };
 
 /**
@@ -122,8 +139,6 @@ export class TextInput implements IFormWidget, IFormWidgetSettable {
 
   private addEventListeners() {
     this.options.triggerOnChangeAsYouType ? this.addOnTypeEventListener() : this.addOnChangeEventListener();
-
-    this.options.resetOnBlur && this.addResetOnBlurListener();
   }
 
   private addOnChangeEventListener() {
@@ -137,12 +152,6 @@ export class TextInput implements IFormWidget, IFormWidgetSettable {
   private addOnTypeEventListener() {
     this.input.on(['keyup'], () => {
       this.triggerChange();
-    });
-  }
-
-  private addResetOnBlurListener() {
-    this.input.on(['blur'], () => {
-      this.reset();
     });
   }
 
