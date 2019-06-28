@@ -16,6 +16,7 @@ import { Result } from '../../magicbox/Result/Result';
 import { MagicBoxInstance, createMagicBox } from '../../magicbox/MagicBox';
 import { Grammar } from '../../magicbox/Grammar';
 import { QueryboxOptionsProcessing } from './QueryboxOptionsProcessing';
+import 'styling/_QueryBox';
 
 export interface IQueryboxOptions {
   enableSearchAsYouType?: boolean;
