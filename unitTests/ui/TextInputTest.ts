@@ -1,5 +1,7 @@
 import { TextInput, ITextInputOptions } from '../../src/ui/FormWidgets/TextInput';
 import { $$ } from '../../src/utils/Dom';
+import { Simulate } from '../Simulate';
+import { KEYBOARD } from '../../src/Core';
 
 export function TextInputTest() {
   describe('TextInput', () => {
@@ -24,8 +26,27 @@ export function TextInputTest() {
       return textInput.getElement();
     }
 
+    function getInput() {
+      return $$(getElement()).find('input');
+    }
+
+    function simulateEnter() {
+      getInput().setAttribute('value', 'new value');
+      Simulate.keyDown(getInput(), KEYBOARD.ENTER);
+    }
+
+    function simulateKeyUp() {
+      getInput().setAttribute('value', 'new value');
+      Simulate.keyUp(getInput(), KEYBOARD.CTRL);
+    }
+
+    function simulateBlur() {
+      getInput().setAttribute('value', 'new value');
+      $$(getInput()).trigger('blur');
+    }
+
     it('should contain a required input element', () => {
-      const input = <HTMLInputElement>$$(getElement()).find('input');
+      const input = <HTMLInputElement>getInput();
       expect(input.required).toBe(true);
     });
 
@@ -43,12 +64,12 @@ export function TextInputTest() {
       expect(labelHTML).toBeNull();
     });
 
-    it(`when name is specified and the usePlaceholder options is true
+    it(`when name is specified and the options "usePlaceholder" is true
     should contain a placeholder instead of a label`, () => {
       const placeholder = 'A Placeholder';
       initializeComponentWithOptions(placeholder, { usePlaceholder: true });
 
-      const input = <HTMLInputElement>$$(getElement()).find('input');
+      const input = <HTMLInputElement>getInput();
       const labelHTML = $$(getElement()).find('label');
 
       expect(labelHTML).toBeNull();
@@ -119,13 +140,62 @@ export function TextInputTest() {
       expect($$(getElement()).getClass()[0]).toBe('coveo-input');
     });
 
-    it('should allow to set a custom class name', () => {
+    it('should allow to set a custom class with the option "className"', () => {
       const customClass = 'coveo-custom-class';
       initializeComponentWithOptions('hello', { className: customClass });
 
       expect($$(getElement()).getClass()[0]).toBe(customClass);
     });
 
-    // TODO: test triggerOnChangeAsYouType, resetOnBlur & ariaLabel
+    describe('when option "triggerOnChangeAsYouType" is false (default)', () => {
+      it('should trigger "onChange" when input is blurred', () => {
+        simulateBlur();
+        expect(spy).toHaveBeenCalledTimes(1);
+      });
+
+      it('should trigger "onChange" when the Enter key is pressed on the keyboard', () => {
+        simulateEnter();
+        expect(spy).toHaveBeenCalledTimes(1);
+      });
+
+      it('should not trigger "onChange" on key up', () => {
+        simulateKeyUp();
+        expect(spy).not.toHaveBeenCalled();
+      });
+    });
+
+    describe('when option "triggerOnChangeAsYouType" is true', () => {
+      beforeEach(() => {
+        initializeComponentWithOptions('hello', { triggerOnChangeAsYouType: true });
+      });
+
+      it('should not trigger "onChange" when input is blurred', () => {
+        simulateBlur();
+        expect(spy).not.toHaveBeenCalled();
+      });
+
+      it('should not trigger "onChange" when the Enter key is pressed on the keyboard', () => {
+        simulateEnter();
+        expect(spy).not.toHaveBeenCalled();
+      });
+
+      it('should trigger "onChange" on key up', () => {
+        simulateKeyUp();
+        expect(spy).toHaveBeenCalledTimes(1);
+      });
+    });
+
+    it(`when the "ariaLabel" option is not defined (default)
+    should not add the "aria-label" attribute`, () => {
+      expect(getInput().hasAttribute('aria-label')).toBe(false);
+    });
+
+    it(`when the "ariaLabel" option is defined
+    should add the "aria-label" attribute on the input with the right value`, () => {
+      const ariaLabel = 'An arial label;';
+      initializeComponentWithOptions('Hello', { ariaLabel });
+
+      expect(getInput().getAttribute('aria-label')).toEqual(ariaLabel);
+    });
   });
 }

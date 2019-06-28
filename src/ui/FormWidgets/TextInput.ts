@@ -128,8 +128,7 @@ export class TextInput implements IFormWidget, IFormWidgetSettable {
   private buildContent() {
     this.element = $$('div', { className: this.options.className }).el;
     this.input = $$('input', { type: 'text', required: true });
-    const ariaLabel = this.options.ariaLabel ? this.options.ariaLabel : this.name;
-    ariaLabel && this.input.setAttribute('aria-label', ariaLabel);
+    this.options.ariaLabel && this.input.setAttribute('aria-label', this.options.ariaLabel);
 
     this.addEventListeners();
 
