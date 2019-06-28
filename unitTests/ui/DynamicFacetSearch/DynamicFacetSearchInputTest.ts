@@ -8,7 +8,7 @@ export function DynamicFacetSearchInputTest() {
   describe('DynamicFacetSearchInputTest', () => {
     let facet: DynamicFacet;
     let facetSearchInput: DynamicFacetSearchInput;
-    let onChangeSpy = jasmine.createSpy('onChange');
+    const onChangeSpy = jasmine.createSpy('onChange');
 
     beforeEach(() => {
       facet = DynamicFacetTestUtils.createFakeFacet();
