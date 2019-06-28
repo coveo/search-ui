@@ -131,8 +131,8 @@ export class PendingSearchEvent {
         $$(this.root).trigger(AnalyticsEvents.searchEvent, <IAnalyticsSearchEventsArgs>{
           searchEvents: apiSearchEvents
         });
-        if (apiSearchEvents.length) {
-          apiSearchEvents.forEach(searchEvent => {
+        if (this.searchEvents.length) {
+          this.searchEvents.forEach(searchEvent => {
             $$(this.root).trigger(AnalyticsEvents.analyticsEventReady, <IAnalyticsEventArgs>{
               event: 'CoveoSearchEvent',
               coveoAnalyticsEventData: searchEvent
