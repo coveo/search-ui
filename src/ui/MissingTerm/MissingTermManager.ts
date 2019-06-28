@@ -5,14 +5,26 @@ import { IDoneBuildingQueryEventArgs } from '../../events/QueryEvents';
 import { IClearBreadcrumbEventArgs, IPopulateBreadcrumbEventArgs } from '../../events/BreadcrumbEvents';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { QueryController } from '../../controllers/QueryController';
+import { MODEL_EVENTS, IAttributeChangedEventArg } from '../../models/Model';
+import { QUERY_STATE_ATTRIBUTES } from '../../models/QueryStateModel';
+import XRegExp = require('xregexp');
 
 export class MissingTermManager {
   static ID = 'MissingTermManager';
+  // Used to split terms and phrases. Match character that can separate words or caracter for Chinese, Japanese and Korean.
+  // Han: Unicode script for Chinesse character
+  // We only need to import 1 Asian, charcaters script because what is important here is the space between the caracter and any script will contain it
+  static wordBoundary = '(([\\p{Han}])?([^(\\p{Latin}-)])|^|$)';
+
   private termForcedToAppear: Array<string>;
   constructor(root: HTMLElement, private queryStateModel: QueryStateModel, private queryController: QueryController) {
-    $$(root).on(QueryEvents.buildingQuery, (event, args: IDoneBuildingQueryEventArgs) => {
+    $$(root).on(QueryEvents.doneBuildingQuery, (event, args: IDoneBuildingQueryEventArgs) => {
       return this.handleBuildingQuery(args);
     });
+
+    $$(root).on(`state:${MODEL_EVENTS.CHANGE_ONE}${QUERY_STATE_ATTRIBUTES.Q}`, (evt, args: IAttributeChangedEventArg) =>
+      this.handleQueryChange(args)
+    );
 
     $$(root).on(BreadcrumbEvents.populateBreadcrumb, (evt, args: IPopulateBreadcrumbEventArgs) => {
       this.handlePopulateBreadcrumb(args);
@@ -21,18 +33,22 @@ export class MissingTermManager {
   }
 
   private handleBuildingQuery(data: IDoneBuildingQueryEventArgs) {
-    const currentMissingTerm = this.queryStateModel.get('missingTerm');
+    const currentMissingTerm = this.queryStateModel.get('missingTerms');
     currentMissingTerm.forEach(term => {
       data.queryBuilder.advancedExpression.add(term);
     });
   }
 
-  private updateTermsForcedToAppear() {
-    this.termForcedToAppear = [...this.queryStateModel.get('missingTerm')];
+  private getUpdateTermsForcedToAppear() {
+    this.termForcedToAppear = [...this.queryStateModel.get('missingTerms')];
+  }
+
+  private setUpdateTermsForcedToAppear(termForcedToAppear) {
+    this.queryStateModel.set('missingTerms', [...termForcedToAppear]);
   }
 
   private handlePopulateBreadcrumb(args: IPopulateBreadcrumbEventArgs) {
-    this.updateTermsForcedToAppear();
+    this.getUpdateTermsForcedToAppear();
     if (this.termForcedToAppear.length === 0) {
       return;
     }
@@ -80,14 +96,30 @@ export class MissingTermManager {
   }
 
   private removeTermForcedToAppear(term: string) {
-    this.updateTermsForcedToAppear();
+    this.getUpdateTermsForcedToAppear();
     const termIndex = this.termForcedToAppear.indexOf(term);
     this.termForcedToAppear.splice(termIndex, 1);
-    this.queryStateModel.set('missingTerm', [...this.termForcedToAppear]);
+    this.setUpdateTermsForcedToAppear(this.termForcedToAppear);
     this.queryController.executeQuery();
   }
 
   private handleClearBreadcrumb() {
-    this.queryStateModel.set('missingTerm', []);
+    this.setUpdateTermsForcedToAppear([]);
+  }
+
+  private handleQueryChange(args: IAttributeChangedEventArg) {
+    this.getUpdateTermsForcedToAppear();
+    if (!this.termForcedToAppear) {
+      return;
+    }
+
+    this.termForcedToAppear.forEach(term => {
+      const regex = XRegExp(`${MissingTermManager.wordBoundary}(${term})${MissingTermManager.wordBoundary}`, 'g');
+      if (!regex.test(args.value)) {
+        const termIndex = this.termForcedToAppear.indexOf(term);
+        this.termForcedToAppear.splice(termIndex, 1);
+      }
+    });
+    this.setUpdateTermsForcedToAppear(this.termForcedToAppear);
   }
 }
