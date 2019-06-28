@@ -86,5 +86,5 @@ export interface ISearchEvent extends IAnalyticsEvent {
   /**
    * A representation of the state of each dynamic facet in the search interface when the action that triggered the event was executed.
    */
-  facetsState?: IAnalyticsDynamicFacetMeta[];
+  facetState?: IAnalyticsDynamicFacetMeta[];
 }
