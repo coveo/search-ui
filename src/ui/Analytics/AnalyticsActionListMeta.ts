@@ -134,14 +134,49 @@ export enum AnalyticsDynamicFacetType {
   string = 'String'
 }
 
+/**
+ * Describes the current condition of a single dynamic facet value.
+ */
 export interface IAnalyticsDynamicFacetMeta {
+  /**
+   * The name of the field the dynamic facet displaying the value is based on.
+   *
+   * **Example:** `author`
+   */
   field: string;
+  /**
+   * The unique identifier of the dynamic facet displaying the value.
+   *
+   * **Example:** `author`
+   */
   id: string;
+  /**
+   * The original name (i.e., field value) of the dynamic facet value.
+   *
+   * **Example:** `alice_r_smith`
+   */
   value?: string;
+  /**
+   * The current 1-based position of the dynamic facet value, relative to other values in the same dynamic facet.
+   */
   valuePosition?: number;
+  /**
+   * The custom display name of the dynamic facet value that was interacted with.
+   *
+   * **Example:** `Alice R. Smith`
+   */
   displayValue?: string;
+  /**
+   * The type of values displayed in the dynamic facet.
+   */
   facetType?: AnalyticsDynamicFacetType;
+  /**
+   * The new state of the dynamic facet value that was interacted with.
+   */
   state?: FacetValueState;
+  /*
+  * The 1-based position of the dynamic facet, relative to other dynamic facets in the page.
+  */
   facetPosition?: number;
 }
 
@@ -1280,15 +1315,8 @@ export var analyticsActionCauseList = {
    * `actionCause`: `'facetSelect'`
    * `actionType`: `'dynamicFacet'`
    *
-   * Logging an event with this actionType also adds the following key-value pairs in the custom data property of the Usage Analytics HTTP service request.
-   * `"field":`: <correspondingFacetField>
-   * `"id":`: <correspondingFacetId>
-   * `"value":`: <correspondingFacetValue>
-   * `"valuePosition":`: <correspondingFacetValuePosition>
-   * `"displayValue":`: <correspondingFacetDisplayValue>
-   * `"facetType":`: <correspondingFacetType>
-   * `"state":`: <correspondingFacetState>
-   * `"facetPosition":`: <correspondingFacetPosition>
+   * The required and optional properties of an [`IAnalyticsDynamicFacetMeta`](@link IAnalyticsDynamicFacetMeta)
+   * object are added as custom data when logging a usage analytics event matching this `actionCause`/`actionType`.
    */
   dynamicFacetSelect: <IAnalyticsActionCause>{
     name: 'dynamicFacetSelect',
@@ -1300,15 +1328,8 @@ export var analyticsActionCauseList = {
    * `actionCause`: `'dynamicFacetDeselect'`
    * `actionType`: `'dynamicFacet'`
    *
-   * Logging an event with this actionType also adds the following key-value pairs in the custom data property of the Usage Analytics HTTP service request.
-   * `"field":`: <correspondingFacetField>
-   * `"id":`: <correspondingFacetId>
-   * `"value":`: <correspondingFacetValue>
-   * `"valuePosition":`: <correspondingFacetValuePosition>
-   * `"displayValue":`: <correspondingFacetDisplayValue>
-   * `"facetType":`: <correspondingFacetType>
-   * `"state":`: <correspondingFacetState>
-   * `"facetPosition":`: <correspondingFacetPosition>
+   * The required and optional properties of an [`IAnalyticsDynamicFacetMeta`](@link IAnalyticsDynamicFacetMeta)
+   * object are added as custom data when logging a usage analytics event matching this `actionCause`/`actionType`.
    */
   dynamicFacetDeselect: <IAnalyticsActionCause>{
     name: 'dynamicFacetDeselect',
@@ -1320,11 +1341,8 @@ export var analyticsActionCauseList = {
    * `actionCause`: `'dynamicFacetClearAll'`
    * `actionType`: `'dynamicFacet'`
    *
-   * Logging an event with this actionType also adds the following key-value pairs in the custom data property of the Usage Analytics HTTP service request.
-   * `"field":`: <correspondingFacetField>
-   * `"id":`: <correspondingFacetId>
-   * `"facetType":`: <correspondingFacetType>
-   * `"facetPosition":`: <correspondingFacetPosition>
+   * The required properties of an [`IAnalyticsDynamicFacetMeta`](@link IAnalyticsDynamicFacetMeta) object are added as custom data
+   * when logging a usage analytics event matching this `actionCause`/`actionType`.
    */
   dynamicFacetClearAll: <IAnalyticsActionCause>{
     name: 'dynamicFacetClearAll',
