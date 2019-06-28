@@ -31,7 +31,6 @@
     border-bottom-right-radius: $default-border-radius;
   }
   .magic-box {
-    @include flex-grow(1);
     @include defaultRoundedBorder();
     .magic-box-clear-svg {
       width: 15px;
