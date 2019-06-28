@@ -15,5 +15,8 @@ export interface ISearchEvent extends IAnalyticsEvent {
   advancedQuery: string;
   didYouMean: boolean;
   contextual: boolean;
-  facetsState?: IAnalyticsDynamicFacetMeta[];
+  /**
+   * A representation of the state of each dynamic facet in the search interface when the action that triggered the event was executed.
+   */
+  facetState?: IAnalyticsDynamicFacetMeta[];
 }

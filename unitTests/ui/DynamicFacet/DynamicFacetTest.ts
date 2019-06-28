@@ -7,7 +7,7 @@ import { $$, BreadcrumbEvents, QueryEvents } from '../../../src/Core';
 import { FacetSortCriteria } from '../../../src/rest/Facet/FacetSortCriteria';
 import { Simulate } from '../../Simulate';
 import { IPopulateBreadcrumbEventArgs } from '../../../src/events/BreadcrumbEvents';
-import { analyticsActionCauseList } from '../../../src/ui/Analytics/AnalyticsActionListMeta';
+import { analyticsActionCauseList, AnalyticsDynamicFacetType } from '../../../src/ui/Analytics/AnalyticsActionListMeta';
 import { FakeResults } from '../../Fake';
 
 export function DynamicFacetTest() {
@@ -409,6 +409,15 @@ export function DynamicFacetTest() {
       expect(test.cmp.usageAnalytics.logSearchEvent).toHaveBeenCalled();
     });
 
+    it('returns the correct basicAnalyticsFacetState', () => {
+      expect(test.cmp.basicAnalyticsFacetState).toEqual({
+        field: test.cmp.options.field.toString(),
+        id: test.cmp.options.id,
+        facetType: AnalyticsDynamicFacetType.string,
+        facetPosition: test.cmp.position
+      });
+    });
+
     it('returns the correct analyticsFacetState', () => {
       test.cmp.selectValue('bar');
       test.cmp.selectValue('foo');
@@ -424,15 +433,15 @@ export function DynamicFacetTest() {
     });
 
     it(`when calling "putStateIntoAnalytics" 
-      should call "addFacetsState" on the "PendingSearchEvent" with the correct state`, () => {
+      should call "addFacetState" on the "PendingSearchEvent" with the correct state`, () => {
       const fakePendingSearchEvent = {
-        addFacetsState: jasmine.createSpy('addFacetsState')
+        addFacetState: jasmine.createSpy('addFacetState')
       };
       test.cmp.usageAnalytics.getPendingSearchEvent = jasmine.createSpy('getPendingSearchEvent').and.callFake(() => fakePendingSearchEvent);
 
       test.cmp.putStateIntoAnalytics();
 
-      expect(fakePendingSearchEvent.addFacetsState).toHaveBeenCalledWith(test.cmp.analyticsFacetState);
+      expect(fakePendingSearchEvent.addFacetState).toHaveBeenCalledWith(test.cmp.analyticsFacetState);
     });
 
     it('facet position should be null by default', () => {
