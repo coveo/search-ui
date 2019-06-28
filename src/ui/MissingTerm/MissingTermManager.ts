@@ -119,7 +119,12 @@ export class MissingTermManager {
       }
     });
     this.setUpdateTermsForcedToAppear(termForcedToAppearCopy);
-    const breadcrumb = get(document.querySelector('.CoveoBreadcrumb')) as Breadcrumb;
+    const breadcrumbSelector = document.querySelector('.CoveoBreadcrumb');
+    if (!breadcrumbSelector) {
+      return;
+    }
+
+    let breadcrumb = <Breadcrumb>get(<HTMLElement>breadcrumbSelector);
     if (breadcrumb) {
       breadcrumb.getBreadcrumbs();
       $$(this.root).trigger(BreadcrumbEvents.redrawBreadcrumb);
