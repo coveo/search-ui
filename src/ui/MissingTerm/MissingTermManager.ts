@@ -1,6 +1,6 @@
 import 'styling/_MissingTermsBreadcrumb';
 import { $$ } from '../../utils/Dom';
-import { QueryEvents, QueryStateModel, BreadcrumbEvents, l } from '../../Core';
+import { QueryEvents, QueryStateModel, BreadcrumbEvents, l, get } from '../../Core';
 import { IDoneBuildingQueryEventArgs } from '../../events/QueryEvents';
 import { IClearBreadcrumbEventArgs, IPopulateBreadcrumbEventArgs } from '../../events/BreadcrumbEvents';
 import { SVGIcons } from '../../utils/SVGIcons';
@@ -8,6 +8,7 @@ import { QueryController } from '../../controllers/QueryController';
 import { MODEL_EVENTS, IAttributeChangedEventArg } from '../../models/Model';
 import { QUERY_STATE_ATTRIBUTES } from '../../models/QueryStateModel';
 import XRegExp = require('xregexp');
+import { Breadcrumb } from '../Breadcrumb/Breadcrumb';
 
 export class MissingTermManager {
   static ID = 'MissingTermManager';
@@ -17,7 +18,7 @@ export class MissingTermManager {
   static wordBoundary = '(([\\p{Han}])?([^(\\p{Latin}-)])|^|$)';
 
   private termForcedToAppear: Array<string>;
-  constructor(root: HTMLElement, private queryStateModel: QueryStateModel, private queryController: QueryController) {
+  constructor(private root: HTMLElement, private queryStateModel: QueryStateModel, private queryController: QueryController) {
     $$(root).on(QueryEvents.doneBuildingQuery, (event, args: IDoneBuildingQueryEventArgs) => {
       return this.handleBuildingQuery(args);
     });
@@ -109,17 +110,19 @@ export class MissingTermManager {
 
   private handleQueryChange(args: IAttributeChangedEventArg) {
     this.getUpdateTermsForcedToAppear();
-    if (!this.termForcedToAppear) {
-      return;
-    }
-
+    let termForcedToAppearCopy = [...this.termForcedToAppear];
     this.termForcedToAppear.forEach(term => {
       const regex = XRegExp(`${MissingTermManager.wordBoundary}(${term})${MissingTermManager.wordBoundary}`, 'g');
       if (!regex.test(args.value)) {
-        const termIndex = this.termForcedToAppear.indexOf(term);
-        this.termForcedToAppear.splice(termIndex, 1);
+        const termIndex = termForcedToAppearCopy.indexOf(term);
+        termForcedToAppearCopy.splice(termIndex, 1);
       }
     });
-    this.setUpdateTermsForcedToAppear(this.termForcedToAppear);
+    this.setUpdateTermsForcedToAppear(termForcedToAppearCopy);
+    const breadcrumb = get(document.querySelector('.CoveoBreadcrumb')) as Breadcrumb;
+    if (breadcrumb) {
+      breadcrumb.getBreadcrumbs();
+      $$(this.root).trigger(BreadcrumbEvents.redrawBreadcrumb);
+    }
   }
 }
