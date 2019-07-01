@@ -47,6 +47,10 @@ export function DynamicFacetTest() {
       return !!$$(test.cmp.element.parentElement).find('.coveo-topSpace');
     }
 
+    function searchFeatureActive() {
+      return !!$$(test.cmp.element).find('.coveo-dynamic-facet-search');
+    }
+
     it(`when facet has values but none are selected
       should not be seen as "active" or as "empty"`, () => {
       test.cmp.ensureDom();
@@ -455,6 +459,21 @@ export function DynamicFacetTest() {
       $$(test.env.root).trigger(QueryEvents.querySuccess, { results: fakeResultsWithFacets });
 
       expect(test.cmp.position).toBe(1);
+    });
+
+    it(`when "enableFacetSearch" option is false (default)
+    it should not render the search element`, () => {
+      test.cmp.ensureDom();
+      expect(searchFeatureActive()).toBe(false);
+    });
+
+    it(`when "enableFacetSearch" option is true
+    it should render the search element`, () => {
+      options.enableFacetSearch = true;
+      initializeComponent();
+      test.cmp.ensureDom();
+
+      expect(searchFeatureActive()).toBe(true);
     });
   });
 }

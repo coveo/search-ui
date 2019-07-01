@@ -1,5 +1,7 @@
-import { TextInput } from '../../src/ui/FormWidgets/TextInput';
+import { TextInput, ITextInputOptions } from '../../src/ui/FormWidgets/TextInput';
 import { $$ } from '../../src/utils/Dom';
+import { Simulate } from '../Simulate';
+import { KEYBOARD } from '../../src/Core';
 
 export function TextInputTest() {
   describe('TextInput', () => {
@@ -8,7 +10,7 @@ export function TextInputTest() {
 
     beforeEach(() => {
       spy = jasmine.createSpy('spy');
-      textInput = new TextInput(spy, 'hello');
+      initializeComponentWithOptions('hello');
     });
 
     afterEach(() => {
@@ -16,31 +18,67 @@ export function TextInputTest() {
       spy = null;
     });
 
+    function initializeComponentWithOptions(name?: string, options?: ITextInputOptions) {
+      textInput = new TextInput(spy, name, options);
+    }
+
+    function getElement() {
+      return textInput.getElement();
+    }
+
+    function getInput() {
+      return $$(getElement()).find('input');
+    }
+
+    function simulateEnter() {
+      getInput().setAttribute('value', 'new value');
+      Simulate.keyDown(getInput(), KEYBOARD.ENTER);
+    }
+
+    function simulateKeyUp() {
+      getInput().setAttribute('value', 'new value');
+      Simulate.keyUp(getInput(), KEYBOARD.CTRL);
+    }
+
+    function simulateBlur() {
+      getInput().setAttribute('value', 'new value');
+      $$(getInput()).trigger('blur');
+    }
+
     it('should contain a required input element', () => {
-      let element = textInput.getElement();
-      let input = <HTMLInputElement>$$(element).find('input');
+      const input = <HTMLInputElement>getInput();
       expect(input.required).toBe(true);
     });
 
     it('should contain a label if specified', () => {
-      let label = 'Label';
+      const label = 'Label';
 
-      textInput = new TextInput(() => {}, label);
-      let element = textInput.getElement();
-      let labelHTML = <HTMLInputElement>$$(element).find('label');
+      initializeComponentWithOptions(label);
+      const labelHTML = $$(getElement()).find('label');
       expect($$(labelHTML).text()).toEqual(label);
     });
 
     it('should not contain a label if not specified', () => {
-      textInput = new TextInput(spy);
-      let element = textInput.getElement();
-      let labelHTML = <HTMLInputElement>$$(element).find('label');
+      initializeComponentWithOptions();
+      const labelHTML = $$(getElement()).find('label');
       expect(labelHTML).toBeNull();
+    });
+
+    it(`when name is specified and the options "usePlaceholder" is true
+    should contain a placeholder instead of a label`, () => {
+      const placeholder = 'A Placeholder';
+      initializeComponentWithOptions(placeholder, { usePlaceholder: true });
+
+      const input = <HTMLInputElement>getInput();
+      const labelHTML = $$(getElement()).find('label');
+
+      expect(labelHTML).toBeNull();
+      expect(input.placeholder).toEqual(placeholder);
     });
 
     describe('setValue', () => {
       it('should modify the input value', () => {
-        let value = 'test';
+        const value = 'test';
         textInput.setValue(value);
         expect(textInput.getValue()).toEqual(value);
       });
@@ -96,6 +134,68 @@ export function TextInputTest() {
       textInput.reset();
       textInput.reset();
       expect(spy).toHaveBeenCalledTimes(2);
+    });
+
+    it('should have coveo-input as the default class name', () => {
+      expect($$(getElement()).getClass()[0]).toBe('coveo-input');
+    });
+
+    it('should allow to set a custom class with the option "className"', () => {
+      const customClass = 'coveo-custom-class';
+      initializeComponentWithOptions('hello', { className: customClass });
+
+      expect($$(getElement()).getClass()[0]).toBe(customClass);
+    });
+
+    describe('when option "triggerOnChangeAsYouType" is false (default)', () => {
+      it('should trigger "onChange" when input is blurred', () => {
+        simulateBlur();
+        expect(spy).toHaveBeenCalledTimes(1);
+      });
+
+      it('should trigger "onChange" when the Enter key is pressed on the keyboard', () => {
+        simulateEnter();
+        expect(spy).toHaveBeenCalledTimes(1);
+      });
+
+      it('should not trigger "onChange" on key up', () => {
+        simulateKeyUp();
+        expect(spy).not.toHaveBeenCalled();
+      });
+    });
+
+    describe('when option "triggerOnChangeAsYouType" is true', () => {
+      beforeEach(() => {
+        initializeComponentWithOptions('hello', { triggerOnChangeAsYouType: true });
+      });
+
+      it('should not trigger "onChange" when input is blurred', () => {
+        simulateBlur();
+        expect(spy).not.toHaveBeenCalled();
+      });
+
+      it('should not trigger "onChange" when the Enter key is pressed on the keyboard', () => {
+        simulateEnter();
+        expect(spy).not.toHaveBeenCalled();
+      });
+
+      it('should trigger "onChange" on key up', () => {
+        simulateKeyUp();
+        expect(spy).toHaveBeenCalledTimes(1);
+      });
+    });
+
+    it(`when the "ariaLabel" option is not defined (default)
+    should not add the "aria-label" attribute`, () => {
+      expect(getInput().hasAttribute('aria-label')).toBe(false);
+    });
+
+    it(`when the "ariaLabel" option is defined
+    should add the "aria-label" attribute on the input with the right value`, () => {
+      const ariaLabel = 'An arial label;';
+      initializeComponentWithOptions('Hello', { ariaLabel });
+
+      expect(getInput().getAttribute('aria-label')).toEqual(ariaLabel);
     });
   });
 }

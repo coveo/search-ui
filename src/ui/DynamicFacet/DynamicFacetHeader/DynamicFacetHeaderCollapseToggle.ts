@@ -21,7 +21,7 @@ export class DynamicFacetHeaderCollapseToggle {
     const parent = $$('div');
 
     this.collapseButton = new DynamicFacetHeaderButton({
-      label: l('Collapse'),
+      label: l('CollapseFacet', this.facet.options.title),
       iconSVG: SVGIcons.icons.arrowUp,
       iconClassName: 'coveo-dynamic-facet-collapse-toggle-svg',
       className: 'coveo-dynamic-facet-header-collapse',
@@ -29,7 +29,7 @@ export class DynamicFacetHeaderCollapseToggle {
       action: () => this.facet.collapse()
     });
     this.expandButton = new DynamicFacetHeaderButton({
-      label: l('Expand'),
+      label: l('ExpandFacet', this.facet.options.title),
       iconSVG: SVGIcons.icons.arrowDown,
       iconClassName: 'coveo-dynamic-facet-collapse-toggle-svg',
       className: 'coveo-dynamic-facet-header-expand',
