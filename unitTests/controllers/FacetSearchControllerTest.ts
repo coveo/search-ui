@@ -29,22 +29,24 @@ export function FacetSearchControllerTest() {
         ignoreValues: facet.values.allValues,
         captions: facet.options.valueCaption,
         searchContext: facet.queryController.getLastQuery(),
-        query: `${query}*`
+        query: `*${query}*`
       };
 
       expect(facet.queryController.getEndpoint().facetSearch).toHaveBeenCalledWith(expectedRequest);
     });
 
-    it(`when facet option "optionalLeadingWildcard" is true
-    should prepend the query with a wildcard`, () => {
-      facet.options.useLeadingWildcardInFacetSearch = true;
+    it(`when facet option "optionalLeadingWildcard" is false
+    should not prepend the query with a wildcard`, () => {
+      facet.options.useLeadingWildcardInFacetSearch = false;
 
       const query = 'my query';
       facetSearchController.search(query);
 
-      const queryWithWildcards = `*${query}*`;
+      const queryWithEndWildcardOnly = `${query}*`;
 
-      expect(facet.queryController.getEndpoint().facetSearch).toHaveBeenCalledWith(jasmine.objectContaining({ query: queryWithWildcards }));
+      expect(facet.queryController.getEndpoint().facetSearch).toHaveBeenCalledWith(
+        jasmine.objectContaining({ query: queryWithEndWildcardOnly })
+      );
     });
   });
 }

@@ -178,10 +178,10 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
      * If the [`enableFacetSearch`]{@link DynamicFacet.options.enableFacetSearch} option is `true`,
      * specifies whether to use a leading wildcard in the facet search query.
      *
-     * **Default:** `false`
+     * **Default:** `true`
      */
     useLeadingWildcardInFacetSearch: ComponentOptions.buildBooleanOption({
-      defaultValue: false,
+      defaultValue: true,
       section: 'Filtering',
       depend: 'enableFacetSearch'
     }),
