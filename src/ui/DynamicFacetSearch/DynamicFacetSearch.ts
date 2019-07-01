@@ -2,16 +2,14 @@ import 'styling/DynamicFacetSearch/_DynamicFacetSearch';
 import { $$ } from '../../utils/Dom';
 import { FacetSearchController } from '../../controllers/FacetSearchController';
 import { DynamicFacet } from '../DynamicFacet/DynamicFacet';
-import { IFacetSearchResponse } from '../../rest/Facet/FacetSearchResponse';
 import { Utils } from '../../utils/Utils';
 import { DynamicFacetSearchInput } from './DynamicFacetSearchInput';
+import { debounce } from 'underscore';
 
 export class DynamicFacetSearch {
   public element: HTMLElement;
   private input: DynamicFacetSearchInput;
   private facetSearchController: FacetSearchController;
-  private facetSearchTimeout: number;
-  private facetSearchPromise: Promise<IFacetSearchResponse>;
   static delay = 400;
 
   constructor(private facet: DynamicFacet) {
@@ -26,34 +24,19 @@ export class DynamicFacetSearch {
   }
 
   private onInputChange(value: string) {
-    this.cancelAnyPendingSearchOperation();
+    this.debouncedTriggerNewFacetSearch.cancel();
 
     if (Utils.isEmptyString(value)) {
       return;
     }
 
-    this.facetSearchTimeout = window.setTimeout(() => {
-      this.triggerNewFacetSearch(value);
-    }, DynamicFacetSearch.delay);
+    this.debouncedTriggerNewFacetSearch(value);
   }
+
+  private debouncedTriggerNewFacetSearch = debounce(this.triggerNewFacetSearch, DynamicFacetSearch.delay);
 
   private async triggerNewFacetSearch(terms: string) {
-    this.facetSearchPromise = this.facetSearchController.search(terms);
-
-    if (this.facetSearchPromise) {
-      // TODO: display search results
-      await this.facetSearchPromise;
-    }
-  }
-
-  private cancelAnyPendingSearchOperation() {
-    if (Utils.exists(this.facetSearchTimeout)) {
-      clearTimeout(this.facetSearchTimeout);
-      this.facetSearchTimeout = undefined;
-    }
-    if (Utils.exists(this.facetSearchPromise)) {
-      Promise.reject(this.facetSearchPromise).catch(() => {});
-      this.facetSearchPromise = undefined;
-    }
+    // TODO: display search results
+    await this.facetSearchController.search(terms);
   }
 }
