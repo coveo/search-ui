@@ -5,26 +5,26 @@ import { IFormWidget, IFormWidgetSettable } from './FormWidgets';
 
 export interface ITextInputOptions {
   /**
-   * Uses a placeholder on the input instead of adding a label
+   * Whether to add a placeholder to the `TextInput` rather than a label.
    *
    * **Default:** `false`
    */
   usePlaceholder?: boolean;
   /**
-   * Set the element class name
+   * The class name to add to the `TextInput`'s HTML element.
    *
    * **Default:** `coveo-input`
    */
   className?: string;
   /**
-   * Instead of triggering the `onChange` method by pressing enter or blurring the input,
-   * triggers it on every key press
+   * Whether to trigger the `TextInput`'s `onChange` function on every key press
+   * rather than when the enter key is pressed or the input is blurred.
    *
    * **Default:** `false`
    */
   triggerOnChangeAsYouType?: boolean;
   /**
-   * Adds a custom aria-label attribute on the input
+   * A custom aria-label attribute to add to the `TextInput`'s HTML element.
    */
   ariaLabel?: string;
 }

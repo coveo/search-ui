@@ -2684,15 +2684,15 @@
   },
   "ShowLessFacetResults": {
     "en": "Show less results for {0} facet",
-    "fr": "Montrer moins de résultats pour la facette {0}"
+    "fr": "Afficher moins de résultats pour la facette {0}"
   },
   "ShowMoreFacetResults": {
     "en": "Show more results for {0} facet",
-    "fr": "Montrer plus de résultats pour la facette {0}"
+    "fr": "Afficher plus de résultats pour la facette {0}"
   },
   "SearchFacetResults": {
-    "en": "Search results for {0} facet",
-    "fr": "Rechercher les résultats pour la facette {0}"
+    "en": "Search for values in {0} facet",
+    "fr": "Rechercher des valeurs dans la facette {0}"
   },
   "Today": {
     "en": "Today",
