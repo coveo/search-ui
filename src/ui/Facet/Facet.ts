@@ -56,6 +56,7 @@ import { AccessibleButton } from '../../utils/AccessibleButton';
 import { IResponsiveComponentOptions } from '../ResponsiveComponents/ResponsiveComponentsManager';
 import { ResponsiveFacetOptions } from '../ResponsiveComponents/ResponsiveFacetOptions';
 import { DependsOnManager, IDependentFacet } from '../../utils/DependsOnManager';
+import { ComponentsTypes } from '../../utils/ComponentsTypes';
 
 export interface IFacetOptions extends IResponsiveComponentOptions {
   title?: string;
@@ -1528,6 +1529,37 @@ export class Facet extends Component {
     this.dependsOnManager = new DependsOnManager(facetInfo);
   }
 
+  private dependsOnUpdateParentDisplayValue() {
+    if (!this.options.dependsOn) {
+      return;
+    }
+
+    const masterFacetComponent = ComponentsTypes.getAllFacetsInstance(this.root).filter((cmp: Facet) => {
+      const idFacet = cmp instanceof Facet;
+      return idFacet && cmp.options.id === this.options.dependsOn;
+    }) as Facet[];
+
+    if (!masterFacetComponent.length) {
+      this.logger.warn(
+        `Unable to find a Facet with the id or field "${this.options.dependsOn}".`,
+        `The master facet values can't be updated.`
+      );
+      return;
+    }
+    if (masterFacetComponent.length > 1) {
+      this.logger.warn(
+        `Multiple facets with id "${this.options.dependsOn}" found.`,
+        `A given facet may only depend on a single other facet.`,
+        `Ensure that each facet in your search interface has a unique id.`,
+        `The master facet cannot be updated.`,
+        masterFacetComponent
+      );
+      return;
+    }
+    const masterFacet = masterFacetComponent[0];
+    masterFacet.keepDisplayedValuesNextTime = false;
+  }
+
   private initBottomAndTopSpacer() {
     const bottomSpace = $$(this.options.paddingContainer).find('.coveo-bottomSpace');
     const topSpace = $$(this.options.paddingContainer).find('.coveo-topSpace');
@@ -1608,7 +1640,7 @@ export class Facet extends Component {
   private handleQueryStateChanged(data: IAttributesChangedEventArg) {
     Assert.exists(data);
     this.ensureDom();
-
+    this.dependsOnUpdateParentDisplayValue();
     const trimValuesFromModel = (values?: string[]) => {
       if (values) {
         values = _.map(values, value => value.trim());

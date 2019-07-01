@@ -45,11 +45,7 @@ export class DynamicFacetHeader {
   }
 
   private logClearAllToAnalytics() {
-    this.facet.logAnalyticsEvent(analyticsActionCauseList.dynamicFacetClearAll, {
-      facetId: this.facet.options.id,
-      facetField: this.facet.options.field.toString(),
-      facetTitle: this.facet.options.title
-    });
+    this.facet.logAnalyticsEvent(analyticsActionCauseList.dynamicFacetClearAll, this.facet.basicAnalyticsFacetState);
   }
 
   private createCollapseToggle() {

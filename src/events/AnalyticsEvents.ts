@@ -1,6 +1,9 @@
 import { IAPIDocumentViewEvent } from '../rest/APIDocumentViewEvent';
 import { IAPISearchEvent } from '../rest/APISearchEvent';
 import { IAPICustomEvent } from '../rest/APICustomEvent';
+import { ICustomEvent } from '../rest/CustomEvent';
+import { IClickEvent } from '../rest/ClickEvent';
+import { ISearchEvent } from '../rest/SearchEvent';
 
 export interface IAnalyticsSearchEventsArgs {
   searchEvents: IAPISearchEvent[];
@@ -25,8 +28,14 @@ export interface IAnalyticsCustomEventArgs {
  * The object that all [`analyticsEventReady`]{@link AnalyticsEvents.analyticsEventReady} handlers receive as an argument.
  */
 export interface IAnalyticsEventArgs {
+  /**
+   * The type of Coveo Cloud usage analytics event.
+   */
   event: 'CoveoCustomEvent' | 'CoveoClickEvent' | 'CoveoSearchEvent';
-  coveoAnalyticsEventData: IAPISearchEvent | IAPIDocumentViewEvent | IAPICustomEvent;
+  /**
+   * The fields describing the Coveo Cloud usage analytics event.
+   */
+  coveoAnalyticsEventData: ICustomEvent | IClickEvent | ISearchEvent;
 }
 
 /**
