@@ -46,7 +46,6 @@ export interface IDynamicFacetOptions extends IResponsiveComponentOptions {
   enableCollapse?: boolean;
   enableFacetSearch?: boolean;
   useLeadingWildcardInFacetSearch?: boolean;
-  facetSearchDelay?: number;
   collapsedByDefault?: boolean;
   includeInBreadcrumb?: boolean;
   numberOfValuesInBreadcrumb?: number;
@@ -185,17 +184,6 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
       section: 'Filtering',
       depend: 'enableFacetSearch'
     }),
-
-    /**
-     * If the [`enableFacetSearch`]{@link DynamicFacet.options.enableFacetSearch} option is `true`, specifies the delay (in
-     * milliseconds) before sending a search request to the server when the user starts typing in the facet search box.
-     *
-     * Specifying a smaller value makes results appear faster. However, chances of having to cancel many requests
-     * sent to the server increase as the user keeps on typing new characters.
-     *
-     * Default value is `400`. Minimum value is `0`.
-     */
-    facetSearchDelay: ComponentOptions.buildNumberOption({ defaultValue: 400, min: 0, section: 'Filtering', depend: 'enableFacetSearch' }),
 
     /**
      * Whether this facet should be collapsed by default.

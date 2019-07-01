@@ -30,7 +30,6 @@ export function DynamicFacetSearchTest() {
 
     describe('when triggering a change on the input', () => {
       beforeEach(() => {
-        facet.options.facetSearchDelay = 100;
         simulateInputChange('test');
       });
 
@@ -39,7 +38,7 @@ export function DynamicFacetSearchTest() {
         setTimeout(() => {
           expect(facet.queryController.getEndpoint().facetSearch).toHaveBeenCalled();
           done();
-        }, facet.options.facetSearchDelay);
+        }, DynamicFacetSearch.delay);
       });
 
       it(`when the input has an empty value
@@ -49,10 +48,10 @@ export function DynamicFacetSearchTest() {
         setTimeout(() => {
           expect(facet.queryController.getEndpoint().facetSearch).not.toHaveBeenCalled();
           done();
-        }, facet.options.facetSearchDelay);
+        }, DynamicFacetSearch.delay);
       });
 
-      it(`should not trigger a new facet search before the "facetSearchDelay" as expired`, done => {
+      it(`should not trigger a new facet search before the search delay as expired`, done => {
         setTimeout(() => {
           expect(facet.queryController.getEndpoint().facetSearch).not.toHaveBeenCalled();
           done();
@@ -60,7 +59,7 @@ export function DynamicFacetSearchTest() {
       });
     });
 
-    it(`when triggering multiple changes before the facetSearchDelay expiration
+    it(`when triggering multiple changes before the search delay expiration
     should not trigger more than one facet search`, done => {
       simulateInputChange('tes');
       simulateInputChange('test');
@@ -68,12 +67,11 @@ export function DynamicFacetSearchTest() {
       setTimeout(() => {
         expect(facet.queryController.getEndpoint().facetSearch).toHaveBeenCalledTimes(1);
         done();
-      }, facet.options.facetSearchDelay);
+      }, DynamicFacetSearch.delay);
     });
 
-    it(`when triggering multiple changes after the facetSearchDelay expiration
+    it(`when triggering multiple changes after the search delay expiration
     should trigger more than one facet search`, done => {
-      facet.options.facetSearchDelay = 50;
       simulateInputChange('tes');
 
       setTimeout(() => {
@@ -82,8 +80,8 @@ export function DynamicFacetSearchTest() {
         setTimeout(() => {
           expect(facet.queryController.getEndpoint().facetSearch).toHaveBeenCalledTimes(2);
           done();
-        }, facet.options.facetSearchDelay);
-      }, facet.options.facetSearchDelay);
+        }, DynamicFacetSearch.delay);
+      }, DynamicFacetSearch.delay);
     });
   });
 }
