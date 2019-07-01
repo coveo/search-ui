@@ -4,22 +4,24 @@ import { FacetSearchController } from '../../controllers/FacetSearchController';
 import { DynamicFacet } from '../DynamicFacet/DynamicFacet';
 import { Utils } from '../../utils/Utils';
 import { DynamicFacetSearchInput } from './DynamicFacetSearchInput';
-import { debounce } from 'underscore';
+import { debounce, uniqueId } from 'underscore';
 
 export class DynamicFacetSearch {
   public element: HTMLElement;
   private input: DynamicFacetSearchInput;
   private facetSearchController: FacetSearchController;
+  private listboxId: string;
   static delay = 400;
 
   constructor(private facet: DynamicFacet) {
     this.element = $$('div', { className: 'coveo-dynamic-facet-search' }).el;
+    this.listboxId = uniqueId('coveo-dynamic-facet-search-listbox-');
     this.createAndAppendInput();
     this.facetSearchController = new FacetSearchController(this.facet);
   }
 
   private createAndAppendInput() {
-    this.input = new DynamicFacetSearchInput(this.facet, this.onInputChange.bind(this));
+    this.input = new DynamicFacetSearchInput(this.facet, this.onInputChange.bind(this), this.listboxId);
     this.element.appendChild(this.input.element);
   }
 
