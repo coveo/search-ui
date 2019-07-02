@@ -6,18 +6,18 @@
 	<title>CategoryFacet | Coveo JavaScript Search Framework - Reference Documentation</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link href='https://fonts.googleapis.com/css?family=Lato:100,300,400,700' rel='stylesheet' type='text/css'/>
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" />
-	<link rel="stylesheet" href="https://static.cloud.coveo.com/searchui/v2.6063/css/CoveoFullSearch.min.css" />
+	<link href='https://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'/>
+	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="https://s3.amazonaws.com/coveostatic/community-unified-navigation/css/styles.css" media="screen" charset="utf-8">
 	<link rel="stylesheet" href="../assets/css/main.css">
 	<link rel="stylesheet" href="../assets/css/overrides.css">
-	<link rel="stylesheet" href="../assets/css/coveo-connect-header.css">
+	<link rel="stylesheet" href="https://static.cloud.coveo.com/searchui/v2.4094/css/CoveoFullSearch.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 	<script type="text/javascript" src="https://static.cloud.coveo.com/coveo.analytics.js/coveoua.js"></script>
 	<script src="../assets/js/modernizr.js"></script>
-	<script class="coveo-script" src="https://static.cloud.coveo.com/searchui/v2.6063/js/CoveoJsSearch.min.js"></script>
+	<script src="https://static.cloud.coveo.com/searchui/v2.4382/js/CoveoJsSearch.min.js"></script>
 	<script src="https://static.cloud.coveo.com/searchui/v2.4382/js/templates/templates.js"></script>
-	<script src="../assets/js/coveo-connect-header.js"></script>
+	<script src="../assets/js/header.js"></script>
 	<script src="../assets/gen/js/playground.js"></script>
 	<script src="../assets/js/searchUIrefDoc.js"></script>
 	<link href="https://s3.amazonaws.com/coveostatic/Developers.png" rel="shortcut icon" type="image/png">
@@ -25,77 +25,46 @@
 </head>
 <body>
 <header>
-	<div class="content">
-		<div class="logo">
-			<a class="logo-link" href="https://connect.coveo.com/s/"></a>
-			<div class="logo-img-wrap">
-				<div class="logo-imgbg"></div>
-			</div>
-			<div class="logo-text">
-				<span class="logo-text-bar">|</span>
-				<span> Connect</span>
-			</div>
+	<div class="upHeader clear">
+		<div class="logos">
+			<a href="http://www.coveo.com" class="logo" title="Coveo community"></a>
+			<h3>
+				<a href="https://support.coveo.com" id="communityLink" title="Coveo Community">Community</a>
+			</h3>
 		</div>
-		<div class="search">
-			<div id="coveoConnectHeaderStandaloneSearchbox" class="searchbox">
-				<div class="CoveoSearchbox" type="text" data-auto-focus="false" data-enable-omnibox="true"
-				data-inline="false" data-enable-wildcards="true" data-enable-search-as-you-type="false"
-				data-enable-reveal-query-suggest-addon="true" data-enable-query-syntax="true"
-			data-enable-field-addon="true"></div>
+		<h1 class="currentSiteName"><em>Support</em> <span>Menu<i class="arrow"></i></span></h1>
+		<nav>
+			<ul id="siteSelection" class="menu floated">
+				<li><a id="jsSupport" href="https://support.coveo.com"  target="_blank">Support</a></li>
+				<li><a id="jsProductDocs" href="https://onlinehelp.coveo.com" target="_blank">Product docs</a></li>
+				<li><a id="jsDevDocs" href="https://developers.coveo.com" target="_blank">Developer docs</a></li>
+				<li><a id="jsAnswers" href="https://answers.coveo.com" target="_blank">Answers</a></li>
+				<li><a id="jsTraining" href="http://www.coveo.com/training" target="_blank">Training</a></li>
+			</ul>
+			<ul id="siteSelection2" class="externalbox with-sub">
+				<li>
+					<a href="#" class="sub">More <i class="arrow"></i></a>
+					<ul>
+						<li><a target="_blank" href="https://cloud.coveo.com">Cloud V1 Administration Console</a></li>
+						<li><a target="_blank" href="https://platform.cloud.coveo.com">Cloud V2 Administration Console</a></li>
+						<li><a target="_blank" href="http://source.coveo.com">Technical Blog</a></li>
+					</ul>
+				</li>
+			</ul>
+		</nav>
+	</div>
+	<div class="bottomHeader">
+		<div id="searchBox">
+			<div class="CoveoSearchbox" data-enable-omnibox="true" data-inline="false" data-enable-wildcards="true" data-enable-search-as-you-type="false" data-enable-query-suggest-addon="false" data-enable-query-syntax="true" data-enable-field-addon="true"></div>
+			<div class="CoveoFieldSuggestions" data-field="@jsuipagetopic" data-header-title="Suggested topics"></div>
 		</div>
 	</div>
-	<nav class="subnav">
-		<ul>
-			<li><a href="https://coveo.com" target="_blank">Coveo.com</a></li>
-			<li><a href="https://connect.coveo.com/s/community-guidelines" target="_blank">Community Guidelines</a>
-			</li>
-			<li><a href="https://coveo.co1.qualtrics.com/jfe/form/SV_0OFD8lvnckM3qtv?Q_JFE=qdg" target="_blank">Site
-			Feedback</a></li>
-		</ul>
-	</nav>
-	<nav class="navBar">
-		<ul>
-			<li><button class="dropdownButton">My Coveo<i class="fas fa-chevron-down"></i>
-					<ul class="dropdown">
-						<li><a href="https://connect.coveo.com/s/">Home</a></li>
-						<li><a href="https://platform.cloud.coveo.com/admin/" target="_blank">Coveo V2
-						Administration Console</a></li>
-						<li><a href="https://cloud.coveo.com" target="_blank">Coveo V1 Administration Console</a>
-						</li>
-					</ul>
-				</button>
-			</li>
-			<li>
-				<button class="dropdownButton">Learn<i class="fas fa-chevron-down"></i>
-					<ul class="dropdown">
-						<li><a href="https://docs.coveo.com" target="_blank">Product Docs</a></li>
-						<li><a
-							href="https://connect.coveo.com/s/global-search/%40uri#sort=relevancy&f:resourceType=[Support%20Article]">Knowledge
-						Articles</a></li>
-						<li><a href="https://academy.coveo.com" target="_blank">Academy</a></li>
-						<li><a href="https://source.coveo.com" target="_blank">Tech Blog</a></li>
-						<li><a href="https://blog.coveo.com" target="_blank">Blog</a></li>
-						<li><a href="https://connect.coveo.com/s/events">Events/Webinars</a></li>
-					</ul>
-				</button>
-			</li>
-			<li>
-				<button class="dropdownButton">Collaborate<i class="fas fa-chevron-down"></i>
-					<ul class="dropdown">
-						<li><a href="https://connect.coveo.com/s/discussions">Discussions</a></li>
-						<li><a href="https://connect.coveo.com/s/topic/0TO0d000000gGvUGAU">Administrator Topic</a>
-						</li>
-						<li><a href="https://connect.coveo.com/s/topic/0TO0d000000gGveGAE">Business User Topic</a>
-						</li>
-						<li><a href="https://connect.coveo.com/s/topic/0TO0d000000gGvZGAU">Developer Topic</a></li>
-						<li><a href="https://connect.coveo.com/s/groups">Groups</a></li>
-						<li><a href="https://connect.coveo.com/s/ideas">Ideas</a></li>
-					</ul>
-				</button>
-			</li>
-		</ul>
-	</nav>
-	</div>
+	<!-- Do not focus on Querybox when URL contains hash to ensure page scrolls down to corresponding anchor. -->
+	<script>
+        if (document.location.hash) {
+            $('.CoveoSearchbox').attr('data-auto-focus', 'false');
+        }
+    </script>
 </header>
 <div class="container container-main">
 	<div class="row">
@@ -248,6 +217,8 @@
 			</div>
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
+					<dl class="tsd-deprecated">
+					</dl>
 					<div class="lead">
 						<p>The <code>CategoryFacet</code> component is a facet that renders values in a hierarchical fashion. It determines the filter to apply depending on the
 						current selected path of values.</p>
@@ -255,6 +226,11 @@
 					<p>The path is a sequence of values that leads to a specific value in the hierarchy.
 					It is an array listing all the parents of a file (e.g., <code>[&#39;c&#39;, &#39;folder1&#39;]</code> for the <code>c:\folder1\text1.txt</code> file).</p>
 					<p>This facet requires a <a href="categoryfacet.html#options.field"><code>field</code></a> with a special format to work correctly (see <a href="https://docs.coveo.com/en/2667">Using the Category Facet Component</a>).</p>
+					<dl class="tsd-comment-tags">
+						<dt>not supported in</dt>
+						<dd><p><a href="https://developers.coveo.com/x/yRQvAg">Coveo for Salesforce Free</a></p>
+						</dd>
+					</dl>
 				</div>
 			</section>
 			<div class="preview-container tsd-panel">
@@ -345,8 +321,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/CategoryFacet/CategoryFacet.ts#L459">ui/CategoryFacet/CategoryFacet.ts
-									:459</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/CategoryFacet/CategoryFacet.ts#L456">ui/CategoryFacet/CategoryFacet.ts
+									:456</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -400,8 +376,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/CategoryFacet/CategoryFacet.ts#L613">ui/CategoryFacet/CategoryFacet.ts
-									:613</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/CategoryFacet/CategoryFacet.ts#L608">ui/CategoryFacet/CategoryFacet.ts
+									:608</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -432,8 +408,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/CategoryFacet/CategoryFacet.ts#L568">ui/CategoryFacet/CategoryFacet.ts
-									:568</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/CategoryFacet/CategoryFacet.ts#L563">ui/CategoryFacet/CategoryFacet.ts
+									:563</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -510,8 +486,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/CategoryFacet/CategoryFacet.ts#L536">ui/CategoryFacet/CategoryFacet.ts
-									:536</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/CategoryFacet/CategoryFacet.ts#L531">ui/CategoryFacet/CategoryFacet.ts
+									:531</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -560,8 +536,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/CategoryFacet/CategoryFacet.ts#L625">ui/CategoryFacet/CategoryFacet.ts
-									:625</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/CategoryFacet/CategoryFacet.ts#L620">ui/CategoryFacet/CategoryFacet.ts
+									:620</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -591,8 +567,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/CategoryFacet/CategoryFacet.ts#L485">ui/CategoryFacet/CategoryFacet.ts
-									:485</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/CategoryFacet/CategoryFacet.ts#L482">ui/CategoryFacet/CategoryFacet.ts
+									:482</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -616,8 +592,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/CategoryFacet/CategoryFacet.ts#L597">ui/CategoryFacet/CategoryFacet.ts
-									:597</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/CategoryFacet/CategoryFacet.ts#L592">ui/CategoryFacet/CategoryFacet.ts
+									:592</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -640,8 +616,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/CategoryFacet/CategoryFacet.ts#L475">ui/CategoryFacet/CategoryFacet.ts
-									:475</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/CategoryFacet/CategoryFacet.ts#L472">ui/CategoryFacet/CategoryFacet.ts
+									:472</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -664,8 +640,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/CategoryFacet/CategoryFacet.ts#L583">ui/CategoryFacet/CategoryFacet.ts
-									:583</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/CategoryFacet/CategoryFacet.ts#L578">ui/CategoryFacet/CategoryFacet.ts
+									:578</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -688,8 +664,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/CategoryFacet/CategoryFacet.ts#L553">ui/CategoryFacet/CategoryFacet.ts
-									:553</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/CategoryFacet/CategoryFacet.ts#L548">ui/CategoryFacet/CategoryFacet.ts
+									:548</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -719,8 +695,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/CategoryFacet/CategoryFacet.ts#L604">ui/CategoryFacet/CategoryFacet.ts
-									:604</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/CategoryFacet/CategoryFacet.ts#L599">ui/CategoryFacet/CategoryFacet.ts
+									:599</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -743,8 +719,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/CategoryFacet/CategoryFacet.ts#L523">ui/CategoryFacet/CategoryFacet.ts
-									:523</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/CategoryFacet/CategoryFacet.ts#L519">ui/CategoryFacet/CategoryFacet.ts
+									:519</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -769,8 +745,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/CategoryFacet/CategoryFacet.ts#L508">ui/CategoryFacet/CategoryFacet.ts
-									:508</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/CategoryFacet/CategoryFacet.ts#L505">ui/CategoryFacet/CategoryFacet.ts
+									:505</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1057,8 +1033,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/CategoryFacet/CategoryFacet.ts#L216">ui/CategoryFacet/CategoryFacet.ts
-							:216</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/CategoryFacet/CategoryFacet.ts#L213">ui/CategoryFacet/CategoryFacet.ts
+							:213</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1085,8 +1061,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/CategoryFacet/CategoryFacet.ts#L229">ui/CategoryFacet/CategoryFacet.ts
-							:229</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/CategoryFacet/CategoryFacet.ts#L226">ui/CategoryFacet/CategoryFacet.ts
+							:226</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1109,8 +1085,8 @@ data-debug&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/CategoryFacet/CategoryFacet.ts#L194">ui/CategoryFacet/CategoryFacet.ts
-							:194</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/CategoryFacet/CategoryFacet.ts#L191">ui/CategoryFacet/CategoryFacet.ts
+							:191</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1135,8 +1111,8 @@ data-debug&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/CategoryFacet/CategoryFacet.ts#L126">ui/CategoryFacet/CategoryFacet.ts
-							:126</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/CategoryFacet/CategoryFacet.ts#L123">ui/CategoryFacet/CategoryFacet.ts
+							:123</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1161,8 +1137,8 @@ data-enable-facet-search&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/CategoryFacet/CategoryFacet.ts#L173">ui/CategoryFacet/CategoryFacet.ts
-							:173</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/CategoryFacet/CategoryFacet.ts#L170">ui/CategoryFacet/CategoryFacet.ts
+							:170</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1185,8 +1161,8 @@ data-enable-more-less&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/CategoryFacet/CategoryFacet.ts#L165">ui/CategoryFacet/CategoryFacet.ts
-							:165</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/CategoryFacet/CategoryFacet.ts#L162">ui/CategoryFacet/CategoryFacet.ts
+							:162</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1210,8 +1186,8 @@ data-enable-more-less&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/CategoryFacet/CategoryFacet.ts#L100">ui/CategoryFacet/CategoryFacet.ts
-							:100</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/CategoryFacet/CategoryFacet.ts#L97">ui/CategoryFacet/CategoryFacet.ts
+							:97</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1236,8 +1212,8 @@ data-enable-more-less&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/CategoryFacet/CategoryFacet.ts#L136">ui/CategoryFacet/CategoryFacet.ts
-							:136</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/CategoryFacet/CategoryFacet.ts#L133">ui/CategoryFacet/CategoryFacet.ts
+							:133</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1261,8 +1237,8 @@ data-enable-more-less&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/CategoryFacet/CategoryFacet.ts#L148">ui/CategoryFacet/CategoryFacet.ts
-							:148</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/CategoryFacet/CategoryFacet.ts#L145">ui/CategoryFacet/CategoryFacet.ts
+							:145</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1292,8 +1268,8 @@ data-enable-more-less&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/CategoryFacet/CategoryFacet.ts#L223">ui/CategoryFacet/CategoryFacet.ts
-							:223</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/CategoryFacet/CategoryFacet.ts#L220">ui/CategoryFacet/CategoryFacet.ts
+							:220</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1315,8 +1291,8 @@ data-enable-more-less&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/CategoryFacet/CategoryFacet.ts#L155">ui/CategoryFacet/CategoryFacet.ts
-							:155</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/CategoryFacet/CategoryFacet.ts#L152">ui/CategoryFacet/CategoryFacet.ts
+							:152</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1338,8 +1314,8 @@ data-enable-more-less&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/CategoryFacet/CategoryFacet.ts#L115">ui/CategoryFacet/CategoryFacet.ts
-							:115</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/CategoryFacet/CategoryFacet.ts#L112">ui/CategoryFacet/CategoryFacet.ts
+							:112</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1361,8 +1337,8 @@ data-enable-more-less&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/CategoryFacet/CategoryFacet.ts#L180">ui/CategoryFacet/CategoryFacet.ts
-							:180</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/CategoryFacet/CategoryFacet.ts#L177">ui/CategoryFacet/CategoryFacet.ts
+							:177</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1384,8 +1360,8 @@ data-enable-more-less&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/CategoryFacet/CategoryFacet.ts#L106">ui/CategoryFacet/CategoryFacet.ts
-							:106</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/CategoryFacet/CategoryFacet.ts#L103">ui/CategoryFacet/CategoryFacet.ts
+							:103</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1406,8 +1382,8 @@ data-enable-more-less&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/CategoryFacet/CategoryFacet.ts#L271">ui/CategoryFacet/CategoryFacet.ts
-							:271</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/CategoryFacet/CategoryFacet.ts#L268">ui/CategoryFacet/CategoryFacet.ts
+							:268</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
