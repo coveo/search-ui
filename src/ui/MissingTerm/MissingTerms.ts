@@ -5,7 +5,7 @@ import { IComponentBindings } from '../Base/ComponentBindings';
 import { ComponentOptions } from '../Base/ComponentOptions';
 import { $$, Initialization, l } from '../../Core';
 import { Dom } from '../../utils/Dom';
-import { analyticsActionCauseList, IAnalyticsIncludeMissingTerm } from '../Analytics/AnalyticsActionListMeta';
+import { analyticsActionCauseList, IAnalyticsMissingTerm } from '../Analytics/AnalyticsActionListMeta';
 import { IQueryResult } from '../../rest/QueryResult';
 import XRegExp = require('xregexp');
 
@@ -150,9 +150,6 @@ export class MissingTerms extends Component {
   }
 
   private executeNewQuery(missingTerm: string = this.queryStateModel.get('q')) {
-    this.usageAnalytics.logSearchEvent<IAnalyticsIncludeMissingTerm>(analyticsActionCauseList.missingTermClick, {
-      missingTerm: missingTerm
-    });
     this.queryController.executeQuery();
   }
 
@@ -161,6 +158,7 @@ export class MissingTerms extends Component {
       const termElement = $$('button', { className: 'coveo-missing-term coveo-clickable' }, term);
       termElement.on('click', () => {
         this.addTermForcedToAppear(term);
+        this.logUAMissingTerm(term);
         this.executeNewQuery(term);
       });
       return termElement;
@@ -216,6 +214,12 @@ export class MissingTerms extends Component {
       $$(allMissingTerms[index]).show();
       allMissingTerms[index].removeAttribute('style');
     }
+  }
+
+  private logUAMissingTerm(term: string) {
+    this.usageAnalytics.logSearchEvent<IAnalyticsMissingTerm>(analyticsActionCauseList.addMissingTerm, {
+      missingTerm: term
+    });
   }
 }
 Initialization.registerAutoCreateComponent(MissingTerms);

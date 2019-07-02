@@ -2,12 +2,13 @@ import * as Mock from '../MockEnvironment';
 import { MissingTermManager } from '../../src/ui/MissingTerm/MissingTermManager';
 import { Simulate } from '../Simulate';
 import { $$, l } from '../Test';
+import { NoopAnalyticsClient } from '../../src/ui/Analytics/NoopAnalyticsClient';
 
 export function MissingTermsManagerTest() {
   describe('MissingTermManager', () => {
     let env: Mock.IMockEnvironment;
     let missingTerms: string[];
-
+    const usageAnalytics = new NoopAnalyticsClient();
     const spyGet = () => {
       return missingTerms;
     };
@@ -20,7 +21,7 @@ export function MissingTermsManagerTest() {
 
     beforeEach(() => {
       env = new Mock.MockEnvironmentBuilder().build();
-      new MissingTermManager(env.root, env.queryStateModel, env.queryController);
+      new MissingTermManager(env.root, env.queryStateModel, env.queryController, usageAnalytics);
       env.queryStateModel.get = jasmine.createSpy('missingTermSpy').and.callFake(spyGet);
       env.queryStateModel.set = jasmine.createSpy('missingTermSpy').and.callFake(spySet);
       missingTerms = [];
@@ -63,6 +64,24 @@ export function MissingTermsManagerTest() {
         expect(missingTerms.length).toBe(2);
         element.click();
         expect(missingTerms.length).toBe(1);
+      });
+
+      it('should log an event when it is clicked', () => {
+        spyOn(usageAnalytics, 'logSearchEvent');
+        missingTerms.push('is');
+        missingTerms.push('this');
+        const breadcrumb = populateBreadcrumb();
+        const element = $$(breadcrumb[0].element).find('.coveo-missing-term-breadcrumb-clear');
+        element.click();
+        expect(usageAnalytics.logSearchEvent).toHaveBeenCalledWith(
+          jasmine.objectContaining({
+            name: 'removeMissingTerm',
+            type: 'missingTerm'
+          }),
+          jasmine.objectContaining({
+            missingTerm: 'is'
+          })
+        );
       });
     });
   });

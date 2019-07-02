@@ -235,7 +235,7 @@ export interface IAnalyticsResultsLayoutChange {
   resultsLayoutChangeTo: string;
 }
 
-export interface IAnalyticsIncludeMissingTerm {
+export interface IAnalyticsMissingTerm {
   missingTerm: string;
 }
 
@@ -1328,11 +1328,21 @@ export var analyticsActionCauseList = {
   /**
    * The search event that gets logged when an end-user triggers a new query by clicking a missing term in a result item.
    *
-   * `actionCause`: `'missingTermClick'`
+   * `actionCause`: `'addMissingTerm'`
    * `actionType`: `'missingTerm'`
    */
-  missingTermClick: <IAnalyticsActionCause>{
-    name: 'missingTermClick',
+  addMissingTerm: <IAnalyticsActionCause>{
+    name: 'addMissingTerm',
+    type: 'missingTerm'
+  },
+  /**
+   * The search event that gets logged when an end-user triggers a new query by removing a missing term from the breadcrumb.
+   *
+   * `actionCause`: `'removeMissingTerm'`
+   * `actionType`: `'missingTerm'`
+   */
+  removeMissingTerm: <IAnalyticsActionCause>{
+    name: 'removeMissingTerm',
     type: 'missingTerm'
   }
 };

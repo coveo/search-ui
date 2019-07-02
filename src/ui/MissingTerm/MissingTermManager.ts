@@ -5,11 +5,18 @@ import { IDoneBuildingQueryEventArgs } from '../../events/QueryEvents';
 import { IClearBreadcrumbEventArgs, IPopulateBreadcrumbEventArgs } from '../../events/BreadcrumbEvents';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { QueryController } from '../../controllers/QueryController';
+import { IAnalyticsMissingTerm, analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
+import { IAnalyticsClient } from '../Analytics/AnalyticsClient';
 
 export class MissingTermManager {
   static ID = 'MissingTermManager';
   private termForcedToAppear: Array<string>;
-  constructor(root: HTMLElement, private queryStateModel: QueryStateModel, private queryController: QueryController) {
+  constructor(
+    root: HTMLElement,
+    private queryStateModel: QueryStateModel,
+    private queryController: QueryController,
+    private usageAnalytics: IAnalyticsClient
+  ) {
     $$(root).on(QueryEvents.buildingQuery, (event, args: IDoneBuildingQueryEventArgs) => {
       return this.handleBuildingQuery(args);
     });
@@ -84,10 +91,17 @@ export class MissingTermManager {
     const termIndex = this.termForcedToAppear.indexOf(term);
     this.termForcedToAppear.splice(termIndex, 1);
     this.queryStateModel.set('missingTerm', [...this.termForcedToAppear]);
+    this.logUAMissingTerm(term);
     this.queryController.executeQuery();
   }
 
   private handleClearBreadcrumb() {
     this.queryStateModel.set('missingTerm', []);
+  }
+
+  private logUAMissingTerm(term: string) {
+    this.usageAnalytics.logSearchEvent<IAnalyticsMissingTerm>(analyticsActionCauseList.removeMissingTerm, {
+      missingTerm: term
+    });
   }
 }
