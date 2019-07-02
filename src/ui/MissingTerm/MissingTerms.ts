@@ -178,7 +178,7 @@ export class MissingTerms extends Component {
     return this.termForcedToAppear.indexOf(term) !== -1;
   }
 
-  private containsWildcard(term: string): boolean {
+  private containsWildcard(term): boolean {
     const query = this.queryStateModel.get('q');
     const regxStarWildcard = XRegExp(`(\\*${term})|${term}\\*`);
     const regxQuestionMarkWildcard = XRegExp(`(\\?${term})|${term}\\?`);
