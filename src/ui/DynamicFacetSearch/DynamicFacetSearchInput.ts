@@ -41,4 +41,8 @@ export class DynamicFacetSearchInput {
   public set activeDescendant(descendantId: string) {
     this.inputElement.setAttribute('aria-activedescendant', descendantId);
   }
+
+  public reset() {
+    this.textInput.reset();
+  }
 }

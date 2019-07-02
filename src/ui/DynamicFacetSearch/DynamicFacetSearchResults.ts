@@ -19,30 +19,32 @@ export class DynamicFacetSearchResults {
   }
 
   public createFromResponse(response: IFacetSearchResponse) {
-    this.facetValues = response.values.map(
-      (facetValue, index) =>
-        new DynamicFacetValue(
-          {
-            value: facetValue.rawValue,
-            displayValue: facetValue.displayValue,
-            numberOfResults: facetValue.count,
-            state: FacetValueState.idle,
-            position: index + 1
-          },
-          this.facet
-        )
-    );
+    this.facetValues = response.values.map((resultValue, index) => {
+      const facetValue = new DynamicFacetValue(
+        {
+          value: resultValue.rawValue,
+          displayValue: resultValue.displayValue,
+          numberOfResults: resultValue.count,
+          state: FacetValueState.idle,
+          position: index + 1
+        },
+        this.facet
+      );
+
+      facetValue.renderer.enableIsInSearchFlag();
+      return facetValue;
+    });
   }
 
   public render() {
     this.empty();
-    if (!this.facetValues.length) {
+    if (!this.hasValues()) {
       return;
     }
 
     const fragment = document.createDocumentFragment();
     this.facetValues.forEach(facetValue => {
-      fragment.appendChild(facetValue.render());
+      fragment.appendChild(facetValue.renderer.render());
     });
 
     this.element.appendChild(fragment);
@@ -52,5 +54,9 @@ export class DynamicFacetSearchResults {
   public empty() {
     $$(this.element).empty();
     $$(this.element).hide();
+  }
+
+  public hasValues() {
+    return !!this.facetValues.length;
   }
 }

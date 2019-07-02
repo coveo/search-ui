@@ -19,7 +19,7 @@ export class DynamicFacetValue implements IDynamicFacetValue {
   public numberOfResults: number;
   public position: number;
   public displayValue: string;
-  private renderer: DynamicFacetValueRenderer;
+  public renderer: DynamicFacetValueRenderer;
 
   constructor({ value, state, numberOfResults, position, displayValue }: IDynamicFacetValue, private facet: DynamicFacet) {
     this.value = value;
@@ -77,9 +77,5 @@ export class DynamicFacetValue implements IDynamicFacetValue {
       displayValue: this.displayValue ? this.displayValue : this.valueCaption,
       state: this.state
     };
-  }
-
-  public render() {
-    return this.renderer.render();
   }
 }

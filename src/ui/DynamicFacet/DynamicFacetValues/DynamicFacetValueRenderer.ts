@@ -9,6 +9,7 @@ import { FacetValueState } from '../../../rest/Facet/FacetValueState';
 export class DynamicFacetValueRenderer {
   private dom: Dom;
   private checkbox: Checkbox;
+  private isInSearch: boolean;
 
   constructor(private facetValue: DynamicFacetValue, private facet: DynamicFacet) {}
 
@@ -30,6 +31,10 @@ export class DynamicFacetValueRenderer {
 
   private toggleSelectedClass() {
     this.dom.toggleClass('coveo-selected', this.facetValue.isSelected);
+  }
+
+  public enableIsInSearchFlag() {
+    this.isInSearch = true;
   }
 
   private createCheckbox() {
@@ -62,7 +67,8 @@ export class DynamicFacetValueRenderer {
     this.facet.pinFacetPosition();
     this.facet.toggleSelectValue(this.facetValue.value);
     this.toggleSelectedClass();
-    this.facet.enableFreezeCurrentValuesFlag();
+    this.isInSearch && this.facet.clearSearch();
+    !this.isInSearch && this.facet.enableFreezeCurrentValuesFlag();
     this.facet.enableFreezeFacetOrderFlag();
     this.facet.triggerNewQuery(() => this.logActionToAnalytics());
   };
