@@ -11,9 +11,9 @@ import { InitializationEvents } from '../../events/InitializationEvents';
 export class DynamicFacetSearch {
   public element: HTMLElement;
   public input: DynamicFacetSearchInput;
+  public id: string;
   private results: DynamicFacetSearchResults;
   private facetSearchController: FacetSearchController;
-  private id: string;
   static delay = 200;
 
   constructor(private facet: DynamicFacet) {
@@ -34,16 +34,16 @@ export class DynamicFacetSearch {
   }
 
   private createAndAppendInput() {
-    this.input = new DynamicFacetSearchInput(this.facet, this.onInputChange.bind(this), this.id);
+    this.input = new DynamicFacetSearchInput(this.facet, this);
     this.element.appendChild(this.input.element);
   }
 
   private createAndAppendResults() {
-    this.results = new DynamicFacetSearchResults(this.facet, this.id);
+    this.results = new DynamicFacetSearchResults(this.facet, this);
     this.element.appendChild(this.results.element);
   }
 
-  private onInputChange(value: string) {
+  public onInputChange(value: string) {
     this.removeDocumentClickListener();
     this.debouncedTriggerNewFacetSearch.cancel();
 

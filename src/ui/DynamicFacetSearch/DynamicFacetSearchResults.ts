@@ -4,14 +4,15 @@ import { IFacetSearchResponse } from '../../rest/Facet/FacetSearchResponse';
 import { DynamicFacetValue } from '../DynamicFacet/DynamicFacetValues/DynamicFacetValue';
 import { FacetValueState } from '../../rest/Facet/FacetValueState';
 import { DynamicFacet } from '../DynamicFacet/DynamicFacet';
+import { DynamicFacetSearch } from './DynamicFacetSearch';
 
 export class DynamicFacetSearchResults {
   public element: HTMLElement;
   private facetValues: DynamicFacetValue[];
 
-  constructor(private facet: DynamicFacet, private searchId: string) {
+  constructor(private facet: DynamicFacet, private search: DynamicFacetSearch) {
     this.element = $$('ul', {
-      id: `${this.searchId}-listbox`,
+      id: `${this.search.id}-listbox`,
       role: 'listbox',
       className: 'coveo-dynamic-facet-search-results'
     }).el;

@@ -2,13 +2,14 @@ import { TextInput, ITextInputOptions } from '../FormWidgets/TextInput';
 import { l } from '../../strings/Strings';
 import { DynamicFacet } from '../DynamicFacet/DynamicFacet';
 import { $$ } from '../../utils/Dom';
+import { DynamicFacetSearch } from './DynamicFacetSearch';
 
 export class DynamicFacetSearchInput {
   public element: HTMLElement;
   private textInput: TextInput;
   private inputElement: HTMLElement;
 
-  constructor(private facet: DynamicFacet, private onChange: (value: string) => void, private searchId: string) {
+  constructor(private facet: DynamicFacet, private search: DynamicFacetSearch) {
     this.create();
     this.addAccessibilityAttributes();
   }
@@ -21,13 +22,17 @@ export class DynamicFacetSearchInput {
       ariaLabel: l('SearchFacetResults', this.facet.options.title)
     };
 
-    this.textInput = new TextInput((inputInstance: TextInput) => this.onChange(inputInstance.getValue()), l('Search'), inputOptions);
+    this.textInput = new TextInput(
+      (inputInstance: TextInput) => this.search.onInputChange(inputInstance.getValue()),
+      l('Search'),
+      inputOptions
+    );
     this.element = this.textInput.getElement();
     this.inputElement = $$(this.element).find('input');
   }
 
   private addAccessibilityAttributes() {
-    const listboxId = `${this.searchId}-listbox`;
+    const listboxId = `${this.search.id}-listbox`;
     this.element.setAttribute('role', 'combobox');
     this.element.setAttribute('aria-owns', listboxId);
     this.element.setAttribute('aria-aria-haspopup', 'listbox');
