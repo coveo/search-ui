@@ -177,6 +177,46 @@ export function MissingTermsTest() {
             test.cmp.addTermForcedToAppear(specialCharacter);
             expect(test.cmp.queryStateModel.get('missingTerm')).toEqual([specialCharacter]);
           });
+
+          it(`and the term is of length 1,
+          and the term present have an apostrophe before him,
+          the term is not rendered in the page`, () => {
+            const apostropheCharacter = 's';
+            query = "efile's";
+            fakeResult.absentTerms = [apostropheCharacter];
+            test = mockComponent(query);
+            expect(test.cmp.element.childElementCount).toEqual(0);
+          });
+
+          it(`and the term is of length 1,
+          and the term present have an apostrophe after him,
+          the term is not rendered in the page`, () => {
+            const apostropheCharacter = 's';
+            query = "s'efile";
+            fakeResult.absentTerms = [apostropheCharacter];
+            test = mockComponent(query);
+            expect(test.cmp.element.childElementCount).toEqual(0);
+          });
+
+          it(`and the term is of length superior than 1,
+          and the term present have an apostrophe before him,
+          the term is rendered in the page`, () => {
+            const apostropheCharacter = 'efile';
+            query = "efile's";
+            fakeResult.absentTerms = [apostropheCharacter];
+            test = mockComponent(query);
+            expect(test.cmp.element.childElementCount).toEqual(2);
+          });
+
+          it(`and the term is of length superior than 1,
+          and the term present have an apostrophe after him,
+          the term is rendered in the page`, () => {
+            const apostropheCharacter = 'efile';
+            query = "s'efile";
+            fakeResult.absentTerms = [apostropheCharacter];
+            test = mockComponent(query);
+            expect(test.cmp.element.childElementCount).toEqual(2);
+          });
         });
       });
 

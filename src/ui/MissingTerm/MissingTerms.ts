@@ -141,7 +141,7 @@ export class MissingTerms extends Component {
 
   private buildMissingTerms(): Dom[] {
     const terms: Dom[] = this.missingTerms.map(term => {
-      if (this.containsFeaturedResults(term) || this.containsWildcard(term)) {
+      if (this.containsFeaturedResults(term) || this.containsWildcard(term) || this.constainsApostrophe(term)) {
         return;
       }
       return this.makeTermClickableIfEnabled(term);
@@ -178,7 +178,7 @@ export class MissingTerms extends Component {
     return this.termForcedToAppear.indexOf(term) !== -1;
   }
 
-  private containsWildcard(term): boolean {
+  private containsWildcard(term: string): boolean {
     const query = this.queryStateModel.get('q');
     const regxStarWildcard = XRegExp(`(\\*${term})|${term}\\*`);
     const regxQuestionMarkWildcard = XRegExp(`(\\?${term})|${term}\\?`);
@@ -187,6 +187,16 @@ export class MissingTerms extends Component {
     const foundQuestionMark = this.queryController.getLastQuery().questionMark && regxQuestionMarkWildcard.test(query);
 
     return foundStar || foundQuestionMark;
+  }
+
+  private constainsApostrophe(term: string): boolean {
+    if (term.length > 1) {
+      return false;
+    }
+    const query = this.queryStateModel.get('q');
+    const regxApostrophe = RegExp(`'${term}|${term}'`);
+
+    return regxApostrophe.test(query);
   }
 
   private hideMissingTermsOverTheNumberOfResults(elements: HTMLElement[]) {
