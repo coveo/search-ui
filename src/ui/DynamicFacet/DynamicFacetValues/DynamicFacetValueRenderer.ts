@@ -49,6 +49,10 @@ export class DynamicFacetValueRenderer {
       `(${this.facetValue.formattedCount})`
     );
 
+    if (this.isInSearch) {
+      this.checkboxButton.setAttribute('tabindex', '-1');
+    }
+
     const label = $$(this.checkbox.getElement()).find('.coveo-checkbox-span-label');
     const labelSuffix = $$(this.checkbox.getElement()).find('.coveo-checkbox-span-label-suffix');
 
@@ -61,17 +65,21 @@ export class DynamicFacetValueRenderer {
     this.facetValue.isSelected && this.checkbox.select(false);
   }
 
-  private addFocusAndBlurEventListeners() {
-    const checkboxButton = $$(this.checkbox.getElement()).find('button');
+  private get checkboxButton() {
+    return $$(this.checkbox.getElement()).find('button');
+  }
 
-    $$(checkboxButton).on('focusin', () => this.onFocusIn());
-    $$(checkboxButton).on('focusout', () => this.onFocusOut());
+  private addFocusAndBlurEventListeners() {
+    $$(this.checkboxButton).on('focusin', () => this.onFocusIn());
+    $$(this.checkboxButton).on('focusout', () => this.onFocusOut());
   }
 
   private onFocusIn() {
     if (this.isInSearch) {
       this.dom.setAttribute('aria-selected', 'true');
       this.facet.updateSearchActiveDescendant(this.dom.getAttribute('id'));
+    } else {
+      this.facet.clearSearch();
     }
     this.dom.addClass('coveo-focused');
   }

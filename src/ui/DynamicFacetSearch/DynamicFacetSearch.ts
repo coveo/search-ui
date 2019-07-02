@@ -48,7 +48,9 @@ export class DynamicFacetSearch {
     this.debouncedTriggerNewFacetSearch.cancel();
 
     if (Utils.isEmptyString(value)) {
-      return this.results.empty();
+      this.input.toggleExpanded(false);
+      this.results.empty();
+      return;
     }
 
     this.addDocumentClickListener();
@@ -80,5 +82,6 @@ export class DynamicFacetSearch {
     const response = await this.facetSearchController.search(terms);
     this.results.createFromResponse(response);
     this.results.render();
+    this.input.toggleExpanded(this.results.hasValues());
   }
 }

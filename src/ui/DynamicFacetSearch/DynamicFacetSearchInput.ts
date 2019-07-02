@@ -29,13 +29,17 @@ export class DynamicFacetSearchInput {
   private addAccessibilityAttributes() {
     const listboxId = `${this.searchId}-listbox`;
     this.element.setAttribute('role', 'combobox');
-    this.element.setAttribute('aria-expanded', 'false');
     this.element.setAttribute('aria-owns', listboxId);
     this.element.setAttribute('aria-aria-haspopup', 'listbox');
+    this.toggleExpanded(false);
 
     this.inputElement.setAttribute('aria-autocomplete', 'list');
     this.inputElement.setAttribute('aria-controls', listboxId);
     this.updateActiveDescendant();
+  }
+
+  public toggleExpanded(expanded: boolean) {
+    this.element.setAttribute('aria-expanded', expanded ? 'true' : 'false');
   }
 
   public updateActiveDescendant(descendantId = '') {
