@@ -12,12 +12,12 @@ import { Breadcrumb } from '../Breadcrumb/Breadcrumb';
 
 export class MissingTermManager {
   static ID = 'MissingTermManager';
-  // Used to split terms and phrases. Match character that can separate words or caracter for Chinese, Japanese and Korean.
-  // Han: Unicode script for Chinesse character
-  // We only need to import 1 Asian, charcaters script because what is important here is the space between the caracter and any script will contain it
+  // We only need to import one Asian characters script because what is important here is the space
+  // between characters and any of those scripts will contain it.
+  // p{Han}: import the unicode script for chinese caracter
+  // List of script: https://www.fontspace.com/unicode/script
   static wordBoundary = '(([\\p{Han}])?([^(\\p{Latin}-)])|^|$)';
 
-  private termForcedToAppear: Array<string>;
   constructor(private root: HTMLElement, private queryStateModel: QueryStateModel, private queryController: QueryController) {
     $$(root).on(QueryEvents.doneBuildingQuery, (event, args: IDoneBuildingQueryEventArgs) => {
       return this.handleBuildingQuery(args);
@@ -40,17 +40,16 @@ export class MissingTermManager {
     });
   }
 
-  private getUpdateTermsForcedToAppear() {
-    this.termForcedToAppear = [...this.queryStateModel.get('missingTerms')];
+  private get termsForcedToAppear(): string[] {
+    return [...this.queryStateModel.get('missingTerms')];
   }
 
-  private setUpdateTermsForcedToAppear(termForcedToAppear) {
-    this.queryStateModel.set('missingTerms', [...termForcedToAppear]);
+  private setUpdateTermsForcedToAppear(terms: string[]) {
+    this.queryStateModel.set('missingTerms', [...terms]);
   }
 
   private handlePopulateBreadcrumb(args: IPopulateBreadcrumbEventArgs) {
-    this.getUpdateTermsForcedToAppear();
-    if (this.termForcedToAppear.length === 0) {
+    if (this.termsForcedToAppear.length === 0) {
       return;
     }
 
@@ -65,7 +64,7 @@ export class MissingTermManager {
   }
 
   private buildTermForcedToAppear() {
-    return this.termForcedToAppear.map(term => {
+    return this.termsForcedToAppear.map(term => {
       const termContainer = $$(
         'button',
         {
@@ -97,10 +96,10 @@ export class MissingTermManager {
   }
 
   private removeTermForcedToAppear(term: string) {
-    this.getUpdateTermsForcedToAppear();
-    const termIndex = this.termForcedToAppear.indexOf(term);
-    this.termForcedToAppear.splice(termIndex, 1);
-    this.setUpdateTermsForcedToAppear(this.termForcedToAppear);
+    const termsForcedToAppearCopy = this.termsForcedToAppear;
+    const termIndex = termsForcedToAppearCopy.indexOf(term);
+    termsForcedToAppearCopy.splice(termIndex, 1);
+    this.setUpdateTermsForcedToAppear(termsForcedToAppearCopy);
     this.queryController.executeQuery();
   }
 
@@ -109,16 +108,8 @@ export class MissingTermManager {
   }
 
   private handleQueryChange(args: IAttributeChangedEventArg) {
-    this.getUpdateTermsForcedToAppear();
-    let termForcedToAppearCopy = [...this.termForcedToAppear];
-    this.termForcedToAppear.forEach(term => {
-      const regex = XRegExp(`${MissingTermManager.wordBoundary}(${term})${MissingTermManager.wordBoundary}`, 'g');
-      if (!regex.test(args.value)) {
-        const termIndex = termForcedToAppearCopy.indexOf(term);
-        termForcedToAppearCopy.splice(termIndex, 1);
-      }
-    });
-    this.setUpdateTermsForcedToAppear(termForcedToAppearCopy);
+    this.updateTermsForcedToAppearToOnlyIncludeWords(args);
+
     const breadcrumbSelector = document.querySelector('.CoveoBreadcrumb');
     if (!breadcrumbSelector) {
       return;
@@ -129,5 +120,17 @@ export class MissingTermManager {
       breadcrumb.getBreadcrumbs();
       $$(this.root).trigger(BreadcrumbEvents.redrawBreadcrumb);
     }
+  }
+
+  private updateTermsForcedToAppearToOnlyIncludeWords(args) {
+    let termForcedToAppearCopy = this.termsForcedToAppear;
+    this.termsForcedToAppear.forEach(term => {
+      const regex = XRegExp(`${MissingTermManager.wordBoundary}(${term})${MissingTermManager.wordBoundary}`, 'g');
+      if (!regex.test(args.value)) {
+        const termIndex = termForcedToAppearCopy.indexOf(term);
+        termForcedToAppearCopy.splice(termIndex, 1);
+      }
+    });
+    this.setUpdateTermsForcedToAppear(termForcedToAppearCopy);
   }
 }
