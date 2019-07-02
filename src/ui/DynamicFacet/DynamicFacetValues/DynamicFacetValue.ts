@@ -7,6 +7,7 @@ import { IAnalyticsDynamicFacetMeta } from '../../Analytics/AnalyticsActionListM
 
 export interface IDynamicFacetValue {
   value: string;
+  displayValue?: string;
   state: FacetValueState;
   numberOfResults: number;
   position: number;
@@ -17,13 +18,15 @@ export class DynamicFacetValue implements IDynamicFacetValue {
   public state: FacetValueState;
   public numberOfResults: number;
   public position: number;
+  public displayValue: string;
   private renderer: DynamicFacetValueRenderer;
 
-  constructor({ value, state, numberOfResults, position }: IDynamicFacetValue, private facet: DynamicFacet) {
+  constructor({ value, state, numberOfResults, position, displayValue }: IDynamicFacetValue, private facet: DynamicFacet) {
     this.value = value;
     this.state = state;
     this.numberOfResults = numberOfResults;
     this.position = position;
+    this.displayValue = displayValue;
     this.renderer = new DynamicFacetValueRenderer(this, facet);
   }
 
@@ -71,7 +74,7 @@ export class DynamicFacetValue implements IDynamicFacetValue {
       ...this.facet.basicAnalyticsFacetState,
       value: this.value,
       valuePosition: this.position,
-      displayValue: this.valueCaption,
+      displayValue: this.displayValue ? this.displayValue : this.valueCaption,
       state: this.state
     };
   }

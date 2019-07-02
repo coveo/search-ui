@@ -1,4 +1,3 @@
-import 'styling/DynamicFacetSearch/_DynamicFacetSearch';
 import { TextInput, ITextInputOptions } from '../FormWidgets/TextInput';
 import { l } from '../../strings/Strings';
 import { DynamicFacet } from '../DynamicFacet/DynamicFacet';
@@ -9,7 +8,7 @@ export class DynamicFacetSearchInput {
   private textInput: TextInput;
   private inputElement: HTMLElement;
 
-  constructor(private facet: DynamicFacet, private onChange: (value: string) => void, private listboxId: string) {
+  constructor(private facet: DynamicFacet, private onChange: (value: string) => void, private searchId: string) {
     this.create();
     this.addAccessibilityAttributes();
   }
@@ -28,13 +27,14 @@ export class DynamicFacetSearchInput {
   }
 
   private addAccessibilityAttributes() {
+    const listboxId = `${this.searchId}-listbox`;
     this.element.setAttribute('role', 'combobox');
     this.element.setAttribute('aria-expanded', 'false');
-    this.element.setAttribute('aria-owns', this.listboxId);
+    this.element.setAttribute('aria-owns', listboxId);
     this.element.setAttribute('aria-aria-haspopup', 'listbox');
 
     this.inputElement.setAttribute('aria-autocomplete', 'list');
-    this.inputElement.setAttribute('aria-controls', this.listboxId);
+    this.inputElement.setAttribute('aria-controls', listboxId);
     this.activeDescendant = '';
   }
 
