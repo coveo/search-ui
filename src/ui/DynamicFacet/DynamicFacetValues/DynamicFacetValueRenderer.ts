@@ -9,15 +9,23 @@ import { FacetValueState } from '../../../rest/Facet/FacetValueState';
 export class DynamicFacetValueRenderer {
   private dom: Dom;
   private checkbox: Checkbox;
-  private isInSearch: boolean;
+  private isInSearch = false;
 
   constructor(private facetValue: DynamicFacetValue, private facet: DynamicFacet) {}
+
+  public enableIsInSearchFlag() {
+    this.isInSearch = true;
+  }
 
   public render() {
     this.dom = $$('li', {
       className: 'coveo-dynamic-facet-value coveo-dynamic-facet-selectable',
       dataValue: this.facetValue.value
     });
+
+    if (this.isInSearch) {
+      this.dom.setAttribute('id', `coveo-dynamic-facet-search-result-${this.facetValue.position}`);
+    }
 
     this.createCheckbox();
     this.dom.append(this.checkbox.getElement());
@@ -31,10 +39,6 @@ export class DynamicFacetValueRenderer {
 
   private toggleSelectedClass() {
     this.dom.toggleClass('coveo-selected', this.facetValue.isSelected);
-  }
-
-  public enableIsInSearchFlag() {
-    this.isInSearch = true;
   }
 
   private createCheckbox() {
@@ -59,8 +63,22 @@ export class DynamicFacetValueRenderer {
 
   private addFocusAndBlurEventListeners() {
     const checkboxButton = $$(this.checkbox.getElement()).find('button');
-    $$(checkboxButton).on('focusin', () => this.dom.addClass('coveo-focused'));
-    $$(checkboxButton).on('focusout', () => this.dom.removeClass('coveo-focused'));
+
+    $$(checkboxButton).on('focusin', () => this.onFocusIn());
+    $$(checkboxButton).on('focusout', () => this.onFocusOut());
+  }
+
+  private onFocusIn() {
+    if (this.isInSearch) {
+      this.dom.setAttribute('aria-selected', 'true');
+      this.facet.updateSearchActiveDescendant(this.dom.getAttribute('id'));
+    }
+    this.dom.addClass('coveo-focused');
+  }
+
+  private onFocusOut() {
+    this.isInSearch && this.dom.setAttribute('aria-selected', 'false');
+    this.dom.removeClass('coveo-focused');
   }
 
   private selectAction = () => {

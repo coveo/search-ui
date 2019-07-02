@@ -35,14 +35,15 @@ export class DynamicFacetSearchInput {
 
     this.inputElement.setAttribute('aria-autocomplete', 'list');
     this.inputElement.setAttribute('aria-controls', listboxId);
-    this.activeDescendant = '';
+    this.updateActiveDescendant();
   }
 
-  public set activeDescendant(descendantId: string) {
+  public updateActiveDescendant(descendantId = '') {
     this.inputElement.setAttribute('aria-activedescendant', descendantId);
   }
 
   public reset() {
     this.textInput.reset();
+    this.updateActiveDescendant();
   }
 }

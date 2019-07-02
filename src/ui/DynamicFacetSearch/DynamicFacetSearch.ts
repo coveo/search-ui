@@ -10,7 +10,7 @@ import { InitializationEvents } from '../../events/InitializationEvents';
 
 export class DynamicFacetSearch {
   public element: HTMLElement;
-  private input: DynamicFacetSearchInput;
+  public input: DynamicFacetSearchInput;
   private results: DynamicFacetSearchResults;
   private facetSearchController: FacetSearchController;
   private id: string;

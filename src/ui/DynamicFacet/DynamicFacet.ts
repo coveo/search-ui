@@ -498,6 +498,10 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
     this.search && this.search.clear();
   }
 
+  public updateSearchActiveDescendant(id: string) {
+    this.search && this.search.input.updateActiveDescendant(id);
+  }
+
   private initQueryEvents() {
     this.bind.onRootElement(QueryEvents.duringQuery, () => this.ensureDom());
     this.bind.onRootElement(QueryEvents.doneBuildingQuery, (data: IDoneBuildingQueryEventArgs) => this.handleDoneBuildingQuery(data));
