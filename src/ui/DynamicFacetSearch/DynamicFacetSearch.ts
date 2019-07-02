@@ -34,7 +34,7 @@ export class DynamicFacetSearch {
   }
 
   private createAndAppendInput() {
-    this.input = new DynamicFacetSearchInput(this.facet, this.id, this.onInputChange.bind(this));
+    this.input = new DynamicFacetSearchInput(this.facet, this.onInputChange.bind(this), this.id);
     this.element.appendChild(this.input.element);
   }
 
