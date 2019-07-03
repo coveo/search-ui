@@ -140,10 +140,8 @@ export class MissingTerms extends Component {
   }
 
   private buildMissingTerms(): Dom[] {
-    const terms: Dom[] = this.missingTerms.map(term => {
-      if (this.containsFeaturedResults(term) || this.containsWildcard(term) || this.constainsApostrophe(term)) {
-        return;
-      }
+    const validTerms = this.missingTerms.filter(term => this.isValidTerm(term));
+    const terms: Dom[] = validTerms.map(term => {
       return this.makeTermClickableIfEnabled(term);
     });
     return terms;
@@ -189,7 +187,7 @@ export class MissingTerms extends Component {
     return foundStar || foundQuestionMark;
   }
 
-  private constainsApostrophe(term: string): boolean {
+  private containsApostrophe(term: string): boolean {
     if (term.length > 1) {
       return false;
     }
@@ -226,6 +224,10 @@ export class MissingTerms extends Component {
       $$(allMissingTerms[index]).show();
       allMissingTerms[index].removeAttribute('style');
     }
+  }
+
+  private isValidTerm(term) {
+    return !(this.containsFeaturedResults(term) || this.containsWildcard(term) || this.containsApostrophe(term));
   }
 }
 Initialization.registerAutoCreateComponent(MissingTerms);
