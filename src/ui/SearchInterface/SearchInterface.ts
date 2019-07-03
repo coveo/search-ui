@@ -78,6 +78,13 @@ export interface ISearchInterfaceOptions {
   responsiveMode?: ValidResponsiveMode;
 }
 
+export interface IMissingTermManagerArgs {
+  element: HTMLElement;
+  queryStateModel: QueryStateModel;
+  queryController: QueryController;
+  usageAnalytics: IAnalyticsClient;
+}
+
 /**
  * The SearchInterface component is the root and main component of your Coveo search interface. You should place all
  * other Coveo components inside the SearchInterface component.
@@ -528,7 +535,15 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     this.queryController = new QueryController(element, this.options, this.usageAnalytics, this);
     this.facetValueStateHandler = new FacetValueStateHandler((componentId: string) => this.getComponents(componentId));
     new SentryLogger(this.queryController);
-    new MissingTermManager(this.element, this.queryStateModel, this.queryController);
+
+    const missingTermManagerArgs: IMissingTermManagerArgs = {
+      element: this.element,
+      queryStateModel: this.queryStateModel,
+      queryController: this.queryController,
+      usageAnalytics: this.usageAnalytics
+    };
+
+    new MissingTermManager(missingTermManagerArgs);
 
     this.setupEventsHandlers();
     this.setupHistoryManager(element, _window);

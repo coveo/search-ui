@@ -10,7 +10,7 @@ export function MissingTermsTest() {
     let fakeResult: IQueryResult;
 
     const mockComponent = (query: string, option = {}) => {
-      return Mock.advancedResultComponentSetup<MissingTerms>(
+      const test = Mock.advancedResultComponentSetup<MissingTerms>(
         MissingTerms,
         fakeResult,
         new Mock.AdvancedComponentSetupOptions(null, option, (env: Mock.MockEnvironmentBuilder): Mock.MockEnvironmentBuilder => {
@@ -18,6 +18,11 @@ export function MissingTermsTest() {
           return env;
         })
       );
+      const analyticsElement = $$('div', {
+        className: 'CoveoAnalytics'
+      }).el;
+      test.env.root.appendChild(analyticsElement);
+      return test;
     };
 
     beforeEach(() => {
@@ -43,6 +48,23 @@ export function MissingTermsTest() {
           test = mockComponent(query, { clickable: true });
           clickFirstMissingTerm();
           expect(missingTermsClickableSpy).toHaveBeenCalled();
+        });
+
+        it(`true,
+        it should log a addMissingTerm event when it is clicked`, function() {
+          const query = 'This is my query';
+          fakeResult.absentTerms = ['This'];
+          test = mockComponent(query);
+          clickFirstMissingTerm();
+          expect(test.env.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(
+            jasmine.objectContaining({
+              name: 'addMissingTerm',
+              type: 'missingTerm'
+            }),
+            jasmine.objectContaining({
+              missingTerm: 'This'
+            })
+          );
         });
 
         it('false should not allow the user to click on the missingTerm', () => {
