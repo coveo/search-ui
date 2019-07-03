@@ -1,6 +1,8 @@
+@import 'Variables';
 @import 'Colors';
 
 @mixin magic-box($height: 48px) {
+  @include flex-grow(1);
   $padding: floor(1/4 * $height);
   $lineHeight: $height - $padding * 2;
   $fontSize: floor($lineHeight * 2 / 3);

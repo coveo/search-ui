@@ -86,11 +86,7 @@ export function DynamicFacetHeaderTest() {
       };
 
       $$(clearElement()).trigger('click');
-      expect(facet.logAnalyticsEvent).toHaveBeenCalledWith(analyticsActionCauseList.dynamicFacetClearAll, {
-        facetId: facet.options.id,
-        facetField: facet.options.field.toString(),
-        facetTitle: facet.options.title
-      });
+      expect(facet.logAnalyticsEvent).toHaveBeenCalledWith(analyticsActionCauseList.dynamicFacetClearAll, facet.basicAnalyticsFacetState);
     });
 
     it(`when clicking on the clear button

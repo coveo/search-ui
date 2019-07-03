@@ -52,7 +52,7 @@ export class DynamicFacetTestUtils {
     return {
       facetId: facet.options.id,
       field: facet.fieldName,
-      values: [],
+      values: DynamicFacetTestUtils.createFakeFacetValues(),
       moreValuesAvailable: false,
       ...partialResponse
     };

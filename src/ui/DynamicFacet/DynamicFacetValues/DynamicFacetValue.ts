@@ -3,7 +3,7 @@ import { DynamicFacetValueRenderer } from './DynamicFacetValueRenderer';
 import { FacetUtils } from '../../Facet/FacetUtils';
 import { DynamicFacet } from '../DynamicFacet';
 import { FacetValueState } from '../../../rest/Facet/FacetValueState';
-import { IAnalyticsDynamicFacetMeta, AnalyticsDynamicFacetType } from '../../Analytics/AnalyticsActionListMeta';
+import { IAnalyticsDynamicFacetMeta } from '../../Analytics/AnalyticsActionListMeta';
 
 export interface IDynamicFacetValue {
   value: string;
@@ -68,15 +68,11 @@ export class DynamicFacetValue implements IDynamicFacetValue {
 
   public get analyticsMeta(): IAnalyticsDynamicFacetMeta {
     return {
-      facetId: this.facet.options.id,
-      facetField: this.facet.options.field.toString(),
-      facetTitle: this.facet.options.title,
-      facetType: AnalyticsDynamicFacetType.string,
-      facetValue: this.value,
-      facetDisplayValue: this.valueCaption,
-      facetValueState: this.state,
-      facetValuePosition: this.position,
-      facetPosition: this.facet.position
+      ...this.facet.basicAnalyticsFacetState,
+      value: this.value,
+      valuePosition: this.position,
+      displayValue: this.valueCaption,
+      state: this.state
     };
   }
 
