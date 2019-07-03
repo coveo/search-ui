@@ -158,7 +158,7 @@ export class MissingTerms extends Component {
       const termElement = $$('button', { className: 'coveo-missing-term coveo-clickable' }, term);
       termElement.on('click', () => {
         this.addTermForcedToAppear(term);
-        this.logUAMissingTerm(term);
+        this.logAnalyticsAddMissingTerm(term);
         this.executeNewQuery(term);
       });
       return termElement;
@@ -216,7 +216,7 @@ export class MissingTerms extends Component {
     }
   }
 
-  private logUAMissingTerm(term: string) {
+  private logAnalyticsAddMissingTerm(term: string) {
     this.usageAnalytics.logSearchEvent<IAnalyticsMissingTerm>(analyticsActionCauseList.addMissingTerm, {
       missingTerm: term
     });

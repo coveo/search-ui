@@ -3,6 +3,7 @@ import { MissingTermManager } from '../../src/ui/MissingTerm/MissingTermManager'
 import { Simulate } from '../Simulate';
 import { $$, l } from '../Test';
 import { NoopAnalyticsClient } from '../../src/ui/Analytics/NoopAnalyticsClient';
+import { IMissingTermManagerArgs } from '../../src/ui/SearchInterface/SearchInterface';
 
 export function MissingTermsManagerTest() {
   describe('MissingTermManager', () => {
@@ -21,7 +22,13 @@ export function MissingTermsManagerTest() {
 
     beforeEach(() => {
       env = new Mock.MockEnvironmentBuilder().build();
-      new MissingTermManager(env.root, env.queryStateModel, env.queryController, usageAnalytics);
+      const MissingTermManagerArgs: IMissingTermManagerArgs = {
+        element: env.root,
+        queryStateModel: env.queryStateModel,
+        queryController: env.queryController,
+        usageAnalytics: usageAnalytics
+      };
+      new MissingTermManager(MissingTermManagerArgs);
       env.queryStateModel.get = jasmine.createSpy('missingTermSpy').and.callFake(spyGet);
       env.queryStateModel.set = jasmine.createSpy('missingTermSpy').and.callFake(spySet);
       missingTerms = [];
@@ -66,7 +73,7 @@ export function MissingTermsManagerTest() {
         expect(missingTerms.length).toBe(1);
       });
 
-      it('should log an event when it is clicked', () => {
+      it('should log a removeMissingTerm event when it is clicked', () => {
         spyOn(usageAnalytics, 'logSearchEvent');
         missingTerms.push('is');
         missingTerms.push('this');

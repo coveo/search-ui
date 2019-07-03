@@ -50,7 +50,8 @@ export function MissingTermsTest() {
           expect(missingTermsClickableSpy).toHaveBeenCalled();
         });
 
-        it('true it should log an analytic', function() {
+        it(`true,
+        it should log a addMissingTerm event when it is clicked`, function() {
           const query = 'This is my query';
           fakeResult.absentTerms = ['This'];
           test = mockComponent(query);
