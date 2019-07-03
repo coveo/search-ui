@@ -1,10 +1,11 @@
 import 'styling/_MissingTermsBreadcrumb';
 import { $$ } from '../../utils/Dom';
-import { QueryEvents, QueryStateModel, BreadcrumbEvents, l, get } from '../../Core';
+import { IAnalyticsMissingTerm, analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
+import { IMissingTermManagerArgs } from '../SearchInterface/SearchInterface';
+import { QueryEvents, BreadcrumbEvents, l, get } from '../../Core';
 import { IDoneBuildingQueryEventArgs } from '../../events/QueryEvents';
 import { IClearBreadcrumbEventArgs, IPopulateBreadcrumbEventArgs } from '../../events/BreadcrumbEvents';
 import { SVGIcons } from '../../utils/SVGIcons';
-import { QueryController } from '../../controllers/QueryController';
 import { MODEL_EVENTS, IAttributeChangedEventArg } from '../../models/Model';
 import { QUERY_STATE_ATTRIBUTES } from '../../models/QueryStateModel';
 import XRegExp = require('xregexp');
@@ -18,34 +19,34 @@ export class MissingTermManager {
   // List of script: https://www.fontspace.com/unicode/script
   static wordBoundary = '(([\\p{Han}])?([^(\\p{Latin}-)])|^|$)';
 
-  constructor(private root: HTMLElement, private queryStateModel: QueryStateModel, private queryController: QueryController) {
-    $$(root).on(QueryEvents.doneBuildingQuery, (event, args: IDoneBuildingQueryEventArgs) => {
+  constructor(private args: IMissingTermManagerArgs) {
+    $$(args.element).on(QueryEvents.doneBuildingQuery, (event, args: IDoneBuildingQueryEventArgs) => {
       return this.handleBuildingQuery(args);
     });
 
-    $$(root).on(`state:${MODEL_EVENTS.CHANGE_ONE}${QUERY_STATE_ATTRIBUTES.Q}`, (evt, args: IAttributeChangedEventArg) =>
+    $$(args.element).on(`state:${MODEL_EVENTS.CHANGE_ONE}${QUERY_STATE_ATTRIBUTES.Q}`, (evt, args: IAttributeChangedEventArg) =>
       this.handleQueryChange(args)
     );
 
-    $$(root).on(BreadcrumbEvents.populateBreadcrumb, (evt, args: IPopulateBreadcrumbEventArgs) => {
+    $$(args.element).on(BreadcrumbEvents.populateBreadcrumb, (evt, args: IPopulateBreadcrumbEventArgs) => {
       this.handlePopulateBreadcrumb(args);
     });
-    $$(root).on(BreadcrumbEvents.clearBreadcrumb, (evt, args: IClearBreadcrumbEventArgs) => this.handleClearBreadcrumb());
+    $$(args.element).on(BreadcrumbEvents.clearBreadcrumb, (evt, args: IClearBreadcrumbEventArgs) => this.handleClearBreadcrumb());
   }
 
   private handleBuildingQuery(data: IDoneBuildingQueryEventArgs) {
-    const currentMissingTerm = this.queryStateModel.get('missingTerms');
+    const currentMissingTerm = this.args.queryStateModel.get('missingTerms');
     currentMissingTerm.forEach(term => {
       data.queryBuilder.advancedExpression.add(term);
     });
   }
 
   private get termsForcedToAppear(): string[] {
-    return [...this.queryStateModel.get('missingTerms')];
+    return [...this.args.queryStateModel.get('missingTerms')];
   }
 
   private setUpdateTermsForcedToAppear(terms: string[]) {
-    this.queryStateModel.set('missingTerms', [...terms]);
+    this.args.queryStateModel.set('missingTerms', [...terms]);
   }
 
   private handlePopulateBreadcrumb(args: IPopulateBreadcrumbEventArgs) {
@@ -100,7 +101,14 @@ export class MissingTermManager {
     const termIndex = termsForcedToAppearCopy.indexOf(term);
     termsForcedToAppearCopy.splice(termIndex, 1);
     this.setUpdateTermsForcedToAppear(termsForcedToAppearCopy);
-    this.queryController.executeQuery();
+    this.logAnalyticsRemoveMissingTerm(term);
+    this.args.queryController.executeQuery();
+  }
+
+  private logAnalyticsRemoveMissingTerm(term: string) {
+    this.args.usageAnalytics.logSearchEvent<IAnalyticsMissingTerm>(analyticsActionCauseList.removeMissingTerm, {
+      missingTerm: term
+    });
   }
 
   private handleClearBreadcrumb() {
@@ -118,7 +126,7 @@ export class MissingTermManager {
     let breadcrumb = <Breadcrumb>get(<HTMLElement>breadcrumbSelector);
     if (breadcrumb) {
       breadcrumb.getBreadcrumbs();
-      $$(this.root).trigger(BreadcrumbEvents.redrawBreadcrumb);
+      $$(this.args.element).trigger(BreadcrumbEvents.redrawBreadcrumb);
     }
   }
 
