@@ -853,7 +853,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     new AccessibleButton()
       .withElement(more)
       .withSelectAction(() => this.showMore())
-      .withLabel(l('ExpandFacet', this.options.title))
+      .withLabel(l('ShowMoreFacetResults', this.options.title))
       .build();
 
     return more.el;
@@ -867,7 +867,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     new AccessibleButton()
       .withElement(less)
       .withSelectAction(() => this.showLess())
-      .withLabel(l('CollapseFacet', this.options.title))
+      .withLabel(l('ShowLessFacetResults', this.options.title))
       .build();
 
     return less.el;

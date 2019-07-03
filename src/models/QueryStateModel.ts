@@ -76,7 +76,7 @@ export class QueryStateModel extends Model {
     quickview: '',
     debug: false,
     numberOfResults: 10,
-    missingTerm: []
+    missingTerms: []
   };
 
   static attributesEnum = {
@@ -92,7 +92,7 @@ export class QueryStateModel extends Model {
     quickview: 'quickview',
     debug: 'debug',
     numberOfResults: 'numberOfResults',
-    missingTerm: 'missingTerm'
+    missingTerms: 'missingTerms'
   };
 
   static getFacetId(id: string, include: boolean = true) {

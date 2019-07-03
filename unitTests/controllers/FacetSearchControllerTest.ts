@@ -1,6 +1,7 @@
 import { FacetSearchController } from '../../src/controllers/FacetSearchController';
 import { DynamicFacetTestUtils } from '../ui/DynamicFacet/DynamicFacetTestUtils';
 import { DynamicFacet } from '../../src/ui/DynamicFacet/DynamicFacet';
+import { IFacetSearchRequest } from '../../src/rest/Facet/FacetSearchRequest';
 
 export function FacetSearchControllerTest() {
   describe('FacetSearchController', () => {
@@ -13,9 +14,7 @@ export function FacetSearchControllerTest() {
 
     function initializeComponents() {
       facet = DynamicFacetTestUtils.createAdvancedFakeFacet().cmp;
-      facet.values.createFromResponse(
-        DynamicFacetTestUtils.getCompleteFacetResponse(facet, { values: DynamicFacetTestUtils.createFakeFacetValues() })
-      );
+      facet.values.createFromResponse(DynamicFacetTestUtils.getCompleteFacetResponse(facet));
 
       facetSearchController = new FacetSearchController(facet);
     }
@@ -24,14 +23,30 @@ export function FacetSearchControllerTest() {
       const query = 'my query';
       facetSearchController.search(query);
 
-      expect(facet.queryController.getEndpoint().facetSearch).toHaveBeenCalledWith({
+      const expectedRequest: IFacetSearchRequest = {
         field: facet.fieldName,
         numberOfValues: facet.options.numberOfValues,
         ignoreValues: facet.values.allValues,
         captions: facet.options.valueCaption,
         searchContext: facet.queryController.getLastQuery(),
-        query
-      });
+        query: `*${query}*`
+      };
+
+      expect(facet.queryController.getEndpoint().facetSearch).toHaveBeenCalledWith(expectedRequest);
+    });
+
+    it(`when facet option "optionalLeadingWildcard" is false
+    should not prepend the query with a wildcard`, () => {
+      facet.options.useLeadingWildcardInFacetSearch = false;
+
+      const query = 'my query';
+      facetSearchController.search(query);
+
+      const queryWithEndWildcardOnly = `${query}*`;
+
+      expect(facet.queryController.getEndpoint().facetSearch).toHaveBeenCalledWith(
+        jasmine.objectContaining({ query: queryWithEndWildcardOnly })
+      );
     });
   });
 }
