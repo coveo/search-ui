@@ -8,27 +8,26 @@ export class DynamicFacetSearchInput {
   public element: HTMLElement;
   private textInput: TextInput;
   private inputElement: HTMLElement;
+  private inputOptions = {
+    usePlaceholder: true,
+    className: 'coveo-dynamic-facet-search-input',
+    triggerOnChangeAsYouType: true,
+    ariaLabel: l('SearchFacetResults', this.facet.options.title)
+  };
 
   constructor(private facet: DynamicFacet, private search: DynamicFacetSearch) {
     this.create();
+    this.element = this.textInput.getElement();
+    this.inputElement = $$(this.element).find('input');
     this.addAccessibilityAttributes();
   }
 
   private create() {
-    const inputOptions: ITextInputOptions = {
-      usePlaceholder: true,
-      className: 'coveo-dynamic-facet-search-input',
-      triggerOnChangeAsYouType: true,
-      ariaLabel: l('SearchFacetResults', this.facet.options.title)
-    };
-
     this.textInput = new TextInput(
       (inputInstance: TextInput) => this.search.onInputChange(inputInstance.getValue()),
       l('Search'),
-      inputOptions
+      this.inputOptions
     );
-    this.element = this.textInput.getElement();
-    this.inputElement = $$(this.element).find('input');
   }
 
   private addAccessibilityAttributes() {

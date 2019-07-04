@@ -5,6 +5,7 @@ import { DynamicFacetValue } from '../DynamicFacet/DynamicFacetValues/DynamicFac
 import { FacetValueState } from '../../rest/Facet/FacetValueState';
 import { DynamicFacet } from '../DynamicFacet/DynamicFacet';
 import { DynamicFacetSearch } from './DynamicFacetSearch';
+import { l } from '../../strings/Strings';
 
 export class DynamicFacetSearchResults {
   public element: HTMLElement;
@@ -40,15 +41,27 @@ export class DynamicFacetSearchResults {
   public render() {
     this.empty();
     if (!this.hasValues()) {
-      return;
+      return this.renderNoValuesFound();
     }
 
+    this.renderValues();
+  }
+
+  private renderValues() {
     const fragment = document.createDocumentFragment();
     this.facetValues.forEach(facetValue => {
       fragment.appendChild(facetValue.renderer.render());
     });
 
     this.element.appendChild(fragment);
+    $$(this.element).show();
+  }
+
+  private renderNoValuesFound() {
+    const label = l('NoValuesFound');
+    const noValuesFoundElement = $$('li', { className: 'coveo-dynamic-facet-search-result-not-found' }, label).el;
+
+    this.element.appendChild(noValuesFoundElement);
     $$(this.element).show();
   }
 

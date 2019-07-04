@@ -79,7 +79,6 @@ export class DynamicFacetSearch {
   private debouncedTriggerNewFacetSearch = debounce(this.triggerNewFacetSearch, DynamicFacetSearch.delay);
 
   private async triggerNewFacetSearch(terms: string) {
-    console.log('triggering');
     const response = await this.facetSearchController.search(terms);
     this.results.createFromResponse(response);
     this.results.render();
