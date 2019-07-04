@@ -3,6 +3,7 @@ import { l } from '../../strings/Strings';
 import { DynamicFacet } from '../DynamicFacet/DynamicFacet';
 import { $$ } from '../../utils/Dom';
 import { DynamicFacetSearch } from './DynamicFacetSearch';
+import { KEYBOARD } from '../../utils/KeyboardUtils';
 
 export class DynamicFacetSearchInput {
   public element: HTMLElement;
@@ -32,7 +33,8 @@ export class DynamicFacetSearchInput {
   }
 
   private addEventListeners() {
-    $$(this.inputElement).on('blur', () => this.search.onInputBlur());
+    $$(this.inputElement).on('blur', this.search.onInputBlur.bind(this.search));
+    $$(this.inputElement).on('keyup', this.handleKeyboardEvent.bind(this));
   }
 
   private addAccessibilityAttributes() {
@@ -58,5 +60,19 @@ export class DynamicFacetSearchInput {
   public reset() {
     this.textInput.reset();
     this.updateActiveDescendant();
+  }
+
+  private handleKeyboardEvent(event: KeyboardEvent) {
+    switch (event.which) {
+      case KEYBOARD.ESCAPE:
+        this.search.clear();
+        break;
+      case KEYBOARD.DOWN_ARROW:
+        this.search.moveActiveValueDown();
+        break;
+      case KEYBOARD.UP_ARROW:
+        // this.facetSearch.facetSearchElement.moveActiveValueUp();
+        break;
+    }
   }
 }

@@ -28,7 +28,7 @@ export class DynamicFacetValue implements IDynamicFacetValue {
   public numberOfResults: number;
   public position: number;
   public displayValue: string;
-  private renderer: ValueRenderer;
+  public renderer: ValueRenderer;
 
   constructor(
     { value, state, numberOfResults, position, displayValue }: IDynamicFacetValue,

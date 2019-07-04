@@ -25,7 +25,7 @@ $input-height: 35px;
   }
 }
 
-.coveo-dynamic-facet-search-results {
+.coveo-dynamic-facet-search-values {
   background-color: white;
   border: $default-border;
   border-top: none;
@@ -38,6 +38,6 @@ $input-height: 35px;
   z-index: 1;
 }
 
-.coveo-dynamic-facet-search-result-not-found {
+.coveo-dynamic-facet-search-value-not-found {
   padding: 3px 0 6px;
 }

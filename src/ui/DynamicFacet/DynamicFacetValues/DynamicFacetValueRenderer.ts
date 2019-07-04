@@ -27,7 +27,7 @@ export class DynamicFacetValueRenderer implements ValueRenderer {
   }
 
   private renderCheckbox() {
-    this.valueCheckbox = new DynamicFacetValueCheckbox(this.facetValue, this.selectAction);
+    this.valueCheckbox = new DynamicFacetValueCheckbox(this.facetValue, this.selectAction.bind(this));
     this.dom.append(this.valueCheckbox.element);
   }
 
@@ -45,12 +45,12 @@ export class DynamicFacetValueRenderer implements ValueRenderer {
     this.dom.removeClass('coveo-focused');
   }
 
-  private selectAction = () => {
+  private selectAction() {
     this.facet.pinFacetPosition();
     this.facet.toggleSelectValue(this.facetValue.value);
     this.toggleSelectedClass();
     this.facet.enableFreezeCurrentValuesFlag();
     this.facet.enableFreezeFacetOrderFlag();
     this.facet.triggerNewQuery(() => this.facetValue.logSelectActionToAnalytics());
-  };
+  }
 }

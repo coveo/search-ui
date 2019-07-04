@@ -6,12 +6,12 @@ import { DynamicFacetValueCheckbox } from '../DynamicFacet/DynamicFacetValues/Dy
 export class DynamicFacetSearchValueRenderer implements ValueRenderer {
   private dom: Dom;
   private valueCheckbox: DynamicFacetValueCheckbox;
-  private id: string;
+  public id: string;
 
   constructor(private facetValue: DynamicFacetValue, private facet: DynamicFacet) {}
 
   public render() {
-    this.id = `coveo-dynamic-facet-search-result-${this.facetValue.position}`;
+    this.id = `coveo-dynamic-facet-search-value-${this.facetValue.position}`;
     this.dom = $$('li', {
       id: this.id,
       className: 'coveo-dynamic-facet-value coveo-dynamic-facet-selectable',
@@ -30,7 +30,7 @@ export class DynamicFacetSearchValueRenderer implements ValueRenderer {
   }
 
   private renderCheckbox() {
-    this.valueCheckbox = new DynamicFacetValueCheckbox(this.facetValue, this.selectAction);
+    this.valueCheckbox = new DynamicFacetValueCheckbox(this.facetValue, this.selectAction.bind(this));
     $$(this.valueCheckbox.element)
       .find('button')
       .setAttribute('tabindex', '-1');
@@ -39,28 +39,28 @@ export class DynamicFacetSearchValueRenderer implements ValueRenderer {
   }
 
   private addMouseEnterAndOutEventListeners() {
-    $$(this.dom.el).on('mouseenter', () => this.onMouseEnter());
-    $$(this.dom.el).on('mouseleave', () => this.onMouseLeave());
+    $$(this.dom.el).on('mouseenter', () => this.activateFocus());
+    $$(this.dom.el).on('mouseleave', () => this.deactivateFocus());
   }
 
-  private onMouseEnter() {
+  public activateFocus() {
     this.dom.addClass('coveo-focused');
     this.dom.setAttribute('aria-selected', 'true');
-    this.facet.search.updateActiveResult(this.id);
+    this.facet.search.updateActiveValue(this.id, this.facetValue);
   }
 
-  private onMouseLeave() {
+  public deactivateFocus() {
     this.dom.removeClass('coveo-focused');
     this.dom.setAttribute('aria-selected', 'false');
-    this.facet.search.updateActiveResult();
+    this.facet.search.updateActiveValue();
   }
 
-  private selectAction = () => {
+  public selectAction() {
     this.facet.pinFacetPosition();
     this.facet.toggleSelectValue(this.facetValue.value);
     this.toggleSelectedClass();
     this.facet.enableFreezeFacetOrderFlag();
     this.facet.search.clear();
     this.facet.triggerNewQuery(() => this.facetValue.logSelectActionToAnalytics());
-  };
+  }
 }
