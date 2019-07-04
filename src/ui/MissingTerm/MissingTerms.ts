@@ -209,11 +209,13 @@ export class MissingTerms extends Component {
     //p{L} is a Unicode script that matches any character in any language.
     const wordWithBreakpoints = `\\p{L}*[-'?\*’.~=,\/\\\\:\`;_!&\(\)]+\\p{L}*`;
     const regex = XRegExp(wordWithBreakpoints, 'gi');
-    let words: RegExpExecArray;
-    while ((words = regex.exec(this.queryStateModel.get('q'))) !== null) {
+    const query = this.queryStateModel.get('q');
+    let words = regex.exec(query);
+    while (words !== null) {
       if (words[0].indexOf(term) > -1) {
         return false;
       }
+      words = regex.exec(query);
     }
     return !this.containsFeaturedResults(term);
   }
