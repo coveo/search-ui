@@ -59,7 +59,7 @@ export class MissingTerms extends Component {
   // Used to split terms and phrases. Match character that can separate words or caracter for Chinese, Japanese and Korean.
   // Han: Unicode script for Chinesse character
   // We only need to import 1 Asian, charcaters script because what is important here is the space between the caracter and any script will contain it
-  private wordBoundary = '(([\\p{Han}])?([^(\\p{Latin}-)])|^|$)';
+  private wordBoundary = '(([\\p{Han}])?([^(\\p{Latin})])|(^|$|\\(|\\)))';
   private termForcedToAppear: string[];
 
   /**
@@ -176,27 +176,6 @@ export class MissingTerms extends Component {
     return this.termForcedToAppear.indexOf(term) !== -1;
   }
 
-  private containsWildcard(term): boolean {
-    const query = this.queryStateModel.get('q');
-    const regxStarWildcard = XRegExp(`(\\*${term})|${term}\\*`);
-    const regxQuestionMarkWildcard = XRegExp(`(\\?${term})|${term}\\?`);
-
-    const foundStar = this.queryController.getLastQuery().wildcards && regxStarWildcard.test(query);
-    const foundQuestionMark = this.queryController.getLastQuery().questionMark && regxQuestionMarkWildcard.test(query);
-
-    return foundStar || foundQuestionMark;
-  }
-
-  private containsApostrophe(term: string): boolean {
-    if (term.length > 1) {
-      return false;
-    }
-    const query = this.queryStateModel.get('q');
-    const regxApostrophe = RegExp(`'${term}|${term}'`);
-
-    return regxApostrophe.test(query);
-  }
-
   private hideMissingTermsOverTheNumberOfResults(elements: HTMLElement[]) {
     const allMissingTerms = elements.filter(element => {
       return element.tagName === 'BUTTON';
@@ -227,7 +206,16 @@ export class MissingTerms extends Component {
   }
 
   private isValidTerm(term) {
-    return !(this.containsFeaturedResults(term) || this.containsWildcard(term) || this.containsApostrophe(term));
+    //p{L} is a Unicode script that matches any character in any language.
+    const wordWithBreakpoints = `\\p{L}*[-'?\*’.~=,\/\\\\:\`;_!&\(\)]+\\p{L}*`;
+    const regex = XRegExp(wordWithBreakpoints, 'gi');
+    let words: RegExpExecArray;
+    while ((words = regex.exec(this.queryStateModel.get('q'))) !== null) {
+      if (words[0].indexOf(term) > -1) {
+        return false;
+      }
+    }
+    return !this.containsFeaturedResults(term);
   }
 }
 Initialization.registerAutoCreateComponent(MissingTerms);

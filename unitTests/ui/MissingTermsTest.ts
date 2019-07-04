@@ -97,6 +97,42 @@ export function MissingTermsTest() {
     });
     describe('when the langage is', () => {
       describe('English', () => {
+        describe('when a words contains words boundary character', () => {
+          it(`when the missing term is part of the words,
+          it will not be displayed as a missing term.`, () => {
+            const wordBoundarysCharacter = [
+              `-`,
+              `'`,
+              `?`,
+              `*`,
+              `’`,
+              `.`,
+              `~`,
+              `=`,
+              `,`,
+              `/`,
+              `\\`,
+              `:`,
+              `\``,
+              `;`,
+              `_`,
+              `!`,
+              `&`,
+              `(`,
+              `)`
+            ];
+            let query: string;
+            wordBoundarysCharacter.forEach(character => {
+              const apostropheCharacter = `\\${character}s`;
+              query = `efile${apostropheCharacter} `;
+              fakeResult.absentTerms = [`${apostropheCharacter}`];
+              test = mockComponent(query);
+              expect(test.cmp.element.childElementCount).toEqual(0);
+              expect(test.cmp.missingTerms).toEqual([`${apostropheCharacter}`]);
+            });
+          });
+        });
+
         describe('when fetching the missing terms from a query', () => {
           let expectedResult: string[];
           beforeEach(() => {
@@ -177,46 +213,6 @@ export function MissingTermsTest() {
             test.cmp.addTermForcedToAppear(specialCharacter);
             expect(test.cmp.queryStateModel.get('missingTerm')).toEqual([specialCharacter]);
           });
-
-          it(`and the term is of length 1,
-          and the term present have an apostrophe before him,
-          the term is not rendered in the page`, () => {
-            const apostropheCharacter = 's';
-            query = "efile's";
-            fakeResult.absentTerms = [apostropheCharacter];
-            test = mockComponent(query);
-            expect(test.cmp.element.childElementCount).toEqual(0);
-          });
-
-          it(`and the term is of length 1,
-          and the term present have an apostrophe after him,
-          the term is not rendered in the page`, () => {
-            const apostropheCharacter = 's';
-            query = "s'efile";
-            fakeResult.absentTerms = [apostropheCharacter];
-            test = mockComponent(query);
-            expect(test.cmp.element.childElementCount).toEqual(0);
-          });
-
-          it(`and the term is of length superior than 1,
-          and the term present have an apostrophe before him,
-          the term is rendered in the page`, () => {
-            const apostropheCharacter = 'efile';
-            query = "efile's";
-            fakeResult.absentTerms = [apostropheCharacter];
-            test = mockComponent(query);
-            expect(test.cmp.element.childElementCount).toEqual(2);
-          });
-
-          it(`and the term is of length superior than 1,
-          and the term present have an apostrophe after him,
-          the term is rendered in the page`, () => {
-            const apostropheCharacter = 'efile';
-            query = "s'efile";
-            fakeResult.absentTerms = [apostropheCharacter];
-            test = mockComponent(query);
-            expect(test.cmp.element.childElementCount).toEqual(2);
-          });
         });
       });
 
@@ -256,6 +252,41 @@ export function MissingTermsTest() {
             test = mockComponent(query);
             test.cmp.addTermForcedToAppear(KoreanWordPresentMultipleTimes);
             expect(test.cmp.queryStateModel.get('missingTerm')).toEqual([KoreanWordPresentMultipleTimes]);
+          });
+        });
+        describe('when a words contains words boundary character', () => {
+          it(`when the missing term is part of the words,
+          it will not be displayed as a missing term.`, () => {
+            const wordBoundarysCharacter = [
+              `-`,
+              `'`,
+              `?`,
+              `*`,
+              `’`,
+              `.`,
+              `~`,
+              `=`,
+              `,`,
+              `/`,
+              `\\`,
+              `:`,
+              `\``,
+              `;`,
+              `_`,
+              `!`,
+              `&`,
+              `(`,
+              `)`
+            ];
+            let query: string;
+            wordBoundarysCharacter.forEach(character => {
+              const apostropheCharacter = `\\${character}이것은`;
+              query = `쿼리가${apostropheCharacter} `;
+              fakeResult.absentTerms = [`${apostropheCharacter}`];
+              test = mockComponent(query);
+              expect(test.cmp.element.childElementCount).toEqual(0);
+              expect(test.cmp.missingTerms).toEqual([`${apostropheCharacter}`]);
+            });
           });
         });
       });
