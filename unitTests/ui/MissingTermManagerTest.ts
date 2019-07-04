@@ -2,10 +2,13 @@ import * as Mock from '../MockEnvironment';
 import { MissingTermManager } from '../../src/ui/MissingTerm/MissingTermManager';
 import { Simulate } from '../Simulate';
 import { $$, l } from '../Test';
+import { NoopAnalyticsClient } from '../../src/ui/Analytics/NoopAnalyticsClient';
+import { IMissingTermManagerArgs } from '../../src/ui/SearchInterface/SearchInterface';
 
 export function MissingTermsManagerTest() {
   describe('MissingTermManager', () => {
     let env: Mock.IMockEnvironment;
+    const usageAnalytics = new NoopAnalyticsClient();
 
     const getMissingTerms = () => {
       return [...env.queryStateModel.get('missingTerms')];
@@ -23,7 +26,13 @@ export function MissingTermsManagerTest() {
 
     beforeEach(() => {
       env = new Mock.MockEnvironmentBuilder().withLiveQueryStateModel().build();
-      new MissingTermManager(env.root, env.queryStateModel, env.queryController);
+      const MissingTermManagerArgs: IMissingTermManagerArgs = {
+        element: env.root,
+        queryStateModel: env.queryStateModel,
+        queryController: env.queryController,
+        usageAnalytics: usageAnalytics
+      };
+      new MissingTermManager(MissingTermManagerArgs);
     });
 
     it('add missing term from the url in advance query', () => {
@@ -84,6 +93,26 @@ export function MissingTermsManagerTest() {
         expect(getMissingTerms().length).toBe(2);
         element.click();
         expect(getMissingTerms().length).toBe(1);
+      });
+
+      it('should log a removeMissingTerm event when it is clicked', () => {
+        spyOn(usageAnalytics, 'logSearchEvent');
+        const missingTerm1 = 'is';
+        const missingTerm2 = 'this';
+        setMissingTerms(missingTerm1);
+        setMissingTerms(missingTerm2);
+        const breadcrumb = populateBreadcrumb();
+        const element = $$(breadcrumb[0].element).find('.coveo-missing-term-breadcrumb-clear');
+        element.click();
+        expect(usageAnalytics.logSearchEvent).toHaveBeenCalledWith(
+          jasmine.objectContaining({
+            name: 'removeMissingTerm',
+            type: 'missingTerm'
+          }),
+          jasmine.objectContaining({
+            missingTerm: 'is'
+          })
+        );
       });
     });
   });
