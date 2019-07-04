@@ -6,6 +6,7 @@ import { FacetValueState } from '../../rest/Facet/FacetValueState';
 import { DynamicFacet } from '../DynamicFacet/DynamicFacet';
 import { DynamicFacetSearch } from './DynamicFacetSearch';
 import { l } from '../../strings/Strings';
+import { DynamicFacetSearchValueRenderer } from './DynamicFacetSearchValueRenderer';
 
 export class DynamicFacetSearchResults {
   public element: HTMLElement;
@@ -30,10 +31,10 @@ export class DynamicFacetSearchResults {
           state: FacetValueState.idle,
           position: index + 1
         },
-        this.facet
+        this.facet,
+        DynamicFacetSearchValueRenderer
       );
 
-      facetValue.renderer.enableIsInSearchFlag();
       return facetValue;
     });
   }
@@ -50,7 +51,7 @@ export class DynamicFacetSearchResults {
   private renderValues() {
     const fragment = document.createDocumentFragment();
     this.facetValues.forEach(facetValue => {
-      fragment.appendChild(facetValue.renderer.render());
+      fragment.appendChild(facetValue.render());
     });
 
     this.element.appendChild(fragment);

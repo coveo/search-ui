@@ -3,7 +3,16 @@ import { DynamicFacetValueRenderer } from './DynamicFacetValueRenderer';
 import { FacetUtils } from '../../Facet/FacetUtils';
 import { DynamicFacet } from '../DynamicFacet';
 import { FacetValueState } from '../../../rest/Facet/FacetValueState';
-import { IAnalyticsDynamicFacetMeta } from '../../Analytics/AnalyticsActionListMeta';
+import { IAnalyticsDynamicFacetMeta, analyticsActionCauseList } from '../../Analytics/AnalyticsActionListMeta';
+import { l } from '../../../strings/Strings';
+
+export interface ValueRenderer {
+  render(): HTMLElement;
+}
+
+export interface IValueRendererKlass {
+  new (facetValue: DynamicFacetValue, facet: DynamicFacet): ValueRenderer;
+}
 
 export interface IDynamicFacetValue {
   value: string;
@@ -19,15 +28,19 @@ export class DynamicFacetValue implements IDynamicFacetValue {
   public numberOfResults: number;
   public position: number;
   public displayValue: string;
-  public renderer: DynamicFacetValueRenderer;
+  private renderer: ValueRenderer;
 
-  constructor({ value, state, numberOfResults, position, displayValue }: IDynamicFacetValue, private facet: DynamicFacet) {
+  constructor(
+    { value, state, numberOfResults, position, displayValue }: IDynamicFacetValue,
+    private facet: DynamicFacet,
+    rendererKlass: IValueRendererKlass = DynamicFacetValueRenderer
+  ) {
     this.value = value;
     this.state = state;
     this.numberOfResults = numberOfResults;
     this.position = position;
     this.displayValue = displayValue;
-    this.renderer = new DynamicFacetValueRenderer(this, facet);
+    this.renderer = new rendererKlass(this, facet);
   }
 
   public get isSelected() {
@@ -69,6 +82,13 @@ export class DynamicFacetValue implements IDynamicFacetValue {
     return returnValue;
   }
 
+  public get selectAriaLabel() {
+    const selectOrUnselect = !this.isSelected ? 'SelectValueWithResultCount' : 'UnselectValueWithResultCount';
+    const resultCount = l('ResultCount', this.formattedCount);
+
+    return `${l(selectOrUnselect, this.valueCaption, resultCount)}`;
+  }
+
   public get analyticsMeta(): IAnalyticsDynamicFacetMeta {
     return {
       ...this.facet.basicAnalyticsFacetState,
@@ -77,5 +97,16 @@ export class DynamicFacetValue implements IDynamicFacetValue {
       displayValue: this.displayValue ? this.displayValue : this.valueCaption,
       state: this.state
     };
+  }
+
+  public logSelectActionToAnalytics() {
+    const action =
+      this.state === FacetValueState.selected ? analyticsActionCauseList.dynamicFacetSelect : analyticsActionCauseList.dynamicFacetDeselect;
+
+    this.facet.logAnalyticsEvent(action, this.analyticsMeta);
+  }
+
+  public render() {
+    return this.renderer.render();
   }
 }
