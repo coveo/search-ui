@@ -11,7 +11,7 @@ import { DynamicFacetSearchValueRenderer } from './DynamicFacetSearchValueRender
 export class DynamicFacetSearchResults {
   public element: HTMLElement;
   private facetValues: DynamicFacetValue[];
-  private activeResult: string;
+  private activeResultId?: string;
 
   constructor(private facet: DynamicFacet, private search: DynamicFacetSearch) {
     this.element = $$('ul', {
@@ -69,11 +69,7 @@ export class DynamicFacetSearchResults {
   }
 
   public updateActiveResult(resultId?: string) {
-    if (!resultId) {
-      this.activeResult = null;
-    }
-
-    this.activeResult = resultId;
+    this.activeResultId = resultId;
   }
 
   public empty() {
@@ -86,6 +82,6 @@ export class DynamicFacetSearchResults {
   }
 
   public hasActiveResult() {
-    return !this.activeResult;
+    return !!this.activeResultId;
   }
 }
