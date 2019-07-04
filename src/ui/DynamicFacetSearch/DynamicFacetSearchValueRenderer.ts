@@ -40,19 +40,19 @@ export class DynamicFacetSearchValueRenderer implements ValueRenderer {
 
   private addMouseEnterAndOutEventListeners() {
     $$(this.dom.el).on('mouseenter', () => this.onMouseEnter());
-    $$(this.dom.el).on('mouseout', () => this.onMouseOut());
+    $$(this.dom.el).on('mouseleave', () => this.onMouseLeave());
   }
 
   private onMouseEnter() {
     this.dom.addClass('coveo-focused');
     this.dom.setAttribute('aria-selected', 'true');
-    this.facet.updateSearchActiveDescendant(this.id);
+    this.facet.search.updateActiveResult(this.id);
   }
 
-  private onMouseOut() {
+  private onMouseLeave() {
     this.dom.removeClass('coveo-focused');
     this.dom.setAttribute('aria-selected', 'false');
-    this.facet.updateSearchActiveDescendant('');
+    this.facet.search.updateActiveResult();
   }
 
   private selectAction = () => {
@@ -60,6 +60,7 @@ export class DynamicFacetSearchValueRenderer implements ValueRenderer {
     this.facet.toggleSelectValue(this.facetValue.value);
     this.toggleSelectedClass();
     this.facet.enableFreezeFacetOrderFlag();
+    this.facet.search.clear();
     this.facet.triggerNewQuery(() => this.facetValue.logSelectActionToAnalytics());
   };
 }

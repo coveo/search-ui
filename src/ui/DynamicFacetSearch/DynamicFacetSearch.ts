@@ -6,7 +6,6 @@ import { Utils } from '../../utils/Utils';
 import { DynamicFacetSearchInput } from './DynamicFacetSearchInput';
 import { DynamicFacetSearchResults } from './DynamicFacetSearchResults';
 import { debounce, uniqueId } from 'underscore';
-import { InitializationEvents } from '../../events/InitializationEvents';
 
 export class DynamicFacetSearch {
   public element: HTMLElement;
@@ -19,18 +18,10 @@ export class DynamicFacetSearch {
   constructor(private facet: DynamicFacet) {
     this.element = $$('div', { className: 'coveo-dynamic-facet-search' }).el;
     this.id = uniqueId('coveo-dynamic-facet-search-');
-    this.onDocumentClick = this.onDocumentClick.bind(this);
-
-    $$(this.facet.root).on(InitializationEvents.nuke, this.removeDocumentClickListener.bind(this));
 
     this.facetSearchController = new FacetSearchController(this.facet);
     this.createAndAppendInput();
     this.createAndAppendResults();
-  }
-
-  public clear() {
-    this.input.reset();
-    this.results.empty();
   }
 
   private createAndAppendInput() {
@@ -43,8 +34,13 @@ export class DynamicFacetSearch {
     this.element.appendChild(this.results.element);
   }
 
+  public clear() {
+    this.debouncedTriggerNewFacetSearch.cancel();
+    this.input.reset();
+    this.results.empty();
+  }
+
   public onInputChange(value: string) {
-    this.removeDocumentClickListener();
     this.debouncedTriggerNewFacetSearch.cancel();
 
     if (Utils.isEmptyString(value)) {
@@ -53,27 +49,18 @@ export class DynamicFacetSearch {
       return;
     }
 
-    this.addDocumentClickListener();
     this.debouncedTriggerNewFacetSearch(value);
   }
 
-  private onDocumentClick(e: MouseEvent) {
-    if (!this.isTargetInSearch(<HTMLElement>e.target)) {
+  public onInputBlur() {
+    if (!this.results.hasActiveResult()) {
       this.clear();
     }
   }
 
-  private isTargetInSearch(target: HTMLElement) {
-    const parent = $$(target).parent('coveo-dynamic-facet-search');
-    return parent && parent === this.element;
-  }
-
-  private addDocumentClickListener() {
-    document.addEventListener('click', this.onDocumentClick);
-  }
-
-  private removeDocumentClickListener() {
-    document.removeEventListener('click', this.onDocumentClick);
+  public updateActiveResult(resultId?: string) {
+    this.input.updateActiveDescendant(resultId);
+    this.results.updateActiveResult(resultId);
   }
 
   private debouncedTriggerNewFacetSearch = debounce(this.triggerNewFacetSearch, DynamicFacetSearch.delay);

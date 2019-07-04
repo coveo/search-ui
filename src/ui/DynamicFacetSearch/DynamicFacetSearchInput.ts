@@ -8,7 +8,7 @@ export class DynamicFacetSearchInput {
   public element: HTMLElement;
   private textInput: TextInput;
   private inputElement: HTMLElement;
-  private inputOptions = {
+  private inputOptions: ITextInputOptions = {
     usePlaceholder: true,
     className: 'coveo-dynamic-facet-search-input',
     triggerOnChangeAsYouType: true,
@@ -19,6 +19,7 @@ export class DynamicFacetSearchInput {
     this.create();
     this.element = this.textInput.getElement();
     this.inputElement = $$(this.element).find('input');
+    this.addEventListeners();
     this.addAccessibilityAttributes();
   }
 
@@ -28,6 +29,10 @@ export class DynamicFacetSearchInput {
       l('Search'),
       this.inputOptions
     );
+  }
+
+  private addEventListeners() {
+    $$(this.inputElement).on('blur', () => this.search.onInputBlur());
   }
 
   private addAccessibilityAttributes() {

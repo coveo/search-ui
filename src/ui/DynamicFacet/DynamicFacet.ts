@@ -243,11 +243,11 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
   private listenToQueryStateChange = true;
   private padding: FacetPadding;
   private header: DynamicFacetHeader;
-  private search: DynamicFacetSearch;
   private isCollapsed: boolean;
 
   public dynamicFacetManager: DynamicFacetManager;
   public values: DynamicFacetValues;
+  public search: DynamicFacetSearch;
   public position: number = null;
 
   /**
@@ -492,14 +492,6 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
     }
 
     return true;
-  }
-
-  public clearSearch() {
-    this.search && this.search.clear();
-  }
-
-  public updateSearchActiveDescendant(id: string) {
-    this.search && this.search.input.updateActiveDescendant(id);
   }
 
   private initQueryEvents() {
