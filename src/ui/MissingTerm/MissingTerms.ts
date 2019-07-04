@@ -200,19 +200,19 @@ export class MissingTerms extends Component {
     }
   }
 
-  private isValidTerm(term) {
+  private isValidTerm(term: string) {
+    return this.isNonBoundaryTerm(term) && !this.containsFeaturedResults(term);
+  }
+
+  private isNonBoundaryTerm(term: string) {
     //p{L} is a Unicode script that matches any character in any language.
     const wordWithBreakpoints = `\\p{L}*[-'?\*’.~=,\/\\\\:\`;_!&\(\)]+\\p{L}*`;
     const regex = XRegExp(wordWithBreakpoints, 'gi');
     const query = this.queryStateModel.get('q');
-    let words = regex.exec(query);
-    while (words !== null) {
-      if (words[0].indexOf(term) > -1) {
-        return false;
-      }
-      words = regex.exec(query);
-    }
-    return !this.containsFeaturedResults(term);
+    const matches = query.match(regex) || [];
+    return matches.every((word: string) => {
+      return word.indexOf(term) === -1;
+    });
   }
 
   private logAnalyticsAddMissingTerm(term: string) {
