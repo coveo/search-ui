@@ -5,9 +5,10 @@ import { IComponentBindings } from '../Base/ComponentBindings';
 import { ComponentOptions } from '../Base/ComponentOptions';
 import { $$, Initialization, l } from '../../Core';
 import { Dom } from '../../utils/Dom';
-import { analyticsActionCauseList, IAnalyticsIncludeMissingTerm } from '../Analytics/AnalyticsActionListMeta';
+import { analyticsActionCauseList, IAnalyticsMissingTerm } from '../Analytics/AnalyticsActionListMeta';
 import { IQueryResult } from '../../rest/QueryResult';
 import XRegExp = require('xregexp');
+import { MissingTermManager } from './MissingTermManager';
 
 export interface IMissingTermsOptions {
   caption?: string;
@@ -56,10 +57,6 @@ export class MissingTerms extends Component {
     });
   };
 
-  // Used to split terms and phrases. Match character that can separate words or caracter for Chinese, Japanese and Korean.
-  // Han: Unicode script for Chinesse character
-  // We only need to import 1 Asian, charcaters script because what is important here is the space between the caracter and any script will contain it
-  private wordBoundary = '(([\\p{Han}])?([^(\\p{Latin})])|(^|$|\\(|\\)))';
   private termForcedToAppear: string[];
 
   /**
@@ -104,11 +101,11 @@ export class MissingTerms extends Component {
     }
     this.updateTermForcedToAppear();
     this.termForcedToAppear.push(term);
-    this.queryStateModel.set('missingTerm', [...this.termForcedToAppear]);
+    this.queryStateModel.set('missingTerms', [...this.termForcedToAppear]);
   }
 
   private updateTermForcedToAppear() {
-    this.termForcedToAppear = [...this.queryStateModel.get('missingTerm')];
+    this.termForcedToAppear = [...this.queryStateModel.get('missingTerms')];
   }
 
   private addMissingTerms() {
@@ -148,9 +145,6 @@ export class MissingTerms extends Component {
   }
 
   private executeNewQuery(missingTerm: string = this.queryStateModel.get('q')) {
-    this.usageAnalytics.logSearchEvent<IAnalyticsIncludeMissingTerm>(analyticsActionCauseList.missingTermClick, {
-      missingTerm: missingTerm
-    });
     this.queryController.executeQuery();
   }
 
@@ -159,6 +153,7 @@ export class MissingTerms extends Component {
       const termElement = $$('button', { className: 'coveo-missing-term coveo-clickable' }, term);
       termElement.on('click', () => {
         this.addTermForcedToAppear(term);
+        this.logAnalyticsAddMissingTerm(term);
         this.executeNewQuery(term);
       });
       return termElement;
@@ -168,7 +163,7 @@ export class MissingTerms extends Component {
   }
 
   private createWordBoundaryDelimitedRegex(term: string): RegExp {
-    return XRegExp(`${this.wordBoundary}(${term})${this.wordBoundary}`, 'g');
+    return XRegExp(`${MissingTermManager.wordBoundary}(${term})${MissingTermManager.wordBoundary}`, 'g');
   }
 
   private containsFeaturedResults(term: string): boolean {
@@ -218,6 +213,12 @@ export class MissingTerms extends Component {
       words = regex.exec(query);
     }
     return !this.containsFeaturedResults(term);
+  }
+
+  private logAnalyticsAddMissingTerm(term: string) {
+    this.usageAnalytics.logSearchEvent<IAnalyticsMissingTerm>(analyticsActionCauseList.addMissingTerm, {
+      missingTerm: term
+    });
   }
 }
 Initialization.registerAutoCreateComponent(MissingTerms);
