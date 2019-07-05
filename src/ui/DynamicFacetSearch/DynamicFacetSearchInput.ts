@@ -1,6 +1,5 @@
 import { TextInput, ITextInputOptions } from '../FormWidgets/TextInput';
 import { l } from '../../strings/Strings';
-import { DynamicFacet } from '../DynamicFacet/DynamicFacet';
 import { $$ } from '../../utils/Dom';
 import { DynamicFacetSearch } from './DynamicFacetSearch';
 import { KEYBOARD } from '../../utils/KeyboardUtils';
@@ -68,6 +67,9 @@ export class DynamicFacetSearchInput {
 
   private handleKeyboardEvent(event: KeyboardEvent) {
     switch (event.which) {
+      case KEYBOARD.ENTER:
+        this.search.values.selectActiveValue();
+        break;
       case KEYBOARD.ESCAPE:
         this.search.clearAll();
         break;

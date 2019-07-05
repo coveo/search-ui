@@ -141,6 +141,14 @@ export class DynamicFacetSearchValues {
     valueDom.setAttribute('aria-selected', 'false');
   }
 
+  public selectActiveValue() {
+    if (!this.keyboardActiveValue) {
+      return;
+    }
+
+    (<DynamicFacetSearchValueRenderer>this.keyboardActiveValue.renderer).selectAction();
+  }
+
   public moveActiveValueDown() {
     if (!this.facetValues.length) {
       return;
