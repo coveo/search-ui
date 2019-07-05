@@ -6,11 +6,14 @@ $active-text-opacity: 0.6;
   padding: 12px 0;
   margin: 0;
   white-space: normal;
+
+  li {
+    list-style: none;
+  }
 }
 
 .coveo-dynamic-facet-value {
-  list-style: none;
-  margin-bottom: 6px;
+  padding: 2px 0 4px;
 
   &.coveo-selected {
     .coveo-checkbox-span-label,
@@ -35,13 +38,7 @@ $active-text-opacity: 0.6;
     color: $color-blueish-gray;
   }
 
-  .coveo-checkbox-label:hover {
-    .coveo-checkbox-span-label,
-    .coveo-checkbox-span-label-suffix {
-      opacity: $active-text-opacity;
-    }
-  }
-
+  .coveo-checkbox-label:hover,
   &.coveo-focused {
     .coveo-checkbox-span-label,
     .coveo-checkbox-span-label-suffix {

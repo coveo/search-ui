@@ -30,14 +30,31 @@ $input-height: 35px;
   border: $default-border;
   border-top: none;
   width: 100%;
-  padding: 5px 5px 1px;
+  padding: 0;
   margin: 0;
   position: absolute;
   top: $input-height + $input-padding-top;
   list-style: none;
   z-index: 1;
+
+  li {
+    list-style: none;
+  }
+
+  .coveo-dynamic-facet-value {
+    padding: 2px 5px 4px;
+
+    &.coveo-focused {
+      background: $color-blueish-white-grey;
+
+      .coveo-checkbox-span-label,
+      .coveo-checkbox-span-label-suffix {
+        opacity: 1;
+      }
+    }
+  }
 }
 
 .coveo-dynamic-facet-search-value-not-found {
-  padding: 3px 0 6px;
+  padding: 3px 5px 6px;
 }

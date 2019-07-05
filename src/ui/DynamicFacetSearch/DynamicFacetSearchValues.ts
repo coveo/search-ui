@@ -12,7 +12,7 @@ export class DynamicFacetSearchValues {
   public element: HTMLElement;
   private facetValues: DynamicFacetValue[] = [];
   private mouseActiveValue?: DynamicFacetValue;
-  // private keyboardActiveValue?: DynamicFacetValue;
+  private keyboardActiveValue?: DynamicFacetValue;
 
   constructor(private facet: DynamicFacet, private search: DynamicFacetSearch) {
     this.element = $$('ul', {
@@ -76,63 +76,14 @@ export class DynamicFacetSearchValues {
 
   private addEventListeners() {
     this.facetValues.forEach(facetValue => {
-      $$(facetValue.renderedElement).on('mouseenter', this.activateMouseFocusOnElement.bind(this, facetValue));
-      $$(facetValue.renderedElement).on('mouseleave', this.resetMouseFocus.bind(this));
+      $$(facetValue.renderedElement).on('mouseenter', this.setMouseActiveValue.bind(this, facetValue));
+      $$(facetValue.renderedElement).on('mouseleave', this.resetMouseActiveValue.bind(this));
     });
   }
 
-  private activateMouseFocusOnElement(facetValue: DynamicFacetValue) {
-    this.mouseActiveValue = facetValue;
-
-    const valueDom = $$(this.mouseActiveValue.renderedElement);
-    valueDom.addClass('coveo-focused');
-    valueDom.setAttribute('aria-selected', 'true');
-
-    this.search.updateActiveDescendant(valueDom.getAttribute('id'));
-  }
-
-  private resetMouseFocus() {
-    if (!this.mouseActiveValue) {
-      return;
-    }
-
-    const valueDom = $$(this.mouseActiveValue.renderedElement);
-    valueDom.addClass('coveo-focused');
-    valueDom.setAttribute('aria-selected', 'true');
-
-    this.search.updateActiveDescendant();
-    this.mouseActiveValue = null;
-  }
-
-  // // public updateActiveValue(facetValue?: DynamicFacetValue) {
-  // //   this.activeValue = facetValue;
-  // // }
-
-  // // public moveActiveValueDown() {
-  // //   if (!this.facetValues.length) {
-  // //     return;
-  // //   }
-
-  // //   const nextValue = this.nextOrFirstValue;
-  // //   this.activeValue && this.getRendererForValue(this.activeValue).deactivateFocus();
-  // //   this.getRendererForValue(nextValue).activateFocus();
-  // // }
-
-  // // private get nextOrFirstValue() {
-  // //   if (!this.activeValue) {
-  // //     return this.facetValues[0];
-  // //   }
-
-  // //   const nextValueIndex = this.facetValues.indexOf(this.activeValue) + 1;
-  // //   return nextValueIndex < this.facetValues.length ? this.facetValues[nextValueIndex] : this.facetValues[0];
-  // // }
-
-  // private getRendererForValue(facetValue: DynamicFacetValue) {
-  //   return <DynamicFacetSearchValueRenderer>facetValue.renderer;
-  // }
-
   public empty() {
-    this.resetMouseFocus();
+    this.resetMouseActiveValue();
+    this.resetKeyboardActiveValue();
     $$(this.element).empty();
     $$(this.element).hide();
     this.facetValues = [];
@@ -144,5 +95,82 @@ export class DynamicFacetSearchValues {
 
   public isMouseOnValue() {
     return !!this.mouseActiveValue;
+  }
+
+  private setMouseActiveValue(facetValue: DynamicFacetValue) {
+    this.mouseActiveValue = facetValue;
+  }
+
+  private resetMouseActiveValue() {
+    this.mouseActiveValue = null;
+  }
+
+  private setKeyboardActiveValue(facetValue: DynamicFacetValue) {
+    this.keyboardActiveValue = facetValue;
+    this.activateFocusOnValue(this.keyboardActiveValue);
+  }
+
+  private resetKeyboardActiveValue() {
+    if (!this.keyboardActiveValue) {
+      return;
+    }
+
+    this.deactivateFocusOnValue(this.keyboardActiveValue);
+    this.keyboardActiveValue = null;
+  }
+
+  private activateFocusOnValue(facetValue: DynamicFacetValue) {
+    const valueDom = $$(facetValue.renderedElement);
+    valueDom.addClass('coveo-focused');
+    valueDom.setAttribute('aria-selected', 'true');
+
+    this.search.updateActiveDescendant(valueDom.getAttribute('id'));
+  }
+
+  private deactivateFocusOnValue(facetValue: DynamicFacetValue) {
+    const valueDom = $$(facetValue.renderedElement);
+    valueDom.removeClass('coveo-focused');
+    valueDom.setAttribute('aria-selected', 'false');
+
+    this.search.updateActiveDescendant();
+  }
+
+  public moveActiveValueDown() {
+    if (!this.facetValues.length) {
+      return;
+    }
+
+    const nextActiveValue = this.nextOrFirstValue;
+    this.resetKeyboardActiveValue();
+    this.setKeyboardActiveValue(nextActiveValue);
+  }
+
+  public moveActiveValueUp() {
+    if (!this.facetValues.length) {
+      return;
+    }
+
+    const previousActiveValue = this.previousOrLastValue;
+    this.resetKeyboardActiveValue();
+    this.setKeyboardActiveValue(previousActiveValue);
+  }
+
+  private get nextOrFirstValue() {
+    if (!this.keyboardActiveValue) {
+      return this.facetValues[0];
+    }
+
+    const nextValueIndex = this.facetValues.indexOf(this.keyboardActiveValue) + 1;
+    return nextValueIndex < this.facetValues.length ? this.facetValues[nextValueIndex] : this.facetValues[0];
+  }
+
+  private get previousOrLastValue() {
+    const lastValueIndex = this.facetValues.length - 1;
+    if (!this.keyboardActiveValue) {
+      return this.facetValues[lastValueIndex];
+    }
+
+    const previousValueIndex = this.facetValues.indexOf(this.keyboardActiveValue) - 1;
+    return previousValueIndex >= 0 ? this.facetValues[previousValueIndex] : this.facetValues[lastValueIndex];
   }
 }

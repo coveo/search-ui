@@ -71,7 +71,7 @@ export class DynamicFacetSearchInput {
         this.search.moveActiveValueDown();
         break;
       case KEYBOARD.UP_ARROW:
-        // this.facetSearch.facetSearchElement.moveActiveValueUp();
+        this.search.moveActiveValueUp();
         break;
     }
   }

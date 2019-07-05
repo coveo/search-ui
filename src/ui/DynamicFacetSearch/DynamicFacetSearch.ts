@@ -63,7 +63,11 @@ export class DynamicFacetSearch {
   }
 
   public moveActiveValueDown() {
-    // this.values.moveActiveValueDown();
+    this.values.moveActiveValueDown();
+  }
+
+  public moveActiveValueUp() {
+    this.values.moveActiveValueUp();
   }
 
   private debouncedTriggerNewFacetSearch = debounce(this.triggerNewFacetSearch, DynamicFacetSearch.delay);
