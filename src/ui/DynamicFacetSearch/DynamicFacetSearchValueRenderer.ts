@@ -14,7 +14,7 @@ export class DynamicFacetSearchValueRenderer implements ValueRenderer {
     this.id = `coveo-dynamic-facet-search-value-${this.facetValue.position}`;
     this.dom = $$('li', {
       id: this.id,
-      className: 'coveo-dynamic-facet-value coveo-dynamic-facet-selectable',
+      className: 'coveo-dynamic-facet-value coveo-dynamic-facet-search-value coveo-dynamic-facet-selectable',
       dataValue: this.facetValue.value
     });
 

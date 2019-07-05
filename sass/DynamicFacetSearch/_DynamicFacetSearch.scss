@@ -40,21 +40,21 @@ $input-height: 35px;
   li {
     list-style: none;
   }
+}
 
-  .coveo-dynamic-facet-value {
-    padding: 2px 5px 4px;
+.coveo-dynamic-facet-search-value.coveo-dynamic-facet-value {
+  padding: 2px 5px 4px;
 
-    &.coveo-focused {
-      background: $color-blueish-white-grey;
+  &.coveo-focused {
+    background: $color-blueish-white-grey;
 
-      .coveo-checkbox-span-label,
-      .coveo-checkbox-span-label-suffix {
-        opacity: 1;
-      }
+    .coveo-checkbox-span-label,
+    .coveo-checkbox-span-label-suffix {
+      opacity: 1;
     }
   }
 }
 
 .coveo-dynamic-facet-search-value-not-found {
-  padding: 3px 5px 6px;
+  padding: 4px 5px 7px;
 }
