@@ -5,6 +5,11 @@ import { $$ } from '../../utils/Dom';
 import { DynamicFacetSearch } from './DynamicFacetSearch';
 import { KEYBOARD } from '../../utils/KeyboardUtils';
 
+export interface IAccessibilityAttributes {
+  activeDescendant: string;
+  expanded: boolean;
+}
+
 export class DynamicFacetSearchInput {
   public element: HTMLElement;
   private textInput: TextInput;
@@ -12,11 +17,10 @@ export class DynamicFacetSearchInput {
   private inputOptions: ITextInputOptions = {
     usePlaceholder: true,
     className: 'coveo-dynamic-facet-search-input',
-    triggerOnChangeAsYouType: true,
-    ariaLabel: l('SearchFacetResults', this.facet.options.title)
+    triggerOnChangeAsYouType: true
   };
 
-  constructor(private facet: DynamicFacet, private search: DynamicFacetSearch) {
+  constructor(private search: DynamicFacetSearch) {
     this.create();
     this.element = this.textInput.getElement();
     this.inputElement = $$(this.element).find('input');
@@ -42,36 +46,36 @@ export class DynamicFacetSearchInput {
     this.element.setAttribute('role', 'combobox');
     this.element.setAttribute('aria-owns', listboxId);
     this.element.setAttribute('aria-aria-haspopup', 'listbox');
-    this.toggleExpanded(false);
 
+    this.inputElement.setAttribute('id', `${this.search.id}-input`);
     this.inputElement.setAttribute('aria-autocomplete', 'list');
     this.inputElement.setAttribute('aria-controls', listboxId);
-    this.updateActiveDescendant();
+
+    this.updateAccessibilityAttributes({
+      activeDescendant: '',
+      expanded: false
+    });
   }
 
-  public toggleExpanded(expanded: boolean) {
-    this.element.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+  public updateAccessibilityAttributes(attributes: IAccessibilityAttributes) {
+    this.element.setAttribute('aria-expanded', attributes.expanded ? 'true' : 'false');
+    this.inputElement.setAttribute('aria-activedescendant', attributes.activeDescendant);
   }
 
-  public updateActiveDescendant(descendantId = '') {
-    this.inputElement.setAttribute('aria-activedescendant', descendantId);
-  }
-
-  public reset() {
+  public clearInput() {
     this.textInput.reset();
-    this.updateActiveDescendant();
   }
 
   private handleKeyboardEvent(event: KeyboardEvent) {
     switch (event.which) {
       case KEYBOARD.ESCAPE:
-        this.search.clear();
+        this.search.clearAll();
         break;
       case KEYBOARD.DOWN_ARROW:
-        this.search.moveActiveValueDown();
+        this.search.values.moveActiveValueDown();
         break;
       case KEYBOARD.UP_ARROW:
-        this.search.moveActiveValueUp();
+        this.search.values.moveActiveValueUp();
         break;
     }
   }

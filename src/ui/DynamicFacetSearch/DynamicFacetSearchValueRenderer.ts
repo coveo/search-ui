@@ -14,6 +14,7 @@ export class DynamicFacetSearchValueRenderer implements ValueRenderer {
     this.id = `coveo-dynamic-facet-search-value-${this.facetValue.position}`;
     this.dom = $$('li', {
       id: this.id,
+      role: 'option',
       className: 'coveo-dynamic-facet-value coveo-dynamic-facet-search-value coveo-dynamic-facet-selectable',
       dataValue: this.facetValue.value
     });
@@ -41,7 +42,7 @@ export class DynamicFacetSearchValueRenderer implements ValueRenderer {
     this.facet.toggleSelectValue(this.facetValue.value);
     this.toggleSelectedClass();
     this.facet.enableFreezeFacetOrderFlag();
-    this.facet.search.clear();
+    this.facet.search.clearAll();
     this.facet.triggerNewQuery(() => this.facetValue.logSelectActionToAnalytics());
   }
 }

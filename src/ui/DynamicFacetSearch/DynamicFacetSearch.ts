@@ -3,29 +3,47 @@ import { $$ } from '../../utils/Dom';
 import { FacetSearchController } from '../../controllers/FacetSearchController';
 import { DynamicFacet } from '../DynamicFacet/DynamicFacet';
 import { Utils } from '../../utils/Utils';
-import { DynamicFacetSearchInput } from './DynamicFacetSearchInput';
+import { DynamicFacetSearchInput, IAccessibilityAttributes } from './DynamicFacetSearchInput';
 import { DynamicFacetSearchValues } from './DynamicFacetSearchValues';
 import { debounce, uniqueId } from 'underscore';
+import { l } from '../../strings/Strings';
 
 export class DynamicFacetSearch {
   public id: string;
   public element: HTMLElement;
   private input: DynamicFacetSearchInput;
-  private values: DynamicFacetSearchValues;
+  public values: DynamicFacetSearchValues;
   private facetSearchController: FacetSearchController;
   static delay = 400;
 
   constructor(private facet: DynamicFacet) {
     this.element = $$('div', { className: 'coveo-dynamic-facet-search' }).el;
-    this.id = uniqueId('coveo-dynamic-facet-search-');
+    this.id = uniqueId('coveo-dynamic-facet-search');
 
     this.facetSearchController = new FacetSearchController(this.facet);
+    this.createAndAppendLabel();
     this.createAndAppendInput();
     this.createAndAppendValues();
   }
 
+  private createAndAppendLabel() {
+    const label = l('SearchFacetResults', this.facet.options.title);
+    const labelElement = $$(
+      'label',
+      {
+        id: `${this.id}-label`,
+        className: 'coveo-dynamic-facet-search-label',
+        for: `${this.id}-input`,
+        ariaHidden: 'false'
+      },
+      label
+    ).el;
+
+    this.element.appendChild(labelElement);
+  }
+
   private createAndAppendInput() {
-    this.input = new DynamicFacetSearchInput(this.facet, this);
+    this.input = new DynamicFacetSearchInput(this);
     this.element.appendChild(this.input.element);
   }
 
@@ -34,19 +52,17 @@ export class DynamicFacetSearch {
     this.element.appendChild(this.values.element);
   }
 
-  public clear() {
+  public clearAll() {
     this.debouncedTriggerNewFacetSearch.cancel();
-    this.input.reset();
-    this.values.empty();
+    this.input.clearInput();
+    this.values.clearValues();
   }
 
   public onInputChange(value: string) {
     this.debouncedTriggerNewFacetSearch.cancel();
 
     if (Utils.isEmptyString(value)) {
-      this.input.toggleExpanded(false);
-      this.values.empty();
-      return;
+      return this.values.clearValues();
     }
 
     this.debouncedTriggerNewFacetSearch(value);
@@ -54,20 +70,16 @@ export class DynamicFacetSearch {
 
   public onInputBlur() {
     if (!this.values.isMouseOnValue()) {
-      this.clear();
+      this.clearAll();
     }
   }
 
-  public updateActiveDescendant(valueId?: string) {
-    this.input.updateActiveDescendant(valueId);
+  public updateAccessibilityAttributes(attributes: IAccessibilityAttributes) {
+    this.input.updateAccessibilityAttributes(attributes);
   }
 
-  public moveActiveValueDown() {
-    this.values.moveActiveValueDown();
-  }
-
-  public moveActiveValueUp() {
-    this.values.moveActiveValueUp();
+  public updateAriaLive(text: string) {
+    this.facet.searchInterface.ariaLive.updateText(text);
   }
 
   private debouncedTriggerNewFacetSearch = debounce(this.triggerNewFacetSearch, DynamicFacetSearch.delay);
@@ -75,6 +87,5 @@ export class DynamicFacetSearch {
   private async triggerNewFacetSearch(terms: string) {
     const response = await this.facetSearchController.search(terms);
     this.values.renderFromResponse(response);
-    this.input.toggleExpanded(this.values.hasValues());
   }
 }

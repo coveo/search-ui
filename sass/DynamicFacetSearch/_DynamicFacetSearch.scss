@@ -7,6 +7,10 @@ $input-height: 35px;
   position: relative;
 }
 
+.coveo-dynamic-facet-search-label {
+  display: none;
+}
+
 .coveo-dynamic-facet-search-input {
   padding-top: $input-padding-top;
 
