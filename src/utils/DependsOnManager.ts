@@ -1,23 +1,27 @@
 import { Utils } from './Utils';
 import { $$ } from './Dom';
-import { QueryStateModel, QueryEvents } from '../Core';
+import { QueryStateModel, QueryEvents, Component } from '../Core';
 import { ComponentEvents } from '../ui/Base/Component';
 import { MODEL_EVENTS } from '../models/Model';
+import { ComponentsTypes } from './ComponentsTypes';
 
 export interface IDependentFacet {
   reset: () => void;
-  handleNewQuery: () => void;
+  enableDisableDependentFacet: (dependentFacet: Component) => void;
   element: HTMLElement;
+  root: HTMLElement;
   dependsOn: string;
+  id: string;
   queryStateModel: QueryStateModel;
   bind: ComponentEvents;
 }
 
 export class DependsOnManager {
-  constructor(private dependentFacet: IDependentFacet) {}
+  constructor(private dependentFacet: IDependentFacet) {
+    dependentFacet.bind.onRootElement(QueryEvents.newQuery, () => this.handleNewQuery());
+  }
 
   public listenToParentIfDependentFacet() {
-    this.dependentFacet.bind.onRootElement(QueryEvents.newQuery, () => this.dependentFacet.handleNewQuery());
     if (!this.isDependentFacet) {
       return;
     }
@@ -54,5 +58,18 @@ export class DependsOnManager {
   private valuesExistForFacetWithId(id: string) {
     const values = this.dependentFacet.queryStateModel.get(id);
     return values != null && values.length != 0;
+  }
+
+  private handleNewQuery() {
+    const facets = ComponentsTypes.getAllFacetsInstance(this.dependentFacet.root);
+    const dependentFacet = facets.filter(facet => {
+      return this.dependentFacet.id === facet.options.dependsOn;
+    })[0];
+
+    if (!dependentFacet) {
+      return;
+    }
+
+    this.dependentFacet.enableDisableDependentFacet(dependentFacet);
   }
 }

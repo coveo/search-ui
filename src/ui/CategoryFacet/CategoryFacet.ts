@@ -17,7 +17,7 @@ import { Utils } from '../../utils/Utils';
 import { CategoryValue, CategoryValueParent } from './CategoryValue';
 import { pluck, reduce, find, first, last, contains, isArray, keys } from 'underscore';
 import { Assert } from '../../misc/Assert';
-import { QueryEvents, IBuildingQueryEventArgs, IQuerySuccessEventArgs, INewQueryEventArgs } from '../../events/QueryEvents';
+import { QueryEvents, IBuildingQueryEventArgs, IQuerySuccessEventArgs } from '../../events/QueryEvents';
 import { CategoryFacetSearch } from './CategoryFacetSearch';
 import { ICategoryFacetResult } from '../../rest/CategoryFacetResult';
 import { BreadcrumbEvents, IPopulateBreadcrumbEventArgs } from '../../events/BreadcrumbEvents';
@@ -782,24 +782,18 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   private initDependsOnManager() {
     const facetInfo: IDependentFacet = {
       reset: () => this.changeActivePath(this.options.basePath),
-      handleNewQuery: () => this.handleNewQuery(),
+      enableDisableDependentFacet: dependentFacet => this.handleNewQuery(dependentFacet),
       element: this.element,
+      root: this.root,
       dependsOn: this.options.dependsOn,
+      id: this.options.id,
       queryStateModel: this.queryStateModel,
       bind: this.bind
     };
     this.dependsOnManager = new DependsOnManager(facetInfo);
   }
 
-  private handleNewQuery() {
-    const facets = ComponentsTypes.getAllFacetsInstance(this.root);
-    const dependentFacet = facets.filter(facet => {
-      return this.options.id === facet.options.dependsOn;
-    })[0];
-    if (!dependentFacet) {
-      return;
-    }
-
+  private handleNewQuery(dependentFacet: Component) {
     if (this.activePath.length) {
       dependentFacet.enable();
     } else {

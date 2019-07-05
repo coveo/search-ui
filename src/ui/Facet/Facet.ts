@@ -1521,24 +1521,18 @@ export class Facet extends Component {
   private initDependsOnManager() {
     const facetInfo: IDependentFacet = {
       reset: () => this.reset(),
-      handleNewQuery: () => this.handleNewQuery(),
+      enableDisableDependentFacet: dependentFacet => this.handleNewQuery(dependentFacet),
       element: this.element,
+      root: this.root,
       dependsOn: this.options.dependsOn,
+      id: this.options.id,
       queryStateModel: this.queryStateModel,
       bind: this.bind
     };
     this.dependsOnManager = new DependsOnManager(facetInfo);
   }
 
-  private handleNewQuery() {
-    const facets = ComponentsTypes.getAllFacetsInstance(this.root);
-    const dependentFacet = facets.filter(facet => {
-      return this.options.id === facet.options.dependsOn;
-    })[0];
-    if (!dependentFacet) {
-      return;
-    }
-
+  private handleNewQuery(dependentFacet: Component) {
     if (this.getSelectedValues().length) {
       dependentFacet.enable();
     } else {
