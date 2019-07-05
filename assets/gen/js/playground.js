@@ -5128,12 +5128,12 @@ var Playground = /** @class */ (function () {
         return (Dom_1.$$(this.getTitle())
             .text()
             .toLowerCase()
-            .indexOf('coveo component') != -1);
+            .indexOf('component') != -1);
     };
     Playground.prototype.getComponentName = function () {
         var match = Dom_1.$$(this.getTitle())
             .text()
-            .match(/([a-zA-Z]+)$/);
+            .match(/\(Coveo([a-zA-Z]+)\)$/);
         if (match) {
             return match[1];
         }
@@ -5879,8 +5879,8 @@ exports.ResponsiveComponents = ResponsiveComponents;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    lib: '2.6063.10',
-    product: '2.6063.10',
+    lib: '2.6459.3-beta',
+    product: '2.6459.3-beta',
     supportedApiVersion: 2
 };
 
@@ -7269,77 +7269,11 @@ exports.PlaygroundConfiguration = {
             autoTriggerQuery: false
         }
     },
-    Facet: {
+    AdvancedSearch: {
         show: true,
-        options: {
-            field: '@objecttype',
-            title: 'Type'
-        }
-    },
-    Searchbox: {
-        show: true,
-        options: {
-            enableOmnibox: true,
-            enableRevealQuerySuggestAddon: true,
-            inline: true
-        }
-    },
-    SearchButton: {
-        show: true
-    },
-    Omnibox: {
-        show: true,
-        options: {
-            enableQuerySuggestAddon: true,
-            inline: true
-        }
-    },
-    Excerpt: {
-        show: true,
-        isResultComponent: true,
-        basicExpression: 'technology'
-    },
-    Icon: {
-        show: true,
-        isResultComponent: true,
-        basicExpression: 'getting started pdf'
-    },
-    Tab: {
-        show: true,
-        element: new SectionBuilder_1.SectionBuilder(Dom_1.$$('div', { className: 'coveo-tab-section' }))
-            .withComponent('CoveoTab', {
-            'data-caption': 'All content',
-            'data-id': 'All'
-        })
-            .withComponent('CoveoTab', {
-            'data-caption': 'YouTube videos',
-            'data-id': 'YouTube'
-        })
-            .withComponent('CoveoTab', {
-            'data-caption': 'Google Drive',
-            'data-id': 'GoogleDrive'
-        })
-            .withComponent('CoveoTab', {
-            'data-caption': 'Emails',
-            'data-id': 'Emails'
-        })
-            .withComponent('CoveoTab', {
-            'data-caption': 'Salesforce content',
-            'data-id': 'Salesforce'
-        })
-            .build()
-    },
-    FacetSlider: {
-        show: true,
-        options: {
-            field: '@date',
-            dateField: true,
-            queryOverride: '@date>2010/01/01',
-            graph: {
-                steps: 20
-            },
-            rangeSlider: true,
-            title: 'Date distribution'
+        element: new SearchSectionBuilder_1.SearchSectionBuilder().withComponent('CoveoAdvancedSearch').build(),
+        toExecute: function () {
+            setMinHeightOnSearchInterface('300px');
         }
     },
     Badge: {
@@ -7366,17 +7300,36 @@ exports.PlaygroundConfiguration = {
         basicExpression: 'testt',
         element: new SearchSectionBuilder_1.SearchSectionBuilder().withComponent('CoveoDidYouMean').build()
     },
+    DynamicFacet: {
+        show: true,
+        options: {
+            field: '@author',
+            title: 'Author'
+        }
+    },
     ErrorReport: {
         show: true,
         toExecute: function () {
             Coveo['SearchEndpoint'].endpoints['default'].options.accessToken = 'invalid';
         }
     },
+    Excerpt: {
+        show: true,
+        isResultComponent: true,
+        basicExpression: 'technology'
+    },
     ExportToExcel: {
         show: true,
         element: new SearchSectionBuilder_1.SearchSectionBuilder().withComponent('CoveoExportToExcel').build(),
         toExecute: function () {
             setMinHeightOnSearchInterface('300px');
+        }
+    },
+    Facet: {
+        show: true,
+        options: {
+            field: '@objecttype',
+            title: 'Type'
         }
     },
     FacetRange: {
@@ -7411,6 +7364,19 @@ exports.PlaygroundConfiguration = {
                 }
             ],
             sortCriteria: 'alphaascending'
+        }
+    },
+    FacetSlider: {
+        show: true,
+        options: {
+            field: '@date',
+            dateField: true,
+            queryOverride: '@date>2010/01/01',
+            graph: {
+                steps: 20
+            },
+            rangeSlider: true,
+            title: 'Date distribution'
         }
     },
     FieldSuggestions: {
@@ -7480,6 +7446,11 @@ exports.PlaygroundConfiguration = {
         },
         advancedExpression: '@hierarchicfield'
     },
+    Icon: {
+        show: true,
+        isResultComponent: true,
+        basicExpression: 'getting started pdf'
+    },
     Logo: {
         show: true,
         toExecute: function () {
@@ -7499,11 +7470,23 @@ exports.PlaygroundConfiguration = {
         },
         element: new SectionBuilder_1.SectionBuilder().withComponent('CoveoMatrix').build()
     },
-    DynamicFacet: {
+    MissingTerms: {
+        show: true,
+        toExecute: function () {
+            var searchInterface = getSearchInterfaceElement();
+            Coveo.$$(searchInterface).on('afterInitialization', function () {
+                Coveo.state(searchInterface, 'q', 'getting started klingon language');
+            });
+        },
+        element: new SectionBuilder_1.SectionBuilder().withComponent('CoveoMissingTerms').build(),
+        isResultComponent: true,
+        basicExpression: 'getting started klingon language'
+    },
+    Omnibox: {
         show: true,
         options: {
-            field: '@author',
-            title: 'Author'
+            enableQuerySuggestAddon: true,
+            inline: true
         }
     },
     OmniboxResultList: {
@@ -7514,21 +7497,14 @@ exports.PlaygroundConfiguration = {
         }, Dom_1.$$('script', {
             className: 'result-template',
             type: 'text/underscore'
-        }, new SectionBuilder_1.SectionBuilder()
-            .withComponent('CoveoIcon', {
-            'data-small': 'true',
-            'data-with-label': 'false',
-            style: 'display:inline-block; vertical-align:middle; margin-right:5px;'
-        }, 'span')
-            .withComponent('CoveoResultLink', {}, 'a')
-            .build())))
+        }, "<div class=\"coveo-result-frame\">\n              <div class=\"coveo-result-cell\" style=\"vertical-align:top;text-align:center;width:32px;\">\n                <span class=\"CoveoIcon\" data-small=\"true\" data-with-label=\"false\"></span>\n              </div>\n              <div class=\"coveo-result-cell\" style=\"vertical-align: top;padding-left: 16px;\">\n                <div class=\"coveo-result-row\" style=\"margin-top:0;\">\n                  <div class=\"coveo-result-cell\" \">\n                    <a class=\"CoveoResultLink\" ></a>\n                  </div>\n                </div>\n              </div>\n            </div>")))
             .withoutQuerySuggest()
             .build(),
         options: {
             headerTitle: ''
         },
         toExecute: function () {
-            setMinHeightOnSearchInterface('500px');
+            setMinHeightOnSearchInterface('350px');
             getSearchInterfaceInstance().options.resultsPerPage = 5;
         }
     },
@@ -7554,13 +7530,25 @@ exports.PlaygroundConfiguration = {
         isResultComponent: true,
         advancedExpression: '@litopicid @filetype==lithiummessage'
     },
+    PromotedResultsBadge: {
+        show: true,
+        element: new SearchSectionBuilder_1.SearchSectionBuilder()
+            .withComponent('CoveoResultList', {
+            'data-layout': 'list'
+        })
+            .withComponent('CoveoPromotedResultsBadge', {
+            'data-show-badge-for-featured-results': true,
+            'data-show-badge-for-recommended-results': true
+        })
+            .build()
+    },
+    Querybox: {
+        show: true
+    },
     QueryDuration: {
         show: true
     },
     QuerySummary: {
-        show: true
-    },
-    Querybox: {
         show: true
     },
     Quickview: {
@@ -7610,6 +7598,17 @@ exports.PlaygroundConfiguration = {
         toExecute: function () {
             setMinHeightOnSearchInterface('300px');
         }
+    },
+    Searchbox: {
+        show: true,
+        options: {
+            enableOmnibox: true,
+            enableRevealQuerySuggestAddon: true,
+            inline: true
+        }
+    },
+    SearchButton: {
+        show: true
     },
     Settings: {
         show: true,
@@ -7662,37 +7661,43 @@ exports.PlaygroundConfiguration = {
             });
         }
     },
+    Tab: {
+        show: true,
+        element: new SectionBuilder_1.SectionBuilder(Dom_1.$$('div', { className: 'coveo-tab-section' }))
+            .withComponent('CoveoTab', {
+            'data-caption': 'All content',
+            'data-id': 'All'
+        })
+            .withComponent('CoveoTab', {
+            'data-caption': 'YouTube videos',
+            'data-id': 'YouTube'
+        })
+            .withComponent('CoveoTab', {
+            'data-caption': 'Google Drive',
+            'data-id': 'GoogleDrive'
+        })
+            .withComponent('CoveoTab', {
+            'data-caption': 'Emails',
+            'data-id': 'Emails'
+        })
+            .withComponent('CoveoTab', {
+            'data-caption': 'Salesforce content',
+            'data-id': 'Salesforce'
+        })
+            .build()
+    },
     Thumbnail: {
         show: true,
         isResultComponent: true,
         advancedExpression: '@filetype=="youtubevideo"'
     },
+    TimespanFacet: {
+        show: true
+    },
     YouTubeThumbnail: {
         show: true,
         isResultComponent: true,
         advancedExpression: '@filetype=="youtubevideo"'
-    },
-    AdvancedSearch: {
-        show: true,
-        element: new SearchSectionBuilder_1.SearchSectionBuilder().withComponent('CoveoAdvancedSearch').build(),
-        toExecute: function () {
-            setMinHeightOnSearchInterface('300px');
-        }
-    },
-    TimespanFacet: {
-        show: true
-    },
-    PromotedResultsBadge: {
-        show: true,
-        element: new SearchSectionBuilder_1.SearchSectionBuilder()
-            .withComponent('CoveoResultList', {
-            'data-layout': 'list'
-        })
-            .withComponent('CoveoPromotedResultsBadge', {
-            'data-show-badge-for-featured-results': true,
-            'data-show-badge-for-recommended-results': true
-        })
-            .build()
     }
 };
 
@@ -8703,6 +8708,12 @@ var dict = {
     "PageNumber": "Page {0}",
     "DisplayResultsPerPage": "Display {0} results per page",
     "GroupByAndFacetRequestsCannotCoexist": "The query is invalid because it contains both Group By and Facet requests. Ensure that the search interface does not initialize DynamicFacet components alongside Facet components (or alongside any component extending the Facet component, such as FacetRange or FacetSlider).",
+    "MustContain": "Must contain:",
+    "Missing": "Missing:",
+    "Filters": "Filters",
+    "FiltersDropdown": "Filters dropdown",
+    "OpenFiltersDropdown": "Open the filters dropdown",
+    "CloseFiltersDropdown": "Close the filters dropdown",
 };
 function defaultLanguage() {
     var locales = String["locales"] || (String["locales"] = {});
