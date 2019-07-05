@@ -137,10 +137,8 @@ export class MissingTerms extends Component {
   }
 
   private buildMissingTerms(): Dom[] {
-    const terms: Dom[] = this.missingTerms.map(term => {
-      if (this.containsFeaturedResults(term) || this.containsWildcard(term)) {
-        return;
-      }
+    const validTerms = this.missingTerms.filter(term => this.isValidTerm(term));
+    const terms: Dom[] = validTerms.map(term => {
       return this.makeTermClickableIfEnabled(term);
     });
     return terms;
@@ -173,17 +171,6 @@ export class MissingTerms extends Component {
     return this.termForcedToAppear.indexOf(term) !== -1;
   }
 
-  private containsWildcard(term): boolean {
-    const query = this.queryStateModel.get('q');
-    const regxStarWildcard = XRegExp(`(\\*${term})|${term}\\*`);
-    const regxQuestionMarkWildcard = XRegExp(`(\\?${term})|${term}\\?`);
-
-    const foundStar = this.queryController.getLastQuery().wildcards && regxStarWildcard.test(query);
-    const foundQuestionMark = this.queryController.getLastQuery().questionMark && regxQuestionMarkWildcard.test(query);
-
-    return foundStar || foundQuestionMark;
-  }
-
   private hideMissingTermsOverTheNumberOfResults(elements: HTMLElement[]) {
     const allMissingTerms = elements.filter(element => {
       return element.tagName === 'BUTTON';
@@ -211,6 +198,21 @@ export class MissingTerms extends Component {
       $$(allMissingTerms[index]).show();
       allMissingTerms[index].removeAttribute('style');
     }
+  }
+
+  private isValidTerm(term: string) {
+    return this.isNonBoundaryTerm(term) && !this.containsFeaturedResults(term);
+  }
+
+  private isNonBoundaryTerm(term: string) {
+    //p{L} is a Unicode script that matches any character in any language.
+    const wordWithBreakpoints = `\\p{L}*[-'?\*’.~=,\/\\\\:\`;_!&\(\)]+\\p{L}*`;
+    const regex = XRegExp(wordWithBreakpoints, 'gi');
+    const query = this.queryStateModel.get('q');
+    const matches = query.match(regex) || [];
+    return matches.every((word: string) => {
+      return word.indexOf(term) === -1;
+    });
   }
 
   private logAnalyticsAddMissingTerm(term: string) {
