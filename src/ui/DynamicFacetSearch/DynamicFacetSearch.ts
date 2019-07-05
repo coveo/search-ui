@@ -7,12 +7,15 @@ import { DynamicFacetSearchInput, IAccessibilityAttributes } from './DynamicFace
 import { DynamicFacetSearchValues } from './DynamicFacetSearchValues';
 import { debounce, uniqueId } from 'underscore';
 import { l } from '../../strings/Strings';
+import { SVGDom } from '../../utils/SVGDom';
+import { SVGIcons } from '../../utils/SVGIcons';
 
 export class DynamicFacetSearch {
   public id: string;
   public element: HTMLElement;
   private input: DynamicFacetSearchInput;
   public values: DynamicFacetSearchValues;
+  private waitAnimationElement: HTMLElement;
   private facetSearchController: FacetSearchController;
   static delay = 400;
 
@@ -23,6 +26,7 @@ export class DynamicFacetSearch {
     this.facetSearchController = new FacetSearchController(this.facet);
     this.createAndAppendLabel();
     this.createAndAppendInput();
+    this.createAndAppendWaitAnimation();
     this.createAndAppendValues();
   }
 
@@ -47,24 +51,36 @@ export class DynamicFacetSearch {
     this.element.appendChild(this.input.element);
   }
 
+  private createAndAppendWaitAnimation() {
+    this.waitAnimationElement = $$('div', { className: 'coveo-dynamic-facet-search-wait-animation' }, SVGIcons.icons.loading).el;
+    SVGDom.addClassToSVGInContainer(this.waitAnimationElement, 'coveo-dynamic-facet-header-wait-animation-svg');
+    this.toggleWaitAnimation(false);
+    this.element.appendChild(this.waitAnimationElement);
+  }
+
+  private toggleWaitAnimation(show: boolean) {
+    $$(this.waitAnimationElement).toggle(show);
+  }
+
   private createAndAppendValues() {
     this.values = new DynamicFacetSearchValues(this.facet, this);
     this.element.appendChild(this.values.element);
   }
 
   public clearAll() {
-    this.debouncedTriggerNewFacetSearch.cancel();
+    this.cancelFacetSearch();
     this.input.clearInput();
     this.values.clearValues();
   }
 
   public onInputChange(value: string) {
-    this.debouncedTriggerNewFacetSearch.cancel();
+    this.cancelFacetSearch();
 
     if (Utils.isEmptyString(value)) {
       return this.values.clearValues();
     }
 
+    this.toggleWaitAnimation(true);
     this.debouncedTriggerNewFacetSearch(value);
   }
 
@@ -82,10 +98,16 @@ export class DynamicFacetSearch {
     this.facet.searchInterface.ariaLive.updateText(text);
   }
 
+  private cancelFacetSearch() {
+    this.toggleWaitAnimation(false);
+    this.debouncedTriggerNewFacetSearch.cancel();
+  }
+
   private debouncedTriggerNewFacetSearch = debounce(this.triggerNewFacetSearch, DynamicFacetSearch.delay);
 
   private async triggerNewFacetSearch(terms: string) {
     const response = await this.facetSearchController.search(terms);
+    this.toggleWaitAnimation(false);
     this.values.renderFromResponse(response);
   }
 }

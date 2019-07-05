@@ -1,7 +1,7 @@
 @import '../Variables';
 
 $input-padding-top: 15px;
-$input-height: 35px;
+$input-height: 36px;
 
 .coveo-dynamic-facet-search {
   position: relative;
@@ -21,6 +21,12 @@ $input-height: 35px;
     border: $default-border;
     font-size: $font-size-smaller;
   }
+}
+
+.coveo-dynamic-facet-search-wait-animation {
+  position: absolute;
+  right: 10px;
+  top: $input-padding-top + 7px;
 }
 
 .coveo-dynamic-facet-collapsed {
