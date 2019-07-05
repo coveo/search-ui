@@ -6,12 +6,11 @@ import { Utils } from '../../utils/Utils';
 import { DynamicFacetSearchInput } from './DynamicFacetSearchInput';
 import { DynamicFacetSearchValues } from './DynamicFacetSearchValues';
 import { debounce, uniqueId } from 'underscore';
-import { DynamicFacetValue } from '../DynamicFacet/DynamicFacetValues/DynamicFacetValue';
 
 export class DynamicFacetSearch {
-  public element: HTMLElement;
-  public input: DynamicFacetSearchInput;
   public id: string;
+  public element: HTMLElement;
+  private input: DynamicFacetSearchInput;
   private values: DynamicFacetSearchValues;
   private facetSearchController: FacetSearchController;
   static delay = 400;
@@ -54,26 +53,24 @@ export class DynamicFacetSearch {
   }
 
   public onInputBlur() {
-    if (!this.values.hasActiveValue()) {
+    if (!this.values.isMouseOnValue()) {
       this.clear();
     }
   }
 
-  public updateActiveValue(valueId?: string, facetValue?: DynamicFacetValue) {
+  public updateActiveDescendant(valueId?: string) {
     this.input.updateActiveDescendant(valueId);
-    this.values.updateActiveValue(facetValue);
   }
 
   public moveActiveValueDown() {
-    this.values.moveActiveValueDown();
+    // this.values.moveActiveValueDown();
   }
 
   private debouncedTriggerNewFacetSearch = debounce(this.triggerNewFacetSearch, DynamicFacetSearch.delay);
 
   private async triggerNewFacetSearch(terms: string) {
     const response = await this.facetSearchController.search(terms);
-    this.values.createFromResponse(response);
-    this.values.render();
+    this.values.renderFromResponse(response);
     this.input.toggleExpanded(this.values.hasValues());
   }
 }

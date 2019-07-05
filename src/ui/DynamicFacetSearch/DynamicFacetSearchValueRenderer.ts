@@ -20,8 +20,6 @@ export class DynamicFacetSearchValueRenderer implements ValueRenderer {
 
     this.toggleSelectedClass();
     this.renderCheckbox();
-    this.addMouseEnterAndOutEventListeners();
-
     return this.dom.el;
   }
 
@@ -36,23 +34,6 @@ export class DynamicFacetSearchValueRenderer implements ValueRenderer {
       .setAttribute('tabindex', '-1');
 
     this.dom.append(this.valueCheckbox.element);
-  }
-
-  private addMouseEnterAndOutEventListeners() {
-    $$(this.dom.el).on('mouseenter', () => this.activateFocus());
-    $$(this.dom.el).on('mouseleave', () => this.deactivateFocus());
-  }
-
-  public activateFocus() {
-    this.dom.addClass('coveo-focused');
-    this.dom.setAttribute('aria-selected', 'true');
-    this.facet.search.updateActiveValue(this.id, this.facetValue);
-  }
-
-  public deactivateFocus() {
-    this.dom.removeClass('coveo-focused');
-    this.dom.setAttribute('aria-selected', 'false');
-    this.facet.search.updateActiveValue();
   }
 
   public selectAction() {

@@ -29,6 +29,7 @@ export class DynamicFacetValue implements IDynamicFacetValue {
   public position: number;
   public displayValue: string;
   public renderer: ValueRenderer;
+  private element: HTMLElement = null;
 
   constructor(
     { value, state, numberOfResults, position, displayValue }: IDynamicFacetValue,
@@ -106,7 +107,16 @@ export class DynamicFacetValue implements IDynamicFacetValue {
     this.facet.logAnalyticsEvent(action, this.analyticsMeta);
   }
 
-  public render() {
-    return this.renderer.render();
+  private render() {
+    this.element = this.renderer.render();
+    return this.element;
+  }
+
+  public get renderedElement() {
+    if (this.element) {
+      return this.element;
+    }
+
+    return this.render();
   }
 }

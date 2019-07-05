@@ -139,7 +139,7 @@ export class DynamicFacetValues {
     $$(this.list).empty();
 
     this.facetValues.forEach(facetValue => {
-      fragment.appendChild(facetValue.render());
+      fragment.appendChild(facetValue.renderedElement);
     });
 
     if (this.shouldEnableShowLess) {

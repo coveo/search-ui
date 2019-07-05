@@ -11,7 +11,8 @@ import { DynamicFacetSearchValueRenderer } from './DynamicFacetSearchValueRender
 export class DynamicFacetSearchValues {
   public element: HTMLElement;
   private facetValues: DynamicFacetValue[] = [];
-  private activeValue?: DynamicFacetValue;
+  private mouseActiveValue?: DynamicFacetValue;
+  // private keyboardActiveValue?: DynamicFacetValue;
 
   constructor(private facet: DynamicFacet, private search: DynamicFacetSearch) {
     this.element = $$('ul', {
@@ -22,7 +23,13 @@ export class DynamicFacetSearchValues {
     $$(this.element).hide();
   }
 
-  public createFromResponse(response: IFacetSearchResponse) {
+  public renderFromResponse(response: IFacetSearchResponse) {
+    this.empty();
+    this.mapResponseToValues(response);
+    this.render();
+  }
+
+  private mapResponseToValues(response: IFacetSearchResponse) {
     this.facetValues = response.values.map((value, index) => {
       const facetValue = new DynamicFacetValue(
         {
@@ -38,26 +45,26 @@ export class DynamicFacetSearchValues {
 
       return facetValue;
     });
-    this.updateActiveValue();
   }
 
-  public render() {
-    this.empty();
+  private render() {
+    $$(this.element).show();
+
     if (!this.hasValues()) {
       return this.renderNoValuesFound();
     }
 
     this.renderValues();
+    this.addEventListeners();
   }
 
   private renderValues() {
     const fragment = document.createDocumentFragment();
     this.facetValues.forEach(facetValue => {
-      fragment.appendChild(facetValue.render());
+      fragment.appendChild(facetValue.renderedElement);
     });
 
     this.element.appendChild(fragment);
-    $$(this.element).show();
   }
 
   private renderNoValuesFound() {
@@ -65,47 +72,77 @@ export class DynamicFacetSearchValues {
     const noValuesFoundElement = $$('li', { className: 'coveo-dynamic-facet-search-value-not-found' }, label).el;
 
     this.element.appendChild(noValuesFoundElement);
-    $$(this.element).show();
   }
 
-  public updateActiveValue(facetValue?: DynamicFacetValue) {
-    this.activeValue = facetValue;
+  private addEventListeners() {
+    this.facetValues.forEach(facetValue => {
+      $$(facetValue.renderedElement).on('mouseenter', this.activateMouseFocusOnElement.bind(this, facetValue));
+      $$(facetValue.renderedElement).on('mouseleave', this.resetMouseFocus.bind(this));
+    });
   }
 
-  public moveActiveValueDown() {
-    if (!this.facetValues.length) {
+  private activateMouseFocusOnElement(facetValue: DynamicFacetValue) {
+    this.mouseActiveValue = facetValue;
+
+    const valueDom = $$(this.mouseActiveValue.renderedElement);
+    valueDom.addClass('coveo-focused');
+    valueDom.setAttribute('aria-selected', 'true');
+
+    this.search.updateActiveDescendant(valueDom.getAttribute('id'));
+  }
+
+  private resetMouseFocus() {
+    if (!this.mouseActiveValue) {
       return;
     }
 
-    const nextValue = this.nextOrFirstValue;
-    this.activeValue && this.getRendererForValue(this.activeValue).deactivateFocus();
-    this.getRendererForValue(nextValue).activateFocus();
+    const valueDom = $$(this.mouseActiveValue.renderedElement);
+    valueDom.addClass('coveo-focused');
+    valueDom.setAttribute('aria-selected', 'true');
+
+    this.search.updateActiveDescendant();
+    this.mouseActiveValue = null;
   }
 
-  private get nextOrFirstValue() {
-    if (!this.activeValue) {
-      return this.facetValues[0];
-    }
+  // // public updateActiveValue(facetValue?: DynamicFacetValue) {
+  // //   this.activeValue = facetValue;
+  // // }
 
-    const nextValueIndex = this.facetValues.indexOf(this.activeValue) + 1;
-    console.log('nextValueIndex', nextValueIndex);
-    return nextValueIndex < this.facetValues.length ? this.facetValues[nextValueIndex] : this.facetValues[0];
-  }
+  // // public moveActiveValueDown() {
+  // //   if (!this.facetValues.length) {
+  // //     return;
+  // //   }
 
-  private getRendererForValue(facetValue: DynamicFacetValue) {
-    return <DynamicFacetSearchValueRenderer>facetValue.renderer;
-  }
+  // //   const nextValue = this.nextOrFirstValue;
+  // //   this.activeValue && this.getRendererForValue(this.activeValue).deactivateFocus();
+  // //   this.getRendererForValue(nextValue).activateFocus();
+  // // }
+
+  // // private get nextOrFirstValue() {
+  // //   if (!this.activeValue) {
+  // //     return this.facetValues[0];
+  // //   }
+
+  // //   const nextValueIndex = this.facetValues.indexOf(this.activeValue) + 1;
+  // //   return nextValueIndex < this.facetValues.length ? this.facetValues[nextValueIndex] : this.facetValues[0];
+  // // }
+
+  // private getRendererForValue(facetValue: DynamicFacetValue) {
+  //   return <DynamicFacetSearchValueRenderer>facetValue.renderer;
+  // }
 
   public empty() {
+    this.resetMouseFocus();
     $$(this.element).empty();
     $$(this.element).hide();
+    this.facetValues = [];
   }
 
   public hasValues() {
     return !!this.facetValues.length;
   }
 
-  public hasActiveValue() {
-    return !!this.activeValue;
+  public isMouseOnValue() {
+    return !!this.mouseActiveValue;
   }
 }
