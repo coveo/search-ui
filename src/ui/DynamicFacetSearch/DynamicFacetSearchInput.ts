@@ -3,6 +3,7 @@ import { l } from '../../strings/Strings';
 import { $$ } from '../../utils/Dom';
 import { DynamicFacetSearch } from './DynamicFacetSearch';
 import { KEYBOARD } from '../../utils/KeyboardUtils';
+import { Utils } from '../../utils/Utils';
 
 export interface IAccessibilityAttributes {
   activeDescendant: string;
@@ -37,7 +38,8 @@ export class DynamicFacetSearchInput {
 
   private addEventListeners() {
     $$(this.inputElement).on('blur', this.search.onInputBlur.bind(this.search));
-    $$(this.inputElement).on('keydown', this.handleKeyboardEvent.bind(this));
+    $$(this.inputElement).on('keydown', this.handleKeyboardDownEvent.bind(this));
+    $$(this.inputElement).on('keyup', this.handleKeyboardUpEvent.bind(this));
   }
 
   private addAccessibilityAttributes() {
@@ -65,21 +67,29 @@ export class DynamicFacetSearchInput {
     this.textInput.reset();
   }
 
-  private handleKeyboardEvent(event: KeyboardEvent) {
+  private handleKeyboardDownEvent(event: KeyboardEvent) {
+    switch (event.which) {
+      case KEYBOARD.DOWN_ARROW:
+        event.preventDefault();
+        this.search.values.moveActiveValueDown();
+        break;
+      case KEYBOARD.UP_ARROW:
+        event.preventDefault();
+        this.search.values.moveActiveValueUp();
+        break;
+    }
+  }
+
+  private handleKeyboardUpEvent(event: KeyboardEvent) {
     switch (event.which) {
       case KEYBOARD.ENTER:
         this.search.values.selectActiveValue();
         break;
       case KEYBOARD.ESCAPE:
+        if (Utils.isNonEmptyString(this.textInput.getValue())) {
+          event.stopPropagation();
+        }
         this.search.clearAll();
-        break;
-      case KEYBOARD.DOWN_ARROW:
-        this.search.values.moveActiveValueDown();
-        event.preventDefault();
-        break;
-      case KEYBOARD.UP_ARROW:
-        this.search.values.moveActiveValueUp();
-        event.preventDefault();
         break;
     }
   }
