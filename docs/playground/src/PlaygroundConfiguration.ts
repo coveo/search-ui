@@ -261,6 +261,7 @@ export const PlaygroundConfiguration: IStringMap<IComponentPlaygroundConfigurati
         Coveo.state(searchInterface, 'q', 'getting started klingon language');
       });
     },
+    element: new SectionBuilder().withComponent('CoveoMissingTerms').build(),
     isResultComponent: true,
     basicExpression: 'getting started klingon language'
   },
