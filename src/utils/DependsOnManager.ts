@@ -10,6 +10,7 @@ export interface IDependentFacet {
   dependsOn: string;
   queryStateModel: QueryStateModel;
   bind: ComponentEvents;
+  updateComponentAvailibility: () => void;
 }
 
 export class DependsOnManager {
@@ -26,6 +27,8 @@ export class DependsOnManager {
   public updateVisibilityBasedOnDependsOn() {
     if (this.isDependentFacet) {
       $$(this.dependentFacet.element).toggleClass('coveo-facet-dependent', !this.parentFacetHasSelectedValues);
+    } else {
+      this.dependentFacet.updateComponentAvailibility();
     }
   }
 

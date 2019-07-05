@@ -1521,12 +1521,27 @@ export class Facet extends Component {
   private initDependsOnManager() {
     const facetInfo: IDependentFacet = {
       reset: () => this.reset(),
+      updateComponentAvailibility: () => this.dependsOnUpdateFacet(),
       element: this.element,
       dependsOn: this.options.dependsOn,
       queryStateModel: this.queryStateModel,
       bind: this.bind
     };
     this.dependsOnManager = new DependsOnManager(facetInfo);
+  }
+
+  private dependsOnUpdateFacet() {
+    const facets = this.searchInterface.getComponents<Facet>('Facet');
+    const dependentFacet = facets.filter(facet => {
+      return this.options.id === facet.options.dependsOn;
+    })[0];
+    if (this.getSelectedValues().length) {
+      dependentFacet.enable();
+      dependentFacet.dependsOnManager.updateVisibilityBasedOnDependsOn();
+    } else {
+      dependentFacet.disable();
+      dependentFacet.dependsOnManager.updateVisibilityBasedOnDependsOn();
+    }
   }
 
   private dependsOnUpdateParentDisplayValue() {
