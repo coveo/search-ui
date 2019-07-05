@@ -11,7 +11,7 @@ import { DynamicFacetSearchValueRenderer } from './DynamicFacetSearchValueRender
 export class DynamicFacetSearchValues {
   public element: HTMLElement;
   private facetValues: DynamicFacetValue[] = [];
-  private mouseActiveValue?: DynamicFacetValue;
+  public mouseIsOverValue = false;
   private keyboardActiveValue?: DynamicFacetValue;
 
   constructor(private facet: DynamicFacet, private search: DynamicFacetSearch) {
@@ -85,13 +85,13 @@ export class DynamicFacetSearchValues {
 
   private addEventListeners() {
     this.facetValues.forEach(facetValue => {
-      $$(facetValue.renderedElement).on('mouseenter', this.setMouseActiveValue.bind(this, facetValue));
-      $$(facetValue.renderedElement).on('mouseleave', this.resetMouseActiveValue.bind(this));
+      $$(facetValue.renderedElement).on('mouseenter', () => (this.mouseIsOverValue = true));
+      $$(facetValue.renderedElement).on('mouseleave', () => (this.mouseIsOverValue = false));
     });
   }
 
   public clearValues() {
-    this.resetMouseActiveValue();
+    this.mouseIsOverValue = false;
     this.resetKeyboardActiveValue();
     $$(this.element).empty();
     $$(this.element).hide();
@@ -101,18 +101,6 @@ export class DynamicFacetSearchValues {
 
   private hasValues() {
     return !!this.facetValues.length;
-  }
-
-  public isMouseOnValue() {
-    return !!this.mouseActiveValue;
-  }
-
-  private setMouseActiveValue(facetValue: DynamicFacetValue) {
-    this.mouseActiveValue = facetValue;
-  }
-
-  private resetMouseActiveValue() {
-    this.mouseActiveValue = null;
   }
 
   private setKeyboardActiveValue(facetValue: DynamicFacetValue) {

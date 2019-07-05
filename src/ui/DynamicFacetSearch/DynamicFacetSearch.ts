@@ -69,7 +69,7 @@ export class DynamicFacetSearch {
   }
 
   public onInputBlur() {
-    if (!this.values.isMouseOnValue()) {
+    if (!this.values.mouseIsOverValue) {
       this.clearAll();
     }
   }
