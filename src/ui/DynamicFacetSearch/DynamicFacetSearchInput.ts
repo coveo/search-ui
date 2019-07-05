@@ -37,7 +37,7 @@ export class DynamicFacetSearchInput {
 
   private addEventListeners() {
     $$(this.inputElement).on('blur', this.search.onInputBlur.bind(this.search));
-    $$(this.inputElement).on('keyup', this.handleKeyboardEvent.bind(this));
+    $$(this.inputElement).on('keydown', this.handleKeyboardEvent.bind(this));
   }
 
   private addAccessibilityAttributes() {
@@ -75,9 +75,11 @@ export class DynamicFacetSearchInput {
         break;
       case KEYBOARD.DOWN_ARROW:
         this.search.values.moveActiveValueDown();
+        event.preventDefault();
         break;
       case KEYBOARD.UP_ARROW:
         this.search.values.moveActiveValueUp();
+        event.preventDefault();
         break;
     }
   }
