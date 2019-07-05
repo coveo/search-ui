@@ -17,7 +17,7 @@ import { Utils } from '../../utils/Utils';
 import { CategoryValue, CategoryValueParent } from './CategoryValue';
 import { pluck, reduce, find, first, last, contains, isArray, keys } from 'underscore';
 import { Assert } from '../../misc/Assert';
-import { QueryEvents, IBuildingQueryEventArgs, IQuerySuccessEventArgs } from '../../events/QueryEvents';
+import { QueryEvents, IBuildingQueryEventArgs, IQuerySuccessEventArgs, INewQueryEventArgs } from '../../events/QueryEvents';
 import { CategoryFacetSearch } from './CategoryFacetSearch';
 import { ICategoryFacetResult } from '../../rest/CategoryFacetResult';
 import { BreadcrumbEvents, IPopulateBreadcrumbEventArgs } from '../../events/BreadcrumbEvents';
@@ -40,6 +40,7 @@ import { CategoryFacetHeader } from './CategoryFacetHeader';
 import { AccessibleButton } from '../../utils/AccessibleButton';
 import { IStringMap } from '../../rest/GenericParam';
 import { DependsOnManager, IDependentFacet } from '../../utils/DependsOnManager';
+import { ComponentsTypes } from '../../utils/ComponentsTypes';
 
 export interface ICategoryFacetOptions extends IResponsiveComponentOptions {
   field: IFieldOption;
@@ -781,12 +782,29 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   private initDependsOnManager() {
     const facetInfo: IDependentFacet = {
       reset: () => this.changeActivePath(this.options.basePath),
+      handleNewQuery: () => this.handleNewQuery(),
       element: this.element,
       dependsOn: this.options.dependsOn,
       queryStateModel: this.queryStateModel,
       bind: this.bind
     };
     this.dependsOnManager = new DependsOnManager(facetInfo);
+  }
+
+  private handleNewQuery() {
+    const facets = ComponentsTypes.getAllFacetsInstance(this.root);
+    const dependentFacet = facets.filter(facet => {
+      return this.options.id === facet.options.dependsOn;
+    })[0];
+    if (!dependentFacet) {
+      return;
+    }
+
+    if (this.activePath.length) {
+      dependentFacet.enable();
+    } else {
+      dependentFacet.disable();
+    }
   }
 
   private addFading() {
