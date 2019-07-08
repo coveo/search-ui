@@ -247,7 +247,7 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
 
   public dynamicFacetManager: DynamicFacetManager;
   public values: DynamicFacetValues;
-  public search: DynamicFacetSearch;
+  private search: DynamicFacetSearch;
   public position: number = null;
 
   /**
