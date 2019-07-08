@@ -18,7 +18,6 @@ export interface IComboboxOptions {
   noValuesFoundLabel?: string;
   placeholderText?: string;
   wrapperClassName?: string;
-  debouncedDelay?: number;
   selectValueOnClick?: boolean;
   clearOnBlur?: boolean;
 }
@@ -31,7 +30,6 @@ export class Combobox {
   private waitAnimationElement: HTMLElement;
   private defaultOptions: Partial<IComboboxOptions> = {
     wrapperClassName: '',
-    debouncedDelay: 400,
     noValuesFoundLabel: l('NoValuesFound'),
     selectValueOnClick: true,
     clearOnBlur: false
@@ -135,7 +133,7 @@ export class Combobox {
     this.debouncedTriggerNewRequest.cancel();
   }
 
-  private debouncedTriggerNewRequest = debounce(this.triggerRequest, this.options.debouncedDelay);
+  private debouncedTriggerNewRequest = debounce(this.triggerRequest, 400);
 
   private async triggerRequest(terms: string) {
     const response = await this.options.requestValues(terms);
