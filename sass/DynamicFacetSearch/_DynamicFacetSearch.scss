@@ -1,71 +1,16 @@
 @import '../Variables';
 
-$input-padding-top: 15px;
-$input-height: 36px;
-
 .coveo-dynamic-facet-search {
-  position: relative;
-}
+  margin-top: 15px;
 
-.coveo-dynamic-facet-search-label {
-  display: none;
-}
+  .coveo-dynamic-facet-value {
+    padding: 3px 5px 5px;
 
-.coveo-dynamic-facet-search-input {
-  padding-top: $input-padding-top;
-
-  input {
-    width: 100%;
-    height: $input-height;
-    padding: 0 5px;
-    border: $default-border;
-    font-size: $font-size-smaller;
-  }
-}
-
-.coveo-dynamic-facet-search-wait-animation {
-  position: absolute;
-  right: 10px;
-  top: $input-padding-top + 7px;
-}
-
-.coveo-dynamic-facet-collapsed {
-  .coveo-dynamic-facet-search-input {
-    display: none;
-  }
-}
-
-.coveo-dynamic-facet-search-values {
-  background-color: white;
-  border: $default-border;
-  border-top: none;
-  width: 100%;
-  padding: 0;
-  margin: 0;
-  position: absolute;
-  top: $input-height + $input-padding-top;
-  list-style: none;
-  z-index: 1;
-  box-shadow: 0 3px 3px 3px rgba(0, 0, 0, 0.1);
-
-  li {
-    list-style: none;
-  }
-}
-
-.coveo-dynamic-facet-search-value.coveo-dynamic-facet-value {
-  padding: 2px 5px 4px;
-
-  &.coveo-focused {
-    background: $color-blueish-white-grey;
-
-    .coveo-checkbox-span-label,
-    .coveo-checkbox-span-label-suffix {
-      opacity: 1;
+    &.coveo-focused {
+      .coveo-checkbox-span-label,
+      .coveo-checkbox-span-label-suffix {
+        opacity: 1;
+      }
     }
   }
-}
-
-.coveo-dynamic-facet-search-value-not-found {
-  padding: 4px 5px 7px;
 }

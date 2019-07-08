@@ -1,26 +1,25 @@
 import { TextInput, ITextInputOptions } from '../FormWidgets/TextInput';
-import { l } from '../../strings/Strings';
 import { $$ } from '../../utils/Dom';
-import { DynamicFacetSearch } from './DynamicFacetSearch';
+import { Combobox } from './Combobox';
 import { KEYBOARD } from '../../utils/KeyboardUtils';
 import { Utils } from '../../utils/Utils';
 
-export interface IAccessibilityAttributes {
+export interface IComboboxAccessibilityAttributes {
   activeDescendant: string;
   expanded: boolean;
 }
 
-export class DynamicFacetSearchInput {
+export class ComboboxInput {
   public element: HTMLElement;
   private textInput: TextInput;
   private inputElement: HTMLElement;
   private inputOptions: ITextInputOptions = {
     usePlaceholder: true,
-    className: 'coveo-dynamic-facet-search-input',
+    className: 'coveo-combobox-input',
     triggerOnChangeAsYouType: true
   };
 
-  constructor(private search: DynamicFacetSearch) {
+  constructor(private combobox: Combobox) {
     this.create();
     this.element = this.textInput.getElement();
     this.inputElement = $$(this.element).find('input');
@@ -30,25 +29,25 @@ export class DynamicFacetSearchInput {
 
   private create() {
     this.textInput = new TextInput(
-      (inputInstance: TextInput) => this.search.onInputChange(inputInstance.getValue()),
-      l('Search'),
+      (inputInstance: TextInput) => this.combobox.onInputChange(inputInstance.getValue()),
+      this.combobox.options.placeholderText,
       this.inputOptions
     );
   }
 
   private addEventListeners() {
-    $$(this.inputElement).on('blur', this.search.onInputBlur.bind(this.search));
+    $$(this.inputElement).on('blur', this.combobox.onInputBlur.bind(this.combobox));
     $$(this.inputElement).on('keydown', this.handleKeyboardDownEvent.bind(this));
     $$(this.inputElement).on('keyup', this.handleKeyboardUpEvent.bind(this));
   }
 
   private addAccessibilityAttributes() {
-    const listboxId = `${this.search.id}-listbox`;
+    const listboxId = `${this.combobox.id}-listbox`;
     this.element.setAttribute('role', 'combobox');
     this.element.setAttribute('aria-owns', listboxId);
     this.element.setAttribute('aria-aria-haspopup', 'listbox');
 
-    this.inputElement.setAttribute('id', `${this.search.id}-input`);
+    this.inputElement.setAttribute('id', `${this.combobox.id}-input`);
     this.inputElement.setAttribute('aria-autocomplete', 'list');
     this.inputElement.setAttribute('aria-controls', listboxId);
 
@@ -58,7 +57,7 @@ export class DynamicFacetSearchInput {
     });
   }
 
-  public updateAccessibilityAttributes(attributes: IAccessibilityAttributes) {
+  public updateAccessibilityAttributes(attributes: IComboboxAccessibilityAttributes) {
     this.element.setAttribute('aria-expanded', attributes.expanded ? 'true' : 'false');
     this.inputElement.setAttribute('aria-activedescendant', attributes.activeDescendant);
   }
@@ -71,11 +70,11 @@ export class DynamicFacetSearchInput {
     switch (event.which) {
       case KEYBOARD.DOWN_ARROW:
         event.preventDefault();
-        this.search.values.moveActiveValueDown();
+        this.combobox.values.moveActiveValueDown();
         break;
       case KEYBOARD.UP_ARROW:
         event.preventDefault();
-        this.search.values.moveActiveValueUp();
+        this.combobox.values.moveActiveValueUp();
         break;
     }
   }
@@ -83,13 +82,13 @@ export class DynamicFacetSearchInput {
   private handleKeyboardUpEvent(event: KeyboardEvent) {
     switch (event.which) {
       case KEYBOARD.ENTER:
-        this.search.values.selectActiveValue();
+        this.combobox.values.selectActiveValue();
         break;
       case KEYBOARD.ESCAPE:
         if (Utils.isNonEmptyString(this.textInput.getValue())) {
           event.stopPropagation();
         }
-        this.search.clearAll();
+        this.combobox.clearAll();
         break;
     }
   }

@@ -1,113 +1,65 @@
-import 'styling/DynamicFacetSearch/_DynamicFacetSearch';
-import { $$ } from '../../utils/Dom';
-import { FacetSearchController } from '../../controllers/FacetSearchController';
 import { DynamicFacet } from '../DynamicFacet/DynamicFacet';
-import { Utils } from '../../utils/Utils';
-import { DynamicFacetSearchInput, IAccessibilityAttributes } from './DynamicFacetSearchInput';
-import { DynamicFacetSearchValues } from './DynamicFacetSearchValues';
-import { debounce, uniqueId } from 'underscore';
+import { Combobox } from '../Combobox/Combobox';
 import { l } from '../../strings/Strings';
-import { SVGDom } from '../../utils/SVGDom';
-import { SVGIcons } from '../../utils/SVGIcons';
+import { FacetSearchController } from '../../controllers/FacetSearchController';
+import { IFacetSearchResponse } from '../../rest/Facet/FacetSearchResponse';
+import { DynamicFacetValue } from '../DynamicFacet/DynamicFacetValues/DynamicFacetValue';
+import { FacetValueState } from '../../rest/Facet/FacetValueState';
+import { DynamicFacetSearchValueRenderer } from './DynamicFacetSearchValueRenderer';
+import { IComboboxValue } from '../Combobox/ComboboxValues';
+import 'styling/DynamicFacetSearch/_DynamicFacetSearch';
 
 export class DynamicFacetSearch {
-  public id: string;
   public element: HTMLElement;
-  private input: DynamicFacetSearchInput;
-  public values: DynamicFacetSearchValues;
-  private waitAnimationElement: HTMLElement;
   private facetSearchController: FacetSearchController;
-  static delay = 400;
+  private combobox: Combobox;
 
   constructor(private facet: DynamicFacet) {
-    this.element = $$('div', { className: 'coveo-dynamic-facet-search' }).el;
-    this.id = uniqueId('coveo-dynamic-facet-search');
-
     this.facetSearchController = new FacetSearchController(this.facet);
-    this.createAndAppendLabel();
-    this.createAndAppendInput();
-    this.createAndAppendWaitAnimation();
-    this.createAndAppendValues();
-  }
 
-  private createAndAppendLabel() {
-    const label = l('SearchFacetResults', this.facet.options.title);
-    const labelElement = $$(
-      'label',
-      {
-        id: `${this.id}-label`,
-        className: 'coveo-dynamic-facet-search-label',
-        for: `${this.id}-input`,
-        ariaHidden: 'false'
-      },
-      label
-    ).el;
+    this.combobox = new Combobox({
+      label: l('SearchFacetResults', this.facet.options.title),
+      searchInterface: this.facet.searchInterface,
+      request: this.facetSearch.bind(this),
+      createValuesFromResponse: this.createValuesFromResponse.bind(this),
+      onSelectValue: this.onSelectValue,
+      placeholderText: l('Search'),
+      wrapperClassName: 'coveo-dynamic-facet-search'
+    });
 
-    this.element.appendChild(labelElement);
-  }
-
-  private createAndAppendInput() {
-    this.input = new DynamicFacetSearchInput(this);
-    this.element.appendChild(this.input.element);
-  }
-
-  private createAndAppendWaitAnimation() {
-    this.waitAnimationElement = $$('div', { className: 'coveo-dynamic-facet-search-wait-animation' }, SVGIcons.icons.loading).el;
-    SVGDom.addClassToSVGInContainer(this.waitAnimationElement, 'coveo-dynamic-facet-header-wait-animation-svg');
-    this.toggleWaitAnimation(false);
-    this.element.appendChild(this.waitAnimationElement);
-  }
-
-  private toggleWaitAnimation(show: boolean) {
-    $$(this.waitAnimationElement).toggle(show);
-  }
-
-  private createAndAppendValues() {
-    this.values = new DynamicFacetSearchValues(this.facet, this);
-    this.element.appendChild(this.values.element);
+    this.element = this.combobox.element;
   }
 
   public clearAll() {
-    this.cancelFacetSearch();
-    this.input.clearInput();
-    this.values.clearValues();
+    this.combobox.clearAll();
   }
 
-  public onInputChange(value: string) {
-    this.cancelFacetSearch();
-
-    if (Utils.isEmptyString(value)) {
-      return this.values.clearValues();
-    }
-
-    this.toggleWaitAnimation(true);
-    this.debouncedTriggerNewFacetSearch(value);
+  private async facetSearch(terms: string) {
+    return await this.facetSearchController.search(terms);
   }
 
-  public onInputBlur() {
-    if (!this.values.mouseIsOverValue) {
-      this.clearAll();
-    }
+  private createValuesFromResponse(response: IFacetSearchResponse): IComboboxValue[] {
+    return response.values.map((value, index) => {
+      const facetValue = new DynamicFacetValue(
+        {
+          value: value.rawValue,
+          displayValue: value.displayValue,
+          numberOfResults: value.count,
+          state: FacetValueState.idle,
+          position: index + 1
+        },
+        this.facet,
+        DynamicFacetSearchValueRenderer
+      );
+
+      return {
+        ref: facetValue,
+        element: facetValue.renderedElement
+      };
+    });
   }
 
-  public updateAccessibilityAttributes(attributes: IAccessibilityAttributes) {
-    this.input.updateAccessibilityAttributes(attributes);
-  }
-
-  public updateAriaLive(text: string) {
-    this.facet.searchInterface.ariaLive.updateText(text);
-  }
-
-  private cancelFacetSearch() {
-    this.toggleWaitAnimation(false);
-    this.debouncedTriggerNewFacetSearch.cancel();
-  }
-
-  private debouncedTriggerNewFacetSearch = debounce(this.triggerNewFacetSearch, DynamicFacetSearch.delay);
-
-  private async triggerNewFacetSearch(terms: string) {
-    const response = await this.facetSearchController.search(terms);
-    this.toggleWaitAnimation(false);
-    this.values.renderFromResponse(response);
+  private onSelectValue(value: IComboboxValue) {
+    (<DynamicFacetSearchValueRenderer>value.ref.renderer).selectAction();
   }
 }
