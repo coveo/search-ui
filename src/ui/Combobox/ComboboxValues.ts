@@ -170,8 +170,8 @@ export class ComboboxValues {
       return this.values[0];
     }
 
-    const nextValueIndex = this.values.indexOf(this.keyboardActiveValue) + 1;
-    return nextValueIndex < this.values.length ? this.values[nextValueIndex] : this.values[0];
+    const nextValueIndex = (this.values.indexOf(this.keyboardActiveValue) + 1) % this.values.length;
+    return this.values[nextValueIndex];
   }
 
   private get previousOrLastValue() {
