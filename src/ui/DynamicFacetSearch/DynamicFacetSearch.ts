@@ -30,10 +30,6 @@ export class DynamicFacetSearch {
     this.element = this.combobox.element;
   }
 
-  public clearAll() {
-    this.combobox.clearAll();
-  }
-
   private async facetSearch(terms: string) {
     return await this.facetSearchController.search(terms);
   }

@@ -74,23 +74,20 @@ export class ComboboxValues {
     this.values.forEach(({ element }) => {
       $$(element).on('mouseenter', () => (this.mouseIsOverValue = true));
       $$(element).on('mouseleave', () => (this.mouseIsOverValue = false));
-      $$(element).on('click', this.onValueClick.bind(this));
+      this.combobox.options.selectValueOnClick && $$(element).on('click', this.onValueClick.bind(this));
     });
   }
 
   private onValueClick(e: MouseEvent) {
-    if (!this.combobox.options.selectValueOnClick) {
-      return;
-    }
-
     const target = <HTMLElement>e.target;
-    const targetElement = !$$(target).hasClass('coveo-combobox-value') ? $$(target).parent('coveo-combobox-value') : target;
+    const targetElement = $$(target).hasClass('coveo-combobox-value') ? target : $$(target).parent('coveo-combobox-value');
 
     if (!targetElement) {
       return;
     }
 
-    const value = find(this.values, ({ element }) => element.getAttribute('id') === targetElement.getAttribute('id'));
+    const targetId = targetElement.getAttribute('id');
+    const value = find(this.values, ({ element }) => element.getAttribute('id') === targetId);
     value && this.combobox.options.onSelectValue(value);
     this.combobox.clearAll();
   }
