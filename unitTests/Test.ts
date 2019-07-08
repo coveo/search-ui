@@ -195,6 +195,9 @@ FieldValueTest();
 import { FoldingTest } from './ui/FoldingTest';
 FoldingTest();
 
+import { FoldingForThreadTest } from './ui/FoldingForThreadTest';
+FoldingForThreadTest();
+
 import { FollowItemTest } from './ui/FollowItemTest';
 FollowItemTest();
 

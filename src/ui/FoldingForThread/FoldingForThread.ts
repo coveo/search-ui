@@ -38,7 +38,7 @@ export class FoldingForThread extends Folding {
   constructor(public element: HTMLElement, public options: IFoldingOptions, bindings?: IComponentBindings) {
     super(element, options, bindings);
     this.options.getMoreResults = (results: IQueryResult[]) => {
-      return Folding.foldWithParent(results)[0].attachments;
+      return Folding.foldWithParent(results);
     };
 
     this.options.getResult = (result: IQueryResult) => {
