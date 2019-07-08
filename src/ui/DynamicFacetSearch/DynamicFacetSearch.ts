@@ -20,7 +20,7 @@ export class DynamicFacetSearch {
     this.combobox = new Combobox({
       label: l('SearchFacetResults', this.facet.options.title),
       searchInterface: this.facet.searchInterface,
-      request: this.facetSearch.bind(this),
+      requestValues: this.facetSearch.bind(this),
       createValuesFromResponse: this.createValuesFromResponse.bind(this),
       onSelectValue: this.onSelectValue,
       placeholderText: l('Search'),
@@ -53,13 +53,13 @@ export class DynamicFacetSearch {
       );
 
       return {
-        ref: facetValue,
+        value: facetValue,
         element: facetValue.renderedElement
       };
     });
   }
 
-  private onSelectValue(value: IComboboxValue) {
-    (<DynamicFacetSearchValueRenderer>value.ref.renderer).selectAction();
+  private onSelectValue({ value }: IComboboxValue) {
+    (<DynamicFacetSearchValueRenderer>value.renderer).selectAction();
   }
 }

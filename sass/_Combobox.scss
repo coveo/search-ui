@@ -49,16 +49,17 @@ $input-padding: 5px;
   top: $input-height;
   z-index: 1;
   box-shadow: 0 3px 3px 3px rgba(0, 0, 0, 0.1);
-
-  li {
-    list-style: none;
-
-    &.coveo-focused {
-      background: $color-blueish-white-grey;
-    }
-  }
 }
 
+.coveo-combobox-value,
 .coveo-combobox-value-not-found {
-  padding: 4px 5px 7px;
+  list-style: none;
+  padding: 5px;
+}
+
+.coveo-combobox-value {
+  &.coveo-focused,
+  &:hover {
+    background: $color-blueish-white-grey;
+  }
 }

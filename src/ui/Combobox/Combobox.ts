@@ -11,7 +11,7 @@ import { l } from '../../strings/Strings';
 
 export interface IComboboxOptions {
   label: string;
-  request: (terms: string) => Promise<any>;
+  requestValues: (terms: string) => Promise<any>;
   createValuesFromResponse: (response: any) => IComboboxValue[];
   onSelectValue: (value: IComboboxValue) => void;
   searchInterface: SearchInterface;
@@ -19,6 +19,7 @@ export interface IComboboxOptions {
   placeholderText?: string;
   wrapperClassName?: string;
   debouncedDelay?: number;
+  selectValueOnClick?: boolean;
 }
 
 export class Combobox {
@@ -30,7 +31,8 @@ export class Combobox {
   private defaultOptions: Partial<IComboboxOptions> = {
     wrapperClassName: '',
     debouncedDelay: 400,
-    noValuesFoundLabel: l('NoValuesFound')
+    noValuesFoundLabel: l('NoValuesFound'),
+    selectValueOnClick: true
   };
 
   constructor(public options: IComboboxOptions) {
@@ -127,7 +129,7 @@ export class Combobox {
   private debouncedTriggerNewRequest = debounce(this.triggerRequest, this.options.debouncedDelay);
 
   private async triggerRequest(terms: string) {
-    const response = await this.options.request(terms);
+    const response = await this.options.requestValues(terms);
     this.toggleWaitAnimation(false);
     this.values.renderFromResponse(response);
   }

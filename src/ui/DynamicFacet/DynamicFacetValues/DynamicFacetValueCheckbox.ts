@@ -6,7 +6,7 @@ export class DynamicFacetValueCheckbox {
   private checkbox: Checkbox;
   public element: HTMLElement;
 
-  constructor(private facetValue: DynamicFacetValue, selectAction: () => void) {
+  constructor(private facetValue: DynamicFacetValue, selectAction = () => {}) {
     this.checkbox = new Checkbox(
       selectAction.bind(this),
       this.facetValue.valueCaption,

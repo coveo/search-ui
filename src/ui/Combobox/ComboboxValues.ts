@@ -1,9 +1,10 @@
 import { Combobox } from './Combobox';
 import { $$ } from '../../utils/Dom';
+import { find } from 'underscore';
 
 export interface IComboboxValue {
+  value: any;
   element: HTMLElement;
-  ref: any;
 }
 
 export class ComboboxValues {
@@ -42,7 +43,9 @@ export class ComboboxValues {
 
   private renderValues() {
     const fragment = document.createDocumentFragment();
-    this.values.forEach(value => {
+    this.values.forEach((value, index) => {
+      const elementWrapper = $$('li', { id: `${this.combobox.id}value-${index}`, className: 'coveo-combobox-value' }, value.element).el;
+      value.element = elementWrapper;
       fragment.appendChild(value.element);
     });
 
@@ -68,10 +71,28 @@ export class ComboboxValues {
   }
 
   private addEventListeners() {
-    this.values.forEach(value => {
-      $$(value.element).on('mouseenter', () => (this.mouseIsOverValue = true));
-      $$(value.element).on('mouseleave', () => (this.mouseIsOverValue = false));
+    this.values.forEach(({ element }) => {
+      $$(element).on('mouseenter', () => (this.mouseIsOverValue = true));
+      $$(element).on('mouseleave', () => (this.mouseIsOverValue = false));
+      $$(element).on('click', this.onValueClick.bind(this));
     });
+  }
+
+  private onValueClick(e: MouseEvent) {
+    if (!this.combobox.options.selectValueOnClick) {
+      return;
+    }
+
+    const target = <HTMLElement>e.target;
+    const targetElement = !$$(target).hasClass('coveo-combobox-value') ? $$(target).parent('coveo-combobox-value') : target;
+
+    if (!targetElement) {
+      return;
+    }
+
+    const value = find(this.values, ({ element }) => element.getAttribute('id') === targetElement.getAttribute('id'));
+    value && this.combobox.options.onSelectValue(value);
+    this.combobox.clearAll();
   }
 
   private updateAccessibilityAttributes() {
@@ -106,14 +127,14 @@ export class ComboboxValues {
     this.keyboardActiveValue = null;
   }
 
-  private activateFocusOnValue(value: IComboboxValue) {
-    $$(value.element).addClass('coveo-focused');
-    value.element.setAttribute('aria-selected', 'true');
+  private activateFocusOnValue({ element }: IComboboxValue) {
+    $$(element).addClass('coveo-focused');
+    element.setAttribute('aria-selected', 'true');
   }
 
-  private deactivateFocusOnValue(value: IComboboxValue) {
-    $$(value.element).removeClass('coveo-focused');
-    value.element.setAttribute('aria-selected', 'false');
+  private deactivateFocusOnValue({ element }: IComboboxValue) {
+    $$(element).removeClass('coveo-focused');
+    element.setAttribute('aria-selected', 'false');
   }
 
   public selectActiveValue() {
@@ -122,6 +143,7 @@ export class ComboboxValues {
     }
 
     this.combobox.options.onSelectValue(this.keyboardActiveValue);
+    this.combobox.clearAll();
   }
 
   public moveActiveValueDown() {

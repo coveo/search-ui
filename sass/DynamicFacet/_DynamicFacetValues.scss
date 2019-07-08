@@ -13,8 +13,6 @@ $active-text-opacity: 0.6;
 }
 
 .coveo-dynamic-facet-value {
-  padding: 2px 0 4px;
-
   &.coveo-selected {
     .coveo-checkbox-span-label,
     .coveo-checkbox-span-label-suffix {
@@ -23,6 +21,7 @@ $active-text-opacity: 0.6;
   }
 
   .coveo-checkbox-label {
+    padding: 5px 0;
     width: 100%;
   }
 
