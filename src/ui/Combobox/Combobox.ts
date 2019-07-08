@@ -20,6 +20,7 @@ export interface IComboboxOptions {
   wrapperClassName?: string;
   debouncedDelay?: number;
   selectValueOnClick?: boolean;
+  clearOnBlur?: boolean;
 }
 
 export class Combobox {
@@ -32,7 +33,8 @@ export class Combobox {
     wrapperClassName: '',
     debouncedDelay: 400,
     noValuesFoundLabel: l('NoValuesFound'),
-    selectValueOnClick: true
+    selectValueOnClick: true,
+    clearOnBlur: false
   };
 
   constructor(public options: IComboboxOptions) {
@@ -108,9 +110,16 @@ export class Combobox {
   }
 
   public onInputBlur() {
-    if (!this.values.mouseIsOverValue) {
-      this.clearAll();
+    if (this.values.mouseIsOverValue) {
+      return;
     }
+
+    if (this.options.clearOnBlur) {
+      return this.clearAll();
+    }
+
+    this.cancelRequest();
+    this.values.clearValues();
   }
 
   public updateAccessibilityAttributes(attributes: IComboboxAccessibilityAttributes) {

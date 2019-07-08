@@ -36,6 +36,9 @@ export class ComboboxInput {
   }
 
   private addEventListeners() {
+    if (!this.combobox.options.clearOnBlur) {
+      $$(this.inputElement).on('focus', () => this.combobox.onInputChange(this.textInput.getValue()));
+    }
     $$(this.inputElement).on('blur', this.combobox.onInputBlur.bind(this.combobox));
     $$(this.inputElement).on('keydown', this.handleKeyboardDownEvent.bind(this));
     $$(this.inputElement).on('keyup', this.handleKeyboardUpEvent.bind(this));
