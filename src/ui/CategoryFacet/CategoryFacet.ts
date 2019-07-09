@@ -782,7 +782,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   private initDependsOnManager() {
     const facetInfo: IDependentFacet = {
       reset: () => this.dependsOnReset(),
-      enableDisableDependentFacet: dependentFacet => this.handleNewQuery(dependentFacet),
+      enableDisableDependentFacet: dependentFacet => this.enableDisableDependentFacet(dependentFacet),
       element: this.element,
       root: this.root,
       dependsOn: this.options.dependsOn,
@@ -798,12 +798,8 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     this.clear();
   }
 
-  private handleNewQuery(dependentFacet: Component) {
-    if (this.activePath.length) {
-      dependentFacet.enable();
-    } else {
-      dependentFacet.disable();
-    }
+  private enableDisableDependentFacet(dependentFacet: Component) {
+    this.activePath.length ? dependentFacet.enable() : dependentFacet.disable();
   }
 
   private addFading() {

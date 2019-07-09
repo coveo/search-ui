@@ -1521,7 +1521,7 @@ export class Facet extends Component {
   private initDependsOnManager() {
     const facetInfo: IDependentFacet = {
       reset: () => this.reset(),
-      enableDisableDependentFacet: dependentFacet => this.handleNewQuery(dependentFacet),
+      enableDisableDependentFacet: dependentFacet => this.enableDisableDependentFacet(dependentFacet),
       element: this.element,
       root: this.root,
       dependsOn: this.options.dependsOn,
@@ -1532,12 +1532,8 @@ export class Facet extends Component {
     this.dependsOnManager = new DependsOnManager(facetInfo);
   }
 
-  private handleNewQuery(dependentFacet: Component) {
-    if (this.getSelectedValues().length) {
-      dependentFacet.enable();
-    } else {
-      dependentFacet.disable();
-    }
+  private enableDisableDependentFacet(dependentFacet: Component) {
+    this.getSelectedValues().length ? dependentFacet.enable() : dependentFacet.disable();
   }
 
   private dependsOnUpdateParentDisplayValue() {
