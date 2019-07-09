@@ -1,6 +1,5 @@
 import { Utils } from './Utils';
-import { $$ } from './Dom';
-import { QueryStateModel, QueryEvents, Component } from '../Core';
+import { QueryStateModel, QueryEvents, Component, $$ } from '../Core';
 import { ComponentEvents } from '../ui/Base/Component';
 import { MODEL_EVENTS } from '../models/Model';
 import { ComponentsTypes } from './ComponentsTypes';
@@ -19,6 +18,7 @@ export interface IDependentFacet {
 export class DependsOnManager {
   constructor(private dependentFacet: IDependentFacet) {
     dependentFacet.bind.onRootElement(QueryEvents.newQuery, () => this.handleNewQuery());
+    this.updateVisibilityBasedOnDependsOn();
   }
 
   public listenToParentIfDependentFacet() {
@@ -29,9 +29,15 @@ export class DependsOnManager {
   }
 
   public updateVisibilityBasedOnDependsOn() {
-    if (this.isDependentFacet) {
-      $$(this.dependentFacet.element).toggleClass('coveo-facet-dependent', !this.parentFacetHasSelectedValues);
+    if (!this.isDependentFacet) {
+      return;
     }
+
+    if ($$(this.dependentFacet.element).hasClass('coveo-facet-empty')) {
+      return;
+    }
+
+    this.parentFacetHasSelectedValues ? $$(this.dependentFacet.element).show() : $$(this.dependentFacet.element).hide();
   }
 
   private get isDependentFacet() {

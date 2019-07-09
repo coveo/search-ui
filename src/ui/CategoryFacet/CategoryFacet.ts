@@ -40,7 +40,6 @@ import { CategoryFacetHeader } from './CategoryFacetHeader';
 import { AccessibleButton } from '../../utils/AccessibleButton';
 import { IStringMap } from '../../rest/GenericParam';
 import { DependsOnManager, IDependentFacet } from '../../utils/DependsOnManager';
-import { ComponentsTypes } from '../../utils/ComponentsTypes';
 
 export interface ICategoryFacetOptions extends IResponsiveComponentOptions {
   field: IFieldOption;
@@ -770,6 +769,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
       if (!Utils.isNullOrUndefined(path) && isArray(path) && path.length != 0) {
         this.activePath = path;
       }
+      this.dependsOnManager.updateVisibilityBasedOnDependsOn();
     }
   }
 
@@ -781,7 +781,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
 
   private initDependsOnManager() {
     const facetInfo: IDependentFacet = {
-      reset: () => this.changeActivePath(this.options.basePath),
+      reset: () => this.dependsOnReset(),
       enableDisableDependentFacet: dependentFacet => this.handleNewQuery(dependentFacet),
       element: this.element,
       root: this.root,
@@ -791,6 +791,11 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
       bind: this.bind
     };
     this.dependsOnManager = new DependsOnManager(facetInfo);
+  }
+
+  private dependsOnReset() {
+    this.changeActivePath(this.options.basePath);
+    this.clear();
   }
 
   private handleNewQuery(dependentFacet: Component) {
@@ -807,7 +812,6 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
 
   private handleDeferredQuerySuccess() {
     this.removeFading();
-    this.dependsOnManager.updateVisibilityBasedOnDependsOn();
   }
 
   private removeFading() {
