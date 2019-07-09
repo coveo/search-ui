@@ -196,7 +196,7 @@ export function DependsOnManagerTest() {
         });
 
         it(`when the master facet has one excluded value,
-      it does not remove the coveo-facet-dependent class from the dependent facet`, () => {
+      the dependent facet is still hidden`, () => {
           masterFacet.cmp.excludeValue('excluded master value');
           Simulate.query(test.env, { results: getMasterAndDependentFacetResults() });
 
