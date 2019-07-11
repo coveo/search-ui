@@ -25,8 +25,8 @@ export interface IComboboxOptions {
 export class Combobox {
   public element: HTMLElement;
   public id: string;
-  private input: ComboboxInput;
   public values: ComboboxValues;
+  private input: ComboboxInput;
   private waitAnimationElement: HTMLElement;
   private defaultOptions: Partial<IComboboxOptions> = {
     wrapperClassName: '',
