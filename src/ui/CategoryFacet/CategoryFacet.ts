@@ -782,7 +782,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   private initDependsOnManager() {
     const facetInfo: IDependentFacet = {
       reset: () => this.dependsOnReset(),
-      enableDisableDependentFacet: dependentFacet => this.enableDisableDependentFacet(dependentFacet),
+      toogleDependentFacet: dependentFacet => this.toogleDependentFacet(dependentFacet),
       element: this.element,
       root: this.root,
       dependsOn: this.options.dependsOn,
@@ -798,7 +798,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     this.clear();
   }
 
-  private enableDisableDependentFacet(dependentFacet: Component) {
+  private toogleDependentFacet(dependentFacet: Component) {
     this.activePath.length ? dependentFacet.enable() : dependentFacet.disable();
   }
 

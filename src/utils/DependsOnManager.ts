@@ -6,7 +6,7 @@ import { ComponentsTypes } from './ComponentsTypes';
 
 export interface IDependentFacet {
   reset: () => void;
-  enableDisableDependentFacet: (dependentFacet: Component) => void;
+  toogleDependentFacet: (dependentFacet: Component) => void;
   element: HTMLElement;
   root: HTMLElement;
   dependsOn: string;
@@ -68,14 +68,15 @@ export class DependsOnManager {
 
   private handleNewQuery() {
     const facets = ComponentsTypes.getAllFacetsInstance(this.dependentFacet.root);
-    const dependentFacet = facets.filter(facet => {
+    const dependentFacets = facets.filter(facet => {
       return this.dependentFacet.id === facet.options.dependsOn;
-    })[0];
+    });
 
-    if (!dependentFacet) {
+    if (!dependentFacets) {
       return;
     }
-
-    this.dependentFacet.enableDisableDependentFacet(dependentFacet);
+    dependentFacets.forEach(dependentFacet => {
+      this.dependentFacet.toogleDependentFacet(dependentFacet);
+    });
   }
 }
