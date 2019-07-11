@@ -72,9 +72,6 @@ export class DependsOnManager {
       return this.dependentFacet.id === facet.options.dependsOn;
     });
 
-    if (!dependentFacets) {
-      return;
-    }
     dependentFacets.forEach(dependentFacet => {
       this.dependentFacet.toogleDependentFacet(dependentFacet);
     });
