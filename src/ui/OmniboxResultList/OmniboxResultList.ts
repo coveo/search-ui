@@ -156,7 +156,11 @@ export class OmniboxResultList extends ResultList implements IComponentBindings 
       return null;
     }),
     /**
-     * When hovering on a query Suggest, show a preview of the results
+     * For this feature to work, [`enableQuerySyntax`]{@link Omnibox.options.enableQuerySyntax} of the {@link Omnibox} needs to be set to `true`
+     *
+     * this option will change from the default behavior of this component.
+     *
+     * When hovering on a query suggest, it will render the template receive to show a preview of the top results for this suggestion.
      *
      * **Default value:** `true`
      */
