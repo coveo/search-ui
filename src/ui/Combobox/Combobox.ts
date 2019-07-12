@@ -34,6 +34,8 @@ export class Combobox {
     selectValueOnClick: true,
     clearOnBlur: false
   };
+  private isThrottledRequestCancelled = false;
+  private throttlingDelay = 600;
 
   constructor(public options: IComboboxOptions) {
     this.options = {
@@ -96,9 +98,14 @@ export class Combobox {
   }
 
   private clearValues() {
-    this.toggleWaitAnimation(false);
-    this.debouncedTriggerNewRequest.cancel();
     this.values.clearValues();
+    this.cancelRequest();
+  }
+
+  private cancelRequest() {
+    this.toggleWaitAnimation(false);
+    this.throttledTriggerNewRequest.cancel();
+    this.isThrottledRequestCancelled = true;
   }
 
   public onInputChange(value: string) {
@@ -107,7 +114,7 @@ export class Combobox {
     }
 
     this.toggleWaitAnimation(true);
-    this.debouncedTriggerNewRequest(value);
+    this.throttledTriggerNewRequest(value);
   }
 
   public onInputBlur() {
@@ -130,14 +137,18 @@ export class Combobox {
     this.options.searchInterface.ariaLive.updateText(text);
   }
 
-  private debouncedTriggerNewRequest = throttle(this.triggerRequest, 600, {
+  private throttledTriggerNewRequest = throttle(this.triggerRequest, this.throttlingDelay, {
     leading: true,
     trailing: true
   });
 
   private async triggerRequest(terms: string) {
+    this.isThrottledRequestCancelled = false;
     const response = await this.options.requestValues(terms);
     this.toggleWaitAnimation(false);
-    this.values.renderFromResponse(response);
+
+    if (!this.isThrottledRequestCancelled) {
+      this.values.renderFromResponse(response);
+    }
   }
 }
