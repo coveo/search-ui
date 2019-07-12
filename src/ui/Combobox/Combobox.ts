@@ -1,6 +1,6 @@
 import { $$ } from '../../utils/Dom';
 import { ComboboxInput, IComboboxAccessibilityAttributes } from './ComboboxInput';
-import { uniqueId, debounce } from 'underscore';
+import { uniqueId, throttle } from 'underscore';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { SVGDom } from '../../utils/SVGDom';
 import { ComboboxValues, IComboboxValue } from './ComboboxValues';
@@ -91,16 +91,19 @@ export class Combobox {
   }
 
   public clearAll() {
-    this.cancelRequest();
+    this.clearValues();
     this.input.clearInput();
+  }
+
+  private clearValues() {
+    this.toggleWaitAnimation(false);
+    this.debouncedTriggerNewRequest.cancel();
     this.values.clearValues();
   }
 
   public onInputChange(value: string) {
-    this.cancelRequest();
-
     if (Utils.isEmptyString(value)) {
-      return this.values.clearValues();
+      return this.clearValues();
     }
 
     this.toggleWaitAnimation(true);
@@ -116,8 +119,7 @@ export class Combobox {
       return this.clearAll();
     }
 
-    this.cancelRequest();
-    this.values.clearValues();
+    this.clearValues();
   }
 
   public updateAccessibilityAttributes(attributes: IComboboxAccessibilityAttributes) {
@@ -128,12 +130,10 @@ export class Combobox {
     this.options.searchInterface.ariaLive.updateText(text);
   }
 
-  private cancelRequest() {
-    this.toggleWaitAnimation(false);
-    this.debouncedTriggerNewRequest.cancel();
-  }
-
-  private debouncedTriggerNewRequest = debounce(this.triggerRequest, 400);
+  private debouncedTriggerNewRequest = throttle(this.triggerRequest, 600, {
+    leading: true,
+    trailing: true
+  });
 
   private async triggerRequest(terms: string) {
     const response = await this.options.requestValues(terms);

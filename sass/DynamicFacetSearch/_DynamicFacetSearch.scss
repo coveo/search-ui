@@ -6,7 +6,8 @@
   .coveo-combobox-value {
     padding: 0 5px;
 
-    &.coveo-focused {
+    &.coveo-focused,
+    &:hover {
       .coveo-checkbox-span-label,
       .coveo-checkbox-span-label-suffix {
         opacity: 1;

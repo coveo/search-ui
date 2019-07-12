@@ -24,7 +24,8 @@ export class DynamicFacetSearch {
       createValuesFromResponse: this.createValuesFromResponse.bind(this),
       onSelectValue: this.onSelectValue,
       placeholderText: l('Search'),
-      wrapperClassName: 'coveo-dynamic-facet-search'
+      wrapperClassName: 'coveo-dynamic-facet-search',
+      clearOnBlur: true
     });
 
     this.element = this.combobox.element;
