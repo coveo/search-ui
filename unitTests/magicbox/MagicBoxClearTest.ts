@@ -10,7 +10,8 @@ export const MagicBoxClearTest = () => {
 
     beforeEach(() => {
       elem = $$('div').el;
-      magicBox = new MagicBoxInstance(elem, new Grammar('Any', { Any: /.*/ }));
+      const root = $$('div').el;
+      magicBox = new MagicBoxInstance(elem, root, new Grammar('Any', { Any: /.*/ }));
     });
 
     it('should create a container', () => {

@@ -38,6 +38,10 @@ export interface IQuerySuggestSuccessArgs {
   completions: IQuerySuggestCompletion[];
 }
 
+export interface IQuerySuggestSelected {
+  suggestion: string;
+}
+
 /**
  * The `OmniboxEvents` static class contains the string definitions of all events that strongly relate to the
  * [`Omnibox`]{@link Omnibox} component.
@@ -80,4 +84,8 @@ export class OmniboxEvents {
    * This event is only triggered by standard ML-powered query suggestions, and not {@link AnalyticsSuggestions} or {@link FieldSuggestions}.
    */
   public static querySuggestSuccess = 'querySuggestSuccess';
+  /**
+   * Triggered by the [`Omnibox`]{@link Omnibox} component when a query suggestion is hovered by the mouse or selected with the keybord.
+   */
+  public static querySuggestSelected = 'querySuggestSelected';
 }

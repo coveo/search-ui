@@ -1,6 +1,8 @@
 import { $$ } from '../utils/Dom';
 import { InputManager } from './InputManager';
 import { each, defaults, indexOf, compact } from 'underscore';
+import { OmniboxEvents } from '../Core';
+import { IQuerySuggestSelected } from '../events/OmniboxEvents';
 
 export interface Suggestion {
   text?: string;
@@ -26,6 +28,7 @@ export class SuggestionsManager {
   constructor(
     private element: HTMLElement,
     private magicBoxContainer: HTMLElement,
+    private root: HTMLElement,
     private inputManager: InputManager,
     options?: SuggestionsManagerOptions
   ) {
@@ -315,6 +318,13 @@ export class SuggestionsManager {
     }
     $$(suggestion).addClass(this.options.selectedClass);
     this.updateAreaSelectedIfDefined(suggestion, 'true');
+    this.updateSelectedSuggestion(suggestion.innerText);
+  }
+
+  private updateSelectedSuggestion(suggestion: string) {
+    $$(this.root).trigger(OmniboxEvents.querySuggestSelected, <IQuerySuggestSelected>{
+      suggestion
+    });
   }
 
   private removeSelectedStatus(suggestion: HTMLElement): void {
