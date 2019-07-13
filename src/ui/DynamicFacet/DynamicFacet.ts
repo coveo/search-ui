@@ -170,9 +170,11 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
     /**
      * Whether to allow the end-user to search the facet values.
      *
-     * **Default:** `false`
+     * **Default:** `undefined`, and the following behavior applies:
+     * - Will be enabled when more facet values are available from the server.
+     * - Will be disabled when all facet values are already available.
      */
-    enableFacetSearch: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'Filtering' }),
+    enableFacetSearch: ComponentOptions.buildBooleanOption({ section: 'Filtering' }),
 
     /**
      * Whether to prepend facet search queries with a wildcard.
@@ -249,6 +251,7 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
   public values: DynamicFacetValues;
   private search: DynamicFacetSearch;
   public position: number = null;
+  public moreValuesAvailable = false;
 
   /**
    * Creates a new `DynamicFacet` instance.
@@ -558,7 +561,13 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
   }
 
   private onQueryResponse(response?: IFacetResponse) {
-    response ? this.values.createFromResponse(response) : this.values.resetValues();
+    if (response) {
+      this.moreValuesAvailable = response.moreValuesAvailable;
+      return this.values.createFromResponse(response);
+    }
+
+    this.moreValuesAvailable = false;
+    this.values.resetValues();
   }
 
   private handleQueryStateChanged(data: IAttributesChangedEventArg) {
@@ -634,7 +643,7 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
   }
 
   private createAndAppendSearch() {
-    if (!this.options.enableFacetSearch) {
+    if (this.options.enableFacetSearch === false) {
       return;
     }
 
@@ -663,9 +672,16 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
   private updateAppearance() {
     this.header.toggleClear(this.values.hasSelectedValues);
     this.header.toggleCollapse(this.isCollapsed);
+    this.toggleSearchDisplay();
     $$(this.element).toggleClass('coveo-dynamic-facet-collapsed', this.isCollapsed);
     $$(this.element).toggleClass('coveo-active', this.values.hasSelectedValues);
     $$(this.element).toggleClass('coveo-hidden', this.values.isEmpty);
+  }
+
+  private toggleSearchDisplay() {
+    if (Utils.isUndefined(this.options.enableFacetSearch)) {
+      $$(this.search.element).toggle(this.moreValuesAvailable);
+    }
   }
 
   public triggerNewQuery(beforeExecuteQuery?: () => void) {
