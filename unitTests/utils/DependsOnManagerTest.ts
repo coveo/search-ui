@@ -57,30 +57,31 @@ export function DependsOnManagerTest() {
         );
       });
 
-      it('adds the coveo-facet-dependent class to the dependent facet', () => {
-        Simulate.query(testEnv);
-        expect($$(test.cmp.element).hasClass('coveo-facet-dependent')).toBeTruthy();
+      it('the dependent facet is hidden at startup', () => {
+        $$(testEnv.root).trigger('state:change', { attributes: {} });
+        expect($$(test.cmp.element).isVisible()).toBeFalsy();
       });
 
-      it('does not add the coveo-facet-dependent class to the master facet', () => {
+      it('the master facet is visible at startup', () => {
         Simulate.query(testEnv, simulateQueryData);
         master.cmp.selectValue('value9');
-        expect($$(master.cmp.element).hasClass('coveo-facet-dependent')).toBeFalsy();
+        expect($$(master.cmp.element).isVisible()).toBeTruthy();
       });
 
       it(`when the master facet has a selected value,
-      it removes the coveo-facet-dependent class from the dependent facet`, () => {
+      the dependent facet is visible`, () => {
         Simulate.query(testEnv, simulateQueryData);
         master.cmp.selectValue('value9');
-        Simulate.query(testEnv);
-        expect($$(test.cmp.element).hasClass('coveo-facet-dependent')).toBeFalsy();
+        Simulate.query(testEnv, simulateQueryData);
+        $$(testEnv.root).trigger('state:change', { attributes: {} });
+        expect($$(test.cmp.element).isVisible()).toBeTruthy();
       });
 
       it(`when the master facet has a selected value,
       it adds the coveo-category-facet-non-empty-path class to the master facet`, () => {
         Simulate.query(testEnv, simulateQueryData);
         master.cmp.selectValue('value9');
-        Simulate.query(testEnv);
+        Simulate.query(testEnv, simulateQueryData);
         expect($$(master.cmp.element).hasClass('.coveo-category-facet-non-empty-path')).toBeFalsy();
       });
 
@@ -88,6 +89,7 @@ export function DependsOnManagerTest() {
         beforeEach(() => {
           Simulate.query(testEnv, simulateQueryData);
           master.cmp.selectValue('value9');
+          Simulate.query(testEnv, simulateQueryData);
           test.cmp.selectValue('value5');
           Simulate.query(testEnv);
         });
@@ -177,28 +179,28 @@ export function DependsOnManagerTest() {
           Simulate.query(test.env, { results: getMasterAndDependentFacetResults() });
         });
 
-        it('adds the coveo-facet-dependent class to the dependent facet', () => {
-          expect($$(test.cmp.element).hasClass('coveo-facet-dependent')).toBe(true);
+        it('the dependent facet is hidden at startup', () => {
+          expect($$(test.cmp.element).isVisible()).toBeFalsy();
         });
 
-        it('does not add the coveo-facet-dependent class to the master facet', () => {
-          expect($$(masterFacet.cmp.element).hasClass('coveo-facet-dependent')).toBe(false);
+        it('the master facet is visible at startup', () => {
+          expect($$(masterFacet.cmp.element).isVisible()).toBeTruthy();
         });
 
         it(`when the master facet has one selected value,
-      it removes the coveo-facet-dependent class from the dependent facet`, () => {
+      the dependent facet is visible`, () => {
           masterFacet.cmp.selectValue('master value');
-          Simulate.query(test.env);
+          Simulate.query(test.env, { results: getMasterAndDependentFacetResults() });
 
-          expect($$(test.cmp.element).hasClass('coveo-facet-dependent')).toBe(false);
+          expect($$(test.cmp.element).isVisible()).toBeTruthy();
         });
 
         it(`when the master facet has one excluded value,
-      it does not remove the coveo-facet-dependent class from the dependent facet`, () => {
+      the dependent facet is still hidden`, () => {
           masterFacet.cmp.excludeValue('excluded master value');
-          Simulate.query(test.env);
+          Simulate.query(test.env, { results: getMasterAndDependentFacetResults() });
 
-          expect($$(test.cmp.element).hasClass('coveo-facet-dependent')).toBe(true);
+          expect($$(test.cmp.element).isVisible()).toBeFalsy();
         });
 
         describe(`given the master facet has two selected values and the dependent facet has one selected and one excluded value`, () => {
@@ -221,6 +223,7 @@ export function DependsOnManagerTest() {
 
             test.cmp.selectValue('selected dependent value');
             test.cmp.excludeValue('excluded dependent value');
+            Simulate.query(test.env);
           });
 
           it(`when the master facet id is not unique,

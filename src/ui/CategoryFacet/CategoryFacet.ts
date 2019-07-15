@@ -769,6 +769,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
       if (!Utils.isNullOrUndefined(path) && isArray(path) && path.length != 0) {
         this.activePath = path;
       }
+      this.dependsOnManager.updateVisibilityBasedOnDependsOn();
     }
   }
 
@@ -780,13 +781,25 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
 
   private initDependsOnManager() {
     const facetInfo: IDependentFacet = {
-      reset: () => this.changeActivePath(this.options.basePath),
+      reset: () => this.dependsOnReset(),
+      toogleDependentFacet: dependentFacet => this.toogleDependentFacet(dependentFacet),
       element: this.element,
+      root: this.root,
       dependsOn: this.options.dependsOn,
+      id: this.options.id,
       queryStateModel: this.queryStateModel,
       bind: this.bind
     };
     this.dependsOnManager = new DependsOnManager(facetInfo);
+  }
+
+  private dependsOnReset() {
+    this.changeActivePath(this.options.basePath);
+    this.clear();
+  }
+
+  private toogleDependentFacet(dependentFacet: Component) {
+    this.activePath.length ? dependentFacet.enable() : dependentFacet.disable();
   }
 
   private addFading() {
@@ -795,7 +808,6 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
 
   private handleDeferredQuerySuccess() {
     this.removeFading();
-    this.dependsOnManager.updateVisibilityBasedOnDependsOn();
   }
 
   private removeFading() {
