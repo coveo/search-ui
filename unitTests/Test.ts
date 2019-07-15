@@ -719,3 +719,6 @@ FacetPaddingTest();
 
 import { DependsOnManagerTest } from './utils/DependsOnManagerTest';
 DependsOnManagerTest();
+
+import { ComboboxTest } from './ui/Combobox/ComboboxTest';
+ComboboxTest();
