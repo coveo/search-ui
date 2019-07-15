@@ -656,7 +656,6 @@ export function SearchEndpointTest() {
           promiseSuccess
             .then((response: IFacetSearchResponse) => {
               expect(response.values.length).toBe(8);
-              expect(response.totalFacetValues).toBe(33);
             })
             .catch((e: IErrorResponse) => {
               fail(e);
@@ -667,7 +666,7 @@ export function SearchEndpointTest() {
           // Not real completions, but will suffice for test purpose
           jasmine.Ajax.requests.mostRecent().respondWith({
             status: 200,
-            responseText: JSON.stringify({ values: _.range(8), totalFacetValues: 33 })
+            responseText: JSON.stringify({ values: _.range(8) })
           });
         });
 

@@ -34,21 +34,14 @@ export function DynamicFacetSearchTest() {
       });
 
       it(`when the input has a value
-      should trigger a new facet search`, done => {
-        setTimeout(() => {
-          expect(facet.queryController.getEndpoint().facetSearch).toHaveBeenCalled();
-          done();
-        }, DynamicFacetSearch.delay);
+      should trigger a new facet search`, () => {
+        expect(facet.queryController.getEndpoint().facetSearch).toHaveBeenCalled();
       });
 
       it(`when the input has an empty value
-      should not trigger a new facet search`, done => {
+      should not trigger a new facet search`, () => {
         simulateInputChange('');
-
-        setTimeout(() => {
-          expect(facet.queryController.getEndpoint().facetSearch).not.toHaveBeenCalled();
-          done();
-        }, DynamicFacetSearch.delay);
+        expect(facet.queryController.getEndpoint().facetSearch).not.toHaveBeenCalled();
       });
 
       it(`should not trigger a new facet search before the search delay as expired`, done => {
@@ -60,28 +53,12 @@ export function DynamicFacetSearchTest() {
     });
 
     it(`when triggering multiple changes before the search delay expiration
-    should not trigger more than one facet search`, done => {
+    should not trigger more than 2 facet searches (leading and trailing)`, () => {
+      simulateInputChange('te');
       simulateInputChange('tes');
       simulateInputChange('test');
 
-      setTimeout(() => {
-        expect(facet.queryController.getEndpoint().facetSearch).toHaveBeenCalledTimes(1);
-        done();
-      }, DynamicFacetSearch.delay);
-    });
-
-    it(`when triggering multiple changes after the search delay expiration
-    should trigger more than one facet search`, done => {
-      simulateInputChange('tes');
-
-      setTimeout(() => {
-        simulateInputChange('test');
-
-        setTimeout(() => {
-          expect(facet.queryController.getEndpoint().facetSearch).toHaveBeenCalledTimes(2);
-          done();
-        }, DynamicFacetSearch.delay);
-      }, DynamicFacetSearch.delay);
+      expect(facet.queryController.getEndpoint().facetSearch).toHaveBeenCalledTimes(2);
     });
   });
 }
