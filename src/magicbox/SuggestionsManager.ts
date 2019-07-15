@@ -227,11 +227,11 @@ export class SuggestionsManager {
     });
 
     dom.on('click', () => {
-      suggestion.onSelect();
+      this.selectSuggestion(suggestion);
     });
 
     dom.on('keyboardSelect', () => {
-      suggestion.onSelect();
+      this.selectSuggestion(suggestion);
     });
 
     if (suggestion.html) {
@@ -258,6 +258,11 @@ export class SuggestionsManager {
     }
 
     return dom;
+  }
+
+  private selectSuggestion(suggestion: Suggestion) {
+    suggestion.onSelect();
+    $$(this.root).trigger(OmniboxEvents.querySuggestSelection, <IQuerySuggestSelection>{ suggestion: suggestion.text });
   }
 
   private modifyDomFromExistingSuggestion(dom: HTMLElement) {
