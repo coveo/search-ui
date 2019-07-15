@@ -883,24 +883,6 @@ export function FacetTest() {
         );
       });
 
-      describe('when a facet has the dependsOn option set to the field of another facet', () => {
-        const masterFacetField = '@masterFacet';
-        const dependentFacetField = '@field';
-
-        beforeEach(() => {
-          test = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, {
-            field: dependentFacetField,
-            dependsOn: masterFacetField
-          });
-        });
-
-        it('update the visibility of the dependent facet', () => {
-          spyOn(test.cmp['dependsOnManager'], 'updateVisibilityBasedOnDependsOn');
-          Simulate.query(test.env);
-          expect(test.cmp['dependsOnManager'].updateVisibilityBasedOnDependsOn).toHaveBeenCalledTimes(1);
-        });
-      });
-
       it('padding container should default to coveo-facet-column', () => {
         const facetColumn = $$('div', { className: 'coveo-facet-column' });
         const dummyDivParent = $$('div');
