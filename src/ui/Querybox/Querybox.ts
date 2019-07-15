@@ -263,13 +263,13 @@ export class Querybox extends Component {
     $$(this.element).toggleClass('coveo-query-syntax-disabled', this.options.enableQuerySyntax == false);
     this.magicBox = createMagicBox(
       element,
-      this.root,
       new Grammar('Query', {
         Query: '[Term*][Spaces?]',
         Term: '[Spaces?][Word]',
         Spaces: / +/,
         Word: /[^ ]+/
       }),
+      this.root,
       {
         inline: true
       }

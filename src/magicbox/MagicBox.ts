@@ -36,7 +36,7 @@ export class MagicBoxInstance {
   private result: Result;
   private displayedResult: Result;
 
-  constructor(public element: HTMLElement, public root: HTMLElement, public grammar: Grammar, public options: Options = {}) {
+  constructor(public element: HTMLElement, public grammar: Grammar, public options: Options = {}, public root: HTMLElement) {
     if (isUndefined(this.options.inline)) {
       this.options.inline = false;
     }
@@ -253,8 +253,8 @@ export class MagicBoxInstance {
   }
 }
 
-export function createMagicBox(element: HTMLElement, root: HTMLElement, grammar: Grammar, options?: Options) {
-  return new MagicBoxInstance(element, root, grammar, options);
+export function createMagicBox(element: HTMLElement, grammar: Grammar, root: HTMLElement, options?: Options) {
+  return new MagicBoxInstance(element, grammar, options, root);
 }
 
 export function requestAnimationFrame(callback: () => void) {
