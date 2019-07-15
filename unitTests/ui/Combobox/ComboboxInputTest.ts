@@ -1,5 +1,5 @@
 import { ComboboxInput } from '../../../src/ui/Combobox/ComboboxInput';
-import { Combobox, IComboboxOptions } from '../../../src/ui/Combobox/Combobox';
+import { Combobox } from '../../../src/ui/Combobox/Combobox';
 import { $$, KEYBOARD } from '../../../src/Core';
 import { Simulate } from '../../Simulate';
 import { comboboxDefaultOptions } from './ComboboxTest';
@@ -13,11 +13,8 @@ export function ComboboxInputTest() {
       initializeComponent();
     });
 
-    function initializeComponent(additionalOptions?: Partial<IComboboxOptions>) {
-      combobox = new Combobox({
-        ...comboboxDefaultOptions(),
-        ...additionalOptions
-      });
+    function initializeComponent() {
+      combobox = new Combobox(comboboxDefaultOptions());
       spyOn(combobox, 'onInputBlur');
       spyOn(combobox, 'onInputChange');
 

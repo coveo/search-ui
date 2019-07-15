@@ -18,7 +18,6 @@ export interface IComboboxOptions {
   noValuesFoundLabel?: string;
   placeholderText?: string;
   wrapperClassName?: string;
-  selectValueOnClick?: boolean;
   clearOnBlur?: boolean;
 }
 
@@ -31,7 +30,6 @@ export class Combobox {
   private defaultOptions: Partial<IComboboxOptions> = {
     wrapperClassName: '',
     noValuesFoundLabel: l('NoValuesFound'),
-    selectValueOnClick: true,
     clearOnBlur: false
   };
   private isThrottledRequestCancelled = false;

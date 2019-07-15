@@ -27,7 +27,6 @@ export class ComboboxValues {
     this.clearValues();
     this.values = this.combobox.options.createValuesFromResponse(response);
     this.render();
-    this.updateAccessibilityAttributes();
   }
 
   private render() {
@@ -39,6 +38,7 @@ export class ComboboxValues {
 
     this.renderValues();
     this.addEventListeners();
+    this.updateAccessibilityAttributes();
   }
 
   private renderValues() {
@@ -74,7 +74,7 @@ export class ComboboxValues {
     this.values.forEach(({ element }) => {
       $$(element).on('mouseenter', () => (this.mouseIsOverValue = true));
       $$(element).on('mouseleave', () => (this.mouseIsOverValue = false));
-      this.combobox.options.selectValueOnClick && $$(element).on('click', this.onValueClick.bind(this));
+      $$(element).on('click', this.onValueClick.bind(this));
     });
   }
 

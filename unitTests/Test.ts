@@ -725,3 +725,6 @@ ComboboxTest();
 
 import { ComboboxInputTest } from './ui/Combobox/ComboboxInputTest';
 ComboboxInputTest();
+
+import { ComboboxValuesTest } from './ui/Combobox/ComboboxValuesTest';
+ComboboxValuesTest();
