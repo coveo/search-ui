@@ -722,3 +722,6 @@ DependsOnManagerTest();
 
 import { ComboboxTest } from './ui/Combobox/ComboboxTest';
 ComboboxTest();
+
+import { ComboboxInputTest } from './ui/Combobox/ComboboxInputTest';
+ComboboxInputTest();

@@ -1,34 +1,30 @@
 import { $$ } from '../../../src/Core';
 import { Combobox, IComboboxOptions } from '../../../src/ui/Combobox/Combobox';
 import { mockSearchInterface } from '../../MockEnvironment';
-import { IComboboxValue } from '../../../src/ui/Combobox/ComboboxValues';
+
+export function comboboxDefaultOptions() {
+  return {
+    label: 'Label',
+    createValuesFromResponse: jasmine.createSpy('createValuesFromResponse').and.callFake(() => []),
+    requestValues: jasmine.createSpy('requestValues').and.callFake(async () => await []),
+    onSelectValue: jasmine.createSpy('onSelectValue'),
+    searchInterface: mockSearchInterface()
+  };
+}
 
 export function ComboboxTest() {
   describe('Combobox', () => {
     let combobox: Combobox;
-    let options: IComboboxOptions;
 
     beforeEach(() => {
       initializeComponent();
     });
 
     function initializeComponent(additionalOptions?: Partial<IComboboxOptions>) {
-      const values: IComboboxValue[] = [
-        { value: 'value 1', element: $$('div').el },
-        { value: 'value 2', element: $$('div').el },
-        { value: 'value 3', element: $$('div').el }
-      ];
-
-      options = {
-        label: 'Label',
-        createValuesFromResponse: jasmine.createSpy('createValuesFromResponse').and.callFake(() => values),
-        requestValues: jasmine.createSpy('requestValues').and.callFake(async () => await []),
-        onSelectValue: jasmine.createSpy('onSelectValue'),
-        searchInterface: mockSearchInterface(),
+      combobox = new Combobox({
+        ...comboboxDefaultOptions(),
         ...additionalOptions
-      };
-
-      combobox = new Combobox(options);
+      });
 
       spyOn(combobox.values, 'clearValues');
       spyOn(combobox, 'clearAll');
@@ -80,7 +76,7 @@ export function ComboboxTest() {
         });
 
         it('should trigger a new request', () => {
-          expect(options.requestValues).toHaveBeenCalled();
+          expect(combobox.options.requestValues).toHaveBeenCalled();
         });
 
         it('should show and then hide the wait animation', done => {
@@ -98,7 +94,7 @@ export function ComboboxTest() {
         });
 
         it('should not trigger a new request', () => {
-          expect(options.requestValues).not.toHaveBeenCalled();
+          expect(combobox.options.requestValues).not.toHaveBeenCalled();
         });
 
         it('should clear the values', () => {
@@ -115,13 +111,13 @@ export function ComboboxTest() {
 
       it(`multiple times before the delay expiration
       should not trigger more than 1 request instantly`, () => {
-        expect(options.requestValues).toHaveBeenCalledTimes(1);
+        expect(combobox.options.requestValues).toHaveBeenCalledTimes(1);
       });
 
       it(`multiple times before the delay expiration
       should trigger 2 requests (leading and trailing)`, done => {
         setTimeout(() => {
-          expect(options.requestValues).toHaveBeenCalledTimes(2);
+          expect(combobox.options.requestValues).toHaveBeenCalledTimes(2);
           done();
         }, 600);
       });
