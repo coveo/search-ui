@@ -120,7 +120,7 @@ export function DynamicFacetValueTest() {
     });
 
     it(`should render without error`, () => {
-      expect(() => dynamicFacetValue.render()).not.toThrow();
+      expect(() => dynamicFacetValue.renderedElement).not.toThrow();
     });
   });
 }

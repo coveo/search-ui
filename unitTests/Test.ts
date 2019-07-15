@@ -719,6 +719,3 @@ FacetPaddingTest();
 
 import { DependsOnManagerTest } from './utils/DependsOnManagerTest';
 DependsOnManagerTest();
-
-import { DynamicFacetSearchTest } from './ui/DynamicFacetSearch/DynamicFacetSearchTest';
-DynamicFacetSearchTest();

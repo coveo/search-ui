@@ -1,7 +1,8 @@
 import { FacetSearchController } from '../../src/controllers/FacetSearchController';
 import { DynamicFacetTestUtils } from '../ui/DynamicFacet/DynamicFacetTestUtils';
-import { DynamicFacet } from '../../src/ui/DynamicFacet/DynamicFacet';
+import { DynamicFacet, IDynamicFacetOptions } from '../../src/ui/DynamicFacet/DynamicFacet';
 import { IFacetSearchRequest } from '../../src/rest/Facet/FacetSearchRequest';
+import { FileTypes } from '../../src/ui/Misc/FileTypes';
 
 export function FacetSearchControllerTest() {
   describe('FacetSearchController', () => {
@@ -12,8 +13,8 @@ export function FacetSearchControllerTest() {
       initializeComponents();
     });
 
-    function initializeComponents() {
-      facet = DynamicFacetTestUtils.createAdvancedFakeFacet().cmp;
+    function initializeComponents(options?: IDynamicFacetOptions) {
+      facet = DynamicFacetTestUtils.createAdvancedFakeFacet(options).cmp;
       facet.values.createFromResponse(DynamicFacetTestUtils.getCompleteFacetResponse(facet));
 
       facetSearchController = new FacetSearchController(facet);
@@ -27,12 +28,32 @@ export function FacetSearchControllerTest() {
         field: facet.fieldName,
         numberOfValues: facet.options.numberOfValues,
         ignoreValues: facet.values.allValues,
-        captions: facet.options.valueCaption,
+        captions: {},
         searchContext: facet.queryController.getLastQuery(),
         query: `*${query}*`
       };
 
       expect(facet.queryController.getEndpoint().facetSearch).toHaveBeenCalledWith(expectedRequest);
+    });
+
+    function testHasTypesCaptions() {
+      facetSearchController.search('q');
+
+      const expectedPartialRequest = {
+        captions: FileTypes.getFileTypeCaptions()
+      };
+
+      expect(facet.queryController.getEndpoint().facetSearch).toHaveBeenCalledWith(jasmine.objectContaining(expectedPartialRequest));
+    }
+
+    it('should add types captions if the field is @filetype', () => {
+      initializeComponents({ field: '@filetype' });
+      testHasTypesCaptions();
+    });
+
+    it('should add types captions if the field is @objecttype', () => {
+      initializeComponents({ field: '@objecttype' });
+      testHasTypesCaptions();
     });
 
     it(`when facet option "optionalLeadingWildcard" is false

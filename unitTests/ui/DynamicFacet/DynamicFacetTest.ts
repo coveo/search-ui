@@ -461,9 +461,12 @@ export function DynamicFacetTest() {
       expect(test.cmp.position).toBe(1);
     });
 
-    it(`when "enableFacetSearch" option is false (default)
+    it(`when "enableFacetSearch" option is false
     it should not render the search element`, () => {
+      options.enableFacetSearch = false;
+      initializeComponent();
       test.cmp.ensureDom();
+
       expect(searchFeatureActive()).toBe(false);
     });
 
