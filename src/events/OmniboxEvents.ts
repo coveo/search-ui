@@ -38,7 +38,7 @@ export interface IQuerySuggestSuccessArgs {
   completions: IQuerySuggestCompletion[];
 }
 
-export interface IQuerySuggestSelected {
+export interface IQuerySuggestSelection {
   suggestion: string;
 }
 
@@ -85,7 +85,11 @@ export class OmniboxEvents {
    */
   public static querySuggestSuccess = 'querySuggestSuccess';
   /**
-   * Triggered by the [`Omnibox`]{@link Omnibox} component when a query suggestion is hovered by the mouse or selected with the keybord.
+   * Triggered by the [`Omnibox`]{@link Omnibox} component when a query suggestion is hovered by the mouse or cycled through with the keyboard.
    */
-  public static querySuggestSelected = 'querySuggestSelected';
+  public static querySuggestGetFocus = 'querySuggestGetFocus';
+  /**
+   * Triggered by the [`Omnibox`]{@link Omnibox} component when a query suggestion is selected by a mouse click or pressing the enter key.
+   */
+  public static querySuggestSelection = 'querySuggestSelection';
 }

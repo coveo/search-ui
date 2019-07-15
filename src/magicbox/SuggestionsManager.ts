@@ -2,7 +2,7 @@ import { $$ } from '../utils/Dom';
 import { InputManager } from './InputManager';
 import { each, defaults, indexOf, compact } from 'underscore';
 import { OmniboxEvents } from '../Core';
-import { IQuerySuggestSelected } from '../events/OmniboxEvents';
+import { IQuerySuggestSelection } from '../events/OmniboxEvents';
 
 export interface Suggestion {
   text?: string;
@@ -322,7 +322,7 @@ export class SuggestionsManager {
   }
 
   private updateSelectedSuggestion(suggestion: string) {
-    $$(this.root).trigger(OmniboxEvents.querySuggestSelected, <IQuerySuggestSelected>{
+    $$(this.root).trigger(OmniboxEvents.querySuggestGetFocus, <IQuerySuggestSelection>{
       suggestion
     });
   }
