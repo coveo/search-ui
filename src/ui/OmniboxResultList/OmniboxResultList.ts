@@ -283,7 +283,7 @@ export class OmniboxResultList extends ResultList implements IComponentBindings 
   }
 
   private handlePopulateOmnibox(args: IPopulateOmniboxEventArgs) {
-    if (!(this.options.numberOfPreviewResults > 0)) {
+    if (this.options.numberOfPreviewResults > 0) {
       return;
     }
     const promise = new Promise((resolve, reject) => {
