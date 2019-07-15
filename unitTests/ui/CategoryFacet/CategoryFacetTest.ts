@@ -27,26 +27,6 @@ export function CategoryFacetTest() {
     let test: IBasicComponentSetup<CategoryFacet>;
     let simulateQueryData: ISimulateQueryData;
 
-    describe('exposes options', () => {
-      describe('dependsOn', () => {
-        const masterFacetField = '@masterFacet';
-        const dependentFacetField = '@dependantFacet';
-
-        beforeEach(() => {
-          test = Mock.optionsComponentSetup<CategoryFacet, ICategoryFacetOptions>(CategoryFacet, {
-            field: dependentFacetField,
-            dependsOn: masterFacetField
-          });
-        });
-
-        it('update the visibility of the dependent category facet', () => {
-          spyOn(test.cmp['dependsOnManager'], 'updateVisibilityBasedOnDependsOn');
-          Simulate.query(test.env);
-          expect(test.cmp['dependsOnManager'].updateVisibilityBasedOnDependsOn).toHaveBeenCalledTimes(1);
-        });
-      });
-    });
-
     beforeEach(() => {
       simulateQueryData = buildCategoryFacetResults();
       test = Mock.advancedComponentSetup<CategoryFacet>(
