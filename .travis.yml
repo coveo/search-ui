@@ -15,7 +15,7 @@ cache:
 before_install:
   - npm install -g npm@5.5.1
   - if [ "x$TRAVIS_TAG" != "x" ]; then wget https://repo1.maven.org/maven2/com/veracode/vosp/api/wrappers/vosp-api-wrappers-java/$VERACODE_WRAPPER_VERSION/vosp-api-wrappers-java-$VERACODE_WRAPPER_VERSION.jar ; fi
-  - sudo apt-get install libgconf-2.so.4
+  - sudo apt-get install libgconf2-4
 script:
 - source read.version.sh
 - echo $PACKAGE_JSON_VERSION
