@@ -690,6 +690,9 @@ DynamicFacetValuesTest();
 import { DynamicFacetValueTest } from './ui/DynamicFacet/DynamicFacetValues/DynamicFacetValueTest';
 DynamicFacetValueTest();
 
+import { DynamicFacetValueCheckboxTest } from './ui/DynamicFacet/DynamicFacetValues/DynamicFacetValueCheckboxTest';
+DynamicFacetValueCheckboxTest();
+
 import { DynamicFacetValueRendererTest } from './ui/DynamicFacet/DynamicFacetValues/DynamicFacetValueRendererTest';
 DynamicFacetValueRendererTest();
 
