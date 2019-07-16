@@ -32,7 +32,7 @@ export class DynamicFacetSearch {
   }
 
   private async facetSearch(terms: string) {
-    return await this.facetSearchController.search(terms);
+    return this.facetSearchController.search(terms);
   }
 
   private createValuesFromResponse(response: IFacetSearchResponse): IComboboxValue[] {
