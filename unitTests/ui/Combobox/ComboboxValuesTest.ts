@@ -2,6 +2,7 @@ import { Combobox, IComboboxOptions } from '../../../src/ui/Combobox/Combobox';
 import { comboboxDefaultOptions } from './ComboboxTest';
 import { ComboboxValues } from '../../../src/ui/Combobox/ComboboxValues';
 import { $$ } from '../../../src/Core';
+import { IComboboxAccessibilityAttributes } from '../../../src/ui/Combobox/ComboboxInput';
 
 function createValuesFromResponse(response: string[]) {
   return response.map(value => {
@@ -91,6 +92,7 @@ export function ComboboxValuesTest() {
         const valueElement = getChildren()[1];
         $$(valueElement).trigger('mouseenter');
         $$(valueElement).trigger('mouseleave');
+
         expect(comboboxValues.mouseIsOverValue).toBe(false);
       });
 
@@ -130,8 +132,13 @@ export function ComboboxValuesTest() {
         expect(combobox.updateAriaLive).toHaveBeenCalledWith(combobox.options.noValuesFoundLabel);
       });
 
-      it('should call "updateAccessibilityAttributes" once', () => {
-        expect(combobox.updateAccessibilityAttributes).toHaveBeenCalledTimes(1);
+      it('should call "updateAccessibilityAttributes" with the right attributes', () => {
+        const expected: IComboboxAccessibilityAttributes = {
+          expanded: false,
+          activeDescendant: ''
+        };
+
+        expect(combobox.updateAccessibilityAttributes).toHaveBeenCalledWith(expected);
       });
     });
 
@@ -150,8 +157,13 @@ export function ComboboxValuesTest() {
         expect(getChildren().length).toBe(0);
       });
 
-      it('should call "updateAccessibilityAttributes"', () => {
-        expect(combobox.updateAccessibilityAttributes).toHaveBeenCalled();
+      it('should call "updateAccessibilityAttributes" with the right attributes', () => {
+        const expected: IComboboxAccessibilityAttributes = {
+          expanded: false,
+          activeDescendant: ''
+        };
+
+        expect(combobox.updateAccessibilityAttributes).toHaveBeenCalledWith(expected);
       });
     });
 
@@ -186,10 +198,16 @@ export function ComboboxValuesTest() {
         expect(isChildrenActiveAtIndex(0)).toBe(true);
       });
 
-      it('should call "updateAccessibilityAttributes"', () => {
+      it('should call "updateAccessibilityAttributes" with the rigth attributes', () => {
         spyOn(combobox, 'updateAccessibilityAttributes');
         comboboxValues.moveActiveValueDown();
-        expect(combobox.updateAccessibilityAttributes).toHaveBeenCalled();
+
+        const expected: IComboboxAccessibilityAttributes = {
+          expanded: true,
+          activeDescendant: getChildren()[0].getAttribute('id')
+        };
+
+        expect(combobox.updateAccessibilityAttributes).toHaveBeenCalledWith(expected);
       });
     });
 
@@ -224,10 +242,14 @@ export function ComboboxValuesTest() {
         expect(isChildrenActiveAtIndex(1)).toBe(true);
       });
 
-      it('should call "updateAccessibilityAttributes"', () => {
+      it('should call "updateAccessibilityAttributes" with the right attributes', () => {
         spyOn(combobox, 'updateAccessibilityAttributes');
         comboboxValues.moveActiveValueUp();
-        expect(combobox.updateAccessibilityAttributes).toHaveBeenCalled();
+
+        expect(combobox.updateAccessibilityAttributes).toHaveBeenCalledWith({
+          expanded: true,
+          activeDescendant: getChildren()[1].getAttribute('id')
+        });
       });
     });
 
