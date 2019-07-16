@@ -154,7 +154,7 @@ export class OmniboxResultList extends ResultList implements IComponentBindings 
       return null;
     }),
     /**
-     * Number of results to render in the preview.
+     * The maximum number of query results to render in the preview.
      *
      * **Minimum and default value:** `0`
      */

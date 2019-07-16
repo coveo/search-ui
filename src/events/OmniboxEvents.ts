@@ -38,7 +38,13 @@ export interface IQuerySuggestSuccessArgs {
   completions: IQuerySuggestCompletion[];
 }
 
+/**
+ * Describes the object that all [`querySuggestGetFocus`]{@link querySuggestGetFocus} and [`querySuggestSelection`]{@link querySuggestSelection} event handlers receive as an argument.
+ */
 export interface IQuerySuggestSelection {
+  /**
+   * The query suggestion that had focus or was selected.
+   */
   suggestion: string;
 }
 
@@ -86,10 +92,14 @@ export class OmniboxEvents {
   public static querySuggestSuccess = 'querySuggestSuccess';
   /**
    * Triggered by the [`Omnibox`]{@link Omnibox} component when a query suggestion is hovered by the mouse or cycled through with the keyboard.
+   *
+   * All `querySuggestGetFocus` event handlers receive an object implementing the [`IQuerySuggestSelection`]{@link IQuerySuggestSelection} interface as an argument.
    */
   public static querySuggestGetFocus = 'querySuggestGetFocus';
   /**
    * Triggered by the [`Omnibox`]{@link Omnibox} component when a query suggestion is selected by a mouse click or pressing the enter key.
+   *
+   * All `querySuggestSelection` event handlers receive an object implementing the [`IQuerySuggestSelection`]{@link IQuerySuggestSelection} interface as an argument.
    */
   public static querySuggestSelection = 'querySuggestSelection';
 }
