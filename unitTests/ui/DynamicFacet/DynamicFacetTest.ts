@@ -51,6 +51,10 @@ export function DynamicFacetTest() {
       return !!$$(test.cmp.element).find('.coveo-dynamic-facet-search');
     }
 
+    function searchFeatureDisplayed() {
+      return $$($$(test.cmp.element).find('.coveo-dynamic-facet-search')).isVisible();
+    }
+
     it(`when facet has values but none are selected
       should not be seen as "active" or as "empty"`, () => {
       test.cmp.ensureDom();
@@ -477,6 +481,24 @@ export function DynamicFacetTest() {
       test.cmp.ensureDom();
 
       expect(searchFeatureActive()).toBe(true);
+    });
+
+    it(`when "enableFacetSearch" option is "undefined" and "moreValuesAvailable" is "true"
+    it should show the search`, () => {
+      initializeComponent();
+      test.cmp.moreValuesAvailable = true;
+      test.cmp.ensureDom();
+
+      expect(searchFeatureDisplayed()).toBe(true);
+    });
+
+    it(`when "enableFacetSearch" option is "undefined" and "moreValuesAvailable" is "true"
+    it should hide the search`, () => {
+      initializeComponent();
+      test.cmp.moreValuesAvailable = false;
+      test.cmp.ensureDom();
+
+      expect(searchFeatureDisplayed()).toBe(false);
     });
   });
 }
