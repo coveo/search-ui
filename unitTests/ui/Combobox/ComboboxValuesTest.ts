@@ -33,9 +33,16 @@ export function ComboboxValuesTest() {
         createValuesFromResponse,
         ...additionalOptions
       });
-      spyOn(combobox, 'updateAccessibilityAttributes');
       spyOn(combobox, 'clearAll');
       comboboxValues = new ComboboxValues(combobox);
+    }
+
+    function getChildren() {
+      return $$(comboboxValues.element).children();
+    }
+
+    function isChildrenActiveAtIndex(index: number) {
+      return $$(getChildren()[index]).hasClass('coveo-focused');
     }
 
     describe('when being initialized', () => {
@@ -56,6 +63,7 @@ export function ComboboxValuesTest() {
 
     describe('when calling "renderFromResponse" with values', () => {
       beforeEach(() => {
+        spyOn(combobox, 'updateAccessibilityAttributes');
         triggerRenderFromResponse(['hi', 'hello', 'goodbye']);
       });
 
@@ -64,7 +72,7 @@ export function ComboboxValuesTest() {
       });
 
       it('should render the values in the list', () => {
-        expect($$(comboboxValues.element).children().length).toBe(response.length);
+        expect(getChildren().length).toBe(response.length);
       });
 
       it('should call "updateAccessibilityAttributes" twice', () => {
@@ -73,14 +81,14 @@ export function ComboboxValuesTest() {
 
       it(`when entering a value with the mouse
       "mouseIsOverValue" should be true`, () => {
-        const valueElement = $$(comboboxValues.element).children()[0];
+        const valueElement = getChildren()[0];
         $$(valueElement).trigger('mouseenter');
         expect(comboboxValues.mouseIsOverValue).toBe(true);
       });
 
       it(`when entering then leaving a value with the mouse
       "mouseIsOverValue" should be false`, () => {
-        const valueElement = $$(comboboxValues.element).children()[1];
+        const valueElement = getChildren()[1];
         $$(valueElement).trigger('mouseenter');
         $$(valueElement).trigger('mouseleave');
         expect(comboboxValues.mouseIsOverValue).toBe(false);
@@ -88,14 +96,14 @@ export function ComboboxValuesTest() {
 
       describe('when a value is clicked', () => {
         beforeEach(() => {
-          const valueElement = $$(comboboxValues.element).children()[1];
+          const valueElement = getChildren()[1];
           $$(valueElement).trigger('click');
         });
 
         it('should call the option "onSelectValue" with the correct argument', () => {
           expect(combobox.options.onSelectValue).toHaveBeenCalledWith({
             value: response[1],
-            element: $$(comboboxValues.element).children()[1]
+            element: getChildren()[1]
           });
         });
 
@@ -109,11 +117,12 @@ export function ComboboxValuesTest() {
       beforeEach(() => {
         initializeComponent();
         spyOn(combobox, 'updateAriaLive');
+        spyOn(combobox, 'updateAccessibilityAttributes');
         triggerRenderFromResponse([]);
       });
 
       it('should show the "no values found" element', () => {
-        const noValuesFound = $$(comboboxValues.element).children()[0];
+        const noValuesFound = getChildren()[0];
         expect($$(noValuesFound).hasClass('coveo-combobox-value-not-found')).toBe(true);
       });
 
@@ -129,6 +138,7 @@ export function ComboboxValuesTest() {
     describe('when calling "clearValues"', () => {
       beforeEach(() => {
         triggerRenderFromResponse(['hi', 'hello', 'goodbye']);
+        spyOn(combobox, 'updateAccessibilityAttributes');
         comboboxValues.clearValues();
       });
 
@@ -137,11 +147,113 @@ export function ComboboxValuesTest() {
       });
 
       it('should empty the list', () => {
-        expect($$(comboboxValues.element).children().length).toBe(0);
+        expect(getChildren().length).toBe(0);
       });
 
       it('should call "updateAccessibilityAttributes"', () => {
         expect(combobox.updateAccessibilityAttributes).toHaveBeenCalled();
+      });
+    });
+
+    describe('when calling "moveActiveValueDown"', () => {
+      beforeEach(() => {
+        triggerRenderFromResponse(['hi', 'hello']);
+      });
+
+      it(`when no value is active
+      should activate the first value`, () => {
+        comboboxValues.moveActiveValueDown();
+
+        expect(isChildrenActiveAtIndex(0)).toBe(true);
+      });
+
+      it(`when a value is active
+      should activate the next value`, () => {
+        comboboxValues.moveActiveValueDown();
+        comboboxValues.moveActiveValueDown();
+
+        expect(isChildrenActiveAtIndex(0)).toBe(false);
+        expect(isChildrenActiveAtIndex(1)).toBe(true);
+      });
+
+      it(`when the last value is active
+      should activate the first value`, () => {
+        comboboxValues.moveActiveValueDown();
+        comboboxValues.moveActiveValueDown();
+        comboboxValues.moveActiveValueDown();
+
+        expect(isChildrenActiveAtIndex(1)).toBe(false);
+        expect(isChildrenActiveAtIndex(0)).toBe(true);
+      });
+
+      it('should call "updateAccessibilityAttributes"', () => {
+        spyOn(combobox, 'updateAccessibilityAttributes');
+        comboboxValues.moveActiveValueDown();
+        expect(combobox.updateAccessibilityAttributes).toHaveBeenCalled();
+      });
+    });
+
+    describe('when calling "moveActiveValueUp"', () => {
+      beforeEach(() => {
+        triggerRenderFromResponse(['hi', 'hello']);
+      });
+
+      it(`when no value is active
+      should activate the last value`, () => {
+        comboboxValues.moveActiveValueUp();
+
+        expect(isChildrenActiveAtIndex(1)).toBe(true);
+      });
+
+      it(`when a value is active
+      should activate the previous value`, () => {
+        comboboxValues.moveActiveValueUp();
+        comboboxValues.moveActiveValueUp();
+
+        expect(isChildrenActiveAtIndex(1)).toBe(false);
+        expect(isChildrenActiveAtIndex(0)).toBe(true);
+      });
+
+      it(`when the last value is active
+      should activate the last value`, () => {
+        comboboxValues.moveActiveValueUp();
+        comboboxValues.moveActiveValueUp();
+        comboboxValues.moveActiveValueUp();
+
+        expect(isChildrenActiveAtIndex(0)).toBe(false);
+        expect(isChildrenActiveAtIndex(1)).toBe(true);
+      });
+
+      it('should call "updateAccessibilityAttributes"', () => {
+        spyOn(combobox, 'updateAccessibilityAttributes');
+        comboboxValues.moveActiveValueUp();
+        expect(combobox.updateAccessibilityAttributes).toHaveBeenCalled();
+      });
+    });
+
+    describe('when calling "selectActiveValue"', () => {
+      beforeEach(() => {
+        triggerRenderFromResponse(['hi']);
+      });
+
+      it(`when no value is active
+      should not trigger a select and clear`, () => {
+        comboboxValues.selectActiveValue();
+
+        expect(combobox.clearAll).not.toHaveBeenCalled();
+        expect(combobox.options.onSelectValue).not.toHaveBeenCalled();
+      });
+
+      it(`when a value is active
+      should trigger a select and clear`, () => {
+        comboboxValues.moveActiveValueDown();
+        comboboxValues.selectActiveValue();
+
+        expect(combobox.clearAll).toHaveBeenCalled();
+        expect(combobox.options.onSelectValue).toHaveBeenCalledWith({
+          value: response[0],
+          element: getChildren()[0]
+        });
       });
     });
   });
