@@ -338,8 +338,8 @@ export class ComponentOptions {
    * @param optionArgs The arguments to apply when building the option.
    * @returns {string} The resulting option value.
    */
-  static buildStringOption(optionArgs?: IComponentOptions<string>): string {
-    return ComponentOptions.buildOption<string>(ComponentOptionsType.STRING, ComponentOptions.loadStringOption, optionArgs);
+  static buildStringOption<T extends string>(optionArgs?: IComponentOptions<T>): T {
+    return ComponentOptions.buildOption<T>(ComponentOptionsType.STRING, ComponentOptions.loadStringOption, optionArgs);
   }
 
   /**
@@ -736,7 +736,7 @@ export class ComponentOptions {
     return values;
   }
 
-  static loadStringOption(element: HTMLElement, name: string, option: IComponentOptions<any>): string {
+  static loadStringOption<T extends string>(element: HTMLElement, name: string, option: IComponentOptions<any>): T {
     return element.getAttribute(ComponentOptions.attrNameFromName(name, option)) || ComponentOptions.getAttributeFromAlias(element, option);
   }
 
