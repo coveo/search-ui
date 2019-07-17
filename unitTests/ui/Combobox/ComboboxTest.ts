@@ -34,10 +34,6 @@ export function ComboboxTest() {
       return $$(combobox.element).find('input');
     }
 
-    function getLabel() {
-      return $$(combobox.element).find('label');
-    }
-
     function getValues() {
       return $$(combobox.element).find('ul');
     }
@@ -49,15 +45,6 @@ export function ComboboxTest() {
     describe('when initializing the combobox', () => {
       it('should render the input', () => {
         expect(getInput()).toBeTruthy();
-      });
-
-      it('should render the label correctly', () => {
-        expect(getLabel().innerHTML).toBe(combobox.options.label);
-      });
-
-      it('the label should have the right attributes', () => {
-        expect(getLabel().getAttribute('for')).toBe(getInput().getAttribute('id'));
-        expect(getLabel().getAttribute('aria-hidden')).toBe('false');
       });
 
       it('should render the hidden wait animation', () => {

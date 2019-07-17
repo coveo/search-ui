@@ -53,7 +53,7 @@ export function ComboboxValuesTest() {
 
       it('should possess the correct accessibility attributes', () => {
         expect(comboboxValues.element.getAttribute('id')).toBe(`${combobox.id}-listbox`);
-        expect(comboboxValues.element.getAttribute('aria-labelledby')).toBe(`${combobox.id}-label`);
+        expect(comboboxValues.element.getAttribute('aria-labelledby')).toBe(`${combobox.id}-input`);
         expect(comboboxValues.element.getAttribute('role')).toBe('listbox');
       });
 
