@@ -11,8 +11,18 @@ export interface IQuerySuggestPreview extends IResultListOptions {
 }
 
 /**
+ * The QuerySuggestPreview component behaves exactly like the {@link ResultList} component (which it extends), except that
+ * it renders itself beside the query suggest when hovering a result.
  *
- *
+ * ```html
+ * <div class="CoveoQuerySuggestPreview">
+ *   <script class="result-template" type="text/x-underscore">
+ *     <div>
+ *       <a class='CoveoResultLink'></a>
+ *     </div>
+ *   </script>
+ * </div>
+ * ```
  *
  */
 export class QuerySuggestPreview extends ResultList implements IComponentBindings {
@@ -25,16 +35,7 @@ export class QuerySuggestPreview extends ResultList implements IComponentBinding
    *
    * Any element that does not match this css class and that is clicked will trigger a redirection by the OmniboxResultList.
    */
-  static elementsToIgnore = [
-    'coveo-field-table-toggle-caption',
-    'CoveoFollowItem',
-    'CoveoPrintableUri',
-    'CoveoQuickview',
-    'CoveoResultLink',
-    'CoveoResultRating',
-    'CoveoResultTagging',
-    'CoveoYouTubeThumbnail'
-  ];
+  static elementsToIgnore = [];
 
   static doExport = () => {
     exportGlobally({
@@ -56,7 +57,7 @@ export class QuerySuggestPreview extends ResultList implements IComponentBinding
   };
 
   /**
-   * Creates a new OmniboxResultList component.
+   * Creates a new QuerySuggestPreview component.
    * @param element The HTMLElement on which to instantiate the component.
    * @param options The options for the QuerySuggestPreview component.
    * @param bindings The bindings that the component requires to function normally. If not set, these will be
