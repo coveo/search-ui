@@ -1,6 +1,8 @@
 import { $$ } from '../utils/Dom';
 import { InputManager } from './InputManager';
 import { each, defaults, indexOf, compact } from 'underscore';
+import { OmniboxEvents } from '../Core';
+import { IQuerySuggestSelection } from '../events/OmniboxEvents';
 
 export interface Suggestion {
   text?: string;
@@ -26,6 +28,7 @@ export class SuggestionsManager {
   constructor(
     private element: HTMLElement,
     private magicBoxContainer: HTMLElement,
+    private root: HTMLElement,
     private inputManager: InputManager,
     options?: SuggestionsManagerOptions
   ) {
@@ -224,11 +227,11 @@ export class SuggestionsManager {
     });
 
     dom.on('click', () => {
-      suggestion.onSelect();
+      this.selectSuggestion(suggestion);
     });
 
     dom.on('keyboardSelect', () => {
-      suggestion.onSelect();
+      this.selectSuggestion(suggestion);
     });
 
     if (suggestion.html) {
@@ -255,6 +258,11 @@ export class SuggestionsManager {
     }
 
     return dom;
+  }
+
+  private selectSuggestion(suggestion: Suggestion) {
+    suggestion.onSelect();
+    $$(this.root).trigger(OmniboxEvents.querySuggestSelection, <IQuerySuggestSelection>{ suggestion: suggestion.text });
   }
 
   private modifyDomFromExistingSuggestion(dom: HTMLElement) {
@@ -315,6 +323,13 @@ export class SuggestionsManager {
     }
     $$(suggestion).addClass(this.options.selectedClass);
     this.updateAreaSelectedIfDefined(suggestion, 'true');
+    this.updateSelectedSuggestion(suggestion.innerText);
+  }
+
+  private updateSelectedSuggestion(suggestion: string) {
+    $$(this.root).trigger(OmniboxEvents.querySuggestGetFocus, <IQuerySuggestSelection>{
+      suggestion
+    });
   }
 
   private removeSelectedStatus(suggestion: HTMLElement): void {
