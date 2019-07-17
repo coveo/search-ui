@@ -32,6 +32,10 @@ $active-text-opacity: 0.6;
     line-height: 1.2em;
   }
 
+  .coveo-checkbox-label button + .coveo-checkbox-span-label {
+    margin-left: 12px;
+  }
+
   .coveo-checkbox-span-label-suffix {
     margin-left: 8px;
     color: $color-blueish-gray;

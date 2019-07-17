@@ -47,26 +47,9 @@ export class Combobox {
 
   private create() {
     this.element = $$('div', { className: `coveo-combobox-wrapper ${this.options.wrapperClassName}` }).el;
-    this.createAndAppendLabel();
     this.createAndAppendInput();
     this.createAndAppendWaitAnimation();
     this.createAndAppendValues();
-  }
-
-  private createAndAppendLabel() {
-    const labelElement = $$(
-      'label',
-      {
-        id: `${this.id}-label`,
-        className: 'coveo-combobox-label',
-        for: `${this.id}-input`,
-        // Even if the label is hidden, the screen reader will still read it
-        ariaHidden: 'false'
-      },
-      this.options.label
-    ).el;
-
-    this.element.appendChild(labelElement);
   }
 
   private createAndAppendInput() {

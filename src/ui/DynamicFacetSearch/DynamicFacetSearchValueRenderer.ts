@@ -11,7 +11,6 @@ export class DynamicFacetSearchValueRenderer implements ValueRenderer {
 
   public render() {
     this.dom = $$('div', {
-      role: 'option',
       className: 'coveo-dynamic-facet-value',
       dataValue: this.facetValue.value
     });

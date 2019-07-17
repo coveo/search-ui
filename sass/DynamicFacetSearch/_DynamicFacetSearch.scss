@@ -3,6 +3,11 @@
 .coveo-dynamic-facet-search {
   margin-top: 15px;
 
+  .coveo-checkbox-span-label-suffix {
+    // For accessibility contrast reasons
+    color: black;
+  }
+
   .coveo-combobox-value {
     padding: 0 5px;
 

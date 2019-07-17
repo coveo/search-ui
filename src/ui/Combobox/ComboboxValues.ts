@@ -18,7 +18,7 @@ export class ComboboxValues {
       id: `${this.combobox.id}-listbox`,
       role: 'listbox',
       className: 'coveo-combobox-values',
-      ariaLabelledby: `${this.combobox.id}-label`
+      ariaLabelledby: `${this.combobox.id}-input`
     }).el;
     $$(this.element).hide();
   }
@@ -44,7 +44,11 @@ export class ComboboxValues {
   private renderValues() {
     const fragment = document.createDocumentFragment();
     this.values.forEach((value, index) => {
-      const elementWrapper = $$('li', { id: `${this.combobox.id}value-${index}`, className: 'coveo-combobox-value' }, value.element).el;
+      const elementWrapper = $$(
+        'li',
+        { id: `${this.combobox.id}-value-${index}`, className: 'coveo-combobox-value', role: 'option' },
+        value.element
+      ).el;
       value.element = elementWrapper;
       fragment.appendChild(value.element);
     });
@@ -61,6 +65,7 @@ export class ComboboxValues {
     const noValuesFoundElement = $$(
       'li',
       {
+        role: 'option',
         className: 'coveo-combobox-value-not-found'
       },
       label

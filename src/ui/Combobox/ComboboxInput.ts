@@ -16,7 +16,8 @@ export class ComboboxInput {
   private inputOptions: ITextInputOptions = {
     usePlaceholder: true,
     className: 'coveo-combobox-input',
-    triggerOnChangeAsYouType: true
+    triggerOnChangeAsYouType: true,
+    isRequired: false
   };
 
   constructor(private combobox: Combobox) {
@@ -48,11 +49,12 @@ export class ComboboxInput {
     const listboxId = `${this.combobox.id}-listbox`;
     this.element.setAttribute('role', 'combobox');
     this.element.setAttribute('aria-owns', listboxId);
-    this.element.setAttribute('aria-aria-haspopup', 'listbox');
+    this.element.setAttribute('aria-haspopup', 'listbox');
 
     this.inputElement.setAttribute('id', `${this.combobox.id}-input`);
     this.inputElement.setAttribute('aria-autocomplete', 'list');
     this.inputElement.setAttribute('aria-controls', listboxId);
+    this.inputElement.setAttribute('aria-label', this.combobox.options.label);
 
     this.updateAccessibilityAttributes({
       activeDescendant: '',
@@ -62,7 +64,9 @@ export class ComboboxInput {
 
   public updateAccessibilityAttributes(attributes: IComboboxAccessibilityAttributes) {
     this.element.setAttribute('aria-expanded', attributes.expanded ? 'true' : 'false');
-    this.inputElement.setAttribute('aria-activedescendant', attributes.activeDescendant);
+    Utils.isEmptyString(attributes.activeDescendant)
+      ? this.inputElement.removeAttribute('aria-activedescendant')
+      : this.inputElement.setAttribute('aria-activedescendant', attributes.activeDescendant);
   }
 
   public clearInput() {
