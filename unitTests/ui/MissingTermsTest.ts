@@ -10,7 +10,7 @@ export function MissingTermsTest() {
     let fakeResult: IQueryResult;
 
     const mockComponent = (query: string, option = {}) => {
-      return Mock.advancedResultComponentSetup<MissingTerms>(
+      const test = Mock.advancedResultComponentSetup<MissingTerms>(
         MissingTerms,
         fakeResult,
         new Mock.AdvancedComponentSetupOptions(null, option, (env: Mock.MockEnvironmentBuilder): Mock.MockEnvironmentBuilder => {
@@ -18,6 +18,11 @@ export function MissingTermsTest() {
           return env;
         })
       );
+      const analyticsElement = $$('div', {
+        className: 'CoveoAnalytics'
+      }).el;
+      test.env.root.appendChild(analyticsElement);
+      return test;
     };
 
     beforeEach(() => {
@@ -43,6 +48,23 @@ export function MissingTermsTest() {
           test = mockComponent(query, { clickable: true });
           clickFirstMissingTerm();
           expect(missingTermsClickableSpy).toHaveBeenCalled();
+        });
+
+        it(`true,
+        it should log a addMissingTerm event when it is clicked`, function() {
+          const query = 'This is my query';
+          fakeResult.absentTerms = ['This'];
+          test = mockComponent(query);
+          clickFirstMissingTerm();
+          expect(test.env.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(
+            jasmine.objectContaining({
+              name: 'addMissingTerm',
+              type: 'missingTerm'
+            }),
+            jasmine.objectContaining({
+              missingTerm: 'This'
+            })
+          );
         });
 
         it('false should not allow the user to click on the missingTerm', () => {
@@ -96,7 +118,30 @@ export function MissingTermsTest() {
       });
     });
     describe('when the langage is', () => {
+      const getMissingTerms = () => {
+        return test.cmp.queryStateModel.get('missingTerms');
+      };
+
+      const getWordBoudaryChars = () => {
+        return [`-`, `'`, `?`, `*`, `’`, `.`, `~`, `=`, `,`, `/`, `\\`, `:`, `\``, `;`, `_`, `!`, `&`, `(`, `)`];
+      };
+
       describe('English', () => {
+        describe('when a words contains words boundary character', () => {
+          it(`when the missing term is part of the words,
+          it will not be displayed as a missing term.`, () => {
+            const wordBoundarysCharacter = getWordBoudaryChars();
+            wordBoundarysCharacter.forEach(character => {
+              const boundaryCharacter = `\\${character}s`;
+              const query = `efile${boundaryCharacter} `;
+              fakeResult.absentTerms = [`${boundaryCharacter}`];
+              test = mockComponent(query);
+              expect(test.cmp.element.childElementCount).toEqual(0);
+              expect(test.cmp.missingTerms).toEqual([`${boundaryCharacter}`]);
+            });
+          });
+        });
+
         describe('when fetching the missing terms from a query', () => {
           let expectedResult: string[];
           beforeEach(() => {
@@ -129,7 +174,7 @@ export function MissingTermsTest() {
             test = mockComponent(query);
             test.cmp.queryController.executeQuery();
             test.cmp.addTermForcedToAppear(termPresent);
-            expect(test.cmp.queryStateModel.get('missingTerm')).toEqual([termPresent]);
+            expect(getMissingTerms()).toEqual([termPresent]);
           });
 
           it('and the term is the first word in the query, the term is added to the url', () => {
@@ -139,7 +184,7 @@ export function MissingTermsTest() {
             test = mockComponent(query);
             test.cmp.addTermForcedToAppear(firstWord);
             test.cmp.queryController.executeQuery();
-            expect(test.cmp.queryStateModel.get('missingTerm')).toEqual([firstWord]);
+            expect(getMissingTerms()).toEqual([firstWord]);
           });
 
           it('and the term is the last word in the query, the term is added to the url', () => {
@@ -148,7 +193,7 @@ export function MissingTermsTest() {
             fakeResult.absentTerms = [lastWord];
             test = mockComponent(query);
             test.cmp.addTermForcedToAppear(lastWord);
-            expect(test.cmp.queryStateModel.get('missingTerm')).toEqual([lastWord]);
+            expect(getMissingTerms()).toEqual([lastWord]);
           });
 
           it('and the term is not present, queryStateModel.set is never called', () => {
@@ -166,7 +211,7 @@ export function MissingTermsTest() {
             fakeResult.absentTerms = [hyphensWord];
             test = mockComponent(query);
             test.cmp.addTermForcedToAppear(hyphensWord);
-            expect(test.cmp.queryStateModel.get('missingTerm')).toEqual([hyphensWord]);
+            expect(getMissingTerms()).toEqual([hyphensWord]);
           });
 
           it('and the term present is surrounded by special character, the term is added to the url', () => {
@@ -175,7 +220,7 @@ export function MissingTermsTest() {
             fakeResult.absentTerms = [specialCharacter];
             test = mockComponent(query);
             test.cmp.addTermForcedToAppear(specialCharacter);
-            expect(test.cmp.queryStateModel.get('missingTerm')).toEqual([specialCharacter]);
+            expect(getMissingTerms()).toEqual([specialCharacter]);
           });
         });
       });
@@ -188,7 +233,7 @@ export function MissingTermsTest() {
             fakeResult.absentTerms = [koreanWordPresent];
             test = mockComponent(query);
             test.cmp.addTermForcedToAppear(koreanWordPresent);
-            expect(test.cmp.queryStateModel.get('missingTerm')).toEqual([koreanWordPresent]);
+            expect(getMissingTerms()).toEqual([koreanWordPresent]);
           });
 
           it('and the term is the first word in the query, the term is added to the url', () => {
@@ -197,7 +242,7 @@ export function MissingTermsTest() {
             fakeResult.absentTerms = [koreanFirstWord];
             test = mockComponent(query);
             test.cmp.addTermForcedToAppear(koreanFirstWord);
-            expect(test.cmp.queryStateModel.get('missingTerm')).toEqual([koreanFirstWord]);
+            expect(getMissingTerms()).toEqual([koreanFirstWord]);
           });
 
           it('and the term is the last word in the query, the term is added to the url', () => {
@@ -206,7 +251,7 @@ export function MissingTermsTest() {
             fakeResult.absentTerms = [KoreanlastWord];
             test = mockComponent(query);
             test.cmp.addTermForcedToAppear(KoreanlastWord);
-            expect(test.cmp.queryStateModel.get('missingTerm')).toEqual([KoreanlastWord]);
+            expect(getMissingTerms()).toEqual([KoreanlastWord]);
           });
 
           it('and the term is a single character surronded by other character, the term is added to the url', () => {
@@ -215,7 +260,21 @@ export function MissingTermsTest() {
             fakeResult.absentTerms = [KoreanWordPresentMultipleTimes];
             test = mockComponent(query);
             test.cmp.addTermForcedToAppear(KoreanWordPresentMultipleTimes);
-            expect(test.cmp.queryStateModel.get('missingTerm')).toEqual([KoreanWordPresentMultipleTimes]);
+            expect(getMissingTerms()).toEqual([KoreanWordPresentMultipleTimes]);
+          });
+        });
+        describe('when a words contains words boundary character', () => {
+          it(`when the missing term is part of the words,
+          it will not be displayed as a missing term.`, () => {
+            const wordBoundarysCharacter = getWordBoudaryChars();
+            wordBoundarysCharacter.forEach(character => {
+              const boundaryCharacter = `\\${character}이것은`;
+              const query = `쿼리가${boundaryCharacter} `;
+              fakeResult.absentTerms = [`${boundaryCharacter}`];
+              test = mockComponent(query);
+              expect(test.cmp.element.childElementCount).toEqual(0);
+              expect(test.cmp.missingTerms).toEqual([`${boundaryCharacter}`]);
+            });
           });
         });
       });

@@ -5,9 +5,10 @@ import { IComponentBindings } from '../Base/ComponentBindings';
 import { ComponentOptions } from '../Base/ComponentOptions';
 import { $$, Initialization, l } from '../../Core';
 import { Dom } from '../../utils/Dom';
-import { analyticsActionCauseList, IAnalyticsIncludeMissingTerm } from '../Analytics/AnalyticsActionListMeta';
+import { analyticsActionCauseList, IAnalyticsMissingTerm } from '../Analytics/AnalyticsActionListMeta';
 import { IQueryResult } from '../../rest/QueryResult';
 import XRegExp = require('xregexp');
+import { MissingTermManager } from './MissingTermManager';
 
 export interface IMissingTermsOptions {
   caption?: string;
@@ -56,10 +57,6 @@ export class MissingTerms extends Component {
     });
   };
 
-  // Used to split terms and phrases. Match character that can separate words or caracter for Chinese, Japanese and Korean.
-  // Han: Unicode script for Chinesse character
-  // We only need to import 1 Asian, charcaters script because what is important here is the space between the caracter and any script will contain it
-  private wordBoundary = '(([\\p{Han}])?([^(\\p{Latin}-)])|^|$)';
   private termForcedToAppear: string[];
 
   /**
@@ -104,11 +101,11 @@ export class MissingTerms extends Component {
     }
     this.updateTermForcedToAppear();
     this.termForcedToAppear.push(term);
-    this.queryStateModel.set('missingTerm', [...this.termForcedToAppear]);
+    this.queryStateModel.set('missingTerms', [...this.termForcedToAppear]);
   }
 
   private updateTermForcedToAppear() {
-    this.termForcedToAppear = [...this.queryStateModel.get('missingTerm')];
+    this.termForcedToAppear = [...this.queryStateModel.get('missingTerms')];
   }
 
   private addMissingTerms() {
@@ -140,19 +137,14 @@ export class MissingTerms extends Component {
   }
 
   private buildMissingTerms(): Dom[] {
-    const terms: Dom[] = this.missingTerms.map(term => {
-      if (this.containsFeaturedResults(term) || this.containsWildcard(term)) {
-        return;
-      }
+    const validTerms = this.missingTerms.filter(term => this.isValidTerm(term));
+    const terms: Dom[] = validTerms.map(term => {
       return this.makeTermClickableIfEnabled(term);
     });
     return terms;
   }
 
   private executeNewQuery(missingTerm: string = this.queryStateModel.get('q')) {
-    this.usageAnalytics.logSearchEvent<IAnalyticsIncludeMissingTerm>(analyticsActionCauseList.missingTermClick, {
-      missingTerm: missingTerm
-    });
     this.queryController.executeQuery();
   }
 
@@ -161,6 +153,7 @@ export class MissingTerms extends Component {
       const termElement = $$('button', { className: 'coveo-missing-term coveo-clickable' }, term);
       termElement.on('click', () => {
         this.addTermForcedToAppear(term);
+        this.logAnalyticsAddMissingTerm(term);
         this.executeNewQuery(term);
       });
       return termElement;
@@ -170,23 +163,12 @@ export class MissingTerms extends Component {
   }
 
   private createWordBoundaryDelimitedRegex(term: string): RegExp {
-    return XRegExp(`${this.wordBoundary}(${term})${this.wordBoundary}`, 'g');
+    return XRegExp(`${MissingTermManager.wordBoundary}(${term})${MissingTermManager.wordBoundary}`, 'g');
   }
 
   private containsFeaturedResults(term: string): boolean {
     this.updateTermForcedToAppear();
     return this.termForcedToAppear.indexOf(term) !== -1;
-  }
-
-  private containsWildcard(term): boolean {
-    const query = this.queryStateModel.get('q');
-    const regxStarWildcard = XRegExp(`(\\*${term})|${term}\\*`);
-    const regxQuestionMarkWildcard = XRegExp(`(\\?${term})|${term}\\?`);
-
-    const foundStar = this.queryController.getLastQuery().wildcards && regxStarWildcard.test(query);
-    const foundQuestionMark = this.queryController.getLastQuery().questionMark && regxQuestionMarkWildcard.test(query);
-
-    return foundStar || foundQuestionMark;
   }
 
   private hideMissingTermsOverTheNumberOfResults(elements: HTMLElement[]) {
@@ -216,6 +198,27 @@ export class MissingTerms extends Component {
       $$(allMissingTerms[index]).show();
       allMissingTerms[index].removeAttribute('style');
     }
+  }
+
+  private isValidTerm(term: string) {
+    return this.isNonBoundaryTerm(term) && !this.containsFeaturedResults(term);
+  }
+
+  private isNonBoundaryTerm(term: string) {
+    //p{L} is a Unicode script that matches any character in any language.
+    const wordWithBreakpoints = `\\p{L}*[-'?\*’.~=,\/\\\\:\`;_!&\(\)]+\\p{L}*`;
+    const regex = XRegExp(wordWithBreakpoints, 'gi');
+    const query = this.queryStateModel.get('q');
+    const matches = query.match(regex) || [];
+    return matches.every((word: string) => {
+      return word.indexOf(term) === -1;
+    });
+  }
+
+  private logAnalyticsAddMissingTerm(term: string) {
+    this.usageAnalytics.logSearchEvent<IAnalyticsMissingTerm>(analyticsActionCauseList.addMissingTerm, {
+      missingTerm: term
+    });
   }
 }
 Initialization.registerAutoCreateComponent(MissingTerms);

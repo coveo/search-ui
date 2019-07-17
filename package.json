@@ -1,6 +1,6 @@
 {
   "name": "coveo-search-ui",
-  "version": "2.0.308",
+  "version": "2.0.323",
   "description": "Coveo JavaScript Search Framework",
   "main": "./bin/js/CoveoJsSearch.js",
   "types": "./bin/ts/CoveoJsSearch.d.ts",
@@ -140,6 +140,7 @@
     "sass-loader": "^6.0",
     "script-loader": "^0.7.0",
     "sitemap-generator": "^5.0.0",
+    "snyk": "^1.148.0",
     "string-replace-loader": "^1.0.2",
     "style-loader": "^0.19.0",
     "svg-inline-loader": "^0.7.1",
@@ -152,7 +153,7 @@
     "walk": "^2.3.9",
     "webpack": "^3.10.0",
     "webpack-bundle-analyzer": "^3.3.2",
-    "webpack-dev-server": "3.0.0",
+    "webpack-dev-server": "3.1.11",
     "xml2js": "^0.4.17",
     "yargs": "^4.7.1"
   },
@@ -168,7 +169,6 @@
     "modal-box": "^2.0.10",
     "pikaday": "^1.4.0",
     "popper.js": "^1.14.3",
-    "snyk": "^1.148.0",
     "underscore": "^1.8.3",
     "xregexp": "^4.2.4"
   },
