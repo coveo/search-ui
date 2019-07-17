@@ -4,7 +4,7 @@ import { l } from '../../strings/Strings';
 import { ResultList } from '../ResultList/ResultList';
 import { IResultListOptions } from '../ResultList/ResultListOptions';
 import { IQueryResult } from '../../rest/QueryResult';
-import { IPopulateOmniboxEventArgs, OmniboxEvents, IQuerySuggestSelection } from '../../events/OmniboxEvents';
+import { IPopulateOmniboxEventArgs, OmniboxEvents } from '../../events/OmniboxEvents';
 import { ComponentOptions, IQueryExpression } from '../Base/ComponentOptions';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { QueryEvents, IBuildingQueryEventArgs } from '../../events/QueryEvents';
