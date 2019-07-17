@@ -4,7 +4,7 @@ import { l } from '../../strings/Strings';
 import { ResultList } from '../ResultList/ResultList';
 import { IResultListOptions } from '../ResultList/ResultListOptions';
 import { IQueryResult } from '../../rest/QueryResult';
-import { IPopulateOmniboxEventArgs, OmniboxEvents } from '../../events/OmniboxEvents';
+import { IPopulateOmniboxEventArgs, OmniboxEvents, IQuerySuggestSelection } from '../../events/OmniboxEvents';
 import { ComponentOptions, IQueryExpression } from '../Base/ComponentOptions';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { QueryEvents, IBuildingQueryEventArgs } from '../../events/QueryEvents';
@@ -19,7 +19,6 @@ import OmniboxModuleDefintion = require('../Omnibox/Omnibox');
 import { InitializationEvents } from '../../EventsModules';
 import { logSearchBoxSubmitEvent } from '../Analytics/SharedAnalyticsCalls';
 import { Logger } from '../../misc/Logger';
-
 import 'styling/_OmniboxResultList';
 
 export interface IOmniboxResultListOptions extends IResultListOptions {
@@ -27,6 +26,7 @@ export interface IOmniboxResultListOptions extends IResultListOptions {
   onSelect?: (result: IQueryResult, resultElement: HTMLElement, omniboxObject: IPopulateOmniboxEventArgs, event?: Event) => void;
   headerTitle?: string;
   queryOverride?: IQueryExpression;
+  numberOfPreviewResults?: number;
 }
 
 /**
@@ -152,7 +152,13 @@ export class OmniboxResultList extends ResultList implements IComponentBindings 
       (result: IQueryResult, resultElement: HTMLElement, omniboxObject: IPopulateOmniboxEventArgs) => void
     >(() => {
       return null;
-    })
+    }),
+    /**
+     * The maximum number of query results to render in the preview.
+     *
+     * **Minimum and default value:** `0`
+     */
+    numberOfPreviewResults: ComponentOptions.buildNumberOption({ defaultValue: 0, min: 0 })
   };
 
   private lastOmniboxRequest: { omniboxObject: IPopulateOmniboxEventArgs; resolve: (...args: any[]) => void };
@@ -169,7 +175,8 @@ export class OmniboxResultList extends ResultList implements IComponentBindings 
     this.options = ComponentOptions.initComponentOptions(element, OmniboxResultList, options);
     this.setupOptions();
     this.bind.onRootElement(OmniboxEvents.populateOmnibox, (args: IPopulateOmniboxEventArgs) => this.handlePopulateOmnibox(args));
-    this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => this.handleQueryOverride(args));
+    this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => this.handleBuildingQuery(args));
+    this.bind.onRootElement(OmniboxEvents.querySuggestGetFocus, (args: IQuerySuggestSelection) => this.querySuggestGetFocus(args));
 
     const omniboxElement: HTMLElement = $$(this.root).find(`.${Component.computeCssClassNameForType('Omnibox')}`);
     if (omniboxElement) {
@@ -233,6 +240,10 @@ export class OmniboxResultList extends ResultList implements IComponentBindings 
     return Promise.resolve(null);
   }
 
+  private get shouldShowPreviewResults() {
+    return this.options.numberOfPreviewResults > 0;
+  }
+
   private appendHeaderIfTitleIsSpecified() {
     if (this.options.headerTitle) {
       this.options.resultContainer.appendChild(
@@ -276,6 +287,9 @@ export class OmniboxResultList extends ResultList implements IComponentBindings 
   }
 
   private handlePopulateOmnibox(args: IPopulateOmniboxEventArgs) {
+    if (this.shouldShowPreviewResults) {
+      return;
+    }
     const promise = new Promise((resolve, reject) => {
       this.queryController.executeQuery({
         searchAsYouType: true,
@@ -289,7 +303,7 @@ export class OmniboxResultList extends ResultList implements IComponentBindings 
     });
   }
 
-  private handleQueryOverride(args: IBuildingQueryEventArgs) {
+  protected handleBuildingQuery(args: IBuildingQueryEventArgs) {
     Assert.exists(args);
     if (Utils.isNonEmptyString(this.options.queryOverride)) {
       args.queryBuilder.constantExpression.add(this.options.queryOverride);
@@ -304,6 +318,21 @@ export class OmniboxResultList extends ResultList implements IComponentBindings 
     if (this.lastOmniboxRequest) {
       this.options.onSelect.call(this, result, resultElement, this.lastOmniboxRequest.omniboxObject, e);
     }
+  }
+
+  private querySuggestGetFocus(args: IQuerySuggestSelection) {
+    if (!this.shouldShowPreviewResults) {
+      return;
+    }
+    this.executeQueryHover(args.suggestion);
+  }
+
+  private executeQueryHover(suggestion: string) {
+    const previousQueryOptions = this.queryController.getLastQuery();
+    previousQueryOptions.q = suggestion;
+    previousQueryOptions.numberOfResults = this.options.numberOfPreviewResults;
+    //TODO: I will need to execute a query, with the result,
+    //      build a container and display the result  next to the querySuggest
   }
 
   private otherComponentShouldHandleSelection(e: Event, resultElement: HTMLElement) {
