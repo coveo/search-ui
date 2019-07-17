@@ -20,8 +20,8 @@ export class DynamicFacetSearch {
     this.combobox = new Combobox({
       label: l('SearchFacetResults', this.facet.options.title),
       searchInterface: this.facet.searchInterface,
-      requestValues: this.facetSearch.bind(this),
-      createValuesFromResponse: this.createValuesFromResponse.bind(this),
+      requestValues: terms => this.facetSearch(terms),
+      createValuesFromResponse: (response: IFacetSearchResponse) => this.createValuesFromResponse(response),
       onSelectValue: this.onSelectValue,
       placeholderText: l('Search'),
       wrapperClassName: 'coveo-dynamic-facet-search',

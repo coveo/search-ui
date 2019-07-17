@@ -79,7 +79,7 @@ export class ComboboxValues {
     this.values.forEach(({ element }) => {
       $$(element).on('mouseenter', () => (this.mouseIsOverValue = true));
       $$(element).on('mouseleave', () => (this.mouseIsOverValue = false));
-      $$(element).on('click', this.onValueClick.bind(this));
+      $$(element).on('click', (e: MouseEvent) => this.onValueClick(e));
     });
   }
 
