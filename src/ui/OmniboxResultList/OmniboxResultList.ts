@@ -240,6 +240,10 @@ export class OmniboxResultList extends ResultList implements IComponentBindings 
     return Promise.resolve(null);
   }
 
+  private get shouldShowPreviewResults() {
+    return this.options.numberOfPreviewResults > 0;
+  }
+
   private appendHeaderIfTitleIsSpecified() {
     if (this.options.headerTitle) {
       this.options.resultContainer.appendChild(
@@ -283,7 +287,7 @@ export class OmniboxResultList extends ResultList implements IComponentBindings 
   }
 
   private handlePopulateOmnibox(args: IPopulateOmniboxEventArgs) {
-    if (this.options.numberOfPreviewResults > 0) {
+    if (this.shouldShowPreviewResults) {
       return;
     }
     const promise = new Promise((resolve, reject) => {
@@ -317,7 +321,7 @@ export class OmniboxResultList extends ResultList implements IComponentBindings 
   }
 
   private querySuggestGetFocus(args: IQuerySuggestSelection) {
-    if (!(this.options.numberOfPreviewResults > 0)) {
+    if (!this.shouldShowPreviewResults) {
       return;
     }
     this.executeQueryHover(args.suggestion);
