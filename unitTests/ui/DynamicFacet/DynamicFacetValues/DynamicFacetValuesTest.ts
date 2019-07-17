@@ -132,9 +132,8 @@ export function DynamicFacetValuesTest() {
 
     describe('when moreValuesAvailable is true', () => {
       beforeEach(() => {
-        dynamicFacetValues.createFromResponse(
-          DynamicFacetTestUtils.getCompleteFacetResponse(facet, { values: mockFacetValues, moreValuesAvailable: true })
-        );
+        facet.moreValuesAvailable = true;
+        dynamicFacetValues.createFromResponse(DynamicFacetTestUtils.getCompleteFacetResponse(facet, { values: mockFacetValues }));
       });
 
       it(`should render the "Show more" button`, () => {

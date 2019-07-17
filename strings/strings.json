@@ -7479,5 +7479,9 @@
   "CloseFiltersDropdown": {
     "en": "Close the filters dropdown",
     "fr": "Fermer le menu déroulant de filtres"
+  },
+  "NoValuesFound": {
+    "en": "No values found.",
+    "fr": "Aucune valeur trouvée."
   }
 }

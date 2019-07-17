@@ -3,7 +3,7 @@
 
 .coveo-dynamic-facet-header {
   padding: 8px 0;
-  border-bottom: 1px solid $color-light-grey;
+  border-bottom: $default-border;
   @include display(flex);
 }
 
