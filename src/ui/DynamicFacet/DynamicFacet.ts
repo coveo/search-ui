@@ -33,7 +33,6 @@ import {
 } from '../Analytics/AnalyticsActionListMeta';
 import { IQueryOptions } from '../../controllers/QueryController';
 import { DynamicFacetManager } from '../DynamicFacetManager/DynamicFacetManager';
-import { FacetPadding } from '../FacetPadding/FacetPadding';
 import { QueryBuilder } from '../Base/QueryBuilder';
 import { IAutoLayoutAdjustableInsideFacetColumn } from '../SearchInterface/FacetColumnAutoLayoutAdjustment';
 import { DynamicFacetSearch } from '../DynamicFacetSearch/DynamicFacetSearch';
@@ -243,7 +242,6 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
   private dynamicFacetQueryController: DynamicFacetQueryController;
   private includedAttributeId: string;
   private listenToQueryStateChange = true;
-  private padding: FacetPadding;
   private header: DynamicFacetHeader;
   private isCollapsed: boolean;
 
@@ -452,10 +450,6 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
     this.dynamicFacetQueryController.enableFreezeFacetOrderFlag();
   }
 
-  public pinFacetPosition() {
-    this.padding && this.padding.pin();
-  }
-
   // Complete facet analytics meta
   public get analyticsFacetState(): IAnalyticsDynamicFacetMeta[] {
     return this.values.activeFacetValues.map(facetValue => facetValue.analyticsMeta);
@@ -557,7 +551,6 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
     this.header.hideLoading();
     this.values.render();
     this.updateAppearance();
-    this.padding && this.padding.ensurePinnedFacetHasNotMoved();
   }
 
   private onQueryResponse(response?: IFacetResponse) {
@@ -613,22 +606,8 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
   }
 
   public createDom() {
-    this.createPadding();
     this.createAndAppendContent();
     this.updateAppearance();
-  }
-
-  private createPadding() {
-    if (!this.options.preservePosition) {
-      return;
-    }
-
-    const columnParent = $$(this.element).parent('coveo-facet-column');
-    if (!columnParent) {
-      return this.logger.info(`Padding feature deactivated because facet doesn't have a parent with the class "coveo-facet-column"`);
-    }
-
-    this.padding = new FacetPadding(this.element, columnParent);
   }
 
   private createAndAppendContent() {

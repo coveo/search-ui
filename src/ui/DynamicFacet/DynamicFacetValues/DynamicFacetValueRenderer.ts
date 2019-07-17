@@ -46,7 +46,6 @@ export class DynamicFacetValueRenderer implements ValueRenderer {
   }
 
   private selectAction() {
-    this.facet.pinFacetPosition();
     this.facet.toggleSelectValue(this.facetValue.value);
     this.toggleSelectedClass();
     this.facet.enableFreezeCurrentValuesFlag();
