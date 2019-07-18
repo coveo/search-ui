@@ -1,6 +1,6 @@
 import { Component } from '../ui/Base/Component';
 import { ResultList } from '../ui/ResultList/ResultList';
-import { $$, Win } from './Dom';
+import { $$ } from './Dom';
 import { find } from 'underscore';
 import { Logger } from '../misc/Logger';
 
@@ -31,12 +31,12 @@ export class ResultListUtils {
     }
 
     const scrollContainer = resultList.options.infiniteScrollContainer;
-    const offset = resultList.searchInterface.element.getBoundingClientRect().top;
 
-    if (scrollContainer instanceof Window) {
-      scrollContainer.scrollTo(0, new Win(scrollContainer).scrollY() + offset);
+    if (typeof scrollContainer.scrollTo === 'function') {
+      const searchInterfacePosition = resultList.searchInterface.element.getBoundingClientRect().top;
+      scrollContainer.scrollTo(0, window.pageYOffset + searchInterfacePosition);
     } else {
-      scrollContainer.scrollTop = 0;
+      (<HTMLElement>scrollContainer).scrollTop = 0;
     }
   }
 
