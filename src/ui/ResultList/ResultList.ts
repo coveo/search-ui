@@ -49,11 +49,7 @@ import { IResultListOptions } from './ResultListOptions';
 
 CoreHelpers.exportAllHelpersGlobally(window['Coveo']);
 
-enum WaitAnimation {
-  Fade = 'fade',
-  Spinner = 'spinner',
-  None = 'none'
-}
+type WaitAnimation = 'fade' | 'spinner' | 'none';
 
 /**
  * The `ResultList` component is responsible for displaying query results by applying one or several result templates
@@ -128,7 +124,7 @@ export class ResultList extends Component {
      *
      * Default value is `none`.
      */
-    waitAnimation: ComponentOptions.buildStringOption<WaitAnimation>({ defaultValue: WaitAnimation.None }),
+    waitAnimation: ComponentOptions.buildStringOption<WaitAnimation>({ defaultValue: 'none' }),
 
     /**
      * Specifies the element inside which to display the [`waitAnimation`]{@link ResultList.options.waitAnimation}.
