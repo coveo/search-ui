@@ -65,6 +65,11 @@ export class QuerySuggestPreview extends ResultList implements IComponentBinding
    */
   constructor(public element: HTMLElement, public options?: IQuerySuggestPreview, public bindings?: IComponentBindings) {
     super(element, options, bindings, QuerySuggestPreview.ID);
+
+    //Have to do this for now or or break the search interface
+    //Will fix in JSUI-2508 where i will use my template
+    this.element.style.display = 'none';
+
     this.options = ComponentOptions.initComponentOptions(element, QuerySuggestPreview, options);
 
     this.bind.onRootElement(OmniboxEvents.querySuggestGetFocus, (args: IQuerySuggestSelection) => this.querySuggestGetFocus(args));

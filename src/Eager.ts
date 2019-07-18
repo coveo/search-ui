@@ -292,3 +292,6 @@ MissingTerms.doExport();
 
 import { swapVar } from './SwapVar';
 swapVar(this);
+
+import { QuerySuggestPreview } from './ui/QuerySuggestPreview/QuerySuggestPreview';
+QuerySuggestPreview.doExport();
