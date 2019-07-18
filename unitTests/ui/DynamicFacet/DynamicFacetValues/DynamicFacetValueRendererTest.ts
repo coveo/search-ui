@@ -3,7 +3,6 @@ import { DynamicFacetValueRenderer } from '../../../../src/ui/DynamicFacet/Dynam
 import { DynamicFacetValue } from '../../../../src/ui/DynamicFacet/DynamicFacetValues/DynamicFacetValue';
 import { DynamicFacetTestUtils } from '../DynamicFacetTestUtils';
 import { DynamicFacet, IDynamicFacetOptions } from '../../../../src/ui/DynamicFacet/DynamicFacet';
-import { analyticsActionCauseList } from '../../../../src/ui/Analytics/AnalyticsActionListMeta';
 
 export function DynamicFacetValueRendererTest() {
   describe('DynamicFacetValueRenderer', () => {
@@ -19,6 +18,8 @@ export function DynamicFacetValueRendererTest() {
       facet = DynamicFacetTestUtils.createFakeFacet(options);
       dynamicFacetValue = new DynamicFacetValue(DynamicFacetTestUtils.createFakeFacetValues(1)[0], facet);
       dynamicFacetValueRenderer = new DynamicFacetValueRenderer(dynamicFacetValue, facet);
+
+      spyOn(dynamicFacetValue, 'logSelectActionToAnalytics');
     }
 
     it('should render without errors', () => {
@@ -49,6 +50,19 @@ export function DynamicFacetValueRendererTest() {
         expect($$(element).hasClass('coveo-focused')).toBe(false);
       });
 
+      it(`when checkbox is clicked
+      should trigger the right methods`, () => {
+        facet.triggerNewQuery = beforeExecuteQuery => {
+          beforeExecuteQuery();
+        };
+        $$(checkboxButton).trigger('click');
+
+        expect(facet.toggleSelectValue).toHaveBeenCalledTimes(1);
+        expect(facet.enableFreezeCurrentValuesFlag).toHaveBeenCalledTimes(1);
+        expect(facet.enableFreezeFacetOrderFlag).toHaveBeenCalledTimes(1);
+        expect(dynamicFacetValue.logSelectActionToAnalytics).toHaveBeenCalledTimes(1);
+      });
+
       describe('when being the facet value is not selected', () => {
         it('should not have the coveo-selected class', () => {
           expect($$(element).hasClass('coveo-selected')).toBe(false);
@@ -56,35 +70,11 @@ export function DynamicFacetValueRendererTest() {
 
         it(`when checkbox is clicked
         should toggle the value to selected correctly`, () => {
-          // Toggling selection on value manualy because the facet is only a mock
+          // Toggling selection on value manually because the facet is only a mock
           dynamicFacetValue.toggleSelect();
-
           $$(checkboxButton).trigger('click');
 
-          expect(facet.toggleSelectValue).toHaveBeenCalledTimes(1);
-          expect(facet.triggerNewQuery).toHaveBeenCalledTimes(1);
           expect($$(element).hasClass('coveo-selected')).toBe(true);
-        });
-
-        it(`when checkbox is clicked
-        should log the select analytics action`, () => {
-          facet.triggerNewQuery = beforeExecuteQuery => {
-            beforeExecuteQuery();
-          };
-          // Toggling selection on value manualy because the facet is only a mock
-          dynamicFacetValue.toggleSelect();
-          $$(checkboxButton).trigger('click');
-
-          expect(facet.logAnalyticsEvent).toHaveBeenCalledWith(
-            analyticsActionCauseList.dynamicFacetSelect,
-            dynamicFacetValue.analyticsMeta
-          );
-        });
-
-        it('should contain an aria-label with the correct string', () => {
-          const expectedAriaLabel = `Select ${dynamicFacetValue.value} with ${dynamicFacetValue.formattedCount} results`;
-
-          expect($$(checkboxButton).getAttribute('aria-label')).toBe(expectedAriaLabel);
         });
       });
 
@@ -101,36 +91,11 @@ export function DynamicFacetValueRendererTest() {
 
         it(`when checkbox is clicked
         should toggle the value to deselected correctly`, () => {
-          // Toggling selection on value manualy because the facet is only a mock
+          // Toggling selection on value manually because the facet is only a mock
           dynamicFacetValue.toggleSelect();
           $$(checkboxButton).trigger('click');
 
-          expect(facet.toggleSelectValue).toHaveBeenCalledTimes(1);
-          expect(facet.enableFreezeCurrentValuesFlag).toHaveBeenCalledTimes(1);
-          expect(facet.enableFreezeFacetOrderFlag).toHaveBeenCalledTimes(1);
-          expect(facet.triggerNewQuery).toHaveBeenCalledTimes(1);
           expect($$(element).hasClass('coveo-selected')).toBe(false);
-        });
-
-        it(`when checkbox is clicked
-        should log the deselect analytics action`, () => {
-          facet.triggerNewQuery = beforeExecuteQuery => {
-            beforeExecuteQuery();
-          };
-          // Toggling selection on value manualy because the facet is only a mock
-          dynamicFacetValue.toggleSelect();
-          $$(checkboxButton).trigger('click');
-
-          expect(facet.logAnalyticsEvent).toHaveBeenCalledWith(
-            analyticsActionCauseList.dynamicFacetDeselect,
-            dynamicFacetValue.analyticsMeta
-          );
-        });
-
-        it('should contain an aria-label with the correct string', () => {
-          const expectedAriaLabel = `Unselect ${dynamicFacetValue.value} with ${dynamicFacetValue.formattedCount} results`;
-
-          expect($$(checkboxButton).getAttribute('aria-label')).toBe(expectedAriaLabel);
         });
       });
     });

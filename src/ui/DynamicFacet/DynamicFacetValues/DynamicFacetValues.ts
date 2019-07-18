@@ -10,14 +10,12 @@ import { l } from '../../../strings/Strings';
 export class DynamicFacetValues {
   private facetValues: DynamicFacetValue[];
   private list = $$('ul', { className: 'coveo-dynamic-facet-values' }).el;
-  private moreValuesAvailable: boolean;
 
   constructor(private facet: DynamicFacet) {
     this.resetValues();
   }
 
   public createFromResponse(response: IFacetResponse) {
-    this.moreValuesAvailable = response.moreValuesAvailable;
     this.facetValues = response.values.map(
       (facetValue, index) =>
         new DynamicFacetValue(
@@ -33,7 +31,6 @@ export class DynamicFacetValues {
   }
 
   public resetValues() {
-    this.moreValuesAvailable = false;
     this.facetValues = [];
   }
 
@@ -139,14 +136,14 @@ export class DynamicFacetValues {
     $$(this.list).empty();
 
     this.facetValues.forEach(facetValue => {
-      fragment.appendChild(facetValue.render());
+      fragment.appendChild(facetValue.renderedElement);
     });
 
     if (this.shouldEnableShowLess) {
       fragment.appendChild(this.buildShowLess());
     }
 
-    if (this.moreValuesAvailable) {
+    if (this.facet.moreValuesAvailable) {
       fragment.appendChild(this.buildShowMore());
     }
 

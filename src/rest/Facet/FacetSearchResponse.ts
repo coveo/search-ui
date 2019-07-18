@@ -26,5 +26,4 @@ export interface IFacetSearchResponse {
    * The facet values.
    */
   values: IFacetSearchResultValue[];
-  totalFacetValues: number;
 }

@@ -3,10 +3,20 @@ import { DynamicFacetValueRenderer } from './DynamicFacetValueRenderer';
 import { FacetUtils } from '../../Facet/FacetUtils';
 import { DynamicFacet } from '../DynamicFacet';
 import { FacetValueState } from '../../../rest/Facet/FacetValueState';
-import { IAnalyticsDynamicFacetMeta } from '../../Analytics/AnalyticsActionListMeta';
+import { IAnalyticsDynamicFacetMeta, analyticsActionCauseList } from '../../Analytics/AnalyticsActionListMeta';
+import { l } from '../../../strings/Strings';
+
+export interface ValueRenderer {
+  render(): HTMLElement;
+}
+
+export interface IValueRendererKlass {
+  new (facetValue: DynamicFacetValue, facet: DynamicFacet): ValueRenderer;
+}
 
 export interface IDynamicFacetValue {
   value: string;
+  displayValue?: string;
   state: FacetValueState;
   numberOfResults: number;
   position: number;
@@ -17,14 +27,21 @@ export class DynamicFacetValue implements IDynamicFacetValue {
   public state: FacetValueState;
   public numberOfResults: number;
   public position: number;
-  private renderer: DynamicFacetValueRenderer;
+  public displayValue: string;
+  public renderer: ValueRenderer;
+  private element: HTMLElement = null;
 
-  constructor({ value, state, numberOfResults, position }: IDynamicFacetValue, private facet: DynamicFacet) {
+  constructor(
+    { value, state, numberOfResults, position, displayValue }: IDynamicFacetValue,
+    private facet: DynamicFacet,
+    rendererKlass: IValueRendererKlass = DynamicFacetValueRenderer
+  ) {
     this.value = value;
     this.state = state;
     this.numberOfResults = numberOfResults;
     this.position = position;
-    this.renderer = new DynamicFacetValueRenderer(this, facet);
+    this.displayValue = displayValue;
+    this.renderer = new rendererKlass(this, facet);
   }
 
   public get isSelected() {
@@ -66,17 +83,40 @@ export class DynamicFacetValue implements IDynamicFacetValue {
     return returnValue;
   }
 
+  public get selectAriaLabel() {
+    const selectOrUnselect = !this.isSelected ? 'SelectValueWithResultCount' : 'UnselectValueWithResultCount';
+    const resultCount = l('ResultCount', this.formattedCount);
+
+    return `${l(selectOrUnselect, this.valueCaption, resultCount)}`;
+  }
+
   public get analyticsMeta(): IAnalyticsDynamicFacetMeta {
     return {
       ...this.facet.basicAnalyticsFacetState,
       value: this.value,
       valuePosition: this.position,
-      displayValue: this.valueCaption,
+      displayValue: this.displayValue ? this.displayValue : this.valueCaption,
       state: this.state
     };
   }
 
-  public render() {
-    return this.renderer.render();
+  public logSelectActionToAnalytics() {
+    const action =
+      this.state === FacetValueState.selected ? analyticsActionCauseList.dynamicFacetSelect : analyticsActionCauseList.dynamicFacetDeselect;
+
+    this.facet.logAnalyticsEvent(action, this.analyticsMeta);
+  }
+
+  private render() {
+    this.element = this.renderer.render();
+    return this.element;
+  }
+
+  public get renderedElement() {
+    if (this.element) {
+      return this.element;
+    }
+
+    return this.render();
   }
 }
