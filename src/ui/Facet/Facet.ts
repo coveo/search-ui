@@ -58,6 +58,30 @@ import { ResponsiveFacetOptions } from '../ResponsiveComponents/ResponsiveFacetO
 import { DependsOnManager, IDependentFacet } from '../../utils/DependsOnManager';
 import { ComponentsTypes } from '../../utils/ComponentsTypes';
 
+enum SortCriterion {
+  Occurrences = 'occurrences',
+  Score = 'score',
+  AlphaAscending = 'alphaascending',
+  AlphaDescending = 'alphadescending',
+  ComputedFieldAscending = 'computedfieldascending',
+  ComputedFieldDescending = 'computedfielddescending',
+  Chisquare = 'chisquare',
+  Nosort = 'nosort'
+}
+
+enum ComputedFieldOperation {
+  Sum = 'sum',
+  Average = 'average',
+  Minimum = 'minimum',
+  Maximum = 'maximum'
+}
+
+enum ComputedFieldFormat {
+  Currency = 'c0',
+  Integer = 'n0',
+  TwoDecimals = 'n2'
+}
+
 export interface IFacetOptions extends IResponsiveComponentOptions {
   title?: string;
   field?: IFieldOption;
@@ -248,16 +272,7 @@ export class Facet extends Component {
      *
      * Default value is `occurrences,score,alphaascending,alphadescending`.
      */
-    availableSorts: ComponentOptions.buildListOption<
-      | 'occurrences'
-      | 'score'
-      | 'alphaascending'
-      | 'alphadescending'
-      | 'computedfieldascending'
-      | 'computedfielddescending'
-      | 'chisquare'
-      | 'nosort'
-    >({
+    availableSorts: ComponentOptions.buildListOption<SortCriterion>({
       defaultValue: ['occurrences', 'score', 'alphaascending', 'alphadescending'],
       section: 'Sorting',
       depend: 'enableSettings',
@@ -280,9 +295,9 @@ export class Facet extends Component {
      * Default value is the first sort criteria specified in the [`availableSorts`]{@link Facet.options.availableSorts}
      * option, or `occurrences` if no sort criteria is specified.
      */
-    sortCriteria: ComponentOptions.buildStringOption({
+    sortCriteria: ComponentOptions.buildStringOption<SortCriterion>({
       postProcessing: (value, options: IFacetOptions) =>
-        value || (options.availableSorts.length > 0 ? options.availableSorts[0] : 'occurrences'),
+        value || (options.availableSorts.length > 0 ? (options.availableSorts[0] as SortCriterion) : SortCriterion.Occurrences),
       section: 'Sorting'
     }),
     /**
@@ -474,7 +489,10 @@ export class Facet extends Component {
      * Default value is `sum`.
      * @notSupportedIn salesforcefree
      */
-    computedFieldOperation: ComponentOptions.buildStringOption({ defaultValue: 'sum', section: 'ComputedField' }),
+    computedFieldOperation: ComponentOptions.buildStringOption<ComputedFieldOperation>({
+      defaultValue: ComputedFieldOperation.Sum,
+      section: 'ComputedField'
+    }),
     /**
      * Specifies how to format the values resulting from a
      * [`computedFieldOperation`]{@link Facet.options.computedFieldOperation}.
@@ -490,7 +508,10 @@ export class Facet extends Component {
      * Default value is `"c0"`.
      * @notSupportedIn salesforcefree
      */
-    computedFieldFormat: ComponentOptions.buildStringOption({ defaultValue: 'c0', section: 'ComputedField' }),
+    computedFieldFormat: ComponentOptions.buildStringOption<ComputedFieldFormat>({
+      defaultValue: ComputedFieldFormat.Currency,
+      section: 'ComputedField'
+    }),
     /**
      * Specifies what the caption of the [`computedField`]{@link Facet.options.computedField} should be in the facet
      * **Settings** menu for sorting.
