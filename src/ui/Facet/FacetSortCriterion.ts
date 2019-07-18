@@ -1,4 +1,4 @@
-export enum SortCriterion {
+export enum FacetSortCriterion {
   Occurrences = 'occurrences',
   Score = 'score',
   AlphaAscending = 'alphaascending',

@@ -57,7 +57,7 @@ import { IResponsiveComponentOptions } from '../ResponsiveComponents/ResponsiveC
 import { ResponsiveFacetOptions } from '../ResponsiveComponents/ResponsiveFacetOptions';
 import { DependsOnManager, IDependentFacet } from '../../utils/DependsOnManager';
 import { ComponentsTypes } from '../../utils/ComponentsTypes';
-import { SortCriterion } from './SortCriterion';
+import { FacetSortCriterion } from './FacetSortCriterion';
 
 enum ComputedFieldOperation {
   Sum = 'sum',
@@ -262,7 +262,7 @@ export class Facet extends Component {
      *
      * Default value is `occurrences,score,alphaascending,alphadescending`.
      */
-    availableSorts: ComponentOptions.buildListOption<SortCriterion>({
+    availableSorts: ComponentOptions.buildListOption<FacetSortCriterion>({
       defaultValue: ['occurrences', 'score', 'alphaascending', 'alphadescending'],
       section: 'Sorting',
       depend: 'enableSettings',
@@ -285,9 +285,9 @@ export class Facet extends Component {
      * Default value is the first sort criteria specified in the [`availableSorts`]{@link Facet.options.availableSorts}
      * option, or `occurrences` if no sort criteria is specified.
      */
-    sortCriteria: ComponentOptions.buildStringOption<SortCriterion>({
+    sortCriteria: ComponentOptions.buildStringOption<FacetSortCriterion>({
       postProcessing: (value, options: IFacetOptions) =>
-        value || (options.availableSorts.length > 0 ? (options.availableSorts[0] as SortCriterion) : SortCriterion.Occurrences),
+        value || (options.availableSorts.length > 0 ? (options.availableSorts[0] as FacetSortCriterion) : FacetSortCriterion.Occurrences),
       section: 'Sorting'
     }),
     /**
