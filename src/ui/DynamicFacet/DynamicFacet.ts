@@ -36,6 +36,7 @@ import { DynamicFacetManager } from '../DynamicFacetManager/DynamicFacetManager'
 import { QueryBuilder } from '../Base/QueryBuilder';
 import { IAutoLayoutAdjustableInsideFacetColumn } from '../SearchInterface/FacetColumnAutoLayoutAdjustment';
 import { DynamicFacetSearch } from '../DynamicFacetSearch/DynamicFacetSearch';
+import { ResultListUtils } from '../../utils/ResultListUtils';
 
 export interface IDynamicFacetOptions extends IResponsiveComponentOptions {
   id?: string;
@@ -448,6 +449,10 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
   public enableFreezeFacetOrderFlag() {
     Assert.exists(this.dynamicFacetQueryController);
     this.dynamicFacetQueryController.enableFreezeFacetOrderFlag();
+  }
+
+  public scrollToTop() {
+    ResultListUtils.scrollToTop(this.root);
   }
 
   // Complete facet analytics meta

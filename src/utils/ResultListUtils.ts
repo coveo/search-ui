@@ -1,6 +1,6 @@
 import { Component } from '../ui/Base/Component';
 import { ResultList } from '../ui/ResultList/ResultList';
-import { $$ } from './Dom';
+import { $$, Win } from './Dom';
 import { find } from 'underscore';
 import { Logger } from '../misc/Logger';
 
@@ -21,6 +21,23 @@ export class ResultListUtils {
   public static isInfiniteScrollEnabled(root: HTMLElement) {
     const resultList = ResultListUtils.getActiveResultList(root);
     return resultList ? !!resultList.options.enableInfiniteScroll : false;
+  }
+
+  public static scrollToTop(root: HTMLElement) {
+    const resultList = ResultListUtils.getActiveResultList(root);
+    if (!resultList) {
+      new Logger(this).warn('No active ResultList, scrolling to the top of the Window');
+      return window.scrollTo(0, 0);
+    }
+
+    const scrollContainer = resultList.options.infiniteScrollContainer;
+    const offset = resultList.searchInterface.element.getBoundingClientRect().top;
+
+    if (scrollContainer instanceof Window) {
+      scrollContainer.scrollTo(0, new Win(scrollContainer).scrollY() + offset);
+    } else {
+      scrollContainer.scrollTop = 0;
+    }
   }
 
   private static getActiveResultList(root: HTMLElement) {
