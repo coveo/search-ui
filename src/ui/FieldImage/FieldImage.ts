@@ -36,6 +36,8 @@ export class FieldImage extends Component {
      * Specifies the field that the FieldImage should display.
      *
      * Specifying a value for this parameter is required in order for the FieldImage component to work.
+     *
+     * **Default value:** `@field`
      */
     field: ComponentOptions.buildFieldOption({ defaultValue: '@field', required: true }),
     /**
@@ -76,7 +78,7 @@ export class FieldImage extends Component {
         width: this.options.width
       }
     };
-    new FieldValue(this.element, fieldValueOption, bindings, this.result, fieldImageClassId);
+    new FieldValue(element, fieldValueOption, bindings, result);
   }
 }
 
