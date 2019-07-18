@@ -291,5 +291,5 @@ lazyMissingTerms();
 import { swapVar } from './SwapVar';
 swapVar(this);
 
-import { lazyFieldImage } from './ui/FieldImage/LazyFieldImage';
-lazyFieldImage();
+import { lazyImageFieldValue } from './ui/FieldImage/LazyImageFieldValue';
+lazyImageFieldValue();

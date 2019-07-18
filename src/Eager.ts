@@ -293,5 +293,5 @@ MissingTerms.doExport();
 import { swapVar } from './SwapVar';
 swapVar(this);
 
-import { FieldImage } from './ui/FieldImage/FieldImage';
-FieldImage.doExport();
+import { ImageFieldValue } from './ui/FieldImage/ImageFieldValue';
+ImageFieldValue.doExport();
