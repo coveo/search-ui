@@ -1,10 +1,9 @@
-export enum FacetSortCriterion {
-  Occurrences = 'occurrences',
-  Score = 'score',
-  AlphaAscending = 'alphaascending',
-  AlphaDescending = 'alphadescending',
-  ComputedFieldAscending = 'computedfieldascending',
-  ComputedFieldDescending = 'computedfielddescending',
-  Chisquare = 'chisquare',
-  Nosort = 'nosort'
-}
+export type FacetSortCriterion =
+  | 'occurrences'
+  | 'score'
+  | 'alphaascending'
+  | 'alphadescending'
+  | 'computedfieldascending'
+  | 'computedfielddescending'
+  | 'chisquare'
+  | 'nosort';

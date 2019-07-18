@@ -59,18 +59,8 @@ import { DependsOnManager, IDependentFacet } from '../../utils/DependsOnManager'
 import { ComponentsTypes } from '../../utils/ComponentsTypes';
 import { FacetSortCriterion } from './FacetSortCriterion';
 
-enum ComputedFieldOperation {
-  Sum = 'sum',
-  Average = 'average',
-  Minimum = 'minimum',
-  Maximum = 'maximum'
-}
-
-enum ComputedFieldFormat {
-  Currency = 'c0',
-  Integer = 'n0',
-  TwoDecimals = 'n2'
-}
+type ComputedFieldOperation = 'sum' | 'average' | 'minimum' | 'maximum';
+type ComputedFieldFormat = 'c0' | 'n0' | 'n2';
 
 export interface IFacetOptions extends IResponsiveComponentOptions {
   title?: string;
@@ -287,7 +277,7 @@ export class Facet extends Component {
      */
     sortCriteria: ComponentOptions.buildStringOption<FacetSortCriterion>({
       postProcessing: (value, options: IFacetOptions) =>
-        value || (options.availableSorts.length > 0 ? (options.availableSorts[0] as FacetSortCriterion) : FacetSortCriterion.Occurrences),
+        value || (options.availableSorts.length > 0 ? (options.availableSorts[0] as FacetSortCriterion) : 'occurrences'),
       section: 'Sorting'
     }),
     /**
@@ -480,7 +470,7 @@ export class Facet extends Component {
      * @notSupportedIn salesforcefree
      */
     computedFieldOperation: ComponentOptions.buildStringOption<ComputedFieldOperation>({
-      defaultValue: ComputedFieldOperation.Sum,
+      defaultValue: 'sum',
       section: 'ComputedField'
     }),
     /**
@@ -499,7 +489,7 @@ export class Facet extends Component {
      * @notSupportedIn salesforcefree
      */
     computedFieldFormat: ComponentOptions.buildStringOption<ComputedFieldFormat>({
-      defaultValue: ComputedFieldFormat.Currency,
+      defaultValue: 'c0',
       section: 'ComputedField'
     }),
     /**

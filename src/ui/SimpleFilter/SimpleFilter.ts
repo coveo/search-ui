@@ -147,7 +147,7 @@ export class SimpleFilter extends Component {
      */
     sortCriteria: ComponentOptions.buildStringOption<FacetSortCriterion>({
       postProcessing: (value, options: ISimpleFilterOptions) => {
-        const sortCriteriaToValidate = value || FacetSortCriterion.Score;
+        const sortCriteriaToValidate = value || 'score';
         if (SimpleFilter.simpleFilterSortCritera().indexOf(sortCriteriaToValidate.toLowerCase()) !== -1) {
           return sortCriteriaToValidate;
         } else {
@@ -155,7 +155,7 @@ export class SimpleFilter extends Component {
             `The simpleFilter component doesn't accept ${sortCriteriaToValidate} as the value for the sortCriteria option.`,
             `Available option are : ${SimpleFilter.simpleFilterSortCritera().toString()}`
           );
-          return FacetSortCriterion.Score;
+          return 'score';
         }
       }
     })
