@@ -57,17 +57,7 @@ import { IResponsiveComponentOptions } from '../ResponsiveComponents/ResponsiveC
 import { ResponsiveFacetOptions } from '../ResponsiveComponents/ResponsiveFacetOptions';
 import { DependsOnManager, IDependentFacet } from '../../utils/DependsOnManager';
 import { ComponentsTypes } from '../../utils/ComponentsTypes';
-
-enum SortCriterion {
-  Occurrences = 'occurrences',
-  Score = 'score',
-  AlphaAscending = 'alphaascending',
-  AlphaDescending = 'alphadescending',
-  ComputedFieldAscending = 'computedfieldascending',
-  ComputedFieldDescending = 'computedfielddescending',
-  Chisquare = 'chisquare',
-  Nosort = 'nosort'
-}
+import { SortCriterion } from './SortCriterion';
 
 enum ComputedFieldOperation {
   Sum = 'sum',
