@@ -11,6 +11,14 @@ export interface IFieldImage {
   height?: string;
 }
 
+/**
+ * The FieldImage component displays the value of a field associated to its parent search result.
+ * It is use strictly for displaying an image.
+ *
+ * This component is a result template component (see [Result Templates](https://developers.coveo.com/x/aIGfAQ)).
+ *
+ * A common use of this component is to display the image of a product for sale.
+ */
 export class FieldImage extends Component {
   static ID = 'FieldImage';
   static doExport = () => {
@@ -31,16 +39,14 @@ export class FieldImage extends Component {
      */
     field: ComponentOptions.buildFieldOption({ defaultValue: '@field', required: true }),
     /**
-     * the width of the image
+     * The width of the image
      */
     width: ComponentOptions.buildStringOption(),
     /**
-     * the height of the image
+     * The height of the image
      */
     height: ComponentOptions.buildStringOption()
   };
-
-  //private fieldValue: FieldValue
 
   /**
    * Creates a new FieldImage.
