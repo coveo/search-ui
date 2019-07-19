@@ -120,6 +120,10 @@
     }
     .magic-box-suggestions.magic-box-hasSuggestion {
       display: block;
+      div#coveo-magicbox-suggestions {
+        border: 1px solid $grey-500;
+        border-right: none;
+      }
     }
   }
   .magic-box-suggestions {
@@ -128,12 +132,11 @@
     top: 100%;
     left: -1px;
     right: -1px;
-    overflow: hidden;
+    overflow: visible;
     background: $white;
     z-index: 1;
     display: none;
     font-family: arial, sans-serif;
-    border: 1px solid $grey-500;
     .magic-box-suggestion-seperator,
     .magic-box-suggestion {
       opacity: 1;

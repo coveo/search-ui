@@ -1,11 +1,11 @@
-import { ResultList } from '../ResultList/ResultList';
-import { IResultListOptions } from '../ResultList/ResultListOptions';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { exportGlobally } from '../../GlobalExports';
-import { ComponentOptions, OmniboxEvents, Initialization } from '../../Core';
+import { ComponentOptions, OmniboxEvents, Initialization, $$, Component } from '../../Core';
 import { IQuerySuggestSelection } from '../../events/OmniboxEvents';
+import { IQueryResults } from '../../rest/QueryResults';
+import 'styling/_QuerySuggestPreview';
 
-export interface IQuerySuggestPreview extends IResultListOptions {
+export interface IQuerySuggestPreview {
   numberOfPreviewResults?: number;
   width?: string;
 }
@@ -25,7 +25,7 @@ export interface IQuerySuggestPreview extends IResultListOptions {
  * ```
  *
  */
-export class QuerySuggestPreview extends ResultList implements IComponentBindings {
+export class QuerySuggestPreview extends Component implements IComponentBindings {
   static ID = 'QuerySuggestPreview';
 
   /**
@@ -64,15 +64,17 @@ export class QuerySuggestPreview extends ResultList implements IComponentBinding
    * automatically resolved (with a slower execution time).
    */
   constructor(public element: HTMLElement, public options?: IQuerySuggestPreview, public bindings?: IComponentBindings) {
-    super(element, options, bindings, QuerySuggestPreview.ID);
+    super(element, QuerySuggestPreview.ID, bindings);
 
     //Have to do this for now or or break the search interface
     //Will fix in JSUI-2508 where i will use my template
-    this.element.style.display = 'none';
+    //this.element.style.display = 'none';
 
     this.options = ComponentOptions.initComponentOptions(element, QuerySuggestPreview, options);
 
     this.bind.onRootElement(OmniboxEvents.querySuggestGetFocus, (args: IQuerySuggestSelection) => this.querySuggestGetFocus(args));
+    //this.options.layout = 'card'
+    //this.options.resultContainer = null
   }
 
   private get shouldShowPreviewResults() {
@@ -89,9 +91,27 @@ export class QuerySuggestPreview extends ResultList implements IComponentBinding
   private executeQueryHover(suggestion: string) {
     const previousQueryOptions = this.queryController.getLastQuery();
     previousQueryOptions.q = suggestion;
-    previousQueryOptions.numberOfResults = this.options.numberOfPreviewResults;
     //TODO: I will need to execute a query, with the result,
     //      build a container and display the result  next to the querySuggest
+    previousQueryOptions.numberOfResults = this.options.numberOfPreviewResults;
+    this.queryController
+      .getEndpoint()
+      .search(previousQueryOptions)
+      .then(results => {
+        if (!results) {
+          return;
+        }
+        this.buildResultsPreview(results);
+      });
+  }
+
+  private buildResultsPreview(results: IQueryResults): Promise<HTMLElement[]> {
+    const previewContainer = $$(this.root).find('.coveo-preview-container');
+    const container = $$('div', {}, $$('a', {}, 'test').el).el;
+    //container.style.width = '150px'
+    container.style.cssFloat = 'left';
+    //previewContainer.appendChild(container)
+    return;
   }
 }
 

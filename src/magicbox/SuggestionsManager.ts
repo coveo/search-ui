@@ -1,8 +1,9 @@
-import { $$ } from '../utils/Dom';
+import { $$, Dom } from '../utils/Dom';
 import { InputManager } from './InputManager';
 import { each, defaults, indexOf, compact } from 'underscore';
-import { OmniboxEvents } from '../Core';
+import { OmniboxEvents, Component } from '../Core';
 import { IQuerySuggestSelection } from '../events/OmniboxEvents';
+import { QuerySuggestPreview } from '../ui/QuerySuggestPreview/QuerySuggestPreview';
 
 export interface Suggestion {
   text?: string;
@@ -186,9 +187,9 @@ export class SuggestionsManager {
       this.removeAccessibilityPropertiesForSuggestions();
       return;
     }
-
     const suggestionsContainer = this.buildSuggestionsContainer();
-    $$(this.element).append(suggestionsContainer.el);
+    const suggestionPreviewContainer = this.setUpForResultPreview(suggestionsContainer);
+    $$(this.element).append(suggestionPreviewContainer.el);
     this.addAccessibilityPropertiesForSuggestions();
 
     each(suggestions, (suggestion: Suggestion) => {
@@ -219,6 +220,34 @@ export class SuggestionsManager {
       id: 'coveo-magicbox-suggestions',
       role: 'listbox'
     });
+  }
+
+  private buildPreviewContainer() {
+    return $$('div', {
+      className: 'coveo-preview-container'
+    }).el;
+  }
+
+  private setUpForResultPreview(suggestions: Dom): Dom {
+    const querySuggestPreviewElement: HTMLElement = $$(this.root).find(`.${Component.computeCssClassNameForType('QuerySuggestPreview')}`);
+    if (!querySuggestPreviewElement) {
+      return suggestions;
+    }
+    const querySuggestPreview = <QuerySuggestPreview>Component.get(querySuggestPreviewElement);
+    if (!(querySuggestPreview.options.numberOfPreviewResults > 0)) {
+      return suggestions;
+    }
+
+    const suggestionContainerParent = $$('div', {
+      className: 'coveo-suggestion-container',
+      role: 'listbox'
+    });
+
+    const previewContainer = this.buildPreviewContainer();
+
+    suggestionContainerParent.append(suggestions.el);
+    suggestionContainerParent.append(previewContainer);
+    return suggestionContainerParent;
   }
 
   private createDomFromSuggestion(suggestion: Suggestion) {

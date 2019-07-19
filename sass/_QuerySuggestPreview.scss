@@ -1,0 +1,22 @@
+@import 'MagicBox/Colors';
+.coveo-suggestion-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  width: calc(100% + 250px);
+  border: none;
+
+  #coveo-magicbox-suggestions {
+    width: 50%;
+    max-width: 300px;
+  }
+}
+
+.coveo-preview-container {
+  align-items: stretch;
+  flex: 1 1 0;
+  background: $grey-100;
+  font-family: arial, sans-serif;
+  border: 1px solid $grey-500;
+  border-left: none;
+}

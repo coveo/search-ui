@@ -4,7 +4,7 @@ import { l } from '../../strings/Strings';
 import { ResultList } from '../ResultList/ResultList';
 import { IResultListOptions } from '../ResultList/ResultListOptions';
 import { IQueryResult } from '../../rest/QueryResult';
-import { IPopulateOmniboxEventArgs, OmniboxEvents, IQuerySuggestSelection } from '../../events/OmniboxEvents';
+import { IPopulateOmniboxEventArgs, OmniboxEvents } from '../../events/OmniboxEvents';
 import { ComponentOptions, IQueryExpression } from '../Base/ComponentOptions';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { QueryEvents, IBuildingQueryEventArgs } from '../../events/QueryEvents';
@@ -152,13 +152,7 @@ export class OmniboxResultList extends ResultList implements IComponentBindings 
       (result: IQueryResult, resultElement: HTMLElement, omniboxObject: IPopulateOmniboxEventArgs) => void
     >(() => {
       return null;
-    }),
-    /**
-     * The maximum number of query results to render in the preview.
-     *
-     * **Minimum and default value:** `0`
-     */
-    numberOfPreviewResults: ComponentOptions.buildNumberOption({ defaultValue: 0, min: 0 })
+    })
   };
 
   private lastOmniboxRequest: { omniboxObject: IPopulateOmniboxEventArgs; resolve: (...args: any[]) => void };
@@ -176,18 +170,9 @@ export class OmniboxResultList extends ResultList implements IComponentBindings 
     this.setupOptions();
     this.bind.onRootElement(OmniboxEvents.populateOmnibox, (args: IPopulateOmniboxEventArgs) => this.handlePopulateOmnibox(args));
     this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => this.handleBuildingQuery(args));
-
-    const omniboxElement: HTMLElement = $$(this.root).find(`.${Component.computeCssClassNameForType('Omnibox')}`);
-    if (omniboxElement) {
-      this.bind.onRootElement(InitializationEvents.afterComponentsInitialization, () => {
-        const omnibox = <OmniboxModuleDefintion.Omnibox>Component.get(omniboxElement);
-        const magicBox = omnibox.magicBox;
-        magicBox.onsubmit = () => {
-          logSearchBoxSubmitEvent(this.usageAnalytics);
-          this.queryController.executeQuery();
-        };
-      });
-    }
+    this.bind.onRootElement(InitializationEvents.afterComponentsInitialization, () => {
+      this.handleAfterComponentInit();
+    });
   }
 
   /**
@@ -237,6 +222,18 @@ export class OmniboxResultList extends ResultList implements IComponentBindings 
     this.resolveLastOmniboxRequest();
 
     return Promise.resolve(null);
+  }
+
+  private handleAfterComponentInit() {
+    const omniboxElement: HTMLElement = $$(this.root).find(`.${Component.computeCssClassNameForType('Omnibox')}`);
+    if (omniboxElement) {
+      const omnibox = <OmniboxModuleDefintion.Omnibox>Component.get(omniboxElement);
+      const magicBox = omnibox.magicBox;
+      magicBox.onsubmit = () => {
+        logSearchBoxSubmitEvent(this.usageAnalytics);
+        this.queryController.executeQuery();
+      };
+    }
   }
 
   private appendHeaderIfTitleIsSpecified() {
