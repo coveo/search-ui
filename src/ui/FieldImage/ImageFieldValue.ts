@@ -7,17 +7,15 @@ import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
 
 export interface IImageFieldValue {
   field?: IFieldOption;
-  width?: string;
-  height?: string;
+  width?: number;
+  height?: number;
+  alt?: string;
 }
 
 /**
- * The ImageFieldValue component displays the value of a field associated to its parent search result.
- * It is use strictly for displaying an image.
+ * This [result template](https://docs.coveo.com/en/413/) component renders an image from a URL retrieved in a given [`field`]{@link ImageFieldValue.options.field}.
  *
- * This component is a result template component (see [Result Templates](https://developers.coveo.com/x/aIGfAQ)).
- *
- * A common use of this component is to display the image of a product for sale.
+ * A typical use case of this component is to display product images in the context of commerce.
  */
 export class ImageFieldValue extends Component {
   static ID = 'ImageFieldValue';
@@ -33,25 +31,23 @@ export class ImageFieldValue extends Component {
    */
   static options: IImageFieldValue = {
     /**
-     * Specifies the field that the ImageFieldValue should display.
+     * **Required**. The name of a field whose value is the URL of the image to display.
      *
-     * Specifying a value for this parameter is required in order for the ImageFieldValue component to work.
-     *
-     * **Default value:** `@field`
+     * **Note:** The component uses the value of this field to set the `src` attribute of the [`img`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img) HTML tag it generates.
      */
-    field: ComponentOptions.buildFieldOption({ defaultValue: '@field', required: true }),
+    field: ComponentOptions.buildFieldOption({ required: true }),
     /**
-     * The width of the image
+     * The width of the image (in pixels).
      *
-     * the value can either be in `pixels` or `pourcentages`
+     * **Note:** The component uses this value to set the `width` attribute of the [`img`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img) HTML tag it generates.
      */
-    width: ComponentOptions.buildStringOption(),
+    width: ComponentOptions.buildNumberOption(),
     /**
-     * The height of the image
+     * The height of the image (in pixels).
      *
-     * the value can either be in `pixels` or `pourcentages`
+     * **Note:** The component uses this value to set the `height` attribute of the [`img`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img) HTML tag it generates.
      */
-    height: ComponentOptions.buildStringOption()
+    height: ComponentOptions.buildNumberOption()
   };
 
   /**
@@ -79,7 +75,8 @@ export class ImageFieldValue extends Component {
       htmlValue: true,
       helperOptions: {
         height: this.options.height,
-        width: this.options.width
+        width: this.options.width,
+        alt: result.title
       }
     };
     new FieldValue(element, fieldValueOption, bindings, result);
