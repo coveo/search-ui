@@ -16,29 +16,30 @@ export function FieldImageTest() {
     }
 
     describe('exposes options', () => {
-      it('field not specified should default to @field', () => {
-        initializeFieldValueComponent({});
-        expect(test.cmp.options.field).toBe('@field');
+      it('field should get set by the option', () => {
+        const field = '@field';
+        initializeFieldValueComponent({ field });
+        expect(test.cmp.options.field).toBe(field);
       });
 
       it('width should be applied to the img tag', () => {
-        const width = '50px';
+        const width = 50;
         initializeFieldValueComponent({
           field: '@ccimage',
           width
         });
         const img = $$(test.cmp.element).find('img');
-        expect(img.getAttribute('width')).toBe(width);
+        expect(img.getAttribute('width')).toBe(width.toString());
       });
 
       it('height should be applied to the img tag', () => {
-        const height = '50px';
+        const height = 50;
         initializeFieldValueComponent({
           field: '@ccimage',
           height
         });
         const img = $$(test.cmp.element).find('img');
-        expect(img.getAttribute('height')).toBe(height);
+        expect(img.getAttribute('height')).toBe(height.toString());
       });
     });
   });
