@@ -3,6 +3,7 @@ import { DynamicFacetValue } from '../../../../src/ui/DynamicFacet/DynamicFacetV
 import { DynamicFacetTestUtils } from '../DynamicFacetTestUtils';
 import { DynamicFacet, IDynamicFacetOptions } from '../../../../src/ui/DynamicFacet/DynamicFacet';
 import { FacetValueState } from '../../../../src/rest/Facet/FacetValueState';
+import { analyticsActionCauseList } from '../../../../src/ui/Analytics/AnalyticsActionListMeta';
 
 export function DynamicFacetValueTest() {
   describe('DynamicFacetValue', () => {
@@ -119,8 +120,39 @@ export function DynamicFacetValueTest() {
       });
     });
 
+    describe('when the value has the state "idle"', () => {
+      it('should return the correct aria-label', () => {
+        const expectedAriaLabel = `Select ${dynamicFacetValue.value} with ${dynamicFacetValue.formattedCount} results`;
+        expect(dynamicFacetValue.selectAriaLabel).toBe(expectedAriaLabel);
+      });
+
+      it('should log the right analytics action', () => {
+        dynamicFacetValue.logSelectActionToAnalytics();
+        expect(facet.logAnalyticsEvent).toHaveBeenCalledWith(
+          analyticsActionCauseList.dynamicFacetDeselect,
+          dynamicFacetValue.analyticsMeta
+        );
+      });
+    });
+
+    describe('when the value has the state "selected"', () => {
+      beforeEach(() => {
+        dynamicFacetValue.select();
+      });
+
+      it('should return the correct aria-label', () => {
+        const expectedAriaLabel = `Unselect ${dynamicFacetValue.value} with ${dynamicFacetValue.formattedCount} results`;
+        expect(dynamicFacetValue.selectAriaLabel).toBe(expectedAriaLabel);
+      });
+
+      it('should log the right analytics action', () => {
+        dynamicFacetValue.logSelectActionToAnalytics();
+        expect(facet.logAnalyticsEvent).toHaveBeenCalledWith(analyticsActionCauseList.dynamicFacetSelect, dynamicFacetValue.analyticsMeta);
+      });
+    });
+
     it(`should render without error`, () => {
-      expect(() => dynamicFacetValue.render()).not.toThrow();
+      expect(() => dynamicFacetValue.renderedElement).not.toThrow();
     });
   });
 }

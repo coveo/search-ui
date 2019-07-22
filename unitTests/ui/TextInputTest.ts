@@ -197,5 +197,19 @@ export function TextInputTest() {
 
       expect(getInput().getAttribute('aria-label')).toEqual(ariaLabel);
     });
+
+    it(`when the "isRequired" option is true
+    should set the "required" attribute on the input to true`, () => {
+      initializeComponentWithOptions('Hello', { isRequired: true });
+
+      expect(getInput().getAttribute('required')).toBe('true');
+    });
+
+    it(`when the "isRequired" option is false
+    should set the "required" attribute on the input to false`, () => {
+      initializeComponentWithOptions('Hello', { isRequired: false });
+
+      expect(getInput().getAttribute('required')).toBeFalsy();
+    });
   });
 }

@@ -1221,7 +1221,6 @@ export class Facet extends Component {
     Assert.exists(data);
     this.unfadeInactiveValuesInMainList();
     this.hideWaitingAnimation();
-    this.dependsOnManager.updateVisibilityBasedOnDependsOn();
     const groupByResult = data.results.groupByResults[this.facetQueryController.lastGroupByRequestIndex];
     this.facetQueryController.lastGroupByResult = groupByResult;
     // Two corner case to handle regarding the "sticky" aspect of facets :
@@ -1301,6 +1300,7 @@ export class Facet extends Component {
   protected updateAppearanceDependingOnState() {
     $$(this.element).toggleClass('coveo-active', this.values.hasSelectedOrExcludedValues());
     $$(this.element).toggleClass('coveo-facet-empty', !this.isAnyValueCurrentlyDisplayed());
+    this.dependsOnManager.updateVisibilityBasedOnDependsOn();
     $$(this.facetHeader.eraserElement).toggleClass('coveo-facet-header-eraser-visible', this.values.hasSelectedOrExcludedValues());
   }
 
@@ -1522,12 +1522,19 @@ export class Facet extends Component {
   private initDependsOnManager() {
     const facetInfo: IDependentFacet = {
       reset: () => this.reset(),
+      toogleDependentFacet: dependentFacet => this.toogleDependentFacet(dependentFacet),
       element: this.element,
+      root: this.root,
       dependsOn: this.options.dependsOn,
+      id: this.options.id,
       queryStateModel: this.queryStateModel,
       bind: this.bind
     };
     this.dependsOnManager = new DependsOnManager(facetInfo);
+  }
+
+  private toogleDependentFacet(dependentFacet: Component) {
+    this.getSelectedValues().length ? dependentFacet.enable() : dependentFacet.disable();
   }
 
   private dependsOnUpdateParentDisplayValue() {

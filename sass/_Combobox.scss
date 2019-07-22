@@ -1,0 +1,61 @@
+@import './Variables';
+@import './mixins/_facetHeaderAnimation';
+
+$input-height: 36px;
+$input-padding: 5px;
+
+.coveo-combobox-wrapper {
+  position: relative;
+}
+
+.coveo-combobox-wait-animation-svg {
+  width: 16px;
+  height: 16px;
+  color: $coveo-blue;
+  display: inline-block;
+  vertical-align: middle;
+  @include facet-header-animation;
+}
+
+.coveo-combobox-input {
+  position: relative;
+
+  input {
+    width: 100%;
+    height: $input-height;
+    padding: 0 5px;
+    font-size: $font-size-smaller;
+  }
+}
+
+.coveo-combobox-wait-animation {
+  position: absolute;
+  right: 10px;
+  top: 7px;
+}
+
+.coveo-combobox-values {
+  background-color: white;
+  border: $default-border;
+  border-top: none;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  position: absolute;
+  top: $input-height;
+  z-index: 1;
+  box-shadow: 0 3px 3px 3px rgba(0, 0, 0, 0.1);
+}
+
+.coveo-combobox-value,
+.coveo-combobox-value-not-found {
+  list-style: none;
+  padding: 5px;
+}
+
+.coveo-combobox-value {
+  &.coveo-focused,
+  &:hover {
+    background: $color-blueish-white-grey;
+  }
+}

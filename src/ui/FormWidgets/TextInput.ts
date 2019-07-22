@@ -24,6 +24,12 @@ export interface ITextInputOptions {
    */
   triggerOnChangeAsYouType?: boolean;
   /**
+   * Whether to set the required attribute to `true` or `false`.
+   *
+   * **Default:** `true`
+   */
+  isRequired?: boolean;
+  /**
    * A custom aria-label attribute to add to the `TextInput`'s HTML element.
    */
   ariaLabel?: string;
@@ -32,7 +38,8 @@ export interface ITextInputOptions {
 const defaultOptions: ITextInputOptions = {
   usePlaceholder: false,
   className: 'coveo-input',
-  triggerOnChangeAsYouType: false
+  triggerOnChangeAsYouType: false,
+  isRequired: true
 };
 
 /**
@@ -127,7 +134,9 @@ export class TextInput implements IFormWidget, IFormWidgetSettable {
 
   private buildContent() {
     this.element = $$('div', { className: this.options.className }).el;
-    this.input = $$('input', { type: 'text', required: true });
+    this.input = $$('input', { type: 'text' });
+
+    this.options.isRequired && this.input.setAttribute('required', 'true');
     this.options.ariaLabel && this.input.setAttribute('aria-label', this.options.ariaLabel);
 
     this.addEventListeners();

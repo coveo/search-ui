@@ -649,7 +649,7 @@ export class ResultList extends Component {
     return this.searchInterface.getComponents('ResultLayoutSelector') as ResultLayoutSelectorModule.ResultLayoutSelector[];
   }
 
-  private handleBuildingQuery(args: IBuildingQueryEventArgs) {
+  protected handleBuildingQuery(args: IBuildingQueryEventArgs) {
     if (this.options.fieldsToInclude != null) {
       // remove the @
       args.queryBuilder.addFieldsToInclude(map(this.options.fieldsToInclude, field => field.substr(1)));
