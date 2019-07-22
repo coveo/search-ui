@@ -223,6 +223,7 @@ export class CategoryFacetSearch implements IFacetSearch {
       .withElement(item)
       .withSelectAction(() => {
         this.categoryFacet.changeActivePath(path);
+        this.categoryFacet.scrollToTop();
         this.categoryFacet.logAnalyticsEvent(analyticsActionCauseList.categoryFacetSelect, path);
         this.categoryFacet.executeQuery();
       })

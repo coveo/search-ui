@@ -40,6 +40,7 @@ import { CategoryFacetHeader } from './CategoryFacetHeader';
 import { AccessibleButton } from '../../utils/AccessibleButton';
 import { IStringMap } from '../../rest/GenericParam';
 import { DependsOnManager, IDependentFacet } from '../../utils/DependsOnManager';
+import { ResultListUtils } from '../../utils/ResultListUtils';
 
 export interface ICategoryFacetOptions extends IResponsiveComponentOptions {
   field: IFieldOption;
@@ -357,6 +358,10 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
       this.activePath,
       this.numberOfValues + 1
     );
+  }
+
+  public scrollToTop() {
+    ResultListUtils.scrollToTop(this.root);
   }
 
   private tryToInitFacetSearch() {
