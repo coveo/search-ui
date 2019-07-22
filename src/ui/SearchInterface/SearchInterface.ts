@@ -26,18 +26,21 @@ import { ComponentStateModel } from '../../models/ComponentStateModel';
 import { IAttributeChangedEventArg, Model } from '../../models/Model';
 import { QueryStateModel, QUERY_STATE_ATTRIBUTES } from '../../models/QueryStateModel';
 import { SearchEndpoint } from '../../rest/SearchEndpoint';
+import { ComponentsTypes } from '../../utils/ComponentsTypes';
 import { $$ } from '../../utils/Dom';
 import { HashUtils } from '../../utils/HashUtils';
 import { Utils } from '../../utils/Utils';
 import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
 import { IAnalyticsClient } from '../Analytics/AnalyticsClient';
 import { NoopAnalyticsClient } from '../Analytics/NoopAnalyticsClient';
+import { AriaLive, IAriaLive } from '../AriaLive/AriaLive';
 import { BaseComponent } from '../Base/BaseComponent';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { ComponentOptions, IFieldOption, IQueryExpression } from '../Base/ComponentOptions';
 import { InitializationPlaceholder } from '../Base/InitializationPlaceholder';
 import { RootComponent } from '../Base/RootComponent';
 import { Debug } from '../Debug/Debug';
+import { MissingTermManager } from '../MissingTerm/MissingTermManager';
 import { Context, IPipelineContextProvider } from '../PipelineContext/PipelineGlobalExports';
 import {
   MEDIUM_SCREEN_WIDTH,
@@ -48,8 +51,6 @@ import {
 import { FacetColumnAutoLayoutAdjustment } from './FacetColumnAutoLayoutAdjustment';
 import { FacetValueStateHandler } from './FacetValueStateHandler';
 import RelevanceInspectorModule = require('../RelevanceInspector/RelevanceInspector');
-import { AriaLive, IAriaLive } from '../AriaLive/AriaLive';
-import { MissingTermManager } from '../MissingTerm/MissingTermManager';
 
 export interface ISearchInterfaceOptions {
   enableHistory?: boolean;
@@ -533,7 +534,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     this.componentOptionsModel = new ComponentOptionsModel(element);
     this.usageAnalytics = this.initializeAnalytics();
     this.queryController = new QueryController(element, this.options, this.usageAnalytics, this);
-    this.facetValueStateHandler = new FacetValueStateHandler((componentId: string) => this.getComponents(componentId));
+    this.facetValueStateHandler = new FacetValueStateHandler(this.element);
     new SentryLogger(this.queryController);
 
     const missingTermManagerArgs: IMissingTermManagerArgs = {
@@ -1027,6 +1028,30 @@ export class SearchInterface extends RootComponent implements IComponentBindings
         }
       });
     });
+    if (this.duplicatesFacets.length) {
+      this.logger.warn(
+        `The following facets have duplicate id/field:`,
+        this.duplicatesFacets,
+        `Ensure that each facet in your search interface has a unique id.`
+      );
+    }
+  }
+
+  private get duplicatesFacets() {
+    const duplicate = [];
+    const facets = ComponentsTypes.getAllFacetsInstance(this.root);
+    facets.forEach(facet => {
+      facets.forEach(cmp => {
+        if (facet == cmp) {
+          return;
+        }
+        if (facet.options.id === cmp.options.id) {
+          duplicate.push(facet);
+          return;
+        }
+      });
+    });
+    return duplicate;
   }
 
   private toggleSectionState(cssClass: string, toggle = true) {
