@@ -1,42 +1,62 @@
-import 'styling/DynamicFacetSearch/_DynamicFacetSearch';
-import { $$ } from '../../utils/Dom';
-import { FacetSearchController } from '../../controllers/FacetSearchController';
 import { DynamicFacet } from '../DynamicFacet/DynamicFacet';
-import { Utils } from '../../utils/Utils';
-import { DynamicFacetSearchInput } from './DynamicFacetSearchInput';
-import { debounce } from 'underscore';
+import { Combobox } from '../Combobox/Combobox';
+import { l } from '../../strings/Strings';
+import { FacetSearchController } from '../../controllers/FacetSearchController';
+import { IFacetSearchResponse } from '../../rest/Facet/FacetSearchResponse';
+import { DynamicFacetValue } from '../DynamicFacet/DynamicFacetValues/DynamicFacetValue';
+import { FacetValueState } from '../../rest/Facet/FacetValueState';
+import { DynamicFacetSearchValueRenderer } from './DynamicFacetSearchValueRenderer';
+import { IComboboxValue } from '../Combobox/ComboboxValues';
+import 'styling/DynamicFacetSearch/_DynamicFacetSearch';
 
 export class DynamicFacetSearch {
   public element: HTMLElement;
-  private input: DynamicFacetSearchInput;
   private facetSearchController: FacetSearchController;
-  static delay = 400;
+  private combobox: Combobox;
 
   constructor(private facet: DynamicFacet) {
-    this.element = $$('div', { className: 'coveo-dynamic-facet-search' }).el;
-    this.createAndAppendInput();
     this.facetSearchController = new FacetSearchController(this.facet);
+
+    this.combobox = new Combobox({
+      label: l('SearchFacetResults', this.facet.options.title),
+      searchInterface: this.facet.searchInterface,
+      requestValues: terms => this.facetSearch(terms),
+      createValuesFromResponse: (response: IFacetSearchResponse) => this.createValuesFromResponse(response),
+      onSelectValue: this.onSelectValue,
+      placeholderText: l('Search'),
+      wrapperClassName: 'coveo-dynamic-facet-search',
+      clearOnBlur: true
+    });
+
+    this.element = this.combobox.element;
   }
 
-  private createAndAppendInput() {
-    this.input = new DynamicFacetSearchInput(this.facet, this.onInputChange.bind(this));
-    this.element.appendChild(this.input.element);
+  private async facetSearch(terms: string) {
+    return this.facetSearchController.search(terms);
   }
 
-  private onInputChange(value: string) {
-    this.debouncedTriggerNewFacetSearch.cancel();
+  private createValuesFromResponse(response: IFacetSearchResponse): IComboboxValue[] {
+    return response.values.map((value, index) => {
+      const facetValue = new DynamicFacetValue(
+        {
+          value: value.rawValue,
+          displayValue: value.displayValue,
+          numberOfResults: value.count,
+          state: FacetValueState.idle,
+          position: index + 1
+        },
+        this.facet,
+        DynamicFacetSearchValueRenderer
+      );
 
-    if (Utils.isEmptyString(value)) {
-      return;
-    }
-
-    this.debouncedTriggerNewFacetSearch(value);
+      return {
+        value: facetValue,
+        element: facetValue.renderedElement
+      };
+    });
   }
 
-  private debouncedTriggerNewFacetSearch = debounce(this.triggerNewFacetSearch, DynamicFacetSearch.delay);
-
-  private async triggerNewFacetSearch(terms: string) {
-    // TODO: display search results
-    await this.facetSearchController.search(terms);
+  private onSelectValue({ value }: IComboboxValue) {
+    (<DynamicFacetSearchValueRenderer>value.renderer).selectAction();
   }
 }

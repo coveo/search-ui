@@ -39,6 +39,16 @@ export interface IQuerySuggestSuccessArgs {
 }
 
 /**
+ * Describes the object that all [`querySuggestGetFocus`]{@link querySuggestGetFocus} and [`querySuggestSelection`]{@link querySuggestSelection} event handlers receive as an argument.
+ */
+export interface IQuerySuggestSelection {
+  /**
+   * The query suggestion that had focus or was selected.
+   */
+  suggestion: string;
+}
+
+/**
  * The `OmniboxEvents` static class contains the string definitions of all events that strongly relate to the
  * [`Omnibox`]{@link Omnibox} component.
  */
@@ -80,4 +90,16 @@ export class OmniboxEvents {
    * This event is only triggered by standard ML-powered query suggestions, and not {@link AnalyticsSuggestions} or {@link FieldSuggestions}.
    */
   public static querySuggestSuccess = 'querySuggestSuccess';
+  /**
+   * Triggered by the [`Omnibox`]{@link Omnibox} component when a query suggestion is hovered by the mouse or cycled through with the keyboard.
+   *
+   * All `querySuggestGetFocus` event handlers receive an object implementing the [`IQuerySuggestSelection`]{@link IQuerySuggestSelection} interface as an argument.
+   */
+  public static querySuggestGetFocus = 'querySuggestGetFocus';
+  /**
+   * Triggered by the [`Omnibox`]{@link Omnibox} component when a query suggestion is selected by a mouse click or pressing the enter key.
+   *
+   * All `querySuggestSelection` event handlers receive an object implementing the [`IQuerySuggestSelection`]{@link IQuerySuggestSelection} interface as an argument.
+   */
+  public static querySuggestSelection = 'querySuggestSelection';
 }
