@@ -130,29 +130,6 @@ export function FacetValueSuggestionsTest() {
       });
     });
 
-    describe('when the field is a standard category field', () => {
-      beforeEach(() => {
-        setUpKeywordInOmnibox(aKeyword);
-        setUpOmniboxSuggestionsToReturn([getOmniboxSuggestionValue('a|b|c|d')]);
-        setUpSuggestionsFromProviderToReturn([
-          { field: someField, keyword: aKeyword, numberOfResults: 10, score: { distanceFromTotalForField: 100 }, value: 'a|b|c|d' }
-        ]);
-        test.cmp.options.isCategoryField = true;
-      });
-
-      it('should modify the state by correctly splitting the field value', async done => {
-        const resultingArgs = await triggerPopulateOmniboxEvent();
-
-        firstSuggestion(resultingArgs).then(result => {
-          result[0].onSelect();
-          expect(test.env.queryStateModel.set).toHaveBeenCalledWith(QueryStateModel.attributesEnum.fv, {
-            [someField]: ['a', 'b', 'c', 'd']
-          });
-          done();
-        });
-      });
-    });
-
     describe('when the field is a category field', () => {
       beforeEach(() => {
         setUpKeywordInOmnibox(aKeyword);
