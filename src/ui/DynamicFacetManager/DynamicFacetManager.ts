@@ -16,6 +16,7 @@ export interface IDynamicFacetManagerOptions {
   enableReorder?: boolean;
   onUpdate?: IDynamicFacetManagerOnUpdate;
   compareFacets?: IDynamicFacetManagerCompareFacet;
+  maximumNumberOfExpandedFacets?: number;
 }
 
 export interface IDynamicFacetManagerOnUpdate {
@@ -71,7 +72,18 @@ export class DynamicFacetManager extends Component {
      */
     compareFacets: ComponentOptions.buildCustomOption<IDynamicFacetManagerCompareFacet>(() => {
       return null;
-    })
+    }),
+    /**
+     * Defines the maximum number of expanded facets inside the manager.
+     * The rest of the facets will be collapsed.
+     *
+     * **Note:**
+     * Will prioritize the facets that possess active values, then will prioritize the first facets.
+     * If more there are more facets that possess active values than the `maximumNumberOfExpandedFacets` option, it will override it.
+     *
+     * **Default:** `4`
+     */
+    maximumNumberOfExpandedFacets: ComponentOptions.buildNumberOption({ defaultValue: 4 })
   };
 
   private childrenFacets: DynamicFacet[] = [];
@@ -79,6 +91,18 @@ export class DynamicFacetManager extends Component {
 
   private get enabledFacets() {
     return this.childrenFacets.filter(facet => !facet.disabled);
+  }
+
+  private get facetsWithValues() {
+    return this.childrenFacets.filter(facet => !facet.values.isEmpty);
+  }
+
+  private get expandedFacetsWithOnlyIdleValues() {
+    return this.childrenFacets.filter(facet => !facet.values.isEmpty && !facet.isCollapsed && !facet.values.hasActiveValues);
+  }
+
+  private get facetsWithActiveValues() {
+    return this.childrenFacets.filter(facet => !facet.values.isEmpty && facet.values.hasActiveValues);
   }
 
   /**
@@ -166,16 +190,25 @@ export class DynamicFacetManager extends Component {
     this.resetContainer();
     const fragment = document.createDocumentFragment();
 
-    this.childrenFacets.forEach((dynamicFacet, index) => {
+    this.facetsWithValues.forEach((dynamicFacet, index) => {
       fragment.appendChild(dynamicFacet.element);
+
+      dynamicFacet.options.collapsedByDefault ? dynamicFacet.collapse() : dynamicFacet.expand();
 
       if (this.options.onUpdate) {
         this.options.onUpdate(dynamicFacet, index);
       }
     });
 
+    this.respectMaximumExpandedFacetsThreshold();
+
     this.containerElement.appendChild(fragment);
     this.element.appendChild(this.containerElement);
+  }
+
+  private respectMaximumExpandedFacetsThreshold() {
+    const numberOfFacetsToKeepExpanded = Math.max(this.options.maximumNumberOfExpandedFacets - this.facetsWithActiveValues.length, 0);
+    this.expandedFacetsWithOnlyIdleValues.slice(numberOfFacetsToKeepExpanded).forEach(dynamicFacet => dynamicFacet.collapse());
   }
 
   private getFacetComponentById(id: string) {

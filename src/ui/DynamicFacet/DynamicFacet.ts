@@ -163,9 +163,9 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
     /**
      * Whether to allow the end-user to expand and collapse this facet.
      *
-     * **Default:** `false`
+     * **Default:** `true`
      */
-    enableCollapse: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'Filtering' }),
+    enableCollapse: ComponentOptions.buildBooleanOption({ defaultValue: true, section: 'Filtering' }),
 
     /**
      * Whether to allow the end-user to search the facet values.
@@ -245,13 +245,13 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
   private listenToQueryStateChange = true;
   private padding: FacetPadding;
   private header: DynamicFacetHeader;
-  private isCollapsed: boolean;
 
   public dynamicFacetManager: DynamicFacetManager;
   public values: DynamicFacetValues;
   private search: DynamicFacetSearch;
   public position: number = null;
   public moreValuesAvailable = false;
+  public isCollapsed: boolean;
 
   /**
    * Creates a new `DynamicFacet` instance.
@@ -681,6 +681,10 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
   private toggleSearchDisplay() {
     if (Utils.isUndefined(this.options.enableFacetSearch)) {
       $$(this.search.element).toggle(this.moreValuesAvailable);
+    }
+
+    if (this.isCollapsed) {
+      $$(this.search.element).toggle(false);
     }
   }
 
