@@ -1,22 +1,30 @@
 @import 'MagicBox/Colors';
 .coveo-suggestion-container {
-  display: flex;
-  flex-direction: row;
+  display: inline-flex;
   flex-wrap: nowrap;
-  width: calc(100% + 250px);
-  border: none;
-
-  #coveo-magicbox-suggestions {
-    width: 50%;
-    max-width: 300px;
-  }
-}
-
-.coveo-preview-container {
   align-items: stretch;
-  flex: 1 1 0;
   background: $grey-100;
-  font-family: arial, sans-serif;
   border: 1px solid $grey-500;
-  border-left: none;
+  #coveo-magicbox-suggestions {
+    border: none !important;
+    min-width: 250px;
+    max-width: 250px;
+    float: left;
+    background: white;
+  }
+  .coveo-preview-results {
+    font-family: arial, sans-serif;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    overflow: hidden;
+  }
+  .coveo-preview-layout {
+    text-align: center;
+    padding: 20px;
+    align-items: flex-start;
+  }
+  .coveo-preview-header {
+    padding: 10px;
+  }
 }

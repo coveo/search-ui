@@ -7483,5 +7483,9 @@
   "NoValuesFound": {
     "en": "No values found.",
     "fr": "Aucune valeur trouvée."
+  },
+  "ProductRecommandation": {
+    "en": "Product recommandation for",
+    "fr": "Recommandation de produit pour"
   }
 }

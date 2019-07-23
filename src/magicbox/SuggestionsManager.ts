@@ -185,6 +185,7 @@ export class SuggestionsManager {
 
     if (!this.hasSuggestions) {
       this.removeAccessibilityPropertiesForSuggestions();
+      this.querySuggestPreviewComponent && this.querySuggestPreviewComponent.handleNoSuggestion();
       return;
     }
     const suggestionsContainer = this.buildSuggestionsContainer();
@@ -222,19 +223,22 @@ export class SuggestionsManager {
     });
   }
 
-  private buildPreviewContainer() {
-    return $$('div', {
-      className: 'coveo-preview-container'
-    }).el;
-  }
-
-  private setUpForResultPreview(suggestions: Dom): Dom {
+  private get querySuggestPreviewComponent() {
     const querySuggestPreviewElement: HTMLElement = $$(this.root).find(`.${Component.computeCssClassNameForType('QuerySuggestPreview')}`);
     if (!querySuggestPreviewElement) {
-      return suggestions;
+      return;
     }
     const querySuggestPreview = <QuerySuggestPreview>Component.get(querySuggestPreviewElement);
     if (!(querySuggestPreview.options.numberOfPreviewResults > 0)) {
+      return;
+    }
+
+    return querySuggestPreview;
+  }
+
+  private setUpForResultPreview(suggestions: Dom): Dom {
+    const querySuggestPreview = this.querySuggestPreviewComponent;
+    if (!querySuggestPreview) {
       return suggestions;
     }
 
@@ -243,7 +247,7 @@ export class SuggestionsManager {
       role: 'listbox'
     });
 
-    const previewContainer = this.buildPreviewContainer();
+    const previewContainer = querySuggestPreview.buildPreviewContainer();
 
     suggestionContainerParent.append(suggestions.el);
     suggestionContainerParent.append(previewContainer);
