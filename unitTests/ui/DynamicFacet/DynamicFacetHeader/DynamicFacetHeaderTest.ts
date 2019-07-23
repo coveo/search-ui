@@ -97,6 +97,7 @@ export function DynamicFacetHeaderTest() {
       expect(facet.reset).toHaveBeenCalledTimes(1);
       expect(facet.enableFreezeFacetOrderFlag).toHaveBeenCalledTimes(1);
       expect(facet.triggerNewQuery).toHaveBeenCalledTimes(1);
+      expect(facet.scrollToTop).toHaveBeenCalledTimes(1);
     });
 
     describe('when passing the option enableCollapse as false', () => {

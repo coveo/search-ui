@@ -9,6 +9,7 @@ import { CategoryFacetQueryController } from '../../../src/controllers/CategoryF
 import { IBuildingQueryEventArgs } from '../../../src/events/QueryEvents';
 import { first, range, pluck, shuffle, partition, chain } from 'underscore';
 import { analyticsActionCauseList } from '../../../src/ui/Analytics/AnalyticsActionListMeta';
+import { ResultListUtils } from '../../../src/utils/ResultListUtils';
 
 export function buildCategoryFacetResults(numberOfResults = 11, numberOfRequestedValues = 11, field = '@field'): ISimulateQueryData {
   const fakeResults = FakeResults.createFakeResults();
@@ -91,6 +92,13 @@ export function CategoryFacetTest() {
     it('calling hide adds the coveo hidden class', () => {
       test.cmp.hide();
       expect($$(test.cmp.element).hasClass('coveo-hidden')).toBeTruthy();
+    });
+
+    it('calling "scrollToTop" should call "scrollToTop" on the ResultListUtils', () => {
+      spyOn(ResultListUtils, 'scrollToTop');
+      test.cmp.scrollToTop();
+
+      expect(ResultListUtils.scrollToTop).toHaveBeenCalledWith(test.cmp.root);
     });
 
     describe('when there is no results', () => {

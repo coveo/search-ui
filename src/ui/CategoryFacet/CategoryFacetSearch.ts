@@ -113,6 +113,7 @@ export class CategoryFacetSearch implements IFacetSearch {
       this.categoryFacet.changeActivePath(path);
       this.categoryFacet.logAnalyticsEvent(analyticsActionCauseList.categoryFacetSelect, path);
       this.categoryFacet.executeQuery();
+      this.categoryFacet.scrollToTop();
     }
   }
 

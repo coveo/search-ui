@@ -9,6 +9,7 @@ import { Simulate } from '../../Simulate';
 import { IPopulateBreadcrumbEventArgs } from '../../../src/events/BreadcrumbEvents';
 import { analyticsActionCauseList, AnalyticsDynamicFacetType } from '../../../src/ui/Analytics/AnalyticsActionListMeta';
 import { FakeResults } from '../../Fake';
+import { ResultListUtils } from '../../../src/utils/ResultListUtils';
 
 export function DynamicFacetTest() {
   describe('DynamicFacet', () => {
@@ -471,6 +472,13 @@ export function DynamicFacetTest() {
       test.cmp.ensureDom();
 
       expect(searchFeatureDisplayed()).toBe(false);
+    });
+
+    it('calling "scrollToTop" should call "scrollToTop" on the ResultListUtils', () => {
+      spyOn(ResultListUtils, 'scrollToTop');
+      test.cmp.scrollToTop();
+
+      expect(ResultListUtils.scrollToTop).toHaveBeenCalledWith(test.cmp.root);
     });
   });
 }
