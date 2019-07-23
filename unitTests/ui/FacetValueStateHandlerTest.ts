@@ -1,11 +1,11 @@
+import { Facet, IFacetOptions } from '../../src/ui/Facet/Facet';
 import { FacetValueStateHandler } from '../../src/ui/SearchInterface/FacetValueStateHandler';
-import { Facet } from '../../src/ui/Facet/Facet';
 import * as Mock from '../MockEnvironment';
 
 export function FacetValueStateHandlerTest() {
   describe('FacetValueStateHandler', () => {
     let test: FacetValueStateHandler;
-    let facetMatchingFvState: Facet;
+    let facetMatchingFvState: Mock.IBasicComponentSetup<Facet>;
     const facetId = 'somefield';
     const fieldIdWithoutFacet = 'bloup';
     const someFacetValue = 'fishfishfish';
@@ -16,13 +16,12 @@ export function FacetValueStateHandlerTest() {
     };
 
     beforeEach(() => {
-      facetMatchingFvState = Mock.mock<Facet>(Facet);
-      facetMatchingFvState.options = {
+      facetMatchingFvState = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, {
         id: facetId,
         field: facetId
-      };
+      });
 
-      test = new FacetValueStateHandler(componentId => [facetMatchingFvState]);
+      test = new FacetValueStateHandler(facetMatchingFvState.env.root);
     });
 
     afterEach(() => {

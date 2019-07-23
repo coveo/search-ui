@@ -49,6 +49,8 @@ import { IResultListOptions } from './ResultListOptions';
 
 CoreHelpers.exportAllHelpersGlobally(window['Coveo']);
 
+type WaitAnimation = 'fade' | 'spinner' | 'none';
+
 /**
  * The `ResultList` component is responsible for displaying query results by applying one or several result templates
  * (see [Result Templates](https://developers.coveo.com/x/aIGfAQ)).
@@ -122,7 +124,7 @@ export class ResultList extends Component {
      *
      * Default value is `none`.
      */
-    waitAnimation: ComponentOptions.buildStringOption({ defaultValue: 'none' }),
+    waitAnimation: ComponentOptions.buildStringOption<WaitAnimation>({ defaultValue: 'none' }),
 
     /**
      * Specifies the element inside which to display the [`waitAnimation`]{@link ResultList.options.waitAnimation}.
@@ -248,7 +250,7 @@ export class ResultList extends Component {
      *
      * Default value is `list`.
      */
-    layout: ComponentOptions.buildStringOption({
+    layout: ComponentOptions.buildStringOption<ValidLayout>({
       defaultValue: 'list',
       required: true
     }),
@@ -756,8 +758,12 @@ export class ResultList extends Component {
     });
   }
 
+  private get waitAnimation() {
+    return this.options.waitAnimation.toLowerCase() as WaitAnimation;
+  }
+
   private showWaitingAnimation() {
-    switch (this.options.waitAnimation.toLowerCase()) {
+    switch (this.waitAnimation) {
       case 'fade':
         $$(this.options.waitAnimationContainer).addClass('coveo-fade-out');
         break;
@@ -771,7 +777,7 @@ export class ResultList extends Component {
   }
 
   private hideWaitingAnimation() {
-    switch (this.options.waitAnimation.toLowerCase()) {
+    switch (this.waitAnimation) {
       case 'fade':
         $$(this.options.waitAnimationContainer).removeClass('coveo-fade-out');
         break;
