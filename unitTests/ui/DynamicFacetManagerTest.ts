@@ -28,6 +28,13 @@ export function DynamicFacetManagerTest() {
         DynamicFacetTestUtils.createAdvancedFakeFacet({ id: 'test2', field: '@test2', numberOfValues: 5 }).cmp,
         DynamicFacetTestUtils.createAdvancedFakeFacet({ id: 'test3', field: '@test3', numberOfValues: 100 }).cmp
       ];
+
+      facets.forEach(facet => {
+        facet.ensureDom();
+        facet.values.createFromResponse(
+          DynamicFacetTestUtils.getCompleteFacetResponse(facet, { values: DynamicFacetTestUtils.createFakeFacetValues() })
+        );
+      });
     }
 
     function initializeComponent() {
@@ -49,11 +56,11 @@ export function DynamicFacetManagerTest() {
     }
 
     function triggerQuerySuccess(resultFacets: IFacetResponse[]) {
-      const fakeResult = FakeResults.createFakeResults();
-      fakeResult.facets = resultFacets;
+      const fakeResults = FakeResults.createFakeResults();
+      fakeResults.facets = resultFacets;
 
       Simulate.query(test.env, {
-        results: fakeResult
+        results: fakeResults
       });
     }
 

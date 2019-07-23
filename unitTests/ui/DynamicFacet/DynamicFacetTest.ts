@@ -227,6 +227,16 @@ export function DynamicFacetTest() {
       expect($$(test.cmp.element).hasClass('coveo-dynamic-facet-collapsed')).toBe(true);
     });
 
+    it(`when enableCollapse is false & collapsedByDefault options is true
+      facet should not be collapsed`, () => {
+      options.enableCollapse = false;
+      options.collapsedByDefault = true;
+      initializeComponent();
+      test.cmp.ensureDom();
+
+      expect($$(test.cmp.element).hasClass('coveo-dynamic-facet-collapsed')).toBe(false);
+    });
+
     it(`allows to collapse`, () => {
       test.cmp.ensureDom();
       test.cmp.collapse();
