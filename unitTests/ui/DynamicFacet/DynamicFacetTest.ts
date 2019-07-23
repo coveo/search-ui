@@ -480,5 +480,15 @@ export function DynamicFacetTest() {
 
       expect(ResultListUtils.scrollToTop).toHaveBeenCalledWith(test.cmp.root);
     });
+
+    it(`when the enableScrollToTop option is "false"
+    calling "scrollToTop" should not call "scrollToTop" on the ResultListUtils`, () => {
+      options.enableScrollToTop = false;
+      initializeComponent();
+      spyOn(ResultListUtils, 'scrollToTop');
+      test.cmp.scrollToTop();
+
+      expect(ResultListUtils.scrollToTop).not.toHaveBeenCalledWith(test.cmp.root);
+    });
   });
 }

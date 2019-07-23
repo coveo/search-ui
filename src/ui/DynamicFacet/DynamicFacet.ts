@@ -45,6 +45,7 @@ export interface IDynamicFacetOptions extends IResponsiveComponentOptions {
   sortCriteria?: string;
   numberOfValues?: number;
   enableCollapse?: boolean;
+  enableScrollToTop?: boolean;
   enableFacetSearch?: boolean;
   useLeadingWildcardInFacetSearch?: boolean;
   collapsedByDefault?: boolean;
@@ -166,6 +167,13 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
      * **Default:** `false`
      */
     enableCollapse: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'Filtering' }),
+
+    /**
+     * Whether to scroll to the top of the search interface on a facet interaction.
+     *
+     * **Default:** `true`
+     */
+    enableScrollToTop: ComponentOptions.buildBooleanOption({ defaultValue: true, section: 'CommonOptions' }),
 
     /**
      * Whether to allow the end-user to search the facet values.
@@ -452,7 +460,9 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
   }
 
   public scrollToTop() {
-    ResultListUtils.scrollToTop(this.root);
+    if (this.options.enableScrollToTop) {
+      ResultListUtils.scrollToTop(this.root);
+    }
   }
 
   // Complete facet analytics meta
