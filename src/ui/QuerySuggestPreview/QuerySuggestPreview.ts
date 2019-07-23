@@ -10,31 +10,9 @@ export interface IQuerySuggestPreview extends IResultListOptions {
   width?: string;
 }
 
-/**
- * The QuerySuggestPreview component behaves exactly like the {@link ResultList} component (which it extends), except that
- * it renders itself beside the query suggest when hovering a result.
- *
- * ```html
- * <div class="CoveoQuerySuggestPreview">
- *   <script class="result-template" type="text/x-underscore">
- *     <div>
- *       <a class='CoveoResultLink'></a>
- *     </div>
- *   </script>
- * </div>
- * ```
- *
- */
 export class QuerySuggestPreview extends ResultList implements IComponentBindings {
   static ID = 'QuerySuggestPreview';
 
-  /**
-   * Specifies a list a css class that should be ignored when the end user click result in the omnibox
-   *
-   * Any element that is specified here should normally be able to handle the standard click event.
-   *
-   * Any element that does not match this css class and that is clicked will trigger a redirection by the OmniboxResultList.
-   */
   static elementsToIgnore = [];
 
   static doExport = () => {
@@ -43,26 +21,10 @@ export class QuerySuggestPreview extends ResultList implements IComponentBinding
     });
   };
 
-  /**
-   * The options for the component
-   * @componentOptions
-   */
   static options: IQuerySuggestPreview = {
-    /**
-     * The maximum number of query results to render in the preview.
-     *
-     * **Minimum and default value:** `0`
-     */
     numberOfPreviewResults: ComponentOptions.buildNumberOption({ defaultValue: 0, min: 0 })
   };
 
-  /**
-   * Creates a new QuerySuggestPreview component.
-   * @param element The HTMLElement on which to instantiate the component.
-   * @param options The options for the QuerySuggestPreview component.
-   * @param bindings The bindings that the component requires to function normally. If not set, these will be
-   * automatically resolved (with a slower execution time).
-   */
   constructor(public element: HTMLElement, public options?: IQuerySuggestPreview, public bindings?: IComponentBindings) {
     super(element, options, bindings, QuerySuggestPreview.ID);
 
