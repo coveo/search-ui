@@ -33,6 +33,10 @@ export function CategoryValueTest() {
       return new CategoryValue($$('div'), categoryValueDescriptor, new CategoryFacetTemplates(), categoryFacet);
     }
 
+    function categoryValueElement(categoryValue: CategoryValue) {
+      return $$(categoryValue.element).find('.coveo-category-facet-value-label');
+    }
+
     beforeEach(() => {
       initCategoryValueDescriptor();
       initCategoryFacetOptions();
@@ -42,15 +46,8 @@ export function CategoryValueTest() {
     it('when at maximumDepth, it does not call changeActivePath', () => {
       const categoryValue = buildCategoryValue().makeSelectable();
       spyOn(categoryFacet, 'changeActivePath');
-      $$($$(categoryValue.element).find('.coveo-category-facet-value-label')).trigger('click');
+      $$(categoryValueElement(categoryValue)).trigger('click');
       expect(categoryFacet.changeActivePath).not.toHaveBeenCalled();
-    });
-
-    it('calls scrollToTop on click', () => {
-      const categoryValue = buildCategoryValue().makeSelectable();
-      spyOn(categoryFacet, 'scrollToTop');
-      $$($$(categoryValue.element).find('.coveo-category-facet-value-label')).trigger('click');
-      expect(categoryFacet.scrollToTop).toHaveBeenCalled();
     });
 
     describe('when below maximumDepth, when it is selectable', () => {
@@ -59,29 +56,43 @@ export function CategoryValueTest() {
       it('calls changeActivePath on click', () => {
         const categoryValue = buildCategoryValue().makeSelectable();
         spyOn(categoryFacet, 'changeActivePath');
-        $$($$(categoryValue.element).find('.coveo-category-facet-value-label')).trigger('click');
+        $$(categoryValueElement(categoryValue)).trigger('click');
         expect(categoryFacet.changeActivePath).toHaveBeenCalled();
       });
 
       it('calls changeActivePath on enter keyup', () => {
         const categoryValue = buildCategoryValue().makeSelectable();
         spyOn(categoryFacet, 'changeActivePath');
-        Simulate.keyUp($$(categoryValue.element).find('.coveo-category-facet-value-label'), KEYBOARD.ENTER);
+        Simulate.keyUp(categoryValueElement(categoryValue), KEYBOARD.ENTER);
         expect(categoryFacet.changeActivePath).toHaveBeenCalled();
+      });
+
+      it('calls scrollToTop on click', () => {
+        const categoryValue = buildCategoryValue().makeSelectable();
+        spyOn(categoryFacet, 'scrollToTop');
+        $$(categoryValueElement(categoryValue)).trigger('click');
+        expect(categoryFacet.scrollToTop).toHaveBeenCalled();
+      });
+
+      it('calls scrollToTop on enter keyup', () => {
+        const categoryValue = buildCategoryValue().makeSelectable();
+        spyOn(categoryFacet, 'scrollToTop');
+        Simulate.keyUp(categoryValueElement(categoryValue), KEYBOARD.ENTER);
+        expect(categoryFacet.scrollToTop).toHaveBeenCalled();
       });
     });
 
     it('does not call changeActivePath on click by default', () => {
       const categoryValue = buildCategoryValue();
       spyOn(categoryFacet, 'changeActivePath');
-      $$($$(categoryValue.element).find('.coveo-category-facet-value-label')).trigger('click');
+      $$(categoryValueElement(categoryValue)).trigger('click');
       expect(categoryFacet.changeActivePath).not.toHaveBeenCalled();
     });
 
     it('does not call changeActivePath on enter keyup by default', () => {
       const categoryValue = buildCategoryValue();
       spyOn(categoryFacet, 'changeActivePath');
-      Simulate.keyUp($$(categoryValue.element).find('.coveo-category-facet-value-label'), KEYBOARD.ENTER);
+      Simulate.keyUp(categoryValueElement(categoryValue), KEYBOARD.ENTER);
       expect(categoryFacet.changeActivePath).not.toHaveBeenCalled();
     });
 
