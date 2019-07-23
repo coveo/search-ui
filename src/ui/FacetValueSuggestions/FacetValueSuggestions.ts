@@ -1,22 +1,24 @@
-import { Omnibox, IOmniboxSuggestion } from '../Omnibox/Omnibox';
-import { Component } from '../Base/Component';
-import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
-import { IComponentBindings } from '../Base/ComponentBindings';
-import { OmniboxEvents, IPopulateOmniboxSuggestionsEventArgs } from '../../events/OmniboxEvents';
-import { Initialization } from '../Base/Initialization';
-import { analyticsActionCauseList, IAnalyticsNoMeta } from '../Analytics/AnalyticsActionListMeta';
-import { $$ } from '../../utils/Dom';
-import { exportGlobally } from '../../GlobalExports';
 import 'styling/_FieldSuggestions';
 import * as _ from 'underscore';
-import { QueryStateModel } from '../../ModelsModules';
-import { DomUtils } from '../../UtilsModules';
-import { IFacetValueSuggestionRow, FacetValueSuggestionsProvider, IFacetValueSuggestionsProvider } from './FacetValueSuggestionsProvider';
+import { IPopulateOmniboxSuggestionsEventArgs, OmniboxEvents } from '../../events/OmniboxEvents';
+import { exportGlobally } from '../../GlobalExports';
 import { l } from '../../MiscModules';
+import { QueryStateModel } from '../../ModelsModules';
+import { $$ } from '../../utils/Dom';
+import { DomUtils } from '../../UtilsModules';
+import { analyticsActionCauseList, IAnalyticsNoMeta } from '../Analytics/AnalyticsActionListMeta';
+import { Component } from '../Base/Component';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
+import { Initialization } from '../Base/Initialization';
+import { IOmniboxSuggestion, Omnibox } from '../Omnibox/Omnibox';
+import { FacetValueSuggestionsProvider, IFacetValueSuggestionRow, IFacetValueSuggestionsProvider } from './FacetValueSuggestionsProvider';
 
 export interface IFacetValueSuggestionsOptions {
   numberOfSuggestions: number;
   field?: IFieldOption;
+  isCategoryField?: boolean;
+  categoryFieldDelimitingCharacter?: string;
   useQuerySuggestions?: boolean;
   useValueFromSearchbox?: boolean;
   displayEstimateNumberOfResults?: boolean;
@@ -131,7 +133,25 @@ export class FacetValueSuggestions extends Component {
      */
     templateHelper: ComponentOptions.buildCustomOption<(row: IFacetValueSuggestionRow, omnibox: Omnibox) => string>(() => {
       return null;
-    })
+    }),
+    /**
+     * Specifies if the field to suggest is a "Category field", similar to the format used by the [`CategoryFacet`]{@link CategoryFacet} component.
+     *
+     * This option is required to ensure that on selection, the corresponding [`CategoryFacet`]{@link CategoryFacet} component in the page, if any, will properly handle the filter format.
+     *
+     * See also the [`categoryFieldDelimitingCharacter`]{@link categoryFieldDelimitingCharacter} option.
+     *
+     * Default value is `false`.
+     */
+    isCategoryField: ComponentOptions.buildBooleanOption({ defaultValue: false }),
+    /**
+     * Specifies the delimiting character used by the category field, if the [`isCategoryField`]{@link isCategoryField} option is set to true.
+     *
+     * This option has no effect otherwise.
+     *
+     * Default value is `|`.
+     */
+    categoryFieldDelimitingCharacter: ComponentOptions.buildStringOption({ defaultValue: '|', depend: 'isCategoryField' })
   };
 
   public facetValueSuggestionsProvider: IFacetValueSuggestionsProvider;
@@ -262,7 +282,10 @@ export class FacetValueSuggestions extends Component {
     // Copy the state here, else it will directly modify queryStateModel.defaultAttributes.fv.
     const fvState: { [key: string]: string[] } = { ...this.queryStateModel.get(QueryStateModel.attributesEnum.fv) };
     const existingValues: string[] = fvState[this.options.field.toString()] || [];
-    fvState[this.options.field.toString()] = existingValues.concat([row.value]);
+
+    const valuesToSetInState = this.options.isCategoryField ? row.value.split(this.options.categoryFieldDelimitingCharacter) : [row.value];
+    fvState[this.options.field.toString()] = existingValues.concat(valuesToSetInState);
+
     this.queryStateModel.set(QueryStateModel.attributesEnum.fv, fvState);
     omnibox.magicBox.blur();
     this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.omniboxField, {});
