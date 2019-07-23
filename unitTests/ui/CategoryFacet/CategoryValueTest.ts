@@ -46,6 +46,13 @@ export function CategoryValueTest() {
       expect(categoryFacet.changeActivePath).not.toHaveBeenCalled();
     });
 
+    it('calls scrollToTop on click', () => {
+      const categoryValue = buildCategoryValue().makeSelectable();
+      spyOn(categoryFacet, 'scrollToTop');
+      $$($$(categoryValue.element).find('.coveo-category-facet-value-label')).trigger('click');
+      expect(categoryFacet.scrollToTop).toHaveBeenCalled();
+    });
+
     describe('when below maximumDepth, when it is selectable', () => {
       beforeEach(() => (categoryValueDescriptor.path = ['1', '2']));
 
