@@ -135,7 +135,7 @@ export class FacetValueSuggestions extends Component {
       return null;
     }),
     /**
-     * Specifies if the field to suggest is a "Category field", similar to the format used by the [`CategoryFacet`]{@link CategoryFacet} component.
+     * Specifies wether the field to suggest is a "Category field", ie., it has the format used by the [`CategoryFacet`]{@link CategoryFacet} component.
      *
      * This option is required to ensure that on selection, the corresponding [`CategoryFacet`]{@link CategoryFacet} component in the page, if any, will properly handle the filter format.
      *
@@ -146,8 +146,6 @@ export class FacetValueSuggestions extends Component {
     isCategoryField: ComponentOptions.buildBooleanOption({ defaultValue: false }),
     /**
      * Specifies the delimiting character used by the category field, if the [`isCategoryField`]{@link isCategoryField} option is set to true.
-     *
-     * This option has no effect otherwise.
      *
      * Default value is `|`.
      */
