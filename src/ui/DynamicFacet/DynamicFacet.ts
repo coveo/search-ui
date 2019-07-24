@@ -511,7 +511,6 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
     this.bind.onRootElement(QueryEvents.duringQuery, () => this.ensureDom());
     this.bind.onRootElement(QueryEvents.doneBuildingQuery, (data: IDoneBuildingQueryEventArgs) => this.handleDoneBuildingQuery(data));
     this.bind.onRootElement(QueryEvents.querySuccess, (data: IQuerySuccessEventArgs) => this.handleQuerySuccess(data.results));
-    this.bind.onRootElement(QueryEvents.deferredQuerySuccess, () => this.handleDeferredQuerySuccess());
     this.bind.onRootElement(QueryEvents.queryError, () => this.onQueryResponse());
   }
 
@@ -561,9 +560,6 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
     this.position = index + 1;
 
     this.onQueryResponse(response);
-  }
-
-  private handleDeferredQuerySuccess() {
     this.header.hideLoading();
     this.values.render();
     this.updateAppearance();
@@ -692,9 +688,7 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
     beforeExecuteQuery && beforeExecuteQuery();
 
     const results = await this.dynamicFacetQueryController.executeIsolatedQuery();
-
     results && this.handleQuerySuccess(results);
-    this.handleDeferredQuerySuccess();
   }
 
   private beforeSendingQuery() {
