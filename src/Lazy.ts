@@ -290,3 +290,6 @@ lazyMissingTerms();
 
 import { swapVar } from './SwapVar';
 swapVar(this);
+
+import { lazyQuerySuggestPreview } from './ui/QuerySuggestPreview/LazyQuerySuggestPreview';
+lazyQuerySuggestPreview();
