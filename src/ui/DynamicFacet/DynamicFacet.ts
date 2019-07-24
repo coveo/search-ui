@@ -169,7 +169,7 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
     enableCollapse: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'Filtering' }),
 
     /**
-     * Whether to scroll to the top of the search interface on a facet interaction.
+     * Whether to scroll back to the top of the page whenever the end-user interacts with a facet.
      *
      * **Default:** `true`
      */
