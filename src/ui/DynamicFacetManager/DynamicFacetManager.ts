@@ -74,12 +74,12 @@ export class DynamicFacetManager extends Component {
       return null;
     }),
     /**
-     * Defines the maximum number of expanded facets inside the manager.
-     * The rest of the facets will be collapsed.
+     * The maximum number of expanded facets inside the manager.
+     * Remaining facets are collapsed.
      *
      * **Note:**
-     * Will prioritize the facets that possess active values, then will prioritize the first facets.
-     * If more there are more facets that possess active values than the `maximumNumberOfExpandedFacets` option, it will override it.
+     * Prioritizes facets with active values, and then prioritizes first facets.
+     * If the number of facets with active values exceeds the value of the `maximumNumberOfExpandedFacets` option, it overrides the option.
      *
      * **Default:** `4`
      */
