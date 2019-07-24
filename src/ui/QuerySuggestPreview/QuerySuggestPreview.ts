@@ -1,6 +1,6 @@
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { exportGlobally } from '../../GlobalExports';
-import { ComponentOptions, OmniboxEvents, Initialization, $$, Component, Assert, QueryUtils, l } from '../../Core';
+import { ComponentOptions, OmniboxEvents, Initialization, $$, Component, Assert, QueryUtils } from '../../Core';
 import { IQuerySuggestSelection } from '../../events/OmniboxEvents';
 import { IQueryResults } from '../../rest/QueryResults';
 import 'styling/_QuerySuggestPreview';
@@ -15,7 +15,6 @@ import { ResultListTableRenderer } from '../ResultList/ResultListTableRenderer';
 
 export interface IQuerySuggestPreview {
   numberOfPreviewResults?: number;
-  suggestionWidth?: number;
   previewWidth?: number;
   resultTemplate?: Template;
   headerText?: string;
@@ -57,10 +56,6 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
      */
     previewWidth: ComponentOptions.buildNumberOption(),
     /**
-     *  The width that the query suggestion container will be
-     */
-    suggestionWidth: ComponentOptions.buildNumberOption(),
-    /**
      *  The test displayed at the top of the preview.
      *
      *  After this text, the suggestion surronded in quotes will appear.
@@ -69,7 +64,7 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
      */
     headerText: ComponentOptions.buildLocalizedStringOption({ defaultValue: 'ProductRecommandation' }),
     /**
-     *  The number of millisecond that a end user have to hover on a query suggest before a request is sent.
+     *  The time in millisecond that a end user have to hover on a query suggest before a request is sent.
      */
     hoverTime: ComponentOptions.buildNumberOption({ defaultValue: 200 })
   };
@@ -141,6 +136,11 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
       });
   }
 
+  private autoCreateComponentsInsideResult(element: HTMLElement, result: IQueryResult): IInitResult {
+    Assert.exists(element);
+    return Initialization.automaticallyCreateComponentsInsideResult(element, result);
+  }
+
   public handleNoSuggestion() {
     clearTimeout(this.timer);
     this.previousSuggestionHovered = null;
@@ -151,11 +151,6 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
     container.style.width = `${this.options.previewWidth}px`;
     container.style.maxWidth = `${this.options.previewWidth}px`;
     return container;
-  }
-
-  private autoCreateComponentsInsideResult(element: HTMLElement, result: IQueryResult): IInitResult {
-    Assert.exists(element);
-    return Initialization.automaticallyCreateComponentsInsideResult(element, result);
   }
 
   private buildPreviewHeader(suggestion: string) {
@@ -175,6 +170,10 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
   }
 
   private querySuggestGetFocus(args: IQuerySuggestSelection) {
+    if (!this.previewContainer) {
+      return;
+    }
+
     if (this.previousSuggestionHovered === args.suggestion) {
       return;
     }
@@ -219,7 +218,7 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
   }
 
   private updateResultPerRow(HTMLElements: HTMLElement[]) {
-    let size = HTMLElements.length == 4 ? 50 : Math.max(33, 100 / HTMLElements.length);
+    let size = HTMLElements.length == 4 ? 50 : Math.max(33, ~~(100 / HTMLElements.length));
     HTMLElements.forEach(element => {
       this.updateFlexCSS(element, size);
     });
