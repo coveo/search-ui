@@ -18,6 +18,7 @@ import { FacetUtils } from '../Facet/FacetUtils';
 import { Checkbox } from '../FormWidgets/Checkbox';
 import { SimpleFilterValues } from './SimpleFilterValues';
 import { Logger } from '../../misc/Logger';
+import { FacetSortCriterion } from '../Facet/FacetSortCriterion';
 
 export interface ISimpleFilterOptions {
   title: string;
@@ -144,7 +145,7 @@ export class SimpleFilter extends Component {
      * not appear often in the index, but does appear often in the query result set will tend to appear higher.
      *
      */
-    sortCriteria: ComponentOptions.buildStringOption({
+    sortCriteria: ComponentOptions.buildStringOption<FacetSortCriterion>({
       postProcessing: (value, options: ISimpleFilterOptions) => {
         const sortCriteriaToValidate = value || 'score';
         if (SimpleFilter.simpleFilterSortCritera().indexOf(sortCriteriaToValidate.toLowerCase()) !== -1) {

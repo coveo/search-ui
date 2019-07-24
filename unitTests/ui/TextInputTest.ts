@@ -209,7 +209,7 @@ export function TextInputTest() {
     should set the "required" attribute on the input to false`, () => {
       initializeComponentWithOptions('Hello', { isRequired: false });
 
-      expect(getInput().getAttribute('required')).toBe('false');
+      expect(getInput().getAttribute('required')).toBeFalsy();
     });
   });
 }
