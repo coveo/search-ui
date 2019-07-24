@@ -12,10 +12,10 @@ import { TemplateComponentOptions } from '../Base/TemplateComponentOptions';
 import { IQueryResult } from '../../rest/QueryResult';
 import { pluck, sortBy, map } from 'underscore';
 import { ResultListTableRenderer } from '../ResultList/ResultListTableRenderer';
-import { InitializationPlaceholder } from '../Base/InitializationPlaceholder';
 
 export interface IQuerySuggestPreview {
   numberOfPreviewResults?: number;
+  suggestionWidth?: number;
   previewWidth?: number;
   resultTemplate?: Template;
   headerText?: string;
@@ -23,31 +23,10 @@ export interface IQuerySuggestPreview {
 }
 
 /**
- * The QuerySuggestPreview component behaves exactly like the {@link ResultList} component (which it extends), except that
- * it renders itself beside the query suggest when hovering a result.
- *
- * ```html
- * <div class="CoveoQuerySuggestPreview">
- *   <script class="result-template" type="text/x-underscore">
- *     <div>
- *       <a class='CoveoResultLink'></a>
- *     </div>
- *   </script>
- * </div>
- * ```
  *
  */
 export class QuerySuggestPreview extends Component implements IComponentBindings {
   static ID = 'QuerySuggestPreview';
-
-  /**
-   * Specifies a list a css class that should be ignored when the end user click result in the omnibox
-   *
-   * Any element that is specified here should normally be able to handle the standard click event.
-   *
-   * Any element that does not match this css class and that is clicked will trigger a redirection by the OmniboxResultList.
-   */
-  static elementsToIgnore = [];
 
   static doExport = () => {
     exportGlobally({
@@ -64,7 +43,9 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
     /**
      * The maximum number of query results to render in the preview.
      *
-     * **Minimum and default value:** `0`
+     * **Minimum value:** `1`
+     * **Maximum value:** `6`
+     * **Default value:** `3`
      */
     numberOfPreviewResults: ComponentOptions.buildNumberOption({
       defaultValue: 3,
@@ -72,15 +53,23 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
       max: 6
     }),
     /**
-     *
+     *  Width in `pixels` that the preview container will be
      */
     previewWidth: ComponentOptions.buildNumberOption(),
     /**
+     *  The width that the query suggestion container will be
+     */
+    suggestionWidth: ComponentOptions.buildNumberOption(),
+    /**
+     *  The test displayed at the top of the preview.
      *
+     *  After this text, the suggestion surronded in quotes will appear.
+     *
+     * **Default value:** `Product recommandation for`
      */
     headerText: ComponentOptions.buildLocalizedStringOption({ defaultValue: 'ProductRecommandation' }),
     /**
-     *
+     *  The number of millisecond that a end user have to hover on a query suggest before a request is sent.
      */
     hoverTime: ComponentOptions.buildNumberOption({ defaultValue: 200 })
   };
@@ -157,11 +146,6 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
     this.previousSuggestionHovered = null;
   }
 
-  private autoCreateComponentsInsideResult(element: HTMLElement, result: IQueryResult): IInitResult {
-    Assert.exists(element);
-    return Initialization.automaticallyCreateComponentsInsideResult(element, result);
-  }
-
   public buildPreviewContainer() {
     const container = $$('div', { className: 'coveo-preview-container' }).el;
     container.style.width = `${this.options.previewWidth}px`;
@@ -169,8 +153,13 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
     return container;
   }
 
+  private autoCreateComponentsInsideResult(element: HTMLElement, result: IQueryResult): IInitResult {
+    Assert.exists(element);
+    return Initialization.automaticallyCreateComponentsInsideResult(element, result);
+  }
+
   private buildPreviewHeader(suggestion: string) {
-    const text = $$('span', {}, `${l(this.options.headerText)} "${suggestion}"`).el;
+    const text = $$('span', {}, `${this.options.headerText} "${suggestion}"`).el;
     const header = $$('div', { className: 'coveo-preview-header' }, text).el;
     this.previewContainer.appendChild(header);
   }
