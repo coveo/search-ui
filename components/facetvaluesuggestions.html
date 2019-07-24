@@ -250,8 +250,10 @@
 						<section class="tsd-index-section ">
 							<h3>Component Options</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="facetvaluesuggestions.html#options.categoryfielddelimitingcharacter" class="tsd-kind-icon">category<wbr>Field<wbr>Delimiting<wbr>Character</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="facetvaluesuggestions.html#options.displayestimatenumberofresults" class="tsd-kind-icon">display<wbr>Estimate<wbr>Number<wbr>OfResults</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="facetvaluesuggestions.html#options.field" class="tsd-kind-icon">field</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="facetvaluesuggestions.html#options.iscategoryfield" class="tsd-kind-icon">is<wbr>Category<wbr>Field</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="facetvaluesuggestions.html#options.numberofsuggestions" class="tsd-kind-icon">number<wbr>OfSuggestions</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="facetvaluesuggestions.html#options.templatehelper" class="tsd-kind-icon">template<wbr>Helper</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="facetvaluesuggestions.html#options.usequerysuggestions" class="tsd-kind-icon">use<wbr>Query<wbr>Suggestions</a></li>
@@ -640,14 +642,36 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Component Options</h2>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
+					<a name="options.categoryfielddelimitingcharacter" class="tsd-anchor"></a>
+					<h3>category<wbr>Field<wbr>Delimiting<wbr>Character</h3>
+					<div class="tsd-signature tsd-kind-icon">category<wbr>Field<wbr>Delimiting<wbr>Character<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetValueSuggestions/FacetValueSuggestions.ts#L152">ui/FacetValueSuggestions/FacetValueSuggestions.ts
+							:152</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Specifies the delimiting character used by the category field, if the <a href="facetvaluesuggestions.html#options.iscategoryfield"><code>isCategoryField</code></a> option is set to true.</p>
+						</div>
+						<p>Default value is <code>|</code>.</p>
+					</div>
+					<div class="tsd-panel">
+						<div class="tsd-signature-type">Markup configuration example(s) :</div>
+						<pre>data-category-field-delimiting-character&#x3D;&#x27;foo&#x27;</pre>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
 					<a name="options.displayestimatenumberofresults" class="tsd-anchor"></a>
 					<h3>display<wbr>Estimate<wbr>Number<wbr>OfResults</h3>
 					<div class="tsd-signature tsd-kind-icon">display<wbr>Estimate<wbr>Number<wbr>OfResults<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetValueSuggestions/FacetValueSuggestions.ts#L94">ui/FacetValueSuggestions/FacetValueSuggestions.ts
-							:94</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetValueSuggestions/FacetValueSuggestions.ts#L96">ui/FacetValueSuggestions/FacetValueSuggestions.ts
+							:96</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -674,8 +698,8 @@ data-display-estimate-number-of-results&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetValueSuggestions/FacetValueSuggestions.ts#L51">ui/FacetValueSuggestions/FacetValueSuggestions.ts
-							:51</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetValueSuggestions/FacetValueSuggestions.ts#L53">ui/FacetValueSuggestions/FacetValueSuggestions.ts
+							:53</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -690,14 +714,39 @@ data-display-estimate-number-of-results&#x3D;&#x27;false&#x27;</pre>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
+					<a name="options.iscategoryfield" class="tsd-anchor"></a>
+					<h3>is<wbr>Category<wbr>Field</h3>
+					<div class="tsd-signature tsd-kind-icon">is<wbr>Category<wbr>Field<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetValueSuggestions/FacetValueSuggestions.ts#L146">ui/FacetValueSuggestions/FacetValueSuggestions.ts
+							:146</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Specifies wether the field to suggest is a &quot;Category field&quot;, ie., it has the format used by the <a href="categoryfacet.html"><code>CategoryFacet</code></a> component.</p>
+						</div>
+						<p>This option is required to ensure that on selection, the corresponding <a href="categoryfacet.html"><code>CategoryFacet</code></a> component in the page, if any, will properly handle the filter format.</p>
+						<p>See also the <a href="facetvaluesuggestions.html#options.categoryfielddelimitingcharacter"><code>categoryFieldDelimitingCharacter</code></a> option.</p>
+						<p>Default value is <code>false</code>.</p>
+					</div>
+					<div class="tsd-panel">
+						<div class="tsd-signature-type">Markup configuration example(s) :</div>
+						<pre>data-is-category-field&#x3D;&#x27;true&#x27;
+data-is-category-field&#x3D;&#x27;false&#x27;</pre>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
 					<a name="options.numberofsuggestions" class="tsd-anchor"></a>
 					<h3>number<wbr>OfSuggestions</h3>
 					<div class="tsd-signature tsd-kind-icon">number<wbr>OfSuggestions<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetValueSuggestions/FacetValueSuggestions.ts#L58">ui/FacetValueSuggestions/FacetValueSuggestions.ts
-							:58</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetValueSuggestions/FacetValueSuggestions.ts#L60">ui/FacetValueSuggestions/FacetValueSuggestions.ts
+							:60</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -718,8 +767,8 @@ data-display-estimate-number-of-results&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetValueSuggestions/FacetValueSuggestions.ts#L132">ui/FacetValueSuggestions/FacetValueSuggestions.ts
-							:132</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetValueSuggestions/FacetValueSuggestions.ts#L134">ui/FacetValueSuggestions/FacetValueSuggestions.ts
+							:134</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -789,8 +838,8 @@ Coveo.init(<span class="hljs-built_in">document</span>.querySelector(<span class
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetValueSuggestions/FacetValueSuggestions.ts#L68">ui/FacetValueSuggestions/FacetValueSuggestions.ts
-							:68</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetValueSuggestions/FacetValueSuggestions.ts#L70">ui/FacetValueSuggestions/FacetValueSuggestions.ts
+							:70</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -814,8 +863,8 @@ data-use-query-suggestions&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetValueSuggestions/FacetValueSuggestions.ts#L75">ui/FacetValueSuggestions/FacetValueSuggestions.ts
-							:75</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetValueSuggestions/FacetValueSuggestions.ts#L77">ui/FacetValueSuggestions/FacetValueSuggestions.ts
+							:77</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -845,8 +894,8 @@ data-use-value-from-searchbox&#x3D;&#x27;false&#x27;</pre>
 								<p>Overwrites <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#constructor">constructor</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetValueSuggestions/FacetValueSuggestions.ts#L146">ui/FacetValueSuggestions/FacetValueSuggestions.ts
-									:146</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetValueSuggestions/FacetValueSuggestions.ts#L164">ui/FacetValueSuggestions/FacetValueSuggestions.ts
+									:164</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
