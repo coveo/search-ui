@@ -271,6 +271,8 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
     this.initComponentStateEvents();
 
     this.values = new DynamicFacetValues(this);
+
+    this.verifyCollapsingConfiguration();
     this.isCollapsed = this.options.enableCollapse && this.options.collapsedByDefault;
 
     ResponsiveDynamicFacets.init(this.root, this, this.options);
@@ -705,6 +707,12 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
     this.logger.error('DynamicFacets are not supported by your current search endpoint. Disabling this component.');
     this.disable();
     this.updateAppearance();
+  }
+
+  private verifyCollapsingConfiguration() {
+    if (this.options.collapsedByDefault && !this.options.enableCollapse) {
+      this.logger.warn('The "collapsedByDefault" option is "true" while the "enableCollapse" is "false"');
+    }
   }
 
   private logAnalyticsFacetShowMoreLess(cause: IAnalyticsActionCause) {
