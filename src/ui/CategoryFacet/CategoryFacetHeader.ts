@@ -54,6 +54,7 @@ export class CategoryFacetHeader {
 
     const onClearClick = () => {
       this.options.categoryFacet.reset();
+      this.options.categoryFacet.scrollToTop();
     };
 
     new AccessibleButton()

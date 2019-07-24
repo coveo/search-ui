@@ -46,11 +46,11 @@ export class DynamicFacetValueRenderer implements ValueRenderer {
   }
 
   private selectAction() {
-    this.facet.pinFacetPosition();
     this.facet.toggleSelectValue(this.facetValue.value);
     this.toggleSelectedClass();
     this.facet.enableFreezeCurrentValuesFlag();
     this.facet.enableFreezeFacetOrderFlag();
+    this.facet.scrollToTop();
     this.facet.triggerNewQuery(() => this.facetValue.logSelectActionToAnalytics());
   }
 }

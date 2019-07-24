@@ -88,5 +88,47 @@ export const ResultListUtilsTest = () => {
       appendResultListToRoot({ enableInfiniteScroll: true }, true);
       expect(utils.isInfiniteScrollEnabled(root.element)).toBe(false);
     });
+
+    describe(`when calling #scrollToTop`, () => {
+      let infiniteScrollContainer: HTMLElement;
+      let scrollTopSpy: jasmine.Spy;
+
+      beforeEach(() => {
+        infiniteScrollContainer = document.createElement('div');
+        spyOn(window, 'scrollTo');
+        spyOn(infiniteScrollContainer, 'scrollTo');
+
+        let innerValue = 500;
+        scrollTopSpy = jasmine.createSpy('scrollTop', v => (innerValue = v));
+        Object.defineProperty(infiniteScrollContainer, 'scrollTop', {
+          get: () => innerValue,
+          set: scrollTopSpy
+        });
+      });
+
+      it(`with no active result list
+      should scroll to top on the window`, () => {
+        appendResultListToRoot({ infiniteScrollContainer }, true);
+        utils.scrollToTop(root.element);
+        expect(window.scrollTo).toHaveBeenCalledWith(0, 0);
+      });
+
+      it(`with an active result list in a normal browser (not IE11)
+      should call the ScrollTo method of the HTMLElement`, () => {
+        appendResultListToRoot({ infiniteScrollContainer });
+
+        utils.scrollToTop(root.element);
+        expect(infiniteScrollContainer.scrollTo).toHaveBeenCalledWith(0, window.pageYOffset + root.element.getBoundingClientRect().top);
+      });
+
+      it(`with an active result list the IE11 browser
+      should change the scrollTop property of the scrollContainer`, () => {
+        appendResultListToRoot({ infiniteScrollContainer });
+        infiniteScrollContainer.scrollTo = undefined;
+
+        utils.scrollToTop(root.element);
+        expect(scrollTopSpy).toHaveBeenCalledWith(0);
+      });
+    });
   });
 };

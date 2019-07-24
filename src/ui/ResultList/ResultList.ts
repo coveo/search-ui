@@ -46,6 +46,7 @@ import { ResultListRenderer } from './ResultListRenderer';
 import { ResultListTableRenderer } from './ResultListTableRenderer';
 import ResultLayoutSelectorModule = require('../ResultLayoutSelector/ResultLayoutSelector');
 import { IResultListOptions } from './ResultListOptions';
+import { ResultListUtils } from '../../utils/ResultListUtils';
 
 CoreHelpers.exportAllHelpersGlobally(window['Coveo']);
 
@@ -626,13 +627,7 @@ export class ResultList extends Component {
       return;
     }
 
-    if (typeof this.options.infiniteScrollContainer.scrollTo === 'function') {
-      const searchInterfacePosition = window.pageYOffset + this.searchInterface.element.getBoundingClientRect().top;
-      this.options.infiniteScrollContainer.scrollTo(0, searchInterfacePosition);
-    } else {
-      const el = <HTMLElement>this.options.infiniteScrollContainer;
-      el.scrollTop = 0;
-    }
+    ResultListUtils.scrollToTop(this.root);
   }
 
   private handleNewQuery() {
