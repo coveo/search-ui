@@ -457,6 +457,7 @@ export function DynamicFacetTest() {
 
     it(`when getting successful results
       facet position should be correct`, () => {
+      test.cmp.ensureDom();
       const fakeResultsWithFacets = FakeResults.createFakeResults();
       fakeResultsWithFacets.facets = [DynamicFacetTestUtils.getCompleteFacetResponse(test.cmp)];
       $$(test.env.root).trigger(QueryEvents.querySuccess, { results: fakeResultsWithFacets });
