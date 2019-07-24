@@ -4,6 +4,7 @@ import { Assert } from '../misc/Assert';
 import { IFacetRequest, IFacetRequestValue } from '../rest/Facet/FacetRequest';
 import { FacetSortCriteria } from '../rest/Facet/FacetSortCriteria';
 import { QueryEvents } from '../events/QueryEvents';
+import { findIndex } from 'underscore';
 
 export class DynamicFacetQueryController {
   private numberOfValuesToRequest: number;
@@ -45,7 +46,14 @@ export class DynamicFacetQueryController {
   public putFacetIntoQueryBuilder(queryBuilder: QueryBuilder) {
     Assert.exists(queryBuilder);
 
-    const facetRequest: IFacetRequest = {
+    queryBuilder.facetRequests.push(this.facetRequest);
+    if (this.freezeFacetOrder) {
+      queryBuilder.facetOptions.freezeFacetOrder = true;
+    }
+  }
+
+  public get facetRequest(): IFacetRequest {
+    return {
       facetId: this.facet.options.id,
       field: this.facet.fieldName,
       sortCriteria: this.facet.options.sortCriteria as FacetSortCriteria,
@@ -54,11 +62,20 @@ export class DynamicFacetQueryController {
       freezeCurrentValues: this.freezeCurrentValues,
       isFieldExpanded: this.numberOfValuesToRequest > this.facet.options.numberOfValues
     };
+  }
 
-    queryBuilder.facetRequests.push(facetRequest);
-    if (this.freezeFacetOrder) {
-      queryBuilder.facetOptions.freezeFacetOrder = true;
+  public executeIsolatedQuery() {
+    const query = this.facet.queryController.getLastQuery();
+    const previousFacetRequestIndex = findIndex(query.facets, { facetId: this.facet.options.id });
+    if (previousFacetRequestIndex !== -1) {
+      query.facets[previousFacetRequestIndex] = this.facetRequest;
+    } else if (query.facets) {
+      query.facets.push(this.facetRequest);
+    } else {
+      query.facets = [this.facetRequest];
     }
+
+    return this.facet.queryController.getEndpoint().search(query);
   }
 
   private get currentValues(): IFacetRequestValue[] {

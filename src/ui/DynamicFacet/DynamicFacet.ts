@@ -28,7 +28,6 @@ import {
   IAnalyticsActionCause,
   IAnalyticsDynamicFacetMeta,
   analyticsActionCauseList,
-  IAnalyticsFacetMeta,
   AnalyticsDynamicFacetType
 } from '../Analytics/AnalyticsActionListMeta';
 import { IQueryOptions } from '../../controllers/QueryController';
@@ -37,6 +36,7 @@ import { QueryBuilder } from '../Base/QueryBuilder';
 import { IAutoLayoutAdjustableInsideFacetColumn } from '../SearchInterface/FacetColumnAutoLayoutAdjustment';
 import { DynamicFacetSearch } from '../DynamicFacetSearch/DynamicFacetSearch';
 import { ResultListUtils } from '../../utils/ResultListUtils';
+import { IQueryResults } from '../../rest/QueryResults';
 
 export interface IDynamicFacetOptions extends IResponsiveComponentOptions {
   id?: string;
@@ -248,13 +248,13 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
     preservePosition: ComponentOptions.buildBooleanOption({ defaultValue: true })
   };
 
-  private dynamicFacetQueryController: DynamicFacetQueryController;
   private includedAttributeId: string;
   private listenToQueryStateChange = true;
   private header: DynamicFacetHeader;
   private isCollapsed: boolean;
 
   public dynamicFacetManager: DynamicFacetManager;
+  public dynamicFacetQueryController: DynamicFacetQueryController;
   public values: DynamicFacetValues;
   private search: DynamicFacetSearch;
   public position: number = null;
@@ -366,28 +366,26 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
   /**
    * Requests additional values.
    *
-   * Automatically triggers a query.
+   * Automatically triggers an isolated query.
    * @param additionalNumberOfValues The number of additional values to request. Minimum value is 1. Defaults to the [numberOfValues]{@link DynamicFacet.options.numberOfValues} option value.
    */
   public showMoreValues(additionalNumberOfValues = this.options.numberOfValues): void {
     this.ensureDom();
     this.logger.info('Show more values');
     this.dynamicFacetQueryController.increaseNumberOfValuesToRequest(additionalNumberOfValues);
-    this.triggerNewQuery();
-    this.logAnalyticsFacetShowMoreLess(analyticsActionCauseList.facetShowMore);
+    this.triggerNewIsolatedQuery(() => this.logAnalyticsFacetShowMoreLess(analyticsActionCauseList.dynamicFacetShowMore));
   }
 
   /**
    * Reduces the number of displayed facet values down to [numberOfValues]{@link DynamicFacet.options.numberOfValues}.
    *
-   * Automatically triggers a query.
+   * Automatically triggers an isolated query.
    */
   public showLessValues(): void {
     this.ensureDom();
     this.logger.info('Show less values');
     this.dynamicFacetQueryController.resetNumberOfValuesToRequest();
-    this.triggerNewQuery();
-    this.logAnalyticsFacetShowMoreLess(analyticsActionCauseList.facetShowLess);
+    this.triggerNewIsolatedQuery(() => this.logAnalyticsFacetShowMoreLess(analyticsActionCauseList.dynamicFacetShowLess));
   }
 
   /**
@@ -399,6 +397,9 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
    */
   public reset() {
     this.ensureDom();
+    if (!this.values.hasActiveValues) {
+      return;
+    }
     this.logger.info('Deselect all values');
     this.values.clearAll();
     this.values.render();
@@ -509,7 +510,7 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
   private initQueryEvents() {
     this.bind.onRootElement(QueryEvents.duringQuery, () => this.ensureDom());
     this.bind.onRootElement(QueryEvents.doneBuildingQuery, (data: IDoneBuildingQueryEventArgs) => this.handleDoneBuildingQuery(data));
-    this.bind.onRootElement(QueryEvents.querySuccess, (data: IQuerySuccessEventArgs) => this.handleQuerySuccess(data));
+    this.bind.onRootElement(QueryEvents.querySuccess, (data: IQuerySuccessEventArgs) => this.handleQuerySuccess(data.results));
     this.bind.onRootElement(QueryEvents.deferredQuerySuccess, () => this.handleDeferredQuerySuccess());
     this.bind.onRootElement(QueryEvents.queryError, () => this.onQueryResponse());
   }
@@ -550,13 +551,13 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
     this.putStateIntoAnalytics();
   }
 
-  private handleQuerySuccess(data: IQuerySuccessEventArgs) {
-    if (Utils.isNullOrUndefined(data.results.facets)) {
+  private handleQuerySuccess(results: IQueryResults) {
+    if (Utils.isNullOrUndefined(results.facets)) {
       return this.notImplementedError();
     }
 
-    const index = findIndex(data.results.facets, { facetId: this.options.id });
-    const response = index !== -1 ? data.results.facets[index] : null;
+    const index = findIndex(results.facets, { facetId: this.options.id });
+    const response = index !== -1 ? results.facets[index] : null;
     this.position = index + 1;
 
     this.onQueryResponse(response);
@@ -686,6 +687,16 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
     this.queryController.executeQuery(options);
   }
 
+  public async triggerNewIsolatedQuery(beforeExecuteQuery?: () => void) {
+    this.beforeSendingQuery();
+    beforeExecuteQuery && beforeExecuteQuery();
+
+    const results = await this.dynamicFacetQueryController.executeIsolatedQuery();
+
+    results && this.handleQuerySuccess(results);
+    this.handleDeferredQuerySuccess();
+  }
+
   private beforeSendingQuery() {
     this.header.showLoading();
     this.updateAppearance();
@@ -698,15 +709,7 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
   }
 
   private logAnalyticsFacetShowMoreLess(cause: IAnalyticsActionCause) {
-    this.usageAnalytics.logCustomEvent<IAnalyticsFacetMeta>(
-      cause,
-      {
-        facetId: this.options.id,
-        facetField: this.options.field.toString(),
-        facetTitle: this.options.title
-      },
-      this.element
-    );
+    this.usageAnalytics.logCustomEvent<IAnalyticsDynamicFacetMeta>(cause, this.basicAnalyticsFacetState, this.element);
   }
 }
 
