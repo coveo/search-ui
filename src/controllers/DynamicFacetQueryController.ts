@@ -5,6 +5,7 @@ import { IFacetRequest, IFacetRequestValue } from '../rest/Facet/FacetRequest';
 import { FacetSortCriteria } from '../rest/Facet/FacetSortCriteria';
 import { QueryEvents } from '../events/QueryEvents';
 import { findIndex } from 'underscore';
+import { IQueryResults } from '../rest/QueryResults';
 
 export class DynamicFacetQueryController {
   private numberOfValuesToRequest: number;
@@ -64,7 +65,7 @@ export class DynamicFacetQueryController {
     };
   }
 
-  public executeIsolatedQuery() {
+  public executeIsolatedQuery(): Promise<IQueryResults> {
     const query = this.facet.queryController.getLastQuery();
     const previousFacetRequestIndex = findIndex(query.facets, { facetId: this.facet.options.id });
     if (previousFacetRequestIndex !== -1) {
