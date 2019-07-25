@@ -56,9 +56,9 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
      */
     previewWidth: ComponentOptions.buildNumberOption(),
     /**
-     *  The test displayed at the top of the preview.
+     *  The text displayed at the top of the preview.
      *
-     *  After this text, the suggestion surronded in quotes will appear.
+     *  After this text, the suggestion will be surrounded in quotes
      *
      * **Default value:** `Product recommandation for`
      */

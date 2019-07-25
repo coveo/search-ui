@@ -3,15 +3,18 @@
   display: inline-flex;
   flex-wrap: nowrap;
   align-items: stretch;
-  background: $grey-100;
   border: 1px solid $grey-500;
-  width: auto;
+  min-width: 100%;
+
   #coveo-magicbox-suggestions {
     border: none !important;
     min-width: 250px;
     max-width: 250px;
     float: left;
-    background: white;
+  }
+  .coveo-preview-container {
+    background: $grey-100;
+    flex: 1 1 100%;
   }
   .coveo-preview-results {
     font-family: arial, sans-serif;
