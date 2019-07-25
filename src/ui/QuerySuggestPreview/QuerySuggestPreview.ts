@@ -43,6 +43,11 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
    * @componentOptions
    */
   static options: IQuerySuggestPreview = {
+    /**
+     * The [Result Templates](https://developers.coveo.com/x/aIGfAQ)
+     *
+     * Specifying a value for this option is required for the `QuerySuggestPreview` component to work.
+     */
     resultTemplate: TemplateComponentOptions.buildTemplateOption(),
     /**
      * The maximum number of query results to render in the preview.
@@ -77,7 +82,9 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
      */
     headerText: ComponentOptions.buildLocalizedStringOption({ defaultValue: 'ProductRecommandation' }),
     /**
-     *  The time in millisecond that a end user have to hover on a query suggest before a request is sent.
+     *  The time in `milliseconds` that a end user have to hover on a query suggest before a request is sent.
+     *
+     * **Default value:** `200`
      */
     hoverTime: ComponentOptions.buildNumberOption({ defaultValue: 200 })
   };
@@ -97,6 +104,14 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
     super(element, QuerySuggestPreview.ID, bindings);
 
     this.options = ComponentOptions.initComponentOptions(element, QuerySuggestPreview, options);
+
+    if (!this.options.resultTemplate) {
+      this.logger.warn(
+        `Option "resultTemplate" is *REQUIRED* on the component "QuerySuggestPreview". The component or the search page might *NOT WORK PROPERLY*`,
+        `Check the following URL to create your result template`,
+        `https://developers.coveo.com/x/aIGfAQ`
+      );
+    }
 
     this.bind.onRootElement(OmniboxEvents.querySuggestGetFocus, (args: IQuerySuggestSelection) => this.querySuggestGetFocus(args));
   }
