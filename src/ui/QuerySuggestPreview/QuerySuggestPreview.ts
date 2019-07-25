@@ -23,7 +23,11 @@ export interface IQuerySuggestPreview {
 }
 
 /**
+ * This component need [`querySuggest`]{@link Omnibox.options.enableQuerySuggestAddon} to work.
  *
+ *  It allows you to preview the top recommendation when hovering on a Query suggest
+ *
+ *  A [Result Templates](https://developers.coveo.com/x/aIGfAQ) is required for this component to work.
  */
 export class QuerySuggestPreview extends Component implements IComponentBindings {
   static ID = 'QuerySuggestPreview';
@@ -145,16 +149,17 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
       });
   }
 
-  private autoCreateComponentsInsideResult(element: HTMLElement, result: IQueryResult): IInitResult {
-    Assert.exists(element);
-    return Initialization.automaticallyCreateComponentsInsideResult(element, result);
-  }
-
+  /**
+   * Reset the component when no suggestion are displayed
+   */
   public handleNoSuggestion() {
     clearTimeout(this.timer);
     this.previousSuggestionHovered = null;
   }
 
+  /**
+   * Create the container which the results preview will render
+   */
   public buildPreviewContainer() {
     const container = $$('div', { className: 'coveo-preview-container' }).el;
     if (!this.options.previewWidth) {
@@ -166,12 +171,20 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
     return container;
   }
 
+  /**
+   * Resize the width of the suggestion container
+   */
   public updateWidthOfSuggestionContainer(container: Dom) {
     if (!this.options.suggestionWidth) {
       return;
     }
     container.el.style.minWidth = this.options.suggestionWidth;
     container.el.style.maxWidth = this.options.suggestionWidth;
+  }
+
+  private autoCreateComponentsInsideResult(element: HTMLElement, result: IQueryResult): IInitResult {
+    Assert.exists(element);
+    return Initialization.automaticallyCreateComponentsInsideResult(element, result);
   }
 
   private buildPreviewHeader(suggestion: string) {

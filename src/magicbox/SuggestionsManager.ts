@@ -244,8 +244,7 @@ export class SuggestionsManager {
     }
 
     const suggestionContainerParent = $$('div', {
-      className: 'coveo-suggestion-container',
-      role: 'listbox'
+      className: 'coveo-suggestion-container'
     });
 
     const previewContainer = querySuggestPreview.buildPreviewContainer();
