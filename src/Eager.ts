@@ -290,6 +290,9 @@ CategoryFacet.doExport();
 import { MissingTerms } from './ui/MissingTerm/MissingTerms';
 MissingTerms.doExport();
 
+import { QuerySuggestPreview } from './ui/QuerySuggestPreview/QuerySuggestPreview';
+QuerySuggestPreview.doExport();
+
 import { swapVar } from './SwapVar';
 swapVar(this);
 

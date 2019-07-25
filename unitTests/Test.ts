@@ -720,9 +720,6 @@ MissingTermsManagerTest();
 import { SearchboxResizeTest } from './utils/SearchboxResizeTest';
 SearchboxResizeTest();
 
-import { FacetPaddingTest } from './ui/FacetPaddingTest';
-FacetPaddingTest();
-
 import { DependsOnManagerTest } from './utils/DependsOnManagerTest';
 DependsOnManagerTest();
 

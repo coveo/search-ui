@@ -41,6 +41,7 @@ export class DynamicFacetHeader {
   private clear() {
     this.facet.reset();
     this.facet.enableFreezeFacetOrderFlag();
+    this.facet.scrollToTop();
     this.facet.triggerNewQuery(() => this.logClearAllToAnalytics());
   }
 

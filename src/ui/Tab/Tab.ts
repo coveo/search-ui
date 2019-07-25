@@ -16,6 +16,7 @@ import { IComponentBindings } from '../Base/ComponentBindings';
 import { ComponentOptions, IQueryExpression } from '../Base/ComponentOptions';
 import { Initialization } from '../Base/Initialization';
 import { ResponsiveTabs } from '../ResponsiveComponents/ResponsiveTabs';
+import { ValidLayout } from '../ResultLayoutSelector/ValidLayout';
 
 export interface ITabOptions {
   expression?: IQueryExpression;
@@ -137,7 +138,7 @@ export class Tab extends Component {
      *
      * Default value is `undefined` and the component selects the first available layout.
      */
-    layout: ComponentOptions.buildStringOption(),
+    layout: ComponentOptions.buildStringOption<ValidLayout>(),
 
     /**
      * Specifies whether to include the {@link Tab.options.expression} in the constant part of the query.

@@ -112,6 +112,7 @@ export class CategoryValue implements CategoryValueParent {
   private onSelect() {
     if (!this.pastMaximumDepth()) {
       this.categoryFacet.logAnalyticsEvent(analyticsActionCauseList.categoryFacetSelect, this.path);
+      this.categoryFacet.scrollToTop();
       this.categoryFacet.changeActivePath(this.path);
       this.categoryFacet.executeQuery();
     }

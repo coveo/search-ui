@@ -9,6 +9,7 @@ import { Simulate } from '../../Simulate';
 import { IPopulateBreadcrumbEventArgs } from '../../../src/events/BreadcrumbEvents';
 import { analyticsActionCauseList, AnalyticsDynamicFacetType } from '../../../src/ui/Analytics/AnalyticsActionListMeta';
 import { FakeResults } from '../../Fake';
+import { ResultListUtils } from '../../../src/utils/ResultListUtils';
 
 export function DynamicFacetTest() {
   describe('DynamicFacet', () => {
@@ -41,10 +42,6 @@ export function DynamicFacetTest() {
       const args: IPopulateBreadcrumbEventArgs = { breadcrumbs: [] };
       $$(test.env.root).trigger(BreadcrumbEvents.populateBreadcrumb, args);
       return args.breadcrumbs;
-    }
-
-    function paddingFeatureActive() {
-      return !!$$(test.cmp.element.parentElement).find('.coveo-topSpace');
     }
 
     function searchFeatureActive() {
@@ -387,30 +384,6 @@ export function DynamicFacetTest() {
       expect(breadcrumbs.length).toBe(1);
     });
 
-    it(`when setting a preservePosition to true (default) and having a facet column parent
-      should activate the padding feature`, () => {
-      $$(test.cmp.element.parentElement).addClass('coveo-facet-column');
-      test.cmp.ensureDom();
-      expect(paddingFeatureActive()).toBe(true);
-    });
-
-    it(`when setting a preservePosition to true (default) without having a facet column parent
-      should not activate the padding feature`, () => {
-      test.cmp.ensureDom();
-
-      expect(paddingFeatureActive()).toBe(false);
-    });
-
-    it(`when setting a preservePosition to false and having a facet column parent
-      should not activate the padding feature`, () => {
-      options.preservePosition = false;
-      initializeComponent();
-      $$(test.cmp.element.parentElement).addClass('coveo-facet-column');
-      test.cmp.ensureDom();
-
-      expect(paddingFeatureActive()).toBe(false);
-    });
-
     it('logs an analytics search event when logAnalyticsEvent is called', () => {
       test.cmp.logAnalyticsEvent(analyticsActionCauseList.dynamicFacetSelect, test.cmp.analyticsFacetState[0]);
 
@@ -499,6 +472,23 @@ export function DynamicFacetTest() {
       test.cmp.ensureDom();
 
       expect(searchFeatureDisplayed()).toBe(false);
+    });
+
+    it('calling "scrollToTop" should call "scrollToTop" on the ResultListUtils', () => {
+      spyOn(ResultListUtils, 'scrollToTop');
+      test.cmp.scrollToTop();
+
+      expect(ResultListUtils.scrollToTop).toHaveBeenCalledWith(test.cmp.root);
+    });
+
+    it(`when the enableScrollToTop option is "false"
+    calling "scrollToTop" should not call "scrollToTop" on the ResultListUtils`, () => {
+      options.enableScrollToTop = false;
+      initializeComponent();
+      spyOn(ResultListUtils, 'scrollToTop');
+      test.cmp.scrollToTop();
+
+      expect(ResultListUtils.scrollToTop).not.toHaveBeenCalledWith(test.cmp.root);
     });
   });
 }

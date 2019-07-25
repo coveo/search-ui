@@ -46,8 +46,11 @@ import { ResultListRenderer } from './ResultListRenderer';
 import { ResultListTableRenderer } from './ResultListTableRenderer';
 import ResultLayoutSelectorModule = require('../ResultLayoutSelector/ResultLayoutSelector');
 import { IResultListOptions } from './ResultListOptions';
+import { ResultListUtils } from '../../utils/ResultListUtils';
 
 CoreHelpers.exportAllHelpersGlobally(window['Coveo']);
+
+type WaitAnimation = 'fade' | 'spinner' | 'none';
 
 /**
  * The `ResultList` component is responsible for displaying query results by applying one or several result templates
@@ -122,7 +125,7 @@ export class ResultList extends Component {
      *
      * Default value is `none`.
      */
-    waitAnimation: ComponentOptions.buildStringOption({ defaultValue: 'none' }),
+    waitAnimation: ComponentOptions.buildStringOption<WaitAnimation>({ defaultValue: 'none' }),
 
     /**
      * Specifies the element inside which to display the [`waitAnimation`]{@link ResultList.options.waitAnimation}.
@@ -248,7 +251,7 @@ export class ResultList extends Component {
      *
      * Default value is `list`.
      */
-    layout: ComponentOptions.buildStringOption({
+    layout: ComponentOptions.buildStringOption<ValidLayout>({
       defaultValue: 'list',
       required: true
     }),
@@ -624,13 +627,7 @@ export class ResultList extends Component {
       return;
     }
 
-    if (typeof this.options.infiniteScrollContainer.scrollTo === 'function') {
-      const searchInterfacePosition = window.pageYOffset + this.searchInterface.element.getBoundingClientRect().top;
-      this.options.infiniteScrollContainer.scrollTo(0, searchInterfacePosition);
-    } else {
-      const el = <HTMLElement>this.options.infiniteScrollContainer;
-      el.scrollTop = 0;
-    }
+    ResultListUtils.scrollToTop(this.root);
   }
 
   private handleNewQuery() {
@@ -756,8 +753,12 @@ export class ResultList extends Component {
     });
   }
 
+  private get waitAnimation() {
+    return this.options.waitAnimation.toLowerCase() as WaitAnimation;
+  }
+
   private showWaitingAnimation() {
-    switch (this.options.waitAnimation.toLowerCase()) {
+    switch (this.waitAnimation) {
       case 'fade':
         $$(this.options.waitAnimationContainer).addClass('coveo-fade-out');
         break;
@@ -771,7 +772,7 @@ export class ResultList extends Component {
   }
 
   private hideWaitingAnimation() {
-    switch (this.options.waitAnimation.toLowerCase()) {
+    switch (this.waitAnimation) {
       case 'fade':
         $$(this.options.waitAnimationContainer).removeClass('coveo-fade-out');
         break;

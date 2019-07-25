@@ -31,6 +31,7 @@ export class DynamicFacetSearchValueRenderer implements ValueRenderer {
   public selectAction() {
     this.facet.enableFreezeFacetOrderFlag();
     this.facet.toggleSelectValue(this.facetValue.value);
+    this.facet.scrollToTop();
     this.facet.triggerNewQuery(() => this.facetValue.logSelectActionToAnalytics());
   }
 }
