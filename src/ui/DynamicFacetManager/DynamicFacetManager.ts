@@ -4,7 +4,7 @@ import { InitializationEvents } from '../../events/InitializationEvents';
 import { QueryEvents, IQuerySuccessEventArgs, IDoneBuildingQueryEventArgs } from '../../events/QueryEvents';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { exportGlobally } from '../../GlobalExports';
-import { find, without } from 'underscore';
+import { find, without, partition } from 'underscore';
 import { IFacetResponse } from '../../rest/Facet/FacetResponse';
 import { $$ } from '../../utils/Dom';
 import { Utils } from '../../utils/Utils';
@@ -99,14 +99,6 @@ export class DynamicFacetManager extends Component {
     return this.childrenFacets.filter(facet => !facet.values.isEmpty);
   }
 
-  private get expandedFacetsWithOnlyIdleValues() {
-    return this.childrenFacets.filter(facet => !facet.values.isEmpty && !facet.isCollapsed && !facet.values.hasActiveValues);
-  }
-
-  private get facetsWithActiveValues() {
-    return this.childrenFacets.filter(facet => !facet.values.isEmpty && facet.values.hasActiveValues);
-  }
-
   /**
    * Creates a new `DynamicFacetManager` instance.
    *
@@ -195,8 +187,6 @@ export class DynamicFacetManager extends Component {
     this.facetsWithValues.forEach((dynamicFacet, index) => {
       fragment.appendChild(dynamicFacet.element);
 
-      dynamicFacet.options.collapsedByDefault ? dynamicFacet.collapse() : dynamicFacet.expand();
-
       if (this.options.onUpdate) {
         this.options.onUpdate(dynamicFacet, index);
       }
@@ -212,8 +202,17 @@ export class DynamicFacetManager extends Component {
     if (this.options.maximumNumberOfExpandedFacets === -1) {
       return;
     }
-    const numberOfFacetsToKeepExpanded = Math.max(this.options.maximumNumberOfExpandedFacets - this.facetsWithActiveValues.length, 0);
-    this.expandedFacetsWithOnlyIdleValues.slice(numberOfFacetsToKeepExpanded).forEach(dynamicFacet => dynamicFacet.collapse());
+
+    const [collapsableFacets, uncollapsableFacets] = partition(this.facetsWithValues, facet => facet.options.enableCollapse);
+    const [facetsWithActiveValues, remainingFacets] = partition(collapsableFacets, facet => facet.values.hasActiveValues);
+    const numberOfFacetsLeftToExpand =
+      this.options.maximumNumberOfExpandedFacets - uncollapsableFacets.length - facetsWithActiveValues.length;
+
+    facetsWithActiveValues.forEach(dynamicFacet => dynamicFacet.expand());
+
+    remainingFacets.forEach((dynamicFacet, index) => {
+      index < numberOfFacetsLeftToExpand ? dynamicFacet.expand() : dynamicFacet.collapse();
+    });
   }
 
   private getFacetComponentById(id: string) {

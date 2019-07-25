@@ -419,6 +419,12 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
    * Expands the facet, displaying all of its currently fetched values.
    */
   public expand() {
+    if (!this.options.enableCollapse) {
+      return this.logger.warn('It is not possible to expand a facet that has the option "enableCollapse" set to "false"');
+    }
+    if (!this.isCollapsed) {
+      return;
+    }
     this.ensureDom();
     this.logger.info('Expand facet values');
     this.isCollapsed = false;
@@ -429,6 +435,12 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
    * Collapses the facet, displaying only its currently selected values.
    */
   public collapse() {
+    if (!this.options.enableCollapse) {
+      return this.logger.warn('It is not possible to collapse a facet that has the option "enableCollapse" set to "false"');
+    }
+    if (this.isCollapsed) {
+      return;
+    }
     this.ensureDom();
     this.logger.info('Collapse facet values');
     this.isCollapsed = true;
