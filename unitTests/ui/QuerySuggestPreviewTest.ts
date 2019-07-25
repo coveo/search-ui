@@ -16,12 +16,11 @@ export function QuerySuggestPreviewTest() {
     let suggestionManager: SuggestionsManager;
     let suggestion: Dom;
     let elementInsideSuggestion: Dom;
-    let selectableClass = 'selectable';
-    let selectedClass = 'selected';
 
     function setupQuerySuggestPreview(options: IQuerySuggestPreview = {}) {
       const tmpl: HtmlTemplate = Mock.mock<HtmlTemplate>(HtmlTemplate);
       options['resultTemplate'] = tmpl;
+
       test = Mock.advancedComponentSetup<QuerySuggestPreview>(
         QuerySuggestPreview,
         new Mock.AdvancedComponentSetupOptions(null, options, env => testEnv)
@@ -41,8 +40,6 @@ export function QuerySuggestPreviewTest() {
       suggestion = $$(document.createElement('div'));
       elementInsideSuggestion = $$(document.createElement('div'));
 
-      suggestion.addClass(selectableClass);
-      suggestion.setAttribute('aria-selected', 'false');
       suggestion.el.appendChild(elementInsideSuggestion.el);
       suggestionContainer.el.appendChild(suggestion.el);
       container.el.appendChild(suggestionContainer.el);
@@ -52,10 +49,7 @@ export function QuerySuggestPreviewTest() {
       buildSuggestion();
       const inputManager = new InputManager(document.createElement('div'), () => {}, {} as MagicBoxInstance);
 
-      suggestionManager = new SuggestionsManager(suggestionContainer.el, document.createElement('div'), testEnv.root, inputManager, {
-        selectedClass,
-        selectableClass
-      });
+      suggestionManager = new SuggestionsManager(suggestionContainer.el, document.createElement('div'), testEnv.root, inputManager);
     }
 
     function setupRenderPreview() {
@@ -139,7 +133,7 @@ export function QuerySuggestPreviewTest() {
 
     describe('when the previews are rendered,', () => {
       it(`if we have one element,
-      it take 100% of the available space`, done => {
+      it take 100% of the remaining available space`, done => {
         setupQuerySuggestPreview({ numberOfPreviewResults: 1 });
         setupSuggestion();
         triggerQuerySuggestHover();
@@ -151,7 +145,7 @@ export function QuerySuggestPreviewTest() {
       });
 
       it(`if we have two element,
-      each take 50% of the available space`, done => {
+      each take 50% of the remaining available space`, done => {
         setupQuerySuggestPreview({ numberOfPreviewResults: 2 });
         setupSuggestion();
         triggerQuerySuggestHover();
@@ -163,7 +157,7 @@ export function QuerySuggestPreviewTest() {
       });
 
       it(`if we have three element,
-      each take 33% of the available space`, done => {
+      each take 33% of the remaining available space`, done => {
         setupQuerySuggestPreview({ numberOfPreviewResults: 3 });
         setupSuggestion();
         triggerQuerySuggestHover();
@@ -175,7 +169,7 @@ export function QuerySuggestPreviewTest() {
       });
 
       it(`if we have four element,
-      each take 50% of the available space`, done => {
+      each take 50% of the remaining available space`, done => {
         setupQuerySuggestPreview({ numberOfPreviewResults: 4 });
         setupSuggestion();
         triggerQuerySuggestHover();
@@ -187,7 +181,7 @@ export function QuerySuggestPreviewTest() {
       });
 
       it(`if we have five elements or more,
-      each take 33% of the available space`, done => {
+      each take 33% of the remaining available space`, done => {
         setupQuerySuggestPreview({ numberOfPreviewResults: 6 });
         setupSuggestion();
         triggerQuerySuggestHover();
@@ -200,7 +194,7 @@ export function QuerySuggestPreviewTest() {
     });
 
     describe('When we hover', () => {
-      it(`on the same Suggestion multiple times,
+      it(`on the same Suggestion multiple times before the time in the option hoverTime has passed,
       the query is is executed only once`, done => {
         setupQuerySuggestPreview();
         test.cmp.queryController.getEndpoint().search = jasmine.createSpy('execQuery');
@@ -214,8 +208,8 @@ export function QuerySuggestPreviewTest() {
         }, test.cmp.options.hoverTime);
       });
 
-      it(`on multiple suggestion before the time in the option hoverTime,
-      the query is is executed only once with the last Suggestion we hover hover`, done => {
+      it(`on multiple suggestion before the time in the option hoverTime has passed,
+      the query is is executed only once with the last Suggestion we hovered on`, done => {
         const realQuery = 'testing3';
         setupQuerySuggestPreview();
         test.cmp.queryController.getEndpoint().search = jasmine.createSpy('execQuery');
@@ -232,7 +226,7 @@ export function QuerySuggestPreviewTest() {
     });
 
     it(`When there is no Suggestion,
-    it call handleNoSuggestion`, () => {
+    it calls handleNoSuggestion`, () => {
       setupQuerySuggestPreview();
       spyOn(test.cmp, 'handleNoSuggestion');
       expect(test.cmp.handleNoSuggestion).not.toHaveBeenCalled();

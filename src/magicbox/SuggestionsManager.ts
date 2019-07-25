@@ -188,6 +188,7 @@ export class SuggestionsManager {
       this.querySuggestPreviewComponent && this.querySuggestPreviewComponent.handleNoSuggestion();
       return;
     }
+
     const suggestionsContainer = this.buildSuggestionsContainer();
     const suggestionPreviewContainer = this.setUpForResultPreview(suggestionsContainer);
     $$(this.element).append(suggestionPreviewContainer.el);
