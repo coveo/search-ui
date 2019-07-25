@@ -81,9 +81,11 @@ export class DynamicFacetManager extends Component {
      * Prioritizes facets with active values, and then prioritizes first facets.
      * If the number of facets with active values exceeds the value of the `maximumNumberOfExpandedFacets` option, it overrides the option.
      *
+     * Using the value `-1` will disable the feature and keep all facet expanded.
+     *
      * **Default:** `4`
      */
-    maximumNumberOfExpandedFacets: ComponentOptions.buildNumberOption({ defaultValue: 4 })
+    maximumNumberOfExpandedFacets: ComponentOptions.buildNumberOption({ defaultValue: 4, min: -1 })
   };
 
   private childrenFacets: DynamicFacet[] = [];
@@ -207,6 +209,9 @@ export class DynamicFacetManager extends Component {
   }
 
   private respectMaximumExpandedFacetsThreshold() {
+    if (this.options.maximumNumberOfExpandedFacets === -1) {
+      return;
+    }
     const numberOfFacetsToKeepExpanded = Math.max(this.options.maximumNumberOfExpandedFacets - this.facetsWithActiveValues.length, 0);
     this.expandedFacetsWithOnlyIdleValues.slice(numberOfFacetsToKeepExpanded).forEach(dynamicFacet => dynamicFacet.collapse());
   }
