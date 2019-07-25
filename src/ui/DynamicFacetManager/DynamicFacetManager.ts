@@ -205,13 +205,13 @@ export class DynamicFacetManager extends Component {
 
     const [collapsableFacets, uncollapsableFacets] = partition(this.facetsWithValues, facet => facet.options.enableCollapse);
     const [facetsWithActiveValues, remainingFacets] = partition(collapsableFacets, facet => facet.values.hasActiveValues);
-    const numberOfFacetsLeftToExpand =
+    const indexOfFirstFacetToCollapse =
       this.options.maximumNumberOfExpandedFacets - uncollapsableFacets.length - facetsWithActiveValues.length;
 
     facetsWithActiveValues.forEach(dynamicFacet => dynamicFacet.expand());
 
     remainingFacets.forEach((dynamicFacet, index) => {
-      index < numberOfFacetsLeftToExpand ? dynamicFacet.expand() : dynamicFacet.collapse();
+      index < indexOfFirstFacetToCollapse ? dynamicFacet.expand() : dynamicFacet.collapse();
     });
   }
 
