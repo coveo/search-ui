@@ -58,14 +58,8 @@ export class ImageFieldValue extends Component {
    * automatically resolved (with a slower execution time).
    * @param result The result to associate the component with.
    */
-  constructor(
-    public element: HTMLElement,
-    public options: IImageFieldValue,
-    bindings?: IComponentBindings,
-    public result?: IQueryResult,
-    ImageFieldValueClassId: string = ImageFieldValue.ID
-  ) {
-    super(element, ImageFieldValueClassId, bindings);
+  constructor(public element: HTMLElement, public options: IImageFieldValue, bindings?: IComponentBindings, public result?: IQueryResult) {
+    super(element, ImageFieldValue.ID, bindings);
 
     this.options = ComponentOptions.initComponentOptions(element, ImageFieldValue, options);
 
