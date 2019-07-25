@@ -687,8 +687,12 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
     this.beforeSendingQuery();
     beforeExecuteQuery && beforeExecuteQuery();
 
-    const results = await this.dynamicFacetQueryController.executeIsolatedQuery();
-    results && this.handleQuerySuccess(results);
+    try {
+      const results = await this.dynamicFacetQueryController.executeIsolatedQuery();
+      this.handleQuerySuccess(results);
+    } catch (e) {
+      this.header.hideLoading();
+    }
   }
 
   private beforeSendingQuery() {

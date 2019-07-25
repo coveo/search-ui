@@ -200,7 +200,7 @@ export function DynamicFacetTest() {
       testQueryStateModelValues();
     });
 
-    it('when calling reset, should clear and rerender values if there is any active', () => {
+    it('when calling reset, should clear and rerender values if there is any active value', () => {
       mockFacetValues[0].state = FacetValueState.selected;
       initializeComponent();
 
@@ -210,7 +210,7 @@ export function DynamicFacetTest() {
       expect(test.cmp.values.render).toHaveBeenCalledTimes(2);
     });
 
-    it('when calling reset, should not clear and rerender values if there is any active', () => {
+    it('when calling reset, should not clear and rerender values when there are no active values', () => {
       test.cmp.reset();
 
       expect(test.cmp.values.clearAll).not.toHaveBeenCalled();
