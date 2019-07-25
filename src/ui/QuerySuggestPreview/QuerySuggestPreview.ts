@@ -1,6 +1,6 @@
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { exportGlobally } from '../../GlobalExports';
-import { ComponentOptions, OmniboxEvents, Initialization, $$, Component, Assert, QueryUtils } from '../../Core';
+import { ComponentOptions, OmniboxEvents, Initialization, $$, Component, Assert, QueryUtils, Dom } from '../../Core';
 import { IQuerySuggestSelection } from '../../events/OmniboxEvents';
 import { IQueryResults } from '../../rest/QueryResults';
 import 'styling/_QuerySuggestPreview';
@@ -16,6 +16,7 @@ import { ResultListTableRenderer } from '../ResultList/ResultListTableRenderer';
 export interface IQuerySuggestPreview {
   numberOfPreviewResults?: number;
   previewWidth?: number;
+  suggestionWidth?: string;
   resultTemplate?: Template;
   headerText?: string;
   hoverTime?: number;
@@ -52,9 +53,17 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
       max: 6
     }),
     /**
-     *  Width in `pixels` that the preview container will be
+     *  Width in `pixels` that the preview container will take
+     *
+     * The default behavior is to take 100% of the remaining place shared by the suggestion
      */
     previewWidth: ComponentOptions.buildNumberOption(),
+    /**
+     *  Width in `pixels` or `pourcentages` that the suggestion container will take
+     *
+     * **Default value:** `33%`
+     */
+    suggestionWidth: ComponentOptions.buildStringOption({ defaultValue: '33%' }),
     /**
      *  The text displayed at the top of the preview.
      *
@@ -148,9 +157,21 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
 
   public buildPreviewContainer() {
     const container = $$('div', { className: 'coveo-preview-container' }).el;
+    if (!this.options.previewWidth) {
+      return container;
+    }
+
     container.style.width = `${this.options.previewWidth}px`;
     container.style.maxWidth = `${this.options.previewWidth}px`;
     return container;
+  }
+
+  public updateWidthOfSuggestionContainer(container: Dom) {
+    if (!this.options.suggestionWidth) {
+      return;
+    }
+    container.el.style.minWidth = this.options.suggestionWidth;
+    container.el.style.maxWidth = this.options.suggestionWidth;
   }
 
   private buildPreviewHeader(suggestion: string) {
@@ -161,6 +182,10 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
 
   private buildResultsContainer() {
     const resultsContainer = $$('div', { className: 'coveo-preview-results' }).el;
+    if (!this.options.previewWidth) {
+      return resultsContainer;
+    }
+
     resultsContainer.style.width = `${this.options.previewWidth}px`;
     return resultsContainer;
   }

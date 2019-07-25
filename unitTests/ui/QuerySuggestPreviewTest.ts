@@ -18,6 +18,7 @@ export function QuerySuggestPreviewTest() {
     let elementInsideSuggestion: Dom;
     let selectableClass = 'selectable';
     let selectedClass = 'selected';
+
     function setupQuerySuggestPreview(options: IQuerySuggestPreview = {}) {
       const tmpl: HtmlTemplate = Mock.mock<HtmlTemplate>(HtmlTemplate);
       options['resultTemplate'] = tmpl;
@@ -34,7 +35,7 @@ export function QuerySuggestPreviewTest() {
       $$(testEnv.root).trigger(OmniboxEvents.querySuggestGetFocus, { suggestion });
     }
 
-    function buildContainer() {
+    function buildSuggestion() {
       container = $$(document.createElement('div'));
       suggestionContainer = $$(document.createElement('div'));
       suggestion = $$(document.createElement('div'));
@@ -48,7 +49,7 @@ export function QuerySuggestPreviewTest() {
     }
 
     function setupSuggestionManager() {
-      buildContainer();
+      buildSuggestion();
       const inputManager = new InputManager(document.createElement('div'), () => {}, {} as MagicBoxInstance);
 
       suggestionManager = new SuggestionsManager(suggestionContainer.el, document.createElement('div'), testEnv.root, inputManager, {
@@ -62,7 +63,7 @@ export function QuerySuggestPreviewTest() {
       (test.cmp.options.resultTemplate.instantiateToElement as jasmine.Spy).and.returnValue(Promise.resolve($$('div').el));
     }
 
-    function setupPreview(suggestions: Suggestion[] = [{ text: 'test' }]) {
+    function setupSuggestion(suggestions: Suggestion[] = [{ text: 'test' }]) {
       setupSuggestionManager();
       suggestionManager.updateSuggestions(suggestions);
       setupRenderPreview();
@@ -76,7 +77,7 @@ export function QuerySuggestPreviewTest() {
       it('numberOfPreviewResults set the number of results to query', done => {
         const numberOfPreviewResults = 5;
         setupQuerySuggestPreview({ numberOfPreviewResults });
-        setupPreview();
+        setupSuggestion();
         triggerQuerySuggestHover();
         setTimeout(() => {
           expect(test.cmp.queryController.getLastQuery().numberOfResults).toBe(numberOfPreviewResults);
@@ -87,7 +88,7 @@ export function QuerySuggestPreviewTest() {
       it('hoverTime set the time before the query is executed', done => {
         const hoverTime = 200;
         setupQuerySuggestPreview({ hoverTime });
-        setupPreview();
+        setupSuggestion();
         triggerQuerySuggestHover();
         expect(test.cmp.queryController.getLastQuery).not.toHaveBeenCalled();
         setTimeout(() => {
@@ -99,7 +100,7 @@ export function QuerySuggestPreviewTest() {
       it('previewWidth change the witdh of the preview container', done => {
         const width = 500;
         setupQuerySuggestPreview({ previewWidth: width });
-        setupPreview();
+        setupSuggestion();
         triggerQuerySuggestHover();
         setTimeout(() => {
           const previewContainer = $$(suggestionContainer.el).find('.coveo-preview-container');
@@ -109,14 +110,28 @@ export function QuerySuggestPreviewTest() {
         }, test.cmp.options.hoverTime);
       });
 
-      it('headerText change the text in the header of the preview', done => {
-        const headerText = 'Super Header';
-        setupQuerySuggestPreview({ headerText });
-        setupPreview();
+      it('suggestionWidth change the width of the suggestion container', done => {
+        const suggestionWidth = '250px';
+        setupQuerySuggestPreview({ suggestionWidth });
+        setupSuggestion();
         triggerQuerySuggestHover();
         setTimeout(() => {
+          const suggestionContainerById = $$(suggestionContainer.el).find('#coveo-magicbox-suggestions');
+          expect(suggestionContainerById.style.minWidth).toBe(suggestionWidth);
+          expect(suggestionContainerById.style.maxWidth).toBe(suggestionWidth);
+          done();
+        }, test.cmp.options.hoverTime);
+      });
+
+      it('headerText change the text in the header of the preview', done => {
+        const headerText = 'Super Header';
+        const suggestion = 'test';
+        setupQuerySuggestPreview({ headerText });
+        setupSuggestion();
+        triggerQuerySuggestHover(suggestion);
+        setTimeout(() => {
           const previewContainer = $$(suggestionContainer.el).find('.coveo-preview-header > span');
-          expect(previewContainer.innerText).toBe(`${headerText} "test"`);
+          expect(previewContainer.innerText).toBe(`${headerText} "${suggestion}"`);
           done();
         }, test.cmp.options.hoverTime);
       });
@@ -126,7 +141,7 @@ export function QuerySuggestPreviewTest() {
       it(`if we have one element,
       it take 100% of the available space`, done => {
         setupQuerySuggestPreview({ numberOfPreviewResults: 1 });
-        setupPreview();
+        setupSuggestion();
         triggerQuerySuggestHover();
         setTimeout(() => {
           const previewContainer = $$(suggestionContainer.el).find('.CoveoResult');
@@ -138,7 +153,7 @@ export function QuerySuggestPreviewTest() {
       it(`if we have two element,
       each take 50% of the available space`, done => {
         setupQuerySuggestPreview({ numberOfPreviewResults: 2 });
-        setupPreview();
+        setupSuggestion();
         triggerQuerySuggestHover();
         setTimeout(() => {
           const previewContainer = $$(suggestionContainer.el).find('.CoveoResult');
@@ -150,7 +165,7 @@ export function QuerySuggestPreviewTest() {
       it(`if we have three element,
       each take 33% of the available space`, done => {
         setupQuerySuggestPreview({ numberOfPreviewResults: 3 });
-        setupPreview();
+        setupSuggestion();
         triggerQuerySuggestHover();
         setTimeout(() => {
           const previewContainer = $$(suggestionContainer.el).find('.CoveoResult');
@@ -162,7 +177,7 @@ export function QuerySuggestPreviewTest() {
       it(`if we have four element,
       each take 50% of the available space`, done => {
         setupQuerySuggestPreview({ numberOfPreviewResults: 4 });
-        setupPreview();
+        setupSuggestion();
         triggerQuerySuggestHover();
         setTimeout(() => {
           const previewContainer = $$(suggestionContainer.el).find('.CoveoResult');
@@ -174,7 +189,7 @@ export function QuerySuggestPreviewTest() {
       it(`if we have five elements or more,
       each take 33% of the available space`, done => {
         setupQuerySuggestPreview({ numberOfPreviewResults: 6 });
-        setupPreview();
+        setupSuggestion();
         triggerQuerySuggestHover();
         setTimeout(() => {
           const previewContainer = $$(suggestionContainer.el).find('.CoveoResult');
@@ -189,7 +204,7 @@ export function QuerySuggestPreviewTest() {
       the query is is executed only once`, done => {
         setupQuerySuggestPreview();
         test.cmp.queryController.getEndpoint().search = jasmine.createSpy('execQuery');
-        setupPreview();
+        setupSuggestion();
         triggerQuerySuggestHover();
         triggerQuerySuggestHover();
         triggerQuerySuggestHover();
@@ -204,7 +219,7 @@ export function QuerySuggestPreviewTest() {
         const realQuery = 'testing3';
         setupQuerySuggestPreview();
         test.cmp.queryController.getEndpoint().search = jasmine.createSpy('execQuery');
-        setupPreview();
+        setupSuggestion();
         triggerQuerySuggestHover('testing');
         triggerQuerySuggestHover('testing2');
         triggerQuerySuggestHover(realQuery);
@@ -221,7 +236,7 @@ export function QuerySuggestPreviewTest() {
       setupQuerySuggestPreview();
       spyOn(test.cmp, 'handleNoSuggestion');
       expect(test.cmp.handleNoSuggestion).not.toHaveBeenCalled();
-      setupPreview([]);
+      setupSuggestion([]);
       expect(test.cmp.handleNoSuggestion).toHaveBeenCalled();
     });
   });

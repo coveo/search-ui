@@ -248,7 +248,7 @@ export class SuggestionsManager {
     });
 
     const previewContainer = querySuggestPreview.buildPreviewContainer();
-
+    querySuggestPreview.updateWidthOfSuggestionContainer(suggestions);
     suggestionContainerParent.append(suggestions.el);
     suggestionContainerParent.append(previewContainer);
     return suggestionContainerParent;
