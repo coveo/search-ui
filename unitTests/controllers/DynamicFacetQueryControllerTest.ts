@@ -162,6 +162,16 @@ export function DynamicFacetQueryControllerTest() {
         facet.queryController.getLastQuery = () => queryBuilder.build();
       });
 
+      it(`should update query parameters`, () => {
+        dynamicFacetQueryController.executeIsolatedQuery();
+        expect(mockEndpoint.search).toHaveBeenCalledWith(
+          jasmine.objectContaining({
+            isInternalQuery: true,
+            numberOfResults: 0
+          })
+        );
+      });
+
       it(`when there are no previous facets requests
       should create the array of facet requests`, () => {
         dynamicFacetQueryController.executeIsolatedQuery();
