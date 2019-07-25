@@ -26,7 +26,6 @@ export interface IOmniboxResultListOptions extends IResultListOptions {
   onSelect?: (result: IQueryResult, resultElement: HTMLElement, omniboxObject: IPopulateOmniboxEventArgs, event?: Event) => void;
   headerTitle?: string;
   queryOverride?: IQueryExpression;
-  numberOfPreviewResults?: number;
 }
 
 /**

@@ -171,6 +171,17 @@ export function CategoryFacetSearchTest() {
       });
     });
 
+    it('it scrolls to top', done => {
+      categoryFacetSearch.displayNewValues();
+
+      setTimeout(() => {
+        spyOn(categoryFacetMock, 'scrollToTop');
+        $$(getFacetSearchValues()[0]).trigger('click');
+        expect(categoryFacetMock.scrollToTop).toHaveBeenCalled();
+        done();
+      });
+    });
+
     describe('when selecting with the keyboard (using ENTER)', () => {
       let keyboardEvent: KeyboardEvent;
 
@@ -178,6 +189,7 @@ export function CategoryFacetSearchTest() {
         keyboardEvent = { which: KEYBOARD.ENTER } as KeyboardEvent;
         spyOn(categoryFacetMock, 'changeActivePath');
         spyOn(categoryFacetMock, 'logAnalyticsEvent');
+        spyOn(categoryFacetMock, 'scrollToTop');
         categoryFacetSearch.displayNewValues();
       });
 
@@ -185,6 +197,14 @@ export function CategoryFacetSearchTest() {
         setTimeout(() => {
           getInputHandler().handleKeyboardEvent(keyboardEvent);
           expect(categoryFacetMock.changeActivePath).toHaveBeenCalledWith(['value0']);
+          done();
+        });
+      });
+
+      it('it scrolls to top', done => {
+        setTimeout(() => {
+          getInputHandler().handleKeyboardEvent(keyboardEvent);
+          expect(categoryFacetMock.scrollToTop).toHaveBeenCalled();
           done();
         });
       });
