@@ -27,6 +27,10 @@ export function DynamicFacetTest() {
       test = DynamicFacetTestUtils.createAdvancedFakeFacet(options);
       (test.env.searchInterface.getComponents as jasmine.Spy).and.returnValue([test.cmp]);
       test.cmp.values.createFromResponse(DynamicFacetTestUtils.getCompleteFacetResponse(test.cmp, { values: mockFacetValues }));
+
+      spyOn(test.cmp.values, 'clearAll').and.callThrough();
+      spyOn(test.cmp.values, 'render').and.callThrough();
+      spyOn(test.cmp, 'triggerNewIsolatedQuery').and.callThrough();
     }
 
     function testQueryStateModelValues() {
@@ -167,18 +171,50 @@ export function DynamicFacetTest() {
       expect(test.cmp.queryController.executeQuery).toHaveBeenCalled();
     });
 
+    it('allows to trigger a new isolated query', () => {
+      spyOn(test.cmp.dynamicFacetQueryController, 'executeIsolatedQuery');
+      const beforeExecuteQuery = jasmine.createSpy('beforeExecuteQuery', () => {});
+      test.cmp.ensureDom();
+      test.cmp.triggerNewIsolatedQuery(beforeExecuteQuery);
+
+      expect(test.cmp.dynamicFacetQueryController.executeIsolatedQuery).toHaveBeenCalled();
+      expect(beforeExecuteQuery).toHaveBeenCalled();
+      expect(test.cmp.values.render).toHaveBeenCalled();
+    });
+
+    it('triggering a new isolated query updates the values', () => {
+      test.cmp.ensureDom();
+      test.cmp.triggerNewIsolatedQuery();
+
+      expect(test.cmp.values.render).toHaveBeenCalled();
+    });
+
     it('allows to reset', () => {
       mockFacetValues[1].state = FacetValueState.selected;
       mockFacetValues[3].state = FacetValueState.selected;
       initializeComponent();
-      test.cmp.ensureDom();
-      expect(test.cmp.values.selectedValues.length).toBe(2);
-
       test.cmp.reset();
 
       expect($$(test.cmp.element).hasClass('coveo-active')).toBe(false);
       expect(test.cmp.values.selectedValues.length).toBe(0);
       testQueryStateModelValues();
+    });
+
+    it('when calling reset, should clear and rerender values if there is any active value', () => {
+      mockFacetValues[0].state = FacetValueState.selected;
+      initializeComponent();
+
+      test.cmp.reset();
+
+      expect(test.cmp.values.clearAll).toHaveBeenCalled();
+      expect(test.cmp.values.render).toHaveBeenCalledTimes(2);
+    });
+
+    it('when calling reset, should not clear and rerender values when there are no active values', () => {
+      test.cmp.reset();
+
+      expect(test.cmp.values.clearAll).not.toHaveBeenCalled();
+      expect(test.cmp.values.render).toHaveBeenCalledTimes(1);
     });
 
     it('showMoreValues adds by the numberOfValues option by default', () => {
@@ -191,14 +227,14 @@ export function DynamicFacetTest() {
     it('allows to showMoreValues with a custom amount of values', () => {
       const additionalNumberOfValues = 38;
       test.cmp.showMoreValues(additionalNumberOfValues);
-      expect(test.cmp.queryController.executeQuery).toHaveBeenCalled();
+      expect(test.cmp.triggerNewIsolatedQuery).toHaveBeenCalled();
 
       expect(getFirstFacetRequest().numberOfValues).toBe(test.cmp.options.numberOfValues + additionalNumberOfValues);
     });
 
     it('showMoreValues triggers a query', () => {
       test.cmp.showMoreValues();
-      expect(test.cmp.queryController.executeQuery).toHaveBeenCalled();
+      expect(test.cmp.triggerNewIsolatedQuery).toHaveBeenCalled();
     });
 
     it('showLessValues resets the amount of values to the numberOfValues option', () => {
@@ -211,7 +247,7 @@ export function DynamicFacetTest() {
 
     it('showLessValues triggers a query', () => {
       test.cmp.showLessValues();
-      expect(test.cmp.queryController.executeQuery).toHaveBeenCalled();
+      expect(test.cmp.triggerNewIsolatedQuery).toHaveBeenCalled();
     });
 
     it(`when enableCollapse & collapsedByDefault options are true
@@ -303,29 +339,19 @@ export function DynamicFacetTest() {
     });
 
     it('should log an analytics event when showing more results', () => {
-      const expectedMetadata = jasmine.objectContaining({
-        facetId: test.cmp.options.id,
-        facetField: test.cmp.options.field.toString(),
-        facetTitle: test.cmp.options.title
-      });
       test.cmp.showMoreValues();
-      expect(test.env.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(
-        analyticsActionCauseList.facetShowMore,
-        expectedMetadata,
+      expect(test.cmp.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(
+        analyticsActionCauseList.dynamicFacetShowMore,
+        test.cmp.basicAnalyticsFacetState,
         test.cmp.element
       );
     });
 
     it('should log an analytics event when showing less results', () => {
-      const expectedMetadata = jasmine.objectContaining({
-        facetId: test.cmp.options.id,
-        facetField: test.cmp.options.field.toString(),
-        facetTitle: test.cmp.options.title
-      });
       test.cmp.showLessValues();
-      expect(test.env.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(
-        analyticsActionCauseList.facetShowLess,
-        expectedMetadata,
+      expect(test.cmp.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(
+        analyticsActionCauseList.dynamicFacetShowLess,
+        test.cmp.basicAnalyticsFacetState,
         test.cmp.element
       );
     });
@@ -431,6 +457,7 @@ export function DynamicFacetTest() {
 
     it(`when getting successful results
       facet position should be correct`, () => {
+      test.cmp.ensureDom();
       const fakeResultsWithFacets = FakeResults.createFakeResults();
       fakeResultsWithFacets.facets = [DynamicFacetTestUtils.getCompleteFacetResponse(test.cmp)];
       $$(test.env.root).trigger(QueryEvents.querySuccess, { results: fakeResultsWithFacets });
