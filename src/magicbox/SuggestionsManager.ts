@@ -219,7 +219,7 @@ export class SuggestionsManager {
 
   private buildSuggestionsContainer() {
     return $$('div', {
-      id: 'coveo-magicbox-suggestions',
+      className: 'coveo-magicbox-suggestions',
       role: 'listbox'
     });
   }

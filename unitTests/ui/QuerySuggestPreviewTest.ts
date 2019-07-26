@@ -109,7 +109,7 @@ export function QuerySuggestPreviewTest() {
         setupSuggestion();
         triggerQuerySuggestHover();
         setTimeout(() => {
-          const suggestionContainerById = $$(suggestionContainer.el).find('#coveo-magicbox-suggestions');
+          const suggestionContainerById = $$(suggestionContainer.el).find('.coveo-magicbox-suggestions');
           expect(suggestionContainerById.style.minWidth).toBe(suggestionWidth);
           expect(suggestionContainerById.style.maxWidth).toBe(suggestionWidth);
           done();

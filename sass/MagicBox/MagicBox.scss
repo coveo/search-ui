@@ -120,8 +120,13 @@
     }
     .magic-box-suggestions.magic-box-hasSuggestion {
       display: block;
-      div#coveo-magicbox-suggestions {
+      .coveo-magicbox-suggestions {
         border: 1px solid $grey-500;
+      }
+      .coveo-suggestion-container {
+        .coveo-magicbox-suggestions {
+          border: none;
+        }
       }
     }
   }

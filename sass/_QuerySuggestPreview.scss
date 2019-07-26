@@ -1,13 +1,14 @@
 @import 'MagicBox/Colors';
+@import 'Variables';
 .coveo-suggestion-container {
   display: inline-flex;
   flex-wrap: nowrap;
   align-items: stretch;
-  border: 1px solid $grey-500;
+  border: $default-border;
   min-width: 100%;
 
-  #coveo-magicbox-suggestions {
-    border: none !important;
+  .coveo-magicbox-suggestions {
+    border: none;
     float: left;
   }
   .coveo-preview-container {
