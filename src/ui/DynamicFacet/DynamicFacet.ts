@@ -421,7 +421,7 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
    */
   public expand() {
     if (!this.options.enableCollapse) {
-      return this.logger.warn('It is not possible to expand a facet that has the option "enableCollapse" set to "false"');
+      return this.logger.warn(`Calling expand() won't do anything on a facet that has the option "enableCollapse" set to "false"`);
     }
     if (!this.isCollapsed) {
       return;
@@ -437,7 +437,7 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
    */
   public collapse() {
     if (!this.options.enableCollapse) {
-      return this.logger.warn('It is not possible to collapse a facet that has the option "enableCollapse" set to "false"');
+      return this.logger.warn(`Calling collapse() won't do anything on a facet that has the option "enableCollapse" set to "false"`);
     }
     if (this.isCollapsed) {
       return;
