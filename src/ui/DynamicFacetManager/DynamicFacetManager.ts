@@ -81,7 +81,7 @@ export class DynamicFacetManager extends Component {
      * Prioritizes facets with active values, and then prioritizes first facets.
      * If the number of facets with active values exceeds the value of the `maximumNumberOfExpandedFacets` option, it overrides the option.
      *
-     * Using the value `-1` will disable the feature and keep all facet expanded.
+     * Using the value `-1` disables the feature and keeps all facets expanded.
      *
      * **Default:** `4`
      */
