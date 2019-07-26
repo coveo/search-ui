@@ -18,17 +18,21 @@ export function DynamicFacetManagerTest() {
     beforeEach(() => {
       options = {};
       initializeFacets();
-      initializeComponent();
+      initializeManager();
       test.cmp.ensureDom();
     });
 
     function initializeFacets() {
       facets = [
-        DynamicFacetTestUtils.createAdvancedFakeFacet({ id: 'test1', field: '@test1', numberOfValues: 10 }).cmp,
-        DynamicFacetTestUtils.createAdvancedFakeFacet({ id: 'test2', field: '@test2', numberOfValues: 5 }).cmp,
-        DynamicFacetTestUtils.createAdvancedFakeFacet({ id: 'test3', field: '@test3', numberOfValues: 100 }).cmp
+        DynamicFacetTestUtils.createAdvancedFakeFacet({ numberOfValues: 10 }).cmp,
+        DynamicFacetTestUtils.createAdvancedFakeFacet({ numberOfValues: 5 }).cmp,
+        DynamicFacetTestUtils.createAdvancedFakeFacet({ numberOfValues: 100 }).cmp
       ];
 
+      createValuesForFacets();
+    }
+
+    function createValuesForFacets() {
       facets.forEach(facet => {
         facet.ensureDom();
         facet.values.createFromResponse(
@@ -37,7 +41,7 @@ export function DynamicFacetManagerTest() {
       });
     }
 
-    function initializeComponent() {
+    function initializeManager() {
       test = Mock.advancedComponentSetup<DynamicFacetManager>(DynamicFacetManager, <Mock.AdvancedComponentSetupOptions>{
         cmpOptions: options,
         modifyBuilder: builder => {
@@ -59,6 +63,11 @@ export function DynamicFacetManagerTest() {
       const fakeResults = FakeResults.createFakeResults();
       fakeResults.facets = resultFacets;
 
+      facets.forEach(facet => {
+        Simulate.query(facet.getBindings() as Mock.IMockEnvironment, {
+          results: fakeResults
+        });
+      });
       Simulate.query(test.env, {
         results: fakeResults
       });
@@ -115,6 +124,17 @@ export function DynamicFacetManagerTest() {
       expect(facetIsInRequest).toBe(false);
     });
 
+    it(`when a facet has no values
+    should not be appended in the manager container`, () => {
+      triggerAfterComponentsInitialization();
+      const modifiedQueryResponse = queryFacetsResponse();
+      modifiedQueryResponse[0].values = [];
+
+      triggerQuerySuccess(modifiedQueryResponse);
+      expect(managerContainerChildren().length).toBe(facets.length - 1);
+      expect(managerContainerChildren()[0]).not.toBe(facets[1].element);
+    });
+
     it('should reorder the facets in the DOM according to order of the query results', () => {
       triggerAfterComponentsInitialization();
       triggerQuerySuccess(queryFacetsResponse());
@@ -129,7 +149,7 @@ export function DynamicFacetManagerTest() {
       options = {
         enableReorder: false
       };
-      initializeComponent();
+      initializeManager();
       triggerAfterComponentsInitialization();
       triggerQuerySuccess(queryFacetsResponse());
 
@@ -143,7 +163,7 @@ export function DynamicFacetManagerTest() {
       options = {
         onUpdate: jasmine.createSpy('onUpdate')
       };
-      initializeComponent();
+      initializeManager();
       triggerAfterComponentsInitialization();
       triggerQuerySuccess(queryFacetsResponse());
 
@@ -157,7 +177,7 @@ export function DynamicFacetManagerTest() {
           return facetB.options.numberOfValues - facetA.options.numberOfValues;
         }
       };
-      initializeComponent();
+      initializeManager();
       triggerAfterComponentsInitialization();
       triggerQuerySuccess(queryFacetsResponse());
 

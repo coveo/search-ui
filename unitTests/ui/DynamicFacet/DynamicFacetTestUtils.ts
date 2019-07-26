@@ -8,7 +8,7 @@ import { IFacetResponse } from '../../../src/rest/Facet/FacetResponse';
 export class DynamicFacetTestUtils {
   static allOptions(options?: IDynamicFacetOptions) {
     return {
-      field: '@dummy',
+      field: `@dummy${Math.round(Math.random() * 100000)}`,
       ...options
     };
   }
