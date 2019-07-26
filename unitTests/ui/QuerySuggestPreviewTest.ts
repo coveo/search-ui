@@ -76,19 +76,19 @@ export function QuerySuggestPreviewTest() {
         setTimeout(() => {
           expect(test.cmp.queryController.getLastQuery().numberOfResults).toBe(numberOfPreviewResults);
           done();
-        }, test.cmp.options.hoverTime);
+        }, test.cmp.options.executeQueryDelay);
       });
 
       it('hoverTime set the time before the query is executed', done => {
-        const hoverTime = 200;
-        setupQuerySuggestPreview({ hoverTime });
+        const executeQueryDelay = 200;
+        setupQuerySuggestPreview({ executeQueryDelay });
         setupSuggestion();
         triggerQuerySuggestHover();
         expect(test.cmp.queryController.getLastQuery).not.toHaveBeenCalled();
         setTimeout(() => {
           expect(test.cmp.queryController.getLastQuery).toHaveBeenCalledTimes(1);
           done();
-        }, hoverTime);
+        }, executeQueryDelay);
       });
 
       it('previewWidth change the witdh of the preview container', done => {
@@ -99,9 +99,8 @@ export function QuerySuggestPreviewTest() {
         setTimeout(() => {
           const previewContainer = $$(suggestionContainer.el).find('.coveo-preview-container');
           expect(previewContainer.style.width).toEqual(`${width}px`);
-          expect(previewContainer.style.maxWidth).toEqual(`${width}px`);
           done();
-        }, test.cmp.options.hoverTime);
+        }, test.cmp.options.executeQueryDelay);
       });
 
       it('suggestionWidth change the width of the suggestion container', done => {
@@ -114,7 +113,7 @@ export function QuerySuggestPreviewTest() {
           expect(suggestionContainerById.style.minWidth).toBe(suggestionWidth);
           expect(suggestionContainerById.style.maxWidth).toBe(suggestionWidth);
           done();
-        }, test.cmp.options.hoverTime);
+        }, test.cmp.options.executeQueryDelay);
       });
 
       it('headerText change the text in the header of the preview', done => {
@@ -127,47 +126,11 @@ export function QuerySuggestPreviewTest() {
           const previewContainer = $$(suggestionContainer.el).find('.coveo-preview-header > span');
           expect(previewContainer.innerText).toBe(`${headerText} "${suggestion}"`);
           done();
-        }, test.cmp.options.hoverTime);
+        }, test.cmp.options.executeQueryDelay);
       });
     });
 
     describe('when the previews are rendered,', () => {
-      it(`if we have one element,
-      it take 100% of the remaining available space`, done => {
-        setupQuerySuggestPreview({ numberOfPreviewResults: 1 });
-        setupSuggestion();
-        triggerQuerySuggestHover();
-        setTimeout(() => {
-          const previewContainer = $$(suggestionContainer.el).find('.CoveoResult');
-          expect(previewContainer.style.flex).toBe('0 0 100%');
-          done();
-        }, test.cmp.options.hoverTime);
-      });
-
-      it(`if we have two element,
-      each take 50% of the remaining available space`, done => {
-        setupQuerySuggestPreview({ numberOfPreviewResults: 2 });
-        setupSuggestion();
-        triggerQuerySuggestHover();
-        setTimeout(() => {
-          const previewContainer = $$(suggestionContainer.el).find('.CoveoResult');
-          expect(previewContainer.style.flex).toBe('0 0 50%');
-          done();
-        }, test.cmp.options.hoverTime);
-      });
-
-      it(`if we have three element,
-      each take 33% of the remaining available space`, done => {
-        setupQuerySuggestPreview({ numberOfPreviewResults: 3 });
-        setupSuggestion();
-        triggerQuerySuggestHover();
-        setTimeout(() => {
-          const previewContainer = $$(suggestionContainer.el).find('.CoveoResult');
-          expect(previewContainer.style.flex).toBe('0 0 33%');
-          done();
-        }, test.cmp.options.hoverTime);
-      });
-
       it(`if we have four element,
       each take 50% of the remaining available space`, done => {
         setupQuerySuggestPreview({ numberOfPreviewResults: 4 });
@@ -177,10 +140,10 @@ export function QuerySuggestPreviewTest() {
           const previewContainer = $$(suggestionContainer.el).find('.CoveoResult');
           expect(previewContainer.style.flex).toBe('0 0 50%');
           done();
-        }, test.cmp.options.hoverTime);
+        }, test.cmp.options.executeQueryDelay);
       });
 
-      it(`if we have five elements or more,
+      it(`if we DON'T have 4 htmlElement,
       each take 33% of the remaining available space`, done => {
         setupQuerySuggestPreview({ numberOfPreviewResults: 6 });
         setupSuggestion();
@@ -189,7 +152,7 @@ export function QuerySuggestPreviewTest() {
           const previewContainer = $$(suggestionContainer.el).find('.CoveoResult');
           expect(previewContainer.style.flex).toBe('0 0 33%');
           done();
-        }, test.cmp.options.hoverTime);
+        }, test.cmp.options.executeQueryDelay);
       });
     });
 
@@ -205,7 +168,7 @@ export function QuerySuggestPreviewTest() {
         setTimeout(() => {
           expect(test.cmp.queryController.getEndpoint().search).toHaveBeenCalledTimes(1);
           done();
-        }, test.cmp.options.hoverTime);
+        }, test.cmp.options.executeQueryDelay);
       });
 
       it(`on multiple suggestion before the time in the option hoverTime has passed,
@@ -221,7 +184,7 @@ export function QuerySuggestPreviewTest() {
           expect(test.cmp.queryController.getEndpoint().search).toHaveBeenCalledTimes(1);
           expect(test.cmp.queryController.getLastQuery().q).toBe(realQuery);
           done();
-        }, test.cmp.options.hoverTime);
+        }, test.cmp.options.executeQueryDelay);
       });
     });
 

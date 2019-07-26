@@ -7484,8 +7484,8 @@
     "en": "No values found.",
     "fr": "Aucune valeur trouvée."
   },
-  "ProductRecommandation": {
-    "en": "Product recommandation for",
-    "fr": "Recommandation de produit pour"
+  "QuerySuggestPreview": {
+    "en": "Query result items for",
+    "fr": "Résultat(s) de la requête pour"
   }
 }

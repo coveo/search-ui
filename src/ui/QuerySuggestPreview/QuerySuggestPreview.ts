@@ -19,15 +19,25 @@ export interface IQuerySuggestPreview {
   suggestionWidth?: string;
   resultTemplate?: Template;
   headerText?: string;
-  hoverTime?: number;
+  executeQueryDelay?: number;
 }
 
 /**
- * This component need [`querySuggest`]{@link Omnibox.options.enableQuerySuggestAddon} to work.
+ * The `QuerySuggestPreview` component allows you to preview the top query result items of hovered query suggestions.
  *
- *  It allows you to preview the top recommendation when hovering on a Query suggest
+ * This component requires a working [`querySuggest`]{@link Omnibox.options.enableQuerySuggestAddon} component in the corresponding search box,
+ * and you need to provide a [result template](https://developers.coveo.com/x/aIGfAQ) for the preview.
  *
- *  A [Result Templates](https://developers.coveo.com/x/aIGfAQ) is required for this component to work.
+ * **Exemple**
+ * ```
+ *  <div class="CoveoQuerySuggestPreview">
+ *    <script class="result-template" type="text/x-underscore">
+ *      <span>
+ *        <a class='CoveoResultLink'></a>
+ *      </span>
+ *    </script>
+ *  </div>
+ * ```
  */
 export class QuerySuggestPreview extends Component implements IComponentBindings {
   static ID = 'QuerySuggestPreview';
@@ -43,11 +53,6 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
    * @componentOptions
    */
   static options: IQuerySuggestPreview = {
-    /**
-     * The [Result Templates](https://developers.coveo.com/x/aIGfAQ)
-     *
-     * Specifying a value for this option is required for the `QuerySuggestPreview` component to work.
-     */
     resultTemplate: TemplateComponentOptions.buildTemplateOption(),
     /**
      * The maximum number of query results to render in the preview.
@@ -62,31 +67,30 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
       max: 6
     }),
     /**
-     *  Width in `pixels` that the preview container will take
+     * Width of the preview container (in pixels).
      *
-     * The default behavior is to take 100% of the remaining place shared by the suggestion
+     * If this option is `undefined` or lower than the remaning space left by the suggestion,
+     * the component takes all the space left over by the query suggestions.
      */
     previewWidth: ComponentOptions.buildNumberOption(),
     /**
-     *  Width in `pixels` or `pourcentages` that the suggestion container will take
+     *  Width of the suggestion container (in pixels or percentage).
      *
      * **Default value:** `33%`
      */
     suggestionWidth: ComponentOptions.buildStringOption({ defaultValue: '33%' }),
     /**
-     *  The text displayed at the top of the preview.
+     *  The text to display at the top of the preview, which is followed by "`<SUGGESTION>`", where `<SUGGESTION>` is the hovered query suggestion.
      *
-     *  After this text, the suggestion will be surrounded in quotes
-     *
-     * **Default value:** `Product recommandation for`
+     * **Default value:** `Query result items for`
      */
-    headerText: ComponentOptions.buildLocalizedStringOption({ defaultValue: 'ProductRecommandation' }),
+    headerText: ComponentOptions.buildLocalizedStringOption({ defaultValue: 'QuerySuggestPreview' }),
     /**
-     *  The time in `milliseconds` that a end user have to hover on a query suggest before a request is sent.
+     *  The hovering time (in ms) required on a query suggestion before requesting preview items.
      *
      * **Default value:** `200`
      */
-    hoverTime: ComponentOptions.buildNumberOption({ defaultValue: 200 })
+    executeQueryDelay: ComponentOptions.buildNumberOption({ defaultValue: 200 })
   };
 
   private previousSuggestionHovered: string;
@@ -117,8 +121,8 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
   }
 
   /**
-   * Builds and returns an array of HTMLElement with the given result set.
-   * @param results the result set to build an array of HTMLElement from.
+   * Builds and returns an HTMLElement array containing the preview result items.
+   * @param results The result items to build the HTMLElement array with.
    */
   public buildResults(results: IQueryResults): Promise<HTMLElement[]> {
     const res: { elem: HTMLElement; idx: number }[] = [];
@@ -140,7 +144,7 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
 
   /**
    * Builds and returns an HTMLElement for the given result.
-   * @param result the result to build an HTMLElement from.
+   * @param result The result to build an HTMLElement width.
    * @returns {HTMLElement}
    */
   public buildResult(result: IQueryResult): Promise<HTMLElement> {
@@ -165,7 +169,7 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
   }
 
   /**
-   * Reset the component when no suggestion are displayed
+   * Resets the component when no suggestion is displayed.
    */
   public handleNoSuggestion() {
     clearTimeout(this.timer);
@@ -173,7 +177,7 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
   }
 
   /**
-   * Create the container which the results preview will render
+   * Creates the preview results container.
    */
   public buildPreviewContainer() {
     const container = $$('div', { className: 'coveo-preview-container' }).el;
@@ -182,12 +186,11 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
     }
 
     container.style.width = `${this.options.previewWidth}px`;
-    container.style.maxWidth = `${this.options.previewWidth}px`;
     return container;
   }
 
   /**
-   * Resize the width of the suggestion container
+   * Resizes the width of the suggestion container.
    */
   public updateWidthOfSuggestionContainer(container: Dom) {
     if (!this.options.suggestionWidth) {
@@ -214,7 +217,6 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
       return resultsContainer;
     }
 
-    resultsContainer.style.width = `${this.options.previewWidth}px`;
     return resultsContainer;
   }
 
@@ -235,7 +237,7 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
     this.timer && clearTimeout(this.timer);
     this.timer = setTimeout(() => {
       this.executeQueryHover(args.suggestion);
-    }, this.options.hoverTime);
+    }, this.options.executeQueryDelay);
   }
 
   private executeQueryHover(suggestion: string) {
@@ -256,7 +258,7 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
       });
   }
 
-  private buildResultsPreview(results: IQueryResults): Promise<HTMLElement[]> {
+  private buildResultsPreview(results: IQueryResults) {
     const resultsContainer = this.buildResultsContainer();
     this.previewContainer.appendChild(resultsContainer);
     this.setupRenderer(resultsContainer);
@@ -267,18 +269,20 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
       this.updateResultPerRow(HTMLResult);
       this.renderer.renderResults(HTMLResult, true, result => {});
     });
-    return;
   }
 
-  private updateResultPerRow(HTMLElements: HTMLElement[]) {
-    let size = HTMLElements.length == 4 ? 50 : Math.max(33, ~~(100 / HTMLElements.length));
-    HTMLElements.forEach(element => {
-      this.updateFlexCSS(element, size);
+  private updateResultPerRow(elements: HTMLElement[]) {
+    let resultAvailibleSpace = '33%';
+    if (elements.length === 4) {
+      resultAvailibleSpace = '50%';
+    }
+    elements.forEach(element => {
+      this.updateFlexCSS(element, resultAvailibleSpace);
     });
   }
 
-  private updateFlexCSS(element: HTMLElement, value: number) {
-    element.style.flex = `0 0 ${value}%`;
+  private updateFlexCSS(element: HTMLElement, value: string) {
+    element.style.flex = `0 0 ${value}`;
   }
 
   //Delete when creating the PR

@@ -190,7 +190,7 @@ export class SuggestionsManager {
     }
 
     const suggestionsContainer = this.buildSuggestionsContainer();
-    const suggestionPreviewContainer = this.setUpForResultPreview(suggestionsContainer);
+    const suggestionPreviewContainer = this.initPreviewForSuggestions(suggestionsContainer);
     $$(this.element).append(suggestionPreviewContainer.el);
     this.addAccessibilityPropertiesForSuggestions();
 
@@ -229,15 +229,10 @@ export class SuggestionsManager {
     if (!querySuggestPreviewElement) {
       return;
     }
-    const querySuggestPreview = <QuerySuggestPreview>Component.get(querySuggestPreviewElement);
-    if (!(querySuggestPreview.options.numberOfPreviewResults > 0)) {
-      return;
-    }
-
-    return querySuggestPreview;
+    return <QuerySuggestPreview>Component.get(querySuggestPreviewElement);
   }
 
-  private setUpForResultPreview(suggestions: Dom): Dom {
+  private initPreviewForSuggestions(suggestions: Dom): Dom {
     const querySuggestPreview = this.querySuggestPreviewComponent;
     if (!querySuggestPreview) {
       return suggestions;
