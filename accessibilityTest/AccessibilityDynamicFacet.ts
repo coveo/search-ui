@@ -1,6 +1,6 @@
 import * as axe from 'axe-core';
 import { $$, Component, DynamicFacet } from 'coveo-search-ui';
-import { afterDeferredQuerySuccess, afterDelay, getFacetColumn, getRoot, inDesktopMode, resetMode } from './Testing';
+import { afterQuerySuccess, afterDelay, getFacetColumn, getRoot, inDesktopMode, resetMode } from './Testing';
 import { KEYBOARD } from '../src/Core';
 
 export const AccessibilityDynamicFacet = () => {
@@ -25,7 +25,7 @@ export const AccessibilityDynamicFacet = () => {
 
     it('should be accessible', async done => {
       getFacetColumn().appendChild(dynamicFacet);
-      await afterDeferredQuerySuccess();
+      await afterQuerySuccess();
       const axeResults = await axe.run(getRoot());
       expect(axeResults).toBeAccessible();
       done();
@@ -59,7 +59,7 @@ export const AccessibilityDynamicFacet = () => {
     describe('facet search', () => {
       it('should be accessible with results', async done => {
         getFacetColumn().appendChild(dynamicFacet);
-        await afterDeferredQuerySuccess();
+        await afterQuerySuccess();
 
         await loadSearchResultsForQuery();
 
@@ -70,7 +70,7 @@ export const AccessibilityDynamicFacet = () => {
 
       it('should be accessible without results', async done => {
         getFacetColumn().appendChild(dynamicFacet);
-        await afterDeferredQuerySuccess();
+        await afterQuerySuccess();
 
         await loadSearchResultsForQuery('a non relevant query');
 
@@ -81,7 +81,7 @@ export const AccessibilityDynamicFacet = () => {
 
       it('should be accessible when selected a result with the keyboard', async done => {
         getFacetColumn().appendChild(dynamicFacet);
-        await afterDeferredQuerySuccess();
+        await afterQuerySuccess();
 
         await loadSearchResultsForQuery();
         triggerKeyboardEvent('keydown', KEYBOARD.DOWN_ARROW, getInput());
@@ -93,7 +93,7 @@ export const AccessibilityDynamicFacet = () => {
 
       it('should be accessible after being cleared', async done => {
         getFacetColumn().appendChild(dynamicFacet);
-        await afterDeferredQuerySuccess();
+        await afterQuerySuccess();
 
         await loadSearchResultsForQuery();
         await loadSearchResultsForQuery('', 0);
