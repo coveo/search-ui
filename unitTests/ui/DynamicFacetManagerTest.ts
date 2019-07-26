@@ -24,9 +24,9 @@ export function DynamicFacetManagerTest() {
 
     function initializeFacets() {
       facets = [
-        DynamicFacetTestUtils.createAdvancedFakeFacet({ numberOfValues: 10 }).cmp,
-        DynamicFacetTestUtils.createAdvancedFakeFacet({ numberOfValues: 5 }).cmp,
-        DynamicFacetTestUtils.createAdvancedFakeFacet({ numberOfValues: 100 }).cmp
+        DynamicFacetTestUtils.createAdvancedFakeFacet({ field: 'field1', numberOfValues: 10 }).cmp,
+        DynamicFacetTestUtils.createAdvancedFakeFacet({ field: 'field2', numberOfValues: 5 }).cmp,
+        DynamicFacetTestUtils.createAdvancedFakeFacet({ field: 'field3', numberOfValues: 100 }).cmp
       ];
     }
 
@@ -180,7 +180,7 @@ export function DynamicFacetManagerTest() {
       function initializeManyFacets(numberOfFacets = 10) {
         facets = [];
         for (let index = 0; index < numberOfFacets; index++) {
-          facets.push(DynamicFacetTestUtils.createAdvancedFakeFacet().cmp);
+          facets.push(DynamicFacetTestUtils.createAdvancedFakeFacet({ field: `field${index}` }).cmp);
         }
       }
 

@@ -204,7 +204,7 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
      *
      * **Default:** `false`
      */
-    collapsedByDefault: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'Filtering' }),
+    collapsedByDefault: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'Filtering', depend: 'enableCollapse' }),
 
     /**
      * Whether to notify the [Breadcrumb]{@link Breadcrumb} component when toggling values in the facet.
