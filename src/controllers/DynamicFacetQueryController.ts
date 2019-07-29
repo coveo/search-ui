@@ -67,8 +67,6 @@ export class DynamicFacetQueryController {
 
   public executeIsolatedQuery(): Promise<IQueryResults> {
     const query = this.facet.queryController.getLastQuery();
-    // @ts-ignore
-    query.isInternalQuery = true;
     query.numberOfResults = 0;
 
     const previousFacetRequestIndex = findIndex(query.facets, { facetId: this.facet.options.id });
