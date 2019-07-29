@@ -166,7 +166,6 @@ export function DynamicFacetQueryControllerTest() {
         dynamicFacetQueryController.executeIsolatedQuery();
         expect(mockEndpoint.search).toHaveBeenCalledWith(
           jasmine.objectContaining({
-            isInternalQuery: true,
             numberOfResults: 0
           })
         );
