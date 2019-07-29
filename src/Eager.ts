@@ -295,3 +295,6 @@ QuerySuggestPreview.doExport();
 
 import { swapVar } from './SwapVar';
 swapVar(this);
+
+import { ImageFieldValue } from './ui/FieldImage/ImageFieldValue';
+ImageFieldValue.doExport();
