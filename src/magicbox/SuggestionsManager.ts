@@ -3,7 +3,7 @@ import { InputManager } from './InputManager';
 import { each, defaults, indexOf, compact } from 'underscore';
 import { OmniboxEvents, Component } from '../Core';
 import { IQuerySuggestSelection } from '../events/OmniboxEvents';
-import { QuerySuggestPreview } from '../ui/QuerySuggestPreview/QuerySuggestPreview';
+import QuerySuggestPreview = require('../ui/QuerySuggestPreview/QuerySuggestPreview');
 
 export interface Suggestion {
   text?: string;
@@ -229,7 +229,7 @@ export class SuggestionsManager {
     if (!querySuggestPreviewElement) {
       return;
     }
-    return <QuerySuggestPreview>Component.get(querySuggestPreviewElement);
+    return Component.get(querySuggestPreviewElement) as QuerySuggestPreview.QuerySuggestPreview;
   }
 
   private initPreviewForSuggestions(suggestions: Dom): Dom {
