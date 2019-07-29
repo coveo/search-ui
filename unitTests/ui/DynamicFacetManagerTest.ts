@@ -8,6 +8,7 @@ import { Simulate } from '../Simulate';
 import { FakeResults } from '../Fake';
 import { findWhere } from 'underscore';
 import { QueryEvents, QueryBuilder } from '../../src/Core';
+import { FacetValueState } from '../../src/rest/Facet/FacetValueState';
 
 export function DynamicFacetManagerTest() {
   describe('DynamicFacetManager', () => {
@@ -18,25 +19,22 @@ export function DynamicFacetManagerTest() {
     beforeEach(() => {
       options = {};
       initializeFacets();
-      initializeComponent();
-      test.cmp.ensureDom();
+      initializeManager();
     });
 
     function initializeFacets() {
       facets = [
-        DynamicFacetTestUtils.createAdvancedFakeFacet({ id: 'test1', field: '@test1', numberOfValues: 10 }).cmp,
-        DynamicFacetTestUtils.createAdvancedFakeFacet({ id: 'test2', field: '@test2', numberOfValues: 5 }).cmp,
-        DynamicFacetTestUtils.createAdvancedFakeFacet({ id: 'test3', field: '@test3', numberOfValues: 100 }).cmp
+        DynamicFacetTestUtils.createAdvancedFakeFacet({ field: '@field1', numberOfValues: 10 }).cmp,
+        DynamicFacetTestUtils.createAdvancedFakeFacet({ field: '@field2', numberOfValues: 5 }).cmp,
+        DynamicFacetTestUtils.createAdvancedFakeFacet({ field: '@field3', numberOfValues: 100 }).cmp
       ];
     }
 
-    function initializeComponent() {
+    function initializeManager() {
       test = Mock.advancedComponentSetup<DynamicFacetManager>(DynamicFacetManager, <Mock.AdvancedComponentSetupOptions>{
         cmpOptions: options,
         modifyBuilder: builder => {
-          builder.element.appendChild(facets[0].element);
-          builder.element.appendChild(facets[1].element);
-          builder.element.appendChild(facets[2].element);
+          facets.forEach(facet => builder.element.appendChild(facet.element));
           return builder;
         }
       });
@@ -45,15 +43,23 @@ export function DynamicFacetManagerTest() {
     }
 
     function triggerAfterComponentsInitialization() {
+      facets.forEach(facet => {
+        Simulate.initialization(facet.getBindings() as Mock.IMockEnvironment);
+      });
       Simulate.initialization(test.env);
     }
 
     function triggerQuerySuccess(resultFacets: IFacetResponse[]) {
-      const fakeResult = FakeResults.createFakeResults();
-      fakeResult.facets = resultFacets;
+      const fakeResults = FakeResults.createFakeResults();
+      fakeResults.facets = resultFacets;
 
+      facets.forEach(facet => {
+        Simulate.query(facet.getBindings() as Mock.IMockEnvironment, {
+          results: fakeResults
+        });
+      });
       Simulate.query(test.env, {
-        results: fakeResult
+        results: fakeResults
       });
     }
 
@@ -108,6 +114,17 @@ export function DynamicFacetManagerTest() {
       expect(facetIsInRequest).toBe(false);
     });
 
+    it(`when a facet has no values
+    should not be appended in the manager container`, () => {
+      triggerAfterComponentsInitialization();
+      const modifiedQueryResponse = queryFacetsResponse();
+      modifiedQueryResponse[0].values = [];
+
+      triggerQuerySuccess(modifiedQueryResponse);
+      expect(managerContainerChildren().length).toBe(facets.length - 1);
+      expect(managerContainerChildren()[0]).not.toBe(facets[1].element);
+    });
+
     it('should reorder the facets in the DOM according to order of the query results', () => {
       triggerAfterComponentsInitialization();
       triggerQuerySuccess(queryFacetsResponse());
@@ -122,7 +139,7 @@ export function DynamicFacetManagerTest() {
       options = {
         enableReorder: false
       };
-      initializeComponent();
+      initializeManager();
       triggerAfterComponentsInitialization();
       triggerQuerySuccess(queryFacetsResponse());
 
@@ -136,7 +153,7 @@ export function DynamicFacetManagerTest() {
       options = {
         onUpdate: jasmine.createSpy('onUpdate')
       };
-      initializeComponent();
+      initializeManager();
       triggerAfterComponentsInitialization();
       triggerQuerySuccess(queryFacetsResponse());
 
@@ -150,13 +167,96 @@ export function DynamicFacetManagerTest() {
           return facetB.options.numberOfValues - facetA.options.numberOfValues;
         }
       };
-      initializeComponent();
+      initializeManager();
       triggerAfterComponentsInitialization();
       triggerQuerySuccess(queryFacetsResponse());
 
       expect(managerContainerChildren()[0]).toBe(facets[2].element);
       expect(managerContainerChildren()[1]).toBe(facets[0].element);
       expect(managerContainerChildren()[2]).toBe(facets[1].element);
+    });
+
+    describe('Managing the "maximumNumberOfExpandedFacets" option', () => {
+      function initializeManyFacets(numberOfFacets = 10) {
+        facets = [];
+        for (let index = 0; index < numberOfFacets; index++) {
+          facets.push(DynamicFacetTestUtils.createAdvancedFakeFacet({ field: `field${index}` }).cmp);
+        }
+      }
+
+      function queryManyFacetsResponse(): IFacetResponse[] {
+        return facets.map(facet => DynamicFacetTestUtils.getCompleteFacetResponse(facet));
+      }
+
+      function initForMaximumNumberOfExpandedFacets(max: number) {
+        options = { maximumNumberOfExpandedFacets: max };
+        initializeManager();
+        triggerAfterComponentsInitialization();
+        triggerQuerySuccess(queryManyFacetsResponse());
+      }
+
+      function collapsedFacets() {
+        return facets.filter(facet => facet.isCollapsed);
+      }
+
+      it(`when "maximumNumberOfExpandedFacets" is -1
+      should not collapse any facets`, () => {
+        initializeManyFacets();
+        initForMaximumNumberOfExpandedFacets(-1);
+        expect(collapsedFacets().length).toBe(0);
+      });
+
+      it(`when "maximumNumberOfExpandedFacets" is 0
+      should collapse all facets`, () => {
+        initializeManyFacets();
+        initForMaximumNumberOfExpandedFacets(0);
+        expect(collapsedFacets().length).toBe(facets.length);
+      });
+
+      it(`when "maximumNumberOfExpandedFacets" is 1
+      should only expand the first facet`, () => {
+        initializeManyFacets();
+        initForMaximumNumberOfExpandedFacets(1);
+        expect(collapsedFacets().length).toBe(facets.length - 1);
+        expect(collapsedFacets().indexOf(facets[0])).toBe(-1);
+      });
+
+      it(`when there is a facet with the option "enableCollapse" set to false
+      should not collapse it`, () => {
+        initializeManyFacets();
+        facets[3].options.enableCollapse = false;
+        initForMaximumNumberOfExpandedFacets(0);
+        expect(collapsedFacets().length).toBe(facets.length - 1);
+        expect(collapsedFacets().indexOf(facets[3])).toBe(-1);
+      });
+
+      it(`when there is a facet with active values
+      should not collapse it`, () => {
+        initializeManyFacets();
+        initForMaximumNumberOfExpandedFacets(0);
+        const modifiedResponse = queryManyFacetsResponse();
+        modifiedResponse[3].values[0].state = FacetValueState.selected;
+        triggerQuerySuccess(modifiedResponse);
+
+        expect(collapsedFacets().length).toBe(facets.length - 1);
+        expect(collapsedFacets().indexOf(facets[3])).toBe(-1);
+      });
+
+      it(`when applying maximum
+      should take into account facets that have to be expanded`, () => {
+        initializeManyFacets();
+        facets[4].options.enableCollapse = false;
+
+        initForMaximumNumberOfExpandedFacets(3);
+        const modifiedResponse = queryManyFacetsResponse();
+        modifiedResponse[6].values[0].state = FacetValueState.selected;
+        triggerQuerySuccess(modifiedResponse);
+
+        expect(collapsedFacets().length).toBe(facets.length - 3);
+        expect(collapsedFacets().indexOf(facets[0])).toBe(-1);
+        expect(collapsedFacets().indexOf(facets[4])).toBe(-1);
+        expect(collapsedFacets().indexOf(facets[6])).toBe(-1);
+      });
     });
   });
 }
