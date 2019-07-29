@@ -240,22 +240,18 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
     }, this.options.executeQueryDelay);
   }
 
-  private executeQueryHover(suggestion: string) {
+  private async executeQueryHover(suggestion: string) {
     const previousQueryOptions = this.queryController.getLastQuery();
     previousQueryOptions.q = suggestion;
     previousQueryOptions.numberOfResults = this.options.numberOfPreviewResults;
-    this.queryController
-      .getEndpoint()
-      .search(previousQueryOptions)
-      .then(results => {
-        $$(this.previewContainer).empty();
-        if (!results) {
-          return;
-        }
-        this.addImage(results);
-        this.buildPreviewHeader(suggestion);
-        this.buildResultsPreview(results);
-      });
+    var results = await this.queryController.getEndpoint().search(previousQueryOptions);
+    $$(this.previewContainer).empty();
+    if (!results) {
+      return;
+    }
+    this.addImage(results);
+    this.buildPreviewHeader(suggestion);
+    this.buildResultsPreview(results);
   }
 
   private buildResultsPreview(results: IQueryResults) {

@@ -34,6 +34,11 @@ export function QuerySuggestPreviewTest() {
       $$(testEnv.root).trigger(OmniboxEvents.querySuggestGetFocus, { suggestion });
     }
 
+    function triggerQuerySuggestHoverAndPassTime(suggestion: string = 'test') {
+      triggerQuerySuggestHover(suggestion);
+      jasmine.clock().tick(test.cmp.options.executeQueryDelay);
+    }
+
     function buildSuggestion() {
       container = $$(document.createElement('div'));
       suggestionContainer = $$(document.createElement('div'));
@@ -66,59 +71,59 @@ export function QuerySuggestPreviewTest() {
     beforeEach(() => {
       testEnv = new Mock.MockEnvironmentBuilder();
     });
-
     describe('expose options', () => {
-      it('numberOfPreviewResults set the number of results to query', done => {
+      beforeEach(() => {
+        jasmine.clock().install();
+      });
+
+      afterEach(() => {
+        jasmine.clock().uninstall();
+      });
+
+      it('numberOfPreviewResults set the number of results to query', () => {
         const numberOfPreviewResults = 5;
         setupQuerySuggestPreview({ numberOfPreviewResults });
         setupSuggestion();
-        triggerQuerySuggestHover();
-        setTimeout(() => {
-          expect(test.cmp.queryController.getLastQuery().numberOfResults).toBe(numberOfPreviewResults);
-          done();
-        }, test.cmp.options.executeQueryDelay);
+        triggerQuerySuggestHoverAndPassTime();
+        expect(test.cmp.queryController.getLastQuery().numberOfResults).toBe(numberOfPreviewResults);
       });
 
-      it('hoverTime set the time before the query is executed', done => {
+      it('hoverTime set the time before the query is executed', () => {
         const executeQueryDelay = 200;
         setupQuerySuggestPreview({ executeQueryDelay });
         setupSuggestion();
-        triggerQuerySuggestHover();
         expect(test.cmp.queryController.getLastQuery).not.toHaveBeenCalled();
-        setTimeout(() => {
-          expect(test.cmp.queryController.getLastQuery).toHaveBeenCalledTimes(1);
-          done();
-        }, executeQueryDelay);
+        triggerQuerySuggestHoverAndPassTime();
+        expect(test.cmp.queryController.getLastQuery).toHaveBeenCalledTimes(1);
       });
 
-      it('previewWidth change the witdh of the preview container', done => {
+      it('previewWidth change the witdh of the preview container', () => {
         const width = 500;
         setupQuerySuggestPreview({ previewWidth: width });
         setupSuggestion();
-        triggerQuerySuggestHover();
-        setTimeout(() => {
-          const previewContainer = $$(suggestionContainer.el).find('.coveo-preview-container');
-          expect(previewContainer.style.width).toEqual(`${width}px`);
-          done();
-        }, test.cmp.options.executeQueryDelay);
+        triggerQuerySuggestHoverAndPassTime();
+        const previewContainer = $$(suggestionContainer.el).find('.coveo-preview-container');
+        expect(previewContainer.style.width).toEqual(`${width}px`);
       });
 
-      it('suggestionWidth change the width of the suggestion container', done => {
+      it('suggestionWidth change the width of the suggestion container', () => {
         const suggestionWidth = '250px';
         setupQuerySuggestPreview({ suggestionWidth });
         setupSuggestion();
-        triggerQuerySuggestHover();
-        setTimeout(() => {
-          const suggestionContainerById = $$(suggestionContainer.el).find('.coveo-magicbox-suggestions');
-          expect(suggestionContainerById.style.minWidth).toBe(suggestionWidth);
-          expect(suggestionContainerById.style.maxWidth).toBe(suggestionWidth);
-          done();
-        }, test.cmp.options.executeQueryDelay);
+        triggerQuerySuggestHoverAndPassTime();
+        const suggestionContainerById = $$(suggestionContainer.el).find('.coveo-magicbox-suggestions');
+        expect(suggestionContainerById.style.minWidth).toBe(suggestionWidth);
+        expect(suggestionContainerById.style.maxWidth).toBe(suggestionWidth);
       });
 
       it('headerText change the text in the header of the preview', done => {
         const headerText = 'Super Header';
         const suggestion = 'test';
+        //We can't use the clock here because we are validating a DOM element
+        //Since we need to wait for some promise to finish and I can't wait for them
+        //since they were triggered by an event. Meanwhile, Jasmine will continue to
+        //evaluate and would fail the test
+        jasmine.clock().uninstall();
         setupQuerySuggestPreview({ headerText });
         setupSuggestion();
         triggerQuerySuggestHover(suggestion);
@@ -157,6 +162,14 @@ export function QuerySuggestPreviewTest() {
     });
 
     describe('When we hover', () => {
+      beforeEach(() => {
+        jasmine.clock().install();
+      });
+
+      afterEach(() => {
+        jasmine.clock().uninstall();
+      });
+
       it(`on the same Suggestion multiple times before the time in the option hoverTime has passed,
       the query is is executed only once`, done => {
         setupQuerySuggestPreview();
@@ -164,11 +177,9 @@ export function QuerySuggestPreviewTest() {
         setupSuggestion();
         triggerQuerySuggestHover();
         triggerQuerySuggestHover();
-        triggerQuerySuggestHover();
-        setTimeout(() => {
-          expect(test.cmp.queryController.getEndpoint().search).toHaveBeenCalledTimes(1);
-          done();
-        }, test.cmp.options.executeQueryDelay);
+        triggerQuerySuggestHoverAndPassTime();
+        expect(test.cmp.queryController.getEndpoint().search).toHaveBeenCalledTimes(1);
+        done();
       });
 
       it(`on multiple suggestion before the time in the option hoverTime has passed,
@@ -179,12 +190,10 @@ export function QuerySuggestPreviewTest() {
         setupSuggestion();
         triggerQuerySuggestHover('testing');
         triggerQuerySuggestHover('testing2');
-        triggerQuerySuggestHover(realQuery);
-        setTimeout(() => {
-          expect(test.cmp.queryController.getEndpoint().search).toHaveBeenCalledTimes(1);
-          expect(test.cmp.queryController.getLastQuery().q).toBe(realQuery);
-          done();
-        }, test.cmp.options.executeQueryDelay);
+        triggerQuerySuggestHoverAndPassTime(realQuery);
+        expect(test.cmp.queryController.getEndpoint().search).toHaveBeenCalledTimes(1);
+        expect(test.cmp.queryController.getLastQuery().q).toBe(realQuery);
+        done();
       });
     });
 
