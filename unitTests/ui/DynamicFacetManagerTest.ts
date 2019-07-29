@@ -24,9 +24,9 @@ export function DynamicFacetManagerTest() {
 
     function initializeFacets() {
       facets = [
-        DynamicFacetTestUtils.createAdvancedFakeFacet({ field: 'field1', numberOfValues: 10 }).cmp,
-        DynamicFacetTestUtils.createAdvancedFakeFacet({ field: 'field2', numberOfValues: 5 }).cmp,
-        DynamicFacetTestUtils.createAdvancedFakeFacet({ field: 'field3', numberOfValues: 100 }).cmp
+        DynamicFacetTestUtils.createAdvancedFakeFacet({ field: '@field1', numberOfValues: 10 }).cmp,
+        DynamicFacetTestUtils.createAdvancedFakeFacet({ field: '@field2', numberOfValues: 5 }).cmp,
+        DynamicFacetTestUtils.createAdvancedFakeFacet({ field: '@field3', numberOfValues: 100 }).cmp
       ];
     }
 
