@@ -210,5 +210,10 @@ export function QueryBuilderTest() {
         expect(queryBuilder.build().facets).toEqual([facetRequest]);
       });
     });
+
+    it('can setUserOfUserActions', () => {
+      queryBuilder.setUserOfUserActions('foo@bar.baz');
+      expect(queryBuilder.userActions.tagViewsOfUser).toBe('foo@bar.baz');
+    });
   });
 }

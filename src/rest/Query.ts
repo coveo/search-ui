@@ -16,6 +16,16 @@ export interface IFacetOptions {
 }
 
 /**
+ * The information about the user we'd like to check and its actions.
+ */
+export interface IUserActions {
+  /**
+   * The id of the user for which we should check the document views.
+   */
+  tagViewsOfUser?: string;
+}
+
+/**
  * The IQuery interface describes a query that can be performed on the Coveo REST Search API.
  *
  * For basic usage, see the {@link IQuery.q} and {@link IQuery.aq} properties.
@@ -253,4 +263,9 @@ export interface IQuery {
    * The global configuration options to apply to the requests in the [facets]{@link IQuery.facets} array.
    */
   facetOptions?: IFacetOptions;
+
+  /**
+   * The information about the user we'd like to check and its actions.
+   */
+  userActions: IUserActions;
 }

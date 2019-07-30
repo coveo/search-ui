@@ -2,7 +2,7 @@ import { ExpressionBuilder } from './ExpressionBuilder';
 import { IRankingFunction } from '../../rest/RankingFunction';
 import { IQueryFunction } from '../../rest/QueryFunction';
 import { IGroupByRequest } from '../../rest/GroupByRequest';
-import { IQuery, IFacetOptions } from '../../rest/Query';
+import { IQuery, IFacetOptions, IUserActions } from '../../rest/Query';
 import { QueryBuilderExpression } from './QueryBuilderExpression';
 import * as _ from 'underscore';
 import { Utils } from '../../utils/Utils';
@@ -321,6 +321,10 @@ export class QueryBuilder {
    */
   public allowQueriesWithoutKeywords: boolean;
   /**
+   * Specify the information about the user who's actions shall be checked in the query.
+   */
+  public userActions: IUserActions = {};
+  /**
    * Build the current content or state of the query builder and return a {@link IQuery}.
    *
    * build can be called multiple times on the same QueryBuilder.
@@ -374,7 +378,8 @@ export class QueryBuilder {
       context: this.context,
       actionsHistory: this.actionsHistory,
       recommendation: this.recommendation,
-      allowQueriesWithoutKeywords: this.allowQueriesWithoutKeywords
+      allowQueriesWithoutKeywords: this.allowQueriesWithoutKeywords,
+      userActions: this.userActions
     };
     return query;
   }
@@ -529,5 +534,13 @@ export class QueryBuilder {
     }
 
     return this.facetRequests;
+  }
+
+  /**
+   *
+   * @param user The ID of the user we'd like to check the document views.
+   */
+  public setUserOfUserActions(user: string) {
+    this.userActions = { tagViewsOfUser: user };
   }
 }
