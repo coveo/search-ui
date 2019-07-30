@@ -64,8 +64,8 @@ export function QuerySuggestPreviewTest() {
 
     function setupSuggestion(suggestions: Suggestion[] = [{ text: 'test' }]) {
       setupSuggestionManager();
-      suggestionManager.updateSuggestions(suggestions);
       setupRenderPreview();
+      suggestionManager.updateSuggestions(suggestions);
     }
 
     beforeEach(() => {
@@ -195,15 +195,6 @@ export function QuerySuggestPreviewTest() {
         expect(test.cmp.queryController.getLastQuery().q).toBe(realQuery);
         done();
       });
-    });
-
-    it(`When there is no Suggestion,
-    it calls handleNoSuggestion`, () => {
-      setupQuerySuggestPreview();
-      spyOn(test.cmp, 'handleNoSuggestion');
-      expect(test.cmp.handleNoSuggestion).not.toHaveBeenCalled();
-      setupSuggestion([]);
-      expect(test.cmp.handleNoSuggestion).toHaveBeenCalled();
     });
   });
 }

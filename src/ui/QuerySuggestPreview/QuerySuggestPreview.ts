@@ -1,6 +1,6 @@
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { exportGlobally } from '../../GlobalExports';
-import { ComponentOptions, OmniboxEvents, Initialization, $$, Component, Assert, QueryUtils, Dom } from '../../Core';
+import { ComponentOptions, OmniboxEvents, Initialization, $$, Component, Assert, QueryUtils } from '../../Core';
 import { IQuerySuggestSelection } from '../../events/OmniboxEvents';
 import { IQueryResults } from '../../rest/QueryResults';
 import 'styling/_QuerySuggestPreview';
@@ -118,6 +118,12 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
     }
 
     this.bind.onRootElement(OmniboxEvents.querySuggestGetFocus, (args: IQuerySuggestSelection) => this.querySuggestGetFocus(args));
+    this.bind.onRootElement(OmniboxEvents.querySuggestRendered, () => {
+      this.handleAfterComponentInit();
+    });
+    this.bind.onRootElement(OmniboxEvents.querySuggestLooseFocus, () => {
+      this.handleQuerySuggestLooseFocus();
+    });
   }
 
   /**
@@ -168,36 +174,36 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
       });
   }
 
-  /**
-   * Resets the component when no suggestion is displayed.
-   */
-  public handleNoSuggestion() {
+  private handleQuerySuggestLooseFocus() {
     clearTimeout(this.timer);
+    this.timer = null;
     this.previousSuggestionHovered = null;
   }
 
-  /**
-   * Creates the preview results container.
-   */
-  public buildPreviewContainer() {
-    const container = $$('div', { className: 'coveo-preview-container' }).el;
+  private updatePreviewContainer(container: HTMLElement) {
     if (!this.options.previewWidth) {
-      return container;
+      return;
     }
-
     container.style.width = `${this.options.previewWidth}px`;
-    return container;
   }
 
-  /**
-   * Resizes the width of the suggestion container.
-   */
-  public updateWidthOfSuggestionContainer(container: Dom) {
+  private updateWidthOfSuggestionContainer(container: HTMLElement) {
     if (!this.options.suggestionWidth) {
       return;
     }
-    container.el.style.minWidth = this.options.suggestionWidth;
-    container.el.style.maxWidth = this.options.suggestionWidth;
+    container.style.minWidth = this.options.suggestionWidth;
+    container.style.maxWidth = this.options.suggestionWidth;
+  }
+
+  private handleAfterComponentInit() {
+    const suggestionContainer = $$(this.root).find('.coveo-magicbox-suggestions');
+    if (suggestionContainer) {
+      this.updateWidthOfSuggestionContainer(suggestionContainer);
+    }
+    const previewContainer = $$(this.root).find('.coveo-preview-container');
+    if (previewContainer) {
+      this.updatePreviewContainer(previewContainer);
+    }
   }
 
   private autoCreateComponentsInsideResult(element: HTMLElement, result: IQueryResult): IInitResult {

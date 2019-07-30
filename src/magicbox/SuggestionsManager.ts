@@ -3,7 +3,6 @@ import { InputManager } from './InputManager';
 import { each, defaults, indexOf, compact } from 'underscore';
 import { OmniboxEvents, Component } from '../Core';
 import { IQuerySuggestSelection } from '../events/OmniboxEvents';
-import QuerySuggestPreview = require('../ui/QuerySuggestPreview/QuerySuggestPreview');
 
 export interface Suggestion {
   text?: string;
@@ -84,6 +83,7 @@ export class SuggestionsManager {
         this.removeSelectedStatus(targetParents[0]);
       }
     }
+    $$(this.root).trigger(OmniboxEvents.querySuggestLooseFocus);
   }
 
   public moveDown(): Suggestion {
@@ -185,7 +185,6 @@ export class SuggestionsManager {
 
     if (!this.hasSuggestions) {
       this.removeAccessibilityPropertiesForSuggestions();
-      this.querySuggestPreviewComponent && this.querySuggestPreviewComponent.handleNoSuggestion();
       return;
     }
 
@@ -204,6 +203,7 @@ export class SuggestionsManager {
       dom['suggestion'] = suggestion;
       suggestionsContainer.append(dom.el);
     });
+    $$(this.root).trigger(OmniboxEvents.querySuggestRendered);
   }
 
   private processKeyboardSelection(suggestion: HTMLElement) {
@@ -224,15 +224,21 @@ export class SuggestionsManager {
     });
   }
 
+  private buildPreviewContainer() {
+    return $$('div', {
+      className: 'coveo-preview-container'
+    }).el;
+  }
+
   private get querySuggestPreviewComponent() {
     const querySuggestPreviewElement: HTMLElement = $$(this.root).find(`.${Component.computeCssClassNameForType('QuerySuggestPreview')}`);
     if (!querySuggestPreviewElement) {
       return;
     }
-    return Component.get(querySuggestPreviewElement) as QuerySuggestPreview.QuerySuggestPreview;
+    return Component.get(querySuggestPreviewElement);
   }
 
-  private initPreviewForSuggestions(suggestions: Dom): Dom {
+  private initPreviewForSuggestions(suggestions: Dom) {
     const querySuggestPreview = this.querySuggestPreviewComponent;
     if (!querySuggestPreview) {
       return suggestions;
@@ -242,8 +248,7 @@ export class SuggestionsManager {
       className: 'coveo-suggestion-container'
     });
 
-    const previewContainer = querySuggestPreview.buildPreviewContainer();
-    querySuggestPreview.updateWidthOfSuggestionContainer(suggestions);
+    const previewContainer = this.buildPreviewContainer();
     suggestionContainerParent.append(suggestions.el);
     suggestionContainerParent.append(previewContainer);
     return suggestionContainerParent;
