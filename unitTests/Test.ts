@@ -731,3 +731,6 @@ ComboboxInputTest();
 
 import { ComboboxValuesTest } from './ui/Combobox/ComboboxValuesTest';
 ComboboxValuesTest();
+
+import { FieldImageTest } from './ui/ImageFieldValueTest';
+FieldImageTest();

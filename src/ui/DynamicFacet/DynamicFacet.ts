@@ -164,9 +164,9 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
     /**
      * Whether to allow the end-user to expand and collapse this facet.
      *
-     * **Default:** `false`
+     * **Default:** `true`
      */
-    enableCollapse: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'Filtering' }),
+    enableCollapse: ComponentOptions.buildBooleanOption({ defaultValue: true, section: 'Filtering' }),
 
     /**
      * Whether to scroll back to the top of the page whenever the end-user interacts with a facet.
@@ -204,7 +204,7 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
      *
      * **Default:** `false`
      */
-    collapsedByDefault: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'Filtering' }),
+    collapsedByDefault: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'Filtering', depend: 'enableCollapse' }),
 
     /**
      * Whether to notify the [Breadcrumb]{@link Breadcrumb} component when toggling values in the facet.
@@ -251,7 +251,6 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
   private includedAttributeId: string;
   private listenToQueryStateChange = true;
   private header: DynamicFacetHeader;
-  private isCollapsed: boolean;
 
   public dynamicFacetManager: DynamicFacetManager;
   public dynamicFacetQueryController: DynamicFacetQueryController;
@@ -259,6 +258,7 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
   private search: DynamicFacetSearch;
   public position: number = null;
   public moreValuesAvailable = false;
+  public isCollapsed: boolean;
 
   /**
    * Creates a new `DynamicFacet` instance.
@@ -278,6 +278,8 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
     this.initComponentStateEvents();
 
     this.values = new DynamicFacetValues(this);
+
+    this.verifyCollapsingConfiguration();
     this.isCollapsed = this.options.enableCollapse && this.options.collapsedByDefault;
 
     ResponsiveDynamicFacets.init(this.root, this, this.options);
@@ -418,6 +420,12 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
    * Expands the facet, displaying all of its currently fetched values.
    */
   public expand() {
+    if (!this.options.enableCollapse) {
+      return this.logger.warn(`Calling expand() won't do anything on a facet that has the option "enableCollapse" set to "false"`);
+    }
+    if (!this.isCollapsed) {
+      return;
+    }
     this.ensureDom();
     this.logger.info('Expand facet values');
     this.isCollapsed = false;
@@ -428,6 +436,12 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
    * Collapses the facet, displaying only its currently selected values.
    */
   public collapse() {
+    if (!this.options.enableCollapse) {
+      return this.logger.warn(`Calling collapse() won't do anything on a facet that has the option "enableCollapse" set to "false"`);
+    }
+    if (this.isCollapsed) {
+      return;
+    }
     this.ensureDom();
     this.logger.info('Collapse facet values');
     this.isCollapsed = true;
@@ -673,6 +687,10 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
     if (Utils.isUndefined(this.options.enableFacetSearch)) {
       $$(this.search.element).toggle(this.moreValuesAvailable);
     }
+
+    if (this.isCollapsed) {
+      $$(this.search.element).toggle(false);
+    }
   }
 
   public triggerNewQuery(beforeExecuteQuery?: () => void) {
@@ -704,6 +722,12 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
     this.logger.error('DynamicFacets are not supported by your current search endpoint. Disabling this component.');
     this.disable();
     this.updateAppearance();
+  }
+
+  private verifyCollapsingConfiguration() {
+    if (this.options.collapsedByDefault && !this.options.enableCollapse) {
+      this.logger.warn('The "collapsedByDefault" option is "true" while the "enableCollapse" is "false"');
+    }
   }
 
   private logAnalyticsFacetShowMoreLess(cause: IAnalyticsActionCause) {

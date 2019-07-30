@@ -4,7 +4,7 @@ import { InitializationEvents } from '../../events/InitializationEvents';
 import { QueryEvents, IQuerySuccessEventArgs, IDoneBuildingQueryEventArgs } from '../../events/QueryEvents';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { exportGlobally } from '../../GlobalExports';
-import { find, without } from 'underscore';
+import { find, without, partition } from 'underscore';
 import { IFacetResponse } from '../../rest/Facet/FacetResponse';
 import { $$ } from '../../utils/Dom';
 import { Utils } from '../../utils/Utils';
@@ -16,6 +16,7 @@ export interface IDynamicFacetManagerOptions {
   enableReorder?: boolean;
   onUpdate?: IDynamicFacetManagerOnUpdate;
   compareFacets?: IDynamicFacetManagerCompareFacet;
+  maximumNumberOfExpandedFacets?: number;
 }
 
 export interface IDynamicFacetManagerOnUpdate {
@@ -71,7 +72,20 @@ export class DynamicFacetManager extends Component {
      */
     compareFacets: ComponentOptions.buildCustomOption<IDynamicFacetManagerCompareFacet>(() => {
       return null;
-    })
+    }),
+    /**
+     * The maximum number of expanded facets inside the manager.
+     * Remaining facets are collapsed.
+     *
+     * **Note:**
+     * Prioritizes facets with active values, and then prioritizes first facets.
+     * If the number of facets with active values exceeds the value of the `maximumNumberOfExpandedFacets` option, it overrides the option.
+     *
+     * Using the value `-1` disables the feature and keeps all facets expanded.
+     *
+     * **Default:** `4`
+     */
+    maximumNumberOfExpandedFacets: ComponentOptions.buildNumberOption({ defaultValue: 4, min: -1 })
   };
 
   private childrenFacets: DynamicFacet[] = [];
@@ -79,6 +93,10 @@ export class DynamicFacetManager extends Component {
 
   private get enabledFacets() {
     return this.childrenFacets.filter(facet => !facet.disabled);
+  }
+
+  private get facetsWithValues() {
+    return this.childrenFacets.filter(facet => !facet.values.isEmpty);
   }
 
   /**
@@ -166,7 +184,7 @@ export class DynamicFacetManager extends Component {
     this.resetContainer();
     const fragment = document.createDocumentFragment();
 
-    this.childrenFacets.forEach((dynamicFacet, index) => {
+    this.facetsWithValues.forEach((dynamicFacet, index) => {
       fragment.appendChild(dynamicFacet.element);
 
       if (this.options.onUpdate) {
@@ -174,8 +192,27 @@ export class DynamicFacetManager extends Component {
       }
     });
 
+    this.respectMaximumExpandedFacetsThreshold();
+
     this.containerElement.appendChild(fragment);
     this.element.appendChild(this.containerElement);
+  }
+
+  private respectMaximumExpandedFacetsThreshold() {
+    if (this.options.maximumNumberOfExpandedFacets === -1) {
+      return;
+    }
+
+    const [collapsableFacets, uncollapsableFacets] = partition(this.facetsWithValues, facet => facet.options.enableCollapse);
+    const [facetsWithActiveValues, remainingFacets] = partition(collapsableFacets, facet => facet.values.hasActiveValues);
+    const indexOfFirstFacetToCollapse =
+      this.options.maximumNumberOfExpandedFacets - uncollapsableFacets.length - facetsWithActiveValues.length;
+
+    facetsWithActiveValues.forEach(dynamicFacet => dynamicFacet.expand());
+
+    remainingFacets.forEach((dynamicFacet, index) => {
+      index < indexOfFirstFacetToCollapse ? dynamicFacet.expand() : dynamicFacet.collapse();
+    });
   }
 
   private getFacetComponentById(id: string) {

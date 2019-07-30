@@ -25,8 +25,10 @@ export function DynamicFacetTest() {
 
     function initializeComponent() {
       test = DynamicFacetTestUtils.createAdvancedFakeFacet(options);
+      spyOn(test.cmp.logger, 'warn');
       (test.env.searchInterface.getComponents as jasmine.Spy).and.returnValue([test.cmp]);
       test.cmp.values.createFromResponse(DynamicFacetTestUtils.getCompleteFacetResponse(test.cmp, { values: mockFacetValues }));
+      test.cmp.moreValuesAvailable = true;
 
       spyOn(test.cmp.values, 'clearAll').and.callThrough();
       spyOn(test.cmp.values, 'render').and.callThrough();
@@ -54,6 +56,11 @@ export function DynamicFacetTest() {
 
     function searchFeatureDisplayed() {
       return $$($$(test.cmp.element).find('.coveo-dynamic-facet-search')).isVisible();
+    }
+
+    function validateExpandCollapse(shouldBeCollapsed: boolean) {
+      expect($$(test.cmp.element).hasClass('coveo-dynamic-facet-collapsed')).toBe(shouldBeCollapsed);
+      expect(searchFeatureDisplayed()).toBe(!shouldBeCollapsed);
     }
 
     it(`when facet has values but none are selected
@@ -257,14 +264,24 @@ export function DynamicFacetTest() {
       initializeComponent();
       test.cmp.ensureDom();
 
-      expect($$(test.cmp.element).hasClass('coveo-dynamic-facet-collapsed')).toBe(true);
+      validateExpandCollapse(true);
+    });
+
+    it(`when enableCollapse is false & collapsedByDefault options is true
+      facet should not be collapsed`, () => {
+      options.enableCollapse = false;
+      options.collapsedByDefault = true;
+      initializeComponent();
+      test.cmp.ensureDom();
+
+      validateExpandCollapse(false);
     });
 
     it(`allows to collapse`, () => {
       test.cmp.ensureDom();
       test.cmp.collapse();
 
-      expect($$(test.cmp.element).hasClass('coveo-dynamic-facet-collapsed')).toBe(true);
+      validateExpandCollapse(true);
     });
 
     it(`allows to expand`, () => {
@@ -273,17 +290,33 @@ export function DynamicFacetTest() {
 
       test.cmp.expand();
 
-      expect($$(test.cmp.element).hasClass('coveo-dynamic-facet-collapsed')).toBe(false);
+      validateExpandCollapse(false);
+    });
+
+    it(`does not allow to expand if the enableCollapse is false`, () => {
+      options.enableCollapse = false;
+      initializeComponent();
+      test.cmp.ensureDom();
+      test.cmp.collapse();
+      expect(test.cmp.logger.warn).toHaveBeenCalled();
+    });
+
+    it(`does not allow to collapse if the enableCollapse is false`, () => {
+      options.enableCollapse = false;
+      initializeComponent();
+      test.cmp.ensureDom();
+      test.cmp.expand();
+      expect(test.cmp.logger.warn).toHaveBeenCalled();
     });
 
     it(`allows to toggle between expand/collapse`, () => {
       test.cmp.ensureDom();
 
       test.cmp.toggleCollapse();
-      expect($$(test.cmp.element).hasClass('coveo-dynamic-facet-collapsed')).toBe(true);
+      validateExpandCollapse(true);
 
       test.cmp.toggleCollapse();
-      expect($$(test.cmp.element).hasClass('coveo-dynamic-facet-collapsed')).toBe(false);
+      validateExpandCollapse(false);
     });
 
     it('should have a default title', () => {
@@ -485,8 +518,6 @@ export function DynamicFacetTest() {
 
     it(`when "enableFacetSearch" option is "undefined" and "moreValuesAvailable" is "true"
     it should show the search`, () => {
-      initializeComponent();
-      test.cmp.moreValuesAvailable = true;
       test.cmp.ensureDom();
 
       expect(searchFeatureDisplayed()).toBe(true);
