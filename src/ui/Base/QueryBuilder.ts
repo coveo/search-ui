@@ -537,7 +537,8 @@ export class QueryBuilder {
   }
 
   /**
-   *
+   * Set the userActions.tagViewsOfUser field of the query.
+   * This will modify the {@link QueryResult.isUserActionView} if the user saw/opened the result.
    * @param user The ID of the user we'd like to check the document views.
    */
   public setUserOfUserActions(user: string) {
