@@ -6,6 +6,7 @@ import { FakeResults } from '../Fake';
 import { SuggestionsManager, Suggestion } from '../../src/magicbox/SuggestionsManager';
 import { InputManager } from '../../src/magicbox/InputManager';
 import { MagicBoxInstance } from '../../src/magicbox/MagicBox';
+import { IQueryResults } from '../../src/rest/QueryResults';
 
 export function QuerySuggestPreviewTest() {
   describe('QuerySuggestPreview', () => {
@@ -27,14 +28,13 @@ export function QuerySuggestPreviewTest() {
       );
     }
 
-    function triggerQuerySuggestHover(suggestion: string = 'test') {
-      (test.env.searchEndpoint.search as jasmine.Spy).and.returnValue(
-        Promise.resolve(FakeResults.createFakeResults(test.cmp.options.numberOfPreviewResults))
-      );
+    function triggerQuerySuggestHover(suggestion: string = 'test', fakeResults?: IQueryResults) {
+      fakeResults = fakeResults || FakeResults.createFakeResults(test.cmp.options.numberOfPreviewResults);
+      (test.env.searchEndpoint.search as jasmine.Spy).and.returnValue(Promise.resolve(fakeResults));
       $$(testEnv.root).trigger(OmniboxEvents.querySuggestGetFocus, { suggestion });
     }
 
-    function triggerQuerySuggestHoverAndPassTime(suggestion: string = 'test') {
+    function triggerQuerySuggestHoverAndPassTime(suggestion: string = 'test', fakeResults?: IQueryResults) {
       triggerQuerySuggestHover(suggestion);
       jasmine.clock().tick(test.cmp.options.executeQueryDelay);
     }
@@ -194,6 +194,42 @@ export function QuerySuggestPreviewTest() {
         expect(test.cmp.queryController.getEndpoint().search).toHaveBeenCalledTimes(1);
         expect(test.cmp.queryController.getLastQuery().q).toBe(realQuery);
         done();
+      });
+    });
+
+    describe('currentlyDisplayedResults', () => {
+      it('currentlyDisplayedResults get populated by rendered results', done => {
+        setupQuerySuggestPreview();
+        const fakeResults = FakeResults.createFakeResults(test.cmp.options.numberOfPreviewResults);
+        setupSuggestion();
+        triggerQuerySuggestHover('test', fakeResults);
+        setTimeout(() => {
+          expect(test.cmp.displayedResults).toEqual(fakeResults.results);
+          done();
+        }, test.cmp.options.executeQueryDelay);
+      });
+
+      it('currentlyDisplayedResults get emptied when they aare no result to be rendered', done => {
+        setupQuerySuggestPreview();
+        const fakeResults = FakeResults.createFakeResults(0);
+        setupSuggestion();
+        triggerQuerySuggestHover('test', fakeResults);
+        setTimeout(() => {
+          expect(test.cmp.displayedResults).toEqual([]);
+          done();
+        }, test.cmp.options.executeQueryDelay);
+      });
+
+      it('currentlyDisplayedResults get emptied when a querySuggest loose focus', done => {
+        setupQuerySuggestPreview();
+        setupSuggestion();
+        triggerQuerySuggestHover('test');
+        setTimeout(() => {
+          expect(test.cmp.displayedResults.length).toEqual(test.cmp.options.numberOfPreviewResults);
+          $$(test.cmp.root).trigger(OmniboxEvents.querySuggestLooseFocus);
+          expect(test.cmp.displayedResults).toEqual([]);
+          done();
+        }, test.cmp.options.executeQueryDelay);
       });
     });
   });

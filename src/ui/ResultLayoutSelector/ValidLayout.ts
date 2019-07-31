@@ -3,4 +3,6 @@
  *
  * See the [Result Layouts](https://developers.coveo.com/x/yQUvAg) documentation.
  */
-export type ValidLayout = 'list' | 'card' | 'table' | 'preview';
+export type ValidLayout = 'list' | 'card' | 'table';
+
+export type RendererValidLayout = ValidLayout | 'preview';

@@ -5,7 +5,7 @@ import { IInitResult } from '../Base/Initialization';
 import { Template } from './Template';
 import { SearchInterface } from '../../ui/SearchInterface/SearchInterface';
 import { ResultList } from '../ResultList/ResultList';
-import { ValidLayout } from '../ResultLayoutSelector/ValidLayout';
+import { RendererValidLayout } from '../ResultLayoutSelector/ValidLayout';
 
 export interface ITemplateToHtml {
   resultTemplate: Template;
@@ -22,7 +22,7 @@ export class TemplateToHtml {
    */
   public async buildResults(
     results: IQueryResults,
-    layout: ValidLayout,
+    layout: RendererValidLayout,
     currentlyDisplayedResults: IQueryResult[]
   ): Promise<HTMLElement[]> {
     const resultsPromises = results.results.map((result: IQueryResult) => {
@@ -39,7 +39,11 @@ export class TemplateToHtml {
    * @param result the result to build an HTMLElement from.
    * @returns {HTMLElement}
    */
-  public async buildResult(result: IQueryResult, layout: ValidLayout, currentlyDisplayedResults: IQueryResult[]): Promise<HTMLElement> {
+  public async buildResult(
+    result: IQueryResult,
+    layout: RendererValidLayout,
+    currentlyDisplayedResults: IQueryResult[]
+  ): Promise<HTMLElement> {
     Assert.exists(result);
     QueryUtils.setStateObjectOnQueryResult(this.args.queryStateModel.get(), result);
     QueryUtils.setSearchInterfaceObjectOnQueryResult(this.args.searchInterface, result);
@@ -60,7 +64,7 @@ export class TemplateToHtml {
     return Initialization.automaticallyCreateComponentsInsideResult(element, result);
   }
 
-  private createHtmlElement(result: IQueryResult, layout: ValidLayout) {
+  private createHtmlElement(result: IQueryResult, layout: RendererValidLayout) {
     return this.args.resultTemplate.instantiateToElement(result, {
       wrapInDiv: true,
       checkCondition: true,

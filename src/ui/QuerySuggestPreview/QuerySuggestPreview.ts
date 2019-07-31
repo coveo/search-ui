@@ -1,17 +1,17 @@
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { exportGlobally } from '../../GlobalExports';
-import { ComponentOptions, OmniboxEvents, Initialization, $$, Component, Assert, QueryUtils } from '../../Core';
+import { ComponentOptions, OmniboxEvents, Initialization, $$, Component } from '../../Core';
 import { IQuerySuggestSelection } from '../../events/OmniboxEvents';
 import { IQueryResults } from '../../rest/QueryResults';
 import 'styling/_QuerySuggestPreview';
 import { ResultListRenderer } from '../ResultList/ResultListRenderer';
-import { IInitializationParameters, IInitResult } from '../Base/Initialization';
+import { IInitializationParameters } from '../Base/Initialization';
 import { IResultListOptions } from '../ResultList/ResultListOptions';
 import { Template } from '../Templates/Template';
 import { TemplateComponentOptions } from '../Base/TemplateComponentOptions';
-import { IQueryResult } from '../../rest/QueryResult';
-import { pluck, sortBy, map } from 'underscore';
 import { ResultListTableRenderer } from '../ResultList/ResultListTableRenderer';
+import { ITemplateToHtml, TemplateToHtml } from '../Templates/TemplateToHtml';
+import { IQueryResult } from '../../rest/QueryResult';
 
 export interface IQuerySuggestPreview {
   numberOfPreviewResults?: number;
@@ -96,6 +96,7 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
   private previousSuggestionHovered: string;
   private renderer: ResultListRenderer;
   private timer;
+  public currentlyDisplayedResults: IQueryResult[] = [];
 
   /**
    * Creates a new QuerySuggestPreview component.
@@ -127,57 +128,27 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
   }
 
   /**
-   * Builds and returns an HTMLElement array containing the preview result items.
-   * @param results The result items to build the HTMLElement array with.
+   * Gets the list of currently displayed result.
+   * @returns {IQueryResult[]}
    */
-  public buildResults(results: IQueryResults): Promise<HTMLElement[]> {
-    const res: { elem: HTMLElement; idx: number }[] = [];
-    const resultsPromises = map(results.results, (result: IQueryResult, index: number) => {
-      return this.buildResult(result).then((resultElement: HTMLElement) => {
-        if (resultElement != null) {
-          res.push({ elem: resultElement, idx: index });
-        }
-        return resultElement;
-      });
-    });
-
-    // We need to sort by the original index order, because in lazy loading mode, it's possible that results does not gets rendered
-    // in the correct order returned by the index, depending on the time it takes to load all the results component for a given result template
-    return Promise.all(resultsPromises).then(() => {
-      return pluck(sortBy(res, 'idx'), 'elem');
-    });
+  public get displayedResults(): IQueryResult[] {
+    return this.currentlyDisplayedResults;
   }
 
-  /**
-   * Builds and returns an HTMLElement for the given result.
-   * @param result The result to build an HTMLElement width.
-   * @returns {HTMLElement}
-   */
-  public buildResult(result: IQueryResult): Promise<HTMLElement> {
-    Assert.exists(result);
-    QueryUtils.setStateObjectOnQueryResult(this.queryStateModel.get(), result);
-    QueryUtils.setSearchInterfaceObjectOnQueryResult(this.searchInterface, result);
-    return this.options.resultTemplate
-      .instantiateToElement(result, {
-        wrapInDiv: true,
-        checkCondition: true,
-        currentLayout: 'preview',
-        responsiveComponents: this.searchInterface.responsiveComponents
-      })
-      .then((resultElement: HTMLElement) => {
-        if (resultElement != null) {
-          Component.bindResultToElement(resultElement, result);
-        }
-        return this.autoCreateComponentsInsideResult(resultElement, result).initResult.then(() => {
-          return resultElement;
-        });
-      });
+  private get templateToHtml() {
+    const templateToHtmlArgs: ITemplateToHtml = {
+      searchInterface: this.searchInterface,
+      queryStateModel: this.queryStateModel,
+      resultTemplate: this.options.resultTemplate
+    };
+    return new TemplateToHtml(templateToHtmlArgs);
   }
 
   private handleQuerySuggestLooseFocus() {
     clearTimeout(this.timer);
     this.timer = null;
     this.previousSuggestionHovered = null;
+    this.currentlyDisplayedResults = [];
   }
 
   private updatePreviewContainer(container: HTMLElement) {
@@ -206,11 +177,6 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
     }
   }
 
-  private autoCreateComponentsInsideResult(element: HTMLElement, result: IQueryResult): IInitResult {
-    Assert.exists(element);
-    return Initialization.automaticallyCreateComponentsInsideResult(element, result);
-  }
-
   private buildPreviewHeader(suggestion: string) {
     const text = $$('span', {}, `${this.options.headerText} "${suggestion}"`).el;
     const header = $$('div', { className: 'coveo-preview-header' }, text).el;
@@ -218,12 +184,7 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
   }
 
   private buildResultsContainer() {
-    const resultsContainer = $$('div', { className: 'coveo-preview-results' }).el;
-    if (!this.options.previewWidth) {
-      return resultsContainer;
-    }
-
-    return resultsContainer;
+    return $$('div', { className: 'coveo-preview-results' }).el;
   }
 
   private get previewContainer() {
@@ -252,6 +213,7 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
     previousQueryOptions.numberOfResults = this.options.numberOfPreviewResults;
     var results = await this.queryController.getEndpoint().search(previousQueryOptions);
     $$(this.previewContainer).empty();
+    this.currentlyDisplayedResults = [];
     if (!results) {
       return;
     }
@@ -260,17 +222,16 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
     this.buildResultsPreview(results);
   }
 
-  private buildResultsPreview(results: IQueryResults) {
+  private async buildResultsPreview(results: IQueryResults) {
     const resultsContainer = this.buildResultsContainer();
     this.previewContainer.appendChild(resultsContainer);
     this.setupRenderer(resultsContainer);
-    this.buildResults(results).then(HTMLResult => {
-      if (!(HTMLResult.length > 0)) {
-        return;
-      }
-      this.updateResultPerRow(HTMLResult);
-      this.renderer.renderResults(HTMLResult, true, result => {});
-    });
+    const HTMLResult = await this.templateToHtml.buildResults(results, 'preview', this.currentlyDisplayedResults);
+    if (!(HTMLResult.length > 0)) {
+      return;
+    }
+    this.updateResultPerRow(HTMLResult);
+    this.renderer.renderResults(HTMLResult, true, result => {});
   }
 
   private updateResultPerRow(elements: HTMLElement[]) {

@@ -31,7 +31,7 @@ import { IInitializationParameters, IInitResult, Initialization } from '../Base/
 import { InitializationPlaceholder } from '../Base/InitializationPlaceholder';
 import { TemplateComponentOptions } from '../Base/TemplateComponentOptions';
 import { ResponsiveDefaultResultTemplate } from '../ResponsiveComponents/ResponsiveDefaultResultTemplate';
-import { ValidLayout } from '../ResultLayoutSelector/ValidLayout';
+import { ValidLayout, RendererValidLayout } from '../ResultLayoutSelector/ValidLayout';
 import { CoreHelpers } from '../Templates/CoreHelpers';
 import { DefaultRecommendationTemplate } from '../Templates/DefaultRecommendationTemplate';
 import { DefaultResultTemplate } from '../Templates/DefaultResultTemplate';
@@ -401,7 +401,7 @@ export class ResultList extends Component {
    * @param results the result set to build an array of HTMLElement from.
    */
   public buildResults(results: IQueryResults): Promise<HTMLElement[]> {
-    const layout = <ValidLayout>this.options.layout;
+    const layout = <RendererValidLayout>this.options.layout;
     return this.templateToHtml.buildResults(results, layout, this.currentlyDisplayedResults);
   }
 
@@ -411,7 +411,7 @@ export class ResultList extends Component {
    * @returns {HTMLElement}
    */
   public buildResult(result: IQueryResult): Promise<HTMLElement> {
-    const layout = <ValidLayout>this.options.layout;
+    const layout = <RendererValidLayout>this.options.layout;
     return this.templateToHtml.buildResult(result, layout, this.currentlyDisplayedResults);
   }
 
