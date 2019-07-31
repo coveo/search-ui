@@ -1035,7 +1035,7 @@ export class Facet extends Component {
 
   /**
    * Returns the endpoint for the facet.
-   * @returns {ISearchEndpoint} The endpoint for the Ffcet.
+   * @returns {ISearchEndpoint} The endpoint for the facet.
    */
   public getEndpoint(): ISearchEndpoint {
     return this.queryController.getEndpoint();

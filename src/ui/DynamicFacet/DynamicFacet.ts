@@ -28,7 +28,6 @@ import {
   IAnalyticsActionCause,
   IAnalyticsDynamicFacetMeta,
   analyticsActionCauseList,
-  IAnalyticsFacetMeta,
   AnalyticsDynamicFacetType
 } from '../Analytics/AnalyticsActionListMeta';
 import { IQueryOptions } from '../../controllers/QueryController';
@@ -37,6 +36,7 @@ import { QueryBuilder } from '../Base/QueryBuilder';
 import { IAutoLayoutAdjustableInsideFacetColumn } from '../SearchInterface/FacetColumnAutoLayoutAdjustment';
 import { DynamicFacetSearch } from '../DynamicFacetSearch/DynamicFacetSearch';
 import { ResultListUtils } from '../../utils/ResultListUtils';
+import { IQueryResults } from '../../rest/QueryResults';
 
 export interface IDynamicFacetOptions extends IResponsiveComponentOptions {
   id?: string;
@@ -164,9 +164,9 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
     /**
      * Whether to allow the end-user to expand and collapse this facet.
      *
-     * **Default:** `false`
+     * **Default:** `true`
      */
-    enableCollapse: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'Filtering' }),
+    enableCollapse: ComponentOptions.buildBooleanOption({ defaultValue: true, section: 'Filtering' }),
 
     /**
      * Whether to scroll back to the top of the page whenever the end-user interacts with a facet.
@@ -204,7 +204,7 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
      *
      * **Default:** `false`
      */
-    collapsedByDefault: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'Filtering' }),
+    collapsedByDefault: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'Filtering', depend: 'enableCollapse' }),
 
     /**
      * Whether to notify the [Breadcrumb]{@link Breadcrumb} component when toggling values in the facet.
@@ -248,17 +248,17 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
     preservePosition: ComponentOptions.buildBooleanOption({ defaultValue: true })
   };
 
-  private dynamicFacetQueryController: DynamicFacetQueryController;
   private includedAttributeId: string;
   private listenToQueryStateChange = true;
   private header: DynamicFacetHeader;
-  private isCollapsed: boolean;
 
   public dynamicFacetManager: DynamicFacetManager;
+  public dynamicFacetQueryController: DynamicFacetQueryController;
   public values: DynamicFacetValues;
   private search: DynamicFacetSearch;
   public position: number = null;
   public moreValuesAvailable = false;
+  public isCollapsed: boolean;
 
   /**
    * Creates a new `DynamicFacet` instance.
@@ -278,6 +278,8 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
     this.initComponentStateEvents();
 
     this.values = new DynamicFacetValues(this);
+
+    this.verifyCollapsingConfiguration();
     this.isCollapsed = this.options.enableCollapse && this.options.collapsedByDefault;
 
     ResponsiveDynamicFacets.init(this.root, this, this.options);
@@ -366,28 +368,26 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
   /**
    * Requests additional values.
    *
-   * Automatically triggers a query.
+   * Automatically triggers an isolated query.
    * @param additionalNumberOfValues The number of additional values to request. Minimum value is 1. Defaults to the [numberOfValues]{@link DynamicFacet.options.numberOfValues} option value.
    */
   public showMoreValues(additionalNumberOfValues = this.options.numberOfValues): void {
     this.ensureDom();
     this.logger.info('Show more values');
     this.dynamicFacetQueryController.increaseNumberOfValuesToRequest(additionalNumberOfValues);
-    this.triggerNewQuery();
-    this.logAnalyticsFacetShowMoreLess(analyticsActionCauseList.facetShowMore);
+    this.triggerNewIsolatedQuery(() => this.logAnalyticsFacetShowMoreLess(analyticsActionCauseList.dynamicFacetShowMore));
   }
 
   /**
    * Reduces the number of displayed facet values down to [numberOfValues]{@link DynamicFacet.options.numberOfValues}.
    *
-   * Automatically triggers a query.
+   * Automatically triggers an isolated query.
    */
   public showLessValues(): void {
     this.ensureDom();
     this.logger.info('Show less values');
     this.dynamicFacetQueryController.resetNumberOfValuesToRequest();
-    this.triggerNewQuery();
-    this.logAnalyticsFacetShowMoreLess(analyticsActionCauseList.facetShowLess);
+    this.triggerNewIsolatedQuery(() => this.logAnalyticsFacetShowMoreLess(analyticsActionCauseList.dynamicFacetShowLess));
   }
 
   /**
@@ -399,6 +399,9 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
    */
   public reset() {
     this.ensureDom();
+    if (!this.values.hasActiveValues) {
+      return;
+    }
     this.logger.info('Deselect all values');
     this.values.clearAll();
     this.values.render();
@@ -417,6 +420,12 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
    * Expands the facet, displaying all of its currently fetched values.
    */
   public expand() {
+    if (!this.options.enableCollapse) {
+      return this.logger.warn(`Calling expand() won't do anything on a facet that has the option "enableCollapse" set to "false"`);
+    }
+    if (!this.isCollapsed) {
+      return;
+    }
     this.ensureDom();
     this.logger.info('Expand facet values');
     this.isCollapsed = false;
@@ -427,6 +436,12 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
    * Collapses the facet, displaying only its currently selected values.
    */
   public collapse() {
+    if (!this.options.enableCollapse) {
+      return this.logger.warn(`Calling collapse() won't do anything on a facet that has the option "enableCollapse" set to "false"`);
+    }
+    if (this.isCollapsed) {
+      return;
+    }
     this.ensureDom();
     this.logger.info('Collapse facet values');
     this.isCollapsed = true;
@@ -509,8 +524,7 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
   private initQueryEvents() {
     this.bind.onRootElement(QueryEvents.duringQuery, () => this.ensureDom());
     this.bind.onRootElement(QueryEvents.doneBuildingQuery, (data: IDoneBuildingQueryEventArgs) => this.handleDoneBuildingQuery(data));
-    this.bind.onRootElement(QueryEvents.querySuccess, (data: IQuerySuccessEventArgs) => this.handleQuerySuccess(data));
-    this.bind.onRootElement(QueryEvents.deferredQuerySuccess, () => this.handleDeferredQuerySuccess());
+    this.bind.onRootElement(QueryEvents.querySuccess, (data: IQuerySuccessEventArgs) => this.handleQuerySuccess(data.results));
     this.bind.onRootElement(QueryEvents.queryError, () => this.onQueryResponse());
   }
 
@@ -550,19 +564,16 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
     this.putStateIntoAnalytics();
   }
 
-  private handleQuerySuccess(data: IQuerySuccessEventArgs) {
-    if (Utils.isNullOrUndefined(data.results.facets)) {
+  private handleQuerySuccess(results: IQueryResults) {
+    if (Utils.isNullOrUndefined(results.facets)) {
       return this.notImplementedError();
     }
 
-    const index = findIndex(data.results.facets, { facetId: this.options.id });
-    const response = index !== -1 ? data.results.facets[index] : null;
+    const index = findIndex(results.facets, { facetId: this.options.id });
+    const response = index !== -1 ? results.facets[index] : null;
     this.position = index + 1;
 
     this.onQueryResponse(response);
-  }
-
-  private handleDeferredQuerySuccess() {
     this.header.hideLoading();
     this.values.render();
     this.updateAppearance();
@@ -676,6 +687,10 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
     if (Utils.isUndefined(this.options.enableFacetSearch)) {
       $$(this.search.element).toggle(this.moreValuesAvailable);
     }
+
+    if (this.isCollapsed) {
+      $$(this.search.element).toggle(false);
+    }
   }
 
   public triggerNewQuery(beforeExecuteQuery?: () => void) {
@@ -684,6 +699,18 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
     const options: IQueryOptions = beforeExecuteQuery ? { beforeExecuteQuery } : { ignoreWarningSearchEvent: true };
 
     this.queryController.executeQuery(options);
+  }
+
+  public async triggerNewIsolatedQuery(beforeExecuteQuery?: () => void) {
+    this.beforeSendingQuery();
+    beforeExecuteQuery && beforeExecuteQuery();
+
+    try {
+      const results = await this.dynamicFacetQueryController.executeIsolatedQuery();
+      this.handleQuerySuccess(results);
+    } catch (e) {
+      this.header.hideLoading();
+    }
   }
 
   private beforeSendingQuery() {
@@ -697,16 +724,14 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
     this.updateAppearance();
   }
 
+  private verifyCollapsingConfiguration() {
+    if (this.options.collapsedByDefault && !this.options.enableCollapse) {
+      this.logger.warn('The "collapsedByDefault" option is "true" while the "enableCollapse" is "false"');
+    }
+  }
+
   private logAnalyticsFacetShowMoreLess(cause: IAnalyticsActionCause) {
-    this.usageAnalytics.logCustomEvent<IAnalyticsFacetMeta>(
-      cause,
-      {
-        facetId: this.options.id,
-        facetField: this.options.field.toString(),
-        facetTitle: this.options.title
-      },
-      this.element
-    );
+    this.usageAnalytics.logCustomEvent<IAnalyticsDynamicFacetMeta>(cause, this.basicAnalyticsFacetState, this.element);
   }
 }
 
