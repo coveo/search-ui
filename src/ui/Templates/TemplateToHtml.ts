@@ -6,6 +6,7 @@ import { Template } from './Template';
 import { SearchInterface } from '../../ui/SearchInterface/SearchInterface';
 import { ResultList } from '../ResultList/ResultList';
 import { RendererValidLayout } from '../ResultLayoutSelector/ValidLayout';
+import { pluck, sortBy, map } from 'underscore';
 
 export interface ITemplateToHtml {
   resultTemplate: Template;
@@ -16,29 +17,29 @@ export interface ITemplateToHtml {
 export class TemplateToHtml {
   constructor(public args: ITemplateToHtml) {}
 
-  /**
-   * Builds and returns an array of HTMLElement with the given result set.
-   * @param results the result set to build an array of HTMLElement from.
-   */
   public async buildResults(
     results: IQueryResults,
     layout: RendererValidLayout,
     currentlyDisplayedResults: IQueryResult[]
   ): Promise<HTMLElement[]> {
-    const resultsPromises = results.results.map((result: IQueryResult) => {
-      return this.buildResult(result, layout, currentlyDisplayedResults);
+    const res: { elem: HTMLElement; idx: number }[] = [];
+    const resultsPromises = map(results.results, (result: IQueryResult, index: number) => {
+      return this.buildResult(result, layout, currentlyDisplayedResults).then((resultElement: HTMLElement) => {
+        if (resultElement != null) {
+          res.push({ elem: resultElement, idx: index });
+        }
+        ResultList.resultCurrentlyBeingRendered = null;
+        return resultElement;
+      });
     });
 
-    const resultElement = await Promise.all(resultsPromises);
-    ResultList.resultCurrentlyBeingRendered = null;
-    return resultElement;
+    // We need to sort by the original index order, because in lazy loading mode, it's possible that results does not gets rendered
+    // in the correct order returned by the index, depending on the time it takes to load all the results component for a given result template
+    return Promise.all(resultsPromises).then(() => {
+      return pluck(sortBy(res, 'idx'), 'elem');
+    });
   }
 
-  /**
-   * Builds and returns an HTMLElement for the given result.
-   * @param result the result to build an HTMLElement from.
-   * @returns {HTMLElement}
-   */
   public async buildResult(
     result: IQueryResult,
     layout: RendererValidLayout,
