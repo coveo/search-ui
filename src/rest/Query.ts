@@ -18,11 +18,11 @@ export interface IFacetOptions {
 /**
  * The information about the user we'd like to check and its actions.
  */
-export interface IUserActions {
+export interface IUserActionsRequest {
   /**
    * The id of the user for which we should check the document views.
    */
-  tagViewsOfUser?: string;
+  tagViewsOfUser: string;
 }
 
 /**
@@ -267,5 +267,5 @@ export interface IQuery {
   /**
    * The information about the user we'd like to check and its actions.
    */
-  userActions?: IUserActions;
+  userActions?: IUserActionsRequest;
 }

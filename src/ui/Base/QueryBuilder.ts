@@ -2,7 +2,7 @@ import { ExpressionBuilder } from './ExpressionBuilder';
 import { IRankingFunction } from '../../rest/RankingFunction';
 import { IQueryFunction } from '../../rest/QueryFunction';
 import { IGroupByRequest } from '../../rest/GroupByRequest';
-import { IQuery, IFacetOptions, IUserActions } from '../../rest/Query';
+import { IQuery, IFacetOptions, IUserActionsRequest } from '../../rest/Query';
 import { QueryBuilderExpression } from './QueryBuilderExpression';
 import * as _ from 'underscore';
 import { Utils } from '../../utils/Utils';
@@ -323,7 +323,7 @@ export class QueryBuilder {
   /**
    * Specify the information about the user who's actions shall be checked in the query.
    */
-  public userActions: IUserActions = {};
+  public userActions: IUserActionsRequest;
   /**
    * Build the current content or state of the query builder and return a {@link IQuery}.
    *
@@ -534,14 +534,5 @@ export class QueryBuilder {
     }
 
     return this.facetRequests;
-  }
-
-  /**
-   * Set the userActions.tagViewsOfUser field of the query.
-   * This will modify the {@link QueryResult.isUserActionView} if the user saw/opened the result.
-   * @param user The ID of the user we'd like to check the document views.
-   */
-  public setUserOfUserActions(user: string) {
-    this.userActions = { tagViewsOfUser: user };
   }
 }
