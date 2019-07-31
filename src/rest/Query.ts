@@ -267,5 +267,5 @@ export interface IQuery {
   /**
    * The information about the user we'd like to check and its actions.
    */
-  userActions: IUserActions;
+  userActions?: IUserActions;
 }
