@@ -16,7 +16,7 @@ import { IQueryResult } from '../../rest/QueryResult';
 export interface IQuerySuggestPreview {
   numberOfPreviewResults?: number;
   previewWidth?: number;
-  suggestionWidth?: string;
+  suggestionWidth?: number;
   resultTemplate?: Template;
   headerText?: string;
   executeQueryDelay?: number;
@@ -74,11 +74,14 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
      */
     previewWidth: ComponentOptions.buildNumberOption(),
     /**
-     *  Width of the suggestion container (in pixels or percentage).
+     *  Width of the suggestion container (in pixels).
      *
-     * **Default value:** `33%`
+     *  If the value is set to `0`, the width will adjust to the longuest displayed querySuggestion
+     *
+     * **Default value:** `250`
+     * **Minimum value:** `0`
      */
-    suggestionWidth: ComponentOptions.buildStringOption({ defaultValue: '33%' }),
+    suggestionWidth: ComponentOptions.buildNumberOption({ defaultValue: 250, min: 0 }),
     /**
      *  The text to display at the top of the preview, which is followed by "`<SUGGESTION>`", where `<SUGGESTION>` is the hovered query suggestion.
      *
@@ -123,7 +126,7 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
       this.handleAfterComponentInit();
     });
     this.bind.onRootElement(OmniboxEvents.querySuggestLooseFocus, () => {
-      this.handleQuerySuggestLooseFocus();
+      this.handleFocusOut();
     });
   }
 
@@ -144,7 +147,7 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
     return new TemplateToHtml(templateToHtmlArgs);
   }
 
-  private handleQuerySuggestLooseFocus() {
+  private handleFocusOut() {
     clearTimeout(this.timer);
     this.timer = null;
     this.previousSuggestionHovered = null;
@@ -162,8 +165,7 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
     if (!this.options.suggestionWidth) {
       return;
     }
-    container.style.minWidth = this.options.suggestionWidth;
-    container.style.maxWidth = this.options.suggestionWidth;
+    container.style.width = `${this.options.suggestionWidth}px`;
   }
 
   private handleAfterComponentInit() {
@@ -178,8 +180,8 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
   }
 
   private buildPreviewHeader(suggestion: string) {
-    const text = $$('span', {}, `${this.options.headerText} "${suggestion}"`).el;
-    const header = $$('div', { className: 'coveo-preview-header' }, text).el;
+    const text = `${this.options.headerText} "${suggestion}"`;
+    const header = $$('h4', { className: 'coveo-preview-header' }, text).el;
     this.previewContainer.appendChild(header);
   }
 
@@ -211,21 +213,20 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
     const previousQueryOptions = this.queryController.getLastQuery();
     previousQueryOptions.q = suggestion;
     previousQueryOptions.numberOfResults = this.options.numberOfPreviewResults;
-    var results = await this.queryController.getEndpoint().search(previousQueryOptions);
+    const results = await this.queryController.getEndpoint().search(previousQueryOptions);
     $$(this.previewContainer).empty();
     this.currentlyDisplayedResults = [];
     if (!results) {
       return;
     }
-    this.addImage(results);
     this.buildPreviewHeader(suggestion);
     this.buildResultsPreview(results);
   }
 
   private async buildResultsPreview(results: IQueryResults) {
-    const resultsContainer = this.buildResultsContainer();
-    this.previewContainer.appendChild(resultsContainer);
-    this.setupRenderer(resultsContainer);
+    const builtResults = this.buildResultsContainer();
+    this.previewContainer.appendChild(builtResults);
+    this.setupRenderer(builtResults);
     const HTMLResult = await this.templateToHtml.buildResults(results, 'preview', this.currentlyDisplayedResults);
     if (!(HTMLResult.length > 0)) {
       return;
@@ -235,24 +236,17 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
   }
 
   private updateResultPerRow(elements: HTMLElement[]) {
-    let resultAvailibleSpace = '33%';
+    let resultAvailableSpace = '33%';
     if (elements.length === 4) {
-      resultAvailibleSpace = '50%';
+      resultAvailableSpace = '50%';
     }
     elements.forEach(element => {
-      this.updateFlexCSS(element, resultAvailibleSpace);
+      this.updateFlexCSS(element, resultAvailableSpace);
     });
   }
 
   private updateFlexCSS(element: HTMLElement, value: string) {
     element.style.flex = `0 0 ${value}`;
-  }
-
-  //Delete when creating the PR
-  private addImage(results: IQueryResults) {
-    results.results.forEach(result => {
-      result.raw['ccimage'] = 'https://img.bbystatic.com/BestBuy_US/images/products/5410/5410701_sa.jpg';
-    });
   }
 
   private setupRenderer(resultsContainer: HTMLElement) {

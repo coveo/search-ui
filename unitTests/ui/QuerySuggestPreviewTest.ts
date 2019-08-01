@@ -107,13 +107,12 @@ export function QuerySuggestPreviewTest() {
       });
 
       it('suggestionWidth change the width of the suggestion container', () => {
-        const suggestionWidth = '250px';
+        const suggestionWidth = 250;
         setupQuerySuggestPreview({ suggestionWidth });
         setupSuggestion();
         triggerQuerySuggestHoverAndPassTime();
         const suggestionContainerById = $$(suggestionContainer.el).find('.coveo-magicbox-suggestions');
-        expect(suggestionContainerById.style.minWidth).toBe(suggestionWidth);
-        expect(suggestionContainerById.style.maxWidth).toBe(suggestionWidth);
+        expect(suggestionContainerById.style.width).toBe(`${suggestionWidth}px`);
       });
 
       it('headerText change the text in the header of the preview', done => {
@@ -128,7 +127,7 @@ export function QuerySuggestPreviewTest() {
         setupSuggestion();
         triggerQuerySuggestHover(suggestion);
         setTimeout(() => {
-          const previewContainer = $$(suggestionContainer.el).find('.coveo-preview-header > span');
+          const previewContainer = $$(suggestionContainer.el).find('.coveo-preview-header');
           expect(previewContainer.innerText).toBe(`${headerText} "${suggestion}"`);
           done();
         }, test.cmp.options.executeQueryDelay);
