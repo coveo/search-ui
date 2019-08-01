@@ -1,7 +1,7 @@
 import 'styling/_Result';
 import 'styling/_ResultFrame';
 import 'styling/_ResultList';
-import { chain, compact, contains, each, flatten, map, pluck, sortBy, unique, without } from 'underscore';
+import { chain, compact, contains, each, flatten, map, unique, without } from 'underscore';
 import {
   IBuildingQueryEventArgs,
   IDuringQueryEventArgs,
@@ -22,7 +22,6 @@ import { IQueryResults } from '../../rest/QueryResults';
 import { DeviceUtils } from '../../utils/DeviceUtils';
 import { $$, Doc, Win } from '../../utils/Dom';
 import { DomUtils } from '../../utils/DomUtils';
-import { QueryUtils } from '../../utils/QueryUtils';
 import { Utils } from '../../utils/Utils';
 import { analyticsActionCauseList, IAnalyticsNoMeta } from '../Analytics/AnalyticsActionListMeta';
 import { Component } from '../Base/Component';
@@ -47,6 +46,7 @@ import { ResultListTableRenderer } from './ResultListTableRenderer';
 import ResultLayoutSelectorModule = require('../ResultLayoutSelector/ResultLayoutSelector');
 import { IResultListOptions } from './ResultListOptions';
 import { ResultListUtils } from '../../utils/ResultListUtils';
+import { TemplateToHtml, ITemplateToHtml } from '../Templates/TemplateToHtml';
 
 CoreHelpers.exportAllHelpersGlobally(window['Coveo']);
 
@@ -401,22 +401,8 @@ export class ResultList extends Component {
    * @param results the result set to build an array of HTMLElement from.
    */
   public buildResults(results: IQueryResults): Promise<HTMLElement[]> {
-    const res: { elem: HTMLElement; idx: number }[] = [];
-    const resultsPromises = map(results.results, (result: IQueryResult, index: number) => {
-      return this.buildResult(result).then((resultElement: HTMLElement) => {
-        if (resultElement != null) {
-          res.push({ elem: resultElement, idx: index });
-        }
-        ResultList.resultCurrentlyBeingRendered = null;
-        return resultElement;
-      });
-    });
-
-    // We need to sort by the original index order, because in lazy loading mode, it's possible that results does not gets rendered
-    // in the correct order returned by the index, depending on the time it takes to load all the results component for a given result template
-    return Promise.all(resultsPromises).then(() => {
-      return pluck(sortBy(res, 'idx'), 'elem');
-    });
+    const layout = <ValidLayout>this.options.layout;
+    return this.templateToHtml.buildResults(results, layout, this.currentlyDisplayedResults);
   }
 
   /**
@@ -425,26 +411,8 @@ export class ResultList extends Component {
    * @returns {HTMLElement}
    */
   public buildResult(result: IQueryResult): Promise<HTMLElement> {
-    Assert.exists(result);
-    QueryUtils.setStateObjectOnQueryResult(this.queryStateModel.get(), result);
-    QueryUtils.setSearchInterfaceObjectOnQueryResult(this.searchInterface, result);
-    ResultList.resultCurrentlyBeingRendered = result;
-    return this.options.resultTemplate
-      .instantiateToElement(result, {
-        wrapInDiv: true,
-        checkCondition: true,
-        currentLayout: <ValidLayout>this.options.layout,
-        responsiveComponents: this.searchInterface.responsiveComponents
-      })
-      .then((resultElement: HTMLElement) => {
-        if (resultElement != null) {
-          Component.bindResultToElement(resultElement, result);
-        }
-        this.currentlyDisplayedResults.push(result);
-        return this.autoCreateComponentsInsideResult(resultElement, result).initResult.then(() => {
-          return resultElement;
-        });
-      });
+    const layout = <ValidLayout>this.options.layout;
+    return this.templateToHtml.buildResult(result, layout, this.currentlyDisplayedResults);
   }
 
   /**
@@ -508,6 +476,15 @@ export class ResultList extends Component {
     return this.fetchingMoreResults;
   }
 
+  public get templateToHtml() {
+    const templateToHtmlArgs: ITemplateToHtml = {
+      resultTemplate: this.options.resultTemplate,
+      searchInterface: this.searchInterface,
+      queryStateModel: this.queryStateModel
+    };
+    return new TemplateToHtml(templateToHtmlArgs);
+  }
+
   /**
    * Gets the list of currently displayed result.
    * @returns {IQueryResult[]}
@@ -547,8 +524,7 @@ export class ResultList extends Component {
   }
 
   protected autoCreateComponentsInsideResult(element: HTMLElement, result: IQueryResult): IInitResult {
-    Assert.exists(element);
-    return Initialization.automaticallyCreateComponentsInsideResult(element, result);
+    return this.templateToHtml.autoCreateComponentsInsideResult(element, result);
   }
 
   protected triggerNewResultDisplayed(result: IQueryResult, resultElement: HTMLElement) {
