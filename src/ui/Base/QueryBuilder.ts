@@ -321,7 +321,7 @@ export class QueryBuilder {
    */
   public allowQueriesWithoutKeywords: boolean;
   /**
-   * Specify the information about the user who's actions shall be checked in the query.
+   * A request to retrieve user actions in the query response.
    */
   public userActions: IUserActionsRequest;
   /**

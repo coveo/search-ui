@@ -107,7 +107,7 @@ export interface IQueryResult {
   isRecommendation: boolean;
 
   /**
-   * Contains a value that specifies whether the result was seen by the user targeted in the query.
+   * Whether the result item was previously viewed by the user specified in the [userActions]{@link IQuery.userActions} request of the query.
    */
   isUserActionView?: boolean;
 
