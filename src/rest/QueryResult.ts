@@ -105,6 +105,12 @@ export interface IQueryResult {
    * See also [Coveo Machine Learning](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=177).
    */
   isRecommendation: boolean;
+
+  /**
+   * Whether the result item was previously viewed by the user specified in the [userActions]{@link IQuery.userActions} request of the query.
+   */
+  isUserActionView?: boolean;
+
   /**
    * Specifies whether the result is a Featured Result in the Coveo Query Pipeline (see [Managing Query Pipeline Featured Results](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=126)).
    */
