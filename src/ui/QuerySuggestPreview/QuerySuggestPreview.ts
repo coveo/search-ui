@@ -23,21 +23,24 @@ export interface IQuerySuggestPreview {
 }
 
 /**
- * The `QuerySuggestPreview` component allows you to preview the top query result items of hovered query suggestions.
+ * This component renders a preview of the top query results matching the currently focused query suggestion in the search box.
  *
- * This component requires a working [`querySuggest`]{@link Omnibox.options.enableQuerySuggestAddon} component in the corresponding search box,
- * and you need to provide a [result template](https://developers.coveo.com/x/aIGfAQ) for the preview.
+ * As such, this component only works when an [`Omnibox`]{@link Omnibox} whose [`enableQuerySuggestAddon`]{@link Omnibox.options.enableQuerySuggestAddon} option is set to `true` is present in the search interface.
+ *
+ * Moreover, this component requires at least one [result template](https://docs.coveo.com/en/413/) in its markup configuration to be able to render previews.
  *
  * **Exemple**
  * ```
- *  <div class="CoveoQuerySuggestPreview">
- *    <script class="result-template" type="text/x-underscore">
- *      <span>
- *        <a class='CoveoResultLink'></a>
- *      </span>
+ *   <div class="CoveoQuerySuggestPreview">
+ *    <script class="result-template" type="text/html">
+ *      <div class="coveo-result-frame">
+ *        <a class="CoveoResultLink"></a>
+ *      </div>
  *    </script>
- *  </div>
+ *   </div>
  * ```
+ *
+ * See [Providing Query Suggestion Result Previews](https://docs.coveo.com/en/340/#providing-query-suggestion-result-previews).
  */
 export class QuerySuggestPreview extends Component implements IComponentBindings {
   static ID = 'QuerySuggestPreview';
@@ -57,9 +60,9 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
     /**
      * The maximum number of query results to render in the preview.
      *
-     * **Minimum value:** `1`
-     * **Maximum value:** `6`
-     * **Default value:** `3`
+     * **Minimum:** `1`
+     * **Maximum:** `6`
+     * **Default:** `3`
      */
     numberOfPreviewResults: ComponentOptions.buildNumberOption({
       defaultValue: 3,
@@ -67,31 +70,31 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
       max: 6
     }),
     /**
-     * Width of the preview container (in pixels).
+     * The width of the preview container (in pixels).
      *
      * If this option is `undefined` or lower than the remaning space left by the suggestion,
-     * the component takes all the space left over by the query suggestions.
+     * the component takes all the space left by the query suggestions.
      */
     previewWidth: ComponentOptions.buildNumberOption(),
     /**
-     *  Width of the suggestion container (in pixels).
+     *  The width of the suggestion container (in pixels).
      *
      *  If the value is set to `0`, the width will adjust to the longuest displayed querySuggestion
      *
-     * **Default value:** `250`
-     * **Minimum value:** `0`
+     * **Default:** `250`
+     * **Minimum:** `0`
      */
     suggestionWidth: ComponentOptions.buildNumberOption({ defaultValue: 250, min: 0 }),
     /**
      *  The text to display at the top of the preview, which is followed by "`<SUGGESTION>`", where `<SUGGESTION>` is the hovered query suggestion.
      *
-     * **Default value:** `Query result items for`
+     * **Default:** The localized string `Query result items for`
      */
     headerText: ComponentOptions.buildLocalizedStringOption({ defaultValue: 'QuerySuggestPreview' }),
     /**
-     *  The hovering time (in ms) required on a query suggestion before requesting preview items.
+     *  The amount of focus time (in milliseconds) required on a query suggestion before requesting a preview of its top results.
      *
-     * **Default value:** `200`
+     * **Default:** `200`
      */
     executeQueryDelay: ComponentOptions.buildNumberOption({ defaultValue: 200 })
   };
@@ -115,9 +118,8 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
 
     if (!this.options.resultTemplate) {
       this.logger.warn(
-        `Option "resultTemplate" is *REQUIRED* on the component "QuerySuggestPreview". The component or the search page might *NOT WORK PROPERLY*`,
-        `Check the following URL to create your result template`,
-        `https://developers.coveo.com/x/aIGfAQ`
+        `Specifying a result template is required for the 'QuerySuggestPreview' component to work properly. See `,
+        `https://docs.coveo.com/340/#providing-query-suggestion-result-previews`
       );
     }
 
@@ -125,7 +127,7 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
     this.bind.onRootElement(OmniboxEvents.querySuggestRendered, () => {
       this.handleAfterComponentInit();
     });
-    this.bind.onRootElement(OmniboxEvents.querySuggestLooseFocus, () => {
+    this.bind.onRootElement(OmniboxEvents.querySuggestLoseFocus, () => {
       this.handleFocusOut();
     });
   }
@@ -251,7 +253,7 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
 
   private setupRenderer(resultsContainer: HTMLElement) {
     const rendererOption: IResultListOptions = {
-      resultContainer: resultsContainer
+      resultsContainer
     };
     const initParameters: IInitializationParameters = {
       options: this.searchInterface.options.originalOptionsObject,

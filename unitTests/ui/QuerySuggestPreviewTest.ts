@@ -225,7 +225,7 @@ export function QuerySuggestPreviewTest() {
         triggerQuerySuggestHover('test');
         setTimeout(() => {
           expect(test.cmp.displayedResults.length).toEqual(test.cmp.options.numberOfPreviewResults);
-          $$(test.cmp.root).trigger(OmniboxEvents.querySuggestLooseFocus);
+          $$(test.cmp.root).trigger(OmniboxEvents.querySuggestLoseFocus);
           expect(test.cmp.displayedResults).toEqual([]);
           done();
         }, test.cmp.options.executeQueryDelay);

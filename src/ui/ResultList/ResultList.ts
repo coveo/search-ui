@@ -110,7 +110,7 @@ export class ResultList extends Component {
      * If you specify no value for this option, a `div` element will be dynamically created and appended to the result
      * list. This element will then be used as a result container.
      */
-    resultContainer: ComponentOptions.buildChildHtmlElementOption(),
+    resultsContainer: ComponentOptions.buildChildHtmlElementOption(),
     resultTemplate: TemplateComponentOptions.buildTemplateOption({ defaultFunction: ResultList.getDefaultTemplate }),
 
     /**
@@ -136,7 +136,7 @@ export class ResultList extends Component {
      * Default value is the value of the [`resultContainer`]{@link ResultList.options.resultContainer} option.
      */
     waitAnimationContainer: ComponentOptions.buildChildHtmlElementOption({
-      postProcessing: (value, options: IResultListOptions) => value || options.resultContainer
+      postProcessing: (value, options: IResultListOptions) => value || options.resultsContainer
     }),
 
     /**
@@ -329,7 +329,7 @@ export class ResultList extends Component {
     this.bind.onQueryState(MODEL_EVENTS.CHANGE_ONE, QUERY_STATE_ATTRIBUTES.FIRST, () => this.handlePageChanged());
 
     this.resultContainer = this.initResultContainer();
-    Assert.exists(this.options.resultContainer);
+    Assert.exists(this.options.resultsContainer);
 
     this.initWaitAnimationContainer();
     Assert.exists(this.options.waitAnimationContainer);
@@ -784,16 +784,16 @@ export class ResultList extends Component {
   }
 
   private initResultContainer(): ResultContainer {
-    if (!this.options.resultContainer) {
+    if (!this.options.resultsContainer) {
       const elemType = this.options.layout === 'table' ? 'table' : 'div';
-      this.options.resultContainer = $$(elemType, { className: 'coveo-result-list-container' }).el;
+      this.options.resultsContainer = $$(elemType, { className: 'coveo-result-list-container' }).el;
       this.initResultContainerAddToDom();
     }
-    return new ResultContainer(this.options.resultContainer, this.searchInterface);
+    return new ResultContainer(this.options.resultsContainer, this.searchInterface);
   }
 
   protected initResultContainerAddToDom() {
-    this.element.appendChild(this.options.resultContainer);
+    this.element.appendChild(this.options.resultsContainer);
   }
 
   private initWaitAnimationContainer() {
