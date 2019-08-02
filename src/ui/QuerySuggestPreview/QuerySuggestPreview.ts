@@ -226,22 +226,19 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
   }
 
   private async buildResultsPreview(results: IQueryResults) {
-    const builtResults = this.buildResultsContainer();
-    this.previewContainer.appendChild(builtResults);
-    this.setupRenderer(builtResults);
-    const HTMLResult = await this.templateToHtml.buildResults(results, 'preview', this.currentlyDisplayedResults);
-    if (!(HTMLResult.length > 0)) {
+    const resultsContainer = this.buildResultsContainer();
+    this.previewContainer.appendChild(resultsContainer);
+    this.setupRenderer(resultsContainer);
+    const buildResults = await this.templateToHtml.buildResults(results, 'preview', this.currentlyDisplayedResults);
+    if (!(buildResults.length > 0)) {
       return;
     }
-    this.updateResultPerRow(HTMLResult);
-    this.renderer.renderResults(HTMLResult, true, result => {});
+    this.updateResultPerRow(buildResults);
+    this.renderer.renderResults(buildResults, true, result => {});
   }
 
   private updateResultPerRow(elements: HTMLElement[]) {
-    let resultAvailableSpace = '33%';
-    if (elements.length === 4) {
-      resultAvailableSpace = '50%';
-    }
+    const resultAvailableSpace = elements.length === 4 ? '50%' : '33%';
     elements.forEach(element => {
       this.updateFlexCSS(element, resultAvailableSpace);
     });
