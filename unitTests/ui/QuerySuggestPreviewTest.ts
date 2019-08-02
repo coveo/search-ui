@@ -198,7 +198,7 @@ export function QuerySuggestPreviewTest() {
     });
 
     describe('currentlyDisplayedResults', () => {
-      it('currentlyDisplayedResults get populated by rendered results', done => {
+      it('get populated by rendered results', done => {
         setupQuerySuggestPreview();
         const fakeResults = FakeResults.createFakeResults(test.cmp.options.numberOfPreviewResults);
         setupSuggestion();
@@ -209,7 +209,7 @@ export function QuerySuggestPreviewTest() {
         }, test.cmp.options.executeQueryDelay);
       });
 
-      it('currentlyDisplayedResults get emptied when they aare no result to be rendered', done => {
+      it('get emptied when they aare no result to be rendered', done => {
         setupQuerySuggestPreview();
         const fakeResults = FakeResults.createFakeResults(0);
         setupSuggestion();
@@ -220,7 +220,7 @@ export function QuerySuggestPreviewTest() {
         }, test.cmp.options.executeQueryDelay);
       });
 
-      it('currentlyDisplayedResults get emptied when a querySuggest loose focus', done => {
+      it('get emptied when a querySuggest loose focus', done => {
         setupQuerySuggestPreview();
         setupSuggestion();
         triggerQuerySuggestHover('test');

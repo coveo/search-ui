@@ -2,12 +2,15 @@ import { compact, filter, map, reduceRight, last } from 'underscore';
 import { IAnalyticsOmniboxSuggestionMeta } from '../Analytics/AnalyticsActionListMeta';
 
 export class OmniboxAnalytics {
-  public partialQueries: string[] = [];
+  public partialQueries: string[];
   public suggestionRanking: number;
   public suggestions: string[];
   public partialQuery: string;
 
-  constructor() {}
+  constructor() {
+    this.partialQueries = [];
+    this.suggestions = [];
+  }
 
   public buildCustomDataForPartialQueries(index?: number, suggestions?: string[]): IAnalyticsOmniboxSuggestionMeta {
     this.partialQuery = last(this.partialQueries);
