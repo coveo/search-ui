@@ -23,7 +23,6 @@ export function OmniboxTest() {
       }
       testEnv = new Mock.MockEnvironmentBuilder();
       testEnv.searchInterface.getOmniboxAnalytics = jasmine.createSpy('omniboxAnalytics').and.returnValue(new OmniboxAnalytics()) as any;
-      //test = Mock.basicComponentSetup<Omnibox>(Omnibox);
       test = Mock.advancedComponentSetup<Omnibox>(Omnibox, new Mock.AdvancedComponentSetupOptions(null, {}, env => testEnv));
       $$(test.env.root).trigger(InitializationEvents.afterComponentsInitialization);
     });
@@ -33,8 +32,17 @@ export function OmniboxTest() {
       Simulate.removeJQuery();
     });
 
+    function initOmniboxWithTestEnv(options: IOmniboxOptions) {
+      test = Mock.advancedComponentSetup<Omnibox>(
+        Omnibox,
+        new Mock.AdvancedComponentSetupOptions($$('div').el, options, env => {
+          return testEnv;
+        })
+      );
+    }
+
     function initOmnibox(options: IOmniboxOptions) {
-      test = Mock.advancedComponentSetup<Omnibox>(Omnibox, new Mock.AdvancedComponentSetupOptions(null, options, env => testEnv));
+      test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, options);
     }
 
     describe('on submit', () => {
@@ -77,18 +85,18 @@ export function OmniboxTest() {
 
     describe('exposes options', () => {
       it('inline should be passed down to magic box', () => {
-        initOmnibox({
+        initOmniboxWithTestEnv({
           inline: true
         });
         expect(test.cmp.magicBox.options.inline).toBe(true);
-        initOmnibox({
+        initOmniboxWithTestEnv({
           inline: false
         });
         expect(test.cmp.magicBox.options.inline).toBe(false);
       });
 
       it('enableSearchAsYouType should allow to to trigger a query after a delay', function(done) {
-        initOmnibox({
+        initOmniboxWithTestEnv({
           enableSearchAsYouType: true,
           enableQuerySuggestAddon: false
         });
@@ -102,7 +110,7 @@ export function OmniboxTest() {
       });
 
       it('enableQuerySyntax to false should add the correct class on the element', () => {
-        initOmnibox({
+        initOmniboxWithTestEnv({
           enableQuerySyntax: false
         });
 
@@ -198,7 +206,7 @@ export function OmniboxTest() {
       });
 
       it('enableFieldAddon should create an addon component', () => {
-        initOmnibox({
+        initOmniboxWithTestEnv({
           enableFieldAddon: true
         });
 
@@ -216,7 +224,7 @@ export function OmniboxTest() {
       });
 
       it('minCharForSuggestions should be set', () => {
-        initOmnibox({
+        initOmniboxWithTestEnv({
           querySuggestCharacterThreshold: 5
         });
         expect(test.cmp.options.querySuggestCharacterThreshold).toBe(5);
@@ -273,7 +281,7 @@ export function OmniboxTest() {
       });
 
       it('listOfFields should show specified fields when field addon is enabled', done => {
-        initOmnibox({
+        initOmniboxWithTestEnv({
           enableFieldAddon: true,
           listOfFields: ['@field', '@another_field']
         });
@@ -306,7 +314,7 @@ export function OmniboxTest() {
       });
 
       it('enableQuerySuggestAddon should create an addon component', () => {
-        initOmnibox({
+        initOmniboxWithTestEnv({
           enableQuerySuggestAddon: true
         });
 
@@ -316,7 +324,7 @@ export function OmniboxTest() {
       });
 
       it('enableQueryExtensionAddon should create an addon component', () => {
-        initOmnibox({
+        initOmniboxWithTestEnv({
           enableQueryExtensionAddon: true
         });
 
@@ -326,21 +334,21 @@ export function OmniboxTest() {
       });
 
       it('placeholder allow to set a placeholder in the input', () => {
-        initOmnibox({
+        initOmniboxWithTestEnv({
           placeholder: 'trololo'
         });
         expect(test.cmp.getInput().placeholder).toBe('trololo');
       });
 
       it('placeholder should use translated version', () => {
-        initOmnibox({
+        initOmniboxWithTestEnv({
           placeholder: 'SearchFor'
         });
         expect(test.cmp.getInput().placeholder).toBe(l('SearchFor'));
       });
 
       it('enableSearchAsYouType + enableQuerySuggestAddon should send correct analytics events', () => {
-        initOmnibox({
+        initOmniboxWithTestEnv({
           enableQuerySuggestAddon: true,
           enableSearchAsYouType: true
         });
@@ -382,7 +390,7 @@ export function OmniboxTest() {
       });
 
       it('triggerQueryOnClear should trigger a query on clear', () => {
-        initOmnibox({
+        initOmniboxWithTestEnv({
           triggerQueryOnClear: true
         });
         test.cmp.magicBox.clear();
@@ -390,7 +398,7 @@ export function OmniboxTest() {
       });
 
       it('triggerQueryOnClear should not trigger a query on clear if false', () => {
-        initOmnibox({
+        initOmniboxWithTestEnv({
           triggerQueryOnClear: false
         });
         test.cmp.magicBox.clear();
@@ -432,7 +440,7 @@ export function OmniboxTest() {
     });
 
     it('should execute query automatically when confidence level is > 0.8 on suggestion', done => {
-      initOmnibox({
+      initOmniboxWithTestEnv({
         enableSearchAsYouType: true,
         enableQuerySuggestAddon: true
       });
@@ -452,7 +460,7 @@ export function OmniboxTest() {
     });
 
     it('should execute query automatically when confidence level is = 0.8 on suggestion', done => {
-      initOmnibox({
+      initOmniboxWithTestEnv({
         enableSearchAsYouType: true,
         enableQuerySuggestAddon: true
       });
@@ -472,7 +480,7 @@ export function OmniboxTest() {
     });
 
     it('should not execute query automatically when confidence level is < 0.8 on suggestion', done => {
-      initOmnibox({
+      initOmniboxWithTestEnv({
         enableSearchAsYouType: true,
         enableQuerySuggestAddon: true
       });
@@ -492,7 +500,7 @@ export function OmniboxTest() {
     });
 
     it('should execute query automatically when confidence level is not provided and the suggestion does not match the typed text', done => {
-      initOmnibox({
+      initOmniboxWithTestEnv({
         enableSearchAsYouType: true,
         enableQuerySuggestAddon: true
       });
@@ -511,7 +519,7 @@ export function OmniboxTest() {
     });
 
     it('should not execute query automatically when confidence level is not provided but the suggestion match the typed text', done => {
-      initOmnibox({
+      initOmniboxWithTestEnv({
         enableSearchAsYouType: true,
         enableQuerySuggestAddon: true
       });
