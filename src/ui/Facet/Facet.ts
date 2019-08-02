@@ -57,6 +57,10 @@ import { IResponsiveComponentOptions } from '../ResponsiveComponents/ResponsiveC
 import { ResponsiveFacetOptions } from '../ResponsiveComponents/ResponsiveFacetOptions';
 import { DependsOnManager, IDependentFacet } from '../../utils/DependsOnManager';
 import { ComponentsTypes } from '../../utils/ComponentsTypes';
+import { FacetSortCriterion } from './FacetSortCriterion';
+
+type ComputedFieldOperation = 'sum' | 'average' | 'minimum' | 'maximum';
+type ComputedFieldFormat = 'c0' | 'n0' | 'n2';
 
 export interface IFacetOptions extends IResponsiveComponentOptions {
   title?: string;
@@ -248,16 +252,7 @@ export class Facet extends Component {
      *
      * Default value is `occurrences,score,alphaascending,alphadescending`.
      */
-    availableSorts: ComponentOptions.buildListOption<
-      | 'occurrences'
-      | 'score'
-      | 'alphaascending'
-      | 'alphadescending'
-      | 'computedfieldascending'
-      | 'computedfielddescending'
-      | 'chisquare'
-      | 'nosort'
-    >({
+    availableSorts: ComponentOptions.buildListOption<FacetSortCriterion>({
       defaultValue: ['occurrences', 'score', 'alphaascending', 'alphadescending'],
       section: 'Sorting',
       depend: 'enableSettings',
@@ -280,9 +275,9 @@ export class Facet extends Component {
      * Default value is the first sort criteria specified in the [`availableSorts`]{@link Facet.options.availableSorts}
      * option, or `occurrences` if no sort criteria is specified.
      */
-    sortCriteria: ComponentOptions.buildStringOption({
+    sortCriteria: ComponentOptions.buildStringOption<FacetSortCriterion>({
       postProcessing: (value, options: IFacetOptions) =>
-        value || (options.availableSorts.length > 0 ? options.availableSorts[0] : 'occurrences'),
+        value || (options.availableSorts.length > 0 ? (options.availableSorts[0] as FacetSortCriterion) : 'occurrences'),
       section: 'Sorting'
     }),
     /**
@@ -474,7 +469,10 @@ export class Facet extends Component {
      * Default value is `sum`.
      * @notSupportedIn salesforcefree
      */
-    computedFieldOperation: ComponentOptions.buildStringOption({ defaultValue: 'sum', section: 'ComputedField' }),
+    computedFieldOperation: ComponentOptions.buildStringOption<ComputedFieldOperation>({
+      defaultValue: 'sum',
+      section: 'ComputedField'
+    }),
     /**
      * Specifies how to format the values resulting from a
      * [`computedFieldOperation`]{@link Facet.options.computedFieldOperation}.
@@ -490,7 +488,10 @@ export class Facet extends Component {
      * Default value is `"c0"`.
      * @notSupportedIn salesforcefree
      */
-    computedFieldFormat: ComponentOptions.buildStringOption({ defaultValue: 'c0', section: 'ComputedField' }),
+    computedFieldFormat: ComponentOptions.buildStringOption<ComputedFieldFormat>({
+      defaultValue: 'c0',
+      section: 'ComputedField'
+    }),
     /**
      * Specifies what the caption of the [`computedField`]{@link Facet.options.computedField} should be in the facet
      * **Settings** menu for sorting.
@@ -1034,7 +1035,7 @@ export class Facet extends Component {
 
   /**
    * Returns the endpoint for the facet.
-   * @returns {ISearchEndpoint} The endpoint for the Ffcet.
+   * @returns {ISearchEndpoint} The endpoint for the facet.
    */
   public getEndpoint(): ISearchEndpoint {
     return this.queryController.getEndpoint();
@@ -1220,7 +1221,6 @@ export class Facet extends Component {
     Assert.exists(data);
     this.unfadeInactiveValuesInMainList();
     this.hideWaitingAnimation();
-    this.dependsOnManager.updateVisibilityBasedOnDependsOn();
     const groupByResult = data.results.groupByResults[this.facetQueryController.lastGroupByRequestIndex];
     this.facetQueryController.lastGroupByResult = groupByResult;
     // Two corner case to handle regarding the "sticky" aspect of facets :
@@ -1300,6 +1300,7 @@ export class Facet extends Component {
   protected updateAppearanceDependingOnState() {
     $$(this.element).toggleClass('coveo-active', this.values.hasSelectedOrExcludedValues());
     $$(this.element).toggleClass('coveo-facet-empty', !this.isAnyValueCurrentlyDisplayed());
+    this.dependsOnManager.updateVisibilityBasedOnDependsOn();
     $$(this.facetHeader.eraserElement).toggleClass('coveo-facet-header-eraser-visible', this.values.hasSelectedOrExcludedValues());
   }
 
@@ -1521,12 +1522,19 @@ export class Facet extends Component {
   private initDependsOnManager() {
     const facetInfo: IDependentFacet = {
       reset: () => this.reset(),
+      toogleDependentFacet: dependentFacet => this.toogleDependentFacet(dependentFacet),
       element: this.element,
+      root: this.root,
       dependsOn: this.options.dependsOn,
+      id: this.options.id,
       queryStateModel: this.queryStateModel,
       bind: this.bind
     };
     this.dependsOnManager = new DependsOnManager(facetInfo);
+  }
+
+  private toogleDependentFacet(dependentFacet: Component) {
+    this.getSelectedValues().length ? dependentFacet.enable() : dependentFacet.disable();
   }
 
   private dependsOnUpdateParentDisplayValue() {

@@ -1349,6 +1349,32 @@ export var analyticsActionCauseList = {
     type: 'dynamicFacet'
   },
   /**
+   * Identifies the search event that gets logged when the **Show more** button of the DynamicFacet is selected.
+   *
+   * `actionCause`: `'dynamicFacetShowMore'`
+   * `actionType`: `'dynamicFacet'`
+   *
+   * The required properties of an [`IAnalyticsDynamicFacetMeta`](@link IAnalyticsDynamicFacetMeta) object are added as custom data
+   * when logging a usage analytics event matching this `actionCause`/`actionType`.
+   */
+  dynamicFacetShowMore: <IAnalyticsActionCause>{
+    name: 'dynamicFacetShowMore',
+    type: 'dynamicFacet'
+  },
+  /**
+   * Identifies the search event that gets logged when the **Show less** button of the DynamicFacet is selected.
+   *
+   * `actionCause`: `'dynamicFacetShowLess'`
+   * `actionType`: `'dynamicFacet'`
+   *
+   * The required properties of an [`IAnalyticsDynamicFacetMeta`](@link IAnalyticsDynamicFacetMeta) object are added as custom data
+   * when logging a usage analytics event matching this `actionCause`/`actionType`.
+   */
+  dynamicFacetShowLess: <IAnalyticsActionCause>{
+    name: 'dynamicFacetShowLess',
+    type: 'dynamicFacet'
+  },
+  /**
    * The search event that gets logged when an end-user triggers a new query by clicking a missing term in a result item.
    *
    * `actionCause`: `'addMissingTerm'`

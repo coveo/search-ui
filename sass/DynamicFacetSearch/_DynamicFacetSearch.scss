@@ -1,18 +1,22 @@
 @import '../Variables';
 
-.coveo-dynamic-facet-search-input {
-  padding-top: 15px;
+.coveo-dynamic-facet-search {
+  margin-top: 15px;
 
-  input {
-    width: 100%;
-    height: 35px;
-    padding: 0 5px;
-    font-size: $font-size-smaller;
+  .coveo-checkbox-span-label-suffix {
+    // For accessibility contrast reasons
+    color: black;
   }
-}
 
-.coveo-dynamic-facet-collapsed {
-  .coveo-dynamic-facet-search-input {
-    display: none;
+  .coveo-combobox-value {
+    padding: 0 5px;
+
+    &.coveo-focused,
+    &:hover {
+      .coveo-checkbox-span-label,
+      .coveo-checkbox-span-label-suffix {
+        opacity: 1;
+      }
+    }
   }
 }

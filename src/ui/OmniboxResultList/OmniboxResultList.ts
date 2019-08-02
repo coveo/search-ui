@@ -19,7 +19,6 @@ import OmniboxModuleDefintion = require('../Omnibox/Omnibox');
 import { InitializationEvents } from '../../EventsModules';
 import { logSearchBoxSubmitEvent } from '../Analytics/SharedAnalyticsCalls';
 import { Logger } from '../../misc/Logger';
-
 import 'styling/_OmniboxResultList';
 
 export interface IOmniboxResultListOptions extends IResultListOptions {
@@ -169,7 +168,7 @@ export class OmniboxResultList extends ResultList implements IComponentBindings 
     this.options = ComponentOptions.initComponentOptions(element, OmniboxResultList, options);
     this.setupOptions();
     this.bind.onRootElement(OmniboxEvents.populateOmnibox, (args: IPopulateOmniboxEventArgs) => this.handlePopulateOmnibox(args));
-    this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => this.handleQueryOverride(args));
+    this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => this.handleBuildingQuery(args));
 
     const omniboxElement: HTMLElement = $$(this.root).find(`.${Component.computeCssClassNameForType('Omnibox')}`);
     if (omniboxElement) {
@@ -289,7 +288,7 @@ export class OmniboxResultList extends ResultList implements IComponentBindings 
     });
   }
 
-  private handleQueryOverride(args: IBuildingQueryEventArgs) {
+  protected handleBuildingQuery(args: IBuildingQueryEventArgs) {
     Assert.exists(args);
     if (Utils.isNonEmptyString(this.options.queryOverride)) {
       args.queryBuilder.constantExpression.add(this.options.queryOverride);

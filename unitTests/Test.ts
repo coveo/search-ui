@@ -690,8 +690,14 @@ DynamicFacetValuesTest();
 import { DynamicFacetValueTest } from './ui/DynamicFacet/DynamicFacetValues/DynamicFacetValueTest';
 DynamicFacetValueTest();
 
+import { DynamicFacetValueCheckboxTest } from './ui/DynamicFacet/DynamicFacetValues/DynamicFacetValueCheckboxTest';
+DynamicFacetValueCheckboxTest();
+
 import { DynamicFacetValueRendererTest } from './ui/DynamicFacet/DynamicFacetValues/DynamicFacetValueRendererTest';
 DynamicFacetValueRendererTest();
+
+import { DynamicFacetSearchValueRendererTest } from './ui/DynamicFacet/DynamicFacetValues/DynamicFacetSearchValueRendererTest';
+DynamicFacetSearchValueRendererTest();
 
 import { DynamicFacetBreadcrumbsTest } from './ui/DynamicFacet/DynamicFacetBreadcrumbsTest';
 DynamicFacetBreadcrumbsTest();
@@ -714,14 +720,17 @@ MissingTermsManagerTest();
 import { SearchboxResizeTest } from './utils/SearchboxResizeTest';
 SearchboxResizeTest();
 
-import { FacetPaddingTest } from './ui/FacetPaddingTest';
-FacetPaddingTest();
-
 import { DependsOnManagerTest } from './utils/DependsOnManagerTest';
 DependsOnManagerTest();
 
-import { DynamicFacetSearchTest } from './ui/DynamicFacetSearch/DynamicFacetSearchTest';
-DynamicFacetSearchTest();
+import { ComboboxTest } from './ui/Combobox/ComboboxTest';
+ComboboxTest();
 
-import { DynamicFacetSearchInputTest } from './ui/DynamicFacetSearch/DynamicFacetSearchInputTest';
-DynamicFacetSearchInputTest();
+import { ComboboxInputTest } from './ui/Combobox/ComboboxInputTest';
+ComboboxInputTest();
+
+import { ComboboxValuesTest } from './ui/Combobox/ComboboxValuesTest';
+ComboboxValuesTest();
+
+import { FieldImageTest } from './ui/ImageFieldValueTest';
+FieldImageTest();
