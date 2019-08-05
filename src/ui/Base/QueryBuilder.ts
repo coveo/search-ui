@@ -2,7 +2,7 @@ import { ExpressionBuilder } from './ExpressionBuilder';
 import { IRankingFunction } from '../../rest/RankingFunction';
 import { IQueryFunction } from '../../rest/QueryFunction';
 import { IGroupByRequest } from '../../rest/GroupByRequest';
-import { IQuery, IFacetOptions } from '../../rest/Query';
+import { IQuery, IFacetOptions, IUserActionsRequest } from '../../rest/Query';
 import { QueryBuilderExpression } from './QueryBuilderExpression';
 import * as _ from 'underscore';
 import { Utils } from '../../utils/Utils';
@@ -321,6 +321,10 @@ export class QueryBuilder {
    */
   public allowQueriesWithoutKeywords: boolean;
   /**
+   * A request to retrieve user actions in the query response.
+   */
+  public userActions: IUserActionsRequest;
+  /**
    * Build the current content or state of the query builder and return a {@link IQuery}.
    *
    * build can be called multiple times on the same QueryBuilder.
@@ -374,7 +378,8 @@ export class QueryBuilder {
       context: this.context,
       actionsHistory: this.actionsHistory,
       recommendation: this.recommendation,
-      allowQueriesWithoutKeywords: this.allowQueriesWithoutKeywords
+      allowQueriesWithoutKeywords: this.allowQueriesWithoutKeywords,
+      userActions: this.userActions
     };
     return query;
   }
