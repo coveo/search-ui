@@ -626,15 +626,10 @@ export class Omnibox extends Component {
   private handleQuerySuggestGetFocus(args: IQuerySuggestSelection) {
     const suggestions = _.compact(_.map(this.lastSuggestions, suggestion => suggestion.text));
     this.omniboxAnalytics.suggestions = suggestions;
-    this.omniboxAnalytics.suggestionRanking = this.findSuggestionRanking(args.suggestion);
-  }
-  private findSuggestionRanking(suggestion) {
-    let indice = 0;
-    let found;
-    do {
-      found = this.lastSuggestions[indice].text === suggestion;
-    } while (!found && ++indice < this.lastSuggestions.length);
-    return indice;
+    const suggestion = this.lastSuggestions.filter(suggestion => {
+      return suggestion.text === args.suggestion;
+    })[0];
+    this.omniboxAnalytics.suggestionRanking = this.lastSuggestions.indexOf(suggestion);
   }
 
   private handleSuggestions() {

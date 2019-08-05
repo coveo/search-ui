@@ -122,7 +122,6 @@ export function OmniboxTest() {
         initOmnibox({
           enableQuerySyntax: false
         });
-
         test.cmp.setText('@field==Batman');
 
         var simulation = Simulate.query(test.env);
@@ -131,7 +130,7 @@ export function OmniboxTest() {
         initOmnibox({
           enableQuerySyntax: true
         });
-        test.cmp.setText('@field==Batman2');
+        test.cmp.setText('@field==Batman');
 
         simulation = Simulate.query(test.env);
         expect(simulation.queryBuilder.enableQuerySyntax).toBe(true);
@@ -254,7 +253,7 @@ export function OmniboxTest() {
 
           const fieldsDescription = buildFieldDescription(['@firstFieldName', '@secondFieldName']);
 
-          test.env.searchEndpoint.listFields = jasmine.createSpy('hey').and.callFake(() => Promise.resolve(fieldsDescription));
+          test.env.searchEndpoint.listFields = () => Promise.resolve(fieldsDescription);
           const suggestions = await test.cmp.magicBox.getSuggestions();
           const fieldAddonSuggestion = await suggestions[1];
           expect(fieldAddonSuggestion.length).toEqual(1);
