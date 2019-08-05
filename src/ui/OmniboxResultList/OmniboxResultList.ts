@@ -207,7 +207,7 @@ export class OmniboxResultList extends ResultList implements IComponentBindings 
    * @param append
    */
   public renderResults(resultElements: HTMLElement[], append = false) {
-    $$(this.options.resultContainer).empty();
+    $$(this.options.resultsContainer).empty();
 
     if (!this.lastOmniboxRequest) {
       return Promise.resolve(null);
@@ -237,7 +237,7 @@ export class OmniboxResultList extends ResultList implements IComponentBindings 
 
   private appendHeaderIfTitleIsSpecified() {
     if (this.options.headerTitle) {
-      this.options.resultContainer.appendChild(
+      this.options.resultsContainer.appendChild(
         $$(
           'div',
           { className: 'coveo-omnibox-result-list-header' },
@@ -250,7 +250,7 @@ export class OmniboxResultList extends ResultList implements IComponentBindings 
 
   private appendResults(resultElements: HTMLElement[]) {
     _.each(resultElements, (resultElement: HTMLElement) => {
-      this.options.resultContainer.appendChild(resultElement);
+      this.options.resultsContainer.appendChild(resultElement);
       this.triggerNewResultDisplayed(Component.getResult(resultElement), resultElement);
     });
 
@@ -258,10 +258,10 @@ export class OmniboxResultList extends ResultList implements IComponentBindings 
   }
 
   private resolveLastOmniboxRequest() {
-    if ($$(this.options.resultContainer).findAll('.coveo-omnibox-selectable').length == 0) {
+    if ($$(this.options.resultsContainer).findAll('.coveo-omnibox-selectable').length == 0) {
       this.lastOmniboxRequest.resolve({ element: null, zIndex: this.options.omniboxZIndex });
     } else {
-      this.lastOmniboxRequest.resolve({ element: this.options.resultContainer, zIndex: this.options.omniboxZIndex });
+      this.lastOmniboxRequest.resolve({ element: this.options.resultsContainer, zIndex: this.options.omniboxZIndex });
     }
   }
 

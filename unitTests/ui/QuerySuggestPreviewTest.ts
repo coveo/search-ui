@@ -107,13 +107,12 @@ export function QuerySuggestPreviewTest() {
       });
 
       it('suggestionWidth change the width of the suggestion container', () => {
-        const suggestionWidth = '250px';
+        const suggestionWidth = 250;
         setupQuerySuggestPreview({ suggestionWidth });
         setupSuggestion();
         triggerQuerySuggestHoverAndPassTime();
         const suggestionContainerById = $$(suggestionContainer.el).find('.coveo-magicbox-suggestions');
-        expect(suggestionContainerById.style.minWidth).toBe(suggestionWidth);
-        expect(suggestionContainerById.style.maxWidth).toBe(suggestionWidth);
+        expect(suggestionContainerById.style.width).toBe(`${suggestionWidth}px`);
       });
 
       it('headerText change the text in the header of the preview', done => {
@@ -128,7 +127,7 @@ export function QuerySuggestPreviewTest() {
         setupSuggestion();
         triggerQuerySuggestHover(suggestion);
         setTimeout(() => {
-          const previewContainer = $$(suggestionContainer.el).find('.coveo-preview-header > span');
+          const previewContainer = $$(suggestionContainer.el).find('.coveo-preview-header');
           expect(previewContainer.innerText).toBe(`${headerText} "${suggestion}"`);
           done();
         }, test.cmp.options.executeQueryDelay);
@@ -198,7 +197,7 @@ export function QuerySuggestPreviewTest() {
     });
 
     describe('currentlyDisplayedResults', () => {
-      it('get populated by rendered results', done => {
+      it('currentlyDisplayedResults get populated by rendered results', done => {
         setupQuerySuggestPreview();
         const fakeResults = FakeResults.createFakeResults(test.cmp.options.numberOfPreviewResults);
         setupSuggestion();
@@ -209,7 +208,7 @@ export function QuerySuggestPreviewTest() {
         }, test.cmp.options.executeQueryDelay);
       });
 
-      it('get emptied when they aare no result to be rendered', done => {
+      it('currentlyDisplayedResults get emptied when they aare no result to be rendered', done => {
         setupQuerySuggestPreview();
         const fakeResults = FakeResults.createFakeResults(0);
         setupSuggestion();
@@ -220,13 +219,13 @@ export function QuerySuggestPreviewTest() {
         }, test.cmp.options.executeQueryDelay);
       });
 
-      it('get emptied when a querySuggest loose focus', done => {
+      it('currentlyDisplayedResults get emptied when a querySuggest loose focus', done => {
         setupQuerySuggestPreview();
         setupSuggestion();
         triggerQuerySuggestHover('test');
         setTimeout(() => {
           expect(test.cmp.displayedResults.length).toEqual(test.cmp.options.numberOfPreviewResults);
-          $$(test.cmp.root).trigger(OmniboxEvents.querySuggestLooseFocus);
+          $$(test.cmp.root).trigger(OmniboxEvents.querySuggestLoseFocus);
           expect(test.cmp.displayedResults).toEqual([]);
           done();
         }, test.cmp.options.executeQueryDelay);

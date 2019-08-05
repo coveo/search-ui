@@ -481,7 +481,7 @@ export function ResultListTest() {
         const aNewContainer = document.createElement('div');
         expect(aNewContainer.children.length).toBe(0);
         test = Mock.optionsComponentSetup<ResultList, IResultListOptions>(ResultList, {
-          resultContainer: aNewContainer
+          resultsContainer: aNewContainer
         });
         Simulate.query(test.env);
         Defer.defer(() => {
@@ -670,7 +670,7 @@ export function ResultListTest() {
           });
           Simulate.query(test.env);
           Defer.defer(() => {
-            const container = test.cmp.options.resultContainer;
+            const container = test.cmp.options.resultsContainer;
             expect(container.children.item(container.children.length - 1).innerHTML).toBe('');
             expect(container.children.item(container.children.length - 2).innerHTML).toBe('');
             expect(container.children.item(container.children.length - 3).innerHTML).toBe('');

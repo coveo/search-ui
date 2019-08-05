@@ -90,19 +90,19 @@ export class OmniboxEvents {
    */
   public static querySuggestSuccess = 'querySuggestSuccess';
   /**
-   * Triggered by the [`Omnibox`]{@link Omnibox} component when a query suggestion has finished rendring.
+   * Triggered by the [`Omnibox`]{@link Omnibox} component when a query suggestion has finished rendering.
    */
   public static querySuggestRendered = 'querySuggestRendered';
   /**
-   * Triggered by the [`Omnibox`]{@link Omnibox} component when a query suggestion is hovered by the mouse or is entered by moving through with the keyboard.
+   * Triggered by the [`Omnibox`]{@link Omnibox} component when a query suggestion gets focus following a mouse hovering or keyboard navigation event.
    *
    * All `querySuggestGetFocus` event handlers receive an object implementing the [`IQuerySuggestSelection`]{@link IQuerySuggestSelection} interface as an argument.
    */
   public static querySuggestGetFocus = 'querySuggestGetFocus';
   /**
-   * Triggered by the [`Omnibox`]{@link Omnibox} component when a query suggestion stop being hovered by the mouse or is exited by moving through with the keyboard.
+   * Triggered by the [`Omnibox`]{@link Omnibox} component when a query suggestion loses focus following a mouse hovering or keyboard navigation event.
    */
-  public static querySuggestLooseFocus = 'querySuggestLooseFocus';
+  public static querySuggestLoseFocus = 'querySuggestLooseFocus';
   /**
    * Triggered by the [`Omnibox`]{@link Omnibox} component when a query suggestion is selected by a mouse click or pressing the enter key.
    *

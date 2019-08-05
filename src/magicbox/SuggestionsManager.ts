@@ -83,7 +83,7 @@ export class SuggestionsManager {
         this.removeSelectedStatus(targetParents[0]);
       }
     }
-    $$(this.root).trigger(OmniboxEvents.querySuggestLooseFocus);
+    $$(this.root).trigger(OmniboxEvents.querySuggestLoseFocus);
   }
 
   public moveDown(): Suggestion {

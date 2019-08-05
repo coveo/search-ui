@@ -16,28 +16,31 @@ import { IQueryResult } from '../../rest/QueryResult';
 export interface IQuerySuggestPreview {
   numberOfPreviewResults?: number;
   previewWidth?: number;
-  suggestionWidth?: string;
+  suggestionWidth?: number;
   resultTemplate?: Template;
   headerText?: string;
   executeQueryDelay?: number;
 }
 
 /**
- * The `QuerySuggestPreview` component allows you to preview the top query result items of hovered query suggestions.
+ * This component renders a preview of the top query results matching the currently focused query suggestion in the search box.
  *
- * This component requires a working [`querySuggest`]{@link Omnibox.options.enableQuerySuggestAddon} component in the corresponding search box,
- * and you need to provide a [result template](https://developers.coveo.com/x/aIGfAQ) for the preview.
+ * As such, this component only works when an [`Omnibox`]{@link Omnibox} whose [`enableQuerySuggestAddon`]{@link Omnibox.options.enableQuerySuggestAddon} option is set to `true` is present in the search interface.
  *
- * **Exemple**
+ * Moreover, this component requires at least one [result template](https://docs.coveo.com/en/413/) in its markup configuration to be able to render previews.
+ *
+ * **Example**
  * ```
- *  <div class="CoveoQuerySuggestPreview">
- *    <script class="result-template" type="text/x-underscore">
- *      <span>
- *        <a class='CoveoResultLink'></a>
- *      </span>
+ *   <div class="CoveoQuerySuggestPreview">
+ *    <script class="result-template" type="text/html">
+ *      <div class="coveo-result-frame">
+ *        <a class="CoveoResultLink"></a>
+ *      </div>
  *    </script>
- *  </div>
+ *   </div>
  * ```
+ *
+ * See [Providing Query Suggestion Result Previews](https://docs.coveo.com/en/340/#providing-query-suggestion-result-previews).
  */
 export class QuerySuggestPreview extends Component implements IComponentBindings {
   static ID = 'QuerySuggestPreview';
@@ -57,9 +60,9 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
     /**
      * The maximum number of query results to render in the preview.
      *
-     * **Minimum value:** `1`
-     * **Maximum value:** `6`
-     * **Default value:** `3`
+     * **Minimum:** `1`
+     * **Maximum:** `6`
+     * **Default:** `3`
      */
     numberOfPreviewResults: ComponentOptions.buildNumberOption({
       defaultValue: 3,
@@ -67,28 +70,31 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
       max: 6
     }),
     /**
-     * Width of the preview container (in pixels).
+     * The width of the preview container (in pixels).
      *
      * If this option is `undefined` or lower than the remaning space left by the suggestion,
-     * the component takes all the space left over by the query suggestions.
+     * the component takes all the space left by the query suggestions.
      */
     previewWidth: ComponentOptions.buildNumberOption(),
     /**
-     *  Width of the suggestion container (in pixels or percentage).
+     *  The width of the suggestion container (in pixels).
      *
-     * **Default value:** `33%`
+     *  If the value is set to `0`, the width will adjust to the longest displayed query suggestion.
+     *
+     * **Default:** `250`
+     * **Minimum:** `0`
      */
-    suggestionWidth: ComponentOptions.buildStringOption({ defaultValue: '33%' }),
+    suggestionWidth: ComponentOptions.buildNumberOption({ defaultValue: 250, min: 0 }),
     /**
      *  The text to display at the top of the preview, which is followed by "`<SUGGESTION>`", where `<SUGGESTION>` is the hovered query suggestion.
      *
-     * **Default value:** `Query result items for`
+     * **Default:** The localized string `Query result items for`
      */
     headerText: ComponentOptions.buildLocalizedStringOption({ defaultValue: 'QuerySuggestPreview' }),
     /**
-     *  The hovering time (in ms) required on a query suggestion before requesting preview items.
+     *  The amount of focus time (in milliseconds) required on a query suggestion before requesting a preview of its top results.
      *
-     * **Default value:** `200`
+     * **Default:** `200`
      */
     executeQueryDelay: ComponentOptions.buildNumberOption({ defaultValue: 200 })
   };
@@ -112,9 +118,8 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
 
     if (!this.options.resultTemplate) {
       this.logger.warn(
-        `Option "resultTemplate" is *REQUIRED* on the component "QuerySuggestPreview". The component or the search page might *NOT WORK PROPERLY*`,
-        `Check the following URL to create your result template`,
-        `https://developers.coveo.com/x/aIGfAQ`
+        `Specifying a result template is required for the 'QuerySuggestPreview' component to work properly. See `,
+        `https://docs.coveo.com/340/#providing-query-suggestion-result-previews`
       );
     }
 
@@ -122,8 +127,8 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
     this.bind.onRootElement(OmniboxEvents.querySuggestRendered, () => {
       this.handleAfterComponentInit();
     });
-    this.bind.onRootElement(OmniboxEvents.querySuggestLooseFocus, () => {
-      this.handleQuerySuggestLooseFocus();
+    this.bind.onRootElement(OmniboxEvents.querySuggestLoseFocus, () => {
+      this.handleFocusOut();
     });
   }
 
@@ -144,7 +149,7 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
     return new TemplateToHtml(templateToHtmlArgs);
   }
 
-  private handleQuerySuggestLooseFocus() {
+  private handleFocusOut() {
     clearTimeout(this.timer);
     this.timer = null;
     this.previousSuggestionHovered = null;
@@ -162,8 +167,7 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
     if (!this.options.suggestionWidth) {
       return;
     }
-    container.style.minWidth = this.options.suggestionWidth;
-    container.style.maxWidth = this.options.suggestionWidth;
+    container.style.width = `${this.options.suggestionWidth}px`;
   }
 
   private handleAfterComponentInit() {
@@ -178,8 +182,8 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
   }
 
   private buildPreviewHeader(suggestion: string) {
-    const text = $$('span', {}, `${this.options.headerText} "${suggestion}"`).el;
-    const header = $$('div', { className: 'coveo-preview-header' }, text).el;
+    const text = `${this.options.headerText} "${suggestion}"`;
+    const header = $$('h4', { className: 'coveo-preview-header' }, text).el;
     this.previewContainer.appendChild(header);
   }
 
@@ -211,13 +215,12 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
     const previousQueryOptions = this.queryController.getLastQuery();
     previousQueryOptions.q = suggestion;
     previousQueryOptions.numberOfResults = this.options.numberOfPreviewResults;
-    var results = await this.queryController.getEndpoint().search(previousQueryOptions);
+    const results = await this.queryController.getEndpoint().search(previousQueryOptions);
     $$(this.previewContainer).empty();
     this.currentlyDisplayedResults = [];
     if (!results) {
       return;
     }
-    this.addImage(results);
     this.buildPreviewHeader(suggestion);
     this.buildResultsPreview(results);
   }
@@ -226,21 +229,18 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
     const resultsContainer = this.buildResultsContainer();
     this.previewContainer.appendChild(resultsContainer);
     this.setupRenderer(resultsContainer);
-    const HTMLResult = await this.templateToHtml.buildResults(results, 'preview', this.currentlyDisplayedResults);
-    if (!(HTMLResult.length > 0)) {
+    const buildResults = await this.templateToHtml.buildResults(results, 'preview', this.currentlyDisplayedResults);
+    if (!(buildResults.length > 0)) {
       return;
     }
-    this.updateResultPerRow(HTMLResult);
-    this.renderer.renderResults(HTMLResult, true, result => {});
+    this.updateResultPerRow(buildResults);
+    this.renderer.renderResults(buildResults, true, result => {});
   }
 
   private updateResultPerRow(elements: HTMLElement[]) {
-    let resultAvailibleSpace = '33%';
-    if (elements.length === 4) {
-      resultAvailibleSpace = '50%';
-    }
+    const resultAvailableSpace = elements.length === 4 ? '50%' : '33%';
     elements.forEach(element => {
-      this.updateFlexCSS(element, resultAvailibleSpace);
+      this.updateFlexCSS(element, resultAvailableSpace);
     });
   }
 
@@ -248,16 +248,9 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
     element.style.flex = `0 0 ${value}`;
   }
 
-  //Delete when creating the PR
-  private addImage(results: IQueryResults) {
-    results.results.forEach(result => {
-      result.raw['ccimage'] = 'https://img.bbystatic.com/BestBuy_US/images/products/5410/5410701_sa.jpg';
-    });
-  }
-
   private setupRenderer(resultsContainer: HTMLElement) {
     const rendererOption: IResultListOptions = {
-      resultContainer: resultsContainer
+      resultsContainer
     };
     const initParameters: IInitializationParameters = {
       options: this.searchInterface.options.originalOptionsObject,
