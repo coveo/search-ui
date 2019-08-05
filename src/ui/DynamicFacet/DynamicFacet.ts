@@ -674,6 +674,10 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
   }
 
   private toggleSearchDisplay() {
+    if (this.options.enableFacetSearch === false) {
+      return;
+    }
+
     if (Utils.isUndefined(this.options.enableFacetSearch)) {
       $$(this.search.element).toggle(this.moreValuesAvailable);
     }
