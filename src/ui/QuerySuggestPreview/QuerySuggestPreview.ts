@@ -29,7 +29,7 @@ export interface IQuerySuggestPreview {
  *
  * Moreover, this component requires at least one [result template](https://docs.coveo.com/en/413/) in its markup configuration to be able to render previews.
  *
- * **Exemple**
+ * **Example**
  * ```
  *   <div class="CoveoQuerySuggestPreview">
  *    <script class="result-template" type="text/html">
@@ -79,7 +79,7 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
     /**
      *  The width of the suggestion container (in pixels).
      *
-     *  If the value is set to `0`, the width will adjust to the longuest displayed querySuggestion
+     *  If the value is set to `0`, the width will adjust to the longest displayed query suggestion.
      *
      * **Default:** `250`
      * **Minimum:** `0`
