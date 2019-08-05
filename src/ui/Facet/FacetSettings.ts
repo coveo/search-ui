@@ -157,7 +157,7 @@ export class FacetSettings extends FacetSort {
     new Popper(this.settingsButton, this.settingsPopup, {
       modifiers: {
         preventOverflow: {
-          boundariesElement: this.facet.root
+          boundariesElement: this.facet.element.parentElement
         }
       }
     });
