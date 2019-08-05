@@ -236,6 +236,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
      * Specifies a JSON object describing a mapping of facet values to their desired captions. See
      * [Normalizing Facet Value Captions](https://developers.coveo.com/x/jBsvAg).
      *
+     * **Note:**
      * If this option is specified, the facet search box will be unavailable.
      *
      * **Examples:**
@@ -269,9 +270,6 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
      * <!-- Ensure that the double quotes are properly handled in data-value-caption. -->
      * <div class='CoveoCategoryFacet' data-field='@myotherfield' data-value-caption='{"txt":"Text files","html":"Web page"}'></div>
      * ```
-     *
-     * **Note:**
-     * > Using value captions will disable alphabetical sorts (see the [availableSorts]{@link Facet.options.availableSorts} option).
      */
     valueCaption: ComponentOptions.buildJsonOption<IStringMap<string>>({ defaultValue: {} }),
     /**
