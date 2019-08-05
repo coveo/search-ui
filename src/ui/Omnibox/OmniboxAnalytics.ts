@@ -1,4 +1,4 @@
-import { compact, filter, map, reduceRight, last } from 'underscore';
+import { last, chain } from 'underscore';
 import { IAnalyticsOmniboxSuggestionMeta } from '../Analytics/AnalyticsActionListMeta';
 
 export class OmniboxAnalytics {
@@ -25,46 +25,37 @@ export class OmniboxAnalytics {
     };
   }
 
-  public dumpInfo() {
-    console.log(this.partialQueries);
-  }
-
   private cleanCustomData(toClean: string[], rejectLength = 256) {
     // Filter out only consecutive values that are the identical
-    toClean = compact(
-      filter(toClean, (partial: string, pos?: number, array?: string[]) => {
-        return pos === 0 || partial !== array[pos - 1];
-      })
-    );
-
-    // Custom dimensions cannot be an array in analytics service: Send a string joined by ; instead.
-    // Need to replace ;
-    toClean = map(toClean, partial => {
-      return partial.replace(/;/g, '');
-    });
-
-    // Reduce right to get the last X words that adds to less then rejectLength
     const reducedToRejectLengthOrLess = [];
-    reduceRight(
-      toClean,
-      (memo: number, partial: string) => {
+    chain(toClean)
+      .compact()
+
+      // Custom dimensions cannot be an array in analytics service: Send a string joined by ; instead.
+      // Need to replace ;
+      .map(partial => {
+        return partial.replace(/;/g, '');
+      })
+
+      // Reduce right to get the last X words that adds to less then rejectLength
+
+      .reduceRight((memo: number, partial: string) => {
         const totalSoFar = memo + partial.length;
         if (totalSoFar <= rejectLength) {
           reducedToRejectLengthOrLess.push(partial);
         }
         return totalSoFar;
-      },
-      0
-    );
-    toClean = reducedToRejectLengthOrLess.reverse();
-    const ret = toClean.join(';');
+      }, 0)
+      .value();
+    const toCleanLocal = reducedToRejectLengthOrLess.reverse() as string[];
+    const ret = toCleanLocal.join(';');
 
     // analytics service can store max 256 char in a custom event
     // if we're over that, call cleanup again with an arbitrary 10 less char accepted
     if (ret.length >= 256) {
-      return this.cleanCustomData(toClean, rejectLength - 10);
+      return this.cleanCustomData(toCleanLocal, rejectLength - 10);
     }
 
-    return toClean.join(';');
+    return toCleanLocal.join(';');
   }
 }

@@ -1406,7 +1406,7 @@ export var analyticsActionCauseList = {
    * `"partialQueries":`: <correspondingPartialQueries>
    * `"suggestions":`: <availableQuerySuggestions>
    */
-  QuerrySuggestPreviewQuery: <IAnalyticsActionCause>{
+  ShowQuerySuggestPreview: <IAnalyticsActionCause>{
     name: 'QuerrySuggestPreviewQuery',
     type: 'querySuggestPreview'
   }

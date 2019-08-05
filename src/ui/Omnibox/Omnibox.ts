@@ -49,6 +49,7 @@ import { Result } from '../../magicbox/Result/Result';
 import { MagicBoxInstance, createMagicBox } from '../../magicbox/MagicBox';
 import { QueryboxOptionsProcessing } from '../Querybox/QueryboxOptionsProcessing';
 import { OmniboxAnalytics } from './OmniboxAnalytics';
+import { findWhere } from 'underscore';
 
 export interface IOmniboxSuggestion extends Suggestion {
   executableConfidence?: number;
@@ -623,13 +624,10 @@ export class Omnibox extends Component {
     return this.omniboxAnalytics.buildCustomDataForPartialQueries(index, suggestions);
   }
 
-  private handleQuerySuggestGetFocus(args: IQuerySuggestSelection) {
+  private handleQuerySuggestGetFocus({ suggestion }: IQuerySuggestSelection) {
     const suggestions = _.compact(_.map(this.lastSuggestions, suggestion => suggestion.text));
     this.omniboxAnalytics.suggestions = suggestions;
-    const suggestion = this.lastSuggestions.filter(suggestion => {
-      return suggestion.text === args.suggestion;
-    })[0];
-    this.omniboxAnalytics.suggestionRanking = this.lastSuggestions.indexOf(suggestion);
+    this.omniboxAnalytics.suggestionRanking = this.lastSuggestions.indexOf(findWhere(this.lastSuggestions, { text: suggestion }));
   }
 
   private handleSuggestions() {
