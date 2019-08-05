@@ -732,5 +732,8 @@ ComboboxInputTest();
 import { ComboboxValuesTest } from './ui/Combobox/ComboboxValuesTest';
 ComboboxValuesTest();
 
+import { QuerySuggestPreviewTest } from './ui/QuerySuggestPreviewTest';
+QuerySuggestPreviewTest();
+
 import { FieldImageTest } from './ui/ImageFieldValueTest';
 FieldImageTest();

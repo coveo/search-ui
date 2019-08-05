@@ -7483,5 +7483,9 @@
   "NoValuesFound": {
     "en": "No values found.",
     "fr": "Aucune valeur trouvée."
+  },
+  "QuerySuggestPreview": {
+    "en": "Query result item(s) for",
+    "fr": "Résultat(s) de la requête pour"
   }
 }

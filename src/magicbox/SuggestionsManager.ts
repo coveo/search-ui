@@ -1,7 +1,7 @@
-import { $$ } from '../utils/Dom';
+import { $$, Dom } from '../utils/Dom';
 import { InputManager } from './InputManager';
 import { each, defaults, indexOf, compact } from 'underscore';
-import { OmniboxEvents } from '../Core';
+import { OmniboxEvents, Component } from '../Core';
 import { IQuerySuggestSelection } from '../events/OmniboxEvents';
 
 export interface Suggestion {
@@ -83,6 +83,7 @@ export class SuggestionsManager {
         this.removeSelectedStatus(targetParents[0]);
       }
     }
+    $$(this.root).trigger(OmniboxEvents.querySuggestLoseFocus);
   }
 
   public moveDown(): Suggestion {
@@ -188,7 +189,8 @@ export class SuggestionsManager {
     }
 
     const suggestionsContainer = this.buildSuggestionsContainer();
-    $$(this.element).append(suggestionsContainer.el);
+    const suggestionPreviewContainer = this.initPreviewForSuggestions(suggestionsContainer);
+    $$(this.element).append(suggestionPreviewContainer.el);
     this.addAccessibilityPropertiesForSuggestions();
 
     each(suggestions, (suggestion: Suggestion) => {
@@ -201,6 +203,7 @@ export class SuggestionsManager {
       dom['suggestion'] = suggestion;
       suggestionsContainer.append(dom.el);
     });
+    $$(this.root).trigger(OmniboxEvents.querySuggestRendered);
   }
 
   private processKeyboardSelection(suggestion: HTMLElement) {
@@ -216,9 +219,39 @@ export class SuggestionsManager {
 
   private buildSuggestionsContainer() {
     return $$('div', {
-      id: 'coveo-magicbox-suggestions',
+      className: 'coveo-magicbox-suggestions',
       role: 'listbox'
     });
+  }
+
+  private buildPreviewContainer() {
+    return $$('div', {
+      className: 'coveo-preview-container'
+    }).el;
+  }
+
+  private get querySuggestPreviewComponent() {
+    const querySuggestPreviewElement: HTMLElement = $$(this.root).find(`.${Component.computeCssClassNameForType('QuerySuggestPreview')}`);
+    if (!querySuggestPreviewElement) {
+      return;
+    }
+    return Component.get(querySuggestPreviewElement);
+  }
+
+  private initPreviewForSuggestions(suggestions: Dom) {
+    const querySuggestPreview = this.querySuggestPreviewComponent;
+    if (!querySuggestPreview) {
+      return suggestions;
+    }
+
+    const suggestionContainerParent = $$('div', {
+      className: 'coveo-suggestion-container'
+    });
+
+    const previewContainer = this.buildPreviewContainer();
+    suggestionContainerParent.append(suggestions.el);
+    suggestionContainerParent.append(previewContainer);
+    return suggestionContainerParent;
   }
 
   private createDomFromSuggestion(suggestion: Suggestion) {

@@ -1,0 +1,35 @@
+@import 'MagicBox/Colors';
+@import 'Variables';
+.coveo-suggestion-container {
+  display: inline-flex;
+  flex-wrap: nowrap;
+  align-items: stretch;
+  border: $default-border;
+  min-width: 100%;
+
+  .coveo-magicbox-suggestions {
+    border: none;
+    float: left;
+  }
+  .coveo-preview-container {
+    border: none;
+    background: $grey-100;
+    flex: 1 1 100%;
+  }
+  .coveo-preview-results {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    overflow: hidden;
+  }
+  .coveo-preview-layout {
+    text-align: center;
+    padding: 20px;
+    align-items: flex-start;
+  }
+  .coveo-preview-header {
+    padding: 10px;
+    font-weight: normal;
+    margin-top: 0;
+  }
+}

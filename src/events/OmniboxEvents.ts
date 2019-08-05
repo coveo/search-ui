@@ -81,7 +81,6 @@ export class OmniboxEvents {
    * This event is only triggered by standard ML-powered query suggestions, and not {@link AnalyticsSuggestions} or {@link FieldSuggestions}.
    */
   public static buildingQuerySuggest = 'buildingQuerySuggest';
-
   /**
    * Triggered by the [`Omnibox`]{@link Omnibox} component when query suggestions are received from the Search API.
    *
@@ -91,11 +90,19 @@ export class OmniboxEvents {
    */
   public static querySuggestSuccess = 'querySuggestSuccess';
   /**
-   * Triggered by the [`Omnibox`]{@link Omnibox} component when a query suggestion is hovered by the mouse or cycled through with the keyboard.
+   * Triggered by the [`Omnibox`]{@link Omnibox} component when a query suggestion has finished rendering.
+   */
+  public static querySuggestRendered = 'querySuggestRendered';
+  /**
+   * Triggered by the [`Omnibox`]{@link Omnibox} component when a query suggestion gets focus following a mouse hovering or keyboard navigation event.
    *
    * All `querySuggestGetFocus` event handlers receive an object implementing the [`IQuerySuggestSelection`]{@link IQuerySuggestSelection} interface as an argument.
    */
   public static querySuggestGetFocus = 'querySuggestGetFocus';
+  /**
+   * Triggered by the [`Omnibox`]{@link Omnibox} component when a query suggestion loses focus following a mouse hovering or keyboard navigation event.
+   */
+  public static querySuggestLoseFocus = 'querySuggestLooseFocus';
   /**
    * Triggered by the [`Omnibox`]{@link Omnibox} component when a query suggestion is selected by a mouse click or pressing the enter key.
    *

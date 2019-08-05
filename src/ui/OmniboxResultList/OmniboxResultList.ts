@@ -169,18 +169,9 @@ export class OmniboxResultList extends ResultList implements IComponentBindings 
     this.setupOptions();
     this.bind.onRootElement(OmniboxEvents.populateOmnibox, (args: IPopulateOmniboxEventArgs) => this.handlePopulateOmnibox(args));
     this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => this.handleBuildingQuery(args));
-
-    const omniboxElement: HTMLElement = $$(this.root).find(`.${Component.computeCssClassNameForType('Omnibox')}`);
-    if (omniboxElement) {
-      this.bind.onRootElement(InitializationEvents.afterComponentsInitialization, () => {
-        const omnibox = <OmniboxModuleDefintion.Omnibox>Component.get(omniboxElement);
-        const magicBox = omnibox.magicBox;
-        magicBox.onsubmit = () => {
-          logSearchBoxSubmitEvent(this.usageAnalytics);
-          this.queryController.executeQuery();
-        };
-      });
-    }
+    this.bind.onRootElement(InitializationEvents.afterComponentsInitialization, () => {
+      this.handleAfterComponentInit();
+    });
   }
 
   /**
@@ -216,7 +207,7 @@ export class OmniboxResultList extends ResultList implements IComponentBindings 
    * @param append
    */
   public renderResults(resultElements: HTMLElement[], append = false) {
-    $$(this.options.resultContainer).empty();
+    $$(this.options.resultsContainer).empty();
 
     if (!this.lastOmniboxRequest) {
       return Promise.resolve(null);
@@ -232,9 +223,21 @@ export class OmniboxResultList extends ResultList implements IComponentBindings 
     return Promise.resolve(null);
   }
 
+  private handleAfterComponentInit() {
+    const omniboxElement: HTMLElement = $$(this.root).find(`.${Component.computeCssClassNameForType('Omnibox')}`);
+    if (omniboxElement) {
+      const omnibox = <OmniboxModuleDefintion.Omnibox>Component.get(omniboxElement);
+      const magicBox = omnibox.magicBox;
+      magicBox.onsubmit = () => {
+        logSearchBoxSubmitEvent(this.usageAnalytics);
+        this.queryController.executeQuery();
+      };
+    }
+  }
+
   private appendHeaderIfTitleIsSpecified() {
     if (this.options.headerTitle) {
-      this.options.resultContainer.appendChild(
+      this.options.resultsContainer.appendChild(
         $$(
           'div',
           { className: 'coveo-omnibox-result-list-header' },
@@ -247,7 +250,7 @@ export class OmniboxResultList extends ResultList implements IComponentBindings 
 
   private appendResults(resultElements: HTMLElement[]) {
     _.each(resultElements, (resultElement: HTMLElement) => {
-      this.options.resultContainer.appendChild(resultElement);
+      this.options.resultsContainer.appendChild(resultElement);
       this.triggerNewResultDisplayed(Component.getResult(resultElement), resultElement);
     });
 
@@ -255,10 +258,10 @@ export class OmniboxResultList extends ResultList implements IComponentBindings 
   }
 
   private resolveLastOmniboxRequest() {
-    if ($$(this.options.resultContainer).findAll('.coveo-omnibox-selectable').length == 0) {
+    if ($$(this.options.resultsContainer).findAll('.coveo-omnibox-selectable').length == 0) {
       this.lastOmniboxRequest.resolve({ element: null, zIndex: this.options.omniboxZIndex });
     } else {
-      this.lastOmniboxRequest.resolve({ element: this.options.resultContainer, zIndex: this.options.omniboxZIndex });
+      this.lastOmniboxRequest.resolve({ element: this.options.resultsContainer, zIndex: this.options.omniboxZIndex });
     }
   }
 

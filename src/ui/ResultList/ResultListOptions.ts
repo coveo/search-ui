@@ -2,7 +2,7 @@ import { IFieldOption } from '../Base/ComponentOptions';
 import { Template } from '../Templates/Template';
 
 export interface IResultListOptions {
-  resultContainer?: HTMLElement;
+  resultsContainer?: HTMLElement;
   resultTemplate?: Template;
   resultOptions?: {};
   waitAnimationContainer?: HTMLElement;
