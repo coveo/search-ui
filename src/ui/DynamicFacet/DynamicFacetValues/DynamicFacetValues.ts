@@ -131,13 +131,10 @@ export class DynamicFacetValues {
     return hasMoreValuesThenDefault && this.hasIdleValues;
   }
 
-  public render() {
-    const fragment = document.createDocumentFragment();
-    $$(this.list).empty();
-
-    this.facetValues.forEach(facetValue => {
-      fragment.appendChild(facetValue.renderedElement);
-    });
+  private appendShowMoreLess(fragment: DocumentFragment) {
+    if (!this.facet.options.enableMoreLess) {
+      return;
+    }
 
     if (this.shouldEnableShowLess) {
       fragment.appendChild(this.buildShowLess());
@@ -146,6 +143,17 @@ export class DynamicFacetValues {
     if (this.facet.moreValuesAvailable) {
       fragment.appendChild(this.buildShowMore());
     }
+  }
+
+  public render() {
+    const fragment = document.createDocumentFragment();
+    $$(this.list).empty();
+
+    this.facetValues.forEach(facetValue => {
+      fragment.appendChild(facetValue.renderedElement);
+    });
+
+    this.appendShowMoreLess(fragment);
 
     this.list.appendChild(fragment);
     return this.list;

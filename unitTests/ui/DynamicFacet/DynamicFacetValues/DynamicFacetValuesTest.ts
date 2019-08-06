@@ -12,7 +12,7 @@ export function DynamicFacetValuesTest() {
     let facet: DynamicFacet;
 
     beforeEach(() => {
-      facet = DynamicFacetTestUtils.createFakeFacet({ numberOfValues: 5 });
+      facet = DynamicFacetTestUtils.createFakeFacet({ numberOfValues: 5, enableMoreLess: true });
 
       mockFacetValues = DynamicFacetTestUtils.createFakeFacetValues();
       mockFacetValues[1].state = FacetValueState.selected;
@@ -23,6 +23,10 @@ export function DynamicFacetValuesTest() {
 
     function initializeComponent() {
       dynamicFacetValues = new DynamicFacetValues(facet);
+      createValuesFromResponse();
+    }
+
+    function createValuesFromResponse() {
       dynamicFacetValues.createFromResponse(DynamicFacetTestUtils.getCompleteFacetResponse(facet, { values: mockFacetValues }));
     }
 
@@ -133,7 +137,7 @@ export function DynamicFacetValuesTest() {
     describe('when moreValuesAvailable is true', () => {
       beforeEach(() => {
         facet.moreValuesAvailable = true;
-        dynamicFacetValues.createFromResponse(DynamicFacetTestUtils.getCompleteFacetResponse(facet, { values: mockFacetValues }));
+        createValuesFromResponse();
       });
 
       it(`should render the "Show more" button`, () => {
@@ -156,7 +160,7 @@ export function DynamicFacetValuesTest() {
     describe('when there are more values than the numberOfValues option', () => {
       beforeEach(() => {
         mockFacetValues = DynamicFacetTestUtils.createFakeFacetValues(10);
-        dynamicFacetValues.createFromResponse(DynamicFacetTestUtils.getCompleteFacetResponse(facet, { values: mockFacetValues }));
+        createValuesFromResponse();
       });
 
       it(`should render the "Show less" button`, () => {
@@ -168,6 +172,29 @@ export function DynamicFacetValuesTest() {
         $$(lessButton()).trigger('click');
         expect(facet.enableFreezeFacetOrderFlag).toHaveBeenCalledTimes(1);
         expect(facet.showLessValues).toHaveBeenCalledTimes(1);
+      });
+    });
+
+    describe('when the facet option enableMoreLess is false', () => {
+      beforeEach(() => {
+        facet = DynamicFacetTestUtils.createFakeFacet({ numberOfValues: 5, enableMoreLess: false });
+        initializeComponent();
+      });
+
+      it(`when moreValuesAvailable is true
+      should not render the "Show less" button`, () => {
+        facet.moreValuesAvailable = true;
+
+        createValuesFromResponse();
+        expect(moreButton()).toBeFalsy();
+      });
+
+      it(`when clicking on the "Show more" button
+        should perform the correct actions on the facet`, () => {
+        mockFacetValues = DynamicFacetTestUtils.createFakeFacetValues(10);
+        createValuesFromResponse();
+
+        expect(lessButton()).toBeFalsy();
       });
     });
   });

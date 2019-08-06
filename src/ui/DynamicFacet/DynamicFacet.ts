@@ -46,6 +46,7 @@ export interface IDynamicFacetOptions extends IResponsiveComponentOptions {
   numberOfValues?: number;
   enableCollapse?: boolean;
   enableScrollToTop?: boolean;
+  enableMoreLess?: boolean;
   enableFacetSearch?: boolean;
   useLeadingWildcardInFacetSearch?: boolean;
   collapsedByDefault?: boolean;
@@ -175,7 +176,20 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
     enableScrollToTop: ComponentOptions.buildBooleanOption({ defaultValue: true, section: 'CommonOptions' }),
 
     /**
+     * Specifies whether to enable the **Show more** and **Show less** buttons in the facet.
+     *
+     * **Note:**
+     * > The [`DynamicRangeFacet`]{@link DynamicRangeFacet} component does not support this option.
+     *
+     * **Default:** `true`
+     */
+    enableMoreLess: ComponentOptions.buildBooleanOption({ defaultValue: true, section: 'CommonOptions' }),
+
+    /**
      * Whether to allow the end-user to search the facet values.
+     *
+     * **Note:**
+     * > The [`DynamicRangeFacet`]{@link DynamicRangeFacet} component does not support this option.
      *
      * **Default:** `undefined`, and the following behavior applies:
      * - Will be enabled when more facet values are available from the server.
@@ -186,6 +200,9 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
     /**
      * Whether to prepend facet search queries with a wildcard.
      * See also the [enableFacetSearch]{@link DynamicFacet.options.enableFacetSearch} option.
+     *
+     * **Note:**
+     * > The [`DynamicRangeFacet`]{@link DynamicRangeFacet} component does not support this option.
      *
      * **Default:** `true`
      */
@@ -234,6 +251,8 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
      *
      * See [Normalizing Facet Value Captions](https://developers.coveo.com/x/jBsvAg).
      *
+     * **Note:**
+     * > The [`DynamicRangeFacet`]{@link DynamicRangeFacet} component does not support this option.
      */
     valueCaption: ComponentOptions.buildJsonOption<IStringMap<string>>()
   };
@@ -257,8 +276,13 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
    * @param options The component options.
    * @param bindings The component bindings. Automatically resolved by default.
    */
-  constructor(public element: HTMLElement, public options?: IDynamicFacetOptions, bindings?: IComponentBindings) {
-    super(element, DynamicFacet.ID, bindings);
+  constructor(
+    public element: HTMLElement,
+    public options?: IDynamicFacetOptions,
+    bindings?: IComponentBindings,
+    classId: string = DynamicFacet.ID
+  ) {
+    super(element, classId, bindings);
     this.options = ComponentOptions.initComponentOptions(element, DynamicFacet, options);
 
     this.initDynamicFacetQueryController();
