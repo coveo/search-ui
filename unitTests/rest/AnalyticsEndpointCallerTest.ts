@@ -81,6 +81,12 @@ export const AnalyticsEndpointCallerTest = () => {
         expect(spyBeacon).toHaveBeenCalledWith('https://blah.analytics.com/click?access_token=foo', jasmine.anything());
       });
 
+      it('when the access token is undefined, it should not send it as a query string parameter', () => {
+        analyticsCaller.options.accessToken = undefined;
+        analyticsCaller.call(buildRequest('https://blah.analytics.com/click'));
+        expect(spyBeacon).toHaveBeenCalledWith('https://blah.analytics.com/click', jasmine.anything());
+      });
+
       it('should properly encode the payload', () => {
         const payload = {
           actionCause: 'something',
