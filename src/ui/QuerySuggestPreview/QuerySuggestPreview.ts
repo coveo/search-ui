@@ -13,7 +13,11 @@ import { ResultListTableRenderer } from '../ResultList/ResultListTableRenderer';
 import { ITemplateToHtml, TemplateToHtml } from '../Templates/TemplateToHtml';
 import { IQueryResult } from '../../rest/QueryResult';
 import { OmniboxAnalytics } from '../Omnibox/OmniboxAnalytics';
-import { IAnalyticsOmniboxSuggestionMeta, analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
+import {
+  IAnalyticsOmniboxSuggestionMeta,
+  analyticsActionCauseList,
+  IAnalyticsClickQuerySuggestPreview
+} from '../Analytics/AnalyticsActionListMeta';
 
 export interface IQuerySuggestPreview {
   numberOfPreviewResults?: number;
@@ -240,6 +244,7 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
     if (!(buildResults.length > 0)) {
       return;
     }
+    this.addOnClickListener(buildResults);
     this.updateResultPerRow(buildResults);
     this.renderer.renderResults(buildResults, true, result => {});
   }
@@ -249,6 +254,21 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
     elements.forEach(element => {
       this.updateFlexCSS(element, resultAvailableSpace);
     });
+  }
+
+  private addOnClickListener(results: HTMLElement[]) {
+    results.forEach(result => {
+      const rank = results.indexOf(result).toString();
+      result.setAttribute('coveo-preview-rank', rank);
+      this.bind.on(result, 'click', (e: MouseEvent) => {
+        this.handleOnClick(e, result);
+      });
+    });
+  }
+
+  private handleOnClick(e: MouseEvent, element: HTMLElement) {
+    const rank = Number(element.getAttribute('coveo-preview-rank'));
+    this.logClickQuerySuggestPreview(rank, element);
   }
 
   private updateFlexCSS(element: HTMLElement, value: string) {
@@ -273,6 +293,17 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
     this.usageAnalytics.logSearchEvent<IAnalyticsOmniboxSuggestionMeta>(
       analyticsActionCauseList.showQuerySuggestPreview,
       this.omniboxAnalytics.buildCustomDataForPartialQueries()
+    );
+  }
+
+  private logClickQuerySuggestPreview(displayedRank: number, element: HTMLElement) {
+    this.usageAnalytics.logCustomEvent<IAnalyticsClickQuerySuggestPreview>(
+      analyticsActionCauseList.clickQuerySuggestPreview,
+      {
+        suggestion: this.previousSuggestionHovered,
+        displayedRank
+      },
+      element
     );
   }
 }

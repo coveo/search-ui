@@ -73,7 +73,7 @@ export function QuerySuggestPreviewTest() {
 
     beforeEach(() => {
       testEnv = new Mock.MockEnvironmentBuilder();
-      testEnv.searchInterface.getOmniboxAnalytics = jasmine.createSpy('omniboxAnalytics').and.returnValue(new OmniboxAnalytics());
+      testEnv.searchInterface.getOmniboxAnalytics = jasmine.createSpy('omniboxAnalytics').and.returnValue(new OmniboxAnalytics()) as any;
     });
     describe('expose options', () => {
       beforeEach(() => {
@@ -159,6 +159,17 @@ export function QuerySuggestPreviewTest() {
         setTimeout(() => {
           const previewContainer = $$(suggestionContainer.el).find('.CoveoResult');
           expect(previewContainer.style.flex).toBe('0 0 33%');
+          done();
+        }, test.cmp.options.executeQueryDelay);
+      });
+
+      it('it set the attribute coveo-preview-rank with the rank of the preview', done => {
+        setupQuerySuggestPreview();
+        setupSuggestion();
+        triggerQuerySuggestHover();
+        setTimeout(() => {
+          const previewContainer = $$(suggestionContainer.el).find('.coveo-preview-results > .CoveoResult');
+          expect(previewContainer.getAttribute('coveo-preview-rank')).toBe('0');
           done();
         }, test.cmp.options.executeQueryDelay);
       });
@@ -257,6 +268,31 @@ export function QuerySuggestPreviewTest() {
           expect(test.cmp.displayedResults.length).toEqual(test.cmp.options.numberOfPreviewResults);
           $$(test.cmp.root).trigger(OmniboxEvents.querySuggestLoseFocus);
           expect(test.cmp.displayedResults).toEqual([]);
+          done();
+        }, test.cmp.options.executeQueryDelay);
+      });
+    });
+
+    describe('when we click a rendered preview,', () => {
+      it('it log an analytics with the appropriate event', done => {
+        const suggestion = 'test';
+        setupQuerySuggestPreview();
+        setupSuggestion();
+        triggerQuerySuggestHover(suggestion);
+        setTimeout(() => {
+          const previewContainer = $$(suggestionContainer.el).find('.coveo-preview-results > .CoveoResult');
+          if (!previewContainer) {
+            done.fail('No result to click. Impossible validate the analytics');
+          }
+          previewContainer.click();
+          expect(test.cmp.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(
+            analyticsActionCauseList.clickQuerySuggestPreview,
+            jasmine.objectContaining({
+              suggestion,
+              displayedRank: 0
+            }),
+            previewContainer
+          );
           done();
         }, test.cmp.options.executeQueryDelay);
       });

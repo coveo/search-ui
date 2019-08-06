@@ -273,6 +273,11 @@ export interface IAnalyticsMissingTerm {
   missingTerm: string;
 }
 
+export interface IAnalyticsClickQuerySuggestPreview {
+  suggestion: string;
+  displayedRank: number;
+}
+
 export var analyticsActionCauseList = {
   /**
    * Identifies the search event that gets logged when the initial query is performed as a result of loading a search interface.
@@ -1408,6 +1413,20 @@ export var analyticsActionCauseList = {
    */
   showQuerySuggestPreview: <IAnalyticsActionCause>{
     name: 'QuerrySuggestPreviewQuery',
+    type: 'querySuggestPreview'
+  },
+  /**
+   * Identifies the search event that gets logged when a user clicks a result from a querySuggestPreview.
+   *
+   * `actionCause`: `'clickQuerySuggestPreview'`
+   * `actionType`: `'querySuggestPreview'`
+   *
+   * Logging an event with this actionType also adds the following key-value pairs in the custom data property of the Usage Analytics HTTP service request.
+   * `"suggestion":`: <correspondingPartialQueries>
+   * `"displayedRank":`: <availableQuerySuggestions>
+   */
+  clickQuerySuggestPreview: <IAnalyticsActionCause>{
+    name: 'clickQuerySuggestPreview',
     type: 'querySuggestPreview'
   }
 };
