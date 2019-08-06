@@ -9,10 +9,8 @@ export class OmniboxAnalytics {
 
   constructor() {}
 
-  public buildCustomDataForPartialQueries(index?: number, suggestions?: string[]): IAnalyticsOmniboxSuggestionMeta {
+  public buildCustomDataForPartialQueries(): IAnalyticsOmniboxSuggestionMeta {
     this.partialQuery = last(this.partialQueries);
-    this.suggestions = suggestions || this.suggestions;
-    this.suggestionRanking = index || this.suggestionRanking;
 
     return {
       partialQueries: this.cleanCustomData(this.partialQueries),

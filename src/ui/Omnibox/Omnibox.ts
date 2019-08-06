@@ -621,13 +621,19 @@ export class Omnibox extends Component {
   }
 
   private buildCustomDataForPartialQueries(index: number, suggestions: string[]): IAnalyticsOmniboxSuggestionMeta {
-    return this.omniboxAnalytics.buildCustomDataForPartialQueries(index, suggestions);
+    this.updateOmniboxAnalytics(suggestions, index);
+    return this.omniboxAnalytics.buildCustomDataForPartialQueries();
   }
 
   private handleQuerySuggestGetFocus({ suggestion }: IQuerySuggestSelection) {
     const suggestions = _.compact(_.map(this.lastSuggestions, suggestion => suggestion.text));
+    const ranking = this.lastSuggestions.indexOf(findWhere(this.lastSuggestions, { text: suggestion }));
+    this.updateOmniboxAnalytics(suggestions, ranking);
+  }
+
+  private updateOmniboxAnalytics(suggestions: string[], suggestionRanking: number) {
     this.omniboxAnalytics.suggestions = suggestions;
-    this.omniboxAnalytics.suggestionRanking = this.lastSuggestions.indexOf(findWhere(this.lastSuggestions, { text: suggestion }));
+    this.omniboxAnalytics.suggestionRanking = suggestionRanking;
   }
 
   private handleSuggestions() {
