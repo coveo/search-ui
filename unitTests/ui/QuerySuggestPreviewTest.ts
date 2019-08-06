@@ -7,6 +7,9 @@ import { SuggestionsManager, Suggestion } from '../../src/magicbox/SuggestionsMa
 import { InputManager } from '../../src/magicbox/InputManager';
 import { MagicBoxInstance } from '../../src/magicbox/MagicBox';
 import { IQueryResults } from '../../src/rest/QueryResults';
+import { OmniboxAnalytics } from '../../src/ui/Omnibox/OmniboxAnalytics';
+import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
+import { last } from 'underscore';
 
 export function QuerySuggestPreviewTest() {
   describe('QuerySuggestPreview', () => {
@@ -70,6 +73,7 @@ export function QuerySuggestPreviewTest() {
 
     beforeEach(() => {
       testEnv = new Mock.MockEnvironmentBuilder();
+      testEnv.searchInterface.getOmniboxAnalytics = jasmine.createSpy('omniboxAnalytics').and.returnValue(new OmniboxAnalytics());
     });
     describe('expose options', () => {
       beforeEach(() => {
@@ -193,6 +197,32 @@ export function QuerySuggestPreviewTest() {
         expect(test.cmp.queryController.getEndpoint().search).toHaveBeenCalledTimes(1);
         expect(test.cmp.queryController.getLastQuery().q).toBe(realQuery);
         done();
+      });
+
+      it(`and the query get executed, 
+      an analytics get logs`, () => {
+        const partialQueries = ['t', 'te', 'tes', 'test'];
+        const suggestionRanking = 3;
+        const suggestions = ['test', 'test2', 'test3'];
+        testEnv.searchInterface.getOmniboxAnalytics = jasmine.createSpy('omniboxAnalytics').and.callFake(() => {
+          const omniboxAnalytics = new OmniboxAnalytics();
+          omniboxAnalytics.partialQueries = partialQueries;
+          omniboxAnalytics.suggestionRanking = suggestionRanking;
+          omniboxAnalytics.suggestions = suggestions;
+          return omniboxAnalytics;
+        });
+        setupQuerySuggestPreview();
+        setupSuggestion();
+        triggerQuerySuggestHoverAndPassTime();
+        expect(test.cmp.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(
+          analyticsActionCauseList.showQuerySuggestPreview,
+          jasmine.objectContaining({
+            partialQuery: last(partialQueries),
+            suggestionRanking,
+            partialQueries: partialQueries.join(';'),
+            suggestions: suggestions.join(';')
+          })
+        );
       });
     });
 

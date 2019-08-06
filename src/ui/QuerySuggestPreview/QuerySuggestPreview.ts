@@ -12,6 +12,8 @@ import { TemplateComponentOptions } from '../Base/TemplateComponentOptions';
 import { ResultListTableRenderer } from '../ResultList/ResultListTableRenderer';
 import { ITemplateToHtml, TemplateToHtml } from '../Templates/TemplateToHtml';
 import { IQueryResult } from '../../rest/QueryResult';
+import { OmniboxAnalytics } from '../Omnibox/OmniboxAnalytics';
+import { IAnalyticsOmniboxSuggestionMeta, analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
 
 export interface IQuerySuggestPreview {
   numberOfPreviewResults?: number;
@@ -102,6 +104,8 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
   private previousSuggestionHovered: string;
   private renderer: ResultListRenderer;
   private timer;
+  private omniboxAnalytics: OmniboxAnalytics;
+
   public currentlyDisplayedResults: IQueryResult[] = [];
 
   /**
@@ -130,6 +134,8 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
     this.bind.onRootElement(OmniboxEvents.querySuggestLoseFocus, () => {
       this.handleFocusOut();
     });
+
+    this.omniboxAnalytics = this.searchInterface.getOmniboxAnalytics();
   }
 
   /**
@@ -207,6 +213,7 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
     this.previousSuggestionHovered = args.suggestion;
     this.timer && clearTimeout(this.timer);
     this.timer = setTimeout(() => {
+      this.logShowQuerySuggestPreview();
       this.executeQueryHover(args.suggestion);
     }, this.options.executeQueryDelay);
   }
@@ -260,6 +267,13 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
     const autoCreateComponentsFn = (elem: HTMLElement) => Initialization.automaticallyCreateComponentsInside(elem, initParameters);
 
     this.renderer = new ResultListTableRenderer(rendererOption, autoCreateComponentsFn);
+  }
+
+  private logShowQuerySuggestPreview() {
+    this.usageAnalytics.logSearchEvent<IAnalyticsOmniboxSuggestionMeta>(
+      analyticsActionCauseList.showQuerySuggestPreview,
+      this.omniboxAnalytics.buildCustomDataForPartialQueries()
+    );
   }
 }
 
