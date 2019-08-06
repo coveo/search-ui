@@ -106,6 +106,7 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
   };
 
   private previousSuggestionHovered: string;
+  private currentlyRenderedSuggestion: string;
   private renderer: ResultListRenderer;
   private timer;
   private omniboxAnalytics: OmniboxAnalytics;
@@ -217,14 +218,15 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
     this.previousSuggestionHovered = args.suggestion;
     this.timer && clearTimeout(this.timer);
     this.timer = setTimeout(() => {
+      this.currentlyRenderedSuggestion = args.suggestion;
       this.logShowQuerySuggestPreview();
-      this.executeQueryHover(args.suggestion);
+      this.executeQueryHover();
     }, this.options.executeQueryDelay);
   }
 
-  private async executeQueryHover(suggestion: string) {
+  private async executeQueryHover() {
     const previousQueryOptions = this.queryController.getLastQuery();
-    previousQueryOptions.q = suggestion;
+    previousQueryOptions.q = this.currentlyRenderedSuggestion;
     previousQueryOptions.numberOfResults = this.options.numberOfPreviewResults;
     const results = await this.queryController.getEndpoint().search(previousQueryOptions);
     $$(this.previewContainer).empty();
@@ -232,7 +234,7 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
     if (!results) {
       return;
     }
-    this.buildPreviewHeader(suggestion);
+    this.buildPreviewHeader(this.currentlyRenderedSuggestion);
     this.buildResultsPreview(results);
   }
 
@@ -300,7 +302,7 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
     this.usageAnalytics.logCustomEvent<IAnalyticsClickQuerySuggestPreview>(
       analyticsActionCauseList.clickQuerySuggestPreview,
       {
-        suggestion: this.previousSuggestionHovered,
+        suggestion: this.currentlyRenderedSuggestion,
         displayedRank
       },
       element

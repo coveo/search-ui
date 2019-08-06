@@ -274,16 +274,24 @@ export function QuerySuggestPreviewTest() {
     });
 
     describe('when we click a rendered preview,', () => {
-      it('it log an analytics with the appropriate event', done => {
-        const suggestion = 'test';
+      function getAResult(done) {
+        const previewContainer = $$(suggestionContainer.el).find('.coveo-preview-results > .CoveoResult');
+        if (!previewContainer) {
+          done.fail('No result to click. Impossible validate the analytics');
+        }
+        return previewContainer;
+      }
+
+      const suggestion = 'test';
+      beforeEach(() => {
         setupQuerySuggestPreview();
         setupSuggestion();
         triggerQuerySuggestHover(suggestion);
+      });
+
+      it('it log an analytics with the appropriate event', done => {
         setTimeout(() => {
-          const previewContainer = $$(suggestionContainer.el).find('.coveo-preview-results > .CoveoResult');
-          if (!previewContainer) {
-            done.fail('No result to click. Impossible validate the analytics');
-          }
+          const previewContainer = getAResult(done);
           previewContainer.click();
           expect(test.cmp.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(
             analyticsActionCauseList.clickQuerySuggestPreview,
@@ -294,6 +302,26 @@ export function QuerySuggestPreviewTest() {
             previewContainer
           );
           done();
+        }, test.cmp.options.executeQueryDelay);
+      });
+
+      it(`it log an analytics with the appropriate event,
+      even if we hover on another suggestion before clicking`, done => {
+        setTimeout(() => {
+          triggerQuerySuggestHover(`bad ${suggestion}`);
+          setTimeout(() => {
+            const previewContainer = getAResult(done);
+            previewContainer.click();
+            expect(test.cmp.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(
+              analyticsActionCauseList.clickQuerySuggestPreview,
+              jasmine.objectContaining({
+                suggestion,
+                displayedRank: 0
+              }),
+              previewContainer
+            );
+            done();
+          }, test.cmp.options.executeQueryDelay - 100);
         }, test.cmp.options.executeQueryDelay);
       });
     });
