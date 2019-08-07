@@ -21,8 +21,9 @@ export function OmniboxAnalyticsTest() {
       const suggestions: string[] = [];
       let partialQuery: string;
       const buildCustomDataForPartialQueries = (): IAnalyticsOmniboxSuggestionMeta => {
-        const partialQueries = omniboxAnalytics.partialQueries.length !== 0 ? undefined : omniboxAnalytics.partialQueries.join(';');
-        const suggestions = omniboxAnalytics.suggestions.length !== 0 ? undefined : omniboxAnalytics.suggestions.join(';');
+        const partialQueries = omniboxAnalytics.partialQueries.join(';');
+        const suggestions = omniboxAnalytics.suggestions.join(';');
+
         return {
           partialQueries,
           suggestionRanking: omniboxAnalytics.suggestionRanking,
@@ -47,7 +48,7 @@ export function OmniboxAnalyticsTest() {
         testOmnibox = Mock.advancedComponentSetup<Omnibox>(Omnibox, new Mock.AdvancedComponentSetupOptions(null, {}, env => testEnv));
       });
 
-      it('enableSearchAsYouType + enableQuerySuggestAddon should send correct analytics events', () => {
+      it('when the option enableSearchAsYouType + enableQuerySuggestAddon should send correct analytics events', () => {
         testOmnibox = Mock.advancedComponentSetup<Omnibox>(
           Omnibox,
           new Mock.AdvancedComponentSetupOptions(
