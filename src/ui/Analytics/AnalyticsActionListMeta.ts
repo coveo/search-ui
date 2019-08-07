@@ -1402,7 +1402,7 @@ export var analyticsActionCauseList = {
   /**
    * Identifies the search event that gets logged when a user clicks a query suggestion based on the usage analytics recorded queries.
    *
-   * `actionCause`: `'QuerrySuggestPreviewQuery'`
+   * `actionCause`: `'showQuerySuggestPreview'`
    * `actionType`: `'querySuggestPreview'`
    *
    * Logging an event with this actionType also adds the following key-value pairs in the custom data property of the Usage Analytics HTTP service request.
@@ -1412,7 +1412,7 @@ export var analyticsActionCauseList = {
    * `"suggestions":`: <availableQuerySuggestions>
    */
   showQuerySuggestPreview: <IAnalyticsActionCause>{
-    name: 'QuerrySuggestPreviewQuery',
+    name: 'showQuerySuggestPreview',
     type: 'querySuggestPreview'
   },
   /**

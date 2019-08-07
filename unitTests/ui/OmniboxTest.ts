@@ -1,6 +1,6 @@
 import * as Mock from '../MockEnvironment';
 import { Omnibox } from '../../src/ui/Omnibox/Omnibox';
-import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
+import { analyticsActionCauseList, IAnalyticsOmniboxSuggestionMeta } from '../../src/ui/Analytics/AnalyticsActionListMeta';
 import { IOmniboxOptions, IOmniboxSuggestion } from '../../src/ui/Omnibox/Omnibox';
 import { Simulate } from '../Simulate';
 import { $$ } from '../../src/utils/Dom';
@@ -10,7 +10,7 @@ import { IFieldDescription } from '../../src/rest/FieldDescription';
 import { Suggestion } from '../../src/magicbox/SuggestionsManager';
 import { KEYBOARD, OmniboxEvents } from '../../src/Core';
 import { IQueryOptions } from '../../src/controllers/QueryController';
-import { OmniboxAnalytics } from '../../src/ui/Omnibox/OmniboxAnalytics';
+import { IOmniboxAnalytics } from '../../src/ui/Omnibox/OmniboxAnalytics';
 
 export function OmniboxTest() {
   describe('Omnibox', () => {
@@ -33,7 +33,24 @@ export function OmniboxTest() {
 
     function setupEnv() {
       testEnv = new Mock.MockEnvironmentBuilder();
-      testEnv.searchInterface.getOmniboxAnalytics = jasmine.createSpy('omniboxAnalytics').and.returnValue(new OmniboxAnalytics()) as any;
+      testEnv.searchInterface.getOmniboxAnalytics = jasmine.createSpy('omniboxAnalytics').and.returnValue(setupOmniboxAnalytics()) as any;
+    }
+
+    function setupOmniboxAnalytics(): IOmniboxAnalytics {
+      const partialQueries: string[] = [];
+      let suggestionRanking: number;
+      const suggestions: string[] = [];
+      let partialQuery: string;
+      const buildCustomDataForPartialQueries = (): IAnalyticsOmniboxSuggestionMeta => {
+        return null;
+      };
+      return {
+        partialQueries,
+        suggestionRanking,
+        suggestions,
+        partialQuery,
+        buildCustomDataForPartialQueries
+      };
     }
 
     function initOmnibox(options: IOmniboxOptions) {
@@ -345,48 +362,6 @@ export function OmniboxTest() {
           placeholder: 'SearchFor'
         });
         expect(test.cmp.getInput().placeholder).toBe(l('SearchFor'));
-      });
-
-      it('enableSearchAsYouType + enableQuerySuggestAddon should send correct analytics events', () => {
-        initOmnibox({
-          enableQuerySuggestAddon: true,
-          enableSearchAsYouType: true
-        });
-        let spy = jasmine.createSpy('spy');
-        test.env.searchEndpoint.getQuerySuggest = spy;
-
-        spy.and.returnValue({
-          completions: [
-            {
-              expression: 'a'
-            },
-            {
-              expression: 'b'
-            },
-            {
-              expression: 'c'
-            },
-            {
-              expression: 'd'
-            },
-            {
-              expression: 'e'
-            }
-          ]
-        });
-
-        test.cmp.setText('foobar');
-        expect(test.cmp.magicBox.onchange).toBeDefined();
-        test.cmp.magicBox.onchange();
-        test.cmp.magicBox.onselect(<Suggestion>['a']);
-        expect(test.env.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(
-          analyticsActionCauseList.omniboxAnalytics,
-          jasmine.objectContaining({
-            partialQuery: undefined,
-            suggestionRanking: jasmine.any(Number),
-            partialQueries: ''
-          })
-        );
       });
 
       it('triggerQueryOnClear should trigger a query on clear', () => {
