@@ -67,6 +67,8 @@ export interface IDynamicFacetOptions extends IResponsiveComponentOptions {
  *
  * This facet is more easy to use than the original [`Facet`]{@link Facet} component. It implements additional Coveo Machine Learning (Coveo ML) features
  * such as dynamic navigation experience (DNE).
+ *
+ * @notSupportedIn salesforcefree
  */
 export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsideFacetColumn {
   static ID = 'DynamicFacet';
@@ -372,7 +374,7 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
    *
    * @param values The name of the facet value to toggle.
    */
-  public toggleSelectValue(value: string): void {
+  public toggleSelectValue(value: string) {
     Assert.exists(value);
     this.ensureDom();
     this.logger.info('Toggle select facet value', this.values.get(value).toggleSelect());
@@ -385,7 +387,7 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
    * Automatically triggers an isolated query.
    * @param additionalNumberOfValues The number of additional values to request. Minimum value is 1. Defaults to the [numberOfValues]{@link DynamicFacet.options.numberOfValues} option value.
    */
-  public showMoreValues(additionalNumberOfValues = this.options.numberOfValues): void {
+  public showMoreValues(additionalNumberOfValues = this.options.numberOfValues) {
     this.ensureDom();
     this.logger.info('Show more values');
     this.dynamicFacetQueryController.increaseNumberOfValuesToRequest(additionalNumberOfValues);
@@ -397,7 +399,7 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
    *
    * Automatically triggers an isolated query.
    */
-  public showLessValues(): void {
+  public showLessValues() {
     this.ensureDom();
     this.logger.info('Show less values');
     this.dynamicFacetQueryController.resetNumberOfValuesToRequest();
