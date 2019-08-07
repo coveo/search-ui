@@ -41,7 +41,7 @@
         white-space: initial;
       }
     }
-    .CoveoDynamicFacet {
+    #{$allDynamicFacetsType} {
       margin: 0;
 
       .coveo-dynamic-facet-header,
