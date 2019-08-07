@@ -9,7 +9,7 @@ export class DynamicFacetValueCheckbox {
   constructor(private facetValue: DynamicFacetValue, selectAction = () => {}) {
     this.checkbox = new Checkbox(
       selectAction.bind(this),
-      this.facetValue.valueCaption,
+      this.facetValue.displayValue,
       this.facetValue.selectAriaLabel,
       `(${this.facetValue.formattedCount})`
     );
@@ -18,7 +18,7 @@ export class DynamicFacetValueCheckbox {
     const labelSuffix = $$(this.checkbox.getElement()).find('.coveo-checkbox-span-label-suffix');
 
     if (label && labelSuffix) {
-      label.setAttribute('title', this.facetValue.valueCaption);
+      label.setAttribute('title', this.facetValue.displayValue);
       label.setAttribute('aria-hidden', 'true');
       labelSuffix.setAttribute('aria-hidden', 'true');
     }

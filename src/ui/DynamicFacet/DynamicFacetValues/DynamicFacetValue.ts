@@ -40,7 +40,7 @@ export class DynamicFacetValue implements IDynamicFacetValue {
     this.state = state;
     this.numberOfResults = numberOfResults;
     this.position = position;
-    this.displayValue = displayValue;
+    this.displayValue = displayValue || this.valueCaption;
     this.renderer = new rendererKlass(this, facet);
   }
 
@@ -87,7 +87,7 @@ export class DynamicFacetValue implements IDynamicFacetValue {
     const selectOrUnselect = !this.isSelected ? 'SelectValueWithResultCount' : 'UnselectValueWithResultCount';
     const resultCount = l('ResultCount', this.formattedCount);
 
-    return `${l(selectOrUnselect, this.valueCaption, resultCount)}`;
+    return `${l(selectOrUnselect, this.displayValue, resultCount)}`;
   }
 
   public get analyticsMeta(): IAnalyticsDynamicFacetMeta {
@@ -95,7 +95,7 @@ export class DynamicFacetValue implements IDynamicFacetValue {
       ...this.facet.basicAnalyticsFacetState,
       value: this.value,
       valuePosition: this.position,
-      displayValue: this.displayValue ? this.displayValue : this.valueCaption,
+      displayValue: this.displayValue,
       state: this.state
     };
   }
