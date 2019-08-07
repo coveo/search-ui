@@ -2,9 +2,10 @@ import * as Mock from '../MockEnvironment';
 import { IBasicComponentSetup } from '../MockEnvironment';
 import { QuerySuggestPreview } from '../../src/ui/QuerySuggestPreview/QuerySuggestPreview';
 import { QuerySuggestPreviewTestUtils } from './QuerySuggestPreviewTestUtils';
-import { OmniboxAnalytics } from '../../src/ui/Omnibox/OmniboxAnalytics';
+import { IOmniboxAnalytics } from '../../src/ui/Omnibox/OmniboxAnalytics';
 import { $$, OmniboxEvents } from '../../src/Core';
 import { FakeResults } from '../Fake';
+import { IAnalyticsOmniboxSuggestionMeta } from '../../src/ui/Analytics/AnalyticsActionListMeta';
 
 export function QuerySuggestPreviewTest() {
   describe('QuerySuggestPreview', () => {
@@ -12,9 +13,26 @@ export function QuerySuggestPreviewTest() {
     let testEnv: Mock.MockEnvironmentBuilder;
     let utils: QuerySuggestPreviewTestUtils;
 
+    function setupOmniboxAnalytics(): IOmniboxAnalytics {
+      const partialQueries: string[] = [];
+      let suggestionRanking: number;
+      const suggestions: string[] = [];
+      let partialQuery: string;
+      const buildCustomDataForPartialQueries = (): IAnalyticsOmniboxSuggestionMeta => {
+        return null;
+      };
+      return {
+        partialQueries,
+        suggestionRanking,
+        suggestions,
+        partialQuery,
+        buildCustomDataForPartialQueries
+      };
+    }
+
     beforeEach(() => {
       testEnv = new Mock.MockEnvironmentBuilder();
-      testEnv.searchInterface.getOmniboxAnalytics = jasmine.createSpy('omniboxAnalytics').and.returnValue(new OmniboxAnalytics()) as any;
+      testEnv.searchInterface.getOmniboxAnalytics = jasmine.createSpy('omniboxAnalytics').and.returnValue(setupOmniboxAnalytics()) as any;
       utils = new QuerySuggestPreviewTestUtils(testEnv);
     });
 
