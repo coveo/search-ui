@@ -1,5 +1,11 @@
 import { FacetValueState } from './FacetValueState';
 import { FacetSortCriteria } from './FacetSortCriteria';
+import { IFacetNumericalRangeValue } from './FacetRangeValues';
+
+export enum FacetType {
+  Specific = 'Specific',
+  NumericalRange = 'NumericalRange'
+}
 
 /**
  * A [`currentValues`]{@link IFacetRequest.currentValues} item in a Search API
@@ -9,7 +15,7 @@ export interface IFacetRequestValue {
   /**
    * **Required (Search API).** The facet value name.
    */
-  value: string;
+  value: string | IFacetNumericalRangeValue;
 
   /**
    * The current facet value state in the search interface.

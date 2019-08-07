@@ -1,4 +1,5 @@
 import { FacetValueState } from '../../rest/Facet/FacetValueState';
+import { FacetType } from '../../rest/Facet/FacetRequest';
 
 /**
  * The IAnalyticsActionCause interface describes the cause of an event for the analytics service.
@@ -130,10 +131,6 @@ export interface IAnalyticsFacetSliderChangeMeta {
   facetRangeEnd: any;
 }
 
-export enum AnalyticsDynamicFacetType {
-  string = 'String'
-}
-
 /**
  * Describes the current condition of a single dynamic facet value.
  */
@@ -169,7 +166,7 @@ export interface IAnalyticsDynamicFacetMeta {
   /**
    * The type of values displayed in the dynamic facet.
    */
-  facetType?: AnalyticsDynamicFacetType;
+  facetType?: FacetType;
   /**
    * The new state of the dynamic facet value that was interacted with.
    */

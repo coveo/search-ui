@@ -24,12 +24,7 @@ import { isFacetSortCriteria } from '../../rest/Facet/FacetSortCriteria';
 import { l } from '../../strings/Strings';
 import { DeviceUtils } from '../../utils/DeviceUtils';
 import { BreadcrumbEvents, IPopulateBreadcrumbEventArgs } from '../../events/BreadcrumbEvents';
-import {
-  IAnalyticsActionCause,
-  IAnalyticsDynamicFacetMeta,
-  analyticsActionCauseList,
-  AnalyticsDynamicFacetType
-} from '../Analytics/AnalyticsActionListMeta';
+import { IAnalyticsActionCause, IAnalyticsDynamicFacetMeta, analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
 import { IQueryOptions } from '../../controllers/QueryController';
 import { DynamicFacetManager } from '../DynamicFacetManager/DynamicFacetManager';
 import { QueryBuilder } from '../Base/QueryBuilder';
@@ -37,6 +32,7 @@ import { IAutoLayoutAdjustableInsideFacetColumn } from '../SearchInterface/Facet
 import { DynamicFacetSearch } from '../DynamicFacetSearch/DynamicFacetSearch';
 import { ResultListUtils } from '../../utils/ResultListUtils';
 import { IQueryResults } from '../../rest/QueryResults';
+import { FacetType } from '../../rest/Facet/FacetRequest';
 
 export interface IDynamicFacetOptions extends IResponsiveComponentOptions {
   id?: string;
@@ -305,6 +301,10 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
     return this.options.field.slice(1);
   }
 
+  public get facetType() {
+    return FacetType.Specific;
+  }
+
   /**
    * Selects a single value in this facet.
    *
@@ -506,7 +506,7 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
     return {
       field: this.options.field.toString(),
       id: this.options.id,
-      facetType: AnalyticsDynamicFacetType.string,
+      facetType: this.facetType,
       facetPosition: this.position
     };
   }
