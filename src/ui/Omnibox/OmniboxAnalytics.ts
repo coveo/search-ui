@@ -1,4 +1,4 @@
-import { last, compact, filter, map, reduceRight } from 'underscore';
+import { last, compact, filter, reduceRight } from 'underscore';
 import { IAnalyticsOmniboxSuggestionMeta } from '../Analytics/AnalyticsActionListMeta';
 
 export interface IOmniboxAnalytics {
@@ -35,7 +35,7 @@ export class OmniboxAnalytics implements IOmniboxAnalytics {
 
     // Custom dimensions cannot be an array in analytics service: Send a string joined by ; instead.
     // Need to replace ;
-    const redimensionedArray = this.removeCustomDimension(filterOutConsecutiveValues);
+    const redimensionedArray = filterOutConsecutiveValues.map(value => this.removeSemicolons(value));
 
     // Reduce right to get the last X words that adds to less then rejectLength
     const reducedToRejectLengthOrLess = this.reduceAnalyticsToLengthLimit(redimensionedArray, rejectLength);
@@ -60,10 +60,8 @@ export class OmniboxAnalytics implements IOmniboxAnalytics {
     );
   }
 
-  private removeCustomDimension(toClean: string[]) {
-    return map(toClean, partial => {
-      return partial.replace(/;/g, '');
-    });
+  private removeSemicolons(partial: string) {
+    return partial.replace(/;/g, '');
   }
 
   private reduceAnalyticsToLengthLimit(toClean: string[], rejectLength: number) {
