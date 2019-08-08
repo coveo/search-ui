@@ -1,4 +1,4 @@
-type RangeExtremum = string | number | Date;
+export type RangeExtremum = string | number | Date;
 
 /**
  * Describes a single range value to request in a [Group By](https://docs.coveo.com/en/203/) operation
