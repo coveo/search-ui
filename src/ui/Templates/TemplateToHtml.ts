@@ -7,6 +7,8 @@ import { SearchInterface } from '../../ui/SearchInterface/SearchInterface';
 import { ResultList } from '../ResultList/ResultList';
 import { RendererValidLayout } from '../ResultLayoutSelector/ValidLayout';
 import { pluck, sortBy, map } from 'underscore';
+import { $$ } from '../../utils/Dom';
+import { Logger } from '../../misc/Logger';
 
 export interface ITemplateToHtml {
   resultTemplate: Template;
@@ -55,9 +57,11 @@ export class TemplateToHtml {
       Component.bindResultToElement(resultElement, result);
     }
     currentlyDisplayedResults.push(result);
-    return this.autoCreateComponentsInsideResult(resultElement, result).initResult.then(() => {
-      return resultElement;
-    });
+
+    await this.autoCreateComponentsInsideResult(resultElement, result).initResult;
+
+    this.verifyChildren(resultElement);
+    return resultElement;
   }
 
   public autoCreateComponentsInsideResult(element: HTMLElement, result: IQueryResult): IInitResult {
@@ -72,5 +76,15 @@ export class TemplateToHtml {
       currentLayout: layout,
       responsiveComponents: this.args.searchInterface.responsiveComponents
     });
+  }
+
+  private verifyChildren(element: HTMLElement) {
+    const containsResultLink = !!$$(element).find('.CoveoResultLink');
+    if (containsResultLink) {
+      return;
+    }
+
+    const msg = `Result does not contain a "CoveoResultLink" component, please verify the result template`;
+    new Logger(element).warn(msg, this.args.resultTemplate);
   }
 }
