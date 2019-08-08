@@ -1,102 +1,85 @@
-import * as Mock from '../MockEnvironment';
-import { Omnibox } from '../../src/ui/Omnibox/Omnibox';
-import { IOmniboxAnalytics } from '../../src/ui/Omnibox/OmniboxAnalytics';
-import { IAnalyticsOmniboxSuggestionMeta, analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
-import { Suggestion } from '../../src/magicbox/SuggestionsManager';
+import { OmniboxAnalytics } from '../../src/ui/Omnibox/OmniboxAnalytics';
+import { IAnalyticsOmniboxSuggestionMeta } from '../../src/ui/Analytics/AnalyticsActionListMeta';
 
 export function OmniboxAnalyticsTest() {
-  let omniboxAnalytics: IOmniboxAnalytics;
+  let omniboxAnalytics: OmniboxAnalytics;
 
   describe('omniboxAnalyticsTest', () => {
-    let testEnv: Mock.MockEnvironmentBuilder;
+    beforeEach(() => {
+      omniboxAnalytics = new OmniboxAnalytics();
+    });
 
-    function setupEnv() {
-      testEnv = new Mock.MockEnvironmentBuilder();
-      testEnv.searchInterface.getOmniboxAnalytics = jasmine.createSpy('omniboxAnalytics').and.returnValue(setupOmniboxAnalytics()) as any;
+    function random256Array(array: string[]) {
+      while (array.join('').length <= 256) {
+        array.push(
+          Math.random()
+            .toString(36)
+            .substring(2)
+        );
+      }
     }
 
-    function setupOmniboxAnalytics(): IOmniboxAnalytics {
-      const partialQueries: string[] = [];
-      let suggestionRanking: number;
-      const suggestions: string[] = [];
-      let partialQuery: string;
-      const buildCustomDataForPartialQueries = (): IAnalyticsOmniboxSuggestionMeta => {
-        const partialQueries = omniboxAnalytics.partialQueries.join(';');
-        const suggestions = omniboxAnalytics.suggestions.join(';');
+    it('return IAnalyticsOmniboxSuggestionMeta when nothing has change since initialisation', () => {
+      expect(omniboxAnalytics.buildCustomDataForPartialQueries()).toEqual(
+        jasmine.objectContaining(<IAnalyticsOmniboxSuggestionMeta>{
+          partialQueries: '',
+          suggestionRanking: undefined,
+          suggestions: '',
+          partialQuery: undefined
+        })
+      );
+    });
 
-        return {
-          partialQueries,
-          suggestionRanking: omniboxAnalytics.suggestionRanking,
-          suggestions,
-          partialQuery: omniboxAnalytics.partialQuery
-        };
-      };
-      return (omniboxAnalytics = {
-        partialQueries,
-        suggestionRanking,
-        suggestions,
-        partialQuery,
-        buildCustomDataForPartialQueries
-      });
-    }
+    it('suggestionRanking should get set with the right value', () => {
+      omniboxAnalytics.suggestionRanking = 3;
+      expect(omniboxAnalytics.buildCustomDataForPartialQueries()).toEqual(
+        jasmine.objectContaining(<IAnalyticsOmniboxSuggestionMeta>{
+          partialQueries: '',
+          partialQuery: undefined,
+          suggestionRanking: 3,
+          suggestions: ''
+        })
+      );
+    });
 
-    describe('in the omnibox', () => {
-      let testOmnibox: Mock.IBasicComponentSetup<Omnibox>;
+    it('partialQueries and suggestions values get separated by a semicolon', () => {
+      omniboxAnalytics.partialQueries = ['foo', 'foo2'];
+      omniboxAnalytics.suggestions = ['bar', 'bar2'];
+      expect(omniboxAnalytics.buildCustomDataForPartialQueries()).toEqual(
+        jasmine.objectContaining(<IAnalyticsOmniboxSuggestionMeta>{
+          partialQueries: 'foo;foo2',
+          partialQuery: 'foo2',
+          suggestionRanking: undefined,
+          suggestions: 'bar;bar2'
+        })
+      );
+    });
 
-      beforeEach(() => {
-        setupEnv();
-        testOmnibox = Mock.advancedComponentSetup<Omnibox>(Omnibox, new Mock.AdvancedComponentSetupOptions(null, {}, env => testEnv));
-      });
+    it('partialQueries and suggestions consecutive values get reduce to 1', () => {
+      omniboxAnalytics.partialQueries = ['foo', 'foo', 'foo'];
+      omniboxAnalytics.suggestions = ['bar', 'bar', 'bar'];
+      expect(omniboxAnalytics.buildCustomDataForPartialQueries()).toEqual(
+        jasmine.objectContaining(<IAnalyticsOmniboxSuggestionMeta>{
+          partialQueries: 'foo',
+          partialQuery: 'foo',
+          suggestionRanking: undefined,
+          suggestions: 'bar'
+        })
+      );
+    });
 
-      it('when the option enableSearchAsYouType + enableQuerySuggestAddon should send correct analytics events', () => {
-        testOmnibox = Mock.advancedComponentSetup<Omnibox>(
-          Omnibox,
-          new Mock.AdvancedComponentSetupOptions(
-            null,
-            {
-              enableQuerySuggestAddon: true,
-              enableSearchAsYouType: true
-            },
-            env => testEnv
-          )
-        );
+    it('partialQueries length should get rezise be a max of 256 character', () => {
+      random256Array(omniboxAnalytics.partialQueries);
+      expect(omniboxAnalytics.partialQueries.join('').length).toBeGreaterThan(256);
+      const metadata = omniboxAnalytics.buildCustomDataForPartialQueries();
+      expect(metadata.partialQueries.length).toBeLessThan(256);
+    });
 
-        let spy = jasmine.createSpy('spy');
-        testOmnibox.env.searchEndpoint.getQuerySuggest = spy;
-
-        spy.and.returnValue({
-          completions: [
-            {
-              expression: 'a'
-            },
-            {
-              expression: 'b'
-            },
-            {
-              expression: 'c'
-            },
-            {
-              expression: 'd'
-            },
-            {
-              expression: 'e'
-            }
-          ]
-        });
-
-        testOmnibox.cmp.setText('foobar');
-        expect(testOmnibox.cmp.magicBox.onchange).toBeDefined();
-        testOmnibox.cmp.magicBox.onchange();
-        testOmnibox.cmp.magicBox.onselect(<Suggestion>['a']);
-        expect(testOmnibox.env.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(
-          analyticsActionCauseList.omniboxAnalytics,
-          jasmine.objectContaining({
-            partialQuery: undefined,
-            suggestionRanking: jasmine.any(Number),
-            partialQueries: ''
-          })
-        );
-      });
+    it('suggestions length should get rezise be a max of 256 character', () => {
+      random256Array(omniboxAnalytics.suggestions);
+      expect(omniboxAnalytics.suggestions.join('').length).toBeGreaterThan(256);
+      const metadata = omniboxAnalytics.buildCustomDataForPartialQueries();
+      expect(metadata.suggestions.length).toBeLessThan(256);
     });
   });
 }

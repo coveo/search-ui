@@ -16,6 +16,7 @@ export function OmniboxTest() {
   describe('Omnibox', () => {
     let test: Mock.IBasicComponentSetup<Omnibox>;
     let testEnv: Mock.MockEnvironmentBuilder;
+    let omniboxAnalytics: IOmniboxAnalytics;
     beforeEach(() => {
       // Thanks phantom js for bad native event support
       if (Simulate.isPhantomJs()) {
@@ -33,16 +34,22 @@ export function OmniboxTest() {
 
     function setupEnv() {
       testEnv = new Mock.MockEnvironmentBuilder();
-      testEnv.searchInterface.getOmniboxAnalytics = jasmine.createSpy('omniboxAnalytics').and.returnValue(setupOmniboxAnalytics()) as any;
+      omniboxAnalytics = buildOmniboxAnalyticsMock();
+      testEnv.searchInterface.getOmniboxAnalytics = jasmine.createSpy('omniboxAnalytics').and.returnValue(omniboxAnalytics) as any;
     }
 
-    function setupOmniboxAnalytics(): IOmniboxAnalytics {
+    function buildOmniboxAnalyticsMock(): IOmniboxAnalytics {
       const partialQueries: string[] = [];
       let suggestionRanking: number;
       const suggestions: string[] = [];
       let partialQuery: string;
       const buildCustomDataForPartialQueries = (): IAnalyticsOmniboxSuggestionMeta => {
-        return null;
+        return {
+          suggestionRanking: omniboxAnalytics.suggestionRanking,
+          suggestions: omniboxAnalytics.suggestions.join(';'),
+          partialQueries: omniboxAnalytics.partialQueries.join(';'),
+          partialQuery: omniboxAnalytics.partialQuery
+        };
       };
       return {
         partialQueries,
@@ -362,6 +369,48 @@ export function OmniboxTest() {
           placeholder: 'SearchFor'
         });
         expect(test.cmp.getInput().placeholder).toBe(l('SearchFor'));
+      });
+
+      it('enableSearchAsYouType + enableQuerySuggestAddon should send correct analytics events', () => {
+        initOmnibox({
+          enableQuerySuggestAddon: true,
+          enableSearchAsYouType: true
+        });
+        let spy = jasmine.createSpy('spy');
+        test.env.searchEndpoint.getQuerySuggest = spy;
+
+        spy.and.returnValue({
+          completions: [
+            {
+              expression: 'a'
+            },
+            {
+              expression: 'b'
+            },
+            {
+              expression: 'c'
+            },
+            {
+              expression: 'd'
+            },
+            {
+              expression: 'e'
+            }
+          ]
+        });
+
+        test.cmp.setText('foobar');
+        expect(test.cmp.magicBox.onchange).toBeDefined();
+        test.cmp.magicBox.onchange();
+        test.cmp.magicBox.onselect(<Suggestion>['a']);
+        expect(test.env.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(
+          analyticsActionCauseList.omniboxAnalytics,
+          jasmine.objectContaining({
+            partialQuery: undefined,
+            suggestionRanking: jasmine.any(Number),
+            partialQueries: ''
+          })
+        );
       });
 
       it('triggerQueryOnClear should trigger a query on clear', () => {
