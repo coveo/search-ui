@@ -58,6 +58,7 @@ export class MagicBoxInstance {
 
     this.inputManager = new InputManager(
       inputContainer,
+      root,
       (text, wordCompletion) => {
         if (!wordCompletion) {
           this.setText(text);

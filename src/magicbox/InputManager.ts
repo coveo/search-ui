@@ -4,6 +4,7 @@ import _ = require('underscore');
 import { MagicBoxInstance } from './MagicBox';
 import { KEYBOARD } from '../utils/KeyboardUtils';
 import { l } from '../strings/Strings';
+import { Component } from '../Core';
 
 export class InputManager {
   public input: HTMLInputElement;
@@ -26,7 +27,12 @@ export class InputManager {
   public onchangecursor: () => void;
   public ontabpress: () => void;
 
-  constructor(element: HTMLElement, private onchange: (text: string, wordCompletion: boolean) => void, private magicBox: MagicBoxInstance) {
+  constructor(
+    element: HTMLElement,
+    private root: HTMLElement,
+    private onchange: (text: string, wordCompletion: boolean) => void,
+    private magicBox: MagicBoxInstance
+  ) {
     this.underlay = document.createElement('div');
     this.underlay.className = 'magic-box-underlay';
 
@@ -249,7 +255,7 @@ export class InputManager {
     switch (e.keyCode || e.which) {
       case 37: // Left
       case 39: // Right
-        this.onchangecursor();
+        this.handleLeftRightArrow();
         break;
       default:
         if (this.onkeydown == null || this.onkeyup(e.keyCode || e.which)) {
@@ -258,6 +264,12 @@ export class InputManager {
           e.preventDefault();
         }
         break;
+    }
+  }
+
+  private handleLeftRightArrow() {
+    if (!$$(this.root).find(`.${Component.computeCssClassNameForType('QuerySuggestPreview')}`)) {
+      this.onchangecursor();
     }
   }
 

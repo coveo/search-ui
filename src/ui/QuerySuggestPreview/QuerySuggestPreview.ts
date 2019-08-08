@@ -221,8 +221,16 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
     if (!results) {
       return;
     }
+    this.addImage(results);
     this.buildPreviewHeader(suggestion);
     this.buildResultsPreview(results);
+  }
+
+  //Delete when creating the PR
+  private addImage(results: IQueryResults) {
+    results.results.forEach(result => {
+      result.raw['ccimage'] = 'https://img.bbystatic.com/BestBuy_US/images/products/5410/5410701_sa.jpg';
+    });
   }
 
   private async buildResultsPreview(results: IQueryResults) {
