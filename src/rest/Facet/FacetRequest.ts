@@ -1,10 +1,11 @@
 import { FacetValueState } from './FacetValueState';
 import { FacetSortCriteria } from './FacetSortCriteria';
-import { IFacetNumericalRangeValue } from './FacetRangeValues';
+import { IRangeValue } from '../RangeValue';
 
 export enum FacetType {
   Specific = 'Specific',
-  NumericalRange = 'NumericalRange'
+  NumericalRange = 'NumericalRange',
+  DateRange = 'DateRange'
 }
 
 /**
@@ -15,7 +16,7 @@ export interface IFacetRequestValue {
   /**
    * **Required (Search API).** The facet value name.
    */
-  value: string | IFacetNumericalRangeValue;
+  value: string | IRangeValue;
 
   /**
    * The current facet value state in the search interface.
@@ -47,6 +48,14 @@ export interface IFacetRequest {
    * **Example:** `author`
    */
   field: string;
+
+  /**
+   * The [facet type]{@link FacetType}
+   * Possible values are `Specific`, `NumericalRange` and `DateRange`.
+   *
+   * **Default (Search API):** `Specific`
+   */
+  type?: FacetType;
 
   /**
    * The sort criterion to apply to the returned facet values.
@@ -114,4 +123,13 @@ export interface IFacetRequest {
    * **Default (Search API):** `false`
    */
   isFieldExpanded?: boolean;
+
+  /**
+   * Whether the index should generate the ranges automatically.
+   *
+   * **Default (Search API):**
+   * > `false` if [`currentValues`]{@link IFacetRequest.currentValues} is present.
+   * > `true` if [`currentValues`]{@link IFacetRequest.currentValues} is empty.
+   */
+  generateAutomaticRanges?: boolean;
 }
