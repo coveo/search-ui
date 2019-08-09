@@ -507,6 +507,15 @@ export function DynamicFacetTest() {
       expect(searchFeatureActive()).toBe(false);
     });
 
+    it(`when "enableFacetSearch" option is false
+    it should not throw when collapsing`, () => {
+      options.enableFacetSearch = false;
+      initializeComponent();
+      test.cmp.ensureDom();
+
+      expect(() => test.cmp.collapse()).not.toThrow();
+    });
+
     it(`when "enableFacetSearch" option is true
     it should render the search element`, () => {
       options.enableFacetSearch = true;

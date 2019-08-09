@@ -52,7 +52,6 @@ export interface IDynamicFacetOptions extends IResponsiveComponentOptions {
   includeInBreadcrumb?: boolean;
   numberOfValuesInBreadcrumb?: number;
   valueCaption?: any;
-  preservePosition?: boolean;
 }
 
 /**
@@ -236,16 +235,7 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
      * See [Normalizing Facet Value Captions](https://developers.coveo.com/x/jBsvAg).
      *
      */
-    valueCaption: ComponentOptions.buildJsonOption<IStringMap<string>>(),
-
-    /**
-     * Whether the facet should remain in its current position in the viewport when the mouse cursor is over it.
-     *
-     * Leaving this to `true` ensures that the facet does not move around in the search interface while the end-user is interacting with it.
-     *
-     * Default: `true`
-     */
-    preservePosition: ComponentOptions.buildBooleanOption({ defaultValue: true })
+    valueCaption: ComponentOptions.buildJsonOption<IStringMap<string>>()
   };
 
   private includedAttributeId: string;
@@ -684,6 +674,10 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
   }
 
   private toggleSearchDisplay() {
+    if (this.options.enableFacetSearch === false) {
+      return;
+    }
+
     if (Utils.isUndefined(this.options.enableFacetSearch)) {
       $$(this.search.element).toggle(this.moreValuesAvailable);
     }
