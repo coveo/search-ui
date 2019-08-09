@@ -174,7 +174,7 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
     enableScrollToTop: ComponentOptions.buildBooleanOption({ defaultValue: true, section: 'CommonOptions' }),
 
     /**
-     * Specifies whether to enable the **Show more** and **Show less** buttons in the facet.
+     * Whether to enable the **Show more** and **Show less** buttons in the facet.
      *
      * **Note:**
      * > The [`DynamicRangeFacet`]{@link DynamicRangeFacet} component does not support this option.

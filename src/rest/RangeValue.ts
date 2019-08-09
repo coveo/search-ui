@@ -1,6 +1,5 @@
 /**
- * Describes a single range value to request in a [Group By](https://docs.coveo.com/en/203/) operation
- * or in a [facet request]{@link IFacetRequest}.
+ * Describes a single range value in a [group by request]{@link IGroupByRequest} or [facet request]{@link IFacetRequest}.
  */
 export interface IRangeValue<T = string | number | Date> {
   /**

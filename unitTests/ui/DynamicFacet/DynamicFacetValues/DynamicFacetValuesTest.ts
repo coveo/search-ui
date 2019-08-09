@@ -189,9 +189,9 @@ export function DynamicFacetValuesTest() {
         expect(moreButton()).toBeFalsy();
       });
 
-      it(`when clicking on the "Show more" button
-        should perform the correct actions on the facet`, () => {
-        mockFacetValues = DynamicFacetTestUtils.createFakeFacetValues(10);
+      it(`when there are more values than the option "numberOfValues"
+      should not render the "Show less" button`, () => {
+        mockFacetValues = DynamicFacetTestUtils.createFakeFacetValues(facet.options.numberOfValues * 3);
         createValuesFromResponse();
 
         expect(lessButton()).toBeFalsy();
