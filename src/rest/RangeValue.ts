@@ -1,7 +1,9 @@
+export type RangeExtremum = string | number | Date;
+
 /**
  * Describes a single range value in a [group by request]{@link IGroupByRequest} or [facet request]{@link IFacetRequest}.
  */
-export interface IRangeValue<T = string | number | Date> {
+export interface IRangeValue {
   /**
    * The value to start the range at.
    *
@@ -9,7 +11,7 @@ export interface IRangeValue<T = string | number | Date> {
    * > - `0`
    * > - `2018-01-01T00:00:00.000Z`
    */
-  start?: T;
+  start?: RangeExtremum;
 
   /**
    * The value to end the range at.
@@ -18,7 +20,7 @@ export interface IRangeValue<T = string | number | Date> {
    * > - `500`
    * > - `2018-12-31T23:59:59.999Z`
    */
-  end?: T;
+  end?: RangeExtremum;
 
   /**
    * The label to associate with the range value.

@@ -75,7 +75,7 @@ export class TimespanFacet extends Component {
     });
   };
 
-  private rangeValues: IRangeValue<Date>[] = [
+  private rangeValues: IRangeValue[] = [
     {
       start: moment(0).toDate(),
       end: moment()
@@ -153,7 +153,7 @@ export class TimespanFacet extends Component {
   /**
    * Sets a new range for the component.
    */
-  public set ranges(ranges: IRangeValue<Date>[]) {
+  public set ranges(ranges: IRangeValue[]) {
     this.rangeValues = ranges;
     this.buildFacet();
   }
