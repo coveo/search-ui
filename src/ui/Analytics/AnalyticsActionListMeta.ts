@@ -1393,21 +1393,5 @@ export var analyticsActionCauseList = {
   removeMissingTerm: <IAnalyticsActionCause>{
     name: 'removeMissingTerm',
     type: 'missingTerm'
-  },
-  /**
-   * Identifies the search event that gets logged when a user clicks a query suggestion based on the usage analytics recorded queries.
-   *
-   * `actionCause`: `'showQuerySuggestPreview'`
-   * `actionType`: `'querySuggestPreview'`
-   *
-   * Logging an event with this actionType also adds the following key-value pairs in the custom data property of the Usage Analytics HTTP service request.
-   * `"partialQuery":`: <correspondingPartialQuery>
-   * `"suggestionRanking":`: <suggestionRankingValue>
-   * `"partialQueries":`: <correspondingPartialQueries>
-   * `"suggestions":`: <availableQuerySuggestions>
-   */
-  showQuerySuggestPreview: <IAnalyticsActionCause>{
-    name: 'showQuerySuggestPreview',
-    type: 'querySuggestPreview'
   }
 };
