@@ -1,6 +1,6 @@
 import * as Mock from '../MockEnvironment';
 import { Omnibox } from '../../src/ui/Omnibox/Omnibox';
-import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
+import { analyticsActionCauseList, IAnalyticsOmniboxSuggestionMeta } from '../../src/ui/Analytics/AnalyticsActionListMeta';
 import { IOmniboxOptions, IOmniboxSuggestion } from '../../src/ui/Omnibox/Omnibox';
 import { Simulate } from '../Simulate';
 import { $$ } from '../../src/utils/Dom';
@@ -10,16 +10,20 @@ import { IFieldDescription } from '../../src/rest/FieldDescription';
 import { Suggestion } from '../../src/magicbox/SuggestionsManager';
 import { KEYBOARD, OmniboxEvents } from '../../src/Core';
 import { IQueryOptions } from '../../src/controllers/QueryController';
+import { IOmniboxAnalytics } from '../../src/ui/Omnibox/OmniboxAnalytics';
 
 export function OmniboxTest() {
   describe('Omnibox', () => {
-    var test: Mock.IBasicComponentSetup<Omnibox>;
+    let test: Mock.IBasicComponentSetup<Omnibox>;
+    let testEnv: Mock.MockEnvironmentBuilder;
+    let omniboxAnalytics: IOmniboxAnalytics;
     beforeEach(() => {
       // Thanks phantom js for bad native event support
       if (Simulate.isPhantomJs()) {
         Simulate.addJQuery();
       }
-      test = Mock.basicComponentSetup<Omnibox>(Omnibox);
+      setupEnv();
+      test = Mock.advancedComponentSetup<Omnibox>(Omnibox, new Mock.AdvancedComponentSetupOptions(null, {}, env => testEnv));
       $$(test.env.root).trigger(InitializationEvents.afterComponentsInitialization);
     });
 
@@ -27,6 +31,44 @@ export function OmniboxTest() {
       test = null;
       Simulate.removeJQuery();
     });
+
+    function setupEnv() {
+      testEnv = new Mock.MockEnvironmentBuilder();
+      omniboxAnalytics = buildOmniboxAnalyticsMock();
+      testEnv.searchInterface.getOmniboxAnalytics = jasmine.createSpy('omniboxAnalytics').and.returnValue(omniboxAnalytics) as any;
+    }
+
+    function buildOmniboxAnalyticsMock(): IOmniboxAnalytics {
+      const partialQueries: string[] = [];
+      let suggestionRanking: number;
+      const suggestions: string[] = [];
+      let partialQuery: string;
+      const buildCustomDataForPartialQueries = (): IAnalyticsOmniboxSuggestionMeta => {
+        return {
+          suggestionRanking: omniboxAnalytics.suggestionRanking,
+          suggestions: omniboxAnalytics.suggestions.join(';'),
+          partialQueries: omniboxAnalytics.partialQueries.join(';'),
+          partialQuery: omniboxAnalytics.partialQuery
+        };
+      };
+      return {
+        partialQueries,
+        suggestionRanking,
+        suggestions,
+        partialQuery,
+        buildCustomDataForPartialQueries
+      };
+    }
+
+    function initOmnibox(options: IOmniboxOptions) {
+      setupEnv();
+      test = Mock.advancedComponentSetup<Omnibox>(
+        Omnibox,
+        new Mock.AdvancedComponentSetupOptions($$('div').el, options, env => {
+          return testEnv;
+        })
+      );
+    }
 
     describe('on submit', () => {
       beforeEach(() => test.cmp.submit());
@@ -68,18 +110,18 @@ export function OmniboxTest() {
 
     describe('exposes options', () => {
       it('inline should be passed down to magic box', () => {
-        test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
+        initOmnibox({
           inline: true
         });
         expect(test.cmp.magicBox.options.inline).toBe(true);
-        test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
+        initOmnibox({
           inline: false
         });
         expect(test.cmp.magicBox.options.inline).toBe(false);
       });
 
       it('enableSearchAsYouType should allow to to trigger a query after a delay', function(done) {
-        test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
+        initOmnibox({
           enableSearchAsYouType: true,
           enableQuerySuggestAddon: false
         });
@@ -93,7 +135,7 @@ export function OmniboxTest() {
       });
 
       it('enableQuerySyntax to false should add the correct class on the element', () => {
-        test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
+        initOmnibox({
           enableQuerySyntax: false
         });
 
@@ -101,7 +143,7 @@ export function OmniboxTest() {
       });
 
       it('enableQuerySyntax should modify the enableQuerySyntax parameter', function() {
-        test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
+        initOmnibox({
           enableQuerySyntax: false
         });
         test.cmp.setText('@field==Batman');
@@ -109,7 +151,7 @@ export function OmniboxTest() {
         var simulation = Simulate.query(test.env);
         expect(simulation.queryBuilder.enableQuerySyntax).toBe(false);
 
-        test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
+        initOmnibox({
           enableQuerySyntax: true
         });
         test.cmp.setText('@field==Batman');
@@ -119,7 +161,7 @@ export function OmniboxTest() {
       });
 
       it('enablePartialMatch should modify the enablePartialMatch parameters', () => {
-        test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
+        initOmnibox({
           enablePartialMatch: false
         });
         test.cmp.setText('@field==Batman');
@@ -127,7 +169,7 @@ export function OmniboxTest() {
         var simulation = Simulate.query(test.env);
         expect(simulation.queryBuilder.enablePartialMatch).toBeFalsy();
 
-        test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
+        initOmnibox({
           enablePartialMatch: true
         });
         test.cmp.setText('@field==Batman');
@@ -136,7 +178,7 @@ export function OmniboxTest() {
       });
 
       it('partialMatchKeywords should modify the query builder', () => {
-        test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
+        initOmnibox({
           partialMatchKeywords: 123,
           enablePartialMatch: true
         });
@@ -147,7 +189,7 @@ export function OmniboxTest() {
       });
 
       it('partialMatchThreshold should modify the query builder', () => {
-        test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
+        initOmnibox({
           partialMatchThreshold: '14%',
           enablePartialMatch: true
         });
@@ -158,7 +200,7 @@ export function OmniboxTest() {
       });
 
       it('enableWildcards should modify the query builder', () => {
-        test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
+        initOmnibox({
           enableWildcards: true
         });
         test.cmp.setText('@field==Batman');
@@ -168,7 +210,7 @@ export function OmniboxTest() {
       });
 
       it('enableQuestionMarks should modify the query builder', () => {
-        test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
+        initOmnibox({
           enableQuestionMarks: true
         });
         test.cmp.setText('@field==Batman');
@@ -178,7 +220,7 @@ export function OmniboxTest() {
       });
 
       it('enableQuestionMarks should modify the query builder', () => {
-        test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
+        initOmnibox({
           enableLowercaseOperators: true
         });
         test.cmp.setText('@field==Batman');
@@ -188,7 +230,7 @@ export function OmniboxTest() {
       });
 
       it('enableFieldAddon should create an addon component', () => {
-        test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
+        initOmnibox({
           enableFieldAddon: true
         });
 
@@ -206,7 +248,7 @@ export function OmniboxTest() {
       });
 
       it('minCharForSuggestions should be set', () => {
-        test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
+        initOmnibox({
           querySuggestCharacterThreshold: 5
         });
         expect(test.cmp.options.querySuggestCharacterThreshold).toBe(5);
@@ -226,7 +268,7 @@ export function OmniboxTest() {
         };
 
         it('enableFieldAddon should filter fields suggestions with the listOfFields option', async done => {
-          test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
+          initOmnibox({
             enableFieldAddon: true,
             listOfFields: ['@secondFieldName']
           });
@@ -244,7 +286,7 @@ export function OmniboxTest() {
         });
 
         it('enableFieldAddon should always provide suggestions with field leading with @', async done => {
-          test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
+          initOmnibox({
             enableFieldAddon: true
           });
 
@@ -263,7 +305,7 @@ export function OmniboxTest() {
       });
 
       it('listOfFields should show specified fields when field addon is enabled', done => {
-        test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
+        initOmnibox({
           enableFieldAddon: true,
           listOfFields: ['@field', '@another_field']
         });
@@ -283,7 +325,12 @@ export function OmniboxTest() {
         let element = $$('div');
         element.addClass('CoveoOmnibox');
         element.setAttribute('data-enable-top-query-addon', 'true');
-        test = Mock.advancedComponentSetup<Omnibox>(Omnibox, new Mock.AdvancedComponentSetupOptions(element.el));
+        test = Mock.advancedComponentSetup<Omnibox>(
+          Omnibox,
+          new Mock.AdvancedComponentSetupOptions(element.el, null, env => {
+            return testEnv;
+          })
+        );
 
         test.cmp.setText('foobar');
         test.cmp.magicBox.getSuggestions();
@@ -291,7 +338,7 @@ export function OmniboxTest() {
       });
 
       it('enableQuerySuggestAddon should create an addon component', () => {
-        test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
+        initOmnibox({
           enableQuerySuggestAddon: true
         });
 
@@ -301,7 +348,7 @@ export function OmniboxTest() {
       });
 
       it('enableQueryExtensionAddon should create an addon component', () => {
-        test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
+        initOmnibox({
           enableQueryExtensionAddon: true
         });
 
@@ -311,21 +358,21 @@ export function OmniboxTest() {
       });
 
       it('placeholder allow to set a placeholder in the input', () => {
-        test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
+        initOmnibox({
           placeholder: 'trololo'
         });
         expect(test.cmp.getInput().placeholder).toBe('trololo');
       });
 
       it('placeholder should use translated version', () => {
-        test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
+        initOmnibox({
           placeholder: 'SearchFor'
         });
         expect(test.cmp.getInput().placeholder).toBe(l('SearchFor'));
       });
 
       it('enableSearchAsYouType + enableQuerySuggestAddon should send correct analytics events', () => {
-        test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
+        initOmnibox({
           enableQuerySuggestAddon: true,
           enableSearchAsYouType: true
         });
@@ -367,7 +414,7 @@ export function OmniboxTest() {
       });
 
       it('triggerQueryOnClear should trigger a query on clear', () => {
-        test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
+        initOmnibox({
           triggerQueryOnClear: true
         });
         test.cmp.magicBox.clear();
@@ -375,7 +422,7 @@ export function OmniboxTest() {
       });
 
       it('triggerQueryOnClear should not trigger a query on clear if false', () => {
-        test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
+        initOmnibox({
           triggerQueryOnClear: false
         });
         test.cmp.magicBox.clear();
@@ -389,8 +436,8 @@ export function OmniboxTest() {
             triggerQueryOnClear: true
           },
           env => {
-            env.searchInterface.options.allowQueriesWithoutKeywords = false;
-            return env;
+            testEnv.searchInterface.options.allowQueriesWithoutKeywords = false;
+            return testEnv;
           }
         );
 
@@ -406,8 +453,8 @@ export function OmniboxTest() {
             enableSearchAsYouType: true
           },
           env => {
-            env.searchInterface.options.allowQueriesWithoutKeywords = true;
-            return env;
+            testEnv.searchInterface.options.allowQueriesWithoutKeywords = true;
+            return testEnv;
           }
         );
 
@@ -417,7 +464,7 @@ export function OmniboxTest() {
     });
 
     it('should execute query automatically when confidence level is > 0.8 on suggestion', done => {
-      test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
+      initOmnibox({
         enableSearchAsYouType: true,
         enableQuerySuggestAddon: true
       });
@@ -437,7 +484,7 @@ export function OmniboxTest() {
     });
 
     it('should execute query automatically when confidence level is = 0.8 on suggestion', done => {
-      test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
+      initOmnibox({
         enableSearchAsYouType: true,
         enableQuerySuggestAddon: true
       });
@@ -457,7 +504,7 @@ export function OmniboxTest() {
     });
 
     it('should not execute query automatically when confidence level is < 0.8 on suggestion', done => {
-      test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
+      initOmnibox({
         enableSearchAsYouType: true,
         enableQuerySuggestAddon: true
       });
@@ -477,7 +524,7 @@ export function OmniboxTest() {
     });
 
     it('should execute query automatically when confidence level is not provided and the suggestion does not match the typed text', done => {
-      test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
+      initOmnibox({
         enableSearchAsYouType: true,
         enableQuerySuggestAddon: true
       });
@@ -496,7 +543,7 @@ export function OmniboxTest() {
     });
 
     it('should not execute query automatically when confidence level is not provided but the suggestion match the typed text', done => {
-      test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
+      initOmnibox({
         enableSearchAsYouType: true,
         enableQuerySuggestAddon: true
       });
@@ -519,7 +566,7 @@ export function OmniboxTest() {
         test = Mock.advancedComponentSetup<Omnibox>(
           Omnibox,
           new Mock.AdvancedComponentSetupOptions(undefined, undefined, (builder: Mock.MockEnvironmentBuilder) => {
-            return builder.withLiveQueryStateModel();
+            return testEnv.withLiveQueryStateModel();
           })
         );
       });
