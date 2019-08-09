@@ -51,6 +51,7 @@ import {
 import { FacetColumnAutoLayoutAdjustment } from './FacetColumnAutoLayoutAdjustment';
 import { FacetValueStateHandler } from './FacetValueStateHandler';
 import RelevanceInspectorModule = require('../RelevanceInspector/RelevanceInspector');
+import { OmniboxAnalytics } from '../Omnibox/OmniboxAnalytics';
 
 export interface ISearchInterfaceOptions {
   enableHistory?: boolean;
@@ -507,6 +508,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
   private facetValueStateHandler: FacetValueStateHandler;
   private queryPipelineConfigurationForResultsPerPage: number;
   private relevanceInspector: RelevanceInspectorModule.RelevanceInspector;
+  private omniboxAnalytics: OmniboxAnalytics;
 
   /**
    * Creates a new SearchInterface. Initialize various singletons for the interface (e.g., usage analytics, query
@@ -545,6 +547,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     };
 
     new MissingTermManager(missingTermManagerArgs);
+    this.omniboxAnalytics = new OmniboxAnalytics();
 
     this.setupEventsHandlers();
     this.setupHistoryManager(element, _window);
@@ -571,6 +574,10 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     // Specially for the pager component. As such, we try to cover that corner case.
     this.logger.warn('Results per page is incoherent in the search interface.', this);
     return 10;
+  }
+
+  public getOmniboxAnalytics() {
+    return this.omniboxAnalytics;
   }
 
   /**

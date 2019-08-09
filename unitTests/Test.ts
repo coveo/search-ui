@@ -740,3 +740,6 @@ QuerySuggestPreviewTest();
 
 import { FieldImageTest } from './ui/ImageFieldValueTest';
 FieldImageTest();
+
+import { OmniboxAnalyticsTest } from './ui/OmniboxAnalyticsTest';
+OmniboxAnalyticsTest();
