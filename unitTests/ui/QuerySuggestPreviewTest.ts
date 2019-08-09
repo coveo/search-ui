@@ -11,6 +11,28 @@ import { MagicBoxInstance } from '../../src/magicbox/MagicBox';
 import { IQueryResults } from '../../src/rest/QueryResults';
 import { last } from 'underscore';
 
+export function initOmniboxAnalyticsMock(omniboxAnalytics: IOmniboxAnalytics) {
+  const partialQueries: string[] = [];
+  let suggestionRanking: number;
+  const suggestions: string[] = [];
+  let partialQuery: string;
+  const buildCustomDataForPartialQueries = (): IAnalyticsOmniboxSuggestionMeta => {
+    return {
+      suggestionRanking: omniboxAnalytics.suggestionRanking,
+      suggestions: omniboxAnalytics.suggestions.join(';'),
+      partialQueries: omniboxAnalytics.partialQueries.join(';'),
+      partialQuery: omniboxAnalytics.partialQuery
+    };
+  };
+  return (omniboxAnalytics = {
+    partialQueries,
+    suggestionRanking,
+    suggestions,
+    partialQuery,
+    buildCustomDataForPartialQueries
+  });
+}
+
 export function QuerySuggestPreviewTest() {
   describe('QuerySuggestPreview', () => {
     let test: IBasicComponentSetup<QuerySuggestPreview>;
@@ -72,31 +94,17 @@ export function QuerySuggestPreviewTest() {
       suggestionManager.updateSuggestions(suggestions);
     }
 
-    function buildQuerySuggestPreviewAnalyticsMock(): IOmniboxAnalytics {
-      const partialQueries: string[] = [];
-      let suggestionRanking: number;
-      const suggestions: string[] = [];
-      let partialQuery: string;
-      const buildCustomDataForPartialQueries = (): IAnalyticsOmniboxSuggestionMeta => {
-        return {
-          suggestionRanking: omniboxAnalytics.suggestionRanking,
-          suggestions: omniboxAnalytics.suggestions.join(';'),
-          partialQueries: omniboxAnalytics.partialQueries.join(';'),
-          partialQuery: omniboxAnalytics.partialQuery
-        };
-      };
-      return {
-        partialQueries,
-        suggestionRanking,
-        suggestions,
-        partialQuery,
-        buildCustomDataForPartialQueries
-      };
+    function waitXms(ms: number) {
+      return Promise.resolve(
+        setTimeout(() => {
+          return;
+        }, ms)
+      );
     }
 
     beforeEach(() => {
       testEnv = new Mock.MockEnvironmentBuilder();
-      omniboxAnalytics = buildQuerySuggestPreviewAnalyticsMock();
+      omniboxAnalytics = this.initOmniboxAnalyticsMock(omniboxAnalytics);
       testEnv.searchInterface.getOmniboxAnalytics = jasmine.createSpy('omniboxAnalytics').and.returnValue(omniboxAnalytics) as any;
     });
 
@@ -236,7 +244,7 @@ export function QuerySuggestPreviewTest() {
       });
 
       it(`and the query get executed, 
-      an analytics get logs`, () => {
+      it logs an analytics search event`, () => {
         setupQuerySuggestPreview();
         setupSuggestion();
         triggerQuerySuggestHoverAndPassTime();
@@ -288,52 +296,47 @@ export function QuerySuggestPreviewTest() {
       });
     });
     describe('Analytics', () => {
-      function getAResult(done) {
+      function getAResult() {
         const previewContainer = $$(suggestionContainer.el).find('.coveo-preview-results > .CoveoResult');
-        if (!previewContainer) {
-          done.fail('No result to click. Impossible validate the analytics');
-        }
         return previewContainer;
       }
 
-      it('it log an analytics with the appropriate event', done => {
+      function getAnalyticsMetadata(suggestion: string) {
+        return jasmine.objectContaining({
+          suggestion,
+          displayedRank: 0
+        });
+      }
+
+      it('it log an analytics with the appropriate event', async done => {
         const suggestion = 'test';
         triggerQuerySuggestHover(suggestion);
-        setTimeout(() => {
-          const previewContainer = getAResult(done);
-          previewContainer.click();
-          expect(test.cmp.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(
-            analyticsActionCauseList.clickQuerySuggestPreview,
-            jasmine.objectContaining({
-              suggestion,
-              displayedRank: 0
-            }),
-            previewContainer
-          );
-          done();
-        }, test.cmp.options.executeQueryDelay);
+        await waitXms(test.cmp.options.executeQueryDelay);
+        const previewContainer = getAResult();
+        previewContainer.click();
+        expect(test.cmp.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(
+          analyticsActionCauseList.clickQuerySuggestPreview,
+          getAnalyticsMetadata(suggestion),
+          previewContainer
+        );
+        done();
       });
 
       it(`it log an analytics with the appropriate event,
-      even if we hover on another suggestion before clicking`, done => {
+      even if we hover on another suggestion before clicking`, async done => {
         const suggestion = 'test';
         triggerQuerySuggestHover(suggestion);
-        setTimeout(() => {
-          triggerQuerySuggestHover(`bad ${suggestion}`);
-          setTimeout(() => {
-            const previewContainer = getAResult(done);
-            previewContainer.click();
-            expect(test.cmp.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(
-              analyticsActionCauseList.clickQuerySuggestPreview,
-              jasmine.objectContaining({
-                suggestion,
-                displayedRank: 0
-              }),
-              previewContainer
-            );
-            done();
-          }, test.cmp.options.executeQueryDelay - 100);
-        }, test.cmp.options.executeQueryDelay);
+        await waitXms(test.cmp.options.executeQueryDelay);
+        triggerQuerySuggestHover(`bad ${suggestion}`);
+        await waitXms(test.cmp.options.executeQueryDelay - 100);
+        const previewContainer = getAResult();
+        previewContainer.click();
+        expect(test.cmp.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(
+          analyticsActionCauseList.clickQuerySuggestPreview,
+          getAnalyticsMetadata(suggestion),
+          previewContainer
+        );
+        done();
       });
     });
   });
