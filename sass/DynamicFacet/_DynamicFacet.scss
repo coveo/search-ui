@@ -1,4 +1,6 @@
-.CoveoDynamicFacet {
+@import '../Variables';
+
+#{$allDynamicFacetsType} {
   background: white;
 
   &.coveo-hidden {

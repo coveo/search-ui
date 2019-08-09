@@ -57,6 +57,7 @@ export class DynamicFacetQueryController {
     return {
       facetId: this.facet.options.id,
       field: this.facet.fieldName,
+      type: this.facet.facetType,
       sortCriteria: this.facet.options.sortCriteria as FacetSortCriteria,
       currentValues: this.currentValues,
       numberOfValues: this.numberOfValues,

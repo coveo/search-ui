@@ -42,9 +42,9 @@ export class DynamicFacetBreadcrumbs {
       'button',
       {
         className: 'coveo-dynamic-facet-breadcrumb-value',
-        ariaLabel: l('RemoveFilterOn', facetValue.valueCaption)
+        ariaLabel: l('RemoveFilterOn', facetValue.displayValue)
       },
-      facetValue.valueCaption
+      facetValue.displayValue
     ).el;
     const clearElement = $$('span', { className: 'coveo-dynamic-facet-breadcrumb-value-clear' }, SVGIcons.icons.mainClear).el;
     valueElement.appendChild(clearElement);

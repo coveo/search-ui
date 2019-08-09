@@ -6,13 +6,24 @@ import { DynamicFacet } from '../DynamicFacet';
 import { IFacetResponse } from '../../../rest/Facet/FacetResponse';
 import { FacetValueState } from '../../../rest/Facet/FacetValueState';
 import { l } from '../../../strings/Strings';
+import { DynamicFacetValueFormatter } from './DynamicFacetValueFormatter';
+
+export interface ValueFormatter {
+  format(value: string): string;
+}
+
+export interface IDynamicFacetValueFormatterKlass {
+  new (facet: DynamicFacet): ValueFormatter;
+}
 
 export class DynamicFacetValues {
   private facetValues: DynamicFacetValue[];
   private list = $$('ul', { className: 'coveo-dynamic-facet-values' }).el;
+  private valueFormatter: ValueFormatter;
 
-  constructor(private facet: DynamicFacet) {
+  constructor(private facet: DynamicFacet, formatterKlass: IDynamicFacetValueFormatterKlass = DynamicFacetValueFormatter) {
     this.resetValues();
+    this.valueFormatter = new formatterKlass(this.facet);
   }
 
   public createFromResponse(response: IFacetResponse) {
@@ -21,6 +32,7 @@ export class DynamicFacetValues {
         new DynamicFacetValue(
           {
             value: facetValue.value,
+            displayValue: this.valueFormatter.format(facetValue.value),
             numberOfResults: facetValue.numberOfResults,
             state: facetValue.state,
             position: index + 1
@@ -86,7 +98,8 @@ export class DynamicFacetValues {
 
     const position = this.facetValues.length + 1;
     const state = FacetValueState.idle;
-    const newFacetValue = new DynamicFacetValue({ value, state, numberOfResults: 0, position }, this.facet);
+    const displayValue = this.valueFormatter.format(value);
+    const newFacetValue = new DynamicFacetValue({ value, displayValue, state, numberOfResults: 0, position }, this.facet);
     this.facetValues.push(newFacetValue);
     return newFacetValue;
   }
@@ -131,13 +144,10 @@ export class DynamicFacetValues {
     return hasMoreValuesThenDefault && this.hasIdleValues;
   }
 
-  public render() {
-    const fragment = document.createDocumentFragment();
-    $$(this.list).empty();
-
-    this.facetValues.forEach(facetValue => {
-      fragment.appendChild(facetValue.renderedElement);
-    });
+  private appendShowMoreLess(fragment: DocumentFragment) {
+    if (!this.facet.options.enableMoreLess) {
+      return;
+    }
 
     if (this.shouldEnableShowLess) {
       fragment.appendChild(this.buildShowLess());
@@ -146,6 +156,17 @@ export class DynamicFacetValues {
     if (this.facet.moreValuesAvailable) {
       fragment.appendChild(this.buildShowMore());
     }
+  }
+
+  public render() {
+    const fragment = document.createDocumentFragment();
+    $$(this.list).empty();
+
+    this.facetValues.forEach(facetValue => {
+      fragment.appendChild(facetValue.renderedElement);
+    });
+
+    this.appendShowMoreLess(fragment);
 
     this.list.appendChild(fragment);
     return this.list;

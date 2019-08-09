@@ -7,7 +7,7 @@ import { $$, BreadcrumbEvents, QueryEvents } from '../../../src/Core';
 import { FacetSortCriteria } from '../../../src/rest/Facet/FacetSortCriteria';
 import { Simulate } from '../../Simulate';
 import { IPopulateBreadcrumbEventArgs } from '../../../src/events/BreadcrumbEvents';
-import { analyticsActionCauseList, AnalyticsDynamicFacetType } from '../../../src/ui/Analytics/AnalyticsActionListMeta';
+import { analyticsActionCauseList } from '../../../src/ui/Analytics/AnalyticsActionListMeta';
 import { FakeResults } from '../../Fake';
 import { ResultListUtils } from '../../../src/utils/ResultListUtils';
 
@@ -453,7 +453,7 @@ export function DynamicFacetTest() {
       expect(test.cmp.basicAnalyticsFacetState).toEqual({
         field: test.cmp.options.field.toString(),
         id: test.cmp.options.id,
-        facetType: AnalyticsDynamicFacetType.string,
+        facetType: test.cmp.facetType,
         facetPosition: test.cmp.position
       });
     });
