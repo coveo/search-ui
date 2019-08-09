@@ -85,59 +85,6 @@ export function DynamicFacetValueTest() {
       expect(dynamicFacetValue.formattedCount).toBe(Globalize.format(dynamicFacetValue.numberOfResults, 'n0'));
     });
 
-    it(`when using the valueCaption option with a function
-      should bypass it and return the original value`, () => {
-      options = { valueCaption: () => 'allo' };
-      initializeComponent();
-
-      expect(dynamicFacetValue.valueCaption).toBe(dynamicFacetValue.value);
-    });
-
-    it(`when using the valueCaption with an object that contains the original value
-      should return the caption`, () => {
-      const captionValue = 'allo';
-      options = { valueCaption: { [dynamicFacetValue.value]: captionValue } };
-      initializeComponent();
-
-      expect(dynamicFacetValue.valueCaption).toBe(captionValue);
-    });
-
-    it(`when a display value isn't specified
-      when there is no valueCaption
-      should return the value as display value`, () => {
-      expect(dynamicFacetValue.displayValue).toBe(dynamicFacetValue.value);
-    });
-
-    it(`when a display value is specified
-      when using the valueCaption with an object that contains the original value
-      should still return the original display value`, () => {
-      const displayValue = 'display value';
-      options = { valueCaption: { [dynamicFacetValue.value]: 'value caption' } };
-      initializeComponent();
-      const mockValue = DynamicFacetTestUtils.createFakeFacetValues(1)[0];
-      dynamicFacetValue = new DynamicFacetValue({ ...mockValue, displayValue }, facet);
-
-      expect(dynamicFacetValue.displayValue).toBe(displayValue);
-    });
-
-    it(`when a display value is not specified
-      when using the valueCaption with an object that contains the original value
-      should return the valueCaption as display value`, () => {
-      const valueCaption = 'value caption';
-      options = { valueCaption: { [dynamicFacetValue.value]: valueCaption } };
-      initializeComponent();
-
-      expect(dynamicFacetValue.displayValue).toBe(valueCaption);
-    });
-
-    it(`when using the valueCaption with an object that does not contain the original value
-      should return original value`, () => {
-      options = { valueCaption: { randomValue: 'allo' } };
-      initializeComponent();
-
-      expect(dynamicFacetValue.valueCaption).toBe(dynamicFacetValue.value);
-    });
-
     it(`should return the correct analyticsMeta`, () => {
       expect(dynamicFacetValue.analyticsMeta).toEqual({
         ...facet.basicAnalyticsFacetState,

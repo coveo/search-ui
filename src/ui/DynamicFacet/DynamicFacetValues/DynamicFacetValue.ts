@@ -1,6 +1,5 @@
 import * as Globalize from 'globalize';
 import { DynamicFacetValueRenderer } from './DynamicFacetValueRenderer';
-import { FacetUtils } from '../../Facet/FacetUtils';
 import { DynamicFacet } from '../DynamicFacet';
 import { FacetValueState } from '../../../rest/Facet/FacetValueState';
 import { IAnalyticsDynamicFacetMeta, analyticsActionCauseList } from '../../Analytics/AnalyticsActionListMeta';
@@ -16,7 +15,7 @@ export interface IValueRendererKlass {
 
 export interface IDynamicFacetValue {
   value: string;
-  displayValue?: string;
+  displayValue: string;
   state: FacetValueState;
   numberOfResults: number;
   position: number;
@@ -40,7 +39,7 @@ export class DynamicFacetValue implements IDynamicFacetValue {
     this.state = state;
     this.numberOfResults = numberOfResults;
     this.position = position;
-    this.displayValue = displayValue || this.valueCaption;
+    this.displayValue = displayValue;
     this.renderer = new rendererKlass(this, facet);
   }
 
@@ -71,16 +70,6 @@ export class DynamicFacetValue implements IDynamicFacetValue {
 
   public get formattedCount(): string {
     return Globalize.format(this.numberOfResults, 'n0');
-  }
-
-  public get valueCaption(): string {
-    let returnValue = FacetUtils.tryToGetTranslatedCaption(<string>this.facet.options.field, this.value);
-
-    if (this.facet.options.valueCaption && typeof this.facet.options.valueCaption === 'object') {
-      returnValue = this.facet.options.valueCaption[this.value] || returnValue;
-    }
-
-    return returnValue;
   }
 
   public get selectAriaLabel() {
