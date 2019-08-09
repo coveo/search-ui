@@ -7,15 +7,15 @@ import { IRangeValue } from '../RangeValue';
  */
 export enum FacetType {
   /**
-   * Request facet values representing specific values (e.g., Alice Smith, Bob Jones, etc.).
+   * Request facet values representing specific values.
    */
   Specific = 'Specific',
   /**
-   * Request facet values representing ranges of numbers (e.g., 0..10, 11..20, etc.).
+   * Request facet values representing ranges of numbers.
    */
   NumericalRange = 'NumericalRange',
   /**
-   * Request facet values representing ranges of dates (e.g., 2019-07-01..2019-07-31, 2019-08-01..2019-08-01, etc.).
+   * Request facet values representing ranges of dates.
    */
   DateRange = 'DateRange'
 }
