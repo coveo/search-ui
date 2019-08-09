@@ -119,18 +119,26 @@ export function CategoryFacetTest() {
         expect(test.cmp.hide).toHaveBeenCalled();
       });
 
-      it('does not hide the component when the facet is in an "active" state and has available values', () => {
+      it('does not hide the component when the facet has available values', () => {
         test.cmp.activePath = ['value1'];
         spyOn(test.cmp, 'getAvailableValues').and.returnValue(['value1', 'value2']);
         simulateNoResults();
         expect(test.cmp.hide).not.toHaveBeenCalled();
       });
 
-      it('hides the component when the facet is in an "active" state but has no available values', () => {
-        test.cmp.activePath = ['value1'];
-        spyOn(test.cmp, 'getAvailableValues').and.returnValue([]);
-        simulateNoResults();
-        expect(test.cmp.hide).toHaveBeenCalled();
+      describe(`when the facet does not have available values,
+      when simulating no results`, () => {
+        it(`does not call the query state model (doing so would prevent going back in history using the back button)`, () => {
+          spyOn(test.cmp.queryStateModel, 'set');
+          simulateNoResults();
+          expect(test.cmp.queryStateModel.set).not.toHaveBeenCalled();
+        });
+
+        it('hides the component', () => {
+          spyOn(test.cmp, 'getAvailableValues').and.returnValue([]);
+          simulateNoResults();
+          expect(test.cmp.hide).toHaveBeenCalled();
+        });
       });
     });
 

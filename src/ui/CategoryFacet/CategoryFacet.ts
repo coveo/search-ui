@@ -409,18 +409,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   }
 
   private handleNoResults() {
-    if (this.isPristine()) {
-      this.hide();
-      return;
-    }
-
-    if (this.hasValues) {
-      this.show();
-      return;
-    }
-
-    this.activePath = this.options.basePath;
-    this.hide();
+    this.hasValues ? this.show() : this.hide();
   }
 
   public handleQuerySuccess(args: IQuerySuccessEventArgs) {
