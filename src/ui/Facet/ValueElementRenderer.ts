@@ -85,18 +85,13 @@ export class ValueElementRenderer {
 
   protected buildValueCheckbox(): HTMLElement {
     const checkbox = $$('input', {
-      type: 'checkbox'
+      type: 'checkbox',
+      'aria-hidden': true
     }).el;
-    if (this.facetValue.selected) {
-      checkbox.setAttribute('checked', 'checked');
-    } else {
-      checkbox.removeAttribute('checked');
-    }
-    if (this.facetValue.excluded) {
-      checkbox.setAttribute('disabled', 'disabled');
-    } else {
-      checkbox.removeAttribute('disabled');
-    }
+
+    this.facetValue.selected ? checkbox.setAttribute('checked', 'checked') : checkbox.removeAttribute('checked');
+    this.facetValue.excluded ? checkbox.setAttribute('disabled', 'disabled') : checkbox.removeAttribute('disabled');
+
     Component.pointElementsToDummyForm(checkbox);
     return checkbox;
   }
