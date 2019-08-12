@@ -1,6 +1,6 @@
 import * as Mock from '../MockEnvironment';
 import { Omnibox } from '../../src/ui/Omnibox/Omnibox';
-import { analyticsActionCauseList, IAnalyticsOmniboxSuggestionMeta } from '../../src/ui/Analytics/AnalyticsActionListMeta';
+import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
 import { IOmniboxOptions, IOmniboxSuggestion } from '../../src/ui/Omnibox/Omnibox';
 import { Simulate } from '../Simulate';
 import { $$ } from '../../src/utils/Dom';
