@@ -75,6 +75,16 @@ export function ValueElementRendererTest() {
       expect(ariaLabel).toContain('Unselect');
     });
 
+    it(`when the facetValue is excluded,
+    the aria-label attribute contains the word 'Unexclude'`, () => {
+      const facetValue = FacetValue.createFromFieldValue(FakeResults.createFakeFieldValue('foo', 123));
+      facetValue.excluded = true;
+      valueRenderer = new ValueElementRenderer(facet, facetValue).build();
+
+      const ariaLabel = valueRenderer.accessibleElement.getAttribute('aria-label');
+      expect(ariaLabel).toContain('Unexclude');
+    });
+
     it('should build a caption', () => {
       valueRenderer = new ValueElementRenderer(
         facet,
