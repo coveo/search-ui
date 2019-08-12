@@ -24,12 +24,7 @@ import { isFacetSortCriteria } from '../../rest/Facet/FacetSortCriteria';
 import { l } from '../../strings/Strings';
 import { DeviceUtils } from '../../utils/DeviceUtils';
 import { BreadcrumbEvents, IPopulateBreadcrumbEventArgs } from '../../events/BreadcrumbEvents';
-import {
-  IAnalyticsActionCause,
-  IAnalyticsDynamicFacetMeta,
-  analyticsActionCauseList,
-  AnalyticsDynamicFacetType
-} from '../Analytics/AnalyticsActionListMeta';
+import { IAnalyticsActionCause, IAnalyticsDynamicFacetMeta, analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
 import { IQueryOptions } from '../../controllers/QueryController';
 import { DynamicFacetManager } from '../DynamicFacetManager/DynamicFacetManager';
 import { QueryBuilder } from '../Base/QueryBuilder';
@@ -37,6 +32,7 @@ import { IAutoLayoutAdjustableInsideFacetColumn } from '../SearchInterface/Facet
 import { DynamicFacetSearch } from '../DynamicFacetSearch/DynamicFacetSearch';
 import { ResultListUtils } from '../../utils/ResultListUtils';
 import { IQueryResults } from '../../rest/QueryResults';
+import { FacetType } from '../../rest/Facet/FacetRequest';
 
 export interface IDynamicFacetOptions extends IResponsiveComponentOptions {
   id?: string;
@@ -46,6 +42,7 @@ export interface IDynamicFacetOptions extends IResponsiveComponentOptions {
   numberOfValues?: number;
   enableCollapse?: boolean;
   enableScrollToTop?: boolean;
+  enableMoreLess?: boolean;
   enableFacetSearch?: boolean;
   useLeadingWildcardInFacetSearch?: boolean;
   collapsedByDefault?: boolean;
@@ -66,6 +63,8 @@ export interface IDynamicFacetOptions extends IResponsiveComponentOptions {
  *
  * This facet is more easy to use than the original [`Facet`]{@link Facet} component. It implements additional Coveo Machine Learning (Coveo ML) features
  * such as dynamic navigation experience (DNE).
+ *
+ * @notSupportedIn salesforcefree
  */
 export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsideFacetColumn {
   static ID = 'DynamicFacet';
@@ -175,7 +174,20 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
     enableScrollToTop: ComponentOptions.buildBooleanOption({ defaultValue: true, section: 'CommonOptions' }),
 
     /**
+     * Whether to enable the **Show more** and **Show less** buttons in the facet.
+     *
+     * **Note:**
+     * > The [`DynamicRangeFacet`]{@link DynamicRangeFacet} component does not support this option.
+     *
+     * **Default:** `true`
+     */
+    enableMoreLess: ComponentOptions.buildBooleanOption({ defaultValue: true, section: 'CommonOptions' }),
+
+    /**
      * Whether to allow the end-user to search the facet values.
+     *
+     * **Note:**
+     * > The [`DynamicRangeFacet`]{@link DynamicRangeFacet} component does not support this option.
      *
      * **Default:** `undefined`, and the following behavior applies:
      * - Will be enabled when more facet values are available from the server.
@@ -186,6 +198,9 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
     /**
      * Whether to prepend facet search queries with a wildcard.
      * See also the [enableFacetSearch]{@link DynamicFacet.options.enableFacetSearch} option.
+     *
+     * **Note:**
+     * > The [`DynamicRangeFacet`]{@link DynamicRangeFacet} component does not support this option.
      *
      * **Default:** `true`
      */
@@ -234,6 +249,8 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
      *
      * See [Normalizing Facet Value Captions](https://developers.coveo.com/x/jBsvAg).
      *
+     * **Note:**
+     * > The [`DynamicRangeFacet`]{@link DynamicRangeFacet} component does not support this option.
      */
     valueCaption: ComponentOptions.buildJsonOption<IStringMap<string>>()
   };
@@ -257,8 +274,13 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
    * @param options The component options.
    * @param bindings The component bindings. Automatically resolved by default.
    */
-  constructor(public element: HTMLElement, public options?: IDynamicFacetOptions, bindings?: IComponentBindings) {
-    super(element, DynamicFacet.ID, bindings);
+  constructor(
+    public element: HTMLElement,
+    public options?: IDynamicFacetOptions,
+    bindings?: IComponentBindings,
+    classId: string = DynamicFacet.ID
+  ) {
+    super(element, classId, bindings);
     this.options = ComponentOptions.initComponentOptions(element, DynamicFacet, options);
 
     this.initDynamicFacetQueryController();
@@ -277,6 +299,10 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
 
   public get fieldName() {
     return this.options.field.slice(1);
+  }
+
+  public get facetType() {
+    return FacetType.Specific;
   }
 
   /**
@@ -348,7 +374,7 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
    *
    * @param values The name of the facet value to toggle.
    */
-  public toggleSelectValue(value: string): void {
+  public toggleSelectValue(value: string) {
     Assert.exists(value);
     this.ensureDom();
     this.logger.info('Toggle select facet value', this.values.get(value).toggleSelect());
@@ -361,7 +387,7 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
    * Automatically triggers an isolated query.
    * @param additionalNumberOfValues The number of additional values to request. Minimum value is 1. Defaults to the [numberOfValues]{@link DynamicFacet.options.numberOfValues} option value.
    */
-  public showMoreValues(additionalNumberOfValues = this.options.numberOfValues): void {
+  public showMoreValues(additionalNumberOfValues = this.options.numberOfValues) {
     this.ensureDom();
     this.logger.info('Show more values');
     this.dynamicFacetQueryController.increaseNumberOfValuesToRequest(additionalNumberOfValues);
@@ -373,7 +399,7 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
    *
    * Automatically triggers an isolated query.
    */
-  public showLessValues(): void {
+  public showLessValues() {
     this.ensureDom();
     this.logger.info('Show less values');
     this.dynamicFacetQueryController.resetNumberOfValuesToRequest();
@@ -480,7 +506,7 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
     return {
       field: this.options.field.toString(),
       id: this.options.id,
-      facetType: AnalyticsDynamicFacetType.string,
+      facetType: this.facetType,
       facetPosition: this.position
     };
   }

@@ -98,7 +98,7 @@
 }
 
 #{$allFacetsType},
-.CoveoDynamicFacet {
+#{$allDynamicFacetsType} {
   &.coveo-during-initialization {
     display: none;
     &.coveo-with-placeholder {

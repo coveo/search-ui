@@ -52,6 +52,10 @@ export function DynamicFacetQueryControllerTest() {
       expect(facetRequest().field).toBe('field');
     });
 
+    it('should send the facet type', () => {
+      expect(facetRequest().type).toBe(facet.facetType);
+    });
+
     it('should send the current values', () => {
       const currentValues = facetRequest().currentValues;
 
