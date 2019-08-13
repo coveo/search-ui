@@ -260,16 +260,14 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
 
   private addOnClickListener(results: HTMLElement[]) {
     results.forEach(result => {
-      const rank = results.indexOf(result).toString();
-      result.setAttribute('coveo-preview-rank', rank);
+      const rank = results.indexOf(result);
       this.bind.on(result, 'click', (e: MouseEvent) => {
-        this.handleOnClick(e, result);
+        this.handleOnClick(e, result, rank);
       });
     });
   }
 
-  private handleOnClick(e: MouseEvent, element: HTMLElement) {
-    const rank = Number(element.getAttribute('coveo-preview-rank'));
+  private handleOnClick(e: MouseEvent, element: HTMLElement, rank: number) {
     this.logClickQuerySuggestPreview(rank, element);
   }
 

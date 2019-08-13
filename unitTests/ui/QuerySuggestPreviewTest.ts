@@ -195,17 +195,6 @@ export function QuerySuggestPreviewTest() {
           done();
         }, test.cmp.options.executeQueryDelay);
       });
-
-      it('it set the attribute coveo-preview-rank with the rank of the preview', done => {
-        setupQuerySuggestPreview();
-        setupSuggestion();
-        triggerQuerySuggestHover();
-        setTimeout(() => {
-          const previewContainer = $$(suggestionContainer.el).find('.coveo-preview-results > .CoveoResult');
-          expect(previewContainer.getAttribute('coveo-preview-rank')).toBe('0');
-          done();
-        }, test.cmp.options.executeQueryDelay);
-      });
     });
 
     describe('When we hover', () => {
