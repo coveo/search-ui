@@ -45,6 +45,12 @@ export function ValueElementRendererTest() {
       expect(valueRenderer.build().checkbox.getAttribute('disabled')).toBe('disabled');
     });
 
+    it('the checkbox has an aria-hidden equal to true', () => {
+      valueRenderer = new ValueElementRenderer(facet, FacetValue.createFromFieldValue(FakeResults.createFakeFieldValue('foo', 123)));
+      valueRenderer.build();
+      expect(valueRenderer.checkbox.getAttribute('aria-hidden')).toBe('true');
+    });
+
     it('should put the tabindex attribute to 0 on a stylish checkbox', () => {
       valueRenderer = new ValueElementRenderer(facet, FacetValue.createFromFieldValue(FakeResults.createFakeFieldValue('foo', 123)));
       expect(valueRenderer.build().stylishCheckbox.getAttribute('tabindex')).toBe('0');
