@@ -41,6 +41,7 @@ import { AccessibleButton } from '../../utils/AccessibleButton';
 import { IStringMap } from '../../rest/GenericParam';
 import { DependsOnManager, IDependentFacet } from '../../utils/DependsOnManager';
 import { ResultListUtils } from '../../utils/ResultListUtils';
+import { CategoryFacetValuesTree } from './CategoryFacetValuesTree';
 
 export interface ICategoryFacetOptions extends IResponsiveComponentOptions {
   field: IFieldOption;
@@ -66,8 +67,6 @@ export type CategoryValueDescriptor = {
   count: number;
   path: string[];
 };
-
-type ITreeNode = { value: ICategoryFacetValue; children: ITreeNode[] };
 
 /**
  * The `CategoryFacet` component is a facet that renders values in a hierarchical fashion. It determines the filter to apply depending on the
@@ -302,6 +301,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   private numberOfChildValuesCurrentlyDisplayed = 0;
   private numberOfValues: number;
   private dependsOnManager: DependsOnManager;
+  private categoryFacetValuesTree: CategoryFacetValuesTree;
 
   public static WAIT_ELEMENT_CLASS = 'coveo-category-facet-header-wait-animation';
 
@@ -315,6 +315,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     this.categoryValueRoot.path = this.activePath;
     this.currentPage = 0;
     this.numberOfValues = this.options.numberOfValues;
+    this.categoryFacetValuesTree = new CategoryFacetValuesTree();
 
     this.tryToInitFacetSearch();
 
@@ -667,33 +668,8 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     return this.categoryValueRoot.children;
   }
 
-  private treeOfSeenValues: ITreeNode[] = [];
-
-  private storeNewValuesInTree(categoryFacetResult: ICategoryFacetResult) {
-    let currentNodes = this.treeOfSeenValues;
-
-    for (const parent of categoryFacetResult.parentValues) {
-      const node = this.getNodeInTreeOfSeenValues(currentNodes, parent.value);
-
-      if (!node) {
-        const newNode: ITreeNode = { value: parent, children: [] };
-        currentNodes.push(newNode);
-      }
-
-      currentNodes = this.getNodeInTreeOfSeenValues(currentNodes, parent.value).children;
-    }
-
-    categoryFacetResult.values
-      .filter(value => !this.getNodeInTreeOfSeenValues(currentNodes, value.value))
-      .forEach(value => currentNodes.push({ value, children: [] }));
-  }
-
-  private getNodeInTreeOfSeenValues(nodes: ITreeNode[], value: string) {
-    return find(nodes, node => node.value.value === value);
-  }
-
   private renderValues(categoryFacetResult: ICategoryFacetResult, numberOfRequestedValues: number) {
-    this.storeNewValuesInTree(categoryFacetResult);
+    this.categoryFacetValuesTree.storeNewValues(categoryFacetResult);
     this.show();
     let sortedParentValues = this.sortParentValues(categoryFacetResult.parentValues);
     let currentParentValue: CategoryValueParent = this.categoryValueRoot;
@@ -913,20 +889,11 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
       return;
     }
 
-    let currentNode: ITreeNode;
-    for (const part of this.activePath) {
-      const searchThrough = currentNode ? currentNode.children : this.treeOfSeenValues;
-      const node = this.getNodeInTreeOfSeenValues(searchThrough, part);
-
-      if (node) {
-        currentNode = node;
-      }
-    }
-
-    const lastParentValue: CategoryValueDescriptor = {
+    const lastParentValue = this.categoryFacetValuesTree.getValueForLastPartInPath(this.activePath);
+    const descriptor: CategoryValueDescriptor = {
       path: this.activePath,
-      count: currentNode.value.numberOfResults,
-      value: currentNode.value.value
+      count: lastParentValue.numberOfResults,
+      value: lastParentValue.value
     };
 
     const resetFacet = () => {
@@ -934,7 +901,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
       this.reset();
     };
 
-    const categoryFacetBreadcrumbBuilder = new CategoryFacetBreadcrumb(this, resetFacet, lastParentValue);
+    const categoryFacetBreadcrumbBuilder = new CategoryFacetBreadcrumb(this, resetFacet, descriptor);
 
     args.breadcrumbs.push({ element: categoryFacetBreadcrumbBuilder.build() });
   }
