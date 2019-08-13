@@ -7436,11 +7436,11 @@
   },
   "SelectValueWithResultCount": {
     "en": "Select {0} with {1}",
-    "fr": "Sélectionnez {0} avec {1}"
+    "fr": "Sélectionner {0} avec {1}"
   },
   "UnselectValueWithResultCount": {
     "en": "Unselect {0} with {1}",
-    "fr": "Désélectionnez {0} avec {1}"
+    "fr": "Désélectionner {0} avec {1}"
   },
   "ExcludeValueWithResultCount": {
     "en": "Exclude {0} with {1}",
