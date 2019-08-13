@@ -2,17 +2,17 @@ import { ICategoryFacetValue } from '../../rest/CategoryFacetValue';
 import { ICategoryFacetResult } from '../../rest/CategoryFacetResult';
 import { find } from 'underscore';
 
-type ITreeNode = { result: ICategoryFacetValue; children: ITreeNode[] };
+type ISeenValue = { result: ICategoryFacetValue; children: ISeenValue[] };
 
 export class CategoryFacetValuesTree {
-  private seenValues: ITreeNode[] = [];
+  private seenValues: ISeenValue[] = [];
 
   public getValueForLastPartInPath(path: string[]) {
-    let currentNode: ITreeNode;
+    let currentNode: ISeenValue;
 
     for (const part of path) {
-      const searchThrough = currentNode ? currentNode.children : this.seenValues;
-      const node = this.getNodeInTreeOfSeenValues(searchThrough, part);
+      const nodesToSearch = currentNode ? currentNode.children : this.seenValues;
+      const node = this.findNodeWithValue(nodesToSearch, part);
 
       if (node) {
         currentNode = node;
@@ -26,22 +26,22 @@ export class CategoryFacetValuesTree {
     let currentNodes = this.seenValues;
 
     for (const parent of categoryFacetResult.parentValues) {
-      const node = this.getNodeInTreeOfSeenValues(currentNodes, parent.value);
+      const node = this.findNodeWithValue(currentNodes, parent.value);
 
       if (!node) {
-        const newNode: ITreeNode = { result: parent, children: [] };
+        const newNode: ISeenValue = { result: parent, children: [] };
         currentNodes.push(newNode);
       }
 
-      currentNodes = this.getNodeInTreeOfSeenValues(currentNodes, parent.value).children;
+      currentNodes = this.findNodeWithValue(currentNodes, parent.value).children;
     }
 
     categoryFacetResult.values
-      .filter(value => !this.getNodeInTreeOfSeenValues(currentNodes, value.value))
-      .forEach(value => currentNodes.push({ result: value, children: [] }));
+      .filter(result => !this.findNodeWithValue(currentNodes, result.value))
+      .forEach(result => currentNodes.push({ result, children: [] }));
   }
 
-  private getNodeInTreeOfSeenValues(nodes: ITreeNode[], value: string) {
+  private findNodeWithValue(nodes: ISeenValue[], value: string) {
     return find(nodes, node => node.result.value === value);
   }
 }
