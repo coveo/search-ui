@@ -59,7 +59,7 @@ export class ValueElementRenderer {
 
   protected buildExcludeIcon(): HTMLElement {
     const excludeIcon = $$('div', {
-      title: l('Exclude', this.facet.getValueCaption(this.facetValue)),
+      title: l('ExcludeValueWithResultCount', this.caption, l('ResultCount', this.count)),
       className: 'coveo-facet-value-exclude',
       tabindex: 0,
       role: 'button'
@@ -259,10 +259,20 @@ export class ValueElementRenderer {
     el.setAttribute('role', 'button');
   }
 
-  private get ariaLabel() {
-    const selectOrUnselect = !this.facetValue.selected ? 'SelectValueWithResultCount' : 'UnselectValueWithResultCount';
-    const resultCount = l('ResultCount', this.count);
+  private get actionLabel() {
+    if (this.facetValue.excluded) {
+      return 'UnexcludeValueWithResultCount';
+    }
 
-    return `${l(selectOrUnselect, this.caption, resultCount)}`;
+    if (this.facetValue.selected) {
+      return 'UnselectValueWithResultCount';
+    }
+
+    return 'SelectValueWithResultCount';
+  }
+
+  private get ariaLabel() {
+    const resultCount = l('ResultCount', this.count);
+    return `${l(this.actionLabel, this.caption, resultCount)}`;
   }
 }
