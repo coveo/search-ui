@@ -67,6 +67,8 @@ export type CategoryValueDescriptor = {
   path: string[];
 };
 
+type ITreeNode = { value: ICategoryFacetValue; children: ITreeNode[] };
+
 /**
  * The `CategoryFacet` component is a facet that renders values in a hierarchical fashion. It determines the filter to apply depending on the
  * current selected path of values.
@@ -665,7 +667,33 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     return this.categoryValueRoot.children;
   }
 
+  private treeOfSeenValues: ITreeNode[] = [];
+
+  private storeNewValuesInTree(categoryFacetResult: ICategoryFacetResult) {
+    let currentNodes = this.treeOfSeenValues;
+
+    for (const parent of categoryFacetResult.parentValues) {
+      const node = this.getNodeInTreeOfSeenValues(currentNodes, parent.value);
+
+      if (!node) {
+        const newNode: ITreeNode = { value: parent, children: [] };
+        currentNodes.push(newNode);
+      }
+
+      currentNodes = this.getNodeInTreeOfSeenValues(currentNodes, parent.value).children;
+    }
+
+    categoryFacetResult.values
+      .filter(value => !this.getNodeInTreeOfSeenValues(currentNodes, value.value))
+      .forEach(value => currentNodes.push({ value, children: [] }));
+  }
+
+  private getNodeInTreeOfSeenValues(nodes: ITreeNode[], value: string) {
+    return find(nodes, node => node.value.value === value);
+  }
+
   private renderValues(categoryFacetResult: ICategoryFacetResult, numberOfRequestedValues: number) {
+    this.storeNewValuesInTree(categoryFacetResult);
     this.show();
     let sortedParentValues = this.sortParentValues(categoryFacetResult.parentValues);
     let currentParentValue: CategoryValueParent = this.categoryValueRoot;
@@ -885,15 +913,21 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
       return;
     }
 
-    let lastParentValue = this.getVisibleParentValues().pop();
+    let currentNode: ITreeNode;
+    for (const part of this.activePath) {
+      const searchThrough = currentNode ? currentNode.children : this.treeOfSeenValues;
+      const node = this.getNodeInTreeOfSeenValues(searchThrough, part);
 
-    if (!lastParentValue) {
-      // This means we're in a special corner case where the current base path is configured
-      // to one level before the last values in the tree.
-      // In that case, there's simply no parent, so we must tweak things a bit so it plays nicely with the breadcrumb.
-      // We can simulate the "last parent value" as being the current active path itself.
-      lastParentValue = this.activeCategoryValue.getDescriptor();
+      if (node) {
+        currentNode = node;
+      }
     }
+
+    const lastParentValue: CategoryValueDescriptor = {
+      path: this.activePath,
+      count: currentNode.value.numberOfResults,
+      value: currentNode.value.value
+    };
 
     const resetFacet = () => {
       this.logAnalyticsEvent(analyticsActionCauseList.breadcrumbFacet);
