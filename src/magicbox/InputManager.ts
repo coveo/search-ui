@@ -1,9 +1,9 @@
-import { Result } from './Result/Result';
-import { $$ } from '../utils/Dom';
-import _ = require('underscore');
-import { MagicBoxInstance } from './MagicBox';
-import { KEYBOARD } from '../utils/KeyboardUtils';
 import { l } from '../strings/Strings';
+import { $$ } from '../utils/Dom';
+import { KEYBOARD } from '../utils/KeyboardUtils';
+import { MagicBoxInstance } from './MagicBox';
+import { Result } from './Result/Result';
+import _ = require('underscore');
 
 export class InputManager {
   public input: HTMLInputElement;
@@ -201,7 +201,6 @@ export class InputManager {
   private addAccessibilitiesProperties() {
     this.input.spellcheck = false;
     this.input.setAttribute('form', 'coveo-dummy-form');
-    this.input.setAttribute('role', 'combobox');
     this.input.setAttribute('autocomplete', 'off');
     this.input.setAttribute('aria-autocomplete', 'list');
     this.input.setAttribute('title', `${l('InsertAQuery')}. ${l('PressEnterToSend')}`);
@@ -218,7 +217,7 @@ export class InputManager {
 
   public blur() {
     if (this.hasFocus) {
-      this.input.blur();
+      //this.input.blur();
     }
   }
 

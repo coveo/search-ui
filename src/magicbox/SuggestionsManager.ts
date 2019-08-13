@@ -1,8 +1,8 @@
+import { compact, defaults, each, indexOf } from 'underscore';
+import { Component, OmniboxEvents } from '../Core';
+import { IQuerySuggestSelection } from '../events/OmniboxEvents';
 import { $$, Dom } from '../utils/Dom';
 import { InputManager } from './InputManager';
-import { each, defaults, indexOf, compact } from 'underscore';
-import { OmniboxEvents, Component } from '../Core';
-import { IQuerySuggestSelection } from '../events/OmniboxEvents';
 
 export interface Suggestion {
   text?: string;
@@ -24,6 +24,8 @@ export class SuggestionsManager {
   private pendingSuggestion: Promise<Suggestion[]>;
   private options: SuggestionsManagerOptions;
   private keyboardFocusedSuggestion: HTMLElement;
+  private suggestionsListbox: Dom;
+  private suggestionsPreviewContainer: Dom;
 
   constructor(
     private element: HTMLElement,
@@ -52,6 +54,9 @@ export class SuggestionsManager {
     });
 
     this.addAccessibilityProperties();
+    this.suggestionsListbox = this.buildSuggestionsContainer();
+    this.suggestionsPreviewContainer = this.initPreviewForSuggestions(this.suggestionsListbox);
+    $$(this.element).append(this.suggestionsPreviewContainer.el);
   }
 
   public handleMouseOver(e) {
@@ -175,8 +180,8 @@ export class SuggestionsManager {
   }
 
   public updateSuggestions(suggestions: Suggestion[]) {
-    $$(this.element).empty();
     this.element.className = 'magic-box-suggestions';
+    this.suggestionsListbox.empty();
 
     this.hasSuggestions = suggestions.length > 0;
 
@@ -188,9 +193,6 @@ export class SuggestionsManager {
       return;
     }
 
-    const suggestionsContainer = this.buildSuggestionsContainer();
-    const suggestionPreviewContainer = this.initPreviewForSuggestions(suggestionsContainer);
-    $$(this.element).append(suggestionPreviewContainer.el);
     this.addAccessibilityPropertiesForSuggestions();
 
     each(suggestions, (suggestion: Suggestion) => {
@@ -199,9 +201,10 @@ export class SuggestionsManager {
       dom.setAttribute('id', `magic-box-suggestion-${indexOf(suggestions, suggestion)}`);
       dom.setAttribute('role', 'option');
       dom.setAttribute('aria-selected', 'false');
+      dom.setAttribute('aria-label', suggestion.text);
 
       dom['suggestion'] = suggestion;
-      suggestionsContainer.append(dom.el);
+      this.suggestionsListbox.append(dom.el);
     });
     $$(this.root).trigger(OmniboxEvents.querySuggestRendered);
   }
@@ -274,6 +277,7 @@ export class SuggestionsManager {
 
     if (suggestion.text) {
       dom.text(suggestion.text);
+
       return dom;
     }
 

@@ -1,11 +1,11 @@
+import { each, find, isUndefined } from 'underscore';
 import { $$ } from '../utils/Dom';
-import { Result } from './Result/Result';
-import { Grammar } from './Grammar';
 import { doMagicBoxExport } from './doMagicBoxExport';
-import { Suggestion, SuggestionsManager } from './SuggestionsManager';
+import { Grammar } from './Grammar';
 import { InputManager } from './InputManager';
-import { isUndefined, each, find } from 'underscore';
 import { MagicBoxClear } from './MagicBoxClear';
+import { Result } from './Result/Result';
+import { Suggestion, SuggestionsManager } from './SuggestionsManager';
 
 export interface Options {
   inline?: boolean;
@@ -128,7 +128,7 @@ export class MagicBoxInstance {
 
   private setupHandler() {
     this.inputManager.onblur = () => {
-      $$(this.element).removeClass('magic-box-hasFocus');
+      // $$(this.element).removeClass('magic-box-hasFocus');
       this.onblur && this.onblur();
       if (!this.options.inline) {
         this.clearSuggestion();
@@ -214,10 +214,12 @@ export class MagicBoxInstance {
   }
 
   public clearSuggestion() {
-    this.suggestionsManager.mergeSuggestions([], suggestions => {
+    return;
+
+    /*this.suggestionsManager.mergeSuggestions([], suggestions => {
       this.updateSuggestion(suggestions);
     });
-    this.inputManager.setWordCompletion(null);
+    this.inputManager.setWordCompletion(null);*/
   }
 
   private focusOnSuggestion(suggestion: Suggestion) {
