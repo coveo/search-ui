@@ -273,13 +273,13 @@ export class ResultFolding extends Component {
       const showLessLink = $$('a', { className: 'coveo-folding-show-less' }, this.options.lessCaption).el;
 
       new AccessibleButton()
-        .withElement(showMoreLink)
+        .withElement(this.showMore)
         .withLabel(this.options.moreCaption)
         .withSelectAction(() => this.showMoreResults())
         .build();
 
       new AccessibleButton()
-        .withElement(showLessLink)
+        .withElement(this.showLess)
         .withLabel(this.options.lessCaption)
         .withSelectAction(() => this.showLessResults())
         .build();
@@ -301,8 +301,8 @@ export class ResultFolding extends Component {
     $$(this.oneResultCaption).toggleClass('coveo-hidden', !(subResultsLength && subResultsLength == 1));
 
     if (this.showMore) {
-      $$(this.showMore).toggle(!this.showingMoreResults && !Utils.exists(this.moreResultsPromise));
-      $$(this.showLess).toggle(this.showingMoreResults);
+      $$(this.showMore).toggleClass('coveo-visible', !this.showingMoreResults && !Utils.exists(this.moreResultsPromise));
+      $$(this.showLess).toggleClass('coveo-visible', this.showingMoreResults);
     }
 
     let showIfNormal = $$(this.element).find('.coveo-show-if-normal');
