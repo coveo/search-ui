@@ -44,7 +44,6 @@ export class MagicBoxInstance {
     if (this.options.inline) {
       $$(element).addClass('magic-box-inline');
     }
-    $$(this.element).setAttribute('role', 'combobox');
 
     this.result = this.grammar.parse('');
     this.displayedResult = this.result.clean();
@@ -128,7 +127,7 @@ export class MagicBoxInstance {
 
   private setupHandler() {
     this.inputManager.onblur = () => {
-      // $$(this.element).removeClass('magic-box-hasFocus');
+      $$(this.element).removeClass('magic-box-hasFocus');
       this.onblur && this.onblur();
       if (!this.options.inline) {
         this.clearSuggestion();
@@ -214,12 +213,10 @@ export class MagicBoxInstance {
   }
 
   public clearSuggestion() {
-    return;
-
-    /*this.suggestionsManager.mergeSuggestions([], suggestions => {
+    this.suggestionsManager.mergeSuggestions([], suggestions => {
       this.updateSuggestion(suggestions);
     });
-    this.inputManager.setWordCompletion(null);*/
+    this.inputManager.setWordCompletion(null);
   }
 
   private focusOnSuggestion(suggestion: Suggestion) {

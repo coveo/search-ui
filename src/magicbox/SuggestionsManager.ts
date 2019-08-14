@@ -53,10 +53,10 @@ export class SuggestionsManager {
       this.handleMouseOut(e);
     });
 
-    this.addAccessibilityProperties();
     this.suggestionsListbox = this.buildSuggestionsContainer();
     this.suggestionsPreviewContainer = this.initPreviewForSuggestions(this.suggestionsListbox);
     $$(this.element).append(this.suggestionsPreviewContainer.el);
+    this.addAccessibilityPropertiesForCombobox();
   }
 
   public handleMouseOver(e) {
@@ -180,8 +180,8 @@ export class SuggestionsManager {
   }
 
   public updateSuggestions(suggestions: Suggestion[]) {
-    this.element.className = 'magic-box-suggestions';
     this.suggestionsListbox.empty();
+    $$(this.inputManager.input).setAttribute('aria-activedescendant', '');
 
     this.hasSuggestions = suggestions.length > 0;
 
@@ -189,11 +189,8 @@ export class SuggestionsManager {
     $$(this.magicBoxContainer).setAttribute('aria-expanded', this.hasSuggestions.toString());
 
     if (!this.hasSuggestions) {
-      this.removeAccessibilityPropertiesForSuggestions();
       return;
     }
-
-    this.addAccessibilityPropertiesForSuggestions();
 
     each(suggestions, (suggestion: Suggestion) => {
       const dom = suggestion.dom ? this.modifyDomFromExistingSuggestion(suggestion.dom) : this.createDomFromSuggestion(suggestion);
@@ -206,13 +203,14 @@ export class SuggestionsManager {
       dom['suggestion'] = suggestion;
       this.suggestionsListbox.append(dom.el);
     });
+
     $$(this.root).trigger(OmniboxEvents.querySuggestRendered);
   }
 
   private processKeyboardSelection(suggestion: HTMLElement) {
-    this.addSelectedStatus(suggestion);
     this.keyboardFocusedSuggestion = suggestion;
     $$(this.inputManager.input).setAttribute('aria-activedescendant', $$(suggestion).getAttribute('id'));
+    this.addSelectedStatus(suggestion);
   }
 
   private processMouseSelection(suggestion: HTMLElement) {
@@ -223,6 +221,7 @@ export class SuggestionsManager {
   private buildSuggestionsContainer() {
     return $$('div', {
       className: 'coveo-magicbox-suggestions',
+      id: 'coveo-magicbox-suggestions',
       role: 'listbox'
     });
   }
@@ -329,7 +328,7 @@ export class SuggestionsManager {
       this.processKeyboardSelection(newlySelected);
     } else {
       this.keyboardFocusedSuggestion = null;
-      this.inputManager.input.removeAttribute('aria-activedescendant');
+      $$(this.inputManager.input).setAttribute('aria-activedescendant', '');
     }
 
     return newlySelected;
@@ -359,8 +358,8 @@ export class SuggestionsManager {
       this.removeSelectedStatus(elem);
     }
     $$(suggestion).addClass(this.options.selectedClass);
-    this.updateAreaSelectedIfDefined(suggestion, 'true');
     this.updateSelectedSuggestion(suggestion.innerText);
+    this.updateAreaSelectedIfDefined(suggestion, 'true');
   }
 
   private updateSelectedSuggestion(suggestion: string) {
@@ -380,20 +379,17 @@ export class SuggestionsManager {
     }
   }
 
-  private addAccessibilityProperties() {
-    $$(this.magicBoxContainer).setAttribute('aria-expanded', 'false');
-    $$(this.magicBoxContainer).setAttribute('aria-haspopup', 'listbox');
-    this.inputManager.input.removeAttribute('aria-activedescendant');
-  }
+  private addAccessibilityPropertiesForCombobox() {
+    const combobox = $$(this.magicBoxContainer);
+    const input = $$(this.inputManager.input);
 
-  private addAccessibilityPropertiesForSuggestions() {
-    $$(this.magicBoxContainer).setAttribute('aria-owns', 'coveo-magicbox-suggestions');
-    this.inputManager.input.setAttribute('aria-controls', 'coveo-magicbox-suggestions');
-  }
+    combobox.setAttribute('aria-expanded', 'false');
+    combobox.setAttribute('role', 'combobox');
+    combobox.setAttribute('aria-owns', 'coveo-magicbox-suggestions');
+    combobox.setAttribute('aria-haspopup', 'listbox');
 
-  private removeAccessibilityPropertiesForSuggestions() {
-    this.inputManager.input.removeAttribute('aria-activedescendant');
-    this.inputManager.input.removeAttribute('aria-controls');
-    this.magicBoxContainer.removeAttribute('aria-owns');
+    input.setAttribute('aria-activedescendant', '');
+    input.setAttribute('aria-controls', 'coveo-magicbox-suggestions');
+    input.setAttribute('aria-autocomplete', 'list');
   }
 }
