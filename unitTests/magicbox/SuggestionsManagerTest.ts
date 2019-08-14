@@ -1,8 +1,7 @@
-import { SuggestionsManager } from '../../src/magicbox/SuggestionsManager';
-import { Dom } from '../../src/utils/Dom';
-import { $$ } from '../../src/utils/Dom';
 import { InputManager } from '../../src/magicbox/InputManager';
 import { MagicBoxInstance } from '../../src/magicbox/MagicBox';
+import { SuggestionsManager } from '../../src/magicbox/SuggestionsManager';
+import { $$, Dom } from '../../src/utils/Dom';
 
 export function SuggestionsManagerTest() {
   describe('Suggestions manager', () => {
@@ -43,7 +42,7 @@ export function SuggestionsManagerTest() {
       expect(suggestionsElement.getAttribute('role')).toBe('listbox');
     });
 
-    it('does not build suggestion parent correctly when emptying sugggestions', () => {
+    it('adds an empty option child to the suggestions parent when emptying sugggestions', () => {
       // Start by adding a suggestion so that elements are correctly created first
       suggestionManager.updateSuggestions([{}]);
       suggestionManager.updateSuggestions([]);
@@ -52,7 +51,8 @@ export function SuggestionsManagerTest() {
       expect($$(suggestionContainer).hasClass('magic-box-hasSuggestion')).toBe(false);
 
       const suggestionsElement = $$(suggestionContainer).find('.coveo-magicbox-suggestions');
-      expect(suggestionsElement).toBeNull();
+      expect(suggestionsElement.childElementCount).toBe(1);
+      expect(suggestionsElement.firstChild.textContent).toBe('');
     });
 
     it('builds suggestion children correctly when adding a suggestion', () => {

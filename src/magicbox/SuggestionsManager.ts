@@ -57,6 +57,7 @@ export class SuggestionsManager {
     this.suggestionsPreviewContainer = this.initPreviewForSuggestions(this.suggestionsListbox);
     $$(this.element).append(this.suggestionsPreviewContainer.el);
     this.addAccessibilityPropertiesForCombobox();
+    this.appendEmptySuggestionOption();
   }
 
   public handleMouseOver(e) {
@@ -181,7 +182,7 @@ export class SuggestionsManager {
 
   public updateSuggestions(suggestions: Suggestion[]) {
     this.suggestionsListbox.empty();
-    $$(this.inputManager.input).setAttribute('aria-activedescendant', '');
+    this.inputManager.input.removeAttribute('aria-activedescendant');
 
     this.hasSuggestions = suggestions.length > 0;
 
@@ -189,6 +190,7 @@ export class SuggestionsManager {
     $$(this.magicBoxContainer).setAttribute('aria-expanded', this.hasSuggestions.toString());
 
     if (!this.hasSuggestions) {
+      this.appendEmptySuggestionOption();
       return;
     }
 
@@ -198,7 +200,7 @@ export class SuggestionsManager {
       dom.setAttribute('id', `magic-box-suggestion-${indexOf(suggestions, suggestion)}`);
       dom.setAttribute('role', 'option');
       dom.setAttribute('aria-selected', 'false');
-      dom.setAttribute('aria-label', suggestion.text);
+      dom.setAttribute('aria-label', dom.text());
 
       dom['suggestion'] = suggestion;
       this.suggestionsListbox.append(dom.el);
@@ -301,6 +303,12 @@ export class SuggestionsManager {
     $$(this.root).trigger(OmniboxEvents.querySuggestSelection, <IQuerySuggestSelection>{ suggestion: suggestion.text });
   }
 
+  private appendEmptySuggestionOption() {
+    // Accessibility tools reports that a listbox element must always have at least one child with an option
+    // Even if there is no suggestions to show.
+    this.suggestionsListbox.append($$('div', { role: 'option' }).el);
+  }
+
   private modifyDomFromExistingSuggestion(dom: HTMLElement) {
     // this need to be done if the selection is in cache and the dom is set in the suggestion
     this.removeSelectedStatus(dom);
@@ -328,7 +336,7 @@ export class SuggestionsManager {
       this.processKeyboardSelection(newlySelected);
     } else {
       this.keyboardFocusedSuggestion = null;
-      $$(this.inputManager.input).setAttribute('aria-activedescendant', '');
+      this.inputManager.input.removeAttribute('aria-activedescendant');
     }
 
     return newlySelected;
@@ -388,7 +396,7 @@ export class SuggestionsManager {
     combobox.setAttribute('aria-owns', 'coveo-magicbox-suggestions');
     combobox.setAttribute('aria-haspopup', 'listbox');
 
-    input.setAttribute('aria-activedescendant', '');
+    input.el.removeAttribute('aria-activedescendant');
     input.setAttribute('aria-controls', 'coveo-magicbox-suggestions');
     input.setAttribute('aria-autocomplete', 'list');
   }
