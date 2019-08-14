@@ -5,7 +5,7 @@ import { find } from 'underscore';
 type ISeenValue = { result: ICategoryFacetValue; children: ISeenValue[] };
 
 export class CategoryFacetValuesTree {
-  private seenValues: ISeenValue[] = [];
+  public seenValues: ISeenValue[] = [];
 
   public getValueForLastPartInPath(path: string[]) {
     let currentNode: ISeenValue;
