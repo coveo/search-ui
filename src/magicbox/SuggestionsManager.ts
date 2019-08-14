@@ -208,9 +208,9 @@ export class SuggestionsManager {
   }
 
   private processKeyboardSelection(suggestion: HTMLElement) {
+    this.addSelectedStatus(suggestion);
     this.keyboardFocusedSuggestion = suggestion;
     $$(this.inputManager.input).setAttribute('aria-activedescendant', $$(suggestion).getAttribute('id'));
-    this.addSelectedStatus(suggestion);
   }
 
   private processMouseSelection(suggestion: HTMLElement) {

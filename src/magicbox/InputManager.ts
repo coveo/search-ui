@@ -98,6 +98,8 @@ export class InputManager {
     } else {
       this.setWordCompletion(wordCompletion);
     }
+
+    this.updateScroll();
   }
 
   /**
@@ -109,6 +111,7 @@ export class InputManager {
     }
     this.wordCompletion = wordCompletion;
     this.updateWordCompletion();
+    this.updateScroll();
   }
 
   /**
@@ -130,6 +133,34 @@ export class InputManager {
     return this.input.selectionStart;
   }
 
+  /**
+   * Update the scroll of the underlay this allowed the highlight to match the text
+   */
+
+  private updateScrollDefer: number;
+  private updateScroll(defer = true) {
+    var callback = () => {
+      // this is the cheapest call we can do before update scroll
+      if (this.underlay.clientWidth < this.underlay.scrollWidth) {
+        this.underlay.style.visibility = 'hidden';
+        this.underlay.scrollLeft = this.input.scrollLeft;
+        this.underlay.scrollTop = this.input.scrollTop;
+        this.underlay.style.visibility = 'visible';
+      }
+      this.updateScrollDefer = null;
+      // one day we will have to remove this
+      if (this.hasFocus) {
+        this.updateScroll();
+      }
+    };
+    // sometime we want it to be updated as soon as posible to have no flickering
+    if (!defer) {
+      callback();
+    } else if (this.updateScrollDefer == null) {
+      this.updateScrollDefer = requestAnimationFrame(callback);
+    }
+  }
+
   private setupHandler() {
     this.input.onblur = () => {
       this.hasFocus = false;
@@ -138,10 +169,12 @@ export class InputManager {
           this.onblur && this.onblur();
         }
       }, 300);
+      this.updateScroll();
     };
-    this.input.onfocus = e => {
+    this.input.onfocus = () => {
       if (!this.hasFocus) {
         this.hasFocus = true;
+        this.updateScroll();
         this.onfocus && this.onfocus();
       }
     };
