@@ -8,18 +8,21 @@ export class CategoryFacetValuesTree {
   public seenValues: ISeenValue[] = [];
 
   public getValueForLastPartInPath(path: string[]) {
+    const nullCategoryFacetValue: ICategoryFacetValue = { value: '', numberOfResults: 0 };
     let currentNode: ISeenValue;
 
     for (const part of path) {
       const nodesToSearch = currentNode ? currentNode.children : this.seenValues;
       const node = this.findNodeWithValue(nodesToSearch, part);
 
-      if (node) {
-        currentNode = node;
+      if (!node) {
+        return nullCategoryFacetValue;
       }
+
+      currentNode = node;
     }
 
-    return currentNode.result;
+    return currentNode ? currentNode.result : nullCategoryFacetValue;
   }
 
   public storeNewValues(categoryFacetResult: ICategoryFacetResult) {

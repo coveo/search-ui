@@ -88,5 +88,43 @@ export function CategoryFacetValuesTreeTest() {
       expect(firstSeenValue.result).toEqual(parentValue);
       expect(firstSeenValue.children[0].result).toEqual(childValue);
     });
+
+    it(`when calling #getValueForLastPartInPath with an empty array,
+    it returns a an object with #value that is an empty string`, () => {
+      const result = klass.getValueForLastPartInPath([]);
+      expect(result.value).toBe('');
+    });
+
+    it(`when calling #getValueForLastPartInPath with an array with a value that has not been seen,
+    it returns an object with #value that is an empty string`, () => {
+      const result = klass.getValueForLastPartInPath(['newValue']);
+      expect(result.value).toBe('');
+    });
+
+    describe(`when calling #storeNewValues with two parent values`, () => {
+      const parent1 = buildCategoryFacetValue({ value: 'parent1' });
+      const parent2 = buildCategoryFacetValue({ value: 'parent2' });
+
+      beforeEach(() => {
+        const result = buildCategoryFacetResult({ parentValues: [parent1, parent2] });
+        klass.storeNewValues(result);
+      });
+
+      it(`when calling #getValueForLastPartInPath with the names of the parent values in the correct order,
+      it returns the second parent`, () => {
+        const path = [parent1.value, parent2.value];
+        const lastParent = klass.getValueForLastPartInPath(path);
+
+        expect(lastParent.value).toBe(parent2.value);
+      });
+
+      it(`when calling #getValueForLastPartInPath with the names of the parent values in reverse order,
+      it returns an object with #value that is an empty string`, () => {
+        const path = [parent2.value, parent1.value];
+        const lastParent = klass.getValueForLastPartInPath(path);
+
+        expect(lastParent.value).toBe('');
+      });
+    });
   });
 }
