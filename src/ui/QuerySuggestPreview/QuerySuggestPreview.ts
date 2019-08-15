@@ -12,6 +12,7 @@ import { TemplateComponentOptions } from '../Base/TemplateComponentOptions';
 import { ResultListTableRenderer } from '../ResultList/ResultListTableRenderer';
 import { ITemplateToHtml, TemplateToHtml } from '../Templates/TemplateToHtml';
 import { IQueryResult } from '../../rest/QueryResult';
+import { ResultLink } from '../ResultLink/ResultLink';
 
 export interface IQuerySuggestPreview {
   numberOfPreviewResults?: number;
@@ -204,6 +205,10 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
       return;
     }
 
+    if (args.suggestion === '') {
+      return;
+    }
+
     this.previousSuggestionHovered = args.suggestion;
     this.timer && clearTimeout(this.timer);
     this.timer = setTimeout(() => {
@@ -221,16 +226,8 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
     if (!results) {
       return;
     }
-    this.addImage(results);
     this.buildPreviewHeader(suggestion);
     this.buildResultsPreview(results);
-  }
-
-  //Delete when creating the PR
-  private addImage(results: IQueryResults) {
-    results.results.forEach(result => {
-      result.raw['ccimage'] = 'https://img.bbystatic.com/BestBuy_US/images/products/5410/5410701_sa.jpg';
-    });
   }
 
   private async buildResultsPreview(results: IQueryResults) {
@@ -248,8 +245,21 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
   private updateResultPerRow(elements: HTMLElement[]) {
     const resultAvailableSpace = elements.length === 4 ? '50%' : '33%';
     elements.forEach(element => {
+      $$(element).addClass('coveo-preview-selectable');
+
+      $$(element).on('keyboardSelect', () => {
+        this.handleSelect(element);
+      });
       this.updateFlexCSS(element, resultAvailableSpace);
     });
+  }
+
+  private handleSelect(element: HTMLElement) {
+    const link = $$(element).find(`.${Component.computeCssClassNameForType('ResultLink')}`);
+    if (link) {
+      const resultLink = <ResultLink>Component.get(link);
+      resultLink.openLinkAsConfigured() || resultLink.openLink();
+    }
   }
 
   private updateFlexCSS(element: HTMLElement, value: string) {

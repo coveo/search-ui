@@ -19,11 +19,14 @@ export interface SuggestionsManagerOptions {
   timeout?: number;
 }
 
+type direction = 'up' | 'down' | 'left' | 'right';
+
 export class SuggestionsManager {
   public hasSuggestions: boolean;
   private pendingSuggestion: Promise<Suggestion[]>;
   private options: SuggestionsManagerOptions;
   private keyboardFocusedSuggestion: HTMLElement;
+  private lastSelectedSuggestion: HTMLElement;
 
   constructor(
     private element: HTMLElement,
@@ -86,12 +89,24 @@ export class SuggestionsManager {
     $$(this.root).trigger(OmniboxEvents.querySuggestLoseFocus);
   }
 
-  public moveDown(): Suggestion {
-    return this.returnMoved(this.move('down'));
+  public moveDown() {
+    const selected = this.move('down');
+    return this.afterMoving(selected);
   }
 
-  public moveUp(): Suggestion {
-    return this.returnMoved(this.move('up'));
+  public moveUp() {
+    const selected = this.move('up');
+    return this.afterMoving(selected);
+  }
+
+  public moveLeft() {
+    const selected = this.move('left');
+    return this.afterMoving(selected);
+  }
+
+  public moveRight() {
+    const selected = this.move('right');
+    return this.afterMoving(selected);
   }
 
   public selectAndReturnKeyboardFocusedElement(): HTMLElement {
@@ -185,6 +200,7 @@ export class SuggestionsManager {
 
     if (!this.hasSuggestions) {
       this.removeAccessibilityPropertiesForSuggestions();
+      $$(this.root).trigger(OmniboxEvents.querySuggestLoseFocus);
       return;
     }
 
@@ -206,14 +222,28 @@ export class SuggestionsManager {
     $$(this.root).trigger(OmniboxEvents.querySuggestRendered);
   }
 
+  private afterMoving(selected) {
+    if (this.htmlElementIsSuggestion(selected)) {
+      return this.returnMoved(selected) as Suggestion;
+    }
+    return selected;
+  }
+
   private processKeyboardSelection(suggestion: HTMLElement) {
     this.addSelectedStatus(suggestion);
+    this.updateSelectedSuggestion(suggestion.innerText);
     this.keyboardFocusedSuggestion = suggestion;
     $$(this.inputManager.input).setAttribute('aria-activedescendant', $$(suggestion).getAttribute('id'));
   }
 
+  private processKeyboardPreviewSelection(suggestion: HTMLElement) {
+    this.addSelectedStatus(suggestion);
+    this.keyboardFocusedSuggestion = suggestion;
+  }
+
   private processMouseSelection(suggestion: HTMLElement) {
     this.addSelectedStatus(suggestion);
+    this.updateSelectedSuggestion(suggestion.innerText);
     this.keyboardFocusedSuggestion = null;
   }
 
@@ -306,29 +336,72 @@ export class SuggestionsManager {
     return $$(dom);
   }
 
-  private move(direction: 'up' | 'down') {
+  private move(direction: direction) {
+    const previewSelectables = $$(this.element).findAll(`.coveo-preview-selectable`);
+    if (previewSelectables.length > 0) {
+      return this.moveWithQuerySuggestPreview(direction);
+    }
+    return this.moveWithinSuggestion(direction);
+  }
+
+  private moveWithinSuggestion(direction: direction) {
     const currentlySelected = $$(this.element).find(`.${this.options.selectedClass}`);
     const selectables = $$(this.element).findAll(`.${this.options.selectableClass}`);
     const currentIndex = indexOf(selectables, currentlySelected);
 
     let index = direction == 'up' ? currentIndex - 1 : currentIndex + 1;
-    if (index < -1) {
-      index = selectables.length - 1;
-    }
-    if (index > selectables.length) {
-      index = 0;
-    }
+    index = (index + selectables.length) % selectables.length;
 
-    const newlySelected = selectables[index];
+    this.lastSelectedSuggestion = selectables[index];
 
-    if (newlySelected) {
-      this.processKeyboardSelection(newlySelected);
+    return this.selectQuerySuggest(this.lastSelectedSuggestion);
+  }
+
+  private selectQuerySuggest(suggestion: HTMLElement) {
+    if (suggestion) {
+      this.processKeyboardSelection(suggestion);
     } else {
       this.keyboardFocusedSuggestion = null;
       this.inputManager.input.removeAttribute('aria-activedescendant');
     }
 
-    return newlySelected;
+    return suggestion;
+  }
+
+  private moveWithQuerySuggestPreview(direction: direction) {
+    const currentlySelected = $$(this.element).find(`.${this.options.selectedClass}`);
+    const omniboxSelectables = $$(this.element).findAll(`.${this.options.selectableClass}`);
+    const previewSelectables = $$(this.element).findAll(`.coveo-preview-selectable`);
+    const omniboxIndex = indexOf(omniboxSelectables, currentlySelected);
+    const previewIndex = indexOf(previewSelectables, currentlySelected);
+    const noSelection = omniboxIndex == -1 && previewIndex == -1;
+
+    if ((noSelection || omniboxIndex > -1) && (direction == 'up' || direction == 'down')) {
+      return this.moveWithinSuggestion(direction);
+    }
+
+    if (previewSelectables.length == 0 || (direction == 'left' && previewIndex == -1)) {
+      return this.lastSelectedSuggestion;
+    }
+
+    let index = previewIndex;
+    if (direction == 'up' || direction == 'down') {
+      if (previewSelectables.length < 4) {
+        return this.lastSelectedSuggestion;
+      }
+
+      let offset = Math.ceil(previewSelectables.length / 2);
+      index = direction == 'up' ? previewIndex - offset : previewIndex + offset;
+    } else if (direction == 'left' || direction == 'right') {
+      if (index === 0 && direction == 'left') {
+        return this.selectQuerySuggest(this.lastSelectedSuggestion);
+      }
+      index = direction == 'left' ? previewIndex - 1 : previewIndex + 1;
+    }
+    index = (index + previewSelectables.length) % previewSelectables.length;
+
+    this.processKeyboardPreviewSelection(previewSelectables[index]);
+    return previewSelectables[index];
   }
 
   private returnMoved(selected) {
@@ -356,7 +429,6 @@ export class SuggestionsManager {
     }
     $$(suggestion).addClass(this.options.selectedClass);
     this.updateAreaSelectedIfDefined(suggestion, 'true');
-    this.updateSelectedSuggestion(suggestion.innerText);
   }
 
   private updateSelectedSuggestion(suggestion: string) {
@@ -391,5 +463,10 @@ export class SuggestionsManager {
     this.inputManager.input.removeAttribute('aria-activedescendant');
     this.inputManager.input.removeAttribute('aria-controls');
     this.magicBoxContainer.removeAttribute('aria-owns');
+  }
+
+  private htmlElementIsSuggestion(selected: HTMLElement) {
+    const omniboxSelectables = $$(this.element).findAll(`.${this.options.selectableClass}`);
+    return indexOf(omniboxSelectables, selected) > -1;
   }
 }

@@ -6,6 +6,7 @@ import { Suggestion, SuggestionsManager } from './SuggestionsManager';
 import { InputManager } from './InputManager';
 import { isUndefined, each, find } from 'underscore';
 import { MagicBoxClear } from './MagicBoxClear';
+import { KEYBOARD } from '../Core';
 
 export interface Options {
   inline?: boolean;
@@ -143,18 +144,18 @@ export class MagicBoxInstance {
     };
 
     this.inputManager.onkeydown = (key: number) => {
-      if (key == 38 || key == 40) {
+      if (key == KEYBOARD.UP_ARROW || key == KEYBOARD.DOWN_ARROW || key == KEYBOARD.LEFT_ARROW || key == KEYBOARD.RIGHT_ARROW) {
         // Up, Down
         return false;
       }
-      if (key == 13) {
+      if (key == KEYBOARD.ENTER) {
         // Enter
         const suggestion = this.suggestionsManager.selectAndReturnKeyboardFocusedElement();
         if (suggestion == null) {
           this.onsubmit && this.onsubmit();
         }
         return false;
-      } else if (key == 27) {
+      } else if (key == KEYBOARD.ESCAPE) {
         // ESC
         this.clearSuggestion();
         this.blur();
@@ -167,19 +168,28 @@ export class MagicBoxInstance {
     };
 
     this.inputManager.onkeyup = (key: number) => {
-      if (key == 38) {
-        // Up
-        this.onmove && this.onmove();
-        this.focusOnSuggestion(this.suggestionsManager.moveUp());
-        this.onchange && this.onchange();
-      } else if (key == 40) {
-        // Down
-        this.onmove && this.onmove();
-        this.focusOnSuggestion(this.suggestionsManager.moveDown());
-        this.onchange && this.onchange();
-      } else {
-        return true;
+      let selected: Suggestion | HTMLElement = null;
+      this.onmove && this.onmove();
+      switch (key) {
+        case KEYBOARD.UP_ARROW:
+          selected = this.suggestionsManager.moveUp();
+          break;
+        case KEYBOARD.DOWN_ARROW:
+          selected = this.suggestionsManager.moveDown();
+          break;
+        case KEYBOARD.LEFT_ARROW:
+          selected = this.suggestionsManager.moveLeft();
+          break;
+        case KEYBOARD.RIGHT_ARROW:
+          selected = this.suggestionsManager.moveRight();
+          break;
+        default:
+          return true;
       }
+      if (!(selected instanceof HTMLElement)) {
+        this.focusOnSuggestion(selected);
+      }
+      this.onchange && this.onchange();
       return false;
     };
   }

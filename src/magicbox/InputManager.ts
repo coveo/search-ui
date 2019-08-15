@@ -255,7 +255,7 @@ export class InputManager {
     switch (e.keyCode || e.which) {
       case 37: // Left
       case 39: // Right
-        this.handleLeftRightArrow();
+        this.handleLeftRightArrow(e);
         break;
       default:
         if (this.onkeydown == null || this.onkeyup(e.keyCode || e.which)) {
@@ -267,8 +267,14 @@ export class InputManager {
     }
   }
 
-  private handleLeftRightArrow() {
-    if (!$$(this.root).find(`.${Component.computeCssClassNameForType('QuerySuggestPreview')}`)) {
+  private handleLeftRightArrow(e: KeyboardEvent) {
+    if ($$(this.root).find(`.${Component.computeCssClassNameForType('QuerySuggestPreview')}`)) {
+      if (this.onkeydown == null || this.onkeyup(e.keyCode || e.which)) {
+        this.onInputChange();
+      } else {
+        e.preventDefault();
+      }
+    } else {
       this.onchangecursor();
     }
   }
