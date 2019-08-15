@@ -145,18 +145,15 @@ export class MagicBoxInstance {
 
     this.inputManager.onkeydown = (key: number) => {
       if (key == KEYBOARD.UP_ARROW || key == KEYBOARD.DOWN_ARROW || key == KEYBOARD.LEFT_ARROW || key == KEYBOARD.RIGHT_ARROW) {
-        // Up, Down
         return false;
       }
       if (key == KEYBOARD.ENTER) {
-        // Enter
         const suggestion = this.suggestionsManager.selectAndReturnKeyboardFocusedElement();
         if (suggestion == null) {
           this.onsubmit && this.onsubmit();
         }
         return false;
       } else if (key == KEYBOARD.ESCAPE) {
-        // ESC
         this.clearSuggestion();
         this.blur();
       }
