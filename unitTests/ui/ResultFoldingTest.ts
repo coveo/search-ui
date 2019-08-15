@@ -204,7 +204,7 @@ export function ResultFoldingTest() {
     it("should not display the 'more' link when moreResults handler is not available", done => {
       test = Mock.basicResultComponentSetup<ResultFolding>(ResultFolding);
       Defer.defer(() => {
-        expect($$(test.cmp.element).find('coveo-folding-show-more')).toBeNull();
+        expect($$(test.cmp.element).find('.coveo-folding-show-more')).toBeNull();
         done();
       });
     });
@@ -277,11 +277,13 @@ export function ResultFoldingTest() {
 
     it('can load an external template from an id', done => {
       TemplateCache.registerTemplate('Foo', UnderscoreTemplate.fromString('foubarre', {}));
-      test = Mock.advancedResultComponentSetup<ResultFolding>(ResultFolding, FakeResults.createFakeResult(), <
-        Mock.AdvancedComponentSetupOptions
-      >{
-        element: $$('div', { 'data-result-template-id': 'Foo' }).el
-      });
+      test = Mock.advancedResultComponentSetup<ResultFolding>(
+        ResultFolding,
+        FakeResults.createFakeResult(),
+        <Mock.AdvancedComponentSetupOptions>{
+          element: $$('div', { 'data-result-template-id': 'Foo' }).el
+        }
+      );
       test.cmp.options.resultTemplate.instantiateToElement(<IQueryResult>{}).then(elem => {
         expect(elem.innerHTML).toBe('foubarre');
         done();
@@ -289,11 +291,13 @@ export function ResultFoldingTest() {
     });
 
     it('should automatically use the template inside its element', done => {
-      test = Mock.advancedResultComponentSetup<ResultFolding>(ResultFolding, FakeResults.createFakeResult(), <
-        Mock.AdvancedComponentSetupOptions
-      >{
-        element: $$('div', {}, $$('script', { className: 'result-template', type: 'text/underscore' }, 'heyo')).el
-      });
+      test = Mock.advancedResultComponentSetup<ResultFolding>(
+        ResultFolding,
+        FakeResults.createFakeResult(),
+        <Mock.AdvancedComponentSetupOptions>{
+          element: $$('div', {}, $$('script', { className: 'result-template', type: 'text/underscore' }, 'heyo')).el
+        }
+      );
       test.cmp.options.resultTemplate.instantiateToElement(<IQueryResult>{}).then(elem => {
         expect(elem.innerHTML).toBe('heyo');
         done();
@@ -373,6 +377,32 @@ export function ResultFoldingTest() {
         $$(parentCardOverlay).trigger(CardOverlayEvents.openCardOverlay);
         $$(parentCardOverlay).trigger(CardOverlayEvents.openCardOverlay);
         expect(test.cmp.showMoreResults).toHaveBeenCalledTimes(1);
+        done();
+      });
+    });
+
+    it('should call showMoreResults when clicking on the showMore button', done => {
+      const result = FakeResults.createFakeResult();
+      result.moreResults = () => undefined; // moreResults needs to exist
+      test = Mock.advancedResultComponentSetup<ResultFolding>(ResultFolding, result);
+      Defer.defer(() => {
+        spyOn(test.cmp, 'showMoreResults');
+        const showMoreElement = $$(test.cmp.element.parentElement).find('.coveo-folding-footer-section-for-less');
+        $$(showMoreElement).trigger('click');
+        expect(test.cmp.showMoreResults).toHaveBeenCalledTimes(1);
+        done();
+      });
+    });
+
+    it('should call showLessResults when clicking on the showLess button', done => {
+      const result = FakeResults.createFakeResult();
+      result.moreResults = () => undefined;
+      test = Mock.advancedResultComponentSetup<ResultFolding>(ResultFolding, result);
+      Defer.defer(() => {
+        spyOn(test.cmp, 'showLessResults');
+        const showLessElement = $$(test.cmp.element.parentElement).find('.coveo-folding-footer-section-for-more');
+        $$(showLessElement).trigger('click');
+        expect(test.cmp.showLessResults).toHaveBeenCalledTimes(1);
         done();
       });
     });
