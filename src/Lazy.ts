@@ -279,8 +279,20 @@ lazyPromotedResultsBadge();
 import { lazyCategoryFacet } from './ui/CategoryFacet/LazyCategoryFacet';
 lazyCategoryFacet();
 
-// import { lazyMLFacet } from './ui/MLFacet/LazyMLFacet';
-// lazyMLFacet();
+import { lazyDynamicFacet } from './ui/DynamicFacet/LazyDynamicFacet';
+lazyDynamicFacet();
+
+import { lazyDynamicFacetManager } from './ui/DynamicFacetManager/LazyDynamicFacetManager';
+lazyDynamicFacetManager();
+
+import { lazyMissingTerms } from './ui/MissingTerm/LazyMissingTerms';
+lazyMissingTerms();
 
 import { swapVar } from './SwapVar';
 swapVar(this);
+
+import { lazyImageFieldValue } from './ui/FieldImage/LazyImageFieldValue';
+lazyImageFieldValue();
+
+import { lazyQuerySuggestPreview } from './ui/QuerySuggestPreview/LazyQuerySuggestPreview';
+lazyQuerySuggestPreview();

@@ -205,6 +205,10 @@ export class Dom {
       return false;
     }
 
+    if (this.hasClass('coveo-hidden')) {
+      return false;
+    }
+
     return true;
   }
 

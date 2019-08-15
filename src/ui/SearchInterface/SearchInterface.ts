@@ -26,18 +26,21 @@ import { ComponentStateModel } from '../../models/ComponentStateModel';
 import { IAttributeChangedEventArg, Model } from '../../models/Model';
 import { QueryStateModel, QUERY_STATE_ATTRIBUTES } from '../../models/QueryStateModel';
 import { SearchEndpoint } from '../../rest/SearchEndpoint';
+import { ComponentsTypes } from '../../utils/ComponentsTypes';
 import { $$ } from '../../utils/Dom';
 import { HashUtils } from '../../utils/HashUtils';
 import { Utils } from '../../utils/Utils';
 import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
 import { IAnalyticsClient } from '../Analytics/AnalyticsClient';
 import { NoopAnalyticsClient } from '../Analytics/NoopAnalyticsClient';
+import { AriaLive, IAriaLive } from '../AriaLive/AriaLive';
 import { BaseComponent } from '../Base/BaseComponent';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { ComponentOptions, IFieldOption, IQueryExpression } from '../Base/ComponentOptions';
 import { InitializationPlaceholder } from '../Base/InitializationPlaceholder';
 import { RootComponent } from '../Base/RootComponent';
 import { Debug } from '../Debug/Debug';
+import { MissingTermManager } from '../MissingTerm/MissingTermManager';
 import { Context, IPipelineContextProvider } from '../PipelineContext/PipelineGlobalExports';
 import {
   MEDIUM_SCREEN_WIDTH,
@@ -48,7 +51,7 @@ import {
 import { FacetColumnAutoLayoutAdjustment } from './FacetColumnAutoLayoutAdjustment';
 import { FacetValueStateHandler } from './FacetValueStateHandler';
 import RelevanceInspectorModule = require('../RelevanceInspector/RelevanceInspector');
-import { AriaLive, IAriaLive } from '../AriaLive/AriaLive';
+import { OmniboxAnalytics } from '../Omnibox/OmniboxAnalytics';
 
 export interface ISearchInterfaceOptions {
   enableHistory?: boolean;
@@ -75,6 +78,13 @@ export interface ISearchInterfaceOptions {
   responsiveMediumBreakpoint?: number;
   responsiveSmallBreakpoint?: number;
   responsiveMode?: ValidResponsiveMode;
+}
+
+export interface IMissingTermManagerArgs {
+  element: HTMLElement;
+  queryStateModel: QueryStateModel;
+  queryController: QueryController;
+  usageAnalytics: IAnalyticsClient;
 }
 
 /**
@@ -498,6 +508,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
   private facetValueStateHandler: FacetValueStateHandler;
   private queryPipelineConfigurationForResultsPerPage: number;
   private relevanceInspector: RelevanceInspectorModule.RelevanceInspector;
+  private omniboxAnalytics: OmniboxAnalytics;
 
   /**
    * Creates a new SearchInterface. Initialize various singletons for the interface (e.g., usage analytics, query
@@ -525,8 +536,18 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     this.componentOptionsModel = new ComponentOptionsModel(element);
     this.usageAnalytics = this.initializeAnalytics();
     this.queryController = new QueryController(element, this.options, this.usageAnalytics, this);
-    this.facetValueStateHandler = new FacetValueStateHandler((componentId: string) => this.getComponents(componentId));
+    this.facetValueStateHandler = new FacetValueStateHandler(this.element);
     new SentryLogger(this.queryController);
+
+    const missingTermManagerArgs: IMissingTermManagerArgs = {
+      element: this.element,
+      queryStateModel: this.queryStateModel,
+      queryController: this.queryController,
+      usageAnalytics: this.usageAnalytics
+    };
+
+    new MissingTermManager(missingTermManagerArgs);
+    this.omniboxAnalytics = new OmniboxAnalytics();
 
     this.setupEventsHandlers();
     this.setupHistoryManager(element, _window);
@@ -553,6 +574,10 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     // Specially for the pager component. As such, we try to cover that corner case.
     this.logger.warn('Results per page is incoherent in the search interface.', this);
     return 10;
+  }
+
+  public getOmniboxAnalytics() {
+    return this.omniboxAnalytics;
   }
 
   /**
@@ -1010,6 +1035,30 @@ export class SearchInterface extends RootComponent implements IComponentBindings
         }
       });
     });
+    if (this.duplicatesFacets.length) {
+      this.logger.warn(
+        `The following facets have duplicate id/field:`,
+        this.duplicatesFacets,
+        `Ensure that each facet in your search interface has a unique id.`
+      );
+    }
+  }
+
+  private get duplicatesFacets() {
+    const duplicate = [];
+    const facets = ComponentsTypes.getAllFacetsInstance(this.root);
+    facets.forEach(facet => {
+      facets.forEach(cmp => {
+        if (facet == cmp) {
+          return;
+        }
+        if (facet.options.id === cmp.options.id) {
+          duplicate.push(facet);
+          return;
+        }
+      });
+    });
+    return duplicate;
   }
 
   private toggleSectionState(cssClass: string, toggle = true) {

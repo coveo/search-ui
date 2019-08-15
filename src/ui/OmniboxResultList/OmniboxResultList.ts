@@ -19,7 +19,6 @@ import OmniboxModuleDefintion = require('../Omnibox/Omnibox');
 import { InitializationEvents } from '../../EventsModules';
 import { logSearchBoxSubmitEvent } from '../Analytics/SharedAnalyticsCalls';
 import { Logger } from '../../misc/Logger';
-
 import 'styling/_OmniboxResultList';
 
 export interface IOmniboxResultListOptions extends IResultListOptions {
@@ -169,19 +168,10 @@ export class OmniboxResultList extends ResultList implements IComponentBindings 
     this.options = ComponentOptions.initComponentOptions(element, OmniboxResultList, options);
     this.setupOptions();
     this.bind.onRootElement(OmniboxEvents.populateOmnibox, (args: IPopulateOmniboxEventArgs) => this.handlePopulateOmnibox(args));
-    this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => this.handleQueryOverride(args));
-
-    const omniboxElement: HTMLElement = $$(this.root).find(`.${Component.computeCssClassNameForType('Omnibox')}`);
-    if (omniboxElement) {
-      this.bind.onRootElement(InitializationEvents.afterComponentsInitialization, () => {
-        const omnibox = <OmniboxModuleDefintion.Omnibox>Component.get(omniboxElement);
-        const magicBox = omnibox.magicBox;
-        magicBox.onsubmit = () => {
-          logSearchBoxSubmitEvent(this.usageAnalytics);
-          this.queryController.executeQuery();
-        };
-      });
-    }
+    this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => this.handleBuildingQuery(args));
+    this.bind.onRootElement(InitializationEvents.afterComponentsInitialization, () => {
+      this.handleAfterComponentInit();
+    });
   }
 
   /**
@@ -217,7 +207,7 @@ export class OmniboxResultList extends ResultList implements IComponentBindings 
    * @param append
    */
   public renderResults(resultElements: HTMLElement[], append = false) {
-    $$(this.options.resultContainer).empty();
+    $$(this.options.resultsContainer).empty();
 
     if (!this.lastOmniboxRequest) {
       return Promise.resolve(null);
@@ -233,9 +223,21 @@ export class OmniboxResultList extends ResultList implements IComponentBindings 
     return Promise.resolve(null);
   }
 
+  private handleAfterComponentInit() {
+    const omniboxElement: HTMLElement = $$(this.root).find(`.${Component.computeCssClassNameForType('Omnibox')}`);
+    if (omniboxElement) {
+      const omnibox = <OmniboxModuleDefintion.Omnibox>Component.get(omniboxElement);
+      const magicBox = omnibox.magicBox;
+      magicBox.onsubmit = () => {
+        logSearchBoxSubmitEvent(this.usageAnalytics);
+        this.queryController.executeQuery();
+      };
+    }
+  }
+
   private appendHeaderIfTitleIsSpecified() {
     if (this.options.headerTitle) {
-      this.options.resultContainer.appendChild(
+      this.options.resultsContainer.appendChild(
         $$(
           'div',
           { className: 'coveo-omnibox-result-list-header' },
@@ -248,7 +250,7 @@ export class OmniboxResultList extends ResultList implements IComponentBindings 
 
   private appendResults(resultElements: HTMLElement[]) {
     _.each(resultElements, (resultElement: HTMLElement) => {
-      this.options.resultContainer.appendChild(resultElement);
+      this.options.resultsContainer.appendChild(resultElement);
       this.triggerNewResultDisplayed(Component.getResult(resultElement), resultElement);
     });
 
@@ -256,10 +258,10 @@ export class OmniboxResultList extends ResultList implements IComponentBindings 
   }
 
   private resolveLastOmniboxRequest() {
-    if ($$(this.options.resultContainer).findAll('.coveo-omnibox-selectable').length == 0) {
+    if ($$(this.options.resultsContainer).findAll('.coveo-omnibox-selectable').length == 0) {
       this.lastOmniboxRequest.resolve({ element: null, zIndex: this.options.omniboxZIndex });
     } else {
-      this.lastOmniboxRequest.resolve({ element: this.options.resultContainer, zIndex: this.options.omniboxZIndex });
+      this.lastOmniboxRequest.resolve({ element: this.options.resultsContainer, zIndex: this.options.omniboxZIndex });
     }
   }
 
@@ -278,6 +280,7 @@ export class OmniboxResultList extends ResultList implements IComponentBindings 
   private handlePopulateOmnibox(args: IPopulateOmniboxEventArgs) {
     const promise = new Promise((resolve, reject) => {
       this.queryController.executeQuery({
+        searchAsYouType: true,
         shouldRedirectStandaloneSearchbox: false,
         beforeExecuteQuery: () => this.usageAnalytics.logSearchAsYouType<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxSubmit, {})
       });
@@ -288,7 +291,7 @@ export class OmniboxResultList extends ResultList implements IComponentBindings 
     });
   }
 
-  private handleQueryOverride(args: IBuildingQueryEventArgs) {
+  protected handleBuildingQuery(args: IBuildingQueryEventArgs) {
     Assert.exists(args);
     if (Utils.isNonEmptyString(this.options.queryOverride)) {
       args.queryBuilder.constantExpression.add(this.options.queryOverride);
@@ -333,6 +336,12 @@ export class OmniboxResultList extends ResultList implements IComponentBindings 
       this.root
     );
     window.location.href = result.clickUri;
+  }
+
+  protected initResultContainerAddToDom() {
+    //This function is overwritten and don't do anything because we don't want to append the result container
+    //to the DOM. If the resultContainer was to be appended to the DOM, this could lead to result appearing
+    //outside of the magicBox so the rest of the page would be push down
   }
 }
 

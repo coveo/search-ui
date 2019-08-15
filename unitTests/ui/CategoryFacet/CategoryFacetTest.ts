@@ -9,13 +9,14 @@ import { CategoryFacetQueryController } from '../../../src/controllers/CategoryF
 import { IBuildingQueryEventArgs } from '../../../src/events/QueryEvents';
 import { first, range, pluck, shuffle, partition, chain } from 'underscore';
 import { analyticsActionCauseList } from '../../../src/ui/Analytics/AnalyticsActionListMeta';
+import { ResultListUtils } from '../../../src/utils/ResultListUtils';
 
-export function buildCategoryFacetResults(numberOfResults = 11, numberOfRequestedValues = 11): ISimulateQueryData {
+export function buildCategoryFacetResults(numberOfResults = 11, numberOfRequestedValues = 11, field = '@field'): ISimulateQueryData {
   const fakeResults = FakeResults.createFakeResults();
   const queryBuilder = new QueryBuilder();
-  fakeResults.categoryFacets.push(FakeResults.createFakeCategoryFacetResult('@field', [], 'value', numberOfResults));
+  fakeResults.categoryFacets.push(FakeResults.createFakeCategoryFacetResult(field, [], 'value', numberOfResults));
   queryBuilder.categoryFacets.push({
-    field: '@field',
+    field,
     path: pluck(fakeResults.categoryFacets[0].parentValues, 'value'),
     maximumNumberOfValues: numberOfRequestedValues
   });
@@ -35,6 +36,10 @@ export function CategoryFacetTest() {
       );
       test.cmp.activePath = simulateQueryData.query.categoryFacets[0].path;
     });
+
+    function allCategoriesButton() {
+      return $$(test.cmp.element).find('.coveo-category-facet-all-categories');
+    }
 
     it('when calling getVisibleParentValues returns all the visible parent values', () => {
       Simulate.query(test.env, simulateQueryData);
@@ -91,6 +96,13 @@ export function CategoryFacetTest() {
     it('calling hide adds the coveo hidden class', () => {
       test.cmp.hide();
       expect($$(test.cmp.element).hasClass('coveo-hidden')).toBeTruthy();
+    });
+
+    it('calling "scrollToTop" should call "scrollToTop" on the ResultListUtils', () => {
+      spyOn(ResultListUtils, 'scrollToTop');
+      test.cmp.scrollToTop();
+
+      expect(ResultListUtils.scrollToTop).toHaveBeenCalledWith(test.cmp.root);
     });
 
     describe('when there is no results', () => {
@@ -255,6 +267,35 @@ export function CategoryFacetTest() {
 
         expect(queryBuilder.categoryFacets[0].maximumNumberOfValues).toBe(initialNumberOfValues + 1);
       });
+
+      it('showMore should log an analytics event when showing more results', () => {
+        const expectedMetadata = jasmine.objectContaining({
+          facetId: test.cmp.options.id,
+          facetField: test.cmp.options.field.toString(),
+          facetTitle: test.cmp.options.title
+        });
+        test.cmp.showMore();
+        expect(test.env.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(
+          analyticsActionCauseList.facetShowMore,
+          expectedMetadata,
+          test.cmp.element
+        );
+      });
+
+      it('showLess should log an analytics event when showing less results', () => {
+        const expectedMetadata = jasmine.objectContaining({
+          facetId: test.cmp.options.id,
+          facetField: test.cmp.options.field.toString(),
+          facetTitle: test.cmp.options.title
+        });
+        test.cmp.showMore();
+        test.cmp.showLess();
+        expect(test.env.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(
+          analyticsActionCauseList.facetShowLess,
+          expectedMetadata,
+          test.cmp.element
+        );
+      });
     });
 
     it('adds a facet search functionality by default', () => {
@@ -313,24 +354,25 @@ export function CategoryFacetTest() {
     });
 
     describe('renders', () => {
-      function removeAllCategoriesButton(element) {
-        const allCategoriesButton = $$(element).find('.coveo-category-facet-all-categories');
-        allCategoriesButton && $$(allCategoriesButton).detach();
+      function removeAllCategoriesButton() {
+        allCategoriesButton() && $$(allCategoriesButton()).detach();
       }
 
       function verifyParents(numberOfParents: number) {
-        removeAllCategoriesButton(test.cmp.element);
+        removeAllCategoriesButton();
         const parentCategoryValues = $$(test.cmp.element).findAll('.coveo-category-facet-parent-value');
+
+        const expectedValues = ['0', '251', '502', '753', '1,004', '1,255', '1,506', '1,757', '2,008', '2,259'];
         for (const i of range(numberOfParents)) {
           const valueCaption = $$(parentCategoryValues[i]).find('.coveo-category-facet-value-caption');
           const valueCount = $$(parentCategoryValues[i]).find('.coveo-category-facet-value-count');
           expect($$(valueCaption).text()).toEqual(`parent${i}`);
-          expect($$(valueCount).text()).toEqual('5');
+          expect($$(valueCount).text()).toEqual(expectedValues[i]);
         }
       }
 
       function verifyChildren(numberOfValues: number) {
-        removeAllCategoriesButton(test.cmp.element);
+        removeAllCategoriesButton();
         const categoryValues = $$(test.cmp.element).findAll('.coveo-category-facet-child-value');
         for (const i of range(0, numberOfValues)) {
           const valueCaption = $$(categoryValues[i]).find('.coveo-category-facet-value-caption');
@@ -394,19 +436,29 @@ export function CategoryFacetTest() {
 
         Simulate.query(test.env, simulateQueryData);
 
-        removeAllCategoriesButton(test.cmp.element);
+        removeAllCategoriesButton();
         expect($$(test.cmp.element).findAll('.coveo-category-facet-value').length).toEqual(numberOfReturnedValues);
       });
 
       it('appends an all categories button when there are parents', () => {
         Simulate.query(test.env, simulateQueryData);
-        expect($$(test.cmp.element).find('.coveo-category-facet-all-categories')).not.toBeNull();
+        expect(allCategoriesButton()).not.toBeNull();
       });
 
       it('does not append an all categories button when there are no parents', () => {
         simulateQueryData.query.categoryFacets[0].path = [];
         Simulate.query(test.env, simulateQueryData);
-        expect($$(test.cmp.element).find('.coveo-category-facet-all-categories')).toBeNull();
+        expect(allCategoriesButton()).toBeNull();
+      });
+
+      it('all categories button should call "scrollToTop" and "reset" when clicked', () => {
+        Simulate.query(test.env, simulateQueryData);
+        spyOn(test.cmp, 'scrollToTop');
+        spyOn(test.cmp, 'reset');
+
+        $$(allCategoriesButton()).trigger('click');
+        expect(test.cmp.reset).toHaveBeenCalled();
+        expect(test.cmp.scrollToTop).toHaveBeenCalled();
       });
 
       it('should make child values label selectable', () => {

@@ -17,10 +17,12 @@ import { Facet } from '../Facet/Facet';
 import { FacetUtils } from '../Facet/FacetUtils';
 import { TemplateHelpers } from '../Templates/TemplateHelpers';
 import { l } from '../../strings/Strings';
+import { DynamicFacet } from '../DynamicFacet/DynamicFacet';
 
 export interface IFieldValueOptions {
   field?: IFieldOption;
   facet?: string;
+  dynamicFacet?: string;
   htmlValue?: boolean;
   helper?: string;
   helperOptions?: { [key: string]: any };
@@ -375,6 +377,11 @@ export class FieldValue extends Component {
   }
 
   private bindEventOnValue(element: HTMLElement, originalFacetValue: string, renderedFacetValue: string) {
+    this.bindFacets(element, originalFacetValue, renderedFacetValue);
+    this.bindDynamicFacets(element, originalFacetValue, renderedFacetValue);
+  }
+
+  private bindFacets(element: HTMLElement, originalFacetValue: string, renderedFacetValue: string) {
     const facetAttributeName = QueryStateModel.getFacetId(this.options.facet);
     const facets = filter<Facet>(this.componentStateModel.get(facetAttributeName), (possibleFacetComponent: Component) => {
       // Here, we need to check if a potential facet component (as returned by the component state model) is a "standard" facet.
@@ -399,35 +406,68 @@ export class FieldValue extends Component {
       return componentIsAStandardFacet;
     });
 
-    const atLeastOneFacetIsEnabled = facets.length > 0;
-
-    if (atLeastOneFacetIsEnabled) {
-      const selected = find<Facet>(facets, (facet: Facet) => {
+    if (facets.length) {
+      const isValueSelected = !!find<Facet>(facets, facet => {
         const facetValue = facet.values.get(originalFacetValue);
         return facetValue && facetValue.selected;
       });
 
-      const label = selected ? l('RemoveFilterOn', renderedFacetValue) : l('FilterOn', renderedFacetValue);
-      new AccessibleButton()
-        .withTitle(label)
-        .withLabel(label)
-        .withElement(element)
-        .withSelectAction(() => this.handleSelection(selected, facets, originalFacetValue))
-        .build();
-
-      if (selected) {
-        $$(element).addClass('coveo-selected');
-      }
-      $$(element).addClass('coveo-clickable');
+      const selectAction = () => this.handleFacetSelection(isValueSelected, facets, originalFacetValue);
+      this.buildClickableElement(element, !!isValueSelected, renderedFacetValue, selectAction);
     }
   }
 
-  private handleSelection(selected: Facet, facets: Facet[], value: string) {
-    if (selected != null) {
-      each(facets, (facet: Facet) => facet.deselectValue(value));
-    } else {
-      each(facets, (facet: Facet) => facet.selectValue(value));
+  private getDynamicFacets() {
+    const dynamicFacetAttributeName = QueryStateModel.getFacetId(this.options.facet);
+    return filter<DynamicFacet>(
+      this.componentStateModel.get(dynamicFacetAttributeName),
+      (component: Component) => component.type === DynamicFacet.ID && !component.disabled
+    );
+  }
+
+  private bindDynamicFacets(element: HTMLElement, originalFacetValue: string, renderedFacetValue: string) {
+    const dynamicFacets = this.getDynamicFacets();
+
+    if (dynamicFacets.length) {
+      const isValueSelected = !!find<DynamicFacet>(dynamicFacets, dynamicFacet => dynamicFacet.values.hasSelectedValue(originalFacetValue));
+
+      const selectAction = () => this.handleDynamicFacetSelection(isValueSelected, dynamicFacets, originalFacetValue);
+      this.buildClickableElement(element, isValueSelected, renderedFacetValue, selectAction);
     }
+  }
+
+  private buildClickableElement(element: HTMLElement, isSelected: boolean, value: string, selectAction: () => void) {
+    const label = isSelected ? l('RemoveFilterOn', value) : l('FilterOn', value);
+    new AccessibleButton()
+      .withTitle(label)
+      .withLabel(label)
+      .withElement(element)
+      .withSelectAction(selectAction)
+      .build();
+
+    if (isSelected) {
+      $$(element).addClass('coveo-selected');
+    }
+    $$(element).addClass('coveo-clickable');
+  }
+
+  private handleFacetSelection(isValueSelected: boolean, facets: Facet[], value: string) {
+    facets.forEach(facet => {
+      isValueSelected ? facet.deselectValue(value) : facet.selectValue(value);
+    });
+
+    this.executeQuery(value);
+  }
+
+  private handleDynamicFacetSelection(isValueSelected: boolean, facets: DynamicFacet[], value: string) {
+    facets.forEach(facet => {
+      isValueSelected ? facet.deselectValue(value) : facet.selectValue(value);
+    });
+
+    this.executeQuery(value);
+  }
+
+  private executeQuery(value: string) {
     this.queryController.deferExecuteQuery({
       beforeExecuteQuery: () =>
         this.usageAnalytics.logSearchEvent<IAnalyticsFieldValueMeta>(analyticsActionCauseList.documentField, {

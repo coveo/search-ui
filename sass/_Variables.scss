@@ -160,11 +160,15 @@ $standard-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 @mixin linkButton {
   @include clickable();
 
+  // These two lines are for IE11
+  overflow: visible;
+  width: auto;
+
   padding: 0;
   margin: 0;
   background: none;
   border: none;
-  color: $color-vibrant-blue;
+  color: $color-teal;
 }
 
 $allFacetsType: '
@@ -174,4 +178,9 @@ $allFacetsType: '
 .CoveoHierarchicalFacet,
 .CoveoCategoryFacet,
 .CoveoTimespanFacet,
+';
+
+$allDynamicFacetsType: '
+.CoveoDynamicFacet,
+.CoveoDynamicRangeFacet,
 ';

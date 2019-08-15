@@ -1,6 +1,9 @@
 import { IAPIDocumentViewEvent } from '../rest/APIDocumentViewEvent';
 import { IAPISearchEvent } from '../rest/APISearchEvent';
 import { IAPICustomEvent } from '../rest/APICustomEvent';
+import { ICustomEvent } from '../rest/CustomEvent';
+import { IClickEvent } from '../rest/ClickEvent';
+import { ISearchEvent } from '../rest/SearchEvent';
 
 export interface IAnalyticsSearchEventsArgs {
   searchEvents: IAPISearchEvent[];
@@ -19,6 +22,20 @@ export interface IAnalyticsDocumentViewEventArgs {
 
 export interface IAnalyticsCustomEventArgs {
   customEvent: IAPICustomEvent;
+}
+
+/**
+ * The object that all [`analyticsEventReady`]{@link AnalyticsEvents.analyticsEventReady} handlers receive as an argument.
+ */
+export interface IAnalyticsEventArgs {
+  /**
+   * The type of Coveo Cloud usage analytics event.
+   */
+  event: 'CoveoCustomEvent' | 'CoveoClickEvent' | 'CoveoSearchEvent';
+  /**
+   * The fields describing the Coveo Cloud usage analytics event.
+   */
+  coveoAnalyticsEventData: ICustomEvent | IClickEvent | ISearchEvent;
 }
 
 /**
@@ -167,6 +184,13 @@ export class AnalyticsEvents {
    */
   public static documentViewEvent = 'analyticsDocumentViewEvent';
   public static customEvent = 'analyticsCustomEvent';
+
+  /**
+   * Triggered when any event (i.e., `search`, `click`, or `custom`) is about to be logged.
+   *
+   * All `analyticsEventReady` event handlers receive an [`AnalyticsEventArgs`]{@link IAnalyticsEventArgs} object as an argument.
+   */
+  public static analyticsEventReady = 'analyticsEventReady';
 
   /**
    * Triggered whenever an analytics event is about to be logged.

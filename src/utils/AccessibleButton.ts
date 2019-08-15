@@ -113,23 +113,13 @@ export class AccessibleButton {
   }
 
   private ensureDifferentiationBetweenKeyboardAndMouseFocus() {
-    const classOnPress = 'coveo-accessible-button-pressed';
-    const classOnFocus = 'coveo-accessible-button-focused';
+    const classWhenPressed = 'coveo-accessible-button-pressed';
     $$(this.element).addClass('coveo-accessible-button');
 
-    $$(this.element).on('mousedown', () => {
-      $$(this.element).addClass(classOnPress);
-      $$(this.element).removeClass(classOnFocus);
-    });
-
-    $$(this.element).on('mouseup', () => $$(this.element).removeClass(classOnPress));
+    $$(this.element).on('mouseup', () => $$(this.element).addClass(classWhenPressed));
     $$(this.element).on('focus', () => {
-      if (!$$(this.element).hasClass(classOnPress)) {
-        $$(this.element).addClass(classOnFocus);
-      }
+      $$(this.element).removeClass(classWhenPressed);
     });
-
-    $$(this.element).on('blur', () => $$(this.element).removeClass(classOnFocus));
   }
 
   private ensureCorrectRole() {
@@ -158,6 +148,18 @@ export class AccessibleButton {
     if (this.enterKeyboardAction) {
       this.ensureTabIndex();
       this.bindEvent('keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, (e: Event) => this.enterKeyboardAction(e)));
+      this.bindEvent(
+        'keydown',
+        KeyboardUtils.keypressAction(KEYBOARD.SPACEBAR, (e: Event) => {
+          e.preventDefault();
+        })
+      );
+      this.bindEvent(
+        'keyup',
+        KeyboardUtils.keypressAction(KEYBOARD.SPACEBAR, (e: Event) => {
+          this.enterKeyboardAction(e);
+        })
+      );
     }
 
     if (this.clickAction) {

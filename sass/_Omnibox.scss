@@ -17,7 +17,9 @@
     font-style: italic;
     color: $black;
   }
-  .magic-box-underlay {
+  .magic-box-input .magic-box-underlay {
+    display: flex;
+    align-items: center;
     [data-id='FieldQuery'],
     [data-id='FieldSimpleQuery'] {
       &[data-success='true'] {

@@ -6,7 +6,12 @@
 import 'styling/_Omnibox';
 import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
-import { IOmniboxPreprocessResultForQueryEventArgs, IPopulateOmniboxSuggestionsEventArgs, OmniboxEvents } from '../../events/OmniboxEvents';
+import {
+  IOmniboxPreprocessResultForQueryEventArgs,
+  IPopulateOmniboxSuggestionsEventArgs,
+  OmniboxEvents,
+  IQuerySuggestSelection
+} from '../../events/OmniboxEvents';
 import { IBuildingQueryEventArgs, IDuringQueryEventArgs, QueryEvents } from '../../events/QueryEvents';
 import { StandaloneSearchInterfaceEvents } from '../../events/StandaloneSearchInterfaceEvents';
 import { Assert } from '../../misc/Assert';
@@ -43,6 +48,8 @@ import { ExpressionDef } from '../../magicbox/Expression/Expression';
 import { Result } from '../../magicbox/Result/Result';
 import { MagicBoxInstance, createMagicBox } from '../../magicbox/MagicBox';
 import { QueryboxOptionsProcessing } from '../Querybox/QueryboxOptionsProcessing';
+import { OmniboxAnalytics } from './OmniboxAnalytics';
+import { findWhere } from 'underscore';
 
 export interface IOmniboxSuggestion extends Suggestion {
   executableConfidence?: number;
@@ -59,6 +66,7 @@ export interface IOmniboxOptions extends IQueryboxOptions {
   omniboxTimeout?: number;
   placeholder?: string;
   numberOfSuggestions?: number;
+  querySuggestCharacterThreshold?: number;
   grammar?: (
     grammar: { start: string; expressions: { [id: string]: ExpressionDef } }
   ) => { start: string; expressions: { [id: string]: ExpressionDef } };
@@ -239,17 +247,30 @@ export class Omnibox extends Component {
     numberOfSuggestions: ComponentOptions.buildNumberOption({
       defaultValue: 5,
       min: 1
+    }),
+    /**
+     * The minimum number of characters required in the in the text input before displaying available query suggestions when focus is on the component.
+     *
+     * Note: Only effective when [enableQuerySuggestAddon]{@link Omnibox.options.enableQuerySuggestAddon} is true.
+     *
+     * depend: 'enableQuerySuggestAddon'
+     *
+     * Default (and minimum): 0, meaning that trending query suggestions are displayed when focus is on the component, even if its text input is empty.
+     */
+    querySuggestCharacterThreshold: ComponentOptions.buildNumberOption({
+      defaultValue: 0,
+      min: 0
     })
   };
 
   public magicBox: MagicBoxInstance;
-  private partialQueries: string[] = [];
   private lastSuggestions: IOmniboxSuggestion[] = [];
   private lastQuery: string;
   private modifyEventTo: IAnalyticsActionCause;
   private movedOnce = false;
   private searchAsYouTypeTimeout: number;
   private skipAutoSuggest = false;
+  private omniboxAnalytics: OmniboxAnalytics;
 
   public suggestionAddon: IQuerySuggestAddon;
 
@@ -266,7 +287,7 @@ export class Omnibox extends Component {
     this.options = ComponentOptions.initComponentOptions(element, Omnibox, options);
     const originalValueForQuerySyntax = this.options.enableQuerySyntax;
     new QueryboxOptionsProcessing(this).postProcess();
-
+    this.omniboxAnalytics = this.searchInterface.getOmniboxAnalytics();
     $$(this.element).toggleClass('coveo-query-syntax-disabled', this.options.enableQuerySyntax == false);
 
     this.suggestionAddon = this.options.enableQuerySuggestAddon ? new QuerySuggestAddon(this) : new VoidQuerySuggestAddon();
@@ -290,6 +311,7 @@ export class Omnibox extends Component {
       }
       this.updateGrammar();
     });
+    this.bind.onRootElement(OmniboxEvents.querySuggestGetFocus, (args: IQuerySuggestSelection) => this.handleQuerySuggestGetFocus(args));
   }
 
   /**
@@ -388,7 +410,7 @@ export class Omnibox extends Component {
 
   private createMagicBox() {
     const grammar = this.createGrammar();
-    this.magicBox = createMagicBox(this.element, new Grammar(grammar.start, grammar.expressions), {
+    this.magicBox = createMagicBox(this.element, new Grammar(grammar.start, grammar.expressions), this.root, {
       inline: this.options.inline,
       selectableSuggestionClass: 'coveo-omnibox-selectable',
       selectedSuggestionClass: 'coveo-omnibox-selected',
@@ -398,7 +420,7 @@ export class Omnibox extends Component {
     const input = $$(this.magicBox.element).find('input');
 
     if (input) {
-      $$(input).setAttribute('aria-label', this.options.placeholder || l('Search'));
+      $$(input).setAttribute('aria-label', l('SubmitSearch'));
     }
 
     this.setupMagicBox();
@@ -426,7 +448,7 @@ export class Omnibox extends Component {
       // If text is empty, this can mean that user selected text from the search box
       // and hit "delete" : Reset the partial queries in this case
       if (Utils.isEmptyString(this.getText())) {
-        this.partialQueries = [];
+        this.omniboxAnalytics.partialQueries = [];
       }
       this.movedOnce = false;
       this.lastSuggestions = suggestions;
@@ -486,7 +508,7 @@ export class Omnibox extends Component {
 
       // Consider a selection like a reset of the partial queries (it's the end of a suggestion pattern)
       if (this.isAutoSuggestion()) {
-        this.partialQueries = [];
+        this.omniboxAnalytics.partialQueries = [];
       }
     };
 
@@ -599,64 +621,36 @@ export class Omnibox extends Component {
   }
 
   private buildCustomDataForPartialQueries(index: number, suggestions: string[]): IAnalyticsOmniboxSuggestionMeta {
-    return {
-      partialQueries: this.cleanCustomData(this.partialQueries),
-      suggestionRanking: index,
-      suggestions: this.cleanCustomData(suggestions),
-      partialQuery: _.last(this.partialQueries)
-    };
+    this.updateOmniboxAnalytics(suggestions, index);
+    return this.omniboxAnalytics.buildCustomDataForPartialQueries();
   }
 
-  private cleanCustomData(toClean: string[], rejectLength = 256) {
-    // Filter out only consecutive values that are the identical
-    toClean = _.compact(
-      _.filter(toClean, (partial: string, pos?: number, array?: string[]) => {
-        return pos === 0 || partial !== array[pos - 1];
-      })
-    );
+  private handleQuerySuggestGetFocus({ suggestion }: IQuerySuggestSelection) {
+    const suggestions = _.compact(_.map(this.lastSuggestions, suggestion => suggestion.text));
+    const ranking = this.lastSuggestions.indexOf(findWhere(this.lastSuggestions, { text: suggestion }));
+    this.updateOmniboxAnalytics(suggestions, ranking);
+  }
 
-    // Custom dimensions cannot be an array in analytics service: Send a string joined by ; instead.
-    // Need to replace ;
-    toClean = _.map(toClean, partial => {
-      return partial.replace(/;/g, '');
-    });
-
-    // Reduce right to get the last X words that adds to less then rejectLength
-    const reducedToRejectLengthOrLess = [];
-    _.reduceRight(
-      toClean,
-      (memo: number, partial: string) => {
-        const totalSoFar = memo + partial.length;
-        if (totalSoFar <= rejectLength) {
-          reducedToRejectLengthOrLess.push(partial);
-        }
-        return totalSoFar;
-      },
-      0
-    );
-    toClean = reducedToRejectLengthOrLess.reverse();
-    const ret = toClean.join(';');
-
-    // analytics service can store max 256 char in a custom event
-    // if we're over that, call cleanup again with an arbitrary 10 less char accepted
-    if (ret.length >= 256) {
-      return this.cleanCustomData(toClean, rejectLength - 10);
-    }
-
-    return toClean.join(';');
+  private updateOmniboxAnalytics(suggestions: string[], suggestionRanking: number) {
+    this.omniboxAnalytics.suggestions = suggestions;
+    this.omniboxAnalytics.suggestionRanking = suggestionRanking;
   }
 
   private handleSuggestions() {
-    const suggestionsEventArgs: IPopulateOmniboxSuggestionsEventArgs = {
-      suggestions: [],
-      omnibox: this
-    };
-    this.bind.trigger(this.element, OmniboxEvents.populateOmniboxSuggestions, suggestionsEventArgs);
     const text = this.getText();
-    if (!Utils.isNullOrEmptyString(text)) {
-      this.partialQueries.push(text);
+    if (this.options.querySuggestCharacterThreshold <= text.length) {
+      const suggestionsEventArgs: IPopulateOmniboxSuggestionsEventArgs = {
+        suggestions: [],
+        omnibox: this
+      };
+      this.bind.trigger(this.element, OmniboxEvents.populateOmniboxSuggestions, suggestionsEventArgs);
+      if (!Utils.isNullOrEmptyString(text)) {
+        this.omniboxAnalytics.partialQueries.push(text);
+      }
+      return _.compact(suggestionsEventArgs.suggestions);
+    } else {
+      return [];
     }
-    return _.compact(suggestionsEventArgs.suggestions);
   }
 
   private handleBeforeRedirect() {
@@ -810,7 +804,7 @@ export class Omnibox extends Component {
 
   private handleQuerySuccess() {
     if (!this.isAutoSuggestion()) {
-      this.partialQueries = [];
+      this.omniboxAnalytics.partialQueries = [];
     }
   }
 

@@ -1,6 +1,8 @@
-import { $$ } from '../utils/Dom';
+import { $$, Dom } from '../utils/Dom';
 import { InputManager } from './InputManager';
 import { each, defaults, indexOf, compact } from 'underscore';
+import { OmniboxEvents, Component } from '../Core';
+import { IQuerySuggestSelection } from '../events/OmniboxEvents';
 
 export interface Suggestion {
   text?: string;
@@ -26,6 +28,7 @@ export class SuggestionsManager {
   constructor(
     private element: HTMLElement,
     private magicBoxContainer: HTMLElement,
+    private root: HTMLElement,
     private inputManager: InputManager,
     options?: SuggestionsManagerOptions
   ) {
@@ -80,6 +83,7 @@ export class SuggestionsManager {
         this.removeSelectedStatus(targetParents[0]);
       }
     }
+    $$(this.root).trigger(OmniboxEvents.querySuggestLoseFocus);
   }
 
   public moveDown(): Suggestion {
@@ -180,11 +184,14 @@ export class SuggestionsManager {
     $$(this.magicBoxContainer).setAttribute('aria-expanded', this.hasSuggestions.toString());
 
     if (!this.hasSuggestions) {
+      this.removeAccessibilityPropertiesForSuggestions();
       return;
     }
 
     const suggestionsContainer = this.buildSuggestionsContainer();
-    $$(this.element).append(suggestionsContainer.el);
+    const suggestionPreviewContainer = this.initPreviewForSuggestions(suggestionsContainer);
+    $$(this.element).append(suggestionPreviewContainer.el);
+    this.addAccessibilityPropertiesForSuggestions();
 
     each(suggestions, (suggestion: Suggestion) => {
       const dom = suggestion.dom ? this.modifyDomFromExistingSuggestion(suggestion.dom) : this.createDomFromSuggestion(suggestion);
@@ -196,6 +203,7 @@ export class SuggestionsManager {
       dom['suggestion'] = suggestion;
       suggestionsContainer.append(dom.el);
     });
+    $$(this.root).trigger(OmniboxEvents.querySuggestRendered);
   }
 
   private processKeyboardSelection(suggestion: HTMLElement) {
@@ -211,9 +219,39 @@ export class SuggestionsManager {
 
   private buildSuggestionsContainer() {
     return $$('div', {
-      id: 'coveo-magicbox-suggestions',
+      className: 'coveo-magicbox-suggestions',
       role: 'listbox'
     });
+  }
+
+  private buildPreviewContainer() {
+    return $$('div', {
+      className: 'coveo-preview-container'
+    }).el;
+  }
+
+  private get querySuggestPreviewComponent() {
+    const querySuggestPreviewElement: HTMLElement = $$(this.root).find(`.${Component.computeCssClassNameForType('QuerySuggestPreview')}`);
+    if (!querySuggestPreviewElement) {
+      return;
+    }
+    return Component.get(querySuggestPreviewElement);
+  }
+
+  private initPreviewForSuggestions(suggestions: Dom) {
+    const querySuggestPreview = this.querySuggestPreviewComponent;
+    if (!querySuggestPreview) {
+      return suggestions;
+    }
+
+    const suggestionContainerParent = $$('div', {
+      className: 'coveo-suggestion-container'
+    });
+
+    const previewContainer = this.buildPreviewContainer();
+    suggestionContainerParent.append(suggestions.el);
+    suggestionContainerParent.append(previewContainer);
+    return suggestionContainerParent;
   }
 
   private createDomFromSuggestion(suggestion: Suggestion) {
@@ -222,11 +260,11 @@ export class SuggestionsManager {
     });
 
     dom.on('click', () => {
-      suggestion.onSelect();
+      this.selectSuggestion(suggestion);
     });
 
     dom.on('keyboardSelect', () => {
-      suggestion.onSelect();
+      this.selectSuggestion(suggestion);
     });
 
     if (suggestion.html) {
@@ -253,6 +291,11 @@ export class SuggestionsManager {
     }
 
     return dom;
+  }
+
+  private selectSuggestion(suggestion: Suggestion) {
+    suggestion.onSelect();
+    $$(this.root).trigger(OmniboxEvents.querySuggestSelection, <IQuerySuggestSelection>{ suggestion: suggestion.text });
   }
 
   private modifyDomFromExistingSuggestion(dom: HTMLElement) {
@@ -313,6 +356,13 @@ export class SuggestionsManager {
     }
     $$(suggestion).addClass(this.options.selectedClass);
     this.updateAreaSelectedIfDefined(suggestion, 'true');
+    this.updateSelectedSuggestion(suggestion.innerText);
+  }
+
+  private updateSelectedSuggestion(suggestion: string) {
+    $$(this.root).trigger(OmniboxEvents.querySuggestGetFocus, <IQuerySuggestSelection>{
+      suggestion
+    });
   }
 
   private removeSelectedStatus(suggestion: HTMLElement): void {
@@ -330,5 +380,16 @@ export class SuggestionsManager {
     $$(this.magicBoxContainer).setAttribute('aria-expanded', 'false');
     $$(this.magicBoxContainer).setAttribute('aria-haspopup', 'listbox');
     this.inputManager.input.removeAttribute('aria-activedescendant');
+  }
+
+  private addAccessibilityPropertiesForSuggestions() {
+    $$(this.magicBoxContainer).setAttribute('aria-owns', 'coveo-magicbox-suggestions');
+    this.inputManager.input.setAttribute('aria-controls', 'coveo-magicbox-suggestions');
+  }
+
+  private removeAccessibilityPropertiesForSuggestions() {
+    this.inputManager.input.removeAttribute('aria-activedescendant');
+    this.inputManager.input.removeAttribute('aria-controls');
+    this.magicBoxContainer.removeAttribute('aria-owns');
   }
 }

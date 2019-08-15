@@ -23,7 +23,12 @@ import { $$, Win } from '../../utils/Dom';
 import { SVGDom } from '../../utils/SVGDom';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { Utils } from '../../utils/Utils';
-import { analyticsActionCauseList, IAnalyticsFacetMeta, IAnalyticsFacetSortMeta } from '../Analytics/AnalyticsActionListMeta';
+import {
+  analyticsActionCauseList,
+  IAnalyticsFacetMeta,
+  IAnalyticsFacetSortMeta,
+  IAnalyticsActionCause
+} from '../Analytics/AnalyticsActionListMeta';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { ComponentOptions, IFieldOption, IQueryExpression } from '../Base/ComponentOptions';
@@ -47,10 +52,15 @@ import { OmniboxValueElement } from './OmniboxValueElement';
 import { OmniboxValuesList } from './OmniboxValuesList';
 import { ValueElement } from './ValueElement';
 import { ValueElementRenderer } from './ValueElementRenderer';
-import { DependentFacetManager } from './DependentFacetManager';
 import { AccessibleButton } from '../../utils/AccessibleButton';
 import { IResponsiveComponentOptions } from '../ResponsiveComponents/ResponsiveComponentsManager';
 import { ResponsiveFacetOptions } from '../ResponsiveComponents/ResponsiveFacetOptions';
+import { DependsOnManager, IDependentFacet } from '../../utils/DependsOnManager';
+import { ComponentsTypes } from '../../utils/ComponentsTypes';
+import { FacetSortCriterion } from './FacetSortCriterion';
+
+type ComputedFieldOperation = 'sum' | 'average' | 'minimum' | 'maximum';
+type ComputedFieldFormat = 'c0' | 'n0' | 'n2';
 
 export interface IFacetOptions extends IResponsiveComponentOptions {
   title?: string;
@@ -242,16 +252,7 @@ export class Facet extends Component {
      *
      * Default value is `occurrences,score,alphaascending,alphadescending`.
      */
-    availableSorts: ComponentOptions.buildListOption<
-      | 'occurrences'
-      | 'score'
-      | 'alphaascending'
-      | 'alphadescending'
-      | 'computedfieldascending'
-      | 'computedfielddescending'
-      | 'chisquare'
-      | 'nosort'
-    >({
+    availableSorts: ComponentOptions.buildListOption<FacetSortCriterion>({
       defaultValue: ['occurrences', 'score', 'alphaascending', 'alphadescending'],
       section: 'Sorting',
       depend: 'enableSettings',
@@ -274,9 +275,9 @@ export class Facet extends Component {
      * Default value is the first sort criteria specified in the [`availableSorts`]{@link Facet.options.availableSorts}
      * option, or `occurrences` if no sort criteria is specified.
      */
-    sortCriteria: ComponentOptions.buildStringOption({
+    sortCriteria: ComponentOptions.buildStringOption<FacetSortCriterion>({
       postProcessing: (value, options: IFacetOptions) =>
-        value || (options.availableSorts.length > 0 ? options.availableSorts[0] : 'occurrences'),
+        value || (options.availableSorts.length > 0 ? (options.availableSorts[0] as FacetSortCriterion) : 'occurrences'),
       section: 'Sorting'
     }),
     /**
@@ -468,7 +469,10 @@ export class Facet extends Component {
      * Default value is `sum`.
      * @notSupportedIn salesforcefree
      */
-    computedFieldOperation: ComponentOptions.buildStringOption({ defaultValue: 'sum', section: 'ComputedField' }),
+    computedFieldOperation: ComponentOptions.buildStringOption<ComputedFieldOperation>({
+      defaultValue: 'sum',
+      section: 'ComputedField'
+    }),
     /**
      * Specifies how to format the values resulting from a
      * [`computedFieldOperation`]{@link Facet.options.computedFieldOperation}.
@@ -484,7 +488,10 @@ export class Facet extends Component {
      * Default value is `"c0"`.
      * @notSupportedIn salesforcefree
      */
-    computedFieldFormat: ComponentOptions.buildStringOption({ defaultValue: 'c0', section: 'ComputedField' }),
+    computedFieldFormat: ComponentOptions.buildStringOption<ComputedFieldFormat>({
+      defaultValue: 'c0',
+      section: 'ComputedField'
+    }),
     /**
      * Specifies what the caption of the [`computedField`]{@link Facet.options.computedField} should be in the facet
      * **Settings** menu for sorting.
@@ -712,7 +719,7 @@ export class Facet extends Component {
   protected footerElement: HTMLElement;
   private canFetchMore: boolean = true;
   private nbAvailableValues: number;
-  private dependentFacetManager: DependentFacetManager;
+  private dependsOnManager: DependsOnManager;
 
   private showingWaitAnimation = false;
   private pinnedViewportPosition: number;
@@ -753,7 +760,7 @@ export class Facet extends Component {
     this.checkForComputedFieldAndSort();
     this.checkForValueCaptionType();
     this.checkForCustomSort();
-    this.initDependentFacetManager();
+    this.initDependsOnManager();
     this.initFacetQueryController();
     this.initQueryEvents();
     this.initQueryStateEvents();
@@ -1028,7 +1035,7 @@ export class Facet extends Component {
 
   /**
    * Returns the endpoint for the facet.
-   * @returns {ISearchEndpoint} The endpoint for the Ffcet.
+   * @returns {ISearchEndpoint} The endpoint for the facet.
    */
   public getEndpoint(): ISearchEndpoint {
     return this.queryController.getEndpoint();
@@ -1178,6 +1185,7 @@ export class Facet extends Component {
     $$(this.moreElement).addClass('coveo-active');
     this.values.sortValuesDependingOnStatus(this.numberOfValues);
     this.rebuildValueElements();
+    this.logAnalyticsFacetShowMoreLess(analyticsActionCauseList.facetShowLess);
   }
 
   /**
@@ -1213,7 +1221,6 @@ export class Facet extends Component {
     Assert.exists(data);
     this.unfadeInactiveValuesInMainList();
     this.hideWaitingAnimation();
-    this.dependentFacetManager.updateVisibilityBasedOnDependsOn();
     const groupByResult = data.results.groupByResults[this.facetQueryController.lastGroupByRequestIndex];
     this.facetQueryController.lastGroupByResult = groupByResult;
     // Two corner case to handle regarding the "sticky" aspect of facets :
@@ -1293,6 +1300,7 @@ export class Facet extends Component {
   protected updateAppearanceDependingOnState() {
     $$(this.element).toggleClass('coveo-active', this.values.hasSelectedOrExcludedValues());
     $$(this.element).toggleClass('coveo-facet-empty', !this.isAnyValueCurrentlyDisplayed());
+    this.dependsOnManager.updateVisibilityBasedOnDependsOn();
     $$(this.facetHeader.eraserElement).toggleClass('coveo-facet-header-eraser-visible', this.values.hasSelectedOrExcludedValues());
   }
 
@@ -1316,7 +1324,7 @@ export class Facet extends Component {
     this.queryStateModel.registerNewAttribute(this.lookupValueAttributeId, {});
 
     this.bind.onQueryState(MODEL_EVENTS.CHANGE, undefined, (args: IAttributesChangedEventArg) => this.handleQueryStateChanged(args));
-    this.dependentFacetManager.listenToParentIfDependentFacet();
+    this.dependsOnManager.listenToParentIfDependentFacet();
   }
 
   protected initComponentStateEvents() {
@@ -1511,8 +1519,53 @@ export class Facet extends Component {
     }
   }
 
-  private initDependentFacetManager() {
-    this.dependentFacetManager = new DependentFacetManager(this);
+  private initDependsOnManager() {
+    const facetInfo: IDependentFacet = {
+      reset: () => this.reset(),
+      toogleDependentFacet: dependentFacet => this.toogleDependentFacet(dependentFacet),
+      element: this.element,
+      root: this.root,
+      dependsOn: this.options.dependsOn,
+      id: this.options.id,
+      queryStateModel: this.queryStateModel,
+      bind: this.bind
+    };
+    this.dependsOnManager = new DependsOnManager(facetInfo);
+  }
+
+  private toogleDependentFacet(dependentFacet: Component) {
+    this.getSelectedValues().length ? dependentFacet.enable() : dependentFacet.disable();
+  }
+
+  private dependsOnUpdateParentDisplayValue() {
+    if (!this.options.dependsOn) {
+      return;
+    }
+
+    const masterFacetComponent = ComponentsTypes.getAllFacetsInstance(this.root).filter((cmp: Facet) => {
+      const idFacet = cmp instanceof Facet;
+      return idFacet && cmp.options.id === this.options.dependsOn;
+    }) as Facet[];
+
+    if (!masterFacetComponent.length) {
+      this.logger.warn(
+        `Unable to find a Facet with the id or field "${this.options.dependsOn}".`,
+        `The master facet values can't be updated.`
+      );
+      return;
+    }
+    if (masterFacetComponent.length > 1) {
+      this.logger.warn(
+        `Multiple facets with id "${this.options.dependsOn}" found.`,
+        `A given facet may only depend on a single other facet.`,
+        `Ensure that each facet in your search interface has a unique id.`,
+        `The master facet cannot be updated.`,
+        masterFacetComponent
+      );
+      return;
+    }
+    const masterFacet = masterFacetComponent[0];
+    masterFacet.keepDisplayedValuesNextTime = false;
   }
 
   private initBottomAndTopSpacer() {
@@ -1595,7 +1648,7 @@ export class Facet extends Component {
   private handleQueryStateChanged(data: IAttributesChangedEventArg) {
     Assert.exists(data);
     this.ensureDom();
-
+    this.dependsOnUpdateParentDisplayValue();
     const trimValuesFromModel = (values?: string[]) => {
       if (values) {
         values = _.map(values, value => value.trim());
@@ -1832,7 +1885,7 @@ export class Facet extends Component {
 
     new AccessibleButton()
       .withElement(more)
-      .withLabel(l('ExpandFacet', this.options.title))
+      .withLabel(l('ShowMoreFacetResults', this.options.title))
       .withSelectAction(() => this.handleClickMore())
       .build();
 
@@ -1846,7 +1899,7 @@ export class Facet extends Component {
 
     new AccessibleButton()
       .withElement(less)
-      .withLabel(l('CollapseFacet', this.options.title))
+      .withLabel(l('ShowLessFacetResults', this.options.title))
       .withSelectAction(() => this.handleClickLess())
       .build();
 
@@ -1861,6 +1914,7 @@ export class Facet extends Component {
     this.facetQueryController
       .fetchMore(this.numberOfValues + 1)
       .then((queryResults: IQueryResults) => {
+        this.logAnalyticsFacetShowMoreLess(analyticsActionCauseList.facetShowMore);
         const facetValues = new FacetValues(queryResults.groupByResults[0]);
 
         facetValues.importActiveValuesFromOtherList(this.values);
@@ -1966,6 +2020,18 @@ export class Facet extends Component {
       groupByResult: this.facetQueryController.lastGroupByResult
     };
     return info;
+  }
+
+  private logAnalyticsFacetShowMoreLess(cause: IAnalyticsActionCause) {
+    this.usageAnalytics.logCustomEvent<IAnalyticsFacetMeta>(
+      cause,
+      {
+        facetId: this.options.id,
+        facetField: this.options.field.toString(),
+        facetTitle: this.options.title
+      },
+      this.element
+    );
   }
 }
 

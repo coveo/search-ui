@@ -6,10 +6,10 @@ import { $$ } from '../../src/utils/Dom';
 export function ResultListTableRendererTest() {
   describe('ResultListTableRenderer', () => {
     let renderer: ResultListTableRenderer;
-    let resultContainer: HTMLElement;
+    let resultsContainer: HTMLElement;
     beforeEach(() => {
-      resultContainer = $$('table').el;
-      renderer = new ResultListTableRenderer({ resultContainer: resultContainer }, () => null);
+      resultsContainer = $$('table').el;
+      renderer = new ResultListTableRenderer({ resultsContainer }, () => null);
     });
     afterEach(() => {
       renderer = null;
@@ -17,9 +17,9 @@ export function ResultListTableRendererTest() {
 
     it('should only instantiate table-header by default', done => {
       const fakeTemplateList = new TableTemplate([]);
-      renderer = new ResultListTableRenderer({ resultTemplate: fakeTemplateList, resultContainer: resultContainer }, () => null);
+      renderer = new ResultListTableRenderer({ resultTemplate: fakeTemplateList, resultsContainer }, () => null);
       renderer.renderResults([$$('div', { className: 'CoveoResult' }).el], false, () => null).then(() => {
-        expect($$(resultContainer).find('.coveo-result-list-table-header')).not.toBeNull();
+        expect($$(resultsContainer).find('.coveo-result-list-table-header')).not.toBeNull();
         done();
       });
     });
@@ -31,9 +31,9 @@ export function ResultListTableRendererTest() {
           return true;
         }
       });
-      renderer = new ResultListTableRenderer({ resultTemplate: fakeTemplateList, resultContainer: resultContainer }, () => null);
+      renderer = new ResultListTableRenderer({ resultTemplate: fakeTemplateList, resultsContainer }, () => null);
       renderer.renderResults([$$('div', { className: 'CoveoResult' }).el], false, () => null).then(() => {
-        expect($$(resultContainer).find('.coveo-result-list-table-footer')).not.toBeNull();
+        expect($$(resultsContainer).find('.coveo-result-list-table-footer')).not.toBeNull();
         done();
       });
     });
@@ -45,9 +45,9 @@ export function ResultListTableRendererTest() {
           return false;
         }
       });
-      renderer = new ResultListTableRenderer({ resultTemplate: fakeTemplateList, resultContainer: resultContainer }, () => null);
+      renderer = new ResultListTableRenderer({ resultTemplate: fakeTemplateList, resultsContainer }, () => null);
       renderer.renderResults([$$('div', { className: 'CoveoResult' }).el], false, () => null);
-      expect($$(resultContainer).find('.coveo-result-list-table-header')).toBeNull();
+      expect($$(resultsContainer).find('.coveo-result-list-table-header')).toBeNull();
     });
 
     it('should not render a header or a footer when passed append set to true', () => {
@@ -57,10 +57,10 @@ export function ResultListTableRendererTest() {
           return false;
         }
       });
-      renderer = new ResultListTableRenderer({ resultTemplate: fakeTemplateList, resultContainer: resultContainer }, () => null);
+      renderer = new ResultListTableRenderer({ resultTemplate: fakeTemplateList, resultsContainer }, () => null);
       renderer.renderResults([$$('div', { className: 'CoveoResult' }).el], true, () => null);
-      expect($$(resultContainer).find('.coveo-result-list-table-header')).toBeNull();
-      expect($$(resultContainer).find('.coveo-result-list-table-footer')).toBeNull();
+      expect($$(resultsContainer).find('.coveo-result-list-table-header')).toBeNull();
+      expect($$(resultsContainer).find('.coveo-result-list-table-footer')).toBeNull();
     });
   });
 }

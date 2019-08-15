@@ -525,9 +525,6 @@ FacetValueSuggestionsTest();
 import { FacetValueSuggestionsProviderTest } from './ui/FacetValueSuggestionsProviderTest';
 FacetValueSuggestionsProviderTest();
 
-import { SuggestionsCacheTest } from './misc/SuggestionsCacheTest';
-SuggestionsCacheTest();
-
 import { FacetColumnAutoLayoutAdjustmentTest } from './ui/FacetColumnAutoLayoutAdjustmentTest';
 FacetColumnAutoLayoutAdjustmentTest();
 
@@ -660,7 +657,7 @@ AriaLiveTest();
 import { QuerySummaryUtilsTest } from './utils/QuerySummaryUtilsTest';
 QuerySummaryUtilsTest();
 
-import { CategoryFacetQueryControllerTest } from './controllers/CategoryFacetQueryControlllerTest';
+import { CategoryFacetQueryControllerTest } from './controllers/CategoryFacetQueryControllerTest';
 CategoryFacetQueryControllerTest();
 
 import { ComponentsTypesTest } from './utils/ComponentsTypesTest';
@@ -675,29 +672,74 @@ ResultListUtilsTest();
 import { FacetUtilsTest } from './utils/FacetUtilsTest';
 FacetUtilsTest();
 
-import { MLFacetTest } from './ui/MLFacet/MLFacetTest';
-MLFacetTest();
+import { DynamicFacetTest } from './ui/DynamicFacet/DynamicFacetTest';
+DynamicFacetTest();
 
-import { MLFacetHeaderTest } from './ui/MLFacet/MLFacetHeader/MLFacetHeaderTest';
-MLFacetHeaderTest();
+import { DynamicFacetHeaderTest } from './ui/DynamicFacet/DynamicFacetHeader/DynamicFacetHeaderTest';
+DynamicFacetHeaderTest();
 
-import { MLFacetHeaderButtonTest } from './ui/MLFacet/MLFacetHeader/MLFacetHeaderButtonTest';
-MLFacetHeaderButtonTest();
+import { DynamicFacetHeaderButtonTest } from './ui/DynamicFacet/DynamicFacetHeader/DynamicFacetHeaderButtonTest';
+DynamicFacetHeaderButtonTest();
 
-import { MLFacetHeaderCollapseToggleTest } from './ui/MLFacet/MLFacetHeader/MLFacetHeaderCollapseToggleTest';
-MLFacetHeaderCollapseToggleTest();
+import { DynamicFacetHeaderCollapseToggleTest } from './ui/DynamicFacet/DynamicFacetHeader/DynamicFacetHeaderCollapseToggleTest';
+DynamicFacetHeaderCollapseToggleTest();
 
-import { MLFacetValuesTest } from './ui/MLFacet/MLFacetValues/MLFacetValuesTest';
-MLFacetValuesTest();
+import { DynamicFacetValuesTest } from './ui/DynamicFacet/DynamicFacetValues/DynamicFacetValuesTest';
+DynamicFacetValuesTest();
 
-import { MLFacetValueTest } from './ui/MLFacet/MLFacetValues/MLFacetValueTest';
-MLFacetValueTest();
+import { DynamicFacetValueTest } from './ui/DynamicFacet/DynamicFacetValues/DynamicFacetValueTest';
+DynamicFacetValueTest();
 
-import { MLFacetValueRendererTest } from './ui/MLFacet/MLFacetValues/MLFacetValueRendererTest';
-MLFacetValueRendererTest();
+import { DynamicFacetValueCheckboxTest } from './ui/DynamicFacet/DynamicFacetValues/DynamicFacetValueCheckboxTest';
+DynamicFacetValueCheckboxTest();
 
-import { MLFacetBreadcrumbsTest } from './ui/MLFacet/MLFacetBreadcrumbsTest';
-MLFacetBreadcrumbsTest();
+import { DynamicFacetValueRendererTest } from './ui/DynamicFacet/DynamicFacetValues/DynamicFacetValueRendererTest';
+DynamicFacetValueRendererTest();
 
-import { MLFacetQueryControllerTest } from './controllers/MLFacetQueryControllerTest';
-MLFacetQueryControllerTest();
+import { DynamicFacetSearchValueRendererTest } from './ui/DynamicFacet/DynamicFacetValues/DynamicFacetSearchValueRendererTest';
+DynamicFacetSearchValueRendererTest();
+
+import { DynamicFacetBreadcrumbsTest } from './ui/DynamicFacet/DynamicFacetBreadcrumbsTest';
+DynamicFacetBreadcrumbsTest();
+
+import { DynamicFacetQueryControllerTest } from './controllers/DynamicFacetQueryControllerTest';
+DynamicFacetQueryControllerTest();
+
+import { DynamicFacetManagerTest } from './ui/DynamicFacetManagerTest';
+DynamicFacetManagerTest();
+
+import { DynamicFacetValueFormatterTest } from './ui/DynamicFacet/DynamicFacetValues/DynamicFacetValueFormatterTest';
+DynamicFacetValueFormatterTest();
+
+import { FacetSearchControllerTest } from './controllers/FacetSearchControllerTest';
+FacetSearchControllerTest();
+
+import { MissingTermsTest } from './ui/MissingTermsTest';
+MissingTermsTest();
+
+import { MissingTermsManagerTest } from './ui/MissingTermManagerTest';
+MissingTermsManagerTest();
+
+import { SearchboxResizeTest } from './utils/SearchboxResizeTest';
+SearchboxResizeTest();
+
+import { DependsOnManagerTest } from './utils/DependsOnManagerTest';
+DependsOnManagerTest();
+
+import { ComboboxTest } from './ui/Combobox/ComboboxTest';
+ComboboxTest();
+
+import { ComboboxInputTest } from './ui/Combobox/ComboboxInputTest';
+ComboboxInputTest();
+
+import { ComboboxValuesTest } from './ui/Combobox/ComboboxValuesTest';
+ComboboxValuesTest();
+
+import { QuerySuggestPreviewTest } from './ui/QuerySuggestPreviewTest';
+QuerySuggestPreviewTest();
+
+import { FieldImageTest } from './ui/ImageFieldValueTest';
+FieldImageTest();
+
+import { OmniboxAnalyticsTest } from './ui/OmniboxAnalyticsTest';
+OmniboxAnalyticsTest();

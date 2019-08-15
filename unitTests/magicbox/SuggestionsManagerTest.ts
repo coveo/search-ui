@@ -19,10 +19,16 @@ export function SuggestionsManagerTest() {
       buildContainer();
       const inputManager = new InputManager(document.createElement('div'), () => {}, {} as MagicBoxInstance);
 
-      suggestionManager = new SuggestionsManager(suggestionContainer.el, document.createElement('div'), inputManager, {
-        selectedClass,
-        selectableClass
-      });
+      suggestionManager = new SuggestionsManager(
+        suggestionContainer.el,
+        document.createElement('div'),
+        document.createElement('div'),
+        inputManager,
+        {
+          selectedClass,
+          selectableClass
+        }
+      );
     });
 
     it('builds suggestions parent correctly when adding a suggestion', () => {
@@ -31,7 +37,7 @@ export function SuggestionsManagerTest() {
       expect(suggestionManager.hasSuggestions).toBe(true);
       expect($$(suggestionContainer).hasClass('magic-box-hasSuggestion')).toBe(true);
 
-      const suggestionsElement = $$(suggestionContainer).find('#coveo-magicbox-suggestions');
+      const suggestionsElement = $$(suggestionContainer).find('.coveo-magicbox-suggestions');
       expect(suggestionsElement).toBeTruthy();
       expect(suggestionsElement.children.length).toBe(1);
       expect(suggestionsElement.getAttribute('role')).toBe('listbox');
@@ -45,7 +51,7 @@ export function SuggestionsManagerTest() {
       expect(suggestionManager.hasSuggestions).toBe(false);
       expect($$(suggestionContainer).hasClass('magic-box-hasSuggestion')).toBe(false);
 
-      const suggestionsElement = $$(suggestionContainer).find('#coveo-magicbox-suggestions');
+      const suggestionsElement = $$(suggestionContainer).find('.coveo-magicbox-suggestions');
       expect(suggestionsElement).toBeNull();
     });
 

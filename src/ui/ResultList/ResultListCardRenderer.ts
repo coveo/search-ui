@@ -9,7 +9,7 @@ export class ResultListCardRenderer extends ResultListRenderer {
         // with infinite scrolling, we want the additional results to append at the end of the previous query.
         // For this, we need to remove the padding.
         if (this.resultListOptions.enableInfiniteScroll) {
-          const needToBeRemoved = $$(this.resultListOptions.resultContainer).findAll('.coveo-card-layout-padding');
+          const needToBeRemoved = $$(this.resultListOptions.resultsContainer).findAll('.coveo-card-layout-padding');
           _.each(needToBeRemoved, toRemove => $$(toRemove).remove());
         }
         // Used to prevent last card from spanning the grid's whole width

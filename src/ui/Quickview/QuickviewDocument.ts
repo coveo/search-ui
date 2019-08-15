@@ -1,4 +1,3 @@
-import * as _ from 'underscore';
 import { IQuickviewLoadedEventArgs, QuickviewEvents } from '../../events/QuickviewEvents';
 import { IOpenQuickviewEventArgs } from '../../events/ResultListEvents';
 import { Assert } from '../../misc/Assert';
@@ -14,7 +13,7 @@ import { Initialization } from '../Base/Initialization';
 import { QuickviewDocumentIframe } from './QuickviewDocumentIframe';
 import { QuickviewDocumentHeader } from './QuickviewDocumentHeader';
 import { QuickviewDocumentWords } from './QuickviewDocumentWords';
-import { each } from 'underscore';
+import { each, keys } from 'underscore';
 import { QuickviewDocumentWordButton } from './QuickviewDocumentWordButton';
 import { QuickviewDocumentPreviewBar } from './QuickviewDocumentPreviewBar';
 
@@ -51,7 +50,6 @@ export class QuickviewDocument extends Component {
 
   private iframe: QuickviewDocumentIframe;
   private header: QuickviewDocumentHeader;
-  private termsToHighlightWereModified: boolean;
 
   /**
    * Creates a new `QuickviewDocument` component.
@@ -71,7 +69,6 @@ export class QuickviewDocument extends Component {
 
     this.options = ComponentOptions.initComponentOptions(element, QuickviewDocument, options);
     this.result = result || this.resolveResult();
-    this.termsToHighlightWereModified = false;
     Assert.exists(this.result);
   }
 
@@ -92,15 +89,13 @@ export class QuickviewDocument extends Component {
     this.ensureDom();
 
     const beforeLoad = new Date().getTime();
-    const termsToHighlight = _.keys(this.result.termsToHighlight);
+    const termsToHighlight = this.initialTermsToHighlight;
 
-    $$(this.element).trigger(QuickviewEvents.openQuickview, {
-      termsToHighlight
-    } as IOpenQuickviewEventArgs);
+    this.triggerOpenQuickViewEvent({ termsToHighlight });
 
-    this.checkIfTermsToHighlightWereModified(termsToHighlight);
-
-    if (this.termsToHighlightWereModified) {
+    const termsWereModified = this.wereTermsToHighlightModified(termsToHighlight);
+    
+    if (termsWereModified) {
       this.handleTermsToHighlight(termsToHighlight, this.query);
     }
 
@@ -131,6 +126,14 @@ export class QuickviewDocument extends Component {
     }
   }
 
+  private get initialTermsToHighlight() {
+    return keys(this.result.termsToHighlight);
+  }
+
+  private triggerOpenQuickViewEvent(args: IOpenQuickviewEventArgs) {
+    $$(this.root).trigger(QuickviewEvents.openQuickview, args)
+  }
+
   private get query() {
     return { ...this.queryController.getLastQuery() };
   }
@@ -141,23 +144,21 @@ export class QuickviewDocument extends Component {
     } as IQuickviewLoadedEventArgs);
   }
 
-  private handleTermsToHighlight(termsToHighlight: Array<string>, queryObject: IQuery) {
+  private handleTermsToHighlight(termsToHighlight: string[], queryObject: IQuery) {
     for (const term in this.result.termsToHighlight) {
       delete this.result.termsToHighlight[term];
     }
     let query = '';
-    _.each(termsToHighlight, term => {
+    each(termsToHighlight, term => {
       query += term + ' ';
-      this.result.termsToHighlight[term] = new Array<string>(term);
+      this.result.termsToHighlight[term] = [term];
     });
     query = query.substring(0, query.length - 1);
     queryObject.q = query;
   }
 
-  private checkIfTermsToHighlightWereModified(termsToHighlight: Array<string>) {
-    if (!Utils.arrayEqual(termsToHighlight, _.keys(this.result.termsToHighlight))) {
-      this.termsToHighlightWereModified = true;
-    }
+  private wereTermsToHighlightModified(termsToHighlight: string[]) {
+    return !Utils.arrayEqual(termsToHighlight, this.initialTermsToHighlight);
   }
 }
 

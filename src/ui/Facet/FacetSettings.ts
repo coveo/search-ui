@@ -13,6 +13,7 @@ import { analyticsActionCauseList, IAnalyticsFacetMeta } from '../Analytics/Anal
 import { Facet } from './Facet';
 import { FacetSort, IFacetSortDescription } from './FacetSort';
 import Popper from 'popper.js';
+import { KEYBOARD, KeyboardUtils } from '../../utils/KeyboardUtils';
 
 export interface IFacetSettingsKlass {
   new (sorts: string[], facet: Facet): FacetSettings;
@@ -156,7 +157,7 @@ export class FacetSettings extends FacetSort {
     new Popper(this.settingsButton, this.settingsPopup, {
       modifiers: {
         preventOverflow: {
-          boundariesElement: this.facet.root
+          boundariesElement: this.facet.element.parentElement
         }
       }
     });
@@ -214,6 +215,12 @@ export class FacetSettings extends FacetSort {
 
     $$(el).on('mouseleave', mouseLeave);
     $$(el).on('mouseenter', mouseEnter);
+    $$(el).on('keyup', KeyboardUtils.keypressAction(KEYBOARD.ESCAPE, () => this.handleKeyboardClose()));
+  }
+
+  private handleKeyboardClose() {
+    this.close();
+    this.settingsButton.focus();
   }
 
   private buildSettingsPopup() {
@@ -381,7 +388,7 @@ export class FacetSettings extends FacetSort {
         this.facet.facetHeader.collapseFacet();
         this.close();
       })
-      .withLabel(l('Collapse'))
+      .withLabel(l('CollapseFacet', this.facet.options.title))
       .build();
 
     return hideSection;
@@ -403,7 +410,7 @@ export class FacetSettings extends FacetSort {
         this.facet.facetHeader.expandFacet();
         this.close();
       })
-      .withLabel(l('Expand'))
+      .withLabel(l('ExpandFacet', this.facet.options.title))
       .build();
 
     return showSection;

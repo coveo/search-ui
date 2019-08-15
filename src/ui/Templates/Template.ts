@@ -7,7 +7,7 @@ import { ResponsiveComponents } from '../ResponsiveComponents/ResponsiveComponen
 import * as _ from 'underscore';
 import { Initialization, LazyInitialization } from '../Base/Initialization';
 import { Utils } from '../../utils/Utils';
-import { ValidLayout } from '../ResultLayoutSelector/ValidLayout';
+import { RendererValidLayout, ValidLayout } from '../ResultLayoutSelector/ValidLayout';
 
 export type TemplateRole = 'table-header' | 'table-footer';
 
@@ -28,7 +28,7 @@ export interface IFieldsToMatch {
 }
 
 export interface IInstantiateTemplateOptions {
-  currentLayout?: ValidLayout;
+  currentLayout?: RendererValidLayout;
   checkCondition?: boolean;
   wrapInDiv?: boolean;
   responsiveComponents?: ResponsiveComponents;

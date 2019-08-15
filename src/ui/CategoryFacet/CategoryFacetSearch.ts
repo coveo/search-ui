@@ -12,6 +12,7 @@ import { analyticsActionCauseList, IAnalyticsCategoryFacetMeta } from '../Analyt
 import { IFacetSearch } from '../Facet/IFacetSearch';
 import { IIndexFieldValue } from '../../rest/FieldValue';
 import { AccessibleButton } from '../../utils/AccessibleButton';
+import * as Globalize from 'globalize';
 
 export class CategoryFacetSearch implements IFacetSearch {
   public container: Dom | undefined;
@@ -112,6 +113,7 @@ export class CategoryFacetSearch implements IFacetSearch {
       this.categoryFacet.changeActivePath(path);
       this.categoryFacet.logAnalyticsEvent(analyticsActionCauseList.categoryFacetSelect, path);
       this.categoryFacet.executeQuery();
+      this.categoryFacet.scrollToTop();
     }
   }
 
@@ -180,13 +182,21 @@ export class CategoryFacetSearch implements IFacetSearch {
     this.highlightCurrentQueryWithinSearchResults();
   }
 
+  private getFormattedCount(count: number) {
+    return Globalize.format(count, 'n0');
+  }
+
   private buildFacetSearchValue(categoryFacetValue: IGroupByValue, index: number) {
     const path = categoryFacetValue.value.split(this.categoryFacet.options.delimitingCharacter);
 
     const pathParents = path.slice(0, -1).length != 0 ? `${path.slice(0, -1).join('/')}/` : '';
 
     const value = $$('span', { className: 'coveo-category-facet-search-value-caption' }, last(path));
-    const number = $$('span', { className: 'coveo-category-facet-search-value-number' }, categoryFacetValue.numberOfResults.toString(10));
+    const number = $$(
+      'span',
+      { className: 'coveo-category-facet-search-value-number' },
+      this.getFormattedCount(categoryFacetValue.numberOfResults)
+    );
     const pathParentsCaption = $$('span', { className: 'coveo-category-facet-search-path-parents' }, pathParents);
 
     const pathToValueCaption = $$('span', { className: 'coveo-category-facet-search-path' }, pathParentsCaption);
@@ -207,13 +217,14 @@ export class CategoryFacetSearch implements IFacetSearch {
     );
     item.el.dataset.path = categoryFacetValue.value;
 
-    const countLabel = l('ResultCount', categoryFacetValue.numberOfResults.toString());
+    const countLabel = l('ResultCount', this.getFormattedCount(categoryFacetValue.numberOfResults));
     const label = l('SelectValueWithResultCount', last(path), countLabel);
 
     new AccessibleButton()
       .withElement(item)
       .withSelectAction(() => {
         this.categoryFacet.changeActivePath(path);
+        this.categoryFacet.scrollToTop();
         this.categoryFacet.logAnalyticsEvent(analyticsActionCauseList.categoryFacetSelect, path);
         this.categoryFacet.executeQuery();
       })

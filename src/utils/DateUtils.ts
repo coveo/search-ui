@@ -183,6 +183,8 @@ class DefaultDateToStringOptions extends Options implements IDateToStringOptions
  * using the correct culture, language and format. It also offers methods to convert date objects to strings.
  */
 export class DateUtils {
+  private static momentjsLocaleDataMap: Record<string, moment.Locale> = {};
+
   // This function is used to call convertToStandardDate for legacy reasons. convertFromJsonDateIfNeeded was refactored to
   // convertToStandardDate, which would be a breaking change otherwise.
   static convertFromJsonDateIfNeeded(date: any): Date {
@@ -207,8 +209,20 @@ export class DateUtils {
   }
 
   public static setLocale(): void {
+    DateUtils.saveOriginalMomentLocaleData();
     moment.updateLocale(DateUtils.momentjsCompatibleLocale, DateUtils.transformGlobalizeCalendarToMomentCalendar());
     moment.locale(DateUtils.momentjsCompatibleLocale);
+  }
+
+  private static saveOriginalMomentLocaleData() {
+    const locale = DateUtils.momentjsCompatibleLocale;
+    const alreadySaved = DateUtils.momentjsLocaleDataMap[locale] != null;
+
+    if (alreadySaved) {
+      return;
+    }
+
+    DateUtils.momentjsLocaleDataMap[locale] = moment.localeData();
   }
 
   /**
@@ -256,28 +270,28 @@ export class DateUtils {
     let correctedFormat = format;
 
     const fourLowercaseY = DateUtils.buildRegexMatchingExactCharSequence('y', 4);
-    correctedFormat = correctedFormat.replace(fourLowercaseY, 'YYYY');
+    correctedFormat = correctedFormat.replace(fourLowercaseY, '$1YYYY');
 
     const twoLowercaseY = DateUtils.buildRegexMatchingExactCharSequence('y', 2);
-    correctedFormat = correctedFormat.replace(twoLowercaseY, 'YY');
+    correctedFormat = correctedFormat.replace(twoLowercaseY, '$1YY');
 
     const twoLowercaseD = DateUtils.buildRegexMatchingExactCharSequence('d', 2);
-    correctedFormat = correctedFormat.replace(twoLowercaseD, 'DD');
+    correctedFormat = correctedFormat.replace(twoLowercaseD, '$1DD');
 
     const oneLowercaseD = DateUtils.buildRegexMatchingExactCharSequence('d', 1);
-    correctedFormat = correctedFormat.replace(oneLowercaseD, 'D');
+    correctedFormat = correctedFormat.replace(oneLowercaseD, '$1D');
 
     const twoLowercaseH = DateUtils.buildRegexMatchingExactCharSequence('h', 2);
-    correctedFormat = correctedFormat.replace(twoLowercaseH, 'H');
+    correctedFormat = correctedFormat.replace(twoLowercaseH, '$1H');
 
     return correctedFormat;
   }
 
   private static buildRegexMatchingExactCharSequence(char: string, sequenceLength: number) {
-    const negativeLookBehind = `(?<!${char})`;
+    const negativeNonCapturingGroup = `(?:([^${char}]|^))`; // look-behind is not supported in Firefox
     const charSequence = `${char}{${sequenceLength}}`;
     const negativeLookAhead = `(?!${char})`;
-    const exactSequence = `${negativeLookBehind}${charSequence}${negativeLookAhead}`;
+    const exactSequence = `${negativeNonCapturingGroup}${charSequence}${negativeLookAhead}`;
 
     return new RegExp(exactSequence, 'g');
   }
@@ -331,10 +345,19 @@ export class DateUtils {
     }
 
     if (options.useLongDateFormat) {
-      return `${dateOnly.format('dddd')} ${dateOnly.format('LL')} ${dateOnly.format('YYYY')}`;
+      return dateOnly.format(this.longDateFormat);
     }
 
     return dateOnly.format('L');
+  }
+
+  private static get longDateFormat() {
+    const momentLocaleData = DateUtils.momentjsLocaleDataMap[DateUtils.momentjsCompatibleLocale];
+
+    return momentLocaleData
+      .longDateFormat('LLLL')
+      .replace(/[h:mA]/g, '')
+      .trim();
   }
 
   /**

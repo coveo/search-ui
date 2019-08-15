@@ -2,7 +2,7 @@ import { ExpressionBuilder } from './ExpressionBuilder';
 import { IRankingFunction } from '../../rest/RankingFunction';
 import { IQueryFunction } from '../../rest/QueryFunction';
 import { IGroupByRequest } from '../../rest/GroupByRequest';
-import { IQuery } from '../../rest/Query';
+import { IQuery, IFacetOptions, IUserActionsRequest } from '../../rest/Query';
 import { QueryBuilderExpression } from './QueryBuilderExpression';
 import * as _ from 'underscore';
 import { Utils } from '../../utils/Utils';
@@ -282,10 +282,15 @@ export class QueryBuilder {
   public groupByRequests: IGroupByRequest[] = [];
 
   /**
-   * Specifies an array of request for the MLFacet component.
+   * Specifies an array of request for the DynamicFacet component.
    * Cannot be used alongside [`groupByRequests`]{@link QueryBuilder.groupByRequests}
    */
   public facetRequests: IFacetRequest[] = [];
+
+  /**
+   * The global configuration options to apply to the requests in the [facets]{@link QueryBuilder.facets} array.
+   */
+  public facetOptions: IFacetOptions = {};
 
   /**
    * Specifies an array of request for the CategoryFacet component.
@@ -315,6 +320,10 @@ export class QueryBuilder {
    * This parameter is normally controlled by {@link SearchInterface.options.allowEmptyQuery} option.
    */
   public allowQueriesWithoutKeywords: boolean;
+  /**
+   * A request to retrieve user actions in the query response.
+   */
+  public userActions: IUserActionsRequest;
   /**
    * Build the current content or state of the query builder and return a {@link IQuery}.
    *
@@ -358,6 +367,7 @@ export class QueryBuilder {
       rankingFunctions: this.rankingFunctions,
       groupBy: this.groupBy,
       facets: this.facets,
+      facetOptions: this.facetOptions,
       categoryFacets: this.categoryFacets,
       retrieveFirstSentences: this.retrieveFirstSentences,
       timezone: this.timezone,
@@ -368,7 +378,8 @@ export class QueryBuilder {
       context: this.context,
       actionsHistory: this.actionsHistory,
       recommendation: this.recommendation,
-      allowQueriesWithoutKeywords: this.allowQueriesWithoutKeywords
+      allowQueriesWithoutKeywords: this.allowQueriesWithoutKeywords,
+      userActions: this.userActions
     };
     return query;
   }

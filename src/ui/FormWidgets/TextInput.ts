@@ -1,14 +1,53 @@
 import { exportGlobally } from '../../GlobalExports';
-import { l } from '../../strings/Strings';
-import { $$ } from '../../utils/Dom';
+import { $$, Dom } from '../../utils/Dom';
 import { KEYBOARD } from '../../utils/KeyboardUtils';
 import { IFormWidget, IFormWidgetSettable } from './FormWidgets';
+
+export interface ITextInputOptions {
+  /**
+   * Whether to add a placeholder to the `TextInput` rather than a label.
+   *
+   * **Default:** `false`
+   */
+  usePlaceholder?: boolean;
+  /**
+   * The class name to add to the `TextInput`'s HTML element.
+   *
+   * **Default:** `coveo-input`
+   */
+  className?: string;
+  /**
+   * Whether to trigger the `TextInput`'s `onChange` function on every key press
+   * rather than when the enter key is pressed or the input is blurred.
+   *
+   * **Default:** `false`
+   */
+  triggerOnChangeAsYouType?: boolean;
+  /**
+   * Whether to set the required attribute to `true` or `false`.
+   *
+   * **Default:** `true`
+   */
+  isRequired?: boolean;
+  /**
+   * A custom aria-label attribute to add to the `TextInput`'s HTML element.
+   */
+  ariaLabel?: string;
+}
+
+const defaultOptions: ITextInputOptions = {
+  usePlaceholder: false,
+  className: 'coveo-input',
+  triggerOnChangeAsYouType: false,
+  isRequired: true
+};
 
 /**
  * A text input widget with standard styling.
  */
 export class TextInput implements IFormWidget, IFormWidgetSettable {
   private element: HTMLElement;
+  private input: Dom;
   private lastQueryText: string = '';
 
   static doExport() {
@@ -21,9 +60,18 @@ export class TextInput implements IFormWidget, IFormWidgetSettable {
    * Creates a new `TextInput`.
    * @param onChange The function to call when the value entered in the text input changes. This function takes the
    * current `TextInput` instance as an argument.
-   * @param name The text to display in the text input label.
+   * @param name The text to display in the text input label or placeholder.
    */
-  constructor(public onChange: (textInput: TextInput) => void = (textInput: TextInput) => {}, public name?: string) {
+  constructor(
+    public onChange: (textInput: TextInput) => void = (textInput: TextInput) => {},
+    public name?: string,
+    private options?: ITextInputOptions
+  ) {
+    this.options = {
+      ...defaultOptions,
+      ...this.options
+    };
+
     this.buildContent();
   }
 
@@ -85,27 +133,44 @@ export class TextInput implements IFormWidget, IFormWidgetSettable {
   }
 
   private buildContent() {
-    const container = $$('div', { className: 'coveo-input' });
-    const input = $$('input', {
-      type: 'text',
-      'aria-label': this.name ? l(this.name) : ''
-    });
+    this.element = $$('div', { className: this.options.className }).el;
+    this.input = $$('input', { type: 'text' });
 
-    input.on(['keydown', 'blur'], (e: Event) => {
+    this.options.isRequired && this.input.setAttribute('required', 'true');
+    this.options.ariaLabel && this.input.setAttribute('aria-label', this.options.ariaLabel);
+
+    this.addEventListeners();
+
+    this.element.appendChild(this.input.el);
+    this.name && this.createLabelOrPlaceholder();
+  }
+
+  private addEventListeners() {
+    this.options.triggerOnChangeAsYouType ? this.addOnTypeEventListener() : this.addOnChangeEventListener();
+  }
+
+  private addOnChangeEventListener() {
+    this.input.on(['keydown', 'blur'], (e: Event) => {
       if (e.type == 'blur' || (<KeyboardEvent>e).keyCode == KEYBOARD.ENTER) {
         this.triggerChange();
       }
     });
+  }
 
-    (<HTMLInputElement>input.el).required = true;
-    container.append(input.el);
+  private addOnTypeEventListener() {
+    this.input.on(['keyup'], () => {
+      this.triggerChange();
+    });
+  }
 
-    if (this.name) {
-      const label = $$('label');
-      label.text(this.name);
-      container.append(label.el);
+  private createLabelOrPlaceholder() {
+    if (this.options.usePlaceholder) {
+      return this.input.setAttribute('placeholder', this.name);
     }
-    this.element = container.el;
+
+    const label = $$('label');
+    label.text(this.name);
+    this.element.appendChild(label.el);
   }
 
   private triggerChange() {

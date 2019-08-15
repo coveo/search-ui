@@ -13,6 +13,8 @@ import { IQuerySuggestRequest, IQuerySuggestResponse } from '../rest/QuerySugges
 import { IRatingRequest } from '../rest/RatingRequest';
 import { ISubscriptionRequest, ISubscription } from '../rest/Subscription';
 import { ISentryLog } from './SentryLog';
+import { IFacetSearchRequest } from './Facet/FacetSearchRequest';
+import { IFacetSearchResponse } from './Facet/FacetSearchResponse';
 
 /**
  * The possible options when creating a {@link SearchEndpoint}
@@ -104,6 +106,7 @@ export interface ISearchEndpoint {
   extensions(callOptions?: IEndpointCallOptions): Promise<IExtension[]> | Promise<IEndpointError>;
   tagDocument(taggingRequest: ITaggingRequest, callOptions?: IEndpointCallOptions): Promise<boolean>;
   getQuerySuggest(request: IQuerySuggestRequest, callOptions?: IEndpointCallOptions): Promise<IQuerySuggestResponse>;
+  facetSearch(request: IFacetSearchRequest, callOptions?: IEndpointCallOptions): Promise<IFacetSearchResponse>;
   rateDocument(ratingRequest: IRatingRequest, callOptions?: IEndpointCallOptions): Promise<boolean>;
   follow(request: ISubscriptionRequest): Promise<ISubscription>;
   listSubscriptions(page?: number, callOptions?: IEndpointCallOptions): Promise<ISubscription[]>;

@@ -37,8 +37,8 @@ export class ResponsiveDefaultResultTemplate implements IResponsiveComponent {
   public handleResizeEvent() {
     let lastResults = this.resultList.queryController.getLastResults();
     if (this.needSmallMode()) {
-      $$(this.resultList.options.resultContainer).addClass('coveo-card-layout-container');
-      $$(this.resultList.options.resultContainer).removeClass(`coveo-list-layout-container`);
+      $$(this.resultList.options.resultsContainer).addClass('coveo-card-layout-container');
+      $$(this.resultList.options.resultsContainer).removeClass(`coveo-list-layout-container`);
       if (this.currentMode != 'small') {
         if (lastResults) {
           this.resultList.buildResults(lastResults).then((elements: HTMLElement[]) => {
@@ -48,8 +48,8 @@ export class ResponsiveDefaultResultTemplate implements IResponsiveComponent {
         this.currentMode = 'small';
       }
     } else {
-      $$(this.resultList.options.resultContainer).removeClass('coveo-card-layout-container');
-      $$(this.resultList.options.resultContainer).addClass(`coveo-list-layout-container`);
+      $$(this.resultList.options.resultsContainer).removeClass('coveo-card-layout-container');
+      $$(this.resultList.options.resultsContainer).addClass(`coveo-list-layout-container`);
       if (this.currentMode != 'large') {
         if (lastResults) {
           this.resultList.buildResults(lastResults).then((elements: HTMLElement[]) => {
