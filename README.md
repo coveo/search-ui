@@ -87,7 +87,7 @@ A tutorial is available to help you get started (see
 
 ## Build
 
-You should have node 9.5.0 (or later) installed to build this project.
+You should have node 9.5.0 (or more recent node 9) installed to build this project.
 
     npm install -g yarn
     yarn global add gulp
