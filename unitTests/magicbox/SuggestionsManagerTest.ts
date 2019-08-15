@@ -74,6 +74,22 @@ export function SuggestionsManagerTest() {
       expect(selectedWithKeyboard).toBe(suggestion.el);
     });
 
+    it('returns the correct selected element with keyboard on move left', () => {
+      suggestionManager.moveLeft();
+      const selectedWithKeyboard = suggestionManager.selectAndReturnKeyboardFocusedElement();
+      expect($$(selectedWithKeyboard).hasClass(selectedClass)).toBe(true);
+      expect($$(selectedWithKeyboard).getAttribute('aria-selected')).toBe('true');
+      expect(selectedWithKeyboard).toBe(suggestion.el);
+    });
+
+    it('returns the correct selected element with keyboard on move right', () => {
+      suggestionManager.moveRight();
+      const selectedWithKeyboard = suggestionManager.selectAndReturnKeyboardFocusedElement();
+      expect($$(selectedWithKeyboard).hasClass(selectedClass)).toBe(true);
+      expect($$(selectedWithKeyboard).getAttribute('aria-selected')).toBe('true');
+      expect(selectedWithKeyboard).toBe(suggestion.el);
+    });
+
     it('return no selected element with successive call to selectAndReturnKeyboardFocusedElement()', () => {
       suggestionManager.moveDown();
       const selectedWithKeyboard = suggestionManager.selectAndReturnKeyboardFocusedElement();
