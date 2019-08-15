@@ -385,8 +385,15 @@ export class SuggestionsManager {
     if (previewSelectables.length == 0 || (direction == 'left' && previewIndex == -1)) {
       return this.lastSelectedSuggestion;
     }
+    return this.moveWithinPreview(direction);
+  }
 
+  private moveWithinPreview(direction: direction) {
+    const currentlySelected = $$(this.element).find(`.${this.options.selectedClass}`);
+    const previewSelectables = $$(this.element).findAll(`.coveo-preview-selectable`);
+    const previewIndex = indexOf(previewSelectables, currentlySelected);
     let index = previewIndex;
+
     if (direction == 'up' || direction == 'down') {
       //up and down does nothing if we only have 1 row.
       if (previewSelectables.length < 4) {
@@ -395,15 +402,17 @@ export class SuggestionsManager {
 
       let offset = Math.ceil(previewSelectables.length / 2);
       index = direction == 'up' ? previewIndex - offset : previewIndex + offset;
-    } else if (direction == 'left' || direction == 'right') {
+    }
+
+    if (direction == 'left' || direction == 'right') {
       //Go back to the suggestion
       if (index === 0 && direction == 'left') {
         return this.selectQuerySuggest(this.lastSelectedSuggestion);
       }
       index = direction == 'left' ? previewIndex - 1 : previewIndex + 1;
     }
-    index = (index + previewSelectables.length) % previewSelectables.length;
 
+    index = (index + previewSelectables.length) % previewSelectables.length;
     this.processKeyboardPreviewSelection(previewSelectables[index]);
     return previewSelectables[index];
   }
