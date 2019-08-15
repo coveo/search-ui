@@ -343,7 +343,7 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
     let modifiedMeta: IChangeableAnalyticsMetaObject = _.extend({}, meta);
     modifiedMeta['JSUIVersion'] = version.lib + ';' + version.product;
 
-    if (result) {
+    if (!(modifiedMeta['contentIDKey'] && modifiedMeta['contentIDValue']) && result) {
       let uniqueId = QueryUtils.getPermanentId(result);
       modifiedMeta['contentIDKey'] = uniqueId.fieldUsed;
       modifiedMeta['contentIDValue'] = uniqueId.fieldValue;
