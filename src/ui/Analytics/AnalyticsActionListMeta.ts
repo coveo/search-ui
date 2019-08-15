@@ -270,8 +270,17 @@ export interface IAnalyticsMissingTerm {
   missingTerm: string;
 }
 
-export interface IAnalyticsClickQuerySuggestPreview {
+/**
+ * Describes the object sent as metadata along with [`clickQuerySuggestPreview`]{@link analyticsActionCauseList.clickQuerySuggestPreview} usage analytics events.
+ */
+export interface IAnalyticsClickQuerySuggestPreviewMeta {
+  /**
+   * The query suggestion for which a preview item was opened.
+   */
   suggestion: string;
+  /**
+   * The 0-based position of the preview item that was opened.
+   */
   displayedRank: number;
 }
 
@@ -1397,30 +1406,36 @@ export var analyticsActionCauseList = {
     type: 'missingTerm'
   },
   /**
-   * Identifies the search event that gets logged when a user clicks a query suggestion based on the usage analytics recorded queries.
+   * The search event logged when a preview is requested for a query suggestion (see the [QuerySuggestPreview]{@link QuerySuggestPreview} component).
    *
-   * `actionCause`: `'showQuerySuggestPreview'`
-   * `actionType`: `'querySuggestPreview'`
+   * Implements the [IAnalyticsActionCause]{@link IAnalyticsActionCause} interface as such:
    *
-   * Logging an event with this actionType also adds the following key-value pairs in the custom data property of the Usage Analytics HTTP service request.
-   * `"partialQuery":`: <correspondingPartialQuery>
-   * `"suggestionRanking":`: <suggestionRankingValue>
-   * `"partialQueries":`: <correspondingPartialQueries>
-   * `"suggestions":`: <availableQuerySuggestions>
+   * ```javascript
+   * {
+   *  actionCause: "showQuerySuggestPreview",
+   *  actionType: "querySuggestPreview"
+   * }
+   * ```
+   *
+   * The framework sends an [`IAnalyticsTopSuggestionMeta`]{@link IAnalyticsTopSuggestionMeta} object as metadata when logging this event.
    */
   showQuerySuggestPreview: <IAnalyticsActionCause>{
     name: 'showQuerySuggestPreview',
     type: 'querySuggestPreview'
   },
   /**
-   * Identifies the search event that gets logged when a user clicks a result from a querySuggestPreview.
+   * The custom event logged when an item is opened in a query suggestion preview (see the [QuerySuggestPreview]{@link QuerySuggestPreview} component).
    *
-   * `actionCause`: `'clickQuerySuggestPreview'`
-   * `actionType`: `'querySuggestPreview'`
+   * Implements the [IAnalyticsActionCause]{@link IAnalyticsActionCause} interface as such:
    *
-   * Logging an event with this actionType also adds the following key-value pairs in the custom data property of the Usage Analytics HTTP service request.
-   * `"suggestion":`: <correspondingPartialQueries>
-   * `"displayedRank":`: <availableQuerySuggestions>
+   * ```javascript
+   * {
+   *  actionCause: "clickQuerySuggestPreview",
+   *  actionType: "querySuggestPreview"
+   * }
+   * ```
+   *
+   * The framework sends an [`IAnalyticsClickQuerySuggestPreviewMeta`]{@link IAnalyticsClickQuerySuggestPreviewMeta} object as metadata when logging this event.
    */
   clickQuerySuggestPreview: <IAnalyticsActionCause>{
     name: 'clickQuerySuggestPreview',

@@ -16,7 +16,7 @@ import { OmniboxAnalytics } from '../Omnibox/OmniboxAnalytics';
 import {
   IAnalyticsOmniboxSuggestionMeta,
   analyticsActionCauseList,
-  IAnalyticsClickQuerySuggestPreview
+  IAnalyticsClickQuerySuggestPreviewMeta
 } from '../Analytics/AnalyticsActionListMeta';
 
 export interface IQuerySuggestPreview {
@@ -297,7 +297,7 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
   }
 
   private logClickQuerySuggestPreview(displayedRank: number, element: HTMLElement) {
-    this.usageAnalytics.logCustomEvent<IAnalyticsClickQuerySuggestPreview>(
+    this.usageAnalytics.logCustomEvent<IAnalyticsClickQuerySuggestPreviewMeta>(
       analyticsActionCauseList.clickQuerySuggestPreview,
       {
         suggestion: this.currentlyRenderedSuggestion,

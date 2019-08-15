@@ -17,12 +17,7 @@ export function initOmniboxAnalyticsMock(omniboxAnalytics: IOmniboxAnalytics) {
   const suggestions: string[] = [];
   let partialQuery: string;
   const buildCustomDataForPartialQueries = (): IAnalyticsOmniboxSuggestionMeta => {
-    return {
-      suggestionRanking: omniboxAnalytics.suggestionRanking,
-      suggestions: omniboxAnalytics.suggestions.join(';'),
-      partialQueries: omniboxAnalytics.partialQueries.join(';'),
-      partialQuery: omniboxAnalytics.partialQuery
-    };
+    return getMetadata(omniboxAnalytics);
   };
   return (omniboxAnalytics = {
     partialQueries,
@@ -31,6 +26,15 @@ export function initOmniboxAnalyticsMock(omniboxAnalytics: IOmniboxAnalytics) {
     partialQuery,
     buildCustomDataForPartialQueries
   });
+}
+
+function getMetadata(omniboxAnalytics: IOmniboxAnalytics) {
+  return {
+    suggestionRanking: omniboxAnalytics.suggestionRanking,
+    suggestions: omniboxAnalytics.suggestions.join(';'),
+    partialQueries: omniboxAnalytics.partialQueries.join(';'),
+    partialQuery: last(omniboxAnalytics.partialQuery)
+  };
 }
 
 export function QuerySuggestPreviewTest() {
@@ -237,14 +241,10 @@ export function QuerySuggestPreviewTest() {
         setupQuerySuggestPreview();
         setupSuggestion();
         triggerQuerySuggestHoverAndPassTime();
+
         expect(test.cmp.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(
           analyticsActionCauseList.showQuerySuggestPreview,
-          jasmine.objectContaining({
-            partialQuery: last(omniboxAnalytics.partialQueries),
-            suggestionRanking: omniboxAnalytics.suggestionRanking,
-            partialQueries: omniboxAnalytics.partialQueries.join(';'),
-            suggestions: omniboxAnalytics.suggestions.join(';')
-          })
+          jasmine.objectContaining(getMetadata(omniboxAnalytics))
         );
       });
     });
