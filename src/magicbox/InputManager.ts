@@ -253,8 +253,8 @@ export class InputManager {
 
   private keyup(e: KeyboardEvent) {
     switch (e.keyCode || e.which) {
-      case 37: // Left
-      case 39: // Right
+      case KEYBOARD.LEFT_ARROW:
+      case KEYBOARD.RIGHT_ARROW:
         this.handleLeftRightArrow(e);
         break;
       default:
