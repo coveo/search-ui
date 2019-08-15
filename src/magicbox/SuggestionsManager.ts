@@ -376,16 +376,19 @@ export class SuggestionsManager {
     const previewIndex = indexOf(previewSelectables, currentlySelected);
     const noSelection = omniboxIndex == -1 && previewIndex == -1;
 
+    //if we move within the suggestion
     if ((noSelection || omniboxIndex > -1) && (direction == 'up' || direction == 'down')) {
       return this.moveWithinSuggestion(direction);
     }
 
+    //if there is no preview OR we go left when we are on the Suggestion
     if (previewSelectables.length == 0 || (direction == 'left' && previewIndex == -1)) {
       return this.lastSelectedSuggestion;
     }
 
     let index = previewIndex;
     if (direction == 'up' || direction == 'down') {
+      //up and down does nothing if we only have 1 row.
       if (previewSelectables.length < 4) {
         return this.lastSelectedSuggestion;
       }
@@ -393,6 +396,7 @@ export class SuggestionsManager {
       let offset = Math.ceil(previewSelectables.length / 2);
       index = direction == 'up' ? previewIndex - offset : previewIndex + offset;
     } else if (direction == 'left' || direction == 'right') {
+      //Go back to the suggestion
       if (index === 0 && direction == 'left') {
         return this.selectQuerySuggest(this.lastSelectedSuggestion);
       }
