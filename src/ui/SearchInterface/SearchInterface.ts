@@ -1046,8 +1046,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
 
   private get duplicatesFacets() {
     const duplicate = [];
-    // Filtering out the TimespanFacet as they always wrap a FacetRange component with the same ID/Field
-    const facets = ComponentsTypes.getAllFacetsInstance(this.root).filter(cmp => cmp.type !== 'TimespanFacet');
+    const facets = ComponentsTypes.getAllFacetsInstance(this.root);
 
     facets.forEach(facet => {
       facets.forEach(cmp => {

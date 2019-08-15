@@ -5,7 +5,7 @@ import { MockEnvironmentBuilder } from '../MockEnvironment';
 
 export function ComponentsTypesTest() {
   describe('ComponentsTypes', () => {
-    const expectedFacets = ['Facet', 'FacetRange', 'FacetSlider', 'CategoryFacet', 'HierarchicalFacet'];
+    const expectedFacets = ['Facet', 'FacetRange', 'FacetSlider', 'CategoryFacet', 'HierarchicalFacet', 'TimespanFacet'];
 
     it('should be able to return a list of different type of facets identifier', () => {
       expectedFacets.forEach(expectedFacet => {
