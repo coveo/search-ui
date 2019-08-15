@@ -213,7 +213,7 @@ export class SuggestionsManager {
       const dom = suggestion.dom ? this.modifyDomFromExistingSuggestion(suggestion.dom) : this.createDomFromSuggestion(suggestion);
 
       dom.setAttribute('id', `magic-box-suggestion-${indexOf(suggestions, suggestion)}`);
-      dom.setAttribute('role', 'gridcell');
+      dom.setAttribute('role', 'option');
       dom.setAttribute('aria-selected', 'false');
 
       dom['suggestion'] = suggestion;
@@ -249,7 +249,8 @@ export class SuggestionsManager {
 
   private buildSuggestionsContainer() {
     return $$('div', {
-      className: 'coveo-magicbox-suggestions'
+      className: 'coveo-magicbox-suggestions',
+      role: 'listbox'
     });
   }
 
@@ -274,8 +275,7 @@ export class SuggestionsManager {
     }
 
     const suggestionContainerParent = $$('div', {
-      className: 'coveo-suggestion-container',
-      role: 'grid'
+      className: 'coveo-suggestion-container'
     });
 
     const previewContainer = this.buildPreviewContainer();
