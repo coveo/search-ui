@@ -238,11 +238,11 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
     if (!(buildResults.length > 0)) {
       return;
     }
-    this.updateResultPerRow(buildResults);
+    this.updateResultElement(buildResults);
     this.renderer.renderResults(buildResults, true, result => {});
   }
 
-  private updateResultPerRow(elements: HTMLElement[]) {
+  private updateResultElement(elements: HTMLElement[]) {
     const resultAvailableSpace = elements.length === 4 ? '50%' : '33%';
     elements.forEach(element => {
       $$(element).addClass('coveo-preview-selectable');
@@ -250,7 +250,8 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
       $$(element).on('keyboardSelect', () => {
         this.handleSelect(element);
       });
-      this.updateFlexCSS(element, resultAvailableSpace);
+
+      this.updateResultPerRow(element, resultAvailableSpace);
     });
   }
 
@@ -262,7 +263,7 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
     }
   }
 
-  private updateFlexCSS(element: HTMLElement, value: string) {
+  private updateResultPerRow(element: HTMLElement, value: string) {
     element.style.flex = `0 0 ${value}`;
   }
 
