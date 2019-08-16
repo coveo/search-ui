@@ -352,7 +352,7 @@ export class SuggestionsManager {
     const selectables = $$(this.element).findAll(`.${this.options.selectableClass}`);
     const currentIndex = indexOf(selectables, currentlySelected);
 
-    let index = direction == Direction.Up ? currentIndex - 1 : currentIndex + 1;
+    let index = direction === Direction.Up ? currentIndex - 1 : currentIndex + 1;
     index = (index + selectables.length) % selectables.length;
 
     this.lastSelectedSuggestion = selectables[index];
@@ -378,16 +378,16 @@ export class SuggestionsManager {
     const omniboxIndex = indexOf(omniboxSelectables, currentlySelected);
     const previewIndex = indexOf(previewSelectables, currentlySelected);
 
-    const verticalMove = direction == Direction.Up || direction == Direction.Down;
+    const verticalMove = direction === Direction.Up || direction === Direction.Down;
     const suggestionIsSelected = omniboxIndex > -1;
     if (suggestionIsSelected && verticalMove) {
       this.moveWithinSuggestion(direction);
       return;
     }
 
-    const noPreviewDisplayed = previewSelectables.length == 0;
-    const directionIsLeft = direction == Direction.Left;
-    const noPreviewSelected = previewIndex == -1;
+    const noPreviewDisplayed = previewSelectables.length === 0;
+    const directionIsLeft = direction === Direction.Left;
+    const noPreviewSelected = previewIndex === -1;
     if (noPreviewDisplayed || (directionIsLeft && noPreviewSelected)) {
       return;
     }
@@ -398,11 +398,11 @@ export class SuggestionsManager {
     const previewSelectables = $$(this.element).findAll(`.coveo-preview-selectable`);
 
     let newSelectedIndex;
-    if (direction == Direction.Up || direction == Direction.Down) {
+    if (direction === Direction.Up || direction === Direction.Down) {
       newSelectedIndex = this.moveVerticalInPreview(direction);
     }
 
-    if (direction == Direction.Left || direction == Direction.Right) {
+    if (direction === Direction.Left || direction === Direction.Right) {
       newSelectedIndex = this.moveHorizontalInPreview(direction);
     }
     if (Utils.isNullOrUndefined(newSelectedIndex)) {
@@ -419,10 +419,10 @@ export class SuggestionsManager {
     const previewIndex = indexOf(previewSelectables, currentlySelected);
 
     if (previewSelectables.length <= resultPerRow) {
-      return this.lastSelectedSuggestion;
+      return null;
     }
     const offset = Math.ceil(previewSelectables.length / 2);
-    return direction == Direction.Up ? previewIndex - offset : previewIndex + offset;
+    return direction === Direction.Up ? previewIndex - offset : previewIndex + offset;
   }
 
   private moveHorizontalInPreview(direction: Direction) {
@@ -430,11 +430,11 @@ export class SuggestionsManager {
     const previewSelectables = $$(this.element).findAll(`.coveo-preview-selectable`);
     const previewIndex = indexOf(previewSelectables, currentlySelected);
 
-    if (previewIndex === 0 && direction == Direction.Left) {
+    if (previewIndex === 0 && direction === Direction.Left) {
       this.selectQuerySuggest(this.lastSelectedSuggestion);
       return;
     }
-    return direction == Direction.Left ? previewIndex - 1 : previewIndex + 1;
+    return direction === Direction.Left ? previewIndex - 1 : previewIndex + 1;
   }
 
   private returnMoved(selected) {

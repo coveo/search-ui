@@ -144,16 +144,16 @@ export class MagicBoxInstance {
     };
 
     this.inputManager.onkeydown = (key: number) => {
-      if (key == KEYBOARD.UP_ARROW || key == KEYBOARD.DOWN_ARROW || key == KEYBOARD.LEFT_ARROW || key == KEYBOARD.RIGHT_ARROW) {
+      if (key === KEYBOARD.UP_ARROW || key === KEYBOARD.DOWN_ARROW || key === KEYBOARD.LEFT_ARROW || key === KEYBOARD.RIGHT_ARROW) {
         return false;
       }
-      if (key == KEYBOARD.ENTER) {
+      if (key === KEYBOARD.ENTER) {
         const suggestion = this.suggestionsManager.selectAndReturnKeyboardFocusedElement();
         if (suggestion == null) {
           this.onsubmit && this.onsubmit();
         }
         return false;
-      } else if (key == KEYBOARD.ESCAPE) {
+      } else if (key === KEYBOARD.ESCAPE) {
         this.clearSuggestion();
         this.blur();
       }
