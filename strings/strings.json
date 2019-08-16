@@ -449,6 +449,10 @@
     "zh-cn": "搜索 {0}",
     "zh-tw": "搜尋 {0}"
   },
+  "SubmitSearch": {
+    "en": "Submit search",
+    "fr": "Envoyer la requête"
+  },
   "ShareQuery": {
     "en": "Share Query",
     "fr": "Partager cette requête",
@@ -7436,11 +7440,19 @@
   },
   "SelectValueWithResultCount": {
     "en": "Select {0} with {1}",
-    "fr": "Sélectionnez {0} avec {1}"
+    "fr": "Sélectionner {0} avec {1}"
   },
   "UnselectValueWithResultCount": {
     "en": "Unselect {0} with {1}",
-    "fr": "Désélectionnez {0} avec {1}"
+    "fr": "Désélectionner {0} avec {1}"
+  },
+  "ExcludeValueWithResultCount": {
+    "en": "Exclude {0} with {1}",
+    "fr": "Exclure {0} avec {1}"
+  },
+  "UnexcludeValueWithResultCount": {
+    "en": "Unexclude {0} with {1}",
+    "fr": "Réinclure {0} avec {1}"
   },
   "PageNumber": {
     "en": "Page {0}",

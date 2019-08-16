@@ -45,6 +45,18 @@ export function ValueElementRendererTest() {
       expect(valueRenderer.build().checkbox.getAttribute('disabled')).toBe('disabled');
     });
 
+    it('the checkbox has an aria-hidden equal to true', () => {
+      valueRenderer = new ValueElementRenderer(facet, FacetValue.createFromFieldValue(FakeResults.createFakeFieldValue('foo', 123)));
+      valueRenderer.build();
+      expect(valueRenderer.checkbox.getAttribute('aria-hidden')).toBe('true');
+    });
+
+    it('the checkbox has an aria-label', () => {
+      valueRenderer = new ValueElementRenderer(facet, FacetValue.createFromFieldValue(FakeResults.createFakeFieldValue('foo', 123)));
+      valueRenderer.build();
+      expect(valueRenderer.checkbox.getAttribute('aria-label')).toBeTruthy();
+    });
+
     it('should put the tabindex attribute to 0 on a stylish checkbox', () => {
       valueRenderer = new ValueElementRenderer(facet, FacetValue.createFromFieldValue(FakeResults.createFakeFieldValue('foo', 123)));
       expect(valueRenderer.build().stylishCheckbox.getAttribute('tabindex')).toBe('0');
@@ -73,6 +85,16 @@ export function ValueElementRendererTest() {
 
       const ariaLabel = valueRenderer.accessibleElement.getAttribute('aria-label');
       expect(ariaLabel).toContain('Unselect');
+    });
+
+    it(`when the facetValue is excluded,
+    the aria-label attribute contains the word 'Unexclude'`, () => {
+      const facetValue = FacetValue.createFromFieldValue(FakeResults.createFakeFieldValue('foo', 123));
+      facetValue.excluded = true;
+      valueRenderer = new ValueElementRenderer(facet, facetValue).build();
+
+      const ariaLabel = valueRenderer.accessibleElement.getAttribute('aria-label');
+      expect(ariaLabel).toContain('Unexclude');
     });
 
     it('should build a caption', () => {

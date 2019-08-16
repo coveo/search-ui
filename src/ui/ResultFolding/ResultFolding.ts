@@ -19,6 +19,7 @@ import 'styling/_ResultFolding';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { SVGDom } from '../../utils/SVGDom';
 import { TemplateComponentOptions } from '../Base/TemplateComponentOptions';
+import { AccessibleButton } from '../../utils/AccessibleButton';
 
 export interface IResultFoldingOptions {
   resultTemplate?: Template;
@@ -244,32 +245,45 @@ export class ResultFolding extends Component {
   }
 
   private buildFooter() {
-    let footer = $$('div', { className: 'coveo-folding-footer' }).el;
+    const footer = $$('div', { className: 'coveo-folding-footer' }).el;
     this.element.parentElement.appendChild(footer);
 
     if (this.result.moreResults) {
       this.showMore = $$('div', { className: 'coveo-folding-footer-section-for-less' }).el;
-      $$(this.showMore).on('click', () => this.showMoreResults());
       footer.appendChild(this.showMore);
 
       this.showLess = $$('div', { className: 'coveo-folding-footer-section-for-more' }).el;
-      $$(this.showLess).on('click', () => this.showLessResults());
       footer.appendChild(this.showLess);
 
-      let footerIconShowMore = $$(
+      const footerIconShowMore = $$(
         'div',
         { className: 'coveo-folding-more' },
         $$('span', { className: 'coveo-folding-footer-icon' }, SVGIcons.icons.arrowDown).el
       ).el;
       SVGDom.addClassToSVGInContainer(footerIconShowMore, 'coveo-folding-more-svg');
-      let footerIconShowLess = $$(
+
+      const footerIconShowLess = $$(
         'div',
         { className: 'coveo-folding-less' },
         $$('span', { className: 'coveo-folding-footer-icon' }, SVGIcons.icons.arrowUp).el
       ).el;
       SVGDom.addClassToSVGInContainer(footerIconShowLess, 'coveo-folding-less-svg');
-      let showMoreLink = $$('a', { className: 'coveo-folding-show-more' }, this.options.moreCaption).el;
-      let showLessLink = $$('a', { className: 'coveo-folding-show-less' }, this.options.lessCaption).el;
+
+      const showMoreLink = $$('a', { className: 'coveo-folding-show-more' }, this.options.moreCaption).el;
+      const showLessLink = $$('a', { className: 'coveo-folding-show-less' }, this.options.lessCaption).el;
+
+      new AccessibleButton()
+        .withElement(this.showMore)
+        .withLabel(this.options.moreCaption)
+        .withSelectAction(() => this.showMoreResults())
+        .build();
+
+      new AccessibleButton()
+        .withElement(this.showLess)
+        .withLabel(this.options.lessCaption)
+        .withSelectAction(() => this.showLessResults())
+        .build();
+
       this.showMore.appendChild(showMoreLink);
       this.showLess.appendChild(showLessLink);
       this.showMore.appendChild(footerIconShowMore);
@@ -287,8 +301,8 @@ export class ResultFolding extends Component {
     $$(this.oneResultCaption).toggleClass('coveo-hidden', !(subResultsLength && subResultsLength == 1));
 
     if (this.showMore) {
-      $$(this.showMore).toggle(!this.showingMoreResults && !Utils.exists(this.moreResultsPromise));
-      $$(this.showLess).toggle(this.showingMoreResults);
+      $$(this.showMore).toggleClass('coveo-visible', !this.showingMoreResults && !Utils.exists(this.moreResultsPromise));
+      $$(this.showLess).toggleClass('coveo-visible', this.showingMoreResults);
     }
 
     let showIfNormal = $$(this.element).find('.coveo-show-if-normal');
