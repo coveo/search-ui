@@ -273,6 +273,11 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
 
   private handleSelect(element: HTMLElement) {
     element.click();
+    const link = $$(element).find(`.${Component.computeCssClassNameForType('ResultLink')}`);
+    if (link) {
+      const resultLink = <ResultLink>Component.get(link);
+      resultLink.openLinkAsConfigured() || resultLink.openLink();
+    }
   }
 
   private addOnClickListener(results: HTMLElement[]) {
