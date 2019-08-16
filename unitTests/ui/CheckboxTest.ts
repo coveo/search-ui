@@ -1,4 +1,5 @@
 import { Checkbox } from '../../src/ui/FormWidgets/Checkbox';
+import { $$ } from '../../src/utils/Dom';
 
 export function CheckboxTest() {
   describe('Checkbox', () => {
@@ -30,6 +31,22 @@ export function CheckboxTest() {
     it('should not allow to create a checkbox with stored XSS', () => {
       checkbox = new Checkbox(spyChange, '<svg/onload=alert(document.domain)>');
       expect(checkbox.getLabel().textContent).toBe('<svg/onload=alert(document.domain)>');
+    });
+
+    it('the checkbox input has an aria-hidden equal to true', () => {
+      expect(
+        $$(checkbox.getElement())
+          .find('input')
+          .getAttribute('aria-hidden')
+      ).toBe('true');
+    });
+
+    it('the checkbox input has an aria-label', () => {
+      expect(
+        $$(checkbox.getElement())
+          .find('input')
+          .getAttribute('aria-label')
+      ).toBeTruthy();
     });
 
     describe('select', () => {
