@@ -12,6 +12,7 @@ import { TemplateComponentOptions } from '../Base/TemplateComponentOptions';
 import { ResultListTableRenderer } from '../ResultList/ResultListTableRenderer';
 import { ITemplateToHtml, TemplateToHtml } from '../Templates/TemplateToHtml';
 import { IQueryResult } from '../../rest/QueryResult';
+import { ResultLink } from '../ResultLink/ResultLink';
 import { OmniboxAnalytics } from '../Omnibox/OmniboxAnalytics';
 import {
   IAnalyticsOmniboxSuggestionMeta,
@@ -27,6 +28,8 @@ export interface IQuerySuggestPreview {
   headerText?: string;
   executeQueryDelay?: number;
 }
+
+export const resultPerRow = 3;
 
 /**
  * This component renders a preview of the top query results matching the currently focused query suggestion in the search box.
@@ -215,6 +218,10 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
       return;
     }
 
+    if (args.suggestion === '') {
+      return;
+    }
+
     this.previousSuggestionHovered = args.suggestion;
     this.timer && clearTimeout(this.timer);
     this.timer = setTimeout(() => {
@@ -246,16 +253,31 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
     if (!(buildResults.length > 0)) {
       return;
     }
+    this.updateResultElement(buildResults);
     this.addOnClickListener(buildResults);
-    this.updateResultPerRow(buildResults);
     this.renderer.renderResults(buildResults, true, result => {});
   }
 
-  private updateResultPerRow(elements: HTMLElement[]) {
+  private updateResultElement(elements: HTMLElement[]) {
     const resultAvailableSpace = elements.length === 4 ? '50%' : '33%';
     elements.forEach(element => {
-      this.updateFlexCSS(element, resultAvailableSpace);
+      $$(element).addClass('coveo-preview-selectable');
+
+      $$(element).on('keyboardSelect', () => {
+        this.handleSelect(element);
+      });
+
+      this.updateResultPerRow(element, resultAvailableSpace);
     });
+  }
+
+  private handleSelect(element: HTMLElement) {
+    element.click();
+    const link = $$(element).find(`.${Component.computeCssClassNameForType('ResultLink')}`);
+    if (link) {
+      const resultLink = <ResultLink>Component.get(link);
+      resultLink.openLinkAsConfigured() || resultLink.openLink();
+    }
   }
 
   private addOnClickListener(results: HTMLElement[]) {
@@ -271,7 +293,7 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
     this.logClickQuerySuggestPreview(rank, element);
   }
 
-  private updateFlexCSS(element: HTMLElement, value: string) {
+  private updateResultPerRow(element: HTMLElement, value: string) {
     element.style.flex = `0 0 ${value}`;
   }
 

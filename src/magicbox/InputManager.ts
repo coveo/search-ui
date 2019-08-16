@@ -4,6 +4,7 @@ import _ = require('underscore');
 import { MagicBoxInstance } from './MagicBox';
 import { KEYBOARD } from '../utils/KeyboardUtils';
 import { l } from '../strings/Strings';
+import { Component } from '../Core';
 
 export class InputManager {
   public input: HTMLInputElement;
@@ -26,7 +27,12 @@ export class InputManager {
   public onchangecursor: () => void;
   public ontabpress: () => void;
 
-  constructor(element: HTMLElement, private onchange: (text: string, wordCompletion: boolean) => void, private magicBox: MagicBoxInstance) {
+  constructor(
+    element: HTMLElement,
+    private onchange: (text: string, wordCompletion: boolean) => void,
+    private magicBox: MagicBoxInstance,
+    private root: HTMLElement
+  ) {
     this.underlay = document.createElement('div');
     this.underlay.className = 'magic-box-underlay';
 
@@ -247,9 +253,9 @@ export class InputManager {
 
   private keyup(e: KeyboardEvent) {
     switch (e.keyCode || e.which) {
-      case 37: // Left
-      case 39: // Right
-        this.onchangecursor();
+      case KEYBOARD.LEFT_ARROW:
+      case KEYBOARD.RIGHT_ARROW:
+        this.handleLeftRightArrow(e);
         break;
       default:
         if (this.onkeydown == null || this.onkeyup(e.keyCode || e.which)) {
@@ -259,6 +265,16 @@ export class InputManager {
         }
         break;
     }
+  }
+
+  private handleLeftRightArrow(e: KeyboardEvent) {
+    const querySuggestPreview = $$(this.root).find(`.${Component.computeCssClassNameForType('QuerySuggestPreview')}`);
+    if (!querySuggestPreview) {
+      this.onchangecursor();
+    }
+
+    const inputChanged = this.onkeydown == null || this.onkeyup(e.keyCode || e.which);
+    inputChanged ? this.onInputChange() : e.preventDefault();
   }
 
   private tabPress() {

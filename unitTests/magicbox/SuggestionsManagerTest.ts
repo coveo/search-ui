@@ -17,18 +17,13 @@ export function SuggestionsManagerTest() {
 
     beforeEach(() => {
       buildContainer();
-      const inputManager = new InputManager(document.createElement('div'), () => {}, {} as MagicBoxInstance);
+      const root = document.createElement('div');
+      const inputManager = new InputManager(document.createElement('div'), () => {}, {} as MagicBoxInstance, root);
 
-      suggestionManager = new SuggestionsManager(
-        suggestionContainer.el,
-        document.createElement('div'),
-        document.createElement('div'),
-        inputManager,
-        {
-          selectedClass,
-          selectableClass
-        }
-      );
+      suggestionManager = new SuggestionsManager(suggestionContainer.el, document.createElement('div'), root, inputManager, {
+        selectedClass,
+        selectableClass
+      });
     });
 
     it('builds suggestions parent correctly when adding a suggestion', () => {
@@ -73,6 +68,22 @@ export function SuggestionsManagerTest() {
 
     it('returns the correct selected element with keyboard on move up', () => {
       suggestionManager.moveUp();
+      const selectedWithKeyboard = suggestionManager.selectAndReturnKeyboardFocusedElement();
+      expect($$(selectedWithKeyboard).hasClass(selectedClass)).toBe(true);
+      expect($$(selectedWithKeyboard).getAttribute('aria-selected')).toBe('true');
+      expect(selectedWithKeyboard).toBe(suggestion.el);
+    });
+
+    it('returns the correct selected element with keyboard on move left', () => {
+      suggestionManager.moveLeft();
+      const selectedWithKeyboard = suggestionManager.selectAndReturnKeyboardFocusedElement();
+      expect($$(selectedWithKeyboard).hasClass(selectedClass)).toBe(true);
+      expect($$(selectedWithKeyboard).getAttribute('aria-selected')).toBe('true');
+      expect(selectedWithKeyboard).toBe(suggestion.el);
+    });
+
+    it('returns the correct selected element with keyboard on move right', () => {
+      suggestionManager.moveRight();
       const selectedWithKeyboard = suggestionManager.selectAndReturnKeyboardFocusedElement();
       expect($$(selectedWithKeyboard).hasClass(selectedClass)).toBe(true);
       expect($$(selectedWithKeyboard).getAttribute('aria-selected')).toBe('true');

@@ -1,8 +1,9 @@
 import { $$, Dom } from '../utils/Dom';
 import { InputManager } from './InputManager';
 import { each, defaults, indexOf, compact } from 'underscore';
-import { OmniboxEvents, Component } from '../Core';
+import { OmniboxEvents, Component, Utils } from '../Core';
 import { IQuerySuggestSelection } from '../events/OmniboxEvents';
+import { resultPerRow } from '../ui/QuerySuggestPreview/QuerySuggestPreview';
 
 export interface Suggestion {
   text?: string;
@@ -19,11 +20,19 @@ export interface SuggestionsManagerOptions {
   timeout?: number;
 }
 
+enum Direction {
+  Up = 'Up',
+  Down = 'Down',
+  Left = 'Left',
+  Right = 'Right'
+}
+
 export class SuggestionsManager {
   public hasSuggestions: boolean;
   private pendingSuggestion: Promise<Suggestion[]>;
   private options: SuggestionsManagerOptions;
   private keyboardFocusedSuggestion: HTMLElement;
+  private lastSelectedSuggestion: HTMLElement;
 
   constructor(
     private element: HTMLElement,
@@ -86,12 +95,20 @@ export class SuggestionsManager {
     $$(this.root).trigger(OmniboxEvents.querySuggestLoseFocus);
   }
 
-  public moveDown(): Suggestion {
-    return this.returnMoved(this.move('down'));
+  public moveDown() {
+    this.move(Direction.Down);
   }
 
-  public moveUp(): Suggestion {
-    return this.returnMoved(this.move('up'));
+  public moveUp() {
+    this.move(Direction.Up);
+  }
+
+  public moveLeft() {
+    this.move(Direction.Left);
+  }
+
+  public moveRight() {
+    this.move(Direction.Right);
   }
 
   public selectAndReturnKeyboardFocusedElement(): HTMLElement {
@@ -185,6 +202,7 @@ export class SuggestionsManager {
 
     if (!this.hasSuggestions) {
       this.removeAccessibilityPropertiesForSuggestions();
+      $$(this.root).trigger(OmniboxEvents.querySuggestLoseFocus);
       return;
     }
 
@@ -206,14 +224,28 @@ export class SuggestionsManager {
     $$(this.root).trigger(OmniboxEvents.querySuggestRendered);
   }
 
+  public get selectedSuggestion(): Suggestion {
+    if (this.htmlElementIsSuggestion(this.keyboardFocusedSuggestion)) {
+      return this.returnMoved(this.keyboardFocusedSuggestion) as Suggestion;
+    }
+    return null;
+  }
+
   private processKeyboardSelection(suggestion: HTMLElement) {
     this.addSelectedStatus(suggestion);
+    this.updateSelectedSuggestion(suggestion.innerText);
     this.keyboardFocusedSuggestion = suggestion;
     $$(this.inputManager.input).setAttribute('aria-activedescendant', $$(suggestion).getAttribute('id'));
   }
 
+  private processKeyboardPreviewSelection(suggestion: HTMLElement) {
+    this.addSelectedStatus(suggestion);
+    this.keyboardFocusedSuggestion = suggestion;
+  }
+
   private processMouseSelection(suggestion: HTMLElement) {
     this.addSelectedStatus(suggestion);
+    this.updateSelectedSuggestion(suggestion.innerText);
     this.keyboardFocusedSuggestion = null;
   }
 
@@ -306,29 +338,103 @@ export class SuggestionsManager {
     return $$(dom);
   }
 
-  private move(direction: 'up' | 'down') {
+  private move(direction: Direction) {
+    const previewSelectables = $$(this.element).findAll(`.coveo-preview-selectable`);
+    if (previewSelectables.length > 0) {
+      this.moveWithQuerySuggestPreview(direction);
+    } else {
+      this.moveWithinSuggestion(direction);
+    }
+  }
+
+  private moveWithinSuggestion(direction: Direction) {
     const currentlySelected = $$(this.element).find(`.${this.options.selectedClass}`);
     const selectables = $$(this.element).findAll(`.${this.options.selectableClass}`);
     const currentIndex = indexOf(selectables, currentlySelected);
 
-    let index = direction == 'up' ? currentIndex - 1 : currentIndex + 1;
-    if (index < -1) {
-      index = selectables.length - 1;
-    }
-    if (index > selectables.length) {
-      index = 0;
-    }
+    let index = direction === Direction.Up ? currentIndex - 1 : currentIndex + 1;
+    index = (index + selectables.length) % selectables.length;
 
-    const newlySelected = selectables[index];
+    this.lastSelectedSuggestion = selectables[index];
 
-    if (newlySelected) {
-      this.processKeyboardSelection(newlySelected);
+    this.selectQuerySuggest(this.lastSelectedSuggestion);
+  }
+
+  private selectQuerySuggest(suggestion: HTMLElement) {
+    if (suggestion) {
+      this.processKeyboardSelection(suggestion);
     } else {
       this.keyboardFocusedSuggestion = null;
       this.inputManager.input.removeAttribute('aria-activedescendant');
     }
 
-    return newlySelected;
+    return suggestion;
+  }
+
+  private moveWithQuerySuggestPreview(direction: Direction) {
+    const currentlySelected = $$(this.element).find(`.${this.options.selectedClass}`);
+    const omniboxSelectables = $$(this.element).findAll(`.${this.options.selectableClass}`);
+    const previewSelectables = $$(this.element).findAll(`.coveo-preview-selectable`);
+    const omniboxIndex = indexOf(omniboxSelectables, currentlySelected);
+    const previewIndex = indexOf(previewSelectables, currentlySelected);
+
+    const verticalMove = direction === Direction.Up || direction === Direction.Down;
+    const suggestionIsSelected = omniboxIndex > -1;
+    if (suggestionIsSelected && verticalMove) {
+      this.moveWithinSuggestion(direction);
+      return;
+    }
+
+    const noPreviewDisplayed = previewSelectables.length === 0;
+    const directionIsLeft = direction === Direction.Left;
+    const noPreviewSelected = previewIndex === -1;
+    if (noPreviewDisplayed || (directionIsLeft && noPreviewSelected)) {
+      return;
+    }
+    this.moveWithinPreview(direction);
+  }
+
+  private moveWithinPreview(direction: Direction) {
+    const previewSelectables = $$(this.element).findAll(`.coveo-preview-selectable`);
+
+    let newSelectedIndex;
+    if (direction === Direction.Up || direction === Direction.Down) {
+      newSelectedIndex = this.moveVerticallyInPreview(direction);
+    }
+
+    if (direction === Direction.Left || direction === Direction.Right) {
+      newSelectedIndex = this.moveHorizontallyInPreview(direction);
+    }
+    if (Utils.isNullOrUndefined(newSelectedIndex)) {
+      return;
+    }
+
+    newSelectedIndex = (newSelectedIndex + previewSelectables.length) % previewSelectables.length;
+    this.processKeyboardPreviewSelection(previewSelectables[newSelectedIndex]);
+  }
+
+  private moveVerticallyInPreview(direction: Direction) {
+    const currentlySelected = $$(this.element).find(`.${this.options.selectedClass}`);
+    const previewSelectables = $$(this.element).findAll(`.coveo-preview-selectable`);
+    const previewIndex = indexOf(previewSelectables, currentlySelected);
+
+    if (previewSelectables.length <= resultPerRow) {
+      return null;
+    }
+    const offset = Math.ceil(previewSelectables.length / 2);
+    return direction === Direction.Up ? previewIndex - offset : previewIndex + offset;
+  }
+
+  private moveHorizontallyInPreview(direction: Direction) {
+    const currentlySelected = $$(this.element).find(`.${this.options.selectedClass}`);
+    const previewSelectables = $$(this.element).findAll(`.coveo-preview-selectable`);
+    const previewIndex = indexOf(previewSelectables, currentlySelected);
+
+    if (previewIndex === 0 && direction === Direction.Left) {
+      this.selectQuerySuggest(this.lastSelectedSuggestion);
+      return;
+    }
+    return direction === Direction.Left ? previewIndex - 1 : previewIndex + 1;
   }
 
   private returnMoved(selected) {
@@ -356,7 +462,6 @@ export class SuggestionsManager {
     }
     $$(suggestion).addClass(this.options.selectedClass);
     this.updateAreaSelectedIfDefined(suggestion, 'true');
-    this.updateSelectedSuggestion(suggestion.innerText);
   }
 
   private updateSelectedSuggestion(suggestion: string) {
@@ -391,5 +496,10 @@ export class SuggestionsManager {
     this.inputManager.input.removeAttribute('aria-activedescendant');
     this.inputManager.input.removeAttribute('aria-controls');
     this.magicBoxContainer.removeAttribute('aria-owns');
+  }
+
+  private htmlElementIsSuggestion(selected: HTMLElement) {
+    const omniboxSelectables = $$(this.element).findAll(`.${this.options.selectableClass}`);
+    return indexOf(omniboxSelectables, selected) > -1;
   }
 }
