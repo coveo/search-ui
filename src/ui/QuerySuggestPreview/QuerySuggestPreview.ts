@@ -12,6 +12,12 @@ import { TemplateComponentOptions } from '../Base/TemplateComponentOptions';
 import { ResultListTableRenderer } from '../ResultList/ResultListTableRenderer';
 import { ITemplateToHtml, TemplateToHtml } from '../Templates/TemplateToHtml';
 import { IQueryResult } from '../../rest/QueryResult';
+import { OmniboxAnalytics } from '../Omnibox/OmniboxAnalytics';
+import {
+  IAnalyticsOmniboxSuggestionMeta,
+  analyticsActionCauseList,
+  IAnalyticsClickQuerySuggestPreviewMeta
+} from '../Analytics/AnalyticsActionListMeta';
 
 export interface IQuerySuggestPreview {
   numberOfPreviewResults?: number;
@@ -100,8 +106,11 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
   };
 
   private previousSuggestionHovered: string;
+  private currentlyRenderedSuggestion: string;
   private renderer: ResultListRenderer;
   private timer;
+  private omniboxAnalytics: OmniboxAnalytics;
+
   public currentlyDisplayedResults: IQueryResult[] = [];
 
   /**
@@ -130,6 +139,8 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
     this.bind.onRootElement(OmniboxEvents.querySuggestLoseFocus, () => {
       this.handleFocusOut();
     });
+
+    this.omniboxAnalytics = this.searchInterface.getOmniboxAnalytics();
   }
 
   /**
@@ -207,13 +218,15 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
     this.previousSuggestionHovered = args.suggestion;
     this.timer && clearTimeout(this.timer);
     this.timer = setTimeout(() => {
-      this.executeQueryHover(args.suggestion);
+      this.currentlyRenderedSuggestion = args.suggestion;
+      this.logShowQuerySuggestPreview();
+      this.executeQueryHover();
     }, this.options.executeQueryDelay);
   }
 
-  private async executeQueryHover(suggestion: string) {
+  private async executeQueryHover() {
     const previousQueryOptions = this.queryController.getLastQuery();
-    previousQueryOptions.q = suggestion;
+    previousQueryOptions.q = this.currentlyRenderedSuggestion;
     previousQueryOptions.numberOfResults = this.options.numberOfPreviewResults;
     const results = await this.queryController.getEndpoint().search(previousQueryOptions);
     $$(this.previewContainer).empty();
@@ -221,7 +234,7 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
     if (!results) {
       return;
     }
-    this.buildPreviewHeader(suggestion);
+    this.buildPreviewHeader(this.currentlyRenderedSuggestion);
     this.buildResultsPreview(results);
   }
 
@@ -233,6 +246,7 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
     if (!(buildResults.length > 0)) {
       return;
     }
+    this.addOnClickListener(buildResults);
     this.updateResultPerRow(buildResults);
     this.renderer.renderResults(buildResults, true, result => {});
   }
@@ -242,6 +256,19 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
     elements.forEach(element => {
       this.updateFlexCSS(element, resultAvailableSpace);
     });
+  }
+
+  private addOnClickListener(results: HTMLElement[]) {
+    results.forEach(result => {
+      const rank = results.indexOf(result);
+      this.bind.on(result, 'click', (e: MouseEvent) => {
+        this.handleOnClick(e, result, rank);
+      });
+    });
+  }
+
+  private handleOnClick(e: MouseEvent, element: HTMLElement, rank: number) {
+    this.logClickQuerySuggestPreview(rank, element);
   }
 
   private updateFlexCSS(element: HTMLElement, value: string) {
@@ -260,6 +287,24 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
     const autoCreateComponentsFn = (elem: HTMLElement) => Initialization.automaticallyCreateComponentsInside(elem, initParameters);
 
     this.renderer = new ResultListTableRenderer(rendererOption, autoCreateComponentsFn);
+  }
+
+  private logShowQuerySuggestPreview() {
+    this.usageAnalytics.logSearchEvent<IAnalyticsOmniboxSuggestionMeta>(
+      analyticsActionCauseList.showQuerySuggestPreview,
+      this.omniboxAnalytics.buildCustomDataForPartialQueries()
+    );
+  }
+
+  private logClickQuerySuggestPreview(displayedRank: number, element: HTMLElement) {
+    this.usageAnalytics.logCustomEvent<IAnalyticsClickQuerySuggestPreviewMeta>(
+      analyticsActionCauseList.clickQuerySuggestPreview,
+      {
+        suggestion: this.currentlyRenderedSuggestion,
+        displayedRank
+      },
+      element
+    );
   }
 }
 
