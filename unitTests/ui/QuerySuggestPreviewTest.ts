@@ -53,7 +53,7 @@ export function QuerySuggestPreviewTest() {
     function setupSuggestionManager() {
       const root = document.createElement('div');
       buildSuggestion();
-      const inputManager = new InputManager(document.createElement('div'), root, () => {}, {} as MagicBoxInstance);
+      const inputManager = new InputManager(document.createElement('div'), () => {}, {} as MagicBoxInstance, root);
 
       suggestionManager = new SuggestionsManager(suggestionContainer.el, root, testEnv.root, inputManager);
     }
