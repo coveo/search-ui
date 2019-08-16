@@ -59,7 +59,6 @@ export class MagicBoxInstance {
 
     this.inputManager = new InputManager(
       inputContainer,
-      root,
       (text, wordCompletion) => {
         if (!wordCompletion) {
           this.setText(text);
@@ -70,7 +69,8 @@ export class MagicBoxInstance {
           this.onselect && this.onselect(this.getFirstSuggestionText());
         }
       },
-      this
+      this,
+      root
     );
 
     this.inputManager.ontabpress = () => {
@@ -165,26 +165,25 @@ export class MagicBoxInstance {
     };
 
     this.inputManager.onkeyup = (key: number) => {
-      let selected: Suggestion | HTMLElement = null;
       this.onmove && this.onmove();
       switch (key) {
         case KEYBOARD.UP_ARROW:
-          selected = this.suggestionsManager.moveUp();
+          this.suggestionsManager.moveUp();
           break;
         case KEYBOARD.DOWN_ARROW:
-          selected = this.suggestionsManager.moveDown();
+          this.suggestionsManager.moveDown();
           break;
         case KEYBOARD.LEFT_ARROW:
-          selected = this.suggestionsManager.moveLeft();
+          this.suggestionsManager.moveLeft();
           break;
         case KEYBOARD.RIGHT_ARROW:
-          selected = this.suggestionsManager.moveRight();
+          this.suggestionsManager.moveRight();
           break;
         default:
           return true;
       }
-      if (!(selected instanceof HTMLElement)) {
-        this.focusOnSuggestion(selected);
+      if (this.suggestionsManager.selectedSuggestion) {
+        this.focusOnSuggestion(this.suggestionsManager.selectedSuggestion);
       }
       this.onchange && this.onchange();
       return false;

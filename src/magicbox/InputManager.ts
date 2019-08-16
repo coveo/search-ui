@@ -29,9 +29,9 @@ export class InputManager {
 
   constructor(
     element: HTMLElement,
-    private root: HTMLElement,
     private onchange: (text: string, wordCompletion: boolean) => void,
-    private magicBox: MagicBoxInstance
+    private magicBox: MagicBoxInstance,
+    private root: HTMLElement
   ) {
     this.underlay = document.createElement('div');
     this.underlay.className = 'magic-box-underlay';
@@ -268,15 +268,13 @@ export class InputManager {
   }
 
   private handleLeftRightArrow(e: KeyboardEvent) {
-    if ($$(this.root).find(`.${Component.computeCssClassNameForType('QuerySuggestPreview')}`)) {
-      if (this.onkeydown == null || this.onkeyup(e.keyCode || e.which)) {
-        this.onInputChange();
-      } else {
-        e.preventDefault();
-      }
-    } else {
+    const querySuggestPreview = $$(this.root).find(`.${Component.computeCssClassNameForType('QuerySuggestPreview')}`);
+    if (!querySuggestPreview) {
       this.onchangecursor();
     }
+
+    const inputChanged = this.onkeydown == null || this.onkeyup(e.keyCode || e.which);
+    inputChanged ? this.onInputChange() : e.preventDefault();
   }
 
   private tabPress() {

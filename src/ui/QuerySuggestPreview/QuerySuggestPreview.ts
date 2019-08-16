@@ -23,6 +23,8 @@ export interface IQuerySuggestPreview {
   executeQueryDelay?: number;
 }
 
+export const resultPerRow = 3;
+
 /**
  * This component renders a preview of the top query results matching the currently focused query suggestion in the search box.
  *

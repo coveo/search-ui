@@ -1,8 +1,9 @@
 import { $$, Dom } from '../utils/Dom';
 import { InputManager } from './InputManager';
 import { each, defaults, indexOf, compact } from 'underscore';
-import { OmniboxEvents, Component } from '../Core';
+import { OmniboxEvents, Component, Utils } from '../Core';
 import { IQuerySuggestSelection } from '../events/OmniboxEvents';
+import { resultPerRow } from '../ui/QuerySuggestPreview/QuerySuggestPreview';
 
 export interface Suggestion {
   text?: string;
@@ -19,7 +20,12 @@ export interface SuggestionsManagerOptions {
   timeout?: number;
 }
 
-type direction = 'up' | 'down' | 'left' | 'right';
+enum Direction {
+  Up = 'Up',
+  Down = 'Down',
+  Left = 'Left',
+  Right = 'Right'
+}
 
 export class SuggestionsManager {
   public hasSuggestions: boolean;
@@ -90,23 +96,19 @@ export class SuggestionsManager {
   }
 
   public moveDown() {
-    const selected = this.move('down');
-    return this.afterMoving(selected);
+    this.move(Direction.Down);
   }
 
   public moveUp() {
-    const selected = this.move('up');
-    return this.afterMoving(selected);
+    this.move(Direction.Up);
   }
 
   public moveLeft() {
-    const selected = this.move('left');
-    return this.afterMoving(selected);
+    this.move(Direction.Left);
   }
 
   public moveRight() {
-    const selected = this.move('right');
-    return this.afterMoving(selected);
+    this.move(Direction.Right);
   }
 
   public selectAndReturnKeyboardFocusedElement(): HTMLElement {
@@ -222,11 +224,11 @@ export class SuggestionsManager {
     $$(this.root).trigger(OmniboxEvents.querySuggestRendered);
   }
 
-  private afterMoving(selected) {
-    if (this.htmlElementIsSuggestion(selected)) {
-      return this.returnMoved(selected) as Suggestion;
+  public get selectedSuggestion(): Suggestion {
+    if (this.htmlElementIsSuggestion(this.keyboardFocusedSuggestion)) {
+      return this.returnMoved(this.keyboardFocusedSuggestion) as Suggestion;
     }
-    return selected;
+    return null;
   }
 
   private processKeyboardSelection(suggestion: HTMLElement) {
@@ -336,25 +338,26 @@ export class SuggestionsManager {
     return $$(dom);
   }
 
-  private move(direction: direction) {
+  private move(direction: Direction) {
     const previewSelectables = $$(this.element).findAll(`.coveo-preview-selectable`);
     if (previewSelectables.length > 0) {
-      return this.moveWithQuerySuggestPreview(direction);
+      this.moveWithQuerySuggestPreview(direction);
+    } else {
+      this.moveWithinSuggestion(direction);
     }
-    return this.moveWithinSuggestion(direction);
   }
 
-  private moveWithinSuggestion(direction: direction) {
+  private moveWithinSuggestion(direction: Direction) {
     const currentlySelected = $$(this.element).find(`.${this.options.selectedClass}`);
     const selectables = $$(this.element).findAll(`.${this.options.selectableClass}`);
     const currentIndex = indexOf(selectables, currentlySelected);
 
-    let index = direction == 'up' ? currentIndex - 1 : currentIndex + 1;
+    let index = direction == Direction.Up ? currentIndex - 1 : currentIndex + 1;
     index = (index + selectables.length) % selectables.length;
 
     this.lastSelectedSuggestion = selectables[index];
 
-    return this.selectQuerySuggest(this.lastSelectedSuggestion);
+    this.selectQuerySuggest(this.lastSelectedSuggestion);
   }
 
   private selectQuerySuggest(suggestion: HTMLElement) {
@@ -368,53 +371,70 @@ export class SuggestionsManager {
     return suggestion;
   }
 
-  private moveWithQuerySuggestPreview(direction: direction) {
+  private moveWithQuerySuggestPreview(direction: Direction) {
     const currentlySelected = $$(this.element).find(`.${this.options.selectedClass}`);
     const omniboxSelectables = $$(this.element).findAll(`.${this.options.selectableClass}`);
     const previewSelectables = $$(this.element).findAll(`.coveo-preview-selectable`);
     const omniboxIndex = indexOf(omniboxSelectables, currentlySelected);
     const previewIndex = indexOf(previewSelectables, currentlySelected);
-    const noSelection = omniboxIndex == -1 && previewIndex == -1;
 
-    //if we move within the suggestion
-    if ((noSelection || omniboxIndex > -1) && (direction == 'up' || direction == 'down')) {
-      return this.moveWithinSuggestion(direction);
+    const verticalMove = direction == Direction.Up || direction == Direction.Down;
+    const suggestionIsSelected = omniboxIndex > -1;
+    if (suggestionIsSelected && verticalMove) {
+      this.moveWithinSuggestion(direction);
+      return;
     }
 
-    //if there is no preview OR we go left when we are on the Suggestion
-    if (previewSelectables.length == 0 || (direction == 'left' && previewIndex == -1)) {
-      return this.lastSelectedSuggestion;
+    const noPreviewDisplayed = previewSelectables.length == 0;
+    const directionIsLeft = direction == Direction.Left;
+    const noPreviewSelected = previewIndex == -1;
+    if (noPreviewDisplayed || (directionIsLeft && noPreviewSelected)) {
+      return;
     }
-    return this.moveWithinPreview(direction);
+    this.moveWithinPreview(direction);
   }
 
-  private moveWithinPreview(direction: direction) {
+  private moveWithinPreview(direction: Direction) {
+    const previewSelectables = $$(this.element).findAll(`.coveo-preview-selectable`);
+
+    let newSelectedIndex;
+    if (direction == Direction.Up || direction == Direction.Down) {
+      newSelectedIndex = this.moveVerticalInPreview(direction);
+    }
+
+    if (direction == Direction.Left || direction == Direction.Right) {
+      newSelectedIndex = this.moveHorizontalInPreview(direction);
+    }
+    if (Utils.isNullOrUndefined(newSelectedIndex)) {
+      return;
+    }
+
+    newSelectedIndex = (newSelectedIndex + previewSelectables.length) % previewSelectables.length;
+    this.processKeyboardPreviewSelection(previewSelectables[newSelectedIndex]);
+  }
+
+  private moveVerticalInPreview(direction: Direction) {
     const currentlySelected = $$(this.element).find(`.${this.options.selectedClass}`);
     const previewSelectables = $$(this.element).findAll(`.coveo-preview-selectable`);
     const previewIndex = indexOf(previewSelectables, currentlySelected);
-    let index = previewIndex;
 
-    if (direction == 'up' || direction == 'down') {
-      //up and down does nothing if we only have 1 row.
-      if (previewSelectables.length < 4) {
-        return this.lastSelectedSuggestion;
-      }
-
-      let offset = Math.ceil(previewSelectables.length / 2);
-      index = direction == 'up' ? previewIndex - offset : previewIndex + offset;
+    if (previewSelectables.length <= resultPerRow) {
+      return this.lastSelectedSuggestion;
     }
+    const offset = Math.ceil(previewSelectables.length / 2);
+    return direction == Direction.Up ? previewIndex - offset : previewIndex + offset;
+  }
 
-    if (direction == 'left' || direction == 'right') {
-      //Go back to the suggestion
-      if (index === 0 && direction == 'left') {
-        return this.selectQuerySuggest(this.lastSelectedSuggestion);
-      }
-      index = direction == 'left' ? previewIndex - 1 : previewIndex + 1;
+  private moveHorizontalInPreview(direction: Direction) {
+    const currentlySelected = $$(this.element).find(`.${this.options.selectedClass}`);
+    const previewSelectables = $$(this.element).findAll(`.coveo-preview-selectable`);
+    const previewIndex = indexOf(previewSelectables, currentlySelected);
+
+    if (previewIndex === 0 && direction == Direction.Left) {
+      this.selectQuerySuggest(this.lastSelectedSuggestion);
+      return;
     }
-
-    index = (index + previewSelectables.length) % previewSelectables.length;
-    this.processKeyboardPreviewSelection(previewSelectables[index]);
-    return previewSelectables[index];
+    return direction == Direction.Left ? previewIndex - 1 : previewIndex + 1;
   }
 
   private returnMoved(selected) {
