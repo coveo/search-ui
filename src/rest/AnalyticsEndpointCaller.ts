@@ -22,12 +22,20 @@ export class AnalyticsEndpointCaller implements IEndpointCaller {
   }
 
   private sendBeacon(params: IEndpointCallParameters) {
-    const url = UrlUtils.normalizeAsString({
-      paths: params.url,
-      queryAsString: params.queryString.concat(`access_token=${this.options.accessToken}`)
-    });
+    const queryAsString = params.queryString.concat(this.additionalQueryStringParams);
+    const url = UrlUtils.normalizeAsString({ paths: params.url, queryAsString });
     const data = EndpointCaller.convertJsonToFormBody({ clickEvent: params.requestData });
     navigator.sendBeacon(url, new Blob([data], { type: 'application/x-www-form-urlencoded' }));
+  }
+
+  private get additionalQueryStringParams() {
+    const tokenParam = this.accessTokenAsQueryString;
+    return tokenParam ? [tokenParam] : [];
+  }
+
+  private get accessTokenAsQueryString() {
+    const token = this.options.accessToken;
+    return token ? `access_token=${token}` : '';
   }
 
   private shouldSendAsBeacon(params: IEndpointCallParameters): boolean {

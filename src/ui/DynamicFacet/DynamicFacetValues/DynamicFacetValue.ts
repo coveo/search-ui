@@ -1,6 +1,5 @@
 import * as Globalize from 'globalize';
 import { DynamicFacetValueRenderer } from './DynamicFacetValueRenderer';
-import { FacetUtils } from '../../Facet/FacetUtils';
 import { DynamicFacet } from '../DynamicFacet';
 import { FacetValueState } from '../../../rest/Facet/FacetValueState';
 import { IAnalyticsDynamicFacetMeta, analyticsActionCauseList } from '../../Analytics/AnalyticsActionListMeta';
@@ -16,7 +15,7 @@ export interface IValueRendererKlass {
 
 export interface IDynamicFacetValue {
   value: string;
-  displayValue?: string;
+  displayValue: string;
   state: FacetValueState;
   numberOfResults: number;
   position: number;
@@ -73,21 +72,11 @@ export class DynamicFacetValue implements IDynamicFacetValue {
     return Globalize.format(this.numberOfResults, 'n0');
   }
 
-  public get valueCaption(): string {
-    let returnValue = FacetUtils.tryToGetTranslatedCaption(<string>this.facet.options.field, this.value);
-
-    if (this.facet.options.valueCaption && typeof this.facet.options.valueCaption === 'object') {
-      returnValue = this.facet.options.valueCaption[this.value] || returnValue;
-    }
-
-    return returnValue;
-  }
-
   public get selectAriaLabel() {
     const selectOrUnselect = !this.isSelected ? 'SelectValueWithResultCount' : 'UnselectValueWithResultCount';
     const resultCount = l('ResultCount', this.formattedCount);
 
-    return `${l(selectOrUnselect, this.valueCaption, resultCount)}`;
+    return `${l(selectOrUnselect, this.displayValue, resultCount)}`;
   }
 
   public get analyticsMeta(): IAnalyticsDynamicFacetMeta {
@@ -95,7 +84,7 @@ export class DynamicFacetValue implements IDynamicFacetValue {
       ...this.facet.basicAnalyticsFacetState,
       value: this.value,
       valuePosition: this.position,
-      displayValue: this.displayValue ? this.displayValue : this.valueCaption,
+      displayValue: this.displayValue,
       state: this.state
     };
   }

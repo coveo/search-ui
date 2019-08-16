@@ -35,9 +35,11 @@ export class DynamicFacetTestUtils {
     const fakeValues = [];
 
     for (let index = 0; index < count; index++) {
+      const value = `fake value ${index}`;
       const fakeValue: IDynamicFacetValue = {
-        value: `fake value ${index}`,
+        displayValue: value,
         numberOfResults: Math.ceil(Math.random() * 100000),
+        value,
         state,
         position: index + 1
       };

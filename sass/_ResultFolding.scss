@@ -32,7 +32,11 @@
 
 .coveo-folding-footer-section-for-less,
 .coveo-folding-footer-section-for-more {
-  display: inline-block;
+  display: none;
+
+  &.coveo-visible {
+    display: inline-block;
+  }
 }
 
 .coveo-folding-normal-caption,

@@ -708,6 +708,9 @@ DynamicFacetQueryControllerTest();
 import { DynamicFacetManagerTest } from './ui/DynamicFacetManagerTest';
 DynamicFacetManagerTest();
 
+import { DynamicFacetValueFormatterTest } from './ui/DynamicFacet/DynamicFacetValues/DynamicFacetValueFormatterTest';
+DynamicFacetValueFormatterTest();
+
 import { FacetSearchControllerTest } from './controllers/FacetSearchControllerTest';
 FacetSearchControllerTest();
 
@@ -737,3 +740,6 @@ QuerySuggestPreviewTest();
 
 import { FieldImageTest } from './ui/ImageFieldValueTest';
 FieldImageTest();
+
+import { OmniboxAnalyticsTest } from './ui/OmniboxAnalyticsTest';
+OmniboxAnalyticsTest();
