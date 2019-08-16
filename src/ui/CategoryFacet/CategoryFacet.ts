@@ -41,6 +41,7 @@ import { AccessibleButton } from '../../utils/AccessibleButton';
 import { IStringMap } from '../../rest/GenericParam';
 import { DependsOnManager, IDependentFacet } from '../../utils/DependsOnManager';
 import { ResultListUtils } from '../../utils/ResultListUtils';
+import { CategoryFacetValuesTree } from './CategoryFacetValuesTree';
 
 export interface ICategoryFacetOptions extends IResponsiveComponentOptions {
   field: IFieldOption;
@@ -300,6 +301,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   private numberOfChildValuesCurrentlyDisplayed = 0;
   private numberOfValues: number;
   private dependsOnManager: DependsOnManager;
+  private categoryFacetValuesTree: CategoryFacetValuesTree;
 
   public static WAIT_ELEMENT_CLASS = 'coveo-category-facet-header-wait-animation';
 
@@ -313,6 +315,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     this.categoryValueRoot.path = this.activePath;
     this.currentPage = 0;
     this.numberOfValues = this.options.numberOfValues;
+    this.categoryFacetValuesTree = new CategoryFacetValuesTree();
 
     this.tryToInitFacetSearch();
 
@@ -409,18 +412,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   }
 
   private handleNoResults() {
-    if (this.isPristine()) {
-      this.hide();
-      return;
-    }
-
-    if (this.hasValues) {
-      this.show();
-      return;
-    }
-
-    this.activePath = this.options.basePath;
-    this.hide();
+    this.hasValues ? this.show() : this.hide();
   }
 
   public handleQuerySuccess(args: IQuerySuccessEventArgs) {
@@ -677,6 +669,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   }
 
   private renderValues(categoryFacetResult: ICategoryFacetResult, numberOfRequestedValues: number) {
+    this.categoryFacetValuesTree.storeNewValues(categoryFacetResult);
     this.show();
     let sortedParentValues = this.sortParentValues(categoryFacetResult.parentValues);
     let currentParentValue: CategoryValueParent = this.categoryValueRoot;
@@ -896,22 +889,19 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
       return;
     }
 
-    let lastParentValue = this.getVisibleParentValues().pop();
-
-    if (!lastParentValue) {
-      // This means we're in a special corner case where the current base path is configured
-      // to one level before the last values in the tree.
-      // In that case, there's simply no parent, so we must tweak things a bit so it plays nicely with the breadcrumb.
-      // We can simulate the "last parent value" as being the current active path itself.
-      lastParentValue = this.activeCategoryValue.getDescriptor();
-    }
+    const lastParentValue = this.categoryFacetValuesTree.getValueForLastPartInPath(this.activePath);
+    const descriptor: CategoryValueDescriptor = {
+      path: this.activePath,
+      count: lastParentValue.numberOfResults,
+      value: lastParentValue.value
+    };
 
     const resetFacet = () => {
       this.logAnalyticsEvent(analyticsActionCauseList.breadcrumbFacet);
       this.reset();
     };
 
-    const categoryFacetBreadcrumbBuilder = new CategoryFacetBreadcrumb(this, resetFacet, lastParentValue);
+    const categoryFacetBreadcrumbBuilder = new CategoryFacetBreadcrumb(this, resetFacet, descriptor);
 
     args.breadcrumbs.push({ element: categoryFacetBreadcrumbBuilder.build() });
   }
