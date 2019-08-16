@@ -506,6 +506,7 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
     return {
       field: this.options.field.toString(),
       id: this.options.id,
+      title: this.options.title,
       facetType: this.facetType,
       facetPosition: this.position
     };

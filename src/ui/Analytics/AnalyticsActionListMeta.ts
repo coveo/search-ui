@@ -148,6 +148,12 @@ export interface IAnalyticsDynamicFacetMeta {
    */
   id: string;
   /**
+   * The title of the dynamic facet.
+   *
+   * **Example:** `Author`
+   */
+  title: string;
+  /**
    * The original name (i.e., field value) of the dynamic facet value.
    *
    * **Example:** `alice_r_smith`
