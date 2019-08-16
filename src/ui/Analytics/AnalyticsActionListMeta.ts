@@ -270,6 +270,20 @@ export interface IAnalyticsMissingTerm {
   missingTerm: string;
 }
 
+/**
+ * Describes the object sent as metadata along with [`clickQuerySuggestPreview`]{@link analyticsActionCauseList.clickQuerySuggestPreview} usage analytics events.
+ */
+export interface IAnalyticsClickQuerySuggestPreviewMeta {
+  /**
+   * The query suggestion for which a preview item was opened.
+   */
+  suggestion: string;
+  /**
+   * The 0-based position of the preview item that was opened.
+   */
+  displayedRank: number;
+}
+
 export var analyticsActionCauseList = {
   /**
    * Identifies the search event that gets logged when the initial query is performed as a result of loading a search interface.
@@ -1390,5 +1404,41 @@ export var analyticsActionCauseList = {
   removeMissingTerm: <IAnalyticsActionCause>{
     name: 'removeMissingTerm',
     type: 'missingTerm'
+  },
+  /**
+   * The search event logged when a preview is requested for a query suggestion (see the [QuerySuggestPreview]{@link QuerySuggestPreview} component).
+   *
+   * Implements the [IAnalyticsActionCause]{@link IAnalyticsActionCause} interface as such:
+   *
+   * ```javascript
+   * {
+   *  actionCause: "showQuerySuggestPreview",
+   *  actionType: "querySuggestPreview"
+   * }
+   * ```
+   *
+   * The framework sends an [`IAnalyticsTopSuggestionMeta`]{@link IAnalyticsTopSuggestionMeta} object as metadata when logging this event.
+   */
+  showQuerySuggestPreview: <IAnalyticsActionCause>{
+    name: 'showQuerySuggestPreview',
+    type: 'querySuggestPreview'
+  },
+  /**
+   * The custom event logged when an item is opened in a query suggestion preview (see the [QuerySuggestPreview]{@link QuerySuggestPreview} component).
+   *
+   * Implements the [IAnalyticsActionCause]{@link IAnalyticsActionCause} interface as such:
+   *
+   * ```javascript
+   * {
+   *  actionCause: "clickQuerySuggestPreview",
+   *  actionType: "querySuggestPreview"
+   * }
+   * ```
+   *
+   * The framework sends an [`IAnalyticsClickQuerySuggestPreviewMeta`]{@link IAnalyticsClickQuerySuggestPreviewMeta} object as metadata when logging this event.
+   */
+  clickQuerySuggestPreview: <IAnalyticsActionCause>{
+    name: 'clickQuerySuggestPreview',
+    type: 'querySuggestPreview'
   }
 };
