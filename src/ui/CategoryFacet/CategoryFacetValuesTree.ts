@@ -2,7 +2,7 @@ import { ICategoryFacetValue } from '../../rest/CategoryFacetValue';
 import { ICategoryFacetResult } from '../../rest/CategoryFacetResult';
 import { find } from 'underscore';
 
-type ISeenValue = { result: ICategoryFacetValue; children: ISeenValue[] };
+export type ISeenValue = { result: ICategoryFacetValue; children: ISeenValue[] };
 
 export class CategoryFacetValuesTree {
   public seenValues: ISeenValue[] = [];
