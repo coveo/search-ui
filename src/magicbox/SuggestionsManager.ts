@@ -399,11 +399,11 @@ export class SuggestionsManager {
 
     let newSelectedIndex;
     if (direction === Direction.Up || direction === Direction.Down) {
-      newSelectedIndex = this.moveVerticalInPreview(direction);
+      newSelectedIndex = this.moveVerticallyInPreview(direction);
     }
 
     if (direction === Direction.Left || direction === Direction.Right) {
-      newSelectedIndex = this.moveHorizontalInPreview(direction);
+      newSelectedIndex = this.moveHorizontallyInPreview(direction);
     }
     if (Utils.isNullOrUndefined(newSelectedIndex)) {
       return;
@@ -413,7 +413,7 @@ export class SuggestionsManager {
     this.processKeyboardPreviewSelection(previewSelectables[newSelectedIndex]);
   }
 
-  private moveVerticalInPreview(direction: Direction) {
+  private moveVerticallyInPreview(direction: Direction) {
     const currentlySelected = $$(this.element).find(`.${this.options.selectedClass}`);
     const previewSelectables = $$(this.element).findAll(`.coveo-preview-selectable`);
     const previewIndex = indexOf(previewSelectables, currentlySelected);
@@ -425,7 +425,7 @@ export class SuggestionsManager {
     return direction === Direction.Up ? previewIndex - offset : previewIndex + offset;
   }
 
-  private moveHorizontalInPreview(direction: Direction) {
+  private moveHorizontallyInPreview(direction: Direction) {
     const currentlySelected = $$(this.element).find(`.${this.options.selectedClass}`);
     const previewSelectables = $$(this.element).findAll(`.coveo-preview-selectable`);
     const previewIndex = indexOf(previewSelectables, currentlySelected);
