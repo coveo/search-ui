@@ -5,7 +5,7 @@ import { MockEnvironmentBuilder } from '../MockEnvironment';
 
 export function ComponentsTypesTest() {
   describe('ComponentsTypes', () => {
-    const expectedFacets = ['Facet', 'FacetRange', 'FacetSlider', 'CategoryFacet', 'HierarchicalFacet'];
+    const expectedFacets = ['Facet', 'FacetSlider', 'FacetRange', 'TimespanFacet', 'HierarchicalFacet', 'CategoryFacet', 'DynamicFacet'];
 
     it('should be able to return a list of different type of facets identifier', () => {
       expectedFacets.forEach(expectedFacet => {
@@ -39,14 +39,14 @@ export function ComponentsTypesTest() {
         });
       });
 
-      it('should be able to return all facets element', () => {
+      it('should be able to return all top level facets element', () => {
         const allFacetsElements = ComponentsTypes.getAllFacetsElements(root);
 
         expect(allFacetsElements.length).toBe(expectedFacets.length);
         allFacetsElements.forEach(element => expect(element instanceof HTMLDivElement).toBe(true));
       });
 
-      it('should be able to return all facets instance', () => {
+      it('should be able to return all top level facets instance', () => {
         const allFacetsInstance = ComponentsTypes.getAllFacetsInstance(root);
 
         expect(allFacetsInstance.length).toBe(expectedFacets.length);
