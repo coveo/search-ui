@@ -148,6 +148,27 @@ export const PlaygroundConfiguration: IStringMap<IComponentPlaygroundConfigurati
       title: 'Date distribution'
     }
   },
+  FacetValueSuggestions: {
+    options: {
+      field: '@filetype',
+      useQuerySuggestions: false
+    },
+    show: true,
+    element: new SearchSectionBuilder()
+      .withDomElement(
+        $$(
+          'div',
+          { className: 'preview-info' },
+          "Showing scoped query suggestions based on <span class='preview-info-emphasis'>@filetype</span> field values"
+        )
+      )
+      .withComponent('CoveoFacetValueSuggestions')
+      .withoutQuerySuggest()
+      .build(),
+    toExecute: () => {
+      setMinHeightOnSearchInterface('500px');
+    }
+  },
   FieldSuggestions: {
     options: {
       field: '@author',
