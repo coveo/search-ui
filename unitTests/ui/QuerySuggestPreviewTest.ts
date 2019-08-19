@@ -1,12 +1,41 @@
 import * as Mock from '../MockEnvironment';
-import { QuerySuggestPreview, IQuerySuggestPreview } from '../../src/ui/QuerySuggestPreview/QuerySuggestPreview';
 import { IBasicComponentSetup } from '../MockEnvironment';
-import { $$, OmniboxEvents, Dom, HtmlTemplate } from '../../src/Core';
+import { QuerySuggestPreview, IQuerySuggestPreview } from '../../src/ui/QuerySuggestPreview/QuerySuggestPreview';
+import { IOmniboxAnalytics } from '../../src/ui/Omnibox/OmniboxAnalytics';
+import { $$, OmniboxEvents, HtmlTemplate, Dom } from '../../src/Core';
 import { FakeResults } from '../Fake';
-import { SuggestionsManager, Suggestion } from '../../src/magicbox/SuggestionsManager';
+import { IAnalyticsOmniboxSuggestionMeta, analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
+import { Suggestion, SuggestionsManager } from '../../src/magicbox/SuggestionsManager';
 import { InputManager } from '../../src/magicbox/InputManager';
 import { MagicBoxInstance } from '../../src/magicbox/MagicBox';
 import { IQueryResults } from '../../src/rest/QueryResults';
+import { last } from 'underscore';
+
+export function initOmniboxAnalyticsMock(omniboxAnalytics: IOmniboxAnalytics) {
+  const partialQueries: string[] = [];
+  let suggestionRanking: number;
+  const suggestions: string[] = [];
+  let partialQuery: string;
+  const buildCustomDataForPartialQueries = (): IAnalyticsOmniboxSuggestionMeta => {
+    return getMetadata(omniboxAnalytics);
+  };
+  return (omniboxAnalytics = {
+    partialQueries,
+    suggestionRanking,
+    suggestions,
+    partialQuery,
+    buildCustomDataForPartialQueries
+  });
+}
+
+function getMetadata(omniboxAnalytics: IOmniboxAnalytics) {
+  return {
+    suggestionRanking: omniboxAnalytics.suggestionRanking,
+    suggestions: omniboxAnalytics.suggestions.join(';'),
+    partialQueries: omniboxAnalytics.partialQueries.join(';'),
+    partialQuery: last(omniboxAnalytics.partialQuery)
+  };
+}
 
 export function QuerySuggestPreviewTest() {
   describe('QuerySuggestPreview', () => {
@@ -17,6 +46,7 @@ export function QuerySuggestPreviewTest() {
     let suggestionManager: SuggestionsManager;
     let suggestion: Dom;
     let elementInsideSuggestion: Dom;
+    let omniboxAnalytics: IOmniboxAnalytics;
 
     function setupQuerySuggestPreview(options: IQuerySuggestPreview = {}) {
       const tmpl: HtmlTemplate = Mock.mock<HtmlTemplate>(HtmlTemplate);
@@ -51,10 +81,11 @@ export function QuerySuggestPreviewTest() {
     }
 
     function setupSuggestionManager() {
+      const root = document.createElement('div');
       buildSuggestion();
-      const inputManager = new InputManager(document.createElement('div'), () => {}, {} as MagicBoxInstance);
+      const inputManager = new InputManager(document.createElement('div'), () => {}, {} as MagicBoxInstance, root);
 
-      suggestionManager = new SuggestionsManager(suggestionContainer.el, document.createElement('div'), testEnv.root, inputManager);
+      suggestionManager = new SuggestionsManager(suggestionContainer.el, root, testEnv.root, inputManager);
     }
 
     function setupRenderPreview() {
@@ -68,9 +99,20 @@ export function QuerySuggestPreviewTest() {
       suggestionManager.updateSuggestions(suggestions);
     }
 
+    function waitXms(ms: number) {
+      return Promise.resolve(
+        setTimeout(() => {
+          return;
+        }, ms)
+      );
+    }
+
     beforeEach(() => {
       testEnv = new Mock.MockEnvironmentBuilder();
+      omniboxAnalytics = this.initOmniboxAnalyticsMock(omniboxAnalytics);
+      testEnv.searchInterface.getOmniboxAnalytics = jasmine.createSpy('omniboxAnalytics').and.returnValue(omniboxAnalytics) as any;
     });
+
     describe('expose options', () => {
       beforeEach(() => {
         jasmine.clock().install();
@@ -194,10 +236,22 @@ export function QuerySuggestPreviewTest() {
         expect(test.cmp.queryController.getLastQuery().q).toBe(realQuery);
         done();
       });
+
+      it(`and the query get executed, 
+      it logs an analytics search event`, () => {
+        setupQuerySuggestPreview();
+        setupSuggestion();
+        triggerQuerySuggestHoverAndPassTime();
+
+        expect(test.cmp.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(
+          analyticsActionCauseList.showQuerySuggestPreview,
+          jasmine.objectContaining(getMetadata(omniboxAnalytics))
+        );
+      });
     });
 
     describe('currentlyDisplayedResults', () => {
-      it('currentlyDisplayedResults get populated by rendered results', done => {
+      it('get populated by rendered results', done => {
         setupQuerySuggestPreview();
         const fakeResults = FakeResults.createFakeResults(test.cmp.options.numberOfPreviewResults);
         setupSuggestion();
@@ -208,7 +262,7 @@ export function QuerySuggestPreviewTest() {
         }, test.cmp.options.executeQueryDelay);
       });
 
-      it('currentlyDisplayedResults get emptied when they aare no result to be rendered', done => {
+      it('get emptied when they aare no result to be rendered', done => {
         setupQuerySuggestPreview();
         const fakeResults = FakeResults.createFakeResults(0);
         setupSuggestion();
@@ -219,7 +273,7 @@ export function QuerySuggestPreviewTest() {
         }, test.cmp.options.executeQueryDelay);
       });
 
-      it('currentlyDisplayedResults get emptied when a querySuggest loose focus', done => {
+      it('get emptied when a querySuggest loose focus', done => {
         setupQuerySuggestPreview();
         setupSuggestion();
         triggerQuerySuggestHover('test');
@@ -229,6 +283,68 @@ export function QuerySuggestPreviewTest() {
           expect(test.cmp.displayedResults).toEqual([]);
           done();
         }, test.cmp.options.executeQueryDelay);
+      });
+    });
+
+    describe('SuggestionManager', () => {
+      it(`when moving right,
+      it returns a QuerySuggestPreview`, done => {
+        setupQuerySuggestPreview();
+        const fakeResults = FakeResults.createFakeResults(test.cmp.options.numberOfPreviewResults);
+        setupSuggestion();
+        triggerQuerySuggestHover('test', fakeResults);
+        setTimeout(() => {
+          suggestionManager.moveRight();
+          const selectedWithKeyboard = suggestionManager.selectAndReturnKeyboardFocusedElement();
+          expect(selectedWithKeyboard.classList).toContain('coveo-preview-selectable');
+          expect(selectedWithKeyboard.classList).toContain('magic-box-selected');
+          done();
+        }, test.cmp.options.executeQueryDelay);
+      });
+    });
+
+    describe('Analytics', () => {
+      function getAResult() {
+        const previewContainer = $$(suggestionContainer.el).find('.coveo-preview-results > .CoveoResult');
+        return previewContainer;
+      }
+
+      function getAnalyticsMetadata(suggestion: string) {
+        return jasmine.objectContaining({
+          suggestion,
+          displayedRank: 0
+        });
+      }
+
+      it('it log an analytics with the appropriate event', async done => {
+        const suggestion = 'test';
+        triggerQuerySuggestHover(suggestion);
+        await waitXms(test.cmp.options.executeQueryDelay);
+        const previewContainer = getAResult();
+        previewContainer.click();
+        expect(test.cmp.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(
+          analyticsActionCauseList.clickQuerySuggestPreview,
+          getAnalyticsMetadata(suggestion),
+          previewContainer
+        );
+        done();
+      });
+
+      it(`it log an analytics with the appropriate event,
+      even if we hover on another suggestion before clicking`, async done => {
+        const suggestion = 'test';
+        triggerQuerySuggestHover(suggestion);
+        await waitXms(test.cmp.options.executeQueryDelay);
+        triggerQuerySuggestHover(`bad ${suggestion}`);
+        await waitXms(test.cmp.options.executeQueryDelay - 100);
+        const previewContainer = getAResult();
+        previewContainer.click();
+        expect(test.cmp.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(
+          analyticsActionCauseList.clickQuerySuggestPreview,
+          getAnalyticsMetadata(suggestion),
+          previewContainer
+        );
+        done();
       });
     });
   });

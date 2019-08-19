@@ -12,6 +12,13 @@ import { TemplateComponentOptions } from '../Base/TemplateComponentOptions';
 import { ResultListTableRenderer } from '../ResultList/ResultListTableRenderer';
 import { ITemplateToHtml, TemplateToHtml } from '../Templates/TemplateToHtml';
 import { IQueryResult } from '../../rest/QueryResult';
+import { ResultLink } from '../ResultLink/ResultLink';
+import { OmniboxAnalytics } from '../Omnibox/OmniboxAnalytics';
+import {
+  IAnalyticsOmniboxSuggestionMeta,
+  analyticsActionCauseList,
+  IAnalyticsClickQuerySuggestPreviewMeta
+} from '../Analytics/AnalyticsActionListMeta';
 
 export interface IQuerySuggestPreview {
   numberOfPreviewResults?: number;
@@ -21,6 +28,8 @@ export interface IQuerySuggestPreview {
   headerText?: string;
   executeQueryDelay?: number;
 }
+
+export const resultPerRow = 3;
 
 /**
  * This component renders a preview of the top query results matching the currently focused query suggestion in the search box.
@@ -100,8 +109,11 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
   };
 
   private previousSuggestionHovered: string;
+  private currentlyRenderedSuggestion: string;
   private renderer: ResultListRenderer;
   private timer;
+  private omniboxAnalytics: OmniboxAnalytics;
+
   public currentlyDisplayedResults: IQueryResult[] = [];
 
   /**
@@ -130,6 +142,8 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
     this.bind.onRootElement(OmniboxEvents.querySuggestLoseFocus, () => {
       this.handleFocusOut();
     });
+
+    this.omniboxAnalytics = this.searchInterface.getOmniboxAnalytics();
   }
 
   /**
@@ -204,16 +218,22 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
       return;
     }
 
+    if (args.suggestion === '') {
+      return;
+    }
+
     this.previousSuggestionHovered = args.suggestion;
     this.timer && clearTimeout(this.timer);
     this.timer = setTimeout(() => {
-      this.executeQueryHover(args.suggestion);
+      this.currentlyRenderedSuggestion = args.suggestion;
+      this.logShowQuerySuggestPreview();
+      this.executeQueryHover();
     }, this.options.executeQueryDelay);
   }
 
-  private async executeQueryHover(suggestion: string) {
+  private async executeQueryHover() {
     const previousQueryOptions = this.queryController.getLastQuery();
-    previousQueryOptions.q = suggestion;
+    previousQueryOptions.q = this.currentlyRenderedSuggestion;
     previousQueryOptions.numberOfResults = this.options.numberOfPreviewResults;
     const results = await this.queryController.getEndpoint().search(previousQueryOptions);
     $$(this.previewContainer).empty();
@@ -221,7 +241,7 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
     if (!results) {
       return;
     }
-    this.buildPreviewHeader(suggestion);
+    this.buildPreviewHeader(this.currentlyRenderedSuggestion);
     this.buildResultsPreview(results);
   }
 
@@ -233,18 +253,47 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
     if (!(buildResults.length > 0)) {
       return;
     }
-    this.updateResultPerRow(buildResults);
+    this.updateResultElement(buildResults);
+    this.addOnClickListener(buildResults);
     this.renderer.renderResults(buildResults, true, result => {});
   }
 
-  private updateResultPerRow(elements: HTMLElement[]) {
+  private updateResultElement(elements: HTMLElement[]) {
     const resultAvailableSpace = elements.length === 4 ? '50%' : '33%';
     elements.forEach(element => {
-      this.updateFlexCSS(element, resultAvailableSpace);
+      $$(element).addClass('coveo-preview-selectable');
+
+      $$(element).on('keyboardSelect', () => {
+        this.handleSelect(element);
+      });
+
+      this.updateResultPerRow(element, resultAvailableSpace);
     });
   }
 
-  private updateFlexCSS(element: HTMLElement, value: string) {
+  private handleSelect(element: HTMLElement) {
+    element.click();
+    const link = $$(element).find(`.${Component.computeCssClassNameForType('ResultLink')}`);
+    if (link) {
+      const resultLink = <ResultLink>Component.get(link);
+      resultLink.openLinkAsConfigured() || resultLink.openLink();
+    }
+  }
+
+  private addOnClickListener(results: HTMLElement[]) {
+    results.forEach(result => {
+      const rank = results.indexOf(result);
+      this.bind.on(result, 'click', (e: MouseEvent) => {
+        this.handleOnClick(e, result, rank);
+      });
+    });
+  }
+
+  private handleOnClick(e: MouseEvent, element: HTMLElement, rank: number) {
+    this.logClickQuerySuggestPreview(rank, element);
+  }
+
+  private updateResultPerRow(element: HTMLElement, value: string) {
     element.style.flex = `0 0 ${value}`;
   }
 
@@ -260,6 +309,24 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
     const autoCreateComponentsFn = (elem: HTMLElement) => Initialization.automaticallyCreateComponentsInside(elem, initParameters);
 
     this.renderer = new ResultListTableRenderer(rendererOption, autoCreateComponentsFn);
+  }
+
+  private logShowQuerySuggestPreview() {
+    this.usageAnalytics.logSearchEvent<IAnalyticsOmniboxSuggestionMeta>(
+      analyticsActionCauseList.showQuerySuggestPreview,
+      this.omniboxAnalytics.buildCustomDataForPartialQueries()
+    );
+  }
+
+  private logClickQuerySuggestPreview(displayedRank: number, element: HTMLElement) {
+    this.usageAnalytics.logCustomEvent<IAnalyticsClickQuerySuggestPreviewMeta>(
+      analyticsActionCauseList.clickQuerySuggestPreview,
+      {
+        suggestion: this.currentlyRenderedSuggestion,
+        displayedRank
+      },
+      element
+    );
   }
 }
 

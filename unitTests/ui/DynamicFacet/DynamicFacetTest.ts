@@ -452,6 +452,7 @@ export function DynamicFacetTest() {
     it('returns the correct basicAnalyticsFacetState', () => {
       expect(test.cmp.basicAnalyticsFacetState).toEqual({
         field: test.cmp.options.field.toString(),
+        title: test.cmp.options.title,
         id: test.cmp.options.id,
         facetType: test.cmp.facetType,
         facetPosition: test.cmp.position
