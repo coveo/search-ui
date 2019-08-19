@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>IAnalyticsActionCause | Coveo JavaScript Search Framework - Reference Documentation</title>
+	<title>FacetType | Coveo JavaScript Search Framework - Reference Documentation</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link href='https://fonts.googleapis.com/css?family=Lato:100,300,400,700' rel='stylesheet' type='text/css'/>
@@ -123,14 +123,17 @@
 					<a id="globals-toc-link" href=../globals.html><b>Globals</b></a>
 				</ul>
 				<ul class="current">
-					<li class="current tsd-kind-interface">
-						<a href="ianalyticsactioncause.html" class="tsd-kind-icon">IAnalytics<wbr>Action<wbr>Cause</a>
+					<li class="current tsd-kind-enum">
+						<a href="facettype.html" class="tsd-kind-icon">Facet<wbr>Type</a>
 						<ul>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="ianalyticsactioncause.html#name" class="tsd-kind-icon">name</a>
+							<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
+								<a href="facettype.html#daterange" class="tsd-kind-icon">Date<wbr>Range</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="ianalyticsactioncause.html#type" class="tsd-kind-icon">type</a>
+							<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
+								<a href="facettype.html#numericalrange" class="tsd-kind-icon">Numerical<wbr>Range</a>
+							</li>
+							<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
+								<a href="facettype.html#specific" class="tsd-kind-icon">Specific</a>
 							</li>
 						</ul>
 					</li>
@@ -151,18 +154,17 @@
 							<a href="../globals.html">Globals</a>
 						</li>
 						<li>
-							<a href="ianalyticsactioncause.html">IAnalyticsActionCause</a>
+							<a href="facettype.html">FacetType</a>
 						</li>
 					</ul>
-					<h1>Interface IAnalyticsActionCause</h1>
+					<h1>Enumeration FacetType</h1>
 				</div>
 			</div>
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>The IAnalyticsActionCause interface describes the cause of an event for the analytics service.</p>
+						<p>The allowed values for the [<code>facetType</code>]{@link IFacetRequest.facetType} property of a <a href="../interfaces/ifacetrequest.html">facet request</a>.</p>
 					</div>
-					<p>See the <a href="../components/analytics.html">Analytics</a> component</p>
 				</div>
 			</section>
 			<div class="preview-container tsd-panel">
@@ -173,65 +175,69 @@
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section ">
-							<h3>Properties</h3>
+							<h3>Enumeration members</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="ianalyticsactioncause.html#name" class="tsd-kind-icon">name</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="ianalyticsactioncause.html#type" class="tsd-kind-icon">type</a></li>
+								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="facettype.html#daterange" class="tsd-kind-icon">Date<wbr>Range</a></li>
+								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="facettype.html#numericalrange" class="tsd-kind-icon">Numerical<wbr>Range</a></li>
+								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="facettype.html#specific" class="tsd-kind-icon">Specific</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
-				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="name" class="tsd-anchor"></a>
-					<h3>name</h3>
-					<div class="tsd-signature tsd-kind-icon">name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+				<h2>Enumeration members</h2>
+				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum">
+					<a name="daterange" class="tsd-anchor"></a>
+					<h3>Date<wbr>Range</h3>
+					<div class="tsd-signature tsd-kind-icon">Date<wbr>Range<span class="tsd-signature-symbol">:</span> </div>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/AnalyticsActionListMeta.ts#L17">ui/Analytics/AnalyticsActionListMeta.ts
-							:17</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Facet/FacetRequest.ts#L20">rest/Facet/FacetRequest.ts
+							:20</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the name of the event. While you can actually set this property to any arbitrary string value, its value
-								should uniquely identify the precise action that triggers the event. Thus, each individual event should have its
-							own unique <code>name</code> value.</p>
+							<p>Request facet values representing ranges of dates.</p>
 						</div>
-						<p>Example: <code>searchBoxSubmit</code>, <code>resultSort</code>, etc.</p>
 					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="type" class="tsd-anchor"></a>
-					<h3>type</h3>
-					<div class="tsd-signature tsd-kind-icon">type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum">
+					<a name="numericalrange" class="tsd-anchor"></a>
+					<h3>Numerical<wbr>Range</h3>
+					<div class="tsd-signature tsd-kind-icon">Numerical<wbr>Range<span class="tsd-signature-symbol">:</span> </div>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/AnalyticsActionListMeta.ts#L26">ui/Analytics/AnalyticsActionListMeta.ts
-							:26</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Facet/FacetRequest.ts#L16">rest/Facet/FacetRequest.ts
+							:16</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the type of the event. While you can actually set this property to any arbitrary string value, it should
-								describe the general category of the event. Thus, more than one event can have the same <code>type</code> value, which makes
-							it possible to group events with identical types when doing reporting.</p>
+							<p>Request facet values representing ranges of numbers.</p>
 						</div>
-						<p>Example: All search box related events could have <code>searchbox</code> as their <code>type</code> value.</p>
 					</div>
 				</section>
-			</section>
-			<section class="tsd-panel tsd-hierarchy">
-				<h3>Hierarchy</h3>
-				<ul class="tsd-hierarchy">
-					<li>
-						<span class="target">IAnalyticsActionCause</span>
-					</li>
-				</ul>
+				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum">
+					<a name="specific" class="tsd-anchor"></a>
+					<h3>Specific</h3>
+					<div class="tsd-signature tsd-kind-icon">Specific<span class="tsd-signature-symbol">:</span> </div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Facet/FacetRequest.ts#L12">rest/Facet/FacetRequest.ts
+							:12</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Request facet values representing specific values.</p>
+						</div>
+					</div>
+				</section>
 			</section>
 			<footer class="with-border-bottom">
 				<div class="container">
