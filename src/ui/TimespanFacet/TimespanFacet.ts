@@ -133,7 +133,7 @@ export class TimespanFacet extends Component {
   private facetRangeElement: Dom;
   private facetRange: FacetRange;
 
-  constructor(public element: HTMLElement, public options?: ITimespanFacetOptions, bindings?: IComponentBindings) {
+  constructor(public element: HTMLElement, public options?: ITimespanFacetOptions, private bindings?: IComponentBindings) {
     super(element, TimespanFacet.ID, bindings);
 
     this.options = ComponentOptions.initComponentOptions(element, TimespanFacet, options);
@@ -176,14 +176,18 @@ export class TimespanFacet extends Component {
     this.destroyFacet();
     this.facetRangeElement = $$('div');
     $$(this.element).append(this.facetRangeElement.el);
-    this.facetRange = new FacetRange(this.facetRangeElement.el, {
-      field: this.options.field,
-      title: this.options.title,
-      ranges: this.rangeValues,
-      availableSorts: ['custom'],
-      customSort: pluck(this.rangeValues, 'label'),
-      id: this.options.id
-    });
+    this.facetRange = new FacetRange(
+      this.facetRangeElement.el,
+      {
+        field: this.options.field,
+        title: this.options.title,
+        ranges: this.rangeValues,
+        availableSorts: ['custom'],
+        customSort: pluck(this.rangeValues, 'label'),
+        id: this.options.id
+      },
+      this.bindings
+    );
     this.facetRange.isCurrentlyDisplayed = this.isCurrentlyDisplayed;
   }
 

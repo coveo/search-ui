@@ -13,7 +13,11 @@ export class ComponentsTypes {
 
   public static getAllFacetsElements(root: HTMLElement | Dom) {
     const selectors = ComponentsTypes.allFacetsClassname.map(className => `.${className}`).join(', ');
-    return $$(root as HTMLElement).findAll(selectors);
+    const hasNoFacetChild = (element: HTMLElement) => !$$(element).findAll(selectors).length;
+
+    return $$(root as HTMLElement)
+      .findAll(selectors)
+      .filter(hasNoFacetChild);
   }
 
   public static getAllFacetsInstance(root: HTMLElement | Dom) {

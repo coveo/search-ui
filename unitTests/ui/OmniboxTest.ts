@@ -1,6 +1,6 @@
 import * as Mock from '../MockEnvironment';
 import { Omnibox } from '../../src/ui/Omnibox/Omnibox';
-import { analyticsActionCauseList, IAnalyticsOmniboxSuggestionMeta } from '../../src/ui/Analytics/AnalyticsActionListMeta';
+import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
 import { IOmniboxOptions, IOmniboxSuggestion } from '../../src/ui/Omnibox/Omnibox';
 import { Simulate } from '../Simulate';
 import { $$ } from '../../src/utils/Dom';
@@ -11,6 +11,7 @@ import { Suggestion } from '../../src/magicbox/SuggestionsManager';
 import { KEYBOARD, OmniboxEvents } from '../../src/Core';
 import { IQueryOptions } from '../../src/controllers/QueryController';
 import { IOmniboxAnalytics } from '../../src/ui/Omnibox/OmniboxAnalytics';
+import { initOmniboxAnalyticsMock } from './QuerySuggestPreviewTest';
 
 export function OmniboxTest() {
   describe('Omnibox', () => {
@@ -34,30 +35,8 @@ export function OmniboxTest() {
 
     function setupEnv() {
       testEnv = new Mock.MockEnvironmentBuilder();
-      omniboxAnalytics = buildOmniboxAnalyticsMock();
+      omniboxAnalytics = initOmniboxAnalyticsMock(omniboxAnalytics);
       testEnv.searchInterface.getOmniboxAnalytics = jasmine.createSpy('omniboxAnalytics').and.returnValue(omniboxAnalytics) as any;
-    }
-
-    function buildOmniboxAnalyticsMock(): IOmniboxAnalytics {
-      const partialQueries: string[] = [];
-      let suggestionRanking: number;
-      const suggestions: string[] = [];
-      let partialQuery: string;
-      const buildCustomDataForPartialQueries = (): IAnalyticsOmniboxSuggestionMeta => {
-        return {
-          suggestionRanking: omniboxAnalytics.suggestionRanking,
-          suggestions: omniboxAnalytics.suggestions.join(';'),
-          partialQueries: omniboxAnalytics.partialQueries.join(';'),
-          partialQuery: omniboxAnalytics.partialQuery
-        };
-      };
-      return {
-        partialQueries,
-        suggestionRanking,
-        suggestions,
-        partialQuery,
-        buildCustomDataForPartialQueries
-      };
     }
 
     function initOmnibox(options: IOmniboxOptions) {

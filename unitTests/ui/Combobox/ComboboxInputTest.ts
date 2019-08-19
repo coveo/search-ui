@@ -1,6 +1,6 @@
-import { ComboboxInput } from '../../../src/ui/Combobox/ComboboxInput';
-import { Combobox } from '../../../src/ui/Combobox/Combobox';
 import { $$, KEYBOARD } from '../../../src/Core';
+import { Combobox } from '../../../src/ui/Combobox/Combobox';
+import { ComboboxInput } from '../../../src/ui/Combobox/ComboboxInput';
 import { Simulate } from '../../Simulate';
 import { comboboxDefaultOptions } from './ComboboxTest';
 
