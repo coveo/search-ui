@@ -9,7 +9,7 @@ export class DynamicRangeFacetValueCreator implements ValueCreator {
   constructor(private facet: DynamicRangeFacet) {}
 
   private formatValue(value: RangeType) {
-    // TODO: manage different formats
+    // TODO: Manage different value formats
     return `${value}`;
   }
 
@@ -22,7 +22,7 @@ export class DynamicRangeFacetValueCreator implements ValueCreator {
 
   private valueFromRange(range: IRangeValue) {
     const scope = range.endInclusive ? RangeEndScope.Inclusive : RangeEndScope.Exclusive;
-    // TODO: manage different formats
+    // TODO: Manage different value formats
     return `${range.start}..${range.end}${scope}`;
   }
 
@@ -62,11 +62,11 @@ export class DynamicRangeFacetValueCreator implements ValueCreator {
     const valueRegex = new RegExp(`^(.+)\\.\\.(.+)(${RangeEndScope.Inclusive}|${RangeEndScope.Exclusive})$`);
     const startAndEnd = valueRegex.exec(value);
     if (!startAndEnd) {
-      // TODO: Throw error
+      this.facet.logger.error('Range facet value invalid', value);
       return null;
     }
 
-    // TODO: Manage different formats (date)
+    // TODO: Manage different value formats
     return {
       start: Number(startAndEnd[1]),
       end: Number(startAndEnd[2]),
