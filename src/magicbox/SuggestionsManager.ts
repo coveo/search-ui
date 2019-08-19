@@ -1,9 +1,10 @@
-import { $$, Dom } from '../utils/Dom';
-import { InputManager } from './InputManager';
-import { each, defaults, indexOf, compact } from 'underscore';
-import { OmniboxEvents, Component, Utils } from '../Core';
-import { IQuerySuggestSelection } from '../events/OmniboxEvents';
+import { compact, defaults, each, indexOf } from 'underscore';
+import { IQuerySuggestSelection, OmniboxEvents } from '../events/OmniboxEvents';
+import { Component } from '../ui/Base/Component';
 import { resultPerRow } from '../ui/QuerySuggestPreview/QuerySuggestPreview';
+import { $$, Dom } from '../utils/Dom';
+import { Utils } from '../utils/Utils';
+import { InputManager } from './InputManager';
 
 export interface Suggestion {
   text?: string;
@@ -32,6 +33,8 @@ export class SuggestionsManager {
   private pendingSuggestion: Promise<Suggestion[]>;
   private options: SuggestionsManagerOptions;
   private keyboardFocusedSuggestion: HTMLElement;
+  private suggestionsListbox: Dom;
+  private suggestionsPreviewContainer: Dom;
   private lastSelectedSuggestion: HTMLElement;
 
   constructor(
@@ -60,7 +63,11 @@ export class SuggestionsManager {
       this.handleMouseOut(e);
     });
 
-    this.addAccessibilityProperties();
+    this.suggestionsListbox = this.buildSuggestionsContainer();
+    this.suggestionsPreviewContainer = this.initPreviewForSuggestions(this.suggestionsListbox);
+    $$(this.element).append(this.suggestionsPreviewContainer.el);
+    this.addAccessibilityPropertiesForCombobox();
+    this.appendEmptySuggestionOption();
   }
 
   public handleMouseOver(e) {
@@ -192,8 +199,8 @@ export class SuggestionsManager {
   }
 
   public updateSuggestions(suggestions: Suggestion[]) {
-    $$(this.element).empty();
-    this.element.className = 'magic-box-suggestions';
+    this.suggestionsListbox.empty();
+    this.inputManager.input.removeAttribute('aria-activedescendant');
 
     this.hasSuggestions = suggestions.length > 0;
 
@@ -201,15 +208,10 @@ export class SuggestionsManager {
     $$(this.magicBoxContainer).setAttribute('aria-expanded', this.hasSuggestions.toString());
 
     if (!this.hasSuggestions) {
-      this.removeAccessibilityPropertiesForSuggestions();
+      this.appendEmptySuggestionOption();
       $$(this.root).trigger(OmniboxEvents.querySuggestLoseFocus);
       return;
     }
-
-    const suggestionsContainer = this.buildSuggestionsContainer();
-    const suggestionPreviewContainer = this.initPreviewForSuggestions(suggestionsContainer);
-    $$(this.element).append(suggestionPreviewContainer.el);
-    this.addAccessibilityPropertiesForSuggestions();
 
     each(suggestions, (suggestion: Suggestion) => {
       const dom = suggestion.dom ? this.modifyDomFromExistingSuggestion(suggestion.dom) : this.createDomFromSuggestion(suggestion);
@@ -217,10 +219,12 @@ export class SuggestionsManager {
       dom.setAttribute('id', `magic-box-suggestion-${indexOf(suggestions, suggestion)}`);
       dom.setAttribute('role', 'option');
       dom.setAttribute('aria-selected', 'false');
+      dom.setAttribute('aria-label', dom.text());
 
       dom['suggestion'] = suggestion;
-      suggestionsContainer.append(dom.el);
+      this.suggestionsListbox.append(dom.el);
     });
+
     $$(this.root).trigger(OmniboxEvents.querySuggestRendered);
   }
 
@@ -252,6 +256,7 @@ export class SuggestionsManager {
   private buildSuggestionsContainer() {
     return $$('div', {
       className: 'coveo-magicbox-suggestions',
+      id: 'coveo-magicbox-suggestions',
       role: 'listbox'
     });
   }
@@ -306,6 +311,7 @@ export class SuggestionsManager {
 
     if (suggestion.text) {
       dom.text(suggestion.text);
+
       return dom;
     }
 
@@ -328,6 +334,12 @@ export class SuggestionsManager {
   private selectSuggestion(suggestion: Suggestion) {
     suggestion.onSelect();
     $$(this.root).trigger(OmniboxEvents.querySuggestSelection, <IQuerySuggestSelection>{ suggestion: suggestion.text });
+  }
+
+  private appendEmptySuggestionOption() {
+    // Accessibility tools reports that a listbox element must always have at least one child with an option
+    // Even if there is no suggestions to show.
+    this.suggestionsListbox.append($$('div', { role: 'option' }).el);
   }
 
   private modifyDomFromExistingSuggestion(dom: HTMLElement) {
@@ -461,6 +473,7 @@ export class SuggestionsManager {
       this.removeSelectedStatus(elem);
     }
     $$(suggestion).addClass(this.options.selectedClass);
+    this.updateSelectedSuggestion(suggestion.innerText);
     this.updateAreaSelectedIfDefined(suggestion, 'true');
   }
 
@@ -481,21 +494,18 @@ export class SuggestionsManager {
     }
   }
 
-  private addAccessibilityProperties() {
-    $$(this.magicBoxContainer).setAttribute('aria-expanded', 'false');
-    $$(this.magicBoxContainer).setAttribute('aria-haspopup', 'listbox');
-    this.inputManager.input.removeAttribute('aria-activedescendant');
-  }
+  private addAccessibilityPropertiesForCombobox() {
+    const combobox = $$(this.magicBoxContainer);
+    const input = $$(this.inputManager.input);
 
-  private addAccessibilityPropertiesForSuggestions() {
-    $$(this.magicBoxContainer).setAttribute('aria-owns', 'coveo-magicbox-suggestions');
-    this.inputManager.input.setAttribute('aria-controls', 'coveo-magicbox-suggestions');
-  }
+    combobox.setAttribute('aria-expanded', 'false');
+    combobox.setAttribute('role', 'combobox');
+    combobox.setAttribute('aria-owns', 'coveo-magicbox-suggestions');
+    combobox.setAttribute('aria-haspopup', 'listbox');
 
-  private removeAccessibilityPropertiesForSuggestions() {
-    this.inputManager.input.removeAttribute('aria-activedescendant');
-    this.inputManager.input.removeAttribute('aria-controls');
-    this.magicBoxContainer.removeAttribute('aria-owns');
+    input.el.removeAttribute('aria-activedescendant');
+    input.setAttribute('aria-controls', 'coveo-magicbox-suggestions');
+    input.setAttribute('aria-autocomplete', 'list');
   }
 
   private htmlElementIsSuggestion(selected: HTMLElement) {

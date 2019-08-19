@@ -1,12 +1,12 @@
-import { $$ } from '../utils/Dom';
-import { Result } from './Result/Result';
-import { Grammar } from './Grammar';
-import { doMagicBoxExport } from './doMagicBoxExport';
-import { Suggestion, SuggestionsManager } from './SuggestionsManager';
-import { InputManager } from './InputManager';
-import { isUndefined, each, find } from 'underscore';
-import { MagicBoxClear } from './MagicBoxClear';
+import { each, find, isUndefined } from 'underscore';
 import { KEYBOARD } from '../Core';
+import { $$ } from '../utils/Dom';
+import { doMagicBoxExport } from './doMagicBoxExport';
+import { Grammar } from './Grammar';
+import { InputManager } from './InputManager';
+import { MagicBoxClear } from './MagicBoxClear';
+import { Result } from './Result/Result';
+import { Suggestion, SuggestionsManager } from './SuggestionsManager';
 
 export interface Options {
   inline?: boolean;
@@ -45,7 +45,6 @@ export class MagicBoxInstance {
     if (this.options.inline) {
       $$(element).addClass('magic-box-inline');
     }
-    $$(this.element).setAttribute('role', 'combobox');
 
     this.result = this.grammar.parse('');
     this.displayedResult = this.result.clean();
