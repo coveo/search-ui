@@ -13,7 +13,7 @@
   }
   .coveo-preview-container {
     border: none;
-    background: $grey-100;
+    background: $white;
     flex: 1 1 100%;
   }
   .coveo-preview-results {
@@ -31,5 +31,10 @@
     padding: 10px;
     font-weight: normal;
     margin-top: 0;
+  }
+  .coveo-preview-selectable.coveo-omnibox-selected,
+  .coveo-preview-selectable:hover {
+    outline: $default-border;
+    outline-offset: -1px;
   }
 }
