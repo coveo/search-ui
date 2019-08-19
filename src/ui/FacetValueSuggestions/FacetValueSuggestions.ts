@@ -118,7 +118,7 @@ export class FacetValueSuggestions extends Component {
     }),
 
     /**
-     * Wether the [`field`]{@link FacetValueSuggestions.options.field} option references a multi value field.
+     * Whether the [`field`]{@link FacetValueSuggestions.options.field} option references a multi value field.
      *
      * Setting this option to `true` if appropriate will allow the corresponding [`CategoryFacet`]{@link CategoryFacet} component (if present) to properly handle the filter format.
      *
