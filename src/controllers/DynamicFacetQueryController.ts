@@ -12,7 +12,7 @@ export class DynamicFacetQueryController {
   private freezeCurrentValues = false;
   private freezeFacetOrder = false;
 
-  constructor(private facet: DynamicFacet) {
+  constructor(protected facet: DynamicFacet) {
     this.resetNumberOfValuesToRequest();
     this.resetFreezeCurrentValuesDuringQuery();
   }
@@ -84,14 +84,14 @@ export class DynamicFacetQueryController {
     return this.facet.queryController.getEndpoint().search(query);
   }
 
-  private get currentValues(): IFacetRequestValue[] {
+  protected get currentValues(): IFacetRequestValue[] {
     return this.facet.values.allFacetValues.map(({ value, state }) => ({
       value,
       state
     }));
   }
 
-  private get numberOfValues() {
+  protected get numberOfValues() {
     if (this.freezeCurrentValues) {
       return this.currentValues.length;
     }

@@ -708,9 +708,6 @@ DynamicFacetQueryControllerTest();
 import { DynamicFacetManagerTest } from './ui/DynamicFacetManagerTest';
 DynamicFacetManagerTest();
 
-import { DynamicFacetValueFormatterTest } from './ui/DynamicFacet/DynamicFacetValues/DynamicFacetValueFormatterTest';
-DynamicFacetValueFormatterTest();
-
 import { FacetSearchControllerTest } from './controllers/FacetSearchControllerTest';
 FacetSearchControllerTest();
 

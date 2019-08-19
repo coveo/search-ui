@@ -3,43 +3,38 @@ import { $$ } from '../../../utils/Dom';
 import { findWhere, find } from 'underscore';
 import { DynamicFacetValue } from './DynamicFacetValue';
 import { DynamicFacet } from '../DynamicFacet';
-import { IFacetResponse } from '../../../rest/Facet/FacetResponse';
+import { IFacetResponse, IFacetResponseValue } from '../../../rest/Facet/FacetResponse';
 import { FacetValueState } from '../../../rest/Facet/FacetValueState';
 import { l } from '../../../strings/Strings';
-import { DynamicFacetValueFormatter } from './DynamicFacetValueFormatter';
+import { DynamicFacetValueCreator } from './DynamicFacetValueCreator';
+import { IRangeValue } from '../../../rest/RangeValue';
 
-export interface ValueFormatter {
-  format(value: string): string;
+export interface ValueCreator {
+  createFromResponse(facetValue: IFacetResponseValue, index: number): DynamicFacetValue;
+  createFromValue(value: string): DynamicFacetValue;
+  createFromRange?(range: IRangeValue, index: number): DynamicFacetValue;
 }
 
-export interface IDynamicFacetValueFormatterKlass {
-  new (facet: DynamicFacet): ValueFormatter;
+export interface IDynamicFacetValueCreatorKlass {
+  new (facet: DynamicFacet): ValueCreator;
 }
 
 export class DynamicFacetValues {
   private facetValues: DynamicFacetValue[];
   private list = $$('ul', { className: 'coveo-dynamic-facet-values' }).el;
-  private valueFormatter: ValueFormatter;
+  private valueCreator: ValueCreator;
 
-  constructor(private facet: DynamicFacet, formatterKlass: IDynamicFacetValueFormatterKlass = DynamicFacetValueFormatter) {
+  constructor(private facet: DynamicFacet, creatorKlass: IDynamicFacetValueCreatorKlass = DynamicFacetValueCreator) {
     this.resetValues();
-    this.valueFormatter = new formatterKlass(this.facet);
+    this.valueCreator = new creatorKlass(this.facet);
   }
 
   public createFromResponse(response: IFacetResponse) {
-    this.facetValues = response.values.map(
-      (facetValue, index) =>
-        new DynamicFacetValue(
-          {
-            value: facetValue.value,
-            displayValue: this.valueFormatter.format(facetValue.value),
-            numberOfResults: facetValue.numberOfResults,
-            state: facetValue.state,
-            position: index + 1
-          },
-          this.facet
-        )
-    );
+    this.facetValues = response.values.map((facetValue, index) => this.valueCreator.createFromResponse(facetValue, index));
+  }
+
+  public createFromRanges(ranges: IRangeValue[]) {
+    this.facetValues = ranges.map((range, index) => this.valueCreator.createFromRange(range, index));
   }
 
   public resetValues() {
@@ -96,10 +91,7 @@ export class DynamicFacetValues {
       return facetValue;
     }
 
-    const position = this.facetValues.length + 1;
-    const state = FacetValueState.idle;
-    const displayValue = this.valueFormatter.format(value);
-    const newFacetValue = new DynamicFacetValue({ value, displayValue, state, numberOfResults: 0, position }, this.facet);
+    const newFacetValue = this.valueCreator.createFromValue(value);
     this.facetValues.push(newFacetValue);
     return newFacetValue;
   }
