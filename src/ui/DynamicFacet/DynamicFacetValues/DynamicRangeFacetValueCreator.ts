@@ -47,11 +47,11 @@ export class DynamicRangeFacetValueCreator implements ValueCreator {
   public createFromResponse(responseValue: IFacetResponseValue, index: number) {
     const correspondingValue = this.facet.values.allFacetValues[index];
     const displayValue = correspondingValue ? correspondingValue.displayValue : this.formatRangeValue(responseValue);
-    responseValue.endInclusive = true;
+    responseValue.endInclusive = correspondingValue.endInclusive;
 
+    const facetValue = this.createFromRange(responseValue, index);
     // TODO: Replace previous code by this line when "endInclusive" is sent in the response
     // const facetValue = this.facet.values.get(this.valueFromRange(responseValue));
-    const facetValue = this.createFromRange(responseValue, index);
     facetValue.displayValue = displayValue;
     facetValue.numberOfResults = responseValue.numberOfResults;
     facetValue.state = responseValue.state;
