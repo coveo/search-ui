@@ -51,7 +51,6 @@ import { QueryboxOptionsProcessing } from '../Querybox/QueryboxOptionsProcessing
 import { OmniboxAnalytics } from './OmniboxAnalytics';
 import { findWhere } from 'underscore';
 import { BreadcrumbEvents } from '../../events/BreadcrumbEvents';
-import { SearchButton } from '../SearchButton/SearchButton';
 
 export interface IOmniboxSuggestion extends Suggestion {
   executableConfidence?: number;
@@ -713,8 +712,8 @@ export class Omnibox extends Component {
 
     // Prevent queries triggered by unrelated components to clear the the filters
     // e.g., a facet selection
-    const validOrigins = [Omnibox.ID, SearchButton.ID];
-    if (!origin || !origin.type || validOrigins.indexOf[origin.type] === -1) {
+    const validOrigins = [Omnibox.ID, 'SearchButton'];
+    if (!origin || validOrigins.indexOf(origin.type) === -1) {
       return;
     }
 

@@ -8,7 +8,7 @@ import { l } from '../../src/strings/Strings';
 import { InitializationEvents } from '../../src/events/InitializationEvents';
 import { IFieldDescription } from '../../src/rest/FieldDescription';
 import { Suggestion } from '../../src/magicbox/SuggestionsManager';
-import { KEYBOARD, OmniboxEvents, BreadcrumbEvents, QueryEvents, Component } from '../../src/Core';
+import { KEYBOARD, OmniboxEvents, BreadcrumbEvents, QueryEvents } from '../../src/Core';
 import { IQueryOptions } from '../../src/controllers/QueryController';
 import { IOmniboxAnalytics } from '../../src/ui/Omnibox/OmniboxAnalytics';
 import { initOmniboxAnalyticsMock } from './QuerySuggestPreviewTest';
@@ -609,39 +609,73 @@ export function OmniboxTest() {
 
     describe('when handling "newQuery" event', () => {
       let breadcrumbClearSpy: jasmine.Spy;
-      let origin: Component;
 
       beforeEach(() => {
         breadcrumbClearSpy = jasmine.createSpy('clearBreadcrumb');
         $$(test.env.root).on(BreadcrumbEvents.clearBreadcrumb, breadcrumbClearSpy);
+        setupForClearingFiltersOnNewQuery();
       });
 
       function setupForClearingFiltersOnNewQuery() {
-        origin = test.cmp;
         test.cmp.options.clearFiltersOnNewQuery = true;
         test.cmp.queryController.firstQuery = false;
-        test.cmp.queryController.getLastQuery = () => ({ q: undefined });
+        test.cmp.queryController.getLastQuery = () => ({ q: 'old query' });
         test.cmp.setText('new query');
       }
 
-      it(`when clearFiltersOnNewQuery is true
+      describe(`when clearFiltersOnNewQuery is true
         when it is not the first query
-        when the origin is an Omnibox
-        when the new query is different from the previous one
-        should clear breadcrumbs`, () => {
-        setupForClearingFiltersOnNewQuery();
-        $$(test.env.root).trigger(QueryEvents.newQuery, { origin });
-        expect(breadcrumbClearSpy).toHaveBeenCalled();
+        when the new query is different from the previous one`, () => {
+        it(`when the origin is a valid component (Omnibox)
+          should clear breadcrumbs`, () => {
+          $$(test.env.root).trigger(QueryEvents.newQuery, { origin: test.cmp });
+          expect(breadcrumbClearSpy).toHaveBeenCalled();
+        });
+
+        it(`when the origin is a valid component (SearchButton)
+          should clear breadcrumbs`, () => {
+          $$(test.env.root).trigger(QueryEvents.newQuery, { origin: { type: 'SearchButton' } });
+          expect(breadcrumbClearSpy).toHaveBeenCalled();
+        });
+
+        it(`when the origin is not a valid component (Facet)
+          should not clear breadcrumbs`, () => {
+          $$(test.env.root).trigger(QueryEvents.newQuery, { origin: { type: 'Facet' } });
+          expect(breadcrumbClearSpy).not.toHaveBeenCalled();
+        });
+
+        it(`when the origin is not defined
+          should not clear breadcrumbs`, () => {
+          $$(test.env.root).trigger(QueryEvents.newQuery);
+          expect(breadcrumbClearSpy).not.toHaveBeenCalled();
+        });
+      });
+
+      it(`when clearFiltersOnNewQuery is false
+        should not clear breadcrumbs`, () => {
+        test.cmp.options.clearFiltersOnNewQuery = false;
+        $$(test.env.root).trigger(QueryEvents.newQuery, { origin: test.cmp });
+        expect(breadcrumbClearSpy).not.toHaveBeenCalled();
+      });
+
+      it(`when clearFiltersOnNewQuery is true
+        when it is the first query
+        should not clear breadcrumbs`, () => {
+        test.cmp.queryController.firstQuery = true;
+        $$(test.env.root).trigger(QueryEvents.newQuery, { origin: test.cmp });
+        expect(breadcrumbClearSpy).not.toHaveBeenCalled();
       });
 
       it(`when clearFiltersOnNewQuery is true
         when it is not the first query
-        when the origin is a SearchButton
-        when the new query is different from the previous one
-        should clear breadcrumbs`, () => {
-        setupForClearingFiltersOnNewQuery();
-        $$(test.env.root).trigger(QueryEvents.newQuery, { origin: 'allo' });
-        expect(breadcrumbClearSpy).toHaveBeenCalled();
+        when the origin is a valid component (SearchButton)
+        when the new query is the same as the previous one
+        should not clear breadcrumbs`, () => {
+        const sameQuery = 'same here';
+        test.cmp.queryController.getLastQuery = () => ({ q: sameQuery });
+        test.cmp.setText(sameQuery);
+        $$(test.env.root).trigger(QueryEvents.newQuery, { origin: test.cmp });
+        expect(breadcrumbClearSpy).not.toHaveBeenCalled();
       });
     });
   });
