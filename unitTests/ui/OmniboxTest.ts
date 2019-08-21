@@ -8,7 +8,7 @@ import { l } from '../../src/strings/Strings';
 import { InitializationEvents } from '../../src/events/InitializationEvents';
 import { IFieldDescription } from '../../src/rest/FieldDescription';
 import { Suggestion } from '../../src/magicbox/SuggestionsManager';
-import { KEYBOARD, OmniboxEvents } from '../../src/Core';
+import { KEYBOARD, OmniboxEvents, BreadcrumbEvents, QueryEvents, Component } from '../../src/Core';
 import { IQueryOptions } from '../../src/controllers/QueryController';
 import { IOmniboxAnalytics } from '../../src/ui/Omnibox/OmniboxAnalytics';
 import { initOmniboxAnalyticsMock } from './QuerySuggestPreviewTest';
@@ -604,6 +604,44 @@ export function OmniboxTest() {
         await test.cmp.magicBox.getSuggestions();
         expect(querySuggestSuccessSpy).toHaveBeenCalled();
         done();
+      });
+    });
+
+    describe('when handling "newQuery" event', () => {
+      let breadcrumbClearSpy: jasmine.Spy;
+      let origin: Component;
+
+      beforeEach(() => {
+        breadcrumbClearSpy = jasmine.createSpy('clearBreadcrumb');
+        $$(test.env.root).on(BreadcrumbEvents.clearBreadcrumb, breadcrumbClearSpy);
+      });
+
+      function setupForClearingFiltersOnNewQuery() {
+        origin = test.cmp;
+        test.cmp.options.clearFiltersOnNewQuery = true;
+        test.cmp.queryController.firstQuery = false;
+        test.cmp.queryController.getLastQuery = () => ({ q: undefined });
+        test.cmp.setText('new query');
+      }
+
+      it(`when clearFiltersOnNewQuery is true
+        when it is not the first query
+        when the origin is an Omnibox
+        when the new query is different from the previous one
+        should clear breadcrumbs`, () => {
+        setupForClearingFiltersOnNewQuery();
+        $$(test.env.root).trigger(QueryEvents.newQuery, { origin });
+        expect(breadcrumbClearSpy).toHaveBeenCalled();
+      });
+
+      it(`when clearFiltersOnNewQuery is true
+        when it is not the first query
+        when the origin is a SearchButton
+        when the new query is different from the previous one
+        should clear breadcrumbs`, () => {
+        setupForClearingFiltersOnNewQuery();
+        $$(test.env.root).trigger(QueryEvents.newQuery, { origin: 'allo' });
+        expect(breadcrumbClearSpy).toHaveBeenCalled();
       });
     });
   });

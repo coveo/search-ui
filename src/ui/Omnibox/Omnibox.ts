@@ -12,7 +12,7 @@ import {
   OmniboxEvents,
   IQuerySuggestSelection
 } from '../../events/OmniboxEvents';
-import { IBuildingQueryEventArgs, IDuringQueryEventArgs, QueryEvents } from '../../events/QueryEvents';
+import { IBuildingQueryEventArgs, IDuringQueryEventArgs, QueryEvents, INewQueryEventArgs } from '../../events/QueryEvents';
 import { StandaloneSearchInterfaceEvents } from '../../events/StandaloneSearchInterfaceEvents';
 import { Assert } from '../../misc/Assert';
 import { COMPONENT_OPTIONS_ATTRIBUTES } from '../../models/ComponentOptionsModel';
@@ -51,6 +51,7 @@ import { QueryboxOptionsProcessing } from '../Querybox/QueryboxOptionsProcessing
 import { OmniboxAnalytics } from './OmniboxAnalytics';
 import { findWhere } from 'underscore';
 import { BreadcrumbEvents } from '../../events/BreadcrumbEvents';
+import { SearchButton } from '../SearchButton/SearchButton';
 
 export interface IOmniboxSuggestion extends Suggestion {
   executableConfidence?: number;
@@ -301,7 +302,7 @@ export class Omnibox extends Component {
     new OldOmniboxAddon(this);
     this.createMagicBox();
 
-    this.bind.onRootElement(QueryEvents.newQuery, () => this.handleNewQuery());
+    this.bind.onRootElement(QueryEvents.newQuery, (args: INewQueryEventArgs) => this.handleNewQuery(args));
     this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => this.handleBuildingQuery(args));
     this.bind.onRootElement(StandaloneSearchInterfaceEvents.beforeRedirect, () => this.handleBeforeRedirect());
     this.bind.onRootElement(QueryEvents.querySuccess, () => this.handleQuerySuccess());
@@ -700,17 +701,25 @@ export class Omnibox extends Component {
     new QueryboxQueryParameters(this.options).addParameters(data.queryBuilder, query);
   }
 
-  private handleNewQuery() {
-    if (!this.options.clearFiltersOnNewQuery) {
-      return;
-    }
+  private handleNewQuery(data: INewQueryEventArgs) {
+    Assert.exists(data);
+    this.options.clearFiltersOnNewQuery && this.clearFiltersIfNewQuery(data);
+  }
 
+  private clearFiltersIfNewQuery({ origin, searchAsYouType }: INewQueryEventArgs) {
     if (this.queryController.firstQuery) {
       return;
     }
 
+    // Prevent queries triggered by unrelated components to clear the the filters
+    // e.g., a facet selection
+    const validOrigins = [Omnibox.ID, SearchButton.ID];
+    if (!origin || !origin.type || validOrigins.indexOf[origin.type] === -1) {
+      return;
+    }
+
     const lastQuery = this.queryController.getLastQuery().q || '';
-    const newQuery = this.getText();
+    const newQuery = this.getQuery(searchAsYouType);
     if (lastQuery !== newQuery) {
       this.bind.trigger(this.root, BreadcrumbEvents.clearBreadcrumb);
     }
@@ -765,7 +774,8 @@ export class Omnibox extends Component {
     this.queryController.executeQuery({
       searchAsYouType: searchAsYouType,
       logInActionsHistory: true,
-      cancel: !shouldExecuteQuery
+      cancel: !shouldExecuteQuery,
+      origin: this
     });
   }
 
