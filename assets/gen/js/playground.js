@@ -2611,9 +2611,6 @@ var Dom = /** @class */ (function () {
         if (this.hasClass('coveo-tab-disabled')) {
             return false;
         }
-        if (this.hasClass('coveo-hidden')) {
-            return false;
-        }
         return true;
     };
     /**
@@ -3841,30 +3838,6 @@ var SearchEndpoint = /** @class */ (function () {
         return this.getQuerySuggest(request, callOptions, callParams);
     };
     /**
-     * Searches through the values of a facet.
-     * @param request The request for which to search through the values of a facet.
-     * @param callOptions An additional set of options to use for this call.
-     * @param callParams The options injected by the applied decorators.
-     * @returns {Promise<IFacetSearchResponse>} A Promise of facet search results.
-     */
-    SearchEndpoint.prototype.facetSearch = function (request, callOptions, callParams) {
-        return __awaiter(this, void 0, void 0, function () {
-            var response;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        callParams = __assign({}, callParams, { requestData: __assign({}, callParams.requestData, _.omit(request, function (parameter) { return Utils_1.Utils.isNullOrUndefined(parameter); })) });
-                        this.logger.info('Performing REST query to get facet search results', request);
-                        return [4 /*yield*/, this.performOneCall(callParams, callOptions)];
-                    case 1:
-                        response = _a.sent();
-                        this.logger.info('REST query successful', response);
-                        return [2 /*return*/, response];
-                }
-            });
-        });
-    };
-    /**
      * Follows an item, or a query result, using the search alerts service.
      * @param request The subscription details.
      * @param callOptions An additional set of options to use for this call.
@@ -4231,16 +4204,6 @@ var SearchEndpoint = /** @class */ (function () {
         includeVisitorId(),
         includeIsGuestUser()
     ], SearchEndpoint.prototype, "getQuerySuggest", null);
-    __decorate([
-        path('/facet'),
-        method('POST'),
-        requestDataType('application/json'),
-        responseType('text'),
-        includeActionsHistory(),
-        includeReferrer(),
-        includeVisitorId(),
-        includeIsGuestUser()
-    ], SearchEndpoint.prototype, "facetSearch", null);
     __decorate([
         alertsPath('/subscriptions'),
         accessTokenInUrl('accessToken'),
@@ -5916,8 +5879,8 @@ exports.ResponsiveComponents = ResponsiveComponents;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    lib: '2.7023.0-beta',
-    product: '2.7023.0-beta',
+    lib: '2.6459.10-beta',
+    product: '2.6459.10-beta',
     supportedApiVersion: 2
 };
 
@@ -7416,21 +7379,6 @@ exports.PlaygroundConfiguration = {
             title: 'Date distribution'
         }
     },
-    FacetValueSuggestions: {
-        options: {
-            field: '@filetype',
-            useQuerySuggestions: false
-        },
-        show: true,
-        element: new SearchSectionBuilder_1.SearchSectionBuilder()
-            .withDomElement(Dom_1.$$('div', { className: 'preview-info' }, "Showing scoped query suggestions based on <span class='preview-info-emphasis'>@filetype</span> field values"))
-            .withComponent('CoveoFacetValueSuggestions')
-            .withoutQuerySuggest()
-            .build(),
-        toExecute: function () {
-            setMinHeightOnSearchInterface('500px');
-        }
-    },
     FieldSuggestions: {
         options: {
             field: '@author',
@@ -8446,7 +8394,6 @@ var dict = {
     "Remove": "Remove",
     "Search": "Search",
     "SearchFor": "Search for {0}",
-    "SubmitSearch": "Submit search",
     "ShareQuery": "Share Query",
     "Preferences": "Preferences",
     "LinkOpeningSettings": "Link opening settings",
@@ -8538,9 +8485,6 @@ var dict = {
     "Expand": "Expand",
     "CollapseFacet": "Collapse {0} facet",
     "ExpandFacet": "Expand {0} facet",
-    "ShowLessFacetResults": "Show less results for {0} facet",
-    "ShowMoreFacetResults": "Show more results for {0} facet",
-    "SearchFacetResults": "Search for values in {0} facet",
     "Today": "Today",
     "Yesterday": "Yesterday",
     "Tomorrow": "Tomorrow",
@@ -8761,8 +8705,6 @@ var dict = {
     "FacetTitle": "{0} facet",
     "SelectValueWithResultCount": "Select {0} with {1}",
     "UnselectValueWithResultCount": "Unselect {0} with {1}",
-    "ExcludeValueWithResultCount": "Exclude {0} with {1}",
-    "UnexcludeValueWithResultCount": "Unexclude {0} with {1}",
     "PageNumber": "Page {0}",
     "DisplayResultsPerPage": "Display {0} results per page",
     "GroupByAndFacetRequestsCannotCoexist": "The query is invalid because it contains both Group By and Facet requests. Ensure that the search interface does not initialize DynamicFacet components alongside Facet components (or alongside any component extending the Facet component, such as FacetRange or FacetSlider).",
@@ -8772,8 +8714,6 @@ var dict = {
     "FiltersDropdown": "Filters dropdown",
     "OpenFiltersDropdown": "Open the filters dropdown",
     "CloseFiltersDropdown": "Close the filters dropdown",
-    "NoValuesFound": "No values found.",
-    "QuerySuggestPreview": "Query result item(s) for",
 };
 function defaultLanguage() {
     var locales = String["locales"] || (String["locales"] = {});
