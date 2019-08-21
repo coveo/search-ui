@@ -50,6 +50,7 @@ import { MagicBoxInstance, createMagicBox } from '../../magicbox/MagicBox';
 import { QueryboxOptionsProcessing } from '../Querybox/QueryboxOptionsProcessing';
 import { OmniboxAnalytics } from './OmniboxAnalytics';
 import { findWhere } from 'underscore';
+import { BreadcrumbEvents } from '../../events/BreadcrumbEvents';
 
 export interface IOmniboxSuggestion extends Suggestion {
   executableConfidence?: number;
@@ -70,6 +71,7 @@ export interface IOmniboxOptions extends IQueryboxOptions {
   grammar?: (
     grammar: { start: string; expressions: { [id: string]: ExpressionDef } }
   ) => { start: string; expressions: { [id: string]: ExpressionDef } };
+  clearFiltersOnNewQuery?: boolean;
 }
 
 const MINIMUM_EXECUTABLE_CONFIDENCE = 0.8;
@@ -260,7 +262,12 @@ export class Omnibox extends Component {
     querySuggestCharacterThreshold: ComponentOptions.buildNumberOption({
       defaultValue: 0,
       min: 0
-    })
+    }),
+
+    /**
+     * Specify wether all active query filters should be cleared everytime the user inputs a new query.
+     */
+    clearFiltersOnNewQuery: ComponentOptions.buildBooleanOption({ defaultValue: false })
   };
 
   public magicBox: MagicBoxInstance;
@@ -294,6 +301,7 @@ export class Omnibox extends Component {
     new OldOmniboxAddon(this);
     this.createMagicBox();
 
+    this.bind.onRootElement(QueryEvents.newQuery, () => this.handleNewQuery());
     this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => this.handleBuildingQuery(args));
     this.bind.onRootElement(StandaloneSearchInterfaceEvents.beforeRedirect, () => this.handleBeforeRedirect());
     this.bind.onRootElement(QueryEvents.querySuccess, () => this.handleQuerySuccess());
@@ -690,6 +698,22 @@ export class Omnibox extends Component {
     this.bind.trigger(this.element, OmniboxEvents.omniboxPreprocessResultForQuery, preprocessResultForQueryArgs);
     const query = preprocessResultForQueryArgs.result.toString();
     new QueryboxQueryParameters(this.options).addParameters(data.queryBuilder, query);
+  }
+
+  private handleNewQuery() {
+    if (!this.options.clearFiltersOnNewQuery) {
+      return;
+    }
+
+    if (this.queryController.firstQuery) {
+      return;
+    }
+
+    const lastQuery = this.queryController.getLastQuery().q || '';
+    const newQuery = this.getText();
+    if (lastQuery !== newQuery) {
+      this.bind.trigger(this.root, BreadcrumbEvents.clearBreadcrumb);
+    }
   }
 
   private handleTabPress() {
