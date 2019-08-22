@@ -265,7 +265,11 @@ export class Omnibox extends Component {
     }),
 
     /**
-     * Specify wether all active query filters should be cleared everytime the user inputs a new query.
+     * Whether to clear all active query filters when the end user submits a new query from the search box.
+     *
+     * Note: This does not include the filter expression enforced by the currently selected tab, if any.
+     *
+     * **Default:** `false`
      */
     clearFiltersOnNewQuery: ComponentOptions.buildBooleanOption({ defaultValue: false })
   };
