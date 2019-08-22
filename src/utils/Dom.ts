@@ -112,10 +112,10 @@ export class Dom {
   /**
    * Performant way to transform a NodeList to an array of HTMLElement, for manipulation<br/>
    * http://jsperf.com/nodelist-to-array/72
-   * @param nodeList a {NodeList} to convert to an array
+   * @param nodeList a {NodeList} or {HTMLCollection} to convert to an array
    * @returns {HTMLElement[]}
    */
-  public nodeListToArray(nodeList: NodeList): HTMLElement[] {
+  public nodeListToArray(nodeList: NodeList | HTMLCollection): HTMLElement[] {
     let i = nodeList.length;
     const arr: HTMLElement[] = new Array(i);
     while (i--) {

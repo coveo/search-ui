@@ -556,7 +556,7 @@ export class Debug extends RootComponent {
       selection.removeAllRanges();
       selection.addRange(range);
     } else if ('createTextRange' in document.body) {
-      const textRange = document.body['createTextRange']();
+      const textRange = (document.body['createTextRange'] as Function)();
       textRange.moveToElementText(el);
       textRange.select();
     }
