@@ -261,7 +261,7 @@ export class Component extends BaseComponent {
    */
   public queryStateModel: QueryStateModel;
   /**
-   * Contains the state of different component (enabled vs disabled). Allows to get/set values. Trigger component state event when modified. Each component can listen to those events.
+   * Contains the state of different components (enabled vs disabled). Allows to get/set values. Triggers component state event when modified. Each component can listen to those events.
    */
   public componentStateModel: ComponentStateModel;
   /**
@@ -277,7 +277,7 @@ export class Component extends BaseComponent {
    */
   public usageAnalytics: IAnalyticsClient;
   /**
-   * Contains the state of options for differents component. Mainly used by {@link ResultLink}.
+   * Contains the state of options for different components. Mainly used by {@link ResultLink}.
    */
   public componentOptionsModel: ComponentOptionsModel;
   public ensureDom: Function;
