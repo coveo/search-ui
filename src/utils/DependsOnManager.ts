@@ -6,7 +6,7 @@ import { ComponentsTypes } from './ComponentsTypes';
 
 export interface IDependentFacet {
   reset: () => void;
-  toogleDependentFacet: (dependentFacet: Component) => void;
+  toggleDependentFacet: (dependentFacet: Component) => void;
   element: HTMLElement;
   root: HTMLElement;
   dependsOn: string;
@@ -73,7 +73,7 @@ export class DependsOnManager {
     });
 
     dependentFacets.forEach(dependentFacet => {
-      this.dependentFacet.toogleDependentFacet(dependentFacet);
+      this.dependentFacet.toggleDependentFacet(dependentFacet);
     });
   }
 }
