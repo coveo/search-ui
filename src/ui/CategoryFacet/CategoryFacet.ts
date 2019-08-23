@@ -411,19 +411,18 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     return !this.options.enableFacetSearch;
   }
 
-  private handleNoResults() {
-    this.hasValues ? this.show() : this.hide();
+  private handleResults() {
+    $$(this.element).toggleClass('coveo-hidden', !this.isCurrentlyDisplayed());
+    this.dependsOnManager.updateVisibilityBasedOnDependsOn();
   }
 
   public handleQuerySuccess(args: IQuerySuccessEventArgs) {
     if (Utils.isNullOrUndefined(args.results.categoryFacets)) {
-      this.notImplementedError();
-      return;
+      return this.notImplementedError();
     }
 
     if (Utils.isNullOrUndefined(args.results.categoryFacets[this.positionInQuery])) {
-      this.handleNoResults();
-      return;
+      return this.handleResults();
     }
 
     const numberOfRequestedValues = args.query.categoryFacets[this.positionInQuery].maximumNumberOfValues;
@@ -432,16 +431,15 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     this.clear();
 
     if (categoryFacetResult.notImplemented) {
-      this.notImplementedError();
-      return;
+      return this.notImplementedError();
     }
 
-    if (categoryFacetResult.values.length == 0 && categoryFacetResult.parentValues.length == 0) {
-      this.handleNoResults();
-      return;
+    if (!categoryFacetResult.values.length && !categoryFacetResult.parentValues.length) {
+      return this.handleResults();
     }
 
     this.renderValues(categoryFacetResult, numberOfRequestedValues);
+    this.handleResults();
     if (this.isFacetSearchAvailable) {
       const facetSearch = this.categoryFacetSearch.build();
       $$(facetSearch).insertAfter(this.categoryValueRoot.listRoot.el);
@@ -593,25 +591,6 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     this.executeQuery();
   }
 
-  public disable() {
-    super.disable();
-    this.hide();
-  }
-
-  /**
-   * Hides the component.
-   */
-  public hide() {
-    $$(this.element).addClass('coveo-hidden');
-  }
-
-  /**
-   * Shows the component.
-   */
-  public show() {
-    $$(this.element).removeClass('coveo-hidden');
-  }
-
   /**
    * Goes through any value that contains the value parameter, and verifies whether there are missing parents.
    * Issues are then logged in the console.
@@ -670,7 +649,6 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
 
   private renderValues(categoryFacetResult: ICategoryFacetResult, numberOfRequestedValues: number) {
     this.categoryFacetValuesTree.storeNewValues(categoryFacetResult);
-    this.show();
     let sortedParentValues = this.sortParentValues(categoryFacetResult.parentValues);
     let currentParentValue: CategoryValueParent = this.categoryValueRoot;
     let needToTruncate = false;

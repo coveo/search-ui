@@ -33,11 +33,7 @@ export class DependsOnManager {
       return;
     }
 
-    if ($$(this.facet.element).hasClass('coveo-facet-empty')) {
-      return;
-    }
-
-    this.dependableFacetHasSelectedValues ? $$(this.facet.element).show() : $$(this.facet.element).hide();
+    $$(this.facet.element).toggleClass('coveo-hidden', !this.dependableFacetHasSelectedValues);
   }
 
   private get isDependentFacet() {
@@ -67,8 +63,8 @@ export class DependsOnManager {
   }
 
   private handleNewQuery() {
-    const facets = ComponentsTypes.getAllFacetsInstance(this.facet.root);
-    const dependentFacets = facets.filter(facet => {
+    const allFacets = ComponentsTypes.getAllFacetsInstance(this.facet.root);
+    const dependentFacets = allFacets.filter(facet => {
       return this.facet.id === facet.options.dependsOn;
     });
 
