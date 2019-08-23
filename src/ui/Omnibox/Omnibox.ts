@@ -12,7 +12,7 @@ import {
   OmniboxEvents,
   IQuerySuggestSelection
 } from '../../events/OmniboxEvents';
-import { IBuildingQueryEventArgs, IDuringQueryEventArgs, QueryEvents } from '../../events/QueryEvents';
+import { IBuildingQueryEventArgs, IDuringQueryEventArgs, QueryEvents, INewQueryEventArgs } from '../../events/QueryEvents';
 import { StandaloneSearchInterfaceEvents } from '../../events/StandaloneSearchInterfaceEvents';
 import { Assert } from '../../misc/Assert';
 import { COMPONENT_OPTIONS_ATTRIBUTES } from '../../models/ComponentOptionsModel';
@@ -50,6 +50,7 @@ import { MagicBoxInstance, createMagicBox } from '../../magicbox/MagicBox';
 import { QueryboxOptionsProcessing } from '../Querybox/QueryboxOptionsProcessing';
 import { OmniboxAnalytics } from './OmniboxAnalytics';
 import { findWhere } from 'underscore';
+import { BreadcrumbEvents } from '../../events/BreadcrumbEvents';
 
 export interface IOmniboxSuggestion extends Suggestion {
   executableConfidence?: number;
@@ -70,6 +71,7 @@ export interface IOmniboxOptions extends IQueryboxOptions {
   grammar?: (
     grammar: { start: string; expressions: { [id: string]: ExpressionDef } }
   ) => { start: string; expressions: { [id: string]: ExpressionDef } };
+  clearFiltersOnNewQuery?: boolean;
 }
 
 const MINIMUM_EXECUTABLE_CONFIDENCE = 0.8;
@@ -260,7 +262,16 @@ export class Omnibox extends Component {
     querySuggestCharacterThreshold: ComponentOptions.buildNumberOption({
       defaultValue: 0,
       min: 0
-    })
+    }),
+
+    /**
+     * Whether to clear all active query filters when the end user submits a new query from the search box.
+     *
+     * Note: This does not include the filter expression enforced by the currently selected tab, if any.
+     *
+     * **Default:** `false`
+     */
+    clearFiltersOnNewQuery: ComponentOptions.buildBooleanOption({ defaultValue: false })
   };
 
   public magicBox: MagicBoxInstance;
@@ -294,6 +305,7 @@ export class Omnibox extends Component {
     new OldOmniboxAddon(this);
     this.createMagicBox();
 
+    this.bind.onRootElement(QueryEvents.newQuery, (args: INewQueryEventArgs) => this.handleNewQuery(args));
     this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => this.handleBuildingQuery(args));
     this.bind.onRootElement(StandaloneSearchInterfaceEvents.beforeRedirect, () => this.handleBeforeRedirect());
     this.bind.onRootElement(QueryEvents.querySuccess, () => this.handleQuerySuccess());
@@ -692,6 +704,30 @@ export class Omnibox extends Component {
     new QueryboxQueryParameters(this.options).addParameters(data.queryBuilder, query);
   }
 
+  private handleNewQuery(data: INewQueryEventArgs) {
+    Assert.exists(data);
+    this.options.clearFiltersOnNewQuery && this.clearFiltersIfNewQuery(data);
+  }
+
+  private clearFiltersIfNewQuery({ origin, searchAsYouType }: INewQueryEventArgs) {
+    if (this.queryController.firstQuery) {
+      return;
+    }
+
+    // Prevent queries triggered by unrelated components to clear the the filters
+    // e.g., a facet selection
+    const validOrigins = [Omnibox.ID, 'SearchButton'];
+    if (!origin || validOrigins.indexOf(origin.type) === -1) {
+      return;
+    }
+
+    const lastQuery = this.queryController.getLastQuery().q || '';
+    const newQuery = this.getQuery(searchAsYouType);
+    if (lastQuery !== newQuery) {
+      this.bind.trigger(this.root, BreadcrumbEvents.clearBreadcrumb);
+    }
+  }
+
   private handleTabPress() {
     if (this.options.enableQuerySuggestAddon) {
       this.handleTabPressForSuggestions();
@@ -741,7 +777,8 @@ export class Omnibox extends Component {
     this.queryController.executeQuery({
       searchAsYouType: searchAsYouType,
       logInActionsHistory: true,
-      cancel: !shouldExecuteQuery
+      cancel: !shouldExecuteQuery,
+      origin: this
     });
   }
 
