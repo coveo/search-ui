@@ -16,8 +16,8 @@ export interface IDependentFacet {
 }
 
 export class DependsOnManager {
-  constructor(private dependableFacet: IDependentFacet) {
-    this.dependableFacet.bind.onRootElement(QueryEvents.newQuery, () => this.handleNewQuery());
+  constructor(private facet: IDependentFacet) {
+    this.facet.bind.onRootElement(QueryEvents.newQuery, () => this.handleNewQuery());
     this.updateVisibilityBasedOnDependsOn();
   }
 
@@ -25,7 +25,7 @@ export class DependsOnManager {
     if (!this.isDependentFacet) {
       return;
     }
-    this.dependableFacet.bind.onQueryState(MODEL_EVENTS.CHANGE, undefined, () => this.resetIfdependableFacetHasNoSelectedValues());
+    this.facet.bind.onQueryState(MODEL_EVENTS.CHANGE, undefined, () => this.resetIfdependableFacetHasNoSelectedValues());
   }
 
   public updateVisibilityBasedOnDependsOn() {
@@ -33,11 +33,11 @@ export class DependsOnManager {
       return;
     }
 
-    if ($$(this.dependableFacet.element).hasClass('coveo-facet-empty')) {
+    if ($$(this.facet.element).hasClass('coveo-facet-empty')) {
       return;
     }
 
-    this.dependableFacetHasSelectedValues ? $$(this.dependableFacet.element).show() : $$(this.dependableFacet.element).hide();
+    this.dependableFacetHasSelectedValues ? $$(this.facet.element).show() : $$(this.facet.element).hide();
   }
 
   private get isDependentFacet() {
@@ -45,7 +45,7 @@ export class DependsOnManager {
   }
 
   private get facetDependsOnField() {
-    return this.dependableFacet.dependsOn;
+    return this.facet.dependsOn;
   }
 
   public resetIfdependableFacetHasNoSelectedValues() {
@@ -53,7 +53,7 @@ export class DependsOnManager {
       return;
     }
 
-    this.dependableFacet.reset();
+    this.facet.reset();
   }
 
   private get dependableFacetHasSelectedValues() {
@@ -62,18 +62,18 @@ export class DependsOnManager {
   }
 
   private valuesExistForFacetWithId(id: string) {
-    const values = this.dependableFacet.queryStateModel.get(id);
+    const values = this.facet.queryStateModel.get(id);
     return values != null && values.length != 0;
   }
 
   private handleNewQuery() {
-    const facets = ComponentsTypes.getAllFacetsInstance(this.dependableFacet.root);
+    const facets = ComponentsTypes.getAllFacetsInstance(this.facet.root);
     const dependentFacets = facets.filter(facet => {
-      return this.dependableFacet.id === facet.options.dependsOn;
+      return this.facet.id === facet.options.dependsOn;
     });
 
     dependentFacets.forEach(dependentFacet => {
-      this.dependableFacet.toggleDependentFacet(dependentFacet);
+      this.facet.toggleDependentFacet(dependentFacet);
     });
   }
 }
