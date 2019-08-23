@@ -16,8 +16,8 @@ export interface IDependentFacet {
 }
 
 export class DependsOnManager {
-  constructor(private dependentFacet: IDependentFacet) {
-    dependentFacet.bind.onRootElement(QueryEvents.newQuery, () => this.handleNewQuery());
+  constructor(private dependableFacet: IDependentFacet) {
+    this.dependableFacet.bind.onRootElement(QueryEvents.newQuery, () => this.handleNewQuery());
     this.updateVisibilityBasedOnDependsOn();
   }
 
@@ -25,7 +25,7 @@ export class DependsOnManager {
     if (!this.isDependentFacet) {
       return;
     }
-    this.dependentFacet.bind.onQueryState(MODEL_EVENTS.CHANGE, undefined, () => this.resetIfParentFacetHasNoSelectedValues());
+    this.dependableFacet.bind.onQueryState(MODEL_EVENTS.CHANGE, undefined, () => this.resetIfdependableFacetHasNoSelectedValues());
   }
 
   public updateVisibilityBasedOnDependsOn() {
@@ -33,11 +33,11 @@ export class DependsOnManager {
       return;
     }
 
-    if ($$(this.dependentFacet.element).hasClass('coveo-facet-empty')) {
+    if ($$(this.dependableFacet.element).hasClass('coveo-facet-empty')) {
       return;
     }
 
-    this.parentFacetHasSelectedValues ? $$(this.dependentFacet.element).show() : $$(this.dependentFacet.element).hide();
+    this.dependableFacetHasSelectedValues ? $$(this.dependableFacet.element).show() : $$(this.dependableFacet.element).hide();
   }
 
   private get isDependentFacet() {
@@ -45,35 +45,35 @@ export class DependsOnManager {
   }
 
   private get facetDependsOnField() {
-    return this.dependentFacet.dependsOn;
+    return this.dependableFacet.dependsOn;
   }
 
-  public resetIfParentFacetHasNoSelectedValues() {
-    if (this.parentFacetHasSelectedValues) {
+  public resetIfdependableFacetHasNoSelectedValues() {
+    if (this.dependableFacetHasSelectedValues) {
       return;
     }
 
-    this.dependentFacet.reset();
+    this.dependableFacet.reset();
   }
 
-  private get parentFacetHasSelectedValues() {
+  private get dependableFacetHasSelectedValues() {
     const parentSelectedValuesId = QueryStateModel.getFacetId(this.facetDependsOnField);
     return this.valuesExistForFacetWithId(parentSelectedValuesId);
   }
 
   private valuesExistForFacetWithId(id: string) {
-    const values = this.dependentFacet.queryStateModel.get(id);
+    const values = this.dependableFacet.queryStateModel.get(id);
     return values != null && values.length != 0;
   }
 
   private handleNewQuery() {
-    const facets = ComponentsTypes.getAllFacetsInstance(this.dependentFacet.root);
+    const facets = ComponentsTypes.getAllFacetsInstance(this.dependableFacet.root);
     const dependentFacets = facets.filter(facet => {
-      return this.dependentFacet.id === facet.options.dependsOn;
+      return this.dependableFacet.id === facet.options.dependsOn;
     });
 
     dependentFacets.forEach(dependentFacet => {
-      this.dependentFacet.toggleDependentFacet(dependentFacet);
+      this.dependableFacet.toggleDependentFacet(dependentFacet);
     });
   }
 }
