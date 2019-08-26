@@ -593,16 +593,6 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     this.executeQuery();
   }
 
-  public enable() {
-    super.enable();
-    this.updateAppearance();
-  }
-
-  public disable() {
-    super.disable();
-    this.updateAppearance();
-  }
-
   private resetPath() {
     this.changeActivePath(this.options.basePath);
   }
@@ -614,6 +604,16 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     this.resetPath();
     this.logAnalyticsEvent(analyticsActionCauseList.categoryFacetClear);
     this.executeQuery();
+  }
+
+  public enable() {
+    super.enable();
+    this.updateAppearance();
+  }
+
+  public disable() {
+    super.disable();
+    this.updateAppearance();
   }
 
   /**
