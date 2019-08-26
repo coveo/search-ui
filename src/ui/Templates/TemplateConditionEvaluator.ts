@@ -8,14 +8,14 @@ export class TemplateConditionEvaluator {
     const regexAcceptableCharacters = '[a-z0-9_]';
     // Matches a field preceded by a `@` symbol.
     // getFieldFromString('@hello_world') === ['hello_world']
-    const regexAtMatcher = `(?:(?!\\b@)@(${regexAcceptableCharacters}+(?:\.${regexAcceptableCharacters}+)*\\b))`;
-    // Matches a field preceded by an name and a period.
+    const regexAtMatcher = `(?:(?!\\b@)@(${regexAcceptableCharacters}+(?:\\.${regexAcceptableCharacters}+)*\\b))`;
+    // Matches a field preceded by the word raw and a period.
     // getFieldFromString('john.doe') === ['doe']
     const regexObjectFieldMatcher = `\\braw\\.(${regexAcceptableCharacters}+)`;
-    // Matches a key between single or double quotes.
-    // getFieldFromString('hello["world"]') === ['world']
+    // Matches a key following the word raw between single or double quotes.
+    // getFieldFromString('raw["world"]') === ['world']
     const regexKeyMatcher = `\\braw\\[(?:'([^']+)'|"([^"]+)")\\]`;
-    const fieldRegex = new RegExp(`/${regexAtMatcher}|${regexObjectFieldMatcher}|${regexKeyMatcher}/gi`);
+    const fieldRegex = new RegExp(`${regexAtMatcher}|${regexObjectFieldMatcher}|${regexKeyMatcher}`, 'gi');
     const matches = StringUtils.match(text, fieldRegex);
     var fields: string[] = _.map(matches, field => {
       return field[1] || field[2] || field[3] || field[4] || null;
