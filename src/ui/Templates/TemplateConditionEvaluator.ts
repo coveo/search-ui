@@ -5,12 +5,21 @@ import * as _ from 'underscore';
 
 export class TemplateConditionEvaluator {
   static getFieldFromString(text: string): string[] {
-    var fields: string[] = _.map(
-      StringUtils.match(text, /(?:(?!\b@)@([a-z0-9]+(?:\.[a-z0-9]+)*\b))|\braw.([a-z0-9]+)|\braw\['([^']+)'\]|\braw\["([^"]+)"\]/gi),
-      field => {
-        return field[1] || field[2] || field[3] || field[4] || null;
-      }
-    );
+    const regexAcceptableCharacters = '[a-z0-9_]';
+    // Matches a field preceded by a `@` symbol.
+    // getFieldFromString('@hello_world') === ['hello_world']
+    const regexAtMatcher = `(?:(?!\\b@)@(${regexAcceptableCharacters}+(?:\.${regexAcceptableCharacters}+)*\\b))`;
+    // Matches a field preceded by an name and a period.
+    // getFieldFromString('john.doe') === ['doe']
+    const regexObjectFieldMatcher = `\\braw\\.(${regexAcceptableCharacters}+)`;
+    // Matches a key between single or double quotes.
+    // getFieldFromString('hello["world"]') === ['world']
+    const regexKeyMatcher = `\\braw\\[(?:'([^']+)'|"([^"]+)")\\]`;
+    const fieldRegex = new RegExp(`/${regexAtMatcher}|${regexObjectFieldMatcher}|${regexKeyMatcher}/gi`);
+    const matches = StringUtils.match(text, fieldRegex);
+    var fields: string[] = _.map(matches, field => {
+      return field[1] || field[2] || field[3] || field[4] || null;
+    });
 
     return fields;
   }
