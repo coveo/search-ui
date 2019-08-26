@@ -106,11 +106,16 @@ gulp.task('internalDefs', function() {
 
 gulp.task('validateDefs', ['validateTSV1', 'validateTSV2']);
 
-gulp.task('installTSV1', done => {
-  const version = '1.8.10';
-  new Promise(() => tvm.install(version, () => tvm.use(version, done)));
-});
+function setTvmTypscriptVersion(version, cb) {
+  tvm.install(version, () => tvm.use(version, cb));
+}
 
-gulp.task('validateTSV1', ['installTSV1'], shell.task('node node_modules/tvm/current/bin/tsc --noEmit ./bin/ts/CoveoJsSearch.d.ts'));
+function testTypeDefinitionsWithTvm() {
+  return shell.task('node node_modules/tvm/current/bin/tsc --noEmit ./bin/ts/CoveoJsSearch.d.ts');
+}
 
-gulp.task('validateTSV2', shell.task(['node node_modules/typescript/bin/tsc --noEmit ./bin/ts/CoveoJsSearch.d.ts']));
+gulp.task('installTSV1', done => setTvmTypscriptVersion('1.8.10', done));
+gulp.task('validateTSV1', ['installTSV1'], testTypeDefinitionsWithTvm());
+
+gulp.task('installTSV2', done => setTvmTypscriptVersion('2.8.1', done));
+gulp.task('validateTSV2', ['installTSV2'], testTypeDefinitionsWithTvm());
