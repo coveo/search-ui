@@ -1,9 +1,10 @@
-import { Result } from './Result/Result';
-import { $$ } from '../utils/Dom';
-import _ = require('underscore');
-import { MagicBoxInstance } from './MagicBox';
-import { KEYBOARD } from '../utils/KeyboardUtils';
+import * as _ from 'underscore';
+import { Component } from '../Core';
 import { l } from '../strings/Strings';
+import { $$ } from '../utils/Dom';
+import { KEYBOARD } from '../utils/KeyboardUtils';
+import { MagicBoxInstance } from './MagicBox';
+import { Result } from './Result/Result';
 
 export class InputManager {
   public input: HTMLInputElement;
@@ -26,7 +27,12 @@ export class InputManager {
   public onchangecursor: () => void;
   public ontabpress: () => void;
 
-  constructor(element: HTMLElement, private onchange: (text: string, wordCompletion: boolean) => void, private magicBox: MagicBoxInstance) {
+  constructor(
+    element: HTMLElement,
+    private onchange: (text: string, wordCompletion: boolean) => void,
+    private magicBox: MagicBoxInstance,
+    private root: HTMLElement
+  ) {
     this.underlay = document.createElement('div');
     this.underlay.className = 'magic-box-underlay';
 
@@ -83,33 +89,6 @@ export class InputManager {
   }
 
   /**
-   * Update the scroll of the underlay this allowed the highlight to match the text
-   */
-  private updateScrollDefer: number;
-  private updateScroll(defer = true) {
-    var callback = () => {
-      // this is the cheapest call we can do before update scroll
-      if (this.underlay.clientWidth < this.underlay.scrollWidth) {
-        this.underlay.style.visibility = 'hidden';
-        this.underlay.scrollLeft = this.input.scrollLeft;
-        this.underlay.scrollTop = this.input.scrollTop;
-        this.underlay.style.visibility = 'visible';
-      }
-      this.updateScrollDefer = null;
-      // one day we will have to remove this
-      if (this.hasFocus) {
-        this.updateScroll();
-      }
-    };
-    // sometime we want it to be updated as soon as posible to have no flickering
-    if (!defer) {
-      callback();
-    } else if (this.updateScrollDefer == null) {
-      this.updateScrollDefer = requestAnimationFrame(callback);
-    }
-  }
-
-  /**
    * Set the result and update visual if needed
    */
   public setResult(result: Result, wordCompletion?: string) {
@@ -160,6 +139,34 @@ export class InputManager {
     return this.input.selectionStart;
   }
 
+  /**
+   * Update the scroll of the underlay this allowed the highlight to match the text
+   */
+
+  private updateScrollDefer: number;
+  private updateScroll(defer = true) {
+    var callback = () => {
+      // this is the cheapest call we can do before update scroll
+      if (this.underlay.clientWidth < this.underlay.scrollWidth) {
+        this.underlay.style.visibility = 'hidden';
+        this.underlay.scrollLeft = this.input.scrollLeft;
+        this.underlay.scrollTop = this.input.scrollTop;
+        this.underlay.style.visibility = 'visible';
+      }
+      this.updateScrollDefer = null;
+      // one day we will have to remove this
+      if (this.hasFocus) {
+        this.updateScroll();
+      }
+    };
+    // sometime we want it to be updated as soon as posible to have no flickering
+    if (!defer) {
+      callback();
+    } else if (this.updateScrollDefer == null) {
+      this.updateScrollDefer = requestAnimationFrame(callback);
+    }
+  }
+
   private setupHandler() {
     this.input.onblur = () => {
       this.hasFocus = false;
@@ -199,10 +206,9 @@ export class InputManager {
   }
 
   private addAccessibilitiesProperties() {
-    this.input.spellcheck = false;
+    this.input.setAttribute('type', 'text');
+    this.input.setAttribute('role', 'searchbox');
     this.input.setAttribute('form', 'coveo-dummy-form');
-    this.input.setAttribute('role', 'combobox');
-    this.input.setAttribute('autocomplete', 'off');
     this.input.setAttribute('aria-autocomplete', 'list');
     this.input.setAttribute('title', `${l('InsertAQuery')}. ${l('PressEnterToSend')}`);
   }
@@ -247,9 +253,9 @@ export class InputManager {
 
   private keyup(e: KeyboardEvent) {
     switch (e.keyCode || e.which) {
-      case 37: // Left
-      case 39: // Right
-        this.onchangecursor();
+      case KEYBOARD.LEFT_ARROW:
+      case KEYBOARD.RIGHT_ARROW:
+        this.handleLeftRightArrow(e);
         break;
       default:
         if (this.onkeydown == null || this.onkeyup(e.keyCode || e.which)) {
@@ -259,6 +265,16 @@ export class InputManager {
         }
         break;
     }
+  }
+
+  private handleLeftRightArrow(e: KeyboardEvent) {
+    const querySuggestPreview = $$(this.root).find(`.${Component.computeCssClassNameForType('QuerySuggestPreview')}`);
+    if (!querySuggestPreview) {
+      this.onchangecursor();
+    }
+
+    const inputChanged = this.onkeydown == null || this.onkeyup(e.keyCode || e.which);
+    inputChanged ? this.onInputChange() : e.preventDefault();
   }
 
   private tabPress() {

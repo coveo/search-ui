@@ -1,6 +1,6 @@
 {
   "name": "coveo-search-ui",
-  "version": "2.0.353",
+  "version": "2.0.360",
   "description": "Coveo JavaScript Search Framework",
   "main": "./bin/js/CoveoJsSearch.js",
   "types": "./bin/ts/CoveoJsSearch.d.ts",
@@ -26,10 +26,7 @@
     "prepare": "npm run snyk-protect"
   },
   "lint-staged": {
-    "*.{js,ts,json,scss}": [
-      "prettier --write",
-      "git add"
-    ]
+    "*.{js,ts,json,scss}": ["prettier --write", "git add"]
   },
   "prettier": {
     "printWidth": 140,
@@ -39,33 +36,13 @@
     "type": "git",
     "url": "git+https://github.com/coveo/search-ui.git"
   },
-  "keywords": [
-    "coveo",
-    "search",
-    "ui",
-    "framework",
-    "js",
-    "typescript",
-    "jssearch",
-    "jsui"
-  ],
+  "keywords": ["coveo", "search", "ui", "framework", "js", "typescript", "jssearch", "jsui"],
   "author": "Coveo <sandbox_JSUI@coveo.com> (http://source.coveo.com/)",
   "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/coveo/search-ui/issues"
   },
-  "files": [
-    "bin",
-    "pages",
-    "gulpTasks",
-    "images",
-    "templates",
-    "strings",
-    "filetypes",
-    "lib",
-    "src",
-    "typings"
-  ],
+  "files": ["bin", "pages", "gulpTasks", "images", "templates", "strings", "filetypes", "lib", "src", "typings"],
   "homepage": "https://github.com/coveo/search-ui#readme",
   "devDependencies": {
     "@salesforce-ux/design-system": "^2.6.0",
@@ -106,8 +83,6 @@
     "gulp-rename": "^1.2.2",
     "gulp-replace": "^0.5.4",
     "gulp-shell": "^0.5.2",
-    "gulp-svg-sprites": "^4.1.1",
-    "gulp-util": "^3.0.8",
     "gulp-zip": "^3.2.0",
     "husky": "^0.14.3",
     "image-size": "^0.5.0",

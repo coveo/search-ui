@@ -1,8 +1,7 @@
-import { SuggestionsManager } from '../../src/magicbox/SuggestionsManager';
-import { Dom } from '../../src/utils/Dom';
-import { $$ } from '../../src/utils/Dom';
 import { InputManager } from '../../src/magicbox/InputManager';
 import { MagicBoxInstance } from '../../src/magicbox/MagicBox';
+import { SuggestionsManager } from '../../src/magicbox/SuggestionsManager';
+import { $$, Dom } from '../../src/utils/Dom';
 
 export function SuggestionsManagerTest() {
   describe('Suggestions manager', () => {
@@ -17,18 +16,13 @@ export function SuggestionsManagerTest() {
 
     beforeEach(() => {
       buildContainer();
-      const inputManager = new InputManager(document.createElement('div'), () => {}, {} as MagicBoxInstance);
+      const root = document.createElement('div');
+      const inputManager = new InputManager(document.createElement('div'), () => {}, {} as MagicBoxInstance, root);
 
-      suggestionManager = new SuggestionsManager(
-        suggestionContainer.el,
-        document.createElement('div'),
-        document.createElement('div'),
-        inputManager,
-        {
-          selectedClass,
-          selectableClass
-        }
-      );
+      suggestionManager = new SuggestionsManager(suggestionContainer.el, document.createElement('div'), root, inputManager, {
+        selectedClass,
+        selectableClass
+      });
     });
 
     it('builds suggestions parent correctly when adding a suggestion', () => {
@@ -43,7 +37,7 @@ export function SuggestionsManagerTest() {
       expect(suggestionsElement.getAttribute('role')).toBe('listbox');
     });
 
-    it('does not build suggestion parent correctly when emptying sugggestions', () => {
+    it('adds an empty option child to the suggestions parent when emptying sugggestions', () => {
       // Start by adding a suggestion so that elements are correctly created first
       suggestionManager.updateSuggestions([{}]);
       suggestionManager.updateSuggestions([]);
@@ -52,7 +46,8 @@ export function SuggestionsManagerTest() {
       expect($$(suggestionContainer).hasClass('magic-box-hasSuggestion')).toBe(false);
 
       const suggestionsElement = $$(suggestionContainer).find('.coveo-magicbox-suggestions');
-      expect(suggestionsElement).toBeNull();
+      expect(suggestionsElement.childElementCount).toBe(1);
+      expect(suggestionsElement.firstChild.textContent).toBe('');
     });
 
     it('builds suggestion children correctly when adding a suggestion', () => {
@@ -73,6 +68,22 @@ export function SuggestionsManagerTest() {
 
     it('returns the correct selected element with keyboard on move up', () => {
       suggestionManager.moveUp();
+      const selectedWithKeyboard = suggestionManager.selectAndReturnKeyboardFocusedElement();
+      expect($$(selectedWithKeyboard).hasClass(selectedClass)).toBe(true);
+      expect($$(selectedWithKeyboard).getAttribute('aria-selected')).toBe('true');
+      expect(selectedWithKeyboard).toBe(suggestion.el);
+    });
+
+    it('returns the correct selected element with keyboard on move left', () => {
+      suggestionManager.moveLeft();
+      const selectedWithKeyboard = suggestionManager.selectAndReturnKeyboardFocusedElement();
+      expect($$(selectedWithKeyboard).hasClass(selectedClass)).toBe(true);
+      expect($$(selectedWithKeyboard).getAttribute('aria-selected')).toBe('true');
+      expect(selectedWithKeyboard).toBe(suggestion.el);
+    });
+
+    it('returns the correct selected element with keyboard on move right', () => {
+      suggestionManager.moveRight();
       const selectedWithKeyboard = suggestionManager.selectAndReturnKeyboardFocusedElement();
       expect($$(selectedWithKeyboard).hasClass(selectedClass)).toBe(true);
       expect($$(selectedWithKeyboard).getAttribute('aria-selected')).toBe('true');

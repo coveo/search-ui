@@ -1,6 +1,6 @@
 import * as Mock from '../MockEnvironment';
 import { Omnibox } from '../../src/ui/Omnibox/Omnibox';
-import { analyticsActionCauseList, IAnalyticsOmniboxSuggestionMeta } from '../../src/ui/Analytics/AnalyticsActionListMeta';
+import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
 import { IOmniboxOptions, IOmniboxSuggestion } from '../../src/ui/Omnibox/Omnibox';
 import { Simulate } from '../Simulate';
 import { $$ } from '../../src/utils/Dom';
@@ -8,9 +8,10 @@ import { l } from '../../src/strings/Strings';
 import { InitializationEvents } from '../../src/events/InitializationEvents';
 import { IFieldDescription } from '../../src/rest/FieldDescription';
 import { Suggestion } from '../../src/magicbox/SuggestionsManager';
-import { KEYBOARD, OmniboxEvents } from '../../src/Core';
+import { KEYBOARD, OmniboxEvents, BreadcrumbEvents, QueryEvents } from '../../src/Core';
 import { IQueryOptions } from '../../src/controllers/QueryController';
 import { IOmniboxAnalytics } from '../../src/ui/Omnibox/OmniboxAnalytics';
+import { initOmniboxAnalyticsMock } from './QuerySuggestPreviewTest';
 
 export function OmniboxTest() {
   describe('Omnibox', () => {
@@ -34,30 +35,8 @@ export function OmniboxTest() {
 
     function setupEnv() {
       testEnv = new Mock.MockEnvironmentBuilder();
-      omniboxAnalytics = buildOmniboxAnalyticsMock();
+      omniboxAnalytics = initOmniboxAnalyticsMock(omniboxAnalytics);
       testEnv.searchInterface.getOmniboxAnalytics = jasmine.createSpy('omniboxAnalytics').and.returnValue(omniboxAnalytics) as any;
-    }
-
-    function buildOmniboxAnalyticsMock(): IOmniboxAnalytics {
-      const partialQueries: string[] = [];
-      let suggestionRanking: number;
-      const suggestions: string[] = [];
-      let partialQuery: string;
-      const buildCustomDataForPartialQueries = (): IAnalyticsOmniboxSuggestionMeta => {
-        return {
-          suggestionRanking: omniboxAnalytics.suggestionRanking,
-          suggestions: omniboxAnalytics.suggestions.join(';'),
-          partialQueries: omniboxAnalytics.partialQueries.join(';'),
-          partialQuery: omniboxAnalytics.partialQuery
-        };
-      };
-      return {
-        partialQueries,
-        suggestionRanking,
-        suggestions,
-        partialQuery,
-        buildCustomDataForPartialQueries
-      };
     }
 
     function initOmnibox(options: IOmniboxOptions) {
@@ -625,6 +604,78 @@ export function OmniboxTest() {
         await test.cmp.magicBox.getSuggestions();
         expect(querySuggestSuccessSpy).toHaveBeenCalled();
         done();
+      });
+    });
+
+    describe('when handling "newQuery" event', () => {
+      let breadcrumbClearSpy: jasmine.Spy;
+
+      beforeEach(() => {
+        breadcrumbClearSpy = jasmine.createSpy('clearBreadcrumb');
+        $$(test.env.root).on(BreadcrumbEvents.clearBreadcrumb, breadcrumbClearSpy);
+        setupForClearingFiltersOnNewQuery();
+      });
+
+      function setupForClearingFiltersOnNewQuery() {
+        test.cmp.options.clearFiltersOnNewQuery = true;
+        test.cmp.queryController.firstQuery = false;
+        test.cmp.queryController.getLastQuery = () => ({ q: 'old query' });
+        test.cmp.setText('new query');
+      }
+
+      describe(`when clearFiltersOnNewQuery is true
+        when it is not the first query
+        when the new query is different from the previous one`, () => {
+        it(`when the origin is a valid component (Omnibox)
+          should clear breadcrumbs`, () => {
+          $$(test.env.root).trigger(QueryEvents.newQuery, { origin: test.cmp });
+          expect(breadcrumbClearSpy).toHaveBeenCalled();
+        });
+
+        it(`when the origin is a valid component (SearchButton)
+          should clear breadcrumbs`, () => {
+          $$(test.env.root).trigger(QueryEvents.newQuery, { origin: { type: 'SearchButton' } });
+          expect(breadcrumbClearSpy).toHaveBeenCalled();
+        });
+
+        it(`when the origin is not a valid component (Facet)
+          should not clear breadcrumbs`, () => {
+          $$(test.env.root).trigger(QueryEvents.newQuery, { origin: { type: 'Facet' } });
+          expect(breadcrumbClearSpy).not.toHaveBeenCalled();
+        });
+
+        it(`when the origin is not defined
+          should not clear breadcrumbs`, () => {
+          $$(test.env.root).trigger(QueryEvents.newQuery);
+          expect(breadcrumbClearSpy).not.toHaveBeenCalled();
+        });
+      });
+
+      it(`when clearFiltersOnNewQuery is false
+        should not clear breadcrumbs`, () => {
+        test.cmp.options.clearFiltersOnNewQuery = false;
+        $$(test.env.root).trigger(QueryEvents.newQuery, { origin: test.cmp });
+        expect(breadcrumbClearSpy).not.toHaveBeenCalled();
+      });
+
+      it(`when clearFiltersOnNewQuery is true
+        when it is the first query
+        should not clear breadcrumbs`, () => {
+        test.cmp.queryController.firstQuery = true;
+        $$(test.env.root).trigger(QueryEvents.newQuery, { origin: test.cmp });
+        expect(breadcrumbClearSpy).not.toHaveBeenCalled();
+      });
+
+      it(`when clearFiltersOnNewQuery is true
+        when it is not the first query
+        when the origin is a valid component (SearchButton)
+        when the new query is the same as the previous one
+        should not clear breadcrumbs`, () => {
+        const sameQuery = 'same here';
+        test.cmp.queryController.getLastQuery = () => ({ q: sameQuery });
+        test.cmp.setText(sameQuery);
+        $$(test.env.root).trigger(QueryEvents.newQuery, { origin: test.cmp });
+        expect(breadcrumbClearSpy).not.toHaveBeenCalled();
       });
     });
   });
