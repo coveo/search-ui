@@ -93,11 +93,6 @@ export function CategoryFacetTest() {
       expect(test.cmp.activePath).toEqual(currentPath.concat(['value9']));
     });
 
-    it('calling hide adds the coveo hidden class', () => {
-      test.cmp.hide();
-      expect($$(test.cmp.element).hasClass('coveo-hidden')).toBeTruthy();
-    });
-
     it('calling "scrollToTop" should call "scrollToTop" on the ResultListUtils', () => {
       spyOn(ResultListUtils, 'scrollToTop');
       test.cmp.scrollToTop();
@@ -109,21 +104,20 @@ export function CategoryFacetTest() {
       const simulateNoResults = () => {
         const emptyCategoryFacetResults = FakeResults.createFakeCategoryFacetResult('@field', [], undefined, 0);
         simulateQueryData.results = { ...simulateQueryData.results, categoryFacets: [emptyCategoryFacetResults] };
-        spyOn(test.cmp, 'hide');
 
         Simulate.query(test.env, simulateQueryData);
       };
 
       it('hides the component by default', () => {
         simulateNoResults();
-        expect(test.cmp.hide).toHaveBeenCalled();
+        expect($$(test.cmp.element).isVisible()).toBe(false);
       });
 
       it('does not hide the component when the facet has available values', () => {
         test.cmp.activePath = ['value1'];
         spyOn(test.cmp, 'getAvailableValues').and.returnValue(['value1', 'value2']);
         simulateNoResults();
-        expect(test.cmp.hide).not.toHaveBeenCalled();
+        expect($$(test.cmp.element).isVisible()).toBe(true);
       });
 
       describe(`when the facet does not have available values,
@@ -137,7 +131,7 @@ export function CategoryFacetTest() {
         it('hides the component', () => {
           spyOn(test.cmp, 'getAvailableValues').and.returnValue([]);
           simulateNoResults();
-          expect(test.cmp.hide).toHaveBeenCalled();
+          expect($$(test.cmp.element).isVisible()).toBe(false);
         });
       });
     });
@@ -168,12 +162,6 @@ export function CategoryFacetTest() {
         Simulate.query(test.env, simulateQueryData);
 
         expect(test.cmp.disabled).toBe(true);
-      });
-
-      it('hides the component', () => {
-        spyOn(test.cmp, 'hide');
-        Simulate.query(test.env, simulateQueryData);
-        expect(test.cmp.hide).toHaveBeenCalled();
       });
     });
 
