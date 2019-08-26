@@ -25,7 +25,7 @@ export class DependsOnManager {
     if (!this.isDependentFacet) {
       return;
     }
-    this.facet.bind.onQueryState(MODEL_EVENTS.CHANGE, undefined, () => this.resetIfdependableFacetHasNoSelectedValues());
+    this.facet.bind.onQueryState(MODEL_EVENTS.CHANGE, undefined, () => this.resetIfDependableFacetHasNoSelectedValues());
   }
 
   public updateVisibilityBasedOnDependsOn() {
@@ -44,7 +44,7 @@ export class DependsOnManager {
     return this.facet.dependsOn;
   }
 
-  public resetIfdependableFacetHasNoSelectedValues() {
+  private resetIfDependableFacetHasNoSelectedValues() {
     if (this.dependableFacetHasSelectedValues) {
       return;
     }
