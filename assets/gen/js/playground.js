@@ -5879,8 +5879,8 @@ exports.ResponsiveComponents = ResponsiveComponents;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    lib: '2.6459.10-beta',
-    product: '2.6459.10-beta',
+    lib: '2.6459.11',
+    product: '2.6459.11',
     supportedApiVersion: 2
 };
 
@@ -8144,6 +8144,12 @@ var dict = {
     "objecttype_phonecall": "Phone call",
     "appointment": "Appointment",
     "objecttype_appointment": "Appointment",
+    "youtubevideo": "YouTube video",
+    "filetype_youtubevideo": "YouTube video",
+    "youtubeplaylistitem": "YouTube playlist item",
+    "filetype_youtubeplaylistitem": "YouTube playlist item",
+    "youtubeplaylist": "YouTube playlist",
+    "filetype_youtubeplaylist": "YouTube playlist",
     "spportal": "Portal",
     "filetype_spportal": "Portal",
     "spsite": "SharePoint Site",
@@ -8370,12 +8376,6 @@ var dict = {
     "filetype_spmicrofeedlist": "Microfeed",
     "splistfolder": "List Folder",
     "filetype_splistfolder": "List Folder",
-    "youtubevideo": "YouTube video",
-    "filetype_youtubevideo": "YouTube video",
-    "youtubeplaylistitem": "YouTube playlist item",
-    "filetype_youtubeplaylistitem": "YouTube playlist item",
-    "youtubeplaylist": "YouTube playlist",
-    "filetype_youtubeplaylist": "YouTube playlist",
     "Unknown": "Unknown",
     "And": "AND",
     "Authenticating": "Authenticating {0}...",
