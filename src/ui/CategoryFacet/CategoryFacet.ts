@@ -411,21 +411,17 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     return !this.options.enableFacetSearch;
   }
 
-  private get hasValues() {
-    return !this.isPristine() || this.getAvailableValues().length;
+  private get isCategoryEmpty() {
+    return !this.categoryValueRoot.path.length && !this.categoryValueRoot.children.length;
   }
 
   private updateAppearance() {
-    if (this.disabled || !this.hasValues) {
+    if (this.disabled || this.isCategoryEmpty) {
       return $$(this.element).addClass('coveo-hidden');
     }
 
     $$(this.element).removeClass('coveo-hidden');
     this.dependsOnManager.updateVisibilityBasedOnDependsOn();
-  }
-
-  private handleNoResults() {
-    this.resetPath();
   }
 
   public handleQuerySuccess(args: IQuerySuccessEventArgs) {
@@ -434,7 +430,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     }
 
     if (Utils.isNullOrUndefined(args.results.categoryFacets[this.positionInQuery])) {
-      return this.handleNoResults();
+      return;
     }
 
     const numberOfRequestedValues = args.query.categoryFacets[this.positionInQuery].maximumNumberOfValues;
@@ -447,7 +443,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     }
 
     if (!categoryFacetResult.values.length && !categoryFacetResult.parentValues.length) {
-      return this.handleNoResults();
+      return;
     }
 
     this.renderValues(categoryFacetResult, numberOfRequestedValues);
