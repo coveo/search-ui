@@ -302,7 +302,7 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
   }
 
   public get facetType() {
-    return FacetType.Specific;
+    return FacetType.specific;
   }
 
   /**
