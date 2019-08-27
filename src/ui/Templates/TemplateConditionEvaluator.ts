@@ -17,7 +17,7 @@ export class TemplateConditionEvaluator {
     const regexKeyMatcher = `\\braw\\[(?:'([^']+)'|"([^"]+)")\\]`;
     const fieldRegex = new RegExp(`${regexAtMatcher}|${regexObjectFieldMatcher}|${regexKeyMatcher}`, 'gi');
     const matches = StringUtils.match(text, fieldRegex);
-    var fields: string[] = _.map(matches, field => {
+    const fields: string[] = _.map(matches, field => {
       return field[1] || field[2] || field[3] || field[4] || null;
     });
 
