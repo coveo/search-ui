@@ -9,8 +9,8 @@ export function TemplateConditionEvaluatorTest() {
     it('should be able to find a field in the format @FIELDNAME', () => {
       expect(
         Utils.arrayEqual(
-          TemplateConditionEvaluator.getFieldFromString('@first_field second third@fourth @fifth'),
-          ['first_field', 'fifth'],
+          TemplateConditionEvaluator.getFieldFromString('@first_field second@third @fourth'),
+          ['first_field', 'third', 'fourth'],
           false
         )
       ).toBeTruthy();
@@ -19,8 +19,18 @@ export function TemplateConditionEvaluatorTest() {
     it('should be able to find a field in the format word.FIELDNAME', () => {
       expect(
         Utils.arrayEqual(
-          TemplateConditionEvaluator.getFieldFromString('first.second raw.third .fifth aw.sixth raw.seventh_field'),
-          ['third', 'seventh_field'],
+          TemplateConditionEvaluator.getFieldFromString('raw.first_field raw.second raw.third'),
+          ['first_field', 'second', 'third'],
+          false
+        )
+      ).toBeTruthy();
+    });
+
+    it("should be able to find a field in the format word['FIELDNAME']", () => {
+      expect(
+        Utils.arrayEqual(
+          TemplateConditionEvaluator.getFieldFromString(`raw['first_field'] raw['second'] raw['third']`),
+          ['first_field', 'second', 'third'],
           false
         )
       ).toBeTruthy();
@@ -29,29 +39,42 @@ export function TemplateConditionEvaluatorTest() {
     it('should be able to find a field in the format word["FIELDNAME"]', () => {
       expect(
         Utils.arrayEqual(
-          TemplateConditionEvaluator.getFieldFromString(
-            `first['second'] raw[fourth] aw['fifth'] raw['sixth_field'] raw[\`seventh\`] raw["eight"]`
-          ),
-          ['sixth_field', 'eight'],
+          TemplateConditionEvaluator.getFieldFromString(`raw["first_field"] raw["second"] raw["third"]`),
+          ['first_field', 'second', 'third'],
           false
         )
       ).toBeTruthy();
     });
 
-    it('should not be able to find a field in the format raw.@FIELDNAME', () => {
-      expect(TemplateConditionEvaluator.getFieldFromString(`raw.@field`).length).toBe(0);
+    it('should not consider lone words to be fields', () => {
+      expect(TemplateConditionEvaluator.getFieldFromString(`My name is John Doe`).length).toBe(0);
     });
 
-    it('should not be able to find a field in the format raw[@FIELDNAME]', () => {
-      expect(TemplateConditionEvaluator.getFieldFromString(`raw[@field]`).length).toBe(0);
+    it('should not accept anything other than the @ symbol, "raw" and a period, or brackets before a field name', () => {
+      expect(TemplateConditionEvaluator.getFieldFromString(`aw.foo`).length).toBe(0);
+      expect(TemplateConditionEvaluator.getFieldFromString(`aw["foo"]`).length).toBe(0);
+      expect(TemplateConditionEvaluator.getFieldFromString(`craw.foo`).length).toBe(0);
+      expect(TemplateConditionEvaluator.getFieldFromString(`craw["foo"]`).length).toBe(0);
+      expect(TemplateConditionEvaluator.getFieldFromString(`<foo`).length).toBe(0);
     });
 
-    it('should not be able to find a field in the format @raw.FIELDNAME', () => {
-      expect(TemplateConditionEvaluator.getFieldFromString(`@raw.field`).length).toBe(0);
+    it("should not allow symbols within a field's name unless it is in between quotes", () => {
+      expect(
+        Utils.arrayEqual(
+          TemplateConditionEvaluator.getFieldFromString(`@foo#bar raw.hello#world raw['brown#fox']`),
+          ['foo', 'hello', 'brown#fox'],
+          false
+        )
+      ).toBeTruthy();
     });
 
-    it('should not be able to find a field in the format @raw["field"]', () => {
-      expect(TemplateConditionEvaluator.getFieldFromString(`@raw["field"]`).length).toBe(0);
+    it('should not be able to find a field if the format is raw["FIELDNAME"] and one of the quotes doesn\'t match the other', () => {
+      expect(TemplateConditionEvaluator.getFieldFromString(`raw["foo']`).length).toBe(0);
+      expect(TemplateConditionEvaluator.getFieldFromString(`raw['foo"]`).length).toBe(0);
+    });
+
+    it('should not be able to find a field if the format is raw["FIELDNAME"] and the quotes aren\'t valid', () => {
+      expect(TemplateConditionEvaluator.getFieldFromString(`raw[#foo#]`).length).toBe(0);
     });
 
     describe('should be able to evaluate a basic boolean condition', () => {
