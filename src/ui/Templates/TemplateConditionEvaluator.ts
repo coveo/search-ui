@@ -5,16 +5,18 @@ import * as _ from 'underscore';
 
 export class TemplateConditionEvaluator {
   static getFieldFromString(text: string): string[] {
-    const regexAcceptableCharacters = '[a-z0-9_]';
+    const regexAcceptableCharacter = '[a-z0-9_]';
+    const regexStartOfWord = '(?:^|\\s)';
+    const regexEndOfWord = '(?:$|\\s)';
     // Matches a field preceded by a `@` symbol.
     // getFieldFromString('@hello_world') === ['hello_world']
-    const regexAtMatcher = `(?:(?!\\b@)@(${regexAcceptableCharacters}+(?:\\.${regexAcceptableCharacters}+)*\\b))`;
+    const regexAtMatcher = `${regexStartOfWord}@(${regexAcceptableCharacter}+)${regexEndOfWord}`;
     // Matches a field preceded by the word raw and a period.
     // getFieldFromString('john.doe') === ['doe']
-    const regexObjectFieldMatcher = `\\braw\\.(${regexAcceptableCharacters}+)`;
+    const regexObjectFieldMatcher = `${regexStartOfWord}raw\\.(${regexAcceptableCharacter}+)${regexEndOfWord}`;
     // Matches a key following the word raw between single or double quotes.
     // getFieldFromString('raw["world"]') === ['world']
-    const regexKeyMatcher = `\\braw\\[(?:'([^']+)'|"([^"]+)")\\]`;
+    const regexKeyMatcher = `${regexStartOfWord}raw\\[(?:'([^']+)'|"([^"]+)")\\]${regexEndOfWord}`;
     const fieldRegex = new RegExp(`${regexAtMatcher}|${regexObjectFieldMatcher}|${regexKeyMatcher}`, 'gi');
     const matches = StringUtils.match(text, fieldRegex);
     var fields: string[] = _.map(matches, field => {
