@@ -4,24 +4,17 @@ import { ResponsiveComponents } from '../ResponsiveComponents/ResponsiveComponen
 import * as _ from 'underscore';
 
 export class TemplateConditionEvaluator {
-  static getFieldFromString(text: string): string[] {
-    const regexAcceptableCharacter = '[a-z0-9_]';
-    // Matches a field preceded by a `@` symbol.
-    // getFieldFromString('@hello_world') === ['hello_world']
-    const regexAtMatcher = `@(${regexAcceptableCharacter}+)\\b`;
-    // Matches a field preceded by the word raw and a period.
-    // getFieldFromString('john.doe') === ['doe']
-    const regexObjectFieldMatcher = `\\braw\\.(${regexAcceptableCharacter}+)\\b`;
-    // Matches a key following the word raw between single or double quotes.
-    // getFieldFromString('raw["world"]') === ['world']
-    const regexKeyMatcher = `\\braw\\[(?:'([^']+)'|"([^"]+)")\\]`;
-    const fieldRegex = new RegExp(`${regexAtMatcher}|${regexObjectFieldMatcher}|${regexKeyMatcher}`, 'gi');
-    const matches = StringUtils.match(text, fieldRegex);
-    const fields: string[] = _.map(matches, field => {
-      return field[1] || field[2] || field[3] || field[4] || null;
-    });
+  static getFieldFromString(text: string) {
+    const acceptableCharacterInFieldName = '[a-z0-9_]';
+    const fieldWithAtSymbolPrefix = `@(${acceptableCharacterInFieldName}+)\\b`;
+    const rawFieldAccessedUsingDotOperator = `\\braw\\.(${acceptableCharacterInFieldName}+)\\b`;
+    const fieldBetweenDoubleQuotes = `"[^"]*?(${acceptableCharacterInFieldName}+)[^"]*?"`;
+    const fieldBetweenSingleQuotes = `'[^']*?(${acceptableCharacterInFieldName}+)[^']*?'`;
+    const rawFieldAccessedUsingString = `\\braw\\[(?:${fieldBetweenDoubleQuotes}|${fieldBetweenSingleQuotes})\\]`;
+    const fieldMatcher = new RegExp(`${fieldWithAtSymbolPrefix}|${rawFieldAccessedUsingDotOperator}|${rawFieldAccessedUsingString}`, 'gi');
+    const matchedFields = StringUtils.match(text, fieldMatcher);
 
-    return fields;
+    return _.map(matchedFields, match => _.find(match.splice(1), field => field));
   }
 
   static evaluateCondition(condition: string, result: IQueryResult, responsiveComponents = new ResponsiveComponents()): Boolean {

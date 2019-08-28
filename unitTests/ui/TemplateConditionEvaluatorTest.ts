@@ -16,7 +16,7 @@ export function TemplateConditionEvaluatorTest() {
       ).toBeTruthy();
     });
 
-    it('should be able to find a field in the format word.FIELDNAME', () => {
+    it('should be able to find a field in the format raw.FIELDNAME', () => {
       expect(
         Utils.arrayEqual(
           TemplateConditionEvaluator.getFieldFromString('raw.first_field raw.second raw.third'),
@@ -26,7 +26,7 @@ export function TemplateConditionEvaluatorTest() {
       ).toBeTruthy();
     });
 
-    it("should be able to find a field in the format word['FIELDNAME']", () => {
+    it("should be able to find a field in the format raw['FIELDNAME']", () => {
       expect(
         Utils.arrayEqual(
           TemplateConditionEvaluator.getFieldFromString(`raw['first_field'] raw['second'] raw['third']`),
@@ -36,7 +36,7 @@ export function TemplateConditionEvaluatorTest() {
       ).toBeTruthy();
     });
 
-    it('should be able to find a field in the format word["FIELDNAME"]', () => {
+    it('should be able to find a field in the format raw["FIELDNAME"]', () => {
       expect(
         Utils.arrayEqual(
           TemplateConditionEvaluator.getFieldFromString(`raw["first_field"] raw["second"] raw["third"]`),
@@ -50,6 +50,13 @@ export function TemplateConditionEvaluatorTest() {
       expect(TemplateConditionEvaluator.getFieldFromString(`My name is John Doe`).length).toBe(0);
     });
 
+    it('should not match an empty field name', () => {
+      expect(TemplateConditionEvaluator.getFieldFromString(`@`).length).toBe(0);
+      expect(TemplateConditionEvaluator.getFieldFromString(`raw.`).length).toBe(0);
+      expect(TemplateConditionEvaluator.getFieldFromString(`raw['']`).length).toBe(0);
+      expect(TemplateConditionEvaluator.getFieldFromString(`raw[""]`).length).toBe(0);
+    });
+
     it('should not accept anything other than the @ symbol, "raw" and a period, or brackets before a field name', () => {
       expect(TemplateConditionEvaluator.getFieldFromString(`aw.foo`).length).toBe(0);
       expect(TemplateConditionEvaluator.getFieldFromString(`aw["foo"]`).length).toBe(0);
@@ -58,11 +65,11 @@ export function TemplateConditionEvaluatorTest() {
       expect(TemplateConditionEvaluator.getFieldFromString(`<foo`).length).toBe(0);
     });
 
-    it("should not allow symbols within a field's name unless it is in between quotes", () => {
+    it("should not allow symbols within a field's name", () => {
       expect(
         Utils.arrayEqual(
           TemplateConditionEvaluator.getFieldFromString(`@foo#bar raw.hello#world raw['brown#fox']`),
-          ['foo', 'hello', 'brown#fox'],
+          ['foo', 'hello', 'brown'],
           false
         )
       ).toBeTruthy();
