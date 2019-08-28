@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>IAnalyticsActionCause | Coveo JavaScript Search Framework - Reference Documentation</title>
+	<title>IFacetSearchRequest | Coveo JavaScript Search Framework - Reference Documentation</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link href='https://fonts.googleapis.com/css?family=Lato:100,300,400,700' rel='stylesheet' type='text/css'/>
@@ -124,13 +124,25 @@
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface">
-						<a href="ianalyticsactioncause.html" class="tsd-kind-icon">IAnalytics<wbr>Action<wbr>Cause</a>
+						<a href="ifacetsearchrequest.html" class="tsd-kind-icon">IFacet<wbr>Search<wbr>Request</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="ianalyticsactioncause.html#name" class="tsd-kind-icon">name</a>
+								<a href="ifacetsearchrequest.html#captions" class="tsd-kind-icon">captions</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="ianalyticsactioncause.html#type" class="tsd-kind-icon">type</a>
+								<a href="ifacetsearchrequest.html#field" class="tsd-kind-icon">field</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="ifacetsearchrequest.html#ignorevalues" class="tsd-kind-icon">ignore<wbr>Values</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="ifacetsearchrequest.html#numberofvalues" class="tsd-kind-icon">number<wbr>OfValues</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="ifacetsearchrequest.html#query" class="tsd-kind-icon">query</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="ifacetsearchrequest.html#searchcontext" class="tsd-kind-icon">search<wbr>Context</a>
 							</li>
 						</ul>
 					</li>
@@ -151,18 +163,17 @@
 							<a href="../globals.html">Globals</a>
 						</li>
 						<li>
-							<a href="ianalyticsactioncause.html">IAnalyticsActionCause</a>
+							<a href="ifacetsearchrequest.html">IFacetSearchRequest</a>
 						</li>
 					</ul>
-					<h1>Interface IAnalyticsActionCause</h1>
+					<h1>Interface IFacetSearchRequest</h1>
 				</div>
 			</div>
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>The IAnalyticsActionCause interface describes the cause of an event for the analytics service.</p>
+						<p>A Search API facet search request.</p>
 					</div>
-					<p>See the <a href="../components/analytics.html">Analytics</a> component</p>
 				</div>
 			</section>
 			<div class="preview-container tsd-panel">
@@ -175,8 +186,12 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="ianalyticsactioncause.html#name" class="tsd-kind-icon">name</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="ianalyticsactioncause.html#type" class="tsd-kind-icon">type</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="ifacetsearchrequest.html#captions" class="tsd-kind-icon">captions</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="ifacetsearchrequest.html#field" class="tsd-kind-icon">field</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="ifacetsearchrequest.html#ignorevalues" class="tsd-kind-icon">ignore<wbr>Values</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="ifacetsearchrequest.html#numberofvalues" class="tsd-kind-icon">number<wbr>OfValues</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="ifacetsearchrequest.html#query" class="tsd-kind-icon">query</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="ifacetsearchrequest.html#searchcontext" class="tsd-kind-icon">search<wbr>Context</a></li>
 							</ul>
 						</section>
 					</div>
@@ -185,43 +200,114 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="name" class="tsd-anchor"></a>
-					<h3>name</h3>
-					<div class="tsd-signature tsd-kind-icon">name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<a name="captions" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> captions</h3>
+					<div class="tsd-signature tsd-kind-icon">captions<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/AnalyticsActionListMeta.ts#L17">ui/Analytics/AnalyticsActionListMeta.ts
-							:17</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Facet/FacetSearchRequest.ts#L37">rest/Facet/FacetSearchRequest.ts
+							:37</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the name of the event. While you can actually set this property to any arbitrary string value, its value
-								should uniquely identify the precise action that triggers the event. Thus, each individual event should have its
-							own unique <code>name</code> value.</p>
+							<p>A dictionary that maps index field values to facet value display names.</p>
 						</div>
-						<p>Example: <code>searchBoxSubmit</code>, <code>resultSort</code>, etc.</p>
+						<p><strong>Example</strong></p>
+						<blockquote>
+							<p><code>{&quot;acme_productA&quot;: &quot;ACME Product A&quot;, &quot;acme_productB&quot;: &quot;ACME Product B&quot;}</code></p>
+						</blockquote>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="type" class="tsd-anchor"></a>
-					<h3>type</h3>
-					<div class="tsd-signature tsd-kind-icon">type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<a name="field" class="tsd-anchor"></a>
+					<h3>field</h3>
+					<div class="tsd-signature tsd-kind-icon">field<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/AnalyticsActionListMeta.ts#L26">ui/Analytics/AnalyticsActionListMeta.ts
-							:26</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Facet/FacetSearchRequest.ts#L10">rest/Facet/FacetSearchRequest.ts
+							:10</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the type of the event. While you can actually set this property to any arbitrary string value, it should
-								describe the general category of the event. Thus, more than one event can have the same <code>type</code> value, which makes
-							it possible to group events with identical types when doing reporting.</p>
+							<p>The name of the field against which to execute the facet search request.</p>
 						</div>
-						<p>Example: All search box related events could have <code>searchbox</code> as their <code>type</code> value.</p>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="ignorevalues" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> ignore<wbr>Values</h3>
+					<div class="tsd-signature tsd-kind-icon">ignore<wbr>Values<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">String[]</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Facet/FacetSearchRequest.ts#L16">rest/Facet/FacetSearchRequest.ts
+							:16</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>A list of index field values to filter out from the facet search results.</p>
+						</div>
+						<p><strong>Example:</strong> <code>[&quot;blue&quot;, &quot;green&quot;]</code></p>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="numberofvalues" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> number<wbr>OfValues</h3>
+					<div class="tsd-signature tsd-kind-icon">number<wbr>OfValues<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Facet/FacetSearchRequest.ts#L22">rest/Facet/FacetSearchRequest.ts
+							:22</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The maximum number of facet values to fetch.</p>
+						</div>
+						<p><strong>Default (Search API):</strong> <code>10</code></p>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="query" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> query</h3>
+					<div class="tsd-signature tsd-kind-icon">query<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Facet/FacetSearchRequest.ts#L30">rest/Facet/FacetSearchRequest.ts
+							:30</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The string to match.</p>
+						</div>
+						<p>Typically, the text entered by the end-user in the facet search box, to which one or more wildcard characters (<code>*</code>) may be added.</p>
+						<p><strong>Example:</strong> <code>&quot;*oran*&quot;</code></p>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="searchcontext" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> search<wbr>Context</h3>
+					<div class="tsd-signature tsd-kind-icon">search<wbr>Context<span class="tsd-signature-symbol">:</span> <a href="iquery.html" class="tsd-signature-type">IQuery</a></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Facet/FacetSearchRequest.ts#L43">rest/Facet/FacetSearchRequest.ts
+							:43</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The query parameters representing the current state of the search interface.</p>
+						</div>
+						<p>See the <a href="iquery.html">query</a> documentation.</p>
 					</div>
 				</section>
 			</section>
@@ -229,7 +315,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">IAnalyticsActionCause</span>
+						<span class="target">IFacetSearchRequest</span>
 					</li>
 				</ul>
 			</section>

@@ -246,6 +246,8 @@
 			</div>
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
+					<dl class="tsd-deprecated">
+					</dl>
 					<div class="lead">
 						<p>The <code>DynamicFacet</code> component displays a <em>facet</em> of the results for the current query. A facet is a list of values for a
 						certain field occurring in the results, ordered using a configurable criteria (e.g., number of occurrences).</p>
@@ -256,6 +258,11 @@
 					field values.</p>
 					<p>This facet is more easy to use than the original <a href="facet.html"><code>Facet</code></a> component. It implements additional Coveo Machine Learning (Coveo ML) features
 					such as dynamic navigation experience (DNE).</p>
+					<dl class="tsd-comment-tags">
+						<dt>not supported in</dt>
+						<dd><p><a href="https://developers.coveo.com/x/yRQvAg">Coveo for Salesforce Free</a></p>
+						</dd>
+					</dl>
 				</div>
 			</section>
 			<div class="preview-container tsd-panel">
@@ -309,14 +316,17 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="dynamicfacet.html#options.collapsedbydefault" class="tsd-kind-icon">collapsed<wbr>ByDefault</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="dynamicfacet.html#options.enablecollapse" class="tsd-kind-icon">enable<wbr>Collapse</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="dynamicfacet.html#options.enablefacetsearch" class="tsd-kind-icon">enable<wbr>Facet<wbr>Search</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="dynamicfacet.html#options.enablemoreless" class="tsd-kind-icon">enable<wbr>More<wbr>Less</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="dynamicfacet.html#options.enablescrolltotop" class="tsd-kind-icon">enable<wbr>Scroll<wbr>ToTop</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="dynamicfacet.html#options.field" class="tsd-kind-icon">field</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="dynamicfacet.html#options.id-1" class="tsd-kind-icon">id</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="dynamicfacet.html#options.includeinbreadcrumb" class="tsd-kind-icon">include<wbr>InBreadcrumb</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="dynamicfacet.html#options.numberofvalues" class="tsd-kind-icon">number<wbr>OfValues</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="dynamicfacet.html#options.numberofvaluesinbreadcrumb" class="tsd-kind-icon">number<wbr>OfValues<wbr>InBreadcrumb</a></li>
-								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="dynamicfacet.html#options.preserveposition" class="tsd-kind-icon">preserve<wbr>Position</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="dynamicfacet.html#options.sortcriteria" class="tsd-kind-icon">sort<wbr>Criteria</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="dynamicfacet.html#options.title" class="tsd-kind-icon">title</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="dynamicfacet.html#options.useleadingwildcardinfacetsearch" class="tsd-kind-icon">use<wbr>Leading<wbr>Wildcard<wbr>InFacet<wbr>Search</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="dynamicfacet.html#options.valuecaption" class="tsd-kind-icon">value<wbr>Caption</a></li>
 							</ul>
 						</section>
@@ -342,8 +352,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/DynamicFacet/DynamicFacet.ts#L396">ui/DynamicFacet/DynamicFacet.ts
-									:396</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/DynamicFacet/DynamicFacet.ts#L454">ui/DynamicFacet/DynamicFacet.ts
+									:454</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -391,8 +401,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/DynamicFacet/DynamicFacet.ts#L309">ui/DynamicFacet/DynamicFacet.ts
-									:309</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/DynamicFacet/DynamicFacet.ts#L360">ui/DynamicFacet/DynamicFacet.ts
+									:360</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -426,8 +436,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/DynamicFacet/DynamicFacet.ts#L296">ui/DynamicFacet/DynamicFacet.ts
-									:296</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/DynamicFacet/DynamicFacet.ts#L347">ui/DynamicFacet/DynamicFacet.ts
+									:347</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -512,8 +522,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/DynamicFacet/DynamicFacet.ts#L410">ui/DynamicFacet/DynamicFacet.ts
-									:410</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/DynamicFacet/DynamicFacet.ts#L474">ui/DynamicFacet/DynamicFacet.ts
+									:474</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -538,8 +548,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/DynamicFacet/DynamicFacet.ts#L424">ui/DynamicFacet/DynamicFacet.ts
-									:424</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/DynamicFacet/DynamicFacet.ts#L488">ui/DynamicFacet/DynamicFacet.ts
+									:488</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -565,8 +575,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/DynamicFacet/DynamicFacet.ts#L386">ui/DynamicFacet/DynamicFacet.ts
-									:386</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/DynamicFacet/DynamicFacet.ts#L438">ui/DynamicFacet/DynamicFacet.ts
+									:438</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -590,8 +600,8 @@
 								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#getbindings">getBindings</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L130">ui/Base/Component.ts
-									:130</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L317">ui/Base/Component.ts
+									:317</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -614,8 +624,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/DynamicFacet/DynamicFacet.ts#L367">ui/DynamicFacet/DynamicFacet.ts
-									:367</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/DynamicFacet/DynamicFacet.ts#L416">ui/DynamicFacet/DynamicFacet.ts
+									:416</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -640,8 +650,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/DynamicFacet/DynamicFacet.ts#L278">ui/DynamicFacet/DynamicFacet.ts
-									:278</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/DynamicFacet/DynamicFacet.ts#L329">ui/DynamicFacet/DynamicFacet.ts
+									:329</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -675,8 +685,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/DynamicFacet/DynamicFacet.ts#L265">ui/DynamicFacet/DynamicFacet.ts
-									:265</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/DynamicFacet/DynamicFacet.ts#L316">ui/DynamicFacet/DynamicFacet.ts
+									:316</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -710,15 +720,15 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/DynamicFacet/DynamicFacet.ts#L352">ui/DynamicFacet/DynamicFacet.ts
-									:352</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/DynamicFacet/DynamicFacet.ts#L402">ui/DynamicFacet/DynamicFacet.ts
+									:402</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Reduces the number of displayed facet values down to <a href="dynamicfacet.html#options.numberofvalues">numberOfValues</a>.</p>
 								</div>
-								<p>Automatically triggers a query.</p>
+								<p>Automatically triggers an isolated query.</p>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
@@ -735,15 +745,15 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/DynamicFacet/DynamicFacet.ts#L339">ui/DynamicFacet/DynamicFacet.ts
-									:339</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/DynamicFacet/DynamicFacet.ts#L390">ui/DynamicFacet/DynamicFacet.ts
+									:390</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Requests additional values.</p>
 								</div>
-								<p>Automatically triggers a query.</p>
+								<p>Automatically triggers an isolated query.</p>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -769,8 +779,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/DynamicFacet/DynamicFacet.ts#L379">ui/DynamicFacet/DynamicFacet.ts
-									:379</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/DynamicFacet/DynamicFacet.ts#L431">ui/DynamicFacet/DynamicFacet.ts
+									:431</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -793,8 +803,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/DynamicFacet/DynamicFacet.ts#L326">ui/DynamicFacet/DynamicFacet.ts
-									:326</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/DynamicFacet/DynamicFacet.ts#L377">ui/DynamicFacet/DynamicFacet.ts
+									:377</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -825,8 +835,8 @@
 								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#get">get</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L199">ui/Base/Component.ts
-									:199</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L386">ui/Base/Component.ts
+									:386</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -871,8 +881,8 @@
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#bind">bind</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L68">ui/Base/Component.ts
-							:68</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L254">ui/Base/Component.ts
+							:254</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -896,8 +906,8 @@
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#componentoptionsmodel">componentOptionsModel</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L96">ui/Base/Component.ts
-							:96</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L282">ui/Base/Component.ts
+							:282</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -914,8 +924,8 @@
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#componentstatemodel">componentStateModel</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L80">ui/Base/Component.ts
-							:80</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L266">ui/Base/Component.ts
+							:266</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -975,8 +985,8 @@
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#querycontroller">queryController</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L84">ui/Base/Component.ts
-							:84</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L270">ui/Base/Component.ts
+							:270</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -993,8 +1003,8 @@
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#querystatemodel">queryStateModel</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L76">ui/Base/Component.ts
-							:76</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L262">ui/Base/Component.ts
+							:262</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1011,8 +1021,8 @@
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#root">root</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L72">ui/Base/Component.ts
-							:72</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L258">ui/Base/Component.ts
+							:258</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1029,8 +1039,8 @@
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#searchinterface">searchInterface</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L88">ui/Base/Component.ts
-							:88</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L274">ui/Base/Component.ts
+							:274</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1047,8 +1057,8 @@
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#usageanalytics">usageAnalytics</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L92">ui/Base/Component.ts
-							:92</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L278">ui/Base/Component.ts
+							:278</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1086,8 +1096,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/DynamicFacet/DynamicFacet.ts#L175">ui/DynamicFacet/DynamicFacet.ts
-							:175</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/DynamicFacet/DynamicFacet.ts#L221">ui/DynamicFacet/DynamicFacet.ts
+							:221</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1111,20 +1121,101 @@ data-collapsed-by-default&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/DynamicFacet/DynamicFacet.ts#L165">ui/DynamicFacet/DynamicFacet.ts
-							:165</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/DynamicFacet/DynamicFacet.ts#L167">ui/DynamicFacet/DynamicFacet.ts
+							:167</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>Whether to allow the end-user to expand and collapse this facet.</p>
 						</div>
-						<p><strong>Default:</strong> <code>false</code></p>
+						<p><strong>Default:</strong> <code>true</code></p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-enable-collapse&#x3D;&#x27;true&#x27;
 data-enable-collapse&#x3D;&#x27;false&#x27;</pre>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
+					<a name="options.enablefacetsearch" class="tsd-anchor"></a>
+					<h3>enable<wbr>Facet<wbr>Search</h3>
+					<div class="tsd-signature tsd-kind-icon">enable<wbr>Facet<wbr>Search<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/DynamicFacet/DynamicFacet.ts#L196">ui/DynamicFacet/DynamicFacet.ts
+							:196</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Whether to allow the end-user to search the facet values.</p>
+						</div>
+						<p><strong>Note:</strong></p>
+						<blockquote>
+							<p>The [<code>DynamicRangeFacet</code>]{@link DynamicRangeFacet} component does not support this option.</p>
+						</blockquote>
+						<p><strong>Default:</strong> <code>undefined</code>, and the following behavior applies:</p>
+						<ul>
+							<li>Will be enabled when more facet values are available from the server.</li>
+							<li>Will be disabled when all facet values are already available.</li>
+						</ul>
+					</div>
+					<div class="tsd-panel">
+						<div class="tsd-signature-type">Markup configuration example(s) :</div>
+						<pre>data-enable-facet-search&#x3D;&#x27;true&#x27;
+data-enable-facet-search&#x3D;&#x27;false&#x27;</pre>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
+					<a name="options.enablemoreless" class="tsd-anchor"></a>
+					<h3>enable<wbr>More<wbr>Less</h3>
+					<div class="tsd-signature tsd-kind-icon">enable<wbr>More<wbr>Less<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/DynamicFacet/DynamicFacet.ts#L184">ui/DynamicFacet/DynamicFacet.ts
+							:184</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Whether to enable the <strong>Show more</strong> and <strong>Show less</strong> buttons in the facet.</p>
+						</div>
+						<p><strong>Note:</strong></p>
+						<blockquote>
+							<p>The [<code>DynamicRangeFacet</code>]{@link DynamicRangeFacet} component does not support this option.</p>
+						</blockquote>
+						<p><strong>Default:</strong> <code>true</code></p>
+					</div>
+					<div class="tsd-panel">
+						<div class="tsd-signature-type">Markup configuration example(s) :</div>
+						<pre>data-enable-more-less&#x3D;&#x27;true&#x27;
+data-enable-more-less&#x3D;&#x27;false&#x27;</pre>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
+					<a name="options.enablescrolltotop" class="tsd-anchor"></a>
+					<h3>enable<wbr>Scroll<wbr>ToTop</h3>
+					<div class="tsd-signature tsd-kind-icon">enable<wbr>Scroll<wbr>ToTop<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/DynamicFacet/DynamicFacet.ts#L174">ui/DynamicFacet/DynamicFacet.ts
+							:174</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Whether to scroll back to the top of the page whenever the end-user interacts with a facet.</p>
+						</div>
+						<p><strong>Default:</strong> <code>true</code></p>
+					</div>
+					<div class="tsd-panel">
+						<div class="tsd-signature-type">Markup configuration example(s) :</div>
+						<pre>data-enable-scroll-to-top&#x3D;&#x27;true&#x27;
+data-enable-scroll-to-top&#x3D;&#x27;false&#x27;</pre>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
@@ -1134,8 +1225,8 @@ data-enable-collapse&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/DynamicFacet/DynamicFacet.ts#L127">ui/DynamicFacet/DynamicFacet.ts
-							:127</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/DynamicFacet/DynamicFacet.ts#L129">ui/DynamicFacet/DynamicFacet.ts
+							:129</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1160,8 +1251,8 @@ data-enable-collapse&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/DynamicFacet/DynamicFacet.ts#L94">ui/DynamicFacet/DynamicFacet.ts
-							:94</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/DynamicFacet/DynamicFacet.ts#L96">ui/DynamicFacet/DynamicFacet.ts
+							:96</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1190,8 +1281,8 @@ data-enable-collapse&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/DynamicFacet/DynamicFacet.ts#L184">ui/DynamicFacet/DynamicFacet.ts
-							:184</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/DynamicFacet/DynamicFacet.ts#L230">ui/DynamicFacet/DynamicFacet.ts
+							:230</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1214,8 +1305,8 @@ data-include-in-breadcrumb&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/DynamicFacet/DynamicFacet.ts#L158">ui/DynamicFacet/DynamicFacet.ts
-							:158</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/DynamicFacet/DynamicFacet.ts#L160">ui/DynamicFacet/DynamicFacet.ts
+							:160</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1238,8 +1329,8 @@ data-include-in-breadcrumb&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/DynamicFacet/DynamicFacet.ts#L194">ui/DynamicFacet/DynamicFacet.ts
-							:194</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/DynamicFacet/DynamicFacet.ts#L240">ui/DynamicFacet/DynamicFacet.ts
+							:240</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1256,38 +1347,14 @@ data-include-in-breadcrumb&#x3D;&#x27;false&#x27;</pre>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
-					<a name="options.preserveposition" class="tsd-anchor"></a>
-					<h3>preserve<wbr>Position</h3>
-					<div class="tsd-signature tsd-kind-icon">preserve<wbr>Position<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/DynamicFacet/DynamicFacet.ts#L216">ui/DynamicFacet/DynamicFacet.ts
-							:216</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Whether the facet should remain in its current position in the viewport when the mouse cursor is over it.</p>
-						</div>
-						<p>Leaving this to <code>true</code> ensures that the facet does not move around in the search interface while the end-user is interacting with it.</p>
-						<p>Default: <code>true</code></p>
-					</div>
-					<div class="tsd-panel">
-						<div class="tsd-signature-type">Markup configuration example(s) :</div>
-						<pre>data-preserve-position&#x3D;&#x27;true&#x27;
-data-preserve-position&#x3D;&#x27;false&#x27;</pre>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
 					<a name="options.sortcriteria" class="tsd-anchor"></a>
 					<h3>sort<wbr>Criteria</h3>
 					<div class="tsd-signature tsd-kind-icon">sort<wbr>Criteria<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/DynamicFacet/DynamicFacet.ts#L145">ui/DynamicFacet/DynamicFacet.ts
-							:145</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/DynamicFacet/DynamicFacet.ts#L147">ui/DynamicFacet/DynamicFacet.ts
+							:147</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1320,8 +1387,8 @@ data-preserve-position&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/DynamicFacet/DynamicFacet.ts#L111">ui/DynamicFacet/DynamicFacet.ts
-							:111</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/DynamicFacet/DynamicFacet.ts#L113">ui/DynamicFacet/DynamicFacet.ts
+							:113</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1336,9 +1403,9 @@ data-preserve-position&#x3D;&#x27;false&#x27;</pre>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
-					<a name="options.valuecaption" class="tsd-anchor"></a>
-					<h3>value<wbr>Caption</h3>
-					<div class="tsd-signature tsd-kind-icon">value<wbr>Caption<span class="tsd-signature-symbol">:</span> <a href="../interfaces/istringmap.html" class="tsd-signature-type">IStringMap</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></div>
+					<a name="options.useleadingwildcardinfacetsearch" class="tsd-anchor"></a>
+					<h3>use<wbr>Leading<wbr>Wildcard<wbr>InFacet<wbr>Search</h3>
+					<div class="tsd-signature tsd-kind-icon">use<wbr>Leading<wbr>Wildcard<wbr>InFacet<wbr>Search<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
@@ -1348,9 +1415,41 @@ data-preserve-position&#x3D;&#x27;false&#x27;</pre>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
+							<p>Whether to prepend facet search queries with a wildcard.
+							See also the <a href="dynamicfacet.html#options.enablefacetsearch">enableFacetSearch</a> option.</p>
+						</div>
+						<p><strong>Note:</strong></p>
+						<blockquote>
+							<p>The [<code>DynamicRangeFacet</code>]{@link DynamicRangeFacet} component does not support this option.</p>
+						</blockquote>
+						<p><strong>Default:</strong> <code>true</code></p>
+					</div>
+					<div class="tsd-panel">
+						<div class="tsd-signature-type">Markup configuration example(s) :</div>
+						<pre>data-use-leading-wildcard-in-facet-search&#x3D;&#x27;true&#x27;
+data-use-leading-wildcard-in-facet-search&#x3D;&#x27;false&#x27;</pre>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
+					<a name="options.valuecaption" class="tsd-anchor"></a>
+					<h3>value<wbr>Caption</h3>
+					<div class="tsd-signature tsd-kind-icon">value<wbr>Caption<span class="tsd-signature-symbol">:</span> <a href="../interfaces/istringmap.html" class="tsd-signature-type">IStringMap</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/DynamicFacet/DynamicFacet.ts#L255">ui/DynamicFacet/DynamicFacet.ts
+							:255</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
 							<p>A mapping of facet values to their desired captions.</p>
 						</div>
 						<p>See <a href="https://developers.coveo.com/x/jBsvAg">Normalizing Facet Value Captions</a>.</p>
+						<p><strong>Note:</strong></p>
+						<blockquote>
+							<p>The [<code>DynamicRangeFacet</code>]{@link DynamicRangeFacet} component does not support this option.</p>
+						</blockquote>
 					</div>
 				</section>
 			</section>
@@ -1360,7 +1459,7 @@ data-preserve-position&#x3D;&#x27;false&#x27;</pre>
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-coveo-component tsd-is-overwrite">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Dynamic<wbr>Facet<span class="tsd-signature-symbol">(</span>element<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLElement</span>, options<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">IDynamicFacetOptions</span>, bindings<span class="tsd-signature-symbol">?: </span><a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="dynamicfacet.html" class="tsd-signature-type">DynamicFacet</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Dynamic<wbr>Facet<span class="tsd-signature-symbol">(</span>element<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLElement</span>, options<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">IDynamicFacetOptions</span>, bindings<span class="tsd-signature-symbol">?: </span><a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a>, classId<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="dynamicfacet.html" class="tsd-signature-type">DynamicFacet</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -1368,8 +1467,8 @@ data-preserve-position&#x3D;&#x27;false&#x27;</pre>
 								<p>Overwrites <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#constructor">constructor</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/DynamicFacet/DynamicFacet.ts#L228">ui/DynamicFacet/DynamicFacet.ts
-									:228</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/DynamicFacet/DynamicFacet.ts#L268">ui/DynamicFacet/DynamicFacet.ts
+									:268</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1402,6 +1501,9 @@ data-preserve-position&#x3D;&#x27;false&#x27;</pre>
 											<p>The component bindings. Automatically resolved by default.</p>
 										</div>
 									</div>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> classId: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;DynamicFacet.ID</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="dynamicfacet.html" class="tsd-signature-type">DynamicFacet</a></h4>
