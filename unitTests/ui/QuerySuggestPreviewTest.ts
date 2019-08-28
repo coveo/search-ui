@@ -81,10 +81,11 @@ export function QuerySuggestPreviewTest() {
     }
 
     function setupSuggestionManager() {
+      const root = document.createElement('div');
       buildSuggestion();
-      const inputManager = new InputManager(document.createElement('div'), () => {}, {} as MagicBoxInstance);
+      const inputManager = new InputManager(document.createElement('div'), () => {}, {} as MagicBoxInstance, root);
 
-      suggestionManager = new SuggestionsManager(suggestionContainer.el, document.createElement('div'), testEnv.root, inputManager);
+      suggestionManager = new SuggestionsManager(suggestionContainer.el, root, testEnv.root, inputManager);
     }
 
     function setupRenderPreview() {
@@ -250,7 +251,7 @@ export function QuerySuggestPreviewTest() {
     });
 
     describe('currentlyDisplayedResults', () => {
-      it('currentlyDisplayedResults get populated by rendered results', done => {
+      it('get populated by rendered results', done => {
         setupQuerySuggestPreview();
         const fakeResults = FakeResults.createFakeResults(test.cmp.options.numberOfPreviewResults);
         setupSuggestion();
@@ -261,7 +262,7 @@ export function QuerySuggestPreviewTest() {
         }, test.cmp.options.executeQueryDelay);
       });
 
-      it('currentlyDisplayedResults get emptied when they aare no result to be rendered', done => {
+      it('get emptied when they aare no result to be rendered', done => {
         setupQuerySuggestPreview();
         const fakeResults = FakeResults.createFakeResults(0);
         setupSuggestion();
@@ -272,7 +273,7 @@ export function QuerySuggestPreviewTest() {
         }, test.cmp.options.executeQueryDelay);
       });
 
-      it('currentlyDisplayedResults get emptied when a querySuggest loose focus', done => {
+      it('get emptied when a querySuggest loose focus', done => {
         setupQuerySuggestPreview();
         setupSuggestion();
         triggerQuerySuggestHover('test');
@@ -284,6 +285,24 @@ export function QuerySuggestPreviewTest() {
         }, test.cmp.options.executeQueryDelay);
       });
     });
+
+    describe('SuggestionManager', () => {
+      it(`when moving right,
+      it returns a QuerySuggestPreview`, done => {
+        setupQuerySuggestPreview();
+        const fakeResults = FakeResults.createFakeResults(test.cmp.options.numberOfPreviewResults);
+        setupSuggestion();
+        triggerQuerySuggestHover('test', fakeResults);
+        setTimeout(() => {
+          suggestionManager.moveRight();
+          const selectedWithKeyboard = suggestionManager.selectAndReturnKeyboardFocusedElement();
+          expect(selectedWithKeyboard.classList).toContain('coveo-preview-selectable');
+          expect(selectedWithKeyboard.classList).toContain('magic-box-selected');
+          done();
+        }, test.cmp.options.executeQueryDelay);
+      });
+    });
+
     describe('Analytics', () => {
       function getAResult() {
         const previewContainer = $$(suggestionContainer.el).find('.coveo-preview-results > .CoveoResult');

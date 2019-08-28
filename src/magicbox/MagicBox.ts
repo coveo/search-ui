@@ -1,11 +1,12 @@
+import { each, find, isUndefined } from 'underscore';
+import { KEYBOARD } from '../Core';
 import { $$ } from '../utils/Dom';
-import { Result } from './Result/Result';
-import { Grammar } from './Grammar';
 import { doMagicBoxExport } from './doMagicBoxExport';
-import { Suggestion, SuggestionsManager } from './SuggestionsManager';
+import { Grammar } from './Grammar';
 import { InputManager } from './InputManager';
-import { isUndefined, each, find } from 'underscore';
 import { MagicBoxClear } from './MagicBoxClear';
+import { Result } from './Result/Result';
+import { Suggestion, SuggestionsManager } from './SuggestionsManager';
 
 export interface Options {
   inline?: boolean;
@@ -44,7 +45,6 @@ export class MagicBoxInstance {
     if (this.options.inline) {
       $$(element).addClass('magic-box-inline');
     }
-    $$(this.element).setAttribute('role', 'combobox');
 
     this.result = this.grammar.parse('');
     this.displayedResult = this.result.clean();
@@ -68,7 +68,8 @@ export class MagicBoxInstance {
           this.onselect && this.onselect(this.getFirstSuggestionText());
         }
       },
-      this
+      this,
+      root
     );
 
     this.inputManager.ontabpress = () => {
@@ -142,19 +143,16 @@ export class MagicBoxInstance {
     };
 
     this.inputManager.onkeydown = (key: number) => {
-      if (key == 38 || key == 40) {
-        // Up, Down
+      if (key === KEYBOARD.UP_ARROW || key === KEYBOARD.DOWN_ARROW || key === KEYBOARD.LEFT_ARROW || key === KEYBOARD.RIGHT_ARROW) {
         return false;
       }
-      if (key == 13) {
-        // Enter
+      if (key === KEYBOARD.ENTER) {
         const suggestion = this.suggestionsManager.selectAndReturnKeyboardFocusedElement();
         if (suggestion == null) {
           this.onsubmit && this.onsubmit();
         }
         return false;
-      } else if (key == 27) {
-        // ESC
+      } else if (key === KEYBOARD.ESCAPE) {
         this.clearSuggestion();
         this.blur();
       }
@@ -166,19 +164,27 @@ export class MagicBoxInstance {
     };
 
     this.inputManager.onkeyup = (key: number) => {
-      if (key == 38) {
-        // Up
-        this.onmove && this.onmove();
-        this.focusOnSuggestion(this.suggestionsManager.moveUp());
-        this.onchange && this.onchange();
-      } else if (key == 40) {
-        // Down
-        this.onmove && this.onmove();
-        this.focusOnSuggestion(this.suggestionsManager.moveDown());
-        this.onchange && this.onchange();
-      } else {
-        return true;
+      this.onmove && this.onmove();
+      switch (key) {
+        case KEYBOARD.UP_ARROW:
+          this.suggestionsManager.moveUp();
+          break;
+        case KEYBOARD.DOWN_ARROW:
+          this.suggestionsManager.moveDown();
+          break;
+        case KEYBOARD.LEFT_ARROW:
+          this.suggestionsManager.moveLeft();
+          break;
+        case KEYBOARD.RIGHT_ARROW:
+          this.suggestionsManager.moveRight();
+          break;
+        default:
+          return true;
       }
+      if (this.suggestionsManager.selectedSuggestion) {
+        this.focusOnSuggestion(this.suggestionsManager.selectedSuggestion);
+      }
+      this.onchange && this.onchange();
       return false;
     };
   }

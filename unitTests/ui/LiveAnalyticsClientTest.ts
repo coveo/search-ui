@@ -511,6 +511,52 @@ export function LiveAnalyticsClientTest() {
       expect(metaData.contentIDValue).toBe(id.value);
     });
 
+    it(`when specifying contentIDKey and contentIDValue for #logCustomEvent, it should keep them in the metadata object`, () => {
+      const spy = jasmine.createSpy('spy');
+      $$(env.root).on(AnalyticsEvents.changeAnalyticsCustomData, spy);
+
+      const customData = {
+        contentIDKey: 'groupid',
+        contentIDValue: 'my-id-abc-123'
+      };
+      const result = FakeResults.createFakeResult();
+      client.logCustomEvent<IAnalyticsNoMeta>(analyticsActionCauseList.documentOpen, customData, document.createElement('div'), result);
+      const metaData = spy.calls.mostRecent().args[1].metaObject;
+
+      expect(metaData.contentIDKey).toBe('groupid');
+      expect(metaData.contentIDValue).toBe('my-id-abc-123');
+    });
+
+    it(`when specifying contentIDKey only for #logCustomEvent, it should update with urihash in the metadata object`, () => {
+      const spy = jasmine.createSpy('spy');
+      $$(env.root).on(AnalyticsEvents.changeAnalyticsCustomData, spy);
+
+      const customData = {
+        contentIDKey: 'groupid'
+      };
+      const result = FakeResults.createFakeResult();
+      client.logCustomEvent<IAnalyticsNoMeta>(analyticsActionCauseList.documentOpen, customData, document.createElement('div'), result);
+      const metaData = spy.calls.mostRecent().args[1].metaObject;
+
+      expect(metaData.contentIDKey).toBe('urihash');
+      expect(metaData.contentIDValue).toBe(result.raw.urihash);
+    });
+
+    it(`when specifying contentIDValue only for #logCustomEvent, it should update with urihash in the metadata object`, () => {
+      const spy = jasmine.createSpy('spy');
+      $$(env.root).on(AnalyticsEvents.changeAnalyticsCustomData, spy);
+
+      const customData = {
+        contentIDValue: 'my-id-abc-123'
+      };
+      const result = FakeResults.createFakeResult();
+      client.logCustomEvent<IAnalyticsNoMeta>(analyticsActionCauseList.documentOpen, customData, document.createElement('div'), result);
+      const metaData = spy.calls.mostRecent().args[1].metaObject;
+
+      expect(metaData.contentIDKey).toBe('urihash');
+      expect(metaData.contentIDValue).toBe(result.raw.urihash);
+    });
+
     describe('with click event', () => {
       let spy: jasmine.Spy;
       let fakeResult: IQueryResult;

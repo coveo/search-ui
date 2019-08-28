@@ -527,15 +527,7 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
   }
 
   public isCurrentlyDisplayed() {
-    if (!$$(this.element).isVisible()) {
-      return false;
-    }
-
-    if ($$(this.element).hasClass('coveo-hidden')) {
-      return false;
-    }
-
-    return true;
+    return $$(this.element).isVisible();
   }
 
   private initQueryEvents() {
