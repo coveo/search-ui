@@ -36,6 +36,8 @@ export class AnalyticsEndpoint {
   private organization: string;
   public endpointCaller: AnalyticsEndpointCaller;
 
+  private dead: boolean = false;
+
   constructor(public options: IAnalyticsEndpointOptions) {
     this.logger = new Logger(this);
 
@@ -93,11 +95,22 @@ export class AnalyticsEndpoint {
     return this.getFromService<string[]>(url, params);
   }
 
+  public forgetVisitorId() {
+    Cookie.erase('visitorId');
+  }
+
+  public kill() {
+    this.dead = true;
+  }
+
   private async sendToService(data: Record<string, any>, path: string, paramName: string): Promise<any> {
     // We use pendingRequest because we don't want to have 2 request to analytics at the same time.
     // Otherwise the cookie visitId won't be set correctly.
     if (AnalyticsEndpoint.pendingRequest != null) {
       await AnalyticsEndpoint.pendingRequest;
+    }
+    if (this.dead) {
+      return;
     }
 
     const url = this.getURL(path);
@@ -105,10 +118,17 @@ export class AnalyticsEndpoint {
 
     try {
       const results = await request;
+      if (this.dead) {
+        return;
+      }
       AnalyticsEndpoint.pendingRequest = null;
       this.handleAnalyticsEventResponse(results.data);
       return results.data;
     } catch (error) {
+      if (this.dead) {
+        // TODO: Log, ignore or rethrow error?
+        return;
+      }
       AnalyticsEndpoint.pendingRequest = null;
       if (this.options.accessToken.isExpired(error)) {
         const successfullyRenewed = await this.options.accessToken.doRenew();
