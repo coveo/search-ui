@@ -15,6 +15,7 @@ import { IStandaloneSearchInterfaceOptions } from '../SearchInterface/SearchInte
 import { IRecommendationOptions } from '../Recommendation/Recommendation';
 import * as _ from 'underscore';
 import { PublicPathUtils } from '../../utils/PublicPathUtils';
+import { Analytics } from '../Analytics/Analytics';
 
 /**
  * Initialize the framework with a basic search interface. Calls {@link Initialization.initSearchInterface}.
@@ -445,6 +446,45 @@ export function configureResourceRoot(path: string) {
 
 Initialization.registerNamedMethod('configureResourceRoot', (path: string) => {
   configureResourceRoot(path);
+});
+
+function findAllComponentsOfType<T extends BaseComponent>(type: { new (...args: any[]): T }) {
+  return $$(document.body)
+    .findAll(`.Coveo${(<typeof BaseComponent>(<{}>type)).ID}`)
+    .map(element => <T>Component.resolveBinding(element as HTMLElement, type));
+}
+
+/**
+ * Re-enables all analytics if they were previously disabled.
+ */
+export function enableAnalytics() {
+  findAllComponentsOfType(Analytics).forEach(analytics => analytics.enable());
+}
+
+Initialization.registerNamedMethod('enableAnalytics', () => {
+  enableAnalytics();
+});
+
+/**
+ * Removes the analytics tracking cookie and clears the actions history.
+ */
+export function clearLocalData() {
+  findAllComponentsOfType(Analytics).forEach(analytics => analytics.clearLocalData());
+}
+
+Initialization.registerNamedMethod('clearLocalData', () => {
+  clearLocalData();
+});
+
+/**
+ * Disables analytics and clears local data.
+ */
+export function disableAnalytics() {
+  findAllComponentsOfType(Analytics).forEach(analytics => analytics.disable());
+}
+
+Initialization.registerNamedMethod('disableAnalytics', () => {
+  disableAnalytics();
 });
 
 /**
