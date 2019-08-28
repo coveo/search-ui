@@ -118,6 +118,10 @@
     .coveo-child-result {
       .CoveoQuickview {
         margin-left: 5px;
+        display: inline-block;
+        .coveo-icon-for-quickview-svg {
+          margin-top: 0;
+        }
       }
     }
   }
