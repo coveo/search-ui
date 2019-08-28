@@ -417,10 +417,10 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
 
   private updateAppearance() {
     if (this.disabled || this.isCategoryEmpty) {
-      return $$(this.element).addClass('coveo-hidden');
+      return this.hide();
     }
 
-    $$(this.element).removeClass('coveo-hidden');
+    this.show();
     this.dependsOnManager.updateVisibilityBasedOnDependsOn();
   }
 
@@ -600,6 +600,20 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     this.resetPath();
     this.logAnalyticsEvent(analyticsActionCauseList.categoryFacetClear);
     this.executeQuery();
+  }
+
+  /**
+   * Hides the component.
+   */
+  public hide() {
+    $$(this.element).addClass('coveo-hidden');
+  }
+
+  /**
+   * Shows the component.
+   */
+  public show() {
+    $$(this.element).removeClass('coveo-hidden');
   }
 
   public enable() {

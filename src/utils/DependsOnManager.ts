@@ -25,7 +25,7 @@ export class DependsOnManager {
     if (!this.isDependentFacet) {
       return;
     }
-    this.facet.bind.onQueryState(MODEL_EVENTS.CHANGE, undefined, () => this.resetIfDependableFacetHasNoSelectedValues());
+    this.facet.bind.onQueryState(MODEL_EVENTS.CHANGE, undefined, () => this.resetIfParentFacetHasNoSelectedValues());
   }
 
   public updateVisibilityBasedOnDependsOn() {
@@ -33,7 +33,7 @@ export class DependsOnManager {
       return;
     }
 
-    $$(this.facet.element).toggleClass('coveo-hidden', !this.dependableFacetHasSelectedValues);
+    $$(this.facet.element).toggleClass('coveo-hidden', !this.parentFacetHasSelectedValues);
   }
 
   private get isDependentFacet() {
@@ -44,15 +44,15 @@ export class DependsOnManager {
     return this.facet.dependsOn;
   }
 
-  private resetIfDependableFacetHasNoSelectedValues() {
-    if (this.dependableFacetHasSelectedValues) {
+  private resetIfParentFacetHasNoSelectedValues() {
+    if (this.parentFacetHasSelectedValues) {
       return;
     }
 
     this.facet.reset();
   }
 
-  private get dependableFacetHasSelectedValues() {
+  private get parentFacetHasSelectedValues() {
     const parentSelectedValuesId = QueryStateModel.getFacetId(this.facetDependsOnField);
     return this.valuesExistForFacetWithId(parentSelectedValuesId);
   }

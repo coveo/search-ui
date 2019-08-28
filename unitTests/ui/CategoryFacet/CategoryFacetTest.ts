@@ -93,6 +93,17 @@ export function CategoryFacetTest() {
       expect(test.cmp.activePath).toEqual(currentPath.concat(['value9']));
     });
 
+    it('calling hide adds the coveo hidden class', () => {
+      test.cmp.hide();
+      expect($$(test.cmp.element).hasClass('coveo-hidden')).toBeTruthy();
+    });
+
+    it('calling show removes the coveo hidden class', () => {
+      $$(test.cmp.element).addClass('coveo-hidden');
+      test.cmp.show();
+      expect($$(test.cmp.element).hasClass('coveo-hidden')).toBe(false);
+    });
+
     it('calling "scrollToTop" should call "scrollToTop" on the ResultListUtils', () => {
       spyOn(ResultListUtils, 'scrollToTop');
       test.cmp.scrollToTop();
@@ -125,7 +136,7 @@ export function CategoryFacetTest() {
     });
 
     it('should correctly evaluate isCurrentlyDisplayed() when facet is not visible', () => {
-      $$(test.cmp.element).addClass('coveo-hidden');
+      test.cmp.hide();
       expect(test.cmp.isCurrentlyDisplayed()).toBe(false);
     });
 
