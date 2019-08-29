@@ -3,14 +3,13 @@ import { DynamicFacet } from '../ui/DynamicFacet/DynamicFacet';
 import { IFacetSearchResponse } from '../rest/Facet/FacetSearchResponse';
 import { FileTypes } from '../ui/Misc/FileTypes';
 import { QueryUtils } from '../utils/QueryUtils';
-import { IStringMap } from '../rest/GenericParam';
 import { DateUtils } from '../utils/DateUtils';
 
 export class FacetSearchController {
   constructor(private facet: DynamicFacet) {}
 
   private getMonthsValueCaptions() {
-    const monthsValueCaptions: IStringMap<string> = {};
+    const monthsValueCaptions: Record<string, string> = {};
     for (let month = 1; month <= 12; month++) {
       const key = `0${month}`.substr(-2);
       monthsValueCaptions[key] = DateUtils.monthToString(month - 1);
@@ -19,7 +18,7 @@ export class FacetSearchController {
     return monthsValueCaptions;
   }
 
-  private addTypesCaptionsIfNecessary(): IStringMap<string> {
+  private addTypesCaptionsIfNecessary(): Record<string, string> {
     const field = this.facet.options.field.toLowerCase();
     const isFileType = QueryUtils.isStratusAgnosticField(field, '@filetype');
     const isObjectType = QueryUtils.isStratusAgnosticField(field, '@objecttype');
@@ -36,7 +35,7 @@ export class FacetSearchController {
     return {};
   }
 
-  private get captions(): IStringMap<string> {
+  private get captions(): Record<string, string> {
     return {
       ...this.addTypesCaptionsIfNecessary(),
       ...this.facet.options.valueCaption
