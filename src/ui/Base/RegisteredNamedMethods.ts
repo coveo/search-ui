@@ -448,17 +448,18 @@ Initialization.registerNamedMethod('configureResourceRoot', (path: string) => {
   configureResourceRoot(path);
 });
 
-function findAllComponentsOfType<T extends BaseComponent>(type: { new (...args: any[]): T }) {
-  return $$(document.body)
-    .findAll(`.Coveo${(<typeof BaseComponent>(<{}>type)).ID}`)
+function findAllComponentsOfType<T extends BaseComponent>(type: { new (...args: any[]): T }, searchRoot = document.body) {
+  return $$(searchRoot)
+    .findAll(Component.computeSelectorForType((<typeof BaseComponent>(<{}>type)).ID))
     .map(element => <T>Component.resolveBinding(element as HTMLElement, type));
 }
 
 /**
- * Re-enables all analytics if they were previously disabled.
+ * Re-enables all [Analytics]{@link Analytics} components if they were previously disabled.
+ * @param searchRoot What ancestor or CoveoAnalytics element to search from in the DOM.
  */
-export function enableAnalytics() {
-  findAllComponentsOfType(Analytics).forEach(analytics => analytics.enable());
+export function enableAnalytics(searchRoot = document.body) {
+  findAllComponentsOfType(Analytics, searchRoot).forEach(analytics => analytics.enable());
 }
 
 Initialization.registerNamedMethod('enableAnalytics', () => {
@@ -467,9 +468,10 @@ Initialization.registerNamedMethod('enableAnalytics', () => {
 
 /**
  * Removes the analytics tracking cookie and clears the actions history.
+ * @param searchRoot What ancestor or CoveoAnalytics element to search from in the DOM.
  */
-export function clearLocalData() {
-  findAllComponentsOfType(Analytics).forEach(analytics => analytics.clearLocalData());
+export function clearLocalData(searchRoot = document.body) {
+  findAllComponentsOfType(Analytics, searchRoot).forEach(analytics => analytics.clearLocalData());
 }
 
 Initialization.registerNamedMethod('clearLocalData', () => {
@@ -477,10 +479,11 @@ Initialization.registerNamedMethod('clearLocalData', () => {
 });
 
 /**
- * Disables analytics and clears local data.
+ * Disables all [Analytics]{@link Analytics} components and clears local data.
+ * @param searchRoot What ancestor or CoveoAnalytics element to search from in the DOM.
  */
-export function disableAnalytics() {
-  findAllComponentsOfType(Analytics).forEach(analytics => analytics.disable());
+export function disableAnalytics(searchRoot = document.body) {
+  findAllComponentsOfType(Analytics, searchRoot).forEach(analytics => analytics.disable());
 }
 
 Initialization.registerNamedMethod('disableAnalytics', () => {
