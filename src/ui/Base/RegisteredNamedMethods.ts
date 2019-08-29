@@ -449,9 +449,14 @@ Initialization.registerNamedMethod('configureResourceRoot', (path: string) => {
 });
 
 function findAllComponentsOfType<T extends BaseComponent>(type: { new (...args: any[]): T }, searchRoot = document.body) {
-  return $$(searchRoot)
-    .findAll(Component.computeSelectorForType((<typeof BaseComponent>(<{}>type)).ID))
-    .map(element => <T>Component.resolveBinding(element as HTMLElement, type));
+  const className = Component.computeCssClassNameForType((<typeof BaseComponent>(<{}>type)).ID);
+  const root = $$(searchRoot);
+  const found: T[] = [];
+  if (root.hasClass(className)) {
+    found.push(<T>Component.resolveBinding(root.el, type));
+  }
+  found.push(...root.findClass(className).map(element => <T>Component.resolveBinding(element as HTMLElement, type)));
+  return found;
 }
 
 /**
@@ -459,7 +464,12 @@ function findAllComponentsOfType<T extends BaseComponent>(type: { new (...args: 
  * @param searchRoot What ancestor or CoveoAnalytics element to search from in the DOM.
  */
 export function enableAnalytics(searchRoot = document.body) {
-  findAllComponentsOfType(Analytics, searchRoot).forEach(analytics => analytics.enable());
+  const analyticsInstances = findAllComponentsOfType(Analytics, searchRoot);
+  if (analyticsInstances.length === 0) {
+    console.warn('Could not enable analytics because they could not be found.');
+    return;
+  }
+  analyticsInstances.forEach(analytics => analytics.enable());
 }
 
 Initialization.registerNamedMethod('enableAnalytics', () => {
@@ -471,7 +481,12 @@ Initialization.registerNamedMethod('enableAnalytics', () => {
  * @param searchRoot What ancestor or CoveoAnalytics element to search from in the DOM.
  */
 export function clearLocalData(searchRoot = document.body) {
-  findAllComponentsOfType(Analytics, searchRoot).forEach(analytics => analytics.clearLocalData());
+  const analyticsInstances = findAllComponentsOfType(Analytics, searchRoot);
+  if (analyticsInstances.length === 0) {
+    console.warn('Could not clear local data because analytics could not be found.');
+    return;
+  }
+  analyticsInstances.forEach(analytics => analytics.clearLocalData());
 }
 
 Initialization.registerNamedMethod('clearLocalData', () => {
@@ -483,7 +498,12 @@ Initialization.registerNamedMethod('clearLocalData', () => {
  * @param searchRoot What ancestor or CoveoAnalytics element to search from in the DOM.
  */
 export function disableAnalytics(searchRoot = document.body) {
-  findAllComponentsOfType(Analytics, searchRoot).forEach(analytics => analytics.disable());
+  const analyticsInstances = findAllComponentsOfType(Analytics, searchRoot);
+  if (analyticsInstances.length === 0) {
+    console.warn('Could not disable analytics because they could not be found.');
+    return;
+  }
+  analyticsInstances.forEach(analytics => analytics.disable());
 }
 
 Initialization.registerNamedMethod('disableAnalytics', () => {
