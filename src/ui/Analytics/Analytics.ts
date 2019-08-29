@@ -23,6 +23,8 @@ import { PendingSearchEvent } from './PendingSearchEvent';
 import { PendingSearchAsYouTypeSearchEvent } from './PendingSearchAsYouTypeSearchEvent';
 import { AccessToken } from '../../rest/AccessToken';
 import { AnalyticsEvents, IAnalyticsEventArgs } from '../../events/AnalyticsEvents';
+import { NullStorage } from 'coveo.analytics/dist/storage';
+import HistoryStore from 'coveo.analytics/dist/history';
 
 export interface IAnalyticsOptions {
   user?: string;
@@ -381,6 +383,7 @@ export class Analytics extends Component {
     }
     super.enable();
     this.initializeAnalyticsClient();
+    this.resolveQueryController().historyStore = new HistoryStore();
   }
 
   /**
@@ -395,10 +398,15 @@ export class Analytics extends Component {
    * Disables analytics and clears local data by running [`clearLocalData`]{@link Analytics.clearLocalData}.
    */
   public disable() {
+    if (this.disabled) {
+      console.warn('Analytics are already disabled.');
+      return;
+    }
     super.disable();
     this.clearLocalData();
     this.client.endpoint.kill();
     this.client = new NoopAnalyticsClient();
+    this.resolveQueryController().historyStore = new HistoryStore(new NullStorage());
   }
 
   /**
