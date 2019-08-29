@@ -45,24 +45,25 @@ export class DynamicRangeFacetValueCreator implements ValueCreator {
   }
 
   public createFromResponse(responseValue: IFacetResponseValue, index: number) {
-    const correspondingValue = this.facet.values.allFacetValues[index];
-    const displayValue = correspondingValue ? correspondingValue.displayValue : this.formatRangeValue(responseValue);
-    responseValue.endInclusive = correspondingValue.endInclusive;
+    const value = this.valueFromRange(responseValue);
+    const { displayValue } = this.facet.values.get(value);
 
-    const facetValue = this.createFromRange(responseValue, index);
-    // TODO: Replace previous code by this line when "endInclusive" is sent in the response
-    // const facetValue = this.facet.values.get(this.valueFromRange(responseValue));
-    facetValue.displayValue = displayValue;
-    facetValue.numberOfResults = responseValue.numberOfResults;
-    facetValue.state = responseValue.state;
-    return facetValue;
+    return new DynamicFacetValue(
+      {
+        ...responseValue,
+        value,
+        displayValue,
+        position: index + 1
+      },
+      this.facet
+    );
   }
 
   private extractRangeFromValue(value: string): IRangeValue {
     const valueRegex = new RegExp(`^(.+)\\.\\.(.+)(${RangeEndScope.Inclusive}|${RangeEndScope.Exclusive})$`);
     const startAndEnd = valueRegex.exec(value);
     if (!startAndEnd) {
-      this.facet.logger.error('Range facet value invalid', value);
+      this.facet.logger.error('Facet range value invalid', value);
       return null;
     }
 
