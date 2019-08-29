@@ -711,6 +711,9 @@ DynamicFacetQueryControllerTest();
 import { DynamicFacetManagerTest } from './ui/DynamicFacetManagerTest';
 DynamicFacetManagerTest();
 
+import { DynamicFacetValueCreatorTest } from './ui/DynamicFacet/DynamicFacetValues/DynamicFacetValueCreatorTest';
+DynamicFacetValueCreatorTest();
+
 import { FacetSearchControllerTest } from './controllers/FacetSearchControllerTest';
 FacetSearchControllerTest();
 
