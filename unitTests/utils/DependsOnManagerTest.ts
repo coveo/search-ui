@@ -95,7 +95,7 @@ export function DependsOnManagerTest() {
         });
 
         it(`when resetting the master facet,
-        it reset the dependent facet`, () => {
+        it resets the dependent facet`, () => {
           expect(test.cmp.activePath.length).toBe(1);
           master.cmp.deselectCurrentValue();
           Simulate.query(testEnv);
