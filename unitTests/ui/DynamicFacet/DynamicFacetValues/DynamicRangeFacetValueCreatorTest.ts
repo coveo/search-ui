@@ -4,8 +4,7 @@ import { DynamicRangeFacetTestUtils } from '../DynamicRangeFacetTestUtils';
 import { IFacetResponseValue } from '../../../../src/rest/Facet/FacetResponse';
 import { DynamicFacetValue } from '../../../../src/ui/DynamicFacet/DynamicFacetValues/DynamicFacetValue';
 import { FacetValueState } from '../../../../src/rest/Facet/FacetValueState';
-import { RangeEndScope } from '../../../../src/rest/RangeValue';
-// import { FacetUtils } from '../../../../src/ui/Facet/FacetUtils';
+import { RangeEndScope, IRangeValue } from '../../../../src/rest/RangeValue';
 
 export function DynamicRangeFacetValueCreatorTest() {
   describe('DynamicRangeFacetValueCreator', () => {
@@ -75,6 +74,56 @@ export function DynamicRangeFacetValueCreatorTest() {
 
         initializeValue();
         expect(facetValue.displayValue).toBe(displayValue);
+      });
+    });
+
+    describe('testing createFromRanges', () => {
+      let index: number;
+      let rangeValue: IRangeValue;
+      let facetValue: DynamicFacetValue;
+
+      beforeEach(() => {
+        index = 0;
+        rangeValue = DynamicRangeFacetTestUtils.createFakeRanges(1)[0];
+        initializeValue();
+      });
+
+      function initializeValue() {
+        facetValue = valueCreator.createFromRange(rangeValue, index);
+      }
+
+      it('should have the right basic properties', () => {
+        expect(facetValue.start).toBe(rangeValue.start);
+        expect(facetValue.endInclusive).toBe(rangeValue.endInclusive);
+        expect(facetValue.end).toBe(rangeValue.end);
+        expect(facetValue.state).toBe(FacetValueState.idle);
+        expect(facetValue.position).toBe(index + 1);
+        expect(facetValue.numberOfResults).toBe(0);
+      });
+
+      it(`when the endInclusive is false
+      should format the value from the range properly`, () => {
+        expect(facetValue.value).toBe(`${facetValue.start}..${facetValue.end}${RangeEndScope.Exclusive}`);
+      });
+
+      it(`when the endInclusive is true
+      should format the value from the range properly`, () => {
+        rangeValue.endInclusive = true;
+        initializeValue();
+        expect(facetValue.value).toBe(`${facetValue.start}..${facetValue.end}${RangeEndScope.Inclusive}`);
+      });
+
+      it(`when there is no label 
+        should format the displayValue correctly`, () => {
+        expect(facetValue.displayValue).toBe(`${facetValue.start} ${facet.options.valueSeparator} ${facetValue.end}`);
+      });
+
+      it(`when there is no label 
+        should assign it to the displayValue`, () => {
+        const label = 'this is a label';
+        rangeValue.label = label;
+        initializeValue();
+        expect(facetValue.displayValue).toBe(label);
       });
     });
 
