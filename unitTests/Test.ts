@@ -708,6 +708,9 @@ DynamicFacetBreadcrumbsTest();
 import { DynamicFacetQueryControllerTest } from './controllers/DynamicFacetQueryControllerTest';
 DynamicFacetQueryControllerTest();
 
+import { DynamicRangeFacetQueryControllerTest } from './controllers/DynamicRangeFacetQueryControllerTest';
+DynamicRangeFacetQueryControllerTest();
+
 import { DynamicFacetManagerTest } from './ui/DynamicFacetManagerTest';
 DynamicFacetManagerTest();
 

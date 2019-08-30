@@ -5,8 +5,8 @@ import { DynamicRangeFacet } from '../ui/DynamicFacet/DynamicRangeFacet';
 export class DynamicRangeFacetQueryController extends DynamicFacetQueryController {
   protected facet: DynamicRangeFacet;
 
-  private get hasRangesOrValues() {
-    return !!this.facet.options.ranges || !this.facet.values.isEmpty;
+  private get hasValues() {
+    return !this.facet.values.isEmpty;
   }
 
   public get facetRequest(): IFacetRequest {
@@ -16,13 +16,13 @@ export class DynamicRangeFacetQueryController extends DynamicFacetQueryControlle
       type: this.facet.facetType,
       currentValues: this.currentValues,
       numberOfValues: this.numberOfValues,
-      freezeCurrentValues: this.hasRangesOrValues,
-      generateAutomaticRanges: !this.hasRangesOrValues
+      freezeCurrentValues: this.hasValues,
+      generateAutomaticRanges: !this.hasValues
     };
   }
 
   protected get numberOfValues() {
-    return this.hasRangesOrValues ? this.currentValues.length : this.facet.options.numberOfValues;
+    return this.hasValues ? this.currentValues.length : this.facet.options.numberOfValues;
   }
 
   protected get currentValues(): IFacetRequestValue[] {
