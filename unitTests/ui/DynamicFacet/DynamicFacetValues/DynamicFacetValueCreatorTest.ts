@@ -64,5 +64,43 @@ export function DynamicFacetValueCreatorTest() {
         expect(FacetUtils.tryToGetTranslatedCaption).toHaveBeenCalled();
       });
     });
+
+    describe('testing createFromValue', () => {
+      let value = 'hello friends';
+      let facetValue: DynamicFacetValue;
+
+      beforeEach(() => {
+        initializeValue();
+      });
+
+      function initializeValue() {
+        facetValue = valueCreator.createFromValue(value);
+      }
+
+      it('should have the right basic properties', () => {
+        expect(facetValue.value).toBe(value);
+        expect(facetValue.state).toBe(FacetValueState.idle);
+        expect(facetValue.position).toBe(1);
+        expect(facetValue.numberOfResults).toBe(0);
+      });
+
+      it(`when there is no value caption
+      display value should be equal to the value`, () => {
+        expect(facetValue.displayValue).toBe(value);
+      });
+
+      it(`when there is a value caption
+      display value should be equal to the caption for that value`, () => {
+        value = 'caption';
+        initializeValue();
+        expect(facetValue.displayValue).toBe('this is a value caption');
+      });
+
+      it('should call tryToGetTranslatedCaption from FacetUtils', () => {
+        spyOn(FacetUtils, 'tryToGetTranslatedCaption');
+        initializeValue();
+        expect(FacetUtils.tryToGetTranslatedCaption).toHaveBeenCalled();
+      });
+    });
   });
 }
