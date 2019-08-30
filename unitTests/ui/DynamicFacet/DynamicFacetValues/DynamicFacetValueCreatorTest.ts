@@ -9,6 +9,7 @@ import { FacetUtils } from '../../../../src/ui/Facet/FacetUtils';
 export function DynamicFacetValueCreatorTest() {
   describe('DynamicFacetValueCreator', () => {
     let valueCreator: DynamicFacetValueCreator;
+    let facetValue: DynamicFacetValue;
     let facet: DynamicFacet;
 
     beforeEach(() => {
@@ -23,7 +24,6 @@ export function DynamicFacetValueCreatorTest() {
     describe('testing createFromResponse', () => {
       let index: number;
       let responseValue: IFacetResponseValue;
-      let facetValue: DynamicFacetValue;
 
       beforeEach(() => {
         index = 0;
@@ -67,7 +67,6 @@ export function DynamicFacetValueCreatorTest() {
 
     describe('testing createFromValue', () => {
       let value = 'hello friends';
-      let facetValue: DynamicFacetValue;
 
       beforeEach(() => {
         initializeValue();
