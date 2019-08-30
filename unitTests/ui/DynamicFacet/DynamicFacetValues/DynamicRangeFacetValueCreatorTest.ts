@@ -77,5 +77,53 @@ export function DynamicRangeFacetValueCreatorTest() {
         expect(facetValue.displayValue).toBe(displayValue);
       });
     });
+
+    describe('testing createFromValue', () => {
+      let value = `10..20${RangeEndScope.Inclusive}`;
+      let facetValue: DynamicFacetValue;
+
+      beforeEach(() => {
+        initializeValue();
+      });
+
+      function initializeValue() {
+        facetValue = valueCreator.createFromValue(value);
+      }
+
+      it('should throw on a invalid format', () => {
+        expect(() => valueCreator.createFromValue('allo')).toThrowError();
+        expect(() => valueCreator.createFromValue('1..1000')).toThrowError();
+      });
+
+      it('should extract the start correctly when it is a integer', () => {
+        expect(facetValue.start).toBe(10);
+      });
+
+      it('should extract the start correctly when it is a double', () => {
+        value = `10.5..20${RangeEndScope.Inclusive}`;
+        initializeValue();
+        expect(facetValue.start).toBe(10.5);
+      });
+
+      it('should extract the end correctly when it is a integer', () => {
+        expect(facetValue.end).toBe(20);
+      });
+
+      it('should extract the end correctly when it is a double', () => {
+        value = `10..20.1${RangeEndScope.Inclusive}`;
+        initializeValue();
+        expect(facetValue.end).toBe(20.1);
+      });
+
+      it('should extract the endInclusive correctly "Inclusive"', () => {
+        expect(facetValue.endInclusive).toBe(true);
+      });
+
+      it('should extract the endInclusive correctly "Exclusive"', () => {
+        value = `10..20${RangeEndScope.Exclusive}`;
+        initializeValue();
+        expect(facetValue.endInclusive).toBe(false);
+      });
+    });
   });
 }
