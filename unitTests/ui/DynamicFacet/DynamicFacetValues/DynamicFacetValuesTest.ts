@@ -1,20 +1,23 @@
 import { DynamicFacetValues } from '../../../../src/ui/DynamicFacet/DynamicFacetValues/DynamicFacetValues';
 import { FacetValueState } from '../../../../src/rest/Facet/FacetValueState';
 import { IDynamicFacetValue } from '../../../../src/ui/DynamicFacet/DynamicFacetValues/DynamicFacetValue';
+import { DynamicRangeFacetValueCreator } from '../../../../src/ui/DynamicFacet/DynamicFacetValues/DynamicRangeFacetValueCreator';
 import { DynamicFacet } from '../../../../src/ui/DynamicFacet/DynamicFacet';
 import { DynamicFacetTestUtils } from '../DynamicFacetTestUtils';
 import { $$ } from '../../../../src/Core';
+import { DynamicRangeFacetTestUtils } from '../DynamicRangeFacetTestUtils';
 
 export function DynamicFacetValuesTest() {
   describe('DynamicFacetValues', () => {
+    const valueCount = 8;
     let dynamicFacetValues: DynamicFacetValues;
     let mockFacetValues: IDynamicFacetValue[];
     let facet: DynamicFacet;
 
     beforeEach(() => {
-      facet = DynamicFacetTestUtils.createFakeFacet({ numberOfValues: 5, enableMoreLess: true });
+      facet = DynamicFacetTestUtils.createFakeFacet({ numberOfValues: valueCount, enableMoreLess: true });
 
-      mockFacetValues = DynamicFacetTestUtils.createFakeFacetValues();
+      mockFacetValues = DynamicFacetTestUtils.createFakeFacetValues(valueCount);
       mockFacetValues[1].state = FacetValueState.selected;
       mockFacetValues[3].state = FacetValueState.selected;
 
@@ -28,6 +31,11 @@ export function DynamicFacetValuesTest() {
 
     function createValuesFromResponse() {
       dynamicFacetValues.createFromResponse(DynamicFacetTestUtils.getCompleteFacetResponse(facet, { values: mockFacetValues }));
+    }
+
+    function createValuesFromRanges() {
+      dynamicFacetValues = new DynamicFacetValues(facet, DynamicRangeFacetValueCreator);
+      dynamicFacetValues.createFromRanges(DynamicRangeFacetTestUtils.createFakeRanges(valueCount));
     }
 
     function moreButton() {
@@ -196,6 +204,18 @@ export function DynamicFacetValuesTest() {
 
         expect(lessButton()).toBeFalsy();
       });
+    });
+
+    it(`when calling createValuesFromResponse
+    it should create the values correctly`, () => {
+      createValuesFromResponse();
+      expect(dynamicFacetValues.allFacetValues.length).toBe(valueCount);
+    });
+
+    it(`when calling createValuesFromRanges
+    it should create the values correctly`, () => {
+      createValuesFromRanges();
+      expect(dynamicFacetValues.allFacetValues.length).toBe(valueCount);
     });
   });
 }
