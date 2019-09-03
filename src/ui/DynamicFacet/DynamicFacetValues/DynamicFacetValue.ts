@@ -5,6 +5,7 @@ import { FacetValueState } from '../../../rest/Facet/FacetValueState';
 import { IAnalyticsDynamicFacetMeta, analyticsActionCauseList } from '../../Analytics/AnalyticsActionListMeta';
 import { l } from '../../../strings/Strings';
 import { IRangeValue, RangeType } from '../../../rest/RangeValue';
+import { FacetType } from '../../../rest/Facet/FacetRequest';
 
 export interface ValueRenderer {
   render(): HTMLElement;
@@ -82,9 +83,22 @@ export class DynamicFacetValue implements IDynamicFacetValue {
     return `${l(selectOrUnselect, this.displayValue, resultCount)}`;
   }
 
+  public get rangeAnalyticsMeta() {
+    if (this.facet.facetType === FacetType.specific) {
+      return null;
+    }
+
+    return {
+      start: this.start,
+      end: this.end,
+      endInclusive: this.endInclusive
+    };
+  }
+
   public get analyticsMeta(): IAnalyticsDynamicFacetMeta {
     return {
       ...this.facet.basicAnalyticsFacetState,
+      ...this.rangeAnalyticsMeta,
       value: this.value,
       valuePosition: this.position,
       displayValue: this.displayValue,

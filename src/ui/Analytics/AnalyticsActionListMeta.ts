@@ -1,5 +1,6 @@
 import { FacetValueState } from '../../rest/Facet/FacetValueState';
 import { FacetType } from '../../rest/Facet/FacetRequest';
+import { RangeType } from '../../rest/RangeValue';
 
 /**
  * The IAnalyticsActionCause interface describes the cause of an event for the analytics service.
@@ -159,6 +160,26 @@ export interface IAnalyticsDynamicFacetMeta {
    * **Example:** `alice_r_smith`
    */
   value?: string;
+  /**
+   * The value to start the range at.
+   *
+   * **Examples:**
+   * > - `0`
+   * > - `2018-01-01T00:00:00.000Z`
+   */
+  start?: RangeType;
+  /**
+   * The value to end the range at.
+   *
+   * **Examples:**
+   * > - `500`
+   * > - `2018-12-31T23:59:59.999Z`
+   */
+  end?: RangeType;
+  /**
+   * Whether to include the [`end`]{@link IRangeValue.end} value in the range.
+   */
+  endInclusive?: boolean;
   /**
    * The current 1-based position of the dynamic facet value, relative to other values in the same dynamic facet.
    */

@@ -1,6 +1,7 @@
 import * as Globalize from 'globalize';
 import { DynamicFacetValue } from '../../../../src/ui/DynamicFacet/DynamicFacetValues/DynamicFacetValue';
 import { DynamicFacetTestUtils } from '../DynamicFacetTestUtils';
+import { DynamicRangeFacetTestUtils } from '../DynamicRangeFacetTestUtils';
 import { DynamicFacet, IDynamicFacetOptions } from '../../../../src/ui/DynamicFacet/DynamicFacet';
 import { FacetValueState } from '../../../../src/rest/Facet/FacetValueState';
 import { analyticsActionCauseList } from '../../../../src/ui/Analytics/AnalyticsActionListMeta';
@@ -17,9 +18,10 @@ export function DynamicFacetValueTest() {
     });
 
     function initializeComponent() {
-      facet = DynamicFacetTestUtils.createFakeFacet(options);
+      facet = DynamicFacetTestUtils.createAdvancedFakeFacet(options).cmp;
       (facet.searchInterface.getComponents as jasmine.Spy).and.returnValue([facet]);
       dynamicFacetValue = new DynamicFacetValue(DynamicFacetTestUtils.createFakeFacetValues(1)[0], facet);
+      spyOn(facet, 'logAnalyticsEvent');
     }
 
     it('should toggle selection correctly', () => {
@@ -85,13 +87,30 @@ export function DynamicFacetValueTest() {
       expect(dynamicFacetValue.formattedCount).toBe(Globalize.format(dynamicFacetValue.numberOfResults, 'n0'));
     });
 
-    it(`should return the correct analyticsMeta`, () => {
+    it(`should return the correct analyticsMeta for a specific value`, () => {
       expect(dynamicFacetValue.analyticsMeta).toEqual({
         ...facet.basicAnalyticsFacetState,
         value: dynamicFacetValue.value,
         valuePosition: dynamicFacetValue.position,
         displayValue: dynamicFacetValue.displayValue,
         state: dynamicFacetValue.state
+      });
+    });
+
+    it(`should return the correct analyticsMeta for a range value`, () => {
+      const rangeFacet = DynamicRangeFacetTestUtils.createFakeFacet();
+      rangeFacet.values.createFromRanges(DynamicRangeFacetTestUtils.createFakeRanges());
+      dynamicFacetValue = rangeFacet.values.allFacetValues[0];
+
+      expect(dynamicFacetValue.analyticsMeta).toEqual({
+        ...rangeFacet.basicAnalyticsFacetState,
+        value: dynamicFacetValue.value,
+        valuePosition: dynamicFacetValue.position,
+        displayValue: dynamicFacetValue.displayValue,
+        state: dynamicFacetValue.state,
+        start: dynamicFacetValue.start,
+        end: dynamicFacetValue.end,
+        endInclusive: dynamicFacetValue.endInclusive
       });
     });
 
