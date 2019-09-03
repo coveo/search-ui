@@ -36,8 +36,6 @@ export class AnalyticsEndpoint {
   private organization: string;
   public endpointCaller: AnalyticsEndpointCaller;
 
-  private dead: boolean = false;
-
   constructor(public options: IAnalyticsEndpointOptions) {
     this.logger = new Logger(this);
 
@@ -95,12 +93,9 @@ export class AnalyticsEndpoint {
     return this.getFromService<string[]>(url, params);
   }
 
-  public forgetVisitorId() {
+  public clearCookies() {
     Cookie.erase('visitorId');
-  }
-
-  public kill() {
-    this.dead = true;
+    Cookie.erase('visitId');
   }
 
   private async sendToService(data: Record<string, any>, path: string, paramName: string): Promise<any> {
@@ -109,26 +104,16 @@ export class AnalyticsEndpoint {
     if (AnalyticsEndpoint.pendingRequest != null) {
       await AnalyticsEndpoint.pendingRequest;
     }
-    if (this.dead) {
-      return;
-    }
 
     const url = this.getURL(path);
     const request = this.executeRequest(url, data);
 
     try {
       const results = await request;
-      if (this.dead) {
-        return;
-      }
       AnalyticsEndpoint.pendingRequest = null;
       this.handleAnalyticsEventResponse(results.data);
       return results.data;
     } catch (error) {
-      if (this.dead) {
-        // TODO: Log, ignore or rethrow error?
-        return;
-      }
       AnalyticsEndpoint.pendingRequest = null;
       if (this.options.accessToken.isExpired(error)) {
         const successfullyRenewed = await this.options.accessToken.doRenew();

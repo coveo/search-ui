@@ -23,8 +23,6 @@ import { PendingSearchEvent } from './PendingSearchEvent';
 import { PendingSearchAsYouTypeSearchEvent } from './PendingSearchAsYouTypeSearchEvent';
 import { AccessToken } from '../../rest/AccessToken';
 import { AnalyticsEvents, IAnalyticsEventArgs } from '../../events/AnalyticsEvents';
-import { NullStorage } from 'coveo.analytics/dist/storage';
-import HistoryStore from 'coveo.analytics/dist/history';
 
 export interface IAnalyticsOptions {
   user?: string;
@@ -378,20 +376,22 @@ export class Analytics extends Component {
    */
   public enable() {
     if (!this.disabled) {
-      console.warn('Analytics are already enabled.');
-      return;
+      return this.logger.warn('Analytics are already enabled.');
     }
     super.enable();
     this.initializeAnalyticsClient();
-    this.resolveQueryController().historyStore = new HistoryStore();
+    this.resolveQueryController().enableHistory();
   }
 
   /**
-   * Removes the analytics tracking cookie and clears the actions history.
+   * Removes all session information stored in the browser (e.g. analytics visitor cookies, action history, etc.)
    */
   public clearLocalData() {
-    this.client.endpoint.forgetVisitorId();
-    this.resolveQueryController().historyStore.clear();
+    if (this.disabled || this.client instanceof NoopAnalyticsClient) {
+      return this.logger.warn('Could not clear local data while analytics are disabled.');
+    }
+    this.client.endpoint.clearCookies();
+    this.resolveQueryController().resetHistory();
   }
 
   /**
@@ -399,14 +399,12 @@ export class Analytics extends Component {
    */
   public disable() {
     if (this.disabled) {
-      console.warn('Analytics are already disabled.');
-      return;
+      return this.logger.warn('Analytics are already disabled.');
     }
-    super.disable();
     this.clearLocalData();
-    this.client.endpoint.kill();
     this.client = new NoopAnalyticsClient();
-    this.resolveQueryController().historyStore = new HistoryStore(new NullStorage());
+    this.resolveQueryController().disableHistory();
+    super.disable();
   }
 
   /**

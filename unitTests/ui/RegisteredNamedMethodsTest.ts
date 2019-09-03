@@ -17,7 +17,6 @@ import { NoopComponent } from '../../src/ui/NoopComponent/NoopComponent';
 import { Defer } from '../../src/misc/Defer';
 import { SearchInterface } from '../../src/ui/SearchInterface/SearchInterface';
 import { Analytics } from '../../src/ui/Analytics/Analytics';
-import { LiveAnalyticsClient } from '../../src/ui/Analytics/LiveAnalyticsClient';
 import { NoopAnalyticsClient } from '../../src/ui/Analytics/NoopAnalyticsClient';
 import { SearchEndpoint } from '../../src/rest/SearchEndpoint';
 import HistoryStore from 'coveo.analytics/dist/history';
@@ -182,11 +181,12 @@ export function RegisteredNamedMethodsTest() {
       let analytics: { [key: string]: IAnalyticsClient };
 
       beforeEach(() => {
+        const analyticsClassName = Component.computeCssClassName(Analytics);
         analyticsElement = $$('div', {
-          className: 'CoveoAnalytics'
+          className: analyticsClassName
         }).el;
         analytics = { client: mockUsageAnalytics() };
-        analyticsElement['Analytics'] = analytics;
+        analyticsElement[analyticsClassName] = analytics;
         analyticsElement['CoveoBoundComponents'] = [analytics];
         env.root.appendChild(analyticsElement);
       });
@@ -268,58 +268,44 @@ export function RegisteredNamedMethodsTest() {
         setup = null;
       });
 
-      it('should be live by default', () => {
-        expect(setup.cmp.client instanceof LiveAnalyticsClient).toBeTruthy();
+      it('should not be noop by default', () => {
+        expect(setup.cmp.client instanceof NoopAnalyticsClient).not.toBeTruthy();
       });
 
       it('should become noop after being disabled', () => {
-        expect(setup.cmp.client instanceof LiveAnalyticsClient).toBeTruthy();
+        expect(setup.cmp.client instanceof NoopAnalyticsClient).not.toBeTruthy();
         RegisteredNamedMethod.disableAnalytics(setup.env.root);
         expect(setup.cmp.client instanceof NoopAnalyticsClient).toBeTruthy();
       });
 
-      it('should become live after being re-enabled', () => {
-        expect(setup.cmp.client instanceof LiveAnalyticsClient).toBeTruthy();
+      it('should not be noop after being re-enabled', () => {
+        expect(setup.cmp.client instanceof NoopAnalyticsClient).not.toBeTruthy();
         RegisteredNamedMethod.disableAnalytics(setup.env.root);
         expect(setup.cmp.client instanceof NoopAnalyticsClient).toBeTruthy();
         RegisteredNamedMethod.enableAnalytics(setup.env.root);
-        expect(setup.cmp.client instanceof LiveAnalyticsClient).toBeTruthy();
+        expect(setup.cmp.client instanceof NoopAnalyticsClient).not.toBeTruthy();
       });
 
       it('should clear actions history when disabling analytics', () => {
-        const clearActionsHistoryFunction = spyOn(setup.env.queryController.historyStore, 'clear');
         RegisteredNamedMethod.disableAnalytics(setup.env.root);
-        expect(clearActionsHistoryFunction).toHaveBeenCalled();
+        expect(setup.env.queryController.resetHistory).toHaveBeenCalled();
       });
 
       it('should clear visitor cookie when disabling analytics', () => {
-        const forgetIdFunction = spyOn(setup.cmp.client.endpoint, 'forgetVisitorId');
+        const clearCookiesFunction = spyOn(setup.cmp.client.endpoint, 'clearCookies');
         RegisteredNamedMethod.disableAnalytics(setup.env.root);
-        expect(forgetIdFunction).toHaveBeenCalled();
+        expect(clearCookiesFunction).toHaveBeenCalled();
       });
 
       it('should clear actions history when clearing local data', () => {
-        const clearActionsHistoryFunction = spyOn(setup.env.queryController.historyStore, 'clear');
         RegisteredNamedMethod.clearLocalData(setup.env.root);
-        expect(clearActionsHistoryFunction).toHaveBeenCalled();
+        expect(setup.env.queryController.resetHistory).toHaveBeenCalled();
       });
 
       it('should clear visitor cookie when clearing local data', () => {
-        const forgetIdFunction = spyOn(setup.cmp.client.endpoint, 'forgetVisitorId');
+        const clearCookiesFunction = spyOn(setup.cmp.client.endpoint, 'clearCookies');
         RegisteredNamedMethod.clearLocalData(setup.env.root);
-        expect(forgetIdFunction).toHaveBeenCalled();
-      });
-
-      it('should not clear actions history when enabling analytics', () => {
-        const clearActionsHistoryFunction = spyOn(setup.env.queryController.historyStore, 'clear');
-        RegisteredNamedMethod.enableAnalytics(setup.env.root);
-        expect(clearActionsHistoryFunction).not.toHaveBeenCalled();
-      });
-
-      it('should not clear visitor cookie when enabling analytics', () => {
-        const forgetIdFunction = spyOn(setup.cmp.client.endpoint, 'forgetVisitorId');
-        RegisteredNamedMethod.enableAnalytics(setup.env.root);
-        expect(forgetIdFunction).not.toHaveBeenCalled();
+        expect(clearCookiesFunction).toHaveBeenCalled();
       });
     });
   });

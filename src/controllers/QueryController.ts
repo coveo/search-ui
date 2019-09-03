@@ -30,6 +30,7 @@ import { LocalStorageUtils } from '../utils/LocalStorageUtils';
 import { QueryUtils } from '../utils/QueryUtils';
 import { UrlUtils } from '../utils/UrlUtils';
 import { Utils } from '../utils/Utils';
+import { NullStorage } from 'coveo.analytics/dist/storage';
 
 /**
  * Possible options when performing a query with the query controller
@@ -120,7 +121,7 @@ export class QueryController extends RootComponent {
     Assert.exists(element);
     Assert.exists(options);
     this.firstQuery = true;
-    this.historyStore = new history.HistoryStore();
+    this.enableHistory();
   }
 
   /**
@@ -466,6 +467,18 @@ export class QueryController extends RootComponent {
     }
     this.loadLastQueryHash();
     return this.lastQueryHash || this.queryHash(new QueryBuilder().build());
+  }
+
+  public resetHistory() {
+    this.historyStore.clear();
+  }
+
+  public enableHistory() {
+    this.historyStore = new history.HistoryStore();
+  }
+
+  public disableHistory() {
+    this.historyStore = new history.HistoryStore(new NullStorage());
   }
 
   private closeModalBoxIfNeeded(needed?: boolean) {
