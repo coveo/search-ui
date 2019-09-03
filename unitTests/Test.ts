@@ -678,6 +678,9 @@ FacetUtilsTest();
 import { DynamicFacetTest } from './ui/DynamicFacet/DynamicFacetTest';
 DynamicFacetTest();
 
+import { DynamicRangeFacetTest } from './ui/DynamicFacet/DynamicRangeFacetTest';
+DynamicRangeFacetTest();
+
 import { DynamicFacetHeaderTest } from './ui/DynamicFacet/DynamicFacetHeader/DynamicFacetHeaderTest';
 DynamicFacetHeaderTest();
 
