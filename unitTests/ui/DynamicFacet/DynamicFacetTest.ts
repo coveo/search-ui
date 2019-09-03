@@ -10,6 +10,7 @@ import { IPopulateBreadcrumbEventArgs } from '../../../src/events/BreadcrumbEven
 import { analyticsActionCauseList } from '../../../src/ui/Analytics/AnalyticsActionListMeta';
 import { FakeResults } from '../../Fake';
 import { ResultListUtils } from '../../../src/utils/ResultListUtils';
+import { FacetType } from '../../../src/rest/Facet/FacetRequest';
 
 export function DynamicFacetTest() {
   describe('DynamicFacet', () => {
@@ -454,7 +455,7 @@ export function DynamicFacetTest() {
         field: test.cmp.options.field.toString(),
         title: test.cmp.options.title,
         id: test.cmp.options.id,
-        facetType: test.cmp.facetType,
+        facetType: FacetType.specific,
         facetPosition: test.cmp.position
       });
     });

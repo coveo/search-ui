@@ -120,7 +120,8 @@ export class CategoryFacetSearch implements IFacetSearch {
   private handleClickElsewhere(e: MouseEvent) {
     const closestContainer = $$(<HTMLElement>e.target).closest('.coveo-category-facet-search-container');
 
-    if (!closestContainer || closestContainer != this.container.el) {
+    const isSelfContainer = this.container && closestContainer === this.container.el;
+    if (!closestContainer || !isSelfContainer) {
       this.dismissSearchResults();
     }
   }
