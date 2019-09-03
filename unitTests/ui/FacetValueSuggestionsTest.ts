@@ -121,8 +121,8 @@ export function FacetValueSuggestionsTest() {
           expect(result[0].html).toBe(
             l(
               'KeywordInCategory',
-              `<span class='coveo-omnibox-hightlight2'>${aKeyword}</span>`,
-              `<span class='coveo-omnibox-hightlight'>${someSuggestionValue}</span>`
+              `<span class='coveo-omnibox-suggestion-input-corrected'>${aKeyword}</span>`,
+              `<span class='coveo-omnibox-suggestion-input'>${someSuggestionValue}</span>`
             )
           );
           done();
