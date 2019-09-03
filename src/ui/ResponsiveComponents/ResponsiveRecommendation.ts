@@ -169,7 +169,7 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
 
   private getFacetSliders(): any[] {
     const facetSliders = [];
-    this.coveoRoot.findAll('.' + Component.computeCssClassNameForType(`FacetSlider`)).forEach(facetSliderElement => {
+    this.coveoRoot.findAll(Component.computeSelectorForType('FacetSlider')).forEach(facetSliderElement => {
       const facetSlider = Component.get(facetSliderElement);
       facetSlider && facetSliders.push(facetSlider);
     });
@@ -178,7 +178,7 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
 
   private getFacets(): any[] {
     const facets = [];
-    this.coveoRoot.findAll('.' + Component.computeCssClassNameForType('Facet')).forEach(facetElement => {
+    this.coveoRoot.findAll(Component.computeSelectorForType('Facet')).forEach(facetElement => {
       const facet = Component.get(facetElement);
       facet && facets.push(facet);
     });
