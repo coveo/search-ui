@@ -18,7 +18,17 @@ export class DynamicFacetHeader {
   private showLoadingTimeout: number;
 
   constructor(private facet: DynamicFacet) {
-    this.element = $$('div', { className: 'coveo-dynamic-facet-header' }).el;
+    this.render();
+  }
+
+  private render() {
+    if (this.facet.options.customHeader) {
+      const customHeader = new this.facet.options.customHeader();
+      this.element = customHeader.render();
+    } else {
+      this.element = $$('div', { className: 'coveo-dynamic-facet-header' }).el;
+    }
+
     this.title = this.createTitle();
     $$(this.element).append(this.title.el);
     $$(this.element).append(this.createWaitAnimation());

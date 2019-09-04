@@ -34,6 +34,15 @@ import { ResultListUtils } from '../../utils/ResultListUtils';
 import { IQueryResults } from '../../rest/QueryResults';
 import { FacetType } from '../../rest/Facet/FacetRequest';
 
+export interface Rendererable {
+  render(): HTMLElement;
+  allo(): void;
+}
+
+export interface IRendererableKlass {
+  new (): Rendererable;
+}
+
 export interface IDynamicFacetOptions extends IResponsiveComponentOptions {
   id?: string;
   title?: string;
@@ -49,6 +58,7 @@ export interface IDynamicFacetOptions extends IResponsiveComponentOptions {
   includeInBreadcrumb?: boolean;
   numberOfValuesInBreadcrumb?: number;
   valueCaption?: any;
+  customHeader?: IRendererableKlass;
 }
 
 /**
@@ -252,7 +262,10 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
      * **Note:**
      * > The [`DynamicRangeFacet`]{@link DynamicRangeFacet} component does not support this option.
      */
-    valueCaption: ComponentOptions.buildJsonOption<IStringMap<string>>()
+    valueCaption: ComponentOptions.buildJsonOption<IStringMap<string>>(),
+    customHeader: ComponentOptions.buildCustomOption<IRendererableKlass>(() => {
+      return null;
+    })
   };
 
   private includedAttributeId: string;
