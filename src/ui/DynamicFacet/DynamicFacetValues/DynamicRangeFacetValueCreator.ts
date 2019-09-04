@@ -1,3 +1,4 @@
+import * as Globalize from 'globalize';
 import { DynamicRangeFacet } from '../DynamicRangeFacet';
 import { ValueCreator } from './DynamicFacetValues';
 import { IFacetResponseValue } from '../../../rest/Facet/FacetResponse';
@@ -10,7 +11,7 @@ export class DynamicRangeFacetValueCreator implements ValueCreator {
 
   private formatValue(value: RangeType) {
     // TODO: Manage different value formats
-    return `${value}`;
+    return Globalize.format(value, 'n0');
   }
 
   private formatRangeValue(range: IRangeValue) {
