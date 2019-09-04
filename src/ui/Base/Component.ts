@@ -419,7 +419,7 @@ export class Component extends BaseComponent {
 
   static resolveRoot(element: HTMLElement): HTMLElement {
     Assert.exists(element);
-    var resolvedSearchInterface = Component.resolveBinding(element, SearchInterface);
+    const resolvedSearchInterface = Component.resolveBinding(element, SearchInterface);
     return resolvedSearchInterface ? resolvedSearchInterface.element : document.body;
   }
 
