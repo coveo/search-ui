@@ -2,7 +2,7 @@ import * as Mock from '../MockEnvironment';
 import { IBasicComponentSetup } from '../MockEnvironment';
 import { QuerySuggestPreview, IQuerySuggestPreview } from '../../src/ui/QuerySuggestPreview/QuerySuggestPreview';
 import { IOmniboxAnalytics } from '../../src/ui/Omnibox/OmniboxAnalytics';
-import { $$, OmniboxEvents, HtmlTemplate, Dom } from '../../src/Core';
+import { $$, OmniboxEvents, HtmlTemplate, Dom, Component } from '../../src/Core';
 import { FakeResults } from '../Fake';
 import { IAnalyticsOmniboxSuggestionMeta, analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
 import { Suggestion, SuggestionsManager } from '../../src/magicbox/SuggestionsManager';
@@ -56,6 +56,7 @@ export function QuerySuggestPreviewTest() {
         QuerySuggestPreview,
         new Mock.AdvancedComponentSetupOptions(null, options, env => testEnv)
       );
+      spyOn(Component, 'resolveRoot').and.returnValue(testEnv.root);
     }
 
     function triggerQuerySuggestHover(suggestion: string = 'test', fakeResults?: IQueryResults) {
@@ -80,12 +81,12 @@ export function QuerySuggestPreviewTest() {
       container.el.appendChild(suggestionContainer.el);
     }
 
-    function setupSuggestionManager() {
-      const root = document.createElement('div');
+    function setupSuggestionsManager() {
       buildSuggestion();
-      const inputManager = new InputManager(document.createElement('div'), () => {}, {} as MagicBoxInstance, root);
+      const inputManager = new InputManager(document.createElement('div'), () => {}, {} as MagicBoxInstance);
 
-      suggestionManager = new SuggestionsManager(suggestionContainer.el, root, inputManager, {}, testEnv.root);
+      const container = document.createElement('div');
+      suggestionManager = new SuggestionsManager(suggestionContainer.el, container, inputManager, {});
     }
 
     function setupRenderPreview() {
@@ -94,7 +95,7 @@ export function QuerySuggestPreviewTest() {
     }
 
     function setupSuggestion(suggestions: Suggestion[] = [{ text: 'test' }]) {
-      setupSuggestionManager();
+      setupSuggestionsManager();
       setupRenderPreview();
       suggestionManager.updateSuggestions(suggestions);
     }
@@ -286,7 +287,7 @@ export function QuerySuggestPreviewTest() {
       });
     });
 
-    describe('SuggestionManager', () => {
+    describe('SuggestionsManager', () => {
       it(`when moving right,
       it returns a QuerySuggestPreview`, done => {
         setupQuerySuggestPreview();

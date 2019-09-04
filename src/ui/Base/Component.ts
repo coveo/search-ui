@@ -294,7 +294,7 @@ export class Component extends BaseComponent {
   constructor(public element: HTMLElement, public type: string, bindings: IComponentBindings = {}) {
     super(element, type);
     this.bind = new Component.ComponentEventClass(this);
-    this.root = bindings.root || this.resolveRoot();
+    this.root = bindings.root || Component.resolveRoot(element);
     this.queryStateModel = bindings.queryStateModel || this.resolveQueryStateModel();
     this.componentStateModel = bindings.componentStateModel || this.resolveComponentStateModel();
     this.queryController = bindings.queryController || this.resolveQueryController();
@@ -332,11 +332,6 @@ export class Component extends BaseComponent {
 
   public resolveSearchInterface(): SearchInterface {
     return <SearchInterface>Component.resolveBinding(this.element, SearchInterface);
-  }
-
-  public resolveRoot(): HTMLElement {
-    var resolvedSearchInterface = Component.resolveBinding(this.element, SearchInterface);
-    return resolvedSearchInterface ? resolvedSearchInterface.element : undefined;
   }
 
   public resolveQueryController(): QueryController {
@@ -420,6 +415,12 @@ export class Component extends BaseComponent {
     if (jQuery) {
       jQuery(element).data(result);
     }
+  }
+
+  static resolveRoot(element: HTMLElement): HTMLElement {
+    Assert.exists(element);
+    var resolvedSearchInterface = Component.resolveBinding(element, SearchInterface);
+    return resolvedSearchInterface ? resolvedSearchInterface.element : document.body;
   }
 
   static resolveBinding(element: HTMLElement, componentClass: any): BaseComponent {

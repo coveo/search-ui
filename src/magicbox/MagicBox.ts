@@ -28,8 +28,6 @@ export class MagicBoxInstance {
 
   public getSuggestions: () => Array<Promise<Suggestion[]> | Suggestion[]>;
 
-  public root: HTMLElement;
-
   private inputManager: InputManager;
   private suggestionsManager: SuggestionsManager;
   private magicBoxClear: MagicBoxClear;
@@ -39,7 +37,7 @@ export class MagicBoxInstance {
   private result: Result;
   private displayedResult: Result;
 
-  constructor(public element: HTMLElement, public grammar: Grammar, public options: Options = {}, root: HTMLElement) {
+  constructor(public element: HTMLElement, public grammar: Grammar, public options: Options = {}) {
     if (isUndefined(this.options.inline)) {
       this.options.inline = false;
     }
@@ -70,8 +68,7 @@ export class MagicBoxInstance {
           this.onselect && this.onselect(this.getFirstSuggestionText());
         }
       },
-      this,
-      root
+      this
     );
 
     this.inputManager.ontabpress = () => {
@@ -89,17 +86,11 @@ export class MagicBoxInstance {
     suggestionsContainer.className = 'magic-box-suggestions';
     this.element.appendChild(suggestionsContainer);
 
-    this.suggestionsManager = new SuggestionsManager(
-      suggestionsContainer,
-      this.element,
-      this.inputManager,
-      {
-        selectableClass: this.options.selectableSuggestionClass,
-        selectedClass: this.options.selectedSuggestionClass,
-        timeout: this.options.suggestionTimeout
-      },
-      this.root
-    );
+    this.suggestionsManager = new SuggestionsManager(suggestionsContainer, this.element, this.inputManager, {
+      selectableClass: this.options.selectableSuggestionClass,
+      selectedClass: this.options.selectedSuggestionClass,
+      timeout: this.options.suggestionTimeout
+    });
 
     this.magicBoxClear = new MagicBoxClear(this);
     this.setupHandler();
@@ -267,8 +258,8 @@ export class MagicBoxInstance {
   }
 }
 
-export function createMagicBox(element: HTMLElement, grammar: Grammar, options?: Options, root?: HTMLElement) {
-  return new MagicBoxInstance(element, grammar, options, root);
+export function createMagicBox(element: HTMLElement, grammar: Grammar, options?: Options) {
+  return new MagicBoxInstance(element, grammar, options);
 }
 
 export function requestAnimationFrame(callback: () => void) {

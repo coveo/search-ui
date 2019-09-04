@@ -271,8 +271,7 @@ export class Querybox extends Component {
       }),
       {
         inline: true
-      },
-      this.root
+      }
     );
 
     const input = $$(this.magicBox.element).find('input');

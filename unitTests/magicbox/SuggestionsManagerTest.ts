@@ -16,19 +16,12 @@ export function SuggestionsManagerTest() {
 
     beforeEach(() => {
       buildContainer();
-      const root = document.createElement('div');
-      const inputManager = new InputManager(document.createElement('div'), () => {}, {} as MagicBoxInstance, root);
+      const inputManager = new InputManager(document.createElement('div'), () => {}, {} as MagicBoxInstance);
 
-      suggestionManager = new SuggestionsManager(
-        suggestionContainer.el,
-        document.createElement('div'),
-        inputManager,
-        {
-          selectedClass,
-          selectableClass
-        },
-        root
-      );
+      suggestionManager = new SuggestionsManager(suggestionContainer.el, document.createElement('div'), inputManager, {
+        selectedClass,
+        selectableClass
+      });
     });
 
     it('builds suggestions parent correctly when adding a suggestion', () => {
