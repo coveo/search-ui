@@ -422,12 +422,17 @@ export class Omnibox extends Component {
 
   private createMagicBox() {
     const grammar = this.createGrammar();
-    this.magicBox = createMagicBox(this.element, new Grammar(grammar.start, grammar.expressions), this.root, {
-      inline: this.options.inline,
-      selectableSuggestionClass: 'coveo-omnibox-selectable',
-      selectedSuggestionClass: 'coveo-omnibox-selected',
-      suggestionTimeout: this.options.omniboxTimeout
-    });
+    this.magicBox = createMagicBox(
+      this.element,
+      new Grammar(grammar.start, grammar.expressions),
+      {
+        inline: this.options.inline,
+        selectableSuggestionClass: 'coveo-omnibox-selectable',
+        selectedSuggestionClass: 'coveo-omnibox-selected',
+        suggestionTimeout: this.options.omniboxTimeout
+      },
+      this.root
+    );
 
     const input = $$(this.magicBox.element).find('input');
 

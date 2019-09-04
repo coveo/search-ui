@@ -269,10 +269,10 @@ export class Querybox extends Component {
         Spaces: / +/,
         Word: /[^ ]+/
       }),
-      this.root,
       {
         inline: true
-      }
+      },
+      this.root
     );
 
     const input = $$(this.magicBox.element).find('input');

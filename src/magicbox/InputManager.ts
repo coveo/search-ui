@@ -31,7 +31,8 @@ export class InputManager {
     element: HTMLElement,
     private onchange: (text: string, wordCompletion: boolean) => void,
     private magicBox: MagicBoxInstance,
-    private root: HTMLElement
+    // TODO: try to get default interface
+    private root = $$('div').el
   ) {
     this.underlay = document.createElement('div');
     this.underlay.className = 'magic-box-underlay';

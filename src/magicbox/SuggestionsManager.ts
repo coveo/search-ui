@@ -40,9 +40,10 @@ export class SuggestionsManager {
   constructor(
     private element: HTMLElement,
     private magicBoxContainer: HTMLElement,
-    private root: HTMLElement,
     private inputManager: InputManager,
-    options?: SuggestionsManagerOptions
+    options?: SuggestionsManagerOptions,
+    // TODO: try to get default interface
+    private root = $$('div').el
   ) {
     this.options = defaults(options, <SuggestionsManagerOptions>{
       selectableClass: 'magic-box-suggestion',

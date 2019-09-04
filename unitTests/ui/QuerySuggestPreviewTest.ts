@@ -85,7 +85,7 @@ export function QuerySuggestPreviewTest() {
       buildSuggestion();
       const inputManager = new InputManager(document.createElement('div'), () => {}, {} as MagicBoxInstance, root);
 
-      suggestionManager = new SuggestionsManager(suggestionContainer.el, root, testEnv.root, inputManager);
+      suggestionManager = new SuggestionsManager(suggestionContainer.el, root, inputManager, {}, testEnv.root);
     }
 
     function setupRenderPreview() {
