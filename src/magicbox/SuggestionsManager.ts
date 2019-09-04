@@ -45,7 +45,6 @@ export class SuggestionsManager {
     options?: SuggestionsManagerOptions
   ) {
     this.root = Component.resolveRoot(element);
-    console.log('this.root', this.root);
     this.options = defaults(options, <SuggestionsManagerOptions>{
       selectableClass: 'magic-box-suggestion',
       selectedClass: 'magic-box-selected'
