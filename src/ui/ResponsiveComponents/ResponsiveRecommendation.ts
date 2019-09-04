@@ -24,8 +24,6 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
   public recommendationRoot: Dom;
   private breakpoint: number;
   private dropdown: ResponsiveDropdown;
-  private facetSliders: any[];
-  private facets: any[];
   private dropdownHeaderLabel: string;
   private searchInterface: SearchInterface;
 
@@ -70,10 +68,7 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
     this.breakpoint = this.defineResponsiveBreakpoint(options);
     this.searchInterface = <SearchInterface>Component.get(this.coveoRoot.el, SearchInterface, false);
     this.dropdown = this.buildDropdown(responsiveDropdown);
-    this.facets = this.getFacets();
-    this.facetSliders = this.getFacetSliders();
     this.registerOnOpenHandler();
-    this.registerOnCloseHandler();
     this.registerQueryEvents();
     this.handleResizeEvent();
   }
@@ -173,49 +168,37 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
   }
 
   private getFacetSliders(): any[] {
-    let facetSliders = [];
-    _.each(this.coveoRoot.findAll('.' + Component.computeCssClassNameForType(`FacetSlider`)), facetSliderElement => {
-      let facetSlider = Component.get(facetSliderElement);
-      facetSliders.push(facetSlider);
+    const facetSliders = [];
+    this.coveoRoot.findAll(Component.computeSelectorForType('FacetSlider')).forEach(facetSliderElement => {
+      const facetSlider = Component.get(facetSliderElement);
+      facetSlider && facetSliders.push(facetSlider);
     });
     return facetSliders;
   }
 
   private getFacets(): any[] {
-    let facets = [];
-    _.each(this.coveoRoot.findAll('.' + Component.computeCssClassNameForType('Facet')), facetElement => {
-      let facet = Component.get(facetElement);
-      facets.push(facet);
+    const facets = [];
+    this.coveoRoot.findAll(Component.computeSelectorForType('Facet')).forEach(facetElement => {
+      const facet = Component.get(facetElement);
+      facet && facets.push(facet);
     });
     return facets;
   }
 
-  private dismissFacetSearches(): void {
-    _.each(this.facets, facet => {
-      if (facet.facetSearch && facet.facetSearch.currentlyDisplayedResults) {
-        facet.facetSearch.completelyDismissSearch();
-      }
-    });
-  }
-
   private enableFacetPreservePosition(): void {
-    _.each(this.facets, facet => (facet.options.preservePosition = true));
+    this.getFacets().forEach(facet => (facet.options.preservePosition = true));
   }
 
   private disableFacetPreservePosition(): void {
-    _.each(this.facets, facet => (facet.options.preservePosition = false));
+    this.getFacets().forEach(facet => (facet.options.preservePosition = false));
   }
 
   private drawFacetSliderGraphs(): void {
-    _.each(this.facetSliders, facetSlider => facetSlider.drawDelayedGraphData());
+    this.getFacetSliders().forEach(facetSlider => facetSlider.drawDelayedGraphData());
   }
 
   private registerOnOpenHandler(): void {
     this.dropdown.registerOnOpenHandler(this.drawFacetSliderGraphs, this);
-  }
-
-  private registerOnCloseHandler(): void {
-    this.dropdown.registerOnCloseHandler(this.dismissFacetSearches, this);
   }
 
   private getRecommendationRoot(): Dom {
