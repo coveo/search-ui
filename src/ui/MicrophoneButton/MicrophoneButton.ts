@@ -27,6 +27,7 @@ export class MicrophoneButton extends Component {
   constructor(public element: HTMLElement, public options?: IMicrophoneButtonOptions, bindings?: IComponentBindings) {
     super(element, MicrophoneButton.ID, bindings);
     this.buildButton();
+    this.addMicrophoneToggleKeyboardShortcut();
   }
 
   private buildButton() {
@@ -39,6 +40,14 @@ export class MicrophoneButton extends Component {
       .withSelectAction(() => this.toggleActiveStatus())
       .withLabel(l('SpeechToText'))
       .build();
+  }
+
+  private addMicrophoneToggleKeyboardShortcut() {
+    $$(document.body).on('keydown', (e: KeyboardEvent) => {
+      if (e.ctrlKey && e.key === 'm') {
+        this.toggleActiveStatus();
+      }
+    });
   }
 
   private toggleActiveStatus() {
