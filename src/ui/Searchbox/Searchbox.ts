@@ -11,11 +11,13 @@ import { Initialization } from '../Base/Initialization';
 import { IOmniboxOptions, Omnibox } from '../Omnibox/Omnibox';
 import { Querybox } from '../Querybox/Querybox';
 import { SearchButton } from '../SearchButton/SearchButton';
+import { MicrophoneButton } from '../MicrophoneButton/MicrophoneButton';
 import { each, extend } from 'underscore';
 
 export interface ISearchboxOptions extends IOmniboxOptions {
   addSearchButton?: boolean;
   enableOmnibox?: boolean;
+  enableSpeechToText?: boolean;
   height?: number;
 }
 
@@ -94,7 +96,13 @@ export class Searchbox extends Component {
      *
      * Default value is `true`.
      */
-    enableOmnibox: ComponentOptions.buildBooleanOption({ defaultValue: true })
+    enableOmnibox: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+    /**
+     * Project Sirius option.
+     *
+     * Default value is `true`.
+     */
+    enableSpeechToText: ComponentOptions.buildBooleanOption({ defaultValue: true })
   };
 
   /**
@@ -131,6 +139,12 @@ export class Searchbox extends Component {
 
     const div = document.createElement('div');
     this.element.appendChild(div);
+
+    if (this.options.enableSpeechToText) {
+      const microphoneElement = $$('div').el;
+      this.element.appendChild(microphoneElement);
+      new MicrophoneButton(microphoneElement, {}, bindings);
+    }
 
     if (this.options.addSearchButton) {
       const anchor = $$('a');
