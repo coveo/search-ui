@@ -1,0 +1,25 @@
+@import 'Variables';
+
+.CoveoMicrophoneButton {
+  position: relative;
+}
+
+.coveo-microphone-button {
+  position: absolute;
+  width: 40px;
+  height: 80%;
+  top: 10%;
+  right: 5px;
+  border: none;
+}
+
+.coveo-microphone-button-svg {
+  fill: $color-greyish-teal-blue;
+  margin-top: 6px;
+}
+
+.coveo-microphone-button.active {
+  .coveo-microphone-button-svg {
+    fill: $color-red;
+  }
+}

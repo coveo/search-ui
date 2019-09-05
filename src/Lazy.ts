@@ -212,6 +212,9 @@ lazySearchbox();
 import { lazySearchButton } from './ui/SearchButton/LazySearchButton';
 lazySearchButton();
 
+import { lazyMicrophoneButton } from './ui/MicrophoneButton/LazyMicrophoneButton';
+lazyMicrophoneButton();
+
 import { lazySettings } from './ui/Settings/LazySettings';
 lazySettings();
 

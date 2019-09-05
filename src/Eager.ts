@@ -212,6 +212,9 @@ Searchbox.doExport();
 import { SearchButton } from './ui/SearchButton/SearchButton';
 SearchButton.doExport();
 
+import { MicrophoneButton } from './ui/MicrophoneButton/MicrophoneButton';
+MicrophoneButton.doExport();
+
 import { Settings } from './ui/Settings/Settings';
 Settings.doExport();
 
