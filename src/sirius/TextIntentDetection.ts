@@ -1,5 +1,3 @@
-declare const $;
-
 interface ITextIntentDetection {
   token: string;
   onResult: (res: any) => void;
@@ -29,20 +27,27 @@ export class TextIntentDetection {
     this.cache = {};
   }
 
-  public parse(msg: string, isFinal: boolean) {
+  public async parse(msg: string, isFinal: boolean) {
     const now = Date.now();
 
     // To prevent useless request to wit.ai
     const cache = this.getCachedResult(msg);
     if (cache) return this.emitResult(cache, isFinal, now);
 
-    $.ajax('https://api.wit.ai/message', {
-      data: { q: msg },
-      headers: { Authorization: `Bearer ${this.opts.token}` }
-    }).then(body => this.setCachedResult(body, isFinal, now), err => this.emitError(err));
+    try {
+      const response = await fetch(`https://api.wit.ai/message?q=${encodeURI(msg)}`, {
+        headers: { Authorization: `Bearer ${this.opts.token}` }
+      });
+
+      const body = await response.json();
+      this.setCachedResult(body, isFinal, now);
+    } catch (error) {
+      this.emitError(error);
+    }
   }
 
   private getCachedKey(msg: string) {
+    if (!msg) return;
     return msg.toLowerCase().trim();
   }
 
