@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, height=device-height">
+  <title>Title</title>
+  <link rel="stylesheet" href="./css/CoveoFullSearch.css" />
+  <script class="coveo-script" src="js/CoveoJsSearch.Lazy.js"></script>
+  <script src="js/templates/templates.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      Coveo.SearchEndpoint.configureSampleEndpointV2({
+        restUri: 'https://platformdev.cloud.coveo.com/rest/search',
+        // Get this from the content browser API calls (Bearer token)
+        accessToken: 'ADD-YOUR-ACCESS-TOKEN-HERE',
+        queryStringArguments: {
+          organizationId: 'jsuifacetsensedemo8fm8w12c'
+        }
+      });
+      Coveo.init(document.body);
+    })
+  </script>
+</head>
+
+<div id="search" class="CoveoSearchInterface" data-enable-history="true">
+    <div class="CoveoFolding"></div>
+    <div class="CoveoAnalytics"></div>
+    <div class="coveo-tab-section">
+      <a class="CoveoTab" data-id="All" data-caption="All Content"></a>
+    </div>
+    <div class="coveo-search-section">
+      <div class="CoveoSearchbox" data-enable-omnibox="true"></div>
+    </div>
+    <div class="coveo-main-section">
+      <div class="coveo-facet-column">
+        <div class="CoveoCategoryFacet" data-field="@cctaxonomy" data-title="Category" data-number-of-values=""></div>
+        <div class="CoveoFacet" data-title="Brand" data-field="@ccbrand" data-number-of-values=""></div>
+      </div>
+      <div class="coveo-results-column">
+        <div class="CoveoShareQuery"></div>
+        <div class="CoveoPreferencesPanel">
+          <div class="CoveoResultsPreferences"></div>
+          <div class="CoveoResultsFiltersPreferences"></div>
+        </div>
+        <div class="CoveoTriggers"></div>
+        <div class="CoveoBreadcrumb"></div>
+        <div class="CoveoDidYouMean"></div>
+        <div class="coveo-results-header">
+          <div class="coveo-summary-section">
+            <span class="CoveoQuerySummary"><div class="coveo-show-if-no-results"></div></span>
+            <span class="CoveoQueryDuration"></span>
+          </div>
+          <div class="coveo-result-layout-section">
+            <span class="CoveoResultLayout"></span>
+          </div>
+          <div class="coveo-sort-section">
+            <span class="CoveoSort" data-sort-criteria="relevancy" data-caption="Relevance"></span>
+            <span class="CoveoSort" data-sort-criteria="@ccpricesale descending, @ccpricesale ascending" data-caption="Price"></span>
+          </div>
+        </div>
+        <div class="CoveoHiddenQuery"></div>
+        <div class="CoveoErrorReport" data-pop-up="false"></div>
+        <div class="CoveoResultList" data-layout="list" data-wait-animation="fade" data-auto-select-fields-to-include="true">
+          <script id="Default" class="result-template" type="text/html" data-layout="list"><div class="coveo-result-frame">
+    <div class="coveo-result-cell" style="vertical-align:top;text-align:center;width:32px;">
+  <span class="CoveoFieldValue" data-field="@ccimage" data-html-value="true" data-helper="image" data-helper-options-height="200"></span>
+  <div class="CoveoQuickview"></div>
+  </div>
+    <div class="coveo-result-cell" style="vertical-align: top;padding-left: 16px;">
+      <div class="coveo-result-row" style="margin-top:0;">
+        <div class="coveo-result-cell" style="vertical-align:top;font-size:16px;">
+          <a class="CoveoResultLink"></a>
+        </div>
+        <div class="coveo-result-cell" style="width:120px;text-align:right;font-size:12px">
+          <div class="coveo-result-row">
+            <span class="CoveoFieldValue" data-field="@ccpriceretail" data-helper="currency" data-helper-options-decimals="2"></span>
+          </div>
+        </div>
+      </div>
+      <div class="coveo-result-row" style="margin-top:10px;">
+        <div class="coveo-result-cell">
+  <span class="CoveoFieldValue" data-field="@cctaxonomy" data-split-values="true"></span>
+  </div>
+      </div><div class="coveo-result-row"><div class="coveo-result-cell">
+  <span class="CoveoExcerpt"></span>
+  </div></div>
+      <div class="coveo-result-row" style="margin-top:10px;">
+      </div>
+      <div class="coveo-result-row" style="margin-top:10px;">
+      </div>
+    </div>
+  </div></script>
+        </div>
+        <div class="CoveoPager"></div>
+        <div class="CoveoLogo"></div>
+        <div class="CoveoResultsPerPage"></div>
+      </div>
+    </div>
+  </div>
+
+</html>
