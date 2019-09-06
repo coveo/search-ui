@@ -36,14 +36,15 @@ export class SuggestionsManager {
   private suggestionsListbox: Dom;
   private suggestionsPreviewContainer: Dom;
   private lastSelectedSuggestion: HTMLElement;
+  private root: HTMLElement;
 
   constructor(
     private element: HTMLElement,
     private magicBoxContainer: HTMLElement,
-    private root: HTMLElement,
     private inputManager: InputManager,
     options?: SuggestionsManagerOptions
   ) {
+    this.root = Component.resolveRoot(element);
     this.options = defaults(options, <SuggestionsManagerOptions>{
       selectableClass: 'magic-box-suggestion',
       selectedClass: 'magic-box-selected'
