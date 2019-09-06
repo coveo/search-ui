@@ -1522,7 +1522,7 @@ export class Facet extends Component {
   private initDependsOnManager() {
     const facetInfo: IDependentFacet = {
       reset: () => this.reset(),
-      toogleDependentFacet: dependentFacet => this.toogleDependentFacet(dependentFacet),
+      toggleDependentFacet: dependentFacet => this.toggleDependentFacet(dependentFacet),
       element: this.element,
       root: this.root,
       dependsOn: this.options.dependsOn,
@@ -1533,7 +1533,7 @@ export class Facet extends Component {
     this.dependsOnManager = new DependsOnManager(facetInfo);
   }
 
-  private toogleDependentFacet(dependentFacet: Component) {
+  private toggleDependentFacet(dependentFacet: Component) {
     this.getSelectedValues().length ? dependentFacet.enable() : dependentFacet.disable();
   }
 
