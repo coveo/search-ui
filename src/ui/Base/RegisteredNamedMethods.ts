@@ -454,13 +454,19 @@ Initialization.registerNamedMethod('configureResourceRoot', (path: string) => {
 });
 
 /**
- * Re-enables all [Analytics]{@link Analytics} components if they were previously disabled.
- * @param searchRoot What ancestor or CoveoAnalytics element to search from in the DOM.
+ * Re-enables an [`Analytics`]{@link Analytics} component if it was previously disabled.
+ * @param searchRoot
+ * The element to scan for an Analytics component.
+ * This can be an element onto which a component instance is bound
+ * (e.g., document.querySelector(".CoveoAnalytics"),
+ * or an ancestor of such an element (e.g., document.getElementById("search").
  */
 export function enableAnalytics(searchRoot = document.querySelector(Component.computeSelectorForType(SearchInterface.ID)) as HTMLElement) {
   const analytics = getCoveoAnalytics(searchRoot) as Analytics;
   if (!analytics) {
-    return registeredNamedMethodsLogger.warn('Could not enable analytics because they could not be found.');
+    return registeredNamedMethodsLogger.warn(
+      'Could not enable analytics because no Analytics component could be found in the specified searchRoot.'
+    );
   }
   analytics.enable();
 }
@@ -470,13 +476,19 @@ Initialization.registerNamedMethod('enableAnalytics', () => {
 });
 
 /**
- * Removes all session information stored in the browser (e.g. analytics visitor cookies, action history, etc.)
- * @param searchRoot What ancestor or CoveoAnalytics element to search from in the DOM.
+ * Removes all session information stored in the browser (e.g., analytics visitor cookies, action history, etc.)
+ * @param searchRoot
+ * The element to scan for an Analytics component.
+ * This can be an element onto which a component instance is bound
+ * (e.g., document.querySelector(".CoveoAnalytics"),
+ * or an ancestor of such an element (e.g., document.getElementById("search").
  */
 export function clearLocalData(searchRoot = document.querySelector(Component.computeSelectorForType(SearchInterface.ID)) as HTMLElement) {
   const analytics = getCoveoAnalytics(searchRoot) as Analytics;
   if (!analytics) {
-    return registeredNamedMethodsLogger.warn('Could not clear local data because analytics could not be found.');
+    return registeredNamedMethodsLogger.warn(
+      'Could not clear local data because no Analytics component could be found in the specified searchRoot.'
+    );
   }
   analytics.clearLocalData();
 }
@@ -486,13 +498,19 @@ Initialization.registerNamedMethod('clearLocalData', () => {
 });
 
 /**
- * Disables all [Analytics]{@link Analytics} components and clears local data.
- * @param searchRoot What ancestor or CoveoAnalytics element to search from in the DOM.
+ * Disables an [`Analytics`]{@link Analytics} component and clears local data.
+ * @param searchRoot
+ * The element to scan for an Analytics component.
+ * This can be an element onto which a component instance is bound
+ * (e.g., document.querySelector(".CoveoAnalytics"),
+ * or an ancestor of such an element (e.g., document.getElementById("search").
  */
 export function disableAnalytics(searchRoot = document.querySelector(Component.computeSelectorForType(SearchInterface.ID)) as HTMLElement) {
   const analytics = getCoveoAnalytics(searchRoot) as Analytics;
   if (!analytics) {
-    return registeredNamedMethodsLogger.warn('Could not disable analytics because they could not be found.');
+    return registeredNamedMethodsLogger.warn(
+      'Could not disable analytics because no Analytics component could be found in the specified searchRoot.'
+    );
   }
   analytics.disable();
 }

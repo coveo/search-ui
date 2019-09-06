@@ -372,11 +372,11 @@ export class Analytics extends Component {
   }
 
   /**
-   * Re-enables analytics if they were previously disabled.
+   * Re-enables the component if it was previously disabled.
    */
   public enable() {
     if (!this.disabled) {
-      return this.logger.warn('Analytics are already enabled.');
+      return this.logger.warn('The Analytics component is already enabled.');
     }
     super.enable();
     this.initializeAnalyticsClient();
@@ -384,7 +384,7 @@ export class Analytics extends Component {
   }
 
   /**
-   * Removes all session information stored in the browser (e.g. analytics visitor cookies, action history, etc.)
+   * Removes all session information stored in the browser (e.g., analytics visitor cookies, action history, etc.)
    */
   public clearLocalData() {
     if (this.disabled || this.client instanceof NoopAnalyticsClient) {
@@ -395,11 +395,11 @@ export class Analytics extends Component {
   }
 
   /**
-   * Disables analytics and clears local data by running [`clearLocalData`]{@link Analytics.clearLocalData}.
+   * Disables the component and clears local data by running [`clearLocalData`]{@link Analytics.clearLocalData}.
    */
   public disable() {
     if (this.disabled) {
-      return this.logger.warn('Analytics are already disabled.');
+      return this.logger.warn('The Analytics component is already disabled.');
     }
     this.clearLocalData();
     this.client = new NoopAnalyticsClient();
