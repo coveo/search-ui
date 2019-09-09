@@ -1,18 +1,17 @@
 @import 'Variables';
 @import './MagicBox/MagicBox';
-
-.coveo-waiting-for-first-query .coveo-omnibox {
+\ .coveo-waiting-for-first-query .coveo-omnibox {
   z-index: 0;
 }
 .CoveoOmnibox.magic-box {
-  .coveo-omnibox-suggestion-input {
+  .coveo-omnibox-hightlight {
     font-weight: bold;
     color: $black;
   }
   .magic-box-suggestions {
     z-index: 3;
   }
-  .coveo-omnibox-suggestion-input-corrected {
+  .coveo-omnibox-hightlight2 {
     font-style: italic;
     color: $black;
   }
@@ -20,18 +19,19 @@
     font-weight: bold;
     color: $black;
 
-    .coveo-omnibox-suggestion-input {
-      font-weight: initial;
-    }
-
-    .coveo-omnibox-suggestion-input-corrected {
-      font-weight: initial;
+    .coveo-omnibox-hightlight,
+    .coveo-omnibox-hightlight2 {
+      font-weight: normal;
     }
 
     .coveo-omnibox-suggestion-category,
     .coveo-omnibox-suggestion-results-count {
-      font-weight: initial;
-      opacity: 0.4;
+      font-weight: normal;
+      color: $grey-600;
+
+      .coveo-omnibox-hightlight {
+        color: $grey-600;
+      }
     }
   }
   .magic-box-input .magic-box-underlay {

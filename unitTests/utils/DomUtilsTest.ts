@@ -77,6 +77,49 @@ export function DomUtilsTest() {
       });
     });
 
+    describe('highlight', () => {
+      const randomString = () =>
+        Math.random()
+          .toString(36)
+          .substring(2);
+
+      it('should highlight the entire content with coveo-highlight by default', () => {
+        (<void[]>Array.apply(null, { length: 2 }))
+          .map(randomString)
+          .forEach(content => expect(DomUtils.highlight(content)).toBe(`<span class='coveo-highlight'>${content}</span>`));
+      });
+
+      it('should highlight the entire content with whatever parameter is given', () => {
+        (<void[]>Array.apply(null, { length: 2 }))
+          .map(() => ({
+            classToApply: randomString(),
+            content: randomString()
+          }))
+          .forEach(pair =>
+            expect(DomUtils.highlight(pair.content, pair.classToApply)).toBe(`<span class='${pair.classToApply}'>${pair.content}</span>`)
+          );
+      });
+
+      const parseStringToHTMLElement = (str: string) => {
+        const parent = document.createElement('div');
+        parent.innerHTML = str;
+        return parent.children[0];
+      };
+      const testHighlightedElementText = '<input type="text"/>';
+
+      it('should HTML encode the string content by default', () => {
+        const element = parseStringToHTMLElement(DomUtils.highlight(testHighlightedElementText));
+        expect(element.children.length).toBe(0);
+        expect(element.textContent).toBe(testHighlightedElementText);
+      });
+
+      it('should not HTML encode the string content when asked not to', () => {
+        const element = parseStringToHTMLElement(DomUtils.highlight(testHighlightedElementText, undefined, false));
+        expect(element.children.length).toBe(1);
+        expect(element.children[0] instanceof HTMLInputElement).toBe(true, 'expected to contain an instance of HTMLInputElement');
+      });
+    });
+
     describe('hightlightElement', () => {
       const startDelimiter = 'start-';
       const endDelimiter = '-end';

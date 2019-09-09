@@ -27,10 +27,10 @@ export class QuerySuggestAddon implements IQuerySuggestAddon {
     return suggestion.highlighted.replace(/\[(.*?)\]|\{(.*?)\}|\((.*?)\)/g, (part, notMatched, matched, corrected) => {
       var className = '';
       if (matched) {
-        className = 'coveo-omnibox-suggestion-input';
+        className = 'coveo-omnibox-hightlight';
       }
       if (corrected) {
-        className = 'coveo-omnibox-suggestion-input-corrected';
+        className = 'coveo-omnibox-hightlight2';
       }
 
       let ret: Dom;

@@ -46,14 +46,20 @@ export class DomUtils {
     return dom;
   }
 
+  static highlight(content: string, classToApply = 'coveo-highlight', htmlEncode = true) {
+    return `<span class='${classToApply}'>${htmlEncode ? StringUtils.htmlEncode(content) : content}</span>`;
+  }
+
   static highlightElement(initialString: string, valueToSearch: string, classToApply: string = 'coveo-highlight'): string {
     let regex = new RegExp(Utils.escapeRegexCharacter(StringUtils.latinize(valueToSearch)), 'i');
     let firstChar = StringUtils.latinize(initialString).search(regex);
     if (firstChar >= 0) {
       let lastChar = firstChar + valueToSearch.length;
-      return `${StringUtils.htmlEncode(initialString.slice(0, firstChar))}<span class='${classToApply}'>${StringUtils.htmlEncode(
-        initialString.slice(firstChar, lastChar)
-      )}</span>${StringUtils.htmlEncode(initialString.slice(lastChar))}`;
+      return (
+        StringUtils.htmlEncode(initialString.slice(0, firstChar)) +
+        this.highlight(initialString.slice(firstChar, lastChar), classToApply, true) +
+        StringUtils.htmlEncode(initialString.slice(lastChar))
+      );
     } else {
       return initialString;
     }
