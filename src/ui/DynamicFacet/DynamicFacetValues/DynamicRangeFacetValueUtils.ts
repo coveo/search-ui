@@ -30,15 +30,15 @@ export class DynamicRangeFacetValueUtils {
   static validateRangeValue(value: RangeType, valueFormat: DynamicRangeFacetValueFormat) {
     switch (valueFormat) {
       case DynamicRangeFacetValueFormat.number:
-        return this.validateNumberValue(`${value}`);
+        return this.validateNumberValue(value);
       // TODO: Manage more value formats
       default:
         return `${value}`;
     }
   }
 
-  static validateNumberValue(value: string) {
-    const number = parseFloat(value);
+  static validateNumberValue(value: RangeType) {
+    const number = parseFloat(`${value}`);
     return isNaN(number) ? null : number;
   }
 

@@ -1,6 +1,6 @@
 import { IRangeValue } from '../../../src/rest/RangeValue';
 import * as Mock from '../../MockEnvironment';
-import { DynamicRangeFacet, IDynamicRangeFacetOptions } from '../../../src/ui/DynamicFacet/DynamicRangeFacet';
+import { DynamicRangeFacet, IDynamicRangeFacetOptions, DynamicRangeFacetValueFormat } from '../../../src/ui/DynamicFacet/DynamicRangeFacet';
 import { DynamicFacetValues } from '../../../src/ui/DynamicFacet/DynamicFacetValues/DynamicFacetValues';
 import { DynamicRangeFacetValueCreator } from '../../../src/ui/DynamicFacet/DynamicFacetValues/DynamicRangeFacetValueCreator';
 import { $$ } from '../../../src/Core';
@@ -10,6 +10,7 @@ export class DynamicRangeFacetTestUtils {
     return {
       field: '@dummy',
       valueSeparator: 'to',
+      valueFormat: DynamicRangeFacetValueFormat.number,
       ...options
     };
   }
