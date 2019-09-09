@@ -13,14 +13,14 @@ export class DynamicRangeFacetValueCreator implements ValueCreator {
   private formatValue(value: RangeType) {
     switch (typeof value) {
       case 'number':
-        return this.formatNumberValue(value);
+        return this.formatNumberValue(<number>value);
       // TODO: Manage more value formats
       default:
         return `${value}`;
     }
   }
 
-  private formatNumberValue(value: number) {
+  private formatNumberValue(value: number): string {
     const numberOfDecimals = NumberUtils.countDecimals(value);
     return Globalize.format(value, `n${numberOfDecimals}`);
   }
