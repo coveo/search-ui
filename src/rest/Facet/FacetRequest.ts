@@ -9,15 +9,15 @@ export enum FacetType {
   /**
    * Request facet values representing specific values.
    */
-  Specific = 'Specific',
+  specific = 'specific',
   /**
    * Request facet values representing ranges of numbers.
    */
-  NumericalRange = 'NumericalRange',
+  numericalRange = 'numericalRange',
   /**
    * Request facet values representing ranges of dates.
    */
-  DateRange = 'DateRange'
+  dateRange = 'dateRange'
 }
 
 /**

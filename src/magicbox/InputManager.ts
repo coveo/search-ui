@@ -11,6 +11,7 @@ export class InputManager {
   private underlay: HTMLElement;
   private highlightContainer: HTMLElement;
   private ghostTextContainer: HTMLElement;
+  private root: HTMLElement;
 
   private result: Result;
   private wordCompletion: string;
@@ -27,12 +28,8 @@ export class InputManager {
   public onchangecursor: () => void;
   public ontabpress: () => void;
 
-  constructor(
-    element: HTMLElement,
-    private onchange: (text: string, wordCompletion: boolean) => void,
-    private magicBox: MagicBoxInstance,
-    private root: HTMLElement
-  ) {
+  constructor(element: HTMLElement, private onchange: (text: string, wordCompletion: boolean) => void, private magicBox: MagicBoxInstance) {
+    this.root = Component.resolveRoot(element);
     this.underlay = document.createElement('div');
     this.underlay.className = 'magic-box-underlay';
 
