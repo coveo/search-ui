@@ -9,6 +9,7 @@ import { load } from '../ui/Base/RegisteredNamedMethods';
 import { Logger } from '../misc/Logger';
 import { IComponentBindings } from '../ui/Base/ComponentBindings';
 import { Initialization } from '../Core';
+import { Assert } from '../misc/Assert';
 export class DomUtils {
   static getPopUpCloseButton(captionForClose: string, captionForReminder: string): string {
     let container = document.createElement('span');
@@ -47,7 +48,13 @@ export class DomUtils {
   }
 
   static highlight(content: string, classToApply = 'coveo-highlight', htmlEncode = true) {
-    return `<span class='${classToApply}'>${htmlEncode ? StringUtils.htmlEncode(content) : content}</span>`;
+    const trimmedClass = classToApply !== null ? classToApply.trim() : null;
+    if (trimmedClass !== null) {
+      Assert.check(/^([^\s\-][a-z\s\-]*[^\s\-])?$/i.test(trimmedClass), 'Invalid class');
+    }
+    return `<span${trimmedClass !== null && trimmedClass.length > 0 ? ` class='${trimmedClass}'` : ''}>${
+      htmlEncode ? StringUtils.htmlEncode(content) : content
+    }</span>`;
   }
 
   static highlightElement(initialString: string, valueToSearch: string, classToApply: string = 'coveo-highlight'): string {

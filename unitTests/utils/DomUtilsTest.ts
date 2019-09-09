@@ -78,26 +78,15 @@ export function DomUtilsTest() {
     });
 
     describe('highlight', () => {
-      const randomString = () =>
-        Math.random()
-          .toString(36)
-          .substring(2);
+      const content = 'This is some text content';
 
       it('should highlight the entire content with coveo-highlight by default', () => {
-        (<void[]>Array.apply(null, { length: 2 }))
-          .map(randomString)
-          .forEach(content => expect(DomUtils.highlight(content)).toBe(`<span class='coveo-highlight'>${content}</span>`));
+        expect(DomUtils.highlight(content)).toBe(`<span class='coveo-highlight'>${content}</span>`);
       });
 
       it('should highlight the entire content with whatever parameter is given', () => {
-        (<void[]>Array.apply(null, { length: 2 }))
-          .map(() => ({
-            classToApply: randomString(),
-            content: randomString()
-          }))
-          .forEach(pair =>
-            expect(DomUtils.highlight(pair.content, pair.classToApply)).toBe(`<span class='${pair.classToApply}'>${pair.content}</span>`)
-          );
+        const classToApply = 'my-odd-class';
+        expect(DomUtils.highlight(content, classToApply)).toBe(`<span class='${classToApply}'>${content}</span>`);
       });
 
       const parseStringToHTMLElement = (str: string) => {
@@ -105,6 +94,57 @@ export function DomUtilsTest() {
         parent.innerHTML = str;
         return parent.children[0];
       };
+
+      it('should still return valid HTML if the class or content are empty', () => {
+        expect(parseStringToHTMLElement(DomUtils.highlight('', '')) instanceof HTMLSpanElement).toBe(
+          true,
+          'an instance of HTMLSpanElement'
+        );
+
+        expect(parseStringToHTMLElement(DomUtils.highlight('', '', false)) instanceof HTMLSpanElement).toBe(
+          true,
+          'an instance of HTMLSpanElement'
+        );
+      });
+
+      it('should not escape spaces in classToApply', () => {
+        const classes = ['hello', 'world'];
+        const resultingElementClassList = parseStringToHTMLElement(DomUtils.highlight(content, `${classes[0]} ${classes[1]}`)).classList;
+        expect(resultingElementClassList.length).toBe(2);
+        classes.forEach(className => expect(resultingElementClassList.contains(className)).toBe(true, "in the element's class list"));
+      });
+
+      it('should throw an exception when the content is null', () => {
+        expect(() => DomUtils.highlight(null, 'hello')).toThrow();
+      });
+
+      it('should return an element with no class when the classToApply is null', () => {
+        expect(parseStringToHTMLElement(DomUtils.highlight('hello', null)).classList.length).toBe(0);
+      });
+
+      it('should ignore trailing spaces in classToApply', () => {
+        expect(parseStringToHTMLElement(DomUtils.highlight('hello', '   hello world   ')).classList.length).toBe(2);
+        expect(parseStringToHTMLElement(DomUtils.highlight('hello', '   ')).classList.length).toBe(0);
+      });
+
+      const contentWithSymbols = `-\`!@#$%^&*()=[]{}<>“‘.,~:;'"|\\?📀`;
+
+      it('should throw an exception when the classToApply contains symbols', () => {
+        const prefix = 'hello';
+        const suffix = 'world';
+        contentWithSymbols
+          .split('')
+          .slice(1)
+          .forEach(char => expect(() => DomUtils.highlight(content, prefix + char + suffix)).toThrow());
+      });
+
+      it('should still return valid HTML if the content contains symbols and is HTML encoded', () => {
+        const element = parseStringToHTMLElement(DomUtils.highlight(contentWithSymbols));
+        expect(element instanceof HTMLSpanElement).toBe(true, 'an instance of HTMLSpanElement');
+        expect(element.children.length).toBe(0);
+        expect(element.textContent).toBe(contentWithSymbols);
+      });
+
       const testHighlightedElementText = '<input type="text"/>';
 
       it('should HTML encode the string content by default', () => {
