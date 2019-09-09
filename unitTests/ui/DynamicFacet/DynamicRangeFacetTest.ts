@@ -32,7 +32,7 @@ export function DynamicRangeFacetTest() {
       expect(test.cmp.options.enableMoreLess).toBe(false);
     });
 
-    it('enableMoreLess option should be disabled', () => {
+    it('valueCaption option should be disabled', () => {
       options.valueCaption = { hello: 'bonjour' };
       initializeComponent();
       expect(test.cmp.options.valueCaption).toEqual({});

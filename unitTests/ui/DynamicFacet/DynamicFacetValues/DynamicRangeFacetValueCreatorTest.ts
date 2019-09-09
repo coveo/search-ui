@@ -118,7 +118,7 @@ export function DynamicRangeFacetValueCreatorTest() {
         expect(facetValue.displayValue).toBe(`${facetValue.start} ${facet.options.valueSeparator} ${facetValue.end}`);
       });
 
-      it(`when there is no label 
+      it(`when there is a label 
         should assign it to the displayValue`, () => {
         const label = 'this is a label';
         rangeValue.label = label;

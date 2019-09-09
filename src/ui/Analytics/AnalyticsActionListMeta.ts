@@ -161,7 +161,7 @@ export interface IAnalyticsDynamicFacetMeta {
    */
   value?: string;
   /**
-   * The value to start the range at.
+   * The minimum value of the dynamic range facet value.
    *
    * **Examples:**
    * > - `0`
@@ -169,7 +169,7 @@ export interface IAnalyticsDynamicFacetMeta {
    */
   start?: RangeType;
   /**
-   * The value to end the range at.
+   * The maximum value of the dynamic range facet value.
    *
    * **Examples:**
    * > - `500`
@@ -177,7 +177,7 @@ export interface IAnalyticsDynamicFacetMeta {
    */
   end?: RangeType;
   /**
-   * Whether to include the [`end`]{@link IRangeValue.end} value in the range.
+   * Whether the [`end`]{@link IRangeValue.end} value is included in the dynamic range facet value.
    */
   endInclusive?: boolean;
   /**

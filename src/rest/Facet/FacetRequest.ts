@@ -120,7 +120,7 @@ export interface IFacetRequest {
    * The values displayed by the facet in the search interface at the moment of
    * the request.
    *
-   * See [FacetRequestValueType]{@link FacetRequestValueType}.
+   * See [IFacetRequestValue]{@link IFacetRequestValue}.
    *
    * **Default (Search API):** `[]`
    */

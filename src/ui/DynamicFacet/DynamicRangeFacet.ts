@@ -11,8 +11,18 @@ import { DynamicFacetValues } from './DynamicFacetValues/DynamicFacetValues';
 import { DynamicRangeFacetValueCreator } from './DynamicFacetValues/DynamicRangeFacetValueCreator';
 import { DynamicRangeFacetQueryController } from '../../controllers/DynamicRangeFacetQueryController';
 
+/**
+ * The allowed values for the [`valueFormat`]{@link DynamicRangeFacet.options.valueFormat} option
+ * of the [`DynamicRangeFacet`]{@link DynamicRangeFacet} component.
+ */
 export enum DynamicRangeFacetValueFormat {
+  /**
+   * Format range values as localized numeric strings.
+   */
   number = 'number',
+  /**
+   * Format range values as localized date strings.
+   */
   date = 'date'
 }
 
@@ -25,17 +35,15 @@ export interface IDynamicRangeFacetOptions extends IDynamicFacetOptions {
 /**
  * A `DynamicRangeFacet` is a [facet](https://docs.coveo.com/en/198/) whose values are expressed as ranges.
  *
- * You must set the [`field`]{@link DynamicFacet.options.field} option to a value targeting a numeric or date [field](https://docs.coveo.com/en/200/) in your index for this component to work.
+ * You must set the [`field`]{@link DynamicFacet.options.field} option to a value targeting a numeric or date [field](https://docs.coveo.com/en/200/)
+ * in your index for this component to work.
  *
  * This component extends the [`DynamicFacet`]{@link DynamicFacet} component and supports all `DynamicFacet` options except:
  *
- * - **Facet Search** options
- *   - [`enableFacetSearch`]{@link DynamicFacet.options.enableFacetSearch}
- *   - [`useLeadingWildcardInFacetSearch`]{@link DynamicFacet.options.useLeadingWildcardInFacetSearch}
- * - **More and Less** options
- *   - [`enableMoreLess`]{@link DynamicFacet.options.enableMoreLess}
- * - **Value caption** menu options
- *   - [`valueCaption`]{@link DynamicFacet.options.valueCaption}
+ * - [`enableFacetSearch`]{@link DynamicFacet.options.enableFacetSearch}
+ * - [`useLeadingWildcardInFacetSearch`]{@link DynamicFacet.options.useLeadingWildcardInFacetSearch}
+ * - [`enableMoreLess`]{@link DynamicFacet.options.enableMoreLess}
+ * - [`valueCaption`]{@link DynamicFacet.options.valueCaption}
  *
  *  @notSupportedIn salesforcefree
  */
@@ -46,16 +54,21 @@ export class DynamicRangeFacet extends DynamicFacet implements IComponentBinding
 
   static options: IDynamicRangeFacetOptions = {
     /**
-     * The separator between the minimum and the maximum.
+     * The label to insert between the minimum and maximum value of each range displayed in the facet.
+     *
+     * **Default:** The localized string for `to`.
+     *
+     * @examples until, up to
      *
      * **Default:** The localized string for `to`.
      */
     valueSeparator: ComponentOptions.buildLocalizedStringOption({ defaultValue: l('To'), section: 'CommonOptions' }),
     /**
-     * The format used for the minimum and maximum value.
-     * Possible values are: `number`, `date` and `currency`
+     * The string format to apply to the minimum and maximum value of each range displayed in the facet.
      *
-     * **Default:** `number`
+     * **Default:** [`number`]{@link DynamicRangeFacetValueFormat.number}
+     *
+     * @examples date
      */
     valueFormat: ComponentOptions.buildStringOption({ defaultValue: DynamicRangeFacetValueFormat.number, section: 'CommonOptions' }),
     /**
