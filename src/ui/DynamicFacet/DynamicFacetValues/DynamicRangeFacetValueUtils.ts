@@ -61,4 +61,25 @@ export class DynamicRangeFacetValueUtils {
     const scope = range.endInclusive ? RangeEndScope.Inclusive : RangeEndScope.Exclusive;
     return `${range.start}..${range.end}${scope}`;
   }
+
+  static rangeFromValue(value: string, valueFormat: DynamicRangeFacetValueFormat): IRangeValue {
+    const valueRegex = new RegExp(`^(.+)\\.\\.(.+)(${RangeEndScope.Inclusive}|${RangeEndScope.Exclusive})$`);
+    const startAndEnd = valueRegex.exec(value);
+    if (!startAndEnd) {
+      return null;
+    }
+
+    const start = this.validateRangeValue(startAndEnd[1], valueFormat);
+    const end = this.validateRangeValue(startAndEnd[2], valueFormat);
+
+    if (isNull(start) || isNull(end)) {
+      return null;
+    }
+
+    return {
+      start,
+      end,
+      endInclusive: startAndEnd[3] === RangeEndScope.Inclusive
+    };
+  }
 }

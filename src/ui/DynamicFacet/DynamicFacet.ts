@@ -617,8 +617,10 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
 
   private handleQueryStateChangedIncluded = (querySelectedValues: string[]) => {
     const currentSelectedValues = this.values.selectedValues;
-    const valuesToSelect = difference(querySelectedValues, currentSelectedValues);
-    const valuesToDeselect = difference(currentSelectedValues, querySelectedValues);
+    const validQuerySelectedValues = querySelectedValues.filter(value => this.values.get(value));
+
+    const valuesToSelect = difference(validQuerySelectedValues, currentSelectedValues);
+    const valuesToDeselect = difference(currentSelectedValues, validQuerySelectedValues);
 
     if (Utils.isNonEmptyArray(valuesToSelect)) {
       this.selectMultipleValues(valuesToSelect);

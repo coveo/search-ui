@@ -92,6 +92,10 @@ export class DynamicFacetValues {
     }
 
     const newFacetValue = this.valueCreator.createFromValue(value);
+    if (!newFacetValue) {
+      return null;
+    }
+
     this.facetValues.push(newFacetValue);
     return newFacetValue;
   }
