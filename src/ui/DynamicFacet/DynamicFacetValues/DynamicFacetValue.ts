@@ -74,7 +74,7 @@ export class DynamicFacetValue implements IDynamicFacetValue {
 
   public get selectAriaLabel() {
     const selectOrUnselect = !this.isSelected ? 'SelectValueWithResultCount' : 'UnselectValueWithResultCount';
-    const resultCount = l('ResultCount', this.formattedCount);
+    const resultCount = l('ResultCount', this.formattedCount, this.numberOfResults);
 
     return `${l(selectOrUnselect, this.displayValue, resultCount)}`;
   }

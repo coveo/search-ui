@@ -145,7 +145,13 @@ export class FacetValueSuggestions extends Component {
   static defaultTemplate(this: FacetValueSuggestions, row: IFacetValueSuggestionRow, omnibox: Omnibox): string {
     const keyword = DomUtils.highlightElement(row.keyword, omnibox.getText(), 'coveo-omnibox-hightlight2');
     const facetValue = DomUtils.highlightElement(row.value, row.value, 'coveo-omnibox-hightlight');
-    const details = this.options.displayEstimateNumberOfResults ? ` (${l('ResultCount', row.numberOfResults.toString())})` : '';
+    const details = this.options.displayEstimateNumberOfResults
+      ? DomUtils.highlight(
+          ` (${l('ResultCount', row.numberOfResults.toString(), row.numberOfResults)})`,
+          'coveo-omnibox-suggestion-results-count',
+          true
+        )
+      : '';
     return `${l('KeywordInCategory', keyword, facetValue)}${details}`;
   }
 
