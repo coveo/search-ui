@@ -1,50 +1,29 @@
-import * as Globalize from 'globalize';
 import { DynamicRangeFacet } from '../DynamicRangeFacet';
 import { ValueCreator } from './DynamicFacetValues';
 import { IFacetResponseValue } from '../../../rest/Facet/FacetResponse';
 import { DynamicFacetValue } from './DynamicFacetValue';
-import { RangeType, IRangeValue, RangeEndScope } from '../../../rest/RangeValue';
+import { IRangeValue, RangeEndScope } from '../../../rest/RangeValue';
 import { FacetValueState } from '../../../rest/Facet/FacetValueState';
-import { NumberUtils } from '../../../utils/NumberUtils';
+import { DynamicRangeFacetValueUtils as RangeUtils } from './DynamicRangeFacetValueUtils';
 
 export class DynamicRangeFacetValueCreator implements ValueCreator {
   constructor(private facet: DynamicRangeFacet) {}
 
-  private formatValue(value: RangeType) {
-    switch (typeof value) {
-      case 'number':
-        return this.formatNumberValue(<number>value);
-      // TODO: Manage more value formats
-      default:
-        return `${value}`;
+  public createFromRange(unvalidatedRange: IRangeValue, index: number) {
+    const range = RangeUtils.validateRange(unvalidatedRange, this.facet.options.valueFormat);
+    if (!range) {
+      this.facet.logger.error(`Unvalid range for ${this.facet.options.valueFormat} format`, unvalidatedRange);
+      return null;
     }
-  }
 
-  private formatNumberValue(value: number): string {
-    const numberOfDecimals = NumberUtils.countDecimals(value);
-    return Globalize.format(value, `n${numberOfDecimals}`);
-  }
-
-  private formatRangeValue(range: IRangeValue) {
-    const formattedStart = this.formatValue(range.start);
-    const formattedEnd = this.formatValue(range.end);
-
-    return `${formattedStart} ${this.facet.options.valueSeparator} ${formattedEnd}`;
-  }
-
-  private valueFromRange(range: IRangeValue) {
-    const scope = range.endInclusive ? RangeEndScope.Inclusive : RangeEndScope.Exclusive;
-    // TODO: Manage different value formats
-    return `${range.start}..${range.end}${scope}`;
-  }
-
-  public createFromRange(range: IRangeValue, index: number) {
-    const displayValue = range.label ? range.label : this.formatRangeValue(range);
+    const displayValue = range.label
+      ? range.label
+      : RangeUtils.formatRangeValue(range, this.facet.options.valueFormat, this.facet.options.valueSeparator);
 
     return new DynamicFacetValue(
       {
         displayValue,
-        value: this.valueFromRange(range),
+        value: RangeUtils.valueFromRange(range),
         start: range.start,
         end: range.end,
         endInclusive: !!range.endInclusive,
@@ -57,7 +36,7 @@ export class DynamicRangeFacetValueCreator implements ValueCreator {
   }
 
   public createFromResponse(responseValue: IFacetResponseValue, index: number) {
-    const value = this.valueFromRange(responseValue);
+    const value = RangeUtils.valueFromRange(responseValue);
     const { displayValue } = this.facet.values.get(value);
 
     return new DynamicFacetValue(
@@ -79,10 +58,9 @@ export class DynamicRangeFacetValueCreator implements ValueCreator {
       return null;
     }
 
-    // TODO: Manage different value formats
     return {
-      start: Number(startAndEnd[1]),
-      end: Number(startAndEnd[2]),
+      start: RangeUtils.validateRangeValue(startAndEnd[1], this.facet.options.valueFormat),
+      end: RangeUtils.validateRangeValue(startAndEnd[2], this.facet.options.valueFormat),
       endInclusive: startAndEnd[3] === RangeEndScope.Inclusive
     };
   }

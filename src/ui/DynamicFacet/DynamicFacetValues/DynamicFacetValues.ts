@@ -34,7 +34,7 @@ export class DynamicFacetValues {
   }
 
   public createFromRanges(ranges: IRangeValue[]) {
-    this.facetValues = ranges.map((range, index) => this.valueCreator.createFromRange(range, index));
+    this.facetValues = ranges.map((range, index) => this.valueCreator.createFromRange(range, index)).filter(facetValue => !!facetValue);
   }
 
   public resetValues() {
