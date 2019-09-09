@@ -269,7 +269,6 @@ export class Querybox extends Component {
         Spaces: / +/,
         Word: /[^ ]+/
       }),
-      this.root,
       {
         inline: true
       }

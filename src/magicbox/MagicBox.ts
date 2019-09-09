@@ -37,7 +37,7 @@ export class MagicBoxInstance {
   private result: Result;
   private displayedResult: Result;
 
-  constructor(public element: HTMLElement, public grammar: Grammar, public options: Options = {}, public root: HTMLElement) {
+  constructor(public element: HTMLElement, public grammar: Grammar, public options: Options = {}) {
     if (isUndefined(this.options.inline)) {
       this.options.inline = false;
     }
@@ -68,8 +68,7 @@ export class MagicBoxInstance {
           this.onselect && this.onselect(this.getFirstSuggestionText());
         }
       },
-      this,
-      root
+      this
     );
 
     this.inputManager.ontabpress = () => {
@@ -87,7 +86,7 @@ export class MagicBoxInstance {
     suggestionsContainer.className = 'magic-box-suggestions';
     this.element.appendChild(suggestionsContainer);
 
-    this.suggestionsManager = new SuggestionsManager(suggestionsContainer, this.element, this.root, this.inputManager, {
+    this.suggestionsManager = new SuggestionsManager(suggestionsContainer, this.element, this.inputManager, {
       selectableClass: this.options.selectableSuggestionClass,
       selectedClass: this.options.selectedSuggestionClass,
       timeout: this.options.suggestionTimeout
@@ -259,8 +258,8 @@ export class MagicBoxInstance {
   }
 }
 
-export function createMagicBox(element: HTMLElement, grammar: Grammar, root: HTMLElement, options?: Options) {
-  return new MagicBoxInstance(element, grammar, options, root);
+export function createMagicBox(element: HTMLElement, grammar: Grammar, options?: Options) {
+  return new MagicBoxInstance(element, grammar, options);
 }
 
 export function requestAnimationFrame(callback: () => void) {
