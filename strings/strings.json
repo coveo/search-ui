@@ -7359,12 +7359,12 @@
     "fr": "Inspecteur de Pertinence des Documents"
   },
   "KeywordInCategory": {
-    "en": "{0} in {1}",
-    "fr": "{0} dans {1}"
+    "en": "{0} <span class=\"coveo-omnibox-suggestion-category\">in {1}</span>",
+    "fr": "{0} <span class=\"coveo-omnibox-suggestion-category\">dans {1}</span>"
   },
   "ResultCount": {
-    "en": "{0} results",
-    "fr": "{0} résultats"
+    "en": "{0} result<pl>s</pl>",
+    "fr": "{0} résultat<pl>s</pl>"
   },
   "ShowingResults": {
     "en": "{0} result<pl>s</pl>",
