@@ -2,6 +2,8 @@ import * as Mock from '../../MockEnvironment';
 import { DynamicRangeFacet, IDynamicRangeFacetOptions, DynamicRangeFacetValueFormat } from '../../../src/ui/DynamicFacet/DynamicRangeFacet';
 import { DynamicRangeFacetTestUtils } from './DynamicRangeFacetTestUtils';
 import { FacetType } from '../../../src/rest/Facet/FacetRequest';
+import { QueryStateModel } from '../../../src/Core';
+import { RangeEndScope } from '../../../src/rest/RangeValue';
 
 export function DynamicRangeFacetTest() {
   describe('DynamicRangeFacet', () => {
@@ -9,12 +11,13 @@ export function DynamicRangeFacetTest() {
     let options: IDynamicRangeFacetOptions;
 
     beforeEach(() => {
-      options = { field: '@field' };
+      options = { field: '@field', ranges: [] };
       initializeComponent();
     });
 
     function initializeComponent() {
       test = DynamicRangeFacetTestUtils.createAdvancedFakeFacet(options);
+      spyOn(test.cmp.logger, 'error');
       spyOn(test.cmp.logger, 'warn');
     }
 
@@ -81,6 +84,43 @@ export function DynamicRangeFacetTest() {
       test.cmp.triggerNewIsolatedQuery();
 
       expect(test.cmp.logger.warn).toHaveBeenCalled();
+    });
+
+    function updateQSM(value: string) {
+      const id = QueryStateModel.getFacetId(test.cmp.options.id);
+      test.cmp.queryStateModel.set(id, [value]);
+    }
+
+    describe('when updating directly the QSM', () => {
+      it(`when using a valid range value
+      should not throw an error`, () => {
+        updateQSM(`1..10${RangeEndScope.Inclusive}`);
+        expect(test.cmp.logger.error).not.toHaveBeenCalled();
+      });
+
+      it(`when not using a range value
+      should throw an error`, () => {
+        updateQSM('notARange');
+        expect(test.cmp.logger.error).toHaveBeenCalled();
+      });
+
+      it(`when using a bad start value
+      should throw an error`, () => {
+        updateQSM(`yes..10${RangeEndScope.Inclusive}`);
+        expect(test.cmp.logger.error).toHaveBeenCalled();
+      });
+
+      it(`when using a bad start end value
+      should throw an error`, () => {
+        updateQSM(`1..no${RangeEndScope.Inclusive}`);
+        expect(test.cmp.logger.error).toHaveBeenCalled();
+      });
+
+      it(`when using a bad start endInclusive value
+      should throw an error`, () => {
+        updateQSM(`1..10out`);
+        expect(test.cmp.logger.error).toHaveBeenCalled();
+      });
     });
   });
 }

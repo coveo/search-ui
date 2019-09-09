@@ -71,7 +71,6 @@ export class DynamicRangeFacetValueUtils {
 
     const start = this.validateRangeValue(startAndEnd[1], valueFormat);
     const end = this.validateRangeValue(startAndEnd[2], valueFormat);
-
     if (isNull(start) || isNull(end)) {
       return null;
     }
