@@ -5,13 +5,24 @@ import { IFacetResponseValue } from '../../../rest/Facet/FacetResponse';
 import { DynamicFacetValue } from './DynamicFacetValue';
 import { RangeType, IRangeValue, RangeEndScope } from '../../../rest/RangeValue';
 import { FacetValueState } from '../../../rest/Facet/FacetValueState';
+import { NumberUtils } from '../../../utils/NumberUtils';
 
 export class DynamicRangeFacetValueCreator implements ValueCreator {
   constructor(private facet: DynamicRangeFacet) {}
 
   private formatValue(value: RangeType) {
-    // TODO: Manage different value formats
-    return Globalize.format(value, 'n0');
+    switch (typeof value) {
+      case 'number':
+        return this.formatNumberValue(value);
+      // TODO: Manage more value formats
+      default:
+        return `${value}`;
+    }
+  }
+
+  private formatNumberValue(value: number) {
+    const numberOfDecimals = NumberUtils.countDecimals(value);
+    return Globalize.format(value, `n${numberOfDecimals}`);
   }
 
   private formatRangeValue(range: IRangeValue) {
