@@ -16,8 +16,7 @@ export class DynamicRangeFacetQueryController extends DynamicFacetQueryControlle
       type: this.facet.facetType,
       currentValues: this.currentValues,
       numberOfValues: this.numberOfValues,
-      freezeCurrentValues: this.hasValues,
-      generateAutomaticRanges: !this.hasValues
+      freezeCurrentValues: this.hasValues
     };
   }
 

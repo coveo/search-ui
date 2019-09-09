@@ -44,10 +44,6 @@ export function DynamicRangeFacetQueryControllerTest() {
         expect(facetRequest().freezeCurrentValues).toBe(true);
       });
 
-      it('generateAutomaticRanges should be false', () => {
-        expect(facetRequest().generateAutomaticRanges).toBe(false);
-      });
-
       it('numberOfValues should be equal to the number of current values', () => {
         expect(facetRequest().numberOfValues).toBe(facetRequest().currentValues.length);
       });
@@ -60,10 +56,6 @@ export function DynamicRangeFacetQueryControllerTest() {
 
       it('freezeCurrentValues should be false', () => {
         expect(facetRequest().freezeCurrentValues).toBe(false);
-      });
-
-      it('generateAutomaticRanges should be true', () => {
-        expect(facetRequest().generateAutomaticRanges).toBe(true);
       });
 
       it('numberOfValues should be equal to the numberOfValues option', () => {
