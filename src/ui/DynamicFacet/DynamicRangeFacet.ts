@@ -76,7 +76,7 @@ export class DynamicRangeFacet extends DynamicFacet implements IComponentBinding
      *
      * **Required:** Specifying a value for this option is required for the component to work.
      */
-    ranges: ComponentOptions.buildJsonOption<IRangeValue[]>()
+    ranges: ComponentOptions.buildJsonOption<IRangeValue[]>({ required: true })
   };
 
   /**
