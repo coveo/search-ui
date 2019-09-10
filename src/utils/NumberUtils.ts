@@ -1,10 +1,8 @@
-export class NumberUtils {
-  static countDecimals = function(value: number) {
-    if (Math.floor(value) === value) {
-      return 0;
-    }
+import { isNull } from 'util';
 
-    const postDecimalValues = value.toString().split('.')[1];
-    return postDecimalValues.length;
-  };
+export class NumberUtils {
+  static countDecimals(value: number) {
+    const decimalsMatch = /^\d+\.?([\d+]*)$/.exec(`${value}`);
+    return isNull(decimalsMatch) ? 0 : decimalsMatch[1].length;
+  }
 }
