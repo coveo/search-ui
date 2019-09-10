@@ -119,11 +119,12 @@ export function DynamicRangeFacetValueCreatorTest() {
       }
 
       it('should throw on a invalid format', () => {
-        expect(() => valueCreator.createFromValue(null)).toThrowError();
+        valueCreator.createFromValue('notValid');
+        expect(facet.logger.error).toHaveBeenCalled();
       });
 
       it('should return null on a invalid format', () => {
-        expect(valueCreator.createFromValue(null)).toBeNull();
+        expect(valueCreator.createFromValue('notvalid')).toBeNull();
       });
 
       it('should have the right position', () => {

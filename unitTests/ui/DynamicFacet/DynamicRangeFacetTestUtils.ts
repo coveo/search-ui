@@ -3,7 +3,7 @@ import * as Mock from '../../MockEnvironment';
 import { DynamicRangeFacet, IDynamicRangeFacetOptions, DynamicRangeFacetValueFormat } from '../../../src/ui/DynamicFacet/DynamicRangeFacet';
 import { DynamicFacetValues } from '../../../src/ui/DynamicFacet/DynamicFacetValues/DynamicFacetValues';
 import { DynamicRangeFacetValueCreator } from '../../../src/ui/DynamicFacet/DynamicFacetValues/DynamicRangeFacetValueCreator';
-import { $$ } from '../../../src/Core';
+import { $$, Logger } from '../../../src/Core';
 
 export class DynamicRangeFacetTestUtils {
   static allOptions(options?: IDynamicRangeFacetOptions) {
@@ -17,6 +17,7 @@ export class DynamicRangeFacetTestUtils {
 
   static createFakeFacet(options?: IDynamicRangeFacetOptions) {
     const facet = Mock.mockComponent<DynamicRangeFacet>(DynamicRangeFacet);
+    facet.logger = Mock.mock(Logger);
     facet.options = this.allOptions(options);
     facet.values = new DynamicFacetValues(facet, DynamicRangeFacetValueCreator);
     facet.element = $$('div').el;
