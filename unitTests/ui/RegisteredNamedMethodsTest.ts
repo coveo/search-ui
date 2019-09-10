@@ -1,5 +1,11 @@
 import * as RegisteredNamedMethod from '../../src/ui/Base/RegisteredNamedMethods';
-import { IMockEnvironment, MockEnvironmentBuilder } from '../MockEnvironment';
+import {
+  IMockEnvironment,
+  MockEnvironmentBuilder,
+  advancedComponentSetup,
+  IBasicComponentSetup,
+  AdvancedComponentSetupOptions
+} from '../MockEnvironment';
 import { $$ } from '../../src/utils/Dom';
 import { Component } from '../../src/ui/Base/Component';
 import { Searchbox } from '../../src/ui/Searchbox/Searchbox';
@@ -10,6 +16,11 @@ import { LazyInitialization } from '../../src/ui/Base/Initialization';
 import { NoopComponent } from '../../src/ui/NoopComponent/NoopComponent';
 import { Defer } from '../../src/misc/Defer';
 import { SearchInterface } from '../../src/ui/SearchInterface/SearchInterface';
+import { Analytics } from '../../src/ui/Analytics/Analytics';
+import { NoopAnalyticsClient } from '../../src/ui/Analytics/NoopAnalyticsClient';
+import { SearchEndpoint } from '../../src/rest/SearchEndpoint';
+import HistoryStore from 'coveo.analytics/dist/history';
+import { NullStorage } from 'coveo.analytics/dist/storage';
 
 export function RegisteredNamedMethodsTest() {
   describe('RegisteredNamedMethods', () => {
@@ -165,16 +176,17 @@ export function RegisteredNamedMethodsTest() {
       expect(spy).toHaveBeenCalled();
     });
 
-    describe('with analytics', () => {
+    describe('with spy analytics', () => {
       let analyticsElement: HTMLElement;
       let analytics: { [key: string]: IAnalyticsClient };
 
       beforeEach(() => {
+        const analyticsClassName = Component.computeCssClassName(Analytics);
         analyticsElement = $$('div', {
-          className: 'CoveoAnalytics'
+          className: analyticsClassName
         }).el;
         analytics = { client: mockUsageAnalytics() };
-        analyticsElement['Analytics'] = analytics;
+        analyticsElement[analyticsClassName] = analytics;
         analyticsElement['CoveoBoundComponents'] = [analytics];
         env.root.appendChild(analyticsElement);
       });
@@ -230,6 +242,70 @@ export function RegisteredNamedMethodsTest() {
           fakeResult,
           env.root
         );
+      });
+    });
+
+    describe('with mock analytics', () => {
+      let setup: IBasicComponentSetup<Analytics>;
+
+      beforeEach(() => {
+        setup = advancedComponentSetup<Analytics>(
+          Analytics,
+          new AdvancedComponentSetupOptions(null, null, env => {
+            env.searchInterface.options.endpoint = new SearchEndpoint({
+              accessToken: 'another token',
+              queryStringArguments: { organizationId: 'another organization' },
+              restUri: 'another/uri'
+            });
+            env.queryController.historyStore = new HistoryStore(new NullStorage());
+            return env;
+          })
+        );
+      });
+
+      afterEach(() => {
+        SearchEndpoint.endpoints['default'] = null;
+        setup = null;
+      });
+
+      it('should not be noop by default', () => {
+        expect(setup.cmp.client instanceof NoopAnalyticsClient).not.toBeTruthy();
+      });
+
+      it('should become noop after being disabled', () => {
+        expect(setup.cmp.client instanceof NoopAnalyticsClient).not.toBeTruthy();
+        RegisteredNamedMethod.disableAnalytics(setup.env.root);
+        expect(setup.cmp.client instanceof NoopAnalyticsClient).toBeTruthy();
+      });
+
+      it('should not be noop after being re-enabled', () => {
+        expect(setup.cmp.client instanceof NoopAnalyticsClient).not.toBeTruthy();
+        RegisteredNamedMethod.disableAnalytics(setup.env.root);
+        expect(setup.cmp.client instanceof NoopAnalyticsClient).toBeTruthy();
+        RegisteredNamedMethod.enableAnalytics(setup.env.root);
+        expect(setup.cmp.client instanceof NoopAnalyticsClient).not.toBeTruthy();
+      });
+
+      it('should clear actions history when disabling analytics', () => {
+        RegisteredNamedMethod.disableAnalytics(setup.env.root);
+        expect(setup.env.queryController.resetHistory).toHaveBeenCalled();
+      });
+
+      it('should clear visitor cookie when disabling analytics', () => {
+        const clearCookiesFunction = spyOn(setup.cmp.client.endpoint, 'clearCookies');
+        RegisteredNamedMethod.disableAnalytics(setup.env.root);
+        expect(clearCookiesFunction).toHaveBeenCalled();
+      });
+
+      it('should clear actions history when clearing local data', () => {
+        RegisteredNamedMethod.clearLocalData(setup.env.root);
+        expect(setup.env.queryController.resetHistory).toHaveBeenCalled();
+      });
+
+      it('should clear visitor cookie when clearing local data', () => {
+        const clearCookiesFunction = spyOn(setup.cmp.client.endpoint, 'clearCookies');
+        RegisteredNamedMethod.clearLocalData(setup.env.root);
+        expect(clearCookiesFunction).toHaveBeenCalled();
       });
     });
   });
