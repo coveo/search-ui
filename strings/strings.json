@@ -7499,5 +7499,9 @@
   "QuerySuggestPreview": {
     "en": "Query result item(s) for",
     "fr": "Résultat(s) de la requête pour"
+  },
+  "To": {
+    "en": "to",
+    "fr": "à"
   }
 }

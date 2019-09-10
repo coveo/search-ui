@@ -288,9 +288,7 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
     this.initQueryStateEvents();
     this.initBreadCrumbEvents();
     this.initComponentStateEvents();
-
-    this.values = new DynamicFacetValues(this);
-
+    this.initValues();
     this.verifyCollapsingConfiguration();
     this.isCollapsed = this.options.enableCollapse && this.options.collapsedByDefault;
 
@@ -377,7 +375,9 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
   public toggleSelectValue(value: string) {
     Assert.exists(value);
     this.ensureDom();
-    this.logger.info('Toggle select facet value', this.values.get(value).toggleSelect());
+    const facetValue = this.values.get(value);
+    facetValue.toggleSelect();
+    this.logger.info('Toggle select facet value', facetValue);
     this.handleFacetValuesChanged();
   }
 
@@ -552,12 +552,16 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
     }
   }
 
+  protected initValues() {
+    this.values = new DynamicFacetValues(this);
+  }
+
   private initComponentStateEvents() {
     const componentStateId = QueryStateModel.getFacetId(this.options.id);
     this.componentStateModel.registerComponent(componentStateId, this);
   }
 
-  private initDynamicFacetQueryController() {
+  protected initDynamicFacetQueryController() {
     this.dynamicFacetQueryController = new DynamicFacetQueryController(this);
   }
 
@@ -613,8 +617,10 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
 
   private handleQueryStateChangedIncluded = (querySelectedValues: string[]) => {
     const currentSelectedValues = this.values.selectedValues;
-    const valuesToSelect = difference(querySelectedValues, currentSelectedValues);
-    const valuesToDeselect = difference(currentSelectedValues, querySelectedValues);
+    const validQuerySelectedValues = querySelectedValues.filter(value => this.values.get(value));
+
+    const valuesToSelect = difference(validQuerySelectedValues, currentSelectedValues);
+    const valuesToDeselect = difference(currentSelectedValues, validQuerySelectedValues);
 
     if (Utils.isNonEmptyArray(valuesToSelect)) {
       this.selectMultipleValues(valuesToSelect);

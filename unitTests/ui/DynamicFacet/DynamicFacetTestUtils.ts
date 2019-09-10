@@ -4,6 +4,7 @@ import { IDynamicFacetValue } from '../../../src/ui/DynamicFacet/DynamicFacetVal
 import { FacetValueState } from '../../../src/rest/Facet/FacetValueState';
 import * as Mock from '../../MockEnvironment';
 import { IFacetResponse } from '../../../src/rest/Facet/FacetResponse';
+import { DynamicFacetValues } from '../../../src/ui/DynamicFacet/DynamicFacetValues/DynamicFacetValues';
 
 export class DynamicFacetTestUtils {
   static allOptions(options?: IDynamicFacetOptions) {
@@ -16,6 +17,7 @@ export class DynamicFacetTestUtils {
   static createFakeFacet(options?: IDynamicFacetOptions) {
     const facet = Mock.mockComponent<DynamicFacet>(DynamicFacet);
     facet.options = this.allOptions(options);
+    facet.values = new DynamicFacetValues(facet);
     facet.element = $$('div').el;
     facet.searchInterface = Mock.mockSearchInterface();
 
