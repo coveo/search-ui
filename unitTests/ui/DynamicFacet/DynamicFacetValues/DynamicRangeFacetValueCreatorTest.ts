@@ -5,6 +5,7 @@ import { IFacetResponseValue } from '../../../../src/rest/Facet/FacetResponse';
 import { DynamicFacetValue } from '../../../../src/ui/DynamicFacet/DynamicFacetValues/DynamicFacetValue';
 import { FacetValueState } from '../../../../src/rest/Facet/FacetValueState';
 import { RangeEndScope, IRangeValue } from '../../../../src/rest/RangeValue';
+import { DynamicRangeFacetValueUtils } from '../../../../src/ui/DynamicFacet/DynamicFacetValues/DynamicRangeFacetValueUtils';
 
 export function DynamicRangeFacetValueCreatorTest() {
   describe('DynamicRangeFacetValueCreator', () => {
@@ -48,18 +49,7 @@ export function DynamicRangeFacetValueCreatorTest() {
         expect(facetValue.state).toBe(responseValue.state);
         expect(facetValue.position).toBe(index + 1);
         expect(facetValue.numberOfResults).toBe(responseValue.numberOfResults);
-      });
-
-      it(`when the endInclusive is true
-      should format the value from the range properly`, () => {
-        expect(facetValue.value).toBe(`${responseValue.start}..${responseValue.end}${RangeEndScope.Inclusive}`);
-      });
-
-      it(`when the endInclusive is false
-      should format the value from the range properly`, () => {
-        responseValue.endInclusive = false;
-        initializeValue();
-        expect(facetValue.value).toBe(`${responseValue.start}..${responseValue.end}${RangeEndScope.Exclusive}`);
+        expect(facetValue.value).toBe(DynamicRangeFacetValueUtils.valueFromRange(responseValue));
       });
 
       it('should have the formated displayValue from the value by default', () => {
@@ -99,18 +89,7 @@ export function DynamicRangeFacetValueCreatorTest() {
         expect(facetValue.state).toBe(FacetValueState.idle);
         expect(facetValue.position).toBe(index + 1);
         expect(facetValue.numberOfResults).toBe(0);
-      });
-
-      it(`when the endInclusive is false
-      should format the value from the range properly`, () => {
-        expect(facetValue.value).toBe(`${facetValue.start}..${facetValue.end}${RangeEndScope.Exclusive}`);
-      });
-
-      it(`when the endInclusive is true
-      should format the value from the range properly`, () => {
-        rangeValue.endInclusive = true;
-        initializeValue();
-        expect(facetValue.value).toBe(`${facetValue.start}..${facetValue.end}${RangeEndScope.Inclusive}`);
+        expect(facetValue.value).toBe(DynamicRangeFacetValueUtils.valueFromRange(rangeValue));
       });
 
       it(`when there is no label 
@@ -140,38 +119,15 @@ export function DynamicRangeFacetValueCreatorTest() {
       }
 
       it('should throw on a invalid format', () => {
-        expect(() => valueCreator.createFromValue('allo')).toThrowError();
-        expect(() => valueCreator.createFromValue('1..1000')).toThrowError();
+        expect(() => valueCreator.createFromValue(null)).toThrowError();
       });
 
-      it('should extract the start correctly when it is a integer', () => {
-        expect(facetValue.start).toBe(10);
+      it('should return null on a invalid format', () => {
+        expect(valueCreator.createFromValue(null)).toBeNull();
       });
 
-      it('should extract the start correctly when it is a double', () => {
-        value = `10.5..20${RangeEndScope.Inclusive}`;
-        initializeValue();
-        expect(facetValue.start).toBe(10.5);
-      });
-
-      it('should extract the end correctly when it is a integer', () => {
-        expect(facetValue.end).toBe(20);
-      });
-
-      it('should extract the end correctly when it is a double', () => {
-        value = `10..20.1${RangeEndScope.Inclusive}`;
-        initializeValue();
-        expect(facetValue.end).toBe(20.1);
-      });
-
-      it('should extract the endInclusive correctly "Inclusive"', () => {
-        expect(facetValue.endInclusive).toBe(true);
-      });
-
-      it('should extract the endInclusive correctly "Exclusive"', () => {
-        value = `10..20${RangeEndScope.Exclusive}`;
-        initializeValue();
-        expect(facetValue.endInclusive).toBe(false);
+      it('should have the right position', () => {
+        expect(facetValue.position).toBe(1);
       });
     });
   });
