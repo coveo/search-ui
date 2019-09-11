@@ -1,14 +1,14 @@
 import * as Mock from '../../MockEnvironment';
-import { DynamicRangeFacet, IDynamicRangeFacetOptions, DynamicRangeFacetValueFormat } from '../../../src/ui/DynamicFacet/DynamicRangeFacet';
-import { DynamicRangeFacetTestUtils } from './DynamicRangeFacetTestUtils';
+import { DynamicFacetRange, IDynamicFacetRangeOptions, DynamicFacetRangeValueFormat } from '../../../src/ui/DynamicFacet/DynamicFacetRange';
+import { DynamicFacetRangeTestUtils } from './DynamicFacetRangeTestUtils';
 import { FacetType } from '../../../src/rest/Facet/FacetRequest';
 import { QueryStateModel } from '../../../src/Core';
 import { RangeEndScope } from '../../../src/rest/RangeValue';
 
-export function DynamicRangeFacetTest() {
-  describe('DynamicRangeFacet', () => {
-    let test: Mock.IBasicComponentSetup<DynamicRangeFacet>;
-    let options: IDynamicRangeFacetOptions;
+export function DynamicFacetRangeTest() {
+  describe('DynamicFacetRange', () => {
+    let test: Mock.IBasicComponentSetup<DynamicFacetRange>;
+    let options: IDynamicFacetRangeOptions;
 
     beforeEach(() => {
       options = { field: '@field', ranges: [] };
@@ -16,7 +16,7 @@ export function DynamicRangeFacetTest() {
     });
 
     function initializeComponent() {
-      test = DynamicRangeFacetTestUtils.createAdvancedFakeFacet(options);
+      test = DynamicFacetRangeTestUtils.createAdvancedFakeFacet(options);
       spyOn(test.cmp.logger, 'error');
       spyOn(test.cmp.logger, 'warn');
     }
@@ -48,14 +48,14 @@ export function DynamicRangeFacetTest() {
 
     it(`when the ranges option is defined
       should have the right number of values`, () => {
-      options.ranges = DynamicRangeFacetTestUtils.createFakeRanges();
+      options.ranges = DynamicFacetRangeTestUtils.createFakeRanges();
       initializeComponent();
       expect(test.cmp.values.allFacetValues.length).toBe(options.ranges.length);
     });
 
     it(`when the valueFormat is date
       the facetType should be dateRange`, () => {
-      options.valueFormat = DynamicRangeFacetValueFormat.date;
+      options.valueFormat = DynamicFacetRangeValueFormat.date;
       initializeComponent();
       expect(test.cmp.facetType).toBe(FacetType.dateRange);
     });

@@ -1,9 +1,9 @@
 import { DynamicFacetQueryController } from './DynamicFacetQueryController';
 import { IFacetRequest, IFacetRequestValue } from '../rest/Facet/FacetRequest';
-import { DynamicRangeFacet } from '../ui/DynamicFacet/DynamicRangeFacet';
+import { DynamicFacetRange } from '../ui/DynamicFacet/DynamicFacetRange';
 
-export class DynamicRangeFacetQueryController extends DynamicFacetQueryController {
-  protected facet: DynamicRangeFacet;
+export class DynamicFacetRangeQueryController extends DynamicFacetQueryController {
+  protected facet: DynamicFacetRange;
 
   private get hasValues() {
     return !this.facet.values.isEmpty;

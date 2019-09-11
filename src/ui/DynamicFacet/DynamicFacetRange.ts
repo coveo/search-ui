@@ -8,14 +8,14 @@ import { l } from '../../strings/Strings';
 import { FacetType } from '../../rest/Facet/FacetRequest';
 import { IRangeValue } from '../../rest/RangeValue';
 import { DynamicFacetValues } from './DynamicFacetValues/DynamicFacetValues';
-import { DynamicRangeFacetValueCreator } from './DynamicFacetValues/DynamicRangeFacetValueCreator';
-import { DynamicRangeFacetQueryController } from '../../controllers/DynamicRangeFacetQueryController';
+import { DynamicFacetRangeValueCreator } from './DynamicFacetValues/DynamicFacetRangeValueCreator';
+import { DynamicFacetRangeQueryController } from '../../controllers/DynamicFacetRangeQueryController';
 
 /**
- * The allowed values for the [`valueFormat`]{@link DynamicRangeFacet.options.valueFormat} option
- * of the [`DynamicRangeFacet`]{@link DynamicRangeFacet} component.
+ * The allowed values for the [`valueFormat`]{@link DynamicFacetRange.options.valueFormat} option
+ * of the [`DynamicFacetRange`]{@link DynamicFacetRange} component.
  */
-export enum DynamicRangeFacetValueFormat {
+export enum DynamicFacetRangeValueFormat {
   /**
    * Format range values as localized numeric strings.
    */
@@ -26,14 +26,14 @@ export enum DynamicRangeFacetValueFormat {
   date = 'date'
 }
 
-export interface IDynamicRangeFacetOptions extends IDynamicFacetOptions {
+export interface IDynamicFacetRangeOptions extends IDynamicFacetOptions {
   valueSeparator?: string;
-  valueFormat?: DynamicRangeFacetValueFormat;
+  valueFormat?: DynamicFacetRangeValueFormat;
   ranges?: IRangeValue[];
 }
 
 /**
- * A `DynamicRangeFacet` is a [facet](https://docs.coveo.com/en/198/) whose values are expressed as ranges.
+ * A `DynamicFacetRange` is a [facet](https://docs.coveo.com/en/198/) whose values are expressed as ranges.
  *
  * You must set the [`field`]{@link DynamicFacet.options.field} option to a value targeting a numeric or date [field](https://docs.coveo.com/en/200/)
  * in your index for this component to work.
@@ -47,12 +47,12 @@ export interface IDynamicRangeFacetOptions extends IDynamicFacetOptions {
  *
  *  @notSupportedIn salesforcefree
  */
-export class DynamicRangeFacet extends DynamicFacet implements IComponentBindings {
-  static ID = 'DynamicRangeFacet';
+export class DynamicFacetRange extends DynamicFacet implements IComponentBindings {
+  static ID = 'DynamicFacetRange';
   static parent = DynamicFacet;
-  static doExport = () => exportGlobally({ DynamicRangeFacet });
+  static doExport = () => exportGlobally({ DynamicFacetRange });
 
-  static options: IDynamicRangeFacetOptions = {
+  static options: IDynamicFacetRangeOptions = {
     /**
      * The label to insert between the minimum and maximum value of each range displayed in the facet.
      *
@@ -66,11 +66,11 @@ export class DynamicRangeFacet extends DynamicFacet implements IComponentBinding
     /**
      * The string format to apply to the minimum and maximum value of each range displayed in the facet.
      *
-     * **Default:** [`number`]{@link DynamicRangeFacetValueFormat.number}
+     * **Default:** [`number`]{@link DynamicFacetRangeValueFormat.number}
      *
      * @examples date
      */
-    valueFormat: ComponentOptions.buildStringOption({ defaultValue: DynamicRangeFacetValueFormat.number, section: 'CommonOptions' }),
+    valueFormat: ComponentOptions.buildStringOption({ defaultValue: DynamicFacetRangeValueFormat.number, section: 'CommonOptions' }),
     /**
      * The list of [range values]{@link IRangeValue} to request (see [Requesting Specific FacetRange Values](https://docs.coveo.com/en/2790/)).
      *
@@ -80,20 +80,20 @@ export class DynamicRangeFacet extends DynamicFacet implements IComponentBinding
   };
 
   /**
-   * Creates a new `DynamicRangeFacet` instance.
+   * Creates a new `DynamicFacetRange` instance.
    *
    * @param element The element from which to instantiate the component.
    * @param options The component options.
    * @param bindings The component bindings. Automatically resolved by default.
    */
-  constructor(public element: HTMLElement, public options: IDynamicRangeFacetOptions, bindings?: IComponentBindings) {
-    super(element, ComponentOptions.initComponentOptions(element, DynamicRangeFacet, options), bindings, DynamicRangeFacet.ID);
+  constructor(public element: HTMLElement, public options: IDynamicFacetRangeOptions, bindings?: IComponentBindings) {
+    super(element, ComponentOptions.initComponentOptions(element, DynamicFacetRange, options), bindings, DynamicFacetRange.ID);
 
     this.disableUnavailableOptions();
   }
 
   protected initValues() {
-    this.values = new DynamicFacetValues(this, DynamicRangeFacetValueCreator);
+    this.values = new DynamicFacetValues(this, DynamicFacetRangeValueCreator);
 
     if (this.options.ranges) {
       this.values.createFromRanges(this.options.ranges);
@@ -101,7 +101,7 @@ export class DynamicRangeFacet extends DynamicFacet implements IComponentBinding
   }
 
   protected initDynamicFacetQueryController() {
-    this.dynamicFacetQueryController = new DynamicRangeFacetQueryController(this);
+    this.dynamicFacetQueryController = new DynamicFacetRangeQueryController(this);
   }
 
   private disableUnavailableOptions() {
@@ -112,7 +112,7 @@ export class DynamicRangeFacet extends DynamicFacet implements IComponentBinding
   }
 
   public get facetType(): FacetType {
-    if (this.options.valueFormat === DynamicRangeFacetValueFormat.date) {
+    if (this.options.valueFormat === DynamicFacetRangeValueFormat.date) {
       return FacetType.dateRange;
     }
 
@@ -120,17 +120,17 @@ export class DynamicRangeFacet extends DynamicFacet implements IComponentBinding
   }
 
   public showMoreValues() {
-    this.logger.warn('The "showMoreValues" method is not available on the "DynamicRangeFacet" component');
+    this.logger.warn('The "showMoreValues" method is not available on the "DynamicFacetRange" component');
   }
 
   public showLessValues() {
-    this.logger.warn('The "showLessValues" method is not available on the "DynamicRangeFacet" component');
+    this.logger.warn('The "showLessValues" method is not available on the "DynamicFacetRange" component');
   }
 
   public async triggerNewIsolatedQuery() {
-    this.logger.warn('The "triggerNewIsolatedQuery" method is not available on the "DynamicRangeFacet" component');
+    this.logger.warn('The "triggerNewIsolatedQuery" method is not available on the "DynamicFacetRange" component');
   }
 }
 
-Initialization.registerAutoCreateComponent(DynamicRangeFacet);
-DynamicRangeFacet.doExport();
+Initialization.registerAutoCreateComponent(DynamicFacetRange);
+DynamicFacetRange.doExport();

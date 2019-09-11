@@ -1,13 +1,13 @@
-import { DynamicRangeFacet } from '../DynamicRangeFacet';
+import { DynamicFacetRange } from '../DynamicFacetRange';
 import { ValueCreator } from './DynamicFacetValues';
 import { IFacetResponseValue } from '../../../rest/Facet/FacetResponse';
 import { DynamicFacetValue } from './DynamicFacetValue';
 import { IRangeValue } from '../../../rest/RangeValue';
 import { FacetValueState } from '../../../rest/Facet/FacetValueState';
-import { DynamicRangeFacetValueUtils as RangeUtils } from './DynamicRangeFacetValueUtils';
+import { DynamicFacetRangeValueUtils as RangeUtils } from './DynamicFacetRangeValueUtils';
 
-export class DynamicRangeFacetValueCreator implements ValueCreator {
-  constructor(private facet: DynamicRangeFacet) {}
+export class DynamicFacetRangeValueCreator implements ValueCreator {
+  constructor(private facet: DynamicFacetRange) {}
 
   private get valueFormat() {
     return this.facet.options.valueFormat;

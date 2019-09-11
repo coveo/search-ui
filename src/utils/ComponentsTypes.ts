@@ -12,7 +12,7 @@ export class ComponentsTypes {
       'HierarchicalFacet',
       'CategoryFacet',
       'DynamicFacet',
-      'DynamicRangeFacet'
+      'DynamicFacetRange'
     ];
   }
 
