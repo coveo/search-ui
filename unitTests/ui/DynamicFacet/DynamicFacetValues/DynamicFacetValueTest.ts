@@ -1,7 +1,7 @@
 import * as Globalize from 'globalize';
 import { DynamicFacetValue } from '../../../../src/ui/DynamicFacet/DynamicFacetValues/DynamicFacetValue';
 import { DynamicFacetTestUtils } from '../DynamicFacetTestUtils';
-import { DynamicRangeFacetTestUtils } from '../DynamicRangeFacetTestUtils';
+import { DynamicFacetRangeTestUtils } from '../DynamicFacetRangeTestUtils';
 import { DynamicFacet, IDynamicFacetOptions } from '../../../../src/ui/DynamicFacet/DynamicFacet';
 import { FacetValueState } from '../../../../src/rest/Facet/FacetValueState';
 import { analyticsActionCauseList } from '../../../../src/ui/Analytics/AnalyticsActionListMeta';
@@ -98,8 +98,8 @@ export function DynamicFacetValueTest() {
     });
 
     it(`should return the correct analyticsMeta for a range value`, () => {
-      const rangeFacet = DynamicRangeFacetTestUtils.createFakeFacet();
-      rangeFacet.values.createFromRanges(DynamicRangeFacetTestUtils.createFakeRanges());
+      const rangeFacet = DynamicFacetRangeTestUtils.createFakeFacet();
+      rangeFacet.values.createFromRanges(DynamicFacetRangeTestUtils.createFakeRanges());
       dynamicFacetValue = rangeFacet.values.allFacetValues[0];
 
       expect(dynamicFacetValue.analyticsMeta).toEqual({

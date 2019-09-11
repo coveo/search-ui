@@ -1,13 +1,13 @@
-import { DynamicRangeFacetQueryController } from '../../src/controllers/DynamicRangeFacetQueryController';
-import { DynamicRangeFacetTestUtils } from '../ui/DynamicFacet/DynamicRangeFacetTestUtils';
-import { DynamicRangeFacet, IDynamicRangeFacetOptions } from '../../src/ui/DynamicFacet/DynamicRangeFacet';
+import { DynamicFacetRangeQueryController } from '../../src/controllers/DynamicFacetRangeQueryController';
+import { DynamicFacetRangeTestUtils } from '../ui/DynamicFacet/DynamicFacetRangeTestUtils';
+import { DynamicFacetRange, IDynamicFacetRangeOptions } from '../../src/ui/DynamicFacet/DynamicFacetRange';
 
-export function DynamicRangeFacetQueryControllerTest() {
-  describe('DynamicRangeFacetQueryController', () => {
-    let facet: DynamicRangeFacet;
-    let facetOptions: IDynamicRangeFacetOptions;
-    let dynamicRangeFacetQueryController: DynamicRangeFacetQueryController;
-    let ranges = DynamicRangeFacetTestUtils.createFakeRanges();
+export function DynamicFacetRangeQueryControllerTest() {
+  describe('DynamicFacetRangeQueryController', () => {
+    let facet: DynamicFacetRange;
+    let facetOptions: IDynamicFacetRangeOptions;
+    let dynamicFacetRangeQueryController: DynamicFacetRangeQueryController;
+    let ranges = DynamicFacetRangeTestUtils.createFakeRanges();
 
     beforeEach(() => {
       facetOptions = { field: '@field', ranges };
@@ -16,12 +16,12 @@ export function DynamicRangeFacetQueryControllerTest() {
     });
 
     function initializeComponents() {
-      facet = DynamicRangeFacetTestUtils.createAdvancedFakeFacet(facetOptions).cmp;
-      dynamicRangeFacetQueryController = new DynamicRangeFacetQueryController(facet);
+      facet = DynamicFacetRangeTestUtils.createAdvancedFakeFacet(facetOptions).cmp;
+      dynamicFacetRangeQueryController = new DynamicFacetRangeQueryController(facet);
     }
 
     function facetRequest() {
-      return dynamicRangeFacetQueryController.facetRequest;
+      return dynamicFacetRangeQueryController.facetRequest;
     }
 
     function facetValues() {

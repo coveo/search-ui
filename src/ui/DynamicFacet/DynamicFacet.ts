@@ -177,7 +177,7 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
      * Whether to enable the **Show more** and **Show less** buttons in the facet.
      *
      * **Note:**
-     * > The [`DynamicRangeFacet`]{@link DynamicRangeFacet} component does not support this option.
+     * > The [`DynamicFacetRange`]{@link DynamicFacetRange} component does not support this option.
      *
      * **Default:** `true`
      */
@@ -187,7 +187,7 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
      * Whether to allow the end-user to search the facet values.
      *
      * **Note:**
-     * > The [`DynamicRangeFacet`]{@link DynamicRangeFacet} component does not support this option.
+     * > The [`DynamicFacetRange`]{@link DynamicFacetRange} component does not support this option.
      *
      * **Default:** `undefined`, and the following behavior applies:
      * - Will be enabled when more facet values are available from the server.
@@ -200,7 +200,7 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
      * See also the [enableFacetSearch]{@link DynamicFacet.options.enableFacetSearch} option.
      *
      * **Note:**
-     * > The [`DynamicRangeFacet`]{@link DynamicRangeFacet} component does not support this option.
+     * > The [`DynamicFacetRange`]{@link DynamicFacetRange} component does not support this option.
      *
      * **Default:** `true`
      */
@@ -250,7 +250,7 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
      * See [Normalizing Facet Value Captions](https://developers.coveo.com/x/jBsvAg).
      *
      * **Note:**
-     * > The [`DynamicRangeFacet`]{@link DynamicRangeFacet} component does not support this option.
+     * > The [`DynamicFacetRange`]{@link DynamicFacetRange} component does not support this option.
      */
     valueCaption: ComponentOptions.buildJsonOption<IStringMap<string>>()
   };

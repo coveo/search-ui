@@ -1,33 +1,33 @@
 import { IRangeValue } from '../../../src/rest/RangeValue';
 import * as Mock from '../../MockEnvironment';
-import { DynamicRangeFacet, IDynamicRangeFacetOptions, DynamicRangeFacetValueFormat } from '../../../src/ui/DynamicFacet/DynamicRangeFacet';
+import { DynamicFacetRange, IDynamicFacetRangeOptions, DynamicFacetRangeValueFormat } from '../../../src/ui/DynamicFacet/DynamicFacetRange';
 import { DynamicFacetValues } from '../../../src/ui/DynamicFacet/DynamicFacetValues/DynamicFacetValues';
-import { DynamicRangeFacetValueCreator } from '../../../src/ui/DynamicFacet/DynamicFacetValues/DynamicRangeFacetValueCreator';
+import { DynamicFacetRangeValueCreator } from '../../../src/ui/DynamicFacet/DynamicFacetValues/DynamicFacetRangeValueCreator';
 import { $$, Logger } from '../../../src/Core';
 
-export class DynamicRangeFacetTestUtils {
-  static allOptions(options?: IDynamicRangeFacetOptions) {
+export class DynamicFacetRangeTestUtils {
+  static allOptions(options?: IDynamicFacetRangeOptions) {
     return {
       field: '@dummy',
       valueSeparator: 'to',
-      valueFormat: DynamicRangeFacetValueFormat.number,
+      valueFormat: DynamicFacetRangeValueFormat.number,
       ...options
     };
   }
 
-  static createFakeFacet(options?: IDynamicRangeFacetOptions) {
-    const facet = Mock.mockComponent<DynamicRangeFacet>(DynamicRangeFacet);
+  static createFakeFacet(options?: IDynamicFacetRangeOptions) {
+    const facet = Mock.mockComponent<DynamicFacetRange>(DynamicFacetRange);
     facet.logger = Mock.mock(Logger);
     facet.options = this.allOptions(options);
-    facet.values = new DynamicFacetValues(facet, DynamicRangeFacetValueCreator);
+    facet.values = new DynamicFacetValues(facet, DynamicFacetRangeValueCreator);
     facet.element = $$('div').el;
     facet.searchInterface = Mock.mockSearchInterface();
 
     return facet;
   }
 
-  static createAdvancedFakeFacet(options?: IDynamicRangeFacetOptions, withQSM = true) {
-    return Mock.advancedComponentSetup<DynamicRangeFacet>(DynamicRangeFacet, <Mock.AdvancedComponentSetupOptions>{
+  static createAdvancedFakeFacet(options?: IDynamicFacetRangeOptions, withQSM = true) {
+    return Mock.advancedComponentSetup<DynamicFacetRange>(DynamicFacetRange, <Mock.AdvancedComponentSetupOptions>{
       modifyBuilder: builder => {
         return withQSM ? builder.withLiveQueryStateModel() : builder;
       },

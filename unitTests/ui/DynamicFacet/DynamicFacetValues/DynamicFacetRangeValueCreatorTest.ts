@@ -1,24 +1,24 @@
-import { DynamicRangeFacetValueCreator } from '../../../../src/ui/DynamicFacet/DynamicFacetValues/DynamicRangeFacetValueCreator';
-import { DynamicRangeFacet } from '../../../../src/ui/DynamicFacet/DynamicRangeFacet';
-import { DynamicRangeFacetTestUtils } from '../DynamicRangeFacetTestUtils';
+import { DynamicFacetRangeValueCreator } from '../../../../src/ui/DynamicFacet/DynamicFacetValues/DynamicFacetRangeValueCreator';
+import { DynamicFacetRange } from '../../../../src/ui/DynamicFacet/DynamicFacetRange';
+import { DynamicFacetRangeTestUtils } from '../DynamicFacetRangeTestUtils';
 import { IFacetResponseValue } from '../../../../src/rest/Facet/FacetResponse';
 import { DynamicFacetValue } from '../../../../src/ui/DynamicFacet/DynamicFacetValues/DynamicFacetValue';
 import { FacetValueState } from '../../../../src/rest/Facet/FacetValueState';
 import { RangeEndScope, IRangeValue } from '../../../../src/rest/RangeValue';
-import { DynamicRangeFacetValueUtils } from '../../../../src/ui/DynamicFacet/DynamicFacetValues/DynamicRangeFacetValueUtils';
+import { DynamicFacetRangeValueUtils } from '../../../../src/ui/DynamicFacet/DynamicFacetValues/DynamicFacetRangeValueUtils';
 
-export function DynamicRangeFacetValueCreatorTest() {
-  describe('DynamicRangeFacetValueCreator', () => {
-    let valueCreator: DynamicRangeFacetValueCreator;
-    let facet: DynamicRangeFacet;
+export function DynamicFacetRangeValueCreatorTest() {
+  describe('DynamicFacetRangeValueCreator', () => {
+    let valueCreator: DynamicFacetRangeValueCreator;
+    let facet: DynamicFacetRange;
 
     beforeEach(() => {
       initializeComponent();
     });
 
     function initializeComponent() {
-      facet = DynamicRangeFacetTestUtils.createFakeFacet();
-      valueCreator = new DynamicRangeFacetValueCreator(facet);
+      facet = DynamicFacetRangeTestUtils.createFakeFacet();
+      valueCreator = new DynamicFacetRangeValueCreator(facet);
     }
 
     describe('testing createFromResponse', () => {
@@ -49,7 +49,7 @@ export function DynamicRangeFacetValueCreatorTest() {
         expect(facetValue.state).toBe(responseValue.state);
         expect(facetValue.position).toBe(index + 1);
         expect(facetValue.numberOfResults).toBe(responseValue.numberOfResults);
-        expect(facetValue.value).toBe(DynamicRangeFacetValueUtils.valueFromRange(responseValue));
+        expect(facetValue.value).toBe(DynamicFacetRangeValueUtils.valueFromRange(responseValue));
       });
 
       it('should have the formated displayValue from the value by default', () => {
@@ -74,7 +74,7 @@ export function DynamicRangeFacetValueCreatorTest() {
 
       beforeEach(() => {
         index = 0;
-        rangeValue = DynamicRangeFacetTestUtils.createFakeRanges(1)[0];
+        rangeValue = DynamicFacetRangeTestUtils.createFakeRanges(1)[0];
         initializeValue();
       });
 
@@ -89,7 +89,7 @@ export function DynamicRangeFacetValueCreatorTest() {
         expect(facetValue.state).toBe(FacetValueState.idle);
         expect(facetValue.position).toBe(index + 1);
         expect(facetValue.numberOfResults).toBe(0);
-        expect(facetValue.value).toBe(DynamicRangeFacetValueUtils.valueFromRange(rangeValue));
+        expect(facetValue.value).toBe(DynamicFacetRangeValueUtils.valueFromRange(rangeValue));
       });
 
       it(`when there is no label 
