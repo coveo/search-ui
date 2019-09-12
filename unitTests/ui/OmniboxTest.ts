@@ -1,16 +1,15 @@
-import * as Mock from '../MockEnvironment';
-import { Omnibox } from '../../src/ui/Omnibox/Omnibox';
-import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
-import { IOmniboxOptions, IOmniboxSuggestion } from '../../src/ui/Omnibox/Omnibox';
-import { Simulate } from '../Simulate';
-import { $$ } from '../../src/utils/Dom';
-import { l } from '../../src/strings/Strings';
-import { InitializationEvents } from '../../src/events/InitializationEvents';
-import { IFieldDescription } from '../../src/rest/FieldDescription';
-import { Suggestion } from '../../src/magicbox/SuggestionsManager';
-import { KEYBOARD, OmniboxEvents, BreadcrumbEvents, QueryEvents } from '../../src/Core';
 import { IQueryOptions } from '../../src/controllers/QueryController';
+import { BreadcrumbEvents, KEYBOARD, OmniboxEvents, QueryEvents } from '../../src/Core';
+import { InitializationEvents } from '../../src/events/InitializationEvents';
+import { Suggestion } from '../../src/magicbox/SuggestionsManager';
+import { IFieldDescription } from '../../src/rest/FieldDescription';
+import { l } from '../../src/strings/Strings';
+import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
+import { IOmniboxOptions, IOmniboxSuggestion, Omnibox } from '../../src/ui/Omnibox/Omnibox';
 import { IOmniboxAnalytics } from '../../src/ui/Omnibox/OmniboxAnalytics';
+import { $$ } from '../../src/utils/Dom';
+import * as Mock from '../MockEnvironment';
+import { Simulate } from '../Simulate';
 import { initOmniboxAnalyticsMock } from './QuerySuggestPreviewTest';
 
 export function OmniboxTest() {
@@ -48,6 +47,34 @@ export function OmniboxTest() {
         })
       );
     }
+
+    describe('when the omnibox launches populateOmniboxSuggestions events', () => {
+      it('it triggers the event from the component element as well as root element if the omnibox is not a descendant of its root', async done => {
+        const fakeRoot = document.createElement('div');
+        test.cmp.root = fakeRoot;
+        const spy = jasmine.createSpy('spy');
+
+        $$(fakeRoot).on(OmniboxEvents.populateOmniboxSuggestions, spy);
+        $$(test.cmp.element).on(OmniboxEvents.populateOmniboxSuggestions, spy);
+
+        await test.cmp.magicBox.getSuggestions();
+        expect(spy).toHaveBeenCalledTimes(2);
+        done();
+      });
+
+      it('it triggers the event only once if the element is a descendant of its root', async done => {
+        const fakeRoot = document.createElement('div');
+        test.cmp.root = fakeRoot;
+        fakeRoot.appendChild(test.cmp.element);
+
+        const spy = jasmine.createSpy('spy');
+        $$(fakeRoot).on(OmniboxEvents.populateOmniboxSuggestions, spy);
+
+        await test.cmp.magicBox.getSuggestions();
+        expect(spy).toHaveBeenCalledTimes(1);
+        done();
+      });
+    });
 
     describe('on submit', () => {
       beforeEach(() => test.cmp.submit());
