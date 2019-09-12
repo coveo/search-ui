@@ -11,6 +11,9 @@ import { Utils } from '../../utils/Utils';
 import { ComponentOptions } from '../Base/ComponentOptions';
 import { Assert } from '../../misc/Assert';
 import { Initialization } from '../Base/Initialization';
+import { DynamicFacetRange } from '../DynamicFacet/DynamicFacetRange';
+
+export type AnyDynamicFacet = DynamicFacet | DynamicFacetRange;
 
 export interface IDynamicFacetManagerOptions {
   enableReorder?: boolean;
@@ -28,15 +31,15 @@ export interface IDynamicFacetManagerCompareFacet {
 }
 
 /**
- * The `DynamicFacetManager` component is meant to be a parent for multiple [DynamicFacet]{@link DynamicFacet} components.
- * It allows more control over the rendering and ordering of the children [DynamicFacet]{@link DynamicFacet} components.
+ * The `DynamicFacetManager` component is meant to be a parent for multiple [DynamicFacet]{@link DynamicFacet} & [DynamicFacetRange]{@link DynamicFacetRange} components.
+ * It allows more control over the rendering and ordering of the children [DynamicFacet]{@link DynamicFacet} & [DynamicFacetRange]{@link DynamicFacetRange} components.
  */
 export class DynamicFacetManager extends Component {
   static ID = 'DynamicFacetManager';
   static doExport = () => exportGlobally({ DynamicFacetManager });
 
   /**
-   * The options for the DynamicFacet
+   * The options for the DynamicFacetManager
    * @componentOptions
    */
   static options: IDynamicFacetManagerOptions = {
@@ -88,7 +91,7 @@ export class DynamicFacetManager extends Component {
     maximumNumberOfExpandedFacets: ComponentOptions.buildNumberOption({ defaultValue: 4, min: -1 })
   };
 
-  private childrenFacets: DynamicFacet[] = [];
+  private childrenFacets: AnyDynamicFacet[] = [];
   private containerElement: HTMLElement;
 
   private get enabledFacets() {
@@ -133,9 +136,15 @@ export class DynamicFacetManager extends Component {
     this.bind.onRootElement(QueryEvents.querySuccess, (data: IQuerySuccessEventArgs) => this.handleQuerySuccess(data));
   }
 
-  private handleAfterComponentsInitialization() {
+  private get anyDynamicFacets(): AnyDynamicFacet[] {
     const allDynamicFacets = this.bindings.searchInterface.getComponents<DynamicFacet>('DynamicFacet');
-    this.childrenFacets = allDynamicFacets.filter(dynamicFacet => this.element.contains(dynamicFacet.element));
+    const allDynamicFacetRanges = this.bindings.searchInterface.getComponents<DynamicFacetRange>('DynamicFacetRange');
+
+    return [...allDynamicFacets, ...allDynamicFacetRanges];
+  }
+
+  private handleAfterComponentsInitialization() {
+    this.childrenFacets = this.anyDynamicFacets.filter(dynamicFacet => this.element.contains(dynamicFacet.element));
     this.childrenFacets.forEach(dynamicFacet => (dynamicFacet.dynamicFacetManager = this));
 
     if (!this.childrenFacets.length) {
