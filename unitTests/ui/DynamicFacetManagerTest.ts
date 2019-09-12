@@ -81,7 +81,7 @@ export function DynamicFacetManagerTest() {
       expect(test.cmp.disabled).toBe(true);
     });
 
-    it('should disable the component if a query response has no facets parameter', () => {
+    it('should disable the component if a query response has no "facets" parameter', () => {
       triggerAfterComponentsInitialization();
       test.cmp.enable();
       Simulate.query(test.env, {
@@ -96,33 +96,23 @@ export function DynamicFacetManagerTest() {
       expect(managerContainerChildren()[2]).toBe(facets[2].element);
     });
 
-    it('should not disable the component if a query response has no facets parameter', () => {
+    it('should not disable the component if a query response has a "facets" parameter', () => {
       triggerAfterComponentsInitialization();
       expect(test.cmp.disabled).toBe(false);
     });
 
     it(`when a facet is disabled
     should not be sent in the request`, () => {
-      facets[0].disable();
+      const facetIndex = 0;
+      facets[facetIndex].disable();
       const queryBuilder = new QueryBuilder();
       triggerAfterComponentsInitialization();
       $$(test.env.root).trigger(QueryEvents.doneBuildingQuery, {
         queryBuilder
       });
 
-      const facetIsInRequest = !!findWhere(queryBuilder.facetRequests, { facetId: facets[0].options.id });
+      const facetIsInRequest = !!findWhere(queryBuilder.facetRequests, { facetId: facets[facetIndex].options.id });
       expect(facetIsInRequest).toBe(false);
-    });
-
-    it(`when a facet has no values
-    should not be appended in the manager container`, () => {
-      triggerAfterComponentsInitialization();
-      const modifiedQueryResponse = queryFacetsResponse();
-      modifiedQueryResponse[0].values = [];
-
-      triggerQuerySuccess(modifiedQueryResponse);
-      expect(managerContainerChildren().length).toBe(facets.length - 1);
-      expect(managerContainerChildren()[0]).not.toBe(facets[1].element);
     });
 
     it('should reorder the facets in the DOM according to order of the query results', () => {
