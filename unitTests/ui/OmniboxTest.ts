@@ -76,6 +76,32 @@ export function OmniboxTest() {
       });
     });
 
+    describe('when the omnibox launches omniboxPreprocessResultForQuery events', () => {
+      it('it triggers the event from the component element as well as root element if the omnibox is not a descendant of its root', () => {
+        const fakeRoot = document.createElement('div');
+        test.cmp.root = fakeRoot;
+        const spy = jasmine.createSpy('spy');
+
+        $$(fakeRoot).on(OmniboxEvents.omniboxPreprocessResultForQuery, spy);
+        $$(test.cmp.element).on(OmniboxEvents.omniboxPreprocessResultForQuery, spy);
+
+        Simulate.query(test.env);
+        expect(spy).toHaveBeenCalledTimes(2);
+      });
+
+      it('it triggers the event only once if the element is a descendant of its root', () => {
+        const fakeRoot = document.createElement('div');
+        test.cmp.root = fakeRoot;
+        fakeRoot.appendChild(test.cmp.element);
+
+        const spy = jasmine.createSpy('spy');
+        $$(fakeRoot).on(OmniboxEvents.omniboxPreprocessResultForQuery, spy);
+
+        Simulate.query(test.env);
+        expect(spy).toHaveBeenCalledTimes(1);
+      });
+    });
+
     describe('on submit', () => {
       beforeEach(() => test.cmp.submit());
 

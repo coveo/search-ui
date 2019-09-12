@@ -710,9 +710,17 @@ export class Omnibox extends Component {
       }
     }
 
-    this.bind.trigger(this.root, OmniboxEvents.omniboxPreprocessResultForQuery, preprocessResultForQueryArgs);
+    this.triggerOmniboxPreprocessResultForQuery(preprocessResultForQueryArgs);
     const query = preprocessResultForQueryArgs.result.toString();
     new QueryboxQueryParameters(this.options).addParameters(data.queryBuilder, query);
+  }
+
+  private triggerOmniboxPreprocessResultForQuery(args: IOmniboxPreprocessResultForQueryEventArgs) {
+    this.bind.trigger(this.element, OmniboxEvents.omniboxPreprocessResultForQuery, args);
+
+    if (!$$(this.element).isDescendant(this.root)) {
+      this.bind.trigger(this.root, OmniboxEvents.omniboxPreprocessResultForQuery, args);
+    }
   }
 
   private handleNewQuery(data: INewQueryEventArgs) {
