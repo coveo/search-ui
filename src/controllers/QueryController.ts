@@ -1,4 +1,5 @@
 import { history } from 'coveo.analytics';
+import { NullStorage } from 'coveo.analytics/dist/storage';
 import * as _ from 'underscore';
 import {
   IBuildingCallOptionsEventArgs,
@@ -30,7 +31,6 @@ import { LocalStorageUtils } from '../utils/LocalStorageUtils';
 import { QueryUtils } from '../utils/QueryUtils';
 import { UrlUtils } from '../utils/UrlUtils';
 import { Utils } from '../utils/Utils';
-import { NullStorage } from 'coveo.analytics/dist/storage';
 
 /**
  * Possible options when performing a query with the query controller

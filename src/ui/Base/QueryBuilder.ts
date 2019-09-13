@@ -1,13 +1,13 @@
-import { ExpressionBuilder } from './ExpressionBuilder';
-import { IRankingFunction } from '../../rest/RankingFunction';
-import { IQueryFunction } from '../../rest/QueryFunction';
-import { IGroupByRequest } from '../../rest/GroupByRequest';
-import { IQuery, IFacetOptions, IUserActionsRequest } from '../../rest/Query';
-import { QueryBuilderExpression } from './QueryBuilderExpression';
 import * as _ from 'underscore';
-import { Utils } from '../../utils/Utils';
 import { ICategoryFacetRequest } from '../../rest/CategoryFacetRequest';
 import { IFacetRequest } from '../../rest/Facet/FacetRequest';
+import { IGroupByRequest } from '../../rest/GroupByRequest';
+import { IFacetOptions, IQuery, IUserActionsRequest } from '../../rest/Query';
+import { IQueryFunction } from '../../rest/QueryFunction';
+import { IRankingFunction } from '../../rest/RankingFunction';
+import { Utils } from '../../utils/Utils';
+import { ExpressionBuilder } from './ExpressionBuilder';
+import { QueryBuilderExpression } from './QueryBuilderExpression';
 
 /**
  * The QueryBuilder is used to build a {@link IQuery} that will be able to be executed using the Search API.
@@ -528,11 +528,19 @@ export class QueryBuilder {
     return this.groupByRequests;
   }
 
+  private set groupBy(groupBy: IGroupByRequest[]) {
+    this.groupByRequests = groupBy;
+  }
+
   private get facets() {
     if (Utils.isEmptyArray(this.facetRequests)) {
       return undefined;
     }
 
     return this.facetRequests;
+  }
+
+  private set facets(facets: IFacetRequest[]) {
+    this.facetRequests = facets;
   }
 }
