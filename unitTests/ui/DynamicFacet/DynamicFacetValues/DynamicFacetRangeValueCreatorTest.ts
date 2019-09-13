@@ -49,7 +49,7 @@ export function DynamicFacetRangeValueCreatorTest() {
         expect(facetValue.state).toBe(responseValue.state);
         expect(facetValue.position).toBe(index + 1);
         expect(facetValue.numberOfResults).toBe(responseValue.numberOfResults);
-        expect(facetValue.value).toBe(DynamicFacetRangeValueUtils.valueFromRange(responseValue));
+        expect(facetValue.value).toBe(DynamicFacetRangeValueUtils.createValueFromRange(responseValue));
       });
 
       it('should have the formated displayValue from the value by default', () => {
@@ -89,7 +89,7 @@ export function DynamicFacetRangeValueCreatorTest() {
         expect(facetValue.state).toBe(FacetValueState.idle);
         expect(facetValue.position).toBe(index + 1);
         expect(facetValue.numberOfResults).toBe(0);
-        expect(facetValue.value).toBe(DynamicFacetRangeValueUtils.valueFromRange(rangeValue));
+        expect(facetValue.value).toBe(DynamicFacetRangeValueUtils.createValueFromRange(rangeValue));
       });
 
       it(`when there is no label 

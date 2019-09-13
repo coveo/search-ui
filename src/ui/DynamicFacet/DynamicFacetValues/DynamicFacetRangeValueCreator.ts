@@ -14,7 +14,7 @@ export class DynamicFacetRangeValueCreator implements ValueCreator {
   }
 
   public createFromRange(unvalidatedRange: IRangeValue, index: number) {
-    const range = RangeUtils.validateRange(unvalidatedRange, this.valueFormat);
+    const range = RangeUtils.parseRange(unvalidatedRange, this.valueFormat);
     if (!range) {
       this.facet.logger.error(`Unvalid range for ${this.valueFormat} format`, unvalidatedRange);
       return null;
@@ -22,12 +22,12 @@ export class DynamicFacetRangeValueCreator implements ValueCreator {
 
     const displayValue = range.label
       ? range.label
-      : RangeUtils.formatRangeValue(range, this.valueFormat, this.facet.options.valueSeparator);
+      : RangeUtils.formatRangeDisplayValue(range, this.valueFormat, this.facet.options.valueSeparator);
 
     return new DynamicFacetValue(
       {
         displayValue,
-        value: RangeUtils.valueFromRange(range),
+        value: RangeUtils.createValueFromRange(range),
         start: range.start,
         end: range.end,
         endInclusive: !!range.endInclusive,
@@ -40,7 +40,7 @@ export class DynamicFacetRangeValueCreator implements ValueCreator {
   }
 
   public createFromResponse(responseValue: IFacetResponseValue, index: number) {
-    const value = RangeUtils.valueFromRange(responseValue);
+    const value = RangeUtils.createValueFromRange(responseValue);
     const { displayValue } = this.facet.values.get(value);
 
     return new DynamicFacetValue(
@@ -55,7 +55,7 @@ export class DynamicFacetRangeValueCreator implements ValueCreator {
   }
 
   public createFromValue(value: string) {
-    const range = RangeUtils.rangeFromValue(value, this.valueFormat);
+    const range = RangeUtils.createRangeFromValue(value, this.valueFormat);
     if (!range) {
       this.facet.logger.error('Facet range value invalid', value);
       return null;

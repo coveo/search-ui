@@ -6,20 +6,24 @@ import { isNull } from 'util';
 import { DateUtils } from '../../../utils/DateUtils';
 
 export class DynamicFacetRangeValueUtils {
-  public static formatValue(value: RangeType, valueFormat: DynamicFacetRangeValueFormat) {
+  public static formatDisplayValue(value: RangeType, valueFormat: DynamicFacetRangeValueFormat) {
     switch (valueFormat) {
       case DynamicFacetRangeValueFormat.number:
-        return this.formatNumberValue(<number>value);
+        return this.formatNumberDisplayValue(<number>value);
       case DynamicFacetRangeValueFormat.date:
-        return this.formatDateValue(value);
+        return this.formatDateDisplayValue(value);
       default:
         return `${value}`;
     }
   }
 
-  private static formatNumberValue(value: number): string {
+  private static formatNumberDisplayValue(value: number): string {
     const numberOfDecimals = NumberUtils.countDecimals(value);
     return Globalize.format(value, `n${numberOfDecimals}`);
+  }
+
+  private static formatDateDisplayValue(value: RangeType): string {
+    return DateUtils.dateToString(this.dateFromRangeTypeValue(value));
   }
 
   private static dateFromRangeTypeValue(value: RangeType) {
@@ -34,40 +38,36 @@ export class DynamicFacetRangeValueUtils {
     }
   }
 
-  private static formatDateValue(value: RangeType): string {
-    return DateUtils.dateToString(this.dateFromRangeTypeValue(value));
-  }
-
-  public static formatRangeValue(range: IRangeValue, valueFormat: DynamicFacetRangeValueFormat, valueSeparator: string) {
-    const formattedStart = this.formatValue(range.start, valueFormat);
-    const formattedEnd = this.formatValue(range.end, valueFormat);
+  public static formatRangeDisplayValue(range: IRangeValue, valueFormat: DynamicFacetRangeValueFormat, valueSeparator: string) {
+    const formattedStart = this.formatDisplayValue(range.start, valueFormat);
+    const formattedEnd = this.formatDisplayValue(range.end, valueFormat);
 
     return `${formattedStart} ${valueSeparator} ${formattedEnd}`;
   }
 
-  private static validateRangeValue(value: RangeType, valueFormat: DynamicFacetRangeValueFormat) {
+  private static parseRangeValue(value: RangeType, valueFormat: DynamicFacetRangeValueFormat) {
     switch (valueFormat) {
       case DynamicFacetRangeValueFormat.number:
-        return this.validateNumberValue(value);
+        return this.parseNumberValue(value);
       case DynamicFacetRangeValueFormat.date:
-        return this.validateDateValue(value);
+        return this.parseDateValue(value);
       default:
         return `${value}`;
     }
   }
 
-  private static validateNumberValue(value: RangeType) {
+  private static parseNumberValue(value: RangeType) {
     const number = parseFloat(`${value}`);
     return isNaN(number) ? null : number;
   }
 
-  private static validateDateValue(value: RangeType) {
+  private static parseDateValue(value: RangeType) {
     return DateUtils.dateTimeForQuery(this.dateFromRangeTypeValue(value));
   }
 
-  public static validateRange(unvalidatedRange: IRangeValue, valueFormat: DynamicFacetRangeValueFormat) {
-    const start = this.validateRangeValue(unvalidatedRange.start, valueFormat);
-    const end = this.validateRangeValue(unvalidatedRange.end, valueFormat);
+  public static parseRange(unvalidatedRange: IRangeValue, valueFormat: DynamicFacetRangeValueFormat) {
+    const start = this.parseRangeValue(unvalidatedRange.start, valueFormat);
+    const end = this.parseRangeValue(unvalidatedRange.end, valueFormat);
 
     if (isNull(start) || isNull(end)) {
       return null;
@@ -80,20 +80,20 @@ export class DynamicFacetRangeValueUtils {
     };
   }
 
-  public static valueFromRange(range: IRangeValue) {
+  public static createValueFromRange(range: IRangeValue) {
     const scope = range.endInclusive ? RangeEndScope.Inclusive : RangeEndScope.Exclusive;
     return `${range.start}..${range.end}${scope}`;
   }
 
-  public static rangeFromValue(value: string, valueFormat: DynamicFacetRangeValueFormat): IRangeValue {
+  public static createRangeFromValue(value: string, valueFormat: DynamicFacetRangeValueFormat): IRangeValue {
     const valueRegex = new RegExp(`^(.+)\\.\\.(.+)(${RangeEndScope.Inclusive}|${RangeEndScope.Exclusive})$`);
     const startAndEnd = valueRegex.exec(value);
     if (!startAndEnd) {
       return null;
     }
 
-    const start = this.validateRangeValue(startAndEnd[1], valueFormat);
-    const end = this.validateRangeValue(startAndEnd[2], valueFormat);
+    const start = this.parseRangeValue(startAndEnd[1], valueFormat);
+    const end = this.parseRangeValue(startAndEnd[2], valueFormat);
     if (isNull(start) || isNull(end)) {
       return null;
     }
