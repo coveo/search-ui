@@ -1,6 +1,6 @@
 import { $$ } from '../../src/utils/Dom';
 import * as Mock from '../MockEnvironment';
-import { DynamicFacetManager, IDynamicFacetManagerOptions, AnyDynamicFacet } from '../../src/ui/DynamicFacetManager/DynamicFacetManager';
+import { DynamicFacetManager, IDynamicFacetManagerOptions } from '../../src/ui/DynamicFacetManager/DynamicFacetManager';
 import { DynamicFacetTestUtils } from './DynamicFacet/DynamicFacetTestUtils';
 import { DynamicFacetRangeTestUtils } from './DynamicFacet/DynamicFacetRangeTestUtils';
 import { IFacetResponse } from '../../src/rest/Facet/FacetResponse';
@@ -10,12 +10,14 @@ import { findWhere } from 'underscore';
 import { QueryEvents, QueryBuilder } from '../../src/Core';
 import { FacetValueState } from '../../src/rest/Facet/FacetValueState';
 import { DynamicFacetRange } from '../../src/ui/DynamicFacet/DynamicFacetRange';
+import { DynamicFacet } from '../../src/ui/DynamicFacet/DynamicFacet';
+import { ComponentsTypes } from '../../src/utils/ComponentsTypes';
 
 export function DynamicFacetManagerTest() {
   describe('DynamicFacetManager', () => {
     let test: Mock.IBasicComponentSetup<DynamicFacetManager>;
     let options: IDynamicFacetManagerOptions;
-    let facets: AnyDynamicFacet[];
+    let facets: DynamicFacet[];
 
     beforeEach(() => {
       options = {};
@@ -44,7 +46,7 @@ export function DynamicFacetManagerTest() {
         }
       });
 
-      test.env.searchInterface.getComponents = () => facets as any[];
+      ComponentsTypes.getAllFacetsInstance = () => facets as any[];
     }
 
     function triggerAfterComponentsInitialization() {
@@ -81,7 +83,7 @@ export function DynamicFacetManagerTest() {
     }
 
     it('should disable the component if it contains no DynamicFacet child', () => {
-      test.env.searchInterface.getComponents = () => [];
+      ComponentsTypes.getAllFacetsInstance = () => [];
       triggerAfterComponentsInitialization();
       expect(test.cmp.disabled).toBe(true);
     });
