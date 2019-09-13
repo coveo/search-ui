@@ -1,15 +1,17 @@
+import * as Globalize from 'globalize';
 import { RangeType, IRangeValue, RangeEndScope } from '../../../rest/RangeValue';
 import { DynamicFacetRangeValueFormat } from '../DynamicFacetRange';
 import { NumberUtils } from '../../../utils/NumberUtils';
-import * as Globalize from 'globalize';
 import { isNull } from 'util';
+import { DateUtils } from '../../../utils/DateUtils';
 
 export class DynamicFacetRangeValueUtils {
   public static formatValue(value: RangeType, valueFormat: DynamicFacetRangeValueFormat) {
     switch (valueFormat) {
       case DynamicFacetRangeValueFormat.number:
         return this.formatNumberValue(<number>value);
-      // TODO: Manage more value formats
+      case DynamicFacetRangeValueFormat.date:
+        return this.formatDateValue(value);
       default:
         return `${value}`;
     }
@@ -18,6 +20,22 @@ export class DynamicFacetRangeValueUtils {
   private static formatNumberValue(value: number): string {
     const numberOfDecimals = NumberUtils.countDecimals(value);
     return Globalize.format(value, `n${numberOfDecimals}`);
+  }
+
+  private static dateFromRangeTypeValue(value: RangeType) {
+    switch (typeof value) {
+      case 'number':
+        const unixTimestamp = <number>value;
+        return new Date(unixTimestamp * 1000);
+      case 'string':
+        return new Date(`${value}`);
+      default:
+        return <Date>value;
+    }
+  }
+
+  private static formatDateValue(value: RangeType): string {
+    return DateUtils.dateToString(this.dateFromRangeTypeValue(value));
   }
 
   public static formatRangeValue(range: IRangeValue, valueFormat: DynamicFacetRangeValueFormat, valueSeparator: string) {
@@ -31,7 +49,8 @@ export class DynamicFacetRangeValueUtils {
     switch (valueFormat) {
       case DynamicFacetRangeValueFormat.number:
         return this.validateNumberValue(value);
-      // TODO: Manage more value formats
+      case DynamicFacetRangeValueFormat.date:
+        return this.validateDateValue(value);
       default:
         return `${value}`;
     }
@@ -40,6 +59,10 @@ export class DynamicFacetRangeValueUtils {
   private static validateNumberValue(value: RangeType) {
     const number = parseFloat(`${value}`);
     return isNaN(number) ? null : number;
+  }
+
+  private static validateDateValue(value: RangeType) {
+    return DateUtils.dateTimeForQuery(this.dateFromRangeTypeValue(value));
   }
 
   public static validateRange(unvalidatedRange: IRangeValue, valueFormat: DynamicFacetRangeValueFormat) {
