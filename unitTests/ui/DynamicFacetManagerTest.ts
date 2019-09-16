@@ -2,19 +2,23 @@ import { $$ } from '../../src/utils/Dom';
 import * as Mock from '../MockEnvironment';
 import { DynamicFacetManager, IDynamicFacetManagerOptions } from '../../src/ui/DynamicFacetManager/DynamicFacetManager';
 import { DynamicFacetTestUtils } from './DynamicFacet/DynamicFacetTestUtils';
+import { DynamicFacetRangeTestUtils } from './DynamicFacet/DynamicFacetRangeTestUtils';
 import { IFacetResponse } from '../../src/rest/Facet/FacetResponse';
-import { DynamicFacet } from '../../src/ui/DynamicFacet/DynamicFacet';
 import { Simulate } from '../Simulate';
 import { FakeResults } from '../Fake';
 import { findWhere } from 'underscore';
 import { QueryEvents, QueryBuilder } from '../../src/Core';
 import { FacetValueState } from '../../src/rest/Facet/FacetValueState';
+import { DynamicFacetRange } from '../../src/ui/DynamicFacet/DynamicFacetRange';
+import { DynamicFacet } from '../../src/ui/DynamicFacet/DynamicFacet';
+import { ComponentsTypes } from '../../src/utils/ComponentsTypes';
 
 export function DynamicFacetManagerTest() {
   describe('DynamicFacetManager', () => {
     let test: Mock.IBasicComponentSetup<DynamicFacetManager>;
     let options: IDynamicFacetManagerOptions;
     let facets: DynamicFacet[];
+    const getAllFacetsInstance = ComponentsTypes.getAllFacetsInstance;
 
     beforeEach(() => {
       options = {};
@@ -22,11 +26,19 @@ export function DynamicFacetManagerTest() {
       initializeManager();
     });
 
+    afterAll(() => {
+      ComponentsTypes.getAllFacetsInstance = getAllFacetsInstance;
+    });
+
     function initializeFacets() {
       facets = [
-        DynamicFacetTestUtils.createAdvancedFakeFacet({ field: '@field1', numberOfValues: 10 }).cmp,
+        DynamicFacetTestUtils.createAdvancedFakeFacet({ field: '@field1', numberOfValues: 100 }).cmp,
         DynamicFacetTestUtils.createAdvancedFakeFacet({ field: '@field2', numberOfValues: 5 }).cmp,
-        DynamicFacetTestUtils.createAdvancedFakeFacet({ field: '@field3', numberOfValues: 100 }).cmp
+        DynamicFacetRangeTestUtils.createAdvancedFakeFacet({
+          field: '@field3',
+          numberOfValues: 100,
+          ranges: DynamicFacetRangeTestUtils.createFakeRanges(100)
+        }).cmp
       ];
     }
 
@@ -39,7 +51,7 @@ export function DynamicFacetManagerTest() {
         }
       });
 
-      test.env.searchInterface.getComponents = () => facets as any[];
+      ComponentsTypes.getAllFacetsInstance = () => facets as any[];
     }
 
     function triggerAfterComponentsInitialization() {
@@ -70,13 +82,13 @@ export function DynamicFacetManagerTest() {
     function queryFacetsResponse(): IFacetResponse[] {
       return [
         DynamicFacetTestUtils.getCompleteFacetResponse(facets[1]),
-        DynamicFacetTestUtils.getCompleteFacetResponse(facets[2]),
+        DynamicFacetRangeTestUtils.getCompleteFacetResponse(<DynamicFacetRange>facets[2]),
         DynamicFacetTestUtils.getCompleteFacetResponse(facets[0])
       ];
     }
 
     it('should disable the component if it contains no DynamicFacet child', () => {
-      test.env.searchInterface.getComponents = () => [];
+      ComponentsTypes.getAllFacetsInstance = () => [];
       triggerAfterComponentsInitialization();
       expect(test.cmp.disabled).toBe(true);
     });
