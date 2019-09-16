@@ -88,7 +88,7 @@ export function DynamicFacetManagerTest() {
       expect(test.cmp.disabled).toBe(true);
     });
 
-    it('should disable the component if a query response has no facets parameter', () => {
+    it('should disable the component if a query response has no "facets" parameter', () => {
       triggerAfterComponentsInitialization();
       test.cmp.enable();
       Simulate.query(test.env, {
@@ -103,33 +103,23 @@ export function DynamicFacetManagerTest() {
       expect(managerContainerChildren()[2]).toBe(facets[2].element);
     });
 
-    it('should not disable the component if a query response has no facets parameter', () => {
+    it('should not disable the component if a query response has a "facets" parameter', () => {
       triggerAfterComponentsInitialization();
       expect(test.cmp.disabled).toBe(false);
     });
 
     it(`when a facet is disabled
     should not be sent in the request`, () => {
-      facets[0].disable();
+      const facetIndex = 0;
+      facets[facetIndex].disable();
       const queryBuilder = new QueryBuilder();
       triggerAfterComponentsInitialization();
       $$(test.env.root).trigger(QueryEvents.doneBuildingQuery, {
         queryBuilder
       });
 
-      const facetIsInRequest = !!findWhere(queryBuilder.facetRequests, { facetId: facets[0].options.id });
+      const facetIsInRequest = !!findWhere(queryBuilder.facetRequests, { facetId: facets[facetIndex].options.id });
       expect(facetIsInRequest).toBe(false);
-    });
-
-    it(`when a facet has no values
-    should not be appended in the manager container`, () => {
-      triggerAfterComponentsInitialization();
-      const modifiedQueryResponse = queryFacetsResponse();
-      modifiedQueryResponse[0].values = [];
-
-      triggerQuerySuccess(modifiedQueryResponse);
-      expect(managerContainerChildren().length).toBe(facets.length - 1);
-      expect(managerContainerChildren()[0]).not.toBe(facets[1].element);
     });
 
     it('should reorder the facets in the DOM according to order of the query results', () => {
@@ -187,7 +177,7 @@ export function DynamicFacetManagerTest() {
       function initializeManyFacets(numberOfFacets = 10) {
         facets = [];
         for (let index = 0; index < numberOfFacets; index++) {
-          facets.push(DynamicFacetTestUtils.createAdvancedFakeFacet({ field: `field${index}` }).cmp);
+          facets.push(DynamicFacetTestUtils.createAdvancedFakeFacet({ field: `@field${index}` }).cmp);
         }
       }
 
@@ -206,23 +196,28 @@ export function DynamicFacetManagerTest() {
         return facets.filter(facet => facet.isCollapsed);
       }
 
+      function hiddenFacets() {
+        return facets.filter(facet => !facet.isCurrentlyDisplayed());
+      }
+
+      beforeEach(() => {
+        initializeManyFacets();
+      });
+
       it(`when "maximumNumberOfExpandedFacets" is -1
       should not collapse any facets`, () => {
-        initializeManyFacets();
         initForMaximumNumberOfExpandedFacets(-1);
         expect(collapsedFacets().length).toBe(0);
       });
 
       it(`when "maximumNumberOfExpandedFacets" is 0
       should collapse all facets`, () => {
-        initializeManyFacets();
         initForMaximumNumberOfExpandedFacets(0);
         expect(collapsedFacets().length).toBe(facets.length);
       });
 
       it(`when "maximumNumberOfExpandedFacets" is 1
       should only expand the first facet`, () => {
-        initializeManyFacets();
         initForMaximumNumberOfExpandedFacets(1);
         expect(collapsedFacets().length).toBe(facets.length - 1);
         expect(collapsedFacets().indexOf(facets[0])).toBe(-1);
@@ -230,7 +225,6 @@ export function DynamicFacetManagerTest() {
 
       it(`when there is a facet with the option "enableCollapse" set to false
       should not collapse it`, () => {
-        initializeManyFacets();
         facets[3].options.enableCollapse = false;
         initForMaximumNumberOfExpandedFacets(0);
         expect(collapsedFacets().length).toBe(facets.length - 1);
@@ -239,7 +233,6 @@ export function DynamicFacetManagerTest() {
 
       it(`when there is a facet with active values
       should not collapse it`, () => {
-        initializeManyFacets();
         initForMaximumNumberOfExpandedFacets(0);
         const modifiedResponse = queryManyFacetsResponse();
         modifiedResponse[3].values[0].state = FacetValueState.selected;
@@ -249,9 +242,22 @@ export function DynamicFacetManagerTest() {
         expect(collapsedFacets().indexOf(facets[3])).toBe(-1);
       });
 
+      it(`when there is a facet with no values
+      should not be taken into consideration when expanding/collapsing`, () => {
+        const maximumNumberOfExpandedFacets = 2;
+        initForMaximumNumberOfExpandedFacets(maximumNumberOfExpandedFacets);
+        const modifiedQueryResponse = queryManyFacetsResponse();
+        modifiedQueryResponse[0].values = [];
+        triggerQuerySuccess(modifiedQueryResponse);
+
+        expect(hiddenFacets().indexOf(facets[0])).toBe(0);
+        expect(collapsedFacets().length).toBe(facets.length - (maximumNumberOfExpandedFacets + 1));
+        expect(collapsedFacets().indexOf(facets[1])).toBe(-1);
+        expect(collapsedFacets().indexOf(facets[2])).toBe(-1);
+      });
+
       it(`when applying maximum
       should take into account facets that have to be expanded`, () => {
-        initializeManyFacets();
         facets[4].options.enableCollapse = false;
 
         initForMaximumNumberOfExpandedFacets(3);
