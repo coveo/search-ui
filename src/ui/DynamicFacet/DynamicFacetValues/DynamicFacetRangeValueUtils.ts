@@ -29,8 +29,7 @@ export class DynamicFacetRangeValueUtils {
   private static dateFromRangeTypeValue(value: RangeType) {
     switch (typeof value) {
       case 'number':
-        const unixTimestamp = <number>value;
-        return new Date(unixTimestamp * 1000);
+        return new Date(<number>value);
       case 'string':
         return new Date(`${value}`);
       default:
@@ -62,7 +61,8 @@ export class DynamicFacetRangeValueUtils {
   }
 
   private static parseDateValue(value: RangeType) {
-    return DateUtils.dateTimeForQuery(this.dateFromRangeTypeValue(value));
+    const parsedValue = DateUtils.dateTimeForQuery(this.dateFromRangeTypeValue(value));
+    return parsedValue === 'Invalid date' ? null : parsedValue;
   }
 
   public static parseRange(unvalidatedRange: IRangeValue, valueFormat: DynamicFacetRangeValueFormat) {
