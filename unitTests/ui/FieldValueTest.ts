@@ -12,7 +12,7 @@ import { DateUtils } from '../../src/utils/DateUtils';
 import * as _ from 'underscore';
 import { l } from '../../src/Core';
 import { DynamicFacet } from '../../src/ui/DynamicFacet/DynamicFacet';
-import { DynamicFacetValues } from '../../src/ui/DynamicFacet/DynamicFacetValues/DynamicFacetValues';
+import { DynamicFacetTestUtils } from './DynamicFacet/DynamicFacetTestUtils';
 
 export function FieldValueTest() {
   describe('FieldValue', () => {
@@ -236,7 +236,7 @@ export function FieldValueTest() {
       let facet: Facet;
 
       beforeEach(() => {
-        facet = Mock.mock<Facet>(Facet);
+        facet = Mock.mockComponent<Facet>(Facet);
 
         facet.values = Mock.mock<FacetValues>(FacetValues);
         facet.values.get = () => {
@@ -280,9 +280,7 @@ export function FieldValueTest() {
       let facet: DynamicFacet;
 
       beforeEach(() => {
-        facet = Mock.mock<DynamicFacet>(DynamicFacet);
-
-        facet.values = Mock.mock<DynamicFacetValues>(DynamicFacetValues);
+        facet = DynamicFacetTestUtils.createFakeFacet();
         facet.values.hasSelectedValue = () => true;
       });
 
