@@ -20,6 +20,8 @@ import { IListFieldValuesRequest, IListFieldValuesBatchRequest } from './ListFie
 import { ISubscriptionRequest, ISubscription } from './Subscription';
 import { ISentryLog } from './SentryLog';
 import * as _ from 'underscore';
+import { IFacetSearchRequest } from './Facet/FacetSearchRequest';
+import { IFacetSearchResponse } from './Facet/FacetSearchResponse';
 
 export class SearchEndpointWithDefaultCallOptions implements ISearchEndpoint {
   options: ISearchEndpointOptions;
@@ -58,6 +60,10 @@ export class SearchEndpointWithDefaultCallOptions implements ISearchEndpoint {
 
   public getQuerySuggest(request: IQuerySuggestRequest, callOptions?: IEndpointCallOptions): Promise<IQuerySuggestResponse> {
     return this.endpoint.getQuerySuggest(request, this.enrichCallOptions(callOptions));
+  }
+
+  public facetSearch(request: IFacetSearchRequest, callOptions?: IEndpointCallOptions): Promise<IFacetSearchResponse> {
+    return this.endpoint.facetSearch(request, this.enrichCallOptions(callOptions));
   }
 
   public rateDocument(ratingRequest: IRatingRequest, callOptions?: IEndpointCallOptions): Promise<boolean> {

@@ -1,13 +1,14 @@
+@import 'Variables';
 @import 'Colors';
 
 @mixin magic-box($height: 48px) {
+  @include flex-grow(1);
   $padding: floor(1/4 * $height);
   $lineHeight: $height - $padding * 2;
   $fontSize: floor($lineHeight * 2 / 3);
   position: relative;
   text-align: left;
   color: $grey-900;
-  border: 1px solid $grey-500;
   .magic-box-input {
     background: $white;
     height: $height;
@@ -17,8 +18,8 @@
     > input {
       color: $grey-900;
       text-align: left;
-      padding: $padding 0;
-      text-indent: $padding;
+      padding: $padding $height+1 $padding $padding;
+      text-indent: 0;
       font-family: arial, sans-serif;
       font-size: $fontSize;
       line-height: $lineHeight;
@@ -83,10 +84,11 @@
     line-height: $height;
     text-align: center;
     font-size: 24px;
-    transition: width 0.3s;
+    transition: visibility 0.3s, width 0.3s;
     cursor: pointer;
     background: $white;
     width: 0;
+    visibility: hidden;
     overflow: hidden;
     .magic-box-icon {
       &:before {
@@ -108,6 +110,7 @@
   &.magic-box-notEmpty {
     .magic-box-clear {
       width: $height;
+      visibility: visible;
     }
   }
   &.magic-box-hasFocus {
@@ -116,6 +119,15 @@
     }
     .magic-box-suggestions.magic-box-hasSuggestion {
       display: block;
+      .coveo-magicbox-suggestions {
+        border: $default-border;
+      }
+      .coveo-suggestion-container {
+        border: $default-border;
+        .coveo-magicbox-suggestions {
+          border: none;
+        }
+      }
     }
   }
   .magic-box-suggestions {
@@ -124,12 +136,11 @@
     top: 100%;
     left: -1px;
     right: -1px;
-    overflow: hidden;
+    overflow: visible;
     background: $white;
     z-index: 1;
     display: none;
     font-family: arial, sans-serif;
-    border: 1px solid $grey-500;
     .magic-box-suggestion-seperator,
     .magic-box-suggestion {
       opacity: 1;
@@ -209,8 +220,17 @@
       top: 0;
       left: 0;
       right: 0;
-      border: none;
-      border-top: 1px solid $grey-500;
+      .coveo-magicbox-suggestions {
+        border: none;
+        border-top: $default-border;
+      }
+      .coveo-suggestion-container {
+        border: none;
+        border-top: $default-border;
+        .coveo-magicbox-suggestions {
+          border-top: none;
+        }
+      }
     }
   }
 }
@@ -229,14 +249,14 @@
     &:before {
       border-top-left-radius: 4px;
       border-bottom-left-radius: 4px;
-      left: -1px;
+      left: 1px;
     }
   }
   @if ($right) {
     &:before {
       border-top-right-radius: 4px;
       border-bottom-right-radius: 4px;
-      right: -1px;
+      right: 1px;
     }
   }
 }

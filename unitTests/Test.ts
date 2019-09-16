@@ -15,6 +15,9 @@ SearchEndpointTest();
 import { BackOffRequestTest } from './rest/BackOffRequestTest';
 BackOffRequestTest();
 
+import { FacetSortCriteriaTest } from './rest/Facet/FacetSortCriteriaTest';
+FacetSortCriteriaTest();
+
 import { CookieUtilsTest } from './utils/CookieUtilsTest';
 CookieUtilsTest();
 
@@ -41,6 +44,9 @@ QueryStateModelTest();
 
 import { EndpointCallerTest } from './rest/EndpointCallerTest';
 EndpointCallerTest();
+
+import { AnalyticsEndpointCallerTest } from './rest/AnalyticsEndpointCallerTest';
+AnalyticsEndpointCallerTest();
 
 import { FacetQueryControllerTest } from './controllers/FacetQueryControllerTest';
 FacetQueryControllerTest();
@@ -486,6 +492,9 @@ FacetSliderQueryControllerTest();
 import { DateUtilsTest } from './ui/DateUtilsTest';
 DateUtilsTest();
 
+import { NumberUtilsTest } from './utils/NumberUtilsTest';
+NumberUtilsTest();
+
 import { DebugForResultTest } from './ui/DebugForResultTest';
 DebugForResultTest();
 
@@ -513,14 +522,14 @@ AccessTokenTest();
 import { CategoryFacetTest } from './ui/CategoryFacet/CategoryFacetTest';
 CategoryFacetTest();
 
+import { CategoryFacetValuesTreeTest } from './ui/CategoryFacet/CategoryFacetValuesTreeTest';
+CategoryFacetValuesTreeTest();
+
 import { FacetValueSuggestionsTest } from './ui/FacetValueSuggestionsTest';
 FacetValueSuggestionsTest();
 
 import { FacetValueSuggestionsProviderTest } from './ui/FacetValueSuggestionsProviderTest';
 FacetValueSuggestionsProviderTest();
-
-import { SuggestionsCacheTest } from './misc/SuggestionsCacheTest';
-SuggestionsCacheTest();
 
 import { FacetColumnAutoLayoutAdjustmentTest } from './ui/FacetColumnAutoLayoutAdjustmentTest';
 FacetColumnAutoLayoutAdjustmentTest();
@@ -633,11 +642,122 @@ CategoryFacetBreadcrumbTest();
 import { CategoryValueTest } from './ui/CategoryFacet/CategoryValueTest';
 CategoryValueTest();
 
+import { CategoryFacetHeaderTest } from './ui/CategoryFacet/CategoryFacetHeaderTest';
+CategoryFacetHeaderTest();
+
 import { GrammarTest } from './magicbox/GrammarTest';
 GrammarTest();
 
 import { SuggestionsManagerTest } from './magicbox/SuggestionsManagerTest';
 SuggestionsManagerTest();
 
+import { MagicBoxClearTest } from './magicbox/MagicBoxClearTest';
+MagicBoxClearTest();
+
 import { AccessibleButtonTest } from './utils/AccessibleButtonTest';
 AccessibleButtonTest();
+
+import { AriaLiveTest } from './ui/AriaLiveTest';
+AriaLiveTest();
+
+import { QuerySummaryUtilsTest } from './utils/QuerySummaryUtilsTest';
+QuerySummaryUtilsTest();
+
+import { CategoryFacetQueryControllerTest } from './controllers/CategoryFacetQueryControllerTest';
+CategoryFacetQueryControllerTest();
+
+import { ComponentsTypesTest } from './utils/ComponentsTypesTest';
+ComponentsTypesTest();
+
+import { PromotedResultsBadgeTest } from './ui/PromotedResultsBadgeTest';
+PromotedResultsBadgeTest();
+
+import { ResultListUtilsTest } from './utils/ResultListUtilsTest';
+ResultListUtilsTest();
+
+import { FacetUtilsTest } from './utils/FacetUtilsTest';
+FacetUtilsTest();
+
+import { DynamicFacetTest } from './ui/DynamicFacet/DynamicFacetTest';
+DynamicFacetTest();
+
+import { DynamicFacetRangeTest } from './ui/DynamicFacet/DynamicFacetRangeTest';
+DynamicFacetRangeTest();
+
+import { DynamicFacetHeaderTest } from './ui/DynamicFacet/DynamicFacetHeader/DynamicFacetHeaderTest';
+DynamicFacetHeaderTest();
+
+import { DynamicFacetHeaderButtonTest } from './ui/DynamicFacet/DynamicFacetHeader/DynamicFacetHeaderButtonTest';
+DynamicFacetHeaderButtonTest();
+
+import { DynamicFacetHeaderCollapseToggleTest } from './ui/DynamicFacet/DynamicFacetHeader/DynamicFacetHeaderCollapseToggleTest';
+DynamicFacetHeaderCollapseToggleTest();
+
+import { DynamicFacetValuesTest } from './ui/DynamicFacet/DynamicFacetValues/DynamicFacetValuesTest';
+DynamicFacetValuesTest();
+
+import { DynamicFacetValueTest } from './ui/DynamicFacet/DynamicFacetValues/DynamicFacetValueTest';
+DynamicFacetValueTest();
+
+import { DynamicFacetValueCheckboxTest } from './ui/DynamicFacet/DynamicFacetValues/DynamicFacetValueCheckboxTest';
+DynamicFacetValueCheckboxTest();
+
+import { DynamicFacetValueRendererTest } from './ui/DynamicFacet/DynamicFacetValues/DynamicFacetValueRendererTest';
+DynamicFacetValueRendererTest();
+
+import { DynamicFacetSearchValueRendererTest } from './ui/DynamicFacet/DynamicFacetValues/DynamicFacetSearchValueRendererTest';
+DynamicFacetSearchValueRendererTest();
+
+import { DynamicFacetBreadcrumbsTest } from './ui/DynamicFacet/DynamicFacetBreadcrumbsTest';
+DynamicFacetBreadcrumbsTest();
+
+import { DynamicFacetQueryControllerTest } from './controllers/DynamicFacetQueryControllerTest';
+DynamicFacetQueryControllerTest();
+
+import { DynamicFacetRangeQueryControllerTest } from './controllers/DynamicFacetRangeQueryControllerTest';
+DynamicFacetRangeQueryControllerTest();
+
+import { DynamicFacetManagerTest } from './ui/DynamicFacetManagerTest';
+DynamicFacetManagerTest();
+
+import { DynamicFacetValueCreatorTest } from './ui/DynamicFacet/DynamicFacetValues/DynamicFacetValueCreatorTest';
+DynamicFacetValueCreatorTest();
+
+import { DynamicFacetRangeValueCreatorTest } from './ui/DynamicFacet/DynamicFacetValues/DynamicFacetRangeValueCreatorTest';
+DynamicFacetRangeValueCreatorTest();
+
+import { DynamicFacetRangeValueUtilsTest } from './ui/DynamicFacet/DynamicFacetValues/DynamicFacetRangeValueUtilsTest';
+DynamicFacetRangeValueUtilsTest();
+
+import { FacetSearchControllerTest } from './controllers/FacetSearchControllerTest';
+FacetSearchControllerTest();
+
+import { MissingTermsTest } from './ui/MissingTermsTest';
+MissingTermsTest();
+
+import { MissingTermsManagerTest } from './ui/MissingTermManagerTest';
+MissingTermsManagerTest();
+
+import { SearchboxResizeTest } from './utils/SearchboxResizeTest';
+SearchboxResizeTest();
+
+import { DependsOnManagerTest } from './utils/DependsOnManagerTest';
+DependsOnManagerTest();
+
+import { ComboboxTest } from './ui/Combobox/ComboboxTest';
+ComboboxTest();
+
+import { ComboboxInputTest } from './ui/Combobox/ComboboxInputTest';
+ComboboxInputTest();
+
+import { ComboboxValuesTest } from './ui/Combobox/ComboboxValuesTest';
+ComboboxValuesTest();
+
+import { QuerySuggestPreviewTest } from './ui/QuerySuggestPreviewTest';
+QuerySuggestPreviewTest();
+
+import { FieldImageTest } from './ui/ImageFieldValueTest';
+FieldImageTest();
+
+import { OmniboxAnalyticsTest } from './ui/OmniboxAnalyticsTest';
+OmniboxAnalyticsTest();

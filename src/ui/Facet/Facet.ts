@@ -20,14 +20,18 @@ import { ISearchEndpoint } from '../../rest/SearchEndpointInterface';
 import { l } from '../../strings/Strings';
 import { DeviceUtils } from '../../utils/DeviceUtils';
 import { $$, Win } from '../../utils/Dom';
-import { KEYBOARD, KeyboardUtils } from '../../utils/KeyboardUtils';
 import { SVGDom } from '../../utils/SVGDom';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { Utils } from '../../utils/Utils';
-import { analyticsActionCauseList, IAnalyticsFacetMeta } from '../Analytics/AnalyticsActionListMeta';
+import {
+  analyticsActionCauseList,
+  IAnalyticsFacetMeta,
+  IAnalyticsFacetSortMeta,
+  IAnalyticsActionCause
+} from '../Analytics/AnalyticsActionListMeta';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
-import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
+import { ComponentOptions, IFieldOption, IQueryExpression } from '../Base/ComponentOptions';
 import { Initialization } from '../Base/Initialization';
 import { IOmniboxDataRow } from '../Omnibox/OmniboxInterface';
 import { ResponsiveFacets } from '../ResponsiveComponents/ResponsiveFacets';
@@ -48,8 +52,17 @@ import { OmniboxValueElement } from './OmniboxValueElement';
 import { OmniboxValuesList } from './OmniboxValuesList';
 import { ValueElement } from './ValueElement';
 import { ValueElementRenderer } from './ValueElementRenderer';
+import { AccessibleButton } from '../../utils/AccessibleButton';
+import { IResponsiveComponentOptions } from '../ResponsiveComponents/ResponsiveComponentsManager';
+import { ResponsiveFacetOptions } from '../ResponsiveComponents/ResponsiveFacetOptions';
+import { DependsOnManager, IDependentFacet } from '../../utils/DependsOnManager';
+import { ComponentsTypes } from '../../utils/ComponentsTypes';
+import { FacetSortCriterion } from './FacetSortCriterion';
 
-export interface IFacetOptions {
+type ComputedFieldOperation = 'sum' | 'average' | 'minimum' | 'maximum';
+type ComputedFieldFormat = 'c0' | 'n0' | 'n2';
+
+export interface IFacetOptions extends IResponsiveComponentOptions {
   title?: string;
   field?: IFieldOption;
   isMultiValueField?: boolean;
@@ -87,11 +100,8 @@ export interface IFacetOptions {
   allowedValues?: string[];
   headerIcon?: string;
   valueIcon?: (facetValue: FacetValue) => string;
-  additionalFilter?: string;
+  additionalFilter?: IQueryExpression;
   dependsOn?: string;
-  enableResponsiveMode?: boolean;
-  responsiveBreakpoint?: number;
-  dropdownHeaderLabel?: string;
   useWildcardsInFacetSearch?: boolean;
 }
 
@@ -109,9 +119,9 @@ export interface IFacetOptions {
  * This is probably the most complex component in the Coveo JavaScript Search Framework and as such, it allows for many
  * configuration options.
  *
- * See also the [`FacetRange`]{@link FacetRange} and [`HierarchicalFacet`]{@link HierarchicalFacet} components (which
- * extend this component), and the [`FacetSlider`]{@link FacetSlider} component (which does not properly extend this
- * component, but is very similar).
+ * See also the [`FacetRange`]{@link FacetRange} and [`TimespanFacet`]{@link TimespanFacet} components (which
+ * extend this component), and the [`FacetSlider`]{@link FacetSlider} and [`CategoryFacet`]{@link CategoryFacet} components (which do not extend this
+ * component, but are very similar).
  */
 export class Facet extends Component {
   static ID = 'Facet';
@@ -164,14 +174,20 @@ export class Facet extends Component {
      * If you have two facets with the same field on the same page, you should specify an `id` value for at least one of
      * those two facets. This `id` must be unique among the facets.
      *
-     * Whitespace characters are automatically removed from the `id` value.
+     * Non-word characters except - @ $ _ . + ! * ' ( ) , , ( `^a-zA-Z0-9-@$_.+!*'(),,]+` ) are automatically removed from the `id` value.
      *
      * Default value is the [`field`]{@link Facet.options.field} option value.
      */
     id: ComponentOptions.buildStringOption({
       postProcessing: (value: string, options: IFacetOptions) => {
         if (value) {
-          return value.replace(/\s/g, '');
+          // All non-word characters, except @ (the default character that specifies a field in the index)
+          // and characters that do no need to be encoded in the URL : - @ $ _ . + ! * ' ( ) , ,
+          const modified = value.replace(/[^a-zA-Z0-9-@$_.+!*'(),,]+/g, '');
+          if (Utils.isNullOrEmptyString(modified)) {
+            return options.field as string;
+          }
+          return modified;
         }
         return options.field as string;
       }
@@ -182,7 +198,7 @@ export class Facet extends Component {
      *
      * Default value is `false`.
      */
-    isMultiValueField: ComponentOptions.buildBooleanOption({ defaultValue: false }),
+    isMultiValueField: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'CommonOptions' }),
     /**
      * Specifies the field whose values the Facet should display.
      *
@@ -203,7 +219,7 @@ export class Facet extends Component {
      *
      * Default value is `true`.
      */
-    enableSettings: ComponentOptions.buildBooleanOption({ defaultValue: true, section: 'SettingsMenu', priority: 9 }),
+    enableSettings: ComponentOptions.buildBooleanOption({ defaultValue: true, section: 'Sorting', priority: 9 }),
     /**
      * If the [`enableSettings`]{@link Facet.options.enableSettings} option is `true`, specifies whether the
      * **Save state** menu option is available in the facet **Settings** menu.
@@ -221,8 +237,8 @@ export class Facet extends Component {
      * Possible values are:
      * - `"occurrences"`
      * - `"score"`
-     * - `"alphaAscending"`
-     * - `alphaDescending`
+     * - `"alphaascending"`
+     * - `"alphadescending"`
      * - `"computedfieldascending"`
      * - `"computedfielddescending"`
      * - `"custom"`
@@ -234,22 +250,22 @@ export class Facet extends Component {
      *
      * > * Using value captions will disable alphabetical sorts (see the [valueCaption]{@link Facet.options.valueCaption} option).
      *
-     * Default value is `occurrences,score,alphaAscending,alphaDescending`.
+     * Default value is `occurrences,score,alphaascending,alphadescending`.
      */
-    availableSorts: ComponentOptions.buildListOption<
-      | 'occurrences'
-      | 'score'
-      | 'alphaascending'
-      | 'alphadescending'
-      | 'computedfieldascending'
-      | 'computedfielddescending'
-      | 'chisquare'
-      | 'nosort'
-    >({
-      defaultValue: ['occurrences', 'score', 'alphaAscending', 'alphaDescending'],
-      depend: 'enableSettings',
+    availableSorts: ComponentOptions.buildListOption<FacetSortCriterion>({
+      defaultValue: ['occurrences', 'score', 'alphaascending', 'alphadescending'],
       section: 'Sorting',
-      values: ['AlphaAscending', 'AlphaDescending', 'ComputedFieldAscending', 'ComputedFieldDescending', 'ChiSquare', 'NoSort']
+      depend: 'enableSettings',
+      values: [
+        'Occurrences',
+        'Score',
+        'AlphaAscending',
+        'AlphaDescending',
+        'ComputedFieldAscending',
+        'ComputedFieldDescending',
+        'ChiSquare',
+        'NoSort'
+      ]
     }),
     /**
      * Specifies the criteria to use to sort the facet values.
@@ -259,9 +275,9 @@ export class Facet extends Component {
      * Default value is the first sort criteria specified in the [`availableSorts`]{@link Facet.options.availableSorts}
      * option, or `occurrences` if no sort criteria is specified.
      */
-    sortCriteria: ComponentOptions.buildStringOption({
+    sortCriteria: ComponentOptions.buildStringOption<FacetSortCriterion>({
       postProcessing: (value, options: IFacetOptions) =>
-        value || (options.availableSorts.length > 0 ? options.availableSorts[0] : 'occurrences'),
+        value || (options.availableSorts.length > 0 ? (options.availableSorts[0] as FacetSortCriterion) : 'occurrences'),
       section: 'Sorting'
     }),
     /**
@@ -320,8 +336,7 @@ export class Facet extends Component {
      */
     enableTogglingOperator: ComponentOptions.buildBooleanOption({
       defaultValue: false,
-      alias: 'allowTogglingOperator',
-      section: 'Filtering'
+      alias: 'allowTogglingOperator'
     }),
     /**
      * Specifies whether to display a search box at the bottom of the facet for searching among the available facet
@@ -441,7 +456,7 @@ export class Facet extends Component {
      * [`computedFieldCaption`]{@link Facet.options.computedFieldCaption} options.
      * @notSupportedIn salesforcefree
      */
-    computedField: ComponentOptions.buildFieldOption({ section: 'ComputedField', priority: 7 }),
+    computedField: ComponentOptions.buildFieldOption({ priority: 7 }),
     /**
      * Specifies the type of aggregate operation to perform on the [`computedField`]{@link Facet.options.computedField}.
      *
@@ -454,7 +469,10 @@ export class Facet extends Component {
      * Default value is `sum`.
      * @notSupportedIn salesforcefree
      */
-    computedFieldOperation: ComponentOptions.buildStringOption({ defaultValue: 'sum', section: 'ComputedField' }),
+    computedFieldOperation: ComponentOptions.buildStringOption<ComputedFieldOperation>({
+      defaultValue: 'sum',
+      section: 'ComputedField'
+    }),
     /**
      * Specifies how to format the values resulting from a
      * [`computedFieldOperation`]{@link Facet.options.computedFieldOperation}.
@@ -470,7 +488,10 @@ export class Facet extends Component {
      * Default value is `"c0"`.
      * @notSupportedIn salesforcefree
      */
-    computedFieldFormat: ComponentOptions.buildStringOption({ defaultValue: 'c0', section: 'ComputedField' }),
+    computedFieldFormat: ComponentOptions.buildStringOption<ComputedFieldFormat>({
+      defaultValue: 'c0',
+      section: 'ComputedField'
+    }),
     /**
      * Specifies what the caption of the [`computedField`]{@link Facet.options.computedField} should be in the facet
      * **Settings** menu for sorting.
@@ -593,7 +614,7 @@ export class Facet extends Component {
      * Example: `@date>=2014/01/01`
      * @notSupportedIn salesforcefree
      */
-    additionalFilter: ComponentOptions.buildStringOption({ section: 'Filtering' }),
+    additionalFilter: ComponentOptions.buildQueryExpressionOption(),
     /**
      * Specifies whether this facet only appears when a value is selected in its "parent" facet.
      *
@@ -619,7 +640,7 @@ export class Facet extends Component {
      * <div class='CoveoFacet' data-field='@myfield' data-title='My Parent Facet' data-id='myParentCustomId'></div>
      *
      * <!-- The "dependent" Facet must refer to the custom `id` of its "parent" Facet, which is 'myParentCustomId'. -->
-     * <div class='CoveoFacet' data-field='@myotherfield data-title='My Dependent Facet' data-depends-on='myParentCustomId'></div>
+     * <div class='CoveoFacet' data-field='@myotherfield' data-title='My Dependent Facet' data-depends-on='myParentCustomId'></div>
      * ```
      *
      * Default value is `undefined`
@@ -665,35 +686,7 @@ export class Facet extends Component {
      * > Using value captions will disable alphabetical sorts (see the [availableSorts]{@link Facet.options.availableSorts} option).
      */
     valueCaption: ComponentOptions.buildJsonOption<IStringMap<string>>(),
-    /**
-     * Specifies whether to enable *responsive mode* for facets. Setting this options to `false` on any `Facet`, or
-     * [`FacetSlider`]{@link FacetSlider} component in a search interface disables responsive mode for all other facets
-     * in the search interface.
-     *
-     * Responsive mode displays all facets under a single dropdown button whenever the width of the HTML element which
-     * the search interface is bound to reaches or falls behind a certain threshold (see
-     * {@link SearchInterface.responsiveComponents}).
-     *
-     * See also the [`dropdownHeaderLabel`]{@link Facet.options.dropdownHeaderLabel} option.
-     *
-     * Default value is `true`.
-     */
-    enableResponsiveMode: ComponentOptions.buildBooleanOption({ defaultValue: true, section: 'ResponsiveOptions' }),
-    responsiveBreakpoint: ComponentOptions.buildNumberOption({
-      deprecated:
-        'This option is exposed for legacy reasons. It is not recommended to use this option. Instead, use `SearchInterface.options.responsiveMediumBreakpoint` options exposed on the `SearchInterface`.'
-    }),
-    /**
-     * If the [`enableResponsiveMode`]{@link Facet.options.enableResponsiveMode} option is `true` for all facets and
-     * {@link FacetSlider.options.enableResponsiveMode} is also `true` for all sliders, specifies the label of the
-     * dropdown button that allows to display the facets when in responsive mode.
-     *
-     * If more than one `Facet` or {@link FacetSlider} component in the search interface specifies a value for this
-     * option, the framework uses the first occurrence of the option.
-     *
-     * Default value is `Filters`.
-     */
-    dropdownHeaderLabel: ComponentOptions.buildLocalizedStringOption({ section: 'ResponsiveOptions' })
+    ...ResponsiveFacetOptions
   };
 
   public facetQueryController: FacetQueryController;
@@ -716,6 +709,7 @@ export class Facet extends Component {
   public facetSort: FacetSort;
   public facetValuesList: FacetValuesList;
   public facetHeader: FacetHeader;
+  public searchContainer: ValueElementRenderer;
 
   protected omniboxZIndex;
   protected moreElement: HTMLElement;
@@ -725,6 +719,7 @@ export class Facet extends Component {
   protected footerElement: HTMLElement;
   private canFetchMore: boolean = true;
   private nbAvailableValues: number;
+  private dependsOnManager: DependsOnManager;
 
   private showingWaitAnimation = false;
   private pinnedViewportPosition: number;
@@ -765,6 +760,7 @@ export class Facet extends Component {
     this.checkForComputedFieldAndSort();
     this.checkForValueCaptionType();
     this.checkForCustomSort();
+    this.initDependsOnManager();
     this.initFacetQueryController();
     this.initQueryEvents();
     this.initQueryStateEvents();
@@ -1039,7 +1035,7 @@ export class Facet extends Component {
 
   /**
    * Returns the endpoint for the facet.
-   * @returns {ISearchEndpoint} The endpoint for the Ffcet.
+   * @returns {ISearchEndpoint} The endpoint for the facet.
    */
   public getEndpoint(): ISearchEndpoint {
     return this.queryController.getEndpoint();
@@ -1058,6 +1054,16 @@ export class Facet extends Component {
     this.ensureDom();
     if (this.options.sortCriteria != criteria) {
       this.options.sortCriteria = criteria;
+      this.usageAnalytics.logCustomEvent<IAnalyticsFacetSortMeta>(
+        analyticsActionCauseList.facetUpdateSort,
+        {
+          criteria,
+          facetId: this.options.id,
+          facetField: this.options.field.toString(),
+          facetTitle: this.options.title
+        },
+        this.element
+      );
       this.triggerNewQuery();
     }
   }
@@ -1113,6 +1119,7 @@ export class Facet extends Component {
     this.triggerNewQuery(() =>
       this.usageAnalytics.logSearchEvent<IAnalyticsFacetMeta>(analyticsActionCauseList.facetSelectAll, {
         facetId: this.options.id,
+        facetField: this.options.field.toString(),
         facetTitle: this.options.title
       })
     );
@@ -1178,6 +1185,7 @@ export class Facet extends Component {
     $$(this.moreElement).addClass('coveo-active');
     this.values.sortValuesDependingOnStatus(this.numberOfValues);
     this.rebuildValueElements();
+    this.logAnalyticsFacetShowMoreLess(analyticsActionCauseList.facetShowLess);
   }
 
   /**
@@ -1213,7 +1221,6 @@ export class Facet extends Component {
     Assert.exists(data);
     this.unfadeInactiveValuesInMainList();
     this.hideWaitingAnimation();
-    this.updateVisibilityBasedOnDependsOn();
     const groupByResult = data.results.groupByResults[this.facetQueryController.lastGroupByRequestIndex];
     this.facetQueryController.lastGroupByResult = groupByResult;
     // Two corner case to handle regarding the "sticky" aspect of facets :
@@ -1293,6 +1300,7 @@ export class Facet extends Component {
   protected updateAppearanceDependingOnState() {
     $$(this.element).toggleClass('coveo-active', this.values.hasSelectedOrExcludedValues());
     $$(this.element).toggleClass('coveo-facet-empty', !this.isAnyValueCurrentlyDisplayed());
+    this.dependsOnManager.updateVisibilityBasedOnDependsOn();
     $$(this.facetHeader.eraserElement).toggleClass('coveo-facet-header-eraser-visible', this.values.hasSelectedOrExcludedValues());
   }
 
@@ -1316,6 +1324,7 @@ export class Facet extends Component {
     this.queryStateModel.registerNewAttribute(this.lookupValueAttributeId, {});
 
     this.bind.onQueryState(MODEL_EVENTS.CHANGE, undefined, (args: IAttributesChangedEventArg) => this.handleQueryStateChanged(args));
+    this.dependsOnManager.listenToParentIfDependentFacet();
   }
 
   protected initComponentStateEvents() {
@@ -1409,32 +1418,30 @@ export class Facet extends Component {
   }
 
   protected updateSearchElement(moreValuesAvailable = true) {
-    if (moreValuesAvailable) {
-      const renderer = new ValueElementRenderer(this, FacetValue.create(l('Search')));
-      const searchButton = renderer.build().withNo([renderer.excludeIcon, renderer.icon]);
-      $$(searchButton.listItem).addClass('coveo-facet-search-button');
-      searchButton.stylishCheckbox.removeAttribute('tabindex');
-
-      // Mobile do not like label. Use click event
-      if (DeviceUtils.isMobileDevice()) {
-        $$(searchButton.label).on('click', (e: Event) => {
-          if (searchButton.checkbox.getAttribute('checked')) {
-            searchButton.checkbox.removeAttribute('checked');
-          } else {
-            searchButton.checkbox.setAttribute('checked', 'checked');
-          }
-          $$(searchButton.checkbox).trigger('change');
-          e.stopPropagation();
-          e.preventDefault();
-        });
-      }
-
-      $$(searchButton.checkbox).on('change', () => {
-        $$(this.element).addClass('coveo-facet-searching');
-        this.facetSearch.focus();
-      });
-      this.facetValuesList.valueContainer.appendChild(searchButton.listItem);
+    if (!moreValuesAvailable) {
+      return;
     }
+
+    const renderer = new ValueElementRenderer(this, FacetValue.create(l('Search')));
+    this.searchContainer = renderer.build().withNo([renderer.excludeIcon, renderer.icon]);
+    $$(this.searchContainer.listItem).addClass('coveo-facet-search-button');
+
+    new AccessibleButton()
+      .withElement(this.searchContainer.accessibleElement)
+      .withLabel(l('Search'))
+      .withEnterKeyboardAction(e => this.toggleSearchMenu(e))
+      .build();
+
+    // Mobile do not like label. Use click event
+    if (DeviceUtils.isMobileDevice()) {
+      $$(this.searchContainer.label).on('click', e => this.toggleSearchMenu(e));
+    }
+
+    $$(this.searchContainer.checkbox).on('change', () => {
+      $$(this.element).addClass('coveo-facet-searching');
+      this.facetSearch.focus();
+    });
+    this.facetValuesList.valueContainer.appendChild(this.searchContainer.listItem);
   }
 
   protected updateMoreLess(
@@ -1468,6 +1475,21 @@ export class Facet extends Component {
     this.showLess();
   }
 
+  private toggleSearchMenu(e: Event) {
+    const searchButton = this.searchContainer;
+
+    if (searchButton.checkbox.getAttribute('checked')) {
+      searchButton.checkbox.removeAttribute('checked');
+    } else {
+      searchButton.checkbox.setAttribute('checked', 'checked');
+    }
+
+    $$(searchButton.checkbox).trigger('change');
+
+    e.stopPropagation();
+    e.preventDefault();
+  }
+
   private checkForComputedFieldAndSort() {
     if (this.options.sortCriteria.toLowerCase().indexOf('computedfield') != -1 && Utils.isNullOrUndefined(this.options.computedField)) {
       this.logger.warn(
@@ -1495,6 +1517,55 @@ export class Facet extends Component {
     if (this.options.availableSorts[0] == 'custom') {
       this.options.sortCriteria = 'nosort';
     }
+  }
+
+  private initDependsOnManager() {
+    const facetInfo: IDependentFacet = {
+      reset: () => this.reset(),
+      toggleDependentFacet: dependentFacet => this.toggleDependentFacet(dependentFacet),
+      element: this.element,
+      root: this.root,
+      dependsOn: this.options.dependsOn,
+      id: this.options.id,
+      queryStateModel: this.queryStateModel,
+      bind: this.bind
+    };
+    this.dependsOnManager = new DependsOnManager(facetInfo);
+  }
+
+  private toggleDependentFacet(dependentFacet: Component) {
+    this.getSelectedValues().length ? dependentFacet.enable() : dependentFacet.disable();
+  }
+
+  private dependsOnUpdateParentDisplayValue() {
+    if (!this.options.dependsOn) {
+      return;
+    }
+
+    const masterFacetComponent = ComponentsTypes.getAllFacetsInstance(this.root).filter((cmp: Facet) => {
+      const idFacet = cmp instanceof Facet;
+      return idFacet && cmp.options.id === this.options.dependsOn;
+    }) as Facet[];
+
+    if (!masterFacetComponent.length) {
+      this.logger.warn(
+        `Unable to find a Facet with the id or field "${this.options.dependsOn}".`,
+        `The master facet values can't be updated.`
+      );
+      return;
+    }
+    if (masterFacetComponent.length > 1) {
+      this.logger.warn(
+        `Multiple facets with id "${this.options.dependsOn}" found.`,
+        `A given facet may only depend on a single other facet.`,
+        `Ensure that each facet in your search interface has a unique id.`,
+        `The master facet cannot be updated.`,
+        masterFacetComponent
+      );
+      return;
+    }
+    const masterFacet = masterFacetComponent[0];
+    masterFacet.keepDisplayedValuesNextTime = false;
   }
 
   private initBottomAndTopSpacer() {
@@ -1577,7 +1648,7 @@ export class Facet extends Component {
   private handleQueryStateChanged(data: IAttributesChangedEventArg) {
     Assert.exists(data);
     this.ensureDom();
-
+    this.dependsOnUpdateParentDisplayValue();
     const trimValuesFromModel = (values?: string[]) => {
       if (values) {
         values = _.map(values, value => value.trim());
@@ -1808,26 +1879,30 @@ export class Facet extends Component {
   }
 
   private buildMore(): HTMLElement {
-    let more: HTMLElement;
     const svgContainer = $$('span', { className: 'coveo-facet-more-icon' }, SVGIcons.icons.arrowDown).el;
     SVGDom.addClassToSVGInContainer(svgContainer, 'coveo-facet-more-icon-svg');
-    more = $$('div', { className: 'coveo-facet-more', tabindex: 0 }, svgContainer).el;
+    const more = $$('div', { className: 'coveo-facet-more', tabindex: 0 }, svgContainer).el;
 
-    const moreAction = () => this.handleClickMore();
-    $$(more).on('click', moreAction);
-    $$(more).on('keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, moreAction));
+    new AccessibleButton()
+      .withElement(more)
+      .withLabel(l('ShowMoreFacetResults', this.options.title))
+      .withSelectAction(() => this.handleClickMore())
+      .build();
+
     return more;
   }
 
   private buildLess(): HTMLElement {
-    let less: HTMLElement;
     const svgContainer = $$('span', { className: 'coveo-facet-less-icon' }, SVGIcons.icons.arrowUp).el;
     SVGDom.addClassToSVGInContainer(svgContainer, 'coveo-facet-less-icon-svg');
-    less = $$('div', { className: 'coveo-facet-less', tabIndex: 0 }, svgContainer).el;
+    const less = $$('div', { className: 'coveo-facet-less', tabindex: 0 }, svgContainer).el;
 
-    const lessAction = () => this.handleClickLess();
-    $$(less).on('click', lessAction);
-    $$(less).on('keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, lessAction));
+    new AccessibleButton()
+      .withElement(less)
+      .withLabel(l('ShowLessFacetResults', this.options.title))
+      .withSelectAction(() => this.handleClickLess())
+      .build();
+
     return less;
   }
 
@@ -1839,6 +1914,7 @@ export class Facet extends Component {
     this.facetQueryController
       .fetchMore(this.numberOfValues + 1)
       .then((queryResults: IQueryResults) => {
+        this.logAnalyticsFacetShowMoreLess(analyticsActionCauseList.facetShowMore);
         const facetValues = new FacetValues(queryResults.groupByResults[0]);
 
         facetValues.importActiveValuesFromOtherList(this.values);
@@ -1928,21 +2004,6 @@ export class Facet extends Component {
     }
   }
 
-  private updateVisibilityBasedOnDependsOn() {
-    if (Utils.isNonEmptyString(this.options.dependsOn)) {
-      $$(this.element).toggleClass(
-        'coveo-facet-dependent',
-        !this.doesParentFacetHasSelectedValue() && !this.values.hasSelectedOrExcludedValues()
-      );
-    }
-  }
-
-  private doesParentFacetHasSelectedValue(): boolean {
-    const id = QueryStateModel.getFacetId(this.options.dependsOn);
-    const values = this.queryStateModel.get(id);
-    return values != null && values.length != 0;
-  }
-
   private shouldRenderFacetSearch() {
     return this.options.enableFacetSearch;
   }
@@ -1959,6 +2020,18 @@ export class Facet extends Component {
       groupByResult: this.facetQueryController.lastGroupByResult
     };
     return info;
+  }
+
+  private logAnalyticsFacetShowMoreLess(cause: IAnalyticsActionCause) {
+    this.usageAnalytics.logCustomEvent<IAnalyticsFacetMeta>(
+      cause,
+      {
+        facetId: this.options.id,
+        facetField: this.options.field.toString(),
+        facetTitle: this.options.title
+      },
+      this.element
+    );
   }
 }
 

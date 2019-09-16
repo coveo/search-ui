@@ -11,7 +11,8 @@ import { ITopQueries } from '../../rest/TopQueries';
 import {
   IChangeableAnalyticsMetaObject,
   IChangeableAnalyticsDataObject,
-  IChangeAnalyticsCustomDataEventArgs
+  IChangeAnalyticsCustomDataEventArgs,
+  IAnalyticsEventArgs
 } from '../../events/AnalyticsEvents';
 import { Defer } from '../../misc/Defer';
 import { $$ } from '../../utils/Dom';
@@ -27,6 +28,7 @@ import { Component } from '../Base/Component';
 import { version } from '../../misc/Version';
 import { QueryUtils } from '../../utils/QueryUtils';
 import * as _ from 'underscore';
+import { IComponentBindings } from '../Base/ComponentBindings';
 
 export class LiveAnalyticsClient implements IAnalyticsClient {
   public isContextual: boolean = false;
@@ -48,7 +50,8 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
     public splitTestRunName: string,
     public splitTestRunVersion: string,
     public originLevel1: string,
-    public sendToCloud: boolean
+    public sendToCloud: boolean,
+    public bindings: IComponentBindings
   ) {
     Assert.exists(endpoint);
     Assert.exists(rootElement);
@@ -110,8 +113,13 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
     return this.pushClickEvent(actionCause, metaObject, result, element);
   }
 
-  public logCustomEvent<TMeta>(actionCause: IAnalyticsActionCause, meta: TMeta, element: HTMLElement): Promise<IAPIAnalyticsEventResponse> {
-    var metaObject = this.buildMetaObject(meta);
+  public logCustomEvent<TMeta>(
+    actionCause: IAnalyticsActionCause,
+    meta: TMeta,
+    element: HTMLElement,
+    result?: IQueryResult
+  ): Promise<IAPIAnalyticsEventResponse> {
+    const metaObject = this.buildMetaObject(meta, result);
     return this.pushCustomEvent(actionCause, metaObject, element);
   }
 
@@ -166,11 +174,15 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
     metaObject: IChangeableAnalyticsMetaObject,
     element?: HTMLElement
   ): Promise<IAPIAnalyticsEventResponse> {
-    var customEvent = this.buildCustomEvent(actionCause, metaObject, element);
+    const customEvent = this.buildCustomEvent(actionCause, metaObject, element);
     this.triggerChangeAnalyticsCustomData('CustomEvent', metaObject, customEvent);
     this.checkToSendAnyPendingSearchAsYouType(actionCause);
     $$(this.rootElement).trigger(AnalyticsEvents.customEvent, <IAnalyticsCustomEventArgs>{
       customEvent: APIAnalyticsBuilder.convertCustomEventToAPI(customEvent)
+    });
+    $$(this.rootElement).trigger(AnalyticsEvents.analyticsEventReady, <IAnalyticsEventArgs>{
+      event: 'CoveoCustomEvent',
+      coveoAnalyticsEventData: customEvent
     });
     return this.sendToCloud ? this.endpoint.sendCustomEvent(customEvent) : Promise.resolve(null);
   }
@@ -239,6 +251,10 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
 
     $$(this.rootElement).trigger(AnalyticsEvents.documentViewEvent, {
       documentViewEvent: APIAnalyticsBuilder.convertDocumentViewToAPI(event)
+    });
+    $$(this.rootElement).trigger(AnalyticsEvents.analyticsEventReady, <IAnalyticsEventArgs>{
+      event: 'CoveoClickEvent',
+      coveoAnalyticsEventData: event
     });
     return this.sendToCloud ? this.endpoint.sendDocumentViewEvent(event) : Promise.resolve(null);
   }
@@ -327,7 +343,9 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
     let modifiedMeta: IChangeableAnalyticsMetaObject = _.extend({}, meta);
     modifiedMeta['JSUIVersion'] = version.lib + ';' + version.product;
 
-    if (result) {
+    const contentIDsAreAlreadySet = modifiedMeta['contentIDKey'] && modifiedMeta['contentIDValue'];
+
+    if (!contentIDsAreAlreadySet && result) {
       let uniqueId = QueryUtils.getPermanentId(result);
       modifiedMeta['contentIDKey'] = uniqueId.fieldUsed;
       modifiedMeta['contentIDValue'] = uniqueId.fieldValue;

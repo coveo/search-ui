@@ -1,4 +1,5 @@
 import 'styling/_Quickview';
+import PopperJs from 'popper.js';
 import { QuickviewEvents } from '../../events/QuickviewEvents';
 import { ResultListEvents } from '../../events/ResultListEvents';
 import { ModalBox as ModalBoxModule } from '../../ExternalModulesShim';
@@ -23,6 +24,26 @@ import { Template } from '../Templates/Template';
 import { DefaultQuickviewTemplate } from './DefaultQuickviewTemplate';
 import { QuickviewDocument } from './QuickviewDocument';
 
+/**
+ * The allowed [`Quickview`]{@link Quickview} [`tooltipPlacement`]{@link Quickview.options.tooltipPlacement} option values. The `-start` and `-end` variations indicate relative alignement. Horizontally (`top`, `bottom`), `-start` means _left_ and `-end` means _right_. Vertically (`left`, `right`), `-start` means _top_ and `-end` means _bottom_. No variation means _center_.
+ */
+export type ValidTooltipPlacement =
+  | 'auto-start'
+  | 'auto'
+  | 'auto-end'
+  | 'top-start'
+  | 'top'
+  | 'top-end'
+  | 'right-start'
+  | 'right'
+  | 'right-end'
+  | 'bottom-end'
+  | 'bottom'
+  | 'bottom-start'
+  | 'left-end'
+  | 'left'
+  | 'left-start';
+
 export interface IQuickviewOptions {
   title?: string;
   showDate?: boolean;
@@ -30,6 +51,7 @@ export interface IQuickviewOptions {
   enableLoadingAnimation?: boolean;
   loadingAnimation?: HTMLElement | Promise<HTMLElement>;
   alwaysShow?: boolean;
+  tooltipPlacement?: ValidTooltipPlacement;
 }
 
 interface IQuickviewOpenerObject {
@@ -48,6 +70,7 @@ interface IQuickviewOpenerObject {
  * > - You can change the appearance of the `Quickview` link/button by adding elements in the inner HTML of its `div`.
  * > - You can change the content of the `Quickview` modal box link by specifying a template `id` or CSS selector (see
  * > the [`contentTemplate`]{@link Quickview.options.contentTemplate} option).
+ * > - When using Coveo for Salesforce 3.16, in an environment compliant with LockerService, ensure you use `CoveoSalesforceQuickview` (see [Changing the Default Quick View in Coveo for Salesforce](https://docs.coveo.com/en/1234/)).
  *
  * **Example:**
  * ```html
@@ -210,7 +233,19 @@ export class Quickview extends Component {
         }
         return DomUtils.getBasicLoadingAnimation();
       }
-    )
+    ),
+
+    /**
+     * Specifies the emplacement of the tooltip in relation to the `Quickview` HTML element.
+     *
+     * **Example:**
+     * > Setting this option to `top-start` will make the tooltip appear on top of the `Quickview` button, aligned to the left.
+     *
+     * Default value is `bottom`.
+     */
+    tooltipPlacement: ComponentOptions.buildCustomOption<ValidTooltipPlacement>((value: ValidTooltipPlacement) => value, {
+      defaultValue: 'bottom'
+    })
   };
 
   public static resultCurrentlyBeingRendered: IQueryResult = null;
@@ -243,26 +278,82 @@ export class Quickview extends Component {
     // If there is no content inside the Quickview div,
     // we need to add something that will show up in the result template itself
     if (/^\s*$/.test(this.element.innerHTML)) {
-      const iconForQuickview = $$('div', { className: 'coveo-icon-for-quickview' }, SVGIcons.icons.quickview);
-      SVGDom.addClassToSVGInContainer(iconForQuickview.el, 'coveo-icon-for-quickview-svg');
-      const captionForQuickview = $$('div', { className: 'coveo-caption-for-icon', tabindex: 0 }, 'Quickview'.toLocaleString()).el;
-      const div = $$('div');
-      div.append(iconForQuickview.el);
-      div.append(captionForQuickview);
-      $$(this.element).append(div.el);
+      this.buildContent();
     }
 
     this.bindClick(result);
     if (this.bindings.resultElement) {
-      this.bind.on(this.bindings.resultElement, ResultListEvents.openQuickview, () => this.open());
+      this.bind.on(this.bindings.resultElement, ResultListEvents.openQuickview, (event?: Event) => {
+        event && event.stopPropagation();
+        this.open();
+      });
     }
+  }
+
+  private buildContent() {
+    const icon = this.buildIcon();
+    const caption = this.buildCaption();
+    const content = $$('div');
+
+    content.append(icon);
+    content.append(caption);
+    $$(this.element).append(content.el);
+
+    this.buildTooltipIfNotInCardLayout(icon, caption);
+  }
+
+  private buildIcon() {
+    const icon = $$('div', { className: 'coveo-icon-for-quickview' }, SVGIcons.icons.quickview).el;
+    SVGDom.addClassToSVGInContainer(icon, 'coveo-icon-for-quickview-svg');
+    return icon;
+  }
+
+  private buildCaption() {
+    return $$('div', { className: 'coveo-caption-for-icon', tabindex: 0 }, 'Quickview'.toLocaleString()).el;
+  }
+
+  private buildTooltipIfNotInCardLayout(icon: HTMLElement, caption: HTMLElement) {
+    if (this.resultsAreInCardLayout) {
+      return;
+    }
+
+    const arrow = $$('div').el;
+    caption.appendChild(arrow);
+    this.buildPopper(icon, caption, arrow);
+  }
+
+  private get resultsAreInCardLayout() {
+    return this.queryStateModel.get(QueryStateModel.attributesEnum.layout) === 'card';
+  }
+
+  private buildPopper(icon: HTMLElement, caption: HTMLElement, arrow: HTMLElement) {
+    const popperReference = new PopperJs(icon, caption, {
+      placement: this.options.tooltipPlacement,
+      modifiers: {
+        preventOverflow: {
+          boundariesElement: $$(this.root).el,
+          padding: 0
+        },
+        arrow: {
+          element: arrow
+        },
+        // X,Y offset of the tooltip relative to the icon
+        offset: {
+          offset: '0,8'
+        }
+      }
+    });
+
+    $$(this.element).on('mouseover', () => {
+      popperReference.update();
+    });
   }
 
   /**
    * Opens the `Quickview` modal box.
    */
   public open() {
-    if (this.modalbox == null) {
+    if (Utils.isNullOrUndefined(this.modalbox)) {
       // To prevent the keyboard from opening on mobile if the search bar has focus
       Quickview.resultCurrentlyBeingRendered = this.result;
       // activeElement does not exist in LockerService
@@ -271,7 +362,7 @@ export class Quickview extends Component {
       }
 
       const openerObject = this.prepareOpenQuickviewObject();
-      this.createModalBox(openerObject).then(() => {
+      return this.createModalBox(openerObject).then(() => {
         this.bindQuickviewEvents(openerObject);
         this.animateAndOpen();
         this.logUsageAnalyticsEvent();
@@ -324,14 +415,9 @@ export class Quickview extends Component {
   }
 
   private bindQuickviewEvents(openerObject: IQuickviewOpenerObject) {
-    $$(this.modalbox.content).on(QuickviewEvents.quickviewLoaded, () => {
-      if (openerObject.loadingAnimation instanceof HTMLElement) {
-        $$(openerObject.loadingAnimation).remove();
-      } else if (openerObject.loadingAnimation instanceof Promise) {
-        openerObject.loadingAnimation.then(anim => {
-          $$(anim).remove();
-        });
-      }
+    $$(this.modalbox.content).on(QuickviewEvents.quickviewLoaded, async () => {
+      const anim = await openerObject.loadingAnimation;
+      $$(anim).remove();
     });
   }
 
@@ -378,29 +464,49 @@ export class Quickview extends Component {
     };
   }
 
-  private prepareQuickviewContent(loadingAnimation: HTMLElement | Promise<HTMLElement>): Promise<Dom> {
-    return this.options.contentTemplate.instantiateToElement(this.result).then((built: HTMLElement) => {
-      const content = $$(built);
+  private async prepareQuickviewContent(loadingAnimation: HTMLElement | Promise<HTMLElement>): Promise<Dom> {
+    const domContent = await this.instantiateTemplateToDom();
 
-      const initOptions = this.searchInterface.options;
-      const initParameters: IInitializationParameters = {
-        options: initOptions,
-        bindings: this.getBindings(),
-        result: this.result
-      };
-      return Initialization.automaticallyCreateComponentsInside(content.el, initParameters).initResult.then(() => {
-        if (content.find('.' + Component.computeCssClassName(QuickviewDocument)) != undefined && this.options.enableLoadingAnimation) {
-          if (loadingAnimation instanceof HTMLElement) {
-            content.prepend(loadingAnimation);
-          } else if (loadingAnimation instanceof Promise) {
-            loadingAnimation.then(anim => {
-              content.prepend(anim);
-            });
-          }
-        }
-        return content;
-      });
-    });
+    const initOptions = this.searchInterface.options;
+    const initParameters: IInitializationParameters = {
+      options: initOptions,
+      bindings: this.getBindings(),
+      result: this.result
+    };
+
+    await Initialization.automaticallyCreateComponentsInside(domContent.el, initParameters).initResult;
+
+    const containsQuickviewDocumentAndCustomAnimation = () =>
+      domContent.find(`.${Component.computeCssClassName(QuickviewDocument)}`) != undefined && this.options.enableLoadingAnimation;
+
+    if (containsQuickviewDocumentAndCustomAnimation()) {
+      if (loadingAnimation instanceof HTMLElement) {
+        domContent.prepend(loadingAnimation);
+      } else if (loadingAnimation instanceof Promise) {
+        loadingAnimation.then(anim => {
+          domContent.prepend(anim);
+        });
+      }
+    }
+    return domContent;
+  }
+
+  private async instantiateTemplateToDom(): Promise<Dom> {
+    let templateInstantiated: HTMLElement;
+    try {
+      templateInstantiated = await this.options.contentTemplate.instantiateToElement(this.result);
+    } catch (e) {
+      this.logger.warn(e);
+    } finally {
+      if (!templateInstantiated) {
+        this.logger.warn(
+          'An unexpected error happened while trying to render a custom template quickview, fallbacking on default quickview template...',
+          this.options.contentTemplate
+        );
+        templateInstantiated = await new DefaultQuickviewTemplate().instantiateToElement(this.result);
+      }
+    }
+    return $$(templateInstantiated);
   }
 
   private closeQuickview() {

@@ -26,7 +26,7 @@ import { AccessibleButton } from '../../utils/AccessibleButton';
  * The `ResultLink` component automatically transform a search result title into a clickable link pointing to the
  * original item.
  *
- * This component is a result template component (see [Result Templates](https://developers.coveo.com/x/aIGfAQ)).
+ * This component is a result template component (see [Result Templates](https://docs.coveo.com/en/413/)).
  */
 export class ResultLink extends Component {
   static ID = 'ResultLink';
@@ -54,7 +54,7 @@ export class ResultLink extends Component {
      * default field):
      *
      * ```html
-     * <a class="CoveoResultLink" field="@uri"></a>
+     * <a class="CoveoResultLink" data-field="@uri"></a>
      * ```
      *
      * - In the following result template, the custom `getMyKBUri()` function provides the `href` value:
@@ -100,7 +100,7 @@ export class ResultLink extends Component {
      *
      * If this option is `true`, clicking the `ResultLink` calls the
      * [`openLinkInNewWindow`]{@link ResultLink.openLinkInNewWindow} method instead of the
-     * [ `openLink`]{@link ResultLink.openLink} method.
+     * [`openLink`]{@link ResultLink.openLink} method.
      *
      * **Note:**
      * > If a search page contains a [`ResultPreferences`]{@link ResultsPreferences} component whose
@@ -196,9 +196,6 @@ export class ResultLink extends Component {
      *
      * **Example:**
      * ```javascript
-     *
-     *
-     *
      * // You can set the option in the 'init' call:
      * Coveo.init(document.querySelector("#search"), {
      *   ResultLink : {
@@ -254,6 +251,7 @@ export class ResultLink extends Component {
       this.options.openQuickview = result.raw['connectortype'] == 'ExchangeCrawler' && DeviceUtils.isMobileDevice();
     }
     this.element.setAttribute('tabindex', '0');
+    this.addHeadingRoleIfFirstResultLink();
 
     Assert.exists(this.componentOptionsModel);
     Assert.exists(this.result);
@@ -358,6 +356,28 @@ export class ResultLink extends Component {
       this.setHrefIfNotAlready() ||
       this.openLinkThatIsNotAnAnchor()
     );
+  }
+
+  private addHeadingRoleIfFirstResultLink() {
+    if (!this.isFirstResultLink) {
+      return;
+    }
+
+    this.element.setAttribute('role', 'heading');
+    this.element.setAttribute('aria-level', '2');
+  }
+
+  private get isFirstResultLink() {
+    const resultRoot = $$(this.element).closest('CoveoResult');
+
+    if (!resultRoot) {
+      return false;
+    }
+
+    const resultLinkSelector = `.${Component.computeCssClassNameForType(ResultLink.ID)}`;
+    const firstResultLink = $$(resultRoot).find(resultLinkSelector);
+
+    return firstResultLink === this.element;
   }
 
   private bindOnClickIfNotUndefined() {

@@ -3,6 +3,27 @@ import { IRankingFunction } from './RankingFunction';
 import { IGroupByRequest } from './GroupByRequest';
 import { Context } from '../ui/PipelineContext/PipelineGlobalExports';
 import { ICategoryFacetRequest } from './CategoryFacetRequest';
+import { IFacetRequest } from './Facet/FacetRequest';
+
+/**
+ * The available global configuration options when requesting facets through the [facets]{IQuery.facets} array.
+ */
+export interface IFacetOptions {
+  /**
+   * Describes a request to retrieve user actions in a query response.
+   */
+  freezeFacetOrder?: Boolean;
+}
+
+/**
+ * The information about the user we'd like to check and its actions.
+ */
+export interface IUserActionsRequest {
+  /**
+   * The id of the user for which we should check the document views.
+   */
+  tagViewsOfUser: string;
+}
 
 /**
  * The IQuery interface describes a query that can be performed on the Coveo REST Search API.
@@ -232,4 +253,24 @@ export interface IQuery {
    * This parameter is normally controlled by {@link SearchInterface.options.allowEmptyQuery} option.
    */
   allowQueriesWithoutKeywords?: boolean;
+
+  /**
+   * Specifies an array of request to retrieve facet values for the DynamicFacet component.
+   */
+  facets?: IFacetRequest[];
+
+  /**
+   * A request to retrieve user actions in the query response.
+   */
+  facetOptions?: IFacetOptions;
+
+  /**
+   * The user ID or visitor ID whose item views should be tagged in the query results
+   * (see the [isUserActionView]{@link IQueryResult.isUserActionView} property of the [IQueryResult]{@link IQueryResult} interface).
+   *
+   * **Examples:**
+   *  - asmith@example.com
+   *  - 6318b0c6-9397-4d70-b393-cf4770fd1bab
+   */
+  userActions?: IUserActionsRequest;
 }

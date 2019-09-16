@@ -23,7 +23,7 @@ export class DefaultResultTemplate extends Template {
     this.addFields(Initialization.getRegisteredFieldsForQuery());
   }
 
-  instantiateToString(object: IQueryResult, instantiateOptions: IInstantiateTemplateOptions = {}): string {
+  public instantiateToString(object: IQueryResult, instantiateOptions: IInstantiateTemplateOptions = {}): string {
     Assert.exists(object);
     let mergedOptions = new DefaultInstantiateTemplateOptions().merge(instantiateOptions);
     object = _.extend({}, object, UnderscoreTemplate.templateHelpers);
@@ -48,23 +48,21 @@ export class DefaultResultTemplate extends Template {
     return this.getFallbackTemplate();
   }
 
-  getFields() {
+  public getFields() {
     var defaultTemplates = _.map(TemplateCache.getDefaultTemplates(), name => TemplateCache.getTemplate(name));
     return _.flatten(_.map(defaultTemplates, (template: Template) => template.getFields()));
   }
 
-  getType() {
+  public getType() {
     return 'DefaultResultTemplate';
   }
 
-  getFallbackTemplate(): string {
+  public getFallbackTemplate(): string {
     let titleContainer = $$('div', {
       className: 'coveo-title'
     });
 
-    let resultLink = $$('a', {
-      className: 'CoveoResultLink'
-    });
+    let resultLink = $$('a', { className: 'CoveoResultLink' });
 
     titleContainer.append(resultLink.el);
 

@@ -1,6 +1,8 @@
 @import 'bourbon/bourbon';
 @import 'Variables';
 @import 'mixins/mediaQuery';
+@import 'mixins/breadcrumb';
+
 .coveo-simplefilter-header-wrapper {
   width: 100%;
   margin: auto;
@@ -149,28 +151,15 @@
 }
 
 .coveo-simplefilter-breadcrumb-title {
-  @include breadcrumbTitle();
+  @include breadcrumb-title();
 }
 
 .coveo-simplefilter-breadcrumb-value {
-  @include clearButton('.coveo-simplefilter-breadcrumb-clear');
-  @include clickableVibrant();
-  display: inline-block;
-  font-size: $font-size-smaller;
-  margin-right: 20px;
+  @include breadcrumb-value();
 }
 
 .coveo-simplefilter-breadcrumb-clear {
-  display: inline-block;
-  margin-left: 5px;
-  position: relative;
-  top: 5px;
-  @include clearButton('.coveo-breadcrumb-clear-all-icon');
-}
-
-.coveo-simplefilter-breadcrumb-clear-svg {
-  position: absolute;
-  top: -15px;
+  @include breadcrumb-value-clear();
 }
 
 .coveo-simplefilter-toggle-down-svg {

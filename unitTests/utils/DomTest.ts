@@ -1,7 +1,6 @@
 /// <reference path="../../lib/jasmine/index.d.ts" />
+import { $$, Dom } from '../../src/utils/Dom';
 import { registerCustomMatcher } from '../CustomMatchers';
-import { Dom } from '../../src/utils/Dom';
-import { $$ } from '../../src/utils/Dom';
 import { Simulate } from '../Simulate';
 
 interface IJQuery {
@@ -30,6 +29,56 @@ export function DomTests() {
 
       afterEach(() => {
         Simulate.removeJQuery();
+      });
+
+      describe('when calling #isValidElement', () => {
+        it('should respond true when a valid element is given', () => {
+          const NORMAL_ELEMENT = document.createElement('div');
+          expect($$(NORMAL_ELEMENT).isValid()).toBeTruthy();
+        });
+
+        it('should respond false when a invalid element is given', () => {
+          const NOT_AN_ELEMENT = new Event('resize') as any;
+          expect($$(NOT_AN_ELEMENT).isValid()).toBeFalsy();
+        });
+
+        it('should respond false when a locked element is given such as in a LockerService context', () => {
+          const LOCKED_LOCKER_SERVICE_ELEMENT = {} as any;
+          expect($$(LOCKED_LOCKER_SERVICE_ELEMENT).isValid()).toBeFalsy();
+        });
+      });
+
+      describe('without custom event (IE11)', () => {
+        let customEvent;
+        beforeAll(() => {
+          customEvent = CustomEvent;
+          delete window['CustomEvent'];
+        });
+
+        afterAll(() => {
+          window['CustomEvent'] = customEvent;
+        });
+
+        it('using trigger should work properly', () => {
+          registerCustomMatcher();
+          const spy = jasmine.createSpy('spy');
+          new Dom(el).on('click', spy);
+          new Dom(el).trigger('click');
+          expect(spy).toHaveBeenCalled();
+
+          const spy2 = jasmine.createSpy('spy2');
+          new Dom(el).on('foo', spy2);
+          new Dom(el).trigger('foo', { bar: 'baz' });
+          expect(spy2).eventHandlerToHaveBeenCalledWith({ bar: 'baz' });
+        });
+
+        it('using "trigger" with a non alpha numeric character should work properly', () => {
+          const spy = jasmine.createSpy('spy');
+          el.addEventListener('thiscontainsspace', spy);
+
+          new Dom(el).trigger('this contains space');
+          expect(spy).toHaveBeenCalledTimes(1);
+        });
       });
 
       it('insert after should work properly', () => {
@@ -85,6 +134,57 @@ export function DomTests() {
         expect(other.parentNode).toBe(parent);
         expect(other.previousSibling).toBe(sibling);
         expect(other.nextSibling).toBe(otherSibling);
+      });
+
+      describe(`when calling #show`, () => {
+        let div: HTMLElement;
+
+        beforeEach(() => {
+          div = document.createElement('div');
+          $$(div).show();
+        });
+
+        it('sets display to an empty string', () => {
+          expect(div.style.display).toBe('block');
+        });
+
+        it(`sets the aria-hidden attribute to 'false'`, () => {
+          expect(div.getAttribute('aria-hidden')).toBe('false');
+        });
+      });
+
+      describe(`when calling #hide`, () => {
+        let div: HTMLElement;
+
+        beforeEach(() => {
+          div = document.createElement('div');
+          $$(div).hide();
+        });
+
+        it(`sets display to 'none'`, () => {
+          expect(div.style.display).toBe('none');
+        });
+
+        it(`sets the aria-hidden attribute to 'true'`, () => {
+          expect(div.getAttribute('aria-hidden')).toBe('true');
+        });
+      });
+
+      describe(`when calling #unhide`, () => {
+        let div: HTMLElement;
+
+        beforeEach(() => {
+          div = document.createElement('div');
+          $$(div).unhide();
+        });
+
+        it('sets display to an empty string', () => {
+          expect(div.style.display).toBe('');
+        });
+
+        it(`sets the aria-hidden attribute to 'false'`, () => {
+          expect(div.getAttribute('aria-hidden')).toBe('false');
+        });
       });
 
       describe('prepend', () => {
@@ -615,6 +715,93 @@ export function DomTests() {
         Simulate.removeJQuery();
       });
 
+      describe('with native set to true', () => {
+        beforeEach(() => {
+          Dom.useNativeJavaScriptEvents = true;
+        });
+
+        afterEach(() => {
+          Dom.useNativeJavaScriptEvents = false;
+        });
+
+        it('when using "on" to bind a click event, when triggering a click, it calls the click handler', () => {
+          const spy = jasmine.createSpy('spy');
+          new Dom(el).on('click', spy);
+          el.click();
+          expect(spy).toHaveBeenCalled();
+        });
+
+        it('when using "on" to bind a custom event, when triggering the custom event with a payload, it calls the handler with the payload', () => {
+          const spy2 = jasmine.createSpy('spy2');
+          const test = { detail: { lorem: 'ipsum' } };
+          new Dom(el).on('foo', spy2);
+          new Dom(el).trigger('foo', test);
+
+          expect(spy2).toHaveBeenCalledWith(jasmine.any(Event), jasmine.objectContaining(test));
+        });
+
+        it('when using "on" to bind three different events having the same handler, when triggering the three events, it calls the handler three times', () => {
+          const spy3 = jasmine.createSpy('spy3');
+          const eventNames = ['1', '2', '3'];
+          new Dom(el).on(eventNames, spy3);
+          eventNames.map(evt => new CustomEvent(evt)).forEach(evt => el.dispatchEvent(evt));
+          expect(spy3).toHaveBeenCalledTimes(3);
+        });
+
+        it('using "on" with non alpha numeric character should work properly', () => {
+          const spy = jasmine.createSpy('spy');
+          new Dom(el).on('this contains space', spy);
+          new Dom(el).trigger('thiscontainsspace');
+          expect(spy).toHaveBeenCalledTimes(1);
+        });
+
+        it('using "one" should work properly', () => {
+          const spy = jasmine.createSpy('spy');
+          new Dom(el).one('click', spy);
+          el.click();
+          el.click();
+          el.click();
+          expect(spy).toHaveBeenCalled();
+          expect(spy).toHaveBeenCalledTimes(1);
+        });
+
+        it('using "one" with non alpha numeric character should work properly', () => {
+          const spy = jasmine.createSpy('spy');
+          new Dom(el).one('this contains space', spy);
+          new Dom(el).trigger('thiscontainsspace');
+          new Dom(el).trigger('thiscontainsspace');
+          new Dom(el).trigger('thiscontainsspace');
+          expect(spy).toHaveBeenCalledTimes(1);
+        });
+
+        it('using "off" should work properly', () => {
+          const spy = jasmine.createSpy('spy');
+          new Dom(el).on('test', spy);
+          new Dom(el).off('test', spy);
+          el.dispatchEvent(new CustomEvent('test'));
+          expect(spy).not.toHaveBeenCalled();
+        });
+
+        it('using "trigger" should work properly', () => {
+          const spy = jasmine.createSpy('spy');
+          new Dom(el).on('click', spy);
+          new Dom(el).trigger('click');
+          expect(spy).toHaveBeenCalled();
+
+          const spy2 = jasmine.createSpy('spy2');
+          new Dom(el).on('foo', spy2);
+          new Dom(el).trigger('foo', { bar: 'baz' });
+          expect(spy2).toHaveBeenCalledWith(jasmine.any(Event), { bar: 'baz' });
+        });
+
+        it('using "trigger" with non alpha numeric character should work properly', () => {
+          const spy = jasmine.createSpy('spy');
+          new Dom(el).on('thiscontainsspace', spy);
+          new Dom(el).trigger('this contains space');
+          expect(spy).toHaveBeenCalledTimes(1);
+        });
+      });
+
       it('using "on" should work properly', () => {
         const spy = jasmine.createSpy('spy');
         new Dom(el).on('click', spy);
@@ -662,7 +849,6 @@ export function DomTests() {
         el.click();
         el.click();
         el.click();
-        expect(spy).toHaveBeenCalled();
         expect(spy).toHaveBeenCalledTimes(1);
       });
 

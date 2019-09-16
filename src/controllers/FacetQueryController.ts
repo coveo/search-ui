@@ -86,8 +86,8 @@ export class FacetQueryController {
       this.constantExpressionToUseForFacetSearch = queryOverrideObject.constant;
     } else {
       const parts = queryBuilder.computeCompleteExpressionParts();
-      this.expressionToUseForFacetSearch = parts.withoutConstant == null ? '@uri' : parts.withoutConstant;
-      this.basicExpressionToUseForFacetSearch = parts.basic == null ? '@uri' : parts.basic;
+      this.expressionToUseForFacetSearch = parts.withoutConstant == null ? '' : parts.withoutConstant;
+      this.basicExpressionToUseForFacetSearch = parts.basic == null ? '' : parts.basic;
       this.advancedExpressionToUseForFacetSearch = parts.advanced;
       this.constantExpressionToUseForFacetSearch = parts.constant;
     }
@@ -300,7 +300,8 @@ export class FacetQueryController {
 
   private processQueryOverrideForMultiSelection(queryBuilder: QueryBuilder, mergeWith: QueryBuilderExpression) {
     if (this.facet.values.hasSelectedOrExcludedValues()) {
-      mergeWith = queryBuilder.computeCompleteExpressionPartsExcept(this.computeOurFilterExpression());
+      const ourExpression = this.computeOurFilterExpression();
+      mergeWith = queryBuilder.computeCompleteExpressionPartsExcept(ourExpression);
       if (QueryBuilderExpression.isEmpty(mergeWith)) {
         mergeWith.advanced = '@uri';
       }
@@ -310,12 +311,35 @@ export class FacetQueryController {
   }
 
   private processQueryOverrideForAdditionalFilter(queryBuilder: QueryBuilder, mergeWith: QueryBuilderExpression) {
+    if (Utils.isEmptyString(mergeWith.basic)) {
+      mergeWith.basic = queryBuilder.expression.build();
+    }
     if (Utils.isEmptyString(mergeWith.constant)) {
-      mergeWith.constant = `${this.additionalFilter}`;
+      const addExistingConstantExpressionIfNotEmpty = queryBuilder.constantExpression.isEmpty()
+        ? ''
+        : queryBuilder.constantExpression.build() + ' ';
+      mergeWith.constant = `${addExistingConstantExpressionIfNotEmpty}${this.additionalFilter}`;
     } else {
       mergeWith.constant = `${mergeWith.constant} ${this.additionalFilter}`;
     }
+
+    if (!mergeWith.advanced) {
+      mergeWith.advanced = this.getFilterExpressionWithoutOurFilterExpression(queryBuilder);
+    }
+
     return mergeWith;
+  }
+
+  private getFilterExpressionWithoutOurFilterExpression(queryBuilder: QueryBuilder) {
+    const expression = new ExpressionBuilder();
+    const advancedExpressionParts = queryBuilder.advancedExpression.getParts();
+
+    advancedExpressionParts.forEach(part => expression.add(part));
+
+    const currentFacetAdvancedExpression = this.computeOurFilterExpression();
+    expression.remove(currentFacetAdvancedExpression);
+
+    return expression.build();
   }
 
   private processQueryOverrideForEmptyValues(queryBuilder: QueryBuilder, mergeWith: QueryBuilderExpression) {

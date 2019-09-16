@@ -5,24 +5,110 @@ import { IResultsPerPageOptions } from '../../src/ui/ResultsPerPage/ResultsPerPa
 import { Simulate } from '../Simulate';
 import { FakeResults } from '../Fake';
 import { $$ } from '../../src/utils/Dom';
+import { QueryStateModel } from '../../src/Core';
+import { QUERY_STATE_ATTRIBUTES } from '../../src/models/QueryStateModel';
 
 export function ResultsPerPageTest() {
   describe('ResultsPerPage', () => {
     let test: Mock.IBasicComponentSetup<ResultsPerPage>;
 
-    beforeEach(() => {
-      test = Mock.basicComponentSetup<ResultsPerPage>(ResultsPerPage);
-      test.env.queryController.options = {};
-      test.env.queryController.options.resultsPerPage = 10;
+    function buildResultsPerPage() {
+      const cmp = Mock.basicComponentSetup<ResultsPerPage>(ResultsPerPage);
+      cmp.env.queryController.options = {};
+      cmp.env.queryController.options.resultsPerPage = 10;
+      return cmp;
+    }
+
+    beforeEach(() => (test = buildResultsPerPage()));
+
+    afterEach(() => (test = null));
+
+    describe('when calling #setResultsPerPage', () => {
+      const numOfResults = 50;
+
+      beforeEach(() => test.cmp.setResultsPerPage(numOfResults));
+
+      it('updates the resultsPerPage option in the SearchInterface', () => {
+        expect(test.cmp.searchInterface.resultsPerPage).toBe(numOfResults);
+      });
+
+      it('sets number if results in the QueryStateModel', () => {
+        expect(test.cmp.queryStateModel.set).toHaveBeenCalledWith(QueryStateModel.attributesEnum.numberOfResults, numOfResults);
+      });
+
+      it('should trigger a query', () => {
+        expect(test.env.queryController.executeQuery).toHaveBeenCalled();
+      });
+
+      it('should log the proper analytics event', () => {
+        expect(test.env.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(
+          analyticsActionCauseList.pagerResize,
+          { currentResultsPerPage: numOfResults },
+          test.cmp.element
+        );
+      });
     });
 
-    afterEach(() => {
-      test = null;
+    describe('when modifying the query state model', () => {
+      const setQueryStateModelValue = (value: any) => {
+        test.env.queryStateModel.set(QUERY_STATE_ATTRIBUTES.NUMBER_OF_RESULTS, value);
+      };
+
+      const verifyStateForNumberOfResults = (value: any) => {
+        expect(test.cmp.resultsPerPage).toBe(value);
+        expect(test.env.queryStateModel.get(QUERY_STATE_ATTRIBUTES.NUMBER_OF_RESULTS)).toBe(value);
+      };
+
+      beforeEach(() => {
+        const advancedOptions = <IResultsPerPageOptions>{
+          choicesDisplayed: [10, 25, 50, 100],
+          initialChoice: 25
+        };
+
+        const advancedSetup = new Mock.AdvancedComponentSetupOptions(null, advancedOptions, builder => {
+          return builder.withLiveQueryStateModel();
+        });
+
+        test = Mock.advancedComponentSetup<ResultsPerPage>(ResultsPerPage, advancedSetup);
+        Simulate.initialization(test.env);
+        verifyStateForNumberOfResults(25);
+      });
+
+      it('should accept setting the value to the original default 10', () => {
+        setQueryStateModelValue(10);
+        verifyStateForNumberOfResults(10);
+      });
+
+      it('should accept setting the value to the a different value than the original', () => {
+        setQueryStateModelValue(50);
+        verifyStateForNumberOfResults(50);
+      });
+
+      it('should revert to the initial state when setting an invalid value', () => {
+        setQueryStateModelValue(123);
+        verifyStateForNumberOfResults(25);
+      });
+
+      it('should revert to the initial state when setting a NaN', () => {
+        setQueryStateModelValue('foo');
+        verifyStateForNumberOfResults(25);
+      });
     });
 
-    it('should trigger a query when the number of results per page changes', () => {
-      test.cmp.setResultsPerPage(50);
-      expect(test.env.queryController.executeQuery).toHaveBeenCalled();
+    it(`when there are two ResultsPerPage components,
+    when calling #setResultsPerPage on one,
+    it updates the second component to the same number of results`, () => {
+      const numOfResults = 50;
+      const bindings = new Mock.MockEnvironmentBuilder().withLiveQueryStateModel().getBindings();
+
+      const firstResultsPerPage = new ResultsPerPage($$('div').el, {}, bindings);
+      const secondResultsPerPage = new ResultsPerPage($$('div').el, {}, bindings);
+
+      expect(secondResultsPerPage.resultsPerPage).not.toBe(numOfResults);
+
+      firstResultsPerPage.setResultsPerPage(numOfResults);
+
+      expect(secondResultsPerPage.resultsPerPage).toBe(secondResultsPerPage.resultsPerPage);
     });
 
     describe('should be able to activate and deactivate', () => {
@@ -63,27 +149,30 @@ export function ResultsPerPageTest() {
       });
     });
 
-    describe('analytics', () => {
-      it('should log the proper event when changing the number of results per page', () => {
-        test.cmp.setResultsPerPage(50);
-        expect(test.env.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(
-          analyticsActionCauseList.pagerResize,
-          { currentResultsPerPage: 50 },
-          test.cmp.element
-        );
-      });
-    });
-
     describe('exposes options', () => {
       it('choicesDisplayed allows to choose the number of results per page options', () => {
         test = Mock.optionsComponentSetup<ResultsPerPage, IResultsPerPageOptions>(ResultsPerPage, {
           choicesDisplayed: [15, 25, 35, 75]
         });
+        Simulate.initialization(test.env);
         Simulate.query(test.env, {
-          results: FakeResults.createFakeResults(1000)
+          results: FakeResults.createFakeResults(100)
         });
         expect($$(test.cmp.element).findAll('a.coveo-results-per-page-list-item-text').length).toBe(4);
         expect(test.env.queryController.options.resultsPerPage).toBe(15);
+      });
+
+      it('choicesDisplayed links display the right aria-label', () => {
+        test = Mock.optionsComponentSetup<ResultsPerPage, IResultsPerPageOptions>(ResultsPerPage, {
+          choicesDisplayed: [10, 25, 50]
+        });
+        Simulate.query(test.env, {
+          results: FakeResults.createFakeResults(100)
+        });
+
+        const anchors = $$(test.cmp.element).findAll('a.coveo-results-per-page-list-item-text');
+        expect($$(anchors[0]).text()).toBe('10');
+        expect(anchors[0].parentElement.getAttribute('aria-label')).toBe('Display 10 results per page');
       });
 
       it('initialChoice allows to choose the first choice of the number of results per page options', () => {
@@ -91,8 +180,9 @@ export function ResultsPerPageTest() {
           initialChoice: 13,
           choicesDisplayed: [3, 5, 7, 13]
         });
+        Simulate.initialization(test.env);
         Simulate.query(test.env, {
-          results: FakeResults.createFakeResults(1000)
+          results: FakeResults.createFakeResults(100)
         });
         expect(test.env.queryController.options.resultsPerPage).toBe(13);
       });
@@ -103,8 +193,9 @@ export function ResultsPerPageTest() {
           initialChoice: undefined,
           choicesDisplayed: [firstChoice, 5, 7, 13]
         });
+        Simulate.initialization(test.env);
         Simulate.query(test.env, {
-          results: FakeResults.createFakeResults(1000)
+          results: FakeResults.createFakeResults(100)
         });
         expect(test.env.queryController.options.resultsPerPage).toBe(firstChoice);
       });
@@ -116,10 +207,26 @@ export function ResultsPerPageTest() {
           initialChoice: aChoiceNotDisplayed,
           choicesDisplayed: [firstChoice, 5, 7, 13]
         });
+        Simulate.initialization(test.env);
         Simulate.query(test.env, {
-          results: FakeResults.createFakeResults(1000)
+          results: FakeResults.createFakeResults(100)
         });
         expect(test.env.queryController.options.resultsPerPage).toBe(firstChoice);
+      });
+
+      it(`when the QSM numberOfResults is equal to the default QSM number of results,
+      when the initialChoice option is not equal to the default QSM numberOfResults,
+      it sets the resultsPerPage to the initialChoice`, () => {
+        const initialChoice = 5;
+        test = Mock.optionsComponentSetup<ResultsPerPage, IResultsPerPageOptions>(ResultsPerPage, {
+          initialChoice: initialChoice,
+          choicesDisplayed: [initialChoice, 10, 15, 20]
+        });
+        Simulate.initialization(test.env);
+        Simulate.query(test.env, {
+          results: FakeResults.createFakeResults(100)
+        });
+        expect(test.env.queryController.options.resultsPerPage).toBe(initialChoice);
       });
     });
   });

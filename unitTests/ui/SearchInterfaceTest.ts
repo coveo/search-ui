@@ -21,6 +21,7 @@ import * as Mock from '../MockEnvironment';
 import { Simulate } from '../Simulate';
 import { SearchEndpoint } from '../Test';
 import { NoopHistoryController } from '../../src/controllers/NoopHistoryController';
+import { MockEnvironmentBuilder } from '../MockEnvironment';
 
 export function SearchInterfaceTest() {
   describe('SearchInterface', () => {
@@ -130,74 +131,57 @@ export function SearchInterfaceTest() {
     it('should set the correct css class on facet section, if available', () => {
       const facetSection = $$('div', { className: 'coveo-facet-column' });
       cmp.element.appendChild(facetSection.el);
+      cmp.queryController.options.endpoint = Mock.mockSearchEndpoint();
+      const env = new MockEnvironmentBuilder().withRoot(cmp.element).build();
 
-      $$(cmp.element).trigger(QueryEvents.querySuccess, {
-        results: FakeResults.createFakeResults(0)
-      });
+      Simulate.query(env, { results: FakeResults.createFakeResults(0) });
       expect(facetSection.hasClass('coveo-no-results')).toBe(true);
 
-      $$(cmp.element).trigger(QueryEvents.querySuccess, {
-        results: FakeResults.createFakeResults(10)
-      });
+      Simulate.query(env, { results: FakeResults.createFakeResults(10) });
       expect(facetSection.hasClass('coveo-no-results')).toBe(false);
 
-      $$(cmp.element).trigger(QueryEvents.queryError);
+      Simulate.queryError(env);
       expect(facetSection.hasClass('coveo-no-results')).toBe(true);
 
-      $$(cmp.element).trigger(QueryEvents.querySuccess, {
-        results: FakeResults.createFakeResults(10)
-      });
+      Simulate.query(env, { results: FakeResults.createFakeResults(10) });
       expect(facetSection.hasClass('coveo-no-results')).toBe(false);
     });
 
     it('should set the correct css class on result section, if available', () => {
       const resultsSection = $$('div', { className: 'coveo-results-column' });
-
       cmp.element.appendChild(resultsSection.el);
-      $$(cmp.element).trigger(QueryEvents.querySuccess, {
-        results: FakeResults.createFakeResults(0)
-      });
+      cmp.queryController.options.endpoint = Mock.mockSearchEndpoint();
+      const env = new MockEnvironmentBuilder().withRoot(cmp.element).build();
+
+      Simulate.query(env, { results: FakeResults.createFakeResults(0) });
       expect(resultsSection.hasClass('coveo-no-results')).toBe(true);
 
-      $$(cmp.element).trigger(QueryEvents.querySuccess, {
-        results: FakeResults.createFakeResults(10)
-      });
-
+      Simulate.query(env, { results: FakeResults.createFakeResults(10) });
       expect(resultsSection.hasClass('coveo-no-results')).toBe(false);
 
-      $$(cmp.element).trigger(QueryEvents.queryError);
-
+      Simulate.queryError(env);
       expect(resultsSection.hasClass('coveo-no-results')).toBe(true);
 
-      $$(cmp.element).trigger(QueryEvents.querySuccess, {
-        results: FakeResults.createFakeResults(10)
-      });
-
+      Simulate.query(env, { results: FakeResults.createFakeResults(10) });
       expect(resultsSection.hasClass('coveo-no-results')).toBe(false);
     });
 
     it('should set the correct css class on recommendation section, if available', () => {
       const recommendationSection = $$('div', { className: 'coveo-recommendation-main-section' });
-
       cmp.element.appendChild(recommendationSection.el);
+      cmp.queryController.options.endpoint = Mock.mockSearchEndpoint();
+      const env = new MockEnvironmentBuilder().withRoot(cmp.element).build();
 
-      $$(cmp.element).trigger(QueryEvents.querySuccess, {
-        results: FakeResults.createFakeResults(0)
-      });
-
+      Simulate.query(env, { results: FakeResults.createFakeResults(0) });
       expect(recommendationSection.hasClass('coveo-no-results')).toBe(true);
-      $$(cmp.element).trigger(QueryEvents.querySuccess, {
-        results: FakeResults.createFakeResults(10)
-      });
 
+      Simulate.query(env, { results: FakeResults.createFakeResults(10) });
       expect(recommendationSection.hasClass('coveo-no-results')).toBe(false);
-      $$(cmp.element).trigger(QueryEvents.queryError);
 
+      Simulate.queryError(env);
       expect(recommendationSection.hasClass('coveo-no-results')).toBe(true);
-      $$(cmp.element).trigger(QueryEvents.querySuccess, {
-        results: FakeResults.createFakeResults(10)
-      });
 
+      Simulate.query(env, { results: FakeResults.createFakeResults(10) });
       expect(recommendationSection.hasClass('coveo-no-results')).toBe(false);
     });
 
@@ -586,9 +570,10 @@ export function SearchInterfaceTest() {
         });
       });
 
-      describe('when allowQueriesWithoutKeywords if false', () => {
+      describe('when allowQueriesWithoutKeywords is false', () => {
+        let searchInterface: SearchInterface;
         beforeEach(() => {
-          setupSearchInterface({ allowQueriesWithoutKeywords: false });
+          searchInterface = setupSearchInterface({ allowQueriesWithoutKeywords: false });
         });
 
         it('it does cancel the query if there are no keywords', done => {
@@ -616,6 +601,25 @@ export function SearchInterfaceTest() {
         it('it should set a flag in the query', () => {
           const simulation = Simulate.query(env);
           expect(simulation.queryBuilder.build().allowQueriesWithoutKeywords).toBe(false);
+        });
+
+        it('should not cancel the query if there is no keyword currently, but there is a previous query available which contains keyword', done => {
+          searchInterface.queryController.getLastQuery = () => {
+            const queryBuilder = new QueryBuilder();
+            queryBuilder.expression.add('foo');
+            return queryBuilder.build();
+          };
+
+          $$(div).on(QueryEvents.doneBuildingQuery, (e, args: IDoneBuildingQueryEventArgs) => {
+            expect(args.cancel).toBe(false);
+            expect(args.queryBuilder.build().q).toBe('foo');
+            done();
+          });
+
+          const currentlyEmptyQueryBuilder = new QueryBuilder();
+          Simulate.query(env, {
+            queryBuilder: currentlyEmptyQueryBuilder
+          });
         });
 
         describe('using css classes', () => {

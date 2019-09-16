@@ -4,6 +4,7 @@ import { IOmniboxData, IOmniboxDataRow } from '../ui/Omnibox/OmniboxInterface';
 import { Omnibox } from '../ui/Omnibox/Omnibox';
 import { Suggestion } from '../magicbox/SuggestionsManager';
 import { Result } from '../magicbox/Result/Result';
+import { IQuerySuggestRequest, IQuerySuggestCompletion } from '../rest/QuerySuggest';
 
 /**
  * The `IPopulateOmniboxSuggestionsEventArgs` interface describes the object that all
@@ -27,6 +28,24 @@ export interface IPopulateOmniboxEventRow extends IOmniboxDataRow {}
 
 export interface IOmniboxPreprocessResultForQueryEventArgs {
   result: Result;
+}
+
+export interface IBuildingQuerySuggestArgs {
+  payload: IQuerySuggestRequest;
+}
+
+export interface IQuerySuggestSuccessArgs {
+  completions: IQuerySuggestCompletion[];
+}
+
+/**
+ * Describes the object that all [`querySuggestGetFocus`]{@link querySuggestGetFocus} and [`querySuggestSelection`]{@link querySuggestSelection} event handlers receive as an argument.
+ */
+export interface IQuerySuggestSelection {
+  /**
+   * The query suggestion that had focus or was selected.
+   */
+  suggestion: string;
 }
 
 /**
@@ -53,4 +72,41 @@ export class OmniboxEvents {
   public static populateOmniboxSuggestions = 'populateOmniboxSuggestions';
 
   public static omniboxPreprocessResultForQuery = 'omniboxPreprocessResultForQuery';
+
+  /**
+   * Triggered by the [`Omnibox`]{@link Omnibox} component before sending a query suggestion request to the Search API.
+   *
+   * Allows external functions to refine the payload b3efore sending the request.
+   *
+   * This event is only triggered by standard ML-powered query suggestions, and not {@link AnalyticsSuggestions} or {@link FieldSuggestions}.
+   */
+  public static buildingQuerySuggest = 'buildingQuerySuggest';
+  /**
+   * Triggered by the [`Omnibox`]{@link Omnibox} component when query suggestions are received from the Search API.
+   *
+   * Allows external functions to look into the received query suggestions, and modify them if needed.
+   *
+   * This event is only triggered by standard ML-powered query suggestions, and not {@link AnalyticsSuggestions} or {@link FieldSuggestions}.
+   */
+  public static querySuggestSuccess = 'querySuggestSuccess';
+  /**
+   * Triggered by the [`Omnibox`]{@link Omnibox} component when a query suggestion has finished rendering.
+   */
+  public static querySuggestRendered = 'querySuggestRendered';
+  /**
+   * Triggered by the [`Omnibox`]{@link Omnibox} component when a query suggestion gets focus following a mouse hovering or keyboard navigation event.
+   *
+   * All `querySuggestGetFocus` event handlers receive an object implementing the [`IQuerySuggestSelection`]{@link IQuerySuggestSelection} interface as an argument.
+   */
+  public static querySuggestGetFocus = 'querySuggestGetFocus';
+  /**
+   * Triggered by the [`Omnibox`]{@link Omnibox} component when a query suggestion loses focus following a mouse hovering or keyboard navigation event.
+   */
+  public static querySuggestLoseFocus = 'querySuggestLooseFocus';
+  /**
+   * Triggered by the [`Omnibox`]{@link Omnibox} component when a query suggestion is selected by a mouse click or pressing the enter key.
+   *
+   * All `querySuggestSelection` event handlers receive an object implementing the [`IQuerySuggestSelection`]{@link IQuerySuggestSelection} interface as an argument.
+   */
+  public static querySuggestSelection = 'querySuggestSelection';
 }

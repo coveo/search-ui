@@ -1,12 +1,12 @@
-import { IFacetValueSuggestionsOptions, FacetValueSuggestions } from '../../src/ui/FacetValueSuggestions/FacetValueSuggestions';
-import * as Mock from '../MockEnvironment';
-import { IFieldOption } from '../../src/ui/Base/ComponentOptions';
-import { $$, OmniboxEvents, QueryStateModel, l } from '../Test';
-import { Omnibox, IOmniboxSuggestion } from '../../src/ui/Omnibox/Omnibox';
 import { IPopulateOmniboxSuggestionsEventArgs } from '../../src/events/OmniboxEvents';
-import { IFacetValueSuggestionRow, IFacetValueSuggestionsProvider } from '../../src/ui/FacetValueSuggestions/FacetValueSuggestionsProvider';
-import { QuerySuggestAddon } from '../../src/ui/Omnibox/QuerySuggestAddon';
 import { Suggestion } from '../../src/magicbox/SuggestionsManager';
+import { IFieldOption } from '../../src/ui/Base/ComponentOptions';
+import { FacetValueSuggestions, IFacetValueSuggestionsOptions } from '../../src/ui/FacetValueSuggestions/FacetValueSuggestions';
+import { IFacetValueSuggestionRow, IFacetValueSuggestionsProvider } from '../../src/ui/FacetValueSuggestions/FacetValueSuggestionsProvider';
+import { IOmniboxSuggestion, Omnibox } from '../../src/ui/Omnibox/Omnibox';
+import { QuerySuggestAddon } from '../../src/ui/Omnibox/QuerySuggestAddon';
+import * as Mock from '../MockEnvironment';
+import { $$, l, OmniboxEvents, QueryStateModel } from '../Test';
 
 export function FacetValueSuggestionsTest() {
   describe('FacetValueSuggestions', () => {
@@ -126,6 +126,55 @@ export function FacetValueSuggestionsTest() {
             )
           );
           done();
+        });
+      });
+    });
+
+    describe('when the field is a category field', () => {
+      beforeEach(() => {
+        setUpKeywordInOmnibox(aKeyword);
+        setUpOmniboxSuggestionsToReturn([getOmniboxSuggestionValue()]);
+        test.cmp.options.isCategoryField = true;
+      });
+
+      describe('with standard delimiter', () => {
+        beforeEach(() => {
+          setUpSuggestionsFromProviderToReturn([
+            { field: someField, keyword: aKeyword, numberOfResults: 10, score: { distanceFromTotalForField: 100 }, value: 'a|b|c|d' }
+          ]);
+        });
+
+        it('should modify the state by correctly splitting the field value', async done => {
+          const resultingArgs = await triggerPopulateOmniboxEvent();
+
+          firstSuggestion(resultingArgs).then(result => {
+            result[0].onSelect();
+            expect(test.env.queryStateModel.set).toHaveBeenCalledWith(QueryStateModel.attributesEnum.fv, {
+              [someField]: ['a', 'b', 'c', 'd']
+            });
+            done();
+          });
+        });
+      });
+
+      describe('with a custom delimiter', () => {
+        beforeEach(() => {
+          setUpSuggestionsFromProviderToReturn([
+            { field: someField, keyword: aKeyword, numberOfResults: 10, score: { distanceFromTotalForField: 100 }, value: 'a>b>c>d' }
+          ]);
+          test.cmp.options.categoryFieldDelimitingCharacter = '>';
+        });
+
+        it('should modify the state by correctly splitting the field value', async done => {
+          const resultingArgs = await triggerPopulateOmniboxEvent();
+
+          firstSuggestion(resultingArgs).then(result => {
+            result[0].onSelect();
+            expect(test.env.queryStateModel.set).toHaveBeenCalledWith(QueryStateModel.attributesEnum.fv, {
+              [someField]: ['a', 'b', 'c', 'd']
+            });
+            done();
+          });
         });
       });
     });
@@ -334,26 +383,6 @@ export function FacetValueSuggestionsTest() {
           done();
         });
       });
-    });
-
-    it('caches results by keywords', async done => {
-      test.cmp.options.useValueFromSearchbox = true;
-      test.cmp.options.useQuerySuggestions = false;
-
-      const anotherKeyword = 'anotherkeyword';
-      await triggerPopulateOmniboxEvent();
-      await triggerPopulateOmniboxEvent();
-
-      expect(facetValueSuggestionsProvider.getSuggestions).toHaveBeenCalledTimes(1);
-      expect(facetValueSuggestionsProvider.getSuggestions).toHaveBeenCalledWith([aKeyword]);
-
-      setUpKeywordInOmnibox(anotherKeyword);
-      await triggerPopulateOmniboxEvent();
-
-      expect(facetValueSuggestionsProvider.getSuggestions).toHaveBeenCalledTimes(2);
-      expect(facetValueSuggestionsProvider.getSuggestions).toHaveBeenCalledWith([anotherKeyword]);
-
-      done();
     });
   });
 }

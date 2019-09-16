@@ -56,6 +56,10 @@ export class FacetSearch implements IFacetSearch {
     $$(facet.root).on(InitializationEvents.nuke, () => this.handleNuke());
   }
 
+  public get facetType() {
+    return Facet.ID;
+  }
+
   /**
    * Build the search component and return an `HTMLElement` which can be appended to the {@link Facet}.
    * @returns {HTMLElement}
@@ -108,7 +112,11 @@ export class FacetSearch implements IFacetSearch {
         .then((fieldValues: IIndexFieldValue[]) => {
           this.facet.usageAnalytics.logCustomEvent<IAnalyticsFacetMeta>(
             analyticsActionCauseList.facetSearch,
-            { facetId: this.facet.options.id, facetTitle: this.facet.options.title },
+            {
+              facetId: this.facet.options.id,
+              facetField: this.facet.options.field.toString(),
+              facetTitle: this.facet.options.title
+            },
             this.facet.root
           );
           this.facet.logger.debug('Received field values', fieldValues);
@@ -168,7 +176,7 @@ export class FacetSearch implements IFacetSearch {
       this.triggerNewFacetSearch(this.buildParamsForNormalSearch());
     } else {
       if (this.searchResults.style.display != 'none') {
-        this.performSelectActionOnCurrentSearchResult();
+        this.performActionOnCurrentSearchResult();
         this.dismissSearchResults();
       } else if ($$(this.search).is('.coveo-facet-search-no-results')) {
         this.selectAllValuesMatchingSearch();
@@ -197,6 +205,10 @@ export class FacetSearch implements IFacetSearch {
 
   public getValueInInputForFacetSearch() {
     return this.facetSearchElement.getValueInInputForFacetSearch();
+  }
+
+  public updateAriaLive(text: string) {
+    this.facet.searchInterface.ariaLive.updateText(text);
   }
 
   private get input() {
@@ -286,13 +298,13 @@ export class FacetSearch implements IFacetSearch {
     if (!facetSearchParameters.fetchMore) {
       $$(this.searchResults).empty();
     }
-    let selectAll = document.createElement('li');
-    if (Utils.isNonEmptyString(facetSearchParameters.valueToSearch)) {
-      $$(selectAll).addClass(['coveo-facet-selectable', 'coveo-facet-search-selectable', 'coveo-facet-search-select-all']);
-      $$(selectAll).text(l('SelectAll'));
-      $$(selectAll).on('click', () => this.selectAllValuesMatchingSearch());
-      this.facetSearchElement.appendToSearchResults(selectAll);
+
+    const facetSearchHasQuery = Utils.isNonEmptyString(facetSearchParameters.valueToSearch);
+
+    if (facetSearchHasQuery) {
+      this.appendSelectAllResultsButton();
     }
+
     let facetValues = map(fieldValues, fieldValue => {
       return FacetValue.create(fieldValue);
     });
@@ -305,9 +317,21 @@ export class FacetSearch implements IFacetSearch {
       this.currentlyDisplayedResults = pluck(facetValues, 'value');
     }
 
-    each($$(this.searchResults).findAll('.coveo-facet-selectable'), (elem: HTMLElement) => {
+    each($$(this.searchResults).findAll('.coveo-facet-selectable'), (elem: HTMLElement, index: number) => {
+      $$(elem).setAttribute('id', `coveo-facet-search-${this.facet.options.id}-suggestion-${index}`);
+      $$(elem).setAttribute('role', 'option');
+      $$(elem).setAttribute('aria-selected', 'false');
       $$(elem).addClass('coveo-facet-search-selectable');
     });
+  }
+
+  private appendSelectAllResultsButton() {
+    const selectAll = document.createElement('li');
+    $$(selectAll).addClass(['coveo-facet-selectable', 'coveo-facet-search-selectable', 'coveo-facet-search-select-all']);
+    $$(selectAll).text(l('SelectAll'));
+    $$(selectAll).setAttribute('aria-hidden', 'true');
+    $$(selectAll).on('click', () => this.selectAllValuesMatchingSearch());
+    this.facetSearchElement.appendToSearchResults(selectAll);
   }
 
   private buildParamsForNormalSearch() {
@@ -348,12 +372,21 @@ export class FacetSearch implements IFacetSearch {
     return $$(target).findAll('.coveo-facet-selectable');
   }
 
-  private performSelectActionOnCurrentSearchResult() {
+  private performActionOnCurrentSearchResult() {
     let current = $$(this.searchResults).find('.coveo-facet-search-current-result');
     Assert.check(current != undefined);
 
-    let checkbox = <HTMLInputElement>$$(current).find('input[type="checkbox"]');
-    if (checkbox != undefined) {
+    const shouldExclude = $$(current).hasClass('coveo-facet-value-will-exclude');
+
+    if (shouldExclude) {
+      const excludeIcon = $$(current).find('.coveo-facet-value-exclude');
+      excludeIcon.click();
+      return;
+    }
+
+    const checkbox = <HTMLInputElement>$$(current).find('input[type="checkbox"]');
+
+    if (checkbox) {
       checkbox.checked = true;
       $$(checkbox).trigger('change');
     } else {

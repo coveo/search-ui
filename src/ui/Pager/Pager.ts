@@ -17,12 +17,13 @@ import { Initialization } from '../Base/Initialization';
 import { Assert } from '../../misc/Assert';
 import { l } from '../../strings/Strings';
 import { $$ } from '../../utils/Dom';
-import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
 import { exportGlobally } from '../../GlobalExports';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { SVGDom } from '../../utils/SVGDom';
 import 'styling/_Pager';
 import { AccessibleButton } from '../../utils/AccessibleButton';
+import { ResultListEvents } from '../../events/ResultListEvents';
+import { ResultListUtils } from '../../utils/ResultListUtils';
 
 export interface IPagerOptions {
   numberOfPages: number;
@@ -100,12 +101,10 @@ export class Pager extends Component {
     })
   };
 
-  /**
-   * The current page (1-based index).
-   */
-  public currentPage: number;
   private listenToQueryStateChange = true;
   private ignoreNextQuerySuccess = false;
+
+  private _currentPage: number;
 
   // The normal behavior of this component is to reset to page 1 when a new
   // query is performed by other components (i.e. not pagers).
@@ -138,10 +137,32 @@ export class Pager extends Component {
     this.bind.onQueryState(MODEL_EVENTS.CHANGE_ONE, QUERY_STATE_ATTRIBUTES.FIRST, (data: IAttributeChangedEventArg) =>
       this.handleQueryStateModelChanged(data)
     );
+    this.addAlwaysActiveListeners();
 
     this.list = document.createElement('ul');
     $$(this.list).addClass('coveo-pager-list');
     element.appendChild(this.list);
+  }
+
+  /**
+   * The current page (1-based index).
+   */
+  public get currentPage(): number {
+    return this._currentPage;
+  }
+
+  public set currentPage(value: number) {
+    let sanitizedValue = value;
+
+    if (isNaN(value)) {
+      this.logger.warn(`Unable to set pager current page to an invalid value: ${value}. Resetting to 1.`);
+      sanitizedValue = 1;
+    }
+
+    sanitizedValue = Math.max(Math.min(sanitizedValue, this.getMaxNumberOfPagesForCurrentResultsPerPage()), 1);
+    sanitizedValue = Math.floor(sanitizedValue);
+
+    this._currentPage = sanitizedValue;
   }
 
   /**
@@ -154,7 +175,7 @@ export class Pager extends Component {
    */
   public setPage(pageNumber: number, analyticCause: IAnalyticsActionCause = analyticsActionCauseList.pagerNumber) {
     Assert.exists(pageNumber);
-    this.currentPage = Math.max(Math.min(pageNumber, this.getMaxNumberOfPagesForCurrentResultsPerPage()), 1);
+    this.currentPage = pageNumber;
     this.updateQueryStateModel(this.getFirstResultNumber(this.currentPage));
     this.usageAnalytics.logCustomEvent<IAnalyticsPagerMeta>(analyticCause, { pagerNumber: this.currentPage }, this.element);
     this.queryController.executeQuery({
@@ -182,13 +203,19 @@ export class Pager extends Component {
     this.setPage(this.currentPage + 1, analyticsActionCauseList.pagerNext);
   }
 
+  private addAlwaysActiveListeners() {
+    this.searchInterface.element.addEventListener(ResultListEvents.newResultsDisplayed, () =>
+      ResultListUtils.hideIfInfiniteScrollEnabled(this)
+    );
+  }
+
   private getMaxNumberOfPagesForCurrentResultsPerPage() {
     return Math.ceil(this.options.maximumNumberOfResultsFromIndex / this.searchInterface.resultsPerPage);
   }
 
   private handleNewQuery(data: INewQueryEventArgs) {
-    const triggeredByPager = data && data.origin && data.origin.type == Pager.ID;
-    if (this.needToReset && !triggeredByPager) {
+    const triggeredByPagerOrDebugMode = data && data.origin && (data.origin.type == Pager.ID || data.origin.type == 'Debug');
+    if (this.needToReset && !triggeredByPagerOrDebugMode) {
       this.currentPage = 1;
       this.updateQueryStateModel(this.getFirstResultNumber(this.currentPage));
     }
@@ -223,16 +250,23 @@ export class Pager extends Component {
           $$(listItemValue).addClass(['coveo-pager-list-item-text', 'coveo-pager-anchor']);
           $$(listItemValue).text(i.toString(10));
 
-          let listItem = $$('li', { className: 'coveo-pager-list-item', tabindex: 0 }).el;
-          if (i == this.currentPage) {
+          const page = i;
+          const listItem = $$('li', {
+            className: 'coveo-pager-list-item',
+            tabindex: 0
+          }).el;
+          if (page === this.currentPage) {
             $$(listItem).addClass('coveo-active');
           }
 
-          ((pageNumber: number) => {
-            let clickAction = () => this.handleClickPage(pageNumber);
-            $$(listItem).on('click', clickAction);
-            $$(listItem).on('keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, clickAction));
-          })(i);
+          const clickAction = () => this.handleClickPage(page);
+
+          new AccessibleButton()
+            .withElement(listItem)
+            .withLabel(l('PageNumber', i.toString(10)))
+            .withClickAction(clickAction)
+            .withEnterKeyboardAction(clickAction)
+            .build();
 
           listItem.appendChild(listItemValue);
           this.list.appendChild(listItem);

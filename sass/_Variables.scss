@@ -91,18 +91,17 @@ $standard-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 
 @mixin clickable($dark-background: false) {
   color: $coveo-blue;
-  @if $dark-background==true {
-    color: $color-coveo-for-salesforce;
-  }
   text-decoration: none;
   cursor: pointer;
+  @if $dark-background==true {
+    color: $color-blueish-white;
+    text-decoration: underline;
+  }
   &:visited,
   &:visited:hover {
-    text-decoration: none;
-    @if $dark-background==false {
-      color: $color-purple;
-    } @else {
-      color: $color-coveo-for-salesforce;
+    color: $color-purple;
+    @if $dark-background==true {
+      color: $color-blueish-white;
     }
   }
   &:hover,
@@ -110,22 +109,10 @@ $standard-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     text-decoration: underline;
   }
   &.coveo-selected * {
-    @if $dark-background==false {
-      color: $coveo-blue;
-    } @else {
-      color: $color-coveo-for-salesforce;
+    color: $coveo-blue;
+    @if $dark-background==true {
+      color: $color-blueish-white;
     }
-  }
-}
-
-@mixin clickableVibrant($dark-background: false) {
-  @include clickable($dark-background);
-  color: $coveo-blue;
-  &:hover {
-    color: $coveo-blue;
-  }
-  &.coveo-selected * {
-    color: $coveo-blue;
   }
 }
 
@@ -162,11 +149,6 @@ $standard-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   }
 }
 
-@mixin breadcrumbTitle {
-  color: $color-blueish-gray;
-  margin-right: 14px;
-}
-
 @mixin coveo-email-to-and-from {
   font-size: 13px;
   a {
@@ -174,3 +156,31 @@ $standard-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     white-space: nowrap;
   }
 }
+
+@mixin linkButton {
+  @include clickable();
+
+  // These two lines are for IE11
+  overflow: visible;
+  width: auto;
+
+  padding: 0;
+  margin: 0;
+  background: none;
+  border: none;
+  color: $color-teal;
+}
+
+$allFacetsType: '
+.CoveoFacet,
+.CoveoFacetRange,
+.CoveoFacetSlider,
+.CoveoHierarchicalFacet,
+.CoveoCategoryFacet,
+.CoveoTimespanFacet,
+';
+
+$allDynamicFacetsType: '
+.CoveoDynamicFacet,
+.CoveoDynamicFacetRange,
+';

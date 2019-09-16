@@ -9,6 +9,8 @@ import { OmniboxEvents } from '../../src/events/OmniboxEvents';
 import { BreadcrumbEvents } from '../../src/events/BreadcrumbEvents';
 import { IPopulateBreadcrumbEventArgs } from '../../src/events/BreadcrumbEvents';
 import { IPopulateOmniboxEventArgs } from '../../src/events/OmniboxEvents';
+import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
+import { KEYBOARD } from '../../src/Core';
 
 export function FacetTest() {
   describe('Facet', () => {
@@ -166,6 +168,56 @@ export function FacetTest() {
       expect(test.env.queryController.executeQuery).toHaveBeenCalled();
     });
 
+    it('should log an analytics event when updating sort', () => {
+      test.cmp.updateSort('score');
+      const expectedMetadata = jasmine.objectContaining({
+        facetId: test.cmp.options.id,
+        facetField: test.cmp.options.field.toString(),
+        facetTitle: test.cmp.options.title
+      });
+      expect(test.env.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(
+        analyticsActionCauseList.facetUpdateSort,
+        expectedMetadata,
+        test.cmp.element
+      );
+    });
+
+    it('should log an analytics event when showing more results', async done => {
+      const results = FakeResults.createFakeResults(test.cmp.options.pageSize + 5);
+      const validation = Promise.resolve(results.results);
+      const spyFacetQueryController = jasmine.createSpy('spyFacetQueryController').and.returnValue(validation);
+      const expectedMetadata = jasmine.objectContaining({
+        facetId: test.cmp.options.id,
+        facetField: test.cmp.options.field.toString(),
+        facetTitle: test.cmp.options.title
+      });
+
+      test.cmp.facetQueryController.fetchMore = spyFacetQueryController as any;
+      test.cmp.showMore();
+      await validation;
+      expect(test.env.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(
+        analyticsActionCauseList.facetShowMore,
+        expectedMetadata,
+        test.cmp.element
+      );
+      done();
+    });
+
+    it('should log an analytics event when showing less results', () => {
+      const expectedMetadata = jasmine.objectContaining({
+        facetId: test.cmp.options.id,
+        facetField: test.cmp.options.field.toString(),
+        facetTitle: test.cmp.options.title
+      });
+      test.cmp.showMore();
+      test.cmp.showLess();
+      expect(test.env.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(
+        analyticsActionCauseList.facetShowLess,
+        expectedMetadata,
+        test.cmp.element
+      );
+    });
+
     it('allows to collapse', () => {
       let spy = jasmine.createSpy('collapse');
       test.cmp.ensureDom();
@@ -307,6 +359,24 @@ export function FacetTest() {
         });
 
         expect(test.cmp.options.id).toBe('anotherrandomvalue');
+      });
+
+      it("id should trim all non alpha-numeric characters except - @ $ _ . + ! * ' ( ) , , ", () => {
+        test = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, {
+          field: '@mycoolfield2',
+          id: "&@!#$%^&*(')._qwerty,,/\\=+-12345"
+        });
+
+        expect(test.cmp.options.id).toBe("@!$*(')._qwerty,,+-12345");
+      });
+
+      it('id should fallback to the facet field if it contains only characters that need to be encoded in the URL', () => {
+        test = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, {
+          field: '@mycoolfield2',
+          id: ';/?:=& "<>#%{}|^~[]`'
+        });
+
+        expect(test.cmp.options.id).toBe('@mycoolfield2');
       });
 
       it('isMultiValueField should trigger another query to update delta', () => {
@@ -580,6 +650,60 @@ export function FacetTest() {
         expect(test.cmp.facetSearch).toBeUndefined();
       });
 
+      describe(`given enableFacetSearch is set to 'true',
+      given that searching is not active`, () => {
+        const searchingCssClass = 'coveo-facet-searching';
+        const oneMoreThanNumberOfDisplayedValues = 6;
+
+        function triggerChangeOnCheckbox() {
+          const changeEvent = new Event('change');
+          test.cmp.searchContainer.checkbox.dispatchEvent(changeEvent);
+        }
+
+        beforeEach(() => {
+          const options = { field: '@field', enableFacetSearch: true };
+          test = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, options);
+          test.cmp['nbAvailableValues'] = oneMoreThanNumberOfDisplayedValues;
+          test.cmp.reset();
+
+          expect(test.cmp.element.className).not.toContain(searchingCssClass);
+        });
+
+        it(`when triggering a 'change' event on the searchContainer checkbox,
+        it actives searching`, () => {
+          triggerChangeOnCheckbox();
+          expect(test.cmp.element.className).toContain(searchingCssClass);
+        });
+
+        describe(`when triggering an 'Enter' keyup event on the searchContainer listItem`, () => {
+          function triggerEnterKeyOnAccessibleElement() {
+            Simulate.keyUp(test.cmp.searchContainer.accessibleElement, KEYBOARD.ENTER);
+          }
+
+          beforeEach(triggerEnterKeyOnAccessibleElement);
+
+          it('activates searching', () => {
+            expect(test.cmp.element.className).toContain(searchingCssClass);
+          });
+
+          it(`sets the checkbox 'checked' attribute`, () => {
+            const checkbox = test.cmp.searchContainer.checkbox;
+            const checkedAttribute = checkbox.getAttribute('checked');
+            expect(checkedAttribute).toBeTruthy();
+          });
+
+          it(`when triggering a second 'Enter' keyup event,
+          it removes the checkbox 'checked' attribute`, () => {
+            triggerEnterKeyOnAccessibleElement();
+
+            const checkbox = test.cmp.searchContainer.checkbox;
+            const checkedAttribute = checkbox.getAttribute('checked');
+
+            expect(checkedAttribute).toBeFalsy();
+          });
+        });
+      });
+
       it('facetSearchDelay should be passed to the facet search component', function(done) {
         test = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, {
           field: '@field',
@@ -757,39 +881,6 @@ export function FacetTest() {
             })
           ])
         );
-      });
-
-      it('dependsOn should specify a facet to depend on another one', () => {
-        test = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, {
-          field: '@field',
-          dependsOn: '@masterFacet'
-        });
-
-        var masterFacet = Mock.advancedComponentSetup<Facet>(
-          Facet,
-          new Mock.AdvancedComponentSetupOptions(
-            undefined,
-            {
-              field: '@masterFacet'
-            },
-            (builder: Mock.MockEnvironmentBuilder) => {
-              return builder.withRoot(test.env.root);
-            }
-          )
-        );
-
-        var results = FakeResults.createFakeResults();
-        results.groupByResults = [
-          FakeResults.createFakeGroupByResult('@field', 'foo', 15),
-          FakeResults.createFakeGroupByResult('@masterFacet', 'foo', 15)
-        ];
-
-        Simulate.query(test.env, {
-          results: results
-        });
-
-        expect($$(test.cmp.element).hasClass('coveo-facet-dependent')).toBe(true);
-        expect($$(masterFacet.cmp.element).hasClass('coveo-facet-dependent')).toBe(false);
       });
 
       it('padding container should default to coveo-facet-column', () => {

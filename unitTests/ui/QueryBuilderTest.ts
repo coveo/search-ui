@@ -1,4 +1,6 @@
 import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
+import { IFacetRequest } from '../../src/rest/Facet/FacetRequest';
+import { IGroupByRequest } from '../../src/rest/GroupByRequest';
 export function QueryBuilderTest() {
   describe('QueryBuilder', () => {
     var queryBuilder: QueryBuilder;
@@ -173,6 +175,40 @@ export function QueryBuilderTest() {
 
     it('should be able to detect if no end user keywords exist in either the basic or long expression', () => {
       expect(queryBuilder.containsEndUserKeywords()).toBeFalsy();
+    });
+
+    it('should have facets undefined if none have been added', () => {
+      expect(queryBuilder.build().facets).toBeUndefined();
+    });
+
+    it('should have facetOptions defined as an empty object', () => {
+      expect(queryBuilder.build().facetOptions).toEqual({});
+    });
+
+    it(`if groupByRequests is empty
+      should set groupBy to undefined`, () => {
+      expect(queryBuilder.groupByRequests.length).toBe(0);
+      expect(queryBuilder.build().groupBy).toBeUndefined();
+    });
+
+    it(`if groupByRequests is not empty
+      should set groupBy to groupByRequests`, () => {
+      const groupByRequest: IGroupByRequest = { field: '@allo' };
+      queryBuilder.groupByRequests.push(groupByRequest);
+
+      expect(queryBuilder.build().groupBy).toEqual([groupByRequest]);
+    });
+
+    describe('when adding a facet request', () => {
+      const facetRequest: IFacetRequest = { facetId: 'test', field: '@test' };
+
+      beforeEach(() => {
+        queryBuilder.facetRequests.push(facetRequest);
+      });
+
+      it('should add the facets parameter correctly', () => {
+        expect(queryBuilder.build().facets).toEqual([facetRequest]);
+      });
     });
   });
 }

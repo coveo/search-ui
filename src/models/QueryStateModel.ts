@@ -14,7 +14,9 @@ export const QUERY_STATE_ATTRIBUTES = {
   HD: 'hd',
   HQ: 'hq',
   QUICKVIEW: 'quickview',
-  DEBUG: 'debug'
+  DEBUG: 'debug',
+  NUMBER_OF_RESULTS: 'numberOfResults',
+  MISSING_TERMS: 'missingTerms'
 };
 
 export interface IQueryStateIncludedAttribute {
@@ -72,7 +74,9 @@ export class QueryStateModel extends Model {
     layout: 'list',
     tg: '',
     quickview: '',
-    debug: false
+    debug: false,
+    numberOfResults: 10,
+    missingTerms: []
   };
 
   static attributesEnum = {
@@ -86,7 +90,9 @@ export class QueryStateModel extends Model {
     hq: 'hq',
     tg: 'tg',
     quickview: 'quickview',
-    debug: 'debug'
+    debug: 'debug',
+    numberOfResults: 'numberOfResults',
+    missingTerms: 'missingTerms'
   };
 
   static getFacetId(id: string, include: boolean = true) {
@@ -99,10 +105,6 @@ export class QueryStateModel extends Model {
 
   static getFacetLookupValue(id: string) {
     return QueryStateModel.getFacetId(id) + ':lookupvalues';
-  }
-
-  static getCategoryFacetId(id: string) {
-    return 'cf:' + id;
   }
 
   /**
@@ -122,8 +124,8 @@ export class QueryStateModel extends Model {
    */
   public atLeastOneFacetIsActive() {
     return !_.isUndefined(
-      _.find(this.attributes, (value, key: any) => {
-        return key.indexOf('f:') == 0 && !Utils.arrayEqual(this.getDefault(key), value);
+      _.find(this.attributes, (value, key: string) => {
+        return key.match(/^f:/) && !Utils.arrayEqual(this.getDefault(key), value);
       })
     );
   }

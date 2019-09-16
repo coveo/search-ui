@@ -7,6 +7,7 @@ import 'styling/_AccessibleButton';
 export class AccessibleButton {
   private element: Dom;
   private label: string;
+  private title: string;
 
   private clickAction: (e: Event) => void;
   private enterKeyboardAction: (e: Event) => void;
@@ -38,6 +39,11 @@ export class AccessibleButton {
 
   public withLabel(label: string) {
     this.label = label;
+    return this;
+  }
+
+  public withTitle(title: string) {
+    this.title = title;
     return this;
   }
 
@@ -96,6 +102,7 @@ export class AccessibleButton {
 
     this.ensureCorrectRole();
     this.ensureCorrectLabel();
+    this.ensureTitle();
     this.ensureSelectAction();
     this.ensureUnselectAction();
     this.ensureMouseenterAndFocusAction();
@@ -106,27 +113,19 @@ export class AccessibleButton {
   }
 
   private ensureDifferentiationBetweenKeyboardAndMouseFocus() {
-    const classOnPress = 'coveo-accessible-button-pressed';
-    const classOnFocus = 'coveo-accessible-button-focused';
+    const classWhenPressed = 'coveo-accessible-button-pressed';
     $$(this.element).addClass('coveo-accessible-button');
 
-    $$(this.element).on('mousedown', () => {
-      $$(this.element).addClass(classOnPress);
-      $$(this.element).removeClass(classOnFocus);
-    });
-
-    $$(this.element).on('mouseup', () => $$(this.element).removeClass(classOnPress));
+    $$(this.element).on('mouseup', () => $$(this.element).addClass(classWhenPressed));
     $$(this.element).on('focus', () => {
-      if (!$$(this.element).hasClass(classOnPress)) {
-        $$(this.element).addClass(classOnFocus);
-      }
+      $$(this.element).removeClass(classWhenPressed);
     });
-
-    $$(this.element).on('blur', () => $$(this.element).removeClass(classOnFocus));
   }
 
   private ensureCorrectRole() {
-    this.element.setAttribute('role', 'button');
+    if (!this.element.getAttribute('role')) {
+      this.element.setAttribute('role', 'button');
+    }
   }
 
   private ensureCorrectLabel() {
@@ -135,7 +134,10 @@ export class AccessibleButton {
       return;
     }
     this.element.setAttribute('aria-label', this.label);
-    this.element.setAttribute('title', this.label);
+  }
+
+  private ensureTitle() {
+    this.title && this.element.setAttribute('title', this.title);
   }
 
   private ensureTabIndex() {
@@ -146,6 +148,18 @@ export class AccessibleButton {
     if (this.enterKeyboardAction) {
       this.ensureTabIndex();
       this.bindEvent('keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, (e: Event) => this.enterKeyboardAction(e)));
+      this.bindEvent(
+        'keydown',
+        KeyboardUtils.keypressAction(KEYBOARD.SPACEBAR, (e: Event) => {
+          e.preventDefault();
+        })
+      );
+      this.bindEvent(
+        'keyup',
+        KeyboardUtils.keypressAction(KEYBOARD.SPACEBAR, (e: Event) => {
+          this.enterKeyboardAction(e);
+        })
+      );
     }
 
     if (this.clickAction) {

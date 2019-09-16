@@ -20,6 +20,10 @@ export function OmniboxResultListTest() {
       results = FakeResults.createFakeResults();
     });
 
+    it("HTMLElement, doesn't have a DOMChild", () => {
+      expect(test.cmp.element.childElementCount).toBe(0);
+    });
+
     it('should support building results', async done => {
       const built = await test.cmp.buildResults(results);
       expect(built.length).toEqual(results.results.length);
@@ -50,13 +54,22 @@ export function OmniboxResultListTest() {
       expect(test.cmp.disabled).toBeFalsy();
     });
 
+    it('should execute a search as you type query on populateOmnibox', () => {
+      Simulate.populateOmnibox(test.env);
+      expect(test.env.queryController.executeQuery).toHaveBeenCalledWith(
+        jasmine.objectContaining({
+          searchAsYouType: true
+        })
+      );
+    });
+
     describe('when selecting an element', () => {
       let spyOnSelect: jasmine.Spy;
 
       beforeEach(() => {
         spyOnSelect = jasmine.createSpy('onClick');
         test.cmp.options.onSelect = spyOnSelect;
-        Simulate.omnibox(test.env);
+        Simulate.populateOmnibox(test.env);
       });
 
       it('should call the onSelect option when clicking on each element of the result list', async done => {
@@ -159,16 +172,30 @@ export function OmniboxResultListTest() {
         expect(test.cmp.options.layout).toEqual('list');
       });
 
-      it('headerTitle should output a title', async done => {
-        test = Mock.optionsComponentSetup<OmniboxResultList, IOmniboxResultListOptions>(OmniboxResultList, {
-          headerTitle: 'My title'
+      describe(`when the headerTitle option is specified,
+      when simulating a populate omnibox event`, () => {
+        beforeEach(() => {
+          test = Mock.optionsComponentSetup<OmniboxResultList, IOmniboxResultListOptions>(OmniboxResultList, {
+            headerTitle: 'My title'
+          });
+
+          Simulate.populateOmnibox(test.env);
         });
-        Simulate.omnibox(test.env);
-        const built = await test.cmp.buildResults(results);
-        await test.cmp.renderResults(built);
-        const header = $$(test.cmp.options.resultContainer).find('.coveo-omnibox-result-list-header');
-        expect($$(header).text()).toEqual('My title');
-        done();
+
+        it('when results is a populated array, it appends a title to the result container', async done => {
+          const built = await test.cmp.buildResults(results);
+          await test.cmp.renderResults(built);
+          const header = $$(test.cmp.options.resultsContainer).find('.coveo-omnibox-result-list-header');
+          expect($$(header).text()).toEqual('My title');
+          done();
+        });
+
+        it(`when results is an empty array, it does not append a title to the result container`, async done => {
+          await test.cmp.renderResults([]);
+          const header = $$(test.cmp.options.resultsContainer).find('.coveo-omnibox-result-list-header');
+          expect(header).toBe(null);
+          done();
+        });
       });
     });
   });

@@ -28,23 +28,22 @@ import {
 } from '../Analytics/AnalyticsActionListMeta';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
-import { ComponentOptions, IComponentOptionsObjectOptionArgs, IFieldOption } from '../Base/ComponentOptions';
+import { ComponentOptions, IComponentOptionsObjectOptionArgs, IFieldOption, IQueryExpression } from '../Base/ComponentOptions';
 import { Initialization } from '../Base/Initialization';
 import { FacetHeader } from '../Facet/FacetHeader';
 import { IDuringSlideEventArgs, IEndSlideEventArgs, ISliderGraphData, ISliderOptions, Slider } from '../Misc/Slider';
 import { ResponsiveComponentsUtils } from '../ResponsiveComponents/ResponsiveComponentsUtils';
 import { ResponsiveDropdownEvent } from '../ResponsiveComponents/ResponsiveDropdown/ResponsiveDropdown';
 import { ResponsiveFacetSlider } from '../ResponsiveComponents/ResponsiveFacetSlider';
+import { IResponsiveComponentOptions } from '../ResponsiveComponents/ResponsiveComponentsManager';
+import { ResponsiveFacetOptions } from '../ResponsiveComponents/ResponsiveFacetOptions';
 
-export interface IFacetSliderOptions extends ISliderOptions {
+export interface IFacetSliderOptions extends ISliderOptions, IResponsiveComponentOptions {
   dateField?: boolean;
-  queryOverride?: string;
+  queryOverride?: IQueryExpression;
   id?: string;
   field?: IFieldOption;
   title?: string;
-  enableResponsiveMode?: boolean;
-  responsiveBreakpoint?: number;
-  dropdownHeaderLabel?: string;
 }
 
 /**
@@ -129,7 +128,7 @@ export class FacetSlider extends Component {
      * <div class="CoveoFacetSlider" data-field="@date" data-date-field="true" data-query-override="@date>2000/01/01"></div>
      * ```
      */
-    queryOverride: ComponentOptions.buildStringOption({ section: 'Filtering' }),
+    queryOverride: ComponentOptions.buildQueryExpressionOption({ section: 'Filtering' }),
 
     /**
      * Specifies the starting boundary of the slider.
@@ -322,33 +321,7 @@ export class FacetSlider extends Component {
     valueCaption: ComponentOptions.buildCustomOption<(values: number[]) => string>(() => {
       return null;
     }),
-
-    /**
-     * Specifies whether to enable *responsive mode* for facets. Setting this options to `false` on any
-     * [`Facet`]{@link Facet} or [`FacetSlider`]{@link FacetSlider} in a search interface disables responsive mode for
-     * all other facets in the search interface.
-     *
-     * Responsive mode displays all facets under a single dropdown button whenever the width of the HTML element which
-     * the search interface is bound to reaches or falls behind a certain threshold (see
-     * {@link SearchInterface.responsiveComponents}).
-     *
-     * See also the `FacetSlider` [`dropdownHeaderLabel`]{@link FacetSlider.options.dropdownHeaderLabel} option.
-     *
-     * Default value is `true`.
-     */
-    enableResponsiveMode: ComponentOptions.buildBooleanOption({ defaultValue: true, section: 'ResponsiveOptions' }),
-
-    /**
-     * Specifies the label of the button which the end user can click to display the facets when in responsive mode. If
-     * this option is configured more than once, the button uses the first occurrence of the option as its label.
-     *
-     * Default value is "Filters".
-     */
-    dropdownHeaderLabel: ComponentOptions.buildLocalizedStringOption({ section: 'ResponsiveOptions' }),
-    responsiveBreakpoint: ComponentOptions.buildNumberOption({
-      deprecated:
-        'This option is exposed for legacy reasons. It is not recommended to use this option. Instead, use `SearchInterface.options.responsiveMediumBreakpoint` options exposed on the `SearchInterface`.'
-    })
+    ...ResponsiveFacetOptions
   };
 
   static ID = 'FacetSlider';
@@ -651,6 +624,7 @@ export class FacetSlider extends Component {
       this.reset();
       this.usageAnalytics.logSearchEvent<IAnalyticsFacetMeta>(analyticsActionCauseList.facetClearAll, {
         facetId: this.options.id,
+        facetField: this.options.field.toString(),
         facetTitle: this.options.title
       });
       this.queryController.executeQuery();
@@ -744,6 +718,7 @@ export class FacetSlider extends Component {
       this.updateAppearanceDependingOnState();
       this.usageAnalytics.logSearchEvent<IAnalyticsFacetSliderChangeMeta>(analyticsActionCauseList.facetRangeSlider, {
         facetId: this.options.id,
+        facetField: this.options.field.toString(),
         facetRangeStart: this.startOfSlider.toString(),
         facetRangeEnd: this.endOfSlider.toString()
       });
@@ -769,6 +744,7 @@ export class FacetSlider extends Component {
       this.updateQueryState();
       this.usageAnalytics.logSearchEvent<IAnalyticsFacetGraphSelectedMeta>(analyticsActionCauseList.facetRangeGraph, {
         facetId: this.options.id,
+        facetField: this.options.field.toString(),
         facetRangeStart: this.startOfSlider.toString(),
         facetRangeEnd: this.endOfSlider.toString()
       });
@@ -969,7 +945,7 @@ export class FacetSlider extends Component {
   }
 
   private trySetSliderBoundaryFromQueryResult(data: IQuerySuccessEventArgs) {
-    const groupByResults = data.results.groupByResults[this.facetQueryController.groupByRequestForFullRange];
+    const groupByResults = data.results.groupByResults[this.facetQueryController.lastGroupByRequestForFullRangeIndex];
     if (groupByResults && groupByResults.values.length > 0 && groupByResults.values[0].numberOfResults != 0) {
       this.setupInitialSliderStateStart(groupByResults.values[0].value.split('..')[0]);
       this.setupInitialSliderStateEnd(groupByResults.values[groupByResults.values.length - 1].value.split('..')[1]);

@@ -1,6 +1,6 @@
 import { IQueryResult } from '../../rest/QueryResult';
 import { Component } from '../Base/Component';
-import { IResultListOptions } from './ResultList';
+import { IResultListOptions } from './ResultListOptions';
 import _ = require('underscore');
 
 export class ResultListRenderer {
@@ -24,7 +24,7 @@ export class ResultListRenderer {
         if (endFrag) {
           resultsFragment.appendChild(endFrag);
         }
-        this.resultListOptions.resultContainer.appendChild(resultsFragment);
+        this.resultListOptions.resultsContainer.appendChild(resultsFragment);
       }
     );
   }

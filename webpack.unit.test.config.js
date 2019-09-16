@@ -1,9 +1,7 @@
 'use strict';
 const _ = require('underscore');
-const minimize = process.argv.indexOf('minimize') !== -1;
 const webpack = require('webpack');
 const path = require('path');
-const production = process.env.NODE_ENV === 'production';
 const globalizePath = __dirname + '/lib/globalize/globalize.min.js';
 
 module.exports = {

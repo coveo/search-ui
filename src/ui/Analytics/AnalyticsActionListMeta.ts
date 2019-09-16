@@ -1,3 +1,7 @@
+import { FacetValueState } from '../../rest/Facet/FacetValueState';
+import { FacetType } from '../../rest/Facet/FacetRequest';
+import { RangeType } from '../../rest/RangeValue';
+
 /**
  * The IAnalyticsActionCause interface describes the cause of an event for the analytics service.
  *
@@ -21,7 +25,6 @@ export interface IAnalyticsActionCause {
    * Example: All search box related events could have `searchbox` as their `type` value.
    */
   type: string;
-  metaMap?: { [name: string]: number };
 }
 
 export interface IAnalyticsNoMeta {}
@@ -67,6 +70,7 @@ export interface IAnalyticsDocumentViewMeta {
 
 export interface IAnalyticsOmniboxFacetMeta {
   facetId: string;
+  facetField: string;
   facetTitle: string;
   facetValue?: string;
   suggestions: string;
@@ -82,12 +86,18 @@ export interface IAnalyticsSimpleFilterMeta {
 
 export interface IAnalyticsFacetMeta {
   facetId: string;
+  facetField: string;
   facetValue?: string;
   facetTitle: string;
 }
 
+export interface IAnalyticsFacetSortMeta extends IAnalyticsFacetMeta {
+  criteria: string;
+}
+
 export interface IAnalyticsCategoryFacetMeta {
   categoryFacetId: string;
+  categoryFacetField: string;
   categoryFacetPath?: string[];
   categoryFacetTitle: string;
 }
@@ -117,8 +127,81 @@ export interface IAnalyticsOmniboxSuggestionMeta {
 
 export interface IAnalyticsFacetSliderChangeMeta {
   facetId: string;
+  facetField: string;
   facetRangeStart: any;
   facetRangeEnd: any;
+}
+
+/**
+ * Describes the current condition of a single dynamic facet value.
+ */
+export interface IAnalyticsDynamicFacetMeta {
+  /**
+   * The name of the field the dynamic facet displaying the value is based on.
+   *
+   * **Example:** `author`
+   */
+  field: string;
+  /**
+   * The unique identifier of the dynamic facet displaying the value.
+   *
+   * **Example:** `author`
+   */
+  id: string;
+  /**
+   * The title of the dynamic facet.
+   *
+   * **Example:** `Author`
+   */
+  title: string;
+  /**
+   * The original name (i.e., field value) of the dynamic facet value.
+   *
+   * **Example:** `alice_r_smith`
+   */
+  value?: string;
+  /**
+   * The minimum value of the dynamic range facet value.
+   *
+   * **Examples:**
+   * > - `0`
+   * > - `2018-01-01T00:00:00.000Z`
+   */
+  start?: RangeType;
+  /**
+   * The maximum value of the dynamic range facet value.
+   *
+   * **Examples:**
+   * > - `500`
+   * > - `2018-12-31T23:59:59.999Z`
+   */
+  end?: RangeType;
+  /**
+   * Whether the [`end`]{@link IRangeValue.end} value is included in the dynamic range facet value.
+   */
+  endInclusive?: boolean;
+  /**
+   * The current 1-based position of the dynamic facet value, relative to other values in the same dynamic facet.
+   */
+  valuePosition?: number;
+  /**
+   * The custom display name of the dynamic facet value that was interacted with.
+   *
+   * **Example:** `Alice R. Smith`
+   */
+  displayValue?: string;
+  /**
+   * The type of values displayed in the dynamic facet.
+   */
+  facetType?: FacetType;
+  /**
+   * The new state of the dynamic facet value that was interacted with.
+   */
+  state?: FacetValueState;
+  /*
+  * The 1-based position of the dynamic facet, relative to other dynamic facets in the page.
+  */
+  facetPosition?: number;
 }
 
 export interface IAnalyticsFacetGraphSelectedMeta extends IAnalyticsFacetSliderChangeMeta {}
@@ -201,13 +284,31 @@ export interface IAnalyticsSearchAlertsUpdateMeta extends IAnalyticsSearchAlerts
 
 export interface IAnalyticsSearchAlertsFollowDocumentMeta extends IAnalyticsDocumentViewMeta {
   documentSource: string;
-  documentLanguage: string;
+  documentLanguage: string[];
   contentIDKey: string;
   contentIDValue: string;
 }
 
 export interface IAnalyticsResultsLayoutChange {
   resultsLayoutChangeTo: string;
+}
+
+export interface IAnalyticsMissingTerm {
+  missingTerm: string;
+}
+
+/**
+ * Describes the object sent as metadata along with [`clickQuerySuggestPreview`]{@link analyticsActionCauseList.clickQuerySuggestPreview} usage analytics events.
+ */
+export interface IAnalyticsClickQuerySuggestPreviewMeta {
+  /**
+   * The query suggestion for which a preview item was opened.
+   */
+  suggestion: string;
+  /**
+   * The 0-based position of the preview item that was opened.
+   */
+  displayedRank: number;
 }
 
 export var analyticsActionCauseList = {
@@ -227,13 +328,12 @@ export var analyticsActionCauseList = {
    * `actionCause`: `'interfaceChange'`
    * `actionType`: `'interface'`
    *
-   * Logging an event with this actionType also adds the following key-value pair in the custom data property of the Usage Analytics HTTP service request.
+   * Logging an event with this actionType also adds the following key-value pairs in the custom data property of the Usage Analytics HTTP service request.
    * `"interfaceChangeTo"`: <newTabId>
    */
   interfaceChange: <IAnalyticsActionCause>{
     name: 'interfaceChange',
-    type: 'interface',
-    metaMap: { interfaceChangeTo: 1 }
+    type: 'interface'
   },
   /**
    * Identifies the search event that gets logged when any `hd` or `hq` gets cleared from {@link QueryStateModel}, and then triggers a new query.
@@ -241,13 +341,12 @@ export var analyticsActionCauseList = {
    * `actionCause`: `'contextRemove'`
    * `actionType`: `'misc'`
    *
-   * Logging an event with this actionType also adds the following key-value pair in the custom data property of the Usage Analytics HTTP service request.
+   * Logging an event with this actionType also adds the following key-value pairs in the custom data property of the Usage Analytics HTTP service request.
    * `"contextName"`: <contextName>
    */
   contextRemove: <IAnalyticsActionCause>{
     name: 'contextRemove',
-    type: 'misc',
-    metaMap: { contextName: 1 }
+    type: 'misc'
   },
   /**
    * Identifies the search event that gets logged when `enableAutoCorrection: true` and the query is automatically corrected.
@@ -275,13 +374,12 @@ export var analyticsActionCauseList = {
    * `actionCause`: `'resultsSort'`
    * `actionType`: `'misc'`
    *
-   * Logging an event with this actionType also adds the following key-value pair in the custom data property of the Usage Analytics HTTP service request.
+   * Logging an event with this actionType also adds the following key-value pairs in the custom data property of the Usage Analytics HTTP service request.
    * `"resultsSortBy"`: <sortingCategory>
    */
   resultsSort: <IAnalyticsActionCause>{
     name: 'resultsSort',
-    type: 'misc',
-    metaMap: { resultsSortBy: 1 }
+    type: 'misc'
   },
   /**
    * Identifies the search event that gets logged when a submit button is selected on a search box.
@@ -304,7 +402,7 @@ export var analyticsActionCauseList = {
     type: 'search box'
   },
   /**
-   * Identifies the search as you type event that gets logged when a query is automatically generated, and results are displayed while a user is entering text in the search box before they voluntarily submit the query.
+   * The search-as-you-type event that gets logged when a query is automatically generated, and results are displayed while a user is entering text in the search box before they voluntarily submit the query.
    *
    * `actionCause`: `'searchboxAsYouType'`
    * `actionType`: `'search box'`
@@ -314,7 +412,7 @@ export var analyticsActionCauseList = {
     type: 'search box'
   },
   /**
-   * Identifies the search as you type event that gets logged when a breadcrumb facet is selected and the query is updated.
+   * The search-as-you-type event that gets logged when a breadcrumb facet is selected and the query is updated.
    *
    * `actionCause`: `'breadcrumbFacet'`
    * `actionType`: `'breadcrumb'`
@@ -324,8 +422,25 @@ export var analyticsActionCauseList = {
    */
   breadcrumbFacet: <IAnalyticsActionCause>{
     name: 'breadcrumbFacet',
-    type: 'breadcrumb',
-    metaMap: { facetId: 1, facetValue: 2, facetTitle: 3 }
+    type: 'breadcrumb'
+  },
+  /**
+   * The search-as-you-type event that gets logged when a DynamicFacet breadcrumb is selected and the query is updated.
+   *
+   * `actionCause`: `'breadcrumbDynamicFacet'`
+   * `actionType`: `'breadcrumb'`
+   *
+   * Logging an event with this actionType also adds the following key-value pairs in the custom data property of the Usage Analytics HTTP service request.
+   * `"facetId":`: <correspondingFacetId>
+   * `"facetField":`: <correspondingFacetField>
+   * `"facetTitle":`: <correspondingFacetTitle>
+   * `"facetValue":`: <correspondingFacetValue>
+   * `"facetDisplayValue":`: <correspondingFacetDisplayValue>
+   * `"facetState":`: <correspondingFacetState>
+   */
+  breadcrumbDynamicFacet: <IAnalyticsActionCause>{
+    name: 'breadcrumbDynamicFacet',
+    type: 'breadcrumb'
   },
   /**
    * Identifies the search event that gets logged when a user clears all values from the advanced search filter summary.
@@ -357,11 +472,11 @@ export var analyticsActionCauseList = {
    * `"facetId":`: <correspondingFacetId>
    * `"facetValue":`: <correspondingFacetValue>
    * `"facetTitle":`: <correspondingFacetTitle>
+   * `"facetField":`: <correspondingFacetField>
    */
   documentTag: <IAnalyticsActionCause>{
     name: 'documentTag',
-    type: 'document',
-    metaMap: { facetId: 1, facetValue: 2, facetTitle: 3 }
+    type: 'document'
   },
   /**
    * Identifies the search event that gets logged when a user clicks a field value from an item field to add a filter.
@@ -369,15 +484,15 @@ export var analyticsActionCauseList = {
    * `actionCause`: `'documentField'`
    * `actionType`: `'document'`
    *
-   * Logging an event with this actionType also adds the following key-value pair in the custom data property of the Usage Analytics HTTP service request.
+   * Logging an event with this actionType also adds the following key-value pairs in the custom data property of the Usage Analytics HTTP service request.
    * `"facetId":`: <correspondingFacetId>
    * `"facetValue":`: <correspondingFacetValue>
    * `"facetTitle":`: <correspondingFacetTitle>
+   * `"facetField":`: <correspondingFacetField>
    */
   documentField: <IAnalyticsActionCause>{
     name: 'documentField',
-    type: 'document',
-    metaMap: { facetId: 1, facetValue: 2, facetTitle: 3 }
+    type: 'document'
   },
   /**
    * Identifies the click event that gets logged when the Quick View element is selected and a Quick View modal of the document is displayed.
@@ -391,8 +506,7 @@ export var analyticsActionCauseList = {
    */
   documentQuickview: <IAnalyticsActionCause>{
     name: 'documentQuickview',
-    type: 'document',
-    metaMap: { documentTitle: 1, documentURL: 2 }
+    type: 'document'
   },
   /**
    * Identifies the click event that gets logged when a user clicks on a search result to open an item.
@@ -406,8 +520,7 @@ export var analyticsActionCauseList = {
    */
   documentOpen: <IAnalyticsActionCause>{
     name: 'documentOpen',
-    type: 'document',
-    metaMap: { documentTitle: 1, documentURL: 2 }
+    type: 'document'
   },
   /**
    * Identifies the search event that gets logged when a user selects or deselects a facet filter from the Omnibox.
@@ -419,11 +532,11 @@ export var analyticsActionCauseList = {
    * `"facetId":`: <correspondingFacetId>
    * `"facetValue":`: <correspondingFacetValue>
    * `"facetTitle":`: <correspondingFacetTitle>
+   * `"facetField":`: <correspondingFacetField>
    */
   omniboxFacetSelect: <IAnalyticsActionCause>{
     name: 'omniboxFacetSelect',
-    type: 'omnibox',
-    metaMap: { facetId: 1, facetValue: 2, facetTitle: 3 }
+    type: 'omnibox'
   },
   /**
    * Identifies the search event that gets logged when a user clicks a facet value to filter out results containing this value from the Omnibox.
@@ -435,11 +548,11 @@ export var analyticsActionCauseList = {
    * `"facetId":`: <correspondingFacetId>
    * `"facetValue":`: <correspondingFacetValue>
    * `"facetTitle":`: <correspondingFacetTitle>
+   * `"facetField":`: <correspondingFacetField>
    */
   omniboxFacetExclude: <IAnalyticsActionCause>{
     name: 'omniboxFacetExclude',
-    type: 'omnibox',
-    metaMap: { facetId: 1, facetValue: 2, facetTitle: 3 }
+    type: 'omnibox'
   },
   /**
    * Identifies the search event that gets logged when a user selects or deselects a facet filter from the Omnibox.
@@ -451,11 +564,11 @@ export var analyticsActionCauseList = {
    * `"facetId":`: <correspondingFacetId>
    * `"facetValue":`: <correspondingFacetValue>
    * `"facetTitle":`: <correspondingFacetTitle>
+   * `"facetField":`: <correspondingFacetField>
    */
   omniboxFacetDeselect: <IAnalyticsActionCause>{
     name: 'omniboxFacetDeselect',
-    type: 'omnibox',
-    metaMap: { facetId: 1, facetValue: 2, facetTitle: 3 }
+    type: 'omnibox'
   },
   /**
    * Identifies the search event that gets logged when a user clicks a facet value to not filter out results containing this value from the Omnibox.
@@ -467,11 +580,11 @@ export var analyticsActionCauseList = {
    * `"facetId":`: <correspondingFacetId>
    * `"facetValue":`: <correspondingFacetValue>
    * `"facetTitle":`: <correspondingFacetTitle>
+   * `"facetField":`: <correspondingFacetField>
    */
   omniboxFacetUnexclude: <IAnalyticsActionCause>{
     name: 'omniboxFacetUnexclude',
-    type: 'omnibox',
-    metaMap: { faceId: 1, facetValue: 2, facetTitle: 3 }
+    type: 'omnibox'
   },
   /**
    * Identifies the search event that gets logged when a user clicks a query suggestion based on the usage analytics recorded queries.
@@ -487,13 +600,7 @@ export var analyticsActionCauseList = {
    */
   omniboxAnalytics: <IAnalyticsActionCause>{
     name: 'omniboxAnalytics',
-    type: 'omnibox',
-    metaMap: {
-      partialQuery: 1,
-      suggestionRanking: 2,
-      partialQueries: 3,
-      suggestions: 4
-    }
+    type: 'omnibox'
   },
   /**
    * Identifies the search event that gets logged when a suggested search query is selected from a standalone searchbox.
@@ -509,13 +616,7 @@ export var analyticsActionCauseList = {
    */
   omniboxFromLink: <IAnalyticsActionCause>{
     name: 'omniboxFromLink',
-    type: 'omnibox',
-    metaMap: {
-      partialQuery: 1,
-      suggestionRanking: 2,
-      partialQueries: 3,
-      suggestions: 4
-    }
+    type: 'omnibox'
   },
   /**
    * Identifies the search event that gets logged when a user selects a query suggestion from a list built from values of a field.
@@ -533,13 +634,13 @@ export var analyticsActionCauseList = {
    * `actionCause`: `'facetClearAll'`
    * `actionType`: `'facet'`
    *
-   * Logging an event with this actionType also adds the following key-value pair in the custom data property of the Usage Analytics HTTP service request.
+   * Logging an event with this actionType also adds the following key-value pairs in the custom data property of the Usage Analytics HTTP service request.
    * `"facetId":`: <correspondingFacetId>
+   * `"facetField":`: <correspondingFacetField>
    */
   facetClearAll: <IAnalyticsActionCause>{
     name: 'facetClearAll',
-    type: 'facet',
-    metaMap: { facetId: 1 }
+    type: 'facet'
   },
   /**
    * Identifies the custom event that gets logged when a query is being typed into the facet search box.
@@ -547,13 +648,13 @@ export var analyticsActionCauseList = {
    * `actionCause`: `'facetSearch'`
    * `actionType`: `'facet'`
    *
-   * Logging an event with this actionType also adds the following key-value pair in the custom data property of the Usage Analytics HTTP service request.
+   * Logging an event with this actionType also adds the following key-value pairs in the custom data property of the Usage Analytics HTTP service request.
    * `"facetId":`: <correspondingFacetId>
+   * `"facetField":`: <correspondingFacetField>
    */
   facetSearch: <IAnalyticsActionCause>{
     name: 'facetSearch',
-    type: 'facet',
-    metaMap: { facetId: 1 }
+    type: 'facet'
   },
   /**
    * Identifies the search event that gets logged when the user toggles the facet operator.
@@ -565,11 +666,11 @@ export var analyticsActionCauseList = {
    * `"facetId":`: <correspondingFacetId>
    * `"facetOperatorBefore":`: <facetOperatorBeforeToggle>
    * `"facetOperatorAfter":`: <facetOperatorAfterToggle>
+   * `"facetField":`: <correspondingFacetField>
    */
   facetToggle: <IAnalyticsActionCause>{
     name: 'facetToggle',
-    type: 'facet',
-    metaMap: { facetId: 1, facetOperatorBefore: 2, facetOperatorAfter: 3 }
+    type: 'facet'
   },
   /**
    * Identifies the search event that gets logged when a facet slider changes range values.
@@ -581,11 +682,11 @@ export var analyticsActionCauseList = {
    * `"facetId":`: <correspondingFacetId>
    * `"facetRangeStart":`: <correspondingRangeStart>
    * `"facetRangeEnd":`: <correspondingRangeEnd>
+   * `"facetField":`: <correspondingFacetField>
    */
   facetRangeSlider: <IAnalyticsActionCause>{
     name: 'facetRangeSlider',
-    type: 'facet',
-    metaMap: { facetId: 1, facetRangeStart: 2, facetRangeEnd: 3 }
+    type: 'facet'
   },
   /**
    * Identifies the search event that gets logged when a facet graph changes range values.
@@ -597,11 +698,11 @@ export var analyticsActionCauseList = {
    * `"facetId":`: <correspondingFacetId>
    * `"facetRangeStart":`: <correspondingRangeStart>
    * `"facetRangeEnd":`: <correspondingRangeEnd>
+   * `"facetField":`: <correspondingFacetField>
    */
   facetRangeGraph: <IAnalyticsActionCause>{
     name: 'facetRangeGraph',
-    type: 'facet',
-    metaMap: { facetId: 1, facetRangeStart: 2, facetRangeEnd: 3 }
+    type: 'facet'
   },
   /**
    * Identifies the search event that gets logged when a facet check box is selected and the query is updated.
@@ -613,11 +714,11 @@ export var analyticsActionCauseList = {
    * `"facetId":`: <correspondingFacetId>
    * `"facetValue":`: <correspondingFacetValue>
    * `"facetTitle":`: <correspondingFacetTitle>
+   * `"facetField":`: <correspondingFacetField>
    */
   facetSelect: <IAnalyticsActionCause>{
     name: 'facetSelect',
-    type: 'facet',
-    metaMap: { facetId: 1, facetValue: 2, facetTitle: 3 }
+    type: 'facet'
   },
   /**
    * Identifies the search event that gets logged when all filters on a facet are selected.
@@ -629,11 +730,11 @@ export var analyticsActionCauseList = {
    * `"facetId":`: <correspondingFacetId>
    * `"facetValue":`: <correspondingFacetValue>
    * `"facetTitle":`: <correspondingFacetTitle>
+   * `"facetField":`: <correspondingFacetField>
    */
   facetSelectAll: <IAnalyticsActionCause>{
     name: 'facetSelectAll',
-    type: 'facet',
-    metaMap: { facetId: 1, facetValue: 2, facetTitle: 3 }
+    type: 'facet'
   },
   /**
    * Identifies the search event that gets logged when a facet check box is deselected and the query is updated.
@@ -645,11 +746,11 @@ export var analyticsActionCauseList = {
    * `"facetId":`: <correspondingFacetId>
    * `"facetValue":`: <correspondingFacetValue>
    * `"facetTitle":`: <correspondingFacetTitle>
+   * `"facetField":`: <correspondingFacetField>
    */
   facetDeselect: <IAnalyticsActionCause>{
     name: 'facetDeselect',
-    type: 'facet',
-    metaMap: { facetId: 1, facetValue: 2, facetTitle: 3 }
+    type: 'facet'
   },
   /**
    * Identifies the search event that gets logged when a user clicks a facet value to filter out results containing the facet value.
@@ -661,11 +762,11 @@ export var analyticsActionCauseList = {
    * `"facetId":`: <correspondingFacetId>
    * `"facetValue":`: <correspondingFacetValue>
    * `"facetTitle":`: <correspondingFacetTitle>
+   * `"facetField":`: <correspondingFacetField>
    */
   facetExclude: <IAnalyticsActionCause>{
     name: 'facetExclude',
-    type: 'facet',
-    metaMap: { facetId: 1, facetValue: 2, facetTitle: 3 }
+    type: 'facet'
   },
   /**
    * Identifies the search event that gets logged when a user clicks a facet value to not filter out results containing the facet value.
@@ -677,31 +778,55 @@ export var analyticsActionCauseList = {
    * `"facetId":`: <correspondingFacetId>
    * `"facetValue":`: <correspondingFacetValue>
    * `"facetTitle":`: <correspondingFacetTitle>
+   * `"facetField":`: <correspondingFacetField>
    */
   facetUnexclude: <IAnalyticsActionCause>{
     name: 'facetUnexclude',
-    type: 'facet',
-    metaMap: { facetId: 1, facetValue: 2, facetTitle: 3 }
+    type: 'facet'
+  },
+  facetUpdateSort: <IAnalyticsActionCause>{
+    name: 'facetUpdateSort',
+    type: 'facet'
   },
   categoryFacetSelect: <IAnalyticsActionCause>{
     name: 'categoryFacetSelect',
-    type: 'categoryFacet',
-    metaMap: { categoryFacetId: 1, categoryFacetValue: 2, categoryFacetTitle: 3 }
+    type: 'categoryFacet'
+  },
+  categoryFacetReload: <IAnalyticsActionCause>{
+    name: 'categoryFacetReload',
+    type: 'categoryFacet'
   },
   categoryFacetClear: <IAnalyticsActionCause>{
     name: 'categoryFacetClear',
-    type: 'categoryFacet',
-    metaMap: { categoryFacetId: 1, categoryFacetValue: 2, categoryFacetTitle: 3 }
+    type: 'categoryFacet'
   },
   categoryFacetBreadcrumb: <IAnalyticsActionCause>{
     name: 'categoryFacetBreadcrumb',
-    type: 'categoryFacet',
-    metaMap: { categoryFacetId: 1, categoryFacetValue: 2, categoryFacetTitle: 3 }
+    type: 'categoryFacet'
   },
   categoryFacetSearch: <IAnalyticsActionCause>{
     name: 'categoryFacetSearch',
-    type: 'categoryFacet',
-    metaMap: { categoryFacetId: 1, categoryFacetValue: 2, categoryFacetTitle: 3 }
+    type: 'categoryFacet'
+  },
+  /**
+   * The custom event that gets logged when an end-user expands a dynamic facet to see additional values.
+   *
+   * `actionCause`: `'showMoreFacetResults'`
+   * `actionType`: `'facet'`
+   */
+  facetShowMore: <IAnalyticsActionCause>{
+    name: 'showMoreFacetResults',
+    type: 'facet'
+  },
+  /**
+   * The custom event that gets logged when an end-user collapses a dynamic facet to see less values.
+   *
+   * `actionCause`: `'showLessFacetResults'`
+   * `actionType`: `'facet'`
+   */
+  facetShowLess: <IAnalyticsActionCause>{
+    name: 'showLessFacetResults',
+    type: 'facet'
   },
   /**
    * Identifies the search and custom event that gets logged when a user clicks the Go Back link after an error page.
@@ -804,8 +929,7 @@ export var analyticsActionCauseList = {
    */
   casecontextAdd: <IAnalyticsActionCause>{
     name: 'casecontextAdd',
-    type: 'casecontext',
-    metaMap: { caseID: 5 }
+    type: 'casecontext'
   },
   /**
    * In the context of Coveo for Salesforce, this search event is logged when a user clears the Show only contextual result checkbox from the Insight Panel.
@@ -813,13 +937,12 @@ export var analyticsActionCauseList = {
    * `actionCause`: `'casecontextRemove'`
    * `actionType`: `'casecontext'`
    *
-   * Logging an event with this actionType also adds the following key-value pair in the custom data property of the Usage Analytics HTTP service request.
+   * Logging an event with this actionType also adds the following key-value pairs in the custom data property of the Usage Analytics HTTP service request.
    * `"caseID":`: <correspondingCaseId>
    */
   casecontextRemove: <IAnalyticsActionCause>{
     name: 'casecontextRemove',
-    type: 'casecontext',
-    metaMap: { caseID: 5 }
+    type: 'casecontext'
   },
   /**
    * Identifies the search and custom event that gets logged when a checkbox in the search preferences is toggled.
@@ -833,8 +956,7 @@ export var analyticsActionCauseList = {
    */
   preferencesChange: <IAnalyticsActionCause>{
     name: 'preferencesChange',
-    type: 'preferences',
-    metaMap: { preferenceName: 1, preferenceType: 2 }
+    type: 'preferences'
   },
   /**
    * In the context of Coveo for Salesforce, this is custom event logged when an agent opens the User Actions panel.
@@ -870,8 +992,7 @@ export var analyticsActionCauseList = {
    */
   caseAttach: <IAnalyticsActionCause>{
     name: 'caseAttach',
-    type: 'case',
-    metaMap: { documentTitle: 1, resultUriHash: 3, articleID: 4, caseID: 5 }
+    type: 'case'
   },
   /**
    * In the context of Coveo for Salesforce, this custom event is logged when a user detaches a knowledge base article to a case.
@@ -887,8 +1008,7 @@ export var analyticsActionCauseList = {
    */
   caseDetach: <IAnalyticsActionCause>{
     name: 'caseDetach',
-    type: 'case',
-    metaMap: { documentTitle: 1, resultUriHash: 3, articleID: 4, caseID: 5 }
+    type: 'case'
   },
   /**
    * Identifies the search event that gets logged when a user modifies a custom search filter or removes one from the breadcrumbs.
@@ -903,8 +1023,7 @@ export var analyticsActionCauseList = {
    */
   customfiltersChange: <IAnalyticsActionCause>{
     name: 'customfiltersChange',
-    type: 'customfilters',
-    metaMap: { customFilterName: 1, customFilterType: 2, customFilterExpression: 3 }
+    type: 'customfilters'
   },
   /**
    * Identifies the custom event that gets logged when a page number is selected and more items are loaded.
@@ -917,8 +1036,7 @@ export var analyticsActionCauseList = {
    */
   pagerNumber: <IAnalyticsActionCause>{
     name: 'pagerNumber',
-    type: 'getMoreResults',
-    metaMap: { pagerNumber: 1 }
+    type: 'getMoreResults'
   },
   /**
    * Identifies the custom event that gets logged when the Next Page link is selected and more items are loaded.
@@ -931,8 +1049,7 @@ export var analyticsActionCauseList = {
    */
   pagerNext: <IAnalyticsActionCause>{
     name: 'pagerNext',
-    type: 'getMoreResults',
-    metaMap: { pagerNumber: 1 }
+    type: 'getMoreResults'
   },
   /**
    * Identifies the custom event that gets logged when the Previous Page link is selected and more items are loaded.
@@ -945,8 +1062,7 @@ export var analyticsActionCauseList = {
    */
   pagerPrevious: <IAnalyticsActionCause>{
     name: 'pagerPrevious',
-    type: 'getMoreResults',
-    metaMap: { pagerNumber: 1 }
+    type: 'getMoreResults'
   },
   /**
    * Identifies the custom event that gets logged when the user scrolls to the bottom of the item page and more results are loaded.
@@ -1044,8 +1160,7 @@ export var analyticsActionCauseList = {
    */
   queryError: <IAnalyticsActionCause>{
     name: 'query',
-    type: 'errors',
-    metaMap: { query: 1, aq: 2, cq: 3, dq: 4, errorType: 5, errorMessage: 6 }
+    type: 'errors'
   },
   /**
    * Identifies the custom event that gets logged when a user exports search results in an XLS file by clicking the Export to Excel option.
@@ -1170,13 +1285,12 @@ export var analyticsActionCauseList = {
    */
   simpleFilterSelectValue: <IAnalyticsActionCause>{
     name: 'selectValue',
-    type: 'simpleFilter',
-    metaMap: { simpleFilterTitle: 1, simpleFilterValue: 2, simpleFilterField: 3 }
+    type: 'simpleFilter'
   },
   /**
    * Identifies the search event that gets logged when a user deselects a simple filter value under the search box.
    *
-   * `actionCause`: `'selectValue'`
+   * `actionCause`: `'deselectValue'`
    * `actionType`: `'simpleFilter'`
    *
    * Logging an event with this actionType also adds the following key-value pairs in the custom data property of the Usage Analytics HTTP service request.
@@ -1185,9 +1299,8 @@ export var analyticsActionCauseList = {
    * `"simpleFilterField":`: <correspondingSimpleFilterField>
    */
   simpleFilterDeselectValue: <IAnalyticsActionCause>{
-    name: 'selectValue',
-    type: 'simpleFilter',
-    metaMap: { simpleFilterTitle: 1, simpleFilterValues: 2, simpleFilterField: 3 }
+    name: 'deselectValue',
+    type: 'simpleFilter'
   },
   /**
    * Identifies the search event that gets logged when a user clicks the Clear all button to remove all simple filters under the search box.
@@ -1202,8 +1315,7 @@ export var analyticsActionCauseList = {
    */
   simpleFilterClearAll: <IAnalyticsActionCause>{
     name: 'selectValue',
-    type: 'simpleFilter',
-    metaMap: { simpleFilterTitle: 1, simpleFilterField: 3 }
+    type: 'simpleFilter'
   },
   /**
    * Identifies the search event that gets logged when a user changes the search results layout (list, card, or table).
@@ -1234,5 +1346,126 @@ export var analyticsActionCauseList = {
   foldingShowLess: <IAnalyticsActionCause>{
     name: 'showLessFoldedResults',
     type: 'folding'
+  },
+  /**
+   * Identifies the search event that gets logged when a dynamicFacet check box is selected and the query is updated.
+   *
+   * `actionCause`: `'facetSelect'`
+   * `actionType`: `'dynamicFacet'`
+   *
+   * The required and optional properties of an [`IAnalyticsDynamicFacetMeta`](@link IAnalyticsDynamicFacetMeta)
+   * object are added as custom data when logging a usage analytics event matching this `actionCause`/`actionType`.
+   */
+  dynamicFacetSelect: <IAnalyticsActionCause>{
+    name: 'dynamicFacetSelect',
+    type: 'dynamicFacet'
+  },
+  /**
+   * Identifies the search event that gets logged when a dynamicFacet check box is deselected and the query is updated.
+   *
+   * `actionCause`: `'dynamicFacetDeselect'`
+   * `actionType`: `'dynamicFacet'`
+   *
+   * The required and optional properties of an [`IAnalyticsDynamicFacetMeta`](@link IAnalyticsDynamicFacetMeta)
+   * object are added as custom data when logging a usage analytics event matching this `actionCause`/`actionType`.
+   */
+  dynamicFacetDeselect: <IAnalyticsActionCause>{
+    name: 'dynamicFacetDeselect',
+    type: 'dynamicFacet'
+  },
+  /**
+   * Identifies the search event that gets logged when the **Clear** button of the DynamicFacet is selected.
+   *
+   * `actionCause`: `'dynamicFacetClearAll'`
+   * `actionType`: `'dynamicFacet'`
+   *
+   * The required properties of an [`IAnalyticsDynamicFacetMeta`](@link IAnalyticsDynamicFacetMeta) object are added as custom data
+   * when logging a usage analytics event matching this `actionCause`/`actionType`.
+   */
+  dynamicFacetClearAll: <IAnalyticsActionCause>{
+    name: 'dynamicFacetClearAll',
+    type: 'dynamicFacet'
+  },
+  /**
+   * Identifies the search event that gets logged when the **Show more** button of the DynamicFacet is selected.
+   *
+   * `actionCause`: `'dynamicFacetShowMore'`
+   * `actionType`: `'dynamicFacet'`
+   *
+   * The required properties of an [`IAnalyticsDynamicFacetMeta`](@link IAnalyticsDynamicFacetMeta) object are added as custom data
+   * when logging a usage analytics event matching this `actionCause`/`actionType`.
+   */
+  dynamicFacetShowMore: <IAnalyticsActionCause>{
+    name: 'dynamicFacetShowMore',
+    type: 'dynamicFacet'
+  },
+  /**
+   * Identifies the search event that gets logged when the **Show less** button of the DynamicFacet is selected.
+   *
+   * `actionCause`: `'dynamicFacetShowLess'`
+   * `actionType`: `'dynamicFacet'`
+   *
+   * The required properties of an [`IAnalyticsDynamicFacetMeta`](@link IAnalyticsDynamicFacetMeta) object are added as custom data
+   * when logging a usage analytics event matching this `actionCause`/`actionType`.
+   */
+  dynamicFacetShowLess: <IAnalyticsActionCause>{
+    name: 'dynamicFacetShowLess',
+    type: 'dynamicFacet'
+  },
+  /**
+   * The search event that gets logged when an end-user triggers a new query by clicking a missing term in a result item.
+   *
+   * `actionCause`: `'addMissingTerm'`
+   * `actionType`: `'missingTerm'`
+   */
+  addMissingTerm: <IAnalyticsActionCause>{
+    name: 'addMissingTerm',
+    type: 'missingTerm'
+  },
+  /**
+   * The search event that gets logged when an end-user triggers a new query by removing a missing term from the breadcrumb.
+   *
+   * `actionCause`: `'removeMissingTerm'`
+   * `actionType`: `'missingTerm'`
+   */
+  removeMissingTerm: <IAnalyticsActionCause>{
+    name: 'removeMissingTerm',
+    type: 'missingTerm'
+  },
+  /**
+   * The search event logged when a preview is requested for a query suggestion (see the [QuerySuggestPreview]{@link QuerySuggestPreview} component).
+   *
+   * Implements the [IAnalyticsActionCause]{@link IAnalyticsActionCause} interface as such:
+   *
+   * ```javascript
+   * {
+   *  actionCause: "showQuerySuggestPreview",
+   *  actionType: "querySuggestPreview"
+   * }
+   * ```
+   *
+   * The framework sends an [`IAnalyticsTopSuggestionMeta`]{@link IAnalyticsTopSuggestionMeta} object as metadata when logging this event.
+   */
+  showQuerySuggestPreview: <IAnalyticsActionCause>{
+    name: 'showQuerySuggestPreview',
+    type: 'querySuggestPreview'
+  },
+  /**
+   * The custom event logged when an item is opened in a query suggestion preview (see the [QuerySuggestPreview]{@link QuerySuggestPreview} component).
+   *
+   * Implements the [IAnalyticsActionCause]{@link IAnalyticsActionCause} interface as such:
+   *
+   * ```javascript
+   * {
+   *  actionCause: "clickQuerySuggestPreview",
+   *  actionType: "querySuggestPreview"
+   * }
+   * ```
+   *
+   * The framework sends an [`IAnalyticsClickQuerySuggestPreviewMeta`]{@link IAnalyticsClickQuerySuggestPreviewMeta} object as metadata when logging this event.
+   */
+  clickQuerySuggestPreview: <IAnalyticsActionCause>{
+    name: 'clickQuerySuggestPreview',
+    type: 'querySuggestPreview'
   }
 };

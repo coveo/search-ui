@@ -9,6 +9,7 @@ import { load } from '../ui/Base/RegisteredNamedMethods';
 import { Logger } from '../misc/Logger';
 import { IComponentBindings } from '../ui/Base/ComponentBindings';
 import { Initialization } from '../Core';
+import { Assert } from '../misc/Assert';
 export class DomUtils {
   static getPopUpCloseButton(captionForClose: string, captionForReminder: string): string {
     let container = document.createElement('span');
@@ -46,14 +47,26 @@ export class DomUtils {
     return dom;
   }
 
+  static highlight(content: string, classToApply = 'coveo-highlight', htmlEncode = true) {
+    const trimmedClass = classToApply !== null ? classToApply.trim() : null;
+    if (trimmedClass !== null) {
+      Assert.check(/^([^\s\-][a-z\s\-]*[^\s\-])?$/i.test(trimmedClass), 'Invalid class');
+    }
+    return `<span${trimmedClass !== null && trimmedClass.length > 0 ? ` class='${trimmedClass}'` : ''}>${
+      htmlEncode ? StringUtils.htmlEncode(content) : content
+    }</span>`;
+  }
+
   static highlightElement(initialString: string, valueToSearch: string, classToApply: string = 'coveo-highlight'): string {
     let regex = new RegExp(Utils.escapeRegexCharacter(StringUtils.latinize(valueToSearch)), 'i');
     let firstChar = StringUtils.latinize(initialString).search(regex);
     if (firstChar >= 0) {
       let lastChar = firstChar + valueToSearch.length;
-      return `${StringUtils.htmlEncode(initialString.slice(0, firstChar))}<span class='${classToApply}'>${StringUtils.htmlEncode(
-        initialString.slice(firstChar, lastChar)
-      )}</span>${StringUtils.htmlEncode(initialString.slice(lastChar))}`;
+      return (
+        StringUtils.htmlEncode(initialString.slice(0, firstChar)) +
+        this.highlight(initialString.slice(firstChar, lastChar), classToApply, true) +
+        StringUtils.htmlEncode(initialString.slice(lastChar))
+      );
     } else {
       return initialString;
     }

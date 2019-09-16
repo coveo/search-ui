@@ -14,8 +14,7 @@ All resources will be available under `node_modules/coveo-search-ui/bin`. You ca
 
 If you are using a module bundler (Browserify, Webpack, rollup, etc.), you can use `require('coveo-search-ui')` or `import * as Coveo from 'coveo-search-ui'`.
 
-Alternatively, you can download the latest version of the Coveo JavaScript Search UI Framework
-[here](http://productupdate.coveo.com/?product=coveo-search-ui&version=1).
+Alternatively, you can download the Coveo JavaScript Search UI Framework (see [Downloading the JavaScript Search Framework](https://docs.coveo.com/en/319/javascript-search-framework/downloading-the-javascript-search-framework)).
 
 ## Including the Resources from a CDN
 
@@ -25,6 +24,8 @@ official release (from version `1.2537` on) through a content delivery network (
 You can simply use a URL such as `https://static.cloud.coveo.com/searchui/v[VERSION]/[PATH_TO_FILE]`, where you
 replace `[VERSION]` by the actual release version number you wish to use and `[PATH_TO_FILE]` by the path of the file
 you require.
+
+For quick access to the latest CDN links, see [JavaScript Search Framework CDN Links](https://docs.coveo.com/en/2075/javascript-search-framework/javascript-search-framework-cdn-links).
 
 **Example:**
 
@@ -86,7 +87,7 @@ A tutorial is available to help you get started (see
 
 ## Build
 
-You should have node 9.5.0 (or later) installed to build this project.
+You should have node 10.x installed to build this project.
 
     npm install -g yarn
     yarn global add gulp
@@ -99,7 +100,7 @@ You should have node 9.5.0 (or later) installed to build this project.
 * `gulp compile`: Builds only the TypeScript code and generates its output in the `./bin` folder.
 * `gulp css`: Builds only the Sass code and generates its output in the `./bin` folder.
 * `gulp sprites`: Regenerates the sprites image as well as the generated Sass/CSS code.
-* `gulp test`: Builds and runs the unit tests.
+* `gulp unitTests`: Builds and runs the unit tests.
 * `gulp doc`: Generates the documentation website for the project.
 * `gulp dev`: Starts a webpack dev server for the project.
 * `gulp devTest`: Starts a webpack dev server for the unit tests.
@@ -148,12 +149,16 @@ General reference documentation is generated using TypeDoc (see
 generated reference documentation lists and describes all available options and public methods for each component.
 
 Handwritten documentation with more examples is also available (see
-[JavaScript Search Framework Home](https://developers.coveo.com/display/JsSearchV1/JavaScript+Search+Framework+V1+Home)).
+[Coveo JavaScript Search UI Framework Home](https://docs.coveo.com/en/375/javascript-search-framework/javascript-search-framework-home)).
 
-A tutorial is available (see
-[JavaScript Search Framework Getting Started Tutorial](https://developers.coveo.com/display/JsSearchV1/JavaScript+Search+Framework+V1+Getting+Started+Tutorial)).
+A tutorial is also available (see
+[Coveo JavaScript Search UI Framework Getting Started Tutorial](https://developers.coveo.com/x/J4okAg)).
 If you are new to the Coveo JavaScript Search UI Framework, you should definitely consult this tutorial, as it contains
 valuable information.
 
-You can also use Coveo Search to find answers to any specific issues/questions (see
-[search.coveo.com](https://search.coveo.com)).
+You can also use Coveo Search to find answers to any specific issues/questions (see the
+[Coveo Community Portal](https://support.coveo.com/s/search/All/Home/%40uri)).
+
+## Issues and questions
+
+Please use the [Coveo community](https://answers.coveo.com) to ask questions or to search for existing solutions.

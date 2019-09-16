@@ -15,6 +15,7 @@ import { IComponentBindings } from './ComponentBindings';
 import { DebugEvents } from '../../events/DebugEvents';
 import * as _ from 'underscore';
 import { Model } from '../../models/Model';
+import { exportGlobally } from '../../GlobalExports';
 
 /**
  * Definition for a Component.
@@ -58,224 +59,6 @@ export interface IComponentDefinition {
 }
 
 /**
- * The base class for every component in the framework.
- */
-export class Component extends BaseComponent {
-  /**
-   * Allows the component to bind events and execute them only when it is enabled.
-   * @type {Coveo.ComponentEvents}
-   */
-  public bind = new ComponentEvents(this);
-  /**
-   * A reference to the root HTMLElement (the {@link SearchInterface}).
-   */
-  public root: HTMLElement;
-  /**
-   * Contains the state of the query. Allows to get/set values. Trigger query state event when modified. Each component can listen to those events.
-   */
-  public queryStateModel: QueryStateModel;
-  /**
-   * Contains the state of different component (enabled vs disabled). Allows to get/set values. Trigger component state event when modified. Each component can listen to those events.
-   */
-  public componentStateModel: ComponentStateModel;
-  /**
-   * Contains the singleton that allows to trigger queries.
-   */
-  public queryController: QueryController;
-  /**
-   * A reference to the root of every component, the {@link SearchInterface}.
-   */
-  public searchInterface: SearchInterface;
-  /**
-   * A reference to the {@link Analytics.client}.
-   */
-  public usageAnalytics: IAnalyticsClient;
-  /**
-   * Contains the state of options for differents component. Mainly used by {@link ResultLink}.
-   */
-  public componentOptionsModel: ComponentOptionsModel;
-  public ensureDom: Function;
-  public options?: any;
-
-  /**
-   * Create a new Component. Resolve all {@link IComponentBindings} if not provided.<br/>
-   * Create a new Logger for this component.
-   * Attach the component to the {@link SearchInterface}.<br/>
-   * @param element The HTMLElement on which to create the component. Used to bind data on the element.
-   * @param type The unique identifier for this component. See : {@link IComponentDefinition.ID}. Used to generate the unique Coveo CSS class associated with every component.
-   * @param bindings The environment for every component. Optional, but omitting to provide one will impact performance.
-   */
-  constructor(public element: HTMLElement, public type: string, bindings: IComponentBindings = {}) {
-    super(element, type);
-    this.root = bindings.root || this.resolveRoot();
-    this.queryStateModel = bindings.queryStateModel || this.resolveQueryStateModel();
-    this.componentStateModel = bindings.componentStateModel || this.resolveComponentStateModel();
-    this.queryController = bindings.queryController || this.resolveQueryController();
-    this.searchInterface = bindings.searchInterface || this.resolveSearchInterface();
-    this.usageAnalytics = bindings.usageAnalytics || this.resolveUA();
-    this.componentOptionsModel = bindings.componentOptionsModel || this.resolveComponentOptionsModel();
-    this.ensureDom = _.once(() => this.createDom());
-
-    if (this.searchInterface != null) {
-      this.searchInterface.attachComponent(type, this);
-    }
-
-    this.initDebugInfo();
-  }
-
-  /**
-   * Return the bindings, or environment, for the current component.
-   * @returns {IComponentBindings}
-   */
-  public getBindings(): IComponentBindings {
-    return <IComponentBindings>{
-      root: this.root,
-      queryStateModel: this.queryStateModel,
-      queryController: this.queryController,
-      searchInterface: this.searchInterface,
-      componentStateModel: this.componentStateModel,
-      componentOptionsModel: this.componentOptionsModel,
-      usageAnalytics: this.usageAnalytics
-    };
-  }
-
-  public createDom() {
-    // By default we do nothing
-  }
-
-  public resolveSearchInterface(): SearchInterface {
-    return <SearchInterface>Component.resolveBinding(this.element, SearchInterface);
-  }
-
-  public resolveRoot(): HTMLElement {
-    var resolvedSearchInterface = Component.resolveBinding(this.element, SearchInterface);
-    return resolvedSearchInterface ? resolvedSearchInterface.element : undefined;
-  }
-
-  public resolveQueryController(): QueryController {
-    return <QueryController>Component.resolveBinding(this.element, QueryController);
-  }
-
-  public resolveComponentStateModel(): ComponentStateModel {
-    return <ComponentStateModel>Component.resolveBinding(this.element, ComponentStateModel);
-  }
-
-  public resolveQueryStateModel(): QueryStateModel {
-    return <QueryStateModel>Component.resolveBinding(this.element, QueryStateModel);
-  }
-
-  public resolveComponentOptionsModel(): ComponentOptionsModel {
-    return <ComponentOptionsModel>Component.resolveBinding(this.element, ComponentOptionsModel);
-  }
-
-  public resolveUA(): IAnalyticsClient {
-    var searchInterface = this.resolveSearchInterface();
-    return searchInterface && searchInterface.usageAnalytics ? searchInterface.usageAnalytics : new NoopAnalyticsClient();
-  }
-
-  public resolveResult(): IQueryResult {
-    return Component.getResult(this.element);
-  }
-
-  private initDebugInfo() {
-    $$(this.element).on('dblclick', (e: MouseEvent) => {
-      if (e.altKey) {
-        var debugInfo = this.debugInfo();
-        if (debugInfo != null) {
-          $$(this.root).trigger(DebugEvents.showDebugPanel, this.debugInfo());
-        }
-      }
-    });
-  }
-
-  /**
-   * Get the bound component to the given HTMLElement. Throws an assert if the HTMLElement has no component bound, unless using the noThrow argument.<br/>
-   * If there is multiple component bound to the current HTMLElement, you must specify the component class.
-   * @param element HTMLElement for which to get the bound component.
-   * @param componentClass Optional component class. If the HTMLElement has multiple components bound, you must specify which one you are targeting.
-   * @param noThrow Boolean option to tell the method to not throw on error.
-   * @returns {Component}
-   */
-  static get(element: HTMLElement, componentClass?: any, noThrow?: boolean): BaseComponent {
-    Assert.exists(element);
-
-    if (_.isString(componentClass)) {
-      return <Component>element[Component.computeCssClassNameForType(componentClass)];
-    } else if (Utils.exists(componentClass)) {
-      Assert.exists(componentClass.ID);
-      return <Component>element[Component.computeCssClassNameForType(componentClass.ID)];
-    } else {
-      // No class specified, but we support returning the bound component
-      // if there is exactly one.
-      var boundComponents = BaseComponent.getBoundComponentsForElement(element);
-      if (!noThrow) {
-        Assert.check(
-          boundComponents.length <= 1,
-          'More than one component is bound to this element. You need to specify the component type.'
-        );
-      }
-      return boundComponents[0];
-    }
-  }
-
-  static getResult(element: HTMLElement, noThrow: boolean = false): IQueryResult {
-    var resultElement = $$(element).closest('.CoveoResult');
-    Assert.check(noThrow || resultElement != undefined);
-    return resultElement['CoveoResult'];
-  }
-
-  static bindResultToElement(element: HTMLElement, result: IQueryResult) {
-    Assert.exists(element);
-    Assert.exists(result);
-    $$(element).addClass('CoveoResult');
-    element['CoveoResult'] = result;
-    let jQuery = JQueryUtils.getJQuery();
-    if (jQuery) {
-      jQuery(element).data(result);
-    }
-  }
-
-  static resolveBinding(element: HTMLElement, componentClass: any): BaseComponent {
-    Assert.exists(element);
-    Assert.exists(componentClass);
-    Assert.exists(componentClass.ID);
-
-    const targetClassName = Component.computeCssClassNameForType(componentClass.ID);
-    let found: HTMLElement;
-
-    if ($$(element).is('.' + targetClassName)) {
-      found = element;
-    } else {
-      // first, look down
-      const findDown = $$(element).findClass(targetClassName);
-
-      if (findDown && findDown.length !== 0) {
-        found = findDown[0];
-      } else {
-        const findUp = $$(element).closest(targetClassName);
-
-        if (findUp) {
-          found = findUp;
-        }
-      }
-    }
-    if (found) {
-      return <BaseComponent>found[targetClassName];
-    } else {
-      return undefined;
-    }
-  }
-
-  static pointElementsToDummyForm(element: HTMLElement) {
-    let inputs = $$(element).is('input') ? [element] : [];
-    inputs = inputs.concat($$(element).findAll('input'));
-    _.each(_.compact(inputs), input => {
-      input.setAttribute('form', 'coveo-dummy-form');
-    });
-  }
-}
-
-/**
  * The `ComponentEvents` class is used by the various Coveo Component to trigger events and bind event handlers. It adds
  * logic to execute handlers or triggers only when a component is "enabled", which serves as a way to avoid executing
  * handlers on components that are invisible and inactive in the query.
@@ -287,6 +70,12 @@ export class Component extends BaseComponent {
  * [`disable`]{@link Component.disable} method.
  */
 export class ComponentEvents {
+  static doExport() {
+    exportGlobally({
+      ComponentEvents: ComponentEvents
+    });
+  }
+
   /**
    * Creates a new `ComponentEvents` instance for a [`Component`]{@link Component}.
    * @param owner The [`Component`]{@link Component} that owns the event handlers and triggers.
@@ -415,7 +204,7 @@ export class ComponentEvents {
    * @param func The function to execute if the component is enabled.
    * @returns {function(...[any]): *}
    */
-  private wrapToCallIfEnabled(func: Function) {
+  protected wrapToCallIfEnabled(func: Function) {
     return (...args: any[]) => {
       if (!this.owner.disabled) {
         if (args && args[0] instanceof CustomEvent) {
@@ -450,5 +239,226 @@ export class ComponentEvents {
       evtName = model.getEventName(eventType);
     }
     return evtName;
+  }
+}
+
+/**
+ * The base class for every component in the framework.
+ */
+export class Component extends BaseComponent {
+  static ComponentEventClass: typeof ComponentEvents = ComponentEvents;
+  /**
+   * Allows the component to bind events and execute them only when it is enabled.
+   * @type {Coveo.ComponentEvents}
+   */
+  public bind: ComponentEvents;
+  /**
+   * A reference to the root HTMLElement (the {@link SearchInterface}).
+   */
+  public root: HTMLElement;
+  /**
+   * Contains the state of the query. Allows to get/set values. Trigger query state event when modified. Each component can listen to those events.
+   */
+  public queryStateModel: QueryStateModel;
+  /**
+   * Contains the state of different components (enabled vs disabled). Allows to get/set values. Triggers component state event when modified. Each component can listen to those events.
+   */
+  public componentStateModel: ComponentStateModel;
+  /**
+   * Contains the singleton that allows to trigger queries.
+   */
+  public queryController: QueryController;
+  /**
+   * A reference to the root of every component, the {@link SearchInterface}.
+   */
+  public searchInterface: SearchInterface;
+  /**
+   * A reference to the {@link Analytics.client}.
+   */
+  public usageAnalytics: IAnalyticsClient;
+  /**
+   * Contains the state of options for different components. Mainly used by {@link ResultLink}.
+   */
+  public componentOptionsModel: ComponentOptionsModel;
+  public ensureDom: Function;
+  public options?: any;
+
+  /**
+   * Create a new Component. Resolve all {@link IComponentBindings} if not provided.<br/>
+   * Create a new Logger for this component.
+   * Attach the component to the {@link SearchInterface}.<br/>
+   * @param element The HTMLElement on which to create the component. Used to bind data on the element.
+   * @param type The unique identifier for this component. See : {@link IComponentDefinition.ID}. Used to generate the unique Coveo CSS class associated with every component.
+   * @param bindings The environment for every component. Optional, but omitting to provide one will impact performance.
+   */
+  constructor(public element: HTMLElement, public type: string, bindings: IComponentBindings = {}) {
+    super(element, type);
+    this.bind = new Component.ComponentEventClass(this);
+    this.root = bindings.root || Component.resolveRoot(element);
+    this.queryStateModel = bindings.queryStateModel || this.resolveQueryStateModel();
+    this.componentStateModel = bindings.componentStateModel || this.resolveComponentStateModel();
+    this.queryController = bindings.queryController || this.resolveQueryController();
+    this.searchInterface = bindings.searchInterface || this.resolveSearchInterface();
+    this.usageAnalytics = bindings.usageAnalytics || this.resolveUA();
+    this.componentOptionsModel = bindings.componentOptionsModel || this.resolveComponentOptionsModel();
+    this.ensureDom = _.once(() => this.createDom());
+
+    if (this.searchInterface != null) {
+      this.searchInterface.attachComponent(type, this);
+    }
+
+    this.initDebugInfo();
+  }
+
+  /**
+   * Return the bindings, or environment, for the current component.
+   * @returns {IComponentBindings}
+   */
+  public getBindings(): IComponentBindings {
+    return <IComponentBindings>{
+      root: this.root,
+      queryStateModel: this.queryStateModel,
+      queryController: this.queryController,
+      searchInterface: this.searchInterface,
+      componentStateModel: this.componentStateModel,
+      componentOptionsModel: this.componentOptionsModel,
+      usageAnalytics: this.usageAnalytics
+    };
+  }
+
+  public createDom() {
+    // By default we do nothing
+  }
+
+  public resolveSearchInterface(): SearchInterface {
+    return <SearchInterface>Component.resolveBinding(this.element, SearchInterface);
+  }
+
+  public resolveQueryController(): QueryController {
+    return <QueryController>Component.resolveBinding(this.element, QueryController);
+  }
+
+  public resolveComponentStateModel(): ComponentStateModel {
+    return <ComponentStateModel>Component.resolveBinding(this.element, ComponentStateModel);
+  }
+
+  public resolveQueryStateModel(): QueryStateModel {
+    return <QueryStateModel>Component.resolveBinding(this.element, QueryStateModel);
+  }
+
+  public resolveComponentOptionsModel(): ComponentOptionsModel {
+    return <ComponentOptionsModel>Component.resolveBinding(this.element, ComponentOptionsModel);
+  }
+
+  public resolveUA(): IAnalyticsClient {
+    var searchInterface = this.resolveSearchInterface();
+    return searchInterface && searchInterface.usageAnalytics ? searchInterface.usageAnalytics : new NoopAnalyticsClient();
+  }
+
+  public resolveResult(): IQueryResult {
+    return Component.getResult(this.element);
+  }
+
+  private initDebugInfo() {
+    $$(this.element).on('dblclick', (e: MouseEvent) => {
+      if (e.altKey) {
+        var debugInfo = this.debugInfo();
+        if (debugInfo != null) {
+          $$(this.root).trigger(DebugEvents.showDebugPanel, this.debugInfo());
+        }
+      }
+    });
+  }
+
+  /**
+   * Get the bound component to the given HTMLElement. Throws an assert if the HTMLElement has no component bound, unless using the noThrow argument.<br/>
+   * If there is multiple component bound to the current HTMLElement, you must specify the component class.
+   * @param element HTMLElement for which to get the bound component.
+   * @param componentClass Optional component class. If the HTMLElement has multiple components bound, you must specify which one you are targeting.
+   * @param noThrow Boolean option to tell the method to not throw on error.
+   * @returns {Component}
+   */
+  static get(element: HTMLElement, componentClass?: any, noThrow?: boolean): BaseComponent {
+    Assert.exists(element);
+
+    if (_.isString(componentClass)) {
+      return <Component>element[Component.computeCssClassNameForType(componentClass)];
+    } else if (Utils.exists(componentClass)) {
+      Assert.exists(componentClass.ID);
+      return <Component>element[Component.computeCssClassNameForType(componentClass.ID)];
+    } else {
+      // No class specified, but we support returning the bound component
+      // if there is exactly one.
+      var boundComponents = BaseComponent.getBoundComponentsForElement(element);
+      if (!noThrow) {
+        Assert.check(
+          boundComponents.length <= 1,
+          'More than one component is bound to this element. You need to specify the component type.'
+        );
+      }
+      return boundComponents[0];
+    }
+  }
+
+  static getResult(element: HTMLElement, noThrow: boolean = false): IQueryResult {
+    var resultElement = $$(element).closest('.CoveoResult');
+    Assert.check(noThrow || resultElement != undefined);
+    return resultElement['CoveoResult'];
+  }
+
+  static bindResultToElement(element: HTMLElement, result: IQueryResult) {
+    Assert.exists(element);
+    Assert.exists(result);
+    $$(element).addClass('CoveoResult');
+    element['CoveoResult'] = result;
+    let jQuery = JQueryUtils.getJQuery();
+    if (jQuery) {
+      jQuery(element).data(result);
+    }
+  }
+
+  static resolveRoot(element: HTMLElement): HTMLElement {
+    Assert.exists(element);
+    const resolvedSearchInterface = Component.resolveBinding(element, SearchInterface);
+    return resolvedSearchInterface ? resolvedSearchInterface.element : document.body;
+  }
+
+  static resolveBinding(element: HTMLElement, componentClass: any): BaseComponent {
+    Assert.exists(element);
+    Assert.exists(componentClass);
+    Assert.exists(componentClass.ID);
+
+    const targetClassName = Component.computeCssClassNameForType(componentClass.ID);
+    let found: HTMLElement;
+
+    if ($$(element).is('.' + targetClassName)) {
+      found = element;
+    } else {
+      // first, look down
+      const findDown = $$(element).findClass(targetClassName);
+
+      if (findDown && findDown.length !== 0) {
+        found = findDown[0];
+      } else {
+        const findUp = $$(element).closest(targetClassName);
+
+        if (findUp) {
+          found = findUp;
+        }
+      }
+    }
+    if (found) {
+      return <BaseComponent>found[targetClassName];
+    } else {
+      return undefined;
+    }
+  }
+
+  static pointElementsToDummyForm(element: HTMLElement) {
+    let inputs = $$(element).is('input') ? [element] : [];
+    inputs = inputs.concat($$(element).findAll('input'));
+    _.each(_.compact(inputs), input => {
+      input.setAttribute('form', 'coveo-dummy-form');
+    });
   }
 }

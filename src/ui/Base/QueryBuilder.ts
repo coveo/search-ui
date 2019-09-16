@@ -2,11 +2,12 @@ import { ExpressionBuilder } from './ExpressionBuilder';
 import { IRankingFunction } from '../../rest/RankingFunction';
 import { IQueryFunction } from '../../rest/QueryFunction';
 import { IGroupByRequest } from '../../rest/GroupByRequest';
-import { IQuery } from '../../rest/Query';
+import { IQuery, IFacetOptions, IUserActionsRequest } from '../../rest/Query';
 import { QueryBuilderExpression } from './QueryBuilderExpression';
 import * as _ from 'underscore';
 import { Utils } from '../../utils/Utils';
 import { ICategoryFacetRequest } from '../../rest/CategoryFacetRequest';
+import { IFacetRequest } from '../../rest/Facet/FacetRequest';
 
 /**
  * The QueryBuilder is used to build a {@link IQuery} that will be able to be executed using the Search API.
@@ -241,6 +242,10 @@ export class QueryBuilder {
    */
   public enableDebug: boolean = false;
   /**
+   * **Note:**
+   *
+   * > The Coveo Cloud V2 platform does not support collaborative rating. Therefore, this property is obsolete in Coveo Cloud V2.
+   *
    * Whether the index should take collaborative rating in account when ranking result (see : {@link ResultRating}).
    */
   public enableCollaborativeRating: boolean;
@@ -272,8 +277,20 @@ export class QueryBuilder {
   public rankingFunctions: IRankingFunction[] = [];
   /**
    * Specifies an array of Group By operations that can be performed on the query results to extract facets.
+   * Cannot be used alongside [`facetRequests`]{@link QueryBuilder.facetRequests}
    */
   public groupByRequests: IGroupByRequest[] = [];
+
+  /**
+   * Specifies an array of request for the DynamicFacet component.
+   * Cannot be used alongside [`groupByRequests`]{@link QueryBuilder.groupByRequests}
+   */
+  public facetRequests: IFacetRequest[] = [];
+
+  /**
+   * The global configuration options to apply to the requests in the [facets]{@link QueryBuilder.facets} array.
+   */
+  public facetOptions: IFacetOptions = {};
 
   /**
    * Specifies an array of request for the CategoryFacet component.
@@ -303,6 +320,10 @@ export class QueryBuilder {
    * This parameter is normally controlled by {@link SearchInterface.options.allowEmptyQuery} option.
    */
   public allowQueriesWithoutKeywords: boolean;
+  /**
+   * A request to retrieve user actions in the query response.
+   */
+  public userActions: IUserActionsRequest;
   /**
    * Build the current content or state of the query builder and return a {@link IQuery}.
    *
@@ -344,7 +365,9 @@ export class QueryBuilder {
       sortField: this.sortField,
       queryFunctions: this.queryFunctions,
       rankingFunctions: this.rankingFunctions,
-      groupBy: this.groupByRequests,
+      groupBy: this.groupBy,
+      facets: this.facets,
+      facetOptions: this.facetOptions,
       categoryFacets: this.categoryFacets,
       retrieveFirstSentences: this.retrieveFirstSentences,
       timezone: this.timezone,
@@ -355,7 +378,8 @@ export class QueryBuilder {
       context: this.context,
       actionsHistory: this.actionsHistory,
       recommendation: this.recommendation,
-      allowQueriesWithoutKeywords: this.allowQueriesWithoutKeywords
+      allowQueriesWithoutKeywords: this.allowQueriesWithoutKeywords,
+      userActions: this.userActions
     };
     return query;
   }
@@ -494,5 +518,21 @@ export class QueryBuilder {
   public containsEndUserKeywords(): boolean {
     const query = this.build();
     return Utils.isNonEmptyString(query.q) || Utils.isNonEmptyString(query.lq);
+  }
+
+  private get groupBy() {
+    if (Utils.isEmptyArray(this.groupByRequests)) {
+      return undefined;
+    }
+
+    return this.groupByRequests;
+  }
+
+  private get facets() {
+    if (Utils.isEmptyArray(this.facetRequests)) {
+      return undefined;
+    }
+
+    return this.facetRequests;
   }
 }

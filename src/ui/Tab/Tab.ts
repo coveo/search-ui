@@ -13,12 +13,13 @@ import { Utils } from '../../utils/Utils';
 import { IAnalyticsInterfaceChange, analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
-import { ComponentOptions } from '../Base/ComponentOptions';
+import { ComponentOptions, IQueryExpression } from '../Base/ComponentOptions';
 import { Initialization } from '../Base/Initialization';
 import { ResponsiveTabs } from '../ResponsiveComponents/ResponsiveTabs';
+import { ValidLayout } from '../ResultLayoutSelector/ValidLayout';
 
 export interface ITabOptions {
-  expression?: string;
+  expression?: IQueryExpression;
   constant?: boolean;
   id?: string;
   icon?: string;
@@ -103,7 +104,7 @@ export class Tab extends Component {
      *
      * Default value is `undefined` and the Tab applies no additional expression or filter to the query.
      */
-    expression: ComponentOptions.buildStringOption({ section: 'Filtering' }),
+    expression: ComponentOptions.buildQueryExpressionOption({ section: 'Common Options' }),
 
     /**
      * Specifies the {@link SearchEndpoint} to point to when performing queries from within the Tab.
@@ -137,7 +138,7 @@ export class Tab extends Component {
      *
      * Default value is `undefined` and the component selects the first available layout.
      */
-    layout: ComponentOptions.buildStringOption(),
+    layout: ComponentOptions.buildStringOption<ValidLayout>(),
 
     /**
      * Specifies whether to include the {@link Tab.options.expression} in the constant part of the query.
@@ -246,6 +247,7 @@ export class Tab extends Component {
       .withElement(element)
       .withSelectAction(() => this.select())
       .withLabel(this.options.caption)
+      .withTitle(this.options.caption)
       .withOwner(this.bind)
       .build();
 

@@ -189,6 +189,7 @@ export class ValueElement {
   private getAnalyticsFacetMeta(): IAnalyticsFacetMeta {
     return {
       facetId: this.facet.options.id,
+      facetField: this.facet.options.field.toString(),
       facetValue: this.facetValue.value,
       facetTitle: this.facet.options.title
     };

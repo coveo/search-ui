@@ -1,35 +1,36 @@
-import { RootComponent } from '../ui/Base/RootComponent';
-import { IQueryResults } from '../rest/QueryResults';
-import { QueryBuilder } from '../ui/Base/QueryBuilder';
-import { IQuery } from '../rest/Query';
-import { ISearchEndpoint, IEndpointCallOptions } from '../rest/SearchEndpointInterface';
-import { SearchEndpoint } from '../rest/SearchEndpoint';
-import { LocalStorageUtils } from '../utils/LocalStorageUtils';
-import { ISearchInterfaceOptions } from '../ui/SearchInterface/SearchInterface';
-import { Assert } from '../misc/Assert';
-import { SearchEndpointWithDefaultCallOptions } from '../rest/SearchEndpointWithDefaultCallOptions';
-import {
-  INewQueryEventArgs,
-  IPreprocessResultsEventArgs,
-  INoResultsEventArgs,
-  IQuerySuccessEventArgs,
-  IQueryErrorEventArgs,
-  IDuringQueryEventArgs,
-  QueryEvents,
-  IFetchMoreSuccessEventArgs,
-  IDoneBuildingQueryEventArgs,
-  IBuildingQueryEventArgs,
-  IBuildingCallOptionsEventArgs
-} from '../events/QueryEvents';
-import { QueryUtils } from '../utils/QueryUtils';
-import { Defer } from '../misc/Defer';
-import { $$, Dom } from '../utils/Dom';
-import { Utils } from '../utils/Utils';
-import { BaseComponent } from '../ui/Base/BaseComponent';
-import { ModalBox } from '../ExternalModulesShim';
 import { history } from 'coveo.analytics';
 import * as _ from 'underscore';
+import {
+  IBuildingCallOptionsEventArgs,
+  IBuildingQueryEventArgs,
+  IDoneBuildingQueryEventArgs,
+  IDuringQueryEventArgs,
+  IFetchMoreSuccessEventArgs,
+  INewQueryEventArgs,
+  INoResultsEventArgs,
+  IPreprocessResultsEventArgs,
+  IQueryErrorEventArgs,
+  IQuerySuccessEventArgs,
+  QueryEvents
+} from '../events/QueryEvents';
+import { ModalBox } from '../ExternalModulesShim';
+import { Assert } from '../misc/Assert';
+import { Defer } from '../misc/Defer';
+import { IQuery } from '../rest/Query';
+import { IQueryResults } from '../rest/QueryResults';
+import { SearchEndpoint } from '../rest/SearchEndpoint';
+import { IEndpointCallOptions, ISearchEndpoint } from '../rest/SearchEndpointInterface';
+import { SearchEndpointWithDefaultCallOptions } from '../rest/SearchEndpointWithDefaultCallOptions';
+import { BaseComponent } from '../ui/Base/BaseComponent';
+import { QueryBuilder } from '../ui/Base/QueryBuilder';
+import { RootComponent } from '../ui/Base/RootComponent';
+import { ISearchInterfaceOptions } from '../ui/SearchInterface/SearchInterface';
+import { $$, Dom } from '../utils/Dom';
+import { LocalStorageUtils } from '../utils/LocalStorageUtils';
+import { QueryUtils } from '../utils/QueryUtils';
 import { UrlUtils } from '../utils/UrlUtils';
+import { Utils } from '../utils/Utils';
+import { NullStorage } from 'coveo.analytics/dist/storage';
 
 /**
  * Possible options when performing a query with the query controller
@@ -41,7 +42,7 @@ export interface IQueryOptions {
    */
   ignoreWarningSearchEvent?: boolean;
   /**
-   * Specify that the query to execute is a search as you type. This information will be passed down in the query events for component and external code to determine their behavior
+   * Whether the query to execute is a search-as-you-type. This information will be passed down in the query events for component and external code to determine their behavior
    */
   searchAsYouType?: boolean;
   /**
@@ -79,7 +80,6 @@ interface ILastQueryLocalStorage {
 class DefaultQueryOptions implements IQueryOptions {
   searchAsYouType = false;
   beforeExecuteQuery: () => void;
-  closeModalBox = true;
   cancel = false;
   logInActionsHistory = false;
   shouldRedirectStandaloneSearchbox = true;
@@ -95,6 +95,8 @@ export class QueryController extends RootComponent {
   static ID = 'QueryController';
   public historyStore: CoveoAnalytics.HistoryStore;
   public firstQuery: boolean;
+  public modalBox = ModalBox;
+  public closeModalBox = true;
 
   private currentPendingQuery: Promise<IQueryResults>;
   private lastQueryBuilder: QueryBuilder;
@@ -119,7 +121,7 @@ export class QueryController extends RootComponent {
     Assert.exists(element);
     Assert.exists(options);
     this.firstQuery = true;
-    this.historyStore = new history.HistoryStore();
+    this.enableHistory();
   }
 
   /**
@@ -170,9 +172,7 @@ export class QueryController extends RootComponent {
   public executeQuery(options?: IQueryOptions): Promise<IQueryResults> {
     options = <IQueryOptions>_.extend(new DefaultQueryOptions(), options);
 
-    if (options.closeModalBox) {
-      ModalBox.close(true);
-    }
+    this.closeModalBoxIfNeeded(options ? options.closeModalBox : undefined);
 
     this.logger.debug('Executing new query');
 
@@ -220,7 +220,6 @@ export class QueryController extends RootComponent {
     promise
       .then(queryResults => {
         Assert.exists(queryResults);
-        let firstQuery = this.firstQuery;
         if (this.firstQuery) {
           this.firstQuery = false;
         }
@@ -231,9 +230,8 @@ export class QueryController extends RootComponent {
         }
 
         this.logger.debug('Query results received', query, queryResults);
-        let enableHistory = this.searchInterface && this.searchInterface.options && this.searchInterface.options.enableHistory;
 
-        if ((!firstQuery || enableHistory) && this.keepLastSearchUid(query, queryResults)) {
+        if (this.keepLastSearchUid(query, queryResults, options)) {
           queryResults.searchUid = this.getLastSearchUid();
           queryResults._reusedSearchUid = true;
           QueryUtils.setPropertyOnResults(queryResults, 'queryUid', this.getLastSearchUid());
@@ -297,7 +295,6 @@ export class QueryController extends RootComponent {
 
         this.logger.error('Query triggered an error', query, error);
 
-        // this.currentPendingQuery.reject(error);
         this.currentPendingQuery = undefined;
         let dataToSendOnError: IQueryErrorEventArgs = {
           queryBuilder: queryBuilder,
@@ -472,6 +469,24 @@ export class QueryController extends RootComponent {
     return this.lastQueryHash || this.queryHash(new QueryBuilder().build());
   }
 
+  public resetHistory() {
+    this.historyStore.clear();
+  }
+
+  public enableHistory() {
+    this.historyStore = new history.HistoryStore();
+  }
+
+  public disableHistory() {
+    this.historyStore = new history.HistoryStore(new NullStorage());
+  }
+
+  private closeModalBoxIfNeeded(needed?: boolean) {
+    if (needed != undefined ? needed : this.closeModalBox) {
+      this.modalBox.close(true);
+    }
+  }
+
   private getLastSearchUid(): string {
     if (this.lastSearchUid != null) {
       return this.lastSearchUid;
@@ -523,8 +538,13 @@ export class QueryController extends RootComponent {
     }
   }
 
-  private keepLastSearchUid(query: IQuery, queryResults: IQueryResults) {
-    return this.getLastQueryHash() == this.queryHash(query, queryResults);
+  private keepLastSearchUid(query: IQuery, queryResults: IQueryResults, options: IQueryOptions) {
+    if (options.keepLastSearchUid === true) {
+      return true;
+    }
+
+    const enableHistory = this.searchInterface && this.searchInterface.options && this.searchInterface.options.enableHistory;
+    return enableHistory && this.getLastQueryHash() == this.queryHash(query, queryResults);
   }
 
   private queryHash(query: IQuery, queryResults?: IQueryResults): string {

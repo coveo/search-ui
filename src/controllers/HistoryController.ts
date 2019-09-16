@@ -87,6 +87,7 @@ export class HistoryController extends RootComponent implements IHistoryManager 
   }
 
   public replaceState(state: Record<string, any>) {
+    this.ignoreNextHashChange = true;
     const hash = '#' + this.hashUtils.encodeValues(state);
     this.window.location.replace(hash);
   }
@@ -184,7 +185,8 @@ export class HistoryController extends RootComponent implements IHistoryManager 
     Assert.isNonEmptyString(key);
     let value;
     try {
-      value = this.hashUtils.getValue(key, this.hashUtils.getHash(this.window));
+      const hash = this.hashUtils.getHash(this.window);
+      value = this.hashUtils.getValue(key, hash);
     } catch (error) {
       this.logger.error(`Could not parse parameter ${key} from URI`);
     }
@@ -222,6 +224,7 @@ export class HistoryController extends RootComponent implements IHistoryManager 
         if (facetInfo) {
           this.usageAnalytics.logSearchEvent<IAnalyticsFacetMeta>(facetInfo.actionCause, {
             facetId: facetInfo.fieldName,
+            facetField: facetInfo.fieldName,
             facetTitle: facetInfo.fieldName,
             facetValue: facetInfo.valueModified
           });
@@ -231,10 +234,10 @@ export class HistoryController extends RootComponent implements IHistoryManager 
   }
 
   private extractFacetInfoFromStateDifference(key: string) {
-    const regexForFacetInclusion = /f:(?!.*:not)(.*)/;
+    const regexForFacetInclusion = /^f:(?!.*:not)(.*)/;
     const matchForInclusion = regexForFacetInclusion.exec(key);
 
-    const regexForFacetExclusion = /f:(.*):not/;
+    const regexForFacetExclusion = /^f:(.*):not/;
     const matchForExclusion = regexForFacetExclusion.exec(key);
 
     const currentValue = this.queryStateModel.get(key) || [];

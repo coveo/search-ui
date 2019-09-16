@@ -14,7 +14,7 @@ interface IGeolocationResponseLocation {
 
 /**
  * The `GoogleApiPositionProvider` class uses the
- * [Google Maps Geolocation API]{https://developers.google.com/maps/documentation/geolocation/intro} to provide the
+ * [Google Maps Geolocation API](https://developers.google.com/maps/documentation/geolocation/intro) to provide the
  * position of the end user to a [`DistanceResources`]{@link DistanceResources} component whose
  * [`googleApiKey`]{@link DistanceResources.options.googleApiKey} option is set to a valid  Google Maps Geolocation API
  * key.
@@ -22,22 +22,19 @@ interface IGeolocationResponseLocation {
 export class GoogleApiPositionProvider implements IGeolocationPositionProvider {
   constructor(private googleApiKey: string) {}
 
-  public getPosition(): Promise<IGeolocationPosition> {
-    return new EndpointCaller()
-      .call<IGeolocationResponse>({
-        errorsAsSuccess: false,
-        method: 'POST',
-        queryString: [`key=${this.googleApiKey}`],
-        requestData: {},
-        responseType: 'json',
-        url: GOOGLE_MAP_BASE_URL
-      })
-      .then(responseData => {
-        const location = responseData.data.location;
-        return {
-          longitude: location.lng,
-          latitude: location.lat
-        };
-      });
+  public async getPosition(): Promise<IGeolocationPosition> {
+    const responseData = await new EndpointCaller().call<IGeolocationResponse>({
+      errorsAsSuccess: false,
+      method: 'POST',
+      queryString: [`key=${this.googleApiKey}`],
+      requestData: {},
+      responseType: 'json',
+      url: GOOGLE_MAP_BASE_URL
+    });
+    const location = responseData.data.location;
+    return {
+      longitude: location.lng,
+      latitude: location.lat
+    };
   }
 }

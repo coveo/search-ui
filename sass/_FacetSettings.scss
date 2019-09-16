@@ -3,7 +3,7 @@
   position: absolute;
   overflow: hidden;
   @include defaultRoundedBorder();
-  z-index: 11;
+  z-index: 999;
   background-color: white;
 }
 
@@ -20,7 +20,7 @@
 }
 
 .coveo-facet-settings-items {
-  padding: 0;
+  padding: 3px;
   overflow: hidden;
   vertical-align: middle;
   display: inline-block;
@@ -117,6 +117,7 @@
 
 .coveo-facet-settings-section-hide {
   border-top: $default-border;
+  margin: 3px;
   cursor: pointer;
   @include iconWithHoverState('coveo-facet-settings-section-hide-svg', 'none', 'coveo-facet-settings-disabled');
 }
@@ -143,4 +144,5 @@
   font-size: $font-size-smallest;
   font-weight: bold;
   color: $color-blueish-gray;
+  padding: 10px;
 }

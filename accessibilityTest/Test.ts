@@ -1,4 +1,4 @@
-/// <reference types="../bin/ts/CoveoJsSearch" />
+/// <reference path="../bin/ts/CoveoJsSearch.d.ts" />
 /// <reference path="./CustomMatcher.d.ts" />
 import { $$ } from 'coveo-search-ui';
 import { AccessibilityAdvancedSearch } from './AccessibilityAdvancedSearch';
@@ -19,6 +19,7 @@ import { AccessibilityExportToExcel } from './AccessibilityExportToExcel';
 import { AccessibilityFacet } from './AccessibilityFacet';
 import { AccessibilityFacetRange } from './AccessibilityFacetRange';
 import { AccessibilityFacetSlider } from './AccessibilityFacetSlider';
+import { AccessibilityDynamicFacet } from './AccessibilityDynamicFacet';
 import { AccessibilityFieldTable } from './AccessibilityFieldTable';
 import { AccessibilityFieldValue } from './AccessibilityFieldValue';
 import { AccessibilityIcon } from './AccessibilityIcon';
@@ -46,7 +47,7 @@ import { AccessibilityResultList } from './AccessibilityResultList';
 import { AccessibilitySort } from './AccessibilitySort';
 import { AccessibilityTab } from './AccessibilityTab';
 import { AccessibilityTimespanFacet } from './AccessibilityTimespanFacet';
-import { AccessibilityYouTubeThumbnail } from './AccessibilityYoutubeThumbnail';
+import { AccessibilityYouTubeThumbnail } from './AccessibilityYouTubeThumbnail';
 
 const initialHTMLSetup = () => {
   const body = jasmine['getGlobal']().document.body;
@@ -112,6 +113,7 @@ describe('Testing ...', () => {
   AccessibilityFacet();
   AccessibilityFacetRange();
   AccessibilityFacetSlider();
+  AccessibilityDynamicFacet();
   AccessibilityFieldTable();
   AccessibilityFieldValue();
   AccessibilityIcon();

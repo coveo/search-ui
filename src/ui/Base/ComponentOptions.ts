@@ -1,14 +1,14 @@
-import { IFieldDescription } from '../../rest/FieldDescription';
+import { contains, each, extend, isArray, keys, map } from 'underscore';
 import { Assert } from '../../misc/Assert';
 import { Logger } from '../../misc/Logger';
-import { $$ } from '../../utils/Dom';
-import { Utils } from '../../utils/Utils';
-import { l } from '../../strings/Strings';
-import * as _ from 'underscore';
-import { SVGIcons } from '../../utils/SVGIcons';
+import { IFieldDescription } from '../../rest/FieldDescription';
 import { IStringMap } from '../../rest/GenericParam';
-import { IComponentOptionsTemplateOptionArgs, TemplateComponentOptions } from './TemplateComponentOptions';
+import { l } from '../../strings/Strings';
+import { $$ } from '../../utils/Dom';
+import { SVGIcons } from '../../utils/SVGIcons';
+import { Utils } from '../../utils/Utils';
 import { Template } from '../Templates/Template';
+import { IComponentOptionsTemplateOptionArgs, TemplateComponentOptions } from './TemplateComponentOptions';
 
 /**
  * The `IFieldOption` interface declares a type for options that should contain a field to be used in a query.
@@ -16,6 +16,13 @@ import { Template } from '../Templates/Template';
  * The only constraint this type has over a basic string is that it should start with the `@` character.
  */
 export interface IFieldOption extends String {}
+
+/**
+ * The `IQueryExpression` type is a string type dedicated to query expressions.
+ *
+ * This type is used to build a specific option for query expressions.
+ */
+export type IQueryExpression = string;
 
 export interface IComponentOptionsLoadOption<T> {
   (element: HTMLElement, name: string, option: IComponentOptionsOption<T>): T;
@@ -257,7 +264,8 @@ export enum ComponentOptionsType {
   LONG_STRING,
   JSON,
   JAVASCRIPT,
-  NONE
+  NONE,
+  QUERY_EXPRESSION
 }
 
 const camelCaseToHyphenRegex = /([A-Z])|\W+(\w)/g;
@@ -330,8 +338,8 @@ export class ComponentOptions {
    * @param optionArgs The arguments to apply when building the option.
    * @returns {string} The resulting option value.
    */
-  static buildStringOption(optionArgs?: IComponentOptions<string>): string {
-    return ComponentOptions.buildOption<string>(ComponentOptionsType.STRING, ComponentOptions.loadStringOption, optionArgs);
+  static buildStringOption<T extends string>(optionArgs?: IComponentOptions<T>): T {
+    return ComponentOptions.buildOption<T>(ComponentOptionsType.STRING, ComponentOptions.loadStringOption, optionArgs);
   }
 
   /**
@@ -496,6 +504,22 @@ export class ComponentOptions {
   }
 
   /**
+   * Builds a query expression option.
+   *
+   * The query expression option should follow the [Coveo Cloud Query Syntax Reference](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=357).
+   *
+   * **Markup Example:**
+   *
+   * > `data-foo="@bar==baz"`
+   *
+   * @param optionArgs The arguments to apply when building the option.
+   * @returns {IQueryExpression} The resulting option value.
+   */
+  static buildQueryExpressionOption(optionArgs?: IComponentOptions<string>): IQueryExpression {
+    return ComponentOptions.buildOption<string>(ComponentOptionsType.QUERY_EXPRESSION, ComponentOptions.loadStringOption, optionArgs);
+  }
+
+  /**
    * Builds an array of strings option.
    *
    * As with all options that expect an array, you should use commas to delimit the different values.
@@ -560,15 +584,15 @@ export class ComponentOptions {
     const loadOption: IComponentOptionsLoadOption<{
       [key: string]: any;
     }> = (element: HTMLElement, name: string, option: IComponentOptionsOption<any>) => {
-      const keys = _.keys(optionArgs.subOptions);
+      const extractedKeys = keys(optionArgs.subOptions);
       const scopedOptions: {
         [name: string]: IComponentOptionsOption<any>;
       } = {};
       const scopedValues: {
         [name: string]: any;
       } = {};
-      for (let i = 0; i < keys.length; i++) {
-        const key = keys[i];
+      for (let i = 0; i < extractedKeys.length; i++) {
+        const key = extractedKeys[i];
         const scopedkey = ComponentOptions.mergeCamelCase(name, key);
         scopedOptions[scopedkey] = optionArgs.subOptions[key];
       }
@@ -577,8 +601,8 @@ export class ComponentOptions {
         [name: string]: any;
       } = {};
       let resultFound = false;
-      for (let i = 0; i < keys.length; i++) {
-        const key = keys[i];
+      for (let i = 0; i < extractedKeys.length; i++) {
+        const key = extractedKeys[i];
         const scopedkey = ComponentOptions.mergeCamelCase(name, key);
         if (scopedValues[scopedkey] != null) {
           resultValues[key] = scopedValues[scopedkey];
@@ -643,7 +667,7 @@ export class ComponentOptions {
     if (values == null) {
       values = {};
     }
-    const names: string[] = _.keys(options);
+    const names: string[] = keys(options);
     for (let i = 0; i < names.length; i++) {
       const name = names[i];
       const optionDefinition = options[name];
@@ -664,9 +688,9 @@ export class ComponentOptions {
       if (value == null && values[name] == undefined) {
         if (optionDefinition.defaultValue != null) {
           if (optionDefinition.type == ComponentOptionsType.LIST) {
-            value = _.extend([], optionDefinition.defaultValue);
+            value = extend([], optionDefinition.defaultValue);
           } else if (optionDefinition.type == ComponentOptionsType.OBJECT) {
-            value = _.extend({}, optionDefinition.defaultValue);
+            value = extend({}, optionDefinition.defaultValue);
           } else {
             value = optionDefinition.defaultValue;
           }
@@ -687,7 +711,7 @@ export class ComponentOptions {
           }
         }
         if (optionDefinition.type == ComponentOptionsType.OBJECT && values[name] != null) {
-          values[name] = _.extend(values[name], value);
+          values[name] = extend(values[name], value);
         } else if (optionDefinition.type == ComponentOptionsType.LOCALIZED_STRING) {
           values[name] = l(value);
         } else {
@@ -712,7 +736,7 @@ export class ComponentOptions {
     return values;
   }
 
-  static loadStringOption(element: HTMLElement, name: string, option: IComponentOptions<any>): string {
+  static loadStringOption<T extends string>(element: HTMLElement, name: string, option: IComponentOptions<any>): T {
     return element.getAttribute(ComponentOptions.attrNameFromName(name, option)) || ComponentOptions.getAttributeFromAlias(element, option);
   }
 
@@ -748,7 +772,7 @@ export class ComponentOptions {
       return null;
     }
     const fields = fieldsAttr.split(fieldsSeperator);
-    _.each(fields, (field: string) => {
+    each(fields, (field: string) => {
       Assert.check(Utils.isCoveoField(field), field + ' is not a valid field');
     });
     return fields;
@@ -759,14 +783,14 @@ export class ComponentOptions {
     const locale: string = String['locale'] || String['defaultLocale'];
     if (locale != null && attributeValue != null) {
       const localeParts = locale.toLowerCase().split('-');
-      const locales = _.map(localeParts, (part, i) => localeParts.slice(0, i + 1).join('-'));
+      const locales = map(localeParts, (part, i) => localeParts.slice(0, i + 1).join('-'));
       const localizers = attributeValue.match(localizer);
       if (localizers != null) {
         for (let i = 0; i < localizers.length; i++) {
           const groups = localizer.exec(localizers[i]);
           if (groups != null) {
             const lang = groups[1].toLowerCase();
-            if (_.contains(locales, lang)) {
+            if (contains(locales, lang)) {
               return groups[2].replace(/^\s+|\s+$/g, '');
             }
           }
@@ -896,13 +920,14 @@ export class ComponentOptions {
   }
 
   static isElementScrollable(element: HTMLElement) {
-    return $$(element).css('overflow-y') == 'scroll' || element.style.overflowY == 'scroll';
+    const overflowProperty = $$(element).css('overflow-y');
+    return overflowProperty == 'scroll' || overflowProperty == 'auto';
   }
 
   static getAttributeFromAlias(element: HTMLElement, option: IComponentOptions<any>) {
-    if (_.isArray(option.alias)) {
+    if (isArray(option.alias)) {
       let attributeFound;
-      _.each(option.alias, alias => {
+      each(option.alias, alias => {
         const attributeFoundWithThisAlias = element.getAttribute(ComponentOptions.attrNameFromName(alias));
         if (attributeFoundWithThisAlias) {
           attributeFound = attributeFoundWithThisAlias;

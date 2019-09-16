@@ -17,6 +17,8 @@ import { Initialization } from '../Base/Initialization';
 import { FacetUtils } from '../Facet/FacetUtils';
 import { Checkbox } from '../FormWidgets/Checkbox';
 import { SimpleFilterValues } from './SimpleFilterValues';
+import { Logger } from '../../misc/Logger';
+import { FacetSortCriterion } from '../Facet/FacetSortCriterion';
 
 export interface ISimpleFilterOptions {
   title: string;
@@ -24,6 +26,7 @@ export interface ISimpleFilterOptions {
   field: IFieldOption;
   valueCaption: any;
   maximumNumberOfValues: number;
+  sortCriteria: string;
 }
 
 interface ILabeledCheckbox {
@@ -46,6 +49,10 @@ export class SimpleFilter extends Component {
       SimpleFilter
     });
   };
+
+  static simpleFilterSortCritera() {
+    return ['score', 'occurrences', 'alphaascending', 'alphadescending', 'chisquare'];
+  }
   /**
    * The possible options for the SimpleFilter.
    * @componentOptions
@@ -78,7 +85,7 @@ export class SimpleFilter extends Component {
      *
      * Default value is the localized string for `NoTitle`.
      */
-    title: ComponentOptions.buildStringOption({ defaultValue: l('NoTitle') }),
+    title: ComponentOptions.buildLocalizedStringOption({ defaultValue: 'NoTitle' }),
 
     /**
      * Specifies a JSON object describing a mapping of `SimpleFilter` values to their desired captions.
@@ -115,7 +122,43 @@ export class SimpleFilter extends Component {
      * <div class='CoveoSimpleFilter' data-field='@myotherfield' data-value-caption='{"txt":"Text files","html":"Web page"}'></div>
      * ```
      */
-    valueCaption: ComponentOptions.buildJsonOption()
+    valueCaption: ComponentOptions.buildJsonOption(),
+    /**
+     *
+     * string?
+     * The sort criteria to use.
+     *
+     * **Default:** `score`
+     *
+     * **Allowed values:**
+     *
+     * `score`: sort using the score value which is computed from the number of occurrences of a field value, as well as from the position
+     * where query result items having this field value appear in the ranked query result set. When using this sort criterion, a field value
+     * with 100 occurrences might appear after one with only 10 occurrences, if the occurrences of the latter field value tend to appear higher
+     * in the ranked query result set.
+     *
+     * `occurrences`: sort by number of occurrences, with field values having the highest number of occurrences appearing first.
+     *
+     * `alphaascending/alphadescending`: sort alphabetically on the field values.
+     *
+     * `chisquare`: sort based on the relative frequency of field values in the query result set compared to their frequency in the entire index. This means that a field value that does
+     * not appear often in the index, but does appear often in the query result set will tend to appear higher.
+     *
+     */
+    sortCriteria: ComponentOptions.buildStringOption<FacetSortCriterion>({
+      postProcessing: (value, options: ISimpleFilterOptions) => {
+        const sortCriteriaToValidate = value || 'score';
+        if (SimpleFilter.simpleFilterSortCritera().indexOf(sortCriteriaToValidate.toLowerCase()) !== -1) {
+          return sortCriteriaToValidate;
+        } else {
+          new Logger(SimpleFilter).warn(
+            `The simpleFilter component doesn't accept ${sortCriteriaToValidate} as the value for the sortCriteria option.`,
+            `Available option are : ${SimpleFilter.simpleFilterSortCritera().toString()}`
+          );
+          return 'score';
+        }
+      }
+    })
   };
 
   private valueContainer: Dom;
@@ -296,6 +339,9 @@ export class SimpleFilter extends Component {
 
   private handleBlur(e: MouseEvent) {
     const relatedTarget = e.relatedTarget as HTMLElement;
+    if (!relatedTarget) {
+      return;
+    }
     if (!$$(relatedTarget).parent(Component.computeCssClassName(SimpleFilter))) {
       this.closeContainer();
     }
@@ -316,6 +362,11 @@ export class SimpleFilter extends Component {
         this.circleElement.addClass('coveo-simplefilter-circle-hidden');
       }
     }
+
+    if (selectedValues.length == 0) {
+      this.isSticky = false;
+    }
+
     const action = checkbox.isSelected()
       ? analyticsActionCauseList.simpleFilterSelectValue
       : analyticsActionCauseList.simpleFilterDeselectValue;
@@ -351,6 +402,15 @@ export class SimpleFilter extends Component {
     } else if (this.groupByRequestValues != undefined) {
       this.checkboxes = map(this.groupByRequestValues, caption => this.createCheckbox(caption));
     }
+    if (
+      this.options.sortCriteria.toLocaleLowerCase() === 'alphaascending' ||
+      this.options.sortCriteria.toLowerCase() === 'alphadescending'
+    ) {
+      this.checkboxes.sort((a, b) => a.checkbox.label.localeCompare(b.checkbox.label));
+      if (this.options.sortCriteria.toLowerCase() === 'alphadescending') {
+        this.checkboxes.reverse();
+      }
+    }
     each(this.checkboxes, result => {
       this.valueContainer.append(result.checkbox.getElement());
     });
@@ -375,7 +435,7 @@ export class SimpleFilter extends Component {
 
   private buildSelect(): HTMLElement {
     const select = $$('span', { className: 'coveo-simplefilter-select' });
-    this.selectTitle = $$('span', { className: 'coveo-simplefilter-selecttext' }, this.getValueCaption(this.options.title));
+    this.selectTitle = $$('span', { className: 'coveo-simplefilter-selecttext' }, this.options.title);
     select.append(this.selectTitle.el);
     select.append(this.buildCircleElement());
     select.append(this.buildSvgToggleUpIcon());
@@ -412,7 +472,7 @@ export class SimpleFilter extends Component {
   private handlePopulateBreadcrumb(args: IPopulateBreadcrumbEventArgs) {
     if (this.getSelectedLabeledCheckboxes().length > 0) {
       const elem = $$('div', { className: 'coveo-simplefilter-breadcrumb' });
-      const title = $$('span', { className: 'coveo-simplefilter-breadcrumb-title' }, this.options.title);
+      const title = $$('span', { className: 'coveo-simplefilter-breadcrumb-title' }, `${this.options.title}:`);
       elem.append(title.el);
       const values = $$('span', { className: 'coveo-simplefilter-breadcrumb-values' });
       elem.append(values.el);
@@ -420,8 +480,7 @@ export class SimpleFilter extends Component {
       each(this.getSelectedLabeledCheckboxes(), selectedlabeledCheckbox => {
         const value = $$('span', { className: 'coveo-simplefilter-breadcrumb-value' }, this.getValueCaption(selectedlabeledCheckbox.label));
         values.append(value.el);
-        const svgContainer = $$('span', { className: 'coveo-simplefilter-breadcrumb-clear' }, SVGIcons.icons.checkboxHookExclusionMore);
-        SVGDom.addClassToSVGInContainer(svgContainer.el, 'coveo-simplefilter-breadcrumb-clear-svg');
+        const svgContainer = $$('span', { className: 'coveo-simplefilter-breadcrumb-clear' }, SVGIcons.icons.mainClear);
         value.append(svgContainer.el);
         value.el.title = this.getValueCaption(selectedlabeledCheckbox.label);
         $$(value).on('click', () => this.handleRemoveFromBreadcrumb(selectedlabeledCheckbox));

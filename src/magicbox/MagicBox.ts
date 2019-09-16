@@ -1,11 +1,12 @@
-/// <reference path="./MagicBox.d.ts"/>
+import { each, find, isUndefined } from 'underscore';
+import { KEYBOARD } from '../Core';
 import { $$ } from '../utils/Dom';
-import { Result } from './Result/Result';
-import { Grammar } from './Grammar';
 import { doMagicBoxExport } from './doMagicBoxExport';
-import { Suggestion, SuggestionsManager } from './SuggestionsManager';
-import _ = require('underscore');
+import { Grammar } from './Grammar';
 import { InputManager } from './InputManager';
+import { MagicBoxClear } from './MagicBoxClear';
+import { Result } from './Result/Result';
+import { Suggestion, SuggestionsManager } from './SuggestionsManager';
 
 export interface Options {
   inline?: boolean;
@@ -29,7 +30,7 @@ export class MagicBoxInstance {
 
   private inputManager: InputManager;
   private suggestionsManager: SuggestionsManager;
-  private clearDom: HTMLElement;
+  private magicBoxClear: MagicBoxClear;
 
   private lastSuggestions: Suggestion[] = [];
 
@@ -37,34 +38,22 @@ export class MagicBoxInstance {
   private displayedResult: Result;
 
   constructor(public element: HTMLElement, public grammar: Grammar, public options: Options = {}) {
-    if (_.isUndefined(this.options.inline)) {
+    if (isUndefined(this.options.inline)) {
       this.options.inline = false;
     }
     $$(element).addClass('magic-box');
     if (this.options.inline) {
       $$(element).addClass('magic-box-inline');
     }
-    $$(this.element).setAttribute('role', 'combobox');
 
     this.result = this.grammar.parse('');
     this.displayedResult = this.result.clean();
-
-    this.clearDom = document.createElement('div');
-    this.clearDom.className = 'magic-box-clear';
-
-    const icon = document.createElement('div');
-    icon.className = 'magic-box-icon';
-    this.clearDom.appendChild(icon);
 
     let inputContainer = $$(element).find('.magic-box-input');
     if (!inputContainer) {
       inputContainer = document.createElement('div');
       inputContainer.className = 'magic-box-input';
-
-      element.appendChild(this.clearDom);
       element.appendChild(inputContainer);
-    } else {
-      element.insertBefore(this.clearDom, inputContainer);
     }
 
     this.inputManager = new InputManager(
@@ -103,6 +92,7 @@ export class MagicBoxInstance {
       timeout: this.options.suggestionTimeout
     });
 
+    this.magicBoxClear = new MagicBoxClear(this);
     this.setupHandler();
   }
 
@@ -116,6 +106,7 @@ export class MagicBoxInstance {
 
   public setText(text: string) {
     $$(this.element).toggleClass('magic-box-notEmpty', text.length > 0);
+    this.magicBoxClear.toggleTabindexAndAriaHidden(text.length > 0);
 
     this.result = this.grammar.parse(text);
     this.displayedResult = this.result.clean();
@@ -151,19 +142,16 @@ export class MagicBoxInstance {
     };
 
     this.inputManager.onkeydown = (key: number) => {
-      if (key == 38 || key == 40) {
-        // Up, Down
+      if (key === KEYBOARD.UP_ARROW || key === KEYBOARD.DOWN_ARROW || key === KEYBOARD.LEFT_ARROW || key === KEYBOARD.RIGHT_ARROW) {
         return false;
       }
-      if (key == 13) {
-        // Enter
-        const suggestion = this.suggestionsManager.select();
+      if (key === KEYBOARD.ENTER) {
+        const suggestion = this.suggestionsManager.selectAndReturnKeyboardFocusedElement();
         if (suggestion == null) {
           this.onsubmit && this.onsubmit();
         }
         return false;
-      } else if (key == 27) {
-        // ESC
+      } else if (key === KEYBOARD.ESCAPE) {
         this.clearSuggestion();
         this.blur();
       }
@@ -175,24 +163,28 @@ export class MagicBoxInstance {
     };
 
     this.inputManager.onkeyup = (key: number) => {
-      if (key == 38) {
-        // Up
-        this.onmove && this.onmove();
-        this.focusOnSuggestion(this.suggestionsManager.moveUp());
-        this.onchange && this.onchange();
-      } else if (key == 40) {
-        // Down
-        this.onmove && this.onmove();
-        this.focusOnSuggestion(this.suggestionsManager.moveDown());
-        this.onchange && this.onchange();
-      } else {
-        return true;
+      this.onmove && this.onmove();
+      switch (key) {
+        case KEYBOARD.UP_ARROW:
+          this.suggestionsManager.moveUp();
+          break;
+        case KEYBOARD.DOWN_ARROW:
+          this.suggestionsManager.moveDown();
+          break;
+        case KEYBOARD.LEFT_ARROW:
+          this.suggestionsManager.moveLeft();
+          break;
+        case KEYBOARD.RIGHT_ARROW:
+          this.suggestionsManager.moveRight();
+          break;
+        default:
+          return true;
       }
+      if (this.suggestionsManager.selectedSuggestion) {
+        this.focusOnSuggestion(this.suggestionsManager.selectedSuggestion);
+      }
+      this.onchange && this.onchange();
       return false;
-    };
-
-    this.clearDom.onclick = () => {
-      this.clear();
     };
   }
 
@@ -207,7 +199,7 @@ export class MagicBoxInstance {
     const firstSuggestion = this.getFirstSuggestionText();
     this.inputManager.setWordCompletion(firstSuggestion && firstSuggestion.text);
     this.onsuggestions && this.onsuggestions(suggestions);
-    _.each(suggestions, (suggestion: Suggestion) => {
+    each(suggestions, (suggestion: Suggestion) => {
       if (suggestion.onSelect == null && suggestion.text != null) {
         suggestion.onSelect = () => {
           this.setText(suggestion.text);
@@ -243,7 +235,7 @@ export class MagicBoxInstance {
   }
 
   private getFirstSuggestionText(): Suggestion {
-    return _.find(this.lastSuggestions, suggestion => suggestion.text != null);
+    return find(this.lastSuggestions, suggestion => suggestion.text != null);
   }
 
   public getText() {
@@ -276,4 +268,5 @@ export function requestAnimationFrame(callback: () => void) {
   }
   return setTimeout(callback);
 }
+
 doMagicBoxExport();

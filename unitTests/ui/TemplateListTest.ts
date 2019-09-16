@@ -21,12 +21,11 @@ export function TemplateListTest() {
     });
 
     describe('when there are no templates', () => {
-      it('should return a default result template when instantiating to element', done => {
+      it('should return a default result template when instantiating to element', async done => {
         let templateList = new TemplateList([]);
-        templateList.instantiateToElement(result).then(element => {
-          expect(element.innerHTML).toEqual(new DefaultResultTemplate().instantiateToString(result));
-          done();
-        });
+        const element = await templateList.instantiateToElement(result);
+        expect(element.innerHTML).toEqual(new DefaultResultTemplate().instantiateToString(result));
+        done();
       });
 
       it('should return a default result template when instantiating to string', () => {

@@ -69,6 +69,10 @@ export class ResultLayoutSelector extends Component {
   private resultLayoutSection: HTMLElement;
   private hasNoResults: boolean;
 
+  /**
+   * The component options
+   * @componentOptions
+   */
   static options: IResultLayoutOptions = {
     /**
      * Specifies the layouts that should be available when the search page is displayed in mobile mode.
@@ -217,7 +221,7 @@ export class ResultLayoutSelector extends Component {
   }
 
   private enableLayout(layout: ValidLayout) {
-    const allResultLists = this.activeResultLists;
+    const allResultLists = this.resultLists;
     const atLeastOneResultListCanShowLayout = find(allResultLists, resultList => resultList.options.layout == layout);
     if (atLeastOneResultListCanShowLayout && this.isLayoutDisplayedByButton(layout)) {
       this.showButton(layout);
@@ -227,10 +231,6 @@ export class ResultLayoutSelector extends Component {
 
   private get resultLists(): ResultListModule.ResultList[] {
     return this.searchInterface.getComponents('ResultList');
-  }
-
-  private get activeResultLists(): ResultListModule.ResultList[] {
-    return filter(this.resultLists, list => !list.disabled);
   }
 
   private hideButton(layout: ValidLayout) {
@@ -325,7 +325,7 @@ export class ResultLayoutSelector extends Component {
 
     new AccessibleButton()
       .withElement(btn)
-      .withLabel(l(layout))
+      .withLabel(l('DisplayResultsAs', l(layout)))
       .withSelectAction(selectAction)
       .withOwner(this.bind)
       .build();

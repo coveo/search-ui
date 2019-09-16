@@ -14,16 +14,11 @@ declare const Coveo;
 export interface IPipelineContextOptions {}
 
 /**
- * A PipelineContext is used to add contextual information about the environment inside which the query is executed.
+ * A PipelineContext is used to add custom context information to a query (see [Adding Custom Context Information to Queries](https://docs.coveo.com/en/399)).
  *
- * It allows to pass arbitrary key values pairs ( think `JSON` ), which can then be leveraged by the [Query Pipeline](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=108),
- * or by Coveo Machine Learning.
+ * This component is meant to be initialized with a script tag, possibly configuring it with JSON content.
  *
- * This can be any arbitrary information that you can use to contextualize the query and help Coveo improve relevance by returning results tailored to a specific context.
- *
- * This component is meant to be configured using a script tag, with a JSON content.
- *
- * The values can be either a `string` or an array of `string`.
+ * The values can be either string or string array.
  *
  * ```
  * <script class='CoveoPipelineContext' type='text/context'>
@@ -34,18 +29,11 @@ export interface IPipelineContextOptions {}
  * </script>
  * ```
  *
- * You can also simply use JavaScript code to pass context values, using the {@link QueryBuilder.addContextValue} method.
+ * Configuring the component within a script tag implies you will be able to leverage the interface editor.
  *
- * This means you do not necessarily need to use this component to pass context.
- * ```
- * Coveo.$$(root).on('buildingQuery', function(args) {
- *     args.queryBuilder.addContextValue('foo', 'bar');
- * })
- * ```
+ * Once the component is created, you can also use JavaScript code to set/overwrite context values, using the {@link setContext} and {@link setContextValue} methods.
  *
- * Using this component as opposed to JavaScript code means you will be able to leverage the interface editor.
- *
- * Regardless of if you use this component or JavaScript to add context, both will add the needed data in the [Query.Context]{@link IQuery.context} parameter.
+ * Whether you configure the component within a script tag or using JavaScript code, the data is added to the [Query.Context]{@link IQuery.context} parameter.
  *
  * **Note:**
  *
@@ -78,7 +66,9 @@ export class PipelineContext extends Component implements IPipelineContextProvid
   }
 
   /**
-   * Set a new context, replacing any value previously set.
+   * **Available since the [December 2017 Release](https://docs.coveo.com/en/373).**
+   *
+   * Sets a new context, replacing the previous context if applicable.
    *
    * @param newContext The new context to set, which can be directly passed as a JSON, or as a stringified JSON.
    */
@@ -100,6 +90,8 @@ export class PipelineContext extends Component implements IPipelineContextProvid
   }
 
   /**
+   * **Available since the [December 2017 Release](https://docs.coveo.com/en/373).**
+   *
    * Sets a value for a context key, replacing the previous value if applicable.
    * @param contextKey
    * @param contextValue

@@ -6,18 +6,20 @@ import { DefaultFoldingTemplate } from './DefaultFoldingTemplate';
 import { IQueryResult } from '../../rest/QueryResult';
 import { Utils } from '../../utils/Utils';
 import { QueryUtils } from '../../utils/QueryUtils';
-import { Initialization, IInitializationParameters, IInitResult } from '../Base/Initialization';
+import { Initialization } from '../Base/Initialization';
 import { Assert } from '../../misc/Assert';
 import { $$, Win } from '../../utils/Dom';
 import { l } from '../../strings/Strings';
-import * as _ from 'underscore';
+import { each, map } from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 import { analyticsActionCauseList, IAnalyticsDocumentViewMeta } from '../Analytics/AnalyticsActionListMeta';
+import { Logger } from '../../misc/Logger';
 
 import 'styling/_ResultFolding';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { SVGDom } from '../../utils/SVGDom';
 import { TemplateComponentOptions } from '../Base/TemplateComponentOptions';
+import { AccessibleButton } from '../../utils/AccessibleButton';
 
 export interface IResultFoldingOptions {
   resultTemplate?: Template;
@@ -146,17 +148,7 @@ export class ResultFolding extends Component {
     Assert.exists(result);
 
     this.buildElements();
-    this.displayThoseResults(this.result.childResults).then(() => {
-      this.updateElementVisibility();
-
-      if ($$(this.element.parentElement).hasClass('CoveoCardOverlay')) {
-        this.bindOverlayEvents();
-      }
-
-      if (this.result.childResults.length == 0 && !this.result.moreResults) {
-        $$(this.element).hide();
-      }
-    });
+    this.renderElements();
   }
 
   /**
@@ -164,7 +156,7 @@ export class ResultFolding extends Component {
    * This is the equivalent of clicking "Show all conversation".
    * @returns {Promise<IQueryResult[]>}
    */
-  public showMoreResults() {
+  public async showMoreResults() {
     Assert.exists(this.result.moreResults);
 
     this.cancelAnyPendingShowMore();
@@ -173,34 +165,35 @@ export class ResultFolding extends Component {
     this.results.appendChild(this.waitAnimation);
     this.updateElementVisibility();
 
-    let ret = this.moreResultsPromise.then((results?: IQueryResult[]) => {
-      this.childResults = results;
-      this.showingMoreResults = true;
-      this.usageAnalytics.logClickEvent<IAnalyticsDocumentViewMeta>(
-        analyticsActionCauseList.foldingShowMore,
-        this.getAnalyticsMetadata(),
-        this.result,
-        this.element
-      );
-      return this.displayThoseResults(results).then(() => {
-        this.updateElementVisibility(results.length);
-        return results;
-      });
-    });
+    const results = await this.moreResultsPromise;
+    this.childResults = results;
+    this.showingMoreResults = true;
+    this.usageAnalytics.logClickEvent<IAnalyticsDocumentViewMeta>(
+      analyticsActionCauseList.foldingShowMore,
+      this.getAnalyticsMetadata(),
+      this.result,
+      this.element
+    );
 
-    ret.finally(() => {
-      this.moreResultsPromise = undefined;
-      $$(this.waitAnimation).detach();
-      this.waitAnimation = undefined;
-    });
+    try {
+      await this.displayThoseResults(results);
+      this.updateElementVisibility(results.length);
+    } catch (e) {
+      const logger = new Logger(this);
+      logger.warn('An error occured when trying to display more results');
+    }
 
-    return ret;
+    this.moreResultsPromise = undefined;
+    $$(this.waitAnimation).detach();
+    this.waitAnimation = undefined;
+
+    return results;
   }
 
   /**
    * Show less results for a given conversation. This is the equivalent of clicking "Show less"
    */
-  public showLessResults() {
+  public async showLessResults() {
     this.cancelAnyPendingShowMore();
     this.showingMoreResults = false;
     this.usageAnalytics.logCustomEvent<IAnalyticsDocumentViewMeta>(
@@ -208,7 +201,7 @@ export class ResultFolding extends Component {
       this.getAnalyticsMetadata(),
       this.element
     );
-    this.displayThoseResults(this.result.childResults);
+    await this.displayThoseResults(this.result.childResults);
     this.updateElementVisibility();
     this.scrollToResultElement();
   }
@@ -217,6 +210,19 @@ export class ResultFolding extends Component {
     this.buildHeader();
     this.buildResults();
     this.buildFooter();
+  }
+
+  private async renderElements() {
+    await this.displayThoseResults(this.result.childResults);
+    this.updateElementVisibility();
+
+    if ($$(this.element.parentElement).hasClass('CoveoCardOverlay')) {
+      this.bindOverlayEvents();
+    }
+
+    if (this.result.childResults.length == 0 && !this.result.moreResults) {
+      $$(this.element).hide();
+    }
   }
 
   private buildHeader() {
@@ -239,32 +245,45 @@ export class ResultFolding extends Component {
   }
 
   private buildFooter() {
-    let footer = $$('div', { className: 'coveo-folding-footer' }).el;
+    const footer = $$('div', { className: 'coveo-folding-footer' }).el;
     this.element.parentElement.appendChild(footer);
 
     if (this.result.moreResults) {
       this.showMore = $$('div', { className: 'coveo-folding-footer-section-for-less' }).el;
-      $$(this.showMore).on('click', () => this.showMoreResults());
       footer.appendChild(this.showMore);
 
       this.showLess = $$('div', { className: 'coveo-folding-footer-section-for-more' }).el;
-      $$(this.showLess).on('click', () => this.showLessResults());
       footer.appendChild(this.showLess);
 
-      let footerIconShowMore = $$(
+      const footerIconShowMore = $$(
         'div',
         { className: 'coveo-folding-more' },
         $$('span', { className: 'coveo-folding-footer-icon' }, SVGIcons.icons.arrowDown).el
       ).el;
       SVGDom.addClassToSVGInContainer(footerIconShowMore, 'coveo-folding-more-svg');
-      let footerIconShowLess = $$(
+
+      const footerIconShowLess = $$(
         'div',
         { className: 'coveo-folding-less' },
         $$('span', { className: 'coveo-folding-footer-icon' }, SVGIcons.icons.arrowUp).el
       ).el;
       SVGDom.addClassToSVGInContainer(footerIconShowLess, 'coveo-folding-less-svg');
-      let showMoreLink = $$('a', { className: 'coveo-folding-show-more' }, this.options.moreCaption).el;
-      let showLessLink = $$('a', { className: 'coveo-folding-show-less' }, this.options.lessCaption).el;
+
+      const showMoreLink = $$('a', { className: 'coveo-folding-show-more' }, this.options.moreCaption).el;
+      const showLessLink = $$('a', { className: 'coveo-folding-show-less' }, this.options.lessCaption).el;
+
+      new AccessibleButton()
+        .withElement(this.showMore)
+        .withLabel(this.options.moreCaption)
+        .withSelectAction(() => this.showMoreResults())
+        .build();
+
+      new AccessibleButton()
+        .withElement(this.showLess)
+        .withLabel(this.options.lessCaption)
+        .withSelectAction(() => this.showLessResults())
+        .build();
+
       this.showMore.appendChild(showMoreLink);
       this.showLess.appendChild(showLessLink);
       this.showMore.appendChild(footerIconShowMore);
@@ -282,8 +301,8 @@ export class ResultFolding extends Component {
     $$(this.oneResultCaption).toggleClass('coveo-hidden', !(subResultsLength && subResultsLength == 1));
 
     if (this.showMore) {
-      $$(this.showMore).toggle(!this.showingMoreResults && !Utils.exists(this.moreResultsPromise));
-      $$(this.showLess).toggle(this.showingMoreResults);
+      $$(this.showMore).toggleClass('coveo-visible', !this.showingMoreResults && !Utils.exists(this.moreResultsPromise));
+      $$(this.showLess).toggleClass('coveo-visible', this.showingMoreResults);
     }
 
     let showIfNormal = $$(this.element).find('.coveo-show-if-normal');
@@ -302,51 +321,35 @@ export class ResultFolding extends Component {
     window.scrollTo(0, new Win(window).scrollY() + resultElem.getBoundingClientRect().top);
   }
 
-  private displayThoseResults(results: IQueryResult[]): Promise<boolean> {
-    const childResultsPromises = _.map(results, result => {
+  private async displayThoseResults(results: IQueryResult[]): Promise<boolean> {
+    const childResultsPromises = map(results, result => {
       return this.renderChildResult(result);
     });
 
-    return Promise.all(childResultsPromises).then((childsToAppend: HTMLElement[]) => {
-      $$(this.results).empty();
-      _.each(childsToAppend, oneChild => {
-        this.results.appendChild(oneChild);
-      });
-      return true;
+    const childsToAppend: HTMLElement[] = await Promise.all(childResultsPromises);
+    $$(this.results).empty();
+    each(childsToAppend, oneChild => {
+      this.results.appendChild(oneChild);
     });
+    return true;
   }
 
-  private renderChildResult(childResult: IQueryResult): Promise<HTMLElement> {
+  private async renderChildResult(childResult: IQueryResult): Promise<HTMLElement> {
     QueryUtils.setStateObjectOnQueryResult(this.queryStateModel.get(), childResult);
     QueryUtils.setSearchInterfaceObjectOnQueryResult(this.searchInterface, childResult);
 
-    return this.options.resultTemplate
-      .instantiateToElement(childResult, {
-        wrapInDiv: false,
-        checkCondition: false,
-        responsiveComponents: this.searchInterface.responsiveComponents
-      })
-      .then((oneChild: HTMLElement) => {
-        $$(oneChild).addClass('coveo-result-folding-child-result');
+    const oneChild: HTMLElement = await this.options.resultTemplate.instantiateToElement(childResult, {
+      wrapInDiv: false,
+      checkCondition: false,
+      responsiveComponents: this.searchInterface.responsiveComponents
+    });
 
-        $$(oneChild).toggleClass('coveo-normal-child-result', !this.showingMoreResults);
-        $$(oneChild).toggleClass('coveo-expanded-child-result', this.showingMoreResults);
-        return this.autoCreateComponentsInsideResult(oneChild, childResult).initResult.then(() => {
-          return oneChild;
-        });
-      });
-  }
+    $$(oneChild).addClass('coveo-result-folding-child-result');
+    $$(oneChild).toggleClass('coveo-normal-child-result', !this.showingMoreResults);
+    $$(oneChild).toggleClass('coveo-expanded-child-result', this.showingMoreResults);
 
-  private autoCreateComponentsInsideResult(element: HTMLElement, result: IQueryResult): IInitResult {
-    Assert.exists(element);
-
-    let initOptions = this.searchInterface.options;
-    let initParameters: IInitializationParameters = {
-      options: initOptions,
-      bindings: this.getBindings(),
-      result: result
-    };
-    return Initialization.automaticallyCreateComponentsInside(element, initParameters);
+    await Initialization.automaticallyCreateComponentsInsideResult(oneChild, childResult).initResult;
+    return oneChild;
   }
 
   private cancelAnyPendingShowMore() {

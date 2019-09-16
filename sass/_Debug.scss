@@ -14,9 +14,15 @@ $color_duration: #33b;
   .coveo-input {
     margin: 8px;
   }
+  .coveo-checkbox-label {
+    margin-left: 18px;
+  }
+  .coveo-checkbox-span-label {
+    margin-left: 6px;
+  }
   .coveo-modal-header {
     a {
-      @include clickableVibrant();
+      @include clickable();
     }
     height: auto;
     min-height: 80px;

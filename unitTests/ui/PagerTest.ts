@@ -38,6 +38,33 @@ export function PagerTest() {
       expect(test.env.queryController.executeQuery).toHaveBeenCalledTimes(4);
     });
 
+    it('should not be possible to set current page to an invalid value', () => {
+      test.cmp.setPage('a' as any);
+      expect(test.cmp.currentPage).toBe(1);
+      test.cmp.setPage('1' as any);
+      expect(test.cmp.currentPage).toBe(1);
+      test.cmp.setPage(2 as any);
+      expect(test.cmp.currentPage).toBe(2);
+      test.cmp.setPage(1.7 as any);
+      expect(test.cmp.currentPage).toBe(1);
+      test.cmp.setPage(1.5 as any);
+      expect(test.cmp.currentPage).toBe(1);
+      test.cmp.setPage(1.499999 as any);
+      expect(test.cmp.currentPage).toBe(1);
+      test.cmp.setPage('1.599999' as any);
+      expect(test.cmp.currentPage).toBe(1);
+      test.cmp.setPage('2.00000' as any);
+      expect(test.cmp.currentPage).toBe(2);
+      test.cmp.setPage({} as any);
+      expect(test.cmp.currentPage).toBe(1);
+      test.cmp.setPage(true as any);
+      expect(test.cmp.currentPage).toBe(1);
+      test.cmp.setPage(false as any);
+      expect(test.cmp.currentPage).toBe(1);
+      test.cmp.setPage(0 as any);
+      expect(test.cmp.currentPage).toBe(1);
+    });
+
     it('should update the state when changing page', () => {
       let currentPage = 1;
       test.cmp.setPage(++currentPage);
@@ -89,28 +116,50 @@ export function PagerTest() {
       expect($$(anchors[anchors.length - 1]).text()).toBe('10');
     });
 
-    it('should reset page number on a new query if the origin is not a pager', () => {
-      // origin not available -> reset
-      test.cmp.setPage(5);
-      expect(test.cmp.currentPage).toBe(5);
-      $$(test.env.root).trigger(QueryEvents.newQuery, {});
-      expect(test.cmp.currentPage).toBe(1);
-
-      // origin not the pager -> reset
-      test.cmp.setPage(10);
-      expect(test.cmp.currentPage).toBe(10);
-      $$(test.env.root).trigger(QueryEvents.newQuery, {
-        origin: 'nope not the pager'
+    it('should set the aria-label on elements correctly', () => {
+      const builder = new QueryBuilder();
+      Simulate.query(test.env, {
+        query: builder.build(),
+        results: FakeResults.createFakeResults(100)
       });
-      expect(test.cmp.currentPage).toBe(1);
 
-      // origin is pager -> no reset
+      const anchors = $$(test.cmp.element).findAll('a.coveo-pager-list-item-text');
+      expect($$(anchors[0]).text()).toBe('1');
+      expect(anchors[0].parentElement.getAttribute('aria-label')).toBe('Page 1');
+    });
+
+    it('should not reset page number on a new query if the origin is a pager', () => {
       test.cmp.setPage(6);
       expect(test.cmp.currentPage).toBe(6);
       $$(test.env.root).trigger(QueryEvents.newQuery, {
         origin: test.cmp
       });
       expect(test.cmp.currentPage).toBe(6);
+    });
+
+    it('should not reset page number on a new query if the origin is a debug panel', () => {
+      test.cmp.setPage(10);
+      expect(test.cmp.currentPage).toBe(10);
+      $$(test.env.root).trigger(QueryEvents.newQuery, {
+        origin: { type: 'Debug' }
+      });
+      expect(test.cmp.currentPage).toBe(10);
+    });
+
+    it('should reset the page number on a new query if the origin is not set', () => {
+      test.cmp.setPage(5);
+      expect(test.cmp.currentPage).toBe(5);
+      $$(test.env.root).trigger(QueryEvents.newQuery, {});
+      expect(test.cmp.currentPage).toBe(1);
+    });
+
+    it('should reset the page number on a new query if the origin is something not recognized', () => {
+      test.cmp.setPage(10);
+      expect(test.cmp.currentPage).toBe(10);
+      $$(test.env.root).trigger(QueryEvents.newQuery, {
+        origin: 'nope not the pager'
+      });
+      expect(test.cmp.currentPage).toBe(1);
     });
 
     describe('when queries are performed', () => {
@@ -154,15 +203,6 @@ export function PagerTest() {
         anchors = $$(test.cmp.element).findAll('a.coveo-pager-list-item-text');
         expect($$(anchors[0]).text()).toBe('1');
         expect($$(anchors[anchors.length - 1]).text()).toBe('2');
-      });
-
-      it('should return to the last valid page when there is no results', () => {
-        $$(test.env.root).on(QueryEvents.noResults, (e, args: INoResultsEventArgs) => {
-          expect(args.retryTheQuery).toBe(true);
-        });
-        test.cmp.currentPage = 101;
-        execQuery(test, 10, 1000, 0, test.cmp);
-        expect(test.cmp.currentPage).toBe(100);
       });
 
       it('should return to the last valid page when there is no results and the numberOfResults per page is no standard', () => {

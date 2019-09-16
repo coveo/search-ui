@@ -28,6 +28,7 @@ import ModalBox = Coveo.ModalBox.ModalBox;
 import { NoopComponent } from '../src/ui/NoopComponent/NoopComponent';
 import { Component } from '../src/ui/Base/Component';
 import { QueryError } from '../src/rest/QueryError';
+import { InitializationEvents } from '../src/Core';
 
 export interface ISimulateQueryData {
   query?: IQuery;
@@ -191,6 +192,13 @@ export class Simulate {
     return options;
   }
 
+  static initialization(env: IMockEnvironment) {
+    $$(env.root).trigger(InitializationEvents.beforeInitialization);
+    $$(env.root).trigger(InitializationEvents.afterComponentsInitialization);
+    $$(env.root).trigger(InitializationEvents.restoreHistoryState);
+    $$(env.root).trigger(InitializationEvents.afterInitialization);
+  }
+
   static modalBoxModule(): ModalBox {
     let modalBox = <any>{};
     modalBox.open = jasmine.createSpy('open');
@@ -219,7 +227,7 @@ export class Simulate {
     };
   }
 
-  static omnibox(env: IMockEnvironment, options?): IOmniboxData {
+  static populateOmnibox(env: IMockEnvironment, options?): IOmniboxData {
     let expression = {
       word: 'foo',
       regex: /foo/
@@ -252,6 +260,10 @@ export class Simulate {
     let args = <IPopulateBreadcrumbEventArgs>{ breadcrumbs: [] };
     $$(env.root).trigger(BreadcrumbEvents.populateBreadcrumb, args);
     return args.breadcrumbs;
+  }
+
+  static clearBreadcrumb(env: IMockEnvironment) {
+    $$(env.root).trigger(BreadcrumbEvents.clearBreadcrumb);
   }
 
   static keyUp(element: HTMLElement, key: number, shiftKey?: boolean) {

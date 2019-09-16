@@ -1,5 +1,5 @@
 import { TemplateHelpers } from '../../src/ui/Templates/TemplateHelpers';
-import { IHighlight } from '../../src/rest/Highlight';
+import { IHighlight, IHighlightPhrase, IHighlightTerm } from '../../src/rest/Highlight';
 import { IDateToStringOptions } from '../../src/utils/DateUtils';
 import { ITimeSpanUtilsOptions } from '../../src/utils/TimeSpanUtils';
 import { FakeResults } from '../Fake';
@@ -88,7 +88,7 @@ export function CoreHelperTest() {
 
     it('highlightStreamText should work correctly', () => {
       const toHighlight = 'a b';
-      const terms: { [originalTerm: string]: string[] } = { a: [], b: [] };
+      const terms: IHighlightTerm = { a: [], b: [] };
       expect(TemplateHelpers.getHelper('highlightStreamText')(toHighlight, terms, {})).toEqual(
         '<span class="coveo-highlight" data-highlight-group="1" data-highlight-group-term="a">a</span> <span class="coveo-highlight" data-highlight-group="2" data-highlight-group-term="b">b</span>'
       );
@@ -96,7 +96,7 @@ export function CoreHelperTest() {
 
     it('highlightStreamTextv2 should work correctly', () => {
       const toHighlight = 'a b';
-      const termsToHighlight: { [originalTerm: string]: string[] } = { a: [], b: [] };
+      const termsToHighlight: IHighlightTerm = { a: [], b: [] };
 
       expect(
         TemplateHelpers.getHelper('highlightStreamTextv2')(toHighlight, {
@@ -108,9 +108,57 @@ export function CoreHelperTest() {
       );
     });
 
+    it(`when the termsToHighlight contains words that are part of phrasesToHighlight,
+      highlightStreamTextv2 should only highlight a phrase's term once`, () => {
+      const toHighlight = 'e-file';
+      const termsToHighlight: IHighlightTerm = {
+        efile: [],
+        file: []
+      };
+      const phrasesToHighlight: IHighlightPhrase = {
+        'e file': {
+          e: [],
+          file: []
+        }
+      };
+
+      const highlightedText = TemplateHelpers.getHelper('highlightStreamTextv2')(toHighlight, {
+        termsToHighlight,
+        phrasesToHighlight
+      });
+
+      expect(highlightedText).toEqual(
+        '<span class="coveo-highlight" data-highlight-group="3" data-highlight-group-term="e file">e-file</span>'
+      );
+    });
+
+    it(`when the termsToHighlight "synonyms" contains words that are part of phrasesToHighlight,
+      highlightStreamTextv2 should only highlight a phrase's term once`, () => {
+      const toHighlight = 'e-file';
+      const termsToHighlight: IHighlightTerm = {
+        efile: [],
+        filing: ['file']
+      };
+      const phrasesToHighlight: IHighlightPhrase = {
+        'e file': {
+          e: [],
+          file: []
+        }
+      };
+
+      const highlightedText = TemplateHelpers.getHelper('highlightStreamTextv2')(toHighlight, {
+        termsToHighlight,
+        phrasesToHighlight
+      });
+
+      expect(highlightedText).toEqual(
+        '<span class="coveo-highlight" data-highlight-group="3" data-highlight-group-term="e file">e-file</span>'
+      );
+    });
+
     it('highlightStreamHTML should work correctly', () => {
       const toHighlight = '<div>a b</div>';
-      const terms: { [originalTerm: string]: string[] } = { a: [], b: [] };
+      const terms: IHighlightTerm = { a: [], b: [] };
       expect(TemplateHelpers.getHelper('highlightStreamHTML')(toHighlight, terms, {})).toEqual(
         '<div><span class="coveo-highlight" data-highlight-group="1" data-highlight-group-term="a">a</span> <span class="coveo-highlight" data-highlight-group="2" data-highlight-group-term="b">b</span></div>'
       );
@@ -118,7 +166,7 @@ export function CoreHelperTest() {
 
     it('highlightStreamHTMLv2 should work correctly', () => {
       const toHighlight = '<div>a b</div>';
-      const termsToHighlight: { [originalTerm: string]: string[] } = { a: [], b: [] };
+      const termsToHighlight: IHighlightTerm = { a: [], b: [] };
       expect(
         TemplateHelpers.getHelper('highlightStreamHTMLv2')(toHighlight, {
           termsToHighlight,
@@ -362,7 +410,7 @@ export function CoreHelperTest() {
         result = FakeResults.createFakeResult();
 
         let spy = jasmine.createSpy('getRawDataStream');
-        spy.and.returnValue(new Promise((resolve, reject) => {}));
+        spy.and.returnValue(new Promise(() => {}));
         endpoint.getRawDataStream = spy;
         SearchEndpoint.endpoints['default'] = endpoint;
       });

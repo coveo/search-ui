@@ -1,10 +1,6 @@
 @import 'bourbon/bourbon';
 @import 'Variables';
-.CoveoFacet,
-.CoveoFacetRange,
-.CoveoFacetSlider,
-.CoveoHierarchicalFacet,
-.CoveoCategoryFacet {
+#{$allFacetsType} {
   margin: 10px 0;
   padding: 0;
   @include defaultRoundedBorder();
@@ -12,25 +8,32 @@
   position: relative;
 }
 
+// Needed because this facet embeds FacetRange
+// Otherwise cause issue when selecting any facet, and getting no results
+// Would cause a small border to appear in the facet column
+.CoveoTimespanFacet {
+  border: none;
+}
+
 .coveo-facet-column {
   .coveo-topSpace.coveo-with-animation,
   .coveo-bottomSpace.coveo-with-animation {
     @include transition(height 0.5s);
   }
-  &.coveo-no-visible-facet {
+}
+
+.coveo-no-visible-facet {
+  .coveo-facet-column {
     display: none;
   }
 }
 
-.coveo-facet-empty {
+.coveo-facet-empty,
+.coveo-hidden {
   display: none;
   &.coveo-with-placeholder {
     display: block;
   }
-}
-
-.coveo-facet-dependent {
-  display: none;
 }
 
 .coveo-facet-collapsed {

@@ -3,6 +3,7 @@ import { IQueryResult } from '../../src/rest/QueryResult';
 import { FakeResults } from '../Fake';
 import { ResponsiveComponents } from '../../src/ui/ResponsiveComponents/ResponsiveComponents';
 import { $$ } from '../../src/utils/Dom';
+
 export function TemplateTest() {
   describe('Template', () => {
     let result: IQueryResult;
@@ -69,6 +70,11 @@ export function TemplateTest() {
           expect($$(created).text()).toBe(`Hello World`);
           done();
         });
+      });
+
+      it('should return null when calling instantiate to element with a false condition', () => {
+        tmpl.condition = () => false;
+        expect(tmpl.instantiateToElement(result)).toBeNull();
       });
 
       it('should correctly return the root HTMLElement when not wrapping in a div', done => {

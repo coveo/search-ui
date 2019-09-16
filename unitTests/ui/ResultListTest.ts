@@ -4,8 +4,8 @@ import { registerCustomMatcher } from '../CustomMatchers';
 import { FakeResults } from '../Fake';
 import { Simulate } from '../Simulate';
 import { $$ } from '../../src/utils/Dom';
-import { ResultListEvents } from '../../src/events/ResultListEvents';
-import { IResultListOptions } from '../../src/ui/ResultList/ResultList';
+import { ResultListEvents, IChangeLayoutEventArgs } from '../../src/events/ResultListEvents';
+import { IResultListOptions } from '../../src/ui/ResultList/ResultListOptions';
 import { UnderscoreTemplate } from '../../src/ui/Templates/UnderscoreTemplate';
 import { ResultLayoutEvents } from '../../src/events/ResultLayoutEvents';
 import { AdvancedComponentSetupOptions } from '../MockEnvironment';
@@ -15,6 +15,7 @@ import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsAction
 import { IQueryResults } from '../../src/rest/QueryResults';
 import { Defer } from '../../src/misc/Defer';
 import { ResultLayoutSelector } from '../../src/ui/ResultLayoutSelector/ResultLayoutSelector';
+import { ResultListUtils } from '../../src/utils/ResultListUtils';
 
 export function ResultListTest() {
   describe('ResultList', () => {
@@ -38,7 +39,7 @@ export function ResultListTest() {
       describe('when returning less than 10 results', () => {
         let promiseResults: Promise<IQueryResults>;
         beforeEach(() => {
-          promiseResults = new Promise((resolve, reject) => {
+          promiseResults = new Promise(resolve => {
             resolve(FakeResults.createFakeResults(5));
           });
 
@@ -70,7 +71,7 @@ export function ResultListTest() {
       describe('when returning 10 or more results', () => {
         let promiseResults: Promise<IQueryResults>;
         beforeEach(() => {
-          promiseResults = new Promise((resolve, reject) => {
+          promiseResults = new Promise(resolve => {
             resolve(FakeResults.createFakeResults(10));
           });
 
@@ -353,7 +354,66 @@ export function ResultListTest() {
       expect($$(test.cmp.element).hasClass('coveo-hidden')).toBe(false);
     });
 
-    it('should hide and show specific css class correctly', done => {
+    it('enableScrollBackTop should be set', () => {
+      test = Mock.optionsComponentSetup<ResultList, IResultListOptions>(ResultList, {
+        enableScrollToTop: false
+      });
+      expect(test.cmp.options.enableScrollToTop).toBe(false);
+    });
+
+    describe(`when triggering a layout change event with one result`, () => {
+      const layout = 'list';
+
+      const showIfQuery = $$('div', { className: 'coveo-show-if-query' });
+      const showIfNoQuery = $$('div', { className: 'coveo-show-if-no-query' });
+      const showIfResults = $$('div', { className: 'coveo-show-if-results' });
+      const showIfNoResults = $$('div', { className: 'coveo-show-if-no-results' });
+
+      function triggerLayoutChange() {
+        const changeLayoutArgs: IChangeLayoutEventArgs = { layout, results: FakeResults.createFakeResults(1) };
+        $$(test.env.root).trigger(ResultListEvents.changeLayout, changeLayoutArgs);
+      }
+
+      beforeEach(() => {
+        test.cmp.options.layout = layout;
+
+        const nodes = [showIfQuery, showIfNoQuery, showIfResults, showIfNoResults];
+        nodes.forEach(node => test.cmp.element.appendChild(node.el));
+
+        triggerLayoutChange();
+      });
+
+      it(`should add "display: block" style to the showIfQuery element`, done => {
+        Defer.defer(() => {
+          expect(showIfQuery.el.style.display).toBe('block');
+          done();
+        });
+      });
+
+      it(`should add "display: none" style to the showIfNoQuery element`, done => {
+        Defer.defer(() => {
+          expect(showIfNoQuery.el.style.display).toBe('none');
+          done();
+        });
+      });
+
+      it(`should add "display: block" style to the showIfResults element`, done => {
+        Defer.defer(() => {
+          expect(showIfResults.el.style.display).toBe('block');
+          done();
+        });
+      });
+
+      it(`should add "display: none" style to the showIfNoResults element`, done => {
+        Defer.defer(() => {
+          expect(showIfNoResults.el.style.display).toBe('none');
+          done();
+        });
+      });
+    });
+
+    it(`when triggering a query,
+    it should hide and show specific css class correctly`, done => {
       const showIfQuery = $$('div', {
         className: 'coveo-show-if-query'
       });
@@ -403,12 +463,25 @@ export function ResultListTest() {
       });
     });
 
+    it('should not ask for more data when infiniteScrolling is enable and the container is not a window', () => {
+      const infiniteScrollContainer = $$('div');
+      infiniteScrollContainer.setAttribute('style', 'height: 400px;');
+      const option: IResultListOptions = {
+        enableInfiniteScroll: true,
+        infiniteScrollContainer: infiniteScrollContainer.el
+      };
+      test = Mock.basicComponentSetup<ResultList>(ResultList, option);
+      spyOn(test.cmp, 'displayMoreResults');
+      Simulate.query(test.env);
+      expect(test.cmp.displayMoreResults).not.toHaveBeenCalled();
+    });
+
     describe('exposes options', () => {
       it('resultContainer allow to specify where to render results', done => {
         const aNewContainer = document.createElement('div');
         expect(aNewContainer.children.length).toBe(0);
         test = Mock.optionsComponentSetup<ResultList, IResultListOptions>(ResultList, {
-          resultContainer: aNewContainer
+          resultsContainer: aNewContainer
         });
         Simulate.query(test.env);
         Defer.defer(() => {
@@ -461,7 +534,7 @@ export function ResultListTest() {
       it('resultTemplate allow to specify a template manually', done => {
         const tmpl: UnderscoreTemplate = Mock.mock<UnderscoreTemplate>(UnderscoreTemplate);
         const asSpy = <any>tmpl;
-        asSpy.instantiateToElement.and.returnValue(new Promise((resolve, reject) => resolve(document.createElement('div'))));
+        asSpy.instantiateToElement.and.returnValue(new Promise(resolve => resolve(document.createElement('div'))));
         test = Mock.optionsComponentSetup<ResultList, IResultListOptions>(ResultList, {
           resultTemplate: tmpl
         });
@@ -597,7 +670,7 @@ export function ResultListTest() {
           });
           Simulate.query(test.env);
           Defer.defer(() => {
-            const container = test.cmp.options.resultContainer;
+            const container = test.cmp.options.resultsContainer;
             expect(container.children.item(container.children.length - 1).innerHTML).toBe('');
             expect(container.children.item(container.children.length - 2).innerHTML).toBe('');
             expect(container.children.item(container.children.length - 3).innerHTML).toBe('');
@@ -707,6 +780,61 @@ export function ResultListTest() {
           it('should enable the layout in the layout selector', () => {
             test.cmp.enable();
             expect(mockResultLayoutSelector.enableLayouts).toHaveBeenCalledWith(['card']);
+          });
+        });
+        describe('enableScrollToTop set to', () => {
+          let allResult: IQueryResults;
+          let scrollToTopSpy: jasmine.Spy;
+          const setupResultList = (
+            option: IResultListOptions = {
+              enableInfiniteScroll: true,
+              infiniteScrollContainer: document.createElement('div'),
+              enableScrollToTop: true
+            }
+          ) => {
+            let test = Mock.basicComponentSetup<ResultList>(ResultList, option);
+            test.cmp.currentlyDisplayedResults.push(allResult.results[1]);
+            (test.cmp.queryController.fetchMore as jasmine.Spy).and.returnValue(Promise.resolve(allResult));
+            return test;
+          };
+
+          beforeEach(() => {
+            jasmine.clock().install();
+            scrollToTopSpy = spyOn(ResultListUtils, 'scrollToTop');
+
+            allResult = FakeResults.createFakeResults(50);
+          });
+
+          afterEach(() => {
+            jasmine.clock().uninstall();
+          });
+
+          it('true, should call the scrollToTop of the ResultListUtils', done => {
+            test = setupResultList();
+            test.cmp.displayMoreResults(50).then(() => {
+              Simulate.query(test.env);
+              jasmine.clock().tick(0);
+
+              expect(scrollToTopSpy).toHaveBeenCalledWith(test.cmp.root);
+
+              done();
+            });
+          });
+
+          it('false, should not call the scrollToTop of the ResultListUtils', done => {
+            test = setupResultList({
+              enableInfiniteScroll: true,
+              infiniteScrollContainer: undefined,
+              enableScrollToTop: false
+            });
+            test.cmp.displayMoreResults(50).then(() => {
+              Simulate.query(test.env);
+              jasmine.clock().tick(0);
+
+              expect(scrollToTopSpy).not.toHaveBeenCalled();
+
+              done();
+            });
           });
         });
       });

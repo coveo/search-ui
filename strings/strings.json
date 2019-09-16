@@ -449,6 +449,10 @@
     "zh-cn": "搜索 {0}",
     "zh-tw": "搜尋 {0}"
   },
+  "SubmitSearch": {
+    "en": "Submit search",
+    "fr": "Envoyer la requête"
+  },
   "ShareQuery": {
     "en": "Share Query",
     "fr": "Partager cette requête",
@@ -702,27 +706,27 @@
   "ShowingResultsOfWithQuery": {
     "en": "Result<pl>s</pl> {0}<pl>-{1}</pl> of {2} for {3}",
     "fr": "Résultat<pl>s</pl> {0}<pl>-{1}</pl> de {2} pour {3}",
-    "cs": "<sn>Výsledek</sn><pl>Výsledky</pl> {0}<pl>–{1}</pl> ze {2}",
-    "da": "Resultat<pl>er</pl> {0}<pl>-{1}</pl> af {2}",
-    "de": "Ergebnis<pl>se</pl> {0}<pl>-{1}</pl> von {2}",
-    "el": "Αποτελέσματ<pl>α</pl> {0}<pl>-{1}</pl> από {2}",
-    "es-es": "Resultado<pl>s</pl> {0}<pl>-{1}</pl> de {2}",
-    "fi": "<sn>Tulos</sn><pl>Tulokset</pl> {0}<pl>–{1}</pl> / {2}",
-    "hu": "Eredmény<pl>ek</pl> {0}<pl>-{1}</pl> / {2}",
-    "id": "Hasil {0}<pl>-{1}</pl> dari {2}",
-    "it": "Risultat<sn>o</sn><pl>i</pl> {0}<pl>-{1}</pl> di {2}",
-    "ja": "結果{2}件中{0}<pl>～{1}</pl>",
-    "ko": "결과 {0},{2} 중<pl>-{1}</pl>",
-    "nl": "Resulta<sn>at</sn><pl>ten</pl> {0}<pl>-{1}</pl> van {2}",
-    "no": "Resultat<pl>er</pl>-{0}<pl>-{1}</pl> av {2}",
-    "pl": "Wynik<pl>i</pl> {0}<pl>-{1}</pl> z {2}",
-    "pt-br": "Resultado<pl>s</pl> {0}<pl>-{1}</pl> de {2}",
-    "ru": "Результат<pl>ы</pl> {0}<pl>-{1}</pl> из {2}",
-    "sv": "Resultat<pl>en</pl> {0}<pl>-{1}</pl> av {2}",
-    "th": "ผลลัพธ์ที่ {0}<pl>-{1}</pl> จาก {2}",
-    "tr": "{2} / {0}<pl>-{1}</pl> sonuç",
-    "zh-cn": "结果数 {0}<pl>-{1}</pl>，总数 {2}",
-    "zh-tw": "結果數 {0}<pl>-{1}</pl>，總數 {2}"
+    "cs": "<sn>Výsledek</sn><pl>Výsledky</pl> {0}<pl>–{1}</pl> ze {2} za {3}",
+    "da": "Resultat<pl>er</pl> {0}<pl>-{1}</pl> af {2} til {3}",
+    "de": "Ergebnis<pl>se</pl> {0}<pl>-{1}</pl> von {2} für {3}",
+    "el": "Αποτελέσματ<pl>α</pl> {0}<pl>-{1}</pl> από {2} για {3}",
+    "es-es": "Resultado<pl>s</pl> {0}<pl>-{1}</pl> de {2} para {3}",
+    "fi": "<sn>Tulos</sn><pl>Tulokset</pl> {0}<pl>–{1}</pl> / {2} sta {3}",
+    "hu": "Eredmény<pl>ek</pl> {0}<pl>-{1}</pl> / {2}-ból: {3}",
+    "id": "Hasil {0}<pl>-{1}</pl> dari {2} untuk {3}",
+    "it": "Risultat<sn>o</sn><pl>i</pl> {0}<pl>-{1}</pl> di {2} per {3}",
+    "ja": "{3} の結果 {2} 件中 {0}<pl>~{1}</pl>件を表示",
+    "ko": "{3} 에 대한 {2} 결과 {0}<pl>-{1}</pl>",
+    "nl": "Resulta<sn>at</sn><pl>ten</pl> {0}<pl>-{1}</pl> van {2} voor {3}",
+    "no": "Resultat<pl>er</pl>-{0}<pl>-{1}</pl> av {2} for {3}",
+    "pl": "Wynik<pl>i</pl> {0}<pl>-{1}</pl> z {2} za {3}",
+    "pt-br": "Resultado<pl>s</pl> {0}<pl>-{1}</pl> de {2} para {3}",
+    "ru": "Результат<pl>ы</pl> {0}<pl>-{1}</pl> из {2} на {3}",
+    "sv": "Resultat<pl>en</pl> {0}<pl>-{1}</pl> av {2} för {3}",
+    "th": "ผลลัพธ์ที่ {0}<pl>-{1}</pl> จาก {2} สำหรับ{3}",
+    "tr": "{3} için {2} / {0}<pl>-{1}</pl> sonuç",
+    "zh-cn": "结果数 {0}<pl>-{1}</pl>，总数 {2}, 搜索 {3}",
+    "zh-tw": "结果数 {0}<pl>-{1}</pl>，总数 {2}, 搜索 {3}"
   },
   "SwitchTo": {
     "en": "Switch to {0}",
@@ -2673,6 +2677,26 @@
     "tr": "Genişlet",
     "zh-cn": "展开",
     "zh-tw": "展開"
+  },
+  "CollapseFacet": {
+    "en": "Collapse {0} facet",
+    "fr": "Réduire la facette {0}"
+  },
+  "ExpandFacet": {
+    "en": "Expand {0} facet",
+    "fr": "Agrandir la facette {0}"
+  },
+  "ShowLessFacetResults": {
+    "en": "Show less results for {0} facet",
+    "fr": "Afficher moins de résultats pour la facette {0}"
+  },
+  "ShowMoreFacetResults": {
+    "en": "Show more results for {0} facet",
+    "fr": "Afficher plus de résultats pour la facette {0}"
+  },
+  "SearchFacetResults": {
+    "en": "Search for values in {0} facet",
+    "fr": "Rechercher des valeurs dans la facette {0}"
   },
   "Today": {
     "en": "Today",
@@ -7335,19 +7359,19 @@
     "fr": "Inspecteur de Pertinence des Documents"
   },
   "KeywordInCategory": {
-    "en": "{0} in {1}",
-    "fr": "{0} dans {1}"
+    "en": "{0} <span class=\"coveo-omnibox-suggestion-category\">in {1}</span>",
+    "fr": "{0} <span class=\"coveo-omnibox-suggestion-category\">dans {1}</span>"
   },
   "ResultCount": {
-    "en": "{0} results",
-    "fr": "{0} résultats"
+    "en": "{0} result<pl>s</pl>",
+    "fr": "{0} résultat<pl>s</pl>"
   },
   "ShowingResults": {
     "en": "{0} result<pl>s</pl>",
     "fr": "{0} résultat<pl>s</pl>"
   },
   "ShowingResultsWithQuery": {
-    "en": "{0} result<pl></pl> for {1}",
+    "en": "{0} result<pl>s</pl> for {1}",
     "fr": "{0} résultat<pl>s</pl> pour {1}"
   },
   "NumberOfVideos": {
@@ -7389,5 +7413,95 @@
   "RemoveFilterOn": {
     "en": "Remove filter on {0}",
     "fr": "Enlever le filtre sur {0}"
+  },
+  "Enter": {
+    "en": "Enter",
+    "fr": "Entrée"
+  },
+  "InsertAQuery": {
+    "en": "Insert a query",
+    "fr": "Insérer une requête"
+  },
+  "PressEnterToSend": {
+    "en": "Press enter to send",
+    "fr": "Appuyez sur Entrée pour envoyer"
+  },
+  "SortResultsBy": {
+    "en": "Sort results by {0}",
+    "fr": "Trier les résultats par {0}"
+  },
+  "DisplayResultsAs": {
+    "en": "Display results as {0}",
+    "fr": "Afficher les résultats comme {0}"
+  },
+  "FacetTitle": {
+    "en": "{0} facet",
+    "fr": "Facette {0}"
+  },
+  "SelectValueWithResultCount": {
+    "en": "Select {0} with {1}",
+    "fr": "Sélectionner {0} avec {1}"
+  },
+  "UnselectValueWithResultCount": {
+    "en": "Unselect {0} with {1}",
+    "fr": "Désélectionner {0} avec {1}"
+  },
+  "ExcludeValueWithResultCount": {
+    "en": "Exclude {0} with {1}",
+    "fr": "Exclure {0} avec {1}"
+  },
+  "UnexcludeValueWithResultCount": {
+    "en": "Unexclude {0} with {1}",
+    "fr": "Réinclure {0} avec {1}"
+  },
+  "PageNumber": {
+    "en": "Page {0}",
+    "fr": "Page {0}"
+  },
+  "DisplayResultsPerPage": {
+    "en": "Display {0} results per page",
+    "fr": "Afficher {0} résultats par page"
+  },
+  "GroupByAndFacetRequestsCannotCoexist": {
+    "en":
+      "The query is invalid because it contains both Group By and Facet requests. Ensure that the search interface does not initialize DynamicFacet components alongside Facet components (or alongside any component extending the Facet component, such as FacetRange or FacetSlider).",
+    "fr":
+      "La requête n'est pas valide car elle contient les requêtes Group By et Facet. Assurez-vous que l'interface de recherche n'initialise pas les composants DynamicFacet aux côtés des composants Facet (ou de tout composant d'extension du composant Facet, tel que FacetRange ou FacetSlider)."
+  },
+  "MustContain": {
+    "en": "Must contain:",
+    "fr": "Doit contenir:"
+  },
+  "Missing": {
+    "en": "Missing:",
+    "fr": "Manquant(s):"
+  },
+  "Filters": {
+    "en": "Filters",
+    "fr": "Filtres"
+  },
+  "FiltersDropdown": {
+    "en": "Filters dropdown",
+    "fr": "Menu déroulant de filtres"
+  },
+  "OpenFiltersDropdown": {
+    "en": "Open the filters dropdown",
+    "fr": "Ouvrir le menu déroulant de filtres"
+  },
+  "CloseFiltersDropdown": {
+    "en": "Close the filters dropdown",
+    "fr": "Fermer le menu déroulant de filtres"
+  },
+  "NoValuesFound": {
+    "en": "No values found.",
+    "fr": "Aucune valeur trouvée."
+  },
+  "QuerySuggestPreview": {
+    "en": "Query result item(s) for",
+    "fr": "Résultat(s) de la requête pour"
+  },
+  "To": {
+    "en": "to",
+    "fr": "à"
   }
 }

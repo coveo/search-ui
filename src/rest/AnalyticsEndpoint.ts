@@ -1,21 +1,20 @@
-import { Logger } from '../misc/Logger';
-import { EndpointCaller, IEndpointCallerOptions } from '../rest/EndpointCaller';
-import { IAPIAnalyticsVisitResponseRest } from './APIAnalyticsVisitResponse';
-import { IErrorResponse } from '../rest/EndpointCaller';
-import { IAPIAnalyticsSearchEventsResponse } from '../rest/APIAnalyticsSearchEventsResponse';
-import { ISearchEvent } from '../rest/SearchEvent';
-import { IClickEvent } from '../rest/ClickEvent';
-import { IAPIAnalyticsEventResponse } from './APIAnalyticsEventResponse';
+import { first } from 'underscore';
 import { Assert } from '../misc/Assert';
+import { Logger } from '../misc/Logger';
+import { IAPIAnalyticsSearchEventsResponse } from '../rest/APIAnalyticsSearchEventsResponse';
+import { IClickEvent } from '../rest/ClickEvent';
+import { IEndpointCallerOptions, IErrorResponse, ISuccessResponse } from '../rest/EndpointCaller';
+import { AnalyticsEndpointCaller } from '../rest/AnalyticsEndpointCaller';
+import { IStringMap } from '../rest/GenericParam';
+import { ISearchEvent } from '../rest/SearchEvent';
+import { Cookie } from '../utils/CookieUtils';
+import { UrlUtils, IUrlNormalizedParts } from '../utils/UrlUtils';
+import { Utils } from '../utils/Utils';
+import { AccessToken } from './AccessToken';
+import { IAPIAnalyticsEventResponse } from './APIAnalyticsEventResponse';
+import { IAPIAnalyticsVisitResponseRest } from './APIAnalyticsVisitResponse';
 import { ICustomEvent } from './CustomEvent';
 import { ITopQueries } from './TopQueries';
-import { Cookie } from '../utils/CookieUtils';
-import { ISuccessResponse } from '../rest/EndpointCaller';
-import { IStringMap } from '../rest/GenericParam';
-import * as _ from 'underscore';
-import { Utils } from '../utils/Utils';
-import { UrlUtils } from '../utils/UrlUtils';
-import { AccessToken } from './AccessToken';
 
 export interface IAnalyticsEndpointOptions {
   accessToken: AccessToken;
@@ -35,7 +34,7 @@ export class AnalyticsEndpoint {
 
   private visitId: string;
   private organization: string;
-  public endpointCaller: EndpointCaller;
+  public endpointCaller: AnalyticsEndpointCaller;
 
   constructor(public options: IAnalyticsEndpointOptions) {
     this.logger = new Logger(this);
@@ -44,7 +43,7 @@ export class AnalyticsEndpoint {
       accessToken: this.options.accessToken.token
     };
 
-    this.endpointCaller = new EndpointCaller(endpointCallerOptions);
+    this.endpointCaller = new AnalyticsEndpointCaller(endpointCallerOptions);
     this.organization = options.organization;
   }
 
@@ -73,7 +72,7 @@ export class AnalyticsEndpoint {
   public sendSearchEvents(searchEvents: ISearchEvent[]): Promise<IAPIAnalyticsSearchEventsResponse> {
     if (searchEvents.length > 0) {
       this.logger.info('Logging analytics search events', searchEvents);
-      return this.sendToService<ISearchEvent[], IAPIAnalyticsSearchEventsResponse>(searchEvents, 'searches', 'searchEvents');
+      return this.sendToService(searchEvents, 'searches', 'searchEvents');
     }
   }
 
@@ -94,34 +93,20 @@ export class AnalyticsEndpoint {
     return this.getFromService<string[]>(url, params);
   }
 
-  private async sendToService<D, R>(data: D, path: string, paramName: string): Promise<R> {
-    const versionToCall = AnalyticsEndpoint.CUSTOM_ANALYTICS_VERSION || AnalyticsEndpoint.DEFAULT_ANALYTICS_VERSION;
-    const urlNormalized = UrlUtils.normalizeAsParts({
-      paths: [this.options.serviceUrl, '/rest/', versionToCall, '/analytics/', path],
-      query: {
-        org: this.organization,
-        visitorId: Cookie.get('visitorId')
-      }
-    });
+  public clearCookies() {
+    Cookie.erase('visitorId');
+    Cookie.erase('visitId');
+  }
+
+  private async sendToService(data: Record<string, any>, path: string, paramName: string): Promise<any> {
     // We use pendingRequest because we don't want to have 2 request to analytics at the same time.
     // Otherwise the cookie visitId won't be set correctly.
     if (AnalyticsEndpoint.pendingRequest != null) {
-      try {
-        await AnalyticsEndpoint.pendingRequest;
-      } finally {
-        return this.sendToService<D, R>(data, path, paramName);
-      }
+      await AnalyticsEndpoint.pendingRequest;
     }
 
-    const request: Promise<any> = (AnalyticsEndpoint.pendingRequest = this.endpointCaller.call<R>({
-      errorsAsSuccess: false,
-      method: 'POST',
-      queryString: urlNormalized.queryNormalized,
-      requestData: data,
-      url: urlNormalized.path,
-      responseType: 'text',
-      requestDataType: 'application/json'
-    }));
+    const url = this.getURL(path);
+    const request = this.executeRequest(url, data);
 
     try {
       const results = await request;
@@ -133,12 +118,54 @@ export class AnalyticsEndpoint {
       if (this.options.accessToken.isExpired(error)) {
         const successfullyRenewed = await this.options.accessToken.doRenew();
         if (successfullyRenewed) {
-          return this.sendToService<D, R>(data, path, paramName);
+          return this.sendToService(data, path, paramName);
         }
       }
 
       throw error;
     }
+  }
+
+  private executeRequest(
+    urlNormalized: IUrlNormalizedParts,
+    data: Record<string, any>
+  ): Promise<ISuccessResponse<IAPIAnalyticsEventResponse>> {
+    const request = this.endpointCaller.call<IAPIAnalyticsEventResponse>({
+      errorsAsSuccess: false,
+      method: 'POST',
+      queryString: urlNormalized.queryNormalized,
+      requestData: data,
+      url: urlNormalized.path,
+      responseType: 'text',
+      requestDataType: 'application/json'
+    });
+
+    if (request) {
+      AnalyticsEndpoint.pendingRequest = request;
+      return request;
+    }
+
+    // In some case, (eg: using navigator.sendBeacon), there won't be any response to read from the service
+    // In those case, send back an empty object upstream.
+    return Promise.resolve({
+      data: {
+        visitId: '',
+        visitorId: ''
+      },
+      duration: 0
+    });
+  }
+
+  private getURL(path: string): IUrlNormalizedParts {
+    const versionToCall = AnalyticsEndpoint.CUSTOM_ANALYTICS_VERSION || AnalyticsEndpoint.DEFAULT_ANALYTICS_VERSION;
+    const urlNormalized = UrlUtils.normalizeAsParts({
+      paths: [this.options.serviceUrl, '/rest/', versionToCall, '/analytics/', path],
+      query: {
+        org: this.organization,
+        visitor: Cookie.get('visitorId')
+      }
+    });
+    return urlNormalized;
   }
 
   private getFromService<T>(url: string, params: IStringMap<string>): Promise<T> {
@@ -165,8 +192,8 @@ export class AnalyticsEndpoint {
       visitId = response['visitId'];
       visitorId = response['visitorId'];
     } else if (response['searchEventResponses']) {
-      visitId = (<IAPIAnalyticsEventResponse>_.first(response['searchEventResponses'])).visitId;
-      visitorId = (<IAPIAnalyticsEventResponse>_.first(response['searchEventResponses'])).visitorId;
+      visitId = (<IAPIAnalyticsEventResponse>first(response['searchEventResponses'])).visitId;
+      visitorId = (<IAPIAnalyticsEventResponse>first(response['searchEventResponses'])).visitorId;
     }
 
     if (visitId) {

@@ -39,6 +39,8 @@ import { IGroupByResult } from './GroupByResult';
 import { AccessToken } from './AccessToken';
 import { BackOffRequest } from './BackOffRequest';
 import { IBackOffRequest } from 'exponential-backoff';
+import { IFacetSearchRequest } from './Facet/FacetSearchRequest';
+import { IFacetSearchResponse } from './Facet/FacetSearchResponse';
 
 export class DefaultSearchEndpointOptions implements ISearchEndpointOptions {
   restUri: string;
@@ -705,6 +707,10 @@ export class SearchEndpoint implements ISearchEndpoint {
   }
 
   /**
+   * **Note:**
+   *
+   * > The Coveo Cloud V2 platform does not support collaborative rating. Therefore, this method is obsolete in Coveo Cloud V2.
+   *
    * Rates a single item in the index (granted that collaborative rating is enabled on your index)
    * @param ratingRequest The item id, and the rating to add.
    * @param callOptions An additional set of options to use for this call.
@@ -808,6 +814,41 @@ export class SearchEndpoint implements ISearchEndpoint {
     callParams?: IEndpointCallParameters
   ): Promise<IQuerySuggestResponse> {
     return this.getQuerySuggest(request, callOptions, callParams);
+  }
+
+  /**
+   * Searches through the values of a facet.
+   * @param request The request for which to search through the values of a facet.
+   * @param callOptions An additional set of options to use for this call.
+   * @param callParams The options injected by the applied decorators.
+   * @returns {Promise<IFacetSearchResponse>} A Promise of facet search results.
+   */
+  @path('/facet')
+  @method('POST')
+  @requestDataType('application/json')
+  @responseType('text')
+  @includeActionsHistory()
+  @includeReferrer()
+  @includeVisitorId()
+  @includeIsGuestUser()
+  public async facetSearch(
+    request: IFacetSearchRequest,
+    callOptions?: IEndpointCallOptions,
+    callParams?: IEndpointCallParameters
+  ): Promise<IFacetSearchResponse> {
+    callParams = {
+      ...callParams,
+      requestData: {
+        ...callParams.requestData,
+        ..._.omit(request, parameter => Utils.isNullOrUndefined(parameter))
+      }
+    };
+
+    this.logger.info('Performing REST query to get facet search results', request);
+
+    const response = await this.performOneCall<IFacetSearchResponse>(callParams, callOptions);
+    this.logger.info('REST query successful', response);
+    return response;
   }
 
   /**
@@ -1024,10 +1065,16 @@ export class SearchEndpoint implements ISearchEndpoint {
 
   private buildBaseQueryString(callOptions?: IEndpointCallOptions) {
     callOptions = { ...callOptions };
-    return {
-      ...this.options.queryStringArguments,
-      authentication: _.isArray(callOptions.authentication) ? callOptions.authentication.join(',') : null
-    };
+    if (_.isArray(callOptions.authentication) && Utils.isNonEmptyArray(callOptions.authentication)) {
+      return {
+        ...this.options.queryStringArguments,
+        authentication: callOptions.authentication.join(',')
+      };
+    } else {
+      return {
+        ...this.options.queryStringArguments
+      };
+    }
   }
 
   private buildQueryAsQueryString(query: string, queryObject: IQuery): Record<string, any> {
@@ -1037,7 +1084,7 @@ export class SearchEndpoint implements ISearchEndpoint {
     // In this reality however, we must support GET calls (ex: GET /html) for CORS/JSONP/IE reasons.
     // Therefore, we cherry-pick parts of the query to include in a 'query string' instead of a body payload.
     const queryParameters: Record<string, any> = {};
-    ['q', 'aq', 'cq', 'dq', 'searchHub', 'tab', 'locale', 'pipeline', 'lowercaseOperators'].forEach(key => {
+    ['q', 'aq', 'cq', 'dq', 'searchHub', 'tab', 'locale', 'pipeline', 'lowercaseOperators', 'timezone'].forEach(key => {
       queryParameters[key] = queryObject[key];
     });
 
@@ -1066,7 +1113,7 @@ export class SearchEndpoint implements ISearchEndpoint {
     callOptions = _.extend({}, callOptions);
 
     return {
-      uniqueId,
+      uniqueId: Utils.safeEncodeURIComponent(uniqueId),
       enableNavigation: 'true',
       requestedOutputSize: callOptions.requestedOutputSize ? callOptions.requestedOutputSize.toString() : null,
       contentType: callOptions.contentType

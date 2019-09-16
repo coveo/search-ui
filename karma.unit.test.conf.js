@@ -8,7 +8,10 @@ var configuration = {
   singleRun: true,
   browsers: ['ChromeHeadless'],
   frameworks: ['jasmine'],
-  browserNoActivityTimeout: 90000,
+  browserDisconnectTimeout: 120000,
+  browserNoActivityTimeout: 120000,
+  captureTimeout: 120000,
+  processKillTimeout: 120000,
   browserDisconnectTolerance: 10,
   files: [
     {

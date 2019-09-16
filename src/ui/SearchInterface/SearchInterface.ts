@@ -1,4 +1,3 @@
-import * as fastclick from 'fastclick';
 import * as jstz from 'jstimezonedetect';
 import 'styling/Globals';
 import 'styling/_SearchButton';
@@ -25,25 +24,34 @@ import { SentryLogger } from '../../misc/SentryLogger';
 import { ComponentOptionsModel } from '../../models/ComponentOptionsModel';
 import { ComponentStateModel } from '../../models/ComponentStateModel';
 import { IAttributeChangedEventArg, Model } from '../../models/Model';
-import { QueryStateModel } from '../../models/QueryStateModel';
+import { QueryStateModel, QUERY_STATE_ATTRIBUTES } from '../../models/QueryStateModel';
 import { SearchEndpoint } from '../../rest/SearchEndpoint';
+import { ComponentsTypes } from '../../utils/ComponentsTypes';
 import { $$ } from '../../utils/Dom';
 import { HashUtils } from '../../utils/HashUtils';
 import { Utils } from '../../utils/Utils';
 import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
 import { IAnalyticsClient } from '../Analytics/AnalyticsClient';
 import { NoopAnalyticsClient } from '../Analytics/NoopAnalyticsClient';
+import { AriaLive, IAriaLive } from '../AriaLive/AriaLive';
 import { BaseComponent } from '../Base/BaseComponent';
 import { IComponentBindings } from '../Base/ComponentBindings';
-import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
+import { ComponentOptions, IFieldOption, IQueryExpression } from '../Base/ComponentOptions';
 import { InitializationPlaceholder } from '../Base/InitializationPlaceholder';
 import { RootComponent } from '../Base/RootComponent';
 import { Debug } from '../Debug/Debug';
+import { MissingTermManager } from '../MissingTerm/MissingTermManager';
 import { Context, IPipelineContextProvider } from '../PipelineContext/PipelineGlobalExports';
-import { MEDIUM_SCREEN_WIDTH, ResponsiveComponents, SMALL_SCREEN_WIDTH } from '../ResponsiveComponents/ResponsiveComponents';
+import {
+  MEDIUM_SCREEN_WIDTH,
+  ResponsiveComponents,
+  SMALL_SCREEN_WIDTH,
+  ValidResponsiveMode
+} from '../ResponsiveComponents/ResponsiveComponents';
 import { FacetColumnAutoLayoutAdjustment } from './FacetColumnAutoLayoutAdjustment';
 import { FacetValueStateHandler } from './FacetValueStateHandler';
 import RelevanceInspectorModule = require('../RelevanceInspector/RelevanceInspector');
+import { OmniboxAnalytics } from '../Omnibox/OmniboxAnalytics';
 
 export interface ISearchInterfaceOptions {
   enableHistory?: boolean;
@@ -51,7 +59,7 @@ export interface ISearchInterfaceOptions {
   useLocalStorageForHistory?: boolean;
   resultsPerPage?: number;
   excerptLength?: number;
-  expression?: string;
+  expression?: IQueryExpression;
   filterField?: IFieldOption;
   autoTriggerQuery?: boolean;
   timezone?: string;
@@ -69,6 +77,14 @@ export interface ISearchInterfaceOptions {
   allowQueriesWithoutKeywords?: boolean;
   responsiveMediumBreakpoint?: number;
   responsiveSmallBreakpoint?: number;
+  responsiveMode?: ValidResponsiveMode;
+}
+
+export interface IMissingTermManagerArgs {
+  element: HTMLElement;
+  queryStateModel: QueryStateModel;
+  queryController: QueryController;
+  usageAnalytics: IAnalyticsClient;
 }
 
 /**
@@ -206,7 +222,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
      *
      * Default value is `''`.
      */
-    expression: ComponentOptions.buildStringOption({ defaultValue: '' }),
+    expression: ComponentOptions.buildQueryExpressionOption({ defaultValue: '' }),
 
     /**
      * Specifies the name of a field to use as a custom filter when executing the query (also referred to as
@@ -343,6 +359,10 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     enableDebugInfo: ComponentOptions.buildBooleanOption({ defaultValue: true }),
 
     /**
+     * **Note:**
+     *
+     * > The Coveo Cloud V2 platform does not support collaborative rating. Therefore, this option is obsolete in Coveo Cloud V2.
+     *
      * Specifies whether to enable collaborative rating, which you can leverage using the
      * [`ResultRating`]{@link ResultRating} component.
      *
@@ -439,7 +459,31 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     responsiveSmallBreakpoint: ComponentOptions.buildNumberOption({
       defaultValue: SMALL_SCREEN_WIDTH,
       depend: 'enableAutomaticResponsiveMode'
-    })
+    }),
+    /**
+     * Specifies the search interface responsive mode that should be used.
+     *
+     * When the mode is auto, the width of the window/device that displays the search page is used to determine which layout the search page should use
+     * (see [enableAutomaticResponsiveMode]{@link SearchInterface.options.enableAutomaticResponsiveMode}, [responsiveMediumBreakpoint]{@link SearchInterface.options.responsiveMediumBreakpoint}
+     * and [responsiveSmallBreakpoint{@link SearchInterface.options.responsiveSmallBreakpoint}])
+     *
+     * When it's not on auto, the width is ignored and the the layout used depends on this option
+     * (e.g. If set to "small", then the search interface layout will be the same as if it was on a narrow window/device)
+     */
+    responsiveMode: ComponentOptions.buildCustomOption<ValidResponsiveMode>(
+      value => {
+        // Validator function for the string passed, verify it's one of the accepted values.
+        if (value === 'auto' || value === 'small' || value === 'medium' || value === 'large') {
+          return value;
+        } else {
+          console.warn(`${value} is not a proper value for responsiveMode, auto has been used instead.`);
+          return 'auto';
+        }
+      },
+      {
+        defaultValue: 'auto'
+      }
+    )
   };
 
   public static SMALL_INTERFACE_CLASS_NAME = 'coveo-small-search-interface';
@@ -458,11 +502,13 @@ export class SearchInterface extends RootComponent implements IComponentBindings
    */
   public responsiveComponents: ResponsiveComponents;
   public isResultsPerPageModifiedByPipeline = false;
+  public ariaLive: IAriaLive;
 
   private attachedComponents: { [type: string]: BaseComponent[] };
   private facetValueStateHandler: FacetValueStateHandler;
   private queryPipelineConfigurationForResultsPerPage: number;
   private relevanceInspector: RelevanceInspectorModule.RelevanceInspector;
+  private omniboxAnalytics: OmniboxAnalytics;
 
   /**
    * Creates a new SearchInterface. Initialize various singletons for the interface (e.g., usage analytics, query
@@ -484,15 +530,24 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     this.root = element;
 
     this.setupQueryMode();
-    this.setupMobileFastclick(element);
 
     this.queryStateModel = new QueryStateModel(element);
     this.componentStateModel = new ComponentStateModel(element);
     this.componentOptionsModel = new ComponentOptionsModel(element);
     this.usageAnalytics = this.initializeAnalytics();
     this.queryController = new QueryController(element, this.options, this.usageAnalytics, this);
-    this.facetValueStateHandler = new FacetValueStateHandler((componentId: string) => this.getComponents(componentId));
+    this.facetValueStateHandler = new FacetValueStateHandler(this.element);
     new SentryLogger(this.queryController);
+
+    const missingTermManagerArgs: IMissingTermManagerArgs = {
+      element: this.element,
+      queryStateModel: this.queryStateModel,
+      queryController: this.queryController,
+      usageAnalytics: this.usageAnalytics
+    };
+
+    new MissingTermManager(missingTermManagerArgs);
+    this.omniboxAnalytics = new OmniboxAnalytics();
 
     this.setupEventsHandlers();
     this.setupHistoryManager(element, _window);
@@ -501,6 +556,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
 
     this.setupDebugInfo();
     this.setupResponsiveComponents();
+    this.ariaLive = new AriaLive(element);
   }
 
   public set resultsPerPage(resultsPerPage: number) {
@@ -518,6 +574,10 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     // Specially for the pager component. As such, we try to cover that corner case.
     this.logger.warn('Results per page is incoherent in the search interface.', this);
     return 10;
+  }
+
+  public getOmniboxAnalytics() {
+    return this.omniboxAnalytics;
   }
 
   /**
@@ -666,13 +726,6 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     }
   }
 
-  private setupMobileFastclick(element: HTMLElement) {
-    // The definition file for fastclick does not match the way that fast click gets loaded (AMD)
-    // So we have to do some typecasting gymnastics
-    const attachFastclick = (fastclick as any).attach;
-    attachFastclick(element);
-  }
-
   private setupEventsHandlers() {
     const eventName = this.queryStateModel.getEventName(Model.eventTypes.preprocess);
     $$(this.element).on(eventName, (e, args) => this.handlePreprocessQueryStateModel(args));
@@ -699,6 +752,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     this.responsiveComponents = new ResponsiveComponents();
     this.responsiveComponents.setMediumScreenWidth(this.options.responsiveMediumBreakpoint);
     this.responsiveComponents.setSmallScreenWidth(this.options.responsiveSmallBreakpoint);
+    this.responsiveComponents.setResponsiveMode(this.options.responsiveMode);
   }
 
   private handleDebugModeChange(args: IAttributeChangedEventArg) {
@@ -981,6 +1035,31 @@ export class SearchInterface extends RootComponent implements IComponentBindings
         }
       });
     });
+    if (this.duplicatesFacets.length) {
+      this.logger.warn(
+        `The following facets have duplicate id/field:`,
+        this.duplicatesFacets,
+        `Ensure that each facet in your search interface has a unique id.`
+      );
+    }
+  }
+
+  private get duplicatesFacets() {
+    const duplicate = [];
+    const facets = ComponentsTypes.getAllFacetsInstance(this.root);
+
+    facets.forEach(facet => {
+      facets.forEach(cmp => {
+        if (facet == cmp) {
+          return;
+        }
+        if (facet.options.id === cmp.options.id) {
+          duplicate.push(facet);
+          return;
+        }
+      });
+    });
+    return duplicate;
   }
 
   private toggleSectionState(cssClass: string, toggle = true) {
@@ -1030,17 +1109,23 @@ export class SearchInterface extends RootComponent implements IComponentBindings
 
     $$(this.element).on(QueryEvents.doneBuildingQuery, (e, args: IDoneBuildingQueryEventArgs) => {
       if (!args.queryBuilder.containsEndUserKeywords()) {
-        this.logger.info('Query cancelled by the Search Interface', 'Configuration does not allow empty query', this, this.options);
-        args.cancel = true;
-        this.queryStateModel.reset();
+        const lastQuery = this.queryController.getLastQuery().q;
+        if (Utils.isNonEmptyString(lastQuery)) {
+          this.queryStateModel.set(QUERY_STATE_ATTRIBUTES.Q, lastQuery);
+          args.queryBuilder.expression.add(lastQuery);
+        } else {
+          this.logger.info('Query cancelled by the Search Interface', 'Configuration does not allow empty query', this, this.options);
+          args.cancel = true;
+          this.queryStateModel.reset();
 
-        new InitializationPlaceholder(this.element)
-          .withEventToRemovePlaceholder(QueryEvents.newQuery)
-          .withFullInitializationStyling()
-          .withVisibleRootElement()
-          .withPlaceholderForFacets()
-          .withPlaceholderForResultList()
-          .withWaitingForFirstQueryMode();
+          new InitializationPlaceholder(this.element)
+            .withEventToRemovePlaceholder(QueryEvents.newQuery)
+            .withFullInitializationStyling()
+            .withVisibleRootElement()
+            .withPlaceholderForFacets()
+            .withPlaceholderForResultList()
+            .withWaitingForFirstQueryMode();
+        }
       }
     });
   }

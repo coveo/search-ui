@@ -7,7 +7,7 @@ import { ResponsiveComponents } from '../ResponsiveComponents/ResponsiveComponen
 import * as _ from 'underscore';
 import { Initialization, LazyInitialization } from '../Base/Initialization';
 import { Utils } from '../../utils/Utils';
-import { ValidLayout } from '../ResultLayoutSelector/ValidLayout';
+import { RendererValidLayout, ValidLayout } from '../ResultLayoutSelector/ValidLayout';
 
 export type TemplateRole = 'table-header' | 'table-footer';
 
@@ -28,7 +28,7 @@ export interface IFieldsToMatch {
 }
 
 export interface IInstantiateTemplateOptions {
-  currentLayout?: ValidLayout;
+  currentLayout?: RendererValidLayout;
   checkCondition?: boolean;
   wrapInDiv?: boolean;
   responsiveComponents?: ResponsiveComponents;
@@ -78,7 +78,7 @@ export class Template implements ITemplateProperties {
 
   constructor(public dataToString?: (object?: any) => string) {}
 
-  instantiateToString(
+  public instantiateToString(
     object: IQueryResult,
     instantiateOptions: IInstantiateTemplateOptions = new DefaultInstantiateTemplateOptions()
   ): string {
@@ -159,74 +159,55 @@ export class Template implements ITemplateProperties {
     return null;
   }
 
-  addField(field: string) {
+  public addField(field: string) {
     if (!_.contains(this.fields, field)) {
       this.fields.push(field);
     }
   }
 
-  addFields(fields: string[]) {
+  public addFields(fields: string[]) {
     if (Utils.isNonEmptyArray(fields)) {
       this.fields = Utils.concatWithoutDuplicate(this.fields, fields);
     }
   }
 
-  getComponentsInside(tmplString: string): string[] {
-    let allComponentsInsideCurrentTemplate = _.map(Initialization.getListOfRegisteredComponents(), (componentId: string) => {
-      let regex = new RegExp(`Coveo${componentId}`, 'g');
-      if (regex.exec(tmplString)) {
-        return componentId;
-      } else {
-        return null;
-      }
+  public getComponentsInside(tmplString: string): string[] {
+    const allComponentsInsideCurrentTemplate = _.map(Initialization.getListOfRegisteredComponents(), (componentId: string) => {
+      const regex = new RegExp(`Coveo${componentId}`, 'g');
+      return regex.exec(tmplString) ? componentId : null;
     });
 
     return _.compact(allComponentsInsideCurrentTemplate);
   }
 
-  instantiateToElement(object: IQueryResult, instantiateTemplateOptions: IInstantiateTemplateOptions = {}): Promise<HTMLElement> {
-    let mergedOptions = new DefaultInstantiateTemplateOptions().merge(instantiateTemplateOptions);
+  public instantiateToElement(result: IQueryResult, templateOptions: IInstantiateTemplateOptions = {}): Promise<HTMLElement> | null {
+    const mergedOptions = new DefaultInstantiateTemplateOptions().merge(templateOptions);
+    const html = this.instantiateToString(result, mergedOptions);
 
-    var html = this.instantiateToString(object, mergedOptions);
     if (html == null) {
       return null;
     }
 
-    let allComponentsLazyLoaded = _.map(this.getComponentsInside(html), (component: string) => {
-      return LazyInitialization.getLazyRegisteredComponent(component).then(lazyLoadedComponent => {
-        return lazyLoadedComponent;
-      });
-    });
-
-    return Promise.all(allComponentsLazyLoaded).then(() => {
-      const layout = this.layout || mergedOptions.currentLayout;
-      const elemType = layout === 'table' ? 'tr' : 'div';
-      var element = $$(elemType, {}, html).el;
-      if (!mergedOptions.wrapInDiv && element.children.length === 1) {
-        element = <HTMLElement>element.children.item(0);
-      }
-      if (layout) {
-        $$(element).addClass(`coveo-${layout}-layout`);
-      }
-      this.logger.trace('Instantiated result template', object, element);
-      element['template'] = this;
-      return element;
+    return this.ensureComponentsInHtmlStringHaveLoaded(html).then(() => {
+      const template = this.buildTemplate(html, mergedOptions);
+      this.logger.trace('Instantiated result template', result, template);
+      return template;
     });
   }
 
-  toHtmlElement(): HTMLElement {
+  public toHtmlElement(): HTMLElement {
     return null;
   }
 
-  getFields(): string[] {
+  public getFields(): string[] {
     return this.fields;
   }
 
-  getType() {
+  public getType() {
     return 'Template';
   }
 
-  setConditionWithFallback(condition: string) {
+  public setConditionWithFallback(condition: string) {
     // In some circumstances (eg: locker service in SF), with strict Content-Security-Policy, eval / new Function are not allowed by the browser.
     // Try to use the eval method, if possible. Otherwise fallback to a mechanism where we will try to parse/evaluate the condition as a simple string.
     try {
@@ -239,5 +220,27 @@ export class Template implements ITemplateProperties {
   protected getTemplateInfo(): any {
     // Try to get info on the template by returning the first parameter found that is not undefined.
     return this.conditionToParse != undefined ? this.conditionToParse : this.condition != undefined ? this.condition : this.fieldsToMatch;
+  }
+
+  private ensureComponentsInHtmlStringHaveLoaded(html: string) {
+    const components = this.getComponentsInside(html).map(component => LazyInitialization.getLazyRegisteredComponent(component));
+    return Promise.all(components);
+  }
+
+  private buildTemplate(html: string, templateOptions: IInstantiateTemplateOptions) {
+    const layout = this.layout || templateOptions.currentLayout;
+    const elemType = layout === 'table' ? 'tr' : 'div';
+    let element = $$(elemType, {}, html).el;
+
+    if (!templateOptions.wrapInDiv && element.children.length === 1) {
+      element = <HTMLElement>element.children.item(0);
+    }
+
+    if (layout) {
+      $$(element).addClass(`coveo-${layout}-layout`);
+    }
+
+    element['template'] = this;
+    return element;
   }
 }

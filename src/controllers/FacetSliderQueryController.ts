@@ -10,12 +10,14 @@ import { QueryBuilder } from '../ui/Base/QueryBuilder';
 import { FacetSlider } from '../ui/FacetSlider/FacetSlider';
 import { DateUtils } from '../utils/DateUtils';
 import { QueryUtils } from '../utils/QueryUtils';
+import { QueryBuilderExpression } from '../ui/Base/QueryBuilderExpression';
+import { Utils } from '../utils/Utils';
 
 export class FacetSliderQueryController {
   public graphGroupByQueriesIndex: number;
   private rangeValuesForGraphToUse: { start: any; end: any }[];
   public lastGroupByRequestIndex: number;
-  public groupByRequestForFullRange: number;
+  public lastGroupByRequestForFullRangeIndex: number;
 
   constructor(public facet: FacetSlider) {
     this.facet.bind.onRootElement(QueryEvents.querySuccess, (args: IQuerySuccessEventArgs) => this.handleQuerySuccess(args));
@@ -136,6 +138,8 @@ export class FacetSliderQueryController {
       basicGroupByRequestForGraph.generateAutomaticRanges = true;
     }
 
+    this.addExpressionToExcludeInvalidDates(basicGroupByRequestForGraph);
+
     const filter = this.computeOurFilterExpression(this.facet.getSliderBoundaryForQuery());
     this.processQueryOverride(filter, basicGroupByRequestForGraph, queryBuilder);
 
@@ -147,66 +151,31 @@ export class FacetSliderQueryController {
   private putGroupByForSliderIntoQueryBuilder(queryBuilder: QueryBuilder) {
     this.lastGroupByRequestIndex = queryBuilder.groupByRequests.length;
 
-    let maximumNumberOfValues = 1;
-    if (this.facet.hasAGraph()) {
-      maximumNumberOfValues = this.facet.options.graph.steps;
-    }
-
-    let rangeValues = undefined;
-    const { start, end } = this.formatStartAndEnd();
-    if (this.facet.isSimpleSliderConfig) {
-      rangeValues = [
-        {
-          start: start,
-          end: end,
-          label: 'slider',
-          endInclusive: false
-        }
-      ];
-    }
-
-    // A basic group by request that takes into account the current query
-    // This one will determine if the facet is empty for the current query
-    const basicGroupByRequestForSlider = this.createBasicGroupByRequest();
-    basicGroupByRequestForSlider.maximumNumberOfValues = maximumNumberOfValues;
-    basicGroupByRequestForSlider.sortCriteria = 'nosort';
-    basicGroupByRequestForSlider.generateAutomaticRanges = !this.facet.isSimpleSliderConfig;
-    basicGroupByRequestForSlider.rangeValues = rangeValues;
-    const filter = this.computeOurFilterExpression(this.facet.getSliderBoundaryForQuery());
-    this.processQueryOverride(filter, basicGroupByRequestForSlider, queryBuilder);
-
-    queryBuilder.groupByRequests.push(basicGroupByRequestForSlider);
-
-    // We need a group by request for the "full range" that does not take into account the current query
-    // This will determine the full range of the query so that the X range of the slider is static
-    this.groupByRequestForFullRange = queryBuilder.groupByRequests.length;
-    const groupByRequestForFullRange = clone(basicGroupByRequestForSlider);
-    groupByRequestForFullRange.advancedQueryOverride = this.facet.options.queryOverride || '@uri';
-    delete groupByRequestForFullRange.constantQueryOverride;
-    delete groupByRequestForFullRange.queryOverride;
-
-    queryBuilder.groupByRequests.push(groupByRequestForFullRange);
+    const basicGroupByRequestForSlider = this.putGroupByBasicSliderIntoQueryBuilder(queryBuilder);
+    this.putGroupByForFullRangeSliderIntoQueryBuilder(queryBuilder, basicGroupByRequestForSlider);
   }
 
   private processQueryOverride(filter: string, groupByRequest: IGroupByRequest, queryBuilder: QueryBuilder) {
+    let expression: QueryBuilderExpression;
     if (filter != undefined) {
-      const queryOverrideObject = queryBuilder.computeCompleteExpressionPartsExcept(filter);
-      groupByRequest.queryOverride = queryOverrideObject.basic;
-      groupByRequest.advancedQueryOverride = queryOverrideObject.advanced;
-      groupByRequest.constantQueryOverride = queryOverrideObject.constant;
-      if (groupByRequest.advancedQueryOverride == undefined) {
-        groupByRequest.advancedQueryOverride = this.facet.options.queryOverride || '@uri';
-      } else {
-        groupByRequest.advancedQueryOverride += this.facet.options.queryOverride ? ' ' + this.facet.options.queryOverride : '';
-      }
-    } else if (this.facet.options.queryOverride != null) {
-      const completeExpression = queryBuilder.computeCompleteExpression();
-      groupByRequest.queryOverride = (completeExpression != null ? completeExpression + ' ' : '') + this.facet.options.queryOverride;
+      expression = queryBuilder.computeCompleteExpressionPartsExcept(filter);
+    } else {
+      expression = queryBuilder.computeCompleteExpressionParts();
     }
+
+    const queryOverrideFromOptions = this.facet.options.queryOverride || '@uri';
+
+    groupByRequest.queryOverride = this.appendOrSetGroupByOverrideParam(groupByRequest.queryOverride, expression.basic);
+    groupByRequest.advancedQueryOverride = this.appendOrSetGroupByOverrideParam(groupByRequest.advancedQueryOverride, expression.advanced);
+    groupByRequest.constantQueryOverride = this.appendOrSetGroupByOverrideParam(groupByRequest.constantQueryOverride, expression.constant);
+    groupByRequest.advancedQueryOverride = this.appendOrSetGroupByOverrideParam(
+      groupByRequest.advancedQueryOverride,
+      queryOverrideFromOptions
+    );
   }
 
   private createRangeValuesForGraphUsingStartAndEnd() {
-    const { start, end } = this.formatStartAndEnd();
+    const { start, end } = this.getFormattedStartAndEnd();
     const oneRange: IRangeValue = {
       start: start,
       end: end,
@@ -260,7 +229,7 @@ export class FacetSliderQueryController {
     });
   }
 
-  private formatStartAndEnd() {
+  private getFormattedStartAndEnd() {
     let start = this.facet.options.start;
     let end = this.facet.options.end;
     if (this.facet.options.dateField) {
@@ -268,8 +237,8 @@ export class FacetSliderQueryController {
       end = this.getISOFormat(end);
     }
     return {
-      start: start,
-      end: end
+      start,
+      end
     };
   }
 
@@ -306,5 +275,100 @@ export class FacetSliderQueryController {
 
   private getBrowserCompatibleFormat(value: string) {
     return value.replace('@', 'T').replace(/\//g, '-');
+  }
+
+  private putGroupByForFullRangeSliderIntoQueryBuilder(queryBuilder: QueryBuilder, basicGroupByRequest: IGroupByRequest) {
+    // We need a group by request for the "full range" that does not take into account the current query (query override)
+    // The goal is to obtain a query wich return the whole range of results without taking into account what the users typed in the search box,
+    // so that the X range of the slider is static between each queries.
+
+    this.lastGroupByRequestForFullRangeIndex = queryBuilder.groupByRequests.length;
+    const groupByRequestForFullRange = clone(basicGroupByRequest);
+
+    // This removes the "basic" query override. ie: user input
+    delete groupByRequestForFullRange.queryOverride;
+    // This removes any current filter in the facet caused by a selection
+    delete groupByRequestForFullRange.advancedQueryOverride;
+    // We keep the "constantQueryOverride", since it normally contains static filter always applied no matter what.
+
+    if (this.facet.options.queryOverride) {
+      groupByRequestForFullRange.advancedQueryOverride = this.facet.options.queryOverride;
+    }
+
+    this.addExpressionToExcludeInvalidDates(groupByRequestForFullRange);
+    queryBuilder.groupByRequests.push(groupByRequestForFullRange);
+  }
+
+  private putGroupByBasicSliderIntoQueryBuilder(queryBuilder: QueryBuilder): IGroupByRequest {
+    let maximumNumberOfValues = 1;
+
+    if (this.facet.hasAGraph()) {
+      maximumNumberOfValues = this.facet.options.graph.steps;
+    }
+
+    let rangeValues: IRangeValue[];
+    if (this.facet.isSimpleSliderConfig) {
+      rangeValues = [
+        {
+          ...this.getFormattedStartAndEnd(),
+          label: 'slider',
+          endInclusive: false
+        }
+      ];
+    }
+
+    // A basic group by request that takes into account the current query
+    // This one will determine if the facet is empty for the current query
+    const basicGroupByRequestForSlider = this.createBasicGroupByRequest();
+    basicGroupByRequestForSlider.maximumNumberOfValues = maximumNumberOfValues;
+    basicGroupByRequestForSlider.sortCriteria = 'nosort';
+    basicGroupByRequestForSlider.generateAutomaticRanges = !this.facet.isSimpleSliderConfig;
+    basicGroupByRequestForSlider.rangeValues = rangeValues;
+    const filter = this.computeOurFilterExpression(this.facet.getSliderBoundaryForQuery());
+    this.processQueryOverride(filter, basicGroupByRequestForSlider, queryBuilder);
+    this.addExpressionToExcludeInvalidDates(basicGroupByRequestForSlider);
+
+    queryBuilder.groupByRequests.push(basicGroupByRequestForSlider);
+
+    return basicGroupByRequestForSlider;
+  }
+
+  private addExpressionToExcludeInvalidDates(groupByRequest: IGroupByRequest) {
+    if (this.facet.options.dateField) {
+      // When a connector sets an invalid or un-existing date,
+      // the Coveo index will automatically set its value to 1400/01/01 (the "minimum" value in the Boost C++ library).
+      // Here, we try to always force those values out,
+      // by putting a filter on dates above Unix epoch, otherwise all kinds of weird stuff will happen for the end users
+      // For example :
+      // - We'll get extremely huge range of dates, all with no values
+      //   (because it turns out not many document were actually produced in the medieval ages).
+      // - Graphs might get all out of bound, with very tiny slices.
+      // - Moment js will incorrectly evaluate the date.
+      // - You cannot actually query for those invalid document using date queries anyway,
+      //   meaning playing with the slider will always return "no results" if you try and filter on those invalid documents.
+      // Instead of taking the approach of garbage in/garbage out, this tries to do something a bit more sane for end users ...
+
+      const builderToRemoveInvalidRange = new QueryBuilder();
+      builderToRemoveInvalidRange.expression.addFieldExpression(this.facet.options.field as string, '>', [
+        this.getFilterDateFormat(new Date(0))
+      ]);
+      if (groupByRequest.constantQueryOverride) {
+        groupByRequest.constantQueryOverride += ` ${builderToRemoveInvalidRange.expression.build()}`;
+      } else {
+        groupByRequest.constantQueryOverride = builderToRemoveInvalidRange.expression.build();
+      }
+    }
+  }
+
+  private appendOrSetGroupByOverrideParam(param: string, value: string) {
+    if (Utils.isNullOrUndefined(value)) {
+      return param;
+    }
+
+    if (Utils.isNullOrUndefined(param)) {
+      return value || '';
+    } else {
+      return param + ' ' + (value || '');
+    }
   }
 }

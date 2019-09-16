@@ -371,6 +371,7 @@ export function StreamHighlightUtilsTest() {
         `Lorem ipsum 9-1-1 dolor ${getHighlightResultForTerm('sit&amp;amet', 1, 'sit amet')}`
       );
     });
+
     it('should work with +', () => {
       const toHighlight = 'Lorem ipsum 9-1-1 dolor sit+amet';
       const phrases: { [phrase: string]: { [originalTerm: string]: string[] } } = {

@@ -9,6 +9,7 @@ import { FakeResults } from '../Fake';
 import * as Mock from '../MockEnvironment';
 import { ISimulateQueryData, Simulate } from '../Simulate';
 import _ = require('underscore');
+import { Utils } from '../../src/Core';
 
 export function FoldingTest() {
   describe('Folding', () => {
@@ -215,6 +216,18 @@ export function FoldingTest() {
       afterEach(() => {
         test = null;
         queryData = null;
+      });
+
+      it('should trap the error if a query error happens when getting more results', () => {
+        (test.env.searchEndpoint.search as jasmine.Spy).and.returnValue(Promise.reject("That's a bad query"));
+        expect(() => queryData.results.results[0].moreResults()).not.toThrowError();
+      });
+
+      it('should return an empty array if a query error happens when getting more results', async done => {
+        (test.env.searchEndpoint.search as jasmine.Spy).and.returnValue(Promise.reject("That's a bad query"));
+        const results = await queryData.results.results[0].moreResults();
+        expect(Utils.isEmptyArray(results)).toBe(true);
+        done();
       });
 
       describe('should clone the original query', () => {

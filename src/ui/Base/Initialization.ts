@@ -1,6 +1,6 @@
 import * as _ from 'underscore';
 import { QueryController } from '../../controllers/QueryController';
-import { InitializationEvents } from '../../events/InitializationEvents';
+import { InitializationEvents, IInitializationEventArgs } from '../../events/InitializationEvents';
 import { Assert } from '../../misc/Assert';
 import { Logger } from '../../misc/Logger';
 import { ComponentOptionsModel } from '../../models/ComponentOptionsModel';
@@ -242,41 +242,72 @@ export class Initialization {
     const alreadyInitialized = Component.get(element, QueryController, true);
     if (alreadyInitialized) {
       this.logger.error('This DOM element has already been initialized as a search interface, skipping initialization', element);
-      return new Promise((resolve, reject) => {
-        resolve({ elem: element });
+      return Promise.resolve({
+        elem: element
       });
     }
 
     options = Initialization.resolveDefaultOptions(element, options);
 
+    const waitForAllPromisesToFinish = async (eventType: string, promises: Promise<any>[]) => {
+      try {
+        const promisesWithErrorsHandledIndividually = promises.map(p => {
+          return p.catch(error =>
+            this.logger.warn(
+              `An error occurred when trying to defer the \"${eventType}\" event. The defer will be ignored.`,
+              `Error: ${error}`
+            )
+          );
+        });
+        return Promise.all(promisesWithErrorsHandledIndividually);
+      } catch (error) {
+        this.logger.error(
+          `An unexpected error occurred when trying to defer the \"${event}\" event. All defers will be ignored.`,
+          `Error: ${error}`
+        );
+      }
+    };
+
+    const triggerInitializationEventWithArguments = (eventType: string) => {
+      const initializationEventArgs: IInitializationEventArgs = {
+        defer: []
+      };
+      $$(element).trigger(eventType, initializationEventArgs);
+      if (initializationEventArgs.defer.length > 0) {
+        return waitForAllPromisesToFinish(eventType, initializationEventArgs.defer);
+      } else {
+        return Promise.resolve();
+      }
+    };
+
     Initialization.performInitFunctionsOption(options, InitializationEvents.beforeInitialization);
     $$(element).trigger(InitializationEvents.beforeInitialization);
 
-    const toExecuteOnceSearchInterfaceIsInitialized = () => {
-      return Initialization.initExternalComponents(element, options).then(result => {
-        Initialization.performInitFunctionsOption(options, InitializationEvents.afterComponentsInitialization);
-        $$(element).trigger(InitializationEvents.afterComponentsInitialization);
+    const toExecuteOnceSearchInterfaceIsInitialized = async () => {
+      const result = await Initialization.initExternalComponents(element, options);
 
-        $$(element).trigger(InitializationEvents.restoreHistoryState);
+      Initialization.performInitFunctionsOption(options, InitializationEvents.afterComponentsInitialization);
+      await triggerInitializationEventWithArguments(InitializationEvents.afterComponentsInitialization);
 
-        Initialization.performInitFunctionsOption(options, InitializationEvents.afterInitialization);
-        $$(element).trigger(InitializationEvents.afterInitialization);
+      $$(element).trigger(InitializationEvents.restoreHistoryState);
 
-        const searchInterface = <SearchInterface>Component.get(element, SearchInterface);
-        if (Initialization.shouldExecuteFirstQueryAutomatically(searchInterface)) {
-          Initialization.logFirstQueryCause(searchInterface);
-          let shouldLogInActionHistory = true;
-          // We should not log an action history if the interface is a standalone recommendation component.
-          if (Coveo['Recommendation']) {
-            shouldLogInActionHistory = !(searchInterface instanceof Coveo['Recommendation']);
-          }
-          (<QueryController>Component.get(element, QueryController)).executeQuery({
-            logInActionsHistory: shouldLogInActionHistory,
-            isFirstQuery: true
-          });
+      Initialization.performInitFunctionsOption(options, InitializationEvents.afterInitialization);
+      await triggerInitializationEventWithArguments(InitializationEvents.afterInitialization);
+
+      const searchInterface = <SearchInterface>Component.get(element, SearchInterface);
+      if (Initialization.shouldExecuteFirstQueryAutomatically(searchInterface)) {
+        Initialization.logFirstQueryCause(searchInterface);
+        let shouldLogInActionHistory = true;
+        // We should not log an action history if the interface is a standalone recommendation component.
+        if (Coveo['Recommendation']) {
+          shouldLogInActionHistory = !(searchInterface instanceof Coveo['Recommendation']);
         }
-        return result;
-      });
+        (<QueryController>Component.get(element, QueryController)).executeQuery({
+          logInActionsHistory: shouldLogInActionHistory,
+          isFirstQuery: true
+        });
+      }
+      return result;
     };
 
     const resultOfSearchInterfaceInitialization = initSearchInterfaceFunction(element, options);

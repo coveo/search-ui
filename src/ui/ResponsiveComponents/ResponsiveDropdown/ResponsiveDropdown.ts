@@ -4,6 +4,11 @@ import { $$, Dom } from '../../../utils/Dom';
 import { EventsUtils } from '../../../utils/EventsUtils';
 import * as _ from 'underscore';
 import { AccessibleButton } from '../../../utils/AccessibleButton';
+import { KeyboardUtils, KEYBOARD } from '../../../utils/KeyboardUtils';
+import { InitializationEvents } from '../../../events/InitializationEvents';
+import { Assert } from '../../../misc/Assert';
+import { l } from '../../../strings/Strings';
+
 export enum ResponsiveDropdownEvent {
   OPEN = 'responsiveDropdownOpen',
   CLOSE = 'responsiveDropdownClose'
@@ -16,7 +21,6 @@ export class ResponsiveDropdown {
   public static DROPDOWN_BACKGROUND_CSS_CLASS_NAME: string = 'coveo-dropdown-background';
 
   public isOpened: boolean = false;
-
   private onOpenHandlers: HandlerCall[] = [];
   private onCloseHandlers: HandlerCall[] = [];
   private popupBackground: Dom;
@@ -25,16 +29,24 @@ export class ResponsiveDropdown {
   private parent: Dom;
 
   constructor(public dropdownContent: IResponsiveDropdownContent, public dropdownHeader: ResponsiveDropdownHeader, public coveoRoot: Dom) {
+    Assert.exists(dropdownContent);
+    Assert.exists(dropdownHeader);
+    Assert.exists(coveoRoot);
+
     this.popupBackground = this.buildPopupBackground();
     this.bindOnClickDropdownHeaderEvent();
     this.saveContentPosition();
+    this.bindOnKeyboardEscapeEvent();
+    this.bindNukeEvents();
   }
 
   public registerOnOpenHandler(handler: Function, context) {
+    Assert.exists(handler);
     this.onOpenHandlers.push({ handler: handler, context: context });
   }
 
   public registerOnCloseHandler(handler: Function, context) {
+    Assert.exists(handler);
     this.onCloseHandlers.push({ handler: handler, context: context });
   }
 
@@ -75,16 +87,27 @@ export class ResponsiveDropdown {
   private bindOnClickDropdownHeaderEvent() {
     new AccessibleButton()
       .withElement(this.dropdownHeader.element)
-      .withSelectAction(() => {
-        if (this.isOpened) {
-          this.close();
-        } else {
-          this.open();
-        }
-      })
-      .withBlurAction(() => this.close())
-      .withLabel('yo')
+      .withSelectAction(() => (this.isOpened ? this.close() : this.open()))
+      .withLabel(l(this.isOpened ? 'CloseFiltersDropdown' : 'OpenFiltersDropdown'))
       .build();
+  }
+
+  private closeIfOpened = () => {
+    this.isOpened && this.close();
+  };
+
+  private bindOnKeyboardEscapeEvent() {
+    $$(document.documentElement).on('keyup', KeyboardUtils.keypressAction(KEYBOARD.ESCAPE, this.closeIfOpened));
+  }
+
+  private unbindOnKeyboardEscapeEvent() {
+    $$(document.documentElement).off('keyup', KeyboardUtils.keypressAction(KEYBOARD.ESCAPE, this.closeIfOpened));
+  }
+
+  private bindNukeEvents() {
+    $$(this.coveoRoot).on(InitializationEvents.nuke, () => {
+      this.unbindOnKeyboardEscapeEvent();
+    });
   }
 
   private showPopupBackground() {

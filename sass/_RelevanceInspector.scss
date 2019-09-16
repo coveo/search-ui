@@ -1,8 +1,9 @@
 @import './Variables';
 @import './Animations';
 @import 'mixins/resultsHeaderElement';
-@import '../node_modules/coveo-styleguide/scss/common/palette.scss';
-@import '../node_modules/coveo-styleguide/scss/variables.scss';
+@import 'coveo-styleguide/scss/common/palette';
+@import 'coveo-styleguide/scss/variables';
+
 .coveo-relevance-inspector {
   text-align: center;
   padding: 10px;

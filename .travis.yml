@@ -7,13 +7,15 @@ notifications:
     on_success: change
     on_failure: always
 node_js:
-- 8.5.0
+- 8.15.1
 cache:
   yarn: true
   directories:
   - node_modules
 before_install:
   - npm install -g npm@5.5.1
+  - if [ "x$TRAVIS_TAG" != "x" ]; then wget https://repo1.maven.org/maven2/com/veracode/vosp/api/wrappers/vosp-api-wrappers-java/$VERACODE_WRAPPER_VERSION/vosp-api-wrappers-java-$VERACODE_WRAPPER_VERSION.jar ; fi
+  - sudo apt-get install libgconf2-4
 script:
 - source read.version.sh
 - echo $PACKAGE_JSON_VERSION
@@ -23,12 +25,13 @@ script:
 - yarn run unitTests
 - if [ "x$TRAVIS_TAG" != "x" ]; then yarn run accessibilityTests ; fi
 - yarn run uploadCoverage
-- yarn run testChunks
 - yarn run validateTypeDefinitions
 after_success:
 - if [ "x$TRAVIS_TAG" != "x" ]; then bash ./deploy.doc.sh ; fi
 - yarn run docsitemap
 - yarn run zipForGitReleases
+- yarn run zipForVeracode
+- if [ "x$TRAVIS_TAG" != "x" ]; then java -jar vosp-api-wrappers-java-$VERACODE_WRAPPER_VERSION.jar -vid $VERACODE_KEY_ID  -vkey $VERACODE_SECRET -action uploadandscan -appname Coveo -sandboxname "JS UI" -createprofile true -filepath veracode.zip -version "Travis build [ $TRAVIS_JOB_NUMBER ] on branch [ $TRAVIS_BRANCH ]" ; else echo "Build was triggered from a fork; skipping Veracode" ; fi
 env:
   global:
   - COMMIT_AUTHOR_EMAIL: sandbox_JSUI@coveo.com
@@ -37,7 +40,7 @@ deploy:
     email: sandbox_JSUI@coveo.com
     skip_cleanup: true
     api_key:
-      secure: CsRAOjw3GCfawyyGy1ICScdA6T3N1S8XPCGqzVVM7tGrRPHBQeuAnw872P5Xgafi89JJ527lZXNqqKTfIcM1S4KZj6xLLYS641gMGbzx+SZ+RhSTZm97ECge3LYFyisM+3NIuiCAi9lgTa+JoOtplUVS0pSpqsVppXvPqsFavUVik7gv5THxFpx80iXDcWHufMoynZFodGC921DWKlC4SxQD5rZhG9XoGTYr36Ox0PuUjZRNgxU8gEhdgGLWKIRZrCfzWhtb2SAjvG28AzXT1VLb2BbnYCe44EMLqsOTcfzbFZEPR7gFyjZ8qCbLwUNkTHKtSA7NPfCHBl/bmFaBGjTNAzqv5Ne7jEXpB3olmz06q58QXybk1IYewuikKM/wbHUo8KIMv2Hf7VJP3RO8o1GvOPEm/Caif6LTVgQ7E+T7247Sr42EhjmLOFnngKS1UOqHppzuhzRkKkCu9rIT1T83QzD0eWL5lD3+dfLvAB/AGHdxb+m+1it/IUrTSKj+9cM78C/Sj1Ed0TYyDTYC6VgCGNnPMqPfBIpP8r4+SYlkjbcPX8DgygzTd9eDMI0RBXE2IbSBrWQEoQqFBt8tDQdLu51JjYdororVG2Y1SgL5mcK+w8WOHCPJFfUlVPIfGERcvo/J/y8c79GtdmlNVFUz+pymseCvJp3xWmF3pas=
+      secure: tEFBMHm1YjFLJa8lDs9tvE/YSZ7xItu1+zgSzEVUzVZngUWybsle5pMgGYzwq2HhoV3l6hw+tg9+aSKuxCkk0ezF5L9emHDBNUksB3vD7+hQ9ebIHlv/D3QI/Q6cxh358M6pF1sjw9NP7g2rIbYkIZtEPpz7DkWUDhsKAg0VFVMH4q2WJ6Lt8q2LW9acC87zR4FBHkB8pYOuQzW7tLNhsBOmRqU4qge6p3u0ox90N9UTDVGQVzwnD99zixCcJc0WhdnuK7wTf3EebMA+iBXD0/V4VlvNUBA/cVPWujZkvYw3gYO+JuwMuFqXAXQiAXuoyEaPbmCIdD+Lhj+Yj8HMspncl0vhcfrf1v8xdnqfgmf+TSEXLAMGdndUhlzIEHhPi39IUx7EKKdtayP0oYoEuWRjXF6EoAy+d5Y1NO/Q5tpncI7WaXXB+uaj+43fs4qS36hXRDdPGL8wHLPvvu0ndFoIipw9SPC+p2vj/VSj0HHrz/dBD4QF+zUM+IVuptZJ82bS7ozBpdX2nZVYsZka9XSuiQuMzs/P81dT6ksTSfbIvtwlH8lI17UbNN8dTXiFQ5Ij5sUCxag9heFnOicRV3q1eSNF3bYVrjlNnLx7rZsGqoln4TaTe6oX7+V3gXRuCofrh44kj5ZiwgiMR3LA8Xc7z2QrcegQYD04AvCStDY=
     on:
       tags: true
       repo: coveo/search-ui
@@ -63,9 +66,9 @@ deploy:
       repo: coveo/search-ui
       all_branches: true
   - provider: s3
-    access_key_id: AKIAIWWGBULVXLZH3XUQ
+    access_key_id: AKIAYKDJLZIT462WODCI
     secret_access_key:
-      secure: rE1I0tkPU4n9e6bjm+eAujC1ttRTGtDjOvyYIyz/0K62n7pZ8IRAH/5AIHKrNbbGu0ImQrrz8owP/jamhk5AN9+9ISrqe/jTtid9garlnfrgQtvZJNw6jVcqj9WXycz7nFLLyArPR9oXHa7GSbwk8yjn0Ho216Xf1FNGq71Jv4sCEkwfvUwi9Hs427K6p09s/dsf/q04+hZVASc1L4CMLgTj5BBOPPP9cw7QusHYCaviyy0tCtiNq5tt+R64DfNTY4mbg3wIMp4ouyfxkKYCpVngoWBm+dFtH2p3SJnTPullvEm6HA/domQHlCzsUXles4rsBZ3/8Rb1xUteqdlthyt0+WC8vpip5gsPDwk/+GcD+bVoBPCIUbQxVjmSSuZ7heJz5aPQOg0t23u/nZ2mYdXR6xjpocaf7awtAMm1lHfvQkV0SUKMNVMH2rYEfRYuans0edleVaBTri2VSCzXwqrNd7q+LcWJdxHfibXunQ3x7eQuWaLY2rw+VKHQTdwvPKjw9eqioiTN7HEhKoZn+bYU0M3XimuE9DKo7MRWXRkFvNSAQkbFRA45/nSgh317nHuXmyelyFm/Teqqy7zZYPctJ+yJD1QRvRv2kBnev/G6p6466JMLpQVQw4JzUhU9X5hyGYaCeDROHOnRoWLngDUuN9vs1v4O7M/PSeJMsdg=
+      secure: sT8isIiaAIg/Ic7x8cCD3anwCEHAyzG/IWkngmkf5c128NEwUIUdmsQJ1hi4Bw84zk1OOb3id+yXjeaTuKDgIkxe/jk3e2xZ7xElfLNTOln6QLkgsYpKFtGHiKjROOHOb5+Es6L1mxpHWbXH9ebmEhRduUw/BeHWW2MfZmfb434DgvatViRm8DOeROeqlYnbCda5ZELuT5SdwEs/CbExaiSL0WKVoTvcxbe+At4uVnTuc6SYyOvRoblx/q6Ra6mdRipluMs7Go93eu/Oqo7cZ2akrNSi/WBXGqL/wXxe2pYsziSABWjQaqWXD/jKte1ZBx7OXssn88DUKat/RrL7Ak30WHzgY/goiNV+EPT/wtNYWHP3suAzzGqNNMhsPx0lSI7vSUga72J3hV1TOsX9ORosiRm1c2fnmNB9vJdH7yAX7lWpqH2XuOrldVvvTGazSJYx93eBukDViFCZ6egeb+gMT8VQ38uitwd9BZaMhycoujZgSjhx7JnbHUoUdXkdT3XBNV7fINTozWCNJW81iJN+JuLZzneJ/CbjmjkfGcVoFFPCD9rGSj8DbgvWpt8rkwI4ZfHTNOgO9iWgSklpk9r2wgM7Z87V2Zpu8UX/QCFxy8IREtJUo6X9YG9nBoy21wUa9zia2SWpideur9cXb6U0+q84onHVlA0Ehp/1OYs=
     bucket: coveo-nprod-binaries
     local-dir: bin
     upload-dir: proda/StaticCDN/searchui/v$PACKAGE_JSON_VERSION
@@ -76,6 +79,7 @@ deploy:
       repo: coveo/search-ui
       all_branches: true
       condition: "! $TRAVIS_TAG =~ .*beta.*"
+
 after_deploy:
 - node invalidate.cloudfront.js
 branches:

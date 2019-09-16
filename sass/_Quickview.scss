@@ -7,9 +7,6 @@
   }
   .coveo-list-layout &:hover .coveo-caption-for-icon {
     display: inline;
-    top: 26px;
-    transform: translateX(-50%);
-    left: 50%;
   }
   .coveo-caption-for-icon {
     font-size: $font-size-smallest;
@@ -21,15 +18,44 @@
     position: absolute;
     white-space: nowrap;
     z-index: 1;
-    &:before {
+    > div {
       border: solid;
-      border-color: $color-greyish-dark-blue transparent;
-      border-width: 0 6px 7px;
       content: '';
       position: absolute;
       z-index: 99;
-      top: -6px;
-      left: calc(50% - 6px);
+    }
+
+    $arrow-width: 6px;
+    $arrow-height: 7px;
+    $arrow-color: $color-greyish-dark-blue;
+
+    // Tooltip under element, arrow on top
+    &[x-placement^='bottom'] > div {
+      top: -$arrow-width;
+      border-width: 0 $arrow-width $arrow-height;
+      border-color: $arrow-color transparent;
+    }
+
+    // Tooltip over element, arrow on bottom
+    &[x-placement^='top'] > div {
+      bottom: -$arrow-width;
+      border-width: $arrow-height $arrow-width 0;
+      border-color: $arrow-color transparent;
+    }
+
+    // Tooltip on the right of element, arrow on the left
+    &[x-placement^='right'] > div {
+      left: -$arrow-width;
+      border-width: $arrow-width $arrow-height $arrow-width 0;
+      border-color: transparent $arrow-color;
+    }
+
+    // Tooltip on the left of element, arrow on the right
+    &[x-placement^='left'] > div {
+      right: -$arrow-width;
+      left: auto;
+      border-width: $arrow-width 0 $arrow-width $arrow-height;
+      border-color: transparent $arrow-color;
     }
   }
 }
@@ -186,6 +212,10 @@
       padding: 10px 0 0 10px;
     }
   }
+}
+
+.coveo-icon-for-quickview {
+  text-align: center;
 }
 
 .coveo-icon-for-quickview-svg {

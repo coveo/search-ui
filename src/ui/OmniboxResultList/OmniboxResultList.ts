@@ -1,10 +1,11 @@
 import { Component } from '../Base/Component';
 import { $$ } from '../../utils/Dom';
 import { l } from '../../strings/Strings';
-import { IResultListOptions, ResultList } from '../ResultList/ResultList';
+import { ResultList } from '../ResultList/ResultList';
+import { IResultListOptions } from '../ResultList/ResultListOptions';
 import { IQueryResult } from '../../rest/QueryResult';
 import { IPopulateOmniboxEventArgs, OmniboxEvents } from '../../events/OmniboxEvents';
-import { ComponentOptions } from '../Base/ComponentOptions';
+import { ComponentOptions, IQueryExpression } from '../Base/ComponentOptions';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { QueryEvents, IBuildingQueryEventArgs } from '../../events/QueryEvents';
 import { analyticsActionCauseList, IAnalyticsNoMeta } from '../Analytics/AnalyticsActionListMeta';
@@ -18,14 +19,13 @@ import OmniboxModuleDefintion = require('../Omnibox/Omnibox');
 import { InitializationEvents } from '../../EventsModules';
 import { logSearchBoxSubmitEvent } from '../Analytics/SharedAnalyticsCalls';
 import { Logger } from '../../misc/Logger';
-
 import 'styling/_OmniboxResultList';
 
 export interface IOmniboxResultListOptions extends IResultListOptions {
   omniboxZIndex?: number;
   onSelect?: (result: IQueryResult, resultElement: HTMLElement, omniboxObject: IPopulateOmniboxEventArgs, event?: Event) => void;
   headerTitle?: string;
-  queryOverride?: string;
+  queryOverride?: IQueryExpression;
 }
 
 /**
@@ -109,7 +109,7 @@ export class OmniboxResultList extends ResultList implements IComponentBindings 
      *
      * Default value is `undefined`, which means no default override is specified.
      */
-    queryOverride: ComponentOptions.buildStringOption(),
+    queryOverride: ComponentOptions.buildQueryExpressionOption(),
 
     /**
      * Specifies the function to execute when the user selects a result suggestion.
@@ -168,19 +168,10 @@ export class OmniboxResultList extends ResultList implements IComponentBindings 
     this.options = ComponentOptions.initComponentOptions(element, OmniboxResultList, options);
     this.setupOptions();
     this.bind.onRootElement(OmniboxEvents.populateOmnibox, (args: IPopulateOmniboxEventArgs) => this.handlePopulateOmnibox(args));
-    this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => this.handleQueryOverride(args));
-
-    const omniboxElement: HTMLElement = $$(this.root).find(`.${Component.computeCssClassNameForType('Omnibox')}`);
-    if (omniboxElement) {
-      this.bind.onRootElement(InitializationEvents.afterComponentsInitialization, () => {
-        const omnibox = <OmniboxModuleDefintion.Omnibox>Component.get(omniboxElement);
-        const magicBox = omnibox.magicBox;
-        magicBox.onsubmit = () => {
-          logSearchBoxSubmitEvent(this.usageAnalytics);
-          this.queryController.executeQuery();
-        };
-      });
-    }
+    this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => this.handleBuildingQuery(args));
+    this.bind.onRootElement(InitializationEvents.afterComponentsInitialization, () => {
+      this.handleAfterComponentInit();
+    });
   }
 
   /**
@@ -212,33 +203,65 @@ export class OmniboxResultList extends ResultList implements IComponentBindings 
    * Creates a result container and appends each element from the received `HTMLElement` array to it. For each element
    * it appends to the result container, this method triggers a `newResultDisplayed` event. Once all elements have been
    * appended to the result container, the method triggers a `newResultsDisplayed` event.
-   * @param resultsElement The array of `HTMLElement` to render.
+   * @param resultElements The array of `HTMLElement` to render.
    * @param append
    */
-  public renderResults(resultsElement: HTMLElement[], append = false) {
-    $$(this.options.resultContainer).empty();
-    if (this.lastOmniboxRequest) {
-      if (this.options.headerTitle) {
-        this.options.resultContainer.appendChild(
-          $$(
-            'div',
-            { className: 'coveo-omnibox-result-list-header' },
-            $$('span', { className: 'coveo-icon-omnibox-result-list' }).el,
-            $$('span', { className: 'coveo-caption' }, l(this.options.headerTitle)).el
-          ).el
-        );
-      }
-      _.each(resultsElement, (resultElement: HTMLElement) => {
-        this.options.resultContainer.appendChild(resultElement);
-        this.triggerNewResultDisplayed(Component.getResult(resultElement), resultElement);
-      });
-      this.triggerNewResultsDisplayed();
-      if ($$(this.options.resultContainer).findAll('.coveo-omnibox-selectable').length == 0) {
-        this.lastOmniboxRequest.resolve({ element: null, zIndex: this.options.omniboxZIndex });
-      } else {
-        this.lastOmniboxRequest.resolve({ element: this.options.resultContainer, zIndex: this.options.omniboxZIndex });
-      }
+  public renderResults(resultElements: HTMLElement[], append = false) {
+    $$(this.options.resultsContainer).empty();
+
+    if (!this.lastOmniboxRequest) {
       return Promise.resolve(null);
+    }
+
+    if (resultElements.length) {
+      this.appendHeaderIfTitleIsSpecified();
+      this.appendResults(resultElements);
+    }
+
+    this.resolveLastOmniboxRequest();
+
+    return Promise.resolve(null);
+  }
+
+  private handleAfterComponentInit() {
+    const omniboxElement: HTMLElement = $$(this.root).find(`.${Component.computeCssClassNameForType('Omnibox')}`);
+    if (omniboxElement) {
+      const omnibox = <OmniboxModuleDefintion.Omnibox>Component.get(omniboxElement);
+      const magicBox = omnibox.magicBox;
+      magicBox.onsubmit = () => {
+        logSearchBoxSubmitEvent(this.usageAnalytics);
+        this.queryController.executeQuery();
+      };
+    }
+  }
+
+  private appendHeaderIfTitleIsSpecified() {
+    if (this.options.headerTitle) {
+      this.options.resultsContainer.appendChild(
+        $$(
+          'div',
+          { className: 'coveo-omnibox-result-list-header' },
+          $$('span', { className: 'coveo-icon-omnibox-result-list' }).el,
+          $$('span', { className: 'coveo-caption' }, l(this.options.headerTitle)).el
+        ).el
+      );
+    }
+  }
+
+  private appendResults(resultElements: HTMLElement[]) {
+    _.each(resultElements, (resultElement: HTMLElement) => {
+      this.options.resultsContainer.appendChild(resultElement);
+      this.triggerNewResultDisplayed(Component.getResult(resultElement), resultElement);
+    });
+
+    this.triggerNewResultsDisplayed();
+  }
+
+  private resolveLastOmniboxRequest() {
+    if ($$(this.options.resultsContainer).findAll('.coveo-omnibox-selectable').length == 0) {
+      this.lastOmniboxRequest.resolve({ element: null, zIndex: this.options.omniboxZIndex });
+    } else {
+      this.lastOmniboxRequest.resolve({ element: this.options.resultsContainer, zIndex: this.options.omniboxZIndex });
     }
   }
 
@@ -257,6 +280,7 @@ export class OmniboxResultList extends ResultList implements IComponentBindings 
   private handlePopulateOmnibox(args: IPopulateOmniboxEventArgs) {
     const promise = new Promise((resolve, reject) => {
       this.queryController.executeQuery({
+        searchAsYouType: true,
         shouldRedirectStandaloneSearchbox: false,
         beforeExecuteQuery: () => this.usageAnalytics.logSearchAsYouType<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxSubmit, {})
       });
@@ -267,7 +291,7 @@ export class OmniboxResultList extends ResultList implements IComponentBindings 
     });
   }
 
-  private handleQueryOverride(args: IBuildingQueryEventArgs) {
+  protected handleBuildingQuery(args: IBuildingQueryEventArgs) {
     Assert.exists(args);
     if (Utils.isNonEmptyString(this.options.queryOverride)) {
       args.queryBuilder.constantExpression.add(this.options.queryOverride);
@@ -312,6 +336,12 @@ export class OmniboxResultList extends ResultList implements IComponentBindings 
       this.root
     );
     window.location.href = result.clickUri;
+  }
+
+  protected initResultContainerAddToDom() {
+    //This function is overwritten and don't do anything because we don't want to append the result container
+    //to the DOM. If the resultContainer was to be appended to the DOM, this could lead to result appearing
+    //outside of the magicBox so the rest of the page would be push down
   }
 }
 

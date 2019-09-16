@@ -27,7 +27,7 @@ export class FakeResults {
       pipeline: 'pipeline',
       splitTestRun: 'splitTestRunName',
       totalCount: count != 0 ? count + 1 : 0,
-      totalCountFiltered: count != 0 ? count + 1 : 0,
+      totalCountFiltered: count,
       duration: 321,
       indexDuration: 123,
       clientDuration: 456,
@@ -107,7 +107,8 @@ export class FakeResults {
       rating: 3,
       state: {},
       isRecommendation: false,
-      searchInterface: mockSearchInterface()
+      searchInterface: mockSearchInterface(),
+      absentTerms: []
     };
   }
 
@@ -262,7 +263,7 @@ export class FakeResults {
         return { value: token + number, numberOfResults: 5 };
       }),
       parentValues: range(0, numberOfValues).map(number => {
-        return { value: 'parent' + number, numberOfResults: 5 };
+        return { value: 'parent' + number, numberOfResults: number + 250 * number };
       })
     };
   }
@@ -417,8 +418,8 @@ export class FakeResults {
 
   static createRankingInfoNoKeywords() {
     return `Document weights:
-    Title: 0; Quality: 180; Date: 405; Adjacency: 0; Source: 500; Custom: 400; Collaborative rating: 0; QRE: 890; Ranking functions: 0; 
-    
+    Title: 0; Quality: 180; Date: 405; Adjacency: 0; Source: 500; Custom: 400; Collaborative rating: 0; QRE: 890; Ranking functions: 0;
+
     Total weight: 2375`;
   }
 
