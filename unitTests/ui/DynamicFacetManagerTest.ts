@@ -18,11 +18,16 @@ export function DynamicFacetManagerTest() {
     let test: Mock.IBasicComponentSetup<DynamicFacetManager>;
     let options: IDynamicFacetManagerOptions;
     let facets: DynamicFacet[];
+    const getAllFacetsInstance = ComponentsTypes.getAllFacetsInstance;
 
     beforeEach(() => {
       options = {};
       initializeFacets();
       initializeManager();
+    });
+
+    afterAll(() => {
+      ComponentsTypes.getAllFacetsInstance = getAllFacetsInstance;
     });
 
     function initializeFacets() {
