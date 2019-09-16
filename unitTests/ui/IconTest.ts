@@ -147,6 +147,30 @@ export function IconTest() {
         );
         expect($$($$(test.cmp.element).find('.coveo-icon-caption-overlay')).text()).toBe('troll');
       });
+
+      it('false condition should detach the component from its parent', () => {
+        test = Mock.optionsResultComponentSetup<Icon, IIconOptions>(
+          Icon,
+          {
+            labelValue: 'troll',
+            condition: 'false'
+          },
+          result
+        );
+        expect(test.cmp.element.parentElement).toBeNull();
+      });
+
+      it('true condition should display the component', () => {
+        test = Mock.optionsResultComponentSetup<Icon, IIconOptions>(
+          Icon,
+          {
+            labelValue: 'troll',
+            condition: 'true'
+          },
+          result
+        );
+        expect(test.cmp.element.parentElement).toBeDefined();
+      });
     });
   });
 }

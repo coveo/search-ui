@@ -399,6 +399,20 @@ export function CoreHelperTest() {
           })
         ).toEqual('<img src=\'foo bar\' width="100px"/>');
       });
+
+      it('should allow to specify a srcTemplate', () => {
+        let result = FakeResults.createFakeResult('bar');
+
+        expect(
+          TemplateHelpers.getHelper('image')(
+            'foo bar',
+            {
+              srcTemplate: 'http://test${title}'
+            },
+            result
+          )
+        ).toEqual("<img src='http://testTitlebar' />");
+      });
     });
 
     describe('thumbnail', () => {

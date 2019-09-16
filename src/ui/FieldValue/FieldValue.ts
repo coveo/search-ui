@@ -30,6 +30,7 @@ export interface IFieldValueOptions {
   separator?: string;
   displaySeparator?: string;
   textCaption?: string;
+  condition?: string;
 }
 
 export interface IAnalyticsFieldValueMeta {
@@ -179,6 +180,7 @@ export class FieldValue extends Component {
         alt: ComponentOptions.buildStringOption(showOnlyWithHelper(['image'])),
         height: ComponentOptions.buildStringOption(showOnlyWithHelper(['image'])),
         width: ComponentOptions.buildStringOption(showOnlyWithHelper(['image'])),
+        srcTemplate: ComponentOptions.buildStringOption(showOnlyWithHelper(['image'])),
 
         precision: ComponentOptions.buildNumberOption(showOnlyWithHelper(['size'], { min: 0, defaultValue: 2 })),
         base: ComponentOptions.buildNumberOption(showOnlyWithHelper(['size'], { min: 0, defaultValue: 0 })),
@@ -193,7 +195,14 @@ export class FieldValue extends Component {
      *
      * Default value is `undefined`.
      */
-    textCaption: ComponentOptions.buildLocalizedStringOption()
+    textCaption: ComponentOptions.buildLocalizedStringOption(),
+
+    /**
+     * Specifies a condition to display the component or not
+     *
+     * Default value is `undefined`.
+     */
+    condition: ComponentOptions.buildStringOption()
   };
 
   static simpleOptions = omit(FieldValue.options, 'helperOptions');
@@ -228,8 +237,21 @@ export class FieldValue extends Component {
     this.result = this.result || this.resolveResult();
     Assert.exists(this.result);
 
+    if (this.options.condition != null) {
+      var conditionFunction = new Function('obj', 'with(obj||{}){return ' + this.options.condition + '}');
+      if (conditionFunction(this.result)) {
+        this.initialize(false);
+      } else {
+        this.initialize(true);
+      }
+    } else {
+      this.initialize(false);
+    }
+  }
+
+  private initialize(removeFromParent: boolean) {
     let loadedValueFromComponent = this.getValue();
-    if (loadedValueFromComponent == null) {
+    if (loadedValueFromComponent == null || removeFromParent) {
       // Completely remove the element to ease stuff such as adding separators in CSS
       if (this.element.parentElement != null) {
         this.element.parentElement.removeChild(this.element);

@@ -18,6 +18,7 @@ export interface IIconOptions {
   small?: boolean;
   withLabel?: boolean;
   labelValue?: string;
+  condition?: string;
 }
 
 /**
@@ -75,7 +76,14 @@ export class Icon extends Component {
      * Default value is `undefined`, which means that the Coveo JavaScript Search Framework determines what text the icon
      * needs to display depending on the result file type.
      */
-    labelValue: ComponentOptions.buildLocalizedStringOption()
+    labelValue: ComponentOptions.buildLocalizedStringOption(),
+
+    /**
+     * Specifies a condition to display the component or not
+     *
+     * Default value is `undefined`.
+     */
+    condition: ComponentOptions.buildStringOption()
   };
 
   /**
@@ -92,6 +100,24 @@ export class Icon extends Component {
     this.options = ComponentOptions.initComponentOptions(element, Icon, options);
     this.result = this.result || this.resolveResult();
     Assert.exists(this.result);
+
+    if (this.options.condition != null) {
+      var conditionFunction = new Function('obj', 'with(obj||{}){return ' + this.options.condition + '}');
+      if (conditionFunction(this.result)) {
+        this.initialize(element, bindings, false);
+      } else {
+        this.initialize(element, bindings, true);
+      }
+    } else {
+      this.initialize(element, bindings, false);
+    }
+  }
+
+  private initialize(element: HTMLElement, bindings: IComponentBindings, removeFromParent: boolean) {
+    // Completely remove the element to ease stuff such as adding separators in CSS
+    if (this.element.parentElement != null && removeFromParent) {
+      this.element.parentElement.removeChild(this.element);
+    }
 
     var possibleInternalQuickview = $$(this.element).find('.' + Component.computeCssClassNameForType('Quickview'));
     if (!Utils.isNullOrUndefined(possibleInternalQuickview) && QueryUtils.hasHTMLVersion(this.result)) {

@@ -226,6 +226,22 @@ export function FieldValueTest() {
         });
         expect($$(test.cmp.element).hasClass('coveo-with-label')).toBe(true);
       });
+
+      it('true condition should let the component render within its parent', () => {
+        initializeFieldValueComponent({
+          field: '@title',
+          condition: 'true'
+        });
+        expect(test.cmp.element.parentElement).toBeDefined();
+      });
+
+      it('false condition should detach the component from its parent', () => {
+        initializeFieldValueComponent({
+          field: '@title',
+          condition: 'false'
+        });
+        expect(test.cmp.element.parentElement).toBeNull();
+      });
     });
 
     it('should display the proper field value', () => {
