@@ -29,7 +29,9 @@ export interface IDynamicFacetManagerCompareFacet {
 
 /**
  * The `DynamicFacetManager` component is meant to be a parent for multiple [DynamicFacet]{@link DynamicFacet} & [DynamicFacetRange]{@link DynamicFacetRange} components.
- * It allows more control over the rendering and ordering of the children [DynamicFacet]{@link DynamicFacet} & [DynamicFacetRange]{@link DynamicFacetRange} components.
+ * This component allows controlling a set of [`DynamicFacet`]{@link DynamicFacet} and [`DynamicFacetRange`]{@link DynamicFacetRange} as a group.
+ *
+ * See [Using Dynamic Facets](https://docs.coveo.com/en/2917/).
  */
 export class DynamicFacetManager extends Component {
   static ID = 'DynamicFacetManager';
