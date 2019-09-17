@@ -17,7 +17,7 @@ export class DynamicFacetRangeValueParser {
   }
 
   // TODO: Rework
-  private dateFromRangeTypeValue(value: RangeType) {
+  private dateFromRangeType(value: RangeType) {
     switch (typeof value) {
       case 'number':
         return new Date(<number>value);
@@ -28,23 +28,23 @@ export class DynamicFacetRangeValueParser {
     }
   }
 
-  public formatDisplayValueFromValue(value: RangeType) {
+  private formatDisplayValueFromLimit(value: RangeType) {
     switch (this.valueFormat) {
       case DynamicFacetRangeValueFormat.number:
         const numberOfDecimals = NumberUtils.countDecimals(value as number);
         return Globalize.format(value, `n${numberOfDecimals}`);
 
       case DynamicFacetRangeValueFormat.date:
-        return DateUtils.dateToString(this.dateFromRangeTypeValue(value));
+        return DateUtils.dateToString(this.dateFromRangeType(value));
 
       default:
         return `${value}`;
     }
   }
 
-  public formatDisplayValueFromRange(range: IRangeValue) {
-    const formattedStart = this.formatDisplayValueFromValue(range.start);
-    const formattedEnd = this.formatDisplayValueFromValue(range.end);
+  public formatDisplayValue(range: IRangeValue) {
+    const formattedStart = this.formatDisplayValueFromLimit(range.start);
+    const formattedEnd = this.formatDisplayValueFromLimit(range.end);
 
     return `${formattedStart} ${this.valueSeparator} ${formattedEnd}`;
   }
@@ -66,11 +66,11 @@ export class DynamicFacetRangeValueParser {
   }
 
   private validateDateValue(value: RangeType) {
-    const parsedValue = DateUtils.dateTimeForQuery(this.dateFromRangeTypeValue(value));
+    const parsedValue = DateUtils.dateTimeForQuery(this.dateFromRangeType(value));
     return parsedValue === 'Invalid date' ? null : parsedValue;
   }
 
-  public validateRange(unvalidatedRange: IRangeValue): IRangeValue {
+  public validate(unvalidatedRange: IRangeValue): IRangeValue {
     const start = this.validateRangeLimit(unvalidatedRange.start);
     const end = this.validateRangeLimit(unvalidatedRange.end);
 
@@ -85,12 +85,12 @@ export class DynamicFacetRangeValueParser {
     };
   }
 
-  public formatValueFromRange(range: IRangeValue) {
+  public formatValue(range: IRangeValue) {
     const scope = range.endInclusive ? RangeEndScope.Inclusive : RangeEndScope.Exclusive;
     return `${range.start}..${range.end}${scope}`;
   }
 
-  public parseRangeFromValue(value: string): IRangeValue {
+  public parse(value: string): IRangeValue {
     const valueRegex = new RegExp(`^(.+)\\.\\.(.+)(${RangeEndScope.Inclusive}|${RangeEndScope.Exclusive})$`);
     const startAndEnd = valueRegex.exec(value);
     if (!startAndEnd) {

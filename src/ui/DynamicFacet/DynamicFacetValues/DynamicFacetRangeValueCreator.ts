@@ -14,18 +14,18 @@ export class DynamicFacetRangeValueCreator implements ValueCreator {
   }
 
   public createFromRange(unvalidatedRange: IRangeValue, index: number) {
-    const range = this.parser.validateRange(unvalidatedRange);
+    const range = this.parser.validate(unvalidatedRange);
     if (!range) {
       this.facet.logger.error(`Unvalid range for ${this.facet.options.valueFormat} format`, unvalidatedRange);
       return null;
     }
 
-    const displayValue = range.label ? range.label : this.parser.formatDisplayValueFromRange(range);
+    const displayValue = range.label ? range.label : this.parser.formatDisplayValue(range);
 
     return new DynamicFacetValue(
       {
         displayValue,
-        value: this.parser.formatValueFromRange(range),
+        value: this.parser.formatValue(range),
         start: range.start,
         end: range.end,
         endInclusive: !!range.endInclusive,
@@ -38,7 +38,8 @@ export class DynamicFacetRangeValueCreator implements ValueCreator {
   }
 
   public createFromResponse(responseValue: IFacetResponseValue, index: number) {
-    const value = this.parser.formatValueFromRange(responseValue);
+    const value = this.parser.formatValue(responseValue);
+    // SEARCHAPI-3887 will return displayValue in the response
     const { displayValue } = this.facet.values.get(value);
 
     return new DynamicFacetValue(
@@ -53,7 +54,7 @@ export class DynamicFacetRangeValueCreator implements ValueCreator {
   }
 
   public createFromValue(value: string) {
-    const range = this.parser.parseRangeFromValue(value);
+    const range = this.parser.parse(value);
     if (!range) {
       this.facet.logger.error('Facet range value invalid', value);
       return null;
