@@ -10,22 +10,22 @@ export class DynamicFacetRangeValueCreator implements ValueCreator {
   private parser: DynamicFacetRangeValueParser;
 
   constructor(private facet: DynamicFacetRange) {
-    this.parser = new DynamicFacetRangeValueParser(this.facet.options.valueFormat);
+    this.parser = new DynamicFacetRangeValueParser(this.facet);
   }
 
   public createFromRange(unvalidatedRange: IRangeValue, index: number) {
-    const range = this.parser.parseRange(unvalidatedRange);
+    const range = this.parser.validateRange(unvalidatedRange);
     if (!range) {
       this.facet.logger.error(`Unvalid range for ${this.facet.options.valueFormat} format`, unvalidatedRange);
       return null;
     }
 
-    const displayValue = range.label ? range.label : this.parser.parseRangeDisplayValue(range, this.facet.options.valueSeparator);
+    const displayValue = range.label ? range.label : this.parser.formatDisplayValueFromRange(range);
 
     return new DynamicFacetValue(
       {
         displayValue,
-        value: this.parser.createValueFromRange(range),
+        value: this.parser.formatValueFromRange(range),
         start: range.start,
         end: range.end,
         endInclusive: !!range.endInclusive,
@@ -38,7 +38,7 @@ export class DynamicFacetRangeValueCreator implements ValueCreator {
   }
 
   public createFromResponse(responseValue: IFacetResponseValue, index: number) {
-    const value = this.parser.createValueFromRange(responseValue);
+    const value = this.parser.formatValueFromRange(responseValue);
     const { displayValue } = this.facet.values.get(value);
 
     return new DynamicFacetValue(
@@ -53,7 +53,7 @@ export class DynamicFacetRangeValueCreator implements ValueCreator {
   }
 
   public createFromValue(value: string) {
-    const range = this.parser.createRangeFromValue(value);
+    const range = this.parser.parseRangeFromValue(value);
     if (!range) {
       this.facet.logger.error('Facet range value invalid', value);
       return null;
