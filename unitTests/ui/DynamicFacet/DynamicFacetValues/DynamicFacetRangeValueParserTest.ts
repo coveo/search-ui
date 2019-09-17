@@ -109,8 +109,8 @@ export function DynamicFacetRangeValueParserTest() {
 
         it(`when the value is a integer
           should return the format correctly`, () => {
-          const value = parser.formatDisplayValue({ start: 642384632842, end: 1466662921705 });
-          expect(value).toBe('5/10/1990 to 6/23/2016');
+          const value = parser.formatDisplayValue({ start: 924321600000, end: 1466662921705 });
+          expect(value).toBe('4/17/1999 to 6/23/2016');
         });
 
         it(`when the value is a string
@@ -145,6 +145,31 @@ export function DynamicFacetRangeValueParserTest() {
           });
 
           expect(validatedRange).toBeNull();
+        });
+      });
+
+      describe(`testing parse`, () => {
+        it(`when sending a valid value
+        should return the range correctly`, () => {
+          const range = parser.parse('1999/04/17@00:00:00..2016/06/23@00:00:00inc');
+
+          expect(range).toEqual({
+            start: '1999/04/17@00:00:00',
+            end: '2016/06/23@00:00:00',
+            endInclusive: true
+          });
+        });
+
+        it(`when sending a value with a wrong range
+        should return null`, () => {
+          const range = parser.parse('1999/19/17@00:00:00..2016/06/23@00:00:00inc');
+          expect(range).toBeNull();
+        });
+
+        it(`when sending a value with an unknown endInclusive value
+        should return null`, () => {
+          const range = parser.parse('1999/04/17@00:00:00..2016/06/23@00:00:00ish');
+          expect(range).toBeNull();
         });
       });
 
