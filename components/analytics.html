@@ -126,13 +126,16 @@
 					<li class="current tsd-kind-coveo-component">
 						<a href="analytics.html" class="tsd-kind-icon">Analytics</a>
 						<ul>
+							<li class=" tsd-kind-method tsd-parent-kind-coveo-component">
+								<a href="analytics.html#clearlocaldata" class="tsd-kind-icon">clear<wbr>Local<wbr>Data</a>
+							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-coveo-component tsd-is-inherited">
 								<a href="analytics.html#debuginfo" class="tsd-kind-icon">debug<wbr>Info</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-coveo-component tsd-is-inherited">
+							<li class=" tsd-kind-method tsd-parent-kind-coveo-component tsd-is-overwrite">
 								<a href="analytics.html#disable" class="tsd-kind-icon">disable</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-coveo-component tsd-is-inherited">
+							<li class=" tsd-kind-method tsd-parent-kind-coveo-component tsd-is-overwrite">
 								<a href="analytics.html#enable" class="tsd-kind-icon">enable</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-coveo-component tsd-is-inherited">
@@ -249,9 +252,10 @@
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-method tsd-parent-kind-coveo-component"><a href="analytics.html#clearlocaldata" class="tsd-kind-icon">clear<wbr>Local<wbr>Data</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-coveo-component tsd-is-inherited"><a href="analytics.html#debuginfo" class="tsd-kind-icon">debug<wbr>Info</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-coveo-component tsd-is-inherited"><a href="analytics.html#disable" class="tsd-kind-icon">disable</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-coveo-component tsd-is-inherited"><a href="analytics.html#enable" class="tsd-kind-icon">enable</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-coveo-component tsd-is-overwrite"><a href="analytics.html#disable" class="tsd-kind-icon">disable</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-coveo-component tsd-is-overwrite"><a href="analytics.html#enable" class="tsd-kind-icon">enable</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-coveo-component tsd-is-inherited"><a href="analytics.html#getbindings" class="tsd-kind-icon">get<wbr>Bindings</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-coveo-component"><a href="analytics.html#logclickevent" class="tsd-kind-icon">log<wbr>Click<wbr>Event</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-coveo-component tsd-has-type-parameter"><a href="analytics.html#logcustomevent" class="tsd-kind-icon">log<wbr>Custom<wbr>Event</a></li>
@@ -306,6 +310,30 @@
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Methods</h2>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-coveo-component">
+					<a name="clearlocaldata" class="tsd-anchor"></a>
+					<h3>clear<wbr>Local<wbr>Data</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-coveo-component">
+						<li class="tsd-signature tsd-kind-icon">clear<wbr>Local<wbr>Data<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L389">ui/Analytics/Analytics.ts
+									:389</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Removes all session information stored in the browser (e.g., analytics visitor cookies, action history, etc.)</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="debuginfo" class="tsd-anchor"></a>
 					<h3>debug<wbr>Info</h3>
@@ -331,54 +359,50 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-coveo-component tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-coveo-component tsd-is-overwrite">
 					<a name="disable" class="tsd-anchor"></a>
 					<h3>disable</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-coveo-component tsd-is-inherited">
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-coveo-component tsd-is-overwrite">
 						<li class="tsd-signature tsd-kind-icon">disable<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="../classes/basecomponent.html">BaseComponent</a>.<a href="../classes/basecomponent.html#disable">disable</a></p>
+								<p>Overwrites <a href="../classes/basecomponent.html">BaseComponent</a>.<a href="../classes/basecomponent.html#disable">disable</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/BaseComponent.ts#L52">ui/Base/BaseComponent.ts
-									:52</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L400">ui/Analytics/Analytics.ts
+									:400</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Disable the component.
-										Normally this means that the component will not execute handlers for the framework events (query events, for example).
-									Component are enabled by default on creation.</p>
+									<p>Disables the component and clears local data by running <a href="analytics.html#clearlocaldata"><code>clearLocalData</code></a>.</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-coveo-component tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-coveo-component tsd-is-overwrite">
 					<a name="enable" class="tsd-anchor"></a>
 					<h3>enable</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-coveo-component tsd-is-inherited">
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-coveo-component tsd-is-overwrite">
 						<li class="tsd-signature tsd-kind-icon">enable<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="../classes/basecomponent.html">BaseComponent</a>.<a href="../classes/basecomponent.html#enable">enable</a></p>
+								<p>Overwrites <a href="../classes/basecomponent.html">BaseComponent</a>.<a href="../classes/basecomponent.html#enable">enable</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/BaseComponent.ts#L61">ui/Base/BaseComponent.ts
-									:61</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L377">ui/Analytics/Analytics.ts
+									:377</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Enable the component.
-										Normally this means that the component will execute handlers for the framework events (query events, for example).
-									Components are enabled by default on creation.</p>
+									<p>Re-enables the component if it was previously disabled.</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -679,8 +703,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L384">ui/Analytics/Analytics.ts
-									:384</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L420">ui/Analytics/Analytics.ts
+									:420</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -847,7 +871,7 @@
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Contains the state of options for differents component. Mainly used by <a href="resultlink.html">ResultLink</a>.</p>
+							<p>Contains the state of options for different components. Mainly used by <a href="resultlink.html">ResultLink</a>.</p>
 						</div>
 					</div>
 				</section>
@@ -865,7 +889,7 @@
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Contains the state of different component (enabled vs disabled). Allows to get/set values. Trigger component state event when modified. Each component can listen to those events.</p>
+							<p>Contains the state of different components (enabled vs disabled). Allows to get/set values. Triggers component state event when modified. Each component can listen to those events.</p>
 						</div>
 					</div>
 				</section>

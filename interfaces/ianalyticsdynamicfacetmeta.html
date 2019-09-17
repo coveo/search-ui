@@ -130,6 +130,12 @@
 								<a href="ianalyticsdynamicfacetmeta.html#displayvalue" class="tsd-kind-icon">display<wbr>Value</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="ianalyticsdynamicfacetmeta.html#end" class="tsd-kind-icon">end</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="ianalyticsdynamicfacetmeta.html#endinclusive" class="tsd-kind-icon">end<wbr>Inclusive</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="ianalyticsdynamicfacetmeta.html#facettype" class="tsd-kind-icon">facet<wbr>Type</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
@@ -137,6 +143,9 @@
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="ianalyticsdynamicfacetmeta.html#id" class="tsd-kind-icon">id</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="ianalyticsdynamicfacetmeta.html#start" class="tsd-kind-icon">start</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="ianalyticsdynamicfacetmeta.html#state" class="tsd-kind-icon">state</a>
@@ -193,9 +202,12 @@
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="ianalyticsdynamicfacetmeta.html#displayvalue" class="tsd-kind-icon">display<wbr>Value</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="ianalyticsdynamicfacetmeta.html#end" class="tsd-kind-icon">end</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="ianalyticsdynamicfacetmeta.html#endinclusive" class="tsd-kind-icon">end<wbr>Inclusive</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="ianalyticsdynamicfacetmeta.html#facettype" class="tsd-kind-icon">facet<wbr>Type</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="ianalyticsdynamicfacetmeta.html#field" class="tsd-kind-icon">field</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="ianalyticsdynamicfacetmeta.html#id" class="tsd-kind-icon">id</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="ianalyticsdynamicfacetmeta.html#start" class="tsd-kind-icon">start</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="ianalyticsdynamicfacetmeta.html#state" class="tsd-kind-icon">state</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="ianalyticsdynamicfacetmeta.html#title" class="tsd-kind-icon">title</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="ianalyticsdynamicfacetmeta.html#value" class="tsd-kind-icon">value</a></li>
@@ -214,8 +226,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/AnalyticsActionListMeta.ts#L171">ui/Analytics/AnalyticsActionListMeta.ts
-							:171</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/AnalyticsActionListMeta.ts#L192">ui/Analytics/AnalyticsActionListMeta.ts
+							:192</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -226,14 +238,55 @@
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="end" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> end</h3>
+					<div class="tsd-signature tsd-kind-icon">end<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">RangeType</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/AnalyticsActionListMeta.ts#L178">ui/Analytics/AnalyticsActionListMeta.ts
+							:178</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The maximum value of the dynamic range facet value.</p>
+						</div>
+						<p><strong>Examples:</strong></p>
+						<blockquote>
+							<ul>
+								<li><code>500</code></li>
+								<li><code>2018-12-31T23:59:59.999Z</code></li>
+							</ul>
+						</blockquote>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="endinclusive" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> end<wbr>Inclusive</h3>
+					<div class="tsd-signature tsd-kind-icon">end<wbr>Inclusive<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/AnalyticsActionListMeta.ts#L182">ui/Analytics/AnalyticsActionListMeta.ts
+							:182</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Whether the <a href="irangevalue.html#end"><code>end</code></a> value is included in the dynamic range facet value.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="facettype" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagOptional">Optional</span> facet<wbr>Type</h3>
 					<div class="tsd-signature tsd-kind-icon">facet<wbr>Type<span class="tsd-signature-symbol">:</span> <a href="../enums/facettype.html" class="tsd-signature-type">FacetType</a></div>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/AnalyticsActionListMeta.ts#L175">ui/Analytics/AnalyticsActionListMeta.ts
-							:175</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/AnalyticsActionListMeta.ts#L196">ui/Analytics/AnalyticsActionListMeta.ts
+							:196</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -249,8 +302,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/AnalyticsActionListMeta.ts#L143">ui/Analytics/AnalyticsActionListMeta.ts
-							:143</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/AnalyticsActionListMeta.ts#L144">ui/Analytics/AnalyticsActionListMeta.ts
+							:144</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -267,8 +320,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/AnalyticsActionListMeta.ts#L149">ui/Analytics/AnalyticsActionListMeta.ts
-							:149</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/AnalyticsActionListMeta.ts#L150">ui/Analytics/AnalyticsActionListMeta.ts
+							:150</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -279,14 +332,38 @@
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="start" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> start</h3>
+					<div class="tsd-signature tsd-kind-icon">start<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">RangeType</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/AnalyticsActionListMeta.ts#L170">ui/Analytics/AnalyticsActionListMeta.ts
+							:170</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The minimum value of the dynamic range facet value.</p>
+						</div>
+						<p><strong>Examples:</strong></p>
+						<blockquote>
+							<ul>
+								<li><code>0</code></li>
+								<li><code>2018-01-01T00:00:00.000Z</code></li>
+							</ul>
+						</blockquote>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="state" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagOptional">Optional</span> state</h3>
 					<div class="tsd-signature tsd-kind-icon">state<span class="tsd-signature-symbol">:</span> <a href="../enums/facetvaluestate.html" class="tsd-signature-type">FacetValueState</a></div>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/AnalyticsActionListMeta.ts#L179">ui/Analytics/AnalyticsActionListMeta.ts
-							:179</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/AnalyticsActionListMeta.ts#L200">ui/Analytics/AnalyticsActionListMeta.ts
+							:200</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -302,8 +379,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/AnalyticsActionListMeta.ts#L155">ui/Analytics/AnalyticsActionListMeta.ts
-							:155</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/AnalyticsActionListMeta.ts#L156">ui/Analytics/AnalyticsActionListMeta.ts
+							:156</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -320,8 +397,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/AnalyticsActionListMeta.ts#L161">ui/Analytics/AnalyticsActionListMeta.ts
-							:161</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/AnalyticsActionListMeta.ts#L162">ui/Analytics/AnalyticsActionListMeta.ts
+							:162</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -338,8 +415,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/AnalyticsActionListMeta.ts#L165">ui/Analytics/AnalyticsActionListMeta.ts
-							:165</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/AnalyticsActionListMeta.ts#L186">ui/Analytics/AnalyticsActionListMeta.ts
+							:186</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
