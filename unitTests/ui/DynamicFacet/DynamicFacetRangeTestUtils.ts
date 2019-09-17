@@ -4,6 +4,8 @@ import { DynamicFacetRange, IDynamicFacetRangeOptions, DynamicFacetRangeValueFor
 import { DynamicFacetValues } from '../../../src/ui/DynamicFacet/DynamicFacetValues/DynamicFacetValues';
 import { DynamicFacetRangeValueCreator } from '../../../src/ui/DynamicFacet/DynamicFacetValues/DynamicFacetRangeValueCreator';
 import { $$, Logger } from '../../../src/Core';
+import { IFacetResponse, IFacetResponseValue } from '../../../src/rest/Facet/FacetResponse';
+import { FacetValueState } from '../../../src/rest/Facet/FacetValueState';
 
 export class DynamicFacetRangeTestUtils {
   static allOptions(options?: IDynamicFacetRangeOptions) {
@@ -46,5 +48,21 @@ export class DynamicFacetRangeTestUtils {
     }
 
     return ranges;
+  }
+
+  static getCompleteFacetResponse(facet: DynamicFacetRange, partialResponse?: Partial<IFacetResponse>): IFacetResponse {
+    const facetValues: IFacetResponseValue[] = this.createFakeRanges().map(facetValue => ({
+      ...facetValue,
+      state: FacetValueState.idle,
+      numberOfResults: 10
+    }));
+
+    return {
+      facetId: facet.options.id,
+      field: facet.fieldName,
+      values: facetValues,
+      moreValuesAvailable: false,
+      ...partialResponse
+    };
   }
 }
