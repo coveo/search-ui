@@ -16,15 +16,14 @@ export class DynamicFacetRangeValueParser {
     return this.facet.options.valueSeparator;
   }
 
-  // TODO: Rework
-  private dateFromRangeType(value: RangeType) {
+  private parseDateFromRangeType(value: RangeType) {
     switch (typeof value) {
       case 'number':
-        return new Date(<number>value);
+        return new Date(value as number);
       case 'string':
         return new Date(`${value}`);
       default:
-        return <Date>value;
+        return value as Date;
     }
   }
 
@@ -35,7 +34,7 @@ export class DynamicFacetRangeValueParser {
         return Globalize.format(value, `n${numberOfDecimals}`);
 
       case DynamicFacetRangeValueFormat.date:
-        return DateUtils.dateToString(this.dateFromRangeType(value));
+        return DateUtils.dateToString(this.parseDateFromRangeType(value));
 
       default:
         return `${value}`;
@@ -66,7 +65,7 @@ export class DynamicFacetRangeValueParser {
   }
 
   private validateDateValue(value: RangeType) {
-    const parsedValue = DateUtils.dateTimeForQuery(this.dateFromRangeType(value));
+    const parsedValue = DateUtils.dateTimeForQuery(this.parseDateFromRangeType(value));
     return parsedValue === 'Invalid date' ? null : parsedValue;
   }
 
