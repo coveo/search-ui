@@ -118,10 +118,44 @@ export function DynamicFacetQueryControllerTest() {
       expect(facetRequest().freezeCurrentValues).toBe(false);
     });
 
-    it('allows to enableFreezeCurrentValuesFlag', () => {
+    it(`when calling enableFreezeCurrentValuesFlag
+      allows to enable the flag`, () => {
       dynamicFacetQueryController.enableFreezeCurrentValuesFlag();
 
       expect(facetRequest().freezeCurrentValues).toBe(true);
+    });
+
+    it(`when calling enableFreezeCurrentValuesFlag
+      when the facet has dependent facets with selected values`, () => {
+      spyOn(facet.dependsOnManager, 'hasDependentFacets').and.returnValue(true);
+
+      dynamicFacetQueryController.enableFreezeCurrentValuesFlag();
+
+      expect(facetRequest().freezeCurrentValues).toBe(true);
+    });
+
+    it(`when calling enableFreezeCurrentValuesFlag
+      when the facet has dependent facets without selected values
+      when values aren't affected`, () => {
+      spyOn(facet.dependsOnManager, 'hasDependentFacets').and.returnValue(true);
+      spyOn(facet.dependsOnManager, 'dependentFacetsHaveSelectedValues').and.returnValue(false);
+
+      dynamicFacetQueryController.enableFreezeCurrentValuesFlag();
+
+      expect(facetRequest().freezeCurrentValues).toBe(true);
+    });
+
+    it(`when calling enableFreezeCurrentValuesFlag
+      when the facet has dependent facets without selected values
+      when values are affected`, () => {
+      spyOn(facet.dependsOnManager, 'hasDependentFacets').and.returnValue(true);
+      spyOn(facet.dependsOnManager, 'dependentFacetsHaveSelectedValues').and.returnValue(false);
+      facet.values.resetValues();
+      facet.values.get('allo');
+
+      dynamicFacetQueryController.enableFreezeCurrentValuesFlag();
+
+      expect(facetRequest().freezeCurrentValues).toBe(false);
     });
 
     it(`when freezeCurrentValues flag is set to true
