@@ -44,12 +44,10 @@ export class DependsOnManager {
   }
 
   public get dependentFacetsHaveSelectedValues() {
-    const dependentFacetsWithValues = this.dependentFacets.filter(facet => {
+    return this.dependentFacets.some(facet => {
       const facetId = QueryStateModel.getFacetId(facet.options.id);
       return this.valuesExistForFacetWithId(facetId);
     });
-
-    return !!dependentFacetsWithValues.length;
   }
 
   private get isDependentFacet() {
