@@ -43,6 +43,10 @@ export class DependsOnManager {
     });
   }
 
+  public get hasDependentFacets() {
+    return !!this.dependentFacets.length;
+  }
+
   public get dependentFacetsHaveSelectedValues() {
     return this.dependentFacets.some(facet => {
       const facetId = QueryStateModel.getFacetId(facet.options.id);

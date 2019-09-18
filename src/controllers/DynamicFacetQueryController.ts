@@ -45,7 +45,7 @@ export class DynamicFacetQueryController {
   }
 
   private get areValuesIncorrectlyAffectedByDependsOn() {
-    if (!this.facet.dependsOnManager) {
+    if (!this.facet.dependsOnManager.hasDependentFacets) {
       return false;
     }
 
