@@ -9,25 +9,22 @@ import { buildCategoryFacetResults } from '../ui/CategoryFacet/CategoryFacetTest
 
 export function DependsOnManagerTest() {
   describe('DependsOnManager', () => {
-    const masterCategoryFacetField = '@masterFacet';
-    const dependentCategoryFacetField = '@dependentFacet';
-    let simulateQueryData: ISimulateQueryData;
-    let simulateQueryDataDependent: ISimulateQueryData;
-    let testEnv: Mock.MockEnvironmentBuilder;
-
-    beforeEach(() => {
-      simulateQueryData = buildCategoryFacetResults(11, 11, masterCategoryFacetField);
-      simulateQueryDataDependent = buildCategoryFacetResults(11, 11, dependentCategoryFacetField);
-      simulateQueryData.results.categoryFacets.push(simulateQueryDataDependent.results.categoryFacets[0]);
-      simulateQueryData.query.categoryFacets.push(simulateQueryDataDependent.query.categoryFacets[0]);
-
-      testEnv = new Mock.MockEnvironmentBuilder().withLiveQueryStateModel();
-    });
-
     describe('CategoryFacet', () => {
+      const masterCategoryFacetField = '@masterFacet';
+      const dependentCategoryFacetField = '@dependentFacet';
+      let simulateQueryData: ISimulateQueryData;
+      let simulateQueryDataDependent: ISimulateQueryData;
+      let testEnv: Mock.MockEnvironmentBuilder;
       let test: IBasicComponentSetup<CategoryFacet>;
       let master: IBasicComponentSetup<CategoryFacet>;
+
       beforeEach(() => {
+        simulateQueryData = buildCategoryFacetResults(11, 11, masterCategoryFacetField);
+        simulateQueryDataDependent = buildCategoryFacetResults(11, 11, dependentCategoryFacetField);
+        simulateQueryData.results.categoryFacets.push(simulateQueryDataDependent.results.categoryFacets[0]);
+        simulateQueryData.query.categoryFacets.push(simulateQueryDataDependent.query.categoryFacets[0]);
+
+        testEnv = new Mock.MockEnvironmentBuilder().withLiveQueryStateModel();
         const masterElement = document.createElement('div');
         const dependentElement = document.createElement('div');
         testEnv.root.appendChild(masterElement);
@@ -114,6 +111,7 @@ export function DependsOnManagerTest() {
         });
       });
     });
+
     describe('Facet', () => {
       let test: IBasicComponentSetup<Facet>;
       describe('when a facet has the dependsOn option set to the field of another facet', () => {
@@ -284,5 +282,7 @@ export function DependsOnManagerTest() {
         });
       });
     });
+
+    describe('DynamicFacet', () => {});
   });
 }
