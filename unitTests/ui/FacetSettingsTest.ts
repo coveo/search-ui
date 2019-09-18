@@ -1,10 +1,11 @@
-import { KEYBOARD } from '../../src/Core';
-import { Facet, IFacetOptions } from '../../src/ui/Facet/Facet';
-import { FacetSettings } from '../../src/ui/Facet/FacetSettings';
-import { $$ } from '../../src/utils/Dom';
-import { registerCustomMatcher } from '../CustomMatchers';
 import * as Mock from '../MockEnvironment';
+import { Facet } from '../../src/ui/Facet/Facet';
+import { FacetSettings } from '../../src/ui/Facet/FacetSettings';
+import { IFacetOptions } from '../../src/ui/Facet/Facet';
+import { registerCustomMatcher } from '../CustomMatchers';
+import { $$ } from '../../src/utils/Dom';
 import { Simulate } from '../Simulate';
+import { KEYBOARD } from '../../src/Core';
 
 export function FacetSettingsTest() {
   describe('FacetSettings', () => {
@@ -26,9 +27,6 @@ export function FacetSettingsTest() {
         field: '@field'
       }).cmp;
       sorts = ['foo', 'bar'];
-      const container = document.createElement('div');
-      container.appendChild(facet.element);
-      facet.root.appendChild(container);
       registerCustomMatcher();
     });
 
@@ -91,7 +89,7 @@ export function FacetSettingsTest() {
       });
 
       describe('when the settings popup is visible', () => {
-        beforeEach(() => facetSettings.settingsButton.click());
+        beforeEach(() => facetSettings.settingsButton.click())
 
         it(`when triggering an escape event on the settings button,
         it closes the settings popup`, () => {
@@ -104,14 +102,14 @@ export function FacetSettingsTest() {
           Simulate.keyUp(settingsPopup(), KEYBOARD.ESCAPE);
           expect(settingsPopup()).toBeNull();
         });
-
+        
         it(`when triggering an escape event on the settings popup,
         it focuses the settings button element`, () => {
           spyOn(facetSettings.settingsButton, 'focus');
           Simulate.keyUp(settingsPopup(), KEYBOARD.ESCAPE);
           expect(facetSettings.settingsButton.focus).toHaveBeenCalledTimes(1);
-        });
-      });
+        })
+      })
 
       it('allows open and closing the popup by pressing enter on the facetSetting button', () => {
         Simulate.keyUp(facetSettings.settingsButton, KEYBOARD.ENTER);

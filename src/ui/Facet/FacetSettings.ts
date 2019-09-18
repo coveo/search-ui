@@ -1,12 +1,10 @@
-import Popper from 'popper.js';
 import 'styling/_FacetSettings';
-import { compact, contains, each, escape, filter, find, findWhere, map } from 'underscore';
+import { each, find, map, contains, compact, filter, findWhere, escape } from 'underscore';
 import { InitializationEvents } from '../../events/InitializationEvents';
 import { QueryStateModel } from '../../models/QueryStateModel';
 import { l } from '../../strings/Strings';
 import { AccessibleButton } from '../../utils/AccessibleButton';
 import { $$ } from '../../utils/Dom';
-import { KEYBOARD, KeyboardUtils } from '../../utils/KeyboardUtils';
 import { LocalStorageUtils } from '../../utils/LocalStorageUtils';
 import { SVGDom } from '../../utils/SVGDom';
 import { SVGIcons } from '../../utils/SVGIcons';
@@ -14,6 +12,8 @@ import { Utils } from '../../utils/Utils';
 import { analyticsActionCauseList, IAnalyticsFacetMeta } from '../Analytics/AnalyticsActionListMeta';
 import { Facet } from './Facet';
 import { FacetSort, IFacetSortDescription } from './FacetSort';
+import Popper from 'popper.js';
+import { KEYBOARD, KeyboardUtils } from '../../utils/KeyboardUtils';
 
 export interface IFacetSettingsKlass {
   new (sorts: string[], facet: Facet): FacetSettings;
@@ -153,8 +153,14 @@ export class FacetSettings extends FacetSort {
    * Open the settings menu
    */
   public open() {
-    $$(this.settingsPopup).insertAfter(this.facet.element.parentElement);
-    new Popper(this.settingsButton, this.settingsPopup);
+    $$(this.settingsPopup).insertAfter(this.settingsButton);
+    new Popper(this.settingsButton, this.settingsPopup, {
+      modifiers: {
+        preventOverflow: {
+          boundariesElement: this.facet.element.parentElement
+        }
+      }
+    });
 
     if (this.hideSection && this.showSection) {
       $$(this.hideSection).toggle(!$$(this.facet.element).hasClass('coveo-facet-collapsed'));
