@@ -4,6 +4,7 @@ import { DynamicFacetTestUtils } from '../ui/DynamicFacet/DynamicFacetTestUtils'
 import { QueryBuilder, SearchEndpoint } from '../../src/Core';
 import { FacetValueState } from '../../src/rest/Facet/FacetValueState';
 import { mockSearchEndpoint } from '../MockEnvironment';
+import { DependsOnManager } from '../../src/utils/DependsOnManager';
 
 export function DynamicFacetQueryControllerTest() {
   describe('DynamicFacetQueryController', () => {
@@ -11,10 +12,10 @@ export function DynamicFacetQueryControllerTest() {
     let facetOptions: IDynamicFacetOptions;
     let dynamicFacetQueryController: DynamicFacetQueryController;
     let queryBuilder: QueryBuilder;
-    let mockFacetValues = DynamicFacetTestUtils.createFakeFacetValues(1);
+    let mockFacetValues = DynamicFacetTestUtils.createFakeFacetValues(5);
 
     beforeEach(() => {
-      facetOptions = { field: '@field' };
+      facetOptions = { field: '@field', numberOfValues: 5 };
 
       initializeComponents();
     });
@@ -127,7 +128,10 @@ export function DynamicFacetQueryControllerTest() {
 
     it(`when calling enableFreezeCurrentValuesFlag
       when the facet has dependent facets with selected values`, () => {
-      spyOn(facet.dependsOnManager, 'hasDependentFacets').and.returnValue(true);
+      facet.dependsOnManager = {
+        hasDependentFacets: true,
+        dependentFacetsHaveSelectedValues: true
+      } as DependsOnManager;
 
       dynamicFacetQueryController.enableFreezeCurrentValuesFlag();
 
@@ -137,8 +141,10 @@ export function DynamicFacetQueryControllerTest() {
     it(`when calling enableFreezeCurrentValuesFlag
       when the facet has dependent facets without selected values
       when values aren't affected`, () => {
-      spyOn(facet.dependsOnManager, 'hasDependentFacets').and.returnValue(true);
-      spyOn(facet.dependsOnManager, 'dependentFacetsHaveSelectedValues').and.returnValue(false);
+      facet.dependsOnManager = {
+        hasDependentFacets: true,
+        dependentFacetsHaveSelectedValues: false
+      } as DependsOnManager;
 
       dynamicFacetQueryController.enableFreezeCurrentValuesFlag();
 
@@ -148,8 +154,10 @@ export function DynamicFacetQueryControllerTest() {
     it(`when calling enableFreezeCurrentValuesFlag
       when the facet has dependent facets without selected values
       when values are affected`, () => {
-      spyOn(facet.dependsOnManager, 'hasDependentFacets').and.returnValue(true);
-      spyOn(facet.dependsOnManager, 'dependentFacetsHaveSelectedValues').and.returnValue(false);
+      facet.dependsOnManager = {
+        hasDependentFacets: true,
+        dependentFacetsHaveSelectedValues: false
+      } as DependsOnManager;
       facet.values.resetValues();
       facet.values.get('allo');
 
