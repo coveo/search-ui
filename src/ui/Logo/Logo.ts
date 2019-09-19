@@ -1,5 +1,5 @@
-import { exportGlobally } from '../../GlobalExports';
 import { IQuerySuccessEventArgs, QueryEvents } from '../../events/QueryEvents';
+import { exportGlobally } from '../../GlobalExports';
 import { l } from '../../strings/Strings';
 import { $$ } from '../../utils/Dom';
 import { SVGDom } from '../../utils/SVGDom';
@@ -40,7 +40,7 @@ export class Logo extends Component {
       'a',
       {
         className: 'coveo-powered-by coveo-footer-logo',
-        href: 'http://www.coveo.com/',
+        href: 'https://www.coveo.com/',
         'aria-label': l('CoveoHomePage')
       },
       SVGIcons.icons.coveoPoweredBy
