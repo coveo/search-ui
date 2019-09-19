@@ -343,7 +343,7 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
     values.forEach(value => {
       this.values.get(value).select();
     });
-    this.handleFacetValuesChanged();
+    this.updateQueryStateModel();
   }
 
   /**
@@ -374,7 +374,7 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
     values.forEach(value => {
       this.values.get(value).deselect();
     });
-    this.handleFacetValuesChanged();
+    this.updateQueryStateModel();
   }
 
   /**
@@ -390,7 +390,7 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
     const facetValue = this.values.get(value);
     facetValue.toggleSelect();
     this.logger.info('Toggle select facet value', facetValue);
-    this.handleFacetValuesChanged();
+    this.updateQueryStateModel();
   }
 
   /**
@@ -600,6 +600,7 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
     this.position = index + 1;
 
     this.onQueryResponse(response);
+    this.updateQueryStateModel();
     this.header.hideLoading();
     this.values.render();
     this.updateAppearance();
@@ -707,18 +708,10 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
     this.element.appendChild(this.values.render());
   }
 
-  private handleFacetValuesChanged() {
-    this.updateQueryStateModel();
-  }
-
   private updateQueryStateModel() {
     this.listenToQueryStateChange = false;
-    this.updateIncludedQueryStateModel();
-    this.listenToQueryStateChange = true;
-  }
-
-  private updateIncludedQueryStateModel() {
     this.queryStateModel.set(this.includedAttributeId, this.values.selectedValues);
+    this.listenToQueryStateChange = true;
   }
 
   private updateAppearance() {
@@ -727,8 +720,9 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
     this.toggleSearchDisplay();
     $$(this.element).toggleClass('coveo-dynamic-facet-collapsed', this.isCollapsed);
     $$(this.element).toggleClass('coveo-active', this.values.hasSelectedValues);
-    $$(this.element).toggleClass('coveo-hidden', this.values.isEmpty);
+    $$(this.element).removeClass('coveo-hidden');
     this.dependsOnManager.updateVisibilityBasedOnDependsOn();
+    this.values.isEmpty && $$(this.element).addClass('coveo-hidden');
   }
 
   private toggleSearchDisplay() {
