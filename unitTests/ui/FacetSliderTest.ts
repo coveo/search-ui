@@ -92,6 +92,16 @@ export function FacetSliderTest() {
         expect(isConsideredEmpty()).toBe(false);
       });
 
+      it('should be considered empty if there is no group by results', () => {
+        const groupByResults = [];
+
+        Simulate.query(test.env, {
+          groupByResults
+        });
+
+        expect(isConsideredEmpty()).toBe(true);
+      });
+
       it('should be considered empty if a single value is returned with a count of 0', () => {
         const groupByResults = [
           {
