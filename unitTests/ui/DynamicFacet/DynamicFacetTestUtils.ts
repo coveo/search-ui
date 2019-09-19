@@ -27,10 +27,13 @@ export class DynamicFacetTestUtils {
   static createAdvancedFakeFacet(options?: IDynamicFacetOptions, env?: Mock.IMockEnvironment) {
     return Mock.advancedComponentSetup<DynamicFacet>(DynamicFacet, <Mock.AdvancedComponentSetupOptions>{
       modifyBuilder: builder => {
-        if (env) {
-          builder = builder.withRoot(env.root);
-          builder = builder.withQueryStateModel(env.queryStateModel);
+        if (!env) {
+          builder = builder.withLiveQueryStateModel();
+          return builder;
         }
+
+        builder = builder.withRoot(env.root);
+        builder = builder.withQueryStateModel(env.queryStateModel);
         return builder;
       },
 
