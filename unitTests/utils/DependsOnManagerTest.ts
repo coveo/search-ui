@@ -6,6 +6,11 @@ import { $$ } from '../Test';
 import { Facet, IFacetOptions } from '../../src/ui/Facet/Facet';
 import { FakeResults } from '../Fake';
 import { buildCategoryFacetResults } from '../ui/CategoryFacet/CategoryFacetTest';
+import { DynamicFacet } from '../../src/ui/DynamicFacet/DynamicFacet';
+import { DynamicFacetRange } from '../../src/ui/DynamicFacet/DynamicFacetRange';
+import { DynamicFacetTestUtils } from '../ui/DynamicFacet/DynamicFacetTestUtils';
+import { DynamicFacetRangeTestUtils } from '../ui/DynamicFacet/DynamicFacetRangeTestUtils';
+import { FacetValueState } from '../../src/rest/Facet/FacetValueState';
 
 export function DependsOnManagerTest() {
   describe('DependsOnManager', () => {
@@ -114,7 +119,7 @@ export function DependsOnManagerTest() {
 
     describe('using Facet', () => {
       let test: IBasicComponentSetup<Facet>;
-      let masterFacet: { env: Mock.IMockEnvironment; cmp: Facet };
+      let masterFacet: IBasicComponentSetup<Facet>;
       const masterFacetField = '@masterFacet';
       const dependentFacetField = '@field';
 
@@ -281,6 +286,80 @@ export function DependsOnManagerTest() {
       });
     });
 
-    describe('DynamicFacet', () => {});
+    describe('using DynamicFacet', () => {
+      let env: Mock.IMockEnvironment;
+      let dependentFacet: DynamicFacet;
+      let masterFacet: DynamicFacetRange;
+      const dependentFacetField = '@dependentFacet';
+      const masterFacetField = '@masterFacet';
+
+      function getMasterFacetResults() {
+        return DynamicFacetRangeTestUtils.getCompleteFacetResponse(masterFacet);
+      }
+
+      function getDependantFacetResults() {
+        return DynamicFacetTestUtils.getCompleteFacetResponse(dependentFacet);
+      }
+
+      function getMasterAndDependentFacetResults() {
+        const results = FakeResults.createFakeResults();
+        results.facets = [getMasterFacetResults(), getDependantFacetResults()];
+
+        return results;
+      }
+
+      function queryWithoutSelectedValues() {
+        Simulate.query(env, { results: getMasterAndDependentFacetResults() });
+      }
+
+      function queryWithSelectedValueOnMasterFacet() {
+        const results = getMasterAndDependentFacetResults();
+        results.facets[0].values[0].state = FacetValueState.selected;
+        Simulate.query(env, { results });
+      }
+
+      function queryWithSelectedValueOnDependantFacet() {
+        const results = getMasterAndDependentFacetResults();
+        results.facets[1].values[0].state = FacetValueState.selected;
+        Simulate.query(env, { results });
+      }
+
+      beforeEach(() => {
+        const test = DynamicFacetRangeTestUtils.createAdvancedFakeFacet({
+          field: masterFacetField,
+          ranges: DynamicFacetRangeTestUtils.createFakeRanges()
+        });
+        masterFacet = test.cmp;
+        env = test.env;
+        dependentFacet = DynamicFacetTestUtils.createAdvancedFakeFacet(
+          { field: dependentFacetField, dependsOn: masterFacetField },
+          test.env
+        ).cmp;
+      });
+
+      it(`when no value is selected
+        should not display the children facet`, () => {
+        queryWithoutSelectedValues();
+
+        expect(dependentFacet.isCurrentlyDisplayed()).toBe(false);
+      });
+
+      it(`when a value is selected on the master facet
+      should display the dependent facet`, () => {
+        queryWithSelectedValueOnMasterFacet();
+
+        expect(dependentFacet.isCurrentlyDisplayed()).toBe(true);
+      });
+
+      it(`when a value is selected on the children facet
+        but no value is selected in the master facet
+        should reset and hide the children facet`, () => {
+        spyOn(dependentFacet, 'reset');
+        queryWithSelectedValueOnDependantFacet();
+
+        expect(dependentFacet.isCurrentlyDisplayed()).toBe(false);
+        expect(dependentFacet.reset).toHaveBeenCalled();
+      });
+    });
   });
 }
