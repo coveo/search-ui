@@ -2,7 +2,7 @@
 /// <reference path="../../controllers/FacetSliderQueryController.ts" />
 
 import 'styling/_FacetSlider';
-import { debounce, map } from 'underscore';
+import { debounce, every, map } from 'underscore';
 import { FacetSliderQueryController } from '../../controllers/FacetSliderQueryController';
 import { BreadcrumbEvents, IBreadcrumbItem, IPopulateBreadcrumbEventArgs } from '../../events/BreadcrumbEvents';
 import { InitializationEvents } from '../../events/InitializationEvents';
@@ -1000,9 +1000,8 @@ export class FacetSlider extends Component {
 
   private isFacetEmpty(groupByResults: IGroupByResult, data: IQuerySuccessEventArgs) {
     return (
-      groupByResults == null ||
-      groupByResults.values[0] == null ||
-      groupByResults.values[0].numberOfResults == 0 ||
+      Utils.isNullOrUndefined(groupByResults) ||
+      every(groupByResults.values, value => Utils.isNullOrUndefined(value) || value.numberOfResults === 0) ||
       data.results.results.length == 0
     );
   }
