@@ -1,12 +1,12 @@
-import { Component } from '../Base/Component';
-import { ComponentOptions } from '../Base/ComponentOptions';
-import { IComponentBindings } from '../Base/ComponentBindings';
-import { Utils } from '../../utils/Utils';
-import { QueryEvents, IBuildingQueryEventArgs } from '../../events/QueryEvents';
-import { $$ } from '../../utils/Dom';
-import { Initialization } from '../Base/Initialization';
 import * as _ from 'underscore';
+import { IBuildingQueryEventArgs, QueryEvents } from '../../events/QueryEvents';
 import { exportGlobally } from '../../GlobalExports';
+import { $$ } from '../../utils/Dom';
+import { Utils } from '../../utils/Utils';
+import { Component } from '../Base/Component';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { Initialization } from '../Base/Initialization';
 import { Context, IPipelineContextProvider } from './PipelineGlobalExports';
 
 declare const Coveo;
@@ -39,7 +39,7 @@ export interface IPipelineContextOptions {}
  *
  * This component also ensures that the framework properly determines the context in all corner cases, including when a standalone search box ([initSearchbox]{@link initSearchbox}) is displaying query suggestions.
  *
- * In most cases, if you do not use this component, the context will not be resolved and leveraged properly in the query pipeline (see [What Is a Query Pipeline?](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=252)).
+ * In most cases, if you do not use this component, the context will not be resolved and leveraged properly in the query pipeline (see [What Is a Query Pipeline?](https://www.coveo.com/go?dest=cloudhelp&lcid=9&context=252)).
  *
  */
 export class PipelineContext extends Component implements IPipelineContextProvider {

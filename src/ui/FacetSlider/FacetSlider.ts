@@ -87,7 +87,7 @@ export class FacetSlider extends Component {
      * Specifies the index field whose values the `FacetSlider` should use.
      *
      * The field must be configured correctly as a Facet field in the index (see
-     * [Adding Fields to a Source](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=137)).
+     * [Adding Fields to a Source](https://www.coveo.com/go?dest=cloudhelp&lcid=9&context=137)).
      *
      * Specifying a value for this option is required for the `FacetSlider` component to work.
      */
