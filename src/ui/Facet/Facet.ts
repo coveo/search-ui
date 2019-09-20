@@ -18,6 +18,9 @@ import { IGroupByValue } from '../../rest/GroupByValue';
 import { IQueryResults } from '../../rest/QueryResults';
 import { ISearchEndpoint } from '../../rest/SearchEndpointInterface';
 import { l } from '../../strings/Strings';
+import { AccessibleButton } from '../../utils/AccessibleButton';
+import { ComponentsTypes } from '../../utils/ComponentsTypes';
+import { DependsOnManager, IDependentFacet } from '../../utils/DependsOnManager';
 import { DeviceUtils } from '../../utils/DeviceUtils';
 import { $$, Win } from '../../utils/Dom';
 import { SVGDom } from '../../utils/SVGDom';
@@ -25,15 +28,17 @@ import { SVGIcons } from '../../utils/SVGIcons';
 import { Utils } from '../../utils/Utils';
 import {
   analyticsActionCauseList,
+  IAnalyticsActionCause,
   IAnalyticsFacetMeta,
-  IAnalyticsFacetSortMeta,
-  IAnalyticsActionCause
+  IAnalyticsFacetSortMeta
 } from '../Analytics/AnalyticsActionListMeta';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { ComponentOptions, IFieldOption, IQueryExpression } from '../Base/ComponentOptions';
 import { Initialization } from '../Base/Initialization';
 import { IOmniboxDataRow } from '../Omnibox/OmniboxInterface';
+import { IResponsiveComponentOptions } from '../ResponsiveComponents/ResponsiveComponentsManager';
+import { ResponsiveFacetOptions } from '../ResponsiveComponents/ResponsiveFacetOptions';
 import { ResponsiveFacets } from '../ResponsiveComponents/ResponsiveFacets';
 import { BreadcrumbValueElement } from './BreadcrumbValueElement';
 import { BreadcrumbValueList } from './BreadcrumbValuesList';
@@ -43,6 +48,7 @@ import { FacetSearchParameters } from './FacetSearchParameters';
 import { FacetSearchValuesList } from './FacetSearchValuesList';
 import { FacetSettings } from './FacetSettings';
 import { FacetSort } from './FacetSort';
+import { FacetSortCriterion } from './FacetSortCriterion';
 import { FacetUtils } from './FacetUtils';
 import { FacetValueElement } from './FacetValueElement';
 import { FacetValue, FacetValues } from './FacetValues';
@@ -52,12 +58,6 @@ import { OmniboxValueElement } from './OmniboxValueElement';
 import { OmniboxValuesList } from './OmniboxValuesList';
 import { ValueElement } from './ValueElement';
 import { ValueElementRenderer } from './ValueElementRenderer';
-import { AccessibleButton } from '../../utils/AccessibleButton';
-import { IResponsiveComponentOptions } from '../ResponsiveComponents/ResponsiveComponentsManager';
-import { ResponsiveFacetOptions } from '../ResponsiveComponents/ResponsiveFacetOptions';
-import { DependsOnManager, IDependentFacet } from '../../utils/DependsOnManager';
-import { ComponentsTypes } from '../../utils/ComponentsTypes';
-import { FacetSortCriterion } from './FacetSortCriterion';
 
 type ComputedFieldOperation = 'sum' | 'average' | 'minimum' | 'maximum';
 type ComputedFieldFormat = 'c0' | 'n0' | 'n2';
@@ -159,7 +159,7 @@ export class Facet extends Component {
      * Specifies the index field whose values the facet should use.
      *
      * This requires the given field to be configured correctly in the index as a *Facet field* (see
-     * [Adding Fields to a Source](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=137)).
+     * [Adding Fields to a Source](https://www.coveo.com/go?dest=cloudhelp&lcid=9&context=137)).
      *
      * Specifying a value for this option is required for the `Facet` component to work.
      */

@@ -178,7 +178,7 @@ export class Omnibox extends Component {
      *
      * The corresponding Coveo ML model must be properly configured in your Coveo Cloud organization, otherwise this
      * option has no effect (see
-     * [Managing Machine Learning Query Suggestions in a Query Pipeline](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=168)).
+     * [Managing Machine Learning Query Suggestions in a Query Pipeline](https://www.coveo.com/go?dest=cloudhelp&lcid=9&context=168)).
      *
      * **Note:**
      * > When you set this option and the [`enableSearchAsYouType`]{@link Omnibox.options.enableSearchAsYouType} option
@@ -225,7 +225,7 @@ export class Omnibox extends Component {
     /**
      * Specifies whether the Coveo Platform should try to interpret special query syntax such as field references in the
      * query that the user enters in the Querybox (see
-     * [Coveo Query Syntax Reference](http://www.coveo.com/go?dest=adminhelp70&lcid=9&context=10005)).
+     * [Coveo Query Syntax Reference](https://www.coveo.com/go?dest=adminhelp70&lcid=9&context=10005)).
      *
      * Setting this option to `true` also causes the query syntax in the Querybox to highlight.
      *
