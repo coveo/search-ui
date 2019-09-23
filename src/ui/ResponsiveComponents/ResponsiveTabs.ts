@@ -373,7 +373,8 @@ export class ResponsiveTabs implements IResponsiveComponent {
   private fromDropdownToTabSection(tab: Dom) {
     const lastTabInTabSection = last(this.tabsInTabSection);
     if (!lastTabInTabSection) {
-      return this.tabSection.prepend(tab.el);
+      this.tabSection.prepend(tab.el);
+      return;
     }
 
     const comesAfterInitialTabOrder = this.initialTabOrder.indexOf(tab.el) > this.initialTabOrder.indexOf(lastTabInTabSection);
