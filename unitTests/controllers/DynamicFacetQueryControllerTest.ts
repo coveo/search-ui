@@ -127,8 +127,9 @@ export function DynamicFacetQueryControllerTest() {
       expect(facetRequest().freezeCurrentValues).toBe(true);
     });
 
-    it(`when calling enableFreezeCurrentValuesFlag
-      when the facet has dependent facets with selected values`, () => {
+    it(`given a facet with dependent facets having selected values,
+      when calling enableFreezeCurrentValuesFlag
+      it sets the freezeCurrentValues flag to true`, () => {
       facet.dependsOnManager = {
         hasDependentFacets: true,
         dependentFacetsHaveSelectedValues: true
@@ -139,9 +140,10 @@ export function DynamicFacetQueryControllerTest() {
       expect(facetRequest().freezeCurrentValues).toBe(true);
     });
 
-    it(`when calling enableFreezeCurrentValuesFlag
-      when the facet has dependent facets without selected values
-      when values aren't affected`, () => {
+    it(`given a facet with dependent facets without selected values,
+    when calling enableFreezeCurrentValuesFlag
+    when values are not affected
+    it sets the freezeCurrentValues flag to true`, () => {
       facet.dependsOnManager = {
         hasDependentFacets: true,
         dependentFacetsHaveSelectedValues: false
@@ -152,9 +154,10 @@ export function DynamicFacetQueryControllerTest() {
       expect(facetRequest().freezeCurrentValues).toBe(true);
     });
 
-    it(`when calling enableFreezeCurrentValuesFlag
-      when the facet has dependent facets without selected values
-      when values are affected`, () => {
+    it(`given a facet with dependent facets without selected values,
+    when calling enableFreezeCurrentValuesFlag
+    when values are affected
+    it sets the freezeCurrentValues flag to true`, () => {
       facet.dependsOnManager = {
         hasDependentFacets: true,
         dependentFacetsHaveSelectedValues: false
