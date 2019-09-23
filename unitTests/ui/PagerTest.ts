@@ -88,8 +88,6 @@ export function PagerTest() {
       });
 
       it('should update current page when first result is changed', () => {
-        test.cmp.setPage(7);
-        expect(test.cmp.currentPage).toBe(7);
         test.env.queryStateModel.set('first', 30);
         expect(test.cmp.currentPage).toBe(4);
       });
