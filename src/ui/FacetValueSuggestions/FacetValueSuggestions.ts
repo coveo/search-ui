@@ -143,8 +143,8 @@ export class FacetValueSuggestions extends Component {
   private queryStateFieldFacetId;
 
   static defaultTemplate(this: FacetValueSuggestions, row: IFacetValueSuggestionRow, omnibox: Omnibox): string {
-    const keyword = DomUtils.highlightElement(row.keyword, omnibox.getText(), 'coveo-omnibox-hightlight2');
-    const facetValue = DomUtils.highlightElement(row.value, row.value, 'coveo-omnibox-hightlight');
+    const keyword = DomUtils.highlightElement(row.keyword, omnibox.getText(), 'coveo-omnibox-hightlight');
+    const facetValue = DomUtils.highlight(row.value, 'coveo-omnibox-hightlight');
     const details = this.options.displayEstimateNumberOfResults
       ? DomUtils.highlight(
           ` (${l('ResultCount', row.numberOfResults.toString(), row.numberOfResults)})`,
