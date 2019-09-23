@@ -6,7 +6,7 @@ export class DynamicFacetRangeQueryController extends DynamicFacetQueryControlle
   protected facet: DynamicFacetRange;
 
   private get hasValues() {
-    return !this.facet.values.isEmpty;
+    return !!this.facet.values.allFacetValues.length;
   }
 
   public get facetRequest(): IFacetRequest {
