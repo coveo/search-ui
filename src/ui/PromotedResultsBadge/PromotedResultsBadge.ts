@@ -1,10 +1,10 @@
-import { Component } from '../../ui/Base/Component';
-import { IComponentBindings } from '../Base/ComponentBindings';
-import { ComponentOptions, Initialization, l, $$, ResultListEvents, Dom } from '../../Core';
+import 'styling/_PromotedResultsBadge';
+import { $$, ComponentOptions, Dom, Initialization, l, ResultListEvents } from '../../Core';
+import { IDisplayedNewResultEventArgs } from '../../events/ResultListEvents';
 import { exportGlobally } from '../../GlobalExports';
 import { IQueryResult } from '../../rest/QueryResult';
-import { IDisplayedNewResultEventArgs } from '../../events/ResultListEvents';
-import 'styling/_PromotedResultsBadge';
+import { Component } from '../../ui/Base/Component';
+import { IComponentBindings } from '../Base/ComponentBindings';
 
 export interface IPromotedResultsBadgeOptions {
   showBadgeForFeaturedResults: boolean;
@@ -21,8 +21,8 @@ export interface IPromotedResultsBadgeOptions {
  * The `PromotedResultsBadge` component adds a badge to promoted results in your interface.
  *
  * To be considered promoted, a result needs to either:
- * - be a Featured Result configured through a Coveo Query Pipeline (see [Managing Query Pipeline Featured Results](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=126))
- * - be a recommended result by Coveo Machine Learning (see [Coveo Machine Learning Features](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=183)).
+ * - be a Featured Result configured through a Coveo Query Pipeline (see [Managing Query Pipeline Featured Results](https://www.coveo.com/go?dest=cloudhelp&lcid=9&context=126))
+ * - be a recommended result by Coveo Machine Learning (see [Coveo Machine Learning Features](https://www.coveo.com/go?dest=cloudhelp&lcid=9&context=183)).
  *
  * You can add this component anywhere in your search interface. The component will then add a badge to your results after they have been rendered.
  */
@@ -40,13 +40,13 @@ export class PromotedResultsBadge extends Component {
    */
   static options: IPromotedResultsBadgeOptions = {
     /**
-     * Specifies if a badge should be added to "Featured Results" configured through a [Coveo Query Pipeline](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=126).
+     * Specifies if a badge should be added to "Featured Results" configured through a [Coveo Query Pipeline](https://www.coveo.com/go?dest=cloudhelp&lcid=9&context=126).
      *
      * Default value is `true`.
      */
     showBadgeForFeaturedResults: ComponentOptions.buildBooleanOption({ defaultValue: true }),
     /**
-     * Specifies if a badge should be added to "Recommended Results" returned by a [Coveo Machine Learning algorithm](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=183).
+     * Specifies if a badge should be added to "Recommended Results" returned by a [Coveo Machine Learning algorithm](https://www.coveo.com/go?dest=cloudhelp&lcid=9&context=183).
      *
      * Default value is `false`.
      */

@@ -101,9 +101,10 @@ export class DynamicFacetQueryController {
   }
 
   protected get currentValues(): IFacetRequestValue[] {
-    return this.facet.values.allFacetValues.map(({ value, state }) => ({
+    return this.facet.values.allFacetValues.map(({ value, state, preventAutoSelect }) => ({
       value,
-      state
+      state,
+      preventAutoSelect
     }));
   }
 

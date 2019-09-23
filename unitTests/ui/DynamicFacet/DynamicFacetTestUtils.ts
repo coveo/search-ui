@@ -51,6 +51,7 @@ export class DynamicFacetTestUtils {
         numberOfResults: Math.ceil(Math.random() * 100000),
         value,
         state,
+        preventAutoSelect: false,
         position: index + 1
       };
 

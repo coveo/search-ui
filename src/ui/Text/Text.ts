@@ -1,11 +1,10 @@
-import { ComponentOptions } from '../Base/ComponentOptions';
+import 'styling/_Text';
+import { exportGlobally } from '../../GlobalExports';
+import { $$ } from '../../utils/Dom';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
+import { ComponentOptions } from '../Base/ComponentOptions';
 import { Initialization } from '../Base/Initialization';
-import { $$ } from '../../utils/Dom';
-import { exportGlobally } from '../../GlobalExports';
-
-import 'styling/_Text';
 
 export interface ITextOptions {
   value?: string;
@@ -31,7 +30,7 @@ export interface ITextOptions {
  *
  * The only purpose of this component is to make it possible to easily add different text values to result templates
  * when using the Coveo JavaScript Search Interface Editor (see
- * [JavaScript Search Interface Editor](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=230)).
+ * [JavaScript Search Interface Editor](https://www.coveo.com/go?dest=cloudhelp&lcid=9&context=230)).
  *
  * If you are not designing a search interface using the Coveo JavaScript Search Interface Editor, using this component
  * is unnecessary.
