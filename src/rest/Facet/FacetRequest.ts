@@ -36,7 +36,7 @@ export interface IFacetRequestValue extends IRangeValue {
    */
   value?: string;
   /**
-   * Whether to prevent the Coveo ML feature from automatically selecting the facet value.
+   * Whether to prevent Coveo ML from automatically selecting the facet value.
    *
    * **Default:** `false`
    */
