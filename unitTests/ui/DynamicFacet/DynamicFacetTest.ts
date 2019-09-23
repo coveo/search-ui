@@ -349,6 +349,16 @@ export function DynamicFacetTest() {
       expect(test.cmp.values.selectedValues).toEqual(['a', 'b', 'c']);
     });
 
+    it(`when a previously idle value is returned selected by the API (autoselection)
+    should update the QSM correctly`, () => {
+      mockFacetValues[0].state = FacetValueState.selected;
+      const results = FakeResults.createFakeResults();
+      results.facets = [DynamicFacetTestUtils.getCompleteFacetResponse(test.cmp, { values: mockFacetValues })];
+      Simulate.query(test.env, { results });
+
+      testQueryStateModelValues();
+    });
+
     it('should log an analytics event when selecting a value through the QSM', () => {
       spyOn(test.cmp, 'logAnalyticsEvent');
       test.env.queryStateModel.registerNewAttribute(`f:${test.cmp.options.id}`, []);
