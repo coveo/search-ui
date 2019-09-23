@@ -44,6 +44,7 @@ export interface IDynamicFacetRangeOptions extends IDynamicFacetOptions {
  * - [`useLeadingWildcardInFacetSearch`]{@link DynamicFacet.options.useLeadingWildcardInFacetSearch}
  * - [`enableMoreLess`]{@link DynamicFacet.options.enableMoreLess}
  * - [`valueCaption`]{@link DynamicFacet.options.valueCaption}
+ * - [`sortCriteria`]{@link DynamicFacet.options.sortCriteria}
  *
  *  @notSupportedIn salesforcefree
  */
@@ -52,6 +53,10 @@ export class DynamicFacetRange extends DynamicFacet implements IComponentBinding
   static parent = DynamicFacet;
   static doExport = () => exportGlobally({ DynamicFacetRange });
 
+  /**
+   * The options for the DynamicFacetRange
+   * @componentOptions
+   */
   static options: IDynamicFacetRangeOptions = {
     /**
      * The label to insert between the minimum and maximum value of each range displayed in the facet.
@@ -109,6 +114,7 @@ export class DynamicFacetRange extends DynamicFacet implements IComponentBinding
     this.options.useLeadingWildcardInFacetSearch = false;
     this.options.enableMoreLess = false;
     this.options.valueCaption = {};
+    this.options.sortCriteria = undefined;
   }
 
   public get facetType(): FacetType {

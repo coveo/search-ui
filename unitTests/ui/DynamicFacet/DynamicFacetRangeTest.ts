@@ -4,6 +4,7 @@ import { DynamicFacetRangeTestUtils } from './DynamicFacetRangeTestUtils';
 import { FacetType } from '../../../src/rest/Facet/FacetRequest';
 import { QueryStateModel } from '../../../src/Core';
 import { RangeEndScope } from '../../../src/rest/RangeValue';
+import { FacetSortCriteria } from '../../../src/rest/Facet/FacetSortCriteria';
 
 export function DynamicFacetRangeTest() {
   describe('DynamicFacetRange', () => {
@@ -39,6 +40,12 @@ export function DynamicFacetRangeTest() {
       options.valueCaption = { hello: 'bonjour' };
       initializeComponent();
       expect(test.cmp.options.valueCaption).toEqual({});
+    });
+
+    it('sortCriteria option should be disabled', () => {
+      options.sortCriteria = FacetSortCriteria.score;
+      initializeComponent();
+      expect(test.cmp.options.sortCriteria).toBeUndefined();
     });
 
     it(`when the ranges option is not defined
