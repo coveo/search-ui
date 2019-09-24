@@ -240,10 +240,8 @@ export class FieldValue extends Component {
 
     if (TemplateFieldsEvaluator.evaluateFieldsToMatch(this.options.conditions, this.result) && this.getValue()) {
       this.initialize();
-    } else {
-      if (this.element.parentElement != null) {
-        this.element.parentElement.removeChild(this.element);
-      }
+    } else if (this.element.parentElement != null) {
+      this.element.parentElement.removeChild(this.element);
     }
   }
 

@@ -1,4 +1,4 @@
-import { contains, each, extend, isArray, keys, map, filter } from 'underscore';
+import { contains, each, extend, isArray, keys, map } from 'underscore';
 import { Assert } from '../../misc/Assert';
 import { Logger } from '../../misc/Logger';
 import { IFieldDescription } from '../../rest/FieldDescription';
@@ -795,17 +795,17 @@ export class ComponentOptions {
   }
 
   static loadFieldConditionOption(element: HTMLElement, name: string, option: IComponentOptionsOption<any>): IFieldConditionOption[] {
-    var attrs = filter(Dom.nodeListToArray(element.attributes), (attribute: Node) => {
-      return Utils.stringStartsWith(attribute.nodeName, 'data-condition-field-');
-    });
-    if (attrs.length == 0) return undefined;
-    return map(attrs, (attribute: Node) => {
-      return {
-        field: attribute.nodeName.replace('data-condition-field-not-', '').replace('data-condition-field-', ''),
-        values: Utils.isNonEmptyString(attribute.nodeValue) ? attribute.nodeValue.split(/\s*,\s*/) : null,
-        reverseCondition: attribute.nodeName.indexOf('data-condition-field-not-') == 0
-      };
-    });
+    var attrs = Dom.nodeListToArray(element.attributes).filter(attribute =>
+      Utils.stringStartsWith(attribute.nodeName, 'data-condition-field-')
+    );
+
+    return attrs.length != 0
+      ? attrs.map(attribute => ({
+          field: attribute.nodeName.replace('data-condition-field-not-', '').replace('data-condition-field-', ''),
+          values: Utils.isNonEmptyString(attribute.nodeValue) ? attribute.nodeValue.split(/\s*,\s*/) : null,
+          reverseCondition: attribute.nodeName.indexOf('data-condition-field-not-') == 0
+        }))
+      : undefined;
   }
 
   static loadFieldsOption(element: HTMLElement, name: string, option: IComponentOptionsOption<any>): string[] {

@@ -104,10 +104,8 @@ export class Icon extends Component {
 
     if (TemplateFieldsEvaluator.evaluateFieldsToMatch(this.options.conditions, this.result)) {
       this.initialize(element, bindings);
-    } else {
-      if (this.element.parentElement != null) {
-        this.element.parentElement.removeChild(this.element);
-      }
+    } else if (this.element.parentElement != null) {
+      this.element.parentElement.removeChild(this.element);
     }
   }
 
