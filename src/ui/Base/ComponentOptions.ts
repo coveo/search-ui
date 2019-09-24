@@ -26,7 +26,7 @@ export interface IFieldOption extends String {}
 export interface IFieldConditionOption {
   field: string;
   values: string[];
-  reverseCondition: boolean;
+  reverseCondition?: boolean;
 }
 
 /**
