@@ -142,7 +142,7 @@ export class FacetValueSuggestions extends Component {
 
   private queryStateFieldFacetId;
 
-  private suggestionHTMLRepresentation: Map<string, string>;
+  private suggestionHTMLRepresentation: { [keyword: string]: string } = {};
 
   static defaultTemplate(this: FacetValueSuggestions, row: IFacetValueSuggestionRow, omnibox: Omnibox): string {
     const keyword =
@@ -181,7 +181,6 @@ export class FacetValueSuggestions extends Component {
     }
 
     $$(this.root).on(OmniboxEvents.populateOmniboxSuggestions, (e: Event, args: IPopulateOmniboxSuggestionsEventArgs) => {
-      this.suggestionHTMLRepresentation = new Map();
       args.suggestions.push(this.getSuggestions(args.omnibox));
     });
   }
@@ -201,12 +200,13 @@ export class FacetValueSuggestions extends Component {
   private async getQuerySuggestionsKeywords(omnibox: Omnibox): Promise<string[]> {
     if (this.options.useQuerySuggestions && omnibox.suggestionAddon) {
       const suggestions = (await omnibox.suggestionAddon.getSuggestion()) || [];
-      return suggestions.map(({ html, text }) => {
-        if (text && text.length > 0) {
-          this.suggestionHTMLRepresentation[text] = html !== null ? html : DomUtils.highlightElement(text, omnibox.getText());
-        }
-        return text;
-      });
+
+      return Object.keys(
+        (this.suggestionHTMLRepresentation = suggestions.reduce<{ [keyword: string]: string }>((obj, { html, text }) => {
+          obj[text] = html;
+          return obj;
+        }, {}))
+      );
     } else {
       return [];
     }
