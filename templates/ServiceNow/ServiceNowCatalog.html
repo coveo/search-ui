@@ -10,14 +10,14 @@
         </div>
         <div class="coveo-result-row">
             <div class="coveo-result-cell" style="width:70px;">
-                <div class="CoveoIcon" style="margin-top: 10px" data-with-label="false" data-condition="!raw.snpicture"></div>
-                <span class="CoveoFieldValue" data-field="@snpicture" data-html-value="true" data-helper="image" data-helper-options-src-template="/${raw.snpicture}" data-helper-options-height="60px" style="font-size:12px"></span>
+                <div class="CoveoIcon" style="margin-top: 10px" data-with-label="false" data-condition-field-not-snpicture=""></div>
+                <span class="CoveoImageFieldValue" data-field="@snpicture" data-src-template="/${raw.snpicture}" data-height="60px" style="font-size:12px"></span>
             </div>
             <div class="coveo-result-cell" style="padding:15px">
                 <span class="CoveoExcerpt"></span>
             </div>
             <div class="coveo-result-cell" style="width:120px; text-align:right; vertical-align:top">
-                <div class="CoveoFieldValue" data-field="@snprice" data-text-caption="Category " style="font-size:12px" data-condition="raw.snignoreprice==false"></div>
+                <div class="CoveoFieldValue" data-field="@snprice" data-text-caption="Price " style="font-size:12px" data-condition-field-snignoreprice="false"></div>
                 <span class="CoveoFieldValue" data-field="@sncategorysysname" data-text-caption="Category " style="font-size:12px"></span>
                 <div class="CoveoResultLink" style="font-size:12px;background-color:#599DF8;color:white;border-width:medium;border-color:3F83E7;border-style:solid;border-radius:5px;width:122px;text-align:center;padding-top:10px;padding-bottom:10px;text-decoration:none">ORDER NOW</div>
             </div>

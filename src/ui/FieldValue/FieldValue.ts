@@ -11,13 +11,14 @@ import { Utils } from '../../utils/Utils';
 import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
-import { ComponentOptions, IComponentOptionsObjectOptionArgs, IFieldOption } from '../Base/ComponentOptions';
+import { ComponentOptions, IComponentOptionsObjectOptionArgs, IFieldOption, IFieldConditionOption } from '../Base/ComponentOptions';
 import { Initialization } from '../Base/Initialization';
 import { Facet } from '../Facet/Facet';
 import { FacetUtils } from '../Facet/FacetUtils';
 import { TemplateHelpers } from '../Templates/TemplateHelpers';
 import { l } from '../../strings/Strings';
 import { DynamicFacet } from '../DynamicFacet/DynamicFacet';
+import { TemplateFieldsEvaluator } from '../Templates/TemplateFieldsEvaluator';
 
 export interface IFieldValueOptions {
   field?: IFieldOption;
@@ -30,7 +31,7 @@ export interface IFieldValueOptions {
   separator?: string;
   displaySeparator?: string;
   textCaption?: string;
-  condition?: string;
+  conditions?: IFieldConditionOption[];
 }
 
 export interface IAnalyticsFieldValueMeta {
@@ -198,11 +199,11 @@ export class FieldValue extends Component {
     textCaption: ComponentOptions.buildLocalizedStringOption(),
 
     /**
-     * Specifies a condition to display the component or not
+     * Specifies conditions to display the component or not
      *
      * Default value is `undefined`.
      */
-    condition: ComponentOptions.buildStringOption()
+    conditions: ComponentOptions.buildFieldConditionOption()
   };
 
   static simpleOptions = omit(FieldValue.options, 'helperOptions');
@@ -237,44 +238,34 @@ export class FieldValue extends Component {
     this.result = this.result || this.resolveResult();
     Assert.exists(this.result);
 
-    if (this.options.condition != null) {
-      var conditionFunction = new Function('obj', 'with(obj||{}){return ' + this.options.condition + '}');
-      if (conditionFunction(this.result)) {
-        this.initialize(false);
-      } else {
-        this.initialize(true);
-      }
+    if (TemplateFieldsEvaluator.evaluateFieldsToMatch(this.options.conditions, this.result) && this.getValue()) {
+      this.initialize();
     } else {
-      this.initialize(false);
-    }
-  }
-
-  private initialize(removeFromParent: boolean) {
-    let loadedValueFromComponent = this.getValue();
-    if (loadedValueFromComponent == null || removeFromParent) {
-      // Completely remove the element to ease stuff such as adding separators in CSS
       if (this.element.parentElement != null) {
         this.element.parentElement.removeChild(this.element);
       }
-    } else {
-      let values: string[];
+    }
+  }
 
-      if (isArray(loadedValueFromComponent)) {
-        values = loadedValueFromComponent;
-      } else if (this.options.splitValues) {
-        if (isString(loadedValueFromComponent)) {
-          values = map(loadedValueFromComponent.split(this.options.separator), (v: string) => {
-            return v.trim();
-          });
-        }
-      } else {
-        loadedValueFromComponent = loadedValueFromComponent.toString();
-        values = [loadedValueFromComponent];
+  private initialize() {
+    let loadedValueFromComponent = this.getValue();
+    let values: string[];
+
+    if (isArray(loadedValueFromComponent)) {
+      values = loadedValueFromComponent;
+    } else if (this.options.splitValues) {
+      if (isString(loadedValueFromComponent)) {
+        values = map(loadedValueFromComponent.split(this.options.separator), (v: string) => {
+          return v.trim();
+        });
       }
-      this.appendValuesToDom(values);
-      if (this.options.textCaption != null) {
-        this.prependTextCaptionToDom();
-      }
+    } else {
+      loadedValueFromComponent = loadedValueFromComponent.toString();
+      values = [loadedValueFromComponent];
+    }
+    this.appendValuesToDom(values);
+    if (this.options.textCaption != null) {
+      this.prependTextCaptionToDom();
     }
   }
 

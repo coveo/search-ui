@@ -10,6 +10,7 @@ export interface IImageFieldValue {
   width?: number;
   height?: number;
   alt?: string;
+  srcTemplate?: string;
 }
 
 /**
@@ -47,7 +48,33 @@ export class ImageFieldValue extends Component {
      *
      * **Note:** The component uses this value to set the `height` attribute of the [`img`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img) HTML tag it generates.
      */
-    height: ComponentOptions.buildNumberOption()
+    height: ComponentOptions.buildNumberOption(),
+    /**
+     * Specifies a template literal from which to generate the Image `src` attribute value (see
+     * [Template literals](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Template_literals)).
+     *
+     * This option overrides the [`field`]{@link ImageFieldValue.options.field} option value.
+     *
+     * The template literal can reference any number of fields from the parent result. It can also reference global
+     * scope properties.
+     *
+     * **Examples:**
+     *
+     * - The following markup generates an `src` value such as `http://uri.com?id=itemTitle`:
+     *
+     * ```html
+     * <a class='CoveoImageFieldValue' data-src-template='${clickUri}?id=${raw.title}'></a>
+     * ```
+     *
+     * - The following markup generates an `src` value such as `localhost/fooBar`:
+     *
+     * ```html
+     * <a class='CoveoImageFieldValue' data-src-template='${window.location.hostname}/{Foo.Bar}'></a>
+     * ```
+     *
+     * Default value is `undefined`.
+     */
+    srcTemplate: ComponentOptions.buildStringOption()
   };
 
   /**
@@ -70,7 +97,8 @@ export class ImageFieldValue extends Component {
       helperOptions: {
         height: this.options.height,
         width: this.options.width,
-        alt: result.title
+        alt: result.title,
+        srcTemplate: this.options.srcTemplate
       }
     };
     new FieldValue(element, fieldValueOption, bindings, result);

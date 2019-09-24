@@ -142,9 +142,10 @@ export class StringUtils {
   }
 
   private static readFromObject(object: Object, key: string): string {
-    if (object && key.indexOf('.') !== -1) {
-      let newKey = key.substring(key.indexOf('.') + 1);
-      key = key.substring(0, key.indexOf('.'));
+    const firstPeriodIndex = key.indexOf('.');
+    if (object && firstPeriodIndex !== -1) {
+      let newKey = key.substring(firstPeriodIndex + 1);
+      key = key.substring(0, firstPeriodIndex);
       return this.readFromObject(object[key], newKey);
     }
     return object ? object[key] : undefined;

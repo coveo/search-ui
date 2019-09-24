@@ -1,6 +1,6 @@
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
-import { ComponentOptions } from '../Base/ComponentOptions';
+import { ComponentOptions, IFieldConditionOption } from '../Base/ComponentOptions';
 import { IQueryResult } from '../../rest/QueryResult';
 import { Assert } from '../../misc/Assert';
 import { QueryUtils } from '../../utils/QueryUtils';
@@ -9,6 +9,7 @@ import { Utils } from '../../utils/Utils';
 import { FileTypes, IFileTypeInfo } from '../Misc/FileTypes';
 import { $$ } from '../../utils/Dom';
 import { exportGlobally } from '../../GlobalExports';
+import { TemplateFieldsEvaluator } from '../Templates/TemplateFieldsEvaluator';
 
 /**
  * Available options for the {@link Icon} component.
@@ -18,7 +19,7 @@ export interface IIconOptions {
   small?: boolean;
   withLabel?: boolean;
   labelValue?: string;
-  condition?: string;
+  conditions?: IFieldConditionOption[];
 }
 
 /**
@@ -79,11 +80,11 @@ export class Icon extends Component {
     labelValue: ComponentOptions.buildLocalizedStringOption(),
 
     /**
-     * Specifies a condition to display the component or not
+     * Specifies conditions to display the component or not
      *
      * Default value is `undefined`.
      */
-    condition: ComponentOptions.buildStringOption()
+    conditions: ComponentOptions.buildFieldConditionOption()
   };
 
   /**
@@ -101,24 +102,16 @@ export class Icon extends Component {
     this.result = this.result || this.resolveResult();
     Assert.exists(this.result);
 
-    if (this.options.condition != null) {
-      var conditionFunction = new Function('obj', 'with(obj||{}){return ' + this.options.condition + '}');
-      if (conditionFunction(this.result)) {
-        this.initialize(element, bindings, false);
-      } else {
-        this.initialize(element, bindings, true);
-      }
+    if (TemplateFieldsEvaluator.evaluateFieldsToMatch(this.options.conditions, this.result)) {
+      this.initialize(element, bindings);
     } else {
-      this.initialize(element, bindings, false);
+      if (this.element.parentElement != null) {
+        this.element.parentElement.removeChild(this.element);
+      }
     }
   }
 
-  private initialize(element: HTMLElement, bindings: IComponentBindings, removeFromParent: boolean) {
-    // Completely remove the element to ease stuff such as adding separators in CSS
-    if (this.element.parentElement != null && removeFromParent) {
-      this.element.parentElement.removeChild(this.element);
-    }
-
+  private initialize(element: HTMLElement, bindings: IComponentBindings) {
     var possibleInternalQuickview = $$(this.element).find('.' + Component.computeCssClassNameForType('Quickview'));
     if (!Utils.isNullOrUndefined(possibleInternalQuickview) && QueryUtils.hasHTMLVersion(this.result)) {
       $$(this.element).addClass('coveo-with-quickview');

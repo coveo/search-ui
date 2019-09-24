@@ -25,6 +25,7 @@ export interface ITemplateProperties {
 export interface IFieldsToMatch {
   values?: string[];
   field: string;
+  reverseCondition?: boolean;
 }
 
 export interface IInstantiateTemplateOptions {
