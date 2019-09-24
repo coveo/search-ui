@@ -108,4 +108,10 @@
       text-overflow: ellipsis;
     }
   }
+  .coveo-facet-value-caption {
+    font-weight: bold;
+    .coveo-highlight {
+      font-weight: normal;
+    }
+  }
 }
