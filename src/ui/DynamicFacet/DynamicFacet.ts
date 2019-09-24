@@ -4,7 +4,7 @@ import { $$ } from '../../utils/Dom';
 import { exportGlobally } from '../../GlobalExports';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
-import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
+import { ComponentOptions } from '../Base/ComponentOptions';
 import { Initialization } from '../Base/Initialization';
 import { ResponsiveFacetOptions } from '../ResponsiveComponents/ResponsiveFacetOptions';
 import { ResponsiveDynamicFacets } from '../ResponsiveComponents/ResponsiveDynamicFacets';
@@ -18,7 +18,6 @@ import { Utils } from '../../utils/Utils';
 import { MODEL_EVENTS, IAttributesChangedEventArg } from '../../models/Model';
 import { Assert } from '../../misc/Assert';
 import { IFacetResponse } from '../../rest/Facet/FacetResponse';
-import { IResponsiveComponentOptions } from '../ResponsiveComponents/ResponsiveComponentsManager';
 import { IStringMap } from '../../rest/GenericParam';
 import { isFacetSortCriteria } from '../../rest/Facet/FacetSortCriteria';
 import { l } from '../../strings/Strings';
@@ -33,21 +32,13 @@ import { DynamicFacetSearch } from '../DynamicFacetSearch/DynamicFacetSearch';
 import { ResultListUtils } from '../../utils/ResultListUtils';
 import { IQueryResults } from '../../rest/QueryResults';
 import { FacetType } from '../../rest/Facet/FacetRequest';
+import { IDynamicFacetCommonOptions } from './DynamicFacetCommonOptions';
 
-export interface IDynamicFacetOptions extends IResponsiveComponentOptions {
-  id?: string;
-  title?: string;
-  field?: IFieldOption;
+export interface IDynamicFacetOptions extends IDynamicFacetCommonOptions {
   sortCriteria?: string;
-  numberOfValues?: number;
-  enableCollapse?: boolean;
-  enableScrollToTop?: boolean;
   enableMoreLess?: boolean;
   enableFacetSearch?: boolean;
   useLeadingWildcardInFacetSearch?: boolean;
-  collapsedByDefault?: boolean;
-  includeInBreadcrumb?: boolean;
-  numberOfValuesInBreadcrumb?: number;
   valueCaption?: any;
 }
 
