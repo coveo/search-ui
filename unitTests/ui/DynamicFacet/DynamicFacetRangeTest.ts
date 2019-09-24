@@ -43,7 +43,7 @@ export function DynamicFacetRangeTest() {
 
     it(`when the ranges option is not defined
       should not have values`, () => {
-      expect(test.cmp.values.isEmpty).toBe(true);
+      expect(test.cmp.values.hasValues).toBe(false);
     });
 
     it(`when the ranges option is defined

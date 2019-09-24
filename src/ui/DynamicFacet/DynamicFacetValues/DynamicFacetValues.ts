@@ -57,7 +57,7 @@ export class DynamicFacetValues {
     return this.facetValues.filter(value => !value.isIdle);
   }
 
-  private get nonEmptyOrActiveFacetValues() {
+  private get displayedValues() {
     return this.facetValues.filter(value => !value.isIdle || value.numberOfResults > 0);
   }
 
@@ -77,8 +77,12 @@ export class DynamicFacetValues {
     this.facetValues.forEach(value => value.deselect());
   }
 
-  public get isEmpty() {
-    return !this.nonEmptyOrActiveFacetValues.length;
+  public get hasValues() {
+    return !!this.allFacetValues.length;
+  }
+
+  public get hasDisplayedValues() {
+    return !!this.displayedValues.length;
   }
 
   public hasSelectedValue(arg: string | DynamicFacetValue) {
@@ -162,7 +166,7 @@ export class DynamicFacetValues {
     const fragment = document.createDocumentFragment();
     $$(this.list).empty();
 
-    this.nonEmptyOrActiveFacetValues.forEach(facetValue => {
+    this.displayedValues.forEach(facetValue => {
       fragment.appendChild(facetValue.renderedElement);
     });
 

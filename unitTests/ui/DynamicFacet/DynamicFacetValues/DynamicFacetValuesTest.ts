@@ -99,24 +99,24 @@ export function DynamicFacetValuesTest() {
       expect(dynamicFacetValues.hasIdleValues).toBe(false);
     });
 
-    it('when there are values (non empty or active), isEmpty should return false', () => {
-      expect(dynamicFacetValues.isEmpty).toBe(false);
+    it('when there are values (non empty or active), hasDisplayedValues should return true', () => {
+      expect(dynamicFacetValues.hasDisplayedValues).toBe(true);
     });
 
-    it('when there are only idle values with no results, isEmpty should return true', () => {
+    it('when there are only idle values with no results, hasDisplayedValues should return false', () => {
       const idleValueWithoutResult = mockFacetValues[0];
       idleValueWithoutResult.state = FacetValueState.idle;
       idleValueWithoutResult.numberOfResults = 0;
       mockFacetValues = [idleValueWithoutResult];
       initializeComponent();
 
-      expect(dynamicFacetValues.isEmpty).toBe(true);
+      expect(dynamicFacetValues.hasDisplayedValues).toBe(false);
     });
 
-    it('when there are no values, isEmpty should return true', () => {
+    it('when there are no values, hasDisplayedValues should return false', () => {
       mockFacetValues = [];
       initializeComponent();
-      expect(dynamicFacetValues.isEmpty).toBe(true);
+      expect(dynamicFacetValues.hasDisplayedValues).toBe(false);
     });
 
     it('clearAll should set all values to selected=false', () => {
