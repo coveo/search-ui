@@ -145,7 +145,9 @@ export class FacetValueSuggestions extends Component {
   private suggestionHTMLRepresentation: Map<string, string>;
 
   static defaultTemplate(this: FacetValueSuggestions, row: IFacetValueSuggestionRow, omnibox: Omnibox): string {
-    const keyword = this.suggestionHTMLRepresentation[row.keyword];
+    const keyword =
+      (this.suggestionHTMLRepresentation && this.suggestionHTMLRepresentation[row.keyword]) ||
+      DomUtils.highlightElement(row.keyword, omnibox.getText(), 'coveo-omnibox-hightlight');
     const facetValue = DomUtils.highlight(row.value, 'coveo-omnibox-hightlight');
     const details = this.options.displayEstimateNumberOfResults
       ? DomUtils.highlight(
