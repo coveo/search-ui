@@ -696,7 +696,7 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
     this.toggleSearchDisplay();
     $$(this.element).toggleClass('coveo-dynamic-facet-collapsed', this.isCollapsed);
     $$(this.element).toggleClass('coveo-active', this.values.hasSelectedValues);
-    $$(this.element).toggleClass('coveo-hidden', this.values.isEmpty);
+    $$(this.element).toggleClass('coveo-hidden', !this.values.hasDisplayedValues);
   }
 
   private toggleSearchDisplay() {
