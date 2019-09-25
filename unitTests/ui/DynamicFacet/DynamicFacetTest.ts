@@ -581,12 +581,6 @@ export function DynamicFacetTest() {
         expect(test.cmp.dependsOnManager).toBeTruthy();
       });
 
-      it('should call the "listenToParentIfDependentFacet" method of the DependsOnManager on initialization', () => {
-        spyOn(DependsOnManager.prototype, 'listenToParentIfDependentFacet');
-        initializeComponent();
-        expect(DependsOnManager.prototype.listenToParentIfDependentFacet).toHaveBeenCalled();
-      });
-
       it(`when facet appearance is updated (e.g. when createDom is called)
       should call the "updateVisibilityBasedOnDependsOn" method of the DependsOnManager`, () => {
         test.cmp.createDom();
