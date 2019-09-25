@@ -30,12 +30,16 @@ export function CategoryFacetTest() {
 
     beforeEach(() => {
       simulateQueryData = buildCategoryFacetResults();
+      initializeComponent();
+    });
+
+    function initializeComponent() {
       test = Mock.advancedComponentSetup<CategoryFacet>(
         CategoryFacet,
         new Mock.AdvancedComponentSetupOptions(null, { field: '@field' }, env => env.withLiveQueryStateModel())
       );
       test.cmp.activePath = simulateQueryData.query.categoryFacets[0].path;
-    });
+    }
 
     function allCategoriesButton() {
       return $$(test.cmp.element).find('.coveo-category-facet-all-categories');
@@ -611,6 +615,23 @@ export function CategoryFacetTest() {
         expect(ellipsis).toBeDefined();
         expect(ellipsis.previousSibling.textContent).toContain('parent4');
         expect(ellipsis.nextSibling.textContent).toContain('parent25');
+      });
+    });
+
+    describe('testing the DependsOnManager', () => {
+      beforeEach(() => {
+        spyOn(test.cmp.dependsOnManager, 'updateVisibilityBasedOnDependsOn');
+        spyOn(test.cmp.dependsOnManager, 'listenToParentIfDependentFacet');
+      });
+
+      it('should initialize the dependsOnManager', () => {
+        expect(test.cmp.dependsOnManager).toBeTruthy();
+      });
+
+      it(`when facet appearance is updated (e.g. after a successful query)
+      should call the "updateVisibilityBasedOnDependsOn" method of the DependsOnManager`, () => {
+        Simulate.query(test.env, simulateQueryData);
+        expect(test.cmp.dependsOnManager.updateVisibilityBasedOnDependsOn).toHaveBeenCalled();
       });
     });
   });
