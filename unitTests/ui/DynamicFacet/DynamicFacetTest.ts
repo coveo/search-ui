@@ -11,7 +11,6 @@ import { analyticsActionCauseList } from '../../../src/ui/Analytics/AnalyticsAct
 import { FakeResults } from '../../Fake';
 import { ResultListUtils } from '../../../src/utils/ResultListUtils';
 import { FacetType } from '../../../src/rest/Facet/FacetRequest';
-import { DependsOnManager } from '../../../src/utils/DependsOnManager';
 
 export function DynamicFacetTest() {
   describe('DynamicFacet', () => {

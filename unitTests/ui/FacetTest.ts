@@ -11,7 +11,6 @@ import { IPopulateBreadcrumbEventArgs } from '../../src/events/BreadcrumbEvents'
 import { IPopulateOmniboxEventArgs } from '../../src/events/OmniboxEvents';
 import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
 import { KEYBOARD } from '../../src/Core';
-import { DependsOnManager } from '../../src/utils/DependsOnManager';
 
 export function FacetTest() {
   describe('Facet', () => {
