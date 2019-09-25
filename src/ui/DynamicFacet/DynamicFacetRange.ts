@@ -1,6 +1,6 @@
 import 'styling/DynamicFacet/_DynamicFacet';
 import { Initialization } from '../Base/Initialization';
-import { DynamicFacet, IDynamicFacetOptions } from './DynamicFacet';
+import { DynamicFacet } from './DynamicFacet';
 import { ComponentOptions } from '../Base/ComponentOptions';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { exportGlobally } from '../../GlobalExports';
@@ -10,6 +10,7 @@ import { IRangeValue } from '../../rest/RangeValue';
 import { DynamicFacetValues } from './DynamicFacetValues/DynamicFacetValues';
 import { DynamicFacetRangeValueCreator } from './DynamicFacetValues/DynamicFacetRangeValueCreator';
 import { DynamicFacetRangeQueryController } from '../../controllers/DynamicFacetRangeQueryController';
+import { IDynamicFacetCommonOptions } from './DynamicFacetCommonOptions';
 
 /**
  * The allowed values for the [`valueFormat`]{@link DynamicFacetRange.options.valueFormat} option
@@ -26,7 +27,7 @@ export enum DynamicFacetRangeValueFormat {
   date = 'date'
 }
 
-export interface IDynamicFacetRangeOptions extends IDynamicFacetOptions {
+export interface IDynamicFacetRangeOptions extends IDynamicFacetCommonOptions {
   valueSeparator?: string;
   valueFormat?: DynamicFacetRangeValueFormat;
   ranges?: IRangeValue[];
@@ -38,12 +39,7 @@ export interface IDynamicFacetRangeOptions extends IDynamicFacetOptions {
  * You must set the [`field`]{@link DynamicFacet.options.field} option to a value targeting a numeric or date [field](https://docs.coveo.com/en/200/)
  * in your index for this component to work.
  *
- * This component extends the [`DynamicFacet`]{@link DynamicFacet} component and supports all `DynamicFacet` options except:
- *
- * - [`enableFacetSearch`]{@link DynamicFacet.options.enableFacetSearch}
- * - [`useLeadingWildcardInFacetSearch`]{@link DynamicFacet.options.useLeadingWildcardInFacetSearch}
- * - [`enableMoreLess`]{@link DynamicFacet.options.enableMoreLess}
- * - [`valueCaption`]{@link DynamicFacet.options.valueCaption}
+ * This component extends the [`DynamicFacet`]{@link DynamicFacet} component
  *
  *  @notSupportedIn salesforcefree
  */
@@ -52,6 +48,10 @@ export class DynamicFacetRange extends DynamicFacet implements IComponentBinding
   static parent = DynamicFacet;
   static doExport = () => exportGlobally({ DynamicFacetRange });
 
+  /**
+   * The options for the DynamicFacetRange
+   * @componentOptions
+   */
   static options: IDynamicFacetRangeOptions = {
     /**
      * The label to insert between the minimum and maximum value of each range displayed in the facet.
@@ -88,8 +88,6 @@ export class DynamicFacetRange extends DynamicFacet implements IComponentBinding
    */
   constructor(public element: HTMLElement, public options: IDynamicFacetRangeOptions, bindings?: IComponentBindings) {
     super(element, ComponentOptions.initComponentOptions(element, DynamicFacetRange, options), bindings, DynamicFacetRange.ID);
-
-    this.disableUnavailableOptions();
   }
 
   protected initValues() {
@@ -102,13 +100,6 @@ export class DynamicFacetRange extends DynamicFacet implements IComponentBinding
 
   protected initDynamicFacetQueryController() {
     this.dynamicFacetQueryController = new DynamicFacetRangeQueryController(this);
-  }
-
-  private disableUnavailableOptions() {
-    this.options.enableFacetSearch = false;
-    this.options.useLeadingWildcardInFacetSearch = false;
-    this.options.enableMoreLess = false;
-    this.options.valueCaption = {};
   }
 
   public get facetType(): FacetType {
