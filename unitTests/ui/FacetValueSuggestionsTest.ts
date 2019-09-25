@@ -1,7 +1,11 @@
 import { IPopulateOmniboxSuggestionsEventArgs } from '../../src/events/OmniboxEvents';
 import { Suggestion } from '../../src/magicbox/SuggestionsManager';
 import { IFieldOption } from '../../src/ui/Base/ComponentOptions';
-import { FacetValueSuggestions, IFacetValueSuggestionsOptions } from '../../src/ui/FacetValueSuggestions/FacetValueSuggestions';
+import {
+  FacetValueSuggestions,
+  IFacetValueSuggestionsOptions,
+  IQuerySuggestionKeyword
+} from '../../src/ui/FacetValueSuggestions/FacetValueSuggestions';
 import { IFacetValueSuggestionRow, IFacetValueSuggestionsProvider } from '../../src/ui/FacetValueSuggestions/FacetValueSuggestionsProvider';
 import { IOmniboxSuggestion, Omnibox } from '../../src/ui/Omnibox/Omnibox';
 import { QuerySuggestAddon } from '../../src/ui/Omnibox/QuerySuggestAddon';
@@ -13,9 +17,15 @@ export function FacetValueSuggestionsTest() {
     let test: Mock.IBasicComponentSetup<FacetValueSuggestions>;
     let facetValueSuggestionsProvider: IFacetValueSuggestionsProvider;
     let omniboxInstance: Omnibox;
-    const aKeyword = 'bloup';
+    const aKeyword: IQuerySuggestionKeyword = {
+      text: 'bloup',
+      html: `<span class='coveo-omnibox-hightlight'>bloup</span>`
+    };
     const someSuggestionValue = 'wowow';
-    const anOmniboxSuggestionKeyword = 'fish';
+    const anOmniboxSuggestionKeyword: IQuerySuggestionKeyword = {
+      text: 'fish',
+      html: `<span class='coveo-omnibox-hightlight'>fish</span>`
+    };
     const getSuggestionValue = (): IFacetValueSuggestionRow => {
       return {
         keyword: aKeyword,
@@ -27,10 +37,8 @@ export function FacetValueSuggestionsTest() {
         field: someField
       };
     };
-    const getOmniboxSuggestionValue = (value?: string): IOmniboxSuggestion => {
-      return {
-        text: value || anOmniboxSuggestionKeyword
-      };
+    const getOmniboxSuggestionValue = (keyword?: IQuerySuggestionKeyword): IOmniboxSuggestion => {
+      return keyword || anOmniboxSuggestionKeyword;
     };
     const someField: string = '@bloupbloup';
 
@@ -56,8 +64,8 @@ export function FacetValueSuggestionsTest() {
       return <Promise<Suggestion[]>>args.suggestions[0];
     };
 
-    const setUpKeywordInOmnibox = (keyword: string) => {
-      omniboxInstance.getText = () => keyword;
+    const setUpKeywordTextInOmnibox = (text: string) => {
+      omniboxInstance.getText = () => text;
     };
 
     beforeEach(() => {
@@ -71,7 +79,7 @@ export function FacetValueSuggestionsTest() {
       omniboxInstance.magicBox = {
         blur: jasmine.createSpy('blur')
       } as any;
-      setUpKeywordInOmnibox(aKeyword);
+      setUpKeywordTextInOmnibox(aKeyword.text);
       setUpOmniboxSuggestionsToReturn([getOmniboxSuggestionValue()]);
       test = Mock.basicComponentSetup<FacetValueSuggestions>(FacetValueSuggestions, <IFacetValueSuggestionsOptions>{
         field: <IFieldOption>someField
@@ -119,11 +127,7 @@ export function FacetValueSuggestionsTest() {
           expect(suggestionTemplate).toHaveBeenCalledTimes(1);
 
           expect(result[0].html).toBe(
-            l(
-              'KeywordInCategory',
-              `<span class='coveo-omnibox-hightlight'>${aKeyword}</span>`,
-              `<span class='coveo-omnibox-hightlight'>${someSuggestionValue}</span>`
-            )
+            l('KeywordInCategory', `${aKeyword.html}`, `<span class='coveo-omnibox-hightlight'>${someSuggestionValue}</span>`)
           );
           done();
         });
@@ -132,7 +136,7 @@ export function FacetValueSuggestionsTest() {
 
     describe('when the field is a category field', () => {
       beforeEach(() => {
-        setUpKeywordInOmnibox(aKeyword);
+        setUpKeywordTextInOmnibox(aKeyword.text);
         setUpOmniboxSuggestionsToReturn([getOmniboxSuggestionValue()]);
         test.cmp.options.isCategoryField = true;
       });
@@ -182,7 +186,7 @@ export function FacetValueSuggestionsTest() {
     describe('when no keywords are provided', () => {
       beforeEach(() => {
         setUpOmniboxSuggestionsToReturn([]);
-        setUpKeywordInOmnibox('');
+        setUpKeywordTextInOmnibox('');
         setUpSuggestionsFromProviderToReturn([getSuggestionValue()]);
 
         test.cmp.options.useValueFromSearchbox = true;
@@ -252,7 +256,7 @@ export function FacetValueSuggestionsTest() {
 
         firstSuggestion(resultingArgs).then(result => {
           result[0].onSelect();
-          expect(omniboxInstance.setText).toHaveBeenCalledWith(aKeyword);
+          expect(omniboxInstance.setText).toHaveBeenCalledWith(aKeyword.text);
           done();
         });
       });
@@ -368,20 +372,46 @@ export function FacetValueSuggestionsTest() {
       });
     });
 
-    describe('when only using the search box keywords and the keyword is empty', () => {
+    describe('when only using the search box keywords', () => {
       beforeEach(() => {
         test.cmp.options.useValueFromSearchbox = true;
         test.cmp.options.useQuerySuggestions = false;
-        setUpKeywordInOmnibox('');
       });
 
-      it('returns no suggestions', async done => {
+      it(`returns no suggestions`, async done => {
+        setUpKeywordTextInOmnibox(anOmniboxSuggestionKeyword.text);
         const resultingArgs = await triggerPopulateOmniboxEvent();
 
         firstSuggestion(resultingArgs).then(result => {
           expect(result.length).toBe(0);
           done();
         });
+      });
+
+      it('still returns no suggestions if the omnibox is empty', async done => {
+        setUpKeywordTextInOmnibox('');
+        const resultingArgs = await triggerPopulateOmniboxEvent();
+
+        firstSuggestion(resultingArgs).then(result => {
+          expect(result.length).toBe(0);
+          done();
+        });
+      });
+
+      it(`calls the provider with the omnibox's text if it isn't empty`, async done => {
+        setUpKeywordTextInOmnibox(anOmniboxSuggestionKeyword.text);
+        await triggerPopulateOmniboxEvent();
+
+        expect(facetValueSuggestionsProvider.getSuggestions as jasmine.Spy).toHaveBeenCalledWith([anOmniboxSuggestionKeyword]);
+        done();
+      });
+
+      it(`doesn't call the provider if the omnibox is empty`, async done => {
+        setUpKeywordTextInOmnibox('');
+        await triggerPopulateOmniboxEvent();
+
+        expect(facetValueSuggestionsProvider.getSuggestions as jasmine.Spy).not.toHaveBeenCalled();
+        done();
       });
     });
   });

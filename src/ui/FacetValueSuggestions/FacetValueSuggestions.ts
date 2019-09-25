@@ -25,6 +25,11 @@ export interface IFacetValueSuggestionsOptions {
   templateHelper?: (row: IFacetValueSuggestionRow, omnibox: Omnibox) => string;
 }
 
+export interface IQuerySuggestionKeyword {
+  text: string;
+  html: string;
+}
+
 /**
  * This component provides [`Omnibox`]{@link Omnibox} query suggestions scoped to distinct categories based on the values of a specific [`field`]{@link FacetValueSuggestions.options.field}.
  *
@@ -142,12 +147,8 @@ export class FacetValueSuggestions extends Component {
 
   private queryStateFieldFacetId;
 
-  private suggestionHTMLRepresentation: { [keyword: string]: string } = {};
-
   static defaultTemplate(this: FacetValueSuggestions, row: IFacetValueSuggestionRow, omnibox: Omnibox): string {
-    const keyword =
-      (this.suggestionHTMLRepresentation && this.suggestionHTMLRepresentation[row.keyword]) ||
-      DomUtils.highlightElement(row.keyword, omnibox.getText(), 'coveo-omnibox-hightlight');
+    const keyword = row.keyword.html;
     const facetValue = DomUtils.highlight(row.value, 'coveo-omnibox-hightlight');
     const details = this.options.displayEstimateNumberOfResults
       ? DomUtils.highlight(
@@ -157,6 +158,13 @@ export class FacetValueSuggestions extends Component {
         )
       : '';
     return `${l('KeywordInCategory', keyword, facetValue)}${details}`;
+  }
+
+  private static getQuerySuggestionKeywordFromText(text: string): IQuerySuggestionKeyword {
+    return {
+      text,
+      html: DomUtils.highlight(text, 'coveo-omnibox-hightlight')
+    };
   }
 
   /**
@@ -197,15 +205,13 @@ export class FacetValueSuggestions extends Component {
     return suggestions || [];
   }
 
-  private async getQuerySuggestionsKeywords(omnibox: Omnibox): Promise<string[]> {
+  private async getQuerySuggestionsKeywords(omnibox: Omnibox): Promise<IQuerySuggestionKeyword[]> {
     if (this.options.useQuerySuggestions && omnibox.suggestionAddon) {
-      const suggestions = (await omnibox.suggestionAddon.getSuggestion()) || [];
-
-      return Object.keys(
-        (this.suggestionHTMLRepresentation = suggestions.reduce<{ [keyword: string]: string }>((obj, { html, text }) => {
-          obj[text] = html;
-          return obj;
-        }, {}))
+      return (
+        (await omnibox.suggestionAddon.getSuggestion()).map(({ text, html }) => ({
+          text,
+          html
+        })) || []
       );
     } else {
       return [];
@@ -213,21 +219,24 @@ export class FacetValueSuggestions extends Component {
   }
 
   private async getFacetValueSuggestions(text: string, omnibox: Omnibox): Promise<IOmniboxSuggestion[]> {
-    const wordsToQuery = this.options.useValueFromSearchbox ? [text] : [];
+    const wordsToQuery = this.options.useValueFromSearchbox ? [FacetValueSuggestions.getQuerySuggestionKeywordFromText(text)] : [];
 
-    const suggestionsKeywords: string[] = await this.getQuerySuggestionsKeywords(omnibox);
-    const allWordsToQuery = _.unique(wordsToQuery.concat(suggestionsKeywords).filter(value => value != ''));
+    const suggestionsKeywords: IQuerySuggestionKeyword[] = await this.getQuerySuggestionsKeywords(omnibox);
+    const allKeywordsToQuery = _.unique(
+      wordsToQuery.concat(suggestionsKeywords).filter(keyword => keyword.text != ''),
+      keyword => keyword.text
+    );
 
-    if (allWordsToQuery.length === 0) {
+    if (allKeywordsToQuery.length === 0) {
       return [];
     }
 
-    return this.getSuggestionsForWords(allWordsToQuery, omnibox);
+    return await this.getSuggestionsForWords(allKeywordsToQuery, omnibox);
   }
 
-  private async getSuggestionsForWords(wordsToQuery: string[], omnibox: Omnibox): Promise<IOmniboxSuggestion[]> {
+  private async getSuggestionsForWords(keywordToQuery: IQuerySuggestionKeyword[], omnibox: Omnibox): Promise<IOmniboxSuggestion[]> {
     try {
-      const suggestions = await this.facetValueSuggestionsProvider.getSuggestions(wordsToQuery);
+      const suggestions = await this.facetValueSuggestionsProvider.getSuggestions(keywordToQuery);
 
       this.logger.debug('FacetValue Suggestions Results', suggestions);
 
@@ -278,7 +287,7 @@ export class FacetValueSuggestions extends Component {
   }
 
   private onRowSelection(row: IFacetValueSuggestionRow, omnibox: Omnibox): void {
-    omnibox.setText(row.keyword);
+    omnibox.setText(row.keyword.text);
     // Copy the state here, else it will directly modify queryStateModel.defaultAttributes.fv.
     const fvState: { [key: string]: string[] } = { ...this.queryStateModel.get(QueryStateModel.attributesEnum.fv) };
     const existingValues: string[] = fvState[this.options.field.toString()] || [];
