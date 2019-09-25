@@ -11,6 +11,7 @@ import { analyticsActionCauseList } from '../../../src/ui/Analytics/AnalyticsAct
 import { FakeResults } from '../../Fake';
 import { ResultListUtils } from '../../../src/utils/ResultListUtils';
 import { FacetType } from '../../../src/rest/Facet/FacetRequest';
+import { DependsOnManager } from '../../../src/utils/DependsOnManager';
 
 export function DynamicFacetTest() {
   describe('DynamicFacet', () => {
@@ -568,6 +569,23 @@ export function DynamicFacetTest() {
       test.cmp.scrollToTop();
 
       expect(ResultListUtils.scrollToTop).not.toHaveBeenCalledWith(test.cmp.root);
+    });
+
+    describe('testing the DependsOnManager', () => {
+      beforeEach(() => {
+        spyOn(test.cmp.dependsOnManager, 'updateVisibilityBasedOnDependsOn');
+        spyOn(test.cmp.dependsOnManager, 'listenToParentIfDependentFacet');
+      });
+
+      it('should initialize the dependsOnManager', () => {
+        expect(test.cmp.dependsOnManager).toBeTruthy();
+      });
+
+      it(`when facet appearance is updated (e.g. when createDom is called)
+      should call the "updateVisibilityBasedOnDependsOn" method of the DependsOnManager`, () => {
+        test.cmp.createDom();
+        expect(test.cmp.dependsOnManager.updateVisibilityBasedOnDependsOn).toHaveBeenCalled();
+      });
     });
   });
 }
