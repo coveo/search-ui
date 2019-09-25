@@ -61,7 +61,8 @@ export function DynamicFacetQueryControllerTest() {
 
       expect(currentValues[0]).toEqual({
         value: mockFacetValues[0].value,
-        state: mockFacetValues[0].state
+        state: mockFacetValues[0].state,
+        preventAutoSelect: mockFacetValues[0].preventAutoSelect
       });
     });
 

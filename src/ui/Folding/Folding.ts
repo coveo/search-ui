@@ -1,6 +1,6 @@
 import { any, clone, each, map, sortBy, without } from 'underscore';
-import { exportGlobally } from '../../GlobalExports';
 import { IBuildingQueryEventArgs, IPreprocessResultsEventArgs, QueryEvents } from '../../events/QueryEvents';
+import { exportGlobally } from '../../GlobalExports';
 import { Assert } from '../../misc/Assert';
 import { IQuery } from '../../rest/Query';
 import { IQueryResult } from '../../rest/QueryResult';
@@ -84,7 +84,7 @@ export class Folding extends Component {
      *
      * **Note:**
      * > In an Elasticsearch index, the corresponding field must be configured as a *Facet* field
-     * > (see [Add/Edit a Field: [FieldName] - Panel ](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=288)).
+     * > (see [Add/Edit a Field: [FieldName] - Panel ](https://www.coveo.com/go?dest=cloudhelp&lcid=9&context=288)).
      * > This limitation does not apply to Coveo indexes.
      *
      * Default value is `@foldingcollection`.
