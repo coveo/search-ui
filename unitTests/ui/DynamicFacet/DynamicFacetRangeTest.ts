@@ -4,6 +4,7 @@ import { DynamicFacetRangeTestUtils } from './DynamicFacetRangeTestUtils';
 import { FacetType } from '../../../src/rest/Facet/FacetRequest';
 import { QueryStateModel } from '../../../src/Core';
 import { RangeEndScope } from '../../../src/rest/RangeValue';
+import { FacetSortCriteria } from '../../../src/rest/Facet/FacetSortCriteria';
 
 export function DynamicFacetRangeTest() {
   describe('DynamicFacetRange', () => {
@@ -20,6 +21,32 @@ export function DynamicFacetRangeTest() {
       spyOn(test.cmp.logger, 'error');
       spyOn(test.cmp.logger, 'warn');
     }
+
+    it('facet search options should be disabled', () => {
+      options.enableFacetSearch = true;
+      options.useLeadingWildcardInFacetSearch = true;
+      initializeComponent();
+      expect(test.cmp.options.enableFacetSearch).toBe(false);
+      expect(test.cmp.options.useLeadingWildcardInFacetSearch).toBe(false);
+    });
+
+    it('enableMoreLess option should be disabled', () => {
+      options.enableMoreLess = true;
+      initializeComponent();
+      expect(test.cmp.options.enableMoreLess).toBe(false);
+    });
+
+    it('valueCaption option should be disabled', () => {
+      options.valueCaption = { hello: 'bonjour' };
+      initializeComponent();
+      expect(test.cmp.options.valueCaption).toEqual({});
+    });
+
+    it('sortCriteria option should be disabled', () => {
+      options.sortCriteria = FacetSortCriteria.score;
+      initializeComponent();
+      expect(test.cmp.options.sortCriteria).toBeUndefined();
+    });
 
     it(`when the ranges option is not defined
       should not have values`, () => {
