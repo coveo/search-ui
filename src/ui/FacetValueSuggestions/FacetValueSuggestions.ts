@@ -231,7 +231,7 @@ export class FacetValueSuggestions extends Component {
       return [];
     }
 
-    return await this.getSuggestionsForWords(allKeywordsToQuery, omnibox);
+    return this.getSuggestionsForWords(allKeywordsToQuery, omnibox);
   }
 
   private async getSuggestionsForWords(keywordToQuery: IQuerySuggestionKeyword[], omnibox: Omnibox): Promise<IOmniboxSuggestion[]> {
