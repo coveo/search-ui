@@ -12,7 +12,7 @@ export class DynamicFacetQueryController {
   private freezeCurrentValues = false;
   private freezeFacetOrder = false;
 
-  constructor(private facet: DynamicFacet) {
+  constructor(protected facet: DynamicFacet) {
     this.resetNumberOfValuesToRequest();
     this.resetFreezeCurrentValuesDuringQuery();
   }
@@ -33,11 +33,27 @@ export class DynamicFacetQueryController {
   }
 
   public enableFreezeCurrentValuesFlag() {
+    if (this.areValuesIncorrectlyAffectedByDependsOn) {
+      return;
+    }
+
     this.freezeCurrentValues = true;
   }
 
   public enableFreezeFacetOrderFlag() {
     this.freezeFacetOrder = true;
+  }
+
+  private get areValuesIncorrectlyAffectedByDependsOn() {
+    if (!this.facet.dependsOnManager.hasDependentFacets) {
+      return false;
+    }
+
+    if (this.facet.dependsOnManager.dependentFacetsHaveSelectedValues) {
+      return false;
+    }
+
+    return this.currentValues.length < this.numberOfValuesToRequest;
   }
 
   /**
@@ -84,14 +100,15 @@ export class DynamicFacetQueryController {
     return this.facet.queryController.getEndpoint().search(query);
   }
 
-  private get currentValues(): IFacetRequestValue[] {
-    return this.facet.values.allFacetValues.map(({ value, state }) => ({
+  protected get currentValues(): IFacetRequestValue[] {
+    return this.facet.values.allFacetValues.map(({ value, state, preventAutoSelect }) => ({
       value,
-      state
+      state,
+      preventAutoSelect
     }));
   }
 
-  private get numberOfValues() {
+  protected get numberOfValues() {
     if (this.freezeCurrentValues) {
       return this.currentValues.length;
     }

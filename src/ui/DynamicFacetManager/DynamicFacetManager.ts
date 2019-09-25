@@ -2,7 +2,6 @@ import { Component } from '../Base/Component';
 import { DynamicFacet } from '../DynamicFacet/DynamicFacet';
 import { InitializationEvents } from '../../events/InitializationEvents';
 import { QueryEvents, IQuerySuccessEventArgs, IDoneBuildingQueryEventArgs } from '../../events/QueryEvents';
-import { IComponentBindings } from '../Base/ComponentBindings';
 import { exportGlobally } from '../../GlobalExports';
 import { find, without, partition } from 'underscore';
 import { IFacetResponse } from '../../rest/Facet/FacetResponse';
@@ -11,6 +10,7 @@ import { Utils } from '../../utils/Utils';
 import { ComponentOptions } from '../Base/ComponentOptions';
 import { Assert } from '../../misc/Assert';
 import { Initialization } from '../Base/Initialization';
+import { ComponentsTypes } from '../../utils/ComponentsTypes';
 
 export interface IDynamicFacetManagerOptions {
   enableReorder?: boolean;
@@ -28,15 +28,17 @@ export interface IDynamicFacetManagerCompareFacet {
 }
 
 /**
- * The `DynamicFacetManager` component is meant to be a parent for multiple [DynamicFacet]{@link DynamicFacet} components.
- * It allows more control over the rendering and ordering of the children [DynamicFacet]{@link DynamicFacet} components.
+ * The `DynamicFacetManager` component is meant to be a parent for multiple [DynamicFacet]{@link DynamicFacet} & [DynamicFacetRange]{@link DynamicFacetRange} components.
+ * This component allows controlling a set of [`DynamicFacet`]{@link DynamicFacet} and [`DynamicFacetRange`]{@link DynamicFacetRange} as a group.
+ *
+ * See [Using Dynamic Facets](https://docs.coveo.com/en/2917/).
  */
 export class DynamicFacetManager extends Component {
   static ID = 'DynamicFacetManager';
   static doExport = () => exportGlobally({ DynamicFacetManager });
 
   /**
-   * The options for the DynamicFacet
+   * The options for the DynamicFacetManager
    * @componentOptions
    */
   static options: IDynamicFacetManagerOptions = {
@@ -95,8 +97,8 @@ export class DynamicFacetManager extends Component {
     return this.childrenFacets.filter(facet => !facet.disabled);
   }
 
-  private get facetsWithValues() {
-    return this.childrenFacets.filter(facet => !facet.values.isEmpty);
+  private get facetsWithDisplayedValues() {
+    return this.childrenFacets.filter(facet => facet.values.hasDisplayedValues);
   }
 
   /**
@@ -106,7 +108,7 @@ export class DynamicFacetManager extends Component {
    * @param options The component options.
    * @param bindings The component bindings. Automatically resolved by default.
    */
-  constructor(element: HTMLElement, public options?: IDynamicFacetManagerOptions, private bindings?: IComponentBindings) {
+  constructor(element: HTMLElement, public options?: IDynamicFacetManagerOptions) {
     super(element, 'DynamicFacetManager');
     this.options = ComponentOptions.initComponentOptions(element, DynamicFacetManager, options);
 
@@ -133,9 +135,17 @@ export class DynamicFacetManager extends Component {
     this.bind.onRootElement(QueryEvents.querySuccess, (data: IQuerySuccessEventArgs) => this.handleQuerySuccess(data));
   }
 
+  private isDynamicFacet(component: Component) {
+    return component instanceof DynamicFacet;
+  }
+
+  private get allDynamicFacets(): DynamicFacet[] {
+    const allFacetsInComponent = ComponentsTypes.getAllFacetsInstance(this.element);
+    return <DynamicFacet[]>allFacetsInComponent.filter(this.isDynamicFacet);
+  }
+
   private handleAfterComponentsInitialization() {
-    const allDynamicFacets = this.bindings.searchInterface.getComponents<DynamicFacet>('DynamicFacet');
-    this.childrenFacets = allDynamicFacets.filter(dynamicFacet => this.element.contains(dynamicFacet.element));
+    this.childrenFacets = this.allDynamicFacets;
     this.childrenFacets.forEach(dynamicFacet => (dynamicFacet.dynamicFacetManager = this));
 
     if (!this.childrenFacets.length) {
@@ -184,7 +194,7 @@ export class DynamicFacetManager extends Component {
     this.resetContainer();
     const fragment = document.createDocumentFragment();
 
-    this.facetsWithValues.forEach((dynamicFacet, index) => {
+    this.childrenFacets.forEach((dynamicFacet, index) => {
       fragment.appendChild(dynamicFacet.element);
 
       if (this.options.onUpdate) {
@@ -203,7 +213,7 @@ export class DynamicFacetManager extends Component {
       return;
     }
 
-    const [collapsableFacets, uncollapsableFacets] = partition(this.facetsWithValues, facet => facet.options.enableCollapse);
+    const [collapsableFacets, uncollapsableFacets] = partition(this.facetsWithDisplayedValues, facet => facet.options.enableCollapse);
     const [facetsWithActiveValues, remainingFacets] = partition(collapsableFacets, facet => facet.values.hasActiveValues);
     const indexOfFirstFacetToCollapse =
       this.options.maximumNumberOfExpandedFacets - uncollapsableFacets.length - facetsWithActiveValues.length;

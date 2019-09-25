@@ -278,6 +278,9 @@ TimespanFacet.doExport();
 import { DynamicFacet } from './ui/DynamicFacet/DynamicFacet';
 DynamicFacet.doExport();
 
+import { DynamicFacetRange } from './ui/DynamicFacet/DynamicFacetRange';
+DynamicFacetRange.doExport();
+
 import { DynamicFacetManager } from './ui/DynamicFacetManager/DynamicFacetManager';
 DynamicFacetManager.doExport();
 

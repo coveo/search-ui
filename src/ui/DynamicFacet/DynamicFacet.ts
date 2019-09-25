@@ -4,7 +4,7 @@ import { $$ } from '../../utils/Dom';
 import { exportGlobally } from '../../GlobalExports';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
-import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
+import { ComponentOptions } from '../Base/ComponentOptions';
 import { Initialization } from '../Base/Initialization';
 import { ResponsiveFacetOptions } from '../ResponsiveComponents/ResponsiveFacetOptions';
 import { ResponsiveDynamicFacets } from '../ResponsiveComponents/ResponsiveDynamicFacets';
@@ -18,7 +18,6 @@ import { Utils } from '../../utils/Utils';
 import { MODEL_EVENTS, IAttributesChangedEventArg } from '../../models/Model';
 import { Assert } from '../../misc/Assert';
 import { IFacetResponse } from '../../rest/Facet/FacetResponse';
-import { IResponsiveComponentOptions } from '../ResponsiveComponents/ResponsiveComponentsManager';
 import { IStringMap } from '../../rest/GenericParam';
 import { isFacetSortCriteria } from '../../rest/Facet/FacetSortCriteria';
 import { l } from '../../strings/Strings';
@@ -33,6 +32,8 @@ import { DynamicFacetSearch } from '../DynamicFacetSearch/DynamicFacetSearch';
 import { ResultListUtils } from '../../utils/ResultListUtils';
 import { IQueryResults } from '../../rest/QueryResults';
 import { FacetType } from '../../rest/Facet/FacetRequest';
+import { DependsOnManager, IDependentFacet } from '../../utils/DependsOnManager';
+import { IDynamicFacetCommonOptions } from './DynamicFacetCommonOptions';
 
 export interface Rendererable {
   render(): HTMLElement;
@@ -43,22 +44,14 @@ export interface IRendererableKlass {
   new (): Rendererable;
 }
 
-export interface IDynamicFacetOptions extends IResponsiveComponentOptions {
-  id?: string;
-  title?: string;
-  field?: IFieldOption;
+export interface IDynamicFacetOptions extends IDynamicFacetCommonOptions {
   sortCriteria?: string;
-  numberOfValues?: number;
-  enableCollapse?: boolean;
-  enableScrollToTop?: boolean;
   enableMoreLess?: boolean;
   enableFacetSearch?: boolean;
   useLeadingWildcardInFacetSearch?: boolean;
-  collapsedByDefault?: boolean;
-  includeInBreadcrumb?: boolean;
-  numberOfValuesInBreadcrumb?: number;
   valueCaption?: any;
   customHeader?: IRendererableKlass;
+  dependsOn?: string;
 }
 
 /**
@@ -187,7 +180,7 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
      * Whether to enable the **Show more** and **Show less** buttons in the facet.
      *
      * **Note:**
-     * > The [`DynamicRangeFacet`]{@link DynamicRangeFacet} component does not support this option.
+     * > The [`DynamicFacetRange`]{@link DynamicFacetRange} component does not support this option.
      *
      * **Default:** `true`
      */
@@ -197,7 +190,7 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
      * Whether to allow the end-user to search the facet values.
      *
      * **Note:**
-     * > The [`DynamicRangeFacet`]{@link DynamicRangeFacet} component does not support this option.
+     * > The [`DynamicFacetRange`]{@link DynamicFacetRange} component does not support this option.
      *
      * **Default:** `undefined`, and the following behavior applies:
      * - Will be enabled when more facet values are available from the server.
@@ -210,7 +203,7 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
      * See also the [enableFacetSearch]{@link DynamicFacet.options.enableFacetSearch} option.
      *
      * **Note:**
-     * > The [`DynamicRangeFacet`]{@link DynamicRangeFacet} component does not support this option.
+     * > The [`DynamicFacetRange`]{@link DynamicFacetRange} component does not support this option.
      *
      * **Default:** `true`
      */
@@ -260,9 +253,16 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
      * See [Normalizing Facet Value Captions](https://developers.coveo.com/x/jBsvAg).
      *
      * **Note:**
-     * > The [`DynamicRangeFacet`]{@link DynamicRangeFacet} component does not support this option.
+     * > The [`DynamicFacetRange`]{@link DynamicFacetRange} component does not support this option.
      */
     valueCaption: ComponentOptions.buildJsonOption<IStringMap<string>>(),
+    /**
+     * The id of another facet in which at least one value must be selected in order
+     * for the dependent facet to be visible.
+     *
+     * **Default:** `undefined` and the facet does not depend on any other facet to be displayed.
+     */
+    dependsOn: ComponentOptions.buildStringOption(),
     customHeader: ComponentOptions.buildCustomOption<IRendererableKlass>(() => {
       return null;
     })
@@ -273,6 +273,7 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
   private header: DynamicFacetHeader;
 
   public dynamicFacetManager: DynamicFacetManager;
+  public dependsOnManager: DependsOnManager;
   public dynamicFacetQueryController: DynamicFacetQueryController;
   public values: DynamicFacetValues;
   private search: DynamicFacetSearch;
@@ -297,13 +298,12 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
     this.options = ComponentOptions.initComponentOptions(element, DynamicFacet, options);
 
     this.initDynamicFacetQueryController();
+    this.initDependsOnManager();
     this.initQueryEvents();
     this.initQueryStateEvents();
     this.initBreadCrumbEvents();
     this.initComponentStateEvents();
-
-    this.values = new DynamicFacetValues(this);
-
+    this.initValues();
     this.verifyCollapsingConfiguration();
     this.isCollapsed = this.options.enableCollapse && this.options.collapsedByDefault;
 
@@ -346,7 +346,7 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
     values.forEach(value => {
       this.values.get(value).select();
     });
-    this.handleFacetValuesChanged();
+    this.updateQueryStateModel();
   }
 
   /**
@@ -377,7 +377,7 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
     values.forEach(value => {
       this.values.get(value).deselect();
     });
-    this.handleFacetValuesChanged();
+    this.updateQueryStateModel();
   }
 
   /**
@@ -390,8 +390,10 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
   public toggleSelectValue(value: string) {
     Assert.exists(value);
     this.ensureDom();
-    this.logger.info('Toggle select facet value', this.values.get(value).toggleSelect());
-    this.handleFacetValuesChanged();
+    const facetValue = this.values.get(value);
+    facetValue.toggleSelect();
+    this.logger.info('Toggle select facet value', facetValue);
+    this.updateQueryStateModel();
   }
 
   /**
@@ -554,6 +556,7 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
     this.includedAttributeId = QueryStateModel.getFacetId(this.options.id);
     this.queryStateModel.registerNewAttribute(this.includedAttributeId, []);
     this.bind.onQueryState(MODEL_EVENTS.CHANGE, undefined, this.handleQueryStateChanged);
+    this.dependsOnManager.listenToParentIfDependentFacet();
   }
 
   protected initBreadCrumbEvents() {
@@ -565,12 +568,16 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
     }
   }
 
+  protected initValues() {
+    this.values = new DynamicFacetValues(this);
+  }
+
   private initComponentStateEvents() {
     const componentStateId = QueryStateModel.getFacetId(this.options.id);
     this.componentStateModel.registerComponent(componentStateId, this);
   }
 
-  private initDynamicFacetQueryController() {
+  protected initDynamicFacetQueryController() {
     this.dynamicFacetQueryController = new DynamicFacetQueryController(this);
   }
 
@@ -596,6 +603,7 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
     this.position = index + 1;
 
     this.onQueryResponse(response);
+    this.updateQueryStateModel();
     this.header.hideLoading();
     this.values.render();
     this.updateAppearance();
@@ -626,8 +634,10 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
 
   private handleQueryStateChangedIncluded = (querySelectedValues: string[]) => {
     const currentSelectedValues = this.values.selectedValues;
-    const valuesToSelect = difference(querySelectedValues, currentSelectedValues);
-    const valuesToDeselect = difference(currentSelectedValues, querySelectedValues);
+    const validQuerySelectedValues = querySelectedValues.filter(value => this.values.get(value));
+
+    const valuesToSelect = difference(validQuerySelectedValues, currentSelectedValues);
+    const valuesToDeselect = difference(currentSelectedValues, validQuerySelectedValues);
 
     if (Utils.isNonEmptyArray(valuesToSelect)) {
       this.selectMultipleValues(valuesToSelect);
@@ -651,6 +661,25 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
 
     const breadcrumbs = new DynamicFacetBreadcrumbs(this);
     args.breadcrumbs.push({ element: breadcrumbs.element });
+  }
+
+  private initDependsOnManager() {
+    const facetInfo: IDependentFacet = {
+      reset: () => this.reset(),
+      toggleDependentFacet: dependentFacet => this.toggleDependentFacet(dependentFacet),
+      element: this.element,
+      root: this.root,
+      dependsOn: this.options.dependsOn,
+      id: this.options.id,
+      queryStateModel: this.queryStateModel,
+      bind: this.bind
+    };
+
+    this.dependsOnManager = new DependsOnManager(facetInfo);
+  }
+
+  private toggleDependentFacet(dependentFacet: Component) {
+    this.values.hasSelectedValue ? dependentFacet.enable() : dependentFacet.disable();
   }
 
   public createDom() {
@@ -682,18 +711,10 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
     this.element.appendChild(this.values.render());
   }
 
-  private handleFacetValuesChanged() {
-    this.updateQueryStateModel();
-  }
-
   private updateQueryStateModel() {
     this.listenToQueryStateChange = false;
-    this.updateIncludedQueryStateModel();
-    this.listenToQueryStateChange = true;
-  }
-
-  private updateIncludedQueryStateModel() {
     this.queryStateModel.set(this.includedAttributeId, this.values.selectedValues);
+    this.listenToQueryStateChange = true;
   }
 
   private updateAppearance() {
@@ -702,7 +723,9 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
     this.toggleSearchDisplay();
     $$(this.element).toggleClass('coveo-dynamic-facet-collapsed', this.isCollapsed);
     $$(this.element).toggleClass('coveo-active', this.values.hasSelectedValues);
-    $$(this.element).toggleClass('coveo-hidden', this.values.isEmpty);
+    $$(this.element).removeClass('coveo-hidden');
+    this.dependsOnManager.updateVisibilityBasedOnDependsOn();
+    !this.values.hasDisplayedValues && $$(this.element).addClass('coveo-hidden');
   }
 
   private toggleSearchDisplay() {

@@ -1,13 +1,13 @@
-import { ExpressionBuilder } from './ExpressionBuilder';
-import { IRankingFunction } from '../../rest/RankingFunction';
-import { IQueryFunction } from '../../rest/QueryFunction';
-import { IGroupByRequest } from '../../rest/GroupByRequest';
-import { IQuery, IFacetOptions, IUserActionsRequest } from '../../rest/Query';
-import { QueryBuilderExpression } from './QueryBuilderExpression';
 import * as _ from 'underscore';
-import { Utils } from '../../utils/Utils';
 import { ICategoryFacetRequest } from '../../rest/CategoryFacetRequest';
 import { IFacetRequest } from '../../rest/Facet/FacetRequest';
+import { IGroupByRequest } from '../../rest/GroupByRequest';
+import { IFacetOptions, IQuery, IUserActionsRequest } from '../../rest/Query';
+import { IQueryFunction } from '../../rest/QueryFunction';
+import { IRankingFunction } from '../../rest/RankingFunction';
+import { Utils } from '../../utils/Utils';
+import { ExpressionBuilder } from './ExpressionBuilder';
+import { QueryBuilderExpression } from './QueryBuilderExpression';
 
 /**
  * The QueryBuilder is used to build a {@link IQuery} that will be able to be executed using the Search API.
@@ -85,7 +85,7 @@ export class QueryBuilder {
    *
    * Setting this attribute to `true` enables the wildcards features of the index, effectively expanding keywords
    * containing wildcard characters (`*`) to the possible matching keywords in order to broaden the query (see
-   * [Using Wildcards in Queries](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=359)).
+   * [Using Wildcards in Queries](https://www.coveo.com/go?dest=cloudhelp&lcid=9&context=359)).
    *
    * See also [`enableQuestionMarks`]{@link QueryBuilder.enableQuestionMarks}.
    *
@@ -98,7 +98,7 @@ export class QueryBuilder {
 
   /**
    * Whether to interpret question mark characters (`?`) in the basic [`expression`]{@link QueryBuilder.expression}
-   * keywords (see [Using Wildcards in Queries](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=359).
+   * keywords (see [Using Wildcards in Queries](https://www.coveo.com/go?dest=cloudhelp&lcid=9&context=359).
    *
    * Setting this attribute to `true` has no effect unless [`enableWildcards`]{@link QueryBuilder.enableWildcards} is
    * also `true`.
@@ -113,7 +113,7 @@ export class QueryBuilder {
   /**
    * Whether to interpret special query syntax (e.g., `@objecttype=message`) in the basic
    * [`expression`]{@link QueryBuilder.expression} (see
-   * [Coveo Query Syntax Reference](http://www.coveo.com/go?dest=adminhelp70&lcid=9&context=10005)).
+   * [Coveo Query Syntax Reference](https://www.coveo.com/go?dest=adminhelp70&lcid=9&context=10005)).
    *
    * See also [`enableLowercaseOperators`]{@link QueryBuilder.enableLowercaseOperators}.
    *
@@ -528,11 +528,19 @@ export class QueryBuilder {
     return this.groupByRequests;
   }
 
+  private set groupBy(groupBy: IGroupByRequest[]) {
+    this.groupByRequests = groupBy;
+  }
+
   private get facets() {
     if (Utils.isEmptyArray(this.facetRequests)) {
       return undefined;
     }
 
     return this.facetRequests;
+  }
+
+  private set facets(facets: IFacetRequest[]) {
+    this.facetRequests = facets;
   }
 }

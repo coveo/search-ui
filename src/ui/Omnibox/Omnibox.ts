@@ -5,27 +5,36 @@
 
 import 'styling/_Omnibox';
 import * as _ from 'underscore';
-import { exportGlobally } from '../../GlobalExports';
+import { findWhere } from 'underscore';
+import { BreadcrumbEvents } from '../../events/BreadcrumbEvents';
 import {
   IOmniboxPreprocessResultForQueryEventArgs,
   IPopulateOmniboxSuggestionsEventArgs,
-  OmniboxEvents,
-  IQuerySuggestSelection
+  IQuerySuggestSelection,
+  OmniboxEvents
 } from '../../events/OmniboxEvents';
-import { IBuildingQueryEventArgs, IDuringQueryEventArgs, QueryEvents, INewQueryEventArgs } from '../../events/QueryEvents';
+import { IBuildingQueryEventArgs, IDuringQueryEventArgs, INewQueryEventArgs, QueryEvents } from '../../events/QueryEvents';
 import { StandaloneSearchInterfaceEvents } from '../../events/StandaloneSearchInterfaceEvents';
+import { exportGlobally } from '../../GlobalExports';
+import { ExpressionDef } from '../../magicbox/Expression/Expression';
+import { Grammar } from '../../magicbox/Grammar';
+import { Complete } from '../../magicbox/Grammars/Complete';
+import { Expressions } from '../../magicbox/Grammars/Expressions';
+import { createMagicBox, MagicBoxInstance } from '../../magicbox/MagicBox';
+import { Result } from '../../magicbox/Result/Result';
+import { Suggestion } from '../../magicbox/SuggestionsManager';
 import { Assert } from '../../misc/Assert';
 import { COMPONENT_OPTIONS_ATTRIBUTES } from '../../models/ComponentOptionsModel';
 import { IAttributeChangedEventArg, MODEL_EVENTS } from '../../models/Model';
-import { QUERY_STATE_ATTRIBUTES, QueryStateModel } from '../../models/QueryStateModel';
+import { QueryStateModel, QUERY_STATE_ATTRIBUTES } from '../../models/QueryStateModel';
 import { l } from '../../strings/Strings';
 import { $$, Dom } from '../../utils/Dom';
 import { Utils } from '../../utils/Utils';
 import {
+  analyticsActionCauseList,
   IAnalyticsActionCause,
   IAnalyticsNoMeta,
-  IAnalyticsOmniboxSuggestionMeta,
-  analyticsActionCauseList
+  IAnalyticsOmniboxSuggestionMeta
 } from '../Analytics/AnalyticsActionListMeta';
 import { PendingSearchAsYouTypeSearchEvent } from '../Analytics/PendingSearchAsYouTypeSearchEvent';
 import { logSearchBoxSubmitEvent } from '../Analytics/SharedAnalyticsCalls';
@@ -34,23 +43,14 @@ import { IComponentBindings } from '../Base/ComponentBindings';
 import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
 import { Initialization } from '../Base/Initialization';
 import { IQueryboxOptions, Querybox } from '../Querybox/Querybox';
+import { QueryboxOptionsProcessing } from '../Querybox/QueryboxOptionsProcessing';
 import { QueryboxQueryParameters } from '../Querybox/QueryboxQueryParameters';
 import { StandaloneSearchInterface } from '../SearchInterface/SearchInterface';
 import { FieldAddon } from './FieldAddon';
 import { OldOmniboxAddon } from './OldOmniboxAddon';
+import { OmniboxAnalytics } from './OmniboxAnalytics';
 import { QueryExtensionAddon } from './QueryExtensionAddon';
 import { IQuerySuggestAddon, QuerySuggestAddon, VoidQuerySuggestAddon } from './QuerySuggestAddon';
-import { Grammar } from '../../magicbox/Grammar';
-import { Complete } from '../../magicbox/Grammars/Complete';
-import { Expressions } from '../../magicbox/Grammars/Expressions';
-import { Suggestion } from '../../magicbox/SuggestionsManager';
-import { ExpressionDef } from '../../magicbox/Expression/Expression';
-import { Result } from '../../magicbox/Result/Result';
-import { MagicBoxInstance, createMagicBox } from '../../magicbox/MagicBox';
-import { QueryboxOptionsProcessing } from '../Querybox/QueryboxOptionsProcessing';
-import { OmniboxAnalytics } from './OmniboxAnalytics';
-import { findWhere } from 'underscore';
-import { BreadcrumbEvents } from '../../events/BreadcrumbEvents';
 
 export interface IOmniboxSuggestion extends Suggestion {
   executableConfidence?: number;
@@ -178,7 +178,7 @@ export class Omnibox extends Component {
      *
      * The corresponding Coveo ML model must be properly configured in your Coveo Cloud organization, otherwise this
      * option has no effect (see
-     * [Managing Machine Learning Query Suggestions in a Query Pipeline](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=168)).
+     * [Managing Machine Learning Query Suggestions in a Query Pipeline](https://www.coveo.com/go?dest=cloudhelp&lcid=9&context=168)).
      *
      * **Note:**
      * > When you set this option and the [`enableSearchAsYouType`]{@link Omnibox.options.enableSearchAsYouType} option
@@ -225,7 +225,7 @@ export class Omnibox extends Component {
     /**
      * Specifies whether the Coveo Platform should try to interpret special query syntax such as field references in the
      * query that the user enters in the Querybox (see
-     * [Coveo Query Syntax Reference](http://www.coveo.com/go?dest=adminhelp70&lcid=9&context=10005)).
+     * [Coveo Query Syntax Reference](https://www.coveo.com/go?dest=adminhelp70&lcid=9&context=10005)).
      *
      * Setting this option to `true` also causes the query syntax in the Querybox to highlight.
      *
@@ -655,13 +655,24 @@ export class Omnibox extends Component {
         suggestions: [],
         omnibox: this
       };
-      this.bind.trigger(this.element, OmniboxEvents.populateOmniboxSuggestions, suggestionsEventArgs);
+
+      this.triggerOmniboxSuggestions(suggestionsEventArgs);
+
       if (!Utils.isNullOrEmptyString(text)) {
         this.omniboxAnalytics.partialQueries.push(text);
       }
+
       return _.compact(suggestionsEventArgs.suggestions);
     } else {
       return [];
+    }
+  }
+
+  private triggerOmniboxSuggestions(args: IPopulateOmniboxSuggestionsEventArgs) {
+    this.bind.trigger(this.element, OmniboxEvents.populateOmniboxSuggestions, args);
+
+    if (!$$(this.element).isDescendant(this.root)) {
+      this.bind.trigger(this.root, OmniboxEvents.populateOmniboxSuggestions, args);
     }
   }
 
@@ -699,9 +710,17 @@ export class Omnibox extends Component {
       }
     }
 
-    this.bind.trigger(this.element, OmniboxEvents.omniboxPreprocessResultForQuery, preprocessResultForQueryArgs);
+    this.triggerOmniboxPreprocessResultForQuery(preprocessResultForQueryArgs);
     const query = preprocessResultForQueryArgs.result.toString();
     new QueryboxQueryParameters(this.options).addParameters(data.queryBuilder, query);
+  }
+
+  private triggerOmniboxPreprocessResultForQuery(args: IOmniboxPreprocessResultForQueryEventArgs) {
+    this.bind.trigger(this.element, OmniboxEvents.omniboxPreprocessResultForQuery, args);
+
+    if (!$$(this.element).isDescendant(this.root)) {
+      this.bind.trigger(this.root, OmniboxEvents.omniboxPreprocessResultForQuery, args);
+    }
   }
 
   private handleNewQuery(data: INewQueryEventArgs) {

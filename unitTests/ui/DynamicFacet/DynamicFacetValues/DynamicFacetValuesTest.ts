@@ -1,20 +1,23 @@
 import { DynamicFacetValues } from '../../../../src/ui/DynamicFacet/DynamicFacetValues/DynamicFacetValues';
 import { FacetValueState } from '../../../../src/rest/Facet/FacetValueState';
 import { IDynamicFacetValue } from '../../../../src/ui/DynamicFacet/DynamicFacetValues/DynamicFacetValue';
+import { DynamicFacetRangeValueCreator } from '../../../../src/ui/DynamicFacet/DynamicFacetValues/DynamicFacetRangeValueCreator';
 import { DynamicFacet } from '../../../../src/ui/DynamicFacet/DynamicFacet';
 import { DynamicFacetTestUtils } from '../DynamicFacetTestUtils';
 import { $$ } from '../../../../src/Core';
+import { DynamicFacetRangeTestUtils } from '../DynamicFacetRangeTestUtils';
 
 export function DynamicFacetValuesTest() {
   describe('DynamicFacetValues', () => {
+    const valueCount = 8;
     let dynamicFacetValues: DynamicFacetValues;
     let mockFacetValues: IDynamicFacetValue[];
     let facet: DynamicFacet;
 
     beforeEach(() => {
-      facet = DynamicFacetTestUtils.createFakeFacet({ numberOfValues: 5, enableMoreLess: true });
+      facet = DynamicFacetTestUtils.createFakeFacet({ numberOfValues: valueCount, enableMoreLess: true });
 
-      mockFacetValues = DynamicFacetTestUtils.createFakeFacetValues();
+      mockFacetValues = DynamicFacetTestUtils.createFakeFacetValues(valueCount);
       mockFacetValues[1].state = FacetValueState.selected;
       mockFacetValues[3].state = FacetValueState.selected;
 
@@ -28,6 +31,11 @@ export function DynamicFacetValuesTest() {
 
     function createValuesFromResponse() {
       dynamicFacetValues.createFromResponse(DynamicFacetTestUtils.getCompleteFacetResponse(facet, { values: mockFacetValues }));
+    }
+
+    function createValuesFromRanges() {
+      dynamicFacetValues = new DynamicFacetValues(facet, DynamicFacetRangeValueCreator);
+      dynamicFacetValues.createFromRanges(DynamicFacetRangeTestUtils.createFakeRanges(valueCount));
     }
 
     function moreButton() {
@@ -91,14 +99,24 @@ export function DynamicFacetValuesTest() {
       expect(dynamicFacetValues.hasIdleValues).toBe(false);
     });
 
-    it('when there are values, isEmpty should return false', () => {
-      expect(dynamicFacetValues.isEmpty).toBe(false);
+    it('when there are values (non empty or active), hasDisplayedValues should return true', () => {
+      expect(dynamicFacetValues.hasDisplayedValues).toBe(true);
     });
 
-    it('when there are no values, isEmpty should return true', () => {
+    it('when there are only idle values with no results, hasDisplayedValues should return false', () => {
+      const idleValueWithoutResult = mockFacetValues[0];
+      idleValueWithoutResult.state = FacetValueState.idle;
+      idleValueWithoutResult.numberOfResults = 0;
+      mockFacetValues = [idleValueWithoutResult];
+      initializeComponent();
+
+      expect(dynamicFacetValues.hasDisplayedValues).toBe(false);
+    });
+
+    it('when there are no values, hasDisplayedValues should return false', () => {
       mockFacetValues = [];
       initializeComponent();
-      expect(dynamicFacetValues.isEmpty).toBe(true);
+      expect(dynamicFacetValues.hasDisplayedValues).toBe(false);
     });
 
     it('clearAll should set all values to selected=false', () => {
@@ -122,6 +140,14 @@ export function DynamicFacetValuesTest() {
     it('renders the correct number of children', () => {
       const element = dynamicFacetValues.render();
       expect(element.childElementCount).toBe(mockFacetValues.length);
+    });
+
+    it('does not renders children that are idle and without result', () => {
+      mockFacetValues[0].numberOfResults = 0;
+      initializeComponent();
+
+      const element = dynamicFacetValues.render();
+      expect(element.childElementCount).toBe(mockFacetValues.length - 1);
     });
 
     it(`when moreValuesAvailable is false
@@ -196,6 +222,18 @@ export function DynamicFacetValuesTest() {
 
         expect(lessButton()).toBeFalsy();
       });
+    });
+
+    it(`when calling createValuesFromResponse
+    it should create the values correctly`, () => {
+      createValuesFromResponse();
+      expect(dynamicFacetValues.allFacetValues.length).toBe(valueCount);
+    });
+
+    it(`when calling createValuesFromRanges
+    it should create the values correctly`, () => {
+      createValuesFromRanges();
+      expect(dynamicFacetValues.allFacetValues.length).toBe(valueCount);
     });
   });
 }

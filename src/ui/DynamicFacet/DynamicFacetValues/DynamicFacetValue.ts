@@ -4,6 +4,8 @@ import { DynamicFacet } from '../DynamicFacet';
 import { FacetValueState } from '../../../rest/Facet/FacetValueState';
 import { IAnalyticsDynamicFacetMeta, analyticsActionCauseList } from '../../Analytics/AnalyticsActionListMeta';
 import { l } from '../../../strings/Strings';
+import { IRangeValue, RangeType } from '../../../rest/RangeValue';
+import { FacetType } from '../../../rest/Facet/FacetRequest';
 
 export interface ValueRenderer {
   render(): HTMLElement;
@@ -13,33 +15,37 @@ export interface IValueRendererKlass {
   new (facetValue: DynamicFacetValue, facet: DynamicFacet): ValueRenderer;
 }
 
-export interface IDynamicFacetValue {
+export interface IDynamicFacetValue extends IRangeValue {
   value: string;
   displayValue: string;
   state: FacetValueState;
   numberOfResults: number;
   position: number;
+  preventAutoSelect?: boolean;
 }
 
 export class DynamicFacetValue implements IDynamicFacetValue {
   public value: string;
+  public start: RangeType;
+  public end: RangeType;
+  public endInclusive: boolean;
   public state: FacetValueState;
+  public preventAutoSelect = false;
   public numberOfResults: number;
   public position: number;
   public displayValue: string;
   public renderer: ValueRenderer;
   private element: HTMLElement = null;
 
-  constructor(
-    { value, state, numberOfResults, position, displayValue }: IDynamicFacetValue,
-    private facet: DynamicFacet,
-    rendererKlass: IValueRendererKlass = DynamicFacetValueRenderer
-  ) {
-    this.value = value;
-    this.state = state;
-    this.numberOfResults = numberOfResults;
-    this.position = position;
-    this.displayValue = displayValue;
+  constructor(facetValue: IDynamicFacetValue, private facet: DynamicFacet, rendererKlass: IValueRendererKlass = DynamicFacetValueRenderer) {
+    this.value = facetValue.value;
+    this.start = facetValue.start;
+    this.end = facetValue.end;
+    this.endInclusive = facetValue.endInclusive;
+    this.state = facetValue.state;
+    this.numberOfResults = facetValue.numberOfResults;
+    this.position = facetValue.position;
+    this.displayValue = facetValue.displayValue;
     this.renderer = new rendererKlass(this, facet);
   }
 
@@ -52,7 +58,7 @@ export class DynamicFacetValue implements IDynamicFacetValue {
   }
 
   public toggleSelect() {
-    this.state = this.state === FacetValueState.selected ? FacetValueState.idle : FacetValueState.selected;
+    this.state === FacetValueState.selected ? this.deselect() : this.select();
   }
 
   public select() {
@@ -61,6 +67,7 @@ export class DynamicFacetValue implements IDynamicFacetValue {
 
   public deselect() {
     this.state = FacetValueState.idle;
+    this.preventAutoSelect = true;
   }
 
   public equals(arg: string | DynamicFacetValue) {
@@ -74,14 +81,27 @@ export class DynamicFacetValue implements IDynamicFacetValue {
 
   public get selectAriaLabel() {
     const selectOrUnselect = !this.isSelected ? 'SelectValueWithResultCount' : 'UnselectValueWithResultCount';
-    const resultCount = l('ResultCount', this.formattedCount);
+    const resultCount = l('ResultCount', this.formattedCount, this.numberOfResults);
 
     return `${l(selectOrUnselect, this.displayValue, resultCount)}`;
+  }
+
+  public get rangeAnalyticsMeta() {
+    if (this.facet.facetType === FacetType.specific) {
+      return null;
+    }
+
+    return {
+      start: this.start,
+      end: this.end,
+      endInclusive: this.endInclusive
+    };
   }
 
   public get analyticsMeta(): IAnalyticsDynamicFacetMeta {
     return {
       ...this.facet.basicAnalyticsFacetState,
+      ...this.rangeAnalyticsMeta,
       value: this.value,
       valuePosition: this.position,
       displayValue: this.displayValue,

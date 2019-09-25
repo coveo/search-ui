@@ -492,6 +492,9 @@ FacetSliderQueryControllerTest();
 import { DateUtilsTest } from './ui/DateUtilsTest';
 DateUtilsTest();
 
+import { NumberUtilsTest } from './utils/NumberUtilsTest';
+NumberUtilsTest();
+
 import { DebugForResultTest } from './ui/DebugForResultTest';
 DebugForResultTest();
 
@@ -678,6 +681,9 @@ FacetUtilsTest();
 import { DynamicFacetTest } from './ui/DynamicFacet/DynamicFacetTest';
 DynamicFacetTest();
 
+import { DynamicFacetRangeTest } from './ui/DynamicFacet/DynamicFacetRangeTest';
+DynamicFacetRangeTest();
+
 import { DynamicFacetHeaderTest } from './ui/DynamicFacet/DynamicFacetHeader/DynamicFacetHeaderTest';
 DynamicFacetHeaderTest();
 
@@ -708,11 +714,20 @@ DynamicFacetBreadcrumbsTest();
 import { DynamicFacetQueryControllerTest } from './controllers/DynamicFacetQueryControllerTest';
 DynamicFacetQueryControllerTest();
 
+import { DynamicFacetRangeQueryControllerTest } from './controllers/DynamicFacetRangeQueryControllerTest';
+DynamicFacetRangeQueryControllerTest();
+
 import { DynamicFacetManagerTest } from './ui/DynamicFacetManagerTest';
 DynamicFacetManagerTest();
 
-import { DynamicFacetValueFormatterTest } from './ui/DynamicFacet/DynamicFacetValues/DynamicFacetValueFormatterTest';
-DynamicFacetValueFormatterTest();
+import { DynamicFacetValueCreatorTest } from './ui/DynamicFacet/DynamicFacetValues/DynamicFacetValueCreatorTest';
+DynamicFacetValueCreatorTest();
+
+import { DynamicFacetRangeValueCreatorTest } from './ui/DynamicFacet/DynamicFacetValues/DynamicFacetRangeValueCreatorTest';
+DynamicFacetRangeValueCreatorTest();
+
+import { DynamicFacetRangeValueParserTest } from './ui/DynamicFacet/DynamicFacetValues/DynamicFacetRangeValueParserTest';
+DynamicFacetRangeValueParserTest();
 
 import { FacetSearchControllerTest } from './controllers/FacetSearchControllerTest';
 FacetSearchControllerTest();
