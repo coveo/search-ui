@@ -79,6 +79,8 @@ export class DynamicFacetRange extends DynamicFacet implements IComponentBinding
     /**
      * The list of [range values]{@link IRangeValue} to request (see [Requesting Specific FacetRange Values](https://docs.coveo.com/en/2790/)).
      *
+     * This value will override the [`numberOfValues`]{@link DynamicFacet.options.numberOfValues} value.
+     *
      * **Required:** Specifying a value for this option is required for the component to work.
      */
     ranges: ComponentOptions.buildJsonOption<IRangeValue[]>({ required: true })
