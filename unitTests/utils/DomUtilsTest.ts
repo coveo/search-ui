@@ -71,8 +71,11 @@ export function DomUtilsTest() {
         it('should try to load a salesforce result link', async done => {
           DomUtils.getQuickviewHeader(fakeResult, { title: 'foo', showDate: true }, env.build());
           await load('SalesforceResultLink');
-          expect(spy).toHaveBeenCalled();
-          done();
+
+          setTimeout(() => {
+            expect(spy).toHaveBeenCalled();
+            done();
+          }, 0);
         });
       });
     });

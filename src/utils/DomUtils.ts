@@ -10,6 +10,12 @@ import { Logger } from '../misc/Logger';
 import { IComponentBindings } from '../ui/Base/ComponentBindings';
 import { Initialization } from '../Core';
 import { Assert } from '../misc/Assert';
+
+interface IQuickViewHeaderOptions {
+  showDate: boolean;
+  title: string;
+}
+
 export class DomUtils {
   static getPopUpCloseButton(captionForClose: string, captionForReminder: string): string {
     let container = document.createElement('span');
@@ -92,7 +98,7 @@ export class DomUtils {
     return header;
   }
 
-  static getQuickviewHeader(result: IQueryResult, options: { showDate: boolean; title: string }, bindings: IComponentBindings): Dom {
+  static getQuickviewHeader(result: IQueryResult, options: IQuickViewHeaderOptions, bindings: IComponentBindings): Dom {
     let date = '';
     if (options.showDate) {
       const dateValueFromResult = Utils.getFieldValue(result, 'date');
@@ -121,21 +127,29 @@ export class DomUtils {
       resultForResultLink.title = options.title;
     }
 
-    load(toLoad)
-      .then(() => {
-        clickableLinkElement.addClass(`Coveo${toLoad}`);
-        return Initialization.automaticallyCreateComponentsInsideResult(clickableLinkElement.el, resultForResultLink);
-      })
-      .catch(err => {
-        const logger = new Logger(this);
-        logger.error(`Failed to load module ${toLoad} : ${err}`);
-        logger.info(`Fallback on displaying a non clickable header`);
-        clickableLinkElement.text(options.title);
-      })
-      .finally(() => {
-        $$(header.find('.coveo-quickview-left-header')).append(clickableLinkElement.el);
-      });
+    DomUtils.loadResultLink(toLoad, clickableLinkElement, header, resultForResultLink, options);
 
     return header;
+  }
+
+  private static async loadResultLink(
+    toLoad: string,
+    clickableLinkElement: Dom,
+    header: Dom,
+    resultForResultLink: IQueryResult,
+    options: IQuickViewHeaderOptions
+  ) {
+    try {
+      await load(toLoad);
+      clickableLinkElement.addClass(`Coveo${toLoad}`);
+      Initialization.automaticallyCreateComponentsInsideResult(clickableLinkElement.el, resultForResultLink);
+    } catch (err) {
+      const logger = new Logger(this);
+      logger.error(`Failed to load module ${toLoad} : ${err}`);
+      logger.info(`Fallback on displaying a non clickable header`);
+      clickableLinkElement.text(options.title);
+    }
+
+    $$(header.find('.coveo-quickview-left-header')).append(clickableLinkElement.el);
   }
 }
