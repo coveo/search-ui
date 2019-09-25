@@ -21,29 +21,9 @@ export function DynamicFacetRangeTest() {
       spyOn(test.cmp.logger, 'warn');
     }
 
-    it('facet search options should be disabled', () => {
-      options.enableFacetSearch = true;
-      options.useLeadingWildcardInFacetSearch = true;
-      initializeComponent();
-      expect(test.cmp.options.enableFacetSearch).toBe(false);
-      expect(test.cmp.options.useLeadingWildcardInFacetSearch).toBe(false);
-    });
-
-    it('enableMoreLess option should be disabled', () => {
-      options.enableMoreLess = true;
-      initializeComponent();
-      expect(test.cmp.options.enableMoreLess).toBe(false);
-    });
-
-    it('valueCaption option should be disabled', () => {
-      options.valueCaption = { hello: 'bonjour' };
-      initializeComponent();
-      expect(test.cmp.options.valueCaption).toEqual({});
-    });
-
     it(`when the ranges option is not defined
       should not have values`, () => {
-      expect(test.cmp.values.isEmpty).toBe(true);
+      expect(test.cmp.values.hasValues).toBe(false);
     });
 
     it(`when the ranges option is defined

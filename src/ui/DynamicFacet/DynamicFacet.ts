@@ -4,7 +4,7 @@ import { $$ } from '../../utils/Dom';
 import { exportGlobally } from '../../GlobalExports';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
-import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
+import { ComponentOptions } from '../Base/ComponentOptions';
 import { Initialization } from '../Base/Initialization';
 import { ResponsiveFacetOptions } from '../ResponsiveComponents/ResponsiveFacetOptions';
 import { ResponsiveDynamicFacets } from '../ResponsiveComponents/ResponsiveDynamicFacets';
@@ -18,7 +18,6 @@ import { Utils } from '../../utils/Utils';
 import { MODEL_EVENTS, IAttributesChangedEventArg } from '../../models/Model';
 import { Assert } from '../../misc/Assert';
 import { IFacetResponse } from '../../rest/Facet/FacetResponse';
-import { IResponsiveComponentOptions } from '../ResponsiveComponents/ResponsiveComponentsManager';
 import { IStringMap } from '../../rest/GenericParam';
 import { isFacetSortCriteria } from '../../rest/Facet/FacetSortCriteria';
 import { l } from '../../strings/Strings';
@@ -33,22 +32,16 @@ import { DynamicFacetSearch } from '../DynamicFacetSearch/DynamicFacetSearch';
 import { ResultListUtils } from '../../utils/ResultListUtils';
 import { IQueryResults } from '../../rest/QueryResults';
 import { FacetType } from '../../rest/Facet/FacetRequest';
+import { DependsOnManager, IDependentFacet } from '../../utils/DependsOnManager';
+import { IDynamicFacetCommonOptions } from './DynamicFacetCommonOptions';
 
-export interface IDynamicFacetOptions extends IResponsiveComponentOptions {
-  id?: string;
-  title?: string;
-  field?: IFieldOption;
+export interface IDynamicFacetOptions extends IDynamicFacetCommonOptions {
   sortCriteria?: string;
-  numberOfValues?: number;
-  enableCollapse?: boolean;
-  enableScrollToTop?: boolean;
   enableMoreLess?: boolean;
   enableFacetSearch?: boolean;
   useLeadingWildcardInFacetSearch?: boolean;
-  collapsedByDefault?: boolean;
-  includeInBreadcrumb?: boolean;
-  numberOfValuesInBreadcrumb?: number;
   valueCaption?: any;
+  dependsOn?: string;
 }
 
 /**
@@ -252,7 +245,15 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
      * **Note:**
      * > The [`DynamicFacetRange`]{@link DynamicFacetRange} component does not support this option.
      */
-    valueCaption: ComponentOptions.buildJsonOption<IStringMap<string>>()
+    valueCaption: ComponentOptions.buildJsonOption<IStringMap<string>>(),
+
+    /**
+     * The id of another facet in which at least one value must be selected in order
+     * for the dependent facet to be visible.
+     *
+     * **Default:** `undefined` and the facet does not depend on any other facet to be displayed.
+     */
+    dependsOn: ComponentOptions.buildStringOption()
   };
 
   private includedAttributeId: string;
@@ -260,6 +261,7 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
   private header: DynamicFacetHeader;
 
   public dynamicFacetManager: DynamicFacetManager;
+  public dependsOnManager: DependsOnManager;
   public dynamicFacetQueryController: DynamicFacetQueryController;
   public values: DynamicFacetValues;
   private search: DynamicFacetSearch;
@@ -284,6 +286,7 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
     this.options = ComponentOptions.initComponentOptions(element, DynamicFacet, options);
 
     this.initDynamicFacetQueryController();
+    this.initDependsOnManager();
     this.initQueryEvents();
     this.initQueryStateEvents();
     this.initBreadCrumbEvents();
@@ -331,7 +334,7 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
     values.forEach(value => {
       this.values.get(value).select();
     });
-    this.handleFacetValuesChanged();
+    this.updateQueryStateModel();
   }
 
   /**
@@ -362,7 +365,7 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
     values.forEach(value => {
       this.values.get(value).deselect();
     });
-    this.handleFacetValuesChanged();
+    this.updateQueryStateModel();
   }
 
   /**
@@ -378,7 +381,7 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
     const facetValue = this.values.get(value);
     facetValue.toggleSelect();
     this.logger.info('Toggle select facet value', facetValue);
-    this.handleFacetValuesChanged();
+    this.updateQueryStateModel();
   }
 
   /**
@@ -541,6 +544,7 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
     this.includedAttributeId = QueryStateModel.getFacetId(this.options.id);
     this.queryStateModel.registerNewAttribute(this.includedAttributeId, []);
     this.bind.onQueryState(MODEL_EVENTS.CHANGE, undefined, this.handleQueryStateChanged);
+    this.dependsOnManager.listenToParentIfDependentFacet();
   }
 
   protected initBreadCrumbEvents() {
@@ -587,6 +591,7 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
     this.position = index + 1;
 
     this.onQueryResponse(response);
+    this.updateQueryStateModel();
     this.header.hideLoading();
     this.values.render();
     this.updateAppearance();
@@ -646,6 +651,25 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
     args.breadcrumbs.push({ element: breadcrumbs.element });
   }
 
+  private initDependsOnManager() {
+    const facetInfo: IDependentFacet = {
+      reset: () => this.reset(),
+      toggleDependentFacet: dependentFacet => this.toggleDependentFacet(dependentFacet),
+      element: this.element,
+      root: this.root,
+      dependsOn: this.options.dependsOn,
+      id: this.options.id,
+      queryStateModel: this.queryStateModel,
+      bind: this.bind
+    };
+
+    this.dependsOnManager = new DependsOnManager(facetInfo);
+  }
+
+  private toggleDependentFacet(dependentFacet: Component) {
+    this.values.hasSelectedValue ? dependentFacet.enable() : dependentFacet.disable();
+  }
+
   public createDom() {
     this.createAndAppendContent();
     this.updateAppearance();
@@ -675,18 +699,10 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
     this.element.appendChild(this.values.render());
   }
 
-  private handleFacetValuesChanged() {
-    this.updateQueryStateModel();
-  }
-
   private updateQueryStateModel() {
     this.listenToQueryStateChange = false;
-    this.updateIncludedQueryStateModel();
-    this.listenToQueryStateChange = true;
-  }
-
-  private updateIncludedQueryStateModel() {
     this.queryStateModel.set(this.includedAttributeId, this.values.selectedValues);
+    this.listenToQueryStateChange = true;
   }
 
   private updateAppearance() {
@@ -695,7 +711,9 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
     this.toggleSearchDisplay();
     $$(this.element).toggleClass('coveo-dynamic-facet-collapsed', this.isCollapsed);
     $$(this.element).toggleClass('coveo-active', this.values.hasSelectedValues);
-    $$(this.element).toggleClass('coveo-hidden', this.values.isEmpty);
+    $$(this.element).removeClass('coveo-hidden');
+    this.dependsOnManager.updateVisibilityBasedOnDependsOn();
+    !this.values.hasDisplayedValues && $$(this.element).addClass('coveo-hidden');
   }
 
   private toggleSearchDisplay() {

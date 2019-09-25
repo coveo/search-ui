@@ -710,6 +710,7 @@ export class Facet extends Component {
   public facetValuesList: FacetValuesList;
   public facetHeader: FacetHeader;
   public searchContainer: ValueElementRenderer;
+  public dependsOnManager: DependsOnManager;
 
   protected omniboxZIndex;
   protected moreElement: HTMLElement;
@@ -719,7 +720,6 @@ export class Facet extends Component {
   protected footerElement: HTMLElement;
   private canFetchMore: boolean = true;
   private nbAvailableValues: number;
-  private dependsOnManager: DependsOnManager;
 
   private showingWaitAnimation = false;
   private pinnedViewportPosition: number;

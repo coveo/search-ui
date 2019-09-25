@@ -36,6 +36,19 @@ export class DependsOnManager {
     $$(this.facet.element).toggleClass('coveo-hidden', !this.parentFacetHasSelectedValues);
   }
 
+  private get dependentFacets() {
+    const allFacets = ComponentsTypes.getAllFacetsInstance(this.facet.root);
+    return allFacets.filter(facet => this.facet.id === facet.options.dependsOn);
+  }
+
+  public get hasDependentFacets() {
+    return !!this.dependentFacets.length;
+  }
+
+  public get dependentFacetsHaveSelectedValues() {
+    return this.dependentFacets.some(facet => this.valuesExistForFacetWithId(facet.options.id));
+  }
+
   private get isDependentFacet() {
     return Utils.isNonEmptyString(this.facetDependsOnField);
   }
@@ -53,22 +66,16 @@ export class DependsOnManager {
   }
 
   private get parentFacetHasSelectedValues() {
-    const parentSelectedValuesId = QueryStateModel.getFacetId(this.facetDependsOnField);
-    return this.valuesExistForFacetWithId(parentSelectedValuesId);
+    return this.valuesExistForFacetWithId(this.facetDependsOnField);
   }
 
-  private valuesExistForFacetWithId(id: string) {
-    const values = this.facet.queryStateModel.get(id);
+  private valuesExistForFacetWithId(facetId: string) {
+    const values = this.facet.queryStateModel.get(QueryStateModel.getFacetId(facetId));
     return values != null && values.length != 0;
   }
 
   private handleNewQuery() {
-    const allFacets = ComponentsTypes.getAllFacetsInstance(this.facet.root);
-    const dependentFacets = allFacets.filter(facet => {
-      return this.facet.id === facet.options.dependsOn;
-    });
-
-    dependentFacets.forEach(dependentFacet => {
+    this.dependentFacets.forEach(dependentFacet => {
       this.facet.toggleDependentFacet(dependentFacet);
     });
   }
