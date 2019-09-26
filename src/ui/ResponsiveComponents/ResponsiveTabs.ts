@@ -110,7 +110,10 @@ export class ResponsiveTabs implements IResponsiveComponent {
   }
 
   private shouldAddTabsToDropdown(): boolean {
-    return this.isOverflowing(this.tabSection.el) && ResponsiveComponentsUtils.isSmallTabsActivated(this.coveoRoot);
+    return (
+      (this.isOverflowing(this.tabSection.el) || this.tabSection.el.clientWidth === 0) &&
+      ResponsiveComponentsUtils.isSmallTabsActivated(this.coveoRoot)
+    );
   }
 
   private addTabsToDropdown(): void {
@@ -140,7 +143,10 @@ export class ResponsiveTabs implements IResponsiveComponent {
 
   private shouldRemoveTabsFromDropdown(): boolean {
     return (
-      !this.isOverflowing(this.tabSection.el) && ResponsiveComponentsUtils.isSmallTabsActivated(this.coveoRoot) && !this.isDropdownEmpty()
+      !this.isOverflowing(this.tabSection.el) &&
+      this.tabSection.el.clientWidth !== 0 &&
+      ResponsiveComponentsUtils.isSmallTabsActivated(this.coveoRoot) &&
+      !this.isDropdownEmpty()
     );
   }
 
