@@ -3,13 +3,17 @@ import * as Mock from '../MockEnvironment';
 import { IFieldOption } from '../../src/ui/Base/ComponentOptions';
 import { IIndexFieldValue } from '../../src/rest/FieldValue';
 import { IListFieldValuesRequest } from '../../src/rest/ListFieldValuesRequest';
+import { IQuerySuggestionKeyword } from '../../src/ui/FacetValueSuggestions/FacetValueSuggestions';
 
 export function FacetValueSuggestionsProviderTest() {
   describe('FacetValueSuggestionsProvider', () => {
     let test: FacetValueSuggestionsProvider;
     let environment: Mock.IMockEnvironment;
     const someField: IFieldOption = '@bloupbloup';
-    const valueToSearch = 'cowboy';
+    const valueToSearch: IQuerySuggestionKeyword = {
+      text: 'cowboy',
+      html: `<span class='coveo-omnibox-hightlight'>cowboy</span>`
+    };
     const referenceFieldNumberOfResults = 10;
     const suggestion = 'suggestion';
 
@@ -61,7 +65,7 @@ export function FacetValueSuggestionsProviderTest() {
             field: someField,
             ignoreAccents: true,
             maximumNumberOfValues: 3,
-            queryOverride: valueToSearch
+            queryOverride: valueToSearch.text
           },
           {
             field: someField
