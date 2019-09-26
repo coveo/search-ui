@@ -9,7 +9,7 @@ import { Initialization } from '../Base/Initialization';
 import { ResponsiveFacetOptions } from '../ResponsiveComponents/ResponsiveFacetOptions';
 import { ResponsiveDynamicFacets } from '../ResponsiveComponents/ResponsiveDynamicFacets';
 import { DynamicFacetBreadcrumbs } from './DynamicFacetBreadcrumbs';
-import { DynamicFacetHeader } from './DynamicFacetHeader/DynamicFacetHeader';
+import { DynamicFacetHeader, ICustomHeaderRenderer } from './DynamicFacetHeader/DynamicFacetHeader';
 import { DynamicFacetValues } from './DynamicFacetValues/DynamicFacetValues';
 import { QueryEvents, IQuerySuccessEventArgs, IDoneBuildingQueryEventArgs } from '../../events/QueryEvents';
 import { QueryStateModel } from '../../models/QueryStateModel';
@@ -35,14 +35,7 @@ import { FacetType } from '../../rest/Facet/FacetRequest';
 import { DependsOnManager, IDependentFacet } from '../../utils/DependsOnManager';
 import { IDynamicFacetCommonOptions } from './DynamicFacetCommonOptions';
 
-export interface Rendererable {
-  render(): HTMLElement;
-  allo(): void;
-}
-
-export interface IRendererableKlass {
-  new (): Rendererable;
-}
+export type IDynamicFacetElementRenderer = (facet: DynamicFacet) => HTMLElement;
 
 export interface IDynamicFacetOptions extends IDynamicFacetCommonOptions {
   sortCriteria?: string;
@@ -50,8 +43,8 @@ export interface IDynamicFacetOptions extends IDynamicFacetCommonOptions {
   enableFacetSearch?: boolean;
   useLeadingWildcardInFacetSearch?: boolean;
   valueCaption?: any;
-  customHeader?: IRendererableKlass;
   dependsOn?: string;
+  customHeaderRenderer?: ICustomHeaderRenderer;
 }
 
 /**
@@ -263,7 +256,10 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
      * **Default:** `undefined` and the facet does not depend on any other facet to be displayed.
      */
     dependsOn: ComponentOptions.buildStringOption(),
-    customHeader: ComponentOptions.buildCustomOption<IRendererableKlass>(() => {
+    /**
+     * Makes cuztomization possible for headers.
+     */
+    customHeaderRenderer: ComponentOptions.buildCustomOption<ICustomHeaderRenderer>(() => {
       return null;
     })
   };

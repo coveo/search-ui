@@ -3,10 +3,33 @@ import { $$, Dom } from '../../../utils/Dom';
 import { l } from '../../../strings/Strings';
 import { SVGIcons } from '../../../utils/SVGIcons';
 import { SVGDom } from '../../../utils/SVGDom';
-import { DynamicFacet } from '../DynamicFacet';
+import { DynamicFacet, IDynamicFacetElementRenderer } from '../DynamicFacet';
 import { DynamicFacetHeaderButton } from './DynamicFacetHeaderButton';
 import { DynamicFacetHeaderCollapseToggle } from './DynamicFacetHeaderCollapseToggle';
 import { analyticsActionCauseList } from '../../Analytics/AnalyticsActionListMeta';
+
+export interface ICustomHeaderRenderer {
+  /**
+   * Replace the element with the `coveo-dynamic-facet-header-title` class.
+   */
+  renderTitle?: IDynamicFacetElementRenderer;
+  /**
+   * Replace the element with the `coveo-dynamic-facet-header-wait-animation` class.
+   */
+  renderWaitAnimation?: IDynamicFacetElementRenderer;
+  /**
+   * Replace the element with the `coveo-dynamic-facet-header-clear` class.
+   */
+  renderClearButton?: IDynamicFacetElementRenderer;
+  /**
+   * Replace the element with the `coveo-dynamic-facet-header-collapse` class.
+   */
+  renderCollapseButton?: IDynamicFacetElementRenderer;
+  /**
+   * Replace the element with the `coveo-dynamic-facet-header-expand` class.
+   */
+  renderExpandButton?: IDynamicFacetElementRenderer;
+}
 
 export class DynamicFacetHeader {
   public static showLoadingDelay = 2000;
@@ -16,21 +39,17 @@ export class DynamicFacetHeader {
   private clearButton: DynamicFacetHeaderButton;
   private collapseToggle: DynamicFacetHeaderCollapseToggle;
   private showLoadingTimeout: number;
+  private customRenderer: ICustomHeaderRenderer;
 
   constructor(private facet: DynamicFacet) {
+    this.customRenderer = facet.options.customHeaderRenderer || {};
     this.render();
   }
 
   private render() {
-    if (this.facet.options.customHeader) {
-      const customHeader = new this.facet.options.customHeader();
-      this.element = customHeader.render();
-    } else {
-      this.element = $$('div', { className: 'coveo-dynamic-facet-header' }).el;
-    }
+    this.element = $$('div', { className: 'coveo-dynamic-facet-header' }).el;
 
-    this.title = this.createTitle();
-    $$(this.element).append(this.title.el);
+    $$(this.element).append(this.createTitle());
     $$(this.element).append(this.createWaitAnimation());
     $$(this.element).append(this.createClearButton());
     this.facet.options.enableCollapse && this.enableCollapse();
@@ -42,7 +61,8 @@ export class DynamicFacetHeader {
       ariaLabel: l('Clear', this.facet.options.title),
       className: 'coveo-dynamic-facet-header-clear',
       shouldDisplay: false,
-      action: () => this.clear()
+      action: () => this.clear(),
+      customElement: this.customRenderer.renderClearButton && this.customRenderer.renderClearButton(this.facet)
     });
 
     return this.clearButton.element;
@@ -60,7 +80,7 @@ export class DynamicFacetHeader {
   }
 
   private createCollapseToggle() {
-    this.collapseToggle = new DynamicFacetHeaderCollapseToggle(this.facet);
+    this.collapseToggle = new DynamicFacetHeaderCollapseToggle(this.facet, this.customRenderer);
     return this.collapseToggle.element;
   }
 
@@ -75,7 +95,9 @@ export class DynamicFacetHeader {
   }
 
   private createTitle() {
-    return $$(
+    this.title = this.customRenderer.renderTitle 
+    ? $$(this.customRenderer.renderTitle(this.facet))
+    : $$(
       'h2',
       {
         className: 'coveo-dynamic-facet-header-title',
@@ -83,13 +105,19 @@ export class DynamicFacetHeader {
       },
       $$('span', { ariaHidden: true, title: this.facet.options.title }, this.facet.options.title)
     );
+
+    return this.title.el;
   }
 
   private createWaitAnimation() {
-    this.waitAnimation = $$('div', { className: 'coveo-dynamic-facet-header-wait-animation' }, SVGIcons.icons.loading);
-    SVGDom.addClassToSVGInContainer(this.waitAnimation.el, 'coveo-dynamic-facet-header-wait-animation-svg');
-    this.waitAnimation.toggle(false);
+    if (this.customRenderer.renderWaitAnimation) {
+      this.waitAnimation = $$(this.customRenderer.renderWaitAnimation(this.facet));
+    } else {
+      this.waitAnimation = $$('div', { className: 'coveo-dynamic-facet-header-wait-animation' }, SVGIcons.icons.loading);
+      SVGDom.addClassToSVGInContainer(this.waitAnimation.el, 'coveo-dynamic-facet-header-wait-animation-svg');
+    }
 
+    this.waitAnimation.toggle(false);
     return this.waitAnimation.el;
   }
 

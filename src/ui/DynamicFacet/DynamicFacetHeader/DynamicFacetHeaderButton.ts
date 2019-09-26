@@ -9,6 +9,7 @@ export interface IDynamicFacetHeaderButtonOptions {
   iconSVG?: string;
   iconClassName?: string;
   action?: () => void;
+  customElement?: HTMLElement;
 }
 
 export class DynamicFacetHeaderButton {
@@ -20,21 +21,11 @@ export class DynamicFacetHeaderButton {
   }
 
   private create() {
-    const hasIcon = this.rootOptions.iconSVG && this.rootOptions.iconClassName;
-
-    this.button = $$(
-      'button',
-      { className: `coveo-dynamic-facet-header-btn ${this.rootOptions.className || ''}`.trim() },
-      hasIcon ? this.rootOptions.iconSVG : this.rootOptions.label
-    );
+    this.rootOptions.customElement
+      ? this.button = $$(this.rootOptions.customElement)
+      : this.createButton();
 
     this.rootOptions.action && this.button.on('click', this.rootOptions.action);
-
-    if (hasIcon) {
-      this.button.setAttribute('aria-label', this.rootOptions.label);
-      this.button.setAttribute('title', this.rootOptions.label);
-      SVGDom.addClassToSVGInContainer(this.button.el, this.rootOptions.iconClassName);
-    }
 
     if (this.rootOptions.ariaLabel) {
       this.button.setAttribute('aria-label', this.rootOptions.ariaLabel);
@@ -45,6 +36,22 @@ export class DynamicFacetHeaderButton {
     }
 
     this.element = this.button.el;
+  }
+
+  private createButton() {
+    const hasIcon = this.rootOptions.iconSVG && this.rootOptions.iconClassName;
+
+    this.button = $$(
+      'button',
+      { className: `coveo-dynamic-facet-header-btn ${this.rootOptions.className || ''}`.trim() },
+      hasIcon ? this.rootOptions.iconSVG : this.rootOptions.label
+    );
+
+    if (hasIcon) {
+      this.button.setAttribute('aria-label', this.rootOptions.label);
+      this.button.setAttribute('title', this.rootOptions.label);
+      SVGDom.addClassToSVGInContainer(this.button.el, this.rootOptions.iconClassName);
+    }
   }
 
   public toggle(shouldDisplay: boolean) {
