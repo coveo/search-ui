@@ -4,7 +4,7 @@ import { SuggestionsManager } from '../../src/magicbox/SuggestionsManager';
 import { $$, Dom } from '../../src/utils/Dom';
 
 export function SuggestionsManagerTest() {
-  describe('Suggestions manager', () => {
+  describe('SuggestionsManager', () => {
     const LOCKED_LOCKER_SERVICE_ELEMENT = {};
     let container: Dom;
     let suggestionContainer: Dom;
@@ -13,10 +13,11 @@ export function SuggestionsManagerTest() {
     let elementInsideSuggestion: Dom;
     let selectableClass = 'selectable';
     let selectedClass = 'selected';
+    let inputManager: InputManager;
 
     beforeEach(() => {
       buildContainer();
-      const inputManager = new InputManager(document.createElement('div'), () => {}, {} as MagicBoxInstance);
+      inputManager = new InputManager(document.createElement('div'), () => {}, {} as MagicBoxInstance);
 
       suggestionManager = new SuggestionsManager(suggestionContainer.el, document.createElement('div'), inputManager, {
         selectedClass,
@@ -63,6 +64,12 @@ export function SuggestionsManagerTest() {
       expect($$(selectedWithKeyboard).hasClass(selectedClass)).toBe(true);
       expect($$(selectedWithKeyboard).getAttribute('aria-selected')).toBe('true');
       expect(selectedWithKeyboard).toBe(suggestion.el);
+    });
+
+    it('clearKeyboardFocusedElement sets the keyboard focused element to null', () => {
+      suggestionManager.moveDown();
+      suggestionManager.clearKeyboardFocusedElement();
+      expect(suggestionManager.selectAndReturnKeyboardFocusedElement()).toBeNull();
     });
 
     it('returns the correct selected element with keyboard on move up', () => {

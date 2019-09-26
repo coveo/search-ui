@@ -130,6 +130,10 @@ export class SuggestionsManager {
     return selected;
   }
 
+  public clearKeyboardFocusedElement() {
+    this.keyboardFocusedSuggestion = null;
+  }
+
   public mergeSuggestions(suggestions: Array<Promise<Suggestion[]> | Suggestion[]>, callback?: (suggestions: Suggestion[]) => void) {
     let results: Suggestion[] = [];
     let timeout;
