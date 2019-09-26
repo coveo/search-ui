@@ -13,11 +13,10 @@ export function SuggestionsManagerTest() {
     let elementInsideSuggestion: Dom;
     let selectableClass = 'selectable';
     let selectedClass = 'selected';
-    let inputManager: InputManager;
 
     beforeEach(() => {
       buildContainer();
-      inputManager = new InputManager(document.createElement('div'), () => {}, {} as MagicBoxInstance);
+      const inputManager = new InputManager(document.createElement('div'), () => {}, {} as MagicBoxInstance);
 
       suggestionManager = new SuggestionsManager(suggestionContainer.el, document.createElement('div'), inputManager, {
         selectedClass,
