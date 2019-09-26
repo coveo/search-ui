@@ -10,8 +10,40 @@
   <script src="js/templates/templates.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', function () {
-      Coveo.SearchEndpoint.configureSampleEndpointV2()
-      Coveo.init(document.body);
+      Coveo.SearchEndpoint.configureSampleEndpointV2();
+      // TODO: remove this great example
+      Coveo.init(document.body, {
+        hooks_demo: {
+          customHeaderRenderer: {
+            renderTitle: facet => {
+              const wrapperElement = document.createElement('span');
+              wrapperElement.className = 'coveo-dynamic-facet-header-title';
+
+              const linkElement = document.createElement('a');
+              linkElement.href = 'https://docs.coveo.com/en/2036/cloud-v2-administrators/understanding-fields#field-types';
+              linkElement.style.color = 'orange';
+              linkElement.style.textDecoration = 'none';
+              linkElement.target = 'blank';
+  
+              const titleElement = document.createElement('h3');
+              titleElement.style.margin = '0';
+              titleElement.innerHTML = `${facet.options.title} 🔗`;
+
+              linkElement.appendChild(titleElement);
+              wrapperElement.appendChild(linkElement);
+              return wrapperElement;
+            },
+
+            renderClearButton: () => {
+              const btnElement = document.createElement('span');
+              btnElement.innerHTML = '👋';
+              btnElement.style.fontSize = '20px';
+              btnElement.style.cursor = 'pointer';
+              return btnElement;
+            }
+          }
+        }
+      });
     })
   </script>
 </head>
@@ -26,9 +58,9 @@
   </div>
   <div class="coveo-main-section">
     <div class="coveo-facet-column">
-      <div class="CoveoFacet" data-title="Type" data-field="@objecttype" data-tab="All"></div>
-      <div class="CoveoFacet" data-title="FileType" data-field="@filetype" data-tab="All"></div>
-      <div class="CoveoFacet" data-title="Author" data-field="@author" data-tab="All"></div>
+      <div id="hooks_demo" class="CoveoDynamicFacet" data-title="Filetype" data-field="@filetype" data-tab="All" data-enable-collapse="false"></div>
+      <div class="CoveoDynamicFacet" data-title="Type" data-field="@objecttype" data-tab="All"></div>
+      <div class="CoveoDynamicFacet" data-title="Author" data-field="@author" data-tab="All"></div>
       <div class="CoveoTimespanFacet" data-tab="All"></div>
     </div>
     <div class="coveo-results-column">
