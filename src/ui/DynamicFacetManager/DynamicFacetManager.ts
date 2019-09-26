@@ -97,8 +97,8 @@ export class DynamicFacetManager extends Component {
     return this.childrenFacets.filter(facet => !facet.disabled);
   }
 
-  private get facetsWithValues() {
-    return this.childrenFacets.filter(facet => !facet.values.isEmpty);
+  private get facetsWithDisplayedValues() {
+    return this.childrenFacets.filter(facet => facet.values.hasDisplayedValues);
   }
 
   /**
@@ -213,7 +213,7 @@ export class DynamicFacetManager extends Component {
       return;
     }
 
-    const [collapsableFacets, uncollapsableFacets] = partition(this.facetsWithValues, facet => facet.options.enableCollapse);
+    const [collapsableFacets, uncollapsableFacets] = partition(this.facetsWithDisplayedValues, facet => facet.options.enableCollapse);
     const [facetsWithActiveValues, remainingFacets] = partition(collapsableFacets, facet => facet.values.hasActiveValues);
     const indexOfFirstFacetToCollapse =
       this.options.maximumNumberOfExpandedFacets - uncollapsableFacets.length - facetsWithActiveValues.length;

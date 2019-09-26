@@ -35,6 +35,12 @@ export interface IFacetRequestValue extends IRangeValue {
    * **Required (Search API).** The facet value name.
    */
   value?: string;
+  /**
+   * Whether to prevent Coveo ML from automatically selecting the facet value.
+   *
+   * **Default:** `false`
+   */
+  preventAutoSelect?: boolean;
 }
 
 /**
