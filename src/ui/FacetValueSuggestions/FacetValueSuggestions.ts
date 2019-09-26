@@ -207,12 +207,8 @@ export class FacetValueSuggestions extends Component {
 
   private async getQuerySuggestionsKeywords(omnibox: Omnibox): Promise<IQuerySuggestionKeyword[]> {
     if (this.options.useQuerySuggestions && omnibox.suggestionAddon) {
-      return (
-        (await omnibox.suggestionAddon.getSuggestion()).map(({ text, html }) => ({
-          text,
-          html
-        })) || []
-      );
+      const suggestions = await omnibox.suggestionAddon.getSuggestion();
+      return suggestions.map(({ text, html }) => <IQuerySuggestionKeyword>{ text: text || '', html });
     } else {
       return [];
     }
