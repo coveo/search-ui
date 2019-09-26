@@ -95,16 +95,16 @@ export class DynamicFacetHeader {
   }
 
   private createTitle() {
-    this.title = this.customRenderer.renderTitle 
-    ? $$(this.customRenderer.renderTitle(this.facet))
-    : $$(
-      'h2',
-      {
-        className: 'coveo-dynamic-facet-header-title',
-        ariaLabel: `${l('FacetTitle', this.facet.options.title)}`
-      },
-      $$('span', { ariaHidden: true, title: this.facet.options.title }, this.facet.options.title)
-    );
+    this.title = this.customRenderer.renderTitle
+      ? $$(this.customRenderer.renderTitle(this.facet))
+      : $$(
+        'h2',
+        {
+          className: 'coveo-dynamic-facet-header-title',
+          ariaLabel: `${l('FacetTitle', this.facet.options.title)}`
+        },
+        $$('span', { ariaHidden: true, title: this.facet.options.title }, this.facet.options.title)
+      );
 
     return this.title.el;
   }
