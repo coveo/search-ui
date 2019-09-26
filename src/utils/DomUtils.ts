@@ -11,7 +11,7 @@ import { IComponentBindings } from '../ui/Base/ComponentBindings';
 import { Initialization } from '../Core';
 import { Assert } from '../misc/Assert';
 
-interface IQuickViewHeaderOptions {
+export interface IQuickViewHeaderOptions {
   showDate: boolean;
   title: string;
 }
