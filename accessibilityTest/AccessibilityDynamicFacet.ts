@@ -50,7 +50,7 @@ export const AccessibilityDynamicFacet = () => {
       input.dispatchEvent(event);
     }
 
-    async function loadSearchResultsForQuery(query = 'a', delay = 500) {
+    async function loadSearchResultsForQuery(query = 'a', delay = 1000) {
       getInput().setAttribute('value', query);
       triggerKeyboardEvent('keyup', KEYBOARD.CTRL, getInput());
       await afterDelay(delay);

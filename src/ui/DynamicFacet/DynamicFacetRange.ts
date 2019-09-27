@@ -64,8 +64,6 @@ export class DynamicFacetRange extends DynamicFacet implements IComponentBinding
      * **Default:** The localized string for `to`.
      *
      * @examples until, up to
-     *
-     * **Default:** The localized string for `to`.
      */
     valueSeparator: ComponentOptions.buildLocalizedStringOption({ defaultValue: l('To'), section: 'CommonOptions' }),
     /**
