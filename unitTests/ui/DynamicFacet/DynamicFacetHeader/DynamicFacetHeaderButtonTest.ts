@@ -1,12 +1,15 @@
 import { $$ } from '../../../../src/utils/Dom';
+import * as Mock from '../../../MockEnvironment';
 import {
   DynamicFacetHeaderButton,
   IDynamicFacetHeaderButtonOptions
 } from '../../../../src/ui/DynamicFacet/DynamicFacetHeader/DynamicFacetHeaderButton';
 import { SVGIcons } from '../../../../src/utils/SVGIcons';
+import { DynamicFacet } from '../../../../src/ui/DynamicFacet/DynamicFacet';
 
 export function DynamicFacetHeaderButtonTest() {
   describe('DynamicFacetHeaderButton', () => {
+    let facet: DynamicFacet;
     let button: DynamicFacetHeaderButton;
     let buttonElement: HTMLElement;
     let baseOptions: IDynamicFacetHeaderButtonOptions;
@@ -19,7 +22,8 @@ export function DynamicFacetHeaderButtonTest() {
     });
 
     function initializeComponent() {
-      button = new DynamicFacetHeaderButton(baseOptions);
+      facet = Mock.mockComponent(DynamicFacet);
+      button = new DynamicFacetHeaderButton(facet,baseOptions);
       buttonElement = button.element;
     }
 
@@ -28,7 +32,7 @@ export function DynamicFacetHeaderButtonTest() {
     });
 
     it('should create without errors', () => {
-      expect(() => new DynamicFacetHeaderButton(baseOptions)).not.toThrow();
+      expect(() => new DynamicFacetHeaderButton(facet, baseOptions)).not.toThrow();
     });
 
     it(`when no icon options ("iconSVG" & "iconClassName") are passed

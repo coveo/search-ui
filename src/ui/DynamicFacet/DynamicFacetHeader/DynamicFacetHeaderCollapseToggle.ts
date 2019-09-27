@@ -14,7 +14,7 @@ export class DynamicFacetHeaderCollapseToggle {
   private collapseButton: DynamicFacetHeaderButton;
   private expandButton: DynamicFacetHeaderButton;
 
-  constructor(private facet: DynamicFacet, private customRenderer: ICustomHeaderRenderer) {
+  constructor(private facet: DynamicFacet, private customRenderer: ICustomHeaderRenderer = {}) {
     this.create();
   }
 
