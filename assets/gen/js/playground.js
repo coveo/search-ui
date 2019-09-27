@@ -5916,8 +5916,8 @@ exports.ResponsiveComponents = ResponsiveComponents;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    lib: '2.7219.5-beta',
-    product: '2.7219.5-beta',
+    lib: '2.7023.8-beta',
+    product: '2.7023.8-beta',
     supportedApiVersion: 2
 };
 
@@ -8739,8 +8739,8 @@ var dict = {
     "WithinLastMonth": "Within last month",
     "WithinLastYear": "Within last year",
     "RelevanceInspector": "Relevance Inspector",
-    "KeywordInCategory": "{0} <span class=\"coveo-omnibox-suggestion-category\">in {1}</span>",
-    "ResultCount": "{0} result<pl>s</pl>",
+    "KeywordInCategory": "{0} in {1}",
+    "ResultCount": "{0} results",
     "ShowingResults": "{0} result<pl>s</pl>",
     "ShowingResultsWithQuery": "{0} result<pl>s</pl> for {1}",
     "NumberOfVideos": "Number of videos",
@@ -8774,7 +8774,6 @@ var dict = {
     "CloseFiltersDropdown": "Close the filters dropdown",
     "NoValuesFound": "No values found.",
     "QuerySuggestPreview": "Query result item(s) for",
-    "To": "to",
 };
 function defaultLanguage() {
     var locales = String["locales"] || (String["locales"] = {});
