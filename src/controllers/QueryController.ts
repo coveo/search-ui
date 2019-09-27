@@ -1,5 +1,4 @@
 import { history } from 'coveo.analytics';
-import { NullStorage } from 'coveo.analytics/dist/storage';
 import * as _ from 'underscore';
 import {
   IBuildingCallOptionsEventArgs,
