@@ -81,7 +81,7 @@ export class DynamicFacetHeader {
 
   private createTitle() {
     const originalTitleElement = $$(
-      'h2', 
+      'h2',
       { className: 'coveo-dynamic-facet-header-title' },
       $$('span', { ariaHidden: true, title: this.facet.options.title }, this.facet.options.title)
     ).el;
@@ -98,9 +98,9 @@ export class DynamicFacetHeader {
     const originalWaitElement = $$('div', { className: 'coveo-dynamic-facet-header-wait-animation' }, SVGIcons.icons.loading).el;
     SVGDom.addClassToSVGInContainer(originalWaitElement, 'coveo-dynamic-facet-header-wait-animation-svg');
 
-    this.waitAnimation = this.customRenderer.renderWaitAnimation 
-    ? $$(this.customRenderer.renderWaitAnimation(this.facet, originalWaitElement))
-    : $$(originalWaitElement);
+    this.waitAnimation = this.customRenderer.renderWaitAnimation
+      ? $$(this.customRenderer.renderWaitAnimation(this.facet, originalWaitElement))
+      : $$(originalWaitElement);
 
     this.waitAnimation.toggle(false);
     return this.waitAnimation.el;
