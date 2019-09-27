@@ -34,12 +34,11 @@
               return wrapperElement;
             },
 
-            renderClearButton: () => {
-              const btnElement = document.createElement('span');
-              btnElement.innerHTML = '👋';
-              btnElement.style.fontSize = '20px';
-              btnElement.style.cursor = 'pointer';
-              return btnElement;
+            renderClearButton: (facet, originalElement) => {
+              originalElement.innerHTML = '👋';
+              originalElement.style.fontSize = '20px';
+              originalElement.style.textDecoration = 'none';
+              return originalElement;
             }
           }
         }

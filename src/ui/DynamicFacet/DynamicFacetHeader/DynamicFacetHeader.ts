@@ -9,25 +9,10 @@ import { DynamicFacetHeaderCollapseToggle } from './DynamicFacetHeaderCollapseTo
 import { analyticsActionCauseList } from '../../Analytics/AnalyticsActionListMeta';
 
 export interface ICustomHeaderRenderer {
-  /**
-   * Replace the element with the `coveo-dynamic-facet-header-title` class.
-   */
   renderTitle?: IDynamicFacetElementRenderer;
-  /**
-   * Replace the element with the `coveo-dynamic-facet-header-wait-animation` class.
-   */
   renderWaitAnimation?: IDynamicFacetElementRenderer;
-  /**
-   * Replace the element with the `coveo-dynamic-facet-header-clear` class.
-   */
   renderClearButton?: IDynamicFacetElementRenderer;
-  /**
-   * Replace the element with the `coveo-dynamic-facet-header-collapse` class.
-   */
   renderCollapseButton?: IDynamicFacetElementRenderer;
-  /**
-   * Replace the element with the `coveo-dynamic-facet-header-expand` class.
-   */
   renderExpandButton?: IDynamicFacetElementRenderer;
 }
 
@@ -56,13 +41,13 @@ export class DynamicFacetHeader {
   }
 
   private createClearButton() {
-    this.clearButton = new DynamicFacetHeaderButton({
+    this.clearButton = new DynamicFacetHeaderButton(this.facet, {
       label: l('Clear'),
       ariaLabel: l('Clear', this.facet.options.title),
       className: 'coveo-dynamic-facet-header-clear',
       shouldDisplay: false,
       action: () => this.clear(),
-      customElement: this.customRenderer.renderClearButton && this.customRenderer.renderClearButton(this.facet)
+      customRenderer: this.customRenderer.renderClearButton
     });
 
     return this.clearButton.element;
@@ -95,27 +80,27 @@ export class DynamicFacetHeader {
   }
 
   private createTitle() {
-    this.title = this.customRenderer.renderTitle
-      ? $$(this.customRenderer.renderTitle(this.facet))
-      : $$(
-        'h2',
-        {
-          className: 'coveo-dynamic-facet-header-title',
-          ariaLabel: `${l('FacetTitle', this.facet.options.title)}`
-        },
-        $$('span', { ariaHidden: true, title: this.facet.options.title }, this.facet.options.title)
-      );
+    const originalTitleElement = $$(
+      'h2', 
+      { className: 'coveo-dynamic-facet-header-title' },
+      $$('span', { ariaHidden: true, title: this.facet.options.title }, this.facet.options.title)
+    ).el;
 
+    this.title = this.customRenderer.renderTitle
+      ? $$(this.customRenderer.renderTitle(this.facet, originalTitleElement))
+      : $$(originalTitleElement);
+
+    this.title.setAttribute('ariaLabel', `${l('FacetTitle', this.facet.options.title)}`);
     return this.title.el;
   }
 
   private createWaitAnimation() {
-    if (this.customRenderer.renderWaitAnimation) {
-      this.waitAnimation = $$(this.customRenderer.renderWaitAnimation(this.facet));
-    } else {
-      this.waitAnimation = $$('div', { className: 'coveo-dynamic-facet-header-wait-animation' }, SVGIcons.icons.loading);
-      SVGDom.addClassToSVGInContainer(this.waitAnimation.el, 'coveo-dynamic-facet-header-wait-animation-svg');
-    }
+    const originalWaitElement = $$('div', { className: 'coveo-dynamic-facet-header-wait-animation' }, SVGIcons.icons.loading).el;
+    SVGDom.addClassToSVGInContainer(originalWaitElement, 'coveo-dynamic-facet-header-wait-animation-svg');
+
+    this.waitAnimation = this.customRenderer.renderWaitAnimation 
+    ? $$(this.customRenderer.renderWaitAnimation(this.facet, originalWaitElement))
+    : $$(originalWaitElement);
 
     this.waitAnimation.toggle(false);
     return this.waitAnimation.el;

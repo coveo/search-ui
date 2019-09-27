@@ -35,7 +35,11 @@ import { IQueryResults } from '../../rest/QueryResults';
 import { FacetType } from '../../rest/Facet/FacetRequest';
 import { DependsOnManager, IDependentFacet } from '../../utils/DependsOnManager';
 
-export type IDynamicFacetElementRenderer = (facet: DynamicFacet) => HTMLElement;
+/**
+ * Renderers receive the DynamicFacet component and the original element as arguments and
+ * have to return an element that either replaces or modifies the original element.
+ */
+export type IDynamicFacetElementRenderer = (facet: DynamicFacet, originalElement: HTMLElement) => HTMLElement;
 
 export interface IDynamicFacetOptions extends IResponsiveComponentOptions {
   id?: string;

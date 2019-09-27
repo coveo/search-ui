@@ -1,5 +1,6 @@
 import { $$, Dom } from '../../../utils/Dom';
 import { SVGDom } from '../../../utils/SVGDom';
+import { DynamicFacet, IDynamicFacetElementRenderer } from '../DynamicFacet';
 
 export interface IDynamicFacetHeaderButtonOptions {
   label: string;
@@ -9,21 +10,22 @@ export interface IDynamicFacetHeaderButtonOptions {
   iconSVG?: string;
   iconClassName?: string;
   action?: () => void;
-  customElement?: HTMLElement;
+  customRenderer?: IDynamicFacetElementRenderer;
 }
 
 export class DynamicFacetHeaderButton {
   private button: Dom;
   public element: HTMLElement;
 
-  constructor(private rootOptions: IDynamicFacetHeaderButtonOptions) {
+  constructor(private facet: DynamicFacet, private rootOptions: IDynamicFacetHeaderButtonOptions) {
     this.create();
   }
 
   private create() {
-    this.rootOptions.customElement
-      ? this.button = $$(this.rootOptions.customElement)
-      : this.createButton();
+    const originalButtonElement = this.createButton();
+    this.button = this.rootOptions.customRenderer
+      ? $$(this.rootOptions.customRenderer(this.facet, originalButtonElement))
+      : $$(this.createButton());
 
     this.rootOptions.action && this.button.on('click', this.rootOptions.action);
 
@@ -40,18 +42,19 @@ export class DynamicFacetHeaderButton {
 
   private createButton() {
     const hasIcon = this.rootOptions.iconSVG && this.rootOptions.iconClassName;
-
-    this.button = $$(
+    const button = $$(
       'button',
       { className: `coveo-dynamic-facet-header-btn ${this.rootOptions.className || ''}`.trim() },
       hasIcon ? this.rootOptions.iconSVG : this.rootOptions.label
     );
 
     if (hasIcon) {
-      this.button.setAttribute('aria-label', this.rootOptions.label);
-      this.button.setAttribute('title', this.rootOptions.label);
-      SVGDom.addClassToSVGInContainer(this.button.el, this.rootOptions.iconClassName);
+      button.setAttribute('aria-label', this.rootOptions.label);
+      button.setAttribute('title', this.rootOptions.label);
+      SVGDom.addClassToSVGInContainer(button.el, this.rootOptions.iconClassName);
     }
+
+    return button.el;
   }
 
   public toggle(shouldDisplay: boolean) {
