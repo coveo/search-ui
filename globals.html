@@ -167,6 +167,9 @@
 						<a href="components/dynamicfacetmanager.html" class="tsd-kind-icon">Dynamic<wbr>Facet<wbr>Manager</a>
 					</li>
 					<li class=" tsd-kind-coveo-component">
+						<a href="components/dynamicfacetrange.html" class="tsd-kind-icon">Dynamic<wbr>Facet<wbr>Range</a>
+					</li>
+					<li class=" tsd-kind-coveo-component">
 						<a href="components/errorreport.html" class="tsd-kind-icon">Error<wbr>Report</a>
 					</li>
 					<li class=" tsd-kind-coveo-component">
@@ -348,6 +351,9 @@
 					</li>
 					<li class=" tsd-kind-enum">
 						<a href="enums/allowedvaluespatterntype.html" class="tsd-kind-icon">Allowed<wbr>Values<wbr>Pattern<wbr>Type</a>
+					</li>
+					<li class=" tsd-kind-enum">
+						<a href="enums/dynamicfacetrangevalueformat.html" class="tsd-kind-icon">Dynamic<wbr>Facet<wbr>Range<wbr>Value<wbr>Format</a>
 					</li>
 					<li class=" tsd-kind-enum">
 						<a href="enums/facetsortcriteria.html" class="tsd-kind-icon">Facet<wbr>Sort<wbr>Criteria</a>
@@ -911,7 +917,16 @@
 						<a href="globals.html#__" class="tsd-kind-icon">$$</a>
 					</li>
 					<li class=" tsd-kind-function">
+						<a href="globals.html#clearlocaldata" class="tsd-kind-icon">clear<wbr>Local<wbr>Data</a>
+					</li>
+					<li class=" tsd-kind-function">
 						<a href="globals.html#configureresourceroot" class="tsd-kind-icon">configure<wbr>Resource<wbr>Root</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#disableanalytics" class="tsd-kind-icon">disable<wbr>Analytics</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#enableanalytics" class="tsd-kind-icon">enable<wbr>Analytics</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="globals.html#executequery" class="tsd-kind-icon">execute<wbr>Query</a>
@@ -998,6 +1013,7 @@
 								<li class="tsd-kind-coveo-component"><a href="components/distanceresources.html" class="tsd-kind-icon">Distance<wbr>Resources</a></li>
 								<li class="tsd-kind-coveo-component"><a href="components/dynamicfacet.html" class="tsd-kind-icon">Dynamic<wbr>Facet</a></li>
 								<li class="tsd-kind-coveo-component"><a href="components/dynamicfacetmanager.html" class="tsd-kind-icon">Dynamic<wbr>Facet<wbr>Manager</a></li>
+								<li class="tsd-kind-coveo-component"><a href="components/dynamicfacetrange.html" class="tsd-kind-icon">Dynamic<wbr>Facet<wbr>Range</a></li>
 								<li class="tsd-kind-coveo-component"><a href="components/errorreport.html" class="tsd-kind-icon">Error<wbr>Report</a></li>
 								<li class="tsd-kind-coveo-component"><a href="components/excerpt.html" class="tsd-kind-icon">Excerpt</a></li>
 								<li class="tsd-kind-coveo-component"><a href="components/exporttoexcel.html" class="tsd-kind-icon">Export<wbr>ToExcel</a></li>
@@ -1070,6 +1086,7 @@
 							<h3>Enumerations</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-enum"><a href="enums/allowedvaluespatterntype.html" class="tsd-kind-icon">Allowed<wbr>Values<wbr>Pattern<wbr>Type</a></li>
+								<li class="tsd-kind-enum"><a href="enums/dynamicfacetrangevalueformat.html" class="tsd-kind-icon">Dynamic<wbr>Facet<wbr>Range<wbr>Value<wbr>Format</a></li>
 								<li class="tsd-kind-enum"><a href="enums/facetsortcriteria.html" class="tsd-kind-icon">Facet<wbr>Sort<wbr>Criteria</a></li>
 								<li class="tsd-kind-enum"><a href="enums/facettype.html" class="tsd-kind-icon">Facet<wbr>Type</a></li>
 								<li class="tsd-kind-enum"><a href="enums/facetvaluestate.html" class="tsd-kind-icon">Facet<wbr>Value<wbr>State</a></li>
@@ -1277,7 +1294,10 @@
 							<h3>Functions</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-function"><a href="globals.html#__" class="tsd-kind-icon">$$</a></li>
+								<li class="tsd-kind-function"><a href="globals.html#clearlocaldata" class="tsd-kind-icon">clear<wbr>Local<wbr>Data</a></li>
 								<li class="tsd-kind-function"><a href="globals.html#configureresourceroot" class="tsd-kind-icon">configure<wbr>Resource<wbr>Root</a></li>
+								<li class="tsd-kind-function"><a href="globals.html#disableanalytics" class="tsd-kind-icon">disable<wbr>Analytics</a></li>
+								<li class="tsd-kind-function"><a href="globals.html#enableanalytics" class="tsd-kind-icon">enable<wbr>Analytics</a></li>
 								<li class="tsd-kind-function"><a href="globals.html#executequery" class="tsd-kind-icon">execute<wbr>Query</a></li>
 								<li class="tsd-kind-function"><a href="globals.html#get" class="tsd-kind-icon">get</a></li>
 								<li class="tsd-kind-function"><a href="globals.html#init" class="tsd-kind-icon">init</a></li>
@@ -1426,6 +1446,42 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-function">
+					<a name="clearlocaldata" class="tsd-anchor"></a>
+					<h3>clear<wbr>Local<wbr>Data</h3>
+					<ul class="tsd-signatures tsd-kind-function">
+						<li class="tsd-signature tsd-kind-icon">clear<wbr>Local<wbr>Data<span class="tsd-signature-symbol">(</span>searchRoot<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">HTMLElement</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/RegisteredNamedMethods.ts#L486">ui/Base/RegisteredNamedMethods.ts
+									:486</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Removes all session information stored in the browser (e.g., analytics visitor cookies, action history, etc.)</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> searchRoot: <span class="tsd-signature-type">HTMLElement</span><span class="tsd-signature-symbol"> =&nbsp;document.querySelector(Component.computeSelectorForType(SearchInterface.ID)) as HTMLElement</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The element to scan for an Analytics component.
+											This can be an element onto which a component instance is bound
+											(e.g., document.querySelector(&quot;.CoveoAnalytics&quot;),
+										or an ancestor of such an element (e.g., document.getElementById(&quot;search&quot;).</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function">
 					<a name="configureresourceroot" class="tsd-anchor"></a>
 					<h3>configure<wbr>Resource<wbr>Root</h3>
 					<ul class="tsd-signatures tsd-kind-function">
@@ -1436,8 +1492,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/RegisteredNamedMethods.ts#L442">ui/Base/RegisteredNamedMethods.ts
-									:442</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/RegisteredNamedMethods.ts#L448">ui/Base/RegisteredNamedMethods.ts
+									:448</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1459,6 +1515,78 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-function">
+					<a name="disableanalytics" class="tsd-anchor"></a>
+					<h3>disable<wbr>Analytics</h3>
+					<ul class="tsd-signatures tsd-kind-function">
+						<li class="tsd-signature tsd-kind-icon">disable<wbr>Analytics<span class="tsd-signature-symbol">(</span>searchRoot<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">HTMLElement</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/RegisteredNamedMethods.ts#L508">ui/Base/RegisteredNamedMethods.ts
+									:508</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Disables an <a href="components/analytics.html"><code>Analytics</code></a> component and clears local data.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> searchRoot: <span class="tsd-signature-type">HTMLElement</span><span class="tsd-signature-symbol"> =&nbsp;document.querySelector(Component.computeSelectorForType(SearchInterface.ID)) as HTMLElement</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The element to scan for an Analytics component.
+											This can be an element onto which a component instance is bound
+											(e.g., document.querySelector(&quot;.CoveoAnalytics&quot;),
+										or an ancestor of such an element (e.g., document.getElementById(&quot;search&quot;).</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function">
+					<a name="enableanalytics" class="tsd-anchor"></a>
+					<h3>enable<wbr>Analytics</h3>
+					<ul class="tsd-signatures tsd-kind-function">
+						<li class="tsd-signature tsd-kind-icon">enable<wbr>Analytics<span class="tsd-signature-symbol">(</span>searchRoot<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">HTMLElement</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/RegisteredNamedMethods.ts#L464">ui/Base/RegisteredNamedMethods.ts
+									:464</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Re-enables an <a href="components/analytics.html"><code>Analytics</code></a> component if it was previously disabled.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> searchRoot: <span class="tsd-signature-type">HTMLElement</span><span class="tsd-signature-symbol"> =&nbsp;document.querySelector(Component.computeSelectorForType(SearchInterface.ID)) as HTMLElement</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The element to scan for an Analytics component.
+											This can be an element onto which a component instance is bound
+											(e.g., document.querySelector(&quot;.CoveoAnalytics&quot;),
+										or an ancestor of such an element (e.g., document.getElementById(&quot;search&quot;).</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function">
 					<a name="executequery" class="tsd-anchor"></a>
 					<h3>execute<wbr>Query</h3>
 					<ul class="tsd-signatures tsd-kind-function">
@@ -1469,8 +1597,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/RegisteredNamedMethods.ts#L118">ui/Base/RegisteredNamedMethods.ts
-									:118</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/RegisteredNamedMethods.ts#L122">ui/Base/RegisteredNamedMethods.ts
+									:122</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1505,8 +1633,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/RegisteredNamedMethods.ts#L196">ui/Base/RegisteredNamedMethods.ts
-									:196</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/RegisteredNamedMethods.ts#L200">ui/Base/RegisteredNamedMethods.ts
+									:200</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1550,8 +1678,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/RegisteredNamedMethods.ts#L27">ui/Base/RegisteredNamedMethods.ts
-									:27</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/RegisteredNamedMethods.ts#L31">ui/Base/RegisteredNamedMethods.ts
+									:31</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1593,8 +1721,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/RegisteredNamedMethods.ts#L72">ui/Base/RegisteredNamedMethods.ts
-									:72</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/RegisteredNamedMethods.ts#L76">ui/Base/RegisteredNamedMethods.ts
+									:76</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1653,8 +1781,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/RegisteredNamedMethods.ts#L46">ui/Base/RegisteredNamedMethods.ts
-									:46</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/RegisteredNamedMethods.ts#L50">ui/Base/RegisteredNamedMethods.ts
+									:50</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1702,8 +1830,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/RegisteredNamedMethods.ts#L484">ui/Base/RegisteredNamedMethods.ts
-									:484</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/RegisteredNamedMethods.ts#L556">ui/Base/RegisteredNamedMethods.ts
+									:556</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1765,8 +1893,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/RegisteredNamedMethods.ts#L343">ui/Base/RegisteredNamedMethods.ts
-									:343</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/RegisteredNamedMethods.ts#L349">ui/Base/RegisteredNamedMethods.ts
+									:349</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1822,8 +1950,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/RegisteredNamedMethods.ts#L246">ui/Base/RegisteredNamedMethods.ts
-									:246</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/RegisteredNamedMethods.ts#L252">ui/Base/RegisteredNamedMethods.ts
+									:252</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1873,8 +2001,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/RegisteredNamedMethods.ts#L309">ui/Base/RegisteredNamedMethods.ts
-									:309</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/RegisteredNamedMethods.ts#L315">ui/Base/RegisteredNamedMethods.ts
+									:315</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1931,8 +2059,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/RegisteredNamedMethods.ts#L273">ui/Base/RegisteredNamedMethods.ts
-									:273</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/RegisteredNamedMethods.ts#L279">ui/Base/RegisteredNamedMethods.ts
+									:279</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1984,8 +2112,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/RegisteredNamedMethods.ts#L368">ui/Base/RegisteredNamedMethods.ts
-									:368</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/RegisteredNamedMethods.ts#L374">ui/Base/RegisteredNamedMethods.ts
+									:374</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2024,8 +2152,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/RegisteredNamedMethods.ts#L382">ui/Base/RegisteredNamedMethods.ts
-									:382</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/RegisteredNamedMethods.ts#L388">ui/Base/RegisteredNamedMethods.ts
+									:388</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2080,8 +2208,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/RegisteredNamedMethods.ts#L175">ui/Base/RegisteredNamedMethods.ts
-									:175</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/RegisteredNamedMethods.ts#L179">ui/Base/RegisteredNamedMethods.ts
+									:179</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
