@@ -272,28 +272,19 @@ export function RegisteredNamedMethodsTest() {
         expect(setup.cmp.client instanceof NoopAnalyticsClient).not.toBeTruthy();
       });
 
-      it('should become noop after being disabled', () => {
+      it('should become noop and update the search interface analytics client after being disabled', () => {
         expect(setup.cmp.client instanceof NoopAnalyticsClient).not.toBeTruthy();
         RegisteredNamedMethod.disableAnalytics(setup.env.root);
         expect(setup.cmp.client instanceof NoopAnalyticsClient).toBeTruthy();
-      });
-
-      it('should update the search interface analytics client after being disabled', () => {
-        RegisteredNamedMethod.disableAnalytics(setup.env.root);
         expect(setup.cmp.client).toBe(setup.env.searchInterface.usageAnalytics);
       });
 
-      it('should not be noop after being re-enabled', () => {
+      it('should not be noop and should update the search interface analytics client after being re-enabled', () => {
         expect(setup.cmp.client instanceof NoopAnalyticsClient).not.toBeTruthy();
         RegisteredNamedMethod.disableAnalytics(setup.env.root);
         expect(setup.cmp.client instanceof NoopAnalyticsClient).toBeTruthy();
         RegisteredNamedMethod.enableAnalytics(setup.env.root);
         expect(setup.cmp.client instanceof NoopAnalyticsClient).not.toBeTruthy();
-      });
-
-      it('should update the search interface analytics client after being re-enabled', () => {
-        RegisteredNamedMethod.disableAnalytics(setup.env.root);
-        RegisteredNamedMethod.enableAnalytics(setup.env.root);
         expect(setup.cmp.client).toBe(setup.env.searchInterface.usageAnalytics);
       });
 

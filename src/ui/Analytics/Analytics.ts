@@ -380,7 +380,7 @@ export class Analytics extends Component {
     }
     super.enable();
     this.initializeAnalyticsClient();
-    this.searchInterface.usageAnalytics = this.client;
+    this.updateSearchInterfaceUAClient();
     this.resolveQueryController().enableHistory();
   }
 
@@ -405,9 +405,13 @@ export class Analytics extends Component {
     this.clearLocalData();
     this.client.cancelAllPendingEvents();
     this.client = new NoopAnalyticsClient();
-    this.searchInterface.usageAnalytics = this.client;
+    this.updateSearchInterfaceUAClient();
     this.resolveQueryController().disableHistory();
     super.disable();
+  }
+
+  private updateSearchInterfaceUAClient() {
+    this.searchInterface.usageAnalytics = this.client;
   }
 
   /**
