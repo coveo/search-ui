@@ -116,7 +116,7 @@ export class QueryController extends RootComponent {
    * Create a new query controller
    * @param element
    * @param options
-   * @param usageAnalytics @deprecated
+   * @param usageAnalytics @deprecated Will use the {@link IAnalyticsClient} from the @param searchInterface instead.
    * @param searchInterface
    */
   constructor(element: HTMLElement, public options: ISearchInterfaceOptions, usageAnalytics: IAnalyticsClient, public searchInterface: SearchInterface) {
