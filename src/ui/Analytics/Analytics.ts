@@ -380,6 +380,7 @@ export class Analytics extends Component {
     }
     super.enable();
     this.initializeAnalyticsClient();
+    this.searchInterface.usageAnalytics = this.client;
     this.resolveQueryController().enableHistory();
   }
 
@@ -402,7 +403,9 @@ export class Analytics extends Component {
       return this.logger.warn('The Analytics component is already disabled.');
     }
     this.clearLocalData();
+    this.client.cancelAllPendingEvents();
     this.client = new NoopAnalyticsClient();
+    this.searchInterface.usageAnalytics = this.client;
     this.resolveQueryController().disableHistory();
     super.disable();
   }

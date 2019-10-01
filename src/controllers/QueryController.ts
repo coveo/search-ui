@@ -25,7 +25,7 @@ import { SearchEndpointWithDefaultCallOptions } from '../rest/SearchEndpointWith
 import { BaseComponent } from '../ui/Base/BaseComponent';
 import { QueryBuilder } from '../ui/Base/QueryBuilder';
 import { RootComponent } from '../ui/Base/RootComponent';
-import { ISearchInterfaceOptions } from '../ui/SearchInterface/SearchInterface';
+import { ISearchInterfaceOptions, SearchInterface } from '../ui/SearchInterface/SearchInterface';
 import { $$, Dom } from '../utils/Dom';
 import { LocalStorageUtils } from '../utils/LocalStorageUtils';
 import { QueryUtils } from '../utils/QueryUtils';
@@ -116,7 +116,7 @@ export class QueryController extends RootComponent {
    * @param element
    * @param options
    */
-  constructor(element: HTMLElement, public options: ISearchInterfaceOptions, public usageAnalytics, public searchInterface) {
+  constructor(element: HTMLElement, public options: ISearchInterfaceOptions, public usageAnalytics, public searchInterface: SearchInterface) {
     super(element, QueryController.ID);
     Assert.exists(element);
     Assert.exists(options);
@@ -183,7 +183,7 @@ export class QueryController extends RootComponent {
     }
 
     if (!options.ignoreWarningSearchEvent) {
-      this.usageAnalytics.warnAboutSearchEvent();
+      this.searchInterface.usageAnalytics.warnAboutSearchEvent();
     }
 
     this.showExecutingQueryAnimation();
@@ -334,7 +334,7 @@ export class QueryController extends RootComponent {
     }
     // Send all pending events (think : search as you type)
     // This allows us to get the real search id for the results when the query returns
-    this.usageAnalytics.sendAllPendingEvents();
+    this.searchInterface.usageAnalytics.sendAllPendingEvents();
 
     let queryBuilder = new QueryBuilder();
     this.continueLastQueryBuilder(queryBuilder, count);
