@@ -126,6 +126,10 @@ export class QueryController extends RootComponent {
     this.enableHistory();
   }
 
+  public get usageAnalytics() {
+    return this.searchInterface.usageAnalytics;
+  }
+
   /**
    * Set the {@link SearchEndpoint} that the query controller should use to execute query
    * @param endpoint
@@ -185,7 +189,7 @@ export class QueryController extends RootComponent {
     }
 
     if (!options.ignoreWarningSearchEvent) {
-      this.searchInterface.usageAnalytics.warnAboutSearchEvent();
+      this.usageAnalytics.warnAboutSearchEvent();
     }
 
     this.showExecutingQueryAnimation();
@@ -336,7 +340,7 @@ export class QueryController extends RootComponent {
     }
     // Send all pending events (think : search as you type)
     // This allows us to get the real search id for the results when the query returns
-    this.searchInterface.usageAnalytics.sendAllPendingEvents();
+    this.usageAnalytics.sendAllPendingEvents();
 
     let queryBuilder = new QueryBuilder();
     this.continueLastQueryBuilder(queryBuilder, count);
