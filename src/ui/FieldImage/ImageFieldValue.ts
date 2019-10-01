@@ -50,8 +50,8 @@ export class ImageFieldValue extends Component {
      */
     height: ComponentOptions.buildNumberOption(),
     /**
-     * Specifies a template literal from which to generate the Image `src` attribute value (see
-     * [Template literals](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Template_literals)).
+     * A [Template literals](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Template_literals))
+     * from which to generate the `img` tag's `src` attribute value.
      *
      * This option overrides the [`field`]{@link ImageFieldValue.options.field} option value.
      *

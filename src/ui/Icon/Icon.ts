@@ -80,8 +80,24 @@ export class Icon extends Component {
     labelValue: ComponentOptions.buildLocalizedStringOption(),
 
     /**
-     * Specifies conditions to display the component or not
+     * A field-based condition that must be satisfied by the query result item for the component to be rendered.
      *
+     * Note: This option uses a distinctive markup configuration syntax allowing multiple conditions to be expressed. Its underlying logic is the same as that of the field value conditions mechanism used by result templates.
+     *
+     * **Examples:**
+     * Render the component if the query result item's @documenttype field value is Article or Documentation.
+     * ```html
+     * <div class="CoveoIcon" data-field="@author" data-condition-field-documenttype="Article, Documentation"></div>
+     * ```
+     *
+     * Render the component if the query result item's @documenttype field value is anything but Case.
+     * ```html
+     * <div class="CoveoIcon" data-field="@author" data-condition-field-not-documenttype="Case"></div>
+     * ```
+     * Render the component if the query result item's @documenttype field value is Article, and if its @author field value is anything but Anonymous.
+     * ```html
+     * <div class="CoveoIcon" data-field="@author" data-condition-field-documenttype="Article" data-condition-field-not-author="Anonymous"></div>
+     * ```
      * Default value is `undefined`.
      */
     conditions: ComponentOptions.buildFieldConditionOption()

@@ -18,15 +18,23 @@ import { IComponentOptionsTemplateOptionArgs, TemplateComponentOptions } from '.
 export interface IFieldOption extends String {}
 
 /**
- * The `IFieldConditionOption` interface declares a type for options that should contain a field to be used in a query
- * as well as an expected value for that field.
- *
- * The only constraint this type has over a basic string is that it should start with the `@` character.
+ * The `IFieldConditionOption` is a component option expressing a field-based condition that must be satisfied.
  */
 export interface IFieldConditionOption {
+  /**
+   * The name of the field on which the condition is based (e.g., `author`).
+   */
   field: string;
+
+  /**
+   * The field values allowed (or disallowed) by the condition (e.g., `["Alice Smith", "Bob Jones"]`).
+   */
   values: string[];
-  reverseCondition?: boolean;
+
+  /**
+   * Whether the condition should disallow the specified [`values`]{@link IFieldConditionOption} rather than allowing them.
+   */
+  reverseCondition: boolean;
 }
 
 /**
@@ -631,13 +639,16 @@ export class ComponentOptions {
   /**
    * Builds a field condition option.
    *
-   * A field condition option dynamically loads conditions set on a component
+   * A field condition option defines a field-based condition that must be dynamically evaluated against,
+   * and satisfied by a query result item in order to initialize a result template component.
    *
    * **Markup Example:**
    *
-   * > `data-field-source="SourceName"`
+   * ```html
+   * data-condition-field-author="Alice Smith, Bob Jones"
+   * data-condition-field-not-filetype="pdf"`
+   * ```
    *
-   * @param optionArgs The arguments to apply when building the option.
    * @returns {string} The resulting option value.
    */
   static buildFieldConditionOption(): IFieldConditionOption[] {
