@@ -31,6 +31,7 @@ import { LocalStorageUtils } from '../utils/LocalStorageUtils';
 import { QueryUtils } from '../utils/QueryUtils';
 import { UrlUtils } from '../utils/UrlUtils';
 import { Utils } from '../utils/Utils';
+import { IAnalyticsClient } from '../ui/Analytics/AnalyticsClient';
 
 /**
  * Possible options when performing a query with the query controller
@@ -118,7 +119,7 @@ export class QueryController extends RootComponent {
    * @param usageAnalytics @deprecated
    * @param searchInterface
    */
-  constructor(element: HTMLElement, public options: ISearchInterfaceOptions, usageAnalytics, public searchInterface: SearchInterface) {
+  constructor(element: HTMLElement, public options: ISearchInterfaceOptions, usageAnalytics: IAnalyticsClient, public searchInterface: SearchInterface) {
     super(element, QueryController.ID);
     Assert.exists(element);
     Assert.exists(options);
@@ -126,7 +127,7 @@ export class QueryController extends RootComponent {
     this.enableHistory();
   }
 
-  public get usageAnalytics() {
+  public get usageAnalytics(): IAnalyticsClient {
     return this.searchInterface.usageAnalytics;
   }
 
