@@ -115,8 +115,10 @@ export class QueryController extends RootComponent {
    * Create a new query controller
    * @param element
    * @param options
+   * @param usageAnalytics @deprecated
+   * @param searchInterface
    */
-  constructor(element: HTMLElement, public options: ISearchInterfaceOptions, public usageAnalytics, public searchInterface: SearchInterface) {
+  constructor(element: HTMLElement, public options: ISearchInterfaceOptions, usageAnalytics, public searchInterface: SearchInterface) {
     super(element, QueryController.ID);
     Assert.exists(element);
     Assert.exists(options);

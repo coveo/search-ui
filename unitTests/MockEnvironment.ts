@@ -112,6 +112,7 @@ export class MockEnvironmentBuilder {
     this.searchInterface.element = this.root;
     this.searchInterface.getBindings = () => this.getBindings() as any;
     this.searchInterface.historyManager = this.historyManager;
+    this.searchInterface.usageAnalytics = this.usageAnalytics;
 
     if (!this.searchEndpoint) {
       this.searchEndpoint = mockSearchEndpoint();
