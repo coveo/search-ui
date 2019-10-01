@@ -154,6 +154,8 @@ export class MagicBoxInstance {
       } else if (key === KEYBOARD.ESCAPE) {
         this.clearSuggestion();
         this.blur();
+      } else {
+        this.suggestionsManager.clearKeyboardFocusedElement();
       }
       return true;
     };

@@ -106,6 +106,17 @@ export function ResponsiveTabsTest() {
         });
       };
 
+      const simulateZeroWidth = () => {
+        Object.defineProperty(tabSection.el, 'clientWidth', {
+          value: 0,
+          writable: false
+        });
+
+        Object.defineProperty(tabSection.el, 'scrollWidth', {
+          get: () => 0
+        });
+      };
+
       const openTabContainer = () => {
         $$(root.find('.coveo-dropdown-header')).trigger('click');
         return $$(root.find('.coveo-tab-list-container'));
@@ -189,6 +200,45 @@ export function ResponsiveTabsTest() {
             const tab = allTabsReplacedInTheirOriginalSection[tabId];
             expect(tab.getAttribute('data-id')).toEqual(tabId.toString());
           });
+        });
+      });
+
+      describe('when the tab section has zero client width', () => {
+        beforeEach(() => {
+          new SearchInterface(root.el, { responsiveMode: 'small' });
+          responsiveTabs = new ResponsiveTabs(root, Tab.ID);
+          simulateZeroWidth();
+          spyOn(root, 'width').and.returnValue(new ResponsiveComponents().getMediumScreenWidth() - 1);
+        });
+
+        it('should creates a dropdown header', () => {
+          responsiveTabs.handleResizeEvent();
+          expect(root.find('.coveo-dropdown-header')).not.toBeNull();
+        });
+
+        it('should places tabs in the correct order inside and outside the dropdown', () => {
+          responsiveTabs.handleResizeEvent();
+          const container = openTabContainer();
+
+          const lastTabInDropdown = container.find(`div[data-id="4"]`);
+          expect(lastTabInDropdown).not.toBeNull();
+
+          range(0, 4).forEach(tabOutsideDropdownId => {
+            const tabInIncorrectPosition = container.find(`div[data-id="${tabOutsideDropdownId}"]`);
+            expect(tabInIncorrectPosition).toBeNull();
+          });
+        });
+
+        it('should not place a selected tab inside the dropdown', () => {
+          const lastTab = last(tabs);
+          lastTab.addClass('coveo-selected');
+          const lastId = lastTab.getAttribute('data-id');
+
+          responsiveTabs.handleResizeEvent();
+          const container = openTabContainer();
+
+          const selectedTabInDropdown = container.find(`div[data-id="${lastId}"]`);
+          expect(selectedTabInDropdown).toBeNull();
         });
       });
     });
