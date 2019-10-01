@@ -278,12 +278,29 @@ export function RegisteredNamedMethodsTest() {
         expect(setup.cmp.client instanceof NoopAnalyticsClient).toBeTruthy();
       });
 
+      it('should update the search interface analytics client after being disabled', () => {
+        RegisteredNamedMethod.disableAnalytics(setup.env.root);
+        expect(setup.cmp.client).toBe(setup.env.searchInterface.usageAnalytics);
+      });
+
       it('should not be noop after being re-enabled', () => {
         expect(setup.cmp.client instanceof NoopAnalyticsClient).not.toBeTruthy();
         RegisteredNamedMethod.disableAnalytics(setup.env.root);
         expect(setup.cmp.client instanceof NoopAnalyticsClient).toBeTruthy();
         RegisteredNamedMethod.enableAnalytics(setup.env.root);
         expect(setup.cmp.client instanceof NoopAnalyticsClient).not.toBeTruthy();
+      });
+
+      it('should update the search interface analytics client after being re-enabled', () => {
+        RegisteredNamedMethod.disableAnalytics(setup.env.root);
+        RegisteredNamedMethod.enableAnalytics(setup.env.root);
+        expect(setup.cmp.client).toBe(setup.env.searchInterface.usageAnalytics);
+      });
+
+      it('should cancel pending events when disabling analytics', () => {
+        const cancelAllPendingEventsSpy = spyOn(setup.cmp.client, 'cancelAllPendingEvents');
+        RegisteredNamedMethod.disableAnalytics(setup.env.root);
+        expect(cancelAllPendingEventsSpy).toHaveBeenCalled();
       });
 
       it('should clear actions history when disabling analytics', () => {
