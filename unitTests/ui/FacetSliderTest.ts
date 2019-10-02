@@ -1,14 +1,12 @@
-import * as Mock from '../MockEnvironment';
-import { FacetSlider } from '../../src/ui/FacetSlider/FacetSlider';
-import { Slider } from '../../src/ui/Misc/Slider';
-import { IFacetSliderOptions } from '../../src/ui/FacetSlider/FacetSlider';
-import { Simulate } from '../Simulate';
-import { BreadcrumbEvents } from '../../src/events/BreadcrumbEvents';
-import { IPopulateBreadcrumbEventArgs } from '../../src/events/BreadcrumbEvents';
-import { $$ } from '../../src/utils/Dom';
-import { FakeResults } from '../Fake';
+import { BreadcrumbEvents, IPopulateBreadcrumbEventArgs } from '../../src/events/BreadcrumbEvents';
 import { QueryEvents } from '../../src/events/QueryEvents';
 import { Defer } from '../../src/misc/Defer';
+import { FacetSlider, IFacetSliderOptions } from '../../src/ui/FacetSlider/FacetSlider';
+import { Slider } from '../../src/ui/Misc/Slider';
+import { $$ } from '../../src/utils/Dom';
+import { FakeResults } from '../Fake';
+import * as Mock from '../MockEnvironment';
+import { Simulate } from '../Simulate';
 
 export function FacetSliderTest() {
   describe('FacetSlider', () => {
@@ -16,6 +14,7 @@ export function FacetSliderTest() {
     let facetSliderOptions: IFacetSliderOptions;
 
     beforeEach(() => {
+      Simulate.removeJQuery();
       facetSliderOptions = { start: 0, end: 100, field: '@foo' };
       test = Mock.optionsComponentSetup<FacetSlider, IFacetSliderOptions>(FacetSlider, facetSliderOptions);
       (<jasmine.Spy>test.env.queryStateModel.get).and.returnValue([0, 100]);
@@ -72,6 +71,87 @@ export function FacetSliderTest() {
           })
         ])
       );
+    });
+
+    describe('when deciding if the facet is empty', () => {
+      const isConsideredEmpty = () => {
+        return $$(test.cmp.element).hasClass('coveo-disabled-empty');
+      };
+
+      it('should not be considered empty if a single value is returned with a count different than 0', () => {
+        const groupByResults = [
+          {
+            field: '@foo',
+            values: [FakeResults.createFakeGroupByRangeValue(0, 10, 'foo', 1)]
+          }
+        ];
+
+        Simulate.query(test.env, {
+          groupByResults
+        });
+        expect(isConsideredEmpty()).toBe(false);
+      });
+
+      it('should be considered empty if there is no group by results', () => {
+        const groupByResults = [];
+
+        Simulate.query(test.env, {
+          groupByResults
+        });
+
+        expect(isConsideredEmpty()).toBe(true);
+      });
+
+      it('should be considered empty if a single value is returned with a count of 0', () => {
+        const groupByResults = [
+          {
+            field: '@foo',
+            values: [FakeResults.createFakeGroupByRangeValue(0, 10, 'foo', 0)]
+          }
+        ];
+
+        Simulate.query(test.env, {
+          groupByResults
+        });
+        expect(isConsideredEmpty()).toBe(true);
+      });
+
+      it('should be considered empty if a multiple values have a count of 0', () => {
+        const groupByResults = [
+          {
+            field: '@foo',
+            values: [
+              FakeResults.createFakeGroupByRangeValue(0, 10, 'foo', 0),
+              FakeResults.createFakeGroupByRangeValue(10, 20, 'foo2', 0),
+              FakeResults.createFakeGroupByRangeValue(30, 40, 'foo3', 0)
+            ]
+          }
+        ];
+
+        Simulate.query(test.env, {
+          groupByResults
+        });
+
+        expect(isConsideredEmpty()).toBe(true);
+      });
+
+      it('should not be considered empty if at least one value out of multiple has a count different than 0', () => {
+        const groupByResults = [
+          {
+            field: '@foo',
+            values: [
+              FakeResults.createFakeGroupByRangeValue(0, 10, 'foo', 0),
+              FakeResults.createFakeGroupByRangeValue(10, 20, 'foo2', 0),
+              FakeResults.createFakeGroupByRangeValue(30, 40, 'foo3', 1)
+            ]
+          }
+        ];
+
+        Simulate.query(test.env, {
+          groupByResults
+        });
+        expect(isConsideredEmpty()).toBe(false);
+      });
     });
 
     it("should return the correct selected values after a query, which is it's options", () => {

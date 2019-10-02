@@ -414,10 +414,11 @@ export class FieldValue extends Component {
       // It's also possible that the FacetRange and FacetSlider constructor are not available (lazy loading mode)
       // For that reason we also need to check that the constructor event exist before calling the instanceof operator or an exception would explode (cannot use instanceof "undefined")
       let componentIsAStandardFacet = true;
+      const isDynamicFacet = possibleFacetComponent.type.indexOf('Dynamic') !== -1;
       const facetRangeConstructorExists = Component.getComponentRef('FacetRange');
       const facetSliderConstructorExists = Component.getComponentRef('FacetSlider');
 
-      if (possibleFacetComponent.disabled) {
+      if (possibleFacetComponent.disabled || isDynamicFacet) {
         return false;
       }
 

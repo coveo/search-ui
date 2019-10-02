@@ -1,12 +1,12 @@
-import { Component } from '../Base/Component';
-import { ComponentOptions } from '../Base/ComponentOptions';
-import { IComponentBindings } from '../Base/ComponentBindings';
-import { Utils } from '../../utils/Utils';
-import { QueryEvents, IBuildingQueryEventArgs } from '../../events/QueryEvents';
-import { $$ } from '../../utils/Dom';
-import { Initialization } from '../Base/Initialization';
 import * as _ from 'underscore';
+import { IBuildingQueryEventArgs, QueryEvents } from '../../events/QueryEvents';
 import { exportGlobally } from '../../GlobalExports';
+import { $$ } from '../../utils/Dom';
+import { Utils } from '../../utils/Utils';
+import { Component } from '../Base/Component';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { Initialization } from '../Base/Initialization';
 import { Context, IPipelineContextProvider } from './PipelineGlobalExports';
 
 declare const Coveo;
@@ -14,33 +14,11 @@ declare const Coveo;
 export interface IPipelineContextOptions {}
 
 /**
- * A PipelineContext is used to add custom context information to a query (see [Adding Custom Context Information to Queries](https://docs.coveo.com/en/399)).
+ * The `PipelineContext` component injects custom contextual information into the search requests and usage analytics events sent from a search interface.
  *
- * This component is meant to be initialized with a script tag, possibly configuring it with JSON content.
+ * This component is meant to be initialized on a `script` HTML tag whose `type` attribute is set to `text/context` and whose optional JSON content defines the custom information to send (each value can be set to a string or array of strings).
  *
- * The values can be either string or string array.
- *
- * ```
- * <script class='CoveoPipelineContext' type='text/context'>
- *   {
- *      "foo" : "bar",
- *      "foobar" : ["foo", "bar"]
- *   }
- * </script>
- * ```
- *
- * Configuring the component within a script tag implies you will be able to leverage the interface editor.
- *
- * Once the component is created, you can also use JavaScript code to set/overwrite context values, using the {@link setContext} and {@link setContextValue} methods.
- *
- * Whether you configure the component within a script tag or using JavaScript code, the data is added to the [Query.Context]{@link IQuery.context} parameter.
- *
- * **Note:**
- *
- * This component also ensures that the framework properly determines the context in all corner cases, including when a standalone search box ([initSearchbox]{@link initSearchbox}) is displaying query suggestions.
- *
- * In most cases, if you do not use this component, the context will not be resolved and leveraged properly in the query pipeline (see [What Is a Query Pipeline?](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=252)).
- *
+ * See [Sending Custom Context Information](https://docs.coveo.com/en/399/).
  */
 export class PipelineContext extends Component implements IPipelineContextProvider {
   static ID = 'PipelineContext';

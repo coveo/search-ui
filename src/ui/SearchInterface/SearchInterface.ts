@@ -41,6 +41,7 @@ import { InitializationPlaceholder } from '../Base/InitializationPlaceholder';
 import { RootComponent } from '../Base/RootComponent';
 import { Debug } from '../Debug/Debug';
 import { MissingTermManager } from '../MissingTerm/MissingTermManager';
+import { OmniboxAnalytics } from '../Omnibox/OmniboxAnalytics';
 import { Context, IPipelineContextProvider } from '../PipelineContext/PipelineGlobalExports';
 import {
   MEDIUM_SCREEN_WIDTH,
@@ -51,7 +52,6 @@ import {
 import { FacetColumnAutoLayoutAdjustment } from './FacetColumnAutoLayoutAdjustment';
 import { FacetValueStateHandler } from './FacetValueStateHandler';
 import RelevanceInspectorModule = require('../RelevanceInspector/RelevanceInspector');
-import { OmniboxAnalytics } from '../Omnibox/OmniboxAnalytics';
 
 export interface ISearchInterfaceOptions {
   enableHistory?: boolean;
@@ -396,7 +396,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
      * Specifies the name of the query pipeline to use for the queries.
      *
      * You can specify a value for this option if your index is in a Coveo Cloud organization in which pipelines have
-     * been created (see [Managing Query Pipelines](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=128)).
+     * been created (see [Managing Query Pipelines](https://www.coveo.com/go?dest=cloudhelp&lcid=9&context=128)).
      *
      * **Note:**
      *
@@ -715,7 +715,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
       return;
     }
 
-    this.historyManager = new HistoryController(element, _window, this.queryStateModel, this.queryController, this.usageAnalytics);
+    this.historyManager = new HistoryController(element, _window, this.queryStateModel, this.queryController);
   }
 
   private setupQueryMode() {

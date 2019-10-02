@@ -24,11 +24,19 @@ export class DynamicFacetTestUtils {
     return facet;
   }
 
-  static createAdvancedFakeFacet(options?: IDynamicFacetOptions, withQSM = true) {
+  static createAdvancedFakeFacet(options?: IDynamicFacetOptions, env?: Mock.IMockEnvironment) {
     return Mock.advancedComponentSetup<DynamicFacet>(DynamicFacet, <Mock.AdvancedComponentSetupOptions>{
       modifyBuilder: builder => {
-        return withQSM ? builder.withLiveQueryStateModel() : builder;
+        if (!env) {
+          builder = builder.withLiveQueryStateModel();
+          return builder;
+        }
+
+        builder = builder.withRoot(env.root);
+        builder = builder.withQueryStateModel(env.queryStateModel);
+        return builder;
       },
+
       cmpOptions: this.allOptions(options)
     });
   }
@@ -43,6 +51,7 @@ export class DynamicFacetTestUtils {
         numberOfResults: Math.ceil(Math.random() * 100000),
         value,
         state,
+        preventAutoSelect: false,
         position: index + 1
       };
 

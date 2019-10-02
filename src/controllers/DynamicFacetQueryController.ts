@@ -33,11 +33,27 @@ export class DynamicFacetQueryController {
   }
 
   public enableFreezeCurrentValuesFlag() {
+    if (this.areValuesIncorrectlyAffectedByDependsOn) {
+      return;
+    }
+
     this.freezeCurrentValues = true;
   }
 
   public enableFreezeFacetOrderFlag() {
     this.freezeFacetOrder = true;
+  }
+
+  private get areValuesIncorrectlyAffectedByDependsOn() {
+    if (!this.facet.dependsOnManager.hasDependentFacets) {
+      return false;
+    }
+
+    if (this.facet.dependsOnManager.dependentFacetsHaveSelectedValues) {
+      return false;
+    }
+
+    return this.currentValues.length < this.numberOfValuesToRequest;
   }
 
   /**
@@ -85,9 +101,10 @@ export class DynamicFacetQueryController {
   }
 
   protected get currentValues(): IFacetRequestValue[] {
-    return this.facet.values.allFacetValues.map(({ value, state }) => ({
+    return this.facet.values.allFacetValues.map(({ value, state, preventAutoSelect }) => ({
       value,
-      state
+      state,
+      preventAutoSelect
     }));
   }
 

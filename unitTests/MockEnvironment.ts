@@ -112,6 +112,7 @@ export class MockEnvironmentBuilder {
     this.searchInterface.element = this.root;
     this.searchInterface.getBindings = () => this.getBindings() as any;
     this.searchInterface.historyManager = this.historyManager;
+    this.searchInterface.usageAnalytics = this.usageAnalytics;
 
     if (!this.searchEndpoint) {
       this.searchEndpoint = mockSearchEndpoint();
@@ -252,6 +253,7 @@ export function mockQueryController(): QueryController {
   const spy = <any>m;
   spy.options = {};
   spy.options.resultsPerPage = 10;
+  spy.usageAnalytics = mockUsageAnalytics();
   spy.fetchMore.and.returnValue(new Promise((resolve, reject) => {}));
   spy.getLastQuery.and.returnValue(new QueryBuilder().build());
   spy.executeQuery.and.returnValue(Promise.resolve());

@@ -726,8 +726,8 @@ DynamicFacetValueCreatorTest();
 import { DynamicFacetRangeValueCreatorTest } from './ui/DynamicFacet/DynamicFacetValues/DynamicFacetRangeValueCreatorTest';
 DynamicFacetRangeValueCreatorTest();
 
-import { DynamicFacetRangeValueUtilsTest } from './ui/DynamicFacet/DynamicFacetValues/DynamicFacetRangeValueUtilsTest';
-DynamicFacetRangeValueUtilsTest();
+import { DynamicFacetRangeValueParserTest } from './ui/DynamicFacet/DynamicFacetValues/DynamicFacetRangeValueParserTest';
+DynamicFacetRangeValueParserTest();
 
 import { FacetSearchControllerTest } from './controllers/FacetSearchControllerTest';
 FacetSearchControllerTest();
