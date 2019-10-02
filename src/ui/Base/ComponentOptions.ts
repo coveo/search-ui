@@ -34,7 +34,7 @@ export interface IFieldConditionOption {
   /**
    * Whether the condition should disallow the specified [`values`]{@link IFieldConditionOption} rather than allowing them.
    */
-  reverseCondition: boolean;
+  reverseCondition?: boolean;
 }
 
 /**
