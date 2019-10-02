@@ -715,7 +715,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
       return;
     }
 
-    this.historyManager = new HistoryController(element, _window, this.queryStateModel, this.queryController, null, this);
+    this.historyManager = new HistoryController(element, _window, this.queryStateModel, this.queryController);
   }
 
   private setupQueryMode() {
