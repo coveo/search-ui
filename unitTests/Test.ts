@@ -651,6 +651,9 @@ GrammarTest();
 import { SuggestionsManagerTest } from './magicbox/SuggestionsManagerTest';
 SuggestionsManagerTest();
 
+import { ResultPreviewsGridTest } from './magicbox/ResultPreviewsGridTest';
+ResultPreviewsGridTest();
+
 import { MagicBoxClearTest } from './magicbox/MagicBoxClearTest';
 MagicBoxClearTest();
 
