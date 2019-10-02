@@ -310,8 +310,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/controllers/HistoryController.ts#L99">controllers/HistoryController.ts
-									:99</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/controllers/HistoryController.ts#L103">controllers/HistoryController.ts
+									:103</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -403,7 +403,7 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>History<wbr>Controller<span class="tsd-signature-symbol">(</span>element<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLElement</span>, window<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Window</span>, queryStateModel<span class="tsd-signature-symbol">: </span><a href="querystatemodel.html" class="tsd-signature-type">QueryStateModel</a>, queryController<span class="tsd-signature-symbol">: </span><a href="querycontroller.html" class="tsd-signature-type">QueryController</a>, usageAnalytics<span class="tsd-signature-symbol">?: </span><a href="../interfaces/ianalyticsclient.html" class="tsd-signature-type">IAnalyticsClient</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="historycontroller.html" class="tsd-signature-type">HistoryController</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>History<wbr>Controller<span class="tsd-signature-symbol">(</span>element<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLElement</span>, window<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Window</span>, queryStateModel<span class="tsd-signature-symbol">: </span><a href="querystatemodel.html" class="tsd-signature-type">QueryStateModel</a>, queryController<span class="tsd-signature-symbol">: </span><a href="querycontroller.html" class="tsd-signature-type">QueryController</a>, usageAnalytics<span class="tsd-signature-symbol">?: </span><a href="../interfaces/ianalyticsclient.html" class="tsd-signature-type">IAnalyticsClient</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="historycontroller.html" class="tsd-signature-type">HistoryController</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -434,9 +434,10 @@
 									<h5>queryController: <a href="querycontroller.html" class="tsd-signature-type">QueryController</a></h5>
 								</li>
 								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> usageAnalytics: <a href="../interfaces/ianalyticsclient.html" class="tsd-signature-type">IAnalyticsClient</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> usageAnalytics: <a href="../interfaces/ianalyticsclient.html" class="tsd-signature-type">IAnalyticsClient</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
+											<p><strong>Deprecated.</strong> Since the <a href="https://docs.coveo.com/en/3084/">October 2019 Release (v2.7219)</a>, the class retrieves and uses the {@link AnalyticsClient} from the <code>queryController</code> constructor parameter.</p>
 										</div>
 									</div>
 								</li>
