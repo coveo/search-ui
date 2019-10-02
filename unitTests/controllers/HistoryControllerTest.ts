@@ -18,7 +18,7 @@ export function HistoryControllerTest() {
 
     beforeEach(() => {
       env = new Mock.MockEnvironmentBuilder().withLiveQueryStateModel().build();
-      historyController = new HistoryController(env.root, Mock.mockWindow(), env.queryStateModel, env.queryController, env.usageAnalytics);
+      historyController = new HistoryController(env.root, Mock.mockWindow(), env.queryStateModel, env.queryController, null, env.searchInterface);
     });
 
     afterEach(() => {
@@ -102,7 +102,7 @@ export function HistoryControllerTest() {
 
       describe('when logging analytics event', () => {
         beforeEach(() => {
-          historyController = new HistoryController(env.root, window, env.queryStateModel, env.queryController, env.usageAnalytics);
+          historyController = new HistoryController(env.root, window, env.queryStateModel, env.queryController, null, env.searchInterface);
           historyController.hashUtils = fakeHashUtils;
           $$(historyController.element).trigger(InitializationEvents.restoreHistoryState);
         });

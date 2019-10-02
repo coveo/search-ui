@@ -15,6 +15,8 @@ import { analyticsActionCauseList, IAnalyticsFacetMeta, IAnalyticsActionCause } 
 import { logSearchBoxSubmitEvent, logSortEvent } from '../ui/Analytics/SharedAnalyticsCalls';
 import { Model } from '../models/Model';
 import { IHistoryManager } from './HistoryManager';
+import { SearchInterface } from '../ui/SearchInterface/SearchInterface';
+import { NoopAnalyticsClient } from '../ui/Analytics/NoopAnalyticsClient';
 
 /**
  * This component is instantiated automatically by the framework on the root if the {@link SearchInterface}.<br/>
@@ -40,14 +42,16 @@ export class HistoryController extends RootComponent implements IHistoryManager 
    * @param window
    * @param queryStateModel
    * @param queryController
-   * @param usageAnalytics
+   * @param usageAnalytics **Deprecated.** Since the [October 2019 Release (v2.7219)](https://docs.coveo.com/en/3084/), the class retrieves and uses the {@link AnalyticsClient} from its `searchInterface` constructor parameter.
+   * @param searchInterface
    */
   constructor(
     element: HTMLElement,
     public window: Window,
     public queryStateModel: QueryStateModel,
     public queryController: QueryController,
-    public usageAnalytics?: IAnalyticsClient | undefined
+    usageAnalytics?: IAnalyticsClient,
+    private searchInterface?: SearchInterface
   ) {
     super(element, HistoryController.ID);
 
@@ -72,6 +76,10 @@ export class HistoryController extends RootComponent implements IHistoryManager 
 
     this.window.addEventListener('hashchange', this.hashchange);
     $$(this.element).on(InitializationEvents.nuke, () => this.handleNuke());
+  }
+
+  public get usageAnalytics() {
+    return this.searchInterface && this.searchInterface.usageAnalytics ? this.searchInterface.usageAnalytics : new NoopAnalyticsClient();
   }
 
   public set hashUtils(hashUtils: typeof HashUtils) {
