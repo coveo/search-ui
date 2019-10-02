@@ -4,7 +4,7 @@ import { Logger } from '../../misc/Logger';
 import { IFieldDescription } from '../../rest/FieldDescription';
 import { IStringMap } from '../../rest/GenericParam';
 import { l } from '../../strings/Strings';
-import { $$ } from '../../utils/Dom';
+import { $$, Dom } from '../../utils/Dom';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { Utils } from '../../utils/Utils';
 import { Template } from '../Templates/Template';
@@ -16,6 +16,26 @@ import { IComponentOptionsTemplateOptionArgs, TemplateComponentOptions } from '.
  * The only constraint this type has over a basic string is that it should start with the `@` character.
  */
 export interface IFieldOption extends String {}
+
+/**
+ * The `IFieldConditionOption` is a component option expressing a field-based condition that must be satisfied.
+ */
+export interface IFieldConditionOption {
+  /**
+   * The name of the field on which the condition is based (e.g., `author`).
+   */
+  field: string;
+
+  /**
+   * The field values allowed (or disallowed) by the condition (e.g., `["Alice Smith", "Bob Jones"]`).
+   */
+  values: string[];
+
+  /**
+   * Whether the condition should disallow the specified [`values`]{@link IFieldConditionOption} rather than allowing them.
+   */
+  reverseCondition?: boolean;
+}
 
 /**
  * The `IQueryExpression` type is a string type dedicated to query expressions.
@@ -616,6 +636,25 @@ export class ComponentOptions {
     }>(ComponentOptionsType.OBJECT, loadOption, optionArgs);
   }
 
+  /**
+   * Builds a field condition option.
+   *
+   * A field condition option defines a field-based condition that must be dynamically evaluated against,
+   * and satisfied by a query result item in order to initialize a result template component.
+   *
+   * **Markup Example:**
+   *
+   * ```html
+   * data-condition-field-author="Alice Smith, Bob Jones"
+   * data-condition-field-not-filetype="pdf"`
+   * ```
+   *
+   * @returns {string} The resulting option value.
+   */
+  static buildFieldConditionOption(): IFieldConditionOption[] {
+    return ComponentOptions.buildOption<IFieldConditionOption[]>(ComponentOptionsType.FIELD, ComponentOptions.loadFieldConditionOption);
+  }
+
   static buildOption<T>(type: ComponentOptionsType, load: IComponentOptionsLoadOption<T>, optionArg: IComponentOptions<T> = {}): T {
     const option: IComponentOptionsOption<T> = <any>optionArg;
     option.type = type;
@@ -764,6 +803,20 @@ export class ComponentOptions {
     const field = ComponentOptions.loadStringOption(element, name, option);
     Assert.check(!Utils.isNonEmptyString(field) || Utils.isCoveoField(field), field + ' is not a valid field');
     return field;
+  }
+
+  static loadFieldConditionOption(element: HTMLElement, name: string, option: IComponentOptionsOption<any>): IFieldConditionOption[] {
+    var attrs = Dom.nodeListToArray(element.attributes).filter(attribute =>
+      Utils.stringStartsWith(attribute.nodeName, 'data-condition-field-')
+    );
+
+    return attrs.length != 0
+      ? attrs.map(attribute => ({
+          field: attribute.nodeName.replace('data-condition-field-not-', '').replace('data-condition-field-', ''),
+          values: Utils.isNonEmptyString(attribute.nodeValue) ? attribute.nodeValue.split(/\s*,\s*/) : null,
+          reverseCondition: attribute.nodeName.indexOf('data-condition-field-not-') == 0
+        }))
+      : undefined;
   }
 
   static loadFieldsOption(element: HTMLElement, name: string, option: IComponentOptionsOption<any>): string[] {

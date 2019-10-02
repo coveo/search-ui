@@ -37,6 +37,7 @@ export function FieldValueTest() {
       result = FakeResults.createFakeResult(),
       facet?: Facet | DynamicFacet
     ) {
+      result.raw.filetype = 'unknown';
       test = Mock.advancedResultComponentSetup<FieldValue>(FieldValue, result, <Mock.AdvancedComponentSetupOptions>{
         element: $$('span').el,
         cmpOptions: options,
@@ -225,6 +226,38 @@ export function FieldValueTest() {
           textCaption: 'this is a test'
         });
         expect($$(test.cmp.element).hasClass('coveo-with-label')).toBe(true);
+      });
+
+      it('matching condition should let the component render within its parent', () => {
+        initializeFieldValueComponent({
+          field: '@title',
+          conditions: [{ field: 'filetype', values: ['unknown'] }]
+        });
+        expect(test.cmp.element.parentElement).toBeDefined();
+      });
+
+      it('not matching condition should detach the component from its parent', () => {
+        initializeFieldValueComponent({
+          field: '@title',
+          conditions: [{ field: 'filetype', values: ['abc'] }]
+        });
+        expect(test.cmp.element.parentElement).toBeNull();
+      });
+
+      it('not matching reversed condition should let the component render within its parent', () => {
+        initializeFieldValueComponent({
+          field: '@title',
+          conditions: [{ field: 'filetype', values: ['abc'], reverseCondition: true }]
+        });
+        expect(test.cmp.element.parentElement).toBeDefined();
+      });
+
+      it('matching reversed condition should detach the component from its parent', () => {
+        initializeFieldValueComponent({
+          field: '@title',
+          conditions: [{ field: 'filetype', values: ['unknown'], reverseCondition: true }]
+        });
+        expect(test.cmp.element.parentElement).toBeNull();
       });
     });
 

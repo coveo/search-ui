@@ -11,13 +11,14 @@ import { Utils } from '../../utils/Utils';
 import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
-import { ComponentOptions, IComponentOptionsObjectOptionArgs, IFieldOption } from '../Base/ComponentOptions';
+import { ComponentOptions, IComponentOptionsObjectOptionArgs, IFieldOption, IFieldConditionOption } from '../Base/ComponentOptions';
 import { Initialization } from '../Base/Initialization';
 import { Facet } from '../Facet/Facet';
 import { FacetUtils } from '../Facet/FacetUtils';
 import { TemplateHelpers } from '../Templates/TemplateHelpers';
 import { l } from '../../strings/Strings';
 import { DynamicFacet } from '../DynamicFacet/DynamicFacet';
+import { TemplateFieldsEvaluator } from '../Templates/TemplateFieldsEvaluator';
 
 export interface IFieldValueOptions {
   field?: IFieldOption;
@@ -30,6 +31,7 @@ export interface IFieldValueOptions {
   separator?: string;
   displaySeparator?: string;
   textCaption?: string;
+  conditions?: IFieldConditionOption[];
 }
 
 export interface IAnalyticsFieldValueMeta {
@@ -179,6 +181,7 @@ export class FieldValue extends Component {
         alt: ComponentOptions.buildStringOption(showOnlyWithHelper(['image'])),
         height: ComponentOptions.buildStringOption(showOnlyWithHelper(['image'])),
         width: ComponentOptions.buildStringOption(showOnlyWithHelper(['image'])),
+        srcTemplate: ComponentOptions.buildStringOption(showOnlyWithHelper(['image'])),
 
         precision: ComponentOptions.buildNumberOption(showOnlyWithHelper(['size'], { min: 0, defaultValue: 2 })),
         base: ComponentOptions.buildNumberOption(showOnlyWithHelper(['size'], { min: 0, defaultValue: 0 })),
@@ -193,7 +196,29 @@ export class FieldValue extends Component {
      *
      * Default value is `undefined`.
      */
-    textCaption: ComponentOptions.buildLocalizedStringOption()
+    textCaption: ComponentOptions.buildLocalizedStringOption(),
+
+    /**
+     * A field-based condition that must be satisfied by the query result item for the component to be rendered.
+     *
+     * Note: This option uses a distinctive markup configuration syntax allowing multiple conditions to be expressed. Its underlying logic is the same as that of the field value conditions mechanism used by result templates.
+     *
+     * **Examples:**
+     * Render the component if the query result item's @documenttype field value is Article or Documentation.
+     * ```html
+     * <div class="CoveoFieldValue" data-field="@author" data-condition-field-documenttype="Article, Documentation"></div>
+     * ```
+     * Render the component if the query result item's @documenttype field value is anything but Case.
+     * ```html
+     * <div class="CoveoFieldValue" data-field="@author" data-condition-field-not-documenttype="Case"></div>
+     * ```
+     * Render the component if the query result item's @documenttype field value is Article, and if its @author field value is anything but Anonymous.
+     * ```html
+     * <div class="CoveoFieldValue" data-field="@author" data-condition-field-documenttype="Article" data-condition-field-not-author="Anonymous"></div>
+     * ```
+     * Default value is `undefined`.
+     */
+    conditions: ComponentOptions.buildFieldConditionOption()
   };
 
   static simpleOptions = omit(FieldValue.options, 'helperOptions');
@@ -228,31 +253,32 @@ export class FieldValue extends Component {
     this.result = this.result || this.resolveResult();
     Assert.exists(this.result);
 
+    if (TemplateFieldsEvaluator.evaluateFieldsToMatch(this.options.conditions, this.result) && this.getValue()) {
+      this.initialize();
+    } else if (this.element.parentElement != null) {
+      this.element.parentElement.removeChild(this.element);
+    }
+  }
+
+  private initialize() {
     let loadedValueFromComponent = this.getValue();
-    if (loadedValueFromComponent == null) {
-      // Completely remove the element to ease stuff such as adding separators in CSS
-      if (this.element.parentElement != null) {
-        this.element.parentElement.removeChild(this.element);
+    let values: string[];
+
+    if (isArray(loadedValueFromComponent)) {
+      values = loadedValueFromComponent;
+    } else if (this.options.splitValues) {
+      if (isString(loadedValueFromComponent)) {
+        values = map(loadedValueFromComponent.split(this.options.separator), (v: string) => {
+          return v.trim();
+        });
       }
     } else {
-      let values: string[];
-
-      if (isArray(loadedValueFromComponent)) {
-        values = loadedValueFromComponent;
-      } else if (this.options.splitValues) {
-        if (isString(loadedValueFromComponent)) {
-          values = map(loadedValueFromComponent.split(this.options.separator), (v: string) => {
-            return v.trim();
-          });
-        }
-      } else {
-        loadedValueFromComponent = loadedValueFromComponent.toString();
-        values = [loadedValueFromComponent];
-      }
-      this.appendValuesToDom(values);
-      if (this.options.textCaption != null) {
-        this.prependTextCaptionToDom();
-      }
+      loadedValueFromComponent = loadedValueFromComponent.toString();
+      values = [loadedValueFromComponent];
+    }
+    this.appendValuesToDom(values);
+    if (this.options.textCaption != null) {
+      this.prependTextCaptionToDom();
     }
   }
 

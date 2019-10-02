@@ -5,6 +5,7 @@ import { each, find } from 'underscore';
 export class TemplateFieldsEvaluator {
   public static evaluateFieldsToMatch(toMatches: IFieldsToMatch[], result: IQueryResult): boolean {
     let templateShouldBeLoaded = true;
+    if (!toMatches) return true;
     each(toMatches, (toMatch: IFieldsToMatch) => {
       let matchAtLeastOnce = false;
       if (!toMatch.values) {
@@ -18,7 +19,7 @@ export class TemplateFieldsEvaluator {
           }
         });
       }
-      templateShouldBeLoaded = templateShouldBeLoaded && matchAtLeastOnce;
+      templateShouldBeLoaded = templateShouldBeLoaded && (toMatch.reverseCondition ? !matchAtLeastOnce : matchAtLeastOnce);
     });
     return templateShouldBeLoaded;
   }

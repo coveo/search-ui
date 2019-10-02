@@ -36,6 +36,10 @@ export interface IImageUtilsOptions {
    * The width of the image
    */
   width?: string;
+  /**
+   * The template to use for the image source
+   */
+  srcTemplate?: string;
 }
 
 export class HTMLUtils {

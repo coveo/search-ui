@@ -46,6 +46,28 @@ export function TemplateConditionEvaluatorTest() {
       ).toBeTruthy();
     });
 
+    it('should be able to find a field in the format data-condition-field-FIELDNAME', () => {
+      expect(
+        Utils.arrayEqual(
+          TemplateConditionEvaluator.getFieldFromString(`<div data-condition-field-first_field="abc" data-condition-field-second="bcd">`),
+          ['first_field', 'second'],
+          false
+        )
+      ).toBeTruthy();
+    });
+
+    it('should be able to find a field in the format data-condition-field-not-FIELDNAME', () => {
+      expect(
+        Utils.arrayEqual(
+          TemplateConditionEvaluator.getFieldFromString(
+            `<div data-condition-field-not-first_field="abc" data-condition-field-not-second="bcd">`
+          ),
+          ['first_field', 'second'],
+          false
+        )
+      ).toBeTruthy();
+    });
+
     it('should not consider lone words to be fields', () => {
       expect(TemplateConditionEvaluator.getFieldFromString(`My name is John Doe`).length).toBe(0);
     });

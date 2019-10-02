@@ -11,7 +11,11 @@ export class TemplateConditionEvaluator {
     const fieldBetweenDoubleQuotes = `"[^"]*?(${acceptableCharacterInFieldName}+)[^"]*?"`;
     const fieldBetweenSingleQuotes = `'[^']*?(${acceptableCharacterInFieldName}+)[^']*?'`;
     const rawFieldAccessedUsingString = `\\braw\\[(?:${fieldBetweenDoubleQuotes}|${fieldBetweenSingleQuotes})\\]`;
-    const fieldMatcher = new RegExp(`${fieldWithAtSymbolPrefix}|${rawFieldAccessedUsingDotOperator}|${rawFieldAccessedUsingString}`, 'gi');
+    const fieldUsedInCondition = `data-condition-field-(?:not-)?(${acceptableCharacterInFieldName}+)=`;
+    const fieldMatcher = new RegExp(
+      `${fieldWithAtSymbolPrefix}|${rawFieldAccessedUsingDotOperator}|${rawFieldAccessedUsingString}|${fieldUsedInCondition}`,
+      'gi'
+    );
     const matchedFields = StringUtils.match(text, fieldMatcher);
 
     return _.map(matchedFields, match => _.find(match.splice(1), field => field));
