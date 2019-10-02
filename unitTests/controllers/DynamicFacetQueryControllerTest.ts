@@ -4,6 +4,7 @@ import { DynamicFacetTestUtils } from '../ui/DynamicFacet/DynamicFacetTestUtils'
 import { QueryBuilder, SearchEndpoint } from '../../src/Core';
 import { FacetValueState } from '../../src/rest/Facet/FacetValueState';
 import { mockSearchEndpoint } from '../MockEnvironment';
+import { DependsOnManager } from '../../src/utils/DependsOnManager';
 
 export function DynamicFacetQueryControllerTest() {
   describe('DynamicFacetQueryController', () => {
@@ -11,10 +12,10 @@ export function DynamicFacetQueryControllerTest() {
     let facetOptions: IDynamicFacetOptions;
     let dynamicFacetQueryController: DynamicFacetQueryController;
     let queryBuilder: QueryBuilder;
-    let mockFacetValues = DynamicFacetTestUtils.createFakeFacetValues(1);
+    let mockFacetValues = DynamicFacetTestUtils.createFakeFacetValues(5);
 
     beforeEach(() => {
-      facetOptions = { field: '@field' };
+      facetOptions = { field: '@field', numberOfValues: 5 };
 
       initializeComponents();
     });
@@ -61,7 +62,8 @@ export function DynamicFacetQueryControllerTest() {
 
       expect(currentValues[0]).toEqual({
         value: mockFacetValues[0].value,
-        state: mockFacetValues[0].state
+        state: mockFacetValues[0].state,
+        preventAutoSelect: mockFacetValues[0].preventAutoSelect
       });
     });
 
@@ -118,10 +120,54 @@ export function DynamicFacetQueryControllerTest() {
       expect(facetRequest().freezeCurrentValues).toBe(false);
     });
 
-    it('allows to enableFreezeCurrentValuesFlag', () => {
+    it(`when calling enableFreezeCurrentValuesFlag
+      allows to enable the flag`, () => {
       dynamicFacetQueryController.enableFreezeCurrentValuesFlag();
 
       expect(facetRequest().freezeCurrentValues).toBe(true);
+    });
+
+    it(`given a facet with dependent facets having selected values,
+      when calling enableFreezeCurrentValuesFlag
+      it sets the freezeCurrentValues flag to true`, () => {
+      facet.dependsOnManager = {
+        hasDependentFacets: true,
+        dependentFacetsHaveSelectedValues: true
+      } as DependsOnManager;
+
+      dynamicFacetQueryController.enableFreezeCurrentValuesFlag();
+
+      expect(facetRequest().freezeCurrentValues).toBe(true);
+    });
+
+    it(`given a facet with dependent facets without selected values,
+    when calling enableFreezeCurrentValuesFlag
+    when values are not affected
+    it sets the freezeCurrentValues flag to true`, () => {
+      facet.dependsOnManager = {
+        hasDependentFacets: true,
+        dependentFacetsHaveSelectedValues: false
+      } as DependsOnManager;
+
+      dynamicFacetQueryController.enableFreezeCurrentValuesFlag();
+
+      expect(facetRequest().freezeCurrentValues).toBe(true);
+    });
+
+    it(`given a facet with dependent facets without selected values,
+    when calling enableFreezeCurrentValuesFlag
+    when values are affected
+    it sets the freezeCurrentValues flag to true`, () => {
+      facet.dependsOnManager = {
+        hasDependentFacets: true,
+        dependentFacetsHaveSelectedValues: false
+      } as DependsOnManager;
+      facet.values.resetValues();
+      facet.values.get('allo');
+
+      dynamicFacetQueryController.enableFreezeCurrentValuesFlag();
+
+      expect(facetRequest().freezeCurrentValues).toBe(false);
     });
 
     it(`when freezeCurrentValues flag is set to true

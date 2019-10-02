@@ -4,7 +4,7 @@ import { SuggestionsManager } from '../../src/magicbox/SuggestionsManager';
 import { $$, Dom } from '../../src/utils/Dom';
 
 export function SuggestionsManagerTest() {
-  describe('Suggestions manager', () => {
+  describe('SuggestionsManager', () => {
     const LOCKED_LOCKER_SERVICE_ELEMENT = {};
     let container: Dom;
     let suggestionContainer: Dom;
@@ -63,6 +63,12 @@ export function SuggestionsManagerTest() {
       expect($$(selectedWithKeyboard).hasClass(selectedClass)).toBe(true);
       expect($$(selectedWithKeyboard).getAttribute('aria-selected')).toBe('true');
       expect(selectedWithKeyboard).toBe(suggestion.el);
+    });
+
+    it('clearKeyboardFocusedElement sets the keyboard focused element to null', () => {
+      suggestionManager.moveDown();
+      suggestionManager.clearKeyboardFocusedElement();
+      expect(suggestionManager.selectAndReturnKeyboardFocusedElement()).toBeNull();
     });
 
     it('returns the correct selected element with keyboard on move up', () => {

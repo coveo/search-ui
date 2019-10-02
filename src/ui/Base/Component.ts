@@ -273,10 +273,6 @@ export class Component extends BaseComponent {
    */
   public searchInterface: SearchInterface;
   /**
-   * A reference to the {@link Analytics.client}.
-   */
-  public usageAnalytics: IAnalyticsClient;
-  /**
    * Contains the state of options for different components. Mainly used by {@link ResultLink}.
    */
   public componentOptionsModel: ComponentOptionsModel;
@@ -299,7 +295,6 @@ export class Component extends BaseComponent {
     this.componentStateModel = bindings.componentStateModel || this.resolveComponentStateModel();
     this.queryController = bindings.queryController || this.resolveQueryController();
     this.searchInterface = bindings.searchInterface || this.resolveSearchInterface();
-    this.usageAnalytics = bindings.usageAnalytics || this.resolveUA();
     this.componentOptionsModel = bindings.componentOptionsModel || this.resolveComponentOptionsModel();
     this.ensureDom = _.once(() => this.createDom());
 
@@ -324,6 +319,13 @@ export class Component extends BaseComponent {
       componentOptionsModel: this.componentOptionsModel,
       usageAnalytics: this.usageAnalytics
     };
+  }
+
+  /**
+   * A reference to the {@link Analytics.client}.
+   */
+  public get usageAnalytics() {
+    return this.resolveUA();
   }
 
   public createDom() {
@@ -351,8 +353,7 @@ export class Component extends BaseComponent {
   }
 
   public resolveUA(): IAnalyticsClient {
-    var searchInterface = this.resolveSearchInterface();
-    return searchInterface && searchInterface.usageAnalytics ? searchInterface.usageAnalytics : new NoopAnalyticsClient();
+    return this.searchInterface && this.searchInterface.usageAnalytics ? this.searchInterface.usageAnalytics : new NoopAnalyticsClient();
   }
 
   public resolveResult(): IQueryResult {

@@ -349,6 +349,16 @@ export function DynamicFacetTest() {
       expect(test.cmp.values.selectedValues).toEqual(['a', 'b', 'c']);
     });
 
+    it(`when a previously idle value is returned selected by the API (autoselection)
+    should update the QSM correctly`, () => {
+      mockFacetValues[0].state = FacetValueState.selected;
+      const results = FakeResults.createFakeResults();
+      results.facets = [DynamicFacetTestUtils.getCompleteFacetResponse(test.cmp, { values: mockFacetValues })];
+      Simulate.query(test.env, { results });
+
+      testQueryStateModelValues();
+    });
+
     it('should log an analytics event when selecting a value through the QSM', () => {
       spyOn(test.cmp, 'logAnalyticsEvent');
       test.env.queryStateModel.registerNewAttribute(`f:${test.cmp.options.id}`, []);
@@ -558,6 +568,23 @@ export function DynamicFacetTest() {
       test.cmp.scrollToTop();
 
       expect(ResultListUtils.scrollToTop).not.toHaveBeenCalledWith(test.cmp.root);
+    });
+
+    describe('testing the DependsOnManager', () => {
+      beforeEach(() => {
+        spyOn(test.cmp.dependsOnManager, 'updateVisibilityBasedOnDependsOn');
+        spyOn(test.cmp.dependsOnManager, 'listenToParentIfDependentFacet');
+      });
+
+      it('should initialize the dependsOnManager', () => {
+        expect(test.cmp.dependsOnManager).toBeTruthy();
+      });
+
+      it(`when facet appearance is updated (e.g. when createDom is called)
+      should call the "updateVisibilityBasedOnDependsOn" method of the DependsOnManager`, () => {
+        test.cmp.createDom();
+        expect(test.cmp.dependsOnManager.updateVisibilityBasedOnDependsOn).toHaveBeenCalled();
+      });
     });
   });
 }

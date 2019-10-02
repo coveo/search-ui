@@ -1,4 +1,5 @@
 import { history } from 'coveo.analytics';
+import { NullStorage } from 'coveo.analytics/dist/storage';
 import * as _ from 'underscore';
 import {
   IBuildingCallOptionsEventArgs,
@@ -24,13 +25,13 @@ import { SearchEndpointWithDefaultCallOptions } from '../rest/SearchEndpointWith
 import { BaseComponent } from '../ui/Base/BaseComponent';
 import { QueryBuilder } from '../ui/Base/QueryBuilder';
 import { RootComponent } from '../ui/Base/RootComponent';
-import { ISearchInterfaceOptions } from '../ui/SearchInterface/SearchInterface';
+import { ISearchInterfaceOptions, SearchInterface } from '../ui/SearchInterface/SearchInterface';
 import { $$, Dom } from '../utils/Dom';
 import { LocalStorageUtils } from '../utils/LocalStorageUtils';
 import { QueryUtils } from '../utils/QueryUtils';
 import { UrlUtils } from '../utils/UrlUtils';
 import { Utils } from '../utils/Utils';
-import { NullStorage } from 'coveo.analytics/dist/storage';
+import { IAnalyticsClient } from '../ui/Analytics/AnalyticsClient';
 
 /**
  * Possible options when performing a query with the query controller
@@ -115,13 +116,19 @@ export class QueryController extends RootComponent {
    * Create a new query controller
    * @param element
    * @param options
+   * @param usageAnalytics **Deprecated.** Since the [October 2019 Release (v2.7219)](https://docs.coveo.com/en/3084/), the class retrieves and uses the {@link AnalyticsClient} from its `searchInterface` constructor parameter.
+   * @param searchInterface
    */
-  constructor(element: HTMLElement, public options: ISearchInterfaceOptions, public usageAnalytics, public searchInterface) {
+  constructor(element: HTMLElement, public options: ISearchInterfaceOptions, usageAnalytics: IAnalyticsClient, public searchInterface: SearchInterface) {
     super(element, QueryController.ID);
     Assert.exists(element);
     Assert.exists(options);
     this.firstQuery = true;
     this.enableHistory();
+  }
+
+  public get usageAnalytics(): IAnalyticsClient {
+    return this.searchInterface.usageAnalytics;
   }
 
   /**

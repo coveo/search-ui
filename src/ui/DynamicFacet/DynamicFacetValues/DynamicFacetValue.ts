@@ -21,6 +21,7 @@ export interface IDynamicFacetValue extends IRangeValue {
   state: FacetValueState;
   numberOfResults: number;
   position: number;
+  preventAutoSelect?: boolean;
 }
 
 export class DynamicFacetValue implements IDynamicFacetValue {
@@ -29,6 +30,7 @@ export class DynamicFacetValue implements IDynamicFacetValue {
   public end: RangeType;
   public endInclusive: boolean;
   public state: FacetValueState;
+  public preventAutoSelect = false;
   public numberOfResults: number;
   public position: number;
   public displayValue: string;
@@ -56,7 +58,7 @@ export class DynamicFacetValue implements IDynamicFacetValue {
   }
 
   public toggleSelect() {
-    this.state = this.state === FacetValueState.selected ? FacetValueState.idle : FacetValueState.selected;
+    this.state === FacetValueState.selected ? this.deselect() : this.select();
   }
 
   public select() {
@@ -65,6 +67,7 @@ export class DynamicFacetValue implements IDynamicFacetValue {
 
   public deselect() {
     this.state = FacetValueState.idle;
+    this.preventAutoSelect = true;
   }
 
   public equals(arg: string | DynamicFacetValue) {
