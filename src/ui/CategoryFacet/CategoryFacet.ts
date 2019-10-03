@@ -1,5 +1,4 @@
-// TODO: delete that file
-import 'styling/_CategoryFacet';
+import 'styling/_CategoryFacet'; // TODO: Delete file
 import 'styling/CategoryFacet/_CategoryFacet';
 import { Component } from '../Base/Component';
 import { l } from '../../strings/Strings';
