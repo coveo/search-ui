@@ -339,8 +339,6 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   private numberOfValues: number;
   private categoryFacetValuesTree: CategoryFacetValuesTree;
 
-  public static WAIT_ELEMENT_CLASS = 'coveo-category-facet-header-wait-animation';
-
   constructor(public element: HTMLElement, public options: ICategoryFacetOptions, bindings?: IComponentBindings) {
     super(element, 'CategoryFacet', bindings);
     this.options = ComponentOptions.initComponentOptions(element, CategoryFacet, options);
@@ -512,11 +510,11 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   }
 
   public async executeQuery() {
-    this.showWaitingAnimation();
+    this.header.showLoading();
     try {
       await this.queryController.executeQuery();
     } finally {
-      this.hideWaitingAnimation();
+      this.header.hideLoading();
     }
   }
 
@@ -727,16 +725,6 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     return caption ? caption : value;
   }
 
-  public showWaitingAnimation() {
-    this.ensureDom();
-    this.header.showLoading();
-  }
-
-  public hideWaitingAnimation() {
-    this.ensureDom();
-    this.header.hideLoading();
-  }
-
   public logAnalyticsEvent(eventName: IAnalyticsActionCause, path = this.activePath) {
     this.usageAnalytics.logSearchEvent<IAnalyticsCategoryFacetMeta>(eventName, {
       categoryFacetId: this.options.id,
@@ -846,7 +834,6 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
       title: this.options.title,
       enableCollapse: this.options.enableCollapse,
       clear: () => this.clear(),
-      // TODO: add collapse option
       toggleCollapse: () => this.toggleCollapse(),
       expand: () => this.expand(),
       collapse: () => this.collapse(),
