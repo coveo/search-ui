@@ -1,3 +1,5 @@
+import 'styling/_CategoryFacet';
+import 'styling/DynamicFacet/_DynamicFacet';
 import { Component } from '../Base/Component';
 import { l } from '../../strings/Strings';
 import { IFieldOption, ComponentOptions } from '../Base/ComponentOptions';
@@ -11,7 +13,6 @@ import { CategoryFacetQueryController } from '../../controllers/CategoryFacetQue
 import { SVGDom } from '../../utils/SVGDom';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { QueryStateModel } from '../../models/QueryStateModel';
-import 'styling/_CategoryFacet';
 import { IAttributesChangedEventArg, MODEL_EVENTS } from '../../models/Model';
 import { Utils } from '../../utils/Utils';
 import { CategoryValue, CategoryValueParent } from './CategoryValue';
@@ -36,7 +37,7 @@ import { IAutoLayoutAdjustableInsideFacetColumn } from '../SearchInterface/Facet
 import { ResponsiveFacets } from '../ResponsiveComponents/ResponsiveFacets';
 import { IResponsiveComponentOptions } from '../ResponsiveComponents/ResponsiveComponentsManager';
 import { ResponsiveFacetOptions } from '../ResponsiveComponents/ResponsiveFacetOptions';
-import { CategoryFacetHeader } from './CategoryFacetHeader';
+import { DynamicFacetHeader } from '../DynamicFacet/DynamicFacetHeader/DynamicFacetHeader';
 import { AccessibleButton } from '../../utils/AccessibleButton';
 import { IStringMap } from '../../rest/GenericParam';
 import { DependsOnManager, IDependentFacet } from '../../utils/DependsOnManager';
@@ -294,11 +295,10 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
 
   private categoryValueRoot: CategoryValueRoot;
   private categoryFacetTemplates: CategoryFacetTemplates;
-  private headerElement: HTMLElement;
+  private header: DynamicFacetHeader;
   private currentPage: number;
   private moreLessContainer: Dom;
   private moreValuesToFetch: boolean = true;
-  private showingWaitAnimation = false;
   private numberOfChildValuesCurrentlyDisplayed = 0;
   private numberOfValues: number;
   private categoryFacetValuesTree: CategoryFacetValuesTree;
@@ -436,7 +436,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     const numberOfRequestedValues = args.query.categoryFacets[this.positionInQuery].maximumNumberOfValues;
     const categoryFacetResult = args.results.categoryFacets[this.positionInQuery];
     this.moreValuesToFetch = numberOfRequestedValues == categoryFacetResult.values.length;
-    this.clear();
+    this.dismiss();
 
     if (categoryFacetResult.notImplemented) {
       return this.notImplementedError();
@@ -460,7 +460,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     }
 
     if (!this.isPristine()) {
-      $$(this.element).addClass('coveo-category-facet-non-empty-path');
+      this.header.toggleClear(true);
     }
   }
 
@@ -651,18 +651,12 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
 
   public showWaitingAnimation() {
     this.ensureDom();
-    if (!this.showingWaitAnimation) {
-      $$(this.headerElement).find('.coveo-category-facet-header-wait-animation').style.visibility = 'visible';
-      this.showingWaitAnimation = true;
-    }
+    this.header.showLoading();
   }
 
   public hideWaitingAnimation() {
     this.ensureDom();
-    if (this.showingWaitAnimation) {
-      $$(this.headerElement).find('.coveo-category-facet-header-wait-animation').style.visibility = 'hidden';
-      this.showingWaitAnimation = false;
-    }
+    this.header.hideLoading();
   }
 
   public logAnalyticsEvent(eventName: IAnalyticsActionCause, path = this.activePath) {
@@ -770,9 +764,21 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   }
 
   private buildFacetHeader() {
-    const facetHeader = new CategoryFacetHeader({ categoryFacet: this, title: this.options.title });
-    this.headerElement = facetHeader.build();
-    $$(this.element).prepend(this.headerElement);
+    this.header = new DynamicFacetHeader({
+      title: this.options.title,
+      enableCollapse: false,
+      clear: () => this.clear(),
+      // TODO: add collapse option
+      toggleCollapse: () => { },
+      expand: () => { },
+      collapse: () => { },
+    });
+    $$(this.element).prepend(this.header.element);
+  }
+
+  private clear() {
+    this.reset();
+    this.scrollToTop();
   }
 
   private handleQueryStateChanged(data: IAttributesChangedEventArg) {
@@ -806,7 +812,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
 
   private dependsOnReset() {
     this.changeActivePath(this.options.basePath);
-    this.clear();
+    this.dismiss();
   }
 
   private toggleDependentFacet(dependentFacet: Component) {
@@ -860,13 +866,13 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     }
   }
 
-  private clear() {
+  private dismiss() {
     this.categoryValueRoot.clear();
     if (this.isFacetSearchAvailable) {
       this.categoryFacetSearch.clear();
     }
     this.moreLessContainer && this.moreLessContainer.detach();
-    $$(this.element).removeClass('coveo-category-facet-non-empty-path');
+    this.header.toggleClear(false);
   }
 
   private buildMoreButton() {
