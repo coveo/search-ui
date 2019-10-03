@@ -180,12 +180,6 @@ export function CategoryFacetTest() {
       it('sets the path in the query state', () => {
         expect(test.cmp.queryStateModel.set).toHaveBeenCalledWith(test.cmp.queryStateAttribute, newPath);
       });
-
-      it('shows a wait animation', () => {
-        test.cmp.executeQuery();
-        const waitIcon = $$(test.cmp.element).find('.' + CategoryFacet.WAIT_ELEMENT_CLASS);
-        expect(waitIcon.style.visibility).toEqual('visible');
-      });
     });
 
     it('calling reload calls changeActivePath', () => {

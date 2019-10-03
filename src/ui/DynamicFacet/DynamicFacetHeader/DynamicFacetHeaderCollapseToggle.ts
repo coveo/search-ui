@@ -2,7 +2,7 @@ import { l } from '../../../strings/Strings';
 import { SVGIcons } from '../../../utils/SVGIcons';
 import { $$ } from '../../../utils/Dom';
 import { DynamicFacetHeaderButton } from './DynamicFacetHeaderButton';
-import { IHeaderOptions } from './DynamicFacetHeader';
+import { IDynamicFacetHeaderOptions } from './DynamicFacetHeader';
 
 export interface IDynamicFacetCollapseToggleOptions {
   collapsed: boolean;
@@ -13,7 +13,7 @@ export class DynamicFacetHeaderCollapseToggle {
   private collapseButton: DynamicFacetHeaderButton;
   private expandButton: DynamicFacetHeaderButton;
 
-  constructor(private options: IHeaderOptions) {
+  constructor(private options: IDynamicFacetHeaderOptions) {
     this.create();
   }
 

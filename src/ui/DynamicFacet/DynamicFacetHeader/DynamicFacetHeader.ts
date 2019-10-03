@@ -6,7 +6,7 @@ import { SVGDom } from '../../../utils/SVGDom';
 import { DynamicFacetHeaderButton } from './DynamicFacetHeaderButton';
 import { DynamicFacetHeaderCollapseToggle } from './DynamicFacetHeaderCollapseToggle';
 
-export interface IHeaderOptions {
+export interface IDynamicFacetHeaderOptions {
   title: string;
   enableCollapse: boolean;
   toggleCollapse: () => void;
@@ -24,7 +24,7 @@ export class DynamicFacetHeader {
   private collapseToggle: DynamicFacetHeaderCollapseToggle;
   private showLoadingTimeout: number;
 
-  constructor(private options: IHeaderOptions) {
+  constructor(private options: IDynamicFacetHeaderOptions) {
     this.element = $$('div', { className: 'coveo-dynamic-facet-header' }).el;
     this.title = this.createTitle();
     $$(this.element).append(this.title.el);
