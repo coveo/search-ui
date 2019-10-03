@@ -691,7 +691,14 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
   }
 
   private createAndAppendHeader() {
-    this.header = new DynamicFacetHeader(this);
+    this.header = new DynamicFacetHeader({
+      title: this.options.title,
+      enableCollapse: this.options.enableCollapse,
+      clear: () => this.clear(),
+      toggleCollapse: () => this.toggleCollapse(),
+      collapse: () => this.collapse(),
+      expand: () => this.expand()
+    });
     this.element.appendChild(this.header.element);
   }
 
@@ -778,6 +785,17 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
 
   private logAnalyticsFacetShowMoreLess(cause: IAnalyticsActionCause) {
     this.usageAnalytics.logCustomEvent<IAnalyticsDynamicFacetMeta>(cause, this.basicAnalyticsFacetState, this.element);
+  }
+
+  private clear() {
+    this.reset();
+    this.enableFreezeFacetOrderFlag();
+    this.scrollToTop();
+    this.triggerNewQuery(() => this.logClearAllToAnalytics());
+  }
+
+  private logClearAllToAnalytics() {
+    this.logAnalyticsEvent(analyticsActionCauseList.dynamicFacetClearAll, this.basicAnalyticsFacetState);
   }
 }
 
