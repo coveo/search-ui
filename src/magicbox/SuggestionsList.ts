@@ -50,7 +50,8 @@ export class SuggestionsList {
   constructor(private parentContainer: HTMLElement, options: ISuggestionsListOptions = {}) {
     this.options = defaults(options, <ISuggestionsListOptions>{
       selectableClass: 'magic-box-suggestion',
-      selectedClass: 'magic-box-selected'
+      selectedClass: 'magic-box-selected',
+      timeout: 500
     });
   }
 
