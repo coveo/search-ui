@@ -186,19 +186,19 @@ export class ResultPreviewsGrid {
   }
 
   public moveUp() {
-    return (this.keyboardSelectionMode = this.move(Direction.Up));
+    return this.move(Direction.Up);
   }
 
   public moveDown() {
-    return (this.keyboardSelectionMode = this.move(Direction.Down));
+    return this.move(Direction.Down);
   }
 
   public moveLeft() {
-    return (this.keyboardSelectionMode = this.move(Direction.Left));
+    return this.move(Direction.Left);
   }
 
   public moveRight() {
-    return (this.keyboardSelectionMode = this.move(Direction.Right));
+    return this.move(Direction.Right);
   }
 
   public getSelectedPreviewElement() {
@@ -347,6 +347,7 @@ export class ResultPreviewsGrid {
     if (currentSelectionId === null) {
       return false;
     }
+    this.keyboardSelectionMode = true;
     const totalLength = this.activePreviews.length;
     const rowLength = this.previewsPerRow;
     switch (direction) {
