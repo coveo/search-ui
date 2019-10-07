@@ -25,10 +25,12 @@ export function buildCategoryFacetResults(numberOfResults = 11, numberOfRequeste
 
 export function CategoryFacetTest() {
   describe('CategoryFacet', () => {
+    let options: ICategoryFacetOptions;
     let test: IBasicComponentSetup<CategoryFacet>;
     let simulateQueryData: ISimulateQueryData;
 
     beforeEach(() => {
+      options = { field: '@field' };
       simulateQueryData = buildCategoryFacetResults();
       initializeComponent();
     });
@@ -36,14 +38,81 @@ export function CategoryFacetTest() {
     function initializeComponent() {
       test = Mock.advancedComponentSetup<CategoryFacet>(
         CategoryFacet,
-        new Mock.AdvancedComponentSetupOptions(null, { field: '@field' }, env => env.withLiveQueryStateModel())
+        new Mock.AdvancedComponentSetupOptions(null, options, env => env.withLiveQueryStateModel())
       );
       test.cmp.activePath = simulateQueryData.query.categoryFacets[0].path;
+
+      spyOn(test.cmp.logger, 'warn');
     }
 
     function allCategoriesButton() {
       return $$(test.cmp.element).find('.coveo-category-facet-all-categories');
     }
+
+    describe('testing collapse/expand', () => {
+      function validateExpandCollapse(shouldBeCollapsed: boolean) {
+        expect($$(test.cmp.element).hasClass('coveo-dynamic-category-facet-collapsed')).toBe(shouldBeCollapsed);
+      }
+
+      function initializeComponentWithCollapse(enableCollapse: boolean, collapsedByDefault: boolean) {
+        options.enableCollapse = enableCollapse;
+        options.collapsedByDefault = collapsedByDefault;
+        initializeComponent();
+        Simulate.query(test.env, simulateQueryData);
+      }
+
+      it(`when enableCollapse & collapsedByDefault options are true
+      facet should be collapsed`, () => {
+        initializeComponentWithCollapse(true, true);
+        validateExpandCollapse(true);
+      });
+
+      it(`when enableCollapse is false & collapsedByDefault options is true
+      facet should not be collapsed`, () => {
+        initializeComponentWithCollapse(false, true);
+
+        validateExpandCollapse(false);
+      });
+
+      it(`allows to collapse`, () => {
+        initializeComponentWithCollapse(true, false);
+
+        test.cmp.collapse();
+        validateExpandCollapse(true);
+      });
+
+      it(`allows to expand`, () => {
+        initializeComponentWithCollapse(true, true);
+
+        test.cmp.expand();
+        validateExpandCollapse(false);
+      });
+
+      it(`does not allow to expand if the enableCollapse is false`, () => {
+        initializeComponentWithCollapse(false, false);
+
+        test.cmp.collapse();
+        expect(test.cmp.logger.warn).toHaveBeenCalled();
+      });
+
+      it(`does not allow to collapse if the enableCollapse is false`, () => {
+        initializeComponentWithCollapse(false, false);
+  
+        test.cmp.expand();
+        expect(test.cmp.logger.warn).toHaveBeenCalled();
+      });
+
+      it(`allows to toggle between expand/collapse`, () => {
+        initializeComponentWithCollapse(true, false);
+
+        test.cmp.toggleCollapse();
+        validateExpandCollapse(true);
+
+        test.cmp.toggleCollapse();
+        validateExpandCollapse(false);
+      });
+    });
+
 
     it('when calling getVisibleParentValues returns all the visible parent values', () => {
       Simulate.query(test.env, simulateQueryData);
