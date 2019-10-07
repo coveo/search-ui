@@ -327,10 +327,10 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   public static MAXIMUM_NUMBER_OF_VALUES_BEFORE_TRUNCATING = 15;
   public static NUMBER_OF_VALUES_TO_KEEP_AFTER_TRUNCATING = 10;
   public isCollapsed: boolean;
+  public header: DynamicFacetHeader;
 
   private categoryValueRoot: CategoryValueRoot;
   private categoryFacetTemplates: CategoryFacetTemplates;
-  private header: DynamicFacetHeader;
   private currentPage: number;
   private moreLessContainer: Dom;
   private moreValuesToFetch: boolean = true;
@@ -375,12 +375,6 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
 
   public get activePath() {
     return this.queryStateModel.get(this.queryStateAttribute) || this.options.basePath;
-  }
-
-  public set activePath(newPath: string[]) {
-    this.listenToQueryStateChange = false;
-    this.queryStateModel.set(this.queryStateAttribute, newPath);
-    this.listenToQueryStateChange = true;
   }
 
   public get queryStateAttribute() {
@@ -505,7 +499,9 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
    *
    */
   public changeActivePath(path: string[]) {
-    this.activePath = path;
+    this.listenToQueryStateChange = false;
+    this.queryStateModel.set(this.queryStateAttribute, path);
+    this.listenToQueryStateChange = true;
   }
 
   public async executeQuery() {
@@ -849,7 +845,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     if (this.listenToQueryStateChange) {
       let path = data.attributes[this.queryStateAttribute];
       if (!Utils.isNullOrUndefined(path) && isArray(path) && path.length != 0) {
-        this.activePath = path;
+        this.changeActivePath(path)
       }
     }
   }
