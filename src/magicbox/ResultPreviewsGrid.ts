@@ -34,6 +34,8 @@ export type ReceivedSearchResultPreview = SearchResultPreview;
 
 export type ReceivedSearchResultPreviews = ReceivedSearchResultPreview[];
 
+export type OnSelectionChangedCallback = () => any;
+
 /**
  * This class renders a grid of result previews from [`QuerySuggestPreview`]{@link QuerySuggestPreview} inside a given container and allows navigation within it.
  * It waits to receive a first [`SearchResultPreview`]{@link SearchResultPreview} before creating any HTML element.
@@ -61,7 +63,11 @@ export class ResultPreviewsGrid {
   private activePreviews: ActiveSearchResultPreview[];
   private keyboardSelectionMode: boolean;
 
-  constructor(private parentContainer: HTMLElement, options: IResultPreviewsGridOptions = {}) {
+  constructor(
+    private parentContainer: HTMLElement,
+    options: IResultPreviewsGridOptions = {},
+    private onSelectionChanged?: OnSelectionChangedCallback
+  ) {
     this.options = defaults(options, <IResultPreviewsGridOptions>{
       timeout: 2000,
       maximumPreviews: 6,
@@ -218,6 +224,9 @@ export class ResultPreviewsGrid {
       return;
     }
     this.deselectElement(currentSelection);
+    if (this.onSelectionChanged) {
+      this.onSelectionChanged();
+    }
   }
 
   private setSelectedPreviewElement(element: HTMLElement) {
@@ -226,6 +235,9 @@ export class ResultPreviewsGrid {
       return;
     }
     element.classList.add(this.options.selectedClass);
+    if (this.onSelectionChanged) {
+      this.onSelectionChanged();
+    }
   }
 
   private getSelectedPreviewId() {
