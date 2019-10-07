@@ -48,7 +48,7 @@ export class ResultPreviewsGrid {
   }
 
   private static getPreviewId(element: HTMLElement) {
-    return element.dataset.previewId ? parseInt(element.dataset.previewId) : null;
+    return element.dataset.previewId ? parseInt(element.dataset.previewId, 10) : null;
   }
 
   private resultContainerElements?: {
