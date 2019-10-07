@@ -1,19 +1,11 @@
 import { defaults } from 'underscore';
 import { Dom, $$ } from '../utils/Dom';
 import { Assert } from '../Core';
+import { Suggestion } from './SuggestionsManager';
 
 enum Direction {
   Up = 'Up',
   Down = 'Down'
-}
-
-export interface Suggestion {
-  text?: string;
-  index?: number;
-  html?: string;
-  dom?: HTMLElement;
-  separator?: string;
-  onSelect?: () => void;
 }
 
 interface ActiveSuggestion extends Suggestion {
