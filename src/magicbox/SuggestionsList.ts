@@ -145,11 +145,11 @@ export class SuggestionsList {
   }
 
   public moveUp() {
-    return (this.keyboardSelectionMode = this.move(Direction.Up));
+    return this.move(Direction.Up);
   }
 
   public moveDown() {
-    return (this.keyboardSelectionMode = this.move(Direction.Down));
+    return this.move(Direction.Down);
   }
 
   public getSelectedSuggestionElement() {
@@ -318,6 +318,7 @@ export class SuggestionsList {
     if (currentSelectionId === null) {
       return false;
     }
+    this.keyboardSelectionMode = true;
     if (direction === Direction.Down) {
       if (currentSelectionId === this.activeSuggestions.length - 1) {
         return false;
