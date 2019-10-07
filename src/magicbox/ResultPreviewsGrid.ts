@@ -27,17 +27,22 @@ export interface IResultPreviewGridLegacyOptions {
 export interface IResultPreviewsGridOptions extends IResultPreviewGridLegacyOptions {
   timeout?: number;
   maximumPreviews?: number;
-  loadingMessage?: string;
   selectedClass?: string;
 }
 
-type IncomingSearchResultPreviews = Readonly<SearchResultPreview[]>;
+type ReceivedSearchResultPreview = Readonly<SearchResultPreview>;
+
+type ReceivedSearchResultPreviews = Readonly<ReceivedSearchResultPreview[]>;
 
 /**
  * This class renders a grid of result previews from [`QuerySuggestPreview`]{@link QuerySuggestPreview} inside a given container and allows navigation within it.
  * It waits to receive a first [`SearchResultPreview`]{@link SearchResultPreview} before creating any HTML element.
  */
 export class ResultPreviewsGrid {
+  public static ContainerClassName = 'coveo-preview-container';
+  public static HeaderClassName = 'coveo-preview-header';
+  public static ResultsContainerClassName = 'coveo-preview-results';
+
   private static setPreviewId(element: HTMLElement, id: number) {
     element.dataset.previewId = id.toString();
   }
@@ -48,13 +53,12 @@ export class ResultPreviewsGrid {
 
   private resultContainerElements?: {
     container: Dom;
-    header: Dom;
+    status: Dom;
     results: Dom;
   };
   private options: IResultPreviewsGridOptions;
-  private pendingPreviews: Promise<IncomingSearchResultPreviews>[];
-  private pendingPreviewsRejector: Function;
-  private currentPreviews: ActiveSearchResultPreview[];
+  private queryProcessingRejector: Function;
+  private activePreviews: ActiveSearchResultPreview[];
   private keyboardSelectionMode: boolean;
 
   constructor(private parentContainer: HTMLElement, options: IResultPreviewsGridOptions = {}) {
@@ -67,90 +71,95 @@ export class ResultPreviewsGrid {
 
   private get previewsPerRow() {
     // To account for every CSS that may span previews over multiple rows, this solution was found: https://stackoverflow.com/a/49090306
-    if (this.currentPreviews.length === 0) {
+    if (this.activePreviews.length === 0) {
       return null;
     }
-    const firstVerticalOffset = this.currentPreviews[0].dom.offsetTop;
-    const firstIndexOnNextRow = _.findIndex(this.currentPreviews, preview => preview.dom.offsetTop !== firstVerticalOffset);
-    return firstIndexOnNextRow !== -1 ? firstIndexOnNextRow : this.currentPreviews.length;
-  }
-
-  private get maxPreviewsReached() {
-    return this.currentPreviews.length >= this.options.maximumPreviews;
+    const firstVerticalOffset = this.activePreviews[0].dom.offsetTop;
+    const firstIndexOnNextRow = _.findIndex(this.activePreviews, preview => preview.dom.offsetTop !== firstVerticalOffset);
+    return firstIndexOnNextRow !== -1 ? firstIndexOnNextRow : this.activePreviews.length;
   }
 
   public receiveLegacyOptions(options: IResultPreviewGridLegacyOptions) {
     Object.keys(this.options).forEach(optionName => (this.options[optionName] = options[optionName] || this.options[optionName]));
   }
 
+  /**
+   * Waits for one of the following conditions to be true then creates a container and fills it with the results.
+   * 1. No query was given
+   * 2. All queries were completed
+   * 3. Enough queries were completed to fill the maximum previews
+   * 4. [`timeout`]{@link ResultPreviewsGrid.options.timeout} has passed
+   * If the function is called again while it's still processing, the previous call is cancelled and overriden by the new one.
+   */
   public receiveSearchResultPreviews(
-    searchResultPreviews: Array<Promise<IncomingSearchResultPreviews> | IncomingSearchResultPreviews>,
-    message?: string
+    variantSearchResultPreviewsQueries: Array<Promise<ReceivedSearchResultPreviews> | ReceivedSearchResultPreviews>,
+    getCompletionMessage?: ((activePreviews: SearchResultPreview[]) => string) | void
   ): Promise<SearchResultPreview[]> {
     return new Promise((resolve, reject) => {
-      const previewsPromises = searchResultPreviews
+      if (this.queryProcessingRejector) {
+        this.queryProcessingRejector('new request queued');
+      }
+
+      const currentQueries = variantSearchResultPreviewsQueries
         .filter(preview => preview)
         .map(preview => (preview instanceof Promise ? preview : Promise.resolve(preview)));
-      if (previewsPromises.length === 0) {
-        resolve([]);
-        return;
-      }
 
-      this.showLoadingMessage();
+      const receivedPreviews: ReceivedSearchResultPreview[] = [];
+      let numOfUnresolvedQueries: number = currentQueries.length;
 
-      if (this.pendingPreviewsRejector) {
-        this.pendingPreviewsRejector('new request queued');
-      }
-
-      this.pendingPreviews = previewsPromises;
-
-      let first = () => {
-        if (this.pendingPreviews !== previewsPromises) {
-          return;
-        }
-        this.clearPreviews();
+      const showAndReturn = () => {
+        this.queryProcessingRejector = null;
         if (!this.resultContainerElements) {
           this.buildResultsPreviewsContainer();
         }
-        this.resultContainerElements.header.text(message);
+        this.clearPreviews();
+        this.appendSearchResultPreviews(receivedPreviews);
+        this.setStatusMessage(getCompletionMessage ? <string>getCompletionMessage(this.activePreviews) : null);
+        resolve(this.activePreviews);
       };
 
-      previewsPromises.forEach(previews => {
-        previews.then(results => {
-          if (this.pendingPreviews !== previewsPromises) {
-            return;
-          }
-          if (first) {
-            first();
-            first = null;
-          }
-          this.appendSearchResultPreviews(results);
-          if (this.maxPreviewsReached) {
-            this.pendingPreviews, (this.pendingPreviewsRejector = null);
-            resolve(this.currentPreviews);
-          }
-        });
+      if (numOfUnresolvedQueries === 0) {
+        showAndReturn();
+        return;
+      }
+
+      this.setStatusMessage();
+
+      const rejector = (this.queryProcessingRejector = (message: string) => {
+        this.queryProcessingRejector = null;
+        reject(message);
       });
 
-      this.pendingPreviewsRejector = (message: string) => {
-        this.pendingPreviews, (this.pendingPreviewsRejector = null);
-        reject(message);
-      };
-
-      Promise.all(previewsPromises).then(() => {
-        if (this.pendingPreviews !== previewsPromises) {
-          return;
-        }
-        this.pendingPreviews, (this.pendingPreviewsRejector = null);
-        resolve(this.currentPreviews);
+      currentQueries.forEach(previews => {
+        previews
+          .then(results => {
+            if (rejector !== this.queryProcessingRejector) {
+              return;
+            }
+            if (this.options.maximumPreviews && receivedPreviews.length + results.length > this.options.maximumPreviews) {
+              receivedPreviews.push(...results.slice(0, this.options.maximumPreviews - receivedPreviews.length));
+              showAndReturn();
+              return;
+            } else {
+              receivedPreviews.push(...results);
+            }
+          })
+          .finally(() => {
+            if (rejector !== this.queryProcessingRejector) {
+              return;
+            }
+            numOfUnresolvedQueries -= 1;
+            if (numOfUnresolvedQueries === 0) {
+              showAndReturn();
+            }
+          });
       });
 
       setTimeout(() => {
-        if (this.pendingPreviews !== previewsPromises) {
+        if (rejector !== this.queryProcessingRejector) {
           return;
         }
-        this.pendingPreviews, (this.pendingPreviewsRejector = null);
-        resolve(this.currentPreviews);
+        showAndReturn();
       }, this.options.timeout);
     });
   }
@@ -169,12 +178,11 @@ export class ResultPreviewsGrid {
   }
 
   public moveFirst() {
-    if (!this.currentPreviews || this.currentPreviews.length === 0) {
-      return false;
+    if (!this.activePreviews || this.activePreviews.length === 0) {
+      return (this.keyboardSelectionMode = false);
     }
     this.setSelectedPreviewId(0);
-    this.keyboardSelectionMode = true;
-    return true;
+    return (this.keyboardSelectionMode = true);
   }
 
   public moveUp() {
@@ -230,33 +238,29 @@ export class ResultPreviewsGrid {
 
   private setSelectedPreviewId(id: number) {
     Assert.isLargerOrEqualsThan(0, id);
-    Assert.isSmallerThan(this.currentPreviews.length, id);
-    if (!this.currentPreviews) {
+    Assert.isSmallerThan(this.activePreviews.length, id);
+    if (!this.activePreviews) {
       return;
     }
-    this.setSelectedPreviewElement(this.currentPreviews[id].dom);
+    this.setSelectedPreviewElement(this.activePreviews[id].dom);
   }
 
   private getSelectedPreview() {
-    if (!this.currentPreviews || this.currentPreviews.length === 0) {
+    if (!this.activePreviews || this.activePreviews.length === 0) {
       return null;
     }
     const previewId = this.getSelectedPreviewId();
     if (previewId === null) {
       return null;
     }
-    return this.currentPreviews[previewId];
+    return this.activePreviews[previewId];
   }
 
-  private showLoadingMessage() {
-    const { loadingMessage } = this.options;
-    if (!loadingMessage) {
-      return;
-    }
+  private setStatusMessage(text?: string) {
     if (!this.resultContainerElements) {
       return;
     }
-    this.resultContainerElements.header.text(loadingMessage);
+    this.resultContainerElements.status.text(text || '');
   }
 
   private deselectElement(element: HTMLElement) {
@@ -266,21 +270,17 @@ export class ResultPreviewsGrid {
 
   private clearPreviews() {
     this.keyboardSelectionMode = false;
-    if (this.currentPreviews) {
-      this.currentPreviews.forEach(preview => preview.deactivate());
+    if (this.activePreviews) {
+      this.activePreviews.forEach(preview => preview.deactivate());
     }
-    this.currentPreviews = [];
+    this.activePreviews = [];
     if (this.resultContainerElements) {
       this.resultContainerElements.results.empty();
     }
   }
 
-  private appendSearchResultPreviews(previews: IncomingSearchResultPreviews) {
-    const previewsToAppend =
-      this.currentPreviews.length + previews.length > this.options.maximumPreviews
-        ? previews.slice(0, this.currentPreviews.length - this.currentPreviews.length)
-        : previews;
-    previewsToAppend.forEach(preview =>
+  private appendSearchResultPreviews(previews: ReceivedSearchResultPreviews) {
+    previews.forEach(preview =>
       this.appendSearchResultPreview({
         dom: preview.dom.cloneNode(true) as HTMLElement,
         onSelect: preview.onSelect
@@ -289,7 +289,8 @@ export class ResultPreviewsGrid {
   }
 
   private appendSearchResultPreview(preview: SearchResultPreview) {
-    ResultPreviewsGrid.setPreviewId(preview.dom, this.currentPreviews.length);
+    ResultPreviewsGrid.setPreviewId(preview.dom, this.activePreviews.length);
+    preview.dom.setAttribute('role', 'gridcell');
     const events: { name: string; funct: (e: Event) => void }[] = [
       {
         name: 'mouseover',
@@ -314,19 +315,19 @@ export class ResultPreviewsGrid {
       ...preview,
       deactivate: () => events.forEach(event => preview.dom.removeEventListener(event.name, event.funct))
     };
-    this.currentPreviews.push(activePreview);
+    this.activePreviews.push(activePreview);
     this.resultContainerElements.results.append(preview.dom);
   }
 
   private buildResultsPreviewsContainer() {
-    const container = $$('div', { className: 'coveo-preview-container' });
-    const header = $$('div', { className: 'coveo-preview-header' });
-    container.append(header.el);
-    const results = $$('div', { className: 'coveo-preview-results' });
+    const container = $$('div', { className: ResultPreviewsGrid.ContainerClassName, role: 'tab' });
+    const status = $$('div', { className: ResultPreviewsGrid.HeaderClassName, role: 'status' });
+    container.append(status.el);
+    const results = $$('div', { className: ResultPreviewsGrid.ResultsContainerClassName, role: 'grid' });
     container.append(results.el);
     this.resultContainerElements = {
       container,
-      header,
+      status,
       results
     };
     this.parentContainer.appendChild(container.el);
@@ -346,7 +347,7 @@ export class ResultPreviewsGrid {
     if (currentSelectionId === null) {
       return false;
     }
-    const totalLength = this.currentPreviews.length;
+    const totalLength = this.activePreviews.length;
     const rowLength = this.previewsPerRow;
     switch (direction) {
       case Direction.Left:
