@@ -76,14 +76,14 @@ export function CategoryFacetTest() {
         validateExpandCollapse(false);
       });
 
-      it(`allows to collapse`, () => {
+      it(`allows to collapse when enableCollapse is true`, () => {
         initializeComponentWithCollapse(true, false);
 
         test.cmp.collapse();
         validateExpandCollapse(true);
       });
 
-      it(`allows to expand`, () => {
+      it(`allows to expand when enableCollapse is true`, () => {
         initializeComponentWithCollapse(true, true);
 
         test.cmp.expand();

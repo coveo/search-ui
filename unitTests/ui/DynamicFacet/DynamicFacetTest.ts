@@ -291,14 +291,14 @@ export function DynamicFacetTest() {
       validateExpandCollapse(false);
     });
 
-    it(`allows to collapse`, () => {
+    it(`allows to collapse when enableCollapse is true`, () => {
       test.cmp.ensureDom();
       test.cmp.collapse();
 
       validateExpandCollapse(true);
     });
 
-    it(`allows to expand`, () => {
+    it(`allows to expand when enableCollapse is true`, () => {
       test.cmp.ensureDom();
       test.cmp.collapse();
 
@@ -618,12 +618,12 @@ export function DynamicFacetTest() {
         expect(test.cmp.logAnalyticsEvent).toHaveBeenCalledWith(analyticsActionCauseList.dynamicFacetClearAll, test.cmp.basicAnalyticsFacetState);
       });
 
-      it('should call "toggleClear" when appearance is updated', () => {
+      it('should call "toggleClear" when calling reset', () => {
         test.cmp.reset();
         expect(test.cmp.header.toggleClear).toHaveBeenCalled();
       });
 
-      it('should call "toggleCollapse" when appearance is updated', () => {
+      it('should call "toggleCollapse" when calling collapse', () => {
         test.cmp.collapse();
         expect(test.cmp.header.toggleCollapse).toHaveBeenCalled();
       });
