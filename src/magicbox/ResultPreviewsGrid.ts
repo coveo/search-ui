@@ -30,9 +30,9 @@ export interface IResultPreviewsGridOptions extends IResultPreviewGridLegacyOpti
   selectedClass?: string;
 }
 
-type ReceivedSearchResultPreview = Readonly<SearchResultPreview>;
+export type ReceivedSearchResultPreview = Readonly<SearchResultPreview>;
 
-type ReceivedSearchResultPreviews = Readonly<ReceivedSearchResultPreview[]>;
+export type ReceivedSearchResultPreviews = Readonly<ReceivedSearchResultPreview[]>;
 
 /**
  * This class renders a grid of result previews from [`QuerySuggestPreview`]{@link QuerySuggestPreview} inside a given container and allows navigation within it.
