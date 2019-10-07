@@ -24,6 +24,8 @@ export type ReceivedSuggestions = ReceivedSuggestion[];
 
 export const SuggestionIdPrefix = 'magic-box-suggestion-';
 
+export type OnSelectionChangedCallback = () => any;
+
 /**
  * This class renders a list of suggestions from [`OmniboxEvents.populateOmniboxSuggestions`]{@link OmniboxEvents.populateOmniboxSuggestions}
  * inside a given container and allows navigation within it. It waits to receive a first [`Suggestion`]{@link Suggestion}  before creating
@@ -47,7 +49,11 @@ export class SuggestionsList {
   private activeSuggestions: ActiveSuggestion[];
   private keyboardSelectionMode: boolean;
 
-  constructor(private parentContainer: HTMLElement, options: ISuggestionsListOptions = {}) {
+  constructor(
+    private parentContainer: HTMLElement,
+    options: ISuggestionsListOptions = {},
+    private onSelectionChanged?: OnSelectionChangedCallback
+  ) {
     this.options = defaults(options, <ISuggestionsListOptions>{
       selectableClass: 'magic-box-suggestion',
       selectedClass: 'magic-box-selected',
@@ -169,6 +175,9 @@ export class SuggestionsList {
       return;
     }
     this.deselectElement(currentSelection);
+    if (this.onSelectionChanged) {
+      this.onSelectionChanged();
+    }
   }
 
   private setSelectedSuggestionElement(element: HTMLElement) {
@@ -178,6 +187,9 @@ export class SuggestionsList {
     }
     element.setAttribute('aria-selected', 'true');
     element.classList.add(this.options.selectedClass);
+    if (this.onSelectionChanged) {
+      this.onSelectionChanged();
+    }
   }
 
   private getSelectedSuggestionId() {
