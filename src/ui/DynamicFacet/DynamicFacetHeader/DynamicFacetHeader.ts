@@ -24,7 +24,7 @@ export class DynamicFacetHeader {
   private collapseToggle: DynamicFacetHeaderCollapseToggle;
   private showLoadingTimeout: number;
 
-  constructor(private options: IDynamicFacetHeaderOptions) {
+  constructor(public options: IDynamicFacetHeaderOptions) {
     this.element = $$('div', { className: 'coveo-dynamic-facet-header' }).el;
     this.title = this.createTitle();
     $$(this.element).append(this.title.el);

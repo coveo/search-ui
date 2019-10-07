@@ -267,13 +267,13 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
 
   private includedAttributeId: string;
   private listenToQueryStateChange = true;
-  private header: DynamicFacetHeader;
+  private search: DynamicFacetSearch;
+  public header: DynamicFacetHeader;
 
   public dynamicFacetManager: DynamicFacetManager;
   public dependsOnManager: DependsOnManager;
   public dynamicFacetQueryController: DynamicFacetQueryController;
   public values: DynamicFacetValues;
-  private search: DynamicFacetSearch;
   public position: number = null;
   public moreValuesAvailable = false;
   public isCollapsed: boolean;

@@ -17,6 +17,7 @@ export function DynamicFacetTest() {
     let test: Mock.IBasicComponentSetup<DynamicFacet>;
     let mockFacetValues: IDynamicFacetValue[];
     let options: IDynamicFacetOptions;
+    let triggerNewQuerySpy: jasmine.Spy;
 
     beforeEach(() => {
       options = { field: '@field' };
@@ -33,7 +34,13 @@ export function DynamicFacetTest() {
 
       spyOn(test.cmp.values, 'clearAll').and.callThrough();
       spyOn(test.cmp.values, 'render').and.callThrough();
+      triggerNewQuerySpy = spyOn(test.cmp, 'triggerNewQuery').and.callThrough();
+      triggerNewQuerySpy.and.callThrough();
       spyOn(test.cmp, 'triggerNewIsolatedQuery').and.callThrough();
+      spyOn(test.cmp, 'reset').and.callThrough();
+      spyOn(test.cmp, 'enableFreezeFacetOrderFlag').and.callThrough();
+      spyOn(test.cmp, 'scrollToTop').and.callThrough();
+      spyOn(test.cmp, 'logAnalyticsEvent').and.callThrough();
     }
 
     function testQueryStateModelValues() {
@@ -62,6 +69,12 @@ export function DynamicFacetTest() {
     function validateExpandCollapse(shouldBeCollapsed: boolean) {
       expect($$(test.cmp.element).hasClass('coveo-dynamic-facet-collapsed')).toBe(shouldBeCollapsed);
       expect(searchFeatureDisplayed()).toBe(!shouldBeCollapsed);
+    }
+
+    function fakeResultsWithFacets() {
+      const fakeResultsWithFacets = FakeResults.createFakeResults();
+      fakeResultsWithFacets.facets = [DynamicFacetTestUtils.getCompleteFacetResponse(test.cmp)];
+      return fakeResultsWithFacets;
     }
 
     it(`when facet has values but none are selected
@@ -181,7 +194,7 @@ export function DynamicFacetTest() {
 
     it('allows to trigger a new isolated query', () => {
       spyOn(test.cmp.dynamicFacetQueryController, 'executeIsolatedQuery');
-      const beforeExecuteQuery = jasmine.createSpy('beforeExecuteQuery', () => {});
+      const beforeExecuteQuery = jasmine.createSpy('beforeExecuteQuery', () => { });
       test.cmp.ensureDom();
       test.cmp.triggerNewIsolatedQuery(beforeExecuteQuery);
 
@@ -360,7 +373,6 @@ export function DynamicFacetTest() {
     });
 
     it('should log an analytics event when selecting a value through the QSM', () => {
-      spyOn(test.cmp, 'logAnalyticsEvent');
       test.env.queryStateModel.registerNewAttribute(`f:${test.cmp.options.id}`, []);
       test.env.queryStateModel.set(`f:${test.cmp.options.id}`, ['a', 'b', 'c']);
 
@@ -371,7 +383,6 @@ export function DynamicFacetTest() {
     });
 
     it('should log an analytics event when deselecting a value through the QSM', () => {
-      spyOn(test.cmp, 'logAnalyticsEvent');
       test.env.queryStateModel.registerNewAttribute(`f:${test.cmp.options.id}`, []);
       test.env.queryStateModel.set(`f:${test.cmp.options.id}`, ['a', 'b', 'c']);
       test.env.queryStateModel.set(`f:${test.cmp.options.id}`, []);
@@ -503,9 +514,8 @@ export function DynamicFacetTest() {
     it(`when getting successful results
       facet position should be correct`, () => {
       test.cmp.ensureDom();
-      const fakeResultsWithFacets = FakeResults.createFakeResults();
-      fakeResultsWithFacets.facets = [DynamicFacetTestUtils.getCompleteFacetResponse(test.cmp)];
-      $$(test.env.root).trigger(QueryEvents.querySuccess, { results: fakeResultsWithFacets });
+
+      $$(test.env.root).trigger(QueryEvents.querySuccess, { results: fakeResultsWithFacets() });
 
       expect(test.cmp.position).toBe(1);
     });
@@ -568,6 +578,55 @@ export function DynamicFacetTest() {
       test.cmp.scrollToTop();
 
       expect(ResultListUtils.scrollToTop).not.toHaveBeenCalledWith(test.cmp.root);
+    });
+
+    describe('Testing the header', () => {
+      beforeEach(() => {
+        test.cmp.selectValue(mockFacetValues[0].value);
+        test.cmp.ensureDom();
+        spyOn(test.cmp.header, 'showLoading').and.callThrough();
+        spyOn(test.cmp.header, 'hideLoading').and.callThrough();
+        spyOn(test.cmp.header, 'toggleClear').and.callThrough();
+        spyOn(test.cmp.header, 'toggleCollapse').and.callThrough();
+      });
+
+      it(`when triggering the header "clear" method
+      should perform the correct actions on the facet`, () => {
+        test.cmp.header.options.clear();
+        expect(test.cmp.reset).toHaveBeenCalledTimes(1);
+        expect(test.cmp.enableFreezeFacetOrderFlag).toHaveBeenCalledTimes(1);
+        expect(test.cmp.triggerNewQuery).toHaveBeenCalledTimes(1);
+        expect(test.cmp.scrollToTop).toHaveBeenCalledTimes(1);
+      });
+
+      it(`when triggering a query
+      should call "showLoading" on the header`, () => {
+        test.cmp.triggerNewQuery();
+        expect(test.cmp.header.showLoading).toHaveBeenCalledTimes(1);
+      });
+
+      it(`when a query is successful
+      should call "hideLoading" on the header`, () => {
+        $$(test.env.root).trigger(QueryEvents.querySuccess, { results: fakeResultsWithFacets() });
+        expect(test.cmp.header.hideLoading).toHaveBeenCalledTimes(1);
+      });
+
+      it(`when triggering the header "clear" method
+      should log an analytics event`, () => {
+        triggerNewQuerySpy.and.callFake((beforeCb: any = () => {}) => beforeCb())
+        test.cmp.header.options.clear();
+        expect(test.cmp.logAnalyticsEvent).toHaveBeenCalledWith(analyticsActionCauseList.dynamicFacetClearAll, test.cmp.basicAnalyticsFacetState);
+      });
+
+      it('should call "toggleClear" when appearance is updated', () => {
+        test.cmp.reset();
+        expect(test.cmp.header.toggleClear).toHaveBeenCalled();
+      });
+
+      it('should call "toggleCollapse" when appearance is updated', () => {
+        test.cmp.collapse();
+        expect(test.cmp.header.toggleCollapse).toHaveBeenCalled();
+      });
     });
 
     describe('testing the DependsOnManager', () => {
