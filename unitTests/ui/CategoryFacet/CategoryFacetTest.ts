@@ -25,10 +25,12 @@ export function buildCategoryFacetResults(numberOfResults = 11, numberOfRequeste
 
 export function CategoryFacetTest() {
   describe('CategoryFacet', () => {
+    let options: ICategoryFacetOptions;
     let test: IBasicComponentSetup<CategoryFacet>;
     let simulateQueryData: ISimulateQueryData;
 
     beforeEach(() => {
+      options = { field: '@field' };
       simulateQueryData = buildCategoryFacetResults();
       initializeComponent();
     });
@@ -36,14 +38,124 @@ export function CategoryFacetTest() {
     function initializeComponent() {
       test = Mock.advancedComponentSetup<CategoryFacet>(
         CategoryFacet,
-        new Mock.AdvancedComponentSetupOptions(null, { field: '@field' }, env => env.withLiveQueryStateModel())
+        new Mock.AdvancedComponentSetupOptions(null, options, env => env.withLiveQueryStateModel())
       );
-      test.cmp.activePath = simulateQueryData.query.categoryFacets[0].path;
+      test.cmp.changeActivePath(simulateQueryData.query.categoryFacets[0].path);
+
+      spyOn(test.cmp.logger, 'warn');
+      spyOn(test.cmp, 'scrollToTop').and.callThrough();
+      spyOn(test.cmp, 'reset').and.callThrough();
     }
 
     function allCategoriesButton() {
       return $$(test.cmp.element).find('.coveo-category-facet-all-categories');
     }
+
+    describe('Testing collapse/expand', () => {
+      function validateExpandCollapse(shouldBeCollapsed: boolean) {
+        expect($$(test.cmp.element).hasClass('coveo-dynamic-category-facet-collapsed')).toBe(shouldBeCollapsed);
+      }
+
+      function initializeComponentWithCollapse(enableCollapse: boolean, collapsedByDefault: boolean) {
+        options.enableCollapse = enableCollapse;
+        options.collapsedByDefault = collapsedByDefault;
+        initializeComponent();
+        Simulate.query(test.env, simulateQueryData);
+      }
+
+      it(`when enableCollapse & collapsedByDefault options are true
+      facet should be collapsed`, () => {
+        initializeComponentWithCollapse(true, true);
+        validateExpandCollapse(true);
+      });
+
+      it(`when enableCollapse is false & collapsedByDefault options is true
+      facet should not be collapsed`, () => {
+        initializeComponentWithCollapse(false, true);
+
+        validateExpandCollapse(false);
+      });
+
+      it(`allows to collapse when enableCollapse is true`, () => {
+        initializeComponentWithCollapse(true, false);
+
+        test.cmp.collapse();
+        validateExpandCollapse(true);
+      });
+
+      it(`allows to expand when enableCollapse is true`, () => {
+        initializeComponentWithCollapse(true, true);
+
+        test.cmp.expand();
+        validateExpandCollapse(false);
+      });
+
+      it(`does not allow to expand if the enableCollapse is false`, () => {
+        initializeComponentWithCollapse(false, false);
+
+        test.cmp.collapse();
+        expect(test.cmp.logger.warn).toHaveBeenCalled();
+      });
+
+      it(`does not allow to collapse if the enableCollapse is false`, () => {
+        initializeComponentWithCollapse(false, false);
+
+        test.cmp.expand();
+        expect(test.cmp.logger.warn).toHaveBeenCalled();
+      });
+
+      it(`allows to toggle between expand/collapse`, () => {
+        initializeComponentWithCollapse(true, false);
+
+        test.cmp.toggleCollapse();
+        validateExpandCollapse(true);
+
+        test.cmp.toggleCollapse();
+        validateExpandCollapse(false);
+      });
+    });
+
+    describe('Testing the header', () => {
+      beforeEach(() => {
+        Simulate.query(test.env, simulateQueryData);
+      });
+
+      it(`when triggering the header "clear" method
+      should perform the correct actions on the facet`, () => {
+        test.cmp.header.options.clear();
+        expect(test.cmp.reset).toHaveBeenCalledTimes(1);
+        expect(test.cmp.scrollToTop).toHaveBeenCalledTimes(1);
+      });
+
+      it(`when triggering a query
+      should call "showLoading" on the header`, () => {
+        spyOn(test.cmp.header, 'showLoading').and.callThrough();
+
+        test.cmp.executeQuery();
+        expect(test.cmp.header.showLoading).toHaveBeenCalledTimes(1);
+      });
+
+      it(`when a query is successful
+      should call "hideLoading" on the header`, async done => {
+        spyOn(test.cmp.header, 'hideLoading').and.callThrough();
+        await test.cmp.executeQuery();
+
+        expect(test.cmp.header.hideLoading).toHaveBeenCalledTimes(1);
+        done();
+      });
+
+      it('should call "toggleClear"on query success', () => {
+        spyOn(test.cmp.header, 'toggleClear').and.callThrough();
+        Simulate.query(test.env, simulateQueryData);
+        expect(test.cmp.header.toggleClear).toHaveBeenCalled();
+      });
+
+      it('should call "toggleCollapse" when appearance is updated', () => {
+        spyOn(test.cmp.header, 'toggleCollapse').and.callThrough();
+        test.cmp.collapse();
+        expect(test.cmp.header.toggleCollapse).toHaveBeenCalled();
+      });
+    });
 
     it('when calling getVisibleParentValues returns all the visible parent values', () => {
       Simulate.query(test.env, simulateQueryData);
@@ -56,7 +168,7 @@ export function CategoryFacetTest() {
     it('when calling getVisibleParentValues when there are no parents returns empty array', () => {
       simulateQueryData.results.categoryFacets[0].parentValues = [];
       simulateQueryData.query.categoryFacets[0].path = [];
-      test.cmp.activePath = [];
+      test.cmp.changeActivePath([]);
 
       const visibleParentValues = test.cmp.getVisibleParentValues();
 
@@ -72,13 +184,13 @@ export function CategoryFacetTest() {
     });
 
     it('when calling deselectCurrentValue it strips the last element of the path', () => {
-      test.cmp.activePath = ['value1', 'value2'];
+      test.cmp.changeActivePath(['value1', 'value2']);
       test.cmp.deselectCurrentValue();
       expect(test.cmp.activePath).toEqual(['value1']);
     });
 
     it('when calling deselectCurrentValue and the path is empty the path remains empty', () => {
-      test.cmp.activePath = [];
+      test.cmp.changeActivePath([]);
       test.cmp.deselectCurrentValue();
       expect(test.cmp.activePath).toEqual([]);
     });
@@ -179,12 +291,6 @@ export function CategoryFacetTest() {
 
       it('sets the path in the query state', () => {
         expect(test.cmp.queryStateModel.set).toHaveBeenCalledWith(test.cmp.queryStateAttribute, newPath);
-      });
-
-      it('shows a wait animation', () => {
-        test.cmp.executeQuery();
-        const waitIcon = $$(test.cmp.element).find('.' + CategoryFacet.WAIT_ELEMENT_CLASS);
-        expect(waitIcon.style.visibility).toEqual('visible');
       });
     });
 
@@ -311,13 +417,13 @@ export function CategoryFacetTest() {
       const queryBuilder = mock(QueryBuilder);
       const buildingQueryArgs = { queryBuilder } as IBuildingQueryEventArgs;
       test.cmp.categoryFacetQueryController = mock(CategoryFacetQueryController);
-      const path = (test.cmp.activePath = ['some', 'path']);
+      test.cmp.changeActivePath(['some', 'path']);
 
       test.cmp.handleBuildingQuery(buildingQueryArgs);
 
       expect(test.cmp.categoryFacetQueryController.putCategoryFacetInQueryBuilder).toHaveBeenCalledWith(
         queryBuilder,
-        path,
+        ['some', 'path'],
         test.cmp.options.numberOfValues + 1
       );
     });
@@ -445,8 +551,6 @@ export function CategoryFacetTest() {
 
       it('all categories button should call "scrollToTop" and "reset" when clicked', () => {
         Simulate.query(test.env, simulateQueryData);
-        spyOn(test.cmp, 'scrollToTop');
-        spyOn(test.cmp, 'reset');
 
         $$(allCategoriesButton()).trigger('click');
         expect(test.cmp.reset).toHaveBeenCalled();

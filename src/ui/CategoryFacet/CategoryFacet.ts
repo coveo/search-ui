@@ -1,3 +1,5 @@
+import 'styling/_CategoryFacet'; // TODO: Delete file
+import 'styling/CategoryFacet/_CategoryFacet';
 import { Component } from '../Base/Component';
 import { l } from '../../strings/Strings';
 import { IFieldOption, ComponentOptions } from '../Base/ComponentOptions';
@@ -11,7 +13,6 @@ import { CategoryFacetQueryController } from '../../controllers/CategoryFacetQue
 import { SVGDom } from '../../utils/SVGDom';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { QueryStateModel } from '../../models/QueryStateModel';
-import 'styling/_CategoryFacet';
 import { IAttributesChangedEventArg, MODEL_EVENTS } from '../../models/Model';
 import { Utils } from '../../utils/Utils';
 import { CategoryValue, CategoryValueParent } from './CategoryValue';
@@ -36,7 +37,7 @@ import { IAutoLayoutAdjustableInsideFacetColumn } from '../SearchInterface/Facet
 import { ResponsiveFacets } from '../ResponsiveComponents/ResponsiveFacets';
 import { IResponsiveComponentOptions } from '../ResponsiveComponents/ResponsiveComponentsManager';
 import { ResponsiveFacetOptions } from '../ResponsiveComponents/ResponsiveFacetOptions';
-import { CategoryFacetHeader } from './CategoryFacetHeader';
+import { DynamicFacetHeader } from '../DynamicFacet/DynamicFacetHeader/DynamicFacetHeader';
 import { AccessibleButton } from '../../utils/AccessibleButton';
 import { IStringMap } from '../../rest/GenericParam';
 import { DependsOnManager, IDependentFacet } from '../../utils/DependsOnManager';
@@ -44,12 +45,14 @@ import { ResultListUtils } from '../../utils/ResultListUtils';
 import { CategoryFacetValuesTree } from './CategoryFacetValuesTree';
 
 export interface ICategoryFacetOptions extends IResponsiveComponentOptions {
+  id?: string;
   field: IFieldOption;
   title?: string;
-  numberOfResultsInFacetSearch?: number;
-  id?: string;
+  enableCollapse?: boolean;
+  collapsedByDefault?: boolean;
   enableFacetSearch?: boolean;
   facetSearchDelay?: number;
+  numberOfResultsInFacetSearch?: number;
   numberOfValues?: number;
   injectionDepth?: number;
   enableMoreLess?: boolean;
@@ -94,43 +97,6 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
    */
   static options: ICategoryFacetOptions = {
     /**
-     * The index field whose values the facet should use. The field values should have the form:
-     * `the; the|path; the|path|to; the|path|to|given; the|path|to|given|item;`
-     * where the delimiting character is `|`. This default delimiting character can be changed using the [delimitingCharacter]{@link CategoryFacet.options.delimitingCharacter} option.
-     *
-     * To help you verify whether your fields are setup correctly, see the {@link CategoryFacet.options.debug} option
-     * and the {@link CategoryFacet.debugValue} method.
-     *
-     * See [Using the Category Facet Component](https://docs.coveo.com/en/2667).
-     */
-    field: ComponentOptions.buildFieldOption({ required: true }),
-    /**
-     * The title to display at the top of the facet.
-     *
-     * Default value is the localized string for `NoTitle`.
-     */
-    title: ComponentOptions.buildLocalizedStringOption({
-      defaultValue: l('NoTitle')
-    }),
-    /**
-     * The maximum number of field values to display by default in the facet before the user
-     * clicks the arrow to show more.
-     *
-     * See also the [`enableMoreLess`]{@link CategoryFacet.options.enableMoreLess} option.
-     */
-    numberOfValues: ComponentOptions.buildNumberOption({ defaultValue: 5, min: 0, section: 'CommonOptions' }),
-    /**
-     * Whether to display a search box at the bottom of the facet for searching among the available facet
-     * [`field`]{@link CategoryFacet.options.field} values.
-     *
-     * See also the [`facetSearchDelay`]{@link CategoryFacet.options.facetSearchDelay}, and
-     * [`numberOfResultsInFacetSearch`]{@link CategoryFacet.options.numberOfResultsInFacetSearch} options.
-     *
-     *
-     * Default value is `true`.
-     */
-    enableFacetSearch: ComponentOptions.buildBooleanOption({ defaultValue: true }),
-    /**
      * A unique identifier for the facet. Among other things, this identifier serves the purpose of saving
      * the facet state in the URL hash.
      *
@@ -142,6 +108,65 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     id: ComponentOptions.buildStringOption({
       postProcessing: (value, options: ICategoryFacetOptions) => value || (options.field as string)
     }),
+
+    /**
+     * The index field whose values the facet should use. The field values should have the form:
+     * `the; the|path; the|path|to; the|path|to|given; the|path|to|given|item;`
+     * where the delimiting character is `|`. This default delimiting character can be changed using the [delimitingCharacter]{@link CategoryFacet.options.delimitingCharacter} option.
+     *
+     * To help you verify whether your fields are setup correctly, see the {@link CategoryFacet.options.debug} option
+     * and the {@link CategoryFacet.debugValue} method.
+     *
+     * See [Using the Category Facet Component](https://docs.coveo.com/en/2667).
+     */
+    field: ComponentOptions.buildFieldOption({ required: true }),
+
+    /**
+     * The title to display at the top of the facet.
+     *
+     * Default value is the localized string for `NoTitle`.
+     */
+    title: ComponentOptions.buildLocalizedStringOption({
+      defaultValue: l('NoTitle')
+    }),
+
+    /**
+     * The maximum number of field values to display by default in the facet before the user
+     * clicks the arrow to show more.
+     *
+     * See also the [`enableMoreLess`]{@link CategoryFacet.options.enableMoreLess} option.
+     */
+    numberOfValues: ComponentOptions.buildNumberOption({ defaultValue: 5, min: 0, section: 'CommonOptions' }),
+
+    /**
+    * Whether to allow the end-user to expand and collapse this facet.
+    *
+    * **Default:** `true`
+    */
+    enableCollapse: ComponentOptions.buildBooleanOption({ defaultValue: true, section: 'Filtering' }),
+
+    /**
+     * Whether this facet should be collapsed by default.
+     *
+     * See also the [`enableCollapse`]{@link CategoryFacet.options.enableCollapse}
+     * option.
+     *
+     * **Default:** `false`
+     */
+    collapsedByDefault: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'Filtering', depend: 'enableCollapse' }),
+
+    /**
+     * Whether to display a search box at the bottom of the facet for searching among the available facet
+     * [`field`]{@link CategoryFacet.options.field} values.
+     *
+     * See also the [`facetSearchDelay`]{@link CategoryFacet.options.facetSearchDelay}, and
+     * [`numberOfResultsInFacetSearch`]{@link CategoryFacet.options.numberOfResultsInFacetSearch} options.
+     *
+     *
+     * Default value is `true`.
+     */
+    enableFacetSearch: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+
     /**
      * The *injection depth* to use.
      *
@@ -152,6 +177,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
      * @notSupportedIn salesforcefree
      */
     injectionDepth: ComponentOptions.buildNumberOption({ defaultValue: 1000, min: 0 }),
+
     /**
      * If the [`enableFacetSearch`]{@link CategoryFacet.options.enableFacetSearch} option is `true`, specifies the number of
      * values to display in the facet search results popup.
@@ -159,6 +185,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
      * Default value is `15`. Minimum value is `1`.
      */
     numberOfResultsInFacetSearch: ComponentOptions.buildNumberOption({ defaultValue: 15, min: 1 }),
+
     /**
      * If the [`enableFacetSearch`]{@link CategoryFacet.options.enableFacetSearch} option is `true`, specifies the delay (in
      * milliseconds) before sending a search request to the server when the user starts typing in the category facet search box.
@@ -169,6 +196,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
      * Default value is `100`. Minimum value is `0`.
      */
     facetSearchDelay: ComponentOptions.buildNumberOption({ defaultValue: 100, min: 0 }),
+
     /**
      * Whether to enable the **More** and **Less** buttons in the Facet.
      *
@@ -177,6 +205,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
      * Default value is `true`.
      */
     enableMoreLess: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+
     /**
      * If the [`enableMoreLess`]{@link CategoryFacet.options.enableMoreLess} option is `true`, specifies the number of
      * additional results to fetch when clicking the **More** button.
@@ -184,6 +213,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
      * Default value is `10`. Minimum value is `1`.
      */
     pageSize: ComponentOptions.buildNumberOption({ defaultValue: 10, min: 1, depend: 'enableMoreLess' }),
+
     /**
      * The character that specifies the hierarchical dependency.
      *
@@ -198,6 +228,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
      * Default value is `|`.
      */
     delimitingCharacter: ComponentOptions.buildStringOption({ defaultValue: '|' }),
+
     /**
      * The path to use as the path prefix for every query.
      *
@@ -220,6 +251,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
      *
      */
     basePath: ComponentOptions.buildListOption<string>({ defaultValue: [] }),
+
     /**
      * The maximum number of levels to traverse in the hierarchy.
      * This option does not count the length of the base path. The depth depends on what is shown in the interface.
@@ -227,12 +259,14 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
      * Default value is `Number.MAX_VALUE`.
      */
     maximumDepth: ComponentOptions.buildNumberOption({ min: 1, defaultValue: Number.MAX_VALUE }),
+
     /**
      * Whether to activate field format debugging.
      * This options logs messages in the console for any potential encountered issues.
      * This option can have negative effects on performance, and should only be activated when debugging.
      */
     debug: ComponentOptions.buildBooleanOption({ defaultValue: false }),
+
     /**
      * Specifies a JSON object describing a mapping of facet values to their desired captions. See
      * [Normalizing Facet Value Captions](https://developers.coveo.com/x/jBsvAg).
@@ -273,6 +307,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
      * ```
      */
     valueCaption: ComponentOptions.buildJsonOption<IStringMap<string>>({ defaultValue: {} }),
+
     /**
      * The [id](@link Facet.options.id) of another facet in which at least one value must be selected in order
      * for the dependent category facet to be visible.
@@ -291,24 +326,23 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   public dependsOnManager: DependsOnManager;
   public static MAXIMUM_NUMBER_OF_VALUES_BEFORE_TRUNCATING = 15;
   public static NUMBER_OF_VALUES_TO_KEEP_AFTER_TRUNCATING = 10;
+  public isCollapsed: boolean;
+  public header: DynamicFacetHeader;
 
   private categoryValueRoot: CategoryValueRoot;
   private categoryFacetTemplates: CategoryFacetTemplates;
-  private headerElement: HTMLElement;
   private currentPage: number;
   private moreLessContainer: Dom;
   private moreValuesToFetch: boolean = true;
-  private showingWaitAnimation = false;
   private numberOfChildValuesCurrentlyDisplayed = 0;
   private numberOfValues: number;
   private categoryFacetValuesTree: CategoryFacetValuesTree;
-
-  public static WAIT_ELEMENT_CLASS = 'coveo-category-facet-header-wait-animation';
 
   constructor(public element: HTMLElement, public options: ICategoryFacetOptions, bindings?: IComponentBindings) {
     super(element, 'CategoryFacet', bindings);
     this.options = ComponentOptions.initComponentOptions(element, CategoryFacet, options);
 
+    this.isCollapsed = this.options.enableCollapse && this.options.collapsedByDefault;
     this.categoryFacetQueryController = new CategoryFacetQueryController(this);
     this.categoryFacetTemplates = new CategoryFacetTemplates();
     this.categoryValueRoot = new CategoryValueRoot($$(this.element), this.categoryFacetTemplates, this);
@@ -341,12 +375,6 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
 
   public get activePath() {
     return this.queryStateModel.get(this.queryStateAttribute) || this.options.basePath;
-  }
-
-  public set activePath(newPath: string[]) {
-    this.listenToQueryStateChange = false;
-    this.queryStateModel.set(this.queryStateAttribute, newPath);
-    this.listenToQueryStateChange = true;
   }
 
   public get queryStateAttribute() {
@@ -419,7 +447,9 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     if (this.disabled || this.isCategoryEmpty) {
       return this.hide();
     }
-
+    
+    this.header.toggleCollapse(this.isCollapsed);
+    $$(this.element).toggleClass('coveo-dynamic-category-facet-collapsed', this.isCollapsed);
     this.show();
     this.dependsOnManager.updateVisibilityBasedOnDependsOn();
   }
@@ -436,7 +466,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     const numberOfRequestedValues = args.query.categoryFacets[this.positionInQuery].maximumNumberOfValues;
     const categoryFacetResult = args.results.categoryFacets[this.positionInQuery];
     this.moreValuesToFetch = numberOfRequestedValues == categoryFacetResult.values.length;
-    this.clear();
+    this.dismiss();
 
     if (categoryFacetResult.notImplemented) {
       return this.notImplementedError();
@@ -460,7 +490,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     }
 
     if (!this.isPristine()) {
-      $$(this.element).addClass('coveo-category-facet-non-empty-path');
+      this.header.toggleClear(true);
     }
   }
 
@@ -469,15 +499,17 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
    *
    */
   public changeActivePath(path: string[]) {
-    this.activePath = path;
+    this.listenToQueryStateChange = false;
+    this.queryStateModel.set(this.queryStateAttribute, path);
+    this.listenToQueryStateChange = true;
   }
 
   public async executeQuery() {
-    this.showWaitingAnimation();
+    this.header.showLoading();
     try {
       await this.queryController.executeQuery();
     } finally {
-      this.hideWaitingAnimation();
+      this.header.hideLoading();
     }
   }
 
@@ -616,6 +648,45 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     $$(this.element).removeClass('coveo-hidden');
   }
 
+  /**
+   * Collapses or expands the facet depending on it's current state.
+   */
+  public toggleCollapse() {
+    this.isCollapsed ? this.expand() : this.collapse();
+  }
+
+  /**
+   * Expands the facet, displaying all of its currently fetched values.
+   */
+  public expand() {
+    if (!this.options.enableCollapse) {
+      return this.logger.warn(`Calling expand() won't do anything on a facet that has the option "enableCollapse" set to "false"`);
+    }
+    if (!this.isCollapsed) {
+      return;
+    }
+    this.ensureDom();
+    this.logger.info('Expand facet values');
+    this.isCollapsed = false;
+    this.updateAppearance();
+  }
+
+  /**
+   * Collapses the facet, hiding values.
+   */
+  public collapse() {
+    if (!this.options.enableCollapse) {
+      return this.logger.warn(`Calling collapse() won't do anything on a facet that has the option "enableCollapse" set to "false"`);
+    }
+    if (this.isCollapsed) {
+      return;
+    }
+    this.ensureDom();
+    this.logger.info('Collapse facet values');
+    this.isCollapsed = true;
+    this.updateAppearance();
+  }
+
   public enable() {
     super.enable();
     this.updateAppearance();
@@ -647,22 +718,6 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     const valueCaptions = this.options.valueCaption;
     const caption = valueCaptions[value];
     return caption ? caption : value;
-  }
-
-  public showWaitingAnimation() {
-    this.ensureDom();
-    if (!this.showingWaitAnimation) {
-      $$(this.headerElement).find('.coveo-category-facet-header-wait-animation').style.visibility = 'visible';
-      this.showingWaitAnimation = true;
-    }
-  }
-
-  public hideWaitingAnimation() {
-    this.ensureDom();
-    if (this.showingWaitAnimation) {
-      $$(this.headerElement).find('.coveo-category-facet-header-wait-animation').style.visibility = 'hidden';
-      this.showingWaitAnimation = false;
-    }
   }
 
   public logAnalyticsEvent(eventName: IAnalyticsActionCause, path = this.activePath) {
@@ -770,16 +825,27 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   }
 
   private buildFacetHeader() {
-    const facetHeader = new CategoryFacetHeader({ categoryFacet: this, title: this.options.title });
-    this.headerElement = facetHeader.build();
-    $$(this.element).prepend(this.headerElement);
+    this.header = new DynamicFacetHeader({
+      title: this.options.title,
+      enableCollapse: this.options.enableCollapse,
+      clear: () => this.clear(),
+      toggleCollapse: () => this.toggleCollapse(),
+      expand: () => this.expand(),
+      collapse: () => this.collapse(),
+    });
+    $$(this.element).prepend(this.header.element);
+  }
+
+  private clear() {
+    this.reset();
+    this.scrollToTop();
   }
 
   private handleQueryStateChanged(data: IAttributesChangedEventArg) {
     if (this.listenToQueryStateChange) {
       let path = data.attributes[this.queryStateAttribute];
       if (!Utils.isNullOrUndefined(path) && isArray(path) && path.length != 0) {
-        this.activePath = path;
+        this.changeActivePath(path)
       }
     }
   }
@@ -806,7 +872,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
 
   private dependsOnReset() {
     this.changeActivePath(this.options.basePath);
-    this.clear();
+    this.dismiss();
   }
 
   private toggleDependentFacet(dependentFacet: Component) {
@@ -860,13 +926,13 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     }
   }
 
-  private clear() {
+  private dismiss() {
     this.categoryValueRoot.clear();
     if (this.isFacetSearchAvailable) {
       this.categoryFacetSearch.clear();
     }
     this.moreLessContainer && this.moreLessContainer.detach();
-    $$(this.element).removeClass('coveo-category-facet-non-empty-path');
+    this.header.toggleClear(false);
   }
 
   private buildMoreButton() {
