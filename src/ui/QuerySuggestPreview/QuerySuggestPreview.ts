@@ -31,26 +31,6 @@ export interface IQuerySuggestPreview {
 
 export const resultPerRow = 3;
 
-/**
- * This component renders a preview of the top query results matching the currently focused query suggestion in the search box.
- *
- * As such, this component only works when an [`Omnibox`]{@link Omnibox} whose [`enableQuerySuggestAddon`]{@link Omnibox.options.enableQuerySuggestAddon} option is set to `true` is present in the search interface.
- *
- * Moreover, this component requires at least one [result template](https://docs.coveo.com/en/413/) in its markup configuration to be able to render previews.
- *
- * **Example**
- * ```
- *   <div class="CoveoQuerySuggestPreview">
- *    <script class="result-template" type="text/html">
- *      <div class="coveo-result-frame">
- *        <a class="CoveoResultLink"></a>
- *      </div>
- *    </script>
- *   </div>
- * ```
- *
- * See [Providing Query Suggestion Result Previews](https://docs.coveo.com/en/340/#providing-query-suggestion-result-previews).
- */
 export class QuerySuggestPreview extends Component implements IComponentBindings {
   static ID = 'QuerySuggestPreview';
 
@@ -60,10 +40,6 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
     });
   };
 
-  /**
-   * The options for the component
-   * @componentOptions
-   */
   static options: IQuerySuggestPreview = {
     resultTemplate: TemplateComponentOptions.buildTemplateOption(),
     /**
