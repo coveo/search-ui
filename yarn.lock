@@ -8962,7 +8962,7 @@ typedoc-default-themes@^0.5.0:
 
 "typedoc@https://github.com/coveord/typedoc":
   version "0.10.0"
-  resolved "https://github.com/coveord/typedoc#92f9cd2142b45452ee528e73551c691a82597981"
+  resolved "https://github.com/coveord/typedoc#2bd5c3a9d49c1a6fea4b80bba5c1edddc8b70661"
   dependencies:
     "@types/fs-extra" "5.0.0"
     "@types/handlebars" "4.0.36"
