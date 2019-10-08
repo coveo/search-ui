@@ -142,7 +142,7 @@ export class MagicBoxInstance {
     };
 
     this.inputManager.onkeydown = (key: number) => {
-      if (key === KEYBOARD.UP_ARROW || key === KEYBOARD.DOWN_ARROW || key === KEYBOARD.LEFT_ARROW || key === KEYBOARD.RIGHT_ARROW) {
+      if (key === KEYBOARD.UP_ARROW || key === KEYBOARD.DOWN_ARROW) {
         return false;
       }
       if (key === KEYBOARD.ENTER) {
@@ -172,12 +172,6 @@ export class MagicBoxInstance {
           break;
         case KEYBOARD.DOWN_ARROW:
           this.suggestionsManager.moveDown();
-          break;
-        case KEYBOARD.LEFT_ARROW:
-          this.suggestionsManager.moveLeft();
-          break;
-        case KEYBOARD.RIGHT_ARROW:
-          this.suggestionsManager.moveRight();
           break;
         default:
           return true;
