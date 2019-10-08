@@ -3,10 +3,17 @@ import { $$, Dom } from '../../../utils/Dom';
 import { l } from '../../../strings/Strings';
 import { SVGIcons } from '../../../utils/SVGIcons';
 import { SVGDom } from '../../../utils/SVGDom';
-import { DynamicFacet } from '../DynamicFacet';
 import { DynamicFacetHeaderButton } from './DynamicFacetHeaderButton';
 import { DynamicFacetHeaderCollapseToggle } from './DynamicFacetHeaderCollapseToggle';
-import { analyticsActionCauseList } from '../../Analytics/AnalyticsActionListMeta';
+
+export interface IDynamicFacetHeaderOptions {
+  title: string;
+  enableCollapse: boolean;
+  toggleCollapse: () => void;
+  collapse: () => void;
+  expand: () => void;
+  clear: () => void;
+}
 
 export class DynamicFacetHeader {
   public static showLoadingDelay = 2000;
@@ -17,51 +24,40 @@ export class DynamicFacetHeader {
   private collapseToggle: DynamicFacetHeaderCollapseToggle;
   private showLoadingTimeout: number;
 
-  constructor(private facet: DynamicFacet) {
+  constructor(public options: IDynamicFacetHeaderOptions) {
     this.element = $$('div', { className: 'coveo-dynamic-facet-header' }).el;
     this.title = this.createTitle();
     $$(this.element).append(this.title.el);
     $$(this.element).append(this.createWaitAnimation());
     $$(this.element).append(this.createClearButton());
-    this.facet.options.enableCollapse && this.enableCollapse();
+    this.options.enableCollapse && this.enableCollapse();
   }
 
   private createClearButton() {
     this.clearButton = new DynamicFacetHeaderButton({
       label: l('Clear'),
-      ariaLabel: l('Clear', this.facet.options.title),
+      ariaLabel: l('Clear', this.options.title),
       className: 'coveo-dynamic-facet-header-clear',
       shouldDisplay: false,
-      action: () => this.clear()
+      action: () => this.options.clear()
     });
 
     return this.clearButton.element;
   }
 
-  private clear() {
-    this.facet.reset();
-    this.facet.enableFreezeFacetOrderFlag();
-    this.facet.scrollToTop();
-    this.facet.triggerNewQuery(() => this.logClearAllToAnalytics());
-  }
-
-  private logClearAllToAnalytics() {
-    this.facet.logAnalyticsEvent(analyticsActionCauseList.dynamicFacetClearAll, this.facet.basicAnalyticsFacetState);
-  }
-
   private createCollapseToggle() {
-    this.collapseToggle = new DynamicFacetHeaderCollapseToggle(this.facet);
+    this.collapseToggle = new DynamicFacetHeaderCollapseToggle(this.options);
     return this.collapseToggle.element;
   }
 
   private enableCollapse() {
     $$(this.element).append(this.createCollapseToggle());
     $$(this.title).addClass('coveo-clickable');
-    $$(this.title).on('click', () => this.facet.toggleCollapse());
+    $$(this.title).on('click', () => this.options.toggleCollapse());
   }
 
   public toggleCollapse(isCollapsed: boolean) {
-    this.facet.options.enableCollapse && this.collapseToggle.toggleButtons(isCollapsed);
+    this.options.enableCollapse && this.collapseToggle.toggleButtons(isCollapsed);
   }
 
   private createTitle() {
@@ -69,9 +65,9 @@ export class DynamicFacetHeader {
       'h2',
       {
         className: 'coveo-dynamic-facet-header-title',
-        ariaLabel: `${l('FacetTitle', this.facet.options.title)}`
+        ariaLabel: `${l('FacetTitle', this.options.title)}`
       },
-      $$('span', { ariaHidden: true, title: this.facet.options.title }, this.facet.options.title)
+      $$('span', { ariaHidden: true, title: this.options.title }, this.options.title)
     );
   }
 
