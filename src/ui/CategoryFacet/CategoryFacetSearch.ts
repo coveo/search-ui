@@ -143,7 +143,7 @@ export class CategoryFacetSearch implements IFacetSearch {
     return async () => {
       this.facetSearchElement.showFacetSearchWaitingAnimation();
       this.categoryFacet.logger.info('Triggering new Category Facet search');
-      const categoryFacetValues = await this.categoryFacet.categoryFacetQueryController.searchFacetValues(
+      const categoryFacetValues = await this.categoryFacet.oldCategoryFacetQueryController.searchFacetValues(
         this.facetSearchElement.input.value,
         this.numberOfValuesToFetch
       );

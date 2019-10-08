@@ -53,7 +53,7 @@ export class CategoryFacetDebug {
 
   private addGroupByForEachPathElement(queryBuilder: QueryBuilder, path: string[]) {
     path.forEach(pathElement => {
-      this.categoryFacet.categoryFacetQueryController.addDebugGroupBy(queryBuilder, pathElement);
+      this.categoryFacet.oldCategoryFacetQueryController.addDebugGroupBy(queryBuilder, pathElement);
     });
   }
 

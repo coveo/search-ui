@@ -7,6 +7,7 @@ import { Initialization } from '../Base/Initialization';
 import { exportGlobally } from '../../GlobalExports';
 import { CategoryFacetTemplates } from './CategoryFacetTemplates';
 import { CategoryValueRoot } from './CategoryValueRoot';
+import { OldCategoryFacetQueryController } from '../../controllers/OldCategoryFacetQueryController';
 import { CategoryFacetQueryController } from '../../controllers/CategoryFacetQueryController';
 import { SVGDom } from '../../utils/SVGDom';
 import { SVGIcons } from '../../utils/SVGIcons';
@@ -42,6 +43,7 @@ import { IStringMap } from '../../rest/GenericParam';
 import { DependsOnManager, IDependentFacet } from '../../utils/DependsOnManager';
 import { ResultListUtils } from '../../utils/ResultListUtils';
 import { CategoryFacetValuesTree } from './CategoryFacetValuesTree';
+import { FacetType } from '../../rest/Facet/FacetRequest';
 
 export interface ICategoryFacetOptions extends IResponsiveComponentOptions {
   field: IFieldOption;
@@ -283,6 +285,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     ...ResponsiveFacetOptions
   };
 
+  public oldCategoryFacetQueryController: OldCategoryFacetQueryController;
   public categoryFacetQueryController: CategoryFacetQueryController;
   public listenToQueryStateChange = true;
   public categoryFacetSearch: CategoryFacetSearch;
@@ -309,6 +312,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     super(element, 'CategoryFacet', bindings);
     this.options = ComponentOptions.initComponentOptions(element, CategoryFacet, options);
 
+    this.oldCategoryFacetQueryController = new OldCategoryFacetQueryController(this);
     this.categoryFacetQueryController = new CategoryFacetQueryController(this);
     this.categoryFacetTemplates = new CategoryFacetTemplates();
     this.categoryValueRoot = new CategoryValueRoot($$(this.element), this.categoryFacetTemplates, this);
@@ -335,6 +339,14 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     this.initQueryStateEvents();
   }
 
+  public get fieldName() {
+    return this.options.field.slice(1);
+  }
+
+  public get facetType() {
+    return FacetType.hierarchical;
+  }
+
   public isCurrentlyDisplayed() {
     return $$(this.element).isVisible();
   }
@@ -354,10 +366,14 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   }
 
   public handleBuildingQuery(args: IBuildingQueryEventArgs) {
-    this.positionInQuery = this.categoryFacetQueryController.putCategoryFacetInQueryBuilder(
+    this.positionInQuery = this.oldCategoryFacetQueryController.putCategoryFacetInQueryBuilder(
       args.queryBuilder,
       this.activePath,
       this.numberOfValues + 1
+    );
+
+    this.categoryFacetQueryController.putFacetIntoQueryBuilder(
+      args.queryBuilder
     );
   }
 
@@ -633,7 +649,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
    */
   public async debugValue(value: string) {
     const queryBuilder = new QueryBuilder();
-    this.categoryFacetQueryController.addDebugGroupBy(queryBuilder, value);
+    this.oldCategoryFacetQueryController.addDebugGroupBy(queryBuilder, value);
     const queryResults = await this.queryController.getEndpoint().search(queryBuilder.build());
     CategoryFacetDebug.analyzeResults(queryResults.groupByResults[0], this.options.delimitingCharacter);
   }
