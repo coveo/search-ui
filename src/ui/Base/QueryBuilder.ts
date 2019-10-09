@@ -2,7 +2,7 @@ import * as _ from 'underscore';
 import { ICategoryFacetRequest } from '../../rest/CategoryFacetRequest';
 import { IFacetRequest } from '../../rest/Facet/FacetRequest';
 import { IGroupByRequest } from '../../rest/GroupByRequest';
-import { IFacetOptions, IQuery, IUserActionsRequest } from '../../rest/Query';
+import { IFacetOptions, IQuery, IUserActionsRequest, ICommerceRequest } from '../../rest/Query';
 import { IQueryFunction } from '../../rest/QueryFunction';
 import { IRankingFunction } from '../../rest/RankingFunction';
 import { Utils } from '../../utils/Utils';
@@ -325,6 +325,10 @@ export class QueryBuilder {
    */
   public userActions: IUserActionsRequest;
   /**
+   * A request for a commerce query.
+   */
+  public commerce: ICommerceRequest;
+  /**
    * Build the current content or state of the query builder and return a {@link IQuery}.
    *
    * build can be called multiple times on the same QueryBuilder.
@@ -379,7 +383,8 @@ export class QueryBuilder {
       actionsHistory: this.actionsHistory,
       recommendation: this.recommendation,
       allowQueriesWithoutKeywords: this.allowQueriesWithoutKeywords,
-      userActions: this.userActions
+      userActions: this.userActions,
+      commerce: this.commerce
     };
     return query;
   }

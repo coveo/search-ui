@@ -26,6 +26,18 @@ export interface IUserActionsRequest {
 }
 
 /**
+ * A Search API commerce request.
+ */
+export interface ICommerceRequest {
+  /**
+   * The unique identifier of the catalog to query.
+   *
+   * **Example:** `46bc4275-e613-4dd5-b1ea-3e5aca1bcd9d`
+   */
+  catalogId: string;
+}
+
+/**
  * The IQuery interface describes a query that can be performed on the Coveo REST Search API.
  *
  * For basic usage, see the {@link IQuery.q} and {@link IQuery.aq} properties.
@@ -273,4 +285,8 @@ export interface IQuery {
    *  - 6318b0c6-9397-4d70-b393-cf4770fd1bab
    */
   userActions?: IUserActionsRequest;
+  /**
+   * The commerce request to execute.
+   */
+  commerce?: ICommerceRequest;
 }
