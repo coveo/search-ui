@@ -1,454 +1,391 @@
-import { ResultPreviewsGrid, SearchResultPreview } from '../../src/magicbox/ResultPreviewsGrid';
-import { $$ } from '../../src/utils/Dom';
+import { ResultPreviewsGrid, ISearchResultPreview, ResultPreviewsGridDirection } from '../../src/magicbox/ResultPreviewsGrid';
+import { $$, Dom } from '../../src/utils/Dom';
 import { Assert } from '../../src/Core';
-import {
-  createGridWithDefaults,
-  EmptySearchQueryType,
-  ResultPreviewsGridType,
-  createEmptySearchQuery,
-  SingleSearchResultPreviewType,
-  createSingleSearchResultPreview,
-  SynchronousSingleSearchQueryType,
-  createSynchronousSingleSearchQuery,
-  SingleSearchResultPreviewId,
-  AsynchronousSingleSearchQueryType,
-  createAsynchronousSingleSearchQuery,
-  MultipleSearchResultPreviewsType,
-  PreviewElementProperties,
-  createMultipleSearchResultPreviews,
-  SynchronousMultipleSearchQueriesType,
-  createSynchronousMultipleSearchQueries,
-  AsynchronousMultipleSearchQueriesType,
-  createAsynchronousMultipleSearchQueries,
-  deferPromise,
-  createActiveGridWithDefaults,
-  ContainerWidth,
-  PreviewSize,
-  PreviewMargin,
-  ContainerElementProperties,
-  createMultipleSearchResultPreviews2
-} from './ResultPreviewsGridTest.mock';
+
+type HTMLTestPreviewElement = HTMLElement & { dataset: { testPosition: string } };
+
+type HTMLProps = Partial<Element & { style: string }>;
+
+const PreviewSize = 50;
+const PreviewMargin = 10;
+const PreviewElementProperties: HTMLProps = {
+  className: 'common-class-name',
+  style: `
+    width: ${PreviewSize}px;
+    height: ${PreviewSize}px;
+    margin: ${PreviewMargin}px;
+  `
+};
+
+function createPreview(id: number): ISearchResultPreview {
+  return {
+    element: $$('div', { ...PreviewElementProperties, 'data-test-position': id.toString() }).el,
+    onSelect: jasmine.createSpy('onSelect')
+  };
+}
+
+function createPreviews(count, startId = 0) {
+  const previews: ISearchResultPreview[] = [];
+  for (let i = startId; i < startId + count; i++) {
+    previews.push(createPreview(i));
+  }
+  return previews;
+}
 
 export function ResultPreviewsGridTest() {
-  describe('ResultPreviewsGridTest', () => {
-    // TODO: Add tests with non-default options?
-    describe('with default options', () => {
-      it('does not create any DOM element when instantiated', () => {
-        const { root } = createGridWithDefaults();
-        expect(root.children.length).toEqual(0);
+  describe('ResultPreviewsGrid', () => {
+    let root: Dom;
+    beforeEach(() => {
+      root = $$('div', {
+        id: 'resultPreviewsGridContainer',
+        style: `
+            position: absolute;
+          `
+      });
+    });
+
+    describe('without any previews', () => {
+      let grid: ResultPreviewsGrid;
+      beforeEach(() => {
+        grid = new ResultPreviewsGrid(root.el);
       });
 
-      it('does not have any selection when instantiated', () => {
-        const { grid } = createGridWithDefaults();
-        expect(grid.getSelectedPreviewElement()).toBeNull();
+      it(`doesn't append any preview`, () => {
+        const [resultsContainer] = root.findClass(ResultPreviewsGrid.ResultsContainerClassName);
+        expect(resultsContainer.children.length).toEqual(0);
       });
 
-      it('does not crash when calling selectKeyboardFocusedSelection without a selection', () => {
-        const { grid } = createGridWithDefaults();
-        expect(() => grid.selectKeyboardFocusedSelection()).not.toThrow();
+      it('creates a container once instantiated', () => {
+        expect(root.children().length).toEqual(1);
+      });
+
+      it('does not have any hover when instantiated', () => {
+        expect(grid.getHoveredItem()).toBeNull();
+      });
+
+      it('is not in keyboard selection mode', () => {
+        expect(grid.isHoverKeyboardControlled()).toBeFalsy();
+      });
+
+      it('returns null when calling keyboardSelect', () => {
+        expect(grid.keyboardSelect()).toBeNull();
       });
 
       it('does not allow navigation in any direction', () => {
-        const { grid } = createGridWithDefaults();
-        expect(grid.moveFirst()).toBeFalsy();
-        expect(grid.moveUp()).toBeFalsy();
-        expect(grid.moveDown()).toBeFalsy();
-        expect(grid.moveLeft()).toBeFalsy();
-        expect(grid.moveRight()).toBeFalsy();
+        expect(grid.tryHoverOnFirstItem()).toBeFalsy();
+        expect(grid.tryHoverOnNextItem(ResultPreviewsGridDirection.Up)).toBeFalsy();
+        expect(grid.tryHoverOnNextItem(ResultPreviewsGridDirection.Down)).toBeFalsy();
+        expect(grid.tryHoverOnNextItem(ResultPreviewsGridDirection.Left)).toBeFalsy();
+        expect(grid.tryHoverOnNextItem(ResultPreviewsGridDirection.Right)).toBeFalsy();
+      });
+    });
+
+    describe('with previews', () => {
+      const hoverClassName = 'abcd';
+      const previewsCount = 10;
+      let grid: ResultPreviewsGrid;
+      let previews: ISearchResultPreview[];
+      beforeEach(() => {
+        grid = new ResultPreviewsGrid(root.el, { selectedClass: hoverClassName });
+        previews = createPreviews(previewsCount);
+        grid.setDisplayedItems(previews);
       });
 
-      it('cannot create any DOM element without receiving previews', () => {
-        const { root, grid } = createGridWithDefaults();
-        grid.getSelectedPreviewElement();
-        grid.selectKeyboardFocusedSelection();
-        grid.moveFirst();
-        grid.moveUp();
-        grid.moveDown();
-        grid.moveLeft();
-        grid.moveRight();
-        grid.clearSelection();
-        expect(root.children.length).toEqual(0);
+      const hoverFirst = () => grid.tryHoverOnFirstItem();
+      const hoverUp = () => grid.tryHoverOnNextItem(ResultPreviewsGridDirection.Up);
+      const hoverDown = () => grid.tryHoverOnNextItem(ResultPreviewsGridDirection.Down);
+      const hoverLeft = () => grid.tryHoverOnNextItem(ResultPreviewsGridDirection.Left);
+      const hoverRight = () => grid.tryHoverOnNextItem(ResultPreviewsGridDirection.Right);
+
+      function getPreviewElements() {
+        return root.findClass(PreviewElementProperties.className) as HTMLTestPreviewElement[];
+      }
+
+      it(`doesn't alter the provided previews`, () => {
+        previews.forEach((preview, id) => {
+          expect(preview.element.outerHTML).toEqual(createPreview(id).element.outerHTML);
+        });
       });
 
-      describe('calling receiveSearchResultPreviews', () => {
-        describe('with getCompletionMessage', () => {
-          let getCompletionMessageSpy: jasmine.Spy;
-          beforeEach(() => {
-            getCompletionMessageSpy = jasmine.createSpy('getCompletionMessage');
-          });
+      it('appends as many previews as provided', () => {
+        expect(getPreviewElements().length).toEqual(previewsCount);
+      });
 
-          describe('without any preview', () => {
-            // TODO: Test getCompletionMessage with previews?
-            it(`calls getCompletionMessage with an empty array`, async done => {
-              const { grid } = createGridWithDefaults();
-              await grid.receiveSearchResultPreviews([], getCompletionMessageSpy.and.returnValue(''));
-              expect(getCompletionMessageSpy).toHaveBeenCalled();
-              expect((getCompletionMessageSpy.calls.mostRecent().args[0] as SearchResultPreview[]).length).toEqual(0);
-              done();
-            });
+      it('appends copies of the provided previews in the original order', () => {
+        const elements = getPreviewElements();
+        previews.forEach((preview, id) => {
+          expect(elements[id].outerHTML).not.toEqual(preview.element.outerHTML);
+          expect(elements[id].dataset.testPosition).toEqual(id.toString());
+        });
+      });
 
-            it('shows the provided message', async done => {
-              const { root, grid } = createGridWithDefaults();
-              const message = 'hello';
-              await grid.receiveSearchResultPreviews([], getCompletionMessageSpy.and.returnValue(message));
-              const [header] = root.findClass(ResultPreviewsGrid.HeaderClassName);
-              expect(header).not.toBeNull();
-              expect(header.innerText).toEqual(message);
-              done();
-            });
-          });
+      it('replaces previews with newly provided ones', () => {
+        const newPreviewsCount = 4;
+        const newPreviews = createPreviews(newPreviewsCount, previewsCount);
+        grid.setDisplayedItems(newPreviews);
 
-          describe('with multiple previews', () => {});
+        const elements = getPreviewElements();
+        expect(elements.length).toEqual(newPreviewsCount);
+        newPreviews.forEach((preview, id) => {
+          expect(elements[id].outerHTML).not.toEqual(preview.element.outerHTML);
+          expect(elements[id].dataset.testPosition).toEqual((id + previewsCount).toString());
+        });
+      });
+
+      it('does not have any hover when instantiated', () => {
+        expect(root.findClass(hoverClassName).length).toEqual(0);
+        expect(grid.getHoveredItem()).toBeNull();
+      });
+
+      it('is not in keyboard selection mode', () => {
+        expect(grid.isHoverKeyboardControlled()).toBeFalsy();
+      });
+
+      it('returns null when calling keyboardSelect', () => {
+        expect(grid.keyboardSelect()).toBeNull();
+      });
+
+      it('switches to keyboard selection mode when hovering a preview with tryHover', () => {
+        hoverFirst();
+        expect(grid.isHoverKeyboardControlled()).toBeTruthy();
+      });
+
+      it('switches to mouse selection mode when selecting a preview', () => {
+        hoverFirst();
+        grid.keyboardSelect();
+        expect(grid.isHoverKeyboardControlled()).toBeFalsy();
+      });
+
+      describe('using the mouse', () => {
+        function mouseOver(element: HTMLTestPreviewElement) {
+          $$(element).trigger('mouseover');
+        }
+
+        function mouseOut(element: HTMLTestPreviewElement) {
+          $$(element).trigger('mouseout');
+        }
+
+        it('switches to mouse selection mode when the mouse enters a preview', () => {
+          hoverFirst();
+          mouseOver(getPreviewElements()[0]);
+          expect(grid.isHoverKeyboardControlled()).toBeFalsy();
         });
 
-        describe('without any preview', () => {
-          let query: EmptySearchQueryType;
-          let gridContext: ResultPreviewsGridType;
-          beforeEach(() => {
-            gridContext = createGridWithDefaults();
-            query = createEmptySearchQuery(gridContext);
-          });
+        it('does not return a keyboard selection after the mouse enters a preview', () => {
+          mouseOver(getPreviewElements()[0]);
+          expect(grid.keyboardSelect()).toBeNull();
+        });
 
-          it('appends a container to the root', async done => {
-            const receivedPreviews = await query.receivePromise;
-            expect(gridContext.root.children().length).toEqual(1);
-            expect(receivedPreviews.length).toEqual(0);
-            const [container] = gridContext.root.findClass(ResultPreviewsGrid.ContainerClassName);
-            expect(container).not.toBeNull();
-            const [header] = $$(container).findClass(ResultPreviewsGrid.HeaderClassName);
-            expect(header).not.toBeNull();
-            const [resultsContainer] = $$(container).findClass(ResultPreviewsGrid.ResultsContainerClassName);
-            expect(resultsContainer).not.toBeNull();
-            done();
-          });
-
-          it('does not have any selection when instantiated', async done => {
-            await query.receivePromise;
-            expect(gridContext.grid.getSelectedPreviewElement()).toBeNull();
-            done();
-          });
-
-          it('does not crash when calling selectKeyboardFocusedSelection without a selection', async done => {
-            await query.receivePromise;
-            expect(() => gridContext.grid.selectKeyboardFocusedSelection()).not.toThrow();
-            done();
-          });
-
-          it('does not allow navigation in any direction', async done => {
-            await query.receivePromise;
-            expect(gridContext.grid.moveFirst()).toBeFalsy();
-            expect(gridContext.grid.moveUp()).toBeFalsy();
-            expect(gridContext.grid.moveDown()).toBeFalsy();
-            expect(gridContext.grid.moveLeft()).toBeFalsy();
-            expect(gridContext.grid.moveRight()).toBeFalsy();
-            done();
-          });
-
-          it(`doesn't return any preview`, async done => {
-            expect((await query.receivePromise).length).toEqual(0);
-            done();
-          });
-
-          it(`doesn't append any preview`, async done => {
-            await query.receivePromise;
-            const [resultsContainer] = $$(gridContext.root).findClass(ResultPreviewsGrid.ResultsContainerClassName);
-            expect(resultsContainer.children.length).toEqual(0);
-            done();
-          });
-
-          it(`doesn't show any message by default`, async done => {
-            await query.receivePromise;
-            const [header] = gridContext.root.findClass(ResultPreviewsGrid.HeaderClassName);
-            expect(header).not.toBeNull();
-            expect(header.innerText.length).toEqual(0);
-            done();
+        it('returns the preview hovered by the mouse when calling getHoveredItem', () => {
+          getPreviewElements().forEach(element => {
+            mouseOver(element);
+            const returnedPreview = grid.getHoveredItem();
+            expect(returnedPreview).not.toBeNull();
+            expect(returnedPreview.element).toBe(element);
           });
         });
 
-        describe('with a single preview', () => {
-          let dataset: SingleSearchResultPreviewType;
-          let gridContext: ResultPreviewsGridType;
-          beforeEach(() => {
-            dataset = createSingleSearchResultPreview();
-            gridContext = createGridWithDefaults();
-          });
-
-          describe('synchronously', () => {
-            let query: SynchronousSingleSearchQueryType;
-            beforeEach(() => {
-              query = createSynchronousSingleSearchQuery(gridContext, dataset);
-            });
-
-            it('does not alter the received preview', async done => {
-              const { copiedPreview, originalPreview } = dataset;
-              const [receivedPreview] = await query.receivePromise;
-              const appendedChild = gridContext.root.el.querySelector(`#${SingleSearchResultPreviewId}`);
-              expect(receivedPreview.dom.outerHTML).not.toBe(copiedPreview.dom.outerHTML);
-              expect(originalPreview.dom.outerHTML).toBe(copiedPreview.dom.outerHTML);
-              expect(receivedPreview.dom.outerHTML).toBe(appendedChild.outerHTML);
-              done();
-            });
-
-            it('only appends the received preview', async done => {
-              await query.receivePromise;
-              const appendedChild = gridContext.root.el.querySelector(`#${SingleSearchResultPreviewId}`);
-              expect(appendedChild.parentElement.children.length).toEqual(1);
-              done();
-            });
-
-            it('only returns the received preview', async done => {
-              const receivedPreviews = await query.receivePromise;
-              expect(receivedPreviews.length).toEqual(1);
-              done();
-            });
-
-            it(`only allows moving to the first element after it's received`, async done => {
-              expect(gridContext.grid.moveFirst()).toBeFalsy();
-              expect(gridContext.grid.moveUp()).toBeFalsy();
-              expect(gridContext.grid.moveDown()).toBeFalsy();
-              expect(gridContext.grid.moveLeft()).toBeFalsy();
-              expect(gridContext.grid.moveRight()).toBeFalsy();
-              await query.receivePromise;
-              expect(gridContext.grid.moveUp()).toBeFalsy();
-              expect(gridContext.grid.moveDown()).toBeFalsy();
-              expect(gridContext.grid.moveLeft()).toBeFalsy();
-              expect(gridContext.grid.moveRight()).toBeFalsy();
-              expect(gridContext.grid.moveFirst()).toBeTruthy();
-              expect(gridContext.grid.moveUp()).toBeFalsy();
-              expect(gridContext.grid.moveDown()).toBeFalsy();
-              expect(gridContext.grid.moveLeft()).toBeFalsy();
-              expect(gridContext.grid.moveRight()).toBeFalsy();
-              done();
-            });
-
-            it('has no selection until moveFirst is called', async done => {
-              expect(gridContext.grid.getSelectedPreviewElement()).toBeNull();
-              gridContext.grid.moveFirst();
-              await query.receivePromise;
-              expect(gridContext.grid.getSelectedPreviewElement()).toBeNull();
-              gridContext.grid.moveFirst();
-              expect(gridContext.grid.getSelectedPreviewElement()).not.toBeNull();
-              done();
-            });
-
-            it('can clear selection', async done => {
-              await query.receivePromise;
-              gridContext.grid.moveFirst();
-              gridContext.grid.clearSelection();
-              expect(gridContext.grid.getSelectedPreviewElement()).toBeNull();
-              done();
-            });
-
-            it('can select an element by hovering it', async done => {
-              const [receivedPreview] = await query.receivePromise;
-              expect(gridContext.grid.getSelectedPreviewElement()).toBeNull();
-              $$(receivedPreview.dom).trigger('mouseover');
-              expect(gridContext.grid.getSelectedPreviewElement()).not.toBeNull();
-              done();
-            });
-
-            it('can deselect an element by moving the mouse out of it', async done => {
-              const [receivedPreview] = await query.receivePromise;
-              $$(receivedPreview.dom).trigger('mouseover');
-              expect(gridContext.grid.getSelectedPreviewElement()).not.toBeNull();
-              $$(receivedPreview.dom).trigger('mouseout');
-              expect(gridContext.grid.getSelectedPreviewElement()).toBeNull();
-              done();
-            });
-          });
-
-          describe('asynchronously', () => {
-            let query: AsynchronousSingleSearchQueryType;
-            beforeEach(() => {
-              query = createAsynchronousSingleSearchQuery(gridContext, dataset);
-            });
-
-            it('does not create any DOM element until received', async done => {
-              expect(gridContext.root.children().length).toEqual(0);
-              await query.receivePromise;
-              expect(gridContext.root.children().length).toEqual(1);
-              done();
-            });
+        it('returns null when calling getHoveredItem after the mouse exit a preview', () => {
+          getPreviewElements().forEach(element => {
+            mouseOver(element);
+            mouseOut(element);
+            expect(grid.getHoveredItem()).toBeNull();
           });
         });
 
-        describe('with multiple previews', () => {
-          let dataset: MultipleSearchResultPreviewsType;
-          beforeEach(() => {
-            dataset = createMultipleSearchResultPreviews();
+        it('only gives the hovered class to the preview hovered by the mouse', () => {
+          getPreviewElements().forEach(element => {
+            mouseOver(element);
+            expect(root.findClass(hoverClassName).length).toEqual(1);
+            expect(element.classList).toContain(hoverClassName);
           });
+        });
 
-          describe('synchronously', () => {
-            describe('with an inactive grid', () => {
-              let gridContext: ResultPreviewsGridType;
-              let query: SynchronousMultipleSearchQueriesType;
-              beforeEach(() => {
-                gridContext = createGridWithDefaults();
-                query = createSynchronousMultipleSearchQueries(gridContext, dataset);
-              });
-
-              it('appends copies of received previews in the order they are received', async done => {
-                const receivedPreviews = await query.receivePromise;
-                const firstAppendedChild = gridContext.root.children()[0].querySelector(`#${dataset.originalPreviews[0].dom.id}`);
-                expect(firstAppendedChild).not.toBeNull();
-                $$(firstAppendedChild.parentElement)
-                  .children()
-                  .forEach((appendedChild, position) => {
-                    expect(appendedChild.id).toEqual(dataset.previewCopiesInResolvedOrder[position].dom.id);
-                    expect(appendedChild.outerHTML).toEqual(receivedPreviews[position].dom.outerHTML);
-                    expect(appendedChild.id).not.toEqual(receivedPreviews[(position + 1) % receivedPreviews.length].dom.id);
-                  });
-                done();
-              });
-            });
-
-            describe('with an active grid', () => {
-              it('allows keyboard navigation', async done => {
-                await createActiveGridWithDefaults(async gridContext => {
-                  const query = createSynchronousMultipleSearchQueries(gridContext, dataset);
-                  const receivedPreviews = await query.receivePromise;
-                  const { root, grid } = gridContext;
-                  root.findClass(PreviewElementProperties.className)[0].parentElement.style.cssText = ContainerElementProperties.style;
-
-                  const columns = Math.floor(ContainerWidth / (PreviewSize + PreviewMargin * 2));
-                  Assert.isLargerOrEqualsThan(2, columns); // We need to test with at-least two columns
-                  const columnsInLastRow = dataset.previewCopiesInResolvedOrder.length % columns;
-                  Assert.isLargerThan(0, columnsInLastRow); // We need to test a grid with a lesser amount of items on the last row.
-                  const rows = Math.ceil(dataset.previewCopiesInResolvedOrder.length / columns);
-                  Assert.isLargerOrEqualsThan(2, rows); // We need to test with at-least two rows
-                  expect(grid.moveFirst()).toBeTruthy('can move to origin');
-                  expect(grid.moveUp()).toBeFalsy();
-                  expect(grid.moveLeft()).toBeFalsy();
-                  for (let currentRow = 0; currentRow < rows; currentRow += 1) {
-                    const isLastRow = currentRow === rows - 1;
-                    const columnsInCurrentRow = isLastRow ? columnsInLastRow : columns;
-                    let currentDirection = 1;
-                    for (
-                      let currentColumn = 0;
-                      currentColumn < columnsInCurrentRow && currentColumn >= 0;
-                      currentColumn += currentDirection
-                    ) {
-                      if (currentRow === 0) {
-                        expect(grid.moveUp()).toBeFalsy();
-                      }
-                      if (currentColumn === 0) {
-                        expect(grid.moveLeft()).toBeFalsy();
-                      }
-                      if (isLastRow || (currentRow === rows - 2 && currentColumn >= columnsInLastRow)) {
-                        expect(grid.moveDown()).toBeFalsy();
-                      }
-                      if (currentColumn === columnsInCurrentRow - 1) {
-                        expect(grid.moveRight()).toBeFalsy();
-                        currentDirection = -1;
-                      }
-                      expect(grid.getSelectedPreviewElement().outerHTML).toEqual(
-                        receivedPreviews[currentRow * columns + currentColumn].dom.outerHTML
-                      );
-                      if (currentDirection === 1 && currentColumn < columnsInCurrentRow - 1) {
-                        expect(grid.moveRight()).toBeTruthy(`can move right to (${currentColumn + currentDirection}, ${currentRow})`);
-                      } else if (currentDirection === -1 && currentColumn > 0) {
-                        expect(grid.moveLeft()).toBeTruthy(`can move left to (${currentColumn + currentDirection}, ${currentRow})`);
-                      }
-                    }
-                    if (!isLastRow) {
-                      expect(grid.moveDown()).toBeTruthy(`can move down to (0, ${currentRow + 1})`);
-                    }
-                  }
-                  expect(grid.moveFirst()).toBeTruthy('can move back to origin');
-                  expect(grid.moveRight()).toBeTruthy('can move right from origin again');
-                  expect(grid.selectKeyboardFocusedSelection().dom.outerHTML).toEqual(receivedPreviews[1].dom.outerHTML);
-                  dataset.previewCopiesInResolvedOrder.forEach((preview, i) => {
-                    if (i === 1) {
-                      expect(preview.onSelect).toHaveBeenCalledTimes(1);
-                    } else {
-                      expect(preview.onSelect).not.toHaveBeenCalled();
-                    }
-                  });
-                });
-                done();
-              });
-            });
+        it('removes the hovered class when the mouse exits a preview', () => {
+          getPreviewElements().forEach(element => {
+            mouseOver(element);
+            mouseOut(element);
+            expect(root.findClass(hoverClassName).length).toEqual(0);
           });
+        });
 
-          describe('asynchronously', () => {
-            let gridContext: ResultPreviewsGridType;
-            let query: AsynchronousMultipleSearchQueriesType;
-            beforeEach(() => {
-              gridContext = createGridWithDefaults();
-              query = createAsynchronousMultipleSearchQueries(gridContext, dataset);
-            });
-
-            it('resolves once all given promises are resolved', async done => {
-              let receivePromiseIsResolved = false;
-              query.receivePromise.then(() => (receivePromiseIsResolved = true));
-
-              await deferPromise();
-              expect(gridContext.root.children().length).toEqual(0);
-              expect(receivePromiseIsResolved).toBeFalsy();
-              await query.subPromises.resolvedSecond;
-              expect(gridContext.root.children().length).toEqual(0);
-              expect(receivePromiseIsResolved).toBeFalsy();
-              await query.subPromises.resolvedThird;
-              expect(gridContext.root.children().length).toEqual(1);
-              expect(gridContext.root.findClass(PreviewElementProperties.className).length).toEqual(dataset.previewCopies.length);
-              await deferPromise();
-              expect(receivePromiseIsResolved).toBeTruthy();
-              done();
-            });
-
-            it('rejects and aborts if called again during resolution and process new call', async done => {
-              // Spy on resolve and reject
-              const resolveSpy = jasmine.createSpy('resolve');
-              const rejectSpy = jasmine.createSpy('reject');
-              const receiveResolvedPromise = new Promise(resolve =>
-                query.receivePromise.then(() => {
-                  resolveSpy();
-                  resolve();
-                })
-              );
-              const receiveRejectedPromise = new Promise(resolve =>
-                query.receivePromise.catch(message => {
-                  rejectSpy(message);
-                  resolve();
-                })
-              );
-
-              // Wait for some previews to be resolved then interrupt with another request
-              await query.subPromises.resolvedSecond;
-              const newDataset = createMultipleSearchResultPreviews2();
-              const newQuery = createAsynchronousMultipleSearchQueries(gridContext, newDataset);
-
-              // Wait for receivePromise rejection
-              await Promise.race([receiveResolvedPromise, receiveRejectedPromise]);
-              expect(resolveSpy).not.toHaveBeenCalled();
-              expect(rejectSpy).toHaveBeenCalledWith('new request queued');
-
-              // Check that the grid didn't add the new previews.
-              expect(gridContext.root.children().length).toEqual(0);
-
-              // Check that the new call was processed
-              await newQuery.receivePromise;
-              newDataset.previewCopies.forEach(preview => {
-                expect(gridContext.root.el.querySelector(`#${preview.dom.id}`)).not.toBeNull();
-              });
-              expect(gridContext.root.findClass(PreviewElementProperties.className).length).toEqual(newDataset.previewCopies.length);
-              done();
-            });
-
-            it('appends copies of received previews in the order they are received', async done => {
-              const receivedPreviews = await query.receivePromise;
-              const firstAppendedChild = gridContext.root.children()[0].querySelector(`#${dataset.originalPreviews[0].dom.id}`);
-              expect(firstAppendedChild).not.toBeNull();
-              $$(firstAppendedChild.parentElement)
-                .children()
-                .forEach((appendedChild, position) => {
-                  expect(appendedChild.id).toEqual(dataset.previewCopiesInResolvedOrder[position].dom.id);
-                  expect(appendedChild.outerHTML).toEqual(receivedPreviews[position].dom.outerHTML);
-                  expect(appendedChild.id).not.toEqual(receivedPreviews[(position + 1) % receivedPreviews.length].dom.id);
-                });
-              done();
-            });
+        it('removes the hover when calling clearHover', () => {
+          getPreviewElements().forEach(element => {
+            mouseOver(element);
+            grid.clearHover();
+            expect(root.findClass(hoverClassName).length).toEqual(0);
           });
+        });
+      });
+
+      describe('with an active grid using tryHover', () => {
+        const containerWidth = 300;
+        const maxColumns = Math.floor(containerWidth / (PreviewSize + PreviewMargin * 2));
+        const columnsInLastRow = previewsCount % maxColumns;
+        const rows = Math.ceil(previewsCount / maxColumns);
+        const columns = (row: number) => (row === rows - 1 ? columnsInLastRow : maxColumns);
+        // We should test with a last row of a different length.
+        Assert.check(maxColumns !== columnsInLastRow);
+        // We should test with at-least three rows.
+        Assert.isLargerOrEqualsThan(3, rows);
+        beforeEach(() => {
+          root.findClass(ResultPreviewsGrid.ResultsContainerClassName)[0].style.cssText = `
+            width: ${containerWidth}px;
+            height: 600px;
+            display: flex;
+            flex-wrap: wrap;
+          `;
+          document.body.appendChild(root.el);
+        });
+
+        afterEach(() => {
+          document.body.removeChild(root.el);
+        });
+
+        function hoverAt(column: number, row: number) {
+          hoverFirst();
+          for (let x = 0; x < column; x++) {
+            hoverRight();
+          }
+          for (let y = 0; y < row; y++) {
+            hoverDown();
+          }
+        }
+
+        function compareSelectionWith(column: number, row: number) {
+          const expectedId = row * maxColumns + column;
+          const expectedTestPosition = expectedId.toString();
+          const strCoordinates = `(col: ${column}, row: ${row})`;
+
+          // Test if the currently hovered preview is the one at `column`, `row`
+          const hoveredPreview = grid.getHoveredItem();
+          expect(hoveredPreview).not.toBeNull(`No hover returned at ${strCoordinates}`);
+          expect((hoveredPreview.element as HTMLTestPreviewElement).dataset.testPosition).toEqual(
+            expectedTestPosition,
+            `Wrong preview returned at ${strCoordinates}`
+          );
+          const hoveredItems = root.findClass(hoverClassName);
+          expect(hoveredItems.length).toEqual(1, `Multiple hovers found at ${strCoordinates}`);
+          expect(hoveredItems[0].dataset.testPosition).toEqual(expectedTestPosition, `Wrong preview hovered at ${strCoordinates}`);
+
+          // Test keyboard selection
+          const selection = grid.keyboardSelect();
+          expect(selection).not.toBeNull(`No selection returned at ${strCoordinates}`);
+          expect((selection.element as HTMLTestPreviewElement).dataset.testPosition).toEqual(
+            expectedTestPosition,
+            `Wrong preview selected at ${strCoordinates}`
+          );
+          expect(previews[expectedId].onSelect).toHaveBeenCalledTimes(1);
+
+          // Hover the original position, since keyboardSelect removes the hover.
+          hoverAt(column, row);
+        }
+
+        it('can hover the first item', () => {
+          expect(hoverFirst()).toBeTruthy();
+          compareSelectionWith(0, 0);
+        });
+
+        it('cannot hover the next item when none is selected', () => {
+          expect(hoverUp()).toBeFalsy('Was not prevented from moving up');
+          expect(hoverDown()).toBeFalsy('Was not prevented from moving down');
+          expect(hoverLeft()).toBeFalsy('Was not prevented from moving left');
+          expect(hoverRight()).toBeFalsy('Was not prevented from moving right');
+        });
+
+        it('can hover all items from left to right', () => {
+          for (let y = 0; y < rows; y++) {
+            hoverAt(0, y);
+            compareSelectionWith(0, y);
+            for (let x = 1; x < columns(y); x++) {
+              expect(hoverRight()).toBeTruthy(`Could not move to (${x}, ${y})`);
+              compareSelectionWith(x, y);
+            }
+          }
+        });
+
+        it('can hover all items right to left', () => {
+          for (let y = 0; y < rows; y++) {
+            hoverAt(columns(y) - 1, y);
+            compareSelectionWith(columns(y) - 1, y);
+            for (let x = columns(y) - 2; x > 0; x--) {
+              expect(hoverLeft()).toBeTruthy(`Could not move to (${x}, ${y})`);
+              compareSelectionWith(x, y);
+            }
+          }
+        });
+
+        it('can hover all items from top to bottom', () => {
+          for (let x = 0; x < maxColumns; x++) {
+            const rowsAtColumn = rows - (x < columnsInLastRow ? 0 : 1);
+            hoverAt(x, 0);
+            compareSelectionWith(x, 0);
+            for (let y = 1; y < rowsAtColumn; y++) {
+              expect(hoverDown()).toBeTruthy(`Could not move to (${x}, ${y})`);
+              compareSelectionWith(x, y);
+            }
+          }
+        });
+
+        it('can hover all items from bottom to top', () => {
+          for (let x = 0; x < maxColumns; x++) {
+            const startingRow = rows - (x < columnsInLastRow ? 1 : 2);
+            hoverAt(x, startingRow);
+            compareSelectionWith(x, startingRow);
+            for (let y = startingRow - 1; y > 0; y--) {
+              expect(hoverUp()).toBeTruthy(`Could not move to (${x}, ${y})`);
+              compareSelectionWith(x, y);
+            }
+          }
+        });
+
+        it('cannot go up from the first row', () => {
+          hoverFirst();
+          expect(hoverUp()).toBeFalsy();
+          for (let x = 1; x < maxColumns; x++) {
+            hoverRight();
+            expect(hoverUp()).toBeFalsy(`Was not prevented from moving up from (${x}, 0)`);
+          }
+        });
+
+        it('cannot go down from the last row', () => {
+          hoverAt(0, rows - 1);
+          expect(hoverDown()).toBeFalsy();
+          for (let x = 1; x < columns(rows - 1); x++) {
+            hoverRight();
+            expect(hoverDown()).toBeFalsy(`Was not prevented from moving down from (${x}, ${rows - 1})`);
+          }
+        });
+
+        it('cannot go down onto unexisting cells from the last row', () => {
+          hoverAt(columnsInLastRow - 1, rows - 2);
+          for (let x = columnsInLastRow; x < maxColumns; x++) {
+            hoverRight();
+            expect(hoverDown()).toBeFalsy(`Was not prevented from moving down from (${x}, ${rows - 2})`);
+          }
+        });
+
+        it('cannot go left from the first column', () => {
+          hoverFirst();
+          expect(hoverLeft()).toBeFalsy();
+          for (let y = 1; y < rows; y++) {
+            hoverDown();
+            expect(hoverLeft()).toBeFalsy(`Was not prevented from moving left from (0, ${y})`);
+          }
+        });
+
+        it('cannot go right from the first column', () => {
+          hoverAt(maxColumns - 1, 0);
+          expect(hoverRight()).toBeFalsy();
+          for (let y = 1; y < rows - 1; y++) {
+            hoverDown();
+            expect(hoverRight()).toBeFalsy(`Was not prevented from moving right from (${maxColumns - 1}, ${y})`);
+          }
+        });
+
+        it('cannot go right onto the first unexisting cell from the last row', () => {
+          hoverAt(columnsInLastRow - 1, rows - 1);
+          expect(hoverRight()).toBeFalsy(`Was not prevented from moving right from (${columnsInLastRow - 1}, ${rows - 1})`);
         });
       });
     });
