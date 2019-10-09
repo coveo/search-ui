@@ -1,6 +1,12 @@
-import { ResultPreviewsGrid, ISearchResultPreview, ResultPreviewsGridDirection } from '../../src/magicbox/ResultPreviewsGrid';
+import {
+  ResultPreviewsGrid,
+  ISearchResultPreview,
+  ResultPreviewsGridDirection,
+  ResultPreviewsGridEvents,
+  IPreviewHoveredEventArgs
+} from '../../src/magicbox/ResultPreviewsGrid';
 import { $$, Dom } from '../../src/utils/Dom';
-import { Assert } from '../../src/Core';
+import { Assert, Component } from '../../src/Core';
 
 type HTMLTestPreviewElement = HTMLElement & { dataset: { testPosition: string } };
 
@@ -219,6 +225,7 @@ export function ResultPreviewsGridTest() {
       });
 
       describe('with an active grid using tryHover', () => {
+        let previewHoveredSpy: jasmine.Spy;
         const containerWidth = 300;
         const maxColumns = Math.floor(containerWidth / (PreviewSize + PreviewMargin * 2));
         const columnsInLastRow = previewsCount % maxColumns;
@@ -236,6 +243,10 @@ export function ResultPreviewsGridTest() {
             flex-wrap: wrap;
           `;
           document.body.appendChild(root.el);
+          $$(Component.resolveRoot(root.el)).on(
+            ResultPreviewsGridEvents.PreviewHovered,
+            (previewHoveredSpy = jasmine.createSpy(ResultPreviewsGridEvents.PreviewHovered))
+          );
         });
 
         afterEach(() => {
@@ -252,7 +263,7 @@ export function ResultPreviewsGridTest() {
           }
         }
 
-        function compareSelectionWith(column: number, row: number) {
+        function testCompareSelectionWith(column: number, row: number) {
           const expectedId = row * maxColumns + column;
           const expectedTestPosition = expectedId.toString();
           const strCoordinates = `(col: ${column}, row: ${row})`;
@@ -267,6 +278,13 @@ export function ResultPreviewsGridTest() {
           const hoveredItems = root.findClass(hoverClassName);
           expect(hoveredItems.length).toEqual(1, `Multiple hovers found at ${strCoordinates}`);
           expect(hoveredItems[0].dataset.testPosition).toEqual(expectedTestPosition, `Wrong preview hovered at ${strCoordinates}`);
+
+          // Test that the PreviewHovered event was called.
+          const [, event] = <[any, IPreviewHoveredEventArgs]>previewHoveredSpy.calls.mostRecent().args;
+          expect(event.preview).toBe(
+            hoveredPreview,
+            `${ResultPreviewsGridEvents.PreviewHovered} event called with wrong preview at ${strCoordinates}`
+          );
 
           // Test keyboard selection
           const selection = grid.keyboardSelect();
@@ -283,7 +301,7 @@ export function ResultPreviewsGridTest() {
 
         it('can hover the first item', () => {
           expect(hoverFirst()).toBeTruthy();
-          compareSelectionWith(0, 0);
+          testCompareSelectionWith(0, 0);
         });
 
         it('cannot hover the next item when none is selected', () => {
@@ -296,10 +314,10 @@ export function ResultPreviewsGridTest() {
         it('can hover all items from left to right', () => {
           for (let y = 0; y < rows; y++) {
             hoverAt(0, y);
-            compareSelectionWith(0, y);
+            testCompareSelectionWith(0, y);
             for (let x = 1; x < columns(y); x++) {
               expect(hoverRight()).toBeTruthy(`Could not move to (${x}, ${y})`);
-              compareSelectionWith(x, y);
+              testCompareSelectionWith(x, y);
             }
           }
         });
@@ -307,10 +325,10 @@ export function ResultPreviewsGridTest() {
         it('can hover all items right to left', () => {
           for (let y = 0; y < rows; y++) {
             hoverAt(columns(y) - 1, y);
-            compareSelectionWith(columns(y) - 1, y);
+            testCompareSelectionWith(columns(y) - 1, y);
             for (let x = columns(y) - 2; x > 0; x--) {
               expect(hoverLeft()).toBeTruthy(`Could not move to (${x}, ${y})`);
-              compareSelectionWith(x, y);
+              testCompareSelectionWith(x, y);
             }
           }
         });
@@ -319,10 +337,10 @@ export function ResultPreviewsGridTest() {
           for (let x = 0; x < maxColumns; x++) {
             const rowsAtColumn = rows - (x < columnsInLastRow ? 0 : 1);
             hoverAt(x, 0);
-            compareSelectionWith(x, 0);
+            testCompareSelectionWith(x, 0);
             for (let y = 1; y < rowsAtColumn; y++) {
               expect(hoverDown()).toBeTruthy(`Could not move to (${x}, ${y})`);
-              compareSelectionWith(x, y);
+              testCompareSelectionWith(x, y);
             }
           }
         });
@@ -331,10 +349,10 @@ export function ResultPreviewsGridTest() {
           for (let x = 0; x < maxColumns; x++) {
             const startingRow = rows - (x < columnsInLastRow ? 1 : 2);
             hoverAt(x, startingRow);
-            compareSelectionWith(x, startingRow);
+            testCompareSelectionWith(x, startingRow);
             for (let y = startingRow - 1; y > 0; y--) {
               expect(hoverUp()).toBeTruthy(`Could not move to (${x}, ${y})`);
-              compareSelectionWith(x, y);
+              testCompareSelectionWith(x, y);
             }
           }
         });
