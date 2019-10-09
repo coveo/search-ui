@@ -23,7 +23,7 @@ export interface IResultPreviewsGridOptions {
   selectedClass?: string;
 }
 
-export interface PreviewHoveredEventArgs {
+export interface IPreviewHoveredEventArgs {
   preview: ISearchResultPreview;
 }
 
@@ -145,7 +145,7 @@ export class ResultPreviewsGrid implements ISelectableItemsContainer<ISearchResu
       return;
     }
     this.deselectElement(currentSelection);
-    $$(this.root).trigger(ResultPreviewsGridEvents.PreviewHovered, <PreviewHoveredEventArgs>{
+    $$(this.root).trigger(ResultPreviewsGridEvents.PreviewHovered, <IPreviewHoveredEventArgs>{
       preview: null
     });
   }
@@ -215,7 +215,7 @@ export class ResultPreviewsGrid implements ISelectableItemsContainer<ISearchResu
       return;
     }
     element.classList.add(this.options.selectedClass);
-    $$(this.root).trigger(ResultPreviewsGridEvents.PreviewHovered, <PreviewHoveredEventArgs>{
+    $$(this.root).trigger(ResultPreviewsGridEvents.PreviewHovered, <IPreviewHoveredEventArgs>{
       preview: this.activePreviews[ResultPreviewsGrid.getItemIdFromElement(element)]
     });
   }
