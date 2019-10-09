@@ -51,10 +51,10 @@ export class ResultPreviewsGrid implements ISelectableItemsContainer<ISearchResu
     container: Dom;
     status: Dom;
     results: Dom;
-  };
+  } = null;
   private options: IResultPreviewsGridOptions;
-  private activePreviews: IActiveSearchResultPreview[];
-  private keyboardSelectionMode: boolean;
+  private activePreviews: IActiveSearchResultPreview[] = [];
+  private keyboardSelectionMode: boolean = false;
 
   constructor(private parentContainer: HTMLElement, options: IResultPreviewsGridOptions = {}) {
     this.root = Component.resolveRoot(parentContainer);
@@ -79,7 +79,7 @@ export class ResultPreviewsGrid implements ISelectableItemsContainer<ISearchResu
   }
 
   public getHoveredItem(): ISearchResultPreview {
-    if (!this.activePreviews || this.activePreviews.length === 0) {
+    if (this.activePreviews.length === 0) {
       return null;
     }
     const previewId = this.getHoveredItemId();
@@ -87,7 +87,7 @@ export class ResultPreviewsGrid implements ISelectableItemsContainer<ISearchResu
   }
 
   public tryHoverOnFirstItem() {
-    if (!this.activePreviews || this.activePreviews.length === 0) {
+    if (this.activePreviews.length === 0) {
       return (this.keyboardSelectionMode = false);
     }
     this.setHoveredItemFromId(0);
@@ -164,9 +164,6 @@ export class ResultPreviewsGrid implements ISelectableItemsContainer<ISearchResu
   }
 
   public setStatusMessage(text: string) {
-    if (!this.resultContainerElements) {
-      return;
-    }
     this.resultContainerElements.status.text(text);
   }
 
@@ -199,11 +196,8 @@ export class ResultPreviewsGrid implements ISelectableItemsContainer<ISearchResu
   }
 
   private getHoveredItemElement() {
-    if (!this.resultContainerElements) {
-      return null;
-    }
     const selectedElements = this.resultContainerElements.results.findClass(this.options.selectedClass);
-    if (!selectedElements || selectedElements.length !== 1) {
+    if (selectedElements.length !== 1) {
       return null;
     }
     return selectedElements[0];
@@ -211,9 +205,6 @@ export class ResultPreviewsGrid implements ISelectableItemsContainer<ISearchResu
 
   private setHoveredItemFromElement(element: HTMLElement) {
     this.clearHover();
-    if (!element) {
-      return;
-    }
     element.classList.add(this.options.selectedClass);
     $$(this.root).trigger(ResultPreviewsGridEvents.PreviewHovered, <IPreviewHoveredEventArgs>{
       preview: this.activePreviews[ResultPreviewsGrid.getItemIdFromElement(element)]
@@ -239,13 +230,9 @@ export class ResultPreviewsGrid implements ISelectableItemsContainer<ISearchResu
 
   private clearDisplayedItems() {
     this.keyboardSelectionMode = false;
-    if (this.activePreviews) {
-      this.activePreviews.forEach(preview => preview.deactivate());
-    }
+    this.activePreviews.forEach(preview => preview.deactivate());
     this.activePreviews = [];
-    if (this.resultContainerElements) {
-      this.resultContainerElements.results.empty();
-    }
+    this.resultContainerElements.results.empty();
   }
 
   private appendSearchResultPreview(preview: ISearchResultPreview) {
