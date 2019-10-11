@@ -440,40 +440,7 @@ export class ResultList extends Component {
       this.showWaitingAnimationForInfiniteScrolling();
     }
 
-    this.fetchingMoreResults = this.queryController.fetchMore(count);
-    this.fetchingMoreResults.then((data: IQueryResults) => {
-      Assert.exists(data);
-      this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(analyticsActionCauseList.pagerScrolling, {}, this.element);
-      const results = data.results;
-      this.reachedTheEndOfResults = count > data.results.length;
-      this.buildResults(data).then(async (elements: HTMLElement[]) => {
-        this.renderResults(elements, true);
-        each(results, result => {
-          this.currentlyDisplayedResults.push(result);
-        });
-        this.triggerNewResultsDisplayed();
-      });
-    });
-
-    this.fetchingMoreResults.finally(() => {
-      this.hideWaitingAnimationForInfiniteScrolling();
-      this.fetchingMoreResults = undefined;
-      Defer.defer(() => {
-        this.successiveScrollCount++;
-        if (this.successiveScrollCount <= ResultList.MAX_AMOUNT_OF_SUCESSIVE_REQUESTS) {
-          this.handleScrollOfResultList();
-        } else {
-          this.logger.info(
-            `Result list has triggered 5 consecutive queries to try and fill up the scrolling container, but it is still unable to do so`
-          );
-          this.logger.info(
-            `Try explicitly setting the 'data-infinite-scroll-container-selector' option on the result list. See : https://coveo.github.io/search-ui/components/resultlist.html#options.infinitescrollcontainer`
-          );
-        }
-      });
-    });
-
-    return this.fetchingMoreResults;
+    return this.fetchAndRenderMoreResults(count);
   }
 
   public get templateToHtml() {
@@ -537,6 +504,49 @@ export class ResultList extends Component {
 
   protected triggerNewResultsDisplayed() {
     $$(this.element).trigger(ResultListEvents.newResultsDisplayed, {});
+  }
+
+  private async fetchAndRenderMoreResults(count: number): Promise<IQueryResults> {
+    this.fetchingMoreResults = this.queryController.fetchMore(count);
+
+    try {
+      const data = await this.fetchingMoreResults;
+      Assert.exists(data);
+      this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(analyticsActionCauseList.pagerScrolling, {}, this.element);
+
+      this.reachedTheEndOfResults = count > data.results.length;
+      this.renderNewResults(data);
+
+      this.resetStateAfterFetchingMoreResults();
+
+      return data;
+    } catch (e) {
+      this.resetStateAfterFetchingMoreResults();
+      return Promise.reject(e);
+    }
+  }
+
+  private async renderNewResults(data: IQueryResults) {
+    const elements = await this.buildResults(data);
+    this.renderResults(elements, true);
+    this.currentlyDisplayedResults.push(...data.results);
+    this.triggerNewResultsDisplayed();
+  }
+
+  private resetStateAfterFetchingMoreResults() {
+    this.hideWaitingAnimationForInfiniteScrolling();
+    this.fetchingMoreResults = undefined;
+    Defer.defer(() => {
+      this.successiveScrollCount++;
+      if (this.successiveScrollCount <= ResultList.MAX_AMOUNT_OF_SUCESSIVE_REQUESTS) {
+        this.handleScrollOfResultList();
+      } else {
+        this.logger.info(
+          `Result list has triggered 5 consecutive queries to try and fill up the scrolling container, but it is still unable to do so.
+          Try explicitly setting the 'data-infinite-scroll-container-selector' option on the result list. See : https://coveo.github.io/search-ui/components/resultlist.html#options.infinitescrollcontainer`
+        );
+      }
+    });
   }
 
   private handleDuringQuery() {

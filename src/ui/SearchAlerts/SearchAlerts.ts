@@ -236,7 +236,7 @@ export class SearchAlerts extends Component {
    * Opens the **Manage Alerts** panel. This panel allows the end user to stop following queries or items. It also
    * allows the end user to specify email notification frequency for each followed query or item.
    */
-  public openPanel(): Promise<ISubscription> {
+  public async openPanel(): Promise<void> {
     const title = $$('div');
 
     const titleInfo = $$(
@@ -322,26 +322,21 @@ export class SearchAlerts extends Component {
     table.append(tableBodySubscriptions.el);
     let sizeModForModalBox = 'big';
 
-    return this.queryController
-      .getEndpoint()
-      .listSubscriptions()
-      .then((subscriptions: ISubscription[]) => {
-        _.each(subscriptions, subscription => {
-          this.addSearchAlert(subscription, container);
-        });
-      })
-      .catch(() => {
-        sizeModForModalBox = 'small';
-        container.empty();
-        container.append(this.getFailureMessage().el);
-      })
-      .finally(() => {
-        this.modal = this.ModalBox.open(container.el, {
-          title: title.el.outerHTML,
-          className: 'coveo-subscriptions-panel',
-          sizeMod: sizeModForModalBox
-        });
-      });
+    try {
+      const subscriptions = await this.queryController.getEndpoint().listSubscriptions();
+      _.each(subscriptions, subscription => this.addSearchAlert(subscription, container));
+    } catch (e) {
+      this.logger.error('Error retrieving subscriptions', e);
+      sizeModForModalBox = 'small';
+      container.empty();
+      container.append(this.getFailureMessage().el);
+    }
+
+    this.modal = this.ModalBox.open(container.el, {
+      title: title.el.outerHTML,
+      className: 'coveo-subscriptions-panel',
+      sizeMod: sizeModForModalBox
+    });
   }
 
   private getFailureMessage(): Dom {
