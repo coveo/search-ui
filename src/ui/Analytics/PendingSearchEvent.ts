@@ -106,7 +106,7 @@ export class PendingSearchEvent {
       Assert.exists(queryResults);
       Assert.check(!this.finished);
 
-      const isRecommendationPanelAction = this.templateSearchEvent.actionCause == analyticsActionCauseList.recommendation.name;
+      const isRecommendationPanelAction = this.templateSearchEvent.actionCause === analyticsActionCauseList.recommendation.name;
 
       if (queryResults._reusedSearchUid !== true || isRecommendationPanelAction) {
         const searchEvent: ISearchEvent = { ...this.templateSearchEvent };
@@ -121,7 +121,7 @@ export class PendingSearchEvent {
     const index = indexOf(this.searchPromises, args.promise);
     this.searchPromises.splice(index, 1);
 
-    if (this.searchPromises.length == 0) {
+    if (!this.searchPromises.length) {
       this.flush();
     }
   }
@@ -187,9 +187,7 @@ export class PendingSearchEvent {
     // This is what they use to recognize a custom data that will be used internally by other coveo's service.
     // In this case, Coveo Machine Learning will be the consumer of this information.
     if (query.context != undefined) {
-      each(query.context, (value: string, key: string) => {
-        searchEvent.customData[`context_${key}`] = value;
-      });
+      each(query.context, (value: string, key: string) => (searchEvent.customData[`context_${key}`] = value));
     }
 
     if (queryResults.refinedKeywords != undefined && queryResults.refinedKeywords.length != 0) {

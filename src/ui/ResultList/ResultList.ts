@@ -529,7 +529,7 @@ export class ResultList extends Component {
   private async renderNewResults(data: IQueryResults) {
     const elements = await this.buildResults(data);
     this.renderResults(elements, true);
-    each(data.results, result => this.currentlyDisplayedResults.push(result));
+    this.currentlyDisplayedResults.push(...data.results);
     this.triggerNewResultsDisplayed();
   }
 
@@ -542,10 +542,8 @@ export class ResultList extends Component {
         this.handleScrollOfResultList();
       } else {
         this.logger.info(
-          `Result list has triggered 5 consecutive queries to try and fill up the scrolling container, but it is still unable to do so`
-        );
-        this.logger.info(
-          `Try explicitly setting the 'data-infinite-scroll-container-selector' option on the result list. See : https://coveo.github.io/search-ui/components/resultlist.html#options.infinitescrollcontainer`
+          `Result list has triggered 5 consecutive queries to try and fill up the scrolling container, but it is still unable to do so.
+          Try explicitly setting the 'data-infinite-scroll-container-selector' option on the result list. See : https://coveo.github.io/search-ui/components/resultlist.html#options.infinitescrollcontainer`
         );
       }
     });
