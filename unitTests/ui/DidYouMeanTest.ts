@@ -15,7 +15,7 @@ export function DidYouMeanTest() {
     let test: Mock.IBasicComponentSetup<DidYouMean>;
     let fakeQueryCorrection: IQueryCorrection;
 
-    function correctedWord() {
+    function getCorrectedWord() {
       return $$(test.cmp.element).find('.coveo-did-you-mean-suggestion a');
     }
 
@@ -76,7 +76,7 @@ export function DidYouMeanTest() {
       Simulate.query(test.env, { results: FakeResults.createFakeResults(1), queryCorrections: [fakeQueryCorrection] });
 
       spyOn(test.cmp, 'doQueryWithCorrectedTerm');
-      correctedWord().click();
+      getCorrectedWord().click();
 
       expect(test.cmp.doQueryWithCorrectedTerm).toHaveBeenCalledTimes(1);
     });
@@ -226,7 +226,7 @@ export function DidYouMeanTest() {
           ]
         });
 
-        expect(correctedWord().innerHTML).toBe('&lt;script&gt;alert("hack the internet")&lt;/script&gt;');
+        expect(getCorrectedWord().innerHTML).toBe('&lt;script&gt;alert("hack the internet")&lt;/script&gt;');
       });
 
       it('when query is autocorrected', () => {
@@ -238,7 +238,7 @@ export function DidYouMeanTest() {
             }
           ]
         });
-        expect(correctedWord().innerHTML).toBe('&lt;script&gt;alert("thou shalt surely die")&lt;/script&gt;');
+        expect(getCorrectedWord().innerHTML).toBe('&lt;script&gt;alert("thou shalt surely die")&lt;/script&gt;');
       });
     });
   });
