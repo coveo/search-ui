@@ -19,6 +19,7 @@ interface IActiveSearchResultPreview extends ISearchResultPreview {
 }
 
 export interface IResultPreviewsGridOptions {
+  selectableClass: string;
   selectedClass: string;
 }
 
@@ -54,6 +55,7 @@ export class ResultPreviewsGrid {
   constructor(private parentContainer: HTMLElement, options: Partial<IResultPreviewsGridOptions> = {}) {
     this.root = Component.resolveRoot(parentContainer);
     this.options = {
+      selectableClass: 'coveo-preview-selectable',
       selectedClass: 'magic-box-selected',
       ...options
     };
@@ -226,6 +228,7 @@ export class ResultPreviewsGrid {
   private appendSearchResultPreview(preview: ISearchResultPreview) {
     this.setPreviewIdOfElement(preview.element, this.displayedPreviews.length);
     preview.element.setAttribute('role', 'gridcell');
+    preview.element.classList.add(this.options.selectableClass);
     const events: { name: string; funct: (e: Event) => void }[] = [
       {
         name: 'mouseover',

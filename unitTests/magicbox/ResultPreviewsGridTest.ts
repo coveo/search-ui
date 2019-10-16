@@ -312,6 +312,20 @@ export function ResultPreviewsGridTest() {
           testCompareSelectionWith(0, 0);
         });
 
+        it('can blur the focused preview', () => {
+          focusFirst();
+          grid.blurFocusedPreview();
+          expect(grid.focusedPreview).toBeNull();
+        });
+
+        it('calls the previewBlurred event on the previously focused preview', () => {
+          focusFirst();
+          const focusedPreview = grid.focusedPreview;
+          grid.blurFocusedPreview();
+          const [lastFocusedPreview] = <[ISearchResultPreview]>previewBlurredSpy.calls.mostRecent().args;
+          expect(lastFocusedPreview).toBe(focusedPreview);
+        });
+
         it('cannot focus on the next preview when none is focused', () => {
           expect(focusUp()).toBeFalsy('Was not prevented from moving up');
           expect(focusDown()).toBeFalsy('Was not prevented from moving down');
