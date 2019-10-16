@@ -60,6 +60,7 @@ export class ResultPreviewsGrid {
       ...options
     };
     this.buildResultsPreviewsContainer();
+    this.appendEmptySearchResultPreview();
   }
 
   public bindOnPreviewFocused(binding: (e: Event, focusedPreview: ISearchResultPreview) => void) {
@@ -72,6 +73,10 @@ export class ResultPreviewsGrid {
 
   public setDisplayedPreviews(previews: ISearchResultPreview[]) {
     this.clearDisplayedPreviews();
+    if (previews.length === 0) {
+      this.appendEmptySearchResultPreview();
+      return;
+    }
     previews.forEach(preview =>
       this.appendSearchResultPreview({
         element: preview.element.cloneNode(true) as HTMLElement,
@@ -255,5 +260,9 @@ export class ResultPreviewsGrid {
     };
     this.displayedPreviews.push(activePreview);
     this.resultContainerElements.results.append(preview.element);
+  }
+
+  private appendEmptySearchResultPreview() {
+    this.resultContainerElements.results.append($$('div', { role: 'gridcell' }).el);
   }
 }

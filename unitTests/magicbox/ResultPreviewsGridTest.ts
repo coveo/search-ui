@@ -55,9 +55,9 @@ export function ResultPreviewsGridTest() {
         grid = new ResultPreviewsGrid(root.el);
       });
 
-      it(`doesn't append any preview`, () => {
+      it(`appends an empty preview for accessibility`, () => {
         const [resultsContainer] = root.findClass('coveo-preview-results');
-        expect(resultsContainer.children.length).toEqual(0);
+        expect(resultsContainer.children.length).toEqual(1);
       });
 
       it('creates a container once instantiated', () => {
