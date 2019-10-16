@@ -21,16 +21,6 @@ export interface SuggestionsManagerOptions {
   timeout?: number;
 }
 
-export interface ISelectableItemsContainer<ItemType, DirectionsEnum> {
-  isHoverKeyboardControlled: () => boolean;
-  setDisplayedItems: (items: ItemType[]) => void;
-  getHoveredItem: () => ItemType;
-  tryHoverOnFirstItem: () => boolean;
-  tryHoverOnNextItem: (direction: DirectionsEnum) => boolean;
-  clearHover: () => void;
-  keyboardSelect: () => ItemType;
-}
-
 enum Direction {
   Up = 'Up',
   Down = 'Down',
