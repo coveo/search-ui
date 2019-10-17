@@ -28,35 +28,42 @@ export function ComponentEventsTest() {
       $$(test.env.root).trigger('foo', { bar: 'baz' });
       expect(spy).toHaveBeenCalledWith({ bar: 'baz' });
     });
+    describe('when the event is  wrapped by jQuery and does not have any param', () => {
+      beforeAll(() => {
+        window['Coveo']['$'] = $;
+      });
 
-    it('should execute handler with the originalEvent if its wrapped by jQuery and does not have any param', function() {
-      // Setup.
-      window['Coveo']['$'] = $;
+      beforeEach(() => {
+        test.cmp.enable();
+        test.cmp.bind.on(test.env.root, 'click', spy);
+      });
 
-      test.cmp.enable();
-      test.cmp.bind.on(test.env.root, 'click', spy);
+      it('when triggering a native click, it calls the spy with native event as the only parameter', function() {
+        test.env.root.click();
 
-      // Trigger native click event, expecting it to be wrapped by jQuery.
-      test.env.root.click();
-      // It should call the spy with the native Event for first and only param.
-      expect(spy).toHaveBeenCalled();
-      expect(spy.calls.argsFor(0)[0] instanceof MouseEvent).toBeTruthy();
-      expect((spy.calls.argsFor(0)[0] as MouseEvent).type).toBe('click');
+        expect(spy).toHaveBeenCalled();
+        expect(spy.calls.argsFor(0)[0] instanceof MouseEvent).toBeTruthy();
+        expect((spy.calls.argsFor(0)[0] as MouseEvent).type).toBe('click');
+      });
 
-      // Trigger jQuery click event, without any params.
-      $(test.env.root).click();
-      // It should call the spy without any params.
-      expect(spy).toHaveBeenCalledTimes(2);
-      expect(spy.calls.argsFor(1).length).toBe(0);
+      it('when triggering a JQuery click event without params, it calls the spy without any params', () => {
+        $(test.env.root).click();
 
-      // Trigger jQuery click event, with some param.
-      $$(test.env.root).trigger('click', { bar: 'baz' });
-      // It should call the spy with the aforementioned param.
-      expect(spy).toHaveBeenCalledTimes(3);
-      expect(spy).toHaveBeenCalledWith({ bar: 'baz' });
+        expect(spy).toHaveBeenCalled();
+        expect(spy.calls.argsFor(1).length).toBe(0);
+      });
 
-      // Clean-up.
-      window['Coveo']['$'] = undefined;
+      it('when triggering a JQuery click event with a param object, it calls the spy passing the param object', () => {
+        $(test.env.root).trigger('click', { bar: 'baz' });
+
+        expect(spy).toHaveBeenCalledTimes(3);
+        expect(spy).toHaveBeenCalledWith({ bar: 'baz' });
+      });
+
+      afterAll(() => {
+        // Clean-up.
+        window['Coveo']['$'] = undefined;
+      });
     });
 
     it('should execute handler only once if the component is enabled', function() {
