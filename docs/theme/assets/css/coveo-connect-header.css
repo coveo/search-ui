@@ -1,0 +1,275 @@
+header {
+  background-color: #1D243F;
+  color: #FFFFFF;
+  display: flex;
+  font-size: 0.8rem;
+  line-height: 1.5;
+}
+
+header * {
+  font-family: Lato;
+  font-weight: 300;
+  text-size-adjust: 100%;
+}
+
+header a:-webkit-any-link {
+  color: unset;
+  text-decoration: none;
+}
+
+header .content {
+  height: auto;
+  margin: 0 auto;
+  padding: 0.5rem 1rem 0 1rem;
+  position: relative;
+  width: 1274px;
+
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+/******************** LOGO ********************/
+
+header .content .logo {
+  align-content: inherit;
+  align-items: inherit;
+  display: flex;
+  position: relative;
+}
+
+header .content .logo-link {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  z-index: 2;
+  min-width: 100%;
+}
+
+header .content .logo-img-wrap {
+  line-height: 1;
+  padding-right: 0.75rem;
+}
+
+header .content .logo .logo-imgbg {
+  width: 66px;
+  height: 32px;
+  background: url(https://s3.amazonaws.com/coveo-static-assets/coveo-connect/coveo-logo.png) no-repeat;
+  background-size: contain;
+  line-height: 1;
+}
+
+header .content .logo .logo-text span {
+  font-size: 1.1rem;
+  font-weight: 200;
+  line-height: 1.5;
+  padding-right: 0.75rem;
+}
+
+header .content .logo .logo-text-bar {
+  padding-right: 0.5rem;
+}
+
+/******************** SEARCH BOX ********************/
+
+header .content .search {
+  margin: 0 2rem 0 2rem;
+  padding-right: 0.5rem;
+  display: block;
+  flex: 1 1 auto;
+  height: 33px;
+}
+
+#coveoConnectHeaderStandaloneSearchbox {
+  display: flex;
+  height: 33px;
+  color: #373737;
+}
+
+#coveoConnectHeaderStandaloneSearchbox {
+  height: 33px;
+}
+
+#coveoConnectHeaderStandaloneSearchbox .CoveoSearchButton {
+  height: 33px;
+  width: 45px;
+  border: 1px solid transparent;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  background: #F58020;
+  float: right;
+  position: relative;
+  outline: none;
+}
+
+#coveoConnectHeaderStandaloneSearchbox .CoveoSearchButton:hover {
+  background-color: #e56613;
+}
+
+#coveoConnectHeaderStandaloneSearchbox .CoveoOmnibox.magic-box {
+  border: none;
+}
+
+#coveoConnectHeaderStandaloneSearchbox .magic-box .magic-box-input {
+  height: 33px;
+  border-radius: 5px 0 0 5px;
+}
+
+#coveoConnectHeaderStandaloneSearchbox .magic-box .magic-box-input input {
+  padding: 0;
+  height: 33px;
+}
+
+#coveoConnectHeaderStandaloneSearchbox .magic-box .magic-box-clear {
+  line-height: unset;
+}
+#coveoConnectHeaderStandaloneSearchbox .magic-box.magic-box-notEmpty .magic-box-clear {
+  width: 33px;
+}
+
+#coveoConnectHeaderStandaloneSearchbox .magic-box-suggestions.magic-box-hasSuggestion {
+  border-radius: 5px;
+}
+
+#coveoConnectHeaderStandaloneSearchbox .coveo-search-button-svg path {
+  fill: #fff;
+}
+
+/******************** SUBNAV ********************/
+
+@media (max-width:1024px) {
+  header .content .subnav {
+      display: none;
+  }
+}
+
+header .content .subnav ul {
+  margin: 0px;
+  padding: 0px;
+  list-style: none;
+  display: inline-flex;
+}
+
+header .content .subnav li {
+  display: inline;
+  padding-right: 1.5rem;
+  text-align: left;
+  white-space: nowrap;
+}
+
+header .content .subnav li:hover {
+  color: #828593;
+  transition: color 0.33s;
+}
+
+/******************** NAVBAR ********************/
+
+@media (max-width: 575px) {
+  header .content .search {
+    max-width: unset;
+    margin: 0;
+  }
+}
+
+header .content .navBar {
+  flex: 0 0 auto;
+  flex-direction: row-reverse;
+  width: 100%;
+  padding: 0.8rem 0 0.8rem;
+  font-size: 0.88rem;
+}
+
+header .content .navBar .dropdownButton {
+  font-size: 0.88rem;
+}
+
+header .content .navBar .dropdownButton .fa-chevron-down {
+  margin-left: 0.3rem;
+  font-size: 0.3rem;
+  vertical-align: middle;
+}
+
+header .content .navBar .dropdown li.active {
+  background-color: rgba(0, 0, 0, 0.07);
+}
+
+header .content .navBar .dropdown {
+  margin-top: 5px;
+}
+
+header .content .navBar a {
+  text-decoration: none;
+}
+
+header .content ul {
+  list-style: none;
+  margin: 0;
+  padding-left: 0;
+}
+
+header .content .navBar li {
+  float: left;
+  padding-right: 1rem;
+  position: relative;
+  text-decoration: none;
+}
+
+header .content .navBar > ul > li > button {
+  text-transform: uppercase;
+  color: #fff;
+  border: none;
+  background: none;
+  font-family: "Lato", sans-serif;
+  padding: 5px 0;
+}
+
+header .content .navBar button:focus {
+  outline: none;
+}
+
+header .content .navBar button:hover {
+  cursor: pointer;
+}
+
+header .content .navBar ul li ul {
+  background-color: #fff;
+  visibility: hidden;
+  opacity: 0;
+  min-width: 14rem;
+  border: 1px solid #E4EAED;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.07);
+  position: absolute;
+  transition: all 0.5s ease;
+  left: 0;
+  display: none;
+  padding: 0;
+}
+
+header .content .navBar ul button.selected > ul,
+header .content .navBar ul li ul:active {
+  visibility: visible;
+  opacity: 1;
+  display: block;
+  z-index: 2;
+  width: auto;
+  text-transform: none;
+
+}
+
+header .content .navBar ul li ul li {
+  clear: both;
+  color: #333333;
+  font-size: 0.8rem;
+  font-family: "Lato", sans-serif;
+  line-height: 1.5;
+  text-align: left;
+  overflow: hidden;
+  padding: 6px 10px;
+  width: 100%;
+}
+
+header .content .navBar ul li ul li a:hover {
+  color: #0D80EF;
+}

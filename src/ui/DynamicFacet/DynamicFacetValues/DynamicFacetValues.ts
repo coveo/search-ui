@@ -3,37 +3,41 @@ import { $$ } from '../../../utils/Dom';
 import { findWhere, find } from 'underscore';
 import { DynamicFacetValue } from './DynamicFacetValue';
 import { DynamicFacet } from '../DynamicFacet';
-import { IFacetResponse } from '../../../rest/Facet/FacetResponse';
+import { IFacetResponse, IFacetResponseValue } from '../../../rest/Facet/FacetResponse';
 import { FacetValueState } from '../../../rest/Facet/FacetValueState';
 import { l } from '../../../strings/Strings';
+import { DynamicFacetValueCreator } from './DynamicFacetValueCreator';
+import { IRangeValue } from '../../../rest/RangeValue';
+
+export interface ValueCreator {
+  createFromResponse(facetValue: IFacetResponseValue, index: number): DynamicFacetValue;
+  createFromValue(value: string): DynamicFacetValue;
+  createFromRange?(range: IRangeValue, index: number): DynamicFacetValue;
+}
+
+export interface IDynamicFacetValueCreatorKlass {
+  new (facet: DynamicFacet): ValueCreator;
+}
 
 export class DynamicFacetValues {
   private facetValues: DynamicFacetValue[];
   private list = $$('ul', { className: 'coveo-dynamic-facet-values' }).el;
-  private moreValuesAvailable: boolean;
+  private valueCreator: ValueCreator;
 
-  constructor(private facet: DynamicFacet) {
+  constructor(private facet: DynamicFacet, creatorKlass: IDynamicFacetValueCreatorKlass = DynamicFacetValueCreator) {
     this.resetValues();
+    this.valueCreator = new creatorKlass(this.facet);
   }
 
   public createFromResponse(response: IFacetResponse) {
-    this.moreValuesAvailable = response.moreValuesAvailable;
-    this.facetValues = response.values.map(
-      (facetValue, index) =>
-        new DynamicFacetValue(
-          {
-            value: facetValue.value,
-            numberOfResults: facetValue.numberOfResults,
-            state: facetValue.state,
-            position: index + 1
-          },
-          this.facet
-        )
-    );
+    this.facetValues = response.values.map((facetValue, index) => this.valueCreator.createFromResponse(facetValue, index));
+  }
+
+  public createFromRanges(ranges: IRangeValue[]) {
+    this.facetValues = ranges.map((range, index) => this.valueCreator.createFromRange(range, index)).filter(facetValue => !!facetValue);
   }
 
   public resetValues() {
-    this.moreValuesAvailable = false;
     this.facetValues = [];
   }
 
@@ -53,6 +57,10 @@ export class DynamicFacetValues {
     return this.facetValues.filter(value => !value.isIdle);
   }
 
+  private get displayedValues() {
+    return this.facetValues.filter(value => !value.isIdle || value.numberOfResults > 0);
+  }
+
   public get hasSelectedValues() {
     return !!findWhere(this.facetValues, { state: FacetValueState.selected });
   }
@@ -69,8 +77,12 @@ export class DynamicFacetValues {
     this.facetValues.forEach(value => value.deselect());
   }
 
-  public get isEmpty() {
-    return !this.facetValues.length;
+  public get hasValues() {
+    return !!this.allFacetValues.length;
+  }
+
+  public get hasDisplayedValues() {
+    return !!this.displayedValues.length;
   }
 
   public hasSelectedValue(arg: string | DynamicFacetValue) {
@@ -87,15 +99,24 @@ export class DynamicFacetValues {
       return facetValue;
     }
 
-    const position = this.facetValues.length + 1;
-    const state = FacetValueState.idle;
-    const newFacetValue = new DynamicFacetValue({ value, state, numberOfResults: 0, position }, this.facet);
+    const newFacetValue = this.valueCreator.createFromValue(value);
+    if (!newFacetValue) {
+      return null;
+    }
+
     this.facetValues.push(newFacetValue);
     return newFacetValue;
   }
 
   private buildShowLess() {
-    const showLessBtn = $$('button', { className: 'coveo-dynamic-facet-show-less' }, l('ShowLess'));
+    const showLessBtn = $$(
+      'button',
+      {
+        className: 'coveo-dynamic-facet-show-less',
+        ariaLabel: l('ShowLessFacetResults', this.facet.options.title)
+      },
+      l('ShowLess')
+    );
     const showLess = $$('li', null, showLessBtn);
     showLessBtn.on('click', () => {
       this.facet.enableFreezeFacetOrderFlag();
@@ -105,7 +126,14 @@ export class DynamicFacetValues {
   }
 
   private buildShowMore() {
-    const showMoreBtn = $$('button', { className: 'coveo-dynamic-facet-show-more' }, l('ShowMore'));
+    const showMoreBtn = $$(
+      'button',
+      {
+        className: 'coveo-dynamic-facet-show-more',
+        ariaLabel: l('ShowMoreFacetResults', this.facet.options.title)
+      },
+      l('ShowMore')
+    );
     const showMore = $$('li', null, showMoreBtn);
     showMoreBtn.on('click', () => {
       this.facet.enableFreezeFacetOrderFlag();
@@ -120,21 +148,29 @@ export class DynamicFacetValues {
     return hasMoreValuesThenDefault && this.hasIdleValues;
   }
 
-  public render() {
-    const fragment = new DocumentFragment();
-    $$(this.list).empty();
-
-    this.facetValues.forEach(facetValue => {
-      fragment.appendChild(facetValue.render());
-    });
+  private appendShowMoreLess(fragment: DocumentFragment) {
+    if (!this.facet.options.enableMoreLess) {
+      return;
+    }
 
     if (this.shouldEnableShowLess) {
       fragment.appendChild(this.buildShowLess());
     }
 
-    if (this.moreValuesAvailable) {
+    if (this.facet.moreValuesAvailable) {
       fragment.appendChild(this.buildShowMore());
     }
+  }
+
+  public render() {
+    const fragment = document.createDocumentFragment();
+    $$(this.list).empty();
+
+    this.displayedValues.forEach(facetValue => {
+      fragment.appendChild(facetValue.renderedElement);
+    });
+
+    this.appendShowMoreLess(fragment);
 
     this.list.appendChild(fragment);
     return this.list;

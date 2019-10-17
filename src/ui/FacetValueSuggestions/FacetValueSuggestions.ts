@@ -1,34 +1,40 @@
-import { Omnibox, IOmniboxSuggestion } from '../Omnibox/Omnibox';
-import { Component } from '../Base/Component';
-import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
-import { IComponentBindings } from '../Base/ComponentBindings';
-import { OmniboxEvents, IPopulateOmniboxSuggestionsEventArgs } from '../../events/OmniboxEvents';
-import { Initialization } from '../Base/Initialization';
-import { analyticsActionCauseList, IAnalyticsNoMeta } from '../Analytics/AnalyticsActionListMeta';
-import { $$ } from '../../utils/Dom';
-import { exportGlobally } from '../../GlobalExports';
 import 'styling/_FieldSuggestions';
 import * as _ from 'underscore';
-import { QueryStateModel } from '../../ModelsModules';
-import { DomUtils } from '../../UtilsModules';
-import { IFacetValueSuggestionRow, FacetValueSuggestionsProvider, IFacetValueSuggestionsProvider } from './FacetValueSuggestionsProvider';
+import { IPopulateOmniboxSuggestionsEventArgs, OmniboxEvents } from '../../events/OmniboxEvents';
+import { exportGlobally } from '../../GlobalExports';
 import { l } from '../../MiscModules';
+import { QueryStateModel } from '../../ModelsModules';
+import { $$ } from '../../utils/Dom';
+import { DomUtils } from '../../UtilsModules';
+import { analyticsActionCauseList, IAnalyticsNoMeta } from '../Analytics/AnalyticsActionListMeta';
+import { Component } from '../Base/Component';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
+import { Initialization } from '../Base/Initialization';
+import { IOmniboxSuggestion, Omnibox } from '../Omnibox/Omnibox';
+import { FacetValueSuggestionsProvider, IFacetValueSuggestionRow, IFacetValueSuggestionsProvider } from './FacetValueSuggestionsProvider';
 
 export interface IFacetValueSuggestionsOptions {
   numberOfSuggestions: number;
   field?: IFieldOption;
+  isCategoryField?: boolean;
+  categoryFieldDelimitingCharacter?: string;
   useQuerySuggestions?: boolean;
   useValueFromSearchbox?: boolean;
   displayEstimateNumberOfResults?: boolean;
   templateHelper?: (row: IFacetValueSuggestionRow, omnibox: Omnibox) => string;
 }
 
+export interface IQuerySuggestionKeyword {
+  text: string;
+  html: string;
+}
+
 /**
- * The `FieldValueSuggestions` component provides query suggestions based on a particular field values.
+ * This component provides [`Omnibox`]{@link Omnibox} query suggestions scoped to distinct categories based on the values of a specific [`field`]{@link FacetValueSuggestions.options.field}.
  *
- * For example, if you use a `@category` field, this component will provide suggestions for categories that returns results for the given keywords.
+ * See [Providing Facet Value Suggestions](https://docs.coveo.com/504/)
  *
- * The query suggestions provided by this component appear in the [`Omnibox`]{@link Omnibox} component.
  */
 export class FacetValueSuggestions extends Component {
   static ID = 'FacetValueSuggestions';
@@ -44,33 +50,35 @@ export class FacetValueSuggestions extends Component {
    */
   static options: IFacetValueSuggestionsOptions = {
     /**
-     * Specifies the facet field from which to provide suggestions.
+     * The field on whose values the scoped query suggestions should be based.
      *
-     * Specifying a value for this option is required for the `FieldValueSuggestions` component to work.
+     * Specifying a value for this option is required for the component to work.
+     *
+     * @examples @productcategory
      */
     field: ComponentOptions.buildFieldOption({ required: true }),
 
     /**
-     * Specifies the number of suggestions to render in the [`Omnibox`]{@link Omnibox}.
+     * The maximum number of suggestions to render in the [`Omnibox`]{@link Omnibox}.
      *
-     * Default value is `5`. Minimum value is `1`.
+     * **Default:** `5`
+     * **Minimum:** `1`
      */
     numberOfSuggestions: ComponentOptions.buildNumberOption({ defaultValue: 5, min: 1 }),
 
     /**
-     * Specifies whether to use query suggestions as keywords to get facet values suggestions.
+     * Whether to get scoped query suggestions from the current Coveo ML query suggestions.
      *
-     * Default value is `true`.
+     * **Note:** If this options is set to `true` the [`enableQuerySuggestAddon`]{@link Omnibox.options.enableQuerySuggestAddon} option of the [`Omnibox`]{@link Omnibox.option.enableQuerySuggestAddon} component must be set to `true` as well.
      *
-     * **Note:**
-     * This option requires that the `enableQuerySuggestAddon` is set to `true` in the [`Omnibox`]{@link Omnibox} component.
+     * **Default:** `true`
      */
     useQuerySuggestions: ComponentOptions.buildBooleanOption({ defaultValue: true }),
 
     /**
-     * Specifies whether to use the current value from the search box to get facet values suggestions.
+     * Whether to get scoped query suggestions from the current user query entered in the search box.
      *
-     * Default value is `true` if [`useQuerySuggestions`]{@link useQuerySuggestions} is disabled, `false` otherwise.
+     * **Default:** `true` if [`useQuerySuggestions`]{@link FacetValueSuggestions.options.useQuerySuggestions} is `false`; `false` otherwise
      */
     useValueFromSearchbox: ComponentOptions.buildBooleanOption({
       postProcessing: (value, options: IFacetValueSuggestionsOptions) => {
@@ -79,59 +87,60 @@ export class FacetValueSuggestions extends Component {
     }),
 
     /**
-     * Specifies whether to display the number of results in each of the suggestions.
+     * Whether to display an estimate of the number of results for each scoped query suggestions.
      *
-     * Default value is `false`.
+     * **Default:** `false`
      *
-     * **Note:**
-     * The number of results is an estimate.
-     *
-     * On a Standalone Search Interface, if you are redirecting on a Search Interface that has different filters,
-     *  the number of results on the Standalone Search Interface will be inaccurate.
-     *
-     * Setting this option has no effect when the `templateHelper` options is set.
+     * **Notes:**
+     * - Setting this option to `true` has no effect when the [`templateHelper`]{@link FacetValueSuggestions.options.templateHelper} options is set.
+     * - When displaying scoped query suggestions for a standalone search box whose queries are redirected to a search interface enforcing other filters, the number of results will be inaccurate.
      */
     displayEstimateNumberOfResults: ComponentOptions.buildBooleanOption({ defaultValue: false }),
 
     /**
-     * Specifies the helper function to execute when generating suggestions shown to the end user in the
-     * [`Omnibox`]{@link Omnibox}.
+     * The template helper function to execute when rendering each scoped query suggestion.
      *
-     * If not specified, a default template will be used.
+     * If specified, the function must have the following signature: (row: [IFacetValueSuggestionRow]{@link IFacetValueSuggestionRow}, omnibox: Omnibox) => string
      *
-     * **Note:**
-     * > You cannot set this option directly in the component markup as an HTML attribute. You must either set it in the
-     * > [`init`]{@link init} call of your search interface (see
-     * > [Components - Passing Component Options in the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsintheinitCall)),
-     * > or before the `init` call, using the `options` top-level function (see
-     * > [Components - Passing Component Options Before the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsBeforetheinitCall)).
+     * If not specified, a default function will be used.
+     *
+     * **Note:** You cannot set this option directly in the component markup as an HTML attribute. You must either set it:
+     * - In the [`init`]{@link init} call of your search interface (see [Passing Component Options in the init Call](https://docs.coveo.com/en/346/#passing-component-options-in-the-init-call)
+     * - Before the `init` call, using the [`options`](@link options) top-level function (see [Passing Component Options Before the init Call](https://docs.coveo.com/en/346/#passing-component-options-before-the-init-call)).
      *
      * **Example:**
      *
      * ```javascript
-     *
-     * var suggestionTemplate = function(row, omnibox) {
-     *   return "Searching for " + row.keyword + " in category " + row.value;
-     * };
-     *
-     * // You can set the option in the 'init' call:
-     * Coveo.init(document.querySelector("#search"), {
-     *    FacetValueSuggestions : {
-     *      templateHelper : suggestionTemplate
-     *    }
-     * });
-     *
-     * // Or before the 'init' call, using the 'options' top-level function:
-     * // Coveo.options(document.querySelector("#search"), {
-     * //   FacetValueSuggestions : {
-     * //     templateHelper : suggestionTemplate
-     * //   }
-     * // });
+     * Coveo.init(document.getElementById('search'), {
+     *   FacetValueSuggestions: {
+     *     templateHelper: (row, omnibox) => { return `Searching for <strong>${row.keyword}</strong> in category <em>${row.value}</em>`; }
+     *   }
+     * })
      * ```
      */
     templateHelper: ComponentOptions.buildCustomOption<(row: IFacetValueSuggestionRow, omnibox: Omnibox) => string>(() => {
       return null;
-    })
+    }),
+
+    /**
+     * Whether the [`field`]{@link FacetValueSuggestions.options.field} option references a multi value field.
+     *
+     * Setting this option to `true` if appropriate will allow the corresponding [`CategoryFacet`]{@link CategoryFacet} component (if present) to properly handle the filter format.
+     *
+     * See also the [`categoryFieldDelimitingCharacter`]{@link FacetValueSuggestions.options.categoryFieldDelimitingCharacter} option.
+     *
+     * **Default:** `false`.
+     */
+    isCategoryField: ComponentOptions.buildBooleanOption({ defaultValue: false }),
+
+    /**
+     * The delimiting character used for the multi value field referenced by the [`field`]{@link field} option, assuming the [`isCategoryField`]{@link FacetValueSuggestions.options.isCategoryField} option is set to `true`.
+     *
+     * **Default:** `|`.
+     *
+     * @examples ;, #
+     */
+    categoryFieldDelimitingCharacter: ComponentOptions.buildStringOption({ defaultValue: '|', depend: 'isCategoryField' })
   };
 
   public facetValueSuggestionsProvider: IFacetValueSuggestionsProvider;
@@ -139,10 +148,23 @@ export class FacetValueSuggestions extends Component {
   private queryStateFieldFacetId;
 
   static defaultTemplate(this: FacetValueSuggestions, row: IFacetValueSuggestionRow, omnibox: Omnibox): string {
-    const keyword = DomUtils.highlightElement(row.keyword, omnibox.getText(), 'coveo-omnibox-hightlight2');
-    const facetValue = DomUtils.highlightElement(row.value, row.value, 'coveo-omnibox-hightlight');
-    const details = this.options.displayEstimateNumberOfResults ? ` (${l('ResultCount', row.numberOfResults.toString())})` : '';
+    const keyword = row.keyword.html;
+    const facetValue = DomUtils.highlight(row.value, 'coveo-omnibox-hightlight');
+    const details = this.options.displayEstimateNumberOfResults
+      ? DomUtils.highlight(
+          ` (${l('ResultCount', row.numberOfResults.toString(), row.numberOfResults)})`,
+          'coveo-omnibox-suggestion-results-count',
+          true
+        )
+      : '';
     return `${l('KeywordInCategory', keyword, facetValue)}${details}`;
+  }
+
+  private static getQuerySuggestionKeywordFromText(text: string): IQuerySuggestionKeyword {
+    return {
+      text,
+      html: DomUtils.highlight(text, 'coveo-omnibox-hightlight')
+    };
   }
 
   /**
@@ -183,31 +205,34 @@ export class FacetValueSuggestions extends Component {
     return suggestions || [];
   }
 
-  private async getQuerySuggestionsKeywords(omnibox: Omnibox): Promise<string[]> {
+  private async getQuerySuggestionsKeywords(omnibox: Omnibox): Promise<IQuerySuggestionKeyword[]> {
     if (this.options.useQuerySuggestions && omnibox.suggestionAddon) {
-      const suggestions = (await omnibox.suggestionAddon.getSuggestion()) || [];
-      return suggestions.map(s => s.text);
+      const suggestions = await omnibox.suggestionAddon.getSuggestion();
+      return suggestions.map(({ text, html }) => <IQuerySuggestionKeyword>{ text: text || '', html });
     } else {
       return [];
     }
   }
 
   private async getFacetValueSuggestions(text: string, omnibox: Omnibox): Promise<IOmniboxSuggestion[]> {
-    const wordsToQuery = this.options.useValueFromSearchbox ? [text] : [];
+    const wordsToQuery = this.options.useValueFromSearchbox ? [FacetValueSuggestions.getQuerySuggestionKeywordFromText(text)] : [];
 
-    const suggestionsKeywords: string[] = await this.getQuerySuggestionsKeywords(omnibox);
-    const allWordsToQuery = _.unique(wordsToQuery.concat(suggestionsKeywords).filter(value => value != ''));
+    const suggestionsKeywords: IQuerySuggestionKeyword[] = await this.getQuerySuggestionsKeywords(omnibox);
+    const allKeywordsToQuery = _.unique(
+      wordsToQuery.concat(suggestionsKeywords).filter(keyword => keyword.text != ''),
+      keyword => keyword.text
+    );
 
-    if (allWordsToQuery.length === 0) {
+    if (allKeywordsToQuery.length === 0) {
       return [];
     }
 
-    return this.getSuggestionsForWords(allWordsToQuery, omnibox);
+    return this.getSuggestionsForWords(allKeywordsToQuery, omnibox);
   }
 
-  private async getSuggestionsForWords(wordsToQuery: string[], omnibox: Omnibox): Promise<IOmniboxSuggestion[]> {
+  private async getSuggestionsForWords(keywordToQuery: IQuerySuggestionKeyword[], omnibox: Omnibox): Promise<IOmniboxSuggestion[]> {
     try {
-      const suggestions = await this.facetValueSuggestionsProvider.getSuggestions(wordsToQuery);
+      const suggestions = await this.facetValueSuggestionsProvider.getSuggestions(keywordToQuery);
 
       this.logger.debug('FacetValue Suggestions Results', suggestions);
 
@@ -258,11 +283,14 @@ export class FacetValueSuggestions extends Component {
   }
 
   private onRowSelection(row: IFacetValueSuggestionRow, omnibox: Omnibox): void {
-    omnibox.setText(row.keyword);
+    omnibox.setText(row.keyword.text);
     // Copy the state here, else it will directly modify queryStateModel.defaultAttributes.fv.
     const fvState: { [key: string]: string[] } = { ...this.queryStateModel.get(QueryStateModel.attributesEnum.fv) };
     const existingValues: string[] = fvState[this.options.field.toString()] || [];
-    fvState[this.options.field.toString()] = existingValues.concat([row.value]);
+
+    const valuesToSetInState = this.options.isCategoryField ? row.value.split(this.options.categoryFieldDelimitingCharacter) : [row.value];
+    fvState[this.options.field.toString()] = existingValues.concat(valuesToSetInState);
+
     this.queryStateModel.set(QueryStateModel.attributesEnum.fv, fvState);
     omnibox.magicBox.blur();
     this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.omniboxField, {});

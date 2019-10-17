@@ -20,10 +20,14 @@ export function FacetTest() {
     beforeEach(() => {
       foobarFacetValue = new FacetValue();
       foobarFacetValue.value = 'foobar';
+      initializeComponent();
+    });
+
+    function initializeComponent() {
       test = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, <IFacetOptions>{
         field: '@field'
       });
-    });
+    }
 
     afterEach(() => {
       test = null;
@@ -883,145 +887,6 @@ export function FacetTest() {
         );
       });
 
-      describe('when a facet has the dependsOn option set to the field of another facet', () => {
-        let masterFacet: { env: Mock.IMockEnvironment; cmp: Facet };
-        const masterFacetField = '@masterFacet';
-        const dependentFacetField = '@field';
-
-        function getMasterAndDependentFacetResults() {
-          const results = FakeResults.createFakeResults();
-          results.groupByResults = [
-            FakeResults.createFakeGroupByResult(dependentFacetField, 'foo', 15),
-            FakeResults.createFakeGroupByResult(masterFacetField, 'foo', 15)
-          ];
-
-          return results;
-        }
-
-        function getMasterDependentFacetStateAttributes() {
-          return {
-            ...getMasterFacetStateAttributes(),
-            ...getDependentFacetStateAttributes()
-          };
-        }
-
-        function getMasterFacetStateAttributes() {
-          return {
-            [`f:${masterFacetField}`]: masterFacet.cmp.getSelectedValues(),
-            [`f:${masterFacetField}:not`]: masterFacet.cmp.getExcludedValues()
-          };
-        }
-
-        function getDependentFacetStateAttributes() {
-          return {
-            [`f:${dependentFacetField}`]: test.cmp.getSelectedValues(),
-            [`f:${dependentFacetField}:not`]: test.cmp.getExcludedValues()
-          };
-        }
-
-        beforeEach(() => {
-          masterFacet = Mock.advancedComponentSetup<Facet>(
-            Facet,
-            new Mock.AdvancedComponentSetupOptions(
-              undefined,
-              {
-                field: masterFacetField
-              },
-              (builder: Mock.MockEnvironmentBuilder) => {
-                return builder.withRoot(test.env.root);
-              }
-            )
-          );
-
-          test = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, {
-            field: dependentFacetField,
-            dependsOn: masterFacetField
-          });
-
-          test.cmp.queryStateModel.get = key => {
-            const attributes = getMasterDependentFacetStateAttributes();
-            return attributes[key];
-          };
-
-          Simulate.query(test.env, { results: getMasterAndDependentFacetResults() });
-        });
-
-        it('adds the coveo-facet-dependent class to the dependent facet', () => {
-          expect($$(test.cmp.element).hasClass('coveo-facet-dependent')).toBe(true);
-        });
-
-        it('does not add the coveo-facet-dependent class to the master facet', () => {
-          expect($$(masterFacet.cmp.element).hasClass('coveo-facet-dependent')).toBe(false);
-        });
-
-        it(`when the master facet has one selected value,
-        it removes the coveo-facet-dependent class from the dependent facet`, () => {
-          masterFacet.cmp.selectValue('master value');
-          Simulate.query(test.env);
-
-          expect($$(test.cmp.element).hasClass('coveo-facet-dependent')).toBe(false);
-        });
-
-        it(`when the master facet has one excluded value,
-        it does not remove the coveo-facet-dependent class from the dependent facet`, () => {
-          masterFacet.cmp.excludeValue('excluded master value');
-          Simulate.query(test.env);
-
-          expect($$(test.cmp.element).hasClass('coveo-facet-dependent')).toBe(true);
-        });
-
-        describe(`given the master facet has two selected values and the dependent facet has one selected and one excluded value`, () => {
-          const selectedMasterValue1 = 'selected master value 1';
-          const selectedMasterValue2 = 'selected master value 2';
-
-          function triggerStateChangeOnDependentFacet() {
-            rebindDependentFacetStateChangeListeners();
-            $$(test.env.root).trigger('change', { attributes: {} });
-          }
-
-          function rebindDependentFacetStateChangeListeners() {
-            test.cmp.queryStateModel.getEventName = name => name;
-            test.cmp['initQueryStateEvents']();
-          }
-
-          beforeEach(() => {
-            masterFacet.cmp.selectValue(selectedMasterValue1);
-            masterFacet.cmp.selectValue(selectedMasterValue2);
-
-            test.cmp.selectValue('selected dependent value');
-            test.cmp.excludeValue('excluded dependent value');
-          });
-
-          it(`when resetting the master facet,
-          it resets the dependent facet`, () => {
-            masterFacet.cmp.reset();
-            triggerStateChangeOnDependentFacet();
-
-            expect(test.cmp.getSelectedValues().length).toBe(0);
-            expect(test.cmp.getExcludedValues().length).toBe(0);
-          });
-
-          it(`when deselecting one of the master facet selected options,
-          it does not reset the dependent facet`, () => {
-            masterFacet.cmp.deselectValue(selectedMasterValue1);
-            triggerStateChangeOnDependentFacet();
-
-            expect(test.cmp.getSelectedValues().length).toBe(1);
-            expect(test.cmp.getExcludedValues().length).toBe(1);
-          });
-
-          it(`when deselecting both master facet selected options,
-          it resets the dependent facet`, () => {
-            masterFacet.cmp.deselectValue(selectedMasterValue1);
-            masterFacet.cmp.deselectValue(selectedMasterValue2);
-            triggerStateChangeOnDependentFacet();
-
-            expect(test.cmp.getSelectedValues().length).toBe(0);
-            expect(test.cmp.getExcludedValues().length).toBe(0);
-          });
-        });
-      });
-
       it('padding container should default to coveo-facet-column', () => {
         const facetColumn = $$('div', { className: 'coveo-facet-column' });
         const dummyDivParent = $$('div');
@@ -1048,6 +913,23 @@ export function FacetTest() {
           })
         );
         expect(test.cmp.options.paddingContainer).toBe(dummyDivParent.el);
+      });
+    });
+
+    describe('testing the DependsOnManager', () => {
+      beforeEach(() => {
+        spyOn(test.cmp.dependsOnManager, 'updateVisibilityBasedOnDependsOn');
+        spyOn(test.cmp.dependsOnManager, 'listenToParentIfDependentFacet');
+      });
+
+      it('should initialize the dependsOnManager', () => {
+        expect(test.cmp.dependsOnManager).toBeTruthy();
+      });
+
+      it(`when facet appearance is updated (e.g. when createDom is called)
+      should call the "updateVisibilityBasedOnDependsOn" method of the DependsOnManager`, () => {
+        test.cmp.createDom();
+        expect(test.cmp.dependsOnManager.updateVisibilityBasedOnDependsOn).toHaveBeenCalled();
       });
     });
   });

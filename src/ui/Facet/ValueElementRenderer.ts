@@ -59,9 +59,10 @@ export class ValueElementRenderer {
 
   protected buildExcludeIcon(): HTMLElement {
     const excludeIcon = $$('div', {
-      title: l('Exclude', this.facet.getValueCaption(this.facetValue)),
+      title: l('ExcludeValueWithResultCount', this.caption, l('ResultCount', this.count)),
       className: 'coveo-facet-value-exclude',
-      tabindex: 0
+      tabindex: 0,
+      role: 'button'
     }).el;
     this.addFocusAndBlurEventListeners(excludeIcon);
     excludeIcon.innerHTML = SVGIcons.icons.checkboxHookExclusionMore;
@@ -84,18 +85,14 @@ export class ValueElementRenderer {
 
   protected buildValueCheckbox(): HTMLElement {
     const checkbox = $$('input', {
-      type: 'checkbox'
+      type: 'checkbox',
+      'aria-hidden': true,
+      'aria-label': this.ariaLabel
     }).el;
-    if (this.facetValue.selected) {
-      checkbox.setAttribute('checked', 'checked');
-    } else {
-      checkbox.removeAttribute('checked');
-    }
-    if (this.facetValue.excluded) {
-      checkbox.setAttribute('disabled', 'disabled');
-    } else {
-      checkbox.removeAttribute('disabled');
-    }
+
+    this.facetValue.selected ? checkbox.setAttribute('checked', 'checked') : checkbox.removeAttribute('checked');
+    this.facetValue.excluded ? checkbox.setAttribute('disabled', 'disabled') : checkbox.removeAttribute('disabled');
+
     Component.pointElementsToDummyForm(checkbox);
     return checkbox;
   }
@@ -255,14 +252,23 @@ export class ValueElementRenderer {
   private addAccessibilityAttributesToTargetElement() {
     const el = this.accessibleElement;
     el.setAttribute('aria-label', this.ariaLabel);
-    el.setAttribute('role', 'heading');
-    el.setAttribute('aria-level', '3');
+    el.setAttribute('role', 'button');
+  }
+
+  private get actionLabel() {
+    if (this.facetValue.excluded) {
+      return 'UnexcludeValueWithResultCount';
+    }
+
+    if (this.facetValue.selected) {
+      return 'UnselectValueWithResultCount';
+    }
+
+    return 'SelectValueWithResultCount';
   }
 
   private get ariaLabel() {
-    const selectOrUnselect = !this.facetValue.selected ? 'SelectValueWithResultCount' : 'UnselectValueWithResultCount';
     const resultCount = l('ResultCount', this.count);
-
-    return `${l(selectOrUnselect, this.caption, resultCount)}`;
+    return `${l(this.actionLabel, this.caption, resultCount)}`;
   }
 }

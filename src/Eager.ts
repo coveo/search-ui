@@ -26,6 +26,9 @@ Analytics.doExport();
 import { AnalyticsSuggestions } from './ui/AnalyticsSuggestions/AnalyticsSuggestions';
 AnalyticsSuggestions.doExport();
 
+import { ComponentEvents } from './ui/Base/Component';
+ComponentEvents.doExport();
+
 import { AuthenticationProvider } from './ui/AuthenticationProvider/AuthenticationProvider';
 AuthenticationProvider.doExport();
 
@@ -275,6 +278,9 @@ TimespanFacet.doExport();
 import { DynamicFacet } from './ui/DynamicFacet/DynamicFacet';
 DynamicFacet.doExport();
 
+import { DynamicFacetRange } from './ui/DynamicFacet/DynamicFacetRange';
+DynamicFacetRange.doExport();
+
 import { DynamicFacetManager } from './ui/DynamicFacetManager/DynamicFacetManager';
 DynamicFacetManager.doExport();
 
@@ -284,5 +290,14 @@ PromotedResultsBadge.doExport();
 import { CategoryFacet } from './ui/CategoryFacet/CategoryFacet';
 CategoryFacet.doExport();
 
+import { MissingTerms } from './ui/MissingTerm/MissingTerms';
+MissingTerms.doExport();
+
+import { QuerySuggestPreview } from './ui/QuerySuggestPreview/QuerySuggestPreview';
+QuerySuggestPreview.doExport();
+
 import { swapVar } from './SwapVar';
 swapVar(this);
+
+import { ImageFieldValue } from './ui/FieldImage/ImageFieldValue';
+ImageFieldValue.doExport();

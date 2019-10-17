@@ -1,21 +1,22 @@
 import 'styling/_Tab';
 import { each, indexOf, map } from 'underscore';
-import { exportGlobally } from '../../GlobalExports';
 import { InitializationEvents } from '../../events/InitializationEvents';
 import { IBuildingQueryEventArgs, QueryEvents } from '../../events/QueryEvents';
+import { exportGlobally } from '../../GlobalExports';
 import { Assert } from '../../misc/Assert';
 import { IAttributeChangedEventArg, MODEL_EVENTS } from '../../models/Model';
-import { QUERY_STATE_ATTRIBUTES, QueryStateModel } from '../../models/QueryStateModel';
+import { QueryStateModel, QUERY_STATE_ATTRIBUTES } from '../../models/QueryStateModel';
 import { SearchEndpoint } from '../../rest/SearchEndpoint';
 import { AccessibleButton } from '../../utils/AccessibleButton';
 import { $$ } from '../../utils/Dom';
 import { Utils } from '../../utils/Utils';
-import { IAnalyticsInterfaceChange, analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
+import { analyticsActionCauseList, IAnalyticsInterfaceChange } from '../Analytics/AnalyticsActionListMeta';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { ComponentOptions, IQueryExpression } from '../Base/ComponentOptions';
 import { Initialization } from '../Base/Initialization';
 import { ResponsiveTabs } from '../ResponsiveComponents/ResponsiveTabs';
+import { ValidLayout } from '../ResultLayoutSelector/ValidLayout';
 
 export interface ITabOptions {
   expression?: IQueryExpression;
@@ -137,7 +138,7 @@ export class Tab extends Component {
      *
      * Default value is `undefined` and the component selects the first available layout.
      */
-    layout: ComponentOptions.buildStringOption(),
+    layout: ComponentOptions.buildStringOption<ValidLayout>(),
 
     /**
      * Specifies whether to include the {@link Tab.options.expression} in the constant part of the query.
@@ -173,7 +174,7 @@ export class Tab extends Component {
      * Specifies the name of the query pipeline to use for the queries when the Tab is selected.
      *
      * You can specify a value for this option if your index is in a Coveo Cloud organization in which pipelines have
-     * been created (see [Managing Query Pipelines](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=128)).
+     * been created (see [Managing Query Pipelines](https://www.coveo.com/go?dest=cloudhelp&lcid=9&context=128)).
      *
      * Default value is `undefined`, which means that pipeline selection conditions defined in the Coveo Cloud
      * organization apply.

@@ -28,15 +28,12 @@
   }
 }
 
-.coveo-facet-empty {
+.coveo-facet-empty,
+.coveo-hidden {
   display: none;
   &.coveo-with-placeholder {
     display: block;
   }
-}
-
-.coveo-facet-dependent {
-  display: none;
 }
 
 .coveo-facet-collapsed {

@@ -1,5 +1,5 @@
 import 'styling/DynamicFacet/_DynamicFacet';
-import { difference, findWhere } from 'underscore';
+import { difference, findIndex } from 'underscore';
 import { $$ } from '../../utils/Dom';
 import { exportGlobally } from '../../GlobalExports';
 import { Component } from '../Base/Component';
@@ -24,16 +24,16 @@ import { isFacetSortCriteria } from '../../rest/Facet/FacetSortCriteria';
 import { l } from '../../strings/Strings';
 import { DeviceUtils } from '../../utils/DeviceUtils';
 import { BreadcrumbEvents, IPopulateBreadcrumbEventArgs } from '../../events/BreadcrumbEvents';
-import {
-  IAnalyticsActionCause,
-  IAnalyticsDynamicFacetMeta,
-  analyticsActionCauseList,
-  IAnalyticsFacetMeta
-} from '../Analytics/AnalyticsActionListMeta';
+import { IAnalyticsActionCause, IAnalyticsDynamicFacetMeta, analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
 import { IQueryOptions } from '../../controllers/QueryController';
 import { DynamicFacetManager } from '../DynamicFacetManager/DynamicFacetManager';
-import { FacetPadding } from '../FacetPadding/FacetPadding';
 import { QueryBuilder } from '../Base/QueryBuilder';
+import { IAutoLayoutAdjustableInsideFacetColumn } from '../SearchInterface/FacetColumnAutoLayoutAdjustment';
+import { DynamicFacetSearch } from '../DynamicFacetSearch/DynamicFacetSearch';
+import { ResultListUtils } from '../../utils/ResultListUtils';
+import { IQueryResults } from '../../rest/QueryResults';
+import { FacetType } from '../../rest/Facet/FacetRequest';
+import { DependsOnManager, IDependentFacet } from '../../utils/DependsOnManager';
 
 export interface IDynamicFacetOptions extends IResponsiveComponentOptions {
   id?: string;
@@ -42,11 +42,15 @@ export interface IDynamicFacetOptions extends IResponsiveComponentOptions {
   sortCriteria?: string;
   numberOfValues?: number;
   enableCollapse?: boolean;
+  enableScrollToTop?: boolean;
+  enableMoreLess?: boolean;
+  enableFacetSearch?: boolean;
+  useLeadingWildcardInFacetSearch?: boolean;
   collapsedByDefault?: boolean;
   includeInBreadcrumb?: boolean;
   numberOfValuesInBreadcrumb?: number;
   valueCaption?: any;
-  preservePosition?: boolean;
+  dependsOn?: string;
 }
 
 /**
@@ -61,8 +65,10 @@ export interface IDynamicFacetOptions extends IResponsiveComponentOptions {
  *
  * This facet is more easy to use than the original [`Facet`]{@link Facet} component. It implements additional Coveo Machine Learning (Coveo ML) features
  * such as dynamic navigation experience (DNE).
+ *
+ * @notSupportedIn salesforcefree
  */
-export class DynamicFacet extends Component {
+export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsideFacetColumn {
   static ID = 'DynamicFacet';
   static doExport = () => exportGlobally({ DynamicFacet });
 
@@ -92,12 +98,12 @@ export class DynamicFacet extends Component {
     id: ComponentOptions.buildStringOption({
       postProcessing: (value = '', options: IDynamicFacetOptions) => {
         const maxCharLength = 60;
-        const sanitizedValue = value.replace(/[^A-Za-z0-9-_]+/g, '');
+        const sanitizedValue = value.replace(/[^A-Za-z0-9-_@]+/g, '');
         if (Utils.isNonEmptyString(sanitizedValue)) {
           return sanitizedValue.slice(0, maxCharLength - 1);
         }
 
-        return options.field.slice(1, maxCharLength);
+        return options.field.slice(0, maxCharLength - 1);
       }
     }),
 
@@ -158,9 +164,53 @@ export class DynamicFacet extends Component {
     /**
      * Whether to allow the end-user to expand and collapse this facet.
      *
-     * **Default:** `false`
+     * **Default:** `true`
      */
-    enableCollapse: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'Filtering' }),
+    enableCollapse: ComponentOptions.buildBooleanOption({ defaultValue: true, section: 'Filtering' }),
+
+    /**
+     * Whether to scroll back to the top of the page whenever the end-user interacts with a facet.
+     *
+     * **Default:** `true`
+     */
+    enableScrollToTop: ComponentOptions.buildBooleanOption({ defaultValue: true, section: 'CommonOptions' }),
+
+    /**
+     * Whether to enable the **Show more** and **Show less** buttons in the facet.
+     *
+     * **Note:**
+     * > The [`DynamicFacetRange`]{@link DynamicFacetRange} component does not support this option.
+     *
+     * **Default:** `true`
+     */
+    enableMoreLess: ComponentOptions.buildBooleanOption({ defaultValue: true, section: 'CommonOptions' }),
+
+    /**
+     * Whether to allow the end-user to search the facet values.
+     *
+     * **Note:**
+     * > The [`DynamicFacetRange`]{@link DynamicFacetRange} component does not support this option.
+     *
+     * **Default:** `undefined`, and the following behavior applies:
+     * - Will be enabled when more facet values are available from the server.
+     * - Will be disabled when all facet values are already available.
+     */
+    enableFacetSearch: ComponentOptions.buildBooleanOption({ section: 'Filtering' }),
+
+    /**
+     * Whether to prepend facet search queries with a wildcard.
+     * See also the [enableFacetSearch]{@link DynamicFacet.options.enableFacetSearch} option.
+     *
+     * **Note:**
+     * > The [`DynamicFacetRange`]{@link DynamicFacetRange} component does not support this option.
+     *
+     * **Default:** `true`
+     */
+    useLeadingWildcardInFacetSearch: ComponentOptions.buildBooleanOption({
+      defaultValue: true,
+      section: 'Filtering',
+      depend: 'enableFacetSearch'
+    }),
 
     /**
      * Whether this facet should be collapsed by default.
@@ -170,7 +220,7 @@ export class DynamicFacet extends Component {
      *
      * **Default:** `false`
      */
-    collapsedByDefault: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'Filtering' }),
+    collapsedByDefault: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'Filtering', depend: 'enableCollapse' }),
 
     /**
      * Whether to notify the [Breadcrumb]{@link Breadcrumb} component when toggling values in the facet.
@@ -201,28 +251,32 @@ export class DynamicFacet extends Component {
      *
      * See [Normalizing Facet Value Captions](https://developers.coveo.com/x/jBsvAg).
      *
+     * **Note:**
+     * > The [`DynamicFacetRange`]{@link DynamicFacetRange} component does not support this option.
      */
     valueCaption: ComponentOptions.buildJsonOption<IStringMap<string>>(),
 
     /**
-     * Whether the facet should remain in its current position in the viewport when the mouse cursor is over it.
+     * The id of another facet in which at least one value must be selected in order
+     * for the dependent facet to be visible.
      *
-     * Leaving this to `true` ensures that the facet does not move around in the search interface while the end-user is interacting with it.
-     *
-     * Default: `true`
+     * **Default:** `undefined` and the facet does not depend on any other facet to be displayed.
      */
-    preservePosition: ComponentOptions.buildBooleanOption({ defaultValue: true })
+    dependsOn: ComponentOptions.buildStringOption()
   };
 
-  private dynamicFacetQueryController: DynamicFacetQueryController;
   private includedAttributeId: string;
   private listenToQueryStateChange = true;
-  private padding: FacetPadding;
   private header: DynamicFacetHeader;
-  private isCollapsed: boolean;
 
   public dynamicFacetManager: DynamicFacetManager;
+  public dependsOnManager: DependsOnManager;
+  public dynamicFacetQueryController: DynamicFacetQueryController;
   public values: DynamicFacetValues;
+  private search: DynamicFacetSearch;
+  public position: number = null;
+  public moreValuesAvailable = false;
+  public isCollapsed: boolean;
 
   /**
    * Creates a new `DynamicFacet` instance.
@@ -231,17 +285,23 @@ export class DynamicFacet extends Component {
    * @param options The component options.
    * @param bindings The component bindings. Automatically resolved by default.
    */
-  constructor(public element: HTMLElement, public options?: IDynamicFacetOptions, bindings?: IComponentBindings) {
-    super(element, DynamicFacet.ID, bindings);
+  constructor(
+    public element: HTMLElement,
+    public options?: IDynamicFacetOptions,
+    bindings?: IComponentBindings,
+    classId: string = DynamicFacet.ID
+  ) {
+    super(element, classId, bindings);
     this.options = ComponentOptions.initComponentOptions(element, DynamicFacet, options);
 
     this.initDynamicFacetQueryController();
+    this.initDependsOnManager();
     this.initQueryEvents();
     this.initQueryStateEvents();
     this.initBreadCrumbEvents();
     this.initComponentStateEvents();
-
-    this.values = new DynamicFacetValues(this);
+    this.initValues();
+    this.verifyCollapsingConfiguration();
     this.isCollapsed = this.options.enableCollapse && this.options.collapsedByDefault;
 
     ResponsiveDynamicFacets.init(this.root, this, this.options);
@@ -249,6 +309,10 @@ export class DynamicFacet extends Component {
 
   public get fieldName() {
     return this.options.field.slice(1);
+  }
+
+  public get facetType() {
+    return FacetType.specific;
   }
 
   /**
@@ -279,7 +343,7 @@ export class DynamicFacet extends Component {
     values.forEach(value => {
       this.values.get(value).select();
     });
-    this.handleFacetValuesChanged();
+    this.updateQueryStateModel();
   }
 
   /**
@@ -310,7 +374,7 @@ export class DynamicFacet extends Component {
     values.forEach(value => {
       this.values.get(value).deselect();
     });
-    this.handleFacetValuesChanged();
+    this.updateQueryStateModel();
   }
 
   /**
@@ -320,38 +384,38 @@ export class DynamicFacet extends Component {
    *
    * @param values The name of the facet value to toggle.
    */
-  public toggleSelectValue(value: string): void {
+  public toggleSelectValue(value: string) {
     Assert.exists(value);
     this.ensureDom();
-    this.logger.info('Toggle select facet value', this.values.get(value).toggleSelect());
-    this.handleFacetValuesChanged();
+    const facetValue = this.values.get(value);
+    facetValue.toggleSelect();
+    this.logger.info('Toggle select facet value', facetValue);
+    this.updateQueryStateModel();
   }
 
   /**
    * Requests additional values.
    *
-   * Automatically triggers a query.
+   * Automatically triggers an isolated query.
    * @param additionalNumberOfValues The number of additional values to request. Minimum value is 1. Defaults to the [numberOfValues]{@link DynamicFacet.options.numberOfValues} option value.
    */
-  public showMoreValues(additionalNumberOfValues = this.options.numberOfValues): void {
+  public showMoreValues(additionalNumberOfValues = this.options.numberOfValues) {
     this.ensureDom();
     this.logger.info('Show more values');
     this.dynamicFacetQueryController.increaseNumberOfValuesToRequest(additionalNumberOfValues);
-    this.triggerNewQuery();
-    this.logAnalyticsFacetShowMoreLess(analyticsActionCauseList.facetShowMore);
+    this.triggerNewIsolatedQuery(() => this.logAnalyticsFacetShowMoreLess(analyticsActionCauseList.dynamicFacetShowMore));
   }
 
   /**
    * Reduces the number of displayed facet values down to [numberOfValues]{@link DynamicFacet.options.numberOfValues}.
    *
-   * Automatically triggers a query.
+   * Automatically triggers an isolated query.
    */
-  public showLessValues(): void {
+  public showLessValues() {
     this.ensureDom();
     this.logger.info('Show less values');
     this.dynamicFacetQueryController.resetNumberOfValuesToRequest();
-    this.triggerNewQuery();
-    this.logAnalyticsFacetShowMoreLess(analyticsActionCauseList.facetShowLess);
+    this.triggerNewIsolatedQuery(() => this.logAnalyticsFacetShowMoreLess(analyticsActionCauseList.dynamicFacetShowLess));
   }
 
   /**
@@ -363,6 +427,9 @@ export class DynamicFacet extends Component {
    */
   public reset() {
     this.ensureDom();
+    if (!this.values.hasActiveValues) {
+      return;
+    }
     this.logger.info('Deselect all values');
     this.values.clearAll();
     this.values.render();
@@ -381,6 +448,12 @@ export class DynamicFacet extends Component {
    * Expands the facet, displaying all of its currently fetched values.
    */
   public expand() {
+    if (!this.options.enableCollapse) {
+      return this.logger.warn(`Calling expand() won't do anything on a facet that has the option "enableCollapse" set to "false"`);
+    }
+    if (!this.isCollapsed) {
+      return;
+    }
     this.ensureDom();
     this.logger.info('Expand facet values');
     this.isCollapsed = false;
@@ -391,6 +464,12 @@ export class DynamicFacet extends Component {
    * Collapses the facet, displaying only its currently selected values.
    */
   public collapse() {
+    if (!this.options.enableCollapse) {
+      return this.logger.warn(`Calling collapse() won't do anything on a facet that has the option "enableCollapse" set to "false"`);
+    }
+    if (this.isCollapsed) {
+      return;
+    }
     this.ensureDom();
     this.logger.info('Collapse facet values');
     this.isCollapsed = true;
@@ -423,12 +502,26 @@ export class DynamicFacet extends Component {
     this.dynamicFacetQueryController.enableFreezeFacetOrderFlag();
   }
 
-  public pinFacetPosition() {
-    this.padding && this.padding.pin();
+  public scrollToTop() {
+    if (this.options.enableScrollToTop) {
+      ResultListUtils.scrollToTop(this.root);
+    }
   }
 
+  // Complete facet analytics meta
   public get analyticsFacetState(): IAnalyticsDynamicFacetMeta[] {
     return this.values.activeFacetValues.map(facetValue => facetValue.analyticsMeta);
+  }
+
+  // Facet specific analytics meta
+  public get basicAnalyticsFacetState(): IAnalyticsDynamicFacetMeta {
+    return {
+      field: this.options.field.toString(),
+      id: this.options.id,
+      title: this.options.title,
+      facetType: this.facetType,
+      facetPosition: this.position
+    };
   }
 
   public logAnalyticsEvent(actionCause: IAnalyticsActionCause, facetMeta: IAnalyticsDynamicFacetMeta) {
@@ -442,26 +535,25 @@ export class DynamicFacet extends Component {
 
   public putStateIntoAnalytics() {
     const pendingEvent = this.usageAnalytics.getPendingSearchEvent();
-    pendingEvent && pendingEvent.addFacetsState(this.analyticsFacetState);
+    pendingEvent && pendingEvent.addFacetState(this.analyticsFacetState);
   }
 
-  public get position() {
-    const allDynamicFacets = this.searchInterface.getComponents<DynamicFacet>(DynamicFacet.ID);
-    return allDynamicFacets.indexOf(this) + 1;
+  public isCurrentlyDisplayed() {
+    return $$(this.element).isVisible();
   }
 
   private initQueryEvents() {
     this.bind.onRootElement(QueryEvents.duringQuery, () => this.ensureDom());
     this.bind.onRootElement(QueryEvents.doneBuildingQuery, (data: IDoneBuildingQueryEventArgs) => this.handleDoneBuildingQuery(data));
-    this.bind.onRootElement(QueryEvents.querySuccess, (data: IQuerySuccessEventArgs) => this.handleQuerySuccess(data));
-    this.bind.onRootElement(QueryEvents.deferredQuerySuccess, () => this.handleDeferredQuerySuccess());
+    this.bind.onRootElement(QueryEvents.querySuccess, (data: IQuerySuccessEventArgs) => this.handleQuerySuccess(data.results));
     this.bind.onRootElement(QueryEvents.queryError, () => this.onQueryResponse());
   }
 
   private initQueryStateEvents() {
-    this.includedAttributeId = QueryStateModel.getDynamicFacetId(this.options.id);
+    this.includedAttributeId = QueryStateModel.getFacetId(this.options.id);
     this.queryStateModel.registerNewAttribute(this.includedAttributeId, []);
     this.bind.onQueryState(MODEL_EVENTS.CHANGE, undefined, this.handleQueryStateChanged);
+    this.dependsOnManager.listenToParentIfDependentFacet();
   }
 
   protected initBreadCrumbEvents() {
@@ -473,12 +565,16 @@ export class DynamicFacet extends Component {
     }
   }
 
+  protected initValues() {
+    this.values = new DynamicFacetValues(this);
+  }
+
   private initComponentStateEvents() {
-    const componentStateId = QueryStateModel.getDynamicFacetId(this.options.id);
+    const componentStateId = QueryStateModel.getFacetId(this.options.id);
     this.componentStateModel.registerComponent(componentStateId, this);
   }
 
-  private initDynamicFacetQueryController() {
+  protected initDynamicFacetQueryController() {
     this.dynamicFacetQueryController = new DynamicFacetQueryController(this);
   }
 
@@ -494,25 +590,30 @@ export class DynamicFacet extends Component {
     this.putStateIntoAnalytics();
   }
 
-  private handleQuerySuccess(data: IQuerySuccessEventArgs) {
-    if (Utils.isNullOrUndefined(data.results.facets)) {
+  private handleQuerySuccess(results: IQueryResults) {
+    if (Utils.isNullOrUndefined(results.facets)) {
       return this.notImplementedError();
     }
 
-    const response = findWhere(data.results.facets, { facetId: this.options.id });
+    const index = findIndex(results.facets, { facetId: this.options.id });
+    const response = index !== -1 ? results.facets[index] : null;
+    this.position = index + 1;
 
     this.onQueryResponse(response);
-  }
-
-  private handleDeferredQuerySuccess() {
+    this.updateQueryStateModel();
     this.header.hideLoading();
     this.values.render();
     this.updateAppearance();
-    this.padding && this.padding.ensurePinnedFacetHasNotMoved();
   }
 
   private onQueryResponse(response?: IFacetResponse) {
-    response ? this.values.createFromResponse(response) : this.values.resetValues();
+    if (response) {
+      this.moreValuesAvailable = response.moreValuesAvailable;
+      return this.values.createFromResponse(response);
+    }
+
+    this.moreValuesAvailable = false;
+    this.values.resetValues();
   }
 
   private handleQueryStateChanged(data: IAttributesChangedEventArg) {
@@ -530,8 +631,10 @@ export class DynamicFacet extends Component {
 
   private handleQueryStateChangedIncluded = (querySelectedValues: string[]) => {
     const currentSelectedValues = this.values.selectedValues;
-    const valuesToSelect = difference(querySelectedValues, currentSelectedValues);
-    const valuesToDeselect = difference(currentSelectedValues, querySelectedValues);
+    const validQuerySelectedValues = querySelectedValues.filter(value => this.values.get(value));
+
+    const valuesToSelect = difference(validQuerySelectedValues, currentSelectedValues);
+    const valuesToDeselect = difference(currentSelectedValues, validQuerySelectedValues);
 
     if (Utils.isNonEmptyArray(valuesToSelect)) {
       this.selectMultipleValues(valuesToSelect);
@@ -557,55 +660,83 @@ export class DynamicFacet extends Component {
     args.breadcrumbs.push({ element: breadcrumbs.element });
   }
 
+  private initDependsOnManager() {
+    const facetInfo: IDependentFacet = {
+      reset: () => this.reset(),
+      toggleDependentFacet: dependentFacet => this.toggleDependentFacet(dependentFacet),
+      element: this.element,
+      root: this.root,
+      dependsOn: this.options.dependsOn,
+      id: this.options.id,
+      queryStateModel: this.queryStateModel,
+      bind: this.bind
+    };
+
+    this.dependsOnManager = new DependsOnManager(facetInfo);
+  }
+
+  private toggleDependentFacet(dependentFacet: Component) {
+    this.values.hasSelectedValue ? dependentFacet.enable() : dependentFacet.disable();
+  }
+
   public createDom() {
-    this.createPadding();
-    this.createContent();
+    this.createAndAppendContent();
     this.updateAppearance();
   }
 
-  private createPadding() {
-    if (!this.options.preservePosition) {
+  private createAndAppendContent() {
+    this.createAndAppendHeader();
+    this.createAndAppendSearch();
+    this.createAndAppendValues();
+  }
+
+  private createAndAppendHeader() {
+    this.header = new DynamicFacetHeader(this);
+    this.element.appendChild(this.header.element);
+  }
+
+  private createAndAppendSearch() {
+    if (this.options.enableFacetSearch === false) {
       return;
     }
 
-    const columnParent = $$(this.element).parent('coveo-facet-column');
-    if (!columnParent) {
-      return this.logger.info(`Padding feature deactivated because facet doesn't have a parent with the class "coveo-facet-column"`);
-    }
-
-    this.padding = new FacetPadding(this.element, columnParent);
+    this.search = new DynamicFacetSearch(this);
+    this.element.appendChild(this.search.element);
   }
 
-  private createContent() {
-    this.header = this.createHeader();
-    this.element.appendChild(this.header.element);
+  private createAndAppendValues() {
     this.element.appendChild(this.values.render());
-  }
-
-  private createHeader() {
-    return new DynamicFacetHeader(this);
-  }
-
-  private handleFacetValuesChanged() {
-    this.updateQueryStateModel();
   }
 
   private updateQueryStateModel() {
     this.listenToQueryStateChange = false;
-    this.updateIncludedQueryStateModel();
-    this.listenToQueryStateChange = true;
-  }
-
-  private updateIncludedQueryStateModel() {
     this.queryStateModel.set(this.includedAttributeId, this.values.selectedValues);
+    this.listenToQueryStateChange = true;
   }
 
   private updateAppearance() {
     this.header.toggleClear(this.values.hasSelectedValues);
     this.header.toggleCollapse(this.isCollapsed);
+    this.toggleSearchDisplay();
     $$(this.element).toggleClass('coveo-dynamic-facet-collapsed', this.isCollapsed);
     $$(this.element).toggleClass('coveo-active', this.values.hasSelectedValues);
-    $$(this.element).toggleClass('coveo-hidden', this.values.isEmpty);
+    $$(this.element).removeClass('coveo-hidden');
+    this.dependsOnManager.updateVisibilityBasedOnDependsOn();
+    !this.values.hasDisplayedValues && $$(this.element).addClass('coveo-hidden');
+  }
+
+  private toggleSearchDisplay() {
+    if (this.options.enableFacetSearch === false) {
+      return;
+    }
+
+    if (Utils.isUndefined(this.options.enableFacetSearch)) {
+      $$(this.search.element).toggle(this.moreValuesAvailable);
+    }
+
+    if (this.isCollapsed) {
+      $$(this.search.element).toggle(false);
+    }
   }
 
   public triggerNewQuery(beforeExecuteQuery?: () => void) {
@@ -614,6 +745,18 @@ export class DynamicFacet extends Component {
     const options: IQueryOptions = beforeExecuteQuery ? { beforeExecuteQuery } : { ignoreWarningSearchEvent: true };
 
     this.queryController.executeQuery(options);
+  }
+
+  public async triggerNewIsolatedQuery(beforeExecuteQuery?: () => void) {
+    this.beforeSendingQuery();
+    beforeExecuteQuery && beforeExecuteQuery();
+
+    try {
+      const results = await this.dynamicFacetQueryController.executeIsolatedQuery();
+      this.handleQuerySuccess(results);
+    } catch (e) {
+      this.header.hideLoading();
+    }
   }
 
   private beforeSendingQuery() {
@@ -627,16 +770,14 @@ export class DynamicFacet extends Component {
     this.updateAppearance();
   }
 
+  private verifyCollapsingConfiguration() {
+    if (this.options.collapsedByDefault && !this.options.enableCollapse) {
+      this.logger.warn('The "collapsedByDefault" option is "true" while the "enableCollapse" is "false"');
+    }
+  }
+
   private logAnalyticsFacetShowMoreLess(cause: IAnalyticsActionCause) {
-    this.usageAnalytics.logCustomEvent<IAnalyticsFacetMeta>(
-      cause,
-      {
-        facetId: this.options.id,
-        facetField: this.options.field.toString(),
-        facetTitle: this.options.title
-      },
-      this.element
-    );
+    this.usageAnalytics.logCustomEvent<IAnalyticsDynamicFacetMeta>(cause, this.basicAnalyticsFacetState, this.element);
   }
 }
 

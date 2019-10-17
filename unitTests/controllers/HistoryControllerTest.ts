@@ -18,7 +18,8 @@ export function HistoryControllerTest() {
 
     beforeEach(() => {
       env = new Mock.MockEnvironmentBuilder().withLiveQueryStateModel().build();
-      historyController = new HistoryController(env.root, Mock.mockWindow(), env.queryStateModel, env.queryController, env.usageAnalytics);
+      historyController = new HistoryController(env.root, Mock.mockWindow(), env.queryStateModel, env.queryController);
+      spyOn(historyController, 'usageAnalytics').and.returnValue(env.usageAnalytics);
     });
 
     afterEach(() => {
@@ -102,7 +103,7 @@ export function HistoryControllerTest() {
 
       describe('when logging analytics event', () => {
         beforeEach(() => {
-          historyController = new HistoryController(env.root, window, env.queryStateModel, env.queryController, env.usageAnalytics);
+          historyController = new HistoryController(env.root, window, env.queryStateModel, env.queryController);
           historyController.hashUtils = fakeHashUtils;
           $$(historyController.element).trigger(InitializationEvents.restoreHistoryState);
         });
@@ -173,20 +174,6 @@ export function HistoryControllerTest() {
           simulateHashModule('f:@foo:not', []);
           window.dispatchEvent(new Event('hashchange'));
           assertFacetAnalyticsCall(analyticsActionCauseList.facetUnexclude);
-        });
-
-        it('should not log an analytics event when a DynamicFacet changes to select a value', () => {
-          historyController.queryStateModel.registerNewAttribute('df:@foo', []);
-          simulateHashModule('df:@foo', ['bar']);
-          window.dispatchEvent(new Event('hashchange'));
-          expect(historyController.usageAnalytics.logSearchEvent).not.toHaveBeenCalled();
-        });
-
-        it('should not log an analytics event when a DynamicFacet changes to exclude a value', () => {
-          historyController.queryStateModel.registerNewAttribute('df:@foo:not', []);
-          simulateHashModule('df:@foo:not', ['bar']);
-          window.dispatchEvent(new Event('hashchange'));
-          expect(historyController.usageAnalytics.logSearchEvent).not.toHaveBeenCalled();
         });
       });
     });

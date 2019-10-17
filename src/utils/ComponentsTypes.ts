@@ -4,7 +4,16 @@ import { Component } from '../ui/Base/Component';
 
 export class ComponentsTypes {
   public static get allFacetsType() {
-    return ['Facet', 'FacetSlider', 'FacetRange', 'TimespanFacet', 'HierarchicalFacet', 'CategoryFacet', 'DynamicFacet'];
+    return [
+      'Facet',
+      'FacetSlider',
+      'FacetRange',
+      'TimespanFacet',
+      'HierarchicalFacet',
+      'CategoryFacet',
+      'DynamicFacet',
+      'DynamicFacetRange'
+    ];
   }
 
   public static get allFacetsClassname() {
@@ -13,7 +22,11 @@ export class ComponentsTypes {
 
   public static getAllFacetsElements(root: HTMLElement | Dom) {
     const selectors = ComponentsTypes.allFacetsClassname.map(className => `.${className}`).join(', ');
-    return $$(root as HTMLElement).findAll(selectors);
+    const hasNoFacetChild = (element: HTMLElement) => !$$(element).findAll(selectors).length;
+
+    return $$(root as HTMLElement)
+      .findAll(selectors)
+      .filter(hasNoFacetChild);
   }
 
   public static getAllFacetsInstance(root: HTMLElement | Dom) {

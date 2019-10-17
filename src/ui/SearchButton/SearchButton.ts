@@ -68,7 +68,7 @@ export class SearchButton extends Component {
   private handleClick() {
     this.logger.debug('Performing query following button click');
     this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxSubmit, {});
-    this.queryController.executeQuery();
+    this.queryController.executeQuery({ origin: this });
   }
 }
 

@@ -24,7 +24,7 @@ export class ResultListRenderer {
         if (endFrag) {
           resultsFragment.appendChild(endFrag);
         }
-        this.resultListOptions.resultContainer.appendChild(resultsFragment);
+        this.resultListOptions.resultsContainer.appendChild(resultsFragment);
       }
     );
   }

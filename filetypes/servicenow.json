@@ -1,0 +1,60 @@
+{
+  "filetype": {
+    "sn_hr_core_case": {
+      "icon": "case",
+      "captions": {
+        "en": "HR Case",
+        "fr": "Requête RH"
+      }
+    },
+    "sc_cat_item": {
+      "icon": "custom",
+      "captions": {
+        "en": "Catalog Item",
+        "fr": "Item du Catalogue"
+      }
+    },
+    "sn_customerservice_case": {
+      "icon": "case",
+      "captions": {
+        "en": "Case",
+        "fr": "Requête"
+      }
+    },
+    "kb_social_qa_answer": {
+      "icon": "list",
+      "captions": {
+        "en": "Answer",
+        "fr": "Réponse"
+      }
+    },
+    "kb_social_qa_question": {
+      "icon": "list",
+      "captions": {
+        "en": "Question",
+        "fr": "Question"
+      }
+    },
+    "kb_social_qa_comment": {
+      "icon": "list",
+      "captions": {
+        "en": "Comment",
+        "fr": "Commentaire"
+      }
+    },
+    "incident": {
+      "icon": "case",
+      "captions": {
+        "en": "Incident",
+        "fr": "Incident"
+      }
+    },
+    "kb_knowledge": {
+      "icon": "kb",
+      "captions": {
+        "en": "Knowledge Article",
+        "fr": "Article"
+      }
+    }
+  }
+}

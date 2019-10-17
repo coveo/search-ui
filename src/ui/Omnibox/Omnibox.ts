@@ -5,22 +5,36 @@
 
 import 'styling/_Omnibox';
 import * as _ from 'underscore';
-import { exportGlobally } from '../../GlobalExports';
-import { IOmniboxPreprocessResultForQueryEventArgs, IPopulateOmniboxSuggestionsEventArgs, OmniboxEvents } from '../../events/OmniboxEvents';
-import { IBuildingQueryEventArgs, IDuringQueryEventArgs, QueryEvents } from '../../events/QueryEvents';
+import { findWhere } from 'underscore';
+import { BreadcrumbEvents } from '../../events/BreadcrumbEvents';
+import {
+  IOmniboxPreprocessResultForQueryEventArgs,
+  IPopulateOmniboxSuggestionsEventArgs,
+  IQuerySuggestSelection,
+  OmniboxEvents
+} from '../../events/OmniboxEvents';
+import { IBuildingQueryEventArgs, IDuringQueryEventArgs, INewQueryEventArgs, QueryEvents } from '../../events/QueryEvents';
 import { StandaloneSearchInterfaceEvents } from '../../events/StandaloneSearchInterfaceEvents';
+import { exportGlobally } from '../../GlobalExports';
+import { ExpressionDef } from '../../magicbox/Expression/Expression';
+import { Grammar } from '../../magicbox/Grammar';
+import { Complete } from '../../magicbox/Grammars/Complete';
+import { Expressions } from '../../magicbox/Grammars/Expressions';
+import { createMagicBox, MagicBoxInstance } from '../../magicbox/MagicBox';
+import { Result } from '../../magicbox/Result/Result';
+import { Suggestion } from '../../magicbox/SuggestionsManager';
 import { Assert } from '../../misc/Assert';
 import { COMPONENT_OPTIONS_ATTRIBUTES } from '../../models/ComponentOptionsModel';
 import { IAttributeChangedEventArg, MODEL_EVENTS } from '../../models/Model';
-import { QUERY_STATE_ATTRIBUTES, QueryStateModel } from '../../models/QueryStateModel';
+import { QueryStateModel, QUERY_STATE_ATTRIBUTES } from '../../models/QueryStateModel';
 import { l } from '../../strings/Strings';
 import { $$, Dom } from '../../utils/Dom';
 import { Utils } from '../../utils/Utils';
 import {
+  analyticsActionCauseList,
   IAnalyticsActionCause,
   IAnalyticsNoMeta,
-  IAnalyticsOmniboxSuggestionMeta,
-  analyticsActionCauseList
+  IAnalyticsOmniboxSuggestionMeta
 } from '../Analytics/AnalyticsActionListMeta';
 import { PendingSearchAsYouTypeSearchEvent } from '../Analytics/PendingSearchAsYouTypeSearchEvent';
 import { logSearchBoxSubmitEvent } from '../Analytics/SharedAnalyticsCalls';
@@ -29,20 +43,14 @@ import { IComponentBindings } from '../Base/ComponentBindings';
 import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
 import { Initialization } from '../Base/Initialization';
 import { IQueryboxOptions, Querybox } from '../Querybox/Querybox';
+import { QueryboxOptionsProcessing } from '../Querybox/QueryboxOptionsProcessing';
 import { QueryboxQueryParameters } from '../Querybox/QueryboxQueryParameters';
 import { StandaloneSearchInterface } from '../SearchInterface/SearchInterface';
 import { FieldAddon } from './FieldAddon';
 import { OldOmniboxAddon } from './OldOmniboxAddon';
+import { OmniboxAnalytics } from './OmniboxAnalytics';
 import { QueryExtensionAddon } from './QueryExtensionAddon';
 import { IQuerySuggestAddon, QuerySuggestAddon, VoidQuerySuggestAddon } from './QuerySuggestAddon';
-import { Grammar } from '../../magicbox/Grammar';
-import { Complete } from '../../magicbox/Grammars/Complete';
-import { Expressions } from '../../magicbox/Grammars/Expressions';
-import { Suggestion } from '../../magicbox/SuggestionsManager';
-import { ExpressionDef } from '../../magicbox/Expression/Expression';
-import { Result } from '../../magicbox/Result/Result';
-import { MagicBoxInstance, createMagicBox } from '../../magicbox/MagicBox';
-import { QueryboxOptionsProcessing } from '../Querybox/QueryboxOptionsProcessing';
 
 export interface IOmniboxSuggestion extends Suggestion {
   executableConfidence?: number;
@@ -63,6 +71,7 @@ export interface IOmniboxOptions extends IQueryboxOptions {
   grammar?: (
     grammar: { start: string; expressions: { [id: string]: ExpressionDef } }
   ) => { start: string; expressions: { [id: string]: ExpressionDef } };
+  clearFiltersOnNewQuery?: boolean;
 }
 
 const MINIMUM_EXECUTABLE_CONFIDENCE = 0.8;
@@ -169,7 +178,7 @@ export class Omnibox extends Component {
      *
      * The corresponding Coveo ML model must be properly configured in your Coveo Cloud organization, otherwise this
      * option has no effect (see
-     * [Managing Machine Learning Query Suggestions in a Query Pipeline](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=168)).
+     * [Managing Machine Learning Query Suggestions in a Query Pipeline](https://www.coveo.com/go?dest=cloudhelp&lcid=9&context=168)).
      *
      * **Note:**
      * > When you set this option and the [`enableSearchAsYouType`]{@link Omnibox.options.enableSearchAsYouType} option
@@ -216,7 +225,7 @@ export class Omnibox extends Component {
     /**
      * Specifies whether the Coveo Platform should try to interpret special query syntax such as field references in the
      * query that the user enters in the Querybox (see
-     * [Coveo Query Syntax Reference](http://www.coveo.com/go?dest=adminhelp70&lcid=9&context=10005)).
+     * [Coveo Query Syntax Reference](https://www.coveo.com/go?dest=adminhelp70&lcid=9&context=10005)).
      *
      * Setting this option to `true` also causes the query syntax in the Querybox to highlight.
      *
@@ -253,17 +262,26 @@ export class Omnibox extends Component {
     querySuggestCharacterThreshold: ComponentOptions.buildNumberOption({
       defaultValue: 0,
       min: 0
-    })
+    }),
+
+    /**
+     * Whether to clear all active query filters when the end user submits a new query from the search box.
+     *
+     * Note: This does not include the filter expression enforced by the currently selected tab, if any.
+     *
+     * **Default:** `false`
+     */
+    clearFiltersOnNewQuery: ComponentOptions.buildBooleanOption({ defaultValue: false })
   };
 
   public magicBox: MagicBoxInstance;
-  private partialQueries: string[] = [];
   private lastSuggestions: IOmniboxSuggestion[] = [];
   private lastQuery: string;
   private modifyEventTo: IAnalyticsActionCause;
   private movedOnce = false;
   private searchAsYouTypeTimeout: number;
   private skipAutoSuggest = false;
+  private omniboxAnalytics: OmniboxAnalytics;
 
   public suggestionAddon: IQuerySuggestAddon;
 
@@ -280,13 +298,14 @@ export class Omnibox extends Component {
     this.options = ComponentOptions.initComponentOptions(element, Omnibox, options);
     const originalValueForQuerySyntax = this.options.enableQuerySyntax;
     new QueryboxOptionsProcessing(this).postProcess();
-
+    this.omniboxAnalytics = this.searchInterface.getOmniboxAnalytics();
     $$(this.element).toggleClass('coveo-query-syntax-disabled', this.options.enableQuerySyntax == false);
 
     this.suggestionAddon = this.options.enableQuerySuggestAddon ? new QuerySuggestAddon(this) : new VoidQuerySuggestAddon();
     new OldOmniboxAddon(this);
     this.createMagicBox();
 
+    this.bind.onRootElement(QueryEvents.newQuery, (args: INewQueryEventArgs) => this.handleNewQuery(args));
     this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => this.handleBuildingQuery(args));
     this.bind.onRootElement(StandaloneSearchInterfaceEvents.beforeRedirect, () => this.handleBeforeRedirect());
     this.bind.onRootElement(QueryEvents.querySuccess, () => this.handleQuerySuccess());
@@ -304,6 +323,7 @@ export class Omnibox extends Component {
       }
       this.updateGrammar();
     });
+    this.bind.onRootElement(OmniboxEvents.querySuggestGetFocus, (args: IQuerySuggestSelection) => this.handleQuerySuggestGetFocus(args));
   }
 
   /**
@@ -412,7 +432,7 @@ export class Omnibox extends Component {
     const input = $$(this.magicBox.element).find('input');
 
     if (input) {
-      $$(input).setAttribute('aria-label', this.options.placeholder || l('Search'));
+      $$(input).setAttribute('aria-label', l('SubmitSearch'));
     }
 
     this.setupMagicBox();
@@ -440,7 +460,7 @@ export class Omnibox extends Component {
       // If text is empty, this can mean that user selected text from the search box
       // and hit "delete" : Reset the partial queries in this case
       if (Utils.isEmptyString(this.getText())) {
-        this.partialQueries = [];
+        this.omniboxAnalytics.partialQueries = [];
       }
       this.movedOnce = false;
       this.lastSuggestions = suggestions;
@@ -500,7 +520,7 @@ export class Omnibox extends Component {
 
       // Consider a selection like a reset of the partial queries (it's the end of a suggestion pattern)
       if (this.isAutoSuggestion()) {
-        this.partialQueries = [];
+        this.omniboxAnalytics.partialQueries = [];
       }
     };
 
@@ -613,51 +633,19 @@ export class Omnibox extends Component {
   }
 
   private buildCustomDataForPartialQueries(index: number, suggestions: string[]): IAnalyticsOmniboxSuggestionMeta {
-    return {
-      partialQueries: this.cleanCustomData(this.partialQueries),
-      suggestionRanking: index,
-      suggestions: this.cleanCustomData(suggestions),
-      partialQuery: _.last(this.partialQueries)
-    };
+    this.updateOmniboxAnalytics(suggestions, index);
+    return this.omniboxAnalytics.buildCustomDataForPartialQueries();
   }
 
-  private cleanCustomData(toClean: string[], rejectLength = 256) {
-    // Filter out only consecutive values that are the identical
-    toClean = _.compact(
-      _.filter(toClean, (partial: string, pos?: number, array?: string[]) => {
-        return pos === 0 || partial !== array[pos - 1];
-      })
-    );
+  private handleQuerySuggestGetFocus({ suggestion }: IQuerySuggestSelection) {
+    const suggestions = _.compact(_.map(this.lastSuggestions, suggestion => suggestion.text));
+    const ranking = this.lastSuggestions.indexOf(findWhere(this.lastSuggestions, { text: suggestion }));
+    this.updateOmniboxAnalytics(suggestions, ranking);
+  }
 
-    // Custom dimensions cannot be an array in analytics service: Send a string joined by ; instead.
-    // Need to replace ;
-    toClean = _.map(toClean, partial => {
-      return partial.replace(/;/g, '');
-    });
-
-    // Reduce right to get the last X words that adds to less then rejectLength
-    const reducedToRejectLengthOrLess = [];
-    _.reduceRight(
-      toClean,
-      (memo: number, partial: string) => {
-        const totalSoFar = memo + partial.length;
-        if (totalSoFar <= rejectLength) {
-          reducedToRejectLengthOrLess.push(partial);
-        }
-        return totalSoFar;
-      },
-      0
-    );
-    toClean = reducedToRejectLengthOrLess.reverse();
-    const ret = toClean.join(';');
-
-    // analytics service can store max 256 char in a custom event
-    // if we're over that, call cleanup again with an arbitrary 10 less char accepted
-    if (ret.length >= 256) {
-      return this.cleanCustomData(toClean, rejectLength - 10);
-    }
-
-    return toClean.join(';');
+  private updateOmniboxAnalytics(suggestions: string[], suggestionRanking: number) {
+    this.omniboxAnalytics.suggestions = suggestions;
+    this.omniboxAnalytics.suggestionRanking = suggestionRanking;
   }
 
   private handleSuggestions() {
@@ -667,13 +655,24 @@ export class Omnibox extends Component {
         suggestions: [],
         omnibox: this
       };
-      this.bind.trigger(this.element, OmniboxEvents.populateOmniboxSuggestions, suggestionsEventArgs);
+
+      this.triggerOmniboxSuggestions(suggestionsEventArgs);
+
       if (!Utils.isNullOrEmptyString(text)) {
-        this.partialQueries.push(text);
+        this.omniboxAnalytics.partialQueries.push(text);
       }
+
       return _.compact(suggestionsEventArgs.suggestions);
     } else {
       return [];
+    }
+  }
+
+  private triggerOmniboxSuggestions(args: IPopulateOmniboxSuggestionsEventArgs) {
+    this.bind.trigger(this.element, OmniboxEvents.populateOmniboxSuggestions, args);
+
+    if (!$$(this.element).isDescendant(this.root)) {
+      this.bind.trigger(this.root, OmniboxEvents.populateOmniboxSuggestions, args);
     }
   }
 
@@ -711,9 +710,41 @@ export class Omnibox extends Component {
       }
     }
 
-    this.bind.trigger(this.element, OmniboxEvents.omniboxPreprocessResultForQuery, preprocessResultForQueryArgs);
+    this.triggerOmniboxPreprocessResultForQuery(preprocessResultForQueryArgs);
     const query = preprocessResultForQueryArgs.result.toString();
     new QueryboxQueryParameters(this.options).addParameters(data.queryBuilder, query);
+  }
+
+  private triggerOmniboxPreprocessResultForQuery(args: IOmniboxPreprocessResultForQueryEventArgs) {
+    this.bind.trigger(this.element, OmniboxEvents.omniboxPreprocessResultForQuery, args);
+
+    if (!$$(this.element).isDescendant(this.root)) {
+      this.bind.trigger(this.root, OmniboxEvents.omniboxPreprocessResultForQuery, args);
+    }
+  }
+
+  private handleNewQuery(data: INewQueryEventArgs) {
+    Assert.exists(data);
+    this.options.clearFiltersOnNewQuery && this.clearFiltersIfNewQuery(data);
+  }
+
+  private clearFiltersIfNewQuery({ origin, searchAsYouType }: INewQueryEventArgs) {
+    if (this.queryController.firstQuery) {
+      return;
+    }
+
+    // Prevent queries triggered by unrelated components to clear the the filters
+    // e.g., a facet selection
+    const validOrigins = [Omnibox.ID, 'SearchButton'];
+    if (!origin || validOrigins.indexOf(origin.type) === -1) {
+      return;
+    }
+
+    const lastQuery = this.queryController.getLastQuery().q || '';
+    const newQuery = this.getQuery(searchAsYouType);
+    if (lastQuery !== newQuery) {
+      this.bind.trigger(this.root, BreadcrumbEvents.clearBreadcrumb);
+    }
   }
 
   private handleTabPress() {
@@ -765,7 +796,8 @@ export class Omnibox extends Component {
     this.queryController.executeQuery({
       searchAsYouType: searchAsYouType,
       logInActionsHistory: true,
-      cancel: !shouldExecuteQuery
+      cancel: !shouldExecuteQuery,
+      origin: this
     });
   }
 
@@ -828,7 +860,7 @@ export class Omnibox extends Component {
 
   private handleQuerySuccess() {
     if (!this.isAutoSuggestion()) {
-      this.partialQueries = [];
+      this.omniboxAnalytics.partialQueries = [];
     }
   }
 

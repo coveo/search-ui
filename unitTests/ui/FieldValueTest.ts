@@ -12,7 +12,7 @@ import { DateUtils } from '../../src/utils/DateUtils';
 import * as _ from 'underscore';
 import { l } from '../../src/Core';
 import { DynamicFacet } from '../../src/ui/DynamicFacet/DynamicFacet';
-import { DynamicFacetValues } from '../../src/ui/DynamicFacet/DynamicFacetValues/DynamicFacetValues';
+import { DynamicFacetTestUtils } from './DynamicFacet/DynamicFacetTestUtils';
 
 export function FieldValueTest() {
   describe('FieldValue', () => {
@@ -37,6 +37,7 @@ export function FieldValueTest() {
       result = FakeResults.createFakeResult(),
       facet?: Facet | DynamicFacet
     ) {
+      result.raw.filetype = 'unknown';
       test = Mock.advancedResultComponentSetup<FieldValue>(FieldValue, result, <Mock.AdvancedComponentSetupOptions>{
         element: $$('span').el,
         cmpOptions: options,
@@ -226,6 +227,38 @@ export function FieldValueTest() {
         });
         expect($$(test.cmp.element).hasClass('coveo-with-label')).toBe(true);
       });
+
+      it('matching condition should let the component render within its parent', () => {
+        initializeFieldValueComponent({
+          field: '@title',
+          conditions: [{ field: 'filetype', values: ['unknown'] }]
+        });
+        expect(test.cmp.element.parentElement).toBeDefined();
+      });
+
+      it('not matching condition should detach the component from its parent', () => {
+        initializeFieldValueComponent({
+          field: '@title',
+          conditions: [{ field: 'filetype', values: ['abc'] }]
+        });
+        expect(test.cmp.element.parentElement).toBeNull();
+      });
+
+      it('not matching reversed condition should let the component render within its parent', () => {
+        initializeFieldValueComponent({
+          field: '@title',
+          conditions: [{ field: 'filetype', values: ['abc'], reverseCondition: true }]
+        });
+        expect(test.cmp.element.parentElement).toBeDefined();
+      });
+
+      it('matching reversed condition should detach the component from its parent', () => {
+        initializeFieldValueComponent({
+          field: '@title',
+          conditions: [{ field: 'filetype', values: ['unknown'], reverseCondition: true }]
+        });
+        expect(test.cmp.element.parentElement).toBeNull();
+      });
     });
 
     it('should display the proper field value', () => {
@@ -236,7 +269,7 @@ export function FieldValueTest() {
       let facet: Facet;
 
       beforeEach(() => {
-        facet = Mock.mock<Facet>(Facet);
+        facet = Mock.mockComponent<Facet>(Facet);
 
         facet.values = Mock.mock<FacetValues>(FacetValues);
         facet.values.get = () => {
@@ -280,9 +313,7 @@ export function FieldValueTest() {
       let facet: DynamicFacet;
 
       beforeEach(() => {
-        facet = Mock.mock<DynamicFacet>(DynamicFacet);
-
-        facet.values = Mock.mock<DynamicFacetValues>(DynamicFacetValues);
+        facet = DynamicFacetTestUtils.createFakeFacet();
         facet.values.hasSelectedValue = () => true;
       });
 

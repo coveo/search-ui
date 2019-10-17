@@ -86,11 +86,7 @@ export function DynamicFacetHeaderTest() {
       };
 
       $$(clearElement()).trigger('click');
-      expect(facet.logAnalyticsEvent).toHaveBeenCalledWith(analyticsActionCauseList.dynamicFacetClearAll, {
-        facetId: facet.options.id,
-        facetField: facet.options.field.toString(),
-        facetTitle: facet.options.title
-      });
+      expect(facet.logAnalyticsEvent).toHaveBeenCalledWith(analyticsActionCauseList.dynamicFacetClearAll, facet.basicAnalyticsFacetState);
     });
 
     it(`when clicking on the clear button
@@ -101,6 +97,7 @@ export function DynamicFacetHeaderTest() {
       expect(facet.reset).toHaveBeenCalledTimes(1);
       expect(facet.enableFreezeFacetOrderFlag).toHaveBeenCalledTimes(1);
       expect(facet.triggerNewQuery).toHaveBeenCalledTimes(1);
+      expect(facet.scrollToTop).toHaveBeenCalledTimes(1);
     });
 
     describe('when passing the option enableCollapse as false', () => {

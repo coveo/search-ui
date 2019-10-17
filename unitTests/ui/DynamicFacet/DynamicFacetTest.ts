@@ -3,11 +3,14 @@ import { DynamicFacet, IDynamicFacetOptions } from '../../../src/ui/DynamicFacet
 import { IDynamicFacetValue } from '../../../src/ui/DynamicFacet/DynamicFacetValues/DynamicFacetValue';
 import { FacetValueState } from '../../../src/rest/Facet/FacetValueState';
 import { DynamicFacetTestUtils } from './DynamicFacetTestUtils';
-import { $$, BreadcrumbEvents } from '../../../src/Core';
+import { $$, BreadcrumbEvents, QueryEvents } from '../../../src/Core';
 import { FacetSortCriteria } from '../../../src/rest/Facet/FacetSortCriteria';
 import { Simulate } from '../../Simulate';
 import { IPopulateBreadcrumbEventArgs } from '../../../src/events/BreadcrumbEvents';
 import { analyticsActionCauseList } from '../../../src/ui/Analytics/AnalyticsActionListMeta';
+import { FakeResults } from '../../Fake';
+import { ResultListUtils } from '../../../src/utils/ResultListUtils';
+import { FacetType } from '../../../src/rest/Facet/FacetRequest';
 
 export function DynamicFacetTest() {
   describe('DynamicFacet', () => {
@@ -23,12 +26,18 @@ export function DynamicFacetTest() {
 
     function initializeComponent() {
       test = DynamicFacetTestUtils.createAdvancedFakeFacet(options);
+      spyOn(test.cmp.logger, 'warn');
       (test.env.searchInterface.getComponents as jasmine.Spy).and.returnValue([test.cmp]);
       test.cmp.values.createFromResponse(DynamicFacetTestUtils.getCompleteFacetResponse(test.cmp, { values: mockFacetValues }));
+      test.cmp.moreValuesAvailable = true;
+
+      spyOn(test.cmp.values, 'clearAll').and.callThrough();
+      spyOn(test.cmp.values, 'render').and.callThrough();
+      spyOn(test.cmp, 'triggerNewIsolatedQuery').and.callThrough();
     }
 
     function testQueryStateModelValues() {
-      const qsmValues: string[] = test.env.queryStateModel.attributes[`df:${test.cmp.options.id}`];
+      const qsmValues: string[] = test.env.queryStateModel.attributes[`f:${test.cmp.options.id}`];
       expect(qsmValues).toEqual(test.cmp.values.selectedValues);
     }
 
@@ -42,8 +51,17 @@ export function DynamicFacetTest() {
       return args.breadcrumbs;
     }
 
-    function paddingFeatureActive() {
-      return !!$$(test.cmp.element.parentElement).find('.coveo-topSpace');
+    function searchFeatureActive() {
+      return !!$$(test.cmp.element).find('.coveo-dynamic-facet-search');
+    }
+
+    function searchFeatureDisplayed() {
+      return $$($$(test.cmp.element).find('.coveo-dynamic-facet-search')).isVisible();
+    }
+
+    function validateExpandCollapse(shouldBeCollapsed: boolean) {
+      expect($$(test.cmp.element).hasClass('coveo-dynamic-facet-collapsed')).toBe(shouldBeCollapsed);
+      expect(searchFeatureDisplayed()).toBe(!shouldBeCollapsed);
     }
 
     it(`when facet has values but none are selected
@@ -72,6 +90,22 @@ export function DynamicFacetTest() {
 
       expect($$(test.cmp.element).hasClass('coveo-hidden')).toBe(true);
       expect($$(test.cmp.element).hasClass('coveo-active')).toBe(false);
+    });
+
+    it(`when facet has values
+      isCurrentlyDisplayed should return true`, () => {
+      test.cmp.ensureDom();
+
+      expect(test.cmp.isCurrentlyDisplayed()).toBe(true);
+    });
+
+    it(`when facet has no values
+      isCurrentlyDisplayed should return false`, () => {
+      mockFacetValues = [];
+      initializeComponent();
+      test.cmp.ensureDom();
+
+      expect(test.cmp.isCurrentlyDisplayed()).toBe(false);
     });
 
     it('allows to select a value', () => {
@@ -145,18 +179,50 @@ export function DynamicFacetTest() {
       expect(test.cmp.queryController.executeQuery).toHaveBeenCalled();
     });
 
+    it('allows to trigger a new isolated query', () => {
+      spyOn(test.cmp.dynamicFacetQueryController, 'executeIsolatedQuery');
+      const beforeExecuteQuery = jasmine.createSpy('beforeExecuteQuery', () => {});
+      test.cmp.ensureDom();
+      test.cmp.triggerNewIsolatedQuery(beforeExecuteQuery);
+
+      expect(test.cmp.dynamicFacetQueryController.executeIsolatedQuery).toHaveBeenCalled();
+      expect(beforeExecuteQuery).toHaveBeenCalled();
+      expect(test.cmp.values.render).toHaveBeenCalled();
+    });
+
+    it('triggering a new isolated query updates the values', () => {
+      test.cmp.ensureDom();
+      test.cmp.triggerNewIsolatedQuery();
+
+      expect(test.cmp.values.render).toHaveBeenCalled();
+    });
+
     it('allows to reset', () => {
       mockFacetValues[1].state = FacetValueState.selected;
       mockFacetValues[3].state = FacetValueState.selected;
       initializeComponent();
-      test.cmp.ensureDom();
-      expect(test.cmp.values.selectedValues.length).toBe(2);
-
       test.cmp.reset();
 
       expect($$(test.cmp.element).hasClass('coveo-active')).toBe(false);
       expect(test.cmp.values.selectedValues.length).toBe(0);
       testQueryStateModelValues();
+    });
+
+    it('when calling reset, should clear and rerender values if there is any active value', () => {
+      mockFacetValues[0].state = FacetValueState.selected;
+      initializeComponent();
+
+      test.cmp.reset();
+
+      expect(test.cmp.values.clearAll).toHaveBeenCalled();
+      expect(test.cmp.values.render).toHaveBeenCalledTimes(2);
+    });
+
+    it('when calling reset, should not clear and rerender values when there are no active values', () => {
+      test.cmp.reset();
+
+      expect(test.cmp.values.clearAll).not.toHaveBeenCalled();
+      expect(test.cmp.values.render).toHaveBeenCalledTimes(1);
     });
 
     it('showMoreValues adds by the numberOfValues option by default', () => {
@@ -169,14 +235,14 @@ export function DynamicFacetTest() {
     it('allows to showMoreValues with a custom amount of values', () => {
       const additionalNumberOfValues = 38;
       test.cmp.showMoreValues(additionalNumberOfValues);
-      expect(test.cmp.queryController.executeQuery).toHaveBeenCalled();
+      expect(test.cmp.triggerNewIsolatedQuery).toHaveBeenCalled();
 
       expect(getFirstFacetRequest().numberOfValues).toBe(test.cmp.options.numberOfValues + additionalNumberOfValues);
     });
 
     it('showMoreValues triggers a query', () => {
       test.cmp.showMoreValues();
-      expect(test.cmp.queryController.executeQuery).toHaveBeenCalled();
+      expect(test.cmp.triggerNewIsolatedQuery).toHaveBeenCalled();
     });
 
     it('showLessValues resets the amount of values to the numberOfValues option', () => {
@@ -189,7 +255,7 @@ export function DynamicFacetTest() {
 
     it('showLessValues triggers a query', () => {
       test.cmp.showLessValues();
-      expect(test.cmp.queryController.executeQuery).toHaveBeenCalled();
+      expect(test.cmp.triggerNewIsolatedQuery).toHaveBeenCalled();
     });
 
     it(`when enableCollapse & collapsedByDefault options are true
@@ -199,14 +265,24 @@ export function DynamicFacetTest() {
       initializeComponent();
       test.cmp.ensureDom();
 
-      expect($$(test.cmp.element).hasClass('coveo-dynamic-facet-collapsed')).toBe(true);
+      validateExpandCollapse(true);
+    });
+
+    it(`when enableCollapse is false & collapsedByDefault options is true
+      facet should not be collapsed`, () => {
+      options.enableCollapse = false;
+      options.collapsedByDefault = true;
+      initializeComponent();
+      test.cmp.ensureDom();
+
+      validateExpandCollapse(false);
     });
 
     it(`allows to collapse`, () => {
       test.cmp.ensureDom();
       test.cmp.collapse();
 
-      expect($$(test.cmp.element).hasClass('coveo-dynamic-facet-collapsed')).toBe(true);
+      validateExpandCollapse(true);
     });
 
     it(`allows to expand`, () => {
@@ -215,17 +291,33 @@ export function DynamicFacetTest() {
 
       test.cmp.expand();
 
-      expect($$(test.cmp.element).hasClass('coveo-dynamic-facet-collapsed')).toBe(false);
+      validateExpandCollapse(false);
+    });
+
+    it(`does not allow to expand if the enableCollapse is false`, () => {
+      options.enableCollapse = false;
+      initializeComponent();
+      test.cmp.ensureDom();
+      test.cmp.collapse();
+      expect(test.cmp.logger.warn).toHaveBeenCalled();
+    });
+
+    it(`does not allow to collapse if the enableCollapse is false`, () => {
+      options.enableCollapse = false;
+      initializeComponent();
+      test.cmp.ensureDom();
+      test.cmp.expand();
+      expect(test.cmp.logger.warn).toHaveBeenCalled();
     });
 
     it(`allows to toggle between expand/collapse`, () => {
       test.cmp.ensureDom();
 
       test.cmp.toggleCollapse();
-      expect($$(test.cmp.element).hasClass('coveo-dynamic-facet-collapsed')).toBe(true);
+      validateExpandCollapse(true);
 
       test.cmp.toggleCollapse();
-      expect($$(test.cmp.element).hasClass('coveo-dynamic-facet-collapsed')).toBe(false);
+      validateExpandCollapse(false);
     });
 
     it('should have a default title', () => {
@@ -243,24 +335,34 @@ export function DynamicFacetTest() {
     });
 
     it('should select the needed values using the id', () => {
-      test.env.queryStateModel.registerNewAttribute(`df:${test.cmp.options.id}`, []);
-      test.env.queryStateModel.set(`df:${test.cmp.options.id}`, ['a', 'b', 'c']);
+      test.env.queryStateModel.registerNewAttribute(`${test.cmp.options.id}`, []);
+      test.env.queryStateModel.set(`f:${test.cmp.options.id}`, ['a', 'b', 'c']);
       expect(test.cmp.values.selectedValues).toEqual(['a', 'b', 'c']);
     });
 
     it('should select the needed values using the id', () => {
       options.id = 'my_secret_id';
       initializeComponent();
-      test.env.queryStateModel.registerNewAttribute(`df:${options.id}`, []);
+      test.env.queryStateModel.registerNewAttribute(`f:${options.id}`, []);
 
-      test.env.queryStateModel.set(`df:${options.id}`, ['a', 'b', 'c']);
+      test.env.queryStateModel.set(`f:${options.id}`, ['a', 'b', 'c']);
       expect(test.cmp.values.selectedValues).toEqual(['a', 'b', 'c']);
+    });
+
+    it(`when a previously idle value is returned selected by the API (autoselection)
+    should update the QSM correctly`, () => {
+      mockFacetValues[0].state = FacetValueState.selected;
+      const results = FakeResults.createFakeResults();
+      results.facets = [DynamicFacetTestUtils.getCompleteFacetResponse(test.cmp, { values: mockFacetValues })];
+      Simulate.query(test.env, { results });
+
+      testQueryStateModelValues();
     });
 
     it('should log an analytics event when selecting a value through the QSM', () => {
       spyOn(test.cmp, 'logAnalyticsEvent');
-      test.env.queryStateModel.registerNewAttribute(`df:${test.cmp.options.id}`, []);
-      test.env.queryStateModel.set(`df:${test.cmp.options.id}`, ['a', 'b', 'c']);
+      test.env.queryStateModel.registerNewAttribute(`f:${test.cmp.options.id}`, []);
+      test.env.queryStateModel.set(`f:${test.cmp.options.id}`, ['a', 'b', 'c']);
 
       expect(test.cmp.logAnalyticsEvent).toHaveBeenCalledWith(
         analyticsActionCauseList.dynamicFacetSelect,
@@ -270,9 +372,9 @@ export function DynamicFacetTest() {
 
     it('should log an analytics event when deselecting a value through the QSM', () => {
       spyOn(test.cmp, 'logAnalyticsEvent');
-      test.env.queryStateModel.registerNewAttribute(`df:${test.cmp.options.id}`, []);
-      test.env.queryStateModel.set(`df:${test.cmp.options.id}`, ['a', 'b', 'c']);
-      test.env.queryStateModel.set(`df:${test.cmp.options.id}`, []);
+      test.env.queryStateModel.registerNewAttribute(`f:${test.cmp.options.id}`, []);
+      test.env.queryStateModel.set(`f:${test.cmp.options.id}`, ['a', 'b', 'c']);
+      test.env.queryStateModel.set(`f:${test.cmp.options.id}`, []);
 
       expect(test.cmp.logAnalyticsEvent).toHaveBeenCalledWith(
         analyticsActionCauseList.dynamicFacetDeselect,
@@ -281,29 +383,19 @@ export function DynamicFacetTest() {
     });
 
     it('should log an analytics event when showing more results', () => {
-      const expectedMetadata = jasmine.objectContaining({
-        facetId: test.cmp.options.id,
-        facetField: test.cmp.options.field.toString(),
-        facetTitle: test.cmp.options.title
-      });
       test.cmp.showMoreValues();
-      expect(test.env.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(
-        analyticsActionCauseList.facetShowMore,
-        expectedMetadata,
+      expect(test.cmp.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(
+        analyticsActionCauseList.dynamicFacetShowMore,
+        test.cmp.basicAnalyticsFacetState,
         test.cmp.element
       );
     });
 
     it('should log an analytics event when showing less results', () => {
-      const expectedMetadata = jasmine.objectContaining({
-        facetId: test.cmp.options.id,
-        facetField: test.cmp.options.field.toString(),
-        facetTitle: test.cmp.options.title
-      });
       test.cmp.showLessValues();
-      expect(test.env.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(
-        analyticsActionCauseList.facetShowLess,
-        expectedMetadata,
+      expect(test.cmp.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(
+        analyticsActionCauseList.dynamicFacetShowLess,
+        test.cmp.basicAnalyticsFacetState,
         test.cmp.element
       );
     });
@@ -362,34 +454,20 @@ export function DynamicFacetTest() {
       expect(breadcrumbs.length).toBe(1);
     });
 
-    it(`when setting a preservePosition to true (default) and having a facet column parent
-      should activate the padding feature`, () => {
-      $$(test.cmp.element.parentElement).addClass('coveo-facet-column');
-      test.cmp.ensureDom();
-      expect(paddingFeatureActive()).toBe(true);
-    });
-
-    it(`when setting a preservePosition to true (default) without having a facet column parent
-      should not activate the padding feature`, () => {
-      test.cmp.ensureDom();
-
-      expect(paddingFeatureActive()).toBe(false);
-    });
-
-    it(`when setting a preservePosition to false and having a facet column parent
-      should not activate the padding feature`, () => {
-      options.preservePosition = false;
-      initializeComponent();
-      $$(test.cmp.element.parentElement).addClass('coveo-facet-column');
-      test.cmp.ensureDom();
-
-      expect(paddingFeatureActive()).toBe(false);
-    });
-
     it('logs an analytics search event when logAnalyticsEvent is called', () => {
       test.cmp.logAnalyticsEvent(analyticsActionCauseList.dynamicFacetSelect, test.cmp.analyticsFacetState[0]);
 
       expect(test.cmp.usageAnalytics.logSearchEvent).toHaveBeenCalled();
+    });
+
+    it('returns the correct basicAnalyticsFacetState', () => {
+      expect(test.cmp.basicAnalyticsFacetState).toEqual({
+        field: test.cmp.options.field.toString(),
+        title: test.cmp.options.title,
+        id: test.cmp.options.id,
+        facetType: FacetType.specific,
+        facetPosition: test.cmp.position
+      });
     });
 
     it('returns the correct analyticsFacetState', () => {
@@ -407,15 +485,106 @@ export function DynamicFacetTest() {
     });
 
     it(`when calling "putStateIntoAnalytics" 
-      should call "addFacetsState" on the "PendingSearchEvent" with the correct state`, () => {
+      should call "addFacetState" on the "PendingSearchEvent" with the correct state`, () => {
       const fakePendingSearchEvent = {
-        addFacetsState: jasmine.createSpy('addFacetsState')
+        addFacetState: jasmine.createSpy('addFacetState')
       };
       test.cmp.usageAnalytics.getPendingSearchEvent = jasmine.createSpy('getPendingSearchEvent').and.callFake(() => fakePendingSearchEvent);
 
       test.cmp.putStateIntoAnalytics();
 
-      expect(fakePendingSearchEvent.addFacetsState).toHaveBeenCalledWith(test.cmp.analyticsFacetState);
+      expect(fakePendingSearchEvent.addFacetState).toHaveBeenCalledWith(test.cmp.analyticsFacetState);
+    });
+
+    it('facet position should be null by default', () => {
+      expect(test.cmp.position).toBeNull();
+    });
+
+    it(`when getting successful results
+      facet position should be correct`, () => {
+      test.cmp.ensureDom();
+      const fakeResultsWithFacets = FakeResults.createFakeResults();
+      fakeResultsWithFacets.facets = [DynamicFacetTestUtils.getCompleteFacetResponse(test.cmp)];
+      $$(test.env.root).trigger(QueryEvents.querySuccess, { results: fakeResultsWithFacets });
+
+      expect(test.cmp.position).toBe(1);
+    });
+
+    it(`when "enableFacetSearch" option is false
+    it should not render the search element`, () => {
+      options.enableFacetSearch = false;
+      initializeComponent();
+      test.cmp.ensureDom();
+
+      expect(searchFeatureActive()).toBe(false);
+    });
+
+    it(`when "enableFacetSearch" option is false
+    it should not throw when collapsing`, () => {
+      options.enableFacetSearch = false;
+      initializeComponent();
+      test.cmp.ensureDom();
+
+      expect(() => test.cmp.collapse()).not.toThrow();
+    });
+
+    it(`when "enableFacetSearch" option is true
+    it should render the search element`, () => {
+      options.enableFacetSearch = true;
+      initializeComponent();
+      test.cmp.ensureDom();
+
+      expect(searchFeatureActive()).toBe(true);
+    });
+
+    it(`when "enableFacetSearch" option is "undefined" and "moreValuesAvailable" is "true"
+    it should show the search`, () => {
+      test.cmp.ensureDom();
+
+      expect(searchFeatureDisplayed()).toBe(true);
+    });
+
+    it(`when "enableFacetSearch" option is "undefined" and "moreValuesAvailable" is "true"
+    it should hide the search`, () => {
+      initializeComponent();
+      test.cmp.moreValuesAvailable = false;
+      test.cmp.ensureDom();
+
+      expect(searchFeatureDisplayed()).toBe(false);
+    });
+
+    it('calling "scrollToTop" should call "scrollToTop" on the ResultListUtils', () => {
+      spyOn(ResultListUtils, 'scrollToTop');
+      test.cmp.scrollToTop();
+
+      expect(ResultListUtils.scrollToTop).toHaveBeenCalledWith(test.cmp.root);
+    });
+
+    it(`when the enableScrollToTop option is "false"
+    calling "scrollToTop" should not call "scrollToTop" on the ResultListUtils`, () => {
+      options.enableScrollToTop = false;
+      initializeComponent();
+      spyOn(ResultListUtils, 'scrollToTop');
+      test.cmp.scrollToTop();
+
+      expect(ResultListUtils.scrollToTop).not.toHaveBeenCalledWith(test.cmp.root);
+    });
+
+    describe('testing the DependsOnManager', () => {
+      beforeEach(() => {
+        spyOn(test.cmp.dependsOnManager, 'updateVisibilityBasedOnDependsOn');
+        spyOn(test.cmp.dependsOnManager, 'listenToParentIfDependentFacet');
+      });
+
+      it('should initialize the dependsOnManager', () => {
+        expect(test.cmp.dependsOnManager).toBeTruthy();
+      });
+
+      it(`when facet appearance is updated (e.g. when createDom is called)
+      should call the "updateVisibilityBasedOnDependsOn" method of the DependsOnManager`, () => {
+        test.cmp.createDom();
+        expect(test.cmp.dependsOnManager.updateVisibilityBasedOnDependsOn).toHaveBeenCalled();
+      });
     });
   });
 }

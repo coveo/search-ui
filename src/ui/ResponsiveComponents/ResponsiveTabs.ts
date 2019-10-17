@@ -110,7 +110,10 @@ export class ResponsiveTabs implements IResponsiveComponent {
   }
 
   private shouldAddTabsToDropdown(): boolean {
-    return this.isOverflowing(this.tabSection.el) && ResponsiveComponentsUtils.isSmallTabsActivated(this.coveoRoot);
+    return (
+      (this.isOverflowing(this.tabSection.el) || this.tabSection.el.clientWidth === 0) &&
+      ResponsiveComponentsUtils.isSmallTabsActivated(this.coveoRoot)
+    );
   }
 
   private addTabsToDropdown(): void {
@@ -140,7 +143,10 @@ export class ResponsiveTabs implements IResponsiveComponent {
 
   private shouldRemoveTabsFromDropdown(): boolean {
     return (
-      !this.isOverflowing(this.tabSection.el) && ResponsiveComponentsUtils.isSmallTabsActivated(this.coveoRoot) && !this.isDropdownEmpty()
+      !this.isOverflowing(this.tabSection.el) &&
+      this.tabSection.el.clientWidth !== 0 &&
+      ResponsiveComponentsUtils.isSmallTabsActivated(this.coveoRoot) &&
+      !this.isDropdownEmpty()
     );
   }
 
@@ -374,11 +380,11 @@ export class ResponsiveTabs implements IResponsiveComponent {
     const lastTabInTabSection = last(this.tabsInTabSection);
     if (!lastTabInTabSection) {
       this.tabSection.prepend(tab.el);
+      return;
     }
 
-    const comesAfterIninitialTabOrder = this.initialTabOrder.indexOf(tab.el) > this.initialTabOrder.indexOf(lastTabInTabSection);
-
-    if (comesAfterIninitialTabOrder) {
+    const comesAfterInitialTabOrder = this.initialTabOrder.indexOf(tab.el) > this.initialTabOrder.indexOf(lastTabInTabSection);
+    if (comesAfterInitialTabOrder) {
       tab.insertAfter(lastTabInTabSection);
     } else {
       tab.insertBefore(lastTabInTabSection);

@@ -29,6 +29,7 @@ export class DynamicFacetHeader {
   private createClearButton() {
     this.clearButton = new DynamicFacetHeaderButton({
       label: l('Clear'),
+      ariaLabel: l('Clear', this.facet.options.title),
       className: 'coveo-dynamic-facet-header-clear',
       shouldDisplay: false,
       action: () => this.clear()
@@ -40,15 +41,12 @@ export class DynamicFacetHeader {
   private clear() {
     this.facet.reset();
     this.facet.enableFreezeFacetOrderFlag();
+    this.facet.scrollToTop();
     this.facet.triggerNewQuery(() => this.logClearAllToAnalytics());
   }
 
   private logClearAllToAnalytics() {
-    this.facet.logAnalyticsEvent(analyticsActionCauseList.dynamicFacetClearAll, {
-      facetId: this.facet.options.id,
-      facetField: this.facet.options.field.toString(),
-      facetTitle: this.facet.options.title
-    });
+    this.facet.logAnalyticsEvent(analyticsActionCauseList.dynamicFacetClearAll, this.facet.basicAnalyticsFacetState);
   }
 
   private createCollapseToggle() {

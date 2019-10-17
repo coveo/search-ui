@@ -372,6 +372,49 @@ export class Analytics extends Component {
   }
 
   /**
+   * Re-enables the component if it was previously disabled.
+   */
+  public enable() {
+    if (!this.disabled) {
+      return this.logger.warn('The Analytics component is already enabled.');
+    }
+    super.enable();
+    this.initializeAnalyticsClient();
+    this.updateSearchInterfaceUAClient();
+    this.resolveQueryController().enableHistory();
+  }
+
+  /**
+   * Removes all session information stored in the browser (e.g., analytics visitor cookies, action history, etc.)
+   */
+  public clearLocalData() {
+    if (this.disabled || this.client instanceof NoopAnalyticsClient) {
+      return this.logger.warn('Could not clear local data while analytics are disabled.');
+    }
+    this.client.endpoint.clearCookies();
+    this.resolveQueryController().resetHistory();
+  }
+
+  /**
+   * Disables the component and clears local data by running [`clearLocalData`]{@link Analytics.clearLocalData}.
+   */
+  public disable() {
+    if (this.disabled) {
+      return this.logger.warn('The Analytics component is already disabled.');
+    }
+    this.clearLocalData();
+    this.client.cancelAllPendingEvents();
+    this.client = new NoopAnalyticsClient();
+    this.updateSearchInterfaceUAClient();
+    this.resolveQueryController().disableHistory();
+    super.disable();
+  }
+
+  private updateSearchInterfaceUAClient() {
+    this.searchInterface.usageAnalytics = this.client;
+  }
+
+  /**
    * Attempts to push data representing a single Coveo usage analytics event to the Google Tag Manager data layer.
    *
    * **Note:**

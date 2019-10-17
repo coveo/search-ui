@@ -115,7 +115,7 @@ export class Dom {
    * @param nodeList a {NodeList} to convert to an array
    * @returns {HTMLElement[]}
    */
-  public nodeListToArray(nodeList: NodeList): HTMLElement[] {
+  public static nodeListToArray(nodeList: NodeList): HTMLElement[] {
     let i = nodeList.length;
     const arr: HTMLElement[] = new Array(i);
     while (i--) {
@@ -202,6 +202,10 @@ export class Dom {
     }
 
     if (this.hasClass('coveo-tab-disabled')) {
+      return false;
+    }
+
+    if (this.hasClass('coveo-hidden')) {
       return false;
     }
 
@@ -303,7 +307,7 @@ export class Dom {
    * @returns {HTMLElement[]}
    */
   public children(): HTMLElement[] {
-    return this.nodeListToArray(this.el.children);
+    return Dom.nodeListToArray(this.el.children);
   }
 
   /**
@@ -339,7 +343,7 @@ export class Dom {
    * @returns {HTMLElement[]}
    */
   public findAll(selector: string): HTMLElement[] {
-    return this.nodeListToArray(this.el.querySelectorAll(selector));
+    return Dom.nodeListToArray(this.el.querySelectorAll(selector));
   }
 
   /**
@@ -349,7 +353,7 @@ export class Dom {
    */
   public findClass(className: string): HTMLElement[] {
     if ('getElementsByClassName' in this.el) {
-      return this.nodeListToArray(this.el.getElementsByClassName(className));
+      return Dom.nodeListToArray(this.el.getElementsByClassName(className));
     }
   }
 

@@ -19,6 +19,9 @@
 .CoveoCategoryFacet {
   &.coveo-hidden {
     display: none;
+    &.coveo-with-placeholder {
+      display: block;
+    }
   }
 }
 
@@ -107,7 +110,6 @@
 
 .coveo-category-facet-more-less-container {
   width: 100%;
-  height: 15px;
   background: $color-blueish-white;
   text-align: center;
   border-bottom-left-radius: $default-border-radius;
@@ -117,6 +119,7 @@
 .coveo-category-facet-more,
 .coveo-category-facet-less {
   cursor: pointer;
+  height: 15px;
   &:hover,
   &:focus {
     background: $color-light-grey;

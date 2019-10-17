@@ -185,14 +185,14 @@ export function OmniboxResultListTest() {
         it('when results is a populated array, it appends a title to the result container', async done => {
           const built = await test.cmp.buildResults(results);
           await test.cmp.renderResults(built);
-          const header = $$(test.cmp.options.resultContainer).find('.coveo-omnibox-result-list-header');
+          const header = $$(test.cmp.options.resultsContainer).find('.coveo-omnibox-result-list-header');
           expect($$(header).text()).toEqual('My title');
           done();
         });
 
         it(`when results is an empty array, it does not append a title to the result container`, async done => {
           await test.cmp.renderResults([]);
-          const header = $$(test.cmp.options.resultContainer).find('.coveo-omnibox-result-list-header');
+          const header = $$(test.cmp.options.resultsContainer).find('.coveo-omnibox-result-list-header');
           expect(header).toBe(null);
           done();
         });

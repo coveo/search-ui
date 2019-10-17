@@ -2,19 +2,21 @@ import { Component } from '../Base/Component';
 import { DynamicFacet } from '../DynamicFacet/DynamicFacet';
 import { InitializationEvents } from '../../events/InitializationEvents';
 import { QueryEvents, IQuerySuccessEventArgs, IDoneBuildingQueryEventArgs } from '../../events/QueryEvents';
-import { IComponentBindings } from '../Base/ComponentBindings';
 import { exportGlobally } from '../../GlobalExports';
-import { without, find } from 'underscore';
+import { find, without, partition } from 'underscore';
 import { IFacetResponse } from '../../rest/Facet/FacetResponse';
 import { $$ } from '../../utils/Dom';
 import { Utils } from '../../utils/Utils';
 import { ComponentOptions } from '../Base/ComponentOptions';
 import { Assert } from '../../misc/Assert';
+import { Initialization } from '../Base/Initialization';
+import { ComponentsTypes } from '../../utils/ComponentsTypes';
 
 export interface IDynamicFacetManagerOptions {
   enableReorder?: boolean;
   onUpdate?: IDynamicFacetManagerOnUpdate;
   compareFacets?: IDynamicFacetManagerCompareFacet;
+  maximumNumberOfExpandedFacets?: number;
 }
 
 export interface IDynamicFacetManagerOnUpdate {
@@ -26,15 +28,17 @@ export interface IDynamicFacetManagerCompareFacet {
 }
 
 /**
- * The `DynamicFacetManager` component is meant to be a parent for multiple [DynamicFacet]{@link DynamicFacet} components.
- * It allows more control over the rendering and ordering of the children [DynamicFacet]{@link DynamicFacet} components.
+ * The `DynamicFacetManager` component is meant to be a parent for multiple [DynamicFacet]{@link DynamicFacet} & [DynamicFacetRange]{@link DynamicFacetRange} components.
+ * This component allows controlling a set of [`DynamicFacet`]{@link DynamicFacet} and [`DynamicFacetRange`]{@link DynamicFacetRange} as a group.
+ *
+ * See [Using Dynamic Facets](https://docs.coveo.com/en/2917/).
  */
 export class DynamicFacetManager extends Component {
   static ID = 'DynamicFacetManager';
   static doExport = () => exportGlobally({ DynamicFacetManager });
 
   /**
-   * The options for the DynamicFacet
+   * The options for the DynamicFacetManager
    * @componentOptions
    */
   static options: IDynamicFacetManagerOptions = {
@@ -70,15 +74,31 @@ export class DynamicFacetManager extends Component {
      */
     compareFacets: ComponentOptions.buildCustomOption<IDynamicFacetManagerCompareFacet>(() => {
       return null;
-    })
+    }),
+    /**
+     * The maximum number of expanded facets inside the manager.
+     * Remaining facets are collapsed.
+     *
+     * **Note:**
+     * Prioritizes facets with active values, and then prioritizes first facets.
+     * If the number of facets with active values exceeds the value of the `maximumNumberOfExpandedFacets` option, it overrides the option.
+     *
+     * Using the value `-1` disables the feature and keeps all facets expanded.
+     *
+     * **Default:** `4`
+     */
+    maximumNumberOfExpandedFacets: ComponentOptions.buildNumberOption({ defaultValue: 4, min: -1 })
   };
 
-  private enabledFacets: DynamicFacet[] = [];
-  private disabledFacets: DynamicFacet[] = [];
+  private childrenFacets: DynamicFacet[] = [];
   private containerElement: HTMLElement;
 
-  private get allFacets() {
-    return [...this.enabledFacets, ...this.disabledFacets];
+  private get enabledFacets() {
+    return this.childrenFacets.filter(facet => !facet.disabled);
+  }
+
+  private get facetsWithDisplayedValues() {
+    return this.childrenFacets.filter(facet => facet.values.hasDisplayedValues);
   }
 
   /**
@@ -88,7 +108,7 @@ export class DynamicFacetManager extends Component {
    * @param options The component options.
    * @param bindings The component bindings. Automatically resolved by default.
    */
-  constructor(element: HTMLElement, public options?: IDynamicFacetManagerOptions, private bindings?: IComponentBindings) {
+  constructor(element: HTMLElement, public options?: IDynamicFacetManagerOptions) {
     super(element, 'DynamicFacetManager');
     this.options = ComponentOptions.initComponentOptions(element, DynamicFacetManager, options);
 
@@ -115,12 +135,20 @@ export class DynamicFacetManager extends Component {
     this.bind.onRootElement(QueryEvents.querySuccess, (data: IQuerySuccessEventArgs) => this.handleQuerySuccess(data));
   }
 
-  private handleAfterComponentsInitialization() {
-    const allDynamicFacets = this.bindings.searchInterface.getComponents<DynamicFacet>('DynamicFacet');
-    this.enabledFacets = allDynamicFacets.filter(dynamicFacet => this.element.contains(dynamicFacet.element));
-    this.enabledFacets.forEach(dynamicFacet => (dynamicFacet.dynamicFacetManager = this));
+  private isDynamicFacet(component: Component) {
+    return component instanceof DynamicFacet;
+  }
 
-    if (!this.enabledFacets.length) {
+  private get allDynamicFacets(): DynamicFacet[] {
+    const allFacetsInComponent = ComponentsTypes.getAllFacetsInstance(this.element);
+    return <DynamicFacet[]>allFacetsInComponent.filter(this.isDynamicFacet);
+  }
+
+  private handleAfterComponentsInitialization() {
+    this.childrenFacets = this.allDynamicFacets;
+    this.childrenFacets.forEach(dynamicFacet => (dynamicFacet.dynamicFacetManager = this));
+
+    if (!this.childrenFacets.length) {
       this.disable();
     }
   }
@@ -129,7 +157,7 @@ export class DynamicFacetManager extends Component {
     Assert.exists(data);
     Assert.exists(data.queryBuilder);
 
-    this.allFacets.forEach(dynamicFacet => {
+    this.enabledFacets.forEach(dynamicFacet => {
       dynamicFacet.putStateIntoQueryBuilder(data.queryBuilder);
       dynamicFacet.putStateIntoAnalytics();
     });
@@ -148,14 +176,17 @@ export class DynamicFacetManager extends Component {
   }
 
   private mapResponseToComponents(facetsResponse: IFacetResponse[]) {
-    const responseFacets = facetsResponse.map(({ facetId }) => this.getFacetComponentById(facetId)).filter(Utils.exists);
-    this.disabledFacets = without(this.allFacets, ...responseFacets);
-    this.enabledFacets = responseFacets;
+    const facetsInResponse = facetsResponse.map(({ facetId }) => this.getFacetComponentById(facetId)).filter(Utils.exists);
+    const facetsNotInResponse = without(this.childrenFacets, ...facetsInResponse);
+
+    facetsInResponse.forEach(facet => facet.enable());
+
+    this.childrenFacets = [...facetsInResponse, ...facetsNotInResponse];
   }
 
   private sortFacetsIfCompareOptionsProvided() {
     if (this.options.compareFacets) {
-      this.enabledFacets = this.enabledFacets.sort(this.options.compareFacets);
+      this.childrenFacets = this.childrenFacets.sort(this.options.compareFacets);
     }
   }
 
@@ -163,7 +194,7 @@ export class DynamicFacetManager extends Component {
     this.resetContainer();
     const fragment = document.createDocumentFragment();
 
-    this.enabledFacets.forEach((dynamicFacet, index) => {
+    this.childrenFacets.forEach((dynamicFacet, index) => {
       fragment.appendChild(dynamicFacet.element);
 
       if (this.options.onUpdate) {
@@ -171,12 +202,31 @@ export class DynamicFacetManager extends Component {
       }
     });
 
+    this.respectMaximumExpandedFacetsThreshold();
+
     this.containerElement.appendChild(fragment);
     this.element.appendChild(this.containerElement);
   }
 
+  private respectMaximumExpandedFacetsThreshold() {
+    if (this.options.maximumNumberOfExpandedFacets === -1) {
+      return;
+    }
+
+    const [collapsableFacets, uncollapsableFacets] = partition(this.facetsWithDisplayedValues, facet => facet.options.enableCollapse);
+    const [facetsWithActiveValues, remainingFacets] = partition(collapsableFacets, facet => facet.values.hasActiveValues);
+    const indexOfFirstFacetToCollapse =
+      this.options.maximumNumberOfExpandedFacets - uncollapsableFacets.length - facetsWithActiveValues.length;
+
+    facetsWithActiveValues.forEach(dynamicFacet => dynamicFacet.expand());
+
+    remainingFacets.forEach((dynamicFacet, index) => {
+      index < indexOfFirstFacetToCollapse ? dynamicFacet.expand() : dynamicFacet.collapse();
+    });
+  }
+
   private getFacetComponentById(id: string) {
-    const facet = find(this.allFacets, facet => facet.options.id === id);
+    const facet = find(this.childrenFacets, facet => facet.options.id === id);
 
     if (!facet) {
       this.logger.error(`Cannot find DynamicFacet component with an id equal to "${id}".`);
@@ -190,4 +240,11 @@ export class DynamicFacetManager extends Component {
     this.logger.error('DynamicFacetManager is not supported by your current search endpoint. Disabling this component.');
     this.disable();
   }
+
+  public isCurrentlyDisplayed() {
+    return !!find(this.childrenFacets, facet => facet.isCurrentlyDisplayed());
+  }
 }
+
+Initialization.registerAutoCreateComponent(DynamicFacetManager);
+DynamicFacetManager.doExport();

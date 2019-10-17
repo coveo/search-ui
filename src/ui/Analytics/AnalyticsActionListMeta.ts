@@ -1,4 +1,6 @@
 import { FacetValueState } from '../../rest/Facet/FacetValueState';
+import { FacetType } from '../../rest/Facet/FacetRequest';
+import { RangeType } from '../../rest/RangeValue';
 
 /**
  * The IAnalyticsActionCause interface describes the cause of an event for the analytics service.
@@ -130,20 +132,76 @@ export interface IAnalyticsFacetSliderChangeMeta {
   facetRangeEnd: any;
 }
 
-export enum AnalyticsDynamicFacetType {
-  string = 'String'
-}
-
+/**
+ * Describes the current condition of a single dynamic facet value.
+ */
 export interface IAnalyticsDynamicFacetMeta {
-  facetId: string;
-  facetField: string;
-  facetTitle: string;
-  facetValue?: string;
-  facetType?: AnalyticsDynamicFacetType;
-  facetDisplayValue?: string;
-  facetValueState?: FacetValueState;
+  /**
+   * The name of the field the dynamic facet displaying the value is based on.
+   *
+   * **Example:** `author`
+   */
+  field: string;
+  /**
+   * The unique identifier of the dynamic facet displaying the value.
+   *
+   * **Example:** `author`
+   */
+  id: string;
+  /**
+   * The title of the dynamic facet.
+   *
+   * **Example:** `Author`
+   */
+  title: string;
+  /**
+   * The original name (i.e., field value) of the dynamic facet value.
+   *
+   * **Example:** `alice_r_smith`
+   */
+  value?: string;
+  /**
+   * The minimum value of the dynamic range facet value.
+   *
+   * **Examples:**
+   * > - `0`
+   * > - `2018-01-01T00:00:00.000Z`
+   */
+  start?: RangeType;
+  /**
+   * The maximum value of the dynamic range facet value.
+   *
+   * **Examples:**
+   * > - `500`
+   * > - `2018-12-31T23:59:59.999Z`
+   */
+  end?: RangeType;
+  /**
+   * Whether the [`end`]{@link IRangeValue.end} value is included in the dynamic range facet value.
+   */
+  endInclusive?: boolean;
+  /**
+   * The current 1-based position of the dynamic facet value, relative to other values in the same dynamic facet.
+   */
+  valuePosition?: number;
+  /**
+   * The custom display name of the dynamic facet value that was interacted with.
+   *
+   * **Example:** `Alice R. Smith`
+   */
+  displayValue?: string;
+  /**
+   * The type of values displayed in the dynamic facet.
+   */
+  facetType?: FacetType;
+  /**
+   * The new state of the dynamic facet value that was interacted with.
+   */
+  state?: FacetValueState;
+  /*
+  * The 1-based position of the dynamic facet, relative to other dynamic facets in the page.
+  */
   facetPosition?: number;
-  facetValuePosition?: number;
 }
 
 export interface IAnalyticsFacetGraphSelectedMeta extends IAnalyticsFacetSliderChangeMeta {}
@@ -233,6 +291,24 @@ export interface IAnalyticsSearchAlertsFollowDocumentMeta extends IAnalyticsDocu
 
 export interface IAnalyticsResultsLayoutChange {
   resultsLayoutChangeTo: string;
+}
+
+export interface IAnalyticsMissingTerm {
+  missingTerm: string;
+}
+
+/**
+ * Describes the object sent as metadata along with [`clickQuerySuggestPreview`]{@link analyticsActionCauseList.clickQuerySuggestPreview} usage analytics events.
+ */
+export interface IAnalyticsClickQuerySuggestPreviewMeta {
+  /**
+   * The query suggestion for which a preview item was opened.
+   */
+  suggestion: string;
+  /**
+   * The 0-based position of the preview item that was opened.
+   */
+  displayedRank: number;
 }
 
 export var analyticsActionCauseList = {
@@ -1277,13 +1353,8 @@ export var analyticsActionCauseList = {
    * `actionCause`: `'facetSelect'`
    * `actionType`: `'dynamicFacet'`
    *
-   * Logging an event with this actionType also adds the following key-value pairs in the custom data property of the Usage Analytics HTTP service request.
-   * `"facetId":`: <correspondingFacetId>
-   * `"facetField":`: <correspondingFacetField>
-   * `"facetTitle":`: <correspondingFacetTitle>
-   * `"facetValue":`: <correspondingFacetValue>
-   * `"facetDisplayValue":`: <correspondingFacetDisplayValue>
-   * `"facetState":`: <correspondingFacetState>
+   * The required and optional properties of an [`IAnalyticsDynamicFacetMeta`](@link IAnalyticsDynamicFacetMeta)
+   * object are added as custom data when logging a usage analytics event matching this `actionCause`/`actionType`.
    */
   dynamicFacetSelect: <IAnalyticsActionCause>{
     name: 'dynamicFacetSelect',
@@ -1295,13 +1366,8 @@ export var analyticsActionCauseList = {
    * `actionCause`: `'dynamicFacetDeselect'`
    * `actionType`: `'dynamicFacet'`
    *
-   * Logging an event with this actionType also adds the following key-value pairs in the custom data property of the Usage Analytics HTTP service request.
-   * `"facetId":`: <correspondingFacetId>
-   * `"facetField":`: <correspondingFacetField>
-   * `"facetTitle":`: <correspondingFacetTitle>
-   * `"facetValue":`: <correspondingFacetValue>
-   * `"facetDisplayValue":`: <correspondingFacetDisplayValue>
-   * `"facetState":`: <correspondingFacetState>
+   * The required and optional properties of an [`IAnalyticsDynamicFacetMeta`](@link IAnalyticsDynamicFacetMeta)
+   * object are added as custom data when logging a usage analytics event matching this `actionCause`/`actionType`.
    */
   dynamicFacetDeselect: <IAnalyticsActionCause>{
     name: 'dynamicFacetDeselect',
@@ -1313,12 +1379,93 @@ export var analyticsActionCauseList = {
    * `actionCause`: `'dynamicFacetClearAll'`
    * `actionType`: `'dynamicFacet'`
    *
-   * Logging an event with this actionType also adds the following key-value pairs in the custom data property of the Usage Analytics HTTP service request.
-   * `"facetId":`: <correspondingFacetId>
-   * `"facetField":`: <correspondingFacetField>
+   * The required properties of an [`IAnalyticsDynamicFacetMeta`](@link IAnalyticsDynamicFacetMeta) object are added as custom data
+   * when logging a usage analytics event matching this `actionCause`/`actionType`.
    */
   dynamicFacetClearAll: <IAnalyticsActionCause>{
     name: 'dynamicFacetClearAll',
     type: 'dynamicFacet'
+  },
+  /**
+   * Identifies the search event that gets logged when the **Show more** button of the DynamicFacet is selected.
+   *
+   * `actionCause`: `'dynamicFacetShowMore'`
+   * `actionType`: `'dynamicFacet'`
+   *
+   * The required properties of an [`IAnalyticsDynamicFacetMeta`](@link IAnalyticsDynamicFacetMeta) object are added as custom data
+   * when logging a usage analytics event matching this `actionCause`/`actionType`.
+   */
+  dynamicFacetShowMore: <IAnalyticsActionCause>{
+    name: 'dynamicFacetShowMore',
+    type: 'dynamicFacet'
+  },
+  /**
+   * Identifies the search event that gets logged when the **Show less** button of the DynamicFacet is selected.
+   *
+   * `actionCause`: `'dynamicFacetShowLess'`
+   * `actionType`: `'dynamicFacet'`
+   *
+   * The required properties of an [`IAnalyticsDynamicFacetMeta`](@link IAnalyticsDynamicFacetMeta) object are added as custom data
+   * when logging a usage analytics event matching this `actionCause`/`actionType`.
+   */
+  dynamicFacetShowLess: <IAnalyticsActionCause>{
+    name: 'dynamicFacetShowLess',
+    type: 'dynamicFacet'
+  },
+  /**
+   * The search event that gets logged when an end-user triggers a new query by clicking a missing term in a result item.
+   *
+   * `actionCause`: `'addMissingTerm'`
+   * `actionType`: `'missingTerm'`
+   */
+  addMissingTerm: <IAnalyticsActionCause>{
+    name: 'addMissingTerm',
+    type: 'missingTerm'
+  },
+  /**
+   * The search event that gets logged when an end-user triggers a new query by removing a missing term from the breadcrumb.
+   *
+   * `actionCause`: `'removeMissingTerm'`
+   * `actionType`: `'missingTerm'`
+   */
+  removeMissingTerm: <IAnalyticsActionCause>{
+    name: 'removeMissingTerm',
+    type: 'missingTerm'
+  },
+  /**
+   * The search event logged when a preview is requested for a query suggestion (see the [QuerySuggestPreview]{@link QuerySuggestPreview} component).
+   *
+   * Implements the [IAnalyticsActionCause]{@link IAnalyticsActionCause} interface as such:
+   *
+   * ```javascript
+   * {
+   *  actionCause: "showQuerySuggestPreview",
+   *  actionType: "querySuggestPreview"
+   * }
+   * ```
+   *
+   * The framework sends an [`IAnalyticsTopSuggestionMeta`]{@link IAnalyticsTopSuggestionMeta} object as metadata when logging this event.
+   */
+  showQuerySuggestPreview: <IAnalyticsActionCause>{
+    name: 'showQuerySuggestPreview',
+    type: 'querySuggestPreview'
+  },
+  /**
+   * The custom event logged when an item is opened in a query suggestion preview (see the [QuerySuggestPreview]{@link QuerySuggestPreview} component).
+   *
+   * Implements the [IAnalyticsActionCause]{@link IAnalyticsActionCause} interface as such:
+   *
+   * ```javascript
+   * {
+   *  actionCause: "clickQuerySuggestPreview",
+   *  actionType: "querySuggestPreview"
+   * }
+   * ```
+   *
+   * The framework sends an [`IAnalyticsClickQuerySuggestPreviewMeta`]{@link IAnalyticsClickQuerySuggestPreviewMeta} object as metadata when logging this event.
+   */
+  clickQuerySuggestPreview: <IAnalyticsActionCause>{
+    name: 'clickQuerySuggestPreview',
+    type: 'querySuggestPreview'
   }
 };

@@ -1,9 +1,10 @@
 import * as Globalize from 'globalize';
 import { DynamicFacetValue } from '../../../../src/ui/DynamicFacet/DynamicFacetValues/DynamicFacetValue';
 import { DynamicFacetTestUtils } from '../DynamicFacetTestUtils';
+import { DynamicFacetRangeTestUtils } from '../DynamicFacetRangeTestUtils';
 import { DynamicFacet, IDynamicFacetOptions } from '../../../../src/ui/DynamicFacet/DynamicFacet';
 import { FacetValueState } from '../../../../src/rest/Facet/FacetValueState';
-import { AnalyticsDynamicFacetType } from '../../../../src/ui/Analytics/AnalyticsActionListMeta';
+import { analyticsActionCauseList } from '../../../../src/ui/Analytics/AnalyticsActionListMeta';
 
 export function DynamicFacetValueTest() {
   describe('DynamicFacetValue', () => {
@@ -17,9 +18,10 @@ export function DynamicFacetValueTest() {
     });
 
     function initializeComponent() {
-      facet = DynamicFacetTestUtils.createFakeFacet(options);
+      facet = DynamicFacetTestUtils.createAdvancedFakeFacet(options).cmp;
       (facet.searchInterface.getComponents as jasmine.Spy).and.returnValue([facet]);
       dynamicFacetValue = new DynamicFacetValue(DynamicFacetTestUtils.createFakeFacetValues(1)[0], facet);
+      spyOn(facet, 'logAnalyticsEvent');
     }
 
     it('should toggle selection correctly', () => {
@@ -48,6 +50,12 @@ export function DynamicFacetValueTest() {
       dynamicFacetValue.state = FacetValueState.selected;
       dynamicFacetValue.deselect();
       expect(dynamicFacetValue.isIdle).toBe(true);
+    });
+
+    it('should set the preventAutoSelect flag to true when deselected', () => {
+      dynamicFacetValue.state = FacetValueState.selected;
+      dynamicFacetValue.deselect();
+      expect(dynamicFacetValue.preventAutoSelect).toBe(true);
     });
 
     it(`when comparing with another DynamicFacetValue with a different value
@@ -85,47 +93,66 @@ export function DynamicFacetValueTest() {
       expect(dynamicFacetValue.formattedCount).toBe(Globalize.format(dynamicFacetValue.numberOfResults, 'n0'));
     });
 
-    it(`when using the valueCaption option with a function
-      should bypass it and return the original value`, () => {
-      options = { valueCaption: () => 'allo' };
-      initializeComponent();
-
-      expect(dynamicFacetValue.valueCaption).toBe(dynamicFacetValue.value);
-    });
-
-    it(`when using the valueCaption with an object that contains the original value
-      should return the caption`, () => {
-      const captionValue = 'allo';
-      options = { valueCaption: { [dynamicFacetValue.value]: captionValue } };
-      initializeComponent();
-
-      expect(dynamicFacetValue.valueCaption).toBe(captionValue);
-    });
-
-    it(`when using the valueCaption with an object that does not contain the original value
-      should return original value`, () => {
-      options = { valueCaption: { randomValue: 'allo' } };
-      initializeComponent();
-
-      expect(dynamicFacetValue.valueCaption).toBe(dynamicFacetValue.value);
-    });
-
-    it(`should return the correct analyticsMeta`, () => {
+    it(`should return the correct analyticsMeta for a specific value`, () => {
       expect(dynamicFacetValue.analyticsMeta).toEqual({
-        facetId: facet.options.id,
-        facetField: facet.options.field.toString(),
-        facetTitle: facet.options.title,
-        facetType: AnalyticsDynamicFacetType.string,
-        facetValue: dynamicFacetValue.value,
-        facetDisplayValue: dynamicFacetValue.valueCaption,
-        facetValueState: dynamicFacetValue.state,
-        facetValuePosition: dynamicFacetValue.position,
-        facetPosition: facet.position
+        ...facet.basicAnalyticsFacetState,
+        value: dynamicFacetValue.value,
+        valuePosition: dynamicFacetValue.position,
+        displayValue: dynamicFacetValue.displayValue,
+        state: dynamicFacetValue.state
+      });
+    });
+
+    it(`should return the correct analyticsMeta for a range value`, () => {
+      const rangeFacet = DynamicFacetRangeTestUtils.createFakeFacet();
+      rangeFacet.values.createFromRanges(DynamicFacetRangeTestUtils.createFakeRanges());
+      dynamicFacetValue = rangeFacet.values.allFacetValues[0];
+
+      expect(dynamicFacetValue.analyticsMeta).toEqual({
+        ...rangeFacet.basicAnalyticsFacetState,
+        value: dynamicFacetValue.value,
+        valuePosition: dynamicFacetValue.position,
+        displayValue: dynamicFacetValue.displayValue,
+        state: dynamicFacetValue.state,
+        start: dynamicFacetValue.start,
+        end: dynamicFacetValue.end,
+        endInclusive: dynamicFacetValue.endInclusive
+      });
+    });
+
+    describe('when the value has the state "idle"', () => {
+      it('should return the correct aria-label', () => {
+        const expectedAriaLabel = `Select ${dynamicFacetValue.value} with ${dynamicFacetValue.formattedCount} results`;
+        expect(dynamicFacetValue.selectAriaLabel).toBe(expectedAriaLabel);
+      });
+
+      it('should log the right analytics action', () => {
+        dynamicFacetValue.logSelectActionToAnalytics();
+        expect(facet.logAnalyticsEvent).toHaveBeenCalledWith(
+          analyticsActionCauseList.dynamicFacetDeselect,
+          dynamicFacetValue.analyticsMeta
+        );
+      });
+    });
+
+    describe('when the value has the state "selected"', () => {
+      beforeEach(() => {
+        dynamicFacetValue.select();
+      });
+
+      it('should return the correct aria-label', () => {
+        const expectedAriaLabel = `Unselect ${dynamicFacetValue.value} with ${dynamicFacetValue.formattedCount} results`;
+        expect(dynamicFacetValue.selectAriaLabel).toBe(expectedAriaLabel);
+      });
+
+      it('should log the right analytics action', () => {
+        dynamicFacetValue.logSelectActionToAnalytics();
+        expect(facet.logAnalyticsEvent).toHaveBeenCalledWith(analyticsActionCauseList.dynamicFacetSelect, dynamicFacetValue.analyticsMeta);
       });
     });
 
     it(`should render without error`, () => {
-      expect(() => dynamicFacetValue.render()).not.toThrow();
+      expect(() => dynamicFacetValue.renderedElement).not.toThrow();
     });
   });
 }

@@ -1,6 +1,6 @@
 {
   "name": "coveo-search-ui",
-  "version": "2.0.283",
+  "version": "2.0.397",
   "description": "Coveo JavaScript Search Framework",
   "main": "./bin/js/CoveoJsSearch.js",
   "types": "./bin/ts/CoveoJsSearch.d.ts",
@@ -26,10 +26,7 @@
     "prepare": "npm run snyk-protect"
   },
   "lint-staged": {
-    "*.{js,ts,json,scss}": [
-      "prettier --write",
-      "git add"
-    ]
+    "*.{js,ts,json,scss}": ["prettier --write", "git add"]
   },
   "prettier": {
     "printWidth": 140,
@@ -39,36 +36,17 @@
     "type": "git",
     "url": "git+https://github.com/coveo/search-ui.git"
   },
-  "keywords": [
-    "coveo",
-    "search",
-    "ui",
-    "framework",
-    "js",
-    "typescript",
-    "jssearch",
-    "jsui"
-  ],
+  "keywords": ["coveo", "search", "ui", "framework", "js", "typescript", "jssearch", "jsui"],
   "author": "Coveo <sandbox_JSUI@coveo.com> (http://source.coveo.com/)",
   "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/coveo/search-ui/issues"
   },
-  "files": [
-    "bin",
-    "pages",
-    "gulpTasks",
-    "images",
-    "templates",
-    "strings",
-    "filetypes",
-    "lib",
-    "src",
-    "typings"
-  ],
+  "files": ["bin", "pages", "gulpTasks", "images", "templates", "strings", "filetypes", "lib", "src", "typings"],
   "homepage": "https://github.com/coveo/search-ui#readme",
   "devDependencies": {
     "@salesforce-ux/design-system": "^2.6.0",
+    "@types/ag-grid": "^3.2.0",
     "@types/axe-core": "^2.0.7",
     "@types/bluebird": "^3.5.20",
     "@types/d3": "3.5.36",
@@ -77,6 +55,7 @@
     "@types/jasmine-ajax": "^3.1.37",
     "@types/pikaday": "^1.7.0",
     "@types/underscore": "1.8.3",
+    "@types/xregexp": "^3.0.30",
     "aws-sdk": "^2.155.0",
     "axe-core": "^3.0.2",
     "bluebird": "^3.4.7",
@@ -104,8 +83,6 @@
     "gulp-rename": "^1.2.2",
     "gulp-replace": "^0.5.4",
     "gulp-shell": "^0.5.2",
-    "gulp-svg-sprites": "^4.1.1",
-    "gulp-util": "^3.0.8",
     "gulp-zip": "^3.2.0",
     "husky": "^0.14.3",
     "image-size": "^0.5.0",
@@ -138,6 +115,7 @@
     "sass-loader": "^6.0",
     "script-loader": "^0.7.0",
     "sitemap-generator": "^5.0.0",
+    "snyk": "^1.148.0",
     "string-replace-loader": "^1.0.2",
     "style-loader": "^0.19.0",
     "svg-inline-loader": "^0.7.1",
@@ -156,7 +134,6 @@
   },
   "dependencies": {
     "@material/select": "^0.3.3",
-    "@types/ag-grid": "^3.2.0",
     "coveo.analytics": "^0.7.0",
     "d3": "^4.2.1",
     "d3-scale": "^1.0.3",
@@ -167,8 +144,8 @@
     "modal-box": "^2.0.10",
     "pikaday": "^1.4.0",
     "popper.js": "^1.14.3",
-    "snyk": "^1.148.0",
-    "underscore": "^1.8.3"
+    "underscore": "^1.8.3",
+    "xregexp": "^4.2.4"
   },
   "resolutions": {
     "extend": "3.0.2",

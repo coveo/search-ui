@@ -4,28 +4,40 @@ import { IDynamicFacetValue } from '../../../src/ui/DynamicFacet/DynamicFacetVal
 import { FacetValueState } from '../../../src/rest/Facet/FacetValueState';
 import * as Mock from '../../MockEnvironment';
 import { IFacetResponse } from '../../../src/rest/Facet/FacetResponse';
+import { DynamicFacetValues } from '../../../src/ui/DynamicFacet/DynamicFacetValues/DynamicFacetValues';
 
 export class DynamicFacetTestUtils {
-  static createFakeFacet(options?: IDynamicFacetOptions) {
-    const facet = Mock.mockComponent<DynamicFacet>(DynamicFacet);
-    facet.options = {
-      id: 'dummy',
+  static allOptions(options?: IDynamicFacetOptions) {
+    return {
       field: '@dummy',
-      title: 'a title',
       ...options
     };
+  }
+
+  static createFakeFacet(options?: IDynamicFacetOptions) {
+    const facet = Mock.mockComponent<DynamicFacet>(DynamicFacet);
+    facet.options = this.allOptions(options);
+    facet.values = new DynamicFacetValues(facet);
     facet.element = $$('div').el;
     facet.searchInterface = Mock.mockSearchInterface();
 
     return facet;
   }
 
-  static createAdvancedFakeFacet(options?: IDynamicFacetOptions, withQSM = true) {
+  static createAdvancedFakeFacet(options?: IDynamicFacetOptions, env?: Mock.IMockEnvironment) {
     return Mock.advancedComponentSetup<DynamicFacet>(DynamicFacet, <Mock.AdvancedComponentSetupOptions>{
       modifyBuilder: builder => {
-        return withQSM ? builder.withLiveQueryStateModel() : builder;
+        if (!env) {
+          builder = builder.withLiveQueryStateModel();
+          return builder;
+        }
+
+        builder = builder.withRoot(env.root);
+        builder = builder.withQueryStateModel(env.queryStateModel);
+        return builder;
       },
-      cmpOptions: options
+
+      cmpOptions: this.allOptions(options)
     });
   }
 
@@ -33,10 +45,13 @@ export class DynamicFacetTestUtils {
     const fakeValues = [];
 
     for (let index = 0; index < count; index++) {
+      const value = `fake value ${index}`;
       const fakeValue: IDynamicFacetValue = {
-        value: `fake value ${index}`,
+        displayValue: value,
         numberOfResults: Math.ceil(Math.random() * 100000),
+        value,
         state,
+        preventAutoSelect: false,
         position: index + 1
       };
 
@@ -50,7 +65,7 @@ export class DynamicFacetTestUtils {
     return {
       facetId: facet.options.id,
       field: facet.fieldName,
-      values: [],
+      values: DynamicFacetTestUtils.createFakeFacetValues(),
       moreValuesAvailable: false,
       ...partialResponse
     };

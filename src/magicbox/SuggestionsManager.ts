@@ -1,6 +1,10 @@
-import { $$ } from '../utils/Dom';
+import { compact, defaults, each, indexOf } from 'underscore';
+import { IQuerySuggestSelection, OmniboxEvents } from '../events/OmniboxEvents';
+import { Component } from '../ui/Base/Component';
+import { resultPerRow } from '../ui/QuerySuggestPreview/QuerySuggestPreview';
+import { $$, Dom } from '../utils/Dom';
+import { Utils } from '../utils/Utils';
 import { InputManager } from './InputManager';
-import { each, defaults, indexOf, compact } from 'underscore';
 
 export interface Suggestion {
   text?: string;
@@ -17,11 +21,22 @@ export interface SuggestionsManagerOptions {
   timeout?: number;
 }
 
+enum Direction {
+  Up = 'Up',
+  Down = 'Down',
+  Left = 'Left',
+  Right = 'Right'
+}
+
 export class SuggestionsManager {
   public hasSuggestions: boolean;
   private pendingSuggestion: Promise<Suggestion[]>;
   private options: SuggestionsManagerOptions;
   private keyboardFocusedSuggestion: HTMLElement;
+  private suggestionsListbox: Dom;
+  private suggestionsPreviewContainer: Dom;
+  private lastSelectedSuggestion: HTMLElement;
+  private root: HTMLElement;
 
   constructor(
     private element: HTMLElement,
@@ -29,6 +44,7 @@ export class SuggestionsManager {
     private inputManager: InputManager,
     options?: SuggestionsManagerOptions
   ) {
+    this.root = Component.resolveRoot(element);
     this.options = defaults(options, <SuggestionsManagerOptions>{
       selectableClass: 'magic-box-suggestion',
       selectedClass: 'magic-box-selected'
@@ -48,7 +64,11 @@ export class SuggestionsManager {
       this.handleMouseOut(e);
     });
 
-    this.addAccessibilityProperties();
+    this.suggestionsListbox = this.buildSuggestionsContainer();
+    this.suggestionsPreviewContainer = this.initPreviewForSuggestions(this.suggestionsListbox);
+    $$(this.element).append(this.suggestionsPreviewContainer.el);
+    this.addAccessibilityPropertiesForCombobox();
+    this.appendEmptySuggestionOption();
   }
 
   public handleMouseOver(e) {
@@ -80,14 +100,23 @@ export class SuggestionsManager {
         this.removeSelectedStatus(targetParents[0]);
       }
     }
+    $$(this.root).trigger(OmniboxEvents.querySuggestLoseFocus);
   }
 
-  public moveDown(): Suggestion {
-    return this.returnMoved(this.move('down'));
+  public moveDown() {
+    this.move(Direction.Down);
   }
 
-  public moveUp(): Suggestion {
-    return this.returnMoved(this.move('up'));
+  public moveUp() {
+    this.move(Direction.Up);
+  }
+
+  public moveLeft() {
+    this.move(Direction.Left);
+  }
+
+  public moveRight() {
+    this.move(Direction.Right);
   }
 
   public selectAndReturnKeyboardFocusedElement(): HTMLElement {
@@ -99,6 +128,10 @@ export class SuggestionsManager {
       this.keyboardFocusedSuggestion = null;
     }
     return selected;
+  }
+
+  public clearKeyboardFocusedElement() {
+    this.keyboardFocusedSuggestion = null;
   }
 
   public mergeSuggestions(suggestions: Array<Promise<Suggestion[]> | Suggestion[]>, callback?: (suggestions: Suggestion[]) => void) {
@@ -171,8 +204,8 @@ export class SuggestionsManager {
   }
 
   public updateSuggestions(suggestions: Suggestion[]) {
-    $$(this.element).empty();
-    this.element.className = 'magic-box-suggestions';
+    this.suggestionsListbox.empty();
+    this.inputManager.input.removeAttribute('aria-activedescendant');
 
     this.hasSuggestions = suggestions.length > 0;
 
@@ -180,11 +213,10 @@ export class SuggestionsManager {
     $$(this.magicBoxContainer).setAttribute('aria-expanded', this.hasSuggestions.toString());
 
     if (!this.hasSuggestions) {
+      this.appendEmptySuggestionOption();
+      $$(this.root).trigger(OmniboxEvents.querySuggestLoseFocus);
       return;
     }
-
-    const suggestionsContainer = this.buildSuggestionsContainer();
-    $$(this.element).append(suggestionsContainer.el);
 
     each(suggestions, (suggestion: Suggestion) => {
       const dom = suggestion.dom ? this.modifyDomFromExistingSuggestion(suggestion.dom) : this.createDomFromSuggestion(suggestion);
@@ -192,28 +224,76 @@ export class SuggestionsManager {
       dom.setAttribute('id', `magic-box-suggestion-${indexOf(suggestions, suggestion)}`);
       dom.setAttribute('role', 'option');
       dom.setAttribute('aria-selected', 'false');
+      dom.setAttribute('aria-label', dom.text());
 
       dom['suggestion'] = suggestion;
-      suggestionsContainer.append(dom.el);
+      this.suggestionsListbox.append(dom.el);
     });
+
+    $$(this.root).trigger(OmniboxEvents.querySuggestRendered);
+  }
+
+  public get selectedSuggestion(): Suggestion {
+    if (this.htmlElementIsSuggestion(this.keyboardFocusedSuggestion)) {
+      return this.returnMoved(this.keyboardFocusedSuggestion) as Suggestion;
+    }
+    return null;
   }
 
   private processKeyboardSelection(suggestion: HTMLElement) {
     this.addSelectedStatus(suggestion);
+    this.updateSelectedSuggestion(suggestion.innerText);
     this.keyboardFocusedSuggestion = suggestion;
     $$(this.inputManager.input).setAttribute('aria-activedescendant', $$(suggestion).getAttribute('id'));
   }
 
+  private processKeyboardPreviewSelection(suggestion: HTMLElement) {
+    this.addSelectedStatus(suggestion);
+    this.keyboardFocusedSuggestion = suggestion;
+  }
+
   private processMouseSelection(suggestion: HTMLElement) {
     this.addSelectedStatus(suggestion);
+    this.updateSelectedSuggestion(suggestion.innerText);
     this.keyboardFocusedSuggestion = null;
   }
 
   private buildSuggestionsContainer() {
     return $$('div', {
+      className: 'coveo-magicbox-suggestions',
       id: 'coveo-magicbox-suggestions',
       role: 'listbox'
     });
+  }
+
+  private buildPreviewContainer() {
+    return $$('div', {
+      className: 'coveo-preview-container'
+    }).el;
+  }
+
+  private get querySuggestPreviewComponent() {
+    const querySuggestPreviewElement: HTMLElement = $$(this.root).find(`.${Component.computeCssClassNameForType('QuerySuggestPreview')}`);
+    if (!querySuggestPreviewElement) {
+      return;
+    }
+    return Component.get(querySuggestPreviewElement);
+  }
+
+  private initPreviewForSuggestions(suggestions: Dom) {
+    const querySuggestPreview = this.querySuggestPreviewComponent;
+    if (!querySuggestPreview) {
+      return suggestions;
+    }
+
+    const suggestionContainerParent = $$('div', {
+      className: 'coveo-suggestion-container'
+    });
+
+    const previewContainer = this.buildPreviewContainer();
+    suggestionContainerParent.append(suggestions.el);
+    suggestionContainerParent.append(previewContainer);
+    return suggestionContainerParent;
   }
 
   private createDomFromSuggestion(suggestion: Suggestion) {
@@ -222,11 +302,11 @@ export class SuggestionsManager {
     });
 
     dom.on('click', () => {
-      suggestion.onSelect();
+      this.selectSuggestion(suggestion);
     });
 
     dom.on('keyboardSelect', () => {
-      suggestion.onSelect();
+      this.selectSuggestion(suggestion);
     });
 
     if (suggestion.html) {
@@ -236,6 +316,7 @@ export class SuggestionsManager {
 
     if (suggestion.text) {
       dom.text(suggestion.text);
+
       return dom;
     }
 
@@ -255,6 +336,17 @@ export class SuggestionsManager {
     return dom;
   }
 
+  private selectSuggestion(suggestion: Suggestion) {
+    suggestion.onSelect();
+    $$(this.root).trigger(OmniboxEvents.querySuggestSelection, <IQuerySuggestSelection>{ suggestion: suggestion.text });
+  }
+
+  private appendEmptySuggestionOption() {
+    // Accessibility tools reports that a listbox element must always have at least one child with an option
+    // Even if there is no suggestions to show.
+    this.suggestionsListbox.append($$('div', { role: 'option' }).el);
+  }
+
   private modifyDomFromExistingSuggestion(dom: HTMLElement) {
     // this need to be done if the selection is in cache and the dom is set in the suggestion
     this.removeSelectedStatus(dom);
@@ -263,29 +355,103 @@ export class SuggestionsManager {
     return $$(dom);
   }
 
-  private move(direction: 'up' | 'down') {
+  private move(direction: Direction) {
+    const previewSelectables = $$(this.element).findAll(`.coveo-preview-selectable`);
+    if (previewSelectables.length > 0) {
+      this.moveWithQuerySuggestPreview(direction);
+    } else {
+      this.moveWithinSuggestion(direction);
+    }
+  }
+
+  private moveWithinSuggestion(direction: Direction) {
     const currentlySelected = $$(this.element).find(`.${this.options.selectedClass}`);
     const selectables = $$(this.element).findAll(`.${this.options.selectableClass}`);
     const currentIndex = indexOf(selectables, currentlySelected);
 
-    let index = direction == 'up' ? currentIndex - 1 : currentIndex + 1;
-    if (index < -1) {
-      index = selectables.length - 1;
-    }
-    if (index > selectables.length) {
-      index = 0;
-    }
+    let index = direction === Direction.Up ? currentIndex - 1 : currentIndex + 1;
+    index = (index + selectables.length) % selectables.length;
 
-    const newlySelected = selectables[index];
+    this.lastSelectedSuggestion = selectables[index];
 
-    if (newlySelected) {
-      this.processKeyboardSelection(newlySelected);
+    this.selectQuerySuggest(this.lastSelectedSuggestion);
+  }
+
+  private selectQuerySuggest(suggestion: HTMLElement) {
+    if (suggestion) {
+      this.processKeyboardSelection(suggestion);
     } else {
       this.keyboardFocusedSuggestion = null;
       this.inputManager.input.removeAttribute('aria-activedescendant');
     }
 
-    return newlySelected;
+    return suggestion;
+  }
+
+  private moveWithQuerySuggestPreview(direction: Direction) {
+    const currentlySelected = $$(this.element).find(`.${this.options.selectedClass}`);
+    const omniboxSelectables = $$(this.element).findAll(`.${this.options.selectableClass}`);
+    const previewSelectables = $$(this.element).findAll(`.coveo-preview-selectable`);
+    const omniboxIndex = indexOf(omniboxSelectables, currentlySelected);
+    const previewIndex = indexOf(previewSelectables, currentlySelected);
+
+    const verticalMove = direction === Direction.Up || direction === Direction.Down;
+    const suggestionIsSelected = omniboxIndex > -1;
+    if (suggestionIsSelected && verticalMove) {
+      this.moveWithinSuggestion(direction);
+      return;
+    }
+
+    const noPreviewDisplayed = previewSelectables.length === 0;
+    const directionIsLeft = direction === Direction.Left;
+    const noPreviewSelected = previewIndex === -1;
+    if (noPreviewDisplayed || (directionIsLeft && noPreviewSelected)) {
+      return;
+    }
+    this.moveWithinPreview(direction);
+  }
+
+  private moveWithinPreview(direction: Direction) {
+    const previewSelectables = $$(this.element).findAll(`.coveo-preview-selectable`);
+
+    let newSelectedIndex;
+    if (direction === Direction.Up || direction === Direction.Down) {
+      newSelectedIndex = this.moveVerticallyInPreview(direction);
+    }
+
+    if (direction === Direction.Left || direction === Direction.Right) {
+      newSelectedIndex = this.moveHorizontallyInPreview(direction);
+    }
+    if (Utils.isNullOrUndefined(newSelectedIndex)) {
+      return;
+    }
+
+    newSelectedIndex = (newSelectedIndex + previewSelectables.length) % previewSelectables.length;
+    this.processKeyboardPreviewSelection(previewSelectables[newSelectedIndex]);
+  }
+
+  private moveVerticallyInPreview(direction: Direction) {
+    const currentlySelected = $$(this.element).find(`.${this.options.selectedClass}`);
+    const previewSelectables = $$(this.element).findAll(`.coveo-preview-selectable`);
+    const previewIndex = indexOf(previewSelectables, currentlySelected);
+
+    if (previewSelectables.length <= resultPerRow) {
+      return null;
+    }
+    const offset = Math.ceil(previewSelectables.length / 2);
+    return direction === Direction.Up ? previewIndex - offset : previewIndex + offset;
+  }
+
+  private moveHorizontallyInPreview(direction: Direction) {
+    const currentlySelected = $$(this.element).find(`.${this.options.selectedClass}`);
+    const previewSelectables = $$(this.element).findAll(`.coveo-preview-selectable`);
+    const previewIndex = indexOf(previewSelectables, currentlySelected);
+
+    if (previewIndex === 0 && direction === Direction.Left) {
+      this.selectQuerySuggest(this.lastSelectedSuggestion);
+      return;
+    }
+    return direction === Direction.Left ? previewIndex - 1 : previewIndex + 1;
   }
 
   private returnMoved(selected) {
@@ -312,7 +478,14 @@ export class SuggestionsManager {
       this.removeSelectedStatus(elem);
     }
     $$(suggestion).addClass(this.options.selectedClass);
+    this.updateSelectedSuggestion(suggestion.innerText);
     this.updateAreaSelectedIfDefined(suggestion, 'true');
+  }
+
+  private updateSelectedSuggestion(suggestion: string) {
+    $$(this.root).trigger(OmniboxEvents.querySuggestGetFocus, <IQuerySuggestSelection>{
+      suggestion
+    });
   }
 
   private removeSelectedStatus(suggestion: HTMLElement): void {
@@ -326,9 +499,22 @@ export class SuggestionsManager {
     }
   }
 
-  private addAccessibilityProperties() {
-    $$(this.magicBoxContainer).setAttribute('aria-expanded', 'false');
-    $$(this.magicBoxContainer).setAttribute('aria-haspopup', 'listbox');
-    this.inputManager.input.removeAttribute('aria-activedescendant');
+  private addAccessibilityPropertiesForCombobox() {
+    const combobox = $$(this.magicBoxContainer);
+    const input = $$(this.inputManager.input);
+
+    combobox.setAttribute('aria-expanded', 'false');
+    combobox.setAttribute('role', 'combobox');
+    combobox.setAttribute('aria-owns', 'coveo-magicbox-suggestions');
+    combobox.setAttribute('aria-haspopup', 'listbox');
+
+    input.el.removeAttribute('aria-activedescendant');
+    input.setAttribute('aria-controls', 'coveo-magicbox-suggestions');
+    input.setAttribute('aria-autocomplete', 'list');
+  }
+
+  private htmlElementIsSuggestion(selected: HTMLElement) {
+    const omniboxSelectables = $$(this.element).findAll(`.${this.options.selectableClass}`);
+    return indexOf(omniboxSelectables, selected) > -1;
   }
 }

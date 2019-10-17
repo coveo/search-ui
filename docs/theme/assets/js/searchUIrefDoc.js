@@ -1,13 +1,13 @@
 /**
  * Dynamically adjusts the separator (vertical line between TOC and content) position in the page.
  */
-var setSeparatorLeftPosition = function() {
-  var tocColumnWidth = document.getElementById("toc-column").offsetWidth;
-  document.getElementById("separator").style.left = tocColumnWidth + "px";
-};
+function setSeparatorLeftPosition() {
+  var tocColumnWidth = document.getElementById('toc-column').offsetWidth;
+  document.getElementById('separator').style.left = tocColumnWidth + 'px';
+}
 
-window.addEventListener("DOMContentLoaded", setSeparatorLeftPosition);
-window.addEventListener("resize", setSeparatorLeftPosition);
+window.addEventListener('DOMContentLoaded', setSeparatorLeftPosition);
+window.addEventListener('resize', setSeparatorLeftPosition);
 
 /**
  * Gets the user device or browser name.
@@ -15,22 +15,21 @@ window.addEventListener("resize", setSeparatorLeftPosition);
  * be recognized.
  */
 function getDeviceName() {
+  const userAgent = navigator.userAgent;
 
-  var userAgent = navigator.userAgent;
-
-  if (userAgent.match(/Android/i)) return "Android";
-  if (userAgent.match(/BlackBerry/i)) return "BlackBerry";
-  if (userAgent.match(/iPhone/i)) return "iPhone";
-  if (userAgent.match(/iPad/i)) return "iPad";
-  if (userAgent.match(/iPod/i)) return "iPod";
-  if (userAgent.match(/Opera Mini/i)) return "Opera Mini";
-  if (userAgent.match(/IEMobile/i)) return "IE Mobile";
-  if (userAgent.match(/Chrome/i)) return "Chrome";
-  if (userAgent.match(/MSIE/i) || userAgent.match(/Trident/i)) return "IE";
-  if (userAgent.match(/Opera/i)) return "Opera";
-  if (userAgent.match(/Firefox/i)) return "Firefox";
-  if (userAgent.match(/Safari/i)) return "Safari";
-  else return "Others";
+  if (userAgent.match(/Android/i)) return 'Android';
+  if (userAgent.match(/BlackBerry/i)) return 'BlackBerry';
+  if (userAgent.match(/iPhone/i)) return 'iPhone';
+  if (userAgent.match(/iPad/i)) return 'iPad';
+  if (userAgent.match(/iPod/i)) return 'iPod';
+  if (userAgent.match(/Opera Mini/i)) return 'Opera Mini';
+  if (userAgent.match(/IEMobile/i)) return 'IE Mobile';
+  if (userAgent.match(/Chrome/i)) return 'Chrome';
+  if (userAgent.match(/MSIE/i) || userAgent.match(/Trident/i)) return 'IE';
+  if (userAgent.match(/Opera/i)) return 'Opera';
+  if (userAgent.match(/Firefox/i)) return 'Firefox';
+  if (userAgent.match(/Safari/i)) return 'Safari';
+  else return 'Others';
 }
 
 /**
@@ -38,17 +37,17 @@ function getDeviceName() {
  * @returns {string} The formatted Breadcrumb string.
  */
 function formatBreadcrumbString() {
-
   // This is the array to format.
-  var toFormat = $('.tsd-breadcrumb li').text().split('\n');
+  let toFormat = $('.tsd-breadcrumb li')
+    .text()
+    .split('\n');
 
   // After an element has been trimmed, if it is an empty string, replace that element by a "/".
   // Otherwise, replace the original element in the array by its trimmed version.
   function formatString(element, index, array) {
-    if (element.trim() == "") {
-      array.splice(index, 1, "/");
-    }
-    else {
+    if (element.trim() == '') {
+      array.splice(index, 1, '/');
+    } else {
       array.splice(index, 1, element.trim());
     }
   }
@@ -56,7 +55,7 @@ function formatBreadcrumbString() {
   toFormat.forEach(formatString);
 
   // Join the array element into a single string and remove the commas.
-  return toFormat.join("");
+  return toFormat.join('');
 }
 
 /**
@@ -64,9 +63,11 @@ function formatBreadcrumbString() {
  * @returns {string} The correctly capitalized page title string.
  */
 function capitalizePageTitle() {
-
   // This is the string to capitalize (using title case).
-  var toCapitalize = $('.tsd-page-title h1').text().trim().split(" ");
+  let toCapitalize = $('.tsd-page-title h1')
+    .text()
+    .trim()
+    .split(' ');
 
   function capitalize(element, index, array) {
     array.splice(index, 1, element.replace(element.charAt(0), element.charAt(0).toUpperCase()));
@@ -74,9 +75,8 @@ function capitalizePageTitle() {
 
   toCapitalize.forEach(capitalize);
 
-  return toCapitalize.join(" ");
+  return toCapitalize.join(' ');
 }
-
 
 /**
  * Logs a custom event in the usage analytics
@@ -100,32 +100,32 @@ function logCustomEvent(type, value, token, clickedLabel, clickedTarget) {
         return;
       }
 
-      var uaData = {
+      const uaData = {
         eventType: type,
         eventValue: value,
         device: getDeviceName(),
-        mobile: isMobile(),
         customData: {
-          "coveoSite": location.hostname,
-          "jsBreadcrumb": formatBreadcrumbString(),
-          "referrer": document.referrer,
-          "referrerHost": document.referrer.split('/')[2],
-          "pageTitle": capitalizePageTitle(),
-          "pageURL": location.hostname + location.pathname,
-          "pageAudience": $('meta[name=audience]').attr("content"),
-          "pageLanguage": $('meta[name=lang]').attr("content"),
-          "pageUserAgent": navigator.userAgent,
-          "navLinkLabel": clickedLabel,
-          "navLinkTarget": clickedTarget
+          coveoSite: location.hostname,
+          jsBreadcrumb: formatBreadcrumbString(),
+          referrer: document.referrer,
+          referrerHost: document.referrer.split('/')[2],
+          pageTitle: capitalizePageTitle(),
+          pageURL: location.hostname + location.pathname,
+          pageAudience: $('meta[name=audience]').attr('content'),
+          pageLanguage: $('meta[name=lang]').attr('content'),
+          pageUserAgent: navigator.userAgent,
+          navLinkLabel: clickedLabel,
+          navLinkTarget: clickedTarget
         },
         anonymous: true,
         language: navigator.language || navigator.userLanguage,
-        originLevel1: "ExternalSearch",
+        originLevel1: 'ExternalSearch',
         originLevel2: location.hostname
       };
 
-      var customEventData = encodeURIComponent(JSON.stringify(uaData));
-      var requestUrl = 'https://usageanalytics.coveo.com/rest/v13/analytics/custom?access_token=' + token + "&customEvent=" + customEventData;
+      const customEventData = encodeURIComponent(JSON.stringify(uaData));
+      const requestUrl =
+        'https://usageanalytics.coveo.com/rest/v13/analytics/custom?access_token=' + token + '&customEvent=' + customEventData;
 
       $.ajax({
         url: requestUrl,
@@ -136,55 +136,42 @@ function logCustomEvent(type, value, token, clickedLabel, clickedTarget) {
   });
 }
 
+const uaToken = 'xxf4d1df7a-7916-481e-9917-f562dddc322d';
+
 // Logs a page visit in the usage analytics
 logCustomEvent('pageVisit', window.location.href, uaToken);
 
 // Logs custom page navigation usage analytics events
 $(document).on('click', 'a', function() {
-
-  var elem = $(this);
-  var label = elem.text().trim();
-  var target = elem.attr('href');
-  var eventType = "pageNav";
-  var navType = "";
+  const elem = $(this);
+  const label = elem.text().trim();
+  const target = elem.attr('href');
+  const eventType = 'pageNav';
+  let navType = '';
 
   // Coveo logo
   if (elem.hasClass('logo')) {
     navType = 'logo';
     label = '<Coveo Logo>';
-  }
-
-  // Community next to the logo
-  else if (elem.is('#communityLink')) {
+  } else if (elem.is('#communityLink')) {
+    // Community next to the logo
     navType = 'community';
-  }
-
-  // Site selection
-  else if (elem.parents('ul#siteSelection').length) {
+  } else if (elem.parents('ul#siteSelection').length) {
+    // Site selection
     navType = 'siteSelection';
-  }
-
-  // Secondary site selection
-  else if (elem.parents('ul#siteSelection2').length) {
+  } else if (elem.parents('ul#siteSelection2').length) {
+    // Secondary site selection
     navType = 'siteSelection';
-  }
-
-  // Breadcrumb
-  else if (elem.parents('.tsd-breadcrumb').length) {
+  } else if (elem.parents('.tsd-breadcrumb').length) {
+    // Breadcrumb
     navType = 'breadcrumb';
-  }
-
-  // TOC selection
-  else if (elem.parents('.tsd-navigation').length) {
+  } else if (elem.parents('.tsd-navigation').length) {
+    // TOC selection
     navType = 'toc';
-  }
-
-  // Links in the text
-  else if (elem.parents('section.tsd-panel').length) {
+  } else if (elem.parents('section.tsd-panel').length) {
+    // Links in the text
     navType = 'inTopic';
-  }
-
-  else {
+  } else {
     navType = 'unknown';
   }
   //console.log('Navigation type, label, target: ' + navType + ' | ' + label + ' | ' + target);

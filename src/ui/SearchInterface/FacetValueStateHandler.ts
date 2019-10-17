@@ -1,13 +1,12 @@
 import { QueryStateModel } from '../../models/QueryStateModel';
+import { ComponentsTypes } from '../../utils/ComponentsTypes';
 import { Component } from '../Base/Component';
-import { BaseComponent } from '../Base/BaseComponent';
 
 export class FacetValueStateHandler {
-  constructor(private componentsFetcher: (componentId: string) => Component[]) {}
+  constructor(public root: HTMLElement) {}
 
   public handleFacetValueState(stateToSet: Record<string, any>): void {
-    const facetRef = BaseComponent.getComponentRef('Facet');
-    const allFacets: Component[] = facetRef ? this.componentsFetcher(facetRef.ID) : [];
+    const allFacets = ComponentsTypes.getAllFacetsInstance(this.root);
     const fvState = stateToSet.fv;
     const facetValueStateToFacetState = new FacetValueStateToFacetStateTransformer(stateToSet, fvState, allFacets);
     const facetValueStateToHiddenQuery = new FacetValueStateToHiddenQueryTransformer(stateToSet, fvState);

@@ -1,7 +1,7 @@
 import 'styling/_Result';
 import 'styling/_ResultFrame';
 import 'styling/_ResultList';
-import { chain, compact, contains, each, flatten, map, pluck, sortBy, unique, without } from 'underscore';
+import { chain, compact, contains, each, flatten, map, unique, without } from 'underscore';
 import {
   IBuildingQueryEventArgs,
   IDuringQueryEventArgs,
@@ -22,7 +22,6 @@ import { IQueryResults } from '../../rest/QueryResults';
 import { DeviceUtils } from '../../utils/DeviceUtils';
 import { $$, Doc, Win } from '../../utils/Dom';
 import { DomUtils } from '../../utils/DomUtils';
-import { QueryUtils } from '../../utils/QueryUtils';
 import { Utils } from '../../utils/Utils';
 import { analyticsActionCauseList, IAnalyticsNoMeta } from '../Analytics/AnalyticsActionListMeta';
 import { Component } from '../Base/Component';
@@ -32,7 +31,7 @@ import { IInitializationParameters, IInitResult, Initialization } from '../Base/
 import { InitializationPlaceholder } from '../Base/InitializationPlaceholder';
 import { TemplateComponentOptions } from '../Base/TemplateComponentOptions';
 import { ResponsiveDefaultResultTemplate } from '../ResponsiveComponents/ResponsiveDefaultResultTemplate';
-import { ValidLayout } from '../ResultLayoutSelector/ValidLayout';
+import { ValidLayout, RendererValidLayout } from '../ResultLayoutSelector/ValidLayout';
 import { CoreHelpers } from '../Templates/CoreHelpers';
 import { DefaultRecommendationTemplate } from '../Templates/DefaultRecommendationTemplate';
 import { DefaultResultTemplate } from '../Templates/DefaultResultTemplate';
@@ -46,8 +45,12 @@ import { ResultListRenderer } from './ResultListRenderer';
 import { ResultListTableRenderer } from './ResultListTableRenderer';
 import ResultLayoutSelectorModule = require('../ResultLayoutSelector/ResultLayoutSelector');
 import { IResultListOptions } from './ResultListOptions';
+import { ResultListUtils } from '../../utils/ResultListUtils';
+import { TemplateToHtml, ITemplateToHtml } from '../Templates/TemplateToHtml';
 
 CoreHelpers.exportAllHelpersGlobally(window['Coveo']);
+
+type WaitAnimation = 'fade' | 'spinner' | 'none';
 
 /**
  * The `ResultList` component is responsible for displaying query results by applying one or several result templates
@@ -107,7 +110,7 @@ export class ResultList extends Component {
      * If you specify no value for this option, a `div` element will be dynamically created and appended to the result
      * list. This element will then be used as a result container.
      */
-    resultContainer: ComponentOptions.buildChildHtmlElementOption(),
+    resultsContainer: ComponentOptions.buildChildHtmlElementOption(),
     resultTemplate: TemplateComponentOptions.buildTemplateOption({ defaultFunction: ResultList.getDefaultTemplate }),
 
     /**
@@ -122,7 +125,7 @@ export class ResultList extends Component {
      *
      * Default value is `none`.
      */
-    waitAnimation: ComponentOptions.buildStringOption({ defaultValue: 'none' }),
+    waitAnimation: ComponentOptions.buildStringOption<WaitAnimation>({ defaultValue: 'none' }),
 
     /**
      * Specifies the element inside which to display the [`waitAnimation`]{@link ResultList.options.waitAnimation}.
@@ -133,7 +136,7 @@ export class ResultList extends Component {
      * Default value is the value of the [`resultContainer`]{@link ResultList.options.resultContainer} option.
      */
     waitAnimationContainer: ComponentOptions.buildChildHtmlElementOption({
-      postProcessing: (value, options: IResultListOptions) => value || options.resultContainer
+      postProcessing: (value, options: IResultListOptions) => value || options.resultsContainer
     }),
 
     /**
@@ -248,7 +251,7 @@ export class ResultList extends Component {
      *
      * Default value is `list`.
      */
-    layout: ComponentOptions.buildStringOption({
+    layout: ComponentOptions.buildStringOption<ValidLayout>({
       defaultValue: 'list',
       required: true
     }),
@@ -326,7 +329,7 @@ export class ResultList extends Component {
     this.bind.onQueryState(MODEL_EVENTS.CHANGE_ONE, QUERY_STATE_ATTRIBUTES.FIRST, () => this.handlePageChanged());
 
     this.resultContainer = this.initResultContainer();
-    Assert.exists(this.options.resultContainer);
+    Assert.exists(this.options.resultsContainer);
 
     this.initWaitAnimationContainer();
     Assert.exists(this.options.waitAnimationContainer);
@@ -398,22 +401,8 @@ export class ResultList extends Component {
    * @param results the result set to build an array of HTMLElement from.
    */
   public buildResults(results: IQueryResults): Promise<HTMLElement[]> {
-    const res: { elem: HTMLElement; idx: number }[] = [];
-    const resultsPromises = map(results.results, (result: IQueryResult, index: number) => {
-      return this.buildResult(result).then((resultElement: HTMLElement) => {
-        if (resultElement != null) {
-          res.push({ elem: resultElement, idx: index });
-        }
-        ResultList.resultCurrentlyBeingRendered = null;
-        return resultElement;
-      });
-    });
-
-    // We need to sort by the original index order, because in lazy loading mode, it's possible that results does not gets rendered
-    // in the correct order returned by the index, depending on the time it takes to load all the results component for a given result template
-    return Promise.all(resultsPromises).then(() => {
-      return pluck(sortBy(res, 'idx'), 'elem');
-    });
+    const layout = <RendererValidLayout>this.options.layout;
+    return this.templateToHtml.buildResults(results, layout, this.currentlyDisplayedResults);
   }
 
   /**
@@ -422,26 +411,8 @@ export class ResultList extends Component {
    * @returns {HTMLElement}
    */
   public buildResult(result: IQueryResult): Promise<HTMLElement> {
-    Assert.exists(result);
-    QueryUtils.setStateObjectOnQueryResult(this.queryStateModel.get(), result);
-    QueryUtils.setSearchInterfaceObjectOnQueryResult(this.searchInterface, result);
-    ResultList.resultCurrentlyBeingRendered = result;
-    return this.options.resultTemplate
-      .instantiateToElement(result, {
-        wrapInDiv: true,
-        checkCondition: true,
-        currentLayout: <ValidLayout>this.options.layout,
-        responsiveComponents: this.searchInterface.responsiveComponents
-      })
-      .then((resultElement: HTMLElement) => {
-        if (resultElement != null) {
-          Component.bindResultToElement(resultElement, result);
-        }
-        this.currentlyDisplayedResults.push(result);
-        return this.autoCreateComponentsInsideResult(resultElement, result).initResult.then(() => {
-          return resultElement;
-        });
-      });
+    const layout = <RendererValidLayout>this.options.layout;
+    return this.templateToHtml.buildResult(result, layout, this.currentlyDisplayedResults);
   }
 
   /**
@@ -469,40 +440,16 @@ export class ResultList extends Component {
       this.showWaitingAnimationForInfiniteScrolling();
     }
 
-    this.fetchingMoreResults = this.queryController.fetchMore(count);
-    this.fetchingMoreResults.then((data: IQueryResults) => {
-      Assert.exists(data);
-      this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(analyticsActionCauseList.pagerScrolling, {}, this.element);
-      const results = data.results;
-      this.reachedTheEndOfResults = count > data.results.length;
-      this.buildResults(data).then(async (elements: HTMLElement[]) => {
-        this.renderResults(elements, true);
-        each(results, result => {
-          this.currentlyDisplayedResults.push(result);
-        });
-        this.triggerNewResultsDisplayed();
-      });
-    });
+    return this.fetchAndRenderMoreResults(count);
+  }
 
-    this.fetchingMoreResults.finally(() => {
-      this.hideWaitingAnimationForInfiniteScrolling();
-      this.fetchingMoreResults = undefined;
-      Defer.defer(() => {
-        this.successiveScrollCount++;
-        if (this.successiveScrollCount <= ResultList.MAX_AMOUNT_OF_SUCESSIVE_REQUESTS) {
-          this.handleScrollOfResultList();
-        } else {
-          this.logger.info(
-            `Result list has triggered 5 consecutive queries to try and fill up the scrolling container, but it is still unable to do so`
-          );
-          this.logger.info(
-            `Try explicitly setting the 'data-infinite-scroll-container-selector' option on the result list. See : https://coveo.github.io/search-ui/components/resultlist.html#options.infinitescrollcontainer`
-          );
-        }
-      });
-    });
-
-    return this.fetchingMoreResults;
+  public get templateToHtml() {
+    const templateToHtmlArgs: ITemplateToHtml = {
+      resultTemplate: this.options.resultTemplate,
+      searchInterface: this.searchInterface,
+      queryStateModel: this.queryStateModel
+    };
+    return new TemplateToHtml(templateToHtmlArgs);
   }
 
   /**
@@ -544,8 +491,7 @@ export class ResultList extends Component {
   }
 
   protected autoCreateComponentsInsideResult(element: HTMLElement, result: IQueryResult): IInitResult {
-    Assert.exists(element);
-    return Initialization.automaticallyCreateComponentsInsideResult(element, result);
+    return this.templateToHtml.autoCreateComponentsInsideResult(element, result);
   }
 
   protected triggerNewResultDisplayed(result: IQueryResult, resultElement: HTMLElement) {
@@ -558,6 +504,49 @@ export class ResultList extends Component {
 
   protected triggerNewResultsDisplayed() {
     $$(this.element).trigger(ResultListEvents.newResultsDisplayed, {});
+  }
+
+  private async fetchAndRenderMoreResults(count: number): Promise<IQueryResults> {
+    this.fetchingMoreResults = this.queryController.fetchMore(count);
+
+    try {
+      const data = await this.fetchingMoreResults;
+      Assert.exists(data);
+      this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(analyticsActionCauseList.pagerScrolling, {}, this.element);
+
+      this.reachedTheEndOfResults = count > data.results.length;
+      this.renderNewResults(data);
+
+      this.resetStateAfterFetchingMoreResults();
+
+      return data;
+    } catch (e) {
+      this.resetStateAfterFetchingMoreResults();
+      return Promise.reject(e);
+    }
+  }
+
+  private async renderNewResults(data: IQueryResults) {
+    const elements = await this.buildResults(data);
+    this.renderResults(elements, true);
+    this.currentlyDisplayedResults.push(...data.results);
+    this.triggerNewResultsDisplayed();
+  }
+
+  private resetStateAfterFetchingMoreResults() {
+    this.hideWaitingAnimationForInfiniteScrolling();
+    this.fetchingMoreResults = undefined;
+    Defer.defer(() => {
+      this.successiveScrollCount++;
+      if (this.successiveScrollCount <= ResultList.MAX_AMOUNT_OF_SUCESSIVE_REQUESTS) {
+        this.handleScrollOfResultList();
+      } else {
+        this.logger.info(
+          `Result list has triggered 5 consecutive queries to try and fill up the scrolling container, but it is still unable to do so.
+          Try explicitly setting the 'data-infinite-scroll-container-selector' option on the result list. See : https://coveo.github.io/search-ui/components/resultlist.html#options.infinitescrollcontainer`
+        );
+      }
+    });
   }
 
   private handleDuringQuery() {
@@ -624,14 +613,7 @@ export class ResultList extends Component {
       return;
     }
 
-    if (this.options.infiniteScrollContainer instanceof Window) {
-      const win = <Window>this.options.infiniteScrollContainer;
-      const searchInterfacePosition = win.pageYOffset + this.searchInterface.element.getBoundingClientRect().top;
-      win.scrollTo(0, searchInterfacePosition);
-    } else {
-      const el = <HTMLElement>this.options.infiniteScrollContainer;
-      el.scrollTop = 0;
-    }
+    ResultListUtils.scrollToTop(this.root);
   }
 
   private handleNewQuery() {
@@ -648,7 +630,7 @@ export class ResultList extends Component {
     return this.searchInterface.getComponents('ResultLayoutSelector') as ResultLayoutSelectorModule.ResultLayoutSelector[];
   }
 
-  private handleBuildingQuery(args: IBuildingQueryEventArgs) {
+  protected handleBuildingQuery(args: IBuildingQueryEventArgs) {
     if (this.options.fieldsToInclude != null) {
       // remove the @
       args.queryBuilder.addFieldsToInclude(map(this.options.fieldsToInclude, field => field.substr(1)));
@@ -757,8 +739,12 @@ export class ResultList extends Component {
     });
   }
 
+  private get waitAnimation() {
+    return this.options.waitAnimation.toLowerCase() as WaitAnimation;
+  }
+
   private showWaitingAnimation() {
-    switch (this.options.waitAnimation.toLowerCase()) {
+    switch (this.waitAnimation) {
       case 'fade':
         $$(this.options.waitAnimationContainer).addClass('coveo-fade-out');
         break;
@@ -772,7 +758,7 @@ export class ResultList extends Component {
   }
 
   private hideWaitingAnimation() {
-    switch (this.options.waitAnimation.toLowerCase()) {
+    switch (this.waitAnimation) {
       case 'fade':
         $$(this.options.waitAnimationContainer).removeClass('coveo-fade-out');
         break;
@@ -808,16 +794,16 @@ export class ResultList extends Component {
   }
 
   private initResultContainer(): ResultContainer {
-    if (!this.options.resultContainer) {
+    if (!this.options.resultsContainer) {
       const elemType = this.options.layout === 'table' ? 'table' : 'div';
-      this.options.resultContainer = $$(elemType, { className: 'coveo-result-list-container' }).el;
+      this.options.resultsContainer = $$(elemType, { className: 'coveo-result-list-container' }).el;
       this.initResultContainerAddToDom();
     }
-    return new ResultContainer(this.options.resultContainer, this.searchInterface);
+    return new ResultContainer(this.options.resultsContainer, this.searchInterface);
   }
 
   protected initResultContainerAddToDom() {
-    this.element.appendChild(this.options.resultContainer);
+    this.element.appendChild(this.options.resultsContainer);
   }
 
   private initWaitAnimationContainer() {

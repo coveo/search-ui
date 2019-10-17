@@ -1,6 +1,8 @@
 import { Assert } from '../misc/Assert';
 import { IHighlight } from '../rest/Highlight';
 import { $$ } from '../utils/Dom';
+import { IQueryResult } from '../rest/QueryResult';
+import { Logger } from '../misc/Logger';
 import * as latinize from 'latinize';
 import * as _ from 'underscore';
 
@@ -120,6 +122,33 @@ export class StringUtils {
 
   static capitalizeFirstLetter(str: string) {
     return str.charAt(0).toUpperCase() + str.slice(1);
+  }
+
+  static buildStringTemplateFromResult(template: string, result: IQueryResult) {
+    if (!template) {
+      return '';
+    }
+    return template.replace(/\$\{(.*?)\}/g, (value: string) => {
+      let key = value.substring(2, value.length - 1);
+      let newValue = StringUtils.readFromObject(result, key);
+      if (!newValue) {
+        newValue = StringUtils.readFromObject(window, key);
+      }
+      if (!newValue) {
+        new Logger(this).warn(`${key} used in the ResultLink template is undefined for this result: ${result.title}`);
+      }
+      return newValue || value;
+    });
+  }
+
+  private static readFromObject(object: Object, key: string): string {
+    const firstPeriodIndex = key.indexOf('.');
+    if (object && firstPeriodIndex !== -1) {
+      let newKey = key.substring(firstPeriodIndex + 1);
+      key = key.substring(0, firstPeriodIndex);
+      return this.readFromObject(object[key], newKey);
+    }
+    return object ? object[key] : undefined;
   }
 
   public static accented: { [letter: string]: RegExp } = {

@@ -177,13 +177,12 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
     const customEvent = this.buildCustomEvent(actionCause, metaObject, element);
     this.triggerChangeAnalyticsCustomData('CustomEvent', metaObject, customEvent);
     this.checkToSendAnyPendingSearchAsYouType(actionCause);
-    const convertedCustomEvent = APIAnalyticsBuilder.convertCustomEventToAPI(customEvent);
     $$(this.rootElement).trigger(AnalyticsEvents.customEvent, <IAnalyticsCustomEventArgs>{
-      customEvent: convertedCustomEvent
+      customEvent: APIAnalyticsBuilder.convertCustomEventToAPI(customEvent)
     });
     $$(this.rootElement).trigger(AnalyticsEvents.analyticsEventReady, <IAnalyticsEventArgs>{
       event: 'CoveoCustomEvent',
-      coveoAnalyticsEventData: convertedCustomEvent
+      coveoAnalyticsEventData: customEvent
     });
     return this.sendToCloud ? this.endpoint.sendCustomEvent(customEvent) : Promise.resolve(null);
   }
@@ -250,13 +249,12 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
     Assert.isNonEmptyString(event.sourceName);
     Assert.isNumber(event.documentPosition);
 
-    const convertedDocumentViewEvent = APIAnalyticsBuilder.convertDocumentViewToAPI(event);
     $$(this.rootElement).trigger(AnalyticsEvents.documentViewEvent, {
-      documentViewEvent: convertedDocumentViewEvent
+      documentViewEvent: APIAnalyticsBuilder.convertDocumentViewToAPI(event)
     });
     $$(this.rootElement).trigger(AnalyticsEvents.analyticsEventReady, <IAnalyticsEventArgs>{
       event: 'CoveoClickEvent',
-      coveoAnalyticsEventData: convertedDocumentViewEvent
+      coveoAnalyticsEventData: event
     });
     return this.sendToCloud ? this.endpoint.sendDocumentViewEvent(event) : Promise.resolve(null);
   }
@@ -345,7 +343,9 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
     let modifiedMeta: IChangeableAnalyticsMetaObject = _.extend({}, meta);
     modifiedMeta['JSUIVersion'] = version.lib + ';' + version.product;
 
-    if (result) {
+    const contentIDsAreAlreadySet = modifiedMeta['contentIDKey'] && modifiedMeta['contentIDValue'];
+
+    if (!contentIDsAreAlreadySet && result) {
       let uniqueId = QueryUtils.getPermanentId(result);
       modifiedMeta['contentIDKey'] = uniqueId.fieldUsed;
       modifiedMeta['contentIDValue'] = uniqueId.fieldValue;

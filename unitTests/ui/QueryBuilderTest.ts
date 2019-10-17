@@ -117,6 +117,9 @@ export function QueryBuilderTest() {
       queryBuilder.context = {
         foo: 'bar'
       };
+      queryBuilder.commerce = {
+        catalogId: '14476bd7-0f84-4e05-b554-fb3ac03c0e76'
+      };
 
       expect(queryBuilder.build().pipeline).toBe('pipeline');
       expect(queryBuilder.build().timezone).toBe('timezone');
@@ -160,6 +163,9 @@ export function QueryBuilderTest() {
       expect(queryBuilder.build().enableDuplicateFiltering).toBe(true);
       expect(queryBuilder.build().context).toEqual({
         foo: 'bar'
+      });
+      expect(queryBuilder.build().commerce).toEqual({
+        catalogId: '14476bd7-0f84-4e05-b554-fb3ac03c0e76'
       });
     });
 
