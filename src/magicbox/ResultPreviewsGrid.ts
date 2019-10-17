@@ -9,9 +9,13 @@ export enum ResultPreviewsGridDirection {
   Right = 'Right'
 }
 
+export interface IProvidedSearchResultPreview {
+  inactiveElement: HTMLElement;
+  onSelect: () => void;
+}
+
 export interface ISearchResultPreview {
   element: HTMLElement;
-  onSelect: () => void;
 }
 
 interface IActiveSearchResultPreview extends ISearchResultPreview {
@@ -36,20 +40,15 @@ export class ResultPreviewsGrid {
     results: Dom;
   };
   private options: IResultPreviewsGridOptions;
-  private displayedPreviews: IActiveSearchResultPreview[] = [];
-  private keyboardSelectionMode: boolean = false;
+  private activePreviews: IActiveSearchResultPreview[] = [];
   private previewIdPrefix = 'magic-box-preview-';
 
-  public get isFocusKeyboardControlled() {
-    return this.keyboardSelectionMode;
-  }
-
   public get focusedPreview(): ISearchResultPreview {
-    if (this.displayedPreviews.length === 0) {
+    if (this.activePreviews.length === 0) {
       return null;
     }
-    const previewId = this.getFocusedPreviewPosition();
-    return this.displayedPreviews[previewId] || null;
+    const previewId = this.getFocusPosition();
+    return this.activePreviews[previewId] || null;
   }
 
   constructor(private parentContainer: HTMLElement, options: Partial<IResultPreviewsGridOptions> = {}) {
@@ -71,34 +70,30 @@ export class ResultPreviewsGrid {
     $$(this.root).on(ResultPreviewsGridEvents.PreviewBlurred, binding);
   }
 
-  public setDisplayedPreviews(previews: ISearchResultPreview[]) {
+  public displayPreviews(providedPreviews: IProvidedSearchResultPreview[]) {
     this.clearDisplayedPreviews();
-    if (previews.length === 0) {
+    if (providedPreviews.length === 0) {
       this.appendEmptySearchResultPreview();
       return;
     }
-    previews.forEach(preview =>
-      this.appendSearchResultPreview({
-        element: preview.element.cloneNode(true) as HTMLElement,
-        onSelect: preview.onSelect
-      })
-    );
+    this.activePreviews = providedPreviews.map((preview, id) => this.buildSearchResultPreview(preview, id));
+    this.activePreviews.forEach(preview => this.resultContainerElements.results.append(preview.element));
+    return this.activePreviews as ISearchResultPreview[];
   }
 
   public focusFirstPreview() {
-    if (this.displayedPreviews.length === 0) {
+    if (this.activePreviews.length === 0) {
       return;
     }
-    this.setFocusedPreviewFromPosition(0);
-    this.keyboardSelectionMode = true;
+    this.focusAtPosition(0);
   }
 
   public focusNextPreview(direction: ResultPreviewsGridDirection) {
-    const currentSelectionId = this.getFocusedPreviewPosition();
+    const currentSelectionId = this.getFocusPosition();
     if (currentSelectionId === null) {
       return;
     }
-    const totalLength = this.displayedPreviews.length;
+    const totalLength = this.activePreviews.length;
     const rowLength = this.calculatePreviewsPerRow();
     let newSelectionId = currentSelectionId;
     switch (direction) {
@@ -133,8 +128,7 @@ export class ResultPreviewsGrid {
     if (newSelectionId === currentSelectionId) {
       return;
     }
-    this.setFocusedPreviewFromPosition(newSelectionId);
-    this.keyboardSelectionMode = true;
+    this.focusAtPosition(newSelectionId);
   }
 
   public blurFocusedPreview() {
@@ -144,19 +138,6 @@ export class ResultPreviewsGrid {
     }
     this.blurElement(oldFocusedPreview.element);
     $$(this.root).trigger(ResultPreviewsGridEvents.PreviewBlurred, oldFocusedPreview);
-  }
-
-  public selectKeyboardFocusedPreview() {
-    if (!this.keyboardSelectionMode) {
-      return null;
-    }
-    const selection = this.focusedPreview;
-    if (!selection) {
-      return null;
-    }
-    this.blurFocusedPreview();
-    $$(selection.element).trigger('keyboardSelect');
-    return selection as ISearchResultPreview;
   }
 
   public setStatusMessage(text: string) {
@@ -183,12 +164,12 @@ export class ResultPreviewsGrid {
 
   private calculatePreviewsPerRow() {
     // To account for every CSS that may span previews over multiple rows, this solution was found: https://stackoverflow.com/a/49090306
-    if (this.displayedPreviews.length === 0) {
+    if (this.activePreviews.length === 0) {
       return 0;
     }
-    const firstVerticalOffset = this.displayedPreviews[0].element.offsetTop;
-    const firstIndexOnNextRow = findIndex(this.displayedPreviews, preview => preview.element.offsetTop !== firstVerticalOffset);
-    return firstIndexOnNextRow !== -1 ? firstIndexOnNextRow : this.displayedPreviews.length;
+    const firstVerticalOffset = this.activePreviews[0].element.offsetTop;
+    const firstIndexOnNextRow = findIndex(this.activePreviews, preview => preview.element.offsetTop !== firstVerticalOffset);
+    return firstIndexOnNextRow !== -1 ? firstIndexOnNextRow : this.activePreviews.length;
   }
 
   private setPreviewIdOfElement(element: HTMLElement, id: number) {
@@ -200,13 +181,7 @@ export class ResultPreviewsGrid {
     return strId ? parseInt(strId, 10) : null;
   }
 
-  private setFocusedPreviewFromElement(element: HTMLElement) {
-    this.blurFocusedPreview();
-    element.classList.add(this.options.selectedClass);
-    $$(this.root).trigger(ResultPreviewsGridEvents.PreviewFocused, this.displayedPreviews[this.getPreviewIdFromElement(element)]);
-  }
-
-  private getFocusedPreviewPosition() {
+  private getFocusPosition() {
     const focusedElements = this.resultContainerElements.results.findClass(this.options.selectedClass);
     if (focusedElements.length !== 1) {
       return null;
@@ -214,52 +189,53 @@ export class ResultPreviewsGrid {
     return this.getPreviewIdFromElement(focusedElements[0]);
   }
 
-  private setFocusedPreviewFromPosition(position: number) {
-    this.setFocusedPreviewFromElement(this.displayedPreviews[position].element);
+  private focusAtPosition(position: number) {
+    this.focusElement(this.activePreviews[position].element);
+  }
+
+  private focusElement(element: HTMLElement) {
+    this.blurFocusedPreview();
+    element.classList.add(this.options.selectedClass);
+    element.setAttribute('aria-selected', 'true');
+    $$(this.root).trigger(ResultPreviewsGridEvents.PreviewFocused, this.activePreviews[this.getPreviewIdFromElement(element)]);
   }
 
   private blurElement(element: HTMLElement) {
-    this.keyboardSelectionMode = false;
     element.classList.remove(this.options.selectedClass);
+    element.setAttribute('aria-selected', 'false');
   }
 
   private clearDisplayedPreviews() {
-    this.keyboardSelectionMode = false;
-    this.displayedPreviews.forEach(preview => preview.deactivate());
-    this.displayedPreviews = [];
+    this.activePreviews.forEach(preview => preview.deactivate());
+    this.activePreviews = [];
     this.resultContainerElements.results.empty();
   }
 
-  private appendSearchResultPreview(preview: ISearchResultPreview) {
-    this.setPreviewIdOfElement(preview.element, this.displayedPreviews.length);
-    preview.element.setAttribute('role', 'gridcell');
-    preview.element.classList.add(this.options.selectableClass);
+  private buildSearchResultPreview(providedPreview: IProvidedSearchResultPreview, id: number) {
+    const element = providedPreview.inactiveElement.cloneNode(true) as HTMLElement;
+    this.setPreviewIdOfElement(element, id);
+    element.setAttribute('role', 'gridcell');
+    element.setAttribute('aria-selected', 'false');
+    element.classList.add(this.options.selectableClass);
     const events: { name: string; funct: (e: Event) => void }[] = [
       {
         name: 'mouseover',
-        funct: () => {
-          this.keyboardSelectionMode = false;
-          this.setFocusedPreviewFromElement(preview.element);
-        }
+        funct: () => this.focusElement(element)
       },
       {
         name: 'mouseout',
-        funct: () => {
-          this.blurElement(preview.element);
-        }
+        funct: () => this.blurElement(element)
       },
       {
         name: 'keyboardSelect',
-        funct: () => preview.onSelect && preview.onSelect()
+        funct: () => providedPreview.onSelect && providedPreview.onSelect()
       }
     ];
-    events.forEach(event => $$(preview.element).on(event.name, event.funct));
-    const activePreview: IActiveSearchResultPreview = {
-      ...preview,
-      deactivate: () => events.forEach(event => preview.element.removeEventListener(event.name, event.funct))
+    events.forEach(event => $$(element).on(event.name, event.funct));
+    return {
+      element,
+      deactivate: () => events.forEach(event => element.removeEventListener(event.name, event.funct))
     };
-    this.displayedPreviews.push(activePreview);
-    this.resultContainerElements.results.append(preview.element);
   }
 
   private appendEmptySearchResultPreview() {

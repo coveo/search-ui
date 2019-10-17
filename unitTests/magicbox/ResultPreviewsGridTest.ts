@@ -2,7 +2,8 @@ import {
   ResultPreviewsGrid,
   ISearchResultPreview,
   ResultPreviewsGridDirection,
-  ResultPreviewsGridEvents
+  ResultPreviewsGridEvents,
+  IProvidedSearchResultPreview
 } from '../../src/magicbox/ResultPreviewsGrid';
 import { $$, Dom } from '../../src/utils/Dom';
 import { Assert } from '../../src/Core';
@@ -22,15 +23,15 @@ const previewElementProperties: HTMLProps = {
   `
 };
 
-function createPreview(id: number): ISearchResultPreview {
+function createPreview(id: number): IProvidedSearchResultPreview {
   return {
-    element: $$('div', { ...previewElementProperties, 'data-test-position': id.toString() }).el,
+    inactiveElement: $$('div', { ...previewElementProperties, 'data-test-position': id.toString() }).el,
     onSelect: jasmine.createSpy('onSelect')
   };
 }
 
 function createPreviews(count: number, startId = 0) {
-  const previews: ISearchResultPreview[] = [];
+  const previews: IProvidedSearchResultPreview[] = [];
   for (let i = startId; i < startId + count; i++) {
     previews.push(createPreview(i));
   }
@@ -67,25 +68,17 @@ export function ResultPreviewsGridTest() {
       it('does not have any focused preview when instantiated', () => {
         expect(grid.focusedPreview).toBeNull();
       });
-
-      it('is not in keyboard selection mode', () => {
-        expect(grid.isFocusKeyboardControlled).toBeFalsy();
-      });
-
-      it('returns null when calling keyboardSelect', () => {
-        expect(grid.selectKeyboardFocusedPreview()).toBeNull();
-      });
     });
 
     describe('with previews', () => {
       const focusClassName = 'abcd';
-      const previewsCount = 10;
       let grid: ResultPreviewsGrid;
-      let previews: ISearchResultPreview[];
+      const previewsCount = 10;
+      let providedPreviews: IProvidedSearchResultPreview[];
+      let activePreviews: ISearchResultPreview[];
       beforeEach(() => {
         grid = new ResultPreviewsGrid(root.el, { selectedClass: focusClassName });
-        previews = createPreviews(previewsCount);
-        grid.setDisplayedPreviews(previews);
+        activePreviews = grid.displayPreviews((providedPreviews = createPreviews(previewsCount)));
       });
 
       const focusFirst = () => {
@@ -119,57 +112,40 @@ export function ResultPreviewsGridTest() {
       }
 
       it(`doesn't alter the provided previews`, () => {
-        previews.forEach((preview, id) => {
-          expect(preview.element.outerHTML).toEqual(createPreview(id).element.outerHTML);
+        providedPreviews.forEach((preview, id) => {
+          expect(preview.inactiveElement.outerHTML).toEqual(createPreview(id).inactiveElement.outerHTML);
         });
       });
 
       it('appends as many previews as provided', () => {
-        expect(getPreviewElements().length).toEqual(previewsCount);
+        expect(getPreviewElements().length).toEqual(providedPreviews.length);
       });
 
-      it('appends copies of the provided previews in the original order', () => {
+      it('returns as many previews as provided', () => {
+        expect(activePreviews.length).toEqual(providedPreviews.length);
+      });
+
+      it('appends the returned preview in the same order', () => {
         const elements = getPreviewElements();
-        previews.forEach((preview, id) => {
-          expect(elements[id].dataset.testPosition).toEqual(id.toString());
+        activePreviews.forEach((activePreview, id) => {
+          expect(activePreview.element).toBe(elements[id]);
         });
       });
 
       it('replaces previews with newly provided ones', () => {
         const newPreviewsCount = 4;
-        const newPreviews = createPreviews(newPreviewsCount, previewsCount);
-        grid.setDisplayedPreviews(newPreviews);
+        const newPreviews = grid.displayPreviews(createPreviews(newPreviewsCount, providedPreviews.length));
 
         const elements = getPreviewElements();
         expect(elements.length).toEqual(newPreviewsCount);
         newPreviews.forEach((preview, id) => {
-          expect(elements[id].outerHTML).not.toEqual(preview.element.outerHTML);
-          expect(elements[id].dataset.testPosition).toEqual((id + previewsCount).toString());
+          expect(elements[id]).toBe(preview.element as HTMLTestPreviewElement);
         });
       });
 
       it('does not have any focused preview when instantiated', () => {
         expect(root.findClass(focusClassName).length).toEqual(0);
         expect(grid.focusedPreview).toBeNull();
-      });
-
-      it('is not in keyboard selection mode', () => {
-        expect(grid.isFocusKeyboardControlled).toBeFalsy();
-      });
-
-      it('returns null when calling keyboardSelect', () => {
-        expect(grid.selectKeyboardFocusedPreview()).toBeNull();
-      });
-
-      it('switches to keyboard selection mode when focusing a preview with focusFirstPreview', () => {
-        focusFirst();
-        expect(grid.isFocusKeyboardControlled).toBeTruthy();
-      });
-
-      it('switches to mouse selection mode when selecting a preview', () => {
-        focusFirst();
-        grid.selectKeyboardFocusedPreview();
-        expect(grid.isFocusKeyboardControlled).toBeFalsy();
       });
 
       describe('using the mouse', () => {
@@ -180,17 +156,6 @@ export function ResultPreviewsGridTest() {
         function mouseOut(element: HTMLTestPreviewElement) {
           $$(element).trigger('mouseout');
         }
-
-        it('switches to mouse selection mode when the mouse enters a preview', () => {
-          focusFirst();
-          mouseOver(getPreviewElements()[0]);
-          expect(grid.isFocusKeyboardControlled).toBeFalsy();
-        });
-
-        it('does not return a keyboard selection after the mouse enters a preview', () => {
-          mouseOver(getPreviewElements()[0]);
-          expect(grid.selectKeyboardFocusedPreview()).toBeNull();
-        });
 
         it('returns the preview focused by the mouse when accessing focusedPreview', () => {
           getPreviewElements().forEach(element => {
@@ -286,7 +251,7 @@ export function ResultPreviewsGridTest() {
             expectedTestPosition,
             `Wrong preview returned at ${strCoordinates}`
           );
-          const focusedItems = root.findClass(focusClassName) as HTMLTestPreviewElement[];
+          const focusedItems = root.findAll(`.${focusClassName}`) as HTMLTestPreviewElement[];
           expect(focusedItems.length).toEqual(1, `Multiple focused elements found at ${strCoordinates}`);
           expect(focusedItems[0].dataset.testPosition).toEqual(expectedTestPosition, `Wrong preview focused at ${strCoordinates}`);
 
@@ -295,13 +260,8 @@ export function ResultPreviewsGridTest() {
           expect(preview).toBe(focusedPreview, `previewFocused event called with wrong preview at ${strCoordinates}`);
 
           // Test keyboard selection
-          const selection = grid.selectKeyboardFocusedPreview();
-          expect(selection).not.toBeNull(`No selection returned at ${strCoordinates}`);
-          expect((selection.element as HTMLTestPreviewElement).dataset.testPosition).toEqual(
-            expectedTestPosition,
-            `Wrong preview selected at ${strCoordinates}`
-          );
-          expect(previews[expectedId].onSelect).toHaveBeenCalledTimes(1);
+          $$(focusedPreview.element).trigger('keyboardSelect');
+          expect(providedPreviews[expectedId].onSelect).toHaveBeenCalledTimes(1);
 
           // Focus on the original position, since selectKeyboardFocusedPreview blurs the preview.
           focusOn(column, row);
