@@ -56,7 +56,7 @@ export function ComponentEventsTest() {
       it('when triggering a JQuery click event with a param object, it calls the spy passing the param object', () => {
         $(test.env.root).trigger('click', { bar: 'baz' });
 
-        expect(spy).toHaveBeenCalledTimes(3);
+        expect(spy).toHaveBeenCalled();
         expect(spy).toHaveBeenCalledWith({ bar: 'baz' });
       });
 
