@@ -9,8 +9,15 @@ import { IAnalyticsNoMeta, analyticsActionCauseList } from '../Analytics/Analyti
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { Initialization } from '../Base/Initialization';
+import { QueryStateModel } from '../../models/QueryStateModel';
 
-export interface ISearchButtonOptions {}
+export interface ISearchButtonOptions {
+  searchBox?: ISearchButtonSearchBox;
+}
+
+export interface ISearchButtonSearchBox {
+  getText: () => string;
+}
 
 /**
  * The SearchButton component renders a search icon that the end user can click to trigger a new query.
@@ -67,8 +74,14 @@ export class SearchButton extends Component {
 
   private handleClick() {
     this.logger.debug('Performing query following button click');
+    this.updateQueryStateModelWithSearchBoxQuery();
     this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxSubmit, {});
     this.queryController.executeQuery({ origin: this });
+  }
+
+  private updateQueryStateModelWithSearchBoxQuery() {
+    const searchBox = this.options && this.options.searchBox;
+    searchBox && this.queryStateModel.set(QueryStateModel.attributesEnum.q, searchBox.getText());
   }
 }
 
