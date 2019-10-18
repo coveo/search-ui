@@ -12,10 +12,10 @@ import { Initialization } from '../Base/Initialization';
 import { QueryStateModel } from '../../models/QueryStateModel';
 
 export interface ISearchButtonOptions {
-  searchBox?: ISearchButtonSearchBox;
+  searchbox?: ISearchButtonSearchbox;
 }
 
-export interface ISearchButtonSearchBox {
+export interface ISearchButtonSearchbox {
   getText: () => string;
 }
 
@@ -74,14 +74,14 @@ export class SearchButton extends Component {
 
   private handleClick() {
     this.logger.debug('Performing query following button click');
-    this.updateQueryStateModelWithSearchBoxQuery();
+    this.updateQueryStateModelWithSearchboxQuery();
     this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxSubmit, {});
     this.queryController.executeQuery({ origin: this });
   }
 
-  private updateQueryStateModelWithSearchBoxQuery() {
-    const searchBox = this.options && this.options.searchBox;
-    searchBox && this.queryStateModel.set(QueryStateModel.attributesEnum.q, searchBox.getText());
+  private updateQueryStateModelWithSearchboxQuery() {
+    const searchbox = this.options && this.options.searchbox;
+    searchbox && this.queryStateModel.set(QueryStateModel.attributesEnum.q, searchbox.getText());
   }
 }
 

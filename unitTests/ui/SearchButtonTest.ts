@@ -29,16 +29,16 @@ export function SearchButtonTest() {
       expect(test.env.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(analyticsActionCauseList.searchboxSubmit, {});
     });
 
-    it(`when the #options.searchBox is defined, when clicking the button,
+    it(`when the #options.searchbox is defined, when clicking the button,
     it calls QueryStateModel #set to update the query`, () => {
       const options: ISearchButtonOptions = {
-        searchBox: { getText: () => 'some query' }
+        searchbox: { getText: () => 'some query' }
       };
 
       test = Mock.basicComponentSetup<SearchButton>(SearchButton, options);
       test.cmp.click();
 
-      expect(test.env.queryStateModel.set).toHaveBeenCalledWith(QueryStateModel.attributesEnum.q, options.searchBox.getText());
+      expect(test.env.queryStateModel.set).toHaveBeenCalledWith(QueryStateModel.attributesEnum.q, options.searchbox.getText());
     });
 
     it(`when the #options is null, when clicking the button, it does not throw an error`, () => {
