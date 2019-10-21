@@ -28,7 +28,8 @@ export function ComponentEventsTest() {
       $$(test.env.root).trigger('foo', { bar: 'baz' });
       expect(spy).toHaveBeenCalledWith({ bar: 'baz' });
     });
-    describe('when the event is  wrapped by jQuery and does not have any param', () => {
+
+    describe('when jQuery is loaded into the page', () => {
       beforeAll(() => {
         window['Coveo']['$'] = $;
       });
@@ -38,10 +39,14 @@ export function ComponentEventsTest() {
         test.cmp.bind.on(test.env.root, 'click', spy);
       });
 
-      it('when triggering a native click, it calls the spy with native event as the only parameter', function() {
+      afterAll(() => {
+        window['Coveo']['$'] = undefined;
+      });
+
+      it('when triggering a native click without params, it calls the spy with native event as the only parameter', function() {
         test.env.root.click();
 
-        expect(spy).toHaveBeenCalled();
+        expect(spy).toHaveBeenCalledTimes(1);
         expect(spy.calls.argsFor(0)[0] instanceof MouseEvent).toBeTruthy();
         expect((spy.calls.argsFor(0)[0] as MouseEvent).type).toBe('click');
       });
@@ -49,20 +54,15 @@ export function ComponentEventsTest() {
       it('when triggering a JQuery click event without params, it calls the spy without any params', () => {
         $(test.env.root).click();
 
-        expect(spy).toHaveBeenCalled();
-        expect(spy.calls.argsFor(1).length).toBe(0);
+        expect(spy).toHaveBeenCalledTimes(1);
+        expect(spy.calls.argsFor(0).length).toBe(0);
       });
 
       it('when triggering a JQuery click event with a param object, it calls the spy passing the param object', () => {
         $(test.env.root).trigger('click', { bar: 'baz' });
 
-        expect(spy).toHaveBeenCalled();
+        expect(spy).toHaveBeenCalledTimes(1);
         expect(spy).toHaveBeenCalledWith({ bar: 'baz' });
-      });
-
-      afterAll(() => {
-        // Clean-up.
-        window['Coveo']['$'] = undefined;
       });
     });
 
