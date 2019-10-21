@@ -153,7 +153,7 @@ export class Searchbox extends Component {
 
     const anchor = $$('a');
     this.element.appendChild(anchor.el);
-    this.searchButton = new SearchButton(anchor.el, { searchBox: this.searchbox }, this.bindings);
+    this.searchButton = new SearchButton(anchor.el, { searchbox: this.searchbox }, this.bindings);
   }
 
   private applyMagicBoxIcon() {
