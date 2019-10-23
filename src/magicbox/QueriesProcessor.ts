@@ -33,6 +33,9 @@ export class QueriesProcessor<ItemType> {
     });
   }
 
+  /**
+   * Overrides the previous queries and accumulates the result of promise arrays with a timeout.
+   */
   public async processQueries(queries: (ItemType[] | Promise<ItemType[]>)[]): Promise<QueryProcessResult<ItemType>> {
     this.overrideIfProcessing();
     let items: ItemType[] = [];
