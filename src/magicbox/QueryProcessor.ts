@@ -44,6 +44,7 @@ export class QueryProcessor<T> {
    */
   public async processQueries(queries: (T[] | Promise<T[]>)[]): Promise<IQueryProcessResult<T>> {
     this.overrideIfProcessing();
+    this.processedResults = [];
     const asyncQueries = queries.map(query => (query instanceof Promise ? query : Promise.resolve(query)));
 
     return racePromises(
