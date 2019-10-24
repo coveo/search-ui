@@ -1,79 +1,86 @@
-import { defaults } from 'underscore';
-
-export interface IQueriesProcessorOptions {
+export interface IQueryProcessorOptions {
   timeout: number;
 }
 
-export enum QueryProcessResultStatus {
-  Finished = 'finished',
-  TimedOut = 'timedout',
-  Overriden = 'overriden'
+export enum ProcessingStatus {
+  Finished,
+  TimedOut,
+  Overriden
 }
 
-export type QueryProcessResult<ItemType> =
-  | {
-      status: QueryProcessResultStatus.Finished | QueryProcessResultStatus.TimedOut;
-      items: ItemType[];
-    }
-  | {
-      status: QueryProcessResultStatus.Overriden;
+export interface IQueryResult<T> {
+  status: ProcessingStatus;
+  results?: T[];
+}
+
+/**
+ * IE11 equivalent of Promise.race
+ */
+function racePromises<T>(...promises: Thenable<T>[]): Promise<T> {
+  let done = false;
+  return new Promise<T>((resolve, reject) => {
+    const finish = (func: Function) => {
+      if (done) {
+        return;
+      }
+      done = true;
+      func();
     };
+    promises.forEach(promise => promise.then(result => finish(() => resolve(result))).catch(err => finish(() => reject(err))));
+  });
+}
 
-export class QueriesProcessor<ItemType> {
-  private static async streamQueries<ItemType>(queries: Promise<ItemType[]>[], output: ItemType[]) {
-    await Promise.all(queries.map(query => query.then(items => output.push(...items))));
-  }
+export class QueryProcessor<T> {
+  private override: () => void;
+  private options: IQueryProcessorOptions;
+  private processedResults: T[];
 
-  private override: () => any;
-  private options: IQueriesProcessorOptions;
-
-  constructor(options: Partial<IQueriesProcessorOptions> = {}) {
-    this.options = defaults(options, <IQueriesProcessorOptions>{
-      timeout: 500
-    });
+  constructor(options: Partial<IQueryProcessorOptions> = {}) {
+    this.options = { timeout: 500, ...options };
   }
 
   /**
    * Overrides the previous queries and accumulates the result of promise arrays with a timeout.
    */
-  public async processQueries(queries: (ItemType[] | Promise<ItemType[]>)[]): Promise<QueryProcessResult<ItemType>> {
+  public async processQueries(queries: (T[] | Promise<T[]>)[]): Promise<IQueryResult<T>> {
     this.overrideIfProcessing();
-    let items: ItemType[] = [];
+    const asyncQueries = queries.map(query => (query instanceof Promise ? query : Promise.resolve(query)));
 
-    const asynchronousQueries: Promise<ItemType[]>[] = [];
-    for (const query of queries) {
-      if (query instanceof Promise) {
-        asynchronousQueries.push(query);
-      } else {
-        items.push(...query);
-      }
-    }
-
-    let status: QueryProcessResultStatus;
-    if (asynchronousQueries.length > 0) {
-      status = await Promise.race([
-        QueriesProcessor.streamQueries(asynchronousQueries, items).then(() => QueryProcessResultStatus.Finished),
-        this.waitForOverride().then(() => QueryProcessResultStatus.Overriden),
-        this.waitForTimeout().then(() => QueryProcessResultStatus.TimedOut)
-      ]);
-      if (status === QueryProcessResultStatus.Overriden) {
-        return {
-          status
-        };
-      }
-    } else {
-      status = QueryProcessResultStatus.Finished;
-    }
-    return {
-      status,
-      items
-    };
+    return await racePromises(
+      this.resolveQueriesAndAccumulateResults(asyncQueries).then(() => this.buildProcessResults(ProcessingStatus.Finished)),
+      this.waitForOverride().then(() => this.buildProcessResults(ProcessingStatus.Overriden)),
+      this.waitForTimeout().then(() => this.buildProcessResults(ProcessingStatus.TimedOut))
+    );
   }
 
   public async overrideIfProcessing() {
     if (this.override) {
       this.override();
     }
+  }
+
+  private buildProcessResults(status: ProcessingStatus): IQueryResult<T> {
+    return {
+      status,
+      ...(this.statusHasResults(status) && { results: this.processedResults })
+    };
+  }
+
+  private statusHasResults(status: ProcessingStatus): status is ProcessingStatus.Finished | ProcessingStatus.TimedOut {
+    switch (status) {
+      case ProcessingStatus.Finished:
+      case ProcessingStatus.TimedOut:
+        return true;
+    }
+    return false;
+  }
+
+  /**
+   * Accumulates the results of queries in this.processedResults as they are resolved.
+   * When there are no unprocessed queries remaining, the returned promise is resolved.
+   */
+  private async resolveQueriesAndAccumulateResults(queries: Promise<T[]>[]) {
+    await Promise.all(queries.map(query => query.then(items => this.processedResults.push(...items))));
   }
 
   private waitForOverride() {
