@@ -8,7 +8,7 @@ export enum ProcessingStatus {
   Overriden
 }
 
-export interface IQueryResult<T> {
+export interface IQueryProcessResult<T> {
   status: ProcessingStatus;
   results?: T[];
 }
@@ -42,11 +42,11 @@ export class QueryProcessor<T> {
   /**
    * Overrides the previous queries and accumulates the result of promise arrays with a timeout.
    */
-  public async processQueries(queries: (T[] | Promise<T[]>)[]): Promise<IQueryResult<T>> {
+  public async processQueries(queries: (T[] | Promise<T[]>)[]): Promise<IQueryProcessResult<T>> {
     this.overrideIfProcessing();
     const asyncQueries = queries.map(query => (query instanceof Promise ? query : Promise.resolve(query)));
 
-    return await racePromises(
+    return racePromises(
       this.resolveQueriesAndAccumulateResults(asyncQueries).then(() => this.buildProcessResults(ProcessingStatus.Finished)),
       this.waitForOverride().then(() => this.buildProcessResults(ProcessingStatus.Overriden)),
       this.waitForTimeout().then(() => this.buildProcessResults(ProcessingStatus.TimedOut))
@@ -59,7 +59,7 @@ export class QueryProcessor<T> {
     }
   }
 
-  private buildProcessResults(status: ProcessingStatus): IQueryResult<T> {
+  private buildProcessResults(status: ProcessingStatus): IQueryProcessResult<T> {
     return {
       status,
       ...(this.statusHasResults(status) && { results: this.processedResults })
