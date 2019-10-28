@@ -1,24 +1,19 @@
 import { QueryProcessor, IQueryProcessResult, ProcessingStatus } from '../../src/magicbox/QueryProcessor';
+import { flatten } from 'lodash';
 
 function wait<T = void>(ms?: number, result?: T): Promise<T> {
   return new Promise(resolve => setTimeout(() => resolve(result), ms));
 }
 
-function flat<T>(bumpyArray: T[][]): T[] {
-  return bumpyArray.reduce((resultArray, array) => [...resultArray, ...array], []);
-}
-
-function expectArrayEqual<T>(actualArray: T[], expectedArray: T[]) {
-  if (!expect(actualArray).not.toBeNull()) {
-    return;
+async function tickAndResolve<T>(promise: Promise<T>, ms: number = 0): Promise<T> {
+  const date = new Date();
+  const startTick = date.getTime();
+  jasmine.clock().tick(ms);
+  const result = await promise;
+  if (date.getTime() - startTick !== 0) {
+    throw `Expected promise to be resolved after ticking ${ms}ms.`;
   }
-  if (!expect(actualArray.length).toEqual(expectedArray.length, 'Lengths are not equal')) {
-    return;
-  }
-  if (actualArray.length === 0) {
-    return;
-  }
-  actualArray.forEach((actual, i) => expect(actual).toEqual(expectedArray[i], `Values at ${i} are not equal`));
+  return result;
 }
 
 export function QueryProcessorTest() {
@@ -28,6 +23,17 @@ export function QueryProcessorTest() {
     });
 
     describe('calling processQueries', () => {
+      const timeBetweenQueries = 10;
+      const resolveTimes = [0, timeBetweenQueries, timeBetweenQueries * 2, timeBetweenQueries * 3];
+
+      beforeEach(() => {
+        jasmine.clock().install();
+      });
+
+      afterEach(() => {
+        jasmine.clock().uninstall();
+      });
+
       describe('without values', () => {
         let queryProcessor: QueryProcessor<string>;
         let returnedPromise: Promise<IQueryProcessResult<string>>;
@@ -38,27 +44,25 @@ export function QueryProcessorTest() {
 
         it('resolves immediately', async done => {
           const resolveProcess = jasmine.createSpy('resolveProcess');
-          returnedPromise.then(resolveProcess);
-          await wait();
+          await tickAndResolve(returnedPromise.then(resolveProcess));
           expect(resolveProcess).toHaveBeenCalled();
           done();
         });
 
         it('resolves with Finished status', async done => {
-          expect((await returnedPromise).status).toEqual(ProcessingStatus.Finished);
+          expect((await tickAndResolve(returnedPromise)).status).toEqual(ProcessingStatus.Finished);
           done();
         });
 
         it('resolves with an empty array', async done => {
-          expectArrayEqual((await returnedPromise).results, []);
+          expect((await tickAndResolve(returnedPromise)).results.length).toEqual(0);
           done();
         });
       });
 
-      const timeBetweenQueries = 10;
-      const resolveTimes = [0, timeBetweenQueries, timeBetweenQueries * 2, timeBetweenQueries * 3];
       describe(`with values delayed by ${resolveTimes.map(timeout => timeout + 'ms').join(', ')}`, () => {
-        const lastResolveTime = resolveTimes[resolveTimes.length - 1];
+        const resolveAllTime = resolveTimes[resolveTimes.length - 1];
+        const completionTimeout = resolveAllTime + timeBetweenQueries / 2;
         const stringArraysInResolvedOrder = [['abcd', 'efgh'], ['ijkl'], ['mnop', 'qrst'], ['uvwx']];
         let stringPromisesInResolvedOrder: (string[] | Promise<string[]>)[];
         let stringPromisesInParameterOrder: (string[] | Promise<string[]>)[];
@@ -78,98 +82,107 @@ export function QueryProcessorTest() {
           ];
         });
 
-        const whenToOverride = resolveTimes[2];
-        describe(`when overriding after ${whenToOverride}ms`, () => {
+        describe('when overriding after resolving the second promise', () => {
+          const whenToOverride = resolveTimes[1] + timeBetweenQueries / 2;
           let queryProcessor: QueryProcessor<string>;
           let returnedPromise: Promise<IQueryProcessResult<string>>;
           beforeEach(() => {
-            queryProcessor = new QueryProcessor({ timeout: lastResolveTime + timeBetweenQueries / 2 });
+            queryProcessor = new QueryProcessor({ timeout: completionTimeout });
             returnedPromise = queryProcessor.processQueries(stringPromisesInParameterOrder);
           });
-
-          function willBeOverriden() {
-            it('resolves with Overriden status', async done => {
-              expect((await returnedPromise).status).toEqual(ProcessingStatus.Overriden);
-              done();
-            });
-
-            it('resolves with no items', async done => {
-              expect((await returnedPromise).results).toBeFalsy();
-              done();
-            });
-          }
 
           describe('by calling overrideIfProcessing', () => {
             beforeEach(() => {
               wait(whenToOverride).then(() => queryProcessor.overrideIfProcessing());
             });
 
-            willBeOverriden();
+            it('resolves with Overriden status', async done => {
+              expect((await tickAndResolve(returnedPromise, whenToOverride)).status).toEqual(ProcessingStatus.Overriden);
+              done();
+            });
+
+            it('resolves with no items', async done => {
+              expect((await tickAndResolve(returnedPromise, whenToOverride)).results.length).toEqual(0);
+              done();
+            });
           });
 
           describe('by calling processQueries', () => {
             const newStringArraysInResolvedOrder = [['0️⃣1️⃣'], ['2️⃣3️⃣', '4️⃣']];
-            const newStringsInResolvedOrder = flat(newStringArraysInResolvedOrder);
+            const newStringsInResolvedOrder = flatten(newStringArraysInResolvedOrder);
             let newReturnedPromise: Promise<IQueryProcessResult<string>>;
             beforeEach(() => {
-              newReturnedPromise = new Promise(async resolve => {
-                await wait(whenToOverride);
-                resolve(
-                  await queryProcessor.processQueries([
-                    newStringArraysInResolvedOrder[0],
-                    wait(timeBetweenQueries, newStringArraysInResolvedOrder[1])
-                  ])
-                );
-              });
+              newReturnedPromise = wait(whenToOverride).then(() =>
+                queryProcessor.processQueries([
+                  newStringArraysInResolvedOrder[0],
+                  wait(timeBetweenQueries, newStringArraysInResolvedOrder[1])
+                ])
+              );
             });
 
-            willBeOverriden();
-
-            it('resolves new call with Finished status', async done => {
-              expect((await newReturnedPromise).status).toEqual(ProcessingStatus.Finished);
+            it('resolves with Overriden status', async done => {
+              expect((await tickAndResolve(returnedPromise, whenToOverride)).status).toEqual(ProcessingStatus.Overriden);
               done();
             });
 
-            it(`resolves new call with ${JSON.stringify(newStringsInResolvedOrder)}`, async done => {
-              expectArrayEqual((await newReturnedPromise).results, newStringsInResolvedOrder);
+            it('resolves with no items', async done => {
+              expect((await tickAndResolve(returnedPromise, whenToOverride)).results.length).toEqual(0);
+              done();
+            });
+
+            it('resolves new call with Finished status', async done => {
+              await tickAndResolve(returnedPromise, whenToOverride);
+              expect((await tickAndResolve(newReturnedPromise, timeBetweenQueries)).status).toEqual(ProcessingStatus.Finished);
+              done();
+            });
+
+            it(`resolves new call with results from the new promises`, async done => {
+              await tickAndResolve(returnedPromise, whenToOverride);
+              expect((await tickAndResolve(newReturnedPromise, timeBetweenQueries)).results).toEqual(newStringsInResolvedOrder);
               done();
             });
           });
         });
 
-        function withTimeout(timeout: number, lastResolvedPromiseIndex: number) {
-          describe(`with ${timeout}ms timeout`, () => {
-            let queryProcessor: QueryProcessor<string>;
-            let returnedPromise: Promise<IQueryProcessResult<string>>;
-            const expectedStringsInResolvedOrder = flat(stringArraysInResolvedOrder.slice(0, lastResolvedPromiseIndex + 1));
-            beforeEach(() => {
-              queryProcessor = new QueryProcessor({ timeout });
-              returnedPromise = queryProcessor.processQueries(stringPromisesInParameterOrder);
-            });
-
-            if (timeout >= lastResolveTime) {
-              it('resolves with Finished status', async done => {
-                expect((await returnedPromise).status).toEqual(ProcessingStatus.Finished);
-                done();
-              });
-            } else {
-              it('resolves with TimedOut status', async done => {
-                expect((await returnedPromise).status).toEqual(ProcessingStatus.TimedOut);
-                done();
-              });
-            }
-
-            it(`resolves with ${JSON.stringify(expectedStringsInResolvedOrder)}`, async done => {
-              expectArrayEqual((await returnedPromise).results, expectedStringsInResolvedOrder);
-              done();
-            });
+        describe('timing out after resolving the second promise', () => {
+          const timeout = resolveTimes[1] + timeBetweenQueries / 2;
+          let queryProcessor: QueryProcessor<string>;
+          let returnedPromise: Promise<IQueryProcessResult<string>>;
+          const expectedStringsInResolvedOrder = flatten(stringArraysInResolvedOrder.slice(0, 2));
+          beforeEach(() => {
+            queryProcessor = new QueryProcessor({ timeout });
+            returnedPromise = queryProcessor.processQueries(stringPromisesInParameterOrder);
           });
-        }
 
-        [
-          ...resolveTimes.slice(1).map(timeout => timeout - timeBetweenQueries / 2), // Timing out
-          resolveTimes[resolveTimes.length - 1] + timeBetweenQueries / 2 // Finishing
-        ].forEach((timeout, i) => withTimeout(timeout, i));
+          it('resolves with TimedOut status', async done => {
+            expect((await tickAndResolve(returnedPromise, timeout)).status).toEqual(ProcessingStatus.TimedOut);
+            done();
+          });
+
+          it('resolves with results from the first two promises', async done => {
+            expect((await tickAndResolve(returnedPromise, timeout)).results).toEqual(expectedStringsInResolvedOrder);
+            done();
+          });
+        });
+
+        describe('timing out after last promise', () => {
+          let queryProcessor: QueryProcessor<string>;
+          let returnedPromise: Promise<IQueryProcessResult<string>>;
+          beforeEach(() => {
+            queryProcessor = new QueryProcessor({ timeout: completionTimeout });
+            returnedPromise = queryProcessor.processQueries(stringPromisesInParameterOrder);
+          });
+
+          it('resolves with Finished status', async done => {
+            expect((await tickAndResolve(returnedPromise, resolveAllTime)).status).toEqual(ProcessingStatus.Finished);
+            done();
+          });
+
+          it('resolves with results from every promise', async done => {
+            expect((await tickAndResolve(returnedPromise, resolveAllTime)).results).toEqual(flatten(stringArraysInResolvedOrder));
+            done();
+          });
+        });
       });
     });
   });

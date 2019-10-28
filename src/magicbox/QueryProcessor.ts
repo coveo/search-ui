@@ -10,24 +10,15 @@ export enum ProcessingStatus {
 
 export interface IQueryProcessResult<T> {
   status: ProcessingStatus;
-  results?: T[];
+  results: T[];
 }
 
 /**
  * IE11 equivalent of Promise.race
+ * Adapted from Promise.race(iterable) polyfill on https://www.promisejs.org/api/
  */
-function racePromises<T>(...promises: Thenable<T>[]): Promise<T> {
-  let done = false;
-  return new Promise<T>((resolve, reject) => {
-    const finish = (func: Function) => {
-      if (done) {
-        return;
-      }
-      done = true;
-      func();
-    };
-    promises.forEach(promise => promise.then(result => finish(() => resolve(result))).catch(err => finish(() => reject(err))));
-  });
+function racePromises<T>(promises: Thenable<T>[]): Promise<T> {
+  return new Promise<T>((resolve, reject) => promises.forEach(value => Promise.resolve(value).then(resolve, reject)));
 }
 
 export class QueryProcessor<T> {
@@ -47,11 +38,11 @@ export class QueryProcessor<T> {
     this.processedResults = [];
     const asyncQueries = queries.map(query => (query instanceof Promise ? query : Promise.resolve(query)));
 
-    return racePromises(
-      this.resolveQueriesAndAccumulateResults(asyncQueries).then(() => this.buildProcessResults(ProcessingStatus.Finished)),
+    return racePromises([
+      this.accumulateResultsChronologically(asyncQueries).then(() => this.buildProcessResults(ProcessingStatus.Finished)),
       this.waitForOverride().then(() => this.buildProcessResults(ProcessingStatus.Overriden)),
       this.waitForTimeout().then(() => this.buildProcessResults(ProcessingStatus.TimedOut))
-    );
+    ]);
   }
 
   public async overrideIfProcessing() {
@@ -63,25 +54,13 @@ export class QueryProcessor<T> {
   private buildProcessResults(status: ProcessingStatus): IQueryProcessResult<T> {
     return {
       status,
-      ...(this.statusHasResults(status) && { results: this.processedResults })
+      results: status !== ProcessingStatus.Overriden ? this.processedResults : []
     };
   }
 
-  private statusHasResults(status: ProcessingStatus): status is ProcessingStatus.Finished | ProcessingStatus.TimedOut {
-    switch (status) {
-      case ProcessingStatus.Finished:
-      case ProcessingStatus.TimedOut:
-        return true;
-    }
-    return false;
-  }
-
-  /**
-   * Accumulates the results of queries in this.processedResults as they are resolved.
-   * When there are no unprocessed queries remaining, the returned promise is resolved.
-   */
-  private async resolveQueriesAndAccumulateResults(queries: Promise<T[]>[]) {
-    await Promise.all(queries.map(query => query.then(items => this.processedResults.push(...items))));
+  private async accumulateResultsChronologically(queries: Promise<T[]>[]) {
+    const output = this.processedResults;
+    await Promise.all(queries.map(query => query.then(items => output.push(...items))));
   }
 
   private waitForOverride() {
