@@ -1,10 +1,10 @@
 import { compact, defaults, each, indexOf } from 'underscore';
 import { IQuerySuggestSelection, OmniboxEvents } from '../events/OmniboxEvents';
 import { Component } from '../ui/Base/Component';
-import { resultPerRow } from '../ui/QuerySuggestPreview/QuerySuggestPreview';
 import { $$, Dom } from '../utils/Dom';
 import { Utils } from '../utils/Utils';
 import { InputManager } from './InputManager';
+import { findIndex } from 'lodash';
 
 export interface Suggestion {
   text?: string;
@@ -15,10 +15,16 @@ export interface Suggestion {
   onSelect?: () => void;
 }
 
+export interface ISearchResultPreview {
+  element: HTMLElement;
+  onSelect: () => void;
+}
+
 export interface SuggestionsManagerOptions {
-  selectableClass?: string;
+  suggestionClass?: string;
   selectedClass?: string;
   timeout?: number;
+  previewHeaderText?: string;
 }
 
 enum Direction {
@@ -28,15 +34,46 @@ enum Direction {
   Right = 'Right'
 }
 
+export interface IPopulateSearchResultPreviewsEventArgs {
+  suggestionText: string;
+  previewsQuery: Promise<ISearchResultPreview[]>;
+}
+
+export enum SuggestionsManagerEvents {
+  PopulateSearchResultPreviews = 'populateSearchResultPreviews'
+}
+
 export class SuggestionsManager {
   public hasSuggestions: boolean;
   private pendingSuggestion: Promise<Suggestion[]>;
   private options: SuggestionsManagerOptions;
-  private keyboardFocusedSuggestion: HTMLElement;
+  private keyboardFocusedElement: HTMLElement;
   private suggestionsListbox: Dom;
   private suggestionsPreviewContainer: Dom;
   private lastSelectedSuggestion: HTMLElement;
   private root: HTMLElement;
+  private containsPreviews: boolean;
+  private previewContainer: Dom;
+  private lastPreviewsQuery: Promise<ISearchResultPreview[]>;
+
+  public get hasFocus() {
+    return $$(this.element).findClass(this.options.selectedClass).length > 0;
+  }
+
+  public get hasPreviews() {
+    return !!this.suggestionsPreviewContainer;
+  }
+
+  private get resultPerRow() {
+    // To account for every CSS that may span previews over multiple rows, this solution was found: https://stackoverflow.com/a/49090306
+    const previewSelectables = $$(this.element).findAll(`.coveo-preview-selectable`);
+    if (previewSelectables.length === 0) {
+      return 0;
+    }
+    const firstVerticalOffset = previewSelectables[0].offsetTop;
+    const firstIndexOnNextRow = findIndex(previewSelectables, previewSelectable => previewSelectable.offsetTop !== firstVerticalOffset);
+    return firstIndexOnNextRow !== -1 ? firstIndexOnNextRow : previewSelectables.length;
+  }
 
   constructor(
     private element: HTMLElement,
@@ -46,8 +83,9 @@ export class SuggestionsManager {
   ) {
     this.root = Component.resolveRoot(element);
     this.options = defaults(options, <SuggestionsManagerOptions>{
-      selectableClass: 'magic-box-suggestion',
-      selectedClass: 'magic-box-selected'
+      suggestionClass: 'magic-box-suggestion',
+      selectedClass: 'magic-box-selected',
+      previewHeaderText: 'Query result items for'
     });
     // Put in a sane default, so as to not reject every suggestions if not set on initialization
     if (this.options.timeout == undefined) {
@@ -65,16 +103,15 @@ export class SuggestionsManager {
     });
 
     this.suggestionsListbox = this.buildSuggestionsContainer();
-    this.suggestionsPreviewContainer = this.initPreviewForSuggestions(this.suggestionsListbox);
-    $$(this.element).append(this.suggestionsPreviewContainer.el);
+    $$(this.element).append(this.suggestionsListbox.el);
     this.addAccessibilityPropertiesForCombobox();
     this.appendEmptySuggestionOption();
   }
 
   public handleMouseOver(e) {
     let target = $$(<HTMLElement>e.target);
-    let parents = target.parents(this.options.selectableClass);
-    if (target.hasClass(this.options.selectableClass)) {
+    let parents = target.parents(this.options.suggestionClass);
+    if (target.hasClass(this.options.suggestionClass)) {
       this.processMouseSelection(target.el);
     } else if (parents.length > 0 && this.element.contains(parents[0])) {
       this.processMouseSelection(parents[0]);
@@ -83,12 +120,12 @@ export class SuggestionsManager {
 
   public handleMouseOut(e) {
     let target = $$(<HTMLElement>e.target);
-    let targetParents = target.parents(this.options.selectableClass);
+    let targetParents = target.parents(this.options.suggestionClass);
 
     //e.relatedTarget is not available if moving off the browser window or is an empty object `{}` when moving out of namespace in LockerService.
     if (e.relatedTarget && $$(e.relatedTarget).isValid()) {
-      let relatedTargetParents = $$(<HTMLElement>e.relatedTarget).parents(this.options.selectableClass);
-      if (target.hasClass(this.options.selectedClass) && !$$(<HTMLElement>e.relatedTarget).hasClass(this.options.selectableClass)) {
+      let relatedTargetParents = $$(<HTMLElement>e.relatedTarget).parents(this.options.suggestionClass);
+      if (target.hasClass(this.options.selectedClass) && !$$(<HTMLElement>e.relatedTarget).hasClass(this.options.suggestionClass)) {
         this.removeSelectedStatus(target.el);
       } else if (relatedTargetParents.length == 0 && targetParents.length > 0) {
         this.removeSelectedStatus(targetParents[0]);
@@ -120,20 +157,21 @@ export class SuggestionsManager {
   }
 
   public selectAndReturnKeyboardFocusedElement(): HTMLElement {
-    const selected = this.keyboardFocusedSuggestion;
+    const selected = this.keyboardFocusedElement;
     if (selected != null) {
       $$(selected).trigger('keyboardSelect');
       // By definition, once an element has been "selected" with the keyboard,
       // it is not longer "active" since the event has been processed.
-      this.keyboardFocusedSuggestion = null;
+      this.keyboardFocusedElement = null;
     }
     return selected;
   }
 
   public clearKeyboardFocusedElement() {
-    this.keyboardFocusedSuggestion = null;
+    this.keyboardFocusedElement = null;
   }
 
+  // TODO: Replace this with a class that can accumulate results more cleanly (e.g., QueriesProcessor)
   public mergeSuggestions(suggestions: Array<Promise<Suggestion[]> | Suggestion[]>, callback?: (suggestions: Suggestion[]) => void) {
     let results: Suggestion[] = [];
     let timeout;
@@ -234,28 +272,28 @@ export class SuggestionsManager {
   }
 
   public get selectedSuggestion(): Suggestion {
-    if (this.htmlElementIsSuggestion(this.keyboardFocusedSuggestion)) {
-      return this.returnMoved(this.keyboardFocusedSuggestion) as Suggestion;
+    if (this.htmlElementIsSuggestion(this.keyboardFocusedElement)) {
+      return this.returnMoved(this.keyboardFocusedElement) as Suggestion;
     }
     return null;
   }
 
   private processKeyboardSelection(suggestion: HTMLElement) {
     this.addSelectedStatus(suggestion);
-    this.updateSelectedSuggestion(suggestion.innerText);
-    this.keyboardFocusedSuggestion = suggestion;
+    this.updateSelectedSuggestion(suggestion);
+    this.keyboardFocusedElement = suggestion;
     $$(this.inputManager.input).setAttribute('aria-activedescendant', $$(suggestion).getAttribute('id'));
   }
 
-  private processKeyboardPreviewSelection(suggestion: HTMLElement) {
-    this.addSelectedStatus(suggestion);
-    this.keyboardFocusedSuggestion = suggestion;
+  private processKeyboardPreviewSelection(preview: HTMLElement) {
+    this.addSelectedStatus(preview);
+    this.keyboardFocusedElement = preview;
   }
 
   private processMouseSelection(suggestion: HTMLElement) {
     this.addSelectedStatus(suggestion);
-    this.updateSelectedSuggestion(suggestion.innerText);
-    this.keyboardFocusedSuggestion = null;
+    this.updateSelectedSuggestion(suggestion);
+    this.keyboardFocusedElement = null;
   }
 
   private buildSuggestionsContainer() {
@@ -267,38 +305,35 @@ export class SuggestionsManager {
   }
 
   private buildPreviewContainer() {
-    return $$('div', {
-      className: 'coveo-preview-container'
-    }).el;
+    return (this.previewContainer = $$(
+      'div',
+      {
+        className: 'coveo-preview-container'
+      },
+      $$('h4', {
+        className: 'coveo-preview-header'
+      }),
+      $$('div', {
+        className: 'coveo-preview-results'
+      })
+    )).el;
   }
 
-  private get querySuggestPreviewComponent() {
-    const querySuggestPreviewElement: HTMLElement = $$(this.root).find(`.${Component.computeCssClassNameForType('QuerySuggestPreview')}`);
-    if (!querySuggestPreviewElement) {
-      return;
-    }
-    return Component.get(querySuggestPreviewElement);
-  }
-
-  private initPreviewForSuggestions(suggestions: Dom) {
-    const querySuggestPreview = this.querySuggestPreviewComponent;
-    if (!querySuggestPreview) {
-      return suggestions;
-    }
-
-    const suggestionContainerParent = $$('div', {
-      className: 'coveo-suggestion-container'
-    });
-
-    const previewContainer = this.buildPreviewContainer();
-    suggestionContainerParent.append(suggestions.el);
-    suggestionContainerParent.append(previewContainer);
-    return suggestionContainerParent;
+  private initPreviewForSuggestions() {
+    this.suggestionsPreviewContainer = $$(
+      'div',
+      {
+        className: 'coveo-suggestion-container'
+      },
+      this.suggestionsListbox.el,
+      this.buildPreviewContainer()
+    );
+    this.element.appendChild(this.suggestionsPreviewContainer.el);
   }
 
   private createDomFromSuggestion(suggestion: Suggestion) {
     const dom = $$('div', {
-      className: `magic-box-suggestion ${this.options.selectableClass}`
+      className: `magic-box-suggestion ${this.options.suggestionClass}`
     });
 
     dom.on('click', () => {
@@ -350,7 +385,7 @@ export class SuggestionsManager {
   private modifyDomFromExistingSuggestion(dom: HTMLElement) {
     // this need to be done if the selection is in cache and the dom is set in the suggestion
     this.removeSelectedStatus(dom);
-    const found = $$(dom).find('.' + this.options.selectableClass);
+    const found = $$(dom).find('.' + this.options.suggestionClass);
     this.removeSelectedStatus(found);
     return $$(dom);
   }
@@ -366,22 +401,20 @@ export class SuggestionsManager {
 
   private moveWithinSuggestion(direction: Direction) {
     const currentlySelected = $$(this.element).find(`.${this.options.selectedClass}`);
-    const selectables = $$(this.element).findAll(`.${this.options.selectableClass}`);
+    const selectables = $$(this.element).findAll(`.${this.options.suggestionClass}`);
     const currentIndex = indexOf(selectables, currentlySelected);
 
     let index = direction === Direction.Up ? currentIndex - 1 : currentIndex + 1;
     index = (index + selectables.length) % selectables.length;
 
-    this.lastSelectedSuggestion = selectables[index];
-
-    this.selectQuerySuggest(this.lastSelectedSuggestion);
+    this.selectQuerySuggest(selectables[index]);
   }
 
   private selectQuerySuggest(suggestion: HTMLElement) {
     if (suggestion) {
       this.processKeyboardSelection(suggestion);
     } else {
-      this.keyboardFocusedSuggestion = null;
+      this.keyboardFocusedElement = null;
       this.inputManager.input.removeAttribute('aria-activedescendant');
     }
 
@@ -390,7 +423,7 @@ export class SuggestionsManager {
 
   private moveWithQuerySuggestPreview(direction: Direction) {
     const currentlySelected = $$(this.element).find(`.${this.options.selectedClass}`);
-    const omniboxSelectables = $$(this.element).findAll(`.${this.options.selectableClass}`);
+    const omniboxSelectables = $$(this.element).findAll(`.${this.options.suggestionClass}`);
     const previewSelectables = $$(this.element).findAll(`.coveo-preview-selectable`);
     const omniboxIndex = indexOf(omniboxSelectables, currentlySelected);
     const previewIndex = indexOf(previewSelectables, currentlySelected);
@@ -435,7 +468,7 @@ export class SuggestionsManager {
     const previewSelectables = $$(this.element).findAll(`.coveo-preview-selectable`);
     const previewIndex = indexOf(previewSelectables, currentlySelected);
 
-    if (previewSelectables.length <= resultPerRow) {
+    if (previewSelectables.length <= this.resultPerRow) {
       return null;
     }
     const offset = Math.ceil(previewSelectables.length / 2);
@@ -471,21 +504,21 @@ export class SuggestionsManager {
     return null;
   }
 
-  private addSelectedStatus(suggestion: HTMLElement): void {
+  private addSelectedStatus(element: HTMLElement): void {
     const selected = this.element.getElementsByClassName(this.options.selectedClass);
     for (let i = 0; i < selected.length; i++) {
       const elem = <HTMLElement>selected.item(i);
       this.removeSelectedStatus(elem);
     }
-    $$(suggestion).addClass(this.options.selectedClass);
-    this.updateSelectedSuggestion(suggestion.innerText);
-    this.updateAreaSelectedIfDefined(suggestion, 'true');
+    $$(element).addClass(this.options.selectedClass);
+    this.updateAreaSelectedIfDefined(element, 'true');
   }
 
-  private updateSelectedSuggestion(suggestion: string) {
+  private updateSelectedSuggestion(suggestion: HTMLElement) {
     $$(this.root).trigger(OmniboxEvents.querySuggestGetFocus, <IQuerySuggestSelection>{
-      suggestion
+      suggestion: suggestion.innerText
     });
+    this.displaySearchResultPreviewsForSuggestion(suggestion);
   }
 
   private removeSelectedStatus(suggestion: HTMLElement): void {
@@ -514,7 +547,66 @@ export class SuggestionsManager {
   }
 
   private htmlElementIsSuggestion(selected: HTMLElement) {
-    const omniboxSelectables = $$(this.element).findAll(`.${this.options.selectableClass}`);
+    const omniboxSelectables = $$(this.element).findAll(`.${this.options.suggestionClass}`);
     return indexOf(omniboxSelectables, selected) > -1;
+  }
+
+  private getSearchResultPreviewsQuery(suggestion: HTMLElement) {
+    const populateEventArgs: IPopulateSearchResultPreviewsEventArgs = {
+      suggestionText: suggestion.innerText,
+      previewsQuery: null
+    };
+    $$(this.root).trigger(SuggestionsManagerEvents.PopulateSearchResultPreviews, populateEventArgs);
+    return populateEventArgs.previewsQuery;
+  }
+
+  // TODO: Move this to a seperate class
+  private updateSearchResultPreviewsHeader(text: string) {
+    this.previewContainer.findClass('coveo-preview-header')[0].innerText = text;
+  }
+
+  // TODO: Move this to a seperate class
+  private updateSearchResultPreviews(previews: ISearchResultPreview[]) {
+    const previewWidth = previews.length % 3 === 0 ? 33 : 50;
+    const resultsContainer = $$(this.previewContainer.findClass('coveo-preview-results')[0]);
+    resultsContainer.empty();
+    const previewStyle = `0 0 ${previewWidth}%`;
+    previews.forEach(preview => {
+      preview.element.style.flex = previewStyle;
+      resultsContainer.append(preview.element);
+      const elementDom = $$(preview.element);
+      elementDom.on('click', () => preview.onSelect());
+      elementDom.on('keyboardSelect', () => preview.onSelect());
+    });
+  }
+
+  private displaySuggestionPreviews(suggestion: HTMLElement, previews: ISearchResultPreview[]) {
+    if (!this.suggestionsPreviewContainer) {
+      this.initPreviewForSuggestions();
+    }
+    this.lastPreviewsQuery = null;
+    this.lastSelectedSuggestion = suggestion;
+    this.updateSearchResultPreviews(previews);
+    this.containsPreviews = previews.length > 0;
+    this.element.classList.toggle('magic-box-hasPreviews', this.containsPreviews);
+    this.updateSearchResultPreviewsHeader(this.containsPreviews ? `${this.options.previewHeaderText} "${suggestion.innerText}"` : '');
+  }
+
+  private async loadSearchResultPreviews(suggestion: HTMLElement, query: Promise<ISearchResultPreview[]>) {
+    this.lastPreviewsQuery = query;
+    const previews = await this.lastPreviewsQuery;
+    if (this.lastPreviewsQuery !== query) {
+      return;
+    }
+    if (!previews) {
+      return;
+    }
+    this.displaySuggestionPreviews(suggestion, previews);
+  }
+
+  private async displaySearchResultPreviewsForSuggestion(suggestion: HTMLElement) {
+    if (this.lastSelectedSuggestion !== suggestion) {
+      await this.loadSearchResultPreviews(suggestion, this.getSearchResultPreviewsQuery(suggestion));
+    }
   }
 }
