@@ -142,14 +142,7 @@ export class MagicBoxInstance {
     };
 
     this.inputManager.onkeydown = (key: number) => {
-      if (key === KEYBOARD.UP_ARROW || key === KEYBOARD.DOWN_ARROW) {
-        return false;
-      }
-      if (
-        this.suggestionsManager.hasFocus &&
-        this.suggestionsManager.hasPreviews &&
-        (key === KEYBOARD.LEFT_ARROW || key === KEYBOARD.RIGHT_ARROW)
-      ) {
+      if (this.shouldMoveInSuggestions(key)) {
         return false;
       }
       if (key === KEYBOARD.ENTER) {
@@ -173,7 +166,9 @@ export class MagicBoxInstance {
 
     this.inputManager.onkeyup = (key: number) => {
       this.onmove && this.onmove();
-      const allowHorizontalMovement = this.suggestionsManager.hasFocus && this.suggestionsManager.hasPreviews;
+      if (!this.shouldMoveInSuggestions(key)) {
+        return true;
+      }
       switch (key) {
         case KEYBOARD.UP_ARROW:
           this.suggestionsManager.moveUp();
@@ -182,19 +177,11 @@ export class MagicBoxInstance {
           this.suggestionsManager.moveDown();
           break;
         case KEYBOARD.LEFT_ARROW:
-          if (!allowHorizontalMovement) {
-            return true;
-          }
           this.suggestionsManager.moveLeft();
           break;
         case KEYBOARD.RIGHT_ARROW:
-          if (!allowHorizontalMovement) {
-            return true;
-          }
           this.suggestionsManager.moveRight();
           break;
-        default:
-          return true;
       }
       if (this.suggestionsManager.selectedSuggestion) {
         this.focusOnSuggestion(this.suggestionsManager.selectedSuggestion);
@@ -208,6 +195,20 @@ export class MagicBoxInstance {
     this.suggestionsManager.mergeSuggestions(this.getSuggestions != null ? this.getSuggestions() : [], suggestions => {
       this.updateSuggestion(suggestions);
     });
+  }
+
+  private shouldMoveInSuggestions(key: KEYBOARD) {
+    switch (key) {
+      case KEYBOARD.UP_ARROW:
+      case KEYBOARD.DOWN_ARROW:
+        return true;
+      case KEYBOARD.LEFT_ARROW:
+      case KEYBOARD.RIGHT_ARROW:
+        if (this.suggestionsManager.hasFocus && this.suggestionsManager.hasPreviews) {
+          return true;
+        }
+    }
+    return false;
   }
 
   private updateSuggestion(suggestions: Suggestion[]) {

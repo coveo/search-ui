@@ -5,6 +5,7 @@ import { $$, Dom } from '../utils/Dom';
 import { Utils } from '../utils/Utils';
 import { InputManager } from './InputManager';
 import { findIndex } from 'lodash';
+import { l } from '../strings/Strings';
 
 export interface Suggestion {
   text?: string;
@@ -64,7 +65,7 @@ export class SuggestionsManager {
     return !!this.suggestionsPreviewContainer;
   }
 
-  private get resultPerRow() {
+  private get numberOfResultsPerRow() {
     // To account for every CSS that may span previews over multiple rows, this solution was found: https://stackoverflow.com/a/49090306
     const previewSelectables = $$(this.element).findAll(`.coveo-preview-selectable`);
     if (previewSelectables.length === 0) {
@@ -85,7 +86,7 @@ export class SuggestionsManager {
     this.options = defaults(options, <SuggestionsManagerOptions>{
       suggestionClass: 'magic-box-suggestion',
       selectedClass: 'magic-box-selected',
-      previewHeaderText: 'Query result items for'
+      previewHeaderText: l('QuerySuggestPreview')
     });
     // Put in a sane default, so as to not reject every suggestions if not set on initialization
     if (this.options.timeout == undefined) {
@@ -310,7 +311,7 @@ export class SuggestionsManager {
       {
         className: 'coveo-preview-container'
       },
-      $$('h4', {
+      $$('div', {
         className: 'coveo-preview-header'
       }),
       $$('div', {
@@ -468,7 +469,7 @@ export class SuggestionsManager {
     const previewSelectables = $$(this.element).findAll(`.coveo-preview-selectable`);
     const previewIndex = indexOf(previewSelectables, currentlySelected);
 
-    if (previewSelectables.length <= this.resultPerRow) {
+    if (previewSelectables.length <= this.numberOfResultsPerRow) {
       return null;
     }
     const offset = Math.ceil(previewSelectables.length / 2);

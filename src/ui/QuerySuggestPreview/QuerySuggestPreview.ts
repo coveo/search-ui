@@ -17,10 +17,7 @@ import { SuggestionsManagerEvents, IPopulateSearchResultPreviewsEventArgs, ISear
 
 export interface IQuerySuggestPreview {
   numberOfPreviewResults?: number;
-  previewWidth?: number;
-  suggestionWidth?: number;
   resultTemplate?: Template;
-  headerText?: string;
   executeQueryDelay?: number;
 }
 
@@ -46,7 +43,13 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
       defaultValue: 3,
       min: 1,
       max: 6
-    })
+    }),
+    /**
+     *  The amount of focus time (in milliseconds) required on a query suggestion before requesting a preview of its top results.
+     *
+     * **Default:** `200`
+     */
+    executeQueryDelay: ComponentOptions.buildNumberOption({ defaultValue: 200 })
   };
 
   private timer: Promise<void>;
