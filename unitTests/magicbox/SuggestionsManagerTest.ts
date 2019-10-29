@@ -11,7 +11,7 @@ export function SuggestionsManagerTest() {
     let suggestionManager: SuggestionsManager;
     let suggestion: Dom;
     let elementInsideSuggestion: Dom;
-    let selectableClass = 'selectable';
+    let suggestionClass = 'selectable';
     let selectedClass = 'selected';
 
     beforeEach(() => {
@@ -20,7 +20,7 @@ export function SuggestionsManagerTest() {
 
       suggestionManager = new SuggestionsManager(suggestionContainer.el, document.createElement('div'), inputManager, {
         selectedClass,
-        selectableClass
+        suggestionClass
       });
     });
 
@@ -243,7 +243,7 @@ export function SuggestionsManagerTest() {
       suggestion = $$(document.createElement('div'));
       elementInsideSuggestion = $$(document.createElement('div'));
 
-      suggestion.addClass(selectableClass);
+      suggestion.addClass(suggestionClass);
       suggestion.setAttribute('aria-selected', 'false');
       suggestion.el.appendChild(elementInsideSuggestion.el);
       suggestionContainer.el.appendChild(suggestion.el);
