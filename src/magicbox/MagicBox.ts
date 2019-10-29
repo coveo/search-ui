@@ -87,7 +87,7 @@ export class MagicBoxInstance {
     this.element.appendChild(suggestionsContainer);
 
     this.suggestionsManager = new SuggestionsManager(suggestionsContainer, this.element, this.inputManager, {
-      selectableClass: this.options.selectableSuggestionClass,
+      suggestionClass: this.options.selectableSuggestionClass,
       selectedClass: this.options.selectedSuggestionClass,
       timeout: this.options.suggestionTimeout
     });
@@ -145,6 +145,13 @@ export class MagicBoxInstance {
       if (key === KEYBOARD.UP_ARROW || key === KEYBOARD.DOWN_ARROW) {
         return false;
       }
+      if (
+        this.suggestionsManager.hasFocus &&
+        this.suggestionsManager.hasPreviews &&
+        (key === KEYBOARD.LEFT_ARROW || key === KEYBOARD.RIGHT_ARROW)
+      ) {
+        return false;
+      }
       if (key === KEYBOARD.ENTER) {
         const suggestion = this.suggestionsManager.selectAndReturnKeyboardFocusedElement();
         if (suggestion == null) {
@@ -166,12 +173,25 @@ export class MagicBoxInstance {
 
     this.inputManager.onkeyup = (key: number) => {
       this.onmove && this.onmove();
+      const allowHorizontalMovement = this.suggestionsManager.hasFocus && this.suggestionsManager.hasPreviews;
       switch (key) {
         case KEYBOARD.UP_ARROW:
           this.suggestionsManager.moveUp();
           break;
         case KEYBOARD.DOWN_ARROW:
           this.suggestionsManager.moveDown();
+          break;
+        case KEYBOARD.LEFT_ARROW:
+          if (!allowHorizontalMovement) {
+            return true;
+          }
+          this.suggestionsManager.moveLeft();
+          break;
+        case KEYBOARD.RIGHT_ARROW:
+          if (!allowHorizontalMovement) {
+            return true;
+          }
+          this.suggestionsManager.moveRight();
           break;
         default:
           return true;
