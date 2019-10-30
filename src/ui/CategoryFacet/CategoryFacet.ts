@@ -9,8 +9,8 @@ import { Initialization } from '../Base/Initialization';
 import { exportGlobally } from '../../GlobalExports';
 import { CategoryFacetTemplates } from './CategoryFacetTemplates';
 import { CategoryValueRoot } from './CategoryValueRoot';
-import { OldCategoryFacetQueryController } from '../../controllers/OldCategoryFacetQueryController';
 import { CategoryFacetQueryController } from '../../controllers/CategoryFacetQueryController';
+import { DynamicCategoryFacetQueryController } from '../../controllers/DynamicCategoryFacetQueryController';
 import { SVGDom } from '../../utils/SVGDom';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { QueryStateModel } from '../../models/QueryStateModel';
@@ -320,8 +320,8 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     ...ResponsiveFacetOptions
   };
 
-  public oldCategoryFacetQueryController: OldCategoryFacetQueryController;
   public categoryFacetQueryController: CategoryFacetQueryController;
+  public dynamicCategoryFacetQueryController: DynamicCategoryFacetQueryController;
   public listenToQueryStateChange = true;
   public categoryFacetSearch: CategoryFacetSearch;
   public activeCategoryValue: CategoryValue | undefined;
@@ -331,6 +331,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   public static NUMBER_OF_VALUES_TO_KEEP_AFTER_TRUNCATING = 10;
   public isCollapsed: boolean;
   public header: DynamicFacetHeader;
+  public moreValuesAvailable = false;
 
   private categoryValueRoot: CategoryValueRoot;
   private categoryFacetTemplates: CategoryFacetTemplates;
@@ -345,9 +346,9 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     super(element, 'CategoryFacet', bindings);
     this.options = ComponentOptions.initComponentOptions(element, CategoryFacet, options);
 
-    this.oldCategoryFacetQueryController = new OldCategoryFacetQueryController(this);
-    this.isCollapsed = this.options.enableCollapse && this.options.collapsedByDefault;
     this.categoryFacetQueryController = new CategoryFacetQueryController(this);
+    this.dynamicCategoryFacetQueryController = new DynamicCategoryFacetQueryController(this);
+    this.isCollapsed = this.options.enableCollapse && this.options.collapsedByDefault;
     this.categoryFacetTemplates = new CategoryFacetTemplates();
     this.categoryValueRoot = new CategoryValueRoot($$(this.element), this.categoryFacetTemplates, this);
     this.categoryValueRoot.path = this.activePath;
@@ -394,13 +395,13 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   }
 
   public handleBuildingQuery(args: IBuildingQueryEventArgs) {
-    this.positionInQuery = this.oldCategoryFacetQueryController.putCategoryFacetInQueryBuilder(
+    this.positionInQuery = this.categoryFacetQueryController.putCategoryFacetInQueryBuilder(
       args.queryBuilder,
       this.activePath,
       this.numberOfValues + 1
     );
 
-    this.categoryFacetQueryController.putFacetIntoQueryBuilder(
+    this.dynamicCategoryFacetQueryController.putFacetIntoQueryBuilder(
       args.queryBuilder
     );
   }
@@ -720,7 +721,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
    */
   public async debugValue(value: string) {
     const queryBuilder = new QueryBuilder();
-    this.oldCategoryFacetQueryController.addDebugGroupBy(queryBuilder, value);
+    this.categoryFacetQueryController.addDebugGroupBy(queryBuilder, value);
     const queryResults = await this.queryController.getEndpoint().search(queryBuilder.build());
     CategoryFacetDebug.analyzeResults(queryResults.groupByResults[0], this.options.delimitingCharacter);
   }
