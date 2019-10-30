@@ -1,10 +1,11 @@
 import { CategoryFacet } from '../ui/CategoryFacet/CategoryFacet';
 import { Assert } from '../misc/Assert';
 import { QueryBuilder } from '../ui/Base/QueryBuilder';
-import { IFacetRequest } from '../rest/Facet/FacetRequest';
+import { IFacetRequest, IFacetRequestValue } from '../rest/Facet/FacetRequest';
 import { QueryEvents } from '../events/QueryEvents';
+import { CategoryFacetValue } from '../ui/CategoryFacet/CategoryFacetValues/CategoryFacetValue';
+import { FacetValueState } from '../rest/Facet/FacetValueState';
 
-// IDEA: maybe this could simply extend the DynamicFacetQueryController with only a few modifications
 export class CategoryFacetQueryController {
   private numberOfValuesToRequest: number;
   private freezeFacetOrder = false;
@@ -28,10 +29,6 @@ export class CategoryFacetQueryController {
     this.numberOfValuesToRequest = this.facet.options.numberOfValues;
   }
 
-  /**
-   * Build the facets request for the CategoryFacet, and insert it in the query builder
-   * @param queryBuilder
-   */
   public putFacetIntoQueryBuilder(queryBuilder: QueryBuilder) {
     Assert.exists(queryBuilder);
 
@@ -53,13 +50,26 @@ export class CategoryFacetQueryController {
     };
   }
 
-  public get currentValues() {
-    // TODO: map current values
-    return [];
+  public get currentValues(): IFacetRequestValue[] {
+    return this.facet.values.allFacetValues.map(requestValue => this.buildRequestValue(requestValue));
+  }
+
+  private buildRequestValue(facetValue: CategoryFacetValue): IFacetRequestValue {
+    return {
+      value: facetValue.value,
+      state: facetValue.state,
+      preventAutoSelect: facetValue.preventAutoSelect,
+      children: facetValue.children.map(requestValue => this.buildRequestValue(requestValue)),
+      retrieveChildren: this.shouldRetrieveChildren(facetValue),
+      retrieveCount: 3, // TODO: Move numberOfValuesToRequest to every child values
+    }
+  }
+
+  private shouldRetrieveChildren(facetValue: CategoryFacetValue) {
+    return !facetValue.children.length && facetValue.state === FacetValueState.selected;
   }
 
   private get numberOfValues() {
-    // TODO: consider current facet values
     return this.numberOfValuesToRequest;
   }
 }
