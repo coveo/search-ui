@@ -110,8 +110,8 @@ export class SuggestionsManager {
   }
 
   public handleMouseOver(e) {
-    let target = $$(<HTMLElement>e.target);
-    let parents = target.parents(this.options.suggestionClass);
+    const target = $$(<HTMLElement>e.target);
+    const parents = target.parents(this.options.suggestionClass);
     if (target.hasClass(this.options.suggestionClass)) {
       this.processMouseSelection(target.el);
     } else if (parents.length > 0 && this.element.contains(parents[0])) {
@@ -120,12 +120,12 @@ export class SuggestionsManager {
   }
 
   public handleMouseOut(e) {
-    let target = $$(<HTMLElement>e.target);
-    let targetParents = target.parents(this.options.suggestionClass);
+    const target = $$(<HTMLElement>e.target);
+    const targetParents = target.parents(this.options.suggestionClass);
 
     //e.relatedTarget is not available if moving off the browser window or is an empty object `{}` when moving out of namespace in LockerService.
     if (e.relatedTarget && $$(e.relatedTarget).isValid()) {
-      let relatedTargetParents = $$(<HTMLElement>e.relatedTarget).parents(this.options.suggestionClass);
+      const relatedTargetParents = $$(<HTMLElement>e.relatedTarget).parents(this.options.suggestionClass);
       if (target.hasClass(this.options.selectedClass) && !$$(<HTMLElement>e.relatedTarget).hasClass(this.options.suggestionClass)) {
         this.removeSelectedStatus(target.el);
       } else if (relatedTargetParents.length == 0 && targetParents.length > 0) {
@@ -561,12 +561,12 @@ export class SuggestionsManager {
     return populateEventArgs.previewsQuery;
   }
 
-  // TODO: Move this to a seperate class
+  // TODO: Move this to a separate class
   private updateSearchResultPreviewsHeader(text: string) {
     this.previewContainer.findClass('coveo-preview-header')[0].innerText = text;
   }
 
-  // TODO: Move this to a seperate class
+  // TODO: Move this to a separate class
   private updateSearchResultPreviews(previews: ISearchResultPreview[]) {
     const previewWidth = previews.length % 3 === 0 ? 33 : 50;
     const resultsContainer = $$(this.previewContainer.findClass('coveo-preview-results')[0]);
