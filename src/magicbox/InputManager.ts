@@ -187,9 +187,6 @@ export class InputManager {
     this.input.onkeyup = e => {
       this.keyup(e);
     };
-    this.input.onclick = () => {
-      this.onchangecursor();
-    };
     this.input.oncut = () => {
       setTimeout(() => {
         this.onInputChange();
