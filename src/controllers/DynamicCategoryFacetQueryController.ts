@@ -45,7 +45,7 @@ export class DynamicCategoryFacetQueryController {
 
     queryBuilder.facetRequests.push(this.facetRequest);
     if (this.freezeFacetOrder) {
-      queryBuilder.facetOptions.freezeFacetOrder = true;
+      queryBuilder.facetOptions.freezeFacetOrder = this.freezeFacetOrder;
     }
   }
 
@@ -55,7 +55,7 @@ export class DynamicCategoryFacetQueryController {
       field: this.facet.fieldName,
       type: this.facet.facetType,
       currentValues: this.currentValues,
-      numberOfValues: this.numberOfValues,
+      numberOfValues: this.numberOfValuesToRequest,
       delimitingCharacter: this.facet.options.delimitingCharacter,
       isFieldExpanded: this.numberOfValuesToRequest > this.facet.options.numberOfValues
     };
@@ -78,9 +78,5 @@ export class DynamicCategoryFacetQueryController {
 
   private shouldRetrieveChildren(facetValue: CategoryFacetValue) {
     return !facetValue.children.length && facetValue.state === FacetValueState.selected;
-  }
-
-  private get numberOfValues() {
-    return this.numberOfValuesToRequest;
   }
 }

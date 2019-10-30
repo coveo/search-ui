@@ -52,12 +52,12 @@ export interface IFacetRequestValue extends IRangeValue {
    */
   retrieveChildren?: boolean;
   /**
-   * The maximum number of children to retrieve for this hierarchical facet value. Ignored if `retrieveChildren` is `false`.
+   * The maximum number of children to retrieve for this category facet value. Ignored if `retrieveChildren` is `false`.
    */
   retrieveCount?: number;
   /**
-   * The children of this hierarchical facet value.
-   * Each child is a full-fledged hierarchical facet value that may in turn have its own children and so forth,
+   * The children of this category facet value.
+   * Each child is a full-fledged category facet value that may in turn have its own children and so forth,
    * up to a maximum depth of 50 levels
    */
   children?: IFacetRequestValue[];
