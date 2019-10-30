@@ -331,7 +331,6 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   public static NUMBER_OF_VALUES_TO_KEEP_AFTER_TRUNCATING = 10;
   public isCollapsed: boolean;
   public header: DynamicFacetHeader;
-  public moreValuesAvailable = false;
 
   private categoryValueRoot: CategoryValueRoot;
   private categoryFacetTemplates: CategoryFacetTemplates;
