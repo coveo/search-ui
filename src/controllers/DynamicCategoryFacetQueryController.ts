@@ -1,0 +1,76 @@
+import { CategoryFacet } from '../ui/CategoryFacet/CategoryFacet';
+import { Assert } from '../misc/Assert';
+import { QueryBuilder } from '../ui/Base/QueryBuilder';
+import { IFacetRequest, IFacetRequestValue } from '../rest/Facet/FacetRequest';
+import { QueryEvents } from '../events/QueryEvents';
+import { CategoryFacetValue } from '../ui/CategoryFacet/CategoryFacetValues/CategoryFacetValue';
+import { FacetValueState } from '../rest/Facet/FacetValueState';
+
+// TODO: rename to simply CategoryFacetQueryController
+export class DynamicCategoryFacetQueryController {
+  private numberOfValuesToRequest: number;
+  private freezeFacetOrder = false;
+
+  constructor(private facet: CategoryFacet) {
+    this.resetNumberOfValuesToRequest();
+    this.resetFreezeCurrentValuesDuringQuery();
+  }
+
+  private resetFreezeCurrentValuesDuringQuery() {
+    this.facet.bind.onRootElement(QueryEvents.duringQuery, () => {
+      this.freezeFacetOrder = false;
+    });
+  }
+
+  public increaseNumberOfValuesToRequest(additionalNumberOfValues: number) {
+    this.numberOfValuesToRequest += additionalNumberOfValues;
+  }
+
+  public resetNumberOfValuesToRequest() {
+    this.numberOfValuesToRequest = this.facet.options.numberOfValues;
+  }
+
+  public putFacetIntoQueryBuilder(queryBuilder: QueryBuilder) {
+    Assert.exists(queryBuilder);
+
+    queryBuilder.facetRequests.push(this.facetRequest);
+    if (this.freezeFacetOrder) {
+      queryBuilder.facetOptions.freezeFacetOrder = true;
+    }
+  }
+
+  public get facetRequest(): IFacetRequest {
+    return {
+      facetId: this.facet.options.id,
+      field: this.facet.fieldName,
+      type: this.facet.facetType,
+      currentValues: this.currentValues,
+      numberOfValues: this.numberOfValues,
+      delimitingCharacter: this.facet.options.delimitingCharacter,
+      isFieldExpanded: this.numberOfValuesToRequest > this.facet.options.numberOfValues
+    };
+  }
+
+  public get currentValues(): IFacetRequestValue[] {
+    return this.facet.values.allFacetValues.map(requestValue => this.buildRequestValue(requestValue));
+  }
+
+  private buildRequestValue(facetValue: CategoryFacetValue): IFacetRequestValue {
+    return {
+      value: facetValue.value,
+      state: facetValue.state,
+      preventAutoSelect: facetValue.preventAutoSelect,
+      children: facetValue.children.map(requestValue => this.buildRequestValue(requestValue)),
+      retrieveChildren: this.shouldRetrieveChildren(facetValue),
+      retrieveCount: 3, // TODO: Move numberOfValuesToRequest to every child values
+    }
+  }
+
+  private shouldRetrieveChildren(facetValue: CategoryFacetValue) {
+    return !facetValue.children.length && facetValue.state === FacetValueState.selected;
+  }
+
+  private get numberOfValues() {
+    return this.numberOfValuesToRequest;
+  }
+}
