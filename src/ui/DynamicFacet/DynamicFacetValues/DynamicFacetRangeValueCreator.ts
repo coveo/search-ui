@@ -44,7 +44,11 @@ export class DynamicFacetRangeValueCreator implements ValueCreator {
 
     return new DynamicFacetValue(
       {
-        ...responseValue,
+        state: responseValue.state,
+        numberOfResults: responseValue.numberOfResults,
+        start: responseValue.start,
+        end: responseValue.end,
+        endInclusive: responseValue.endInclusive,
         value,
         displayValue,
         position: index + 1
