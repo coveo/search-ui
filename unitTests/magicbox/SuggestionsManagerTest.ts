@@ -351,7 +351,7 @@ export function SuggestionsManagerTest() {
         it("doesn't select mouse focused suggestions", () => {
           suggestionElements.forEach((_, i) => {
             mouseFocusSuggestion(i);
-            expect(suggestionsManager.selectAndReturnKeyboardFocusedElement()).toBeNull();
+            expect(suggestionsManager.selectAndReturnKeyboardFocusedElement()).toBeFalsy();
           });
         });
 
