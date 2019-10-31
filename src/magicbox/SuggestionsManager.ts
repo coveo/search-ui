@@ -53,9 +53,9 @@ export class SuggestionsManager {
   private suggestionsPreviewContainer: Dom;
   private lastSelectedSuggestion: HTMLElement;
   private root: HTMLElement;
-  private containsPreviews: boolean;
-  private previewContainer: Dom;
   private lastPreviewsQuery: Promise<ISearchResultPreview[]>;
+  private resultPreviewsHeader: Dom;
+  private resultPreviewsContainer: Dom;
 
   public get hasFocus() {
     return $$(this.element).findClass(this.options.selectedClass).length > 0;
@@ -66,8 +66,7 @@ export class SuggestionsManager {
   }
 
   private get numberOfResultsPerRow() {
-    // To account for every CSS that may span previews over multiple rows, this solution was found: https://stackoverflow.com/a/49090306
-    const previewSelectables = $$(this.element).findAll(`.coveo-preview-selectable`);
+    const previewSelectables = $$(this.element).findAll('.coveo-preview-selectable');
     if (previewSelectables.length === 0) {
       return 0;
     }
@@ -172,7 +171,6 @@ export class SuggestionsManager {
     this.keyboardFocusedElement = null;
   }
 
-  // TODO: Replace this with a class that can accumulate results more cleanly (e.g., QueriesProcessor)
   public mergeSuggestions(suggestions: Array<Promise<Suggestion[]> | Suggestion[]>, callback?: (suggestions: Suggestion[]) => void) {
     let results: Suggestion[] = [];
     let timeout;
@@ -306,18 +304,18 @@ export class SuggestionsManager {
   }
 
   private buildPreviewContainer() {
-    return (this.previewContainer = $$(
+    return $$(
       'div',
       {
         className: 'coveo-preview-container'
       },
-      $$('div', {
+      (this.resultPreviewsHeader = $$('div', {
         className: 'coveo-preview-header'
-      }),
-      $$('div', {
+      })),
+      (this.resultPreviewsContainer = $$('div', {
         className: 'coveo-preview-results'
-      })
-    )).el;
+      }))
+    ).el;
   }
 
   private initPreviewForSuggestions() {
@@ -392,7 +390,7 @@ export class SuggestionsManager {
   }
 
   private move(direction: Direction) {
-    const previewSelectables = $$(this.element).findAll(`.coveo-preview-selectable`);
+    const previewSelectables = $$(this.element).findAll('.coveo-preview-selectable');
     if (previewSelectables.length > 0) {
       this.moveWithQuerySuggestPreview(direction);
     } else {
@@ -425,7 +423,7 @@ export class SuggestionsManager {
   private moveWithQuerySuggestPreview(direction: Direction) {
     const currentlySelected = $$(this.element).find(`.${this.options.selectedClass}`);
     const omniboxSelectables = $$(this.element).findAll(`.${this.options.suggestionClass}`);
-    const previewSelectables = $$(this.element).findAll(`.coveo-preview-selectable`);
+    const previewSelectables = $$(this.element).findAll('.coveo-preview-selectable');
     const omniboxIndex = indexOf(omniboxSelectables, currentlySelected);
     const previewIndex = indexOf(previewSelectables, currentlySelected);
 
@@ -446,7 +444,7 @@ export class SuggestionsManager {
   }
 
   private moveWithinPreview(direction: Direction) {
-    const previewSelectables = $$(this.element).findAll(`.coveo-preview-selectable`);
+    const previewSelectables = $$(this.element).findAll('.coveo-preview-selectable');
 
     let newSelectedIndex;
     if (direction === Direction.Up || direction === Direction.Down) {
@@ -466,7 +464,7 @@ export class SuggestionsManager {
 
   private moveVerticallyInPreview(direction: Direction) {
     const currentlySelected = $$(this.element).find(`.${this.options.selectedClass}`);
-    const previewSelectables = $$(this.element).findAll(`.coveo-preview-selectable`);
+    const previewSelectables = $$(this.element).findAll('.coveo-preview-selectable');
     const previewIndex = indexOf(previewSelectables, currentlySelected);
 
     if (previewSelectables.length <= this.numberOfResultsPerRow) {
@@ -478,7 +476,7 @@ export class SuggestionsManager {
 
   private moveHorizontallyInPreview(direction: Direction) {
     const currentlySelected = $$(this.element).find(`.${this.options.selectedClass}`);
-    const previewSelectables = $$(this.element).findAll(`.coveo-preview-selectable`);
+    const previewSelectables = $$(this.element).findAll('.coveo-preview-selectable');
     const previewIndex = indexOf(previewSelectables, currentlySelected);
 
     if (previewIndex === 0 && direction === Direction.Left) {
@@ -561,24 +559,21 @@ export class SuggestionsManager {
     return populateEventArgs.previewsQuery;
   }
 
-  // TODO: Move this to a separate class
   private updateSearchResultPreviewsHeader(text: string) {
-    this.previewContainer.findClass('coveo-preview-header')[0].innerText = text;
+    this.resultPreviewsHeader.text(text);
   }
 
-  // TODO: Move this to a separate class
-  private updateSearchResultPreviews(previews: ISearchResultPreview[]) {
-    const previewWidth = previews.length % 3 === 0 ? 33 : 50;
-    const resultsContainer = $$(this.previewContainer.findClass('coveo-preview-results')[0]);
-    resultsContainer.empty();
-    const previewStyle = `0 0 ${previewWidth}%`;
-    previews.forEach(preview => {
-      preview.element.style.flex = previewStyle;
-      resultsContainer.append(preview.element);
-      const elementDom = $$(preview.element);
-      elementDom.on('click', () => preview.onSelect());
-      elementDom.on('keyboardSelect', () => preview.onSelect());
-    });
+  private appendSearchResultPreview(preview: ISearchResultPreview, widthPercentage: number) {
+    preview.element.style.flex = `0 0 ${widthPercentage}%`;
+    this.resultPreviewsContainer.append(preview.element);
+    const elementDom = $$(preview.element);
+    elementDom.on('click', () => preview.onSelect());
+    elementDom.on('keyboardSelect', () => preview.onSelect());
+  }
+
+  private appendSearchResultPreviews(previews: ISearchResultPreview[]) {
+    this.resultPreviewsContainer.empty();
+    previews.forEach(preview => this.appendSearchResultPreview(preview, previews.length % 3 === 0 ? 33 : 50));
   }
 
   private displaySuggestionPreviews(suggestion: HTMLElement, previews: ISearchResultPreview[]) {
@@ -587,19 +582,16 @@ export class SuggestionsManager {
     }
     this.lastPreviewsQuery = null;
     this.lastSelectedSuggestion = suggestion;
-    this.updateSearchResultPreviews(previews);
-    this.containsPreviews = previews.length > 0;
-    this.element.classList.toggle('magic-box-hasPreviews', this.containsPreviews);
-    this.updateSearchResultPreviewsHeader(this.containsPreviews ? `${this.options.previewHeaderText} "${suggestion.innerText}"` : '');
+    this.appendSearchResultPreviews(previews);
+    const containsPreviews = previews.length > 0;
+    this.element.classList.toggle('magic-box-hasPreviews', containsPreviews);
+    this.updateSearchResultPreviewsHeader(containsPreviews ? `${this.options.previewHeaderText} "${suggestion.innerText}"` : '');
   }
 
-  private async loadSearchResultPreviews(suggestion: HTMLElement, query: Promise<ISearchResultPreview[]>) {
-    this.lastPreviewsQuery = query;
+  private async loadSearchResultPreviews(suggestion: HTMLElement) {
+    const query = (this.lastPreviewsQuery = this.getSearchResultPreviewsQuery(suggestion));
     const previews = await this.lastPreviewsQuery;
-    if (this.lastPreviewsQuery !== query) {
-      return;
-    }
-    if (!previews) {
+    if (this.lastPreviewsQuery !== query || !previews) {
       return;
     }
     this.displaySuggestionPreviews(suggestion, previews);
@@ -607,7 +599,7 @@ export class SuggestionsManager {
 
   private async displaySearchResultPreviewsForSuggestion(suggestion: HTMLElement) {
     if (this.lastSelectedSuggestion !== suggestion) {
-      await this.loadSearchResultPreviews(suggestion, this.getSearchResultPreviewsQuery(suggestion));
+      await this.loadSearchResultPreviews(suggestion);
     }
   }
 }
