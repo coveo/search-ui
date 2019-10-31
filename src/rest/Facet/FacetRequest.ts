@@ -53,6 +53,8 @@ export interface IFacetRequestValue extends IRangeValue {
   retrieveChildren?: boolean;
   /**
    * If [retrieveChildren]{@link IFacetRequestValue.retrieveChildren} is true, the maximum number of children to retrieve for this leaf value.
+   * 
+   * **Default (Search API):** `0`
    */
   retrieveCount?: number;
   /**
@@ -179,8 +181,6 @@ export interface IFacetRequest {
    * **Example:**
    * For a multi-value field containing the following values: `c; c&gt;folder2; c&gt;folder2&gt;folder3;`
    * The delimiting character is `&gt;`.
-   * For a hierarchical field containing the following values: `c;folder2;folder3;`
-   * The delimiting character is `;`.
    * 
    * **Default (Search API):** `;`
    */
