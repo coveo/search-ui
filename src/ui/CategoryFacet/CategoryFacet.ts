@@ -10,6 +10,7 @@ import { exportGlobally } from '../../GlobalExports';
 import { CategoryFacetTemplates } from './CategoryFacetTemplates';
 import { CategoryValueRoot } from './CategoryValueRoot';
 import { CategoryFacetQueryController } from '../../controllers/CategoryFacetQueryController';
+import { DynamicCategoryFacetQueryController } from '../../controllers/DynamicCategoryFacetQueryController';
 import { SVGDom } from '../../utils/SVGDom';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { QueryStateModel } from '../../models/QueryStateModel';
@@ -43,6 +44,7 @@ import { IStringMap } from '../../rest/GenericParam';
 import { DependsOnManager, IDependentFacet } from '../../utils/DependsOnManager';
 import { ResultListUtils } from '../../utils/ResultListUtils';
 import { CategoryFacetValuesTree } from './CategoryFacetValuesTree';
+import { FacetType } from '../../rest/Facet/FacetRequest';
 
 export interface ICategoryFacetOptions extends IResponsiveComponentOptions {
   id?: string;
@@ -319,6 +321,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   };
 
   public categoryFacetQueryController: CategoryFacetQueryController;
+  public dynamicCategoryFacetQueryController: DynamicCategoryFacetQueryController;
   public listenToQueryStateChange = true;
   public categoryFacetSearch: CategoryFacetSearch;
   public activeCategoryValue: CategoryValue | undefined;
@@ -342,8 +345,9 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     super(element, 'CategoryFacet', bindings);
     this.options = ComponentOptions.initComponentOptions(element, CategoryFacet, options);
 
-    this.isCollapsed = this.options.enableCollapse && this.options.collapsedByDefault;
     this.categoryFacetQueryController = new CategoryFacetQueryController(this);
+    this.dynamicCategoryFacetQueryController = new DynamicCategoryFacetQueryController(this);
+    this.isCollapsed = this.options.enableCollapse && this.options.collapsedByDefault;
     this.categoryFacetTemplates = new CategoryFacetTemplates();
     this.categoryValueRoot = new CategoryValueRoot($$(this.element), this.categoryFacetTemplates, this);
     this.categoryValueRoot.path = this.activePath;
@@ -369,6 +373,14 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     this.initQueryStateEvents();
   }
 
+  public get fieldName() {
+    return this.options.field.slice(1);
+  }
+
+  public get facetType() {
+    return FacetType.hierarchical;
+  }
+
   public isCurrentlyDisplayed() {
     return $$(this.element).isVisible();
   }
@@ -386,6 +398,10 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
       args.queryBuilder,
       this.activePath,
       this.numberOfValues + 1
+    );
+
+    this.dynamicCategoryFacetQueryController.putFacetIntoQueryBuilder(
+      args.queryBuilder
     );
   }
 

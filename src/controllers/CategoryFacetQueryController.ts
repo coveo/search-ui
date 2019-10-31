@@ -6,6 +6,7 @@ import { AllowedValuesPatternType } from '../rest/AllowedValuesPatternType';
 import { IGroupByValue } from '../rest/GroupByValue';
 import { Utils } from '../utils/Utils';
 
+// TODO: remove this file and any reference to it
 export class CategoryFacetQueryController {
   constructor(private categoryFacet: CategoryFacet) {}
 
