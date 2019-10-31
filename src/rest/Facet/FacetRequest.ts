@@ -46,13 +46,13 @@ export interface IFacetRequestValue extends IRangeValue {
    */
   preventAutoSelect?: boolean;
   /**
-   * Whether to retrieve the children of this hierarchical facet value. Can only be used on leaf values.
+   * Whether to retrieve the children of this category facet value. Can only be used on leaf values in the request (i.e., values with no current children).
    * 
    * **Default:** `false`
    */
   retrieveChildren?: boolean;
   /**
-   * The maximum number of children to retrieve for this category facet value. Ignored if `retrieveChildren` is `false`.
+   * If [retrieveChildren]{@link IFacetRequestValue.retrieveChildren} is true, the maximum number of children to retrieve for this leaf value.
    */
   retrieveCount?: number;
   /**
