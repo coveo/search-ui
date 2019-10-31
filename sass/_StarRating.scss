@@ -1,0 +1,33 @@
+$color-placeholder-star: #e1e1e1;
+$color-active-star: #d9af00;
+$color-number-reviews: gray;
+
+.CoveoStarRating {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+
+.coveo-star-rating-star + .coveo-star-rating-star {
+  margin-left: 2px;
+}
+
+.coveo-star-rating-star {
+  svg {
+    width: 15px;
+    height: 15px;
+    color: $color-placeholder-star;
+  }
+}
+
+.coveo-star-rating-star-active {
+  svg {
+    color: $color-active-star;
+  }
+}
+
+.coveo-star-rating-label {
+  margin-left: 5px;
+  font-size: 11px;
+  color: $color-number-reviews;
+}
