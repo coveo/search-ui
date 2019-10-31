@@ -13,11 +13,6 @@ import { IMockEnvironment, MockEnvironmentBuilder } from '../MockEnvironment';
 import { OmniboxEvents } from '../../src/Core';
 import { last, first, reverse } from 'lodash';
 
-// function tickAndResolvePromise<T>(promise: Promise<T>, ms = 0): Promise<T> {
-//   jasmine.clock().tick(ms);
-//   return promise;
-// }
-
 function deferAsync() {
   return Promise.resolve();
 }
