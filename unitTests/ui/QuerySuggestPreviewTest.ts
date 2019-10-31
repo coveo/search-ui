@@ -5,9 +5,9 @@ import { IOmniboxAnalytics } from '../../src/ui/Omnibox/OmniboxAnalytics';
 import { $$, HtmlTemplate, Component } from '../../src/Core';
 import { FakeResults } from '../Fake';
 import { IAnalyticsOmniboxSuggestionMeta, analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
-import { SuggestionsManagerEvents, IPopulateSearchResultPreviewsEventArgs } from '../../src/magicbox/SuggestionsManager';
 import { IQueryResults } from '../../src/rest/QueryResults';
 import { last } from 'underscore';
+import { IPopulateSearchResultPreviewsEventArgs, ResultPreviewsManagerEvents } from '../../src/magicbox/ResultPreviewsManager';
 
 export function initOmniboxAnalyticsMock(omniboxAnalytics: IOmniboxAnalytics) {
   const partialQueries: string[] = [];
@@ -57,7 +57,7 @@ export function QuerySuggestPreviewTest() {
       fakeResults = fakeResults || FakeResults.createFakeResults(test.cmp.options.numberOfPreviewResults);
       (test.env.searchEndpoint.search as jasmine.Spy).and.returnValue(Promise.resolve(fakeResults));
       const event: IPopulateSearchResultPreviewsEventArgs = { suggestionText, previewsQuery: null };
-      $$(testEnv.root).trigger(SuggestionsManagerEvents.PopulateSearchResultPreviews, event);
+      $$(testEnv.root).trigger(ResultPreviewsManagerEvents.PopulateSearchResultPreviews, event);
       return event.previewsQuery;
     }
 

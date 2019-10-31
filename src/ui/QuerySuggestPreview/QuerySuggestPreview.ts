@@ -13,7 +13,11 @@ import {
   analyticsActionCauseList,
   IAnalyticsClickQuerySuggestPreviewMeta
 } from '../Analytics/AnalyticsActionListMeta';
-import { SuggestionsManagerEvents, IPopulateSearchResultPreviewsEventArgs, ISearchResultPreview } from '../../magicbox/SuggestionsManager';
+import {
+  ResultPreviewsManagerEvents,
+  IPopulateSearchResultPreviewsEventArgs,
+  ISearchResultPreview
+} from '../../magicbox/ResultPreviewsManager';
 
 export interface IQuerySuggestPreview {
   numberOfPreviewResults?: number;
@@ -75,7 +79,7 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
       );
     }
 
-    this.bind.onRootElement(SuggestionsManagerEvents.PopulateSearchResultPreviews, (args: IPopulateSearchResultPreviewsEventArgs) =>
+    this.bind.onRootElement(ResultPreviewsManagerEvents.PopulateSearchResultPreviews, (args: IPopulateSearchResultPreviewsEventArgs) =>
       this.populateSearchResultPreviews(args)
     );
 

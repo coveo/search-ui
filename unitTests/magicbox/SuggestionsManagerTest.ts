@@ -1,17 +1,16 @@
 import { InputManager } from '../../src/magicbox/InputManager';
 import { MagicBoxInstance } from '../../src/magicbox/MagicBox';
-import {
-  SuggestionsManager,
-  SuggestionsManagerEvents,
-  IPopulateSearchResultPreviewsEventArgs,
-  ISearchResultPreview,
-  Suggestion
-} from '../../src/magicbox/SuggestionsManager';
+import { SuggestionsManager, Suggestion } from '../../src/magicbox/SuggestionsManager';
 import { $$, Dom } from '../../src/utils/Dom';
 import { Utils } from '../../src/utils/Utils';
 import { IMockEnvironment, MockEnvironmentBuilder } from '../MockEnvironment';
 import { OmniboxEvents } from '../../src/Core';
 import { last, first, reverse } from 'lodash';
+import {
+  ISearchResultPreview,
+  ResultPreviewsManagerEvents,
+  IPopulateSearchResultPreviewsEventArgs
+} from '../../src/magicbox/ResultPreviewsManager';
 
 function deferAsync() {
   return Promise.resolve();
@@ -426,7 +425,7 @@ export function SuggestionsManagerTest() {
           let populateSpy: jasmine.Spy;
           function bindPopulateEvent() {
             populateSpy = jasmine.createSpy('PopulateSearchResultPreviews');
-            $$(env.root).on(SuggestionsManagerEvents.PopulateSearchResultPreviews, (_, args: IPopulateSearchResultPreviewsEventArgs) => {
+            $$(env.root).on(ResultPreviewsManagerEvents.PopulateSearchResultPreviews, (_, args: IPopulateSearchResultPreviewsEventArgs) => {
               populateSpy(args.suggestionText);
               args.previewsQuery = createPreviewsPromise(textSuggestions.indexOf(args.suggestionText));
             });
