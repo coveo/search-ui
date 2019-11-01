@@ -11,19 +11,10 @@ const ACTIVE_STAR_CSS_CLASS = 'coveo-star-rating-star-active';
 const STAR_LABEL_CSS_CLASS = 'coveo-star-rating-label';
 
 const getActiveStars = (starRatingElement: HTMLElement) => {
-  const children = starRatingElement.children;
-  let numStars = 0;
-  let numActiveStars = 0;
-  let i = 0;
-  for (; i < children.length; i++) {
-    if (children.item(i).classList.contains(STAR_CSS_CLASS)) {
-      if (children.item(i).classList.contains(ACTIVE_STAR_CSS_CLASS)) {
-        numActiveStars++;
-      }
-      numStars++;
-    }
-  }
-  return { numStars: numStars, numActiveStars: numActiveStars };
+  return {
+    numStars: starRatingElement.querySelectorAll(`.${STAR_CSS_CLASS}`).length,
+    numActiveStars: starRatingElement.querySelectorAll(`.${ACTIVE_STAR_CSS_CLASS}`).length
+  };
 };
 
 export function StarRatingTest() {
@@ -49,7 +40,7 @@ export function StarRatingTest() {
     describe('When the component is instantiated', () => {
       it('should have correct class type', () => {
         initStarRatingComponent('0', '0');
-        expect(test.cmp.element.classList.contains(CONTAINER_CSS_CLASS)).toBeTruthy;
+        expect(test.cmp.element.classList.contains(CONTAINER_CSS_CLASS)).toBe(true);
       });
 
       describe('The star elements', () => {
@@ -67,7 +58,7 @@ export function StarRatingTest() {
           const testRating = -Number.MAX_VALUE;
           initStarRatingComponent(testRating.toString());
 
-          let starData = getActiveStars(test.cmp.element);
+          const starData = getActiveStars(test.cmp.element);
           expect(starData.numStars).toBe(5);
           expect(starData.numActiveStars).toBe(0);
         });
@@ -76,7 +67,7 @@ export function StarRatingTest() {
       describe('The label showing number of ratings', () => {
         it('should not display when no value is provided for number of ratings', () => {
           initStarRatingComponent((0).toString());
-          const children = test.cmp.element.getElementsByClassName(STAR_LABEL_CSS_CLASS);
+          const children = $$(test.cmp.element).findAll(`.${STAR_LABEL_CSS_CLASS}`);
           expect(children.length).toBe(0);
         });
 
@@ -84,8 +75,8 @@ export function StarRatingTest() {
           const testNumRatings = 0;
           initStarRatingComponent((0).toString(), testNumRatings.toString());
 
-          const testLabel = test.cmp.element.lastElementChild;
-          expect(testLabel.className).toEqual(STAR_LABEL_CSS_CLASS);
+          const testLabel = $$(test.cmp.element).find(`.${STAR_LABEL_CSS_CLASS}`);
+          expect(testLabel).toBeDefined();
           expect(testLabel.textContent).toEqual(l('No Ratings'));
         });
 
@@ -93,8 +84,8 @@ export function StarRatingTest() {
           const testNumRatings = -Number.MAX_VALUE;
           initStarRatingComponent((0).toString(), testNumRatings.toString());
 
-          const testLabel = test.cmp.element.lastElementChild;
-          expect(testLabel.className).toEqual(STAR_LABEL_CSS_CLASS);
+          const testLabel = $$(test.cmp.element).find(`.${STAR_LABEL_CSS_CLASS}`);
+          expect(testLabel).toBeDefined();
           expect(testLabel.textContent).toEqual(l('No Ratings'));
         });
 
@@ -102,8 +93,8 @@ export function StarRatingTest() {
           const testNumRatings = Number.MAX_VALUE;
           initStarRatingComponent((0).toString(), testNumRatings.toString());
 
-          const testLabel = test.cmp.element.lastElementChild;
-          expect(testLabel.className).toEqual(STAR_LABEL_CSS_CLASS);
+          const testLabel = $$(test.cmp.element).find(`.${STAR_LABEL_CSS_CLASS}`);
+          expect(testLabel).toBeDefined();
           expect(testLabel.textContent).toEqual(`(${testNumRatings})`);
         });
       });
@@ -114,7 +105,7 @@ export function StarRatingTest() {
           for (let i = 0; i <= newScale; i++) {
             initStarRatingComponent(i.toString(), undefined, newScale);
 
-            let starData = getActiveStars(test.cmp.element);
+            const starData = getActiveStars(test.cmp.element);
             expect(starData.numStars).toBe(5);
             expect(starData.numActiveStars).toBe(Math.floor(i / 2));
           }
