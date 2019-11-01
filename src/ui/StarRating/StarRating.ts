@@ -24,10 +24,8 @@ export interface IStarRatingOptions {
  */
 export class StarRating extends Component {
   static ID = 'StarRating';
-  private result: IQueryResult;
   private rating: number;
   private numberOfRatings: number;
-  private ratingScale: number;
 
   static doExport = () => {
     exportGlobally({
@@ -68,7 +66,7 @@ export class StarRating extends Component {
     public element: HTMLElement,
     public options: IStarRatingOptions,
     public bindings?: IComponentBindings,
-    result?: IQueryResult
+    private result?: IQueryResult
   ) {
     super(element, StarRating.ID);
     this.options = ComponentOptions.initComponentOptions(element, StarRating, options);
@@ -77,8 +75,7 @@ export class StarRating extends Component {
       this.logger.error('No result passed to Star Rating component.');
       return;
     }
-    this.result = result;
-    this.renderComponent(element);
+    this.renderComponent();
   }
 
   private get configuredFieldsHaveValues(): boolean {
@@ -90,38 +87,38 @@ export class StarRating extends Component {
     }
 
     this.rating = Number(rawRating) < 0 ? 0 : Number(rawRating) || 0;
-    this.ratingScale = this.options.ratingScale;
+    const scale = this.options.ratingScale;
 
-    if (this.ratingScale < this.rating || this.ratingScale <= 0) {
-      this.logger.error(`The specified Star Rating of {${this.ratingScale}} scale is invalid.`);
+    if (scale < this.rating || scale <= 0) {
+      this.logger.error(`The specified Star Rating of {${scale}} scale is invalid.`);
       return false;
     } else {
-      this.rating = Math.floor(this.rating * (DEFAULT_SCALE / this.ratingScale));
+      this.rating = Math.floor(this.rating * (DEFAULT_SCALE / scale));
       return true;
     }
   }
 
-  private renderComponent(element: HTMLElement) {
+  private renderComponent() {
     if (this.configuredFieldsHaveValues) {
       for (let starNumber = 1; starNumber <= DEFAULT_SCALE; starNumber++) {
-        this.renderStar(element, starNumber <= this.rating, starNumber);
+        this.renderStar(starNumber <= this.rating, starNumber);
       }
       if (this.numberOfRatings !== undefined) {
-        this.renderNumberOfReviews(element, this.numberOfRatings);
+        this.renderNumberOfReviews(this.numberOfRatings);
       }
     }
   }
 
-  private renderStar(element: HTMLElement, isChecked: boolean, value: number) {
+  private renderStar(isChecked: boolean, value: number) {
     const star = $$('span', { className: 'coveo-star-rating-star' }, SVGIcons.icons.star);
     star.toggleClass('coveo-star-rating-star-active', isChecked);
-    element.appendChild(star.el);
+    this.element.appendChild(star.el);
   }
 
-  private renderNumberOfReviews(element: HTMLElement, value: number) {
+  private renderNumberOfReviews(value: number) {
     const numberString = $$('span', { className: 'coveo-star-rating-label' });
     numberString.text(value > 0 ? `(${value})` : l('No Ratings'));
-    element.appendChild(numberString.el);
+    this.element.appendChild(numberString.el);
   }
 }
 
