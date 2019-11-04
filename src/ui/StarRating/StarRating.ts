@@ -18,9 +18,9 @@ export interface IStarRatingOptions {
   ratingScale?: number;
 }
 /**
- * The `StarRating` component renders a 5-star rating widget for commerce results.
+ * The `StarRating` component renders a five-star rating widget for use in commerce result templates.
  *
- * This component is a result template component (see [Result Templates](https://developers.coveo.com/x/aIGfAQ)).
+ * @isresulttemplatecomponent
  */
 export class StarRating extends Component {
   static ID = 'StarRating';
@@ -33,27 +33,28 @@ export class StarRating extends Component {
     });
   };
 
+  /**
+   * @componentOptions
+   */
   static options: IStarRatingOptions = {
     /**
-     * Specifies the rating to be displayed as stars.
-     *
-     * Specifying a value for this parameter is required in order for the StarRating component to work.
+     * Specifies the rating to be displayed as stars. If the rating is on a different scale than 0-5, a `ratingScale` value must be provided.
      */
-    ratingField: ComponentOptions.buildFieldOption({ defaultValue: '@rating', required: true }),
+    ratingField: ComponentOptions.buildFieldOption({ required: true }),
 
     /**
-     * Specifies the value to be displayed in the label indicating the quantity of ratings.
+     * A numeric field whose value should be used to display the total number of ratings label for the result item.
      *
-     * If unspecified, no label is shown. If a value of `0` is provided, a `(No Ratings)` label is displayed instead.
+     * If unspecified, no number of ratings label is displayed. If the `numberOfRatingsField`'s value is `0` or less, a `(No Ratings)` label is displayed.
      */
     numberOfRatingsField: ComponentOptions.buildFieldOption({ required: false }),
 
     /**
-     * Specifies the scale on which ratings are to be applied
+     * The scale to apply to the [`ratingField`]{@link StarRating.options.ratingField}'s value. Must be smaller than or equal to the highest possible `ratingField`'s value.
      *
-     * Default value is `5`
+     * **Example:** If the `ratingScale` is `100` and the current `ratingField`'s value is `75`, the component will render 3 stars (i.e., `75 * (5 / 100)`, rounded down).
      */
-    ratingScale: ComponentOptions.buildNumberOption({ defaultValue: DEFAULT_SCALE, min: 1, max: 100000 })
+    ratingScale: ComponentOptions.buildNumberOption({ defaultValue: 5, min: 1, max: 100000 })
   };
 
   /**
@@ -78,7 +79,7 @@ export class StarRating extends Component {
     this.renderComponent();
   }
 
-  private get configuredFieldsHaveValues(): boolean {
+  private get configuredFieldsAreValid(): boolean {
     const rawRating = Utils.getFieldValue(this.result, <string>this.options.ratingField);
     const rawNumberOfRatings = Utils.getFieldValue(this.result, <string>this.options.numberOfRatingsField);
 
@@ -90,7 +91,7 @@ export class StarRating extends Component {
     const scale = this.options.ratingScale;
 
     if (scale < this.rating || scale <= 0) {
-      this.logger.error(`The specified Star Rating of {${scale}} scale is invalid.`);
+      this.logger.error(`The rating scale property is either missing or invalid.`);
       return false;
     } else {
       this.rating = Math.floor(this.rating * (DEFAULT_SCALE / scale));
@@ -99,7 +100,7 @@ export class StarRating extends Component {
   }
 
   private renderComponent() {
-    if (this.configuredFieldsHaveValues) {
+    if (this.configuredFieldsAreValid) {
       for (let starNumber = 1; starNumber <= DEFAULT_SCALE; starNumber++) {
         this.renderStar(starNumber <= this.rating);
       }

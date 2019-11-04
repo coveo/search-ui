@@ -61,6 +61,15 @@ export function StarRatingTest() {
         expect(starData.numStars).toBe(5);
         expect(starData.numActiveStars).toBe(0);
       });
+
+      it('should be safe and render a 0 star rating if the rating field contains JS or HTML', () => {
+        const xss = '<svg/onload=alert(document.domain)>';
+        initStarRatingComponent(xss);
+
+        const starData = getActiveStars(test.cmp.element);
+        expect(starData.numStars).toBe(5);
+        expect(starData.numActiveStars).toBe(0);
+      });
     });
 
     describe('The label showing number of ratings', () => {
@@ -95,6 +104,15 @@ export function StarRatingTest() {
         const testLabel = $$(test.cmp.element).find(`.${STAR_LABEL_CSS_CLASS}`);
         expect(testLabel).toBeDefined();
         expect(testLabel.textContent).toEqual(`(${testNumRatings})`);
+      });
+
+      it('should be safe and render a "No Ratings" label if the number of rating field contains JS or HTML', () => {
+        const xss = '<svg/onload=alert(document.domain)>';
+        initStarRatingComponent('0', xss);
+
+        const testLabel = $$(test.cmp.element).find(`.${STAR_LABEL_CSS_CLASS}`);
+        expect(testLabel).toBeDefined();
+        expect(testLabel.textContent).toEqual(l('No Ratings'));
       });
     });
 
