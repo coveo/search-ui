@@ -14,11 +14,6 @@ export interface Suggestion {
   onSelect?: () => void;
 }
 
-export interface ISearchResultPreview {
-  element: HTMLElement;
-  onSelect: () => void;
-}
-
 export interface SuggestionsManagerOptions {
   suggestionClass?: string;
   selectedClass?: string;
