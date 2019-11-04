@@ -416,7 +416,7 @@ export function SuggestionsManagerTest() {
 
           const previewsPromisesWaitTimes = [1, 2];
           function createPreviewsPromise(suggestionId: number) {
-            return Utils.waitUntil(previewsPromisesWaitTimes[suggestionId], previewsBySuggestion[suggestionId]);
+            return Utils.resolveAfter(previewsPromisesWaitTimes[suggestionId], previewsBySuggestion[suggestionId]);
           }
 
           let populateSpy: jasmine.Spy;

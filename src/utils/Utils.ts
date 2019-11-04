@@ -435,7 +435,7 @@ export class Utils {
     return difference;
   }
 
-  static waitUntil<T = void>(ms: number, returns?: T): Promise<T> {
+  static resolveAfter<T = void>(ms: number, returns?: T): Promise<T> {
     return new Promise(resolve => setTimeout(() => (returns ? resolve(returns) : resolve()), ms));
   }
 }
