@@ -100,9 +100,9 @@ export class Matrix extends Component {
      *
      * See {@link IGroupByRequest.sortCriteria} for the list of possible values.
      *
-     * Default value is `ComputedFieldDescending`.
+     * Default value is `computedfielddescending`.
      */
-    sortCriteria: ComponentOptions.buildStringOption({ defaultValue: 'ComputedFieldDescending' }),
+    sortCriteria: ComponentOptions.buildStringOption({ defaultValue: 'computedfielddescending' }),
 
     /**
      * Specifies the maximum number of rows to display in the Matrix.

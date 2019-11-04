@@ -14,6 +14,11 @@ export interface Suggestion {
   onSelect?: () => void;
 }
 
+export interface ISearchResultPreview {
+  element: HTMLElement;
+  onSelect: () => void;
+}
+
 export interface SuggestionsManagerOptions {
   suggestionClass?: string;
   selectedClass?: string;
@@ -26,6 +31,15 @@ export enum Direction {
   Down = 'Down',
   Left = 'Left',
   Right = 'Right'
+}
+
+export interface IPopulateSearchResultPreviewsEventArgs {
+  suggestionText: string;
+  previewsQuery: Promise<ISearchResultPreview[]>;
+}
+
+export enum SuggestionsManagerEvents {
+  PopulateSearchResultPreviews = 'populateSearchResultPreviews'
 }
 
 export class SuggestionsManager {
