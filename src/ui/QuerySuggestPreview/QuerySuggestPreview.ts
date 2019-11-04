@@ -96,7 +96,7 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
   }
 
   private async fetchSearchResultPreviews(suggestionText: string) {
-    const timer = (this.timer = Utils.waitUntil(this.options.executeQueryDelay));
+    const timer = (this.timer = Utils.resolveAfter(this.options.executeQueryDelay));
     await timer;
     if (this.timer !== timer) {
       return [];
