@@ -119,7 +119,12 @@ export class QueryController extends RootComponent {
    * @param usageAnalytics **Deprecated.** Since the [October 2019 Release (v2.7219)](https://docs.coveo.com/en/3084/), the class retrieves and uses the {@link AnalyticsClient} from its `searchInterface` constructor parameter.
    * @param searchInterface
    */
-  constructor(element: HTMLElement, public options: ISearchInterfaceOptions, usageAnalytics: IAnalyticsClient, public searchInterface: SearchInterface) {
+  constructor(
+    element: HTMLElement,
+    public options: ISearchInterfaceOptions,
+    usageAnalytics: IAnalyticsClient,
+    public searchInterface: SearchInterface
+  ) {
     super(element, QueryController.ID);
     Assert.exists(element);
     Assert.exists(options);
