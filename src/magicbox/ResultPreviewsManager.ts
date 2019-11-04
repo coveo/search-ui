@@ -3,15 +3,7 @@ import { l } from '../strings/Strings';
 import { defaults, findIndex } from 'lodash';
 import { Component } from '../ui/Base/Component';
 import { Direction } from './SuggestionsManager';
-
-export interface IPopulateSearchResultPreviewsEventArgs {
-  suggestionText: string;
-  previewsQuery: Promise<ISearchResultPreview[]>;
-}
-
-export enum ResultPreviewsManagerEvents {
-  PopulateSearchResultPreviews = 'populateSearchResultPreviews'
-}
+import { ResultPreviewsManagerEvents, IPopulateSearchResultPreviewsEventArgs } from '../events/ResultPreviewsManagerEvents';
 
 export interface ISearchResultPreview {
   element: HTMLElement;

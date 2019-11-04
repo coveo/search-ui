@@ -7,7 +7,7 @@ import { FakeResults } from '../Fake';
 import { IAnalyticsOmniboxSuggestionMeta, analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
 import { IQueryResults } from '../../src/rest/QueryResults';
 import { last } from 'underscore';
-import { IPopulateSearchResultPreviewsEventArgs, ResultPreviewsManagerEvents } from '../../src/magicbox/ResultPreviewsManager';
+import { IPopulateSearchResultPreviewsEventArgs, ResultPreviewsManagerEvents } from '../../src/events/ResultPreviewsManagerEvents';
 
 export function initOmniboxAnalyticsMock(omniboxAnalytics: IOmniboxAnalytics) {
   const partialQueries: string[] = [];

@@ -13,11 +13,8 @@ import {
   analyticsActionCauseList,
   IAnalyticsClickQuerySuggestPreviewMeta
 } from '../Analytics/AnalyticsActionListMeta';
-import {
-  ResultPreviewsManagerEvents,
-  IPopulateSearchResultPreviewsEventArgs,
-  ISearchResultPreview
-} from '../../magicbox/ResultPreviewsManager';
+import { ISearchResultPreview } from '../../magicbox/ResultPreviewsManager';
+import { ResultPreviewsManagerEvents, IPopulateSearchResultPreviewsEventArgs } from '../../events/ResultPreviewsManagerEvents';
 
 export interface IQuerySuggestPreview {
   numberOfPreviewResults?: number;

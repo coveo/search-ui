@@ -6,11 +6,8 @@ import { Utils } from '../../src/utils/Utils';
 import { IMockEnvironment, MockEnvironmentBuilder } from '../MockEnvironment';
 import { OmniboxEvents } from '../../src/Core';
 import { last, first, reverse } from 'lodash';
-import {
-  ISearchResultPreview,
-  ResultPreviewsManagerEvents,
-  IPopulateSearchResultPreviewsEventArgs
-} from '../../src/magicbox/ResultPreviewsManager';
+import { ISearchResultPreview } from '../../src/magicbox/ResultPreviewsManager';
+import { ResultPreviewsManagerEvents, IPopulateSearchResultPreviewsEventArgs } from '../../src/events/ResultPreviewsManagerEvents';
 
 function deferAsync() {
   return Promise.resolve();
