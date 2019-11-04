@@ -1,6 +1,4 @@
-$color-placeholder-star: #e1e1e1;
-$color-active-star: #d9af00;
-$color-number-reviews: gray;
+@import 'Variables';
 
 .CoveoStarRating {
   display: flex;
@@ -16,18 +14,18 @@ $color-number-reviews: gray;
   svg {
     width: 15px;
     height: 15px;
-    color: $color-placeholder-star;
+    color: $color-blueish-white-grey;
   }
 }
 
 .coveo-star-rating-star-active {
   svg {
-    color: $color-active-star;
+    color: $color-active-yellow;
   }
 }
 
 .coveo-star-rating-label {
   margin-left: 5px;
   font-size: 11px;
-  color: $color-number-reviews;
+  color: $color-grey;
 }

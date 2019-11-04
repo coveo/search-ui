@@ -13,8 +13,8 @@ import { Initialization } from '../Base/Initialization';
 const DEFAULT_SCALE = 5;
 
 export interface IStarRatingOptions {
-  rating?: IFieldOption;
-  numberOfRatings?: IFieldOption;
+  ratingField?: IFieldOption;
+  numberOfRatingsField?: IFieldOption;
   ratingScale?: number;
 }
 /**
@@ -25,7 +25,7 @@ export interface IStarRatingOptions {
 export class StarRating extends Component {
   static ID = 'StarRating';
   private rating: number;
-  private numberOfRatings: number;
+  private numberOfRatingsField: number;
 
   static doExport = () => {
     exportGlobally({
@@ -39,21 +39,21 @@ export class StarRating extends Component {
      *
      * Specifying a value for this parameter is required in order for the StarRating component to work.
      */
-    rating: ComponentOptions.buildFieldOption({ defaultValue: '@rating', required: true }),
+    ratingField: ComponentOptions.buildFieldOption({ defaultValue: '@rating', required: true }),
 
     /**
      * Specifies the value to be displayed in the label indicating the quantity of ratings.
      *
      * If unspecified, no label is shown. If a value of `0` is provided, a `(No Ratings)` label is displayed instead.
      */
-    numberOfRatings: ComponentOptions.buildFieldOption({ required: false }),
+    numberOfRatingsField: ComponentOptions.buildFieldOption({ required: false }),
 
     /**
      * Specifies the scale on which ratings are to be applied
      *
      * Default value is `5`
      */
-    ratingScale: ComponentOptions.buildNumberOption({ defaultValue: DEFAULT_SCALE, min: 1, max: 1000 })
+    ratingScale: ComponentOptions.buildNumberOption({ defaultValue: DEFAULT_SCALE, min: 1, max: 100000 })
   };
 
   /**
@@ -79,11 +79,11 @@ export class StarRating extends Component {
   }
 
   private get configuredFieldsHaveValues(): boolean {
-    const rawRating = Utils.getFieldValue(this.result, <string>this.options.rating);
-    const rawNumberOfRatings = Utils.getFieldValue(this.result, <string>this.options.numberOfRatings);
+    const rawRating = Utils.getFieldValue(this.result, <string>this.options.ratingField);
+    const rawNumberOfRatings = Utils.getFieldValue(this.result, <string>this.options.numberOfRatingsField);
 
     if (rawNumberOfRatings !== undefined) {
-      this.numberOfRatings = Number(rawNumberOfRatings) < 0 ? 0 : Number(rawNumberOfRatings) || 0;
+      this.numberOfRatingsField = Number(rawNumberOfRatings) < 0 ? 0 : Number(rawNumberOfRatings) || 0;
     }
 
     this.rating = Number(rawRating) < 0 ? 0 : Number(rawRating) || 0;
@@ -101,15 +101,15 @@ export class StarRating extends Component {
   private renderComponent() {
     if (this.configuredFieldsHaveValues) {
       for (let starNumber = 1; starNumber <= DEFAULT_SCALE; starNumber++) {
-        this.renderStar(starNumber <= this.rating, starNumber);
+        this.renderStar(starNumber <= this.rating);
       }
-      if (this.numberOfRatings !== undefined) {
-        this.renderNumberOfReviews(this.numberOfRatings);
+      if (this.numberOfRatingsField !== undefined) {
+        this.renderNumberOfReviews(this.numberOfRatingsField);
       }
     }
   }
 
-  private renderStar(isChecked: boolean, value: number) {
+  private renderStar(isChecked: boolean) {
     const star = $$('span', { className: 'coveo-star-rating-star' }, SVGIcons.icons.star);
     star.toggleClass('coveo-star-rating-star-active', isChecked);
     this.element.appendChild(star.el);
