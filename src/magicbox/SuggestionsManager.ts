@@ -1,9 +1,10 @@
-import { compact, defaults, each, indexOf } from 'underscore';
+import { defaults, each, indexOf } from 'underscore';
 import { IQuerySuggestSelection, OmniboxEvents } from '../events/OmniboxEvents';
 import { Component } from '../ui/Base/Component';
 import { $$, Dom } from '../utils/Dom';
 import { InputManager } from './InputManager';
 import { ResultPreviewsManager } from './ResultPreviewsManager';
+import { QueryProcessor, ProcessingStatus } from './QueryProcessor';
 
 export interface Suggestion {
   text?: string;
@@ -30,7 +31,7 @@ export enum Direction {
 
 export class SuggestionsManager {
   public hasSuggestions: boolean;
-  private pendingSuggestion: Promise<Suggestion[]>;
+  private suggestionsProcessor: QueryProcessor<Suggestion>;
   private options: SuggestionsManagerOptions;
   private keyboardFocusedElement: HTMLElement;
   private suggestionsListbox: Dom;
@@ -71,6 +72,7 @@ export class SuggestionsManager {
       this.handleMouseOut(e);
     });
 
+    this.suggestionsProcessor = new QueryProcessor({ timeout: this.options.timeout });
     this.resultPreviewsManager = new ResultPreviewsManager(element, { selectedClass: this.options.selectedClass });
     this.suggestionsListbox = this.buildSuggestionsContainer();
     $$(this.element).append(this.suggestionsListbox.el);
@@ -141,73 +143,13 @@ export class SuggestionsManager {
     this.keyboardFocusedElement = null;
   }
 
-  public mergeSuggestions(suggestions: Array<Promise<Suggestion[]> | Suggestion[]>, callback?: (suggestions: Suggestion[]) => void) {
-    let results: Suggestion[] = [];
-    let timeout;
-    let stillNeedToResolve = true;
-    // clean empty / null values in the array of suggestions
-    suggestions = compact(suggestions);
-    const promise = (this.pendingSuggestion = new Promise<Suggestion[]>((resolve, reject) => {
-      // Concat all promises results together in one flat array.
-      // If one promise take too long to resolve, simply skip it
-      each(suggestions, (suggestion: Promise<Suggestion[]>) => {
-        let shouldRejectPart = false;
-        setTimeout(function() {
-          shouldRejectPart = true;
-          stillNeedToResolve = false;
-        }, this.options.timeout);
-        suggestion.then((item: Suggestion[]) => {
-          if (!shouldRejectPart && item) {
-            results = results.concat(item);
-          }
-        });
-      });
-
-      // Resolve the promise when one of those conditions is met first :
-      // - All suggestions resolved
-      // - Timeout is reached before all promises have processed -> resolve with what we have so far
-      // - No suggestions given (length 0 or undefined)
-      const onResolve = () => {
-        if (stillNeedToResolve) {
-          if (timeout) {
-            clearTimeout(timeout);
-          }
-          if (results.length == 0) {
-            resolve([]);
-          } else if (promise == this.pendingSuggestion || this.pendingSuggestion == null) {
-            resolve(results.sort((a, b) => b.index - a.index));
-          } else {
-            reject('new request queued');
-          }
-        }
-        stillNeedToResolve = false;
-      };
-
-      if (suggestions.length == 0) {
-        onResolve();
-      }
-      if (suggestions == undefined) {
-        onResolve();
-      }
-
-      timeout = setTimeout(function() {
-        onResolve();
-      }, this.options.timeout);
-
-      Promise.all(suggestions).then(() => onResolve());
-    }));
-
-    promise
-      .then((suggestions: Suggestion[]) => {
-        if (callback) {
-          callback(suggestions);
-        }
-        this.updateSuggestions(suggestions);
-        return suggestions;
-      })
-      .catch(() => {
-        return null;
-      });
+  public async mergeSuggestions(suggestions: Array<Promise<Suggestion[]> | Suggestion[]>) {
+    const { results, status } = await this.suggestionsProcessor.processQueries(suggestions);
+    if (status === ProcessingStatus.Overriden) {
+      return [];
+    }
+    this.updateSuggestions(results);
+    return results;
   }
 
   public updateSuggestions(suggestions: Suggestion[]) {

@@ -307,9 +307,7 @@ export function SuggestionsManagerTest() {
 
         let mergedSuggestions: Promise<Suggestion[]>;
         function mergeSuggestions() {
-          mergedSuggestions = new Promise<Suggestion[]>(resolve => {
-            suggestionsManager.mergeSuggestions([Promise.resolve(createSuggestions())], mergedResult => resolve(mergedResult));
-          });
+          mergedSuggestions = suggestionsManager.mergeSuggestions([Promise.resolve(createSuggestions())]);
         }
 
         function waitForQuerySuggestRendered() {

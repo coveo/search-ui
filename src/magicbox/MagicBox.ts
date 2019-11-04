@@ -191,10 +191,9 @@ export class MagicBoxInstance {
     };
   }
 
-  public showSuggestion() {
-    this.suggestionsManager.mergeSuggestions(this.getSuggestions != null ? this.getSuggestions() : [], suggestions => {
-      this.updateSuggestion(suggestions);
-    });
+  public async showSuggestion() {
+    const suggestions = await this.suggestionsManager.mergeSuggestions(this.getSuggestions != null ? this.getSuggestions() : []);
+    this.updateSuggestion(suggestions);
   }
 
   private shouldMoveInSuggestions(key: KEYBOARD) {
@@ -235,11 +234,10 @@ export class MagicBoxInstance {
     this.inputManager.blur();
   }
 
-  public clearSuggestion() {
-    this.suggestionsManager.mergeSuggestions([], suggestions => {
-      this.updateSuggestion(suggestions);
-    });
+  public async clearSuggestion() {
     this.inputManager.setWordCompletion(null);
+    const suggestions = await this.suggestionsManager.mergeSuggestions([]);
+    this.updateSuggestion(suggestions);
   }
 
   private focusOnSuggestion(suggestion: Suggestion) {
