@@ -140,8 +140,6 @@ export class ResultPreviewsManager {
   }
 
   private revertPreviewForSuggestions() {
-    console.log(this.suggestionsPreviewContainer);
-    console.log(this.hasPreviews);
     this.element.appendChild(this.suggestionsListbox.el);
     this.suggestionsPreviewContainer.remove();
     this.suggestionsPreviewContainer = null;
