@@ -33,15 +33,6 @@ export enum Direction {
   Right = 'Right'
 }
 
-export interface IPopulateSearchResultPreviewsEventArgs {
-  suggestionText: string;
-  previewsQuery: Promise<ISearchResultPreview[]>;
-}
-
-export enum SuggestionsManagerEvents {
-  PopulateSearchResultPreviews = 'populateSearchResultPreviews'
-}
-
 export class SuggestionsManager {
   public hasSuggestions: boolean;
   private pendingSuggestion: Promise<Suggestion[]>;
