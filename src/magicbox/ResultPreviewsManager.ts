@@ -78,10 +78,12 @@ export class ResultPreviewsManager {
   }
 
   public async displaySearchResultPreviewsForSuggestion(suggestion: HTMLElement) {
-    if (suggestion && this.lastQueriedSuggestion === suggestion) {
+    const isQueryForSuggestionOngoing = suggestion && this.lastQueriedSuggestion === suggestion;
+    if (isQueryForSuggestionOngoing) {
       return;
     }
-    if (this.lastDisplayedSuggestion === suggestion) {
+    const arePreviewsForSuggestionCurrentlyDisplayed = this.lastDisplayedSuggestion === suggestion;
+    if (arePreviewsForSuggestionCurrentlyDisplayed) {
       this.previewsProcessor.overrideIfProcessing();
       this.lastQueriedSuggestion = null;
       return;
