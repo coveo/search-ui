@@ -737,13 +737,13 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   }
 
   // TODO: move into selectValue/changeActivePath
-  public toggleSelectPath(path: string[]) {
+  public selectPath(path: string[]) {
     Assert.exists(path);
     Assert.isLargerThan(0, path.length);
     this.ensureDom();
     this.values.clearHierarchy(path);
     const facetValue = this.values.get(path);
-    facetValue.toggleSelect();
+    facetValue.select();
     this.logger.info('Toggle select facet value', facetValue);
   }
 
@@ -933,7 +933,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     const path = data.attributes[this.queryStateAttribute];
     if (!Utils.isNullOrUndefined(path) && isArray(path) && path.length != 0) {
       this.changeActivePath(path);
-      this.toggleSelectPath(path as string[]);
+      this.selectPath(path as string[]);
     }
   }
 

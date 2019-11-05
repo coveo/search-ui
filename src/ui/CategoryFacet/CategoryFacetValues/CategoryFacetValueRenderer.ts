@@ -11,7 +11,7 @@ export class CategoryFacetValueRenderer implements ValueRenderer {
     this.dom = $$('li', {
       className: 'coveo-dynamic-category-facet-value',
       dataValue: this.facetValue.value
-    }, `${this.facetValue.displayValue} (${this.facetValue.numberOfResults})`);
+    }, `${this.facetValue.displayValue} (${this.facetValue.formattedCount})`);
 
     this.dom.on('click', () => this.selectAction());
     this.toggleSelectedClass();
@@ -23,7 +23,7 @@ export class CategoryFacetValueRenderer implements ValueRenderer {
   }
 
   private selectAction() {
-    this.facet.toggleSelectPath(this.facetValue.path);
+    this.facet.selectPath(this.facetValue.path);
     this.facet.enableFreezeFacetOrderFlag();
     this.facet.scrollToTop();
     this.toggleSelectedClass();

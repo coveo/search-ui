@@ -1,6 +1,8 @@
+import * as Globalize from 'globalize';
 import { CategoryFacet } from '../CategoryFacet';
 import { FacetValueState } from '../../../rest/Facet/FacetValueState';
 import { CategoryFacetValueRenderer } from './CategoryFacetValueRenderer';
+import { l } from '../../../strings/Strings';
 
 export interface ValueRenderer {
   render(): HTMLElement;
@@ -53,17 +55,17 @@ export class CategoryFacetValue implements ICategoryFacetValue {
     return this.state === FacetValueState.selected;
   }
 
-  public toggleSelect() {
-    this.state === FacetValueState.selected ? this.deselect() : this.select();
-  }
-
   public select() {
     this.state = FacetValueState.selected;
   }
 
-  public deselect() {
-    this.state = FacetValueState.idle;
-    this.preventAutoSelect = true;
+  public get selectAriaLabel() {
+    const resultCount = l('ResultCount', this.formattedCount, this.numberOfResults);
+    return `${l('SelectValueWithResultCount', this.displayValue, resultCount)}`;
+  }
+
+  public get formattedCount(): string {
+    return Globalize.format(this.numberOfResults, 'n0');
   }
 
   public render(fragment: DocumentFragment) {

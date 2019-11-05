@@ -525,6 +525,9 @@ CategoryFacetTest();
 import { CategoryFacetValuesTreeTest } from './ui/CategoryFacet/CategoryFacetValuesTreeTest';
 CategoryFacetValuesTreeTest();
 
+import { CategoryFacetValueTest } from './ui/CategoryFacet/CategoryFacetValues/CategoryFacetValueTest';
+CategoryFacetValueTest();
+
 import { FacetValueSuggestionsTest } from './ui/FacetValueSuggestionsTest';
 FacetValueSuggestionsTest();
 
