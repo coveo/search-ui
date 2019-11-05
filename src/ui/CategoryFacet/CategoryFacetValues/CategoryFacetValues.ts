@@ -61,14 +61,6 @@ export class CategoryFacetValues {
     }, this.facet);
   }
 
-  public get allValues() {
-    return this.facetValues.map(facetValue => facetValue.value);
-  }
-
-  private get displayedValues() {
-    return this.facetValues.filter(value => !value.isIdle || value.numberOfResults > 0);
-  }
-
   public get allFacetValues() {
     return this.facetValues;
   }
@@ -128,7 +120,7 @@ export class CategoryFacetValues {
     const fragment = document.createDocumentFragment();
     $$(this.list).empty();
 
-    this.displayedValues.forEach(facetValue => {
+    this.facetValues.forEach(facetValue => {
       facetValue.render(fragment);
     });
 

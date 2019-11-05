@@ -50,7 +50,7 @@ export function CategoryFacetValueTest() {
     });
 
     it(`when the facet value has children
-      should render and append in thhe frament`, () => {
+      should render and append in the frament`, () => {
       facetValue.children = CategoryFacetTestUtils.createFakeFacetValues().map(fakeFacetValue => new CategoryFacetValue(fakeFacetValue, facet))
       const fragment = new DocumentFragment();
       facetValue.render(fragment)
