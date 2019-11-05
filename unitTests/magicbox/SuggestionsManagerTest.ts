@@ -418,7 +418,7 @@ export function SuggestionsManagerTest() {
             populateSpy = jasmine.createSpy('PopulateSearchResultPreviews');
             $$(env.root).on(ResultPreviewsManagerEvents.PopulateSearchResultPreviews, (_, args: IPopulateSearchResultPreviewsEventArgs) => {
               populateSpy(args.suggestionText);
-              args.previewsQuery = createPreviewsPromise(textSuggestions.indexOf(args.suggestionText));
+              args.previewsQueries.push(createPreviewsPromise(textSuggestions.indexOf(args.suggestionText)));
             });
           }
 
@@ -450,11 +450,12 @@ export function SuggestionsManagerTest() {
               if (expectedSuggestionId === suggestionId) {
                 return;
               }
+              let lastMove: Promise<void>;
               for (expectedSuggestionId; expectedSuggestionId < suggestionId; expectedSuggestionId++) {
-                suggestionsManager.moveDown();
+                lastMove = suggestionsManager.moveDown();
               }
               jasmine.clock().tick(previewsPromisesWaitTimes[suggestionId]);
-              await deferAsync();
+              await lastMove;
             }
 
             beforeEach(() => {
@@ -495,8 +496,10 @@ export function SuggestionsManagerTest() {
             });
 
             it("moving the focus right when there's previews blurs the suggestion", async done => {
+              window['BLAH'] = 1;
               await moveDownToSuggestion(0);
               suggestionsManager.moveRight();
+              window['BLAH'] = 0;
               expect(suggestionsManager.selectedSuggestion).toBeNull();
               done();
             });

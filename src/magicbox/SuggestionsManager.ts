@@ -127,20 +127,20 @@ export class SuggestionsManager {
     $$(this.root).trigger(OmniboxEvents.querySuggestLoseFocus);
   }
 
-  public moveDown() {
-    this.move(Direction.Down);
+  public async moveDown() {
+    await this.move(Direction.Down);
   }
 
-  public moveUp() {
-    this.move(Direction.Up);
+  public async moveUp() {
+    await this.move(Direction.Up);
   }
 
-  public moveLeft() {
-    this.move(Direction.Left);
+  public async moveLeft() {
+    await this.move(Direction.Left);
   }
 
-  public moveRight() {
-    this.move(Direction.Right);
+  public async moveRight() {
+    await this.move(Direction.Right);
   }
 
   public selectAndReturnKeyboardFocusedElement(): HTMLElement {
@@ -215,11 +215,11 @@ export class SuggestionsManager {
     return null;
   }
 
-  private processKeyboardSelection(suggestion: Suggestion) {
+  private async processKeyboardSelection(suggestion: Suggestion) {
     this.addSelectedStatus(suggestion.dom);
-    this.updateSelectedSuggestion(suggestion);
     this.keyboardFocusedElement = { type: 'suggestion', suggestion };
     $$(this.inputManager.input).setAttribute('aria-activedescendant', $$(suggestion.dom).getAttribute('id'));
+    await this.updateSelectedSuggestion(suggestion);
   }
 
   private processKeyboardPreviewSelection(preview: ISearchResultPreview) {
@@ -227,7 +227,7 @@ export class SuggestionsManager {
     this.keyboardFocusedElement = { type: 'preview', preview };
   }
 
-  private processMouseSelection(suggestion: Suggestion) {
+  private async processMouseSelection(suggestion: Suggestion) {
     this.addSelectedStatus(suggestion.dom);
     this.updateSelectedSuggestion(suggestion);
     this.keyboardFocusedElement = null;
@@ -300,9 +300,9 @@ export class SuggestionsManager {
     return $$(dom);
   }
 
-  private move(direction: Direction) {
+  private async move(direction: Direction) {
     if (this.resultPreviewsManager.focusedPreview) {
-      this.moveWithinPreview(direction);
+      await this.moveWithinPreview(direction);
       return;
     }
     if (direction === Direction.Right || direction === Direction.Left) {
@@ -312,10 +312,10 @@ export class SuggestionsManager {
         return;
       }
     }
-    this.moveWithinSuggestion(direction);
+    await this.moveWithinSuggestion(direction);
   }
 
-  private moveWithinSuggestion(direction: Direction) {
+  private async moveWithinSuggestion(direction: Direction) {
     const currentlySelected =
       this.keyboardFocusedElement && this.keyboardFocusedElement.type === 'suggestion' ? this.keyboardFocusedElement.suggestion : null;
     const selectables = this.displayedSuggestions;
@@ -324,12 +324,12 @@ export class SuggestionsManager {
     let index = direction === Direction.Up ? currentIndex - 1 : currentIndex + 1;
     index = (index + selectables.length) % selectables.length;
 
-    this.selectQuerySuggest(selectables[index]);
+    await this.selectQuerySuggest(selectables[index]);
   }
 
-  private selectQuerySuggest(suggestion: Suggestion) {
+  private async selectQuerySuggest(suggestion: Suggestion) {
     if (suggestion) {
-      this.processKeyboardSelection(suggestion);
+      await this.processKeyboardSelection(suggestion);
     } else {
       this.keyboardFocusedElement = null;
       this.inputManager.input.removeAttribute('aria-activedescendant');
@@ -338,10 +338,10 @@ export class SuggestionsManager {
     return suggestion;
   }
 
-  private moveWithinPreview(direction: Direction) {
+  private async moveWithinPreview(direction: Direction) {
     const newFocusedPreview = this.resultPreviewsManager.getPreviewInDirection(direction);
     if (!newFocusedPreview) {
-      this.selectQuerySuggest(this.resultPreviewsManager.previewsOwner);
+      await this.selectQuerySuggest(this.resultPreviewsManager.previewsOwner);
       return;
     }
     this.processKeyboardPreviewSelection(newFocusedPreview);
@@ -357,11 +357,11 @@ export class SuggestionsManager {
     this.updateAreaSelectedIfDefined(element, 'true');
   }
 
-  private updateSelectedSuggestion(suggestion: Suggestion) {
+  private async updateSelectedSuggestion(suggestion: Suggestion) {
     $$(this.root).trigger(OmniboxEvents.querySuggestGetFocus, <IQuerySuggestSelection>{
       suggestion: suggestion.text
     });
-    this.resultPreviewsManager.displaySearchResultPreviewsForSuggestion(suggestion);
+    await this.resultPreviewsManager.displaySearchResultPreviewsForSuggestion(suggestion);
   }
 
   private removeSelectedStatus(suggestion: HTMLElement): void {

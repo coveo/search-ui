@@ -12,7 +12,7 @@ export interface IPopulateSearchResultPreviewsEventArgs {
    * The result previews query. This must be set synchronously before the event resolves.
    * Setting this to a non-empty array will display the given search result previews.
    */
-  previewsQuery: Promise<ISearchResultPreview[]>;
+  previewsQueries: (ISearchResultPreview[] | Promise<ISearchResultPreview[]>)[];
 }
 
 /**
