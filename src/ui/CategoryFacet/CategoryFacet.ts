@@ -736,13 +736,10 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     this.dynamicCategoryFacetQueryController.enableFreezeFacetOrderFlag();
   }
 
-  /**
-   * 
-   * @param path 
-   */
+  // TODO: move into selectValue/changeActivePath
   public toggleSelectPath(path: string[]) {
     Assert.exists(path);
-    // Assert.isLargerThan(0, path.length);
+    Assert.isLargerThan(0, path.length);
     this.ensureDom();
     this.values.clearHierarchy(path);
     const facetValue = this.values.get(path);
