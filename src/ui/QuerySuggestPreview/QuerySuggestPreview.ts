@@ -93,7 +93,7 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
   }
 
   private populateSearchResultPreviews(args: IPopulateSearchResultPreviewsEventArgs) {
-    args.previewsQuery = this.fetchSearchResultPreviews(args.suggestionText);
+    args.previewsQueries.push(this.fetchSearchResultPreviews(args.suggestionText));
   }
 
   private async fetchSearchResultPreviews(suggestionText: string) {

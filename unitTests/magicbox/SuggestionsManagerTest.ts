@@ -424,7 +424,7 @@ export function SuggestionsManagerTest() {
             populateSpy = jasmine.createSpy('PopulateSearchResultPreviews');
             $$(env.root).on(ResultPreviewsManagerEvents.PopulateSearchResultPreviews, (_, args: IPopulateSearchResultPreviewsEventArgs) => {
               populateSpy(args.suggestionText);
-              args.previewsQuery = createPreviewsPromise(textSuggestions.indexOf(args.suggestionText));
+              args.previewsQueries.push(createPreviewsPromise(textSuggestions.indexOf(args.suggestionText)));
             });
           }
 
@@ -456,11 +456,12 @@ export function SuggestionsManagerTest() {
               if (expectedSuggestionId === suggestionId) {
                 return;
               }
+              let lastMove: Promise<void>;
               for (expectedSuggestionId; expectedSuggestionId < suggestionId; expectedSuggestionId++) {
-                suggestionsManager.moveDown();
+                lastMove = suggestionsManager.moveDown();
               }
               jasmine.clock().tick(previewsPromisesWaitTimes[suggestionId]);
-              await deferAsync();
+              await lastMove;
             }
 
             beforeEach(() => {

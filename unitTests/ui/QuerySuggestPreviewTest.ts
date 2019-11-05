@@ -56,9 +56,9 @@ export function QuerySuggestPreviewTest() {
     function triggerPopulateSearchResultPreviews(suggestionText: string = 'test', fakeResults?: IQueryResults) {
       fakeResults = fakeResults || FakeResults.createFakeResults(test.cmp.options.numberOfPreviewResults);
       (test.env.searchEndpoint.search as jasmine.Spy).and.returnValue(Promise.resolve(fakeResults));
-      const event: IPopulateSearchResultPreviewsEventArgs = { suggestionText, previewsQuery: null };
+      const event: IPopulateSearchResultPreviewsEventArgs = { suggestionText, previewsQueries: [] };
       $$(testEnv.root).trigger(ResultPreviewsManagerEvents.PopulateSearchResultPreviews, event);
-      return event.previewsQuery;
+      return event.previewsQueries[0];
     }
 
     function triggerPopulateSearchResultPreviewsAndPassTime(suggestion: string = 'test', fakeResults?: IQueryResults) {
