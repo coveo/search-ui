@@ -17,7 +17,7 @@ import { QueryStateModel } from '../../models/QueryStateModel';
 import { IAttributesChangedEventArg, MODEL_EVENTS } from '../../models/Model';
 import { Utils } from '../../utils/Utils';
 import { CategoryValue, CategoryValueParent } from './CategoryValue';
-import { pluck, reduce, find, first, last, contains, isArray, keys } from 'underscore';
+import { pluck, reduce, find, first, last, contains, isArray, keys, findIndex } from 'underscore';
 import { Assert } from '../../misc/Assert';
 import { QueryEvents, IBuildingQueryEventArgs, IQuerySuccessEventArgs } from '../../events/QueryEvents';
 import { CategoryFacetSearch } from './CategoryFacetSearch';
@@ -45,6 +45,9 @@ import { DependsOnManager, IDependentFacet } from '../../utils/DependsOnManager'
 import { ResultListUtils } from '../../utils/ResultListUtils';
 import { CategoryFacetValuesTree } from './CategoryFacetValuesTree';
 import { FacetType } from '../../rest/Facet/FacetRequest';
+import { CategoryFacetValues } from './CategoryFacetValues/CategoryFacetValues';
+import { IFacetResponse } from '../../rest/Facet/FacetResponse';
+import { IQueryOptions } from '../../controllers/QueryController';
 
 export interface ICategoryFacetOptions extends IResponsiveComponentOptions {
   id?: string;
@@ -331,6 +334,9 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   public static NUMBER_OF_VALUES_TO_KEEP_AFTER_TRUNCATING = 10;
   public isCollapsed: boolean;
   public header: DynamicFacetHeader;
+  public values: CategoryFacetValues;
+  public moreValuesAvailable = false;
+  public position: Number = null;
 
   private categoryValueRoot: CategoryValueRoot;
   private categoryFacetTemplates: CategoryFacetTemplates;
@@ -354,6 +360,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     this.currentPage = 0;
     this.numberOfValues = this.options.numberOfValues;
     this.categoryFacetValuesTree = new CategoryFacetValuesTree();
+    this.values = new CategoryFacetValues(this);
 
     this.tryToInitFacetSearch();
 
@@ -366,6 +373,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     this.bind.onRootElement<IBuildingQueryEventArgs>(QueryEvents.buildingQuery, args => this.handleBuildingQuery(args));
     this.bind.onRootElement<IQuerySuccessEventArgs>(QueryEvents.querySuccess, args => this.handleQuerySuccess(args));
     this.bind.onRootElement(QueryEvents.duringQuery, () => this.addFading());
+    this.bind.onRootElement(QueryEvents.duringQuery, () => this.ensureDom());
     this.bind.onRootElement(QueryEvents.deferredQuerySuccess, () => this.handleDeferredQuerySuccess());
     this.bind.onRootElement<IPopulateBreadcrumbEventArgs>(BreadcrumbEvents.populateBreadcrumb, args => this.handlePopulateBreadCrumb(args));
     this.bind.onRootElement(BreadcrumbEvents.clearBreadcrumb, () => this.handleClearBreadcrumb());
@@ -463,7 +471,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     if (this.disabled || this.isCategoryEmpty) {
       return this.hide();
     }
-    
+
     this.header.toggleCollapse(this.isCollapsed);
     $$(this.element).toggleClass('coveo-dynamic-category-facet-collapsed', this.isCollapsed);
     this.show();
@@ -478,6 +486,13 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     if (Utils.isNullOrUndefined(args.results.categoryFacets[this.positionInQuery])) {
       return;
     }
+
+    const index = findIndex(args.results.facets, { facetId: this.options.id });
+    const response = index !== -1 ? args.results.facets[index] : null;
+    this.position = index + 1;
+
+    this.onQueryResponse(response);
+    this.values.render();
 
     const numberOfRequestedValues = args.query.categoryFacets[this.positionInQuery].maximumNumberOfValues;
     const categoryFacetResult = args.results.categoryFacets[this.positionInQuery];
@@ -510,6 +525,16 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     }
   }
 
+  private onQueryResponse(response?: IFacetResponse) {
+    if (response) {
+      this.moreValuesAvailable = response.moreValuesAvailable;
+      return this.values.createFromResponse(response);
+    }
+
+    this.moreValuesAvailable = false;
+    this.values.resetValues();
+  }
+
   /**
    * Changes the active path.
    *
@@ -527,6 +552,16 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     } finally {
       this.header.hideLoading();
     }
+  }
+
+  private beforeSendingQuery() {}
+
+  public triggerNewQuery(beforeExecuteQuery?: () => void) {
+    this.beforeSendingQuery();
+
+    const options: IQueryOptions = beforeExecuteQuery ? { beforeExecuteQuery } : { ignoreWarningSearchEvent: true };
+
+    this.queryController.executeQuery(options);
   }
 
   /**
@@ -688,6 +723,34 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   }
 
   /**
+   * For this method to work, the component has to be the child of a [DynamicFacetManager]{@link DynamicFacetManager} component.
+   *
+   * Sets a flag indicating whether the facets should be returned in their current order.
+   *
+   * Setting the flag to `true` helps ensuring that the facets do not move around while the end-user is interacting with them.
+   *
+   * The flag is automatically set back to `false` after a query is built.
+   */
+  public enableFreezeFacetOrderFlag() {
+    Assert.exists(this.dynamicCategoryFacetQueryController);
+    this.dynamicCategoryFacetQueryController.enableFreezeFacetOrderFlag();
+  }
+
+  /**
+   * 
+   * @param path 
+   */
+  public toggleSelectPath(path: string[]) {
+    Assert.exists(path);
+    // Assert.isLargerThan(0, path.length);
+    this.ensureDom();
+    this.values.clearHierarchy(path);
+    const facetValue = this.values.get(path);
+    facetValue.toggleSelect();
+    this.logger.info('Toggle select facet value', facetValue);
+  }
+
+  /**
    * Collapses the facet, hiding values.
    */
   public collapse() {
@@ -711,6 +774,14 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   public disable() {
     super.disable();
     this.updateAppearance();
+  }
+
+  public createDom() {
+    this.createAndAppendValues();
+  }
+
+  private createAndAppendValues() {
+    this.element.appendChild(this.values.render());
   }
 
   /**
@@ -858,11 +929,14 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   }
 
   private handleQueryStateChanged(data: IAttributesChangedEventArg) {
-    if (this.listenToQueryStateChange) {
-      let path = data.attributes[this.queryStateAttribute];
-      if (!Utils.isNullOrUndefined(path) && isArray(path) && path.length != 0) {
-        this.changeActivePath(path)
-      }
+    if (!this.listenToQueryStateChange) {
+      return;
+    }
+
+    const path = data.attributes[this.queryStateAttribute];
+    if (!Utils.isNullOrUndefined(path) && isArray(path) && path.length != 0) {
+      this.changeActivePath(path);
+      this.toggleSelectPath(path as string[]);
     }
   }
 
