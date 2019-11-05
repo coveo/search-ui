@@ -19,7 +19,7 @@ export class MagicBoxInstance {
   public onblur: () => void;
   public onfocus: () => void;
   public onchange: () => void;
-  public onsuggestions: (suggestions: Suggestion[]) => void;
+  public onSuggestions: (suggestions: Suggestion[]) => void;
   public onsubmit: () => void;
   public onselect: (suggestion: Suggestion) => void;
   public onclear: () => void;
@@ -59,11 +59,11 @@ export class MagicBoxInstance {
       (text, wordCompletion) => {
         if (!wordCompletion) {
           this.setText(text);
-          this.showSuggestion();
+          this.addSuggestions();
           this.onchange && this.onchange();
         } else {
           this.setText(text);
-          this.onselect && this.onselect(this.getFirstSuggestionText());
+          this.onselect && this.onselect(this.getFirstSuggestionWithText());
         }
       },
       this
@@ -135,7 +135,7 @@ export class MagicBoxInstance {
 
     this.inputManager.onfocus = () => {
       $$(this.element).addClass('magic-box-hasFocus');
-      this.showSuggestion();
+      this.addSuggestions();
       this.onfocus && this.onfocus();
     };
 
@@ -159,7 +159,7 @@ export class MagicBoxInstance {
     };
 
     this.inputManager.onchangecursor = () => {
-      this.showSuggestion();
+      this.addSuggestions();
     };
 
     this.inputManager.onkeyup = (key: number) => {
@@ -189,9 +189,12 @@ export class MagicBoxInstance {
     };
   }
 
-  public async showSuggestion() {
+  public async addSuggestions() {
     await this.suggestionsManager.receiveSuggestions(this.getSuggestions());
-    this.updateSuggestion(this.suggestionsManager.suggestions);
+    const { suggestions } = this.suggestionsManager;
+    this.addSelectEventHandlers(suggestions);
+    this.inputManager.setWordCompletion(this.getFirstSuggestionText());
+    this.onSuggestions(suggestions);
   }
 
   private shouldMoveInSuggestions(key: KEYBOARD) {
@@ -208,10 +211,7 @@ export class MagicBoxInstance {
     return false;
   }
 
-  private updateSuggestion(suggestions: Suggestion[]) {
-    const firstSuggestion = this.getFirstSuggestionText();
-    this.inputManager.setWordCompletion(firstSuggestion && firstSuggestion.text);
-    this.onsuggestions && this.onsuggestions(suggestions);
+  private addSelectEventHandlers(suggestions: Suggestion[]) {
     each(suggestions, (suggestion: Suggestion) => {
       if (suggestion.onSelect == null && suggestion.text != null) {
         suggestion.onSelect = () => {
@@ -234,20 +234,24 @@ export class MagicBoxInstance {
   public async clearSuggestion() {
     this.inputManager.setWordCompletion(null);
     this.suggestionsManager.clearSuggestions();
-    this.updateSuggestion([]);
+    this.onSuggestions([]);
   }
 
   private focusOnSuggestion(suggestion: Suggestion) {
     if (suggestion == null || suggestion.text == null) {
-      suggestion = this.getFirstSuggestionText();
-      this.inputManager.setResult(this.displayedResult, suggestion && suggestion.text);
+      this.inputManager.setResult(this.displayedResult, this.getFirstSuggestionText());
     } else {
       this.inputManager.setResult(this.grammar.parse(suggestion.text).clean(), suggestion.text);
     }
   }
 
-  private getFirstSuggestionText(): Suggestion {
+  private getFirstSuggestionWithText() {
     return find(this.suggestionsManager.suggestions, suggestion => suggestion.text != null);
+  }
+
+  private getFirstSuggestionText() {
+    const firstSuggestionWithText = this.getFirstSuggestionWithText();
+    return firstSuggestionWithText ? firstSuggestionWithText.text : '';
   }
 
   public getText() {
@@ -260,7 +264,7 @@ export class MagicBoxInstance {
 
   public clear() {
     this.setText('');
-    this.showSuggestion();
+    this.clearSuggestion();
     this.focus();
     this.onclear && this.onclear();
   }
