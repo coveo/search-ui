@@ -3,18 +3,8 @@ import { Assert } from '../misc/Assert';
 import { QueryBuilder } from '../ui/Base/QueryBuilder';
 import { IFacetRequest, IFacetRequestValue } from '../rest/Facet/FacetRequest';
 import { QueryEvents } from '../events/QueryEvents';
+import { CategoryFacetValue } from '../ui/CategoryFacet/CategoryFacetValues/CategoryFacetValue';
 import { FacetValueState } from '../rest/Facet/FacetValueState';
-
-// TODO: Create a real class and move in a separate file
-export type CategoryFacetValue = {
-  value: string;
-  displayValue: string;
-  state: FacetValueState;
-  numberOfResults: number;
-  moreValuesAvailable: boolean;
-  preventAutoSelect: boolean;
-  children: CategoryFacetValue[];
-}
 
 // TODO: rename to simply CategoryFacetQueryController
 export class DynamicCategoryFacetQueryController {
@@ -38,6 +28,10 @@ export class DynamicCategoryFacetQueryController {
 
   public resetNumberOfValuesToRequest() {
     this.numberOfValuesToRequest = this.facet.options.numberOfValues;
+  }
+
+  public enableFreezeFacetOrderFlag() {
+    this.freezeFacetOrder = true;
   }
 
   public putFacetIntoQueryBuilder(queryBuilder: QueryBuilder) {
