@@ -32,8 +32,6 @@ export class MagicBoxInstance {
   private suggestionsManager: SuggestionsManager;
   private magicBoxClear: MagicBoxClear;
 
-  private lastSuggestions: Suggestion[] = [];
-
   private result: Result;
   private displayedResult: Result;
 
@@ -192,8 +190,8 @@ export class MagicBoxInstance {
   }
 
   public async showSuggestion() {
-    const suggestions = await this.suggestionsManager.mergeSuggestions(this.getSuggestions != null ? this.getSuggestions() : []);
-    this.updateSuggestion(suggestions);
+    await this.suggestionsManager.mergeSuggestions(this.getSuggestions());
+    this.updateSuggestion(this.suggestionsManager.suggestions);
   }
 
   private shouldMoveInSuggestions(key: KEYBOARD) {
@@ -211,7 +209,6 @@ export class MagicBoxInstance {
   }
 
   private updateSuggestion(suggestions: Suggestion[]) {
-    this.lastSuggestions = suggestions;
     const firstSuggestion = this.getFirstSuggestionText();
     this.inputManager.setWordCompletion(firstSuggestion && firstSuggestion.text);
     this.onsuggestions && this.onsuggestions(suggestions);
@@ -236,8 +233,8 @@ export class MagicBoxInstance {
 
   public async clearSuggestion() {
     this.inputManager.setWordCompletion(null);
-    const suggestions = await this.suggestionsManager.mergeSuggestions([]);
-    this.updateSuggestion(suggestions);
+    await this.suggestionsManager.mergeSuggestions([]);
+    this.updateSuggestion([]);
   }
 
   private focusOnSuggestion(suggestion: Suggestion) {
@@ -250,7 +247,7 @@ export class MagicBoxInstance {
   }
 
   private getFirstSuggestionText(): Suggestion {
-    return find(this.lastSuggestions, suggestion => suggestion.text != null);
+    return find(this.suggestionsManager.suggestions, suggestion => suggestion.text != null);
   }
 
   public getText() {
@@ -269,7 +266,7 @@ export class MagicBoxInstance {
   }
 
   public hasSuggestions() {
-    return this.suggestionsManager.hasSuggestions;
+    return this.suggestionsManager.suggestions.length > 0;
   }
 }
 

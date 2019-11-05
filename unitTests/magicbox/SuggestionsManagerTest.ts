@@ -42,12 +42,14 @@ export function SuggestionsManagerTest() {
           selectedClass,
           suggestionClass
         });
+
+        suggestionManager['displayedSuggestions'] = [{ dom: suggestion.el }];
       });
 
       it('builds suggestions parent correctly when adding a suggestion', () => {
         suggestionManager.updateSuggestions([{}]);
 
-        expect(suggestionManager.hasSuggestions).toBe(true);
+        expect(suggestionManager.suggestions.length).toBeGreaterThan(0);
         expect($$(suggestionContainer).hasClass('magic-box-hasSuggestion')).toBe(true);
 
         const suggestionsElement = $$(suggestionContainer).find('.coveo-magicbox-suggestions');
@@ -61,7 +63,7 @@ export function SuggestionsManagerTest() {
         suggestionManager.updateSuggestions([{}]);
         suggestionManager.updateSuggestions([]);
 
-        expect(suggestionManager.hasSuggestions).toBe(false);
+        expect(suggestionManager.suggestions.length).toEqual(0);
         expect($$(suggestionContainer).hasClass('magic-box-hasSuggestion')).toBe(false);
 
         const suggestionsElement = $$(suggestionContainer).find('.coveo-magicbox-suggestions');
@@ -305,9 +307,8 @@ export function SuggestionsManagerTest() {
           return (suggestions = textSuggestions.map(text => <Suggestion>{ text, onSelect: suggestionOnSelects[text] }));
         }
 
-        let mergedSuggestions: Promise<Suggestion[]>;
         function mergeSuggestions() {
-          mergedSuggestions = suggestionsManager.mergeSuggestions([Promise.resolve(createSuggestions())]);
+          suggestionsManager.mergeSuggestions([Promise.resolve(createSuggestions())]);
         }
 
         function waitForQuerySuggestRendered() {
@@ -325,11 +326,6 @@ export function SuggestionsManagerTest() {
           mergeSuggestions();
           await waitForQuerySuggestRendered();
           suggestionElements = $$(env.root).findClass(suggestionClass);
-          done();
-        });
-
-        it('calls the callback with the merged suggestions', async done => {
-          expect(await mergedSuggestions).toEqual(suggestions);
           done();
         });
 

@@ -1,8 +1,8 @@
 import { $$, Dom } from '../utils/Dom';
 import { l } from '../strings/Strings';
-import { defaults, findIndex } from 'lodash';
+import { defaults, findIndex, find } from 'lodash';
 import { Component } from '../ui/Base/Component';
-import { Direction } from './SuggestionsManager';
+import { Direction, Suggestion } from './SuggestionsManager';
 import { ResultPreviewsManagerEvents, IPopulateSearchResultPreviewsEventArgs } from '../events/ResultPreviewsManagerEvents';
 
 export interface ISearchResultPreview {
@@ -18,11 +18,12 @@ export interface IResultPreviewsManagerOptions {
 
 export class ResultPreviewsManager {
   private options: IResultPreviewsManagerOptions;
+  private displayedPreviews: ISearchResultPreview[];
   private suggestionsPreviewContainer: Dom;
   private resultPreviewsHeader: Dom;
   private resultPreviewsContainer: Dom;
   private lastPreviewsQuery: Promise<ISearchResultPreview[]>;
-  private lastSelectedSuggestion: HTMLElement;
+  private lastSelectedSuggestion: Suggestion;
   private root: HTMLElement;
 
   public get previewsOwner() {
@@ -33,7 +34,7 @@ export class ResultPreviewsManager {
     return !!this.suggestionsPreviewContainer;
   }
 
-  public get focusedPreviewElement() {
+  public get focusedPreview() {
     if (!this.hasPreviews) {
       return null;
     }
@@ -41,14 +42,11 @@ export class ResultPreviewsManager {
     if (!focusedElement || !focusedElement.classList.contains(this.options.previewClass)) {
       return null;
     }
-    return focusedElement;
+    return find(this.displayedPreviews, preview => preview.element === focusedElement);
   }
 
-  public get previewElements() {
-    if (!this.hasPreviews) {
-      return [];
-    }
-    return this.suggestionsPreviewContainer.findClass(this.options.previewClass);
+  public get previews() {
+    return this.displayedPreviews;
   }
 
   private get suggestionsListbox() {
@@ -72,17 +70,18 @@ export class ResultPreviewsManager {
       selectedClass: 'magic-box-selected'
     });
     this.root = Component.resolveRoot(element);
+    this.displayedPreviews = [];
   }
 
-  public async displaySearchResultPreviewsForSuggestion(suggestion: HTMLElement) {
+  public async displaySearchResultPreviewsForSuggestion(suggestion: Suggestion) {
     if (this.lastSelectedSuggestion !== suggestion) {
       await this.loadSearchResultPreviews(suggestion);
     }
   }
 
-  public getElementInDirection(direction: Direction) {
-    const previewElements = this.previewElements;
-    const focusedIndex = previewElements.indexOf(this.focusedPreviewElement);
+  public getPreviewInDirection(direction: Direction) {
+    const previews = this.previews;
+    const focusedIndex = previews.indexOf(this.focusedPreview);
 
     if (focusedIndex === -1) {
       return null;
@@ -92,7 +91,7 @@ export class ResultPreviewsManager {
       return null;
     }
 
-    return previewElements[(focusedIndex + this.getIncrementInDirection(direction)) % previewElements.length];
+    return previews[(focusedIndex + this.getIncrementInDirection(direction)) % previews.length];
   }
 
   private getIncrementInDirection(direction: Direction) {
@@ -152,12 +151,12 @@ export class ResultPreviewsManager {
     ).el;
   }
 
-  private getSearchResultPreviewsQuery(suggestion: HTMLElement) {
+  private getSearchResultPreviewsQuery(suggestion: Suggestion) {
     if (!suggestion) {
       return Promise.resolve([]);
     }
     const populateEventArgs: IPopulateSearchResultPreviewsEventArgs = {
-      suggestionText: suggestion.innerText,
+      suggestionText: suggestion.text,
       previewsQuery: null
     };
     $$(this.root).trigger(ResultPreviewsManagerEvents.PopulateSearchResultPreviews, populateEventArgs);
@@ -181,19 +180,20 @@ export class ResultPreviewsManager {
     previews.forEach(preview => this.appendSearchResultPreview(preview, previews.length % 3 === 0 ? 33 : 50));
   }
 
-  private displaySuggestionPreviews(suggestion: HTMLElement, previews: ISearchResultPreview[]) {
+  private displaySuggestionPreviews(suggestion: Suggestion, previews: ISearchResultPreview[]) {
     this.setHasPreviews(previews && previews.length > 0);
     this.element.classList.toggle('magic-box-hasPreviews', this.hasPreviews);
     this.lastPreviewsQuery = null;
     this.lastSelectedSuggestion = suggestion;
+    this.displayedPreviews = previews;
     if (!this.hasPreviews) {
       return;
     }
     this.appendSearchResultPreviews(previews);
-    this.updateSearchResultPreviewsHeader(`${this.options.previewHeaderText} "${suggestion.innerText}"`);
+    this.updateSearchResultPreviewsHeader(`${this.options.previewHeaderText} "${suggestion.text}"`);
   }
 
-  private async loadSearchResultPreviews(suggestion: HTMLElement) {
+  private async loadSearchResultPreviews(suggestion: Suggestion) {
     const query = (this.lastPreviewsQuery = this.getSearchResultPreviewsQuery(suggestion));
     const previews = await this.lastPreviewsQuery;
     if (this.lastPreviewsQuery !== query) {
