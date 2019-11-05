@@ -190,7 +190,7 @@ export class MagicBoxInstance {
   }
 
   public async showSuggestion() {
-    await this.suggestionsManager.mergeSuggestions(this.getSuggestions());
+    await this.suggestionsManager.receiveSuggestions(this.getSuggestions());
     this.updateSuggestion(this.suggestionsManager.suggestions);
   }
 
@@ -233,7 +233,7 @@ export class MagicBoxInstance {
 
   public async clearSuggestion() {
     this.inputManager.setWordCompletion(null);
-    await this.suggestionsManager.mergeSuggestions([]);
+    this.suggestionsManager.clearSuggestions();
     this.updateSuggestion([]);
   }
 

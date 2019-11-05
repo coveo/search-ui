@@ -160,12 +160,16 @@ export class SuggestionsManager {
     this.keyboardFocusedElement = null;
   }
 
-  public async mergeSuggestions(suggestions: Array<Promise<Suggestion[]> | Suggestion[]>) {
+  public async receiveSuggestions(suggestions: Array<Promise<Suggestion[]> | Suggestion[]>) {
     const { results, status } = await this.suggestionsProcessor.processQueries(suggestions);
     if (status === ProcessingStatus.Overriden) {
       return;
     }
     this.updateSuggestions(results);
+  }
+
+  public clearSuggestions() {
+    this.updateSuggestions([]);
   }
 
   public updateSuggestions(suggestions: Suggestion[]) {

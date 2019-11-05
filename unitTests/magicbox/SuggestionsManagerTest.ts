@@ -308,7 +308,7 @@ export function SuggestionsManagerTest() {
         }
 
         function mergeSuggestions() {
-          suggestionsManager.mergeSuggestions([Promise.resolve(createSuggestions())]);
+          suggestionsManager.receiveSuggestions([Promise.resolve(createSuggestions())]);
         }
 
         function waitForQuerySuggestRendered() {
