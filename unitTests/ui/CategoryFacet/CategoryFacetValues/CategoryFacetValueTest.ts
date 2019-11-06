@@ -16,16 +16,6 @@ export function CategoryFacetValueTest() {
       facetValue = new CategoryFacetValue(fakeFacetValue, facet);
     });
 
-    it('should have the right attributes', () => {
-      expect(facetValue.value).toBe(fakeFacetValue.value);
-      expect(facetValue.path).toBe(fakeFacetValue.path);
-      expect(facetValue.state).toBe(fakeFacetValue.state);
-      expect(facetValue.numberOfResults).toBe(fakeFacetValue.numberOfResults);
-      expect(facetValue.displayValue).toBe(fakeFacetValue.displayValue);
-      expect(facetValue.moreValuesAvailable).toBe(fakeFacetValue.moreValuesAvailable);
-      expect(facetValue.children).toBe(fakeFacetValue.children);
-    });
-
     it('should be idle by default', () => {
       expect(facetValue.isIdle).toBe(true);
     });
