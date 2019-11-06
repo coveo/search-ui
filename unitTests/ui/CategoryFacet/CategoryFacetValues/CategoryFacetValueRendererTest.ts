@@ -13,12 +13,13 @@ export function CategoryFacetValueRendererTest() {
       initializeComponent();
     });
 
-    function initializeComponent(options?: ICategoryFacetOptions) {
-      facet = CategoryFacetTestUtils.createFakeFacet(options);
+    function initializeComponent() {
+    facet = CategoryFacetTestUtils.createFakeFacet();
       facetValue = new CategoryFacetValue(CategoryFacetTestUtils.createFakeFacetValues(1)[0], facet);
       facetValueRenderer = new CategoryFacetValueRenderer(facetValue, facet);
     }
 
+    // TODO: add XSS tests
     it('should render without errors', () => {
       expect(() => facetValueRenderer.render()).not.toThrow();
     });

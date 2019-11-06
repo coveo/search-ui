@@ -16,16 +16,6 @@ export function CategoryFacetValueTest() {
       facetValue = new CategoryFacetValue(fakeFacetValue, facet);
     });
 
-    it('should have the right attributes', () => {
-      expect(facetValue.value).toBe(fakeFacetValue.value);
-      expect(facetValue.path).toBe(fakeFacetValue.path);
-      expect(facetValue.state).toBe(fakeFacetValue.state);
-      expect(facetValue.numberOfResults).toBe(fakeFacetValue.numberOfResults);
-      expect(facetValue.displayValue).toBe(fakeFacetValue.displayValue);
-      expect(facetValue.moreValuesAvailable).toBe(fakeFacetValue.moreValuesAvailable);
-      expect(facetValue.children).toBe(fakeFacetValue.children);
-    });
-
     it('should be idle by default', () => {
       expect(facetValue.isIdle).toBe(true);
     });
@@ -51,7 +41,8 @@ export function CategoryFacetValueTest() {
 
     it(`when the facet value has children
       should render and append in the frament`, () => {
-      facetValue.children = CategoryFacetTestUtils.createFakeFacetValues().map(fakeFacetValue => new CategoryFacetValue(fakeFacetValue, facet))
+      fakeFacetValue.children = CategoryFacetTestUtils.createFakeFacetValues().map(fakeFacetValue => new CategoryFacetValue(fakeFacetValue, facet));
+      facetValue = new CategoryFacetValue(fakeFacetValue, facet);
       const fragment = new DocumentFragment();
       facetValue.render(fragment)
       expect(fragment.children.length).toBe(facetValue.children.length + 1);

@@ -1,8 +1,8 @@
 import { $$, Dom } from '../../../utils/Dom';
 import { CategoryFacet } from '../CategoryFacet';
-import { CategoryFacetValue, ValueRenderer } from './CategoryFacetValue';
+import { CategoryFacetValue } from './CategoryFacetValue';
 
-export class CategoryFacetValueRenderer implements ValueRenderer {
+export class CategoryFacetValueRenderer {
   private dom: Dom;
 
   constructor(private facetValue: CategoryFacetValue, private facet: CategoryFacet) { }

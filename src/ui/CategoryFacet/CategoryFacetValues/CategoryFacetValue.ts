@@ -4,14 +4,6 @@ import { FacetValueState } from '../../../rest/Facet/FacetValueState';
 import { CategoryFacetValueRenderer } from './CategoryFacetValueRenderer';
 import { l } from '../../../strings/Strings';
 
-export interface ValueRenderer {
-  render(): HTMLElement;
-}
-
-export interface IValueRendererKlass {
-  new(facetValue: CategoryFacetValue, facet: CategoryFacet): ValueRenderer;
-}
-
 export interface ICategoryFacetValue {
   value: string;
   path: string[];
@@ -19,32 +11,52 @@ export interface ICategoryFacetValue {
   state: FacetValueState;
   numberOfResults: number;
   moreValuesAvailable: boolean;
-  preventAutoSelect?: boolean;
+  preventAutoSelect: boolean;
   children: CategoryFacetValue[];
 }
 
 export class CategoryFacetValue implements ICategoryFacetValue {
-  public value: string;
-  public path: string[];
-  public state: FacetValueState;
-  public moreValuesAvailable: boolean;
-  public preventAutoSelect = false;
-  public numberOfResults: number;
-  public position: number;
-  public displayValue: string;
-  public children: CategoryFacetValue[];
-  public renderer: ValueRenderer;
+  public renderer: CategoryFacetValueRenderer;
   private element: HTMLElement = null;
 
-  constructor(facetValue: ICategoryFacetValue, facet: CategoryFacet, rendererKlass: IValueRendererKlass = CategoryFacetValueRenderer) {
-    this.value = facetValue.value;
-    this.path = facetValue.path;
-    this.state = facetValue.state;
-    this.numberOfResults = facetValue.numberOfResults;
-    this.displayValue = facetValue.displayValue;
-    this.moreValuesAvailable = facetValue.moreValuesAvailable;
-    this.children = facetValue.children;
-    this.renderer = new rendererKlass(this, facet);
+  constructor(private facetValue: ICategoryFacetValue, facet: CategoryFacet) {
+    this.renderer = new CategoryFacetValueRenderer(this, facet);
+  }
+
+  public get value() {
+    return this.facetValue.value;
+  }
+
+  public get path() {
+    return this.facetValue.path;
+  }
+  
+  public get state() {
+    return this.facetValue.state;
+  }
+
+  public set state(state: FacetValueState) {
+    this.facetValue.state = state;
+  }
+
+  public get moreValuesAvailable() {
+    return this.facetValue.moreValuesAvailable;
+  }
+
+  public get preventAutoSelect() {
+    return this.facetValue.preventAutoSelect;
+  }
+
+  public get numberOfResults() {
+    return this.facetValue.numberOfResults;
+  }
+
+  public get displayValue() {
+    return this.facetValue.displayValue;
+  }
+
+  public get children() {
+    return this.facetValue.children;
   }
 
   public get isIdle() {
