@@ -6,23 +6,17 @@ import { IFacetResponseValue } from '../../../rest/Facet/FacetResponse';
 import { FacetValueState } from '../../../rest/Facet/FacetValueState';
 
 export class DynamicFacetValueCreator implements ValueCreator {
-  constructor(private facet: DynamicFacet) {}
-
-  private formatDisplayValue(value: string) {
-    let returnValue = FacetUtils.tryToGetTranslatedCaption(<string>this.facet.options.field, value);
-
-    if (this.facet.options.valueCaption && typeof this.facet.options.valueCaption === 'object') {
-      returnValue = this.facet.options.valueCaption[value] || returnValue;
-    }
-
-    return returnValue;
-  }
+  constructor(private facet: DynamicFacet) { }
 
   public createFromResponse(facetValue: IFacetResponseValue, index: number) {
     return new DynamicFacetValue(
       {
         value: facetValue.value,
-        displayValue: this.formatDisplayValue(facetValue.value),
+        displayValue: FacetUtils.getDisplayValueFromValueCaption(
+          facetValue.value,
+          this.facet.options.field as string,
+          this.facet.options.valueCaption
+        ),
         numberOfResults: facetValue.numberOfResults,
         state: facetValue.state,
         position: index + 1
@@ -34,7 +28,11 @@ export class DynamicFacetValueCreator implements ValueCreator {
   public createFromValue(value: string) {
     const position = this.facet.values.allFacetValues.length + 1;
     const state = FacetValueState.idle;
-    const displayValue = this.formatDisplayValue(value);
+    const displayValue = FacetUtils.getDisplayValueFromValueCaption(
+      value,
+      this.facet.options.field as string,
+      this.facet.options.valueCaption
+    );
     return new DynamicFacetValue({ value, displayValue, state, numberOfResults: 0, position }, this.facet);
   }
 }
