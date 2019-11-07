@@ -5,7 +5,7 @@ import { FacetUtils } from '../../Facet/FacetUtils';
 import { $$ } from '../../../utils/Dom';
 import { find } from 'underscore';
 import { FacetValueState } from '../../../rest/Facet/FacetValueState';
-import { StringUtils } from '../../../utils/StringUtils';
+import { Utils } from '../../../utils/Utils';
 
 export class CategoryFacetValues {
   private facetValues: CategoryFacetValue[];
@@ -85,7 +85,7 @@ export class CategoryFacetValues {
 
     do {
       const value = remainingPath.shift();
-      facetValue = find(facetValues, facetValue => StringUtils.equalsCaseInsensitive(facetValue.value, value));
+      facetValue = find(facetValues, facetValue => facetValue.value === value);
 
       if (!facetValue) {
         return null;
@@ -112,12 +112,10 @@ export class CategoryFacetValues {
     return newFacetValue;
   }
 
-  private clearHierarchyLevel(facetValues: CategoryFacetValue[], path: string[], level = 0) {
+  private clearHierarchyLevel(facetValues: CategoryFacetValue[], path: string[], level = 1) {
     facetValues.forEach(facetValue => {
-      const nextPathValue = path[level + 1];
       facetValue.state = FacetValueState.idle;
-      facetValue.children = facetValue.children
-        .filter(child => nextPathValue && StringUtils.equalsCaseInsensitive(child.value, nextPathValue));
+      facetValue.children = facetValue.children.filter(child => path[level] && Utils.arrayEqual(path.slice(0, level + 1), child.path));
       this.clearHierarchyLevel(facetValue.children, path, level + 1);
     })
   }

@@ -28,15 +28,15 @@ export class CategoryFacetTestUtils {
     };
   }
 
-  static createFakeFacetResponseValues(withChildren = false) {
+  static createFakeFacetResponseValues(depth = 1, children = 5) {
     const fakeValues: IFacetResponseValue[] = [];
 
-    for (let index = 0; index < 5; index++) {
-      const value = `fake value ${index}`;
+    for (let index = 0; index < children; index++) {
+      const value = `value ${index}-${depth}`;
       const fakeValue: IFacetResponseValue = {
         value,
-        state: withChildren ? FacetValueState.selected : FacetValueState.idle,
-        children: withChildren ? this.createFakeFacetResponseValues() : [],
+        state: FacetValueState.idle,
+        children: depth > 1 ? this.createFakeFacetResponseValues(depth - 1, children) : [],
         moreValuesAvailable: false,
         numberOfResults: Math.ceil(Math.random() * 100000),
       };

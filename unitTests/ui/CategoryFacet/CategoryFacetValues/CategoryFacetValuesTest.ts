@@ -3,6 +3,7 @@ import { CategoryFacetTestUtils } from '../CategoryFacetTestUtils';
 import { CategoryFacet } from '../../../../src/ui/CategoryFacet/CategoryFacet';
 import { IFacetResponse, IFacetResponseValue } from '../../../../src/rest/Facet/FacetResponse';
 import { CategoryFacetValue } from '../../../../src/ui/CategoryFacet/CategoryFacetValues/CategoryFacetValue';
+import { FacetValueState } from '../../../../src/rest/Facet/FacetValueState';
 
 export function CategoryFacetValuesTest() {
   describe('CategoryFacetsValues', () => {
@@ -57,7 +58,7 @@ export function CategoryFacetValuesTest() {
 
         beforeEach(() => {
           response = CategoryFacetTestUtils.getCompleteFacetResponse(facet, {
-            values: CategoryFacetTestUtils.createFakeFacetResponseValues(true)
+            values: CategoryFacetTestUtils.createFakeFacetResponseValues(2)
           });
           facet.values.createFromResponse(response);
 
@@ -95,6 +96,65 @@ export function CategoryFacetValuesTest() {
       facet.values.resetValues();
 
       expect(facet.values.allFacetValues.length).toBe(0);
+    });
+
+    describe('testing clearHierarchy', () => {
+      it(`when path is a single level
+        should set the value state to idle`, () => {
+        facet.values.createFromResponse(CategoryFacetTestUtils.getCompleteFacetResponse(facet));
+        const testValue = facet.values.allFacetValues[2];
+        testValue.select();
+        facet.values.clearHierarchy([testValue.value]);
+        expect(testValue.state).toBe(FacetValueState.idle);
+      });
+
+      describe('when path is multiple levels', () => {
+        let testValue: CategoryFacetValue;
+        let childTestValue: CategoryFacetValue;
+        let grandChildTestValue: CategoryFacetValue;
+
+        beforeEach(() => {
+          facet.values.createFromResponse(CategoryFacetTestUtils.getCompleteFacetResponse(facet, {
+            values: CategoryFacetTestUtils.createFakeFacetResponseValues(3)
+          }));
+
+          testValue = facet.values.allFacetValues[1];
+          childTestValue = facet.values.allFacetValues[1].children[3];
+          grandChildTestValue = facet.values.allFacetValues[1].children[3].children[0];
+          grandChildTestValue.select();
+        });
+
+        function shouldBeIdle(facetValues: CategoryFacetValue[]) {
+          facetValues.forEach(({ state }) => expect(state).toBe(FacetValueState.idle));
+        }
+
+        function shouldBeChildlessExcept(facetValues: CategoryFacetValue[], pathValue: string) {
+          facetValues.forEach(({ value, children }) => value !== pathValue && expect(children.length).toBe(0));
+        }
+
+        it(`should set every values's state expect to idle`, () => {
+          facet.values.clearHierarchy([testValue.value, childTestValue.value, grandChildTestValue.value]);
+          shouldBeIdle(facet.values.allFacetValues);
+          shouldBeIdle(testValue.children);
+          shouldBeIdle(childTestValue.children);
+        });
+
+        it(`should remove every values's children outside of the path`, () => {
+          facet.values.clearHierarchy([testValue.value, childTestValue.value, grandChildTestValue.value]);
+          shouldBeChildlessExcept(facet.values.allFacetValues, testValue.value);
+          shouldBeChildlessExcept(testValue.children, childTestValue.value);
+          shouldBeChildlessExcept(childTestValue.children, grandChildTestValue.value);
+        });
+      });
+    });
+
+    it('should render the correct number of children', () => {
+      facet.values.createFromResponse(CategoryFacetTestUtils.getCompleteFacetResponse(facet, {
+        values: CategoryFacetTestUtils.createFakeFacetResponseValues(3, 3)
+      }));
+
+      const listElement = facet.values.render();
+      expect(listElement.children.length).toBe(39);
     });
   });
 }
