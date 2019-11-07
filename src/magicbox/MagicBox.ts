@@ -32,6 +32,8 @@ export class MagicBoxInstance {
   private suggestionsManager: SuggestionsManager;
   private magicBoxClear: MagicBoxClear;
 
+  private lastSuggestions: Suggestion[] = [];
+
   private result: Result;
   private displayedResult: Result;
 
@@ -190,8 +192,7 @@ export class MagicBoxInstance {
   }
 
   public async addSuggestions() {
-    await this.suggestionsManager.receiveSuggestions(this.getSuggestions());
-    const { suggestions } = this.suggestionsManager;
+    const suggestions = await this.suggestionsManager.receiveSuggestions(this.getSuggestions != null ? this.getSuggestions() : []);
     this.addSelectEventHandlers(suggestions);
     this.inputManager.setWordCompletion(this.getFirstSuggestionText());
     this.onSuggestions(suggestions);
@@ -245,8 +246,8 @@ export class MagicBoxInstance {
     }
   }
 
-  private getFirstSuggestionWithText() {
-    return find(this.suggestionsManager.suggestions, suggestion => suggestion.text != null);
+  private getFirstSuggestionWithText(): Suggestion {
+    return find(this.lastSuggestions, suggestion => suggestion.text != null);
   }
 
   private getFirstSuggestionText() {
@@ -270,7 +271,7 @@ export class MagicBoxInstance {
   }
 
   public hasSuggestions() {
-    return this.suggestionsManager.suggestions.length > 0;
+    return this.suggestionsManager.hasSuggestions;
   }
 }
 

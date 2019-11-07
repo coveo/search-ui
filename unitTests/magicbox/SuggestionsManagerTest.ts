@@ -42,14 +42,12 @@ export function SuggestionsManagerTest() {
           selectedClass,
           suggestionClass
         });
-
-        suggestionManager['displayedSuggestions'] = [{ dom: suggestion.el }];
       });
 
       it('builds suggestions parent correctly when adding a suggestion', () => {
         suggestionManager.updateSuggestions([{}]);
 
-        expect(suggestionManager.suggestions.length).toBeGreaterThan(0);
+        expect(suggestionManager.hasSuggestions).toBe(true);
         expect($$(suggestionContainer).hasClass('magic-box-hasSuggestion')).toBe(true);
 
         const suggestionsElement = $$(suggestionContainer).find('.coveo-magicbox-suggestions');
@@ -63,7 +61,7 @@ export function SuggestionsManagerTest() {
         suggestionManager.updateSuggestions([{}]);
         suggestionManager.updateSuggestions([]);
 
-        expect(suggestionManager.suggestions.length).toEqual(0);
+        expect(suggestionManager.hasSuggestions).toBe(false);
         expect($$(suggestionContainer).hasClass('magic-box-hasSuggestion')).toBe(false);
 
         const suggestionsElement = $$(suggestionContainer).find('.coveo-magicbox-suggestions');
@@ -307,8 +305,8 @@ export function SuggestionsManagerTest() {
           return (suggestions = textSuggestions.map(text => <Suggestion>{ text, onSelect: suggestionOnSelects[text] }));
         }
 
-        function mergeSuggestions() {
-          suggestionsManager.receiveSuggestions([Promise.resolve(createSuggestions())]);
+        async function receiveSuggestions() {
+          await suggestionsManager.receiveSuggestions([Promise.resolve(createSuggestions())]);
         }
 
         function waitForQuerySuggestRendered() {
@@ -323,7 +321,7 @@ export function SuggestionsManagerTest() {
 
         let suggestionElements: HTMLElement[];
         beforeEach(async done => {
-          mergeSuggestions();
+          receiveSuggestions();
           await waitForQuerySuggestRendered();
           suggestionElements = $$(env.root).findClass(suggestionClass);
           done();

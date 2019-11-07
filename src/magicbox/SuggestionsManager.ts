@@ -3,9 +3,8 @@ import { IQuerySuggestSelection, OmniboxEvents } from '../events/OmniboxEvents';
 import { Component } from '../ui/Base/Component';
 import { $$, Dom } from '../utils/Dom';
 import { InputManager } from './InputManager';
-import { ResultPreviewsManager, ISearchResultPreview } from './ResultPreviewsManager';
+import { ResultPreviewsManager } from './ResultPreviewsManager';
 import { QueryProcessor, ProcessingStatus } from './QueryProcessor';
-import { find } from 'lodash';
 
 export interface Suggestion {
   text?: string;
@@ -30,21 +29,11 @@ export enum Direction {
   Right = 'Right'
 }
 
-type KeyboardFocus =
-  | {
-      type: 'suggestion';
-      suggestion: Suggestion;
-    }
-  | {
-      type: 'preview';
-      preview: ISearchResultPreview;
-    };
-
 export class SuggestionsManager {
-  private displayedSuggestions: Suggestion[];
+  public hasSuggestions: boolean;
   private suggestionsProcessor: QueryProcessor<Suggestion>;
   private options: SuggestionsManagerOptions;
-  private keyboardFocusedElement: KeyboardFocus;
+  private keyboardFocusedElement: HTMLElement;
   private suggestionsListbox: Dom;
   private resultPreviewsManager: ResultPreviewsManager;
   private root: HTMLElement;
@@ -55,10 +44,6 @@ export class SuggestionsManager {
 
   public get hasPreviews() {
     return this.resultPreviewsManager.hasPreviews;
-  }
-
-  public get suggestions() {
-    return this.displayedSuggestions;
   }
 
   constructor(
@@ -77,7 +62,7 @@ export class SuggestionsManager {
       this.options.timeout = 500;
     }
 
-    this.displayedSuggestions = [];
+    this.hasSuggestions = false;
 
     $$(this.element).on('mouseover', e => {
       this.handleMouseOver(e);
@@ -99,9 +84,9 @@ export class SuggestionsManager {
     const target = $$(<HTMLElement>e.target);
     const parents = target.parents(this.options.suggestionClass);
     if (target.hasClass(this.options.suggestionClass)) {
-      this.processMouseSelection(this.getSuggestionFromElement(target.el));
+      this.processMouseSelection(target.el);
     } else if (parents.length > 0 && this.element.contains(parents[0])) {
-      this.processMouseSelection(this.getSuggestionFromElement(parents[0]));
+      this.processMouseSelection(parents[0]);
     }
   }
 
@@ -145,15 +130,13 @@ export class SuggestionsManager {
 
   public selectAndReturnKeyboardFocusedElement(): HTMLElement {
     const selected = this.keyboardFocusedElement;
-    if (selected) {
-      const element = selected.type === 'suggestion' ? selected.suggestion.dom : selected.preview.element;
-      $$(element).trigger('keyboardSelect');
+    if (selected != null) {
+      $$(selected).trigger('keyboardSelect');
       // By definition, once an element has been "selected" with the keyboard,
       // it is not longer "active" since the event has been processed.
       this.keyboardFocusedElement = null;
-      return element;
     }
-    return null;
+    return selected;
   }
 
   public clearKeyboardFocusedElement() {
@@ -163,9 +146,10 @@ export class SuggestionsManager {
   public async receiveSuggestions(suggestions: Array<Promise<Suggestion[]> | Suggestion[]>) {
     const { results, status } = await this.suggestionsProcessor.processQueries(suggestions);
     if (status === ProcessingStatus.Overriden) {
-      return;
+      return [];
     }
     this.updateSuggestions(results);
+    return results;
   }
 
   public clearSuggestions() {
@@ -176,59 +160,55 @@ export class SuggestionsManager {
     this.suggestionsListbox.empty();
     this.inputManager.input.removeAttribute('aria-activedescendant');
 
-    this.displayedSuggestions = suggestions;
+    this.hasSuggestions = suggestions.length > 0;
 
-    const hasSuggestions = suggestions.length > 0;
-    $$(this.element).toggleClass('magic-box-hasSuggestion', hasSuggestions);
-    $$(this.magicBoxContainer).setAttribute('aria-expanded', hasSuggestions.toString());
+    $$(this.element).toggleClass('magic-box-hasSuggestion', this.hasSuggestions);
+    $$(this.magicBoxContainer).setAttribute('aria-expanded', this.hasSuggestions.toString());
 
     this.resultPreviewsManager.displaySearchResultPreviewsForSuggestion(null);
 
-    if (!hasSuggestions) {
+    if (!this.hasSuggestions) {
       this.appendEmptySuggestionOption();
       $$(this.root).trigger(OmniboxEvents.querySuggestLoseFocus);
       return;
     }
 
     each(suggestions, (suggestion: Suggestion) => {
-      if (suggestion.dom) {
-        this.modifyDomFromExistingSuggestion(suggestion.dom);
-      } else {
-        suggestion.dom = this.createDomFromSuggestion(suggestion).el;
-      }
+      const dom = suggestion.dom ? this.modifyDomFromExistingSuggestion(suggestion.dom) : this.createDomFromSuggestion(suggestion);
 
-      suggestion.dom.setAttribute('id', `magic-box-suggestion-${indexOf(suggestions, suggestion)}`);
-      suggestion.dom.setAttribute('role', 'option');
-      suggestion.dom.setAttribute('aria-selected', 'false');
-      suggestion.dom.setAttribute('aria-label', suggestion.dom.innerText);
+      dom.setAttribute('id', `magic-box-suggestion-${indexOf(suggestions, suggestion)}`);
+      dom.setAttribute('role', 'option');
+      dom.setAttribute('aria-selected', 'false');
+      dom.setAttribute('aria-label', dom.text());
 
-      this.suggestionsListbox.append(suggestion.dom);
+      dom['suggestion'] = suggestion;
+      this.suggestionsListbox.append(dom.el);
     });
 
     $$(this.root).trigger(OmniboxEvents.querySuggestRendered);
   }
 
   public get selectedSuggestion(): Suggestion {
-    if (this.keyboardFocusedElement && this.keyboardFocusedElement.type === 'suggestion') {
-      return this.keyboardFocusedElement.suggestion;
+    if (this.htmlElementIsSuggestion(this.keyboardFocusedElement)) {
+      return this.returnMoved(this.keyboardFocusedElement) as Suggestion;
     }
     return null;
   }
 
-  private async processKeyboardSelection(suggestion: Suggestion) {
-    this.addSelectedStatus(suggestion.dom);
-    this.keyboardFocusedElement = { type: 'suggestion', suggestion };
-    $$(this.inputManager.input).setAttribute('aria-activedescendant', $$(suggestion.dom).getAttribute('id'));
+  private async processKeyboardSelection(suggestion: HTMLElement) {
+    this.addSelectedStatus(suggestion);
+    this.keyboardFocusedElement = suggestion;
+    $$(this.inputManager.input).setAttribute('aria-activedescendant', $$(suggestion).getAttribute('id'));
     await this.updateSelectedSuggestion(suggestion);
   }
 
-  private processKeyboardPreviewSelection(preview: ISearchResultPreview) {
-    this.addSelectedStatus(preview.element);
-    this.keyboardFocusedElement = { type: 'preview', preview };
+  private processKeyboardPreviewSelection(preview: HTMLElement) {
+    this.addSelectedStatus(preview);
+    this.keyboardFocusedElement = preview;
   }
 
-  private async processMouseSelection(suggestion: Suggestion) {
-    this.addSelectedStatus(suggestion.dom);
+  private processMouseSelection(suggestion: HTMLElement) {
+    this.addSelectedStatus(suggestion);
     this.updateSelectedSuggestion(suggestion);
     this.keyboardFocusedElement = null;
   }
@@ -301,12 +281,12 @@ export class SuggestionsManager {
   }
 
   private async move(direction: Direction) {
-    if (this.resultPreviewsManager.focusedPreview) {
+    if (this.resultPreviewsManager.focusedPreviewElement) {
       await this.moveWithinPreview(direction);
       return;
     }
     if (direction === Direction.Right || direction === Direction.Left) {
-      const firstPreview = this.resultPreviewsManager.previews[0];
+      const firstPreview = this.resultPreviewsManager.previewElements[0];
       if (firstPreview) {
         this.processKeyboardPreviewSelection(firstPreview);
         return;
@@ -316,10 +296,9 @@ export class SuggestionsManager {
   }
 
   private async moveWithinSuggestion(direction: Direction) {
-    const currentlySelected =
-      this.keyboardFocusedElement && this.keyboardFocusedElement.type === 'suggestion' ? this.keyboardFocusedElement.suggestion : null;
-    const selectables = this.displayedSuggestions;
-    const currentIndex = currentlySelected !== null ? indexOf(selectables, currentlySelected) : -1;
+    const currentlySelected = $$(this.element).find(`.${this.options.selectedClass}`);
+    const selectables = $$(this.element).findAll(`.${this.options.suggestionClass}`);
+    const currentIndex = indexOf(selectables, currentlySelected);
 
     let index = direction === Direction.Up ? currentIndex - 1 : currentIndex + 1;
     index = (index + selectables.length) % selectables.length;
@@ -327,7 +306,7 @@ export class SuggestionsManager {
     await this.selectQuerySuggest(selectables[index]);
   }
 
-  private async selectQuerySuggest(suggestion: Suggestion) {
+  private async selectQuerySuggest(suggestion: HTMLElement) {
     if (suggestion) {
       await this.processKeyboardSelection(suggestion);
     } else {
@@ -339,12 +318,29 @@ export class SuggestionsManager {
   }
 
   private async moveWithinPreview(direction: Direction) {
-    const newFocusedPreview = this.resultPreviewsManager.getPreviewInDirection(direction);
+    const newFocusedPreview = this.resultPreviewsManager.getElementInDirection(direction);
     if (!newFocusedPreview) {
       await this.selectQuerySuggest(this.resultPreviewsManager.previewsOwner);
       return;
     }
     this.processKeyboardPreviewSelection(newFocusedPreview);
+  }
+
+  private returnMoved(selected) {
+    if (selected != null) {
+      if (selected['suggestion']) {
+        return selected['suggestion'];
+      }
+      if (selected['no-text-suggestion']) {
+        return null;
+      }
+      if (selected instanceof HTMLElement) {
+        return {
+          text: $$(selected).text()
+        };
+      }
+    }
+    return null;
   }
 
   private addSelectedStatus(element: HTMLElement): void {
@@ -357,9 +353,9 @@ export class SuggestionsManager {
     this.updateAreaSelectedIfDefined(element, 'true');
   }
 
-  private async updateSelectedSuggestion(suggestion: Suggestion) {
+  private async updateSelectedSuggestion(suggestion: HTMLElement) {
     $$(this.root).trigger(OmniboxEvents.querySuggestGetFocus, <IQuerySuggestSelection>{
-      suggestion: suggestion.text
+      suggestion: suggestion.innerText
     });
     await this.resultPreviewsManager.displaySearchResultPreviewsForSuggestion(suggestion);
   }
@@ -389,7 +385,8 @@ export class SuggestionsManager {
     input.setAttribute('aria-autocomplete', 'list');
   }
 
-  private getSuggestionFromElement(element: HTMLElement) {
-    return find(this.displayedSuggestions, suggestion => suggestion.dom === element);
+  private htmlElementIsSuggestion(selected: HTMLElement) {
+    const omniboxSelectables = $$(this.element).findAll(`.${this.options.suggestionClass}`);
+    return indexOf(omniboxSelectables, selected) > -1;
   }
 }
