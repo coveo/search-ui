@@ -156,5 +156,9 @@ export function CategoryFacetValuesTest() {
       const listElement = facet.values.render();
       expect(listElement.children.length).toBe(39);
     });
+
+    describe('testing get', () => {
+      // TODO: will be added in the same PR
+    });
   });
 }
