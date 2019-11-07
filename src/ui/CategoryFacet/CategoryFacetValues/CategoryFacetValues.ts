@@ -31,16 +31,24 @@ export class CategoryFacetValues {
 
   private createFacetValueFromResponse(responseValue: IFacetResponseValue, path: string[] = []): CategoryFacetValue {
     const newPath = [...path, responseValue.value];
+    const displayValue = FacetUtils.getDisplayValueFromValueCaption(
+      responseValue.value,
+      this.facet.options.field as string,
+      this.facet.options.valueCaption
+    );
+    const children = responseValue.children
+      ? responseValue.children.map(responseValue => this.createFacetValueFromResponse(responseValue, newPath))
+      : [];
+
     return new CategoryFacetValue({
       value: responseValue.value,
-      path: newPath,
-      displayValue: this.formatDisplayValue(responseValue.value),
       numberOfResults: responseValue.numberOfResults,
       state: responseValue.state,
       moreValuesAvailable: responseValue.moreValuesAvailable,
-      children: responseValue.children
-        ? responseValue.children.map(responseValue => this.createFacetValueFromResponse(responseValue, newPath))
-        : []
+      preventAutoSelect: false,
+      path: newPath,
+      displayValue,
+      children
     }, this.facet);
   }
 
@@ -57,6 +65,7 @@ export class CategoryFacetValues {
       numberOfResults: 0,
       state: FacetValueState.idle,
       moreValuesAvailable: false,
+      preventAutoSelect: false,
       children
     }, this.facet);
   }
@@ -107,7 +116,8 @@ export class CategoryFacetValues {
     facetValues.forEach(facetValue => {
       const nextPathValue = path[level + 1];
       facetValue.state = FacetValueState.idle;
-      facetValue.children = facetValue.children.filter(child => nextPathValue && StringUtils.equalsCaseInsensitive(child.value, nextPathValue));
+      facetValue.children = facetValue.children
+        .filter(child => nextPathValue && StringUtils.equalsCaseInsensitive(child.value, nextPathValue));
       this.clearHierarchyLevel(facetValue.children, path, level + 1);
     })
   }
