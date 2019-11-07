@@ -34,7 +34,17 @@ export interface ICommerceRequest {
    *
    * **Example:** `46bc4275-e613-4dd5-b1ea-3e5aca1bcd9d`
    */
-  catalogId: string;
+  catalogId?: string;
+  /**
+   * A mandatory query expression applied if and only if a catalog affect the search query.
+   * **Example:** `@storeid==1001`
+   */
+  filter?: string;
+  /**
+   * How the catalog affects the results returned.
+   * **Example:** `selectCatalogObjects`
+   */
+  operation?: 'selectCatalogObjects' | 'excludeCatalogObjects';
 }
 
 /**
