@@ -257,14 +257,14 @@ export class Facet extends Component {
       section: 'Sorting',
       depend: 'enableSettings',
       values: [
-        'Occurrences',
-        'Score',
-        'AlphaAscending',
-        'AlphaDescending',
-        'ComputedFieldAscending',
-        'ComputedFieldDescending',
-        'ChiSquare',
-        'NoSort'
+        'occurrences',
+        'score',
+        'alphaascending',
+        'alphadescending',
+        'computedfieldascending',
+        'computedfielddescending',
+        'chisquare',
+        'nosort'
       ]
     }),
     /**
