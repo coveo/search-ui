@@ -36,12 +36,12 @@ export interface ICommerceRequest {
    */
   catalogId?: string;
   /**
-   * A mandatory query expression applied if and only if a catalog affect the search query.
+   * A mandatory query expression to apply if the commerce request affects the query.
    * **Example:** `@storeid==1001`
    */
   filter?: string;
   /**
-   * How the catalog affects the results returned.
+   * The way the commerce request should affect query results.
    * **Example:** `selectCatalogObjects`
    */
   operation?: 'selectCatalogObjects' | 'excludeCatalogObjects';
