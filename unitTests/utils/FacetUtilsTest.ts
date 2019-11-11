@@ -46,12 +46,6 @@ export const FacetUtilsTest = () => {
         const displayValue = FacetUtils.getDisplayValueFromValueCaption('allo', '@random', { allo: 'bye' })
         expect(displayValue).toBe('bye');
       });
-
-      it('should call tryToGetTranslatedCaption from FacetUtils', () => {
-        spyOn(FacetUtils, 'tryToGetTranslatedCaption');
-        FacetUtils.getDisplayValueFromValueCaption('allo', '@random', {})
-        expect(FacetUtils.tryToGetTranslatedCaption).toHaveBeenCalled();
-      });
     });
   });
 };

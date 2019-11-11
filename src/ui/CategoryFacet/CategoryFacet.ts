@@ -491,7 +491,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     const response = index !== -1 ? args.results.facets[index] : null;
     this.position = index + 1;
 
-    this.onQueryResponse(response);
+    response ? this.onQueryResponse(response) : this.onNoAdditionalValues();
     this.values.render();
 
     const numberOfRequestedValues = args.query.categoryFacets[this.positionInQuery].maximumNumberOfValues;
@@ -526,11 +526,11 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   }
 
   private onQueryResponse(response?: IFacetResponse) {
-    if (response) {
-      this.moreValuesAvailable = response.moreValuesAvailable;
-      return this.values.createFromResponse(response);
-    }
+    this.moreValuesAvailable = response.moreValuesAvailable;
+    return this.values.createFromResponse(response);
+  }
 
+  private onNoAdditionalValues() {
     this.moreValuesAvailable = false;
     this.values.resetValues();
   }
@@ -554,13 +554,8 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     }
   }
 
-  private beforeSendingQuery() {}
-
   public triggerNewQuery(beforeExecuteQuery?: () => void) {
-    this.beforeSendingQuery();
-
     const options: IQueryOptions = beforeExecuteQuery ? { beforeExecuteQuery } : { ignoreWarningSearchEvent: true };
-
     this.queryController.executeQuery(options);
   }
 
@@ -741,7 +736,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     Assert.exists(path);
     Assert.isLargerThan(0, path.length);
     this.ensureDom();
-    this.values.clearHierarchy(path);
+    this.values.collapseHierarchyWithPath(path);
     const facetValue = this.values.get(path);
     facetValue.select();
     this.logger.info('Toggle select facet value', facetValue);

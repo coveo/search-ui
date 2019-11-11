@@ -98,13 +98,13 @@ export function CategoryFacetValuesTest() {
       expect(facet.values.allFacetValues.length).toBe(0);
     });
 
-    describe('testing clearHierarchy', () => {
+    describe('testing collapseHierarchyWithPath', () => {
       it(`when path is a single level
         should set the value state to idle`, () => {
         facet.values.createFromResponse(CategoryFacetTestUtils.getCompleteFacetResponse(facet));
         const testValue = facet.values.allFacetValues[2];
         testValue.select();
-        facet.values.clearHierarchy([testValue.value]);
+        facet.values.collapseHierarchyWithPath([testValue.value]);
         expect(testValue.state).toBe(FacetValueState.idle);
       });
 
@@ -133,14 +133,14 @@ export function CategoryFacetValuesTest() {
         }
 
         it(`should set every values's state expect to idle`, () => {
-          facet.values.clearHierarchy([testValue.value, childTestValue.value, grandChildTestValue.value]);
+          facet.values.collapseHierarchyWithPath([testValue.value, childTestValue.value, grandChildTestValue.value]);
           shouldBeIdle(facet.values.allFacetValues);
           shouldBeIdle(testValue.children);
           shouldBeIdle(childTestValue.children);
         });
 
         it(`should remove every values's children outside of the path`, () => {
-          facet.values.clearHierarchy([testValue.value, childTestValue.value, grandChildTestValue.value]);
+          facet.values.collapseHierarchyWithPath([testValue.value, childTestValue.value, grandChildTestValue.value]);
           shouldBeChildlessExcept(facet.values.allFacetValues, testValue.value);
           shouldBeChildlessExcept(testValue.children, childTestValue.value);
           shouldBeChildlessExcept(childTestValue.children, grandChildTestValue.value);

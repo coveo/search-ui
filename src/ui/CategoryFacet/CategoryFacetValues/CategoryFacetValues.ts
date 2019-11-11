@@ -17,12 +17,7 @@ export class CategoryFacetValues {
 
   private formatDisplayValue(value: string) {
     let returnValue = FacetUtils.tryToGetTranslatedCaption(<string>this.facet.options.field, value);
-
-    if (this.facet.options.valueCaption && typeof this.facet.options.valueCaption === 'object') {
-      returnValue = this.facet.options.valueCaption[value] || returnValue;
-    }
-
-    return returnValue;
+    return this.facet.options.valueCaption[value] || returnValue;
   }
 
   public createFromResponse(response: IFacetResponse) {
@@ -119,16 +114,17 @@ export class CategoryFacetValues {
     return newFacetValue;
   }
 
-  private clearHierarchyLevel(facetValues: CategoryFacetValue[], path: string[], level = 1) {
+  private collapseHierarchyAtPathLevel(facetValues: CategoryFacetValue[], path: string[], level = 1) {
     facetValues.forEach(facetValue => {
       facetValue.state = FacetValueState.idle;
-      facetValue.children = facetValue.children.filter(child => path[level] && Utils.arrayEqual(path.slice(0, level + 1), child.path));
-      this.clearHierarchyLevel(facetValue.children, path, level + 1);
+      const targetPath = path.slice(0, level + 1)
+      facetValue.children = path[level] ? facetValue.children.filter(child => Utils.arrayEqual(targetPath, child.path)) : [];
+      this.collapseHierarchyAtPathLevel(facetValue.children, path, level + 1);
     });
   }
 
-  public clearHierarchy(path: string[]) {
-    this.clearHierarchyLevel(this.facetValues, [...path]);
+  public collapseHierarchyWithPath(path: string[]) {
+    this.collapseHierarchyAtPathLevel(this.facetValues, [...path]);
   }
 
   public render() {
