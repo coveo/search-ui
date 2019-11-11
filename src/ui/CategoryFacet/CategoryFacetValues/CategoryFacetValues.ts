@@ -52,24 +52,6 @@ export class CategoryFacetValues {
     }, this.facet);
   }
 
-  private createFacetValueAtPathLevel(path: string[], level = 0): CategoryFacetValue {
-    const value = path[level];
-    const children = path[level + 1]
-      ? [this.createFacetValueAtPathLevel(path, level + 1)]
-      : [];
-
-    return new CategoryFacetValue({
-      value,
-      path: path.slice(level),
-      displayValue: this.formatDisplayValue(value),
-      numberOfResults: 0,
-      state: FacetValueState.idle,
-      moreValuesAvailable: false,
-      preventAutoSelect: false,
-      children
-    }, this.facet);
-  }
-
   public get allFacetValues() {
     return this.facetValues;
   }
@@ -96,6 +78,36 @@ export class CategoryFacetValues {
     return facetValue;
   }
 
+  private createFacetValueWithPath(path: string[], children: CategoryFacetValue[] = []): CategoryFacetValue {
+    const value = path[path.length - 1]
+    return new CategoryFacetValue({
+      value,
+      path,
+      displayValue: this.formatDisplayValue(value),
+      numberOfResults: 0,
+      state: FacetValueState.idle,
+      moreValuesAvailable: false,
+      preventAutoSelect: false,
+      children
+    }, this.facet);
+  }
+
+  private createFacetValueAtPath(path: string[]) {
+    const remainingPath = [...path];
+    const ultimateFacetValue = this.createFacetValueWithPath([...remainingPath]);
+    let facetValue = ultimateFacetValue;
+
+    while (remainingPath.length > 1) {
+      remainingPath.pop()
+      const parentFacetValue = this.findValueWithPath(remainingPath) || this.createFacetValueWithPath([...remainingPath]);
+      parentFacetValue.children.push(facetValue);
+      facetValue = parentFacetValue;
+    }
+
+    this.facetValues.push(facetValue);
+    return ultimateFacetValue;
+  }
+
   public get(path: string[]) {
     const facetValue = this.findValueWithPath(path);
 
@@ -103,12 +115,7 @@ export class CategoryFacetValues {
       return facetValue;
     }
 
-    const newFacetValue = this.createFacetValueAtPathLevel(path);
-    if (!newFacetValue) {
-      return null;
-    }
-
-    this.facetValues.push(newFacetValue);
+    const newFacetValue = this.createFacetValueAtPath(path);
     return newFacetValue;
   }
 
@@ -117,11 +124,11 @@ export class CategoryFacetValues {
       facetValue.state = FacetValueState.idle;
       facetValue.children = facetValue.children.filter(child => path[level] && Utils.arrayEqual(path.slice(0, level + 1), child.path));
       this.clearHierarchyLevel(facetValue.children, path, level + 1);
-    })
+    });
   }
 
   public clearHierarchy(path: string[]) {
-    this.clearHierarchyLevel(this.facetValues, path);
+    this.clearHierarchyLevel(this.facetValues, [...path]);
   }
 
   public render() {

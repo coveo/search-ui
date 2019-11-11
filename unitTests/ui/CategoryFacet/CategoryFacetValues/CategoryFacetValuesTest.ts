@@ -6,7 +6,7 @@ import { CategoryFacetValue } from '../../../../src/ui/CategoryFacet/CategoryFac
 import { FacetValueState } from '../../../../src/rest/Facet/FacetValueState';
 
 export function CategoryFacetValuesTest() {
-  describe('CategoryFacetsValues', () => {
+  describe('CategoryFacetValues', () => {
     let facet: CategoryFacet;
 
     beforeEach(() => {
@@ -148,17 +148,135 @@ export function CategoryFacetValuesTest() {
       });
     });
 
-    it('should render the correct number of children', () => {
-      facet.values.createFromResponse(CategoryFacetTestUtils.getCompleteFacetResponse(facet, {
-        values: CategoryFacetTestUtils.createFakeFacetResponseValues(3, 3)
-      }));
+    describe('testing render', () => {
+      let listElement: HTMLElement;
+      
+      beforeEach(() => {
+        facet.values.createFromResponse(CategoryFacetTestUtils.getCompleteFacetResponse(facet, {
+          values: CategoryFacetTestUtils.createFakeFacetResponseValues(3, 3)
+        }));
+        listElement = facet.values.render();
+      });
 
-      const listElement = facet.values.render();
-      expect(listElement.children.length).toBe(39);
+      it('should render the correct number of children', () => {
+        expect(listElement.children.length).toBe(39);
+      });
+
+      it('should render the children in the correct order', () => {
+        expect(listElement.children[0].getAttribute('data-value')).toBe(facet.values.allFacetValues[0].value);
+        expect(listElement.children[1].getAttribute('data-value')).toBe(facet.values.allFacetValues[0].children[0].value);
+        expect(listElement.children[listElement.children.length - 1].getAttribute('data-value')).toBe(facet.values.allFacetValues[2].children[2].children[2].value);
+      });
     });
 
     describe('testing get', () => {
-      // TODO: will be added in the same PR
+      beforeEach(() => {
+        facet.values.createFromResponse(CategoryFacetTestUtils.getCompleteFacetResponse(facet, {
+          values: CategoryFacetTestUtils.createFakeFacetResponseValues(4, 3)
+        }));
+      });
+
+      describe('when path already exists', () => {
+        it('returns the value at the first level', () => {
+          const firstLevelValue = facet.values.allFacetValues[1];
+          const path = [firstLevelValue.value];
+          expect(facet.values.get(path)).toBe(firstLevelValue);
+        });
+
+        it('returns the value at the end of the path at the multiple levels deep', () => {
+          const firstLevelValue = facet.values.allFacetValues[1];
+          const secondLevelValue = firstLevelValue.children[2];
+          const thirdLevelValue = secondLevelValue.children[0];
+          const fourthLevelValue = thirdLevelValue.children[1];
+          const path = [firstLevelValue.value, secondLevelValue.value, thirdLevelValue.value, fourthLevelValue.value];
+
+          expect(facet.values.get(path)).toBe(fourthLevelValue);
+        });
+      });
+
+      describe('when path does not exist', () => {
+        let newValue: CategoryFacetValue;
+        let newValuePath: string[];
+
+        describe('at the first level', () => {
+          beforeEach(() => {
+            newValuePath = ['hello'];
+            newValue = facet.values.get(newValuePath);
+          });
+
+          it('returns a new value at the first level with the right attributes', () => {
+            expect(newValue.numberOfResults).toBe(0);
+            expect(newValue.path).toEqual(newValuePath);
+            expect(newValue.children).toEqual([]);
+            expect(newValue.value).toBe('hello');
+            expect(newValue.state).toBe(FacetValueState.idle);
+          });
+  
+          it('appends the new value at end of the first level', () => {
+            expect(facet.values.allFacetValues[facet.values.allFacetValues.length - 1]).toBe(newValue);
+          });
+        });
+
+        describe('at a deeper level under existing values', () => {
+          let firstLevelIndex = 1;
+          let secondLevelIndex = 2;
+
+          beforeEach(() => {
+            newValuePath = [
+              facet.values.allFacetValues[firstLevelIndex].value, 
+              facet.values.allFacetValues[firstLevelIndex].children[secondLevelIndex].value, 
+              'hello'
+            ];
+            newValue = facet.values.get(newValuePath);
+          });
+
+          it('returns a new value at the deeper level with the right attributes', () => {
+            expect(newValue.numberOfResults).toBe(0);
+            expect(newValue.path).toEqual(newValuePath);
+            expect(newValue.children).toEqual([]);
+            expect(newValue.value).toBe('hello');
+            expect(newValue.state).toBe(FacetValueState.idle);
+          });
+  
+          it('appends the new value at end of "path"', () => {
+            expect(facet.values.allFacetValues[firstLevelIndex].children[secondLevelIndex].children[3]).toBe(newValue);
+          });
+        });
+
+        describe('at a deeper level under non-existing values', () => {
+          beforeEach(() => {
+            newValuePath = [
+              'bonjour', 
+              'hello'
+            ];
+            newValue = facet.values.get(newValuePath);
+          });
+
+          it('creates a new value at the first level with the right attributes', () => {
+            const lastFirstLevelIndex = facet.values.allFacetValues.length - 1;
+            const newFirstLevelValue = facet.values.allFacetValues[lastFirstLevelIndex];
+
+            expect(newFirstLevelValue.numberOfResults).toBe(0);
+            expect(newFirstLevelValue.path).toEqual(['bonjour']);
+            expect(newFirstLevelValue.children).toEqual([newValue]);
+            expect(newFirstLevelValue.value).toBe('bonjour');
+            expect(newFirstLevelValue.state).toBe(FacetValueState.idle);
+          });
+
+          it('returns a new value at the deeper level with the right attributes', () => {
+            expect(newValue.numberOfResults).toBe(0);
+            expect(newValue.path).toEqual(newValuePath);
+            expect(newValue.children).toEqual([]);
+            expect(newValue.value).toBe('hello');
+            expect(newValue.state).toBe(FacetValueState.idle);
+          });
+  
+          it('appends the new value at end of "path"', () => {
+            const lastFirstLevelIndex = facet.values.allFacetValues.length - 1;
+            expect(facet.values.allFacetValues[lastFirstLevelIndex].children[0]).toBe(newValue);
+          });
+        });
+      });
     });
   });
 }

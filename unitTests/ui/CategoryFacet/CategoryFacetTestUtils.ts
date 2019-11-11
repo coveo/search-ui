@@ -32,7 +32,7 @@ export class CategoryFacetTestUtils {
     const fakeValues: IFacetResponseValue[] = [];
 
     for (let index = 0; index < children; index++) {
-      const value = `value ${index}-${depth}`;
+      const value = `value ${depth}-${index}`;
       const fakeValue: IFacetResponseValue = {
         value,
         state: FacetValueState.idle,
