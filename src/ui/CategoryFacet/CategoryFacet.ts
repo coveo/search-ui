@@ -527,7 +527,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
 
   private onQueryResponse(response?: IFacetResponse) {
     this.moreValuesAvailable = response.moreValuesAvailable;
-    return this.values.createFromResponse(response);
+    this.values.createFromResponse(response);
   }
 
   private onNoAdditionalValues() {
