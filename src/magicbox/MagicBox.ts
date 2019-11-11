@@ -37,6 +37,15 @@ export class MagicBoxInstance {
   private result: Result;
   private displayedResult: Result;
 
+  private get firstSuggestionWithText(): Suggestion {
+    return find(this.lastSuggestions, suggestion => suggestion.text);
+  }
+
+  private get firstSuggestionText() {
+    const firstSuggestionWithText = this.firstSuggestionWithText;
+    return firstSuggestionWithText ? firstSuggestionWithText.text : '';
+  }
+
   constructor(public element: HTMLElement, public grammar: Grammar, public options: Options = {}) {
     if (isUndefined(this.options.inline)) {
       this.options.inline = false;
@@ -65,7 +74,7 @@ export class MagicBoxInstance {
           this.onchange && this.onchange();
         } else {
           this.setText(text);
-          this.onselect && this.onselect(this.getFirstSuggestionWithText());
+          this.onselect && this.onselect(this.firstSuggestionWithText);
         }
       },
       this
@@ -194,7 +203,7 @@ export class MagicBoxInstance {
   public async addSuggestions() {
     const suggestions = await this.suggestionsManager.receiveSuggestions(this.getSuggestions != null ? this.getSuggestions() : []);
     this.addSelectEventHandlers(suggestions);
-    this.inputManager.setWordCompletion(this.getFirstSuggestionText());
+    this.inputManager.setWordCompletion(this.firstSuggestionText);
     this.onSuggestions(suggestions);
   }
 
@@ -240,19 +249,10 @@ export class MagicBoxInstance {
 
   private focusOnSuggestion(suggestion: Suggestion) {
     if (suggestion == null || suggestion.text == null) {
-      this.inputManager.setResult(this.displayedResult, this.getFirstSuggestionText());
+      this.inputManager.setResult(this.displayedResult, this.firstSuggestionText);
     } else {
       this.inputManager.setResult(this.grammar.parse(suggestion.text).clean(), suggestion.text);
     }
-  }
-
-  private getFirstSuggestionWithText(): Suggestion {
-    return find(this.lastSuggestions, suggestion => !!suggestion.text);
-  }
-
-  private getFirstSuggestionText() {
-    const firstSuggestionWithText = this.getFirstSuggestionWithText();
-    return firstSuggestionWithText ? firstSuggestionWithText.text : '';
   }
 
   public getText() {
