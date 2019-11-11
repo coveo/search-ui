@@ -305,11 +305,8 @@ export function SuggestionsManagerTest() {
           return (suggestions = textSuggestions.map(text => <Suggestion>{ text, onSelect: suggestionOnSelects[text] }));
         }
 
-        let mergedSuggestions: Promise<Suggestion[]>;
-        function mergeSuggestions() {
-          mergedSuggestions = new Promise<Suggestion[]>(resolve => {
-            suggestionsManager.mergeSuggestions([Promise.resolve(createSuggestions())], mergedResult => resolve(mergedResult));
-          });
+        async function receiveSuggestions() {
+          await suggestionsManager.receiveSuggestions([Promise.resolve(createSuggestions())]);
         }
 
         function waitForQuerySuggestRendered() {
@@ -324,14 +321,9 @@ export function SuggestionsManagerTest() {
 
         let suggestionElements: HTMLElement[];
         beforeEach(async done => {
-          mergeSuggestions();
+          receiveSuggestions();
           await waitForQuerySuggestRendered();
           suggestionElements = $$(env.root).findClass(suggestionClass);
-          done();
-        });
-
-        it('calls the callback with the merged suggestions', async done => {
-          expect(await mergedSuggestions).toEqual(suggestions);
           done();
         });
 
@@ -502,8 +494,10 @@ export function SuggestionsManagerTest() {
             });
 
             it("moving the focus right when there's previews blurs the suggestion", async done => {
+              window['BLAH'] = 1;
               await moveDownToSuggestion(0);
               suggestionsManager.moveRight();
+              window['BLAH'] = 0;
               expect(suggestionsManager.selectedSuggestion).toBeNull();
               done();
             });
