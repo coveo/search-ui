@@ -49,7 +49,7 @@ export interface IDynamicFacetOptions extends IResponsiveComponentOptions {
   collapsedByDefault?: boolean;
   includeInBreadcrumb?: boolean;
   numberOfValuesInBreadcrumb?: number;
-  valueCaption?: any;
+  valueCaption?: IStringMap<string>;
   dependsOn?: string;
 }
 
@@ -254,7 +254,7 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
      * **Note:**
      * > The [`DynamicFacetRange`]{@link DynamicFacetRange} component does not support this option.
      */
-    valueCaption: ComponentOptions.buildJsonOption<IStringMap<string>>(),
+    valueCaption: ComponentOptions.buildJsonOption<IStringMap<string>>({ defaultValue: {} }),
 
     /**
      * The id of another facet in which at least one value must be selected in order

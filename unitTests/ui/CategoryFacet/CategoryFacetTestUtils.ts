@@ -10,6 +10,7 @@ export class CategoryFacetTestUtils {
   static allOptions(options?: ICategoryFacetOptions) {
     return {
       field: '@dummy',
+      valueCaption: {},
       ...options
     };
   }

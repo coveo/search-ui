@@ -10,6 +10,7 @@ export class DynamicFacetTestUtils {
   static allOptions(options?: IDynamicFacetOptions) {
     return {
       field: '@dummy',
+      valueCaption: {},
       ...options
     };
   }
