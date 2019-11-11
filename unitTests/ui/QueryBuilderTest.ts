@@ -118,7 +118,9 @@ export function QueryBuilderTest() {
         foo: 'bar'
       };
       queryBuilder.commerce = {
-        catalogId: '14476bd7-0f84-4e05-b554-fb3ac03c0e76'
+        catalogId: '14476bd7-0f84-4e05-b554-fb3ac03c0e76',
+        filter: '@storeid==1001',
+        operation: 'excludeCatalogObjects'
       };
 
       expect(queryBuilder.build().pipeline).toBe('pipeline');
@@ -165,7 +167,9 @@ export function QueryBuilderTest() {
         foo: 'bar'
       });
       expect(queryBuilder.build().commerce).toEqual({
-        catalogId: '14476bd7-0f84-4e05-b554-fb3ac03c0e76'
+        catalogId: '14476bd7-0f84-4e05-b554-fb3ac03c0e76',
+        filter: '@storeid==1001',
+        operation: 'excludeCatalogObjects'
       });
     });
 
