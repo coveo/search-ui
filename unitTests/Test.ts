@@ -531,6 +531,9 @@ CategoryFacetValueTest();
 import { CategoryFacetValueRendererTest } from './ui/CategoryFacet/CategoryFacetValues/CategoryFacetValueRendererTest';
 CategoryFacetValueRendererTest();
 
+import { CategoryFacetValuesTest } from './ui/CategoryFacet/CategoryFacetValues/CategoryFacetValuesTest';
+CategoryFacetValuesTest();
+
 import { FacetValueSuggestionsTest } from './ui/FacetValueSuggestionsTest';
 FacetValueSuggestionsTest();
 

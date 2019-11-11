@@ -1,6 +1,6 @@
 import { CategoryFacetValue } from '../../../../src/ui/CategoryFacet/CategoryFacetValues/CategoryFacetValue';
 import { CategoryFacetValueRenderer } from '../../../../src/ui/CategoryFacet/CategoryFacetValues/CategoryFacetValueRenderer';
-import { CategoryFacet, ICategoryFacetOptions } from '../../../../src/ui/CategoryFacet/CategoryFacet';
+import { CategoryFacet } from '../../../../src/ui/CategoryFacet/CategoryFacet';
 import { CategoryFacetTestUtils } from '../CategoryFacetTestUtils';
 
 export function CategoryFacetValueRendererTest() {
@@ -15,7 +15,7 @@ export function CategoryFacetValueRendererTest() {
 
     function initializeComponent() {
     facet = CategoryFacetTestUtils.createFakeFacet();
-      facetValue = new CategoryFacetValue(CategoryFacetTestUtils.createFakeFacetValues(1)[0], facet);
+      facetValue = new CategoryFacetValue(CategoryFacetTestUtils.createFakeFacetValue(), facet);
       facetValueRenderer = new CategoryFacetValueRenderer(facetValue, facet);
     }
 

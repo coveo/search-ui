@@ -12,7 +12,7 @@ export function CategoryFacetValueTest() {
 
     beforeEach(() => {
       facet = Mock.mockComponent(CategoryFacet);
-      fakeFacetValue = CategoryFacetTestUtils.createFakeFacetValues()[0];
+      fakeFacetValue = CategoryFacetTestUtils.createFakeFacetValue();
       facetValue = new CategoryFacetValue(fakeFacetValue, facet);
     });
 
@@ -41,7 +41,7 @@ export function CategoryFacetValueTest() {
 
     it(`when the facet value has children
       should render and append in the frament`, () => {
-      facetValue.children = CategoryFacetTestUtils.createFakeFacetValues().map(fakeFacetValue => new CategoryFacetValue(fakeFacetValue, facet))
+      facetValue.children = [new CategoryFacetValue(CategoryFacetTestUtils.createFakeFacetValue(), facet)];
       const fragment = new DocumentFragment();
       facetValue.render(fragment)
       expect(fragment.children.length).toBe(facetValue.children.length + 1);

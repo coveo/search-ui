@@ -59,6 +59,10 @@ export class CategoryFacetValue implements ICategoryFacetValue {
     return this.facetValue.children;
   }
 
+  public set children(children: CategoryFacetValue[]) {
+    this.facetValue.children = children;
+  }
+
   public get isIdle() {
     return this.state === FacetValueState.idle;
   }
