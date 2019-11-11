@@ -920,15 +920,19 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     this.scrollToTop();
   }
 
+  private pathIsValidForSelection(path: any): path is string[] {
+    return !Utils.isNullOrUndefined(path) && isArray(path) && path.length != 0;
+  }
+
   private handleQueryStateChanged(data: IAttributesChangedEventArg) {
     if (!this.listenToQueryStateChange) {
       return;
     }
 
     const path = data.attributes[this.queryStateAttribute];
-    if (!Utils.isNullOrUndefined(path) && isArray(path) && path.length != 0) {
+    if (this.pathIsValidForSelection(path)) {
       this.changeActivePath(path);
-      this.selectPath(path as string[]);
+      this.selectPath(path);
     }
   }
 
