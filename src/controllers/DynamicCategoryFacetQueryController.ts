@@ -49,7 +49,7 @@ export class DynamicCategoryFacetQueryController {
       field: this.facet.fieldName,
       type: this.facet.facetType,
       currentValues: this.currentValues,
-      numberOfValues: this.numberOfValuesToRequest,
+      numberOfValues: this.facet.values.hasSelectedValue ? 1 : this.numberOfValuesToRequest,
       delimitingCharacter: this.facet.options.delimitingCharacter,
       isFieldExpanded: this.numberOfValuesToRequest > this.facet.options.numberOfValues
     };
