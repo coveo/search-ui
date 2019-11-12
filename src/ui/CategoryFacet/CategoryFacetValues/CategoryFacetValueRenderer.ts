@@ -5,30 +5,32 @@ import { SVGIcons } from '../../../utils/SVGIcons';
 import { SVGDom } from '../../../utils/SVGDom';
 
 export class CategoryFacetValueRenderer {
-  private dom: Dom;
+  private button: Dom;
 
   constructor(private facetValue: CategoryFacetValue, private facet: CategoryFacet) { }
 
   public render() {
-    this.dom = $$('li', {
+    this.button = $$('button', {
       className: 'coveo-dynamic-category-facet-value',
-      dataValue: this.facetValue.value
+      dataValue: this.facetValue.value,
+      ariaLabel: this.facetValue.selectAriaLabel
     });
-    this.dom.append($$('span', { className: 'coveo-dynamic-category-facet-value-label' }, this.facetValue.displayValue).el);
-    this.dom.append($$('span', { className: 'coveo-dynamic-category-facet-value-count' }, `(${this.facetValue.formattedCount})`).el);
+    this.button.append($$('span', { className: 'coveo-dynamic-category-facet-value-label' }, this.facetValue.displayValue).el);
+    this.button.append($$('span', { className: 'coveo-dynamic-category-facet-value-count' }, `(${this.facetValue.formattedCount})`).el);
 
-    this.dom.toggleClass('coveo-selected', this.facetValue.isSelected);
-    this.dom.toggleClass('coveo-with-space', this.shouldHaveMargin);
+    this.button.toggleClass('coveo-selected', this.facetValue.isSelected);
+    this.button.toggleClass('coveo-with-space', this.shouldHaveMargin);
+    this.facetValue.isSelected && this.button.setAttribute('disabled', 'true');
     this.shouldHaveArrow && this.prependArrow();
-    
-    this.dom.on('click', () => this.selectAction());
-    return this.dom.el;
+
+    this.button.on('click', () => this.selectAction());
+    return $$('li', {}, this.button).el;
   }
 
   private prependArrow() {
     const arrowIcon = $$('div', { className: 'coveo-dynamic-category-facet-value-arrow' }, SVGIcons.icons.arrowLeft);
     SVGDom.addClassToSVGInContainer(arrowIcon.el, 'coveo-dynamic-category-facet-value-arrow-svg');
-    this.dom.prepend(arrowIcon.el);
+    this.button.prepend(arrowIcon.el);
   }
 
   private get shouldHaveMargin() {

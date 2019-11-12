@@ -31,7 +31,13 @@ $active-text-opacity: 0.6;
 
 .coveo-dynamic-category-facet-value,
 .coveo-dynamic-category-facet-clear {
+  text-align: left;
   cursor: pointer;
+  font-size: $font-size-regular;
+  padding: 0;
+  margin: 0;
+  background: none;
+  border: none;
   align-items: center;
   display: inline-flex;
   line-height: 26px;
@@ -50,11 +56,19 @@ $active-text-opacity: 0.6;
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
+    color: black;
   }
 
   .coveo-dynamic-category-facet-value-count {
     margin-left: 8px;
     color: $color-blueish-gray;
+  }
+
+  &:disabled {
+    cursor: auto;
+    &:hover {
+      opacity: 1;
+    }
   }
 
   &.coveo-selected {
