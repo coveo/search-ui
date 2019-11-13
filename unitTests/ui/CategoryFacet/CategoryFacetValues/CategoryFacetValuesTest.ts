@@ -4,6 +4,7 @@ import { CategoryFacet } from '../../../../src/ui/CategoryFacet/CategoryFacet';
 import { IFacetResponse, IFacetResponseValue } from '../../../../src/rest/Facet/FacetResponse';
 import { CategoryFacetValue } from '../../../../src/ui/CategoryFacet/CategoryFacetValues/CategoryFacetValue';
 import { FacetValueState } from '../../../../src/rest/Facet/FacetValueState';
+import { $$ } from '../../../../src/Core';
 
 export function CategoryFacetValuesTest() {
   describe('CategoryFacetValues', () => {
@@ -116,6 +117,40 @@ export function CategoryFacetValuesTest() {
         expect(listElement.children[0].getAttribute('data-value')).toBe(facet.values.allFacetValues[0].value);
         expect(listElement.children[1].getAttribute('data-value')).toBe(facet.values.allFacetValues[0].children[0].value);
         expect(listElement.children[listElement.children.length - 1].getAttribute('data-value')).toBe(facet.values.allFacetValues[2].children[2].children[2].value);
+      });
+
+      function getAllCategoriesElement() {
+        return $$(listElement).find('.coveo-dynamic-category-facet-all');
+      }
+
+      describe('when there is no value selected', () => {
+        it('list should not have the class "coveo-with-space"', () => {
+          expect($$(listElement).hasClass('coveo-with-space')).toBe(false);
+        });
+
+        it('list does not append the "All Categories" element', () => {
+          expect(getAllCategoriesElement()).toBeFalsy();
+        });
+      });
+
+      describe('when there is a value selected', () => {
+        beforeEach(() => {
+          facet.values.selectPath(facet.values.allFacetValues[0].path);
+          listElement = facet.values.render();
+        });
+
+        it('list should not have the class "coveo-with-space"', () => {
+          expect($$(listElement).hasClass('coveo-with-space')).toBe(true);
+        });
+
+        it('list does not append the "All Categories" element', () => {
+          expect(getAllCategoriesElement()).toBeTruthy();
+        });
+
+        it('clicking on the "All Categories" element should call "reset" on the facet', () => {
+          $$(getAllCategoriesElement()).trigger('click');
+          expect(facet.reset).toHaveBeenCalled();
+        });
       });
     });
 

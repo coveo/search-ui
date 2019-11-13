@@ -133,8 +133,8 @@ export class CategoryFacetValues {
     this.selectedPath = [...path];
   }
 
-  public prependBackToRoot() {
-    const clear = $$('li', {}, $$('button', { className: 'coveo-dynamic-category-facet-clear' }, l('AllCategories')));
+  private prependAllCategories() {
+    const clear = $$('li', {}, $$('button', { className: 'coveo-dynamic-category-facet-all' }, l('AllCategories')));
     clear.on('click', () => this.facet.reset());
     $$(this.list).prepend(clear.el);
   }
@@ -148,7 +148,7 @@ export class CategoryFacetValues {
     });
 
     $$(this.list).toggleClass('coveo-with-space', !!this.selectedPath.length);
-    this.selectedPath.length && this.prependBackToRoot();
+    this.selectedPath.length && this.prependAllCategories();
     // TODO: append see more/less
     this.list.appendChild(fragment);
     return this.list;
