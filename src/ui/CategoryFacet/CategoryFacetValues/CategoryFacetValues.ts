@@ -14,7 +14,7 @@ export class CategoryFacetValues {
   private selectedPath: string[] = [];
   private list = $$('ul', { className: 'coveo-dynamic-category-facet-values' }).el;
 
-  constructor(private facet: CategoryFacet) {}
+  constructor(private facet: CategoryFacet) { }
 
   private formatDisplayValue(value: string) {
     let returnValue = FacetUtils.tryToGetTranslatedCaption(<string>this.facet.options.field, value);
@@ -93,30 +93,18 @@ export class CategoryFacetValues {
     }, this.facet);
   }
 
-  private createFacetValueAtPath(path: string[]) {
-    const remainingPath = [...path];
-    const ultimateFacetValue = this.createFacetValueWithPath([...remainingPath]);
-    let facetValue = ultimateFacetValue;
-
-    while (remainingPath.length > 1) {
-      remainingPath.pop()
-      const parentFacetValue = this.findValueWithPath(remainingPath) || this.createFacetValueWithPath([...remainingPath]);
-      parentFacetValue.children.push(facetValue);
-      facetValue = parentFacetValue;
+  private getOrCreateFacetValueWithPath(path: string[]) {
+    const existingFacetValue = this.findValueWithPath(path);
+    if (existingFacetValue) {
+      return existingFacetValue;
     }
 
-    this.facetValues.push(facetValue);
-    return ultimateFacetValue;
-  }
+    const newFacetValue = this.createFacetValueWithPath(path);
+    const siblingValues = path.length === 1
+      ? this.facetValues
+      : this.getOrCreateFacetValueWithPath(path.slice(0, -1)).children;
 
-  private getOrCreateFacetValue(path: string[]) {
-    const facetValue = this.findValueWithPath(path);
-
-    if (facetValue) {
-      return facetValue;
-    }
-
-    const newFacetValue = this.createFacetValueAtPath(path);
+    siblingValues.push(newFacetValue)
     return newFacetValue;
   }
 
@@ -141,7 +129,7 @@ export class CategoryFacetValues {
 
   public selectPath(path: string[]) {
     this.collapseHierarchyWithPath(path);
-    this.getOrCreateFacetValue(path).select();
+    this.getOrCreateFacetValueWithPath(path).select();
     this.selectedPath = [...path];
   }
 

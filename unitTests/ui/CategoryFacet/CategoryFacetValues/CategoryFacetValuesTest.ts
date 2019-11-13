@@ -93,64 +93,14 @@ export function CategoryFacetValuesTest() {
 
     it('resetValues should empty the values', () => {
       facet.values.createFromResponse(CategoryFacetTestUtils.getCompleteFacetResponse(facet));
-      facet.values.resetValues();
+      facet.values.reset();
 
       expect(facet.values.allFacetValues.length).toBe(0);
     });
 
-    describe('testing collapseHierarchyWithPath', () => {
-      it(`when path is a single level
-        should set the value state to idle`, () => {
-        facet.values.createFromResponse(CategoryFacetTestUtils.getCompleteFacetResponse(facet));
-        const testValue = facet.values.allFacetValues[2];
-        testValue.select();
-        facet.values.collapseHierarchyWithPath([testValue.value]);
-        expect(testValue.state).toBe(FacetValueState.idle);
-      });
-
-      describe('when path is multiple levels', () => {
-        let testValue: CategoryFacetValue;
-        let childTestValue: CategoryFacetValue;
-        let grandChildTestValue: CategoryFacetValue;
-
-        beforeEach(() => {
-          facet.values.createFromResponse(CategoryFacetTestUtils.getCompleteFacetResponse(facet, {
-            values: CategoryFacetTestUtils.createFakeFacetResponseValues(3)
-          }));
-
-          testValue = facet.values.allFacetValues[1];
-          childTestValue = facet.values.allFacetValues[1].children[3];
-          grandChildTestValue = facet.values.allFacetValues[1].children[3].children[0];
-          grandChildTestValue.select();
-        });
-
-        function shouldBeIdle(facetValues: CategoryFacetValue[]) {
-          facetValues.forEach(({ state }) => expect(state).toBe(FacetValueState.idle));
-        }
-
-        function shouldBeChildlessExcept(facetValues: CategoryFacetValue[], pathValue: string) {
-          facetValues.forEach(({ value, children }) => value !== pathValue && expect(children.length).toBe(0));
-        }
-
-        it(`should set every values's state expect to idle`, () => {
-          facet.values.collapseHierarchyWithPath([testValue.value, childTestValue.value, grandChildTestValue.value]);
-          shouldBeIdle(facet.values.allFacetValues);
-          shouldBeIdle(testValue.children);
-          shouldBeIdle(childTestValue.children);
-        });
-
-        it(`should remove every values's children outside of the path`, () => {
-          facet.values.collapseHierarchyWithPath([testValue.value, childTestValue.value, grandChildTestValue.value]);
-          shouldBeChildlessExcept(facet.values.allFacetValues, testValue.value);
-          shouldBeChildlessExcept(testValue.children, childTestValue.value);
-          shouldBeChildlessExcept(childTestValue.children, grandChildTestValue.value);
-        });
-      });
-    });
-
     describe('testing render', () => {
       let listElement: HTMLElement;
-      
+
       beforeEach(() => {
         facet.values.createFromResponse(CategoryFacetTestUtils.getCompleteFacetResponse(facet, {
           values: CategoryFacetTestUtils.createFakeFacetResponseValues(3, 3)
@@ -169,111 +119,156 @@ export function CategoryFacetValuesTest() {
       });
     });
 
-    describe('testing get', () => {
-      beforeEach(() => {
-        facet.values.createFromResponse(CategoryFacetTestUtils.getCompleteFacetResponse(facet, {
-          values: CategoryFacetTestUtils.createFakeFacetResponseValues(4, 3)
-        }));
+    describe('testing selectPath', () => {
+
+      describe('when values are at a single level', () => {
+        let testFacetValue: CategoryFacetValue;
+        beforeEach(() => {
+          facet.values.createFromResponse(CategoryFacetTestUtils.getCompleteFacetResponse(facet, {
+            values: CategoryFacetTestUtils.createFakeFacetResponseValues(1, 3)
+          }));
+        });
+
+        describe('when path already exists', () => {
+          beforeEach(() => {
+            testFacetValue = facet.values.allFacetValues[1];
+            facet.values.selectPath([testFacetValue.value]);
+          });
+
+          it('value should be selected', () => {
+            expect(testFacetValue.state).toBe(FacetValueState.selected);
+          });
+
+          it('should remove all the others values at first level', () => {
+            expect(facet.values.allFacetValues.length).toBe(1);
+          });
+        });
+
+        describe('when path does not exist', () => {
+          let newValue = 'a new value!!';
+          beforeEach(() => {
+            facet.values.selectPath([newValue]);
+            testFacetValue = facet.values.allFacetValues[0];
+          });
+
+          it('new value should have the right attributes', () => {
+            expect(testFacetValue.value).toBe(newValue);
+            expect(testFacetValue.children).toEqual([]);
+            expect(testFacetValue.path).toEqual([newValue]);
+            expect(testFacetValue.state).toBe(FacetValueState.selected);
+          });
+
+          it('should remove all the others values at first level', () => {
+            expect(facet.values.allFacetValues.length).toBe(1);
+          });
+        });
       });
 
-      describe('when path already exists', () => {
-        it('returns the value at the first level', () => {
-          const firstLevelValue = facet.values.allFacetValues[1];
-          const path = [firstLevelValue.value];
-          expect(facet.values.get(path)).toBe(firstLevelValue);
+      describe('when values are at multiple levels', () => {
+        let firstLevelFacetValue: CategoryFacetValue;
+        let secondLevelFacetValue: CategoryFacetValue;
+        let thirdLevelFacetValue: CategoryFacetValue;
+
+        beforeEach(() => {
+          facet.values.createFromResponse(CategoryFacetTestUtils.getCompleteFacetResponse(facet, {
+            values: CategoryFacetTestUtils.createFakeFacetResponseValues(4, 3)
+          }));
         });
 
-        it('returns the value at the end of the path at the multiple levels deep', () => {
-          const firstLevelValue = facet.values.allFacetValues[1];
-          const secondLevelValue = firstLevelValue.children[2];
-          const thirdLevelValue = secondLevelValue.children[0];
-          const fourthLevelValue = thirdLevelValue.children[1];
-          const path = [firstLevelValue.value, secondLevelValue.value, thirdLevelValue.value, fourthLevelValue.value];
-
-          expect(facet.values.get(path)).toBe(fourthLevelValue);
-        });
-      });
-
-      describe('when path does not exist', () => {
-        let newValue: CategoryFacetValue;
-        let newValuePath: string[];
-
-        describe('at the first level', () => {
+        describe('when path already entirely exists', () => {
           beforeEach(() => {
-            newValuePath = ['hello'];
-            newValue = facet.values.get(newValuePath);
+            firstLevelFacetValue = facet.values.allFacetValues[1];
+            secondLevelFacetValue = facet.values.allFacetValues[1].children[0];
+            thirdLevelFacetValue = facet.values.allFacetValues[1].children[0].children[2];
+
+            facet.values.selectPath([firstLevelFacetValue.value, secondLevelFacetValue.value, thirdLevelFacetValue.value]);
           });
 
-          it('returns a new value at the first level with the right attributes', () => {
-            expect(newValue.numberOfResults).toBe(0);
-            expect(newValue.path).toEqual(newValuePath);
-            expect(newValue.children).toEqual([]);
-            expect(newValue.value).toBe('hello');
-            expect(newValue.state).toBe(FacetValueState.idle);
+          it('last level should be selected', () => {
+            expect(thirdLevelFacetValue.state).toBe(FacetValueState.selected);
           });
-  
-          it('appends the new value at end of the first level', () => {
-            expect(facet.values.allFacetValues[facet.values.allFacetValues.length - 1]).toBe(newValue);
+
+          it('higher than last level values should be idle', () => {
+            expect(firstLevelFacetValue.state).toBe(FacetValueState.idle);
+            expect(secondLevelFacetValue.state).toBe(FacetValueState.idle);
+          });
+
+          it('should remove all the others values at each level', () => {
+            expect(facet.values.allFacetValues).toEqual([firstLevelFacetValue]);
+            expect(facet.values.allFacetValues[0].children).toEqual([secondLevelFacetValue]);
+            expect(facet.values.allFacetValues[0].children[0].children).toEqual([thirdLevelFacetValue]);
           });
         });
 
-        describe('at a deeper level under existing values', () => {
-          let firstLevelIndex = 1;
-          let secondLevelIndex = 2;
+        describe('when path only partially exist', () => {
+          let newValue = 'a new value!!';
 
           beforeEach(() => {
-            newValuePath = [
-              facet.values.allFacetValues[firstLevelIndex].value, 
-              facet.values.allFacetValues[firstLevelIndex].children[secondLevelIndex].value, 
-              'hello'
-            ];
-            newValue = facet.values.get(newValuePath);
+            firstLevelFacetValue = facet.values.allFacetValues[1];
+            secondLevelFacetValue = facet.values.allFacetValues[1].children[0];
+
+            facet.values.selectPath([firstLevelFacetValue.value, secondLevelFacetValue.value, newValue]);
+            thirdLevelFacetValue = facet.values.allFacetValues[0].children[0].children[0];
           });
 
-          it('returns a new value at the deeper level with the right attributes', () => {
-            expect(newValue.numberOfResults).toBe(0);
-            expect(newValue.path).toEqual(newValuePath);
-            expect(newValue.children).toEqual([]);
-            expect(newValue.value).toBe('hello');
-            expect(newValue.state).toBe(FacetValueState.idle);
+          it('third level value should be selected', () => {
+            expect(thirdLevelFacetValue.state).toBe(FacetValueState.selected);
           });
-  
-          it('appends the new value at end of "path"', () => {
-            expect(facet.values.allFacetValues[firstLevelIndex].children[secondLevelIndex].children[3]).toBe(newValue);
+
+          it('third level value should have the right value/path', () => {
+            expect(thirdLevelFacetValue.value).toBe(newValue);
+            expect(thirdLevelFacetValue.path).toEqual([firstLevelFacetValue.value, secondLevelFacetValue.value, newValue]);
+          });
+
+          it('higher than last level values should be idle', () => {
+            expect(firstLevelFacetValue.state).toBe(FacetValueState.idle);
+            expect(secondLevelFacetValue.state).toBe(FacetValueState.idle);
+          });
+
+          it('should remove all the others values at each level', () => {
+            expect(facet.values.allFacetValues).toEqual([firstLevelFacetValue]);
+            expect(facet.values.allFacetValues[0].children).toEqual([secondLevelFacetValue]);
+            expect(facet.values.allFacetValues[0].children[0].children).toEqual([thirdLevelFacetValue]);
           });
         });
 
-        describe('at a deeper level under non-existing values', () => {
+        describe('when path does not exist', () => {
+          let newPath = ['hello', 'this is', 'a brand new path'];
+
           beforeEach(() => {
-            newValuePath = [
-              'bonjour', 
-              'hello'
-            ];
-            newValue = facet.values.get(newValuePath);
+            facet.values.selectPath([...newPath]);
+
+            firstLevelFacetValue = facet.values.allFacetValues[0];
+            secondLevelFacetValue = facet.values.allFacetValues[0].children[0];
+            thirdLevelFacetValue = facet.values.allFacetValues[0].children[0].children[0];
           });
 
-          it('creates a new value at the first level with the right attributes', () => {
-            const lastFirstLevelIndex = facet.values.allFacetValues.length - 1;
-            const newFirstLevelValue = facet.values.allFacetValues[lastFirstLevelIndex];
-
-            expect(newFirstLevelValue.numberOfResults).toBe(0);
-            expect(newFirstLevelValue.path).toEqual(['bonjour']);
-            expect(newFirstLevelValue.children).toEqual([newValue]);
-            expect(newFirstLevelValue.value).toBe('bonjour');
-            expect(newFirstLevelValue.state).toBe(FacetValueState.idle);
+          it('third level should be selected', () => {
+            expect(thirdLevelFacetValue.state).toBe(FacetValueState.selected);
           });
 
-          it('returns a new value at the deeper level with the right attributes', () => {
-            expect(newValue.numberOfResults).toBe(0);
-            expect(newValue.path).toEqual(newValuePath);
-            expect(newValue.children).toEqual([]);
-            expect(newValue.value).toBe('hello');
-            expect(newValue.state).toBe(FacetValueState.idle);
+          it('third level value should have the right value/path', () => {
+            expect(thirdLevelFacetValue.value).toBe(newPath[2]);
+            expect(thirdLevelFacetValue.path).toEqual(newPath);
           });
-  
-          it('appends the new value at end of "path"', () => {
-            const lastFirstLevelIndex = facet.values.allFacetValues.length - 1;
-            expect(facet.values.allFacetValues[lastFirstLevelIndex].children[0]).toBe(newValue);
+
+          it('higher than last level values should be idle', () => {
+            expect(firstLevelFacetValue.state).toBe(FacetValueState.idle);
+            expect(secondLevelFacetValue.state).toBe(FacetValueState.idle);
+          });
+
+          it('higher than last level values have the right value/path', () => {
+            expect(firstLevelFacetValue.value).toBe(newPath[0]);
+            expect(firstLevelFacetValue.path).toEqual(newPath.slice(-2));
+
+            expect(secondLevelFacetValue.value).toBe(newPath[1]);
+            expect(secondLevelFacetValue.path).toEqual(newPath.slice(-1));
+          });
+
+          it('should remove all the others values at each level', () => {
+            expect(facet.values.allFacetValues).toEqual([firstLevelFacetValue]);
+            expect(facet.values.allFacetValues[0].children).toEqual([secondLevelFacetValue]);
+            expect(facet.values.allFacetValues[0].children[0].children).toEqual([thirdLevelFacetValue]);
           });
         });
       });

@@ -12,7 +12,6 @@ export class CategoryFacetValueRenderer {
   public render() {
     this.button = $$('button', {
       className: 'coveo-dynamic-category-facet-value',
-      dataValue: this.facetValue.value,
       ariaLabel: this.facetValue.selectAriaLabel
     });
     this.button.append($$('span', { className: 'coveo-dynamic-category-facet-value-label' }, this.facetValue.displayValue).el);
@@ -24,7 +23,7 @@ export class CategoryFacetValueRenderer {
     this.shouldHaveArrow && this.prependArrow();
 
     this.button.on('click', () => this.selectAction());
-    return $$('li', {}, this.button).el;
+    return $$('li', { dataValue: this.facetValue.value }, this.button).el;
   }
 
   private prependArrow() {
