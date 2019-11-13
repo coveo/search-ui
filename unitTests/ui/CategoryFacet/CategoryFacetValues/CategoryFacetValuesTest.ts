@@ -259,10 +259,10 @@ export function CategoryFacetValuesTest() {
 
           it('higher than last level values have the right value/path', () => {
             expect(firstLevelFacetValue.value).toBe(newPath[0]);
-            expect(firstLevelFacetValue.path).toEqual(newPath.slice(-2));
+            expect(firstLevelFacetValue.path).toEqual(newPath.slice(0, -2));
 
             expect(secondLevelFacetValue.value).toBe(newPath[1]);
-            expect(secondLevelFacetValue.path).toEqual(newPath.slice(-1));
+            expect(secondLevelFacetValue.path).toEqual(newPath.slice(0, -1));
           });
 
           it('should remove all the others values at each level', () => {
