@@ -114,9 +114,10 @@ export function CategoryFacetValuesTest() {
       });
 
       it('should render the children in the correct order', () => {
-        expect(listElement.children[0].getAttribute('data-value')).toBe(facet.values.allFacetValues[0].value);
-        expect(listElement.children[1].getAttribute('data-value')).toBe(facet.values.allFacetValues[0].children[0].value);
-        expect(listElement.children[listElement.children.length - 1].getAttribute('data-value')).toBe(facet.values.allFacetValues[2].children[2].children[2].value);
+        const documentFragment = new DocumentFragment();
+        expect(listElement.children[0]).toEqual(facet.values.allFacetValues[0].render(documentFragment));
+        expect(listElement.children[1]).toEqual(facet.values.allFacetValues[0].children[0].render(documentFragment));
+        expect(listElement.children[listElement.children.length - 1]).toEqual(facet.values.allFacetValues[2].children[2].children[2].render(documentFragment));
       });
 
       function getAllCategoriesElement() {

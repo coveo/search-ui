@@ -14,7 +14,9 @@ export class CategoryFacetValueRenderer {
       className: 'coveo-dynamic-category-facet-value',
       ariaLabel: this.facetValue.selectAriaLabel
     });
-    this.button.append($$('span', { className: 'coveo-dynamic-category-facet-value-label' }, this.facetValue.displayValue).el);
+    const label = $$('span', { className: 'coveo-dynamic-category-facet-value-label' });
+    label.text(this.facetValue.displayValue);
+    this.button.append(label.el);
     this.button.append($$('span', { className: 'coveo-dynamic-category-facet-value-count' }, `(${this.facetValue.formattedCount})`).el);
 
     this.button.toggleClass('coveo-selected', this.facetValue.isSelected);
