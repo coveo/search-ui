@@ -17,54 +17,6 @@
   }
 }
 
-@mixin coveo-default-result-preview($maxImageHeightRelativeToWidth: 100%) {
-  position: relative;
-  padding: $maxImageHeightRelativeToWidth 0 0 0;
-  margin: 0;
-  .CoveoImageFieldValue {
-    @include attachTo(top);
-    padding: $maxImageHeightRelativeToWidth 0 0 0;
-    span {
-      @include attachTo(all);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      img {
-        max-width: 100%;
-        max-height: 100%;
-        width: auto;
-        height: auto;
-        margin: 0;
-      }
-    }
-  }
-  .CoveoResultLink {
-    display: block;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    margin-top: 20px;
-  }
-}
-
-@mixin coveo-preview-results($columns: 2) {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  overflow: hidden;
-  width: 100%;
-  .coveo-preview-layout {
-    $margin: 10px;
-    box-sizing: border-box;
-    margin: $margin;
-    padding: 20px;
-    width: calc(#{100% / $columns} - #{$margin * 2});
-    .coveo-default-result-preview {
-      @include coveo-default-result-preview();
-    }
-  }
-}
-
 .coveo-suggestion-container {
   display: inline-flex;
   flex-wrap: nowrap;
@@ -81,7 +33,49 @@
     background: $white;
     width: 0;
     .coveo-preview-results {
-      @include coveo-preview-results();
+      $columns: 2;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      overflow: hidden;
+      width: 100%;
+      .coveo-preview-layout {
+        $margin: 10px;
+        box-sizing: border-box;
+        margin: $margin;
+        padding: 20px;
+        width: calc(#{100% / $columns} - #{$margin * 2});
+        .coveo-default-result-preview {
+          $maxImageHeightRelativeToWidth: 100%;
+          position: relative;
+          padding: $maxImageHeightRelativeToWidth 0 0 0;
+          margin: 0;
+          .CoveoImageFieldValue {
+            @include attachTo(top);
+            padding: $maxImageHeightRelativeToWidth 0 0 0;
+            span {
+              @include attachTo(all);
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              img {
+                max-width: 100%;
+                max-height: 100%;
+                width: auto;
+                height: auto;
+                margin: 0;
+              }
+            }
+          }
+          .CoveoResultLink {
+            display: block;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-top: 20px;
+          }
+        }
+      }
     }
     .coveo-preview-header {
       padding: 10px;
