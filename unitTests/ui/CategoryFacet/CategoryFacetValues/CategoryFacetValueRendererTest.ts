@@ -54,10 +54,6 @@ export function CategoryFacetValueRendererTest() {
       expect(element.getAttribute('data-value')).toBe(facetValue.value);
     });
 
-    it('should assign the value to data-value', () => {
-      expect(element.getAttribute('data-value')).toBe(facetValue.value);
-    });
-
     it('should append the correct formatted count', () => {
       expect(getCount().textContent).toBe(`(${facetValue.formattedCount})`);
     });
