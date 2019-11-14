@@ -108,27 +108,27 @@ export class CategoryFacetValues {
     return newFacetValue;
   }
 
-  private collapseHierarchyAtPathLevel(facetValues: CategoryFacetValue[], path: string[], level = 1) {
-    const collapsedFacetValues = facetValues
+  private filterHierarchyAtPathLevel(facetValues: CategoryFacetValue[], path: string[], level = 1) {
+    const filteredFacetValues = facetValues
       .filter(facetValue => {
         const targetPath = path.slice(0, level);
         return Utils.arrayEqual(targetPath, facetValue.path);
       });
 
-    collapsedFacetValues.forEach(facetValue => {
+    filteredFacetValues.forEach(facetValue => {
       facetValue.state = FacetValueState.idle;
-      facetValue.children = this.collapseHierarchyAtPathLevel(facetValue.children, path, level + 1);
+      facetValue.children = this.filterHierarchyAtPathLevel(facetValue.children, path, level + 1);
     });
 
-    return collapsedFacetValues;
+    return filteredFacetValues;
   }
 
-  private collapseHierarchyWithPath(path: string[]) {
-    this.facetValues = this.collapseHierarchyAtPathLevel(this.facetValues, [...path]);
+  private filterHierarchyWithPath(path: string[]) {
+    this.facetValues = this.filterHierarchyAtPathLevel(this.facetValues, path);
   }
 
   public selectPath(path: string[]) {
-    this.collapseHierarchyWithPath(path);
+    this.filterHierarchyWithPath(path);
     this.getOrCreateFacetValueWithPath(path).select();
     this.selectedPath = [...path];
   }
