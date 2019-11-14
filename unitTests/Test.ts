@@ -657,6 +657,9 @@ GrammarTest();
 import { SuggestionsManagerTest } from './magicbox/SuggestionsManagerTest';
 SuggestionsManagerTest();
 
+import { QueryProcessorTest } from './magicbox/QueryProcessorTest';
+QueryProcessorTest();
+
 import { MagicBoxClearTest } from './magicbox/MagicBoxClearTest';
 MagicBoxClearTest();
 

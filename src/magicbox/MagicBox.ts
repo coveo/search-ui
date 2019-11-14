@@ -19,7 +19,7 @@ export class MagicBoxInstance {
   public onblur: () => void;
   public onfocus: () => void;
   public onchange: () => void;
-  public onsuggestions: (suggestions: Suggestion[]) => void;
+  public onSuggestions: (suggestions: Suggestion[]) => void;
   public onsubmit: () => void;
   public onselect: (suggestion: Suggestion) => void;
   public onclear: () => void;
@@ -36,6 +36,15 @@ export class MagicBoxInstance {
 
   private result: Result;
   private displayedResult: Result;
+
+  private get firstSuggestionWithText(): Suggestion {
+    return find(this.lastSuggestions, suggestion => suggestion.text);
+  }
+
+  private get firstSuggestionText() {
+    const firstSuggestionWithText = this.firstSuggestionWithText;
+    return firstSuggestionWithText ? firstSuggestionWithText.text : '';
+  }
 
   constructor(public element: HTMLElement, public grammar: Grammar, public options: Options = {}) {
     if (isUndefined(this.options.inline)) {
@@ -61,11 +70,11 @@ export class MagicBoxInstance {
       (text, wordCompletion) => {
         if (!wordCompletion) {
           this.setText(text);
-          this.showSuggestion();
+          this.addSuggestions();
           this.onchange && this.onchange();
         } else {
           this.setText(text);
-          this.onselect && this.onselect(this.getFirstSuggestionText());
+          this.onselect && this.onselect(this.firstSuggestionWithText);
         }
       },
       this
@@ -87,7 +96,7 @@ export class MagicBoxInstance {
     this.element.appendChild(suggestionsContainer);
 
     this.suggestionsManager = new SuggestionsManager(suggestionsContainer, this.element, this.inputManager, {
-      selectableClass: this.options.selectableSuggestionClass,
+      suggestionClass: this.options.selectableSuggestionClass,
       selectedClass: this.options.selectedSuggestionClass,
       timeout: this.options.suggestionTimeout
     });
@@ -137,12 +146,12 @@ export class MagicBoxInstance {
 
     this.inputManager.onfocus = () => {
       $$(this.element).addClass('magic-box-hasFocus');
-      this.showSuggestion();
+      this.addSuggestions();
       this.onfocus && this.onfocus();
     };
 
     this.inputManager.onkeydown = (key: number) => {
-      if (key === KEYBOARD.UP_ARROW || key === KEYBOARD.DOWN_ARROW || key === KEYBOARD.LEFT_ARROW || key === KEYBOARD.RIGHT_ARROW) {
+      if (this.shouldMoveInSuggestions(key)) {
         return false;
       }
       if (key === KEYBOARD.ENTER) {
@@ -161,11 +170,14 @@ export class MagicBoxInstance {
     };
 
     this.inputManager.onchangecursor = () => {
-      this.showSuggestion();
+      this.addSuggestions();
     };
 
     this.inputManager.onkeyup = (key: number) => {
       this.onmove && this.onmove();
+      if (!this.shouldMoveInSuggestions(key)) {
+        return true;
+      }
       switch (key) {
         case KEYBOARD.UP_ARROW:
           this.suggestionsManager.moveUp();
@@ -179,8 +191,6 @@ export class MagicBoxInstance {
         case KEYBOARD.RIGHT_ARROW:
           this.suggestionsManager.moveRight();
           break;
-        default:
-          return true;
       }
       if (this.suggestionsManager.selectedSuggestion) {
         this.focusOnSuggestion(this.suggestionsManager.selectedSuggestion);
@@ -190,17 +200,28 @@ export class MagicBoxInstance {
     };
   }
 
-  public showSuggestion() {
-    this.suggestionsManager.mergeSuggestions(this.getSuggestions != null ? this.getSuggestions() : [], suggestions => {
-      this.updateSuggestion(suggestions);
-    });
+  public async addSuggestions() {
+    const suggestions = await this.suggestionsManager.receiveSuggestions(this.getSuggestions != null ? this.getSuggestions() : []);
+    this.addSelectEventHandlers(suggestions);
+    this.inputManager.setWordCompletion(this.firstSuggestionText);
+    this.onSuggestions(suggestions);
   }
 
-  private updateSuggestion(suggestions: Suggestion[]) {
-    this.lastSuggestions = suggestions;
-    const firstSuggestion = this.getFirstSuggestionText();
-    this.inputManager.setWordCompletion(firstSuggestion && firstSuggestion.text);
-    this.onsuggestions && this.onsuggestions(suggestions);
+  private shouldMoveInSuggestions(key: KEYBOARD) {
+    switch (key) {
+      case KEYBOARD.UP_ARROW:
+      case KEYBOARD.DOWN_ARROW:
+        return true;
+      case KEYBOARD.LEFT_ARROW:
+      case KEYBOARD.RIGHT_ARROW:
+        if (this.suggestionsManager.hasFocus && this.suggestionsManager.hasPreviews) {
+          return true;
+        }
+    }
+    return false;
+  }
+
+  private addSelectEventHandlers(suggestions: Suggestion[]) {
     each(suggestions, (suggestion: Suggestion) => {
       if (suggestion.onSelect == null && suggestion.text != null) {
         suggestion.onSelect = () => {
@@ -220,24 +241,18 @@ export class MagicBoxInstance {
     this.inputManager.blur();
   }
 
-  public clearSuggestion() {
-    this.suggestionsManager.mergeSuggestions([], suggestions => {
-      this.updateSuggestion(suggestions);
-    });
+  public async clearSuggestion() {
     this.inputManager.setWordCompletion(null);
+    this.suggestionsManager.clearSuggestions();
+    this.onSuggestions([]);
   }
 
   private focusOnSuggestion(suggestion: Suggestion) {
     if (suggestion == null || suggestion.text == null) {
-      suggestion = this.getFirstSuggestionText();
-      this.inputManager.setResult(this.displayedResult, suggestion && suggestion.text);
+      this.inputManager.setResult(this.displayedResult, this.firstSuggestionText);
     } else {
       this.inputManager.setResult(this.grammar.parse(suggestion.text).clean(), suggestion.text);
     }
-  }
-
-  private getFirstSuggestionText(): Suggestion {
-    return find(this.lastSuggestions, suggestion => suggestion.text != null);
   }
 
   public getText() {
@@ -250,7 +265,7 @@ export class MagicBoxInstance {
 
   public clear() {
     this.setText('');
-    this.showSuggestion();
+    this.clearSuggestion();
     this.focus();
     this.onclear && this.onclear();
   }

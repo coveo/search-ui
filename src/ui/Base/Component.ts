@@ -214,6 +214,9 @@ export class ComponentEvents {
         } else if (args && JQueryUtils.isInstanceOfJqueryEvent(args[0])) {
           if (args[1] != undefined) {
             args = [args[1]];
+          } else if (args[0].hasOwnProperty('originalEvent')) {
+            // If the event is a jQuery Event but no args are found, let's use the ones of the originalEvent, if any.
+            args = [args[0].originalEvent];
           } else {
             args = [];
           }

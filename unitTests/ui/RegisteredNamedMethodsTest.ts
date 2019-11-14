@@ -44,7 +44,7 @@ export function RegisteredNamedMethodsTest() {
     });
 
     it('should allow to load an arbitrary module', () => {
-      const fooModule = jasmine.createSpy('foo').and.callFake(() => new Promise((resolve, reject) => { }));
+      const fooModule = jasmine.createSpy('foo').and.callFake(() => new Promise((resolve, reject) => {}));
 
       LazyInitialization.registerLazyModule('foo', fooModule);
 
@@ -362,7 +362,6 @@ export function RegisteredNamedMethodsTest() {
           const liveAnalyticsClient = analyticsSubmitCall.calls.mostRecent().args[0] as IAnalyticsClient;
           expect(liveAnalyticsClient.isActivated()).toBe(true);
         });
-
       });
     });
   });

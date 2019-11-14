@@ -40,6 +40,8 @@ gulp.task('cleanDefs', function() {
       .pipe(replace(/\(this: [A-Za-z_-]+, /gm, '('))
       .pipe(replace(/\| null/gm, '| void'))
       .pipe(replace(/moment\.[a-zA-Z]+/g, 'any'))
+      .pipe(replace(/Partial<[A-z]*>/g, 'any'))
+      .pipe(replace(/<\s?([a-z]+)\s?=\s?[a-z]+\s?>/gi, '<$1>'))
       .pipe(gulp.dest('bin/ts/')) );
 });
 

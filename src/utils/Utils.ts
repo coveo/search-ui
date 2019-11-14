@@ -434,4 +434,8 @@ export class Utils {
     addDiff(secondObject, firstObject);
     return difference;
   }
+
+  static resolveAfter<T = void>(ms: number, returns?: T): Promise<T> {
+    return new Promise(resolve => setTimeout(() => (returns ? resolve(returns) : resolve()), ms));
+  }
 }
