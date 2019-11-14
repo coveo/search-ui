@@ -1,15 +1,8 @@
 @import '../Variables';
-
-$active-text-opacity: 0.6;
+@import '../mixins/dynamicFacet';
 
 .coveo-dynamic-facet-values {
-  padding: 10px 0;
-  margin: 0;
-  white-space: normal;
-
-  li {
-    list-style: none;
-  }
+  @include facetValues;
 }
 
 .coveo-dynamic-facet-value {

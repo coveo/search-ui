@@ -1,6 +1,6 @@
 @import '../Variables';
+@import '../mixins/dynamicFacet';
 
-$active-text-opacity: 0.6;
 $top-level-space: 20px;
 $second-level-space: 35px;
 
@@ -12,9 +12,7 @@ $second-level-space: 35px;
 }
 
 .coveo-dynamic-category-facet-values {
-  list-style: none;
-  padding: 10px 0;
-  margin: 0;
+  @include facetValues;
 
   &.coveo-with-space .coveo-dynamic-category-facet-value  {
     padding-left: $top-level-space;

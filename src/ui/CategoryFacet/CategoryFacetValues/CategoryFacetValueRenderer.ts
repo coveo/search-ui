@@ -14,18 +14,31 @@ export class CategoryFacetValueRenderer {
       className: 'coveo-dynamic-category-facet-value',
       ariaLabel: this.facetValue.selectAriaLabel
     });
+    this.button.on('click', () => this.selectAction());
+
+    this.renderLabel();
+    this.renderCount();
+    this.toggleButtonStates();
+
+    return $$('li', { dataValue: this.facetValue.value }, this.button).el;
+  }
+
+  private renderLabel() {
     const label = $$('span', { className: 'coveo-dynamic-category-facet-value-label' });
     label.text(this.facetValue.displayValue);
     this.button.append(label.el);
-    this.button.append($$('span', { className: 'coveo-dynamic-category-facet-value-count' }, `(${this.facetValue.formattedCount})`).el);
+  }
 
+  private renderCount() {
+    const count = $$('span', { className: 'coveo-dynamic-category-facet-value-count' }, `(${this.facetValue.formattedCount})`);
+    this.button.append(count.el);
+  }
+
+  private toggleButtonStates() {
     this.button.toggleClass('coveo-selected', this.facetValue.isSelected);
     this.button.toggleClass('coveo-with-space', this.shouldHaveMargin);
     this.facetValue.isSelected && this.button.setAttribute('disabled', 'true');
     this.shouldHaveArrow && this.prependArrow();
-
-    this.button.on('click', () => this.selectAction());
-    return $$('li', { dataValue: this.facetValue.value }, this.button).el;
   }
 
   private prependArrow() {

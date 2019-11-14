@@ -47,7 +47,7 @@ export function CategoryFacetValueRendererTest() {
       const fakeFacetValueWithXSS = CategoryFacetTestUtils.createFakeFacetValue();
       fakeFacetValueWithXSS.displayValue = '<script>alert("Hehe goodbye")</script>';
       initializeComponentWithValue(fakeFacetValueWithXSS);
-      expect(getLabel().textContent).toBe(fakeFacetValueWithXSS.displayValue);
+      expect(getLabel().innerHTML).toBe('&lt;script&gt;alert("Hehe goodbye")&lt;/script&gt;');
     });
 
     it('should assign the value to data-value', () => {
