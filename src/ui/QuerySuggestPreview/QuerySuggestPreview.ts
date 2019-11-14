@@ -30,7 +30,8 @@ export interface IQuerySuggestPreview {
  * Moreover, this component can use a [result template](https://docs.coveo.com/en/413/) in its markup configuration to render previews with.
  *
  * **Example**
- * ```
+ * This component works independently of its location in the DOM and can be added like such:
+ * ```html
  *   <div class="CoveoQuerySuggestPreview"></div>
  * ```
  *
