@@ -97,10 +97,11 @@ export function CategoryFacetValueRendererTest() {
         selectedValue.state = FacetValueState.selected;
         initializeComponentWithValue(selectedValue);
       });
+
       it('button should have the class "coveo-selected"', () => {
         expect($$(getButton()).hasClass('coveo-selected')).toBe(true);
       });
-  
+
       it('button should be disabled', () => {
         expect(getButton().getAttribute('disabled')).toBeTruthy();
       });
@@ -128,14 +129,27 @@ export function CategoryFacetValueRendererTest() {
 
       expect($$(getButton()).hasClass('coveo-with-space')).toBe(false);
     });
-    
-    it(`when value is not selected, is not at the first level and has children
-      should prepend an arrow"`, () => {
-      const valueWithChildren = CategoryFacetTestUtils.createFakeFacetValue();
-      valueWithChildren.children = [new CategoryFacetValue(CategoryFacetTestUtils.createFakeFacetValue(), facet)];
-      initializeComponentWithValue(valueWithChildren);
 
-      expect(getArrow()).toBeTruthy();
-    });
+    describe('when value is not at the first level and has children', () => {
+      beforeEach(() => {
+        const valueWithChildren = CategoryFacetTestUtils.createFakeFacetValue();
+        valueWithChildren.children = [new CategoryFacetValue(CategoryFacetTestUtils.createFakeFacetValue(), facet)];
+        initializeComponentWithValue(valueWithChildren);
+      });
+
+      it(`when facet has no selected value
+        should not prepend an arrow`, () => {
+        expect(getArrow()).toBeFalsy();
+      });
+
+      it(`when facet has a selected value, 
+        when value is not at the first level and has children
+        should prepend an arrow`, () => {
+        facet.values.selectPath(['random value']);
+        element = facetValueRenderer.render();
+
+        expect(getArrow()).toBeTruthy();
+      });
+    })
   });
 }

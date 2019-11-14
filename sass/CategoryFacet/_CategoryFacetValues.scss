@@ -1,6 +1,8 @@
 @import '../Variables';
 
 $active-text-opacity: 0.6;
+$top-level-space: 20px;
+$second-level-space: 35px;
 
 // TODO: remove when old values are removed
 .coveo-category-facet-values,
@@ -15,10 +17,10 @@ $active-text-opacity: 0.6;
   margin: 0;
 
   &.coveo-with-space .coveo-dynamic-category-facet-value  {
-    padding-left: 20px;
+    padding-left: $top-level-space;
 
     &.coveo-with-space {
-      padding-left: 45px;
+      padding-left: $top-level-space + $second-level-space;
     }
   }
 }
@@ -51,6 +53,10 @@ $active-text-opacity: 0.6;
 
 .coveo-dynamic-category-facet-value {
   position: relative;
+
+  &.coveo-with-space {
+    padding-left: $top-level-space;
+  }
 
   &:disabled {
     cursor: auto;

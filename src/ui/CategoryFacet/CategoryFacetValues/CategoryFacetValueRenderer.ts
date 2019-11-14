@@ -39,7 +39,7 @@ export class CategoryFacetValueRenderer {
   }
 
   private get shouldHaveArrow() {
-    return !this.facetValue.isSelected && !!this.facetValue.children.length;
+    return this.facet.values.hasSelectedValue && !this.facetValue.isSelected && !!this.facetValue.children.length;
   }
 
   private selectAction() {
