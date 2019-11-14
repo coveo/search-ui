@@ -41,10 +41,13 @@ export function QuerySuggestPreviewTest() {
     let testEnv: Mock.MockEnvironmentBuilder;
     let omniboxAnalytics: IOmniboxAnalytics;
 
-    function setupQuerySuggestPreview(options: IQuerySuggestPreview = {}) {
-      const tmpl: HtmlTemplate = Mock.mock<HtmlTemplate>(HtmlTemplate);
-      (tmpl.instantiateToElement as jasmine.Spy).and.returnValue(Promise.resolve($$('div').el));
-      options['resultTemplate'] = tmpl;
+    const templateClassName = 'test-template';
+    function setupQuerySuggestPreview(options: IQuerySuggestPreview = {}, useCustomTemplate = true) {
+      if (useCustomTemplate) {
+        options.resultTemplate = HtmlTemplate.create(
+          $$('script', { className: 'result-template', type: 'text/html' }, $$('div', { className: templateClassName })).el
+        );
+      }
 
       test = Mock.advancedComponentSetup<QuerySuggestPreview>(
         QuerySuggestPreview,
@@ -79,6 +82,20 @@ export function QuerySuggestPreviewTest() {
     });
 
     describe('expose options', () => {
+      it('resultTemplate sets the template', async done => {
+        setupQuerySuggestPreview();
+        const previews = await triggerPopulateSearchResultPreviewsAndPassTime();
+        expect(previews[0].element.getElementsByClassName(templateClassName).length).toEqual(1);
+        done();
+      });
+
+      it('resultTemplate has a default template', async done => {
+        setupQuerySuggestPreview({}, false);
+        const previews = await triggerPopulateSearchResultPreviewsAndPassTime();
+        expect(previews[0].element.getElementsByClassName('coveo-default-result-preview').length).toEqual(1);
+        done();
+      });
+
       it('numberOfPreviewResults set the number of results to query', async done => {
         const numberOfPreviewResults = 5;
         setupQuerySuggestPreview({ numberOfPreviewResults });
