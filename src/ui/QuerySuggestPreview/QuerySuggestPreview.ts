@@ -1,6 +1,6 @@
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { exportGlobally } from '../../GlobalExports';
-import { ComponentOptions, Initialization, $$, Component, Utils } from '../../Core';
+import { ComponentOptions, Initialization, $$, Component, Utils, HtmlTemplate } from '../../Core';
 import { IQueryResults } from '../../rest/QueryResults';
 import 'styling/_QuerySuggestPreview';
 import { Template } from '../Templates/Template';
@@ -15,6 +15,7 @@ import {
 } from '../Analytics/AnalyticsActionListMeta';
 import { ISearchResultPreview } from '../../magicbox/ResultPreviewsManager';
 import { ResultPreviewsManagerEvents, IPopulateSearchResultPreviewsEventArgs } from '../../events/ResultPreviewsManagerEvents';
+import { ImageFieldValue } from '../FieldImage/ImageFieldValue';
 
 export interface IQuerySuggestPreview {
   numberOfPreviewResults?: number;
@@ -38,10 +39,10 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
      *
      * **Minimum:** `1`
      * **Maximum:** `6`
-     * **Default:** `3`
+     * **Default:** `4`
      */
     numberOfPreviewResults: ComponentOptions.buildNumberOption({
-      defaultValue: 3,
+      defaultValue: 4,
       min: 1,
       max: 6
     }),
@@ -69,11 +70,8 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
     this.options = ComponentOptions.initComponentOptions(element, QuerySuggestPreview, options);
 
     if (!this.options.resultTemplate) {
-      // TODO: Add a default template
-      this.logger.warn(
-        `Specifying a result template is required for the 'QuerySuggestPreview' component to work properly. See `,
-        `https://docs.coveo.com/340/#providing-query-suggestion-result-previews`
-      );
+      this.logger.warn(`No template was provided for ${QuerySuggestPreview.ID}, a default template was used instead.`);
+      this.options.resultTemplate = this.buildDefaultSearchResultPreviewTemplate();
     }
 
     this.bind.onRootElement(ResultPreviewsManagerEvents.PopulateSearchResultPreviews, (args: IPopulateSearchResultPreviewsEventArgs) =>
@@ -81,6 +79,21 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
     );
 
     this.omniboxAnalytics = this.searchInterface.getOmniboxAnalytics();
+  }
+
+  private buildDefaultSearchResultPreviewTemplate() {
+    return HtmlTemplate.create(
+      $$(
+        'script',
+        { className: 'result-template', type: 'text/html' },
+        $$(
+          'div',
+          { className: 'coveo-result-frame coveo-default-result-preview' },
+          $$('div', { className: Component.computeCssClassName(ImageFieldValue), 'data-field': '@image' }),
+          $$('a', { className: Component.computeCssClassName(ResultLink) })
+        )
+      ).el
+    );
   }
 
   private get templateToHtml() {
