@@ -16,7 +16,7 @@ export interface ICategoryFacetValue {
 }
 
 export class CategoryFacetValue implements ICategoryFacetValue {
-  public renderer: CategoryFacetValueRenderer;
+  private renderer: CategoryFacetValueRenderer;
   private element: HTMLElement = null;
 
   constructor(private facetValue: ICategoryFacetValue, facet: CategoryFacet) {

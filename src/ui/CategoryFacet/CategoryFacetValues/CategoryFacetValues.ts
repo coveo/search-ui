@@ -1,3 +1,4 @@
+import 'styling/CategoryFacet/_CategoryFacetValues';
 import { CategoryFacet } from '../CategoryFacet';
 import { IFacetResponse, IFacetResponseValue } from '../../../rest/Facet/FacetResponse';
 import { CategoryFacetValue } from './CategoryFacetValue';
@@ -6,14 +7,14 @@ import { $$ } from '../../../utils/Dom';
 import { find } from 'underscore';
 import { FacetValueState } from '../../../rest/Facet/FacetValueState';
 import { Utils } from '../../../utils/Utils';
+import { l } from '../../../strings/Strings';
 
 export class CategoryFacetValues {
-  private facetValues: CategoryFacetValue[];
+  private facetValues: CategoryFacetValue[] = [];
+  private selectedPath: string[] = [];
   private list = $$('ul', { className: 'coveo-dynamic-category-facet-values' }).el;
 
-  constructor(private facet: CategoryFacet) {
-    this.resetValues();
-  }
+  constructor(private facet: CategoryFacet) { }
 
   private formatDisplayValue(value: string) {
     let returnValue = FacetUtils.tryToGetTranslatedCaption(<string>this.facet.options.field, value);
@@ -51,8 +52,13 @@ export class CategoryFacetValues {
     return this.facetValues;
   }
 
-  public resetValues() {
+  public get hasSelectedValue() {
+    return !!this.selectedPath.length;
+  }
+
+  public reset() {
     this.facetValues = [];
+    this.selectedPath = [];
   }
 
   private findValueWithPath(path: string[]) {
@@ -87,44 +93,50 @@ export class CategoryFacetValues {
     }, this.facet);
   }
 
-  private createFacetValueAtPath(path: string[]) {
-    const remainingPath = [...path];
-    const ultimateFacetValue = this.createFacetValueWithPath([...remainingPath]);
-    let facetValue = ultimateFacetValue;
-
-    while (remainingPath.length > 1) {
-      remainingPath.pop()
-      const parentFacetValue = this.findValueWithPath(remainingPath) || this.createFacetValueWithPath([...remainingPath]);
-      parentFacetValue.children.push(facetValue);
-      facetValue = parentFacetValue;
+  private getOrCreateFacetValueWithPath(path: string[]) {
+    const existingFacetValue = this.findValueWithPath(path);
+    if (existingFacetValue) {
+      return existingFacetValue;
     }
 
-    this.facetValues.push(facetValue);
-    return ultimateFacetValue;
-  }
+    const newFacetValue = this.createFacetValueWithPath(path);
+    const siblingValues = path.length === 1
+      ? this.facetValues
+      : this.getOrCreateFacetValueWithPath(path.slice(0, -1)).children;
 
-  public get(path: string[]) {
-    const facetValue = this.findValueWithPath(path);
-
-    if (facetValue) {
-      return facetValue;
-    }
-
-    const newFacetValue = this.createFacetValueAtPath(path);
+    siblingValues.push(newFacetValue)
     return newFacetValue;
   }
 
-  private collapseHierarchyAtPathLevel(facetValues: CategoryFacetValue[], path: string[], level = 1) {
-    facetValues.forEach(facetValue => {
+  private filterHierarchyAtPathLevel(facetValues: CategoryFacetValue[], path: string[], level = 1) {
+    const filteredFacetValues = facetValues
+      .filter(facetValue => {
+        const targetPath = path.slice(0, level);
+        return Utils.arrayEqual(targetPath, facetValue.path);
+      });
+
+    filteredFacetValues.forEach(facetValue => {
       facetValue.state = FacetValueState.idle;
-      const targetPath = path.slice(0, level + 1)
-      facetValue.children = path[level] ? facetValue.children.filter(child => Utils.arrayEqual(targetPath, child.path)) : [];
-      this.collapseHierarchyAtPathLevel(facetValue.children, path, level + 1);
+      facetValue.children = this.filterHierarchyAtPathLevel(facetValue.children, path, level + 1);
     });
+
+    return filteredFacetValues;
   }
 
-  public collapseHierarchyWithPath(path: string[]) {
-    this.collapseHierarchyAtPathLevel(this.facetValues, [...path]);
+  private filterHierarchyWithPath(path: string[]) {
+    this.facetValues = this.filterHierarchyAtPathLevel(this.facetValues, path);
+  }
+
+  public selectPath(path: string[]) {
+    this.filterHierarchyWithPath(path);
+    this.getOrCreateFacetValueWithPath(path).select();
+    this.selectedPath = [...path];
+  }
+
+  private prependAllCategories() {
+    const clear = $$('li', {}, $$('button', { className: 'coveo-dynamic-category-facet-all' }, l('AllCategories')));
+    clear.on('click', () => this.facet.reset());
+    $$(this.list).prepend(clear.el);
   }
 
   public render() {
@@ -135,6 +147,8 @@ export class CategoryFacetValues {
       facetValue.render(fragment);
     });
 
+    $$(this.list).toggleClass('coveo-with-space', !!this.selectedPath.length);
+    this.selectedPath.length && this.prependAllCategories();
     // TODO: append see more/less
     this.list.appendChild(fragment);
     return this.list;

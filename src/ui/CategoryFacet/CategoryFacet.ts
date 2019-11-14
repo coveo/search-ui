@@ -1,5 +1,4 @@
-import 'styling/_CategoryFacet'; // TODO: Delete file
-import 'styling/CategoryFacet/_CategoryFacet';
+import 'styling/DynamicFacet/_DynamicFacet';
 import { Component } from '../Base/Component';
 import { l } from '../../strings/Strings';
 import { IFieldOption, ComponentOptions } from '../Base/ComponentOptions';
@@ -532,7 +531,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
 
   private onNoAdditionalValues() {
     this.moreValuesAvailable = false;
-    this.values.resetValues();
+    this.values.reset();
   }
 
   /**
@@ -667,15 +666,12 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     this.executeQuery();
   }
 
-  private resetPath() {
-    this.changeActivePath(this.options.basePath);
-  }
-
   /**
    * Resets the facet to its initial state.
    */
   public reset() {
-    this.resetPath();
+    this.values.reset();
+    this.scrollToTop();
     this.logAnalyticsEvent(analyticsActionCauseList.categoryFacetClear);
     this.executeQuery();
   }
@@ -736,10 +732,8 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     Assert.exists(path);
     Assert.isLargerThan(0, path.length);
     this.ensureDom();
-    this.values.collapseHierarchyWithPath(path);
-    const facetValue = this.values.get(path);
-    facetValue.select();
-    this.logger.info('Toggle select facet value', facetValue);
+    this.values.selectPath(path);
+    this.logger.info('Toggle select facet value at path', path);
   }
 
   /**

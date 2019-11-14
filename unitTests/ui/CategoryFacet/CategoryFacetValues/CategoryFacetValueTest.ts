@@ -1,7 +1,6 @@
 import * as Globalize from 'globalize';
 import { CategoryFacetValue, ICategoryFacetValue } from '../../../../src/ui/CategoryFacet/CategoryFacetValues/CategoryFacetValue'
 import { CategoryFacetTestUtils } from '../CategoryFacetTestUtils';
-import * as Mock from '../../../MockEnvironment';
 import { CategoryFacet } from '../../../../src/ui/CategoryFacet/CategoryFacet';
 
 export function CategoryFacetValueTest() {
@@ -11,7 +10,7 @@ export function CategoryFacetValueTest() {
     let fakeFacetValue: ICategoryFacetValue
 
     beforeEach(() => {
-      facet = Mock.mockComponent(CategoryFacet);
+      facet = CategoryFacetTestUtils.createFakeFacet();
       fakeFacetValue = CategoryFacetTestUtils.createFakeFacetValue();
       facetValue = new CategoryFacetValue(fakeFacetValue, facet);
     });

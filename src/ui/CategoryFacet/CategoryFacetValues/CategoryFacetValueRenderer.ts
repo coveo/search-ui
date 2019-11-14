@@ -1,32 +1,64 @@
 import { $$, Dom } from '../../../utils/Dom';
 import { CategoryFacet } from '../CategoryFacet';
 import { CategoryFacetValue } from './CategoryFacetValue';
+import { SVGIcons } from '../../../utils/SVGIcons';
+import { SVGDom } from '../../../utils/SVGDom';
 
 export class CategoryFacetValueRenderer {
-  private dom: Dom;
+  private button: Dom;
 
   constructor(private facetValue: CategoryFacetValue, private facet: CategoryFacet) { }
 
   public render() {
-    this.dom = $$('li', {
+    this.button = $$('button', {
       className: 'coveo-dynamic-category-facet-value',
-      dataValue: this.facetValue.value
-    }, `${this.facetValue.displayValue} (${this.facetValue.formattedCount})`);
+      ariaLabel: this.facetValue.selectAriaLabel
+    });
+    this.button.on('click', () => this.selectAction());
 
-    this.dom.on('click', () => this.selectAction());
-    this.toggleSelectedClass();
-    return this.dom.el;
+    this.renderLabel();
+    this.renderCount();
+    this.toggleButtonStates();
+
+    return $$('li', { dataValue: this.facetValue.value }, this.button).el;
   }
 
-  private toggleSelectedClass() {
-    this.dom.toggleClass('coveo-selected', this.facetValue.isSelected);
+  private renderLabel() {
+    const label = $$('span', { className: 'coveo-dynamic-category-facet-value-label' });
+    label.text(this.facetValue.displayValue);
+    this.button.append(label.el);
+  }
+
+  private renderCount() {
+    const count = $$('span', { className: 'coveo-dynamic-category-facet-value-count' }, `(${this.facetValue.formattedCount})`);
+    this.button.append(count.el);
+  }
+
+  private toggleButtonStates() {
+    this.button.toggleClass('coveo-selected', this.facetValue.isSelected);
+    this.button.toggleClass('coveo-with-space', this.shouldHaveMargin);
+    this.facetValue.isSelected && this.button.setAttribute('disabled', 'true');
+    this.shouldHaveArrow && this.prependArrow();
+  }
+
+  private prependArrow() {
+    const arrowIcon = $$('div', { className: 'coveo-dynamic-category-facet-value-arrow' }, SVGIcons.icons.arrowLeft);
+    SVGDom.addClassToSVGInContainer(arrowIcon.el, 'coveo-dynamic-category-facet-value-arrow-svg');
+    this.button.prepend(arrowIcon.el);
+  }
+
+  private get shouldHaveMargin() {
+    return this.facetValue.path.length > 1 && !this.facetValue.children.length;
+  }
+
+  private get shouldHaveArrow() {
+    return this.facet.values.hasSelectedValue && !this.facetValue.isSelected && !!this.facetValue.children.length;
   }
 
   private selectAction() {
     this.facet.selectPath(this.facetValue.path);
     this.facet.enableFreezeFacetOrderFlag();
     this.facet.scrollToTop();
-    this.toggleSelectedClass();
     this.facet.triggerNewQuery(() => this.facetValue.logSelectActionToAnalytics());
   }
 }
