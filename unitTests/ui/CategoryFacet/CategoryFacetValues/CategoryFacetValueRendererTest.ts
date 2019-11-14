@@ -24,7 +24,7 @@ export function CategoryFacetValueRendererTest() {
     }
 
     function getLabel() {
-      return $$(element).find('.coveo-dynamic-category-facet-value-label')
+      return $$(element).find('.coveo-dynamic-category-facet-value-label');
     }
 
     function getButton() {
@@ -32,11 +32,11 @@ export function CategoryFacetValueRendererTest() {
     }
 
     function getCount() {
-      return $$(element).find('.coveo-dynamic-category-facet-value-count')
+      return $$(element).find('.coveo-dynamic-category-facet-value-count');
     }
 
     function getArrow() {
-      return $$(element).find('.coveo-dynamic-category-facet-value-arrow')
+      return $$(element).find('.coveo-dynamic-category-facet-value-arrow');
     }
 
     it('should render without errors', () => {
@@ -123,7 +123,7 @@ export function CategoryFacetValueRendererTest() {
       button should not have the class "coveo-with-space"`, () => {
       const childValueWithChildren = CategoryFacetTestUtils.createFakeFacetValue();
       childValueWithChildren.path = ['a', 'path'];
-      childValueWithChildren.children = [new CategoryFacetValue(CategoryFacetTestUtils.createFakeFacetValue(), facet)]
+      childValueWithChildren.children = [new CategoryFacetValue(CategoryFacetTestUtils.createFakeFacetValue(), facet)];
       initializeComponentWithValue(childValueWithChildren);
 
       expect($$(getButton()).hasClass('coveo-with-space')).toBe(false);
@@ -132,7 +132,7 @@ export function CategoryFacetValueRendererTest() {
     it(`when value is not selected, is not at the first level and has children
       should prepend an arrow"`, () => {
       const valueWithChildren = CategoryFacetTestUtils.createFakeFacetValue();
-      valueWithChildren.children = [new CategoryFacetValue(CategoryFacetTestUtils.createFakeFacetValue(), facet)]
+      valueWithChildren.children = [new CategoryFacetValue(CategoryFacetTestUtils.createFakeFacetValue(), facet)];
       initializeComponentWithValue(valueWithChildren);
 
       expect(getArrow()).toBeTruthy();
