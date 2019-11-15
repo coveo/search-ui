@@ -96,3 +96,11 @@ $arrow-svg-dimensions: 25px;
   display: inline-block;
   vertical-align: middle;
 }
+
+.coveo-dynamic-category-facet-show-more {
+  @include facetShowMore();
+}
+
+.coveo-dynamic-category-facet-show-less {
+  @include facetShowLess();
+}
