@@ -11,6 +11,9 @@ export class CategoryFacetTestUtils {
     return {
       field: '@dummy',
       valueCaption: {},
+      numberOfValues: 5,
+      pageSize: 10,
+      enableMoreLess: true,
       ...options
     };
   }
