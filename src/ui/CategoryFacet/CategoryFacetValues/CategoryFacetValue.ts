@@ -3,6 +3,7 @@ import { CategoryFacet } from '../CategoryFacet';
 import { FacetValueState } from '../../../rest/Facet/FacetValueState';
 import { CategoryFacetValueRenderer } from './CategoryFacetValueRenderer';
 import { l } from '../../../strings/Strings';
+import { DynamicFacetValueShowMoreLessButton } from '../../DynamicFacet/DynamicFacetValues/DynamicFacetValueMoreLessButton';
 
 export interface ICategoryFacetValue {
   value: string;
@@ -18,9 +19,11 @@ export interface ICategoryFacetValue {
 export class CategoryFacetValue implements ICategoryFacetValue {
   private renderer: CategoryFacetValueRenderer;
   private element: HTMLElement = null;
+  public retrieveCount: number;
 
-  constructor(private facetValue: ICategoryFacetValue, facet: CategoryFacet) {
-    this.renderer = new CategoryFacetValueRenderer(this, facet);
+  constructor(private facetValue: ICategoryFacetValue, private facet: CategoryFacet) {
+    this.renderer = new CategoryFacetValueRenderer(this, this.facet);
+    this.retrieveCount = Math.max(this.facet.options.numberOfValues, this.facetValue.children.length);
   }
 
   public get value() {
@@ -30,7 +33,7 @@ export class CategoryFacetValue implements ICategoryFacetValue {
   public get path() {
     return this.facetValue.path;
   }
-  
+
   public get state() {
     return this.facetValue.state;
   }
@@ -84,11 +87,64 @@ export class CategoryFacetValue implements ICategoryFacetValue {
     return Globalize.format(this.numberOfResults, 'n0');
   }
 
+  private buildShowLess() {
+    const showLess = new DynamicFacetValueShowMoreLessButton({
+      className: 'coveo-dynamic-category-facet-show-less coveo-with-space',
+      ariaLabel: l('ShowLessFacetResults', this.facet.options.title),
+      label: l('ShowLess'),
+      action: () => {
+        this.facet.enableFreezeFacetOrderFlag();
+        this.retrieveCount = this.facet.options.numberOfValues;
+        this.facet.triggerNewIsolatedQuery();
+      }
+    });
+
+    return showLess.element;
+  }
+
+  private buildShowMore() {
+    const showMore = new DynamicFacetValueShowMoreLessButton({
+      className: 'coveo-dynamic-category-facet-show-more coveo-with-space',
+      ariaLabel: l('ShowMoreFacetResults', this.facet.options.title),
+      label: l('ShowMore'),
+      action: () => {
+        this.facet.enableFreezeFacetOrderFlag();
+        this.retrieveCount += this.facet.options.pageSize;
+        this.facet.triggerNewIsolatedQuery();
+      }
+    });
+
+    return showMore.element;
+  }
+  
+  private get shouldEnableShowLess() {
+    return this.children.length > this.facet.options.numberOfValues;
+  }
+
+  private get shouldEnableShowMore() {
+    return this.moreValuesAvailable;
+  }
+
+  private appendShowMoreLess(fragment: DocumentFragment) {
+    if (!this.facet.options.enableMoreLess) {
+      return;
+    }
+
+    if (this.shouldEnableShowLess) {
+      fragment.appendChild(this.buildShowLess());
+    }
+
+    if (this.shouldEnableShowMore) {
+      fragment.appendChild(this.buildShowMore());
+    }
+  }
+
   public render(fragment: DocumentFragment) {
     this.element = this.renderer.render();
     fragment.appendChild(this.element);
 
     this.children.forEach(facetValue => facetValue.render(fragment));
+    this.appendShowMoreLess(fragment);
 
     return this.element;
   }

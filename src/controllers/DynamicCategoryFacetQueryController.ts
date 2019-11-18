@@ -87,13 +87,20 @@ export class CategoryFacetQueryController {
       value: facetValue.value,
       state: facetValue.state,
       preventAutoSelect: facetValue.preventAutoSelect,
-      children: facetValue.children.map(requestValue => this.buildRequestValue(requestValue)),
+      children: this.childrenForFacetValue(facetValue),
       retrieveChildren: this.shouldRetrieveChildren(facetValue),
-      retrieveCount: 3, // TODO: Move numberOfValuesToRequest to every child values
+      retrieveCount: facetValue.retrieveCount
     }
   }
 
+  private childrenForFacetValue(facetValue: CategoryFacetValue) {
+    // TODO: remove when API has fixed currentValue/numberOfValues issue
+    return this.shouldRetrieveChildren(facetValue)
+      ? []
+      : facetValue.children.map(requestValue => this.buildRequestValue(requestValue));
+  }
+
   private shouldRetrieveChildren(facetValue: CategoryFacetValue) {
-    return !facetValue.children.length && facetValue.state === FacetValueState.selected;
+    return facetValue.state === FacetValueState.selected;
   }
 }
