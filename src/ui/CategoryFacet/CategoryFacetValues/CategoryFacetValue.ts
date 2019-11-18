@@ -90,7 +90,7 @@ export class CategoryFacetValue implements ICategoryFacetValue {
   private buildShowLess() {
     const showLess = new DynamicFacetValueShowMoreLessButton({
       className: 'coveo-dynamic-category-facet-show-less coveo-with-space',
-      ariaLabel: l('ShowLessFacetResults', this.facet.options.title),
+      ariaLabel: l('ShowLessCategoryResults', this.displayValue),
       label: l('ShowLess'),
       action: () => {
         this.facet.enableFreezeFacetOrderFlag();
@@ -105,7 +105,7 @@ export class CategoryFacetValue implements ICategoryFacetValue {
   private buildShowMore() {
     const showMore = new DynamicFacetValueShowMoreLessButton({
       className: 'coveo-dynamic-category-facet-show-more coveo-with-space',
-      ariaLabel: l('ShowMoreFacetResults', this.facet.options.title),
+      ariaLabel: l('ShowMoreCategoryResults', this.displayValue),
       label: l('ShowMore'),
       action: () => {
         this.facet.enableFreezeFacetOrderFlag();

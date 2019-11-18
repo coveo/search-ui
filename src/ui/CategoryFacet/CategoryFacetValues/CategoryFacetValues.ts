@@ -144,7 +144,7 @@ export class CategoryFacetValues {
     const showLess = new DynamicFacetValueShowMoreLessButton({
       className: 'coveo-dynamic-category-facet-show-less',
       ariaLabel: l('ShowLessFacetResults', this.facet.options.title),
-      label: l('ShowLess'),
+      label: l('ShowLessCategories'),
       action: () => {
         this.facet.enableFreezeFacetOrderFlag();
         this.facet.showLess();
@@ -158,7 +158,7 @@ export class CategoryFacetValues {
     const showMore = new DynamicFacetValueShowMoreLessButton({
       className: 'coveo-dynamic-category-facet-show-more',
       ariaLabel: l('ShowMoreFacetResults', this.facet.options.title),
-      label: l('ShowMore'),
+      label: l('ShowMoreCategories'),
       action: () => {
         this.facet.enableFreezeFacetOrderFlag();
         this.facet.showMore();
