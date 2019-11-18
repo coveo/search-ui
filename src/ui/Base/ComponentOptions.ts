@@ -447,13 +447,17 @@ export class ComponentOptions {
     values: any = {},
     componentID: string
   ) {
+    if (Utils.isNullOrUndefined(values)) {
+      values = {};
+    }
+
     each(options, (optionDefinition, name) => {
       const value = new ComponentOptionLoader(element, values, name, optionDefinition).load();
-      new ComponentOptionsMerger<any>(optionDefinition, { value, name }, values).merge();
+      new ComponentOptionsMerger(optionDefinition, { value, name }, values).merge();
       new ComponentOptionsValidator(optionDefinition, { componentID, name, value }, values).validate();
     });
 
-    new ComponentOptionsPostProcessing(options, values).postProcess();
+    new ComponentOptionsPostProcessing(options, values, componentID).postProcess();
     return values;
   }
 

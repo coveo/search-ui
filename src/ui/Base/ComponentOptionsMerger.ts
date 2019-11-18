@@ -3,15 +3,15 @@ import { l } from '../../strings/Strings';
 import { Utils } from '../../utils/Utils';
 import { ComponentOptionsType, IComponentOptionsOption } from './IComponentOptions';
 
-export interface IComponentOptionsToMerge<T> {
+export interface IComponentOptionsToMerge {
   name: string;
-  value: T;
+  value: any;
 }
 
-export class ComponentOptionsMerger<T> {
+export class ComponentOptionsMerger {
   constructor(
-    public optionDefinition: IComponentOptionsOption<T>,
-    public valueToMerge: IComponentOptionsToMerge<T>,
+    public optionDefinition: IComponentOptionsOption<any>,
+    public valueToMerge: IComponentOptionsToMerge,
     public optionsDictionnary: Record<any, any>
   ) {}
 

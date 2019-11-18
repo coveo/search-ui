@@ -34,19 +34,15 @@ export class ComponentOptionLoader {
   }
 
   private loadFromDefaultValue() {
+    if (this.optionDefinition.type == ComponentOptionsType.LOCALIZED_STRING) {
+      return this.loadDefaultLocalizedString();
+    }
+
     if (Utils.isNullOrUndefined(this.optionDefinition.defaultValue)) {
       return null;
     }
 
     switch (this.optionDefinition.type) {
-      case ComponentOptionsType.LOCALIZED_STRING:
-        if (!Utils.isNullOrUndefined(this.optionDefinition.defaultValue)) {
-          return this.warnDeprecatedLocalizedStringAndReturnDefaultValue();
-        }
-
-        const isLocalizedOptionLoader = this.optionDefinition as IComponentLocalizedStringOptionArgs;
-        return isLocalizedOptionLoader.localizedString ? isLocalizedOptionLoader.localizedString() : null;
-
       case ComponentOptionsType.LIST:
         return extend([], this.optionDefinition.defaultValue);
       case ComponentOptionsType.OBJECT:
@@ -56,17 +52,17 @@ export class ComponentOptionLoader {
     }
   }
 
-  private loadFromDefaultFunction() {
-    return this.optionDefinition.defaultFunction ? this.optionDefinition.defaultFunction(this.element) : null;
+  private loadDefaultLocalizedString() {
+    if (!Utils.isNullOrUndefined(this.optionDefinition.defaultValue)) {
+      return this.warnDeprecatedLocalizedStringAndReturnDefaultValue();
+    }
+
+    const isLocalizedOptionLoader = this.optionDefinition as IComponentLocalizedStringOptionArgs;
+    return isLocalizedOptionLoader.localizedString ? isLocalizedOptionLoader.localizedString() : null;
   }
 
-  private findFirstValidValue(...chain: { (): any }[]): any {
-    find(chain, fn => {
-      this.resolvedValue = fn();
-      return !Utils.isNullOrUndefined(this.resolvedValue);
-    });
-
-    return this.resolvedValue;
+  private loadFromDefaultFunction() {
+    return this.optionDefinition.defaultFunction ? this.optionDefinition.defaultFunction(this.element) : null;
   }
 
   private warnDeprecatedLocalizedStringAndReturnDefaultValue() {
@@ -76,5 +72,14 @@ export class ComponentOptionLoader {
       } is deprecated. You should instead use localizedString. Not doing so could cause localization bug in your interface.`
     );
     return this.optionDefinition.defaultValue;
+  }
+
+  private findFirstValidValue(...chain: { (): any }[]): any {
+    find(chain, fn => {
+      this.resolvedValue = fn();
+      return !Utils.isNullOrUndefined(this.resolvedValue);
+    });
+
+    return this.resolvedValue;
   }
 }
