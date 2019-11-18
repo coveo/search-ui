@@ -1,6 +1,6 @@
 import * as _ from 'underscore';
 import { QueryController } from '../../controllers/QueryController';
-import { InitializationEvents, IInitializationEventArgs } from '../../events/InitializationEvents';
+import { IInitializationEventArgs, InitializationEvents } from '../../events/InitializationEvents';
 import { Assert } from '../../misc/Assert';
 import { Logger } from '../../misc/Logger';
 import { ComponentOptionsModel } from '../../models/ComponentOptionsModel';
@@ -12,7 +12,7 @@ import { $$ } from '../../utils/Dom';
 import { HashUtils } from '../../utils/HashUtils';
 import { JQueryUtils } from '../../utils/JQueryutils';
 import { Utils } from '../../utils/Utils';
-import { IAnalyticsNoMeta, analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
+import { analyticsActionCauseList, IAnalyticsNoMeta } from '../Analytics/AnalyticsActionListMeta';
 import { Component, IComponentDefinition } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { SearchInterface, StandaloneSearchInterface } from '../SearchInterface/SearchInterface';
@@ -462,16 +462,15 @@ export class Initialization {
       })
       .value();
 
-    const initResult = Promise.all(constructorForEachComponentsInstance)
-      .then(() => true)
-      .catch(e => {
+    const initResult = Promise.all(constructorForEachComponentsInstance).then(() => true);
+    /*.catch(e => {
         // We log the fatal error on init, but then we try to continue the initialization for the rest of the components.
         // In most case, this would be caused by a fatal error in a component constructor.
         // In some cases, it might be for a minor component not essential to basic function of the interface, meaning we could still salvage things here.
         this.logger.error(e);
         this.logger.warn(`Skipping initialization of previous component in error ... `);
         return true;
-      });
+      });*/
 
     return {
       initResult,

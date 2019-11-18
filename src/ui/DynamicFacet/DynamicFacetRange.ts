@@ -1,15 +1,15 @@
 import 'styling/DynamicFacet/_DynamicFacet';
-import { Initialization } from '../Base/Initialization';
-import { DynamicFacet, IDynamicFacetOptions } from './DynamicFacet';
-import { ComponentOptions } from '../Base/ComponentOptions';
-import { IComponentBindings } from '../Base/ComponentBindings';
+import { DynamicFacetRangeQueryController } from '../../controllers/DynamicFacetRangeQueryController';
 import { exportGlobally } from '../../GlobalExports';
-import { l } from '../../strings/Strings';
 import { FacetType } from '../../rest/Facet/FacetRequest';
 import { IRangeValue } from '../../rest/RangeValue';
-import { DynamicFacetValues } from './DynamicFacetValues/DynamicFacetValues';
+import { l } from '../../strings/Strings';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { Initialization } from '../Base/Initialization';
+import { DynamicFacet, IDynamicFacetOptions } from './DynamicFacet';
 import { DynamicFacetRangeValueCreator } from './DynamicFacetValues/DynamicFacetRangeValueCreator';
-import { DynamicFacetRangeQueryController } from '../../controllers/DynamicFacetRangeQueryController';
+import { DynamicFacetValues } from './DynamicFacetValues/DynamicFacetValues';
 
 /**
  * The allowed values for the [`valueFormat`]{@link DynamicFacetRange.options.valueFormat} option
@@ -65,7 +65,10 @@ export class DynamicFacetRange extends DynamicFacet implements IComponentBinding
      *
      * @examples until, up to
      */
-    valueSeparator: ComponentOptions.buildLocalizedStringOption({ defaultValue: l('To'), section: 'CommonOptions' }),
+    valueSeparator: ComponentOptions.buildLocalizedStringOption({
+      localizedString: () => l('To'),
+      section: 'CommonOptions'
+    }),
     /**
      * The string format to apply to the minimum and maximum value of each range displayed in the facet.
      *

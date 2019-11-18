@@ -1,47 +1,48 @@
-import { Component } from '../Base/Component';
-import { l } from '../../strings/Strings';
-import { IFieldOption, ComponentOptions } from '../Base/ComponentOptions';
-import { IComponentBindings } from '../Base/ComponentBindings';
-import { $$, Dom } from '../../utils/Dom';
-import { Initialization } from '../Base/Initialization';
-import { exportGlobally } from '../../GlobalExports';
-import { CategoryFacetTemplates } from './CategoryFacetTemplates';
-import { CategoryValueRoot } from './CategoryValueRoot';
+import 'styling/_CategoryFacet';
+import { contains, find, first, isArray, keys, last, pluck, reduce } from 'underscore';
 import { CategoryFacetQueryController } from '../../controllers/CategoryFacetQueryController';
+import { BreadcrumbEvents, IPopulateBreadcrumbEventArgs } from '../../events/BreadcrumbEvents';
+import { IBuildingQueryEventArgs, IQuerySuccessEventArgs, QueryEvents } from '../../events/QueryEvents';
+import { exportGlobally } from '../../GlobalExports';
+import { Assert } from '../../misc/Assert';
+import { IAttributesChangedEventArg, MODEL_EVENTS } from '../../models/Model';
+import { QueryStateModel } from '../../models/QueryStateModel';
+import { ICategoryFacetResult } from '../../rest/CategoryFacetResult';
+import { ICategoryFacetValue } from '../../rest/CategoryFacetValue';
+import { IStringMap } from '../../rest/GenericParam';
+import { ISearchEndpoint } from '../../rest/SearchEndpointInterface';
+import { l } from '../../strings/Strings';
+import { AccessibleButton } from '../../utils/AccessibleButton';
+import { DependsOnManager, IDependentFacet } from '../../utils/DependsOnManager';
+import { $$, Dom } from '../../utils/Dom';
+import { ResultListUtils } from '../../utils/ResultListUtils';
 import { SVGDom } from '../../utils/SVGDom';
 import { SVGIcons } from '../../utils/SVGIcons';
-import { QueryStateModel } from '../../models/QueryStateModel';
-import 'styling/_CategoryFacet';
-import { IAttributesChangedEventArg, MODEL_EVENTS } from '../../models/Model';
 import { Utils } from '../../utils/Utils';
-import { CategoryValue, CategoryValueParent } from './CategoryValue';
-import { pluck, reduce, find, first, last, contains, isArray, keys } from 'underscore';
-import { Assert } from '../../misc/Assert';
-import { QueryEvents, IBuildingQueryEventArgs, IQuerySuccessEventArgs } from '../../events/QueryEvents';
-import { CategoryFacetSearch } from './CategoryFacetSearch';
-import { ICategoryFacetResult } from '../../rest/CategoryFacetResult';
-import { BreadcrumbEvents, IPopulateBreadcrumbEventArgs } from '../../events/BreadcrumbEvents';
-import { CategoryFacetBreadcrumb } from './CategoryFacetBreadcrumb';
-import { ICategoryFacetValue } from '../../rest/CategoryFacetValue';
-import { ISearchEndpoint } from '../../rest/SearchEndpointInterface';
 import {
-  IAnalyticsCategoryFacetMeta,
   analyticsActionCauseList,
   IAnalyticsActionCause,
+  IAnalyticsCategoryFacetMeta,
   IAnalyticsFacetMeta
 } from '../Analytics/AnalyticsActionListMeta';
-import { CategoryFacetDebug } from './CategoryFacetDebug';
+import { Component } from '../Base/Component';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { IFieldOption } from '../Base/IComponentOptions';
+import { Initialization } from '../Base/Initialization';
 import { QueryBuilder } from '../Base/QueryBuilder';
-import { IAutoLayoutAdjustableInsideFacetColumn } from '../SearchInterface/FacetColumnAutoLayoutAdjustment';
-import { ResponsiveFacets } from '../ResponsiveComponents/ResponsiveFacets';
 import { IResponsiveComponentOptions } from '../ResponsiveComponents/ResponsiveComponentsManager';
 import { ResponsiveFacetOptions } from '../ResponsiveComponents/ResponsiveFacetOptions';
+import { ResponsiveFacets } from '../ResponsiveComponents/ResponsiveFacets';
+import { IAutoLayoutAdjustableInsideFacetColumn } from '../SearchInterface/FacetColumnAutoLayoutAdjustment';
+import { CategoryFacetBreadcrumb } from './CategoryFacetBreadcrumb';
+import { CategoryFacetDebug } from './CategoryFacetDebug';
 import { CategoryFacetHeader } from './CategoryFacetHeader';
-import { AccessibleButton } from '../../utils/AccessibleButton';
-import { IStringMap } from '../../rest/GenericParam';
-import { DependsOnManager, IDependentFacet } from '../../utils/DependsOnManager';
-import { ResultListUtils } from '../../utils/ResultListUtils';
+import { CategoryFacetSearch } from './CategoryFacetSearch';
+import { CategoryFacetTemplates } from './CategoryFacetTemplates';
 import { CategoryFacetValuesTree } from './CategoryFacetValuesTree';
+import { CategoryValue, CategoryValueParent } from './CategoryValue';
+import { CategoryValueRoot } from './CategoryValueRoot';
 
 export interface ICategoryFacetOptions extends IResponsiveComponentOptions {
   field: IFieldOption;
@@ -110,7 +111,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
      * Default value is the localized string for `NoTitle`.
      */
     title: ComponentOptions.buildLocalizedStringOption({
-      defaultValue: l('NoTitle')
+      localizedString: () => l('NoTitle')
     }),
     /**
      * The maximum number of field values to display by default in the facet before the user

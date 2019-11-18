@@ -4,6 +4,7 @@ import { BreadcrumbEvents, IPopulateBreadcrumbEventArgs } from '../../events/Bre
 import { IBuildingQueryEventArgs, IDoneBuildingQueryEventArgs, IQuerySuccessEventArgs, QueryEvents } from '../../events/QueryEvents';
 import { exportGlobally } from '../../GlobalExports';
 import { Assert } from '../../misc/Assert';
+import { Logger } from '../../misc/Logger';
 import { l } from '../../strings/Strings';
 import { AccessibleButton } from '../../utils/AccessibleButton';
 import { $$, Dom } from '../../utils/Dom';
@@ -12,13 +13,13 @@ import { SVGIcons } from '../../utils/SVGIcons';
 import { analyticsActionCauseList, IAnalyticsSimpleFilterMeta } from '../Analytics/AnalyticsActionListMeta';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
-import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { IFieldOption } from '../Base/IComponentOptions';
 import { Initialization } from '../Base/Initialization';
+import { FacetSortCriterion } from '../Facet/FacetSortCriterion';
 import { FacetUtils } from '../Facet/FacetUtils';
 import { Checkbox } from '../FormWidgets/Checkbox';
 import { SimpleFilterValues } from './SimpleFilterValues';
-import { Logger } from '../../misc/Logger';
-import { FacetSortCriterion } from '../Facet/FacetSortCriterion';
 
 export interface ISimpleFilterOptions {
   title: string;
@@ -85,7 +86,7 @@ export class SimpleFilter extends Component {
      *
      * Default value is the localized string for `NoTitle`.
      */
-    title: ComponentOptions.buildLocalizedStringOption({ defaultValue: 'NoTitle' }),
+    title: ComponentOptions.buildLocalizedStringOption({ localizedString: () => l('NoTitle') }),
 
     /**
      * Specifies a JSON object describing a mapping of `SimpleFilter` values to their desired captions.

@@ -1,16 +1,17 @@
-import { Component } from '../Base/Component';
-import { ComponentOptions } from '../Base/ComponentOptions';
-import { IComponentBindings } from '../Base/ComponentBindings';
-import { Initialization } from '../Base/Initialization';
-import { CardOverlayEvents } from '../../events/CardOverlayEvents';
-import { $$ } from '../../utils/Dom';
-import { Assert } from '../../misc/Assert';
-import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
-import { exportGlobally } from '../../GlobalExports';
 import 'styling/_CardOverlay';
-import { SVGIcons } from '../../utils/SVGIcons';
+import { CardOverlayEvents } from '../../events/CardOverlayEvents';
+import { exportGlobally } from '../../GlobalExports';
+import { Assert } from '../../misc/Assert';
+import { l } from '../../strings/Strings';
+import { $$ } from '../../utils/Dom';
+import { KEYBOARD, KeyboardUtils } from '../../utils/KeyboardUtils';
 import { SVGDom } from '../../utils/SVGDom';
+import { SVGIcons } from '../../utils/SVGIcons';
 import { Utils } from '../../utils/Utils';
+import { Component } from '../Base/Component';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { Initialization } from '../Base/Initialization';
 
 export interface ICardOverlayOptions {
   title: string;
@@ -49,7 +50,10 @@ export class CardOverlay extends Component {
      *
      * Setting a value for this option is required for this component to work.
      */
-    title: ComponentOptions.buildLocalizedStringOption({ required: true, defaultValue: 'NoTitle' }),
+    title: ComponentOptions.buildLocalizedStringOption({
+      required: true,
+      localizedString: () => l('NoTitle')
+    }),
 
     /**
      * Specifies the icon to use for the overlay icon and for the button icon.

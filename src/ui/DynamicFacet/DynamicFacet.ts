@@ -1,39 +1,40 @@
 import 'styling/DynamicFacet/_DynamicFacet';
 import { difference, findIndex } from 'underscore';
-import { $$ } from '../../utils/Dom';
+import { DynamicFacetQueryController } from '../../controllers/DynamicFacetQueryController';
+import { IQueryOptions } from '../../controllers/QueryController';
+import { BreadcrumbEvents, IPopulateBreadcrumbEventArgs } from '../../events/BreadcrumbEvents';
+import { IDoneBuildingQueryEventArgs, IQuerySuccessEventArgs, QueryEvents } from '../../events/QueryEvents';
 import { exportGlobally } from '../../GlobalExports';
+import { Assert } from '../../misc/Assert';
+import { IAttributesChangedEventArg, MODEL_EVENTS } from '../../models/Model';
+import { QueryStateModel } from '../../models/QueryStateModel';
+import { FacetType } from '../../rest/Facet/FacetRequest';
+import { IFacetResponse } from '../../rest/Facet/FacetResponse';
+import { isFacetSortCriteria } from '../../rest/Facet/FacetSortCriteria';
+import { IStringMap } from '../../rest/GenericParam';
+import { IQueryResults } from '../../rest/QueryResults';
+import { l } from '../../strings/Strings';
+import { DependsOnManager, IDependentFacet } from '../../utils/DependsOnManager';
+import { DeviceUtils } from '../../utils/DeviceUtils';
+import { $$ } from '../../utils/Dom';
+import { ResultListUtils } from '../../utils/ResultListUtils';
+import { Utils } from '../../utils/Utils';
+import { analyticsActionCauseList, IAnalyticsActionCause, IAnalyticsDynamicFacetMeta } from '../Analytics/AnalyticsActionListMeta';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
-import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { IFieldOption } from '../Base/IComponentOptions';
 import { Initialization } from '../Base/Initialization';
-import { ResponsiveFacetOptions } from '../ResponsiveComponents/ResponsiveFacetOptions';
+import { QueryBuilder } from '../Base/QueryBuilder';
+import { DynamicFacetManager } from '../DynamicFacetManager/DynamicFacetManager';
+import { DynamicFacetSearch } from '../DynamicFacetSearch/DynamicFacetSearch';
+import { IResponsiveComponentOptions } from '../ResponsiveComponents/ResponsiveComponentsManager';
 import { ResponsiveDynamicFacets } from '../ResponsiveComponents/ResponsiveDynamicFacets';
+import { ResponsiveFacetOptions } from '../ResponsiveComponents/ResponsiveFacetOptions';
+import { IAutoLayoutAdjustableInsideFacetColumn } from '../SearchInterface/FacetColumnAutoLayoutAdjustment';
 import { DynamicFacetBreadcrumbs } from './DynamicFacetBreadcrumbs';
 import { DynamicFacetHeader } from './DynamicFacetHeader/DynamicFacetHeader';
 import { DynamicFacetValues } from './DynamicFacetValues/DynamicFacetValues';
-import { QueryEvents, IQuerySuccessEventArgs, IDoneBuildingQueryEventArgs } from '../../events/QueryEvents';
-import { QueryStateModel } from '../../models/QueryStateModel';
-import { DynamicFacetQueryController } from '../../controllers/DynamicFacetQueryController';
-import { Utils } from '../../utils/Utils';
-import { MODEL_EVENTS, IAttributesChangedEventArg } from '../../models/Model';
-import { Assert } from '../../misc/Assert';
-import { IFacetResponse } from '../../rest/Facet/FacetResponse';
-import { IResponsiveComponentOptions } from '../ResponsiveComponents/ResponsiveComponentsManager';
-import { IStringMap } from '../../rest/GenericParam';
-import { isFacetSortCriteria } from '../../rest/Facet/FacetSortCriteria';
-import { l } from '../../strings/Strings';
-import { DeviceUtils } from '../../utils/DeviceUtils';
-import { BreadcrumbEvents, IPopulateBreadcrumbEventArgs } from '../../events/BreadcrumbEvents';
-import { IAnalyticsActionCause, IAnalyticsDynamicFacetMeta, analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
-import { IQueryOptions } from '../../controllers/QueryController';
-import { DynamicFacetManager } from '../DynamicFacetManager/DynamicFacetManager';
-import { QueryBuilder } from '../Base/QueryBuilder';
-import { IAutoLayoutAdjustableInsideFacetColumn } from '../SearchInterface/FacetColumnAutoLayoutAdjustment';
-import { DynamicFacetSearch } from '../DynamicFacetSearch/DynamicFacetSearch';
-import { ResultListUtils } from '../../utils/ResultListUtils';
-import { IQueryResults } from '../../rest/QueryResults';
-import { FacetType } from '../../rest/Facet/FacetRequest';
-import { DependsOnManager, IDependentFacet } from '../../utils/DependsOnManager';
 
 export interface IDynamicFacetOptions extends IResponsiveComponentOptions {
   id?: string;
@@ -113,7 +114,7 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
      * **Default:** The localized string for `NoTitle`.
      */
     title: ComponentOptions.buildLocalizedStringOption({
-      defaultValue: l('NoTitle'),
+      localizedString: () => l('NoTitle'),
       section: 'CommonOptions',
       priority: 10
     }),
