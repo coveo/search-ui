@@ -1,18 +1,18 @@
-import 'styling/_ExportToExcel';
-import * as _ from 'underscore';
-import { SettingsEvents } from '../../events/SettingsEvents';
-import { exportGlobally } from '../../GlobalExports';
-import { l } from '../../strings/Strings';
-import { SVGIcons } from '../../utils/SVGIcons';
-import { analyticsActionCauseList, IAnalyticsNoMeta } from '../Analytics/AnalyticsActionListMeta';
 import { Component } from '../Base/Component';
-import { IComponentBindings } from '../Base/ComponentBindings';
 import { ComponentOptions } from '../Base/ComponentOptions';
 import { IFieldOption } from '../Base/IComponentOptions';
-import { Initialization } from '../Base/Initialization';
-import { get } from '../Base/RegisteredNamedMethods';
-import { SearchInterface } from '../SearchInterface/SearchInterface';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { SettingsEvents } from '../../events/SettingsEvents';
 import { ISettingsPopulateMenuArgs } from '../Settings/Settings';
+import { IAnalyticsNoMeta, analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
+import { Initialization } from '../Base/Initialization';
+import { l } from '../../strings/Strings';
+import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
+import 'styling/_ExportToExcel';
+import { SVGIcons } from '../../utils/SVGIcons';
+import { SearchInterface } from '../SearchInterface/SearchInterface';
+import { get } from '../Base/RegisteredNamedMethods';
 
 export interface IExportToExcelOptions {
   numberOfResults?: number;

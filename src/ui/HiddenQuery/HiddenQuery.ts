@@ -1,19 +1,19 @@
-import 'styling/_HiddenQuery';
-import * as _ from 'underscore';
-import { BreadcrumbEvents, IPopulateBreadcrumbEventArgs } from '../../events/BreadcrumbEvents';
-import { IBuildingQueryEventArgs, QueryEvents } from '../../events/QueryEvents';
-import { exportGlobally } from '../../GlobalExports';
-import { Assert } from '../../misc/Assert';
-import { QueryStateModel, QUERY_STATE_ATTRIBUTES } from '../../models/QueryStateModel';
-import { l } from '../../strings/Strings';
-import { $$ } from '../../utils/Dom';
-import { SVGIcons } from '../../utils/SVGIcons';
-import { Utils } from '../../utils/Utils';
-import { analyticsActionCauseList, IAnalyticsContextRemoveMeta } from '../Analytics/AnalyticsActionListMeta';
 import { Component } from '../Base/Component';
-import { IComponentBindings } from '../Base/ComponentBindings';
 import { ComponentOptions } from '../Base/ComponentOptions';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { l } from '../../strings/Strings';
+import { QueryEvents, IBuildingQueryEventArgs } from '../../events/QueryEvents';
+import { BreadcrumbEvents, IPopulateBreadcrumbEventArgs } from '../../events/BreadcrumbEvents';
+import { analyticsActionCauseList, IAnalyticsContextRemoveMeta } from '../Analytics/AnalyticsActionListMeta';
+import { QUERY_STATE_ATTRIBUTES, QueryStateModel } from '../../models/QueryStateModel';
+import { $$ } from '../../utils/Dom';
+import { Utils } from '../../utils/Utils';
 import { Initialization } from '../Base/Initialization';
+import { Assert } from '../../misc/Assert';
+import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
+import 'styling/_HiddenQuery';
+import { SVGIcons } from '../../utils/SVGIcons';
 
 export interface IHiddenQueryOptions {
   maximumDescriptionLength: number;

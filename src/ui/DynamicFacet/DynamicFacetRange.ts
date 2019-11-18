@@ -1,15 +1,15 @@
 import 'styling/DynamicFacet/_DynamicFacet';
-import { DynamicFacetRangeQueryController } from '../../controllers/DynamicFacetRangeQueryController';
-import { exportGlobally } from '../../GlobalExports';
-import { FacetType } from '../../rest/Facet/FacetRequest';
-import { IRangeValue } from '../../rest/RangeValue';
-import { l } from '../../strings/Strings';
-import { IComponentBindings } from '../Base/ComponentBindings';
-import { ComponentOptions } from '../Base/ComponentOptions';
 import { Initialization } from '../Base/Initialization';
 import { DynamicFacet, IDynamicFacetOptions } from './DynamicFacet';
-import { DynamicFacetRangeValueCreator } from './DynamicFacetValues/DynamicFacetRangeValueCreator';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { exportGlobally } from '../../GlobalExports';
+import { l } from '../../strings/Strings';
+import { FacetType } from '../../rest/Facet/FacetRequest';
+import { IRangeValue } from '../../rest/RangeValue';
 import { DynamicFacetValues } from './DynamicFacetValues/DynamicFacetValues';
+import { DynamicFacetRangeValueCreator } from './DynamicFacetValues/DynamicFacetRangeValueCreator';
+import { DynamicFacetRangeQueryController } from '../../controllers/DynamicFacetRangeQueryController';
 
 /**
  * The allowed values for the [`valueFormat`]{@link DynamicFacetRange.options.valueFormat} option

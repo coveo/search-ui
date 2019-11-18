@@ -1,17 +1,17 @@
-import 'styling/_CardOverlay';
-import { CardOverlayEvents } from '../../events/CardOverlayEvents';
-import { exportGlobally } from '../../GlobalExports';
-import { Assert } from '../../misc/Assert';
-import { l } from '../../strings/Strings';
-import { $$ } from '../../utils/Dom';
-import { KEYBOARD, KeyboardUtils } from '../../utils/KeyboardUtils';
-import { SVGDom } from '../../utils/SVGDom';
-import { SVGIcons } from '../../utils/SVGIcons';
-import { Utils } from '../../utils/Utils';
 import { Component } from '../Base/Component';
-import { IComponentBindings } from '../Base/ComponentBindings';
 import { ComponentOptions } from '../Base/ComponentOptions';
+import { IComponentBindings } from '../Base/ComponentBindings';
 import { Initialization } from '../Base/Initialization';
+import { CardOverlayEvents } from '../../events/CardOverlayEvents';
+import { $$ } from '../../utils/Dom';
+import { Assert } from '../../misc/Assert';
+import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
+import { exportGlobally } from '../../GlobalExports';
+import 'styling/_CardOverlay';
+import { SVGIcons } from '../../utils/SVGIcons';
+import { SVGDom } from '../../utils/SVGDom';
+import { Utils } from '../../utils/Utils';
+import { l } from '../../strings/Strings';
 
 export interface ICardOverlayOptions {
   title: string;

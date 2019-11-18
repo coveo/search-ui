@@ -1,15 +1,15 @@
-import { exportGlobally } from '../../GlobalExports';
-import { Assert } from '../../misc/Assert';
-import { IQueryResult } from '../../rest/QueryResult';
-import { $$ } from '../../utils/Dom';
-import { QueryUtils } from '../../utils/QueryUtils';
-import { Utils } from '../../utils/Utils';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { ComponentOptions } from '../Base/ComponentOptions';
 import { IFieldConditionOption } from '../Base/IComponentOptions';
+import { IQueryResult } from '../../rest/QueryResult';
+import { Assert } from '../../misc/Assert';
+import { QueryUtils } from '../../utils/QueryUtils';
 import { Initialization } from '../Base/Initialization';
+import { Utils } from '../../utils/Utils';
 import { FileTypes, IFileTypeInfo } from '../Misc/FileTypes';
+import { $$ } from '../../utils/Dom';
+import { exportGlobally } from '../../GlobalExports';
 import { TemplateFieldsEvaluator } from '../Templates/TemplateFieldsEvaluator';
 
 /**

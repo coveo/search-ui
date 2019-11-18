@@ -1,14 +1,14 @@
-import * as Globalize from 'globalize';
-import * as _ from 'underscore';
-import { IBuildingQueryEventArgs, IQuerySuccessEventArgs, QueryEvents } from '../../events/QueryEvents';
-import { exportGlobally } from '../../GlobalExports';
-import { IGroupByRequest } from '../../rest/GroupByRequest';
-import { $$ } from '../../utils/Dom';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { ComponentOptions } from '../Base/ComponentOptions';
 import { IFieldOption } from '../Base/IComponentOptions';
+import { QueryEvents, IBuildingQueryEventArgs, IQuerySuccessEventArgs } from '../../events/QueryEvents';
+import { IGroupByRequest } from '../../rest/GroupByRequest';
 import { Initialization } from '../Base/Initialization';
+import { $$ } from '../../utils/Dom';
+import * as Globalize from 'globalize';
+import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
 
 export interface IAggregateOptions {
   field: IFieldOption;
