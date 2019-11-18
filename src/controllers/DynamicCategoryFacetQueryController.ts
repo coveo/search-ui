@@ -5,9 +5,10 @@ import { IFacetRequest, IFacetRequestValue } from '../rest/Facet/FacetRequest';
 import { QueryEvents } from '../events/QueryEvents';
 import { CategoryFacetValue } from '../ui/CategoryFacet/CategoryFacetValues/CategoryFacetValue';
 import { FacetValueState } from '../rest/Facet/FacetValueState';
+import { IQueryResults } from '../rest/QueryResults';
+import { findIndex } from 'underscore';
 
-// TODO: rename to simply CategoryFacetQueryController
-export class DynamicCategoryFacetQueryController {
+export class CategoryFacetQueryController {
   private numberOfValuesToRequest: number;
   private freezeFacetOrder = false;
 
@@ -55,7 +56,29 @@ export class DynamicCategoryFacetQueryController {
     };
   }
 
+  public executeIsolatedQuery(): Promise<IQueryResults> {
+    const query = this.facet.queryController.getLastQuery();
+    // Specifying a numberOfResults of 0 will not log the query as a full fledged query in the API
+    // it will also alleviate the load on the index
+    query.numberOfResults = 0;
+
+    const previousFacetRequestIndex = findIndex(query.facets, { facetId: this.facet.options.id });
+    if (previousFacetRequestIndex !== -1) {
+      query.facets[previousFacetRequestIndex] = this.facetRequest;
+    } else if (query.facets) {
+      query.facets.push(this.facetRequest);
+    } else {
+      query.facets = [this.facetRequest];
+    }
+
+    return this.facet.queryController.getEndpoint().search(query);
+  }
+
   public get currentValues(): IFacetRequestValue[] {
+    // TODO: remove when API has fixed currentValue/numberOfValues issue
+    if (!this.facet.values.hasSelectedValue && this.numberOfValuesToRequest > this.facet.options.numberOfValues) {
+      return [];
+    }
     return this.facet.values.allFacetValues.map(requestValue => this.buildRequestValue(requestValue));
   }
 
