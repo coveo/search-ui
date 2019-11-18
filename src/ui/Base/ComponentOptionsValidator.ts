@@ -26,11 +26,10 @@ export class ComponentOptionsValidator<T> {
     }
 
     this.logger.warn(`${componentID} .${name} has invalid value: ${value}`);
-    if (!this.optionDefinition.required) {
-      return;
+    if (this.optionDefinition.required) {
+      this.logger.error(`${componentID} .${name} is required and has an invalid value: ${value}. ***THIS COMPONENT WILL NOT WORK***`);
     }
 
-    this.logger.error(`${componentID} .${name} is required and has an invalid value: ${value}. ***THIS COMPONENT WILL NOT WORK***`);
     delete this.optionsDictionnary[name];
   }
 }

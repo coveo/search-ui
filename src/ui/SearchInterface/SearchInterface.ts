@@ -26,7 +26,6 @@ import { ComponentStateModel } from '../../models/ComponentStateModel';
 import { IAttributeChangedEventArg, Model } from '../../models/Model';
 import { QueryStateModel, QUERY_STATE_ATTRIBUTES } from '../../models/QueryStateModel';
 import { SearchEndpoint } from '../../rest/SearchEndpoint';
-import { ComponentsTypes } from '../../utils/ComponentsTypes';
 import { $$ } from '../../utils/Dom';
 import { HashUtils } from '../../utils/HashUtils';
 import { Utils } from '../../utils/Utils';
@@ -53,6 +52,7 @@ import {
 import { FacetColumnAutoLayoutAdjustment } from './FacetColumnAutoLayoutAdjustment';
 import { FacetValueStateHandler } from './FacetValueStateHandler';
 import RelevanceInspectorModule = require('../RelevanceInspector/RelevanceInspector');
+import { ComponentsTypes } from '../../utils/ComponentsTypes';
 
 export interface ISearchInterfaceOptions {
   enableHistory?: boolean;

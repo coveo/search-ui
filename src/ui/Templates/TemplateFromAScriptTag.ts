@@ -1,12 +1,12 @@
-import { chain, each, map } from 'underscore';
-import { $$, Dom } from '../../utils/Dom';
+import { Template, IFieldsToMatch, TemplateRole } from './Template';
 import { Utils } from '../../utils/Utils';
-import { ComponentOptions } from '../Base/ComponentOptions';
+import { TemplateConditionEvaluator } from './TemplateConditionEvaluator';
 import { IComponentOptionsFieldsOption } from '../Base/IComponentOptions';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { $$, Dom } from '../../utils/Dom';
 import { Initialization } from '../Base/Initialization';
 import { ValidLayout } from '../ResultLayoutSelector/ValidLayout';
-import { IFieldsToMatch, Template, TemplateRole } from './Template';
-import { TemplateConditionEvaluator } from './TemplateConditionEvaluator';
+import { map, chain, each } from 'underscore';
 
 export interface ITemplateFromStringProperties {
   condition?: string;

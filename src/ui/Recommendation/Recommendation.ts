@@ -1,38 +1,34 @@
-import { history } from 'coveo.analytics';
-import 'styling/_Recommendation';
-import * as _ from 'underscore';
-import { AnalyticsEvents } from '../../events/AnalyticsEvents';
-import { BreadcrumbEvents } from '../../events/BreadcrumbEvents';
-import { InitializationEvents } from '../../events/InitializationEvents';
+import { SearchInterface, ISearchInterfaceOptions } from '../SearchInterface/SearchInterface';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { QueryEvents, IQuerySuccessEventArgs, IBuildingQueryEventArgs } from '../../events/QueryEvents';
 import { OmniboxEvents } from '../../events/OmniboxEvents';
-import { PreferencesPanelEvents } from '../../events/PreferencesPanelEvents';
-import {
-  IBuildingQueryEventArgs,
-  INoResultsEventArgs,
-  IQueryErrorEventArgs,
-  IQuerySuccessEventArgs,
-  QueryEvents
-} from '../../events/QueryEvents';
-import { QuickviewEvents } from '../../events/QuickviewEvents';
 import { ResultListEvents } from '../../events/ResultListEvents';
 import { SettingsEvents } from '../../events/SettingsEvents';
-import { exportGlobally } from '../../GlobalExports';
-import { ComponentOptionsModel } from '../../models/ComponentOptionsModel';
-import { Model, MODEL_EVENTS } from '../../models/Model';
-import { QUERY_STATE_ATTRIBUTES } from '../../models/QueryStateModel';
-import { IStringMap } from '../../rest/GenericParam';
-import { l } from '../../strings/Strings';
-import { $$ } from '../../utils/Dom';
-import { Utils } from '../../utils/Utils';
+import { PreferencesPanelEvents } from '../../events/PreferencesPanelEvents';
+import { AnalyticsEvents } from '../../events/AnalyticsEvents';
 import { analyticsActionCauseList, IAnalyticsNoMeta } from '../Analytics/AnalyticsActionListMeta';
-import { RecommendationAnalyticsClient } from '../Analytics/RecommendationAnalyticsClient';
+import { BreadcrumbEvents } from '../../events/BreadcrumbEvents';
+import { QuickviewEvents } from '../../events/QuickviewEvents';
+import { QUERY_STATE_ATTRIBUTES } from '../../models/QueryStateModel';
+import { Model, MODEL_EVENTS } from '../../models/Model';
+import { Utils } from '../../utils/Utils';
+import { $$ } from '../../utils/Dom';
+import { INoResultsEventArgs } from '../../events/QueryEvents';
+import { IQueryErrorEventArgs } from '../../events/QueryEvents';
 import { IComponentBindings } from '../Base/ComponentBindings';
-import { ComponentOptions } from '../Base/ComponentOptions';
-import { get } from '../Base/RegisteredNamedMethods';
 import { ResponsiveRecommendation } from '../ResponsiveComponents/ResponsiveRecommendation';
-import { ISearchInterfaceOptions, SearchInterface } from '../SearchInterface/SearchInterface';
+import { history } from 'coveo.analytics';
+import { get } from '../Base/RegisteredNamedMethods';
+import { InitializationEvents } from '../../events/InitializationEvents';
+import { ComponentOptionsModel } from '../../models/ComponentOptionsModel';
+import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
 import { DefaultRecommendationTemplate } from '../Templates/DefaultRecommendationTemplate';
 import { RecommendationQuery } from './RecommendationQuery';
+import { RecommendationAnalyticsClient } from '../Analytics/RecommendationAnalyticsClient';
+import 'styling/_Recommendation';
+import { IStringMap } from '../../rest/GenericParam';
+import { l } from '../../strings/Strings';
 
 export interface IRecommendationOptions extends ISearchInterfaceOptions {
   mainSearchInterface?: HTMLElement;

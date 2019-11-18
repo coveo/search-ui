@@ -23,7 +23,11 @@ export class ComponentOptionsMerger<T> {
 
     switch (this.optionDefinition.type) {
       case ComponentOptionsType.OBJECT:
-        this.optionsDictionnary[name] = extend(this.optionsDictionnary[name], value);
+        if (!Utils.isNullOrUndefined(this.optionsDictionnary[name])) {
+          this.optionsDictionnary[name] = extend(this.optionsDictionnary[name], value);
+        } else {
+          this.optionsDictionnary[name] = value;
+        }
         break;
       case ComponentOptionsType.LOCALIZED_STRING:
         this.optionsDictionnary[name] = l(value);

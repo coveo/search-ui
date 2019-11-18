@@ -462,15 +462,16 @@ export class Initialization {
       })
       .value();
 
-    const initResult = Promise.all(constructorForEachComponentsInstance).then(() => true);
-    /*.catch(e => {
+    const initResult = Promise.all(constructorForEachComponentsInstance)
+      .then(() => true)
+      .catch(e => {
         // We log the fatal error on init, but then we try to continue the initialization for the rest of the components.
         // In most case, this would be caused by a fatal error in a component constructor.
         // In some cases, it might be for a minor component not essential to basic function of the interface, meaning we could still salvage things here.
         this.logger.error(e);
         this.logger.warn(`Skipping initialization of previous component in error ... `);
         return true;
-      });*/
+      });
 
     return {
       initResult,

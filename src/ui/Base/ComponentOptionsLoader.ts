@@ -34,15 +34,14 @@ export class ComponentOptionLoader {
   }
 
   private loadFromDefaultValue() {
+    if (Utils.isNullOrUndefined(this.optionDefinition.defaultValue)) {
+      return null;
+    }
+
     switch (this.optionDefinition.type) {
       case ComponentOptionsType.LOCALIZED_STRING:
         if (!Utils.isNullOrUndefined(this.optionDefinition.defaultValue)) {
-          this.logger.warn(
-            `defaultValue for option ${
-              this.optionName
-            } is deprecated. You should instead use localizedString. Not doing so could cause localization bug in your interface.`
-          );
-          return this.optionDefinition.defaultValue;
+          return this.warnDeprecatedLocalizedStringAndReturnDefaultValue();
         }
 
         const isLocalizedOptionLoader = this.optionDefinition as IComponentLocalizedStringOptionArgs;
@@ -68,5 +67,14 @@ export class ComponentOptionLoader {
     });
 
     return this.resolvedValue;
+  }
+
+  private warnDeprecatedLocalizedStringAndReturnDefaultValue() {
+    this.logger.warn(
+      `defaultValue for option ${
+        this.optionName
+      } is deprecated. You should instead use localizedString. Not doing so could cause localization bug in your interface.`
+    );
+    return this.optionDefinition.defaultValue;
   }
 }
