@@ -147,7 +147,7 @@ export class CategoryFacetValues {
       label: l('ShowLess'),
       action: () => {
         this.facet.enableFreezeFacetOrderFlag();
-        // this.facet.showLessValues();
+        this.facet.showLess();
       }
     });
 
@@ -161,7 +161,7 @@ export class CategoryFacetValues {
       label: l('ShowMore'),
       action: () => {
         this.facet.enableFreezeFacetOrderFlag();
-        // this.facet.showMoreValues();
+        this.facet.showMore();
       }
     });
 
@@ -170,6 +170,10 @@ export class CategoryFacetValues {
 
   private get shouldEnableShowLess() {
     return this.facetValues.length > this.facet.options.numberOfValues;
+  }
+
+  private get shouldEnableShowMore() {
+    return this.facet.moreValuesAvailable && !this.hasSelectedValue;
   }
 
   private appendShowMoreLess(fragment: DocumentFragment) {
@@ -181,7 +185,7 @@ export class CategoryFacetValues {
       fragment.appendChild(this.buildShowLess());
     }
 
-    if (this.facet.moreValuesAvailable) {
+    if (this.shouldEnableShowMore) {
       fragment.appendChild(this.buildShowMore());
     }
   }

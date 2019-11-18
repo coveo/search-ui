@@ -8,22 +8,17 @@ import { Initialization } from '../Base/Initialization';
 import { exportGlobally } from '../../GlobalExports';
 import { CategoryFacetTemplates } from './CategoryFacetTemplates';
 import { CategoryValueRoot } from './CategoryValueRoot';
-import { CategoryFacetQueryController } from '../../controllers/CategoryFacetQueryController';
-import { DynamicCategoryFacetQueryController } from '../../controllers/DynamicCategoryFacetQueryController';
-import { SVGDom } from '../../utils/SVGDom';
-import { SVGIcons } from '../../utils/SVGIcons';
+import { CategoryFacetQueryController } from '../../controllers/DynamicCategoryFacetQueryController';
 import { QueryStateModel } from '../../models/QueryStateModel';
 import { IAttributesChangedEventArg, MODEL_EVENTS } from '../../models/Model';
 import { Utils } from '../../utils/Utils';
-import { CategoryValue, CategoryValueParent } from './CategoryValue';
-import { pluck, reduce, find, first, last, contains, isArray, keys, findIndex } from 'underscore';
+import { CategoryValue } from './CategoryValue';
+import { pluck, contains, isArray, findIndex } from 'underscore';
 import { Assert } from '../../misc/Assert';
 import { QueryEvents, IBuildingQueryEventArgs, IQuerySuccessEventArgs } from '../../events/QueryEvents';
 import { CategoryFacetSearch } from './CategoryFacetSearch';
-import { ICategoryFacetResult } from '../../rest/CategoryFacetResult';
 import { BreadcrumbEvents, IPopulateBreadcrumbEventArgs } from '../../events/BreadcrumbEvents';
 import { CategoryFacetBreadcrumb } from './CategoryFacetBreadcrumb';
-import { ICategoryFacetValue } from '../../rest/CategoryFacetValue';
 import { ISearchEndpoint } from '../../rest/SearchEndpointInterface';
 import {
   IAnalyticsCategoryFacetMeta,
@@ -38,7 +33,6 @@ import { ResponsiveFacets } from '../ResponsiveComponents/ResponsiveFacets';
 import { IResponsiveComponentOptions } from '../ResponsiveComponents/ResponsiveComponentsManager';
 import { ResponsiveFacetOptions } from '../ResponsiveComponents/ResponsiveFacetOptions';
 import { DynamicFacetHeader } from '../DynamicFacet/DynamicFacetHeader/DynamicFacetHeader';
-import { AccessibleButton } from '../../utils/AccessibleButton';
 import { IStringMap } from '../../rest/GenericParam';
 import { DependsOnManager, IDependentFacet } from '../../utils/DependsOnManager';
 import { ResultListUtils } from '../../utils/ResultListUtils';
@@ -47,6 +41,7 @@ import { FacetType } from '../../rest/Facet/FacetRequest';
 import { CategoryFacetValues } from './CategoryFacetValues/CategoryFacetValues';
 import { IFacetResponse } from '../../rest/Facet/FacetResponse';
 import { IQueryOptions } from '../../controllers/QueryController';
+import { IQueryResults } from '../../rest/QueryResults';
 
 export interface ICategoryFacetOptions extends IResponsiveComponentOptions {
   id?: string;
@@ -323,7 +318,6 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   };
 
   public categoryFacetQueryController: CategoryFacetQueryController;
-  public dynamicCategoryFacetQueryController: DynamicCategoryFacetQueryController;
   public listenToQueryStateChange = true;
   public categoryFacetSearch: CategoryFacetSearch;
   public activeCategoryValue: CategoryValue | undefined;
@@ -339,11 +333,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
 
   private categoryValueRoot: CategoryValueRoot;
   private categoryFacetTemplates: CategoryFacetTemplates;
-  private currentPage: number;
   private moreLessContainer: Dom;
-  private moreValuesToFetch: boolean = true;
-  private numberOfChildValuesCurrentlyDisplayed = 0;
-  private numberOfValues: number;
   private categoryFacetValuesTree: CategoryFacetValuesTree;
 
   constructor(public element: HTMLElement, public options: ICategoryFacetOptions, bindings?: IComponentBindings) {
@@ -351,13 +341,10 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     this.options = ComponentOptions.initComponentOptions(element, CategoryFacet, options);
 
     this.categoryFacetQueryController = new CategoryFacetQueryController(this);
-    this.dynamicCategoryFacetQueryController = new DynamicCategoryFacetQueryController(this);
     this.isCollapsed = this.options.enableCollapse && this.options.collapsedByDefault;
     this.categoryFacetTemplates = new CategoryFacetTemplates();
     this.categoryValueRoot = new CategoryValueRoot($$(this.element), this.categoryFacetTemplates, this);
     this.categoryValueRoot.path = this.activePath;
-    this.currentPage = 0;
-    this.numberOfValues = this.options.numberOfValues;
     this.categoryFacetValuesTree = new CategoryFacetValuesTree();
     this.values = new CategoryFacetValues(this);
 
@@ -370,7 +357,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     ResponsiveFacets.init(this.root, this, this.options);
     this.initDependsOnManager();
     this.bind.onRootElement<IBuildingQueryEventArgs>(QueryEvents.buildingQuery, args => this.handleBuildingQuery(args));
-    this.bind.onRootElement<IQuerySuccessEventArgs>(QueryEvents.querySuccess, args => this.handleQuerySuccess(args));
+    this.bind.onRootElement(QueryEvents.querySuccess, (data: IQuerySuccessEventArgs) => this.handleQuerySuccess(data.results));
     this.bind.onRootElement(QueryEvents.duringQuery, () => this.addFading());
     this.bind.onRootElement(QueryEvents.duringQuery, () => this.ensureDom());
     this.bind.onRootElement(QueryEvents.deferredQuerySuccess, () => this.handleDeferredQuerySuccess());
@@ -401,13 +388,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   }
 
   public handleBuildingQuery(args: IBuildingQueryEventArgs) {
-    this.positionInQuery = this.categoryFacetQueryController.putCategoryFacetInQueryBuilder(
-      args.queryBuilder,
-      this.activePath,
-      this.numberOfValues + 1
-    );
-
-    this.dynamicCategoryFacetQueryController.putFacetIntoQueryBuilder(
+    this.categoryFacetQueryController.putFacetIntoQueryBuilder(
       args.queryBuilder
     );
   }
@@ -442,20 +423,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   }
 
   private get isFacetSearchAvailable() {
-    if (this.areValueCaptionsSpecified) {
-      return false;
-    }
-
-    if (this.isEnableFacetSearchFalsy) {
-      return false;
-    }
-
-    return true;
-  }
-
-  private get areValueCaptionsSpecified() {
-    const valueCaptions = this.options.valueCaption;
-    return keys(valueCaptions).length !== 0;
+    return false;
   }
 
   private get isEnableFacetSearchFalsy() {
@@ -463,7 +431,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   }
 
   private get isCategoryEmpty() {
-    return !this.categoryValueRoot.path.length && !this.categoryValueRoot.children.length;
+    return !this.values.allFacetValues.length;
   }
 
   private updateAppearance() {
@@ -477,51 +445,19 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     this.dependsOnManager.updateVisibilityBasedOnDependsOn();
   }
 
-  public handleQuerySuccess(args: IQuerySuccessEventArgs) {
-    if (Utils.isNullOrUndefined(args.results.categoryFacets)) {
+  public handleQuerySuccess(results: IQueryResults) {
+    this.header.hideLoading();
+
+    if (Utils.isNullOrUndefined(results.facets)) {
       return this.notImplementedError();
     }
 
-    if (Utils.isNullOrUndefined(args.results.categoryFacets[this.positionInQuery])) {
-      return;
-    }
-
-    const index = findIndex(args.results.facets, { facetId: this.options.id });
-    const response = index !== -1 ? args.results.facets[index] : null;
+    const index = findIndex(results.facets, { facetId: this.options.id });
+    const response = index !== -1 ? results.facets[index] : null;
     this.position = index + 1;
 
     response ? this.onQueryResponse(response) : this.onNoAdditionalValues();
     this.values.render();
-
-    const numberOfRequestedValues = args.query.categoryFacets[this.positionInQuery].maximumNumberOfValues;
-    const categoryFacetResult = args.results.categoryFacets[this.positionInQuery];
-    this.moreValuesToFetch = numberOfRequestedValues == categoryFacetResult.values.length;
-    this.dismiss();
-
-    if (categoryFacetResult.notImplemented) {
-      return this.notImplementedError();
-    }
-
-    if (!categoryFacetResult.values.length && !categoryFacetResult.parentValues.length) {
-      return;
-    }
-
-    this.renderValues(categoryFacetResult, numberOfRequestedValues);
-    if (this.isFacetSearchAvailable) {
-      const facetSearch = this.categoryFacetSearch.build();
-      $$(facetSearch).insertAfter(this.categoryValueRoot.listRoot.el);
-    }
-
-    this.moreLessContainer = $$('div', { className: 'coveo-category-facet-more-less-container' });
-    $$(this.element).append(this.moreLessContainer.el);
-
-    if (this.options.enableMoreLess) {
-      this.renderMoreLess();
-    }
-
-    if (!this.isPristine()) {
-      this.header.toggleClear(true);
-    }
   }
 
   private onQueryResponse(response?: IFacetResponse) {
@@ -546,16 +482,30 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
 
   public async executeQuery() {
     this.header.showLoading();
-    try {
-      await this.queryController.executeQuery();
-    } finally {
-      this.header.hideLoading();
-    }
+    this.queryController.executeQuery();
+  }
+
+  private beforeSendingQuery() {
+    this.header.showLoading();
+    this.updateAppearance();
   }
 
   public triggerNewQuery(beforeExecuteQuery?: () => void) {
+    this.beforeSendingQuery();
     const options: IQueryOptions = beforeExecuteQuery ? { beforeExecuteQuery } : { ignoreWarningSearchEvent: true };
     this.queryController.executeQuery(options);
+  }
+
+  public async triggerNewIsolatedQuery(beforeExecuteQuery?: () => void) {
+    this.beforeSendingQuery();
+    beforeExecuteQuery && beforeExecuteQuery();
+
+    try {
+      const results = await this.categoryFacetQueryController.executeIsolatedQuery();
+      this.handleQuerySuccess(results);
+    } catch (e) {
+      this.header.hideLoading();
+    }
   }
 
   /**
@@ -589,33 +539,32 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   }
 
   /**
-   * Shows more values according to {@link CategoryFacet.options.pageSize}.
+   * Requests additional values.
+   * 
+   * See the [`enableMoreLess`]{@link CategoryFacet.options.enableMoreLess} option.
    *
-   * See the [`enableMoreLess`]{@link CategoryFacet.options.enableMoreLess}, and
-   * [`numberOfValues`]{@link CategoryFacet.options.numberOfValues} options.
+   * Automatically triggers an isolated query.
+   * @param additionalNumberOfValues The number of additional values to request. Minimum value is 1. Defaults to the [pageSize]{@link DynamicFacet.options.pageSize} option value.
    */
-  public showMore() {
-    if (this.moreValuesToFetch) {
-      this.currentPage++;
-      this.numberOfValues = this.options.numberOfValues + this.currentPage * this.options.pageSize;
-      this.reload();
-      this.logAnalyticsFacetShowMoreLess(analyticsActionCauseList.facetShowMore);
-    }
+  public showMore(additionalNumberOfValues = this.options.pageSize) {
+    this.ensureDom();
+    this.logger.info('Show more values');
+    this.categoryFacetQueryController.increaseNumberOfValuesToRequest(additionalNumberOfValues);
+    this.triggerNewIsolatedQuery(() => this.logAnalyticsFacetShowMoreLess(analyticsActionCauseList.facetShowMore));
   }
 
   /**
-   * Shows less values, up to the original number of values.
+   * Reduces the number of displayed facet values down to [numberOfValues]{@link DynamicFacet.options.numberOfValues}.
    *
-   * See the [`enableMoreLess`]{@link CategoryFacet.options.enableMoreLess}, and
-   * [`numberOfValues`]{@link CategoryFacet.options.numberOfValues} options.
+   * See the [`enableMoreLess`]{@link CategoryFacet.options.enableMoreLess} option.
+   * 
+   * Automatically triggers an isolated query.
    */
   public showLess() {
-    if (this.currentPage > 0) {
-      this.currentPage--;
-      this.numberOfValues = this.options.numberOfValues + this.currentPage * this.options.pageSize;
-      this.reload();
-      this.logAnalyticsFacetShowMoreLess(analyticsActionCauseList.facetShowLess);
-    }
+    this.ensureDom();
+    this.logger.info('Show less values');
+    this.categoryFacetQueryController.resetNumberOfValuesToRequest();
+    this.triggerNewIsolatedQuery(() => this.logAnalyticsFacetShowMoreLess(analyticsActionCauseList.facetShowLess));
   }
 
   /**
@@ -723,8 +672,8 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
    * The flag is automatically set back to `false` after a query is built.
    */
   public enableFreezeFacetOrderFlag() {
-    Assert.exists(this.dynamicCategoryFacetQueryController);
-    this.dynamicCategoryFacetQueryController.enableFreezeFacetOrderFlag();
+    Assert.exists(this.categoryFacetQueryController);
+    this.categoryFacetQueryController.enableFreezeFacetOrderFlag();
   }
 
   // TODO: move into selectValue/changeActivePath
@@ -777,7 +726,6 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
    */
   public async debugValue(value: string) {
     const queryBuilder = new QueryBuilder();
-    this.categoryFacetQueryController.addDebugGroupBy(queryBuilder, value);
     const queryResults = await this.queryController.getEndpoint().search(queryBuilder.build());
     CategoryFacetDebug.analyzeResults(queryResults.groupByResults[0], this.options.delimitingCharacter);
   }
@@ -808,89 +756,6 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
 
   get children(): CategoryValue[] {
     return this.categoryValueRoot.children;
-  }
-
-  private renderValues(categoryFacetResult: ICategoryFacetResult, numberOfRequestedValues: number) {
-    this.categoryFacetValuesTree.storeNewValues(categoryFacetResult);
-    let sortedParentValues = this.sortParentValues(categoryFacetResult.parentValues);
-    let currentParentValue: CategoryValueParent = this.categoryValueRoot;
-    let needToTruncate = false;
-    let pathOfLastTruncatedParentValue: string[];
-
-    const numberOfItemsInFirstSlice = Math.floor(CategoryFacet.NUMBER_OF_VALUES_TO_KEEP_AFTER_TRUNCATING / 2);
-    const numberOfItemsInSecondSlice = Math.ceil(CategoryFacet.NUMBER_OF_VALUES_TO_KEEP_AFTER_TRUNCATING / 2);
-
-    sortedParentValues = this.hideBasePathInParentValues(sortedParentValues);
-
-    if (this.shouldTruncate(sortedParentValues)) {
-      pathOfLastTruncatedParentValue = this.findPathOfLastTruncatedParentValue(sortedParentValues, numberOfItemsInSecondSlice);
-      needToTruncate = true;
-      sortedParentValues = first(sortedParentValues, numberOfItemsInFirstSlice).concat(
-        last(sortedParentValues, numberOfItemsInSecondSlice)
-      );
-    }
-
-    if (!this.isPristine()) {
-      this.addAllCategoriesButton();
-    }
-
-    for (let i = 0; i < sortedParentValues.length; i++) {
-      currentParentValue = currentParentValue.renderAsParent(sortedParentValues[i]);
-
-      // We do not want to make the "last" parent selectable, as clicking it would be a noop (re-selecting the same filter)
-      const isLastParent = i == sortedParentValues.length - 1;
-      if (!isLastParent) {
-        (currentParentValue as CategoryValue).makeSelectable().showCollapseArrow();
-      }
-
-      if (needToTruncate) {
-        if (i == numberOfItemsInFirstSlice - 1) {
-          this.addEllipsis();
-        }
-
-        if (i == numberOfItemsInFirstSlice) {
-          currentParentValue.path = [...pathOfLastTruncatedParentValue, sortedParentValues[i].value];
-        }
-      }
-    }
-
-    const childrenValuesToRender = this.moreValuesToFetch
-      ? categoryFacetResult.values.slice(0, numberOfRequestedValues - 1)
-      : categoryFacetResult.values.slice(0, numberOfRequestedValues);
-
-    this.numberOfChildValuesCurrentlyDisplayed = childrenValuesToRender.length;
-
-    currentParentValue.renderChildren(childrenValuesToRender);
-    this.activeCategoryValue = currentParentValue as CategoryValue;
-  }
-
-  private hideBasePathInParentValues(parentValues: ICategoryFacetValue[]) {
-    if (Utils.arrayEqual(first(this.activePath, this.options.basePath.length), this.options.basePath)) {
-      parentValues = last(parentValues, parentValues.length - this.options.basePath.length);
-    }
-    return parentValues;
-  }
-
-  private shouldTruncate(parentValues: ICategoryFacetValue[]) {
-    return parentValues.length > CategoryFacet.MAXIMUM_NUMBER_OF_VALUES_BEFORE_TRUNCATING;
-  }
-
-  private addEllipsis() {
-    this.categoryValueRoot.listRoot.append(this.categoryFacetTemplates.buildEllipsis().el);
-  }
-
-  private findPathOfLastTruncatedParentValue(sortedParentValues: ICategoryFacetValue[], numberOfItemsInSecondSlice: number) {
-    const indexOfLastTruncatedParentValue = sortedParentValues.length - numberOfItemsInSecondSlice - 1;
-    return reduce(first(sortedParentValues, indexOfLastTruncatedParentValue + 1), (path, parentValue) => [...path, parentValue.value], []);
-  }
-
-  private addAllCategoriesButton() {
-    const allCategories = this.categoryFacetTemplates.buildAllCategoriesButton();
-    allCategories.on('click', () => {
-      this.reset();
-      this.scrollToTop();
-    });
-    this.categoryValueRoot.listRoot.append(allCategories.el);
   }
 
   private isPristine() {
@@ -978,34 +843,6 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     this.disable();
   }
 
-  private sortParentValues(parentValues: ICategoryFacetValue[]) {
-    if (this.activePath.length != parentValues.length) {
-      this.logger.warn('Inconsistent CategoryFacet results: Number of parent values results does not equal length of active path');
-      return parentValues;
-    }
-
-    const sortedParentvalues: ICategoryFacetValue[] = [];
-    for (const pathElement of this.activePath) {
-      const currentParentValue = find(parentValues, parentValue => parentValue.value.toLowerCase() == pathElement.toLowerCase());
-      if (!currentParentValue) {
-        this.logger.warn('Inconsistent CategoryFacet results: path not consistent with parent values results');
-        return parentValues;
-      }
-      sortedParentvalues.push(currentParentValue);
-    }
-    return sortedParentvalues;
-  }
-
-  private renderMoreLess() {
-    if (this.numberOfChildValuesCurrentlyDisplayed > this.options.numberOfValues) {
-      this.moreLessContainer.append(this.buildLessButton());
-    }
-
-    if (this.moreValuesToFetch) {
-      this.moreLessContainer.append(this.buildMoreButton());
-    }
-  }
-
   private dismiss() {
     this.categoryValueRoot.clear();
     if (this.isFacetSearchAvailable) {
@@ -1013,34 +850,6 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     }
     this.moreLessContainer && this.moreLessContainer.detach();
     this.header.toggleClear(false);
-  }
-
-  private buildMoreButton() {
-    const svgContainer = $$('span', { className: 'coveo-facet-more-icon' }, SVGIcons.icons.arrowDown).el;
-    SVGDom.addClassToSVGInContainer(svgContainer, 'coveo-facet-more-icon-svg');
-    const more = $$('div', { className: 'coveo-category-facet-more' }, svgContainer);
-
-    new AccessibleButton()
-      .withElement(more)
-      .withSelectAction(() => this.showMore())
-      .withLabel(l('ShowMoreFacetResults', this.options.title))
-      .build();
-
-    return more.el;
-  }
-
-  private buildLessButton() {
-    const svgContainer = $$('span', { className: 'coveo-facet-less-icon' }, SVGIcons.icons.arrowUp).el;
-    SVGDom.addClassToSVGInContainer(svgContainer, 'coveo-facet-less-icon-svg');
-    const less = $$('div', { className: 'coveo-category-facet-less' }, svgContainer);
-
-    new AccessibleButton()
-      .withElement(less)
-      .withSelectAction(() => this.showLess())
-      .withLabel(l('ShowLessFacetResults', this.options.title))
-      .build();
-
-    return less.el;
   }
 
   private handlePopulateBreadCrumb(args: IPopulateBreadcrumbEventArgs) {

@@ -24,7 +24,9 @@ $second-level-space: 35px;
 }
 
 .coveo-dynamic-category-facet-collapsed {
-  .coveo-dynamic-category-facet-value:not(.coveo-selected) {
+  .coveo-dynamic-category-facet-value:not(.coveo-selected),
+  .coveo-dynamic-category-facet-show-less,
+  .coveo-dynamic-category-facet-show-more {
     display: none;
   }
 }
