@@ -1,13 +1,13 @@
 import { $$, Dom } from '../../../utils/Dom';
-import { DynamicFacet } from '../DynamicFacet';
 import { DynamicFacetValue, ValueRenderer } from './DynamicFacetValue';
 import { DynamicFacetValueCheckbox } from './DynamicFacetValueCheckbox';
+import { IDynamicFacet } from '../DynamicFacetInterface';
 
 export class DynamicFacetValueRenderer implements ValueRenderer {
   private dom: Dom;
   private valueCheckbox: DynamicFacetValueCheckbox;
 
-  constructor(private facetValue: DynamicFacetValue, private facet: DynamicFacet) {}
+  constructor(private facetValue: DynamicFacetValue, private facet: IDynamicFacet) {}
 
   public render() {
     this.dom = $$('li', {

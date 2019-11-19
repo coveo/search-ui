@@ -1,15 +1,15 @@
 import 'styling/DynamicFacet/_DynamicFacetBreadcrumbs';
 import { $$ } from '../../utils/Dom';
 import { l } from '../../strings/Strings';
-import { DynamicFacet } from './DynamicFacet';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { DynamicFacetValue } from './DynamicFacetValues/DynamicFacetValue';
 import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
+import { IDynamicFacet } from './DynamicFacetInterface';
 
 export class DynamicFacetBreadcrumbs {
   public element: HTMLElement;
 
-  constructor(private facet: DynamicFacet) {
+  constructor(private facet: IDynamicFacet) {
     this.create();
   }
 

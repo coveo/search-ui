@@ -1,10 +1,11 @@
 import 'styling/DynamicFacet/_DynamicFacet';
+import { IDynamicFacet, IDynamicFacetOptions } from './DynamicFacetInterface';
 import { difference, findIndex } from 'underscore';
 import { $$ } from '../../utils/Dom';
 import { exportGlobally } from '../../GlobalExports';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
-import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
+import { ComponentOptions } from '../Base/ComponentOptions';
 import { Initialization } from '../Base/Initialization';
 import { ResponsiveFacetOptions } from '../ResponsiveComponents/ResponsiveFacetOptions';
 import { ResponsiveDynamicFacets } from '../ResponsiveComponents/ResponsiveDynamicFacets';
@@ -18,7 +19,6 @@ import { Utils } from '../../utils/Utils';
 import { MODEL_EVENTS, IAttributesChangedEventArg } from '../../models/Model';
 import { Assert } from '../../misc/Assert';
 import { IFacetResponse } from '../../rest/Facet/FacetResponse';
-import { IResponsiveComponentOptions } from '../ResponsiveComponents/ResponsiveComponentsManager';
 import { IStringMap } from '../../rest/GenericParam';
 import { isFacetSortCriteria } from '../../rest/Facet/FacetSortCriteria';
 import { l } from '../../strings/Strings';
@@ -28,30 +28,11 @@ import { IAnalyticsActionCause, IAnalyticsDynamicFacetMeta, analyticsActionCause
 import { IQueryOptions } from '../../controllers/QueryController';
 import { DynamicFacetManager } from '../DynamicFacetManager/DynamicFacetManager';
 import { QueryBuilder } from '../Base/QueryBuilder';
-import { IAutoLayoutAdjustableInsideFacetColumn } from '../SearchInterface/FacetColumnAutoLayoutAdjustment';
 import { DynamicFacetSearch } from '../DynamicFacetSearch/DynamicFacetSearch';
 import { ResultListUtils } from '../../utils/ResultListUtils';
 import { IQueryResults } from '../../rest/QueryResults';
 import { FacetType } from '../../rest/Facet/FacetRequest';
 import { DependsOnManager, IDependentFacet } from '../../utils/DependsOnManager';
-
-export interface IDynamicFacetOptions extends IResponsiveComponentOptions {
-  id?: string;
-  title?: string;
-  field?: IFieldOption;
-  sortCriteria?: string;
-  numberOfValues?: number;
-  enableCollapse?: boolean;
-  enableScrollToTop?: boolean;
-  enableMoreLess?: boolean;
-  enableFacetSearch?: boolean;
-  useLeadingWildcardInFacetSearch?: boolean;
-  collapsedByDefault?: boolean;
-  includeInBreadcrumb?: boolean;
-  numberOfValuesInBreadcrumb?: number;
-  valueCaption?: any;
-  dependsOn?: string;
-}
 
 /**
  * The `DynamicFacet` component displays a *facet* of the results for the current query. A facet is a list of values for a
@@ -68,7 +49,7 @@ export interface IDynamicFacetOptions extends IResponsiveComponentOptions {
  *
  * @notSupportedIn salesforcefree
  */
-export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsideFacetColumn {
+export class DynamicFacet extends Component implements IDynamicFacet {
   static ID = 'DynamicFacet';
   static doExport = () => exportGlobally({ DynamicFacet });
 
@@ -268,12 +249,13 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
   private includedAttributeId: string;
   private listenToQueryStateChange = true;
   private header: DynamicFacetHeader;
+  private search: DynamicFacetSearch;
 
+  public options: IDynamicFacetOptions;
   public dynamicFacetManager: DynamicFacetManager;
   public dependsOnManager: DependsOnManager;
   public dynamicFacetQueryController: DynamicFacetQueryController;
   public values: DynamicFacetValues;
-  private search: DynamicFacetSearch;
   public position: number = null;
   public moreValuesAvailable = false;
   public isCollapsed: boolean;
@@ -287,7 +269,7 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
    */
   constructor(
     public element: HTMLElement,
-    public options?: IDynamicFacetOptions,
+    options?: IDynamicFacetOptions,
     bindings?: IComponentBindings,
     classId: string = DynamicFacet.ID
   ) {

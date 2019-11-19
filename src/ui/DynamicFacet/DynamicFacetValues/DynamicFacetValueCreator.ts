@@ -1,12 +1,12 @@
-import { DynamicFacet } from '../DynamicFacet';
 import { FacetUtils } from '../../Facet/FacetUtils';
 import { ValueCreator } from './DynamicFacetValues';
 import { DynamicFacetValue } from './DynamicFacetValue';
 import { IFacetResponseValue } from '../../../rest/Facet/FacetResponse';
 import { FacetValueState } from '../../../rest/Facet/FacetValueState';
+import { IDynamicFacet } from '../DynamicFacetInterface';
 
 export class DynamicFacetValueCreator implements ValueCreator {
-  constructor(private facet: DynamicFacet) {}
+  constructor(private facet: IDynamicFacet) {}
 
   private formatDisplayValue(value: string) {
     let returnValue = FacetUtils.tryToGetTranslatedCaption(<string>this.facet.options.field, value);

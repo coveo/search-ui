@@ -1,18 +1,18 @@
 import * as Globalize from 'globalize';
 import { DynamicFacetValueRenderer } from './DynamicFacetValueRenderer';
-import { DynamicFacet } from '../DynamicFacet';
 import { FacetValueState } from '../../../rest/Facet/FacetValueState';
 import { IAnalyticsDynamicFacetMeta, analyticsActionCauseList } from '../../Analytics/AnalyticsActionListMeta';
 import { l } from '../../../strings/Strings';
 import { IRangeValue, RangeType } from '../../../rest/RangeValue';
 import { FacetType } from '../../../rest/Facet/FacetRequest';
+import { IDynamicFacet } from '../DynamicFacetInterface';
 
 export interface ValueRenderer {
   render(): HTMLElement;
 }
 
 export interface IValueRendererKlass {
-  new (facetValue: DynamicFacetValue, facet: DynamicFacet): ValueRenderer;
+  new (facetValue: DynamicFacetValue, facet: IDynamicFacet): ValueRenderer;
 }
 
 export interface IDynamicFacetValue extends IRangeValue {
@@ -37,7 +37,7 @@ export class DynamicFacetValue implements IDynamicFacetValue {
   public renderer: ValueRenderer;
   private element: HTMLElement = null;
 
-  constructor(facetValue: IDynamicFacetValue, private facet: DynamicFacet, rendererKlass: IValueRendererKlass = DynamicFacetValueRenderer) {
+  constructor(facetValue: IDynamicFacetValue, private facet: IDynamicFacet, rendererKlass: IValueRendererKlass = DynamicFacetValueRenderer) {
     this.value = facetValue.value;
     this.start = facetValue.start;
     this.end = facetValue.end;

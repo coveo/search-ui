@@ -2,12 +2,12 @@ import 'styling/DynamicFacet/_DynamicFacetValues';
 import { $$ } from '../../../utils/Dom';
 import { findWhere, find } from 'underscore';
 import { DynamicFacetValue } from './DynamicFacetValue';
-import { DynamicFacet } from '../DynamicFacet';
 import { IFacetResponse, IFacetResponseValue } from '../../../rest/Facet/FacetResponse';
 import { FacetValueState } from '../../../rest/Facet/FacetValueState';
 import { l } from '../../../strings/Strings';
 import { DynamicFacetValueCreator } from './DynamicFacetValueCreator';
 import { IRangeValue } from '../../../rest/RangeValue';
+import { IDynamicFacet } from '../DynamicFacetInterface';
 
 export interface ValueCreator {
   createFromResponse(facetValue: IFacetResponseValue, index: number): DynamicFacetValue;
@@ -16,7 +16,7 @@ export interface ValueCreator {
 }
 
 export interface IDynamicFacetValueCreatorKlass {
-  new (facet: DynamicFacet): ValueCreator;
+  new (facet: IDynamicFacet): ValueCreator;
 }
 
 export class DynamicFacetValues {
@@ -24,7 +24,7 @@ export class DynamicFacetValues {
   private list = $$('ul', { className: 'coveo-dynamic-facet-values' }).el;
   private valueCreator: ValueCreator;
 
-  constructor(private facet: DynamicFacet, creatorKlass: IDynamicFacetValueCreatorKlass = DynamicFacetValueCreator) {
+  constructor(private facet: IDynamicFacet, creatorKlass: IDynamicFacetValueCreatorKlass = DynamicFacetValueCreator) {
     this.resetValues();
     this.valueCreator = new creatorKlass(this.facet);
   }

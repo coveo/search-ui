@@ -1,6 +1,7 @@
 import 'styling/DynamicFacet/_DynamicFacet';
 import { Initialization } from '../Base/Initialization';
-import { DynamicFacet, IDynamicFacetOptions } from './DynamicFacet';
+import { DynamicFacet } from './DynamicFacet';
+import { IDynamicFacetOptions } from './DynamicFacetInterface';
 import { ComponentOptions } from '../Base/ComponentOptions';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { exportGlobally } from '../../GlobalExports';
