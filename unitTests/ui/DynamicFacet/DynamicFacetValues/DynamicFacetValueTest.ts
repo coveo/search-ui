@@ -2,7 +2,8 @@ import * as Globalize from 'globalize';
 import { DynamicFacetValue } from '../../../../src/ui/DynamicFacet/DynamicFacetValues/DynamicFacetValue';
 import { DynamicFacetTestUtils } from '../DynamicFacetTestUtils';
 import { DynamicFacetRangeTestUtils } from '../DynamicFacetRangeTestUtils';
-import { DynamicFacet, IDynamicFacetOptions } from '../../../../src/ui/DynamicFacet/DynamicFacet';
+import { DynamicFacet } from '../../../../src/ui/DynamicFacet/DynamicFacet';
+import { IDynamicFacetOptions } from '../../../../src/ui/DynamicFacet/DynamicFacetInterface';
 import { FacetValueState } from '../../../../src/rest/Facet/FacetValueState';
 import { analyticsActionCauseList } from '../../../../src/ui/Analytics/AnalyticsActionListMeta';
 

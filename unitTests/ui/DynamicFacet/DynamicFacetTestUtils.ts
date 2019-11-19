@@ -1,5 +1,6 @@
 import { $$ } from '../../../src/utils/Dom';
-import { DynamicFacet, IDynamicFacetOptions } from '../../../src/ui/DynamicFacet/DynamicFacet';
+import { DynamicFacet } from '../../../src/ui/DynamicFacet/DynamicFacet';
+import { IDynamicFacetOptions } from '../../../src/ui/DynamicFacet/DynamicFacetInterface';
 import { IDynamicFacetValue } from '../../../src/ui/DynamicFacet/DynamicFacetValues/DynamicFacetValue';
 import { FacetValueState } from '../../../src/rest/Facet/FacetValueState';
 import * as Mock from '../../MockEnvironment';

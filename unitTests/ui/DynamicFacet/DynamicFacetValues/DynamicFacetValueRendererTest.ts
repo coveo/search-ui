@@ -2,7 +2,8 @@ import { $$ } from '../../../../src/utils/Dom';
 import { DynamicFacetValueRenderer } from '../../../../src/ui/DynamicFacet/DynamicFacetValues/DynamicFacetValueRenderer';
 import { DynamicFacetValue } from '../../../../src/ui/DynamicFacet/DynamicFacetValues/DynamicFacetValue';
 import { DynamicFacetTestUtils } from '../DynamicFacetTestUtils';
-import { DynamicFacet, IDynamicFacetOptions } from '../../../../src/ui/DynamicFacet/DynamicFacet';
+import { DynamicFacet } from '../../../../src/ui/DynamicFacet/DynamicFacet';
+import { IDynamicFacetOptions } from '../../../../src/ui/DynamicFacet/DynamicFacetInterface';
 
 export function DynamicFacetValueRendererTest() {
   describe('DynamicFacetValueRenderer', () => {
