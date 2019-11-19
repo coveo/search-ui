@@ -13,6 +13,7 @@ export interface Options {
   selectableSuggestionClass?: string;
   selectedSuggestionClass?: string;
   suggestionTimeout?: number;
+  executePreviewsQueryDelay?: number;
 }
 
 export class MagicBoxInstance {
@@ -98,7 +99,8 @@ export class MagicBoxInstance {
     this.suggestionsManager = new SuggestionsManager(suggestionsContainer, this.element, this.inputManager, {
       suggestionClass: this.options.selectableSuggestionClass,
       selectedClass: this.options.selectedSuggestionClass,
-      timeout: this.options.suggestionTimeout
+      timeout: this.options.suggestionTimeout,
+      executePreviewsQueryDelay: this.options.executePreviewsQueryDelay
     });
 
     this.magicBoxClear = new MagicBoxClear(this);

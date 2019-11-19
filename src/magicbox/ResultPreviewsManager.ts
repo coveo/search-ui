@@ -5,6 +5,7 @@ import { Component } from '../ui/Base/Component';
 import { Direction } from './SuggestionsManager';
 import { ResultPreviewsManagerEvents, IPopulateSearchResultPreviewsEventArgs } from '../events/ResultPreviewsManagerEvents';
 import { QueryProcessor, ProcessingStatus } from './QueryProcessor';
+import { Utils } from '../utils/Utils';
 
 export interface ISearchResultPreview {
   element: HTMLElement;
@@ -15,6 +16,7 @@ export interface IResultPreviewsManagerOptions {
   previewClass: string;
   selectedClass: string;
   previewHeaderText: string;
+  executePreviewsQueryDelay: number;
 }
 
 export class ResultPreviewsManager {
@@ -25,6 +27,7 @@ export class ResultPreviewsManager {
   private lastQueriedSuggestion: HTMLElement;
   private lastDisplayedSuggestion: HTMLElement;
   private previewsProcessor: QueryProcessor<ISearchResultPreview>;
+  private lastDelay: Promise<void>;
   private root: HTMLElement;
 
   public get previewsOwner() {
@@ -71,13 +74,19 @@ export class ResultPreviewsManager {
     this.options = defaults(options, <IResultPreviewsManagerOptions>{
       previewHeaderText: l('QuerySuggestPreview'),
       previewClass: 'coveo-preview-selectable',
-      selectedClass: 'magic-box-selected'
+      selectedClass: 'magic-box-selected',
+      executePreviewsQueryDelay: 200
     });
     this.root = Component.resolveRoot(element);
     this.previewsProcessor = new QueryProcessor();
   }
 
   public async displaySearchResultPreviewsForSuggestion(suggestion: HTMLElement) {
+    const currentDelay = (this.lastDelay = Utils.resolveAfter(this.options.executePreviewsQueryDelay));
+    await currentDelay;
+    if (currentDelay !== this.lastDelay) {
+      return;
+    }
     const isQueryForSuggestionOngoing = suggestion && this.lastQueriedSuggestion === suggestion;
     if (isQueryForSuggestionOngoing) {
       return;

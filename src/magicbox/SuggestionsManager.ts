@@ -20,6 +20,7 @@ export interface SuggestionsManagerOptions {
   selectedClass?: string;
   timeout?: number;
   previewHeaderText?: string;
+  executePreviewsQueryDelay?: number;
 }
 
 export enum Direction {
@@ -73,7 +74,10 @@ export class SuggestionsManager {
     });
 
     this.suggestionsProcessor = new QueryProcessor({ timeout: this.options.timeout });
-    this.resultPreviewsManager = new ResultPreviewsManager(element, { selectedClass: this.options.selectedClass });
+    this.resultPreviewsManager = new ResultPreviewsManager(element, {
+      selectedClass: this.options.selectedClass,
+      executePreviewsQueryDelay: this.options.executePreviewsQueryDelay
+    });
     this.suggestionsListbox = this.buildSuggestionsContainer();
     $$(this.element).append(this.suggestionsListbox.el);
     this.addAccessibilityPropertiesForCombobox();

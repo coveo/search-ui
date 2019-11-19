@@ -72,6 +72,7 @@ export interface IOmniboxOptions extends IQueryboxOptions {
     grammar: { start: string; expressions: { [id: string]: ExpressionDef } }
   ) => { start: string; expressions: { [id: string]: ExpressionDef } };
   clearFiltersOnNewQuery?: boolean;
+  executePreviewsQueryDelay?: number;
 }
 
 const MINIMUM_EXECUTABLE_CONFIDENCE = 0.8;
@@ -271,7 +272,13 @@ export class Omnibox extends Component {
      *
      * **Default:** `false`
      */
-    clearFiltersOnNewQuery: ComponentOptions.buildBooleanOption({ defaultValue: false })
+    clearFiltersOnNewQuery: ComponentOptions.buildBooleanOption({ defaultValue: false }),
+    /**
+     * The amount of focus time (in milliseconds) required on a query suggestion before requesting a preview of its top results.
+     *
+     * **Default:** `200`
+     */
+    executePreviewsQueryDelay: ComponentOptions.buildNumberOption({ defaultValue: 200 })
   };
 
   public magicBox: MagicBoxInstance;
@@ -426,7 +433,8 @@ export class Omnibox extends Component {
       inline: this.options.inline,
       selectableSuggestionClass: 'coveo-omnibox-selectable',
       selectedSuggestionClass: 'coveo-omnibox-selected',
-      suggestionTimeout: this.options.omniboxTimeout
+      suggestionTimeout: this.options.omniboxTimeout,
+      executePreviewsQueryDelay: this.options.executePreviewsQueryDelay
     });
 
     const input = $$(this.magicBox.element).find('input');
