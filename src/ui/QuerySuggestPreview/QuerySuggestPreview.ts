@@ -33,13 +33,12 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
   };
 
   static options: IQuerySuggestPreview = {
+    /**
+     * If you specify no previously registered template through this option, the component uses its default template.
+     */
     resultTemplate: TemplateComponentOptions.buildTemplateOption(),
     /**
      * The maximum number of query results to render in the preview.
-     *
-     * **Minimum:** `1`
-     * **Maximum:** `6`
-     * **Default:** `4`
      */
     numberOfPreviewResults: ComponentOptions.buildNumberOption({
       defaultValue: 4,
@@ -48,8 +47,6 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
     }),
     /**
      *  The amount of focus time (in milliseconds) required on a query suggestion before requesting a preview of its top results.
-     *
-     * **Default:** `200`
      */
     executeQueryDelay: ComponentOptions.buildNumberOption({ defaultValue: 200 })
   };
