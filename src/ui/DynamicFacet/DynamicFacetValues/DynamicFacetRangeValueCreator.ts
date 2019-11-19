@@ -1,10 +1,10 @@
-import { ValueCreator } from './DynamicFacetValues';
 import { IFacetResponseValue } from '../../../rest/Facet/FacetResponse';
-import { DynamicFacetValue } from './DynamicFacetValue';
+import { DynamicFacetValue, ValueCreator } from './DynamicFacetValue';
 import { IRangeValue } from '../../../rest/RangeValue';
 import { FacetValueState } from '../../../rest/Facet/FacetValueState';
 import { DynamicFacetRangeValueParser } from './DynamicFacetRangeValueParser';
 import { IDynamicFacetRange } from '../DynamicFacetRangeInterface';
+import { DynamicFacetValueRenderer } from './DynamicFacetValueRenderer';
 
 export class DynamicFacetRangeValueCreator implements ValueCreator {
   private parser: DynamicFacetRangeValueParser;
@@ -33,7 +33,8 @@ export class DynamicFacetRangeValueCreator implements ValueCreator {
         state: FacetValueState.idle,
         position: index + 1
       },
-      this.facet
+      this.facet,
+      DynamicFacetValueRenderer
     );
   }
 
@@ -49,7 +50,8 @@ export class DynamicFacetRangeValueCreator implements ValueCreator {
         displayValue,
         position: index + 1
       },
-      this.facet
+      this.facet,
+      DynamicFacetValueRenderer
     );
   }
 

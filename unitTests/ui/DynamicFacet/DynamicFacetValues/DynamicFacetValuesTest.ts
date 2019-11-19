@@ -6,6 +6,7 @@ import { DynamicFacet } from '../../../../src/ui/DynamicFacet/DynamicFacet';
 import { DynamicFacetTestUtils } from '../DynamicFacetTestUtils';
 import { $$ } from '../../../../src/Core';
 import { DynamicFacetRangeTestUtils } from '../DynamicFacetRangeTestUtils';
+import { DynamicFacetValueCreator } from '../../../../src/ui/DynamicFacet/DynamicFacetValues/DynamicFacetValueCreator';
 
 export function DynamicFacetValuesTest() {
   describe('DynamicFacetValues', () => {
@@ -25,7 +26,7 @@ export function DynamicFacetValuesTest() {
     });
 
     function initializeComponent() {
-      dynamicFacetValues = new DynamicFacetValues(facet);
+      dynamicFacetValues = new DynamicFacetValues(facet, DynamicFacetValueCreator);
       createValuesFromResponse();
     }
 

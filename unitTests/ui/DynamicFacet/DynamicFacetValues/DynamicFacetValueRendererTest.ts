@@ -17,7 +17,7 @@ export function DynamicFacetValueRendererTest() {
 
     function initializeComponent(options?: IDynamicFacetOptions) {
       facet = DynamicFacetTestUtils.createFakeFacet(options);
-      dynamicFacetValue = new DynamicFacetValue(DynamicFacetTestUtils.createFakeFacetValues(1)[0], facet);
+      dynamicFacetValue = new DynamicFacetValue(DynamicFacetTestUtils.createFakeFacetValues(1)[0], facet, DynamicFacetValueRenderer);
       dynamicFacetValueRenderer = new DynamicFacetValueRenderer(dynamicFacetValue, facet);
 
       spyOn(dynamicFacetValue, 'logSelectActionToAnalytics');

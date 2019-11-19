@@ -33,6 +33,7 @@ import { ResultListUtils } from '../../utils/ResultListUtils';
 import { IQueryResults } from '../../rest/QueryResults';
 import { FacetType } from '../../rest/Facet/FacetRequest';
 import { DependsOnManager, IDependentFacet } from '../../utils/DependsOnManager';
+import { DynamicFacetValueCreator } from './DynamicFacetValues/DynamicFacetValueCreator';
 
 /**
  * The `DynamicFacet` component displays a *facet* of the results for the current query. A facet is a list of values for a
@@ -556,7 +557,7 @@ export class DynamicFacet extends Component implements IDynamicFacet {
   }
 
   protected initValues() {
-    this.values = new DynamicFacetValues(this);
+    this.values = new DynamicFacetValues(this, DynamicFacetValueCreator);
   }
 
   private initComponentStateEvents() {

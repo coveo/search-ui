@@ -6,6 +6,7 @@ import { DynamicFacet } from '../../../../src/ui/DynamicFacet/DynamicFacet';
 import { IDynamicFacetOptions } from '../../../../src/ui/DynamicFacet/DynamicFacetInterface';
 import { FacetValueState } from '../../../../src/rest/Facet/FacetValueState';
 import { analyticsActionCauseList } from '../../../../src/ui/Analytics/AnalyticsActionListMeta';
+import { DynamicFacetValueRenderer } from '../../../../src/ui/DynamicFacet/DynamicFacetValues/DynamicFacetValueRenderer';
 
 export function DynamicFacetValueTest() {
   describe('DynamicFacetValue', () => {
@@ -21,7 +22,7 @@ export function DynamicFacetValueTest() {
     function initializeComponent() {
       facet = DynamicFacetTestUtils.createAdvancedFakeFacet(options).cmp;
       (facet.searchInterface.getComponents as jasmine.Spy).and.returnValue([facet]);
-      dynamicFacetValue = new DynamicFacetValue(DynamicFacetTestUtils.createFakeFacetValues(1)[0], facet);
+      dynamicFacetValue = new DynamicFacetValue(DynamicFacetTestUtils.createFakeFacetValues(1)[0], facet, DynamicFacetValueRenderer);
       spyOn(facet, 'logAnalyticsEvent');
     }
 
@@ -61,13 +62,13 @@ export function DynamicFacetValueTest() {
 
     it(`when comparing with another DynamicFacetValue with a different value
       it should not equal`, () => {
-      const anotherDynamicFacetValue = new DynamicFacetValue(DynamicFacetTestUtils.createFakeFacetValues(2)[1], facet);
+      const anotherDynamicFacetValue = new DynamicFacetValue(DynamicFacetTestUtils.createFakeFacetValues(2)[1], facet, DynamicFacetValueRenderer);
       expect(dynamicFacetValue.equals(anotherDynamicFacetValue)).toBe(false);
     });
 
     it(`when comparing with another DynamicFacetValue with the same value
       it should equal`, () => {
-      const anotherDynamicFacetValue = new DynamicFacetValue(DynamicFacetTestUtils.createFakeFacetValues(1)[0], facet);
+      const anotherDynamicFacetValue = new DynamicFacetValue(DynamicFacetTestUtils.createFakeFacetValues(1)[0], facet, DynamicFacetValueRenderer);
       expect(dynamicFacetValue.equals(anotherDynamicFacetValue)).toBe(true);
     });
 
