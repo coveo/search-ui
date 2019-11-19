@@ -7,7 +7,11 @@ import { IMockEnvironment, MockEnvironmentBuilder } from '../MockEnvironment';
 import { OmniboxEvents } from '../../src/Core';
 import { last, first, reverse } from 'lodash';
 import { ISearchResultPreview } from '../../src/magicbox/ResultPreviewsManager';
-import { ResultPreviewsManagerEvents, IPopulateSearchResultPreviewsEventArgs } from '../../src/events/ResultPreviewsManagerEvents';
+import {
+  ResultPreviewsManagerEvents,
+  IPopulateSearchResultPreviewsEventArgs,
+  IUpdateResultPreviewsManagerOptionsEventArgs
+} from '../../src/events/ResultPreviewsManagerEvents';
 
 function deferAsync() {
   return Promise.resolve();
@@ -288,13 +292,11 @@ export function SuggestionsManagerTest() {
         } as InputManager;
       }
 
-      const executePreviewsQueryDelay = 150;
       let suggestionsManager: SuggestionsManager;
       beforeEach(() => {
         suggestionsManager = new SuggestionsManager(buildEnvironment().root, buildMagicBoxContainer().el, mockInputManager(), {
           selectedClass,
-          suggestionClass,
-          executePreviewsQueryDelay
+          suggestionClass
         });
       });
 
@@ -413,6 +415,16 @@ export function SuggestionsManagerTest() {
             return Utils.resolveAfter(previewsPromisesWaitTimes[suggestionId], previewsBySuggestion[suggestionId]);
           }
 
+          const delayBeforePopulatePreviews = 150;
+          function bindUpdateResultPreviewsManagerOptionsEvent() {
+            $$(env.root).on(
+              ResultPreviewsManagerEvents.UpdateResultPreviewsManagerOptions,
+              (_, args: IUpdateResultPreviewsManagerOptionsEventArgs) => {
+                args.delayBeforePopulate = delayBeforePopulatePreviews;
+              }
+            );
+          }
+
           let populateSpy: jasmine.Spy;
           let waitForPreviewsPopulateEvent: () => Promise<any>;
           function bindPopulateEvent() {
@@ -455,6 +467,7 @@ export function SuggestionsManagerTest() {
           beforeEach(() => {
             jasmine.clock().install();
             buildPreviews();
+            bindUpdateResultPreviewsManagerOptionsEvent();
             bindPopulateEvent();
             bindUpdateSelectedSuggestion();
           });
@@ -470,7 +483,7 @@ export function SuggestionsManagerTest() {
           it("doesn't append any previews when they aren't resolved yet", async done => {
             mouseFocusSuggestion(0);
             await deferAsync();
-            jasmine.clock().tick(executePreviewsQueryDelay);
+            jasmine.clock().tick(delayBeforePopulatePreviews);
             await waitForPreviewsPopulateEvent();
             expect($$(env.root).findClass(previewClassName).length).toEqual(0);
             done();
@@ -479,7 +492,7 @@ export function SuggestionsManagerTest() {
           it('appends previews when they are resolved', async done => {
             mouseFocusSuggestion(0);
             await deferAsync();
-            jasmine.clock().tick(executePreviewsQueryDelay);
+            jasmine.clock().tick(delayBeforePopulatePreviews);
             await waitForPreviewsPopulateEvent();
             jasmine.clock().tick(previewsPromisesWaitTimes[0]);
             await waitForSelectionUpdated();
@@ -501,7 +514,7 @@ export function SuggestionsManagerTest() {
 
             async function moveDownToSuggestionAndWait(suggestionId: number) {
               moveDownToSuggestion(suggestionId);
-              jasmine.clock().tick(executePreviewsQueryDelay);
+              jasmine.clock().tick(delayBeforePopulatePreviews);
               await waitForPreviewsPopulateEvent();
               jasmine.clock().tick(previewsPromisesWaitTimes[suggestionId]);
               await waitForSelectionUpdated();
@@ -519,7 +532,7 @@ export function SuggestionsManagerTest() {
 
             it('queries previews after `executePreviewsQueryDelay`', async done => {
               moveDownToSuggestion(0);
-              jasmine.clock().tick(executePreviewsQueryDelay);
+              jasmine.clock().tick(delayBeforePopulatePreviews);
               await deferAsync();
               expect(populateSpy).toHaveBeenCalled();
               done();
@@ -527,7 +540,7 @@ export function SuggestionsManagerTest() {
 
             it("doesn't query previews before `executePreviewsQueryDelay`", async done => {
               moveDownToSuggestion(0);
-              jasmine.clock().tick(executePreviewsQueryDelay - 1);
+              jasmine.clock().tick(delayBeforePopulatePreviews - 1);
               await deferAsync();
               expect(populateSpy).not.toHaveBeenCalled();
               done();
@@ -535,7 +548,7 @@ export function SuggestionsManagerTest() {
 
             it("doesn't query previews if another suggestion is focused before the `executePreviewsQueryDelay`", async done => {
               moveDownToSuggestion(0);
-              jasmine.clock().tick(executePreviewsQueryDelay - 1);
+              jasmine.clock().tick(delayBeforePopulatePreviews - 1);
               moveDownToSuggestion(1);
               jasmine.clock().tick(1);
               await deferAsync();
@@ -545,9 +558,9 @@ export function SuggestionsManagerTest() {
 
             it('only queries previews for the last focused suggestion', async done => {
               moveDownToSuggestion(0);
-              jasmine.clock().tick(executePreviewsQueryDelay - 1);
+              jasmine.clock().tick(delayBeforePopulatePreviews - 1);
               moveDownToSuggestion(1);
-              jasmine.clock().tick(executePreviewsQueryDelay);
+              jasmine.clock().tick(delayBeforePopulatePreviews);
               await deferAsync();
               expect(populateSpy).toHaveBeenCalledTimes(1);
               expect(populateSpy).toHaveBeenCalledWith(textSuggestions[1]);

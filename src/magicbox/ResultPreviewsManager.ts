@@ -3,7 +3,11 @@ import { l } from '../strings/Strings';
 import { defaults, findIndex } from 'lodash';
 import { Component } from '../ui/Base/Component';
 import { Direction } from './SuggestionsManager';
-import { ResultPreviewsManagerEvents, IPopulateSearchResultPreviewsEventArgs } from '../events/ResultPreviewsManagerEvents';
+import {
+  ResultPreviewsManagerEvents,
+  IPopulateSearchResultPreviewsEventArgs,
+  IUpdateResultPreviewsManagerOptionsEventArgs
+} from '../events/ResultPreviewsManagerEvents';
 import { QueryProcessor, ProcessingStatus } from './QueryProcessor';
 import { Utils } from '../utils/Utils';
 
@@ -16,7 +20,6 @@ export interface IResultPreviewsManagerOptions {
   previewClass: string;
   selectedClass: string;
   previewHeaderText: string;
-  executePreviewsQueryDelay: number;
 }
 
 export class ResultPreviewsManager {
@@ -74,15 +77,17 @@ export class ResultPreviewsManager {
     this.options = defaults(options, <IResultPreviewsManagerOptions>{
       previewHeaderText: l('QuerySuggestPreview'),
       previewClass: 'coveo-preview-selectable',
-      selectedClass: 'magic-box-selected',
-      executePreviewsQueryDelay: 200
+      selectedClass: 'magic-box-selected'
     });
     this.root = Component.resolveRoot(element);
     this.previewsProcessor = new QueryProcessor();
   }
 
   public async displaySearchResultPreviewsForSuggestion(suggestion: HTMLElement) {
-    const currentDelay = (this.lastDelay = Utils.resolveAfter(this.options.executePreviewsQueryDelay));
+    const externalOptions = this.getExternalOptions();
+    const currentDelay = (this.lastDelay = Utils.resolveAfter(
+      externalOptions.delayBeforePopulate == undefined ? 200 : externalOptions.delayBeforePopulate
+    ));
     await currentDelay;
     if (currentDelay !== this.lastDelay) {
       return;
@@ -180,6 +185,12 @@ export class ResultPreviewsManager {
         className: 'coveo-preview-results'
       }))
     ).el;
+  }
+
+  private getExternalOptions() {
+    const optionsEventArgs: IUpdateResultPreviewsManagerOptionsEventArgs = {};
+    $$(this.root).trigger(ResultPreviewsManagerEvents.UpdateResultPreviewsManagerOptions, optionsEventArgs);
+    return optionsEventArgs;
   }
 
   private getSearchResultPreviewsQuery(suggestion: HTMLElement) {

@@ -14,11 +14,16 @@ import {
   IAnalyticsClickQuerySuggestPreviewMeta
 } from '../Analytics/AnalyticsActionListMeta';
 import { ISearchResultPreview } from '../../magicbox/ResultPreviewsManager';
-import { ResultPreviewsManagerEvents, IPopulateSearchResultPreviewsEventArgs } from '../../events/ResultPreviewsManagerEvents';
+import {
+  ResultPreviewsManagerEvents,
+  IPopulateSearchResultPreviewsEventArgs,
+  IUpdateResultPreviewsManagerOptionsEventArgs
+} from '../../events/ResultPreviewsManagerEvents';
 
 export interface IQuerySuggestPreview {
   numberOfPreviewResults?: number;
   resultTemplate?: Template;
+  executeQueryDelay?: number;
 }
 
 export class QuerySuggestPreview extends Component implements IComponentBindings {
@@ -43,7 +48,11 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
       defaultValue: 3,
       min: 1,
       max: 6
-    })
+    }),
+    /**
+     *  The amount of focus time (in milliseconds) required on a query suggestion before requesting a preview of its top results.
+     */
+    executeQueryDelay: ComponentOptions.buildNumberOption({ defaultValue: 200 })
   };
 
   private omniboxAnalytics: OmniboxAnalytics;
@@ -67,6 +76,12 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
         `https://docs.coveo.com/340/#providing-query-suggestion-result-previews`
       );
     }
+
+    this.bind.onRootElement(
+      ResultPreviewsManagerEvents.UpdateResultPreviewsManagerOptions,
+      (args: IUpdateResultPreviewsManagerOptionsEventArgs) =>
+        (args.delayBeforePopulate = Math.max(args.delayBeforePopulate || 0, this.options.executeQueryDelay))
+    );
 
     this.bind.onRootElement(ResultPreviewsManagerEvents.PopulateSearchResultPreviews, (args: IPopulateSearchResultPreviewsEventArgs) =>
       this.populateSearchResultPreviews(args)
