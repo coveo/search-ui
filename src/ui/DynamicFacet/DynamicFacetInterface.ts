@@ -42,6 +42,8 @@ export interface IDynamicFacet extends Component, IAutoLayoutAdjustableInsideFac
   facetType: FacetType;
   analyticsFacetState: IAnalyticsDynamicFacetMeta[]
   basicAnalyticsFacetState: IAnalyticsDynamicFacetMeta;
+  hasDisplayedValues: boolean;
+  hasActiveValues: boolean;
 
   selectValue(value: string): void;
   selectMultipleValues(values: string[]): void;
@@ -59,7 +61,7 @@ export interface IDynamicFacet extends Component, IAutoLayoutAdjustableInsideFac
   scrollToTop(): void;
   logAnalyticsEvent(actionCause: IAnalyticsActionCause, facetMeta: IAnalyticsDynamicFacetMeta): void;
   putStateIntoQueryBuilder(queryBuilder: QueryBuilder): void;
-  putStateIntoAnalytics(queryBuilder: QueryBuilder): void;
+  putStateIntoAnalytics(): void;
   triggerNewQuery(beforeExecuteQuery?: () => void): void;
   triggerNewIsolatedQuery(beforeExecuteQuery?: () => void): void;
 }

@@ -1,5 +1,4 @@
 import { Component } from '../Base/Component';
-import { DynamicFacet } from '../DynamicFacet/DynamicFacet';
 import { InitializationEvents } from '../../events/InitializationEvents';
 import { QueryEvents, IQuerySuccessEventArgs, IDoneBuildingQueryEventArgs } from '../../events/QueryEvents';
 import { exportGlobally } from '../../GlobalExports';
@@ -11,6 +10,8 @@ import { ComponentOptions } from '../Base/ComponentOptions';
 import { Assert } from '../../misc/Assert';
 import { Initialization } from '../Base/Initialization';
 import { ComponentsTypes } from '../../utils/ComponentsTypes';
+import { QueryBuilder } from '../Base/QueryBuilder';
+import { IAutoLayoutAdjustableInsideFacetColumn } from '../SearchInterface/FacetColumnAutoLayoutAdjustment';
 
 export interface IDynamicFacetManagerOptions {
   enableReorder?: boolean;
@@ -20,11 +21,22 @@ export interface IDynamicFacetManagerOptions {
 }
 
 export interface IDynamicFacetManagerOnUpdate {
-  (facet: DynamicFacet, index: number): void;
+  (facet: IManagerCompatibleFacet, index: number): void;
 }
 
 export interface IDynamicFacetManagerCompareFacet {
-  (facetA: DynamicFacet, facetB: DynamicFacet): number;
+  (facetA: IManagerCompatibleFacet, facetB: IManagerCompatibleFacet): number;
+}
+
+export interface IManagerCompatibleFacet extends Component, IAutoLayoutAdjustableInsideFacetColumn {
+  dynamicFacetManager: DynamicFacetManager;
+  hasDisplayedValues: boolean;
+  hasActiveValues: boolean;
+
+  putStateIntoQueryBuilder(queryBuilder: QueryBuilder): void;
+  putStateIntoAnalytics(): void;
+  expand(): void;
+  collapse(): void;
 }
 
 /**
@@ -90,7 +102,7 @@ export class DynamicFacetManager extends Component {
     maximumNumberOfExpandedFacets: ComponentOptions.buildNumberOption({ defaultValue: 4, min: -1 })
   };
 
-  private childrenFacets: DynamicFacet[] = [];
+  private childrenFacets: IManagerCompatibleFacet[] = [];
   private containerElement: HTMLElement;
 
   private get enabledFacets() {
@@ -98,7 +110,7 @@ export class DynamicFacetManager extends Component {
   }
 
   private get facetsWithDisplayedValues() {
-    return this.childrenFacets.filter(facet => facet.values.hasDisplayedValues);
+    return this.childrenFacets.filter(facet => facet.hasDisplayedValues);
   }
 
   /**
@@ -114,6 +126,13 @@ export class DynamicFacetManager extends Component {
 
     this.moveChildrenIntoContainer();
     this.initEvents();
+  }
+
+  public static get allCompatibleFacets() {
+    return [
+      'DynamicFacet',
+      'DynamicFacetRange'
+    ];
   }
 
   private resetContainer() {
@@ -136,12 +155,12 @@ export class DynamicFacetManager extends Component {
   }
 
   private isDynamicFacet(component: Component) {
-    return component instanceof DynamicFacet;
+    return DynamicFacetManager.allCompatibleFacets.indexOf(component.type) !== -1;
   }
 
-  private get allDynamicFacets(): DynamicFacet[] {
+  private get allDynamicFacets(): IManagerCompatibleFacet[] {
     const allFacetsInComponent = ComponentsTypes.getAllFacetsInstance(this.element);
-    return <DynamicFacet[]>allFacetsInComponent.filter(this.isDynamicFacet);
+    return <IManagerCompatibleFacet[]>allFacetsInComponent.filter(this.isDynamicFacet);
   }
 
   private handleAfterComponentsInitialization() {
@@ -214,7 +233,7 @@ export class DynamicFacetManager extends Component {
     }
 
     const [collapsableFacets, uncollapsableFacets] = partition(this.facetsWithDisplayedValues, facet => facet.options.enableCollapse);
-    const [facetsWithActiveValues, remainingFacets] = partition(collapsableFacets, facet => facet.values.hasActiveValues);
+    const [facetsWithActiveValues, remainingFacets] = partition(collapsableFacets, facet => facet.hasActiveValues);
     const indexOfFirstFacetToCollapse =
       this.options.maximumNumberOfExpandedFacets - uncollapsableFacets.length - facetsWithActiveValues.length;
 
@@ -229,7 +248,7 @@ export class DynamicFacetManager extends Component {
     const facet = find(this.childrenFacets, facet => facet.options.id === id);
 
     if (!facet) {
-      this.logger.error(`Cannot find DynamicFacet component with an id equal to "${id}".`);
+      this.logger.error(`Cannot find facet component with an id equal to "${id}".`);
       return null;
     }
 

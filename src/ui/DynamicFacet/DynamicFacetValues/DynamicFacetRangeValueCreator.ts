@@ -1,15 +1,15 @@
-import { DynamicFacetRange } from '../DynamicFacetRange';
 import { ValueCreator } from './DynamicFacetValues';
 import { IFacetResponseValue } from '../../../rest/Facet/FacetResponse';
 import { DynamicFacetValue } from './DynamicFacetValue';
 import { IRangeValue } from '../../../rest/RangeValue';
 import { FacetValueState } from '../../../rest/Facet/FacetValueState';
 import { DynamicFacetRangeValueParser } from './DynamicFacetRangeValueParser';
+import { IDynamicFacetRange } from '../DynamicFacetRangeInterface';
 
 export class DynamicFacetRangeValueCreator implements ValueCreator {
   private parser: DynamicFacetRangeValueParser;
 
-  constructor(private facet: DynamicFacetRange) {
+  constructor(private facet: IDynamicFacetRange) {
     this.parser = new DynamicFacetRangeValueParser(this.facet);
   }
 

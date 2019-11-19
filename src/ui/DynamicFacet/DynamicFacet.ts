@@ -524,6 +524,14 @@ export class DynamicFacet extends Component implements IDynamicFacet {
     return $$(this.element).isVisible();
   }
 
+  public get hasDisplayedValues() {
+    return this.values.hasDisplayedValues;
+  }
+  
+  public get hasActiveValues() {
+    return this.values.hasActiveValues;
+  }
+
   private initQueryEvents() {
     this.bind.onRootElement(QueryEvents.duringQuery, () => this.ensureDom());
     this.bind.onRootElement(QueryEvents.doneBuildingQuery, (data: IDoneBuildingQueryEventArgs) => this.handleDoneBuildingQuery(data));

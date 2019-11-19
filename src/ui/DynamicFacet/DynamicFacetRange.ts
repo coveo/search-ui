@@ -1,7 +1,7 @@
 import 'styling/DynamicFacet/_DynamicFacet';
 import { Initialization } from '../Base/Initialization';
 import { DynamicFacet } from './DynamicFacet';
-import { IDynamicFacetOptions } from './DynamicFacetInterface';
+import { IDynamicFacetRangeOptions, DynamicFacetRangeValueFormat } from './DynamicFacetRangeInterface';
 import { ComponentOptions } from '../Base/ComponentOptions';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { exportGlobally } from '../../GlobalExports';
@@ -11,27 +11,6 @@ import { IRangeValue } from '../../rest/RangeValue';
 import { DynamicFacetValues } from './DynamicFacetValues/DynamicFacetValues';
 import { DynamicFacetRangeValueCreator } from './DynamicFacetValues/DynamicFacetRangeValueCreator';
 import { DynamicFacetRangeQueryController } from '../../controllers/DynamicFacetRangeQueryController';
-
-/**
- * The allowed values for the [`valueFormat`]{@link DynamicFacetRange.options.valueFormat} option
- * of the [`DynamicFacetRange`]{@link DynamicFacetRange} component.
- */
-export enum DynamicFacetRangeValueFormat {
-  /**
-   * Format range values as localized numeric strings.
-   */
-  number = 'number',
-  /**
-   * Format range values as localized date strings.
-   */
-  date = 'date'
-}
-
-export interface IDynamicFacetRangeOptions extends IDynamicFacetOptions {
-  valueSeparator?: string;
-  valueFormat?: DynamicFacetRangeValueFormat;
-  ranges?: IRangeValue[];
-}
 
 /**
  * A `DynamicFacetRange` is a [facet](https://docs.coveo.com/en/198/) whose values are expressed as ranges.

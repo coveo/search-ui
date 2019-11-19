@@ -1,12 +1,12 @@
 import * as Globalize from 'globalize';
 import { RangeType, IRangeValue, RangeEndScope } from '../../../rest/RangeValue';
-import { DynamicFacetRangeValueFormat, DynamicFacetRange } from '../DynamicFacetRange';
 import { NumberUtils } from '../../../utils/NumberUtils';
 import { isNull } from 'util';
 import { DateUtils } from '../../../utils/DateUtils';
+import { IDynamicFacetRange, DynamicFacetRangeValueFormat } from '../DynamicFacetRangeInterface';
 
 export class DynamicFacetRangeValueParser {
-  constructor(private facet: DynamicFacetRange) {}
+  constructor(private facet: IDynamicFacetRange) {}
 
   private get valueFormat() {
     return this.facet.options.valueFormat;

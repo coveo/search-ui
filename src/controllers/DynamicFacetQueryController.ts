@@ -1,4 +1,3 @@
-import { DynamicFacet } from '../ui/DynamicFacet/DynamicFacet';
 import { QueryBuilder } from '../ui/Base/QueryBuilder';
 import { Assert } from '../misc/Assert';
 import { IFacetRequest, IFacetRequestValue } from '../rest/Facet/FacetRequest';
@@ -6,13 +5,14 @@ import { FacetSortCriteria } from '../rest/Facet/FacetSortCriteria';
 import { QueryEvents } from '../events/QueryEvents';
 import { findIndex } from 'underscore';
 import { IQueryResults } from '../rest/QueryResults';
+import { IDynamicFacet } from '../ui/DynamicFacet/DynamicFacetInterface';
 
 export class DynamicFacetQueryController {
   private numberOfValuesToRequest: number;
   private freezeCurrentValues = false;
   private freezeFacetOrder = false;
 
-  constructor(protected facet: DynamicFacet) {
+  constructor(protected facet: IDynamicFacet) {
     this.resetNumberOfValuesToRequest();
     this.resetFreezeCurrentValuesDuringQuery();
   }
