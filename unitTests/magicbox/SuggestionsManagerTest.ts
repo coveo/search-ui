@@ -288,11 +288,13 @@ export function SuggestionsManagerTest() {
         } as InputManager;
       }
 
+      const executePreviewsQueryDelay = 150;
       let suggestionsManager: SuggestionsManager;
       beforeEach(() => {
         suggestionsManager = new SuggestionsManager(buildEnvironment().root, buildMagicBoxContainer().el, mockInputManager(), {
           selectedClass,
-          suggestionClass
+          suggestionClass,
+          executePreviewsQueryDelay
         });
       });
 
@@ -316,7 +318,7 @@ export function SuggestionsManagerTest() {
         }
 
         function mouseFocusSuggestion(suggestionId: number) {
-          $$(suggestionElements[suggestionId]).trigger('mouseenter');
+          $$(suggestionElements[suggestionId]).trigger('mouseover');
         }
 
         let suggestionElements: HTMLElement[];
@@ -412,18 +414,49 @@ export function SuggestionsManagerTest() {
           }
 
           let populateSpy: jasmine.Spy;
+          let waitForPreviewsPopulateEvent: () => Promise<any>;
           function bindPopulateEvent() {
+            let wasCalled = false;
+            let onCall: () => any;
             populateSpy = jasmine.createSpy('PopulateSearchResultPreviews');
             $$(env.root).on(ResultPreviewsManagerEvents.PopulateSearchResultPreviews, (_, args: IPopulateSearchResultPreviewsEventArgs) => {
               populateSpy(args.suggestionText);
               args.previewsQueries.push(createPreviewsPromise(textSuggestions.indexOf(args.suggestionText)));
+              if (onCall) {
+                onCall();
+                onCall = null;
+              } else {
+                wasCalled = true;
+              }
             });
+            waitForPreviewsPopulateEvent = () =>
+              new Promise(resolve => {
+                if (!wasCalled) {
+                  onCall = () => resolve();
+                  return;
+                }
+                wasCalled = false;
+                resolve();
+              });
+          }
+
+          let waitForSelectionUpdated: () => Promise<any>;
+          function bindUpdateSelectedSuggestion() {
+            const calls: Promise<any>[] = [];
+            const oldFunc = suggestionsManager['updateSelectedSuggestion'].bind(suggestionsManager);
+            suggestionsManager['updateSelectedSuggestion'] = suggestion => {
+              const call = oldFunc(suggestion);
+              calls.push(call);
+              return call;
+            };
+            waitForSelectionUpdated = () => calls[calls.length - 1];
           }
 
           beforeEach(() => {
+            jasmine.clock().install();
             buildPreviews();
             bindPopulateEvent();
-            jasmine.clock().install();
+            bindUpdateSelectedSuggestion();
           });
 
           afterEach(() => {
@@ -437,23 +470,41 @@ export function SuggestionsManagerTest() {
           it("doesn't append any previews when they aren't resolved yet", async done => {
             mouseFocusSuggestion(0);
             await deferAsync();
+            jasmine.clock().tick(executePreviewsQueryDelay);
+            await waitForPreviewsPopulateEvent();
             expect($$(env.root).findClass(previewClassName).length).toEqual(0);
             done();
           });
 
-          describe('after focusing a suggestion', () => {
+          it('appends previews when they are resolved', async done => {
+            mouseFocusSuggestion(0);
+            await deferAsync();
+            jasmine.clock().tick(executePreviewsQueryDelay);
+            await waitForPreviewsPopulateEvent();
+            jasmine.clock().tick(previewsPromisesWaitTimes[0]);
+            await waitForSelectionUpdated();
+            expect($$(env.root).findClass(previewClassName).length).toBeGreaterThan(0);
+            done();
+          });
+
+          describe('after keyboard focusing a suggestion', () => {
             let expectedSuggestionId: number;
 
-            async function moveDownToSuggestion(suggestionId: number) {
+            function moveDownToSuggestion(suggestionId: number) {
               if (expectedSuggestionId === suggestionId) {
                 return;
               }
-              let lastMove: Promise<void>;
               for (expectedSuggestionId; expectedSuggestionId < suggestionId; expectedSuggestionId++) {
-                lastMove = suggestionsManager.moveDown();
+                suggestionsManager.moveDown();
               }
+            }
+
+            async function moveDownToSuggestionAndWait(suggestionId: number) {
+              moveDownToSuggestion(suggestionId);
+              jasmine.clock().tick(executePreviewsQueryDelay);
+              await waitForPreviewsPopulateEvent();
               jasmine.clock().tick(previewsPromisesWaitTimes[suggestionId]);
-              await lastMove;
+              await waitForSelectionUpdated();
             }
 
             beforeEach(() => {
@@ -461,14 +512,51 @@ export function SuggestionsManagerTest() {
             });
 
             it('has a previews container after focusing a suggestion', async done => {
-              await moveDownToSuggestion(0);
+              await moveDownToSuggestionAndWait(0);
               expect($$(env.root).findClass('coveo-preview-container').length).toEqual(1);
+              done();
+            });
+
+            it('queries previews after `executePreviewsQueryDelay`', async done => {
+              moveDownToSuggestion(0);
+              jasmine.clock().tick(executePreviewsQueryDelay);
+              await deferAsync();
+              expect(populateSpy).toHaveBeenCalled();
+              done();
+            });
+
+            it("doesn't query previews before `executePreviewsQueryDelay`", async done => {
+              moveDownToSuggestion(0);
+              jasmine.clock().tick(executePreviewsQueryDelay - 1);
+              await deferAsync();
+              expect(populateSpy).not.toHaveBeenCalled();
+              done();
+            });
+
+            it("doesn't query previews if another suggestion is focused before the `executePreviewsQueryDelay`", async done => {
+              moveDownToSuggestion(0);
+              jasmine.clock().tick(executePreviewsQueryDelay - 1);
+              moveDownToSuggestion(1);
+              jasmine.clock().tick(1);
+              await deferAsync();
+              expect(populateSpy).not.toHaveBeenCalled();
+              done();
+            });
+
+            it('only queries previews for the last focused suggestion', async done => {
+              moveDownToSuggestion(0);
+              jasmine.clock().tick(executePreviewsQueryDelay - 1);
+              moveDownToSuggestion(1);
+              jasmine.clock().tick(executePreviewsQueryDelay);
+              await deferAsync();
+              expect(populateSpy).toHaveBeenCalledTimes(1);
+              expect(populateSpy).toHaveBeenCalledWith(textSuggestions[1]);
               done();
             });
 
             it('populates the previews container', async done => {
               await forEachAsync(textPreviews, async (previewTextsForSuggestion, id) => {
-                await moveDownToSuggestion(id);
+                await moveDownToSuggestionAndWait(id);
                 expect(
                   $$(env.root)
                     .findClass(previewClassName)
@@ -494,23 +582,21 @@ export function SuggestionsManagerTest() {
             });
 
             it("moving the focus right when there's previews blurs the suggestion", async done => {
-              window['BLAH'] = 1;
-              await moveDownToSuggestion(0);
+              await moveDownToSuggestionAndWait(0);
               suggestionsManager.moveRight();
-              window['BLAH'] = 0;
               expect(suggestionsManager.selectedSuggestion).toBeNull();
               done();
             });
 
             it('can select and return the first preview by moving the focus right from the first suggestion', async done => {
-              await moveDownToSuggestion(0);
+              await moveDownToSuggestionAndWait(0);
               suggestionsManager.moveRight();
               expect(suggestionsManager.selectAndReturnKeyboardFocusedElement().innerText).toEqual(first(first(textPreviews)));
               done();
             });
 
             it('moving the focus left from the first preview focuses on the first suggestion', async done => {
-              await moveDownToSuggestion(0);
+              await moveDownToSuggestionAndWait(0);
               suggestionsManager.moveRight();
               suggestionsManager.moveLeft();
               expect(suggestionsManager.selectedSuggestion.text).toEqual(first(suggestions).text);
@@ -519,7 +605,7 @@ export function SuggestionsManagerTest() {
 
             it('can select every preview of every suggestion', async done => {
               await forEachAsync(previewsBySuggestion, async (previews, suggestionId) => {
-                await moveDownToSuggestion(suggestionId);
+                await moveDownToSuggestionAndWait(suggestionId);
                 previews.forEach((preview, previewId) => {
                   suggestionsManager.moveRight();
                   expect(suggestionsManager.selectAndReturnKeyboardFocusedElement().innerText).toEqual(
