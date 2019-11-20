@@ -494,7 +494,7 @@ export class DynamicFacet extends Component implements IDynamicFacet {
   }
 
   public get analyticsFacetState(): IAnalyticsFacetState[] {
-    return this.values.activeFacetValues.map(facetValue => facetValue.analyticsFacetState);
+    return this.values.activeValues.map(facetValue => facetValue.analyticsFacetState);
   }
 
   public get basicAnalyticsFacetState(): IAnalyticsFacetState {

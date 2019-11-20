@@ -17,7 +17,7 @@ export class DynamicFacetBreadcrumbs {
     this.element = $$('div', { className: 'coveo-dynamic-facet-breadcrumb coveo-breadcrumb-item' }).el;
     this.createAndAppendTitle();
 
-    const activeFacetValues = this.facet.values.activeFacetValues;
+    const activeFacetValues = this.facet.values.activeValues;
     const breadcrumbFacetValues = activeFacetValues.slice(0, this.facet.options.numberOfValuesInBreadcrumb);
     const collapsedFacetValues = activeFacetValues.slice(this.facet.options.numberOfValuesInBreadcrumb);
 

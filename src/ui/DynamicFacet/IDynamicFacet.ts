@@ -4,7 +4,7 @@ import { IResponsiveComponentOptions } from '../ResponsiveComponents/ResponsiveC
 import { IDynamicManagerCompatibleFacet } from '../DynamicFacetManager/DynamicFacetManager';
 import { DependsOnManager } from '../../utils/DependsOnManager';
 import { DynamicFacetQueryController } from '../../controllers/DynamicFacetQueryController';
-import { DynamicFacetValues } from './DynamicFacetValues/DynamicFacetValues';
+import { IDynamicFacetValues } from './DynamicFacetValues/IDynamicFacetValues';
 import { FacetType } from '../../rest/Facet/FacetRequest';
 import { IAnalyticsFacetMeta, IAnalyticsActionCause } from '../Analytics/AnalyticsActionListMeta';
 import { Component } from '../Base/Component';
@@ -32,7 +32,7 @@ export interface IDynamicFacet extends Component, IDynamicManagerCompatibleFacet
   options: IDynamicFacetOptions;
   dependsOnManager: DependsOnManager;
   dynamicFacetQueryController: DynamicFacetQueryController;
-  values: DynamicFacetValues;
+  values: IDynamicFacetValues;
   position: number;
   moreValuesAvailable: boolean;
   isCollapsed: boolean;

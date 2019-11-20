@@ -65,8 +65,8 @@ export function DynamicFacetValuesTest() {
     });
 
     it('should return activeFacetValues correctly', () => {
-      expect(dynamicFacetValues.activeFacetValues[0].value).toBe(mockFacetValues[1].value);
-      expect(dynamicFacetValues.activeFacetValues[1].value).toBe(mockFacetValues[3].value);
+      expect(dynamicFacetValues.activeValues[0].value).toBe(mockFacetValues[1].value);
+      expect(dynamicFacetValues.activeValues[1].value).toBe(mockFacetValues[3].value);
     });
 
     it('when there are selected values, hasSelectedValues should return true', () => {

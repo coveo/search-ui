@@ -7,12 +7,13 @@ import { FacetValueState } from '../../../rest/Facet/FacetValueState';
 import { l } from '../../../strings/Strings';
 import { IRangeValue } from '../../../rest/RangeValue';
 import { IDynamicFacet } from '../IDynamicFacet';
+import { IDynamicFacetValues } from './IDynamicFacetValues';
 
 export interface IDynamicFacetValueCreatorKlass {
   new (facet: IDynamicFacet): IValueCreator;
 }
 
-export class DynamicFacetValues {
+export class DynamicFacetValues implements IDynamicFacetValues {
   private facetValues: DynamicFacetValue[];
   private list = $$('ul', { className: 'coveo-dynamic-facet-values' }).el;
   private valueCreator: IValueCreator;
@@ -46,7 +47,7 @@ export class DynamicFacetValues {
     return this.facetValues.filter(value => value.isSelected).map(({ value }) => value);
   }
 
-  public get activeFacetValues() {
+  public get activeValues() {
     return this.facetValues.filter(value => !value.isIdle);
   }
 
@@ -59,7 +60,7 @@ export class DynamicFacetValues {
   }
 
   public get hasActiveValues() {
-    return !!this.activeFacetValues.length;
+    return !!this.activeValues.length;
   }
 
   public get hasIdleValues() {

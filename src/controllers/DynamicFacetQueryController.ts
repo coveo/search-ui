@@ -113,6 +113,6 @@ export class DynamicFacetQueryController {
       return this.currentValues.length;
     }
 
-    return Math.max(this.numberOfValuesToRequest, this.facet.values.activeFacetValues.length);
+    return Math.max(this.numberOfValuesToRequest, this.facet.values.activeValues.length);
   }
 }
