@@ -1,13 +1,12 @@
 import { IAutoLayoutAdjustableInsideFacetColumn } from '../SearchInterface/FacetColumnAutoLayoutAdjustment';
 import { IFieldOption } from '../Base/ComponentOptions';
 import { IResponsiveComponentOptions } from '../ResponsiveComponents/ResponsiveComponentsManager';
-import { DynamicFacetManager } from '../DynamicFacetManager/DynamicFacetManager';
+import { IDynamicManagerCompatibleFacet } from '../DynamicFacetManager/DynamicFacetManager';
 import { DependsOnManager } from '../../utils/DependsOnManager';
 import { DynamicFacetQueryController } from '../../controllers/DynamicFacetQueryController';
 import { DynamicFacetValues } from './DynamicFacetValues/DynamicFacetValues';
 import { FacetType } from '../../rest/Facet/FacetRequest';
 import { IAnalyticsDynamicFacetMeta, IAnalyticsActionCause } from '../Analytics/AnalyticsActionListMeta';
-import { QueryBuilder } from '../Base/QueryBuilder';
 import { Component } from '../Base/Component';
 
 export interface IDynamicFacetOptions extends IResponsiveComponentOptions {
@@ -28,9 +27,8 @@ export interface IDynamicFacetOptions extends IResponsiveComponentOptions {
   dependsOn?: string;
 }
 
-export interface IDynamicFacet extends Component, IAutoLayoutAdjustableInsideFacetColumn {
+export interface IDynamicFacet extends Component, IDynamicManagerCompatibleFacet, IAutoLayoutAdjustableInsideFacetColumn {
   options: IDynamicFacetOptions;
-  dynamicFacetManager: DynamicFacetManager;
   dependsOnManager: DependsOnManager;
   dynamicFacetQueryController: DynamicFacetQueryController;
   values: DynamicFacetValues;
@@ -42,8 +40,6 @@ export interface IDynamicFacet extends Component, IAutoLayoutAdjustableInsideFac
   facetType: FacetType;
   analyticsFacetState: IAnalyticsDynamicFacetMeta[]
   basicAnalyticsFacetState: IAnalyticsDynamicFacetMeta;
-  hasDisplayedValues: boolean;
-  hasActiveValues: boolean;
 
   selectValue(value: string): void;
   selectMultipleValues(values: string[]): void;
@@ -54,14 +50,10 @@ export interface IDynamicFacet extends Component, IAutoLayoutAdjustableInsideFac
   showLessValues(): void;
   reset(): void;
   toggleCollapse(): void;
-  expand(): void;
-  collapse(): void;
   enableFreezeCurrentValuesFlag(): void;
   enableFreezeFacetOrderFlag(): void;
   scrollToTop(): void;
   logAnalyticsEvent(actionCause: IAnalyticsActionCause, facetMeta: IAnalyticsDynamicFacetMeta): void;
-  putStateIntoQueryBuilder(queryBuilder: QueryBuilder): void;
-  putStateIntoAnalytics(): void;
   triggerNewQuery(beforeExecuteQuery?: () => void): void;
   triggerNewIsolatedQuery(beforeExecuteQuery?: () => void): void;
 }

@@ -21,17 +21,18 @@ export interface IDynamicFacetManagerOptions {
 }
 
 export interface IDynamicFacetManagerOnUpdate {
-  (facet: IManagerCompatibleFacet, index: number): void;
+  (facet: IDynamicManagerCompatibleFacet, index: number): void;
 }
 
 export interface IDynamicFacetManagerCompareFacet {
-  (facetA: IManagerCompatibleFacet, facetB: IManagerCompatibleFacet): number;
+  (facetA: IDynamicManagerCompatibleFacet, facetB: IDynamicManagerCompatibleFacet): number;
 }
 
-export interface IManagerCompatibleFacet extends Component, IAutoLayoutAdjustableInsideFacetColumn {
+export interface IDynamicManagerCompatibleFacet extends Component, IAutoLayoutAdjustableInsideFacetColumn {
   dynamicFacetManager: DynamicFacetManager;
   hasDisplayedValues: boolean;
   hasActiveValues: boolean;
+  isDynamicFacet: boolean;
 
   putStateIntoQueryBuilder(queryBuilder: QueryBuilder): void;
   putStateIntoAnalytics(): void;
@@ -102,7 +103,7 @@ export class DynamicFacetManager extends Component {
     maximumNumberOfExpandedFacets: ComponentOptions.buildNumberOption({ defaultValue: 4, min: -1 })
   };
 
-  private childrenFacets: IManagerCompatibleFacet[] = [];
+  private childrenFacets: IDynamicManagerCompatibleFacet[] = [];
   private containerElement: HTMLElement;
 
   private get enabledFacets() {
@@ -128,13 +129,6 @@ export class DynamicFacetManager extends Component {
     this.initEvents();
   }
 
-  public static get allCompatibleFacets() {
-    return [
-      'DynamicFacet',
-      'DynamicFacetRange'
-    ];
-  }
-
   private resetContainer() {
     this.containerElement && $$(this.containerElement).remove();
     this.containerElement = $$('div', { className: 'coveo-dynamic-facet-manager-container' }).el;
@@ -155,12 +149,12 @@ export class DynamicFacetManager extends Component {
   }
 
   private isDynamicFacet(component: Component) {
-    return DynamicFacetManager.allCompatibleFacets.indexOf(component.type) !== -1;
+    return !!(component as IDynamicManagerCompatibleFacet).isDynamicFacet
   }
 
-  private get allDynamicFacets(): IManagerCompatibleFacet[] {
+  private get allDynamicFacets(): IDynamicManagerCompatibleFacet[] {
     const allFacetsInComponent = ComponentsTypes.getAllFacetsInstance(this.element);
-    return <IManagerCompatibleFacet[]>allFacetsInComponent.filter(this.isDynamicFacet);
+    return <IDynamicManagerCompatibleFacet[]>allFacetsInComponent.filter(this.isDynamicFacet);
   }
 
   private handleAfterComponentsInitialization() {

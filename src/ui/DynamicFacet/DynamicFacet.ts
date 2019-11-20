@@ -260,6 +260,7 @@ export class DynamicFacet extends Component implements IDynamicFacet {
   public position: number = null;
   public moreValuesAvailable = false;
   public isCollapsed: boolean;
+  public isDynamicFacet = true;
 
   /**
    * Creates a new `DynamicFacet` instance.
