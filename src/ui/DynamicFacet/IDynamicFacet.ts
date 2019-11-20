@@ -6,8 +6,9 @@ import { DependsOnManager } from '../../utils/DependsOnManager';
 import { DynamicFacetQueryController } from '../../controllers/DynamicFacetQueryController';
 import { DynamicFacetValues } from './DynamicFacetValues/DynamicFacetValues';
 import { FacetType } from '../../rest/Facet/FacetRequest';
-import { IAnalyticsDynamicFacetMeta, IAnalyticsActionCause } from '../Analytics/AnalyticsActionListMeta';
+import { IAnalyticsFacetMeta, IAnalyticsActionCause } from '../Analytics/AnalyticsActionListMeta';
 import { Component } from '../Base/Component';
+import { IAnalyticsFacetState } from '../Analytics/IAnalyticsFacetState';
 
 export interface IDynamicFacetOptions extends IResponsiveComponentOptions {
   id?: string;
@@ -38,8 +39,9 @@ export interface IDynamicFacet extends Component, IDynamicManagerCompatibleFacet
 
   fieldName: string;
   facetType: FacetType;
-  analyticsFacetState: IAnalyticsDynamicFacetMeta[]
-  basicAnalyticsFacetState: IAnalyticsDynamicFacetMeta;
+  analyticsFacetState: IAnalyticsFacetState[]
+  basicAnalyticsFacetState: IAnalyticsFacetState;
+  basicAnalyticsFacetMeta: IAnalyticsFacetMeta;
 
   selectValue(value: string): void;
   selectMultipleValues(values: string[]): void;
@@ -53,7 +55,7 @@ export interface IDynamicFacet extends Component, IDynamicManagerCompatibleFacet
   enableFreezeCurrentValuesFlag(): void;
   enableFreezeFacetOrderFlag(): void;
   scrollToTop(): void;
-  logAnalyticsEvent(actionCause: IAnalyticsActionCause, facetMeta: IAnalyticsDynamicFacetMeta): void;
+  logAnalyticsEvent(actionCause: IAnalyticsActionCause, facetMeta: IAnalyticsFacetMeta): void;
   triggerNewQuery(beforeExecuteQuery?: () => void): void;
   triggerNewIsolatedQuery(beforeExecuteQuery?: () => void): void;
 }

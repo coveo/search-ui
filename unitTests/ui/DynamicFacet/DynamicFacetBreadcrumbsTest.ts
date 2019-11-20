@@ -3,10 +3,9 @@ import { $$ } from '../../../src/Core';
 import { DynamicFacetTestUtils } from './DynamicFacetTestUtils';
 import { DynamicFacet } from '../../../src/ui/DynamicFacet/DynamicFacet';
 import { IDynamicFacetOptions } from '../../../src/ui/DynamicFacet/IDynamicFacet';
-import { IDynamicFacetValue, DynamicFacetValue } from '../../../src/ui/DynamicFacet/DynamicFacetValues/DynamicFacetValue';
+import { IDynamicFacetValue } from '../../../src/ui/DynamicFacet/DynamicFacetValues/DynamicFacetValue';
 import { FacetValueState } from '../../../src/rest/Facet/FacetValueState';
 import { analyticsActionCauseList } from '../../../src/ui/Analytics/AnalyticsActionListMeta';
-import { DynamicFacetValueRenderer } from '../../../src/ui/DynamicFacet/DynamicFacetValues/DynamicFacetValueRenderer';
 
 export function DynamicFacetBreadcrumbsTest() {
   describe('DynamicFacetBreadcrumbs', () => {
