@@ -412,7 +412,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   }
 
   private get isCategoryEmpty() {
-    return !this.categoryValueRoot.path.length && !this.categoryValueRoot.children.length;
+    return !this.categoryValueRoot.children.length;
   }
 
   private updateAppearance() {
