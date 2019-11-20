@@ -56,11 +56,11 @@ export class DynamicFacetBreadcrumbs {
 
   private valueSelectAction(facetValue: DynamicFacetValue) {
     this.facet.deselectValue(facetValue.value);
-    this.facet.triggerNewQuery(() => this.logActionToAnalytics(facetValue));
+    this.facet.triggerNewQuery(() => this.logActionToAnalytics());
   }
 
-  private logActionToAnalytics(facetValue: DynamicFacetValue) {
-    this.facet.logAnalyticsEvent(analyticsActionCauseList.breadcrumbDynamicFacet, facetValue.analyticsFacetState);
+  private logActionToAnalytics() {
+    this.facet.logAnalyticsEvent(analyticsActionCauseList.breadcrumbFacet, this.facet.basicAnalyticsFacetMeta);
   }
 
   private createAndAppendCollapsedBreadcrumbs(facetValues: DynamicFacetValue[]) {

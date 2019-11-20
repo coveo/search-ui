@@ -366,7 +366,7 @@ export function DynamicFacetTest() {
 
       expect(test.cmp.logAnalyticsEvent).toHaveBeenCalledWith(
         analyticsActionCauseList.dynamicFacetSelect,
-        test.cmp.values.get('a').analyticsFacetState
+        test.cmp.values.get('a').analyticsFacetMeta
       );
     });
 
@@ -378,7 +378,7 @@ export function DynamicFacetTest() {
 
       expect(test.cmp.logAnalyticsEvent).toHaveBeenCalledWith(
         analyticsActionCauseList.dynamicFacetDeselect,
-        test.cmp.values.get('a').analyticsFacetState
+        test.cmp.values.get('a').analyticsFacetMeta
       );
     });
 
@@ -455,7 +455,10 @@ export function DynamicFacetTest() {
     });
 
     it('logs an analytics search event when logAnalyticsEvent is called', () => {
-      test.cmp.logAnalyticsEvent(analyticsActionCauseList.dynamicFacetSelect, test.cmp.analyticsFacetState[0]);
+      test.cmp.logAnalyticsEvent(analyticsActionCauseList.dynamicFacetSelect, {
+        ...test.cmp.basicAnalyticsFacetMeta,
+        facetValue: 'foo'
+      });
 
       expect(test.cmp.usageAnalytics.logSearchEvent).toHaveBeenCalled();
     });
@@ -467,6 +470,14 @@ export function DynamicFacetTest() {
         id: test.cmp.options.id,
         facetType: FacetType.specific,
         facetPosition: test.cmp.position
+      });
+    });
+
+    it('returns the correct basicAnalyticsFacetMeta', () => {
+      expect(test.cmp.basicAnalyticsFacetMeta).toEqual({
+        facetField: test.cmp.options.field.toString(),
+        facetTitle: test.cmp.options.title,
+        facetId: test.cmp.options.id
       });
     });
 

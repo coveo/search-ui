@@ -24,7 +24,7 @@ import { isFacetSortCriteria } from '../../rest/Facet/FacetSortCriteria';
 import { l } from '../../strings/Strings';
 import { DeviceUtils } from '../../utils/DeviceUtils';
 import { BreadcrumbEvents, IPopulateBreadcrumbEventArgs } from '../../events/BreadcrumbEvents';
-import { IAnalyticsActionCause, analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
+import { IAnalyticsActionCause, analyticsActionCauseList, IAnalyticsFacetMeta } from '../Analytics/AnalyticsActionListMeta';
 import { IAnalyticsFacetState } from '../Analytics/IAnalyticsFacetState';
 import { IQueryOptions } from '../../controllers/QueryController';
 import { DynamicFacetManager } from '../DynamicFacetManager/DynamicFacetManager';
@@ -523,8 +523,16 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
     };
   }
 
-  public logAnalyticsEvent(actionCause: IAnalyticsActionCause, facetMeta: IAnalyticsFacetState) {
-    this.usageAnalytics.logSearchEvent<IAnalyticsFacetState>(actionCause, facetMeta);
+  public get basicAnalyticsFacetMeta(): IAnalyticsFacetMeta {
+    return {
+      facetField: this.options.field.toString(),
+      facetId: this.options.id,
+      facetTitle: this.options.title
+    };
+  }
+
+  public logAnalyticsEvent(actionCause: IAnalyticsActionCause, facetMeta: IAnalyticsFacetMeta) {
+    this.usageAnalytics.logSearchEvent<IAnalyticsFacetMeta>(actionCause, facetMeta);
   }
 
   public putStateIntoQueryBuilder(queryBuilder: QueryBuilder) {
@@ -638,13 +646,13 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
     if (Utils.isNonEmptyArray(valuesToSelect)) {
       this.selectMultipleValues(valuesToSelect);
       // Only one search event is sent, pick first facet value
-      this.logAnalyticsEvent(analyticsActionCauseList.dynamicFacetSelect, this.values.get(valuesToSelect[0]).analyticsFacetState);
+      this.logAnalyticsEvent(analyticsActionCauseList.dynamicFacetSelect, this.values.get(valuesToSelect[0]).analyticsFacetMeta);
     }
 
     if (Utils.isNonEmptyArray(valuesToDeselect)) {
       this.deselectMultipleValues(valuesToDeselect);
       // Only one search event is sent, pick first facet value
-      this.logAnalyticsEvent(analyticsActionCauseList.dynamicFacetDeselect, this.values.get(valuesToDeselect[0]).analyticsFacetState);
+      this.logAnalyticsEvent(analyticsActionCauseList.dynamicFacetDeselect, this.values.get(valuesToDeselect[0]).analyticsFacetMeta);
     }
   };
 

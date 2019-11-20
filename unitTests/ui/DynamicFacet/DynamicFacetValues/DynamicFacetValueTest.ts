@@ -93,7 +93,14 @@ export function DynamicFacetValueTest() {
       expect(dynamicFacetValue.formattedCount).toBe(Globalize.format(dynamicFacetValue.numberOfResults, 'n0'));
     });
 
-    it(`should return the correct analyticsMeta for a specific value`, () => {
+    it(`should return the correct analyticsFacetMeta for a specific value`, () => {
+      expect(dynamicFacetValue.analyticsFacetMeta).toEqual({
+        ...facet.basicAnalyticsFacetMeta,
+        facetValue: dynamicFacetValue.value
+      });
+    });
+
+    it(`should return the correct analyticsFacetState for a specific value`, () => {
       expect(dynamicFacetValue.analyticsFacetState).toEqual({
         ...facet.basicAnalyticsFacetState,
         value: dynamicFacetValue.value,
@@ -103,7 +110,7 @@ export function DynamicFacetValueTest() {
       });
     });
 
-    it(`should return the correct analyticsMeta for a range value`, () => {
+    it(`should return the correct analyticsFacetState for a range value`, () => {
       const rangeFacet = DynamicFacetRangeTestUtils.createFakeFacet();
       rangeFacet.values.createFromRanges(DynamicFacetRangeTestUtils.createFakeRanges());
       dynamicFacetValue = rangeFacet.values.allFacetValues[0];
@@ -130,7 +137,7 @@ export function DynamicFacetValueTest() {
         dynamicFacetValue.logSelectActionToAnalytics();
         expect(facet.logAnalyticsEvent).toHaveBeenCalledWith(
           analyticsActionCauseList.dynamicFacetDeselect,
-          dynamicFacetValue.analyticsFacetState
+          dynamicFacetValue.analyticsFacetMeta
         );
       });
     });
@@ -147,7 +154,7 @@ export function DynamicFacetValueTest() {
 
       it('should log the right analytics action', () => {
         dynamicFacetValue.logSelectActionToAnalytics();
-        expect(facet.logAnalyticsEvent).toHaveBeenCalledWith(analyticsActionCauseList.dynamicFacetSelect, dynamicFacetValue.analyticsFacetState);
+        expect(facet.logAnalyticsEvent).toHaveBeenCalledWith(analyticsActionCauseList.dynamicFacetSelect, dynamicFacetValue.analyticsFacetMeta);
       });
     });
 

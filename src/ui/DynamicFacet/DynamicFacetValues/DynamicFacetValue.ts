@@ -2,7 +2,7 @@ import * as Globalize from 'globalize';
 import { DynamicFacetValueRenderer } from './DynamicFacetValueRenderer';
 import { DynamicFacet } from '../DynamicFacet';
 import { FacetValueState } from '../../../rest/Facet/FacetValueState';
-import { analyticsActionCauseList } from '../../Analytics/AnalyticsActionListMeta';
+import { analyticsActionCauseList, IAnalyticsFacetMeta } from '../../Analytics/AnalyticsActionListMeta';
 import { l } from '../../../strings/Strings';
 import { IRangeValue, RangeType } from '../../../rest/RangeValue';
 import { FacetType } from '../../../rest/Facet/FacetRequest';
@@ -110,11 +110,18 @@ export class DynamicFacetValue implements IDynamicFacetValue {
     };
   }
 
+  public get analyticsFacetMeta(): IAnalyticsFacetMeta {
+    return {
+      ...this.facet.basicAnalyticsFacetMeta,
+      facetValue: this.value
+    };
+  }
+
   public logSelectActionToAnalytics() {
     const action =
       this.state === FacetValueState.selected ? analyticsActionCauseList.dynamicFacetSelect : analyticsActionCauseList.dynamicFacetDeselect;
 
-    this.facet.logAnalyticsEvent(action, this.analyticsFacetState);
+    this.facet.logAnalyticsEvent(action, this.analyticsFacetMeta);
   }
 
   private render() {
