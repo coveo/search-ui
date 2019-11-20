@@ -11,16 +11,17 @@ import { QueryController } from '../../controllers/QueryController';
 import { Defer } from '../../misc/Defer';
 import { APIAnalyticsBuilder } from '../../rest/APIAnalyticsBuilder';
 import { IAnalyticsSearchEventsArgs, AnalyticsEvents, IAnalyticsEventArgs } from '../../events/AnalyticsEvents';
-import { analyticsActionCauseList, IAnalyticsDynamicFacetMeta } from '../Analytics/AnalyticsActionListMeta';
+import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
 import { QueryStateModel } from '../../models/QueryStateModel';
 import { indexOf, map, each } from 'underscore';
 import { Logger } from '../../misc/Logger';
+import { IAnalyticsFacetState } from './IAnalyticsFacetState';
 
 export class PendingSearchEvent {
   private handler: (evt: Event, arg: IDuringQueryEventArgs) => void;
   private searchPromises: Promise<IQueryResults>[] = [];
   private results: IQueryResults[] = [];
-  private facetState: IAnalyticsDynamicFacetMeta[];
+  private facetState: IAnalyticsFacetState[];
   protected cancelled = false;
   protected finished = false;
   protected searchEvents: ISearchEvent[] = [];
@@ -49,7 +50,7 @@ export class PendingSearchEvent {
     return this.templateSearchEvent.customData;
   }
 
-  public addFacetState(state: IAnalyticsDynamicFacetMeta[]) {
+  public addFacetState(state: IAnalyticsFacetState[]) {
     if (!this.facetState) {
       this.facetState = [];
     }

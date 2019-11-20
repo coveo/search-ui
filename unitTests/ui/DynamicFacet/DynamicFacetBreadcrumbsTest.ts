@@ -2,7 +2,7 @@ import { DynamicFacetBreadcrumbs } from '../../../src/ui/DynamicFacet/DynamicFac
 import { $$ } from '../../../src/Core';
 import { DynamicFacetTestUtils } from './DynamicFacetTestUtils';
 import { DynamicFacet, IDynamicFacetOptions } from '../../../src/ui/DynamicFacet/DynamicFacet';
-import { IDynamicFacetValue, DynamicFacetValue } from '../../../src/ui/DynamicFacet/DynamicFacetValues/DynamicFacetValue';
+import { IDynamicFacetValue } from '../../../src/ui/DynamicFacet/DynamicFacetValues/DynamicFacetValue';
 import { FacetValueState } from '../../../src/rest/Facet/FacetValueState';
 import { analyticsActionCauseList } from '../../../src/ui/Analytics/AnalyticsActionListMeta';
 
@@ -102,8 +102,8 @@ export function DynamicFacetBreadcrumbsTest() {
 
         $$(valueElements()[0]).trigger('click');
         expect(facet.logAnalyticsEvent).toHaveBeenCalledWith(
-          analyticsActionCauseList.breadcrumbDynamicFacet,
-          new DynamicFacetValue(mockFacetValues[0], facet).analyticsMeta
+          analyticsActionCauseList.breadcrumbFacet,
+          facet.basicAnalyticsFacetMeta
         );
       });
     });
