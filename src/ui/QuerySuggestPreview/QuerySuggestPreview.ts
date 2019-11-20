@@ -58,11 +58,11 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
      * **Examples**
      * * Specifying the `id` attribute of the target result template:
      * ```html
-     * <div class="CoveoQuerySuggestPreview" data-template-id="myTemplateId"></div>
+     * <div class="CoveoQuerySuggestPreview" data-result-template-id="myTemplateId"></div>
      * ```
      * * Specifying an equivalent CSS selector:
      * ```html
-     * <div class="CoveoQuerySuggestPreview" data-template-selector="#myTemplateId"></div>
+     * <div class="CoveoQuerySuggestPreview" data-result-template-selector="#myTemplateId"></div>
      * ```
      */
     resultTemplate: TemplateComponentOptions.buildTemplateOption(),
