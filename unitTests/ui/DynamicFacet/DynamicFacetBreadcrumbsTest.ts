@@ -104,8 +104,8 @@ export function DynamicFacetBreadcrumbsTest() {
 
         $$(valueElements()[0]).trigger('click');
         expect(facet.logAnalyticsEvent).toHaveBeenCalledWith(
-          analyticsActionCauseList.breadcrumbDynamicFacet,
-          new DynamicFacetValue(mockFacetValues[0], facet, DynamicFacetValueRenderer).analyticsMeta
+          analyticsActionCauseList.breadcrumbFacet,
+          facet.basicAnalyticsFacetMeta
         );
       });
     });

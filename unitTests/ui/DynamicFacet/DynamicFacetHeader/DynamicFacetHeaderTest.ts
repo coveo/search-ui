@@ -87,7 +87,7 @@ export function DynamicFacetHeaderTest() {
       };
 
       $$(clearElement()).trigger('click');
-      expect(facet.logAnalyticsEvent).toHaveBeenCalledWith(analyticsActionCauseList.dynamicFacetClearAll, facet.basicAnalyticsFacetState);
+      expect(facet.logAnalyticsEvent).toHaveBeenCalledWith(analyticsActionCauseList.dynamicFacetClearAll, facet.basicAnalyticsFacetMeta);
     });
 
     it(`when clicking on the clear button

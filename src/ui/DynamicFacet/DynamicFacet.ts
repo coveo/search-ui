@@ -24,7 +24,8 @@ import { isFacetSortCriteria } from '../../rest/Facet/FacetSortCriteria';
 import { l } from '../../strings/Strings';
 import { DeviceUtils } from '../../utils/DeviceUtils';
 import { BreadcrumbEvents, IPopulateBreadcrumbEventArgs } from '../../events/BreadcrumbEvents';
-import { IAnalyticsActionCause, IAnalyticsDynamicFacetMeta, analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
+import { IAnalyticsActionCause, analyticsActionCauseList, IAnalyticsFacetMeta } from '../Analytics/AnalyticsActionListMeta';
+import { IAnalyticsFacetState } from '../Analytics/IAnalyticsFacetState';
 import { IQueryOptions } from '../../controllers/QueryController';
 import { DynamicFacetManager } from '../DynamicFacetManager/DynamicFacetManager';
 import { QueryBuilder } from '../Base/QueryBuilder';
@@ -492,13 +493,11 @@ export class DynamicFacet extends Component implements IDynamicFacet {
     }
   }
 
-  // Complete facet analytics meta
-  public get analyticsFacetState(): IAnalyticsDynamicFacetMeta[] {
-    return this.values.activeFacetValues.map(facetValue => facetValue.analyticsMeta);
+  public get analyticsFacetState(): IAnalyticsFacetState[] {
+    return this.values.activeFacetValues.map(facetValue => facetValue.analyticsFacetState);
   }
 
-  // Facet specific analytics meta
-  public get basicAnalyticsFacetState(): IAnalyticsDynamicFacetMeta {
+  public get basicAnalyticsFacetState(): IAnalyticsFacetState {
     return {
       field: this.options.field.toString(),
       id: this.options.id,
@@ -508,8 +507,16 @@ export class DynamicFacet extends Component implements IDynamicFacet {
     };
   }
 
-  public logAnalyticsEvent(actionCause: IAnalyticsActionCause, facetMeta: IAnalyticsDynamicFacetMeta) {
-    this.usageAnalytics.logSearchEvent<IAnalyticsDynamicFacetMeta>(actionCause, facetMeta);
+  public get basicAnalyticsFacetMeta(): IAnalyticsFacetMeta {
+    return {
+      facetField: this.options.field.toString(),
+      facetId: this.options.id,
+      facetTitle: this.options.title
+    };
+  }
+
+  public logAnalyticsEvent(actionCause: IAnalyticsActionCause, facetMeta: IAnalyticsFacetMeta) {
+    this.usageAnalytics.logSearchEvent<IAnalyticsFacetMeta>(actionCause, facetMeta);
   }
 
   public putStateIntoQueryBuilder(queryBuilder: QueryBuilder) {
@@ -631,13 +638,13 @@ export class DynamicFacet extends Component implements IDynamicFacet {
     if (Utils.isNonEmptyArray(valuesToSelect)) {
       this.selectMultipleValues(valuesToSelect);
       // Only one search event is sent, pick first facet value
-      this.logAnalyticsEvent(analyticsActionCauseList.dynamicFacetSelect, this.values.get(valuesToSelect[0]).analyticsMeta);
+      this.logAnalyticsEvent(analyticsActionCauseList.dynamicFacetSelect, this.values.get(valuesToSelect[0]).analyticsFacetMeta);
     }
 
     if (Utils.isNonEmptyArray(valuesToDeselect)) {
       this.deselectMultipleValues(valuesToDeselect);
       // Only one search event is sent, pick first facet value
-      this.logAnalyticsEvent(analyticsActionCauseList.dynamicFacetDeselect, this.values.get(valuesToDeselect[0]).analyticsMeta);
+      this.logAnalyticsEvent(analyticsActionCauseList.dynamicFacetDeselect, this.values.get(valuesToDeselect[0]).analyticsFacetMeta);
     }
   };
 
@@ -769,7 +776,7 @@ export class DynamicFacet extends Component implements IDynamicFacet {
   }
 
   private logAnalyticsFacetShowMoreLess(cause: IAnalyticsActionCause) {
-    this.usageAnalytics.logCustomEvent<IAnalyticsDynamicFacetMeta>(cause, this.basicAnalyticsFacetState, this.element);
+    this.usageAnalytics.logCustomEvent<IAnalyticsFacetState>(cause, this.basicAnalyticsFacetState, this.element);
   }
 }
 

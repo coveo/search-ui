@@ -46,7 +46,7 @@ export class DynamicFacetHeader {
   }
 
   private logClearAllToAnalytics() {
-    this.facet.logAnalyticsEvent(analyticsActionCauseList.dynamicFacetClearAll, this.facet.basicAnalyticsFacetState);
+    this.facet.logAnalyticsEvent(analyticsActionCauseList.dynamicFacetClearAll, this.facet.basicAnalyticsFacetMeta);
   }
 
   private createCollapseToggle() {

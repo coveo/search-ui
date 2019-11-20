@@ -1,11 +1,12 @@
 import * as Globalize from 'globalize';
 import { FacetValueState } from '../../../rest/Facet/FacetValueState';
-import { IAnalyticsDynamicFacetMeta, analyticsActionCauseList } from '../../Analytics/AnalyticsActionListMeta';
+import { analyticsActionCauseList, IAnalyticsFacetMeta } from '../../Analytics/AnalyticsActionListMeta';
 import { l } from '../../../strings/Strings';
 import { IRangeValue, RangeType } from '../../../rest/RangeValue';
 import { FacetType } from '../../../rest/Facet/FacetRequest';
 import { IDynamicFacet } from '../IDynamicFacet';
 import { IFacetResponseValue } from '../../../rest/Facet/FacetResponse';
+import { IAnalyticsFacetState } from '../../Analytics/IAnalyticsFacetState';
 
 export interface IValueCreator {
   createFromResponse(facetValue: IFacetResponseValue, index: number): DynamicFacetValue;
@@ -104,7 +105,7 @@ export class DynamicFacetValue implements IDynamicFacetValue {
     };
   }
 
-  public get analyticsMeta(): IAnalyticsDynamicFacetMeta {
+  public get analyticsFacetState(): IAnalyticsFacetState {
     return {
       ...this.facet.basicAnalyticsFacetState,
       ...this.rangeAnalyticsMeta,
@@ -115,11 +116,18 @@ export class DynamicFacetValue implements IDynamicFacetValue {
     };
   }
 
+  public get analyticsFacetMeta(): IAnalyticsFacetMeta {
+    return {
+      ...this.facet.basicAnalyticsFacetMeta,
+      facetValue: this.value
+    };
+  }
+
   public logSelectActionToAnalytics() {
     const action =
       this.state === FacetValueState.selected ? analyticsActionCauseList.dynamicFacetSelect : analyticsActionCauseList.dynamicFacetDeselect;
 
-    this.facet.logAnalyticsEvent(action, this.analyticsMeta);
+    this.facet.logAnalyticsEvent(action, this.analyticsFacetMeta);
   }
 
   private render() {
