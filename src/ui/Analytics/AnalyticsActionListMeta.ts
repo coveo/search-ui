@@ -685,7 +685,7 @@ export var analyticsActionCauseList = {
     type: 'categoryFacet'
   },
   /**
-   * Identifies the search event that gets logged when a dynamicFacet check box is selected and the query is updated.
+   * Identifies the search event that gets logged when a DynamicFacet check box is selected and the query is updated.
    *
    * `actionCause`: `'facetSelect'`
    * `actionType`: `'dynamicFacet'`
@@ -698,7 +698,7 @@ export var analyticsActionCauseList = {
     type: 'dynamicFacet'
   },
   /**
-   * Identifies the search event that gets logged when a dynamicFacet check box is deselected and the query is updated.
+   * Identifies the search event that gets logged when a DynamicFacet check box is deselected and the query is updated.
    *
    * `actionCause`: `'facetDeselect'`
    * `actionType`: `'dynamicFacet'`
@@ -711,7 +711,7 @@ export var analyticsActionCauseList = {
     type: 'dynamicFacet'
   },
   /**
-   * Identifies the search event that gets logged when the **Clear** button of the DynamicFacet is selected.
+   * Identifies the search event that gets logged when the **Clear** button of the DynamicFacet is clicked.
    *
    * `actionCause`: `'facetClearAll'`
    * `actionType`: `'dynamicFacet'`
@@ -724,7 +724,7 @@ export var analyticsActionCauseList = {
     type: 'dynamicFacet'
   },
   /**
-   * Identifies the search event that gets logged when the **Show more** button of the DynamicFacet is selected.
+   * Identifies the search event that gets logged when the **Show more** button of the DynamicFacet is clicked.
    *
    * `actionCause`: `'showMoreFacetResults'`
    * `actionType`: `'dynamicFacet'`
@@ -737,7 +737,7 @@ export var analyticsActionCauseList = {
     type: 'dynamicFacet'
   },
   /**
-   * Identifies the search event that gets logged when the **Show less** button of the DynamicFacet is selected.
+   * Identifies the search event that gets logged when the **Show less** button of the DynamicFacet is clicked.
    *
    * `actionCause`: `'showLessFacetResults'`
    * `actionType`: `'dynamicFacet'`
