@@ -2,9 +2,9 @@ import 'styling/DynamicFacet/_DynamicFacetBreadcrumbs';
 import { $$ } from '../../utils/Dom';
 import { l } from '../../strings/Strings';
 import { SVGIcons } from '../../utils/SVGIcons';
-import { DynamicFacetValue } from './DynamicFacetValues/DynamicFacetValue';
 import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
 import { IDynamicFacet } from './IDynamicFacet';
+import { IDynamicFacetValue } from './DynamicFacetValues/IDynamicFacetValue';
 
 export class DynamicFacetBreadcrumbs {
   public element: HTMLElement;
@@ -33,11 +33,11 @@ export class DynamicFacetBreadcrumbs {
     this.element.appendChild(titleElement);
   }
 
-  private createAndAppendBreadcrumbValues(facetValues: DynamicFacetValue[]) {
+  private createAndAppendBreadcrumbValues(facetValues: IDynamicFacetValue[]) {
     facetValues.forEach(facetValue => this.createAndAppendBreadcrumbValue(facetValue));
   }
 
-  private createAndAppendBreadcrumbValue(facetValue: DynamicFacetValue) {
+  private createAndAppendBreadcrumbValue(facetValue: IDynamicFacetValue) {
     const valueElement = $$(
       'button',
       {
@@ -54,7 +54,7 @@ export class DynamicFacetBreadcrumbs {
     this.element.appendChild(valueElement);
   }
 
-  private valueSelectAction(facetValue: DynamicFacetValue) {
+  private valueSelectAction(facetValue: IDynamicFacetValue) {
     this.facet.deselectValue(facetValue.value);
     this.facet.triggerNewQuery(() => this.logActionToAnalytics());
   }
@@ -63,7 +63,7 @@ export class DynamicFacetBreadcrumbs {
     this.facet.logAnalyticsEvent(analyticsActionCauseList.breadcrumbFacet, this.facet.basicAnalyticsFacetMeta);
   }
 
-  private createAndAppendCollapsedBreadcrumbs(facetValues: DynamicFacetValue[]) {
+  private createAndAppendCollapsedBreadcrumbs(facetValues: IDynamicFacetValue[]) {
     const label = l('NMore', `${facetValues.length}`);
     const title = facetValues.map(({ value }) => value).join('\n');
     const collapsedElement = $$(

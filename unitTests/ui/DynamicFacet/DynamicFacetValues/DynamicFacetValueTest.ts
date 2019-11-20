@@ -7,10 +7,11 @@ import { IDynamicFacetOptions } from '../../../../src/ui/DynamicFacet/IDynamicFa
 import { FacetValueState } from '../../../../src/rest/Facet/FacetValueState';
 import { analyticsActionCauseList } from '../../../../src/ui/Analytics/AnalyticsActionListMeta';
 import { DynamicFacetValueRenderer } from '../../../../src/ui/DynamicFacet/DynamicFacetValues/DynamicFacetValueRenderer';
+import { IDynamicFacetValue } from '../../../../src/ui/DynamicFacet/DynamicFacetValues/IDynamicFacetValue';
 
 export function DynamicFacetValueTest() {
   describe('DynamicFacetValue', () => {
-    let dynamicFacetValue: DynamicFacetValue;
+    let dynamicFacetValue: IDynamicFacetValue;
     let facet: DynamicFacet;
     let options: IDynamicFacetOptions;
 

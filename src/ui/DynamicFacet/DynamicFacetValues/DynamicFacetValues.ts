@@ -1,20 +1,21 @@
 import 'styling/DynamicFacet/_DynamicFacetValues';
 import { $$ } from '../../../utils/Dom';
 import { findWhere, find } from 'underscore';
-import { DynamicFacetValue, IValueCreator } from './DynamicFacetValue';
+import { DynamicFacetValue } from './DynamicFacetValue';
 import { IFacetResponse } from '../../../rest/Facet/FacetResponse';
 import { FacetValueState } from '../../../rest/Facet/FacetValueState';
 import { l } from '../../../strings/Strings';
 import { IRangeValue } from '../../../rest/RangeValue';
 import { IDynamicFacet } from '../IDynamicFacet';
 import { IDynamicFacetValues } from './IDynamicFacetValues';
+import { IValueCreator, IDynamicFacetValue } from './IDynamicFacetValue';
 
 export interface IDynamicFacetValueCreatorKlass {
   new (facet: IDynamicFacet): IValueCreator;
 }
 
 export class DynamicFacetValues implements IDynamicFacetValues {
-  private facetValues: DynamicFacetValue[];
+  private facetValues: IDynamicFacetValue[];
   private list = $$('ul', { className: 'coveo-dynamic-facet-values' }).el;
   private valueCreator: IValueCreator;
 

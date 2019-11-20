@@ -2,34 +2,12 @@ import * as Globalize from 'globalize';
 import { FacetValueState } from '../../../rest/Facet/FacetValueState';
 import { analyticsActionCauseList, IAnalyticsFacetMeta } from '../../Analytics/AnalyticsActionListMeta';
 import { l } from '../../../strings/Strings';
-import { IRangeValue, RangeType } from '../../../rest/RangeValue';
+import {  RangeType } from '../../../rest/RangeValue';
 import { FacetType } from '../../../rest/Facet/FacetRequest';
 import { IDynamicFacet } from '../IDynamicFacet';
-import { IFacetResponseValue } from '../../../rest/Facet/FacetResponse';
 import { IAnalyticsFacetState } from '../../Analytics/IAnalyticsFacetState';
+import { IDynamicFacetValueProperties, IValueRenderer, IValueRendererKlass, IDynamicFacetValue } from './IDynamicFacetValue';
 
-export interface IValueCreator {
-  createFromResponse(facetValue: IFacetResponseValue, index: number): DynamicFacetValue;
-  createFromValue(value: string): DynamicFacetValue;
-  createFromRange(range: IRangeValue, index: number): DynamicFacetValue;
-}
-
-export interface IValueRenderer {
-  render(): HTMLElement;
-}
-
-export interface IValueRendererKlass {
-  new (facetValue: DynamicFacetValue, facet: IDynamicFacet): IValueRenderer;
-}
-
-export interface IDynamicFacetValue extends IRangeValue {
-  value: string;
-  displayValue: string;
-  state: FacetValueState;
-  numberOfResults: number;
-  position: number;
-  preventAutoSelect?: boolean;
-}
 
 export class DynamicFacetValue implements IDynamicFacetValue {
   public value: string;
@@ -44,7 +22,7 @@ export class DynamicFacetValue implements IDynamicFacetValue {
   public renderer: IValueRenderer;
   private element: HTMLElement = null;
 
-  constructor(facetValue: IDynamicFacetValue, private facet: IDynamicFacet, rendererKlass: IValueRendererKlass) {
+  constructor(facetValue: IDynamicFacetValueProperties, private facet: IDynamicFacet, rendererKlass: IValueRendererKlass) {
     this.value = facetValue.value;
     this.start = facetValue.start;
     this.end = facetValue.end;
@@ -77,7 +55,7 @@ export class DynamicFacetValue implements IDynamicFacetValue {
     this.preventAutoSelect = true;
   }
 
-  public equals(arg: string | DynamicFacetValue) {
+  public equals(arg: string | IDynamicFacetValue) {
     const value = typeof arg === 'string' ? arg : arg.value;
     return value.toLowerCase() === this.value.toLowerCase();
   }
@@ -93,7 +71,7 @@ export class DynamicFacetValue implements IDynamicFacetValue {
     return `${l(selectOrUnselect, this.displayValue, resultCount)}`;
   }
 
-  public get rangeAnalyticsMeta() {
+  private get rangeAnalyticsMeta() {
     if (this.facet.facetType === FacetType.specific) {
       return null;
     }

@@ -1,7 +1,7 @@
 import { $$ } from '../../../src/utils/Dom';
 import { DynamicFacet } from '../../../src/ui/DynamicFacet/DynamicFacet';
 import { IDynamicFacetOptions } from '../../../src/ui/DynamicFacet/IDynamicFacet';
-import { IDynamicFacetValue } from '../../../src/ui/DynamicFacet/DynamicFacetValues/DynamicFacetValue';
+import { IDynamicFacetValueProperties } from '../../../src/ui/DynamicFacet/DynamicFacetValues/IDynamicFacetValue';
 import { DynamicFacetValueCreator } from '../../../src/ui/DynamicFacet/DynamicFacetValues/DynamicFacetValueCreator';
 import { FacetValueState } from '../../../src/rest/Facet/FacetValueState';
 import * as Mock from '../../MockEnvironment';
@@ -43,12 +43,12 @@ export class DynamicFacetTestUtils {
     });
   }
 
-  static createFakeFacetValues(count = 5, state = FacetValueState.idle): IDynamicFacetValue[] {
+  static createFakeFacetValues(count = 5, state = FacetValueState.idle): IDynamicFacetValueProperties[] {
     const fakeValues = [];
 
     for (let index = 0; index < count; index++) {
       const value = `fake value ${index}`;
-      const fakeValue: IDynamicFacetValue = {
+      const fakeValue: IDynamicFacetValueProperties = {
         displayValue: value,
         numberOfResults: Math.ceil(Math.random() * 100000),
         value,

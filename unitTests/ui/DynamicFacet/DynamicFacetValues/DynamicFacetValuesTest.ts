@@ -1,6 +1,6 @@
 import { DynamicFacetValues } from '../../../../src/ui/DynamicFacet/DynamicFacetValues/DynamicFacetValues';
 import { FacetValueState } from '../../../../src/rest/Facet/FacetValueState';
-import { IDynamicFacetValue } from '../../../../src/ui/DynamicFacet/DynamicFacetValues/DynamicFacetValue';
+import { IDynamicFacetValueProperties } from '../../../../src/ui/DynamicFacet/DynamicFacetValues/IDynamicFacetValue';
 import { DynamicFacetRangeValueCreator } from '../../../../src/ui/DynamicFacet/DynamicFacetValues/DynamicFacetRangeValueCreator';
 import { DynamicFacet } from '../../../../src/ui/DynamicFacet/DynamicFacet';
 import { DynamicFacetTestUtils } from '../DynamicFacetTestUtils';
@@ -12,7 +12,7 @@ export function DynamicFacetValuesTest() {
   describe('DynamicFacetValues', () => {
     const valueCount = 8;
     let dynamicFacetValues: DynamicFacetValues;
-    let mockFacetValues: IDynamicFacetValue[];
+    let mockFacetValues: IDynamicFacetValueProperties[];
     let facet: DynamicFacet;
 
     beforeEach(() => {

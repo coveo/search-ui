@@ -1,7 +1,7 @@
 import * as Mock from '../../MockEnvironment';
 import { DynamicFacet } from '../../../src/ui/DynamicFacet/DynamicFacet';
 import { IDynamicFacetOptions } from '../../../src/ui/DynamicFacet/IDynamicFacet';
-import { IDynamicFacetValue } from '../../../src/ui/DynamicFacet/DynamicFacetValues/DynamicFacetValue';
+import { IDynamicFacetValueProperties } from '../../../src/ui/DynamicFacet/DynamicFacetValues/IDynamicFacetValue';
 import { FacetValueState } from '../../../src/rest/Facet/FacetValueState';
 import { DynamicFacetTestUtils } from './DynamicFacetTestUtils';
 import { $$, BreadcrumbEvents, QueryEvents } from '../../../src/Core';
@@ -16,7 +16,7 @@ import { FacetType } from '../../../src/rest/Facet/FacetRequest';
 export function DynamicFacetTest() {
   describe('DynamicFacet', () => {
     let test: Mock.IBasicComponentSetup<DynamicFacet>;
-    let mockFacetValues: IDynamicFacetValue[];
+    let mockFacetValues: IDynamicFacetValueProperties[];
     let options: IDynamicFacetOptions;
 
     beforeEach(() => {

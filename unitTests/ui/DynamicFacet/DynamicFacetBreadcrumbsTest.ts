@@ -3,7 +3,7 @@ import { $$ } from '../../../src/Core';
 import { DynamicFacetTestUtils } from './DynamicFacetTestUtils';
 import { DynamicFacet } from '../../../src/ui/DynamicFacet/DynamicFacet';
 import { IDynamicFacetOptions } from '../../../src/ui/DynamicFacet/IDynamicFacet';
-import { IDynamicFacetValue } from '../../../src/ui/DynamicFacet/DynamicFacetValues/DynamicFacetValue';
+import { IDynamicFacetValueProperties } from '../../../src/ui/DynamicFacet/DynamicFacetValues/IDynamicFacetValue';
 import { FacetValueState } from '../../../src/rest/Facet/FacetValueState';
 import { analyticsActionCauseList } from '../../../src/ui/Analytics/AnalyticsActionListMeta';
 
@@ -12,7 +12,7 @@ export function DynamicFacetBreadcrumbsTest() {
     let facet: DynamicFacet;
     let baseOptions: IDynamicFacetOptions;
     let dynamicFacetBreadcrumbs: DynamicFacetBreadcrumbs;
-    let mockFacetValues: IDynamicFacetValue[];
+    let mockFacetValues: IDynamicFacetValueProperties[];
 
     beforeEach(() => {
       mockFacetValues = DynamicFacetTestUtils.createFakeFacetValues(5, FacetValueState.selected);
