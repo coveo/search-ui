@@ -10,7 +10,7 @@ import { IFacetResponseValue } from '../../../rest/Facet/FacetResponse';
 export interface IValueCreator {
   createFromResponse(facetValue: IFacetResponseValue, index: number): DynamicFacetValue;
   createFromValue(value: string): DynamicFacetValue;
-  createFromRange?(range: IRangeValue, index: number): DynamicFacetValue;
+  createFromRange(range: IRangeValue, index: number): DynamicFacetValue;
 }
 
 export interface IValueRenderer {

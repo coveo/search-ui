@@ -42,4 +42,8 @@ export class DynamicFacetValueCreator implements IValueCreator {
       DynamicFacetValueRenderer
     );
   }
+
+  public createFromRange() {
+    return null;
+  }
 }
