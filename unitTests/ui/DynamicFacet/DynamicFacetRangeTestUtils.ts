@@ -6,7 +6,7 @@ import { DynamicFacetRangeValueCreator } from '../../../src/ui/DynamicFacet/Dyna
 import { $$, Logger } from '../../../src/Core';
 import { IFacetResponse, IFacetResponseValue } from '../../../src/rest/Facet/FacetResponse';
 import { FacetValueState } from '../../../src/rest/Facet/FacetValueState';
-import { IDynamicFacetRangeOptions, DynamicFacetRangeValueFormat } from '../../../src/ui/DynamicFacet/DynamicFacetRangeInterface';
+import { IDynamicFacetRangeOptions, DynamicFacetRangeValueFormat } from '../../../src/ui/DynamicFacet/IDynamicFacetRange';
 
 export class DynamicFacetRangeTestUtils {
   static allOptions(options?: IDynamicFacetRangeOptions) {

@@ -3,7 +3,7 @@ import { DynamicFacetValueRenderer } from '../../../../src/ui/DynamicFacet/Dynam
 import { DynamicFacetValue } from '../../../../src/ui/DynamicFacet/DynamicFacetValues/DynamicFacetValue';
 import { DynamicFacetTestUtils } from '../DynamicFacetTestUtils';
 import { DynamicFacet } from '../../../../src/ui/DynamicFacet/DynamicFacet';
-import { IDynamicFacetOptions } from '../../../../src/ui/DynamicFacet/DynamicFacetInterface';
+import { IDynamicFacetOptions } from '../../../../src/ui/DynamicFacet/IDynamicFacet';
 
 export function DynamicFacetValueRendererTest() {
   describe('DynamicFacetValueRenderer', () => {

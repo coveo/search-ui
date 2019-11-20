@@ -1,7 +1,7 @@
 import { $$ } from '../../../../src/utils/Dom';
 import { DynamicFacetHeader } from '../../../../src/ui/DynamicFacet/DynamicFacetHeader/DynamicFacetHeader';
 import { DynamicFacet } from '../../../../src/ui/DynamicFacet/DynamicFacet';
-import { IDynamicFacetOptions } from '../../../../src/ui/DynamicFacet/DynamicFacetInterface';
+import { IDynamicFacetOptions } from '../../../../src/ui/DynamicFacet/IDynamicFacet';
 import { DynamicFacetTestUtils } from '../DynamicFacetTestUtils';
 import { analyticsActionCauseList } from '../../../../src/ui/Analytics/AnalyticsActionListMeta';
 

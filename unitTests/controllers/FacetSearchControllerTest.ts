@@ -1,7 +1,7 @@
 import { FacetSearchController } from '../../src/controllers/FacetSearchController';
 import { DynamicFacetTestUtils } from '../ui/DynamicFacet/DynamicFacetTestUtils';
 import { DynamicFacet } from '../../src/ui/DynamicFacet/DynamicFacet';
-import { IDynamicFacetOptions } from '../../src/ui/DynamicFacet/DynamicFacetInterface';
+import { IDynamicFacetOptions } from '../../src/ui/DynamicFacet/IDynamicFacet';
 import { IFacetSearchRequest } from '../../src/rest/Facet/FacetSearchRequest';
 import { FileTypes } from '../../src/ui/Misc/FileTypes';
 

@@ -1,6 +1,6 @@
 import { $$ } from '../../../src/utils/Dom';
 import { DynamicFacet } from '../../../src/ui/DynamicFacet/DynamicFacet';
-import { IDynamicFacetOptions } from '../../../src/ui/DynamicFacet/DynamicFacetInterface';
+import { IDynamicFacetOptions } from '../../../src/ui/DynamicFacet/IDynamicFacet';
 import { IDynamicFacetValue } from '../../../src/ui/DynamicFacet/DynamicFacetValues/DynamicFacetValue';
 import { DynamicFacetValueCreator } from '../../../src/ui/DynamicFacet/DynamicFacetValues/DynamicFacetValueCreator';
 import { FacetValueState } from '../../../src/rest/Facet/FacetValueState';

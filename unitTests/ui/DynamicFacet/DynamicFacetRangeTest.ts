@@ -5,7 +5,7 @@ import { FacetType } from '../../../src/rest/Facet/FacetRequest';
 import { QueryStateModel } from '../../../src/Core';
 import { RangeEndScope } from '../../../src/rest/RangeValue';
 import { FacetSortCriteria } from '../../../src/rest/Facet/FacetSortCriteria';
-import { IDynamicFacetRangeOptions, DynamicFacetRangeValueFormat } from '../../../src/ui/DynamicFacet/DynamicFacetRangeInterface';
+import { IDynamicFacetRangeOptions, DynamicFacetRangeValueFormat } from '../../../src/ui/DynamicFacet/IDynamicFacetRange';
 
 export function DynamicFacetRangeTest() {
   describe('DynamicFacetRange', () => {
