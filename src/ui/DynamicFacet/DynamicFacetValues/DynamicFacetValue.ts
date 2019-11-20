@@ -7,18 +7,18 @@ import { FacetType } from '../../../rest/Facet/FacetRequest';
 import { IDynamicFacet } from '../IDynamicFacet';
 import { IFacetResponseValue } from '../../../rest/Facet/FacetResponse';
 
-export interface ValueCreator {
+export interface IValueCreator {
   createFromResponse(facetValue: IFacetResponseValue, index: number): DynamicFacetValue;
   createFromValue(value: string): DynamicFacetValue;
   createFromRange?(range: IRangeValue, index: number): DynamicFacetValue;
 }
 
-export interface ValueRenderer {
+export interface IValueRenderer {
   render(): HTMLElement;
 }
 
 export interface IValueRendererKlass {
-  new (facetValue: DynamicFacetValue, facet: IDynamicFacet): ValueRenderer;
+  new (facetValue: DynamicFacetValue, facet: IDynamicFacet): IValueRenderer;
 }
 
 export interface IDynamicFacetValue extends IRangeValue {
@@ -40,7 +40,7 @@ export class DynamicFacetValue implements IDynamicFacetValue {
   public numberOfResults: number;
   public position: number;
   public displayValue: string;
-  public renderer: ValueRenderer;
+  public renderer: IValueRenderer;
   private element: HTMLElement = null;
 
   constructor(facetValue: IDynamicFacetValue, private facet: IDynamicFacet, rendererKlass: IValueRendererKlass) {

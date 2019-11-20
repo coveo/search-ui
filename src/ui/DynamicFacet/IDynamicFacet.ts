@@ -24,7 +24,7 @@ export interface IDynamicFacetOptions extends IResponsiveComponentOptions {
   collapsedByDefault?: boolean;
   includeInBreadcrumb?: boolean;
   numberOfValuesInBreadcrumb?: number;
-  valueCaption?: any;
+  valueCaption?: Record<string, string>;
   dependsOn?: string;
 }
 

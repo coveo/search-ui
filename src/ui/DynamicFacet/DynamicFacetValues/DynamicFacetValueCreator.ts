@@ -1,11 +1,11 @@
 import { FacetUtils } from '../../Facet/FacetUtils';
-import { DynamicFacetValue, ValueCreator } from './DynamicFacetValue';
+import { DynamicFacetValue, IValueCreator } from './DynamicFacetValue';
 import { IFacetResponseValue } from '../../../rest/Facet/FacetResponse';
 import { FacetValueState } from '../../../rest/Facet/FacetValueState';
 import { IDynamicFacet } from '../IDynamicFacet';
 import { DynamicFacetValueRenderer } from './DynamicFacetValueRenderer';
 
-export class DynamicFacetValueCreator implements ValueCreator {
+export class DynamicFacetValueCreator implements IValueCreator {
   constructor(private facet: IDynamicFacet) { }
 
   private formatDisplayValue(value: string) {

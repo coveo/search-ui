@@ -1,12 +1,12 @@
 import { IFacetResponseValue } from '../../../rest/Facet/FacetResponse';
-import { DynamicFacetValue, ValueCreator } from './DynamicFacetValue';
+import { DynamicFacetValue, IValueCreator } from './DynamicFacetValue';
 import { IRangeValue } from '../../../rest/RangeValue';
 import { FacetValueState } from '../../../rest/Facet/FacetValueState';
 import { DynamicFacetRangeValueParser } from './DynamicFacetRangeValueParser';
 import { IDynamicFacetRange } from '../IDynamicFacetRange';
 import { DynamicFacetValueRenderer } from './DynamicFacetValueRenderer';
 
-export class DynamicFacetRangeValueCreator implements ValueCreator {
+export class DynamicFacetRangeValueCreator implements IValueCreator {
   private parser: DynamicFacetRangeValueParser;
 
   constructor(private facet: IDynamicFacetRange) {

@@ -1,9 +1,9 @@
 import { $$, Dom } from '../../utils/Dom';
-import { DynamicFacetValue, ValueRenderer } from '../DynamicFacet/DynamicFacetValues/DynamicFacetValue';
+import { DynamicFacetValue, IValueRenderer } from '../DynamicFacet/DynamicFacetValues/DynamicFacetValue';
 import { DynamicFacetValueCheckbox } from '../DynamicFacet/DynamicFacetValues/DynamicFacetValueCheckbox';
 import { IDynamicFacet } from '../DynamicFacet/IDynamicFacet';
 
-export class DynamicFacetSearchValueRenderer implements ValueRenderer {
+export class DynamicFacetSearchValueRenderer implements IValueRenderer {
   private dom: Dom;
   private valueCheckbox: DynamicFacetValueCheckbox;
 
