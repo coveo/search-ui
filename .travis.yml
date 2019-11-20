@@ -14,7 +14,6 @@ cache:
   - node_modules
 before_install:
   - npm install -g npm@5.5.1
-  - if [ "x$TRAVIS_TAG" != "x" ]; then wget https://repo1.maven.org/maven2/com/veracode/vosp/api/wrappers/vosp-api-wrappers-java/$VERACODE_WRAPPER_VERSION/vosp-api-wrappers-java-$VERACODE_WRAPPER_VERSION.jar ; fi
   - sudo apt-get install libgconf2-4
 script:
 - source read.version.sh
@@ -32,8 +31,6 @@ after_success:
 - if [ "x$TRAVIS_TAG" != "x" ]; then bash ./deploy.doc.sh ; fi
 - yarn run docsitemap
 - yarn run zipForGitReleases
-- yarn run zipForVeracode
-- if [ "x$TRAVIS_TAG" != "x" ]; then java -jar vosp-api-wrappers-java-$VERACODE_WRAPPER_VERSION.jar -vid $VERACODE_KEY_ID  -vkey $VERACODE_SECRET -action uploadandscan -appname Coveo -sandboxname "JS UI" -createprofile true -filepath veracode.zip -version "Travis build [ $TRAVIS_JOB_NUMBER ] on branch [ $TRAVIS_BRANCH ]" ; else echo "Build was triggered from a fork; skipping Veracode" ; fi
 env:
   global:
   - COMMIT_AUTHOR_EMAIL: sandbox_JSUI@coveo.com
