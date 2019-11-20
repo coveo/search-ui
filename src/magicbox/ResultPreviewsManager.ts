@@ -189,7 +189,7 @@ export class ResultPreviewsManager {
 
   private getExternalOptions() {
     const optionsEventArgs: IUpdateResultPreviewsManagerOptionsEventArgs = {};
-    $$(this.root).trigger(ResultPreviewsManagerEvents.UpdateResultPreviewsManagerOptions, optionsEventArgs);
+    $$(this.root).trigger(ResultPreviewsManagerEvents.updateResultPreviewsManagerOptions, optionsEventArgs);
     return optionsEventArgs;
   }
 
@@ -198,7 +198,7 @@ export class ResultPreviewsManager {
       suggestionText: suggestion.innerText,
       previewsQueries: []
     };
-    $$(this.root).trigger(ResultPreviewsManagerEvents.PopulateSearchResultPreviews, populateEventArgs);
+    $$(this.root).trigger(ResultPreviewsManagerEvents.populateSearchResultPreviews, populateEventArgs);
     return this.previewsProcessor.processQueries(populateEventArgs.previewsQueries);
   }
 

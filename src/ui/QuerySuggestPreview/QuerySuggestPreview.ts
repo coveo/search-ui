@@ -78,12 +78,12 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
     }
 
     this.bind.onRootElement(
-      ResultPreviewsManagerEvents.UpdateResultPreviewsManagerOptions,
+      ResultPreviewsManagerEvents.updateResultPreviewsManagerOptions,
       (args: IUpdateResultPreviewsManagerOptionsEventArgs) =>
         (args.delayBeforePopulate = Math.max(args.delayBeforePopulate || 0, this.options.executeQueryDelay))
     );
 
-    this.bind.onRootElement(ResultPreviewsManagerEvents.PopulateSearchResultPreviews, (args: IPopulateSearchResultPreviewsEventArgs) =>
+    this.bind.onRootElement(ResultPreviewsManagerEvents.populateSearchResultPreviews, (args: IPopulateSearchResultPreviewsEventArgs) =>
       this.populateSearchResultPreviews(args)
     );
 

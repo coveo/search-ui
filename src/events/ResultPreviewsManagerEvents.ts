@@ -30,15 +30,15 @@ export interface IPopulateSearchResultPreviewsEventArgs {
  *
  * Those events should be bound to the element returned by `resolveRoot`.
  */
-export enum ResultPreviewsManagerEvents {
+export class ResultPreviewsManagerEvents {
   /**
    * Executed when a {@link Suggestion} is focused before {@link PopulateSearchResultPreviews} is called to fetch more options.
    * This always receives {@link IUpdateResultPreviewsManagerOptionsEventArgs} as arguments.
    */
-  UpdateResultPreviewsManagerOptions = 'updateResultPreviewsManagerOptions',
+  public static updateResultPreviewsManagerOptions = 'updateResultPreviewsManagerOptions';
   /**
    * Executed when a {@link Suggestion} is focused and waiting for search result previews.
    * This always receives {@link IPopulateSearchResultPreviewsEventArgs} as arguments.
    */
-  PopulateSearchResultPreviews = 'populateSearchResultPreviews'
+  public static populateSearchResultPreviews = 'populateSearchResultPreviews';
 }

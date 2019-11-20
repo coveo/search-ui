@@ -418,7 +418,7 @@ export function SuggestionsManagerTest() {
           const delayBeforePopulatePreviews = 150;
           function bindUpdateResultPreviewsManagerOptionsEvent() {
             $$(env.root).on(
-              ResultPreviewsManagerEvents.UpdateResultPreviewsManagerOptions,
+              ResultPreviewsManagerEvents.updateResultPreviewsManagerOptions,
               (_, args: IUpdateResultPreviewsManagerOptionsEventArgs) => {
                 args.delayBeforePopulate = delayBeforePopulatePreviews;
               }
@@ -431,7 +431,7 @@ export function SuggestionsManagerTest() {
             let wasCalled = false;
             let onCall: () => any;
             populateSpy = jasmine.createSpy('PopulateSearchResultPreviews');
-            $$(env.root).on(ResultPreviewsManagerEvents.PopulateSearchResultPreviews, (_, args: IPopulateSearchResultPreviewsEventArgs) => {
+            $$(env.root).on(ResultPreviewsManagerEvents.populateSearchResultPreviews, (_, args: IPopulateSearchResultPreviewsEventArgs) => {
               populateSpy(args.suggestionText);
               args.previewsQueries.push(createPreviewsPromise(textSuggestions.indexOf(args.suggestionText)));
               if (onCall) {
