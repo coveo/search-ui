@@ -366,7 +366,7 @@ export function DynamicFacetTest() {
 
       expect(test.cmp.logAnalyticsEvent).toHaveBeenCalledWith(
         analyticsActionCauseList.dynamicFacetSelect,
-        test.cmp.values.get('a').analyticsMeta
+        test.cmp.values.get('a').analyticsFacetState
       );
     });
 
@@ -378,7 +378,7 @@ export function DynamicFacetTest() {
 
       expect(test.cmp.logAnalyticsEvent).toHaveBeenCalledWith(
         analyticsActionCauseList.dynamicFacetDeselect,
-        test.cmp.values.get('a').analyticsMeta
+        test.cmp.values.get('a').analyticsFacetState
       );
     });
 
@@ -474,7 +474,7 @@ export function DynamicFacetTest() {
       test.cmp.selectValue('bar');
       test.cmp.selectValue('foo');
 
-      expect(test.cmp.analyticsFacetState).toEqual([test.cmp.values.get('bar').analyticsMeta, test.cmp.values.get('foo').analyticsMeta]);
+      expect(test.cmp.analyticsFacetState).toEqual([test.cmp.values.get('bar').analyticsFacetState, test.cmp.values.get('foo').analyticsFacetState]);
     });
 
     it(`when calling "putStateIntoAnalytics" 

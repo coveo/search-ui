@@ -94,7 +94,7 @@ export function DynamicFacetValueTest() {
     });
 
     it(`should return the correct analyticsMeta for a specific value`, () => {
-      expect(dynamicFacetValue.analyticsMeta).toEqual({
+      expect(dynamicFacetValue.analyticsFacetState).toEqual({
         ...facet.basicAnalyticsFacetState,
         value: dynamicFacetValue.value,
         valuePosition: dynamicFacetValue.position,
@@ -108,7 +108,7 @@ export function DynamicFacetValueTest() {
       rangeFacet.values.createFromRanges(DynamicFacetRangeTestUtils.createFakeRanges());
       dynamicFacetValue = rangeFacet.values.allFacetValues[0];
 
-      expect(dynamicFacetValue.analyticsMeta).toEqual({
+      expect(dynamicFacetValue.analyticsFacetState).toEqual({
         ...rangeFacet.basicAnalyticsFacetState,
         value: dynamicFacetValue.value,
         valuePosition: dynamicFacetValue.position,
@@ -130,7 +130,7 @@ export function DynamicFacetValueTest() {
         dynamicFacetValue.logSelectActionToAnalytics();
         expect(facet.logAnalyticsEvent).toHaveBeenCalledWith(
           analyticsActionCauseList.dynamicFacetDeselect,
-          dynamicFacetValue.analyticsMeta
+          dynamicFacetValue.analyticsFacetState
         );
       });
     });
@@ -147,7 +147,7 @@ export function DynamicFacetValueTest() {
 
       it('should log the right analytics action', () => {
         dynamicFacetValue.logSelectActionToAnalytics();
-        expect(facet.logAnalyticsEvent).toHaveBeenCalledWith(analyticsActionCauseList.dynamicFacetSelect, dynamicFacetValue.analyticsMeta);
+        expect(facet.logAnalyticsEvent).toHaveBeenCalledWith(analyticsActionCauseList.dynamicFacetSelect, dynamicFacetValue.analyticsFacetState);
       });
     });
 

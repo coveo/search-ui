@@ -60,7 +60,7 @@ export class DynamicFacetBreadcrumbs {
   }
 
   private logActionToAnalytics(facetValue: DynamicFacetValue) {
-    this.facet.logAnalyticsEvent(analyticsActionCauseList.breadcrumbDynamicFacet, facetValue.analyticsMeta);
+    this.facet.logAnalyticsEvent(analyticsActionCauseList.breadcrumbDynamicFacet, facetValue.analyticsFacetState);
   }
 
   private createAndAppendCollapsedBreadcrumbs(facetValues: DynamicFacetValue[]) {
