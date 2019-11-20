@@ -4,7 +4,7 @@ import { IAnalyticsDynamicFacetMeta, analyticsActionCauseList } from '../../Anal
 import { l } from '../../../strings/Strings';
 import { IRangeValue, RangeType } from '../../../rest/RangeValue';
 import { FacetType } from '../../../rest/Facet/FacetRequest';
-import { IDynamicFacet } from '../DynamicFacetInterface';
+import { IDynamicFacet } from '../IDynamicFacet';
 import { IFacetResponseValue } from '../../../rest/Facet/FacetResponse';
 
 export interface ValueCreator {

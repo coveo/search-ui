@@ -1,6 +1,6 @@
 import { DynamicFacetQueryController } from './DynamicFacetQueryController';
 import { IFacetRequest, IFacetRequestValue } from '../rest/Facet/FacetRequest';
-import { IDynamicFacet } from '../ui/DynamicFacet/DynamicFacetInterface';
+import { IDynamicFacet } from '../ui/DynamicFacet/IDynamicFacet';
 
 export class DynamicFacetRangeQueryController extends DynamicFacetQueryController {
   protected facet: IDynamicFacet;

@@ -5,7 +5,7 @@ import { FacetSortCriteria } from '../rest/Facet/FacetSortCriteria';
 import { QueryEvents } from '../events/QueryEvents';
 import { findIndex } from 'underscore';
 import { IQueryResults } from '../rest/QueryResults';
-import { IDynamicFacet } from '../ui/DynamicFacet/DynamicFacetInterface';
+import { IDynamicFacet } from '../ui/DynamicFacet/IDynamicFacet';
 
 export class DynamicFacetQueryController {
   private numberOfValuesToRequest: number;

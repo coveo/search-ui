@@ -3,7 +3,7 @@ import { RangeType, IRangeValue, RangeEndScope } from '../../../rest/RangeValue'
 import { NumberUtils } from '../../../utils/NumberUtils';
 import { isNull } from 'util';
 import { DateUtils } from '../../../utils/DateUtils';
-import { IDynamicFacetRange, DynamicFacetRangeValueFormat } from '../DynamicFacetRangeInterface';
+import { IDynamicFacetRange, DynamicFacetRangeValueFormat } from '../IDynamicFacetRange';
 
 export class DynamicFacetRangeValueParser {
   constructor(private facet: IDynamicFacetRange) {}

@@ -3,7 +3,7 @@ import { DynamicFacetValue, ValueCreator } from './DynamicFacetValue';
 import { IRangeValue } from '../../../rest/RangeValue';
 import { FacetValueState } from '../../../rest/Facet/FacetValueState';
 import { DynamicFacetRangeValueParser } from './DynamicFacetRangeValueParser';
-import { IDynamicFacetRange } from '../DynamicFacetRangeInterface';
+import { IDynamicFacetRange } from '../IDynamicFacetRange';
 import { DynamicFacetValueRenderer } from './DynamicFacetValueRenderer';
 
 export class DynamicFacetRangeValueCreator implements ValueCreator {

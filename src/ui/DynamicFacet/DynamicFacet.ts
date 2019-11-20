@@ -1,5 +1,5 @@
 import 'styling/DynamicFacet/_DynamicFacet';
-import { IDynamicFacet, IDynamicFacetOptions } from './DynamicFacetInterface';
+import { IDynamicFacet, IDynamicFacetOptions } from './IDynamicFacet';
 import { difference, findIndex } from 'underscore';
 import { $$ } from '../../utils/Dom';
 import { exportGlobally } from '../../GlobalExports';

@@ -2,7 +2,7 @@ import { l } from '../../../strings/Strings';
 import { SVGIcons } from '../../../utils/SVGIcons';
 import { $$ } from '../../../utils/Dom';
 import { DynamicFacetHeaderButton } from './DynamicFacetHeaderButton';
-import { IDynamicFacet } from '../DynamicFacetInterface';
+import { IDynamicFacet } from '../IDynamicFacet';
 
 export interface IDynamicFacetCollapseToggleOptions {
   collapsed: boolean;

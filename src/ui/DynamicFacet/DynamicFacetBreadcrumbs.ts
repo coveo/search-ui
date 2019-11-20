@@ -4,7 +4,7 @@ import { l } from '../../strings/Strings';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { DynamicFacetValue } from './DynamicFacetValues/DynamicFacetValue';
 import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
-import { IDynamicFacet } from './DynamicFacetInterface';
+import { IDynamicFacet } from './IDynamicFacet';
 
 export class DynamicFacetBreadcrumbs {
   public element: HTMLElement;

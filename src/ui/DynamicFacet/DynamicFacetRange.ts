@@ -1,7 +1,7 @@
 import 'styling/DynamicFacet/_DynamicFacet';
 import { Initialization } from '../Base/Initialization';
 import { DynamicFacet } from './DynamicFacet';
-import { IDynamicFacetRangeOptions, DynamicFacetRangeValueFormat } from './DynamicFacetRangeInterface';
+import { IDynamicFacetRangeOptions, DynamicFacetRangeValueFormat } from './IDynamicFacetRange';
 import { ComponentOptions } from '../Base/ComponentOptions';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { exportGlobally } from '../../GlobalExports';

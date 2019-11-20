@@ -7,7 +7,7 @@ import { FacetValueState } from '../../rest/Facet/FacetValueState';
 import { DynamicFacetSearchValueRenderer } from './DynamicFacetSearchValueRenderer';
 import { IComboboxValue } from '../Combobox/ComboboxValues';
 import 'styling/DynamicFacetSearch/_DynamicFacetSearch';
-import { IDynamicFacet } from '../DynamicFacet/DynamicFacetInterface';
+import { IDynamicFacet } from '../DynamicFacet/IDynamicFacet';
 
 export class DynamicFacetSearch {
   public element: HTMLElement;

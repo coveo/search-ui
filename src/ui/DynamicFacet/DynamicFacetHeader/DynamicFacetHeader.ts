@@ -6,7 +6,7 @@ import { SVGDom } from '../../../utils/SVGDom';
 import { DynamicFacetHeaderButton } from './DynamicFacetHeaderButton';
 import { DynamicFacetHeaderCollapseToggle } from './DynamicFacetHeaderCollapseToggle';
 import { analyticsActionCauseList } from '../../Analytics/AnalyticsActionListMeta';
-import { IDynamicFacet } from '../DynamicFacetInterface';
+import { IDynamicFacet } from '../IDynamicFacet';
 
 export class DynamicFacetHeader {
   public static showLoadingDelay = 2000;

@@ -1,4 +1,4 @@
-import { IDynamicFacetOptions, IDynamicFacet } from './DynamicFacetInterface';
+import { IDynamicFacetOptions, IDynamicFacet } from './IDynamicFacet';
 import { IRangeValue } from '../../rest/RangeValue';
 
 /**

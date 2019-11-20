@@ -2,7 +2,7 @@ import { FacetUtils } from '../../Facet/FacetUtils';
 import { DynamicFacetValue, ValueCreator } from './DynamicFacetValue';
 import { IFacetResponseValue } from '../../../rest/Facet/FacetResponse';
 import { FacetValueState } from '../../../rest/Facet/FacetValueState';
-import { IDynamicFacet } from '../DynamicFacetInterface';
+import { IDynamicFacet } from '../IDynamicFacet';
 import { DynamicFacetValueRenderer } from './DynamicFacetValueRenderer';
 
 export class DynamicFacetValueCreator implements ValueCreator {

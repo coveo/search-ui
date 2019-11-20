@@ -6,7 +6,7 @@ import { IFacetResponse } from '../../../rest/Facet/FacetResponse';
 import { FacetValueState } from '../../../rest/Facet/FacetValueState';
 import { l } from '../../../strings/Strings';
 import { IRangeValue } from '../../../rest/RangeValue';
-import { IDynamicFacet } from '../DynamicFacetInterface';
+import { IDynamicFacet } from '../IDynamicFacet';
 
 export interface IDynamicFacetValueCreatorKlass {
   new (facet: IDynamicFacet): ValueCreator;

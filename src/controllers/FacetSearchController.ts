@@ -3,7 +3,7 @@ import { IFacetSearchResponse } from '../rest/Facet/FacetSearchResponse';
 import { FileTypes } from '../ui/Misc/FileTypes';
 import { QueryUtils } from '../utils/QueryUtils';
 import { DateUtils } from '../utils/DateUtils';
-import { IDynamicFacet } from '../ui/DynamicFacet/DynamicFacetInterface';
+import { IDynamicFacet } from '../ui/DynamicFacet/IDynamicFacet';
 
 export class FacetSearchController {
   constructor(private facet: IDynamicFacet) {}
