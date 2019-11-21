@@ -209,6 +209,24 @@
     ],
     "layout": "list"
   },
+  "CardSalesforceB2BProduct": {
+    "priority": 2,
+    "fieldsToMatch": [
+      {
+        "field": "sfccrz__averagerating__c"
+      }
+    ],
+    "layout": "card"
+  },
+  "SalesforceB2BProduct": {
+    "priority": 1,
+    "fieldsToMatch": [
+      {
+        "field": "sfccrz__averagerating__c"
+      }
+    ],
+    "layout": "list"
+  },
   "CardSharePoint": {
     "priority": 2,
     "fieldsToMatch": [

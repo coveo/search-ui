@@ -112,6 +112,7 @@ export class Playground {
   }
 
   public initializePreview() {
+    debugger;
     const previewContainer = $$(document.body).find('.preview-container');
     this.showButton = $$('button', { className: 'preview-toggle' }, `Show a live example of ${this.getComponentName()}`);
     this.hideButton = $$('button', { className: 'preview-toggle' }, 'Hide example');

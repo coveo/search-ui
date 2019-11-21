@@ -6,9 +6,9 @@ import { Component } from '../Base/Component';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { exportGlobally } from '../../GlobalExports';
 import { IQueryResult } from '../../rest/QueryResult';
+import { Initialization } from '../Base/Initialization';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
-import { Initialization } from '../Base/Initialization';
 
 const DEFAULT_SCALE = 5;
 

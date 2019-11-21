@@ -199,10 +199,10 @@ export const PlaygroundConfiguration: IStringMap<IComponentPlaygroundConfigurati
           'table',
           { className: 'CoveoFieldTable' },
           `<tbody>
-    <tr data-field="@size" data-caption="Document size" data-helper="size"></tr>
-     <tr data-field="@source" data-caption="Source"></tr>
-     <tr data-field="@date" data-caption="Date" date-helper="dateTime"></tr>
-   </tbody>`
+            <tr data-field="@size" data-caption="Document size" data-helper="size"></tr>
+            <tr data-field="@source" data-caption="Source"></tr>
+            <tr data-field="@date" data-caption="Date" date-helper="dateTime"></tr>
+          </tbody>`
         )
       )
       .build()
@@ -514,6 +514,16 @@ export const PlaygroundConfiguration: IStringMap<IComponentPlaygroundConfigurati
         args.queryBuilder.numberOfResults = 3;
       });
     }
+  },
+  StarRating: {
+    show: true,
+    options: {
+      ratingField: '@sfccrz__averagerating__c',
+      numberOfRatingsField: '@sfccrz__numberofreviews__c',
+      ratingScale: '5'
+    },
+    isResultComponent: true,
+    advancedExpression: '@sfccrz__averagerating__c AND @sfccrz__numberofreviews__c AND @objecttype=="ccrz__E_Product__c"'
   },
   Tab: {
     show: true,
