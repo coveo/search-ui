@@ -28,11 +28,7 @@ export interface IQuerySuggestPreview {
  * As such, this component only works when the search interface can
  * [provide Coveo Machine Learning query suggestions](https://docs.coveo.com/en/340/#providing-coveo-machine-learning-query-suggestions).
  *
- * **Example**
- * This component works independently of its location in the DOM and can be added like such:
- * ```html
- *   <div class="CoveoQuerySuggestPreview"></div>
- * ```
+ * This component should be initialized on a `div` which can be nested anywhere inside the root element of your search interface.
  *
  * See [Rendering Query Suggestion Result Previews](https://docs.coveo.com/en/340/#rendering-query-suggestion-result-previews).
  */
