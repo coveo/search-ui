@@ -20,6 +20,7 @@ export interface IResultPreviewsManagerOptions {
   previewClass: string;
   selectedClass: string;
   previewHeaderText: string;
+  timeout: number;
 }
 
 export class ResultPreviewsManager {
@@ -80,7 +81,7 @@ export class ResultPreviewsManager {
       selectedClass: 'magic-box-selected'
     });
     this.root = Component.resolveRoot(element);
-    this.previewsProcessor = new QueryProcessor();
+    this.previewsProcessor = new QueryProcessor({ timeout: this.options.timeout });
   }
 
   public async displaySearchResultPreviewsForSuggestion(suggestion: HTMLElement) {
