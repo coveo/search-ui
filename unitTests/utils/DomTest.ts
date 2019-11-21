@@ -31,12 +31,15 @@ export function DomTests() {
         Simulate.removeJQuery();
       });
 
-      it('should properly detect supported event', () => {
-        expect($$(el).supportsEvent('touchstart')).toBe(false);
-        expect($$(el).supportsEvent('touchend')).toBe(false);
-        expect($$(el).supportsEvent('scroll')).toBe(true);
-        expect($$(el).supportsEvent('click')).toBe(true);
-        expect($$(el).supportsEvent('foo')).toBe(false);
+      it('should detect supported event', () => {
+        expect($$(el).canHandleEvent('scroll')).toBe(true);
+        expect($$(el).canHandleEvent('click')).toBe(true);
+      });
+
+      it('should detect unsupported event', () => {
+        expect($$(el).canHandleEvent('touchstart')).toBe(false);
+        expect($$(el).canHandleEvent('touchend')).toBe(false);
+        expect($$(el).canHandleEvent('foo')).toBe(false);
       });
 
       describe('when calling #isValidElement', () => {

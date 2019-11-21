@@ -737,7 +737,7 @@ export class Dom {
    * Determine if an element support a particular native DOM event.
    * @param eventName The event to evaluate. Eg: touchstart, touchend, click, scroll.
    */
-  public supportsEvent(eventName: string): boolean {
+  public canHandleEvent(eventName: string): boolean {
     const eventToEvaluate = `on${eventName}`;
     let isSupported = eventToEvaluate in this.el;
 
