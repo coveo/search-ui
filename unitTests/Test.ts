@@ -675,6 +675,9 @@ QuerySummaryUtilsTest();
 import { CategoryFacetQueryControllerTest } from './controllers/CategoryFacetQueryControllerTest';
 CategoryFacetQueryControllerTest();
 
+import { DynamicCategoryFacetQueryControllerTest } from './controllers/DynamicCategoryFacetQueryControllerTest';
+DynamicCategoryFacetQueryControllerTest();
+
 import { ComponentsTypesTest } from './utils/ComponentsTypesTest';
 ComponentsTypesTest();
 

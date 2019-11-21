@@ -74,7 +74,7 @@ export class CategoryFacetQueryController {
     return this.facet.queryController.getEndpoint().search(query);
   }
 
-  public get currentValues(): IFacetRequestValue[] {
+  private get currentValues(): IFacetRequestValue[] {
     // TODO: remove when API has fixed currentValue/numberOfValues issue
     if (!this.facet.values.hasSelectedValue && this.numberOfValuesToRequest > this.facet.options.numberOfValues) {
       return [];
