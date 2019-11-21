@@ -518,8 +518,8 @@ export const PlaygroundConfiguration: IStringMap<IComponentPlaygroundConfigurati
   StarRating: {
     show: true,
     options: {
-      ratingField: '@sfccrz__averagerating__c',
-      numberOfRatingsField: '@sfccrz__numberofreviews__c',
+      ratingField: '@sfaveragerating',
+      numberOfRatingsField: '@sfnumberofreviews',
       ratingScale: '5'
     },
     isResultComponent: true,

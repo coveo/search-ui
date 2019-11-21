@@ -213,7 +213,7 @@
     "priority": 2,
     "fieldsToMatch": [
       {
-        "field": "sfccrz__averagerating__c"
+        "field": "sfaveragerating"
       }
     ],
     "layout": "card"
@@ -222,7 +222,7 @@
     "priority": 1,
     "fieldsToMatch": [
       {
-        "field": "sfccrz__averagerating__c"
+        "field": "sfaveragerating"
       }
     ],
     "layout": "list"
