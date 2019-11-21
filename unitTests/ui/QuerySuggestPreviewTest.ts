@@ -60,14 +60,16 @@ export function QuerySuggestPreviewTest() {
       fakeResults = fakeResults || FakeResults.createFakeResults(test.cmp.options.numberOfPreviewResults);
       (test.env.searchEndpoint.search as jasmine.Spy).and.returnValue(Promise.resolve(fakeResults));
       const event: IPopulateSearchResultPreviewsEventArgs = { suggestionText, previewsQueries: [] };
-      $$(testEnv.root).trigger(ResultPreviewsManagerEvents.PopulateSearchResultPreviews, event);
+      $$(testEnv.root).trigger(ResultPreviewsManagerEvents.populateSearchResultPreviews, event);
       return event.previewsQueries[0];
     }
 
     function triggerPopulateSearchResultPreviewsAndPassTime(suggestion: string = 'test', fakeResults?: IQueryResults) {
       const query = triggerPopulateSearchResultPreviews(suggestion);
-      jasmine.clock().tick(test.cmp.options.executeQueryDelay);
-      return query;
+      if (query instanceof Promise) {
+        return query;
+      }
+      return Promise.resolve(query);
     }
 
     beforeEach(() => {
@@ -103,42 +105,9 @@ export function QuerySuggestPreviewTest() {
         expect(test.cmp.queryController.getLastQuery().numberOfResults).toBe(numberOfPreviewResults);
         done();
       });
-
-      it('hoverTime set the time before the query is executed', async done => {
-        const executeQueryDelay = 200;
-        setupQuerySuggestPreview({ executeQueryDelay });
-        expect(test.cmp.queryController.getLastQuery).not.toHaveBeenCalled();
-        await triggerPopulateSearchResultPreviewsAndPassTime();
-        expect(test.cmp.queryController.getLastQuery).toHaveBeenCalledTimes(1);
-        done();
-      });
     });
 
     describe('When we hover', () => {
-      it(`on the same Suggestion multiple times before the time in the option hoverTime has passed,
-      the query is is executed only once`, async done => {
-        setupQuerySuggestPreview();
-        test.cmp.queryController.getEndpoint().search = jasmine.createSpy('execQuery');
-        triggerPopulateSearchResultPreviews();
-        triggerPopulateSearchResultPreviews();
-        await triggerPopulateSearchResultPreviewsAndPassTime();
-        expect(test.cmp.queryController.getEndpoint().search).toHaveBeenCalledTimes(1);
-        done();
-      });
-
-      it(`on multiple suggestion before the time in the option hoverTime has passed,
-      the query is is executed only once with the last Suggestion we hovered on`, async done => {
-        const realQuery = 'testing3';
-        setupQuerySuggestPreview();
-        test.cmp.queryController.getEndpoint().search = jasmine.createSpy('execQuery');
-        triggerPopulateSearchResultPreviews('testing');
-        triggerPopulateSearchResultPreviews('testing2');
-        await triggerPopulateSearchResultPreviewsAndPassTime(realQuery);
-        expect(test.cmp.queryController.getEndpoint().search).toHaveBeenCalledTimes(1);
-        expect(test.cmp.queryController.getLastQuery().q).toBe(realQuery);
-        done();
-      });
-
       it(`and the query get executed, 
       it logs an analytics search event`, async done => {
         setupQuerySuggestPreview();

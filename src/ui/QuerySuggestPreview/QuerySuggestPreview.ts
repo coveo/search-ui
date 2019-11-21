@@ -1,6 +1,6 @@
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { exportGlobally } from '../../GlobalExports';
-import { ComponentOptions, Initialization, $$, Component, Utils, HtmlTemplate } from '../../Core';
+import { ComponentOptions, Initialization, $$, Component, HtmlTemplate } from '../../Core';
 import { IQueryResults } from '../../rest/QueryResults';
 import 'styling/_QuerySuggestPreview';
 import { Template } from '../Templates/Template';
@@ -14,8 +14,12 @@ import {
   IAnalyticsClickQuerySuggestPreviewMeta
 } from '../Analytics/AnalyticsActionListMeta';
 import { ISearchResultPreview } from '../../magicbox/ResultPreviewsManager';
-import { ResultPreviewsManagerEvents, IPopulateSearchResultPreviewsEventArgs } from '../../events/ResultPreviewsManagerEvents';
 import { ImageFieldValue } from '../FieldImage/ImageFieldValue';
+import {
+  ResultPreviewsManagerEvents,
+  IPopulateSearchResultPreviewsEventArgs,
+  IUpdateResultPreviewsManagerOptionsEventArgs
+} from '../../events/ResultPreviewsManagerEvents';
 
 export interface IQuerySuggestPreview {
   numberOfPreviewResults?: number;
@@ -23,6 +27,16 @@ export interface IQuerySuggestPreview {
   executeQueryDelay?: number;
 }
 
+/**
+ * This component renders previews of the top query results matching the currently focused query suggestion in the search box.
+ *
+ * As such, this component only works when the search interface can
+ * [provide Coveo Machine Learning query suggestions](https://docs.coveo.com/en/340/#providing-coveo-machine-learning-query-suggestions).
+ *
+ * This component should be initialized on a `div` which can be nested anywhere inside the root element of your search interface.
+ *
+ * See [Rendering Query Suggestion Result Previews](https://docs.coveo.com/en/340/#rendering-query-suggestion-result-previews).
+ */
 export class QuerySuggestPreview extends Component implements IComponentBindings {
   static ID = 'QuerySuggestPreview';
 
@@ -38,6 +52,20 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
    */
   static options: IQuerySuggestPreview = {
     /**
+     * The HTML `id` attribute value, or CSS selector of the previously registered
+     * [result template](https://docs.coveo.com/413/) to apply when rendering the
+     * query suggestion result previews.
+     *
+     * **Examples**
+     * * Specifying the `id` attribute of the target result template:
+     * ```html
+     * <div class="CoveoQuerySuggestPreview" data-result-template-id="myTemplateId"></div>
+     * ```
+     * * Specifying an equivalent CSS selector:
+     * ```html
+     * <div class="CoveoQuerySuggestPreview" data-result-template-selector="#myTemplateId"></div>
+     * ```
+     *
      * If you specify no previously registered template through this option, the component uses its default template.
      */
     resultTemplate: TemplateComponentOptions.buildTemplateOption(),
@@ -55,7 +83,6 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
     executeQueryDelay: ComponentOptions.buildNumberOption({ defaultValue: 200 })
   };
 
-  private timer: Promise<void>;
   private omniboxAnalytics: OmniboxAnalytics;
 
   /**
@@ -75,7 +102,13 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
       this.options.resultTemplate = this.buildDefaultSearchResultPreviewTemplate();
     }
 
-    this.bind.onRootElement(ResultPreviewsManagerEvents.PopulateSearchResultPreviews, (args: IPopulateSearchResultPreviewsEventArgs) =>
+    this.bind.onRootElement(
+      ResultPreviewsManagerEvents.updateResultPreviewsManagerOptions,
+      (args: IUpdateResultPreviewsManagerOptionsEventArgs) =>
+        (args.displayAfterDuration = Math.max(args.displayAfterDuration || 0, this.options.executeQueryDelay))
+    );
+
+    this.bind.onRootElement(ResultPreviewsManagerEvents.populateSearchResultPreviews, (args: IPopulateSearchResultPreviewsEventArgs) =>
       this.populateSearchResultPreviews(args)
     );
 
@@ -111,11 +144,6 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
   }
 
   private async fetchSearchResultPreviews(suggestionText: string) {
-    const timer = (this.timer = Utils.resolveAfter(this.options.executeQueryDelay));
-    await timer;
-    if (this.timer !== timer) {
-      return [];
-    }
     const previousQueryOptions = this.queryController.getLastQuery();
     previousQueryOptions.q = suggestionText;
     previousQueryOptions.numberOfResults = this.options.numberOfPreviewResults;
