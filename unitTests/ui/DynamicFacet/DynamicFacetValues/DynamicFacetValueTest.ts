@@ -93,8 +93,15 @@ export function DynamicFacetValueTest() {
       expect(dynamicFacetValue.formattedCount).toBe(Globalize.format(dynamicFacetValue.numberOfResults, 'n0'));
     });
 
-    it(`should return the correct analyticsMeta for a specific value`, () => {
-      expect(dynamicFacetValue.analyticsMeta).toEqual({
+    it(`should return the correct analyticsFacetMeta for a specific value`, () => {
+      expect(dynamicFacetValue.analyticsFacetMeta).toEqual({
+        ...facet.basicAnalyticsFacetMeta,
+        facetValue: dynamicFacetValue.value
+      });
+    });
+
+    it(`should return the correct analyticsFacetState for a specific value`, () => {
+      expect(dynamicFacetValue.analyticsFacetState).toEqual({
         ...facet.basicAnalyticsFacetState,
         value: dynamicFacetValue.value,
         valuePosition: dynamicFacetValue.position,
@@ -103,12 +110,12 @@ export function DynamicFacetValueTest() {
       });
     });
 
-    it(`should return the correct analyticsMeta for a range value`, () => {
+    it(`should return the correct analyticsFacetState for a range value`, () => {
       const rangeFacet = DynamicFacetRangeTestUtils.createFakeFacet();
       rangeFacet.values.createFromRanges(DynamicFacetRangeTestUtils.createFakeRanges());
       dynamicFacetValue = rangeFacet.values.allFacetValues[0];
 
-      expect(dynamicFacetValue.analyticsMeta).toEqual({
+      expect(dynamicFacetValue.analyticsFacetState).toEqual({
         ...rangeFacet.basicAnalyticsFacetState,
         value: dynamicFacetValue.value,
         valuePosition: dynamicFacetValue.position,
@@ -130,7 +137,7 @@ export function DynamicFacetValueTest() {
         dynamicFacetValue.logSelectActionToAnalytics();
         expect(facet.logAnalyticsEvent).toHaveBeenCalledWith(
           analyticsActionCauseList.dynamicFacetDeselect,
-          dynamicFacetValue.analyticsMeta
+          dynamicFacetValue.analyticsFacetMeta
         );
       });
     });
@@ -147,7 +154,7 @@ export function DynamicFacetValueTest() {
 
       it('should log the right analytics action', () => {
         dynamicFacetValue.logSelectActionToAnalytics();
-        expect(facet.logAnalyticsEvent).toHaveBeenCalledWith(analyticsActionCauseList.dynamicFacetSelect, dynamicFacetValue.analyticsMeta);
+        expect(facet.logAnalyticsEvent).toHaveBeenCalledWith(analyticsActionCauseList.dynamicFacetSelect, dynamicFacetValue.analyticsFacetMeta);
       });
     });
 
