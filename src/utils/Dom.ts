@@ -733,6 +733,22 @@ export class Dom {
     return $$(<HTMLElement>this.el.cloneNode(deep));
   }
 
+  /**
+   * Determine if an element support a particular native DOM event.
+   * @param eventName The event to evaluate. Eg: touchstart, touchend, click, scroll.
+   */
+  public supportsEvent(eventName: string): boolean {
+    const eventToEvaluate = `on${eventName}`;
+    let isSupported = eventToEvaluate in this.el;
+
+    if (!isSupported && this.el.setAttribute) {
+      this.el.setAttribute(eventToEvaluate, 'return;');
+      isSupported = typeof this.el[eventToEvaluate] == 'function';
+    }
+
+    return isSupported;
+  }
+
   private buildIE11CustomEvent(type: string, data?: { [key: string]: any }) {
     const event = document.createEvent('CustomEvent');
     event.initCustomEvent(type, true, true, data);
