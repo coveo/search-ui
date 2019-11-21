@@ -6,8 +6,10 @@ import { ISearchResultPreview } from '../magicbox/ResultPreviewsManager';
 export interface IUpdateResultPreviewsManagerOptionsEventArgs {
   /**
    * How many milliseconds should a {@link Suggestion} be focused for before {@link PopulateSearchResultPreviews} is called.
+   *
+   * If this is not defined, it will default to 200ms.
    */
-  delayBeforePopulate?: number;
+  displayAfterDuration?: number;
 }
 
 /**

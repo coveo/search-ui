@@ -86,7 +86,7 @@ export class ResultPreviewsManager {
   public async displaySearchResultPreviewsForSuggestion(suggestion: HTMLElement) {
     const externalOptions = this.getExternalOptions();
     const currentDelay = (this.lastDelay = Utils.resolveAfter(
-      externalOptions.delayBeforePopulate == undefined ? 200 : externalOptions.delayBeforePopulate
+      Utils.isNullOrUndefined(externalOptions.displayAfterDuration) ? 200 : externalOptions.displayAfterDuration
     ));
     await currentDelay;
     if (currentDelay !== this.lastDelay) {
