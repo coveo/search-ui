@@ -32,6 +32,10 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
     });
   };
 
+  /**
+   * The options for the component
+   * @componentOptions
+   */
   static options: IQuerySuggestPreview = {
     /**
      * If you specify no previously registered template through this option, the component uses its default template.
