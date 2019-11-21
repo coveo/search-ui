@@ -1,6 +1,6 @@
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { exportGlobally } from '../../GlobalExports';
-import { ComponentOptions, Initialization, $$, Component, Utils } from '../../Core';
+import { ComponentOptions, Initialization, $$, Component } from '../../Core';
 import { IQueryResults } from '../../rest/QueryResults';
 import 'styling/_QuerySuggestPreview';
 import { Template } from '../Templates/Template';
@@ -14,7 +14,11 @@ import {
   IAnalyticsClickQuerySuggestPreviewMeta
 } from '../Analytics/AnalyticsActionListMeta';
 import { ISearchResultPreview } from '../../magicbox/ResultPreviewsManager';
-import { ResultPreviewsManagerEvents, IPopulateSearchResultPreviewsEventArgs } from '../../events/ResultPreviewsManagerEvents';
+import {
+  ResultPreviewsManagerEvents,
+  IPopulateSearchResultPreviewsEventArgs,
+  IUpdateResultPreviewsManagerOptionsEventArgs
+} from '../../events/ResultPreviewsManagerEvents';
 
 export interface IQuerySuggestPreview {
   numberOfPreviewResults?: number;
@@ -76,7 +80,6 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
     executeQueryDelay: ComponentOptions.buildNumberOption({ defaultValue: 200 })
   };
 
-  private timer: Promise<void>;
   private omniboxAnalytics: OmniboxAnalytics;
 
   /**
@@ -99,7 +102,13 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
       );
     }
 
-    this.bind.onRootElement(ResultPreviewsManagerEvents.PopulateSearchResultPreviews, (args: IPopulateSearchResultPreviewsEventArgs) =>
+    this.bind.onRootElement(
+      ResultPreviewsManagerEvents.updateResultPreviewsManagerOptions,
+      (args: IUpdateResultPreviewsManagerOptionsEventArgs) =>
+        (args.displayAfterDuration = Math.max(args.displayAfterDuration || 0, this.options.executeQueryDelay))
+    );
+
+    this.bind.onRootElement(ResultPreviewsManagerEvents.populateSearchResultPreviews, (args: IPopulateSearchResultPreviewsEventArgs) =>
       this.populateSearchResultPreviews(args)
     );
 
@@ -120,11 +129,6 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
   }
 
   private async fetchSearchResultPreviews(suggestionText: string) {
-    const timer = (this.timer = Utils.resolveAfter(this.options.executeQueryDelay));
-    await timer;
-    if (this.timer !== timer) {
-      return [];
-    }
     const previousQueryOptions = this.queryController.getLastQuery();
     previousQueryOptions.q = suggestionText;
     previousQueryOptions.numberOfResults = this.options.numberOfPreviewResults;
