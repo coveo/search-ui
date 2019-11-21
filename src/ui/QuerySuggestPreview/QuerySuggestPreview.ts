@@ -26,6 +26,16 @@ export interface IQuerySuggestPreview {
   executeQueryDelay?: number;
 }
 
+/**
+ * This component renders previews of the top query results matching the currently focused query suggestion in the search box.
+ *
+ * As such, this component only works when the search interface can
+ * [provide Coveo Machine Learning query suggestions](https://docs.coveo.com/en/340/#providing-coveo-machine-learning-query-suggestions).
+ *
+ * This component should be initialized on a `div` which can be nested anywhere inside the root element of your search interface.
+ *
+ * See [Rendering Query Suggestion Result Previews](https://docs.coveo.com/en/340/#rendering-query-suggestion-result-previews).
+ */
 export class QuerySuggestPreview extends Component implements IComponentBindings {
   static ID = 'QuerySuggestPreview';
 
@@ -35,14 +45,29 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
     });
   };
 
+  /**
+   * The options for the component
+   * @componentOptions
+   */
   static options: IQuerySuggestPreview = {
+    /**
+     * The HTML `id` attribute value, or CSS selector of the previously registered
+     * [result template](https://docs.coveo.com/413/) to apply when rendering the
+     * query suggestion result previews.
+     *
+     * **Examples**
+     * * Specifying the `id` attribute of the target result template:
+     * ```html
+     * <div class="CoveoQuerySuggestPreview" data-result-template-id="myTemplateId"></div>
+     * ```
+     * * Specifying an equivalent CSS selector:
+     * ```html
+     * <div class="CoveoQuerySuggestPreview" data-result-template-selector="#myTemplateId"></div>
+     * ```
+     */
     resultTemplate: TemplateComponentOptions.buildTemplateOption(),
     /**
      * The maximum number of query results to render in the preview.
-     *
-     * **Minimum:** `1`
-     * **Maximum:** `6`
-     * **Default:** `3`
      */
     numberOfPreviewResults: ComponentOptions.buildNumberOption({
       defaultValue: 3,
