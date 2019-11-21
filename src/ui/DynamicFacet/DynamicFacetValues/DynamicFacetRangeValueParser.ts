@@ -17,14 +17,10 @@ export class DynamicFacetRangeValueParser {
   }
 
   private parseDateFromRangeType(value: RangeType) {
-    switch (typeof value) {
-      case 'number':
-        return new Date(value as number);
-      case 'string':
-        return new Date(`${value}`);
-      default:
-        return value as Date;
-    }
+    const browserParsedDate = new Date(value as any);
+    return DateUtils.isValid(browserParsedDate)
+      ? browserParsedDate
+      : DateUtils.convertToStandardDate(value);
   }
 
   private formatDisplayValueFromLimit(value: RangeType) {
