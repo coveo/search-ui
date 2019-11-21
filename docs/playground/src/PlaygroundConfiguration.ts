@@ -523,7 +523,7 @@ export const PlaygroundConfiguration: IStringMap<IComponentPlaygroundConfigurati
       ratingScale: '5'
     },
     isResultComponent: true,
-    advancedExpression: '@sfccrz__averagerating__c AND @sfccrz__numberofreviews__c AND @objecttype=="ccrz__E_Product__c"'
+    advancedExpression: '@objecttype=="ccrz__E_Product__c"'
   },
   Tab: {
     show: true,
