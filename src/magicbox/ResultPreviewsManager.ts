@@ -3,8 +3,13 @@ import { l } from '../strings/Strings';
 import { defaults, findIndex } from 'lodash';
 import { Component } from '../ui/Base/Component';
 import { Direction } from './SuggestionsManager';
-import { ResultPreviewsManagerEvents, IPopulateSearchResultPreviewsEventArgs } from '../events/ResultPreviewsManagerEvents';
+import {
+  ResultPreviewsManagerEvents,
+  IPopulateSearchResultPreviewsEventArgs,
+  IUpdateResultPreviewsManagerOptionsEventArgs
+} from '../events/ResultPreviewsManagerEvents';
 import { QueryProcessor, ProcessingStatus } from './QueryProcessor';
+import { Utils } from '../utils/Utils';
 
 export interface ISearchResultPreview {
   element: HTMLElement;
@@ -25,6 +30,7 @@ export class ResultPreviewsManager {
   private lastQueriedSuggestion: HTMLElement;
   private lastDisplayedSuggestion: HTMLElement;
   private previewsProcessor: QueryProcessor<ISearchResultPreview>;
+  private lastDelay: Promise<void>;
   private root: HTMLElement;
 
   public get previewsOwner() {
@@ -78,6 +84,14 @@ export class ResultPreviewsManager {
   }
 
   public async displaySearchResultPreviewsForSuggestion(suggestion: HTMLElement) {
+    const externalOptions = this.getExternalOptions();
+    const currentDelay = (this.lastDelay = Utils.resolveAfter(
+      Utils.isNullOrUndefined(externalOptions.displayAfterDuration) ? 200 : externalOptions.displayAfterDuration
+    ));
+    await currentDelay;
+    if (currentDelay !== this.lastDelay) {
+      return;
+    }
     const isQueryForSuggestionOngoing = suggestion && this.lastQueriedSuggestion === suggestion;
     if (isQueryForSuggestionOngoing) {
       return;
@@ -173,12 +187,18 @@ export class ResultPreviewsManager {
     ).el;
   }
 
+  private getExternalOptions() {
+    const optionsEventArgs: IUpdateResultPreviewsManagerOptionsEventArgs = {};
+    $$(this.root).trigger(ResultPreviewsManagerEvents.updateResultPreviewsManagerOptions, optionsEventArgs);
+    return optionsEventArgs;
+  }
+
   private getSearchResultPreviewsQuery(suggestion: HTMLElement) {
     const populateEventArgs: IPopulateSearchResultPreviewsEventArgs = {
       suggestionText: suggestion.innerText,
       previewsQueries: []
     };
-    $$(this.root).trigger(ResultPreviewsManagerEvents.PopulateSearchResultPreviews, populateEventArgs);
+    $$(this.root).trigger(ResultPreviewsManagerEvents.populateSearchResultPreviews, populateEventArgs);
     return this.previewsProcessor.processQueries(populateEventArgs.previewsQueries);
   }
 
