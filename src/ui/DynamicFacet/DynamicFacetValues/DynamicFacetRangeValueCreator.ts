@@ -3,9 +3,9 @@ import { DynamicFacetValue } from './DynamicFacetValue';
 import { IRangeValue } from '../../../rest/RangeValue';
 import { FacetValueState } from '../../../rest/Facet/FacetValueState';
 import { DynamicFacetRangeValueParser } from './DynamicFacetRangeValueParser';
+import { IValueCreator } from '../IDynamicFacet';
 import { IDynamicFacetRange } from '../IDynamicFacetRange';
 import { DynamicFacetValueRenderer } from './DynamicFacetValueRenderer';
-import { IValueCreator } from './IDynamicFacetValue';
 
 export class DynamicFacetRangeValueCreator implements IValueCreator {
   private parser: DynamicFacetRangeValueParser;

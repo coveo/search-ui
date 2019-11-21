@@ -2,8 +2,7 @@ import { DynamicFacetBreadcrumbs } from '../../../src/ui/DynamicFacet/DynamicFac
 import { $$ } from '../../../src/Core';
 import { DynamicFacetTestUtils } from './DynamicFacetTestUtils';
 import { DynamicFacet } from '../../../src/ui/DynamicFacet/DynamicFacet';
-import { IDynamicFacetOptions } from '../../../src/ui/DynamicFacet/IDynamicFacet';
-import { IDynamicFacetValueProperties } from '../../../src/ui/DynamicFacet/DynamicFacetValues/IDynamicFacetValue';
+import { IDynamicFacetOptions, IDynamicFacetValueProperties } from '../../../src/ui/DynamicFacet/IDynamicFacet';
 import { FacetValueState } from '../../../src/rest/Facet/FacetValueState';
 import { analyticsActionCauseList } from '../../../src/ui/Analytics/AnalyticsActionListMeta';
 

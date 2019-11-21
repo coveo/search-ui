@@ -1,7 +1,6 @@
 import * as Mock from '../../MockEnvironment';
 import { DynamicFacet } from '../../../src/ui/DynamicFacet/DynamicFacet';
-import { IDynamicFacetOptions } from '../../../src/ui/DynamicFacet/IDynamicFacet';
-import { IDynamicFacetValueProperties } from '../../../src/ui/DynamicFacet/DynamicFacetValues/IDynamicFacetValue';
+import { IDynamicFacetOptions, IDynamicFacetValueProperties } from '../../../src/ui/DynamicFacet/IDynamicFacet';
 import { FacetValueState } from '../../../src/rest/Facet/FacetValueState';
 import { DynamicFacetTestUtils } from './DynamicFacetTestUtils';
 import { $$, BreadcrumbEvents, QueryEvents } from '../../../src/Core';

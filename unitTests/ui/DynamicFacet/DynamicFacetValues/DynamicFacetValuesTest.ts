@@ -1,6 +1,6 @@
 import { DynamicFacetValues } from '../../../../src/ui/DynamicFacet/DynamicFacetValues/DynamicFacetValues';
 import { FacetValueState } from '../../../../src/rest/Facet/FacetValueState';
-import { IDynamicFacetValueProperties } from '../../../../src/ui/DynamicFacet/DynamicFacetValues/IDynamicFacetValue';
+import { IDynamicFacetValueProperties } from '../../../../src/ui/DynamicFacet/IDynamicFacet';
 import { DynamicFacetRangeValueCreator } from '../../../../src/ui/DynamicFacet/DynamicFacetValues/DynamicFacetRangeValueCreator';
 import { DynamicFacet } from '../../../../src/ui/DynamicFacet/DynamicFacet';
 import { DynamicFacetTestUtils } from '../DynamicFacetTestUtils';

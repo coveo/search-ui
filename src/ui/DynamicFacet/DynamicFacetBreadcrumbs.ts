@@ -3,8 +3,7 @@ import { $$ } from '../../utils/Dom';
 import { l } from '../../strings/Strings';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
-import { IDynamicFacet } from './IDynamicFacet';
-import { IDynamicFacetValue } from './DynamicFacetValues/IDynamicFacetValue';
+import { IDynamicFacet, IDynamicFacetValue } from './IDynamicFacet';
 
 export class DynamicFacetBreadcrumbs {
   public element: HTMLElement;

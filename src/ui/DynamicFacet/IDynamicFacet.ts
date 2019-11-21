@@ -4,11 +4,13 @@ import { IResponsiveComponentOptions } from '../ResponsiveComponents/ResponsiveC
 import { IDynamicManagerCompatibleFacet } from '../DynamicFacetManager/DynamicFacetManager';
 import { DependsOnManager } from '../../utils/DependsOnManager';
 import { DynamicFacetQueryController } from '../../controllers/DynamicFacetQueryController';
-import { IDynamicFacetValues } from './DynamicFacetValues/IDynamicFacetValues';
 import { FacetType } from '../../rest/Facet/FacetRequest';
 import { IAnalyticsFacetMeta, IAnalyticsActionCause } from '../Analytics/AnalyticsActionListMeta';
 import { Component } from '../Base/Component';
 import { IAnalyticsFacetState } from '../Analytics/IAnalyticsFacetState';
+import { IFacetResponseValue, IFacetResponse } from '../../rest/Facet/FacetResponse';
+import { IRangeValue } from '../../rest/RangeValue';
+import { FacetValueState } from '../../rest/Facet/FacetValueState';
 
 export interface IDynamicFacetOptions extends IResponsiveComponentOptions {
   id?: string;
@@ -58,4 +60,67 @@ export interface IDynamicFacet extends Component, IDynamicManagerCompatibleFacet
   logAnalyticsEvent(actionCause: IAnalyticsActionCause, facetMeta: IAnalyticsFacetMeta): void;
   triggerNewQuery(beforeExecuteQuery?: () => void): void;
   triggerNewIsolatedQuery(beforeExecuteQuery?: () => void): void;
+}
+
+export interface IValueCreator {
+  createFromResponse(facetValue: IFacetResponseValue, index: number): IDynamicFacetValue;
+  createFromValue(value: string): IDynamicFacetValue;
+  createFromRange(range: IRangeValue, index: number): IDynamicFacetValue;
+}
+
+export interface IValueRenderer {
+  render(): HTMLElement;
+}
+
+export interface IValueRendererKlass {
+  new (facetValue: IDynamicFacetValueProperties, facet: IDynamicFacet): IValueRenderer;
+}
+
+export interface IDynamicFacetValueProperties extends IRangeValue {
+  value: string;
+  displayValue: string;
+  state: FacetValueState;
+  numberOfResults: number;
+  position: number;
+  preventAutoSelect?: boolean;
+}
+
+export interface IDynamicFacetValue extends IDynamicFacetValueProperties {
+  renderer: IValueRenderer;
+  isSelected: boolean;
+  isIdle: boolean;
+  formattedCount: string;
+  selectAriaLabel: string;
+  renderedElement: HTMLElement;
+  analyticsFacetState: IAnalyticsFacetState;
+  analyticsFacetMeta: IAnalyticsFacetMeta;
+
+  select():void;
+  toggleSelect():void;
+  deselect():void;
+  equals(arg: string | IDynamicFacetValue): boolean;
+
+  logSelectActionToAnalytics(): void;
+}
+
+export interface IDynamicFacetValues {
+  createFromResponse(response: IFacetResponse): void;
+  createFromRanges(ranges: IRangeValue[]): void;
+  resetValues(): void;
+  clearAll(): void;
+  hasSelectedValue(arg: string | IDynamicFacetValue): boolean;
+  get(arg: string | IDynamicFacetValue): IDynamicFacetValue;
+  render(): HTMLElement;
+  
+  allValues: string[];
+  selectedValues: string[];
+
+  allFacetValues: IDynamicFacetValue[];
+  activeValues: IDynamicFacetValue[];
+
+  hasSelectedValues: boolean;
+  hasActiveValues: boolean;
+  hasIdleValues: boolean;
+  hasDisplayedValues: boolean;
+  hasValues: boolean;
 }
