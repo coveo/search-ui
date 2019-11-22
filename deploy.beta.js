@@ -2,6 +2,8 @@
 const login = require('npm-cli-login');
 const exec = require('child_process').exec;
 login('coveo', process.env.NPM_PW, 'sandbox_JSUI@coveo.com');
+exec('npm whoami');
+exec('npm config set registry https://registry.npmjs.org/');
 
 const travisBranchName = process.env.TRAVIS_BRANCH || '';
 let branchToTag = '';
