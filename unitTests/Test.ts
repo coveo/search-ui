@@ -522,9 +522,6 @@ AccessTokenTest();
 import { CategoryFacetTest } from './ui/CategoryFacet/CategoryFacetTest';
 CategoryFacetTest();
 
-import { CategoryFacetValuesTreeTest } from './ui/CategoryFacet/CategoryFacetValuesTreeTest';
-CategoryFacetValuesTreeTest();
-
 import { CategoryFacetValueTest } from './ui/CategoryFacet/CategoryFacetValues/CategoryFacetValueTest';
 CategoryFacetValueTest();
 
@@ -639,17 +636,8 @@ QuickviewDocumentWordButtonTest();
 import { QuickviewDocumentTest } from './ui/QuickviewDocumentTest';
 QuickviewDocumentTest();
 
-import { CategoryFacetDebugTest } from './ui/CategoryFacet/CategoryFacetDebugTest';
-CategoryFacetDebugTest();
-
-import { CategoryFacetSearchTest } from './ui/CategoryFacet/CategoryFacetSearchTest';
-CategoryFacetSearchTest();
-
 import { CategoryFacetBreadcrumbTest } from './ui/CategoryFacet/CategoryFacetBreadcrumbTest';
 CategoryFacetBreadcrumbTest();
-
-import { CategoryValueTest } from './ui/CategoryFacet/CategoryValueTest';
-CategoryValueTest();
 
 import { GrammarTest } from './magicbox/GrammarTest';
 GrammarTest();

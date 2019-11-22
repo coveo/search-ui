@@ -3,20 +3,16 @@ import { Component } from '../Base/Component';
 import { l } from '../../strings/Strings';
 import { IFieldOption, ComponentOptions } from '../Base/ComponentOptions';
 import { IComponentBindings } from '../Base/ComponentBindings';
-import { $$, Dom } from '../../utils/Dom';
+import { $$ } from '../../utils/Dom';
 import { Initialization } from '../Base/Initialization';
 import { exportGlobally } from '../../GlobalExports';
-import { CategoryFacetTemplates } from './CategoryFacetTemplates';
-import { CategoryValueRoot } from './CategoryValueRoot';
 import { CategoryFacetQueryController } from '../../controllers/DynamicCategoryFacetQueryController';
 import { QueryStateModel } from '../../models/QueryStateModel';
 import { IAttributesChangedEventArg, MODEL_EVENTS } from '../../models/Model';
 import { Utils } from '../../utils/Utils';
-import { CategoryValue } from './CategoryValue';
 import { pluck, contains, isArray, findIndex } from 'underscore';
 import { Assert } from '../../misc/Assert';
 import { QueryEvents, IQuerySuccessEventArgs, IDoneBuildingQueryEventArgs } from '../../events/QueryEvents';
-import { CategoryFacetSearch } from './CategoryFacetSearch';
 import { BreadcrumbEvents, IPopulateBreadcrumbEventArgs } from '../../events/BreadcrumbEvents';
 import { CategoryFacetBreadcrumb } from './CategoryFacetBreadcrumb';
 import { ISearchEndpoint } from '../../rest/SearchEndpointInterface';
@@ -26,7 +22,6 @@ import {
   IAnalyticsActionCause,
   IAnalyticsFacetMeta
 } from '../Analytics/AnalyticsActionListMeta';
-import { CategoryFacetDebug } from './CategoryFacetDebug';
 import { QueryBuilder } from '../Base/QueryBuilder';
 import { IAutoLayoutAdjustableInsideFacetColumn } from '../SearchInterface/FacetColumnAutoLayoutAdjustment';
 import { ResponsiveFacets } from '../ResponsiveComponents/ResponsiveFacets';
@@ -36,7 +31,6 @@ import { DynamicFacetHeader } from '../DynamicFacet/DynamicFacetHeader/DynamicFa
 import { IStringMap } from '../../rest/GenericParam';
 import { DependsOnManager, IDependentFacet } from '../../utils/DependsOnManager';
 import { ResultListUtils } from '../../utils/ResultListUtils';
-import { CategoryFacetValuesTree } from './CategoryFacetValuesTree';
 import { FacetType } from '../../rest/Facet/FacetRequest';
 import { CategoryFacetValues } from './CategoryFacetValues/CategoryFacetValues';
 import { IFacetResponse } from '../../rest/Facet/FacetResponse';
@@ -319,39 +313,30 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
 
   public categoryFacetQueryController: CategoryFacetQueryController;
   public listenToQueryStateChange = true;
-  public categoryFacetSearch: CategoryFacetSearch;
-  public activeCategoryValue: CategoryValue | undefined;
   public positionInQuery: number;
   public dependsOnManager: DependsOnManager;
-  public static MAXIMUM_NUMBER_OF_VALUES_BEFORE_TRUNCATING = 15;
-  public static NUMBER_OF_VALUES_TO_KEEP_AFTER_TRUNCATING = 10;
   public isCollapsed: boolean;
   public header: DynamicFacetHeader;
   public values: CategoryFacetValues;
   public moreValuesAvailable = false;
   public position: Number = null;
-
-  private categoryValueRoot: CategoryValueRoot;
-  private categoryFacetTemplates: CategoryFacetTemplates;
-  private moreLessContainer: Dom;
-  private categoryFacetValuesTree: CategoryFacetValuesTree;
+  
+  // TODO: add truncating
+  public static MAXIMUM_NUMBER_OF_VALUES_BEFORE_TRUNCATING = 15;
+  public static NUMBER_OF_VALUES_TO_KEEP_AFTER_TRUNCATING = 10;
 
   constructor(public element: HTMLElement, public options: ICategoryFacetOptions, bindings?: IComponentBindings) {
     super(element, 'CategoryFacet', bindings);
     this.options = ComponentOptions.initComponentOptions(element, CategoryFacet, options);
 
     this.categoryFacetQueryController = new CategoryFacetQueryController(this);
-    this.isCollapsed = this.options.enableCollapse && this.options.collapsedByDefault;
-    this.categoryFacetTemplates = new CategoryFacetTemplates();
-    this.categoryValueRoot = new CategoryValueRoot($$(this.element), this.categoryFacetTemplates, this);
-    this.categoryValueRoot.path = this.activePath;
-    this.categoryFacetValuesTree = new CategoryFacetValuesTree();
+    this.isCollapsed = this.options.enableCollapse && this.options.collapsedByDefault;;
     this.values = new CategoryFacetValues(this);
 
     this.tryToInitFacetSearch();
 
     if (this.options.debug) {
-      new CategoryFacetDebug(this);
+      // TODO: add some sort of debug functionality
     }
 
     ResponsiveFacets.init(this.root, this, this.options);
@@ -407,7 +392,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
       return this.logDisabledFacetSearchWarning();
     }
 
-    this.categoryFacetSearch = new CategoryFacetSearch(this);
+    // TODO: add new facet search
   }
 
   private logDisabledFacetSearchWarning() {
@@ -527,21 +512,10 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
    * @returns simple object with three fields: `value`, `count` and `path`.
    */
   public getVisibleParentValues(): CategoryValueDescriptor[] {
-    return this.getVisibleParentCategoryValues().map(categoryValue => categoryValue.getDescriptor());
+    // TODO: reimplement
+    return [];
   }
 
-  private getVisibleParentCategoryValues() {
-    if (this.categoryValueRoot.children.length == 0 || this.categoryValueRoot.children[0].children.length == 0) {
-      return [];
-    }
-    let currentParentvalue = this.categoryValueRoot.children[0];
-    const parentValues = [currentParentvalue];
-    while (currentParentvalue.children.length != 0 && !Utils.arrayEqual(currentParentvalue.path, this.activePath)) {
-      currentParentvalue = currentParentvalue.children[0];
-      parentValues.push(currentParentvalue);
-    }
-    return parentValues;
-  }
 
   /**
    * Requests additional values.
@@ -577,16 +551,8 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
    * @returns simple object with three fields: `value`, `count` and `path`.
    */
   public getAvailableValues() {
-    if (!this.activeCategoryValue) {
-      return [];
-    }
-    return this.activeCategoryValue.children.map(categoryValue => {
-      return {
-        value: categoryValue.categoryValueDescriptor.value,
-        count: categoryValue.categoryValueDescriptor.count,
-        path: categoryValue.path
-      };
-    });
+    // TODO: reimplement
+    return [];
   }
 
   /**
@@ -730,9 +696,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
    * If you do not want to specify a value, you can simply enable {@link CategoryFacet.options.debug} and do an empty query.
    */
   public async debugValue(value: string) {
-    const queryBuilder = new QueryBuilder();
-    const queryResults = await this.queryController.getEndpoint().search(queryBuilder.build());
-    CategoryFacetDebug.analyzeResults(queryResults.groupByResults[0], this.options.delimitingCharacter);
+    // TODO: add debug functionality
   }
 
   /**
@@ -757,14 +721,6 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
 
   public getEndpoint(): ISearchEndpoint {
     return this.queryController.getEndpoint();
-  }
-
-  get children(): CategoryValue[] {
-    return this.categoryValueRoot.children;
-  }
-
-  private isPristine() {
-    return Utils.arrayEqual(this.activePath, this.options.basePath);
   }
 
   private buildFacetHeader() {
@@ -821,8 +777,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   }
 
   private dependsOnReset() {
-    this.changeActivePath(this.options.basePath);
-    this.dismiss();
+    // TODO: reimplement
   }
 
   private toggleDependentFacet(dependentFacet: Component) {
@@ -848,39 +803,14 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     this.disable();
   }
 
-  private dismiss() {
-    this.categoryValueRoot.clear();
-    if (this.isFacetSearchAvailable) {
-      this.categoryFacetSearch.clear();
-    }
-    this.moreLessContainer && this.moreLessContainer.detach();
-    this.header.toggleClear(false);
-  }
-
   private handlePopulateBreadCrumb(args: IPopulateBreadcrumbEventArgs) {
-    if (this.isPristine()) {
-      return;
-    }
-
-    const lastParentValue = this.categoryFacetValuesTree.getValueForLastPartInPath(this.activePath);
-    const descriptor: CategoryValueDescriptor = {
-      path: this.activePath,
-      count: lastParentValue.numberOfResults,
-      value: lastParentValue.value
-    };
-
-    const resetFacet = () => {
-      this.logAnalyticsEvent(analyticsActionCauseList.breadcrumbFacet);
-      this.reset();
-    };
-
-    const categoryFacetBreadcrumbBuilder = new CategoryFacetBreadcrumb(this, resetFacet, descriptor);
-
+    // TODO: reimplement
+    const categoryFacetBreadcrumbBuilder = new CategoryFacetBreadcrumb(this, null, null);
     args.breadcrumbs.push({ element: categoryFacetBreadcrumbBuilder.build() });
   }
 
   private handleClearBreadcrumb() {
-    this.changeActivePath(this.options.basePath);
+    // TODO: reimplement
   }
 
   private logAnalyticsFacetShowMoreLess(cause: IAnalyticsActionCause) {
