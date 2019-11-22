@@ -1,4 +1,3 @@
-import { DynamicFacet } from '../DynamicFacet/DynamicFacet';
 import { Combobox } from '../Combobox/Combobox';
 import { l } from '../../strings/Strings';
 import { FacetSearchController } from '../../controllers/FacetSearchController';
@@ -8,13 +7,14 @@ import { FacetValueState } from '../../rest/Facet/FacetValueState';
 import { DynamicFacetSearchValueRenderer } from './DynamicFacetSearchValueRenderer';
 import { IComboboxValue } from '../Combobox/ComboboxValues';
 import 'styling/DynamicFacetSearch/_DynamicFacetSearch';
+import { IDynamicFacet } from '../DynamicFacet/IDynamicFacet';
 
 export class DynamicFacetSearch {
   public element: HTMLElement;
   private facetSearchController: FacetSearchController;
   private combobox: Combobox;
 
-  constructor(private facet: DynamicFacet) {
+  constructor(private facet: IDynamicFacet) {
     this.facetSearchController = new FacetSearchController(this.facet);
 
     this.combobox = new Combobox({

@@ -1,5 +1,6 @@
 import { DynamicFacetQueryController } from '../../src/controllers/DynamicFacetQueryController';
-import { DynamicFacet, IDynamicFacetOptions } from '../../src/ui/DynamicFacet/DynamicFacet';
+import { DynamicFacet } from '../../src/ui/DynamicFacet/DynamicFacet';
+import { IDynamicFacetOptions } from '../../src/ui/DynamicFacet/IDynamicFacet';
 import { DynamicFacetTestUtils } from '../ui/DynamicFacet/DynamicFacetTestUtils';
 import { QueryBuilder, SearchEndpoint } from '../../src/Core';
 import { FacetValueState } from '../../src/rest/Facet/FacetValueState';

@@ -3,10 +3,10 @@ import { $$, Dom } from '../../../utils/Dom';
 import { l } from '../../../strings/Strings';
 import { SVGIcons } from '../../../utils/SVGIcons';
 import { SVGDom } from '../../../utils/SVGDom';
-import { DynamicFacet } from '../DynamicFacet';
 import { DynamicFacetHeaderButton } from './DynamicFacetHeaderButton';
 import { DynamicFacetHeaderCollapseToggle } from './DynamicFacetHeaderCollapseToggle';
 import { analyticsActionCauseList } from '../../Analytics/AnalyticsActionListMeta';
+import { IDynamicFacet } from '../IDynamicFacet';
 
 export class DynamicFacetHeader {
   public static showLoadingDelay = 2000;
@@ -17,7 +17,7 @@ export class DynamicFacetHeader {
   private collapseToggle: DynamicFacetHeaderCollapseToggle;
   private showLoadingTimeout: number;
 
-  constructor(private facet: DynamicFacet) {
+  constructor(private facet: IDynamicFacet) {
     this.element = $$('div', { className: 'coveo-dynamic-facet-header' }).el;
     this.title = this.createTitle();
     $$(this.element).append(this.title.el);

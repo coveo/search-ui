@@ -1,11 +1,12 @@
 import { IRangeValue } from '../../../src/rest/RangeValue';
 import * as Mock from '../../MockEnvironment';
-import { DynamicFacetRange, IDynamicFacetRangeOptions, DynamicFacetRangeValueFormat } from '../../../src/ui/DynamicFacet/DynamicFacetRange';
+import { DynamicFacetRange } from '../../../src/ui/DynamicFacet/DynamicFacetRange';
 import { DynamicFacetValues } from '../../../src/ui/DynamicFacet/DynamicFacetValues/DynamicFacetValues';
 import { DynamicFacetRangeValueCreator } from '../../../src/ui/DynamicFacet/DynamicFacetValues/DynamicFacetRangeValueCreator';
 import { $$, Logger } from '../../../src/Core';
 import { IFacetResponse, IFacetResponseValue } from '../../../src/rest/Facet/FacetResponse';
 import { FacetValueState } from '../../../src/rest/Facet/FacetValueState';
+import { IDynamicFacetRangeOptions, DynamicFacetRangeValueFormat } from '../../../src/ui/DynamicFacet/IDynamicFacetRange';
 
 export class DynamicFacetRangeTestUtils {
   static allOptions(options?: IDynamicFacetRangeOptions) {

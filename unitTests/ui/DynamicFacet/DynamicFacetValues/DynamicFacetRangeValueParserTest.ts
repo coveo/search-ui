@@ -1,6 +1,6 @@
 import { DynamicFacetRangeValueParser } from '../../../../src/ui/DynamicFacet/DynamicFacetValues/DynamicFacetRangeValueParser';
-import { DynamicFacetRangeValueFormat } from '../../../../src/ui/DynamicFacet/DynamicFacetRange';
 import { DynamicFacetRangeTestUtils } from '../DynamicFacetRangeTestUtils';
+import { DynamicFacetRangeValueFormat } from '../../../../src/ui/DynamicFacet/IDynamicFacetRange';
 
 export function DynamicFacetRangeValueParserTest() {
   describe('DynamicFacetRangeValueParser', () => {

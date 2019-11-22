@@ -1,12 +1,12 @@
 import { IFacetSearchRequest } from '../rest/Facet/FacetSearchRequest';
-import { DynamicFacet } from '../ui/DynamicFacet/DynamicFacet';
 import { IFacetSearchResponse } from '../rest/Facet/FacetSearchResponse';
 import { FileTypes } from '../ui/Misc/FileTypes';
 import { QueryUtils } from '../utils/QueryUtils';
 import { DateUtils } from '../utils/DateUtils';
+import { IDynamicFacet } from '../ui/DynamicFacet/IDynamicFacet';
 
 export class FacetSearchController {
-  constructor(private facet: DynamicFacet) {}
+  constructor(private facet: IDynamicFacet) {}
 
   private getMonthsValueCaptions() {
     const monthsValueCaptions: Record<string, string> = {};

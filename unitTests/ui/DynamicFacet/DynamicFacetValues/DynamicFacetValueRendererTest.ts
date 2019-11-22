@@ -2,7 +2,8 @@ import { $$ } from '../../../../src/utils/Dom';
 import { DynamicFacetValueRenderer } from '../../../../src/ui/DynamicFacet/DynamicFacetValues/DynamicFacetValueRenderer';
 import { DynamicFacetValue } from '../../../../src/ui/DynamicFacet/DynamicFacetValues/DynamicFacetValue';
 import { DynamicFacetTestUtils } from '../DynamicFacetTestUtils';
-import { DynamicFacet, IDynamicFacetOptions } from '../../../../src/ui/DynamicFacet/DynamicFacet';
+import { DynamicFacet } from '../../../../src/ui/DynamicFacet/DynamicFacet';
+import { IDynamicFacetOptions } from '../../../../src/ui/DynamicFacet/IDynamicFacet';
 
 export function DynamicFacetValueRendererTest() {
   describe('DynamicFacetValueRenderer', () => {
@@ -16,7 +17,7 @@ export function DynamicFacetValueRendererTest() {
 
     function initializeComponent(options?: IDynamicFacetOptions) {
       facet = DynamicFacetTestUtils.createFakeFacet(options);
-      dynamicFacetValue = new DynamicFacetValue(DynamicFacetTestUtils.createFakeFacetValues(1)[0], facet);
+      dynamicFacetValue = new DynamicFacetValue(DynamicFacetTestUtils.createFakeFacetValues(1)[0], facet, DynamicFacetValueRenderer);
       dynamicFacetValueRenderer = new DynamicFacetValueRenderer(dynamicFacetValue, facet);
 
       spyOn(dynamicFacetValue, 'logSelectActionToAnalytics');
