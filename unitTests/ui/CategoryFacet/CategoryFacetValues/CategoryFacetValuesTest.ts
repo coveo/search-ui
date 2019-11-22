@@ -15,6 +15,16 @@ export function CategoryFacetValuesTest() {
       facet.values = new CategoryFacetValues(facet);
     });
 
+    function moreButton() {
+      const element = facet.values.render();
+      return $$(element).find('.coveo-dynamic-category-facet-show-more');
+    }
+
+    function lessButton() {
+      const element = facet.values.render();
+      return $$(element).find('.coveo-dynamic-category-facet-show-less');
+    }
+
     describe('testing createFromResponse', () => {
       let response: IFacetResponse;
 
@@ -306,6 +316,55 @@ export function CategoryFacetValuesTest() {
             expect(facet.values.allFacetValues[0].children).toEqual([secondLevelFacetValue]);
             expect(facet.values.allFacetValues[0].children[0].children).toEqual([thirdLevelFacetValue]);
           });
+        });
+      });
+    });
+
+    describe('testing show more/less values', () => {
+      describe('when moreValuesAvailable is true', () => {
+        beforeEach(() => {
+          facet.moreValuesAvailable = true;
+        });
+  
+        it(`should render the "Show more" button`, () => {
+          expect(moreButton()).toBeTruthy();
+        });
+  
+        it(`when clicking on the "Show more" button
+          should perform the correct actions on the facet`, () => {
+          $$(moreButton()).trigger('click');
+          expect(facet.enableFreezeFacetOrderFlag).toHaveBeenCalledTimes(1);
+          expect(facet.showMore).toHaveBeenCalledTimes(1);
+        });
+
+        it(`when the facet option enableMoreLess is false
+          should not should render the "Show more" button`, () => {
+          facet.options.enableMoreLess = false;
+          expect(moreButton()).toBeFalsy();
+        });
+      });
+
+      describe('when there are more values than the numberOfValues option', () => {
+        beforeEach(() => {
+          const response = CategoryFacetTestUtils.getCompleteFacetResponse(facet, {values: CategoryFacetTestUtils.createFakeFacetResponseValues(1,20)});
+          facet.values.createFromResponse(response);
+        });
+
+        it(`should render the "Show less" button`, () => {
+          expect(lessButton()).toBeTruthy();
+        });
+
+        it(`when clicking on the "Show more" button
+          should perform the correct actions on the facet`, () => {
+          $$(lessButton()).trigger('click');
+          expect(facet.enableFreezeFacetOrderFlag).toHaveBeenCalledTimes(1);
+          expect(facet.showLess).toHaveBeenCalledTimes(1);
+        });
+
+        it(`when the facet option enableMoreLess is false
+          should not should render the "Show less" button`, () => {
+          facet.options.enableMoreLess = false;
+          expect(lessButton()).toBeFalsy();
         });
       });
     });
