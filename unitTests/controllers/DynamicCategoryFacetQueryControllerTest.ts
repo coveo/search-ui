@@ -1,7 +1,8 @@
 import { CategoryFacetQueryController } from '../../src/controllers/DynamicCategoryFacetQueryController';
 import { CategoryFacet, ICategoryFacetOptions } from '../../src/ui/CategoryFacet/CategoryFacet';
-import { QueryBuilder } from '../../src/Core';
+import { QueryBuilder, SearchEndpoint } from '../../src/Core';
 import { CategoryFacetTestUtils } from '../ui/CategoryFacet/CategoryFacetTestUtils';
+import { mockSearchEndpoint } from '../MockEnvironment';
 
 export function DynamicCategoryFacetQueryControllerTest() {
   describe('DynamicCategoryFacetQueryController', () => {
@@ -167,5 +168,67 @@ export function DynamicCategoryFacetQueryControllerTest() {
         expect(currentValue.children).not.toEqual([]);
       });
     });
+
+    describe('when executing a query', () => {
+      let mockEndpoint: SearchEndpoint;
+      beforeEach(() => {
+        mockEndpoint = mockSearchEndpoint();
+        facet.queryController.getEndpoint = () => mockEndpoint;
+        facet.queryController.getLastQuery = () => queryBuilder.build();
+      });
+
+      it(`should send a numberOfResults of 0 in order not to log the query as a full fleged query
+        and alleviate the load on the index`, () => {
+        categoryFacetQueryController.executeIsolatedQuery();
+        expect(mockEndpoint.search).toHaveBeenCalledWith(
+          jasmine.objectContaining({
+            numberOfResults: 0
+          })
+        );
+      });
+
+      it(`when there are no previous facets requests
+      should create the array of facet requests`, () => {
+        categoryFacetQueryController.executeIsolatedQuery();
+        expect(mockEndpoint.search).toHaveBeenCalledWith(
+          jasmine.objectContaining({
+            facets: [categoryFacetQueryController.facetRequest]
+          })
+        );
+      });
+
+      it(`when there are only other facets in the previous request
+      should push to the array of facet requests`, () => {
+        const fakeFacet = CategoryFacetTestUtils.createAdvancedFakeFacet({ field: '@field2' }).cmp;
+        fakeFacet.putStateIntoQueryBuilder(queryBuilder);
+
+        categoryFacetQueryController.executeIsolatedQuery();
+
+        expect(mockEndpoint.search).toHaveBeenCalledWith(
+          jasmine.objectContaining({
+            facets: [queryFacetRequests()[0], categoryFacetQueryController.facetRequest]
+          })
+        );
+      });
+
+      it(`when there is the same facet in the previous result
+      should overwrite it`, () => {
+        putFacetIntoQueryBuilder();
+        const originalFacetRequest = facetRequest();
+
+        categoryFacetQueryController.increaseNumberOfValuesToRequest(facetOptions.numberOfValues);
+        categoryFacetQueryController.executeIsolatedQuery();
+
+        const newFacetRequest = facetRequest();
+        expect(originalFacetRequest).not.toEqual(newFacetRequest);
+        expect(mockEndpoint.search).toHaveBeenCalledWith(
+          jasmine.objectContaining({
+            facets: [newFacetRequest]
+          })
+        );
+      });
+    });
+
+    // TODO: add tests for dependsOnManager when feature is reworked
   });
 }

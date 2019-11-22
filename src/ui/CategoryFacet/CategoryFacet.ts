@@ -15,7 +15,7 @@ import { Utils } from '../../utils/Utils';
 import { CategoryValue } from './CategoryValue';
 import { pluck, contains, isArray, findIndex } from 'underscore';
 import { Assert } from '../../misc/Assert';
-import { QueryEvents, IBuildingQueryEventArgs, IQuerySuccessEventArgs } from '../../events/QueryEvents';
+import { QueryEvents, IQuerySuccessEventArgs, IDoneBuildingQueryEventArgs } from '../../events/QueryEvents';
 import { CategoryFacetSearch } from './CategoryFacetSearch';
 import { BreadcrumbEvents, IPopulateBreadcrumbEventArgs } from '../../events/BreadcrumbEvents';
 import { CategoryFacetBreadcrumb } from './CategoryFacetBreadcrumb';
@@ -356,7 +356,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
 
     ResponsiveFacets.init(this.root, this, this.options);
     this.initDependsOnManager();
-    this.bind.onRootElement<IBuildingQueryEventArgs>(QueryEvents.buildingQuery, args => this.handleBuildingQuery(args));
+    this.bind.onRootElement(QueryEvents.doneBuildingQuery, (data: IDoneBuildingQueryEventArgs) => this.handleDoneBuildingQuery(data));
     this.bind.onRootElement(QueryEvents.querySuccess, (data: IQuerySuccessEventArgs) => this.handleQuerySuccess(data.results));
     this.bind.onRootElement(QueryEvents.duringQuery, () => this.addFading());
     this.bind.onRootElement(QueryEvents.duringQuery, () => this.ensureDom());
@@ -387,10 +387,15 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     return QueryStateModel.getFacetId(this.options.id);
   }
 
-  public handleBuildingQuery(args: IBuildingQueryEventArgs) {
-    this.categoryFacetQueryController.putFacetIntoQueryBuilder(
-      args.queryBuilder
-    );
+  private handleDoneBuildingQuery(data: IDoneBuildingQueryEventArgs) {
+    Assert.exists(data);
+    Assert.exists(data.queryBuilder);
+    this.putStateIntoQueryBuilder(data.queryBuilder);
+  }
+
+  public putStateIntoQueryBuilder(queryBuilder: QueryBuilder) {
+    Assert.exists(queryBuilder);
+    this.categoryFacetQueryController.putFacetIntoQueryBuilder(queryBuilder);
   }
 
   public scrollToTop() {
