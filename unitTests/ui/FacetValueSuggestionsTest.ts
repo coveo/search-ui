@@ -1,6 +1,6 @@
 import { IPopulateOmniboxSuggestionsEventArgs } from '../../src/events/OmniboxEvents';
 import { Suggestion } from '../../src/magicbox/SuggestionsManager';
-import { IFieldOption } from '../../src/ui/Base/ComponentOptions';
+import { IFieldOption } from '../../src/ui/Base/IComponentOptions';
 import {
   FacetValueSuggestions,
   IFacetValueSuggestionsOptions,

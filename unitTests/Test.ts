@@ -141,6 +141,18 @@ ComponentEventsTest();
 import { ComponentOptionsTest } from './ui/ComponentOptionsTest';
 ComponentOptionsTest();
 
+import { ComponentOptionLoaderTest } from './ui/ComponentOptionsLoaderTest';
+ComponentOptionLoaderTest();
+
+import { ComponentOptionsMergerTest } from './ui/ComponentOptionsMergerTest';
+ComponentOptionsMergerTest();
+
+import { ComponentOptionsValidatorTest } from './ui/ComponentOptionsValidatorTest';
+ComponentOptionsValidatorTest();
+
+import { ComponentOptionsPostProcessorTest } from './ui/ComponentOptionsPostProcessorTest';
+ComponentOptionsPostProcessorTest();
+
 import { ComponentTest } from './ui/ComponentTest';
 ComponentTest();
 
