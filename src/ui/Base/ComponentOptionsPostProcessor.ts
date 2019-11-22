@@ -3,7 +3,7 @@ import { IComponentOptionsOption } from './IComponentOptions';
 import { Utils } from '../../utils/Utils';
 import { Logger } from '../../misc/Logger';
 
-export class ComponentOptionsPostProcessing<T> {
+export class ComponentOptionsPostProcessor<T> {
   private logger: Logger;
   constructor(
     public allOptionsDefinitions: { [name: string]: IComponentOptionsOption<T> },

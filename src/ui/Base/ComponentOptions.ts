@@ -8,7 +8,7 @@ import { Utils } from '../../utils/Utils';
 import { Template } from '../Templates/Template';
 import { ComponentOptionLoader } from './ComponentOptionsLoader';
 import { ComponentOptionsMerger } from './ComponentOptionsMerger';
-import { ComponentOptionsPostProcessing } from './ComponentOptionsPostProcessing';
+import { ComponentOptionsPostProcessor } from './ComponentOptionsPostProcessor';
 import { ComponentOptionsValidator } from './ComponentOptionsValidator';
 import {
   ComponentOptionsType,
@@ -457,7 +457,7 @@ export class ComponentOptions {
       new ComponentOptionsValidator(optionDefinition, { componentID, name, value }, values).validate();
     });
 
-    new ComponentOptionsPostProcessing(options, values, componentID).postProcess();
+    new ComponentOptionsPostProcessor(options, values, componentID).postProcess();
     return values;
   }
 

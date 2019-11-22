@@ -1,15 +1,14 @@
-import { extend, find } from 'underscore';
+import { find } from 'underscore';
 import { Logger } from '../../misc/Logger';
 import { Utils } from '../../utils/Utils';
 import { ComponentOptionsType, IComponentLocalizedStringOptionArgs, IComponentOptionsOption } from './IComponentOptions';
 
 export class ComponentOptionLoader {
-  private resolvedValue: any = null;
   private logger: Logger;
 
   constructor(
     public element: HTMLElement,
-    public values: Record<any, any>,
+    public values: Record<string, any>,
     public optionName: string,
     public optionDefinition: IComponentOptionsOption<any>
   ) {
@@ -44,9 +43,9 @@ export class ComponentOptionLoader {
 
     switch (this.optionDefinition.type) {
       case ComponentOptionsType.LIST:
-        return extend([], this.optionDefinition.defaultValue);
+        return [...this.optionDefinition.defaultValue];
       case ComponentOptionsType.OBJECT:
-        return extend({}, this.optionDefinition.defaultValue);
+        return { ...this.optionDefinition.defaultValue };
       default:
         return this.optionDefinition.defaultValue;
     }
@@ -75,11 +74,11 @@ export class ComponentOptionLoader {
   }
 
   private findFirstValidValue(...chain: { (): any }[]): any {
+    let resolvedValue: any = null;
     find(chain, fn => {
-      this.resolvedValue = fn();
-      return !Utils.isNullOrUndefined(this.resolvedValue);
+      resolvedValue = fn();
+      return !Utils.isNullOrUndefined(resolvedValue);
     });
-
-    return this.resolvedValue;
+    return resolvedValue;
   }
 }

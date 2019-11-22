@@ -1,4 +1,3 @@
-import { extend } from 'underscore';
 import { l } from '../../strings/Strings';
 import { Utils } from '../../utils/Utils';
 import { ComponentOptionsType, IComponentOptionsOption } from './IComponentOptions';
@@ -12,7 +11,7 @@ export class ComponentOptionsMerger {
   constructor(
     public optionDefinition: IComponentOptionsOption<any>,
     public valueToMerge: IComponentOptionsToMerge,
-    public optionsDictionnary: Record<any, any>
+    public optionsDictionary: Record<string, any>
   ) {}
 
   public merge() {
@@ -23,17 +22,14 @@ export class ComponentOptionsMerger {
 
     switch (this.optionDefinition.type) {
       case ComponentOptionsType.OBJECT:
-        if (!Utils.isNullOrUndefined(this.optionsDictionnary[name])) {
-          this.optionsDictionnary[name] = extend(this.optionsDictionnary[name], value);
-        } else {
-          this.optionsDictionnary[name] = value;
-        }
+        const currentValue = this.optionsDictionary[name] || {};
+        this.optionsDictionary[name] = { ...currentValue, ...value };
         break;
       case ComponentOptionsType.LOCALIZED_STRING:
-        this.optionsDictionnary[name] = l(value);
+        this.optionsDictionary[name] = l(value);
         break;
       default:
-        this.optionsDictionnary[name] = value;
+        this.optionsDictionary[name] = value;
     }
     return this.valueToMerge;
   }

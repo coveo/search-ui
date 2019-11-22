@@ -150,8 +150,8 @@ ComponentOptionsMergerTest();
 import { ComponentOptionsValidatorTest } from './ui/ComponentOptionsValidatorTest';
 ComponentOptionsValidatorTest();
 
-import { ComponentOptionsPostProcessingTest } from './ui/ComponentOptionsPostProcessingTest';
-ComponentOptionsPostProcessingTest();
+import { ComponentOptionsPostProcessorTest } from './ui/ComponentOptionsPostProcessorTest';
+ComponentOptionsPostProcessorTest();
 
 import { ComponentTest } from './ui/ComponentTest';
 ComponentTest();
