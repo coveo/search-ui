@@ -103,7 +103,7 @@ export function DynamicFacetRangeValueParserTest() {
       describe('testing formatDisplayValue', () => {
         it(`when the value is a Date object
           should return the format correctly`, () => {
-          const value = parser.formatDisplayValue({ start: new Date('April 17 1999'), end: new Date('6/23/2016') });
+          const value = parser.formatDisplayValue({ start: new Date('1999/04/17'), end: new Date('2016/06/23') });
           expect(value).toBe('4/17/1999 to 6/23/2016');
         });
 
@@ -115,7 +115,7 @@ export function DynamicFacetRangeValueParserTest() {
 
         it(`when the value is a string
           should return the format correctly`, () => {
-          const value = parser.formatDisplayValue({ start: 'April 17 1999', end: '6/23/2016' });
+          const value = parser.formatDisplayValue({ start: '1999/04/17', end: '2016/06/23' });
           expect(value).toBe('4/17/1999 to 6/23/2016');
         });
       });
@@ -124,8 +124,8 @@ export function DynamicFacetRangeValueParserTest() {
         it(`when sending a valid range
         should return it correctly validated`, () => {
           const validatedRange = parser.validate({
-            start: '4/17/1999',
-            end: '6/23/2016',
+            start: '1999/04/17',
+            end: '2016/06/23',
             endInclusive: true
           });
 
@@ -139,7 +139,7 @@ export function DynamicFacetRangeValueParserTest() {
         it(`when sending a invalid range
         should return null`, () => {
           const validatedRange = parser.validate({
-            start: 'yes',
+            start: '1999/04/17@00:00:00',
             end: 'no',
             endInclusive: true
           });
