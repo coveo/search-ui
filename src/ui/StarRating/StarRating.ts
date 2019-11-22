@@ -8,7 +8,8 @@ import { exportGlobally } from '../../GlobalExports';
 import { IQueryResult } from '../../rest/QueryResult';
 import { Initialization } from '../Base/Initialization';
 import { IComponentBindings } from '../Base/ComponentBindings';
-import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { IFieldOption } from '../Base/IComponentOptions';
 
 const DEFAULT_SCALE = 5;
 
