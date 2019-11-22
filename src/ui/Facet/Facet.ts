@@ -34,7 +34,8 @@ import {
 } from '../Analytics/AnalyticsActionListMeta';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
-import { ComponentOptions, IFieldOption, IQueryExpression } from '../Base/ComponentOptions';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { IFieldOption, IQueryExpression } from '../Base/IComponentOptions';
 import { Initialization } from '../Base/Initialization';
 import { IOmniboxDataRow } from '../Omnibox/OmniboxInterface';
 import { IResponsiveComponentOptions } from '../ResponsiveComponents/ResponsiveComponentsManager';
@@ -151,7 +152,7 @@ export class Facet extends Component {
      * Default value is the localized string for `NoTitle`.
      */
     title: ComponentOptions.buildLocalizedStringOption({
-      defaultValue: l('NoTitle'),
+      localizedString: () => l('NoTitle'),
       section: 'CommonOptions',
       priority: 10
     }),
@@ -257,14 +258,14 @@ export class Facet extends Component {
       section: 'Sorting',
       depend: 'enableSettings',
       values: [
-        'Occurrences',
-        'Score',
-        'AlphaAscending',
-        'AlphaDescending',
-        'ComputedFieldAscending',
-        'ComputedFieldDescending',
-        'ChiSquare',
-        'NoSort'
+        'occurrences',
+        'score',
+        'alphaascending',
+        'alphadescending',
+        'computedfieldascending',
+        'computedfielddescending',
+        'chisquare',
+        'nosort'
       ]
     }),
     /**
@@ -505,7 +506,7 @@ export class Facet extends Component {
      * @notSupportedIn salesforcefree
      */
     computedFieldCaption: ComponentOptions.buildLocalizedStringOption({
-      defaultValue: l('ComputedField'),
+      localizedString: () => l('ComputedField'),
       section: 'ComputedField'
     }),
     /**

@@ -57,7 +57,9 @@ export class HiddenQuery extends Component {
      * Default value is the localized string f
      * or `"Additional filters:"`
      */
-    title: ComponentOptions.buildLocalizedStringOption({ defaultValue: l('AdditionalFilters') + ':' })
+    title: ComponentOptions.buildLocalizedStringOption({
+      localizedString: () => l('AdditionalFilters') + ':'
+    })
   };
 
   /**

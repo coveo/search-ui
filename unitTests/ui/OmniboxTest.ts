@@ -501,8 +501,8 @@ export function OmniboxTest() {
         enableQuerySuggestAddon: true
       });
       test.cmp.setText('foobar');
-      expect(test.cmp.magicBox.onsuggestions).toBeDefined();
-      test.cmp.magicBox.onsuggestions(<IOmniboxSuggestion[]>[
+      expect(test.cmp.magicBox.onSuggestions).toBeDefined();
+      test.cmp.magicBox.onSuggestions(<IOmniboxSuggestion[]>[
         {
           executableConfidence: 1,
           text: 'foobar'
@@ -521,8 +521,8 @@ export function OmniboxTest() {
         enableQuerySuggestAddon: true
       });
       test.cmp.setText('foobar');
-      expect(test.cmp.magicBox.onsuggestions).toBeDefined();
-      test.cmp.magicBox.onsuggestions(<IOmniboxSuggestion[]>[
+      expect(test.cmp.magicBox.onSuggestions).toBeDefined();
+      test.cmp.magicBox.onSuggestions(<IOmniboxSuggestion[]>[
         {
           executableConfidence: 0.8,
           text: 'foobar'
@@ -541,8 +541,8 @@ export function OmniboxTest() {
         enableQuerySuggestAddon: true
       });
       test.cmp.setText('foobar');
-      expect(test.cmp.magicBox.onsuggestions).toBeDefined();
-      test.cmp.magicBox.onsuggestions(<IOmniboxSuggestion[]>[
+      expect(test.cmp.magicBox.onSuggestions).toBeDefined();
+      test.cmp.magicBox.onSuggestions(<IOmniboxSuggestion[]>[
         {
           executableConfidence: 0.7,
           text: 'foobar'
@@ -561,8 +561,8 @@ export function OmniboxTest() {
         enableQuerySuggestAddon: true
       });
       test.cmp.setText('baz');
-      expect(test.cmp.magicBox.onsuggestions).toBeDefined();
-      test.cmp.magicBox.onsuggestions(<IOmniboxSuggestion[]>[
+      expect(test.cmp.magicBox.onSuggestions).toBeDefined();
+      test.cmp.magicBox.onSuggestions(<IOmniboxSuggestion[]>[
         {
           text: 'foobar'
         }
@@ -580,8 +580,8 @@ export function OmniboxTest() {
         enableQuerySuggestAddon: true
       });
       test.cmp.setText('foo');
-      expect(test.cmp.magicBox.onsuggestions).toBeDefined();
-      test.cmp.magicBox.onsuggestions(<IOmniboxSuggestion[]>[
+      expect(test.cmp.magicBox.onSuggestions).toBeDefined();
+      test.cmp.magicBox.onSuggestions(<IOmniboxSuggestion[]>[
         {
           text: 'foobar'
         }

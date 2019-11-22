@@ -1,8 +1,8 @@
 import * as Globalize from 'globalize';
 import 'styling/_Matrix';
 import * as _ from 'underscore';
-import { exportGlobally } from '../../GlobalExports';
 import { IBuildingQueryEventArgs, IDoneBuildingQueryEventArgs, IQuerySuccessEventArgs, QueryEvents } from '../../events/QueryEvents';
+import { exportGlobally } from '../../GlobalExports';
 import { QueryStateModel } from '../../models/QueryStateModel';
 import { IGroupByRequest } from '../../rest/GroupByRequest';
 import { IQuery } from '../../rest/Query';
@@ -13,7 +13,8 @@ import { QueryUtils } from '../../utils/QueryUtils';
 import { Utils } from '../../utils/Utils';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
-import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { IFieldOption } from '../Base/IComponentOptions';
 import { IInitializationParameters, Initialization } from '../Base/Initialization';
 import { QueryBuilder } from '../Base/QueryBuilder';
 import { TemplateComponentOptions } from '../Base/TemplateComponentOptions';
@@ -100,9 +101,9 @@ export class Matrix extends Component {
      *
      * See {@link IGroupByRequest.sortCriteria} for the list of possible values.
      *
-     * Default value is `ComputedFieldDescending`.
+     * Default value is `computedfielddescending`.
      */
-    sortCriteria: ComponentOptions.buildStringOption({ defaultValue: 'ComputedFieldDescending' }),
+    sortCriteria: ComponentOptions.buildStringOption({ defaultValue: 'computedfielddescending' }),
 
     /**
      * Specifies the maximum number of rows to display in the Matrix.

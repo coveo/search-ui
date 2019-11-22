@@ -26,23 +26,30 @@ export function buildCategoryFacetResults(numberOfResults = 11, numberOfRequeste
 export function CategoryFacetTest() {
   describe('CategoryFacet', () => {
     let test: IBasicComponentSetup<CategoryFacet>;
+    let options: ICategoryFacetOptions;
     let simulateQueryData: ISimulateQueryData;
 
     beforeEach(() => {
+      options = { field: '@field' };
       simulateQueryData = buildCategoryFacetResults();
       initializeComponent();
     });
 
     function initializeComponent() {
-      test = Mock.advancedComponentSetup<CategoryFacet>(
-        CategoryFacet,
-        new Mock.AdvancedComponentSetupOptions(null, { field: '@field' }, env => env.withLiveQueryStateModel())
-      );
+      const initializedOptions = new Mock.AdvancedComponentSetupOptions(null, options, env => env.withLiveQueryStateModel());
+      test = Mock.advancedComponentSetup<CategoryFacet>(CategoryFacet, initializedOptions);
       test.cmp.activePath = simulateQueryData.query.categoryFacets[0].path;
     }
 
     function allCategoriesButton() {
       return $$(test.cmp.element).find('.coveo-category-facet-all-categories');
+    }
+
+    function simulateNoResults() {
+      const emptyCategoryFacetResults = FakeResults.createFakeCategoryFacetResult('@field', [], undefined, 0);
+      simulateQueryData.results = { ...simulateQueryData.results, categoryFacets: [emptyCategoryFacetResults] };
+
+      Simulate.query(test.env, simulateQueryData);
     }
 
     it('when calling getVisibleParentValues returns all the visible parent values', () => {
@@ -116,13 +123,6 @@ export function CategoryFacetTest() {
     });
 
     describe('when there is no results', () => {
-      const simulateNoResults = () => {
-        const emptyCategoryFacetResults = FakeResults.createFakeCategoryFacetResult('@field', [], undefined, 0);
-        simulateQueryData.results = { ...simulateQueryData.results, categoryFacets: [emptyCategoryFacetResults] };
-
-        Simulate.query(test.env, simulateQueryData);
-      };
-
       it('hides the component', () => {
         simulateNoResults();
         expect(test.cmp.isCurrentlyDisplayed()).toBe(false);
@@ -133,6 +133,14 @@ export function CategoryFacetTest() {
         simulateNoResults();
         expect(test.cmp.queryStateModel.set).not.toHaveBeenCalled();
       });
+    });
+
+    it('when a base path is configured, when simulating a query with no results, it hides the component', () => {
+      options.basePath = ['hello'];
+      initializeComponent();
+      simulateNoResults();
+
+      expect(test.cmp.isCurrentlyDisplayed()).toBe(false);
     });
 
     it('should correctly evaluate isCurrentlyDisplayed() when facet is visible', () => {

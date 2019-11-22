@@ -40,7 +40,8 @@ import { PendingSearchAsYouTypeSearchEvent } from '../Analytics/PendingSearchAsY
 import { logSearchBoxSubmitEvent } from '../Analytics/SharedAnalyticsCalls';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
-import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { IFieldOption } from '../Base/IComponentOptions';
 import { Initialization } from '../Base/Initialization';
 import { IQueryboxOptions, Querybox } from '../Querybox/Querybox';
 import { QueryboxOptionsProcessing } from '../Querybox/QueryboxOptionsProcessing';
@@ -456,7 +457,7 @@ export class Omnibox extends Component {
       }
     };
 
-    this.magicBox.onsuggestions = (suggestions: IOmniboxSuggestion[]) => {
+    this.magicBox.onSuggestions = (suggestions: IOmniboxSuggestion[]) => {
       // If text is empty, this can mean that user selected text from the search box
       // and hit "delete" : Reset the partial queries in this case
       if (Utils.isEmptyString(this.getText())) {

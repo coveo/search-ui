@@ -1,14 +1,15 @@
-import { Component } from '../Base/Component';
-import { IComponentBindings } from '../Base/ComponentBindings';
-import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
-import { l } from '../../strings/Strings';
-import { FacetRange } from '../FacetRange/FacetRange';
 import * as moment from 'moment';
+import { pluck } from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 import { IRangeValue } from '../../rest/RangeValue';
-import { pluck } from 'underscore';
-import { Dom, $$ } from '../../utils/Dom';
+import { l } from '../../strings/Strings';
+import { $$, Dom } from '../../utils/Dom';
+import { Component } from '../Base/Component';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { IFieldOption } from '../Base/IComponentOptions';
 import { Initialization } from '../Base/Initialization';
+import { FacetRange } from '../FacetRange/FacetRange';
 import { IResponsiveComponentOptions } from '../ResponsiveComponents/ResponsiveComponentsManager';
 import { ResponsiveFacetOptions } from '../ResponsiveComponents/ResponsiveFacetOptions';
 
