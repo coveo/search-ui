@@ -776,3 +776,6 @@ FieldImageTest();
 
 import { OmniboxAnalyticsTest } from './ui/OmniboxAnalyticsTest';
 OmniboxAnalyticsTest();
+
+import { StarRatingTest } from './ui/StarRatingTest';
+StarRatingTest();

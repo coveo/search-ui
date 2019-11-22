@@ -186,6 +186,9 @@ lazyResultList();
 import { lazyResultRating } from './ui/ResultRating/LazyResultRating';
 lazyResultRating();
 
+import { lazyStarRating } from './ui/StarRating/LazyStarRating';
+lazyStarRating();
+
 import { lazyResultsFiltersPreferences } from './ui/ResultsFiltersPreferences/LazyResultsFiltersPreferences';
 lazyResultsFiltersPreferences();
 

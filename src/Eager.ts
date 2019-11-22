@@ -221,6 +221,9 @@ ShareQuery.doExport();
 import { Sort } from './ui/Sort/Sort';
 Sort.doExport();
 
+import { StarRating } from './ui/StarRating/StarRating';
+StarRating.doExport();
+
 import { Tab } from './ui/Tab/Tab';
 Tab.doExport();
 
