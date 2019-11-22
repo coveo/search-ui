@@ -2295,9 +2295,6 @@ var Utils = /** @class */ (function () {
         addDiff(secondObject, firstObject);
         return difference;
     };
-    Utils.resolveAfter = function (ms, returns) {
-        return new Promise(function (resolve) { return setTimeout(function () { return (returns ? resolve(returns) : resolve()); }, ms); });
-    };
     return Utils;
 }());
 exports.Utils = Utils;
@@ -2531,7 +2528,7 @@ var Dom = /** @class */ (function () {
      * @param nodeList a {NodeList} to convert to an array
      * @returns {HTMLElement[]}
      */
-    Dom.nodeListToArray = function (nodeList) {
+    Dom.prototype.nodeListToArray = function (nodeList) {
         var i = nodeList.length;
         var arr = new Array(i);
         while (i--) {
@@ -2705,7 +2702,7 @@ var Dom = /** @class */ (function () {
      * @returns {HTMLElement[]}
      */
     Dom.prototype.children = function () {
-        return Dom.nodeListToArray(this.el.children);
+        return this.nodeListToArray(this.el.children);
     };
     /**
      * Return all siblings
@@ -2738,7 +2735,7 @@ var Dom = /** @class */ (function () {
      * @returns {HTMLElement[]}
      */
     Dom.prototype.findAll = function (selector) {
-        return Dom.nodeListToArray(this.el.querySelectorAll(selector));
+        return this.nodeListToArray(this.el.querySelectorAll(selector));
     };
     /**
      * Find the child elements using a className
@@ -2747,7 +2744,7 @@ var Dom = /** @class */ (function () {
      */
     Dom.prototype.findClass = function (className) {
         if ('getElementsByClassName' in this.el) {
-            return Dom.nodeListToArray(this.el.getElementsByClassName(className));
+            return this.nodeListToArray(this.el.getElementsByClassName(className));
         }
     };
     /**
@@ -3085,6 +3082,25 @@ var Dom = /** @class */ (function () {
     Dom.prototype.clone = function (deep) {
         if (deep === void 0) { deep = false; }
         return $$(this.el.cloneNode(deep));
+    };
+    /**
+     * Determine if an element support a particular native DOM event.
+     * @param eventName The event to evaluate. Eg: touchstart, touchend, click, scroll.
+     */
+    Dom.prototype.canHandleEvent = function (eventName) {
+        var eventToEvaluate = "on" + eventName;
+        var isSupported = eventToEvaluate in this.el;
+        // This is a protection against false negative.
+        // Some browser will incorrectly report that the event is not supported at this point
+        // To make sure, we need to try and set a fake function as a property on the element,
+        // and then check if it got hooked properly as a 'function' or as something else, meaning
+        // the property is really not defined on the element.
+        if (!isSupported && this.el.setAttribute) {
+            this.el.setAttribute(eventToEvaluate, 'return;');
+            isSupported = typeof this.el[eventToEvaluate] == 'function';
+            this.el.removeAttribute(eventToEvaluate);
+        }
+        return isSupported;
     };
     Dom.prototype.buildIE11CustomEvent = function (type, data) {
         var event = document.createEvent('CustomEvent');
@@ -5919,8 +5935,8 @@ exports.ResponsiveComponents = ResponsiveComponents;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    lib: '2.7610.0-beta',
-    product: '2.7610.0-beta',
+    lib: '2.7219.16-beta',
+    product: '2.7219.16-beta',
     supportedApiVersion: 2
 };
 
@@ -8125,8 +8141,8 @@ var dict = {
     "objecttype_email": "Email",
     "goal": "Goal",
     "objecttype_goal": "Goal",
-    "incident": "Incident",
-    "objecttype_incident": "Incident",
+    "incident": "Case",
+    "objecttype_incident": "Case",
     "invoice": "Invoice",
     "objecttype_invoice": "Invoice",
     "lead": "Lead",
@@ -8199,21 +8215,6 @@ var dict = {
     "objecttype_phonecall": "Phone call",
     "appointment": "Appointment",
     "objecttype_appointment": "Appointment",
-    "sn_hr_core_case": "HR Case",
-    "filetype_sn_hr_core_case": "HR Case",
-    "sc_cat_item": "Catalog Item",
-    "filetype_sc_cat_item": "Catalog Item",
-    "sn_customerservice_case": "Case",
-    "filetype_sn_customerservice_case": "Case",
-    "kb_social_qa_answer": "Answer",
-    "filetype_kb_social_qa_answer": "Answer",
-    "kb_social_qa_question": "Question",
-    "filetype_kb_social_qa_question": "Question",
-    "kb_social_qa_comment": "Comment",
-    "filetype_kb_social_qa_comment": "Comment",
-    "filetype_incident": "Incident",
-    "kb_knowledge": "Knowledge Article",
-    "filetype_kb_knowledge": "Knowledge Article",
     "spportal": "Portal",
     "filetype_spportal": "Portal",
     "spsite": "SharePoint Site",
