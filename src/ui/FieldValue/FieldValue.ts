@@ -3,6 +3,7 @@ import { exportGlobally } from '../../GlobalExports';
 import { Assert } from '../../misc/Assert';
 import { QueryStateModel } from '../../models/QueryStateModel';
 import { IQueryResult } from '../../rest/QueryResult';
+import { l } from '../../strings/Strings';
 import { AccessibleButton } from '../../utils/AccessibleButton';
 import { DateUtils, IDateToStringOptions } from '../../utils/DateUtils';
 import { $$ } from '../../utils/Dom';
@@ -11,14 +12,14 @@ import { Utils } from '../../utils/Utils';
 import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
-import { ComponentOptions, IComponentOptionsObjectOptionArgs, IFieldOption, IFieldConditionOption } from '../Base/ComponentOptions';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { IComponentOptionsObjectOptionArgs, IFieldConditionOption, IFieldOption } from '../Base/IComponentOptions';
 import { Initialization } from '../Base/Initialization';
+import { DynamicFacet } from '../DynamicFacet/DynamicFacet';
 import { Facet } from '../Facet/Facet';
 import { FacetUtils } from '../Facet/FacetUtils';
-import { TemplateHelpers } from '../Templates/TemplateHelpers';
-import { l } from '../../strings/Strings';
-import { DynamicFacet } from '../DynamicFacet/DynamicFacet';
 import { TemplateFieldsEvaluator } from '../Templates/TemplateFieldsEvaluator';
+import { TemplateHelpers } from '../Templates/TemplateHelpers';
 
 export interface IFieldValueOptions {
   field?: IFieldOption;
@@ -244,7 +245,7 @@ export class FieldValue extends Component {
   ) {
     super(element, fieldValueClassId, bindings);
 
-    this.options = ComponentOptions.initOptions(element, FieldValue.simpleOptions, options);
+    this.options = ComponentOptions.initOptions(element, FieldValue.simpleOptions, options, FieldValue.ID);
 
     if (this.options.helper != null) {
       this.normalizeHelperAndOptions();
@@ -340,7 +341,7 @@ export class FieldValue extends Component {
   }
 
   private normalizeHelperAndOptions() {
-    this.options = ComponentOptions.initOptions(this.element, FieldValue.helperOptions, this.options);
+    this.options = ComponentOptions.initOptions(this.element, FieldValue.helperOptions, this.options, FieldValue.ID);
     const toFilter = keys(FieldValue.options.helperOptions['subOptions']);
     const toKeep = filter(toFilter, optionKey => {
       const optionDefinition = FieldValue.options.helperOptions['subOptions'][optionKey];

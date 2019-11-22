@@ -26,7 +26,6 @@ import { ComponentStateModel } from '../../models/ComponentStateModel';
 import { IAttributeChangedEventArg, Model } from '../../models/Model';
 import { QueryStateModel, QUERY_STATE_ATTRIBUTES } from '../../models/QueryStateModel';
 import { SearchEndpoint } from '../../rest/SearchEndpoint';
-import { ComponentsTypes } from '../../utils/ComponentsTypes';
 import { $$ } from '../../utils/Dom';
 import { HashUtils } from '../../utils/HashUtils';
 import { Utils } from '../../utils/Utils';
@@ -36,7 +35,8 @@ import { NoopAnalyticsClient } from '../Analytics/NoopAnalyticsClient';
 import { AriaLive, IAriaLive } from '../AriaLive/AriaLive';
 import { BaseComponent } from '../Base/BaseComponent';
 import { IComponentBindings } from '../Base/ComponentBindings';
-import { ComponentOptions, IFieldOption, IQueryExpression } from '../Base/ComponentOptions';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { IFieldOption, IQueryExpression } from '../Base/IComponentOptions';
 import { InitializationPlaceholder } from '../Base/InitializationPlaceholder';
 import { RootComponent } from '../Base/RootComponent';
 import { Debug } from '../Debug/Debug';
@@ -52,6 +52,7 @@ import {
 import { FacetColumnAutoLayoutAdjustment } from './FacetColumnAutoLayoutAdjustment';
 import { FacetValueStateHandler } from './FacetValueStateHandler';
 import RelevanceInspectorModule = require('../RelevanceInspector/RelevanceInspector');
+import { ComponentsTypes } from '../../utils/ComponentsTypes';
 
 export interface ISearchInterfaceOptions {
   enableHistory?: boolean;

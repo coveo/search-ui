@@ -28,7 +28,8 @@ import {
 } from '../Analytics/AnalyticsActionListMeta';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
-import { ComponentOptions, IComponentOptionsObjectOptionArgs, IFieldOption, IQueryExpression } from '../Base/ComponentOptions';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { IComponentOptionsObjectOptionArgs, IFieldOption, IQueryExpression } from '../Base/IComponentOptions';
 import { Initialization } from '../Base/Initialization';
 import { FacetHeader } from '../Facet/FacetHeader';
 import { IDuringSlideEventArgs, IEndSlideEventArgs, ISliderGraphData, ISliderOptions, Slider } from '../Misc/Slider';
@@ -72,7 +73,10 @@ export class FacetSlider extends Component {
      *
      * Default value is the localized string for `NoTitle`.
      */
-    title: ComponentOptions.buildLocalizedStringOption({ defaultValue: l('NoTitle'), section: 'CommonOptions' }),
+    title: ComponentOptions.buildLocalizedStringOption({
+      localizedString: () => l('NoTitle'),
+      section: 'CommonOptions'
+    }),
 
     /**
      * Specifies whether the [`field`]{@link FacetSlider.options.field} for which you are requesting a range is a date

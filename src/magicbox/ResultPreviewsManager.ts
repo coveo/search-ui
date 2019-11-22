@@ -20,6 +20,7 @@ export interface IResultPreviewsManagerOptions {
   previewClass: string;
   selectedClass: string;
   previewHeaderText: string;
+  timeout: number;
 }
 
 export class ResultPreviewsManager {
@@ -80,7 +81,7 @@ export class ResultPreviewsManager {
       selectedClass: 'magic-box-selected'
     });
     this.root = Component.resolveRoot(element);
-    this.previewsProcessor = new QueryProcessor();
+    this.previewsProcessor = new QueryProcessor({ timeout: this.options.timeout });
   }
 
   public async displaySearchResultPreviewsForSuggestion(suggestion: HTMLElement) {
@@ -206,8 +207,7 @@ export class ResultPreviewsManager {
     this.resultPreviewsHeader.text(text);
   }
 
-  private appendSearchResultPreview(preview: ISearchResultPreview, widthPercentage: number) {
-    preview.element.style.flex = `0 0 ${widthPercentage}%`;
+  private appendSearchResultPreview(preview: ISearchResultPreview) {
     this.resultPreviewsContainer.append(preview.element);
     const elementDom = $$(preview.element);
     elementDom.on('click', () => preview.onSelect());
@@ -216,7 +216,7 @@ export class ResultPreviewsManager {
 
   private appendSearchResultPreviews(previews: ISearchResultPreview[]) {
     this.resultPreviewsContainer.empty();
-    previews.forEach(preview => this.appendSearchResultPreview(preview, previews.length % 3 === 0 ? 33 : 50));
+    previews.forEach(preview => this.appendSearchResultPreview(preview));
   }
 
   private displaySuggestionPreviews(suggestion: HTMLElement, previews: ISearchResultPreview[]) {

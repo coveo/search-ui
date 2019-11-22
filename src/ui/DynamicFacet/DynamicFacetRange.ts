@@ -65,7 +65,10 @@ export class DynamicFacetRange extends DynamicFacet implements IComponentBinding
      *
      * @examples until, up to
      */
-    valueSeparator: ComponentOptions.buildLocalizedStringOption({ defaultValue: l('To'), section: 'CommonOptions' }),
+    valueSeparator: ComponentOptions.buildLocalizedStringOption({
+      localizedString: () => l('To'),
+      section: 'CommonOptions'
+    }),
     /**
      * The string format to apply to the minimum and maximum value of each range displayed in the facet.
      *

@@ -11,6 +11,7 @@ import 'styling/_CardOverlay';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { SVGDom } from '../../utils/SVGDom';
 import { Utils } from '../../utils/Utils';
+import { l } from '../../strings/Strings';
 
 export interface ICardOverlayOptions {
   title: string;
@@ -49,7 +50,10 @@ export class CardOverlay extends Component {
      *
      * Setting a value for this option is required for this component to work.
      */
-    title: ComponentOptions.buildLocalizedStringOption({ required: true, defaultValue: 'NoTitle' }),
+    title: ComponentOptions.buildLocalizedStringOption({
+      required: true,
+      localizedString: () => l('NoTitle')
+    }),
 
     /**
      * Specifies the icon to use for the overlay icon and for the button icon.

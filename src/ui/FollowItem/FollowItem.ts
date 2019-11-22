@@ -17,7 +17,8 @@ import {
   IAnalyticsSearchAlertsFollowDocumentMeta
 } from '../Analytics/AnalyticsActionListMeta';
 import { Component } from '../Base/Component';
-import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { IFieldOption } from '../Base/IComponentOptions';
 import { Initialization } from '../Base/Initialization';
 import { IResultsComponentBindings } from '../Base/ResultsComponentBindings';
 

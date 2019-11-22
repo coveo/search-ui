@@ -1,6 +1,7 @@
 import { Component } from '../Base/Component';
 import { l } from '../../strings/Strings';
-import { IFieldOption, ComponentOptions } from '../Base/ComponentOptions';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { IFieldOption } from '../Base/IComponentOptions';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { $$, Dom } from '../../utils/Dom';
 import { Initialization } from '../Base/Initialization';
@@ -110,7 +111,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
      * Default value is the localized string for `NoTitle`.
      */
     title: ComponentOptions.buildLocalizedStringOption({
-      defaultValue: l('NoTitle')
+      localizedString: () => l('NoTitle')
     }),
     /**
      * The maximum number of field values to display by default in the facet before the user
