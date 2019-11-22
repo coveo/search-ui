@@ -73,7 +73,10 @@ export class SuggestionsManager {
     });
 
     this.suggestionsProcessor = new QueryProcessor({ timeout: this.options.timeout });
-    this.resultPreviewsManager = new ResultPreviewsManager(element, { selectedClass: this.options.selectedClass });
+    this.resultPreviewsManager = new ResultPreviewsManager(element, {
+      selectedClass: this.options.selectedClass,
+      timeout: this.options.timeout
+    });
     this.suggestionsListbox = this.buildSuggestionsContainer();
     $$(this.element).append(this.suggestionsListbox.el);
     this.addAccessibilityPropertiesForCombobox();
