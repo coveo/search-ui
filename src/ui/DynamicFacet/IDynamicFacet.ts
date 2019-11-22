@@ -1,5 +1,5 @@
 import { IAutoLayoutAdjustableInsideFacetColumn } from '../SearchInterface/FacetColumnAutoLayoutAdjustment';
-import { IFieldOption } from '../Base/ComponentOptions';
+import { IFieldOption } from '../Base/IComponentOptions';
 import { IResponsiveComponentOptions } from '../ResponsiveComponents/ResponsiveComponentsManager';
 import { IDynamicManagerCompatibleFacet } from '../DynamicFacetManager/DynamicFacetManager';
 import { DependsOnManager } from '../../utils/DependsOnManager';
