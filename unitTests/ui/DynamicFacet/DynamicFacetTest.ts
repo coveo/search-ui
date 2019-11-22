@@ -485,7 +485,10 @@ export function DynamicFacetTest() {
       test.cmp.selectValue('bar');
       test.cmp.selectValue('foo');
 
-      expect(test.cmp.analyticsFacetState).toEqual([test.cmp.values.get('bar').analyticsFacetState, test.cmp.values.get('foo').analyticsFacetState]);
+      expect(test.cmp.analyticsFacetState).toEqual([
+        test.cmp.values.get('bar').analyticsFacetState,
+        test.cmp.values.get('foo').analyticsFacetState
+      ]);
     });
 
     it(`when calling "putStateIntoAnalytics" 

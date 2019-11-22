@@ -1,7 +1,7 @@
+import { QueryController } from '../../Core';
 import { IIndexFieldValue } from '../../rest/FieldValue';
 import { IListFieldValuesRequest } from '../../rest/ListFieldValuesRequest';
-import { QueryController } from '../../Core';
-import { IFieldOption } from '../Base/ComponentOptions';
+import { IFieldOption } from '../Base/IComponentOptions';
 import { IQuerySuggestionKeyword } from './FacetValueSuggestions';
 
 /**

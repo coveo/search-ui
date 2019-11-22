@@ -156,7 +156,10 @@ export function DynamicFacetValueTest() {
 
       it('should log the right analytics action', () => {
         dynamicFacetValue.logSelectActionToAnalytics();
-        expect(facet.logAnalyticsEvent).toHaveBeenCalledWith(analyticsActionCauseList.dynamicFacetSelect, dynamicFacetValue.analyticsFacetMeta);
+        expect(facet.logAnalyticsEvent).toHaveBeenCalledWith(
+          analyticsActionCauseList.dynamicFacetSelect,
+          dynamicFacetValue.analyticsFacetMeta
+        );
       });
     });
 

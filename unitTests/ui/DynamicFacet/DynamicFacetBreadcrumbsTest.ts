@@ -101,10 +101,7 @@ export function DynamicFacetBreadcrumbsTest() {
         };
 
         $$(valueElements()[0]).trigger('click');
-        expect(facet.logAnalyticsEvent).toHaveBeenCalledWith(
-          analyticsActionCauseList.breadcrumbFacet,
-          facet.basicAnalyticsFacetMeta
-        );
+        expect(facet.logAnalyticsEvent).toHaveBeenCalledWith(analyticsActionCauseList.breadcrumbFacet, facet.basicAnalyticsFacetMeta);
       });
     });
   });

@@ -28,6 +28,7 @@ import { RecommendationQuery } from './RecommendationQuery';
 import { RecommendationAnalyticsClient } from '../Analytics/RecommendationAnalyticsClient';
 import 'styling/_Recommendation';
 import { IStringMap } from '../../rest/GenericParam';
+import { l } from '../../strings/Strings';
 
 export interface IRecommendationOptions extends ISearchInterfaceOptions {
   mainSearchInterface?: HTMLElement;
@@ -191,7 +192,9 @@ export class Recommendation extends SearchInterface implements IComponentBinding
      *
      * Default value is `Recommendations`.
      */
-    dropdownHeaderLabel: ComponentOptions.buildLocalizedStringOption({ defaultValue: 'Recommendations' })
+    dropdownHeaderLabel: ComponentOptions.buildLocalizedStringOption({
+      localizedString: () => l('Recommendations')
+    })
   };
 
   // These are used by the analytics client for recommendation

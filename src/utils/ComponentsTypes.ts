@@ -1,6 +1,5 @@
-import { Dom, $$ } from './Dom';
-import { get } from '../ui/Base/RegisteredNamedMethods';
 import { Component } from '../ui/Base/Component';
+import { $$, Dom } from './Dom';
 
 export class ComponentsTypes {
   public static get allFacetsType() {
@@ -17,7 +16,7 @@ export class ComponentsTypes {
   }
 
   public static get allFacetsClassname() {
-    return ComponentsTypes.allFacetsType.map(type => Component.computeCssClassNameForType(type));
+    return ComponentsTypes.allFacetsType.map(type => `Coveo${type}`);
   }
 
   public static getAllFacetsElements(root: HTMLElement | Dom) {
@@ -30,6 +29,6 @@ export class ComponentsTypes {
   }
 
   public static getAllFacetsInstance(root: HTMLElement | Dom) {
-    return ComponentsTypes.getAllFacetsElements(root).map(element => get(element) as Component);
+    return ComponentsTypes.getAllFacetsElements(root).map(element => Component.get(element) as Component);
   }
 }

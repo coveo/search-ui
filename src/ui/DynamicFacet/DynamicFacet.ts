@@ -96,7 +96,7 @@ export class DynamicFacet extends Component implements IDynamicFacet {
      * **Default:** The localized string for `NoTitle`.
      */
     title: ComponentOptions.buildLocalizedStringOption({
-      defaultValue: l('NoTitle'),
+      localizedString: () => l('NoTitle'),
       section: 'CommonOptions',
       priority: 10
     }),

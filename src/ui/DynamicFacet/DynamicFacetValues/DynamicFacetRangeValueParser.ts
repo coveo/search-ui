@@ -4,6 +4,7 @@ import { NumberUtils } from '../../../utils/NumberUtils';
 import { isNull } from 'util';
 import { DateUtils } from '../../../utils/DateUtils';
 import { IDynamicFacetRange, DynamicFacetRangeValueFormat } from '../IDynamicFacetRange';
+import { Logger } from '../../../misc/Logger';
 
 export class DynamicFacetRangeValueParser {
   constructor(private facet: IDynamicFacetRange) {}
@@ -17,14 +18,13 @@ export class DynamicFacetRangeValueParser {
   }
 
   private parseDateFromRangeType(value: RangeType) {
-    switch (typeof value) {
-      case 'number':
-        return new Date(value as number);
-      case 'string':
-        return new Date(`${value}`);
-      default:
-        return value as Date;
+    const parsedDate = DateUtils.convertToStandardDate(value);
+    if (!DateUtils.isValid(parsedDate)) {
+      new Logger(this).warn('Date value is not valid', value);
+      return null;
     }
+
+    return parsedDate;
   }
 
   private formatDisplayValueFromLimit(value: RangeType) {
