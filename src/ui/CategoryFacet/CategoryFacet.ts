@@ -336,16 +336,14 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     this.tryToInitFacetSearch();
 
     if (this.options.debug) {
-      // TODO: add some sort of debug functionality
+      // TODO: reimplement debug functionality
     }
 
     ResponsiveFacets.init(this.root, this, this.options);
     this.initDependsOnManager();
     this.bind.onRootElement(QueryEvents.doneBuildingQuery, (data: IDoneBuildingQueryEventArgs) => this.handleDoneBuildingQuery(data));
     this.bind.onRootElement(QueryEvents.querySuccess, (data: IQuerySuccessEventArgs) => this.handleQuerySuccess(data.results));
-    this.bind.onRootElement(QueryEvents.duringQuery, () => this.addFading());
     this.bind.onRootElement(QueryEvents.duringQuery, () => this.ensureDom());
-    this.bind.onRootElement(QueryEvents.deferredQuerySuccess, () => this.handleDeferredQuerySuccess());
     this.bind.onRootElement<IPopulateBreadcrumbEventArgs>(BreadcrumbEvents.populateBreadcrumb, args => this.handlePopulateBreadCrumb(args));
     this.bind.onRootElement(BreadcrumbEvents.clearBreadcrumb, () => this.handleClearBreadcrumb());
     this.buildFacetHeader();
@@ -364,6 +362,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     return $$(this.element).isVisible();
   }
 
+  // TODO: hook up with QSM
   public get activePath() {
     return this.queryStateModel.get(this.queryStateAttribute) || this.options.basePath;
   }
@@ -388,15 +387,12 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   }
 
   private tryToInitFacetSearch() {
-    if (!this.isFacetSearchAvailable) {
-      return this.logDisabledFacetSearchWarning();
-    }
-
     // TODO: add new facet search
+    return this.logDisabledFacetSearchWarning();
   }
 
   private logDisabledFacetSearchWarning() {
-    if (this.isEnableFacetSearchFalsy) {
+    if (!this.options.enableFacetSearch) {
       return;
     }
 
@@ -410,14 +406,6 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
 
   private getOptionAttributeName(optionName: keyof ICategoryFacetOptions) {
     return ComponentOptions.attrNameFromName(optionName);
-  }
-
-  private get isFacetSearchAvailable() {
-    return false;
-  }
-
-  private get isEnableFacetSearchFalsy() {
-    return !this.options.enableFacetSearch;
   }
 
   private get isCategoryEmpty() {
@@ -448,6 +436,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
 
     response ? this.onQueryResponse(response) : this.onNoAdditionalValues();
     this.values.render();
+    this.updateAppearance();
   }
 
   private onQueryResponse(response?: IFacetResponse) {
@@ -462,7 +451,6 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
 
   /**
    * Changes the active path.
-   *
    */
   public changeActivePath(path: string[]) {
     this.listenToQueryStateChange = false;
@@ -557,33 +545,24 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
 
   /**
    * Selects a value from the currently available values.
-   * If the given value to select is not in the available values, it will throw an error.
    */
   public selectValue(value: string) {
-    Assert.check(
-      contains(pluck(this.getAvailableValues(), 'value'), value),
-      'Failed while trying to select a value that is not available.'
-    );
-    const newPath = this.activePath.slice(0);
-    newPath.push(value);
-    this.changeActivePath(newPath);
-    this.logAnalyticsEvent(analyticsActionCauseList.categoryFacetSelect);
-    this.executeQuery();
+    // TODO: reimplement
   }
 
   /**
    * Deselects the last value in the hierarchy that is applied to the query. When at the top of the hierarchy, this method does nothing.
    */
   public deselectCurrentValue() {
-    if (this.activePath.length == 0) {
-      return;
-    }
+    // TODO: reimplement
+  }
 
-    const newPath = this.activePath.slice(0);
-    newPath.pop();
-    this.changeActivePath(newPath);
-    this.logAnalyticsEvent(analyticsActionCauseList.categoryFacetSelect);
-    this.executeQuery();
+  public selectPath(path: string[]) {
+    Assert.exists(path);
+    Assert.isLargerThan(0, path.length);
+    this.ensureDom();
+    this.values.selectPath(path);
+    this.logger.info('Toggle select facet value at path', path);
   }
 
   /**
@@ -647,15 +626,6 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     this.categoryFacetQueryController.enableFreezeFacetOrderFlag();
   }
 
-  // TODO: move into selectValue/changeActivePath
-  public selectPath(path: string[]) {
-    Assert.exists(path);
-    Assert.isLargerThan(0, path.length);
-    this.ensureDom();
-    this.values.selectPath(path);
-    this.logger.info('Toggle select facet value at path', path);
-  }
-
   /**
    * Collapses the facet, hiding values.
    */
@@ -683,11 +653,8 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   }
 
   public createDom() {
-    this.createAndAppendValues();
-  }
-
-  private createAndAppendValues() {
     this.element.appendChild(this.values.render());
+    this.updateAppearance();
   }
 
   /**
@@ -782,19 +749,6 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
 
   private toggleDependentFacet(dependentFacet: Component) {
     this.activePath.length ? dependentFacet.enable() : dependentFacet.disable();
-  }
-
-  private addFading() {
-    $$(this.element).addClass('coveo-category-facet-values-fade');
-  }
-
-  private handleDeferredQuerySuccess() {
-    this.updateAppearance();
-    this.removeFading();
-  }
-
-  private removeFading() {
-    $$(this.element).removeClass('coveo-category-facet-values-fade');
   }
 
   private notImplementedError() {
