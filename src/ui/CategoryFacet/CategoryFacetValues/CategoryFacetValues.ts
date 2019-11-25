@@ -136,7 +136,7 @@ export class CategoryFacetValues {
 
   private prependAllCategories() {
     const clear = $$('li', {}, $$('button', { className: 'coveo-dynamic-category-facet-all' }, l('AllCategories')));
-    clear.on('click', () => this.facet.reset());
+    clear.on('click', () => this.facet.clear());
     $$(this.list).prepend(clear.el);
   }
 
