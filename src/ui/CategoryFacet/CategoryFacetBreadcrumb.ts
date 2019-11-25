@@ -1,3 +1,4 @@
+import 'styling/DynamicFacet/_DynamicFacetBreadcrumbs';
 import { $$ } from '../../utils/Dom';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { CategoryFacet } from './CategoryFacet';
@@ -18,7 +19,7 @@ export class CategoryFacetBreadcrumb {
     this.element = $$('div', { className: 'coveo-dynamic-facet-breadcrumb coveo-breadcrumb-item' }).el;
     
     const pathToRender = without(this.facet.activePath, ...this.facet.options.basePath);
-    const captionLabel = pathToRender.map(pathPart => this.facet.getCaption(pathPart)).join('/');
+    const captionLabel = pathToRender.map(pathPart => this.facet.getCaption(pathPart)).join(' / ');
     
     this.createAndAppendTitle();
     this.createAndAppendCaption(captionLabel);
