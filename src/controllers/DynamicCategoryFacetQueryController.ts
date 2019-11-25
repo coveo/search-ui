@@ -56,7 +56,7 @@ export class CategoryFacetQueryController {
     };
   }
 
-  public executeIsolatedQuery(): Promise<IQueryResults> {
+  public getQueryResults(): Promise<IQueryResults> {
     const query = this.facet.queryController.getLastQuery();
     // Specifying a numberOfResults of 0 will not log the query as a full fledged query in the API
     // it will also alleviate the load on the index

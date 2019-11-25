@@ -193,12 +193,12 @@ export function DynamicFacetTest() {
     });
 
     it('allows to trigger a new isolated query', () => {
-      spyOn(test.cmp.dynamicFacetQueryController, 'executeIsolatedQuery');
+      spyOn(test.cmp.dynamicFacetQueryController, 'getQueryResults');
       const beforeExecuteQuery = jasmine.createSpy('beforeExecuteQuery', () => { });
       test.cmp.ensureDom();
       test.cmp.triggerNewIsolatedQuery(beforeExecuteQuery);
 
-      expect(test.cmp.dynamicFacetQueryController.executeIsolatedQuery).toHaveBeenCalled();
+      expect(test.cmp.dynamicFacetQueryController.getQueryResults).toHaveBeenCalled();
       expect(beforeExecuteQuery).toHaveBeenCalled();
       expect(test.cmp.values.render).toHaveBeenCalled();
     });

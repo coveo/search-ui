@@ -129,7 +129,7 @@ export function CategoryFacetValueTest() {
         });
 
         it(`when clicking on the "See less" button
-        should bump the retrieveCount according to the defined options`, () => {
+        should reduce the retrieveCount according to the defined options`, () => {
           $$(getSeeLess()).trigger('click');
           expect(facetValue.retrieveCount).toBe(facet.options.numberOfValues);
         });

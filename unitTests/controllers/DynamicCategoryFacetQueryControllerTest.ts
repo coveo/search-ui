@@ -107,7 +107,9 @@ export function DynamicCategoryFacetQueryControllerTest() {
     
     describe('testing currentValues', () => {
 
-      it('currentValues length should be equal to the facet number of values', () => {
+      // TODO: rename when API has fixed currentValue/numberOfValues issue
+      it(`when a value is selected
+      currentValues length should be equal to the facet number of values`, () => {
         expect(facetRequest().currentValues.length).toBe(facet.values.allFacetValues.length);
       });
 
@@ -117,15 +119,6 @@ export function DynamicCategoryFacetQueryControllerTest() {
         currentValues should be empty`, () => {
         categoryFacetQueryController.increaseNumberOfValuesToRequest(1);
         expect(facetRequest().currentValues).toEqual([]);
-      });
-
-      // TODO: remove when API has fixed currentValue/numberOfValues issue
-      it(`when numberOfValues requested is higher than the numberOfValues option
-        when a value is selected
-        currentValues should not be empty`, () => {
-        facet.values.selectPath(facet.values.allFacetValues[0].path);
-        categoryFacetQueryController.increaseNumberOfValuesToRequest(1);
-        expect(facetRequest().currentValues).not.toEqual([]);
       });
 
       it(`a currentValue basic properties should be built correctly`, () => {
@@ -163,7 +156,7 @@ export function DynamicCategoryFacetQueryControllerTest() {
       });
 
       it(`when the target value is not selected
-      retrieveChildren should be true`, () => {
+      children should not be empty`, () => {
         const currentValue = facetRequest().currentValues[0];
         expect(currentValue.children).not.toEqual([]);
       });
@@ -179,7 +172,7 @@ export function DynamicCategoryFacetQueryControllerTest() {
 
       it(`should send a numberOfResults of 0 in order not to log the query as a full fleged query
         and alleviate the load on the index`, () => {
-        categoryFacetQueryController.executeIsolatedQuery();
+        categoryFacetQueryController.getQueryResults();
         expect(mockEndpoint.search).toHaveBeenCalledWith(
           jasmine.objectContaining({
             numberOfResults: 0
@@ -189,7 +182,7 @@ export function DynamicCategoryFacetQueryControllerTest() {
 
       it(`when there are no previous facets requests
       should create the array of facet requests`, () => {
-        categoryFacetQueryController.executeIsolatedQuery();
+        categoryFacetQueryController.getQueryResults();
         expect(mockEndpoint.search).toHaveBeenCalledWith(
           jasmine.objectContaining({
             facets: [categoryFacetQueryController.facetRequest]
@@ -202,7 +195,7 @@ export function DynamicCategoryFacetQueryControllerTest() {
         const fakeFacet = CategoryFacetTestUtils.createAdvancedFakeFacet({ field: '@field2' }).cmp;
         fakeFacet.putStateIntoQueryBuilder(queryBuilder);
 
-        categoryFacetQueryController.executeIsolatedQuery();
+        categoryFacetQueryController.getQueryResults();
 
         expect(mockEndpoint.search).toHaveBeenCalledWith(
           jasmine.objectContaining({
@@ -217,7 +210,7 @@ export function DynamicCategoryFacetQueryControllerTest() {
         const originalFacetRequest = facetRequest();
 
         categoryFacetQueryController.increaseNumberOfValuesToRequest(facetOptions.numberOfValues);
-        categoryFacetQueryController.executeIsolatedQuery();
+        categoryFacetQueryController.getQueryResults();
 
         const newFacetRequest = facetRequest();
         expect(originalFacetRequest).not.toEqual(newFacetRequest);
