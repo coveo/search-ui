@@ -10,7 +10,7 @@ import { CategoryFacetQueryController } from '../../controllers/DynamicCategoryF
 import { QueryStateModel } from '../../models/QueryStateModel';
 import { IAttributesChangedEventArg, MODEL_EVENTS } from '../../models/Model';
 import { Utils } from '../../utils/Utils';
-import { pluck, contains, isArray, findIndex } from 'underscore';
+import { isArray, findIndex } from 'underscore';
 import { Assert } from '../../misc/Assert';
 import { QueryEvents, IQuerySuccessEventArgs, IDoneBuildingQueryEventArgs } from '../../events/QueryEvents';
 import { BreadcrumbEvents, IPopulateBreadcrumbEventArgs } from '../../events/BreadcrumbEvents';
