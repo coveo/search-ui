@@ -506,7 +506,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     beforeExecuteQuery && beforeExecuteQuery();
 
     try {
-      const results = await this.categoryFacetQueryController.executeIsolatedQuery();
+      const results = await this.categoryFacetQueryController.getQueryResults();
       this.handleQuerySuccess(results);
     } catch (e) {
       this.header.hideLoading();
