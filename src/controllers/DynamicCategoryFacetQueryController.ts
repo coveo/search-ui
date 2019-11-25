@@ -5,9 +5,10 @@ import { IFacetRequest, IFacetRequestValue } from '../rest/Facet/FacetRequest';
 import { QueryEvents } from '../events/QueryEvents';
 import { CategoryFacetValue } from '../ui/CategoryFacet/CategoryFacetValues/CategoryFacetValue';
 import { FacetValueState } from '../rest/Facet/FacetValueState';
+import { IQueryResults } from '../rest/QueryResults';
+import { findIndex } from 'underscore';
 
-// TODO: rename to simply CategoryFacetQueryController
-export class DynamicCategoryFacetQueryController {
+export class CategoryFacetQueryController {
   private numberOfValuesToRequest: number;
   private freezeFacetOrder = false;
 
@@ -55,7 +56,29 @@ export class DynamicCategoryFacetQueryController {
     };
   }
 
-  public get currentValues(): IFacetRequestValue[] {
+  public getQueryResults(): Promise<IQueryResults> {
+    const query = this.facet.queryController.getLastQuery();
+    // Specifying a numberOfResults of 0 will not log the query as a full fledged query in the API
+    // it will also alleviate the load on the index
+    query.numberOfResults = 0;
+
+    const previousFacetRequestIndex = findIndex(query.facets, { facetId: this.facet.options.id });
+    if (previousFacetRequestIndex !== -1) {
+      query.facets[previousFacetRequestIndex] = this.facetRequest;
+    } else if (query.facets) {
+      query.facets.push(this.facetRequest);
+    } else {
+      query.facets = [this.facetRequest];
+    }
+
+    return this.facet.queryController.getEndpoint().search(query);
+  }
+
+  private get currentValues(): IFacetRequestValue[] {
+    // TODO: remove when API has fixed currentValue/numberOfValues issue
+    if (!this.facet.values.hasSelectedValue && this.numberOfValuesToRequest > this.facet.options.numberOfValues) {
+      return [];
+    }
     return this.facet.values.allFacetValues.map(requestValue => this.buildRequestValue(requestValue));
   }
 
@@ -64,13 +87,20 @@ export class DynamicCategoryFacetQueryController {
       value: facetValue.value,
       state: facetValue.state,
       preventAutoSelect: facetValue.preventAutoSelect,
-      children: facetValue.children.map(requestValue => this.buildRequestValue(requestValue)),
+      children: this.childrenForFacetValue(facetValue),
       retrieveChildren: this.shouldRetrieveChildren(facetValue),
-      retrieveCount: 3, // TODO: Move numberOfValuesToRequest to every child values
+      retrieveCount: facetValue.retrieveCount
     }
   }
 
+  private childrenForFacetValue(facetValue: CategoryFacetValue) {
+    // TODO: remove when API has fixed currentValue/numberOfValues issue
+    return this.shouldRetrieveChildren(facetValue)
+      ? []
+      : facetValue.children.map(requestValue => this.buildRequestValue(requestValue));
+  }
+
   private shouldRetrieveChildren(facetValue: CategoryFacetValue) {
-    return !facetValue.children.length && facetValue.state === FacetValueState.selected;
+    return facetValue.state === FacetValueState.selected;
   }
 }

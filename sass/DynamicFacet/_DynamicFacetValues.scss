@@ -43,36 +43,12 @@
   }
 }
 
-.coveo-dynamic-facet-show-more,
-.coveo-dynamic-facet-show-less {
-  @include linkButton();
-
-  width: 100%;
-  text-align: left;
-  margin-top: 2px;
-  padding: 3px 0;
-  font-size: $font-size-regular;
-
-  &::before {
-    width: 15px;
-    display: inline-block;
-    content: '+';
-
-    // IE11 hack: need to define "underline" before setting it to "none"
-    text-decoration: underline;
-  }
-
-  &::before,
-  &:hover::before {
-    text-decoration: none;
-  }
+.coveo-dynamic-facet-show-more {
+  @include facetShowMore();
 }
 
 .coveo-dynamic-facet-show-less {
-  color: $color-dark-grey;
-  &::before {
-    content: '-';
-  }
+  @include facetShowLess();
 }
 
 .coveo-dynamic-facet-collapsed {

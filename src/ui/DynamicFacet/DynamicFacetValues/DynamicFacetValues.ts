@@ -8,6 +8,7 @@ import { FacetValueState } from '../../../rest/Facet/FacetValueState';
 import { l } from '../../../strings/Strings';
 import { DynamicFacetValueCreator } from './DynamicFacetValueCreator';
 import { IRangeValue } from '../../../rest/RangeValue';
+import { DynamicFacetValueShowMoreLessButton } from './DynamicFacetValueMoreLessButton';
 
 export interface ValueCreator {
   createFromResponse(facetValue: IFacetResponseValue, index: number): DynamicFacetValue;
@@ -16,7 +17,7 @@ export interface ValueCreator {
 }
 
 export interface IDynamicFacetValueCreatorKlass {
-  new (facet: DynamicFacet): ValueCreator;
+  new(facet: DynamicFacet): ValueCreator;
 }
 
 export class DynamicFacetValues {
@@ -109,37 +110,31 @@ export class DynamicFacetValues {
   }
 
   private buildShowLess() {
-    const showLessBtn = $$(
-      'button',
-      {
-        className: 'coveo-dynamic-facet-show-less',
-        ariaLabel: l('ShowLessFacetResults', this.facet.options.title)
-      },
-      l('ShowLess')
-    );
-    const showLess = $$('li', null, showLessBtn);
-    showLessBtn.on('click', () => {
-      this.facet.enableFreezeFacetOrderFlag();
-      this.facet.showLessValues();
+    const showLess = new DynamicFacetValueShowMoreLessButton({
+      className: 'coveo-dynamic-facet-show-less',
+      ariaLabel: l('ShowLessFacetResults', this.facet.options.title),
+      label: l('ShowLess'),
+      action: () => {
+        this.facet.enableFreezeFacetOrderFlag();
+        this.facet.showLessValues();
+      }
     });
-    return showLess.el;
+
+    return showLess.element;
   }
 
   private buildShowMore() {
-    const showMoreBtn = $$(
-      'button',
-      {
-        className: 'coveo-dynamic-facet-show-more',
-        ariaLabel: l('ShowMoreFacetResults', this.facet.options.title)
-      },
-      l('ShowMore')
-    );
-    const showMore = $$('li', null, showMoreBtn);
-    showMoreBtn.on('click', () => {
-      this.facet.enableFreezeFacetOrderFlag();
-      this.facet.showMoreValues();
+    const showMore = new DynamicFacetValueShowMoreLessButton({
+      className: 'coveo-dynamic-facet-show-more',
+      ariaLabel: l('ShowMoreFacetResults', this.facet.options.title),
+      label: l('ShowMore'),
+      action: () => {
+        this.facet.enableFreezeFacetOrderFlag();
+        this.facet.showMoreValues();
+      }
     });
-    return showMore.el;
+
+    return showMore.element;
   }
 
   private get shouldEnableShowLess() {

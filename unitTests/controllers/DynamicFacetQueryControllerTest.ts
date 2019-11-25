@@ -214,7 +214,7 @@ export function DynamicFacetQueryControllerTest() {
 
       it(`should send a numberOfResults of 0 in order not to log the query as a full fleged query
         and alleviate the load on the index`, () => {
-        dynamicFacetQueryController.executeIsolatedQuery();
+        dynamicFacetQueryController.getQueryResults();
         expect(mockEndpoint.search).toHaveBeenCalledWith(
           jasmine.objectContaining({
             numberOfResults: 0
@@ -224,7 +224,7 @@ export function DynamicFacetQueryControllerTest() {
 
       it(`when there are no previous facets requests
       should create the array of facet requests`, () => {
-        dynamicFacetQueryController.executeIsolatedQuery();
+        dynamicFacetQueryController.getQueryResults();
         expect(mockEndpoint.search).toHaveBeenCalledWith(
           jasmine.objectContaining({
             facets: [dynamicFacetQueryController.facetRequest]
@@ -237,7 +237,7 @@ export function DynamicFacetQueryControllerTest() {
         const fakeFacet = DynamicFacetTestUtils.createAdvancedFakeFacet({ field: '@field2' }).cmp;
         fakeFacet.putStateIntoQueryBuilder(queryBuilder);
 
-        dynamicFacetQueryController.executeIsolatedQuery();
+        dynamicFacetQueryController.getQueryResults();
 
         expect(mockEndpoint.search).toHaveBeenCalledWith(
           jasmine.objectContaining({
@@ -252,7 +252,7 @@ export function DynamicFacetQueryControllerTest() {
         const originalFacetRequest = facetRequest();
 
         dynamicFacetQueryController.increaseNumberOfValuesToRequest(facetOptions.numberOfValues);
-        dynamicFacetQueryController.executeIsolatedQuery();
+        dynamicFacetQueryController.getQueryResults();
 
         const newFacetRequest = facetRequest();
         expect(originalFacetRequest).not.toEqual(newFacetRequest);

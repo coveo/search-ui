@@ -8,6 +8,7 @@ import { find } from 'underscore';
 import { FacetValueState } from '../../../rest/Facet/FacetValueState';
 import { Utils } from '../../../utils/Utils';
 import { l } from '../../../strings/Strings';
+import { DynamicFacetValueShowMoreLessButton } from '../../DynamicFacet/DynamicFacetValues/DynamicFacetValueMoreLessButton';
 
 export class CategoryFacetValues {
   private facetValues: CategoryFacetValue[] = [];
@@ -139,6 +140,56 @@ export class CategoryFacetValues {
     $$(this.list).prepend(clear.el);
   }
 
+  private buildShowLess() {
+    const showLess = new DynamicFacetValueShowMoreLessButton({
+      className: 'coveo-dynamic-category-facet-show-less',
+      ariaLabel: l('ShowLessFacetResults', this.facet.options.title),
+      label: l('ShowLessCategories'),
+      action: () => {
+        this.facet.enableFreezeFacetOrderFlag();
+        this.facet.showLess();
+      }
+    });
+
+    return showLess.element;
+  }
+
+  private buildShowMore() {
+    const showMore = new DynamicFacetValueShowMoreLessButton({
+      className: 'coveo-dynamic-category-facet-show-more',
+      ariaLabel: l('ShowMoreFacetResults', this.facet.options.title),
+      label: l('ShowMoreCategories'),
+      action: () => {
+        this.facet.enableFreezeFacetOrderFlag();
+        this.facet.showMore();
+      }
+    });
+
+    return showMore.element;
+  }
+
+  private get shouldEnableShowLess() {
+    return this.facetValues.length > this.facet.options.numberOfValues;
+  }
+
+  private get shouldEnableShowMore() {
+    return this.facet.moreValuesAvailable && !this.hasSelectedValue;
+  }
+
+  private appendShowMoreLess(fragment: DocumentFragment) {
+    if (!this.facet.options.enableMoreLess) {
+      return;
+    }
+
+    if (this.shouldEnableShowLess) {
+      fragment.appendChild(this.buildShowLess());
+    }
+
+    if (this.shouldEnableShowMore) {
+      fragment.appendChild(this.buildShowMore());
+    }
+  }
+
   public render() {
     const fragment = document.createDocumentFragment();
     $$(this.list).empty();
@@ -149,7 +200,9 @@ export class CategoryFacetValues {
 
     $$(this.list).toggleClass('coveo-with-space', !!this.selectedPath.length);
     this.selectedPath.length && this.prependAllCategories();
-    // TODO: append see more/less
+
+    this.appendShowMoreLess(fragment);
+
     this.list.appendChild(fragment);
     return this.list;
   }
