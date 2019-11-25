@@ -378,7 +378,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
       this.bind.onRootElement(BreadcrumbEvents.populateBreadcrumb, (args: IPopulateBreadcrumbEventArgs) =>
         this.handlePopulateBreadcrumb(args)
       );
-      this.bind.onRootElement(BreadcrumbEvents.clearBreadcrumb, () => this.reset());
+      this.bind.onRootElement(BreadcrumbEvents.clearBreadcrumb, () => this.clear());
     }
   }
 
@@ -465,7 +465,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
 
   private onNoAdditionalValues() {
     this.moreValuesAvailable = false;
-    this.values.reset();
+    this.values.clear();
   }
 
   /**
@@ -579,21 +579,19 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   }
 
   /**
-   * Reset the facet to it's initial state
-   *
-   * Does **not** trigger a query automatically.
-   * Updates the visual of the facet.
-   *
+   * Reset the facet to it's initial state.
+   * 
+   * Automatically triggers a query.
    */
   public reset() {
-    this.values.reset();
-    this.changeActivePath([]);
+    this.clear();
+    this.scrollToTop();
+    this.triggerNewQuery(() => this.logAnalyticsEvent(analyticsActionCauseList.categoryFacetClear));
   }
 
   public clear() {
-    this.reset();
-    this.scrollToTop();
-    this.triggerNewQuery(() => this.logAnalyticsEvent(analyticsActionCauseList.categoryFacetClear));
+    this.values.clear();
+    this.changeActivePath([]);
   }
 
   /**
@@ -715,7 +713,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     this.header = new DynamicFacetHeader({
       title: this.options.title,
       enableCollapse: this.options.enableCollapse,
-      clear: () => this.clear(),
+      clear: () => this.reset(),
       toggleCollapse: () => this.toggleCollapse(),
       expand: () => this.expand(),
       collapse: () => this.collapse(),

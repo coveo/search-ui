@@ -47,7 +47,7 @@ export class CategoryFacetBreadcrumb {
   }
 
   private valueSelectAction() {
-    this.facet.reset();
+    this.facet.clear();
     this.facet.triggerNewQuery(() => this.facet.logAnalyticsEvent(analyticsActionCauseList.categoryFacetBreadcrumb));
   }
 }

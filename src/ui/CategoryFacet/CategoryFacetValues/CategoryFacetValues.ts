@@ -57,7 +57,7 @@ export class CategoryFacetValues {
     return !!this.selectedPath.length;
   }
 
-  public reset() {
+  public clear() {
     this.facetValues = [];
     this.selectedPath = [];
   }
@@ -136,7 +136,7 @@ export class CategoryFacetValues {
 
   private prependAllCategories() {
     const clear = $$('li', {}, $$('button', { className: 'coveo-dynamic-category-facet-all' }, l('AllCategories')));
-    clear.on('click', () => this.facet.clear());
+    clear.on('click', () => this.facet.reset());
     $$(this.list).prepend(clear.el);
   }
 

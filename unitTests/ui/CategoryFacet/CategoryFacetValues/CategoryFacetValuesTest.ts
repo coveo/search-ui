@@ -102,9 +102,9 @@ export function CategoryFacetValuesTest() {
       });
     });
 
-    it('resetValues should empty the values', () => {
+    it('clear should empty the values', () => {
       facet.values.createFromResponse(CategoryFacetTestUtils.getCompleteFacetResponse(facet));
-      facet.values.reset();
+      facet.values.clear();
 
       expect(facet.values.allFacetValues.length).toBe(0);
     });
