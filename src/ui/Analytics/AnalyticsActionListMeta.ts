@@ -84,6 +84,9 @@ export interface IAnalyticsFacetMeta {
   facetId: string;
   facetField: string;
   facetValue?: string;
+  facetRangeStart?: string;
+  facetRangeEnd?: string;
+  facetRangeEndInclusive?: boolean;
   facetTitle: string;
 }
 

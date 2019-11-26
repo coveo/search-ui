@@ -1,4 +1,3 @@
-import { RangeType } from '../../rest/RangeValue';
 import { FacetType } from '../../rest/Facet/FacetRequest';
 import { FacetValueState } from '../../rest/Facet/FacetValueState';
 
@@ -37,7 +36,7 @@ export interface IAnalyticsFacetState {
    * > - `0`
    * > - `2018-01-01T00:00:00.000Z`
    */
-  start?: RangeType;
+  start?: string;
   /**
    * The maximum value of the dynamic range facet value.
    *
@@ -45,7 +44,7 @@ export interface IAnalyticsFacetState {
    * > - `500`
    * > - `2018-12-31T23:59:59.999Z`
    */
-  end?: RangeType;
+  end?: string;
   /**
    * Whether the [`end`]{@link IRangeValue.end} value is included in the dynamic range facet value.
    */
