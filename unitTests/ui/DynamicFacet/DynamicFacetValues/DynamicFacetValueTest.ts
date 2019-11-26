@@ -100,6 +100,20 @@ export function DynamicFacetValueTest() {
       });
     });
 
+    it(`should return the correct analyticsFacetMeta for a range value`, () => {
+      const rangeFacet = DynamicFacetRangeTestUtils.createFakeFacet();
+      rangeFacet.values.createFromRanges(DynamicFacetRangeTestUtils.createFakeRanges());
+      dynamicFacetValue = rangeFacet.values.allFacetValues[0];
+
+      expect(dynamicFacetValue.analyticsFacetMeta).toEqual({
+        ...rangeFacet.basicAnalyticsFacetMeta,
+        facetValue: `${dynamicFacetValue.start}..${dynamicFacetValue.end}`,
+        facetRangeStart: `${dynamicFacetValue.start}`,
+        facetRangeEnd: `${dynamicFacetValue.end}`,
+        facetRangeEndInclusive: dynamicFacetValue.endInclusive
+      });
+    });
+
     it(`should return the correct analyticsFacetState for a specific value`, () => {
       expect(dynamicFacetValue.analyticsFacetState).toEqual({
         ...facet.basicAnalyticsFacetState,
@@ -117,12 +131,12 @@ export function DynamicFacetValueTest() {
 
       expect(dynamicFacetValue.analyticsFacetState).toEqual({
         ...rangeFacet.basicAnalyticsFacetState,
-        value: dynamicFacetValue.value,
+        value: `${dynamicFacetValue.start}..${dynamicFacetValue.end}`,
         valuePosition: dynamicFacetValue.position,
         displayValue: dynamicFacetValue.displayValue,
         state: dynamicFacetValue.state,
-        start: dynamicFacetValue.start,
-        end: dynamicFacetValue.end,
+        start: `${dynamicFacetValue.start}`,
+        end: `${dynamicFacetValue.end}`,
         endInclusive: dynamicFacetValue.endInclusive
       });
     });
