@@ -2295,6 +2295,9 @@ var Utils = /** @class */ (function () {
         addDiff(secondObject, firstObject);
         return difference;
     };
+    Utils.resolveAfter = function (ms, returns) {
+        return new Promise(function (resolve) { return setTimeout(function () { return (returns ? resolve(returns) : resolve()); }, ms); });
+    };
     return Utils;
 }());
 exports.Utils = Utils;
@@ -2528,7 +2531,7 @@ var Dom = /** @class */ (function () {
      * @param nodeList a {NodeList} to convert to an array
      * @returns {HTMLElement[]}
      */
-    Dom.prototype.nodeListToArray = function (nodeList) {
+    Dom.nodeListToArray = function (nodeList) {
         var i = nodeList.length;
         var arr = new Array(i);
         while (i--) {
@@ -2702,7 +2705,7 @@ var Dom = /** @class */ (function () {
      * @returns {HTMLElement[]}
      */
     Dom.prototype.children = function () {
-        return this.nodeListToArray(this.el.children);
+        return Dom.nodeListToArray(this.el.children);
     };
     /**
      * Return all siblings
@@ -2735,7 +2738,7 @@ var Dom = /** @class */ (function () {
      * @returns {HTMLElement[]}
      */
     Dom.prototype.findAll = function (selector) {
-        return this.nodeListToArray(this.el.querySelectorAll(selector));
+        return Dom.nodeListToArray(this.el.querySelectorAll(selector));
     };
     /**
      * Find the child elements using a className
@@ -2744,7 +2747,7 @@ var Dom = /** @class */ (function () {
      */
     Dom.prototype.findClass = function (className) {
         if ('getElementsByClassName' in this.el) {
-            return this.nodeListToArray(this.el.getElementsByClassName(className));
+            return Dom.nodeListToArray(this.el.getElementsByClassName(className));
         }
     };
     /**
@@ -5935,8 +5938,8 @@ exports.ResponsiveComponents = ResponsiveComponents;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    lib: '2.7219.22',
-    product: '2.7219.22',
+    lib: '2.7610.1-beta',
+    product: '2.7610.1-beta',
     supportedApiVersion: 2
 };
 
@@ -8141,8 +8144,8 @@ var dict = {
     "objecttype_email": "Email",
     "goal": "Goal",
     "objecttype_goal": "Goal",
-    "incident": "Case",
-    "objecttype_incident": "Case",
+    "incident": "Incident",
+    "objecttype_incident": "Incident",
     "invoice": "Invoice",
     "objecttype_invoice": "Invoice",
     "lead": "Lead",
@@ -8215,6 +8218,21 @@ var dict = {
     "objecttype_phonecall": "Phone call",
     "appointment": "Appointment",
     "objecttype_appointment": "Appointment",
+    "sn_hr_core_case": "HR Case",
+    "filetype_sn_hr_core_case": "HR Case",
+    "sc_cat_item": "Catalog Item",
+    "filetype_sc_cat_item": "Catalog Item",
+    "sn_customerservice_case": "Case",
+    "filetype_sn_customerservice_case": "Case",
+    "kb_social_qa_answer": "Answer",
+    "filetype_kb_social_qa_answer": "Answer",
+    "kb_social_qa_question": "Question",
+    "filetype_kb_social_qa_question": "Question",
+    "kb_social_qa_comment": "Comment",
+    "filetype_kb_social_qa_comment": "Comment",
+    "filetype_incident": "Incident",
+    "kb_knowledge": "Knowledge Article",
+    "filetype_kb_knowledge": "Knowledge Article",
     "spportal": "Portal",
     "filetype_spportal": "Portal",
     "spsite": "SharePoint Site",
