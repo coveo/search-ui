@@ -6,6 +6,8 @@ import { CategoryFacetValue } from '../../../../src/ui/CategoryFacet/CategoryFac
 import { FacetValueState } from '../../../../src/rest/Facet/FacetValueState';
 import { $$ } from '../../../../src/Core';
 
+// TODO: add test here for selected response value
+
 export function CategoryFacetValuesTest() {
   describe('CategoryFacetValues', () => {
     let facet: CategoryFacet;

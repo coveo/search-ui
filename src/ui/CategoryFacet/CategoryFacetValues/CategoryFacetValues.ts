@@ -12,7 +12,7 @@ import { DynamicFacetValueShowMoreLessButton } from '../../DynamicFacet/DynamicF
 
 export class CategoryFacetValues {
   private facetValues: CategoryFacetValue[] = [];
-  private selectedPath: string[] = [];
+  private _selectedPath: string[] = [];
   private list = $$('ul', { className: 'coveo-dynamic-category-facet-values' }).el;
 
   constructor(private facet: CategoryFacet) { }
@@ -37,6 +37,10 @@ export class CategoryFacetValues {
       ? responseValue.children.map(responseValue => this.createFacetValueFromResponse(responseValue, newPath))
       : [];
 
+    if (responseValue.state === FacetValueState.selected) {
+      this._selectedPath = newPath;
+    }
+
     return new CategoryFacetValue({
       value: responseValue.value,
       numberOfResults: responseValue.numberOfResults,
@@ -54,12 +58,16 @@ export class CategoryFacetValues {
   }
 
   public get hasSelectedValue() {
-    return !!this.selectedPath.length;
+    return !!this._selectedPath.length;
+  }
+
+  public get selectedPath() {
+    return [...this._selectedPath];
   }
 
   public clear() {
     this.facetValues = [];
-    this.selectedPath = [];
+    this._selectedPath = [];
   }
 
   private findValueWithPath(path: string[]) {
@@ -131,7 +139,7 @@ export class CategoryFacetValues {
   public selectPath(path: string[]) {
     this.filterHierarchyWithPath(path);
     this.getOrCreateFacetValueWithPath(path).select();
-    this.selectedPath = [...path];
+    this._selectedPath = [...path];
   }
 
   private prependAllCategories() {
@@ -198,8 +206,8 @@ export class CategoryFacetValues {
       facetValue.render(fragment);
     });
 
-    $$(this.list).toggleClass('coveo-with-space', !!this.selectedPath.length);
-    this.selectedPath.length && this.prependAllCategories();
+    $$(this.list).toggleClass('coveo-with-space', !!this._selectedPath.length);
+    this._selectedPath.length && this.prependAllCategories();
 
     this.appendShowMoreLess(fragment);
 

@@ -41,6 +41,8 @@ export function DynamicFacetTest() {
       spyOn(test.cmp, 'enableFreezeFacetOrderFlag').and.callThrough();
       spyOn(test.cmp, 'scrollToTop').and.callThrough();
       spyOn(test.cmp, 'logAnalyticsEvent').and.callThrough();
+      spyOn(test.cmp, 'selectMultipleValues').and.callThrough();
+      spyOn(test.cmp, 'deselectMultipleValues').and.callThrough();
     }
 
     function testQueryStateModelValues() {
@@ -372,21 +374,23 @@ export function DynamicFacetTest() {
       testQueryStateModelValues();
     });
 
-    it('should log an analytics event when selecting a value through the QSM', () => {
+    it('should call selectMultipleValues and log an analytics event when selecting a value through the QSM', () => {
       test.env.queryStateModel.registerNewAttribute(`f:${test.cmp.options.id}`, []);
       test.env.queryStateModel.set(`f:${test.cmp.options.id}`, ['a', 'b', 'c']);
 
+      expect(test.cmp.selectMultipleValues).toHaveBeenCalled();
       expect(test.cmp.logAnalyticsEvent).toHaveBeenCalledWith(
         analyticsActionCauseList.dynamicFacetSelect,
         test.cmp.values.get('a').analyticsMeta
       );
     });
 
-    it('should log an analytics event when deselecting a value through the QSM', () => {
+    it('should call deselectMultipleValues and log an analytics event when deselecting a value through the QSM', () => {
       test.env.queryStateModel.registerNewAttribute(`f:${test.cmp.options.id}`, []);
       test.env.queryStateModel.set(`f:${test.cmp.options.id}`, ['a', 'b', 'c']);
       test.env.queryStateModel.set(`f:${test.cmp.options.id}`, []);
 
+      expect(test.cmp.deselectMultipleValues).toHaveBeenCalled();
       expect(test.cmp.logAnalyticsEvent).toHaveBeenCalledWith(
         analyticsActionCauseList.dynamicFacetDeselect,
         test.cmp.values.get('a').analyticsMeta

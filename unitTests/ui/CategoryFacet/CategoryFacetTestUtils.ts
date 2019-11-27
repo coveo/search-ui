@@ -33,6 +33,41 @@ export class CategoryFacetTestUtils {
     };
   }
 
+  static createFakeSelectedFacetResponseValue(): IFacetResponseValue {
+    return {
+      value: 'v0',
+      state: FacetValueState.selected,
+      numberOfResults: 19467,
+      children: [{
+        value: 'v0',
+        state: FacetValueState.idle,
+        numberOfResults: 981,
+        children: []
+      }, {
+        value: 'v1',
+        state: FacetValueState.idle,
+        numberOfResults: 978,
+        children: []
+      }, {
+        value: 'v2',
+        state: FacetValueState.idle,
+        numberOfResults: 975,
+        children: []
+      }, {
+        value: 'v19',
+        state: FacetValueState.idle,
+        numberOfResults: 972,
+        children: []
+      }, {
+        value: 'v18',
+        state: FacetValueState.idle,
+        numberOfResults: 972,
+        children: []
+      }],
+      moreValuesAvailable: true
+    };
+  }
+
   static createFakeFacetResponseValues(depth = 1, children = 5) {
     const fakeValues: IFacetResponseValue[] = [];
 

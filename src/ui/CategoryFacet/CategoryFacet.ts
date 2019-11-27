@@ -455,6 +455,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
 
     response ? this.onQueryResponse(response) : this.onNoAdditionalValues();
     this.values.render();
+    this.changeActivePath(this.values.selectedPath);
     this.updateAppearance();
   }
 
@@ -571,7 +572,6 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
 
   public selectPath(path: string[]) {
     Assert.exists(path);
-    Assert.isLargerThan(0, path.length);
     this.ensureDom();
     this.changeActivePath(path);
     this.values.selectPath(path);
@@ -722,7 +722,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   }
 
   private pathIsValidForSelection(path: any): path is string[] {
-    return !Utils.isNullOrUndefined(path) && isArray(path) && path.length != 0;
+    return !Utils.isNullOrUndefined(path) && isArray(path);
   }
 
   private handleQueryStateChanged(data: IAttributesChangedEventArg) {
@@ -732,7 +732,8 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
 
     const path = data.attributes[this.queryStateAttribute];
     if (this.pathIsValidForSelection(path)) {
-      this.selectPath(path);
+      // TODO: JSUI-2709 add analytics
+      path.length ? this.selectPath(path) : this.clear();
     }
   }
 
