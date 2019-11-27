@@ -95,7 +95,7 @@ export class MockEnvironmentBuilder {
     if (this.built) {
       return this.getBindings();
     }
-    if (this.element.parentNode == undefined) {
+    if (!this.element.parentNode) {
       this.root.appendChild(this.element);
     }
 
