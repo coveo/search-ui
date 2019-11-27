@@ -20,7 +20,7 @@ export class CategoryFacetBreadcrumb {
     
     const pathToRender = without(this.facet.activePath, ...this.facet.options.basePath);
     const captionLabel = pathToRender.map(pathPart => this.facet.getCaption(pathPart)).join(' / ');
-    
+
     this.createAndAppendTitle();
     this.createAndAppendCaption(captionLabel);
   }

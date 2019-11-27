@@ -14,6 +14,7 @@ export class CategoryFacetTestUtils {
       numberOfValues: 5,
       pageSize: 10,
       enableMoreLess: true,
+      basePath: [],
       ...options
     };
   }
