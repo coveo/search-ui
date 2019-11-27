@@ -18,20 +18,18 @@
 }
 
 .coveo-suggestion-container {
-  display: inline-flex;
-  flex-wrap: nowrap;
-  align-items: stretch;
-  min-width: 100%;
+  width: 100%;
 
   .coveo-magicbox-suggestions {
     border: none;
     float: left;
+    width: 30%;
   }
 
   .coveo-preview-container {
     border: none;
     background: $white;
-    width: 0;
+    width: 70%;
     .coveo-preview-results {
       $columns: 2;
       display: flex;
