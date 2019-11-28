@@ -249,7 +249,10 @@ export class ResultList extends Component {
     /**
      * Whether to scroll back to the top of the page whenever the end-user interacts with a non-dynamic facet.
      */
-    enableScrollToTop: ComponentOptions.buildBooleanOption({ defaultValue: true })
+    enableScrollToTop: ComponentOptions.buildBooleanOption({
+      defaultValue: true,
+      depend: 'enableInfiniteScroll'
+    })
   };
 
   public static resultCurrentlyBeingRendered: IQueryResult = null;
