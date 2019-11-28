@@ -134,8 +134,6 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
 
     /**
     * Whether to allow the end-user to expand and collapse this facet.
-    *
-    * **Default:** `true`
     */
     enableCollapse: ComponentOptions.buildBooleanOption({ defaultValue: true, section: 'Filtering' }),
 
@@ -144,15 +142,11 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
      *
      * See also the [`enableCollapse`]{@link CategoryFacet.options.enableCollapse}
      * option.
-     *
-     * **Default:** `false`
      */
     collapsedByDefault: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'Filtering', depend: 'enableCollapse' }),
 
     /**
      * Whether to notify the [Breadcrumb]{@link Breadcrumb} component when toggling values in the facet.
-     *
-     * **Default:** `true`
      */
     includeInBreadcrumb: ComponentOptions.buildBooleanOption({ defaultValue: true, section: 'CommonOptions' }),
 
@@ -162,9 +156,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
      *
      * See also the [`facetSearchDelay`]{@link CategoryFacet.options.facetSearchDelay}, and
      * [`numberOfResultsInFacetSearch`]{@link CategoryFacet.options.numberOfResultsInFacetSearch} options.
-     *
-     *
-     * Default value is `true`.
+     * 
      */
     enableFacetSearch: ComponentOptions.buildBooleanOption({ defaultValue: true }),
 
@@ -579,7 +571,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   }
 
   /**
-   * Reset the facet to it's initial state.
+   * Resets the facet to its initial state.
    * 
    * Automatically triggers a query.
    */
