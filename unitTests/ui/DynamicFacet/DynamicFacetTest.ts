@@ -202,7 +202,6 @@ export function DynamicFacetTest() {
 
       expect(test.cmp.dynamicFacetQueryController.getQueryResults).toHaveBeenCalled();
       expect(beforeExecuteQuery).toHaveBeenCalled();
-      expect(test.cmp.values.render).toHaveBeenCalled();
     });
 
     it('triggering a new isolated query updates the values', () => {

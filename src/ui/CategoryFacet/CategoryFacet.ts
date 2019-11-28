@@ -43,6 +43,7 @@ export interface ICategoryFacetOptions extends IResponsiveComponentOptions {
   title?: string;
   enableCollapse?: boolean;
   collapsedByDefault?: boolean;
+  enableScrollToTop?: boolean;
   enableFacetSearch?: boolean;
   facetSearchDelay?: number;
   numberOfResultsInFacetSearch?: number;
@@ -146,6 +147,11 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     collapsedByDefault: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'Filtering', depend: 'enableCollapse' }),
 
     /**
+     * Whether to scroll back to the top of the page whenever the end-user interacts with a facet.
+     */
+    enableScrollToTop: ComponentOptions.buildBooleanOption({ defaultValue: true, section: 'CommonOptions' }),
+
+    /**
      * Whether to notify the [Breadcrumb]{@link Breadcrumb} component when toggling values in the facet.
      */
     includeInBreadcrumb: ComponentOptions.buildBooleanOption({ defaultValue: true, section: 'CommonOptions' }),
@@ -167,7 +173,6 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
      * facet values. Increasing this value enhances the accuracy of the listed values at the cost of performance.
      *
      * Default value is `1000`. Minimum value is `0`.
-     * @notSupportedIn salesforcefree
      */
     injectionDepth: ComponentOptions.buildNumberOption({ defaultValue: 1000, min: 0 }),
 
@@ -320,7 +325,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   public values: CategoryFacetValues;
   public moreValuesAvailable = false;
   public position: Number = null;
-  
+
   // TODO: add truncating
   public static MAXIMUM_NUMBER_OF_VALUES_BEFORE_TRUNCATING = 15;
   public static NUMBER_OF_VALUES_TO_KEEP_AFTER_TRUNCATING = 10;
@@ -394,7 +399,9 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   }
 
   public scrollToTop() {
-    ResultListUtils.scrollToTop(this.root);
+    if (this.options.enableScrollToTop) {
+      ResultListUtils.scrollToTop(this.root);
+    }
   }
 
   private tryToInitFacetSearch() {
@@ -434,7 +441,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     this.dependsOnManager.updateVisibilityBasedOnDependsOn();
   }
 
-  public handleQuerySuccess(results: IQueryResults) {
+  private handleQuerySuccess(results: IQueryResults) {
     this.header.hideLoading();
 
     if (Utils.isNullOrUndefined(results.facets)) {
@@ -496,7 +503,6 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
    * Reloads the facet with the same path.
    */
   public reload() {
-    this.changeActivePath(this.activePath);
     this.triggerNewQuery(() => this.logAnalyticsEvent(analyticsActionCauseList.categoryFacetReload));
   }
 
@@ -508,7 +514,6 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     // TODO: reimplement
     return [];
   }
-
 
   /**
    * Requests additional values.
@@ -650,16 +655,6 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     this.ensureDom();
     this.logger.info('Collapse facet values');
     this.isCollapsed = true;
-    this.updateAppearance();
-  }
-
-  public enable() {
-    super.enable();
-    this.updateAppearance();
-  }
-
-  public disable() {
-    super.disable();
     this.updateAppearance();
   }
 

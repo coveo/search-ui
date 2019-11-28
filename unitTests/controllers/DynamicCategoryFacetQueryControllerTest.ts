@@ -58,6 +58,10 @@ export function DynamicCategoryFacetQueryControllerTest() {
       expect(facetRequest().facetId).toBe(facet.options.id);
     });
 
+    it('should send the injectionDepth', () => {
+      expect(facetRequest().injectionDepth).toBe(facet.options.injectionDepth);
+    });
+
     it('the facet option freezeFacetOrder should not be defined by default', () => {
       putFacetIntoQueryBuilder();
       expect(queryFacetOptions().freezeFacetOrder).toBeUndefined();
