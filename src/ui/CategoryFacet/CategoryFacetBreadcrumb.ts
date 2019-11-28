@@ -1,39 +1,54 @@
+import 'styling/DynamicFacet/_DynamicFacetBreadcrumbs';
 import { $$ } from '../../utils/Dom';
 import { SVGIcons } from '../../utils/SVGIcons';
-import { CategoryValueDescriptor, CategoryFacet } from './CategoryFacet';
-import { AccessibleButton } from '../../utils/AccessibleButton';
+import { CategoryFacet } from './CategoryFacet';
 import { l } from '../../strings/Strings';
 import { without } from 'underscore';
+import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
 
 export class CategoryFacetBreadcrumb {
+  public element: HTMLElement;
+  
   constructor(
-    private categoryFacet: CategoryFacet,
-    private onClickHandler: (e: MouseEvent) => void,
-    private categoryValueDescriptor: CategoryValueDescriptor
-  ) {}
+    private facet: CategoryFacet
+  ) {
+    this.create();
+  }
 
-  public build(): HTMLElement {
-    const clear = $$(
-      'span',
+  private create() {
+    this.element = $$('div', { className: 'coveo-dynamic-facet-breadcrumb coveo-breadcrumb-item' }).el;
+    
+    const pathToRender = without(this.facet.activePath, ...this.facet.options.basePath);
+    const captionLabel = pathToRender.map(pathPart => this.facet.getCaption(pathPart)).join(' / ');
+
+    this.createAndAppendTitle();
+    this.createAndAppendCaption(captionLabel);
+  }
+
+  private createAndAppendTitle() {
+    const titleElement = $$('h3', { className: 'coveo-dynamic-facet-breadcrumb-title' }, `${this.facet.options.title}:`).el;
+    this.element.appendChild(titleElement);
+  }
+
+  private createAndAppendCaption(caption: string) {
+    const valueElement = $$(
+      'button',
       {
-        className: 'coveo-facet-breadcrumb-clear'
+        className: 'coveo-dynamic-facet-breadcrumb-value',
+        ariaLabel: l('RemoveFilterOn', caption)
       },
-      SVGIcons.icons.mainClear
-    );
+      caption
+    ).el;
+    const clearElement = $$('span', { className: 'coveo-dynamic-facet-breadcrumb-value-clear' }, SVGIcons.icons.mainClear).el;
+    valueElement.appendChild(clearElement);
 
-    const pathToRender = without(this.categoryValueDescriptor.path, ...this.categoryFacet.options.basePath);
-    const captionLabel = pathToRender.map(pathPart => this.categoryFacet.getCaption(pathPart)).join('/');
+    $$(valueElement).on('click', () => this.valueSelectAction());
 
-    const breadcrumbTitle = $$('span', { className: 'coveo-category-facet-breadcrumb-title' }, `${this.categoryFacet.options.title}:`);
-    const valuesContainer = $$('span', { className: 'coveo-category-facet-breadcrumb-values' }, captionLabel, clear);
+    this.element.appendChild(valueElement);
+  }
 
-    new AccessibleButton()
-      .withElement(valuesContainer)
-      .withLabel(l('RemoveFilterOn', captionLabel))
-      .withSelectAction(this.onClickHandler)
-      .build();
-
-    const breadcrumb = $$('span', { className: 'coveo-category-facet-breadcrumb' }, breadcrumbTitle, valuesContainer);
-    return breadcrumb.el;
+  private valueSelectAction() {
+    this.facet.clear();
+    this.facet.triggerNewQuery(() => this.facet.logAnalyticsEvent(analyticsActionCauseList.categoryFacetBreadcrumb));
   }
 }

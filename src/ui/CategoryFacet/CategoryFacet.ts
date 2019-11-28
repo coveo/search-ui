@@ -43,6 +43,7 @@ export interface ICategoryFacetOptions extends IResponsiveComponentOptions {
   title?: string;
   enableCollapse?: boolean;
   collapsedByDefault?: boolean;
+  enableScrollToTop?: boolean;
   enableFacetSearch?: boolean;
   facetSearchDelay?: number;
   numberOfResultsInFacetSearch?: number;
@@ -56,6 +57,7 @@ export interface ICategoryFacetOptions extends IResponsiveComponentOptions {
   maximumDepth?: number;
   valueCaption?: IStringMap<string>;
   dependsOn?: string;
+  includeInBreadcrumb?: boolean;
 }
 
 export type CategoryValueDescriptor = {
@@ -133,8 +135,6 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
 
     /**
     * Whether to allow the end-user to expand and collapse this facet.
-    *
-    * **Default:** `true`
     */
     enableCollapse: ComponentOptions.buildBooleanOption({ defaultValue: true, section: 'Filtering' }),
 
@@ -143,10 +143,18 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
      *
      * See also the [`enableCollapse`]{@link CategoryFacet.options.enableCollapse}
      * option.
-     *
-     * **Default:** `false`
      */
     collapsedByDefault: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'Filtering', depend: 'enableCollapse' }),
+
+    /**
+     * Whether to scroll back to the top of the page whenever the end-user interacts with a facet.
+     */
+    enableScrollToTop: ComponentOptions.buildBooleanOption({ defaultValue: true, section: 'CommonOptions' }),
+
+    /**
+     * Whether to notify the [Breadcrumb]{@link Breadcrumb} component when toggling values in the facet.
+     */
+    includeInBreadcrumb: ComponentOptions.buildBooleanOption({ defaultValue: true, section: 'CommonOptions' }),
 
     /**
      * Whether to display a search box at the bottom of the facet for searching among the available facet
@@ -154,9 +162,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
      *
      * See also the [`facetSearchDelay`]{@link CategoryFacet.options.facetSearchDelay}, and
      * [`numberOfResultsInFacetSearch`]{@link CategoryFacet.options.numberOfResultsInFacetSearch} options.
-     *
-     *
-     * Default value is `true`.
+     * 
      */
     enableFacetSearch: ComponentOptions.buildBooleanOption({ defaultValue: true }),
 
@@ -167,7 +173,6 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
      * facet values. Increasing this value enhances the accuracy of the listed values at the cost of performance.
      *
      * Default value is `1000`. Minimum value is `0`.
-     * @notSupportedIn salesforcefree
      */
     injectionDepth: ComponentOptions.buildNumberOption({ defaultValue: 1000, min: 0 }),
 
@@ -320,7 +325,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   public values: CategoryFacetValues;
   public moreValuesAvailable = false;
   public position: Number = null;
-  
+
   // TODO: add truncating
   public static MAXIMUM_NUMBER_OF_VALUES_BEFORE_TRUNCATING = 15;
   public static NUMBER_OF_VALUES_TO_KEEP_AFTER_TRUNCATING = 10;
@@ -341,11 +346,8 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
 
     ResponsiveFacets.init(this.root, this, this.options);
     this.initDependsOnManager();
-    this.bind.onRootElement(QueryEvents.doneBuildingQuery, (data: IDoneBuildingQueryEventArgs) => this.handleDoneBuildingQuery(data));
-    this.bind.onRootElement(QueryEvents.querySuccess, (data: IQuerySuccessEventArgs) => this.handleQuerySuccess(data.results));
-    this.bind.onRootElement(QueryEvents.duringQuery, () => this.ensureDom());
-    this.bind.onRootElement<IPopulateBreadcrumbEventArgs>(BreadcrumbEvents.populateBreadcrumb, args => this.handlePopulateBreadCrumb(args));
-    this.bind.onRootElement(BreadcrumbEvents.clearBreadcrumb, () => this.handleClearBreadcrumb());
+    this.initBreadCrumbEvents();
+    this.initQueryEvents();
     this.buildFacetHeader();
     this.initQueryStateEvents();
   }
@@ -362,8 +364,22 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     return $$(this.element).isVisible();
   }
 
-  // TODO: hook up with QSM
-  public get activePath() {
+  private initQueryEvents() {
+    this.bind.onRootElement(QueryEvents.doneBuildingQuery, (data: IDoneBuildingQueryEventArgs) => this.handleDoneBuildingQuery(data));
+    this.bind.onRootElement(QueryEvents.querySuccess, (data: IQuerySuccessEventArgs) => this.handleQuerySuccess(data.results));
+    this.bind.onRootElement(QueryEvents.duringQuery, () => this.ensureDom());
+  }
+
+  private initBreadCrumbEvents() {
+    if (this.options.includeInBreadcrumb) {
+      this.bind.onRootElement(BreadcrumbEvents.populateBreadcrumb, (args: IPopulateBreadcrumbEventArgs) =>
+        this.handlePopulateBreadcrumb(args)
+      );
+      this.bind.onRootElement(BreadcrumbEvents.clearBreadcrumb, () => this.clear());
+    }
+  }
+
+  public get activePath(): string[] {
     return this.queryStateModel.get(this.queryStateAttribute) || this.options.basePath;
   }
 
@@ -383,7 +399,9 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   }
 
   public scrollToTop() {
-    ResultListUtils.scrollToTop(this.root);
+    if (this.options.enableScrollToTop) {
+      ResultListUtils.scrollToTop(this.root);
+    }
   }
 
   private tryToInitFacetSearch() {
@@ -423,7 +441,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     this.dependsOnManager.updateVisibilityBasedOnDependsOn();
   }
 
-  public handleQuerySuccess(results: IQueryResults) {
+  private handleQuerySuccess(results: IQueryResults) {
     this.header.hideLoading();
 
     if (Utils.isNullOrUndefined(results.facets)) {
@@ -436,6 +454,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
 
     response ? this.onQueryResponse(response) : this.onNoAdditionalValues();
     this.values.render();
+    this.changeActivePath(this.values.selectedPath);
     this.updateAppearance();
   }
 
@@ -446,7 +465,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
 
   private onNoAdditionalValues() {
     this.moreValuesAvailable = false;
-    this.values.reset();
+    this.values.clear();
   }
 
   /**
@@ -458,14 +477,8 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     this.listenToQueryStateChange = true;
   }
 
-  public async executeQuery() {
-    this.header.showLoading();
-    this.queryController.executeQuery();
-  }
-
   private beforeSendingQuery() {
     this.header.showLoading();
-    this.updateAppearance();
   }
 
   public triggerNewQuery(beforeExecuteQuery?: () => void) {
@@ -490,9 +503,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
    * Reloads the facet with the same path.
    */
   public reload() {
-    this.changeActivePath(this.activePath);
-    this.logAnalyticsEvent(analyticsActionCauseList.categoryFacetReload);
-    this.executeQuery();
+    this.triggerNewQuery(() => this.logAnalyticsEvent(analyticsActionCauseList.categoryFacetReload));
   }
 
   /**
@@ -503,7 +514,6 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     // TODO: reimplement
     return [];
   }
-
 
   /**
    * Requests additional values.
@@ -559,20 +569,26 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
 
   public selectPath(path: string[]) {
     Assert.exists(path);
-    Assert.isLargerThan(0, path.length);
     this.ensureDom();
+    this.changeActivePath(path);
     this.values.selectPath(path);
     this.logger.info('Toggle select facet value at path', path);
   }
 
   /**
    * Resets the facet to its initial state.
+   * 
+   * Automatically triggers a query.
    */
   public reset() {
-    this.values.reset();
+    this.clear();
     this.scrollToTop();
-    this.logAnalyticsEvent(analyticsActionCauseList.categoryFacetClear);
-    this.executeQuery();
+    this.triggerNewQuery(() => this.logAnalyticsEvent(analyticsActionCauseList.categoryFacetClear));
+  }
+
+  public clear() {
+    this.values.clear();
+    this.changeActivePath([]);
   }
 
   /**
@@ -642,16 +658,6 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     this.updateAppearance();
   }
 
-  public enable() {
-    super.enable();
-    this.updateAppearance();
-  }
-
-  public disable() {
-    super.disable();
-    this.updateAppearance();
-  }
-
   public createDom() {
     this.element.appendChild(this.values.render());
     this.updateAppearance();
@@ -694,7 +700,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     this.header = new DynamicFacetHeader({
       title: this.options.title,
       enableCollapse: this.options.enableCollapse,
-      clear: () => this.clear(),
+      clear: () => this.reset(),
       toggleCollapse: () => this.toggleCollapse(),
       expand: () => this.expand(),
       collapse: () => this.collapse(),
@@ -702,13 +708,8 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     $$(this.element).prepend(this.header.element);
   }
 
-  private clear() {
-    this.reset();
-    this.scrollToTop();
-  }
-
   private pathIsValidForSelection(path: any): path is string[] {
-    return !Utils.isNullOrUndefined(path) && isArray(path) && path.length != 0;
+    return !Utils.isNullOrUndefined(path) && isArray(path);
   }
 
   private handleQueryStateChanged(data: IAttributesChangedEventArg) {
@@ -718,8 +719,8 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
 
     const path = data.attributes[this.queryStateAttribute];
     if (this.pathIsValidForSelection(path)) {
-      this.changeActivePath(path);
-      this.selectPath(path);
+      // TODO: JSUI-2709 add analytics
+      path.length ? this.selectPath(path) : this.clear();
     }
   }
 
@@ -757,14 +758,15 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     this.disable();
   }
 
-  private handlePopulateBreadCrumb(args: IPopulateBreadcrumbEventArgs) {
-    // TODO: reimplement
-    const categoryFacetBreadcrumbBuilder = new CategoryFacetBreadcrumb(this, null, null);
-    args.breadcrumbs.push({ element: categoryFacetBreadcrumbBuilder.build() });
-  }
+  private handlePopulateBreadcrumb(args: IPopulateBreadcrumbEventArgs) {
+    Assert.exists(args);
 
-  private handleClearBreadcrumb() {
-    // TODO: reimplement
+    if (!this.values.hasSelectedValue) {
+      return;
+    }
+
+    const breadcrumbs = new CategoryFacetBreadcrumb(this);
+    args.breadcrumbs.push({ element: breadcrumbs.element });
   }
 
   private logAnalyticsFacetShowMoreLess(cause: IAnalyticsActionCause) {

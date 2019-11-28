@@ -100,11 +100,32 @@ export function CategoryFacetValuesTest() {
           expect(childTestValue.children).toEqual([]);
         });
       });
+
+      describe('when response has a selected response value (e.g. autoselection)', () => {
+        let responseValue: IFacetResponseValue;
+
+        beforeEach(() => {
+          responseValue = CategoryFacetTestUtils.createFakeSelectedFacetResponseValue();
+          response = CategoryFacetTestUtils.getCompleteFacetResponse(facet, {
+            values: [responseValue]
+          });
+          facet.values.createFromResponse(response);
+        });
+
+        it('should have a single selected value at the root', () => {
+          expect(facet.values.allFacetValues.length).toBe(1);
+          expect(facet.values.allFacetValues[0].state).toBe(FacetValueState.selected);
+        });
+
+        it('should have the right number of children', () => {
+          expect(facet.values.allFacetValues[0].children.length).toBe(responseValue.children.length);
+        });
+      });
     });
 
-    it('resetValues should empty the values', () => {
+    it('clear should empty the values', () => {
       facet.values.createFromResponse(CategoryFacetTestUtils.getCompleteFacetResponse(facet));
-      facet.values.reset();
+      facet.values.clear();
 
       expect(facet.values.allFacetValues.length).toBe(0);
     });

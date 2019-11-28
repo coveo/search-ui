@@ -14,6 +14,7 @@ export class CategoryFacetTestUtils {
       numberOfValues: 5,
       pageSize: 10,
       enableMoreLess: true,
+      basePath: [],
       ...options
     };
   }
@@ -29,6 +30,41 @@ export class CategoryFacetTestUtils {
       numberOfResults: Math.ceil(Math.random() * 100000),
       preventAutoSelect: false,
       path: [value]
+    };
+  }
+
+  static createFakeSelectedFacetResponseValue(): IFacetResponseValue {
+    return {
+      value: 'v0',
+      state: FacetValueState.selected,
+      numberOfResults: 19467,
+      children: [{
+        value: 'v0',
+        state: FacetValueState.idle,
+        numberOfResults: 981,
+        children: []
+      }, {
+        value: 'v1',
+        state: FacetValueState.idle,
+        numberOfResults: 978,
+        children: []
+      }, {
+        value: 'v2',
+        state: FacetValueState.idle,
+        numberOfResults: 975,
+        children: []
+      }, {
+        value: 'v19',
+        state: FacetValueState.idle,
+        numberOfResults: 972,
+        children: []
+      }, {
+        value: 'v18',
+        state: FacetValueState.idle,
+        numberOfResults: 972,
+        children: []
+      }],
+      moreValuesAvailable: true
     };
   }
 

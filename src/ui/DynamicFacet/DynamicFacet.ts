@@ -768,7 +768,6 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
 
   private beforeSendingQuery() {
     this.header.showLoading();
-    this.updateAppearance();
   }
 
   private notImplementedError() {
