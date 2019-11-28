@@ -34,7 +34,14 @@ export class DynamicFacetRangeValueParser {
         return Globalize.format(value, `n${numberOfDecimals}`);
 
       case DynamicFacetRangeValueFormat.date:
-        return DateUtils.dateToString(this.parseDateFromRangeType(value));
+        return DateUtils.dateToString(this.parseDateFromRangeType(value), {
+          alwaysIncludeTime: false,
+          includeTimeIfThisWeek: false,
+          includeTimeIfToday: false,
+          omitYearIfCurrentOne: false,
+          useTodayYesterdayAndTomorrow: false,
+          useWeekdayIfThisWeek: false
+        });
 
       default:
         return `${value}`;
