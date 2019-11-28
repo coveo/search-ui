@@ -6,8 +6,6 @@ import { CategoryFacetValue } from '../../../../src/ui/CategoryFacet/CategoryFac
 import { FacetValueState } from '../../../../src/rest/Facet/FacetValueState';
 import { $$ } from '../../../../src/Core';
 
-// TODO: add test here for selected response value
-
 export function CategoryFacetValuesTest() {
   describe('CategoryFacetValues', () => {
     let facet: CategoryFacet;
@@ -100,6 +98,27 @@ export function CategoryFacetValuesTest() {
 
         it(`children's children should be empty`, () => {
           expect(childTestValue.children).toEqual([]);
+        });
+      });
+
+      describe('when response has a selected response value (e.g. autoselection)', () => {
+        let responseValue: IFacetResponseValue;
+
+        beforeEach(() => {
+          responseValue = CategoryFacetTestUtils.createFakeSelectedFacetResponseValue();
+          response = CategoryFacetTestUtils.getCompleteFacetResponse(facet, {
+            values: [responseValue]
+          });
+          facet.values.createFromResponse(response);
+        });
+
+        it('should have a single selected value at the root', () => {
+          expect(facet.values.allFacetValues.length).toBe(1);
+          expect(facet.values.allFacetValues[0].state).toBe(FacetValueState.selected);
+        });
+
+        it('should have the right number of children', () => {
+          expect(facet.values.allFacetValues[0].children.length).toBe(responseValue.children.length);
         });
       });
     });
