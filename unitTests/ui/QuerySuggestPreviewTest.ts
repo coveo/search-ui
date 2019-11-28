@@ -8,6 +8,7 @@ import { IAnalyticsOmniboxSuggestionMeta, analyticsActionCauseList } from '../..
 import { IQueryResults } from '../../src/rest/QueryResults';
 import { last } from 'underscore';
 import { IPopulateSearchResultPreviewsEventArgs, ResultPreviewsManagerEvents } from '../../src/events/ResultPreviewsManagerEvents';
+import { IQuery } from '../../src/rest/Query';
 
 export function initOmniboxAnalyticsMock(omniboxAnalytics: IOmniboxAnalytics) {
   const partialQueries: string[] = [];
@@ -102,7 +103,8 @@ export function QuerySuggestPreviewTest() {
         const numberOfPreviewResults = 5;
         setupQuerySuggestPreview({ numberOfPreviewResults });
         await triggerPopulateSearchResultPreviewsAndPassTime();
-        expect(test.cmp.queryController.getLastQuery().numberOfResults).toBe(numberOfPreviewResults);
+        const lastSearchQuery = (test.cmp.queryController.getEndpoint().search as jasmine.Spy).calls.mostRecent().args[0] as IQuery;
+        expect(lastSearchQuery.numberOfResults).toEqual(numberOfPreviewResults);
         done();
       });
     });
