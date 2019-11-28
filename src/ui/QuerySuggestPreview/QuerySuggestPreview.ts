@@ -20,6 +20,7 @@ import {
   IPopulateSearchResultPreviewsEventArgs,
   IUpdateResultPreviewsManagerOptionsEventArgs
 } from '../../events/ResultPreviewsManagerEvents';
+import { IQuery } from '../../rest/Query';
 
 export interface IQuerySuggestPreview {
   numberOfPreviewResults?: number;
@@ -144,15 +145,23 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
   }
 
   private async fetchSearchResultPreviews(suggestionText: string) {
-    const previousQueryOptions = this.queryController.getLastQuery();
-    previousQueryOptions.q = suggestionText;
-    previousQueryOptions.numberOfResults = this.options.numberOfPreviewResults;
+    const query = this.buildQuery(suggestionText);
     this.logShowQuerySuggestPreview();
-    const results = await this.queryController.getEndpoint().search(previousQueryOptions);
+    const results = await this.queryController.getEndpoint().search(query);
     if (!results) {
       return [];
     }
     return this.buildResultsPreview(suggestionText, results);
+  }
+
+  private buildQuery(searchQuery: string): IQuery {
+    const { searchHub, pipeline } = this.queryController.getLastQuery();
+    return {
+      searchHub,
+      pipeline,
+      numberOfResults: this.options.numberOfPreviewResults,
+      q: searchQuery
+    };
   }
 
   private async buildResultsPreview(suggestionText: string, results: IQueryResults) {
