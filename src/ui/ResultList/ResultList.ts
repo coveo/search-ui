@@ -248,6 +248,8 @@ export class ResultList extends Component {
 
     /**
      * Whether to scroll back to the top of the page when the end-user interacts with a facet.
+     *
+     * **Note:** Setting this option to `false` has no effect on dynamic facets. To disable this behavior on a `DynamicFacet` component, you must set its own [`enableScrollToTop`]{@link DynamicFacet.options.enableScrollToTop} option to `false`.
      */
     enableScrollToTop: ComponentOptions.buildBooleanOption({
       defaultValue: true,
