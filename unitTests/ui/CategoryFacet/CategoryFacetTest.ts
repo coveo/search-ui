@@ -339,6 +339,7 @@ export function CategoryFacetTest() {
 
     describe('when calling clear', () => {
       beforeEach(() => {
+        test.cmp.values.selectPath(['hey']);
         test.cmp.clear();
       });
 
@@ -446,8 +447,21 @@ export function CategoryFacetTest() {
       });
     });
 
-    // TODO: test the DependsOnManager
-    describe('testing the DependsOnManager', () => { });
+    describe('testing the DependsOnManager', () => {
+      beforeEach(() => {
+        spyOn(test.cmp.dependsOnManager, 'updateVisibilityBasedOnDependsOn');
+      });
+
+      it('should initialize the dependsOnManager', () => {
+        expect(test.cmp.dependsOnManager).toBeTruthy();
+      });
+
+      it(`when facet appearance is updated (e.g. after a successful query)
+      should call the "updateVisibilityBasedOnDependsOn" method of the DependsOnManager`, () => {
+        Simulate.query(test.env, { results: fakeResultsWithFacets() });
+        expect(test.cmp.dependsOnManager.updateVisibilityBasedOnDependsOn).toHaveBeenCalled();
+      });
+    });
 
     // TODO: JSUI-2709 test logAnalyticsEvent
   });

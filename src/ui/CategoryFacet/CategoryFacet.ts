@@ -308,7 +308,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     valueCaption: ComponentOptions.buildJsonOption<IStringMap<string>>({ defaultValue: {} }),
 
     /**
-     * The [id](@link Facet.options.id) of another facet in which at least one value must be selected in order
+     * The id of another facet in which at least one value must be selected in order
      * for the dependent category facet to be visible.
      *
      * **Default:** `undefined` and the category facet does not depend on any other facet to be displayed.
@@ -432,14 +432,11 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   }
 
   private updateAppearance() {
-    if (this.disabled || this.isCategoryEmpty) {
-      return this.hide();
-    }
-
     this.header.toggleCollapse(this.isCollapsed);
     $$(this.element).toggleClass('coveo-dynamic-category-facet-collapsed', this.isCollapsed);
     this.show();
     this.dependsOnManager.updateVisibilityBasedOnDependsOn();
+    this.isCategoryEmpty && this.hide();
   }
 
   private handleQuerySuccess(results: IQueryResults) {
@@ -618,15 +615,20 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
    * Automatically triggers a query.
    */
   public reset() {
+    this.ensureDom();
     this.clear();
     this.scrollToTop();
     this.triggerNewQuery(() => this.logAnalyticsEvent(analyticsActionCauseList.categoryFacetClear));
   }
 
   public clear() {
+    if (!this.values.hasSelectedValue) {
+      return;
+    }
+
+    this.logger.info('Clear facet');
     this.values.clear();
     this.changeActivePath([]);
-    this.logger.info('Clear facet');
   }
 
   /**
@@ -783,11 +785,12 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   }
 
   private dependsOnReset() {
-    // TODO: reimplement
+    this.clear();
+    this.updateAppearance();
   }
 
   private toggleDependentFacet(dependentFacet: Component) {
-    this.activePath.length ? dependentFacet.enable() : dependentFacet.disable();
+    this.values.hasSelectedValue ? dependentFacet.enable() : dependentFacet.disable();
   }
 
   private notImplementedError() {

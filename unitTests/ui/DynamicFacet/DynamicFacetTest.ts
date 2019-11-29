@@ -222,7 +222,9 @@ export function DynamicFacetTest() {
       testQueryStateModelValues();
     });
 
-    it('when calling reset, should clear and rerender values if there is any active value', () => {
+    it(`when calling reset
+      when there is any active value
+      should clear and rerender values`, () => {
       mockFacetValues[0].state = FacetValueState.selected;
       initializeComponent();
 
@@ -232,7 +234,9 @@ export function DynamicFacetTest() {
       expect(test.cmp.values.render).toHaveBeenCalledTimes(2);
     });
 
-    it('when calling reset, should not clear and rerender values when there are no active values', () => {
+    it(`when calling reset
+      when there are no active values
+      should not clear and rerender values`, () => {
       test.cmp.reset();
 
       expect(test.cmp.values.clearAll).not.toHaveBeenCalled();
@@ -616,7 +620,7 @@ export function DynamicFacetTest() {
 
       it(`when triggering the header "clear" method
       should log an analytics event`, () => {
-        triggerNewQuerySpy.and.callFake((beforeCb: any = () => {}) => beforeCb())
+        triggerNewQuerySpy.and.callFake((beforeCb: any = () => { }) => beforeCb())
         test.cmp.header.options.clear();
         expect(test.cmp.logAnalyticsEvent).toHaveBeenCalledWith(analyticsActionCauseList.dynamicFacetClearAll, test.cmp.basicAnalyticsFacetState);
       });
@@ -635,7 +639,6 @@ export function DynamicFacetTest() {
     describe('testing the DependsOnManager', () => {
       beforeEach(() => {
         spyOn(test.cmp.dependsOnManager, 'updateVisibilityBasedOnDependsOn');
-        spyOn(test.cmp.dependsOnManager, 'listenToParentIfDependentFacet');
       });
 
       it('should initialize the dependsOnManager', () => {
@@ -645,6 +648,12 @@ export function DynamicFacetTest() {
       it(`when facet appearance is updated (e.g. when createDom is called)
       should call the "updateVisibilityBasedOnDependsOn" method of the DependsOnManager`, () => {
         test.cmp.createDom();
+        expect(test.cmp.dependsOnManager.updateVisibilityBasedOnDependsOn).toHaveBeenCalled();
+      });
+
+      it(`when calling reset
+      should call the "updateVisibilityBasedOnDependsOn" method of the DependsOnManager`, () => {
+        test.cmp.reset();
         expect(test.cmp.dependsOnManager.updateVisibilityBasedOnDependsOn).toHaveBeenCalled();
       });
     });
