@@ -471,6 +471,8 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
 
   /**
    * Changes the active path.
+   * 
+   * @param path The array of values that represents the path.
    */
   public changeActivePath(path: string[]) {
     this.listenToQueryStateChange = false;
@@ -564,20 +566,46 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
 
   /**
    * Selects a value from the currently available values.
+   * 
+   * Does **not** trigger a query automatically.
+   * Does **not** update the visual of the facet until a query is performed.
+   * 
+   * @param path The value to select.
+   * 
+   * @deprecated
    */
   public selectValue(value: string) {
-    // TODO: reimplement
+    this.selectPath([...this.values.selectedPath, value]);
   }
 
   /**
    * Deselects the last value in the hierarchy that is applied to the query. When at the top of the hierarchy, this method does nothing.
+   
+   * Does **not** trigger a query automatically.
+   * Does **not** update the visual of the facet until a query is performed.
+   * 
+   * @deprecated
    */
   public deselectCurrentValue() {
-    // TODO: reimplement
+    if (!this.values.hasSelectedValue) {
+      return this.logger.warn('No current value to deselect');
+    }
+
+    const pathToSelect = this.values.selectedPath.slice(0, -1);
+    pathToSelect.length  ? this.selectPath(pathToSelect) : this.clear();
   }
 
+  /**
+   * Select a path in the hierarchy.
+   * 
+   * Does **not** trigger a query automatically.
+   * Does **not** update the visual of the facet until a query is performed.
+   * 
+   * @param path The array of values that represents the path.
+   */
   public selectPath(path: string[]) {
     Assert.exists(path);
+    Assert.isLargerThan(0, path.length);
     this.ensureDom();
     this.changeActivePath(path);
     this.values.selectPath(path);
@@ -598,6 +626,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   public clear() {
     this.values.clear();
     this.changeActivePath([]);
+    this.logger.info('Clear facet');
   }
 
   /**

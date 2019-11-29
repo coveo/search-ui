@@ -370,6 +370,43 @@ export function CategoryFacetTest() {
       });
     });
 
+    describe('when calling selectValue', () => {
+      it(`when no path is selected
+      should call selectPath with the correct path`, () => {
+        test.cmp.selectValue('hello');
+        expect(test.cmp.selectPath).toHaveBeenCalledWith(['hello']);
+      });
+
+      it(`when a path is selected
+      should call selectPath with the correct path`, () => {
+        test.cmp.values.selectPath(['hello', 'there']);
+        test.cmp.selectValue('friend');
+        expect(test.cmp.selectPath).toHaveBeenCalledWith(['hello', 'there', 'friend']);
+      });
+    });
+
+    describe('when calling deselectCurrentValue', () => {
+      it(`when no value is selected
+        should warn the user`, () => {
+        test.cmp.deselectCurrentValue();
+        expect(test.cmp.logger.warn).toHaveBeenCalled();
+      });
+
+      it(`when a path with a single value is selected
+        should call clear`, () => {
+        test.cmp.values.selectPath(['hello']);
+        test.cmp.deselectCurrentValue();
+        expect(test.cmp.clear).toHaveBeenCalled();
+      });
+
+      it(`when a path with multiple values is selected
+        should call selectPath with the correct path`, () => {
+        test.cmp.values.selectPath(['hello', 'there', 'friend']);
+        test.cmp.deselectCurrentValue();
+        expect(test.cmp.selectPath).toHaveBeenCalledWith(['hello', 'there']);
+      });
+    });
+
     it('getCaption should return the caption for a value', () => {
       options.valueCaption = { 'test': 'this is a test' };
       initializeComponent();
@@ -413,7 +450,5 @@ export function CategoryFacetTest() {
     describe('testing the DependsOnManager', () => { });
 
     // TODO: JSUI-2709 test logAnalyticsEvent
-    // TODO: test selectValue
-    // TODO: test deselectCurrentValue
   });
 }
