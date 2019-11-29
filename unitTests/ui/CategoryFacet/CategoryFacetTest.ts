@@ -413,8 +413,6 @@ export function CategoryFacetTest() {
     describe('testing the DependsOnManager', () => { });
 
     // TODO: JSUI-2709 test logAnalyticsEvent
-    // TODO: test getVisibleParentValues
-    // TODO: test getAvailableValues
     // TODO: test selectValue
     // TODO: test deselectCurrentValue
   });

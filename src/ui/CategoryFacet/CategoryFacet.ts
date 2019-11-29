@@ -36,6 +36,7 @@ import { CategoryFacetValues } from './CategoryFacetValues/CategoryFacetValues';
 import { IFacetResponse } from '../../rest/Facet/FacetResponse';
 import { IQueryOptions } from '../../controllers/QueryController';
 import { IQueryResults } from '../../rest/QueryResults';
+import { CategoryFacetValue } from './CategoryFacetValues/CategoryFacetValue';
 
 export interface ICategoryFacetOptions extends IResponsiveComponentOptions {
   id?: string;
@@ -509,10 +510,27 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   /**
    * Returns all the visible parent values.
    * @returns simple object with three fields: `value`, `count` and `path`.
+   * @deprecated
    */
-  public getVisibleParentValues(): CategoryValueDescriptor[] {
-    // TODO: reimplement
-    return [];
+  public getVisibleParentValues() {
+    return this.mapCategoryValuesToCategoryValueDescriptor(this.values.visibleParentValues);
+  }
+
+  /**
+  * Returns the values at the bottom of the hierarchy. These are the values that are not yet applied to the query.
+  * @returns simple object with three fields: `value`, `count` and `path`.
+  * @deprecated
+  */
+  public getAvailableValues() {
+    return this.mapCategoryValuesToCategoryValueDescriptor(this.values.availableValues);
+  }
+
+  private mapCategoryValuesToCategoryValueDescriptor(values: CategoryFacetValue[]): CategoryValueDescriptor[] {
+    return values.map(facetValue => ({
+      value: facetValue.value,
+      count: facetValue.numberOfResults,
+      path: facetValue.path
+    }));
   }
 
   /**
@@ -542,15 +560,6 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     this.logger.info('Show less values');
     this.categoryFacetQueryController.resetNumberOfValuesToRequest();
     this.triggerNewIsolatedQuery(() => this.logAnalyticsFacetShowMoreLess(analyticsActionCauseList.facetShowLess));
-  }
-
-  /**
-   * Returns the values at the bottom of the hierarchy. These are the values that are not yet applied to the query.
-   * @returns simple object with three fields: `value`, `count` and `path`.
-   */
-  public getAvailableValues() {
-    // TODO: reimplement
-    return [];
   }
 
   /**
