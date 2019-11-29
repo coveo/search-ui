@@ -469,7 +469,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   /**
    * Changes the active path.
    * 
-   * @param path The array of values that represents the path.
+   * @param path The values representing the path.
    */
   public changeActivePath(path: string[]) {
     this.listenToQueryStateChange = false;
@@ -567,7 +567,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
    * Does **not** trigger a query automatically.
    * Does **not** update the visual of the facet until a query is performed.
    * 
-   * @param path The value to select.
+   * @param value The value to select.
    * 
    * @deprecated
    */
@@ -598,7 +598,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
    * Does **not** trigger a query automatically.
    * Does **not** update the visual of the facet until a query is performed.
    * 
-   * @param path The array of values that represents the path.
+   * @param path The values representing the path.
    */
   public selectPath(path: string[]) {
     Assert.exists(path);
