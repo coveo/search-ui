@@ -155,8 +155,6 @@ export class DynamicFacet extends Component implements IDynamicFacet {
 
     /**
      * Whether to scroll back to the top of the page whenever the end-user interacts with the facet.
-     *
-     * Only effective when the [`enableInfiniteScroll`]{@link ResultList.options.enableInfiniteScroll} option of the active [`ResultList`]{@link ResultList} is set to `true`.
      */
     enableScrollToTop: ComponentOptions.buildBooleanOption({ defaultValue: true, section: 'CommonOptions' }),
 
