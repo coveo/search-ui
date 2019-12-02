@@ -8,6 +8,7 @@ import { IAnalyticsOmniboxSuggestionMeta, analyticsActionCauseList } from '../..
 import { IQueryResults } from '../../src/rest/QueryResults';
 import { last } from 'underscore';
 import { IPopulateSearchResultPreviewsEventArgs, ResultPreviewsManagerEvents } from '../../src/events/ResultPreviewsManagerEvents';
+import { IQuery } from '../../src/rest/Query';
 
 export function initOmniboxAnalyticsMock(omniboxAnalytics: IOmniboxAnalytics) {
   const partialQueries: string[] = [];
@@ -83,6 +84,28 @@ export function QuerySuggestPreviewTest() {
       jasmine.clock().uninstall();
     });
 
+    it('uses some options from the last query', async done => {
+      const optionsToTest: Partial<IQuery> = {
+        searchHub: 'some search hub',
+        pipeline: 'a pipeline',
+        tab: 'one tab',
+        locale: 'some locale',
+        timezone: 'a timezone',
+        context: {
+          'the first key': 'the first value',
+          'the second key': 'the second value'
+        }
+      };
+      setupQuerySuggestPreview();
+      (test.cmp.queryController.getLastQuery as jasmine.Spy).and.returnValue(optionsToTest);
+      await triggerPopulateSearchResultPreviewsAndPassTime();
+      const lastSearchQuery = (test.cmp.queryController.getEndpoint().search as jasmine.Spy).calls.mostRecent().args[0] as IQuery;
+      for (let optionName of Object.keys(optionsToTest)) {
+        expect(lastSearchQuery[optionName]).toEqual(optionsToTest[optionName]);
+      }
+      done();
+    });
+
     describe('expose options', () => {
       it('resultTemplate sets the template', async done => {
         setupQuerySuggestPreview();
@@ -102,7 +125,8 @@ export function QuerySuggestPreviewTest() {
         const numberOfPreviewResults = 5;
         setupQuerySuggestPreview({ numberOfPreviewResults });
         await triggerPopulateSearchResultPreviewsAndPassTime();
-        expect(test.cmp.queryController.getLastQuery().numberOfResults).toBe(numberOfPreviewResults);
+        const lastSearchQuery = (test.cmp.queryController.getEndpoint().search as jasmine.Spy).calls.mostRecent().args[0] as IQuery;
+        expect(lastSearchQuery.numberOfResults).toEqual(numberOfPreviewResults);
         done();
       });
     });
