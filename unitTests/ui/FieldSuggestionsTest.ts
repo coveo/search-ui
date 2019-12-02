@@ -4,6 +4,9 @@ import { IFieldSuggestionsOptions } from '../../src/ui/FieldSuggestions/FieldSug
 import { Simulate } from '../Simulate';
 import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
 import { $$ } from '../../src/utils/Dom';
+import { FakeResults } from '../Fake';
+import { QueryStateModel } from '../../src/Core';
+import { IPopulateOmniboxEventArgs } from '../../src/events/OmniboxEvents';
 
 export function FieldSuggestionsTest() {
   describe('FieldSuggestions', () => {
@@ -56,6 +59,44 @@ export function FieldSuggestionsTest() {
         test.cmp.selectSuggestion(0);
         expect(test.env.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(analyticsActionCauseList.omniboxField, {});
         done();
+      });
+    });
+
+    describe(`when calling the onSelect option`, () => {
+      const value = 'value';
+      let args: IPopulateOmniboxEventArgs;
+
+      beforeEach(() => {
+        args = buildPopulateOmniboxEventArgs();
+        test.cmp.options.onSelect.call(test.cmp, value, args);
+      });
+
+      function buildPopulateOmniboxEventArgs() {
+        const args = FakeResults.createPopulateOmniboxEventArgs('foo', 1);
+        spyOn(args, 'clear');
+        spyOn(args, 'closeOmnibox');
+        return args;
+      }
+
+      it('does not call the args #clear method', () => {
+        // https://coveord.atlassian.net/browse/JSUI-2748
+        expect(args.clear).not.toHaveBeenCalled();
+      });
+
+      it('calls the args #closeOmnibox method', () => {
+        expect(args.closeOmnibox).toHaveBeenCalledTimes(1);
+      });
+
+      it('sets the QueryStateModel query to the value', () => {
+        expect(test.cmp.queryStateModel.set).toHaveBeenCalledWith(QueryStateModel.attributesEnum.q, value);
+      });
+
+      it('logs a search event to analytics with the correct cause', () => {
+        expect(test.cmp.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(analyticsActionCauseList.omniboxField, {});
+      });
+
+      it('calls executeQuery', () => {
+        expect(test.cmp.queryController.executeQuery).toHaveBeenCalledTimes(1);
       });
     });
 
