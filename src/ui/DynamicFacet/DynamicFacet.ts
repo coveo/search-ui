@@ -76,7 +76,9 @@ export class DynamicFacet extends Component implements IDynamicFacet {
      * If specified, must contain between 1 and 60 characters.
      * Only alphanumeric (A-Za-z0-9), underscore (_), and hyphen (-) characters are kept; other characters are automatically removed.
      *
-     * **Default:** The [`field`]{@link DynamicFacet.options.field} option value.
+     * Defaults to the [`field`]{@link DynamicFacet.options.field} option value.
+     *
+     * @examples author-facet
      */
     id: ComponentOptions.buildStringOption({
       postProcessing: (value = '', options: IDynamicFacetOptions) => {
@@ -93,7 +95,9 @@ export class DynamicFacet extends Component implements IDynamicFacet {
     /**
      * The title to display for this facet.
      *
-     * **Default:** The localized string for `NoTitle`.
+     * Defaults to the localized string for `NoTitle`.
+     *
+     * @examples Author
      */
     title: ComponentOptions.buildLocalizedStringOption({
       localizedString: () => l('NoTitle'),
@@ -105,11 +109,10 @@ export class DynamicFacet extends Component implements IDynamicFacet {
      * The name of the field on which to base this facet.
      *
      * Must be prefixed by `@`, and must reference an existing field whose
-     * **Facet** option is enabled (see
-     * [Add or Edit Fields](https://docs.coveo.com/en/1982/)).
+     * **Facet** option is enabled.
      *
-     * **Required:** Specifying a value for this option is required for the
-     * component to work.
+     * @externaldocs [Add or Edit Fields](https://docs.coveo.com/en/1982/)
+     * @examples @author
      */
     field: ComponentOptions.buildFieldOption({ required: true, section: 'CommonOptions' }),
 
@@ -119,7 +122,8 @@ export class DynamicFacet extends Component implements IDynamicFacet {
      * See [`FacetSortCriteria`]{@link FacetSortCriteria} for the list and
      * description of allowed values.
      *
-     * **Default:** `undefined`, and the following behavior applies:
+     * By default, the following behavior applies:
+     *
      * - If the requested [`numberOfValues`]{@link DynamicFacet.options.numberOfValues}
      * is greater than or equal to the currently displayed number of values,
      * the [`alphanumeric`]{@link FacetSortCriteria.alphanumeric} criterion is
@@ -128,6 +132,8 @@ export class DynamicFacet extends Component implements IDynamicFacet {
      * number of values and the facet is not currently expanded, the [`score`]{@link FacetSortCriteria.score}
      * criterion is used.
      * - Otherwise, the `alphanumeric` criterion is used.
+     *
+     * @examples score
      */
     sortCriteria: ComponentOptions.buildStringOption({
       postProcessing: value => (isFacetSortCriteria(value) ? value : undefined),
@@ -138,56 +144,43 @@ export class DynamicFacet extends Component implements IDynamicFacet {
      * The number of values to request for this facet.
      *
      * Also determines the default maximum number of additional values to request each time this facet is expanded,
-     * and the maximum number of values to display when this facet is collapsed (see [enableCollapse]{@link DynamicFacet.options.enableCollapse}).
-     *
-     * **Default:** `8`
+     * and the maximum number of values to display when this facet is collapsed (see the [`enableCollapse`]{@link DynamicFacet.options.enableCollapse} option).
      */
     numberOfValues: ComponentOptions.buildNumberOption({ min: 0, defaultValue: 8, section: 'CommonOptions' }),
 
     /**
      * Whether to allow the end-user to expand and collapse this facet.
-     *
-     * **Default:** `true`
      */
     enableCollapse: ComponentOptions.buildBooleanOption({ defaultValue: true, section: 'Filtering' }),
 
     /**
-     * Whether to scroll back to the top of the page whenever the end-user interacts with a facet.
-     *
-     * **Default:** `true`
+     * Whether to scroll back to the top of the page whenever the end-user interacts with the facet.
      */
     enableScrollToTop: ComponentOptions.buildBooleanOption({ defaultValue: true, section: 'CommonOptions' }),
 
     /**
      * Whether to enable the **Show more** and **Show less** buttons in the facet.
      *
-     * **Note:**
-     * > The [`DynamicFacetRange`]{@link DynamicFacetRange} component does not support this option.
-     *
-     * **Default:** `true`
+     * **Note:** The [`DynamicFacetRange`]{@link DynamicFacetRange} component does not support this option.
      */
     enableMoreLess: ComponentOptions.buildBooleanOption({ defaultValue: true, section: 'CommonOptions' }),
 
     /**
      * Whether to allow the end-user to search the facet values.
      *
-     * **Note:**
-     * > The [`DynamicFacetRange`]{@link DynamicFacetRange} component does not support this option.
+     * **Note:** The [`DynamicFacetRange`]{@link DynamicFacetRange} component does not support this option.
      *
-     * **Default:** `undefined`, and the following behavior applies:
-     * - Will be enabled when more facet values are available from the server.
-     * - Will be disabled when all facet values are already available.
+     * By default, the following behavior applies:
+     *
+     * - Enabled when more facet values are available.
+     * - Disabled when all available facet values are already displayed.
      */
     enableFacetSearch: ComponentOptions.buildBooleanOption({ section: 'Filtering' }),
 
     /**
      * Whether to prepend facet search queries with a wildcard.
-     * See also the [enableFacetSearch]{@link DynamicFacet.options.enableFacetSearch} option.
      *
-     * **Note:**
-     * > The [`DynamicFacetRange`]{@link DynamicFacetRange} component does not support this option.
-     *
-     * **Default:** `true`
+     * **Note:** The [`DynamicFacetRange`]{@link DynamicFacetRange} component does not support this option.
      */
     useLeadingWildcardInFacetSearch: ComponentOptions.buildBooleanOption({
       defaultValue: true,
@@ -197,30 +190,18 @@ export class DynamicFacet extends Component implements IDynamicFacet {
 
     /**
      * Whether this facet should be collapsed by default.
-     *
-     * See also the [`enableCollapse`]{@link DynamicFacet.options.enableCollapse}
-     * option.
-     *
-     * **Default:** `false`
      */
     collapsedByDefault: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'Filtering', depend: 'enableCollapse' }),
 
     /**
-     * Whether to notify the [Breadcrumb]{@link Breadcrumb} component when toggling values in the facet.
+     * Whether to notify the [`Breadcrumb`]{@link Breadcrumb} component when toggling values in the facet.
      *
-     * See also the [numberOfValuesInBreadcrumb]{@link DynamicFacet.options.numberOfValuesInBreadcrumb} option.
-     *
-     * **Default:** `true`
+     * See also the [`numberOfValuesInBreadcrumb`]{@link DynamicFacet.options.numberOfValuesInBreadcrumb} option.
      */
     includeInBreadcrumb: ComponentOptions.buildBooleanOption({ defaultValue: true, section: 'CommonOptions' }),
 
     /**
      * The maximum number of selected values the [`Breadcrumb`]{@link Breadcrumb} component can display before outputting a **N more...** link for the facet.
-     *
-     * **Note:** This option only has a meaning when the [`includeInBreadcrumb`]{@link DynamicFacet.options.includeInBreadcrumb} option is set to `true`.
-     *
-     * **Minimum:** `0`
-     * **Default:** `5` (desktop), or `3` (mobile)
      */
     numberOfValuesInBreadcrumb: ComponentOptions.buildNumberOption({
       defaultFunction: () => (DeviceUtils.isMobileDevice() ? 3 : 5),
@@ -232,18 +213,19 @@ export class DynamicFacet extends Component implements IDynamicFacet {
     /**
      * A mapping of facet values to their desired captions.
      *
-     * See [Normalizing Facet Value Captions](https://developers.coveo.com/x/jBsvAg).
+     * **Note:** The [`DynamicFacetRange`]{@link DynamicFacetRange} component does not support this option.
      *
-     * **Note:**
-     * > The [`DynamicFacetRange`]{@link DynamicFacetRange} component does not support this option.
+     * @externaldocs [Normalizing Facet Value Captions](https://docs.coveo.com/368/).
+     * @examples { "smith_alice": "Alice Smith"\, "jones_bob_r": "Bob R. Jones" }
      */
     valueCaption: ComponentOptions.buildJsonOption<IStringMap<string>>(),
 
     /**
-     * The id of another facet in which at least one value must be selected in order
-     * for the dependent facet to be visible.
+     * The [`id`]{@link DynamicFacet.options.id} of another facet in which at least one value must be selected in order for the dependent facet to be visible.
      *
-     * **Default:** `undefined` and the facet does not depend on any other facet to be displayed.
+     * By default, the facet does not depend on any other facet to be displayed.
+     *
+     * @examples document-type-facet
      */
     dependsOn: ComponentOptions.buildStringOption()
   };
@@ -536,7 +518,7 @@ export class DynamicFacet extends Component implements IDynamicFacet {
   public get hasDisplayedValues() {
     return this.values.hasDisplayedValues;
   }
-  
+
   public get hasActiveValues() {
     return this.values.hasActiveValues;
   }
