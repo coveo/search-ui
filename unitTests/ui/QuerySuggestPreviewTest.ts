@@ -84,6 +84,28 @@ export function QuerySuggestPreviewTest() {
       jasmine.clock().uninstall();
     });
 
+    it('uses some options from the last query', async done => {
+      const optionsToTest: Partial<IQuery> = {
+        searchHub: 'some search hub',
+        pipeline: 'a pipeline',
+        tab: 'one tab',
+        locale: 'some locale',
+        timezone: 'a timezone',
+        context: {
+          'the first key': 'the first value',
+          'the second key': 'the second value'
+        }
+      };
+      setupQuerySuggestPreview();
+      (test.cmp.queryController.getLastQuery as jasmine.Spy).and.returnValue(optionsToTest);
+      await triggerPopulateSearchResultPreviewsAndPassTime();
+      const lastSearchQuery = (test.cmp.queryController.getEndpoint().search as jasmine.Spy).calls.mostRecent().args[0] as IQuery;
+      for (let optionName of Object.keys(optionsToTest)) {
+        expect(lastSearchQuery[optionName]).toEqual(optionsToTest[optionName]);
+      }
+      done();
+    });
+
     describe('expose options', () => {
       it('resultTemplate sets the template', async done => {
         setupQuerySuggestPreview();
