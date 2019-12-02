@@ -293,7 +293,6 @@ export class FieldSuggestions extends Component {
   }
 
   private onRowSelection(value: string, args: IPopulateOmniboxEventArgs) {
-    args.clear();
     args.closeOmnibox();
     this.queryStateModel.set(QueryStateModel.attributesEnum.q, value);
     this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.omniboxField, {});
