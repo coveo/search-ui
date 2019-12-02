@@ -211,7 +211,7 @@ export class ResultPreviewsManager {
     this.resultPreviewsContainer.append(preview.element);
     const elementDom = $$(preview.element);
     elementDom.on('click', () => preview.onSelect());
-    elementDom.on('keyboardSelect', () => preview.onSelect());
+    elementDom.on('keyboardSelect', () => elementDom.el.click());
   }
 
   private appendSearchResultPreviews(previews: ISearchResultPreview[]) {
