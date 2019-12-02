@@ -308,7 +308,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     valueCaption: ComponentOptions.buildJsonOption<IStringMap<string>>({ defaultValue: {} }),
 
     /**
-     * The id of another facet in which at least one value must be selected in order
+     * The `id` option value of another facet in which at least one value must be selected in order
      * for the dependent category facet to be visible.
      *
      * **Default:** `undefined` and the category facet does not depend on any other facet to be displayed.
