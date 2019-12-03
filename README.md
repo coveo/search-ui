@@ -87,7 +87,7 @@ A tutorial is available to help you get started (see
 
 ## Build
 
-You should have node 9.5.0 (or later) installed to build this project.
+You should have node 10.x installed to build this project.
 
     npm install -g yarn
     yarn global add gulp
@@ -100,7 +100,7 @@ You should have node 9.5.0 (or later) installed to build this project.
 * `gulp compile`: Builds only the TypeScript code and generates its output in the `./bin` folder.
 * `gulp css`: Builds only the Sass code and generates its output in the `./bin` folder.
 * `gulp sprites`: Regenerates the sprites image as well as the generated Sass/CSS code.
-* `gulp test`: Builds and runs the unit tests.
+* `gulp unitTests`: Builds and runs the unit tests.
 * `gulp doc`: Generates the documentation website for the project.
 * `gulp dev`: Starts a webpack dev server for the project.
 * `gulp devTest`: Starts a webpack dev server for the unit tests.

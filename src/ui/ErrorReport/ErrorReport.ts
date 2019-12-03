@@ -1,17 +1,17 @@
-import { Component } from '../Base/Component';
-import { ComponentOptions } from '../Base/ComponentOptions';
-import { Dom, $$ } from '../../utils/Dom';
-import { IComponentBindings } from '../Base/ComponentBindings';
-import { QueryEvents, IQueryErrorEventArgs } from '../../events/QueryEvents';
-import { analyticsActionCauseList, IAnalyticsNoMeta } from '../Analytics/AnalyticsActionListMeta';
-import { l } from '../../strings/Strings';
+import 'styling/_ErrorReport';
+import { IQueryErrorEventArgs, QueryEvents } from '../../events/QueryEvents';
+import { exportGlobally } from '../../GlobalExports';
 import { Assert } from '../../misc/Assert';
-import { Initialization } from '../Base/Initialization';
 import { IEndpointError } from '../../rest/EndpointError';
 import { MissingAuthenticationError } from '../../rest/MissingAuthenticationError';
-import { exportGlobally } from '../../GlobalExports';
-import 'styling/_ErrorReport';
+import { l } from '../../strings/Strings';
 import { AccessibleButton } from '../../utils/AccessibleButton';
+import { $$, Dom } from '../../utils/Dom';
+import { analyticsActionCauseList, IAnalyticsNoMeta } from '../Analytics/AnalyticsActionListMeta';
+import { Component } from '../Base/Component';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { Initialization } from '../Base/Initialization';
 
 export interface IErrorReportOptions {
   showDetailedError: boolean;
@@ -245,6 +245,12 @@ export class ErrorReport extends Component {
         this.options.showDetailedError = false;
         this.buildEndpointErrorElements('https://docs.coveo.com/en/56/');
         this.setErrorTitle(l('CannotAccess', this.organizationId), l('InvalidToken'));
+        break;
+
+      case 'GroupByAndFacetBothExistingException':
+        this.options.showDetailedError = false;
+        this.buildEndpointErrorElements('https://docs.coveo.com/en/2917');
+        this.setErrorTitle(undefined, l('GroupByAndFacetRequestsCannotCoexist'));
         break;
 
       default:

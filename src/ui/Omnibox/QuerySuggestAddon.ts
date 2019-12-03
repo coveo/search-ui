@@ -1,7 +1,7 @@
 ///<reference path="Omnibox.ts"/>
 import { Omnibox, IOmniboxSuggestion } from './Omnibox';
 import { $$, Dom } from '../../utils/Dom';
-import { IQuerySuggestCompletion, IQuerySuggestRequest } from '../../rest/QuerySuggest';
+import { IQuerySuggestCompletion, IQuerySuggestRequest, IQuerySuggestResponse } from '../../rest/QuerySuggest';
 import { ComponentOptionsModel } from '../../models/ComponentOptionsModel';
 import {
   OmniboxEvents,
@@ -10,11 +10,11 @@ import {
   IQuerySuggestSuccessArgs
 } from '../../events/OmniboxEvents';
 import { StringUtils } from '../../utils/StringUtils';
-import { SuggestionsCache } from '../../misc/SuggestionsCache';
 import { map, every, last, indexOf, find } from 'underscore';
 import { QUERY_STATE_ATTRIBUTES } from '../../models/QueryStateModel';
 import { history } from 'coveo.analytics';
 import { Cookie } from '../../utils/CookieUtils';
+import { Utils } from '../../utils/Utils';
 
 export interface IQuerySuggestAddon {
   getSuggestion(): Promise<IOmniboxSuggestion[]>;
@@ -58,8 +58,6 @@ export class QuerySuggestAddon implements IQuerySuggestAddon {
     return every(last(parts, indexOf(parts, firstFail) - parts.length), (part: string[]) => part[1] != null);
   }
 
-  private cache: SuggestionsCache<IOmniboxSuggestion[]> = new SuggestionsCache();
-
   constructor(public omnibox: Omnibox) {
     $$(this.omnibox.element).on(OmniboxEvents.populateOmniboxSuggestions, (e: Event, args: IPopulateOmniboxSuggestionsEventArgs) => {
       args.suggestions.push(this.getSuggestion());
@@ -69,7 +67,10 @@ export class QuerySuggestAddon implements IQuerySuggestAddon {
   public getSuggestion(): Promise<IOmniboxSuggestion[]> {
     const text = this.omnibox.magicBox.getText();
 
-    return this.cache.getSuggestions(text, () => this.getQuerySuggest(text));
+    if (text.length >= this.omnibox.options.querySuggestCharacterThreshold) {
+      return this.getQuerySuggest(text);
+    }
+    return Promise.resolve([]);
   }
 
   private async getQuerySuggest(text: string): Promise<IOmniboxSuggestion[]> {
@@ -93,7 +94,12 @@ export class QuerySuggestAddon implements IQuerySuggestAddon {
       payload
     });
 
-    const results = await this.omnibox.queryController.getEndpoint().getQuerySuggest(payload);
+    let results: IQuerySuggestResponse;
+    try {
+      results = await this.omnibox.queryController.getEndpoint().getQuerySuggest(payload);
+    } catch {
+      return [];
+    }
     const completions = results.completions;
 
     $$(this.omnibox.getBindings().searchInterface.element).trigger(OmniboxEvents.querySuggestSuccess, <IQuerySuggestSuccessArgs>{
@@ -112,7 +118,13 @@ export class QuerySuggestAddon implements IQuerySuggestAddon {
   }
 
   private get tab() {
-    return this.omnibox.getBindings().queryStateModel.get(QUERY_STATE_ATTRIBUTES.T) as string;
+    const tab = this.omnibox.getBindings().queryStateModel.get(QUERY_STATE_ATTRIBUTES.T) as string;
+
+    if (Utils.isNonEmptyString(tab)) {
+      return tab;
+    }
+
+    return undefined;
   }
 
   private get locale() {

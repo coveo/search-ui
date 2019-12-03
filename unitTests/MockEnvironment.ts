@@ -19,6 +19,7 @@ import { OS_NAME } from '../src/utils/OSUtils';
 import { FakeResults } from './Fake';
 import { Simulate } from './Simulate';
 import ModalBox = Coveo.ModalBox.ModalBox;
+import { IAriaLive } from '../src/ui/AriaLive/AriaLive';
 
 export interface IMockEnvironment extends IComponentBindings {
   root: HTMLElement;
@@ -111,6 +112,7 @@ export class MockEnvironmentBuilder {
     this.searchInterface.element = this.root;
     this.searchInterface.getBindings = () => this.getBindings() as any;
     this.searchInterface.historyManager = this.historyManager;
+    this.searchInterface.usageAnalytics = this.usageAnalytics;
 
     if (!this.searchEndpoint) {
       this.searchEndpoint = mockSearchEndpoint();
@@ -227,7 +229,14 @@ export function mockSearchInterface(): SearchInterface {
   m.getBindings = () => {
     return new MockEnvironmentBuilder().build() as any;
   };
+  m.ariaLive = mockAriaLive();
   return m;
+}
+
+function mockAriaLive(): IAriaLive {
+  return {
+    updateText: () => {}
+  };
 }
 
 export function mockResponsiveComponents(): ResponsiveComponents {
@@ -244,6 +253,7 @@ export function mockQueryController(): QueryController {
   const spy = <any>m;
   spy.options = {};
   spy.options.resultsPerPage = 10;
+  spy.usageAnalytics = mockUsageAnalytics();
   spy.fetchMore.and.returnValue(new Promise((resolve, reject) => {}));
   spy.getLastQuery.and.returnValue(new QueryBuilder().build());
   spy.executeQuery.and.returnValue(Promise.resolve());

@@ -105,6 +105,12 @@ export interface IQueryResult {
    * See also [Coveo Machine Learning](https://docs.coveo.com/en/1727/).
    */
   isRecommendation: boolean;
+
+  /**
+   * Whether the result item was previously viewed by the user specified in the [userActions]{@link IQuery.userActions} request of the query.
+   */
+  isUserActionView?: boolean;
+
   /**
    * Specifies whether the result is a Featured Result in the Coveo Query Pipeline (see [Managing Query Pipeline Featured Results](https://docs.coveo.com/en/1961/)).
    */
@@ -154,4 +160,9 @@ export interface IQueryResult {
   orphan?: boolean;
 
   fields?: { [name: string]: any };
+
+  /**
+   * The query terms that are not matched by the result.
+   */
+  absentTerms: string[];
 }

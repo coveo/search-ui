@@ -15,6 +15,7 @@ import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsAction
 import { IQueryResults } from '../../src/rest/QueryResults';
 import { Defer } from '../../src/misc/Defer';
 import { ResultLayoutSelector } from '../../src/ui/ResultLayoutSelector/ResultLayoutSelector';
+import { ResultListUtils } from '../../src/utils/ResultListUtils';
 
 export function ResultListTest() {
   describe('ResultList', () => {
@@ -353,6 +354,13 @@ export function ResultListTest() {
       expect($$(test.cmp.element).hasClass('coveo-hidden')).toBe(false);
     });
 
+    it('enableScrollBackTop should be set', () => {
+      test = Mock.optionsComponentSetup<ResultList, IResultListOptions>(ResultList, {
+        enableScrollToTop: false
+      });
+      expect(test.cmp.options.enableScrollToTop).toBe(false);
+    });
+
     describe(`when triggering a layout change event with one result`, () => {
       const layout = 'list';
 
@@ -473,7 +481,7 @@ export function ResultListTest() {
         const aNewContainer = document.createElement('div');
         expect(aNewContainer.children.length).toBe(0);
         test = Mock.optionsComponentSetup<ResultList, IResultListOptions>(ResultList, {
-          resultContainer: aNewContainer
+          resultsContainer: aNewContainer
         });
         Simulate.query(test.env);
         Defer.defer(() => {
@@ -662,7 +670,7 @@ export function ResultListTest() {
           });
           Simulate.query(test.env);
           Defer.defer(() => {
-            const container = test.cmp.options.resultContainer;
+            const container = test.cmp.options.resultsContainer;
             expect(container.children.item(container.children.length - 1).innerHTML).toBe('');
             expect(container.children.item(container.children.length - 2).innerHTML).toBe('');
             expect(container.children.item(container.children.length - 3).innerHTML).toBe('');
@@ -772,6 +780,61 @@ export function ResultListTest() {
           it('should enable the layout in the layout selector', () => {
             test.cmp.enable();
             expect(mockResultLayoutSelector.enableLayouts).toHaveBeenCalledWith(['card']);
+          });
+        });
+        describe('enableScrollToTop set to', () => {
+          let allResult: IQueryResults;
+          let scrollToTopSpy: jasmine.Spy;
+          const setupResultList = (
+            option: IResultListOptions = {
+              enableInfiniteScroll: true,
+              infiniteScrollContainer: document.createElement('div'),
+              enableScrollToTop: true
+            }
+          ) => {
+            let test = Mock.basicComponentSetup<ResultList>(ResultList, option);
+            test.cmp.currentlyDisplayedResults.push(allResult.results[1]);
+            (test.cmp.queryController.fetchMore as jasmine.Spy).and.returnValue(Promise.resolve(allResult));
+            return test;
+          };
+
+          beforeEach(() => {
+            jasmine.clock().install();
+            scrollToTopSpy = spyOn(ResultListUtils, 'scrollToTop');
+
+            allResult = FakeResults.createFakeResults(50);
+          });
+
+          afterEach(() => {
+            jasmine.clock().uninstall();
+          });
+
+          it('true, should call the scrollToTop of the ResultListUtils', done => {
+            test = setupResultList();
+            test.cmp.displayMoreResults(50).then(() => {
+              Simulate.query(test.env);
+              jasmine.clock().tick(0);
+
+              expect(scrollToTopSpy).toHaveBeenCalledWith(test.cmp.root);
+
+              done();
+            });
+          });
+
+          it('false, should not call the scrollToTop of the ResultListUtils', done => {
+            test = setupResultList({
+              enableInfiniteScroll: true,
+              infiniteScrollContainer: undefined,
+              enableScrollToTop: false
+            });
+            test.cmp.displayMoreResults(50).then(() => {
+              Simulate.query(test.env);
+              jasmine.clock().tick(0);
+
+              expect(scrollToTopSpy).not.toHaveBeenCalled();
+
+              done();
+            });
           });
         });
       });

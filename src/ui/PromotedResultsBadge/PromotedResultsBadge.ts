@@ -1,10 +1,10 @@
-import { Component } from '../../ui/Base/Component';
-import { IComponentBindings } from '../Base/ComponentBindings';
-import { ComponentOptions, Initialization, l, $$, ResultListEvents, Dom } from '../../Core';
+import 'styling/_PromotedResultsBadge';
+import { $$, ComponentOptions, Dom, Initialization, l, ResultListEvents } from '../../Core';
+import { IDisplayedNewResultEventArgs } from '../../events/ResultListEvents';
 import { exportGlobally } from '../../GlobalExports';
 import { IQueryResult } from '../../rest/QueryResult';
-import { IDisplayedNewResultEventArgs } from '../../events/ResultListEvents';
-import 'styling/_PromotedResultsBadge';
+import { Component } from '../../ui/Base/Component';
+import { IComponentBindings } from '../Base/ComponentBindings';
 
 export interface IPromotedResultsBadgeOptions {
   showBadgeForFeaturedResults: boolean;
@@ -40,13 +40,21 @@ export class PromotedResultsBadge extends Component {
    */
   static options: IPromotedResultsBadgeOptions = {
     /**
+<<<<<<< HEAD
      * Specifies if a badge should be added to "Featured Results" configured through a [Coveo Query Pipeline](https://docs.coveo.com/en/1961/).
+=======
+     * Specifies if a badge should be added to "Featured Results" configured through a [Coveo Query Pipeline](https://www.coveo.com/go?dest=cloudhelp&lcid=9&context=126).
+>>>>>>> master
      *
      * Default value is `true`.
      */
     showBadgeForFeaturedResults: ComponentOptions.buildBooleanOption({ defaultValue: true }),
     /**
+<<<<<<< HEAD
      * Specifies if a badge should be added to "Recommended Results" returned by a [Coveo Machine Learning algorithm](https://docs.coveo.com/en/1671/).
+=======
+     * Specifies if a badge should be added to "Recommended Results" returned by a [Coveo Machine Learning algorithm](https://www.coveo.com/go?dest=cloudhelp&lcid=9&context=183).
+>>>>>>> master
      *
      * Default value is `false`.
      */
@@ -58,7 +66,7 @@ export class PromotedResultsBadge extends Component {
      * Default value is the localized string for `Recommended`.
      */
     captionForRecommended: ComponentOptions.buildLocalizedStringOption({
-      defaultValue: l('Recommended'),
+      localizedString: () => l('Recommended'),
       depend: 'showBadgeForRecommendedResults'
     }),
     /**
@@ -66,7 +74,10 @@ export class PromotedResultsBadge extends Component {
      *
      * Default value is the localized string for `Featured`.
      */
-    captionForFeatured: ComponentOptions.buildLocalizedStringOption({ defaultValue: l('Featured'), depend: 'showBadgeForFeaturedResults' }),
+    captionForFeatured: ComponentOptions.buildLocalizedStringOption({
+      localizedString: () => l('Featured'),
+      depend: 'showBadgeForFeaturedResults'
+    }),
 
     /**
      * Specifies the color that should be used for "Featured Results".

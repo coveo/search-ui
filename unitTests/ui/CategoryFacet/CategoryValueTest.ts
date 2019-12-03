@@ -6,59 +6,125 @@ import { $$, KEYBOARD } from '../../../src/Core';
 import { Simulate } from '../../Simulate';
 export function CategoryValueTest() {
   describe('CategoryValue', () => {
-    let categoryValueDescriptor: CategoryValueDescriptor = {
-      value: 'value',
-      count: 3,
-      path: ['1', '2', '3']
-    };
-
+    let categoryValueDescriptor: CategoryValueDescriptor;
     let categoryFacet: CategoryFacet;
+    let categoryFacetOptions: ICategoryFacetOptions;
 
-    const makeCategoryValue = (path = categoryValueDescriptor.path) => {
-      categoryValueDescriptor.path = path;
-      categoryFacet = optionsComponentSetup<CategoryFacet, ICategoryFacetOptions>(CategoryFacet, {
+    function initCategoryValueDescriptor() {
+      categoryValueDescriptor = {
+        value: 'value',
+        count: 3,
+        path: ['1', '2', '3']
+      };
+    }
+
+    function initCategoryFacetOptions() {
+      categoryFacetOptions = {
         field: '@field',
         maximumDepth: 3
-      }).cmp;
+      };
+    }
 
+    function initCategoryFacet() {
+      categoryFacet = optionsComponentSetup<CategoryFacet, ICategoryFacetOptions>(CategoryFacet, categoryFacetOptions).cmp;
+    }
+
+    function buildCategoryValue() {
       return new CategoryValue($$('div'), categoryValueDescriptor, new CategoryFacetTemplates(), categoryFacet);
-    };
+    }
 
-    describe('when it is selectable', () => {
-      it('does not call changeActivePath if we reached maximumDepth', () => {
-        const categoryValue = makeCategoryValue().makeSelectable();
-        spyOn(categoryFacet, 'changeActivePath');
-        $$($$(categoryValue.element).find('.coveo-category-facet-value-label')).trigger('click');
-        expect(categoryFacet.changeActivePath).not.toHaveBeenCalled();
-      });
+    function categoryValueElement(categoryValue: CategoryValue) {
+      return $$(categoryValue.element).find('.coveo-category-facet-value-label');
+    }
 
-      it('calls changeActivePath on click when below or equal maximumDepth', () => {
-        const categoryValue = makeCategoryValue(['1', '2']).makeSelectable();
+    beforeEach(() => {
+      initCategoryValueDescriptor();
+      initCategoryFacetOptions();
+      initCategoryFacet();
+    });
+
+    it('when at maximumDepth, it does not call changeActivePath', () => {
+      const categoryValue = buildCategoryValue().makeSelectable();
+      spyOn(categoryFacet, 'changeActivePath');
+      $$(categoryValueElement(categoryValue)).trigger('click');
+      expect(categoryFacet.changeActivePath).not.toHaveBeenCalled();
+    });
+
+    describe('when below maximumDepth, when it is selectable', () => {
+      beforeEach(() => (categoryValueDescriptor.path = ['1', '2']));
+
+      it('calls changeActivePath on click', () => {
+        const categoryValue = buildCategoryValue().makeSelectable();
         spyOn(categoryFacet, 'changeActivePath');
-        $$($$(categoryValue.element).find('.coveo-category-facet-value-label')).trigger('click');
+        $$(categoryValueElement(categoryValue)).trigger('click');
         expect(categoryFacet.changeActivePath).toHaveBeenCalled();
       });
 
-      it('calls changeActivePath on enter keyup when below or equal maximumDepth', () => {
-        const categoryValue = makeCategoryValue(['1', '2']).makeSelectable();
+      it('calls changeActivePath on enter keyup', () => {
+        const categoryValue = buildCategoryValue().makeSelectable();
         spyOn(categoryFacet, 'changeActivePath');
-        Simulate.keyUp($$(categoryValue.element).find('.coveo-category-facet-value-label'), KEYBOARD.ENTER);
+        Simulate.keyUp(categoryValueElement(categoryValue), KEYBOARD.ENTER);
         expect(categoryFacet.changeActivePath).toHaveBeenCalled();
+      });
+
+      it('calls scrollToTop on click', () => {
+        const categoryValue = buildCategoryValue().makeSelectable();
+        spyOn(categoryFacet, 'scrollToTop');
+        $$(categoryValueElement(categoryValue)).trigger('click');
+        expect(categoryFacet.scrollToTop).toHaveBeenCalled();
+      });
+
+      it('calls scrollToTop on enter keyup', () => {
+        const categoryValue = buildCategoryValue().makeSelectable();
+        spyOn(categoryFacet, 'scrollToTop');
+        Simulate.keyUp(categoryValueElement(categoryValue), KEYBOARD.ENTER);
+        expect(categoryFacet.scrollToTop).toHaveBeenCalled();
       });
     });
 
     it('does not call changeActivePath on click by default', () => {
-      const categoryValue = makeCategoryValue();
+      const categoryValue = buildCategoryValue();
       spyOn(categoryFacet, 'changeActivePath');
-      $$($$(categoryValue.element).find('.coveo-category-facet-value-label')).trigger('click');
+      $$(categoryValueElement(categoryValue)).trigger('click');
       expect(categoryFacet.changeActivePath).not.toHaveBeenCalled();
     });
 
     it('does not call changeActivePath on enter keyup by default', () => {
-      const categoryValue = makeCategoryValue();
+      const categoryValue = buildCategoryValue();
       spyOn(categoryFacet, 'changeActivePath');
-      Simulate.keyUp($$(categoryValue.element).find('.coveo-category-facet-value-label'), KEYBOARD.ENTER);
+      Simulate.keyUp(categoryValueElement(categoryValue), KEYBOARD.ENTER);
       expect(categoryFacet.changeActivePath).not.toHaveBeenCalled();
+    });
+
+    it('displays the categoryValueDescriptor #value by default', () => {
+      const categoryValue = buildCategoryValue();
+      const facetValue = categoryValue.element.find('.coveo-category-facet-value-caption').textContent;
+      expect(facetValue).toBe(categoryValueDescriptor.value);
+    });
+
+    describe(`when the categoryFacet #valueCaption option has a key that matches the categoryValueDescriptor #value`, () => {
+      const caption = 'caption';
+
+      beforeEach(() => {
+        const valueCaption = { [categoryValueDescriptor.value]: caption };
+        categoryFacetOptions.valueCaption = valueCaption;
+        initCategoryFacet();
+      });
+
+      it(`displays the caption instead of the original value`, () => {
+        const categoryValue = buildCategoryValue();
+        const facetValue = categoryValue.element.find('.coveo-category-facet-value-caption').textContent;
+        expect(facetValue).toBe(caption);
+      });
+
+      it(`when the categoryValue is selectable,
+      it adds a label containing the captioned value`, () => {
+        const categoryValue = buildCategoryValue().makeSelectable();
+        const labelElement = categoryValue.element.find('.coveo-category-facet-value-label');
+        const labelAttribute = labelElement.attributes['aria-label'];
+
+        expect(labelAttribute.value).toContain(caption);
+      });
     });
   });
 }

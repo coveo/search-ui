@@ -39,6 +39,8 @@ import { IGroupByResult } from './GroupByResult';
 import { AccessToken } from './AccessToken';
 import { BackOffRequest } from './BackOffRequest';
 import { IBackOffRequest } from 'exponential-backoff';
+import { IFacetSearchRequest } from './Facet/FacetSearchRequest';
+import { IFacetSearchResponse } from './Facet/FacetSearchResponse';
 
 export class DefaultSearchEndpointOptions implements ISearchEndpointOptions {
   restUri: string;
@@ -54,33 +56,27 @@ export class DefaultSearchEndpointOptions implements ISearchEndpointOptions {
 }
 
 /**
- * The `SearchEndpoint` class allows you to execute various actions against the Coveo Search API and a Coveo index
- * (e.g., searching, listing field values, getting the quickview content of an item, etc.).
+ * The `SearchEndpoint` class allows the framework to perform HTTP requests against the Search API (e.g., searching, getting query suggestions, getting the HTML preview of an item, etc.).
  *
- * This class does trigger any query events directly. Consequently, executing an action with this class does not trigger
- * a full query cycle for the Coveo components.
+ * @externaldocumentation https://docs.coveo.com/331/
  *
- * If you wish to have all Coveo components "react" to a query, (and trigger the corresponding query events), use the
- * [`QueryController`]{@link QueryController} class instead.
+ * **Note:** When writing custom code that interacts with the Search API, be aware that executing queries directly through an instance of this class will _not_ trigger any [query events](https://docs.coveo.com/417/#query-events). In some cases, this may be what you want. However, if you _do_ want query events to be triggered (e.g., to ensure that standard components update themselves as expected), use the [`queryController`]{@link QueryController} instance instead.
  */
 export class SearchEndpoint implements ISearchEndpoint {
   /**
-   * Contains a map of all initialized `SearchEndpoint` instances.
+   * A map of all initialized `SearchEndpoint` instances.
    *
-   * **Example:**
-   * > `Coveo.SearchEndpoint.endpoints['default']` returns the default endpoint that was created at initialization.
+   * **Example:** `Coveo.SearchEndpoint.endpoints["default"]` returns the default endpoint that was created at initialization.
    * @type {{}}
    */
   static endpoints: { [endpoint: string]: SearchEndpoint } = {};
 
   /**
-   * Configures a sample search endpoint on a Coveo Cloud index containing a set of public sources with no secured
-   * content.
+   * Configures a demo search endpoint on a Coveo Cloud V1 organization whose index contains various types of non-secured items.
    *
-   * **Note:**
-   * > This method mainly exists for demo purposes and ease of setup.
+   * **Note:** This method mainly exists for demo and testing purposes.
    *
-   * @param otherOptions A set of additional options to use when configuring this endpoint.
+   * @param otherOptions Additional options to apply for this endpoint.
    */
   static configureSampleEndpoint(otherOptions?: ISearchEndpointOptions) {
     if (SearchEndpoint.isUseLocalArgumentPresent()) {
@@ -110,13 +106,11 @@ export class SearchEndpoint implements ISearchEndpoint {
   }
 
   /**
-   * Configures a sample search endpoint on a Coveo Cloud V2 index containing a set of public sources with no secured
-   * content.
+   * Configures a demo search endpoint on a Coveo Cloud V2 organization whose index contains various types of non-secured items.
    *
-   * **Note:**
-   * > This method mainly exists for demo purposes and ease of setup.
+   * **Note:** This method mainly exists for demo and testing purposes.
    *
-   * @param otherOptions A set of additional options to use when configuring this endpoint.
+   * @param otherOptions Additional options to apply for this endpoint.
    */
   static configureSampleEndpointV2(otherOptions?: ISearchEndpointOptions) {
     SearchEndpoint.endpoints['default'] = new SearchEndpoint(
@@ -135,7 +129,7 @@ export class SearchEndpoint implements ISearchEndpoint {
   }
 
   /**
-   * Configures a search endpoint on a Coveo Cloud index.
+   * Configures a search endpoint on a Coveo Cloud V1 index.
    * @param organization The organization ID of your Coveo Cloud index.
    * @param token The token to use to execute query. If not specified, you will likely need to login when querying.
    * @param uri The URI of the Coveo Cloud REST Search API. By default, this points to the production environment.
@@ -159,11 +153,21 @@ export class SearchEndpoint implements ISearchEndpoint {
   }
 
   /**
-   * Configures a search endpoint on a Coveo Cloud V2 index.
-   * @param organization The organization ID of your Coveo Cloud V2 index.
-   * @param token The token to use to execute query. If not specified, you will likely need to login when querying.
-   * @param uri The URI of the Coveo Cloud REST Search API. By default, this points to the production environment.
-   * @param otherOptions A set of additional options to use when configuring this endpoint.
+   * [Configures a new search endpoint](https://docs.coveo.com/331/#configuring-a-new-search-endpoint) on a Coveo Cloud V2 organization.
+   * @param organization The unique identifier of the target Coveo Cloud V2 organization (e.g., `mycoveocloudv2organizationg8tp8wu3`).
+   * @param token The access token to authenticate Search API requests with (i.e., an [API key](https://docs.coveo.com/105/) or a [search token](https://docs.coveo.com/56/)).
+   *
+   * **Note:** This token will also authenticate Usage Analytics Write API requests if the search interface initializes an [`Analytics`]{@link Analytics} component whose [`token`]{@link Analytics.options.token} option is unspecified.
+   * @param uri The base URI of the Search API.
+   *
+   * **Allowed values:**
+   *
+   * - `https://platform.cloud.coveo.com/rest/search` (for organizations in the standard Coveo Cloud V2 environment)
+   * - `https://platformhipaa.cloud.coveo.com/rest/search` (for [HIPAA](https://docs.coveo.com/1853/) organizations)
+   * - `https://globalplatform.cloud.coveo.com/rest/search` (for [multi-region](https://docs.coveo.com/2976/) organizations)
+   *
+   * **Default:** `https://platform.cloud.coveo.com/rest/search`
+   * @param otherOptions Additional options to apply for this endpoint (e.g., a [`renewAccessToken`]{@link ISearchEndpointOptions.renewAccessToken} function).
    */
   static configureCloudV2Endpoint(
     organization?: string,
@@ -815,6 +819,41 @@ export class SearchEndpoint implements ISearchEndpoint {
   }
 
   /**
+   * Searches through the values of a facet.
+   * @param request The request for which to search through the values of a facet.
+   * @param callOptions An additional set of options to use for this call.
+   * @param callParams The options injected by the applied decorators.
+   * @returns {Promise<IFacetSearchResponse>} A Promise of facet search results.
+   */
+  @path('/facet')
+  @method('POST')
+  @requestDataType('application/json')
+  @responseType('text')
+  @includeActionsHistory()
+  @includeReferrer()
+  @includeVisitorId()
+  @includeIsGuestUser()
+  public async facetSearch(
+    request: IFacetSearchRequest,
+    callOptions?: IEndpointCallOptions,
+    callParams?: IEndpointCallParameters
+  ): Promise<IFacetSearchResponse> {
+    callParams = {
+      ...callParams,
+      requestData: {
+        ...callParams.requestData,
+        ..._.omit(request, parameter => Utils.isNullOrUndefined(parameter))
+      }
+    };
+
+    this.logger.info('Performing REST query to get facet search results', request);
+
+    const response = await this.performOneCall<IFacetSearchResponse>(callParams, callOptions);
+    this.logger.info('REST query successful', response);
+    return response;
+  }
+
+  /**
    * Follows an item, or a query result, using the search alerts service.
    * @param request The subscription details.
    * @param callOptions An additional set of options to use for this call.
@@ -1076,7 +1115,7 @@ export class SearchEndpoint implements ISearchEndpoint {
     callOptions = _.extend({}, callOptions);
 
     return {
-      uniqueId,
+      uniqueId: Utils.safeEncodeURIComponent(uniqueId),
       enableNavigation: 'true',
       requestedOutputSize: callOptions.requestedOutputSize ? callOptions.requestedOutputSize.toString() : null,
       contentType: callOptions.contentType

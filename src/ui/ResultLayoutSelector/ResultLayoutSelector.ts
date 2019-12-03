@@ -69,6 +69,10 @@ export class ResultLayoutSelector extends Component {
   private resultLayoutSection: HTMLElement;
   private hasNoResults: boolean;
 
+  /**
+   * The component options
+   * @componentOptions
+   */
   static options: IResultLayoutOptions = {
     /**
      * Specifies the layouts that should be available when the search page is displayed in mobile mode.

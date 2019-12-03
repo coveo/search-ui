@@ -1,5 +1,5 @@
-import 'styling/_Quickview';
 import PopperJs from 'popper.js';
+import 'styling/_Quickview';
 import { QuickviewEvents } from '../../events/QuickviewEvents';
 import { ResultListEvents } from '../../events/ResultListEvents';
 import { ModalBox as ModalBoxModule } from '../../ExternalModulesShim';
@@ -16,7 +16,8 @@ import { SVGIcons } from '../../utils/SVGIcons';
 import { Utils } from '../../utils/Utils';
 import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
 import { Component } from '../Base/Component';
-import { ComponentOptions, ComponentOptionsType } from '../Base/ComponentOptions';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { ComponentOptionsType } from '../Base/IComponentOptions';
 import { IInitializationParameters, Initialization } from '../Base/Initialization';
 import { IResultsComponentBindings } from '../Base/ResultsComponentBindings';
 import { TemplateComponentOptions } from '../Base/TemplateComponentOptions';

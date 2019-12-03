@@ -1,8 +1,8 @@
-import { IFieldOption } from '../Base/ComponentOptions';
+import { IFieldOption } from '../Base/IComponentOptions';
 import { Template } from '../Templates/Template';
 
 export interface IResultListOptions {
-  resultContainer?: HTMLElement;
+  resultsContainer?: HTMLElement;
   resultTemplate?: Template;
   resultOptions?: {};
   waitAnimationContainer?: HTMLElement;
@@ -15,4 +15,5 @@ export interface IResultListOptions {
   fieldsToInclude?: IFieldOption[];
   autoSelectFieldsToInclude?: boolean;
   layout?: string;
+  enableScrollToTop?: boolean;
 }

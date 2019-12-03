@@ -4,6 +4,9 @@ import { IFieldSuggestionsOptions } from '../../src/ui/FieldSuggestions/FieldSug
 import { Simulate } from '../Simulate';
 import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
 import { $$ } from '../../src/utils/Dom';
+import { FakeResults } from '../Fake';
+import { QueryStateModel } from '../../src/Core';
+import { IPopulateOmniboxEventArgs } from '../../src/events/OmniboxEvents';
 
 export function FieldSuggestionsTest() {
   describe('FieldSuggestions', () => {
@@ -27,7 +30,7 @@ export function FieldSuggestionsTest() {
     });
 
     it('should do a request on the endpoint', () => {
-      Simulate.omnibox(test.env);
+      Simulate.populateOmnibox(test.env);
       expect(test.env.searchEndpoint.listFieldValues).toHaveBeenCalledWith(
         jasmine.objectContaining({
           field: '@foobar'
@@ -50,12 +53,50 @@ export function FieldSuggestionsTest() {
           resolve([{ value: 'foo' }, { value: 'bar' }, { value: 'baz' }]);
         })
       );
-      var simulation = Simulate.omnibox(test.env);
+      var simulation = Simulate.populateOmnibox(test.env);
       test.cmp.selectSuggestion(0);
       simulation.rows[0].deferred.then(elementResolved => {
         test.cmp.selectSuggestion(0);
         expect(test.env.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(analyticsActionCauseList.omniboxField, {});
         done();
+      });
+    });
+
+    describe(`when calling the onSelect option`, () => {
+      const value = 'value';
+      let args: IPopulateOmniboxEventArgs;
+
+      beforeEach(() => {
+        args = buildPopulateOmniboxEventArgs();
+        test.cmp.options.onSelect.call(test.cmp, value, args);
+      });
+
+      function buildPopulateOmniboxEventArgs() {
+        const args = FakeResults.createPopulateOmniboxEventArgs('foo', 1);
+        spyOn(args, 'clear');
+        spyOn(args, 'closeOmnibox');
+        return args;
+      }
+
+      it('does not call the args #clear method', () => {
+        // https://coveord.atlassian.net/browse/JSUI-2748
+        expect(args.clear).not.toHaveBeenCalled();
+      });
+
+      it('calls the args #closeOmnibox method', () => {
+        expect(args.closeOmnibox).toHaveBeenCalledTimes(1);
+      });
+
+      it('sets the QueryStateModel query to the value', () => {
+        expect(test.cmp.queryStateModel.set).toHaveBeenCalledWith(QueryStateModel.attributesEnum.q, value);
+      });
+
+      it('logs a search event to analytics with the correct cause', () => {
+        expect(test.cmp.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(analyticsActionCauseList.omniboxField, {});
+      });
+
+      it('calls executeQuery', () => {
+        expect(test.cmp.queryController.executeQuery).toHaveBeenCalledTimes(1);
       });
     });
 
@@ -65,7 +106,7 @@ export function FieldSuggestionsTest() {
           field: '@foobar',
           queryOverride: 'some override'
         });
-        Simulate.omnibox(test.env);
+        Simulate.populateOmnibox(test.env);
         expect(test.env.searchEndpoint.listFieldValues).toHaveBeenCalledWith(
           jasmine.objectContaining({
             field: '@foobar',
@@ -85,7 +126,7 @@ export function FieldSuggestionsTest() {
             resolve([{ value: 'foo' }, { value: 'bar' }, { value: 'baz' }]);
           })
         );
-        var simulation = Simulate.omnibox(test.env);
+        var simulation = Simulate.populateOmnibox(test.env);
         test.cmp.selectSuggestion(0);
         simulation.rows[0].deferred.then(elementResolved => {
           expect(elementResolved.zIndex).toBe(333);
@@ -98,7 +139,7 @@ export function FieldSuggestionsTest() {
           field: '@foobar',
           numberOfSuggestions: 333
         });
-        Simulate.omnibox(test.env);
+        Simulate.populateOmnibox(test.env);
         expect(test.env.searchEndpoint.listFieldValues).toHaveBeenCalledWith(
           jasmine.objectContaining({
             field: '@foobar',
@@ -120,7 +161,7 @@ export function FieldSuggestionsTest() {
 
           (<jasmine.Spy>test.env.searchEndpoint.listFieldValues).and.returnValue(fakeListField);
 
-          const simulation = Simulate.omnibox(test.env);
+          const simulation = Simulate.populateOmnibox(test.env);
           simulation.rows[0].deferred.then(elementResolved => {
             expect($$(elementResolved.element).find('.coveo-top-field-suggestion-header')).toBeNull();
             done();
@@ -135,7 +176,7 @@ export function FieldSuggestionsTest() {
 
           (<jasmine.Spy>test.env.searchEndpoint.listFieldValues).and.returnValue(fakeListField);
 
-          const simulation = Simulate.omnibox(test.env);
+          const simulation = Simulate.populateOmnibox(test.env);
           simulation.rows[0].deferred.then(elementResolved => {
             const header = $$(elementResolved.element).find('.coveo-top-field-suggestion-header');
             expect(header).not.toBeNull();

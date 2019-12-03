@@ -23,6 +23,23 @@ export class ResultListUtils {
     return resultList ? !!resultList.options.enableInfiniteScroll : false;
   }
 
+  public static scrollToTop(root: HTMLElement) {
+    const resultList = ResultListUtils.getActiveResultList(root);
+    if (!resultList) {
+      new Logger(this).warn('No active ResultList, scrolling to the top of the Window');
+      return window.scrollTo(0, 0);
+    }
+
+    const scrollContainer = resultList.options.infiniteScrollContainer;
+
+    if (typeof scrollContainer.scrollTo === 'function') {
+      const searchInterfacePosition = resultList.searchInterface.element.getBoundingClientRect().top;
+      scrollContainer.scrollTo(0, window.pageYOffset + searchInterfacePosition);
+    } else {
+      (<HTMLElement>scrollContainer).scrollTop = 0;
+    }
+  }
+
   private static getActiveResultList(root: HTMLElement) {
     const resultLists = ResultListUtils.getResultLists(root);
     return find(resultLists, resultList => !resultList.disabled);

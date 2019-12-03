@@ -1,15 +1,13 @@
-import * as Mock from '../MockEnvironment';
-import { Pager } from '../../src/ui/Pager/Pager';
-import { registerCustomMatcher } from '../CustomMatchers';
-import { $$ } from '../../src/utils/Dom';
-import { IBuildingQueryEventArgs } from '../../src/events/QueryEvents';
-import { Simulate } from '../Simulate';
-import { FakeResults } from '../Fake';
-import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
-import { QueryEvents, INoResultsEventArgs } from '../../src/events/QueryEvents';
-import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
-import { IPagerOptions } from '../../src/ui/Pager/Pager';
+import { IBuildingQueryEventArgs, INoResultsEventArgs, QueryEvents } from '../../src/events/QueryEvents';
 import { Defer } from '../../src/misc/Defer';
+import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
+import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
+import { IPagerOptions, Pager } from '../../src/ui/Pager/Pager';
+import { $$ } from '../../src/utils/Dom';
+import { registerCustomMatcher } from '../CustomMatchers';
+import { FakeResults } from '../Fake';
+import * as Mock from '../MockEnvironment';
+import { Simulate } from '../Simulate';
 
 export function PagerTest() {
   describe('Pager', () => {
@@ -38,6 +36,33 @@ export function PagerTest() {
       expect(test.env.queryController.executeQuery).toHaveBeenCalledTimes(4);
     });
 
+    it('should not be possible to set current page to an invalid value', () => {
+      test.cmp.setPage('a' as any);
+      expect(test.cmp.currentPage).toBe(1);
+      test.cmp.setPage('1' as any);
+      expect(test.cmp.currentPage).toBe(1);
+      test.cmp.setPage(2 as any);
+      expect(test.cmp.currentPage).toBe(2);
+      test.cmp.setPage(1.7 as any);
+      expect(test.cmp.currentPage).toBe(1);
+      test.cmp.setPage(1.5 as any);
+      expect(test.cmp.currentPage).toBe(1);
+      test.cmp.setPage(1.499999 as any);
+      expect(test.cmp.currentPage).toBe(1);
+      test.cmp.setPage('1.599999' as any);
+      expect(test.cmp.currentPage).toBe(1);
+      test.cmp.setPage('2.00000' as any);
+      expect(test.cmp.currentPage).toBe(2);
+      test.cmp.setPage({} as any);
+      expect(test.cmp.currentPage).toBe(1);
+      test.cmp.setPage(true as any);
+      expect(test.cmp.currentPage).toBe(1);
+      test.cmp.setPage(false as any);
+      expect(test.cmp.currentPage).toBe(1);
+      test.cmp.setPage(0 as any);
+      expect(test.cmp.currentPage).toBe(1);
+    });
+
     it('should update the state when changing page', () => {
       let currentPage = 1;
       test.cmp.setPage(++currentPage);
@@ -52,17 +77,30 @@ export function PagerTest() {
       expect(test.env.queryStateModel.set).toHaveBeenCalledWith('first', (currentPage - 1) * 10);
     });
 
-    it('should update page when state is changed', () => {
-      test = Mock.advancedComponentSetup<Pager>(
-        Pager,
-        new Mock.AdvancedComponentSetupOptions(undefined, undefined, env => {
-          return env.withLiveQueryStateModel();
-        })
-      );
-      test.cmp.setPage(7);
-      expect(test.cmp.currentPage).toBe(7);
-      test.env.queryStateModel.set('first', 30);
-      expect(test.cmp.currentPage).toBe(4);
+    describe('when query state model is updated', () => {
+      beforeEach(() => {
+        test = Mock.advancedComponentSetup<Pager>(
+          Pager,
+          new Mock.AdvancedComponentSetupOptions(undefined, undefined, env => {
+            return env.withLiveQueryStateModel();
+          })
+        );
+      });
+
+      it('should update current page when first result is changed', () => {
+        test.env.queryStateModel.set('first', 30);
+        expect(test.cmp.currentPage).toBe(4);
+      });
+
+      it('should update current page when number of results per page is changed', () => {
+        test.env.queryStateModel.set('numberOfResults', 10);
+        test.env.queryStateModel.set('first', 49);
+
+        expect(test.cmp.currentPage).toBe(5);
+
+        test.env.queryStateModel.set('numberOfResults', 50);
+        expect(test.cmp.currentPage).toBe(1);
+      });
     });
 
     it('should not render anything if only one page of result is returned', () => {
@@ -176,15 +214,6 @@ export function PagerTest() {
         anchors = $$(test.cmp.element).findAll('a.coveo-pager-list-item-text');
         expect($$(anchors[0]).text()).toBe('1');
         expect($$(anchors[anchors.length - 1]).text()).toBe('2');
-      });
-
-      it('should return to the last valid page when there is no results', () => {
-        $$(test.env.root).on(QueryEvents.noResults, (e, args: INoResultsEventArgs) => {
-          expect(args.retryTheQuery).toBe(true);
-        });
-        test.cmp.currentPage = 101;
-        execQuery(test, 10, 1000, 0, test.cmp);
-        expect(test.cmp.currentPage).toBe(100);
       });
 
       it('should return to the last valid page when there is no results and the numberOfResults per page is no standard', () => {

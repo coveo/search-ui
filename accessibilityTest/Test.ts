@@ -19,6 +19,7 @@ import { AccessibilityExportToExcel } from './AccessibilityExportToExcel';
 import { AccessibilityFacet } from './AccessibilityFacet';
 import { AccessibilityFacetRange } from './AccessibilityFacetRange';
 import { AccessibilityFacetSlider } from './AccessibilityFacetSlider';
+import { AccessibilityDynamicFacet } from './AccessibilityDynamicFacet';
 import { AccessibilityFieldTable } from './AccessibilityFieldTable';
 import { AccessibilityFieldValue } from './AccessibilityFieldValue';
 import { AccessibilityIcon } from './AccessibilityIcon';
@@ -47,6 +48,7 @@ import { AccessibilitySort } from './AccessibilitySort';
 import { AccessibilityTab } from './AccessibilityTab';
 import { AccessibilityTimespanFacet } from './AccessibilityTimespanFacet';
 import { AccessibilityYouTubeThumbnail } from './AccessibilityYouTubeThumbnail';
+import { AccessibilityStarResult } from './AccessibilityStarResult';
 
 const initialHTMLSetup = () => {
   const body = jasmine['getGlobal']().document.body;
@@ -112,6 +114,7 @@ describe('Testing ...', () => {
   AccessibilityFacet();
   AccessibilityFacetRange();
   AccessibilityFacetSlider();
+  AccessibilityDynamicFacet();
   AccessibilityFieldTable();
   AccessibilityFieldValue();
   AccessibilityIcon();
@@ -138,4 +141,5 @@ describe('Testing ...', () => {
   AccessibilityTab();
   AccessibilityTimespanFacet();
   AccessibilityYouTubeThumbnail();
+  AccessibilityStarResult();
 });

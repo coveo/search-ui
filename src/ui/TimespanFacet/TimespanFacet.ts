@@ -1,14 +1,15 @@
-import { Component } from '../Base/Component';
-import { IComponentBindings } from '../Base/ComponentBindings';
-import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
-import { l } from '../../strings/Strings';
-import { FacetRange } from '../FacetRange/FacetRange';
 import * as moment from 'moment';
+import { pluck } from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 import { IRangeValue } from '../../rest/RangeValue';
-import { pluck } from 'underscore';
-import { Dom, $$ } from '../../utils/Dom';
+import { l } from '../../strings/Strings';
+import { $$, Dom } from '../../utils/Dom';
+import { Component } from '../Base/Component';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { IFieldOption } from '../Base/IComponentOptions';
 import { Initialization } from '../Base/Initialization';
+import { FacetRange } from '../FacetRange/FacetRange';
 import { IResponsiveComponentOptions } from '../ResponsiveComponents/ResponsiveComponentsManager';
 import { ResponsiveFacetOptions } from '../ResponsiveComponents/ResponsiveFacetOptions';
 
@@ -28,6 +29,8 @@ export interface ITimespanFacetOptions extends IResponsiveComponentOptions {
  * This component is meant to offer out of the box default ranges, so it can easily be inserted in a standard search page.
  *
  * To configure different ranges than those offered by this component, use the standard {@link FacetRange} component instead.
+ *
+ * @notSupportedIn salesforcefree
  */
 export class TimespanFacet extends Component {
   static ID = 'TimespanFacet';
@@ -131,7 +134,7 @@ export class TimespanFacet extends Component {
   private facetRangeElement: Dom;
   private facetRange: FacetRange;
 
-  constructor(public element: HTMLElement, public options?: ITimespanFacetOptions, bindings?: IComponentBindings) {
+  constructor(public element: HTMLElement, public options?: ITimespanFacetOptions, private bindings?: IComponentBindings) {
     super(element, TimespanFacet.ID, bindings);
 
     this.options = ComponentOptions.initComponentOptions(element, TimespanFacet, options);
@@ -174,14 +177,18 @@ export class TimespanFacet extends Component {
     this.destroyFacet();
     this.facetRangeElement = $$('div');
     $$(this.element).append(this.facetRangeElement.el);
-    this.facetRange = new FacetRange(this.facetRangeElement.el, {
-      field: this.options.field,
-      title: this.options.title,
-      ranges: this.rangeValues,
-      availableSorts: ['custom'],
-      customSort: pluck(this.rangeValues, 'label'),
-      id: this.options.id
-    });
+    this.facetRange = new FacetRange(
+      this.facetRangeElement.el,
+      {
+        field: this.options.field,
+        title: this.options.title,
+        ranges: this.rangeValues,
+        availableSorts: ['custom'],
+        customSort: pluck(this.rangeValues, 'label'),
+        id: this.options.id
+      },
+      this.bindings
+    );
     this.facetRange.isCurrentlyDisplayed = this.isCurrentlyDisplayed;
   }
 

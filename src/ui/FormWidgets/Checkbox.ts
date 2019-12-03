@@ -22,7 +22,12 @@ export class Checkbox implements IFormWidgetWithLabel, IFormWidgetSelectable {
    * instance as an argument.
    * @param label The label to display next to the checkbox.
    */
-  constructor(public onChange: (checkbox: Checkbox) => void = (checkbox: Checkbox) => {}, public label: string) {
+  constructor(
+    public onChange: (checkbox: Checkbox) => void = (checkbox: Checkbox) => {},
+    public label: string,
+    public ariaLabel?: string,
+    public labelSuffix?: string
+  ) {
     this.buildContent();
   }
 
@@ -105,15 +110,21 @@ export class Checkbox implements IFormWidgetWithLabel, IFormWidgetSelectable {
     this.checkbox = <HTMLInputElement>$$('input', {
       type: 'checkbox',
       className: 'coveo-checkbox',
-      value: this.label
+      value: this.label,
+      'aria-label': this.ariaLabel || this.label,
+      'aria-hidden': true
     }).el;
-    const button = $$('button', { type: 'button', className: 'coveo-checkbox-button', 'aria-label': this.label });
+    const button = $$('button', { type: 'button', className: 'coveo-checkbox-button', 'aria-label': this.ariaLabel || this.label });
     const labelSpan = $$('span', { className: 'coveo-checkbox-span-label' });
     labelSpan.text(this.label);
+
+    const labelSuffixSpan = $$('span', { className: 'coveo-checkbox-span-label-suffix' });
+    labelSuffixSpan.text(this.labelSuffix);
 
     label.append(this.checkbox);
     label.append(button.el);
     label.append(labelSpan.el);
+    this.labelSuffix && label.append(labelSuffixSpan.el);
 
     button.on('click', (e: Event) => {
       e.preventDefault();

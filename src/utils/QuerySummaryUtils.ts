@@ -1,13 +1,11 @@
 import * as Globalize from 'globalize';
+import { any, escape } from 'underscore';
 import { IQuerySuccessEventArgs } from '../events/QueryEvents';
-import { $$ } from './Dom';
-import { l } from '../strings/Strings';
 import { IQuery } from '../rest/Query';
-import { Component } from '../ui/Base/Component';
-import { any } from 'underscore';
+import { l } from '../strings/Strings';
 import { get } from '../ui/Base/RegisteredNamedMethods';
 import { IResultListOptions } from '../ui/ResultList/ResultListOptions';
-import { escape } from 'underscore';
+import { $$ } from './Dom';
 
 interface ISummaryStrings {
   first: string;
@@ -50,7 +48,7 @@ export class QuerySummaryUtils {
   }
 
   private static isInfiniteScrollMode(root: HTMLElement) {
-    const resultListSelector = `.${Component.computeCssClassNameForType('ResultList')}`;
+    const resultListSelector = `.CoveoResultList`;
     const resultLists = $$(root).findAll(resultListSelector);
 
     return any(resultLists, resultList => {

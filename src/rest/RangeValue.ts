@@ -1,30 +1,43 @@
+export enum RangeEndScope {
+  Inclusive = 'inc',
+  Exclusive = 'exc'
+}
+
+export type RangeType = string | number | Date;
+
 /**
- * The IRangeValue interface describes a single range of values in a group by clause.
+ * Describes a single range value in a [group by request]{@link IGroupByRequest} or [facet request]{@link IFacetRequest}.
  */
 export interface IRangeValue {
   /**
-   * Specifies the start of the range.
+   * The value to start the range at.
    *
-   * E.g., `0`
+   * **Examples:**
+   * > - `0`
+   * > - `2018-01-01T00:00:00.000Z`
    */
-  start?: any;
+  start?: RangeType;
 
   /**
-   * Specifies the end of the range.
+   * The value to end the range at.
    *
-   * E.g., `500`
+   * **Examples:**
+   * > - `500`
+   * > - `2018-12-31T23:59:59.999Z`
    */
-  end?: any;
+  end?: RangeType;
 
   /**
-   * Specifies the label to generate for this range.
+   * The label to associate with the range value.
    *
-   * E.g., `0 - 500`
+   * **Examples:**
+   * > - `0 - 500`
+   * > - `In 2018`
    */
   label?: string;
 
   /**
-   * Specifies whether to include the value of the [end]{@link IRangeValue.end} property in this range.
+   * Whether to include the [`end`]{@link IRangeValue.end} value in the range.
    */
   endInclusive?: boolean;
 }

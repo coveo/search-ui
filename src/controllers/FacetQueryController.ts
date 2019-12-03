@@ -277,7 +277,6 @@ export class FacetQueryController {
       queryBuilderExpression = this.processQueryOverrideForAdditionalFilter(queryBuilder, queryBuilderExpression);
     }
 
-    queryBuilderExpression = this.processQueryOverrideForBasicExpression(queryBuilder, queryBuilderExpression);
     queryBuilderExpression = this.processQueryOverrideForEmptyValues(queryBuilder, queryBuilderExpression);
     if (QueryBuilderExpression.isEmpty(queryBuilderExpression)) {
       return null;
@@ -301,7 +300,8 @@ export class FacetQueryController {
 
   private processQueryOverrideForMultiSelection(queryBuilder: QueryBuilder, mergeWith: QueryBuilderExpression) {
     if (this.facet.values.hasSelectedOrExcludedValues()) {
-      mergeWith = queryBuilder.computeCompleteExpressionPartsExcept(this.computeOurFilterExpression());
+      const ourExpression = this.computeOurFilterExpression();
+      mergeWith = queryBuilder.computeCompleteExpressionPartsExcept(ourExpression);
       if (QueryBuilderExpression.isEmpty(mergeWith)) {
         mergeWith.advanced = '@uri';
       }
@@ -311,6 +311,9 @@ export class FacetQueryController {
   }
 
   private processQueryOverrideForAdditionalFilter(queryBuilder: QueryBuilder, mergeWith: QueryBuilderExpression) {
+    if (Utils.isEmptyString(mergeWith.basic)) {
+      mergeWith.basic = queryBuilder.expression.build();
+    }
     if (Utils.isEmptyString(mergeWith.constant)) {
       const addExistingConstantExpressionIfNotEmpty = queryBuilder.constantExpression.isEmpty()
         ? ''
@@ -321,19 +324,22 @@ export class FacetQueryController {
     }
 
     if (!mergeWith.advanced) {
-      mergeWith.advanced = queryBuilder.advancedExpression.build();
+      mergeWith.advanced = this.getFilterExpressionWithoutOurFilterExpression(queryBuilder);
     }
 
     return mergeWith;
   }
 
-  private processQueryOverrideForBasicExpression(queryBuilder: QueryBuilder, mergeWith: QueryBuilderExpression) {
-    // If any part of the query override built so far inside `mergeWith` is not empty
-    // we must ensure that the basic expression is copied properly
-    if (Utils.isEmptyString(mergeWith.basic) && mergeWith.full != '') {
-      mergeWith.basic = queryBuilder.expression.build();
-    }
-    return mergeWith;
+  private getFilterExpressionWithoutOurFilterExpression(queryBuilder: QueryBuilder) {
+    const expression = new ExpressionBuilder();
+    const advancedExpressionParts = queryBuilder.advancedExpression.getParts();
+
+    advancedExpressionParts.forEach(part => expression.add(part));
+
+    const currentFacetAdvancedExpression = this.computeOurFilterExpression();
+    expression.remove(currentFacetAdvancedExpression);
+
+    return expression.build();
   }
 
   private processQueryOverrideForEmptyValues(queryBuilder: QueryBuilder, mergeWith: QueryBuilderExpression) {

@@ -2,16 +2,16 @@
 /// <reference path="../../controllers/FacetSliderQueryController.ts" />
 
 import 'styling/_FacetSlider';
-import { map, debounce } from 'underscore';
-import { exportGlobally } from '../../GlobalExports';
-import { Defer } from '../../MiscModules';
+import { debounce, every, map } from 'underscore';
 import { FacetSliderQueryController } from '../../controllers/FacetSliderQueryController';
 import { BreadcrumbEvents, IBreadcrumbItem, IPopulateBreadcrumbEventArgs } from '../../events/BreadcrumbEvents';
 import { InitializationEvents } from '../../events/InitializationEvents';
 import { IBuildingQueryEventArgs, IDoneBuildingQueryEventArgs, IQuerySuccessEventArgs, QueryEvents } from '../../events/QueryEvents';
 import { ISearchAlertsPopulateMessageEventArgs, SearchAlertsEvents } from '../../events/SearchAlertEvents';
 import { IGraphValueSelectedArgs, SliderEvents } from '../../events/SliderEvents';
+import { exportGlobally } from '../../GlobalExports';
 import { Assert } from '../../misc/Assert';
+import { Defer } from '../../MiscModules';
 import { IAttributeChangedEventArg, Model } from '../../models/Model';
 import { QueryStateModel } from '../../models/QueryStateModel';
 import { IGroupByResult } from '../../rest/GroupByResult';
@@ -21,22 +21,23 @@ import { SVGDom } from '../../utils/SVGDom';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { Utils } from '../../utils/Utils';
 import {
+  analyticsActionCauseList,
   IAnalyticsFacetGraphSelectedMeta,
   IAnalyticsFacetMeta,
-  IAnalyticsFacetSliderChangeMeta,
-  analyticsActionCauseList
+  IAnalyticsFacetSliderChangeMeta
 } from '../Analytics/AnalyticsActionListMeta';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
-import { ComponentOptions, IComponentOptionsObjectOptionArgs, IFieldOption, IQueryExpression } from '../Base/ComponentOptions';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { IComponentOptionsObjectOptionArgs, IFieldOption, IQueryExpression } from '../Base/IComponentOptions';
 import { Initialization } from '../Base/Initialization';
 import { FacetHeader } from '../Facet/FacetHeader';
 import { IDuringSlideEventArgs, IEndSlideEventArgs, ISliderGraphData, ISliderOptions, Slider } from '../Misc/Slider';
+import { IResponsiveComponentOptions } from '../ResponsiveComponents/ResponsiveComponentsManager';
 import { ResponsiveComponentsUtils } from '../ResponsiveComponents/ResponsiveComponentsUtils';
 import { ResponsiveDropdownEvent } from '../ResponsiveComponents/ResponsiveDropdown/ResponsiveDropdown';
-import { ResponsiveFacetSlider } from '../ResponsiveComponents/ResponsiveFacetSlider';
-import { IResponsiveComponentOptions } from '../ResponsiveComponents/ResponsiveComponentsManager';
 import { ResponsiveFacetOptions } from '../ResponsiveComponents/ResponsiveFacetOptions';
+import { ResponsiveFacetSlider } from '../ResponsiveComponents/ResponsiveFacetSlider';
 
 export interface IFacetSliderOptions extends ISliderOptions, IResponsiveComponentOptions {
   dateField?: boolean;
@@ -72,7 +73,10 @@ export class FacetSlider extends Component {
      *
      * Default value is the localized string for `NoTitle`.
      */
-    title: ComponentOptions.buildLocalizedStringOption({ defaultValue: l('NoTitle'), section: 'CommonOptions' }),
+    title: ComponentOptions.buildLocalizedStringOption({
+      localizedString: () => l('NoTitle'),
+      section: 'CommonOptions'
+    }),
 
     /**
      * Specifies whether the [`field`]{@link FacetSlider.options.field} for which you are requesting a range is a date
@@ -1000,9 +1004,8 @@ export class FacetSlider extends Component {
 
   private isFacetEmpty(groupByResults: IGroupByResult, data: IQuerySuccessEventArgs) {
     return (
-      groupByResults == null ||
-      groupByResults.values[0] == null ||
-      groupByResults.values[0].numberOfResults == 0 ||
+      Utils.isNullOrUndefined(groupByResults) ||
+      every(groupByResults.values, value => Utils.isNullOrUndefined(value) || value.numberOfResults === 0) ||
       data.results.results.length == 0
     );
   }

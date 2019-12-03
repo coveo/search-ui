@@ -4,7 +4,11 @@ import { QueryEvents, IQuerySuccessEventArgs, IQueryErrorEventArgs } from '../..
 import { QuerySummaryUtils } from '../../utils/QuerySummaryUtils';
 import { l } from '../../strings/Strings';
 
-export class AriaLive {
+export interface IAriaLive {
+  updateText: (text: string) => void;
+}
+
+export class AriaLive implements IAriaLive {
   private ariaLiveEl: HTMLElement;
 
   constructor(private root: HTMLElement) {

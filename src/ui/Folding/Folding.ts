@@ -1,6 +1,6 @@
 import { any, clone, each, map, sortBy, without } from 'underscore';
-import { exportGlobally } from '../../GlobalExports';
 import { IBuildingQueryEventArgs, IPreprocessResultsEventArgs, QueryEvents } from '../../events/QueryEvents';
+import { exportGlobally } from '../../GlobalExports';
 import { Assert } from '../../misc/Assert';
 import { IQuery } from '../../rest/Query';
 import { IQueryResult } from '../../rest/QueryResult';
@@ -9,7 +9,8 @@ import { $$ } from '../../utils/Dom';
 import { Utils } from '../../utils/Utils';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
-import { ComponentOptions, IFieldOption, IQueryExpression } from '../Base/ComponentOptions';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { IFieldOption, IQueryExpression } from '../Base/IComponentOptions';
 import { Initialization } from '../Base/Initialization';
 import { QueryBuilder } from '../Base/QueryBuilder';
 import { SortCriteria } from '../Sort/SortCriteria';

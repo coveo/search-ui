@@ -149,17 +149,26 @@ $standard-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   }
 }
 
-@mixin breadcrumbTitle {
-  color: $color-blueish-gray;
-  margin-right: 14px;
-}
-
 @mixin coveo-email-to-and-from {
   font-size: 13px;
   a {
     @include clickable();
     white-space: nowrap;
   }
+}
+
+@mixin linkButton {
+  @include clickable();
+
+  // These two lines are for IE11
+  overflow: visible;
+  width: auto;
+
+  padding: 0;
+  margin: 0;
+  background: none;
+  border: none;
+  color: $color-teal;
 }
 
 $allFacetsType: '
@@ -169,5 +178,9 @@ $allFacetsType: '
 .CoveoHierarchicalFacet,
 .CoveoCategoryFacet,
 .CoveoTimespanFacet,
-.CoveoNoNameFacet,
+';
+
+$allDynamicFacetsType: '
+.CoveoDynamicFacet,
+.CoveoDynamicFacetRange,
 ';

@@ -1,26 +1,26 @@
-import { $$ } from '../../utils/Dom';
 import {
   DistanceEvents,
-  IResolvingPositionEventArgs,
   IGeolocationPosition,
   IGeolocationPositionProvider,
-  IPositionResolvedEventArgs
+  IPositionResolvedEventArgs,
+  IResolvingPositionEventArgs
 } from '../../events/DistanceEvents';
-
+import { IInitializationEventArgs } from '../../events/InitializationEvents';
+import { IBuildingQueryEventArgs } from '../../events/QueryEvents';
+import { InitializationEvents, QueryEvents } from '../../EventsModules';
+import { exportGlobally } from '../../GlobalExports';
+import { IQueryFunction } from '../../rest/QueryFunction';
+import { $$ } from '../../utils/Dom';
 import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
 import { Component } from '../Base/Component';
-import { IFieldOption, ComponentOptions } from '../Base/ComponentOptions';
 import { IComponentBindings } from '../Base/ComponentBindings';
-import { InitializationEvents, QueryEvents } from '../../EventsModules';
-import { IQueryFunction } from '../../rest/QueryFunction';
-import { IBuildingQueryEventArgs } from '../../events/QueryEvents';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { IFieldOption } from '../Base/IComponentOptions';
 import { Initialization } from '../Base/Initialization';
 import { get } from '../Base/RegisteredNamedMethods';
-import { exportGlobally } from '../../GlobalExports';
-import { NavigatorPositionProvider } from './NavigatorPositionProvider';
 import { GoogleApiPositionProvider } from './GoogleApiPositionProvider';
+import { NavigatorPositionProvider } from './NavigatorPositionProvider';
 import { StaticPositionProvider } from './StaticPositionProvider';
-import { IInitializationEventArgs } from '../../events/InitializationEvents';
 
 export interface IDistanceOptions {
   distanceField: IFieldOption;

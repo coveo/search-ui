@@ -26,6 +26,9 @@ Analytics.doExport();
 import { AnalyticsSuggestions } from './ui/AnalyticsSuggestions/AnalyticsSuggestions';
 AnalyticsSuggestions.doExport();
 
+import { ComponentEvents } from './ui/Base/Component';
+ComponentEvents.doExport();
+
 import { AuthenticationProvider } from './ui/AuthenticationProvider/AuthenticationProvider';
 AuthenticationProvider.doExport();
 
@@ -218,6 +221,9 @@ ShareQuery.doExport();
 import { Sort } from './ui/Sort/Sort';
 Sort.doExport();
 
+import { StarRating } from './ui/StarRating/StarRating';
+StarRating.doExport();
+
 import { Tab } from './ui/Tab/Tab';
 Tab.doExport();
 
@@ -272,8 +278,14 @@ SimpleFilter.doExport();
 import { TimespanFacet } from './ui/TimespanFacet/TimespanFacet';
 TimespanFacet.doExport();
 
-// import { NoNameFacet } from './ui/NoNameFacet/NoNameFacet';
-// NoNameFacet.doExport();
+import { DynamicFacet } from './ui/DynamicFacet/DynamicFacet';
+DynamicFacet.doExport();
+
+import { DynamicFacetRange } from './ui/DynamicFacet/DynamicFacetRange';
+DynamicFacetRange.doExport();
+
+import { DynamicFacetManager } from './ui/DynamicFacetManager/DynamicFacetManager';
+DynamicFacetManager.doExport();
 
 import { PromotedResultsBadge } from './ui/PromotedResultsBadge/PromotedResultsBadge';
 PromotedResultsBadge.doExport();
@@ -281,5 +293,14 @@ PromotedResultsBadge.doExport();
 import { CategoryFacet } from './ui/CategoryFacet/CategoryFacet';
 CategoryFacet.doExport();
 
+import { MissingTerms } from './ui/MissingTerm/MissingTerms';
+MissingTerms.doExport();
+
+import { QuerySuggestPreview } from './ui/QuerySuggestPreview/QuerySuggestPreview';
+QuerySuggestPreview.doExport();
+
 import { swapVar } from './SwapVar';
 swapVar(this);
+
+import { ImageFieldValue } from './ui/FieldImage/ImageFieldValue';
+ImageFieldValue.doExport();

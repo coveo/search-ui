@@ -218,7 +218,7 @@ export function CoreHelperTest() {
 
         it('should work correctly with useLongDateFormat', () => {
           options.useLongDateFormat = true;
-          expect(TemplateHelpers.getHelper('date')(new Date(1981, 3, 11), options)).toEqual('Saturday April 11 1981');
+          expect(TemplateHelpers.getHelper('date')(new Date(1981, 3, 11), options)).toEqual('Saturday, April 11, 1981');
         });
 
         it('should work correctly with correct default options ', () => {
@@ -398,6 +398,20 @@ export function CoreHelperTest() {
             width: '100px'
           })
         ).toEqual('<img src=\'foo bar\' width="100px"/>');
+      });
+
+      it('should allow to specify a srcTemplate', () => {
+        let result = FakeResults.createFakeResult('bar');
+
+        expect(
+          TemplateHelpers.getHelper('image')(
+            'foo bar',
+            {
+              srcTemplate: 'http://test${title}'
+            },
+            result
+          )
+        ).toEqual("<img src='http://testTitlebar' />");
       });
     });
 

@@ -96,7 +96,7 @@ export function SortTest() {
 
       it('should display an icon', function() {
         var icon = $$(test.env.element).find('.coveo-icon');
-        expect($$(icon).nodeListToArray.length).toBeGreaterThan(0);
+        expect(icon).toBeDefined();
       });
 
       describe('with a live queryStateModel', function() {

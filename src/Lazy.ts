@@ -186,6 +186,9 @@ lazyResultList();
 import { lazyResultRating } from './ui/ResultRating/LazyResultRating';
 lazyResultRating();
 
+import { lazyStarRating } from './ui/StarRating/LazyStarRating';
+lazyStarRating();
+
 import { lazyResultsFiltersPreferences } from './ui/ResultsFiltersPreferences/LazyResultsFiltersPreferences';
 lazyResultsFiltersPreferences();
 
@@ -279,8 +282,23 @@ lazyPromotedResultsBadge();
 import { lazyCategoryFacet } from './ui/CategoryFacet/LazyCategoryFacet';
 lazyCategoryFacet();
 
-// import { lazyNoNameFacet } from './ui/NoNameFacet/LazyNoNameFacet';
-// lazyNoNameFacet();
+import { lazyDynamicFacet } from './ui/DynamicFacet/LazyDynamicFacet';
+lazyDynamicFacet();
+
+import { lazyDynamicFacetRange } from './ui/DynamicFacet/LazyDynamicFacetRange';
+lazyDynamicFacetRange();
+
+import { lazyDynamicFacetManager } from './ui/DynamicFacetManager/LazyDynamicFacetManager';
+lazyDynamicFacetManager();
+
+import { lazyMissingTerms } from './ui/MissingTerm/LazyMissingTerms';
+lazyMissingTerms();
 
 import { swapVar } from './SwapVar';
 swapVar(this);
+
+import { lazyImageFieldValue } from './ui/FieldImage/LazyImageFieldValue';
+lazyImageFieldValue();
+
+import { lazyQuerySuggestPreview } from './ui/QuerySuggestPreview/LazyQuerySuggestPreview';
+lazyQuerySuggestPreview();

@@ -1,11 +1,12 @@
+import { each, find, isUndefined } from 'underscore';
+import { KEYBOARD } from '../Core';
 import { $$ } from '../utils/Dom';
-import { Result } from './Result/Result';
-import { Grammar } from './Grammar';
 import { doMagicBoxExport } from './doMagicBoxExport';
-import { Suggestion, SuggestionsManager } from './SuggestionsManager';
+import { Grammar } from './Grammar';
 import { InputManager } from './InputManager';
-import { isUndefined, each, find } from 'underscore';
 import { MagicBoxClear } from './MagicBoxClear';
+import { Result } from './Result/Result';
+import { Suggestion, SuggestionsManager } from './SuggestionsManager';
 
 export interface Options {
   inline?: boolean;
@@ -18,7 +19,7 @@ export class MagicBoxInstance {
   public onblur: () => void;
   public onfocus: () => void;
   public onchange: () => void;
-  public onsuggestions: (suggestions: Suggestion[]) => void;
+  public onSuggestions: (suggestions: Suggestion[]) => void;
   public onsubmit: () => void;
   public onselect: (suggestion: Suggestion) => void;
   public onclear: () => void;
@@ -36,6 +37,15 @@ export class MagicBoxInstance {
   private result: Result;
   private displayedResult: Result;
 
+  private get firstSuggestionWithText(): Suggestion {
+    return find(this.lastSuggestions, suggestion => suggestion.text);
+  }
+
+  private get firstSuggestionText() {
+    const firstSuggestionWithText = this.firstSuggestionWithText;
+    return firstSuggestionWithText ? firstSuggestionWithText.text : '';
+  }
+
   constructor(public element: HTMLElement, public grammar: Grammar, public options: Options = {}) {
     if (isUndefined(this.options.inline)) {
       this.options.inline = false;
@@ -44,7 +54,6 @@ export class MagicBoxInstance {
     if (this.options.inline) {
       $$(element).addClass('magic-box-inline');
     }
-    $$(this.element).setAttribute('role', 'combobox');
 
     this.result = this.grammar.parse('');
     this.displayedResult = this.result.clean();
@@ -61,11 +70,11 @@ export class MagicBoxInstance {
       (text, wordCompletion) => {
         if (!wordCompletion) {
           this.setText(text);
-          this.showSuggestion();
+          this.addSuggestions();
           this.onchange && this.onchange();
         } else {
           this.setText(text);
-          this.onselect && this.onselect(this.getFirstSuggestionText());
+          this.onselect && this.onselect(this.firstSuggestionWithText);
         }
       },
       this
@@ -87,7 +96,7 @@ export class MagicBoxInstance {
     this.element.appendChild(suggestionsContainer);
 
     this.suggestionsManager = new SuggestionsManager(suggestionsContainer, this.element, this.inputManager, {
-      selectableClass: this.options.selectableSuggestionClass,
+      suggestionClass: this.options.selectableSuggestionClass,
       selectedClass: this.options.selectedSuggestionClass,
       timeout: this.options.suggestionTimeout
     });
@@ -106,7 +115,7 @@ export class MagicBoxInstance {
 
   public setText(text: string) {
     $$(this.element).toggleClass('magic-box-notEmpty', text.length > 0);
-    this.magicBoxClear.toggleTabindex(text.length > 0);
+    this.magicBoxClear.toggleTabindexAndAriaHidden(text.length > 0);
 
     this.result = this.grammar.parse(text);
     this.displayedResult = this.result.clean();
@@ -137,63 +146,82 @@ export class MagicBoxInstance {
 
     this.inputManager.onfocus = () => {
       $$(this.element).addClass('magic-box-hasFocus');
-      this.showSuggestion();
+      this.addSuggestions();
       this.onfocus && this.onfocus();
     };
 
     this.inputManager.onkeydown = (key: number) => {
-      if (key == 38 || key == 40) {
-        // Up, Down
+      if (this.shouldMoveInSuggestions(key)) {
         return false;
       }
-      if (key == 13) {
-        // Enter
+      if (key === KEYBOARD.ENTER) {
         const suggestion = this.suggestionsManager.selectAndReturnKeyboardFocusedElement();
         if (suggestion == null) {
           this.onsubmit && this.onsubmit();
         }
         return false;
-      } else if (key == 27) {
-        // ESC
+      } else if (key === KEYBOARD.ESCAPE) {
         this.clearSuggestion();
         this.blur();
+      } else {
+        this.suggestionsManager.clearKeyboardFocusedElement();
       }
       return true;
     };
 
     this.inputManager.onchangecursor = () => {
-      this.showSuggestion();
+      this.addSuggestions();
     };
 
     this.inputManager.onkeyup = (key: number) => {
-      if (key == 38) {
-        // Up
-        this.onmove && this.onmove();
-        this.focusOnSuggestion(this.suggestionsManager.moveUp());
-        this.onchange && this.onchange();
-      } else if (key == 40) {
-        // Down
-        this.onmove && this.onmove();
-        this.focusOnSuggestion(this.suggestionsManager.moveDown());
-        this.onchange && this.onchange();
-      } else {
+      this.onmove && this.onmove();
+      if (!this.shouldMoveInSuggestions(key)) {
         return true;
       }
+      switch (key) {
+        case KEYBOARD.UP_ARROW:
+          this.suggestionsManager.moveUp();
+          break;
+        case KEYBOARD.DOWN_ARROW:
+          this.suggestionsManager.moveDown();
+          break;
+        case KEYBOARD.LEFT_ARROW:
+          this.suggestionsManager.moveLeft();
+          break;
+        case KEYBOARD.RIGHT_ARROW:
+          this.suggestionsManager.moveRight();
+          break;
+      }
+      if (this.suggestionsManager.selectedSuggestion) {
+        this.focusOnSuggestion(this.suggestionsManager.selectedSuggestion);
+      }
+      this.onchange && this.onchange();
       return false;
     };
   }
 
-  public showSuggestion() {
-    this.suggestionsManager.mergeSuggestions(this.getSuggestions != null ? this.getSuggestions() : [], suggestions => {
-      this.updateSuggestion(suggestions);
-    });
+  public async addSuggestions() {
+    const suggestions = await this.suggestionsManager.receiveSuggestions(this.getSuggestions != null ? this.getSuggestions() : []);
+    this.addSelectEventHandlers(suggestions);
+    this.inputManager.setWordCompletion(this.firstSuggestionText);
+    this.onSuggestions(suggestions);
   }
 
-  private updateSuggestion(suggestions: Suggestion[]) {
-    this.lastSuggestions = suggestions;
-    const firstSuggestion = this.getFirstSuggestionText();
-    this.inputManager.setWordCompletion(firstSuggestion && firstSuggestion.text);
-    this.onsuggestions && this.onsuggestions(suggestions);
+  private shouldMoveInSuggestions(key: KEYBOARD) {
+    switch (key) {
+      case KEYBOARD.UP_ARROW:
+      case KEYBOARD.DOWN_ARROW:
+        return true;
+      case KEYBOARD.LEFT_ARROW:
+      case KEYBOARD.RIGHT_ARROW:
+        if (this.suggestionsManager.hasFocus && this.suggestionsManager.hasPreviews) {
+          return true;
+        }
+    }
+    return false;
+  }
+
+  private addSelectEventHandlers(suggestions: Suggestion[]) {
     each(suggestions, (suggestion: Suggestion) => {
       if (suggestion.onSelect == null && suggestion.text != null) {
         suggestion.onSelect = () => {
@@ -213,24 +241,18 @@ export class MagicBoxInstance {
     this.inputManager.blur();
   }
 
-  public clearSuggestion() {
-    this.suggestionsManager.mergeSuggestions([], suggestions => {
-      this.updateSuggestion(suggestions);
-    });
+  public async clearSuggestion() {
     this.inputManager.setWordCompletion(null);
+    this.suggestionsManager.clearSuggestions();
+    this.onSuggestions([]);
   }
 
   private focusOnSuggestion(suggestion: Suggestion) {
     if (suggestion == null || suggestion.text == null) {
-      suggestion = this.getFirstSuggestionText();
-      this.inputManager.setResult(this.displayedResult, suggestion && suggestion.text);
+      this.inputManager.setResult(this.displayedResult, this.firstSuggestionText);
     } else {
       this.inputManager.setResult(this.grammar.parse(suggestion.text).clean(), suggestion.text);
     }
-  }
-
-  private getFirstSuggestionText(): Suggestion {
-    return find(this.lastSuggestions, suggestion => suggestion.text != null);
   }
 
   public getText() {
@@ -243,7 +265,7 @@ export class MagicBoxInstance {
 
   public clear() {
     this.setText('');
-    this.showSuggestion();
+    this.clearSuggestion();
     this.focus();
     this.onclear && this.onclear();
   }

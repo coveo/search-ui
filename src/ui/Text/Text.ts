@@ -1,11 +1,10 @@
-import { ComponentOptions } from '../Base/ComponentOptions';
+import 'styling/_Text';
+import { exportGlobally } from '../../GlobalExports';
+import { $$ } from '../../utils/Dom';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
+import { ComponentOptions } from '../Base/ComponentOptions';
 import { Initialization } from '../Base/Initialization';
-import { $$ } from '../../utils/Dom';
-import { exportGlobally } from '../../GlobalExports';
-
-import 'styling/_Text';
 
 export interface ITextOptions {
   value?: string;

@@ -13,6 +13,7 @@ import { ISubscription } from '../../src/rest/Subscription';
 import { AjaxError } from '../../src/rest/AjaxError';
 import _ = require('underscore');
 import { Utils } from '../../src/utils/Utils';
+import { IFacetSearchResponse } from '../../src/rest/Facet/FacetSearchResponse';
 
 export function SearchEndpointTest() {
   describe('SearchEndpoint', () => {
@@ -239,6 +240,25 @@ export function SearchEndpointTest() {
         expect(ep.getViewAsHtmlUri(fakeResult.uniqueId)).toContain('organizationId=myOrgId');
         expect(ep.getViewAsHtmlUri(fakeResult.uniqueId)).toContain('potatoe=mashed');
         expect(ep.getViewAsHtmlUri(fakeResult.uniqueId)).toContain('uniqueId=' + fakeResult.uniqueId);
+      });
+
+      describe('with a uniqueID that contains already encoded characters', () => {
+        let fakeResult: IQueryResult;
+
+        beforeEach(() => {
+          fakeResult = FakeResults.createFakeResult();
+          fakeResult.uniqueId = '123.456$https://somwehere.on.the.internet.com?thisparameter=containsencodedstuff%20';
+        });
+
+        it('allow to get an uri to view as html', () => {
+          expect(ep.getViewAsHtmlUri(fakeResult.uniqueId)).toContain('uniqueId=' + encodeURIComponent(fakeResult.uniqueId));
+        });
+
+        it('allow to get an uri to view as datastream', () => {
+          expect(ep.getViewAsDatastreamUri(fakeResult.uniqueId, '$Thumbnail')).toContain(
+            'uniqueId=' + encodeURIComponent(fakeResult.uniqueId)
+          );
+        });
       });
 
       describe('will execute requests on the search api', () => {
@@ -617,6 +637,36 @@ export function SearchEndpointTest() {
           jasmine.Ajax.requests.mostRecent().respondWith({
             status: 200,
             responseText: JSON.stringify({ completions: _.range(10) })
+          });
+        });
+
+        it('for facetSearch', done => {
+          const promiseSuccess = ep.facetSearch({
+            field: 'test'
+          });
+
+          expect(jasmine.Ajax.requests.mostRecent().url).toContain(ep.getBaseUri() + '/facet?');
+          expect(jasmine.Ajax.requests.mostRecent().url).toContain('organizationId=myOrgId');
+          expect(jasmine.Ajax.requests.mostRecent().url).toContain('potatoe=mashed');
+
+          expect(jasmine.Ajax.requests.mostRecent().method).toBe('POST');
+          expect(JSON.parse(jasmine.Ajax.requests.mostRecent().params)).toEqual(jasmine.objectContaining({ field: 'test' }));
+
+          // Not real extensions, but will suffice for test purpose
+          promiseSuccess
+            .then((response: IFacetSearchResponse) => {
+              expect(response.values.length).toBe(8);
+            })
+            .catch((e: IErrorResponse) => {
+              fail(e);
+              return e;
+            })
+            .then(() => done());
+
+          // Not real completions, but will suffice for test purpose
+          jasmine.Ajax.requests.mostRecent().respondWith({
+            status: 200,
+            responseText: JSON.stringify({ values: _.range(8) })
           });
         });
 

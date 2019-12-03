@@ -30,7 +30,18 @@ export function LiveAnalyticsClientTest() {
 
       env = new Mock.MockEnvironmentBuilder().build();
       endpoint = Mock.mockAnalyticsEndpoint();
-      client = new LiveAnalyticsClient(endpoint, env.root, 'foo', 'foo display', false, 'foo run name', 'foo run version', 'default', true);
+      client = new LiveAnalyticsClient(
+        endpoint,
+        env.root,
+        'foo',
+        'foo display',
+        false,
+        'foo run name',
+        'foo run version',
+        'default',
+        true,
+        { searchInterface: env.searchInterface }
+      );
       promise = new Promise((resolve, reject) => {
         resolve(FakeResults.createFakeResults(3));
       });
@@ -148,7 +159,9 @@ export function LiveAnalyticsClientTest() {
         root.appendChild(env.root);
         root.appendChild(env2.root);
         root.appendChild(env3.root);
-        client = new LiveAnalyticsClient(endpoint, root, 'foo', 'foo display', false, 'foo run name', 'foo run version', 'default', true);
+        client = new LiveAnalyticsClient(endpoint, root, 'foo', 'foo display', false, 'foo run name', 'foo run version', 'default', true, {
+          searchInterface: env.searchInterface
+        });
       });
 
       afterEach(function() {
@@ -384,6 +397,19 @@ export function LiveAnalyticsClientTest() {
       expect(spy).toHaveBeenCalled();
     });
 
+    it('should trigger an analytics ready event on document view', function() {
+      var spy = jasmine.createSpy('spy');
+      $$(env.root).on(AnalyticsEvents.analyticsEventReady, spy);
+      client.logClickEvent<IAnalyticsNoMeta>(
+        analyticsActionCauseList.documentOpen,
+        {},
+        FakeResults.createFakeResult('foo'),
+        document.createElement('div')
+      );
+      Defer.flush();
+      expect(spy).toHaveBeenCalled();
+    });
+
     it('should trigger an analytics event on search event', function(done) {
       var spy = jasmine.createSpy('spy');
       $$(env.root).on(AnalyticsEvents.searchEvent, spy);
@@ -402,9 +428,35 @@ export function LiveAnalyticsClientTest() {
       });
     });
 
+    it('should trigger an analytics ready event on search event', function(done) {
+      var spy = jasmine.createSpy('spy');
+      $$(env.root).on(AnalyticsEvents.analyticsEventReady, spy);
+      client.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxSubmit, {});
+      Simulate.query(env, {
+        query: {
+          q: 'the query 1'
+        },
+        promise: new Promise((resolve, reject) => {
+          resolve(FakeResults.createFakeResults(3));
+        })
+      });
+      _.defer(function() {
+        expect(spy).toHaveBeenCalled();
+        done();
+      });
+    });
+
     it('should trigger an analytics event on custom event', function() {
       var spy = jasmine.createSpy('spy');
       $$(env.root).on(AnalyticsEvents.customEvent, spy);
+      client.logCustomEvent<IAnalyticsNoMeta>(analyticsActionCauseList.documentOpen, {}, document.createElement('div'));
+      Defer.flush();
+      expect(spy).toHaveBeenCalled();
+    });
+
+    it('should trigger an analytics ready event on custom event', function() {
+      var spy = jasmine.createSpy('spy');
+      $$(env.root).on(AnalyticsEvents.analyticsEventReady, spy);
       client.logCustomEvent<IAnalyticsNoMeta>(analyticsActionCauseList.documentOpen, {}, document.createElement('div'));
       Defer.flush();
       expect(spy).toHaveBeenCalled();
@@ -457,6 +509,52 @@ export function LiveAnalyticsClientTest() {
 
       expect(metaData.contentIDKey).toBe(id.key);
       expect(metaData.contentIDValue).toBe(id.value);
+    });
+
+    it(`when specifying contentIDKey and contentIDValue for #logCustomEvent, it should keep them in the metadata object`, () => {
+      const spy = jasmine.createSpy('spy');
+      $$(env.root).on(AnalyticsEvents.changeAnalyticsCustomData, spy);
+
+      const customData = {
+        contentIDKey: 'groupid',
+        contentIDValue: 'my-id-abc-123'
+      };
+      const result = FakeResults.createFakeResult();
+      client.logCustomEvent<IAnalyticsNoMeta>(analyticsActionCauseList.documentOpen, customData, document.createElement('div'), result);
+      const metaData = spy.calls.mostRecent().args[1].metaObject;
+
+      expect(metaData.contentIDKey).toBe('groupid');
+      expect(metaData.contentIDValue).toBe('my-id-abc-123');
+    });
+
+    it(`when specifying contentIDKey only for #logCustomEvent, it should update with urihash in the metadata object`, () => {
+      const spy = jasmine.createSpy('spy');
+      $$(env.root).on(AnalyticsEvents.changeAnalyticsCustomData, spy);
+
+      const customData = {
+        contentIDKey: 'groupid'
+      };
+      const result = FakeResults.createFakeResult();
+      client.logCustomEvent<IAnalyticsNoMeta>(analyticsActionCauseList.documentOpen, customData, document.createElement('div'), result);
+      const metaData = spy.calls.mostRecent().args[1].metaObject;
+
+      expect(metaData.contentIDKey).toBe('urihash');
+      expect(metaData.contentIDValue).toBe(result.raw.urihash);
+    });
+
+    it(`when specifying contentIDValue only for #logCustomEvent, it should update with urihash in the metadata object`, () => {
+      const spy = jasmine.createSpy('spy');
+      $$(env.root).on(AnalyticsEvents.changeAnalyticsCustomData, spy);
+
+      const customData = {
+        contentIDValue: 'my-id-abc-123'
+      };
+      const result = FakeResults.createFakeResult();
+      client.logCustomEvent<IAnalyticsNoMeta>(analyticsActionCauseList.documentOpen, customData, document.createElement('div'), result);
+      const metaData = spy.calls.mostRecent().args[1].metaObject;
+
+      expect(metaData.contentIDKey).toBe('urihash');
+      expect(metaData.contentIDValue).toBe(result.raw.urihash);
     });
 
     describe('with click event', () => {

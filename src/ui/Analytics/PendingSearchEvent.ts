@@ -10,15 +10,18 @@ import { Component } from '../Base/Component';
 import { QueryController } from '../../controllers/QueryController';
 import { Defer } from '../../misc/Defer';
 import { APIAnalyticsBuilder } from '../../rest/APIAnalyticsBuilder';
-import { IAnalyticsSearchEventsArgs, AnalyticsEvents } from '../../events/AnalyticsEvents';
+import { IAnalyticsSearchEventsArgs, AnalyticsEvents, IAnalyticsEventArgs } from '../../events/AnalyticsEvents';
 import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
 import { QueryStateModel } from '../../models/QueryStateModel';
-import * as _ from 'underscore';
+import { indexOf, map, each } from 'underscore';
+import { Logger } from '../../misc/Logger';
+import { IAnalyticsFacetState } from './IAnalyticsFacetState';
 
 export class PendingSearchEvent {
   private handler: (evt: Event, arg: IDuringQueryEventArgs) => void;
   private searchPromises: Promise<IQueryResults>[] = [];
   private results: IQueryResults[] = [];
+  private facetState: IAnalyticsFacetState[];
   protected cancelled = false;
   protected finished = false;
   protected searchEvents: ISearchEvent[] = [];
@@ -47,9 +50,25 @@ export class PendingSearchEvent {
     return this.templateSearchEvent.customData;
   }
 
+  public addFacetState(state: IAnalyticsFacetState[]) {
+    if (!this.facetState) {
+      this.facetState = [];
+    }
+
+    this.facetState.push(...state);
+  }
+
   public cancel() {
     this.stopRecording();
     this.cancelled = true;
+  }
+
+  public stopRecording() {
+    if (this.handler) {
+      $$(this.root).off(QueryEvents.duringQuery, this.handler);
+      $$(this.root).off(QueryEvents.duringFetchMoreQuery, this.handler);
+      this.handler = null;
+    }
   }
 
   protected handleDuringQuery(evt: Event, args: IDuringQueryEventArgs, queryBoxContentToUse?: string) {
@@ -74,35 +93,37 @@ export class PendingSearchEvent {
     const queryController = Component.get(eventTarget, QueryController);
     Assert.exists(queryController);
 
-    args.promise
-      .then((queryResults: IQueryResults) => {
-        Assert.exists(queryResults);
-        Assert.check(!this.finished);
-        if (
-          queryResults._reusedSearchUid !== true ||
-          this.templateSearchEvent.actionCause == analyticsActionCauseList.recommendation.name
-        ) {
-          const searchEvent = <ISearchEvent>_.extend({}, this.templateSearchEvent);
-          this.fillSearchEvent(searchEvent, searchInterface, args.query, queryResults, queryBoxContentToUse);
-          this.searchEvents.push(searchEvent);
-          this.results.push(queryResults);
-          return queryResults;
-        }
-      })
-      .finally(() => {
-        const index = _.indexOf(this.searchPromises, args.promise);
-        this.searchPromises.splice(index, 1);
-        if (this.searchPromises.length == 0) {
-          this.flush();
-        }
-      });
+    this.updateSearchEventsAndQueryResults(args, searchInterface, queryBoxContentToUse);
   }
 
-  public stopRecording() {
-    if (this.handler) {
-      $$(this.root).off(QueryEvents.duringQuery, this.handler);
-      $$(this.root).off(QueryEvents.duringFetchMoreQuery, this.handler);
-      this.handler = null;
+  private async updateSearchEventsAndQueryResults(
+    args: IDuringQueryEventArgs,
+    searchInterface: SearchInterface,
+    queryBoxContentToUse: string
+  ) {
+    try {
+      const queryResults: IQueryResults = await args.promise;
+
+      Assert.exists(queryResults);
+      Assert.check(!this.finished);
+
+      const isRecommendationPanelAction = this.templateSearchEvent.actionCause === analyticsActionCauseList.recommendation.name;
+
+      if (queryResults._reusedSearchUid !== true || isRecommendationPanelAction) {
+        const searchEvent: ISearchEvent = { ...this.templateSearchEvent };
+        this.fillSearchEvent(searchEvent, searchInterface, args.query, queryResults, queryBoxContentToUse);
+        this.searchEvents.push(searchEvent);
+        this.results.push(queryResults);
+      }
+    } catch (e) {
+      new Logger(this).error(e);
+    }
+
+    const index = indexOf(this.searchPromises, args.promise);
+    this.searchPromises.splice(index, 1);
+
+    if (!this.searchPromises.length) {
+      this.flush();
     }
   }
 
@@ -116,12 +137,20 @@ export class PendingSearchEvent {
         if (this.sendToCloud) {
           this.endpoint.sendSearchEvents(this.searchEvents);
         }
-        const apiSearchEvents = _.map(this.searchEvents, (searchEvent: ISearchEvent) => {
+        const apiSearchEvents = map(this.searchEvents, (searchEvent: ISearchEvent) => {
           return APIAnalyticsBuilder.convertSearchEventToAPI(searchEvent);
         });
         $$(this.root).trigger(AnalyticsEvents.searchEvent, <IAnalyticsSearchEventsArgs>{
           searchEvents: apiSearchEvents
         });
+        if (this.searchEvents.length) {
+          this.searchEvents.forEach(searchEvent => {
+            $$(this.root).trigger(AnalyticsEvents.analyticsEventReady, <IAnalyticsEventArgs>{
+              event: 'CoveoSearchEvent',
+              coveoAnalyticsEventData: searchEvent
+            });
+          });
+        }
       });
     }
   }
@@ -153,14 +182,13 @@ export class PendingSearchEvent {
     searchEvent.resultsPerPage = query.numberOfResults;
     searchEvent.searchQueryUid = queryResults.searchUid;
     searchEvent.queryPipeline = queryResults.pipeline;
+    searchEvent.facetState = this.facetState;
 
     // The context_${key} format is important for the Analytics backend
     // This is what they use to recognize a custom data that will be used internally by other coveo's service.
     // In this case, Coveo Machine Learning will be the consumer of this information.
     if (query.context != undefined) {
-      _.each(query.context, (value: string, key: string) => {
-        searchEvent.customData[`context_${key}`] = value;
-      });
+      each(query.context, (value: string, key: string) => (searchEvent.customData[`context_${key}`] = value));
     }
 
     if (queryResults.refinedKeywords != undefined && queryResults.refinedKeywords.length != 0) {

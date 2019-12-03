@@ -1,12 +1,13 @@
-import { ExpressionBuilder } from './ExpressionBuilder';
-import { IRankingFunction } from '../../rest/RankingFunction';
-import { IQueryFunction } from '../../rest/QueryFunction';
-import { IGroupByRequest } from '../../rest/GroupByRequest';
-import { IQuery } from '../../rest/Query';
-import { QueryBuilderExpression } from './QueryBuilderExpression';
 import * as _ from 'underscore';
-import { Utils } from '../../utils/Utils';
 import { ICategoryFacetRequest } from '../../rest/CategoryFacetRequest';
+import { IFacetRequest } from '../../rest/Facet/FacetRequest';
+import { IGroupByRequest } from '../../rest/GroupByRequest';
+import { IFacetOptions, IQuery, IUserActionsRequest, ICommerceRequest } from '../../rest/Query';
+import { IQueryFunction } from '../../rest/QueryFunction';
+import { IRankingFunction } from '../../rest/RankingFunction';
+import { Utils } from '../../utils/Utils';
+import { ExpressionBuilder } from './ExpressionBuilder';
+import { QueryBuilderExpression } from './QueryBuilderExpression';
 
 /**
  * The QueryBuilder is used to build a {@link IQuery} that will be able to be executed using the Search API.
@@ -112,7 +113,7 @@ export class QueryBuilder {
   /**
    * Whether to interpret special query syntax (e.g., `@objecttype=message`) in the basic
    * [`expression`]{@link QueryBuilder.expression} (see
-   * [Coveo Query Syntax Reference](http://www.coveo.com/go?dest=adminhelp70&lcid=9&context=10005)).
+   * [Coveo Query Syntax Reference](https://www.coveo.com/go?dest=adminhelp70&lcid=9&context=10005)).
    *
    * See also [`enableLowercaseOperators`]{@link QueryBuilder.enableLowercaseOperators}.
    *
@@ -276,8 +277,20 @@ export class QueryBuilder {
   public rankingFunctions: IRankingFunction[] = [];
   /**
    * Specifies an array of Group By operations that can be performed on the query results to extract facets.
+   * Cannot be used alongside [`facetRequests`]{@link QueryBuilder.facetRequests}
    */
   public groupByRequests: IGroupByRequest[] = [];
+
+  /**
+   * Specifies an array of request for the DynamicFacet component.
+   * Cannot be used alongside [`groupByRequests`]{@link QueryBuilder.groupByRequests}
+   */
+  public facetRequests: IFacetRequest[] = [];
+
+  /**
+   * The global configuration options to apply to the requests in the [facets]{@link QueryBuilder.facets} array.
+   */
+  public facetOptions: IFacetOptions = {};
 
   /**
    * Specifies an array of request for the CategoryFacet component.
@@ -307,6 +320,14 @@ export class QueryBuilder {
    * This parameter is normally controlled by {@link SearchInterface.options.allowEmptyQuery} option.
    */
   public allowQueriesWithoutKeywords: boolean;
+  /**
+   * A request to retrieve user actions in the query response.
+   */
+  public userActions: IUserActionsRequest;
+  /**
+   * A request for a commerce query.
+   */
+  public commerce: ICommerceRequest;
   /**
    * Build the current content or state of the query builder and return a {@link IQuery}.
    *
@@ -348,7 +369,9 @@ export class QueryBuilder {
       sortField: this.sortField,
       queryFunctions: this.queryFunctions,
       rankingFunctions: this.rankingFunctions,
-      groupBy: this.groupByRequests,
+      groupBy: this.groupBy,
+      facets: this.facets,
+      facetOptions: this.facetOptions,
       categoryFacets: this.categoryFacets,
       retrieveFirstSentences: this.retrieveFirstSentences,
       timezone: this.timezone,
@@ -359,7 +382,9 @@ export class QueryBuilder {
       context: this.context,
       actionsHistory: this.actionsHistory,
       recommendation: this.recommendation,
-      allowQueriesWithoutKeywords: this.allowQueriesWithoutKeywords
+      allowQueriesWithoutKeywords: this.allowQueriesWithoutKeywords,
+      userActions: this.userActions,
+      commerce: this.commerce
     };
     return query;
   }
@@ -498,5 +523,29 @@ export class QueryBuilder {
   public containsEndUserKeywords(): boolean {
     const query = this.build();
     return Utils.isNonEmptyString(query.q) || Utils.isNonEmptyString(query.lq);
+  }
+
+  private get groupBy() {
+    if (Utils.isEmptyArray(this.groupByRequests)) {
+      return undefined;
+    }
+
+    return this.groupByRequests;
+  }
+
+  private set groupBy(groupBy: IGroupByRequest[]) {
+    this.groupByRequests = groupBy;
+  }
+
+  private get facets() {
+    if (Utils.isEmptyArray(this.facetRequests)) {
+      return undefined;
+    }
+
+    return this.facetRequests;
+  }
+
+  private set facets(facets: IFacetRequest[]) {
+    this.facetRequests = facets;
   }
 }

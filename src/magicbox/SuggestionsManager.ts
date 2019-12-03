@@ -1,6 +1,10 @@
-import { $$ } from '../utils/Dom';
+import { defaults, each, indexOf } from 'underscore';
+import { IQuerySuggestSelection, OmniboxEvents } from '../events/OmniboxEvents';
+import { Component } from '../ui/Base/Component';
+import { $$, Dom } from '../utils/Dom';
 import { InputManager } from './InputManager';
-import { each, defaults, indexOf, compact } from 'underscore';
+import { ResultPreviewsManager } from './ResultPreviewsManager';
+import { QueryProcessor, ProcessingStatus } from './QueryProcessor';
 
 export interface Suggestion {
   text?: string;
@@ -12,16 +16,35 @@ export interface Suggestion {
 }
 
 export interface SuggestionsManagerOptions {
-  selectableClass?: string;
+  suggestionClass?: string;
   selectedClass?: string;
   timeout?: number;
+  previewHeaderText?: string;
+}
+
+export enum Direction {
+  Up = 'Up',
+  Down = 'Down',
+  Left = 'Left',
+  Right = 'Right'
 }
 
 export class SuggestionsManager {
   public hasSuggestions: boolean;
-  private pendingSuggestion: Promise<Suggestion[]>;
+  private suggestionsProcessor: QueryProcessor<Suggestion>;
   private options: SuggestionsManagerOptions;
-  private keyboardFocusedSuggestion: HTMLElement;
+  private keyboardFocusedElement: HTMLElement;
+  private suggestionsListbox: Dom;
+  private resultPreviewsManager: ResultPreviewsManager;
+  private root: HTMLElement;
+
+  public get hasFocus() {
+    return $$(this.element).findClass(this.options.selectedClass).length > 0;
+  }
+
+  public get hasPreviews() {
+    return this.resultPreviewsManager.hasPreviews;
+  }
 
   constructor(
     private element: HTMLElement,
@@ -29,8 +52,9 @@ export class SuggestionsManager {
     private inputManager: InputManager,
     options?: SuggestionsManagerOptions
   ) {
+    this.root = Component.resolveRoot(element);
     this.options = defaults(options, <SuggestionsManagerOptions>{
-      selectableClass: 'magic-box-suggestion',
+      suggestionClass: 'magic-box-suggestion',
       selectedClass: 'magic-box-selected'
     });
     // Put in a sane default, so as to not reject every suggestions if not set on initialization
@@ -48,13 +72,21 @@ export class SuggestionsManager {
       this.handleMouseOut(e);
     });
 
-    this.addAccessibilityProperties();
+    this.suggestionsProcessor = new QueryProcessor({ timeout: this.options.timeout });
+    this.resultPreviewsManager = new ResultPreviewsManager(element, {
+      selectedClass: this.options.selectedClass,
+      timeout: this.options.timeout
+    });
+    this.suggestionsListbox = this.buildSuggestionsContainer();
+    $$(this.element).append(this.suggestionsListbox.el);
+    this.addAccessibilityPropertiesForCombobox();
+    this.appendEmptySuggestionOption();
   }
 
   public handleMouseOver(e) {
-    let target = $$(<HTMLElement>e.target);
-    let parents = target.parents(this.options.selectableClass);
-    if (target.hasClass(this.options.selectableClass)) {
+    const target = $$(<HTMLElement>e.target);
+    const parents = target.parents(this.options.suggestionClass);
+    if (target.hasClass(this.options.suggestionClass)) {
       this.processMouseSelection(target.el);
     } else if (parents.length > 0 && this.element.contains(parents[0])) {
       this.processMouseSelection(parents[0]);
@@ -62,13 +94,13 @@ export class SuggestionsManager {
   }
 
   public handleMouseOut(e) {
-    let target = $$(<HTMLElement>e.target);
-    let targetParents = target.parents(this.options.selectableClass);
+    const target = $$(<HTMLElement>e.target);
+    const targetParents = target.parents(this.options.suggestionClass);
 
-    //e.relatedTarget is not available if moving off the browser window
-    if (e.relatedTarget) {
-      let relatedTargetParents = $$(<HTMLElement>e.relatedTarget).parents(this.options.selectableClass);
-      if (target.hasClass(this.options.selectedClass) && !$$(<HTMLElement>e.relatedTarget).hasClass(this.options.selectableClass)) {
+    //e.relatedTarget is not available if moving off the browser window or is an empty object `{}` when moving out of namespace in LockerService.
+    if (e.relatedTarget && $$(e.relatedTarget).isValid()) {
+      const relatedTargetParents = $$(<HTMLElement>e.relatedTarget).parents(this.options.suggestionClass);
+      if (target.hasClass(this.options.selectedClass) && !$$(<HTMLElement>e.relatedTarget).hasClass(this.options.suggestionClass)) {
         this.removeSelectedStatus(target.el);
       } else if (relatedTargetParents.length == 0 && targetParents.length > 0) {
         this.removeSelectedStatus(targetParents[0]);
@@ -80,111 +112,69 @@ export class SuggestionsManager {
         this.removeSelectedStatus(targetParents[0]);
       }
     }
+    $$(this.root).trigger(OmniboxEvents.querySuggestLoseFocus);
   }
 
-  public moveDown(): Suggestion {
-    return this.returnMoved(this.move('down'));
+  public async moveDown() {
+    await this.move(Direction.Down);
   }
 
-  public moveUp(): Suggestion {
-    return this.returnMoved(this.move('up'));
+  public async moveUp() {
+    await this.move(Direction.Up);
+  }
+
+  public async moveLeft() {
+    await this.move(Direction.Left);
+  }
+
+  public async moveRight() {
+    await this.move(Direction.Right);
   }
 
   public selectAndReturnKeyboardFocusedElement(): HTMLElement {
-    const selected = this.keyboardFocusedSuggestion;
-    if (selected != null) {
+    const selected = this.keyboardFocusedElement;
+    if (selected) {
       $$(selected).trigger('keyboardSelect');
       // By definition, once an element has been "selected" with the keyboard,
       // it is not longer "active" since the event has been processed.
-      this.keyboardFocusedSuggestion = null;
+      this.keyboardFocusedElement = null;
     }
     return selected;
   }
 
-  public mergeSuggestions(suggestions: Array<Promise<Suggestion[]> | Suggestion[]>, callback?: (suggestions: Suggestion[]) => void) {
-    let results: Suggestion[] = [];
-    let timeout;
-    let stillNeedToResolve = true;
-    // clean empty / null values in the array of suggestions
-    suggestions = compact(suggestions);
-    const promise = (this.pendingSuggestion = new Promise<Suggestion[]>((resolve, reject) => {
-      // Concat all promises results together in one flat array.
-      // If one promise take too long to resolve, simply skip it
-      each(suggestions, (suggestion: Promise<Suggestion[]>) => {
-        let shouldRejectPart = false;
-        setTimeout(function() {
-          shouldRejectPart = true;
-          stillNeedToResolve = false;
-        }, this.options.timeout);
-        suggestion.then((item: Suggestion[]) => {
-          if (!shouldRejectPart && item) {
-            results = results.concat(item);
-          }
-        });
-      });
+  public clearKeyboardFocusedElement() {
+    this.keyboardFocusedElement = null;
+  }
 
-      // Resolve the promise when one of those conditions is met first :
-      // - All suggestions resolved
-      // - Timeout is reached before all promises have processed -> resolve with what we have so far
-      // - No suggestions given (length 0 or undefined)
-      const onResolve = () => {
-        if (stillNeedToResolve) {
-          if (timeout) {
-            clearTimeout(timeout);
-          }
-          if (results.length == 0) {
-            resolve([]);
-          } else if (promise == this.pendingSuggestion || this.pendingSuggestion == null) {
-            resolve(results.sort((a, b) => b.index - a.index));
-          } else {
-            reject('new request queued');
-          }
-        }
-        stillNeedToResolve = false;
-      };
+  public async receiveSuggestions(suggestions: (Promise<Suggestion[]> | Suggestion[])[]) {
+    const { results, status } = await this.suggestionsProcessor.processQueries(suggestions);
+    if (status === ProcessingStatus.Overriden) {
+      return [];
+    }
+    this.updateSuggestions(results);
+    return results;
+  }
 
-      if (suggestions.length == 0) {
-        onResolve();
-      }
-      if (suggestions == undefined) {
-        onResolve();
-      }
-
-      timeout = setTimeout(function() {
-        onResolve();
-      }, this.options.timeout);
-
-      Promise.all(suggestions).then(() => onResolve());
-    }));
-
-    promise
-      .then((suggestions: Suggestion[]) => {
-        if (callback) {
-          callback(suggestions);
-        }
-        this.updateSuggestions(suggestions);
-        return suggestions;
-      })
-      .catch(() => {
-        return null;
-      });
+  public clearSuggestions() {
+    this.updateSuggestions([]);
   }
 
   public updateSuggestions(suggestions: Suggestion[]) {
-    $$(this.element).empty();
-    this.element.className = 'magic-box-suggestions';
+    this.suggestionsListbox.empty();
+    this.inputManager.input.removeAttribute('aria-activedescendant');
 
     this.hasSuggestions = suggestions.length > 0;
 
     $$(this.element).toggleClass('magic-box-hasSuggestion', this.hasSuggestions);
     $$(this.magicBoxContainer).setAttribute('aria-expanded', this.hasSuggestions.toString());
 
+    this.resultPreviewsManager.displaySearchResultPreviewsForSuggestion(null);
+
     if (!this.hasSuggestions) {
+      this.appendEmptySuggestionOption();
+      $$(this.root).trigger(OmniboxEvents.querySuggestLoseFocus);
       return;
     }
-
-    const suggestionsContainer = this.buildSuggestionsContainer();
-    $$(this.element).append(suggestionsContainer.el);
 
     each(suggestions, (suggestion: Suggestion) => {
       const dom = suggestion.dom ? this.modifyDomFromExistingSuggestion(suggestion.dom) : this.createDomFromSuggestion(suggestion);
@@ -192,25 +182,43 @@ export class SuggestionsManager {
       dom.setAttribute('id', `magic-box-suggestion-${indexOf(suggestions, suggestion)}`);
       dom.setAttribute('role', 'option');
       dom.setAttribute('aria-selected', 'false');
+      dom.setAttribute('aria-label', dom.text());
 
       dom['suggestion'] = suggestion;
-      suggestionsContainer.append(dom.el);
+      this.suggestionsListbox.append(dom.el);
     });
+
+    $$(this.root).trigger(OmniboxEvents.querySuggestRendered);
   }
 
-  private processKeyboardSelection(suggestion: HTMLElement) {
+  public get selectedSuggestion(): Suggestion {
+    if (this.htmlElementIsSuggestion(this.keyboardFocusedElement)) {
+      return this.returnMoved(this.keyboardFocusedElement) as Suggestion;
+    }
+    return null;
+  }
+
+  private async processKeyboardSelection(suggestion: HTMLElement) {
     this.addSelectedStatus(suggestion);
-    this.keyboardFocusedSuggestion = suggestion;
+    this.keyboardFocusedElement = suggestion;
     $$(this.inputManager.input).setAttribute('aria-activedescendant', $$(suggestion).getAttribute('id'));
+    await this.updateSelectedSuggestion(suggestion);
+  }
+
+  private processKeyboardPreviewSelection(preview: HTMLElement) {
+    this.addSelectedStatus(preview);
+    this.keyboardFocusedElement = preview;
   }
 
   private processMouseSelection(suggestion: HTMLElement) {
     this.addSelectedStatus(suggestion);
-    this.keyboardFocusedSuggestion = null;
+    this.updateSelectedSuggestion(suggestion);
+    this.keyboardFocusedElement = null;
   }
 
   private buildSuggestionsContainer() {
     return $$('div', {
+      className: 'coveo-magicbox-suggestions',
       id: 'coveo-magicbox-suggestions',
       role: 'listbox'
     });
@@ -218,15 +226,15 @@ export class SuggestionsManager {
 
   private createDomFromSuggestion(suggestion: Suggestion) {
     const dom = $$('div', {
-      className: `magic-box-suggestion ${this.options.selectableClass}`
+      className: `magic-box-suggestion ${this.options.suggestionClass}`
     });
 
     dom.on('click', () => {
-      suggestion.onSelect();
+      this.selectSuggestion(suggestion);
     });
 
     dom.on('keyboardSelect', () => {
-      suggestion.onSelect();
+      this.selectSuggestion(suggestion);
     });
 
     if (suggestion.html) {
@@ -236,6 +244,7 @@ export class SuggestionsManager {
 
     if (suggestion.text) {
       dom.text(suggestion.text);
+
       return dom;
     }
 
@@ -255,41 +264,73 @@ export class SuggestionsManager {
     return dom;
   }
 
+  private selectSuggestion(suggestion: Suggestion) {
+    suggestion.onSelect();
+    $$(this.root).trigger(OmniboxEvents.querySuggestSelection, <IQuerySuggestSelection>{ suggestion: suggestion.text });
+  }
+
+  private appendEmptySuggestionOption() {
+    // Accessibility tools reports that a listbox element must always have at least one child with an option
+    // Even if there is no suggestions to show.
+    this.suggestionsListbox.append($$('div', { role: 'option' }).el);
+  }
+
   private modifyDomFromExistingSuggestion(dom: HTMLElement) {
     // this need to be done if the selection is in cache and the dom is set in the suggestion
     this.removeSelectedStatus(dom);
-    const found = $$(dom).find('.' + this.options.selectableClass);
+    const found = $$(dom).find('.' + this.options.suggestionClass);
     this.removeSelectedStatus(found);
     return $$(dom);
   }
 
-  private move(direction: 'up' | 'down') {
+  private async move(direction: Direction) {
+    if (this.resultPreviewsManager.focusedPreviewElement) {
+      await this.moveWithinPreview(direction);
+      return;
+    }
+    if (direction === Direction.Right || direction === Direction.Left) {
+      const firstPreview = this.resultPreviewsManager.previewElements[0];
+      if (firstPreview) {
+        this.processKeyboardPreviewSelection(firstPreview);
+        return;
+      }
+    }
+    await this.moveWithinSuggestion(direction);
+  }
+
+  private async moveWithinSuggestion(direction: Direction) {
     const currentlySelected = $$(this.element).find(`.${this.options.selectedClass}`);
-    const selectables = $$(this.element).findAll(`.${this.options.selectableClass}`);
+    const selectables = $$(this.element).findAll(`.${this.options.suggestionClass}`);
     const currentIndex = indexOf(selectables, currentlySelected);
 
-    let index = direction == 'up' ? currentIndex - 1 : currentIndex + 1;
-    if (index < -1) {
-      index = selectables.length - 1;
-    }
-    if (index > selectables.length) {
-      index = 0;
-    }
+    let index = direction === Direction.Up ? currentIndex - 1 : currentIndex + 1;
+    index = (index + selectables.length) % selectables.length;
 
-    const newlySelected = selectables[index];
+    await this.selectQuerySuggest(selectables[index]);
+  }
 
-    if (newlySelected) {
-      this.processKeyboardSelection(newlySelected);
+  private async selectQuerySuggest(suggestion: HTMLElement) {
+    if (suggestion) {
+      await this.processKeyboardSelection(suggestion);
     } else {
-      this.keyboardFocusedSuggestion = null;
+      this.keyboardFocusedElement = null;
       this.inputManager.input.removeAttribute('aria-activedescendant');
     }
 
-    return newlySelected;
+    return suggestion;
+  }
+
+  private async moveWithinPreview(direction: Direction) {
+    const newFocusedPreview = this.resultPreviewsManager.getElementInDirection(direction);
+    if (!newFocusedPreview) {
+      await this.selectQuerySuggest(this.resultPreviewsManager.previewsOwner);
+      return;
+    }
+    this.processKeyboardPreviewSelection(newFocusedPreview);
   }
 
   private returnMoved(selected) {
-    if (selected != null) {
+    if (selected) {
       if (selected['suggestion']) {
         return selected['suggestion'];
       }
@@ -305,14 +346,21 @@ export class SuggestionsManager {
     return null;
   }
 
-  private addSelectedStatus(suggestion: HTMLElement): void {
+  private addSelectedStatus(element: HTMLElement): void {
     const selected = this.element.getElementsByClassName(this.options.selectedClass);
     for (let i = 0; i < selected.length; i++) {
       const elem = <HTMLElement>selected.item(i);
       this.removeSelectedStatus(elem);
     }
-    $$(suggestion).addClass(this.options.selectedClass);
-    this.updateAreaSelectedIfDefined(suggestion, 'true');
+    $$(element).addClass(this.options.selectedClass);
+    this.updateAreaSelectedIfDefined(element, 'true');
+  }
+
+  private async updateSelectedSuggestion(suggestion: HTMLElement) {
+    $$(this.root).trigger(OmniboxEvents.querySuggestGetFocus, <IQuerySuggestSelection>{
+      suggestion: suggestion.innerText
+    });
+    await this.resultPreviewsManager.displaySearchResultPreviewsForSuggestion(suggestion);
   }
 
   private removeSelectedStatus(suggestion: HTMLElement): void {
@@ -326,9 +374,22 @@ export class SuggestionsManager {
     }
   }
 
-  private addAccessibilityProperties() {
-    $$(this.magicBoxContainer).setAttribute('aria-expanded', 'false');
-    $$(this.magicBoxContainer).setAttribute('aria-haspopup', 'listbox');
-    this.inputManager.input.removeAttribute('aria-activedescendant');
+  private addAccessibilityPropertiesForCombobox() {
+    const combobox = $$(this.magicBoxContainer);
+    const input = $$(this.inputManager.input);
+
+    combobox.setAttribute('aria-expanded', 'false');
+    combobox.setAttribute('role', 'combobox');
+    combobox.setAttribute('aria-owns', 'coveo-magicbox-suggestions');
+    combobox.setAttribute('aria-haspopup', 'listbox');
+
+    input.el.removeAttribute('aria-activedescendant');
+    input.setAttribute('aria-controls', 'coveo-magicbox-suggestions');
+    input.setAttribute('aria-autocomplete', 'list');
+  }
+
+  private htmlElementIsSuggestion(selected: HTMLElement) {
+    const omniboxSelectables = $$(this.element).findAll(`.${this.options.suggestionClass}`);
+    return indexOf(omniboxSelectables, selected) > -1;
   }
 }

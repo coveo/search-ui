@@ -1,9 +1,9 @@
 import { FacetSliderQueryController } from '../../src/controllers/FacetSliderQueryController';
-import * as Mock from '../MockEnvironment';
-import { FacetSlider } from '../../src/ui/FacetSlider/FacetSlider';
-import { IFieldOption } from '../../src/ui/Base/ComponentOptions';
-import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
 import { IGroupByRequest } from '../../src/rest/GroupByRequest';
+import { IFieldOption } from '../../src/ui/Base/IComponentOptions';
+import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
+import { FacetSlider } from '../../src/ui/FacetSlider/FacetSlider';
+import * as Mock from '../MockEnvironment';
 
 export function FacetSliderQueryControllerTest() {
   describe('FacetSliderQueryController', () => {
@@ -121,6 +121,17 @@ export function FacetSliderQueryControllerTest() {
         controller.putGroupByIntoQueryBuilder(builder);
         requestForFullRange = builder.groupByRequests[controller.lastGroupByRequestForFullRangeIndex];
         expect(requestForFullRange.constantQueryOverride).toContain('@foo>1970');
+      });
+
+      it('should contain a special expression to filter out invalid document if the field is a date for the graph request', () => {
+        controller.facet.options.dateField = true;
+        controller.facet.options.graph = { steps: 10 };
+        builder.expression.add('something');
+
+        controller.putGroupByIntoQueryBuilder(builder);
+        const requestForGraph = builder.groupByRequests[controller.graphGroupByQueriesIndex];
+        expect(requestForGraph.constantQueryOverride).toContain('@foo>1970');
+        expect(requestForGraph.queryOverride).toContain('something');
       });
     });
 

@@ -1,21 +1,23 @@
 import 'styling/_Tab';
 import { each, indexOf, map } from 'underscore';
-import { exportGlobally } from '../../GlobalExports';
 import { InitializationEvents } from '../../events/InitializationEvents';
 import { IBuildingQueryEventArgs, QueryEvents } from '../../events/QueryEvents';
+import { exportGlobally } from '../../GlobalExports';
 import { Assert } from '../../misc/Assert';
 import { IAttributeChangedEventArg, MODEL_EVENTS } from '../../models/Model';
-import { QUERY_STATE_ATTRIBUTES, QueryStateModel } from '../../models/QueryStateModel';
+import { QueryStateModel, QUERY_STATE_ATTRIBUTES } from '../../models/QueryStateModel';
 import { SearchEndpoint } from '../../rest/SearchEndpoint';
 import { AccessibleButton } from '../../utils/AccessibleButton';
 import { $$ } from '../../utils/Dom';
 import { Utils } from '../../utils/Utils';
-import { IAnalyticsInterfaceChange, analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
+import { analyticsActionCauseList, IAnalyticsInterfaceChange } from '../Analytics/AnalyticsActionListMeta';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
-import { ComponentOptions, IQueryExpression } from '../Base/ComponentOptions';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { IQueryExpression } from '../Base/IComponentOptions';
 import { Initialization } from '../Base/Initialization';
 import { ResponsiveTabs } from '../ResponsiveComponents/ResponsiveTabs';
+import { ValidLayout } from '../ResultLayoutSelector/ValidLayout';
 
 export interface ITabOptions {
   expression?: IQueryExpression;
@@ -103,7 +105,7 @@ export class Tab extends Component {
      *
      * Default value is `undefined` and the Tab applies no additional expression or filter to the query.
      */
-    expression: ComponentOptions.buildQueryExpressionOption({ section: 'Filtering' }),
+    expression: ComponentOptions.buildQueryExpressionOption({ section: 'Common Options' }),
 
     /**
      * Specifies the {@link SearchEndpoint} to point to when performing queries from within the Tab.
@@ -137,7 +139,7 @@ export class Tab extends Component {
      *
      * Default value is `undefined` and the component selects the first available layout.
      */
-    layout: ComponentOptions.buildStringOption(),
+    layout: ComponentOptions.buildStringOption<ValidLayout>(),
 
     /**
      * Specifies whether to include the {@link Tab.options.expression} in the constant part of the query.

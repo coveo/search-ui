@@ -147,6 +147,54 @@ export function IconTest() {
         );
         expect($$($$(test.cmp.element).find('.coveo-icon-caption-overlay')).text()).toBe('troll');
       });
+
+      it('not matching condition should detach the component from its parent', () => {
+        test = Mock.optionsResultComponentSetup<Icon, IIconOptions>(
+          Icon,
+          {
+            labelValue: 'troll',
+            conditions: [{ field: 'filetype', values: ['abc'] }]
+          },
+          result
+        );
+        expect(test.cmp.element.parentElement).toBeNull();
+      });
+
+      it('not matching reversed condition should display the component', () => {
+        test = Mock.optionsResultComponentSetup<Icon, IIconOptions>(
+          Icon,
+          {
+            labelValue: 'troll',
+            conditions: [{ field: 'filetype', values: ['abc'], reverseCondition: true }]
+          },
+          result
+        );
+        expect(test.cmp.element.parentElement).toBeDefined();
+      });
+
+      it('matching condition should display the component', () => {
+        test = Mock.optionsResultComponentSetup<Icon, IIconOptions>(
+          Icon,
+          {
+            labelValue: 'troll',
+            conditions: [{ field: 'filetype', values: ['unknown'] }]
+          },
+          result
+        );
+        expect(test.cmp.element.parentElement).toBeDefined();
+      });
+
+      it('matching reversed condition should detach the component from its parent', () => {
+        test = Mock.optionsResultComponentSetup<Icon, IIconOptions>(
+          Icon,
+          {
+            labelValue: 'troll',
+            conditions: [{ field: 'filetype', values: ['unknown'], reverseCondition: true }]
+          },
+          result
+        );
+        expect(test.cmp.element.parentElement).toBeNull();
+      });
     });
   });
 }

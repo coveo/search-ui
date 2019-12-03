@@ -3,6 +3,7 @@ import { exportGlobally } from '../../GlobalExports';
 import { Assert } from '../../misc/Assert';
 import { QueryStateModel } from '../../models/QueryStateModel';
 import { IQueryResult } from '../../rest/QueryResult';
+import { l } from '../../strings/Strings';
 import { AccessibleButton } from '../../utils/AccessibleButton';
 import { DateUtils, IDateToStringOptions } from '../../utils/DateUtils';
 import { $$ } from '../../utils/Dom';
@@ -11,16 +12,19 @@ import { Utils } from '../../utils/Utils';
 import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
-import { ComponentOptions, IComponentOptionsObjectOptionArgs, IFieldOption } from '../Base/ComponentOptions';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { IComponentOptionsObjectOptionArgs, IFieldConditionOption, IFieldOption } from '../Base/IComponentOptions';
 import { Initialization } from '../Base/Initialization';
+import { DynamicFacet } from '../DynamicFacet/DynamicFacet';
 import { Facet } from '../Facet/Facet';
 import { FacetUtils } from '../Facet/FacetUtils';
+import { TemplateFieldsEvaluator } from '../Templates/TemplateFieldsEvaluator';
 import { TemplateHelpers } from '../Templates/TemplateHelpers';
-import { l } from '../../strings/Strings';
 
 export interface IFieldValueOptions {
   field?: IFieldOption;
   facet?: string;
+  dynamicFacet?: string;
   htmlValue?: boolean;
   helper?: string;
   helperOptions?: { [key: string]: any };
@@ -28,6 +32,7 @@ export interface IFieldValueOptions {
   separator?: string;
   displaySeparator?: string;
   textCaption?: string;
+  conditions?: IFieldConditionOption[];
 }
 
 export interface IAnalyticsFieldValueMeta {
@@ -177,6 +182,7 @@ export class FieldValue extends Component {
         alt: ComponentOptions.buildStringOption(showOnlyWithHelper(['image'])),
         height: ComponentOptions.buildStringOption(showOnlyWithHelper(['image'])),
         width: ComponentOptions.buildStringOption(showOnlyWithHelper(['image'])),
+        srcTemplate: ComponentOptions.buildStringOption(showOnlyWithHelper(['image'])),
 
         precision: ComponentOptions.buildNumberOption(showOnlyWithHelper(['size'], { min: 0, defaultValue: 2 })),
         base: ComponentOptions.buildNumberOption(showOnlyWithHelper(['size'], { min: 0, defaultValue: 0 })),
@@ -191,7 +197,29 @@ export class FieldValue extends Component {
      *
      * Default value is `undefined`.
      */
-    textCaption: ComponentOptions.buildLocalizedStringOption()
+    textCaption: ComponentOptions.buildLocalizedStringOption(),
+
+    /**
+     * A field-based condition that must be satisfied by the query result item for the component to be rendered.
+     *
+     * Note: This option uses a distinctive markup configuration syntax allowing multiple conditions to be expressed. Its underlying logic is the same as that of the field value conditions mechanism used by result templates.
+     *
+     * **Examples:**
+     * Render the component if the query result item's @documenttype field value is Article or Documentation.
+     * ```html
+     * <div class="CoveoFieldValue" data-field="@author" data-condition-field-documenttype="Article, Documentation"></div>
+     * ```
+     * Render the component if the query result item's @documenttype field value is anything but Case.
+     * ```html
+     * <div class="CoveoFieldValue" data-field="@author" data-condition-field-not-documenttype="Case"></div>
+     * ```
+     * Render the component if the query result item's @documenttype field value is Article, and if its @author field value is anything but Anonymous.
+     * ```html
+     * <div class="CoveoFieldValue" data-field="@author" data-condition-field-documenttype="Article" data-condition-field-not-author="Anonymous"></div>
+     * ```
+     * Default value is `undefined`.
+     */
+    conditions: ComponentOptions.buildFieldConditionOption()
   };
 
   static simpleOptions = omit(FieldValue.options, 'helperOptions');
@@ -217,7 +245,7 @@ export class FieldValue extends Component {
   ) {
     super(element, fieldValueClassId, bindings);
 
-    this.options = ComponentOptions.initOptions(element, FieldValue.simpleOptions, options);
+    this.options = ComponentOptions.initOptions(element, FieldValue.simpleOptions, options, FieldValue.ID);
 
     if (this.options.helper != null) {
       this.normalizeHelperAndOptions();
@@ -226,31 +254,32 @@ export class FieldValue extends Component {
     this.result = this.result || this.resolveResult();
     Assert.exists(this.result);
 
+    if (TemplateFieldsEvaluator.evaluateFieldsToMatch(this.options.conditions, this.result) && this.getValue()) {
+      this.initialize();
+    } else if (this.element.parentElement != null) {
+      this.element.parentElement.removeChild(this.element);
+    }
+  }
+
+  private initialize() {
     let loadedValueFromComponent = this.getValue();
-    if (loadedValueFromComponent == null) {
-      // Completely remove the element to ease stuff such as adding separators in CSS
-      if (this.element.parentElement != null) {
-        this.element.parentElement.removeChild(this.element);
+    let values: string[];
+
+    if (isArray(loadedValueFromComponent)) {
+      values = loadedValueFromComponent;
+    } else if (this.options.splitValues) {
+      if (isString(loadedValueFromComponent)) {
+        values = map(loadedValueFromComponent.split(this.options.separator), (v: string) => {
+          return v.trim();
+        });
       }
     } else {
-      let values: string[];
-
-      if (isArray(loadedValueFromComponent)) {
-        values = loadedValueFromComponent;
-      } else if (this.options.splitValues) {
-        if (isString(loadedValueFromComponent)) {
-          values = map(loadedValueFromComponent.split(this.options.separator), (v: string) => {
-            return v.trim();
-          });
-        }
-      } else {
-        loadedValueFromComponent = loadedValueFromComponent.toString();
-        values = [loadedValueFromComponent];
-      }
-      this.appendValuesToDom(values);
-      if (this.options.textCaption != null) {
-        this.prependTextCaptionToDom();
-      }
+      loadedValueFromComponent = loadedValueFromComponent.toString();
+      values = [loadedValueFromComponent];
+    }
+    this.appendValuesToDom(values);
+    if (this.options.textCaption != null) {
+      this.prependTextCaptionToDom();
     }
   }
 
@@ -312,7 +341,7 @@ export class FieldValue extends Component {
   }
 
   private normalizeHelperAndOptions() {
-    this.options = ComponentOptions.initOptions(this.element, FieldValue.helperOptions, this.options);
+    this.options = ComponentOptions.initOptions(this.element, FieldValue.helperOptions, this.options, FieldValue.ID);
     const toFilter = keys(FieldValue.options.helperOptions['subOptions']);
     const toKeep = filter(toFilter, optionKey => {
       const optionDefinition = FieldValue.options.helperOptions['subOptions'][optionKey];
@@ -375,16 +404,22 @@ export class FieldValue extends Component {
   }
 
   private bindEventOnValue(element: HTMLElement, originalFacetValue: string, renderedFacetValue: string) {
+    this.bindFacets(element, originalFacetValue, renderedFacetValue);
+    this.bindDynamicFacets(element, originalFacetValue, renderedFacetValue);
+  }
+
+  private bindFacets(element: HTMLElement, originalFacetValue: string, renderedFacetValue: string) {
     const facetAttributeName = QueryStateModel.getFacetId(this.options.facet);
     const facets = filter<Facet>(this.componentStateModel.get(facetAttributeName), (possibleFacetComponent: Component) => {
       // Here, we need to check if a potential facet component (as returned by the component state model) is a "standard" facet.
       // It's also possible that the FacetRange and FacetSlider constructor are not available (lazy loading mode)
       // For that reason we also need to check that the constructor event exist before calling the instanceof operator or an exception would explode (cannot use instanceof "undefined")
       let componentIsAStandardFacet = true;
+      const isDynamicFacet = possibleFacetComponent.type.indexOf('Dynamic') !== -1;
       const facetRangeConstructorExists = Component.getComponentRef('FacetRange');
       const facetSliderConstructorExists = Component.getComponentRef('FacetSlider');
 
-      if (possibleFacetComponent.disabled) {
+      if (possibleFacetComponent.disabled || isDynamicFacet) {
         return false;
       }
 
@@ -399,35 +434,68 @@ export class FieldValue extends Component {
       return componentIsAStandardFacet;
     });
 
-    const atLeastOneFacetIsEnabled = facets.length > 0;
-
-    if (atLeastOneFacetIsEnabled) {
-      const selected = find<Facet>(facets, (facet: Facet) => {
+    if (facets.length) {
+      const isValueSelected = !!find<Facet>(facets, facet => {
         const facetValue = facet.values.get(originalFacetValue);
         return facetValue && facetValue.selected;
       });
 
-      const label = selected ? l('RemoveFilterOn', renderedFacetValue) : l('FilterOn', renderedFacetValue);
-      new AccessibleButton()
-        .withTitle(label)
-        .withLabel(label)
-        .withElement(element)
-        .withSelectAction(() => this.handleSelection(selected, facets, originalFacetValue))
-        .build();
-
-      if (selected) {
-        $$(element).addClass('coveo-selected');
-      }
-      $$(element).addClass('coveo-clickable');
+      const selectAction = () => this.handleFacetSelection(isValueSelected, facets, originalFacetValue);
+      this.buildClickableElement(element, !!isValueSelected, renderedFacetValue, selectAction);
     }
   }
 
-  private handleSelection(selected: Facet, facets: Facet[], value: string) {
-    if (selected != null) {
-      each(facets, (facet: Facet) => facet.deselectValue(value));
-    } else {
-      each(facets, (facet: Facet) => facet.selectValue(value));
+  private getDynamicFacets() {
+    const dynamicFacetAttributeName = QueryStateModel.getFacetId(this.options.facet);
+    return filter<DynamicFacet>(
+      this.componentStateModel.get(dynamicFacetAttributeName),
+      (component: Component) => component.type === DynamicFacet.ID && !component.disabled
+    );
+  }
+
+  private bindDynamicFacets(element: HTMLElement, originalFacetValue: string, renderedFacetValue: string) {
+    const dynamicFacets = this.getDynamicFacets();
+
+    if (dynamicFacets.length) {
+      const isValueSelected = !!find<DynamicFacet>(dynamicFacets, dynamicFacet => dynamicFacet.values.hasSelectedValue(originalFacetValue));
+
+      const selectAction = () => this.handleDynamicFacetSelection(isValueSelected, dynamicFacets, originalFacetValue);
+      this.buildClickableElement(element, isValueSelected, renderedFacetValue, selectAction);
     }
+  }
+
+  private buildClickableElement(element: HTMLElement, isSelected: boolean, value: string, selectAction: () => void) {
+    const label = isSelected ? l('RemoveFilterOn', value) : l('FilterOn', value);
+    new AccessibleButton()
+      .withTitle(label)
+      .withLabel(label)
+      .withElement(element)
+      .withSelectAction(selectAction)
+      .build();
+
+    if (isSelected) {
+      $$(element).addClass('coveo-selected');
+    }
+    $$(element).addClass('coveo-clickable');
+  }
+
+  private handleFacetSelection(isValueSelected: boolean, facets: Facet[], value: string) {
+    facets.forEach(facet => {
+      isValueSelected ? facet.deselectValue(value) : facet.selectValue(value);
+    });
+
+    this.executeQuery(value);
+  }
+
+  private handleDynamicFacetSelection(isValueSelected: boolean, facets: DynamicFacet[], value: string) {
+    facets.forEach(facet => {
+      isValueSelected ? facet.deselectValue(value) : facet.selectValue(value);
+    });
+
+    this.executeQuery(value);
+  }
+
+  private executeQuery(value: string) {
     this.queryController.deferExecuteQuery({
       beforeExecuteQuery: () =>
         this.usageAnalytics.logSearchEvent<IAnalyticsFieldValueMeta>(analyticsActionCauseList.documentField, {

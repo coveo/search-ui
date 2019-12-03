@@ -17,6 +17,14 @@ export function CategoryFacetHeaderTest() {
       categoryFacetHeader.build();
     }
 
+    function eraserElement() {
+      return $$(categoryFacetHeader.element).find('.coveo-category-facet-header-eraser');
+    }
+
+    function titleElement() {
+      return $$(categoryFacetHeader.element).find('.coveo-category-facet-title');
+    }
+
     beforeEach(() => {
       simulateQueryData = buildCategoryFacetResults();
       test = Mock.advancedComponentSetup<CategoryFacet>(
@@ -36,15 +44,13 @@ export function CategoryFacetHeaderTest() {
     });
 
     it('should build a title', () => {
-      const titleElement = $$(categoryFacetHeader.element).find('.coveo-category-facet-title');
-      expect($$(titleElement).text()).toBe(baseOptions.title);
+      expect($$(titleElement()).text()).toBe(baseOptions.title);
     });
 
     it('the title should be accessible', () => {
-      const title = $$(categoryFacetHeader.element).find('.coveo-category-facet-title');
-      expect($$(title).getAttribute('role')).toBe('heading');
-      expect($$(title).getAttribute('aria-level')).toBe('2');
-      expect($$(title).getAttribute('aria-label')).toBeTruthy();
+      expect(titleElement().getAttribute('role')).toBe('heading');
+      expect(titleElement().getAttribute('aria-level')).toBe('2');
+      expect(titleElement().getAttribute('aria-label')).toBeTruthy();
     });
 
     describe('when the facet has one selected value', () => {
@@ -58,15 +64,19 @@ export function CategoryFacetHeaderTest() {
       });
 
       it('eraser bouton should be accessible', () => {
-        const eraserElement = $$(categoryFacetHeader.element).find('.coveo-category-facet-header-eraser');
-        expect(eraserElement.getAttribute('role')).toBe('button');
-        expect(eraserElement.getAttribute('aria-label')).toBeTruthy();
+        expect(eraserElement().getAttribute('role')).toBe('button');
+        expect(eraserElement().getAttribute('aria-label')).toBeTruthy();
       });
 
       it('when clicking the eraser, it should reset the value', () => {
-        const eraserElement = $$(categoryFacetHeader.element).find('.coveo-category-facet-header-eraser');
-        eraserElement.click();
+        eraserElement().click();
         expect(baseOptions.categoryFacet.activePath).toEqual([]);
+      });
+
+      it('when clicking the eraser, it should call "scrollToTop" on the facet', () => {
+        spyOn(baseOptions.categoryFacet, 'scrollToTop');
+        eraserElement().click();
+        expect(baseOptions.categoryFacet.scrollToTop).toHaveBeenCalled();
       });
     });
   });
