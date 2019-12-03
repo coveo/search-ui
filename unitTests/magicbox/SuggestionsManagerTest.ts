@@ -287,9 +287,10 @@ export function SuggestionsManagerTest() {
       }
 
       function mockInputManager() {
-        return {
-          input: $$('input').el as HTMLInputElement
-        } as InputManager;
+        return <InputManager>{
+          input: $$('input').el as HTMLInputElement,
+          blur: () => {}
+        };
       }
 
       let suggestionsManager: SuggestionsManager;
