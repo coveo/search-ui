@@ -237,13 +237,13 @@ export class ErrorReport extends Component {
     switch (data.error.name) {
       case 'NoEndpointsException':
         this.options.showDetailedError = false;
-        this.buildEndpointErrorElements('http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=257');
+        this.buildEndpointErrorElements('https://docs.coveo.com/en/1997/');
         this.setErrorTitle(l('NoEndpoints', this.organizationId), l('AddSources'));
         break;
 
       case 'InvalidTokenException':
         this.options.showDetailedError = false;
-        this.buildEndpointErrorElements('https://developers.coveo.com/x/XICE');
+        this.buildEndpointErrorElements('https://docs.coveo.com/en/56/');
         this.setErrorTitle(l('CannotAccess', this.organizationId), l('InvalidToken'));
         break;
 
@@ -305,7 +305,7 @@ export class ErrorReport extends Component {
     this.container.append(optionsElement.el);
   }
 
-  private buildEndpointErrorElements(helpLink: string = 'http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=254') {
+  private buildEndpointErrorElements(helpLink: string = 'https://docs.coveo.com/en/0/') {
     this.helpSuggestion.empty();
 
     const link = $$('a', {

@@ -39,7 +39,7 @@ export interface IPipelineContextOptions {}
  *
  * This component also ensures that the framework properly determines the context in all corner cases, including when a standalone search box ([initSearchbox]{@link initSearchbox}) is displaying query suggestions.
  *
- * In most cases, if you do not use this component, the context will not be resolved and leveraged properly in the query pipeline (see [What Is a Query Pipeline?](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=252)).
+ * In most cases, if you do not use this component, the context will not be resolved and leveraged properly in the query pipeline (see [What Is a Query Pipeline?](https://docs.coveo.com/en/1611/)).
  *
  */
 export class PipelineContext extends Component implements IPipelineContextProvider {

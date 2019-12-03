@@ -25,7 +25,7 @@ export interface IIconOptions {
  * from those available in the Coveo JavaScript Search Framework. If the component finds no suitable icon, it instead
  * outputs a generic icon.
  *
- * This component is a result template component (see [Result Templates](https://developers.coveo.com/x/aIGfAQ)).
+ * This component is a result template component (see [Result Templates](https://docs.coveo.com/en/413/)).
  */
 export class Icon extends Component {
   static ID = 'Icon';

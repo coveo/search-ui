@@ -75,7 +75,7 @@ export class DistanceResources extends Component {
      *
      * **Note:**
      * > The field you specify for this option must be an existing numerical field in your index (see
-     * > [Fields - Page](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=287). Otherwise, your query responses
+     * > [Fields - Page](https://docs.coveo.com/en/1833/). Otherwise, your query responses
      * > will contain a `QueryExceptionInvalidQueryFunctionField` or QueryExceptionInvalidQueryFunctionFieldType`
      * > exception, and the DistanceResources component will be unable to evaluate distances.
      *
@@ -90,7 +90,7 @@ export class DistanceResources extends Component {
      *
      * **Note:**
      * > The field you specify for this option must be an existing numerical field in your index (see
-     * > [Fields - Page](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=287). Otherwise, your query responses
+     * > [Fields - Page](https://docs.coveo.com/en/1833/). Otherwise, your query responses
      * > will contain a `QueryExceptionInvalidQueryFunctionField` or QueryExceptionInvalidQueryFunctionFieldType`
      * > exception, and the DistanceResources component will be unable to evaluate distances.
      *

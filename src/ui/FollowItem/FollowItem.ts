@@ -33,9 +33,9 @@ export interface IFollowItemOptions {
  * **Note:**
  * > A {@link SearchAlerts} component must be present in the page for this component to work. It is also necessary to
  * > meet certain requirements to be able to use this component (see
- * > [Deploying Search Alerts on a Coveo JS Search Page](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=248)).
+ * > [Deploying Search Alerts on a Coveo JS Search Page](https://docs.coveo.com/en/1932/)).
  *
- * This component is a result template component (see [Result Templates](https://developers.coveo.com/x/aIGfAQ)).
+ * This component is a result template component (see [Result Templates](https://docs.coveo.com/en/413/)).
  */
 export class FollowItem extends Component {
   static ID = 'FollowItem';

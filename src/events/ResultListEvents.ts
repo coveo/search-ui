@@ -50,7 +50,7 @@ export interface IChangeLayoutEventArgs {
  * The `ResultListEvents` static class contains the string definitions of all events that strongly relate to the result
  * list.
  *
- * See [Events](https://developers.coveo.com/x/bYGfAQ).
+ * See [Events](https://docs.coveo.com/en/417/).
  */
 export class ResultListEvents {
   /**
@@ -88,7 +88,7 @@ export class ResultListEvents {
 
   /**
    * Triggered by the [`ResultLayout`]{@link ResultLayout} component whenever the current result layout changes (see
-   * [Result Layouts](https://developers.coveo.com/x/yQUvAg)).
+   * [Result Layouts](https://docs.coveo.com/en/360/)).
    *
    * All `changeLayout` event handlers receive a [`ChangeLayoutEventArgs`]{@link IChangeLayoutEventArgs} object as an
    * argument.

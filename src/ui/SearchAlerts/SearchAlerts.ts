@@ -48,7 +48,7 @@ export interface ISearchAlertsOptions {
  *
  * **Note:**
  * > It is necessary to meet certain requirements to be able to use this component (see
- * > [Deploying Search Alerts on a Coveo JS Search Page](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=248)).
+ * > [Deploying Search Alerts on a Coveo JS Search Page](https://docs.coveo.com/en/1932/)).
  *
  * See also the {@link FollowItem} component.
  */

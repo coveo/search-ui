@@ -25,7 +25,7 @@ export interface IFieldTableOptions {
  * The FieldTable component displays a set of {@link FieldValue} components in a table that can optionally be
  * expandable and minimizable. This component automatically takes care of not displaying empty field values.
  *
- * This component is a result template component (see [Result Templates](https://developers.coveo.com/x/aIGfAQ)).
+ * This component is a result template component (see [Result Templates](https://docs.coveo.com/en/413/)).
  *
  * **Example:**
  *

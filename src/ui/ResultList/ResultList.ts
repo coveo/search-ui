@@ -51,11 +51,11 @@ CoreHelpers.exportAllHelpersGlobally(window['Coveo']);
 
 /**
  * The `ResultList` component is responsible for displaying query results by applying one or several result templates
- * (see [Result Templates](https://developers.coveo.com/x/aIGfAQ)).
+ * (see [Result Templates](https://docs.coveo.com/en/413/)).
  *
  * It is possible to include multiple `ResultList` components along with a single `ResultLayout`
  * component in a search page to provide different result layouts (see
- * [Result Layouts](https://developers.coveo.com/x/yQUvAg)).
+ * [Result Layouts](https://docs.coveo.com/en/360/)).
  *
  * This component supports infinite scrolling (see the
  * [`enableInfiniteScroll`]{@link ResultList.options.enableInfiniteScroll} option).
@@ -237,7 +237,7 @@ export class ResultList extends Component {
 
     /**
      * Specifies the layout to use when displaying results in this `ResultList` (see
-     * [Result Layouts](https://developers.coveo.com/x/yQUvAg)). Specifying a value for this option automatically
+     * [Result Layouts](https://docs.coveo.com/en/360/)). Specifying a value for this option automatically
      * populates a [`ResultLayout`]{@link ResultLayout} component with a switcher for the layout.
      *
      * For example, if there are two `ResultList` components in the page, one with its `layout` set to `list` and the

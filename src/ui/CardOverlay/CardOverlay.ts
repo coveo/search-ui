@@ -23,7 +23,7 @@ export interface ICardOverlayOptions {
  * possible to place a CardOverlay component anywhere in any result.
  *
  * The primary purpose of the CardOverlay component is to display additional information about a result in a format that
- * fits well within a card result layout (see [Result Layouts](https://developers.coveo.com/x/yQUvAg)).
+ * fits well within a card result layout (see [Result Layouts](https://docs.coveo.com/en/360/)).
  *
  * When initialized, this component creates a `<div class="coveo-card-overlay">` element as the last child of its parent
  * IQueryResult, and displays a button which toggles the visibility of the overlay.

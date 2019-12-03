@@ -56,9 +56,9 @@ export interface IFacetSliderOptions extends ISliderOptions, IResponsiveComponen
  * > [`getSteps`]{@link FacetSlider.options.getSteps} and [`valueCaption`]{@link FacetSlider.options.valueCaption})
  * > cannot be configured as `data-` attributes in the markup. If you wish to configure those options, you must either
  * > do so in the [`init`]{@link init} call of your search interface (see
- * > [Components - Passing Component Options in the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsintheinitCall)),
+ * > [Components - Passing Component Options in the init Call](https://docs.coveo.com/en/346/#passing-component-options-in-the-init-call)),
  * > or before the `init` call, using the `options` top-level function (see
- * > [Components - Passing Component Options Before the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsBeforetheinitCall)).
+ * > [Components - Passing Component Options Before the init Call](https://docs.coveo.com/en/346/#passing-component-options-before-the-init-call)).
  * @notSupportedIn salesforcefree
  */
 export class FacetSlider extends Component {
@@ -87,7 +87,7 @@ export class FacetSlider extends Component {
      * Specifies the index field whose values the `FacetSlider` should use.
      *
      * The field must be configured correctly as a Facet field in the index (see
-     * [Adding Fields to a Source](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=137)).
+     * [Adding Fields to a Source](https://docs.coveo.com/en/1947/)).
      *
      * Specifying a value for this option is required for the `FacetSlider` component to work.
      */
@@ -251,9 +251,9 @@ export class FacetSlider extends Component {
      * **Note:**
      * > You cannot set this option directly in the component markup as an HTML attribute. You must either set it in the
      * > [`init`]{@link init} call of your search interface (see
-     * > [Components - Passing Component Options in the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsintheinitCall)),
+     * > [Components - Passing Component Options in the init Call](https://docs.coveo.com/en/346/#passing-component-options-in-the-init-call)),
      * > or before the `init` call, using the `options` top-level function (see
-     * > [Components - Passing Component Options Before the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsBeforetheinitCall)).
+     * > [Components - Passing Component Options Before the init Call](https://docs.coveo.com/en/346/#passing-component-options-before-the-init-call)).
      *
      * **Example:**
      * ```javascript
@@ -292,9 +292,9 @@ export class FacetSlider extends Component {
      * **Note:**
      * > You cannot set this option directly in the component markup as an HTML attribute. You must either set it in the
      * > [`init`]{@link init} call of your search interface (see
-     * > [Components - Passing Component Options in the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsintheinitCall)),
+     * > [Components - Passing Component Options in the init Call](https://docs.coveo.com/en/346/#passing-component-options-in-the-init-call)),
      * > or before the `init` call, using the `options` top-level function (see
-     * > [Components - Passing Component Options Before the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsBeforetheinitCall)).
+     * > [Components - Passing Component Options Before the init Call](https://docs.coveo.com/en/346/#passing-component-options-before-the-init-call)).
      *
      * **Example:**
      * ```javascript
