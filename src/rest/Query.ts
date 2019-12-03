@@ -240,15 +240,15 @@ export interface IQuery {
   enableQuerySyntax?: boolean;
   enableDuplicateFiltering?: boolean;
   /**
-   * Whether the index should take collaborative rating in account when ranking result. See : {@link ResultRating}
+   * Whether the index should take collaborative rating in account when ranking result. See: {@link ResultRating}
    */
   enableCollaborativeRating?: boolean;
   /**
-   * Specifies the childField when doing parent-child loading (See : {@link Folding})
+   * Specifies the childField when doing parent-child loading (See: {@link Folding})
    */
   childField?: string;
   /**
-   * Specifies the parentField when doing parent-child loading (See : {@link Folding})
+   * Specifies the parentField when doing parent-child loading (See: {@link Folding})
    */
   parentField?: string;
   /**

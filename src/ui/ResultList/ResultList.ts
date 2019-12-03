@@ -536,7 +536,7 @@ export class ResultList extends Component {
       } else {
         this.logger.info(
           `Result list has triggered 5 consecutive queries to try and fill up the scrolling container, but it is still unable to do so.
-          Try explicitly setting the 'data-infinite-scroll-container-selector' option on the result list. See : https://coveo.github.io/search-ui/components/resultlist.html#options.infinitescrollcontainer`
+          Try explicitly setting the 'data-infinite-scroll-container-selector' option on the result list. See: https://coveo.github.io/search-ui/components/resultlist.html#options.infinitescrollcontainer`
         );
       }
     });

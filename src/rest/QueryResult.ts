@@ -112,7 +112,7 @@ export interface IQueryResult {
   isUserActionView?: boolean;
 
   /**
-   * Specifies whether the result is a Featured Result in the Coveo Query Pipeline (see [Managing Query Pipeline Featured Results](https://docs.coveo.com/en/1961/)).
+   * Specifies whether the result is a Featured Result in the Coveo Query Pipeline (see [Adding and Managing Query Pipeline Featured Results](https://docs.coveo.com/en/1961/)).
    */
   isTopResult: boolean;
   termsToHighlight?: IHighlightTerm;

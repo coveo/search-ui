@@ -30,7 +30,7 @@ export interface ITextOptions {
  *
  * The only purpose of this component is to make it possible to easily add different text values to result templates
  * when using the Coveo JavaScript Search Interface Editor (see
- * [JavaScript Search Interface Editor](https://docs.coveo.com/en/1852/)).
+ * [Interface Editor](https://docs.coveo.com/en/1852/)).
  *
  * If you are not designing a search interface using the Coveo JavaScript Search Interface Editor, using this component
  * is unnecessary.

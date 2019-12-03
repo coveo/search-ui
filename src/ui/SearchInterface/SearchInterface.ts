@@ -397,7 +397,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
      * Specifies the name of the query pipeline to use for the queries.
      *
      * You can specify a value for this option if your index is in a Coveo Cloud organization in which pipelines have
-     * been created (see [Managing Query Pipelines](https://docs.coveo.com/en/1791/)).
+     * been created (see [Adding and Managing Query Pipelines](https://docs.coveo.com/en/1791/)).
      *
      * **Note:**
      *
@@ -426,7 +426,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
      *
      * Default value is `undefined`, which means that the search interface lets the Coveo Search API determine the
      * maximum cache age. This is typically equivalent to 30 minutes (see
-     * [Query Parameters - maximumAge](https://docs.coveo.com/en/1461/#RestQueryParameters-maximumAge)).
+     * [maximumAge](https://docs.coveo.com/en/1461/#RestQueryParameters-maximumAge)).
      */
     maximumAge: ComponentOptions.buildNumberOption(),
     /**

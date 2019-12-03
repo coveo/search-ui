@@ -160,7 +160,7 @@ export class Facet extends Component {
      * Specifies the index field whose values the facet should use.
      *
      * This requires the given field to be configured correctly in the index as a *Facet field* (see
-     * [Adding Fields to a Source](https://docs.coveo.com/en/1947/)).
+     * [Add or Edit Fields](https://docs.coveo.com/en/1982/)).
      *
      * Specifying a value for this option is required for the `Facet` component to work.
      */
@@ -394,7 +394,7 @@ export class Facet extends Component {
      *
      * **Note:**
      * > If you are experiencing slow facet search and/or timeouts when this option is set to `true`, consider enabling the **Use cache for nested queries**
-     * > option on your facet [field]{@link Facet.options.field} in the Coveo Cloud Admninistration Console (see [Add/Edit a Field]{@link https://docs.coveo.com/en/1982/}).
+     * > option on your facet [field]{@link Facet.options.field} in the Coveo Cloud Admninistration Console (see [Add or Edit Fields]{@link https://docs.coveo.com/en/1982/}).
      */
     useWildcardsInFacetSearch: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'FacetSearch' }),
     /**

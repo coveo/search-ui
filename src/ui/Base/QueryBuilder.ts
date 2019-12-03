@@ -218,11 +218,11 @@ export class QueryBuilder {
    */
   public filterFieldRange: number;
   /**
-   * Specifies the `parentField` when doing parent-child loading (See : {@link Folding}).
+   * Specifies the `parentField` when doing parent-child loading (See: {@link Folding}).
    */
   public parentField: string;
   /**
-   * Specifies the childField when doing parent-child loading (See : {@link Folding}).
+   * Specifies the childField when doing parent-child loading (See: {@link Folding}).
    */
   public childField: string;
   public fieldsToInclude: string[];
@@ -246,7 +246,7 @@ export class QueryBuilder {
    *
    * > The Coveo Cloud V2 platform does not support collaborative rating. Therefore, this property is obsolete in Coveo Cloud V2.
    *
-   * Whether the index should take collaborative rating in account when ranking result (see : {@link ResultRating}).
+   * Whether the index should take collaborative rating in account when ranking result (See: {@link ResultRating}).
    */
   public enableCollaborativeRating: boolean;
   /**

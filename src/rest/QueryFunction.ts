@@ -1,6 +1,6 @@
 /**
  * Describe a query function that can be executed against the index<br/>
- * See : https://docs.coveo.com/en/1451/
+ * See: [Query Functions](https://docs.coveo.com/en/1451/)
  */
 export interface IQueryFunction {
   /**

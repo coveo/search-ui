@@ -237,7 +237,7 @@ export class ErrorReport extends Component {
     switch (data.error.name) {
       case 'NoEndpointsException':
         this.options.showDetailedError = false;
-        this.buildEndpointErrorElements('https://docs.coveo.com/en/1997/');
+        this.buildEndpointErrorElements('https://docs.coveo.com/en/331/');
         this.setErrorTitle(l('NoEndpoints', this.organizationId), l('AddSources'));
         break;
 
@@ -311,7 +311,7 @@ export class ErrorReport extends Component {
     this.container.append(optionsElement.el);
   }
 
-  private buildEndpointErrorElements(helpLink: string = 'https://docs.coveo.com/en/0/') {
+  private buildEndpointErrorElements(helpLink: string = 'https://docs.coveo.com/en/331/') {
     this.helpSuggestion.empty();
 
     const link = $$('a', {

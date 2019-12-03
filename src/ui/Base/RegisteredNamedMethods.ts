@@ -266,7 +266,7 @@ Initialization.registerNamedMethod('logCustomEvent', (element: HTMLElement, cust
  * A `Search` event is actually sent to the Coveo Usage Analytics service only after the query successfully returns (not
  * immediately after calling this method). Therefore, it is important to call this method **before** executing the
  * query. Otherwise, the `Search` event will not be logged, and you will get a warning message in the console. See
- * [Sending Custom Analytics Events](https://docs.coveo.com/en/365/).
+ * [Logging Your Own Search Events](https://docs.coveo.com/en/2726/#logging-your-own-search-events).
  *
  * @param element The root of the search interface which contains the [`Analytics`]{@link Analytics} component.
  * @param searchEventCause The cause of the event.
@@ -302,7 +302,7 @@ Initialization.registerNamedMethod(
  *
  * It is important to call this method **before** executing the query. Otherwise, no `SearchAsYouType` event will be
  * logged, and you will get a warning message in the console. See
- * [Sending Custom Analytics Events](https://docs.coveo.com/en/365/).
+ * [Logging Your Own Search Events](https://docs.coveo.com/en/2726/#logging-your-own-search-events).
  *
  * @param element The root of the search interface which contains the [`Analytics`]{@link Analytics} component.
  * @param searchAsYouTypeEventCause The cause of the event.

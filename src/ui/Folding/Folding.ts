@@ -85,7 +85,7 @@ export class Folding extends Component {
      *
      * **Note:**
      * > In an Elasticsearch index, the corresponding field must be configured as a *Facet* field
-     * > (see [Add/Edit a Field: [FieldName] - Panel ](https://docs.coveo.com/en/1982/)).
+     * > (see [Add or Edit Fields](https://docs.coveo.com/en/1982/)).
      * > This limitation does not apply to Coveo indexes.
      *
      * Default value is `@foldingcollection`.
@@ -144,7 +144,7 @@ export class Folding extends Component {
 
     /**
      * Specifies the sort criteria to apply to the top result and its child results (e.g., `date ascending`,
-     * `@myfield descending`, etc.). See [Query Parameters - sortCriteria](https://docs.coveo.com/en/1461/#RestQueryParameters-sortCriteria).
+     * `@myfield descending`, etc.). See [sortCriteria](https://docs.coveo.com/en/1461/#RestQueryParameters-sortCriteria).
      *
      * This option works from the results returned by the index. This means that if only the three most relevant folded results are returned by the index
      * and you choose to rearrange the folded results by date, then the three most relevant results will be rearranged by date,

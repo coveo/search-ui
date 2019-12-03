@@ -1,6 +1,6 @@
 /**
  * Describe a computed field request<br/>
- * See : https://docs.coveo.com/en/1467/
+ * See: [Computed Fields](https://docs.coveo.com/en/1467/)
  */
 export interface IComputedFieldRequest {
   /**
