@@ -286,10 +286,11 @@ export function SuggestionsManagerTest() {
         return (magicBoxContainer = $$('div'));
       }
 
+      let blurSpy: jasmine.Spy;
       function mockInputManager() {
         return <InputManager>{
           input: $$('input').el as HTMLInputElement,
-          blur: () => {}
+          blur: (blurSpy = jasmine.createSpy('blur')) as () => void
         };
       }
 
@@ -654,6 +655,8 @@ export function SuggestionsManagerTest() {
                       `Unexpected preview at suggestion #${suggestionId} preview #${previewId}.`
                     );
                     expect(preview.onSelect).toHaveBeenCalled();
+                    expect(blurSpy).toHaveBeenCalled();
+                    blurSpy.calls.reset();
                     (preview.onSelect as jasmine.Spy).calls.reset();
                   });
                   previews.forEach(() => suggestionsManager.moveLeft());
