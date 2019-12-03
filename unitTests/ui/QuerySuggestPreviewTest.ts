@@ -4,7 +4,12 @@ import { QuerySuggestPreview, IQuerySuggestPreview } from '../../src/ui/QuerySug
 import { IOmniboxAnalytics } from '../../src/ui/Omnibox/OmniboxAnalytics';
 import { $$, HtmlTemplate, Component } from '../../src/Core';
 import { FakeResults } from '../Fake';
-import { IAnalyticsOmniboxSuggestionMeta, analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
+import {
+  IAnalyticsOmniboxSuggestionMeta,
+  analyticsActionCauseList,
+  IAnalyticsActionCause,
+  IAnalyticsClickQuerySuggestPreviewMeta
+} from '../../src/ui/Analytics/AnalyticsActionListMeta';
 import { IQueryResults } from '../../src/rest/QueryResults';
 import { last } from 'underscore';
 import { IPopulateSearchResultPreviewsEventArgs, ResultPreviewsManagerEvents } from '../../src/events/ResultPreviewsManagerEvents';
@@ -103,6 +108,32 @@ export function QuerySuggestPreviewTest() {
       for (let optionName of Object.keys(optionsToTest)) {
         expect(lastSearchQuery[optionName]).toEqual(optionsToTest[optionName]);
       }
+      done();
+    });
+
+    it('on select, logs analytics', async done => {
+      setupQuerySuggestPreview();
+      const suggestionText = 'abcdef';
+      const previews = await triggerPopulateSearchResultPreviewsAndPassTime(suggestionText);
+      previews[0].onSelect();
+      const spy = test.cmp.usageAnalytics.logCustomEvent as jasmine.Spy;
+      const [actionCause, meta, element] = <[
+        IAnalyticsActionCause,
+        IAnalyticsClickQuerySuggestPreviewMeta,
+        HTMLElement
+      ]>spy.calls.mostRecent().args;
+      expect(actionCause).toEqual(analyticsActionCauseList.clickQuerySuggestPreview);
+      expect(meta.suggestion).toEqual(suggestionText);
+      expect(element).toEqual(previews[0].element);
+      done();
+    });
+
+    it('on select, only logs analytics once', async done => {
+      setupQuerySuggestPreview();
+      const previews = await triggerPopulateSearchResultPreviewsAndPassTime();
+      previews[0].onSelect();
+      const spy = test.cmp.usageAnalytics.logCustomEvent as jasmine.Spy;
+      expect(spy).toHaveBeenCalledTimes(1);
       done();
     });
 
