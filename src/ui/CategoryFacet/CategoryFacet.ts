@@ -36,6 +36,7 @@ import { CategoryFacetValues } from './CategoryFacetValues/CategoryFacetValues';
 import { IFacetResponse } from '../../rest/Facet/FacetResponse';
 import { IQueryOptions } from '../../controllers/QueryController';
 import { IQueryResults } from '../../rest/QueryResults';
+import { CategoryFacetValue } from './CategoryFacetValues/CategoryFacetValue';
 
 export interface ICategoryFacetOptions extends IResponsiveComponentOptions {
   id?: string;
@@ -307,7 +308,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     valueCaption: ComponentOptions.buildJsonOption<IStringMap<string>>({ defaultValue: {} }),
 
     /**
-     * The [id](@link Facet.options.id) of another facet in which at least one value must be selected in order
+     * The `id` option value of another facet in which at least one value must be selected in order
      * for the dependent category facet to be visible.
      *
      * **Default:** `undefined` and the category facet does not depend on any other facet to be displayed.
@@ -431,14 +432,11 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   }
 
   private updateAppearance() {
-    if (this.disabled || this.isCategoryEmpty) {
-      return this.hide();
-    }
-
     this.header.toggleCollapse(this.isCollapsed);
     $$(this.element).toggleClass('coveo-dynamic-category-facet-collapsed', this.isCollapsed);
     this.show();
     this.dependsOnManager.updateVisibilityBasedOnDependsOn();
+    this.isCategoryEmpty && this.hide();
   }
 
   private handleQuerySuccess(results: IQueryResults) {
@@ -470,6 +468,8 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
 
   /**
    * Changes the active path.
+   * 
+   * @param path The values representing the path.
    */
   public changeActivePath(path: string[]) {
     this.listenToQueryStateChange = false;
@@ -509,10 +509,27 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   /**
    * Returns all the visible parent values.
    * @returns simple object with three fields: `value`, `count` and `path`.
+   * @deprecated
    */
-  public getVisibleParentValues(): CategoryValueDescriptor[] {
-    // TODO: reimplement
-    return [];
+  public getVisibleParentValues() {
+    return this.mapCategoryValuesToCategoryValueDescriptor(this.values.visibleParentValues);
+  }
+
+  /**
+  * Returns the values at the bottom of the hierarchy. These are the values that are not yet applied to the query.
+  * @returns simple object with three fields: `value`, `count` and `path`.
+  * @deprecated
+  */
+  public getAvailableValues() {
+    return this.mapCategoryValuesToCategoryValueDescriptor(this.values.availableValues);
+  }
+
+  private mapCategoryValuesToCategoryValueDescriptor(values: CategoryFacetValue[]): CategoryValueDescriptor[] {
+    return values.map(facetValue => ({
+      value: facetValue.value,
+      count: facetValue.numberOfResults,
+      path: facetValue.path
+    }));
   }
 
   /**
@@ -545,30 +562,47 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   }
 
   /**
-   * Returns the values at the bottom of the hierarchy. These are the values that are not yet applied to the query.
-   * @returns simple object with three fields: `value`, `count` and `path`.
-   */
-  public getAvailableValues() {
-    // TODO: reimplement
-    return [];
-  }
-
-  /**
    * Selects a value from the currently available values.
+   * 
+   * Does **not** trigger a query automatically.
+   * Does **not** update the visual of the facet until a query is performed.
+   * 
+   * @param value The value to select.
+   * 
+   * @deprecated
    */
   public selectValue(value: string) {
-    // TODO: reimplement
+    this.selectPath([...this.values.selectedPath, value]);
   }
 
   /**
    * Deselects the last value in the hierarchy that is applied to the query. When at the top of the hierarchy, this method does nothing.
+   
+   * Does **not** trigger a query automatically.
+   * Does **not** update the visual of the facet until a query is performed.
+   * 
+   * @deprecated
    */
   public deselectCurrentValue() {
-    // TODO: reimplement
+    if (!this.values.hasSelectedValue) {
+      return this.logger.warn('No current value to deselect');
+    }
+
+    const pathToSelect = this.values.selectedPath.slice(0, -1);
+    pathToSelect.length  ? this.selectPath(pathToSelect) : this.clear();
   }
 
+  /**
+   * Select a path in the hierarchy.
+   * 
+   * Does **not** trigger a query automatically.
+   * Does **not** update the visual of the facet until a query is performed.
+   * 
+   * @param path The values representing the path.
+   */
   public selectPath(path: string[]) {
     Assert.exists(path);
+    Assert.isLargerThan(0, path.length);
     this.ensureDom();
     this.changeActivePath(path);
     this.values.selectPath(path);
@@ -581,12 +615,18 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
    * Automatically triggers a query.
    */
   public reset() {
+    this.ensureDom();
     this.clear();
     this.scrollToTop();
     this.triggerNewQuery(() => this.logAnalyticsEvent(analyticsActionCauseList.categoryFacetClear));
   }
 
   public clear() {
+    if (!this.values.hasSelectedValue) {
+      return;
+    }
+
+    this.logger.info('Clear facet');
     this.values.clear();
     this.changeActivePath([]);
   }
@@ -745,11 +785,12 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   }
 
   private dependsOnReset() {
-    // TODO: reimplement
+    this.clear();
+    this.updateAppearance();
   }
 
   private toggleDependentFacet(dependentFacet: Component) {
-    this.activePath.length ? dependentFacet.enable() : dependentFacet.disable();
+    this.values.hasSelectedValue ? dependentFacet.enable() : dependentFacet.disable();
   }
 
   private notImplementedError() {

@@ -427,12 +427,11 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
    */
   public reset() {
     this.ensureDom();
-    if (!this.values.hasActiveValues) {
-      return;
+    if (this.values.hasActiveValues) {
+      this.logger.info('Deselect all values');
+      this.values.clearAll();
+      this.values.render();
     }
-    this.logger.info('Deselect all values');
-    this.values.clearAll();
-    this.values.render();
     this.updateAppearance();
     this.updateQueryStateModel();
   }

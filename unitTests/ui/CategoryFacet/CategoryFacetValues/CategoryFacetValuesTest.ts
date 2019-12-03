@@ -120,6 +120,18 @@ export function CategoryFacetValuesTest() {
         it('should have the right number of children', () => {
           expect(facet.values.allFacetValues[0].children.length).toBe(responseValue.children.length);
         });
+
+        it('should have the right selectedPath', () => {
+          expect(facet.values.selectedPath).toEqual(facet.values.allFacetValues[0].path);
+        });
+
+        it('should have the right visibleParentValues', () => {
+          expect(facet.values.visibleParentValues).toEqual([facet.values.allFacetValues[0]]);
+        });
+
+        it('should have the right availableValues', () => {
+          expect(facet.values.availableValues).toEqual(facet.values.allFacetValues[0].children);
+        });
       });
     });
 
@@ -128,6 +140,7 @@ export function CategoryFacetValuesTest() {
       facet.values.clear();
 
       expect(facet.values.allFacetValues.length).toBe(0);
+      expect(facet.values.selectedPath).toEqual([]);
     });
 
     describe('testing render', () => {
@@ -209,6 +222,18 @@ export function CategoryFacetValuesTest() {
           it('should remove all the others values at first level', () => {
             expect(facet.values.allFacetValues.length).toBe(1);
           });
+
+          it('should have the right selectedPath', () => {
+            expect(facet.values.selectedPath).toEqual([testFacetValue.value]);
+          });
+  
+          it('should have the right visibleParentValues', () => {
+            expect(facet.values.visibleParentValues).toEqual([testFacetValue]);
+          });
+  
+          it('should have the right availableValues', () => {
+            expect(facet.values.availableValues).toEqual(testFacetValue.children);
+          });
         });
 
         describe('when path does not exist', () => {
@@ -227,6 +252,18 @@ export function CategoryFacetValuesTest() {
 
           it('should remove all the others values at first level', () => {
             expect(facet.values.allFacetValues.length).toBe(1);
+          });
+
+          it('should have the right selectedPath', () => {
+            expect(facet.values.selectedPath).toEqual([newValue]);
+          });
+  
+          it('should have the right visibleParentValues', () => {
+            expect(facet.values.visibleParentValues).toEqual([testFacetValue]);
+          });
+  
+          it('should have the right availableValues', () => {
+            expect(facet.values.availableValues).toEqual(testFacetValue.children);
           });
         });
       });
@@ -265,6 +302,18 @@ export function CategoryFacetValuesTest() {
             expect(facet.values.allFacetValues[0].children).toEqual([secondLevelFacetValue]);
             expect(facet.values.allFacetValues[0].children[0].children).toEqual([thirdLevelFacetValue]);
           });
+
+          it('should have the right selectedPath', () => {
+            expect(facet.values.selectedPath).toEqual(thirdLevelFacetValue.path);
+          });
+  
+          it('should have the right visibleParentValues', () => {
+            expect(facet.values.visibleParentValues).toEqual([firstLevelFacetValue, secondLevelFacetValue, thirdLevelFacetValue]);
+          });
+  
+          it('should have the right availableValues', () => {
+            expect(facet.values.availableValues).toEqual(thirdLevelFacetValue.children);
+          });
         });
 
         describe('when path only partially exist', () => {
@@ -296,6 +345,18 @@ export function CategoryFacetValuesTest() {
             expect(facet.values.allFacetValues).toEqual([firstLevelFacetValue]);
             expect(facet.values.allFacetValues[0].children).toEqual([secondLevelFacetValue]);
             expect(facet.values.allFacetValues[0].children[0].children).toEqual([thirdLevelFacetValue]);
+          });
+
+          it('should have the right selectedPath', () => {
+            expect(facet.values.selectedPath).toEqual(thirdLevelFacetValue.path);
+          });
+  
+          it('should have the right visibleParentValues', () => {
+            expect(facet.values.visibleParentValues).toEqual([firstLevelFacetValue, secondLevelFacetValue, thirdLevelFacetValue]);
+          });
+  
+          it('should have the right availableValues', () => {
+            expect(facet.values.availableValues).toEqual(thirdLevelFacetValue.children);
           });
         });
 
@@ -336,6 +397,18 @@ export function CategoryFacetValuesTest() {
             expect(facet.values.allFacetValues).toEqual([firstLevelFacetValue]);
             expect(facet.values.allFacetValues[0].children).toEqual([secondLevelFacetValue]);
             expect(facet.values.allFacetValues[0].children[0].children).toEqual([thirdLevelFacetValue]);
+          });
+
+          it('should have the right selectedPath', () => {
+            expect(facet.values.selectedPath).toEqual(thirdLevelFacetValue.path);
+          });
+  
+          it('should have the right visibleParentValues', () => {
+            expect(facet.values.visibleParentValues).toEqual([firstLevelFacetValue, secondLevelFacetValue, thirdLevelFacetValue]);
+          });
+  
+          it('should have the right availableValues', () => {
+            expect(facet.values.availableValues).toEqual(thirdLevelFacetValue.children);
           });
         });
       });

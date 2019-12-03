@@ -14,7 +14,7 @@ export function CategoryFacetTest() {
   describe('CategoryFacet', () => {
     let test: Mock.IBasicComponentSetup<CategoryFacet>;
     let options: ICategoryFacetOptions;
-    let mockFacetValues: IFacetResponseValue[]
+    let mockFacetValues: IFacetResponseValue[];
 
     beforeEach(() => {
       options = { field: '@dummy' };
@@ -25,9 +25,11 @@ export function CategoryFacetTest() {
       test = CategoryFacetTestUtils.createAdvancedFakeFacet(options);
       mockFacetValues = CategoryFacetTestUtils.createFakeFacetResponseValues(3, 5);
 
-      test.cmp.values.createFromResponse(CategoryFacetTestUtils.getCompleteFacetResponse(test.cmp, {
-        values: mockFacetValues
-      }));
+      test.cmp.values.createFromResponse(
+        CategoryFacetTestUtils.getCompleteFacetResponse(test.cmp, {
+          values: mockFacetValues
+        })
+      );
 
       spyOn(test.cmp, 'selectPath').and.callThrough();
       spyOn(test.cmp, 'scrollToTop').and.callThrough();
@@ -61,9 +63,11 @@ export function CategoryFacetTest() {
 
     function fakeResultsWithFacets() {
       const fakeResultsWithFacets = FakeResults.createFakeResults();
-      fakeResultsWithFacets.facets = [CategoryFacetTestUtils.getCompleteFacetResponse(test.cmp, {
-        values: mockFacetValues
-      })];
+      fakeResultsWithFacets.facets = [
+        CategoryFacetTestUtils.getCompleteFacetResponse(test.cmp, {
+          values: mockFacetValues
+        })
+      ];
       return fakeResultsWithFacets;
     }
 
@@ -133,7 +137,7 @@ export function CategoryFacetTest() {
     should update the QueryStateModel correctly`, () => {
       mockFacetValues[0].children = [];
       mockFacetValues[0].state = FacetValueState.selected;
-      const results = fakeResultsWithFacets()
+      const results = fakeResultsWithFacets();
       Simulate.query(test.env, { results });
 
       testQueryStateModelValues([results.facets[0].values[0].value]);
@@ -245,7 +249,7 @@ export function CategoryFacetTest() {
 
     it('allows to trigger a new isolated query', () => {
       spyOn(test.cmp.categoryFacetQueryController, 'getQueryResults');
-      const beforeExecuteQuery = jasmine.createSpy('beforeExecuteQuery', () => { });
+      const beforeExecuteQuery = jasmine.createSpy('beforeExecuteQuery', () => {});
       test.cmp.ensureDom();
       test.cmp.triggerNewIsolatedQuery(beforeExecuteQuery);
 
@@ -339,6 +343,7 @@ export function CategoryFacetTest() {
 
     describe('when calling clear', () => {
       beforeEach(() => {
+        test.cmp.values.selectPath(['hey']);
         test.cmp.clear();
       });
 
@@ -370,8 +375,45 @@ export function CategoryFacetTest() {
       });
     });
 
+    describe('when calling selectValue', () => {
+      it(`when no path is selected
+      should call selectPath with the correct path`, () => {
+        test.cmp.selectValue('hello');
+        expect(test.cmp.selectPath).toHaveBeenCalledWith(['hello']);
+      });
+
+      it(`when a path is selected
+      should call selectPath with the correct path`, () => {
+        test.cmp.values.selectPath(['hello', 'there']);
+        test.cmp.selectValue('friend');
+        expect(test.cmp.selectPath).toHaveBeenCalledWith(['hello', 'there', 'friend']);
+      });
+    });
+
+    describe('when calling deselectCurrentValue', () => {
+      it(`when no value is selected
+        should warn the user`, () => {
+        test.cmp.deselectCurrentValue();
+        expect(test.cmp.logger.warn).toHaveBeenCalled();
+      });
+
+      it(`when a path with a single value is selected
+        should call clear`, () => {
+        test.cmp.values.selectPath(['hello']);
+        test.cmp.deselectCurrentValue();
+        expect(test.cmp.clear).toHaveBeenCalledTimes(1);
+      });
+
+      it(`when a path with multiple values is selected
+        should call selectPath with the correct path`, () => {
+        test.cmp.values.selectPath(['hello', 'there', 'friend']);
+        test.cmp.deselectCurrentValue();
+        expect(test.cmp.selectPath).toHaveBeenCalledWith(['hello', 'there']);
+      });
+    });
+
     it('getCaption should return the caption for a value', () => {
-      options.valueCaption = { 'test': 'this is a test' };
+      options.valueCaption = { test: 'this is a test' };
       initializeComponent();
       expect(test.cmp.getCaption('test')).toBe('this is a test');
     });
@@ -409,13 +451,22 @@ export function CategoryFacetTest() {
       });
     });
 
-    // TODO: test the DependsOnManager
-    describe('testing the DependsOnManager', () => { });
+    describe('testing the DependsOnManager', () => {
+      beforeEach(() => {
+        spyOn(test.cmp.dependsOnManager, 'updateVisibilityBasedOnDependsOn');
+      });
+
+      it('should initialize the dependsOnManager', () => {
+        expect(test.cmp.dependsOnManager).toBeTruthy();
+      });
+
+      it(`when facet appearance is updated (e.g. after a successful query)
+      should call the "updateVisibilityBasedOnDependsOn" method of the DependsOnManager`, () => {
+        Simulate.query(test.env, { results: fakeResultsWithFacets() });
+        expect(test.cmp.dependsOnManager.updateVisibilityBasedOnDependsOn).toHaveBeenCalled();
+      });
+    });
 
     // TODO: JSUI-2709 test logAnalyticsEvent
-    // TODO: test getVisibleParentValues
-    // TODO: test getAvailableValues
-    // TODO: test selectValue
-    // TODO: test deselectCurrentValue
   });
 }
