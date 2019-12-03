@@ -7,7 +7,6 @@ import { FakeResults } from '../Fake';
 import {
   IAnalyticsOmniboxSuggestionMeta,
   analyticsActionCauseList,
-  IAnalyticsActionCause,
   IAnalyticsClickQuerySuggestPreviewMeta
 } from '../../src/ui/Analytics/AnalyticsActionListMeta';
 import { IQueryResults } from '../../src/rest/QueryResults';
@@ -111,29 +110,24 @@ export function QuerySuggestPreviewTest() {
       done();
     });
 
-    it('on select, logs analytics', async done => {
+    it('on select, logs analytics once', async done => {
       setupQuerySuggestPreview();
       const suggestionText = 'abcdef';
       const previews = await triggerPopulateSearchResultPreviewsAndPassTime(suggestionText);
-      previews[0].onSelect();
-      const spy = test.cmp.usageAnalytics.logCustomEvent as jasmine.Spy;
-      const [actionCause, meta, element] = <[
-        IAnalyticsActionCause,
-        IAnalyticsClickQuerySuggestPreviewMeta,
-        HTMLElement
-      ]>spy.calls.mostRecent().args;
-      expect(actionCause).toEqual(analyticsActionCauseList.clickQuerySuggestPreview);
-      expect(meta.suggestion).toEqual(suggestionText);
-      expect(element).toEqual(previews[0].element);
-      done();
-    });
 
-    it('on select, only logs analytics once', async done => {
-      setupQuerySuggestPreview();
-      const previews = await triggerPopulateSearchResultPreviewsAndPassTime();
-      previews[0].onSelect();
+      const previewIndexToSelect = 0;
+      previews[previewIndexToSelect].onSelect();
+
       const spy = test.cmp.usageAnalytics.logCustomEvent as jasmine.Spy;
       expect(spy).toHaveBeenCalledTimes(1);
+      expect(spy).toHaveBeenCalledWith(
+        analyticsActionCauseList.clickQuerySuggestPreview,
+        <IAnalyticsClickQuerySuggestPreviewMeta>{
+          suggestion: suggestionText,
+          displayedRank: previewIndexToSelect
+        },
+        previews[previewIndexToSelect].element
+      );
       done();
     });
 
