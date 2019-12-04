@@ -287,19 +287,26 @@ export function SuggestionsManagerTest() {
       }
 
       function mockInputManager() {
-        return {
-          input: $$('input').el as HTMLInputElement
-        } as InputManager;
+        return <InputManager>{
+          input: $$('input').el as HTMLInputElement,
+          blur: jasmine.createSpy('blur') as () => void
+        };
       }
 
       let suggestionsManager: SuggestionsManager;
+      let inputManager: InputManager;
       const timeout = 10;
       beforeEach(() => {
-        suggestionsManager = new SuggestionsManager(buildEnvironment().root, buildMagicBoxContainer().el, mockInputManager(), {
-          selectedClass,
-          suggestionClass,
-          timeout
-        });
+        suggestionsManager = new SuggestionsManager(
+          buildEnvironment().root,
+          buildMagicBoxContainer().el,
+          (inputManager = mockInputManager()),
+          {
+            selectedClass,
+            suggestionClass,
+            timeout
+          }
+        );
       });
 
       describe('calling mergeSuggestions', () => {
@@ -644,6 +651,7 @@ export function SuggestionsManagerTest() {
               });
 
               it('can select every preview of every suggestion', async done => {
+                let blurCount = 0;
                 await forEachAsync(previewsBySuggestion, async (previews, suggestionId) => {
                   await moveDownToSuggestionAndWait(suggestionId);
                   previews.forEach((preview, previewId) => {
@@ -652,8 +660,9 @@ export function SuggestionsManagerTest() {
                       textPreviews[suggestionId][previewId],
                       `Unexpected preview at suggestion #${suggestionId} preview #${previewId}.`
                     );
-                    expect(preview.onSelect).toHaveBeenCalled();
-                    (preview.onSelect as jasmine.Spy).calls.reset();
+                    expect(preview.onSelect).toHaveBeenCalledTimes(1);
+                    blurCount += 1;
+                    expect(inputManager.blur).toHaveBeenCalledTimes(blurCount);
                   });
                   previews.forEach(() => suggestionsManager.moveLeft());
                 });
