@@ -203,8 +203,8 @@ export class ResultPreviewsManager {
     return this.previewsProcessor.processQueries(populateEventArgs.previewsQueries);
   }
 
-  private updateSearchResultPreviewsHeader(text: string) {
-    this.resultPreviewsHeader.text(text);
+  private updateSearchResultPreviewsHeader(suggestion: string) {
+    this.resultPreviewsHeader.text(`${this.options.previewHeaderText} "${suggestion}"`);
   }
 
   private appendSearchResultPreview(preview: ISearchResultPreview) {
@@ -227,6 +227,6 @@ export class ResultPreviewsManager {
       return;
     }
     this.appendSearchResultPreviews(previews);
-    this.updateSearchResultPreviewsHeader(`${this.options.previewHeaderText} "${suggestion.innerText}"`);
+    this.updateSearchResultPreviewsHeader(suggestion.innerText);
   }
 }
