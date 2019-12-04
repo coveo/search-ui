@@ -672,9 +672,6 @@ AriaLiveTest();
 import { QuerySummaryUtilsTest } from './utils/QuerySummaryUtilsTest';
 QuerySummaryUtilsTest();
 
-import { CategoryFacetQueryControllerTest } from './controllers/CategoryFacetQueryControllerTest';
-CategoryFacetQueryControllerTest();
-
 import { DynamicCategoryFacetQueryControllerTest } from './controllers/DynamicCategoryFacetQueryControllerTest';
 DynamicCategoryFacetQueryControllerTest();
 

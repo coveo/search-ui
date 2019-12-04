@@ -4,22 +4,15 @@
 $top-level-space: 20px;
 $second-level-space: 35px;
 
-// TODO: remove when old values are removed
-.coveo-category-facet-values,
-.coveo-category-facet-search-container,
-.coveo-category-facet-more-less-container {
-  display: none;
-}
-
 .coveo-dynamic-category-facet-values {
   @include facetValues;
 
-  &.coveo-with-space  {
+  &.coveo-with-space {
     .coveo-dynamic-category-facet-value,
     .coveo-dynamic-category-facet-show-less,
     .coveo-dynamic-category-facet-show-more {
       padding-left: $top-level-space;
-  
+
       &.coveo-with-space {
         padding-left: $top-level-space + $second-level-space;
       }
