@@ -1,8 +1,11 @@
-import { ICategoryFacetValue } from './CategoryFacetValue';
+export interface ICategoryFacetResultValue {
+  value: string;
+  numberOfResults: number;
+}
 
 export interface ICategoryFacetResult {
   notImplemented?: boolean;
   field: string;
-  values: ICategoryFacetValue[];
-  parentValues: ICategoryFacetValue[];
+  values: ICategoryFacetResultValue[];
+  parentValues: ICategoryFacetResultValue[];
 }
