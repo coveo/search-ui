@@ -204,9 +204,7 @@ export class ResultPreviewsManager {
   }
 
   private updateSearchResultPreviewsHeader(suggestion: string) {
-    this.resultPreviewsHeader.setHtml(
-      this.options.previewHeaderText + ' "' + $$('span', { className: 'coveo-omnibox-hightlight' }, suggestion).el.outerHTML + '"'
-    );
+    this.resultPreviewsHeader.text(`${this.options.previewHeaderText} "${suggestion}"`);
   }
 
   private appendSearchResultPreview(preview: ISearchResultPreview) {
