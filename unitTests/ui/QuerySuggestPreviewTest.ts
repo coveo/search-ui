@@ -4,7 +4,11 @@ import { QuerySuggestPreview, IQuerySuggestPreview } from '../../src/ui/QuerySug
 import { IOmniboxAnalytics } from '../../src/ui/Omnibox/OmniboxAnalytics';
 import { $$, HtmlTemplate, Component } from '../../src/Core';
 import { FakeResults } from '../Fake';
-import { IAnalyticsOmniboxSuggestionMeta, analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
+import {
+  IAnalyticsOmniboxSuggestionMeta,
+  analyticsActionCauseList,
+  IAnalyticsClickQuerySuggestPreviewMeta
+} from '../../src/ui/Analytics/AnalyticsActionListMeta';
 import { IQueryResults } from '../../src/rest/QueryResults';
 import { last } from 'underscore';
 import { IPopulateSearchResultPreviewsEventArgs, ResultPreviewsManagerEvents } from '../../src/events/ResultPreviewsManagerEvents';
@@ -103,6 +107,27 @@ export function QuerySuggestPreviewTest() {
       for (let optionName of Object.keys(optionsToTest)) {
         expect(lastSearchQuery[optionName]).toEqual(optionsToTest[optionName]);
       }
+      done();
+    });
+
+    it('on select, logs analytics once', async done => {
+      setupQuerySuggestPreview();
+      const suggestionText = 'abcdef';
+      const previews = await triggerPopulateSearchResultPreviewsAndPassTime(suggestionText);
+
+      const previewIndexToSelect = 0;
+      previews[previewIndexToSelect].onSelect();
+
+      const spy = test.cmp.usageAnalytics.logCustomEvent as jasmine.Spy;
+      expect(spy).toHaveBeenCalledTimes(1);
+      expect(spy).toHaveBeenCalledWith(
+        analyticsActionCauseList.clickQuerySuggestPreview,
+        <IAnalyticsClickQuerySuggestPreviewMeta>{
+          suggestion: suggestionText,
+          displayedRank: previewIndexToSelect
+        },
+        previews[previewIndexToSelect].element
+      );
       done();
     });
 

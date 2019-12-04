@@ -138,6 +138,7 @@ export class SuggestionsManager {
       // By definition, once an element has been "selected" with the keyboard,
       // it is not longer "active" since the event has been processed.
       this.keyboardFocusedElement = null;
+      this.inputManager.blur();
     }
     return selected;
   }
