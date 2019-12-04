@@ -29,7 +29,7 @@ export class DynamicFacetValueCreator implements IValueCreator {
   public createFromValue(value: string) {
     const position = this.facet.values.allFacetValues.length + 1;
     const state = FacetValueState.idle;
-    const displayValue = this.formatDisplayValue(value);
+    const displayValue = this.getDisplayValue(value);
     return new DynamicFacetValue({ value, displayValue, state, numberOfResults: 0, position }, this.facet, DynamicFacetValueRenderer);
   }
 

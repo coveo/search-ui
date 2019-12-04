@@ -774,7 +774,7 @@ export class DynamicFacet extends Component implements IDynamicFacet {
   }
 
   private logClearAllToAnalytics() {
-    this.logAnalyticsEvent(analyticsActionCauseList.dynamicFacetClearAll, this.basicAnalyticsFacetState);
+    this.logAnalyticsEvent(analyticsActionCauseList.dynamicFacetClearAll, this.basicAnalyticsFacetMeta);
   }
 }
 

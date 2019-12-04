@@ -638,7 +638,7 @@ export function DynamicFacetTest() {
         test.cmp.header.options.clear();
         expect(test.cmp.logAnalyticsEvent).toHaveBeenCalledWith(
           analyticsActionCauseList.dynamicFacetClearAll,
-          test.cmp.basicAnalyticsFacetState
+          test.cmp.basicAnalyticsFacetMeta
         );
       });
 
