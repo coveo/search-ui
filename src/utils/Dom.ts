@@ -733,6 +733,28 @@ export class Dom {
     return $$(<HTMLElement>this.el.cloneNode(deep));
   }
 
+  /**
+   * Determine if an element support a particular native DOM event.
+   * @param eventName The event to evaluate. Eg: touchstart, touchend, click, scroll.
+   */
+  public canHandleEvent(eventName: string): boolean {
+    const eventToEvaluate = `on${eventName}`;
+    let isSupported = eventToEvaluate in this.el;
+
+    // This is a protection against false negative.
+    // Some browser will incorrectly report that the event is not supported at this point
+    // To make sure, we need to try and set a fake function as a property on the element,
+    // and then check if it got hooked properly as a 'function' or as something else, meaning
+    // the property is really not defined on the element.
+    if (!isSupported && this.el.setAttribute) {
+      this.el.setAttribute(eventToEvaluate, 'return;');
+      isSupported = typeof this.el[eventToEvaluate] == 'function';
+      this.el.removeAttribute(eventToEvaluate);
+    }
+
+    return isSupported;
+  }
+
   private buildIE11CustomEvent(type: string, data?: { [key: string]: any }) {
     const event = document.createEvent('CustomEvent');
     event.initCustomEvent(type, true, true, data);

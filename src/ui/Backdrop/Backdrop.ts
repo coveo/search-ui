@@ -1,16 +1,16 @@
+import 'styling/_Backdrop';
+import { ModalBox as ModalBoxModule } from '../../ExternalModulesShim';
+import { exportGlobally } from '../../GlobalExports';
+import { IQueryResult } from '../../rest/QueryResult';
+import { $$ } from '../../utils/Dom';
+import { Utils } from '../../utils/Utils';
 import { Component } from '../Base/Component';
-import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
 import { IComponentBindings } from '../Base/ComponentBindings';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { IFieldOption } from '../Base/IComponentOptions';
 import { Initialization } from '../Base/Initialization';
 import { IResultsComponentBindings } from '../Base/ResultsComponentBindings';
-import { IQueryResult } from '../../rest/QueryResult';
-import { Utils } from '../../utils/Utils';
-import { exportGlobally } from '../../GlobalExports';
-import { YouTubeThumbnail, IYouTubeThumbnailOptions } from '../YouTube/YouTubeThumbnail';
-import { $$ } from '../../utils/Dom';
-import { ModalBox as ModalBoxModule } from '../../ExternalModulesShim';
-
-import 'styling/_Backdrop';
+import { IYouTubeThumbnailOptions, YouTubeThumbnail } from '../YouTube/YouTubeThumbnail';
 
 export interface IBackdropOptions {
   imageUrl?: string;

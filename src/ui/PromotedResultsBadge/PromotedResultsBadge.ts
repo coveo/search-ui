@@ -58,7 +58,7 @@ export class PromotedResultsBadge extends Component {
      * Default value is the localized string for `Recommended`.
      */
     captionForRecommended: ComponentOptions.buildLocalizedStringOption({
-      defaultValue: l('Recommended'),
+      localizedString: () => l('Recommended'),
       depend: 'showBadgeForRecommendedResults'
     }),
     /**
@@ -66,7 +66,10 @@ export class PromotedResultsBadge extends Component {
      *
      * Default value is the localized string for `Featured`.
      */
-    captionForFeatured: ComponentOptions.buildLocalizedStringOption({ defaultValue: l('Featured'), depend: 'showBadgeForFeaturedResults' }),
+    captionForFeatured: ComponentOptions.buildLocalizedStringOption({
+      localizedString: () => l('Featured'),
+      depend: 'showBadgeForFeaturedResults'
+    }),
 
     /**
      * Specifies the color that should be used for "Featured Results".

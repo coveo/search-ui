@@ -1,6 +1,7 @@
 import { DynamicFacetRangeQueryController } from '../../src/controllers/DynamicFacetRangeQueryController';
 import { DynamicFacetRangeTestUtils } from '../ui/DynamicFacet/DynamicFacetRangeTestUtils';
-import { DynamicFacetRange, IDynamicFacetRangeOptions } from '../../src/ui/DynamicFacet/DynamicFacetRange';
+import { DynamicFacetRange } from '../../src/ui/DynamicFacet/DynamicFacetRange';
+import { IDynamicFacetRangeOptions } from '../../src/ui/DynamicFacet/IDynamicFacetRange';
 
 export function DynamicFacetRangeQueryControllerTest() {
   describe('DynamicFacetRangeQueryController', () => {

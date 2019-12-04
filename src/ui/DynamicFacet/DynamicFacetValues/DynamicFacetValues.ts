@@ -2,30 +2,23 @@ import 'styling/DynamicFacet/_DynamicFacetValues';
 import { $$ } from '../../../utils/Dom';
 import { findWhere, find } from 'underscore';
 import { DynamicFacetValue } from './DynamicFacetValue';
-import { DynamicFacet } from '../DynamicFacet';
-import { IFacetResponse, IFacetResponseValue } from '../../../rest/Facet/FacetResponse';
+import { IFacetResponse } from '../../../rest/Facet/FacetResponse';
 import { FacetValueState } from '../../../rest/Facet/FacetValueState';
 import { l } from '../../../strings/Strings';
-import { DynamicFacetValueCreator } from './DynamicFacetValueCreator';
 import { IRangeValue } from '../../../rest/RangeValue';
+import { IDynamicFacet, IValueCreator, IDynamicFacetValue, IDynamicFacetValues } from '../IDynamicFacet';
 import { DynamicFacetValueShowMoreLessButton } from './DynamicFacetValueMoreLessButton';
 
-export interface ValueCreator {
-  createFromResponse(facetValue: IFacetResponseValue, index: number): DynamicFacetValue;
-  createFromValue(value: string): DynamicFacetValue;
-  createFromRange?(range: IRangeValue, index: number): DynamicFacetValue;
-}
-
 export interface IDynamicFacetValueCreatorKlass {
-  new(facet: DynamicFacet): ValueCreator;
+  new (facet: IDynamicFacet): IValueCreator;
 }
 
-export class DynamicFacetValues {
-  private facetValues: DynamicFacetValue[];
+export class DynamicFacetValues implements IDynamicFacetValues {
+  private facetValues: IDynamicFacetValue[];
   private list = $$('ul', { className: 'coveo-dynamic-facet-values' }).el;
-  private valueCreator: ValueCreator;
+  private valueCreator: IValueCreator;
 
-  constructor(private facet: DynamicFacet, creatorKlass: IDynamicFacetValueCreatorKlass = DynamicFacetValueCreator) {
+  constructor(private facet: IDynamicFacet, creatorKlass: IDynamicFacetValueCreatorKlass) {
     this.resetValues();
     this.valueCreator = new creatorKlass(this.facet);
   }
@@ -54,7 +47,7 @@ export class DynamicFacetValues {
     return this.facetValues.filter(value => value.isSelected).map(({ value }) => value);
   }
 
-  public get activeFacetValues() {
+  public get activeValues() {
     return this.facetValues.filter(value => !value.isIdle);
   }
 
@@ -67,7 +60,7 @@ export class DynamicFacetValues {
   }
 
   public get hasActiveValues() {
-    return !!this.activeFacetValues.length;
+    return !!this.activeValues.length;
   }
 
   public get hasIdleValues() {

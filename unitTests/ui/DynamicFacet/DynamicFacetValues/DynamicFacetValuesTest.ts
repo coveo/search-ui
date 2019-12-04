@@ -1,17 +1,18 @@
 import { DynamicFacetValues } from '../../../../src/ui/DynamicFacet/DynamicFacetValues/DynamicFacetValues';
 import { FacetValueState } from '../../../../src/rest/Facet/FacetValueState';
-import { IDynamicFacetValue } from '../../../../src/ui/DynamicFacet/DynamicFacetValues/DynamicFacetValue';
+import { IDynamicFacetValueProperties } from '../../../../src/ui/DynamicFacet/IDynamicFacet';
 import { DynamicFacetRangeValueCreator } from '../../../../src/ui/DynamicFacet/DynamicFacetValues/DynamicFacetRangeValueCreator';
 import { DynamicFacet } from '../../../../src/ui/DynamicFacet/DynamicFacet';
 import { DynamicFacetTestUtils } from '../DynamicFacetTestUtils';
 import { $$ } from '../../../../src/Core';
 import { DynamicFacetRangeTestUtils } from '../DynamicFacetRangeTestUtils';
+import { DynamicFacetValueCreator } from '../../../../src/ui/DynamicFacet/DynamicFacetValues/DynamicFacetValueCreator';
 
 export function DynamicFacetValuesTest() {
   describe('DynamicFacetValues', () => {
     const valueCount = 8;
     let dynamicFacetValues: DynamicFacetValues;
-    let mockFacetValues: IDynamicFacetValue[];
+    let mockFacetValues: IDynamicFacetValueProperties[];
     let facet: DynamicFacet;
 
     beforeEach(() => {
@@ -25,7 +26,7 @@ export function DynamicFacetValuesTest() {
     });
 
     function initializeComponent() {
-      dynamicFacetValues = new DynamicFacetValues(facet);
+      dynamicFacetValues = new DynamicFacetValues(facet, DynamicFacetValueCreator);
       createValuesFromResponse();
     }
 
@@ -64,8 +65,8 @@ export function DynamicFacetValuesTest() {
     });
 
     it('should return activeFacetValues correctly', () => {
-      expect(dynamicFacetValues.activeFacetValues[0].value).toBe(mockFacetValues[1].value);
-      expect(dynamicFacetValues.activeFacetValues[1].value).toBe(mockFacetValues[3].value);
+      expect(dynamicFacetValues.activeValues[0].value).toBe(mockFacetValues[1].value);
+      expect(dynamicFacetValues.activeValues[1].value).toBe(mockFacetValues[3].value);
     });
 
     it('when there are selected values, hasSelectedValues should return true', () => {

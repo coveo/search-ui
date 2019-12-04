@@ -1,5 +1,6 @@
 export * from './ui/Base/RegisteredNamedMethods';
-export { ComponentOptions, ComponentOptionsType } from './ui/Base/ComponentOptions';
+export { ComponentOptionsType } from './ui/Base/IComponentOptions';
+export { ComponentOptions } from './ui/Base/ComponentOptions';
 export { Component } from './ui/Base/Component';
 export { BaseComponent } from './ui/Base/BaseComponent';
 export { RootComponent } from './ui/Base/RootComponent';

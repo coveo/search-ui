@@ -1,4 +1,4 @@
-import { IFieldOption } from '../Base/ComponentOptions';
+import { IFieldOption } from '../Base/IComponentOptions';
 import { Template } from '../Templates/Template';
 
 export interface IResultListOptions {

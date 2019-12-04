@@ -1,10 +1,11 @@
 import 'styling/DynamicFacet/_DynamicFacet';
+import { IDynamicFacet, IDynamicFacetOptions } from './IDynamicFacet';
 import { difference, findIndex } from 'underscore';
 import { $$ } from '../../utils/Dom';
 import { exportGlobally } from '../../GlobalExports';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
-import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
+import { ComponentOptions } from '../Base/ComponentOptions';
 import { Initialization } from '../Base/Initialization';
 import { ResponsiveFacetOptions } from '../ResponsiveComponents/ResponsiveFacetOptions';
 import { ResponsiveDynamicFacets } from '../ResponsiveComponents/ResponsiveDynamicFacets';
@@ -18,40 +19,22 @@ import { Utils } from '../../utils/Utils';
 import { MODEL_EVENTS, IAttributesChangedEventArg } from '../../models/Model';
 import { Assert } from '../../misc/Assert';
 import { IFacetResponse } from '../../rest/Facet/FacetResponse';
-import { IResponsiveComponentOptions } from '../ResponsiveComponents/ResponsiveComponentsManager';
 import { IStringMap } from '../../rest/GenericParam';
 import { isFacetSortCriteria } from '../../rest/Facet/FacetSortCriteria';
 import { l } from '../../strings/Strings';
 import { DeviceUtils } from '../../utils/DeviceUtils';
 import { BreadcrumbEvents, IPopulateBreadcrumbEventArgs } from '../../events/BreadcrumbEvents';
-import { IAnalyticsActionCause, IAnalyticsDynamicFacetMeta, analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
+import { IAnalyticsActionCause, analyticsActionCauseList, IAnalyticsFacetMeta } from '../Analytics/AnalyticsActionListMeta';
+import { IAnalyticsFacetState } from '../Analytics/IAnalyticsFacetState';
 import { IQueryOptions } from '../../controllers/QueryController';
 import { DynamicFacetManager } from '../DynamicFacetManager/DynamicFacetManager';
 import { QueryBuilder } from '../Base/QueryBuilder';
-import { IAutoLayoutAdjustableInsideFacetColumn } from '../SearchInterface/FacetColumnAutoLayoutAdjustment';
 import { DynamicFacetSearch } from '../DynamicFacetSearch/DynamicFacetSearch';
 import { ResultListUtils } from '../../utils/ResultListUtils';
 import { IQueryResults } from '../../rest/QueryResults';
 import { FacetType } from '../../rest/Facet/FacetRequest';
 import { DependsOnManager, IDependentFacet } from '../../utils/DependsOnManager';
-
-export interface IDynamicFacetOptions extends IResponsiveComponentOptions {
-  id?: string;
-  title?: string;
-  field?: IFieldOption;
-  sortCriteria?: string;
-  numberOfValues?: number;
-  enableCollapse?: boolean;
-  enableScrollToTop?: boolean;
-  enableMoreLess?: boolean;
-  enableFacetSearch?: boolean;
-  useLeadingWildcardInFacetSearch?: boolean;
-  collapsedByDefault?: boolean;
-  includeInBreadcrumb?: boolean;
-  numberOfValuesInBreadcrumb?: number;
-  valueCaption?: IStringMap<string>;
-  dependsOn?: string;
-}
+import { DynamicFacetValueCreator } from './DynamicFacetValues/DynamicFacetValueCreator';
 
 /**
  * The `DynamicFacet` component displays a *facet* of the results for the current query. A facet is a list of values for a
@@ -68,7 +51,7 @@ export interface IDynamicFacetOptions extends IResponsiveComponentOptions {
  *
  * @notSupportedIn salesforcefree
  */
-export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsideFacetColumn {
+export class DynamicFacet extends Component implements IDynamicFacet {
   static ID = 'DynamicFacet';
   static doExport = () => exportGlobally({ DynamicFacet });
 
@@ -93,7 +76,9 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
      * If specified, must contain between 1 and 60 characters.
      * Only alphanumeric (A-Za-z0-9), underscore (_), and hyphen (-) characters are kept; other characters are automatically removed.
      *
-     * **Default:** The [`field`]{@link DynamicFacet.options.field} option value.
+     * Defaults to the [`field`]{@link DynamicFacet.options.field} option value.
+     *
+     * @examples author-facet
      */
     id: ComponentOptions.buildStringOption({
       postProcessing: (value = '', options: IDynamicFacetOptions) => {
@@ -110,10 +95,12 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
     /**
      * The title to display for this facet.
      *
-     * **Default:** The localized string for `NoTitle`.
+     * Defaults to the localized string for `NoTitle`.
+     *
+     * @examples Author
      */
     title: ComponentOptions.buildLocalizedStringOption({
-      defaultValue: l('NoTitle'),
+      localizedString: () => l('NoTitle'),
       section: 'CommonOptions',
       priority: 10
     }),
@@ -122,11 +109,10 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
      * The name of the field on which to base this facet.
      *
      * Must be prefixed by `@`, and must reference an existing field whose
-     * **Facet** option is enabled (see
-     * [Add or Edit Fields](https://docs.coveo.com/en/1982/)).
+     * **Facet** option is enabled.
      *
-     * **Required:** Specifying a value for this option is required for the
-     * component to work.
+     * @externaldocs [Add or Edit Fields](https://docs.coveo.com/en/1982/)
+     * @examples @author
      */
     field: ComponentOptions.buildFieldOption({ required: true, section: 'CommonOptions' }),
 
@@ -136,7 +122,8 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
      * See [`FacetSortCriteria`]{@link FacetSortCriteria} for the list and
      * description of allowed values.
      *
-     * **Default:** `undefined`, and the following behavior applies:
+     * By default, the following behavior applies:
+     *
      * - If the requested [`numberOfValues`]{@link DynamicFacet.options.numberOfValues}
      * is greater than or equal to the currently displayed number of values,
      * the [`alphanumeric`]{@link FacetSortCriteria.alphanumeric} criterion is
@@ -145,6 +132,8 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
      * number of values and the facet is not currently expanded, the [`score`]{@link FacetSortCriteria.score}
      * criterion is used.
      * - Otherwise, the `alphanumeric` criterion is used.
+     *
+     * @examples score
      */
     sortCriteria: ComponentOptions.buildStringOption({
       postProcessing: value => (isFacetSortCriteria(value) ? value : undefined),
@@ -155,56 +144,43 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
      * The number of values to request for this facet.
      *
      * Also determines the default maximum number of additional values to request each time this facet is expanded,
-     * and the maximum number of values to display when this facet is collapsed (see [enableCollapse]{@link DynamicFacet.options.enableCollapse}).
-     *
-     * **Default:** `8`
+     * and the maximum number of values to display when this facet is collapsed (see the [`enableCollapse`]{@link DynamicFacet.options.enableCollapse} option).
      */
     numberOfValues: ComponentOptions.buildNumberOption({ min: 0, defaultValue: 8, section: 'CommonOptions' }),
 
     /**
      * Whether to allow the end-user to expand and collapse this facet.
-     *
-     * **Default:** `true`
      */
     enableCollapse: ComponentOptions.buildBooleanOption({ defaultValue: true, section: 'Filtering' }),
 
     /**
-     * Whether to scroll back to the top of the page whenever the end-user interacts with a facet.
-     *
-     * **Default:** `true`
+     * Whether to scroll back to the top of the page whenever the end-user interacts with the facet.
      */
     enableScrollToTop: ComponentOptions.buildBooleanOption({ defaultValue: true, section: 'CommonOptions' }),
 
     /**
      * Whether to enable the **Show more** and **Show less** buttons in the facet.
      *
-     * **Note:**
-     * > The [`DynamicFacetRange`]{@link DynamicFacetRange} component does not support this option.
-     *
-     * **Default:** `true`
+     * **Note:** The [`DynamicFacetRange`]{@link DynamicFacetRange} component does not support this option.
      */
     enableMoreLess: ComponentOptions.buildBooleanOption({ defaultValue: true, section: 'CommonOptions' }),
 
     /**
      * Whether to allow the end-user to search the facet values.
      *
-     * **Note:**
-     * > The [`DynamicFacetRange`]{@link DynamicFacetRange} component does not support this option.
+     * **Note:** The [`DynamicFacetRange`]{@link DynamicFacetRange} component does not support this option.
      *
-     * **Default:** `undefined`, and the following behavior applies:
-     * - Will be enabled when more facet values are available from the server.
-     * - Will be disabled when all facet values are already available.
+     * By default, the following behavior applies:
+     *
+     * - Enabled when more facet values are available.
+     * - Disabled when all available facet values are already displayed.
      */
     enableFacetSearch: ComponentOptions.buildBooleanOption({ section: 'Filtering' }),
 
     /**
      * Whether to prepend facet search queries with a wildcard.
-     * See also the [enableFacetSearch]{@link DynamicFacet.options.enableFacetSearch} option.
      *
-     * **Note:**
-     * > The [`DynamicFacetRange`]{@link DynamicFacetRange} component does not support this option.
-     *
-     * **Default:** `true`
+     * **Note:** The [`DynamicFacetRange`]{@link DynamicFacetRange} component does not support this option.
      */
     useLeadingWildcardInFacetSearch: ComponentOptions.buildBooleanOption({
       defaultValue: true,
@@ -214,30 +190,18 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
 
     /**
      * Whether this facet should be collapsed by default.
-     *
-     * See also the [`enableCollapse`]{@link DynamicFacet.options.enableCollapse}
-     * option.
-     *
-     * **Default:** `false`
      */
     collapsedByDefault: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'Filtering', depend: 'enableCollapse' }),
 
     /**
-     * Whether to notify the [Breadcrumb]{@link Breadcrumb} component when toggling values in the facet.
+     * Whether to notify the [`Breadcrumb`]{@link Breadcrumb} component when toggling values in the facet.
      *
-     * See also the [numberOfValuesInBreadcrumb]{@link DynamicFacet.options.numberOfValuesInBreadcrumb} option.
-     *
-     * **Default:** `true`
+     * See also the [`numberOfValuesInBreadcrumb`]{@link DynamicFacet.options.numberOfValuesInBreadcrumb} option.
      */
     includeInBreadcrumb: ComponentOptions.buildBooleanOption({ defaultValue: true, section: 'CommonOptions' }),
 
     /**
      * The maximum number of selected values the [`Breadcrumb`]{@link Breadcrumb} component can display before outputting a **N more...** link for the facet.
-     *
-     * **Note:** This option only has a meaning when the [`includeInBreadcrumb`]{@link DynamicFacet.options.includeInBreadcrumb} option is set to `true`.
-     *
-     * **Minimum:** `0`
-     * **Default:** `5` (desktop), or `3` (mobile)
      */
     numberOfValuesInBreadcrumb: ComponentOptions.buildNumberOption({
       defaultFunction: () => (DeviceUtils.isMobileDevice() ? 3 : 5),
@@ -249,18 +213,19 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
     /**
      * A mapping of facet values to their desired captions.
      *
-     * See [Normalizing Facet Value Captions](https://developers.coveo.com/x/jBsvAg).
+     * **Note:** The [`DynamicFacetRange`]{@link DynamicFacetRange} component does not support this option.
      *
-     * **Note:**
-     * > The [`DynamicFacetRange`]{@link DynamicFacetRange} component does not support this option.
+     * @externaldocs [Normalizing Facet Value Captions](https://docs.coveo.com/368/).
+     * @examples { "smith_alice": "Alice Smith"\, "jones_bob_r": "Bob R. Jones" }
      */
     valueCaption: ComponentOptions.buildJsonOption<IStringMap<string>>({ defaultValue: {} }),
 
     /**
-     * The id of another facet in which at least one value must be selected in order
-     * for the dependent facet to be visible.
+     * The [`id`]{@link DynamicFacet.options.id} of another facet in which at least one value must be selected in order for the dependent facet to be visible.
      *
-     * **Default:** `undefined` and the facet does not depend on any other facet to be displayed.
+     * By default, the facet does not depend on any other facet to be displayed.
+     *
+     * @examples document-type-facet
      */
     dependsOn: ComponentOptions.buildStringOption()
   };
@@ -270,6 +235,7 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
   private search: DynamicFacetSearch;
   public header: DynamicFacetHeader;
 
+  public options: IDynamicFacetOptions;
   public dynamicFacetManager: DynamicFacetManager;
   public dependsOnManager: DependsOnManager;
   public dynamicFacetQueryController: DynamicFacetQueryController;
@@ -277,6 +243,7 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
   public position: number = null;
   public moreValuesAvailable = false;
   public isCollapsed: boolean;
+  public isDynamicFacet = true;
 
   /**
    * Creates a new `DynamicFacet` instance.
@@ -287,7 +254,7 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
    */
   constructor(
     public element: HTMLElement,
-    public options?: IDynamicFacetOptions,
+    options?: IDynamicFacetOptions,
     bindings?: IComponentBindings,
     classId: string = DynamicFacet.ID
   ) {
@@ -507,13 +474,11 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
     }
   }
 
-  // Complete facet analytics meta
-  public get analyticsFacetState(): IAnalyticsDynamicFacetMeta[] {
-    return this.values.activeFacetValues.map(facetValue => facetValue.analyticsMeta);
+  public get analyticsFacetState(): IAnalyticsFacetState[] {
+    return this.values.activeValues.map(facetValue => facetValue.analyticsFacetState);
   }
 
-  // Facet specific analytics meta
-  public get basicAnalyticsFacetState(): IAnalyticsDynamicFacetMeta {
+  public get basicAnalyticsFacetState(): IAnalyticsFacetState {
     return {
       field: this.options.field.toString(),
       id: this.options.id,
@@ -523,8 +488,16 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
     };
   }
 
-  public logAnalyticsEvent(actionCause: IAnalyticsActionCause, facetMeta: IAnalyticsDynamicFacetMeta) {
-    this.usageAnalytics.logSearchEvent<IAnalyticsDynamicFacetMeta>(actionCause, facetMeta);
+  public get basicAnalyticsFacetMeta(): IAnalyticsFacetMeta {
+    return {
+      facetField: this.options.field.toString(),
+      facetId: this.options.id,
+      facetTitle: this.options.title
+    };
+  }
+
+  public logAnalyticsEvent(actionCause: IAnalyticsActionCause, facetMeta: IAnalyticsFacetMeta) {
+    this.usageAnalytics.logSearchEvent<IAnalyticsFacetMeta>(actionCause, facetMeta);
   }
 
   public putStateIntoQueryBuilder(queryBuilder: QueryBuilder) {
@@ -539,6 +512,14 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
 
   public isCurrentlyDisplayed() {
     return $$(this.element).isVisible();
+  }
+
+  public get hasDisplayedValues() {
+    return this.values.hasDisplayedValues;
+  }
+
+  public get hasActiveValues() {
+    return this.values.hasActiveValues;
   }
 
   private initQueryEvents() {
@@ -565,7 +546,7 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
   }
 
   protected initValues() {
-    this.values = new DynamicFacetValues(this);
+    this.values = new DynamicFacetValues(this, DynamicFacetValueCreator);
   }
 
   private initComponentStateEvents() {
@@ -638,13 +619,13 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
     if (Utils.isNonEmptyArray(valuesToSelect)) {
       this.selectMultipleValues(valuesToSelect);
       // Only one search event is sent, pick first facet value
-      this.logAnalyticsEvent(analyticsActionCauseList.dynamicFacetSelect, this.values.get(valuesToSelect[0]).analyticsMeta);
+      this.logAnalyticsEvent(analyticsActionCauseList.dynamicFacetSelect, this.values.get(valuesToSelect[0]).analyticsFacetMeta);
     }
 
     if (Utils.isNonEmptyArray(valuesToDeselect)) {
       this.deselectMultipleValues(valuesToDeselect);
       // Only one search event is sent, pick first facet value
-      this.logAnalyticsEvent(analyticsActionCauseList.dynamicFacetDeselect, this.values.get(valuesToDeselect[0]).analyticsMeta);
+      this.logAnalyticsEvent(analyticsActionCauseList.dynamicFacetDeselect, this.values.get(valuesToDeselect[0]).analyticsFacetMeta);
     }
   };
 
@@ -782,7 +763,7 @@ export class DynamicFacet extends Component implements IAutoLayoutAdjustableInsi
   }
 
   private logAnalyticsFacetShowMoreLess(cause: IAnalyticsActionCause) {
-    this.usageAnalytics.logCustomEvent<IAnalyticsDynamicFacetMeta>(cause, this.basicAnalyticsFacetState, this.element);
+    this.usageAnalytics.logCustomEvent<IAnalyticsFacetState>(cause, this.basicAnalyticsFacetState, this.element);
   }
 
   private clear() {

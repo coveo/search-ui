@@ -1,9 +1,10 @@
 import { Component, Initialization } from '../../Core';
 import { exportGlobally } from '../../GlobalExports';
-import { IComponentBindings } from '../Base/ComponentBindings';
 import { IQueryResult } from '../../rest/QueryResult';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { IFieldOption } from '../Base/IComponentOptions';
 import { FieldValue, IFieldValueOptions } from '../FieldValue/FieldValue';
-import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
 
 export interface IImageFieldValue {
   field?: IFieldOption;

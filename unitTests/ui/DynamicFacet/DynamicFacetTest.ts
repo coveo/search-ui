@@ -1,6 +1,6 @@
 import * as Mock from '../../MockEnvironment';
-import { DynamicFacet, IDynamicFacetOptions } from '../../../src/ui/DynamicFacet/DynamicFacet';
-import { IDynamicFacetValue } from '../../../src/ui/DynamicFacet/DynamicFacetValues/DynamicFacetValue';
+import { DynamicFacet } from '../../../src/ui/DynamicFacet/DynamicFacet';
+import { IDynamicFacetOptions, IDynamicFacetValueProperties } from '../../../src/ui/DynamicFacet/IDynamicFacet';
 import { FacetValueState } from '../../../src/rest/Facet/FacetValueState';
 import { DynamicFacetTestUtils } from './DynamicFacetTestUtils';
 import { $$, BreadcrumbEvents, QueryEvents } from '../../../src/Core';
@@ -15,7 +15,7 @@ import { FacetType } from '../../../src/rest/Facet/FacetRequest';
 export function DynamicFacetTest() {
   describe('DynamicFacet', () => {
     let test: Mock.IBasicComponentSetup<DynamicFacet>;
-    let mockFacetValues: IDynamicFacetValue[];
+    let mockFacetValues: IDynamicFacetValueProperties[];
     let options: IDynamicFacetOptions;
     let triggerNewQuerySpy: jasmine.Spy;
 
@@ -196,7 +196,7 @@ export function DynamicFacetTest() {
 
     it('allows to trigger a new isolated query', () => {
       spyOn(test.cmp.dynamicFacetQueryController, 'getQueryResults');
-      const beforeExecuteQuery = jasmine.createSpy('beforeExecuteQuery', () => { });
+      const beforeExecuteQuery = jasmine.createSpy('beforeExecuteQuery', () => {});
       test.cmp.ensureDom();
       test.cmp.triggerNewIsolatedQuery(beforeExecuteQuery);
 
@@ -384,7 +384,7 @@ export function DynamicFacetTest() {
       expect(test.cmp.selectMultipleValues).toHaveBeenCalled();
       expect(test.cmp.logAnalyticsEvent).toHaveBeenCalledWith(
         analyticsActionCauseList.dynamicFacetSelect,
-        test.cmp.values.get('a').analyticsMeta
+        test.cmp.values.get('a').analyticsFacetMeta
       );
     });
 
@@ -396,7 +396,7 @@ export function DynamicFacetTest() {
       expect(test.cmp.deselectMultipleValues).toHaveBeenCalled();
       expect(test.cmp.logAnalyticsEvent).toHaveBeenCalledWith(
         analyticsActionCauseList.dynamicFacetDeselect,
-        test.cmp.values.get('a').analyticsMeta
+        test.cmp.values.get('a').analyticsFacetMeta
       );
     });
 
@@ -473,7 +473,10 @@ export function DynamicFacetTest() {
     });
 
     it('logs an analytics search event when logAnalyticsEvent is called', () => {
-      test.cmp.logAnalyticsEvent(analyticsActionCauseList.dynamicFacetSelect, test.cmp.analyticsFacetState[0]);
+      test.cmp.logAnalyticsEvent(analyticsActionCauseList.dynamicFacetSelect, {
+        ...test.cmp.basicAnalyticsFacetMeta,
+        facetValue: 'foo'
+      });
 
       expect(test.cmp.usageAnalytics.logSearchEvent).toHaveBeenCalled();
     });
@@ -488,11 +491,22 @@ export function DynamicFacetTest() {
       });
     });
 
+    it('returns the correct basicAnalyticsFacetMeta', () => {
+      expect(test.cmp.basicAnalyticsFacetMeta).toEqual({
+        facetField: test.cmp.options.field.toString(),
+        facetTitle: test.cmp.options.title,
+        facetId: test.cmp.options.id
+      });
+    });
+
     it('returns the correct analyticsFacetState', () => {
       test.cmp.selectValue('bar');
       test.cmp.selectValue('foo');
 
-      expect(test.cmp.analyticsFacetState).toEqual([test.cmp.values.get('bar').analyticsMeta, test.cmp.values.get('foo').analyticsMeta]);
+      expect(test.cmp.analyticsFacetState).toEqual([
+        test.cmp.values.get('bar').analyticsFacetState,
+        test.cmp.values.get('foo').analyticsFacetState
+      ]);
     });
 
     it(`when calling "putStateIntoAnalytics" 
@@ -620,9 +634,12 @@ export function DynamicFacetTest() {
 
       it(`when triggering the header "clear" method
       should log an analytics event`, () => {
-        triggerNewQuerySpy.and.callFake((beforeCb: any = () => { }) => beforeCb())
+        triggerNewQuerySpy.and.callFake((beforeCb: any = () => {}) => beforeCb());
         test.cmp.header.options.clear();
-        expect(test.cmp.logAnalyticsEvent).toHaveBeenCalledWith(analyticsActionCauseList.dynamicFacetClearAll, test.cmp.basicAnalyticsFacetState);
+        expect(test.cmp.logAnalyticsEvent).toHaveBeenCalledWith(
+          analyticsActionCauseList.dynamicFacetClearAll,
+          test.cmp.basicAnalyticsFacetState
+        );
       });
 
       it('should call "toggleClear" when calling reset', () => {

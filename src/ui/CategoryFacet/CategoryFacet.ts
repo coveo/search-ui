@@ -1,7 +1,8 @@
 import 'styling/DynamicFacet/_DynamicFacet';
 import { Component } from '../Base/Component';
 import { l } from '../../strings/Strings';
-import { IFieldOption, ComponentOptions } from '../Base/ComponentOptions';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { IFieldOption } from '../Base/IComponentOptions';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { $$ } from '../../utils/Dom';
 import { Initialization } from '../Base/Initialization';
@@ -123,7 +124,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
      * Default value is the localized string for `NoTitle`.
      */
     title: ComponentOptions.buildLocalizedStringOption({
-      defaultValue: l('NoTitle')
+      localizedString: () => l('NoTitle')
     }),
 
     /**
@@ -135,8 +136,8 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     numberOfValues: ComponentOptions.buildNumberOption({ defaultValue: 5, min: 0, section: 'CommonOptions' }),
 
     /**
-    * Whether to allow the end-user to expand and collapse this facet.
-    */
+     * Whether to allow the end-user to expand and collapse this facet.
+     */
     enableCollapse: ComponentOptions.buildBooleanOption({ defaultValue: true, section: 'Filtering' }),
 
     /**
@@ -163,7 +164,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
      *
      * See also the [`facetSearchDelay`]{@link CategoryFacet.options.facetSearchDelay}, and
      * [`numberOfResultsInFacetSearch`]{@link CategoryFacet.options.numberOfResultsInFacetSearch} options.
-     * 
+     *
      */
     enableFacetSearch: ComponentOptions.buildBooleanOption({ defaultValue: true }),
 
@@ -336,7 +337,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     this.options = ComponentOptions.initComponentOptions(element, CategoryFacet, options);
 
     this.categoryFacetQueryController = new CategoryFacetQueryController(this);
-    this.isCollapsed = this.options.enableCollapse && this.options.collapsedByDefault;;
+    this.isCollapsed = this.options.enableCollapse && this.options.collapsedByDefault;
     this.values = new CategoryFacetValues(this);
 
     this.tryToInitFacetSearch();
@@ -468,7 +469,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
 
   /**
    * Changes the active path.
-   * 
+   *
    * @param path The values representing the path.
    */
   public changeActivePath(path: string[]) {
@@ -516,10 +517,10 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   }
 
   /**
-  * Returns the values at the bottom of the hierarchy. These are the values that are not yet applied to the query.
-  * @returns simple object with three fields: `value`, `count` and `path`.
-  * @deprecated
-  */
+   * Returns the values at the bottom of the hierarchy. These are the values that are not yet applied to the query.
+   * @returns simple object with three fields: `value`, `count` and `path`.
+   * @deprecated
+   */
   public getAvailableValues() {
     return this.mapCategoryValuesToCategoryValueDescriptor(this.values.availableValues);
   }
@@ -534,7 +535,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
 
   /**
    * Requests additional values.
-   * 
+   *
    * See the [`enableMoreLess`]{@link CategoryFacet.options.enableMoreLess} option.
    *
    * Automatically triggers an isolated query.
@@ -551,7 +552,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
    * Reduces the number of displayed facet values down to [numberOfValues]{@link DynamicFacet.options.numberOfValues}.
    *
    * See the [`enableMoreLess`]{@link CategoryFacet.options.enableMoreLess} option.
-   * 
+   *
    * Automatically triggers an isolated query.
    */
   public showLess() {
@@ -563,12 +564,12 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
 
   /**
    * Selects a value from the currently available values.
-   * 
+   *
    * Does **not** trigger a query automatically.
    * Does **not** update the visual of the facet until a query is performed.
-   * 
+   *
    * @param value The value to select.
-   * 
+   *
    * @deprecated
    */
   public selectValue(value: string) {
@@ -589,15 +590,15 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     }
 
     const pathToSelect = this.values.selectedPath.slice(0, -1);
-    pathToSelect.length  ? this.selectPath(pathToSelect) : this.clear();
+    pathToSelect.length ? this.selectPath(pathToSelect) : this.clear();
   }
 
   /**
    * Select a path in the hierarchy.
-   * 
+   *
    * Does **not** trigger a query automatically.
    * Does **not** update the visual of the facet until a query is performed.
-   * 
+   *
    * @param path The values representing the path.
    */
   public selectPath(path: string[]) {
@@ -611,7 +612,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
 
   /**
    * Resets the facet to its initial state.
-   * 
+   *
    * Automatically triggers a query.
    */
   public reset() {
@@ -743,7 +744,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
       clear: () => this.reset(),
       toggleCollapse: () => this.toggleCollapse(),
       expand: () => this.expand(),
-      collapse: () => this.collapse(),
+      collapse: () => this.collapse()
     });
     $$(this.element).prepend(this.header.element);
   }
