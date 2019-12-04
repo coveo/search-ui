@@ -5938,8 +5938,8 @@ exports.ResponsiveComponents = ResponsiveComponents;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    lib: '2.7610.3-beta',
-    product: '2.7610.3-beta',
+    lib: '2.7610.4-beta',
+    product: '2.7610.4-beta',
     supportedApiVersion: 2
 };
 
@@ -8810,7 +8810,7 @@ var dict = {
     "OpenFiltersDropdown": "Open the filters dropdown",
     "CloseFiltersDropdown": "Close the filters dropdown",
     "NoValuesFound": "No values found.",
-    "QuerySuggestPreview": "Query result item(s) for",
+    "QuerySuggestPreview": "Product recommendations for",
     "To": "to",
 };
 function defaultLanguage() {
