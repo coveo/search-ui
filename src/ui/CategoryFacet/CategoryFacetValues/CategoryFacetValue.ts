@@ -1,27 +1,16 @@
 import * as Globalize from 'globalize';
-import { CategoryFacet } from '../CategoryFacet';
 import { FacetValueState } from '../../../rest/Facet/FacetValueState';
 import { CategoryFacetValueRenderer } from './CategoryFacetValueRenderer';
 import { l } from '../../../strings/Strings';
 import { DynamicFacetValueShowMoreLessButton } from '../../DynamicFacet/DynamicFacetValues/DynamicFacetValueMoreLessButton';
-
-export interface ICategoryFacetValue {
-  value: string;
-  path: string[];
-  displayValue: string;
-  state: FacetValueState;
-  numberOfResults: number;
-  moreValuesAvailable: boolean;
-  preventAutoSelect: boolean;
-  children: CategoryFacetValue[];
-}
+import { ICategoryFacetValue, ICategoryFacet, ICategoryFacetValueProperties } from '../ICategoryFacet';
 
 export class CategoryFacetValue implements ICategoryFacetValue {
   private renderer: CategoryFacetValueRenderer;
   private element: HTMLElement = null;
   public retrieveCount: number;
 
-  constructor(private facetValue: ICategoryFacetValue, private facet: CategoryFacet) {
+  constructor(private facetValue: ICategoryFacetValueProperties, private facet: ICategoryFacet) {
     this.renderer = new CategoryFacetValueRenderer(this, this.facet);
     this.retrieveCount = Math.max(this.facet.options.numberOfValues, this.facetValue.children.length);
   }
@@ -62,7 +51,7 @@ export class CategoryFacetValue implements ICategoryFacetValue {
     return this.facetValue.children;
   }
 
-  public set children(children: CategoryFacetValue[]) {
+  public set children(children: ICategoryFacetValue[]) {
     this.facetValue.children = children;
   }
 
@@ -116,7 +105,7 @@ export class CategoryFacetValue implements ICategoryFacetValue {
 
     return showMore.element;
   }
-  
+
   private get shouldEnableShowLess() {
     return this.children.length > this.facet.options.numberOfValues;
   }

@@ -1,12 +1,12 @@
 import { CategoryFacetQueryController } from '../../src/controllers/DynamicCategoryFacetQueryController';
-import { CategoryFacet, ICategoryFacetOptions } from '../../src/ui/CategoryFacet/CategoryFacet';
 import { QueryBuilder, SearchEndpoint } from '../../src/Core';
 import { CategoryFacetTestUtils } from '../ui/CategoryFacet/CategoryFacetTestUtils';
 import { mockSearchEndpoint } from '../MockEnvironment';
+import { ICategoryFacet, ICategoryFacetOptions } from '../../src/ui/CategoryFacet/ICategoryFacet';
 
 export function DynamicCategoryFacetQueryControllerTest() {
   describe('DynamicCategoryFacetQueryController', () => {
-    let facet: CategoryFacet;
+    let facet: ICategoryFacet;
     let facetOptions: ICategoryFacetOptions;
     let categoryFacetQueryController: CategoryFacetQueryController;
     let queryBuilder: QueryBuilder;
@@ -105,12 +105,11 @@ export function DynamicCategoryFacetQueryControllerTest() {
 
     it(`when putFacetIntoQueryBuilder is called
     should add facetRequest into the queryBuilder`, () => {
-      putFacetIntoQueryBuilder()
+      putFacetIntoQueryBuilder();
       expect(queryFacetRequests()[0]).toEqual(facetRequest());
     });
-    
-    describe('testing currentValues', () => {
 
+    describe('testing currentValues', () => {
       // TODO: rename when API has fixed currentValue/numberOfValues issue
       it(`when a value is selected
       currentValues length should be equal to the facet number of values`, () => {

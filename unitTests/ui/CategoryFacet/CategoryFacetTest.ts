@@ -1,6 +1,6 @@
 import * as Mock from '../../MockEnvironment';
 import { CategoryFacetTestUtils } from './CategoryFacetTestUtils';
-import { CategoryFacet, ICategoryFacetOptions } from '../../../src/ui/CategoryFacet/CategoryFacet';
+import { CategoryFacet } from '../../../src/ui/CategoryFacet/CategoryFacet';
 import { FacetType } from '../../../src/rest/Facet/FacetRequest';
 import { IPopulateBreadcrumbEventArgs, BreadcrumbEvents } from '../../../src/events/BreadcrumbEvents';
 import { $$ } from '../../../src/Core';
@@ -9,6 +9,7 @@ import { Simulate } from '../../Simulate';
 import { IFacetResponseValue } from '../../../src/rest/Facet/FacetResponse';
 import { FacetValueState } from '../../../src/rest/Facet/FacetValueState';
 import { ResultListUtils } from '../../../src/utils/ResultListUtils';
+import { ICategoryFacetOptions } from '../../../src/ui/CategoryFacet/ICategoryFacet';
 
 export function CategoryFacetTest() {
   describe('CategoryFacet', () => {
