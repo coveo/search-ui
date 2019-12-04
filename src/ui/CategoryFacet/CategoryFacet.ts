@@ -581,7 +581,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
    
    * Does **not** trigger a query automatically.
    * Does **not** update the visual of the facet until a query is performed.
-   * 
+   *
    * @deprecated
    */
   public deselectCurrentValue() {

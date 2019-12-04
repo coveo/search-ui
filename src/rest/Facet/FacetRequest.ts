@@ -47,13 +47,13 @@ export interface IFacetRequestValue extends IRangeValue {
   preventAutoSelect?: boolean;
   /**
    * Whether to retrieve the children of this category facet value. Can only be used on leaf values in the request (i.e., values with no current children).
-   * 
+   *
    * **Default:** `false`
    */
   retrieveChildren?: boolean;
   /**
    * If [retrieveChildren]{@link IFacetRequestValue.retrieveChildren} is true, the maximum number of children to retrieve for this leaf value.
-   * 
+   *
    * **Default (Search API):** `0`
    */
   retrieveCount?: number;
@@ -181,7 +181,7 @@ export interface IFacetRequest {
    * **Example:**
    * For a multi-value field containing the following values: `c; c&gt;folder2; c&gt;folder2&gt;folder3;`
    * The delimiting character is `&gt;`.
-   * 
+   *
    * **Default (Search API):** `;`
    */
   delimitingCharacter?: string;
