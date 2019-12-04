@@ -53,14 +53,14 @@ export class QueryProcessor<T> {
     }
   }
 
-  private get cleanOrderedResults(): T[] {
+  private get orderedResults(): T[] {
     return flatten(this.processedResults.filter(result => !!result), true);
   }
 
   private buildProcessResults(status: ProcessingStatus): IQueryProcessResult<T> {
     return {
       status,
-      results: status !== ProcessingStatus.Overriden ? this.cleanOrderedResults : []
+      results: status !== ProcessingStatus.Overriden ? this.orderedResults : []
     };
   }
 
