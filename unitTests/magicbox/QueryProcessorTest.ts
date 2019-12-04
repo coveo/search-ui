@@ -77,19 +77,6 @@ export function QueryProcessorTest() {
           ];
         });
 
-        it('resolves the queries in the order it was passed as parameter', async done => {
-          queryProcessor = new QueryProcessor({ timeout: completionTimeout });
-          returnedPromise = queryProcessor.processQueries(stringPromises);
-
-          expect((await tickAndResolve(returnedPromise, completionTimeout)).results).toEqual([
-            ...stringArrays[0],
-            ...stringArrays[1],
-            ...stringArrays[2],
-            ...stringArrays[3]
-          ]);
-          done();
-        });
-
         describe('when overriding after resolving the second promise', () => {
           const whenToOverride = resolveTimes[1] + timeBetweenQueries / 2;
           beforeEach(() => {
@@ -180,7 +167,7 @@ export function QueryProcessorTest() {
             done();
           });
 
-          it('resolves with results from every promise', async done => {
+          it('resolves with results from every promise in the original order', async done => {
             expect((await tickAndResolve(returnedPromise, resolveAllTime)).results).toEqual(flatten(stringArrays));
             done();
           });
