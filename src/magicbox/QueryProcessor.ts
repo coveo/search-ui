@@ -1,3 +1,5 @@
+import { flatten } from 'underscore';
+
 export interface IQueryProcessorOptions {
   timeout: number;
 }
@@ -24,7 +26,7 @@ function racePromises<T>(promises: Thenable<T>[]): Promise<T> {
 export class QueryProcessor<T> {
   private override: () => void;
   private options: IQueryProcessorOptions;
-  private processedResults: T[];
+  private processedResults: T[][];
 
   constructor(options: Partial<IQueryProcessorOptions> = {}) {
     this.options = { timeout: 500, ...options };
@@ -35,7 +37,7 @@ export class QueryProcessor<T> {
    */
   public async processQueries(queries: (T[] | Promise<T[]>)[]): Promise<IQueryProcessResult<T>> {
     this.overrideIfProcessing();
-    this.processedResults = [];
+    this.processedResults = new Array(queries.length);
     const asyncQueries = queries.map(query => (query instanceof Promise ? query : Promise.resolve(query)));
 
     return racePromises([
@@ -51,16 +53,20 @@ export class QueryProcessor<T> {
     }
   }
 
+  private get cleanOrderedResults(): T[] {
+    return flatten(this.processedResults.filter(result => !!result), true);
+  }
+
   private buildProcessResults(status: ProcessingStatus): IQueryProcessResult<T> {
     return {
       status,
-      results: status !== ProcessingStatus.Overriden ? this.processedResults : []
+      results: status !== ProcessingStatus.Overriden ? this.cleanOrderedResults : []
     };
   }
 
   private async accumulateResultsChronologically(queries: Promise<T[]>[]) {
     const output = this.processedResults;
-    await Promise.all(queries.map(query => query.then(items => output.push(...items))));
+    await Promise.all(queries.map((query, i) => query.then(items => (output[i] = items))));
   }
 
   private waitForOverride() {

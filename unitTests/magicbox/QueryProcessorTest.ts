@@ -66,26 +66,39 @@ export function QueryProcessorTest() {
         const stringArraysInResolvedOrder = [['abcd', 'efgh'], ['ijkl'], ['mnop', 'qrst'], ['uvwx']];
         let stringPromisesInResolvedOrder: (string[] | Promise<string[]>)[];
         let stringPromisesInParameterOrder: (string[] | Promise<string[]>)[];
+        let queryProcessor: QueryProcessor<string>;
+        let returnedPromise: Promise<IQueryProcessResult<string>>;
 
         beforeEach(() => {
           stringPromisesInResolvedOrder = [
-            stringArraysInResolvedOrder[0],
+            wait(resolveTimes[3], stringArraysInResolvedOrder[0]),
             wait(resolveTimes[1], stringArraysInResolvedOrder[1]),
             wait(resolveTimes[2], stringArraysInResolvedOrder[2]),
-            wait(resolveTimes[3], stringArraysInResolvedOrder[3])
+            stringArraysInResolvedOrder[3]
           ];
           stringPromisesInParameterOrder = [
-            stringPromisesInResolvedOrder[2],
-            stringPromisesInResolvedOrder[1],
             stringPromisesInResolvedOrder[0],
+            stringPromisesInResolvedOrder[1],
+            stringPromisesInResolvedOrder[2],
             stringPromisesInResolvedOrder[3]
           ];
         });
 
+        it('resolves the queries in the order it was passed as parameter', async done => {
+          queryProcessor = new QueryProcessor({ timeout: completionTimeout });
+          returnedPromise = queryProcessor.processQueries(stringPromisesInParameterOrder);
+
+          expect((await tickAndResolve(returnedPromise, completionTimeout)).results).toEqual([
+            ...stringArraysInResolvedOrder[0],
+            ...stringArraysInResolvedOrder[1],
+            ...stringArraysInResolvedOrder[2],
+            ...stringArraysInResolvedOrder[3]
+          ]);
+          done();
+        });
+
         describe('when overriding after resolving the second promise', () => {
           const whenToOverride = resolveTimes[1] + timeBetweenQueries / 2;
-          let queryProcessor: QueryProcessor<string>;
-          let returnedPromise: Promise<IQueryProcessResult<string>>;
           beforeEach(() => {
             queryProcessor = new QueryProcessor({ timeout: completionTimeout });
             returnedPromise = queryProcessor.processQueries(stringPromisesInParameterOrder);
@@ -146,9 +159,7 @@ export function QueryProcessorTest() {
 
         describe('timing out after resolving the second promise', () => {
           const timeout = resolveTimes[1] + timeBetweenQueries / 2;
-          let queryProcessor: QueryProcessor<string>;
-          let returnedPromise: Promise<IQueryProcessResult<string>>;
-          const expectedStringsInResolvedOrder = flatten(stringArraysInResolvedOrder.slice(0, 2));
+          const expectedStringsInResolvedOrder = [...stringArraysInResolvedOrder[1], ...stringArraysInResolvedOrder[3]];
           beforeEach(() => {
             queryProcessor = new QueryProcessor({ timeout });
             returnedPromise = queryProcessor.processQueries(stringPromisesInParameterOrder);
@@ -166,8 +177,6 @@ export function QueryProcessorTest() {
         });
 
         describe('timing out after last promise', () => {
-          let queryProcessor: QueryProcessor<string>;
-          let returnedPromise: Promise<IQueryProcessResult<string>>;
           beforeEach(() => {
             queryProcessor = new QueryProcessor({ timeout: completionTimeout });
             returnedPromise = queryProcessor.processQueries(stringPromisesInParameterOrder);
