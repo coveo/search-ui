@@ -41,7 +41,7 @@ export interface IPositionResolvedEventArgs {
  * The `DistanceEvents` static class contains the string definitions of all events related to distance
  * list.
  *
- * See [Events](https://developers.coveo.com/x/bYGfAQ).
+ * See [Events](https://docs.coveo.com/en/417/).
  */
 export class DistanceEvents {
   /**

@@ -287,7 +287,7 @@ export class Component extends BaseComponent {
    * Create a new Logger for this component.
    * Attach the component to the {@link SearchInterface}.<br/>
    * @param element The HTMLElement on which to create the component. Used to bind data on the element.
-   * @param type The unique identifier for this component. See : {@link IComponentDefinition.ID}. Used to generate the unique Coveo CSS class associated with every component.
+   * @param type The unique identifier for this component. See: {@link IComponentDefinition.ID}. Used to generate the unique Coveo CSS class associated with every component.
    * @param bindings The environment for every component. Optional, but omitting to provide one will impact performance.
    */
   constructor(public element: HTMLElement, public type: string, bindings: IComponentBindings = {}) {

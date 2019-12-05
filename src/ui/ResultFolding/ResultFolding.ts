@@ -35,9 +35,9 @@ export interface IResultFoldingOptions {
  * active [`Folding`]{@link Folding} component in the page. This component takes care of rendering the parent result and
  * its child results in a coherent manner.
  *
- * This component is a result template component (see [Result Templates](https://developers.coveo.com/x/aIGfAQ)).
+ * This component is a result template component (see [Result Templates](https://docs.coveo.com/en/413/)).
  *
- * See [Folding Results](https://developers.coveo.com/x/7hUvAg).
+ * See [Folding Results](https://docs.coveo.com/en/428/).
  */
 export class ResultFolding extends Component {
   static ID = 'ResultFolding';

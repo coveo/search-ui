@@ -157,7 +157,7 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
     if (_.isUndefined(this.pendingSearchEvent) && _.isUndefined(this.pendingSearchAsYouTypeSearchEvent)) {
       this.logger.warn(
         'A search was triggered, but no analytics event was logged. If you wish to have consistent analytics data, consider logging a search event using the methods provided by the framework',
-        'https://developers.coveo.com/x/TwA5'
+        'https://docs.coveo.com/en/2726/#logging-your-own-search-events'
       );
       if (window['console'] && console.trace) {
         console.trace();

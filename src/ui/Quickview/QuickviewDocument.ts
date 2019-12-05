@@ -30,7 +30,7 @@ export interface IQuickviewDocumentOptions {
  * The default [`contentTemplate`]{@link Quickview.options.contentTemplate} of the
  * `Quickview` component includes the `QuickviewDocument` component.
  *
- * This component is a result template component (see [Result Templates](https://developers.coveo.com/x/aIGfAQ)).
+ * This component is a result template component (see [Result Templates](https://docs.coveo.com/en/413/)).
  */
 export class QuickviewDocument extends Component {
   static ID = 'QuickviewDocument';
