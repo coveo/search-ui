@@ -5938,8 +5938,8 @@ exports.ResponsiveComponents = ResponsiveComponents;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    lib: '2.7610.4-beta',
-    product: '2.7610.4-beta',
+    lib: '2.7610.5-beta',
+    product: '2.7610.5-beta',
     supportedApiVersion: 2
 };
 
@@ -8233,6 +8233,12 @@ var dict = {
     "filetype_incident": "Incident",
     "kb_knowledge": "Knowledge Article",
     "filetype_kb_knowledge": "Knowledge Article",
+    "youtubevideo": "YouTube video",
+    "filetype_youtubevideo": "YouTube video",
+    "youtubeplaylistitem": "YouTube playlist item",
+    "filetype_youtubeplaylistitem": "YouTube playlist item",
+    "youtubeplaylist": "YouTube playlist",
+    "filetype_youtubeplaylist": "YouTube playlist",
     "spportal": "Portal",
     "filetype_spportal": "Portal",
     "spsite": "SharePoint Site",
@@ -8459,12 +8465,6 @@ var dict = {
     "filetype_spmicrofeedlist": "Microfeed",
     "splistfolder": "List Folder",
     "filetype_splistfolder": "List Folder",
-    "youtubevideo": "YouTube video",
-    "filetype_youtubevideo": "YouTube video",
-    "youtubeplaylistitem": "YouTube playlist item",
-    "filetype_youtubeplaylistitem": "YouTube playlist item",
-    "youtubeplaylist": "YouTube playlist",
-    "filetype_youtubeplaylist": "YouTube playlist",
     "Unknown": "Unknown",
     "And": "AND",
     "Authenticating": "Authenticating {0}...",
