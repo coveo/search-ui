@@ -90,6 +90,7 @@ export function QuerySuggestPreviewTest() {
 
     it('uses some options from the last query', async done => {
       const optionsToTest: Partial<IQuery> = {
+        firstResult: 0,
         searchHub: 'some search hub',
         pipeline: 'a pipeline',
         tab: 'one tab',

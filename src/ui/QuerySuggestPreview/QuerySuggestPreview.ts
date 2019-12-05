@@ -157,6 +157,7 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
   private buildQuery(searchQuery: string): IQuery {
     const { searchHub, pipeline, tab, locale, timezone, context } = this.queryController.getLastQuery();
     return {
+      firstResult: 0,
       searchHub,
       pipeline,
       tab,
