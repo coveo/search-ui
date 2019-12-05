@@ -1,14 +1,13 @@
-import { CategoryFacetValues } from '../../../../src/ui/CategoryFacet/CategoryFacetValues/CategoryFacetValues'
+import { CategoryFacetValues } from '../../../../src/ui/CategoryFacet/CategoryFacetValues/CategoryFacetValues';
 import { CategoryFacetTestUtils } from '../CategoryFacetTestUtils';
-import { CategoryFacet } from '../../../../src/ui/CategoryFacet/CategoryFacet';
 import { IFacetResponse, IFacetResponseValue } from '../../../../src/rest/Facet/FacetResponse';
-import { CategoryFacetValue } from '../../../../src/ui/CategoryFacet/CategoryFacetValues/CategoryFacetValue';
 import { FacetValueState } from '../../../../src/rest/Facet/FacetValueState';
 import { $$ } from '../../../../src/Core';
+import { ICategoryFacet, ICategoryFacetValue } from '../../../../src/ui/CategoryFacet/ICategoryFacet';
 
 export function CategoryFacetValuesTest() {
   describe('CategoryFacetValues', () => {
-    let facet: CategoryFacet;
+    let facet: ICategoryFacet;
 
     beforeEach(() => {
       facet = CategoryFacetTestUtils.createFakeFacet();
@@ -29,7 +28,7 @@ export function CategoryFacetValuesTest() {
       let response: IFacetResponse;
 
       describe('when response has 1 level deep of facet values', () => {
-        let testValue: CategoryFacetValue;
+        let testValue: ICategoryFacetValue;
         let responseValue: IFacetResponseValue;
 
         beforeEach(() => {
@@ -62,8 +61,8 @@ export function CategoryFacetValuesTest() {
       });
 
       describe('when response has multiple levels deep of facet values', () => {
-        let testValue: CategoryFacetValue;
-        let childTestValue: CategoryFacetValue;
+        let testValue: ICategoryFacetValue;
+        let childTestValue: ICategoryFacetValue;
         let responseValue: IFacetResponseValue;
         let responseChildValue: IFacetResponseValue;
 
@@ -147,9 +146,11 @@ export function CategoryFacetValuesTest() {
       let listElement: HTMLElement;
 
       beforeEach(() => {
-        facet.values.createFromResponse(CategoryFacetTestUtils.getCompleteFacetResponse(facet, {
-          values: CategoryFacetTestUtils.createFakeFacetResponseValues(3, 3)
-        }));
+        facet.values.createFromResponse(
+          CategoryFacetTestUtils.getCompleteFacetResponse(facet, {
+            values: CategoryFacetTestUtils.createFakeFacetResponseValues(3, 3)
+          })
+        );
         listElement = facet.values.render();
       });
 
@@ -161,7 +162,9 @@ export function CategoryFacetValuesTest() {
         const documentFragment = new DocumentFragment();
         expect(listElement.children[0]).toEqual(facet.values.allFacetValues[0].render(documentFragment));
         expect(listElement.children[1]).toEqual(facet.values.allFacetValues[0].children[0].render(documentFragment));
-        expect(listElement.children[listElement.children.length - 1]).toEqual(facet.values.allFacetValues[2].children[2].children[2].render(documentFragment));
+        expect(listElement.children[listElement.children.length - 1]).toEqual(
+          facet.values.allFacetValues[2].children[2].children[2].render(documentFragment)
+        );
       });
 
       function getAllCategoriesElement() {
@@ -200,13 +203,14 @@ export function CategoryFacetValuesTest() {
     });
 
     describe('testing selectPath', () => {
-
       describe('when values are at a single level', () => {
-        let testFacetValue: CategoryFacetValue;
+        let testFacetValue: ICategoryFacetValue;
         beforeEach(() => {
-          facet.values.createFromResponse(CategoryFacetTestUtils.getCompleteFacetResponse(facet, {
-            values: CategoryFacetTestUtils.createFakeFacetResponseValues(1, 3)
-          }));
+          facet.values.createFromResponse(
+            CategoryFacetTestUtils.getCompleteFacetResponse(facet, {
+              values: CategoryFacetTestUtils.createFakeFacetResponseValues(1, 3)
+            })
+          );
         });
 
         describe('when path already exists', () => {
@@ -226,11 +230,11 @@ export function CategoryFacetValuesTest() {
           it('should have the right selectedPath', () => {
             expect(facet.values.selectedPath).toEqual([testFacetValue.value]);
           });
-  
+
           it('should have the right visibleParentValues', () => {
             expect(facet.values.visibleParentValues).toEqual([testFacetValue]);
           });
-  
+
           it('should have the right availableValues', () => {
             expect(facet.values.availableValues).toEqual(testFacetValue.children);
           });
@@ -257,11 +261,11 @@ export function CategoryFacetValuesTest() {
           it('should have the right selectedPath', () => {
             expect(facet.values.selectedPath).toEqual([newValue]);
           });
-  
+
           it('should have the right visibleParentValues', () => {
             expect(facet.values.visibleParentValues).toEqual([testFacetValue]);
           });
-  
+
           it('should have the right availableValues', () => {
             expect(facet.values.availableValues).toEqual(testFacetValue.children);
           });
@@ -269,14 +273,16 @@ export function CategoryFacetValuesTest() {
       });
 
       describe('when values are at multiple levels', () => {
-        let firstLevelFacetValue: CategoryFacetValue;
-        let secondLevelFacetValue: CategoryFacetValue;
-        let thirdLevelFacetValue: CategoryFacetValue;
+        let firstLevelFacetValue: ICategoryFacetValue;
+        let secondLevelFacetValue: ICategoryFacetValue;
+        let thirdLevelFacetValue: ICategoryFacetValue;
 
         beforeEach(() => {
-          facet.values.createFromResponse(CategoryFacetTestUtils.getCompleteFacetResponse(facet, {
-            values: CategoryFacetTestUtils.createFakeFacetResponseValues(4, 3)
-          }));
+          facet.values.createFromResponse(
+            CategoryFacetTestUtils.getCompleteFacetResponse(facet, {
+              values: CategoryFacetTestUtils.createFakeFacetResponseValues(4, 3)
+            })
+          );
         });
 
         describe('when path already entirely exists', () => {
@@ -306,11 +312,11 @@ export function CategoryFacetValuesTest() {
           it('should have the right selectedPath', () => {
             expect(facet.values.selectedPath).toEqual(thirdLevelFacetValue.path);
           });
-  
+
           it('should have the right visibleParentValues', () => {
             expect(facet.values.visibleParentValues).toEqual([firstLevelFacetValue, secondLevelFacetValue, thirdLevelFacetValue]);
           });
-  
+
           it('should have the right availableValues', () => {
             expect(facet.values.availableValues).toEqual(thirdLevelFacetValue.children);
           });
@@ -350,11 +356,11 @@ export function CategoryFacetValuesTest() {
           it('should have the right selectedPath', () => {
             expect(facet.values.selectedPath).toEqual(thirdLevelFacetValue.path);
           });
-  
+
           it('should have the right visibleParentValues', () => {
             expect(facet.values.visibleParentValues).toEqual([firstLevelFacetValue, secondLevelFacetValue, thirdLevelFacetValue]);
           });
-  
+
           it('should have the right availableValues', () => {
             expect(facet.values.availableValues).toEqual(thirdLevelFacetValue.children);
           });
@@ -402,11 +408,11 @@ export function CategoryFacetValuesTest() {
           it('should have the right selectedPath', () => {
             expect(facet.values.selectedPath).toEqual(thirdLevelFacetValue.path);
           });
-  
+
           it('should have the right visibleParentValues', () => {
             expect(facet.values.visibleParentValues).toEqual([firstLevelFacetValue, secondLevelFacetValue, thirdLevelFacetValue]);
           });
-  
+
           it('should have the right availableValues', () => {
             expect(facet.values.availableValues).toEqual(thirdLevelFacetValue.children);
           });
@@ -419,11 +425,11 @@ export function CategoryFacetValuesTest() {
         beforeEach(() => {
           facet.moreValuesAvailable = true;
         });
-  
+
         it(`should render the "Show more" button`, () => {
           expect(moreButton()).toBeTruthy();
         });
-  
+
         it(`when clicking on the "Show more" button
           should perform the correct actions on the facet`, () => {
           $$(moreButton()).trigger('click');
@@ -440,7 +446,9 @@ export function CategoryFacetValuesTest() {
 
       describe('when there are more values than the numberOfValues option', () => {
         beforeEach(() => {
-          const response = CategoryFacetTestUtils.getCompleteFacetResponse(facet, {values: CategoryFacetTestUtils.createFakeFacetResponseValues(1,20)});
+          const response = CategoryFacetTestUtils.getCompleteFacetResponse(facet, {
+            values: CategoryFacetTestUtils.createFakeFacetResponseValues(1, 20)
+          });
           facet.values.createFromResponse(response);
         });
 

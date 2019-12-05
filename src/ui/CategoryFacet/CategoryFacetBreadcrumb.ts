@@ -1,23 +1,21 @@
 import 'styling/DynamicFacet/_DynamicFacetBreadcrumbs';
 import { $$ } from '../../utils/Dom';
 import { SVGIcons } from '../../utils/SVGIcons';
-import { CategoryFacet } from './CategoryFacet';
+import { ICategoryFacet } from './ICategoryFacet';
 import { l } from '../../strings/Strings';
 import { without } from 'underscore';
 import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
 
 export class CategoryFacetBreadcrumb {
   public element: HTMLElement;
-  
-  constructor(
-    private facet: CategoryFacet
-  ) {
+
+  constructor(private facet: ICategoryFacet) {
     this.create();
   }
 
   private create() {
     this.element = $$('div', { className: 'coveo-dynamic-facet-breadcrumb coveo-breadcrumb-item' }).el;
-    
+
     const pathToRender = without(this.facet.activePath, ...this.facet.options.basePath);
     const captionLabel = pathToRender.map(pathPart => this.facet.getCaption(pathPart)).join(' / ');
 

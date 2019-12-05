@@ -1,13 +1,12 @@
 import { $$, Dom } from '../../../utils/Dom';
-import { CategoryFacet } from '../CategoryFacet';
-import { CategoryFacetValue } from './CategoryFacetValue';
 import { SVGIcons } from '../../../utils/SVGIcons';
 import { SVGDom } from '../../../utils/SVGDom';
+import { ICategoryFacetValue, ICategoryFacet } from '../ICategoryFacet';
 
 export class CategoryFacetValueRenderer {
   private button: Dom;
 
-  constructor(private facetValue: CategoryFacetValue, private facet: CategoryFacet) { }
+  constructor(private facetValue: ICategoryFacetValue, private facet: ICategoryFacet) {}
 
   public render() {
     this.button = $$('button', {

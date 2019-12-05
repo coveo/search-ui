@@ -11,6 +11,7 @@ import { IAnalyticsFacetState } from '../Analytics/IAnalyticsFacetState';
 import { IFacetResponseValue, IFacetResponse } from '../../rest/Facet/FacetResponse';
 import { IRangeValue } from '../../rest/RangeValue';
 import { FacetValueState } from '../../rest/Facet/FacetValueState';
+import { DynamicFacetHeader } from './DynamicFacetHeader/DynamicFacetHeader';
 
 export interface IDynamicFacetOptions extends IResponsiveComponentOptions {
   id?: string;
@@ -31,6 +32,7 @@ export interface IDynamicFacetOptions extends IResponsiveComponentOptions {
 }
 
 export interface IDynamicFacet extends Component, IDynamicManagerCompatibleFacet, IAutoLayoutAdjustableInsideFacetColumn {
+  header: DynamicFacetHeader;
   options: IDynamicFacetOptions;
   dependsOnManager: DependsOnManager;
   dynamicFacetQueryController: DynamicFacetQueryController;
@@ -45,6 +47,7 @@ export interface IDynamicFacet extends Component, IDynamicManagerCompatibleFacet
   basicAnalyticsFacetState: IAnalyticsFacetState;
   basicAnalyticsFacetMeta: IAnalyticsFacetMeta;
 
+  isCurrentlyDisplayed(): boolean;
   selectValue(value: string): void;
   selectMultipleValues(values: string[]): void;
   deselectValue(value: string): void;

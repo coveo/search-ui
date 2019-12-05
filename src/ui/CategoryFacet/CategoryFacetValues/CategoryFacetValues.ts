@@ -1,5 +1,4 @@
 import 'styling/CategoryFacet/_CategoryFacetValues';
-import { CategoryFacet } from '../CategoryFacet';
 import { IFacetResponse, IFacetResponseValue } from '../../../rest/Facet/FacetResponse';
 import { CategoryFacetValue } from './CategoryFacetValue';
 import { FacetUtils } from '../../Facet/FacetUtils';
@@ -9,13 +8,14 @@ import { FacetValueState } from '../../../rest/Facet/FacetValueState';
 import { Utils } from '../../../utils/Utils';
 import { l } from '../../../strings/Strings';
 import { DynamicFacetValueShowMoreLessButton } from '../../DynamicFacet/DynamicFacetValues/DynamicFacetValueMoreLessButton';
+import { ICategoryFacetValues, ICategoryFacet, ICategoryFacetValue } from '../ICategoryFacet';
 
-export class CategoryFacetValues {
-  private facetValues: CategoryFacetValue[] = [];
+export class CategoryFacetValues implements ICategoryFacetValues {
+  private facetValues: ICategoryFacetValue[] = [];
   private _selectedPath: string[] = [];
   private list = $$('ul', { className: 'coveo-dynamic-category-facet-values' }).el;
 
-  constructor(private facet: CategoryFacet) { }
+  constructor(private facet: ICategoryFacet) {}
 
   private formatDisplayValue(value: string) {
     let returnValue = FacetUtils.tryToGetTranslatedCaption(<string>this.facet.options.field, value);
@@ -26,7 +26,7 @@ export class CategoryFacetValues {
     this.facetValues = response.values.map(responseValue => this.createFacetValueFromResponse(responseValue));
   }
 
-  private createFacetValueFromResponse(responseValue: IFacetResponseValue, path: string[] = []): CategoryFacetValue {
+  private createFacetValueFromResponse(responseValue: IFacetResponseValue, path: string[] = []): ICategoryFacetValue {
     const newPath = [...path, responseValue.value];
     const displayValue = FacetUtils.getDisplayValueFromValueCaption(
       responseValue.value,
@@ -41,16 +41,19 @@ export class CategoryFacetValues {
       this._selectedPath = newPath;
     }
 
-    return new CategoryFacetValue({
-      value: responseValue.value,
-      numberOfResults: responseValue.numberOfResults,
-      state: responseValue.state,
-      moreValuesAvailable: responseValue.moreValuesAvailable,
-      preventAutoSelect: false,
-      path: newPath,
-      displayValue,
-      children
-    }, this.facet);
+    return new CategoryFacetValue(
+      {
+        value: responseValue.value,
+        numberOfResults: responseValue.numberOfResults,
+        state: responseValue.state,
+        moreValuesAvailable: responseValue.moreValuesAvailable,
+        preventAutoSelect: false,
+        path: newPath,
+        displayValue,
+        children
+      },
+      this.facet
+    );
   }
 
   public get allFacetValues() {
@@ -72,7 +75,7 @@ export class CategoryFacetValues {
 
   private findValueWithPath(path: string[]) {
     let facetValues = this.facetValues;
-    let facetValue: CategoryFacetValue;
+    let facetValue: ICategoryFacetValue;
     let remainingPath = [...path];
 
     do {
@@ -88,18 +91,21 @@ export class CategoryFacetValues {
     return facetValue;
   }
 
-  private createFacetValueWithPath(path: string[], children: CategoryFacetValue[] = []): CategoryFacetValue {
-    const value = path[path.length - 1]
-    return new CategoryFacetValue({
-      value,
-      path,
-      displayValue: this.formatDisplayValue(value),
-      numberOfResults: 0,
-      state: FacetValueState.idle,
-      moreValuesAvailable: false,
-      preventAutoSelect: false,
-      children
-    }, this.facet);
+  private createFacetValueWithPath(path: string[], children: ICategoryFacetValue[] = []): ICategoryFacetValue {
+    const value = path[path.length - 1];
+    return new CategoryFacetValue(
+      {
+        value,
+        path,
+        displayValue: this.formatDisplayValue(value),
+        numberOfResults: 0,
+        state: FacetValueState.idle,
+        moreValuesAvailable: false,
+        preventAutoSelect: false,
+        children
+      },
+      this.facet
+    );
   }
 
   private getOrCreateFacetValueWithPath(path: string[]) {
@@ -109,20 +115,17 @@ export class CategoryFacetValues {
     }
 
     const newFacetValue = this.createFacetValueWithPath(path);
-    const siblingValues = path.length === 1
-      ? this.facetValues
-      : this.getOrCreateFacetValueWithPath(path.slice(0, -1)).children;
+    const siblingValues = path.length === 1 ? this.facetValues : this.getOrCreateFacetValueWithPath(path.slice(0, -1)).children;
 
-    siblingValues.push(newFacetValue)
+    siblingValues.push(newFacetValue);
     return newFacetValue;
   }
 
-  private filterHierarchyAtPathLevel(facetValues: CategoryFacetValue[], path: string[], level = 1) {
-    const filteredFacetValues = facetValues
-      .filter(facetValue => {
-        const targetPath = path.slice(0, level);
-        return Utils.arrayEqual(targetPath, facetValue.path);
-      });
+  private filterHierarchyAtPathLevel(facetValues: ICategoryFacetValue[], path: string[], level = 1) {
+    const filteredFacetValues = facetValues.filter(facetValue => {
+      const targetPath = path.slice(0, level);
+      return Utils.arrayEqual(targetPath, facetValue.path);
+    });
 
     filteredFacetValues.forEach(facetValue => {
       facetValue.state = FacetValueState.idle;
@@ -220,7 +223,7 @@ export class CategoryFacetValues {
       return [];
     }
 
-    const parentValues: CategoryFacetValue[] = [];
+    const parentValues: ICategoryFacetValue[] = [];
     let currentParentValue = this.allFacetValues[0];
 
     for (let i = 0; i < this.selectedPath.length; i++) {
@@ -232,8 +235,6 @@ export class CategoryFacetValues {
   }
 
   public get availableValues() {
-    return this.selectedPath.length
-      ? this.getOrCreateFacetValueWithPath(this.selectedPath).children
-      : this.facetValues;
+    return this.selectedPath.length ? this.getOrCreateFacetValueWithPath(this.selectedPath).children : this.facetValues;
   }
 }

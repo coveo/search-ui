@@ -1,22 +1,22 @@
-import { CategoryFacetValue, ICategoryFacetValue } from '../../../../src/ui/CategoryFacet/CategoryFacetValues/CategoryFacetValue';
+import { CategoryFacetValue } from '../../../../src/ui/CategoryFacet/CategoryFacetValues/CategoryFacetValue';
 import { CategoryFacetValueRenderer } from '../../../../src/ui/CategoryFacet/CategoryFacetValues/CategoryFacetValueRenderer';
-import { CategoryFacet } from '../../../../src/ui/CategoryFacet/CategoryFacet';
 import { CategoryFacetTestUtils } from '../CategoryFacetTestUtils';
 import { $$ } from '../../../../src/Core';
 import { FacetValueState } from '../../../../src/rest/Facet/FacetValueState';
+import { ICategoryFacet, ICategoryFacetValueProperties } from '../../../../src/ui/CategoryFacet/ICategoryFacet';
 
 export function CategoryFacetValueRendererTest() {
   describe('CategoryFacetValueRendererTest', () => {
     let facetValue: CategoryFacetValue;
     let facetValueRenderer: CategoryFacetValueRenderer;
-    let facet: CategoryFacet;
+    let facet: ICategoryFacet;
     let element: HTMLElement;
 
     beforeEach(() => {
       initializeComponentWithValue(CategoryFacetTestUtils.createFakeFacetValue());
     });
 
-    function initializeComponentWithValue(value: ICategoryFacetValue) {
+    function initializeComponentWithValue(value: ICategoryFacetValueProperties) {
       facet = CategoryFacetTestUtils.createFakeFacet();
       facetValue = new CategoryFacetValue(value, facet);
       facetValueRenderer = new CategoryFacetValueRenderer(facetValue, facet);
@@ -28,7 +28,7 @@ export function CategoryFacetValueRendererTest() {
     }
 
     function getButton() {
-      return $$(element).find('button')
+      return $$(element).find('button');
     }
 
     function getCount() {
@@ -146,6 +146,6 @@ export function CategoryFacetValueRendererTest() {
 
         expect(getArrow()).toBeTruthy();
       });
-    })
+    });
   });
 }

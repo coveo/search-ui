@@ -2,7 +2,6 @@ import 'styling/DynamicFacet/_DynamicFacet';
 import { Component } from '../Base/Component';
 import { l } from '../../strings/Strings';
 import { ComponentOptions } from '../Base/ComponentOptions';
-import { IFieldOption } from '../Base/IComponentOptions';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { $$ } from '../../utils/Dom';
 import { Initialization } from '../Base/Initialization';
@@ -24,9 +23,14 @@ import {
   IAnalyticsFacetMeta
 } from '../Analytics/AnalyticsActionListMeta';
 import { QueryBuilder } from '../Base/QueryBuilder';
-import { IAutoLayoutAdjustableInsideFacetColumn } from '../SearchInterface/FacetColumnAutoLayoutAdjustment';
 import { ResponsiveFacets } from '../ResponsiveComponents/ResponsiveFacets';
-import { IResponsiveComponentOptions } from '../ResponsiveComponents/ResponsiveComponentsManager';
+import {
+  ICategoryFacetOptions,
+  CategoryValueDescriptor,
+  ICategoryFacet,
+  ICategoryFacetValues,
+  ICategoryFacetValue
+} from './ICategoryFacet';
 import { ResponsiveFacetOptions } from '../ResponsiveComponents/ResponsiveFacetOptions';
 import { DynamicFacetHeader } from '../DynamicFacet/DynamicFacetHeader/DynamicFacetHeader';
 import { IStringMap } from '../../rest/GenericParam';
@@ -37,36 +41,6 @@ import { CategoryFacetValues } from './CategoryFacetValues/CategoryFacetValues';
 import { IFacetResponse } from '../../rest/Facet/FacetResponse';
 import { IQueryOptions } from '../../controllers/QueryController';
 import { IQueryResults } from '../../rest/QueryResults';
-import { CategoryFacetValue } from './CategoryFacetValues/CategoryFacetValue';
-
-export interface ICategoryFacetOptions extends IResponsiveComponentOptions {
-  id?: string;
-  field: IFieldOption;
-  title?: string;
-  enableCollapse?: boolean;
-  collapsedByDefault?: boolean;
-  enableScrollToTop?: boolean;
-  enableFacetSearch?: boolean;
-  facetSearchDelay?: number;
-  numberOfResultsInFacetSearch?: number;
-  numberOfValues?: number;
-  injectionDepth?: number;
-  enableMoreLess?: boolean;
-  pageSize?: number;
-  delimitingCharacter?: string;
-  debug?: boolean;
-  basePath?: string[];
-  maximumDepth?: number;
-  valueCaption?: IStringMap<string>;
-  dependsOn?: string;
-  includeInBreadcrumb?: boolean;
-}
-
-export type CategoryValueDescriptor = {
-  value: string;
-  count: number;
-  path: string[];
-};
 
 /**
  * The `CategoryFacet` component is a facet that renders values in a hierarchical fashion. It determines the filter to apply depending on the
@@ -79,17 +53,16 @@ export type CategoryValueDescriptor = {
  *
  * @notSupportedIn salesforcefree
  */
-export class CategoryFacet extends Component implements IAutoLayoutAdjustableInsideFacetColumn {
+export class CategoryFacet extends Component implements ICategoryFacet {
+  static ID = 'CategoryFacet';
   static doExport = () => {
     exportGlobally({
       CategoryFacet
     });
   };
 
-  static ID = 'CategoryFacet';
-
   /**
-   * The options for the component
+   * The options for the CategoryFacet
    * @componentOptions
    */
   static options: ICategoryFacetOptions = {
@@ -318,21 +291,22 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     ...ResponsiveFacetOptions
   };
 
+  private listenToQueryStateChange = true;
+
+  public options: ICategoryFacetOptions;
   public categoryFacetQueryController: CategoryFacetQueryController;
-  public listenToQueryStateChange = true;
-  public positionInQuery: number;
   public dependsOnManager: DependsOnManager;
   public isCollapsed: boolean;
   public header: DynamicFacetHeader;
-  public values: CategoryFacetValues;
+  public values: ICategoryFacetValues;
   public moreValuesAvailable = false;
-  public position: Number = null;
+  public position: number = null;
 
   // TODO: add truncating
   public static MAXIMUM_NUMBER_OF_VALUES_BEFORE_TRUNCATING = 15;
   public static NUMBER_OF_VALUES_TO_KEEP_AFTER_TRUNCATING = 10;
 
-  constructor(public element: HTMLElement, public options: ICategoryFacetOptions, bindings?: IComponentBindings) {
+  constructor(public element: HTMLElement, options: ICategoryFacetOptions, bindings?: IComponentBindings) {
     super(element, 'CategoryFacet', bindings);
     this.options = ComponentOptions.initComponentOptions(element, CategoryFacet, options);
 
@@ -385,7 +359,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     return this.queryStateModel.get(this.queryStateAttribute) || this.options.basePath;
   }
 
-  public get queryStateAttribute() {
+  private get queryStateAttribute() {
     return QueryStateModel.getFacetId(this.options.id);
   }
 
@@ -525,7 +499,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     return this.mapCategoryValuesToCategoryValueDescriptor(this.values.availableValues);
   }
 
-  private mapCategoryValuesToCategoryValueDescriptor(values: CategoryFacetValue[]): CategoryValueDescriptor[] {
+  private mapCategoryValuesToCategoryValueDescriptor(values: ICategoryFacetValue[]): CategoryValueDescriptor[] {
     return values.map(facetValue => ({
       value: facetValue.value,
       count: facetValue.numberOfResults,

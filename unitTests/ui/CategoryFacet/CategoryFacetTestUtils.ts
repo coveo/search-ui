@@ -1,10 +1,10 @@
-import { ICategoryFacetValue } from '../../../src/ui/CategoryFacet/CategoryFacetValues/CategoryFacetValue';
 import { FacetValueState } from '../../../src/rest/Facet/FacetValueState';
-import { ICategoryFacetOptions, CategoryFacet } from '../../../src/ui/CategoryFacet/CategoryFacet';
 import * as Mock from '../../MockEnvironment';
 import { $$ } from '../../../src/Core';
 import { CategoryFacetValues } from '../../../src/ui/CategoryFacet/CategoryFacetValues/CategoryFacetValues';
 import { IFacetResponse, IFacetResponseValue } from '../../../src/rest/Facet/FacetResponse';
+import { CategoryFacet } from '../../../src/ui/CategoryFacet/CategoryFacet';
+import { ICategoryFacet, ICategoryFacetOptions, ICategoryFacetValueProperties } from '../../../src/ui/CategoryFacet/ICategoryFacet';
 
 export class CategoryFacetTestUtils {
   static allOptions(options?: ICategoryFacetOptions) {
@@ -19,7 +19,7 @@ export class CategoryFacetTestUtils {
     };
   }
 
-  static createFakeFacetValue(): ICategoryFacetValue {
+  static createFakeFacetValue(): ICategoryFacetValueProperties {
     const value = 'facet value';
     return {
       value,
@@ -38,32 +38,38 @@ export class CategoryFacetTestUtils {
       value: 'v0',
       state: FacetValueState.selected,
       numberOfResults: 19467,
-      children: [{
-        value: 'v0',
-        state: FacetValueState.idle,
-        numberOfResults: 981,
-        children: []
-      }, {
-        value: 'v1',
-        state: FacetValueState.idle,
-        numberOfResults: 978,
-        children: []
-      }, {
-        value: 'v2',
-        state: FacetValueState.idle,
-        numberOfResults: 975,
-        children: []
-      }, {
-        value: 'v19',
-        state: FacetValueState.idle,
-        numberOfResults: 972,
-        children: []
-      }, {
-        value: 'v18',
-        state: FacetValueState.idle,
-        numberOfResults: 972,
-        children: []
-      }],
+      children: [
+        {
+          value: 'v0',
+          state: FacetValueState.idle,
+          numberOfResults: 981,
+          children: []
+        },
+        {
+          value: 'v1',
+          state: FacetValueState.idle,
+          numberOfResults: 978,
+          children: []
+        },
+        {
+          value: 'v2',
+          state: FacetValueState.idle,
+          numberOfResults: 975,
+          children: []
+        },
+        {
+          value: 'v19',
+          state: FacetValueState.idle,
+          numberOfResults: 972,
+          children: []
+        },
+        {
+          value: 'v18',
+          state: FacetValueState.idle,
+          numberOfResults: 972,
+          children: []
+        }
+      ],
       moreValuesAvailable: true
     };
   }
@@ -78,7 +84,7 @@ export class CategoryFacetTestUtils {
         state: FacetValueState.idle,
         children: depth > 1 ? this.createFakeFacetResponseValues(depth - 1, children) : [],
         moreValuesAvailable: false,
-        numberOfResults: Math.ceil(Math.random() * 100000),
+        numberOfResults: Math.ceil(Math.random() * 100000)
       };
 
       fakeValues.push(fakeValue);
@@ -88,7 +94,7 @@ export class CategoryFacetTestUtils {
   }
 
   static createFakeFacet(options?: ICategoryFacetOptions) {
-    const facet = Mock.mockComponent<CategoryFacet>(CategoryFacet);
+    const facet = Mock.mockComponent<ICategoryFacet>(CategoryFacet);
     facet.options = this.allOptions(options);
     facet.values = new CategoryFacetValues(facet);
     facet.element = $$('div').el;
@@ -114,7 +120,7 @@ export class CategoryFacetTestUtils {
     });
   }
 
-  static getCompleteFacetResponse(facet: CategoryFacet, partialResponse?: Partial<IFacetResponse>): IFacetResponse {
+  static getCompleteFacetResponse(facet: ICategoryFacet, partialResponse?: Partial<IFacetResponse>): IFacetResponse {
     return {
       facetId: facet.options.id,
       field: facet.fieldName,

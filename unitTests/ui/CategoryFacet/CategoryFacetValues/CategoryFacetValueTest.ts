@@ -1,14 +1,14 @@
 import * as Globalize from 'globalize';
-import { CategoryFacetValue, ICategoryFacetValue } from '../../../../src/ui/CategoryFacet/CategoryFacetValues/CategoryFacetValue'
+import { CategoryFacetValue } from '../../../../src/ui/CategoryFacet/CategoryFacetValues/CategoryFacetValue';
 import { CategoryFacetTestUtils } from '../CategoryFacetTestUtils';
-import { CategoryFacet } from '../../../../src/ui/CategoryFacet/CategoryFacet';
 import { $$ } from '../../../../src/Core';
+import { ICategoryFacet, ICategoryFacetValueProperties } from '../../../../src/ui/CategoryFacet/ICategoryFacet';
 
 export function CategoryFacetValueTest() {
   describe('CategoryFacetValue', () => {
-    let facet: CategoryFacet;
+    let facet: ICategoryFacet;
     let facetValue: CategoryFacetValue;
-    let fakeFacetValue: ICategoryFacetValue
+    let fakeFacetValue: ICategoryFacetValueProperties;
 
     beforeEach(() => {
       facet = CategoryFacetTestUtils.createFakeFacet();
