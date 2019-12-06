@@ -271,7 +271,7 @@ export class ComponentOptions {
   /**
    * Builds a query expression option.
    *
-   * The query expression option should follow the [Coveo Cloud Query Syntax Reference](https://www.coveo.com/go?dest=cloudhelp&lcid=9&context=357).
+   * The query expression option should follow the [Coveo Cloud Query Syntax Reference](https://docs.coveo.com/en/1552/).
    *
    * **Markup Example:**
    *

@@ -54,11 +54,11 @@ type WaitAnimation = 'fade' | 'spinner' | 'none';
 
 /**
  * The `ResultList` component is responsible for displaying query results by applying one or several result templates
- * (see [Result Templates](https://developers.coveo.com/x/aIGfAQ)).
+ * (see [Result Templates](https://docs.coveo.com/en/413/)).
  *
  * It is possible to include multiple `ResultList` components along with a single `ResultLayout`
  * component in a search page to provide different result layouts (see
- * [Result Layouts](https://developers.coveo.com/x/yQUvAg)).
+ * [Result Layouts](https://docs.coveo.com/en/360/)).
  *
  * This component supports infinite scrolling (see the
  * [`enableInfiniteScroll`]{@link ResultList.options.enableInfiniteScroll} option).
@@ -229,9 +229,9 @@ export class ResultList extends Component {
     fieldsToInclude: ComponentOptions.buildFieldsOption({ includeInResults: true }),
 
     /**
-     * The layout to use when displaying results in this `ResultList` (see
-     * [Result Layouts](https://developers.coveo.com/x/yQUvAg)). Specifying a value for this option automatically
-     * populates a [`ResultLayoutSelector`]{@link ResultLayoutSelector} component with a switcher for the layout.
+     * Specifies the layout to use when displaying results in this `ResultList` (see
+     * [Result Layouts](https://docs.coveo.com/en/360/)). Specifying a value for this option automatically
+     * populates a [`ResultLayout`]{@link ResultLayout} component with a switcher for the layout.
      *
      * For example, if there are two `ResultList` components in the page, one with its `layout` set to `list` and the
      * other with the same option set to `card`, then the `ResultLayout` component will render two buttons respectively
@@ -536,7 +536,7 @@ export class ResultList extends Component {
       } else {
         this.logger.info(
           `Result list has triggered 5 consecutive queries to try and fill up the scrolling container, but it is still unable to do so.
-          Try explicitly setting the 'data-infinite-scroll-container-selector' option on the result list. See : https://coveo.github.io/search-ui/components/resultlist.html#options.infinitescrollcontainer`
+          Try explicitly setting the 'data-infinite-scroll-container-selector' option on the result list. See: https://coveo.github.io/search-ui/components/resultlist.html#options.infinitescrollcontainer`
         );
       }
     });

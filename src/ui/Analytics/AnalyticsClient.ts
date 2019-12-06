@@ -34,7 +34,7 @@ export interface IAnalyticsClient {
    *
    * > When logging custom `Search` events, you should use the `Coveo.logSearchEvent` top-level function rather than
    * > calling this method directly from the analytics client. See
-   * > [Sending Custom Analytics Events](https://developers.coveo.com/x/KoGfAQ).
+   * > [Logging Your Own Search Events](https://docs.coveo.com/en/2726/#logging-your-own-search-events).
    *
    * @param actionCause The cause of the event.
    * @param meta The metadata you want to use to create custom dimensions. Metadata can contain as many key-value
@@ -61,7 +61,7 @@ export interface IAnalyticsClient {
    *
    * > When logging custom `SearchAsYouType` events, you should use the `Coveo.logSearchAsYouTypeEvent` top-level
    * > function rather than calling this method directly from the analytics client. See
-   * > [Sending Custom Analytics Events](https://developers.coveo.com/x/KoGfAQ).
+   * > [Logging Your Own Search Events](https://docs.coveo.com/en/2726/#logging-your-own-search-events).
    *
    * @param actionCause The cause of the event.
    * @param meta The metadata which you want to use to create custom dimensions. Metadata can contain as many key-value
@@ -83,7 +83,7 @@ export interface IAnalyticsClient {
    * **Note:**
    * > When logging custom `Click` events, you should use the `Coveo.logClickEvent` top-level function rather than
    * > calling this method directly from the analytics client. See
-   * > [Sending Custom Analytics Events](https://developers.coveo.com/x/KoGfAQ).
+   * > [Logging Your Own Search Events](https://docs.coveo.com/en/2726/#logging-your-own-search-events).
    *
    * @param actionCause The cause of the event.
    * @param meta The metadata which you want to use to create custom dimensions. Metadata can contain as many key-value
@@ -113,7 +113,7 @@ export interface IAnalyticsClient {
    * **Note:**
    * > When logging `Custom` events, you should use the `Coveo.logClickEvent` top-level function rather than calling
    * > this method directly from the analytics client. See
-   * > [Sending Custom Analytics Events](https://developers.coveo.com/x/KoGfAQ).
+   * > [Logging Your Own Search Events](https://docs.coveo.com/en/2726/#logging-your-own-search-events).
    *
    * @param actionCause The cause of the event.
    * @param meta The metadata which you want to use to create custom dimensions. Metadata can contain as many key-value

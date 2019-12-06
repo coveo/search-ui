@@ -157,6 +157,7 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
   private buildQuery(searchQuery: string): IQuery {
     const { searchHub, pipeline, tab, locale, timezone, context } = this.queryController.getLastQuery();
     return {
+      firstResult: 0,
       searchHub,
       pipeline,
       tab,
@@ -186,7 +187,6 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
 
   private handleSelect(suggestionText: string, element: HTMLElement, rank: number) {
     this.logClickQuerySuggestPreview(suggestionText, rank, element);
-    element.click();
     const link = $$(element).find(`.${Component.computeCssClassNameForType('ResultLink')}`);
     if (link) {
       const resultLink = <ResultLink>Component.get(link);

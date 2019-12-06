@@ -20,13 +20,13 @@ export interface ICardActionBarOptions {
 
 /**
  * The `CardActionBar` component displays an action bar at the bottom of a card result (see
- * [Result Layouts](https://developers.coveo.com/x/yQUvAg)). It is a simple container for buttons or complementary
+ * [Result Layouts](https://docs.coveo.com/en/360/)). It is a simple container for buttons or complementary
  * information.
  *
  * You should place this component at the bottom of a card result template (i.e., as the last child of the surrounding
  * `coveo-result-frame` div).
  *
- * See [Result Layouts - Using the CardActionBar Component](https://developers.coveo.com/x/yQUvAg#ResultLayouts-UsingtheCardActionBarComponent)
+ * See [Using the CardActionBar Component](https://docs.coveo.com/en/1349/#using-the-cardactionbar-component)
  */
 export class CardActionBar extends Component {
   static ID = 'CardActionBar';

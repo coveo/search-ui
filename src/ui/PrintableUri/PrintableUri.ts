@@ -22,7 +22,7 @@ export interface IPrintableUriOptions extends IResultLinkOptions {}
  *
  * This component displays the URI, or path, to access a result.
  *
- * This component is a result template component (see [Result Templates](https://developers.coveo.com/x/aIGfAQ)).
+ * This component is a result template component (see [Result Templates](https://docs.coveo.com/en/413/)).
  */
 export class PrintableUri extends Component {
   static ID = 'PrintableUri';

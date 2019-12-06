@@ -103,7 +103,7 @@ export class Querybox extends Component {
     /**
      * Specifies whether to expand basic expression keywords containing wildcards characters (`*`) to the possible
      * matching keywords in order to broaden the query (see
-     * [Using Wildcards in Queries](https://www.coveo.com/go?dest=cloudhelp&lcid=9&context=359)).
+     * [Using Wildcards in Queries](https://docs.coveo.com/en/1580/)).
      *
      * See also [`enableQuestionMarks`]{@link Querybox.options.enableQuestionMarks}.
      *
@@ -120,7 +120,7 @@ export class Querybox extends Component {
      * If [`enableWildcards`]{@link Querybox.options.enableWildcards} is `true`, specifies whether to expand basic
      * expression keywords containing question mark characters (`?`) to the possible matching keywords in order to
      * broaden the query (see
-     * [Using Wildcards in Queries](https://www.coveo.com/go?dest=cloudhelp&lcid=9&context=359)).
+     * [Using Wildcards in Queries](https://docs.coveo.com/en/1580/)).
      *
      * **Note:**
      * > If you are using an on-premises version of the Coveo Search API, you also need to set the

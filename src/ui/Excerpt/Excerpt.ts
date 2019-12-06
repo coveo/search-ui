@@ -12,7 +12,7 @@ import 'styling/_Excerpt';
  * The Excerpt component renders an excerpt of its associated result and highlights the keywords from the query using
  * the appropriate template helpers.
  *
- * This component is a result template component (see [Result Templates](https://developers.coveo.com/x/aIGfAQ)).
+ * This component is a result template component (see [Result Templates](https://docs.coveo.com/en/413/)).
  */
 export class Excerpt extends Component {
   static ID = 'Excerpt';

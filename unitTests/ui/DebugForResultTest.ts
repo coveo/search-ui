@@ -32,13 +32,11 @@ export function DebugForResultTest() {
       Expression: "@spacekey=SitecoreV3" Score: 0
       Expression: "@syssource=answers" Score: 0
       Expression: "@syssource==(apices70,apices65,"Web Scraper - apisitecore30")" Score: 0
-      Expression: "@sysuri=="https://onlinehelp.coveo.com/en/cloud/Search.htm"" Score: 0
-      Expression: "@sysuri=="https://onlinehelp.coveo.com/en/ces/7.0/Search.htm"" Score: 0
-      Expression: "@sysuri=="https://onlinehelp.coveo.com/en/ces/6.5/Search.htm"" Score: 0
-      Expression: "@sysuri=="https://onlinehelp.coveo.com/fr/cloud/Search.htm"" Score: 0
-      Expression: "@sysuri=="https://onlinehelp.coveo.com/fr/ces/7.0/Search.htm"" Score: 0
-      Expression: "@sysuri=="https://onlinehelp.coveo.com/fr/ces/6.5/Search.htm"" Score: 0
-      Expression: "@sysuri=="https://onlinehelp.coveo.com/en/cloud/404_error.htm"" Score: 0
+      Expression: "@sysuri=="https://docs.coveo.com/en/1547/"" Score: 0
+      Expression: "@sysuri=="https://docs.coveo.com/en/2660/"" Score: 0
+      Expression: "@sysuri=="https://docs.coveo.com/en/1783/"" Score: 0
+      Expression: "@sysuri=="https://docs.coveo.com/en/2661/"" Score: 0
+      Expression: "@sysuri=="https://docs.coveo.com/en/1547/"" Score: 0
       Expression: "@sysurihash="Fp5jjQ c8VBdA2bV"" Score: 0
       Expression: "@sysurihash="H94tpRkO9JaivGmu"" Score: 890
       Expression: "@sysurihash="aBtg0qhgVOsKsLDP"" Score: 0
