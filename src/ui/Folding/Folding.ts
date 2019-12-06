@@ -53,12 +53,12 @@ interface IResultNode {
  *
  * This component has no visual impact on its own. It simply folds certain search results so that the
  * [`ResultFolding`]{@link ResultFolding} and [`ResultAttachments`]{@link ResultAttachments} components can then nicely
- * render them within result templates (see [Result Templates](https://developers.coveo.com/x/aIGfAQ)).
+ * render them within result templates (see [Result Templates](https://docs.coveo.com/en/413/)).
  *
  * A typical use case of the `Folding` component is to fold email conversations and message board threads results in a
  * result set in order to display them in a convenient format. Messages belonging to a single conversation typically
  * have a unique conversation ID. By indexing this ID on a field, you can use it to fold search results (see
- * [Folding Results](https://developers.coveo.com/x/7hUvAg)).
+ * [Folding Results](https://docs.coveo.com/en/428/)).
  *
  * **Note:**
  * > There can only be one `Folding` component per [`Tab`]{@link Tab} component.
@@ -85,7 +85,7 @@ export class Folding extends Component {
      *
      * **Note:**
      * > In an Elasticsearch index, the corresponding field must be configured as a *Facet* field
-     * > (see [Add/Edit a Field: [FieldName] - Panel ](https://www.coveo.com/go?dest=cloudhelp&lcid=9&context=288)).
+     * > (see [Add or Edit Fields](https://docs.coveo.com/en/1982/)).
      * > This limitation does not apply to Coveo indexes.
      *
      * Default value is `@foldingcollection`.
@@ -144,7 +144,7 @@ export class Folding extends Component {
 
     /**
      * Specifies the sort criteria to apply to the top result and its child results (e.g., `date ascending`,
-     * `@myfield descending`, etc.). See [Query Parameters - sortCriteria](https://developers.coveo.com/x/iwEv#QueryParameters-sortCriteriasortCriteria).
+     * `@myfield descending`, etc.). See [sortCriteria](https://docs.coveo.com/en/1461/#RestQueryParameters-sortCriteria).
      *
      * This option works from the results returned by the index. This means that if only the three most relevant folded results are returned by the index
      * and you choose to rearrange the folded results by date, then the three most relevant results will be rearranged by date,

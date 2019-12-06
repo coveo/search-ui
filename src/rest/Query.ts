@@ -113,7 +113,7 @@ export interface IQuery {
   /**
    * Whether to enable wildcards on the basic expression keywords.<br/>
    * This enables the wildcard features of the index. Coveo Platform will expand keywords containing wildcard characters to the possible matching keywords to broaden the query.<br/>
-   * See [Using Wildcards in Queries](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=359).<br/>
+   * See [Using Wildcards in Queries](https://docs.coveo.com/en/1580/).<br/>
    * If not specified, this parameter defaults to false.
    */
   wildcards?: boolean;
@@ -240,15 +240,15 @@ export interface IQuery {
   enableQuerySyntax?: boolean;
   enableDuplicateFiltering?: boolean;
   /**
-   * Whether the index should take collaborative rating in account when ranking result. See : {@link ResultRating}
+   * Whether the index should take collaborative rating in account when ranking result. See: {@link ResultRating}
    */
   enableCollaborativeRating?: boolean;
   /**
-   * Specifies the childField when doing parent-child loading (See : {@link Folding})
+   * Specifies the childField when doing parent-child loading (See: {@link Folding})
    */
   childField?: string;
   /**
-   * Specifies the parentField when doing parent-child loading (See : {@link Folding})
+   * Specifies the parentField when doing parent-child loading (See: {@link Folding})
    */
   parentField?: string;
   /**

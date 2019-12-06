@@ -85,7 +85,7 @@ export class QueryBuilder {
    *
    * Setting this attribute to `true` enables the wildcards features of the index, effectively expanding keywords
    * containing wildcard characters (`*`) to the possible matching keywords in order to broaden the query (see
-   * [Using Wildcards in Queries](https://www.coveo.com/go?dest=cloudhelp&lcid=9&context=359)).
+   * [Using Wildcards in Queries](https://docs.coveo.com/en/1580/)).
    *
    * See also [`enableQuestionMarks`]{@link QueryBuilder.enableQuestionMarks}.
    *
@@ -98,7 +98,7 @@ export class QueryBuilder {
 
   /**
    * Whether to interpret question mark characters (`?`) in the basic [`expression`]{@link QueryBuilder.expression}
-   * keywords (see [Using Wildcards in Queries](https://www.coveo.com/go?dest=cloudhelp&lcid=9&context=359).
+   * keywords (see [Using Wildcards in Queries](https://docs.coveo.com/en/1580/).
    *
    * Setting this attribute to `true` has no effect unless [`enableWildcards`]{@link QueryBuilder.enableWildcards} is
    * also `true`.
@@ -218,11 +218,11 @@ export class QueryBuilder {
    */
   public filterFieldRange: number;
   /**
-   * Specifies the `parentField` when doing parent-child loading (See : {@link Folding}).
+   * Specifies the `parentField` when doing parent-child loading (See: {@link Folding}).
    */
   public parentField: string;
   /**
-   * Specifies the childField when doing parent-child loading (See : {@link Folding}).
+   * Specifies the childField when doing parent-child loading (See: {@link Folding}).
    */
   public childField: string;
   public fieldsToInclude: string[];
@@ -246,7 +246,7 @@ export class QueryBuilder {
    *
    * > The Coveo Cloud V2 platform does not support collaborative rating. Therefore, this property is obsolete in Coveo Cloud V2.
    *
-   * Whether the index should take collaborative rating in account when ranking result (see : {@link ResultRating}).
+   * Whether the index should take collaborative rating in account when ranking result (See: {@link ResultRating}).
    */
   public enableCollaborativeRating: boolean;
   /**

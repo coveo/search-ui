@@ -179,7 +179,7 @@ export class Omnibox extends Component {
      *
      * The corresponding Coveo ML model must be properly configured in your Coveo Cloud organization, otherwise this
      * option has no effect (see
-     * [Managing Machine Learning Query Suggestions in a Query Pipeline](https://www.coveo.com/go?dest=cloudhelp&lcid=9&context=168)).
+     * [Managing Machine Learning Query Suggestions in a Query Pipeline](https://docs.coveo.com/en/1838/)).
      *
      * **Note:**
      * > When you set this option and the [`enableSearchAsYouType`]{@link Omnibox.options.enableSearchAsYouType} option

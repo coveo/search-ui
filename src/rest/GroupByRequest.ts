@@ -5,7 +5,7 @@ import { AllowedValuesPatternType } from './AllowedValuesPatternType';
 /**
  * The `IGroupByRequest` interface describes a Group By operation to perform against the index.
  *
- * See [Group By Parameters](https://developers.coveo.com/x/jQEv).
+ * See [Group By Operations](https://docs.coveo.com/en/1453/).
  */
 export interface IGroupByRequest {
   /**
@@ -27,7 +27,7 @@ export interface IGroupByRequest {
    * first.
    * - `alphaascending` / `alphadescending`: Sort alphabetically on the field values.
    * - `computedfieldascending` / `computedfielddescending`: Sort on the values of the first computed field for each
-   * Group By value (see [Computed Field Parameters](https://developers.coveo.com/x/jwEv)).
+   * Group By value (see [Computed Fields](https://docs.coveo.com/en/1467/)).
    * - `chisquare`: Sort based on the relative frequency of values in the result set compared to the frequency in the
    * entire index. This means that a value that does not appear often in the index but does appear often in the result
    * set will tend to appear first.
@@ -103,7 +103,7 @@ export interface IGroupByRequest {
    *
    * Computed fields are used to perform aggregate operations on other fields for all the matching items having a
    * specific value in the Group By field in the results. See
-   * [Computed Field Parameters](https://developers.coveo.com/x/jwEv).
+   * [Computed Fields](https://docs.coveo.com/en/1467/).
    */
   computedFields?: IComputedFieldRequest[];
 

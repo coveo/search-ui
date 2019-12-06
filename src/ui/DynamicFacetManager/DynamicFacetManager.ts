@@ -67,9 +67,9 @@ export class DynamicFacetManager extends Component {
      * **Note:**
      * > You cannot set this option directly in the component markup as an HTML attribute. You must either set it in the
      * > [`init`]{@link init} call of your search interface (see
-     * > [Components - Passing Component Options in the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsintheinitCall)),
+     * > [Passing Component Options in the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsintheinitCall)),
      * > or before the `init` call, using the `options` top-level function (see
-     * > [Components - Passing Component Options Before the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsBeforetheinitCall)).
+     * > [Passing Component Options Before the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsBeforetheinitCall)).
      */
     onUpdate: ComponentOptions.buildCustomOption<IDynamicFacetManagerOnUpdate>(() => {
       return null;
@@ -81,9 +81,9 @@ export class DynamicFacetManager extends Component {
      * > If specified, the function must implement the JavaScript compareFunction (see [Array.prototype.sort](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort).
      * > You cannot set this option directly in the component markup as an HTML attribute. You must either set it in the
      * > [`init`]{@link init} call of your search interface (see
-     * > [Components - Passing Component Options in the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsintheinitCall)),
+     * > [Passing Component Options in the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsintheinitCall)),
      * > or before the `init` call, using the `options` top-level function (see
-     * > [Components - Passing Component Options Before the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsBeforetheinitCall)).
+     * > [Passing Component Options Before the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsBeforetheinitCall)).
      */
     compareFacets: ComponentOptions.buildCustomOption<IDynamicFacetManagerCompareFacet>(() => {
       return null;

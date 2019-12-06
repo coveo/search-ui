@@ -133,7 +133,7 @@ Initialization.registerNamedMethod('executeQuery', (element: HTMLElement) => {
 
 /**
  * Performs read and write operations on the [`QueryStateModel`]{@link QueryStateModel} instance of the search
- * interface. See [State](https://developers.coveo.com/x/RYGfAQ).
+ * interface. See [State](https://docs.coveo.com/en/344/).
  *
  * Can perform the following actions:
  *
@@ -266,7 +266,7 @@ Initialization.registerNamedMethod('logCustomEvent', (element: HTMLElement, cust
  * A `Search` event is actually sent to the Coveo Usage Analytics service only after the query successfully returns (not
  * immediately after calling this method). Therefore, it is important to call this method **before** executing the
  * query. Otherwise, the `Search` event will not be logged, and you will get a warning message in the console. See
- * [Sending Custom Analytics Events](https://developers.coveo.com/x/KoGfAQ).
+ * [Logging Your Own Search Events](https://docs.coveo.com/en/2726/#logging-your-own-search-events).
  *
  * @param element The root of the search interface which contains the [`Analytics`]{@link Analytics} component.
  * @param searchEventCause The cause of the event.
@@ -302,7 +302,7 @@ Initialization.registerNamedMethod(
  *
  * It is important to call this method **before** executing the query. Otherwise, no `SearchAsYouType` event will be
  * logged, and you will get a warning message in the console. See
- * [Sending Custom Analytics Events](https://developers.coveo.com/x/KoGfAQ).
+ * [Logging Your Own Search Events](https://docs.coveo.com/en/2726/#logging-your-own-search-events).
  *
  * @param element The root of the search interface which contains the [`Analytics`]{@link Analytics} component.
  * @param searchAsYouTypeEventCause The cause of the event.
@@ -523,7 +523,7 @@ Initialization.registerNamedMethod('disableAnalytics', () => {
  * Asynchronously loads a module, or chunk.
  *
  * This is especially useful when you want to extend a base component, and make sure the lazy component loading process
- * recognizes it (see [Lazy Versus Eager Component Loading](https://developers.coveo.com/x/YBgvAg)).
+ * recognizes it (see [Lazy Versus Eager Component Loading](https://docs.coveo.com/en/295/)).
  *
  * **Example:**
  *

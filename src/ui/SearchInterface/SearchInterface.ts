@@ -256,7 +256,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
      * Default value is `true`.
      *
      * @deprecated This option is exposed for legacy reasons. Since the
-     * [July 2017 Release (v2.2900.23)](https://developers.coveo.com/x/gSMvAg), the loading animation is composed of
+     * [July 2017 Release (v2.2900.23)](https://docs.coveo.com/en/432/), the loading animation is composed of
      * placeholders, making this option is obsolete.
      */
     hideUntilFirstQuery: ComponentOptions.buildBooleanOption({
@@ -303,7 +303,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
      * By default, the loading animation is a Coveo CSS animation (which you can customize with CSS).
      *
      * @deprecated This option is exposed for legacy reasons. Since the
-     * [July 2017 Release (v2.2900.23)](https://developers.coveo.com/x/gSMvAg), the loading animation is composed of
+     * [July 2017 Release (v2.2900.23)](https://docs.coveo.com/en/432/), the loading animation is composed of
      * placeholders, making this option is obsolete.
      */
     firstLoadingAnimation: ComponentOptions.buildChildHtmlElementOption({
@@ -397,7 +397,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
      * Specifies the name of the query pipeline to use for the queries.
      *
      * You can specify a value for this option if your index is in a Coveo Cloud organization in which pipelines have
-     * been created (see [Managing Query Pipelines](https://www.coveo.com/go?dest=cloudhelp&lcid=9&context=128)).
+     * been created (see [Adding and Managing Query Pipelines](https://docs.coveo.com/en/1791/)).
      *
      * **Note:**
      *
@@ -426,7 +426,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
      *
      * Default value is `undefined`, which means that the search interface lets the Coveo Search API determine the
      * maximum cache age. This is typically equivalent to 30 minutes (see
-     * [Query Parameters - maximumAge](https://developers.coveo.com/x/iwEv#QueryParameters-maximumAge)).
+     * [maximumAge](https://docs.coveo.com/en/1461/#RestQueryParameters-maximumAge)).
      */
     maximumAge: ComponentOptions.buildNumberOption(),
     /**
