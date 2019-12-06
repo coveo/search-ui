@@ -32,6 +32,9 @@ export interface IFieldSuggestionsOptions extends ISuggestionForOmniboxOptions {
  * use this component to provide auto-complete suggestions while the end user is typing the title of an item.
  *
  * The query suggestions provided by this component appear in the [`Omnibox`]{@link Omnibox} component.
+ *
+ * **Note:** Consider [providing Coveo ML query suggestions](https://docs.coveo.com/en/340/#providing-coveo-machine-learning-query-suggestions)
+ * rather than field suggestions, as the former yields better performance and relevance.
  */
 export class FieldSuggestions extends Component {
   static ID = 'FieldSuggestions';
