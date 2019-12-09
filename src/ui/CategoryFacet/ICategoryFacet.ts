@@ -7,11 +7,11 @@ import { DependsOnManager } from '../../utils/DependsOnManager';
 import { DynamicFacetHeader } from '../DynamicFacet/DynamicFacetHeader/DynamicFacetHeader';
 import { CategoryFacetQueryController } from '../../controllers/DynamicCategoryFacetQueryController';
 import { FacetType } from '../../rest/Facet/FacetRequest';
-import { QueryBuilder } from '../Base/QueryBuilder';
 import { IAnalyticsActionCause } from '../Analytics/AnalyticsActionListMeta';
 import { ISearchEndpoint } from '../../rest/SearchEndpointInterface';
 import { IFacetResponse } from '../../rest/Facet/FacetResponse';
 import { FacetValueState } from '../../rest/Facet/FacetValueState';
+import { IDynamicManagerCompatibleFacet } from '../DynamicFacetManager/DynamicFacetManager';
 
 export interface ICategoryFacetOptions extends IResponsiveComponentOptions {
   id?: string;
@@ -42,7 +42,7 @@ export type CategoryValueDescriptor = {
   path: string[];
 };
 
-export interface ICategoryFacet extends Component, IAutoLayoutAdjustableInsideFacetColumn {
+export interface ICategoryFacet extends Component, IDynamicManagerCompatibleFacet, IAutoLayoutAdjustableInsideFacetColumn {
   header: DynamicFacetHeader;
   options: ICategoryFacetOptions;
   dependsOnManager: DependsOnManager;
@@ -55,11 +55,6 @@ export interface ICategoryFacet extends Component, IAutoLayoutAdjustableInsideFa
   fieldName: string;
   facetType: FacetType;
   activePath: string[];
-
-  // TODO: remove when adding IDynamicManagerCompatibleFacet
-  putStateIntoQueryBuilder(queryBuilder: QueryBuilder): void;
-  expand(): void;
-  collapse(): void;
 
   isCurrentlyDisplayed(): boolean;
   scrollToTop(): void;

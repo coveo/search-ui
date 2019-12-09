@@ -3,7 +3,7 @@ import { DynamicFacet } from '../../../src/ui/DynamicFacet/DynamicFacet';
 import { IDynamicFacetOptions, IDynamicFacetValueProperties } from '../../../src/ui/DynamicFacet/IDynamicFacet';
 import { FacetValueState } from '../../../src/rest/Facet/FacetValueState';
 import { DynamicFacetTestUtils } from './DynamicFacetTestUtils';
-import { $$, BreadcrumbEvents, QueryEvents } from '../../../src/Core';
+import { $$, BreadcrumbEvents, QueryEvents, QueryBuilder } from '../../../src/Core';
 import { FacetSortCriteria } from '../../../src/rest/Facet/FacetSortCriteria';
 import { Simulate } from '../../Simulate';
 import { IPopulateBreadcrumbEventArgs } from '../../../src/events/BreadcrumbEvents';
@@ -11,6 +11,7 @@ import { analyticsActionCauseList } from '../../../src/ui/Analytics/AnalyticsAct
 import { FakeResults } from '../../Fake';
 import { ResultListUtils } from '../../../src/utils/ResultListUtils';
 import { FacetType } from '../../../src/rest/Facet/FacetRequest';
+import { DynamicFacetManager } from '../../../src/ui/DynamicFacetManager/DynamicFacetManager';
 
 export function DynamicFacetTest() {
   describe('DynamicFacet', () => {
@@ -36,6 +37,7 @@ export function DynamicFacetTest() {
       spyOn(test.cmp.values, 'render').and.callThrough();
       triggerNewQuerySpy = spyOn(test.cmp, 'triggerNewQuery').and.callThrough();
       triggerNewQuerySpy.and.callThrough();
+      spyOn(test.cmp, 'putStateIntoQueryBuilder').and.callThrough();
       spyOn(test.cmp, 'triggerNewIsolatedQuery').and.callThrough();
       spyOn(test.cmp, 'reset').and.callThrough();
       spyOn(test.cmp, 'enableFreezeFacetOrderFlag').and.callThrough();
@@ -650,6 +652,31 @@ export function DynamicFacetTest() {
       it('should call "toggleCollapse" when calling collapse', () => {
         test.cmp.collapse();
         expect(test.cmp.header.toggleCollapse).toHaveBeenCalled();
+      });
+    });
+
+    describe('testing putStateIntoQueryBuilder', () => {
+      it(`when calling putStateIntoQueryBuilder
+      should call putFacetIntoQueryBuilder on the categoryFacetQueryController`, () => {
+        spyOn(test.cmp.dynamicFacetQueryController, 'putFacetIntoQueryBuilder');
+        const queryBuilder = new QueryBuilder();
+        test.cmp.putStateIntoQueryBuilder(queryBuilder);
+        expect(test.cmp.dynamicFacetQueryController.putFacetIntoQueryBuilder).toHaveBeenCalledWith(queryBuilder);
+      });
+
+      it(`when triggering doneBuildingQuery
+      should call putStateIntoQueryBuilder on the facet`, () => {
+        const queryBuilder = new QueryBuilder();
+        $$(test.cmp.root).trigger(QueryEvents.doneBuildingQuery, { queryBuilder });
+        expect(test.cmp.putStateIntoQueryBuilder).toHaveBeenCalledWith(queryBuilder);
+      });
+
+      it(`when facet as a dynamicFacetManager
+      when triggering doneBuildingQuery
+      should not call putStateIntoQueryBuilder on the facet`, () => {
+        test.cmp.dynamicFacetManager = Mock.mockComponent(DynamicFacetManager);
+        $$(test.cmp.root).trigger(QueryEvents.doneBuildingQuery, { queryBuilder: new QueryBuilder() });
+        expect(test.cmp.putStateIntoQueryBuilder).not.toHaveBeenCalled();
       });
     });
 

@@ -41,6 +41,7 @@ import { CategoryFacetValues } from './CategoryFacetValues/CategoryFacetValues';
 import { IFacetResponse } from '../../rest/Facet/FacetResponse';
 import { IQueryOptions } from '../../controllers/QueryController';
 import { IQueryResults } from '../../rest/QueryResults';
+import { DynamicFacetManager } from '../DynamicFacetManager/DynamicFacetManager';
 
 /**
  * The `CategoryFacet` component is a facet that renders values in a hierarchical fashion. It determines the filter to apply depending on the
@@ -301,6 +302,8 @@ export class CategoryFacet extends Component implements ICategoryFacet {
   public values: ICategoryFacetValues;
   public moreValuesAvailable = false;
   public position: number = null;
+  public dynamicFacetManager: DynamicFacetManager;
+  public isDynamicFacet = true;
 
   // TODO: add truncating
   public static MAXIMUM_NUMBER_OF_VALUES_BEFORE_TRUNCATING = 15;
@@ -340,6 +343,14 @@ export class CategoryFacet extends Component implements ICategoryFacet {
     return $$(this.element).isVisible();
   }
 
+  public get hasDisplayedValues() {
+    return !!this.values.allFacetValues.length;
+  }
+
+  public get hasActiveValues() {
+    return this.values.hasSelectedValue;
+  }
+
   private initQueryEvents() {
     this.bind.onRootElement(QueryEvents.doneBuildingQuery, (data: IDoneBuildingQueryEventArgs) => this.handleDoneBuildingQuery(data));
     this.bind.onRootElement(QueryEvents.querySuccess, (data: IQuerySuccessEventArgs) => this.handleQuerySuccess(data.results));
@@ -364,6 +375,11 @@ export class CategoryFacet extends Component implements ICategoryFacet {
   }
 
   private handleDoneBuildingQuery(data: IDoneBuildingQueryEventArgs) {
+    // If there is a DynamicFacetManager, it will take care of adding the facet's state
+    if (this.dynamicFacetManager) {
+      return;
+    }
+
     Assert.exists(data);
     Assert.exists(data.queryBuilder);
     this.putStateIntoQueryBuilder(data.queryBuilder);
@@ -372,6 +388,10 @@ export class CategoryFacet extends Component implements ICategoryFacet {
   public putStateIntoQueryBuilder(queryBuilder: QueryBuilder) {
     Assert.exists(queryBuilder);
     this.categoryFacetQueryController.putFacetIntoQueryBuilder(queryBuilder);
+  }
+
+  public putStateIntoAnalytics() {
+    // TODO: JSUI-2709 add analytics
   }
 
   public scrollToTop() {
