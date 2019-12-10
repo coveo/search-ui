@@ -324,6 +324,15 @@ export class Pager extends Component {
     if (data.queryBuilder.numberOfResults == null) {
       data.queryBuilder.numberOfResults = eventArgs.count;
     }
+
+    // Prevents having a RequestedResultsMax error if we are requesting results over the maximumNumberOfResultsFromIndex option
+    const excessResults = Math.max(
+      0,
+      data.queryBuilder.firstResult + data.queryBuilder.numberOfResults - this.options.maximumNumberOfResultsFromIndex
+    );
+    if (excessResults) {
+      data.queryBuilder.numberOfResults = data.queryBuilder.numberOfResults - excessResults;
+    }
   }
 
   private computePagerBoundary(firstResult: number, totalCount: number) {
