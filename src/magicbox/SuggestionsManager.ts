@@ -202,7 +202,6 @@ export class SuggestionsManager {
   private async processKeyboardSelection(suggestion: HTMLElement) {
     this.addSelectedStatus(suggestion);
     this.keyboardFocusedElement = suggestion;
-    $$(this.inputManager.input).setAttribute('aria-activedescendant', $$(suggestion).getAttribute('id'));
     await this.updateSelectedSuggestion(suggestion);
   }
 
@@ -369,9 +368,10 @@ export class SuggestionsManager {
     this.updateAreaSelectedIfDefined(suggestion, 'false');
   }
 
-  private updateAreaSelectedIfDefined(suggestion: HTMLElement, value: string): void {
-    if ($$(suggestion).getAttribute('aria-selected')) {
-      $$(suggestion).setAttribute('aria-selected', value);
+  private updateAreaSelectedIfDefined(element: HTMLElement, value: string): void {
+    if ($$(element).getAttribute('aria-selected')) {
+      $$(this.inputManager.input).setAttribute('aria-activedescendant', element.id);
+      $$(element).setAttribute('aria-selected', value);
     }
   }
 
