@@ -249,7 +249,7 @@ export function PagerTest() {
       it(`when having a resultPerPage that is not a divider of maximumNumberOfResultsFromIndex 
       should prevent requesting more result than the maximumNumberOfResultsFromIndex option`, () => {
         const resultsPerPage = 12;
-        const pageNumber = 84; // the last page for 1000 results with a resultsPerPage of 12
+        const pageNumber = Math.ceil(test.cmp.options.maximumNumberOfResultsFromIndex / resultsPerPage);
         const firstResult = (pageNumber - 1) * resultsPerPage;
 
         test.cmp.setPage(pageNumber);
