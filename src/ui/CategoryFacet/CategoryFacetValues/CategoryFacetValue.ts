@@ -98,7 +98,7 @@ export class CategoryFacetValue implements ICategoryFacetValue {
       label: l('ShowMore'),
       action: () => {
         this.facet.enableFreezeFacetOrderFlag();
-        this.retrieveCount += this.facet.options.pageSize;
+        this.retrieveCount += this.facet.options.numberOfValues;
         this.facet.triggerNewIsolatedQuery();
       }
     });

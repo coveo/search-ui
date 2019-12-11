@@ -15,7 +15,6 @@ import { Assert } from '../../misc/Assert';
 import { QueryEvents, IQuerySuccessEventArgs, IDoneBuildingQueryEventArgs } from '../../events/QueryEvents';
 import { BreadcrumbEvents, IPopulateBreadcrumbEventArgs } from '../../events/BreadcrumbEvents';
 import { CategoryFacetBreadcrumb } from './CategoryFacetBreadcrumb';
-import { ISearchEndpoint } from '../../rest/SearchEndpointInterface';
 import {
   IAnalyticsCategoryFacetMeta,
   analyticsActionCauseList,
@@ -24,13 +23,7 @@ import {
 } from '../Analytics/AnalyticsActionListMeta';
 import { QueryBuilder } from '../Base/QueryBuilder';
 import { ResponsiveFacets } from '../ResponsiveComponents/ResponsiveFacets';
-import {
-  ICategoryFacetOptions,
-  CategoryValueDescriptor,
-  ICategoryFacet,
-  ICategoryFacetValues,
-  ICategoryFacetValue
-} from './ICategoryFacet';
+import { ICategoryFacetOptions, ICategoryFacet, ICategoryFacetValues } from './ICategoryFacet';
 import { ResponsiveFacetOptions } from '../ResponsiveComponents/ResponsiveFacetOptions';
 import { DynamicFacetHeader } from '../DynamicFacet/DynamicFacetHeader/DynamicFacetHeader';
 import { IStringMap } from '../../rest/GenericParam';
@@ -133,16 +126,6 @@ export class CategoryFacet extends Component implements ICategoryFacet {
     includeInBreadcrumb: ComponentOptions.buildBooleanOption({ defaultValue: true, section: 'CommonOptions' }),
 
     /**
-     * Whether to display a search box at the bottom of the facet for searching among the available facet
-     * [`field`]{@link CategoryFacet.options.field} values.
-     *
-     * See also the [`facetSearchDelay`]{@link CategoryFacet.options.facetSearchDelay}, and
-     * [`numberOfResultsInFacetSearch`]{@link CategoryFacet.options.numberOfResultsInFacetSearch} options.
-     *
-     */
-    enableFacetSearch: ComponentOptions.buildBooleanOption({ defaultValue: true }),
-
-    /**
      * The *injection depth* to use.
      *
      * The injection depth determines how many results to scan in the index to ensure that the category facet lists all potential
@@ -153,40 +136,13 @@ export class CategoryFacet extends Component implements ICategoryFacet {
     injectionDepth: ComponentOptions.buildNumberOption({ defaultValue: 1000, min: 0 }),
 
     /**
-     * If the [`enableFacetSearch`]{@link CategoryFacet.options.enableFacetSearch} option is `true`, specifies the number of
-     * values to display in the facet search results popup.
-     *
-     * Default value is `15`. Minimum value is `1`.
-     */
-    numberOfResultsInFacetSearch: ComponentOptions.buildNumberOption({ defaultValue: 15, min: 1 }),
-
-    /**
-     * If the [`enableFacetSearch`]{@link CategoryFacet.options.enableFacetSearch} option is `true`, specifies the delay (in
-     * milliseconds) before sending a search request to the server when the user starts typing in the category facet search box.
-     *
-     * Specifying a smaller value makes results appear faster. However, chances of having to cancel many requests
-     * sent to the server increase as the user keeps on typing new characters.
-     *
-     * Default value is `100`. Minimum value is `0`.
-     */
-    facetSearchDelay: ComponentOptions.buildNumberOption({ defaultValue: 100, min: 0 }),
-
-    /**
      * Whether to enable the **More** and **Less** buttons in the Facet.
      *
-     * See also the [`pageSize`]{@link CategoryFacet.options.pageSize} option.
+     * See also the [`numberOfValues`]{@link CategoryFacet.options.numberOfValues} option.
      *
      * Default value is `true`.
      */
     enableMoreLess: ComponentOptions.buildBooleanOption({ defaultValue: true }),
-
-    /**
-     * If the [`enableMoreLess`]{@link CategoryFacet.options.enableMoreLess} option is `true`, specifies the number of
-     * additional results to fetch when clicking the **More** button.
-     *
-     * Default value is `10`. Minimum value is `1`.
-     */
-    pageSize: ComponentOptions.buildNumberOption({ defaultValue: 10, min: 1, depend: 'enableMoreLess' }),
 
     /**
      * The character that specifies the hierarchical dependency.
@@ -202,44 +158,6 @@ export class CategoryFacet extends Component implements ICategoryFacet {
      * Default value is `|`.
      */
     delimitingCharacter: ComponentOptions.buildStringOption({ defaultValue: '|' }),
-
-    /**
-     * The path to use as the path prefix for every query.
-     *
-     * **Example:**
-     *
-     * You have the following files indexed on a file system:
-     * ```
-     * c:\
-     *    folder1\
-     *      text1.txt
-     *    folder2\
-     *      folder3\
-     *        text2.txt
-     * ```
-     * Setting the `basePath` to `c` would display `folder1` and `folder2` in the `CategoryFacet`, but omit `c`.
-     *
-     * This options accepts an array of values. To specify a "deeper" starting path in your tree, you need to use comma-separated values.
-     *
-     * For example, setting `data-base-path="c,folder1"` on the component markup would display `folder3` in the `CategoryFacet`, but omit `c` and `folder1`.
-     *
-     */
-    basePath: ComponentOptions.buildListOption<string>({ defaultValue: [] }),
-
-    /**
-     * The maximum number of levels to traverse in the hierarchy.
-     * This option does not count the length of the base path. The depth depends on what is shown in the interface.
-     *
-     * Default value is `Number.MAX_VALUE`.
-     */
-    maximumDepth: ComponentOptions.buildNumberOption({ min: 1, defaultValue: Number.MAX_VALUE }),
-
-    /**
-     * Whether to activate field format debugging.
-     * This options logs messages in the console for any potential encountered issues.
-     * This option can have negative effects on performance, and should only be activated when debugging.
-     */
-    debug: ComponentOptions.buildBooleanOption({ defaultValue: false }),
 
     /**
      * Specifies a JSON object describing a mapping of facet values to their desired captions. See
@@ -305,10 +223,6 @@ export class CategoryFacet extends Component implements ICategoryFacet {
   public dynamicFacetManager: DynamicFacetManager;
   public isDynamicFacet = true;
 
-  // TODO: add truncating
-  public static MAXIMUM_NUMBER_OF_VALUES_BEFORE_TRUNCATING = 15;
-  public static NUMBER_OF_VALUES_TO_KEEP_AFTER_TRUNCATING = 10;
-
   constructor(public element: HTMLElement, options: ICategoryFacetOptions, bindings?: IComponentBindings) {
     super(element, 'CategoryFacet', bindings);
     this.options = ComponentOptions.initComponentOptions(element, CategoryFacet, options);
@@ -316,12 +230,6 @@ export class CategoryFacet extends Component implements ICategoryFacet {
     this.categoryFacetQueryController = new CategoryFacetQueryController(this);
     this.isCollapsed = this.options.enableCollapse && this.options.collapsedByDefault;
     this.values = new CategoryFacetValues(this);
-
-    this.tryToInitFacetSearch();
-
-    if (this.options.debug) {
-      // TODO: reimplement debug functionality
-    }
 
     ResponsiveFacets.init(this.root, this, this.options);
     this.initDependsOnManager();
@@ -366,10 +274,6 @@ export class CategoryFacet extends Component implements ICategoryFacet {
     }
   }
 
-  public get activePath(): string[] {
-    return this.queryStateModel.get(this.queryStateAttribute) || this.options.basePath;
-  }
-
   private get queryStateAttribute() {
     return QueryStateModel.getFacetId(this.options.id);
   }
@@ -400,28 +304,6 @@ export class CategoryFacet extends Component implements ICategoryFacet {
     }
   }
 
-  private tryToInitFacetSearch() {
-    // TODO: add new facet search
-    return this.logDisabledFacetSearchWarning();
-  }
-
-  private logDisabledFacetSearchWarning() {
-    if (!this.options.enableFacetSearch) {
-      return;
-    }
-
-    const valueCaptionAttributeName = this.getOptionAttributeName('valueCaption');
-    const enableFacetSearchAttributeName = this.getOptionAttributeName('enableFacetSearch');
-    const field = this.options.field;
-
-    this.logger.warn(`The search box is disabled on the ${field} CategoryFacet. To hide this warning,
-    either remove the ${valueCaptionAttributeName} option or set the ${enableFacetSearchAttributeName} option to "false".`);
-  }
-
-  private getOptionAttributeName(optionName: keyof ICategoryFacetOptions) {
-    return ComponentOptions.attrNameFromName(optionName);
-  }
-
   private get isCategoryEmpty() {
     return !this.values.allFacetValues.length;
   }
@@ -429,9 +311,9 @@ export class CategoryFacet extends Component implements ICategoryFacet {
   private updateAppearance() {
     this.header.toggleCollapse(this.isCollapsed);
     $$(this.element).toggleClass('coveo-dynamic-category-facet-collapsed', this.isCollapsed);
-    this.show();
+    $$(this.element).removeClass('coveo-hidden');
     this.dependsOnManager.updateVisibilityBasedOnDependsOn();
-    this.isCategoryEmpty && this.hide();
+    this.isCategoryEmpty && $$(this.element).addClass('coveo-hidden');
   }
 
   private handleQuerySuccess(results: IQueryResults) {
@@ -447,7 +329,7 @@ export class CategoryFacet extends Component implements ICategoryFacet {
 
     response ? this.onQueryResponse(response) : this.onNoAdditionalValues();
     this.values.render();
-    this.changeActivePath(this.values.selectedPath);
+    this.updateQueryStateModel(this.values.selectedPath);
     this.updateAppearance();
   }
 
@@ -461,12 +343,7 @@ export class CategoryFacet extends Component implements ICategoryFacet {
     this.values.clear();
   }
 
-  /**
-   * Changes the active path.
-   *
-   * @param path The values representing the path.
-   */
-  public changeActivePath(path: string[]) {
+  private updateQueryStateModel(path: string[]) {
     this.listenToQueryStateChange = false;
     this.queryStateModel.set(this.queryStateAttribute, path);
     this.listenToQueryStateChange = true;
@@ -495,47 +372,14 @@ export class CategoryFacet extends Component implements ICategoryFacet {
   }
 
   /**
-   * Reloads the facet with the same path.
-   */
-  public reload() {
-    this.triggerNewQuery(() => this.logAnalyticsEvent(analyticsActionCauseList.categoryFacetReload));
-  }
-
-  /**
-   * Returns all the visible parent values.
-   * @returns simple object with three fields: `value`, `count` and `path`.
-   * @deprecated
-   */
-  public getVisibleParentValues() {
-    return this.mapCategoryValuesToCategoryValueDescriptor(this.values.visibleParentValues);
-  }
-
-  /**
-   * Returns the values at the bottom of the hierarchy. These are the values that are not yet applied to the query.
-   * @returns simple object with three fields: `value`, `count` and `path`.
-   * @deprecated
-   */
-  public getAvailableValues() {
-    return this.mapCategoryValuesToCategoryValueDescriptor(this.values.availableValues);
-  }
-
-  private mapCategoryValuesToCategoryValueDescriptor(values: ICategoryFacetValue[]): CategoryValueDescriptor[] {
-    return values.map(facetValue => ({
-      value: facetValue.value,
-      count: facetValue.numberOfResults,
-      path: facetValue.path
-    }));
-  }
-
-  /**
    * Requests additional values.
    *
    * See the [`enableMoreLess`]{@link CategoryFacet.options.enableMoreLess} option.
    *
    * Automatically triggers an isolated query.
-   * @param additionalNumberOfValues The number of additional values to request. Minimum value is 1. Defaults to the [pageSize]{@link DynamicFacet.options.pageSize} option value.
+   * @param additionalNumberOfValues The number of additional values to request. Minimum value is 1. Defaults to the [numberOfValues]{@link CategoryFacet.options.numberOfValues} option value.
    */
-  public showMore(additionalNumberOfValues = this.options.pageSize) {
+  public showMore(additionalNumberOfValues = this.options.numberOfValues) {
     this.ensureDom();
     this.logger.info('Show more values');
     this.categoryFacetQueryController.increaseNumberOfValuesToRequest(additionalNumberOfValues);
@@ -557,37 +401,6 @@ export class CategoryFacet extends Component implements ICategoryFacet {
   }
 
   /**
-   * Selects a value from the currently available values.
-   *
-   * Does **not** trigger a query automatically.
-   * Does **not** update the visual of the facet until a query is performed.
-   *
-   * @param value The value to select.
-   *
-   * @deprecated
-   */
-  public selectValue(value: string) {
-    this.selectPath([...this.values.selectedPath, value]);
-  }
-
-  /**
-   * Deselects the last value in the hierarchy that is applied to the query. When at the top of the hierarchy, this method does nothing.
-   
-   * Does **not** trigger a query automatically.
-   * Does **not** update the visual of the facet until a query is performed.
-   *
-   * @deprecated
-   */
-  public deselectCurrentValue() {
-    if (!this.values.hasSelectedValue) {
-      return this.logger.warn('No current value to deselect');
-    }
-
-    const pathToSelect = this.values.selectedPath.slice(0, -1);
-    pathToSelect.length ? this.selectPath(pathToSelect) : this.clear();
-  }
-
-  /**
    * Select a path in the hierarchy.
    *
    * Does **not** trigger a query automatically.
@@ -599,7 +412,7 @@ export class CategoryFacet extends Component implements ICategoryFacet {
     Assert.exists(path);
     Assert.isLargerThan(0, path.length);
     this.ensureDom();
-    this.changeActivePath(path);
+    this.updateQueryStateModel(path);
     this.values.selectPath(path);
     this.logger.info('Toggle select facet value at path', path);
   }
@@ -623,21 +436,7 @@ export class CategoryFacet extends Component implements ICategoryFacet {
 
     this.logger.info('Clear facet');
     this.values.clear();
-    this.changeActivePath([]);
-  }
-
-  /**
-   * Hides the component.
-   */
-  public hide() {
-    $$(this.element).addClass('coveo-hidden');
-  }
-
-  /**
-   * Shows the component.
-   */
-  public show() {
-    $$(this.element).removeClass('coveo-hidden');
+    this.updateQueryStateModel([]);
   }
 
   /**
@@ -699,15 +498,6 @@ export class CategoryFacet extends Component implements ICategoryFacet {
   }
 
   /**
-   * Goes through any value that contains the value parameter, and verifies whether there are missing parents.
-   * Issues are then logged in the console.
-   * If you do not want to specify a value, you can simply enable {@link CategoryFacet.options.debug} and do an empty query.
-   */
-  public async debugValue(value: string) {
-    // TODO: add debug functionality
-  }
-
-  /**
    *
    * @param value The string to find a caption for.
    * Returns the caption for a value or the value itself if no caption is available.
@@ -718,17 +508,13 @@ export class CategoryFacet extends Component implements ICategoryFacet {
     return caption ? caption : value;
   }
 
-  public logAnalyticsEvent(eventName: IAnalyticsActionCause, path = this.activePath) {
+  public logAnalyticsEvent(eventName: IAnalyticsActionCause, path = this.values.selectedPath) {
     this.usageAnalytics.logSearchEvent<IAnalyticsCategoryFacetMeta>(eventName, {
       categoryFacetId: this.options.id,
       categoryFacetField: this.options.field.toString(),
       categoryFacetPath: path,
       categoryFacetTitle: this.options.title
     });
-  }
-
-  public getEndpoint(): ISearchEndpoint {
-    return this.queryController.getEndpoint();
   }
 
   private buildFacetHeader() {
@@ -760,7 +546,7 @@ export class CategoryFacet extends Component implements ICategoryFacet {
   }
 
   private initQueryStateEvents() {
-    this.queryStateModel.registerNewAttribute(this.queryStateAttribute, this.options.basePath);
+    this.queryStateModel.registerNewAttribute(this.queryStateAttribute, []);
     this.bind.onQueryState<IAttributesChangedEventArg>(MODEL_EVENTS.CHANGE, undefined, data => this.handleQueryStateChanged(data));
     this.dependsOnManager.listenToParentIfDependentFacet();
   }

@@ -105,7 +105,7 @@ export function CategoryFacetValueTest() {
         it(`when clicking on the "See more" button
         should bump the retrieveCount according to the defined options`, () => {
           $$(getSeeMore()).trigger('click');
-          expect(facetValue.retrieveCount).toBe(facet.options.numberOfValues + facet.options.pageSize);
+          expect(facetValue.retrieveCount).toBe(facet.options.numberOfValues * 2);
         });
 
         it(`when clicking on the "See more" button
@@ -118,7 +118,7 @@ export function CategoryFacetValueTest() {
 
       describe('when there are more children than the numberOfValues option', () => {
         beforeEach(() => {
-          const newNumberOfValues = facet.options.numberOfValues + facet.options.pageSize;
+          const newNumberOfValues = facet.options.numberOfValues * 2;
           facetValue.retrieveCount = newNumberOfValues;
           addChildrenToValue(newNumberOfValues);
           renderElement();
