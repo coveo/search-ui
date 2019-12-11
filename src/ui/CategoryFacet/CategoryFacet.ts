@@ -139,8 +139,6 @@ export class CategoryFacet extends Component implements ICategoryFacet {
      * Whether to enable the **More** and **Less** buttons in the Facet.
      *
      * See also the [`numberOfValues`]{@link CategoryFacet.options.numberOfValues} option.
-     *
-     * Default value is `true`.
      */
     enableMoreLess: ComponentOptions.buildBooleanOption({ defaultValue: true }),
 
