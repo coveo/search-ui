@@ -223,6 +223,7 @@ export class ResultPreviewsManager {
     preview.element.id = `coveo-result-preview-${position}`;
     const elementDom = $$(preview.element);
     elementDom.setAttribute('aria-selected', 'false');
+    elementDom.setAttribute('role', 'option');
     elementDom.on('click', () => preview.onSelect());
     elementDom.on('keyboardSelect', () => preview.onSelect());
   }
