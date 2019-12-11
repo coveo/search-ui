@@ -279,8 +279,8 @@ lazyTimespanFacet();
 import { lazyPromotedResultsBadge } from './ui/PromotedResultsBadge/LazyPromotedResultsBadge';
 lazyPromotedResultsBadge();
 
-import { lazyCategoryFacet } from './ui/CategoryFacet/LazyCategoryFacet';
-lazyCategoryFacet();
+import { lazyDynamicHierarchicalFacet } from './ui/DynamicHierarchicalFacet/LazyDynamicHierarchicalFacet';
+lazyDynamicHierarchicalFacet();
 
 import { lazyDynamicFacet } from './ui/DynamicFacet/LazyDynamicFacet';
 lazyDynamicFacet();

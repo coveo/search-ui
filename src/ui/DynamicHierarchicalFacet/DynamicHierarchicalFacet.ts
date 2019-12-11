@@ -6,7 +6,7 @@ import { IComponentBindings } from '../Base/ComponentBindings';
 import { $$ } from '../../utils/Dom';
 import { Initialization } from '../Base/Initialization';
 import { exportGlobally } from '../../GlobalExports';
-import { CategoryFacetQueryController } from '../../controllers/DynamicCategoryFacetQueryController';
+import { DynamicHierarchicalFacetQueryController } from '../../controllers/DynamicHierarchicalFacetQueryController';
 import { QueryStateModel } from '../../models/QueryStateModel';
 import { IAttributesChangedEventArg, MODEL_EVENTS } from '../../models/Model';
 import { Utils } from '../../utils/Utils';
@@ -14,52 +14,47 @@ import { isArray, findIndex } from 'underscore';
 import { Assert } from '../../misc/Assert';
 import { QueryEvents, IQuerySuccessEventArgs, IDoneBuildingQueryEventArgs } from '../../events/QueryEvents';
 import { BreadcrumbEvents, IPopulateBreadcrumbEventArgs } from '../../events/BreadcrumbEvents';
-import { CategoryFacetBreadcrumb } from './CategoryFacetBreadcrumb';
-import {
-  IAnalyticsCategoryFacetMeta,
-  analyticsActionCauseList,
-  IAnalyticsActionCause,
-  IAnalyticsFacetMeta
-} from '../Analytics/AnalyticsActionListMeta';
+import { DynamicHierarchicalFacetBreadcrumb } from './DynamicHierarchicalFacetBreadcrumb';
+import { analyticsActionCauseList, IAnalyticsActionCause, IAnalyticsFacetMeta } from '../Analytics/AnalyticsActionListMeta';
 import { QueryBuilder } from '../Base/QueryBuilder';
 import { ResponsiveFacets } from '../ResponsiveComponents/ResponsiveFacets';
-import { ICategoryFacetOptions, ICategoryFacet, ICategoryFacetValues } from './ICategoryFacet';
+import { IDynamicHierarchicalFacetOptions, IDynamicHierarchicalFacet, IDynamicHierarchicalFacetValues } from './IDynamicHierarchicalFacet';
 import { ResponsiveFacetOptions } from '../ResponsiveComponents/ResponsiveFacetOptions';
 import { DynamicFacetHeader } from '../DynamicFacet/DynamicFacetHeader/DynamicFacetHeader';
 import { IStringMap } from '../../rest/GenericParam';
 import { DependsOnManager, IDependentFacet } from '../../utils/DependsOnManager';
 import { ResultListUtils } from '../../utils/ResultListUtils';
 import { FacetType } from '../../rest/Facet/FacetRequest';
-import { CategoryFacetValues } from './CategoryFacetValues/CategoryFacetValues';
+import { DynamicHierarchicalFacetValues } from './DynamicHierarchicalFacetValues/DynamicHierarchicalFacetValues';
 import { IFacetResponse } from '../../rest/Facet/FacetResponse';
 import { IQueryOptions } from '../../controllers/QueryController';
 import { IQueryResults } from '../../rest/QueryResults';
 import { DynamicFacetManager } from '../DynamicFacetManager/DynamicFacetManager';
 
 /**
- * The `CategoryFacet` component is a facet that renders values in a hierarchical fashion. It determines the filter to apply depending on the
+ * The `DynamicHierarchicalFacet` component is a facet that renders values in a hierarchical fashion. It determines the filter to apply depending on the
  * current selected path of values.
  *
  * The path is a sequence of values that leads to a specific value in the hierarchy.
  * It is an array listing all the parents of a file (e.g., `['c', 'folder1']` for the `c:\folder1\text1.txt` file).
  *
- * This facet requires a [`field`]{@link CategoryFacet.options.field} with a special format to work correctly (see [Using the Category Facet Component](https://docs.coveo.com/en/2667)).
+ * This facet requires a [`field`]{@link DynamicHierarchicalFacet.options.field} with a special format to work correctly (see [Using the Hierarchical Facet Component](https://docs.coveo.com/en/2667)).
  *
  * @notSupportedIn salesforcefree
  */
-export class CategoryFacet extends Component implements ICategoryFacet {
-  static ID = 'CategoryFacet';
+export class DynamicHierarchicalFacet extends Component implements IDynamicHierarchicalFacet {
+  static ID = 'DynamicHierarchicalFacet';
   static doExport = () => {
     exportGlobally({
-      CategoryFacet
+      DynamicHierarchicalFacet
     });
   };
 
   /**
-   * The options for the CategoryFacet
+   * The options for the DynamicHierarchicalFacet
    * @componentOptions
    */
-  static options: ICategoryFacetOptions = {
+  static options: IDynamicHierarchicalFacetOptions = {
     /**
      * A unique identifier for the facet. Among other things, this identifier serves the purpose of saving
      * the facet state in the URL hash.
@@ -67,21 +62,21 @@ export class CategoryFacet extends Component implements ICategoryFacet {
      * If you have two facets with the same field on the same page, you should specify an `id` value for at least one of
      * those two facets. This `id` must be unique among the facets.
      *
-     * Default value is the [`field`]{@link CategoryFacet.options.field} option value.
+     * Default value is the [`field`]{@link DynamicHierarchicalFacet.options.field} option value.
      */
     id: ComponentOptions.buildStringOption({
-      postProcessing: (value, options: ICategoryFacetOptions) => value || (options.field as string)
+      postProcessing: (value, options: IDynamicHierarchicalFacetOptions) => value || (options.field as string)
     }),
 
     /**
      * The index field whose values the facet should use. The field values should have the form:
      * `the; the|path; the|path|to; the|path|to|given; the|path|to|given|item;`
-     * where the delimiting character is `|`. This default delimiting character can be changed using the [delimitingCharacter]{@link CategoryFacet.options.delimitingCharacter} option.
+     * where the delimiting character is `|`. This default delimiting character can be changed using the [delimitingCharacter]{@link DynamicHierarchicalFacet.options.delimitingCharacter} option.
      *
-     * To help you verify whether your fields are setup correctly, see the {@link CategoryFacet.options.debug} option
-     * and the {@link CategoryFacet.debugValue} method.
+     * To help you verify whether your fields are setup correctly, see the {@link DynamicHierarchicalFacet.options.debug} option
+     * and the {@link DynamicHierarchicalFacet.debugValue} method.
      *
-     * See [Using the Category Facet Component](https://docs.coveo.com/en/2667).
+     * See [Using the Hierarchical Facet Component](https://docs.coveo.com/en/2667).
      */
     field: ComponentOptions.buildFieldOption({ required: true }),
 
@@ -98,7 +93,7 @@ export class CategoryFacet extends Component implements ICategoryFacet {
      * The maximum number of field values to display by default in the facet before the user
      * clicks the arrow to show more.
      *
-     * See also the [`enableMoreLess`]{@link CategoryFacet.options.enableMoreLess} option.
+     * See also the [`enableMoreLess`]{@link DynamicHierarchicalFacet.options.enableMoreLess} option.
      */
     numberOfValues: ComponentOptions.buildNumberOption({ defaultValue: 5, min: 0, section: 'CommonOptions' }),
 
@@ -110,7 +105,7 @@ export class CategoryFacet extends Component implements ICategoryFacet {
     /**
      * Whether this facet should be collapsed by default.
      *
-     * See also the [`enableCollapse`]{@link CategoryFacet.options.enableCollapse}
+     * See also the [`enableCollapse`]{@link DynamicHierarchicalFacet.options.enableCollapse}
      * option.
      */
     collapsedByDefault: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'Filtering', depend: 'enableCollapse' }),
@@ -128,7 +123,7 @@ export class CategoryFacet extends Component implements ICategoryFacet {
     /**
      * The *injection depth* to use.
      *
-     * The injection depth determines how many results to scan in the index to ensure that the category facet lists all potential
+     * The injection depth determines how many results to scan in the index to ensure that the hierarchical facet lists all potential
      * facet values. Increasing this value enhances the accuracy of the listed values at the cost of performance.
      *
      * Default value is `1000`. Minimum value is `0`.
@@ -138,7 +133,7 @@ export class CategoryFacet extends Component implements ICategoryFacet {
     /**
      * Whether to enable the **More** and **Less** buttons in the Facet.
      *
-     * See also the [`numberOfValues`]{@link CategoryFacet.options.numberOfValues} option.
+     * See also the [`numberOfValues`]{@link DynamicHierarchicalFacet.options.numberOfValues} option.
      */
     enableMoreLess: ComponentOptions.buildBooleanOption({ defaultValue: true }),
 
@@ -193,16 +188,16 @@ export class CategoryFacet extends Component implements ICategoryFacet {
      * Or directly in the markup:
      * ```html
      * <!-- Ensure that the double quotes are properly handled in data-value-caption. -->
-     * <div class='CoveoCategoryFacet' data-field='@myotherfield' data-value-caption='{"txt":"Text files","html":"Web page"}'></div>
+     * <div class='CoveoDynamicHierarchicalFacet' data-field='@myotherfield' data-value-caption='{"txt":"Text files","html":"Web page"}'></div>
      * ```
      */
     valueCaption: ComponentOptions.buildJsonOption<IStringMap<string>>({ defaultValue: {} }),
 
     /**
      * The `id` option value of another facet in which at least one value must be selected in order
-     * for the dependent category facet to be visible.
+     * for the dependent hierarchical facet to be visible.
      *
-     * **Default:** `undefined` and the category facet does not depend on any other facet to be displayed.
+     * **Default:** `undefined` and the hierarchical facet does not depend on any other facet to be displayed.
      */
     dependsOn: ComponentOptions.buildStringOption(),
     ...ResponsiveFacetOptions
@@ -210,24 +205,24 @@ export class CategoryFacet extends Component implements ICategoryFacet {
 
   private listenToQueryStateChange = true;
 
-  public options: ICategoryFacetOptions;
-  public categoryFacetQueryController: CategoryFacetQueryController;
+  public options: IDynamicHierarchicalFacetOptions;
+  public dynamicHierarchicalFacetQueryController: DynamicHierarchicalFacetQueryController;
   public dependsOnManager: DependsOnManager;
   public isCollapsed: boolean;
   public header: DynamicFacetHeader;
-  public values: ICategoryFacetValues;
+  public values: IDynamicHierarchicalFacetValues;
   public moreValuesAvailable = false;
   public position: number = null;
   public dynamicFacetManager: DynamicFacetManager;
   public isDynamicFacet = true;
 
-  constructor(public element: HTMLElement, options: ICategoryFacetOptions, bindings?: IComponentBindings) {
-    super(element, 'CategoryFacet', bindings);
-    this.options = ComponentOptions.initComponentOptions(element, CategoryFacet, options);
+  constructor(public element: HTMLElement, options: IDynamicHierarchicalFacetOptions, bindings?: IComponentBindings) {
+    super(element, 'DynamicHierarchicalFacet', bindings);
+    this.options = ComponentOptions.initComponentOptions(element, DynamicHierarchicalFacet, options);
 
-    this.categoryFacetQueryController = new CategoryFacetQueryController(this);
+    this.dynamicHierarchicalFacetQueryController = new DynamicHierarchicalFacetQueryController(this);
     this.isCollapsed = this.options.enableCollapse && this.options.collapsedByDefault;
-    this.values = new CategoryFacetValues(this);
+    this.values = new DynamicHierarchicalFacetValues(this);
 
     ResponsiveFacets.init(this.root, this, this.options);
     this.initDependsOnManager();
@@ -289,7 +284,7 @@ export class CategoryFacet extends Component implements ICategoryFacet {
 
   public putStateIntoQueryBuilder(queryBuilder: QueryBuilder) {
     Assert.exists(queryBuilder);
-    this.categoryFacetQueryController.putFacetIntoQueryBuilder(queryBuilder);
+    this.dynamicHierarchicalFacetQueryController.putFacetIntoQueryBuilder(queryBuilder);
   }
 
   public putStateIntoAnalytics() {
@@ -302,16 +297,16 @@ export class CategoryFacet extends Component implements ICategoryFacet {
     }
   }
 
-  private get isCategoryEmpty() {
+  private get isHierarchicalEmpty() {
     return !this.values.allFacetValues.length;
   }
 
   private updateAppearance() {
     this.header.toggleCollapse(this.isCollapsed);
-    $$(this.element).toggleClass('coveo-dynamic-category-facet-collapsed', this.isCollapsed);
+    $$(this.element).toggleClass('coveo-dynamic-hierarchical-facet-collapsed', this.isCollapsed);
     $$(this.element).removeClass('coveo-hidden');
     this.dependsOnManager.updateVisibilityBasedOnDependsOn();
-    this.isCategoryEmpty && $$(this.element).addClass('coveo-hidden');
+    this.isHierarchicalEmpty && $$(this.element).addClass('coveo-hidden');
   }
 
   private handleQuerySuccess(results: IQueryResults) {
@@ -362,7 +357,7 @@ export class CategoryFacet extends Component implements ICategoryFacet {
     beforeExecuteQuery && beforeExecuteQuery();
 
     try {
-      const results = await this.categoryFacetQueryController.getQueryResults();
+      const results = await this.dynamicHierarchicalFacetQueryController.getQueryResults();
       this.handleQuerySuccess(results);
     } catch (e) {
       this.header.hideLoading();
@@ -372,29 +367,29 @@ export class CategoryFacet extends Component implements ICategoryFacet {
   /**
    * Requests additional values.
    *
-   * See the [`enableMoreLess`]{@link CategoryFacet.options.enableMoreLess} option.
+   * See the [`enableMoreLess`]{@link DynamicHierarchicalFacet.options.enableMoreLess} option.
    *
    * Automatically triggers an isolated query.
-   * @param additionalNumberOfValues The number of additional values to request. Minimum value is 1. Defaults to the [numberOfValues]{@link CategoryFacet.options.numberOfValues} option value.
+   * @param additionalNumberOfValues The number of additional values to request. Minimum value is 1. Defaults to the [numberOfValues]{@link DynamicHierarchicalFacet.options.numberOfValues} option value.
    */
   public showMore(additionalNumberOfValues = this.options.numberOfValues) {
     this.ensureDom();
     this.logger.info('Show more values');
-    this.categoryFacetQueryController.increaseNumberOfValuesToRequest(additionalNumberOfValues);
+    this.dynamicHierarchicalFacetQueryController.increaseNumberOfValuesToRequest(additionalNumberOfValues);
     this.triggerNewIsolatedQuery(() => this.logAnalyticsFacetShowMoreLess(analyticsActionCauseList.facetShowMore));
   }
 
   /**
    * Reduces the number of displayed facet values down to [numberOfValues]{@link DynamicFacet.options.numberOfValues}.
    *
-   * See the [`enableMoreLess`]{@link CategoryFacet.options.enableMoreLess} option.
+   * See the [`enableMoreLess`]{@link DynamicHierarchicalFacet.options.enableMoreLess} option.
    *
    * Automatically triggers an isolated query.
    */
   public showLess() {
     this.ensureDom();
     this.logger.info('Show less values');
-    this.categoryFacetQueryController.resetNumberOfValuesToRequest();
+    this.dynamicHierarchicalFacetQueryController.resetNumberOfValuesToRequest();
     this.triggerNewIsolatedQuery(() => this.logAnalyticsFacetShowMoreLess(analyticsActionCauseList.facetShowLess));
   }
 
@@ -424,7 +419,7 @@ export class CategoryFacet extends Component implements ICategoryFacet {
     this.ensureDom();
     this.clear();
     this.scrollToTop();
-    this.triggerNewQuery(() => this.logAnalyticsEvent(analyticsActionCauseList.categoryFacetClear));
+    this.triggerNewQuery(() => this.logAnalyticsEvent(analyticsActionCauseList.dynamicFacetClearAll));
   }
 
   public clear() {
@@ -470,8 +465,8 @@ export class CategoryFacet extends Component implements ICategoryFacet {
    * The flag is automatically set back to `false` after a query is built.
    */
   public enableFreezeFacetOrderFlag() {
-    Assert.exists(this.categoryFacetQueryController);
-    this.categoryFacetQueryController.enableFreezeFacetOrderFlag();
+    Assert.exists(this.dynamicHierarchicalFacetQueryController);
+    this.dynamicHierarchicalFacetQueryController.enableFreezeFacetOrderFlag();
   }
 
   /**
@@ -507,11 +502,11 @@ export class CategoryFacet extends Component implements ICategoryFacet {
   }
 
   public logAnalyticsEvent(eventName: IAnalyticsActionCause, path = this.values.selectedPath) {
-    this.usageAnalytics.logSearchEvent<IAnalyticsCategoryFacetMeta>(eventName, {
-      categoryFacetId: this.options.id,
-      categoryFacetField: this.options.field.toString(),
-      categoryFacetPath: path,
-      categoryFacetTitle: this.options.title
+    this.usageAnalytics.logSearchEvent<any>(eventName, {
+      DynamicHierarchicalFacetId: this.options.id,
+      DynamicHierarchicalFacetField: this.options.field.toString(),
+      DynamicHierarchicalFacetPath: path,
+      DynamicHierarchicalFacetTitle: this.options.title
     });
   }
 
@@ -573,7 +568,7 @@ export class CategoryFacet extends Component implements ICategoryFacet {
   }
 
   private notImplementedError() {
-    const errorMessage = 'Category Facets are not supported by your current search endpoint. Disabling this component.';
+    const errorMessage = 'Hierarchical Facets are not supported by your current search endpoint. Disabling this component.';
     this.logger.error(errorMessage);
     this.disable();
   }
@@ -585,7 +580,7 @@ export class CategoryFacet extends Component implements ICategoryFacet {
       return;
     }
 
-    const breadcrumbs = new CategoryFacetBreadcrumb(this);
+    const breadcrumbs = new DynamicHierarchicalFacetBreadcrumb(this);
     args.breadcrumbs.push({ element: breadcrumbs.element });
   }
 
@@ -602,5 +597,5 @@ export class CategoryFacet extends Component implements ICategoryFacet {
   }
 }
 
-Initialization.registerAutoCreateComponent(CategoryFacet);
-CategoryFacet.doExport();
+Initialization.registerAutoCreateComponent(DynamicHierarchicalFacet);
+DynamicHierarchicalFacet.doExport();

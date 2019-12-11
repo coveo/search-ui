@@ -1,14 +1,14 @@
 import 'styling/DynamicFacet/_DynamicFacetBreadcrumbs';
 import { $$ } from '../../utils/Dom';
 import { SVGIcons } from '../../utils/SVGIcons';
-import { ICategoryFacet } from './ICategoryFacet';
+import { IDynamicHierarchicalFacet } from './IDynamicHierarchicalFacet';
 import { l } from '../../strings/Strings';
 import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
 
-export class CategoryFacetBreadcrumb {
+export class DynamicHierarchicalFacetBreadcrumb {
   public element: HTMLElement;
 
-  constructor(private facet: ICategoryFacet) {
+  constructor(private facet: IDynamicHierarchicalFacet) {
     this.create();
   }
 
@@ -46,6 +46,6 @@ export class CategoryFacetBreadcrumb {
 
   private valueSelectAction() {
     this.facet.clear();
-    this.facet.triggerNewQuery(() => this.facet.logAnalyticsEvent(analyticsActionCauseList.categoryFacetBreadcrumb));
+    this.facet.triggerNewQuery(() => this.facet.logAnalyticsEvent(analyticsActionCauseList.breadcrumbFacet));
   }
 }

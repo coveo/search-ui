@@ -1,13 +1,17 @@
 import { FacetValueState } from '../../../src/rest/Facet/FacetValueState';
 import * as Mock from '../../MockEnvironment';
 import { $$ } from '../../../src/Core';
-import { CategoryFacetValues } from '../../../src/ui/CategoryFacet/CategoryFacetValues/CategoryFacetValues';
+import { DynamicHierarchicalFacetValues } from '../../../src/ui/DynamicHierarchicalFacet/DynamicHierarchicalFacetValues/DynamicHierarchicalFacetValues';
 import { IFacetResponse, IFacetResponseValue } from '../../../src/rest/Facet/FacetResponse';
-import { CategoryFacet } from '../../../src/ui/CategoryFacet/CategoryFacet';
-import { ICategoryFacet, ICategoryFacetOptions, ICategoryFacetValueProperties } from '../../../src/ui/CategoryFacet/ICategoryFacet';
+import { DynamicHierarchicalFacet } from '../../../src/ui/DynamicHierarchicalFacet/DynamicHierarchicalFacet';
+import {
+  IDynamicHierarchicalFacet,
+  IDynamicHierarchicalFacetOptions,
+  IDynamicHierarchicalFacetValueProperties
+} from '../../../src/ui/DynamicHierarchicalFacet/IDynamicHierarchicalFacet';
 
-export class CategoryFacetTestUtils {
-  static allOptions(options?: ICategoryFacetOptions) {
+export class DynamicHierarchicalFacetTestUtils {
+  static allOptions(options?: IDynamicHierarchicalFacetOptions) {
     return {
       field: '@dummy',
       valueCaption: {},
@@ -19,7 +23,7 @@ export class CategoryFacetTestUtils {
     };
   }
 
-  static createFakeFacetValue(): ICategoryFacetValueProperties {
+  static createFakeFacetValue(): IDynamicHierarchicalFacetValueProperties {
     const value = 'facet value';
     return {
       value,
@@ -93,18 +97,18 @@ export class CategoryFacetTestUtils {
     return fakeValues;
   }
 
-  static createFakeFacet(options?: ICategoryFacetOptions) {
-    const facet = Mock.mockComponent<ICategoryFacet>(CategoryFacet);
+  static createFakeFacet(options?: IDynamicHierarchicalFacetOptions) {
+    const facet = Mock.mockComponent<IDynamicHierarchicalFacet>(DynamicHierarchicalFacet);
     facet.options = this.allOptions(options);
-    facet.values = new CategoryFacetValues(facet);
+    facet.values = new DynamicHierarchicalFacetValues(facet);
     facet.element = $$('div').el;
     facet.searchInterface = Mock.mockSearchInterface();
 
     return facet;
   }
 
-  static createAdvancedFakeFacet(options?: ICategoryFacetOptions, env?: Mock.IMockEnvironment) {
-    return Mock.advancedComponentSetup<CategoryFacet>(CategoryFacet, <Mock.AdvancedComponentSetupOptions>{
+  static createAdvancedFakeFacet(options?: IDynamicHierarchicalFacetOptions, env?: Mock.IMockEnvironment) {
+    return Mock.advancedComponentSetup<DynamicHierarchicalFacet>(DynamicHierarchicalFacet, <Mock.AdvancedComponentSetupOptions>{
       modifyBuilder: builder => {
         if (!env) {
           builder = builder.withLiveQueryStateModel();
@@ -120,11 +124,11 @@ export class CategoryFacetTestUtils {
     });
   }
 
-  static getCompleteFacetResponse(facet: ICategoryFacet, partialResponse?: Partial<IFacetResponse>): IFacetResponse {
+  static getCompleteFacetResponse(facet: IDynamicHierarchicalFacet, partialResponse?: Partial<IFacetResponse>): IFacetResponse {
     return {
       facetId: facet.options.id,
       field: facet.fieldName,
-      values: CategoryFacetTestUtils.createFakeFacetResponseValues(),
+      values: DynamicHierarchicalFacetTestUtils.createFakeFacetResponseValues(),
       moreValuesAvailable: false,
       ...partialResponse
     };

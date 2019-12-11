@@ -1,19 +1,22 @@
 import * as Globalize from 'globalize';
-import { CategoryFacetValue } from '../../../../src/ui/CategoryFacet/CategoryFacetValues/CategoryFacetValue';
-import { CategoryFacetTestUtils } from '../CategoryFacetTestUtils';
+import { DynamicHierarchicalFacetValue } from '../../../../src/ui/DynamicHierarchicalFacet/DynamicHierarchicalFacetValues/DynamicHierarchicalFacetValue';
+import { DynamicHierarchicalFacetTestUtils } from '../DynamicHierarchicalFacetTestUtils';
 import { $$ } from '../../../../src/Core';
-import { ICategoryFacet, ICategoryFacetValueProperties } from '../../../../src/ui/CategoryFacet/ICategoryFacet';
+import {
+  IDynamicHierarchicalFacet,
+  IDynamicHierarchicalFacetValueProperties
+} from '../../../../src/ui/DynamicHierarchicalFacet/IDynamicHierarchicalFacet';
 
-export function CategoryFacetValueTest() {
-  describe('CategoryFacetValue', () => {
-    let facet: ICategoryFacet;
-    let facetValue: CategoryFacetValue;
-    let fakeFacetValue: ICategoryFacetValueProperties;
+export function DynamicHierarchicalFacetValueTest() {
+  describe('DynamicHierarchicalFacetValue', () => {
+    let facet: IDynamicHierarchicalFacet;
+    let facetValue: DynamicHierarchicalFacetValue;
+    let fakeFacetValue: IDynamicHierarchicalFacetValueProperties;
 
     beforeEach(() => {
-      facet = CategoryFacetTestUtils.createFakeFacet();
-      fakeFacetValue = CategoryFacetTestUtils.createFakeFacetValue();
-      facetValue = new CategoryFacetValue(fakeFacetValue, facet);
+      facet = DynamicHierarchicalFacetTestUtils.createFakeFacet();
+      fakeFacetValue = DynamicHierarchicalFacetTestUtils.createFakeFacetValue();
+      facetValue = new DynamicHierarchicalFacetValue(fakeFacetValue, facet);
     });
 
     it('should be idle by default', () => {
@@ -46,7 +49,7 @@ export function CategoryFacetValueTest() {
     it(`when the facet value has more children than the numberOfValues options
       it should use it's length as the retrieveCount`, () => {
       fakeFacetValue.children = [null, null, null, null, null, null, null, null, null];
-      facetValue = new CategoryFacetValue(fakeFacetValue, facet);
+      facetValue = new DynamicHierarchicalFacetValue(fakeFacetValue, facet);
       expect(facetValue.retrieveCount).toBe(facetValue.children.length);
     });
 
@@ -55,7 +58,7 @@ export function CategoryFacetValueTest() {
 
       function addChildrenToValue(numberOfChildren: number) {
         for (let index = 0; index < numberOfChildren; index++) {
-          facetValue.children.push(new CategoryFacetValue(CategoryFacetTestUtils.createFakeFacetValue(), facet));
+          facetValue.children.push(new DynamicHierarchicalFacetValue(DynamicHierarchicalFacetTestUtils.createFakeFacetValue(), facet));
         }
       }
 
@@ -65,11 +68,11 @@ export function CategoryFacetValueTest() {
       }
 
       function getSeeMore() {
-        return fragment.querySelector('.coveo-dynamic-category-facet-show-more') as HTMLElement;
+        return fragment.querySelector('.coveo-dynamic-hierarchical-facet-show-more') as HTMLElement;
       }
 
       function getSeeLess() {
-        return fragment.querySelector('.coveo-dynamic-category-facet-show-less') as HTMLElement;
+        return fragment.querySelector('.coveo-dynamic-hierarchical-facet-show-less') as HTMLElement;
       }
 
       it(`when the facet value has children
@@ -94,7 +97,7 @@ export function CategoryFacetValueTest() {
       describe('when moreValuesAvailable is true', () => {
         beforeEach(() => {
           fakeFacetValue.moreValuesAvailable = true;
-          facetValue = new CategoryFacetValue(fakeFacetValue, facet);
+          facetValue = new DynamicHierarchicalFacetValue(fakeFacetValue, facet);
           renderElement();
         });
 

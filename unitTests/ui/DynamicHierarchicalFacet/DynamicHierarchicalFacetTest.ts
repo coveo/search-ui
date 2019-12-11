@@ -1,6 +1,6 @@
 import * as Mock from '../../MockEnvironment';
-import { CategoryFacetTestUtils } from './CategoryFacetTestUtils';
-import { CategoryFacet } from '../../../src/ui/CategoryFacet/CategoryFacet';
+import { DynamicHierarchicalFacetTestUtils } from './DynamicHierarchicalFacetTestUtils';
+import { DynamicHierarchicalFacet } from '../../../src/ui/DynamicHierarchicalFacet/DynamicHierarchicalFacet';
 import { FacetType } from '../../../src/rest/Facet/FacetRequest';
 import { IPopulateBreadcrumbEventArgs, BreadcrumbEvents } from '../../../src/events/BreadcrumbEvents';
 import { $$, QueryBuilder, QueryEvents } from '../../../src/Core';
@@ -9,13 +9,13 @@ import { Simulate } from '../../Simulate';
 import { IFacetResponseValue } from '../../../src/rest/Facet/FacetResponse';
 import { FacetValueState } from '../../../src/rest/Facet/FacetValueState';
 import { ResultListUtils } from '../../../src/utils/ResultListUtils';
-import { ICategoryFacetOptions } from '../../../src/ui/CategoryFacet/ICategoryFacet';
+import { IDynamicHierarchicalFacetOptions } from '../../../src/ui/DynamicHierarchicalFacet/IDynamicHierarchicalFacet';
 import { DynamicFacetManager } from '../../../src/ui/DynamicFacetManager/DynamicFacetManager';
 
-export function CategoryFacetTest() {
-  describe('CategoryFacet', () => {
-    let test: Mock.IBasicComponentSetup<CategoryFacet>;
-    let options: ICategoryFacetOptions;
+export function DynamicHierarchicalFacetTest() {
+  describe('DynamicHierarchicalFacet', () => {
+    let test: Mock.IBasicComponentSetup<DynamicHierarchicalFacet>;
+    let options: IDynamicHierarchicalFacetOptions;
     let mockFacetValues: IFacetResponseValue[];
 
     beforeEach(() => {
@@ -24,11 +24,11 @@ export function CategoryFacetTest() {
     });
 
     function initializeComponent() {
-      test = CategoryFacetTestUtils.createAdvancedFakeFacet(options);
-      mockFacetValues = CategoryFacetTestUtils.createFakeFacetResponseValues(3, 5);
+      test = DynamicHierarchicalFacetTestUtils.createAdvancedFakeFacet(options);
+      mockFacetValues = DynamicHierarchicalFacetTestUtils.createFakeFacetResponseValues(3, 5);
 
       test.cmp.values.createFromResponse(
-        CategoryFacetTestUtils.getCompleteFacetResponse(test.cmp, {
+        DynamicHierarchicalFacetTestUtils.getCompleteFacetResponse(test.cmp, {
           values: mockFacetValues
         })
       );
@@ -59,14 +59,14 @@ export function CategoryFacetTest() {
     }
 
     function validateExpandCollapse(shouldBeCollapsed: boolean) {
-      expect($$(test.cmp.element).hasClass('coveo-dynamic-category-facet-collapsed')).toBe(shouldBeCollapsed);
+      expect($$(test.cmp.element).hasClass('coveo-dynamic-hierarchical-facet-collapsed')).toBe(shouldBeCollapsed);
       // TODO: test if search feature is displayed
     }
 
     function fakeResultsWithFacets() {
       const fakeResultsWithFacets = FakeResults.createFakeResults();
       fakeResultsWithFacets.facets = [
-        CategoryFacetTestUtils.getCompleteFacetResponse(test.cmp, {
+        DynamicHierarchicalFacetTestUtils.getCompleteFacetResponse(test.cmp, {
           values: mockFacetValues
         })
       ];
@@ -236,12 +236,12 @@ export function CategoryFacetTest() {
     });
 
     it('allows to trigger a new isolated query', () => {
-      spyOn(test.cmp.categoryFacetQueryController, 'getQueryResults');
+      spyOn(test.cmp.dynamicHierarchicalFacetQueryController, 'getQueryResults');
       const beforeExecuteQuery = jasmine.createSpy('beforeExecuteQuery', () => {});
       test.cmp.ensureDom();
       test.cmp.triggerNewIsolatedQuery(beforeExecuteQuery);
 
-      expect(test.cmp.categoryFacetQueryController.getQueryResults).toHaveBeenCalled();
+      expect(test.cmp.dynamicHierarchicalFacetQueryController.getQueryResults).toHaveBeenCalled();
       expect(beforeExecuteQuery).toHaveBeenCalled();
     });
 
@@ -287,10 +287,10 @@ export function CategoryFacetTest() {
       });
     });
 
-    it('calling enableFreezeFacetOrderFlag should call it in the categoryFacetQueryController', () => {
-      spyOn(test.cmp.categoryFacetQueryController, 'enableFreezeFacetOrderFlag').and.callThrough();
+    it('calling enableFreezeFacetOrderFlag should call it in the dynamicHierarchicalFacetQueryController', () => {
+      spyOn(test.cmp.dynamicHierarchicalFacetQueryController, 'enableFreezeFacetOrderFlag').and.callThrough();
       test.cmp.enableFreezeFacetOrderFlag();
-      expect(test.cmp.categoryFacetQueryController.enableFreezeFacetOrderFlag).toHaveBeenCalled();
+      expect(test.cmp.dynamicHierarchicalFacetQueryController.enableFreezeFacetOrderFlag).toHaveBeenCalled();
     });
 
     describe('when calling reset', () => {
@@ -403,20 +403,20 @@ export function CategoryFacetTest() {
     });
 
     it(`when calling putStateIntoQueryBuilder
-    should call putStateIntoQueryBuilder on the categoryFacetQueryController`, () => {
-      spyOn(test.cmp.categoryFacetQueryController, 'putFacetIntoQueryBuilder');
+    should call putStateIntoQueryBuilder on the dynamicHierarchicalFacetQueryController`, () => {
+      spyOn(test.cmp.dynamicHierarchicalFacetQueryController, 'putFacetIntoQueryBuilder');
       const queryBuilder = new QueryBuilder();
       test.cmp.putStateIntoQueryBuilder(queryBuilder);
-      expect(test.cmp.categoryFacetQueryController.putFacetIntoQueryBuilder).toHaveBeenCalledWith(queryBuilder);
+      expect(test.cmp.dynamicHierarchicalFacetQueryController.putFacetIntoQueryBuilder).toHaveBeenCalledWith(queryBuilder);
     });
 
     describe('testing putStateIntoQueryBuilder', () => {
       it(`when calling putStateIntoQueryBuilder
-      should call putFacetIntoQueryBuilder on the categoryFacetQueryController`, () => {
-        spyOn(test.cmp.categoryFacetQueryController, 'putFacetIntoQueryBuilder');
+      should call putFacetIntoQueryBuilder on the dynamicHierarchicalFacetQueryController`, () => {
+        spyOn(test.cmp.dynamicHierarchicalFacetQueryController, 'putFacetIntoQueryBuilder');
         const queryBuilder = new QueryBuilder();
         test.cmp.putStateIntoQueryBuilder(queryBuilder);
-        expect(test.cmp.categoryFacetQueryController.putFacetIntoQueryBuilder).toHaveBeenCalledWith(queryBuilder);
+        expect(test.cmp.dynamicHierarchicalFacetQueryController.putFacetIntoQueryBuilder).toHaveBeenCalledWith(queryBuilder);
       });
 
       it(`when triggering doneBuildingQuery

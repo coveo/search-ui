@@ -531,17 +531,17 @@ UrlUtilsTest();
 import { AccessTokenTest } from './rest/AccessTokenTest';
 AccessTokenTest();
 
-import { CategoryFacetTest } from './ui/CategoryFacet/CategoryFacetTest';
-CategoryFacetTest();
+import { DynamicHierarchicalFacetTest } from './ui/DynamicHierarchicalFacet/DynamicHierarchicalFacetTest';
+DynamicHierarchicalFacetTest();
 
-import { CategoryFacetValueTest } from './ui/CategoryFacet/CategoryFacetValues/CategoryFacetValueTest';
-CategoryFacetValueTest();
+import { DynamicHierarchicalFacetValueTest } from './ui/DynamicHierarchicalFacet/DynamicHierarchicalFacetValues/DynamicHierarchicalFacetValueTest';
+DynamicHierarchicalFacetValueTest();
 
-import { CategoryFacetValueRendererTest } from './ui/CategoryFacet/CategoryFacetValues/CategoryFacetValueRendererTest';
-CategoryFacetValueRendererTest();
+import { DynamicHierarchicalFacetValueRendererTest } from './ui/DynamicHierarchicalFacet/DynamicHierarchicalFacetValues/DynamicHierarchicalFacetValueRendererTest';
+DynamicHierarchicalFacetValueRendererTest();
 
-import { CategoryFacetValuesTest } from './ui/CategoryFacet/CategoryFacetValues/CategoryFacetValuesTest';
-CategoryFacetValuesTest();
+import { DynamicHierarchicalFacetValuesTest } from './ui/DynamicHierarchicalFacet/DynamicHierarchicalFacetValues/DynamicHierarchicalFacetValuesTest';
+DynamicHierarchicalFacetValuesTest();
 
 import { FacetValueSuggestionsTest } from './ui/FacetValueSuggestionsTest';
 FacetValueSuggestionsTest();
@@ -648,8 +648,8 @@ QuickviewDocumentWordButtonTest();
 import { QuickviewDocumentTest } from './ui/QuickviewDocumentTest';
 QuickviewDocumentTest();
 
-import { CategoryFacetBreadcrumbTest } from './ui/CategoryFacet/CategoryFacetBreadcrumbTest';
-CategoryFacetBreadcrumbTest();
+import { DynamicHierarchicalFacetBreadcrumbTest } from './ui/DynamicHierarchicalFacet/DynamicHierarchicalFacetBreadcrumbTest';
+DynamicHierarchicalFacetBreadcrumbTest();
 
 import { GrammarTest } from './magicbox/GrammarTest';
 GrammarTest();
@@ -672,8 +672,8 @@ AriaLiveTest();
 import { QuerySummaryUtilsTest } from './utils/QuerySummaryUtilsTest';
 QuerySummaryUtilsTest();
 
-import { DynamicCategoryFacetQueryControllerTest } from './controllers/DynamicCategoryFacetQueryControllerTest';
-DynamicCategoryFacetQueryControllerTest();
+import { DynamicHierarchicalFacetQueryControllerTest } from './controllers/DynamicHierarchicalFacetQueryControllerTest';
+DynamicHierarchicalFacetQueryControllerTest();
 
 import { ComponentsTypesTest } from './utils/ComponentsTypesTest';
 ComponentsTypesTest();

@@ -1,23 +1,23 @@
-import { CategoryFacet } from '../../../src/ui/CategoryFacet/CategoryFacet';
-import { CategoryFacetBreadcrumb } from '../../../src/ui/CategoryFacet/CategoryFacetBreadcrumb';
-import { CategoryFacetTestUtils } from './CategoryFacetTestUtils';
+import { DynamicHierarchicalFacet } from '../../../src/ui/DynamicHierarchicalFacet/DynamicHierarchicalFacet';
+import { DynamicHierarchicalFacetBreadcrumb } from '../../../src/ui/DynamicHierarchicalFacet/DynamicHierarchicalFacetBreadcrumb';
+import { DynamicHierarchicalFacetTestUtils } from './DynamicHierarchicalFacetTestUtils';
 import { $$ } from '../../../src/Core';
 import { analyticsActionCauseList } from '../../../src/ui/Analytics/AnalyticsActionListMeta';
 
-export function CategoryFacetBreadcrumbTest() {
-  describe('CategoryFacetBreadcrumb', () => {
-    let facet: CategoryFacet;
-    let breadcrumbs: CategoryFacetBreadcrumb;
+export function DynamicHierarchicalFacetBreadcrumbTest() {
+  describe('DynamicHierarchicalFacetBreadcrumb', () => {
+    let facet: DynamicHierarchicalFacet;
+    let breadcrumbs: DynamicHierarchicalFacetBreadcrumb;
 
     beforeEach(() => {
       initializeComponent();
     });
 
     function initializeComponent() {
-      facet = CategoryFacetTestUtils.createAdvancedFakeFacet().cmp;
-      facet.values.createFromResponse(CategoryFacetTestUtils.getCompleteFacetResponse(facet));
+      facet = DynamicHierarchicalFacetTestUtils.createAdvancedFakeFacet().cmp;
+      facet.values.createFromResponse(DynamicHierarchicalFacetTestUtils.getCompleteFacetResponse(facet));
       facet.selectPath(['test', 'allo']);
-      breadcrumbs = new CategoryFacetBreadcrumb(facet);
+      breadcrumbs = new DynamicHierarchicalFacetBreadcrumb(facet);
     }
 
     function titleElement() {
@@ -59,9 +59,7 @@ export function CategoryFacetBreadcrumbTest() {
       };
 
       $$(valueElement()).trigger('click');
-      expect(facet.logAnalyticsEvent).toHaveBeenCalledWith(
-        analyticsActionCauseList.categoryFacetBreadcrumb
-      );
+      expect(facet.logAnalyticsEvent).toHaveBeenCalledWith(analyticsActionCauseList.breadcrumbFacet);
     });
   });
 }

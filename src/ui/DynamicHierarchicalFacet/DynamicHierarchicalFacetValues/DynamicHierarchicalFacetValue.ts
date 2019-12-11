@@ -1,17 +1,21 @@
 import * as Globalize from 'globalize';
 import { FacetValueState } from '../../../rest/Facet/FacetValueState';
-import { CategoryFacetValueRenderer } from './CategoryFacetValueRenderer';
+import { DynamicHierarchicalFacetValueRenderer } from './DynamicHierarchicalFacetValueRenderer';
 import { l } from '../../../strings/Strings';
 import { DynamicFacetValueShowMoreLessButton } from '../../DynamicFacet/DynamicFacetValues/DynamicFacetValueMoreLessButton';
-import { ICategoryFacetValue, ICategoryFacet, ICategoryFacetValueProperties } from '../ICategoryFacet';
+import {
+  IDynamicHierarchicalFacetValue,
+  IDynamicHierarchicalFacet,
+  IDynamicHierarchicalFacetValueProperties
+} from '../IDynamicHierarchicalFacet';
 
-export class CategoryFacetValue implements ICategoryFacetValue {
-  private renderer: CategoryFacetValueRenderer;
+export class DynamicHierarchicalFacetValue implements IDynamicHierarchicalFacetValue {
+  private renderer: DynamicHierarchicalFacetValueRenderer;
   private element: HTMLElement = null;
   public retrieveCount: number;
 
-  constructor(private facetValue: ICategoryFacetValueProperties, private facet: ICategoryFacet) {
-    this.renderer = new CategoryFacetValueRenderer(this, this.facet);
+  constructor(private facetValue: IDynamicHierarchicalFacetValueProperties, private facet: IDynamicHierarchicalFacet) {
+    this.renderer = new DynamicHierarchicalFacetValueRenderer(this, this.facet);
     this.retrieveCount = Math.max(this.facet.options.numberOfValues, this.facetValue.children.length);
   }
 
@@ -51,7 +55,7 @@ export class CategoryFacetValue implements ICategoryFacetValue {
     return this.facetValue.children;
   }
 
-  public set children(children: ICategoryFacetValue[]) {
+  public set children(children: IDynamicHierarchicalFacetValue[]) {
     this.facetValue.children = children;
   }
 
@@ -78,8 +82,8 @@ export class CategoryFacetValue implements ICategoryFacetValue {
 
   private buildShowLess() {
     const showLess = new DynamicFacetValueShowMoreLessButton({
-      className: 'coveo-dynamic-category-facet-show-less coveo-with-space',
-      ariaLabel: l('ShowLessCategoryResults', this.displayValue),
+      className: 'coveo-dynamic-hierarchical-facet-show-less coveo-with-space',
+      ariaLabel: l('ShowLessHierarchicalResults', this.displayValue),
       label: l('ShowLess'),
       action: () => {
         this.facet.enableFreezeFacetOrderFlag();
@@ -93,8 +97,8 @@ export class CategoryFacetValue implements ICategoryFacetValue {
 
   private buildShowMore() {
     const showMore = new DynamicFacetValueShowMoreLessButton({
-      className: 'coveo-dynamic-category-facet-show-more coveo-with-space',
-      ariaLabel: l('ShowMoreCategoryResults', this.displayValue),
+      className: 'coveo-dynamic-hierarchical-facet-show-more coveo-with-space',
+      ariaLabel: l('ShowMoreHierarchicalResults', this.displayValue),
       label: l('ShowMore'),
       action: () => {
         this.facet.enableFreezeFacetOrderFlag();

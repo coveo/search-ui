@@ -1,38 +1,41 @@
-import { CategoryFacetValues } from '../../../../src/ui/CategoryFacet/CategoryFacetValues/CategoryFacetValues';
-import { CategoryFacetTestUtils } from '../CategoryFacetTestUtils';
+import { DynamicHierarchicalFacetValues } from '../../../../src/ui/DynamicHierarchicalFacet/DynamicHierarchicalFacetValues/DynamicHierarchicalFacetValues';
+import { DynamicHierarchicalFacetTestUtils } from '../DynamicHierarchicalFacetTestUtils';
 import { IFacetResponse, IFacetResponseValue } from '../../../../src/rest/Facet/FacetResponse';
 import { FacetValueState } from '../../../../src/rest/Facet/FacetValueState';
 import { $$ } from '../../../../src/Core';
-import { ICategoryFacet, ICategoryFacetValue } from '../../../../src/ui/CategoryFacet/ICategoryFacet';
+import {
+  IDynamicHierarchicalFacet,
+  IDynamicHierarchicalFacetValue
+} from '../../../../src/ui/DynamicHierarchicalFacet/IDynamicHierarchicalFacet';
 
-export function CategoryFacetValuesTest() {
-  describe('CategoryFacetValues', () => {
-    let facet: ICategoryFacet;
+export function DynamicHierarchicalFacetValuesTest() {
+  describe('DynamicHierarchicalFacetValues', () => {
+    let facet: IDynamicHierarchicalFacet;
 
     beforeEach(() => {
-      facet = CategoryFacetTestUtils.createFakeFacet();
-      facet.values = new CategoryFacetValues(facet);
+      facet = DynamicHierarchicalFacetTestUtils.createFakeFacet();
+      facet.values = new DynamicHierarchicalFacetValues(facet);
     });
 
     function moreButton() {
       const element = facet.values.render();
-      return $$(element).find('.coveo-dynamic-category-facet-show-more');
+      return $$(element).find('.coveo-dynamic-hierarchical-facet-show-more');
     }
 
     function lessButton() {
       const element = facet.values.render();
-      return $$(element).find('.coveo-dynamic-category-facet-show-less');
+      return $$(element).find('.coveo-dynamic-hierarchical-facet-show-less');
     }
 
     describe('testing createFromResponse', () => {
       let response: IFacetResponse;
 
       describe('when response has 1 level deep of facet values', () => {
-        let testValue: ICategoryFacetValue;
+        let testValue: IDynamicHierarchicalFacetValue;
         let responseValue: IFacetResponseValue;
 
         beforeEach(() => {
-          response = CategoryFacetTestUtils.getCompleteFacetResponse(facet);
+          response = DynamicHierarchicalFacetTestUtils.getCompleteFacetResponse(facet);
           facet.values.createFromResponse(response);
           testValue = facet.values.allFacetValues[2];
           responseValue = response.values[2];
@@ -61,14 +64,14 @@ export function CategoryFacetValuesTest() {
       });
 
       describe('when response has multiple levels deep of facet values', () => {
-        let testValue: ICategoryFacetValue;
-        let childTestValue: ICategoryFacetValue;
+        let testValue: IDynamicHierarchicalFacetValue;
+        let childTestValue: IDynamicHierarchicalFacetValue;
         let responseValue: IFacetResponseValue;
         let responseChildValue: IFacetResponseValue;
 
         beforeEach(() => {
-          response = CategoryFacetTestUtils.getCompleteFacetResponse(facet, {
-            values: CategoryFacetTestUtils.createFakeFacetResponseValues(2)
+          response = DynamicHierarchicalFacetTestUtils.getCompleteFacetResponse(facet, {
+            values: DynamicHierarchicalFacetTestUtils.createFakeFacetResponseValues(2)
           });
           facet.values.createFromResponse(response);
 
@@ -104,8 +107,8 @@ export function CategoryFacetValuesTest() {
         let responseValue: IFacetResponseValue;
 
         beforeEach(() => {
-          responseValue = CategoryFacetTestUtils.createFakeSelectedFacetResponseValue();
-          response = CategoryFacetTestUtils.getCompleteFacetResponse(facet, {
+          responseValue = DynamicHierarchicalFacetTestUtils.createFakeSelectedFacetResponseValue();
+          response = DynamicHierarchicalFacetTestUtils.getCompleteFacetResponse(facet, {
             values: [responseValue]
           });
           facet.values.createFromResponse(response);
@@ -135,7 +138,7 @@ export function CategoryFacetValuesTest() {
     });
 
     it('clear should empty the values', () => {
-      facet.values.createFromResponse(CategoryFacetTestUtils.getCompleteFacetResponse(facet));
+      facet.values.createFromResponse(DynamicHierarchicalFacetTestUtils.getCompleteFacetResponse(facet));
       facet.values.clear();
 
       expect(facet.values.allFacetValues.length).toBe(0);
@@ -147,8 +150,8 @@ export function CategoryFacetValuesTest() {
 
       beforeEach(() => {
         facet.values.createFromResponse(
-          CategoryFacetTestUtils.getCompleteFacetResponse(facet, {
-            values: CategoryFacetTestUtils.createFakeFacetResponseValues(3, 3)
+          DynamicHierarchicalFacetTestUtils.getCompleteFacetResponse(facet, {
+            values: DynamicHierarchicalFacetTestUtils.createFakeFacetResponseValues(3, 3)
           })
         );
         listElement = facet.values.render();
@@ -168,7 +171,7 @@ export function CategoryFacetValuesTest() {
       });
 
       function getAllCategoriesElement() {
-        return $$(listElement).find('.coveo-dynamic-category-facet-all');
+        return $$(listElement).find('.coveo-dynamic-hierarchical-facet-all');
       }
 
       describe('when there is no value selected', () => {
@@ -204,11 +207,11 @@ export function CategoryFacetValuesTest() {
 
     describe('testing selectPath', () => {
       describe('when values are at a single level', () => {
-        let testFacetValue: ICategoryFacetValue;
+        let testFacetValue: IDynamicHierarchicalFacetValue;
         beforeEach(() => {
           facet.values.createFromResponse(
-            CategoryFacetTestUtils.getCompleteFacetResponse(facet, {
-              values: CategoryFacetTestUtils.createFakeFacetResponseValues(1, 3)
+            DynamicHierarchicalFacetTestUtils.getCompleteFacetResponse(facet, {
+              values: DynamicHierarchicalFacetTestUtils.createFakeFacetResponseValues(1, 3)
             })
           );
         });
@@ -273,14 +276,14 @@ export function CategoryFacetValuesTest() {
       });
 
       describe('when values are at multiple levels', () => {
-        let firstLevelFacetValue: ICategoryFacetValue;
-        let secondLevelFacetValue: ICategoryFacetValue;
-        let thirdLevelFacetValue: ICategoryFacetValue;
+        let firstLevelFacetValue: IDynamicHierarchicalFacetValue;
+        let secondLevelFacetValue: IDynamicHierarchicalFacetValue;
+        let thirdLevelFacetValue: IDynamicHierarchicalFacetValue;
 
         beforeEach(() => {
           facet.values.createFromResponse(
-            CategoryFacetTestUtils.getCompleteFacetResponse(facet, {
-              values: CategoryFacetTestUtils.createFakeFacetResponseValues(4, 3)
+            DynamicHierarchicalFacetTestUtils.getCompleteFacetResponse(facet, {
+              values: DynamicHierarchicalFacetTestUtils.createFakeFacetResponseValues(4, 3)
             })
           );
         });
@@ -446,8 +449,8 @@ export function CategoryFacetValuesTest() {
 
       describe('when there are more values than the numberOfValues option', () => {
         beforeEach(() => {
-          const response = CategoryFacetTestUtils.getCompleteFacetResponse(facet, {
-            values: CategoryFacetTestUtils.createFakeFacetResponseValues(1, 20)
+          const response = DynamicHierarchicalFacetTestUtils.getCompleteFacetResponse(facet, {
+            values: DynamicHierarchicalFacetTestUtils.createFakeFacetResponseValues(1, 20)
           });
           facet.values.createFromResponse(response);
         });
