@@ -89,6 +89,4 @@ export interface IDynamicHierarchicalFacetValues {
   selectedPath: string[];
 
   allFacetValues: IDynamicHierarchicalFacetValue[];
-  visibleParentValues: IDynamicHierarchicalFacetValue[];
-  availableValues: IDynamicHierarchicalFacetValue[];
 }

@@ -126,14 +126,6 @@ export function DynamicHierarchicalFacetValuesTest() {
         it('should have the right selectedPath', () => {
           expect(facet.values.selectedPath).toEqual(facet.values.allFacetValues[0].path);
         });
-
-        it('should have the right visibleParentValues', () => {
-          expect(facet.values.visibleParentValues).toEqual([facet.values.allFacetValues[0]]);
-        });
-
-        it('should have the right availableValues', () => {
-          expect(facet.values.availableValues).toEqual(facet.values.allFacetValues[0].children);
-        });
       });
     });
 
@@ -233,14 +225,6 @@ export function DynamicHierarchicalFacetValuesTest() {
           it('should have the right selectedPath', () => {
             expect(facet.values.selectedPath).toEqual([testFacetValue.value]);
           });
-
-          it('should have the right visibleParentValues', () => {
-            expect(facet.values.visibleParentValues).toEqual([testFacetValue]);
-          });
-
-          it('should have the right availableValues', () => {
-            expect(facet.values.availableValues).toEqual(testFacetValue.children);
-          });
         });
 
         describe('when path does not exist', () => {
@@ -263,14 +247,6 @@ export function DynamicHierarchicalFacetValuesTest() {
 
           it('should have the right selectedPath', () => {
             expect(facet.values.selectedPath).toEqual([newValue]);
-          });
-
-          it('should have the right visibleParentValues', () => {
-            expect(facet.values.visibleParentValues).toEqual([testFacetValue]);
-          });
-
-          it('should have the right availableValues', () => {
-            expect(facet.values.availableValues).toEqual(testFacetValue.children);
           });
         });
       });
@@ -315,14 +291,6 @@ export function DynamicHierarchicalFacetValuesTest() {
           it('should have the right selectedPath', () => {
             expect(facet.values.selectedPath).toEqual(thirdLevelFacetValue.path);
           });
-
-          it('should have the right visibleParentValues', () => {
-            expect(facet.values.visibleParentValues).toEqual([firstLevelFacetValue, secondLevelFacetValue, thirdLevelFacetValue]);
-          });
-
-          it('should have the right availableValues', () => {
-            expect(facet.values.availableValues).toEqual(thirdLevelFacetValue.children);
-          });
         });
 
         describe('when path only partially exist', () => {
@@ -358,14 +326,6 @@ export function DynamicHierarchicalFacetValuesTest() {
 
           it('should have the right selectedPath', () => {
             expect(facet.values.selectedPath).toEqual(thirdLevelFacetValue.path);
-          });
-
-          it('should have the right visibleParentValues', () => {
-            expect(facet.values.visibleParentValues).toEqual([firstLevelFacetValue, secondLevelFacetValue, thirdLevelFacetValue]);
-          });
-
-          it('should have the right availableValues', () => {
-            expect(facet.values.availableValues).toEqual(thirdLevelFacetValue.children);
           });
         });
 
@@ -410,14 +370,6 @@ export function DynamicHierarchicalFacetValuesTest() {
 
           it('should have the right selectedPath', () => {
             expect(facet.values.selectedPath).toEqual(thirdLevelFacetValue.path);
-          });
-
-          it('should have the right visibleParentValues', () => {
-            expect(facet.values.visibleParentValues).toEqual([firstLevelFacetValue, secondLevelFacetValue, thirdLevelFacetValue]);
-          });
-
-          it('should have the right availableValues', () => {
-            expect(facet.values.availableValues).toEqual(thirdLevelFacetValue.children);
           });
         });
       });

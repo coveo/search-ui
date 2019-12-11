@@ -113,10 +113,9 @@ export function DynamicHierarchicalFacetQueryControllerTest() {
     });
 
     describe('testing currentValues', () => {
-      // TODO: rename when API has fixed currentValue/numberOfValues issue
-      it(`when a value is selected
-      currentValues length should be equal to the facet number of values`, () => {
-        expect(facetRequest().currentValues.length).toBe(facet.values.allFacetValues.length);
+      it(`when no value is selected
+      currentValues length should be 0`, () => {
+        expect(facetRequest().currentValues.length).toBe(0);
       });
 
       // TODO: remove when API has fixed currentValue/numberOfValues issue
@@ -127,7 +126,9 @@ export function DynamicHierarchicalFacetQueryControllerTest() {
         expect(facetRequest().currentValues).toEqual([]);
       });
 
-      it(`a currentValue basic properties should be built correctly`, () => {
+      it(`when a value is selected
+        a currentValue basic properties should be built correctly`, () => {
+        facet.values.selectPath(facet.values.allFacetValues[0].path);
         const facetValue = facet.values.allFacetValues[0];
         const currentValue = facetRequest().currentValues[0];
 
@@ -153,18 +154,6 @@ export function DynamicHierarchicalFacetQueryControllerTest() {
         const currentValue = facetRequest().currentValues[0];
 
         expect(currentValue.children).toEqual([]);
-      });
-
-      it(`when the target value is not selected
-      retrieveChildren should be false`, () => {
-        const currentValue = facetRequest().currentValues[0];
-        expect(currentValue.retrieveChildren).toBe(false);
-      });
-
-      it(`when the target value is not selected
-      children should not be empty`, () => {
-        const currentValue = facetRequest().currentValues[0];
-        expect(currentValue.children).not.toEqual([]);
       });
     });
 

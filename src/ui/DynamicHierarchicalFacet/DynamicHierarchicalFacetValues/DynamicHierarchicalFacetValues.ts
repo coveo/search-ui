@@ -217,24 +217,4 @@ export class DynamicHierarchicalFacetValues implements IDynamicHierarchicalFacet
     this.list.appendChild(fragment);
     return this.list;
   }
-
-  public get visibleParentValues() {
-    if (!this.hasSelectedValue) {
-      return [];
-    }
-
-    const parentValues: IDynamicHierarchicalFacetValue[] = [];
-    let currentParentValue = this.allFacetValues[0];
-
-    for (let i = 0; i < this.selectedPath.length; i++) {
-      parentValues.push(currentParentValue);
-      currentParentValue = currentParentValue.children.length ? currentParentValue.children[0] : null;
-    }
-
-    return parentValues;
-  }
-
-  public get availableValues() {
-    return this.selectedPath.length ? this.getOrCreateFacetValueWithPath(this.selectedPath).children : this.facetValues;
-  }
 }

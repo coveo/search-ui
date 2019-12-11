@@ -75,11 +75,9 @@ export class DynamicHierarchicalFacetQueryController {
   }
 
   private get currentValues(): IFacetRequestValue[] {
-    // TODO: remove when API has fixed currentValue/numberOfValues issue
-    if (!this.facet.values.hasSelectedValue && this.numberOfValuesToRequest > this.facet.options.numberOfValues) {
-      return [];
-    }
-    return this.facet.values.allFacetValues.map(requestValue => this.buildRequestValue(requestValue));
+    return this.facet.values.hasSelectedValue
+      ? this.facet.values.allFacetValues.map(requestValue => this.buildRequestValue(requestValue))
+      : [];
   }
 
   private buildRequestValue(facetValue: IDynamicHierarchicalFacetValue): IFacetRequestValue {
@@ -94,7 +92,6 @@ export class DynamicHierarchicalFacetQueryController {
   }
 
   private childrenForFacetValue(facetValue: IDynamicHierarchicalFacetValue) {
-    // TODO: remove when API has fixed currentValue/numberOfValues issue
     return this.shouldRetrieveChildren(facetValue) ? [] : facetValue.children.map(requestValue => this.buildRequestValue(requestValue));
   }
 
