@@ -49,6 +49,7 @@ import { AccessibilityTab } from './AccessibilityTab';
 import { AccessibilityTimespanFacet } from './AccessibilityTimespanFacet';
 import { AccessibilityYouTubeThumbnail } from './AccessibilityYouTubeThumbnail';
 import { AccessibilityStarResult } from './AccessibilityStarResult';
+import { AccessibilityResultPreviewsManager } from './AccessibilityResultPreviewsManager';
 
 const initialHTMLSetup = () => {
   const body = jasmine['getGlobal']().document.body;
@@ -142,4 +143,5 @@ describe('Testing ...', () => {
   AccessibilityTimespanFacet();
   AccessibilityYouTubeThumbnail();
   AccessibilityStarResult();
+  AccessibilityResultPreviewsManager();
 });

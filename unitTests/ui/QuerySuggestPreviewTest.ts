@@ -13,6 +13,7 @@ import { IQueryResults } from '../../src/rest/QueryResults';
 import { last } from 'underscore';
 import { IPopulateSearchResultPreviewsEventArgs, ResultPreviewsManagerEvents } from '../../src/events/ResultPreviewsManagerEvents';
 import { IQuery } from '../../src/rest/Query';
+import { ResultLink } from '../../src/ui/ResultLink/ResultLink';
 
 export function initOmniboxAnalyticsMock(omniboxAnalytics: IOmniboxAnalytics) {
   const partialQueries: string[] = [];
@@ -61,8 +62,9 @@ export function QuerySuggestPreviewTest() {
       spyOn(Component, 'resolveRoot').and.returnValue(testEnv.root);
     }
 
+    let lastFakeResults: IQueryResults;
     function triggerPopulateSearchResultPreviews(suggestionText: string = 'test', fakeResults?: IQueryResults) {
-      fakeResults = fakeResults || FakeResults.createFakeResults(test.cmp.options.numberOfPreviewResults);
+      lastFakeResults = fakeResults = fakeResults || FakeResults.createFakeResults(test.cmp.options.numberOfPreviewResults);
       (test.env.searchEndpoint.search as jasmine.Spy).and.returnValue(Promise.resolve(fakeResults));
       const event: IPopulateSearchResultPreviewsEventArgs = { suggestionText, previewsQueries: [] };
       $$(testEnv.root).trigger(ResultPreviewsManagerEvents.populateSearchResultPreviews, event);
@@ -130,6 +132,36 @@ export function QuerySuggestPreviewTest() {
         previews[previewIndexToSelect].element
       );
       done();
+    });
+
+    describe('with accessibility', () => {
+      describe('with a ResultLink in the template', () => {
+        beforeEach(() => {
+          setupQuerySuggestPreview({}, false);
+        });
+
+        it('sets the aria-label of previews to their title', async done => {
+          const previews = await triggerPopulateSearchResultPreviewsAndPassTime();
+          previews.forEach((preview, i) => expect(preview.element.getAttribute('aria-label')).toEqual(lastFakeResults.results[i].title));
+          done();
+        });
+
+        it('sets the role of the link to "link"', async done => {
+          const resultLinks = (await triggerPopulateSearchResultPreviewsAndPassTime()).map(preview =>
+            preview.element.querySelector(Component.computeSelectorForType(ResultLink.ID))
+          );
+          resultLinks.forEach(resultLink => expect(resultLink.getAttribute('role')).toEqual('link'));
+          done();
+        });
+
+        it('has no "aria-level" on the link', async done => {
+          const resultLinks = (await triggerPopulateSearchResultPreviewsAndPassTime()).map(preview =>
+            preview.element.querySelector(Component.computeSelectorForType(ResultLink.ID))
+          );
+          resultLinks.forEach(resultLink => expect(resultLink.getAttribute('aria-level')).toBeFalsy());
+          done();
+        });
+      });
     });
 
     describe('expose options', () => {
