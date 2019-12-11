@@ -254,7 +254,7 @@ export function logCustomEvent(
   element: HTMLElement,
   customEventCause: IAnalyticsActionCause,
   metadata: IStringMap<string>,
-  result: IQueryResult
+  result?: IQueryResult
 ) {
   var client = getCoveoAnalyticsClient(element);
   if (client) {
@@ -264,7 +264,7 @@ export function logCustomEvent(
 
 Initialization.registerNamedMethod(
   'logCustomEvent',
-  (element: HTMLElement, customEventCause: IAnalyticsActionCause, metadata: any, result: IQueryResult) => {
+  (element: HTMLElement, customEventCause: IAnalyticsActionCause, metadata: any, result?: IQueryResult) => {
     logCustomEvent(element, customEventCause, metadata, result);
   }
 );
