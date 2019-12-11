@@ -112,6 +112,9 @@ lazyFoldingForThread();
 import { lazyHiddenQuery } from './ui/HiddenQuery/LazyHiddenQuery';
 lazyHiddenQuery();
 
+import { lazyCategoryFacet } from './ui/CategoryFacet/LazyCategoryFacet';
+lazyCategoryFacet();
+
 import { lazyHierarchicalFacet } from './ui/HierarchicalFacet/LazyHierarchicalFacet';
 lazyHierarchicalFacet();
 

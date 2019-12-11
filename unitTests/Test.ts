@@ -531,6 +531,12 @@ UrlUtilsTest();
 import { AccessTokenTest } from './rest/AccessTokenTest';
 AccessTokenTest();
 
+import { CategoryFacetTest } from './ui/CategoryFacet/CategoryFacetTest';
+CategoryFacetTest();
+
+import { CategoryFacetValuesTreeTest } from './ui/CategoryFacet/CategoryFacetValuesTreeTest';
+CategoryFacetValuesTreeTest();
+
 import { DynamicHierarchicalFacetTest } from './ui/DynamicHierarchicalFacet/DynamicHierarchicalFacetTest';
 DynamicHierarchicalFacetTest();
 
@@ -648,6 +654,21 @@ QuickviewDocumentWordButtonTest();
 import { QuickviewDocumentTest } from './ui/QuickviewDocumentTest';
 QuickviewDocumentTest();
 
+import { CategoryFacetDebugTest } from './ui/CategoryFacet/CategoryFacetDebugTest';
+CategoryFacetDebugTest();
+
+import { CategoryFacetSearchTest } from './ui/CategoryFacet/CategoryFacetSearchTest';
+CategoryFacetSearchTest();
+
+import { CategoryFacetBreadcrumbTest } from './ui/CategoryFacet/CategoryFacetBreadcrumbTest';
+CategoryFacetBreadcrumbTest();
+
+import { CategoryValueTest } from './ui/CategoryFacet/CategoryValueTest';
+CategoryValueTest();
+
+import { CategoryFacetHeaderTest } from './ui/CategoryFacet/CategoryFacetHeaderTest';
+CategoryFacetHeaderTest();
+
 import { DynamicHierarchicalFacetBreadcrumbTest } from './ui/DynamicHierarchicalFacet/DynamicHierarchicalFacetBreadcrumbTest';
 DynamicHierarchicalFacetBreadcrumbTest();
 
@@ -671,6 +692,9 @@ AriaLiveTest();
 
 import { QuerySummaryUtilsTest } from './utils/QuerySummaryUtilsTest';
 QuerySummaryUtilsTest();
+
+import { CategoryFacetQueryControllerTest } from './controllers/CategoryFacetQueryControllerTest';
+CategoryFacetQueryControllerTest();
 
 import { DynamicHierarchicalFacetQueryControllerTest } from './controllers/DynamicHierarchicalFacetQueryControllerTest';
 DynamicHierarchicalFacetQueryControllerTest();

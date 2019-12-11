@@ -290,6 +290,9 @@ DynamicFacetManager.doExport();
 import { PromotedResultsBadge } from './ui/PromotedResultsBadge/PromotedResultsBadge';
 PromotedResultsBadge.doExport();
 
+import { CategoryFacet } from './ui/CategoryFacet/CategoryFacet';
+CategoryFacet.doExport();
+
 import { DynamicHierarchicalFacet } from './ui/DynamicHierarchicalFacet/DynamicHierarchicalFacet';
 DynamicHierarchicalFacet.doExport();
 
