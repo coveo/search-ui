@@ -1,16 +1,16 @@
 import { $$, Dom } from '../../../utils/Dom';
 import { SVGIcons } from '../../../utils/SVGIcons';
 import { SVGDom } from '../../../utils/SVGDom';
-import { ICategoryFacetValue, ICategoryFacet } from '../ICategoryFacet';
+import { IDynamicHierarchicalFacetValue, IDynamicHierarchicalFacet } from '../IDynamicHierarchicalFacet';
 
-export class CategoryFacetValueRenderer {
+export class DynamicHierarchicalFacetValueRenderer {
   private button: Dom;
 
-  constructor(private facetValue: ICategoryFacetValue, private facet: ICategoryFacet) {}
+  constructor(private facetValue: IDynamicHierarchicalFacetValue, private facet: IDynamicHierarchicalFacet) {}
 
   public render() {
     this.button = $$('button', {
-      className: 'coveo-dynamic-category-facet-value',
+      className: 'coveo-dynamic-hierarchical-facet-value',
       ariaLabel: this.facetValue.selectAriaLabel
     });
     this.button.on('click', () => this.selectAction());
@@ -23,13 +23,13 @@ export class CategoryFacetValueRenderer {
   }
 
   private renderLabel() {
-    const label = $$('span', { className: 'coveo-dynamic-category-facet-value-label' });
+    const label = $$('span', { className: 'coveo-dynamic-hierarchical-facet-value-label' });
     label.text(this.facetValue.displayValue);
     this.button.append(label.el);
   }
 
   private renderCount() {
-    const count = $$('span', { className: 'coveo-dynamic-category-facet-value-count' }, `(${this.facetValue.formattedCount})`);
+    const count = $$('span', { className: 'coveo-dynamic-hierarchical-facet-value-count' }, `(${this.facetValue.formattedCount})`);
     this.button.append(count.el);
   }
 
@@ -41,8 +41,8 @@ export class CategoryFacetValueRenderer {
   }
 
   private prependArrow() {
-    const arrowIcon = $$('div', { className: 'coveo-dynamic-category-facet-value-arrow' }, SVGIcons.icons.arrowLeft);
-    SVGDom.addClassToSVGInContainer(arrowIcon.el, 'coveo-dynamic-category-facet-value-arrow-svg');
+    const arrowIcon = $$('div', { className: 'coveo-dynamic-hierarchical-facet-value-arrow' }, SVGIcons.icons.arrowLeft);
+    SVGDom.addClassToSVGInContainer(arrowIcon.el, 'coveo-dynamic-hierarchical-facet-value-arrow-svg');
     this.button.prepend(arrowIcon.el);
   }
 

@@ -1,30 +1,33 @@
-import { CategoryFacetValue } from '../../../../src/ui/CategoryFacet/CategoryFacetValues/CategoryFacetValue';
-import { CategoryFacetValueRenderer } from '../../../../src/ui/CategoryFacet/CategoryFacetValues/CategoryFacetValueRenderer';
-import { CategoryFacetTestUtils } from '../CategoryFacetTestUtils';
+import { DynamicHierarchicalFacetValue } from '../../../../src/ui/DynamicHierarchicalFacet/DynamicHierarchicalFacetValues/DynamicHierarchicalFacetValue';
+import { DynamicHierarchicalFacetValueRenderer } from '../../../../src/ui/DynamicHierarchicalFacet/DynamicHierarchicalFacetValues/DynamicHierarchicalFacetValueRenderer';
+import { DynamicHierarchicalFacetTestUtils } from '../DynamicHierarchicalFacetTestUtils';
 import { $$ } from '../../../../src/Core';
 import { FacetValueState } from '../../../../src/rest/Facet/FacetValueState';
-import { ICategoryFacet, ICategoryFacetValueProperties } from '../../../../src/ui/CategoryFacet/ICategoryFacet';
+import {
+  IDynamicHierarchicalFacet,
+  IDynamicHierarchicalFacetValueProperties
+} from '../../../../src/ui/DynamicHierarchicalFacet/IDynamicHierarchicalFacet';
 
-export function CategoryFacetValueRendererTest() {
-  describe('CategoryFacetValueRendererTest', () => {
-    let facetValue: CategoryFacetValue;
-    let facetValueRenderer: CategoryFacetValueRenderer;
-    let facet: ICategoryFacet;
+export function DynamicHierarchicalFacetValueRendererTest() {
+  describe('DynamicHierarchicalFacetValueRendererTest', () => {
+    let facetValue: DynamicHierarchicalFacetValue;
+    let facetValueRenderer: DynamicHierarchicalFacetValueRenderer;
+    let facet: IDynamicHierarchicalFacet;
     let element: HTMLElement;
 
     beforeEach(() => {
-      initializeComponentWithValue(CategoryFacetTestUtils.createFakeFacetValue());
+      initializeComponentWithValue(DynamicHierarchicalFacetTestUtils.createFakeFacetValue());
     });
 
-    function initializeComponentWithValue(value: ICategoryFacetValueProperties) {
-      facet = CategoryFacetTestUtils.createFakeFacet();
-      facetValue = new CategoryFacetValue(value, facet);
-      facetValueRenderer = new CategoryFacetValueRenderer(facetValue, facet);
+    function initializeComponentWithValue(value: IDynamicHierarchicalFacetValueProperties) {
+      facet = DynamicHierarchicalFacetTestUtils.createFakeFacet();
+      facetValue = new DynamicHierarchicalFacetValue(value, facet);
+      facetValueRenderer = new DynamicHierarchicalFacetValueRenderer(facetValue, facet);
       element = facetValueRenderer.render();
     }
 
     function getLabel() {
-      return $$(element).find('.coveo-dynamic-category-facet-value-label');
+      return $$(element).find('.coveo-dynamic-hierarchical-facet-value-label');
     }
 
     function getButton() {
@@ -32,11 +35,11 @@ export function CategoryFacetValueRendererTest() {
     }
 
     function getCount() {
-      return $$(element).find('.coveo-dynamic-category-facet-value-count');
+      return $$(element).find('.coveo-dynamic-hierarchical-facet-value-count');
     }
 
     function getArrow() {
-      return $$(element).find('.coveo-dynamic-category-facet-value-arrow');
+      return $$(element).find('.coveo-dynamic-hierarchical-facet-value-arrow');
     }
 
     it('should render without errors', () => {
@@ -44,7 +47,7 @@ export function CategoryFacetValueRendererTest() {
     });
 
     it('should not render XSS in the displayValue', () => {
-      const fakeFacetValueWithXSS = CategoryFacetTestUtils.createFakeFacetValue();
+      const fakeFacetValueWithXSS = DynamicHierarchicalFacetTestUtils.createFakeFacetValue();
       fakeFacetValueWithXSS.displayValue = '<script>alert("Hehe goodbye")</script>';
       initializeComponentWithValue(fakeFacetValueWithXSS);
       expect(getLabel().innerHTML).toBe('&lt;script&gt;alert("Hehe goodbye")&lt;/script&gt;');
@@ -89,7 +92,7 @@ export function CategoryFacetValueRendererTest() {
 
     describe('when value is selected', () => {
       beforeEach(() => {
-        const selectedValue = CategoryFacetTestUtils.createFakeFacetValue();
+        const selectedValue = DynamicHierarchicalFacetTestUtils.createFakeFacetValue();
         selectedValue.state = FacetValueState.selected;
         initializeComponentWithValue(selectedValue);
       });
@@ -109,7 +112,7 @@ export function CategoryFacetValueRendererTest() {
 
     it(`when value is not at the first level and has no children
       button should have the class "coveo-with-space"`, () => {
-      const childValue = CategoryFacetTestUtils.createFakeFacetValue();
+      const childValue = DynamicHierarchicalFacetTestUtils.createFakeFacetValue();
       childValue.path = ['a', 'path'];
       initializeComponentWithValue(childValue);
 
@@ -118,9 +121,11 @@ export function CategoryFacetValueRendererTest() {
 
     it(`when value is not at the first level but has children
       button should not have the class "coveo-with-space"`, () => {
-      const childValueWithChildren = CategoryFacetTestUtils.createFakeFacetValue();
+      const childValueWithChildren = DynamicHierarchicalFacetTestUtils.createFakeFacetValue();
       childValueWithChildren.path = ['a', 'path'];
-      childValueWithChildren.children = [new CategoryFacetValue(CategoryFacetTestUtils.createFakeFacetValue(), facet)];
+      childValueWithChildren.children = [
+        new DynamicHierarchicalFacetValue(DynamicHierarchicalFacetTestUtils.createFakeFacetValue(), facet)
+      ];
       initializeComponentWithValue(childValueWithChildren);
 
       expect($$(getButton()).hasClass('coveo-with-space')).toBe(false);
@@ -128,8 +133,8 @@ export function CategoryFacetValueRendererTest() {
 
     describe('when value is not at the first level and has children', () => {
       beforeEach(() => {
-        const valueWithChildren = CategoryFacetTestUtils.createFakeFacetValue();
-        valueWithChildren.children = [new CategoryFacetValue(CategoryFacetTestUtils.createFakeFacetValue(), facet)];
+        const valueWithChildren = DynamicHierarchicalFacetTestUtils.createFakeFacetValue();
+        valueWithChildren.children = [new DynamicHierarchicalFacetValue(DynamicHierarchicalFacetTestUtils.createFakeFacetValue(), facet)];
         initializeComponentWithValue(valueWithChildren);
       });
 

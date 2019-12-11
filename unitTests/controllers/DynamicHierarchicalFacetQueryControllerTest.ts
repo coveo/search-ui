@@ -1,37 +1,40 @@
-import { CategoryFacetQueryController } from '../../src/controllers/DynamicCategoryFacetQueryController';
+import { DynamicHierarchicalFacetQueryController } from '../../src/controllers/DynamicHierarchicalFacetQueryController';
 import { QueryBuilder, SearchEndpoint } from '../../src/Core';
-import { CategoryFacetTestUtils } from '../ui/CategoryFacet/CategoryFacetTestUtils';
+import { DynamicHierarchicalFacetTestUtils } from '../ui/DynamicHierarchicalFacet/DynamicHierarchicalFacetTestUtils';
 import { mockSearchEndpoint } from '../MockEnvironment';
-import { ICategoryFacet, ICategoryFacetOptions } from '../../src/ui/CategoryFacet/ICategoryFacet';
+import {
+  IDynamicHierarchicalFacet,
+  IDynamicHierarchicalFacetOptions
+} from '../../src/ui/DynamicHierarchicalFacet/IDynamicHierarchicalFacet';
 
-export function DynamicCategoryFacetQueryControllerTest() {
-  describe('DynamicCategoryFacetQueryController', () => {
-    let facet: ICategoryFacet;
-    let facetOptions: ICategoryFacetOptions;
-    let categoryFacetQueryController: CategoryFacetQueryController;
+export function DynamicHierarchicalFacetQueryControllerTest() {
+  describe('DynamicHierarchicalFacetQueryController', () => {
+    let facet: IDynamicHierarchicalFacet;
+    let facetOptions: IDynamicHierarchicalFacetOptions;
+    let dynamicHierarchicalFacetQueryController: DynamicHierarchicalFacetQueryController;
     let queryBuilder: QueryBuilder;
-    let mockFacetValues = CategoryFacetTestUtils.createFakeFacetResponseValues(3, 3);
+    let mockFacetValues = DynamicHierarchicalFacetTestUtils.createFakeFacetResponseValues(3, 3);
 
     beforeEach(() => {
-      facetOptions = CategoryFacetTestUtils.allOptions();
+      facetOptions = DynamicHierarchicalFacetTestUtils.allOptions();
 
       initializeComponents();
     });
 
     function initializeComponents() {
-      facet = CategoryFacetTestUtils.createAdvancedFakeFacet(facetOptions).cmp;
-      facet.values.createFromResponse(CategoryFacetTestUtils.getCompleteFacetResponse(facet, { values: mockFacetValues }));
+      facet = DynamicHierarchicalFacetTestUtils.createAdvancedFakeFacet(facetOptions).cmp;
+      facet.values.createFromResponse(DynamicHierarchicalFacetTestUtils.getCompleteFacetResponse(facet, { values: mockFacetValues }));
 
       queryBuilder = new QueryBuilder();
-      categoryFacetQueryController = new CategoryFacetQueryController(facet);
+      dynamicHierarchicalFacetQueryController = new DynamicHierarchicalFacetQueryController(facet);
     }
 
     function putFacetIntoQueryBuilder() {
-      categoryFacetQueryController.putFacetIntoQueryBuilder(queryBuilder);
+      dynamicHierarchicalFacetQueryController.putFacetIntoQueryBuilder(queryBuilder);
     }
 
     function facetRequest() {
-      return categoryFacetQueryController.facetRequest;
+      return dynamicHierarchicalFacetQueryController.facetRequest;
     }
 
     function queryFacetRequests() {
@@ -69,7 +72,7 @@ export function DynamicCategoryFacetQueryControllerTest() {
 
     it(`when enableFreezeFacetOrderFlag is called
     the facet option freezeFacetOrder should be true`, () => {
-      categoryFacetQueryController.enableFreezeFacetOrderFlag();
+      dynamicHierarchicalFacetQueryController.enableFreezeFacetOrderFlag();
       putFacetIntoQueryBuilder();
       expect(queryFacetOptions().freezeFacetOrder).toBe(true);
     });
@@ -81,14 +84,14 @@ export function DynamicCategoryFacetQueryControllerTest() {
     it(`when increaseNumberOfValuesToRequest is called
     numberOfValues should be equal to the addtion of the numberOfValues and passed parameter`, () => {
       const additionalNumberOfValues = 5;
-      categoryFacetQueryController.increaseNumberOfValuesToRequest(additionalNumberOfValues);
+      dynamicHierarchicalFacetQueryController.increaseNumberOfValuesToRequest(additionalNumberOfValues);
       expect(facetRequest().numberOfValues).toBe(facetOptions.numberOfValues + additionalNumberOfValues);
     });
 
     it(`when resetNumberOfValuesToRequest is called
     numberOfValues should be equal to the numberOfValues option`, () => {
-      categoryFacetQueryController.increaseNumberOfValuesToRequest(40);
-      categoryFacetQueryController.resetNumberOfValuesToRequest();
+      dynamicHierarchicalFacetQueryController.increaseNumberOfValuesToRequest(40);
+      dynamicHierarchicalFacetQueryController.resetNumberOfValuesToRequest();
       expect(facetRequest().numberOfValues).toBe(facetOptions.numberOfValues);
     });
 
@@ -99,7 +102,7 @@ export function DynamicCategoryFacetQueryControllerTest() {
 
     it(`when numberOfValues requested is higher than the numberOfValues option
     isFieldExpanded should be true`, () => {
-      categoryFacetQueryController.increaseNumberOfValuesToRequest(1);
+      dynamicHierarchicalFacetQueryController.increaseNumberOfValuesToRequest(1);
       expect(facetRequest().isFieldExpanded).toBe(true);
     });
 
@@ -120,7 +123,7 @@ export function DynamicCategoryFacetQueryControllerTest() {
       it(`when numberOfValues requested is higher than the numberOfValues option
         when no value is selected
         currentValues should be empty`, () => {
-        categoryFacetQueryController.increaseNumberOfValuesToRequest(1);
+        dynamicHierarchicalFacetQueryController.increaseNumberOfValuesToRequest(1);
         expect(facetRequest().currentValues).toEqual([]);
       });
 
@@ -175,7 +178,7 @@ export function DynamicCategoryFacetQueryControllerTest() {
 
       it(`should send a numberOfResults of 0 in order not to log the query as a full fleged query
         and alleviate the load on the index`, () => {
-        categoryFacetQueryController.getQueryResults();
+        dynamicHierarchicalFacetQueryController.getQueryResults();
         expect(mockEndpoint.search).toHaveBeenCalledWith(
           jasmine.objectContaining({
             numberOfResults: 0
@@ -185,24 +188,24 @@ export function DynamicCategoryFacetQueryControllerTest() {
 
       it(`when there are no previous facets requests
       should create the array of facet requests`, () => {
-        categoryFacetQueryController.getQueryResults();
+        dynamicHierarchicalFacetQueryController.getQueryResults();
         expect(mockEndpoint.search).toHaveBeenCalledWith(
           jasmine.objectContaining({
-            facets: [categoryFacetQueryController.facetRequest]
+            facets: [dynamicHierarchicalFacetQueryController.facetRequest]
           })
         );
       });
 
       it(`when there are only other facets in the previous request
       should push to the array of facet requests`, () => {
-        const fakeFacet = CategoryFacetTestUtils.createAdvancedFakeFacet({ field: '@field2' }).cmp;
+        const fakeFacet = DynamicHierarchicalFacetTestUtils.createAdvancedFakeFacet({ field: '@field2' }).cmp;
         fakeFacet.putStateIntoQueryBuilder(queryBuilder);
 
-        categoryFacetQueryController.getQueryResults();
+        dynamicHierarchicalFacetQueryController.getQueryResults();
 
         expect(mockEndpoint.search).toHaveBeenCalledWith(
           jasmine.objectContaining({
-            facets: [queryFacetRequests()[0], categoryFacetQueryController.facetRequest]
+            facets: [queryFacetRequests()[0], dynamicHierarchicalFacetQueryController.facetRequest]
           })
         );
       });
@@ -212,8 +215,8 @@ export function DynamicCategoryFacetQueryControllerTest() {
         putFacetIntoQueryBuilder();
         const originalFacetRequest = facetRequest();
 
-        categoryFacetQueryController.increaseNumberOfValuesToRequest(facetOptions.numberOfValues);
-        categoryFacetQueryController.getQueryResults();
+        dynamicHierarchicalFacetQueryController.increaseNumberOfValuesToRequest(facetOptions.numberOfValues);
+        dynamicHierarchicalFacetQueryController.getQueryResults();
 
         const newFacetRequest = facetRequest();
         expect(originalFacetRequest).not.toEqual(newFacetRequest);

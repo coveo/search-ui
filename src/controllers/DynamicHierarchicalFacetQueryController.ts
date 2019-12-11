@@ -5,13 +5,13 @@ import { QueryEvents } from '../events/QueryEvents';
 import { FacetValueState } from '../rest/Facet/FacetValueState';
 import { IQueryResults } from '../rest/QueryResults';
 import { findIndex } from 'underscore';
-import { ICategoryFacet, ICategoryFacetValue } from '../ui/CategoryFacet/ICategoryFacet';
+import { IDynamicHierarchicalFacet, IDynamicHierarchicalFacetValue } from '../ui/DynamicHierarchicalFacet/IDynamicHierarchicalFacet';
 
-export class CategoryFacetQueryController {
+export class DynamicHierarchicalFacetQueryController {
   private numberOfValuesToRequest: number;
   private freezeFacetOrder = false;
 
-  constructor(private facet: ICategoryFacet) {
+  constructor(private facet: IDynamicHierarchicalFacet) {
     this.resetNumberOfValuesToRequest();
     this.resetFreezeCurrentValuesDuringQuery();
   }
@@ -82,7 +82,7 @@ export class CategoryFacetQueryController {
     return this.facet.values.allFacetValues.map(requestValue => this.buildRequestValue(requestValue));
   }
 
-  private buildRequestValue(facetValue: ICategoryFacetValue): IFacetRequestValue {
+  private buildRequestValue(facetValue: IDynamicHierarchicalFacetValue): IFacetRequestValue {
     return {
       value: facetValue.value,
       state: facetValue.state,
@@ -93,12 +93,12 @@ export class CategoryFacetQueryController {
     };
   }
 
-  private childrenForFacetValue(facetValue: ICategoryFacetValue) {
+  private childrenForFacetValue(facetValue: IDynamicHierarchicalFacetValue) {
     // TODO: remove when API has fixed currentValue/numberOfValues issue
     return this.shouldRetrieveChildren(facetValue) ? [] : facetValue.children.map(requestValue => this.buildRequestValue(requestValue));
   }
 
-  private shouldRetrieveChildren(facetValue: ICategoryFacetValue) {
+  private shouldRetrieveChildren(facetValue: IDynamicHierarchicalFacetValue) {
     return facetValue.state === FacetValueState.selected;
   }
 }

@@ -5,14 +5,14 @@ import { Component } from '../Base/Component';
 import { IAutoLayoutAdjustableInsideFacetColumn } from '../SearchInterface/FacetColumnAutoLayoutAdjustment';
 import { DependsOnManager } from '../../utils/DependsOnManager';
 import { DynamicFacetHeader } from '../DynamicFacet/DynamicFacetHeader/DynamicFacetHeader';
-import { CategoryFacetQueryController } from '../../controllers/DynamicCategoryFacetQueryController';
+import { DynamicHierarchicalFacetQueryController } from '../../controllers/DynamicHierarchicalFacetQueryController';
 import { FacetType } from '../../rest/Facet/FacetRequest';
 import { IAnalyticsActionCause } from '../Analytics/AnalyticsActionListMeta';
 import { IFacetResponse } from '../../rest/Facet/FacetResponse';
 import { FacetValueState } from '../../rest/Facet/FacetValueState';
 import { IDynamicManagerCompatibleFacet } from '../DynamicFacetManager/DynamicFacetManager';
 
-export interface ICategoryFacetOptions extends IResponsiveComponentOptions {
+export interface IDynamicHierarchicalFacetOptions extends IResponsiveComponentOptions {
   id?: string;
   field: IFieldOption;
   title?: string;
@@ -28,13 +28,13 @@ export interface ICategoryFacetOptions extends IResponsiveComponentOptions {
   includeInBreadcrumb?: boolean;
 }
 
-export interface ICategoryFacet extends Component, IDynamicManagerCompatibleFacet, IAutoLayoutAdjustableInsideFacetColumn {
+export interface IDynamicHierarchicalFacet extends Component, IDynamicManagerCompatibleFacet, IAutoLayoutAdjustableInsideFacetColumn {
   header: DynamicFacetHeader;
-  options: ICategoryFacetOptions;
+  options: IDynamicHierarchicalFacetOptions;
   dependsOnManager: DependsOnManager;
-  categoryFacetQueryController: CategoryFacetQueryController;
+  dynamicHierarchicalFacetQueryController: DynamicHierarchicalFacetQueryController;
   isCollapsed: boolean;
-  values: ICategoryFacetValues;
+  values: IDynamicHierarchicalFacetValues;
   moreValuesAvailable: boolean;
   position: number;
 
@@ -56,7 +56,7 @@ export interface ICategoryFacet extends Component, IDynamicManagerCompatibleFace
   enableFreezeFacetOrderFlag(): void;
 }
 
-export interface ICategoryFacetValueProperties {
+export interface IDynamicHierarchicalFacetValueProperties {
   value: string;
   path: string[];
   displayValue: string;
@@ -64,10 +64,10 @@ export interface ICategoryFacetValueProperties {
   numberOfResults: number;
   moreValuesAvailable: boolean;
   preventAutoSelect: boolean;
-  children: ICategoryFacetValue[];
+  children: IDynamicHierarchicalFacetValue[];
 }
 
-export interface ICategoryFacetValue extends ICategoryFacetValueProperties {
+export interface IDynamicHierarchicalFacetValue extends IDynamicHierarchicalFacetValueProperties {
   retrieveCount: number;
   isIdle: boolean;
   isSelected: boolean;
@@ -79,7 +79,7 @@ export interface ICategoryFacetValue extends ICategoryFacetValueProperties {
   logSelectActionToAnalytics(): void;
 }
 
-export interface ICategoryFacetValues {
+export interface IDynamicHierarchicalFacetValues {
   clear(): void;
   createFromResponse(response: IFacetResponse): void;
   selectPath(path: string[]): void;
@@ -88,7 +88,7 @@ export interface ICategoryFacetValues {
   hasSelectedValue: boolean;
   selectedPath: string[];
 
-  allFacetValues: ICategoryFacetValue[];
-  visibleParentValues: ICategoryFacetValue[];
-  availableValues: ICategoryFacetValue[];
+  allFacetValues: IDynamicHierarchicalFacetValue[];
+  visibleParentValues: IDynamicHierarchicalFacetValue[];
+  availableValues: IDynamicHierarchicalFacetValue[];
 }

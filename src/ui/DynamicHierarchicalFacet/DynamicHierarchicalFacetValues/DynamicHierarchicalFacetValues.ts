@@ -1,6 +1,6 @@
-import 'styling/CategoryFacet/_CategoryFacetValues';
+import 'styling/DynamicHierarchicalFacet/_DynamicHierarchicalFacetValues';
 import { IFacetResponse, IFacetResponseValue } from '../../../rest/Facet/FacetResponse';
-import { CategoryFacetValue } from './CategoryFacetValue';
+import { DynamicHierarchicalFacetValue } from './DynamicHierarchicalFacetValue';
 import { FacetUtils } from '../../Facet/FacetUtils';
 import { $$ } from '../../../utils/Dom';
 import { find } from 'underscore';
@@ -8,14 +8,14 @@ import { FacetValueState } from '../../../rest/Facet/FacetValueState';
 import { Utils } from '../../../utils/Utils';
 import { l } from '../../../strings/Strings';
 import { DynamicFacetValueShowMoreLessButton } from '../../DynamicFacet/DynamicFacetValues/DynamicFacetValueMoreLessButton';
-import { ICategoryFacetValues, ICategoryFacet, ICategoryFacetValue } from '../ICategoryFacet';
+import { IDynamicHierarchicalFacetValues, IDynamicHierarchicalFacet, IDynamicHierarchicalFacetValue } from '../IDynamicHierarchicalFacet';
 
-export class CategoryFacetValues implements ICategoryFacetValues {
-  private facetValues: ICategoryFacetValue[] = [];
+export class DynamicHierarchicalFacetValues implements IDynamicHierarchicalFacetValues {
+  private facetValues: IDynamicHierarchicalFacetValue[] = [];
   private _selectedPath: string[] = [];
-  private list = $$('ul', { className: 'coveo-dynamic-category-facet-values' }).el;
+  private list = $$('ul', { className: 'coveo-dynamic-hierarchical-facet-values' }).el;
 
-  constructor(private facet: ICategoryFacet) {}
+  constructor(private facet: IDynamicHierarchicalFacet) {}
 
   private formatDisplayValue(value: string) {
     let returnValue = FacetUtils.tryToGetTranslatedCaption(<string>this.facet.options.field, value);
@@ -26,7 +26,7 @@ export class CategoryFacetValues implements ICategoryFacetValues {
     this.facetValues = response.values.map(responseValue => this.createFacetValueFromResponse(responseValue));
   }
 
-  private createFacetValueFromResponse(responseValue: IFacetResponseValue, path: string[] = []): ICategoryFacetValue {
+  private createFacetValueFromResponse(responseValue: IFacetResponseValue, path: string[] = []): IDynamicHierarchicalFacetValue {
     const newPath = [...path, responseValue.value];
     const displayValue = FacetUtils.getDisplayValueFromValueCaption(
       responseValue.value,
@@ -41,7 +41,7 @@ export class CategoryFacetValues implements ICategoryFacetValues {
       this._selectedPath = newPath;
     }
 
-    return new CategoryFacetValue(
+    return new DynamicHierarchicalFacetValue(
       {
         value: responseValue.value,
         numberOfResults: responseValue.numberOfResults,
@@ -75,7 +75,7 @@ export class CategoryFacetValues implements ICategoryFacetValues {
 
   private findValueWithPath(path: string[]) {
     let facetValues = this.facetValues;
-    let facetValue: ICategoryFacetValue;
+    let facetValue: IDynamicHierarchicalFacetValue;
     let remainingPath = [...path];
 
     do {
@@ -91,9 +91,9 @@ export class CategoryFacetValues implements ICategoryFacetValues {
     return facetValue;
   }
 
-  private createFacetValueWithPath(path: string[], children: ICategoryFacetValue[] = []): ICategoryFacetValue {
+  private createFacetValueWithPath(path: string[], children: IDynamicHierarchicalFacetValue[] = []): IDynamicHierarchicalFacetValue {
     const value = path[path.length - 1];
-    return new CategoryFacetValue(
+    return new DynamicHierarchicalFacetValue(
       {
         value,
         path,
@@ -121,7 +121,7 @@ export class CategoryFacetValues implements ICategoryFacetValues {
     return newFacetValue;
   }
 
-  private filterHierarchyAtPathLevel(facetValues: ICategoryFacetValue[], path: string[], level = 1) {
+  private filterHierarchyAtPathLevel(facetValues: IDynamicHierarchicalFacetValue[], path: string[], level = 1) {
     const filteredFacetValues = facetValues.filter(facetValue => {
       const targetPath = path.slice(0, level);
       return Utils.arrayEqual(targetPath, facetValue.path);
@@ -146,14 +146,14 @@ export class CategoryFacetValues implements ICategoryFacetValues {
   }
 
   private prependAllCategories() {
-    const clear = $$('li', {}, $$('button', { className: 'coveo-dynamic-category-facet-all' }, l('AllCategories')));
+    const clear = $$('li', {}, $$('button', { className: 'coveo-dynamic-hierarchical-facet-all' }, l('AllCategories')));
     clear.on('click', () => this.facet.reset());
     $$(this.list).prepend(clear.el);
   }
 
   private buildShowLess() {
     const showLess = new DynamicFacetValueShowMoreLessButton({
-      className: 'coveo-dynamic-category-facet-show-less',
+      className: 'coveo-dynamic-hierarchical-facet-show-less',
       ariaLabel: l('ShowLessFacetResults', this.facet.options.title),
       label: l('ShowLessCategories'),
       action: () => {
@@ -167,7 +167,7 @@ export class CategoryFacetValues implements ICategoryFacetValues {
 
   private buildShowMore() {
     const showMore = new DynamicFacetValueShowMoreLessButton({
-      className: 'coveo-dynamic-category-facet-show-more',
+      className: 'coveo-dynamic-hierarchical-facet-show-more',
       ariaLabel: l('ShowMoreFacetResults', this.facet.options.title),
       label: l('ShowMoreCategories'),
       action: () => {
@@ -223,7 +223,7 @@ export class CategoryFacetValues implements ICategoryFacetValues {
       return [];
     }
 
-    const parentValues: ICategoryFacetValue[] = [];
+    const parentValues: IDynamicHierarchicalFacetValue[] = [];
     let currentParentValue = this.allFacetValues[0];
 
     for (let i = 0; i < this.selectedPath.length; i++) {
