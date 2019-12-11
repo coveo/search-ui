@@ -245,6 +245,18 @@ export function PagerTest() {
           done();
         });
       });
+
+      it(`when having a resultPerPage that is not a divider of maximumNumberOfResultsFromIndex 
+      should prevent requesting more result than the maximumNumberOfResultsFromIndex option`, () => {
+        const resultsPerPage = 12;
+        const pageNumber = Math.ceil(test.cmp.options.maximumNumberOfResultsFromIndex / resultsPerPage);
+        const firstResult = (pageNumber - 1) * resultsPerPage;
+
+        test.cmp.setPage(pageNumber);
+        const { simulation } = execQuery(test, resultsPerPage, firstResult, 0, test.cmp);
+
+        expect(simulation.queryBuilder.numberOfResults).toBe(test.cmp.options.maximumNumberOfResultsFromIndex - firstResult);
+      });
     });
 
     describe('analytics', () => {
