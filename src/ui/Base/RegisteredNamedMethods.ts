@@ -248,7 +248,7 @@ function getCoveoAnalytics(element: HTMLElement) {
  * service automatically converts white spaces to underscores, and uppercase characters to lowercase characters in key
  * names. Each value must be a simple string. If you do not need to log metadata, you can simply pass an empty JSON
  * ( `{}` ).
- * @param result The IQueryResult that the custom event is linked to, if any.
+ * @param result The query result that relates to the custom event, if applicable.
  */
 export function logCustomEvent(
   element: HTMLElement,
