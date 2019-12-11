@@ -3,7 +3,6 @@ import { $$ } from '../../utils/Dom';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { ICategoryFacet } from './ICategoryFacet';
 import { l } from '../../strings/Strings';
-import { without } from 'underscore';
 import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
 
 export class CategoryFacetBreadcrumb {
@@ -16,7 +15,7 @@ export class CategoryFacetBreadcrumb {
   private create() {
     this.element = $$('div', { className: 'coveo-dynamic-facet-breadcrumb coveo-breadcrumb-item' }).el;
 
-    const pathToRender = without(this.facet.activePath, ...this.facet.options.basePath);
+    const pathToRender = this.facet.values.selectedPath;
     const captionLabel = pathToRender.map(pathPart => this.facet.getCaption(pathPart)).join(' / ');
 
     this.createAndAppendTitle();

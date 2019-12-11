@@ -36,7 +36,6 @@ export function CategoryFacetTest() {
       spyOn(test.cmp, 'selectPath').and.callThrough();
       spyOn(test.cmp, 'scrollToTop').and.callThrough();
       spyOn(test.cmp, 'ensureDom').and.callThrough();
-      spyOn(test.cmp, 'changeActivePath').and.callThrough();
       spyOn(test.cmp, 'triggerNewQuery').and.callThrough();
       spyOn(test.cmp, 'triggerNewIsolatedQuery').and.callThrough();
       spyOn(test.cmp, 'reset').and.callThrough();
@@ -115,25 +114,11 @@ export function CategoryFacetTest() {
       expect(breadcrumbs.length).toBe(0);
     });
 
-    it('calling changeActivePath with a path updates the QueryStateModel', () => {
-      test.cmp.changeActivePath(['a', 'path']);
-      testQueryStateModelValues(['a', 'path']);
-    });
-
-    it('calling changeActivePath with an empty path updates the QueryStateModel', () => {
-      test.cmp.changeActivePath([]);
-      testQueryStateModelValues([]);
-    });
-
-    it('activePath should be the basePath by default', () => {
-      expect(test.cmp.activePath).toBe(test.cmp.options.basePath);
-    });
-
     it(`when updating the QueryStateModel
-    should change the activePath value`, () => {
+    should change the values correctly`, () => {
       test.env.queryStateModel.registerNewAttribute(`f:${test.cmp.options.id}`, []);
       test.env.queryStateModel.set(`f:${test.cmp.options.id}`, ['a', 'b', 'c']);
-      expect(test.cmp.activePath).toEqual(['a', 'b', 'c']);
+      testQueryStateModelValues(['a', 'b', 'c']);
     });
 
     it(`when a previously idle value is returned selected by the API (autoselection)
@@ -267,14 +252,9 @@ export function CategoryFacetTest() {
       expect(test.cmp.values.render).toHaveBeenCalled();
     });
 
-    it('reload should change trigger a new query', () => {
-      test.cmp.reload();
-      expect(test.cmp.triggerNewQuery).toHaveBeenCalled();
-    });
-
     describe('testing showMore/showLess', () => {
-      it('showMore adds by the pageSize option by default', () => {
-        const additionalNumberOfValues = test.cmp.options.pageSize;
+      it('showMore adds by the numberOfValues option by default', () => {
+        const additionalNumberOfValues = test.cmp.options.numberOfValues;
         test.cmp.showMore();
 
         expect(getFirstFacetRequest().numberOfValues).toBe(test.cmp.options.numberOfValues + additionalNumberOfValues);
@@ -313,17 +293,6 @@ export function CategoryFacetTest() {
       expect(test.cmp.categoryFacetQueryController.enableFreezeFacetOrderFlag).toHaveBeenCalled();
     });
 
-    it('calling hide adds the coveo hidden class', () => {
-      test.cmp.hide();
-      expect($$(test.cmp.element).hasClass('coveo-hidden')).toBeTruthy();
-    });
-
-    it('calling show removes the coveo hidden class', () => {
-      $$(test.cmp.element).addClass('coveo-hidden');
-      test.cmp.show();
-      expect($$(test.cmp.element).hasClass('coveo-hidden')).toBe(false);
-    });
-
     describe('when calling reset', () => {
       beforeEach(() => {
         test.cmp.reset();
@@ -354,8 +323,8 @@ export function CategoryFacetTest() {
         expect(test.cmp.values.clear).toHaveBeenCalled();
       });
 
-      it('should call changeActivePath with an empty array', () => {
-        expect(test.cmp.changeActivePath).toHaveBeenCalledWith([]);
+      it('should update queryStateModel with an empty array', () => {
+        testQueryStateModelValues([]);
       });
     });
 
@@ -369,49 +338,12 @@ export function CategoryFacetTest() {
         expect(test.cmp.ensureDom).toHaveBeenCalled();
       });
 
-      it('should call changeActvePath with the path', () => {
-        expect(test.cmp.changeActivePath).toHaveBeenCalledWith(path);
+      it('should update queryStateModel with the path', () => {
+        testQueryStateModelValues(path);
       });
 
       it('should call selectPath on the values', () => {
         expect(test.cmp.values.selectPath).toHaveBeenCalledWith(path);
-      });
-    });
-
-    describe('when calling selectValue', () => {
-      it(`when no path is selected
-      should call selectPath with the correct path`, () => {
-        test.cmp.selectValue('hello');
-        expect(test.cmp.selectPath).toHaveBeenCalledWith(['hello']);
-      });
-
-      it(`when a path is selected
-      should call selectPath with the correct path`, () => {
-        test.cmp.values.selectPath(['hello', 'there']);
-        test.cmp.selectValue('friend');
-        expect(test.cmp.selectPath).toHaveBeenCalledWith(['hello', 'there', 'friend']);
-      });
-    });
-
-    describe('when calling deselectCurrentValue', () => {
-      it(`when no value is selected
-        should warn the user`, () => {
-        test.cmp.deselectCurrentValue();
-        expect(test.cmp.logger.warn).toHaveBeenCalled();
-      });
-
-      it(`when a path with a single value is selected
-        should call clear`, () => {
-        test.cmp.values.selectPath(['hello']);
-        test.cmp.deselectCurrentValue();
-        expect(test.cmp.clear).toHaveBeenCalledTimes(1);
-      });
-
-      it(`when a path with multiple values is selected
-        should call selectPath with the correct path`, () => {
-        test.cmp.values.selectPath(['hello', 'there', 'friend']);
-        test.cmp.deselectCurrentValue();
-        expect(test.cmp.selectPath).toHaveBeenCalledWith(['hello', 'there']);
       });
     });
 
@@ -423,7 +355,7 @@ export function CategoryFacetTest() {
 
     describe('Testing the header', () => {
       beforeEach(() => {
-        test.cmp.selectValue(mockFacetValues[0].value);
+        test.cmp.selectPath([mockFacetValues[0].value]);
         test.cmp.ensureDom();
         spyOn(test.cmp.header, 'showLoading').and.callThrough();
         spyOn(test.cmp.header, 'hideLoading').and.callThrough();
