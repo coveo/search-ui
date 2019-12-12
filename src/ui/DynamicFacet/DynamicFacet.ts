@@ -763,7 +763,7 @@ export class DynamicFacet extends Component implements IDynamicFacet {
   }
 
   private logAnalyticsFacetShowMoreLess(cause: IAnalyticsActionCause) {
-    this.usageAnalytics.logCustomEvent<IAnalyticsFacetState>(cause, this.basicAnalyticsFacetState, this.element);
+    this.usageAnalytics.logCustomEvent<IAnalyticsFacetMeta>(cause, this.basicAnalyticsFacetMeta, this.element);
   }
 
   private clear() {
