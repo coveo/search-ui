@@ -248,17 +248,26 @@ function getCoveoAnalytics(element: HTMLElement) {
  * service automatically converts white spaces to underscores, and uppercase characters to lowercase characters in key
  * names. Each value must be a simple string. If you do not need to log metadata, you can simply pass an empty JSON
  * ( `{}` ).
+ * @param result The query result that relates to the custom event, if applicable.
  */
-export function logCustomEvent(element: HTMLElement, customEventCause: IAnalyticsActionCause, metadata: IStringMap<string>) {
+export function logCustomEvent(
+  element: HTMLElement,
+  customEventCause: IAnalyticsActionCause,
+  metadata: IStringMap<string>,
+  result?: IQueryResult
+) {
   var client = getCoveoAnalyticsClient(element);
   if (client) {
-    client.logCustomEvent<any>(customEventCause, metadata, element);
+    client.logCustomEvent<any>(customEventCause, metadata, element, result);
   }
 }
 
-Initialization.registerNamedMethod('logCustomEvent', (element: HTMLElement, customEventCause: IAnalyticsActionCause, metadata: any) => {
-  logCustomEvent(element, customEventCause, metadata);
-});
+Initialization.registerNamedMethod(
+  'logCustomEvent',
+  (element: HTMLElement, customEventCause: IAnalyticsActionCause, metadata: any, result?: IQueryResult) => {
+    logCustomEvent(element, customEventCause, metadata, result);
+  }
+);
 
 /**
  * Finds the [`Analytics`]{@link Analytics} component instance, and uses it to log a `Search` usage analytics event.
