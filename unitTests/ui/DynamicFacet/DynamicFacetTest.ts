@@ -406,7 +406,7 @@ export function DynamicFacetTest() {
       test.cmp.showMoreValues();
       expect(test.cmp.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(
         analyticsActionCauseList.dynamicFacetShowMore,
-        test.cmp.basicAnalyticsFacetState,
+        test.cmp.basicAnalyticsFacetMeta,
         test.cmp.element
       );
     });
@@ -415,7 +415,7 @@ export function DynamicFacetTest() {
       test.cmp.showLessValues();
       expect(test.cmp.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(
         analyticsActionCauseList.dynamicFacetShowLess,
-        test.cmp.basicAnalyticsFacetState,
+        test.cmp.basicAnalyticsFacetMeta,
         test.cmp.element
       );
     });
