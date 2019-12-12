@@ -149,7 +149,7 @@ export class DynamicFacetManager extends Component {
   }
 
   private isDynamicFacet(component: Component) {
-    return !!(component as IDynamicManagerCompatibleFacet).isDynamicFacet
+    return !!(component as IDynamicManagerCompatibleFacet).isDynamicFacet;
   }
 
   private get allDynamicFacets(): IDynamicManagerCompatibleFacet[] {
