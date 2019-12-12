@@ -218,7 +218,7 @@ export class DynamicFacet extends Component implements IDynamicFacet {
      * @externaldocs [Normalizing Facet Value Captions](https://docs.coveo.com/368/).
      * @examples { "smith_alice": "Alice Smith"\, "jones_bob_r": "Bob R. Jones" }
      */
-    valueCaption: ComponentOptions.buildJsonOption<IStringMap<string>>(),
+    valueCaption: ComponentOptions.buildJsonOption<IStringMap<string>>({ defaultValue: {} }),
 
     /**
      * The [`id`]{@link DynamicFacet.options.id} of another facet in which at least one value must be selected in order for the dependent facet to be visible.
@@ -232,8 +232,8 @@ export class DynamicFacet extends Component implements IDynamicFacet {
 
   private includedAttributeId: string;
   private listenToQueryStateChange = true;
-  private header: DynamicFacetHeader;
   private search: DynamicFacetSearch;
+  public header: DynamicFacetHeader;
 
   public options: IDynamicFacetOptions;
   public dynamicFacetManager: DynamicFacetManager;
@@ -394,12 +394,11 @@ export class DynamicFacet extends Component implements IDynamicFacet {
    */
   public reset() {
     this.ensureDom();
-    if (!this.values.hasActiveValues) {
-      return;
+    if (this.values.hasActiveValues) {
+      this.logger.info('Deselect all values');
+      this.values.clearAll();
+      this.values.render();
     }
-    this.logger.info('Deselect all values');
-    this.values.clearAll();
-    this.values.render();
     this.updateAppearance();
     this.updateQueryStateModel();
   }
@@ -672,7 +671,14 @@ export class DynamicFacet extends Component implements IDynamicFacet {
   }
 
   private createAndAppendHeader() {
-    this.header = new DynamicFacetHeader(this);
+    this.header = new DynamicFacetHeader({
+      title: this.options.title,
+      enableCollapse: this.options.enableCollapse,
+      clear: () => this.clear(),
+      toggleCollapse: () => this.toggleCollapse(),
+      collapse: () => this.collapse(),
+      expand: () => this.expand()
+    });
     this.element.appendChild(this.header.element);
   }
 
@@ -733,7 +739,7 @@ export class DynamicFacet extends Component implements IDynamicFacet {
     beforeExecuteQuery && beforeExecuteQuery();
 
     try {
-      const results = await this.dynamicFacetQueryController.executeIsolatedQuery();
+      const results = await this.dynamicFacetQueryController.getQueryResults();
       this.handleQuerySuccess(results);
     } catch (e) {
       this.header.hideLoading();
@@ -742,7 +748,6 @@ export class DynamicFacet extends Component implements IDynamicFacet {
 
   private beforeSendingQuery() {
     this.header.showLoading();
-    this.updateAppearance();
   }
 
   private notImplementedError() {
@@ -759,6 +764,17 @@ export class DynamicFacet extends Component implements IDynamicFacet {
 
   private logAnalyticsFacetShowMoreLess(cause: IAnalyticsActionCause) {
     this.usageAnalytics.logCustomEvent<IAnalyticsFacetState>(cause, this.basicAnalyticsFacetState, this.element);
+  }
+
+  private clear() {
+    this.reset();
+    this.enableFreezeFacetOrderFlag();
+    this.scrollToTop();
+    this.triggerNewQuery(() => this.logClearAllToAnalytics());
+  }
+
+  private logClearAllToAnalytics() {
+    this.logAnalyticsEvent(analyticsActionCauseList.dynamicFacetClearAll, this.basicAnalyticsFacetMeta);
   }
 }
 
