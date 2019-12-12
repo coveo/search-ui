@@ -9,7 +9,7 @@ import { IComponentBindings } from '../Base/ComponentBindings';
 import { ComponentOptions } from '../Base/ComponentOptions';
 import { Initialization } from '../Base/Initialization';
 
-export type ValidLogoTargetOptions = `_top` | `_blank` | `_self` | `_parent`;
+export type ValidLogoTarget = '_top' | '_blank' | '_self' | '_parent';
 
 export interface ILogoOptions {
   target: string;
@@ -39,7 +39,7 @@ export class Logo extends Component {
      *
      * Default value is `undefined`, meaning standard browser behaviour for links will be respected.
      */
-    target: ComponentOptions.buildStringOption<ValidLogoTargetOptions>()
+    target: ComponentOptions.buildStringOption<ValidLogoTarget>()
   };
 
   /**
@@ -67,7 +67,7 @@ export class Logo extends Component {
       },
       SVGIcons.icons.coveoPoweredBy
     );
-    this.options.target ? link.setAttribute('target', this.options.target) : null;
+    this.options.target && link.setAttribute('target', this.options.target);
 
     SVGDom.addClassToSVGInContainer(link.el, 'coveo-powered-by-svg');
     this.element.appendChild(link.el);

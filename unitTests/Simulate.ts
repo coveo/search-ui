@@ -77,9 +77,7 @@ export class Simulate {
   static noResults(env: IMockEnvironment, options?: ISimulateQueryData): ISimulateQueryData {
     const opt = {
       ...options,
-      ...{
-        results: FakeResults.createFakeResults(0)
-      }
+      results: FakeResults.createFakeResults(0)
     };
     return Simulate.query(env, opt);
   }
