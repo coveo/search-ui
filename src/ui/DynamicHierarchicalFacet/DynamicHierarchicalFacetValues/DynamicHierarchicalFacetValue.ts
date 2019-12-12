@@ -8,6 +8,7 @@ import {
   IDynamicHierarchicalFacet,
   IDynamicHierarchicalFacetValueProperties
 } from '../IDynamicHierarchicalFacet';
+import { analyticsActionCauseList } from '../../Analytics/AnalyticsActionListMeta';
 
 export class DynamicHierarchicalFacetValue implements IDynamicHierarchicalFacetValue {
   private renderer: DynamicHierarchicalFacetValueRenderer;
@@ -143,6 +144,6 @@ export class DynamicHierarchicalFacetValue implements IDynamicHierarchicalFacetV
   }
 
   public logSelectActionToAnalytics() {
-    // TODO: add Analytics
+    this.facet.logAnalyticsEvent(analyticsActionCauseList.dynamicFacetSelect);
   }
 }

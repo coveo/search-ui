@@ -45,14 +45,13 @@ export interface IDynamicHierarchicalFacet extends Component, IDynamicManagerCom
   scrollToTop(): void;
   triggerNewQuery(beforeExecuteQuery?: () => void): void;
   triggerNewIsolatedQuery(beforeExecuteQuery?: () => void): void;
-  showMore(additionalNumberOfValues?: number): void;
-  showLess(): void;
+  showMoreValues(additionalNumberOfValues?: number): void;
+  showLessValues(): void;
   selectPath(path: string[]): void;
   reset(): void;
-  clear(): void;
   toggleCollapse(): void;
   getCaption(value: string): string;
-  logAnalyticsEvent(eventName: IAnalyticsActionCause, path?: string[]): void;
+  logAnalyticsEvent(eventName: IAnalyticsActionCause): void;
   enableFreezeFacetOrderFlag(): void;
 }
 
@@ -80,7 +79,8 @@ export interface IDynamicHierarchicalFacetValue extends IDynamicHierarchicalFace
 }
 
 export interface IDynamicHierarchicalFacetValues {
-  clear(): void;
+  resetValues(): void;
+  clearPath(): void;
   createFromResponse(response: IFacetResponse): void;
   selectPath(path: string[]): void;
   render(): HTMLElement;

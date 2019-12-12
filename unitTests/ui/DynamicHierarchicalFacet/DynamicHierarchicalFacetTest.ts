@@ -39,12 +39,12 @@ export function DynamicHierarchicalFacetTest() {
       spyOn(test.cmp, 'triggerNewQuery').and.callThrough();
       spyOn(test.cmp, 'triggerNewIsolatedQuery').and.callThrough();
       spyOn(test.cmp, 'reset').and.callThrough();
-      spyOn(test.cmp, 'clear').and.callThrough();
       spyOn(test.cmp, 'putStateIntoQueryBuilder').and.callThrough();
       spyOn(test.cmp.logger, 'warn').and.callThrough();
       spyOn(test.cmp.values, 'render').and.callThrough();
       spyOn(test.cmp.values, 'selectPath').and.callThrough();
-      spyOn(test.cmp.values, 'clear').and.callThrough();
+      spyOn(test.cmp.values, 'resetValues').and.callThrough();
+      spyOn(test.cmp.values, 'clearPath').and.callThrough();
     }
 
     function triggerPopulateBreadcrumbs() {
@@ -139,11 +139,11 @@ export function DynamicHierarchicalFacetTest() {
       // TODO: JSUI-2709 add analytics
     });
 
-    it('should call clear and log an analytics event when clearing the path through the QueryStateModel', () => {
+    it('should call reset and log an analytics event when clearing the path through the QueryStateModel', () => {
       test.env.queryStateModel.registerNewAttribute(`f:${test.cmp.options.id}`, ['allo']);
       test.env.queryStateModel.set(`f:${test.cmp.options.id}`, []);
 
-      expect(test.cmp.clear).toHaveBeenCalled();
+      expect(test.cmp.reset).toHaveBeenCalled();
       // TODO: JSUI-2709 add analytics
     });
 
@@ -252,37 +252,37 @@ export function DynamicHierarchicalFacetTest() {
       expect(test.cmp.values.render).toHaveBeenCalled();
     });
 
-    describe('testing showMore/showLess', () => {
-      it('showMore adds by the numberOfValues option by default', () => {
+    describe('testing showMoreValues/showLessValues', () => {
+      it('showMoreValues adds by the numberOfValues option by default', () => {
         const additionalNumberOfValues = test.cmp.options.numberOfValues;
-        test.cmp.showMore();
+        test.cmp.showMoreValues();
 
         expect(getFirstFacetRequest().numberOfValues).toBe(test.cmp.options.numberOfValues + additionalNumberOfValues);
       });
 
-      it('allows to showMore with a custom amount of values', () => {
+      it('allows to showMoreValues with a custom amount of values', () => {
         const additionalNumberOfValues = 38;
-        test.cmp.showMore(additionalNumberOfValues);
+        test.cmp.showMoreValues(additionalNumberOfValues);
         expect(test.cmp.triggerNewIsolatedQuery).toHaveBeenCalled();
 
         expect(getFirstFacetRequest().numberOfValues).toBe(test.cmp.options.numberOfValues + additionalNumberOfValues);
       });
 
-      it('showMore triggers a query', () => {
-        test.cmp.showMore();
+      it('showMoreValues triggers a query', () => {
+        test.cmp.showMoreValues();
         expect(test.cmp.triggerNewIsolatedQuery).toHaveBeenCalled();
       });
 
-      it('showLess resets the amount of values to the numberOfValues option', () => {
+      it('showLessValues resets the amount of values to the numberOfValues option', () => {
         const additionalNumberOfValues = 38;
-        test.cmp.showMore(additionalNumberOfValues);
-        test.cmp.showLess();
+        test.cmp.showMoreValues(additionalNumberOfValues);
+        test.cmp.showLessValues();
 
         expect(getFirstFacetRequest().numberOfValues).toBe(test.cmp.options.numberOfValues);
       });
 
-      it('showLess triggers a query', () => {
-        test.cmp.showLess();
+      it('showLessValues triggers a query', () => {
+        test.cmp.showLessValues();
         expect(test.cmp.triggerNewIsolatedQuery).toHaveBeenCalled();
       });
     });
@@ -295,32 +295,12 @@ export function DynamicHierarchicalFacetTest() {
 
     describe('when calling reset', () => {
       beforeEach(() => {
+        test.cmp.values.selectPath(['hey']);
         test.cmp.reset();
       });
 
-      it('should call clear', () => {
-        expect(test.cmp.clear).toHaveBeenCalled();
-      });
-
-      it('should call scrollToTop', () => {
-        expect(test.cmp.scrollToTop).toHaveBeenCalled();
-      });
-
-      it('should trigger a new query', () => {
-        expect(test.cmp.triggerNewQuery).toHaveBeenCalled();
-      });
-
-      // TODO: JSUI-2709 add analytics
-    });
-
-    describe('when calling clear', () => {
-      beforeEach(() => {
-        test.cmp.values.selectPath(['hey']);
-        test.cmp.clear();
-      });
-
-      it('should call clear on the values', () => {
-        expect(test.cmp.values.clear).toHaveBeenCalled();
+      it('should call clearPath on the values', () => {
+        expect(test.cmp.values.clearPath).toHaveBeenCalled();
       });
 
       it('should update queryStateModel with an empty array', () => {
@@ -366,6 +346,7 @@ export function DynamicHierarchicalFacetTest() {
       should perform the correct action on the facet`, () => {
         test.cmp.header.options.clear();
         expect(test.cmp.reset).toHaveBeenCalledTimes(1);
+        expect(test.cmp.triggerNewQuery).toHaveBeenCalledTimes(1);
       });
 
       it(`when triggering a query
