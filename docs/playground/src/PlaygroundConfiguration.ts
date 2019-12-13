@@ -79,7 +79,9 @@ export const PlaygroundConfiguration: IStringMap<IComponentPlaygroundConfigurati
   ErrorReport: {
     show: true,
     toExecute: () => {
-      Coveo['SearchEndpoint'].endpoints['default'].options.accessToken = 'invalid';
+      $$(getSearchInterfaceElement()).on('buildingQuery', function(e, args) {
+        args.queryBuilder.pipeline = 'invalid';
+      });
     }
   },
   Excerpt: {
