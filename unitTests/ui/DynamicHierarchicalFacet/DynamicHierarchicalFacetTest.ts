@@ -134,20 +134,30 @@ export function DynamicHierarchicalFacetTest() {
       testQueryStateModelValues([results.facets[0].values[0].value]);
     });
 
-    it('should call selectPath and log an analytics event when selecting a path through the QueryStateModel', () => {
-      test.env.queryStateModel.registerNewAttribute(`f:${test.cmp.options.id}`, []);
+    it('should call selectPath when selecting a path through the QueryStateModel', () => {
       test.env.queryStateModel.set(`f:${test.cmp.options.id}`, ['a', 'b', 'c']);
 
       expect(test.cmp.selectPath).toHaveBeenCalledWith(['a', 'b', 'c']);
-      expect(test.cmp.logAnalyticsEvent).toHaveBeenCalledWith(analyticsActionCauseList.dynamicFacetSelect);
     });
 
-    it('should call reset and log an analytics event when clearing the path through the QueryStateModel', () => {
-      test.env.queryStateModel.registerNewAttribute(`f:${test.cmp.options.id}`, ['allo']);
+    it('should not call selectPath when selecting a identical path through the QueryStateModel', () => {
+      test.env.queryStateModel.set(`f:${test.cmp.options.id}`, ['a', 'b', 'c']);
+      test.env.queryStateModel.set(`f:${test.cmp.options.id}`, ['a', 'b', 'c']);
+
+      expect(test.cmp.selectPath).toHaveBeenCalledTimes(1);
+    });
+
+    it('should call reset when clearing the path through the QueryStateModel', () => {
+      test.env.queryStateModel.set(`f:${test.cmp.options.id}`, ['test']);
       test.env.queryStateModel.set(`f:${test.cmp.options.id}`, []);
 
-      expect(test.cmp.reset).toHaveBeenCalled();
-      expect(test.cmp.logAnalyticsEvent).toHaveBeenCalledWith(analyticsActionCauseList.dynamicFacetClearAll);
+      expect(test.cmp.reset).toHaveBeenCalledTimes(1);
+    });
+
+    it('should not call reset when clearing an empty path through the QueryStateModel', () => {
+      test.env.queryStateModel.set(`f:${test.cmp.options.id}`, []);
+
+      expect(test.cmp.reset).not.toHaveBeenCalled();
     });
 
     describe('testing collapse/expand', () => {

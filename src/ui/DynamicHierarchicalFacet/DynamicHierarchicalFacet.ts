@@ -569,19 +569,17 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
       return;
     }
 
-    const path = data.attributes[this.queryStateAttribute];
-    if (!this.pathIsValidForSelection(path)) {
+    const queryStatePath = data.attributes[this.queryStateAttribute];
+
+    if (!this.pathIsValidForSelection(queryStatePath)) {
       return;
     }
 
-    if (path.length) {
-      this.selectPath(path);
-      this.logAnalyticsEvent(analyticsActionCauseList.dynamicFacetSelect);
+    if (Utils.arrayEqual(queryStatePath, this.values.selectedPath)) {
       return;
     }
 
-    this.reset();
-    this.logAnalyticsEvent(analyticsActionCauseList.dynamicFacetClearAll);
+    queryStatePath.length ? this.selectPath(queryStatePath) : this.reset();
   }
 
   private initQueryStateEvents() {

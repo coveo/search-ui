@@ -619,14 +619,10 @@ export class DynamicFacet extends Component implements IDynamicFacet {
 
     if (Utils.isNonEmptyArray(valuesToSelect)) {
       this.selectMultipleValues(valuesToSelect);
-      // Only one search event is sent, pick first facet value
-      this.logAnalyticsEvent(analyticsActionCauseList.dynamicFacetSelect, this.values.get(valuesToSelect[0]).analyticsFacetMeta);
     }
 
     if (Utils.isNonEmptyArray(valuesToDeselect)) {
       this.deselectMultipleValues(valuesToDeselect);
-      // Only one search event is sent, pick first facet value
-      this.logAnalyticsEvent(analyticsActionCauseList.dynamicFacetDeselect, this.values.get(valuesToDeselect[0]).analyticsFacetMeta);
     }
   };
 
