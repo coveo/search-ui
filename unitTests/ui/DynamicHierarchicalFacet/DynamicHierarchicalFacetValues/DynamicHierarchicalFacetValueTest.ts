@@ -6,6 +6,7 @@ import {
   IDynamicHierarchicalFacet,
   IDynamicHierarchicalFacetValueProperties
 } from '../../../../src/ui/DynamicHierarchicalFacet/IDynamicHierarchicalFacet';
+import { analyticsActionCauseList } from '../../../../src/ui/Analytics/AnalyticsActionListMeta';
 
 export function DynamicHierarchicalFacetValueTest() {
   describe('DynamicHierarchicalFacetValue', () => {
@@ -26,6 +27,11 @@ export function DynamicHierarchicalFacetValueTest() {
     it('should select correctly', () => {
       facetValue.select();
       expect(facetValue.isSelected).toBe(true);
+    });
+
+    it('should log the right analytics action', () => {
+      facetValue.logSelectActionToAnalytics();
+      expect(facet.logAnalyticsEvent).toHaveBeenCalledWith(analyticsActionCauseList.dynamicFacetSelect);
     });
 
     it(`when getting formattedCount

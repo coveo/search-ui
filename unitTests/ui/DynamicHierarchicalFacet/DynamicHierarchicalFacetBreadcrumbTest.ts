@@ -38,10 +38,12 @@ export function DynamicHierarchicalFacetBreadcrumbTest() {
 
     it(`when clicking on a breadcrumb value element
       it should clear the facet value`, () => {
-      spyOn(facet, 'clear');
+      spyOn(facet, 'reset');
+      spyOn(facet, 'triggerNewQuery');
       $$(valueElement()).trigger('click');
 
-      expect(facet.clear).toHaveBeenCalled();
+      expect(facet.reset).toHaveBeenCalled();
+      expect(facet.triggerNewQuery).toHaveBeenCalled();
     });
 
     it(`when clicking on a breadcrumb value element
@@ -49,6 +51,14 @@ export function DynamicHierarchicalFacetBreadcrumbTest() {
       spyOn(facet, 'triggerNewQuery');
       $$(valueElement()).trigger('click');
       expect(facet.triggerNewQuery).toHaveBeenCalled();
+    });
+
+    it(`when clicking on a breadcrumb value element
+      it call reset on the facet`, () => {
+      spyOn(facet, 'reset');
+
+      $$(valueElement()).trigger('click');
+      expect(facet.reset).toHaveBeenCalled();
     });
 
     it(`when clicking on a breadcrumb value element

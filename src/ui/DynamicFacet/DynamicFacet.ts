@@ -526,7 +526,7 @@ export class DynamicFacet extends Component implements IDynamicFacet {
     this.bind.onRootElement(QueryEvents.duringQuery, () => this.ensureDom());
     this.bind.onRootElement(QueryEvents.doneBuildingQuery, (data: IDoneBuildingQueryEventArgs) => this.handleDoneBuildingQuery(data));
     this.bind.onRootElement(QueryEvents.querySuccess, (data: IQuerySuccessEventArgs) => this.handleQuerySuccess(data.results));
-    this.bind.onRootElement(QueryEvents.queryError, () => this.onQueryResponse());
+    this.bind.onRootElement(QueryEvents.queryError, () => this.onNoValues());
   }
 
   private initQueryStateEvents() {
@@ -571,6 +571,8 @@ export class DynamicFacet extends Component implements IDynamicFacet {
   }
 
   private handleQuerySuccess(results: IQueryResults) {
+    this.header.hideLoading();
+
     if (Utils.isNullOrUndefined(results.facets)) {
       return this.notImplementedError();
     }
@@ -579,19 +581,18 @@ export class DynamicFacet extends Component implements IDynamicFacet {
     const response = index !== -1 ? results.facets[index] : null;
     this.position = index + 1;
 
-    this.onQueryResponse(response);
+    response ? this.onQueryResponse(response) : this.onNoValues();
     this.updateQueryStateModel();
-    this.header.hideLoading();
     this.values.render();
     this.updateAppearance();
   }
 
-  private onQueryResponse(response?: IFacetResponse) {
-    if (response) {
-      this.moreValuesAvailable = response.moreValuesAvailable;
-      return this.values.createFromResponse(response);
-    }
+  private onQueryResponse(response: IFacetResponse) {
+    this.moreValuesAvailable = response.moreValuesAvailable;
+    this.values.createFromResponse(response);
+  }
 
+  private onNoValues() {
     this.moreValuesAvailable = false;
     this.values.resetValues();
   }
@@ -618,14 +619,10 @@ export class DynamicFacet extends Component implements IDynamicFacet {
 
     if (Utils.isNonEmptyArray(valuesToSelect)) {
       this.selectMultipleValues(valuesToSelect);
-      // Only one search event is sent, pick first facet value
-      this.logAnalyticsEvent(analyticsActionCauseList.dynamicFacetSelect, this.values.get(valuesToSelect[0]).analyticsFacetMeta);
     }
 
     if (Utils.isNonEmptyArray(valuesToDeselect)) {
       this.deselectMultipleValues(valuesToDeselect);
-      // Only one search event is sent, pick first facet value
-      this.logAnalyticsEvent(analyticsActionCauseList.dynamicFacetDeselect, this.values.get(valuesToDeselect[0]).analyticsFacetMeta);
     }
   };
 
@@ -709,7 +706,7 @@ export class DynamicFacet extends Component implements IDynamicFacet {
     $$(this.element).toggleClass('coveo-active', this.values.hasSelectedValues);
     $$(this.element).removeClass('coveo-hidden');
     this.dependsOnManager.updateVisibilityBasedOnDependsOn();
-    !this.values.hasDisplayedValues && $$(this.element).addClass('coveo-hidden');
+    !this.hasDisplayedValues && $$(this.element).addClass('coveo-hidden');
   }
 
   private toggleSearchDisplay() {
@@ -763,7 +760,7 @@ export class DynamicFacet extends Component implements IDynamicFacet {
   }
 
   private logAnalyticsFacetShowMoreLess(cause: IAnalyticsActionCause) {
-    this.usageAnalytics.logCustomEvent<IAnalyticsFacetState>(cause, this.basicAnalyticsFacetState, this.element);
+    this.usageAnalytics.logCustomEvent<IAnalyticsFacetMeta>(cause, this.basicAnalyticsFacetMeta, this.element);
   }
 
   private clear() {
