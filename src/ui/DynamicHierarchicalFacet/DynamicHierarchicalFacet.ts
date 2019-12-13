@@ -289,7 +289,7 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
 
   private verifyCollapsingConfiguration() {
     if (this.options.collapsedByDefault && !this.options.enableCollapse) {
-      this.logger.warn('The "collapsedByDefault" option is "true" while the "enableCollapse" is "false"');
+      this.logger.warn('Setting "collapseByDefault" to "true" has no effect when "enableCollapse" is set to "false"');
     }
   }
 
