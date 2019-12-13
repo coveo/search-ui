@@ -11,12 +11,14 @@ import { FacetValueState } from '../../../src/rest/Facet/FacetValueState';
 import { ResultListUtils } from '../../../src/utils/ResultListUtils';
 import { IDynamicHierarchicalFacetOptions } from '../../../src/ui/DynamicHierarchicalFacet/IDynamicHierarchicalFacet';
 import { DynamicFacetManager } from '../../../src/ui/DynamicFacetManager/DynamicFacetManager';
+import { analyticsActionCauseList } from '../../../src/ui/Analytics/AnalyticsActionListMeta';
 
 export function DynamicHierarchicalFacetTest() {
   describe('DynamicHierarchicalFacet', () => {
     let test: Mock.IBasicComponentSetup<DynamicHierarchicalFacet>;
     let options: IDynamicHierarchicalFacetOptions;
     let mockFacetValues: IFacetResponseValue[];
+    let triggerNewQuerySpy: jasmine.Spy;
 
     beforeEach(() => {
       options = { field: '@dummy' };
@@ -34,9 +36,9 @@ export function DynamicHierarchicalFacetTest() {
       );
 
       spyOn(test.cmp, 'selectPath').and.callThrough();
+      spyOn(test.cmp, 'logAnalyticsEvent').and.callThrough();
       spyOn(test.cmp, 'scrollToTop').and.callThrough();
       spyOn(test.cmp, 'ensureDom').and.callThrough();
-      spyOn(test.cmp, 'triggerNewQuery').and.callThrough();
       spyOn(test.cmp, 'triggerNewIsolatedQuery').and.callThrough();
       spyOn(test.cmp, 'reset').and.callThrough();
       spyOn(test.cmp, 'putStateIntoQueryBuilder').and.callThrough();
@@ -45,6 +47,8 @@ export function DynamicHierarchicalFacetTest() {
       spyOn(test.cmp.values, 'selectPath').and.callThrough();
       spyOn(test.cmp.values, 'resetValues').and.callThrough();
       spyOn(test.cmp.values, 'clearPath').and.callThrough();
+      triggerNewQuerySpy = spyOn(test.cmp, 'triggerNewQuery').and.callThrough();
+      triggerNewQuerySpy.and.callThrough();
     }
 
     function triggerPopulateBreadcrumbs() {
@@ -60,7 +64,6 @@ export function DynamicHierarchicalFacetTest() {
 
     function validateExpandCollapse(shouldBeCollapsed: boolean) {
       expect($$(test.cmp.element).hasClass('coveo-dynamic-hierarchical-facet-collapsed')).toBe(shouldBeCollapsed);
-      // TODO: test if search feature is displayed
     }
 
     function fakeResultsWithFacets() {
@@ -136,7 +139,7 @@ export function DynamicHierarchicalFacetTest() {
       test.env.queryStateModel.set(`f:${test.cmp.options.id}`, ['a', 'b', 'c']);
 
       expect(test.cmp.selectPath).toHaveBeenCalledWith(['a', 'b', 'c']);
-      // TODO: JSUI-2709 add analytics
+      expect(test.cmp.logAnalyticsEvent).toHaveBeenCalledWith(analyticsActionCauseList.dynamicFacetSelect);
     });
 
     it('should call reset and log an analytics event when clearing the path through the QueryStateModel', () => {
@@ -144,7 +147,7 @@ export function DynamicHierarchicalFacetTest() {
       test.env.queryStateModel.set(`f:${test.cmp.options.id}`, []);
 
       expect(test.cmp.reset).toHaveBeenCalled();
-      // TODO: JSUI-2709 add analytics
+      expect(test.cmp.logAnalyticsEvent).toHaveBeenCalledWith(analyticsActionCauseList.dynamicFacetClearAll);
     });
 
     describe('testing collapse/expand', () => {
@@ -349,6 +352,13 @@ export function DynamicHierarchicalFacetTest() {
         expect(test.cmp.triggerNewQuery).toHaveBeenCalledTimes(1);
       });
 
+      it(`when triggering the header "clear" method
+      should log an analytics event`, () => {
+        triggerNewQuerySpy.and.callFake((beforeCb: any = () => {}) => beforeCb());
+        test.cmp.header.options.clear();
+        expect(test.cmp.logAnalyticsEvent).toHaveBeenCalledWith(analyticsActionCauseList.dynamicFacetClearAll);
+      });
+
       it(`when triggering a query
       should call "showLoading" on the header`, () => {
         test.cmp.triggerNewQuery();
@@ -416,6 +426,82 @@ export function DynamicHierarchicalFacetTest() {
       });
     });
 
-    // TODO: JSUI-2709 test logAnalyticsEvent
+    it('logs an analytics search event when logAnalyticsEvent is called', () => {
+      test.cmp.logAnalyticsEvent(analyticsActionCauseList.dynamicFacetSelect);
+
+      expect(test.cmp.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(
+        analyticsActionCauseList.dynamicFacetSelect,
+        test.cmp.analyticsFacetMeta
+      );
+    });
+
+    it('should log an analytics event when showing more results', () => {
+      test.cmp.showMoreValues();
+      expect(test.cmp.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(
+        analyticsActionCauseList.dynamicFacetShowMore,
+        test.cmp.analyticsFacetMeta,
+        test.cmp.element
+      );
+    });
+
+    it('should log an analytics event when showing less results', () => {
+      test.cmp.showLessValues();
+      expect(test.cmp.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(
+        analyticsActionCauseList.dynamicFacetShowLess,
+        test.cmp.analyticsFacetMeta,
+        test.cmp.element
+      );
+    });
+
+    function analyticsValue() {
+      return test.cmp.values.selectedPath.join(test.cmp.options.delimitingCharacter);
+    }
+
+    it('returns the correct analyticsFacetState', () => {
+      test.cmp.selectPath(['foo', 'bar']);
+
+      expect(test.cmp.analyticsFacetState).toEqual([
+        {
+          field: test.cmp.options.field.toString(),
+          id: test.cmp.options.id,
+          title: test.cmp.options.title,
+          facetType: test.cmp.facetType,
+          facetPosition: test.cmp.position,
+          value: analyticsValue(),
+          displayValue: analyticsValue(),
+          valuePosition: 1
+        }
+      ]);
+    });
+
+    it('returns the correct analyticsFacetMeta', () => {
+      test.cmp.selectPath(['foo', 'bar']);
+
+      expect(test.cmp.analyticsFacetMeta).toEqual({
+        facetField: test.cmp.options.field.toString(),
+        facetId: test.cmp.options.id,
+        facetTitle: test.cmp.options.title,
+        facetValue: analyticsValue()
+      });
+    });
+
+    it(`when calling "putStateIntoAnalytics" 
+      should call "getPendingSearchEvent" on the "usageAnalytics" object`, () => {
+      test.cmp.putStateIntoAnalytics();
+
+      expect(test.cmp.usageAnalytics.getPendingSearchEvent).toHaveBeenCalled();
+    });
+
+    it(`when calling "putStateIntoAnalytics" 
+      should call "addFacetState" on the "PendingSearchEvent" with the correct state`, () => {
+      const fakePendingSearchEvent = {
+        addFacetState: jasmine.createSpy('addFacetState')
+      };
+      test.cmp.usageAnalytics.getPendingSearchEvent = jasmine.createSpy('getPendingSearchEvent').and.callFake(() => fakePendingSearchEvent);
+
+      test.cmp.putStateIntoAnalytics();
+
+      expect(fakePendingSearchEvent.addFacetState).toHaveBeenCalledWith(test.cmp.analyticsFacetState);
+    });
   });
 }

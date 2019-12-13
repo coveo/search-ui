@@ -511,7 +511,7 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
   }
 
   public logAnalyticsEvent(actionCause: IAnalyticsActionCause) {
-    this.usageAnalytics.logSearchEvent<IAnalyticsFacetMeta>(actionCause, this.basicAnalyticsFacetMeta);
+    this.usageAnalytics.logSearchEvent<IAnalyticsFacetMeta>(actionCause, this.analyticsFacetMeta);
   }
 
   private get analyticsFacetValue() {
@@ -533,7 +533,7 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
     ];
   }
 
-  public get basicAnalyticsFacetMeta(): IAnalyticsFacetMeta {
+  public get analyticsFacetMeta(): IAnalyticsFacetMeta {
     return {
       facetField: this.options.field.toString(),
       facetId: this.options.id,
@@ -625,7 +625,7 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
   }
 
   private logAnalyticsFacetShowMoreLess(cause: IAnalyticsActionCause) {
-    this.usageAnalytics.logCustomEvent<IAnalyticsFacetMeta>(cause, this.basicAnalyticsFacetMeta, this.element);
+    this.usageAnalytics.logCustomEvent<IAnalyticsFacetMeta>(cause, this.analyticsFacetMeta, this.element);
   }
 }
 
