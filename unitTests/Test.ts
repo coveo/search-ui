@@ -36,6 +36,9 @@ L10NTest();
 import { PromisesShimTest } from './misc/PromisesShimTest';
 PromisesShimTest();
 
+import { EnvironmentTest } from './misc/EnvironmentTest';
+EnvironmentTest();
+
 import { ModelTest } from './models/ModelTest';
 ModelTest();
 
