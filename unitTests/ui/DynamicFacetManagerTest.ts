@@ -12,6 +12,8 @@ import { FacetValueState } from '../../src/rest/Facet/FacetValueState';
 import { DynamicFacetRange } from '../../src/ui/DynamicFacet/DynamicFacetRange';
 import { DynamicFacet } from '../../src/ui/DynamicFacet/DynamicFacet';
 import { ComponentsTypes } from '../../src/utils/ComponentsTypes';
+import { Facet } from '../../src/ui/Facet/Facet';
+import { IFacetOptions } from '../../src/rest/Query';
 
 export function DynamicFacetManagerTest() {
   describe('DynamicFacetManager', () => {
@@ -93,6 +95,17 @@ export function DynamicFacetManagerTest() {
       expect(test.cmp.disabled).toBe(true);
     });
 
+    it('should move non DynamicFacetCompatible components outside the container', () => {
+      const nonDynamicFacet = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, <IFacetOptions>{
+        field: '@field'
+      }).cmp;
+      facets = [nonDynamicFacet as any];
+
+      initializeManager();
+      expect(managerContainerChildren().length).toBe(0);
+      expect($$(test.cmp.element).find('.CoveoFacet')).toBeTruthy();
+    });
+
     it('should disable the component if a query response has no "facets" parameter', () => {
       triggerAfterComponentsInitialization();
       test.cmp.enable();
@@ -103,6 +116,7 @@ export function DynamicFacetManagerTest() {
     });
 
     it('should have the component in the right order', () => {
+      triggerAfterComponentsInitialization();
       expect(managerContainerChildren()[0]).toBe(facets[0].element);
       expect(managerContainerChildren()[1]).toBe(facets[1].element);
       expect(managerContainerChildren()[2]).toBe(facets[2].element);
