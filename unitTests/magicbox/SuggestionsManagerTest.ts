@@ -5,7 +5,7 @@ import { $$, Dom } from '../../src/utils/Dom';
 import { Utils } from '../../src/utils/Utils';
 import { IMockEnvironment, MockEnvironmentBuilder } from '../MockEnvironment';
 import { OmniboxEvents } from '../../src/Core';
-import { last, first, reverse } from 'lodash';
+import { last, first } from 'underscore';
 import { ISearchResultPreview } from '../../src/magicbox/ResultPreviewsManager';
 import {
   ResultPreviewsManagerEvents,
@@ -392,7 +392,7 @@ export function SuggestionsManagerTest() {
 
         it('moving the focus up multiple times can reach every suggestion', () => {
           suggestionsManager.moveDown();
-          reverse(suggestions).forEach(suggestion => {
+          suggestions.reverse().forEach(suggestion => {
             suggestionsManager.moveUp();
             expect(suggestionsManager.selectedSuggestion.text).toEqual(suggestion.text);
           });
@@ -415,11 +415,11 @@ export function SuggestionsManagerTest() {
 
           const displayAfterDuration = 150;
           function setDisplayAfterDuration() {
-            spyOn(suggestionsManager['resultPreviewsManager'], 'getExternalOptions' as any).and.returnValue(
-              <IUpdateResultPreviewsManagerOptionsEventArgs>{
-                displayAfterDuration
-              }
-            );
+            spyOn(suggestionsManager['resultPreviewsManager'], 'getExternalOptions' as any).and.returnValue(<
+              IUpdateResultPreviewsManagerOptionsEventArgs
+            >{
+              displayAfterDuration
+            });
           }
 
           let populateSpy: jasmine.Spy;
@@ -622,7 +622,7 @@ export function SuggestionsManagerTest() {
 
               it('moving the focus up multiple times can reach every suggestion', () => {
                 suggestionsManager.moveDown();
-                reverse(suggestions).forEach(suggestion => {
+                suggestions.reverse().forEach(suggestion => {
                   suggestionsManager.moveUp();
                   expect(suggestionsManager.selectedSuggestion.text).toEqual(suggestion.text);
                 });
