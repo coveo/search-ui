@@ -457,7 +457,13 @@ export function DynamicHierarchicalFacetTest() {
       return test.cmp.values.selectedPath.join(test.cmp.options.delimitingCharacter);
     }
 
-    it('returns the correct analyticsFacetState', () => {
+    it(`when a value is not selected
+    returns an empty analyticsFacetState`, () => {
+      expect(test.cmp.analyticsFacetState).toEqual([]);
+    });
+
+    it(`when a value is selected
+    returns the correct analyticsFacetState`, () => {
       test.cmp.selectPath(['foo', 'bar']);
 
       expect(test.cmp.analyticsFacetState).toEqual([
@@ -469,6 +475,7 @@ export function DynamicHierarchicalFacetTest() {
           facetPosition: test.cmp.position,
           value: analyticsValue(),
           displayValue: analyticsValue(),
+          state: FacetValueState.selected,
           valuePosition: 1
         }
       ]);

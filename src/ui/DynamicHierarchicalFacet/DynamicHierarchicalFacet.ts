@@ -31,6 +31,7 @@ import { IQueryOptions } from '../../controllers/QueryController';
 import { IQueryResults } from '../../rest/QueryResults';
 import { DynamicFacetManager } from '../DynamicFacetManager/DynamicFacetManager';
 import { IAnalyticsFacetState } from '../Analytics/IAnalyticsFacetState';
+import { FacetValueState } from '../../rest/Facet/FacetValueState';
 
 /**
  * The `DynamicHierarchicalFacet` component is a facet that renders values in a hierarchical fashion. It determines the filter to apply depending on the
@@ -519,6 +520,10 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
   }
 
   public get analyticsFacetState(): IAnalyticsFacetState[] {
+    if (!this.values.hasSelectedValue) {
+      return [];
+    }
+
     return [
       {
         field: this.options.field.toString(),
@@ -528,6 +533,7 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
         facetPosition: this.position,
         value: this.analyticsFacetValue,
         displayValue: this.analyticsFacetValue,
+        state: FacetValueState.selected,
         valuePosition: 1
       }
     ];
