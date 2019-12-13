@@ -1,6 +1,6 @@
 /**
  * Describe a ranking function that can be executed against the index.<br/>
- * See : https://developers.coveo.com/display/SearchREST/Ranking+Function
+ * See: [Ranking Functions](https://docs.coveo.com/en/1448/)
  */
 export interface IRankingFunction {
   /**

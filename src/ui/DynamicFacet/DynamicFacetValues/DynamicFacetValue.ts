@@ -1,12 +1,11 @@
 import * as Globalize from 'globalize';
-import { IDynamicFacet,  IDynamicFacetValueProperties, IValueRenderer, IValueRendererKlass, IDynamicFacetValue } from '../IDynamicFacet';
+import { IDynamicFacet, IDynamicFacetValueProperties, IValueRenderer, IValueRendererKlass, IDynamicFacetValue } from '../IDynamicFacet';
 import { FacetValueState } from '../../../rest/Facet/FacetValueState';
 import { analyticsActionCauseList, IAnalyticsFacetMeta } from '../../Analytics/AnalyticsActionListMeta';
 import { l } from '../../../strings/Strings';
-import {  RangeType } from '../../../rest/RangeValue';
+import { RangeType } from '../../../rest/RangeValue';
 import { FacetType } from '../../../rest/Facet/FacetRequest';
 import { IAnalyticsFacetState } from '../../Analytics/IAnalyticsFacetState';
-
 
 export class DynamicFacetValue implements IDynamicFacetValue {
   public value: string;
@@ -70,14 +69,22 @@ export class DynamicFacetValue implements IDynamicFacetValue {
     return `${l(selectOrUnselect, this.displayValue, resultCount)}`;
   }
 
-  private get rangeAnalyticsMeta() {
-    if (this.facet.facetType === FacetType.specific) {
+  private get isRange() {
+    return this.facet.facetType !== FacetType.specific;
+  }
+
+  private get analyticsValue() {
+    return this.isRange ? `${this.start}..${this.end}` : this.value;
+  }
+
+  private get rangeFacetState() {
+    if (!this.isRange) {
       return null;
     }
 
     return {
-      start: this.start,
-      end: this.end,
+      start: `${this.start}`,
+      end: `${this.end}`,
       endInclusive: this.endInclusive
     };
   }
@@ -85,18 +92,31 @@ export class DynamicFacetValue implements IDynamicFacetValue {
   public get analyticsFacetState(): IAnalyticsFacetState {
     return {
       ...this.facet.basicAnalyticsFacetState,
-      ...this.rangeAnalyticsMeta,
-      value: this.value,
+      ...this.rangeFacetState,
+      value: this.analyticsValue,
       valuePosition: this.position,
       displayValue: this.displayValue,
       state: this.state
     };
   }
 
+  private get rangeFacetMeta() {
+    if (!this.isRange) {
+      return null;
+    }
+
+    return {
+      facetRangeStart: `${this.start}`,
+      facetRangeEnd: `${this.end}`,
+      facetRangeEndInclusive: this.endInclusive
+    };
+  }
+
   public get analyticsFacetMeta(): IAnalyticsFacetMeta {
     return {
       ...this.facet.basicAnalyticsFacetMeta,
-      facetValue: this.value
+      ...this.rangeFacetMeta,
+      facetValue: this.analyticsValue
     };
   }
 

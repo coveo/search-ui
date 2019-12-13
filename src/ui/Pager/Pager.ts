@@ -324,6 +324,11 @@ export class Pager extends Component {
     if (data.queryBuilder.numberOfResults == null) {
       data.queryBuilder.numberOfResults = eventArgs.count;
     }
+
+    const maxResultNumber = data.queryBuilder.firstResult + data.queryBuilder.numberOfResults;
+    const numOfExcessResults = Math.max(0, maxResultNumber - this.options.maximumNumberOfResultsFromIndex);
+
+    data.queryBuilder.numberOfResults -= numOfExcessResults;
   }
 
   private computePagerBoundary(firstResult: number, totalCount: number) {

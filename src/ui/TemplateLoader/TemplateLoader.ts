@@ -61,7 +61,7 @@ export interface ITemplateLoaderOptions {
  * [ ... ]
  * ```
  *
- * See [Result Templates](https://developers.coveo.com/x/aIGfAQ).
+ * See [Result Templates](https://docs.coveo.com/en/413/).
  */
 export class TemplateLoader extends Component {
   static ID = 'TemplateLoader';

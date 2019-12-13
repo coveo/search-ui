@@ -31,7 +31,7 @@ export interface IResultRatingOptions {}
  * the [`enableCollaborativeRating`]{@link SearchInterface.options.enableCollaborativeRating} option of your
  * search interface is `true`, and if collaborative rating is enabled on your Coveo index.
  *
- * This component is a result template component (see [Result Templates](https://developers.coveo.com/x/aIGfAQ)).
+ * This component is a result template component (see [Result Templates](https://docs.coveo.com/en/413/)).
  *
  * @notSupportedIn salesforcefree
  */

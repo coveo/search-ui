@@ -54,7 +54,7 @@ function showOnlyWithHelper<T>(helpers: string[], options?: T): T {
  * The FieldValue component displays the value of a field associated to its parent search result. It is normally usable
  * within a {@link FieldTable}.
  *
- * This component is a result template component (see [Result Templates](https://developers.coveo.com/x/aIGfAQ)).
+ * This component is a result template component (see [Result Templates](https://docs.coveo.com/en/413/)).
  *
  * A common use of this component is to display a specific field value which also happens to be an existing
  * {@link Facet.options.field}. When the user clicks on the FieldValue component, it activates the corresponding Facet.

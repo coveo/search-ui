@@ -58,8 +58,7 @@ export class AnalyticsSuggestions extends Component {
 
     /**
      * Specifies the title of the query suggestions group in the {@link Omnibox} component. This option is not available
-     * when using the default Lightning Friendly Theme (see
-     * [Lightning Friendly Theme](https://developers.coveo.com/x/Y4EAAg)).
+     * when using the default Lightning Friendly Theme.
      *
      * Default value is the localized string for `"Suggested Queries"`.
      */

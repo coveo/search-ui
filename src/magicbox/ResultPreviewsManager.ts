@@ -1,6 +1,6 @@
 import { $$, Dom } from '../utils/Dom';
 import { l } from '../strings/Strings';
-import { defaults, findIndex } from 'lodash';
+import { defaults, findIndex } from 'underscore';
 import { Component } from '../ui/Base/Component';
 import { Direction } from './SuggestionsManager';
 import {
@@ -203,8 +203,8 @@ export class ResultPreviewsManager {
     return this.previewsProcessor.processQueries(populateEventArgs.previewsQueries);
   }
 
-  private updateSearchResultPreviewsHeader(text: string) {
-    this.resultPreviewsHeader.text(text);
+  private updateSearchResultPreviewsHeader(suggestion: string) {
+    this.resultPreviewsHeader.text(`${this.options.previewHeaderText} "${suggestion}"`);
   }
 
   private appendSearchResultPreview(preview: ISearchResultPreview) {
@@ -227,6 +227,6 @@ export class ResultPreviewsManager {
       return;
     }
     this.appendSearchResultPreviews(previews);
-    this.updateSearchResultPreviewsHeader(`${this.options.previewHeaderText} "${suggestion.innerText}"`);
+    this.updateSearchResultPreviewsHeader(suggestion.innerText);
   }
 }

@@ -54,11 +54,11 @@ type WaitAnimation = 'fade' | 'spinner' | 'none';
 
 /**
  * The `ResultList` component is responsible for displaying query results by applying one or several result templates
- * (see [Result Templates](https://developers.coveo.com/x/aIGfAQ)).
+ * (see [Result Templates](https://docs.coveo.com/en/413/)).
  *
  * It is possible to include multiple `ResultList` components along with a single `ResultLayout`
  * component in a search page to provide different result layouts (see
- * [Result Layouts](https://developers.coveo.com/x/yQUvAg)).
+ * [Result Layouts](https://docs.coveo.com/en/360/)).
  *
  * This component supports infinite scrolling (see the
  * [`enableInfiniteScroll`]{@link ResultList.options.enableInfiniteScroll} option).
@@ -100,7 +100,7 @@ export class ResultList extends Component {
    */
   static options: IResultListOptions = {
     /**
-     * Specifies the element inside which to insert the rendered result templates.
+     * The element inside which to insert the rendered result templates.
      *
      * Performing a new query clears the content of this element.
      *
@@ -114,7 +114,7 @@ export class ResultList extends Component {
     resultTemplate: TemplateComponentOptions.buildTemplateOption({ defaultFunction: ResultList.getDefaultTemplate }),
 
     /**
-     * Specifies the type of animation to display while waiting for a query to return.
+     * The type of animation to display while waiting for a query to return.
      *
      * The possible values are:
      * - `fade`: Fades out the current list of results while the query is executing.
@@ -123,24 +123,24 @@ export class ResultList extends Component {
      *
      * See also the [`waitAnimationContainer`]{@link ResultList.options.waitAnimationContainer} option.
      *
-     * Default value is `none`.
+     * @examples spinner
      */
     waitAnimation: ComponentOptions.buildStringOption<WaitAnimation>({ defaultValue: 'none' }),
 
     /**
-     * Specifies the element inside which to display the [`waitAnimation`]{@link ResultList.options.waitAnimation}.
+     * The element inside which to display the [`waitAnimation`]{@link ResultList.options.waitAnimation}.
      *
      * You can change this by specifying a CSS selector (e.g.,
      * `data-wait-animation-container-selector='#someCssSelector'`).
      *
-     * Default value is the value of the [`resultContainer`]{@link ResultList.options.resultContainer} option.
+     * Defaults to the value of the [`resultsContainer`]{@link ResultList.options.resultsContainer} option.
      */
     waitAnimationContainer: ComponentOptions.buildChildHtmlElementOption({
       postProcessing: (value, options: IResultListOptions) => value || options.resultsContainer
     }),
 
     /**
-     * Specifies whether to automatically retrieve an additional page of results and append it to the
+     * Whether to automatically retrieve an additional page of results and append it to the
      * results that the `ResultList` is currently displaying when the user scrolls down to the bottom of the
      * [`infiniteScrollContainer`]{@link ResultList.options.infiniteScrollContainer}.
      *
@@ -150,17 +150,14 @@ export class ResultList extends Component {
      * It is important to specify the `infiniteScrollContainer` option manually if you want the scrolling element to be
      * something else than the default `window` element. Otherwise, you might find yourself in a strange state where the
      * framework rapidly triggers multiple successive query.
-     *
-     * Default value is `false`.
      */
     enableInfiniteScroll: ComponentOptions.buildBooleanOption({ defaultValue: false }),
 
     /**
-     * If the [`enableInfiniteScroll`]{@link ResultList.options.enableInfiniteScroll} option is `true`, specifies the
-     * number of additional results to fetch when the user scrolls down to the bottom of the
+     * The number of additional results to fetch when the user scrolls down to the bottom of the
      * [`infiniteScrollContainer`]{@link ResultList.options.infiniteScrollContainer}.
      *
-     * Default value is `10`. Minimum value is `1`.
+     * @examples 5
      */
     infiniteScrollPageSize: ComponentOptions.buildNumberOption({
       defaultValue: 10,
@@ -169,8 +166,7 @@ export class ResultList extends Component {
     }),
 
     /**
-     * If the [`enableInfiniteScroll`]{@link ResultList.options.enableInfiniteScroll} option is `true`, specifies the
-     * element that triggers fetching additional results when the end user scrolls down to its bottom.
+     * The element that triggers fetching additional results when the end user scrolls down to its bottom.
      *
      * You can change the container by specifying its selector (e.g.,
      * `data-infinite-scroll-container-selector='#someCssSelector'`).
@@ -194,11 +190,8 @@ export class ResultList extends Component {
     }),
 
     /**
-     * If the [`enableInfiniteScroll`]{@link ResultList.options.enableInfiniteScroll} option is `true`, specifies
-     * whether to display the [`waitingAnimation`]{@link ResultList.options.waitAnimation} while fetching additional
+     * Whether to display the [`waitingAnimation`]{@link ResultList.options.waitAnimation} while fetching additional
      * results.
-     *
-     * Default value is `true`.
      */
     enableInfiniteScrollWaitingAnimation: ComponentOptions.buildBooleanOption({
       depend: 'enableInfiniteScroll',
@@ -209,24 +202,21 @@ export class ResultList extends Component {
     }),
 
     /**
-     * Specifies whether the `ResultList` should scan its result templates to discover which fields it must request to
+     * Whether the `ResultList` should scan its result templates to discover which fields it must request to
      * be able to render all results.
      *
      * Setting this option to `true` ensures that the Coveo Search API does not return fields that are unnecessary for
      * the UI to function.
      *
-     * Default value is `false`, which means that for each result, the Coveo Search API returns all available fields
-     * (unless you specify a list of values in the [`fieldsToInclude`]{@link ResultList.options.fieldsToInclude} option,
-     * in which case the Coveo Search API only returns those fields, if they are available).
-     *
      * **Notes:**
-     * > * Many interfaces created with the JavaScript Search Interface Editor explicitly set this option to `true`.
-     * > * You cannot set this option to `true` in the Coveo for Sitecore integration.
+     *
+     * - Many interfaces created with the JavaScript Search Interface Editor explicitly set this option to `true`.
+     * - You cannot set this option to `true` in the Coveo for Sitecore integration.
      */
     autoSelectFieldsToInclude: ComponentOptions.buildBooleanOption({ defaultValue: false }),
 
     /**
-     * Specifies a list of fields to include in the query results.
+     * A list of fields to include in the query results.
      *
      * If you set the [`autoSelectFieldsToInclude`]{@link ResultList.options.autoSelectFieldsToInclude} option to
      * `true`, the Coveo Search API returns the fields you specify for this option (if those fields are available) in
@@ -240,7 +230,7 @@ export class ResultList extends Component {
 
     /**
      * Specifies the layout to use when displaying results in this `ResultList` (see
-     * [Result Layouts](https://developers.coveo.com/x/yQUvAg)). Specifying a value for this option automatically
+     * [Result Layouts](https://docs.coveo.com/en/360/)). Specifying a value for this option automatically
      * populates a [`ResultLayout`]{@link ResultLayout} component with a switcher for the layout.
      *
      * For example, if there are two `ResultList` components in the page, one with its `layout` set to `list` and the
@@ -249,7 +239,7 @@ export class ResultList extends Component {
      *
      * See the [`ValidLayout`]{@link ValidLayout} type for the list of possible values.
      *
-     * Default value is `list`.
+     * @examples card
      */
     layout: ComponentOptions.buildStringOption<ValidLayout>({
       defaultValue: 'list',
@@ -257,11 +247,14 @@ export class ResultList extends Component {
     }),
 
     /**
-     * Whether to scroll back to the top of the page whenever the end-user interacts with a facet or with the pager.
+     * Whether to scroll back to the top of the page when the end-user interacts with a facet.
      *
-     * Default: `true`
+     * **Note:** Setting this option to `false` has no effect on dynamic facets. To disable this behavior on a `DynamicFacet` component, you must set its own [`enableScrollToTop`]{@link DynamicFacet.options.enableScrollToTop} option to `false`.
      */
-    enableScrollToTop: ComponentOptions.buildBooleanOption({ defaultValue: true })
+    enableScrollToTop: ComponentOptions.buildBooleanOption({
+      defaultValue: true,
+      depend: 'enableInfiniteScroll'
+    })
   };
 
   public static resultCurrentlyBeingRendered: IQueryResult = null;
@@ -543,7 +536,7 @@ export class ResultList extends Component {
       } else {
         this.logger.info(
           `Result list has triggered 5 consecutive queries to try and fill up the scrolling container, but it is still unable to do so.
-          Try explicitly setting the 'data-infinite-scroll-container-selector' option on the result list. See : https://coveo.github.io/search-ui/components/resultlist.html#options.infinitescrollcontainer`
+          Try explicitly setting the 'data-infinite-scroll-container-selector' option on the result list. See: https://coveo.github.io/search-ui/components/resultlist.html#options.infinitescrollcontainer`
         );
       }
     });
