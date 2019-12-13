@@ -125,7 +125,7 @@ export class DynamicFacetManager extends Component {
     super(element, 'DynamicFacetManager');
     this.options = ComponentOptions.initComponentOptions(element, DynamicFacetManager, options);
     this.resetContainer();
-    this.element.appendChild(this.containerElement);
+    $$(this.element).prepend(this.containerElement);
     this.initEvents();
   }
 
@@ -155,6 +155,10 @@ export class DynamicFacetManager extends Component {
       dynamicFacet.dynamicFacetManager = this;
       this.containerElement.appendChild(dynamicFacet.element);
     });
+
+    if (this.element.children.length > 1) {
+      this.logger.warn('DynamicFacetManager contains incompatible elements.');
+    }
 
     if (!this.childrenFacets.length) {
       this.disable();
@@ -213,7 +217,7 @@ export class DynamicFacetManager extends Component {
     this.respectMaximumExpandedFacetsThreshold();
 
     this.containerElement.appendChild(fragment);
-    this.element.appendChild(this.containerElement);
+    $$(this.element).prepend(this.containerElement);
   }
 
   private respectMaximumExpandedFacetsThreshold() {

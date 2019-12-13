@@ -95,15 +95,19 @@ export function DynamicFacetManagerTest() {
       expect(test.cmp.disabled).toBe(true);
     });
 
-    it('should move non DynamicFacetCompatible components outside the container', () => {
+    it(`when there are incompatible elements inside the DynamicFacetManager
+      should move them outside the container and warn the user`, () => {
       const nonDynamicFacet = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, <IFacetOptions>{
         field: '@field'
       }).cmp;
       facets = [nonDynamicFacet as any];
-
       initializeManager();
+      spyOn(test.cmp.logger, 'warn');
+      triggerAfterComponentsInitialization();
+
       expect(managerContainerChildren().length).toBe(0);
       expect($$(test.cmp.element).find('.CoveoFacet')).toBeTruthy();
+      expect(test.cmp.logger.warn).toHaveBeenCalled();
     });
 
     it('should disable the component if a query response has no "facets" parameter', () => {
