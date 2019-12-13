@@ -622,7 +622,7 @@ export function SuggestionsManagerTest() {
 
               it('moving the focus up multiple times can reach every suggestion', () => {
                 suggestionsManager.moveDown();
-                reverse(suggestions).forEach(suggestion => {
+                suggestions.reverse().forEach(suggestion => {
                   suggestionsManager.moveUp();
                   expect(suggestionsManager.selectedSuggestion.text).toEqual(suggestion.text);
                 });
