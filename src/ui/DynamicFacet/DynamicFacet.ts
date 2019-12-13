@@ -571,7 +571,7 @@ export class DynamicFacet extends Component implements IDynamicFacet {
   }
 
   private handleQuerySuccess(results: IQueryResults) {
-    this.values.render();
+    this.header.hideLoading();
 
     if (Utils.isNullOrUndefined(results.facets)) {
       return this.notImplementedError();
@@ -583,7 +583,7 @@ export class DynamicFacet extends Component implements IDynamicFacet {
 
     response ? this.onQueryResponse(response) : this.onNoValues();
     this.updateQueryStateModel();
-    this.header.hideLoading();
+    this.values.render();
     this.updateAppearance();
   }
 
