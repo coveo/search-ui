@@ -1,5 +1,5 @@
 import { QueryProcessor, IQueryProcessResult, ProcessingStatus } from '../../src/magicbox/QueryProcessor';
-import { flatten } from 'lodash';
+import { flatten } from 'underscore';
 
 function wait<T = void>(ms?: number, result?: T): Promise<T> {
   return new Promise(resolve => setTimeout(() => resolve(result), ms));

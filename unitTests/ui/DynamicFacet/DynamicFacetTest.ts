@@ -355,7 +355,6 @@ export function DynamicFacetTest() {
     });
 
     it('should select the needed values using the id', () => {
-      test.env.queryStateModel.registerNewAttribute(`${test.cmp.options.id}`, []);
       test.env.queryStateModel.set(`f:${test.cmp.options.id}`, ['a', 'b', 'c']);
       expect(test.cmp.values.selectedValues).toEqual(['a', 'b', 'c']);
     });
@@ -363,7 +362,6 @@ export function DynamicFacetTest() {
     it('should select the needed values using the id', () => {
       options.id = 'my_secret_id';
       initializeComponent();
-      test.env.queryStateModel.registerNewAttribute(`f:${options.id}`, []);
 
       test.env.queryStateModel.set(`f:${options.id}`, ['a', 'b', 'c']);
       expect(test.cmp.values.selectedValues).toEqual(['a', 'b', 'c']);
@@ -379,34 +377,24 @@ export function DynamicFacetTest() {
       testQueryStateModelValues();
     });
 
-    it('should call selectMultipleValues and log an analytics event when selecting a value through the QSM', () => {
-      test.env.queryStateModel.registerNewAttribute(`f:${test.cmp.options.id}`, []);
+    it('should call selectMultipleValues when selecting a value through the QSM', () => {
       test.env.queryStateModel.set(`f:${test.cmp.options.id}`, ['a', 'b', 'c']);
 
       expect(test.cmp.selectMultipleValues).toHaveBeenCalled();
-      expect(test.cmp.logAnalyticsEvent).toHaveBeenCalledWith(
-        analyticsActionCauseList.dynamicFacetSelect,
-        test.cmp.values.get('a').analyticsFacetMeta
-      );
     });
 
-    it('should call deselectMultipleValues and log an analytics event when deselecting a value through the QSM', () => {
-      test.env.queryStateModel.registerNewAttribute(`f:${test.cmp.options.id}`, []);
+    it('should call deselectMultipleValues when deselecting a value through the QSM', () => {
       test.env.queryStateModel.set(`f:${test.cmp.options.id}`, ['a', 'b', 'c']);
       test.env.queryStateModel.set(`f:${test.cmp.options.id}`, []);
 
       expect(test.cmp.deselectMultipleValues).toHaveBeenCalled();
-      expect(test.cmp.logAnalyticsEvent).toHaveBeenCalledWith(
-        analyticsActionCauseList.dynamicFacetDeselect,
-        test.cmp.values.get('a').analyticsFacetMeta
-      );
     });
 
     it('should log an analytics event when showing more results', () => {
       test.cmp.showMoreValues();
       expect(test.cmp.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(
         analyticsActionCauseList.dynamicFacetShowMore,
-        test.cmp.basicAnalyticsFacetState,
+        test.cmp.basicAnalyticsFacetMeta,
         test.cmp.element
       );
     });
@@ -415,7 +403,7 @@ export function DynamicFacetTest() {
       test.cmp.showLessValues();
       expect(test.cmp.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(
         analyticsActionCauseList.dynamicFacetShowLess,
-        test.cmp.basicAnalyticsFacetState,
+        test.cmp.basicAnalyticsFacetMeta,
         test.cmp.element
       );
     });

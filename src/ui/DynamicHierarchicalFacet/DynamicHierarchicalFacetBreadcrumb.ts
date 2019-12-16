@@ -45,7 +45,7 @@ export class DynamicHierarchicalFacetBreadcrumb {
   }
 
   private valueSelectAction() {
-    this.facet.clear();
+    this.facet.reset();
     this.facet.triggerNewQuery(() => this.facet.logAnalyticsEvent(analyticsActionCauseList.breadcrumbFacet));
   }
 }

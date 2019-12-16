@@ -9,6 +9,7 @@ import {
   IDynamicHierarchicalFacetOptions,
   IDynamicHierarchicalFacetValueProperties
 } from '../../../src/ui/DynamicHierarchicalFacet/IDynamicHierarchicalFacet';
+import { DynamicFacetHeader } from '../../../src/ui/DynamicFacet/DynamicFacetHeader/DynamicFacetHeader';
 
 export class DynamicHierarchicalFacetTestUtils {
   static allOptions(options?: IDynamicHierarchicalFacetOptions) {
@@ -103,6 +104,15 @@ export class DynamicHierarchicalFacetTestUtils {
     facet.values = new DynamicHierarchicalFacetValues(facet);
     facet.element = $$('div').el;
     facet.searchInterface = Mock.mockSearchInterface();
+    facet.header = Mock.mock(DynamicFacetHeader);
+    facet.header.options = {
+      clear: () => {},
+      collapse: () => {},
+      expand: () => {},
+      toggleCollapse: () => {},
+      enableCollapse: facet.options.enableCollapse,
+      title: facet.options.title
+    };
 
     return facet;
   }
