@@ -74,6 +74,10 @@ export class ResultPreviewsManager {
     return firstIndexOnNextRow !== -1 ? firstIndexOnNextRow : previewSelectables.length;
   }
 
+  private get previewContainerId() {
+    return `coveo-previews-for-${this.lastDisplayedSuggestion.id}`;
+  }
+
   constructor(private element: HTMLElement, options: Partial<IResultPreviewsManagerOptions> = {}) {
     this.options = defaults(options, <IResultPreviewsManagerOptions>{
       previewHeaderText: l('QuerySuggestPreview'),
@@ -165,7 +169,7 @@ export class ResultPreviewsManager {
       this.buildPreviewContainer()
     );
     this.element.appendChild(this.suggestionsPreviewContainer.el);
-    this.suggestionsListbox.setAttribute('aria-controls', this.getIdForPreviews());
+    this.suggestionsListbox.setAttribute('aria-controls', this.previewContainerId);
   }
 
   private revertPreviewForSuggestions() {
@@ -174,16 +178,12 @@ export class ResultPreviewsManager {
     this.suggestionsPreviewContainer = null;
   }
 
-  private getIdForPreviews() {
-    return `coveo-previews-for-${this.lastDisplayedSuggestion.id}`;
-  }
-
   private buildPreviewContainer() {
     return $$(
       'div',
       {
         className: 'coveo-preview-container',
-        id: this.getIdForPreviews()
+        id: this.previewContainerId
       },
       (this.resultPreviewsHeader = $$('div', {
         className: 'coveo-preview-header',

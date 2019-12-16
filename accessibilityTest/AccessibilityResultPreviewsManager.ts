@@ -1,7 +1,14 @@
 import * as axe from 'axe-core';
-import { $$, Component, QuerySuggestPreview, Searchbox } from 'coveo-search-ui';
+import { $$, Component, QuerySuggestPreview, Searchbox, InputManager } from 'coveo-search-ui';
 import { afterQuerySuccess, getRoot, getSearchSection } from './Testing';
-import { KEYBOARD } from '../src/utils/KeyboardUtils';
+import { toArray } from 'lodash';
+
+enum KeyboardKey {
+  UpArrow = 38,
+  DownArrow = 40
+}
+
+function noop() {}
 
 export const AccessibilityResultPreviewsManager = () => {
   describe('ResultPreviewsManager', () => {
@@ -9,6 +16,10 @@ export const AccessibilityResultPreviewsManager = () => {
     function buildSearchBox() {
       searchBoxElement = $$('div', { className: Component.computeCssClassName(Searchbox) }).el;
       getSearchSection().appendChild(searchBoxElement);
+    }
+
+    function getSearchBox() {
+      return Component.get(searchBoxElement, Searchbox) as Searchbox;
     }
 
     function buildQuerySuggestPreview() {
@@ -20,23 +31,11 @@ export const AccessibilityResultPreviewsManager = () => {
       return searchBoxElement.getElementsByTagName('input')[0];
     }
 
-    function triggerEvent(key: KEYBOARD) {
-      const event = new KeyboardEvent('keyup');
-      Object.defineProperty(event, 'keyCode', {
-        get: () => {
-          return key;
-        }
-      });
-      Object.defineProperty(event, 'which', {
-        get: () => {
-          return key;
-        }
-      });
-      getInput().dispatchEvent(event);
-    }
-
-    function deferAsync() {
-      return new Promise(resolve => setTimeout(resolve));
+    function pressKeyboardKey(keyCode: KeyboardKey) {
+      const inputManager = getSearchBox()['searchbox'].magicBox['inputManager'] as InputManager;
+      const key: Partial<KeyboardEvent> = { keyCode, stopPropagation: noop, preventDefault: noop };
+      inputManager['keydown'](key);
+      inputManager['keyup'](key);
     }
 
     function waitForElement(parent: HTMLElement, condition: (addedElement: HTMLElement) => boolean, subtree = false): Promise<HTMLElement> {
@@ -44,7 +43,7 @@ export const AccessibilityResultPreviewsManager = () => {
         const observer = new MutationObserver(mutations => {
           for (let mutation of mutations) {
             if (mutation.type === 'childList') {
-              for (let addedNode of _.toArray<HTMLElement>(mutation.addedNodes)) {
+              for (let addedNode of toArray<HTMLElement>((mutation.addedNodes as any) as ArrayLike<HTMLElement>)) {
                 if (condition(addedNode)) {
                   resolve(addedNode);
                   observer.disconnect();
@@ -61,18 +60,16 @@ export const AccessibilityResultPreviewsManager = () => {
 
     async function waitForSuggestions() {
       await waitForElement(searchBoxElement, element => element.classList.contains('magic-box-suggestion'), true);
-      await deferAsync();
     }
 
     async function waitForPreviews() {
       await waitForElement(searchBoxElement, element => element.classList.contains('coveo-preview-selectable'), true);
-      await deferAsync();
     }
 
-    async function triggerResultPreviewsManager() {
+    async function focusOnFirstSuggestion() {
       getInput().focus();
       await waitForSuggestions();
-      triggerEvent(KEYBOARD.DOWN_ARROW);
+      pressKeyboardKey(KeyboardKey.DownArrow);
     }
 
     beforeEach(() => {
@@ -82,7 +79,7 @@ export const AccessibilityResultPreviewsManager = () => {
 
     it('should be accessible', async done => {
       await afterQuerySuccess();
-      await triggerResultPreviewsManager();
+      await focusOnFirstSuggestion();
       await waitForPreviews();
       const axeResults = await axe.run(getRoot());
       expect(axeResults).toBeAccessible();

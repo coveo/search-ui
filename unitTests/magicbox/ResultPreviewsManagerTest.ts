@@ -6,36 +6,30 @@ import { toArray } from 'lodash';
 
 export function ResultPreviewsManagerTest() {
   describe('ResultPreviewsManager', function() {
+    const previewClass = 'this-is-fine';
+    const suggestionText = 'DVD';
+    const previewsTexts = ['Fabric DVD pouch', '15 Blank CDs', 'CD/DVD drive'];
     let env: IMockEnvironment;
+    let resultPreviewsManager: ResultPreviewsManager;
+
     function buildEnvironment() {
       return (env = new MockEnvironmentBuilder().build());
     }
 
-    let container: HTMLElement;
-    function buildContainer() {
-      return buildEnvironment().root.appendChild((container = $$('div').el));
-    }
-
-    let suggestionsListboxElement: HTMLElement;
     function buildSuggestionsListbox() {
-      return container.appendChild(
-        (suggestionsListboxElement = $$('div', { id: 'some-witty-joke', className: 'coveo-magicbox-suggestions' }).el)
-      );
+      return env.element.appendChild($$('div', { id: 'some-witty-joke', className: 'coveo-magicbox-suggestions' }).el);
     }
 
-    const previewClass = 'this-is-fine';
-    let resultPreviewsManager: ResultPreviewsManager;
     function buildResultPreviewsManager() {
-      resultPreviewsManager = new ResultPreviewsManager(buildContainer(), { previewClass });
+      buildEnvironment();
+      resultPreviewsManager = new ResultPreviewsManager(env.element, { previewClass });
       buildSuggestionsListbox();
     }
 
-    const suggestionText = 'DVD';
     function createTestSuggestion() {
       return $$('div', {}, suggestionText).el;
     }
 
-    const previewsTexts = ['Fabric DVD pouch', '15 Blank CDs', 'CD/DVD drive'];
     function createPreviews() {
       return previewsTexts.map(
         text =>
@@ -68,7 +62,7 @@ export function ResultPreviewsManagerTest() {
     }
 
     function getAppendedPreviews() {
-      return toArray<HTMLElement>(container.querySelectorAll(`.${previewClass}`));
+      return toArray<HTMLElement>(env.element.querySelectorAll(`.${previewClass}`));
     }
 
     beforeEach(async done => {
@@ -86,15 +80,15 @@ export function ResultPreviewsManagerTest() {
 
     describe('with accessibility', () => {
       it('builds the preview container with the appropriate roles', async done => {
-        const previewHeader = container.querySelector('.coveo-preview-header');
+        const previewHeader = env.element.querySelector('.coveo-preview-header');
         expect(previewHeader.getAttribute('role')).toEqual('status');
-        const previewResults = container.querySelector('.coveo-preview-results');
+        const previewResults = env.element.querySelector('.coveo-preview-results');
         expect(previewResults.getAttribute('role')).toEqual('listbox');
         done();
       });
 
       it('sets the summary of the results container', () => {
-        const previewResults = container.querySelector('.coveo-preview-results');
+        const previewResults = env.element.querySelector('.coveo-preview-results');
         expect(previewResults.getAttribute('summary')).toContain(suggestionText);
       });
 
