@@ -129,11 +129,19 @@ export function DynamicHierarchicalFacetValuesTest() {
       });
     });
 
-    it('clear should empty the values', () => {
+    it('resetValues should empty the values and clear the path', () => {
       facet.values.createFromResponse(DynamicHierarchicalFacetTestUtils.getCompleteFacetResponse(facet));
-      facet.values.clear();
+      facet.values.resetValues();
 
       expect(facet.values.allFacetValues.length).toBe(0);
+      expect(facet.values.selectedPath).toEqual([]);
+    });
+
+    it('clearPath should clear the path', () => {
+      facet.values.createFromResponse(DynamicHierarchicalFacetTestUtils.getCompleteFacetResponse(facet));
+      facet.values.clearPath();
+
+      expect(facet.values.allFacetValues.length).not.toBe(0);
       expect(facet.values.selectedPath).toEqual([]);
     });
 
@@ -190,9 +198,10 @@ export function DynamicHierarchicalFacetValuesTest() {
           expect(getAllCategoriesElement()).toBeTruthy();
         });
 
-        it('clicking on the "All Categories" element should call "reset" on the facet', () => {
+        it('clicking on the "All Categories" element should call "clear" on the facet header', () => {
+          spyOn(facet.header.options, 'clear');
           $$(getAllCategoriesElement()).trigger('click');
-          expect(facet.reset).toHaveBeenCalled();
+          expect(facet.header.options.clear).toHaveBeenCalled();
         });
       });
     });
@@ -389,7 +398,7 @@ export function DynamicHierarchicalFacetValuesTest() {
           should perform the correct actions on the facet`, () => {
           $$(moreButton()).trigger('click');
           expect(facet.enableFreezeFacetOrderFlag).toHaveBeenCalledTimes(1);
-          expect(facet.showMore).toHaveBeenCalledTimes(1);
+          expect(facet.showMoreValues).toHaveBeenCalledTimes(1);
         });
 
         it(`when the facet option enableMoreLess is false
@@ -411,11 +420,11 @@ export function DynamicHierarchicalFacetValuesTest() {
           expect(lessButton()).toBeTruthy();
         });
 
-        it(`when clicking on the "Show more" button
+        it(`when clicking on the "Show less" button
           should perform the correct actions on the facet`, () => {
           $$(lessButton()).trigger('click');
           expect(facet.enableFreezeFacetOrderFlag).toHaveBeenCalledTimes(1);
-          expect(facet.showLess).toHaveBeenCalledTimes(1);
+          expect(facet.showLessValues).toHaveBeenCalledTimes(1);
         });
 
         it(`when the facet option enableMoreLess is false

@@ -68,8 +68,12 @@ export class DynamicHierarchicalFacetValues implements IDynamicHierarchicalFacet
     return [...this._selectedPath];
   }
 
-  public clear() {
+  public resetValues() {
     this.facetValues = [];
+    this._selectedPath = [];
+  }
+
+  public clearPath() {
     this._selectedPath = [];
   }
 
@@ -147,7 +151,7 @@ export class DynamicHierarchicalFacetValues implements IDynamicHierarchicalFacet
 
   private prependAllCategories() {
     const clear = $$('li', {}, $$('button', { className: 'coveo-dynamic-hierarchical-facet-all' }, l('AllCategories')));
-    clear.on('click', () => this.facet.reset());
+    clear.on('click', () => this.facet.header.options.clear());
     $$(this.list).prepend(clear.el);
   }
 
@@ -158,7 +162,7 @@ export class DynamicHierarchicalFacetValues implements IDynamicHierarchicalFacet
       label: l('ShowLessCategories'),
       action: () => {
         this.facet.enableFreezeFacetOrderFlag();
-        this.facet.showLess();
+        this.facet.showLessValues();
       }
     });
 
@@ -172,7 +176,7 @@ export class DynamicHierarchicalFacetValues implements IDynamicHierarchicalFacet
       label: l('ShowMoreCategories'),
       action: () => {
         this.facet.enableFreezeFacetOrderFlag();
-        this.facet.showMore();
+        this.facet.showMoreValues();
       }
     });
 

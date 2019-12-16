@@ -30,6 +30,8 @@ import { IFacetResponse } from '../../rest/Facet/FacetResponse';
 import { IQueryOptions } from '../../controllers/QueryController';
 import { IQueryResults } from '../../rest/QueryResults';
 import { DynamicFacetManager } from '../DynamicFacetManager/DynamicFacetManager';
+import { IAnalyticsFacetState } from '../Analytics/IAnalyticsFacetState';
+import { FacetValueState } from '../../rest/Facet/FacetValueState';
 
 /**
  * The `DynamicHierarchicalFacet` component is a facet that renders values in a hierarchical fashion. It determines the filter to apply depending on the
@@ -222,6 +224,7 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
 
     this.dynamicHierarchicalFacetQueryController = new DynamicHierarchicalFacetQueryController(this);
     this.isCollapsed = this.options.enableCollapse && this.options.collapsedByDefault;
+    this.verifyCollapsingConfiguration();
     this.values = new DynamicHierarchicalFacetValues(this);
 
     ResponsiveFacets.init(this.root, this, this.options);
@@ -256,6 +259,7 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
     this.bind.onRootElement(QueryEvents.doneBuildingQuery, (data: IDoneBuildingQueryEventArgs) => this.handleDoneBuildingQuery(data));
     this.bind.onRootElement(QueryEvents.querySuccess, (data: IQuerySuccessEventArgs) => this.handleQuerySuccess(data.results));
     this.bind.onRootElement(QueryEvents.duringQuery, () => this.ensureDom());
+    this.bind.onRootElement(QueryEvents.queryError, () => this.onNoValues());
   }
 
   private initBreadCrumbEvents() {
@@ -263,7 +267,7 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
       this.bind.onRootElement(BreadcrumbEvents.populateBreadcrumb, (args: IPopulateBreadcrumbEventArgs) =>
         this.handlePopulateBreadcrumb(args)
       );
-      this.bind.onRootElement(BreadcrumbEvents.clearBreadcrumb, () => this.clear());
+      this.bind.onRootElement(BreadcrumbEvents.clearBreadcrumb, () => this.reset());
     }
   }
 
@@ -280,6 +284,13 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
     Assert.exists(data);
     Assert.exists(data.queryBuilder);
     this.putStateIntoQueryBuilder(data.queryBuilder);
+    this.putStateIntoAnalytics();
+  }
+
+  private verifyCollapsingConfiguration() {
+    if (this.options.collapsedByDefault && !this.options.enableCollapse) {
+      this.logger.warn('Setting "collapseByDefault" to "true" has no effect when "enableCollapse" is set to "false"');
+    }
   }
 
   public putStateIntoQueryBuilder(queryBuilder: QueryBuilder) {
@@ -288,7 +299,8 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
   }
 
   public putStateIntoAnalytics() {
-    // TODO: JSUI-2709 add analytics
+    const pendingEvent = this.usageAnalytics.getPendingSearchEvent();
+    pendingEvent && pendingEvent.addFacetState(this.analyticsFacetState);
   }
 
   public scrollToTop() {
@@ -297,16 +309,12 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
     }
   }
 
-  private get isHierarchicalEmpty() {
-    return !this.values.allFacetValues.length;
-  }
-
   private updateAppearance() {
     this.header.toggleCollapse(this.isCollapsed);
     $$(this.element).toggleClass('coveo-dynamic-hierarchical-facet-collapsed', this.isCollapsed);
     $$(this.element).removeClass('coveo-hidden');
     this.dependsOnManager.updateVisibilityBasedOnDependsOn();
-    this.isHierarchicalEmpty && $$(this.element).addClass('coveo-hidden');
+    !this.hasDisplayedValues && $$(this.element).addClass('coveo-hidden');
   }
 
   private handleQuerySuccess(results: IQueryResults) {
@@ -320,20 +328,20 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
     const response = index !== -1 ? results.facets[index] : null;
     this.position = index + 1;
 
-    response ? this.onQueryResponse(response) : this.onNoAdditionalValues();
+    response ? this.onQueryResponse(response) : this.onNoValues();
     this.values.render();
     this.updateQueryStateModel(this.values.selectedPath);
     this.updateAppearance();
   }
 
-  private onQueryResponse(response?: IFacetResponse) {
+  private onQueryResponse(response: IFacetResponse) {
     this.moreValuesAvailable = response.moreValuesAvailable;
     this.values.createFromResponse(response);
   }
 
-  private onNoAdditionalValues() {
+  private onNoValues() {
     this.moreValuesAvailable = false;
-    this.values.clear();
+    this.values.resetValues();
   }
 
   private updateQueryStateModel(path: string[]) {
@@ -372,11 +380,11 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
    * Automatically triggers an isolated query.
    * @param additionalNumberOfValues The number of additional values to request. Minimum value is 1. Defaults to the [numberOfValues]{@link DynamicHierarchicalFacet.options.numberOfValues} option value.
    */
-  public showMore(additionalNumberOfValues = this.options.numberOfValues) {
+  public showMoreValues(additionalNumberOfValues = this.options.numberOfValues) {
     this.ensureDom();
     this.logger.info('Show more values');
     this.dynamicHierarchicalFacetQueryController.increaseNumberOfValuesToRequest(additionalNumberOfValues);
-    this.triggerNewIsolatedQuery(() => this.logAnalyticsFacetShowMoreLess(analyticsActionCauseList.facetShowMore));
+    this.triggerNewIsolatedQuery(() => this.logAnalyticsFacetShowMoreLess(analyticsActionCauseList.dynamicFacetShowMore));
   }
 
   /**
@@ -386,11 +394,11 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
    *
    * Automatically triggers an isolated query.
    */
-  public showLess() {
+  public showLessValues() {
     this.ensureDom();
     this.logger.info('Show less values');
     this.dynamicHierarchicalFacetQueryController.resetNumberOfValuesToRequest();
-    this.triggerNewIsolatedQuery(() => this.logAnalyticsFacetShowMoreLess(analyticsActionCauseList.facetShowLess));
+    this.triggerNewIsolatedQuery(() => this.logAnalyticsFacetShowMoreLess(analyticsActionCauseList.dynamicFacetShowLess));
   }
 
   /**
@@ -410,25 +418,27 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
     this.logger.info('Toggle select facet value at path', path);
   }
 
-  /**
-   * Resets the facet to its initial state.
-   *
-   * Automatically triggers a query.
-   */
-  public reset() {
-    this.ensureDom();
-    this.clear();
+  private clear() {
+    this.reset();
     this.scrollToTop();
     this.triggerNewQuery(() => this.logAnalyticsEvent(analyticsActionCauseList.dynamicFacetClearAll));
   }
 
-  public clear() {
+  /**
+   * Deselects the path in the facet.
+   *
+   * Does **not** trigger a query automatically.
+   * Does **not** update the visual of the facet until a query is performed.
+   */
+  public reset() {
+    this.ensureDom();
+
     if (!this.values.hasSelectedValue) {
       return;
     }
 
-    this.logger.info('Clear facet');
-    this.values.clear();
+    this.logger.info('Deselect facet value');
+    this.values.clearPath();
     this.updateQueryStateModel([]);
   }
 
@@ -501,20 +511,48 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
     return caption ? caption : value;
   }
 
-  public logAnalyticsEvent(eventName: IAnalyticsActionCause, path = this.values.selectedPath) {
-    this.usageAnalytics.logSearchEvent<any>(eventName, {
-      DynamicHierarchicalFacetId: this.options.id,
-      DynamicHierarchicalFacetField: this.options.field.toString(),
-      DynamicHierarchicalFacetPath: path,
-      DynamicHierarchicalFacetTitle: this.options.title
-    });
+  public logAnalyticsEvent(actionCause: IAnalyticsActionCause) {
+    this.usageAnalytics.logSearchEvent<IAnalyticsFacetMeta>(actionCause, this.analyticsFacetMeta);
+  }
+
+  private get analyticsFacetValue() {
+    return this.values.selectedPath.join(this.options.delimitingCharacter);
+  }
+
+  public get analyticsFacetState(): IAnalyticsFacetState[] {
+    if (!this.values.hasSelectedValue) {
+      return [];
+    }
+
+    return [
+      {
+        field: this.options.field.toString(),
+        id: this.options.id,
+        title: this.options.title,
+        facetType: this.facetType,
+        facetPosition: this.position,
+        value: this.analyticsFacetValue,
+        displayValue: this.analyticsFacetValue,
+        state: FacetValueState.selected,
+        valuePosition: 1
+      }
+    ];
+  }
+
+  public get analyticsFacetMeta(): IAnalyticsFacetMeta {
+    return {
+      facetField: this.options.field.toString(),
+      facetId: this.options.id,
+      facetTitle: this.options.title,
+      facetValue: this.analyticsFacetValue
+    };
   }
 
   private buildFacetHeader() {
     this.header = new DynamicFacetHeader({
       title: this.options.title,
       enableCollapse: this.options.enableCollapse,
-      clear: () => this.reset(),
+      clear: () => this.clear(),
       toggleCollapse: () => this.toggleCollapse(),
       expand: () => this.expand(),
       collapse: () => this.collapse()
@@ -531,11 +569,17 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
       return;
     }
 
-    const path = data.attributes[this.queryStateAttribute];
-    if (this.pathIsValidForSelection(path)) {
-      // TODO: JSUI-2709 add analytics
-      path.length ? this.selectPath(path) : this.clear();
+    const queryStatePath = data.attributes[this.queryStateAttribute];
+
+    if (!this.pathIsValidForSelection(queryStatePath)) {
+      return;
     }
+
+    if (Utils.arrayEqual(queryStatePath, this.values.selectedPath)) {
+      return;
+    }
+
+    queryStatePath.length ? this.selectPath(queryStatePath) : this.reset();
   }
 
   private initQueryStateEvents() {
@@ -568,9 +612,9 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
   }
 
   private notImplementedError() {
-    const errorMessage = 'Hierarchical Facets are not supported by your current search endpoint. Disabling this component.';
-    this.logger.error(errorMessage);
+    this.logger.error('DynamicHierarchicalFacets are not supported by your current search endpoint. Disabling this component.');
     this.disable();
+    this.updateAppearance();
   }
 
   private handlePopulateBreadcrumb(args: IPopulateBreadcrumbEventArgs) {
@@ -585,15 +629,7 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
   }
 
   private logAnalyticsFacetShowMoreLess(cause: IAnalyticsActionCause) {
-    this.usageAnalytics.logCustomEvent<IAnalyticsFacetMeta>(
-      cause,
-      {
-        facetId: this.options.id,
-        facetField: this.options.field.toString(),
-        facetTitle: this.options.title
-      },
-      this.element
-    );
+    this.usageAnalytics.logCustomEvent<IAnalyticsFacetMeta>(cause, this.analyticsFacetMeta, this.element);
   }
 }
 
