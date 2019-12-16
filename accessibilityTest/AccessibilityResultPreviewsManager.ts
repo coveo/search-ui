@@ -1,7 +1,6 @@
 import * as axe from 'axe-core';
 import { $$, Component, QuerySuggestPreview, Searchbox, InputManager } from 'coveo-search-ui';
 import { afterQuerySuccess, getRoot, getSearchSection } from './Testing';
-import { toArray } from 'lodash';
 
 const maxServerResponseTime = 1200;
 const executeQueryDelay = 250;
@@ -31,7 +30,7 @@ export const AccessibilityResultPreviewsManager = () => {
 
     function buildQuerySuggestPreview() {
       const querySuggestPreviewElement = $$('div', { className: Component.computeCssClassName(QuerySuggestPreview) }).el;
-      querySuggestPreviewElement.dataset.executeQueryDelay = executeQueryDelay;
+      querySuggestPreviewElement.dataset.executeQueryDelay = executeQueryDelay.toString();
       getSearchSection().appendChild(querySuggestPreviewElement);
     }
 
