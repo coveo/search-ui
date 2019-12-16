@@ -5,7 +5,7 @@ import { $$, Dom } from '../../src/utils/Dom';
 import { Utils } from '../../src/utils/Utils';
 import { IMockEnvironment, MockEnvironmentBuilder } from '../MockEnvironment';
 import { OmniboxEvents } from '../../src/Core';
-import { last, first, toArray } from 'lodash';
+import { last, first, toArray } from 'underscore';
 import { ISearchResultPreview } from '../../src/magicbox/ResultPreviewsManager';
 import {
   ResultPreviewsManagerEvents,

@@ -2,7 +2,7 @@ import { ResultPreviewsManager, ISearchResultPreview } from '../../src/magicbox/
 import { IMockEnvironment, MockEnvironmentBuilder } from '../MockEnvironment';
 import { $$ } from '../../src/utils/Dom';
 import { ResultPreviewsManagerEvents, IPopulateSearchResultPreviewsEventArgs } from '../../src/events/ResultPreviewsManagerEvents';
-import { toArray } from 'lodash';
+import { toArray } from 'underscore';
 
 export function ResultPreviewsManagerTest() {
   describe('ResultPreviewsManager', function() {
