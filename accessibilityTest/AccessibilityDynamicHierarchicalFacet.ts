@@ -24,6 +24,10 @@ export const AccessibilityDynamicHierarchicalFacet = () => {
     it('should be accessible', async done => {
       getFacetColumn().appendChild(dynamicHierarchicalFacet);
       await afterQuerySuccess();
+      $$(dynamicHierarchicalFacet)
+        .find('.coveo-dynamic-hierarchical-facet-value')
+        .click();
+      await afterQuerySuccess();
       const axeResults = await axe.run(getRoot());
       expect(axeResults).toBeAccessible();
       done();
