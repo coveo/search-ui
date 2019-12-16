@@ -3,12 +3,19 @@ import { $$, Component, QuerySuggestPreview, Searchbox, InputManager } from 'cov
 import { afterQuerySuccess, getRoot, getSearchSection } from './Testing';
 import { toArray } from 'lodash';
 
+const maxServerResponseTime = 1200;
+const executeQueryDelay = 250;
+
 enum KeyboardKey {
   UpArrow = 38,
   DownArrow = 40
 }
 
 function noop() {}
+
+function wait(ms: number) {
+  return new Promise(resolve => setTimeout(() => resolve(), ms));
+}
 
 export const AccessibilityResultPreviewsManager = () => {
   describe('ResultPreviewsManager', () => {
@@ -24,6 +31,7 @@ export const AccessibilityResultPreviewsManager = () => {
 
     function buildQuerySuggestPreview() {
       const querySuggestPreviewElement = $$('div', { className: Component.computeCssClassName(QuerySuggestPreview) }).el;
+      querySuggestPreviewElement.dataset.executeQueryDelay = executeQueryDelay;
       getSearchSection().appendChild(querySuggestPreviewElement);
     }
 
@@ -38,32 +46,12 @@ export const AccessibilityResultPreviewsManager = () => {
       inputManager['keyup'](key);
     }
 
-    function waitForElement(parent: HTMLElement, condition: (addedElement: HTMLElement) => boolean, subtree = false): Promise<HTMLElement> {
-      return new Promise(resolve => {
-        const observer = new MutationObserver(mutations => {
-          for (let mutation of mutations) {
-            if (mutation.type === 'childList') {
-              for (let addedNode of toArray<HTMLElement>((mutation.addedNodes as any) as ArrayLike<HTMLElement>)) {
-                if (condition(addedNode)) {
-                  resolve(addedNode);
-                  observer.disconnect();
-                  return;
-                }
-              }
-            }
-          }
-        });
-
-        observer.observe(parent, { childList: true, subtree });
-      });
-    }
-
     async function waitForSuggestions() {
-      await waitForElement(searchBoxElement, element => element.classList.contains('magic-box-suggestion'), true);
+      await wait(maxServerResponseTime);
     }
 
     async function waitForPreviews() {
-      await waitForElement(searchBoxElement, element => element.classList.contains('coveo-preview-selectable'), true);
+      await wait(executeQueryDelay + maxServerResponseTime);
     }
 
     async function focusOnFirstSuggestion() {
