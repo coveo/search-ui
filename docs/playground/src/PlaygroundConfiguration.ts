@@ -79,7 +79,12 @@ export const PlaygroundConfiguration: IStringMap<IComponentPlaygroundConfigurati
   ErrorReport: {
     show: true,
     toExecute: () => {
-      Coveo['SearchEndpoint'].endpoints['default'].options.accessToken = 'invalid';
+      getSearchInterfaceInstance().queryController.setEndpoint(
+        new SearchEndpoint({
+          restUri: 'https://platform.cloud.coveo.com/rest/search',
+          accessToken: 'invalid'
+        })
+      );
     }
   },
   Excerpt: {
