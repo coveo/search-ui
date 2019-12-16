@@ -78,7 +78,8 @@ export class DynamicFacetQueryController {
       currentValues: this.currentValues,
       numberOfValues: this.numberOfValues,
       freezeCurrentValues: this.freezeCurrentValues,
-      isFieldExpanded: this.numberOfValuesToRequest > this.facet.options.numberOfValues
+      isFieldExpanded: this.numberOfValuesToRequest > this.facet.options.numberOfValues,
+      injectionDepth: this.facet.options.injectionDepth
     };
   }
 

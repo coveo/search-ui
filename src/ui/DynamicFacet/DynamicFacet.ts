@@ -227,7 +227,17 @@ export class DynamicFacet extends Component implements IDynamicFacet {
      *
      * @examples document-type-facet
      */
-    dependsOn: ComponentOptions.buildStringOption()
+    dependsOn: ComponentOptions.buildStringOption(),
+
+    /**
+     * The *injection depth* to use.
+     *
+     * The injection depth determines how many results to scan in the index to ensure that the facet lists all potential
+     * facet values. Increasing this value enhances the accuracy of the listed values at the cost of performance.
+     *
+     * Default value is `1000`. Minimum value is `0`.
+     */
+    injectionDepth: ComponentOptions.buildNumberOption({ defaultValue: 1000, min: 0 })
   };
 
   private includedAttributeId: string;
