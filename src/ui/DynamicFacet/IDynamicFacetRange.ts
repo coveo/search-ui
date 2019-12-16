@@ -7,6 +7,10 @@ import { IRangeValue } from '../../rest/RangeValue';
  */
 export enum DynamicFacetRangeValueFormat {
   /**
+   * Format range values as localized currency strings.
+   */
+  currency = 'currency',
+  /**
    * Format range values as localized numeric strings.
    */
   number = 'number',
@@ -20,6 +24,7 @@ export interface IDynamicFacetRangeOptions extends IDynamicFacetOptions {
   valueSeparator?: string;
   valueFormat?: DynamicFacetRangeValueFormat;
   ranges?: IRangeValue[];
+  currencySymbol?: string;
 }
 
 export interface IDynamicFacetRange extends IDynamicFacet {

@@ -5,6 +5,7 @@ import { isNull } from 'util';
 import { DateUtils } from '../../../utils/DateUtils';
 import { IDynamicFacetRange, DynamicFacetRangeValueFormat } from '../IDynamicFacetRange';
 import { Logger } from '../../../misc/Logger';
+import { CurrencyUtils } from '../../../Core';
 
 export class DynamicFacetRangeValueParser {
   constructor(private facet: IDynamicFacetRange) {}
@@ -33,6 +34,13 @@ export class DynamicFacetRangeValueParser {
         const numberOfDecimals = NumberUtils.countDecimals(value as number);
         return Globalize.format(value, `n${numberOfDecimals}`);
 
+      case DynamicFacetRangeValueFormat.currency:
+        const hasDecimals = !!NumberUtils.countDecimals(value as number);
+        return CurrencyUtils.currencyToString(value as number, {
+          symbol: this.facet.options.currencySymbol,
+          decimals: hasDecimals ? 2 : 0
+        });
+
       case DynamicFacetRangeValueFormat.date:
         return DateUtils.dateToString(this.parseDateFromRangeType(value), {
           alwaysIncludeTime: false,
@@ -58,6 +66,7 @@ export class DynamicFacetRangeValueParser {
   private validateRangeLimit(value: RangeType) {
     switch (this.valueFormat) {
       case DynamicFacetRangeValueFormat.number:
+      case DynamicFacetRangeValueFormat.currency:
         return this.validateNumberValue(value);
       case DynamicFacetRangeValueFormat.date:
         return this.validateDateValue(value);
