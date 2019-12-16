@@ -31,14 +31,13 @@ export class DynamicFacetRangeValueParser {
   private formatDisplayValueFromLimit(value: RangeType) {
     switch (this.valueFormat) {
       case DynamicFacetRangeValueFormat.number:
-        const numberOfDecimals = NumberUtils.countDecimals(value as number);
+        const numberOfDecimals = NumberUtils.countDecimals(`${value}`);
         return Globalize.format(value, `n${numberOfDecimals}`);
 
       case DynamicFacetRangeValueFormat.currency:
-        const hasDecimals = !!NumberUtils.countDecimals(value as number);
-        return CurrencyUtils.currencyToString(value as number, {
+        return CurrencyUtils.currencyToString(parseFloat(`${value}`), {
           symbol: this.facet.options.currencySymbol,
-          decimals: hasDecimals ? 2 : 0
+          decimals: !!NumberUtils.countDecimals(`${value}`) ? 2 : 0
         });
 
       case DynamicFacetRangeValueFormat.date:
