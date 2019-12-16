@@ -124,8 +124,8 @@ export class DynamicFacetManager extends Component {
   constructor(element: HTMLElement, public options?: IDynamicFacetManagerOptions) {
     super(element, 'DynamicFacetManager');
     this.options = ComponentOptions.initComponentOptions(element, DynamicFacetManager, options);
-
-    this.moveChildrenIntoContainer();
+    this.resetContainer();
+    this.prependContainer();
     this.initEvents();
   }
 
@@ -134,12 +134,8 @@ export class DynamicFacetManager extends Component {
     this.containerElement = $$('div', { className: 'coveo-dynamic-facet-manager-container' }).el;
   }
 
-  private moveChildrenIntoContainer() {
-    this.resetContainer();
-    $$(this.element)
-      .children()
-      .forEach(child => this.containerElement.appendChild(child));
-    this.element.appendChild(this.containerElement);
+  private prependContainer() {
+    $$(this.element).prepend(this.containerElement);
   }
 
   private initEvents() {
@@ -159,7 +155,15 @@ export class DynamicFacetManager extends Component {
 
   private handleAfterComponentsInitialization() {
     this.childrenFacets = this.allDynamicFacets;
-    this.childrenFacets.forEach(dynamicFacet => (dynamicFacet.dynamicFacetManager = this));
+    this.childrenFacets.forEach(dynamicFacet => {
+      dynamicFacet.dynamicFacetManager = this;
+      this.containerElement.appendChild(dynamicFacet.element);
+    });
+
+    if (this.element.children.length > 1) {
+      this.logger.warn(`DynamicFacetManager contains incompatible elements. Those elements may be moved in the DOM.
+        To prevent this warning, move those elements outside of the DynamicFacetManager.`);
+    }
 
     if (!this.childrenFacets.length) {
       this.disable();
@@ -218,7 +222,7 @@ export class DynamicFacetManager extends Component {
     this.respectMaximumExpandedFacetsThreshold();
 
     this.containerElement.appendChild(fragment);
-    this.element.appendChild(this.containerElement);
+    this.prependContainer();
   }
 
   private respectMaximumExpandedFacetsThreshold() {
