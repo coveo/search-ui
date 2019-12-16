@@ -11,12 +11,14 @@ import { FacetValueState } from '../../../src/rest/Facet/FacetValueState';
 import { ResultListUtils } from '../../../src/utils/ResultListUtils';
 import { IDynamicHierarchicalFacetOptions } from '../../../src/ui/DynamicHierarchicalFacet/IDynamicHierarchicalFacet';
 import { DynamicFacetManager } from '../../../src/ui/DynamicFacetManager/DynamicFacetManager';
+import { analyticsActionCauseList } from '../../../src/ui/Analytics/AnalyticsActionListMeta';
 
 export function DynamicHierarchicalFacetTest() {
   describe('DynamicHierarchicalFacet', () => {
     let test: Mock.IBasicComponentSetup<DynamicHierarchicalFacet>;
     let options: IDynamicHierarchicalFacetOptions;
     let mockFacetValues: IFacetResponseValue[];
+    let triggerNewQuerySpy: jasmine.Spy;
 
     beforeEach(() => {
       options = { field: '@dummy' };
@@ -34,17 +36,19 @@ export function DynamicHierarchicalFacetTest() {
       );
 
       spyOn(test.cmp, 'selectPath').and.callThrough();
+      spyOn(test.cmp, 'logAnalyticsEvent').and.callThrough();
       spyOn(test.cmp, 'scrollToTop').and.callThrough();
       spyOn(test.cmp, 'ensureDom').and.callThrough();
-      spyOn(test.cmp, 'triggerNewQuery').and.callThrough();
       spyOn(test.cmp, 'triggerNewIsolatedQuery').and.callThrough();
       spyOn(test.cmp, 'reset').and.callThrough();
-      spyOn(test.cmp, 'clear').and.callThrough();
       spyOn(test.cmp, 'putStateIntoQueryBuilder').and.callThrough();
       spyOn(test.cmp.logger, 'warn').and.callThrough();
       spyOn(test.cmp.values, 'render').and.callThrough();
       spyOn(test.cmp.values, 'selectPath').and.callThrough();
-      spyOn(test.cmp.values, 'clear').and.callThrough();
+      spyOn(test.cmp.values, 'resetValues').and.callThrough();
+      spyOn(test.cmp.values, 'clearPath').and.callThrough();
+      triggerNewQuerySpy = spyOn(test.cmp, 'triggerNewQuery').and.callThrough();
+      triggerNewQuerySpy.and.callThrough();
     }
 
     function triggerPopulateBreadcrumbs() {
@@ -60,7 +64,6 @@ export function DynamicHierarchicalFacetTest() {
 
     function validateExpandCollapse(shouldBeCollapsed: boolean) {
       expect($$(test.cmp.element).hasClass('coveo-dynamic-hierarchical-facet-collapsed')).toBe(shouldBeCollapsed);
-      // TODO: test if search feature is displayed
     }
 
     function fakeResultsWithFacets() {
@@ -131,20 +134,30 @@ export function DynamicHierarchicalFacetTest() {
       testQueryStateModelValues([results.facets[0].values[0].value]);
     });
 
-    it('should call selectPath and log an analytics event when selecting a path through the QueryStateModel', () => {
-      test.env.queryStateModel.registerNewAttribute(`f:${test.cmp.options.id}`, []);
+    it('should call selectPath when selecting a path through the QueryStateModel', () => {
       test.env.queryStateModel.set(`f:${test.cmp.options.id}`, ['a', 'b', 'c']);
 
       expect(test.cmp.selectPath).toHaveBeenCalledWith(['a', 'b', 'c']);
-      // TODO: JSUI-2709 add analytics
     });
 
-    it('should call clear and log an analytics event when clearing the path through the QueryStateModel', () => {
-      test.env.queryStateModel.registerNewAttribute(`f:${test.cmp.options.id}`, ['allo']);
+    it('should not call selectPath when selecting a identical path through the QueryStateModel', () => {
+      test.env.queryStateModel.set(`f:${test.cmp.options.id}`, ['a', 'b', 'c']);
+      test.env.queryStateModel.set(`f:${test.cmp.options.id}`, ['a', 'b', 'c']);
+
+      expect(test.cmp.selectPath).toHaveBeenCalledTimes(1);
+    });
+
+    it('should call reset when clearing the path through the QueryStateModel', () => {
+      test.env.queryStateModel.set(`f:${test.cmp.options.id}`, ['test']);
       test.env.queryStateModel.set(`f:${test.cmp.options.id}`, []);
 
-      expect(test.cmp.clear).toHaveBeenCalled();
-      // TODO: JSUI-2709 add analytics
+      expect(test.cmp.reset).toHaveBeenCalledTimes(1);
+    });
+
+    it('should not call reset when clearing an empty path through the QueryStateModel', () => {
+      test.env.queryStateModel.set(`f:${test.cmp.options.id}`, []);
+
+      expect(test.cmp.reset).not.toHaveBeenCalled();
     });
 
     describe('testing collapse/expand', () => {
@@ -252,37 +265,37 @@ export function DynamicHierarchicalFacetTest() {
       expect(test.cmp.values.render).toHaveBeenCalled();
     });
 
-    describe('testing showMore/showLess', () => {
-      it('showMore adds by the numberOfValues option by default', () => {
+    describe('testing showMoreValues/showLessValues', () => {
+      it('showMoreValues adds by the numberOfValues option by default', () => {
         const additionalNumberOfValues = test.cmp.options.numberOfValues;
-        test.cmp.showMore();
+        test.cmp.showMoreValues();
 
         expect(getFirstFacetRequest().numberOfValues).toBe(test.cmp.options.numberOfValues + additionalNumberOfValues);
       });
 
-      it('allows to showMore with a custom amount of values', () => {
+      it('allows to showMoreValues with a custom amount of values', () => {
         const additionalNumberOfValues = 38;
-        test.cmp.showMore(additionalNumberOfValues);
+        test.cmp.showMoreValues(additionalNumberOfValues);
         expect(test.cmp.triggerNewIsolatedQuery).toHaveBeenCalled();
 
         expect(getFirstFacetRequest().numberOfValues).toBe(test.cmp.options.numberOfValues + additionalNumberOfValues);
       });
 
-      it('showMore triggers a query', () => {
-        test.cmp.showMore();
+      it('showMoreValues triggers a query', () => {
+        test.cmp.showMoreValues();
         expect(test.cmp.triggerNewIsolatedQuery).toHaveBeenCalled();
       });
 
-      it('showLess resets the amount of values to the numberOfValues option', () => {
+      it('showLessValues resets the amount of values to the numberOfValues option', () => {
         const additionalNumberOfValues = 38;
-        test.cmp.showMore(additionalNumberOfValues);
-        test.cmp.showLess();
+        test.cmp.showMoreValues(additionalNumberOfValues);
+        test.cmp.showLessValues();
 
         expect(getFirstFacetRequest().numberOfValues).toBe(test.cmp.options.numberOfValues);
       });
 
-      it('showLess triggers a query', () => {
-        test.cmp.showLess();
+      it('showLessValues triggers a query', () => {
+        test.cmp.showLessValues();
         expect(test.cmp.triggerNewIsolatedQuery).toHaveBeenCalled();
       });
     });
@@ -295,32 +308,12 @@ export function DynamicHierarchicalFacetTest() {
 
     describe('when calling reset', () => {
       beforeEach(() => {
+        test.cmp.values.selectPath(['hey']);
         test.cmp.reset();
       });
 
-      it('should call clear', () => {
-        expect(test.cmp.clear).toHaveBeenCalled();
-      });
-
-      it('should call scrollToTop', () => {
-        expect(test.cmp.scrollToTop).toHaveBeenCalled();
-      });
-
-      it('should trigger a new query', () => {
-        expect(test.cmp.triggerNewQuery).toHaveBeenCalled();
-      });
-
-      // TODO: JSUI-2709 add analytics
-    });
-
-    describe('when calling clear', () => {
-      beforeEach(() => {
-        test.cmp.values.selectPath(['hey']);
-        test.cmp.clear();
-      });
-
-      it('should call clear on the values', () => {
-        expect(test.cmp.values.clear).toHaveBeenCalled();
+      it('should call clearPath on the values', () => {
+        expect(test.cmp.values.clearPath).toHaveBeenCalled();
       });
 
       it('should update queryStateModel with an empty array', () => {
@@ -366,6 +359,14 @@ export function DynamicHierarchicalFacetTest() {
       should perform the correct action on the facet`, () => {
         test.cmp.header.options.clear();
         expect(test.cmp.reset).toHaveBeenCalledTimes(1);
+        expect(test.cmp.triggerNewQuery).toHaveBeenCalledTimes(1);
+      });
+
+      it(`when triggering the header "clear" method
+      should log an analytics event`, () => {
+        triggerNewQuerySpy.and.callFake((beforeCb: any = () => {}) => beforeCb());
+        test.cmp.header.options.clear();
+        expect(test.cmp.logAnalyticsEvent).toHaveBeenCalledWith(analyticsActionCauseList.dynamicFacetClearAll);
       });
 
       it(`when triggering a query
@@ -435,6 +436,89 @@ export function DynamicHierarchicalFacetTest() {
       });
     });
 
-    // TODO: JSUI-2709 test logAnalyticsEvent
+    it('logs an analytics search event when logAnalyticsEvent is called', () => {
+      test.cmp.logAnalyticsEvent(analyticsActionCauseList.dynamicFacetSelect);
+
+      expect(test.cmp.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(
+        analyticsActionCauseList.dynamicFacetSelect,
+        test.cmp.analyticsFacetMeta
+      );
+    });
+
+    it('should log an analytics event when showing more results', () => {
+      test.cmp.showMoreValues();
+      expect(test.cmp.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(
+        analyticsActionCauseList.dynamicFacetShowMore,
+        test.cmp.analyticsFacetMeta,
+        test.cmp.element
+      );
+    });
+
+    it('should log an analytics event when showing less results', () => {
+      test.cmp.showLessValues();
+      expect(test.cmp.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(
+        analyticsActionCauseList.dynamicFacetShowLess,
+        test.cmp.analyticsFacetMeta,
+        test.cmp.element
+      );
+    });
+
+    function analyticsValue() {
+      return test.cmp.values.selectedPath.join(test.cmp.options.delimitingCharacter);
+    }
+
+    it(`when a value is not selected
+    returns an empty analyticsFacetState`, () => {
+      expect(test.cmp.analyticsFacetState).toEqual([]);
+    });
+
+    it(`when a value is selected
+    returns the correct analyticsFacetState`, () => {
+      test.cmp.selectPath(['foo', 'bar']);
+
+      expect(test.cmp.analyticsFacetState).toEqual([
+        {
+          field: test.cmp.options.field.toString(),
+          id: test.cmp.options.id,
+          title: test.cmp.options.title,
+          facetType: test.cmp.facetType,
+          facetPosition: test.cmp.position,
+          value: analyticsValue(),
+          displayValue: analyticsValue(),
+          state: FacetValueState.selected,
+          valuePosition: 1
+        }
+      ]);
+    });
+
+    it('returns the correct analyticsFacetMeta', () => {
+      test.cmp.selectPath(['foo', 'bar']);
+
+      expect(test.cmp.analyticsFacetMeta).toEqual({
+        facetField: test.cmp.options.field.toString(),
+        facetId: test.cmp.options.id,
+        facetTitle: test.cmp.options.title,
+        facetValue: analyticsValue()
+      });
+    });
+
+    it(`when calling "putStateIntoAnalytics" 
+      should call "getPendingSearchEvent" on the "usageAnalytics" object`, () => {
+      test.cmp.putStateIntoAnalytics();
+
+      expect(test.cmp.usageAnalytics.getPendingSearchEvent).toHaveBeenCalled();
+    });
+
+    it(`when calling "putStateIntoAnalytics" 
+      should call "addFacetState" on the "PendingSearchEvent" with the correct state`, () => {
+      const fakePendingSearchEvent = {
+        addFacetState: jasmine.createSpy('addFacetState')
+      };
+      test.cmp.usageAnalytics.getPendingSearchEvent = jasmine.createSpy('getPendingSearchEvent').and.callFake(() => fakePendingSearchEvent);
+
+      test.cmp.putStateIntoAnalytics();
+
+      expect(fakePendingSearchEvent.addFacetState).toHaveBeenCalledWith(test.cmp.analyticsFacetState);
+    });
   });
 }
