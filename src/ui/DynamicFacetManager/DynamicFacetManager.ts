@@ -125,13 +125,17 @@ export class DynamicFacetManager extends Component {
     super(element, 'DynamicFacetManager');
     this.options = ComponentOptions.initComponentOptions(element, DynamicFacetManager, options);
     this.resetContainer();
-    $$(this.element).prepend(this.containerElement);
+    this.prependContainer();
     this.initEvents();
   }
 
   private resetContainer() {
     this.containerElement && $$(this.containerElement).remove();
     this.containerElement = $$('div', { className: 'coveo-dynamic-facet-manager-container' }).el;
+  }
+
+  private prependContainer() {
+    $$(this.element).prepend(this.containerElement);
   }
 
   private initEvents() {
@@ -157,7 +161,8 @@ export class DynamicFacetManager extends Component {
     });
 
     if (this.element.children.length > 1) {
-      this.logger.warn('DynamicFacetManager contains incompatible elements.');
+      this.logger.warn(`DynamicFacetManager contains incompatible elements. Those elements may be moved in the DOM.
+        To prevent this warning, move those elements outside of the DynamicFacetManager.`);
     }
 
     if (!this.childrenFacets.length) {
@@ -217,7 +222,7 @@ export class DynamicFacetManager extends Component {
     this.respectMaximumExpandedFacetsThreshold();
 
     this.containerElement.appendChild(fragment);
-    $$(this.element).prepend(this.containerElement);
+    this.prependContainer();
   }
 
   private respectMaximumExpandedFacetsThreshold() {
