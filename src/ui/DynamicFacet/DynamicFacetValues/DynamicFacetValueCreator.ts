@@ -6,23 +6,17 @@ import { FacetValueState } from '../../../rest/Facet/FacetValueState';
 import { DynamicFacetValueRenderer } from './DynamicFacetValueRenderer';
 
 export class DynamicFacetValueCreator implements IValueCreator {
-  constructor(private facet: IDynamicFacet) { }
+  constructor(private facet: IDynamicFacet) {}
 
-  private formatDisplayValue(value: string) {
-    let returnValue = FacetUtils.tryToGetTranslatedCaption(<string>this.facet.options.field, value);
-
-    if (this.facet.options.valueCaption && typeof this.facet.options.valueCaption === 'object') {
-      returnValue = this.facet.options.valueCaption[value] || returnValue;
-    }
-
-    return returnValue;
+  private getDisplayValue(value: string) {
+    return FacetUtils.getDisplayValueFromValueCaption(value, this.facet.options.field as string, this.facet.options.valueCaption);
   }
 
   public createFromResponse(facetValue: IFacetResponseValue, index: number) {
     return new DynamicFacetValue(
       {
         value: facetValue.value,
-        displayValue: this.formatDisplayValue(facetValue.value),
+        displayValue: this.getDisplayValue(facetValue.value),
         numberOfResults: facetValue.numberOfResults,
         state: facetValue.state,
         position: index + 1
@@ -35,12 +29,8 @@ export class DynamicFacetValueCreator implements IValueCreator {
   public createFromValue(value: string) {
     const position = this.facet.values.allFacetValues.length + 1;
     const state = FacetValueState.idle;
-    const displayValue = this.formatDisplayValue(value);
-    return new DynamicFacetValue(
-      { value, displayValue, state, numberOfResults: 0, position },
-      this.facet,
-      DynamicFacetValueRenderer
-    );
+    const displayValue = this.getDisplayValue(value);
+    return new DynamicFacetValue({ value, displayValue, state, numberOfResults: 0, position }, this.facet, DynamicFacetValueRenderer);
   }
 
   public createFromRange() {

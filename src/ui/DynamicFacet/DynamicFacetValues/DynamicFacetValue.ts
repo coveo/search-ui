@@ -1,12 +1,11 @@
 import * as Globalize from 'globalize';
-import { IDynamicFacet,  IDynamicFacetValueProperties, IValueRenderer, IValueRendererKlass, IDynamicFacetValue } from '../IDynamicFacet';
+import { IDynamicFacet, IDynamicFacetValueProperties, IValueRenderer, IValueRendererKlass, IDynamicFacetValue } from '../IDynamicFacet';
 import { FacetValueState } from '../../../rest/Facet/FacetValueState';
 import { analyticsActionCauseList, IAnalyticsFacetMeta } from '../../Analytics/AnalyticsActionListMeta';
 import { l } from '../../../strings/Strings';
-import {  RangeType } from '../../../rest/RangeValue';
+import { RangeType } from '../../../rest/RangeValue';
 import { FacetType } from '../../../rest/Facet/FacetRequest';
 import { IAnalyticsFacetState } from '../../Analytics/IAnalyticsFacetState';
-
 
 export class DynamicFacetValue implements IDynamicFacetValue {
   public value: string;

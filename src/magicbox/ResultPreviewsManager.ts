@@ -1,6 +1,6 @@
 import { $$, Dom } from '../utils/Dom';
 import { l } from '../strings/Strings';
-import { defaults, findIndex } from 'lodash';
+import { defaults, findIndex } from 'underscore';
 import { Component } from '../ui/Base/Component';
 import { Direction } from './SuggestionsManager';
 import {
