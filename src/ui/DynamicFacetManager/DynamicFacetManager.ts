@@ -228,13 +228,26 @@ export class DynamicFacetManager extends Component {
 
     const [collapsableFacets, uncollapsableFacets] = partition(this.facetsWithDisplayedValues, facet => facet.options.enableCollapse);
     const [facetsWithActiveValues, remainingFacets] = partition(collapsableFacets, facet => facet.hasActiveValues);
-    const indexOfFirstFacetToCollapse =
+    let indexOfFirstFacetToCollapse =
       this.options.maximumNumberOfExpandedFacets - uncollapsableFacets.length - facetsWithActiveValues.length;
 
     facetsWithActiveValues.forEach(dynamicFacet => dynamicFacet.expand());
 
     remainingFacets.forEach((dynamicFacet, index) => {
-      index < indexOfFirstFacetToCollapse ? dynamicFacet.expand() : dynamicFacet.collapse();
+      if (index >= indexOfFirstFacetToCollapse) {
+        return dynamicFacet.collapse();
+      }
+
+      if (dynamicFacet.options.collapsedByDefault) {
+        dynamicFacet.logger.info(
+          'Facet is inside a DynamicFacetManager but has the collapsedByDefault option set to "true"',
+          'Facet will not be expanded by the DynamicFacetManager.'
+        );
+        indexOfFirstFacetToCollapse++;
+        return dynamicFacet.collapse();
+      }
+
+      dynamicFacet.expand();
     });
   }
 
