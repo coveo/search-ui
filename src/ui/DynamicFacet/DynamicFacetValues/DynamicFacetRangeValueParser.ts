@@ -36,7 +36,8 @@ export class DynamicFacetRangeValueParser {
 
       case DynamicFacetRangeValueFormat.currency:
         return CurrencyUtils.currencyToString(parseFloat(`${value}`), {
-          decimals: NumberUtils.countDecimals(`${value}`) ? 2 : 0
+          symbol: this.facet.options.currencySymbol,
+          decimals: !!NumberUtils.countDecimals(`${value}`) ? 2 : 0
         });
 
       case DynamicFacetRangeValueFormat.date:

@@ -8,8 +8,6 @@ import { IRangeValue } from '../../rest/RangeValue';
 export enum DynamicFacetRangeValueFormat {
   /**
    * Format range values as localized currency strings.
-   *
-   * The currency associated with the currently loaded culture file is used.
    */
   currency = 'currency',
   /**
@@ -26,6 +24,7 @@ export interface IDynamicFacetRangeOptions extends IDynamicFacetOptions {
   valueSeparator?: string;
   valueFormat?: DynamicFacetRangeValueFormat;
   ranges?: IRangeValue[];
+  currencySymbol?: string;
 }
 
 export interface IDynamicFacetRange extends IDynamicFacet {
