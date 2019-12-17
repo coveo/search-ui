@@ -9,8 +9,7 @@ export enum DynamicFacetRangeValueFormat {
   /**
    * Format range values as localized currency strings.
    *
-   * By default, the component uses the currency associated with the currently loaded culture file
-   * (see [Changing the Language of Your Search Interface](https://docs.coveo.com/421/)).
+   * The currency associated with the currently loaded culture file is used.
    */
   currency = 'currency',
   /**
