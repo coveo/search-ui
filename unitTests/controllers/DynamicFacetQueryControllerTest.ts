@@ -63,7 +63,8 @@ export function DynamicFacetQueryControllerTest() {
     });
 
     it('should send the injectionDepth', () => {
-      expect(facetRequest().injectionDepth).toBe(facet.options.injectionDepth);
+      facet.options.injectionDepth = 15;
+      expect(facetRequest().injectionDepth).toBe(15);
     });
 
     it('should send the current values', () => {
