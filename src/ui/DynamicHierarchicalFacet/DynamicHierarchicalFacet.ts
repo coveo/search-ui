@@ -123,12 +123,9 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
     includeInBreadcrumb: ComponentOptions.buildBooleanOption({ defaultValue: true, section: 'CommonOptions' }),
 
     /**
-     * The *injection depth* to use.
+     * The number of items to scan for facet values.
      *
-     * The injection depth determines how many results to scan in the index to ensure that the hierarchical facet lists all potential
-     * facet values. Increasing this value enhances the accuracy of the listed values at the cost of performance.
-     *
-     * Default value is `1000`. Minimum value is `0`.
+     * Setting this option to a higher value may enhance the accuracy of facet value counts at the cost of slower query performance.
      */
     injectionDepth: ComponentOptions.buildNumberOption({ defaultValue: 1000, min: 0 }),
 
@@ -149,8 +146,6 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
      * `@field: c; c>folder2; c>folder2>folder3;`
      *
      * The delimiting character is `>`.
-     *
-     * Default value is `|`.
      */
     delimitingCharacter: ComponentOptions.buildStringOption({ defaultValue: '|' }),
 
