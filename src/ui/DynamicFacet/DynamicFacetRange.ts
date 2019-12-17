@@ -1,7 +1,7 @@
 import 'styling/DynamicFacet/_DynamicFacet';
 import { Initialization } from '../Base/Initialization';
 import { DynamicFacet } from './DynamicFacet';
-import { IDynamicFacetRangeOptions, DynamicFacetRangeValueFormat } from './IDynamicFacetRange';
+import { IDynamicFacetRangeOptions, DynamicFacetRangeValueFormat, isFacetRangeValueFormat } from './IDynamicFacetRange';
 import { ComponentOptions } from '../Base/ComponentOptions';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { exportGlobally } from '../../GlobalExports';
@@ -56,7 +56,11 @@ export class DynamicFacetRange extends DynamicFacet implements IComponentBinding
      *
      * @examples date
      */
-    valueFormat: ComponentOptions.buildStringOption({ defaultValue: DynamicFacetRangeValueFormat.number, section: 'CommonOptions' }),
+    valueFormat: ComponentOptions.buildStringOption({
+      defaultValue: DynamicFacetRangeValueFormat.number,
+      postProcessing: value => (isFacetRangeValueFormat(value) ? value : DynamicFacetRangeValueFormat.number),
+      section: 'CommonOptions'
+    }),
     /**
      * The currency symbol to use if the [`valueFormat`]{@link DynamicFacetRangeValueFormat.options.valueFormat} is [`currency`]{@link DynamicFacetRangeValueFormat.currency}.
      *

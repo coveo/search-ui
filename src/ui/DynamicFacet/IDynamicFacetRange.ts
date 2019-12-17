@@ -20,6 +20,10 @@ export enum DynamicFacetRangeValueFormat {
   date = 'date'
 }
 
+export function isFacetRangeValueFormat(rangeValueFormat: string) {
+  return !!DynamicFacetRangeValueFormat[rangeValueFormat];
+}
+
 export interface IDynamicFacetRangeOptions extends IDynamicFacetOptions {
   valueSeparator?: string;
   valueFormat?: DynamicFacetRangeValueFormat;
