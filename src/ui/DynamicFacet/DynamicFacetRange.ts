@@ -58,12 +58,6 @@ export class DynamicFacetRange extends DynamicFacet implements IComponentBinding
      */
     valueFormat: ComponentOptions.buildStringOption({ defaultValue: DynamicFacetRangeValueFormat.number, section: 'CommonOptions' }),
     /**
-     * The currency symbol used if the [`valueFormat`]{@link DynamicFacetRangeValueFormat.options.valueFormat} is [`currency`]{@link DynamicFacetRangeValueFormat.currency}.
-     *
-     * **Default:** `$`
-     */
-    currencySymbol: ComponentOptions.buildStringOption({ defaultValue: '$', section: 'CommonOptions' }),
-    /**
      * The list of [range values]{@link IRangeValue} to request (see [Requesting Specific FacetRange Values](https://docs.coveo.com/en/2790/)).
      *
      * This value will override the [`numberOfValues`]{@link DynamicFacet.options.numberOfValues} value.

@@ -8,6 +8,9 @@ import { IRangeValue } from '../../rest/RangeValue';
 export enum DynamicFacetRangeValueFormat {
   /**
    * Format range values as localized currency strings.
+   *
+   * By default, the component uses the currency associated with the currently loaded culture file
+   * (see [Changing the Language of Your Search Interface](https://docs.coveo.com/421/)).
    */
   currency = 'currency',
   /**
@@ -24,7 +27,6 @@ export interface IDynamicFacetRangeOptions extends IDynamicFacetOptions {
   valueSeparator?: string;
   valueFormat?: DynamicFacetRangeValueFormat;
   ranges?: IRangeValue[];
-  currencySymbol?: string;
 }
 
 export interface IDynamicFacetRange extends IDynamicFacet {
