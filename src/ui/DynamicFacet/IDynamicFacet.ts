@@ -29,6 +29,7 @@ export interface IDynamicFacetOptions extends IResponsiveComponentOptions {
   numberOfValuesInBreadcrumb?: number;
   valueCaption?: Record<string, string>;
   dependsOn?: string;
+  injectionDepth?: number;
 }
 
 export interface IDynamicFacet extends Component, IDynamicManagerCompatibleFacet, IAutoLayoutAdjustableInsideFacetColumn {
