@@ -244,8 +244,8 @@ export class DynamicFacetManager extends Component {
 
       if (dynamicFacet.options.collapsedByDefault) {
         dynamicFacet.logger.info(
-          'Facet is inside a DynamicFacetManager but has the collapsedByDefault option set to "true"',
-          'Facet will not be expanded by the DynamicFacetManager.'
+          'The facet is inside a DynamicFacetManager which dynamically expands and collapses facets.',
+          'Facet has the collapsedByDefault option set to "true", which prevents the DynamicFacetManager from expanding it.'
         );
         indexOfFirstFacetToCollapse++;
         return dynamicFacet.collapse();
