@@ -415,11 +415,11 @@ export function SuggestionsManagerTest() {
 
           const displayAfterDuration = 150;
           function setDisplayAfterDuration() {
-            spyOn(suggestionsManager['resultPreviewsManager'], 'getExternalOptions' as any).and.returnValue(<
-              IUpdateResultPreviewsManagerOptionsEventArgs
-            >{
-              displayAfterDuration
-            });
+            spyOn(suggestionsManager['resultPreviewsManager'], 'getExternalOptions' as any).and.returnValue(
+              <IUpdateResultPreviewsManagerOptionsEventArgs>{
+                displayAfterDuration
+              }
+            );
           }
 
           let populateSpy: jasmine.Spy;
@@ -429,8 +429,8 @@ export function SuggestionsManagerTest() {
             let onCall: () => any;
             populateSpy = jasmine.createSpy('PopulateSearchResultPreviews');
             $$(env.root).on(ResultPreviewsManagerEvents.populateSearchResultPreviews, (_, args: IPopulateSearchResultPreviewsEventArgs) => {
-              populateSpy(args.suggestionText);
-              args.previewsQueries.push(getPreviews(textSuggestions.indexOf(args.suggestionText)));
+              populateSpy(args.suggestion);
+              args.previewsQueries.push(getPreviews(textSuggestions.indexOf(args.suggestion.text)));
               if (onCall) {
                 onCall();
                 onCall = null;
@@ -597,7 +597,7 @@ export function SuggestionsManagerTest() {
                 jasmine.clock().tick(displayAfterDuration);
                 await deferAsync();
                 expect(populateSpy).toHaveBeenCalledTimes(1);
-                expect(populateSpy).toHaveBeenCalledWith(textSuggestions[1]);
+                expect((populateSpy.calls.mostRecent().args as [Suggestion])[0].text).toEqual(textSuggestions[1]);
                 done();
               });
 

@@ -14,6 +14,7 @@ import { IFieldOption } from '../Base/IComponentOptions';
 import { Initialization } from '../Base/Initialization';
 import { IOmniboxSuggestion, Omnibox } from '../Omnibox/Omnibox';
 import { FacetValueSuggestionsProvider, IFacetValueSuggestionRow, IFacetValueSuggestionsProvider } from './FacetValueSuggestionsProvider';
+import { ISuggestionField, ISuggestionCategoryField, Suggestion } from '../../magicbox/SuggestionsManager';
 
 export interface IFacetValueSuggestionsOptions {
   numberOfSuggestions: number;
@@ -268,10 +269,25 @@ export class FacetValueSuggestions extends Component {
   }
 
   private mapFacetValueSuggestion(resultToShow: IFacetValueSuggestionRow, omnibox: Omnibox) {
-    return <IOmniboxSuggestion>{
-      html: this.buildDisplayNameForRow(resultToShow, omnibox),
-      onSelect: () => this.onRowSelection(resultToShow, omnibox)
+    const field: ISuggestionField = {
+      name: this.options.field.toString(),
+      value: resultToShow.value
     };
+
+    const suggestion = <IOmniboxSuggestion>{
+      html: this.buildDisplayNameForRow(resultToShow, omnibox),
+      text: resultToShow.keyword.text,
+      field: !this.options.isCategoryField
+        ? field
+        : <ISuggestionCategoryField>{
+            ...field,
+            categoryFieldDelimitingCharacter: this.options.categoryFieldDelimitingCharacter
+          }
+    };
+
+    suggestion.onSelect = () => this.onSuggestionSelected(suggestion, omnibox);
+
+    return suggestion;
   }
 
   private buildDisplayNameForRow(row: IFacetValueSuggestionRow, omnibox: Omnibox): string {
@@ -283,13 +299,15 @@ export class FacetValueSuggestions extends Component {
     }
   }
 
-  private onRowSelection(row: IFacetValueSuggestionRow, omnibox: Omnibox): void {
-    omnibox.setText(row.keyword.text);
+  private onSuggestionSelected(suggestion: Suggestion, omnibox: Omnibox): void {
+    omnibox.setText(suggestion.text);
     // Copy the state here, else it will directly modify queryStateModel.defaultAttributes.fv.
     const fvState: { [key: string]: string[] } = { ...this.queryStateModel.get(QueryStateModel.attributesEnum.fv) };
     const existingValues: string[] = fvState[this.options.field.toString()] || [];
 
-    const valuesToSetInState = this.options.isCategoryField ? row.value.split(this.options.categoryFieldDelimitingCharacter) : [row.value];
+    const valuesToSetInState = this.options.isCategoryField
+      ? suggestion.field.value.split(this.options.categoryFieldDelimitingCharacter)
+      : [suggestion.field.value];
     fvState[this.options.field.toString()] = existingValues.concat(valuesToSetInState);
 
     this.queryStateModel.set(QueryStateModel.attributesEnum.fv, fvState);

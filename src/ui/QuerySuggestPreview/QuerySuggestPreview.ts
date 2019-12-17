@@ -21,6 +21,7 @@ import {
   IUpdateResultPreviewsManagerOptionsEventArgs
 } from '../../events/ResultPreviewsManagerEvents';
 import { IQuery } from '../../rest/Query';
+import { Suggestion } from '../../magicbox/SuggestionsManager';
 
 export interface IQuerySuggestPreview {
   numberOfPreviewResults?: number;
@@ -141,20 +142,20 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
   }
 
   private populateSearchResultPreviews(args: IPopulateSearchResultPreviewsEventArgs) {
-    args.previewsQueries.push(this.fetchSearchResultPreviews(args.suggestionText));
+    args.previewsQueries.push(this.fetchSearchResultPreviews(args.suggestion));
   }
 
-  private async fetchSearchResultPreviews(suggestionText: string) {
-    const query = this.buildQuery(suggestionText);
+  private async fetchSearchResultPreviews(suggestion: Suggestion) {
+    const query = this.buildQuery(suggestion);
     this.logShowQuerySuggestPreview();
     const results = await this.queryController.getEndpoint().search(query);
     if (!results) {
       return [];
     }
-    return this.buildResultsPreview(suggestionText, results);
+    return this.buildResultsPreview(suggestion, results);
   }
 
-  private buildQuery(searchQuery: string): IQuery {
+  private buildQuery(suggestion: Suggestion): IQuery {
     const { searchHub, pipeline, tab, locale, timezone, context } = this.queryController.getLastQuery();
     return {
       firstResult: 0,
@@ -165,28 +166,31 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
       timezone,
       context,
       numberOfResults: this.options.numberOfPreviewResults,
-      q: searchQuery
+      q: suggestion.text || suggestion.dom.innerText,
+      ...(suggestion.field && {
+        aq: `${suggestion.field.name}=="${suggestion.field.value}"`
+      })
     };
   }
 
-  private async buildResultsPreview(suggestionText: string, results: IQueryResults) {
+  private async buildResultsPreview(suggestion: Suggestion, results: IQueryResults) {
     const buildResults = await this.templateToHtml.buildResults(results, 'preview', []);
     if (!(buildResults.length > 0)) {
       return [];
     }
-    return buildResults.map((element, index) => this.buildResultPreview(suggestionText, element, index));
+    return buildResults.map((element, index) => this.buildResultPreview(suggestion, element, index));
   }
 
-  private buildResultPreview(suggestionText: string, element: HTMLElement, rank: number): ISearchResultPreview {
+  private buildResultPreview(suggestion: Suggestion, element: HTMLElement, rank: number): ISearchResultPreview {
     $$(element).addClass('coveo-preview-selectable');
     return {
       element,
-      onSelect: () => this.handleSelect(suggestionText, element, rank)
+      onSelect: () => this.handleSelect(suggestion, element, rank)
     };
   }
 
-  private handleSelect(suggestionText: string, element: HTMLElement, rank: number) {
-    this.logClickQuerySuggestPreview(suggestionText, rank, element);
+  private handleSelect(suggestion: Suggestion, element: HTMLElement, rank: number) {
+    this.logClickQuerySuggestPreview(suggestion, rank, element);
     const link = $$(element).find(`.${Component.computeCssClassNameForType('ResultLink')}`);
     if (link) {
       const resultLink = <ResultLink>Component.get(link);
@@ -202,11 +206,11 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
     );
   }
 
-  private logClickQuerySuggestPreview(suggestionText: string, displayedRank: number, element: HTMLElement) {
+  private logClickQuerySuggestPreview(suggestion: Suggestion, displayedRank: number, element: HTMLElement) {
     this.usageAnalytics.logCustomEvent<IAnalyticsClickQuerySuggestPreviewMeta>(
       analyticsActionCauseList.clickQuerySuggestPreview,
       {
-        suggestion: suggestionText,
+        suggestion: suggestion.text || suggestion.dom.innerText,
         displayedRank
       },
       element

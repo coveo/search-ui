@@ -2,7 +2,7 @@ import { $$, Dom } from '../utils/Dom';
 import { l } from '../strings/Strings';
 import { defaults, findIndex } from 'underscore';
 import { Component } from '../ui/Base/Component';
-import { Direction } from './SuggestionsManager';
+import { Direction, Suggestion } from './SuggestionsManager';
 import {
   ResultPreviewsManagerEvents,
   IPopulateSearchResultPreviewsEventArgs,
@@ -20,6 +20,7 @@ export interface IResultPreviewsManagerOptions {
   previewClass: string;
   selectedClass: string;
   previewHeaderText: string;
+  previewHeaderFieldText: string;
   timeout: number;
 }
 
@@ -28,8 +29,8 @@ export class ResultPreviewsManager {
   private suggestionsPreviewContainer: Dom;
   private resultPreviewsHeader: Dom;
   private resultPreviewsContainer: Dom;
-  private lastQueriedSuggestion: HTMLElement;
-  private lastDisplayedSuggestion: HTMLElement;
+  private lastQueriedSuggestion: Suggestion;
+  private lastDisplayedSuggestion: Suggestion;
   private previewsProcessor: QueryProcessor<ISearchResultPreview>;
   private lastDelay: Promise<void>;
   private root: HTMLElement;
@@ -77,6 +78,7 @@ export class ResultPreviewsManager {
   constructor(private element: HTMLElement, options: Partial<IResultPreviewsManagerOptions> = {}) {
     this.options = defaults(options, <IResultPreviewsManagerOptions>{
       previewHeaderText: l('QuerySuggestPreview'),
+      previewHeaderFieldText: l('QuerySuggestPreviewWithField'),
       previewClass: 'coveo-preview-selectable',
       selectedClass: 'magic-box-selected'
     });
@@ -84,7 +86,7 @@ export class ResultPreviewsManager {
     this.previewsProcessor = new QueryProcessor({ timeout: this.options.timeout });
   }
 
-  public async displaySearchResultPreviewsForSuggestion(suggestion: HTMLElement) {
+  public async displaySearchResultPreviewsForSuggestion(suggestion: Suggestion) {
     const externalOptions = this.getExternalOptions();
     const currentDelay = (this.lastDelay = Utils.resolveAfter(
       Utils.isNullOrUndefined(externalOptions.displayAfterDuration) ? 200 : externalOptions.displayAfterDuration
@@ -194,17 +196,21 @@ export class ResultPreviewsManager {
     return optionsEventArgs;
   }
 
-  private getSearchResultPreviewsQuery(suggestion: HTMLElement) {
+  private getSearchResultPreviewsQuery(suggestion: Suggestion) {
     const populateEventArgs: IPopulateSearchResultPreviewsEventArgs = {
-      suggestionText: suggestion.innerText,
+      suggestion,
       previewsQueries: []
     };
     $$(this.root).trigger(ResultPreviewsManagerEvents.populateSearchResultPreviews, populateEventArgs);
     return this.previewsProcessor.processQueries(populateEventArgs.previewsQueries);
   }
 
-  private updateSearchResultPreviewsHeader(suggestion: string) {
-    this.resultPreviewsHeader.text(`${this.options.previewHeaderText} "${suggestion}"`);
+  private updateSearchResultPreviewsHeader(suggestion: Suggestion) {
+    let text = `${this.options.previewHeaderText} "${suggestion.text}"`;
+    if (suggestion.field) {
+      text += ` ${this.options.previewHeaderFieldText} "${suggestion.field.value}"`;
+    }
+    this.resultPreviewsHeader.text(text);
   }
 
   private appendSearchResultPreview(preview: ISearchResultPreview) {
@@ -219,7 +225,7 @@ export class ResultPreviewsManager {
     previews.forEach(preview => this.appendSearchResultPreview(preview));
   }
 
-  private displaySuggestionPreviews(suggestion: HTMLElement, previews: ISearchResultPreview[]) {
+  private displaySuggestionPreviews(suggestion: Suggestion, previews: ISearchResultPreview[]) {
     this.setHasPreviews(previews && previews.length > 0);
     this.element.classList.toggle('magic-box-hasPreviews', this.hasPreviews);
     this.lastDisplayedSuggestion = suggestion;
@@ -227,6 +233,6 @@ export class ResultPreviewsManager {
       return;
     }
     this.appendSearchResultPreviews(previews);
-    this.updateSearchResultPreviewsHeader(suggestion.innerText);
+    this.updateSearchResultPreviewsHeader(suggestion);
   }
 }
