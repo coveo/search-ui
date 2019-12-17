@@ -183,5 +183,36 @@ export function DynamicFacetRangeValueParserTest() {
         expect(value).toBe('1999/04/17@00:00:00..2016/06/23@00:00:00inc');
       });
     });
+
+    describe('testing with the currency format (formatting only)', () => {
+      beforeEach(() => {
+        const facet = DynamicFacetRangeTestUtils.createFakeFacet({
+          valueFormat: DynamicFacetRangeValueFormat.currency,
+          currencySymbol: '€',
+          valueSeparator: 'to'
+        });
+        parser = new DynamicFacetRangeValueParser(facet);
+      });
+
+      describe('testing formatDisplayValue', () => {
+        it(`when the value is a integer
+          should return the format correctly`, () => {
+          const value = parser.formatDisplayValue({ start: 10, end: 20 });
+          expect(value).toBe('€10 to €20');
+        });
+
+        it(`when the value is a big integer
+          should return the format correctly`, () => {
+          const value = parser.formatDisplayValue({ start: 1000, end: 100000 });
+          expect(value).toBe('€1,000 to €100,000');
+        });
+
+        it(`when the value is a float
+          should return the format correctly`, () => {
+          const value = parser.formatDisplayValue({ start: 0.1, end: 1.9999 });
+          expect(value).toBe('€0.10 to €2.00');
+        });
+      });
+    });
   });
 }
