@@ -12,7 +12,7 @@ const baseTsConfig = require('../tsconfig.json');
 const docgenJsonPath = './bin/docgen/docgen.json';
 
 gulp.task('doc', done => {
-  runsequence('buildDoc', 'testDoc', done);
+  runsequence('buildDoc', 'testDoc', 'copyDocgenToBin', done);
 });
 
 gulp.task('buildDoc', ['copyBinToDoc', 'buildPlayground'], () => {
@@ -42,6 +42,10 @@ gulp.task('cleanGeneratedThemesFiles', () => {
 
 gulp.task('copyBinToDoc', ['cleanGeneratedThemesFiles'], () => {
   return gulp.src('./bin/{js,image,css}/**/*').pipe(gulp.dest('./docs/theme/assets/gen'));
+});
+
+gulp.task('copyDocgenToBin', () => {
+  return gulp.src('./docgen/**/*').pipe(gulp.dest('./bin/docgen'));
 });
 
 gulp.task('buildPlayground', shell.task(['node node_modules/webpack/bin/webpack.js --config ./webpack.playground.config.js']));
