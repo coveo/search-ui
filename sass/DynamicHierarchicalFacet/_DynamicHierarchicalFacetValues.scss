@@ -28,6 +28,11 @@ $second-level-space: 35px;
   }
 }
 
+button.coveo-dynamic-hierarchical-facet-value,
+button.coveo-dynamic-hierarchical-facet-all {
+  display: inline-flex;
+}
+
 .coveo-dynamic-hierarchical-facet-value,
 .coveo-dynamic-hierarchical-facet-all {
   text-align: left;
@@ -38,7 +43,6 @@ $second-level-space: 35px;
   background: none;
   border: none;
   align-items: center;
-  display: inline-flex;
   line-height: 27px;
   width: 100%;
 

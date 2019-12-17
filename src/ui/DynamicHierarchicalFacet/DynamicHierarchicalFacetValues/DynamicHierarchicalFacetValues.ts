@@ -150,7 +150,11 @@ export class DynamicHierarchicalFacetValues implements IDynamicHierarchicalFacet
   }
 
   private prependAllCategories() {
-    const clear = $$('li', {}, $$('button', { className: 'coveo-dynamic-hierarchical-facet-all' }, l('AllCategories')));
+    const clear = $$(
+      'li',
+      {},
+      $$('button', { className: 'coveo-dynamic-hierarchical-facet-all', title: l('AllCategories') }, l('AllCategories'))
+    );
     clear.on('click', () => this.facet.header.options.clear());
     $$(this.list).prepend(clear.el);
   }
