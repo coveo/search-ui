@@ -1,8 +1,7 @@
 @import '../Variables';
 @import '../mixins/dynamicFacet';
 
-$top-level-space: 20px;
-$second-level-space: 35px;
+$level-space: 30px;
 
 .coveo-dynamic-hierarchical-facet-values {
   @include facetValues;
@@ -11,10 +10,10 @@ $second-level-space: 35px;
     .coveo-dynamic-hierarchical-facet-value,
     .coveo-dynamic-hierarchical-facet-show-less,
     .coveo-dynamic-hierarchical-facet-show-more {
-      padding-left: $top-level-space;
+      padding-left: $level-space;
 
       &.coveo-with-space {
-        padding-left: $top-level-space + $second-level-space;
+        padding-left: $level-space * 2;
       }
     }
   }
@@ -28,6 +27,11 @@ $second-level-space: 35px;
   }
 }
 
+button.coveo-dynamic-hierarchical-facet-value,
+button.coveo-dynamic-hierarchical-facet-all {
+  display: inline-flex;
+}
+
 .coveo-dynamic-hierarchical-facet-value,
 .coveo-dynamic-hierarchical-facet-all {
   text-align: left;
@@ -38,7 +42,6 @@ $second-level-space: 35px;
   background: none;
   border: none;
   align-items: center;
-  display: inline-flex;
   line-height: 27px;
   width: 100%;
 
@@ -52,7 +55,7 @@ $second-level-space: 35px;
   position: relative;
 
   &.coveo-with-space {
-    padding-left: $top-level-space;
+    padding-left: $level-space;
   }
 
   &:disabled {
