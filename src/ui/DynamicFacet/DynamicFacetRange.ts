@@ -58,14 +58,14 @@ export class DynamicFacetRange extends DynamicFacet implements IComponentBinding
      *
      * @examples date
      */
-    valueFormat: ComponentOptions.buildStringOption({
+    valueFormat: ComponentOptions.buildStringOption<DynamicFacetRangeValueFormat>({
       postProcessing: (value, options: IDynamicFacetRangeOptions) => {
-        if (!value && options.field.indexOf('date') !== -1) {
-          return DynamicFacetRangeValueFormat.date;
-        }
-
         if (isFacetRangeValueFormat(value)) {
           return value;
+        }
+
+        if (options.field.indexOf('date') !== -1) {
+          return DynamicFacetRangeValueFormat.date;
         }
 
         return DynamicFacetRangeValueFormat.number;
