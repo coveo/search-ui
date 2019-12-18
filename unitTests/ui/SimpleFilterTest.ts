@@ -1,7 +1,7 @@
 import * as Mock from '../MockEnvironment';
 import { ISimpleFilterOptions, SimpleFilter } from '../../src/ui/SimpleFilter/SimpleFilter';
 import { Simulate } from '../Simulate';
-import { $$, Dom } from '../../src/utils/Dom';
+import { $$ } from '../../src/utils/Dom';
 import { BreadcrumbEvents, IPopulateBreadcrumbEventArgs } from '../../src/events/BreadcrumbEvents';
 import { FakeResults } from '../Fake';
 import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
@@ -231,10 +231,9 @@ export function SimpleFilterTest() {
 
     describe('with clear button functionality', () => {
       let simpleFilterWithEraser: Mock.IBasicComponentSetup<SimpleFilter>;
-      let simpleFilterContainer: Dom;
 
       function clickOnClearButton() {
-        $$(simpleFilterContainer.find('.coveo-simplefilter-eraser')).trigger('click');
+        $$($$(simpleFilterWithEraser.cmp.element).find('.coveo-simplefilter-eraser')).trigger('click');
       }
 
       function selectSomeValues() {
@@ -243,7 +242,7 @@ export function SimpleFilterTest() {
       }
 
       function getClearButton() {
-        return $$(simpleFilterContainer.find('.coveo-simplefilter-eraser'));
+        return $$($$(simpleFilterWithEraser.cmp.element).find('.coveo-simplefilter-eraser'));
       }
 
       beforeEach(() => {
@@ -251,7 +250,6 @@ export function SimpleFilterTest() {
           ...aSimpleFilter.cmp.options,
           enableClearButton: true
         });
-        simpleFilterContainer = $$(simpleFilterWithEraser.cmp.element);
         simpleFilterWithEraser.cmp.toggleContainer();
       });
 
@@ -300,7 +298,8 @@ export function SimpleFilterTest() {
             type: 'simpleFilter'
           }),
           jasmine.objectContaining({
-            simpleFilterTitle: simpleFilterWithEraser.cmp.options.title
+            simpleFilterTitle: simpleFilterWithEraser.cmp.options.title,
+            simpleFilterField: simpleFilterWithEraser.cmp.options.field
           })
         );
       });
