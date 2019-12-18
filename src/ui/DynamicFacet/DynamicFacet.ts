@@ -227,7 +227,14 @@ export class DynamicFacet extends Component implements IDynamicFacet {
      *
      * @examples document-type-facet
      */
-    dependsOn: ComponentOptions.buildStringOption()
+    dependsOn: ComponentOptions.buildStringOption(),
+
+    /**
+     * The number of items to scan for facet values.
+     *
+     * Setting this option to a higher value may enhance the accuracy of facet value counts at the cost of slower query performance.
+     */
+    injectionDepth: ComponentOptions.buildNumberOption({ defaultValue: 1000, min: 0 })
   };
 
   private includedAttributeId: string;
