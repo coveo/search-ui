@@ -34,7 +34,7 @@ export interface IQuerySuggestionKeyword {
 /**
  * This component provides [`Omnibox`]{@link Omnibox} query suggestions scoped to distinct categories based on the values of a specific [`field`]{@link FacetValueSuggestions.options.field}.
  *
- * See [Providing Search Box Suggestions](https://docs.coveo.com/340/)
+ * See @externaldocs [Providing Facet Value Suggestions](https://docs.coveo.com/en/340/#providing-facet-value-suggestions)
  *
  */
 export class FacetValueSuggestions extends Component {
