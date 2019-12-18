@@ -232,25 +232,25 @@ export class DynamicFacetManager extends Component {
 
     const [collapsableFacets, uncollapsableFacets] = partition(this.facetsWithDisplayedValues, facet => facet.options.enableCollapse);
     const [facetsWithActiveValues, remainingFacets] = partition(collapsableFacets, facet => facet.hasActiveValues);
-    let indexOfFirstFacetToCollapse =
+    let numberOfFacetsLeftToExpand =
       this.options.maximumNumberOfExpandedFacets - uncollapsableFacets.length - facetsWithActiveValues.length;
 
     facetsWithActiveValues.forEach(dynamicFacet => dynamicFacet.expand());
-
-    remainingFacets.forEach((dynamicFacet, index) => {
-      if (index >= indexOfFirstFacetToCollapse) {
+    remainingFacets.forEach(dynamicFacet => {
+      if (numberOfFacetsLeftToExpand < 1) {
         return dynamicFacet.collapse();
       }
 
       if (dynamicFacet.options.collapsedByDefault) {
         dynamicFacet.logger.info(
-          'The facet is inside a DynamicFacetManager which dynamically expands and collapses facets.',
-          'Facet has the collapsedByDefault option set to "true", which prevents the DynamicFacetManager from expanding it.'
+          `The facet has its "collapsedByDefault" option set to "true", which prevents the DynamicFacetManager from expanding it. 
+          While this configuration may be legitimate, it partially defeats the purpose of the dynamic navigation experience feature.`,
+          'For more information, see https://docs.coveo.com/en/2917/.'
         );
-        indexOfFirstFacetToCollapse++;
         return dynamicFacet.collapse();
       }
 
+      numberOfFacetsLeftToExpand--;
       dynamicFacet.expand();
     });
   }
