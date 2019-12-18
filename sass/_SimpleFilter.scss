@@ -3,6 +3,9 @@
 @import 'mixins/mediaQuery';
 @import 'mixins/breadcrumb';
 
+$max-width: 280px;
+$min-width: 180px;
+
 .coveo-simplefilter-header-wrapper {
   width: 100%;
   margin: auto;
@@ -47,8 +50,8 @@
   position: relative;
   border: $default-border;
   background-color: white;
-  max-width: 250px;
-  min-width: 150px;
+  max-width: $max-width;
+  min-width: $min-width;
   &:hover {
     background-color: $color-blueish-white-grey;
   }
@@ -56,7 +59,7 @@
 
 .coveo-simplefilter-selecttext {
   margin-left: 5px;
-  max-width: 250px;
+  max-width: $max-width;
   overflow: hidden;
   text-overflow: ellipsis;
   pointer-events: none;
@@ -79,7 +82,7 @@
 
 .coveo-simplefilter-toggle-svg-container {
   @include display(flex);
-  padding-top: 2px;
+  padding-top: 1px;
 }
 
 .coveo-simplefilter-circle {
@@ -166,8 +169,22 @@
   margin: 0 5px;
   @include justify-content(flex-end);
   color: $color-greyish-teal-blue;
-  width: 10px;
-  height: 6px;
+  width: 12px;
+  height: 8px;
+}
+
+.coveo-simplefilter-eraser {
+  position: relative;
+  top: 1px;
+  margin: 0 5px 0 10px;
+  cursor: pointer;
+  pointer-events: auto;
+  padding: 0;
+  vertical-align: middle;
+  border: none;
+  background-color: transparent;
+
+  @include clearButton('&', 'normal');
 }
 
 .coveo-simplefilter-empty {
