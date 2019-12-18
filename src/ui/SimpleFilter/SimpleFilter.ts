@@ -162,9 +162,8 @@ export class SimpleFilter extends Component {
       }
     }),
     /**
-     * Specifies whether to show a button to clear all selected values.
+     * Whether to show a button to clear all selected values.
      *
-     * Default value is `false`.
      */
     enableClearButton: ComponentOptions.buildBooleanOption({ defaultValue: false })
   };
@@ -475,15 +474,13 @@ export class SimpleFilter extends Component {
     this.clearElement = $$('button', { className: 'coveo-simplefilter-eraser' }, SVGIcons.icons.mainClear);
     this.clearElement.hide();
 
-    new AccessibleButton()
-      .withElement(this.clearElement.el)
-      .withLabel(l('Clear', this.options.title))
-      .withClickAction((evt: Event) => {
-        evt.stopPropagation();
-        this.handleClear();
-      })
-      .withEnterKeyboardAction(() => this.handleClear())
-      .build();
+    this.clearElement.setAttribute('aria-label', l('Clear', this.options.title));
+    this.clearElement.setAttribute('title', l('Clear', this.options.title));
+
+    this.clearElement.on('click', (evt: Event) => {
+      evt.stopPropagation();
+      this.handleClear();
+    });
 
     return this.clearElement.el;
   }
