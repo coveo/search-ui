@@ -243,8 +243,8 @@ export class DynamicFacetManager extends Component {
 
       if (dynamicFacet.options.collapsedByDefault) {
         dynamicFacet.logger.info(
-          `The facet has its "collapsedByDefault" option set to "true", which prevents the DynamicFacetManager from expanding it.
-          While this configuration may be legitimate, it partially defeats the purpose of the dynamic navigation experience feature.`,
+          'The facet has its "collapsedByDefault" option set to "true", which prevents the DynamicFacetManager from expanding it.',
+          'While this configuration may be legitimate, it partially defeats the purpose of the dynamic navigation experience feature.',
           'For more information, see https://docs.coveo.com/en/2917/.'
         );
         return dynamicFacet.collapse();
