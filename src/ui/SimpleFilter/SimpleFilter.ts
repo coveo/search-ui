@@ -471,11 +471,16 @@ export class SimpleFilter extends Component {
   }
 
   public buildClearElement(): HTMLElement {
-    this.clearElement = $$('button', { className: 'coveo-simplefilter-eraser' }, SVGIcons.icons.mainClear);
+    this.clearElement = $$(
+      'button',
+      {
+        title: l('DeselectFilterValues', this.options.title),
+        'aria-label': l('Clear', this.options.title),
+        className: 'coveo-simplefilter-eraser'
+      },
+      SVGIcons.icons.mainClear
+    );
     this.clearElement.hide();
-
-    this.clearElement.setAttribute('aria-label', l('Clear', this.options.title));
-    this.clearElement.setAttribute('title', l('Clear', this.options.title));
 
     this.clearElement.on('click', (evt: Event) => {
       evt.stopPropagation();

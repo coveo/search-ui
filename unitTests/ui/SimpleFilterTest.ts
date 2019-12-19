@@ -233,7 +233,7 @@ export function SimpleFilterTest() {
       let simpleFilterWithEraser: Mock.IBasicComponentSetup<SimpleFilter>;
 
       function clickOnClearButton() {
-        $$($$(simpleFilterWithEraser.cmp.element).find('.coveo-simplefilter-eraser')).trigger('click');
+        getClearButton().trigger('click');
       }
 
       function selectSomeValues() {
@@ -254,7 +254,7 @@ export function SimpleFilterTest() {
       });
 
       it('should create a clear button if enableClearButton is true', () => {
-        expect(getClearButton()).not.toBeFalsy();
+        expect(getClearButton()).toBeDefined();
       });
 
       it('should display the clear button if there are selected values', () => {
