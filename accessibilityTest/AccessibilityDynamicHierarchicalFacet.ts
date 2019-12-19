@@ -10,7 +10,7 @@ export const AccessibilityDynamicHierarchicalFacet = () => {
       dynamicHierarchicalFacet = $$('div', {
         className: Component.computeCssClassName(DynamicHierarchicalFacet),
         dataTitle: 'My Facet',
-        dataField: '@objecttype',
+        dataField: '@champion_categories',
         dataEnableCollapse: true
       }).el;
 
