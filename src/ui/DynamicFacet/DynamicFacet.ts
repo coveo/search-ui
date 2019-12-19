@@ -234,7 +234,18 @@ export class DynamicFacet extends Component implements IDynamicFacet {
      *
      * Setting this option to a higher value may enhance the accuracy of facet value counts at the cost of slower query performance.
      */
-    injectionDepth: ComponentOptions.buildNumberOption({ defaultValue: 1000, min: 0 })
+    injectionDepth: ComponentOptions.buildNumberOption({ defaultValue: 1000, min: 0 }),
+
+    /**
+     * TODO: document option
+     *
+     * By default, the following behavior applies:
+     *
+     * - `True` when folding is not activated for the query.
+     * - `False` when folding is activated for the query.
+     * See [Folding Results](https://docs.coveo.com/en/428/).
+     */
+    filterFacetCount: ComponentOptions.buildBooleanOption({ section: 'Filtering' })
   };
 
   private includedAttributeId: string;

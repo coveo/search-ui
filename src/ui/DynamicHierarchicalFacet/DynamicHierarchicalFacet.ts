@@ -197,6 +197,17 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
      * **Default:** `undefined` and the hierarchical facet does not depend on any other facet to be displayed.
      */
     dependsOn: ComponentOptions.buildStringOption(),
+
+    /**
+     * TODO: document option
+     *
+     * By default, the following behavior applies:
+     *
+     * - `True` when folding is not activated for the query.
+     * - `False` when folding is activated for the query.
+     * See [Folding Results](https://docs.coveo.com/en/428/).
+     */
+    filterFacetCount: ComponentOptions.buildBooleanOption({ section: 'Filtering' }),
     ...ResponsiveFacetOptions
   };
 

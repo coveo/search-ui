@@ -185,4 +185,8 @@ export interface IFacetRequest {
    * **Default (Search API):** `;`
    */
   delimitingCharacter?: string;
+  /**
+   * TODO: document parameter
+   */
+  filterFacetCount?: boolean;
 }

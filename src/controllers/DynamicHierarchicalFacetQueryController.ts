@@ -6,10 +6,12 @@ import { FacetValueState } from '../rest/Facet/FacetValueState';
 import { IQueryResults } from '../rest/QueryResults';
 import { findIndex } from 'underscore';
 import { IDynamicHierarchicalFacet, IDynamicHierarchicalFacetValue } from '../ui/DynamicHierarchicalFacet/IDynamicHierarchicalFacet';
+import { Utils } from '../utils/Utils';
 
 export class DynamicHierarchicalFacetQueryController {
   private numberOfValuesToRequest: number;
   private freezeFacetOrder = false;
+  private hasFolding = false;
 
   constructor(private facet: IDynamicHierarchicalFacet) {
     this.resetNumberOfValuesToRequest();
@@ -37,6 +39,8 @@ export class DynamicHierarchicalFacetQueryController {
   public putFacetIntoQueryBuilder(queryBuilder: QueryBuilder) {
     Assert.exists(queryBuilder);
 
+    this.hasFolding = !!queryBuilder.filterField;
+
     queryBuilder.facetRequests.push(this.facetRequest);
     if (this.freezeFacetOrder) {
       queryBuilder.facetOptions.freezeFacetOrder = this.freezeFacetOrder;
@@ -52,7 +56,8 @@ export class DynamicHierarchicalFacetQueryController {
       numberOfValues: this.facet.values.hasSelectedValue ? 1 : this.numberOfValuesToRequest,
       delimitingCharacter: this.facet.options.delimitingCharacter,
       isFieldExpanded: this.numberOfValuesToRequest > this.facet.options.numberOfValues,
-      injectionDepth: this.facet.options.injectionDepth
+      injectionDepth: this.facet.options.injectionDepth,
+      filterFacetCount: this.filterFacetCount
     };
   }
 
@@ -61,6 +66,8 @@ export class DynamicHierarchicalFacetQueryController {
     // Specifying a numberOfResults of 0 will not log the query as a full fledged query in the API
     // it will also alleviate the load on the index
     query.numberOfResults = 0;
+
+    this.hasFolding = !!query.filterField;
 
     const previousFacetRequestIndex = findIndex(query.facets, { facetId: this.facet.options.id });
     if (previousFacetRequestIndex !== -1) {
@@ -72,6 +79,14 @@ export class DynamicHierarchicalFacetQueryController {
     }
 
     return this.facet.queryController.getEndpoint().search(query);
+  }
+
+  protected get filterFacetCount() {
+    if (Utils.isUndefined(this.facet.options.filterFacetCount)) {
+      return !this.hasFolding;
+    }
+
+    return this.facet.options.filterFacetCount;
   }
 
   private get currentValues(): IFacetRequestValue[] {

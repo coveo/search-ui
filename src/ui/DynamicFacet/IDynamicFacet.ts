@@ -30,6 +30,7 @@ export interface IDynamicFacetOptions extends IResponsiveComponentOptions {
   valueCaption?: Record<string, string>;
   dependsOn?: string;
   injectionDepth?: number;
+  filterFacetCount?: boolean;
 }
 
 export interface IDynamicFacet extends Component, IDynamicManagerCompatibleFacet, IAutoLayoutAdjustableInsideFacetColumn {

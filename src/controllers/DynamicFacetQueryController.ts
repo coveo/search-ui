@@ -6,11 +6,13 @@ import { QueryEvents } from '../events/QueryEvents';
 import { findIndex } from 'underscore';
 import { IQueryResults } from '../rest/QueryResults';
 import { IDynamicFacet } from '../ui/DynamicFacet/IDynamicFacet';
+import { Utils } from '../Core';
 
 export class DynamicFacetQueryController {
   private numberOfValuesToRequest: number;
   private freezeCurrentValues = false;
   private freezeFacetOrder = false;
+  private hasFolding = false;
 
   constructor(protected facet: IDynamicFacet) {
     this.resetNumberOfValuesToRequest();
@@ -63,6 +65,8 @@ export class DynamicFacetQueryController {
   public putFacetIntoQueryBuilder(queryBuilder: QueryBuilder) {
     Assert.exists(queryBuilder);
 
+    this.hasFolding = !!queryBuilder.filterField;
+
     queryBuilder.facetRequests.push(this.facetRequest);
     if (this.freezeFacetOrder) {
       queryBuilder.facetOptions.freezeFacetOrder = true;
@@ -79,7 +83,8 @@ export class DynamicFacetQueryController {
       numberOfValues: this.numberOfValues,
       freezeCurrentValues: this.freezeCurrentValues,
       isFieldExpanded: this.numberOfValuesToRequest > this.facet.options.numberOfValues,
-      injectionDepth: this.facet.options.injectionDepth
+      injectionDepth: this.facet.options.injectionDepth,
+      filterFacetCount: this.filterFacetCount
     };
   }
 
@@ -88,6 +93,8 @@ export class DynamicFacetQueryController {
     // Specifying a numberOfResults of 0 will not log the query as a full fledged query in the API
     // it will also alleviate the load on the index
     query.numberOfResults = 0;
+
+    this.hasFolding = !!query.filterField;
 
     const previousFacetRequestIndex = findIndex(query.facets, { facetId: this.facet.options.id });
     if (previousFacetRequestIndex !== -1) {
@@ -99,6 +106,14 @@ export class DynamicFacetQueryController {
     }
 
     return this.facet.queryController.getEndpoint().search(query);
+  }
+
+  protected get filterFacetCount() {
+    if (Utils.isUndefined(this.facet.options.filterFacetCount)) {
+      return !this.hasFolding;
+    }
+
+    return this.facet.options.filterFacetCount;
   }
 
   protected get currentValues(): IFacetRequestValue[] {
