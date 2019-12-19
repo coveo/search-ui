@@ -8,20 +8,25 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link href='https://fonts.googleapis.com/css?family=Lato:100,300,400,700' rel='stylesheet' type='text/css'/>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" />
-	<link rel="stylesheet" href="https://static.cloud.coveo.com/searchui/v2.6063/css/CoveoFullSearch.min.css" />
+	<link rel="stylesheet" href="https://static.cloud.coveo.com/searchui/v2.7610/css/CoveoFullSearch.min.css" />
 	<link rel="stylesheet" href="../assets/css/main.css">
 	<link rel="stylesheet" href="../assets/css/overrides.css">
 	<link rel="stylesheet" href="../assets/css/coveo-connect-header.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 	<script type="text/javascript" src="https://static.cloud.coveo.com/coveo.analytics.js/coveoua.js"></script>
 	<script src="../assets/js/modernizr.js"></script>
-	<script class="coveo-script" src="https://static.cloud.coveo.com/searchui/v2.6063/js/CoveoJsSearch.min.js"></script>
-	<script src="https://static.cloud.coveo.com/searchui/v2.4382/js/templates/templates.js"></script>
+	<script class="coveo-script" src="https://static.cloud.coveo.com/searchui/v2.7610/js/CoveoJsSearch.min.js"></script>
+	<script src="https://static.cloud.coveo.com/searchui/v2.7610/js/templates/templates.js"></script>
 	<script src="../assets/js/coveo-connect-header.js"></script>
 	<script src="../assets/gen/js/playground.js"></script>
 	<script src="../assets/js/searchUIrefDoc.js"></script>
 	<link href="https://s3.amazonaws.com/coveostatic/Developers.png" rel="shortcut icon" type="image/png">
 	<link href="https://s3.amazonaws.com/coveostatic/Developers.ico" rel="shortcut icon" type="image/x-icon">
+	<style>
+        .magic-box {
+            border: 1px solid #9e9e9e;
+        }
+    </style>
 </head>
 <body>
 <header>
@@ -215,6 +220,8 @@
 						use this component to provide auto-complete suggestions while the end user is typing the title of an item.</p>
 					</div>
 					<p>The query suggestions provided by this component appear in the <a href="omnibox.html"><code>Omnibox</code></a> component.</p>
+					<p><strong>Note:</strong> Consider <a href="https://docs.coveo.com/en/340/#providing-coveo-machine-learning-query-suggestions">providing Coveo ML query suggestions</a>
+					rather than field suggestions, as the former yields better performance and relevance.</p>
 				</div>
 			</section>
 			<div class="preview-container tsd-panel">
@@ -393,8 +400,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldSuggestions/FieldSuggestions.ts#L239">ui/FieldSuggestions/FieldSuggestions.ts
-									:239</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldSuggestions/FieldSuggestions.ts#L243">ui/FieldSuggestions/FieldSuggestions.ts
+									:243</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -700,8 +707,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldSuggestions/FieldSuggestions.ts#L53">ui/FieldSuggestions/FieldSuggestions.ts
-							:53</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldSuggestions/FieldSuggestions.ts#L57">ui/FieldSuggestions/FieldSuggestions.ts
+							:57</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -729,8 +736,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldSuggestions/FieldSuggestions.ts#L79">ui/FieldSuggestions/FieldSuggestions.ts
-							:79</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldSuggestions/FieldSuggestions.ts#L83">ui/FieldSuggestions/FieldSuggestions.ts
+							:83</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -752,8 +759,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldSuggestions/FieldSuggestions.ts#L86">ui/FieldSuggestions/FieldSuggestions.ts
-							:86</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldSuggestions/FieldSuggestions.ts#L90">ui/FieldSuggestions/FieldSuggestions.ts
+							:90</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -784,8 +791,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldSuggestions/FieldSuggestions.ts#L71">ui/FieldSuggestions/FieldSuggestions.ts
-							:71</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldSuggestions/FieldSuggestions.ts#L75">ui/FieldSuggestions/FieldSuggestions.ts
+							:75</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -818,8 +825,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldSuggestions/FieldSuggestions.ts#L145">ui/FieldSuggestions/FieldSuggestions.ts
-							:145</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldSuggestions/FieldSuggestions.ts#L149">ui/FieldSuggestions/FieldSuggestions.ts
+							:149</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -833,9 +840,9 @@
 						<blockquote>
 							<p>You cannot set this option directly in the component markup as an HTML attribute. You must either set it in the
 								<a href="../globals.html#init"><code>init</code></a> call of your search interface (see
-								<a href="https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsintheinitCall">Components - Passing Component Options in the init Call</a>),
+								<a href="https://docs.coveo.com/en/346/#passing-component-options-in-the-init-call">Passing Component Options in the init Call</a>),
 								or before the <code>init</code> call, using the <code>options</code> top-level function (see
-							<a href="https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsBeforetheinitCall">Components - Passing Component Options Before the init Call</a>).</p>
+							<a href="https://docs.coveo.com/en/346/#passing-component-options-before-the-init-call">Passing Component Options Before the init Call</a>).</p>
 						</blockquote>
 						<p><strong>Example:</strong></p>
 						<pre><code class="lang-javascript">
@@ -887,8 +894,8 @@ Coveo.init(<span class="hljs-built_in">document</span>.querySelector(<span class
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldSuggestions/FieldSuggestions.ts#L61">ui/FieldSuggestions/FieldSuggestions.ts
-							:61</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldSuggestions/FieldSuggestions.ts#L65">ui/FieldSuggestions/FieldSuggestions.ts
+							:65</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -925,8 +932,8 @@ Coveo.init(<span class="hljs-built_in">document</span>.querySelector(<span class
 								<p>Overwrites <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#constructor">constructor</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldSuggestions/FieldSuggestions.ts#L151">ui/FieldSuggestions/FieldSuggestions.ts
-									:151</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldSuggestions/FieldSuggestions.ts#L155">ui/FieldSuggestions/FieldSuggestions.ts
+									:155</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">

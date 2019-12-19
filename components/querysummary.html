@@ -8,20 +8,25 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link href='https://fonts.googleapis.com/css?family=Lato:100,300,400,700' rel='stylesheet' type='text/css'/>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" />
-	<link rel="stylesheet" href="https://static.cloud.coveo.com/searchui/v2.6063/css/CoveoFullSearch.min.css" />
+	<link rel="stylesheet" href="https://static.cloud.coveo.com/searchui/v2.7610/css/CoveoFullSearch.min.css" />
 	<link rel="stylesheet" href="../assets/css/main.css">
 	<link rel="stylesheet" href="../assets/css/overrides.css">
 	<link rel="stylesheet" href="../assets/css/coveo-connect-header.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 	<script type="text/javascript" src="https://static.cloud.coveo.com/coveo.analytics.js/coveoua.js"></script>
 	<script src="../assets/js/modernizr.js"></script>
-	<script class="coveo-script" src="https://static.cloud.coveo.com/searchui/v2.6063/js/CoveoJsSearch.min.js"></script>
-	<script src="https://static.cloud.coveo.com/searchui/v2.4382/js/templates/templates.js"></script>
+	<script class="coveo-script" src="https://static.cloud.coveo.com/searchui/v2.7610/js/CoveoJsSearch.min.js"></script>
+	<script src="https://static.cloud.coveo.com/searchui/v2.7610/js/templates/templates.js"></script>
 	<script src="../assets/js/coveo-connect-header.js"></script>
 	<script src="../assets/gen/js/playground.js"></script>
 	<script src="../assets/js/searchUIrefDoc.js"></script>
 	<link href="https://s3.amazonaws.com/coveostatic/Developers.png" rel="shortcut icon" type="image/png">
 	<link href="https://s3.amazonaws.com/coveostatic/Developers.ico" rel="shortcut icon" type="image/x-icon">
+	<style>
+        .magic-box {
+            border: 1px solid #9e9e9e;
+        }
+    </style>
 </head>
 <body>
 <header>
@@ -748,7 +753,7 @@ data-enable-search-tips&#x3D;&#x27;false&#x27;</pre>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
 					<a name="options.noresultsfoundmessage" class="tsd-anchor"></a>
 					<h3>no<wbr>Results<wbr>Found<wbr>Message</h3>
-					<div class="tsd-signature tsd-kind-icon">no<wbr>Results<wbr>Found<wbr>Message<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span></div>
+					<div class="tsd-signature tsd-kind-icon">no<wbr>Results<wbr>Found<wbr>Message<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
@@ -775,6 +780,10 @@ data-enable-search-tips&#x3D;&#x27;false&#x27;</pre>
 							<dd><p><a href="querysummary.html#options.enablenoresultsfoundmessage"><code>enableNoResultsFoundMessage</code></a> is set to <code>true</code></p>
 							</dd>
 						</dl>
+					</div>
+					<div class="tsd-panel">
+						<div class="tsd-signature-type">Markup configuration example(s) :</div>
+						<pre>data-no-results-found-message&#x3D;&#x27;foo&#x27;</pre>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">

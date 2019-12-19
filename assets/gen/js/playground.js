@@ -3368,14 +3368,11 @@ var DefaultSearchEndpointOptions = /** @class */ (function () {
 }());
 exports.DefaultSearchEndpointOptions = DefaultSearchEndpointOptions;
 /**
- * The `SearchEndpoint` class allows you to execute various actions against the Coveo Search API and a Coveo index
- * (e.g., searching, listing field values, getting the quickview content of an item, etc.).
+ * The `SearchEndpoint` class allows the framework to perform HTTP requests against the Search API (e.g., searching, getting query suggestions, getting the HTML preview of an item, etc.).
  *
- * This class does trigger any query events directly. Consequently, executing an action with this class does not trigger
- * a full query cycle for the Coveo components.
+ * @externaldocumentation https://docs.coveo.com/331/
  *
- * If you wish to have all Coveo components "react" to a query, (and trigger the corresponding query events), use the
- * [`QueryController`]{@link QueryController} class instead.
+ * **Note:** When writing custom code that interacts with the Search API, be aware that executing queries directly through an instance of this class will _not_ trigger any [query events](https://docs.coveo.com/417/#query-events). In some cases, this may be what you want. However, if you _do_ want query events to be triggered (e.g., to ensure that standard components update themselves as expected), use the [`queryController`]{@link QueryController} instance instead.
  */
 var SearchEndpoint = /** @class */ (function () {
     /**
@@ -3411,13 +3408,11 @@ var SearchEndpoint = /** @class */ (function () {
         this.createEndpointCaller();
     }
     /**
-     * Configures a sample search endpoint on a Coveo Cloud index containing a set of public sources with no secured
-     * content.
+     * Configures a demo search endpoint on a Coveo Cloud V1 organization whose index contains various types of non-secured items.
      *
-     * **Note:**
-     * > This method mainly exists for demo purposes and ease of setup.
+     * **Note:** This method mainly exists for demo and testing purposes.
      *
-     * @param otherOptions A set of additional options to use when configuring this endpoint.
+     * @param otherOptions Additional options to apply for this endpoint.
      */
     SearchEndpoint.configureSampleEndpoint = function (otherOptions) {
         if (SearchEndpoint.isUseLocalArgumentPresent()) {
@@ -3437,13 +3432,11 @@ var SearchEndpoint = /** @class */ (function () {
         }
     };
     /**
-     * Configures a sample search endpoint on a Coveo Cloud V2 index containing a set of public sources with no secured
-     * content.
+     * Configures a demo search endpoint on a Coveo Cloud V2 organization whose index contains various types of non-secured items.
      *
-     * **Note:**
-     * > This method mainly exists for demo purposes and ease of setup.
+     * **Note:** This method mainly exists for demo and testing purposes.
      *
-     * @param otherOptions A set of additional options to use when configuring this endpoint.
+     * @param otherOptions Additional options to apply for this endpoint.
      */
     SearchEndpoint.configureSampleEndpointV2 = function (otherOptions) {
         SearchEndpoint.endpoints['default'] = new SearchEndpoint(_.extend({
@@ -3456,7 +3449,7 @@ var SearchEndpoint = /** @class */ (function () {
         }, otherOptions));
     };
     /**
-     * Configures a search endpoint on a Coveo Cloud index.
+     * Configures a search endpoint on a Coveo Cloud V1 index.
      * @param organization The organization ID of your Coveo Cloud index.
      * @param token The token to use to execute query. If not specified, you will likely need to login when querying.
      * @param uri The URI of the Coveo Cloud REST Search API. By default, this points to the production environment.
@@ -3473,11 +3466,21 @@ var SearchEndpoint = /** @class */ (function () {
         SearchEndpoint.endpoints['default'] = new SearchEndpoint(SearchEndpoint.removeUndefinedConfigOption(merged));
     };
     /**
-     * Configures a search endpoint on a Coveo Cloud V2 index.
-     * @param organization The organization ID of your Coveo Cloud V2 index.
-     * @param token The token to use to execute query. If not specified, you will likely need to login when querying.
-     * @param uri The URI of the Coveo Cloud REST Search API. By default, this points to the production environment.
-     * @param otherOptions A set of additional options to use when configuring this endpoint.
+     * [Configures a new search endpoint](https://docs.coveo.com/331/#configuring-a-new-search-endpoint) on a Coveo Cloud V2 organization.
+     * @param organization The unique identifier of the target Coveo Cloud V2 organization (e.g., `mycoveocloudv2organizationg8tp8wu3`).
+     * @param token The access token to authenticate Search API requests with (i.e., an [API key](https://docs.coveo.com/105/) or a [search token](https://docs.coveo.com/56/)).
+     *
+     * **Note:** This token will also authenticate Usage Analytics Write API requests if the search interface initializes an [`Analytics`]{@link Analytics} component whose [`token`]{@link Analytics.options.token} option is unspecified.
+     * @param uri The base URI of the Search API.
+     *
+     * **Allowed values:**
+     *
+     * - `https://platform.cloud.coveo.com/rest/search` (for organizations in the standard Coveo Cloud V2 environment)
+     * - `https://platformhipaa.cloud.coveo.com/rest/search` (for [HIPAA](https://docs.coveo.com/1853/) organizations)
+     * - `https://globalplatform.cloud.coveo.com/rest/search` (for [multi-region](https://docs.coveo.com/2976/) organizations)
+     *
+     * **Default:** `https://platform.cloud.coveo.com/rest/search`
+     * @param otherOptions Additional options to apply for this endpoint (e.g., a [`renewAccessToken`]{@link ISearchEndpointOptions.renewAccessToken} function).
      */
     SearchEndpoint.configureCloudV2Endpoint = function (organization, token, uri, otherOptions) {
         if (uri === void 0) { uri = 'https://platform.cloud.coveo.com/rest/search'; }
@@ -4161,10 +4164,9 @@ var SearchEndpoint = /** @class */ (function () {
         return status == 402;
     };
     /**
-     * Contains a map of all initialized `SearchEndpoint` instances.
+     * A map of all initialized `SearchEndpoint` instances.
      *
-     * **Example:**
-     * > `Coveo.SearchEndpoint.endpoints['default']` returns the default endpoint that was created at initialization.
+     * **Example:** `Coveo.SearchEndpoint.endpoints["default"]` returns the default endpoint that was created at initialization.
      * @type {{}}
      */
     SearchEndpoint.endpoints = {};
@@ -5938,8 +5940,8 @@ exports.ResponsiveComponents = ResponsiveComponents;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    lib: '2.7610.10',
-    product: '2.7610.10',
+    lib: '2.7968.0-beta',
+    product: '2.7968.0-beta',
     supportedApiVersion: 2
 };
 
@@ -7369,7 +7371,10 @@ exports.PlaygroundConfiguration = {
     ErrorReport: {
         show: true,
         toExecute: function () {
-            Coveo['SearchEndpoint'].endpoints['default'].options.accessToken = 'invalid';
+            getSearchInterfaceInstance().queryController.setEndpoint(new SearchEndpoint_1.SearchEndpoint({
+                restUri: 'https://platform.cloud.coveo.com/rest/search',
+                accessToken: 'invalid'
+            }));
         }
     },
     Excerpt: {
@@ -7476,7 +7481,7 @@ exports.PlaygroundConfiguration = {
         isResultComponent: true,
         advancedExpression: '@connectortype==DropboxCrawler AND @objecttype==File',
         element: new SectionBuilder_1.SectionBuilder()
-            .withDomElement(Dom_1.$$('table', { className: 'CoveoFieldTable' }, "<tbody>\n    <tr data-field=\"@size\" data-caption=\"Document size\" data-helper=\"size\"></tr>\n     <tr data-field=\"@source\" data-caption=\"Source\"></tr>\n     <tr data-field=\"@date\" data-caption=\"Date\" date-helper=\"dateTime\"></tr>\n   </tbody>"))
+            .withDomElement(Dom_1.$$('table', { className: 'CoveoFieldTable' }, "<tbody>\n            <tr data-field=\"@size\" data-caption=\"Document size\" data-helper=\"size\"></tr>\n            <tr data-field=\"@source\" data-caption=\"Source\"></tr>\n            <tr data-field=\"@date\" data-caption=\"Date\" date-helper=\"dateTime\"></tr>\n          </tbody>"))
             .build()
     },
     FieldValue: {
@@ -7734,6 +7739,16 @@ exports.PlaygroundConfiguration = {
                 args.queryBuilder.numberOfResults = 3;
             });
         }
+    },
+    StarRating: {
+        show: true,
+        options: {
+            ratingField: '@sfaveragerating',
+            numberOfRatingsField: '@sfnumberofreviews',
+            ratingScale: '5'
+        },
+        isResultComponent: true,
+        advancedExpression: '@objecttype=="ccrz__E_Product__c"'
     },
     Tab: {
         show: true,
@@ -8537,6 +8552,8 @@ var dict = {
     "AllItems": "All items:",
     "ShowLess": "Show less",
     "ShowMore": "Show more",
+    "ShowLessCategories": "Show fewer categories",
+    "ShowMoreCategories": "Show more categories",
     "HideFacet": "Hide Facet",
     "ShowFacet": "Show Facet",
     "AndOthers": "and {0} other<pl>s</pl>",
@@ -8575,8 +8592,10 @@ var dict = {
     "Expand": "Expand",
     "CollapseFacet": "Collapse {0} facet",
     "ExpandFacet": "Expand {0} facet",
-    "ShowLessFacetResults": "Show less results for {0} facet",
+    "ShowLessFacetResults": "Show fewer results for {0} facet",
     "ShowMoreFacetResults": "Show more results for {0} facet",
+    "ShowLessCategoryResults": "Show fewer results for the {0} category",
+    "ShowMoreCategoryResults": "Show more results for the {0} category",
     "SearchFacetResults": "Search for values in {0} facet",
     "Today": "Today",
     "Yesterday": "Yesterday",

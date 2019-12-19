@@ -8,20 +8,25 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link href='https://fonts.googleapis.com/css?family=Lato:100,300,400,700' rel='stylesheet' type='text/css'/>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" />
-	<link rel="stylesheet" href="https://static.cloud.coveo.com/searchui/v2.6063/css/CoveoFullSearch.min.css" />
+	<link rel="stylesheet" href="https://static.cloud.coveo.com/searchui/v2.7610/css/CoveoFullSearch.min.css" />
 	<link rel="stylesheet" href="../assets/css/main.css">
 	<link rel="stylesheet" href="../assets/css/overrides.css">
 	<link rel="stylesheet" href="../assets/css/coveo-connect-header.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 	<script type="text/javascript" src="https://static.cloud.coveo.com/coveo.analytics.js/coveoua.js"></script>
 	<script src="../assets/js/modernizr.js"></script>
-	<script class="coveo-script" src="https://static.cloud.coveo.com/searchui/v2.6063/js/CoveoJsSearch.min.js"></script>
-	<script src="https://static.cloud.coveo.com/searchui/v2.4382/js/templates/templates.js"></script>
+	<script class="coveo-script" src="https://static.cloud.coveo.com/searchui/v2.7610/js/CoveoJsSearch.min.js"></script>
+	<script src="https://static.cloud.coveo.com/searchui/v2.7610/js/templates/templates.js"></script>
 	<script src="../assets/js/coveo-connect-header.js"></script>
 	<script src="../assets/gen/js/playground.js"></script>
 	<script src="../assets/js/searchUIrefDoc.js"></script>
 	<link href="https://s3.amazonaws.com/coveostatic/Developers.png" rel="shortcut icon" type="image/png">
 	<link href="https://s3.amazonaws.com/coveostatic/Developers.ico" rel="shortcut icon" type="image/x-icon">
+	<style>
+        .magic-box {
+            border: 1px solid #9e9e9e;
+        }
+    </style>
 </head>
 <body>
 <header>
@@ -126,6 +131,9 @@
 					<li class="current tsd-kind-interface">
 						<a href="ifacetresponsevalue.html" class="tsd-kind-icon">IFacet<wbr>Response<wbr>Value</a>
 						<ul>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="ifacetresponsevalue.html#children" class="tsd-kind-icon">children</a>
+							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 								<a href="ifacetresponsevalue.html#end" class="tsd-kind-icon">end</a>
 							</li>
@@ -134,6 +142,9 @@
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 								<a href="ifacetresponsevalue.html#label" class="tsd-kind-icon">label</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="ifacetresponsevalue.html#morevaluesavailable" class="tsd-kind-icon">more<wbr>Values<wbr>Available</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="ifacetresponsevalue.html#numberofresults" class="tsd-kind-icon">number<wbr>OfResults</a>
@@ -189,9 +200,11 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="ifacetresponsevalue.html#children" class="tsd-kind-icon">children</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="ifacetresponsevalue.html#end" class="tsd-kind-icon">end</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="ifacetresponsevalue.html#endinclusive" class="tsd-kind-icon">end<wbr>Inclusive</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="ifacetresponsevalue.html#label" class="tsd-kind-icon">label</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="ifacetresponsevalue.html#morevaluesavailable" class="tsd-kind-icon">more<wbr>Values<wbr>Available</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="ifacetresponsevalue.html#numberofresults" class="tsd-kind-icon">number<wbr>OfResults</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="ifacetresponsevalue.html#start" class="tsd-kind-icon">start</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="ifacetresponsevalue.html#state" class="tsd-kind-icon">state</a></li>
@@ -203,6 +216,23 @@
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="children" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> children</h3>
+					<div class="tsd-signature tsd-kind-icon">children<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">IFacetResponseValue[]</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Facet/FacetResponse.ts#L31">rest/Facet/FacetResponse.ts
+							:31</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The children of this hierarchical facet value.</p>
+						</div>
+					</div>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 					<a name="end" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagOptional">Optional</span> end</h3>
@@ -269,6 +299,23 @@
 								<li><code>In 2018</code></li>
 							</ul>
 						</blockquote>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="morevaluesavailable" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> more<wbr>Values<wbr>Available</h3>
+					<div class="tsd-signature tsd-kind-icon">more<wbr>Values<wbr>Available<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Facet/FacetResponse.ts#L26">rest/Facet/FacetResponse.ts
+							:26</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Whether additional values are available for the facet.</p>
+						</div>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">

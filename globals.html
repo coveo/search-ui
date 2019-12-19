@@ -8,20 +8,25 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link href='https://fonts.googleapis.com/css?family=Lato:100,300,400,700' rel='stylesheet' type='text/css'/>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" />
-	<link rel="stylesheet" href="https://static.cloud.coveo.com/searchui/v2.6063/css/CoveoFullSearch.min.css" />
+	<link rel="stylesheet" href="https://static.cloud.coveo.com/searchui/v2.7610/css/CoveoFullSearch.min.css" />
 	<link rel="stylesheet" href="assets/css/main.css">
 	<link rel="stylesheet" href="assets/css/overrides.css">
 	<link rel="stylesheet" href="assets/css/coveo-connect-header.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 	<script type="text/javascript" src="https://static.cloud.coveo.com/coveo.analytics.js/coveoua.js"></script>
 	<script src="assets/js/modernizr.js"></script>
-	<script class="coveo-script" src="https://static.cloud.coveo.com/searchui/v2.6063/js/CoveoJsSearch.min.js"></script>
-	<script src="https://static.cloud.coveo.com/searchui/v2.4382/js/templates/templates.js"></script>
+	<script class="coveo-script" src="https://static.cloud.coveo.com/searchui/v2.7610/js/CoveoJsSearch.min.js"></script>
+	<script src="https://static.cloud.coveo.com/searchui/v2.7610/js/templates/templates.js"></script>
 	<script src="assets/js/coveo-connect-header.js"></script>
 	<script src="assets/gen/js/playground.js"></script>
 	<script src="assets/js/searchUIrefDoc.js"></script>
 	<link href="https://s3.amazonaws.com/coveostatic/Developers.png" rel="shortcut icon" type="image/png">
 	<link href="https://s3.amazonaws.com/coveostatic/Developers.ico" rel="shortcut icon" type="image/x-icon">
+	<style>
+        .magic-box {
+            border: 1px solid #9e9e9e;
+        }
+    </style>
 </head>
 <body>
 <header>
@@ -168,6 +173,9 @@
 					</li>
 					<li class=" tsd-kind-coveo-component">
 						<a href="components/dynamicfacetrange.html" class="tsd-kind-icon">Dynamic<wbr>Facet<wbr>Range</a>
+					</li>
+					<li class=" tsd-kind-coveo-component">
+						<a href="components/dynamichierarchicalfacet.html" class="tsd-kind-icon">Dynamic<wbr>Hierarchical<wbr>Facet</a>
 					</li>
 					<li class=" tsd-kind-coveo-component">
 						<a href="components/errorreport.html" class="tsd-kind-icon">Error<wbr>Report</a>
@@ -327,6 +335,9 @@
 					</li>
 					<li class=" tsd-kind-coveo-component">
 						<a href="components/sort.html" class="tsd-kind-icon">Sort</a>
+					</li>
+					<li class=" tsd-kind-coveo-component">
+						<a href="components/starrating.html" class="tsd-kind-icon">Star<wbr>Rating</a>
 					</li>
 					<li class=" tsd-kind-coveo-component">
 						<a href="components/tab.html" class="tsd-kind-icon">Tab</a>
@@ -579,6 +590,9 @@
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/icomponentdefinition.html" class="tsd-kind-icon">IComponent<wbr>Definition</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/icomponentlocalizedstringoptionargs.html" class="tsd-kind-icon">IComponent<wbr>Localized<wbr>String<wbr>Option<wbr>Args</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-has-type-parameter">
 						<a href="interfaces/icomponentoptions.html" class="tsd-kind-icon">IComponent<wbr>Options</a>
@@ -1032,6 +1046,7 @@
 								<li class="tsd-kind-coveo-component"><a href="components/dynamicfacet.html" class="tsd-kind-icon">Dynamic<wbr>Facet</a></li>
 								<li class="tsd-kind-coveo-component"><a href="components/dynamicfacetmanager.html" class="tsd-kind-icon">Dynamic<wbr>Facet<wbr>Manager</a></li>
 								<li class="tsd-kind-coveo-component"><a href="components/dynamicfacetrange.html" class="tsd-kind-icon">Dynamic<wbr>Facet<wbr>Range</a></li>
+								<li class="tsd-kind-coveo-component"><a href="components/dynamichierarchicalfacet.html" class="tsd-kind-icon">Dynamic<wbr>Hierarchical<wbr>Facet</a></li>
 								<li class="tsd-kind-coveo-component"><a href="components/errorreport.html" class="tsd-kind-icon">Error<wbr>Report</a></li>
 								<li class="tsd-kind-coveo-component"><a href="components/excerpt.html" class="tsd-kind-icon">Excerpt</a></li>
 								<li class="tsd-kind-coveo-component"><a href="components/exporttoexcel.html" class="tsd-kind-icon">Export<wbr>ToExcel</a></li>
@@ -1085,6 +1100,7 @@
 								<li class="tsd-kind-coveo-component"><a href="components/sharequery.html" class="tsd-kind-icon">Share<wbr>Query</a></li>
 								<li class="tsd-kind-coveo-component"><a href="components/simplefilter.html" class="tsd-kind-icon">Simple<wbr>Filter</a></li>
 								<li class="tsd-kind-coveo-component"><a href="components/sort.html" class="tsd-kind-icon">Sort</a></li>
+								<li class="tsd-kind-coveo-component"><a href="components/starrating.html" class="tsd-kind-icon">Star<wbr>Rating</a></li>
 								<li class="tsd-kind-coveo-component"><a href="components/tab.html" class="tsd-kind-icon">Tab</a></li>
 								<li class="tsd-kind-coveo-component"><a href="components/templateloader.html" class="tsd-kind-icon">Template<wbr>Loader</a></li>
 								<li class="tsd-kind-coveo-component"><a href="components/text.html" class="tsd-kind-icon">Text</a></li>
@@ -1190,6 +1206,7 @@
 								<li class="tsd-kind-interface"><a href="interfaces/icommercerequest.html" class="tsd-kind-icon">ICommerce<wbr>Request</a></li>
 								<li class="tsd-kind-interface"><a href="interfaces/icomponentbindings.html" class="tsd-kind-icon">IComponent<wbr>Bindings</a></li>
 								<li class="tsd-kind-interface"><a href="interfaces/icomponentdefinition.html" class="tsd-kind-icon">IComponent<wbr>Definition</a></li>
+								<li class="tsd-kind-interface"><a href="interfaces/icomponentlocalizedstringoptionargs.html" class="tsd-kind-icon">IComponent<wbr>Localized<wbr>String<wbr>Option<wbr>Args</a></li>
 								<li class="tsd-kind-interface tsd-has-type-parameter"><a href="interfaces/icomponentoptions.html" class="tsd-kind-icon">IComponent<wbr>Options</a></li>
 								<li class="tsd-kind-interface"><a href="interfaces/icomponentoptionsfieldoption.html" class="tsd-kind-icon">IComponent<wbr>Options<wbr>Field<wbr>Option</a></li>
 								<li class="tsd-kind-interface"><a href="interfaces/icomponentoptionsfieldoptionargs.html" class="tsd-kind-icon">IComponent<wbr>Options<wbr>Field<wbr>Option<wbr>Args</a></li>
@@ -1389,8 +1406,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/ComponentOptions.ts#L45">ui/Base/ComponentOptions.ts
-							:45</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/IComponentOptions.ts#L35">ui/Base/IComponentOptions.ts
+							:35</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1415,7 +1432,7 @@
 						<div class="lead">
 							<p>The possible valid and supported layouts.</p>
 						</div>
-						<p>See the <a href="https://developers.coveo.com/x/yQUvAg">Result Layouts</a> documentation.</p>
+						<p>See the <a href="https://docs.coveo.com/en/360/">Result Layouts</a> documentation.</p>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-type-alias">
@@ -1425,8 +1442,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Quickview/Quickview.ts#L30">ui/Quickview/Quickview.ts
-							:30</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Quickview/Quickview.ts#L31">ui/Quickview/Quickview.ts
+							:31</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1480,8 +1497,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/RegisteredNamedMethods.ts#L486">ui/Base/RegisteredNamedMethods.ts
-									:486</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/RegisteredNamedMethods.ts#L495">ui/Base/RegisteredNamedMethods.ts
+									:495</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1516,8 +1533,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/RegisteredNamedMethods.ts#L448">ui/Base/RegisteredNamedMethods.ts
-									:448</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/RegisteredNamedMethods.ts#L457">ui/Base/RegisteredNamedMethods.ts
+									:457</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1549,8 +1566,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/RegisteredNamedMethods.ts#L508">ui/Base/RegisteredNamedMethods.ts
-									:508</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/RegisteredNamedMethods.ts#L517">ui/Base/RegisteredNamedMethods.ts
+									:517</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1585,8 +1602,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/RegisteredNamedMethods.ts#L464">ui/Base/RegisteredNamedMethods.ts
-									:464</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/RegisteredNamedMethods.ts#L473">ui/Base/RegisteredNamedMethods.ts
+									:473</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1854,8 +1871,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/RegisteredNamedMethods.ts#L556">ui/Base/RegisteredNamedMethods.ts
-									:556</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/RegisteredNamedMethods.ts#L565">ui/Base/RegisteredNamedMethods.ts
+									:565</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1863,7 +1880,7 @@
 									<p>Asynchronously loads a module, or chunk.</p>
 								</div>
 								<p>This is especially useful when you want to extend a base component, and make sure the lazy component loading process
-								recognizes it (see <a href="https://developers.coveo.com/x/YBgvAg">Lazy Versus Eager Component Loading</a>).</p>
+								recognizes it (see <a href="https://docs.coveo.com/en/295/">Lazy Versus Eager Component Loading</a>).</p>
 								<p><strong>Example:</strong></p>
 								<pre><code class="lang-typescript"><span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">lazyCustomFacet</span>(<span class="hljs-params"></span>) </span>{
   <span class="hljs-keyword">return</span> Coveo.load&lt;Facet&gt;<span class="hljs-function">(<span class="hljs-params">'Facet'</span>).<span class="hljs-params">then</span>(<span class="hljs-params">(<span class="hljs-params">Facet</span>) =&gt; {
@@ -1917,8 +1934,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/RegisteredNamedMethods.ts#L349">ui/Base/RegisteredNamedMethods.ts
-									:349</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/RegisteredNamedMethods.ts#L358">ui/Base/RegisteredNamedMethods.ts
+									:358</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1967,15 +1984,15 @@
 					<a name="logcustomevent" class="tsd-anchor"></a>
 					<h3>log<wbr>Custom<wbr>Event</h3>
 					<ul class="tsd-signatures tsd-kind-function">
-						<li class="tsd-signature tsd-kind-icon">log<wbr>Custom<wbr>Event<span class="tsd-signature-symbol">(</span>element<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLElement</span>, customEventCause<span class="tsd-signature-symbol">: </span><a href="interfaces/ianalyticsactioncause.html" class="tsd-signature-type">IAnalyticsActionCause</a>, metadata<span class="tsd-signature-symbol">: </span><a href="interfaces/istringmap.html" class="tsd-signature-type">IStringMap</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">log<wbr>Custom<wbr>Event<span class="tsd-signature-symbol">(</span>element<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLElement</span>, customEventCause<span class="tsd-signature-symbol">: </span><a href="interfaces/ianalyticsactioncause.html" class="tsd-signature-type">IAnalyticsActionCause</a>, metadata<span class="tsd-signature-symbol">: </span><a href="interfaces/istringmap.html" class="tsd-signature-type">IStringMap</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span>, result<span class="tsd-signature-symbol">?: </span><a href="interfaces/iqueryresult.html" class="tsd-signature-type">IQueryResult</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/RegisteredNamedMethods.ts#L252">ui/Base/RegisteredNamedMethods.ts
-									:252</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/RegisteredNamedMethods.ts#L253">ui/Base/RegisteredNamedMethods.ts
+									:253</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2009,6 +2026,12 @@
 										( <code>{}</code> ).</p>
 									</div>
 								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> result: <a href="interfaces/iqueryresult.html" class="tsd-signature-type">IQueryResult</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The query result that relates to the custom event, if applicable.</p>
+									</div>
+								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
@@ -2025,8 +2048,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/RegisteredNamedMethods.ts#L315">ui/Base/RegisteredNamedMethods.ts
-									:315</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/RegisteredNamedMethods.ts#L324">ui/Base/RegisteredNamedMethods.ts
+									:324</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2041,7 +2064,7 @@
 								triggers a search event.</p>
 								<p>It is important to call this method <strong>before</strong> executing the query. Otherwise, no <code>SearchAsYouType</code> event will be
 									logged, and you will get a warning message in the console. See
-								<a href="https://developers.coveo.com/x/KoGfAQ">Sending Custom Analytics Events</a>.</p>
+								<a href="https://docs.coveo.com/en/2726/#logging-your-own-search-events">Logging Your Own Search Events</a>.</p>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -2083,8 +2106,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/RegisteredNamedMethods.ts#L279">ui/Base/RegisteredNamedMethods.ts
-									:279</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/RegisteredNamedMethods.ts#L288">ui/Base/RegisteredNamedMethods.ts
+									:288</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2094,7 +2117,7 @@
 								<p>A <code>Search</code> event is actually sent to the Coveo Usage Analytics service only after the query successfully returns (not
 									immediately after calling this method). Therefore, it is important to call this method <strong>before</strong> executing the
 									query. Otherwise, the <code>Search</code> event will not be logged, and you will get a warning message in the console. See
-								<a href="https://developers.coveo.com/x/KoGfAQ">Sending Custom Analytics Events</a>.</p>
+								<a href="https://docs.coveo.com/en/2726/#logging-your-own-search-events">Logging Your Own Search Events</a>.</p>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -2136,8 +2159,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/RegisteredNamedMethods.ts#L374">ui/Base/RegisteredNamedMethods.ts
-									:374</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/RegisteredNamedMethods.ts#L383">ui/Base/RegisteredNamedMethods.ts
+									:383</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2176,8 +2199,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/RegisteredNamedMethods.ts#L388">ui/Base/RegisteredNamedMethods.ts
-									:388</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/RegisteredNamedMethods.ts#L397">ui/Base/RegisteredNamedMethods.ts
+									:397</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2276,7 +2299,7 @@
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Performs read and write operations on the <a href="classes/querystatemodel.html"><code>QueryStateModel</code></a> instance of the search
-									interface. See <a href="https://developers.coveo.com/x/RYGfAQ">State</a>.</p>
+									interface. See <a href="https://docs.coveo.com/en/344/">State</a>.</p>
 								</div>
 								<p>Can perform the following actions:</p>
 								<ul>

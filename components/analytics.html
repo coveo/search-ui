@@ -8,20 +8,25 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link href='https://fonts.googleapis.com/css?family=Lato:100,300,400,700' rel='stylesheet' type='text/css'/>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" />
-	<link rel="stylesheet" href="https://static.cloud.coveo.com/searchui/v2.6063/css/CoveoFullSearch.min.css" />
+	<link rel="stylesheet" href="https://static.cloud.coveo.com/searchui/v2.7610/css/CoveoFullSearch.min.css" />
 	<link rel="stylesheet" href="../assets/css/main.css">
 	<link rel="stylesheet" href="../assets/css/overrides.css">
 	<link rel="stylesheet" href="../assets/css/coveo-connect-header.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 	<script type="text/javascript" src="https://static.cloud.coveo.com/coveo.analytics.js/coveoua.js"></script>
 	<script src="../assets/js/modernizr.js"></script>
-	<script class="coveo-script" src="https://static.cloud.coveo.com/searchui/v2.6063/js/CoveoJsSearch.min.js"></script>
-	<script src="https://static.cloud.coveo.com/searchui/v2.4382/js/templates/templates.js"></script>
+	<script class="coveo-script" src="https://static.cloud.coveo.com/searchui/v2.7610/js/CoveoJsSearch.min.js"></script>
+	<script src="https://static.cloud.coveo.com/searchui/v2.7610/js/templates/templates.js"></script>
 	<script src="../assets/js/coveo-connect-header.js"></script>
 	<script src="../assets/gen/js/playground.js"></script>
 	<script src="../assets/js/searchUIrefDoc.js"></script>
 	<link href="https://s3.amazonaws.com/coveostatic/Developers.png" rel="shortcut icon" type="image/png">
 	<link href="https://s3.amazonaws.com/coveostatic/Developers.ico" rel="shortcut icon" type="image/x-icon">
+	<style>
+        .magic-box {
+            border: 1px solid #9e9e9e;
+        }
+    </style>
 </head>
 <body>
 <header>
@@ -237,9 +242,9 @@
 					</div>
 					<p>You can use analytics data to evaluate how users are interacting with your search interface, improve relevance and
 					produce analytics dashboards within the Coveo Cloud Platform.</p>
-					<p>See <a href="https://developers.coveo.com/x/EYskAg">Step 7 - Usage Analytics</a> of the Getting Started with the JavaScript
+					<p>See <a href="https://docs.coveo.com/en/347/">Step 7 - Usage Analytics</a> of the Getting Started with the JavaScript
 					Search Framework V1 tutorial for an introduction to usage analytics.</p>
-					<p>See also <a href="https://developers.coveo.com/x/KoGfAQ">Sending Custom Analytics Events</a> for more advanced use cases.</p>
+					<p>See also <a href="https://docs.coveo.com/en/2726/#logging-your-own-search-events">Logging Your Own Search Events</a> for more advanced use cases.</p>
 				</div>
 			</section>
 			<div class="preview-container tsd-panel">
@@ -465,7 +470,7 @@
 								<blockquote>
 									<p>When logging custom <code>Click</code> events, you should use the <code>Coveo.logClickEvent</code> top-level function rather than
 										calling this method directly from the <code>Analytics</code> component instance. See
-									<a href="https://developers.coveo.com/x/KoGfAQ">Sending Custom Analytics Events</a>.</p>
+									<a href="https://docs.coveo.com/en/2726/#logging-your-own-click-events">Logging Your Own Click Events</a>.</p>
 								</blockquote>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -532,7 +537,7 @@
 								<blockquote>
 									<p>When logging <code>Custom</code> events, you should use the <code>Coveo.logClickEvent</code> top-level function rather than calling
 										this method directly from the <code>Analytics</code> component instance. See
-									<a href="https://developers.coveo.com/x/KoGfAQ">Sending Custom Analytics Events</a>.</p>
+									<a href="https://docs.coveo.com/en/2726/#logging-your-own-custom-events">Logging Your Own Custom Events</a>.</p>
 								</blockquote>
 							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -607,7 +612,7 @@
 								<blockquote>
 									<p>When logging custom <code>SearchAsYouType</code> events, you should use the <code>Coveo.logSearchAsYouTypeEvent</code> top-level
 										function rather than calling this method directly from the <code>Analytics</code> component instance. See
-									<a href="https://developers.coveo.com/x/KoGfAQ">Sending Custom Analytics Events</a>.</p>
+									<a href="https://docs.coveo.com/en/2726/#logging-your-own-search-events">Logging Your Own Search Events</a>.</p>
 								</blockquote>
 							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -665,7 +670,7 @@
 								<blockquote>
 									<p>When logging custom <code>Search</code> events, you should use the <code>Coveo.logSearchEvent</code> top-level function rather than
 										calling this method directly from the <code>Analytics</code> component instance. See
-									<a href="https://developers.coveo.com/x/KoGfAQ">Sending Custom Analytics Events</a>.</p>
+									<a href="https://docs.coveo.com/en/2726/#logging-your-own-search-events">Logging Your Own Search Events</a>.</p>
 								</blockquote>
 							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -1231,7 +1236,7 @@ data-auto-push-to-gtm-data-layer&#x3D;&#x27;false&#x27;</pre>
 							<p>If you wish to use the search hub dimension for security reasons (e.g., to provide different query suggestions
 								for internal and external users), you should specify the search hub when generating the search token for the
 								end user (in safe, server-side code), rather than setting it with this option (see
-							<a href="https://developers.coveo.com/x/XICE">Search Token Authentication</a>).</p>
+							<a href="https://docs.coveo.com/en/56/">Search Token Authentication</a>).</p>
 						</blockquote>
 						<p>Default value is <code>default</code>.</p>
 						<dl class="tsd-comment-tags">

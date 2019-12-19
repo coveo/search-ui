@@ -8,20 +8,25 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link href='https://fonts.googleapis.com/css?family=Lato:100,300,400,700' rel='stylesheet' type='text/css'/>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" />
-	<link rel="stylesheet" href="https://static.cloud.coveo.com/searchui/v2.6063/css/CoveoFullSearch.min.css" />
+	<link rel="stylesheet" href="https://static.cloud.coveo.com/searchui/v2.7610/css/CoveoFullSearch.min.css" />
 	<link rel="stylesheet" href="assets/css/main.css">
 	<link rel="stylesheet" href="assets/css/overrides.css">
 	<link rel="stylesheet" href="assets/css/coveo-connect-header.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 	<script type="text/javascript" src="https://static.cloud.coveo.com/coveo.analytics.js/coveoua.js"></script>
 	<script src="assets/js/modernizr.js"></script>
-	<script class="coveo-script" src="https://static.cloud.coveo.com/searchui/v2.6063/js/CoveoJsSearch.min.js"></script>
-	<script src="https://static.cloud.coveo.com/searchui/v2.4382/js/templates/templates.js"></script>
+	<script class="coveo-script" src="https://static.cloud.coveo.com/searchui/v2.7610/js/CoveoJsSearch.min.js"></script>
+	<script src="https://static.cloud.coveo.com/searchui/v2.7610/js/templates/templates.js"></script>
 	<script src="assets/js/coveo-connect-header.js"></script>
 	<script src="assets/gen/js/playground.js"></script>
 	<script src="assets/js/searchUIrefDoc.js"></script>
 	<link href="https://s3.amazonaws.com/coveostatic/Developers.png" rel="shortcut icon" type="image/png">
 	<link href="https://s3.amazonaws.com/coveostatic/Developers.ico" rel="shortcut icon" type="image/x-icon">
+	<style>
+        .magic-box {
+            border: 1px solid #9e9e9e;
+        }
+    </style>
 </head>
 <body>
 <header>
@@ -168,6 +173,9 @@
 					</li>
 					<li class=" tsd-kind-coveo-component">
 						<a href="components/dynamicfacetrange.html" class="tsd-kind-icon">Dynamic<wbr>Facet<wbr>Range</a>
+					</li>
+					<li class=" tsd-kind-coveo-component">
+						<a href="components/dynamichierarchicalfacet.html" class="tsd-kind-icon">Dynamic<wbr>Hierarchical<wbr>Facet</a>
 					</li>
 					<li class=" tsd-kind-coveo-component">
 						<a href="components/errorreport.html" class="tsd-kind-icon">Error<wbr>Report</a>
@@ -327,6 +335,9 @@
 					</li>
 					<li class=" tsd-kind-coveo-component">
 						<a href="components/sort.html" class="tsd-kind-icon">Sort</a>
+					</li>
+					<li class=" tsd-kind-coveo-component">
+						<a href="components/starrating.html" class="tsd-kind-icon">Star<wbr>Rating</a>
 					</li>
 					<li class=" tsd-kind-coveo-component">
 						<a href="components/tab.html" class="tsd-kind-icon">Tab</a>
@@ -579,6 +590,9 @@
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/icomponentdefinition.html" class="tsd-kind-icon">IComponent<wbr>Definition</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/icomponentlocalizedstringoptionargs.html" class="tsd-kind-icon">IComponent<wbr>Localized<wbr>String<wbr>Option<wbr>Args</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-has-type-parameter">
 						<a href="interfaces/icomponentoptions.html" class="tsd-kind-icon">IComponent<wbr>Options</a>
@@ -1071,7 +1085,7 @@
 <span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
 </code></pre><p>You can find more examples of fully configured pages in the <code>./pages</code> folder.</p>
 				<p>A tutorial is available to help you get started (see
-				<a href="https://developers.coveo.com/x/J4okAg">Coveo JavaScript Search UI Framework Getting Started Tutorial</a>).</p>
+				<a href="https://docs.coveo.com/en/361/">Coveo JavaScript Search UI Framework Getting Started Tutorial</a>).</p>
 				<h2 id="build">Build</h2>
 				<p>You should have node 10.x installed to build this project.</p>
 				<pre><code>npm <span class="hljs-keyword">install</span> -g yarn
@@ -1117,7 +1131,7 @@ gulp
 				<p>Handwritten documentation with more examples is also available (see
 				<a href="https://docs.coveo.com/en/375/javascript-search-framework/javascript-search-framework-home">Coveo JavaScript Search UI Framework Home</a>).</p>
 				<p>A tutorial is also available (see
-					<a href="https://developers.coveo.com/x/J4okAg">Coveo JavaScript Search UI Framework Getting Started Tutorial</a>).
+					<a href="https://docs.coveo.com/en/361/">Coveo JavaScript Search UI Framework Getting Started Tutorial</a>).
 					If you are new to the Coveo JavaScript Search UI Framework, you should definitely consult this tutorial, as it contains
 				valuable information.</p>
 				<p>You can also use Coveo Search to find answers to any specific issues/questions (see the

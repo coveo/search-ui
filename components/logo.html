@@ -8,20 +8,25 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link href='https://fonts.googleapis.com/css?family=Lato:100,300,400,700' rel='stylesheet' type='text/css'/>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" />
-	<link rel="stylesheet" href="https://static.cloud.coveo.com/searchui/v2.6063/css/CoveoFullSearch.min.css" />
+	<link rel="stylesheet" href="https://static.cloud.coveo.com/searchui/v2.7610/css/CoveoFullSearch.min.css" />
 	<link rel="stylesheet" href="../assets/css/main.css">
 	<link rel="stylesheet" href="../assets/css/overrides.css">
 	<link rel="stylesheet" href="../assets/css/coveo-connect-header.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 	<script type="text/javascript" src="https://static.cloud.coveo.com/coveo.analytics.js/coveoua.js"></script>
 	<script src="../assets/js/modernizr.js"></script>
-	<script class="coveo-script" src="https://static.cloud.coveo.com/searchui/v2.6063/js/CoveoJsSearch.min.js"></script>
-	<script src="https://static.cloud.coveo.com/searchui/v2.4382/js/templates/templates.js"></script>
+	<script class="coveo-script" src="https://static.cloud.coveo.com/searchui/v2.7610/js/CoveoJsSearch.min.js"></script>
+	<script src="https://static.cloud.coveo.com/searchui/v2.7610/js/templates/templates.js"></script>
 	<script src="../assets/js/coveo-connect-header.js"></script>
 	<script src="../assets/gen/js/playground.js"></script>
 	<script src="../assets/js/searchUIrefDoc.js"></script>
 	<link href="https://s3.amazonaws.com/coveostatic/Developers.png" rel="shortcut icon" type="image/png">
 	<link href="https://s3.amazonaws.com/coveostatic/Developers.ico" rel="shortcut icon" type="image/x-icon">
+	<style>
+        .magic-box {
+            border: 1px solid #9e9e9e;
+        }
+    </style>
 </head>
 <body>
 <header>
@@ -174,6 +179,9 @@
 							<li class=" tsd-kind-get-signature tsd-parent-kind-coveo-component tsd-is-inherited">
 								<a href="logo.html#usageanalytics" class="tsd-kind-icon">usage<wbr>Analytics</a>
 							</li>
+							<li class=" tsd-kind-object-literal tsd-parent-kind-coveo-component tsd-is-static">
+								<a href="logo.html#options" class="tsd-kind-icon">options</a>
+							</li>
 							<li class=" tsd-kind-constructor tsd-parent-kind-coveo-component tsd-is-overwrite">
 								<a href="logo.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
@@ -245,6 +253,12 @@
 							<h3>Accessors</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-get-signature tsd-parent-kind-coveo-component tsd-is-inherited"><a href="logo.html#usageanalytics" class="tsd-kind-icon">usage<wbr>Analytics</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Component Options</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="logo.html#options.target" class="tsd-kind-icon">target</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
@@ -637,6 +651,28 @@
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Component Options</h2>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
+					<a name="options.target" class="tsd-anchor"></a>
+					<h3>target</h3>
+					<div class="tsd-signature tsd-kind-icon">target<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"_top"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"_blank"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"_self"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"_parent"</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Logo/Logo.ts#L42">ui/Logo/Logo.ts
+							:42</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Specifies how the link to the Coveo website should be opened.</p>
+						</div>
+						<p>Valid values supported are <code>_top</code>, <code>_blank</code>, <code>_self</code>, <code>_parent</code>.</p>
+						<p>Default value is <code>undefined</code>, meaning standard browser behaviour for links will be respected.</p>
+					</div>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Constructors</h2>
 				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-coveo-component tsd-is-overwrite">
 					<a name="constructor" class="tsd-anchor"></a>
@@ -650,8 +686,8 @@
 								<p>Overwrites <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#constructor">constructor</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Logo/Logo.ts#L26">ui/Logo/Logo.ts
-									:26</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Logo/Logo.ts#L43">ui/Logo/Logo.ts
+									:43</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">

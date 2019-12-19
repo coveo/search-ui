@@ -8,20 +8,25 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link href='https://fonts.googleapis.com/css?family=Lato:100,300,400,700' rel='stylesheet' type='text/css'/>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" />
-	<link rel="stylesheet" href="https://static.cloud.coveo.com/searchui/v2.6063/css/CoveoFullSearch.min.css" />
+	<link rel="stylesheet" href="https://static.cloud.coveo.com/searchui/v2.7610/css/CoveoFullSearch.min.css" />
 	<link rel="stylesheet" href="../assets/css/main.css">
 	<link rel="stylesheet" href="../assets/css/overrides.css">
 	<link rel="stylesheet" href="../assets/css/coveo-connect-header.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 	<script type="text/javascript" src="https://static.cloud.coveo.com/coveo.analytics.js/coveoua.js"></script>
 	<script src="../assets/js/modernizr.js"></script>
-	<script class="coveo-script" src="https://static.cloud.coveo.com/searchui/v2.6063/js/CoveoJsSearch.min.js"></script>
-	<script src="https://static.cloud.coveo.com/searchui/v2.4382/js/templates/templates.js"></script>
+	<script class="coveo-script" src="https://static.cloud.coveo.com/searchui/v2.7610/js/CoveoJsSearch.min.js"></script>
+	<script src="https://static.cloud.coveo.com/searchui/v2.7610/js/templates/templates.js"></script>
 	<script src="../assets/js/coveo-connect-header.js"></script>
 	<script src="../assets/gen/js/playground.js"></script>
 	<script src="../assets/js/searchUIrefDoc.js"></script>
 	<link href="https://s3.amazonaws.com/coveostatic/Developers.png" rel="shortcut icon" type="image/png">
 	<link href="https://s3.amazonaws.com/coveostatic/Developers.ico" rel="shortcut icon" type="image/x-icon">
+	<style>
+        .magic-box {
+            border: 1px solid #9e9e9e;
+        }
+    </style>
 </head>
 <body>
 <header>
@@ -130,6 +135,9 @@
 								<a href="ifacetrequest.html#currentvalues" class="tsd-kind-icon">current<wbr>Values</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="ifacetrequest.html#delimitingcharacter" class="tsd-kind-icon">delimiting<wbr>Character</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="ifacetrequest.html#facetid" class="tsd-kind-icon">facet<wbr>Id</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
@@ -199,6 +207,7 @@
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="ifacetrequest.html#currentvalues" class="tsd-kind-icon">current<wbr>Values</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="ifacetrequest.html#delimitingcharacter" class="tsd-kind-icon">delimiting<wbr>Character</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="ifacetrequest.html#facetid" class="tsd-kind-icon">facet<wbr>Id</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="ifacetrequest.html#field" class="tsd-kind-icon">field</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="ifacetrequest.html#freezecurrentvalues" class="tsd-kind-icon">freeze<wbr>Current<wbr>Values</a></li>
@@ -222,8 +231,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Facet/FacetRequest.ts#L133">rest/Facet/FacetRequest.ts
-							:133</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Facet/FacetRequest.ts#L155">rest/Facet/FacetRequest.ts
+							:155</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -236,14 +245,35 @@
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="delimitingcharacter" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> delimiting<wbr>Character</h3>
+					<div class="tsd-signature tsd-kind-icon">delimiting<wbr>Character<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Facet/FacetRequest.ts#L187">rest/Facet/FacetRequest.ts
+							:187</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The character to use to split field values into a hierarchical sequence.</p>
+						</div>
+						<p><strong>Example:</strong>
+							For a multi-value field containing the following values: <code>c; c&amp;gt;folder2; c&amp;gt;folder2&amp;gt;folder3;</code>
+						The delimiting character is <code>&amp;gt;</code>.</p>
+						<p><strong>Default (Search API):</strong> <code>;</code></p>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="facetid" class="tsd-anchor"></a>
 					<h3>facet<wbr>Id</h3>
 					<div class="tsd-signature tsd-kind-icon">facet<wbr>Id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Facet/FacetRequest.ts#L57">rest/Facet/FacetRequest.ts
-							:57</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Facet/FacetRequest.ts#L79">rest/Facet/FacetRequest.ts
+							:79</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -261,8 +291,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Facet/FacetRequest.ts#L67">rest/Facet/FacetRequest.ts
-							:67</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Facet/FacetRequest.ts#L89">rest/Facet/FacetRequest.ts
+							:89</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -281,8 +311,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Facet/FacetRequest.ts#L123">rest/Facet/FacetRequest.ts
-							:123</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Facet/FacetRequest.ts#L145">rest/Facet/FacetRequest.ts
+							:145</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -305,8 +335,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Facet/FacetRequest.ts#L154">rest/Facet/FacetRequest.ts
-							:154</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Facet/FacetRequest.ts#L176">rest/Facet/FacetRequest.ts
+							:176</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -330,8 +360,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Facet/FacetRequest.ts#L109">rest/Facet/FacetRequest.ts
-							:109</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Facet/FacetRequest.ts#L131">rest/Facet/FacetRequest.ts
+							:131</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -350,8 +380,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Facet/FacetRequest.ts#L141">rest/Facet/FacetRequest.ts
-							:141</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Facet/FacetRequest.ts#L163">rest/Facet/FacetRequest.ts
+							:163</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -369,8 +399,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Facet/FacetRequest.ts#L99">rest/Facet/FacetRequest.ts
-							:99</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Facet/FacetRequest.ts#L121">rest/Facet/FacetRequest.ts
+							:121</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -391,8 +421,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Facet/FacetRequest.ts#L87">rest/Facet/FacetRequest.ts
-							:87</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Facet/FacetRequest.ts#L109">rest/Facet/FacetRequest.ts
+							:109</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -417,8 +447,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Facet/FacetRequest.ts#L74">rest/Facet/FacetRequest.ts
-							:74</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Facet/FacetRequest.ts#L96">rest/Facet/FacetRequest.ts
+							:96</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">

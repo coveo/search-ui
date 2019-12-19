@@ -8,20 +8,25 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link href='https://fonts.googleapis.com/css?family=Lato:100,300,400,700' rel='stylesheet' type='text/css'/>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" />
-	<link rel="stylesheet" href="https://static.cloud.coveo.com/searchui/v2.6063/css/CoveoFullSearch.min.css" />
+	<link rel="stylesheet" href="https://static.cloud.coveo.com/searchui/v2.7610/css/CoveoFullSearch.min.css" />
 	<link rel="stylesheet" href="../assets/css/main.css">
 	<link rel="stylesheet" href="../assets/css/overrides.css">
 	<link rel="stylesheet" href="../assets/css/coveo-connect-header.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 	<script type="text/javascript" src="https://static.cloud.coveo.com/coveo.analytics.js/coveoua.js"></script>
 	<script src="../assets/js/modernizr.js"></script>
-	<script class="coveo-script" src="https://static.cloud.coveo.com/searchui/v2.6063/js/CoveoJsSearch.min.js"></script>
-	<script src="https://static.cloud.coveo.com/searchui/v2.4382/js/templates/templates.js"></script>
+	<script class="coveo-script" src="https://static.cloud.coveo.com/searchui/v2.7610/js/CoveoJsSearch.min.js"></script>
+	<script src="https://static.cloud.coveo.com/searchui/v2.7610/js/templates/templates.js"></script>
 	<script src="../assets/js/coveo-connect-header.js"></script>
 	<script src="../assets/gen/js/playground.js"></script>
 	<script src="../assets/js/searchUIrefDoc.js"></script>
 	<link href="https://s3.amazonaws.com/coveostatic/Developers.png" rel="shortcut icon" type="image/png">
 	<link href="https://s3.amazonaws.com/coveostatic/Developers.ico" rel="shortcut icon" type="image/x-icon">
+	<style>
+        .magic-box {
+            border: 1px solid #9e9e9e;
+        }
+    </style>
 </head>
 <body>
 <header>
@@ -223,7 +228,7 @@
 						<p>The FieldTable component displays a set of <a href="fieldvalue.html">FieldValue</a> components in a table that can optionally be
 						expandable and minimizable. This component automatically takes care of not displaying empty field values.</p>
 					</div>
-					<p>This component is a result template component (see <a href="https://developers.coveo.com/x/aIGfAQ">Result Templates</a>).</p>
+					<p>This component is a result template component (see <a href="https://docs.coveo.com/en/413/">Result Templates</a>).</p>
 					<p><strong>Example:</strong></p>
 					<pre><code><span class="hljs-comment">// This is the FieldTable component itself, which holds a list of table rows.</span>
 <span class="hljs-comment">// Each row is a FieldValue component.</span>
@@ -858,9 +863,6 @@ data-allow-minimization&#x3D;&#x27;false&#x27;</pre>
 							<dt>Only effective when</dt>
 							<dd><p><a href="fieldtable.html#options.allowminimization"><code>allowMinimization</code></a> is set to <code>true</code></p>
 							</dd>
-							<dt>Default</dt>
-							<dd><p><code>Details</code></p>
-							</dd>
 						</dl>
 					</div>
 					<div class="tsd-panel">
@@ -921,9 +923,6 @@ data-minimized-by-default&#x3D;&#x27;false&#x27;</pre>
 						<dl class="tsd-comment-tags">
 							<dt>Only effective when</dt>
 							<dd><p><a href="fieldtable.html#options.allowminimization"><code>allowMinimization</code></a> is set to <code>true</code></p>
-							</dd>
-							<dt>Default</dt>
-							<dd><p><code>Details</code></p>
 							</dd>
 						</dl>
 					</div>

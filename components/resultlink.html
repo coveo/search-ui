@@ -8,20 +8,25 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link href='https://fonts.googleapis.com/css?family=Lato:100,300,400,700' rel='stylesheet' type='text/css'/>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" />
-	<link rel="stylesheet" href="https://static.cloud.coveo.com/searchui/v2.6063/css/CoveoFullSearch.min.css" />
+	<link rel="stylesheet" href="https://static.cloud.coveo.com/searchui/v2.7610/css/CoveoFullSearch.min.css" />
 	<link rel="stylesheet" href="../assets/css/main.css">
 	<link rel="stylesheet" href="../assets/css/overrides.css">
 	<link rel="stylesheet" href="../assets/css/coveo-connect-header.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 	<script type="text/javascript" src="https://static.cloud.coveo.com/coveo.analytics.js/coveoua.js"></script>
 	<script src="../assets/js/modernizr.js"></script>
-	<script class="coveo-script" src="https://static.cloud.coveo.com/searchui/v2.6063/js/CoveoJsSearch.min.js"></script>
-	<script src="https://static.cloud.coveo.com/searchui/v2.4382/js/templates/templates.js"></script>
+	<script class="coveo-script" src="https://static.cloud.coveo.com/searchui/v2.7610/js/CoveoJsSearch.min.js"></script>
+	<script src="https://static.cloud.coveo.com/searchui/v2.7610/js/templates/templates.js"></script>
 	<script src="../assets/js/coveo-connect-header.js"></script>
 	<script src="../assets/gen/js/playground.js"></script>
 	<script src="../assets/js/searchUIrefDoc.js"></script>
 	<link href="https://s3.amazonaws.com/coveostatic/Developers.png" rel="shortcut icon" type="image/png">
 	<link href="https://s3.amazonaws.com/coveostatic/Developers.ico" rel="shortcut icon" type="image/x-icon">
+	<style>
+        .magic-box {
+            border: 1px solid #9e9e9e;
+        }
+    </style>
 </head>
 <body>
 <header>
@@ -951,9 +956,9 @@ data-always-open-in-new-window&#x3D;&#x27;false&#x27;</pre>
 						<blockquote>
 							<p>You cannot set this option directly in the component markup as an HTML attribute. You must either set it in the
 								<a href="../globals.html#init"><code>init</code></a> call of your search interface (see
-								<a href="https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsintheinitCall">Components - Passing Component Options in the init Call</a>),
+								<a href="https://docs.coveo.com/en/346/#passing-component-options-in-the-init-call">Passing Component Options in the init Call</a>),
 								or before the <code>init</code> call, using the <code>options</code> top-level function (see
-							<a href="https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsBeforetheinitCall">Components - Passing Component Options Before the init Call</a>).</p>
+							<a href="https://docs.coveo.com/en/346/#passing-component-options-before-the-init-call">Passing Component Options Before the init Call</a>).</p>
 						</blockquote>
 						<p><strong>Example:</strong></p>
 						<pre><code class="lang-javascript"><span class="hljs-comment">// You can set the option in the 'init' call:</span>

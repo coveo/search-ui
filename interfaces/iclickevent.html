@@ -8,20 +8,25 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link href='https://fonts.googleapis.com/css?family=Lato:100,300,400,700' rel='stylesheet' type='text/css'/>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" />
-	<link rel="stylesheet" href="https://static.cloud.coveo.com/searchui/v2.6063/css/CoveoFullSearch.min.css" />
+	<link rel="stylesheet" href="https://static.cloud.coveo.com/searchui/v2.7610/css/CoveoFullSearch.min.css" />
 	<link rel="stylesheet" href="../assets/css/main.css">
 	<link rel="stylesheet" href="../assets/css/overrides.css">
 	<link rel="stylesheet" href="../assets/css/coveo-connect-header.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 	<script type="text/javascript" src="https://static.cloud.coveo.com/coveo.analytics.js/coveoua.js"></script>
 	<script src="../assets/js/modernizr.js"></script>
-	<script class="coveo-script" src="https://static.cloud.coveo.com/searchui/v2.6063/js/CoveoJsSearch.min.js"></script>
-	<script src="https://static.cloud.coveo.com/searchui/v2.4382/js/templates/templates.js"></script>
+	<script class="coveo-script" src="https://static.cloud.coveo.com/searchui/v2.7610/js/CoveoJsSearch.min.js"></script>
+	<script src="https://static.cloud.coveo.com/searchui/v2.7610/js/templates/templates.js"></script>
 	<script src="../assets/js/coveo-connect-header.js"></script>
 	<script src="../assets/gen/js/playground.js"></script>
 	<script src="../assets/js/searchUIrefDoc.js"></script>
 	<link href="https://s3.amazonaws.com/coveostatic/Developers.png" rel="shortcut icon" type="image/png">
 	<link href="https://s3.amazonaws.com/coveostatic/Developers.ico" rel="shortcut icon" type="image/x-icon">
+	<style>
+        .magic-box {
+            border: 1px solid #9e9e9e;
+        }
+    </style>
 </head>
 <body>
 <header>
@@ -389,7 +394,7 @@
 						<div class="lead">
 							<p>Additional metadata to send along with the event.</p>
 						</div>
-						<p><strong>Note:</strong> This field may include custom user context information (see <a href="{{ site.baseurl }}/399/">Sending Custom Context Information</a>).</p>
+						<p><strong>Note:</strong> This field may include custom user context information (see <a href="https://docs.coveo.com/en/399/">Sending Custom Context Information</a>).</p>
 						<p><strong>Example:</strong> <code>{ &quot;currentResultsPerPage&quot;: 25, &quot;userRole&quot;: &quot;developer&quot; }</code></p>
 					</div>
 					<div class="tsd-type-declaration">
@@ -551,7 +556,7 @@
 							<p>The language of the search interface from which the event originates.</p>
 						</div>
 						<p>Must be a valid <a href="https://en.wikipedia.org/wiki/ISO_639-1">ISO-639-1 code</a>.</p>
-						<p><strong>Note:</strong> By default, the framework sets this field according to the currently loaded culture file (see <a href="{{ site.baseurl }}/421/">Changing the Language of Your Search Interface</a>).</p>
+						<p><strong>Note:</strong> By default, the framework sets this field according to the currently loaded culture file (see <a href="https://docs.coveo.com/en/421/">Changing the Language of Your Search Interface</a>).</p>
 						<p><strong>Example:</strong> <code>en</code></p>
 					</div>
 				</section>

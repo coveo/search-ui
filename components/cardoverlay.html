@@ -8,20 +8,25 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link href='https://fonts.googleapis.com/css?family=Lato:100,300,400,700' rel='stylesheet' type='text/css'/>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" />
-	<link rel="stylesheet" href="https://static.cloud.coveo.com/searchui/v2.6063/css/CoveoFullSearch.min.css" />
+	<link rel="stylesheet" href="https://static.cloud.coveo.com/searchui/v2.7610/css/CoveoFullSearch.min.css" />
 	<link rel="stylesheet" href="../assets/css/main.css">
 	<link rel="stylesheet" href="../assets/css/overrides.css">
 	<link rel="stylesheet" href="../assets/css/coveo-connect-header.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 	<script type="text/javascript" src="https://static.cloud.coveo.com/coveo.analytics.js/coveoua.js"></script>
 	<script src="../assets/js/modernizr.js"></script>
-	<script class="coveo-script" src="https://static.cloud.coveo.com/searchui/v2.6063/js/CoveoJsSearch.min.js"></script>
-	<script src="https://static.cloud.coveo.com/searchui/v2.4382/js/templates/templates.js"></script>
+	<script class="coveo-script" src="https://static.cloud.coveo.com/searchui/v2.7610/js/CoveoJsSearch.min.js"></script>
+	<script src="https://static.cloud.coveo.com/searchui/v2.7610/js/templates/templates.js"></script>
 	<script src="../assets/js/coveo-connect-header.js"></script>
 	<script src="../assets/gen/js/playground.js"></script>
 	<script src="../assets/js/searchUIrefDoc.js"></script>
 	<link href="https://s3.amazonaws.com/coveostatic/Developers.png" rel="shortcut icon" type="image/png">
 	<link href="https://s3.amazonaws.com/coveostatic/Developers.ico" rel="shortcut icon" type="image/x-icon">
+	<style>
+        .magic-box {
+            border: 1px solid #9e9e9e;
+        }
+    </style>
 </head>
 <body>
 <header>
@@ -222,7 +227,7 @@
 						possible to place a CardOverlay component anywhere in any result.</p>
 					</div>
 					<p>The primary purpose of the CardOverlay component is to display additional information about a result in a format that
-					fits well within a card result layout (see <a href="https://developers.coveo.com/x/yQUvAg">Result Layouts</a>).</p>
+					fits well within a card result layout (see <a href="https://docs.coveo.com/en/360/">Result Layouts</a>).</p>
 					<p>When initialized, this component creates a <code>&lt;div class=&quot;coveo-card-overlay&quot;&gt;</code> element as the last child of its parent
 					IQueryResult, and displays a button which toggles the visibility of the overlay.</p>
 				</div>
@@ -297,8 +302,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/CardOverlay/CardOverlay.ts#L116">ui/CardOverlay/CardOverlay.ts
-									:116</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/CardOverlay/CardOverlay.ts#L120">ui/CardOverlay/CardOverlay.ts
+									:120</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -426,8 +431,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/CardOverlay/CardOverlay.ts#L104">ui/CardOverlay/CardOverlay.ts
-									:104</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/CardOverlay/CardOverlay.ts#L108">ui/CardOverlay/CardOverlay.ts
+									:108</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -451,8 +456,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/CardOverlay/CardOverlay.ts#L87">ui/CardOverlay/CardOverlay.ts
-									:87</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/CardOverlay/CardOverlay.ts#L91">ui/CardOverlay/CardOverlay.ts
+									:91</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -757,8 +762,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/CardOverlay/CardOverlay.ts#L59">ui/CardOverlay/CardOverlay.ts
-							:59</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/CardOverlay/CardOverlay.ts#L63">ui/CardOverlay/CardOverlay.ts
+							:63</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -779,8 +784,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/CardOverlay/CardOverlay.ts#L52">ui/CardOverlay/CardOverlay.ts
-							:52</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/CardOverlay/CardOverlay.ts#L53">ui/CardOverlay/CardOverlay.ts
+							:53</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -793,9 +798,6 @@
 						<dl class="tsd-comment-tags">
 							<dt>Required</dt>
 							<dd><p>Specifying a value for this option is required for the component to work</p>
-							</dd>
-							<dt>Default</dt>
-							<dd><p><code>NoTitle</code></p>
 							</dd>
 						</dl>
 					</div>
@@ -819,8 +821,8 @@
 								<p>Overwrites <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#constructor">constructor</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/CardOverlay/CardOverlay.ts#L60">ui/CardOverlay/CardOverlay.ts
-									:60</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/CardOverlay/CardOverlay.ts#L64">ui/CardOverlay/CardOverlay.ts
+									:64</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
