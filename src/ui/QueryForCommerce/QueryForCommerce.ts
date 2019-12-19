@@ -12,7 +12,7 @@ export interface IQueryForCommerceOptions {
 }
 
 /**
- * The QueryForCommerce component enables to set conveniently properties for listing pages in commerce sites
+ * The QueryForCommerce component enables to set properties for listing pages in commerce sites in a convenient way
  */
 export class QueryForCommerce extends Component {
   static ID = 'QueryForCommerce';
@@ -24,12 +24,14 @@ export class QueryForCommerce extends Component {
   };
 
   /**
-   * The possible options for the QueryForCommerce.
+   * The options for the QueryForCommerce.
    * @componentOptions
    */
   static options: IQueryForCommerceOptions = {
     /**
      * Setting this property will update the tab value of a query and set the originLevel2 in the analytics event
+     *
+     * This is useful for listing pages in commerce sites to leverage the Coveo ML features.
      */
     listing: ComponentOptions.buildStringOption()
   };
@@ -49,7 +51,7 @@ export class QueryForCommerce extends Component {
     Assert.exists(this.options);
 
     this.bind.onRootElement(QueryEvents.doneBuildingQuery, this.handleDoneBuildingQuery);
-    this.bind.onRootElement(AnalyticsEvents.analyticsEventReady, this.handleChangeAnalytics);
+    this.bind.onRootElement(AnalyticsEvents.changeAnalyticsCustomData, this.handleChangeAnalytics);
   }
 
   private handleDoneBuildingQuery(event: IBuildingQueryEventArgs) {
