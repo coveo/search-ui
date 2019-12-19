@@ -9,14 +9,6 @@ export function QueryForCommerceTest() {
   describe('QueryForCommerce', function() {
     let test: Mock.IBasicComponentSetup<QueryForCommerce>;
 
-    const originalAnalyticsDataObject: IChangeableAnalyticsDataObject = {
-      language: 'en',
-      originLevel1: 'default',
-      originLevel2: 'All',
-      originLevel3: 'localhost:8080',
-      metaObject: {}
-    };
-
     describe('with a listing value', () => {
       beforeEach(function() {
         test = Mock.optionsComponentSetup<QueryForCommerce, IQueryForCommerceOptions>(QueryForCommerce, <IQueryForCommerceOptions>{
@@ -32,23 +24,7 @@ export function QueryForCommerceTest() {
       it('should add a context value with the listing option', function() {
         const simulation = Simulate.query(test.env);
 
-        expect(simulation.queryBuilder.build().context).toEqual(
-          jasmine.objectContaining({
-            listing: test.cmp.options.listing
-          })
-        );
-      });
-
-      it('should update analytics originlevel2 to the listing value', function() {
-        const args: IChangeAnalyticsCustomDataEventArgs = {
-          type: 'SearchEvent',
-          actionType: analyticsActionCauseList.interfaceLoad.type,
-          actionCause: analyticsActionCauseList.interfaceLoad.name,
-          ...originalAnalyticsDataObject
-        };
-        $$(test.env.root).trigger(AnalyticsEvents.changeAnalyticsCustomData, args);
-
-        expect(args['originLevel2']).toBe(test.cmp.options.listing);
+        expect(simulation.queryBuilder.build().context['listing']).toEqual(test.cmp.options.listing);
       });
 
       it('should unset tab after resetting the listing value', function() {
@@ -64,18 +40,40 @@ export function QueryForCommerceTest() {
         expect(simulation.queryBuilder.build().context).toBeFalsy();
       });
 
-      it('should leave originlevel2 untouched after reset listing to null', function() {
-        const args: IChangeAnalyticsCustomDataEventArgs = {
-          type: 'SearchEvent',
-          actionType: analyticsActionCauseList.interfaceLoad.type,
-          actionCause: analyticsActionCauseList.interfaceLoad.name,
-          ...originalAnalyticsDataObject
+      describe('analitycs behavior', () => {
+        const originalAnalyticsDataObject: IChangeableAnalyticsDataObject = {
+          language: 'en',
+          originLevel1: 'default',
+          originLevel2: 'All',
+          originLevel3: 'localhost:8080',
+          metaObject: {}
         };
-        test.cmp.options.listing = null;
 
-        $$(test.env.root).trigger(AnalyticsEvents.changeAnalyticsCustomData, args);
+        function buildEventArgs(): IChangeAnalyticsCustomDataEventArgs {
+          return <IChangeAnalyticsCustomDataEventArgs>{
+            type: 'SearchEvent',
+            actionType: analyticsActionCauseList.interfaceLoad.type,
+            actionCause: analyticsActionCauseList.interfaceLoad.name,
+            ...originalAnalyticsDataObject
+          };
+        }
 
-        expect(args['originLevel2']).toBe(originalAnalyticsDataObject.originLevel2);
+        it('should update analytics originlevel2 to the listing value', function() {
+          const args = buildEventArgs();
+
+          $$(test.env.root).trigger(AnalyticsEvents.changeAnalyticsCustomData, args);
+
+          expect(args['originLevel2']).toBe(test.cmp.options.listing);
+        });
+
+        it('should leave originlevel2 untouched after reset listing to null', function() {
+          const args = buildEventArgs();
+          test.cmp.options.listing = null;
+
+          $$(test.env.root).trigger(AnalyticsEvents.changeAnalyticsCustomData, args);
+
+          expect(args['originLevel2']).toBe(originalAnalyticsDataObject.originLevel2);
+        });
       });
     });
   });
