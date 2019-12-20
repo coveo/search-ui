@@ -34,7 +34,7 @@ export function DynamicFacetQueryControllerTest() {
     }
 
     function facetRequest() {
-      return dynamicFacetQueryController.facetRequest;
+      return dynamicFacetQueryController.buildFacetRequest(queryBuilder.build());
     }
 
     function queryFacetRequests() {
@@ -63,7 +63,9 @@ export function DynamicFacetQueryControllerTest() {
     });
 
     it('should send the injectionDepth', () => {
-      facet.options.injectionDepth = 15;
+      facetOptions.injectionDepth = 15;
+      initializeComponents();
+
       expect(facetRequest().injectionDepth).toBe(15);
     });
 
@@ -237,7 +239,7 @@ export function DynamicFacetQueryControllerTest() {
         dynamicFacetQueryController.getQueryResults();
         expect(mockEndpoint.search).toHaveBeenCalledWith(
           jasmine.objectContaining({
-            facets: [dynamicFacetQueryController.facetRequest]
+            facets: [dynamicFacetQueryController.buildFacetRequest(new QueryBuilder().build())]
           })
         );
       });
@@ -251,7 +253,7 @@ export function DynamicFacetQueryControllerTest() {
 
         expect(mockEndpoint.search).toHaveBeenCalledWith(
           jasmine.objectContaining({
-            facets: [queryFacetRequests()[0], dynamicFacetQueryController.facetRequest]
+            facets: [queryFacetRequests()[0], dynamicFacetQueryController.buildFacetRequest(new QueryBuilder().build())]
           })
         );
       });
