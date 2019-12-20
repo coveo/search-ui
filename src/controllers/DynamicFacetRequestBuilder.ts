@@ -14,20 +14,20 @@ export interface IBasicFacetRequestParameters {
 }
 
 export class DynamicFacetRequestBuilder {
-  constructor(private options: IBasicFacetRequestParameters) {}
+  constructor(private request: IFacetRequest) {}
 
-  public buildRequestForQuery(query: IQuery): IFacetRequest {
+  public buildBaseRequestForQuery(query: IQuery): IFacetRequest {
     return {
-      ...this.options,
+      ...this.request,
       filterFacetCount: this.getFilterFacetCount(!!query.filterField)
     };
   }
 
   private getFilterFacetCount(isFoldingEnabled: boolean) {
-    if (Utils.isUndefined(this.options.filterFacetCount)) {
+    if (Utils.isUndefined(this.request.filterFacetCount)) {
       return !isFoldingEnabled;
     }
 
-    return this.options.filterFacetCount;
+    return this.request.filterFacetCount;
   }
 }

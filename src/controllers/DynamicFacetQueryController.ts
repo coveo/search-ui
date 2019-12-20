@@ -82,7 +82,7 @@ export class DynamicFacetQueryController {
 
   public buildFacetRequest(query: IQuery): IFacetRequest {
     return {
-      ...this.requestBuilder.buildRequestForQuery(query),
+      ...this.requestBuilder.buildBaseRequestForQuery(query),
       currentValues: this.currentValues,
       numberOfValues: this.numberOfValues,
       freezeCurrentValues: this.freezeCurrentValues,

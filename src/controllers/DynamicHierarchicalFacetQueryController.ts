@@ -56,7 +56,7 @@ export class DynamicHierarchicalFacetQueryController {
 
   public buildFacetRequest(query: IQuery): IFacetRequest {
     return {
-      ...this.requestBuilder.buildRequestForQuery(query),
+      ...this.requestBuilder.buildBaseRequestForQuery(query),
       currentValues: this.currentValues,
       numberOfValues: this.facet.values.hasSelectedValue ? 1 : this.numberOfValuesToRequest,
       isFieldExpanded: this.numberOfValuesToRequest > this.facet.options.numberOfValues
