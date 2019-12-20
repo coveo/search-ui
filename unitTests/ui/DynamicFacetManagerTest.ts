@@ -246,6 +246,14 @@ export function DynamicFacetManagerTest() {
         expect(collapsedFacets().indexOf(facets[0])).toBe(-1);
       });
 
+      it(`when there is a facet with the option "collapsedByDefault" set to true
+      should collapse it`, () => {
+        facets[3].options.collapsedByDefault = true;
+        initForMaximumNumberOfExpandedFacets(facets.length);
+        expect(collapsedFacets().length).toBe(1);
+        expect(collapsedFacets()[0]).toBe(facets[3]);
+      });
+
       it(`when there is a facet with the option "enableCollapse" set to false
       should not collapse it`, () => {
         facets[3].options.enableCollapse = false;
