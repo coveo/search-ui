@@ -45,23 +45,11 @@ export function DynamicHierarchicalFacetQueryControllerTest() {
       return queryBuilder.build().facetOptions;
     }
 
-    it('should send the field without the "@"', () => {
-      expect(facetRequest().field).toBe(facet.fieldName);
-    });
-
-    it('should send the facet type', () => {
-      expect(facetRequest().type).toBe(facet.facetType);
-    });
-
-    it('should send the delimitingCharacter', () => {
-      expect(facetRequest().delimitingCharacter).toBe(facet.options.delimitingCharacter);
-    });
-
-    it('should send the facet id', () => {
+    it('should send the right basic facetRequest parameters', () => {
       expect(facetRequest().facetId).toBe(facet.options.id);
-    });
-
-    it('should send the injectionDepth', () => {
+      expect(facetRequest().field).toBe(facet.fieldName);
+      expect(facetRequest().type).toBe(facet.facetType);
+      expect(facetRequest().delimitingCharacter).toBe(facet.options.delimitingCharacter);
       expect(facetRequest().injectionDepth).toBe(facet.options.injectionDepth);
     });
 

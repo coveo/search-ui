@@ -50,23 +50,12 @@ export function DynamicFacetQueryControllerTest() {
       expect(queryFacetRequests().length).toBe(1);
     });
 
-    it('should send the facet id', () => {
+    it('should send the right basic facetRequest parameters', () => {
       expect(facetRequest().facetId).toBe(facet.options.id);
-    });
-
-    it('should send the field without the "@"', () => {
-      expect(facetRequest().field).toBe('field');
-    });
-
-    it('should send the facet type', () => {
+      expect(facetRequest().field).toBe(facet.fieldName);
       expect(facetRequest().type).toBe(facet.facetType);
-    });
-
-    it('should send the injectionDepth', () => {
-      facetOptions.injectionDepth = 15;
-      initializeComponents();
-
-      expect(facetRequest().injectionDepth).toBe(15);
+      expect(facetRequest().sortCriteria).toBe(facet.options.sortCriteria);
+      expect(facetRequest().injectionDepth).toBe(facet.options.injectionDepth);
     });
 
     it('should send the current values', () => {

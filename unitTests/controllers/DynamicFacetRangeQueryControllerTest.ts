@@ -30,19 +30,11 @@ export function DynamicFacetRangeQueryControllerTest() {
       return facet.values.allFacetValues;
     }
 
-    it('should send the facet id', () => {
+    it('should send the right basic facetRequest parameters', () => {
       expect(facetRequest().facetId).toBe(facet.options.id);
-    });
-
-    it('should send the field without the "@"', () => {
-      expect(facetRequest().field).toBe('field');
-    });
-
-    it('should send the facet type', () => {
+      expect(facetRequest().field).toBe(facet.fieldName);
       expect(facetRequest().type).toBe(facet.facetType);
-    });
-
-    it('should send the injectionDepth', () => {
+      expect(facetRequest().sortCriteria).toBe(facet.options.sortCriteria);
       expect(facetRequest().injectionDepth).toBe(facet.options.injectionDepth);
     });
 
