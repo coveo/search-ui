@@ -1,7 +1,6 @@
 import { $$ } from '../../../../src/utils/Dom';
 import { DynamicFacetHeaderCollapseToggle } from '../../../../src/ui/DynamicFacet/DynamicFacetHeader/DynamicFacetHeaderCollapseToggle';
-import { DynamicFacetTestUtils } from '../DynamicFacetTestUtils';
-import { DynamicFacet } from '../../../../src/ui/DynamicFacet/DynamicFacet';
+import { IDynamicFacetHeaderOptions } from '../../../../src/ui/DynamicFacet/DynamicFacetHeader/DynamicFacetHeader';
 
 export function DynamicFacetHeaderCollapseToggleTest() {
   describe('DynamicFacetHeaderCollapseToggle', () => {
@@ -9,18 +8,22 @@ export function DynamicFacetHeaderCollapseToggleTest() {
     let collapseToggleElement: HTMLElement;
     let collapseBtnElement: HTMLElement;
     let expandBtnElement: HTMLElement;
-    let facet: DynamicFacet;
+    let options: IDynamicFacetHeaderOptions;
 
     beforeEach(() => {
-      facet = DynamicFacetTestUtils.createFakeFacet({
+      options = {
+        title: 'hello',
+        clear: jasmine.createSpy('clear'),
         enableCollapse: true,
-        collapsedByDefault: false
-      });
+        toggleCollapse: jasmine.createSpy('toggleCollapse'),
+        collapse: jasmine.createSpy('collapse'),
+        expand: jasmine.createSpy('clear'),
+      };
       initializeComponent();
     });
 
     function initializeComponent() {
-      collapseToggle = new DynamicFacetHeaderCollapseToggle(facet);
+      collapseToggle = new DynamicFacetHeaderCollapseToggle(options);
       collapseToggleElement = collapseToggle.element;
       collapseBtnElement = $$(collapseToggleElement).find('.coveo-dynamic-facet-header-collapse');
       expandBtnElement = $$(collapseToggleElement).find('.coveo-dynamic-facet-header-expand');
@@ -51,7 +54,7 @@ export function DynamicFacetHeaderCollapseToggleTest() {
       should call collapse on the DynamicFacet component`, () => {
       $$(collapseBtnElement).trigger('click');
 
-      expect(facet.collapse).toHaveBeenCalled();
+      expect(options.collapse).toHaveBeenCalled();
     });
 
     it(`when clicking on the expand button
@@ -59,7 +62,7 @@ export function DynamicFacetHeaderCollapseToggleTest() {
       collapseToggle.toggleButtons(true);
       $$(expandBtnElement).trigger('click');
 
-      expect(facet.expand).toHaveBeenCalled();
+      expect(options.expand).toHaveBeenCalled();
     });
   });
 }

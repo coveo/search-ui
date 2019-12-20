@@ -58,9 +58,9 @@ export class Simulate {
   }
 
   static queryError(env: IMockEnvironment, options?: ISimulateQueryData): ISimulateQueryData {
-    options = _.extend(
-      {},
-      {
+    const opt = {
+      ...options,
+      ...{
         error: new QueryError({
           statusCode: 500,
           data: {
@@ -68,10 +68,18 @@ export class Simulate {
             type: 'no!'
           }
         })
-      },
-      options
-    );
-    return Simulate.query(env, options);
+      }
+    };
+
+    return Simulate.query(env, opt);
+  }
+
+  static noResults(env: IMockEnvironment, options?: ISimulateQueryData): ISimulateQueryData {
+    const opt = {
+      ...options,
+      results: FakeResults.createFakeResults(0)
+    };
+    return Simulate.query(env, opt);
   }
 
   static query(env: IMockEnvironment, options?: ISimulateQueryData): ISimulateQueryData {

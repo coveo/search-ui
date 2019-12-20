@@ -12,6 +12,8 @@ import { FacetValueState } from '../../src/rest/Facet/FacetValueState';
 import { DynamicFacetRange } from '../../src/ui/DynamicFacet/DynamicFacetRange';
 import { DynamicFacet } from '../../src/ui/DynamicFacet/DynamicFacet';
 import { ComponentsTypes } from '../../src/utils/ComponentsTypes';
+import { Facet } from '../../src/ui/Facet/Facet';
+import { IFacetOptions } from '../../src/rest/Query';
 
 export function DynamicFacetManagerTest() {
   describe('DynamicFacetManager', () => {
@@ -93,6 +95,21 @@ export function DynamicFacetManagerTest() {
       expect(test.cmp.disabled).toBe(true);
     });
 
+    it(`when there are incompatible elements inside the DynamicFacetManager
+      should move them outside the container and warn the user`, () => {
+      const nonDynamicFacet = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, <IFacetOptions>{
+        field: '@field'
+      }).cmp;
+      facets = [nonDynamicFacet as any];
+      initializeManager();
+      spyOn(test.cmp.logger, 'warn');
+      triggerAfterComponentsInitialization();
+
+      expect(managerContainerChildren().length).toBe(0);
+      expect($$(test.cmp.element).find('.CoveoFacet')).toBeTruthy();
+      expect(test.cmp.logger.warn).toHaveBeenCalled();
+    });
+
     it('should disable the component if a query response has no "facets" parameter', () => {
       triggerAfterComponentsInitialization();
       test.cmp.enable();
@@ -103,6 +120,7 @@ export function DynamicFacetManagerTest() {
     });
 
     it('should have the component in the right order', () => {
+      triggerAfterComponentsInitialization();
       expect(managerContainerChildren()[0]).toBe(facets[0].element);
       expect(managerContainerChildren()[1]).toBe(facets[1].element);
       expect(managerContainerChildren()[2]).toBe(facets[2].element);
@@ -226,6 +244,14 @@ export function DynamicFacetManagerTest() {
         initForMaximumNumberOfExpandedFacets(1);
         expect(collapsedFacets().length).toBe(facets.length - 1);
         expect(collapsedFacets().indexOf(facets[0])).toBe(-1);
+      });
+
+      it(`when there is a facet with the option "collapsedByDefault" set to true
+      should collapse it`, () => {
+        facets[3].options.collapsedByDefault = true;
+        initForMaximumNumberOfExpandedFacets(facets.length);
+        expect(collapsedFacets().length).toBe(1);
+        expect(collapsedFacets()[0]).toBe(facets[3]);
       });
 
       it(`when there is a facet with the option "enableCollapse" set to false

@@ -14,6 +14,11 @@ export class FacetUtils {
     return new RegExp(StringUtils.stringToRegex(value, ignoreAccent), 'i');
   }
 
+  static getDisplayValueFromValueCaption(value: string, field: string, valueCaption: Record<string, string>) {
+    const returnValue = this.tryToGetTranslatedCaption(field, value);
+    return valueCaption[value] || returnValue;
+  }
+
   static getValuesToUseForSearchInFacet(original: string, facet: FacetModuleDefinition.Facet): string[] {
     let ret = [original];
     let regex = this.getRegexToUseForFacetSearch(original, facet.options.facetSearchIgnoreAccents);

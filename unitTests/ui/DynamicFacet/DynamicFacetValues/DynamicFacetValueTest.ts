@@ -62,13 +62,21 @@ export function DynamicFacetValueTest() {
 
     it(`when comparing with another DynamicFacetValue with a different value
       it should not equal`, () => {
-      const anotherDynamicFacetValue = new DynamicFacetValue(DynamicFacetTestUtils.createFakeFacetValues(2)[1], facet, DynamicFacetValueRenderer);
+      const anotherDynamicFacetValue = new DynamicFacetValue(
+        DynamicFacetTestUtils.createFakeFacetValues(2)[1],
+        facet,
+        DynamicFacetValueRenderer
+      );
       expect(dynamicFacetValue.equals(anotherDynamicFacetValue)).toBe(false);
     });
 
     it(`when comparing with another DynamicFacetValue with the same value
       it should equal`, () => {
-      const anotherDynamicFacetValue = new DynamicFacetValue(DynamicFacetTestUtils.createFakeFacetValues(1)[0], facet, DynamicFacetValueRenderer);
+      const anotherDynamicFacetValue = new DynamicFacetValue(
+        DynamicFacetTestUtils.createFakeFacetValues(1)[0],
+        facet,
+        DynamicFacetValueRenderer
+      );
       expect(dynamicFacetValue.equals(anotherDynamicFacetValue)).toBe(true);
     });
 

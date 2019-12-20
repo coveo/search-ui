@@ -1778,6 +1778,14 @@
     "zh-cn": "显示较多的值",
     "zh-tw": "顯示較多的值"
   },
+  "ShowLessCategories": {
+    "en": "Show fewer categories",
+    "fr": "Afficher moins de catégories"
+  },
+  "ShowMoreCategories": {
+    "en": "Show more categories",
+    "fr": "Afficher plus de catégories"
+  },
   "HideFacet": {
     "en": "Hide Facet",
     "fr": "Cacher la facette",
@@ -2687,12 +2695,20 @@
     "fr": "Agrandir la facette {0}"
   },
   "ShowLessFacetResults": {
-    "en": "Show less results for {0} facet",
+    "en": "Show fewer results for {0} facet",
     "fr": "Afficher moins de résultats pour la facette {0}"
   },
   "ShowMoreFacetResults": {
     "en": "Show more results for {0} facet",
     "fr": "Afficher plus de résultats pour la facette {0}"
+  },
+  "ShowLessCategoryResults": {
+    "en": "Show fewer results for the {0} category",
+    "fr": "Afficher moins de résultats pour la catégorie {0}"
+  },
+  "ShowMoreCategoryResults": {
+    "en": "Show more results for the {0} category",
+    "fr": "Afficher plus de résultats pour la catégorie {0}"
   },
   "SearchFacetResults": {
     "en": "Search for values in {0} facet",
@@ -7503,5 +7519,10 @@
   "To": {
     "en": "to",
     "fr": "à"
+  },
+  "DeselectFilterValues": {
+    "en": "Deselect all active filters on {0} field",
+    "fr": "Effacer tout de filtres actifs dans {0}",
+    "es-es": "Quitar los filtros activos en el campo {0}"
   }
 }

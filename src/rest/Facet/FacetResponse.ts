@@ -19,6 +19,16 @@ export interface IFacetResponseValue extends IRangeValue {
    * The number of query result items matching the facet value.
    */
   numberOfResults: number;
+
+  /**
+   * Whether additional values are available for the facet.
+   */
+  moreValuesAvailable?: boolean;
+
+  /**
+   * The children of this hierarchical facet value.
+   */
+  children?: IFacetResponseValue[];
 }
 
 /**

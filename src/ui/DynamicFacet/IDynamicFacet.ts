@@ -11,6 +11,7 @@ import { IAnalyticsFacetState } from '../Analytics/IAnalyticsFacetState';
 import { IFacetResponseValue, IFacetResponse } from '../../rest/Facet/FacetResponse';
 import { IRangeValue } from '../../rest/RangeValue';
 import { FacetValueState } from '../../rest/Facet/FacetValueState';
+import { DynamicFacetHeader } from './DynamicFacetHeader/DynamicFacetHeader';
 
 export interface IDynamicFacetOptions extends IResponsiveComponentOptions {
   id?: string;
@@ -28,9 +29,11 @@ export interface IDynamicFacetOptions extends IResponsiveComponentOptions {
   numberOfValuesInBreadcrumb?: number;
   valueCaption?: Record<string, string>;
   dependsOn?: string;
+  injectionDepth?: number;
 }
 
 export interface IDynamicFacet extends Component, IDynamicManagerCompatibleFacet, IAutoLayoutAdjustableInsideFacetColumn {
+  header: DynamicFacetHeader;
   options: IDynamicFacetOptions;
   dependsOnManager: DependsOnManager;
   dynamicFacetQueryController: DynamicFacetQueryController;
@@ -41,10 +44,11 @@ export interface IDynamicFacet extends Component, IDynamicManagerCompatibleFacet
 
   fieldName: string;
   facetType: FacetType;
-  analyticsFacetState: IAnalyticsFacetState[]
+  analyticsFacetState: IAnalyticsFacetState[];
   basicAnalyticsFacetState: IAnalyticsFacetState;
   basicAnalyticsFacetMeta: IAnalyticsFacetMeta;
 
+  isCurrentlyDisplayed(): boolean;
   selectValue(value: string): void;
   selectMultipleValues(values: string[]): void;
   deselectValue(value: string): void;
@@ -95,9 +99,9 @@ export interface IDynamicFacetValue extends IDynamicFacetValueProperties {
   analyticsFacetState: IAnalyticsFacetState;
   analyticsFacetMeta: IAnalyticsFacetMeta;
 
-  select():void;
-  toggleSelect():void;
-  deselect():void;
+  select(): void;
+  toggleSelect(): void;
+  deselect(): void;
   equals(arg: string | IDynamicFacetValue): boolean;
 
   logSelectActionToAnalytics(): void;
@@ -111,7 +115,7 @@ export interface IDynamicFacetValues {
   hasSelectedValue(arg: string | IDynamicFacetValue): boolean;
   get(arg: string | IDynamicFacetValue): IDynamicFacetValue;
   render(): HTMLElement;
-  
+
   allValues: string[];
   selectedValues: string[];
 

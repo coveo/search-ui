@@ -3,7 +3,7 @@ import { DynamicFacet } from '../../../src/ui/DynamicFacet/DynamicFacet';
 import { IDynamicFacetOptions, IDynamicFacetValueProperties } from '../../../src/ui/DynamicFacet/IDynamicFacet';
 import { FacetValueState } from '../../../src/rest/Facet/FacetValueState';
 import { DynamicFacetTestUtils } from './DynamicFacetTestUtils';
-import { $$, BreadcrumbEvents, QueryEvents } from '../../../src/Core';
+import { $$, BreadcrumbEvents, QueryEvents, QueryBuilder } from '../../../src/Core';
 import { FacetSortCriteria } from '../../../src/rest/Facet/FacetSortCriteria';
 import { Simulate } from '../../Simulate';
 import { IPopulateBreadcrumbEventArgs } from '../../../src/events/BreadcrumbEvents';
@@ -11,12 +11,14 @@ import { analyticsActionCauseList } from '../../../src/ui/Analytics/AnalyticsAct
 import { FakeResults } from '../../Fake';
 import { ResultListUtils } from '../../../src/utils/ResultListUtils';
 import { FacetType } from '../../../src/rest/Facet/FacetRequest';
+import { DynamicFacetManager } from '../../../src/ui/DynamicFacetManager/DynamicFacetManager';
 
 export function DynamicFacetTest() {
   describe('DynamicFacet', () => {
     let test: Mock.IBasicComponentSetup<DynamicFacet>;
     let mockFacetValues: IDynamicFacetValueProperties[];
     let options: IDynamicFacetOptions;
+    let triggerNewQuerySpy: jasmine.Spy;
 
     beforeEach(() => {
       options = { field: '@field' };
@@ -33,7 +35,16 @@ export function DynamicFacetTest() {
 
       spyOn(test.cmp.values, 'clearAll').and.callThrough();
       spyOn(test.cmp.values, 'render').and.callThrough();
+      triggerNewQuerySpy = spyOn(test.cmp, 'triggerNewQuery').and.callThrough();
+      triggerNewQuerySpy.and.callThrough();
+      spyOn(test.cmp, 'putStateIntoQueryBuilder').and.callThrough();
       spyOn(test.cmp, 'triggerNewIsolatedQuery').and.callThrough();
+      spyOn(test.cmp, 'reset').and.callThrough();
+      spyOn(test.cmp, 'enableFreezeFacetOrderFlag').and.callThrough();
+      spyOn(test.cmp, 'scrollToTop').and.callThrough();
+      spyOn(test.cmp, 'logAnalyticsEvent').and.callThrough();
+      spyOn(test.cmp, 'selectMultipleValues').and.callThrough();
+      spyOn(test.cmp, 'deselectMultipleValues').and.callThrough();
     }
 
     function testQueryStateModelValues() {
@@ -62,6 +73,12 @@ export function DynamicFacetTest() {
     function validateExpandCollapse(shouldBeCollapsed: boolean) {
       expect($$(test.cmp.element).hasClass('coveo-dynamic-facet-collapsed')).toBe(shouldBeCollapsed);
       expect(searchFeatureDisplayed()).toBe(!shouldBeCollapsed);
+    }
+
+    function fakeResultsWithFacets() {
+      const fakeResultsWithFacets = FakeResults.createFakeResults();
+      fakeResultsWithFacets.facets = [DynamicFacetTestUtils.getCompleteFacetResponse(test.cmp)];
+      return fakeResultsWithFacets;
     }
 
     it(`when facet has values but none are selected
@@ -180,14 +197,13 @@ export function DynamicFacetTest() {
     });
 
     it('allows to trigger a new isolated query', () => {
-      spyOn(test.cmp.dynamicFacetQueryController, 'executeIsolatedQuery');
+      spyOn(test.cmp.dynamicFacetQueryController, 'getQueryResults');
       const beforeExecuteQuery = jasmine.createSpy('beforeExecuteQuery', () => {});
       test.cmp.ensureDom();
       test.cmp.triggerNewIsolatedQuery(beforeExecuteQuery);
 
-      expect(test.cmp.dynamicFacetQueryController.executeIsolatedQuery).toHaveBeenCalled();
+      expect(test.cmp.dynamicFacetQueryController.getQueryResults).toHaveBeenCalled();
       expect(beforeExecuteQuery).toHaveBeenCalled();
-      expect(test.cmp.values.render).toHaveBeenCalled();
     });
 
     it('triggering a new isolated query updates the values', () => {
@@ -208,7 +224,9 @@ export function DynamicFacetTest() {
       testQueryStateModelValues();
     });
 
-    it('when calling reset, should clear and rerender values if there is any active value', () => {
+    it(`when calling reset
+      when there is any active value
+      should clear and rerender values`, () => {
       mockFacetValues[0].state = FacetValueState.selected;
       initializeComponent();
 
@@ -218,7 +236,9 @@ export function DynamicFacetTest() {
       expect(test.cmp.values.render).toHaveBeenCalledTimes(2);
     });
 
-    it('when calling reset, should not clear and rerender values when there are no active values', () => {
+    it(`when calling reset
+      when there are no active values
+      should not clear and rerender values`, () => {
       test.cmp.reset();
 
       expect(test.cmp.values.clearAll).not.toHaveBeenCalled();
@@ -278,14 +298,14 @@ export function DynamicFacetTest() {
       validateExpandCollapse(false);
     });
 
-    it(`allows to collapse`, () => {
+    it(`allows to collapse when enableCollapse is true`, () => {
       test.cmp.ensureDom();
       test.cmp.collapse();
 
       validateExpandCollapse(true);
     });
 
-    it(`allows to expand`, () => {
+    it(`allows to expand when enableCollapse is true`, () => {
       test.cmp.ensureDom();
       test.cmp.collapse();
 
@@ -335,7 +355,6 @@ export function DynamicFacetTest() {
     });
 
     it('should select the needed values using the id', () => {
-      test.env.queryStateModel.registerNewAttribute(`${test.cmp.options.id}`, []);
       test.env.queryStateModel.set(`f:${test.cmp.options.id}`, ['a', 'b', 'c']);
       expect(test.cmp.values.selectedValues).toEqual(['a', 'b', 'c']);
     });
@@ -343,7 +362,6 @@ export function DynamicFacetTest() {
     it('should select the needed values using the id', () => {
       options.id = 'my_secret_id';
       initializeComponent();
-      test.env.queryStateModel.registerNewAttribute(`f:${options.id}`, []);
 
       test.env.queryStateModel.set(`f:${options.id}`, ['a', 'b', 'c']);
       expect(test.cmp.values.selectedValues).toEqual(['a', 'b', 'c']);
@@ -359,34 +377,24 @@ export function DynamicFacetTest() {
       testQueryStateModelValues();
     });
 
-    it('should log an analytics event when selecting a value through the QSM', () => {
-      spyOn(test.cmp, 'logAnalyticsEvent');
-      test.env.queryStateModel.registerNewAttribute(`f:${test.cmp.options.id}`, []);
+    it('should call selectMultipleValues when selecting a value through the QSM', () => {
       test.env.queryStateModel.set(`f:${test.cmp.options.id}`, ['a', 'b', 'c']);
 
-      expect(test.cmp.logAnalyticsEvent).toHaveBeenCalledWith(
-        analyticsActionCauseList.dynamicFacetSelect,
-        test.cmp.values.get('a').analyticsFacetMeta
-      );
+      expect(test.cmp.selectMultipleValues).toHaveBeenCalled();
     });
 
-    it('should log an analytics event when deselecting a value through the QSM', () => {
-      spyOn(test.cmp, 'logAnalyticsEvent');
-      test.env.queryStateModel.registerNewAttribute(`f:${test.cmp.options.id}`, []);
+    it('should call deselectMultipleValues when deselecting a value through the QSM', () => {
       test.env.queryStateModel.set(`f:${test.cmp.options.id}`, ['a', 'b', 'c']);
       test.env.queryStateModel.set(`f:${test.cmp.options.id}`, []);
 
-      expect(test.cmp.logAnalyticsEvent).toHaveBeenCalledWith(
-        analyticsActionCauseList.dynamicFacetDeselect,
-        test.cmp.values.get('a').analyticsFacetMeta
-      );
+      expect(test.cmp.deselectMultipleValues).toHaveBeenCalled();
     });
 
     it('should log an analytics event when showing more results', () => {
       test.cmp.showMoreValues();
       expect(test.cmp.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(
         analyticsActionCauseList.dynamicFacetShowMore,
-        test.cmp.basicAnalyticsFacetState,
+        test.cmp.basicAnalyticsFacetMeta,
         test.cmp.element
       );
     });
@@ -395,7 +403,7 @@ export function DynamicFacetTest() {
       test.cmp.showLessValues();
       expect(test.cmp.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(
         analyticsActionCauseList.dynamicFacetShowLess,
-        test.cmp.basicAnalyticsFacetState,
+        test.cmp.basicAnalyticsFacetMeta,
         test.cmp.element
       );
     });
@@ -517,9 +525,8 @@ export function DynamicFacetTest() {
     it(`when getting successful results
       facet position should be correct`, () => {
       test.cmp.ensureDom();
-      const fakeResultsWithFacets = FakeResults.createFakeResults();
-      fakeResultsWithFacets.facets = [DynamicFacetTestUtils.getCompleteFacetResponse(test.cmp)];
-      $$(test.env.root).trigger(QueryEvents.querySuccess, { results: fakeResultsWithFacets });
+
+      $$(test.env.root).trigger(QueryEvents.querySuccess, { results: fakeResultsWithFacets() });
 
       expect(test.cmp.position).toBe(1);
     });
@@ -584,10 +591,86 @@ export function DynamicFacetTest() {
       expect(ResultListUtils.scrollToTop).not.toHaveBeenCalledWith(test.cmp.root);
     });
 
+    describe('Testing the header', () => {
+      beforeEach(() => {
+        test.cmp.selectValue(mockFacetValues[0].value);
+        test.cmp.ensureDom();
+        spyOn(test.cmp.header, 'showLoading').and.callThrough();
+        spyOn(test.cmp.header, 'hideLoading').and.callThrough();
+        spyOn(test.cmp.header, 'toggleClear').and.callThrough();
+        spyOn(test.cmp.header, 'toggleCollapse').and.callThrough();
+      });
+
+      it(`when triggering the header "clear" method
+      should perform the correct actions on the facet`, () => {
+        test.cmp.header.options.clear();
+        expect(test.cmp.reset).toHaveBeenCalledTimes(1);
+        expect(test.cmp.enableFreezeFacetOrderFlag).toHaveBeenCalledTimes(1);
+        expect(test.cmp.triggerNewQuery).toHaveBeenCalledTimes(1);
+        expect(test.cmp.scrollToTop).toHaveBeenCalledTimes(1);
+      });
+
+      it(`when triggering a query
+      should call "showLoading" on the header`, () => {
+        test.cmp.triggerNewQuery();
+        expect(test.cmp.header.showLoading).toHaveBeenCalledTimes(1);
+      });
+
+      it(`when a query is successful
+      should call "hideLoading" on the header`, () => {
+        $$(test.env.root).trigger(QueryEvents.querySuccess, { results: fakeResultsWithFacets() });
+        expect(test.cmp.header.hideLoading).toHaveBeenCalledTimes(1);
+      });
+
+      it(`when triggering the header "clear" method
+      should log an analytics event`, () => {
+        triggerNewQuerySpy.and.callFake((beforeCb: any = () => {}) => beforeCb());
+        test.cmp.header.options.clear();
+        expect(test.cmp.logAnalyticsEvent).toHaveBeenCalledWith(
+          analyticsActionCauseList.dynamicFacetClearAll,
+          test.cmp.basicAnalyticsFacetMeta
+        );
+      });
+
+      it('should call "toggleClear" when calling reset', () => {
+        test.cmp.reset();
+        expect(test.cmp.header.toggleClear).toHaveBeenCalled();
+      });
+
+      it('should call "toggleCollapse" when calling collapse', () => {
+        test.cmp.collapse();
+        expect(test.cmp.header.toggleCollapse).toHaveBeenCalled();
+      });
+    });
+
+    describe('testing putStateIntoQueryBuilder', () => {
+      it(`when calling putStateIntoQueryBuilder
+      should call putFacetIntoQueryBuilder on the categoryFacetQueryController`, () => {
+        spyOn(test.cmp.dynamicFacetQueryController, 'putFacetIntoQueryBuilder');
+        const queryBuilder = new QueryBuilder();
+        test.cmp.putStateIntoQueryBuilder(queryBuilder);
+        expect(test.cmp.dynamicFacetQueryController.putFacetIntoQueryBuilder).toHaveBeenCalledWith(queryBuilder);
+      });
+
+      it(`when triggering doneBuildingQuery
+      should call putStateIntoQueryBuilder on the facet`, () => {
+        const queryBuilder = new QueryBuilder();
+        $$(test.cmp.root).trigger(QueryEvents.doneBuildingQuery, { queryBuilder });
+        expect(test.cmp.putStateIntoQueryBuilder).toHaveBeenCalledWith(queryBuilder);
+      });
+
+      it(`when facet as a dynamicFacetManager
+      when triggering doneBuildingQuery
+      should not call putStateIntoQueryBuilder on the facet`, () => {
+        test.cmp.dynamicFacetManager = Mock.mockComponent(DynamicFacetManager);
+        $$(test.cmp.root).trigger(QueryEvents.doneBuildingQuery, { queryBuilder: new QueryBuilder() });
+        expect(test.cmp.putStateIntoQueryBuilder).not.toHaveBeenCalled();
+      });
+    });
+
     describe('testing the DependsOnManager', () => {
       beforeEach(() => {
         spyOn(test.cmp.dependsOnManager, 'updateVisibilityBasedOnDependsOn');
-        spyOn(test.cmp.dependsOnManager, 'listenToParentIfDependentFacet');
       });
 
       it('should initialize the dependsOnManager', () => {
@@ -597,6 +680,12 @@ export function DynamicFacetTest() {
       it(`when facet appearance is updated (e.g. when createDom is called)
       should call the "updateVisibilityBasedOnDependsOn" method of the DependsOnManager`, () => {
         test.cmp.createDom();
+        expect(test.cmp.dependsOnManager.updateVisibilityBasedOnDependsOn).toHaveBeenCalled();
+      });
+
+      it(`when calling reset
+      should call the "updateVisibilityBasedOnDependsOn" method of the DependsOnManager`, () => {
+        test.cmp.reset();
         expect(test.cmp.dependsOnManager.updateVisibilityBasedOnDependsOn).toHaveBeenCalled();
       });
     });

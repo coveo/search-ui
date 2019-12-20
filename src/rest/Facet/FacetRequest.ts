@@ -17,7 +17,11 @@ export enum FacetType {
   /**
    * Request facet values representing ranges of dates.
    */
-  dateRange = 'dateRange'
+  dateRange = 'dateRange',
+  /**
+   * Request facet values representing a hierarchy.
+   */
+  hierarchical = 'hierarchical'
 }
 
 /**
@@ -41,6 +45,24 @@ export interface IFacetRequestValue extends IRangeValue {
    * **Default:** `false`
    */
   preventAutoSelect?: boolean;
+  /**
+   * Whether to retrieve the children of this category facet value. Can only be used on leaf values in the request (i.e., values with no current children).
+   *
+   * **Default:** `false`
+   */
+  retrieveChildren?: boolean;
+  /**
+   * If [retrieveChildren]{@link IFacetRequestValue.retrieveChildren} is true, the maximum number of children to retrieve for this leaf value.
+   *
+   * **Default (Search API):** `0`
+   */
+  retrieveCount?: number;
+  /**
+   * The children of this category facet value.
+   * Each child is a full-fledged category facet value that may in turn have its own children and so forth,
+   * up to a maximum depth of 50 levels
+   */
+  children?: IFacetRequestValue[];
 }
 
 /**
@@ -152,4 +174,15 @@ export interface IFacetRequest {
    * **Default (Search API):** `false`
    */
   generateAutomaticRanges?: boolean;
+
+  /**
+   * The character to use to split field values into a hierarchical sequence.
+   *
+   * **Example:**
+   * For a multi-value field containing the following values: `c; c&gt;folder2; c&gt;folder2&gt;folder3;`
+   * The delimiting character is `&gt;`.
+   *
+   * **Default (Search API):** `;`
+   */
+  delimitingCharacter?: string;
 }

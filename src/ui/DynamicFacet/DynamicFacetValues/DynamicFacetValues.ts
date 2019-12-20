@@ -7,6 +7,7 @@ import { FacetValueState } from '../../../rest/Facet/FacetValueState';
 import { l } from '../../../strings/Strings';
 import { IRangeValue } from '../../../rest/RangeValue';
 import { IDynamicFacet, IValueCreator, IDynamicFacetValue, IDynamicFacetValues } from '../IDynamicFacet';
+import { DynamicFacetValueShowMoreLessButton } from './DynamicFacetValueMoreLessButton';
 
 export interface IDynamicFacetValueCreatorKlass {
   new (facet: IDynamicFacet): IValueCreator;
@@ -102,37 +103,31 @@ export class DynamicFacetValues implements IDynamicFacetValues {
   }
 
   private buildShowLess() {
-    const showLessBtn = $$(
-      'button',
-      {
-        className: 'coveo-dynamic-facet-show-less',
-        ariaLabel: l('ShowLessFacetResults', this.facet.options.title)
-      },
-      l('ShowLess')
-    );
-    const showLess = $$('li', null, showLessBtn);
-    showLessBtn.on('click', () => {
-      this.facet.enableFreezeFacetOrderFlag();
-      this.facet.showLessValues();
+    const showLess = new DynamicFacetValueShowMoreLessButton({
+      className: 'coveo-dynamic-facet-show-less',
+      ariaLabel: l('ShowLessFacetResults', this.facet.options.title),
+      label: l('ShowLess'),
+      action: () => {
+        this.facet.enableFreezeFacetOrderFlag();
+        this.facet.showLessValues();
+      }
     });
-    return showLess.el;
+
+    return showLess.element;
   }
 
   private buildShowMore() {
-    const showMoreBtn = $$(
-      'button',
-      {
-        className: 'coveo-dynamic-facet-show-more',
-        ariaLabel: l('ShowMoreFacetResults', this.facet.options.title)
-      },
-      l('ShowMore')
-    );
-    const showMore = $$('li', null, showMoreBtn);
-    showMoreBtn.on('click', () => {
-      this.facet.enableFreezeFacetOrderFlag();
-      this.facet.showMoreValues();
+    const showMore = new DynamicFacetValueShowMoreLessButton({
+      className: 'coveo-dynamic-facet-show-more',
+      ariaLabel: l('ShowMoreFacetResults', this.facet.options.title),
+      label: l('ShowMore'),
+      action: () => {
+        this.facet.enableFreezeFacetOrderFlag();
+        this.facet.showMoreValues();
+      }
     });
-    return showMore.el;
+
+    return showMore.element;
   }
 
   private get shouldEnableShowLess() {

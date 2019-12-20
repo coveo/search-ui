@@ -20,6 +20,7 @@ import { AccessibilityFacet } from './AccessibilityFacet';
 import { AccessibilityFacetRange } from './AccessibilityFacetRange';
 import { AccessibilityFacetSlider } from './AccessibilityFacetSlider';
 import { AccessibilityDynamicFacet } from './AccessibilityDynamicFacet';
+import { AccessibilityDynamicHierarchicalFacet } from './AccessibilityDynamicHierarchicalFacet';
 import { AccessibilityFieldTable } from './AccessibilityFieldTable';
 import { AccessibilityFieldValue } from './AccessibilityFieldValue';
 import { AccessibilityIcon } from './AccessibilityIcon';
@@ -115,6 +116,7 @@ describe('Testing ...', () => {
   AccessibilityFacetRange();
   AccessibilityFacetSlider();
   AccessibilityDynamicFacet();
+  AccessibilityDynamicHierarchicalFacet();
   AccessibilityFieldTable();
   AccessibilityFieldValue();
   AccessibilityIcon();

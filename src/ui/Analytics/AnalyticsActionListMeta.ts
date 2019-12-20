@@ -1229,7 +1229,7 @@ export var analyticsActionCauseList = {
   /**
    * Identifies the search event that gets logged when a user clicks the Clear all button to remove all simple filters under the search box.
    *
-   * `actionCause`: `'selectValue'`
+   * `actionCause`: `'clearAll'`
    * `actionType`: `'simpleFilter'`
    *
    * Logging an event with this actionType also adds the following key-value pairs in the custom data property of the Usage Analytics HTTP service request.
@@ -1238,7 +1238,7 @@ export var analyticsActionCauseList = {
    * `"simpleFilterField":`: <correspondingSimpleFilterField>
    */
   simpleFilterClearAll: <IAnalyticsActionCause>{
-    name: 'selectValue',
+    name: 'clearAll',
     type: 'simpleFilter'
   },
   /**

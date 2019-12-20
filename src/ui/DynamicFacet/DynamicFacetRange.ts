@@ -1,7 +1,7 @@
 import 'styling/DynamicFacet/_DynamicFacet';
 import { Initialization } from '../Base/Initialization';
 import { DynamicFacet } from './DynamicFacet';
-import { IDynamicFacetRangeOptions, DynamicFacetRangeValueFormat } from './IDynamicFacetRange';
+import { IDynamicFacetRangeOptions, DynamicFacetRangeValueFormat, isFacetRangeValueFormat } from './IDynamicFacetRange';
 import { ComponentOptions } from '../Base/ComponentOptions';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { exportGlobally } from '../../GlobalExports';
@@ -49,14 +49,35 @@ export class DynamicFacetRange extends DynamicFacet implements IComponentBinding
       localizedString: () => l('To'),
       section: 'CommonOptions'
     }),
+    field: ComponentOptions.buildFieldOption({ required: true, section: 'CommonOptions' }),
     /**
      * The string format to apply to the minimum and maximum value of each range displayed in the facet.
      *
-     * **Default:** [`number`]{@link DynamicFacetRangeValueFormat.number}
+     * **Default:** If the [`field`]{@link DynamicFacet.options.field} contains "date", the format will be [`date`]{@link DynamicFacetRangeValueFormat.date}.
+     * Else, it will be [`number`]{@link DynamicFacetRangeValueFormat.number}.
      *
      * @examples date
      */
-    valueFormat: ComponentOptions.buildStringOption({ defaultValue: DynamicFacetRangeValueFormat.number, section: 'CommonOptions' }),
+    valueFormat: ComponentOptions.buildStringOption<DynamicFacetRangeValueFormat>({
+      postProcessing: (value, options: IDynamicFacetRangeOptions) => {
+        if (isFacetRangeValueFormat(value)) {
+          return value;
+        }
+
+        if (options.field.indexOf('date') !== -1) {
+          return DynamicFacetRangeValueFormat.date;
+        }
+
+        return DynamicFacetRangeValueFormat.number;
+      },
+      section: 'CommonOptions'
+    }),
+    /**
+     * The currency symbol to use if the [`valueFormat`]{@link DynamicFacetRangeValueFormat.options.valueFormat} is [`currency`]{@link DynamicFacetRangeValueFormat.currency}.
+     *
+     * By default, the component uses the currency associated with the currently loaded culture file (see [Changing the Language of Your Search Interface](https://docs.coveo.com/421/)).
+     */
+    currencySymbol: ComponentOptions.buildStringOption({ section: 'CommonOptions' }),
     /**
      * The list of [range values]{@link IRangeValue} to request (see [Requesting Specific FacetRange Values](https://docs.coveo.com/en/2790/)).
      *

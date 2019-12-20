@@ -216,7 +216,22 @@ export function RegisteredNamedMethodsTest() {
             type: 'bar'
           }),
           jasmine.any(Object),
-          env.root
+          env.root,
+          undefined
+        );
+      });
+
+      it('should allow to log a custom event with a related query result', () => {
+        const fakeResult = FakeResults.createFakeResult();
+        RegisteredNamedMethod.logCustomEvent(env.root, { name: 'foo', type: 'bar' }, {}, fakeResult);
+        expect(analytics['client'].logCustomEvent).toHaveBeenCalledWith(
+          jasmine.objectContaining({
+            name: 'foo',
+            type: 'bar'
+          }),
+          jasmine.any(Object),
+          env.root,
+          fakeResult
         );
       });
 
