@@ -6,15 +6,24 @@ import { QueryEvents } from '../events/QueryEvents';
 import { findIndex } from 'underscore';
 import { IQueryResults } from '../rest/QueryResults';
 import { IDynamicFacet } from '../ui/DynamicFacet/IDynamicFacet';
-import { Utils } from '../Core';
+import { DynamicFacetRequestBuilder } from './DynamicFacetRequestBuilder';
+import { IQuery } from '../rest/Query';
 
 export class DynamicFacetQueryController {
+  protected requestBuilder: DynamicFacetRequestBuilder;
   private numberOfValuesToRequest: number;
   private freezeCurrentValues = false;
   private freezeFacetOrder = false;
-  private hasFolding = false;
 
   constructor(protected facet: IDynamicFacet) {
+    this.requestBuilder = new DynamicFacetRequestBuilder({
+      facetId: this.facet.options.id,
+      field: this.facet.fieldName,
+      type: this.facet.facetType,
+      sortCriteria: this.facet.options.sortCriteria as FacetSortCriteria,
+      injectionDepth: this.facet.options.injectionDepth,
+      filterFacetCount: this.facet.options.filterFacetCount
+    });
     this.resetNumberOfValuesToRequest();
     this.resetFreezeCurrentValuesDuringQuery();
   }
@@ -65,26 +74,19 @@ export class DynamicFacetQueryController {
   public putFacetIntoQueryBuilder(queryBuilder: QueryBuilder) {
     Assert.exists(queryBuilder);
 
-    this.hasFolding = !!queryBuilder.filterField;
-
-    queryBuilder.facetRequests.push(this.facetRequest);
+    queryBuilder.facetRequests.push(this.buildFacetRequest(queryBuilder.build()));
     if (this.freezeFacetOrder) {
       queryBuilder.facetOptions.freezeFacetOrder = true;
     }
   }
 
-  public get facetRequest(): IFacetRequest {
+  public buildFacetRequest(query: IQuery): IFacetRequest {
     return {
-      facetId: this.facet.options.id,
-      field: this.facet.fieldName,
-      type: this.facet.facetType,
-      sortCriteria: this.facet.options.sortCriteria as FacetSortCriteria,
+      ...this.requestBuilder.buildRequestForQuery(query),
       currentValues: this.currentValues,
       numberOfValues: this.numberOfValues,
       freezeCurrentValues: this.freezeCurrentValues,
-      isFieldExpanded: this.numberOfValuesToRequest > this.facet.options.numberOfValues,
-      injectionDepth: this.facet.options.injectionDepth,
-      filterFacetCount: this.filterFacetCount
+      isFieldExpanded: this.numberOfValuesToRequest > this.facet.options.numberOfValues
     };
   }
 
@@ -94,26 +96,16 @@ export class DynamicFacetQueryController {
     // it will also alleviate the load on the index
     query.numberOfResults = 0;
 
-    this.hasFolding = !!query.filterField;
-
     const previousFacetRequestIndex = findIndex(query.facets, { facetId: this.facet.options.id });
     if (previousFacetRequestIndex !== -1) {
-      query.facets[previousFacetRequestIndex] = this.facetRequest;
+      query.facets[previousFacetRequestIndex] = this.buildFacetRequest(query);
     } else if (query.facets) {
-      query.facets.push(this.facetRequest);
+      query.facets.push(this.buildFacetRequest(query));
     } else {
-      query.facets = [this.facetRequest];
+      query.facets = [this.buildFacetRequest(query)];
     }
 
     return this.facet.queryController.getEndpoint().search(query);
-  }
-
-  protected get filterFacetCount() {
-    if (Utils.isUndefined(this.facet.options.filterFacetCount)) {
-      return !this.hasFolding;
-    }
-
-    return this.facet.options.filterFacetCount;
   }
 
   protected get currentValues(): IFacetRequestValue[] {
