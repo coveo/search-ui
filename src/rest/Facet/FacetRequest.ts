@@ -186,7 +186,9 @@ export interface IFacetRequest {
    */
   delimitingCharacter?: string;
   /**
-   * TODO: document parameter
+   * Whether to exclude folded result parents when estimating result counts for facet values.
+   *
+   * **Default (Search API):** `true`
    */
   filterFacetCount?: boolean;
 }

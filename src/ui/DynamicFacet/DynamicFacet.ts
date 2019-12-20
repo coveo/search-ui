@@ -237,13 +237,11 @@ export class DynamicFacet extends Component implements IDynamicFacet {
     injectionDepth: ComponentOptions.buildNumberOption({ defaultValue: 1000, min: 0 }),
 
     /**
-     * TODO: document option
+     * Whether to exclude folded result parents when estimating result counts for facet values.
      *
-     * By default, the following behavior applies:
+     * See also the [`Folding`]{@link folding} and [`FoldingForThread`]{@link FoldingForThread} components.
      *
-     * - `True` when folding is not activated for the query.
-     * - `False` when folding is activated for the query.
-     * See [Folding Results](https://docs.coveo.com/en/428/).
+     * **Default:** `true` if folded results are requested;`false` otherwise.
      */
     filterFacetCount: ComponentOptions.buildBooleanOption({ section: 'Filtering' })
   };
