@@ -57,6 +57,7 @@ type IFacetValueReference = {
  */
 export interface IFacetValueSuggestionsProviderOptions {
   field: string;
+  expression?: string;
 }
 
 /**
@@ -97,7 +98,7 @@ export class FacetValueSuggestionsProvider implements IFacetValueSuggestionsProv
     const referenceValuesRequest = this.buildReferenceFieldValueRequest();
     const queryParts = this.getQueryToExecuteParts();
     const suggestionValuesRequests = valuesToSearch.map(keyword =>
-      this.buildListFieldValueRequest([...queryParts, keyword.text].join(' '))
+      this.buildListFieldValueRequest([...queryParts, ...[this.options.expression].filter(exp => !!exp), keyword.text].join(' '))
     );
     const requests = [...suggestionValuesRequests, referenceValuesRequest];
     const values = await this.queryController.getEndpoint().listFieldValuesBatch({

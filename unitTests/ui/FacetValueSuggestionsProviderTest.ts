@@ -17,6 +17,12 @@ export function FacetValueSuggestionsProviderTest() {
     const referenceFieldNumberOfResults = 10;
     const suggestion = 'suggestion';
 
+    const baseFieldValueRequest = {
+      field: someField,
+      ignoreAccents: true,
+      maximumNumberOfValues: 3
+    };
+
     const setUpLastQuery = (aq: string = '', cq: string = '') => {
       (<jasmine.Spy>environment.queryController.getLastQuery).and.returnValue({
         aq,
@@ -62,9 +68,7 @@ export function FacetValueSuggestionsProviderTest() {
       expect(environment.searchEndpoint.listFieldValuesBatch).toHaveBeenCalledWith({
         batch: <IListFieldValuesRequest[]>[
           {
-            field: someField,
-            ignoreAccents: true,
-            maximumNumberOfValues: 3,
+            ...baseFieldValueRequest,
             queryOverride: valueToSearch.text
           },
           {
@@ -108,6 +112,35 @@ export function FacetValueSuggestionsProviderTest() {
         const results = await test.getSuggestions([valueToSearch]);
 
         expect(results.length).toBe(10);
+        done();
+      });
+    });
+
+    describe('with an additional expression', () => {
+      const anExpression = '@foofield==barvalue';
+
+      beforeEach(() => {
+        test = new FacetValueSuggestionsProvider(environment.queryController, {
+          field: <string>someField,
+          expression: anExpression
+        });
+      });
+
+      it(`should execute listFieldValuesBatch with value to search,
+          the additional expression and reference`, async done => {
+        await test.getSuggestions([valueToSearch]);
+
+        expect(environment.searchEndpoint.listFieldValuesBatch).toHaveBeenCalledWith({
+          batch: <IListFieldValuesRequest[]>[
+            {
+              ...baseFieldValueRequest,
+              queryOverride: `${anExpression} ${valueToSearch.text}`
+            },
+            {
+              field: someField
+            }
+          ]
+        });
         done();
       });
     });
