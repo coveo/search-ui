@@ -28,6 +28,7 @@ export interface ISimpleFilterOptions {
   valueCaption: any;
   maximumNumberOfValues: number;
   sortCriteria: string;
+  enableClearButton?: boolean;
 }
 
 interface ILabeledCheckbox {
@@ -159,13 +160,19 @@ export class SimpleFilter extends Component {
           return 'score';
         }
       }
-    })
+    }),
+    /**
+     * Whether to show a button to clear all selected values.
+     *
+     */
+    enableClearButton: ComponentOptions.buildBooleanOption({ defaultValue: false })
   };
 
   private valueContainer: Dom;
   private checkboxes: ILabeledCheckbox[];
   private previouslySelected: string[] = [];
   private circleElement: Dom;
+  private clearElement: Dom;
   private backdrop: Dom;
   private selectTitle: Dom;
   private groupByRequestValues: string[] = [];
@@ -319,7 +326,7 @@ export class SimpleFilter extends Component {
     }
   }
 
-  private getSelectedValues() {
+  public getSelectedValues() {
     return map(this.getSelectedLabeledCheckboxes(), (labeledCheckbox: ILabeledCheckbox) => labeledCheckbox.label);
   }
 
@@ -352,6 +359,8 @@ export class SimpleFilter extends Component {
     const selectedValues = this.getSelectedValues();
     this.circleElement.text(selectedValues.length.toString());
     this.circleElement.removeClass('coveo-simplefilter-circle-hidden');
+    this.options.enableClearButton && this.clearElement.show();
+
     if (selectedValues.length == 1) {
       this.setDisplayedTitle(this.getValueCaption(selectedValues[0]));
       this.element.title = this.getValueCaption(selectedValues[0]);
@@ -361,6 +370,7 @@ export class SimpleFilter extends Component {
 
       if (selectedValues.length < 1) {
         this.circleElement.addClass('coveo-simplefilter-circle-hidden');
+        this.options.enableClearButton && this.clearElement.hide();
       }
     }
 
@@ -371,12 +381,13 @@ export class SimpleFilter extends Component {
     const action = checkbox.isSelected()
       ? analyticsActionCauseList.simpleFilterSelectValue
       : analyticsActionCauseList.simpleFilterDeselectValue;
-    this.usageAnalytics.logSearchEvent<IAnalyticsSimpleFilterMeta>(action, {
-      simpleFilterTitle: this.options.title,
-      simpleFilterSelectedValue: checkbox.label,
-      simpleFilterField: <string>this.options.field
-    });
+
     if (this.shouldTriggerQuery) {
+      this.usageAnalytics.logSearchEvent<IAnalyticsSimpleFilterMeta>(action, {
+        simpleFilterTitle: this.options.title,
+        simpleFilterSelectedValue: checkbox.label,
+        simpleFilterField: <string>this.options.field
+      });
       this.queryController.executeQuery();
     }
   }
@@ -439,6 +450,7 @@ export class SimpleFilter extends Component {
     this.selectTitle = $$('span', { className: 'coveo-simplefilter-selecttext' }, this.options.title);
     select.append(this.selectTitle.el);
     select.append(this.buildCircleElement());
+    this.options.enableClearButton && select.append(this.buildClearElement());
     select.append(this.buildSvgToggleUpIcon());
     return select.el;
   }
@@ -456,6 +468,26 @@ export class SimpleFilter extends Component {
       this.getSelectedLabeledCheckboxes().length.toString()
     );
     return this.circleElement.el;
+  }
+
+  public buildClearElement(): HTMLElement {
+    this.clearElement = $$(
+      'button',
+      {
+        title: l('DeselectFilterValues', this.options.title),
+        'aria-label': l('Clear', this.options.title),
+        className: 'coveo-simplefilter-eraser'
+      },
+      SVGIcons.icons.mainClear
+    );
+    this.clearElement.hide();
+
+    this.clearElement.on('click', (evt: Event) => {
+      evt.stopPropagation();
+      this.handleClear();
+    });
+
+    return this.clearElement.el;
   }
 
   private createBackdrop() {
@@ -501,6 +533,20 @@ export class SimpleFilter extends Component {
   private handleClearBreadcrumb() {
     // Bit of a hack with that flag, but essentially we want "clear breadcrumb" to be a global, unique event.
     // Not something that will log a special event for SimpleFilter (or any component)
+    this.resetWithoutTriggeringQuery();
+  }
+
+  private handleClear() {
+    this.usageAnalytics.logSearchEvent<IAnalyticsSimpleFilterMeta>(analyticsActionCauseList.simpleFilterClearAll, {
+      simpleFilterTitle: this.options.title,
+      simpleFilterField: <string>this.options.field
+    });
+
+    this.resetWithoutTriggeringQuery();
+    this.queryController.executeQuery();
+  }
+
+  private resetWithoutTriggeringQuery() {
     this.shouldTriggerQuery = false;
     this.resetSimpleFilter();
     this.shouldTriggerQuery = true;

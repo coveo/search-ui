@@ -803,3 +803,6 @@ OmniboxAnalyticsTest();
 
 import { StarRatingTest } from './ui/StarRatingTest';
 StarRatingTest();
+
+import { ResultPreviewsManagerTest } from './magicbox/ResultPreviewsManagerTest';
+ResultPreviewsManagerTest();

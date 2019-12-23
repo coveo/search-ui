@@ -37,13 +37,13 @@ export const FacetUtilsTest = () => {
     describe('testing getDisplayValueFromValueCaption', () => {
       it(`when there is no value caption
         display value should be equal to the value`, () => {
-        const displayValue = FacetUtils.getDisplayValueFromValueCaption('allo', '@random', {})
+        const displayValue = FacetUtils.getDisplayValueFromValueCaption('allo', '@random', {});
         expect(displayValue).toBe('allo');
       });
 
       it(`when there is a value caption
       display value should be equal to the caption for that value`, () => {
-        const displayValue = FacetUtils.getDisplayValueFromValueCaption('allo', '@random', { allo: 'bye' })
+        const displayValue = FacetUtils.getDisplayValueFromValueCaption('allo', '@random', { allo: 'bye' });
         expect(displayValue).toBe('bye');
       });
     });

@@ -94,10 +94,10 @@ export class StarRating extends Component {
     if (scale < this.rating || scale <= 0) {
       this.logger.error(`The rating scale property is either missing or invalid.`);
       return false;
-    } else {
-      this.rating = Math.floor(this.rating * (DEFAULT_SCALE / scale));
-      return true;
     }
+
+    this.rating = Math.round(this.rating * (DEFAULT_SCALE / scale));
+    return true;
   }
 
   private renderComponent() {
