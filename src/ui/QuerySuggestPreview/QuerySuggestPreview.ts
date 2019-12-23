@@ -119,7 +119,7 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
   private buildDefaultSearchResultPreviewTemplate() {
     return HtmlTemplate.create(
       $$(
-        'script',
+        'div',
         { className: 'result-template', type: 'text/html' },
         $$(
           'div',
