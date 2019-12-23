@@ -10,8 +10,6 @@ enum KeyboardKey {
   DownArrow = 40
 }
 
-function noop() {}
-
 function wait(ms: number) {
   return new Promise(resolve => setTimeout(() => resolve(), ms));
 }
@@ -40,7 +38,7 @@ export const AccessibilityResultPreviewsManager = () => {
 
     function pressKeyboardKey(keyCode: KeyboardKey) {
       const inputManager = getSearchBox()['searchbox'].magicBox['inputManager'] as InputManager;
-      const key: Partial<KeyboardEvent> = { keyCode, stopPropagation: noop, preventDefault: noop };
+      const key: Partial<KeyboardEvent> = { keyCode, stopPropagation: () => {}, preventDefault: () => {} };
       inputManager['keydown'](key);
       inputManager['keyup'](key);
     }
