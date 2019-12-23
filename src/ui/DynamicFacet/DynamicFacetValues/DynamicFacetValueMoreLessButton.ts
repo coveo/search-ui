@@ -3,7 +3,7 @@ import { $$ } from '../../../utils/Dom';
 export interface IDynamicFacetValueMoreLessButtonOptions {
   label: string;
   ariaLabel: string;
-  className: string
+  className: string;
   action: () => void;
 }
 

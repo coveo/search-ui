@@ -74,6 +74,10 @@ export class ResultPreviewsManager {
     return firstIndexOnNextRow !== -1 ? firstIndexOnNextRow : previewSelectables.length;
   }
 
+  private get previewContainerId() {
+    return `coveo-previews-for-${this.lastDisplayedSuggestion.id}`;
+  }
+
   constructor(private element: HTMLElement, options: Partial<IResultPreviewsManagerOptions> = {}) {
     this.options = defaults(options, <IResultPreviewsManagerOptions>{
       previewHeaderText: l('QuerySuggestPreview'),
@@ -165,6 +169,7 @@ export class ResultPreviewsManager {
       this.buildPreviewContainer()
     );
     this.element.appendChild(this.suggestionsPreviewContainer.el);
+    this.suggestionsListbox.setAttribute('aria-controls', this.previewContainerId);
   }
 
   private revertPreviewForSuggestions() {
@@ -177,13 +182,17 @@ export class ResultPreviewsManager {
     return $$(
       'div',
       {
-        className: 'coveo-preview-container'
+        className: 'coveo-preview-container',
+        id: this.previewContainerId
       },
       (this.resultPreviewsHeader = $$('div', {
-        className: 'coveo-preview-header'
+        className: 'coveo-preview-header',
+        role: 'status'
       })),
       (this.resultPreviewsContainer = $$('div', {
-        className: 'coveo-preview-results'
+        className: 'coveo-preview-results',
+        role: 'listbox',
+        'aria-orientation': 'horizontal'
       }))
     ).el;
   }
@@ -204,25 +213,30 @@ export class ResultPreviewsManager {
   }
 
   private updateSearchResultPreviewsHeader(suggestion: string) {
-    this.resultPreviewsHeader.text(`${this.options.previewHeaderText} "${suggestion}"`);
+    const text = `${this.options.previewHeaderText} "${suggestion}"`;
+    this.resultPreviewsHeader.text(text);
+    this.resultPreviewsContainer.setAttribute('summary', text);
   }
 
-  private appendSearchResultPreview(preview: ISearchResultPreview) {
+  private appendSearchResultPreview(preview: ISearchResultPreview, position: number) {
     this.resultPreviewsContainer.append(preview.element);
+    preview.element.id = `coveo-result-preview-${position}`;
     const elementDom = $$(preview.element);
+    elementDom.setAttribute('aria-selected', 'false');
+    elementDom.setAttribute('role', 'option');
     elementDom.on('click', () => preview.onSelect());
     elementDom.on('keyboardSelect', () => preview.onSelect());
   }
 
   private appendSearchResultPreviews(previews: ISearchResultPreview[]) {
     this.resultPreviewsContainer.empty();
-    previews.forEach(preview => this.appendSearchResultPreview(preview));
+    previews.forEach((preview, i) => this.appendSearchResultPreview(preview, i));
   }
 
   private displaySuggestionPreviews(suggestion: HTMLElement, previews: ISearchResultPreview[]) {
+    this.lastDisplayedSuggestion = suggestion;
     this.setHasPreviews(previews && previews.length > 0);
     this.element.classList.toggle('magic-box-hasPreviews', this.hasPreviews);
-    this.lastDisplayedSuggestion = suggestion;
     if (!this.hasPreviews) {
       return;
     }

@@ -13,7 +13,7 @@ export function DynamicFacetHeaderTest() {
         enableCollapse: true,
         toggleCollapse: jasmine.createSpy('toggleCollapse'),
         collapse: jasmine.createSpy('collapse'),
-        expand: jasmine.createSpy('clear'),
+        expand: jasmine.createSpy('clear')
       };
       initializeComponent();
     });
