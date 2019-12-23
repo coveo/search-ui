@@ -34,7 +34,7 @@ export function DynamicHierarchicalFacetQueryControllerTest() {
     }
 
     function facetRequest() {
-      return dynamicHierarchicalFacetQueryController.facetRequest;
+      return dynamicHierarchicalFacetQueryController.buildFacetRequest(queryBuilder.build());
     }
 
     function queryFacetRequests() {
@@ -45,23 +45,11 @@ export function DynamicHierarchicalFacetQueryControllerTest() {
       return queryBuilder.build().facetOptions;
     }
 
-    it('should send the field without the "@"', () => {
-      expect(facetRequest().field).toBe(facet.fieldName);
-    });
-
-    it('should send the facet type', () => {
-      expect(facetRequest().type).toBe(facet.facetType);
-    });
-
-    it('should send the delimitingCharacter', () => {
-      expect(facetRequest().delimitingCharacter).toBe(facet.options.delimitingCharacter);
-    });
-
-    it('should send the facet id', () => {
+    it('should send the right basic facetRequest parameters', () => {
       expect(facetRequest().facetId).toBe(facet.options.id);
-    });
-
-    it('should send the injectionDepth', () => {
+      expect(facetRequest().field).toBe(facet.fieldName);
+      expect(facetRequest().type).toBe(facet.facetType);
+      expect(facetRequest().delimitingCharacter).toBe(facet.options.delimitingCharacter);
       expect(facetRequest().injectionDepth).toBe(facet.options.injectionDepth);
     });
 
@@ -180,7 +168,7 @@ export function DynamicHierarchicalFacetQueryControllerTest() {
         dynamicHierarchicalFacetQueryController.getQueryResults();
         expect(mockEndpoint.search).toHaveBeenCalledWith(
           jasmine.objectContaining({
-            facets: [dynamicHierarchicalFacetQueryController.facetRequest]
+            facets: [dynamicHierarchicalFacetQueryController.buildFacetRequest(new QueryBuilder().build())]
           })
         );
       });
@@ -194,7 +182,7 @@ export function DynamicHierarchicalFacetQueryControllerTest() {
 
         expect(mockEndpoint.search).toHaveBeenCalledWith(
           jasmine.objectContaining({
-            facets: [queryFacetRequests()[0], dynamicHierarchicalFacetQueryController.facetRequest]
+            facets: [queryFacetRequests()[0], dynamicHierarchicalFacetQueryController.buildFacetRequest(new QueryBuilder().build())]
           })
         );
       });

@@ -20,7 +20,7 @@ import { MODEL_EVENTS, IAttributesChangedEventArg } from '../../models/Model';
 import { Assert } from '../../misc/Assert';
 import { IFacetResponse } from '../../rest/Facet/FacetResponse';
 import { IStringMap } from '../../rest/GenericParam';
-import { isFacetSortCriteria } from '../../rest/Facet/FacetSortCriteria';
+import { isFacetSortCriteria, FacetSortCriteria } from '../../rest/Facet/FacetSortCriteria';
 import { l } from '../../strings/Strings';
 import { DeviceUtils } from '../../utils/DeviceUtils';
 import { BreadcrumbEvents, IPopulateBreadcrumbEventArgs } from '../../events/BreadcrumbEvents';
@@ -136,7 +136,7 @@ export class DynamicFacet extends Component implements IDynamicFacet {
      * @examples score
      */
     sortCriteria: ComponentOptions.buildStringOption({
-      postProcessing: value => (isFacetSortCriteria(value) ? value : undefined),
+      postProcessing: value => (isFacetSortCriteria(value) ? (value as FacetSortCriteria) : undefined),
       section: 'Sorting'
     }),
 
@@ -234,7 +234,16 @@ export class DynamicFacet extends Component implements IDynamicFacet {
      *
      * Setting this option to a higher value may enhance the accuracy of facet value counts at the cost of slower query performance.
      */
-    injectionDepth: ComponentOptions.buildNumberOption({ defaultValue: 1000, min: 0 })
+    injectionDepth: ComponentOptions.buildNumberOption({ defaultValue: 1000, min: 0 }),
+
+    /**
+     * Whether to exclude folded result parents when estimating result counts for facet values.
+     *
+     * See also the [`Folding`]{@link folding} and [`FoldingForThread`]{@link FoldingForThread} components.
+     *
+     * **Default:** `true` if folded results are requested;`false` otherwise.
+     */
+    filterFacetCount: ComponentOptions.buildBooleanOption({ section: 'Filtering' })
   };
 
   private includedAttributeId: string;
