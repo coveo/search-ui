@@ -239,9 +239,9 @@ export class ResultPreviewsManager {
   }
 
   private displaySuggestionPreviews(suggestion: Suggestion, previews: ISearchResultPreview[]) {
+    this.lastDisplayedSuggestion = suggestion;
     this.setHasPreviews(previews && previews.length > 0);
     this.element.classList.toggle('magic-box-hasPreviews', this.hasPreviews);
-    this.lastDisplayedSuggestion = suggestion;
     if (!this.hasPreviews) {
       return;
     }

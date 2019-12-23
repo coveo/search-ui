@@ -28,7 +28,7 @@ export function ResultPreviewsManagerTest() {
     }
 
     function createTestSuggestion(): Suggestion {
-      return { dom: $$('div', {}, suggestionText).el };
+      return { dom: $$('div', {}, suggestionText).el, text: suggestionText };
     }
 
     function createPreviews() {
