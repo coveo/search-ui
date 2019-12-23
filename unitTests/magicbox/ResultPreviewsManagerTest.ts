@@ -3,6 +3,7 @@ import { IMockEnvironment, MockEnvironmentBuilder } from '../MockEnvironment';
 import { $$ } from '../../src/utils/Dom';
 import { ResultPreviewsManagerEvents, IPopulateSearchResultPreviewsEventArgs } from '../../src/events/ResultPreviewsManagerEvents';
 import { toArray } from 'underscore';
+import { Suggestion } from '../../src/magicbox/SuggestionsManager';
 
 export function ResultPreviewsManagerTest() {
   describe('ResultPreviewsManager', function() {
@@ -26,8 +27,8 @@ export function ResultPreviewsManagerTest() {
       buildSuggestionsListbox();
     }
 
-    function createTestSuggestion() {
-      return $$('div', {}, suggestionText).el;
+    function createTestSuggestion(): Suggestion {
+      return { dom: $$('div', {}, suggestionText).el };
     }
 
     function createPreviews() {

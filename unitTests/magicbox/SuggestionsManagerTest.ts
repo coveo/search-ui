@@ -46,6 +46,8 @@ export function SuggestionsManagerTest() {
           selectedClass,
           suggestionClass
         });
+
+        suggestionManager.updateSuggestions([buildSuggestion()]);
       });
 
       it('builds suggestions parent correctly when adding a suggestion', () => {
@@ -264,14 +266,21 @@ export function SuggestionsManagerTest() {
       function buildContainer() {
         container = $$(document.createElement('div'));
         suggestionContainer = $$(document.createElement('div'));
-        suggestion = $$(document.createElement('div'));
-        elementInsideSuggestion = $$(document.createElement('div'));
-
-        suggestion.addClass(suggestionClass);
-        suggestion.setAttribute('aria-selected', 'false');
-        suggestion.el.appendChild(elementInsideSuggestion.el);
-        suggestionContainer.el.appendChild(suggestion.el);
         container.el.appendChild(suggestionContainer.el);
+      }
+
+      function buildSuggestion(): Suggestion {
+        const text = 'abc';
+        suggestion = $$(
+          'div',
+          {
+            className: suggestionClass,
+            'aria-selected': false
+          },
+          (elementInsideSuggestion = $$('div', {}, text))
+        );
+
+        return { dom: suggestion.el, text, onSelect: () => {} };
       }
     });
 

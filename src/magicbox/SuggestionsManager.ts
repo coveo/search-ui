@@ -62,7 +62,7 @@ export class SuggestionsManager {
   }
 
   private get focusedSuggestion() {
-    return find(this.currentSuggestions || <Suggestion[]>[], suggestion => suggestion.dom.classList.contains(this.options.selectedClass));
+    return find(this.currentSuggestions, suggestion => suggestion.dom.classList.contains(this.options.selectedClass));
   }
 
   constructor(
@@ -297,7 +297,7 @@ export class SuggestionsManager {
   private modifyDomFromExistingSuggestion(dom: HTMLElement) {
     // this need to be done if the selection is in cache and the dom is set in the suggestion
     this.removeSelectedStatus(dom);
-    const found = $$(dom).find('.' + this.options.suggestionClass);
+    const found = dom.classList.contains(this.options.suggestionClass) ? dom : $$(dom).find('.' + this.options.suggestionClass);
     this.removeSelectedStatus(found);
     return $$(dom);
   }
