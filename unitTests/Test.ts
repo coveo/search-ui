@@ -801,5 +801,5 @@ OmniboxAnalyticsTest();
 import { StarRatingTest } from './ui/StarRatingTest';
 StarRatingTest();
 
-import { QueryForCommerceTest } from './ui/QueryForCommerceTest';
-QueryForCommerceTest();
+import { CommerceQueryTest } from './ui/CommerceQueryTest';
+CommerceQueryTest();

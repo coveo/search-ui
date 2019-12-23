@@ -1,17 +1,17 @@
-import { QueryForCommerce, IQueryForCommerceOptions } from '../../src/ui/QueryForCommerce/QueryForCommerce';
+import { CommerceQuery, ICommerceQueryOptions } from '../../src/ui/CommerceQuery/CommerceQuery';
 import * as Mock from '../MockEnvironment';
 import { Simulate } from '../Simulate';
 import { AnalyticsEvents, $$ } from '../../src/Core';
 import { IChangeableAnalyticsDataObject, IChangeAnalyticsCustomDataEventArgs } from '../../src/events/AnalyticsEvents';
 import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
 
-export function QueryForCommerceTest() {
-  describe('QueryForCommerce', function() {
-    let test: Mock.IBasicComponentSetup<QueryForCommerce>;
+export function CommerceQueryTest() {
+  describe('CommerceQuery', function() {
+    let test: Mock.IBasicComponentSetup<CommerceQuery>;
 
     describe('with a listing value', () => {
       beforeEach(function() {
-        test = Mock.optionsComponentSetup<QueryForCommerce, IQueryForCommerceOptions>(QueryForCommerce, <IQueryForCommerceOptions>{
+        test = Mock.optionsComponentSetup<CommerceQuery, ICommerceQueryOptions>(CommerceQuery, <ICommerceQueryOptions>{
           listing: 'foobar'
         });
       });

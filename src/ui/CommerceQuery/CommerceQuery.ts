@@ -7,27 +7,27 @@ import { AnalyticsEvents, IChangeAnalyticsCustomDataEventArgs } from '../../even
 import { Initialization } from '../Base/Initialization';
 import { exportGlobally } from '../../GlobalExports';
 
-export interface IQueryForCommerceOptions {
+export interface ICommerceQueryOptions {
   listing?: string;
 }
 
 /**
- * The QueryForCommerce component enables to set properties for listing pages in commerce sites in a convenient way
+ * The CommerceQuery component enables to set properties for listing pages in commerce sites in a convenient way
  */
-export class QueryForCommerce extends Component {
-  static ID = 'QueryForCommerce';
+export class CommerceQuery extends Component {
+  static ID = 'CommerceQuery';
 
   static doExport = () => {
     exportGlobally({
-      QueryForCommerce: QueryForCommerce
+      CommerceQuery: CommerceQuery
     });
   };
 
   /**
-   * The options for the QueryForCommerce.
+   * The options for the CommerceQuery.
    * @componentOptions
    */
-  static options: IQueryForCommerceOptions = {
+  static options: ICommerceQueryOptions = {
     /**
      * Setting this property will update the tab value of a query and set the originLevel2 in the analytics event
      *
@@ -37,16 +37,16 @@ export class QueryForCommerce extends Component {
   };
 
   /**
-   * Creates a new QueryForCommerce component.
+   * Creates a new CommerceQuery component.
    * @param element The HTMLElement on which to instantiate the component.
-   * @param options The options for the QueryForCommerce component.
+   * @param options The options for the CommerceQuery component.
    * @param bindings The bindings that the component requires to function normally. If not set, these will be
    * automatically resolved (with a slower execution time).
    */
-  constructor(public element: HTMLElement, public options?: IQueryForCommerceOptions, public bindings?: IComponentBindings) {
-    super(element, QueryForCommerce.ID, bindings);
+  constructor(public element: HTMLElement, public options?: ICommerceQueryOptions, public bindings?: IComponentBindings) {
+    super(element, CommerceQuery.ID, bindings);
 
-    this.options = ComponentOptions.initComponentOptions(element, QueryForCommerce, options);
+    this.options = ComponentOptions.initComponentOptions(element, CommerceQuery, options);
     Assert.exists(element);
     Assert.exists(this.options);
 
@@ -68,4 +68,4 @@ export class QueryForCommerce extends Component {
   }
 }
 
-Initialization.registerAutoCreateComponent(QueryForCommerce);
+Initialization.registerAutoCreateComponent(CommerceQuery);
