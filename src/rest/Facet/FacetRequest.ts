@@ -185,4 +185,10 @@ export interface IFacetRequest {
    * **Default (Search API):** `;`
    */
   delimitingCharacter?: string;
+  /**
+   * Whether to exclude folded result parents when estimating result counts for facet values.
+   *
+   * **Default (Search API):** `true`
+   */
+  filterFacetCount?: boolean;
 }
