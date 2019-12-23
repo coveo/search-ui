@@ -53,7 +53,7 @@ export class FacetValueSuggestions extends Component {
   static options: IFacetValueSuggestionsOptions = {
     /**
      * The field on whose values the scoped query suggestions should be based.
-     * el campo que tiene los valores en los que las sugerencias estan basadas
+     *
      * Specifying a value for this option is required for the component to work.
      *
      * @examples @productcategory
