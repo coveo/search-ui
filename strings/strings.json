@@ -7513,12 +7513,12 @@
     "fr": "Aucune valeur trouvée."
   },
   "QuerySuggestPreview": {
-    "en": "Product recommendations for",
-    "fr": "Recommendations de produits pour"
+    "en": "Most relevant results for",
+    "fr": "Résultats les plus pertinents pour"
   },
   "QuerySuggestPreviewWithField": {
-    "en": "under",
-    "fr": "sous"
+    "en": "in",
+    "fr": "dans"
   },
   "To": {
     "en": "to",

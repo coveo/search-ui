@@ -285,6 +285,8 @@ export class FacetValueSuggestions extends Component {
           }
     };
 
+    suggestion.advancedQuery = `${suggestion.field.name}=="${suggestion.field.value}"`;
+
     suggestion.onSelect = () => this.onSuggestionSelected(suggestion, omnibox);
 
     return suggestion;

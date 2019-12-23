@@ -167,9 +167,7 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
       context,
       numberOfResults: this.options.numberOfPreviewResults,
       q: suggestion.text || suggestion.dom.innerText,
-      ...(suggestion.field && {
-        aq: `${suggestion.field.name}=="${suggestion.field.value}"`
-      })
+      ...(suggestion.advancedQuery && { aq: suggestion.advancedQuery })
     };
   }
 

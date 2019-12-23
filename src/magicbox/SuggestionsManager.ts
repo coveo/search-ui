@@ -22,6 +22,7 @@ export interface Suggestion {
   dom?: HTMLElement;
   separator?: string;
   field?: ISuggestionField;
+  advancedQuery?: string;
   onSelect?: () => void;
 }
 
@@ -61,7 +62,7 @@ export class SuggestionsManager {
   }
 
   private get focusedSuggestion() {
-    return find(this.currentSuggestions, suggestion => suggestion.dom.classList.contains(this.options.selectedClass));
+    return find(this.currentSuggestions || <Suggestion[]>[], suggestion => suggestion.dom.classList.contains(this.options.selectedClass));
   }
 
   constructor(
