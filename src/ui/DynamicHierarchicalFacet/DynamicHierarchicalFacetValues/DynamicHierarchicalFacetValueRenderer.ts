@@ -23,7 +23,7 @@ export class DynamicHierarchicalFacetValueRenderer {
   }
 
   private renderLabel() {
-    const label = $$('span', { className: 'coveo-dynamic-hierarchical-facet-value-label' });
+    const label = $$('span', { className: 'coveo-dynamic-hierarchical-facet-value-label', title: this.facetValue.displayValue });
     label.text(this.facetValue.displayValue);
     this.button.append(label.el);
   }

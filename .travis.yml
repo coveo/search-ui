@@ -73,6 +73,15 @@ deploy:
     upload-dir: proda/StaticCDN/searchui/v$PACKAGE_JSON_VERSION
     acl: public_read
     skip_cleanup: true
+  - provider: s3
+    access_key_id: AKIAYKDJLZIT462WODCI
+    secret_access_key:
+      secure: sT8isIiaAIg/Ic7x8cCD3anwCEHAyzG/IWkngmkf5c128NEwUIUdmsQJ1hi4Bw84zk1OOb3id+yXjeaTuKDgIkxe/jk3e2xZ7xElfLNTOln6QLkgsYpKFtGHiKjROOHOb5+Es6L1mxpHWbXH9ebmEhRduUw/BeHWW2MfZmfb434DgvatViRm8DOeROeqlYnbCda5ZELuT5SdwEs/CbExaiSL0WKVoTvcxbe+At4uVnTuc6SYyOvRoblx/q6Ra6mdRipluMs7Go93eu/Oqo7cZ2akrNSi/WBXGqL/wXxe2pYsziSABWjQaqWXD/jKte1ZBx7OXssn88DUKat/RrL7Ak30WHzgY/goiNV+EPT/wtNYWHP3suAzzGqNNMhsPx0lSI7vSUga72J3hV1TOsX9ORosiRm1c2fnmNB9vJdH7yAX7lWpqH2XuOrldVvvTGazSJYx93eBukDViFCZ6egeb+gMT8VQ38uitwd9BZaMhycoujZgSjhx7JnbHUoUdXkdT3XBNV7fINTozWCNJW81iJN+JuLZzneJ/CbjmjkfGcVoFFPCD9rGSj8DbgvWpt8rkwI4ZfHTNOgO9iWgSklpk9r2wgM7Z87V2Zpu8UX/QCFxy8IREtJUo6X9YG9nBoy21wUa9zia2SWpideur9cXb6U0+q84onHVlA0Ehp/1OYs=
+    bucket: coveo-nprod-binaries
+    local-dir: bin
+    upload-dir: proda/StaticCDN/searchui/v$PACKAGE_JSON_VERSION/$PACKAGE_PATCH_VERSION
+    acl: public_read
+    skip_cleanup: true
     on:
       tags: true
       repo: coveo/search-ui

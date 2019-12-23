@@ -124,7 +124,7 @@ export function StarRatingTest() {
 
           const starData = getActiveStars(test.cmp.element);
           expect(starData.numStars).toBe(5);
-          expect(starData.numActiveStars).toBe(Math.floor(i / 2));
+          expect(starData.numActiveStars).toBe(Math.round(i / 2));
         }
       });
 
