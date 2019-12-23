@@ -19,6 +19,7 @@ export class DynamicHierarchicalFacetQueryController {
       facetId: this.facet.options.id,
       field: this.facet.fieldName,
       type: this.facet.facetType,
+      sortCriteria: this.facet.options.sortCriteria,
       injectionDepth: this.facet.options.injectionDepth,
       delimitingCharacter: this.facet.options.delimitingCharacter,
       filterFacetCount: this.facet.options.filterFacetCount

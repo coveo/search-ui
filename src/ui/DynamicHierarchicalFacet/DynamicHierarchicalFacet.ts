@@ -32,6 +32,7 @@ import { IQueryResults } from '../../rest/QueryResults';
 import { DynamicFacetManager } from '../DynamicFacetManager/DynamicFacetManager';
 import { IAnalyticsFacetState } from '../Analytics/IAnalyticsFacetState';
 import { FacetValueState } from '../../rest/Facet/FacetValueState';
+import { FacetSortCriteria } from '../../rest/Facet/FacetSortCriteria';
 
 /**
  * The `DynamicHierarchicalFacet` component is a facet that renders values in a hierarchical fashion. It determines the filter to apply depending on the
@@ -206,6 +207,19 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
      * **Default:** `true` if folded results are requested;`false` otherwise.
      */
     filterFacetCount: ComponentOptions.buildBooleanOption({ section: 'Filtering' }),
+
+    /**
+     * The sort criterion to use for this facet.
+     *
+     * Allowed values are `occurences` and `alphanumeric`.
+     *
+     * **Default (API):** `occurrences`
+     */
+    sortCriteria: <FacetSortCriteria>ComponentOptions.buildStringOption({
+      postProcessing: value => (value === FacetSortCriteria.alphanumeric || value === FacetSortCriteria.occurrences ? value : undefined),
+      section: 'Sorting'
+    }),
+
     ...ResponsiveFacetOptions
   };
 

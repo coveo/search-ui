@@ -11,6 +11,7 @@ import { IAnalyticsActionCause } from '../Analytics/AnalyticsActionListMeta';
 import { IFacetResponse } from '../../rest/Facet/FacetResponse';
 import { FacetValueState } from '../../rest/Facet/FacetValueState';
 import { IDynamicManagerCompatibleFacet } from '../DynamicFacetManager/DynamicFacetManager';
+import { FacetSortCriteria } from '../../rest/Facet/FacetSortCriteria';
 
 export interface IDynamicHierarchicalFacetOptions extends IResponsiveComponentOptions {
   id?: string;
@@ -20,6 +21,7 @@ export interface IDynamicHierarchicalFacetOptions extends IResponsiveComponentOp
   collapsedByDefault?: boolean;
   enableScrollToTop?: boolean;
   numberOfValues?: number;
+  sortCriteria?: FacetSortCriteria;
   injectionDepth?: number;
   enableMoreLess?: boolean;
   delimitingCharacter?: string;

@@ -135,8 +135,8 @@ export class DynamicFacet extends Component implements IDynamicFacet {
      *
      * @examples score
      */
-    sortCriteria: ComponentOptions.buildStringOption({
-      postProcessing: value => (isFacetSortCriteria(value) ? (value as FacetSortCriteria) : undefined),
+    sortCriteria: <FacetSortCriteria>ComponentOptions.buildStringOption({
+      postProcessing: value => (isFacetSortCriteria(value) ? value : undefined),
       section: 'Sorting'
     }),
 
