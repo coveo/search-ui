@@ -12,12 +12,13 @@ import { IFacetResponseValue, IFacetResponse } from '../../rest/Facet/FacetRespo
 import { IRangeValue } from '../../rest/RangeValue';
 import { FacetValueState } from '../../rest/Facet/FacetValueState';
 import { DynamicFacetHeader } from './DynamicFacetHeader/DynamicFacetHeader';
+import { FacetSortCriteria } from '../../rest/Facet/FacetSortCriteria';
 
 export interface IDynamicFacetOptions extends IResponsiveComponentOptions {
   id?: string;
   title?: string;
   field?: IFieldOption;
-  sortCriteria?: string;
+  sortCriteria?: FacetSortCriteria;
   numberOfValues?: number;
   enableCollapse?: boolean;
   enableScrollToTop?: boolean;

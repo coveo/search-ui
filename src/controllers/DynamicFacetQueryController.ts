@@ -1,7 +1,6 @@
 import { QueryBuilder } from '../ui/Base/QueryBuilder';
 import { Assert } from '../misc/Assert';
 import { IFacetRequest, IFacetRequestValue } from '../rest/Facet/FacetRequest';
-import { FacetSortCriteria } from '../rest/Facet/FacetSortCriteria';
 import { QueryEvents } from '../events/QueryEvents';
 import { findIndex } from 'underscore';
 import { IQueryResults } from '../rest/QueryResults';
@@ -20,7 +19,7 @@ export class DynamicFacetQueryController {
       facetId: this.facet.options.id,
       field: this.facet.fieldName,
       type: this.facet.facetType,
-      sortCriteria: this.facet.options.sortCriteria as FacetSortCriteria,
+      sortCriteria: this.facet.options.sortCriteria,
       injectionDepth: this.facet.options.injectionDepth,
       filterFacetCount: this.facet.options.filterFacetCount
     });

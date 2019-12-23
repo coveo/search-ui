@@ -16,7 +16,7 @@ export function DynamicFacetRequestBuilderTest() {
 
     describe('testing "filterFacetCount"', () => {
       it(`when "filterFacetCount" is not initially defined
-      when the "query" as no "filterField" defined
+      when the "query" has no "filterField" defined
       "filterFacetCount" should be "true"`, () => {
         initializeRequestBuilder();
         const query = new QueryBuilder().build();
@@ -24,7 +24,7 @@ export function DynamicFacetRequestBuilderTest() {
       });
 
       it(`when "filterFacetCount" is not initially defined
-      when the "query" as a "filterField" defined
+      when the "query" has a "filterField" defined
       "filterFacetCount" should be "false"`, () => {
         initializeRequestBuilder();
         const query = new QueryBuilder().build();
