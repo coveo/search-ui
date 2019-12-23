@@ -5,7 +5,7 @@ import { $$, Dom } from '../../src/utils/Dom';
 import { Utils } from '../../src/utils/Utils';
 import { IMockEnvironment, MockEnvironmentBuilder } from '../MockEnvironment';
 import { OmniboxEvents } from '../../src/Core';
-import { last, first } from 'underscore';
+import { last, first, toArray } from 'underscore';
 import { ISearchResultPreview } from '../../src/magicbox/ResultPreviewsManager';
 import {
   ResultPreviewsManagerEvents,
@@ -632,6 +632,15 @@ export function SuggestionsManagerTest() {
                 await moveDownToSuggestionAndWait(0);
                 suggestionsManager.moveRight();
                 expect(suggestionsManager.selectedSuggestion).toBeNull();
+                done();
+              });
+
+              it("moving the focus right when there's previews sets aria-selected on the first preview", async done => {
+                await moveDownToSuggestionAndWait(0);
+                suggestionsManager.moveRight();
+                const selectedElements = toArray<HTMLElement>(env.root.querySelectorAll('[aria-selected="true"]'));
+                expect(selectedElements.length).toEqual(1);
+                expect(selectedElements[0].innerText).toEqual(first(first(textPreviews)));
                 done();
               });
 

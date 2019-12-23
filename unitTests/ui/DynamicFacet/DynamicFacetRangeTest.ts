@@ -73,6 +73,33 @@ export function DynamicFacetRangeTest() {
       expect(test.cmp.facetType).toBe(FacetType.numericalRange);
     });
 
+    it(`when the valueFormat is currency
+      the facetType should be numericalRange`, () => {
+      options.valueFormat = DynamicFacetRangeValueFormat.currency;
+      initializeComponent();
+      expect(test.cmp.facetType).toBe(FacetType.numericalRange);
+    });
+
+    it(`when not setting a valueFormat option
+      should set it to "number" by default`, () => {
+      expect(test.cmp.options.valueFormat).toBe(DynamicFacetRangeValueFormat.number);
+    });
+
+    it(`when not setting a valueFormat option
+      and having with a field containing "date"
+      should set it to "date"`, () => {
+      options.field = '@cooldatefield';
+      initializeComponent();
+      expect(test.cmp.options.valueFormat).toBe(DynamicFacetRangeValueFormat.date);
+    });
+
+    it(`when setting an invalid valueFormat option
+      should set it to "number"`, () => {
+      options.valueFormat = 'hello' as DynamicFacetRangeValueFormat;
+      initializeComponent();
+      expect(test.cmp.options.valueFormat).toBe(DynamicFacetRangeValueFormat.number);
+    });
+
     it(`when calling showMoreValues
       it should throw a warning`, () => {
       test.cmp.showMoreValues();

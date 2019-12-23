@@ -12,8 +12,6 @@ export class DynamicFacetRangeTestUtils {
   static allOptions(options?: IDynamicFacetRangeOptions) {
     return {
       field: '@dummy',
-      valueSeparator: 'to',
-      valueFormat: DynamicFacetRangeValueFormat.number,
       ...options
     };
   }
@@ -21,7 +19,11 @@ export class DynamicFacetRangeTestUtils {
   static createFakeFacet(options?: IDynamicFacetRangeOptions) {
     const facet = Mock.mockComponent<DynamicFacetRange>(DynamicFacetRange);
     facet.logger = Mock.mock(Logger);
-    facet.options = this.allOptions(options);
+    facet.options = this.allOptions({
+      valueFormat: DynamicFacetRangeValueFormat.number,
+      valueSeparator: 'to',
+      ...options
+    });
     facet.values = new DynamicFacetValues(facet, DynamicFacetRangeValueCreator);
     facet.element = $$('div').el;
     facet.searchInterface = Mock.mockSearchInterface();

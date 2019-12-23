@@ -13,6 +13,7 @@ import { IQueryResults } from '../../src/rest/QueryResults';
 import { last } from 'underscore';
 import { IPopulateSearchResultPreviewsEventArgs, ResultPreviewsManagerEvents } from '../../src/events/ResultPreviewsManagerEvents';
 import { IQuery } from '../../src/rest/Query';
+import { ResultLink } from '../../src/ui/ResultLink/ResultLink';
 
 export function initOmniboxAnalyticsMock(omniboxAnalytics: IOmniboxAnalytics) {
   const partialQueries: string[] = [];
@@ -42,11 +43,12 @@ function getMetadata(omniboxAnalytics: IOmniboxAnalytics) {
 
 export function QuerySuggestPreviewTest() {
   describe('QuerySuggestPreview', () => {
+    const templateClassName = 'test-template';
     let test: IBasicComponentSetup<QuerySuggestPreview>;
     let testEnv: Mock.MockEnvironmentBuilder;
     let omniboxAnalytics: IOmniboxAnalytics;
+    let fakeResults: IQueryResults;
 
-    const templateClassName = 'test-template';
     function setupQuerySuggestPreview(options: IQuerySuggestPreview = {}, useCustomTemplate = true) {
       if (useCustomTemplate) {
         options.resultTemplate = HtmlTemplate.create(
@@ -59,17 +61,22 @@ export function QuerySuggestPreviewTest() {
         new Mock.AdvancedComponentSetupOptions(null, options, env => testEnv)
       );
       spyOn(Component, 'resolveRoot').and.returnValue(testEnv.root);
+
+      createDefaultFakeResults();
     }
 
-    function triggerPopulateSearchResultPreviews(suggestionText: string = 'test', fakeResults?: IQueryResults) {
-      fakeResults = fakeResults || FakeResults.createFakeResults(test.cmp.options.numberOfPreviewResults);
+    function createDefaultFakeResults() {
+      fakeResults = FakeResults.createFakeResults(test.cmp.options.numberOfPreviewResults);
+    }
+
+    function triggerPopulateSearchResultPreviews(suggestionText: string = 'test') {
       (test.env.searchEndpoint.search as jasmine.Spy).and.returnValue(Promise.resolve(fakeResults));
       const event: IPopulateSearchResultPreviewsEventArgs = { suggestion: { text: suggestionText }, previewsQueries: [] };
       $$(testEnv.root).trigger(ResultPreviewsManagerEvents.populateSearchResultPreviews, event);
       return event.previewsQueries[0];
     }
 
-    function triggerPopulateSearchResultPreviewsAndPassTime(suggestion: string = 'test', fakeResults?: IQueryResults) {
+    function triggerPopulateSearchResultPreviewsAndPassTime(suggestion: string = 'test') {
       const query = triggerPopulateSearchResultPreviews(suggestion);
       if (query instanceof Promise) {
         return query;
@@ -130,6 +137,36 @@ export function QuerySuggestPreviewTest() {
         previews[previewIndexToSelect].element
       );
       done();
+    });
+
+    describe('with accessibility', () => {
+      describe('with a ResultLink in the template', () => {
+        beforeEach(() => {
+          setupQuerySuggestPreview({}, false);
+        });
+
+        it('sets the aria-label of previews to their title', async done => {
+          const previews = await triggerPopulateSearchResultPreviewsAndPassTime();
+          previews.forEach((preview, i) => expect(preview.element.getAttribute('aria-label')).toEqual(fakeResults.results[i].title));
+          done();
+        });
+
+        it('sets the role of the link to "link"', async done => {
+          const resultLinks = (await triggerPopulateSearchResultPreviewsAndPassTime()).map(preview =>
+            preview.element.querySelector(Component.computeSelectorForType(ResultLink.ID))
+          );
+          resultLinks.forEach(resultLink => expect(resultLink.getAttribute('role')).toEqual('link'));
+          done();
+        });
+
+        it('has no "aria-level" on the link', async done => {
+          const resultLinks = (await triggerPopulateSearchResultPreviewsAndPassTime()).map(preview =>
+            preview.element.querySelector(Component.computeSelectorForType(ResultLink.ID))
+          );
+          resultLinks.forEach(resultLink => expect(resultLink.getAttribute('aria-level')).toBeFalsy());
+          done();
+        });
+      });
     });
 
     describe('expose options', () => {

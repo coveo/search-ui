@@ -7523,5 +7523,10 @@
   "To": {
     "en": "to",
     "fr": "à"
+  },
+  "DeselectFilterValues": {
+    "en": "Deselect all active filters on {0} field",
+    "fr": "Effacer tout de filtres actifs dans {0}",
+    "es-es": "Quitar los filtros activos en el campo {0}"
   }
 }

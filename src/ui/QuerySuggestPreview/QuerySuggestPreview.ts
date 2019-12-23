@@ -180,7 +180,13 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
   }
 
   private buildResultPreview(suggestion: Suggestion, element: HTMLElement, rank: number): ISearchResultPreview {
-    $$(element).addClass('coveo-preview-selectable');
+    element.classList.add('coveo-preview-selectable');
+    const resultLink = element.querySelector(Component.computeSelectorForType(ResultLink.ID)) as HTMLElement;
+    if (resultLink) {
+      element.setAttribute('aria-label', resultLink.textContent);
+      resultLink.setAttribute('role', 'link');
+      resultLink.removeAttribute('aria-level');
+    }
     return {
       element,
       onSelect: () => this.handleSelect(suggestion, element, rank)
