@@ -155,6 +155,14 @@ export function FacetValueSuggestionsTest() {
           });
           done();
         });
+
+        it('should put the split field values into the suggestion', async done => {
+          const resultingArgs = await triggerPopulateOmniboxEvent();
+
+          const result = await firstSuggestion(resultingArgs);
+          expect(result[0].field.values).toEqual(['a', 'b', 'c', 'd']);
+          done();
+        });
       });
 
       describe('with a custom delimiter', () => {
@@ -173,6 +181,14 @@ export function FacetValueSuggestionsTest() {
           expect(test.env.queryStateModel.set).toHaveBeenCalledWith(QueryStateModel.attributesEnum.fv, {
             [someField]: ['a', 'b', 'c', 'd']
           });
+          done();
+        });
+
+        it('should put the split field values into the suggestion', async done => {
+          const resultingArgs = await triggerPopulateOmniboxEvent();
+
+          const result = await firstSuggestion(resultingArgs);
+          expect(result[0].field.values).toEqual(['a', 'b', 'c', 'd']);
           done();
         });
       });
@@ -247,6 +263,22 @@ export function FacetValueSuggestionsTest() {
         const result = await firstSuggestion(resultingArgs);
         result[0].onSelect();
         expect(omniboxInstance.setText).toHaveBeenCalledWith(aKeyword.text);
+        done();
+      });
+
+      it('changes the field of the suggestion', async done => {
+        const resultingArgs = await triggerPopulateOmniboxEvent();
+
+        const result = await firstSuggestion(resultingArgs);
+        expect(result[0].field.name).toEqual(someField);
+        done();
+      });
+
+      it('changes the field value of the suggestion', async done => {
+        const resultingArgs = await triggerPopulateOmniboxEvent();
+
+        const result = await firstSuggestion(resultingArgs);
+        expect(result[0].field.values).toEqual([someSuggestionValue]);
         done();
       });
 
