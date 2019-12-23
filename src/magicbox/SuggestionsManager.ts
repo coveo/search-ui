@@ -8,11 +8,7 @@ import { QueryProcessor, ProcessingStatus } from './QueryProcessor';
 
 export interface ISuggestionField {
   name: string;
-  value: string;
-}
-
-export interface ISuggestionCategoryField extends ISuggestionField {
-  categoryFieldDelimitingCharacter: string;
+  values: string[];
 }
 
 export interface Suggestion {

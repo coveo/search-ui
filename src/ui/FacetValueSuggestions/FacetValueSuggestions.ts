@@ -14,7 +14,7 @@ import { IFieldOption } from '../Base/IComponentOptions';
 import { Initialization } from '../Base/Initialization';
 import { IOmniboxSuggestion, Omnibox } from '../Omnibox/Omnibox';
 import { FacetValueSuggestionsProvider, IFacetValueSuggestionRow, IFacetValueSuggestionsProvider } from './FacetValueSuggestionsProvider';
-import { ISuggestionField, ISuggestionCategoryField, Suggestion } from '../../magicbox/SuggestionsManager';
+import { Suggestion } from '../../magicbox/SuggestionsManager';
 
 export interface IFacetValueSuggestionsOptions {
   numberOfSuggestions: number;
@@ -269,23 +269,18 @@ export class FacetValueSuggestions extends Component {
   }
 
   private mapFacetValueSuggestion(resultToShow: IFacetValueSuggestionRow, omnibox: Omnibox) {
-    const field: ISuggestionField = {
-      name: this.options.field.toString(),
-      value: resultToShow.value
-    };
-
-    const suggestion = <IOmniboxSuggestion>{
+    const suggestion: IOmniboxSuggestion = {
       html: this.buildDisplayNameForRow(resultToShow, omnibox),
       text: resultToShow.keyword.text,
-      field: !this.options.isCategoryField
-        ? field
-        : <ISuggestionCategoryField>{
-            ...field,
-            categoryFieldDelimitingCharacter: this.options.categoryFieldDelimitingCharacter
-          }
+      field: {
+        name: this.options.field.toString(),
+        values: this.options.isCategoryField
+          ? resultToShow.value.split(this.options.categoryFieldDelimitingCharacter)
+          : [resultToShow.value]
+      }
     };
 
-    suggestion.advancedQuery = `${suggestion.field.name}=="${suggestion.field.value}"`;
+    suggestion.advancedQuery = suggestion.field.values.map(value => `${suggestion.field.name}=="${value}"`).join(' AND ');
 
     suggestion.onSelect = () => this.onSuggestionSelected(suggestion, omnibox);
 
@@ -307,9 +302,7 @@ export class FacetValueSuggestions extends Component {
     const fvState: { [key: string]: string[] } = { ...this.queryStateModel.get(QueryStateModel.attributesEnum.fv) };
     const existingValues: string[] = fvState[this.options.field.toString()] || [];
 
-    const valuesToSetInState = this.options.isCategoryField
-      ? suggestion.field.value.split(this.options.categoryFieldDelimitingCharacter)
-      : [suggestion.field.value];
+    const valuesToSetInState = suggestion.field.values;
     fvState[this.options.field.toString()] = existingValues.concat(valuesToSetInState);
 
     this.queryStateModel.set(QueryStateModel.attributesEnum.fv, fvState);

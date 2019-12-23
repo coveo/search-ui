@@ -217,7 +217,7 @@ export class ResultPreviewsManager {
   private updateSearchResultPreviewsHeader(suggestion: Suggestion) {
     let text = `${this.options.previewHeaderText} "${suggestion.text}"`;
     if (suggestion.field) {
-      text += ` ${this.options.previewHeaderFieldText} "${suggestion.field.value}"`;
+      text += ` ${this.options.previewHeaderFieldText} "${suggestion.field.values[0]}"`;
     }
     this.resultPreviewsHeader.text(text);
     this.resultPreviewsContainer.setAttribute('summary', text);
