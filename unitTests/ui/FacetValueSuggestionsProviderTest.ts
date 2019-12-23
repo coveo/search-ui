@@ -17,12 +17,6 @@ export function FacetValueSuggestionsProviderTest() {
     const referenceFieldNumberOfResults = 10;
     const suggestion = 'suggestion';
 
-    const baseFieldValueRequest = {
-      field: someField,
-      ignoreAccents: true,
-      maximumNumberOfValues: 3
-    };
-
     const setUpLastQuery = (aq: string = '', cq: string = '') => {
       (<jasmine.Spy>environment.queryController.getLastQuery).and.returnValue({
         aq,
@@ -68,7 +62,9 @@ export function FacetValueSuggestionsProviderTest() {
       expect(environment.searchEndpoint.listFieldValuesBatch).toHaveBeenCalledWith({
         batch: <IListFieldValuesRequest[]>[
           {
-            ...baseFieldValueRequest,
+            field: someField,
+            ignoreAccents: true,
+            maximumNumberOfValues: 3,
             queryOverride: valueToSearch.text
           },
           {
@@ -126,21 +122,17 @@ export function FacetValueSuggestionsProviderTest() {
         });
       });
 
-      it(`should execute listFieldValuesBatch with value to search,
-          the additional expression and reference`, async done => {
+      it(`should execute listFieldValuesBatch with queryOverride containing an additional expression`, async done => {
         await test.getSuggestions([valueToSearch]);
 
         expect(environment.searchEndpoint.listFieldValuesBatch).toHaveBeenCalledWith({
-          batch: <IListFieldValuesRequest[]>[
-            {
-              ...baseFieldValueRequest,
-              queryOverride: `${anExpression} ${valueToSearch.text}`
-            },
-            {
-              field: someField
-            }
-          ]
+          batch: jasmine.arrayContaining([
+            jasmine.objectContaining({
+              queryOverride: jasmine.stringMatching(`${anExpression}`)
+            })
+          ])
         });
+
         done();
       });
     });
