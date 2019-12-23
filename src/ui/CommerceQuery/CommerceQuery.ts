@@ -47,8 +47,6 @@ export class CommerceQuery extends Component {
     super(element, CommerceQuery.ID, bindings);
 
     this.options = ComponentOptions.initComponentOptions(element, CommerceQuery, options);
-    Assert.exists(element);
-    Assert.exists(this.options);
 
     this.bind.onRootElement(QueryEvents.doneBuildingQuery, this.handleDoneBuildingQuery);
     this.bind.onRootElement(AnalyticsEvents.changeAnalyticsCustomData, this.handleChangeAnalytics);
