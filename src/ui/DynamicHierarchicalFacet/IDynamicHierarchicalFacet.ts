@@ -13,6 +13,8 @@ import { FacetValueState } from '../../rest/Facet/FacetValueState';
 import { IDynamicManagerCompatibleFacet } from '../DynamicFacetManager/DynamicFacetManager';
 import { FacetSortCriteria } from '../../rest/Facet/FacetSortCriteria';
 
+export type HierarchicalFacetSortCriteria = FacetSortCriteria.alphanumeric | FacetSortCriteria.occurrences;
+
 export interface IDynamicHierarchicalFacetOptions extends IResponsiveComponentOptions {
   id?: string;
   field: IFieldOption;
