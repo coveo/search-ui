@@ -35,6 +35,7 @@ import { IQueryResults } from '../../rest/QueryResults';
 import { FacetType } from '../../rest/Facet/FacetRequest';
 import { DependsOnManager, IDependentFacet } from '../../utils/DependsOnManager';
 import { DynamicFacetValueCreator } from './DynamicFacetValues/DynamicFacetValueCreator';
+import { Logger } from '../../misc/Logger';
 
 /**
  * The `DynamicFacet` component displays a *facet* of the results for the current query. A facet is a list of values for a
@@ -136,7 +137,18 @@ export class DynamicFacet extends Component implements IDynamicFacet {
      * @examples score
      */
     sortCriteria: <FacetSortCriteria>ComponentOptions.buildStringOption({
-      postProcessing: value => (isFacetSortCriteria(value) ? value : undefined),
+      postProcessing: value => {
+        if (!value) {
+          return undefined;
+        }
+
+        if (isFacetSortCriteria(value)) {
+          return value;
+        }
+
+        new Logger(value).warn('sortCriteria is not of the the allowed values: "score", "alphanumeric", "occurrences"');
+        return undefined;
+      },
       section: 'Sorting'
     }),
 
