@@ -24,6 +24,7 @@ export interface IFacetValueSuggestionsOptions {
   useQuerySuggestions?: boolean;
   useValueFromSearchbox?: boolean;
   displayEstimateNumberOfResults?: boolean;
+  expression?: string;
   templateHelper?: (row: IFacetValueSuggestionRow, omnibox: Omnibox) => string;
 }
 
@@ -142,7 +143,16 @@ export class FacetValueSuggestions extends Component {
      *
      * @examples ;, #
      */
-    categoryFieldDelimitingCharacter: ComponentOptions.buildStringOption({ defaultValue: '|', depend: 'isCategoryField' })
+    categoryFieldDelimitingCharacter: ComponentOptions.buildStringOption({ defaultValue: '|', depend: 'isCategoryField' }),
+    /**
+     * Specifies an expression to add when looking for suggestions on the facet values
+     *
+     * **Example:**
+     *
+     * `@objecttype==Message`
+     *
+     */
+    expression: ComponentOptions.buildQueryExpressionOption()
   };
 
   public facetValueSuggestionsProvider: IFacetValueSuggestionsProvider;
@@ -170,9 +180,9 @@ export class FacetValueSuggestions extends Component {
   }
 
   /**
-   * Creates a new `FieldSuggestions` component.
+   * Creates a new `FacetValueSuggestions` component.
    * @param element The HTMLElement on which to instantiate the component.
-   * @param options The options for the `FieldSuggestions` component.
+   * @param options The options for the `FacetValueSuggestions` component.
    * @param bindings The bindings that the component requires to function normally. If not set, these will be
    * automatically resolved (with a slower execution time).
    */
@@ -182,7 +192,8 @@ export class FacetValueSuggestions extends Component {
     this.options = ComponentOptions.initComponentOptions(element, FacetValueSuggestions, options);
 
     this.facetValueSuggestionsProvider = new FacetValueSuggestionsProvider(this.queryController, {
-      field: <string>this.options.field
+      field: <string>this.options.field,
+      expression: this.options.expression
     });
     this.queryStateFieldFacetId = `f:${this.options.field}`;
 
