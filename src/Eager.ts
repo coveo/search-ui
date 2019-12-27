@@ -307,3 +307,6 @@ swapVar(this);
 
 import { ImageFieldValue } from './ui/FieldImage/ImageFieldValue';
 ImageFieldValue.doExport();
+
+import { CommerceQuery } from './ui/CommerceQuery/CommerceQuery';
+CommerceQuery.doExport();

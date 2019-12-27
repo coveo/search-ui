@@ -806,3 +806,6 @@ StarRatingTest();
 
 import { ResultPreviewsManagerTest } from './magicbox/ResultPreviewsManagerTest';
 ResultPreviewsManagerTest();
+
+import { CommerceQueryTest } from './ui/CommerceQueryTest';
+CommerceQueryTest();

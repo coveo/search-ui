@@ -305,3 +305,6 @@ lazyImageFieldValue();
 
 import { lazyQuerySuggestPreview } from './ui/QuerySuggestPreview/LazyQuerySuggestPreview';
 lazyQuerySuggestPreview();
+
+import { lazyCommerceQuery } from './ui/CommerceQuery/LazyCommerceQuery';
+lazyCommerceQuery();
