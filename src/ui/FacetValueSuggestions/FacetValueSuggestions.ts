@@ -14,6 +14,7 @@ import { IFieldOption } from '../Base/IComponentOptions';
 import { Initialization } from '../Base/Initialization';
 import { IOmniboxSuggestion, Omnibox } from '../Omnibox/Omnibox';
 import { FacetValueSuggestionsProvider, IFacetValueSuggestionRow, IFacetValueSuggestionsProvider } from './FacetValueSuggestionsProvider';
+import { Suggestion } from '../../magicbox/SuggestionsManager';
 
 export interface IFacetValueSuggestionsOptions {
   numberOfSuggestions: number;
@@ -279,10 +280,20 @@ export class FacetValueSuggestions extends Component {
   }
 
   private mapFacetValueSuggestion(resultToShow: IFacetValueSuggestionRow, omnibox: Omnibox) {
-    return <IOmniboxSuggestion>{
+    const suggestion: IOmniboxSuggestion = {
       html: this.buildDisplayNameForRow(resultToShow, omnibox),
-      onSelect: () => this.onRowSelection(resultToShow, omnibox)
+      text: resultToShow.keyword.text
     };
+
+    const fieldValues = this.options.isCategoryField
+      ? resultToShow.value.split(this.options.categoryFieldDelimitingCharacter)
+      : [resultToShow.value];
+
+    suggestion.advancedQuery = fieldValues.map(value => `${this.options.field}=="${value}"`).join(' AND ');
+
+    suggestion.onSelect = () => this.onSuggestionSelected(suggestion, fieldValues, omnibox);
+
+    return suggestion;
   }
 
   private buildDisplayNameForRow(row: IFacetValueSuggestionRow, omnibox: Omnibox): string {
@@ -294,14 +305,13 @@ export class FacetValueSuggestions extends Component {
     }
   }
 
-  private onRowSelection(row: IFacetValueSuggestionRow, omnibox: Omnibox): void {
-    omnibox.setText(row.keyword.text);
+  private onSuggestionSelected(suggestion: Suggestion, fieldValues: string[], omnibox: Omnibox): void {
+    omnibox.setText(suggestion.text);
     // Copy the state here, else it will directly modify queryStateModel.defaultAttributes.fv.
     const fvState: { [key: string]: string[] } = { ...this.queryStateModel.get(QueryStateModel.attributesEnum.fv) };
     const existingValues: string[] = fvState[this.options.field.toString()] || [];
 
-    const valuesToSetInState = this.options.isCategoryField ? row.value.split(this.options.categoryFieldDelimitingCharacter) : [row.value];
-    fvState[this.options.field.toString()] = existingValues.concat(valuesToSetInState);
+    fvState[this.options.field.toString()] = existingValues.concat(fieldValues);
 
     this.queryStateModel.set(QueryStateModel.attributesEnum.fv, fvState);
     omnibox.magicBox.blur();

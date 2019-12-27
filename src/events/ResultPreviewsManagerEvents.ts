@@ -1,4 +1,5 @@
 import { ISearchResultPreview } from '../magicbox/ResultPreviewsManager';
+import { Suggestion } from '../magicbox/SuggestionsManager';
 
 /**
  * Executed when a {@link Suggestion} is focused before {@link PopulateSearchResultPreviews} is called to fetch more options.
@@ -17,9 +18,9 @@ export interface IUpdateResultPreviewsManagerOptionsEventArgs {
  */
 export interface IPopulateSearchResultPreviewsEventArgs {
   /**
-   * The text to look up search result previews for.
+   * The suggestion to look up search result previews for.
    */
-  suggestionText: string;
+  suggestion: Suggestion;
   /**
    * The result previews query. This must be set synchronously before the event resolves.
    * Setting this to a non-empty array will display the given search result previews.
