@@ -71,7 +71,7 @@ export function QuerySuggestPreviewTest() {
 
     function triggerPopulateSearchResultPreviews(suggestionText: string = 'test') {
       (test.env.searchEndpoint.search as jasmine.Spy).and.returnValue(Promise.resolve(fakeResults));
-      const event: IPopulateSearchResultPreviewsEventArgs = { suggestionText, previewsQueries: [] };
+      const event: IPopulateSearchResultPreviewsEventArgs = { suggestion: { text: suggestionText }, previewsQueries: [] };
       $$(testEnv.root).trigger(ResultPreviewsManagerEvents.populateSearchResultPreviews, event);
       return event.previewsQueries[0];
     }
