@@ -71,7 +71,7 @@ export function QuerySuggestPreviewTest() {
 
     function triggerPopulateSearchResultPreviews(suggestionText: string = 'test') {
       (test.env.searchEndpoint.search as jasmine.Spy).and.returnValue(Promise.resolve(fakeResults));
-      const event: IPopulateSearchResultPreviewsEventArgs = { suggestionText, previewsQueries: [] };
+      const event: IPopulateSearchResultPreviewsEventArgs = { suggestion: { text: suggestionText }, previewsQueries: [] };
       $$(testEnv.root).trigger(ResultPreviewsManagerEvents.populateSearchResultPreviews, event);
       return event.previewsQueries[0];
     }
@@ -137,6 +137,12 @@ export function QuerySuggestPreviewTest() {
         previews[previewIndexToSelect].element
       );
       done();
+    });
+
+    it('builds a default template with a div tag', () => {
+      const template = test.cmp['buildDefaultSearchResultPreviewTemplate']();
+      // A div tag is used instead of a script tag because Firefox doesn't support appending elements to a script tag.
+      expect(template.element.tagName.toLowerCase()).toEqual('div');
     });
 
     describe('with accessibility', () => {

@@ -1,4 +1,4 @@
-import { defaults, each, indexOf } from 'underscore';
+import { defaults, each, indexOf, find } from 'underscore';
 import { IQuerySuggestSelection, OmniboxEvents } from '../events/OmniboxEvents';
 import { Component } from '../ui/Base/Component';
 import { $$, Dom } from '../utils/Dom';
@@ -12,6 +12,7 @@ export interface Suggestion {
   html?: string;
   dom?: HTMLElement;
   separator?: string;
+  advancedQuery?: string;
   onSelect?: () => void;
 }
 
@@ -30,13 +31,17 @@ export enum Direction {
 }
 
 export class SuggestionsManager {
-  public hasSuggestions: boolean;
   private suggestionsProcessor: QueryProcessor<Suggestion>;
+  private currentSuggestions: Suggestion[];
   private options: SuggestionsManagerOptions;
   private keyboardFocusedElement: HTMLElement;
   private suggestionsListbox: Dom;
   private resultPreviewsManager: ResultPreviewsManager;
   private root: HTMLElement;
+
+  public get hasSuggestions() {
+    return this.currentSuggestions && this.currentSuggestions.length > 0;
+  }
 
   public get hasFocus() {
     return $$(this.element).findClass(this.options.selectedClass).length > 0;
@@ -44,6 +49,10 @@ export class SuggestionsManager {
 
   public get hasPreviews() {
     return this.resultPreviewsManager.hasPreviews;
+  }
+
+  private get focusedSuggestion() {
+    return find(this.currentSuggestions, suggestion => suggestion.dom.classList.contains(this.options.selectedClass));
   }
 
   constructor(
@@ -61,8 +70,6 @@ export class SuggestionsManager {
     if (this.options.timeout == undefined) {
       this.options.timeout = 500;
     }
-
-    this.hasSuggestions = false;
 
     $$(this.element).on('mouseover', e => {
       this.handleMouseOver(e);
@@ -164,7 +171,7 @@ export class SuggestionsManager {
     this.suggestionsListbox.empty();
     this.inputManager.input.removeAttribute('aria-activedescendant');
 
-    this.hasSuggestions = suggestions.length > 0;
+    this.currentSuggestions = suggestions;
 
     $$(this.element).toggleClass('magic-box-hasSuggestion', this.hasSuggestions);
     $$(this.magicBoxContainer).setAttribute('aria-expanded', this.hasSuggestions.toString());
@@ -202,7 +209,7 @@ export class SuggestionsManager {
   private async processKeyboardSelection(suggestion: HTMLElement) {
     this.addSelectedStatus(suggestion);
     this.keyboardFocusedElement = suggestion;
-    await this.updateSelectedSuggestion(suggestion);
+    await this.updateSelectedSuggestion(this.focusedSuggestion);
   }
 
   private processKeyboardPreviewSelection(preview: HTMLElement) {
@@ -212,7 +219,7 @@ export class SuggestionsManager {
 
   private processMouseSelection(suggestion: HTMLElement) {
     this.addSelectedStatus(suggestion);
-    this.updateSelectedSuggestion(suggestion);
+    this.updateSelectedSuggestion(this.focusedSuggestion);
     this.keyboardFocusedElement = null;
   }
 
@@ -228,6 +235,8 @@ export class SuggestionsManager {
     const dom = $$('div', {
       className: `magic-box-suggestion ${this.options.suggestionClass}`
     });
+
+    suggestion.dom = dom.el;
 
     dom.on('click', () => {
       this.selectSuggestion(suggestion);
@@ -278,7 +287,7 @@ export class SuggestionsManager {
   private modifyDomFromExistingSuggestion(dom: HTMLElement) {
     // this need to be done if the selection is in cache and the dom is set in the suggestion
     this.removeSelectedStatus(dom);
-    const found = $$(dom).find('.' + this.options.suggestionClass);
+    const found = dom.classList.contains(this.options.suggestionClass) ? dom : $$(dom).find('.' + this.options.suggestionClass);
     this.removeSelectedStatus(found);
     return $$(dom);
   }
@@ -323,7 +332,7 @@ export class SuggestionsManager {
   private async moveWithinPreview(direction: Direction) {
     const newFocusedPreview = this.resultPreviewsManager.getElementInDirection(direction);
     if (!newFocusedPreview) {
-      await this.selectQuerySuggest(this.resultPreviewsManager.previewsOwner);
+      await this.selectQuerySuggest(this.resultPreviewsManager.previewsOwner.dom);
       return;
     }
     this.processKeyboardPreviewSelection(newFocusedPreview);
@@ -356,9 +365,9 @@ export class SuggestionsManager {
     this.updateAreaSelectedIfDefined(element, 'true');
   }
 
-  private async updateSelectedSuggestion(suggestion: HTMLElement) {
+  private async updateSelectedSuggestion(suggestion: Suggestion) {
     $$(this.root).trigger(OmniboxEvents.querySuggestGetFocus, <IQuerySuggestSelection>{
-      suggestion: suggestion.innerText
+      suggestion: suggestion.text
     });
     await this.resultPreviewsManager.displaySearchResultPreviewsForSuggestion(suggestion);
   }

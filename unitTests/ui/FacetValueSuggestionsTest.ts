@@ -155,6 +155,14 @@ export function FacetValueSuggestionsTest() {
           });
           done();
         });
+
+        it('should set the advanced query to check every field value', async done => {
+          const resultingArgs = await triggerPopulateOmniboxEvent();
+
+          const result = await firstSuggestion(resultingArgs);
+          expect(result[0].advancedQuery).toEqual(`${someField}=="a" AND ${someField}=="b" AND ${someField}=="c" AND ${someField}=="d"`);
+          done();
+        });
       });
 
       describe('with a custom delimiter', () => {
@@ -173,6 +181,14 @@ export function FacetValueSuggestionsTest() {
           expect(test.env.queryStateModel.set).toHaveBeenCalledWith(QueryStateModel.attributesEnum.fv, {
             [someField]: ['a', 'b', 'c', 'd']
           });
+          done();
+        });
+
+        it('should set the advanced query to check every field value', async done => {
+          const resultingArgs = await triggerPopulateOmniboxEvent();
+
+          const result = await firstSuggestion(resultingArgs);
+          expect(result[0].advancedQuery).toEqual(`${someField}=="a" AND ${someField}=="b" AND ${someField}=="c" AND ${someField}=="d"`);
           done();
         });
       });
@@ -247,6 +263,14 @@ export function FacetValueSuggestionsTest() {
         const result = await firstSuggestion(resultingArgs);
         result[0].onSelect();
         expect(omniboxInstance.setText).toHaveBeenCalledWith(aKeyword.text);
+        done();
+      });
+
+      it('changes the advanced query of the suggestion', async done => {
+        const resultingArgs = await triggerPopulateOmniboxEvent();
+
+        const result = await firstSuggestion(resultingArgs);
+        expect(result[0].advancedQuery).toEqual(`${someField}=="${someSuggestionValue}"`);
         done();
       });
 

@@ -3,6 +3,7 @@ import { IMockEnvironment, MockEnvironmentBuilder } from '../MockEnvironment';
 import { $$ } from '../../src/utils/Dom';
 import { ResultPreviewsManagerEvents, IPopulateSearchResultPreviewsEventArgs } from '../../src/events/ResultPreviewsManagerEvents';
 import { toArray } from 'underscore';
+import { Suggestion } from '../../src/magicbox/SuggestionsManager';
 
 export function ResultPreviewsManagerTest() {
   describe('ResultPreviewsManager', function() {
@@ -26,8 +27,8 @@ export function ResultPreviewsManagerTest() {
       buildSuggestionsListbox();
     }
 
-    function createTestSuggestion() {
-      return $$('div', {}, suggestionText).el;
+    function createTestSuggestion(): Suggestion {
+      return { dom: $$('div', {}, suggestionText).el, text: suggestionText };
     }
 
     function createPreviews() {
@@ -80,16 +81,9 @@ export function ResultPreviewsManagerTest() {
 
     describe('with accessibility', () => {
       it('builds the preview container with the appropriate roles', async done => {
-        const previewHeader = env.element.querySelector('.coveo-preview-header');
-        expect(previewHeader.getAttribute('role')).toEqual('status');
         const previewResults = env.element.querySelector('.coveo-preview-results');
         expect(previewResults.getAttribute('role')).toEqual('listbox');
         done();
-      });
-
-      it('sets the summary of the results container', () => {
-        const previewResults = env.element.querySelector('.coveo-preview-results');
-        expect(previewResults.getAttribute('summary')).toContain(suggestionText);
       });
 
       it('sets the role of previews to "option"', async done => {
