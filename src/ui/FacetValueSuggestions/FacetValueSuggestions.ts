@@ -271,18 +271,16 @@ export class FacetValueSuggestions extends Component {
   private mapFacetValueSuggestion(resultToShow: IFacetValueSuggestionRow, omnibox: Omnibox) {
     const suggestion: IOmniboxSuggestion = {
       html: this.buildDisplayNameForRow(resultToShow, omnibox),
-      text: resultToShow.keyword.text,
-      field: {
-        name: this.options.field.toString(),
-        values: this.options.isCategoryField
-          ? resultToShow.value.split(this.options.categoryFieldDelimitingCharacter)
-          : [resultToShow.value]
-      }
+      text: resultToShow.keyword.text
     };
 
-    suggestion.advancedQuery = suggestion.field.values.map(value => `${suggestion.field.name}=="${value}"`).join(' AND ');
+    const fieldValues = this.options.isCategoryField
+      ? resultToShow.value.split(this.options.categoryFieldDelimitingCharacter)
+      : [resultToShow.value];
 
-    suggestion.onSelect = () => this.onSuggestionSelected(suggestion, omnibox);
+    suggestion.advancedQuery = fieldValues.map(value => `${this.options.field}=="${value}"`).join(' AND ');
+
+    suggestion.onSelect = () => this.onSuggestionSelected(suggestion, fieldValues, omnibox);
 
     return suggestion;
   }
@@ -296,14 +294,13 @@ export class FacetValueSuggestions extends Component {
     }
   }
 
-  private onSuggestionSelected(suggestion: Suggestion, omnibox: Omnibox): void {
+  private onSuggestionSelected(suggestion: Suggestion, fieldValues: string[], omnibox: Omnibox): void {
     omnibox.setText(suggestion.text);
     // Copy the state here, else it will directly modify queryStateModel.defaultAttributes.fv.
     const fvState: { [key: string]: string[] } = { ...this.queryStateModel.get(QueryStateModel.attributesEnum.fv) };
     const existingValues: string[] = fvState[this.options.field.toString()] || [];
 
-    const valuesToSetInState = suggestion.field.values;
-    fvState[this.options.field.toString()] = existingValues.concat(valuesToSetInState);
+    fvState[this.options.field.toString()] = existingValues.concat(fieldValues);
 
     this.queryStateModel.set(QueryStateModel.attributesEnum.fv, fvState);
     omnibox.magicBox.blur();

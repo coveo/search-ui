@@ -27,7 +27,6 @@ export interface IResultPreviewsManagerOptions {
 export class ResultPreviewsManager {
   private options: IResultPreviewsManagerOptions;
   private suggestionsPreviewContainer: Dom;
-  private resultPreviewsHeader: Dom;
   private resultPreviewsContainer: Dom;
   private lastQueriedSuggestion: Suggestion;
   private lastDisplayedSuggestion: Suggestion;
@@ -187,10 +186,6 @@ export class ResultPreviewsManager {
         className: 'coveo-preview-container',
         id: this.previewContainerId
       },
-      (this.resultPreviewsHeader = $$('div', {
-        className: 'coveo-preview-header',
-        role: 'status'
-      })),
       (this.resultPreviewsContainer = $$('div', {
         className: 'coveo-preview-results',
         role: 'listbox',
@@ -212,15 +207,6 @@ export class ResultPreviewsManager {
     };
     $$(this.root).trigger(ResultPreviewsManagerEvents.populateSearchResultPreviews, populateEventArgs);
     return this.previewsProcessor.processQueries(populateEventArgs.previewsQueries);
-  }
-
-  private updateSearchResultPreviewsHeader(suggestion: Suggestion) {
-    let text = `${this.options.previewHeaderText} "${suggestion.text}"`;
-    if (suggestion.field) {
-      text += ` ${this.options.previewHeaderFieldText} "${suggestion.field.values[0]}"`;
-    }
-    this.resultPreviewsHeader.text(text);
-    this.resultPreviewsContainer.setAttribute('summary', text);
   }
 
   private appendSearchResultPreview(preview: ISearchResultPreview, position: number) {
@@ -246,6 +232,5 @@ export class ResultPreviewsManager {
       return;
     }
     this.appendSearchResultPreviews(previews);
-    this.updateSearchResultPreviewsHeader(suggestion);
   }
 }

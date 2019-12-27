@@ -6,18 +6,12 @@ import { InputManager } from './InputManager';
 import { ResultPreviewsManager } from './ResultPreviewsManager';
 import { QueryProcessor, ProcessingStatus } from './QueryProcessor';
 
-export interface ISuggestionField {
-  name: string;
-  values: string[];
-}
-
 export interface Suggestion {
   text?: string;
   index?: number;
   html?: string;
   dom?: HTMLElement;
   separator?: string;
-  field?: ISuggestionField;
   advancedQuery?: string;
   onSelect?: () => void;
 }

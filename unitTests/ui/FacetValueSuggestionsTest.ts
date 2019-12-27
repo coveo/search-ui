@@ -156,11 +156,11 @@ export function FacetValueSuggestionsTest() {
           done();
         });
 
-        it('should put the split field values into the suggestion', async done => {
+        it('should set the advanced query to check every field value', async done => {
           const resultingArgs = await triggerPopulateOmniboxEvent();
 
           const result = await firstSuggestion(resultingArgs);
-          expect(result[0].field.values).toEqual(['a', 'b', 'c', 'd']);
+          expect(result[0].advancedQuery).toEqual(`${someField}=="a" AND ${someField}=="b" AND ${someField}=="c" AND ${someField}=="d"`);
           done();
         });
       });
@@ -184,11 +184,11 @@ export function FacetValueSuggestionsTest() {
           done();
         });
 
-        it('should put the split field values into the suggestion', async done => {
+        it('should set the advanced query to check every field value', async done => {
           const resultingArgs = await triggerPopulateOmniboxEvent();
 
           const result = await firstSuggestion(resultingArgs);
-          expect(result[0].field.values).toEqual(['a', 'b', 'c', 'd']);
+          expect(result[0].advancedQuery).toEqual(`${someField}=="a" AND ${someField}=="b" AND ${someField}=="c" AND ${someField}=="d"`);
           done();
         });
       });
@@ -266,19 +266,11 @@ export function FacetValueSuggestionsTest() {
         done();
       });
 
-      it('changes the field of the suggestion', async done => {
+      it('changes the advanced query of the suggestion', async done => {
         const resultingArgs = await triggerPopulateOmniboxEvent();
 
         const result = await firstSuggestion(resultingArgs);
-        expect(result[0].field.name).toEqual(someField);
-        done();
-      });
-
-      it('changes the field value of the suggestion', async done => {
-        const resultingArgs = await triggerPopulateOmniboxEvent();
-
-        const result = await firstSuggestion(resultingArgs);
-        expect(result[0].field.values).toEqual([someSuggestionValue]);
+        expect(result[0].advancedQuery).toEqual(`${someField}=="${someSuggestionValue}"`);
         done();
       });
 
