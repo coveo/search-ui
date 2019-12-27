@@ -747,6 +747,9 @@ DynamicFacetSearchValueRendererTest();
 import { DynamicFacetBreadcrumbsTest } from './ui/DynamicFacet/DynamicFacetBreadcrumbsTest';
 DynamicFacetBreadcrumbsTest();
 
+import { DynamicFacetRequestBuilderTest } from './controllers/DynamicFacetRequestBuilderTest';
+DynamicFacetRequestBuilderTest();
+
 import { DynamicFacetQueryControllerTest } from './controllers/DynamicFacetQueryControllerTest';
 DynamicFacetQueryControllerTest();
 
