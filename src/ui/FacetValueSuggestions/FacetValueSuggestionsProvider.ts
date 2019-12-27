@@ -57,6 +57,7 @@ type IFacetValueReference = {
  */
 export interface IFacetValueSuggestionsProviderOptions {
   field: string;
+  expression?: string;
 }
 
 /**
@@ -96,9 +97,16 @@ export class FacetValueSuggestionsProvider implements IFacetValueSuggestionsProv
     // The reference request will be used to get the maximum number of values for a given facet value.
     const referenceValuesRequest = this.buildReferenceFieldValueRequest();
     const queryParts = this.getQueryToExecuteParts();
-    const suggestionValuesRequests = valuesToSearch.map(keyword =>
-      this.buildListFieldValueRequest([...queryParts, keyword.text].join(' '))
-    );
+
+    if (this.options.expression) {
+      queryParts.push(this.options.expression);
+    }
+
+    const suggestionValuesRequests = valuesToSearch.map(keyword => {
+      const queryToExecute = [...queryParts, keyword.text].join(' ');
+      return this.buildListFieldValueRequest(queryToExecute);
+    });
+
     const requests = [...suggestionValuesRequests, referenceValuesRequest];
     const values = await this.queryController.getEndpoint().listFieldValuesBatch({
       batch: requests

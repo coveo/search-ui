@@ -111,5 +111,30 @@ export function FacetValueSuggestionsProviderTest() {
         done();
       });
     });
+
+    describe('with an additional expression', () => {
+      const anExpression = '@foofield==barvalue';
+
+      beforeEach(() => {
+        test = new FacetValueSuggestionsProvider(environment.queryController, {
+          field: <string>someField,
+          expression: anExpression
+        });
+      });
+
+      it(`should execute listFieldValuesBatch with queryOverride containing an additional expression`, async done => {
+        await test.getSuggestions([valueToSearch]);
+
+        expect(environment.searchEndpoint.listFieldValuesBatch).toHaveBeenCalledWith({
+          batch: jasmine.arrayContaining([
+            jasmine.objectContaining({
+              queryOverride: jasmine.stringMatching(`${anExpression}`)
+            })
+          ])
+        });
+
+        done();
+      });
+    });
   });
 }
