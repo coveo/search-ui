@@ -2,6 +2,7 @@ import { DynamicFacetRangeQueryController } from '../../src/controllers/DynamicF
 import { DynamicFacetRangeTestUtils } from '../ui/DynamicFacet/DynamicFacetRangeTestUtils';
 import { DynamicFacetRange } from '../../src/ui/DynamicFacet/DynamicFacetRange';
 import { IDynamicFacetRangeOptions } from '../../src/ui/DynamicFacet/IDynamicFacetRange';
+import { QueryBuilder } from '../../src/Core';
 
 export function DynamicFacetRangeQueryControllerTest() {
   describe('DynamicFacetRangeQueryController', () => {
@@ -22,26 +23,18 @@ export function DynamicFacetRangeQueryControllerTest() {
     }
 
     function facetRequest() {
-      return dynamicFacetRangeQueryController.facetRequest;
+      return dynamicFacetRangeQueryController.buildFacetRequest(new QueryBuilder().build());
     }
 
     function facetValues() {
       return facet.values.allFacetValues;
     }
 
-    it('should send the facet id', () => {
+    it('should send the right basic facetRequest parameters', () => {
       expect(facetRequest().facetId).toBe(facet.options.id);
-    });
-
-    it('should send the field without the "@"', () => {
-      expect(facetRequest().field).toBe('field');
-    });
-
-    it('should send the facet type', () => {
+      expect(facetRequest().field).toBe(facet.fieldName);
       expect(facetRequest().type).toBe(facet.facetType);
-    });
-
-    it('should send the injectionDepth', () => {
+      expect(facetRequest().sortCriteria).toBe(facet.options.sortCriteria);
       expect(facetRequest().injectionDepth).toBe(facet.options.injectionDepth);
     });
 
