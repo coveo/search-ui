@@ -139,6 +139,12 @@ export function QuerySuggestPreviewTest() {
       done();
     });
 
+    it('builds a default template with a div tag', () => {
+      const template = test.cmp['buildDefaultSearchResultPreviewTemplate']();
+      // A div tag is used instead of a script tag because Firefox doesn't support appending elements to a script tag.
+      expect(template.element.tagName).toEqual('div');
+    });
+
     describe('with accessibility', () => {
       describe('with a ResultLink in the template', () => {
         beforeEach(() => {

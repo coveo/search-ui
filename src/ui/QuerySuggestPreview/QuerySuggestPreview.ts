@@ -120,7 +120,7 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
     return HtmlTemplate.create(
       $$(
         'div',
-        { className: 'result-template', type: 'text/html' },
+        { className: 'result-template' },
         $$(
           'div',
           { className: 'coveo-result-frame coveo-default-result-preview' },
