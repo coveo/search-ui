@@ -7512,14 +7512,6 @@
     "en": "No values found.",
     "fr": "Aucune valeur trouvée."
   },
-  "QuerySuggestPreview": {
-    "en": "Most relevant results for",
-    "fr": "Résultats les plus pertinents pour"
-  },
-  "QuerySuggestPreviewWithField": {
-    "en": "in",
-    "fr": "dans"
-  },
   "To": {
     "en": "to",
     "fr": "à"
