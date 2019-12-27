@@ -141,7 +141,8 @@ export class DynamicFacetManager extends Component {
   private initEvents() {
     this.bind.onRootElement(InitializationEvents.afterComponentsInitialization, () => this.handleAfterComponentsInitialization());
     this.bind.onRootElement(QueryEvents.doneBuildingQuery, (data: IDoneBuildingQueryEventArgs) => this.handleDoneBuildingQuery(data));
-    this.bind.onRootElement(QueryEvents.querySuccess, (data: IQuerySuccessEventArgs) => this.handleQuerySuccess(data));
+    // Making sure querySuccess is handled in each dynamic facets before the manager
+    this.bind.onRootElement(QueryEvents.querySuccess, (data: IQuerySuccessEventArgs) => setTimeout(() => this.handleQuerySuccess(data), 0));
   }
 
   private isDynamicFacet(component: Component) {
