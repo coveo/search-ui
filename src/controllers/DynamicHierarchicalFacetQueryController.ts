@@ -8,6 +8,7 @@ import { findIndex } from 'underscore';
 import { IDynamicHierarchicalFacet, IDynamicHierarchicalFacetValue } from '../ui/DynamicHierarchicalFacet/IDynamicHierarchicalFacet';
 import { DynamicFacetRequestBuilder } from './DynamicFacetRequestBuilder';
 import { IQuery } from '../rest/Query';
+import { FacetSortCriteria } from '../rest/Facet/FacetSortCriteria';
 
 export class DynamicHierarchicalFacetQueryController {
   private requestBuilder: DynamicFacetRequestBuilder;
@@ -19,7 +20,7 @@ export class DynamicHierarchicalFacetQueryController {
       facetId: this.facet.options.id,
       field: this.facet.fieldName,
       type: this.facet.facetType,
-      sortCriteria: this.facet.options.sortCriteria,
+      sortCriteria: <FacetSortCriteria>this.facet.options.sortCriteria,
       injectionDepth: this.facet.options.injectionDepth,
       delimitingCharacter: this.facet.options.delimitingCharacter,
       filterFacetCount: this.facet.options.filterFacetCount

@@ -11,9 +11,8 @@ import { IAnalyticsActionCause } from '../Analytics/AnalyticsActionListMeta';
 import { IFacetResponse } from '../../rest/Facet/FacetResponse';
 import { FacetValueState } from '../../rest/Facet/FacetValueState';
 import { IDynamicManagerCompatibleFacet } from '../DynamicFacetManager/DynamicFacetManager';
-import { FacetSortCriteria } from '../../rest/Facet/FacetSortCriteria';
 
-export type HierarchicalFacetSortCriteria = FacetSortCriteria.alphanumeric | FacetSortCriteria.occurrences;
+export type HierarchicalFacetSortCriteria = 'alphanumeric' | 'occurrences';
 
 export interface IDynamicHierarchicalFacetOptions extends IResponsiveComponentOptions {
   id?: string;
@@ -23,7 +22,7 @@ export interface IDynamicHierarchicalFacetOptions extends IResponsiveComponentOp
   collapsedByDefault?: boolean;
   enableScrollToTop?: boolean;
   numberOfValues?: number;
-  sortCriteria?: FacetSortCriteria;
+  sortCriteria?: HierarchicalFacetSortCriteria;
   injectionDepth?: number;
   enableMoreLess?: boolean;
   delimitingCharacter?: string;

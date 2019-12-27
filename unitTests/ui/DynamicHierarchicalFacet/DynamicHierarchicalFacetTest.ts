@@ -9,7 +9,10 @@ import { Simulate } from '../../Simulate';
 import { IFacetResponseValue } from '../../../src/rest/Facet/FacetResponse';
 import { FacetValueState } from '../../../src/rest/Facet/FacetValueState';
 import { ResultListUtils } from '../../../src/utils/ResultListUtils';
-import { IDynamicHierarchicalFacetOptions } from '../../../src/ui/DynamicHierarchicalFacet/IDynamicHierarchicalFacet';
+import {
+  IDynamicHierarchicalFacetOptions,
+  HierarchicalFacetSortCriteria
+} from '../../../src/ui/DynamicHierarchicalFacet/IDynamicHierarchicalFacet';
 import { DynamicFacetManager } from '../../../src/ui/DynamicFacetManager/DynamicFacetManager';
 import { analyticsActionCauseList } from '../../../src/ui/Analytics/AnalyticsActionListMeta';
 import { FacetSortCriteria } from '../../../src/rest/Facet/FacetSortCriteria';
@@ -108,7 +111,7 @@ export function DynamicHierarchicalFacetTest() {
 
     it(`when setting an invalid sortCriteria option
       should set it to undefined in the query`, () => {
-      options.sortCriteria = FacetSortCriteria.score;
+      options.sortCriteria = FacetSortCriteria.score as HierarchicalFacetSortCriteria;
       initializeComponent();
 
       expect(getFirstFacetRequest().sortCriteria).toBeUndefined();
