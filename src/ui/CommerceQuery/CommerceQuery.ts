@@ -1,7 +1,6 @@
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { ComponentOptions } from '../Base/ComponentOptions';
-import { Assert } from '../../misc/Assert';
 import { QueryEvents, IBuildingQueryEventArgs } from '../../events/QueryEvents';
 import { AnalyticsEvents, IChangeAnalyticsCustomDataEventArgs } from '../../events/AnalyticsEvents';
 import { Initialization } from '../Base/Initialization';
