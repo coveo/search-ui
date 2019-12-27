@@ -145,13 +145,30 @@ export function DynamicFacetManagerTest() {
       expect(facetIsInRequest).toBe(false);
     });
 
-    it('should reorder the facets in the DOM according to order of the query results', () => {
+    it('should reorder the facets in the DOM according to order of the query facets results', () => {
       triggerAfterComponentsInitialization();
       triggerQuerySuccess(queryFacetsResponse());
 
       expect(managerContainerChildren()[0]).toBe(facets[1].element);
       expect(managerContainerChildren()[1]).toBe(facets[2].element);
       expect(managerContainerChildren()[2]).toBe(facets[0].element);
+    });
+
+    it('should not create addional number of facets in the DOM after each results', () => {
+      triggerAfterComponentsInitialization();
+      triggerQuerySuccess(queryFacetsResponse());
+      triggerQuerySuccess(queryFacetsResponse());
+
+      expect(managerContainerChildren().length).toBe(3);
+    });
+
+    it('should ignore query facets results that are not children of the manager', () => {
+      triggerAfterComponentsInitialization();
+      const externalFacet = DynamicFacetTestUtils.createAdvancedFakeFacet({ field: '@anotherField', numberOfValues: 1 }).cmp;
+      const additionalFacetResult = DynamicFacetTestUtils.getCompleteFacetResponse(externalFacet);
+      triggerQuerySuccess([additionalFacetResult, ...queryFacetsResponse()]);
+
+      expect(managerContainerChildren().length).toBe(3);
     });
 
     it(`when the "enableReorder" option is "false"
