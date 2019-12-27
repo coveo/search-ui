@@ -193,7 +193,7 @@ export class DynamicFacetManager extends Component {
   }
 
   private mapResponseToComponents(facetsResponse: IFacetResponse[]) {
-    const facetsInResponse = facetsResponse.map(({ facetId }) => this.getFacetComponentById(facetId)).filter(Utils.exists);
+    const facetsInResponse = facetsResponse.map(({ facetId }) => this.getChildFacetWithId(facetId)).filter(Utils.exists);
     const facetsNotInResponse = without(this.childrenFacets, ...facetsInResponse);
 
     facetsInResponse.forEach(facet => facet.enable());
@@ -255,15 +255,8 @@ export class DynamicFacetManager extends Component {
     });
   }
 
-  private getFacetComponentById(id: string) {
-    const facet = find(this.childrenFacets, facet => facet.options.id === id);
-
-    if (!facet) {
-      this.logger.error(`Cannot find facet component with an id equal to "${id}".`);
-      return null;
-    }
-
-    return facet;
+  private getChildFacetWithId(id: string) {
+    return find(this.childrenFacets, facet => facet.options.id === id);
   }
 
   private notImplementedError() {
