@@ -81,12 +81,20 @@ export function DynamicFacetRangeTest() {
     });
 
     it(`when not setting a valueFormat option
-      should set it number`, () => {
+      should set it to "number" by default`, () => {
       expect(test.cmp.options.valueFormat).toBe(DynamicFacetRangeValueFormat.number);
     });
 
-    it(`when not setting an invalid valueFormat option
-      should set it number`, () => {
+    it(`when not setting a valueFormat option
+      and having with a field containing "date"
+      should set it to "date"`, () => {
+      options.field = '@cooldatefield';
+      initializeComponent();
+      expect(test.cmp.options.valueFormat).toBe(DynamicFacetRangeValueFormat.date);
+    });
+
+    it(`when setting an invalid valueFormat option
+      should set it to "number"`, () => {
       options.valueFormat = 'hello' as DynamicFacetRangeValueFormat;
       initializeComponent();
       expect(test.cmp.options.valueFormat).toBe(DynamicFacetRangeValueFormat.number);

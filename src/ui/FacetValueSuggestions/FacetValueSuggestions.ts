@@ -23,6 +23,7 @@ export interface IFacetValueSuggestionsOptions {
   useQuerySuggestions?: boolean;
   useValueFromSearchbox?: boolean;
   displayEstimateNumberOfResults?: boolean;
+  expression?: string;
   templateHelper?: (row: IFacetValueSuggestionRow, omnibox: Omnibox) => string;
 }
 
@@ -34,7 +35,7 @@ export interface IQuerySuggestionKeyword {
 /**
  * This component provides [`Omnibox`]{@link Omnibox} query suggestions scoped to distinct categories based on the values of a specific [`field`]{@link FacetValueSuggestions.options.field}.
  *
- * See [Providing Facet Value Suggestions](https://docs.coveo.com/504/)
+ * See @externaldocs [Providing Facet Value Suggestions](https://docs.coveo.com/en/340/#providing-facet-value-suggestions)
  *
  */
 export class FacetValueSuggestions extends Component {
@@ -126,7 +127,7 @@ export class FacetValueSuggestions extends Component {
     /**
      * Whether the [`field`]{@link FacetValueSuggestions.options.field} option references a multi value field.
      *
-     * Setting this option to `true` if appropriate will allow the corresponding [`CategoryFacet`]{@link CategoryFacet} component (if present) to properly handle the filter format.
+     * Setting this option to `true` if appropriate will allow the corresponding [`CategoryFacet`]{@link CategoryFacet} or [`DynamicHierarchicalFacet`]{@link DynamicHierarchicalFacet} component (if present) to properly handle the filter format.
      *
      * See also the [`categoryFieldDelimitingCharacter`]{@link FacetValueSuggestions.options.categoryFieldDelimitingCharacter} option.
      *
@@ -141,7 +142,16 @@ export class FacetValueSuggestions extends Component {
      *
      * @examples ;, #
      */
-    categoryFieldDelimitingCharacter: ComponentOptions.buildStringOption({ defaultValue: '|', depend: 'isCategoryField' })
+    categoryFieldDelimitingCharacter: ComponentOptions.buildStringOption({ defaultValue: '|', depend: 'isCategoryField' }),
+    /**
+     * Specifies an expression to add when looking for suggestions on the facet values
+     *
+     * **Example:**
+     *
+     * `@objecttype==Message`
+     *
+     */
+    expression: ComponentOptions.buildQueryExpressionOption()
   };
 
   public facetValueSuggestionsProvider: IFacetValueSuggestionsProvider;
@@ -169,9 +179,9 @@ export class FacetValueSuggestions extends Component {
   }
 
   /**
-   * Creates a new `FieldSuggestions` component.
+   * Creates a new `FacetValueSuggestions` component.
    * @param element The HTMLElement on which to instantiate the component.
-   * @param options The options for the `FieldSuggestions` component.
+   * @param options The options for the `FacetValueSuggestions` component.
    * @param bindings The bindings that the component requires to function normally. If not set, these will be
    * automatically resolved (with a slower execution time).
    */
@@ -181,7 +191,8 @@ export class FacetValueSuggestions extends Component {
     this.options = ComponentOptions.initComponentOptions(element, FacetValueSuggestions, options);
 
     this.facetValueSuggestionsProvider = new FacetValueSuggestionsProvider(this.queryController, {
-      field: <string>this.options.field
+      field: <string>this.options.field,
+      expression: this.options.expression
     });
     this.queryStateFieldFacetId = `f:${this.options.field}`;
 

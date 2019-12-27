@@ -197,6 +197,15 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
      * **Default:** `undefined` and the hierarchical facet does not depend on any other facet to be displayed.
      */
     dependsOn: ComponentOptions.buildStringOption(),
+
+    /**
+     * Whether to exclude folded result parents when estimating result counts for facet values.
+     *
+     * See also the [`Folding`]{@link folding} and [`FoldingForThread`]{@link FoldingForThread} components.
+     *
+     * **Default:** `true` if folded results are requested;`false` otherwise.
+     */
+    filterFacetCount: ComponentOptions.buildBooleanOption({ section: 'Filtering' }),
     ...ResponsiveFacetOptions
   };
 

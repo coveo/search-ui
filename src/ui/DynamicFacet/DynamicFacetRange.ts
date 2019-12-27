@@ -49,16 +49,27 @@ export class DynamicFacetRange extends DynamicFacet implements IComponentBinding
       localizedString: () => l('To'),
       section: 'CommonOptions'
     }),
+    field: ComponentOptions.buildFieldOption({ required: true, section: 'CommonOptions' }),
     /**
      * The string format to apply to the minimum and maximum value of each range displayed in the facet.
      *
-     * **Default:** [`number`]{@link DynamicFacetRangeValueFormat.number}
+     * **Default:** If the [`field`]{@link DynamicFacet.options.field} contains "date", the format will be [`date`]{@link DynamicFacetRangeValueFormat.date}.
+     * Else, it will be [`number`]{@link DynamicFacetRangeValueFormat.number}.
      *
      * @examples date
      */
-    valueFormat: ComponentOptions.buildStringOption({
-      defaultValue: DynamicFacetRangeValueFormat.number,
-      postProcessing: value => (isFacetRangeValueFormat(value) ? value : DynamicFacetRangeValueFormat.number),
+    valueFormat: ComponentOptions.buildStringOption<DynamicFacetRangeValueFormat>({
+      postProcessing: (value, options: IDynamicFacetRangeOptions) => {
+        if (isFacetRangeValueFormat(value)) {
+          return value;
+        }
+
+        if (options.field.indexOf('date') !== -1) {
+          return DynamicFacetRangeValueFormat.date;
+        }
+
+        return DynamicFacetRangeValueFormat.number;
+      },
       section: 'CommonOptions'
     }),
     /**

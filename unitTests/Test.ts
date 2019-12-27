@@ -747,6 +747,9 @@ DynamicFacetSearchValueRendererTest();
 import { DynamicFacetBreadcrumbsTest } from './ui/DynamicFacet/DynamicFacetBreadcrumbsTest';
 DynamicFacetBreadcrumbsTest();
 
+import { DynamicFacetRequestBuilderTest } from './controllers/DynamicFacetRequestBuilderTest';
+DynamicFacetRequestBuilderTest();
+
 import { DynamicFacetQueryControllerTest } from './controllers/DynamicFacetQueryControllerTest';
 DynamicFacetQueryControllerTest();
 
@@ -800,6 +803,9 @@ OmniboxAnalyticsTest();
 
 import { StarRatingTest } from './ui/StarRatingTest';
 StarRatingTest();
+
+import { ResultPreviewsManagerTest } from './magicbox/ResultPreviewsManagerTest';
+ResultPreviewsManagerTest();
 
 import { CommerceQueryTest } from './ui/CommerceQueryTest';
 CommerceQueryTest();
