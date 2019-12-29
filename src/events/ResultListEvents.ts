@@ -19,6 +19,18 @@ export interface IDisplayedNewResultEventArgs {
 }
 
 /**
+ * The `IDisplayedNewResultsEventArgs` interface describes the object that all
+ * [`newResultsDisplayed`]{@link ResultListEvents.newResultsDisplayed} event handlers receive as an argument.
+ */
+export interface IDisplayedNewResultsEventArgs {
+  /**
+   * Whether the results are being displayed in a [`ResultList`]{@link ResultList} with infinte scroll enabled.
+   * See [`enableInfiniteScroll`]{@link ResultList.options.enableInfiniteScroll} option).
+   */
+  infiniteScrolling: boolean;
+}
+
+/**
  * The `IOpenQuickviewEventArgs` interface describes the object that all
  * [`openQuickview`]{@link ResultList.openQuickview} event handlers receive as an argument.
  */
