@@ -809,3 +809,6 @@ ResultPreviewsManagerTest();
 
 import { CommerceQueryTest } from './ui/CommerceQueryTest';
 CommerceQueryTest();
+
+import { ScrollRestorationControllerTest } from './controllers/ScrollRestorationControllerTest';
+ScrollRestorationControllerTest();

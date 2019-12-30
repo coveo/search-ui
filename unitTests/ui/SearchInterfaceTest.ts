@@ -22,6 +22,7 @@ import { Simulate } from '../Simulate';
 import { SearchEndpoint } from '../Test';
 import { NoopHistoryController } from '../../src/controllers/NoopHistoryController';
 import { MockEnvironmentBuilder } from '../MockEnvironment';
+import { ScrollRestorationController } from '../../src/controllers/ScrollRestorationController';
 
 export function SearchInterfaceTest() {
   describe('SearchInterface', () => {
@@ -548,6 +549,13 @@ export function SearchInterfaceTest() {
         it('responsiveSmallBreakpoint will default to a proper value', () => {
           const searchInterface = setupSearchInterface({});
           expect(searchInterface.responsiveComponents.getSmallScreenWidth()).toBe(SMALL_SCREEN_WIDTH);
+        });
+
+        it('enableScrollRestoration should create a scroll restoration controller ', () => {
+          setupSearchInterface({
+            enableScrollRestoration: true
+          });
+          expect(cmp.scrollController instanceof ScrollRestorationController).toBe(true);
         });
       });
 

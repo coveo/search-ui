@@ -16,8 +16,7 @@ import { Logger } from '../misc/Logger';
  */
 
 export class ScrollRestorationController {
-  static stateAttributeName: string = 'yoffset';
-
+  public static stateAttributeName: string = 'yoffset';
   /**
    * Specifies the max amount of time to wait to restore the last scroll position.
    */
