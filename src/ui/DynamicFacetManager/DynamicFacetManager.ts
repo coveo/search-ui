@@ -12,6 +12,7 @@ import { Initialization } from '../Base/Initialization';
 import { ComponentsTypes } from '../../utils/ComponentsTypes';
 import { QueryBuilder } from '../Base/QueryBuilder';
 import { IAutoLayoutAdjustableInsideFacetColumn } from '../SearchInterface/FacetColumnAutoLayoutAdjustment';
+import { IQueryResults } from '../../rest/QueryResults';
 
 export interface IDynamicFacetManagerOptions {
   enableReorder?: boolean;
@@ -34,6 +35,7 @@ export interface IDynamicManagerCompatibleFacet extends Component, IAutoLayoutAd
   hasActiveValues: boolean;
   isDynamicFacet: boolean;
 
+  handleQueryResults(results: IQueryResults): void;
   putStateIntoQueryBuilder(queryBuilder: QueryBuilder): void;
   putStateIntoAnalytics(): void;
   expand(): void;
@@ -141,8 +143,7 @@ export class DynamicFacetManager extends Component {
   private initEvents() {
     this.bind.onRootElement(InitializationEvents.afterComponentsInitialization, () => this.handleAfterComponentsInitialization());
     this.bind.onRootElement(QueryEvents.doneBuildingQuery, (data: IDoneBuildingQueryEventArgs) => this.handleDoneBuildingQuery(data));
-    // Making sure querySuccess is handled in each dynamic facets before the manager
-    this.bind.onRootElement(QueryEvents.querySuccess, (data: IQuerySuccessEventArgs) => setTimeout(() => this.handleQuerySuccess(data), 0));
+    this.bind.onRootElement(QueryEvents.querySuccess, (data: IQuerySuccessEventArgs) => this.handleQuerySuccess(data));
   }
 
   private isDynamicFacet(component: Component) {
@@ -185,6 +186,10 @@ export class DynamicFacetManager extends Component {
     if (Utils.isNullOrUndefined(data.results.facets)) {
       return this.notImplementedError();
     }
+
+    this.enabledFacets.forEach(dynamicFacet => {
+      dynamicFacet.handleQueryResults(data.results);
+    });
 
     if (this.options.enableReorder) {
       this.mapResponseToComponents(data.results.facets);

@@ -322,25 +322,33 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
   }
 
   private handleQuerySuccess(results: IQueryResults) {
-    this.header.hideLoading();
+    // If there is a DynamicFacetManager, it will take care of handling the results
+    if (this.dynamicFacetManager) {
+      return;
+    }
 
     if (Utils.isNullOrUndefined(results.facets)) {
       return this.notImplementedError();
     }
 
+    this.handleQueryResults(results);
+  }
+
+  public handleQueryResults(results: IQueryResults) {
     const index = findIndex(results.facets, { facetId: this.options.id });
-    const response = index !== -1 ? results.facets[index] : null;
+    const facetResponse = index !== -1 ? results.facets[index] : null;
     this.position = index + 1;
 
-    response ? this.onQueryResponse(response) : this.onNoValues();
-    this.values.render();
+    facetResponse ? this.onNewValues(facetResponse) : this.onNoValues();
+    this.header.hideLoading();
     this.updateQueryStateModel(this.values.selectedPath);
+    this.values.render();
     this.updateAppearance();
   }
 
-  private onQueryResponse(response: IFacetResponse) {
-    this.moreValuesAvailable = response.moreValuesAvailable;
-    this.values.createFromResponse(response);
+  private onNewValues(facetResponse: IFacetResponse) {
+    this.moreValuesAvailable = facetResponse.moreValuesAvailable;
+    this.values.createFromResponse(facetResponse);
   }
 
   private onNoValues() {
@@ -370,7 +378,7 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
 
     try {
       const results = await this.dynamicHierarchicalFacetQueryController.getQueryResults();
-      this.handleQuerySuccess(results);
+      this.handleQueryResults(results);
     } catch (e) {
       this.header.hideLoading();
     }
