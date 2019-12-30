@@ -47,6 +47,11 @@ export class FacetSettings extends FacetSort {
   private onDocumentClick = () => this.close();
   private closeTimeout: number;
   private enabledSortsIgnoreRenderBecauseOfPairs: IFacetSortDescription[] = [];
+  private loseFocusPromise: Promise<void>;
+
+  private set isExpanded(expanded: boolean) {
+    this.settingsButton.setAttribute('aria-expanded', `${expanded}`);
+  }
 
   constructor(public sorts: string[], public facet: Facet) {
     super(sorts, facet);
@@ -147,14 +152,17 @@ export class FacetSettings extends FacetSort {
    */
   public close() {
     $$(this.settingsPopup).detach();
+    this.isExpanded = false;
   }
 
   /**
    * Open the settings menu
    */
   public open() {
-    $$(this.settingsPopup).insertAfter(this.facet.element.parentElement);
+    $$(this.settingsPopup).insertAfter(this.settingsButton);
     new Popper(this.settingsButton, this.settingsPopup);
+
+    this.isExpanded = true;
 
     if (this.hideSection && this.showSection) {
       $$(this.hideSection).toggle(!$$(this.facet.element).hasClass('coveo-facet-collapsed'));
@@ -189,11 +197,13 @@ export class FacetSettings extends FacetSort {
   }
 
   private buildSettingsButton() {
-    this.settingsButton = $$('div', { className: 'coveo-facet-header-settings' }).el;
+    this.settingsButton = $$('div', { className: 'coveo-facet-header-settings', 'aria-haspopup': 'true' }).el;
     this.settingsButton.innerHTML = SVGIcons.icons.more;
     SVGDom.addClassToSVGInContainer(this.settingsButton, 'coveo-facet-settings-more-svg');
 
     this.hideElementOnMouseEnterLeave(this.settingsButton);
+
+    this.isExpanded = false;
 
     new AccessibleButton()
       .withElement(this.settingsButton)
@@ -241,6 +251,20 @@ export class FacetSettings extends FacetSort {
     return { element: sortSection, sortItems: sortItems };
   }
 
+  private closePopupOnLoseFocus(el: HTMLElement) {
+    $$(el).on('blur', async () => {
+      const promise = (this.loseFocusPromise = Utils.resolveAfter(15));
+      await promise;
+      if (this.loseFocusPromise !== promise) {
+        return;
+      }
+      if (this.settingsPopup.querySelector(':focus')) {
+        return;
+      }
+      this.close();
+    });
+  }
+
   private buildSortSectionItems() {
     let elems = map(this.enabledSorts, enabledSort => {
       if (contains(this.enabledSortsIgnoreRenderBecauseOfPairs, enabledSort)) {
@@ -254,6 +278,8 @@ export class FacetSettings extends FacetSort {
           .withSelectAction((e: Event) => this.handleClickSortButton(e, enabledSort))
           .withLabel(enabledSort.label)
           .build();
+
+        this.closePopupOnLoseFocus(elem);
 
         return elem;
       }
@@ -301,6 +327,8 @@ export class FacetSettings extends FacetSort {
       .withSelectAction((e: Event) => this.handleDirectionClick(e, 'ascending'))
       .build();
 
+    this.closePopupOnLoseFocus(directionAscendingSection);
+
     const directionDescendingSection = this.buildAscendingOrDescendingSection('Descending');
     const directionItemsDescending = this.buildItems();
     const descending = this.buildAscendingOrDescending('Descending');
@@ -313,6 +341,8 @@ export class FacetSettings extends FacetSort {
       .withLabel(l('Descending'))
       .withSelectAction((e: Event) => this.handleDirectionClick(e, 'descending'))
       .build();
+
+    this.closePopupOnLoseFocus(directionDescendingSection);
 
     if (!this.activeSort.directionToggle) {
       $$(directionAscendingSection).addClass('coveo-facet-settings-disabled');
@@ -347,6 +377,8 @@ export class FacetSettings extends FacetSort {
       .withLabel(l('SaveFacetState'))
       .build();
 
+    this.closePopupOnLoseFocus(saveStateSection);
+
     return saveStateSection;
   }
 
@@ -363,6 +395,8 @@ export class FacetSettings extends FacetSort {
       .withSelectAction(() => this.handleClearStateClick())
       .withLabel(l('ClearFacetState'))
       .build();
+
+    this.closePopupOnLoseFocus(clearStateSection);
 
     return clearStateSection;
   }
@@ -385,6 +419,8 @@ export class FacetSettings extends FacetSort {
       .withLabel(l('CollapseFacet', this.facet.options.title))
       .build();
 
+    this.closePopupOnLoseFocus(hideSection);
+
     return hideSection;
   }
 
@@ -406,6 +442,8 @@ export class FacetSettings extends FacetSort {
       })
       .withLabel(l('ExpandFacet', this.facet.options.title))
       .build();
+
+    this.closePopupOnLoseFocus(showSection);
 
     return showSection;
   }
