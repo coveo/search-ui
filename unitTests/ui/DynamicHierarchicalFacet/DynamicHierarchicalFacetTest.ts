@@ -9,9 +9,13 @@ import { Simulate } from '../../Simulate';
 import { IFacetResponseValue } from '../../../src/rest/Facet/FacetResponse';
 import { FacetValueState } from '../../../src/rest/Facet/FacetValueState';
 import { ResultListUtils } from '../../../src/utils/ResultListUtils';
-import { IDynamicHierarchicalFacetOptions } from '../../../src/ui/DynamicHierarchicalFacet/IDynamicHierarchicalFacet';
+import {
+  IDynamicHierarchicalFacetOptions,
+  HierarchicalFacetSortCriteria
+} from '../../../src/ui/DynamicHierarchicalFacet/IDynamicHierarchicalFacet';
 import { DynamicFacetManager } from '../../../src/ui/DynamicFacetManager/DynamicFacetManager';
 import { analyticsActionCauseList } from '../../../src/ui/Analytics/AnalyticsActionListMeta';
+import { FacetSortCriteria } from '../../../src/rest/Facet/FacetSortCriteria';
 
 export function DynamicHierarchicalFacetTest() {
   describe('DynamicHierarchicalFacet', () => {
@@ -98,6 +102,27 @@ export function DynamicHierarchicalFacetTest() {
 
       Simulate.query(test.env, { results: fakeResultsWithFacets() });
       expect(test.cmp.position).toBe(1);
+    });
+
+    it(`when not setting a sortCriteria option
+      should set it to undefined in the query`, () => {
+      expect(getFirstFacetRequest().sortCriteria).toBeUndefined();
+    });
+
+    it(`when setting an invalid sortCriteria option
+      should set it to undefined in the query`, () => {
+      options.sortCriteria = FacetSortCriteria.score as HierarchicalFacetSortCriteria;
+      initializeComponent();
+
+      expect(getFirstFacetRequest().sortCriteria).toBeUndefined();
+    });
+
+    it(`when setting a valid sortCriteria option
+      should pass it down to the query`, () => {
+      options.sortCriteria = FacetSortCriteria.alphanumeric;
+      initializeComponent();
+
+      expect(getFirstFacetRequest().sortCriteria).toBe(FacetSortCriteria.alphanumeric);
     });
 
     it('should populate breadcrumbs by default', () => {

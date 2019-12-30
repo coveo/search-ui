@@ -18,7 +18,12 @@ import { DynamicHierarchicalFacetBreadcrumb } from './DynamicHierarchicalFacetBr
 import { analyticsActionCauseList, IAnalyticsActionCause, IAnalyticsFacetMeta } from '../Analytics/AnalyticsActionListMeta';
 import { QueryBuilder } from '../Base/QueryBuilder';
 import { ResponsiveFacets } from '../ResponsiveComponents/ResponsiveFacets';
-import { IDynamicHierarchicalFacetOptions, IDynamicHierarchicalFacet, IDynamicHierarchicalFacetValues } from './IDynamicHierarchicalFacet';
+import {
+  IDynamicHierarchicalFacetOptions,
+  IDynamicHierarchicalFacet,
+  IDynamicHierarchicalFacetValues,
+  HierarchicalFacetSortCriteria
+} from './IDynamicHierarchicalFacet';
 import { ResponsiveFacetOptions } from '../ResponsiveComponents/ResponsiveFacetOptions';
 import { DynamicFacetHeader } from '../DynamicFacet/DynamicFacetHeader/DynamicFacetHeader';
 import { IStringMap } from '../../rest/GenericParam';
@@ -32,6 +37,8 @@ import { IQueryResults } from '../../rest/QueryResults';
 import { DynamicFacetManager } from '../DynamicFacetManager/DynamicFacetManager';
 import { IAnalyticsFacetState } from '../Analytics/IAnalyticsFacetState';
 import { FacetValueState } from '../../rest/Facet/FacetValueState';
+import { FacetSortCriteria } from '../../rest/Facet/FacetSortCriteria';
+import { Logger } from '../../misc/Logger';
 
 /**
  * The `DynamicHierarchicalFacet` component is a facet that renders values in a hierarchical fashion. It determines the filter to apply depending on the
@@ -206,6 +213,31 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
      * **Default:** `true` if folded results are requested;`false` otherwise.
      */
     filterFacetCount: ComponentOptions.buildBooleanOption({ section: 'Filtering' }),
+
+    /**
+     * The sort criterion to use for this facet.
+     *
+     * See [`HierarchicalFacetSortCriteria`]{@link HierarchicalFacetSortCriteria} for the list and
+     * description of allowed values.
+     *
+     * **Default (API):** [`occurrences`]{@link HierarchicalFacetSortCriteria.occurrences}
+     */
+    sortCriteria: <HierarchicalFacetSortCriteria>ComponentOptions.buildStringOption({
+      postProcessing: value => {
+        if (!value) {
+          return undefined;
+        }
+
+        if (value === FacetSortCriteria.alphanumeric || value === FacetSortCriteria.occurrences) {
+          return value;
+        }
+
+        new Logger(value).warn('sortCriteria is not of the the allowed values: "alphanumeric", "occurrences"');
+        return undefined;
+      },
+      section: 'Sorting'
+    }),
+
     ...ResponsiveFacetOptions
   };
 
