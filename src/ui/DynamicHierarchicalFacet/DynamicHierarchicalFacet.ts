@@ -337,9 +337,10 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
   public handleQueryResults(results: IQueryResults) {
     const index = findIndex(results.facets, { facetId: this.options.id });
     const facetResponse = index !== -1 ? results.facets[index] : null;
-    this.position = index + 1;
 
+    this.position = facetResponse ? index + 1 : null;
     facetResponse ? this.onNewValues(facetResponse) : this.onNoValues();
+
     this.header.hideLoading();
     this.updateQueryStateModel(this.values.selectedPath);
     this.values.render();
