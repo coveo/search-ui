@@ -329,7 +329,6 @@ export function DynamicFacetManagerTest() {
         modifiedQueryResponse[0].values = [];
         triggerQuerySuccess(modifiedQueryResponse);
 
-        expect(hiddenFacets().indexOf(facets[0])).toBe(0);
         expect(collapsedFacets().length).toBe(facets.length - (maximumNumberOfExpandedFacets + 1));
         expect(collapsedFacets().indexOf(facets[1])).toBe(-1);
         expect(collapsedFacets().indexOf(facets[2])).toBe(-1);
@@ -344,7 +343,6 @@ export function DynamicFacetManagerTest() {
         initForMaximumNumberOfExpandedFacets(maximumNumberOfExpandedFacets);
         triggerQuerySuccess(queryManyFacetsResponse());
 
-        expect(hiddenFacets().indexOf(dependantFacet)).toBe(0);
         expect(collapsedFacets().length).toBe(facets.length - (maximumNumberOfExpandedFacets + 1));
         expect(collapsedFacets().indexOf(facets[1])).toBe(-1);
         expect(collapsedFacets().indexOf(facets[2])).toBe(-1);
