@@ -22,7 +22,6 @@ import { Simulate } from '../Simulate';
 import { SearchEndpoint } from '../Test';
 import { NoopHistoryController } from '../../src/controllers/NoopHistoryController';
 import { MockEnvironmentBuilder } from '../MockEnvironment';
-import { ScrollRestorationController } from '../../src/controllers/ScrollRestorationController';
 
 export function SearchInterfaceTest() {
   describe('SearchInterface', () => {
@@ -551,11 +550,11 @@ export function SearchInterfaceTest() {
           expect(searchInterface.responsiveComponents.getSmallScreenWidth()).toBe(SMALL_SCREEN_WIDTH);
         });
 
-        it('enableScrollRestoration should create a scroll restoration controller ', () => {
+        it('enableScrollRestoration should create a scroll restoration module ', () => {
           setupSearchInterface({
             enableScrollRestoration: true
           });
-          expect(cmp.scrollController instanceof ScrollRestorationController).toBe(true);
+          expect(cmp.scrollRestoration).toBeDefined();
         });
       });
 
