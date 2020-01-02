@@ -30,6 +30,7 @@ export interface IDynamicHierarchicalFacetOptions extends IResponsiveComponentOp
   dependsOn?: string;
   includeInBreadcrumb?: boolean;
   filterFacetCount?: boolean;
+  basePath?: string[];
 }
 
 export interface IDynamicHierarchicalFacet extends Component, IDynamicManagerCompatibleFacet, IAutoLayoutAdjustableInsideFacetColumn {

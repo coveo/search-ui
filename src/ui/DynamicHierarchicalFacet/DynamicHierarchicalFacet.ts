@@ -238,6 +238,29 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
       section: 'Sorting'
     }),
 
+    /**
+     * The path to use as the path prefix for every query.
+     *
+     * **Example:**
+     *
+     * You have the following files indexed on a file system:
+     * ```
+     * c:\
+     *    folder1\
+     *      text1.txt
+     *    folder2\
+     *      folder3\
+     *        text2.txt
+     * ```
+     * Setting the `basePath` to `c` would display `folder1` and `folder2` in the `DynamicHierarchicalFacet`, but omit `c`.
+     *
+     * This options accepts an array of values. To specify a "deeper" starting path in your tree, you need to use comma-separated values.
+     *
+     * For example, setting `data-base-path="c,folder1"` on the component markup would display `folder3` in the `DynamicHierarchicalFacet`, but omit `c` and `folder1`.
+     *
+     */
+    basePath: ComponentOptions.buildListOption<string>({ defaultValue: [] }),
+
     ...ResponsiveFacetOptions
   };
 
