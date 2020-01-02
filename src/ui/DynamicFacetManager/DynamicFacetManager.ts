@@ -12,6 +12,7 @@ import { Initialization } from '../Base/Initialization';
 import { ComponentsTypes } from '../../utils/ComponentsTypes';
 import { QueryBuilder } from '../Base/QueryBuilder';
 import { IAutoLayoutAdjustableInsideFacetColumn } from '../SearchInterface/FacetColumnAutoLayoutAdjustment';
+import { IQueryResults } from '../../rest/QueryResults';
 
 export interface IDynamicFacetManagerOptions {
   enableReorder?: boolean;
@@ -34,6 +35,7 @@ export interface IDynamicManagerCompatibleFacet extends Component, IAutoLayoutAd
   hasActiveValues: boolean;
   isDynamicFacet: boolean;
 
+  handleQueryResults(results: IQueryResults): void;
   putStateIntoQueryBuilder(queryBuilder: QueryBuilder): void;
   putStateIntoAnalytics(): void;
   expand(): void;
@@ -184,6 +186,10 @@ export class DynamicFacetManager extends Component {
     if (Utils.isNullOrUndefined(data.results.facets)) {
       return this.notImplementedError();
     }
+
+    this.enabledFacets.forEach(dynamicFacet => {
+      dynamicFacet.handleQueryResults(data.results);
+    });
 
     if (this.options.enableReorder) {
       this.mapResponseToComponents(data.results.facets);

@@ -35,9 +35,13 @@ export function DynamicFacetTest() {
 
       spyOn(test.cmp.values, 'clearAll').and.callThrough();
       spyOn(test.cmp.values, 'render').and.callThrough();
+      spyOn(test.cmp.values, 'createFromResponse');
+      spyOn(test.cmp.values, 'resetValues');
       triggerNewQuerySpy = spyOn(test.cmp, 'triggerNewQuery').and.callThrough();
       triggerNewQuerySpy.and.callThrough();
       spyOn(test.cmp, 'putStateIntoQueryBuilder').and.callThrough();
+      spyOn(test.cmp, 'putStateIntoAnalytics').and.callThrough();
+      spyOn(test.cmp, 'handleQueryResults').and.callThrough();
       spyOn(test.cmp, 'triggerNewIsolatedQuery').and.callThrough();
       spyOn(test.cmp, 'reset').and.callThrough();
       spyOn(test.cmp, 'enableFreezeFacetOrderFlag').and.callThrough();
@@ -77,7 +81,16 @@ export function DynamicFacetTest() {
 
     function fakeResultsWithFacets() {
       const fakeResultsWithFacets = FakeResults.createFakeResults();
-      fakeResultsWithFacets.facets = [DynamicFacetTestUtils.getCompleteFacetResponse(test.cmp)];
+      fakeResultsWithFacets.facets = [
+        DynamicFacetTestUtils.getCompleteFacetResponse(DynamicFacetTestUtils.createAdvancedFakeFacet({ field: '@anotherfield' }).cmp),
+        DynamicFacetTestUtils.getCompleteFacetResponse(test.cmp)
+      ];
+      return fakeResultsWithFacets;
+    }
+
+    function fakeResultsWithNoFacets() {
+      const fakeResultsWithFacets = FakeResults.createFakeResults();
+      fakeResultsWithFacets.facets = [];
       return fakeResultsWithFacets;
     }
 
@@ -499,36 +512,8 @@ export function DynamicFacetTest() {
       ]);
     });
 
-    it(`when calling "putStateIntoAnalytics" 
-      should call "getPendingSearchEvent" on the "usageAnalytics" object`, () => {
-      test.cmp.putStateIntoAnalytics();
-
-      expect(test.cmp.usageAnalytics.getPendingSearchEvent).toHaveBeenCalled();
-    });
-
-    it(`when calling "putStateIntoAnalytics" 
-      should call "addFacetState" on the "PendingSearchEvent" with the correct state`, () => {
-      const fakePendingSearchEvent = {
-        addFacetState: jasmine.createSpy('addFacetState')
-      };
-      test.cmp.usageAnalytics.getPendingSearchEvent = jasmine.createSpy('getPendingSearchEvent').and.callFake(() => fakePendingSearchEvent);
-
-      test.cmp.putStateIntoAnalytics();
-
-      expect(fakePendingSearchEvent.addFacetState).toHaveBeenCalledWith(test.cmp.analyticsFacetState);
-    });
-
     it('facet position should be null by default', () => {
       expect(test.cmp.position).toBeNull();
-    });
-
-    it(`when getting successful results
-      facet position should be correct`, () => {
-      test.cmp.ensureDom();
-
-      $$(test.env.root).trigger(QueryEvents.querySuccess, { results: fakeResultsWithFacets() });
-
-      expect(test.cmp.position).toBe(1);
     });
 
     it(`when "enableFacetSearch" option is false
@@ -616,9 +601,9 @@ export function DynamicFacetTest() {
         expect(test.cmp.header.showLoading).toHaveBeenCalledTimes(1);
       });
 
-      it(`when a query is successful
-      should call "hideLoading" on the header`, () => {
-        $$(test.env.root).trigger(QueryEvents.querySuccess, { results: fakeResultsWithFacets() });
+      it(`when calling handleQueryResults
+        should call "hideLoading" on the header`, () => {
+        test.cmp.handleQueryResults(fakeResultsWithFacets());
         expect(test.cmp.header.hideLoading).toHaveBeenCalledTimes(1);
       });
 
@@ -665,6 +650,103 @@ export function DynamicFacetTest() {
         test.cmp.dynamicFacetManager = Mock.mockComponent(DynamicFacetManager);
         $$(test.cmp.root).trigger(QueryEvents.doneBuildingQuery, { queryBuilder: new QueryBuilder() });
         expect(test.cmp.putStateIntoQueryBuilder).not.toHaveBeenCalled();
+      });
+    });
+
+    describe('testing putStateIntoAnalytics', () => {
+      it(`should call "getPendingSearchEvent" on the "usageAnalytics" object`, () => {
+        test.cmp.putStateIntoAnalytics();
+
+        expect(test.cmp.usageAnalytics.getPendingSearchEvent).toHaveBeenCalled();
+      });
+
+      it(`should call "addFacetState" on the "PendingSearchEvent" with the correct state`, () => {
+        const fakePendingSearchEvent = {
+          addFacetState: jasmine.createSpy('addFacetState')
+        };
+        test.cmp.usageAnalytics.getPendingSearchEvent = jasmine
+          .createSpy('getPendingSearchEvent')
+          .and.callFake(() => fakePendingSearchEvent);
+
+        test.cmp.putStateIntoAnalytics();
+
+        expect(fakePendingSearchEvent.addFacetState).toHaveBeenCalledWith(test.cmp.analyticsFacetState);
+      });
+
+      it(`when facet as a dynamicFacetManager
+        should not call putStateIntoAnalytics on the facet`, () => {
+        test.cmp.dynamicFacetManager = Mock.mockComponent(DynamicFacetManager);
+        $$(test.cmp.root).trigger(QueryEvents.doneBuildingQuery, { queryBuilder: new QueryBuilder() });
+        expect(test.cmp.putStateIntoAnalytics).not.toHaveBeenCalled();
+      });
+    });
+
+    describe('testing querySuccess', () => {
+      beforeEach(() => {
+        test.cmp.ensureDom();
+      });
+
+      it(`when facet as a dynamicFacetManager
+        should call handleQueryResults on the facet`, () => {
+        $$(test.env.root).trigger(QueryEvents.querySuccess, { results: fakeResultsWithFacets() });
+        expect(test.cmp.handleQueryResults).toHaveBeenCalled();
+      });
+
+      it(`when facet as a dynamicFacetManager
+        should not call handleQueryResults on the facet`, () => {
+        test.cmp.dynamicFacetManager = Mock.mockComponent(DynamicFacetManager);
+        $$(test.env.root).trigger(QueryEvents.querySuccess, { results: fakeResultsWithFacets() });
+        expect(test.cmp.handleQueryResults).not.toHaveBeenCalled();
+      });
+    });
+
+    describe('testing handleQueryResults', () => {
+      beforeEach(() => {
+        test.cmp.ensureDom();
+      });
+
+      describe('when facet is in the results', () => {
+        beforeEach(() => {
+          test.cmp.handleQueryResults(fakeResultsWithFacets());
+        });
+
+        it(`facet position should be correct`, () => {
+          expect(test.cmp.position).toBe(2);
+        });
+
+        it(`"createFromResponse" should be called on the values`, () => {
+          expect(test.cmp.values.createFromResponse).toHaveBeenCalledTimes(1);
+        });
+
+        it(`"render" should be called on the values`, () => {
+          expect(test.cmp.values.render).toHaveBeenCalledTimes(2);
+        });
+
+        it('queryStateModel values are correct', () => {
+          testQueryStateModelValues();
+        });
+      });
+
+      describe('when facet is not in the results', () => {
+        beforeEach(() => {
+          test.cmp.handleQueryResults(fakeResultsWithNoFacets());
+        });
+
+        it(`facet position should be "null"`, () => {
+          expect(test.cmp.position).toBeNull();
+        });
+
+        it(`"resetValues" should be called on the values`, () => {
+          expect(test.cmp.values.resetValues).toHaveBeenCalledTimes(1);
+        });
+
+        it(`"render" should be called on the values`, () => {
+          expect(test.cmp.values.render).toHaveBeenCalledTimes(2);
+        });
+
+        it('queryStateModel values are correct', () => {
+          testQueryStateModelValues();
+        });
       });
     });
 
