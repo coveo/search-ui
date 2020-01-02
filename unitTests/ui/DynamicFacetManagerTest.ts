@@ -339,14 +339,15 @@ export function DynamicFacetManagerTest() {
       should not be taken into consideration when expanding/collapsing`, () => {
         const dependantFacet = DynamicFacetTestUtils.createAdvancedFakeFacet({ field: '@dependantFacet', dependsOn: facets[0].options.id })
           .cmp;
-        facets.push(dependantFacet);
+        facets.unshift(dependantFacet);
         const maximumNumberOfExpandedFacets = 2;
         initForMaximumNumberOfExpandedFacets(maximumNumberOfExpandedFacets);
+        triggerQuerySuccess(queryManyFacetsResponse());
 
         expect(hiddenFacets().indexOf(dependantFacet)).toBe(0);
         expect(collapsedFacets().length).toBe(facets.length - (maximumNumberOfExpandedFacets + 1));
-        expect(collapsedFacets().indexOf(facets[0])).toBe(-1);
         expect(collapsedFacets().indexOf(facets[1])).toBe(-1);
+        expect(collapsedFacets().indexOf(facets[2])).toBe(-1);
       });
 
       it(`when applying maximum
