@@ -103,18 +103,6 @@ export function DynamicHierarchicalFacetTest() {
       expect(test.cmp.facetType).toBe(FacetType.hierarchical);
     });
 
-    it('facet position should be null by default', () => {
-      expect(test.cmp.position).toBeNull();
-    });
-
-    it(`when getting successful results
-      facet position should be correct`, () => {
-      test.cmp.ensureDom();
-
-      Simulate.query(test.env, { results: fakeResultsWithFacets() });
-      expect(test.cmp.position).toBe(1);
-    });
-
     it(`when not setting a sortCriteria option
       should set it to undefined in the query`, () => {
       expect(getFirstFacetRequest().sortCriteria).toBeUndefined();
