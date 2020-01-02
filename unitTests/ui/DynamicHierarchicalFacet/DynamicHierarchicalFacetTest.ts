@@ -99,18 +99,6 @@ export function DynamicHierarchicalFacetTest() {
       expect(test.cmp.facetType).toBe(FacetType.hierarchical);
     });
 
-    it('facet position should be null by default', () => {
-      expect(test.cmp.position).toBeNull();
-    });
-
-    it(`when getting successful results
-      facet position should be correct`, () => {
-      test.cmp.ensureDom();
-
-      Simulate.query(test.env, { results: fakeResultsWithFacets() });
-      expect(test.cmp.position).toBe(1);
-    });
-
     it('should populate breadcrumbs by default', () => {
       test.cmp.selectPath(['foo']);
       const breadcrumbs = triggerPopulateBreadcrumbs();
