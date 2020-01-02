@@ -47,7 +47,10 @@ export class FacetSettings extends FacetSort {
   private onDocumentClick = () => this.close();
   private closeTimeout: number;
   private enabledSortsIgnoreRenderBecauseOfPairs: IFacetSortDescription[] = [];
-  private loseFocusPromise: Promise<void>;
+
+  private get isExpanded() {
+    return this.settingsButton && this.settingsButton.getAttribute('aria-expanded') === `${true}`;
+  }
 
   private set isExpanded(expanded: boolean) {
     this.settingsButton.setAttribute('aria-expanded', `${expanded}`);
@@ -151,8 +154,11 @@ export class FacetSettings extends FacetSort {
    * Close the settings menu
    */
   public close() {
-    $$(this.settingsPopup).detach();
+    if (!this.isExpanded) {
+      return;
+    }
     this.isExpanded = false;
+    $$(this.settingsPopup).detach();
   }
 
   /**
@@ -230,6 +236,12 @@ export class FacetSettings extends FacetSort {
   private buildSettingsPopup() {
     this.settingsPopup = $$('div', { className: 'coveo-facet-settings-popup' }).el;
     this.hideElementOnMouseEnterLeave(this.settingsPopup);
+    $$(this.settingsPopup).on('focusout', (e: FocusEvent) => {
+      if (e.relatedTarget && this.settingsPopup.contains(e.relatedTarget as Node)) {
+        return;
+      }
+      this.close();
+    });
   }
 
   private buildSortSection() {
@@ -251,20 +263,6 @@ export class FacetSettings extends FacetSort {
     return { element: sortSection, sortItems: sortItems };
   }
 
-  private closePopupOnLoseFocus(el: HTMLElement) {
-    $$(el).on('blur', async () => {
-      const promise = (this.loseFocusPromise = Utils.resolveAfter(15));
-      await promise;
-      if (this.loseFocusPromise !== promise) {
-        return;
-      }
-      if (this.settingsPopup.querySelector(':focus')) {
-        return;
-      }
-      this.close();
-    });
-  }
-
   private buildSortSectionItems() {
     let elems = map(this.enabledSorts, enabledSort => {
       if (contains(this.enabledSortsIgnoreRenderBecauseOfPairs, enabledSort)) {
@@ -278,8 +276,6 @@ export class FacetSettings extends FacetSort {
           .withSelectAction((e: Event) => this.handleClickSortButton(e, enabledSort))
           .withLabel(enabledSort.label)
           .build();
-
-        this.closePopupOnLoseFocus(elem);
 
         return elem;
       }
@@ -327,8 +323,6 @@ export class FacetSettings extends FacetSort {
       .withSelectAction((e: Event) => this.handleDirectionClick(e, 'ascending'))
       .build();
 
-    this.closePopupOnLoseFocus(directionAscendingSection);
-
     const directionDescendingSection = this.buildAscendingOrDescendingSection('Descending');
     const directionItemsDescending = this.buildItems();
     const descending = this.buildAscendingOrDescending('Descending');
@@ -341,8 +335,6 @@ export class FacetSettings extends FacetSort {
       .withLabel(l('Descending'))
       .withSelectAction((e: Event) => this.handleDirectionClick(e, 'descending'))
       .build();
-
-    this.closePopupOnLoseFocus(directionDescendingSection);
 
     if (!this.activeSort.directionToggle) {
       $$(directionAscendingSection).addClass('coveo-facet-settings-disabled');
@@ -377,8 +369,6 @@ export class FacetSettings extends FacetSort {
       .withLabel(l('SaveFacetState'))
       .build();
 
-    this.closePopupOnLoseFocus(saveStateSection);
-
     return saveStateSection;
   }
 
@@ -395,8 +385,6 @@ export class FacetSettings extends FacetSort {
       .withSelectAction(() => this.handleClearStateClick())
       .withLabel(l('ClearFacetState'))
       .build();
-
-    this.closePopupOnLoseFocus(clearStateSection);
 
     return clearStateSection;
   }
@@ -419,8 +407,6 @@ export class FacetSettings extends FacetSort {
       .withLabel(l('CollapseFacet', this.facet.options.title))
       .build();
 
-    this.closePopupOnLoseFocus(hideSection);
-
     return hideSection;
   }
 
@@ -442,8 +428,6 @@ export class FacetSettings extends FacetSort {
       })
       .withLabel(l('ExpandFacet', this.facet.options.title))
       .build();
-
-    this.closePopupOnLoseFocus(showSection);
 
     return showSection;
   }
