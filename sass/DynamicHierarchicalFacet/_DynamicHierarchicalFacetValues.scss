@@ -87,16 +87,17 @@ button.coveo-dynamic-hierarchical-facet-all {
 
 .coveo-dynamic-hierarchical-facet-value-arrow {
   position: absolute;
+  top: 6px;
   left: 0;
 }
 
-$arrow-svg-dimensions: 25px;
+$arrow-svg-dimensions: 15px;
 .coveo-dynamic-hierarchical-facet-value-arrow-svg {
+  transform: rotate(90deg);
   width: $arrow-svg-dimensions;
   height: $arrow-svg-dimensions;
   color: $coveo-blue;
-  display: inline-block;
-  vertical-align: middle;
+  vertical-align: top;
 }
 
 .coveo-dynamic-hierarchical-facet-show-more {
