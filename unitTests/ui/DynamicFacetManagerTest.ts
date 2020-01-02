@@ -131,6 +131,37 @@ export function DynamicFacetManagerTest() {
       expect(test.cmp.disabled).toBe(false);
     });
 
+    it(`on the doneBuildingQuery event
+      should call putStateIntoQueryBuilder on it's facets`, () => {
+      triggerAfterComponentsInitialization();
+      spyOn(facets[2], 'putStateIntoQueryBuilder');
+      $$(test.env.root).trigger(QueryEvents.doneBuildingQuery, {
+        queryBuilder: new QueryBuilder()
+      });
+
+      expect(facets[2].putStateIntoQueryBuilder).toHaveBeenCalledTimes(1);
+    });
+
+    it(`on the doneBuildingQuery event
+      should call putStateIntoAnalytics on it's facets`, () => {
+      triggerAfterComponentsInitialization();
+      spyOn(facets[2], 'putStateIntoAnalytics');
+      $$(test.env.root).trigger(QueryEvents.doneBuildingQuery, {
+        queryBuilder: new QueryBuilder()
+      });
+
+      expect(facets[2].putStateIntoAnalytics).toHaveBeenCalledTimes(1);
+    });
+
+    it(`on the querySuccess event
+      should call handleQueryResults on it's facets`, () => {
+      triggerAfterComponentsInitialization();
+      spyOn(facets[2], 'handleQueryResults').and.callThrough();
+      triggerQuerySuccess(queryFacetsResponse());
+
+      expect(facets[2].handleQueryResults).toHaveBeenCalledTimes(1);
+    });
+
     it(`when a facet is disabled
     should not be sent in the request`, () => {
       const facetIndex = 0;

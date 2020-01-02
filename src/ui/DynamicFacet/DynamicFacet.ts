@@ -578,25 +578,34 @@ export class DynamicFacet extends Component implements IDynamicFacet {
   }
 
   private handleQuerySuccess(results: IQueryResults) {
-    this.header.hideLoading();
+    // If there is a DynamicFacetManager, it will take care of handling the results
+    if (this.dynamicFacetManager) {
+      return;
+    }
 
     if (Utils.isNullOrUndefined(results.facets)) {
       return this.notImplementedError();
     }
 
-    const index = findIndex(results.facets, { facetId: this.options.id });
-    const response = index !== -1 ? results.facets[index] : null;
-    this.position = index + 1;
+    this.handleQueryResults(results);
+  }
 
-    response ? this.onQueryResponse(response) : this.onNoValues();
+  public handleQueryResults(results: IQueryResults) {
+    const index = findIndex(results.facets, { facetId: this.options.id });
+    const facetResponse = index !== -1 ? results.facets[index] : null;
+
+    this.position = facetResponse ? index + 1 : null;
+    facetResponse ? this.onNewValues(facetResponse) : this.onNoValues();
+
+    this.header.hideLoading();
     this.updateQueryStateModel();
     this.values.render();
     this.updateAppearance();
   }
 
-  private onQueryResponse(response: IFacetResponse) {
-    this.moreValuesAvailable = response.moreValuesAvailable;
-    this.values.createFromResponse(response);
+  private onNewValues(facetResponse: IFacetResponse) {
+    this.moreValuesAvailable = facetResponse.moreValuesAvailable;
+    this.values.createFromResponse(facetResponse);
   }
 
   private onNoValues() {
@@ -744,7 +753,7 @@ export class DynamicFacet extends Component implements IDynamicFacet {
 
     try {
       const results = await this.dynamicFacetQueryController.getQueryResults();
-      this.handleQuerySuccess(results);
+      this.handleQueryResults(results);
     } catch (e) {
       this.header.hideLoading();
     }
