@@ -221,6 +221,31 @@ export class Simulate {
     return modalBox;
   }
 
+  static fullModalBoxModule(): ModalBox {
+    let content: HTMLElement;
+    const container = $$(
+      'div',
+      { className: 'coveo-wrapper coveo-modal-container' },
+      (content = $$(
+        'div',
+        { className: 'coveo-modal-content' },
+        $$('header', { className: 'coveo-modal-header' }, $$('div', { className: 'coveo-quickview-close-button coveo-small-close' })).el
+      ).el)
+    ).el;
+    const backdrop = $$('div', { className: 'coveo-modal-backdrop' }).el;
+    let modalBox = <any>{};
+    modalBox.open = jasmine.createSpy('open');
+    modalBox.close = jasmine.createSpy('close');
+    modalBox.open.and.returnValue({
+      modalBox: container,
+      wrapper: content,
+      overlay: backdrop,
+      content,
+      close: modalBox.close
+    });
+    return modalBox;
+  }
+
   static analyticsStoreModule(actionsHistory = []) {
     return {
       addElement: (query: IQuery) => {},
