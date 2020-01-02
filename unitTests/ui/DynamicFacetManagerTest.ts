@@ -267,10 +267,6 @@ export function DynamicFacetManagerTest() {
         return facets.filter(facet => facet.isCollapsed);
       }
 
-      function hiddenFacets() {
-        return facets.filter(facet => !facet.isCurrentlyDisplayed());
-      }
-
       beforeEach(() => {
         initializeManyFacets();
       });
