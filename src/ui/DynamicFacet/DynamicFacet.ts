@@ -521,10 +521,6 @@ export class DynamicFacet extends Component implements IDynamicFacet {
     return $$(this.element).isVisible();
   }
 
-  public get hasDisplayedValues() {
-    return this.values.hasDisplayedValues;
-  }
-
   public get hasActiveValues() {
     return this.values.hasActiveValues;
   }
@@ -722,7 +718,7 @@ export class DynamicFacet extends Component implements IDynamicFacet {
     $$(this.element).toggleClass('coveo-active', this.values.hasSelectedValues);
     $$(this.element).removeClass('coveo-hidden');
     this.dependsOnManager.updateVisibilityBasedOnDependsOn();
-    !this.hasDisplayedValues && $$(this.element).addClass('coveo-hidden');
+    !this.values.hasDisplayedValues && $$(this.element).addClass('coveo-hidden');
   }
 
   private toggleSearchDisplay() {

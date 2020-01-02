@@ -31,7 +31,6 @@ export interface IDynamicFacetManagerCompareFacet {
 
 export interface IDynamicManagerCompatibleFacet extends Component, IAutoLayoutAdjustableInsideFacetColumn {
   dynamicFacetManager: DynamicFacetManager;
-  hasDisplayedValues: boolean;
   hasActiveValues: boolean;
   isDynamicFacet: boolean;
 
@@ -112,8 +111,8 @@ export class DynamicFacetManager extends Component {
     return this.childrenFacets.filter(facet => !facet.disabled);
   }
 
-  private get facetsWithDisplayedValues() {
-    return this.childrenFacets.filter(facet => facet.hasDisplayedValues);
+  private get displayedFacets() {
+    return this.childrenFacets.filter(facet => facet.isCurrentlyDisplayed());
   }
 
   /**
@@ -236,7 +235,7 @@ export class DynamicFacetManager extends Component {
       return;
     }
 
-    const [collapsableFacets, uncollapsableFacets] = partition(this.facetsWithDisplayedValues, facet => facet.options.enableCollapse);
+    const [collapsableFacets, uncollapsableFacets] = partition(this.displayedFacets, facet => facet.options.enableCollapse);
     const [facetsWithActiveValues, remainingFacets] = partition(collapsableFacets, facet => facet.hasActiveValues);
     let numberOfFacetsLeftToExpand =
       this.options.maximumNumberOfExpandedFacets - uncollapsableFacets.length - facetsWithActiveValues.length;
