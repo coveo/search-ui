@@ -283,10 +283,6 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
     return $$(this.element).isVisible();
   }
 
-  public get hasDisplayedValues() {
-    return !!this.values.allFacetValues.length;
-  }
-
   public get hasActiveValues() {
     return this.values.hasSelectedValue;
   }
@@ -350,7 +346,7 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
     $$(this.element).toggleClass('coveo-dynamic-hierarchical-facet-collapsed', this.isCollapsed);
     $$(this.element).removeClass('coveo-hidden');
     this.dependsOnManager.updateVisibilityBasedOnDependsOn();
-    !this.hasDisplayedValues && $$(this.element).addClass('coveo-hidden');
+    !this.values.allFacetValues.length && $$(this.element).addClass('coveo-hidden');
   }
 
   private handleQuerySuccess(results: IQueryResults) {

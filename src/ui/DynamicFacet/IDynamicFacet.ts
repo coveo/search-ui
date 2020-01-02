@@ -127,6 +127,5 @@ export interface IDynamicFacetValues {
   hasSelectedValues: boolean;
   hasActiveValues: boolean;
   hasIdleValues: boolean;
-  hasDisplayedValues: boolean;
   hasValues: boolean;
 }
