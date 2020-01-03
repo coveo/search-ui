@@ -83,9 +83,9 @@ export class DynamicFacetRange extends DynamicFacet implements IComponentBinding
      *
      * This value will override the [`numberOfValues`]{@link DynamicFacet.options.numberOfValues} value.
      *
-     * **Required:** Specifying a value for this option is required for the component to work.
+     * If this option is not defined, the index will try to generate automatic ranges.
      */
-    ranges: ComponentOptions.buildJsonOption<IRangeValue[]>({ required: true })
+    ranges: ComponentOptions.buildJsonOption<IRangeValue[]>()
   };
 
   /**

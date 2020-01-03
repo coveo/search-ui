@@ -11,7 +11,7 @@ import { IQuery } from '../rest/Query';
 export class DynamicFacetQueryController {
   protected requestBuilder: DynamicFacetRequestBuilder;
   private numberOfValuesToRequest: number;
-  private freezeCurrentValues = false;
+  protected freezeCurrentValues = false;
   private freezeFacetOrder = false;
 
   constructor(protected facet: IDynamicFacet) {
