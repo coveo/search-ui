@@ -41,7 +41,7 @@ export class DynamicHierarchicalFacetValueRenderer {
   }
 
   private prependArrow() {
-    const arrowIcon = $$('div', { className: 'coveo-dynamic-hierarchical-facet-value-arrow' }, SVGIcons.icons.arrowLeft);
+    const arrowIcon = $$('div', { className: 'coveo-dynamic-hierarchical-facet-value-arrow' }, SVGIcons.icons.arrowDown);
     SVGDom.addClassToSVGInContainer(arrowIcon.el, 'coveo-dynamic-hierarchical-facet-value-arrow-svg');
     this.button.prepend(arrowIcon.el);
   }

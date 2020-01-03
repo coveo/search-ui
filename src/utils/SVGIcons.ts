@@ -8,7 +8,6 @@ export class SVGIcons {
     checkboxHookExclusionMore: require(`svg/checkbox-hook-exclusion-more`),
     arrowUp: require(`svg/arrow-up`),
     arrowDown: require(`svg/arrow-down`),
-    arrowLeft: require(`svg/arrow-left`),
 
     mainClear: require(`svg/main-clear`),
     orAnd: require(`svg/or-and`),

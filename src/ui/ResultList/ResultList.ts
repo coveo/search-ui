@@ -11,7 +11,12 @@ import {
   QueryEvents
 } from '../../events/QueryEvents';
 import { IResultLayoutPopulateArgs, ResultLayoutEvents } from '../../events/ResultLayoutEvents';
-import { IChangeLayoutEventArgs, IDisplayedNewResultEventArgs, ResultListEvents } from '../../events/ResultListEvents';
+import {
+  IChangeLayoutEventArgs,
+  IDisplayedNewResultEventArgs,
+  IDisplayedNewResultsEventArgs,
+  ResultListEvents
+} from '../../events/ResultListEvents';
 import { exportGlobally } from '../../GlobalExports';
 import { Assert } from '../../misc/Assert';
 import { Defer } from '../../misc/Defer';
@@ -496,7 +501,10 @@ export class ResultList extends Component {
   }
 
   protected triggerNewResultsDisplayed() {
-    $$(this.element).trigger(ResultListEvents.newResultsDisplayed, {});
+    const args: IDisplayedNewResultsEventArgs = {
+      isInfiniteScrollEnabled: this.options.enableInfiniteScroll
+    };
+    $$(this.element).trigger(ResultListEvents.newResultsDisplayed, args);
   }
 
   private async fetchAndRenderMoreResults(count: number): Promise<IQueryResults> {
