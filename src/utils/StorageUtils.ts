@@ -1,9 +1,9 @@
-export type ValidStorageProviders = 'local' | 'session';
+export type ValidStorageProvider = 'local' | 'session';
 
 export class StorageUtils<T> {
   private storage: Storage;
 
-  constructor(public id: string, public storageProvider: ValidStorageProviders = 'local') {
+  constructor(private id: string, storageProvider: ValidStorageProvider = 'local') {
     // This check must be made in a try/catch. If cookies are disabled for a
     // browser then window.localStorage will throw an undefined exception.
     try {

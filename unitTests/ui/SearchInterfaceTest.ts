@@ -554,14 +554,14 @@ export function SearchInterfaceTest() {
           setupSearchInterface({
             enableScrollRestoration: true
           });
-          expect(cmp.scrollRestoration).toBeDefined();
+          expect(cmp.scrollRestorer).toBeDefined();
         });
 
         it('enableScrollRestoration should not create a scroll restoration instance if false', () => {
           setupSearchInterface({
             enableScrollRestoration: false
           });
-          expect(cmp.scrollRestoration).toBeUndefined();
+          expect(cmp.scrollRestorer).toBeUndefined();
         });
       });
 

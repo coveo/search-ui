@@ -53,7 +53,7 @@ import { FacetColumnAutoLayoutAdjustment } from './FacetColumnAutoLayoutAdjustme
 import { FacetValueStateHandler } from './FacetValueStateHandler';
 import RelevanceInspectorModule = require('../RelevanceInspector/RelevanceInspector');
 import { ComponentsTypes } from '../../utils/ComponentsTypes';
-import { ScrollRestoration } from './ScrollRestoration';
+import { ScrollRestorer } from './ScrollRestorer';
 
 export interface ISearchInterfaceOptions {
   enableHistory?: boolean;
@@ -503,7 +503,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
   public componentOptionsModel: ComponentOptionsModel;
   public usageAnalytics: IAnalyticsClient;
   public historyManager: IHistoryManager;
-  public scrollRestoration: ScrollRestoration;
+  public scrollRestorer: ScrollRestorer;
   /**
    * Allows to get and set the different breakpoints for mobile and tablet devices.
    *
@@ -561,7 +561,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     this.setupEventsHandlers();
     this.setupHistoryManager(element, _window);
 
-    this.setupScrollRestoration(element, _window, this.queryStateModel);
+    this.setupScrollRestorer(element, _window, this.queryStateModel);
 
     this.element.style.display = element.style.display || 'block';
 
@@ -759,9 +759,9 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     }
   }
 
-  private setupScrollRestoration(element: HTMLElement, _window: Window, queryStateModel: QueryStateModel) {
+  private setupScrollRestorer(element: HTMLElement, _window: Window, queryStateModel: QueryStateModel) {
     if (this.options.enableScrollRestoration) {
-      this.scrollRestoration = new ScrollRestoration(element, queryStateModel);
+      this.scrollRestorer = new ScrollRestorer(element, queryStateModel);
     }
   }
 

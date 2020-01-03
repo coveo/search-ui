@@ -9,26 +9,26 @@ interface IScrollRestorationInfo {
   pageHeight: number;
 }
 
-export class ScrollRestoration {
-  static ID = 'ScrollRestoration';
+export class ScrollRestorer {
+  private ID = 'ScrollRestorer';
 
   private scrollInfoStorage: StorageUtils<Record<string, IScrollRestorationInfo>>;
 
-  private restorationTimeOutInMs: number = 5000;
-  private tryToScrollIntervalInMs: number = 50;
-  private timeoutHandle = null;
+  private restorationTimeOutInMs = 5000;
+  private tryToScrollIntervalInMs = 50;
+  private timeoutHandle;
 
   constructor(public root: HTMLElement, private queryStateModel: QueryStateModel) {
-    this.scrollInfoStorage = new StorageUtils<Record<string, IScrollRestorationInfo>>(ScrollRestoration.ID, 'session');
+    this.scrollInfoStorage = new StorageUtils<Record<string, IScrollRestorationInfo>>(this.ID, 'session');
     window.addEventListener('beforeunload', () => {
-      this.saveScrollPositionInState();
+      this.saveScrollInfo();
     });
     $$(this.root).on(ResultListEvents.newResultsDisplayed, (event: Event, args: IDisplayedNewResultsEventArgs) =>
       this.handleNewResultsDisplayed(args)
     );
   }
 
-  public saveScrollPositionInState() {
+  private saveScrollInfo() {
     const scrollInfo: IScrollRestorationInfo = {
       pageHeight: window.document.body.scrollHeight,
       lastPosition: window.pageYOffset
@@ -43,15 +43,15 @@ export class ScrollRestoration {
   }
 
   public handleNewResultsDisplayed(args: IDisplayedNewResultsEventArgs) {
-    if (args.infiniteScrolling) {
-      new Logger(this).warn('Scroll restoration is not yet supported on result lists with infinite scrolling enabled.');
-      this.resetScrollPositionState();
+    if (args.isInfiniteScrollEnabled) {
+      new Logger(this).warn('Scroll restoration is not supported on result lists with infinite scrolling enabled.');
+      this.resetScrollInfo();
       return;
     }
 
     const scrollInfo = this.getScrollInfoForCurrentQuery();
 
-    this.resetScrollPositionState();
+    this.resetScrollInfo();
 
     if (scrollInfo && scrollInfo.lastPosition) {
       const stopTryingAt = Date.now() + this.restorationTimeOutInMs;
@@ -59,7 +59,7 @@ export class ScrollRestoration {
     }
   }
 
-  private resetScrollPositionState() {
+  private resetScrollInfo() {
     this.scrollInfoStorage.remove(this.getKeyForCurrentQuery());
   }
 

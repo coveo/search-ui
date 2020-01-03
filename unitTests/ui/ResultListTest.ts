@@ -311,14 +311,14 @@ export function ResultListTest() {
           expect(spyResults).toHaveBeenCalledWith(
             jasmine.any(CustomEvent),
             jasmine.objectContaining({
-              infiniteScrolling: false
+              isInfiniteScrollEnabled: false
             })
           );
           done();
         });
     });
 
-    it('should trigger results displayed event with infiniteScrolling set to true if enableInfiniteScroll is true', async done => {
+    it('should trigger results displayed event with isInfiniteScrollEnabled set to true if enableInfiniteScroll is true', async done => {
       const data = FakeResults.createFakeResults(6);
       const spyResults = jasmine.createSpy('spyResults');
       test.cmp.options.enableInfiniteScroll = true;
@@ -330,7 +330,7 @@ export function ResultListTest() {
       expect(spyResults).toHaveBeenCalledWith(
         jasmine.any(CustomEvent),
         jasmine.objectContaining({
-          infiniteScrolling: true
+          isInfiniteScrollEnabled: true
         })
       );
       done();

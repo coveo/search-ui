@@ -502,7 +502,7 @@ export class ResultList extends Component {
 
   protected triggerNewResultsDisplayed() {
     const args: IDisplayedNewResultsEventArgs = {
-      infiniteScrolling: this.options.enableInfiniteScroll
+      isInfiniteScrollEnabled: this.options.enableInfiniteScroll
     };
     $$(this.element).trigger(ResultListEvents.newResultsDisplayed, args);
   }
