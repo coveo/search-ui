@@ -36,7 +36,7 @@ export function QuickviewTest() {
       env = mockBuilder.build();
       env.queryStateModel.set(QueryStateModel.attributesEnum.layout, layout);
       result = FakeResults.createFakeResult();
-      modalBox = Simulate.fullModalBoxModule();
+      modalBox = Simulate.modalBoxModule();
       return new Quickview(env.element, { contentTemplate: template, ...options }, bindings, result, modalBox);
     };
 

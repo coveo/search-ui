@@ -208,20 +208,6 @@ export class Simulate {
   }
 
   static modalBoxModule(): ModalBox {
-    let modalBox = <any>{};
-    modalBox.open = jasmine.createSpy('open');
-    modalBox.close = jasmine.createSpy('close');
-    modalBox.open.and.returnValue({
-      modalBox: $$('div', undefined, $$('div', { className: 'coveo-wrapper' })).el,
-      wrapper: $$('div', undefined, $$('div', { className: 'coveo-quickview-close-button' })).el,
-      overlay: $$('div').el,
-      content: $$('div').el,
-      close: modalBox.close
-    });
-    return modalBox;
-  }
-
-  static fullModalBoxModule(): ModalBox {
     let content: HTMLElement;
     const container = $$(
       'div',
