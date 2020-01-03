@@ -53,6 +53,7 @@ import { FacetColumnAutoLayoutAdjustment } from './FacetColumnAutoLayoutAdjustme
 import { FacetValueStateHandler } from './FacetValueStateHandler';
 import RelevanceInspectorModule = require('../RelevanceInspector/RelevanceInspector');
 import { ComponentsTypes } from '../../utils/ComponentsTypes';
+import { ScrollRestorer } from './ScrollRestorer';
 
 export interface ISearchInterfaceOptions {
   enableHistory?: boolean;
@@ -79,6 +80,7 @@ export interface ISearchInterfaceOptions {
   responsiveMediumBreakpoint?: number;
   responsiveSmallBreakpoint?: number;
   responsiveMode?: ValidResponsiveMode;
+  enableScrollRestoration?: boolean;
 }
 
 export interface IMissingTermManagerArgs {
@@ -484,7 +486,12 @@ export class SearchInterface extends RootComponent implements IComponentBindings
       {
         defaultValue: 'auto'
       }
-    )
+    ),
+    /**
+     * Specifies whether to restore the last scroll position when navigating back
+     * to the search interface.
+     */
+    enableScrollRestoration: ComponentOptions.buildBooleanOption({ defaultValue: false })
   };
 
   public static SMALL_INTERFACE_CLASS_NAME = 'coveo-small-search-interface';
@@ -496,6 +503,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
   public componentOptionsModel: ComponentOptionsModel;
   public usageAnalytics: IAnalyticsClient;
   public historyManager: IHistoryManager;
+  public scrollRestorer: ScrollRestorer;
   /**
    * Allows to get and set the different breakpoints for mobile and tablet devices.
    *
@@ -552,6 +560,8 @@ export class SearchInterface extends RootComponent implements IComponentBindings
 
     this.setupEventsHandlers();
     this.setupHistoryManager(element, _window);
+
+    this.setupScrollRestorer(element, _window, this.queryStateModel);
 
     this.element.style.display = element.style.display || 'block';
 
@@ -746,6 +756,12 @@ export class SearchInterface extends RootComponent implements IComponentBindings
   private setupDebugInfo() {
     if (this.options.enableDebugInfo) {
       setTimeout(() => new Debug(this.element, this.getBindings()));
+    }
+  }
+
+  private setupScrollRestorer(element: HTMLElement, _window: Window, queryStateModel: QueryStateModel) {
+    if (this.options.enableScrollRestoration) {
+      this.scrollRestorer = new ScrollRestorer(element, queryStateModel);
     }
   }
 

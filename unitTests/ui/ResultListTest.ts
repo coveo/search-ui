@@ -308,8 +308,32 @@ export function ResultListTest() {
         .then(() => {
           expect(spyResult).toHaveBeenCalledTimes(6);
           expect(spyResults).toHaveBeenCalledTimes(1);
+          expect(spyResults).toHaveBeenCalledWith(
+            jasmine.any(CustomEvent),
+            jasmine.objectContaining({
+              isInfiniteScrollEnabled: false
+            })
+          );
           done();
         });
+    });
+
+    it('should trigger results displayed event with isInfiniteScrollEnabled set to true if enableInfiniteScroll is true', async done => {
+      const data = FakeResults.createFakeResults(6);
+      const spyResults = jasmine.createSpy('spyResults');
+      test.cmp.options.enableInfiniteScroll = true;
+      $$(test.cmp.element).on(ResultListEvents.newResultsDisplayed, spyResults);
+
+      const results = await test.cmp.buildResults(data);
+      await test.cmp.renderResults(results);
+
+      expect(spyResults).toHaveBeenCalledWith(
+        jasmine.any(CustomEvent),
+        jasmine.objectContaining({
+          isInfiniteScrollEnabled: true
+        })
+      );
+      done();
     });
 
     it('should render itself correctly after a full query', done => {

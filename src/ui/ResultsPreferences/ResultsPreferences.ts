@@ -7,7 +7,7 @@ import { Defer } from '../../misc/Defer';
 import { ComponentOptionsModel } from '../../models/ComponentOptionsModel';
 import { l } from '../../strings/Strings';
 import { $$ } from '../../utils/Dom';
-import { LocalStorageUtils } from '../../utils/LocalStorageUtils';
+import { StorageUtils } from '../../utils/StorageUtils';
 import { analyticsActionCauseList, IAnalyticsPreferencesChangeMeta } from '../Analytics/AnalyticsActionListMeta';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
@@ -83,7 +83,7 @@ export class ResultsPreferences extends Component {
   };
 
   public preferences: IPossiblePreferences;
-  private preferencePanelLocalStorage: LocalStorageUtils<IPossiblePreferences>;
+  private preferencePanelLocalStorage: StorageUtils<IPossiblePreferences>;
   private preferencesPanel: HTMLElement;
   private preferencePanelCheckboxInputs: { [label: string]: Checkbox } = {};
   private preferencePanelRadioInputs: { [label: string]: RadioButton } = {};
@@ -101,7 +101,7 @@ export class ResultsPreferences extends Component {
     this.options = ComponentOptions.initComponentOptions(element, ResultsPreferences, options);
 
     this.preferencesPanel = $$(this.element).closest(Component.computeCssClassNameForType('PreferencesPanel'));
-    this.preferencePanelLocalStorage = new LocalStorageUtils(ResultsPreferences.ID);
+    this.preferencePanelLocalStorage = new StorageUtils(ResultsPreferences.ID);
     Assert.exists(this.componentOptionsModel);
     Assert.exists(window.localStorage);
     Assert.exists(this.preferencesPanel);
