@@ -26,7 +26,7 @@ import { DefaultQuickviewTemplate } from './DefaultQuickviewTemplate';
 import { QuickviewDocument } from './QuickviewDocument';
 import { KeyboardUtils } from '../../Core';
 import { KEYBOARD } from '../../utils/KeyboardUtils';
-import _ = require('underscore');
+import { FocusTrap } from '../FocusTrap/FocusTrap';
 
 /**
  * The allowed [`Quickview`]{@link Quickview} [`tooltipPlacement`]{@link Quickview.options.tooltipPlacement} option values. The `-start` and `-end` variations indicate relative alignement. Horizontally (`top`, `bottom`), `-start` means _left_ and `-end` means _right_. Vertically (`left`, `right`), `-start` means _top_ and `-end` means _bottom_. No variation means _center_.
@@ -258,6 +258,8 @@ export class Quickview extends Component {
 
   private lastFocusedElement: HTMLElement;
 
+  private focusTrap: FocusTrap;
+
   /**
    * Creates a new `Quickview` component.
    * @param element The HTMLElement on which to instantiate the component.
@@ -388,6 +390,8 @@ export class Quickview extends Component {
     if (this.modalbox != null) {
       this.modalbox.close();
       this.modalbox = null;
+      this.focusTrap.disable();
+      this.focusTrap = null;
       if (this.lastFocusedElement && this.lastFocusedElement.parentElement) {
         this.lastFocusedElement.focus();
       }
@@ -469,50 +473,10 @@ export class Quickview extends Component {
     });
   }
 
-  private getFocusableElements(container: HTMLElement) {
-    return _.sortBy(container.querySelectorAll<HTMLElement>('[tabindex]'), element => element.tabIndex);
-  }
-
-  private createFocusTrap(element: HTMLElement) {
-    document.addEventListener('focusin', e => {
-      if (!this.modalbox) {
-        return;
-      }
-      if (!element.contains(e.target as HTMLElement)) {
-        const focusableElements = this.getFocusableElements(element);
-        focusableElements[0].focus();
-        e.preventDefault();
-        return;
-      }
-    });
-    $$(document.body).on('keydown', (e: KeyboardEvent) => {
-      if (!this.modalbox) {
-        return;
-      }
-      if (e.keyCode !== KEYBOARD.TAB) {
-        return;
-      }
-      const focusableElements = this.getFocusableElements(element);
-      const activeElement = document.activeElement;
-      const isGoingForward = !e.shiftKey;
-      if (isGoingForward) {
-        if (activeElement === _.last(focusableElements)) {
-          focusableElements[0].focus();
-          e.preventDefault();
-        }
-      } else {
-        if (activeElement === focusableElements[0]) {
-          _.last(focusableElements).focus();
-          e.preventDefault();
-        }
-      }
-    });
-  }
-
   private makeModalboxAccessible(modal: HTMLElement) {
     modal.setAttribute('aria-modal', 'true');
     this.makeModalCloseButtonAccessible(modal.querySelector('.coveo-small-close'));
-    this.createFocusTrap(modal);
+    this.focusTrap = new FocusTrap(modal);
   }
 
   private makeModalCloseButtonAccessible(closeButton: HTMLElement) {
