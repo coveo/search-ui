@@ -188,7 +188,8 @@ export function CoreHelperTest() {
       it('should work correctly when it "resolves" options automatically through the result list', () => {
         Component.getComponentRef('ResultList').resultCurrentlyBeingRendered = {
           ...FakeResults.createFakeResult(),
-          ...{ termsToHighlight, phrasesToHighlight }
+          termsToHighlight,
+          phrasesToHighlight
         };
         expect(TemplateHelpers.getHelper('highlightStreamHTMLv2')(toHighlight)).toEqual(expectedOutput);
       });
