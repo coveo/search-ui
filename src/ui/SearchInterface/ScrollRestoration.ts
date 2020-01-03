@@ -4,7 +4,7 @@ import { Logger } from '../../misc/Logger';
 import { StorageUtils } from '../../utils/StorageUtils';
 import { QueryStateModel } from '../../models/QueryStateModel';
 
-export interface IScrollRestorationInfo {
+interface IScrollRestorationInfo {
   lastPosition: number;
   pageHeight: number;
 }
@@ -18,12 +18,12 @@ export class ScrollRestoration {
   private tryToScrollIntervalInMs: number = 50;
   private timeoutHandle = null;
 
-  constructor(public element: HTMLElement, private queryStateModel: QueryStateModel) {
+  constructor(public root: HTMLElement, private queryStateModel: QueryStateModel) {
     this.scrollInfoStorage = new StorageUtils<Record<string, IScrollRestorationInfo>>(ScrollRestoration.ID, 'session');
     window.addEventListener('beforeunload', () => {
       this.saveScrollPositionInState();
     });
-    $$(this.element).on(ResultListEvents.newResultsDisplayed, (event: Event, args: IDisplayedNewResultsEventArgs) =>
+    $$(this.root).on(ResultListEvents.newResultsDisplayed, (event: Event, args: IDisplayedNewResultsEventArgs) =>
       this.handleNewResultsDisplayed(args)
     );
   }

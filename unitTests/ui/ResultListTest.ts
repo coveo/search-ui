@@ -318,23 +318,22 @@ export function ResultListTest() {
         });
     });
 
-    it('should trigger results displayed event with infiniteScrolling set to true if enableInfiniteScroll is true', done => {
+    it('should trigger results displayed event with infiniteScrolling set to true if enableInfiniteScroll is true', async done => {
       const data = FakeResults.createFakeResults(6);
       const spyResults = jasmine.createSpy('spyResults');
       test.cmp.options.enableInfiniteScroll = true;
       $$(test.cmp.element).on(ResultListEvents.newResultsDisplayed, spyResults);
-      test.cmp
-        .buildResults(data)
-        .then(elem => test.cmp.renderResults(elem))
-        .then(() => {
-          expect(spyResults).toHaveBeenCalledWith(
-            jasmine.any(CustomEvent),
-            jasmine.objectContaining({
-              infiniteScrolling: true
-            })
-          );
-          done();
-        });
+
+      const results = await test.cmp.buildResults(data);
+      await test.cmp.renderResults(results);
+
+      expect(spyResults).toHaveBeenCalledWith(
+        jasmine.any(CustomEvent),
+        jasmine.objectContaining({
+          infiniteScrolling: true
+        })
+      );
+      done();
     });
 
     it('should render itself correctly after a full query', done => {

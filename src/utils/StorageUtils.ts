@@ -23,19 +23,21 @@ export class StorageUtils<T> {
   }
 
   public save(data: T) {
+    if (!this.storage) {
+      return;
+    }
     try {
-      if (this.storage != null) {
-        this.storage.setItem(this.getStorageKey(), JSON.stringify(data));
-      }
+      this.storage.setItem(this.getStorageKey(), JSON.stringify(data));
     } catch (error) {}
   }
 
   public load(): T {
+    if (!this.storage) {
+      return null;
+    }
+
     try {
-      if (this.storage == null) {
-        return null;
-      }
-      var value = this.storage.getItem(this.getStorageKey());
+      const value = this.storage.getItem(this.getStorageKey());
       return value && JSON.parse(value);
     } catch (error) {
       return null;
@@ -43,15 +45,17 @@ export class StorageUtils<T> {
   }
 
   public remove(key?: string) {
+    if (!this.storage) {
+      return;
+    }
+
     try {
-      if (this.storage != null) {
-        if (key == undefined) {
-          this.storage.removeItem(this.getStorageKey());
-        } else {
-          var oldObj = this.load();
-          delete oldObj[key];
-          this.save(oldObj);
-        }
+      if (key == undefined) {
+        this.storage.removeItem(this.getStorageKey());
+      } else {
+        const oldObj = this.load();
+        delete oldObj[key];
+        this.save(oldObj);
       }
     } catch (error) {}
   }

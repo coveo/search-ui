@@ -550,11 +550,18 @@ export function SearchInterfaceTest() {
           expect(searchInterface.responsiveComponents.getSmallScreenWidth()).toBe(SMALL_SCREEN_WIDTH);
         });
 
-        it('enableScrollRestoration should create a scroll restoration module ', () => {
+        it('enableScrollRestoration should create a scroll restoration instance if true', () => {
           setupSearchInterface({
             enableScrollRestoration: true
           });
           expect(cmp.scrollRestoration).toBeDefined();
+        });
+
+        it('enableScrollRestoration should not create a scroll restoration instance if false', () => {
+          setupSearchInterface({
+            enableScrollRestoration: false
+          });
+          expect(cmp.scrollRestoration).toBeUndefined();
         });
       });
 

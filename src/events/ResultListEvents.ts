@@ -24,7 +24,7 @@ export interface IDisplayedNewResultEventArgs {
  */
 export interface IDisplayedNewResultsEventArgs {
   /**
-   * Whether the results are being displayed in a [`ResultList`]{@link ResultList} with infinte scroll enabled.
+   * Whether the results are being displayed in a [`ResultList`]{@link ResultList} with infinite scroll enabled.
    * See [`enableInfiniteScroll`]{@link ResultList.options.enableInfiniteScroll} option).
    */
   infiniteScrolling: boolean;
