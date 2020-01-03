@@ -35,6 +35,7 @@ import { IQueryResults } from '../../rest/QueryResults';
 import { FacetType } from '../../rest/Facet/FacetRequest';
 import { DependsOnManager, IDependentFacet } from '../../utils/DependsOnManager';
 import { DynamicFacetValueCreator } from './DynamicFacetValues/DynamicFacetValueCreator';
+import { Logger } from '../../misc/Logger';
 
 /**
  * The `DynamicFacet` component displays a *facet* of the results for the current query. A facet is a list of values for a
@@ -135,8 +136,19 @@ export class DynamicFacet extends Component implements IDynamicFacet {
      *
      * @examples score
      */
-    sortCriteria: ComponentOptions.buildStringOption({
-      postProcessing: value => (isFacetSortCriteria(value) ? (value as FacetSortCriteria) : undefined),
+    sortCriteria: <FacetSortCriteria>ComponentOptions.buildStringOption({
+      postProcessing: value => {
+        if (!value) {
+          return undefined;
+        }
+
+        if (isFacetSortCriteria(value)) {
+          return value;
+        }
+
+        new Logger(value).warn('sortCriteria is not of the the allowed values: "score", "alphanumeric", "occurrences"');
+        return undefined;
+      },
       section: 'Sorting'
     }),
 
@@ -530,10 +542,6 @@ export class DynamicFacet extends Component implements IDynamicFacet {
     return $$(this.element).isVisible();
   }
 
-  public get hasDisplayedValues() {
-    return this.values.hasDisplayedValues;
-  }
-
   public get hasActiveValues() {
     return this.values.hasActiveValues;
   }
@@ -587,25 +595,34 @@ export class DynamicFacet extends Component implements IDynamicFacet {
   }
 
   private handleQuerySuccess(results: IQueryResults) {
-    this.header.hideLoading();
+    // If there is a DynamicFacetManager, it will take care of handling the results
+    if (this.dynamicFacetManager) {
+      return;
+    }
 
     if (Utils.isNullOrUndefined(results.facets)) {
       return this.notImplementedError();
     }
 
-    const index = findIndex(results.facets, { facetId: this.options.id });
-    const response = index !== -1 ? results.facets[index] : null;
-    this.position = index + 1;
+    this.handleQueryResults(results);
+  }
 
-    response ? this.onQueryResponse(response) : this.onNoValues();
+  public handleQueryResults(results: IQueryResults) {
+    const index = findIndex(results.facets, { facetId: this.options.id });
+    const facetResponse = index !== -1 ? results.facets[index] : null;
+
+    this.position = facetResponse ? index + 1 : null;
+    facetResponse ? this.onNewValues(facetResponse) : this.onNoValues();
+
+    this.header.hideLoading();
     this.updateQueryStateModel();
     this.values.render();
     this.updateAppearance();
   }
 
-  private onQueryResponse(response: IFacetResponse) {
-    this.moreValuesAvailable = response.moreValuesAvailable;
-    this.values.createFromResponse(response);
+  private onNewValues(facetResponse: IFacetResponse) {
+    this.moreValuesAvailable = facetResponse.moreValuesAvailable;
+    this.values.createFromResponse(facetResponse);
   }
 
   private onNoValues() {
@@ -722,7 +739,7 @@ export class DynamicFacet extends Component implements IDynamicFacet {
     $$(this.element).toggleClass('coveo-active', this.values.hasSelectedValues);
     $$(this.element).removeClass('coveo-hidden');
     this.dependsOnManager.updateVisibilityBasedOnDependsOn();
-    !this.hasDisplayedValues && $$(this.element).addClass('coveo-hidden');
+    !this.values.hasDisplayedValues && $$(this.element).addClass('coveo-hidden');
   }
 
   private toggleSearchDisplay() {
@@ -753,7 +770,7 @@ export class DynamicFacet extends Component implements IDynamicFacet {
 
     try {
       const results = await this.dynamicFacetQueryController.getQueryResults();
-      this.handleQuerySuccess(results);
+      this.handleQueryResults(results);
     } catch (e) {
       this.header.hideLoading();
     }
