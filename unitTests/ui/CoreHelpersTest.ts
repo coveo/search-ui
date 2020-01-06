@@ -7,6 +7,7 @@ import { SearchEndpoint } from '../../src/rest/SearchEndpoint';
 import { mockSearchEndpoint, MockEnvironmentBuilder } from '../MockEnvironment';
 import { IQueryResult } from '../../src/rest/QueryResult';
 import { IIconOptions } from '../../src/ui/Icon/Icon';
+import { Component } from '../../src/Core';
 
 export function CoreHelperTest() {
   describe('CoreHelpers', () => {
@@ -164,17 +165,34 @@ export function CoreHelperTest() {
       );
     });
 
-    it('highlightStreamHTMLv2 should work correctly', () => {
+    describe('highlightStreamHTMLv2', () => {
+      const termsToHighlight = { a: [], b: [] };
+      const phrasesToHighlight = {};
+      const expectedOutput =
+        '<div><span class="coveo-highlight" data-highlight-group="1" data-highlight-group-term="a">a</span> <span class="coveo-highlight" data-highlight-group="2" data-highlight-group-term="b">b</span></div>';
       const toHighlight = '<div>a b</div>';
-      const termsToHighlight: IHighlightTerm = { a: [], b: [] };
-      expect(
-        TemplateHelpers.getHelper('highlightStreamHTMLv2')(toHighlight, {
+
+      afterEach(() => {
+        Component.getComponentRef('ResultList').resultCurrentlyBeingRendered = null;
+      });
+
+      it('should work correctly when options are passed explicitely', () => {
+        expect(
+          TemplateHelpers.getHelper('highlightStreamHTMLv2')(toHighlight, {
+            termsToHighlight,
+            phrasesToHighlight
+          })
+        ).toEqual(expectedOutput);
+      });
+
+      it('should work correctly when it "resolves" options automatically through the result list', () => {
+        Component.getComponentRef('ResultList').resultCurrentlyBeingRendered = {
+          ...FakeResults.createFakeResult(),
           termsToHighlight,
-          phrasesToHighlight: {}
-        })
-      ).toEqual(
-        '<div><span class="coveo-highlight" data-highlight-group="1" data-highlight-group-term="a">a</span> <span class="coveo-highlight" data-highlight-group="2" data-highlight-group-term="b">b</span></div>'
-      );
+          phrasesToHighlight
+        };
+        expect(TemplateHelpers.getHelper('highlightStreamHTMLv2')(toHighlight)).toEqual(expectedOutput);
+      });
     });
 
     it('number should work correctly', () => {
