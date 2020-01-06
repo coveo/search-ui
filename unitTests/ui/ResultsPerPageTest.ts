@@ -7,7 +7,6 @@ import { FakeResults } from '../Fake';
 import { $$ } from '../../src/utils/Dom';
 import { QueryStateModel } from '../../src/Core';
 import { QUERY_STATE_ATTRIBUTES } from '../../src/models/QueryStateModel';
-import { lab } from 'd3';
 
 export function ResultsPerPageTest() {
   describe('ResultsPerPage', () => {

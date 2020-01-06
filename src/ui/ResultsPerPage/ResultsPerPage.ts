@@ -213,7 +213,7 @@ export class ResultsPerPage extends Component {
     this.span = $$(
       'span',
       {
-        id: `coveo-results-per-page-text-${QueryUtils.createGuid()}`,
+        id: `coveo-results-per-page-text-${Math.floor(Math.random() * 10 ** 9)}`,
         className: 'coveo-results-per-page-text'
       },
       l('ResultsPerPage')
