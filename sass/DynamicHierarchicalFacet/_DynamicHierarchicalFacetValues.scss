@@ -1,7 +1,7 @@
 @import '../Variables';
 @import '../mixins/dynamicFacet';
 
-$level-space: 30px;
+$level-space: 20px;
 
 .coveo-dynamic-hierarchical-facet-values {
   @include facetValues;
