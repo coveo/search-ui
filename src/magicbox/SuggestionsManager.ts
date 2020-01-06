@@ -30,6 +30,8 @@ export enum Direction {
   Right = 'Right'
 }
 
+export const suggestionListboxID = 'coveo-magicbox-suggestions';
+
 export class SuggestionsManager {
   private suggestionsProcessor: QueryProcessor<Suggestion>;
   private currentSuggestions: Suggestion[];
@@ -225,8 +227,8 @@ export class SuggestionsManager {
 
   private buildSuggestionsContainer() {
     return $$('div', {
-      className: 'coveo-magicbox-suggestions',
-      id: 'coveo-magicbox-suggestions',
+      className: suggestionListboxID,
+      id: suggestionListboxID,
       role: 'listbox'
     });
   }
@@ -401,8 +403,8 @@ export class SuggestionsManager {
 
     this.inputManager.activeDescendant = null;
     this.inputManager.expanded = false;
-    input.setAttribute('aria-owns', 'coveo-magicbox-suggestions');
-    input.setAttribute('aria-controls', 'coveo-magicbox-suggestions');
+    input.setAttribute('aria-owns', suggestionListboxID);
+    input.setAttribute('aria-controls', suggestionListboxID);
   }
 
   private htmlElementIsSuggestion(selected: HTMLElement) {
