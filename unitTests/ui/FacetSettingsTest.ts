@@ -120,6 +120,17 @@ export function FacetSettingsTest() {
         Simulate.keyUp(facetSettings.settingsButton, KEYBOARD.ENTER);
         expect(settingsPopup()).toBeNull();
       });
+
+      it('closes the popup when losing focus', () => {
+        Simulate.keyUp(facetSettings.settingsButton, KEYBOARD.ENTER);
+        $$(settingsPopup()).trigger('focusout');
+        expect(settingsPopup()).toBeNull();
+      });
+
+      it('appends the settings popup after the button', () => {
+        Simulate.keyUp(facetSettings.settingsButton, KEYBOARD.ENTER);
+        expect(settingsPopup().previousSibling).toEqual(facetSettings.settingsButton);
+      });
     });
 
     it('should show collapse/expand section if it is not disabled from the facet', async done => {
