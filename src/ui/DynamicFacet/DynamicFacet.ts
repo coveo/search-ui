@@ -686,7 +686,7 @@ export class DynamicFacet extends Component implements IDynamicFacet {
   }
 
   private toggleDependentFacet(dependentFacet: Component) {
-    this.values.hasSelectedValue ? dependentFacet.enable() : dependentFacet.disable();
+    this.values.hasSelectedValues ? dependentFacet.enable() : dependentFacet.disable();
   }
 
   public createDom() {
