@@ -220,7 +220,7 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
      * See [`HierarchicalFacetSortCriteria`]{@link HierarchicalFacetSortCriteria} for the list and
      * description of allowed values.
      *
-     * **Default (API):** [`occurrences`]{@link HierarchicalFacetSortCriteria.occurrences}
+     * **Default (Search API):** [`occurrences`]{@link HierarchicalFacetSortCriteria.occurrences}
      */
     sortCriteria: <HierarchicalFacetSortCriteria>ComponentOptions.buildStringOption({
       postProcessing: value => {
