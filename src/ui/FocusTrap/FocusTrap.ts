@@ -1,5 +1,5 @@
-import _ = require('underscore');
 import { Defer } from '../../misc/Defer';
+import { sortBy } from 'underscore';
 
 export class FocusTrap {
   private focusInEvent: (e: FocusEvent) => void;
@@ -7,7 +7,7 @@ export class FocusTrap {
   private enabled: boolean;
 
   private get focusableElements(): HTMLElement[] {
-    return _.sortBy(this.container.querySelectorAll('[tabindex]'), element => element.tabIndex);
+    return sortBy(this.container.querySelectorAll('[tabindex]'), element => element.tabIndex);
   }
 
   constructor(private container: HTMLElement) {
@@ -44,7 +44,7 @@ export class FocusTrap {
 
   private focusFirstElement() {
     const elements = this.focusableElements;
-    if (elements.length > 0) {
+    if (elements.length) {
       elements[0].focus();
     }
   }
