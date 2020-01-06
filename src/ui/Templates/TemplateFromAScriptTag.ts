@@ -1,7 +1,8 @@
 import { Template, IFieldsToMatch, TemplateRole } from './Template';
 import { Utils } from '../../utils/Utils';
 import { TemplateConditionEvaluator } from './TemplateConditionEvaluator';
-import { ComponentOptions, IComponentOptionsFieldsOption } from '../Base/ComponentOptions';
+import { IComponentOptionsFieldsOption } from '../Base/IComponentOptions';
+import { ComponentOptions } from '../Base/ComponentOptions';
 import { $$, Dom } from '../../utils/Dom';
 import { Initialization } from '../Base/Initialization';
 import { ValidLayout } from '../ResultLayoutSelector/ValidLayout';

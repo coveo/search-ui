@@ -1,8 +1,8 @@
 import { DynamicFacetBreadcrumbs } from '../../../src/ui/DynamicFacet/DynamicFacetBreadcrumbs';
 import { $$ } from '../../../src/Core';
 import { DynamicFacetTestUtils } from './DynamicFacetTestUtils';
-import { DynamicFacet, IDynamicFacetOptions } from '../../../src/ui/DynamicFacet/DynamicFacet';
-import { IDynamicFacetValue, DynamicFacetValue } from '../../../src/ui/DynamicFacet/DynamicFacetValues/DynamicFacetValue';
+import { DynamicFacet } from '../../../src/ui/DynamicFacet/DynamicFacet';
+import { IDynamicFacetOptions, IDynamicFacetValueProperties } from '../../../src/ui/DynamicFacet/IDynamicFacet';
 import { FacetValueState } from '../../../src/rest/Facet/FacetValueState';
 import { analyticsActionCauseList } from '../../../src/ui/Analytics/AnalyticsActionListMeta';
 
@@ -11,7 +11,7 @@ export function DynamicFacetBreadcrumbsTest() {
     let facet: DynamicFacet;
     let baseOptions: IDynamicFacetOptions;
     let dynamicFacetBreadcrumbs: DynamicFacetBreadcrumbs;
-    let mockFacetValues: IDynamicFacetValue[];
+    let mockFacetValues: IDynamicFacetValueProperties[];
 
     beforeEach(() => {
       mockFacetValues = DynamicFacetTestUtils.createFakeFacetValues(5, FacetValueState.selected);
@@ -101,10 +101,7 @@ export function DynamicFacetBreadcrumbsTest() {
         };
 
         $$(valueElements()[0]).trigger('click');
-        expect(facet.logAnalyticsEvent).toHaveBeenCalledWith(
-          analyticsActionCauseList.breadcrumbDynamicFacet,
-          new DynamicFacetValue(mockFacetValues[0], facet).analyticsMeta
-        );
+        expect(facet.logAnalyticsEvent).toHaveBeenCalledWith(analyticsActionCauseList.breadcrumbFacet, facet.basicAnalyticsFacetMeta);
       });
     });
   });

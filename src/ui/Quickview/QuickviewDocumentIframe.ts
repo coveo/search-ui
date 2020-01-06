@@ -1,7 +1,7 @@
-import { Dom, $$ } from '../../utils/Dom';
-import { AjaxError } from '../../rest/AjaxError';
 import { each } from 'underscore';
 import { DeviceUtils, l } from '../../Core';
+import { AjaxError } from '../../rest/AjaxError';
+import { $$, Dom } from '../../utils/Dom';
 
 export class QuickviewDocumentIframe {
   public el: HTMLElement;
@@ -119,7 +119,7 @@ export class QuickviewDocumentIframe {
     // 100% we're able to trick Safari from thinking it must expand the iframe. Amazed.
     // The 'scrolling' part is required otherwise the hack doesn't work.
     //
-    // http://stackoverflow.com/questions/23083462/how-to-get-an-iframe-to-be-responsive-in-ios-safari
+    // https://stackoverflow.com/questions/23083462/how-to-get-an-iframe-to-be-responsive-in-ios-safari
     const cssHackForIOS = `
       body, html {
         height: 1px !important;

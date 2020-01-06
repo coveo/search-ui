@@ -29,11 +29,13 @@
     </div>
     <div class="coveo-main-section coveo-recommendation-main-section">
       <div class="coveo-facet-column coveo-recommendation-facet-column">
-        <div class="CoveoFacet" data-title="Type" data-field="@objecttype" data-tab="All"></div>
-        <div class="CoveoFacet" data-title="FileType" data-field="@filetype" data-tab="All"></div>
-        <div class="CoveoFacet" data-title="Author" data-field="@author" data-tab="All"></div>
-        <div class="CoveoFacet" data-title="Year" data-field="@year" data-tab="All"></div>
-        <div class="CoveoFacet" data-title="Month" data-field="@month" data-tab="All"></div>
+        <div class="CoveoDynamicFacetManager">
+          <div class="CoveoDynamicFacet" data-title="Type" data-field="@objecttype" data-tab="All"></div>
+          <div class="CoveoDynamicFacet" data-title="FileType" data-field="@filetype" data-tab="All"></div>
+          <div class="CoveoDynamicFacet" data-title="Author" data-field="@author" data-tab="All"></div>
+          <div class="CoveoDynamicFacet" data-title="Year" data-field="@year" data-tab="All"></div>
+          <div class="CoveoDynamicFacet" data-title="Month" data-field="@month" data-tab="All"></div>
+        </div>
       </div>
       <div class="coveo-results-column coveo-recommendation-results-column">
         <div class="CoveoShareQuery"></div>
@@ -59,8 +61,10 @@
         </div>
         <div class="CoveoHiddenQuery"></div>
         <div class="CoveoErrorReport"></div>
-        <div class="CoveoResultList" data-layout="list" data-wait-animation="fade" data-auto-select-fields-to-include="true"></div>
-        <div class="CoveoResultList" data-layout="card" data-wait-animation="fade" data-auto-select-fields-to-include="true"></div>
+        <div class="CoveoResultList" data-layout="list" data-wait-animation="fade"
+          data-auto-select-fields-to-include="true"></div>
+        <div class="CoveoResultList" data-layout="card" data-wait-animation="fade"
+          data-auto-select-fields-to-include="true"></div>
         <div class="CoveoPager"></div>
         <div class="CoveoResultsPerPage"></div>
       </div>

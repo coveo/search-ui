@@ -18,6 +18,9 @@ import { IGroupByValue } from '../../rest/GroupByValue';
 import { IQueryResults } from '../../rest/QueryResults';
 import { ISearchEndpoint } from '../../rest/SearchEndpointInterface';
 import { l } from '../../strings/Strings';
+import { AccessibleButton } from '../../utils/AccessibleButton';
+import { ComponentsTypes } from '../../utils/ComponentsTypes';
+import { DependsOnManager, IDependentFacet } from '../../utils/DependsOnManager';
 import { DeviceUtils } from '../../utils/DeviceUtils';
 import { $$, Win } from '../../utils/Dom';
 import { SVGDom } from '../../utils/SVGDom';
@@ -25,15 +28,18 @@ import { SVGIcons } from '../../utils/SVGIcons';
 import { Utils } from '../../utils/Utils';
 import {
   analyticsActionCauseList,
+  IAnalyticsActionCause,
   IAnalyticsFacetMeta,
-  IAnalyticsFacetSortMeta,
-  IAnalyticsActionCause
+  IAnalyticsFacetSortMeta
 } from '../Analytics/AnalyticsActionListMeta';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
-import { ComponentOptions, IFieldOption, IQueryExpression } from '../Base/ComponentOptions';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { IFieldOption, IQueryExpression } from '../Base/IComponentOptions';
 import { Initialization } from '../Base/Initialization';
 import { IOmniboxDataRow } from '../Omnibox/OmniboxInterface';
+import { IResponsiveComponentOptions } from '../ResponsiveComponents/ResponsiveComponentsManager';
+import { ResponsiveFacetOptions } from '../ResponsiveComponents/ResponsiveFacetOptions';
 import { ResponsiveFacets } from '../ResponsiveComponents/ResponsiveFacets';
 import { BreadcrumbValueElement } from './BreadcrumbValueElement';
 import { BreadcrumbValueList } from './BreadcrumbValuesList';
@@ -43,6 +49,7 @@ import { FacetSearchParameters } from './FacetSearchParameters';
 import { FacetSearchValuesList } from './FacetSearchValuesList';
 import { FacetSettings } from './FacetSettings';
 import { FacetSort } from './FacetSort';
+import { FacetSortCriterion } from './FacetSortCriterion';
 import { FacetUtils } from './FacetUtils';
 import { FacetValueElement } from './FacetValueElement';
 import { FacetValue, FacetValues } from './FacetValues';
@@ -52,12 +59,6 @@ import { OmniboxValueElement } from './OmniboxValueElement';
 import { OmniboxValuesList } from './OmniboxValuesList';
 import { ValueElement } from './ValueElement';
 import { ValueElementRenderer } from './ValueElementRenderer';
-import { AccessibleButton } from '../../utils/AccessibleButton';
-import { IResponsiveComponentOptions } from '../ResponsiveComponents/ResponsiveComponentsManager';
-import { ResponsiveFacetOptions } from '../ResponsiveComponents/ResponsiveFacetOptions';
-import { DependsOnManager, IDependentFacet } from '../../utils/DependsOnManager';
-import { ComponentsTypes } from '../../utils/ComponentsTypes';
-import { FacetSortCriterion } from './FacetSortCriterion';
 
 type ComputedFieldOperation = 'sum' | 'average' | 'minimum' | 'maximum';
 type ComputedFieldFormat = 'c0' | 'n0' | 'n2';
@@ -151,7 +152,7 @@ export class Facet extends Component {
      * Default value is the localized string for `NoTitle`.
      */
     title: ComponentOptions.buildLocalizedStringOption({
-      defaultValue: l('NoTitle'),
+      localizedString: () => l('NoTitle'),
       section: 'CommonOptions',
       priority: 10
     }),
@@ -159,7 +160,7 @@ export class Facet extends Component {
      * Specifies the index field whose values the facet should use.
      *
      * This requires the given field to be configured correctly in the index as a *Facet field* (see
-     * [Adding Fields to a Source](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=137)).
+     * [Add or Edit Fields](https://docs.coveo.com/en/1982/)).
      *
      * Specifying a value for this option is required for the `Facet` component to work.
      */
@@ -257,14 +258,14 @@ export class Facet extends Component {
       section: 'Sorting',
       depend: 'enableSettings',
       values: [
-        'Occurrences',
-        'Score',
-        'AlphaAscending',
-        'AlphaDescending',
-        'ComputedFieldAscending',
-        'ComputedFieldDescending',
-        'ChiSquare',
-        'NoSort'
+        'occurrences',
+        'score',
+        'alphaascending',
+        'alphadescending',
+        'computedfieldascending',
+        'computedfielddescending',
+        'chisquare',
+        'nosort'
       ]
     }),
     /**
@@ -393,7 +394,7 @@ export class Facet extends Component {
      *
      * **Note:**
      * > If you are experiencing slow facet search and/or timeouts when this option is set to `true`, consider enabling the **Use cache for nested queries**
-     * > option on your facet [field]{@link Facet.options.field} in the Coveo Cloud Admninistration Console (see [Add/Edit a Field]{@link https://onlinehelp.coveo.com/en/cloud/add_edit_fields.htm}).
+     * > option on your facet [field]{@link Facet.options.field} in the Coveo Cloud Admninistration Console (see [Add or Edit Fields]{@link https://docs.coveo.com/en/1982/}).
      */
     useWildcardsInFacetSearch: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'FacetSearch' }),
     /**
@@ -505,7 +506,7 @@ export class Facet extends Component {
      * @notSupportedIn salesforcefree
      */
     computedFieldCaption: ComponentOptions.buildLocalizedStringOption({
-      defaultValue: l('ComputedField'),
+      localizedString: () => l('ComputedField'),
       section: 'ComputedField'
     }),
     /**
@@ -648,7 +649,7 @@ export class Facet extends Component {
     dependsOn: ComponentOptions.buildStringOption(),
     /**
      * Specifies a JSON object describing a mapping of facet values to their desired captions. See
-     * [Normalizing Facet Value Captions](https://developers.coveo.com/x/jBsvAg).
+     * [Normalizing Facet Value Captions](https://docs.coveo.com/en/368/).
      *
      * **Examples:**
      *
@@ -710,6 +711,7 @@ export class Facet extends Component {
   public facetValuesList: FacetValuesList;
   public facetHeader: FacetHeader;
   public searchContainer: ValueElementRenderer;
+  public dependsOnManager: DependsOnManager;
 
   protected omniboxZIndex;
   protected moreElement: HTMLElement;
@@ -719,7 +721,6 @@ export class Facet extends Component {
   protected footerElement: HTMLElement;
   private canFetchMore: boolean = true;
   private nbAvailableValues: number;
-  private dependsOnManager: DependsOnManager;
 
   private showingWaitAnimation = false;
   private pinnedViewportPosition: number;
@@ -1522,7 +1523,7 @@ export class Facet extends Component {
   private initDependsOnManager() {
     const facetInfo: IDependentFacet = {
       reset: () => this.reset(),
-      toogleDependentFacet: dependentFacet => this.toogleDependentFacet(dependentFacet),
+      toggleDependentFacet: dependentFacet => this.toggleDependentFacet(dependentFacet),
       element: this.element,
       root: this.root,
       dependsOn: this.options.dependsOn,
@@ -1533,7 +1534,7 @@ export class Facet extends Component {
     this.dependsOnManager = new DependsOnManager(facetInfo);
   }
 
-  private toogleDependentFacet(dependentFacet: Component) {
+  private toggleDependentFacet(dependentFacet: Component) {
     this.getSelectedValues().length ? dependentFacet.enable() : dependentFacet.disable();
   }
 

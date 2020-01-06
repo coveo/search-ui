@@ -28,7 +28,8 @@
   }
 }
 
-.coveo-facet-empty {
+.coveo-facet-empty,
+.coveo-hidden {
   display: none;
   &.coveo-with-placeholder {
     display: block;

@@ -1,20 +1,20 @@
-import { ISuggestionForOmniboxOptions, SuggestionForOmnibox, ISuggestionForOmniboxTemplate } from '../Misc/SuggestionForOmnibox';
-import { ComponentOptions } from '../Base/ComponentOptions';
-import { IComponentBindings } from '../Base/ComponentBindings';
-import { Component } from '../Base/Component';
-import { Assert } from '../../misc/Assert';
-import { OmniboxEvents, IPopulateOmniboxEventArgs } from '../../events/OmniboxEvents';
-import { QueryEvents } from '../../events/QueryEvents';
-import { l } from '../../strings/Strings';
-import { QueryStateModel } from '../../models/QueryStateModel';
-import { analyticsActionCauseList, IAnalyticsTopSuggestionMeta } from '../Analytics/AnalyticsActionListMeta';
-import { Initialization } from '../Base/Initialization';
-import { $$ } from '../../utils/Dom';
-import { StandaloneSearchInterface } from '../SearchInterface/SearchInterface';
-import { IStringMap } from '../../rest/GenericParam';
 import * as _ from 'underscore';
+import { IPopulateOmniboxEventArgs, OmniboxEvents } from '../../events/OmniboxEvents';
+import { QueryEvents } from '../../events/QueryEvents';
 import { exportGlobally } from '../../GlobalExports';
+import { Assert } from '../../misc/Assert';
+import { QueryStateModel } from '../../models/QueryStateModel';
+import { IStringMap } from '../../rest/GenericParam';
+import { l } from '../../strings/Strings';
 import { AccessibleButton } from '../../utils/AccessibleButton';
+import { $$ } from '../../utils/Dom';
+import { analyticsActionCauseList, IAnalyticsTopSuggestionMeta } from '../Analytics/AnalyticsActionListMeta';
+import { Component } from '../Base/Component';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { Initialization } from '../Base/Initialization';
+import { ISuggestionForOmniboxOptions, ISuggestionForOmniboxTemplate, SuggestionForOmnibox } from '../Misc/SuggestionForOmnibox';
+import { StandaloneSearchInterface } from '../SearchInterface/SearchInterface';
 
 export interface IAnalyticsSuggestionsOptions extends ISuggestionForOmniboxOptions {}
 
@@ -58,12 +58,13 @@ export class AnalyticsSuggestions extends Component {
 
     /**
      * Specifies the title of the query suggestions group in the {@link Omnibox} component. This option is not available
-     * when using the default Lightning Friendly Theme (see
-     * [Lightning Friendly Theme](https://developers.coveo.com/x/Y4EAAg)).
+     * when using the default Lightning Friendly Theme.
      *
      * Default value is the localized string for `"Suggested Queries"`.
      */
-    headerTitle: ComponentOptions.buildLocalizedStringOption({ defaultValue: l('SuggestedQueries') }),
+    headerTitle: ComponentOptions.buildLocalizedStringOption({
+      localizedString: () => l('SuggestedQueries')
+    }),
 
     /**
      * Specifies the number of query suggestions to request and display in the {@link Omnibox} component.

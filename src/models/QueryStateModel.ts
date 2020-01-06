@@ -31,7 +31,7 @@ export interface IQueryStateExcludedAttribute {
 
 /**
  * The `QueryStateModel` class is a key-value store which contains the current state of the components that can affect
- * the query (see [State](https://developers.coveo.com/x/RYGfAQ)). This class inherits from the [`Model`]{@link Model}
+ * the query (see [State](https://docs.coveo.com/en/344/)). This class inherits from the [`Model`]{@link Model}
  * class. Optionally, it is possible to persist the state in the query string in order to enable browser history
  * management (see the [`HistoryController`]{@link HistoryController} class).
  *

@@ -209,6 +209,24 @@
     ],
     "layout": "list"
   },
+  "CardSalesforceB2BProduct": {
+    "priority": 2,
+    "fieldsToMatch": [
+      {
+        "field": "sfaveragerating"
+      }
+    ],
+    "layout": "card"
+  },
+  "SalesforceB2BProduct": {
+    "priority": 1,
+    "fieldsToMatch": [
+      {
+        "field": "sfaveragerating"
+      }
+    ],
+    "layout": "list"
+  },
   "CardSharePoint": {
     "priority": 2,
     "fieldsToMatch": [
@@ -344,6 +362,66 @@
       {
         "field": "filetype",
         "values": ["rssitem", "rssfeed"]
+      }
+    ]
+  },
+  "ServiceNowCase": {
+    "priority": 1,
+    "layout": "list",
+    "fieldsToMatch": [
+      {
+        "field": "filetype",
+        "values": ["sn_customerservice_case"]
+      }
+    ]
+  },
+  "ServiceNowCatalog": {
+    "priority": 1,
+    "layout": "list",
+    "fieldsToMatch": [
+      {
+        "field": "filetype",
+        "values": ["sc_cat_item"]
+      }
+    ]
+  },
+  "ServiceNowHRCase": {
+    "priority": 1,
+    "layout": "list",
+    "fieldsToMatch": [
+      {
+        "field": "filetype",
+        "values": ["sn_hr_core_case"]
+      }
+    ]
+  },
+  "ServiceNowIncident": {
+    "priority": 1,
+    "layout": "list",
+    "fieldsToMatch": [
+      {
+        "field": "filetype",
+        "values": ["incident"]
+      }
+    ]
+  },
+  "ServiceNowKnowledge": {
+    "priority": 1,
+    "layout": "list",
+    "fieldsToMatch": [
+      {
+        "field": "filetype",
+        "values": ["kb_knowledge"]
+      }
+    ]
+  },
+  "ServiceNowQuestion": {
+    "priority": 1,
+    "layout": "list",
+    "fieldsToMatch": [
+      {
+        "field": "filetype",
+        "values": ["kb_social_qa_question"]
       }
     ]
   },

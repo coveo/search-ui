@@ -1,26 +1,26 @@
-import { $$ } from '../../utils/Dom';
 import {
   DistanceEvents,
-  IResolvingPositionEventArgs,
   IGeolocationPosition,
   IGeolocationPositionProvider,
-  IPositionResolvedEventArgs
+  IPositionResolvedEventArgs,
+  IResolvingPositionEventArgs
 } from '../../events/DistanceEvents';
-
+import { IInitializationEventArgs } from '../../events/InitializationEvents';
+import { IBuildingQueryEventArgs } from '../../events/QueryEvents';
+import { InitializationEvents, QueryEvents } from '../../EventsModules';
+import { exportGlobally } from '../../GlobalExports';
+import { IQueryFunction } from '../../rest/QueryFunction';
+import { $$ } from '../../utils/Dom';
 import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
 import { Component } from '../Base/Component';
-import { IFieldOption, ComponentOptions } from '../Base/ComponentOptions';
 import { IComponentBindings } from '../Base/ComponentBindings';
-import { InitializationEvents, QueryEvents } from '../../EventsModules';
-import { IQueryFunction } from '../../rest/QueryFunction';
-import { IBuildingQueryEventArgs } from '../../events/QueryEvents';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { IFieldOption } from '../Base/IComponentOptions';
 import { Initialization } from '../Base/Initialization';
 import { get } from '../Base/RegisteredNamedMethods';
-import { exportGlobally } from '../../GlobalExports';
-import { NavigatorPositionProvider } from './NavigatorPositionProvider';
 import { GoogleApiPositionProvider } from './GoogleApiPositionProvider';
+import { NavigatorPositionProvider } from './NavigatorPositionProvider';
 import { StaticPositionProvider } from './StaticPositionProvider';
-import { IInitializationEventArgs } from '../../events/InitializationEvents';
 
 export interface IDistanceOptions {
   distanceField: IFieldOption;
@@ -75,7 +75,7 @@ export class DistanceResources extends Component {
      *
      * **Note:**
      * > The field you specify for this option must be an existing numerical field in your index (see
-     * > [Fields - Page](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=287). Otherwise, your query responses
+     * > [Adding and Managing Fields](https://docs.coveo.com/en/1833/). Otherwise, your query responses
      * > will contain a `QueryExceptionInvalidQueryFunctionField` or QueryExceptionInvalidQueryFunctionFieldType`
      * > exception, and the DistanceResources component will be unable to evaluate distances.
      *
@@ -90,7 +90,7 @@ export class DistanceResources extends Component {
      *
      * **Note:**
      * > The field you specify for this option must be an existing numerical field in your index (see
-     * > [Fields - Page](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=287). Otherwise, your query responses
+     * > [Adding and Managing Fields](https://docs.coveo.com/en/1833/). Otherwise, your query responses
      * > will contain a `QueryExceptionInvalidQueryFunctionField` or QueryExceptionInvalidQueryFunctionFieldType`
      * > exception, and the DistanceResources component will be unable to evaluate distances.
      *

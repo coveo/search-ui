@@ -1,14 +1,14 @@
 import 'styling/_MissingTerms';
+import { $$, Initialization, l } from '../../Core';
 import { exportGlobally } from '../../GlobalExports';
+import { IQueryResult } from '../../rest/QueryResult';
+import { Dom } from '../../utils/Dom';
+import { analyticsActionCauseList, IAnalyticsMissingTerm } from '../Analytics/AnalyticsActionListMeta';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { ComponentOptions } from '../Base/ComponentOptions';
-import { $$, Initialization, l } from '../../Core';
-import { Dom } from '../../utils/Dom';
-import { analyticsActionCauseList, IAnalyticsMissingTerm } from '../Analytics/AnalyticsActionListMeta';
-import { IQueryResult } from '../../rest/QueryResult';
-import XRegExp = require('xregexp');
 import { MissingTermManager } from './MissingTermManager';
+import XRegExp = require('xregexp');
 
 export interface IMissingTermsOptions {
   caption?: string;
@@ -38,7 +38,9 @@ export class MissingTerms extends Component {
      *
      * **Default:** The localized string for `Missing`.
      */
-    caption: ComponentOptions.buildLocalizedStringOption({ defaultValue: 'Missing' }),
+    caption: ComponentOptions.buildLocalizedStringOption({
+      localizedString: () => l('Missing')
+    }),
     /**
      * The maximum number of missing term to be displayed
      *

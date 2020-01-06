@@ -16,6 +16,7 @@ import { Utils } from '../../utils/Utils';
 import { Defer } from '../../misc/Defer';
 import { $$ } from '../../utils/Dom';
 import { StreamHighlightUtils } from '../../utils/StreamHighlightUtils';
+import { StringUtils } from '../../utils/StringUtils';
 import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 
@@ -190,9 +191,9 @@ export class ResultLink extends Component {
      * **Note:**
      * > You cannot set this option directly in the component markup as an HTML attribute. You must either set it in the
      * > [`init`]{@link init} call of your search interface (see
-     * > [Components - Passing Component Options in the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsintheinitCall)),
+     * > [Passing Component Options in the init Call](https://docs.coveo.com/en/346/#passing-component-options-in-the-init-call)),
      * > or before the `init` call, using the `options` top-level function (see
-     * > [Components - Passing Component Options Before the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsBeforetheinitCall)).
+     * > [Passing Component Options Before the init Call](https://docs.coveo.com/en/346/#passing-component-options-before-the-init-call)).
      *
      * **Example:**
      * ```javascript
@@ -287,7 +288,7 @@ export class ResultLink extends Component {
           ? HighlightUtils.highlightString(this.result.title, this.result.titleHighlights, null, 'coveo-highlight')
           : this.result.clickUri;
       } else {
-        let newTitle = this.parseStringTemplate(this.options.titleTemplate);
+        let newTitle = StringUtils.buildStringTemplateFromResult(this.options.titleTemplate, this.result);
         this.element.innerHTML = newTitle
           ? StreamHighlightUtils.highlightStreamText(newTitle, this.result.termsToHighlight, this.result.phrasesToHighlight)
           : this.result.clickUri;
@@ -478,7 +479,7 @@ export class ResultLink extends Component {
 
   private getResultUri(): string {
     if (this.options.hrefTemplate) {
-      return this.parseStringTemplate(this.options.hrefTemplate);
+      return StringUtils.buildStringTemplateFromResult(this.options.hrefTemplate, this.result);
     }
     if (this.options.field == undefined && this.options.openInOutlook) {
       this.setField();
@@ -519,32 +520,6 @@ export class ResultLink extends Component {
 
   private quickviewShouldBeOpened() {
     return (this.options.openQuickview || this.isUriThatMustBeOpenedInQuickview()) && QueryUtils.hasHTMLVersion(this.result);
-  }
-
-  protected parseStringTemplate(template: string): string {
-    if (!template) {
-      return '';
-    }
-    return template.replace(/\$\{(.*?)\}/g, (value: string) => {
-      let key = value.substring(2, value.length - 1);
-      let newValue = this.readFromObject(this.result, key);
-      if (!newValue) {
-        newValue = this.readFromObject(window, key);
-      }
-      if (!newValue) {
-        this.logger.warn(`${key} used in the ResultLink template is undefined for this result: ${this.result.title}`);
-      }
-      return newValue || value;
-    });
-  }
-
-  private readFromObject(object: Object, key: string): string {
-    if (object && key.indexOf('.') !== -1) {
-      let newKey = key.substring(key.indexOf('.') + 1);
-      key = key.substring(0, key.indexOf('.'));
-      return this.readFromObject(object[key], newKey);
-    }
-    return object ? object[key] : undefined;
   }
 }
 

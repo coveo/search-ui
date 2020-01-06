@@ -20,10 +20,14 @@ export function FacetTest() {
     beforeEach(() => {
       foobarFacetValue = new FacetValue();
       foobarFacetValue.value = 'foobar';
+      initializeComponent();
+    });
+
+    function initializeComponent() {
       test = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, <IFacetOptions>{
         field: '@field'
       });
-    });
+    }
 
     afterEach(() => {
       test = null;
@@ -909,6 +913,23 @@ export function FacetTest() {
           })
         );
         expect(test.cmp.options.paddingContainer).toBe(dummyDivParent.el);
+      });
+    });
+
+    describe('testing the DependsOnManager', () => {
+      beforeEach(() => {
+        spyOn(test.cmp.dependsOnManager, 'updateVisibilityBasedOnDependsOn');
+        spyOn(test.cmp.dependsOnManager, 'listenToParentIfDependentFacet');
+      });
+
+      it('should initialize the dependsOnManager', () => {
+        expect(test.cmp.dependsOnManager).toBeTruthy();
+      });
+
+      it(`when facet appearance is updated (e.g. when createDom is called)
+      should call the "updateVisibilityBasedOnDependsOn" method of the DependsOnManager`, () => {
+        test.cmp.createDom();
+        expect(test.cmp.dependsOnManager.updateVisibilityBasedOnDependsOn).toHaveBeenCalled();
       });
     });
   });

@@ -20,7 +20,8 @@
 
 <body id="search" class='CoveoSearchInterface' data-enable-history="true">
   <div class="coveo-tab-section">
-    <a class="CoveoTab" data-id="Jira" data-caption="Jira" data-expression='@connectortype=="JiraCrawler" AND NOT @jidocumenttype="WorkLog"'></a>
+    <a class="CoveoTab" data-id="Jira" data-caption="Jira"
+      data-expression='@connectortype=="JiraCrawler" AND NOT @jidocumenttype="WorkLog"'></a>
   </div>
   <div class='coveo-search-section'>
     <div class="CoveoSearchbox" data-enable-omnibox="true"></div>
@@ -28,21 +29,18 @@
   </div>
   <div class="coveo-main-section">
     <div class="coveo-facet-column">
-      <div class="CoveoFacet" data-title="Project" data-field="@jiprojectname" data-tab="Jira"></div>
-      <div class="CoveoFacet" data-title="Type" data-field="@jidocumenttype" data-tab="Jira"></div>
-      <!--Will work only with issue-->
-      <div class='CoveoFacet' data-title='Status' data-field='@jifieldsstatusname' data-allow-toggling-operator='true' data-is-multi-value='true'
-        data-tab="Jira"></div>
-      <div class="CoveoFacet" data-title="Priority" data-field="@jifieldspriorityname" data-tab="Jira"></div>
-      <div class='CoveoFacet' data-title='Assignee' data-field='@jifieldsassigneedisplayname' data-tab="Jira"></div>
-      <div class="CoveoFacet" data-title="Issue type" data-field="@jifieldsissuetypename" data-tab="Jira"></div>
-      <div class='CoveoFacet' data-title='Reporter' data-field='@jifieldsreporterdisplayname' data-tab="Jira"></div>
-      <div class="CoveoFacet" data-title="Author" data-field="@jiauthordisplayname" data-tab="Jira"></div>
-      <div class='CoveoFacet' data-title='Label' data-field='@jifieldslabels' data-allow-toggling-operator='true' data-is-multi-value='true'
-        data-tab="Jira"></div>
-      <!--Will work only with bug issue-->
-      <div class='CoveoFacet' data-title='Version' data-field='@jifieldsversionsname' data-tab="Jira"></div>
-      <div class="CoveoTimespanFacet" data-tab="Jira"></div>
+      <div class="CoveoDynamicFacetManager">
+        <div class="CoveoDynamicFacet" data-title="Project" data-field="@jiprojectname" data-tab="Jira"></div>
+        <div class="CoveoDynamicFacet" data-title="Type" data-field="@jidocumenttype" data-tab="Jira"></div>
+        <div class='CoveoDynamicFacet' data-title='Status' data-field='@jifieldsstatusname' data-tab="Jira"></div>
+        <div class="CoveoDynamicFacet" data-title="Priority" data-field="@jifieldspriorityname" data-tab="Jira"></div>
+        <div class='CoveoDynamicFacet' data-title='Assignee' data-field='@jifieldsassigneedisplayname' data-tab="Jira"></div>
+        <div class="CoveoDynamicFacet" data-title="Issue Type" data-field="@jifieldsissuetypename" data-tab="Jira"></div>
+        <div class='CoveoDynamicFacet' data-title='Reporter' data-field='@jifieldsreporterdisplayname' data-tab="Jira"></div>
+        <div class="CoveoDynamicFacet" data-title="Author" data-field="@jiauthordisplayname" data-tab="Jira"></div>
+        <div class='CoveoDynamicFacet' data-title='Label' data-field='@jifieldslabels' data-tab="Jira"></div>
+        <div class='CoveoDynamicFacet' data-title='Version' data-field='@jifieldsversionsname' data-tab="Jira"></div>
+      </div>
     </div>
     <div class="coveo-results-column">
       <div class="CoveoShareQuery"></div>
@@ -68,8 +66,10 @@
       </div>
       <div class="CoveoHiddenQuery"></div>
       <div class="CoveoErrorReport"></div>
-      <div class="CoveoResultList" data-layout="list" data-wait-animation="fade" data-auto-select-fields-to-include="true"></div>
-      <div class="CoveoResultList" data-layout="card" data-wait-animation="fade" data-auto-select-fields-to-include="true"></div>
+      <div class="CoveoResultList" data-layout="list" data-wait-animation="fade"
+        data-auto-select-fields-to-include="true"></div>
+      <div class="CoveoResultList" data-layout="card" data-wait-animation="fade"
+        data-auto-select-fields-to-include="true"></div>
       <div class="CoveoPager"></div>
       <div class="CoveoLogo"></div>
       <div class="CoveoResultsPerPage"></div>

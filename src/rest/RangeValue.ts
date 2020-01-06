@@ -1,3 +1,8 @@
+export enum RangeEndScope {
+  Inclusive = 'inc',
+  Exclusive = 'exc'
+}
+
 export type RangeType = string | number | Date;
 
 /**

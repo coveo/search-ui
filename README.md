@@ -83,11 +83,11 @@ For quick access to the latest CDN links, see [JavaScript Search Framework CDN L
 You can find more examples of fully configured pages in the `./pages` folder.
 
 A tutorial is available to help you get started (see
-[Coveo JavaScript Search UI Framework Getting Started Tutorial](https://developers.coveo.com/x/J4okAg)).
+[Coveo JavaScript Search UI Framework Getting Started Tutorial](https://docs.coveo.com/en/361/)).
 
 ## Build
 
-You should have node 9.5.0 (or later) installed to build this project.
+You should have node 10.x installed to build this project.
 
     npm install -g yarn
     yarn global add gulp
@@ -152,7 +152,7 @@ Handwritten documentation with more examples is also available (see
 [Coveo JavaScript Search UI Framework Home](https://docs.coveo.com/en/375/javascript-search-framework/javascript-search-framework-home)).
 
 A tutorial is also available (see
-[Coveo JavaScript Search UI Framework Getting Started Tutorial](https://developers.coveo.com/x/J4okAg)).
+[Coveo JavaScript Search UI Framework Getting Started Tutorial](https://docs.coveo.com/en/361/)).
 If you are new to the Coveo JavaScript Search UI Framework, you should definitely consult this tutorial, as it contains
 valuable information.
 

@@ -20,7 +20,8 @@
 
 <body id="search" class='CoveoSearchInterface' data-enable-history="true">
   <div class="coveo-tab-section">
-    <a class="CoveoTab" data-id="SharePoint" data-caption="SharePoint" data-expression="@connectortype==SharePoint OR @connectortype==SharepointCrawler"></a>
+    <a class="CoveoTab" data-id="SharePoint" data-caption="SharePoint"
+      data-expression="@connectortype==SharePoint OR @connectortype==SharepointCrawler"></a>
   </div>
   <div class='coveo-search-section'>
     <div class="CoveoSearchbox" data-enable-omnibox="true"></div>
@@ -28,12 +29,13 @@
   </div>
   <div class="coveo-main-section">
     <div class="coveo-facet-column">
-      <div class="CoveoFacet" data-title="File Type" data-field="@filetype" data-tab="SharePoint"></div>
-      <div class="CoveoFacet" data-title="Item Type" data-field="@spitemtype" data-tab="SharePoint"></div>
-      <div class="CoveoFacet" data-title="List Name" data-field="@splistname" data-tab="SharePoint"></div>
-      <div class="CoveoFacet" data-title="Site" data-field="@spsitename" data-tab="SharePoint"></div>
-      <div class="CoveoFacet" data-title="Author" data-field="@author" data-tab="SharePoint"></div>
-      <div class="CoveoTimespanFacet" data-tab="SharePoint"></div>
+      <div class="CoveoDynamicFacetManager">
+        <div class="CoveoDynamicFacet" data-title="FileType" data-field="@filetype" data-tab="SharePoint"></div>
+        <div class="CoveoDynamicFacet" data-title="Item Type" data-field="@spitemtype" data-tab="SharePoint"></div>
+        <div class="CoveoDynamicFacet" data-title="List Name" data-field="@splistname" data-tab="SharePoint"></div>
+        <div class="CoveoDynamicFacet" data-title="Site" data-field="@spsitename" data-tab="SharePoint"></div>
+        <div class="CoveoDynamicFacet" data-title="Author" data-field="@author" data-tab="SharePoint"></div>
+      </div>
     </div>
     <div class="coveo-results-column">
       <div class="CoveoShareQuery"></div>
@@ -69,8 +71,10 @@
       </div>
       <div class="CoveoHiddenQuery"></div>
       <div class="CoveoErrorReport"></div>
-      <div class="CoveoResultList" data-layout="list" data-wait-animation="fade" data-auto-select-fields-to-include="true"></div>
-      <div class="CoveoResultList" data-layout="card" data-wait-animation="fade" data-auto-select-fields-to-include="true"></div>
+      <div class="CoveoResultList" data-layout="list" data-wait-animation="fade"
+        data-auto-select-fields-to-include="true"></div>
+      <div class="CoveoResultList" data-layout="card" data-wait-animation="fade"
+        data-auto-select-fields-to-include="true"></div>
       <div class="CoveoPager"></div>
       <div class="CoveoLogo"></div>
       <div class="CoveoResultsPerPage"></div>

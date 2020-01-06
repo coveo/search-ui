@@ -221,6 +221,9 @@ ShareQuery.doExport();
 import { Sort } from './ui/Sort/Sort';
 Sort.doExport();
 
+import { StarRating } from './ui/StarRating/StarRating';
+StarRating.doExport();
+
 import { Tab } from './ui/Tab/Tab';
 Tab.doExport();
 
@@ -278,6 +281,9 @@ TimespanFacet.doExport();
 import { DynamicFacet } from './ui/DynamicFacet/DynamicFacet';
 DynamicFacet.doExport();
 
+import { DynamicFacetRange } from './ui/DynamicFacet/DynamicFacetRange';
+DynamicFacetRange.doExport();
+
 import { DynamicFacetManager } from './ui/DynamicFacetManager/DynamicFacetManager';
 DynamicFacetManager.doExport();
 
@@ -286,6 +292,9 @@ PromotedResultsBadge.doExport();
 
 import { CategoryFacet } from './ui/CategoryFacet/CategoryFacet';
 CategoryFacet.doExport();
+
+import { DynamicHierarchicalFacet } from './ui/DynamicHierarchicalFacet/DynamicHierarchicalFacet';
+DynamicHierarchicalFacet.doExport();
 
 import { MissingTerms } from './ui/MissingTerm/MissingTerms';
 MissingTerms.doExport();
@@ -298,3 +307,6 @@ swapVar(this);
 
 import { ImageFieldValue } from './ui/FieldImage/ImageFieldValue';
 ImageFieldValue.doExport();
+
+import { CommerceQuery } from './ui/CommerceQuery/CommerceQuery';
+CommerceQuery.doExport();

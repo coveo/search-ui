@@ -1,4 +1,5 @@
-import { ComponentOptions, ComponentOptionsType, IComponentOptions } from '../../src/ui/Base/ComponentOptions';
+import { ComponentOptions } from '../../src/ui/Base/ComponentOptions';
+import { ComponentOptionsType, IComponentOptions } from '../../src/ui/Base/IComponentOptions';
 import { TemplateComponentOptions } from '../../src/ui/Base/TemplateComponentOptions';
 import { TemplateCache } from '../../src/ui/Templates/TemplateCache';
 import { Dom } from '../../src/utils/Dom';

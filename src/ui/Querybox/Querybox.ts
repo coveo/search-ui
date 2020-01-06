@@ -1,22 +1,22 @@
-import { exportGlobally } from '../../GlobalExports';
+import 'styling/_Querybox';
 import { IBuildingQueryEventArgs, QueryEvents } from '../../events/QueryEvents';
 import { StandaloneSearchInterfaceEvents } from '../../events/StandaloneSearchInterfaceEvents';
+import { exportGlobally } from '../../GlobalExports';
+import { Grammar } from '../../magicbox/Grammar';
+import { createMagicBox, MagicBoxInstance } from '../../magicbox/MagicBox';
+import { Result } from '../../magicbox/Result/Result';
 import { Assert } from '../../misc/Assert';
 import { IAttributeChangedEventArg, MODEL_EVENTS } from '../../models/Model';
-import { QUERY_STATE_ATTRIBUTES, QueryStateModel } from '../../models/QueryStateModel';
+import { QueryStateModel, QUERY_STATE_ATTRIBUTES } from '../../models/QueryStateModel';
 import { l } from '../../strings/Strings';
 import { $$ } from '../../utils/Dom';
-import { IAnalyticsNoMeta, analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
+import { analyticsActionCauseList, IAnalyticsNoMeta } from '../Analytics/AnalyticsActionListMeta';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { ComponentOptions } from '../Base/ComponentOptions';
 import { Initialization } from '../Base/Initialization';
-import { QueryboxQueryParameters } from './QueryboxQueryParameters';
-import { Result } from '../../magicbox/Result/Result';
-import { MagicBoxInstance, createMagicBox } from '../../magicbox/MagicBox';
-import { Grammar } from '../../magicbox/Grammar';
 import { QueryboxOptionsProcessing } from './QueryboxOptionsProcessing';
-import 'styling/_Querybox';
+import { QueryboxQueryParameters } from './QueryboxQueryParameters';
 
 export interface IQueryboxOptions {
   enableSearchAsYouType?: boolean;
@@ -77,7 +77,7 @@ export class Querybox extends Component {
     /**
      * Specifies whether to interpret special query syntax (e.g., `@objecttype=message`) when the end user types
      * a query in the `Querybox` (see
-     * [Coveo Query Syntax Reference](http://www.coveo.com/go?dest=adminhelp70&lcid=9&context=10005)). Setting this
+     * [Coveo Query Syntax Reference](https://www.coveo.com/go?dest=adminhelp70&lcid=9&context=10005)). Setting this
      * option to `true` also causes the `Querybox` to highlight any query syntax.
      *
      * Regardless of the value of this option, the Coveo Cloud REST Search API always interprets expressions surrounded
@@ -103,7 +103,7 @@ export class Querybox extends Component {
     /**
      * Specifies whether to expand basic expression keywords containing wildcards characters (`*`) to the possible
      * matching keywords in order to broaden the query (see
-     * [Using Wildcards in Queries](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=359)).
+     * [Using Wildcards in Queries](https://docs.coveo.com/en/1580/)).
      *
      * See also [`enableQuestionMarks`]{@link Querybox.options.enableQuestionMarks}.
      *
@@ -120,7 +120,7 @@ export class Querybox extends Component {
      * If [`enableWildcards`]{@link Querybox.options.enableWildcards} is `true`, specifies whether to expand basic
      * expression keywords containing question mark characters (`?`) to the possible matching keywords in order to
      * broaden the query (see
-     * [Using Wildcards in Queries](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=359)).
+     * [Using Wildcards in Queries](https://docs.coveo.com/en/1580/)).
      *
      * **Note:**
      * > If you are using an on-premises version of the Coveo Search API, you also need to set the
@@ -137,7 +137,7 @@ export class Querybox extends Component {
      * the end user types those keywords in lowercase.
      *
      * This option applies to all query operators (see
-     * [Coveo Query Syntax Reference](http://www.coveo.com/go?dest=adminhelp70&lcid=9&context=10005)).
+     * [Coveo Query Syntax Reference](https://www.coveo.com/go?dest=adminhelp70&lcid=9&context=10005)).
      *
      * **Example:**
      * > If this option and the `enableQuerySyntax` option are both `true`, the Coveo Platform interprets the `near`
@@ -269,7 +269,6 @@ export class Querybox extends Component {
         Spaces: / +/,
         Word: /[^ ]+/
       }),
-      this.root,
       {
         inline: true
       }

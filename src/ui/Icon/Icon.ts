@@ -1,6 +1,7 @@
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { ComponentOptions } from '../Base/ComponentOptions';
+import { IFieldConditionOption } from '../Base/IComponentOptions';
 import { IQueryResult } from '../../rest/QueryResult';
 import { Assert } from '../../misc/Assert';
 import { QueryUtils } from '../../utils/QueryUtils';
@@ -9,6 +10,7 @@ import { Utils } from '../../utils/Utils';
 import { FileTypes, IFileTypeInfo } from '../Misc/FileTypes';
 import { $$ } from '../../utils/Dom';
 import { exportGlobally } from '../../GlobalExports';
+import { TemplateFieldsEvaluator } from '../Templates/TemplateFieldsEvaluator';
 
 /**
  * Available options for the {@link Icon} component.
@@ -18,6 +20,7 @@ export interface IIconOptions {
   small?: boolean;
   withLabel?: boolean;
   labelValue?: string;
+  conditions?: IFieldConditionOption[];
 }
 
 /**
@@ -25,7 +28,7 @@ export interface IIconOptions {
  * from those available in the Coveo JavaScript Search Framework. If the component finds no suitable icon, it instead
  * outputs a generic icon.
  *
- * This component is a result template component (see [Result Templates](https://developers.coveo.com/x/aIGfAQ)).
+ * This component is a result template component (see [Result Templates](https://docs.coveo.com/en/413/)).
  */
 export class Icon extends Component {
   static ID = 'Icon';
@@ -75,7 +78,30 @@ export class Icon extends Component {
      * Default value is `undefined`, which means that the Coveo JavaScript Search Framework determines what text the icon
      * needs to display depending on the result file type.
      */
-    labelValue: ComponentOptions.buildLocalizedStringOption()
+    labelValue: ComponentOptions.buildLocalizedStringOption(),
+
+    /**
+     * A field-based condition that must be satisfied by the query result item for the component to be rendered.
+     *
+     * Note: This option uses a distinctive markup configuration syntax allowing multiple conditions to be expressed. Its underlying logic is the same as that of the field value conditions mechanism used by result templates.
+     *
+     * **Examples:**
+     * Render the component if the query result item's @documenttype field value is Article or Documentation.
+     * ```html
+     * <div class="CoveoIcon" data-field="@author" data-condition-field-documenttype="Article, Documentation"></div>
+     * ```
+     *
+     * Render the component if the query result item's @documenttype field value is anything but Case.
+     * ```html
+     * <div class="CoveoIcon" data-field="@author" data-condition-field-not-documenttype="Case"></div>
+     * ```
+     * Render the component if the query result item's @documenttype field value is Article, and if its @author field value is anything but Anonymous.
+     * ```html
+     * <div class="CoveoIcon" data-field="@author" data-condition-field-documenttype="Article" data-condition-field-not-author="Anonymous"></div>
+     * ```
+     * Default value is `undefined`.
+     */
+    conditions: ComponentOptions.buildFieldConditionOption()
   };
 
   /**
@@ -93,6 +119,14 @@ export class Icon extends Component {
     this.result = this.result || this.resolveResult();
     Assert.exists(this.result);
 
+    if (TemplateFieldsEvaluator.evaluateFieldsToMatch(this.options.conditions, this.result)) {
+      this.initialize(element, bindings);
+    } else if (this.element.parentElement != null) {
+      this.element.parentElement.removeChild(this.element);
+    }
+  }
+
+  private initialize(element: HTMLElement, bindings: IComponentBindings) {
     var possibleInternalQuickview = $$(this.element).find('.' + Component.computeCssClassNameForType('Quickview'));
     if (!Utils.isNullOrUndefined(possibleInternalQuickview) && QueryUtils.hasHTMLVersion(this.result)) {
       $$(this.element).addClass('coveo-with-quickview');

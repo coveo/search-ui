@@ -1,16 +1,15 @@
-import * as Mock from '../MockEnvironment';
-import { Omnibox } from '../../src/ui/Omnibox/Omnibox';
-import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
-import { IOmniboxOptions, IOmniboxSuggestion } from '../../src/ui/Omnibox/Omnibox';
-import { Simulate } from '../Simulate';
-import { $$ } from '../../src/utils/Dom';
-import { l } from '../../src/strings/Strings';
-import { InitializationEvents } from '../../src/events/InitializationEvents';
-import { IFieldDescription } from '../../src/rest/FieldDescription';
-import { Suggestion } from '../../src/magicbox/SuggestionsManager';
-import { KEYBOARD, OmniboxEvents } from '../../src/Core';
 import { IQueryOptions } from '../../src/controllers/QueryController';
+import { BreadcrumbEvents, KEYBOARD, OmniboxEvents, QueryEvents } from '../../src/Core';
+import { InitializationEvents } from '../../src/events/InitializationEvents';
+import { Suggestion } from '../../src/magicbox/SuggestionsManager';
+import { IFieldDescription } from '../../src/rest/FieldDescription';
+import { l } from '../../src/strings/Strings';
+import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
+import { IOmniboxOptions, IOmniboxSuggestion, Omnibox } from '../../src/ui/Omnibox/Omnibox';
 import { IOmniboxAnalytics } from '../../src/ui/Omnibox/OmniboxAnalytics';
+import { $$ } from '../../src/utils/Dom';
+import * as Mock from '../MockEnvironment';
+import { Simulate } from '../Simulate';
 import { initOmniboxAnalyticsMock } from './QuerySuggestPreviewTest';
 
 export function OmniboxTest() {
@@ -48,6 +47,60 @@ export function OmniboxTest() {
         })
       );
     }
+
+    describe('when the omnibox launches populateOmniboxSuggestions events', () => {
+      it('it triggers the event from the component element as well as root element if the omnibox is not a descendant of its root', async done => {
+        const fakeRoot = document.createElement('div');
+        test.cmp.root = fakeRoot;
+        const spy = jasmine.createSpy('spy');
+
+        $$(fakeRoot).on(OmniboxEvents.populateOmniboxSuggestions, spy);
+        $$(test.cmp.element).on(OmniboxEvents.populateOmniboxSuggestions, spy);
+
+        await test.cmp.magicBox.getSuggestions();
+        expect(spy).toHaveBeenCalledTimes(2);
+        done();
+      });
+
+      it('it triggers the event only once if the element is a descendant of its root', async done => {
+        const fakeRoot = document.createElement('div');
+        test.cmp.root = fakeRoot;
+        fakeRoot.appendChild(test.cmp.element);
+
+        const spy = jasmine.createSpy('spy');
+        $$(fakeRoot).on(OmniboxEvents.populateOmniboxSuggestions, spy);
+
+        await test.cmp.magicBox.getSuggestions();
+        expect(spy).toHaveBeenCalledTimes(1);
+        done();
+      });
+    });
+
+    describe('when the omnibox launches omniboxPreprocessResultForQuery events', () => {
+      it('it triggers the event from the component element as well as root element if the omnibox is not a descendant of its root', () => {
+        const fakeRoot = document.createElement('div');
+        test.cmp.root = fakeRoot;
+        const spy = jasmine.createSpy('spy');
+
+        $$(fakeRoot).on(OmniboxEvents.omniboxPreprocessResultForQuery, spy);
+        $$(test.cmp.element).on(OmniboxEvents.omniboxPreprocessResultForQuery, spy);
+
+        Simulate.query(test.env);
+        expect(spy).toHaveBeenCalledTimes(2);
+      });
+
+      it('it triggers the event only once if the element is a descendant of its root', () => {
+        const fakeRoot = document.createElement('div');
+        test.cmp.root = fakeRoot;
+        fakeRoot.appendChild(test.cmp.element);
+
+        const spy = jasmine.createSpy('spy');
+        $$(fakeRoot).on(OmniboxEvents.omniboxPreprocessResultForQuery, spy);
+
+        Simulate.query(test.env);
+        expect(spy).toHaveBeenCalledTimes(1);
+      });
+    });
 
     describe('on submit', () => {
       beforeEach(() => test.cmp.submit());
@@ -448,8 +501,8 @@ export function OmniboxTest() {
         enableQuerySuggestAddon: true
       });
       test.cmp.setText('foobar');
-      expect(test.cmp.magicBox.onsuggestions).toBeDefined();
-      test.cmp.magicBox.onsuggestions(<IOmniboxSuggestion[]>[
+      expect(test.cmp.magicBox.onSuggestions).toBeDefined();
+      test.cmp.magicBox.onSuggestions(<IOmniboxSuggestion[]>[
         {
           executableConfidence: 1,
           text: 'foobar'
@@ -468,8 +521,8 @@ export function OmniboxTest() {
         enableQuerySuggestAddon: true
       });
       test.cmp.setText('foobar');
-      expect(test.cmp.magicBox.onsuggestions).toBeDefined();
-      test.cmp.magicBox.onsuggestions(<IOmniboxSuggestion[]>[
+      expect(test.cmp.magicBox.onSuggestions).toBeDefined();
+      test.cmp.magicBox.onSuggestions(<IOmniboxSuggestion[]>[
         {
           executableConfidence: 0.8,
           text: 'foobar'
@@ -488,8 +541,8 @@ export function OmniboxTest() {
         enableQuerySuggestAddon: true
       });
       test.cmp.setText('foobar');
-      expect(test.cmp.magicBox.onsuggestions).toBeDefined();
-      test.cmp.magicBox.onsuggestions(<IOmniboxSuggestion[]>[
+      expect(test.cmp.magicBox.onSuggestions).toBeDefined();
+      test.cmp.magicBox.onSuggestions(<IOmniboxSuggestion[]>[
         {
           executableConfidence: 0.7,
           text: 'foobar'
@@ -508,8 +561,8 @@ export function OmniboxTest() {
         enableQuerySuggestAddon: true
       });
       test.cmp.setText('baz');
-      expect(test.cmp.magicBox.onsuggestions).toBeDefined();
-      test.cmp.magicBox.onsuggestions(<IOmniboxSuggestion[]>[
+      expect(test.cmp.magicBox.onSuggestions).toBeDefined();
+      test.cmp.magicBox.onSuggestions(<IOmniboxSuggestion[]>[
         {
           text: 'foobar'
         }
@@ -527,8 +580,8 @@ export function OmniboxTest() {
         enableQuerySuggestAddon: true
       });
       test.cmp.setText('foo');
-      expect(test.cmp.magicBox.onsuggestions).toBeDefined();
-      test.cmp.magicBox.onsuggestions(<IOmniboxSuggestion[]>[
+      expect(test.cmp.magicBox.onSuggestions).toBeDefined();
+      test.cmp.magicBox.onSuggestions(<IOmniboxSuggestion[]>[
         {
           text: 'foobar'
         }
@@ -604,6 +657,78 @@ export function OmniboxTest() {
         await test.cmp.magicBox.getSuggestions();
         expect(querySuggestSuccessSpy).toHaveBeenCalled();
         done();
+      });
+    });
+
+    describe('when handling "newQuery" event', () => {
+      let breadcrumbClearSpy: jasmine.Spy;
+
+      beforeEach(() => {
+        breadcrumbClearSpy = jasmine.createSpy('clearBreadcrumb');
+        $$(test.env.root).on(BreadcrumbEvents.clearBreadcrumb, breadcrumbClearSpy);
+        setupForClearingFiltersOnNewQuery();
+      });
+
+      function setupForClearingFiltersOnNewQuery() {
+        test.cmp.options.clearFiltersOnNewQuery = true;
+        test.cmp.queryController.firstQuery = false;
+        test.cmp.queryController.getLastQuery = () => ({ q: 'old query' });
+        test.cmp.setText('new query');
+      }
+
+      describe(`when clearFiltersOnNewQuery is true
+        when it is not the first query
+        when the new query is different from the previous one`, () => {
+        it(`when the origin is a valid component (Omnibox)
+          should clear breadcrumbs`, () => {
+          $$(test.env.root).trigger(QueryEvents.newQuery, { origin: test.cmp });
+          expect(breadcrumbClearSpy).toHaveBeenCalled();
+        });
+
+        it(`when the origin is a valid component (SearchButton)
+          should clear breadcrumbs`, () => {
+          $$(test.env.root).trigger(QueryEvents.newQuery, { origin: { type: 'SearchButton' } });
+          expect(breadcrumbClearSpy).toHaveBeenCalled();
+        });
+
+        it(`when the origin is not a valid component (Facet)
+          should not clear breadcrumbs`, () => {
+          $$(test.env.root).trigger(QueryEvents.newQuery, { origin: { type: 'Facet' } });
+          expect(breadcrumbClearSpy).not.toHaveBeenCalled();
+        });
+
+        it(`when the origin is not defined
+          should not clear breadcrumbs`, () => {
+          $$(test.env.root).trigger(QueryEvents.newQuery);
+          expect(breadcrumbClearSpy).not.toHaveBeenCalled();
+        });
+      });
+
+      it(`when clearFiltersOnNewQuery is false
+        should not clear breadcrumbs`, () => {
+        test.cmp.options.clearFiltersOnNewQuery = false;
+        $$(test.env.root).trigger(QueryEvents.newQuery, { origin: test.cmp });
+        expect(breadcrumbClearSpy).not.toHaveBeenCalled();
+      });
+
+      it(`when clearFiltersOnNewQuery is true
+        when it is the first query
+        should not clear breadcrumbs`, () => {
+        test.cmp.queryController.firstQuery = true;
+        $$(test.env.root).trigger(QueryEvents.newQuery, { origin: test.cmp });
+        expect(breadcrumbClearSpy).not.toHaveBeenCalled();
+      });
+
+      it(`when clearFiltersOnNewQuery is true
+        when it is not the first query
+        when the origin is a valid component (SearchButton)
+        when the new query is the same as the previous one
+        should not clear breadcrumbs`, () => {
+        const sameQuery = 'same here';
+        test.cmp.queryController.getLastQuery = () => ({ q: sameQuery });
+        test.cmp.setText(sameQuery);
+        $$(test.env.root).trigger(QueryEvents.newQuery, { origin: test.cmp });
+        expect(breadcrumbClearSpy).not.toHaveBeenCalled();
       });
     });
   });

@@ -1,0 +1,131 @@
+import { IAutoLayoutAdjustableInsideFacetColumn } from '../SearchInterface/FacetColumnAutoLayoutAdjustment';
+import { IFieldOption } from '../Base/IComponentOptions';
+import { IResponsiveComponentOptions } from '../ResponsiveComponents/ResponsiveComponentsManager';
+import { IDynamicManagerCompatibleFacet } from '../DynamicFacetManager/DynamicFacetManager';
+import { DependsOnManager } from '../../utils/DependsOnManager';
+import { DynamicFacetQueryController } from '../../controllers/DynamicFacetQueryController';
+import { FacetType } from '../../rest/Facet/FacetRequest';
+import { IAnalyticsFacetMeta, IAnalyticsActionCause } from '../Analytics/AnalyticsActionListMeta';
+import { Component } from '../Base/Component';
+import { IAnalyticsFacetState } from '../Analytics/IAnalyticsFacetState';
+import { IFacetResponseValue, IFacetResponse } from '../../rest/Facet/FacetResponse';
+import { IRangeValue } from '../../rest/RangeValue';
+import { FacetValueState } from '../../rest/Facet/FacetValueState';
+import { DynamicFacetHeader } from './DynamicFacetHeader/DynamicFacetHeader';
+import { FacetSortCriteria } from '../../rest/Facet/FacetSortCriteria';
+
+export interface IDynamicFacetOptions extends IResponsiveComponentOptions {
+  id?: string;
+  title?: string;
+  field?: IFieldOption;
+  sortCriteria?: FacetSortCriteria;
+  numberOfValues?: number;
+  enableCollapse?: boolean;
+  enableScrollToTop?: boolean;
+  enableMoreLess?: boolean;
+  enableFacetSearch?: boolean;
+  useLeadingWildcardInFacetSearch?: boolean;
+  collapsedByDefault?: boolean;
+  includeInBreadcrumb?: boolean;
+  numberOfValuesInBreadcrumb?: number;
+  valueCaption?: Record<string, string>;
+  dependsOn?: string;
+  injectionDepth?: number;
+  filterFacetCount?: boolean;
+}
+
+export interface IDynamicFacet extends Component, IDynamicManagerCompatibleFacet, IAutoLayoutAdjustableInsideFacetColumn {
+  header: DynamicFacetHeader;
+  options: IDynamicFacetOptions;
+  dependsOnManager: DependsOnManager;
+  dynamicFacetQueryController: DynamicFacetQueryController;
+  values: IDynamicFacetValues;
+  position: number;
+  moreValuesAvailable: boolean;
+  isCollapsed: boolean;
+
+  fieldName: string;
+  facetType: FacetType;
+  analyticsFacetState: IAnalyticsFacetState[];
+  basicAnalyticsFacetState: IAnalyticsFacetState;
+  basicAnalyticsFacetMeta: IAnalyticsFacetMeta;
+
+  isCurrentlyDisplayed(): boolean;
+  selectValue(value: string): void;
+  selectMultipleValues(values: string[]): void;
+  deselectValue(value: string): void;
+  deselectMultipleValues(values: string[]): void;
+  toggleSelectValue(value: string): void;
+  showMoreValues(additionalNumberOfValues?: number): void;
+  showLessValues(): void;
+  reset(): void;
+  toggleCollapse(): void;
+  enableFreezeCurrentValuesFlag(): void;
+  enableFreezeFacetOrderFlag(): void;
+  scrollToTop(): void;
+  logAnalyticsEvent(actionCause: IAnalyticsActionCause, facetMeta: IAnalyticsFacetMeta): void;
+  triggerNewQuery(beforeExecuteQuery?: () => void): void;
+  triggerNewIsolatedQuery(beforeExecuteQuery?: () => void): void;
+}
+
+export interface IValueCreator {
+  createFromResponse(facetValue: IFacetResponseValue, index: number): IDynamicFacetValue;
+  createFromValue(value: string): IDynamicFacetValue;
+  createFromRange(range: IRangeValue, index: number): IDynamicFacetValue;
+}
+
+export interface IValueRenderer {
+  render(): HTMLElement;
+}
+
+export interface IValueRendererKlass {
+  new (facetValue: IDynamicFacetValueProperties, facet: IDynamicFacet): IValueRenderer;
+}
+
+export interface IDynamicFacetValueProperties extends IRangeValue {
+  value: string;
+  displayValue: string;
+  state: FacetValueState;
+  numberOfResults: number;
+  position: number;
+  preventAutoSelect?: boolean;
+}
+
+export interface IDynamicFacetValue extends IDynamicFacetValueProperties {
+  renderer: IValueRenderer;
+  isSelected: boolean;
+  isIdle: boolean;
+  formattedCount: string;
+  selectAriaLabel: string;
+  renderedElement: HTMLElement;
+  analyticsFacetState: IAnalyticsFacetState;
+  analyticsFacetMeta: IAnalyticsFacetMeta;
+
+  select(): void;
+  toggleSelect(): void;
+  deselect(): void;
+  equals(arg: string | IDynamicFacetValue): boolean;
+
+  logSelectActionToAnalytics(): void;
+}
+
+export interface IDynamicFacetValues {
+  createFromResponse(response: IFacetResponse): void;
+  createFromRanges(ranges: IRangeValue[]): void;
+  resetValues(): void;
+  clearAll(): void;
+  hasSelectedValue(arg: string | IDynamicFacetValue): boolean;
+  get(arg: string | IDynamicFacetValue): IDynamicFacetValue;
+  render(): HTMLElement;
+
+  allValues: string[];
+  selectedValues: string[];
+
+  allFacetValues: IDynamicFacetValue[];
+  activeValues: IDynamicFacetValue[];
+
+  hasSelectedValues: boolean;
+  hasActiveValues: boolean;
+  hasIdleValues: boolean;
+  hasValues: boolean;
+}

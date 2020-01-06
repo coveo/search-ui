@@ -79,7 +79,12 @@ export const PlaygroundConfiguration: IStringMap<IComponentPlaygroundConfigurati
   ErrorReport: {
     show: true,
     toExecute: () => {
-      Coveo['SearchEndpoint'].endpoints['default'].options.accessToken = 'invalid';
+      getSearchInterfaceInstance().queryController.setEndpoint(
+        new SearchEndpoint({
+          restUri: 'https://platform.cloud.coveo.com/rest/search',
+          accessToken: 'invalid'
+        })
+      );
     }
   },
   Excerpt: {
@@ -199,10 +204,10 @@ export const PlaygroundConfiguration: IStringMap<IComponentPlaygroundConfigurati
           'table',
           { className: 'CoveoFieldTable' },
           `<tbody>
-    <tr data-field="@size" data-caption="Document size" data-helper="size"></tr>
-     <tr data-field="@source" data-caption="Source"></tr>
-     <tr data-field="@date" data-caption="Date" date-helper="dateTime"></tr>
-   </tbody>`
+            <tr data-field="@size" data-caption="Document size" data-helper="size"></tr>
+            <tr data-field="@source" data-caption="Source"></tr>
+            <tr data-field="@date" data-caption="Date" date-helper="dateTime"></tr>
+          </tbody>`
         )
       )
       .build()
@@ -514,6 +519,16 @@ export const PlaygroundConfiguration: IStringMap<IComponentPlaygroundConfigurati
         args.queryBuilder.numberOfResults = 3;
       });
     }
+  },
+  StarRating: {
+    show: true,
+    options: {
+      ratingField: '@sfaveragerating',
+      numberOfRatingsField: '@sfnumberofreviews',
+      ratingScale: '5'
+    },
+    isResultComponent: true,
+    advancedExpression: '@objecttype=="ccrz__E_Product__c"'
   },
   Tab: {
     show: true,

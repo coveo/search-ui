@@ -31,6 +31,17 @@ export function DomTests() {
         Simulate.removeJQuery();
       });
 
+      it('should detect supported event', () => {
+        expect($$(el).canHandleEvent('scroll')).toBe(true);
+        expect($$(el).canHandleEvent('click')).toBe(true);
+      });
+
+      it('should detect unsupported event', () => {
+        expect($$(el).canHandleEvent('touchstart')).toBe(false);
+        expect($$(el).canHandleEvent('touchend')).toBe(false);
+        expect($$(el).canHandleEvent('foo')).toBe(false);
+      });
+
       describe('when calling #isValidElement', () => {
         it('should respond true when a valid element is given', () => {
           const NORMAL_ELEMENT = document.createElement('div');

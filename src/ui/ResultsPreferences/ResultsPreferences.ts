@@ -1,22 +1,22 @@
-import { Component } from '../Base/Component';
-import { ComponentOptions } from '../Base/ComponentOptions';
-import { ComponentOptionsModel } from '../../models/ComponentOptionsModel';
-import { IComponentBindings } from '../Base/ComponentBindings';
-import { LocalStorageUtils } from '../../utils/LocalStorageUtils';
+import 'styling/_ResultsPreferences';
+import * as _ from 'underscore';
 import { PreferencesPanelEvents } from '../../events/PreferencesPanelEvents';
-import { analyticsActionCauseList, IAnalyticsPreferencesChangeMeta } from '../Analytics/AnalyticsActionListMeta';
-import { Initialization } from '../Base/Initialization';
+import { exportGlobally } from '../../GlobalExports';
 import { Assert } from '../../misc/Assert';
+import { Defer } from '../../misc/Defer';
+import { ComponentOptionsModel } from '../../models/ComponentOptionsModel';
 import { l } from '../../strings/Strings';
 import { $$ } from '../../utils/Dom';
-import * as _ from 'underscore';
-import { exportGlobally } from '../../GlobalExports';
-import { Defer } from '../../misc/Defer';
+import { StorageUtils } from '../../utils/StorageUtils';
+import { analyticsActionCauseList, IAnalyticsPreferencesChangeMeta } from '../Analytics/AnalyticsActionListMeta';
+import { Component } from '../Base/Component';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { Initialization } from '../Base/Initialization';
 import { Checkbox } from '../FormWidgets/Checkbox';
-import { RadioButton } from '../FormWidgets/RadioButton';
 import { FormGroup } from '../FormWidgets/FormGroup';
 import { IFormWidgetSelectable } from '../FormWidgets/FormWidgets';
-import 'styling/_ResultsPreferences';
+import { RadioButton } from '../FormWidgets/RadioButton';
 
 export interface IResultsPreferencesOptions {
   enableOpenInOutlook?: boolean;
@@ -70,7 +70,7 @@ export class ResultsPreferences extends Component {
      *
      * If query syntax is enabled, the Coveo Platform tries to interpret special query syntax (e.g.,
      * `@objecttype=message`) when the end user types a query in the [`Querybox`]{@link Querybox} (see
-     * [Coveo Query Syntax Reference](http://www.coveo.com/go?dest=adminhelp70&lcid=9&context=10005)). Enabling query
+     * [Coveo Query Syntax Reference](https://www.coveo.com/go?dest=adminhelp70&lcid=9&context=10005)). Enabling query
      * syntax also causes the `Querybox` to highlight any query syntax.
      *
      * Selecting **On** for the **Enable query syntax** setting enables query syntax, whereas selecting **Off** disables
@@ -83,7 +83,7 @@ export class ResultsPreferences extends Component {
   };
 
   public preferences: IPossiblePreferences;
-  private preferencePanelLocalStorage: LocalStorageUtils<IPossiblePreferences>;
+  private preferencePanelLocalStorage: StorageUtils<IPossiblePreferences>;
   private preferencesPanel: HTMLElement;
   private preferencePanelCheckboxInputs: { [label: string]: Checkbox } = {};
   private preferencePanelRadioInputs: { [label: string]: RadioButton } = {};
@@ -101,7 +101,7 @@ export class ResultsPreferences extends Component {
     this.options = ComponentOptions.initComponentOptions(element, ResultsPreferences, options);
 
     this.preferencesPanel = $$(this.element).closest(Component.computeCssClassNameForType('PreferencesPanel'));
-    this.preferencePanelLocalStorage = new LocalStorageUtils(ResultsPreferences.ID);
+    this.preferencePanelLocalStorage = new StorageUtils(ResultsPreferences.ID);
     Assert.exists(this.componentOptionsModel);
     Assert.exists(window.localStorage);
     Assert.exists(this.preferencesPanel);

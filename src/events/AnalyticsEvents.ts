@@ -168,7 +168,7 @@ export interface IChangeableAnalyticsDataObject {
  * The `AnalyticsEvents` static class contains the string definitions of all events that strongly relate to usage
  * analytics.
  *
- * See [Events](https://developers.coveo.com/x/bYGfAQ).
+ * See [Events](https://docs.coveo.com/en/417/).
  */
 export class AnalyticsEvents {
   public static searchEvent = 'analyticsSearchEvent';

@@ -1,9 +1,9 @@
 import { FacetSliderQueryController } from '../../src/controllers/FacetSliderQueryController';
-import * as Mock from '../MockEnvironment';
-import { FacetSlider } from '../../src/ui/FacetSlider/FacetSlider';
-import { IFieldOption } from '../../src/ui/Base/ComponentOptions';
-import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
 import { IGroupByRequest } from '../../src/rest/GroupByRequest';
+import { IFieldOption } from '../../src/ui/Base/IComponentOptions';
+import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
+import { FacetSlider } from '../../src/ui/FacetSlider/FacetSlider';
+import * as Mock from '../MockEnvironment';
 
 export function FacetSliderQueryControllerTest() {
   describe('FacetSliderQueryController', () => {

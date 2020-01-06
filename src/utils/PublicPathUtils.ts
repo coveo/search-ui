@@ -30,7 +30,7 @@ export class PublicPathUtils {
     if (!this.isScript(coveoScript)) {
       new Logger(this)
         .warn(`You should add the class coveo-script on the script tag that includes the Coveo framework. Not doing so may cause the framework to not be able to auto-detect the path to load the lazy chunks in certain environments.
-        More details here https://docs.coveo.com/en/295/javascript-search-framework/lazy-versus-eager-component-loading#fixing-code-chunks-loading-path-issues`);
+        More details [here](https://docs.coveo.com/en/295/javascript-search-framework/lazy-versus-eager-component-loading#fixing-code-chunks-loading-path-issues).`);
     }
     if (!Utils.isNullOrUndefined(currentScript)) {
       return this.parseScriptDirectoryPath(currentScript);

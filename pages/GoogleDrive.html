@@ -20,7 +20,8 @@
 
 <body id="search" class='CoveoSearchInterface' data-enable-history="true">
   <div class="coveo-tab-section">
-    <a class="CoveoTab" data-id="GoogleDrive" data-caption="Google Drive" data-expression="@connectortype==GoogleDriveCrawler AND @documenttype==(File,Folder)"></a>
+    <a class="CoveoTab" data-id="GoogleDrive" data-caption="Google Drive"
+      data-expression="@connectortype==GoogleDriveCrawler AND @documenttype==(File,Folder)"></a>
   </div>
   <div class='coveo-search-section'>
     <div class="CoveoSearchbox" data-enable-omnibox="true"></div>
@@ -28,15 +29,15 @@
   </div>
   <div class="coveo-main-section">
     <div class="coveo-facet-column">
-      <div class="CoveoFacet" data-title="File Type" data-field="@filetype" data-tab="GoogleDrive"></div>
-      <div class="CoveoFacet" data-title="Origin" data-field="@gdfilesource" data-custom-sort="My Drive,Shared with Me, Shared Globally"
-        data-tab="GoogleDrive"></div>
-      <div class="CoveoFacet" data-title="Owner" data-field="@author" data-tab="GoogleDrive"></div>
-      <div class="CoveoFacet" data-title="Last modified by" data-field="@gdfilelastmodifyinguserdisplayname" data-tab="GoogleDrive"></div>
-      <div class="CoveoFacet" data-title="Shared To" data-field="@to" data-allow-toggling-operator="true" data-is-multi-value="true"
-        data-tab="GoogleDrive"></div>
-      <div class="CoveoFacet" data-title="Shared From" data-field="@from" data-tab="GoogleDrive"></div>
-      <div class="CoveoTimespanFacet" data-tab="GoogleDrive"></div>
+      <div class="CoveoDynamicFacetManager">
+        <div class="CoveoDynamicFacet" data-title="FileType" data-field="@filetype" data-tab="GoogleDrive"></div>
+        <div class="CoveoDynamicFacet" data-title="Origin" data-field="@gdfilesource" data-tab="GoogleDrive"></div>
+        <div class="CoveoDynamicFacet" data-title="Owner" data-field="@author" data-tab="GoogleDrive"></div>
+        <div class="CoveoDynamicFacet" data-title="Last modified By" data-field="@gdfilelastmodifyinguserdisplayname"
+          data-tab="GoogleDrive"></div>
+        <div class="CoveoDynamicFacet" data-title="Shared To" data-field="@to" data-tab="GoogleDrive"></div>
+        <div class="CoveoDynamicFacet" data-title="Shared From" data-field="@from" data-tab="GoogleDrive"></div>
+      </div>
     </div>
 
     <div class="coveo-results-column">
@@ -63,8 +64,10 @@
       </div>
       <div class="CoveoHiddenQuery"></div>
       <div class="CoveoErrorReport"></div>
-      <div class="CoveoResultList" data-layout="list" data-wait-animation="fade" data-auto-select-fields-to-include="true"></div>
-      <div class="CoveoResultList" data-layout="card" data-wait-animation="fade" data-auto-select-fields-to-include="true"></div>
+      <div class="CoveoResultList" data-layout="list" data-wait-animation="fade"
+        data-auto-select-fields-to-include="true"></div>
+      <div class="CoveoResultList" data-layout="card" data-wait-animation="fade"
+        data-auto-select-fields-to-include="true"></div>
       <div class="CoveoPager"></div>
       <div class="CoveoLogo"></div>
       <div class="CoveoResultsPerPage"></div>

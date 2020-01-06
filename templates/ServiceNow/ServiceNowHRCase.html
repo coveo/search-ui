@@ -1,0 +1,48 @@
+<div class="coveo-result-frame">
+    <div class="coveo-result-cell" style="vertical-align: top;">
+        <div class="coveo-result-row" style="margin-top:0;">
+            <div class="coveo-result-cell" style="vertical-align:bottom; font-size:16px">
+                <a class="CoveoResultLink" data-title-template="[${raw.snnumber}] ${raw.title} ">
+                </a>
+            </div>
+            <div class="coveo-result-cell" style="width:120px;vertical-align:bottom">
+                <span class="CoveoFieldValue" data-field="@date" data-text-caption="Updated: " data-helper="dateTime" data-html-value="false" data-helper-options-include-time-if-this-week="false" style="color:#6A7689;font-size:10px"></span>
+            </div>
+        </div>
+        <div class="coveo-result-row">
+            <div class="coveo-result-cell">
+                <span style="border-style:solid;border-width:thin;border-color:#DF9140;border-radius:0px 10px 10px 0px;font-size:12px;background-color:#DF9140;color:white;padding:2px;padding-right:10px;padding-left:5px;margin-right:-12px">HR Case</span>
+                <span class="CoveoFieldValue" data-field="@snstate" style="border:solid thin #DF9140;border-radius:0px 10px 10px 0px;font-size:12px;color:black;padding-left:15px;padding-right:10px;padding-top:2px;padding-bottom:2px;text-decoration:none"></span>
+                <span class="CoveoFieldValue" data-field="@snopenedforname" data-value="@snopenedforsysid" data-text-caption="Requested by" style="padding-left:10px;padding-right:5px" data-helper="anchor" data-html-value="true" data-helper-options-target="@snopenedforsysid"></span>
+                <span class="CoveoFieldValue" data-field="@snopenedbytitle"></span>
+            </div>
+            <div class="coveo-result-cell" style="width:120px">
+                <span class="CoveoQuickview" style="font-size:10px;color:black;border-width:thin;border-color:grey;border-style:solid;border-radius:16px;width:100px;padding-right:10px;padding-left:10px;padding-top:2px;padding-bottom:2px;text-decoration:none">QUICK VIEW</span>
+            </div>
+        </div>
+        <div class="coveo-result-row"></div>
+        <div class="coveo-result-row">
+            <div class="coveo-result-cell" style="padding-right:15px;padding-top:10px;padding-bottom:10px">
+                <span class="CoveoExcerpt"></span>
+            </div>
+            <div class="coveo-result-cell" style="width:150px;border-left:solid thin #CAD2D8; text-align:center">
+                <span class="CoveoFieldValue" data-field="@snpriority" data-text-caption="Priority" style="padding-top:10px"></span><br/>
+                <span class="CoveoFieldValue" data-field="@snurgency" data-text-caption="Urgency" style="padding-top:10px"></span>
+            </div>
+        </div>
+        <div class="coveo-result-row" style="padding-top:10px">
+            <div class="coveo-result-cell" style="border:solid thin #CAD2D8;padding:10px">
+                <span class="CoveoFieldValue" data-field="@snhrservicename" data-text-caption="Category" style="padding-right:10px"></span>
+                <span class="CoveoFieldValue" data-field="@snassignedtoname" data-text-caption="Assigned to" style="padding-right:15px"></span>
+                <span class="CoveoFieldValue" data-field="@snclosedbyname" data-text-caption="Closed  by"></span>
+                <span class="CoveoFieldValue" data-field="@snclosedat" data-helper="dateTime" data-html-value="false" data-text-caption="on"></span>
+                <div class="coveo-result-cell" style="padding:5px"></div>
+                <table class="CoveoFieldTable" data-minimized-title="Details" data-minimized-by-default="true" data-expanded-title="Details">
+                    <tbody>
+                        <tr data-caption="Work Notes" data-field="@snworknotes" data-html-value="true" data-split-values="true" data-separator="Checklist item:"></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

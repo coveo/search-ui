@@ -1,5 +1,5 @@
 import { IAnalyticsEvent } from './AnalyticsEvent';
-import { IAnalyticsDynamicFacetMeta } from '../ui/Analytics/AnalyticsActionListMeta';
+import { IAnalyticsFacetState } from '../ui/Analytics/IAnalyticsFacetState';
 
 /**
  * Describes a Coveo Cloud usage analytics _search_ event.
@@ -86,5 +86,5 @@ export interface ISearchEvent extends IAnalyticsEvent {
   /**
    * A representation of the state of each dynamic facet in the search interface when the action that triggered the event was executed.
    */
-  facetState?: IAnalyticsDynamicFacetMeta[];
+  facetState?: IAnalyticsFacetState[];
 }

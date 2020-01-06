@@ -47,10 +47,10 @@ export interface IAnalyticsOptions {
  * You can use analytics data to evaluate how users are interacting with your search interface, improve relevance and
  * produce analytics dashboards within the Coveo Cloud Platform.
  *
- * See [Step 7 - Usage Analytics](https://developers.coveo.com/x/EYskAg) of the Getting Started with the JavaScript
+ * See [Step 7 - Usage Analytics](https://docs.coveo.com/en/347/) of the Getting Started with the JavaScript
  * Search Framework V1 tutorial for an introduction to usage analytics.
  *
- * See also [Sending Custom Analytics Events](https://developers.coveo.com/x/KoGfAQ) for more advanced use cases.
+ * See also [Logging Your Own Search Events](https://docs.coveo.com/en/2726/#logging-your-own-search-events) for more advanced use cases.
  */
 
 export class Analytics extends Component {
@@ -127,7 +127,7 @@ export class Analytics extends Component {
      * > If you wish to use the search hub dimension for security reasons (e.g., to provide different query suggestions
      * > for internal and external users), you should specify the search hub when generating the search token for the
      * > end user (in safe, server-side code), rather than setting it with this option (see
-     * > [Search Token Authentication](https://developers.coveo.com/x/XICE)).
+     * > [Search Token Authentication](https://docs.coveo.com/en/56/)).
      *
      * Default value is `default`.
      */
@@ -255,7 +255,7 @@ export class Analytics extends Component {
    *
    * > When logging custom `Search` events, you should use the `Coveo.logSearchEvent` top-level function rather than
    * > calling this method directly from the `Analytics` component instance. See
-   * > [Sending Custom Analytics Events](https://developers.coveo.com/x/KoGfAQ).
+   * > [Logging Your Own Search Events](https://docs.coveo.com/en/2726/#logging-your-own-search-events).
    *
    * @param actionCause The cause of the event.
    * @param meta The metadata you want to use to create custom dimensions. Metadata can contain as many key-value
@@ -284,7 +284,7 @@ export class Analytics extends Component {
    *
    * > When logging custom `SearchAsYouType` events, you should use the `Coveo.logSearchAsYouTypeEvent` top-level
    * > function rather than calling this method directly from the `Analytics` component instance. See
-   * > [Sending Custom Analytics Events](https://developers.coveo.com/x/KoGfAQ).
+   * > [Logging Your Own Search Events](https://docs.coveo.com/en/2726/#logging-your-own-search-events).
    *
    * @param actionCause The cause of the event.
    * @param meta The metadata which you want to use to create custom dimensions. Metadata can contain as many key-value
@@ -308,7 +308,7 @@ export class Analytics extends Component {
    * **Note:**
    * > When logging `Custom` events, you should use the `Coveo.logClickEvent` top-level function rather than calling
    * > this method directly from the `Analytics` component instance. See
-   * > [Sending Custom Analytics Events](https://developers.coveo.com/x/KoGfAQ).
+   * > [Logging Your Own Custom Events](https://docs.coveo.com/en/2726/#logging-your-own-custom-events).
    *
    * @param actionCause The cause of the event.
    * @param meta The metadata which you want to use to create custom dimensions. Metadata can contain as many key-value
@@ -335,7 +335,7 @@ export class Analytics extends Component {
    * **Note:**
    * > When logging custom `Click` events, you should use the `Coveo.logClickEvent` top-level function rather than
    * > calling this method directly from the `Analytics` component instance. See
-   * > [Sending Custom Analytics Events](https://developers.coveo.com/x/KoGfAQ).
+   * > [Logging Your Own Click Events](https://docs.coveo.com/en/2726/#logging-your-own-click-events).
    *
    * @param actionCause The cause of the event.
    * @param meta The metadata which you want to use to create custom dimensions. Metadata can contain as many key-value
@@ -369,6 +369,49 @@ export class Analytics extends Component {
    */
   public setOriginContext(originContext: string) {
     this.client.setOriginContext(originContext);
+  }
+
+  /**
+   * Re-enables the component if it was previously disabled.
+   */
+  public enable() {
+    if (!this.disabled) {
+      return this.logger.warn('The Analytics component is already enabled.');
+    }
+    super.enable();
+    this.initializeAnalyticsClient();
+    this.updateSearchInterfaceUAClient();
+    this.resolveQueryController().enableHistory();
+  }
+
+  /**
+   * Removes all session information stored in the browser (e.g., analytics visitor cookies, action history, etc.)
+   */
+  public clearLocalData() {
+    if (this.disabled || this.client instanceof NoopAnalyticsClient) {
+      return this.logger.warn('Could not clear local data while analytics are disabled.');
+    }
+    this.client.endpoint.clearCookies();
+    this.resolveQueryController().resetHistory();
+  }
+
+  /**
+   * Disables the component and clears local data by running [`clearLocalData`]{@link Analytics.clearLocalData}.
+   */
+  public disable() {
+    if (this.disabled) {
+      return this.logger.warn('The Analytics component is already disabled.');
+    }
+    this.clearLocalData();
+    this.client.cancelAllPendingEvents();
+    this.client = new NoopAnalyticsClient();
+    this.updateSearchInterfaceUAClient();
+    this.resolveQueryController().disableHistory();
+    super.disable();
+  }
+
+  private updateSearchInterfaceUAClient() {
+    this.searchInterface.usageAnalytics = this.client;
   }
 
   /**

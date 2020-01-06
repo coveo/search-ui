@@ -102,7 +102,7 @@ export interface IQueryResult {
    *
    * See the [`Recommendation`]{@link Recommendation} component.
    *
-   * See also [Coveo Machine Learning](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=177).
+   * See also [Coveo Machine Learning](https://docs.coveo.com/en/1727/).
    */
   isRecommendation: boolean;
 
@@ -112,7 +112,7 @@ export interface IQueryResult {
   isUserActionView?: boolean;
 
   /**
-   * Specifies whether the result is a Featured Result in the Coveo Query Pipeline (see [Managing Query Pipeline Featured Results](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=126)).
+   * Specifies whether the result is a Featured Result in the Coveo Query Pipeline (see [Adding and Managing Query Pipeline Featured Results](https://docs.coveo.com/en/1961/)).
    */
   isTopResult: boolean;
   termsToHighlight?: IHighlightTerm;

@@ -112,6 +112,9 @@ lazyFoldingForThread();
 import { lazyHiddenQuery } from './ui/HiddenQuery/LazyHiddenQuery';
 lazyHiddenQuery();
 
+import { lazyCategoryFacet } from './ui/CategoryFacet/LazyCategoryFacet';
+lazyCategoryFacet();
+
 import { lazyHierarchicalFacet } from './ui/HierarchicalFacet/LazyHierarchicalFacet';
 lazyHierarchicalFacet();
 
@@ -185,6 +188,9 @@ lazyResultList();
 
 import { lazyResultRating } from './ui/ResultRating/LazyResultRating';
 lazyResultRating();
+
+import { lazyStarRating } from './ui/StarRating/LazyStarRating';
+lazyStarRating();
 
 import { lazyResultsFiltersPreferences } from './ui/ResultsFiltersPreferences/LazyResultsFiltersPreferences';
 lazyResultsFiltersPreferences();
@@ -276,11 +282,14 @@ lazyTimespanFacet();
 import { lazyPromotedResultsBadge } from './ui/PromotedResultsBadge/LazyPromotedResultsBadge';
 lazyPromotedResultsBadge();
 
-import { lazyCategoryFacet } from './ui/CategoryFacet/LazyCategoryFacet';
-lazyCategoryFacet();
+import { lazyDynamicHierarchicalFacet } from './ui/DynamicHierarchicalFacet/LazyDynamicHierarchicalFacet';
+lazyDynamicHierarchicalFacet();
 
 import { lazyDynamicFacet } from './ui/DynamicFacet/LazyDynamicFacet';
 lazyDynamicFacet();
+
+import { lazyDynamicFacetRange } from './ui/DynamicFacet/LazyDynamicFacetRange';
+lazyDynamicFacetRange();
 
 import { lazyDynamicFacetManager } from './ui/DynamicFacetManager/LazyDynamicFacetManager';
 lazyDynamicFacetManager();
@@ -296,3 +305,6 @@ lazyImageFieldValue();
 
 import { lazyQuerySuggestPreview } from './ui/QuerySuggestPreview/LazyQuerySuggestPreview';
 lazyQuerySuggestPreview();
+
+import { lazyCommerceQuery } from './ui/CommerceQuery/LazyCommerceQuery';
+lazyCommerceQuery();

@@ -19,6 +19,9 @@
 .CoveoCategoryFacet {
   &.coveo-hidden {
     display: none;
+    &.coveo-with-placeholder {
+      display: block;
+    }
   }
 }
 

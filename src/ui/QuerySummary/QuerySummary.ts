@@ -7,12 +7,12 @@ import { Assert } from '../../misc/Assert';
 import { QueryStateModel } from '../../models/QueryStateModel';
 import { l } from '../../strings/Strings';
 import { $$ } from '../../utils/Dom';
+import { QuerySummaryUtils } from '../../utils/QuerySummaryUtils';
 import { analyticsActionCauseList, IAnalyticsNoMeta } from '../Analytics/AnalyticsActionListMeta';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { ComponentOptions } from '../Base/ComponentOptions';
 import { Initialization } from '../Base/Initialization';
-import { QuerySummaryUtils } from '../../utils/QuerySummaryUtils';
 
 export interface IQuerySummaryOptions {
   onlyDisplaySearchTips?: boolean;
@@ -74,8 +74,8 @@ export class QuerySummary extends Component {
      *
      * Default value is `No results for ${query}`.
      */
-    noResultsFoundMessage: ComponentOptions.buildStringOption({
-      defaultValue: l('noResultFor', '${query}'),
+    noResultsFoundMessage: ComponentOptions.buildLocalizedStringOption({
+      localizedString: () => l('noResultFor', '${query}'),
       depend: 'enableNoResultsFoundMessage',
       postProcessing: (value: string) => {
         return escape(value);

@@ -1,7 +1,11 @@
 import { IPopulateOmniboxSuggestionsEventArgs } from '../../src/events/OmniboxEvents';
 import { Suggestion } from '../../src/magicbox/SuggestionsManager';
-import { IFieldOption } from '../../src/ui/Base/ComponentOptions';
-import { FacetValueSuggestions, IFacetValueSuggestionsOptions } from '../../src/ui/FacetValueSuggestions/FacetValueSuggestions';
+import { IFieldOption } from '../../src/ui/Base/IComponentOptions';
+import {
+  FacetValueSuggestions,
+  IFacetValueSuggestionsOptions,
+  IQuerySuggestionKeyword
+} from '../../src/ui/FacetValueSuggestions/FacetValueSuggestions';
 import { IFacetValueSuggestionRow, IFacetValueSuggestionsProvider } from '../../src/ui/FacetValueSuggestions/FacetValueSuggestionsProvider';
 import { IOmniboxSuggestion, Omnibox } from '../../src/ui/Omnibox/Omnibox';
 import { QuerySuggestAddon } from '../../src/ui/Omnibox/QuerySuggestAddon';
@@ -13,9 +17,15 @@ export function FacetValueSuggestionsTest() {
     let test: Mock.IBasicComponentSetup<FacetValueSuggestions>;
     let facetValueSuggestionsProvider: IFacetValueSuggestionsProvider;
     let omniboxInstance: Omnibox;
-    const aKeyword = 'bloup';
+    const aKeyword: IQuerySuggestionKeyword = {
+      text: 'bloup',
+      html: `<span class='coveo-omnibox-hightlight'>bloup</span>`
+    };
     const someSuggestionValue = 'wowow';
-    const anOmniboxSuggestionKeyword = 'fish';
+    const anOmniboxSuggestionKeyword: IQuerySuggestionKeyword = {
+      text: 'fish',
+      html: `<span class='coveo-omnibox-hightlight'>fish</span>`
+    };
     const getSuggestionValue = (): IFacetValueSuggestionRow => {
       return {
         keyword: aKeyword,
@@ -27,10 +37,8 @@ export function FacetValueSuggestionsTest() {
         field: someField
       };
     };
-    const getOmniboxSuggestionValue = (value?: string): IOmniboxSuggestion => {
-      return {
-        text: value || anOmniboxSuggestionKeyword
-      };
+    const getOmniboxSuggestionValue = (keyword?: IQuerySuggestionKeyword): IOmniboxSuggestion => {
+      return keyword || anOmniboxSuggestionKeyword;
     };
     const someField: string = '@bloupbloup';
 
@@ -56,8 +64,8 @@ export function FacetValueSuggestionsTest() {
       return <Promise<Suggestion[]>>args.suggestions[0];
     };
 
-    const setUpKeywordInOmnibox = (keyword: string) => {
-      omniboxInstance.getText = () => keyword;
+    const setUpKeywordTextInOmnibox = (text: string) => {
+      omniboxInstance.getText = () => text;
     };
 
     beforeEach(() => {
@@ -71,7 +79,7 @@ export function FacetValueSuggestionsTest() {
       omniboxInstance.magicBox = {
         blur: jasmine.createSpy('blur')
       } as any;
-      setUpKeywordInOmnibox(aKeyword);
+      setUpKeywordTextInOmnibox(aKeyword.text);
       setUpOmniboxSuggestionsToReturn([getOmniboxSuggestionValue()]);
       test = Mock.basicComponentSetup<FacetValueSuggestions>(FacetValueSuggestions, <IFacetValueSuggestionsOptions>{
         field: <IFieldOption>someField
@@ -86,10 +94,9 @@ export function FacetValueSuggestionsTest() {
     it('does not populate suggestions when there are no suggestions', async done => {
       const resultingArgs = await triggerPopulateOmniboxEvent();
 
-      firstSuggestion(resultingArgs).then(result => {
-        expect(result.length).toBe(0);
-        done();
-      });
+      const result = await firstSuggestion(resultingArgs);
+      expect(result.length).toBe(0);
+      done();
     });
 
     describe('when a template helper is defined', () => {
@@ -104,35 +111,29 @@ export function FacetValueSuggestionsTest() {
       it('should call the template helper', async done => {
         const resultingArgs = await triggerPopulateOmniboxEvent();
 
-        firstSuggestion(resultingArgs).then(result => {
-          expect(suggestionTemplate).toHaveBeenCalledTimes(1);
-          expect(result[0].html).toBe(someSuggestionValue);
-          done();
-        });
+        const result = await firstSuggestion(resultingArgs);
+        expect(suggestionTemplate).toHaveBeenCalledTimes(1);
+        expect(result[0].html).toBe(someSuggestionValue);
+        done();
       });
 
       it('should fallback to the default template when the template helper throws', async done => {
         suggestionTemplate.and.throwError('my template helper is very bad');
         const resultingArgs = await triggerPopulateOmniboxEvent();
 
-        firstSuggestion(resultingArgs).then(result => {
-          expect(suggestionTemplate).toHaveBeenCalledTimes(1);
+        const result = await firstSuggestion(resultingArgs);
+        expect(suggestionTemplate).toHaveBeenCalledTimes(1);
 
-          expect(result[0].html).toBe(
-            l(
-              'KeywordInCategory',
-              `<span class='coveo-omnibox-hightlight2'>${aKeyword}</span>`,
-              `<span class='coveo-omnibox-hightlight'>${someSuggestionValue}</span>`
-            )
-          );
-          done();
-        });
+        expect(result[0].html).toBe(
+          l('KeywordInCategory', `${aKeyword.html}`, `<span class='coveo-omnibox-hightlight'>${someSuggestionValue}</span>`)
+        );
+        done();
       });
     });
 
     describe('when the field is a category field', () => {
       beforeEach(() => {
-        setUpKeywordInOmnibox(aKeyword);
+        setUpKeywordTextInOmnibox(aKeyword.text);
         setUpOmniboxSuggestionsToReturn([getOmniboxSuggestionValue()]);
         test.cmp.options.isCategoryField = true;
       });
@@ -147,13 +148,20 @@ export function FacetValueSuggestionsTest() {
         it('should modify the state by correctly splitting the field value', async done => {
           const resultingArgs = await triggerPopulateOmniboxEvent();
 
-          firstSuggestion(resultingArgs).then(result => {
-            result[0].onSelect();
-            expect(test.env.queryStateModel.set).toHaveBeenCalledWith(QueryStateModel.attributesEnum.fv, {
-              [someField]: ['a', 'b', 'c', 'd']
-            });
-            done();
+          const result = await firstSuggestion(resultingArgs);
+          result[0].onSelect();
+          expect(test.env.queryStateModel.set).toHaveBeenCalledWith(QueryStateModel.attributesEnum.fv, {
+            [someField]: ['a', 'b', 'c', 'd']
           });
+          done();
+        });
+
+        it('should set the advanced query to check every field value', async done => {
+          const resultingArgs = await triggerPopulateOmniboxEvent();
+
+          const result = await firstSuggestion(resultingArgs);
+          expect(result[0].advancedQuery).toEqual(`${someField}=="a" AND ${someField}=="b" AND ${someField}=="c" AND ${someField}=="d"`);
+          done();
         });
       });
 
@@ -168,13 +176,20 @@ export function FacetValueSuggestionsTest() {
         it('should modify the state by correctly splitting the field value', async done => {
           const resultingArgs = await triggerPopulateOmniboxEvent();
 
-          firstSuggestion(resultingArgs).then(result => {
-            result[0].onSelect();
-            expect(test.env.queryStateModel.set).toHaveBeenCalledWith(QueryStateModel.attributesEnum.fv, {
-              [someField]: ['a', 'b', 'c', 'd']
-            });
-            done();
+          const result = await firstSuggestion(resultingArgs);
+          result[0].onSelect();
+          expect(test.env.queryStateModel.set).toHaveBeenCalledWith(QueryStateModel.attributesEnum.fv, {
+            [someField]: ['a', 'b', 'c', 'd']
           });
+          done();
+        });
+
+        it('should set the advanced query to check every field value', async done => {
+          const resultingArgs = await triggerPopulateOmniboxEvent();
+
+          const result = await firstSuggestion(resultingArgs);
+          expect(result[0].advancedQuery).toEqual(`${someField}=="a" AND ${someField}=="b" AND ${someField}=="c" AND ${someField}=="d"`);
+          done();
         });
       });
     });
@@ -182,7 +197,7 @@ export function FacetValueSuggestionsTest() {
     describe('when no keywords are provided', () => {
       beforeEach(() => {
         setUpOmniboxSuggestionsToReturn([]);
-        setUpKeywordInOmnibox('');
+        setUpKeywordTextInOmnibox('');
         setUpSuggestionsFromProviderToReturn([getSuggestionValue()]);
 
         test.cmp.options.useValueFromSearchbox = true;
@@ -205,68 +220,69 @@ export function FacetValueSuggestionsTest() {
       it('populates suggestions', async done => {
         const resultingArgs = await triggerPopulateOmniboxEvent();
 
-        firstSuggestion(resultingArgs).then(result => {
-          expect(result.length).toBe(3);
-          done();
-        });
+        const result = await firstSuggestion(resultingArgs);
+        expect(result.length).toBe(3);
+        done();
       });
 
       it('should respect the numberOfSuggestions option when the value is less than what is returned', async done => {
         test.cmp.options.numberOfSuggestions = 2;
         const resultingArgs = await triggerPopulateOmniboxEvent();
-        firstSuggestion(resultingArgs).then(result => {
-          expect(result.length).toBe(2);
-          done();
-        });
+        const result = await firstSuggestion(resultingArgs);
+        expect(result.length).toBe(2);
+        done();
       });
 
       it('should respect the numberOfSuggestions option when the value is more than what is returned', async done => {
         test.cmp.options.numberOfSuggestions = 99;
         const resultingArgs = await triggerPopulateOmniboxEvent();
-        firstSuggestion(resultingArgs).then(result => {
-          expect(result.length).toBe(3);
-          done();
-        });
+        const result = await firstSuggestion(resultingArgs);
+        expect(result.length).toBe(3);
+        done();
       });
 
       it('should respect the numberOfSuggestions option when the value is 0', async done => {
         test.cmp.options.numberOfSuggestions = 0;
         const resultingArgs = await triggerPopulateOmniboxEvent();
-        firstSuggestion(resultingArgs).then(result => {
-          expect(result.length).toBe(0);
-          done();
-        });
+        const result = await firstSuggestion(resultingArgs);
+        expect(result.length).toBe(0);
+        done();
       });
 
       it('should respect the numberOfSuggestions option when the value is 1', async done => {
         test.cmp.options.numberOfSuggestions = 1;
         const resultingArgs = await triggerPopulateOmniboxEvent();
-        firstSuggestion(resultingArgs).then(result => {
-          expect(result.length).toBe(1);
-          done();
-        });
+        const result = await firstSuggestion(resultingArgs);
+        expect(result.length).toBe(1);
+        done();
       });
 
       it('changes the omnibox text to the suggestion keyword', async done => {
         const resultingArgs = await triggerPopulateOmniboxEvent();
 
-        firstSuggestion(resultingArgs).then(result => {
-          result[0].onSelect();
-          expect(omniboxInstance.setText).toHaveBeenCalledWith(aKeyword);
-          done();
-        });
+        const result = await firstSuggestion(resultingArgs);
+        result[0].onSelect();
+        expect(omniboxInstance.setText).toHaveBeenCalledWith(aKeyword.text);
+        done();
+      });
+
+      it('changes the advanced query of the suggestion', async done => {
+        const resultingArgs = await triggerPopulateOmniboxEvent();
+
+        const result = await firstSuggestion(resultingArgs);
+        expect(result[0].advancedQuery).toEqual(`${someField}=="${someSuggestionValue}"`);
+        done();
       });
 
       it('changes the fv state when clicking on a suggestion', async done => {
         const resultingArgs = await triggerPopulateOmniboxEvent();
 
-        firstSuggestion(resultingArgs).then(result => {
-          result[0].onSelect();
-          expect(test.env.queryStateModel.set).toHaveBeenCalledWith(QueryStateModel.attributesEnum.fv, {
-            [someField]: [someSuggestionValue]
-          });
-          done();
+        const result = await firstSuggestion(resultingArgs);
+        result[0].onSelect();
+        expect(test.env.queryStateModel.set).toHaveBeenCalledWith(QueryStateModel.attributesEnum.fv, {
+          [someField]: [someSuggestionValue]
         });
+        done();
       });
 
       it('merges the original fv state when clicking on a suggestion', async done => {
@@ -276,25 +292,23 @@ export function FacetValueSuggestionsTest() {
 
         const resultingArgs = await triggerPopulateOmniboxEvent();
 
-        firstSuggestion(resultingArgs).then(result => {
-          result[0].onSelect();
-          expect(test.env.queryStateModel.set).toHaveBeenCalledWith(QueryStateModel.attributesEnum.fv, {
-            wow: 'existingvalue',
-            [someField]: [someSuggestionValue]
-          });
-          done();
+        const result = await firstSuggestion(resultingArgs);
+        result[0].onSelect();
+        expect(test.env.queryStateModel.set).toHaveBeenCalledWith(QueryStateModel.attributesEnum.fv, {
+          wow: 'existingvalue',
+          [someField]: [someSuggestionValue]
         });
+        done();
       });
 
       it('executes a query and log usage analytics when clicking on a suggestion', async done => {
         const resultingArgs = await triggerPopulateOmniboxEvent();
 
-        firstSuggestion(resultingArgs).then(result => {
-          result[0].onSelect();
-          expect(test.env.usageAnalytics.logSearchEvent).toHaveBeenCalled();
-          expect(test.env.queryController.executeQuery).toHaveBeenCalled();
-          done();
-        });
+        const result = await firstSuggestion(resultingArgs);
+        result[0].onSelect();
+        expect(test.env.usageAnalytics.logSearchEvent).toHaveBeenCalled();
+        expect(test.env.queryController.executeQuery).toHaveBeenCalled();
+        done();
       });
     });
 
@@ -362,26 +376,49 @@ export function FacetValueSuggestionsTest() {
 
       const resultingArgs = await triggerPopulateOmniboxEvent();
 
-      firstSuggestion(resultingArgs).then(result => {
-        expect(result.length).toBe(1);
-        done();
-      });
+      const result = await firstSuggestion(resultingArgs);
+      expect(result.length).toBe(1);
+      done();
     });
 
-    describe('when only using the search box keywords and the keyword is empty', () => {
+    describe('when only using the search box keywords', () => {
       beforeEach(() => {
         test.cmp.options.useValueFromSearchbox = true;
         test.cmp.options.useQuerySuggestions = false;
-        setUpKeywordInOmnibox('');
       });
 
-      it('returns no suggestions', async done => {
+      it(`returns no suggestions`, async done => {
+        setUpKeywordTextInOmnibox(anOmniboxSuggestionKeyword.text);
         const resultingArgs = await triggerPopulateOmniboxEvent();
 
-        firstSuggestion(resultingArgs).then(result => {
-          expect(result.length).toBe(0);
-          done();
-        });
+        const result = await firstSuggestion(resultingArgs);
+        expect(result.length).toBe(0);
+        done();
+      });
+
+      it('still returns no suggestions if the omnibox is empty', async done => {
+        setUpKeywordTextInOmnibox('');
+        const resultingArgs = await triggerPopulateOmniboxEvent();
+
+        const result = await firstSuggestion(resultingArgs);
+        expect(result.length).toBe(0);
+        done();
+      });
+
+      it(`calls the provider's getSuggestions with the omnibox's text if it isn't empty`, async done => {
+        setUpKeywordTextInOmnibox(anOmniboxSuggestionKeyword.text);
+        await triggerPopulateOmniboxEvent();
+
+        expect(facetValueSuggestionsProvider.getSuggestions as jasmine.Spy).toHaveBeenCalledWith([anOmniboxSuggestionKeyword]);
+        done();
+      });
+
+      it(`doesn't call the provider's getSuggestions if the omnibox is empty`, async done => {
+        setUpKeywordTextInOmnibox('');
+        await triggerPopulateOmniboxEvent();
+
+        expect(facetValueSuggestionsProvider.getSuggestions as jasmine.Spy).not.toHaveBeenCalled();
+        done();
       });
     });
   });

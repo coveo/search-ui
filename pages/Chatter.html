@@ -20,7 +20,8 @@
 
 <body id="search" class='CoveoSearchInterface' data-enable-history="true">
   <div class="coveo-tab-section">
-    <a class="CoveoTab" data-id="Chatter" data-caption="Chatter" data-expression="@objecttype==(FeedItem,FeedComment)"></a>
+    <a class="CoveoTab" data-id="Chatter" data-caption="Chatter"
+      data-expression="@objecttype==(FeedItem,FeedComment)"></a>
   </div>
   <div class='coveo-search-section'>
     <div class="CoveoSearchbox" data-enable-omnibox="true"></div>
@@ -28,11 +29,12 @@
   </div>
   <div class="coveo-main-section">
     <div class="coveo-facet-column">
-      <div class="CoveoFacet" data-title="Posted on" data-tab="Chatter" data-field="@sfparentname"></div>
-      <div class="CoveoFacet" data-title="Posted by" data-tab="Chatter" data-field="@sfcreatedbyname"></div>
-      <div class="CoveoFacet" data-title="Topic" data-tab="Chatter" data-field="@coveochatterfeedtopics"></div>
-      <div class="CoveoFacet" data-title="Liked by" data-tab="Chatter" data-field="@sflikedby"></div>
-      <div class="CoveoTimespanFacet" data-tab="Chatter"></div>
+      <div class="CoveoDynamicFacetManager">
+        <div class="CoveoDynamicFacet" data-title="Posted on" data-tab="Chatter" data-field="@sfparentname"></div>
+        <div class="CoveoDynamicFacet" data-title="PostedBy" data-tab="Chatter" data-field="@sfcreatedbyname"></div>
+        <div class="CoveoDynamicFacet" data-title="Topic" data-tab="Chatter" data-field="@coveochatterfeedtopics"></div>
+        <div class="CoveoDynamicFacet" data-title="Liked By" data-tab="Chatter" data-field="@sflikedby"></div>
+      </div>
     </div>
     <div class="coveo-results-column">
       <div class="CoveoShareQuery"></div>
@@ -58,8 +60,10 @@
       </div>
       <div class="CoveoHiddenQuery"></div>
       <div class="CoveoErrorReport"></div>
-      <div class="CoveoResultList" data-layout="list" data-wait-animation="fade" data-auto-select-fields-to-include="true"></div>
-      <div class="CoveoResultList" data-layout="card" data-wait-animation="fade" data-auto-select-fields-to-include="true"></div>
+      <div class="CoveoResultList" data-layout="list" data-wait-animation="fade"
+        data-auto-select-fields-to-include="true"></div>
+      <div class="CoveoResultList" data-layout="card" data-wait-animation="fade"
+        data-auto-select-fields-to-include="true"></div>
       <div class="CoveoPager"></div>
       <div class="CoveoLogo"></div>
       <div class="CoveoResultsPerPage"></div>

@@ -93,6 +93,11 @@ export class AnalyticsEndpoint {
     return this.getFromService<string[]>(url, params);
   }
 
+  public clearCookies() {
+    Cookie.erase('visitorId');
+    Cookie.erase('visitId');
+  }
+
   private async sendToService(data: Record<string, any>, path: string, paramName: string): Promise<any> {
     // We use pendingRequest because we don't want to have 2 request to analytics at the same time.
     // Otherwise the cookie visitId won't be set correctly.

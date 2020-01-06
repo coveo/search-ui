@@ -139,17 +139,15 @@ export class DidYouMean extends Component {
     this.logger.trace('Received query results from new query', results);
 
     if (Utils.isNonEmptyArray(results.queryCorrections)) {
-      let correctedSentence = this.buildCorrectedSentence(results.queryCorrections[0]);
+      const correctedSentence = this.buildCorrectedSentence(results.queryCorrections[0]);
       this.correctedTerm = results.queryCorrections[0].correctedQuery;
-      let didYouMean = $$('div', { className: 'coveo-did-you-mean-suggestion' }, l('didYouMean', '')).el;
-      this.element.appendChild(didYouMean);
 
-      let searchTerm = $$('a', {}, correctedSentence).el;
-      didYouMean.appendChild(searchTerm);
+      const correctedWordEl = $$('a', {}, correctedSentence).el;
+      const didYouMean = $$('div', { className: 'coveo-did-you-mean-suggestion' }, l('didYouMean', correctedWordEl.outerHTML));
+      this.element.appendChild(didYouMean.el);
 
-      $$(searchTerm).on('click', () => {
-        this.doQueryWithCorrectedTerm();
-      });
+      const appendedCorrectedWordEl = didYouMean.find(correctedWordEl.tagName);
+      $$(appendedCorrectedWordEl).on('click', () => this.doQueryWithCorrectedTerm());
 
       $$(this.element).show();
     }

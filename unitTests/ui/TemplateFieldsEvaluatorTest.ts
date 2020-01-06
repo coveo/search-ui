@@ -19,6 +19,11 @@ export function TemplateFieldsEvaluatorTest() {
       fieldsToMatch = null;
     });
 
+    it('should evaluate an undefined array', () => {
+      fieldsToMatch = undefined;
+      expect(TemplateFieldsEvaluator.evaluateFieldsToMatch(fieldsToMatch, result)).toBe(true);
+    });
+
     it('should be able to evaluate fields to match', () => {
       fieldsToMatch = [{ field, values: [fieldValue, 'baz'] }];
       expect(TemplateFieldsEvaluator.evaluateFieldsToMatch(fieldsToMatch, result)).toBe(true);

@@ -20,7 +20,8 @@
 
 <body id="search" class='CoveoSearchInterface' data-enable-history="true">
   <div class="coveo-tab-section">
-    <a class="CoveoTab" data-id="Dropbox" data-caption="Dropbox" data-expression="@connectortype==DropboxCrawler AND @objecttype==File"></a>
+    <a class="CoveoTab" data-id="Dropbox" data-caption="Dropbox"
+      data-expression="@connectortype==DropboxCrawler AND @objecttype==File"></a>
   </div>
   <div class='coveo-search-section'>
     <div class="CoveoSearchbox" data-enable-omnibox="true"></div>
@@ -28,10 +29,11 @@
   </div>
   <div class="coveo-main-section">
     <div class="coveo-facet-column">
-      <div class="CoveoFacet" data-title="File Type" data-field="@filetype" data-tab="Dropbox"></div>
-      <div class="CoveoFacet" data-title="Author" data-field="@author" data-tab="Dropbox"></div>
-      <div class="CoveoFacet" data-title="Language" data-field="@language" data-tab="Dropbox"></div>
-      <div class="CoveoTimespanFacet" data-tab="Dropbox"></div>
+      <div class="CoveoDynamicFacetManager">
+        <div class="CoveoDynamicFacet" data-title="FileType" data-field="@filetype" data-tab="Dropbox"></div>
+        <div class="CoveoDynamicFacet" data-title="Author" data-field="@author" data-tab="Dropbox"></div>
+        <div class="CoveoDynamicFacet" data-title="Language" data-field="@language" data-tab="Dropbox"></div>
+      </div>
     </div>
     <div class="coveo-results-column">
       <div class="CoveoShareQuery"></div>
@@ -57,8 +59,10 @@
       </div>
       <div class="CoveoHiddenQuery"></div>
       <div class="CoveoErrorReport"></div>
-      <div class="CoveoResultList" data-layout="list" data-wait-animation="fade" data-auto-select-fields-to-include="true"></div>
-      <div class="CoveoResultList" data-layout="card" data-wait-animation="fade" data-auto-select-fields-to-include="true"></div>
+      <div class="CoveoResultList" data-layout="list" data-wait-animation="fade"
+        data-auto-select-fields-to-include="true"></div>
+      <div class="CoveoResultList" data-layout="card" data-wait-animation="fade"
+        data-auto-select-fields-to-include="true"></div>
       <div class="CoveoPager"></div>
       <div class="CoveoLogo"></div>
       <div class="CoveoResultsPerPage"></div>

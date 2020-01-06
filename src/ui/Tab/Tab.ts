@@ -1,19 +1,20 @@
 import 'styling/_Tab';
 import { each, indexOf, map } from 'underscore';
-import { exportGlobally } from '../../GlobalExports';
 import { InitializationEvents } from '../../events/InitializationEvents';
 import { IBuildingQueryEventArgs, QueryEvents } from '../../events/QueryEvents';
+import { exportGlobally } from '../../GlobalExports';
 import { Assert } from '../../misc/Assert';
 import { IAttributeChangedEventArg, MODEL_EVENTS } from '../../models/Model';
-import { QUERY_STATE_ATTRIBUTES, QueryStateModel } from '../../models/QueryStateModel';
+import { QueryStateModel, QUERY_STATE_ATTRIBUTES } from '../../models/QueryStateModel';
 import { SearchEndpoint } from '../../rest/SearchEndpoint';
 import { AccessibleButton } from '../../utils/AccessibleButton';
 import { $$ } from '../../utils/Dom';
 import { Utils } from '../../utils/Utils';
-import { IAnalyticsInterfaceChange, analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
+import { analyticsActionCauseList, IAnalyticsInterfaceChange } from '../Analytics/AnalyticsActionListMeta';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
-import { ComponentOptions, IQueryExpression } from '../Base/ComponentOptions';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { IQueryExpression } from '../Base/IComponentOptions';
 import { Initialization } from '../Base/Initialization';
 import { ResponsiveTabs } from '../ResponsiveComponents/ResponsiveTabs';
 import { ValidLayout } from '../ResultLayoutSelector/ValidLayout';
@@ -134,7 +135,7 @@ export class Tab extends Component {
      *
      * If not specified, it will default to 'list'.
      *
-     * See also [Result Layouts](https://developers.coveo.com/x/yQUvAg).
+     * See also [Result Layouts](https://docs.coveo.com/en/360/).
      *
      * Default value is `undefined` and the component selects the first available layout.
      */
@@ -174,7 +175,7 @@ export class Tab extends Component {
      * Specifies the name of the query pipeline to use for the queries when the Tab is selected.
      *
      * You can specify a value for this option if your index is in a Coveo Cloud organization in which pipelines have
-     * been created (see [Managing Query Pipelines](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=128)).
+     * been created (see [Adding and Managing Query Pipelines](https://docs.coveo.com/en/1791/)).
      *
      * Default value is `undefined`, which means that pipeline selection conditions defined in the Coveo Cloud
      * organization apply.
@@ -198,7 +199,7 @@ export class Tab extends Component {
      * > Tab (see {@link SearchInterface.options.maximumAge}).
      *
      * Default value is `undefined` and the Coveo Search API determines the maximum cache age. This is typically
-     * equivalent to 30 minutes (see [Query Parameters - maximumAge](https://developers.coveo.com/display/SearchREST/Query+Parameters#QueryParameters-maximumAge)).
+     * equivalent to 30 minutes (see [maximumAge](https://docs.coveo.com/en/1461/#RestQueryParameters-maximumAge)).
      */
     maximumAge: ComponentOptions.buildNumberOption(),
 

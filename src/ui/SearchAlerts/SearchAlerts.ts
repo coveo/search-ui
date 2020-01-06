@@ -1,38 +1,39 @@
-import { Component } from '../Base/Component';
-import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
-import { IComponentBindings } from '../Base/ComponentBindings';
-import { SearchAlertsMessage } from './SearchAlertsMessage';
-import { SettingsEvents } from '../../events/SettingsEvents';
+import * as _ from 'underscore';
 import { QueryEvents } from '../../events/QueryEvents';
+import { ISearchAlertsEventArgs, ISearchAlertsFailEventArgs, SearchAlertsEvents } from '../../events/SearchAlertEvents';
+import { SettingsEvents } from '../../events/SettingsEvents';
+import { ModalBox as ModalBoxModule } from '../../ExternalModulesShim';
+import { exportGlobally } from '../../GlobalExports';
 import { Assert } from '../../misc/Assert';
-import { IQuery } from '../../rest/Query';
 import { AjaxError } from '../../rest/AjaxError';
-import { ISettingsPopulateMenuArgs } from '../Settings/Settings';
-import { SearchAlertsEvents, ISearchAlertsEventArgs, ISearchAlertsFailEventArgs } from '../../events/SearchAlertEvents';
+import { IQuery } from '../../rest/Query';
 import {
   ISubscription,
   ISubscriptionItemRequest,
-  SUBSCRIPTION_TYPE,
+  ISubscriptionQueryRequest,
   ISubscriptionRequest,
-  ISubscriptionQueryRequest
+  SUBSCRIPTION_TYPE
 } from '../../rest/Subscription';
-import { Initialization } from '../Base/Initialization';
 import { l } from '../../strings/Strings';
 import { $$, Dom } from '../../utils/Dom';
-import { ModalBox as ModalBoxModule } from '../../ExternalModulesShim';
+import { SVGIcons } from '../../utils/SVGIcons';
 import {
   analyticsActionCauseList,
-  IAnalyticsSearchAlertsUpdateMeta,
+  IAnalyticsActionCause,
   IAnalyticsSearchAlertsMeta,
-  IAnalyticsActionCause
+  IAnalyticsSearchAlertsUpdateMeta
 } from '../Analytics/AnalyticsActionListMeta';
-import * as _ from 'underscore';
-import { exportGlobally } from '../../GlobalExports';
-import ModalBox = Coveo.ModalBox.ModalBox;
-import { Dropdown } from '../FormWidgets/Dropdown';
-import { SVGIcons } from '../../utils/SVGIcons';
+import { Component } from '../Base/Component';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { IFieldOption } from '../Base/IComponentOptions';
+import { Initialization } from '../Base/Initialization';
 import { get } from '../Base/RegisteredNamedMethods';
+import { Dropdown } from '../FormWidgets/Dropdown';
 import { SearchInterface } from '../SearchInterface/SearchInterface';
+import { ISettingsPopulateMenuArgs } from '../Settings/Settings';
+import { SearchAlertsMessage } from './SearchAlertsMessage';
+import ModalBox = Coveo.ModalBox.ModalBox;
 
 export interface ISearchAlertsOptions {
   enableManagePanel?: boolean;
@@ -48,7 +49,7 @@ export interface ISearchAlertsOptions {
  *
  * **Note:**
  * > It is necessary to meet certain requirements to be able to use this component (see
- * > [Deploying Search Alerts on a Coveo JS Search Page](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=248)).
+ * > [Deploying Search Alerts on a Coveo JS Search Page](https://docs.coveo.com/en/1932/)).
  *
  * See also the {@link FollowItem} component.
  */
@@ -236,7 +237,7 @@ export class SearchAlerts extends Component {
    * Opens the **Manage Alerts** panel. This panel allows the end user to stop following queries or items. It also
    * allows the end user to specify email notification frequency for each followed query or item.
    */
-  public openPanel(): Promise<ISubscription> {
+  public async openPanel(): Promise<void> {
     const title = $$('div');
 
     const titleInfo = $$(
@@ -322,26 +323,21 @@ export class SearchAlerts extends Component {
     table.append(tableBodySubscriptions.el);
     let sizeModForModalBox = 'big';
 
-    return this.queryController
-      .getEndpoint()
-      .listSubscriptions()
-      .then((subscriptions: ISubscription[]) => {
-        _.each(subscriptions, subscription => {
-          this.addSearchAlert(subscription, container);
-        });
-      })
-      .catch(() => {
-        sizeModForModalBox = 'small';
-        container.empty();
-        container.append(this.getFailureMessage().el);
-      })
-      .finally(() => {
-        this.modal = this.ModalBox.open(container.el, {
-          title: title.el.outerHTML,
-          className: 'coveo-subscriptions-panel',
-          sizeMod: sizeModForModalBox
-        });
-      });
+    try {
+      const subscriptions = await this.queryController.getEndpoint().listSubscriptions();
+      _.each(subscriptions, subscription => this.addSearchAlert(subscription, container));
+    } catch (e) {
+      this.logger.error('Error retrieving subscriptions', e);
+      sizeModForModalBox = 'small';
+      container.empty();
+      container.append(this.getFailureMessage().el);
+    }
+
+    this.modal = this.ModalBox.open(container.el, {
+      title: title.el.outerHTML,
+      className: 'coveo-subscriptions-panel',
+      sizeMod: sizeModForModalBox
+    });
   }
 
   private getFailureMessage(): Dom {

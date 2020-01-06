@@ -1,21 +1,26 @@
-import { ISuggestionForOmniboxOptions, SuggestionForOmnibox, ISuggestionForOmniboxTemplate } from '../Misc/SuggestionForOmnibox';
-import { Component } from '../Base/Component';
-import { ComponentOptions, IFieldOption, IQueryExpression } from '../Base/ComponentOptions';
-import { IComponentBindings } from '../Base/ComponentBindings';
-import { Assert } from '../../misc/Assert';
-import { Utils } from '../../utils/Utils';
-import { OmniboxEvents, IPopulateOmniboxEventArgs } from '../../events/OmniboxEvents';
-import { IIndexFieldValue } from '../../rest/FieldValue';
-import { IListFieldValuesRequest } from '../../rest/ListFieldValuesRequest';
-import { QueryStateModel } from '../../models/QueryStateModel';
-import { Initialization } from '../Base/Initialization';
-import { analyticsActionCauseList, IAnalyticsNoMeta } from '../Analytics/AnalyticsActionListMeta';
-import { $$ } from '../../utils/Dom';
-import { ISuggestionForOmniboxOptionsOnSelect } from '../Misc/SuggestionForOmnibox';
-import { IStringMap } from '../../rest/GenericParam';
-import * as _ from 'underscore';
-import { exportGlobally } from '../../GlobalExports';
 import 'styling/_FieldSuggestions';
+import * as _ from 'underscore';
+import { IPopulateOmniboxEventArgs, OmniboxEvents } from '../../events/OmniboxEvents';
+import { exportGlobally } from '../../GlobalExports';
+import { Assert } from '../../misc/Assert';
+import { QueryStateModel } from '../../models/QueryStateModel';
+import { IIndexFieldValue } from '../../rest/FieldValue';
+import { IStringMap } from '../../rest/GenericParam';
+import { IListFieldValuesRequest } from '../../rest/ListFieldValuesRequest';
+import { $$ } from '../../utils/Dom';
+import { Utils } from '../../utils/Utils';
+import { analyticsActionCauseList, IAnalyticsNoMeta } from '../Analytics/AnalyticsActionListMeta';
+import { Component } from '../Base/Component';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { IFieldOption, IQueryExpression } from '../Base/IComponentOptions';
+import { Initialization } from '../Base/Initialization';
+import {
+  ISuggestionForOmniboxOptions,
+  ISuggestionForOmniboxOptionsOnSelect,
+  ISuggestionForOmniboxTemplate,
+  SuggestionForOmnibox
+} from '../Misc/SuggestionForOmnibox';
 
 export interface IFieldSuggestionsOptions extends ISuggestionForOmniboxOptions {
   field?: IFieldOption;
@@ -27,6 +32,9 @@ export interface IFieldSuggestionsOptions extends ISuggestionForOmniboxOptions {
  * use this component to provide auto-complete suggestions while the end user is typing the title of an item.
  *
  * The query suggestions provided by this component appear in the [`Omnibox`]{@link Omnibox} component.
+ *
+ * **Note:** Consider [providing Coveo ML query suggestions](https://docs.coveo.com/en/340/#providing-coveo-machine-learning-query-suggestions)
+ * rather than field suggestions, as the former yields better performance and relevance.
  */
 export class FieldSuggestions extends Component {
   static ID = 'FieldSuggestions';
@@ -50,7 +58,7 @@ export class FieldSuggestions extends Component {
 
     /**
      * Specifies a query override to apply when retrieving suggestions. You can use any valid query expression (see
-     * [Coveo Query Syntax Reference](http://www.coveo.com/go?dest=adminhelp70&lcid=9&context=10005)).
+     * [Coveo Query Syntax Reference](https://www.coveo.com/go?dest=adminhelp70&lcid=9&context=10005)).
      *
      * Default value is the empty string, and the component applies no query override.
      */
@@ -90,9 +98,9 @@ export class FieldSuggestions extends Component {
      * **Note:**
      * > You cannot set this option directly in the component markup as an HTML attribute. You must either set it in the
      * > [`init`]{@link init} call of your search interface (see
-     * > [Components - Passing Component Options in the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsintheinitCall)),
+     * > [Passing Component Options in the init Call](https://docs.coveo.com/en/346/#passing-component-options-in-the-init-call)),
      * > or before the `init` call, using the `options` top-level function (see
-     * > [Components - Passing Component Options Before the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsBeforetheinitCall)).
+     * > [Passing Component Options Before the init Call](https://docs.coveo.com/en/346/#passing-component-options-before-the-init-call)).
      *
      * **Example:**
      *
@@ -289,7 +297,6 @@ export class FieldSuggestions extends Component {
   }
 
   private onRowSelection(value: string, args: IPopulateOmniboxEventArgs) {
-    args.clear();
     args.closeOmnibox();
     this.queryStateModel.set(QueryStateModel.attributesEnum.q, value);
     this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.omniboxField, {});

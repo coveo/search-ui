@@ -1,0 +1,48 @@
+$active-text-opacity: 0.6;
+
+@mixin facetValues() {
+  padding: 10px 0;
+  margin: 0;
+  white-space: normal;
+  list-style: none;
+}
+
+@mixin commonShowMoreLess() {
+  @include linkButton();
+
+  width: 100%;
+  text-align: left;
+  margin-top: 2px;
+  padding: 3px 0;
+  font-size: $font-size-regular;
+
+  &::before {
+    width: 15px;
+    display: inline-block;
+
+    // IE11 hack: need to define "underline" before setting it to "none"
+    text-decoration: underline;
+  }
+
+  &::before,
+  &:hover::before {
+    text-decoration: none;
+  }
+}
+
+@mixin facetShowMore() {
+  @include commonShowMoreLess();
+
+  &::before {
+    content: '+';
+  }
+}
+
+@mixin facetShowLess() {
+  @include commonShowMoreLess();
+
+  color: $color-dark-grey;
+  &::before {
+    content: '-';
+  }
+}

@@ -1,6 +1,7 @@
 import { FacetSearchController } from '../../src/controllers/FacetSearchController';
 import { DynamicFacetTestUtils } from '../ui/DynamicFacet/DynamicFacetTestUtils';
-import { DynamicFacet, IDynamicFacetOptions } from '../../src/ui/DynamicFacet/DynamicFacet';
+import { DynamicFacet } from '../../src/ui/DynamicFacet/DynamicFacet';
+import { IDynamicFacetOptions } from '../../src/ui/DynamicFacet/IDynamicFacet';
 import { IFacetSearchRequest } from '../../src/rest/Facet/FacetSearchRequest';
 import { FileTypes } from '../../src/ui/Misc/FileTypes';
 
@@ -54,6 +55,30 @@ export function FacetSearchControllerTest() {
     it('should add types captions if the field is @objecttype', () => {
       initializeComponents({ field: '@objecttype' });
       testHasTypesCaptions();
+    });
+
+    it('should add months captions if the field is @month', () => {
+      initializeComponents({ field: '@month' });
+      facetSearchController.search('q');
+
+      const expectedPartialRequest = {
+        captions: {
+          '01': 'January',
+          '02': 'February',
+          '03': 'March',
+          '04': 'April',
+          '05': 'May',
+          '06': 'June',
+          '07': 'July',
+          '08': 'August',
+          '09': 'September',
+          '10': 'October',
+          '11': 'November',
+          '12': 'December'
+        }
+      };
+
+      expect(facet.queryController.getEndpoint().facetSearch).toHaveBeenCalledWith(jasmine.objectContaining(expectedPartialRequest));
     });
 
     it(`when facet option "optionalLeadingWildcard" is false

@@ -1,23 +1,25 @@
 import { $$ } from '../../../../src/utils/Dom';
-import { DynamicFacetHeader } from '../../../../src/ui/DynamicFacet/DynamicFacetHeader/DynamicFacetHeader';
-import { DynamicFacet, IDynamicFacetOptions } from '../../../../src/ui/DynamicFacet/DynamicFacet';
-import { DynamicFacetTestUtils } from '../DynamicFacetTestUtils';
-import { analyticsActionCauseList } from '../../../../src/ui/Analytics/AnalyticsActionListMeta';
+import { DynamicFacetHeader, IDynamicFacetHeaderOptions } from '../../../../src/ui/DynamicFacet/DynamicFacetHeader/DynamicFacetHeader';
 
 export function DynamicFacetHeaderTest() {
   describe('DynamicFacetHeader', () => {
     let dynamicFacetHeader: DynamicFacetHeader;
-    let facet: DynamicFacet;
-    let baseOptions: IDynamicFacetOptions;
+    let options: IDynamicFacetHeaderOptions;
 
     beforeEach(() => {
-      baseOptions = { title: 'hello' };
+      options = {
+        title: 'hello',
+        clear: jasmine.createSpy('clear'),
+        enableCollapse: true,
+        toggleCollapse: jasmine.createSpy('toggleCollapse'),
+        collapse: jasmine.createSpy('collapse'),
+        expand: jasmine.createSpy('clear')
+      };
       initializeComponent();
     });
 
     function initializeComponent() {
-      facet = DynamicFacetTestUtils.createFakeFacet(baseOptions);
-      dynamicFacetHeader = new DynamicFacetHeader(facet);
+      dynamicFacetHeader = new DynamicFacetHeader(options);
     }
 
     function collapseElement() {
@@ -38,7 +40,7 @@ export function DynamicFacetHeaderTest() {
 
     it('should create an accessible title', () => {
       expect($$(titleElement()).getAttribute('aria-label')).toBeTruthy();
-      expect($$(titleElement()).find('span').innerHTML).toBe(baseOptions.title);
+      expect($$(titleElement()).find('span').innerHTML).toBe(options.title);
     });
 
     it('should create a hidden waitAnimationElement', () => {
@@ -70,39 +72,16 @@ export function DynamicFacetHeaderTest() {
     });
 
     it(`when clicking on the clear button
-      it should reset the facet & trigger a new query`, () => {
+      it should call the clear option`, () => {
       dynamicFacetHeader.toggleClear(true);
       $$(clearElement()).trigger('click');
 
-      expect(facet.reset).toHaveBeenCalled();
-      expect(facet.triggerNewQuery).toHaveBeenCalled();
-    });
-
-    it(`when clicking on the clear button
-      it should log an analytics event`, () => {
-      dynamicFacetHeader.toggleClear(true);
-      facet.triggerNewQuery = beforeExecuteQuery => {
-        beforeExecuteQuery();
-      };
-
-      $$(clearElement()).trigger('click');
-      expect(facet.logAnalyticsEvent).toHaveBeenCalledWith(analyticsActionCauseList.dynamicFacetClearAll, facet.basicAnalyticsFacetState);
-    });
-
-    it(`when clicking on the clear button
-      should perform the correct actions on the facet`, () => {
-      dynamicFacetHeader.toggleClear(true);
-      $$(clearElement()).trigger('click');
-
-      expect(facet.reset).toHaveBeenCalledTimes(1);
-      expect(facet.enableFreezeFacetOrderFlag).toHaveBeenCalledTimes(1);
-      expect(facet.triggerNewQuery).toHaveBeenCalledTimes(1);
-      expect(facet.scrollToTop).toHaveBeenCalledTimes(1);
+      expect(options.clear).toHaveBeenCalled();
     });
 
     describe('when passing the option enableCollapse as false', () => {
       beforeEach(() => {
-        baseOptions.enableCollapse = false;
+        options.enableCollapse = false;
         initializeComponent();
       });
 
@@ -118,7 +97,7 @@ export function DynamicFacetHeaderTest() {
 
     describe('when passing the option enableCollapse as true', () => {
       beforeEach(() => {
-        baseOptions.enableCollapse = true;
+        options.enableCollapse = true;
         initializeComponent();
       });
 
@@ -135,7 +114,7 @@ export function DynamicFacetHeaderTest() {
         should call the toggleCollapse method of the DynamicFacet`, () => {
         $$(titleElement()).trigger('click');
 
-        expect(facet.toggleCollapse).toHaveBeenCalledTimes(1);
+        expect(options.toggleCollapse).toHaveBeenCalledTimes(1);
       });
     });
   });

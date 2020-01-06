@@ -62,7 +62,6 @@ export function RecommendationAnalyticsClientTest() {
     });
 
     it('should log a second click on the main interface', function() {
-      spyOn(mainSearchInterface.cmp.usageAnalytics, 'logClickEvent');
       recommendation.cmp.mainQuerySearchUID = '123';
       recommendation.cmp.mainQueryPipeline = 'main pipeline';
       client.logClickEvent(analyticsActionCauseList.documentOpen, {}, FakeResults.createFakeResult('foo'), clickElement);
@@ -78,7 +77,6 @@ export function RecommendationAnalyticsClientTest() {
     });
 
     it('should not log a second click on the main interface if there were no main interface query', function() {
-      spyOn(mainSearchInterface.cmp.usageAnalytics, 'logClickEvent');
       client.logClickEvent(analyticsActionCauseList.documentOpen, {}, FakeResults.createFakeResult('foo'), clickElement);
       expect(mainSearchInterface.cmp.usageAnalytics.logClickEvent).not.toHaveBeenCalledWith(
         analyticsActionCauseList.recommendationOpen,

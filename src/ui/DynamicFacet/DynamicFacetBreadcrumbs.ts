@@ -1,15 +1,14 @@
 import 'styling/DynamicFacet/_DynamicFacetBreadcrumbs';
 import { $$ } from '../../utils/Dom';
 import { l } from '../../strings/Strings';
-import { DynamicFacet } from './DynamicFacet';
 import { SVGIcons } from '../../utils/SVGIcons';
-import { DynamicFacetValue } from './DynamicFacetValues/DynamicFacetValue';
 import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
+import { IDynamicFacet, IDynamicFacetValue } from './IDynamicFacet';
 
 export class DynamicFacetBreadcrumbs {
   public element: HTMLElement;
 
-  constructor(private facet: DynamicFacet) {
+  constructor(private facet: IDynamicFacet) {
     this.create();
   }
 
@@ -17,7 +16,7 @@ export class DynamicFacetBreadcrumbs {
     this.element = $$('div', { className: 'coveo-dynamic-facet-breadcrumb coveo-breadcrumb-item' }).el;
     this.createAndAppendTitle();
 
-    const activeFacetValues = this.facet.values.activeFacetValues;
+    const activeFacetValues = this.facet.values.activeValues;
     const breadcrumbFacetValues = activeFacetValues.slice(0, this.facet.options.numberOfValuesInBreadcrumb);
     const collapsedFacetValues = activeFacetValues.slice(this.facet.options.numberOfValuesInBreadcrumb);
 
@@ -33,11 +32,11 @@ export class DynamicFacetBreadcrumbs {
     this.element.appendChild(titleElement);
   }
 
-  private createAndAppendBreadcrumbValues(facetValues: DynamicFacetValue[]) {
+  private createAndAppendBreadcrumbValues(facetValues: IDynamicFacetValue[]) {
     facetValues.forEach(facetValue => this.createAndAppendBreadcrumbValue(facetValue));
   }
 
-  private createAndAppendBreadcrumbValue(facetValue: DynamicFacetValue) {
+  private createAndAppendBreadcrumbValue(facetValue: IDynamicFacetValue) {
     const valueElement = $$(
       'button',
       {
@@ -54,16 +53,16 @@ export class DynamicFacetBreadcrumbs {
     this.element.appendChild(valueElement);
   }
 
-  private valueSelectAction(facetValue: DynamicFacetValue) {
+  private valueSelectAction(facetValue: IDynamicFacetValue) {
     this.facet.deselectValue(facetValue.value);
-    this.facet.triggerNewQuery(() => this.logActionToAnalytics(facetValue));
+    this.facet.triggerNewQuery(() => this.logActionToAnalytics());
   }
 
-  private logActionToAnalytics(facetValue: DynamicFacetValue) {
-    this.facet.logAnalyticsEvent(analyticsActionCauseList.breadcrumbDynamicFacet, facetValue.analyticsMeta);
+  private logActionToAnalytics() {
+    this.facet.logAnalyticsEvent(analyticsActionCauseList.breadcrumbFacet, this.facet.basicAnalyticsFacetMeta);
   }
 
-  private createAndAppendCollapsedBreadcrumbs(facetValues: DynamicFacetValue[]) {
+  private createAndAppendCollapsedBreadcrumbs(facetValues: IDynamicFacetValue[]) {
     const label = l('NMore', `${facetValues.length}`);
     const title = facetValues.map(({ value }) => value).join('\n');
     const collapsedElement = $$(

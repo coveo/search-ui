@@ -91,7 +91,7 @@ export interface IAnalyticsEvent {
    *
    * Must be a valid [ISO-639-1 code](https://en.wikipedia.org/wiki/ISO_639-1).
    *
-   * **Note:** By default, the framework sets this field according to the currently loaded culture file (see [Changing the Language of Your Search Interface]({{ site.baseurl }}/421/)).
+   * **Note:** By default, the framework sets this field according to the currently loaded culture file (see [Changing the Language of Your Search Interface](https://docs.coveo.com/en/421/)).
    *
    * **Example:** `en`
    */
@@ -120,7 +120,7 @@ export interface IAnalyticsEvent {
   /**
    * Additional metadata to send along with the event.
    *
-   * **Note:** This field may include custom user context information (see [Sending Custom Context Information]({{ site.baseurl }}/399/)).
+   * **Note:** This field may include custom user context information (see [Sending Custom Context Information](https://docs.coveo.com/en/399/)).
    *
    * **Example:** `{ "currentResultsPerPage": 25, "userRole": "developer" }`
    */

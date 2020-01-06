@@ -11,6 +11,7 @@ import 'styling/_CardOverlay';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { SVGDom } from '../../utils/SVGDom';
 import { Utils } from '../../utils/Utils';
+import { l } from '../../strings/Strings';
 
 export interface ICardOverlayOptions {
   title: string;
@@ -23,7 +24,7 @@ export interface ICardOverlayOptions {
  * possible to place a CardOverlay component anywhere in any result.
  *
  * The primary purpose of the CardOverlay component is to display additional information about a result in a format that
- * fits well within a card result layout (see [Result Layouts](https://developers.coveo.com/x/yQUvAg)).
+ * fits well within a card result layout (see [Result Layouts](https://docs.coveo.com/en/360/)).
  *
  * When initialized, this component creates a `<div class="coveo-card-overlay">` element as the last child of its parent
  * IQueryResult, and displays a button which toggles the visibility of the overlay.
@@ -49,7 +50,10 @@ export class CardOverlay extends Component {
      *
      * Setting a value for this option is required for this component to work.
      */
-    title: ComponentOptions.buildLocalizedStringOption({ required: true, defaultValue: 'NoTitle' }),
+    title: ComponentOptions.buildLocalizedStringOption({
+      required: true,
+      localizedString: () => l('NoTitle')
+    }),
 
     /**
      * Specifies the icon to use for the overlay icon and for the button icon.

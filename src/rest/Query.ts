@@ -26,6 +26,28 @@ export interface IUserActionsRequest {
 }
 
 /**
+ * A Search API commerce request.
+ */
+export interface ICommerceRequest {
+  /**
+   * The unique identifier of the catalog to query.
+   *
+   * **Example:** `46bc4275-e613-4dd5-b1ea-3e5aca1bcd9d`
+   */
+  catalogId?: string;
+  /**
+   * A mandatory query expression to apply if the commerce request affects the query.
+   * **Example:** `@storeid==1001`
+   */
+  filter?: string;
+  /**
+   * The way the commerce request should affect query results.
+   * **Example:** `selectCatalogObjects`
+   */
+  operation?: 'selectCatalogObjects' | 'excludeCatalogObjects';
+}
+
+/**
  * The IQuery interface describes a query that can be performed on the Coveo REST Search API.
  *
  * For basic usage, see the {@link IQuery.q} and {@link IQuery.aq} properties.
@@ -91,7 +113,7 @@ export interface IQuery {
   /**
    * Whether to enable wildcards on the basic expression keywords.<br/>
    * This enables the wildcard features of the index. Coveo Platform will expand keywords containing wildcard characters to the possible matching keywords to broaden the query.<br/>
-   * See [Using Wildcards in Queries](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=359).<br/>
+   * See [Using Wildcards in Queries](https://docs.coveo.com/en/1580/).<br/>
    * If not specified, this parameter defaults to false.
    */
   wildcards?: boolean;
@@ -218,15 +240,15 @@ export interface IQuery {
   enableQuerySyntax?: boolean;
   enableDuplicateFiltering?: boolean;
   /**
-   * Whether the index should take collaborative rating in account when ranking result. See : {@link ResultRating}
+   * Whether the index should take collaborative rating in account when ranking result. See: {@link ResultRating}
    */
   enableCollaborativeRating?: boolean;
   /**
-   * Specifies the childField when doing parent-child loading (See : {@link Folding})
+   * Specifies the childField when doing parent-child loading (See: {@link Folding})
    */
   childField?: string;
   /**
-   * Specifies the parentField when doing parent-child loading (See : {@link Folding})
+   * Specifies the parentField when doing parent-child loading (See: {@link Folding})
    */
   parentField?: string;
   /**
@@ -273,4 +295,8 @@ export interface IQuery {
    *  - 6318b0c6-9397-4d70-b393-cf4770fd1bab
    */
   userActions?: IUserActionsRequest;
+  /**
+   * The commerce request to execute.
+   */
+  commerce?: ICommerceRequest;
 }

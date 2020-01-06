@@ -1,15 +1,13 @@
-import * as Mock from '../MockEnvironment';
-import { Pager } from '../../src/ui/Pager/Pager';
-import { registerCustomMatcher } from '../CustomMatchers';
-import { $$ } from '../../src/utils/Dom';
-import { IBuildingQueryEventArgs } from '../../src/events/QueryEvents';
-import { Simulate } from '../Simulate';
-import { FakeResults } from '../Fake';
-import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
-import { QueryEvents, INoResultsEventArgs } from '../../src/events/QueryEvents';
-import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
-import { IPagerOptions } from '../../src/ui/Pager/Pager';
+import { IBuildingQueryEventArgs, INoResultsEventArgs, QueryEvents } from '../../src/events/QueryEvents';
 import { Defer } from '../../src/misc/Defer';
+import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
+import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
+import { IPagerOptions, Pager } from '../../src/ui/Pager/Pager';
+import { $$ } from '../../src/utils/Dom';
+import { registerCustomMatcher } from '../CustomMatchers';
+import { FakeResults } from '../Fake';
+import * as Mock from '../MockEnvironment';
+import { Simulate } from '../Simulate';
 
 export function PagerTest() {
   describe('Pager', () => {
@@ -79,17 +77,30 @@ export function PagerTest() {
       expect(test.env.queryStateModel.set).toHaveBeenCalledWith('first', (currentPage - 1) * 10);
     });
 
-    it('should update page when state is changed', () => {
-      test = Mock.advancedComponentSetup<Pager>(
-        Pager,
-        new Mock.AdvancedComponentSetupOptions(undefined, undefined, env => {
-          return env.withLiveQueryStateModel();
-        })
-      );
-      test.cmp.setPage(7);
-      expect(test.cmp.currentPage).toBe(7);
-      test.env.queryStateModel.set('first', 30);
-      expect(test.cmp.currentPage).toBe(4);
+    describe('when query state model is updated', () => {
+      beforeEach(() => {
+        test = Mock.advancedComponentSetup<Pager>(
+          Pager,
+          new Mock.AdvancedComponentSetupOptions(undefined, undefined, env => {
+            return env.withLiveQueryStateModel();
+          })
+        );
+      });
+
+      it('should update current page when first result is changed', () => {
+        test.env.queryStateModel.set('first', 30);
+        expect(test.cmp.currentPage).toBe(4);
+      });
+
+      it('should update current page when number of results per page is changed', () => {
+        test.env.queryStateModel.set('numberOfResults', 10);
+        test.env.queryStateModel.set('first', 49);
+
+        expect(test.cmp.currentPage).toBe(5);
+
+        test.env.queryStateModel.set('numberOfResults', 50);
+        expect(test.cmp.currentPage).toBe(1);
+      });
     });
 
     it('should not render anything if only one page of result is returned', () => {
@@ -233,6 +244,18 @@ export function PagerTest() {
           expect(test.cmp.currentPage).toBe(3);
           done();
         });
+      });
+
+      it(`when having a resultPerPage that is not a divider of maximumNumberOfResultsFromIndex 
+      should prevent requesting more result than the maximumNumberOfResultsFromIndex option`, () => {
+        const resultsPerPage = 12;
+        const pageNumber = Math.ceil(test.cmp.options.maximumNumberOfResultsFromIndex / resultsPerPage);
+        const firstResult = (pageNumber - 1) * resultsPerPage;
+
+        test.cmp.setPage(pageNumber);
+        const { simulation } = execQuery(test, resultsPerPage, firstResult, 0, test.cmp);
+
+        expect(simulation.queryBuilder.numberOfResults).toBe(test.cmp.options.maximumNumberOfResultsFromIndex - firstResult);
       });
     });
 

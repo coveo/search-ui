@@ -451,8 +451,8 @@
     "incident": {
       "icon": "case",
       "captions": {
-        "en": "Case",
-        "fr": "Cas",
+        "en": "Incident",
+        "fr": "Incident",
         "cs": "Případ",
         "da": "Sag",
         "de": "Fall",

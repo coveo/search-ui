@@ -47,7 +47,7 @@ export const defaultLayout: ValidLayout = 'list';
  * This component automatically populates itself with buttons to switch between the ResultList components that have a
  * valid layout value (see the {@link ValidLayout} type).
  *
- * See also the [Result Layouts](https://developers.coveo.com/x/yQUvAg) documentation.
+ * See also the [Result Layouts](https://docs.coveo.com/en/360/) documentation.
  */
 export class ResultLayoutSelector extends Component {
   static ID = 'ResultLayoutSelector';

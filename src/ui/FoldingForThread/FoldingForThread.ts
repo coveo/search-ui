@@ -17,7 +17,7 @@ import { Folding, IFoldingOptions } from '../Folding/Folding';
  * **Note:**
  * > There can only be one `FoldingForThread` component per [`Tab`]{@link Tab} component.
  *
- * See [Folding Results](https://developers.coveo.com/x/7hUvAg).
+ * See [Folding Results](https://docs.coveo.com/en/428/).
  */
 export class FoldingForThread extends Folding {
   static ID = 'FoldingForThread';

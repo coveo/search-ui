@@ -1,8 +1,6 @@
 import { Component } from '../Base/Component';
-import { DynamicFacet } from '../DynamicFacet/DynamicFacet';
 import { InitializationEvents } from '../../events/InitializationEvents';
 import { QueryEvents, IQuerySuccessEventArgs, IDoneBuildingQueryEventArgs } from '../../events/QueryEvents';
-import { IComponentBindings } from '../Base/ComponentBindings';
 import { exportGlobally } from '../../GlobalExports';
 import { find, without, partition } from 'underscore';
 import { IFacetResponse } from '../../rest/Facet/FacetResponse';
@@ -11,6 +9,10 @@ import { Utils } from '../../utils/Utils';
 import { ComponentOptions } from '../Base/ComponentOptions';
 import { Assert } from '../../misc/Assert';
 import { Initialization } from '../Base/Initialization';
+import { ComponentsTypes } from '../../utils/ComponentsTypes';
+import { QueryBuilder } from '../Base/QueryBuilder';
+import { IAutoLayoutAdjustableInsideFacetColumn } from '../SearchInterface/FacetColumnAutoLayoutAdjustment';
+import { IQueryResults } from '../../rest/QueryResults';
 
 export interface IDynamicFacetManagerOptions {
   enableReorder?: boolean;
@@ -20,23 +22,37 @@ export interface IDynamicFacetManagerOptions {
 }
 
 export interface IDynamicFacetManagerOnUpdate {
-  (facet: DynamicFacet, index: number): void;
+  (facet: IDynamicManagerCompatibleFacet, index: number): void;
 }
 
 export interface IDynamicFacetManagerCompareFacet {
-  (facetA: DynamicFacet, facetB: DynamicFacet): number;
+  (facetA: IDynamicManagerCompatibleFacet, facetB: IDynamicManagerCompatibleFacet): number;
+}
+
+export interface IDynamicManagerCompatibleFacet extends Component, IAutoLayoutAdjustableInsideFacetColumn {
+  dynamicFacetManager: DynamicFacetManager;
+  hasActiveValues: boolean;
+  isDynamicFacet: boolean;
+
+  handleQueryResults(results: IQueryResults): void;
+  putStateIntoQueryBuilder(queryBuilder: QueryBuilder): void;
+  putStateIntoAnalytics(): void;
+  expand(): void;
+  collapse(): void;
 }
 
 /**
- * The `DynamicFacetManager` component is meant to be a parent for multiple [DynamicFacet]{@link DynamicFacet} components.
- * It allows more control over the rendering and ordering of the children [DynamicFacet]{@link DynamicFacet} components.
+ * The `DynamicFacetManager` component is meant to be a parent for multiple [DynamicFacet]{@link DynamicFacet} & [DynamicFacetRange]{@link DynamicFacetRange} components.
+ * This component allows controlling a set of [`DynamicFacet`]{@link DynamicFacet} and [`DynamicFacetRange`]{@link DynamicFacetRange} as a group.
+ *
+ * See [Using Dynamic Facets](https://docs.coveo.com/en/2917/).
  */
 export class DynamicFacetManager extends Component {
   static ID = 'DynamicFacetManager';
   static doExport = () => exportGlobally({ DynamicFacetManager });
 
   /**
-   * The options for the DynamicFacet
+   * The options for the DynamicFacetManager
    * @componentOptions
    */
   static options: IDynamicFacetManagerOptions = {
@@ -52,9 +68,9 @@ export class DynamicFacetManager extends Component {
      * **Note:**
      * > You cannot set this option directly in the component markup as an HTML attribute. You must either set it in the
      * > [`init`]{@link init} call of your search interface (see
-     * > [Components - Passing Component Options in the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsintheinitCall)),
+     * > [Passing Component Options in the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsintheinitCall)),
      * > or before the `init` call, using the `options` top-level function (see
-     * > [Components - Passing Component Options Before the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsBeforetheinitCall)).
+     * > [Passing Component Options Before the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsBeforetheinitCall)).
      */
     onUpdate: ComponentOptions.buildCustomOption<IDynamicFacetManagerOnUpdate>(() => {
       return null;
@@ -66,9 +82,9 @@ export class DynamicFacetManager extends Component {
      * > If specified, the function must implement the JavaScript compareFunction (see [Array.prototype.sort](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort).
      * > You cannot set this option directly in the component markup as an HTML attribute. You must either set it in the
      * > [`init`]{@link init} call of your search interface (see
-     * > [Components - Passing Component Options in the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsintheinitCall)),
+     * > [Passing Component Options in the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsintheinitCall)),
      * > or before the `init` call, using the `options` top-level function (see
-     * > [Components - Passing Component Options Before the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsBeforetheinitCall)).
+     * > [Passing Component Options Before the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsBeforetheinitCall)).
      */
     compareFacets: ComponentOptions.buildCustomOption<IDynamicFacetManagerCompareFacet>(() => {
       return null;
@@ -88,15 +104,15 @@ export class DynamicFacetManager extends Component {
     maximumNumberOfExpandedFacets: ComponentOptions.buildNumberOption({ defaultValue: 4, min: -1 })
   };
 
-  private childrenFacets: DynamicFacet[] = [];
+  private childrenFacets: IDynamicManagerCompatibleFacet[] = [];
   private containerElement: HTMLElement;
 
   private get enabledFacets() {
     return this.childrenFacets.filter(facet => !facet.disabled);
   }
 
-  private get facetsWithValues() {
-    return this.childrenFacets.filter(facet => !facet.values.isEmpty);
+  private get displayedFacets() {
+    return this.childrenFacets.filter(facet => facet.isCurrentlyDisplayed());
   }
 
   /**
@@ -106,11 +122,11 @@ export class DynamicFacetManager extends Component {
    * @param options The component options.
    * @param bindings The component bindings. Automatically resolved by default.
    */
-  constructor(element: HTMLElement, public options?: IDynamicFacetManagerOptions, private bindings?: IComponentBindings) {
+  constructor(element: HTMLElement, public options?: IDynamicFacetManagerOptions) {
     super(element, 'DynamicFacetManager');
     this.options = ComponentOptions.initComponentOptions(element, DynamicFacetManager, options);
-
-    this.moveChildrenIntoContainer();
+    this.resetContainer();
+    this.prependContainer();
     this.initEvents();
   }
 
@@ -119,12 +135,8 @@ export class DynamicFacetManager extends Component {
     this.containerElement = $$('div', { className: 'coveo-dynamic-facet-manager-container' }).el;
   }
 
-  private moveChildrenIntoContainer() {
-    this.resetContainer();
-    $$(this.element)
-      .children()
-      .forEach(child => this.containerElement.appendChild(child));
-    this.element.appendChild(this.containerElement);
+  private prependContainer() {
+    $$(this.element).prepend(this.containerElement);
   }
 
   private initEvents() {
@@ -133,10 +145,26 @@ export class DynamicFacetManager extends Component {
     this.bind.onRootElement(QueryEvents.querySuccess, (data: IQuerySuccessEventArgs) => this.handleQuerySuccess(data));
   }
 
+  private isDynamicFacet(component: Component) {
+    return !!(component as IDynamicManagerCompatibleFacet).isDynamicFacet;
+  }
+
+  private get allDynamicFacets(): IDynamicManagerCompatibleFacet[] {
+    const allFacetsInComponent = ComponentsTypes.getAllFacetsInstance(this.element);
+    return <IDynamicManagerCompatibleFacet[]>allFacetsInComponent.filter(this.isDynamicFacet);
+  }
+
   private handleAfterComponentsInitialization() {
-    const allDynamicFacets = this.bindings.searchInterface.getComponents<DynamicFacet>('DynamicFacet');
-    this.childrenFacets = allDynamicFacets.filter(dynamicFacet => this.element.contains(dynamicFacet.element));
-    this.childrenFacets.forEach(dynamicFacet => (dynamicFacet.dynamicFacetManager = this));
+    this.childrenFacets = this.allDynamicFacets;
+    this.childrenFacets.forEach(dynamicFacet => {
+      dynamicFacet.dynamicFacetManager = this;
+      this.containerElement.appendChild(dynamicFacet.element);
+    });
+
+    if (this.element.children.length > 1) {
+      this.logger.warn(`DynamicFacetManager contains incompatible elements. Those elements may be moved in the DOM.
+        To prevent this warning, move those elements outside of the DynamicFacetManager.`);
+    }
 
     if (!this.childrenFacets.length) {
       this.disable();
@@ -158,6 +186,10 @@ export class DynamicFacetManager extends Component {
       return this.notImplementedError();
     }
 
+    this.enabledFacets.forEach(dynamicFacet => {
+      dynamicFacet.handleQueryResults(data.results);
+    });
+
     if (this.options.enableReorder) {
       this.mapResponseToComponents(data.results.facets);
       this.sortFacetsIfCompareOptionsProvided();
@@ -166,7 +198,7 @@ export class DynamicFacetManager extends Component {
   }
 
   private mapResponseToComponents(facetsResponse: IFacetResponse[]) {
-    const facetsInResponse = facetsResponse.map(({ facetId }) => this.getFacetComponentById(facetId)).filter(Utils.exists);
+    const facetsInResponse = facetsResponse.map(({ facetId }) => this.getChildFacetWithId(facetId)).filter(Utils.exists);
     const facetsNotInResponse = without(this.childrenFacets, ...facetsInResponse);
 
     facetsInResponse.forEach(facet => facet.enable());
@@ -184,7 +216,7 @@ export class DynamicFacetManager extends Component {
     this.resetContainer();
     const fragment = document.createDocumentFragment();
 
-    this.facetsWithValues.forEach((dynamicFacet, index) => {
+    this.childrenFacets.forEach((dynamicFacet, index) => {
       fragment.appendChild(dynamicFacet.element);
 
       if (this.options.onUpdate) {
@@ -195,7 +227,7 @@ export class DynamicFacetManager extends Component {
     this.respectMaximumExpandedFacetsThreshold();
 
     this.containerElement.appendChild(fragment);
-    this.element.appendChild(this.containerElement);
+    this.prependContainer();
   }
 
   private respectMaximumExpandedFacetsThreshold() {
@@ -203,27 +235,33 @@ export class DynamicFacetManager extends Component {
       return;
     }
 
-    const [collapsableFacets, uncollapsableFacets] = partition(this.facetsWithValues, facet => facet.options.enableCollapse);
-    const [facetsWithActiveValues, remainingFacets] = partition(collapsableFacets, facet => facet.values.hasActiveValues);
-    const indexOfFirstFacetToCollapse =
+    const [collapsableFacets, uncollapsableFacets] = partition(this.displayedFacets, facet => facet.options.enableCollapse);
+    const [facetsWithActiveValues, remainingFacets] = partition(collapsableFacets, facet => facet.hasActiveValues);
+    let numberOfFacetsLeftToExpand =
       this.options.maximumNumberOfExpandedFacets - uncollapsableFacets.length - facetsWithActiveValues.length;
 
     facetsWithActiveValues.forEach(dynamicFacet => dynamicFacet.expand());
+    remainingFacets.forEach(dynamicFacet => {
+      if (numberOfFacetsLeftToExpand < 1) {
+        return dynamicFacet.collapse();
+      }
 
-    remainingFacets.forEach((dynamicFacet, index) => {
-      index < indexOfFirstFacetToCollapse ? dynamicFacet.expand() : dynamicFacet.collapse();
+      if (dynamicFacet.options.collapsedByDefault) {
+        dynamicFacet.logger.info(
+          'The facet has its "collapsedByDefault" option set to "true", which prevents the DynamicFacetManager from expanding it.',
+          'While this configuration may be legitimate, it partially defeats the purpose of the dynamic navigation experience feature.',
+          'For more information, see https://docs.coveo.com/en/2917/.'
+        );
+        return dynamicFacet.collapse();
+      }
+
+      numberOfFacetsLeftToExpand--;
+      dynamicFacet.expand();
     });
   }
 
-  private getFacetComponentById(id: string) {
-    const facet = find(this.childrenFacets, facet => facet.options.id === id);
-
-    if (!facet) {
-      this.logger.error(`Cannot find DynamicFacet component with an id equal to "${id}".`);
-      return null;
-    }
-
-    return facet;
+  private getChildFacetWithId(id: string) {
+    return find(this.childrenFacets, facet => facet.options.id === id);
   }
 
   private notImplementedError() {

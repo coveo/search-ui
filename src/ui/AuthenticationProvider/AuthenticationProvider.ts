@@ -27,7 +27,7 @@ export interface IAuthenticationProviderOptions {
 /**
  * The `AuthenticationProvider` component makes it possible to execute queries with an identity that the end user
  * can obtain using an authentication provider configured on the Coveo REST Search API
- * (see [Claims Authentication](https://developers.coveo.com/x/pQ8vAg)).
+ * (see [Claims Authentication](https://docs.coveo.com/en/113/)).
  *
  * When necessary, this component handles redirecting the browser to the address that starts the authentication process.
  *
@@ -51,7 +51,7 @@ export class AuthenticationProvider extends Component {
     /**
      * Specifies the name of the authentication provider.
      *
-     * See [SAML Authentication](https://developers.coveo.com/x/pw8vAg).
+     * See [SAML Authentication](https://docs.coveo.com/en/91/).
      */
     name: ComponentOptions.buildStringOption(),
 

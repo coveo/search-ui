@@ -1,4 +1,5 @@
 import 'styling/_FieldTable';
+import { each } from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 import { IQueryResult } from '../../rest/QueryResult';
 import { l } from '../../strings/Strings';
@@ -12,7 +13,6 @@ import { IComponentBindings } from '../Base/ComponentBindings';
 import { ComponentOptions } from '../Base/ComponentOptions';
 import { Initialization } from '../Base/Initialization';
 import { FieldValue, IFieldValueOptions } from '../FieldValue/FieldValue';
-import { each } from 'underscore';
 
 export interface IFieldTableOptions {
   allowMinimization: boolean;
@@ -25,7 +25,7 @@ export interface IFieldTableOptions {
  * The FieldTable component displays a set of {@link FieldValue} components in a table that can optionally be
  * expandable and minimizable. This component automatically takes care of not displaying empty field values.
  *
- * This component is a result template component (see [Result Templates](https://developers.coveo.com/x/aIGfAQ)).
+ * This component is a result template component (see [Result Templates](https://docs.coveo.com/en/413/)).
  *
  * **Example:**
  *
@@ -74,7 +74,7 @@ export class FieldTable extends Component {
      * Default value is `"Details"`.
      */
     expandedTitle: ComponentOptions.buildLocalizedStringOption({
-      defaultValue: 'Details',
+      localizedString: () => l('Details'),
       depend: 'allowMinimization'
     }),
 
@@ -85,7 +85,7 @@ export class FieldTable extends Component {
      * Default value is `"Details"`.
      */
     minimizedTitle: ComponentOptions.buildLocalizedStringOption({
-      defaultValue: 'Details',
+      localizedString: () => l('Details'),
       depend: 'allowMinimization'
     }),
 

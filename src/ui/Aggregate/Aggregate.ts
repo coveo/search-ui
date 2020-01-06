@@ -1,6 +1,7 @@
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
-import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { IFieldOption } from '../Base/IComponentOptions';
 import { QueryEvents, IBuildingQueryEventArgs, IQuerySuccessEventArgs } from '../../events/QueryEvents';
 import { IGroupByRequest } from '../../rest/GroupByRequest';
 import { Initialization } from '../Base/Initialization';

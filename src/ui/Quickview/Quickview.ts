@@ -1,5 +1,5 @@
-import 'styling/_Quickview';
 import PopperJs from 'popper.js';
+import 'styling/_Quickview';
 import { QuickviewEvents } from '../../events/QuickviewEvents';
 import { ResultListEvents } from '../../events/ResultListEvents';
 import { ModalBox as ModalBoxModule } from '../../ExternalModulesShim';
@@ -16,7 +16,8 @@ import { SVGIcons } from '../../utils/SVGIcons';
 import { Utils } from '../../utils/Utils';
 import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
 import { Component } from '../Base/Component';
-import { ComponentOptions, ComponentOptionsType } from '../Base/ComponentOptions';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { ComponentOptionsType } from '../Base/IComponentOptions';
 import { IInitializationParameters, Initialization } from '../Base/Initialization';
 import { IResultsComponentBindings } from '../Base/ResultsComponentBindings';
 import { TemplateComponentOptions } from '../Base/TemplateComponentOptions';
@@ -106,7 +107,7 @@ interface IQuickviewOpenerObject {
  * <!-- Note that simply including `<div class='CoveoQuickview'></div>` in the markup will be enough most of the time, since the component includes a default template and a default button appearance. -->
  * ```
  *
- * This component is a result template component (see [Result Templates](https://developers.coveo.com/x/aIGfAQ)).
+ * This component is a result template component (see [Result Templates](https://docs.coveo.com/en/413/)).
  */
 export class Quickview extends Component {
   static ID = 'Quickview';
@@ -192,7 +193,7 @@ export class Quickview extends Component {
      * selector of the HTML element you wish to display, or the `id` of a previously registered template (see
      * [`TemplateCache`]{@link TemplateCache}).
      *
-     * See [Branding Customization - Customizing the Quickview Loading Animation](https://developers.coveo.com/x/EoGfAQ#BrandingCustomization-CustomizingtheQuickviewLoadingAnimation).
+     * See [Customizing the Quickview Loading Animation](https://docs.coveo.com/en/296/#customizing-the-quickview-loading-animation).
      *
      * **Examples:**
      *
@@ -209,7 +210,7 @@ export class Quickview extends Component {
      * ```
      *
      * By default, the loading animation is a Coveo animation, which you can customize with CSS (see
-     * [Branding Customization - Customizing the Default Loading Animation](https://developers.coveo.com/x/EoGfAQ#BrandingCustomization-CustomizingtheDefaultLoadingAnimation).
+     * [Customizing the Default Loading Animation](https://docs.coveo.com/en/296/#customizing-the-default-search-page-animation).
      */
     loadingAnimation: ComponentOptions.buildOption<HTMLElement | Promise<HTMLElement>>(
       ComponentOptionsType.NONE,

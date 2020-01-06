@@ -2,6 +2,7 @@ import * as Mock from '../MockEnvironment';
 import { NoopComponent } from '../../src/ui/NoopComponent/NoopComponent';
 import { registerCustomMatcher } from '../CustomMatchers';
 import { $$ } from '../../src/utils/Dom';
+import { JQuery as $ } from '../JQueryModule';
 
 export function ComponentEventsTest() {
   describe('ComponentEvent', () => {
@@ -26,6 +27,43 @@ export function ComponentEventsTest() {
       expect(spy).toHaveBeenCalled();
       $$(test.env.root).trigger('foo', { bar: 'baz' });
       expect(spy).toHaveBeenCalledWith({ bar: 'baz' });
+    });
+
+    describe('when jQuery is loaded into the page', () => {
+      beforeAll(() => {
+        window['Coveo']['$'] = $;
+      });
+
+      beforeEach(() => {
+        test.cmp.enable();
+        test.cmp.bind.on(test.env.root, 'click', spy);
+      });
+
+      afterAll(() => {
+        window['Coveo']['$'] = undefined;
+      });
+
+      it('when triggering a native click without params, it calls the spy with native event as the only parameter', function() {
+        test.env.root.click();
+
+        expect(spy).toHaveBeenCalledTimes(1);
+        expect(spy.calls.argsFor(0)[0] instanceof MouseEvent).toBeTruthy();
+        expect((spy.calls.argsFor(0)[0] as MouseEvent).type).toBe('click');
+      });
+
+      it('when triggering a JQuery click event without params, it calls the spy without any params', () => {
+        $(test.env.root).click();
+
+        expect(spy).toHaveBeenCalledTimes(1);
+        expect(spy.calls.argsFor(0).length).toBe(0);
+      });
+
+      it('when triggering a JQuery click event with a param object, it calls the spy passing the param object', () => {
+        $(test.env.root).trigger('click', { bar: 'baz' });
+
+        expect(spy).toHaveBeenCalledTimes(1);
+        expect(spy).toHaveBeenCalledWith({ bar: 'baz' });
+      });
     });
 
     it('should execute handler only once if the component is enabled', function() {

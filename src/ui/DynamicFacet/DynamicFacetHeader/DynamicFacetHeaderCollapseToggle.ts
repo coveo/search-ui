@@ -2,7 +2,7 @@ import { l } from '../../../strings/Strings';
 import { SVGIcons } from '../../../utils/SVGIcons';
 import { $$ } from '../../../utils/Dom';
 import { DynamicFacetHeaderButton } from './DynamicFacetHeaderButton';
-import { DynamicFacet } from '../DynamicFacet';
+import { IDynamicFacetHeaderOptions } from './DynamicFacetHeader';
 
 export interface IDynamicFacetCollapseToggleOptions {
   collapsed: boolean;
@@ -13,7 +13,7 @@ export class DynamicFacetHeaderCollapseToggle {
   private collapseButton: DynamicFacetHeaderButton;
   private expandButton: DynamicFacetHeaderButton;
 
-  constructor(private facet: DynamicFacet) {
+  constructor(private options: IDynamicFacetHeaderOptions) {
     this.create();
   }
 
@@ -21,20 +21,20 @@ export class DynamicFacetHeaderCollapseToggle {
     const parent = $$('div');
 
     this.collapseButton = new DynamicFacetHeaderButton({
-      label: l('CollapseFacet', this.facet.options.title),
+      label: l('CollapseFacet', this.options.title),
       iconSVG: SVGIcons.icons.arrowUp,
       iconClassName: 'coveo-dynamic-facet-collapse-toggle-svg',
       className: 'coveo-dynamic-facet-header-collapse',
       shouldDisplay: true,
-      action: () => this.facet.collapse()
+      action: () => this.options.collapse()
     });
     this.expandButton = new DynamicFacetHeaderButton({
-      label: l('ExpandFacet', this.facet.options.title),
+      label: l('ExpandFacet', this.options.title),
       iconSVG: SVGIcons.icons.arrowDown,
       iconClassName: 'coveo-dynamic-facet-collapse-toggle-svg',
       className: 'coveo-dynamic-facet-header-expand',
       shouldDisplay: false,
-      action: () => this.facet.expand()
+      action: () => this.options.expand()
     });
 
     parent.append(this.collapseButton.element);

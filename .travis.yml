@@ -14,7 +14,6 @@ cache:
   - node_modules
 before_install:
   - npm install -g npm@5.5.1
-  - if [ "x$TRAVIS_TAG" != "x" ]; then wget https://repo1.maven.org/maven2/com/veracode/vosp/api/wrappers/vosp-api-wrappers-java/$VERACODE_WRAPPER_VERSION/vosp-api-wrappers-java-$VERACODE_WRAPPER_VERSION.jar ; fi
   - sudo apt-get install libgconf2-4
 script:
 - source read.version.sh
@@ -24,14 +23,14 @@ script:
 - if [ "x$TRAVIS_TAG" != "x" ]; then yarn run minimize ; fi
 - yarn run unitTests
 - if [ "x$TRAVIS_TAG" != "x" ]; then yarn run accessibilityTests ; fi
+- set +e
 - yarn run uploadCoverage
+- set -e
 - yarn run validateTypeDefinitions
 after_success:
 - if [ "x$TRAVIS_TAG" != "x" ]; then bash ./deploy.doc.sh ; fi
 - yarn run docsitemap
 - yarn run zipForGitReleases
-- yarn run zipForVeracode
-- if [ "x$TRAVIS_TAG" != "x" ]; then java -jar vosp-api-wrappers-java-$VERACODE_WRAPPER_VERSION.jar -vid $VERACODE_KEY_ID  -vkey $VERACODE_SECRET -action uploadandscan -appname Coveo -sandboxname "JS UI" -createprofile true -filepath veracode.zip -version "Travis build [ $TRAVIS_JOB_NUMBER ] on branch [ $TRAVIS_BRANCH ]" ; else echo "Build was triggered from a fork; skipping Veracode" ; fi
 env:
   global:
   - COMMIT_AUTHOR_EMAIL: sandbox_JSUI@coveo.com
@@ -72,6 +71,15 @@ deploy:
     bucket: coveo-nprod-binaries
     local-dir: bin
     upload-dir: proda/StaticCDN/searchui/v$PACKAGE_JSON_VERSION
+    acl: public_read
+    skip_cleanup: true
+  - provider: s3
+    access_key_id: AKIAYKDJLZIT462WODCI
+    secret_access_key:
+      secure: sT8isIiaAIg/Ic7x8cCD3anwCEHAyzG/IWkngmkf5c128NEwUIUdmsQJ1hi4Bw84zk1OOb3id+yXjeaTuKDgIkxe/jk3e2xZ7xElfLNTOln6QLkgsYpKFtGHiKjROOHOb5+Es6L1mxpHWbXH9ebmEhRduUw/BeHWW2MfZmfb434DgvatViRm8DOeROeqlYnbCda5ZELuT5SdwEs/CbExaiSL0WKVoTvcxbe+At4uVnTuc6SYyOvRoblx/q6Ra6mdRipluMs7Go93eu/Oqo7cZ2akrNSi/WBXGqL/wXxe2pYsziSABWjQaqWXD/jKte1ZBx7OXssn88DUKat/RrL7Ak30WHzgY/goiNV+EPT/wtNYWHP3suAzzGqNNMhsPx0lSI7vSUga72J3hV1TOsX9ORosiRm1c2fnmNB9vJdH7yAX7lWpqH2XuOrldVvvTGazSJYx93eBukDViFCZ6egeb+gMT8VQ38uitwd9BZaMhycoujZgSjhx7JnbHUoUdXkdT3XBNV7fINTozWCNJW81iJN+JuLZzneJ/CbjmjkfGcVoFFPCD9rGSj8DbgvWpt8rkwI4ZfHTNOgO9iWgSklpk9r2wgM7Z87V2Zpu8UX/QCFxy8IREtJUo6X9YG9nBoy21wUa9zia2SWpideur9cXb6U0+q84onHVlA0Ehp/1OYs=
+    bucket: coveo-nprod-binaries
+    local-dir: bin
+    upload-dir: proda/StaticCDN/searchui/v$PACKAGE_JSON_VERSION/$PACKAGE_PATCH_VERSION
     acl: public_read
     skip_cleanup: true
     on:

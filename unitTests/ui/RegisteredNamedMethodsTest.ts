@@ -1,5 +1,11 @@
 import * as RegisteredNamedMethod from '../../src/ui/Base/RegisteredNamedMethods';
-import { IMockEnvironment, MockEnvironmentBuilder } from '../MockEnvironment';
+import {
+  IMockEnvironment,
+  MockEnvironmentBuilder,
+  advancedComponentSetup,
+  IBasicComponentSetup,
+  AdvancedComponentSetupOptions
+} from '../MockEnvironment';
 import { $$ } from '../../src/utils/Dom';
 import { Component } from '../../src/ui/Base/Component';
 import { Searchbox } from '../../src/ui/Searchbox/Searchbox';
@@ -10,6 +16,12 @@ import { LazyInitialization } from '../../src/ui/Base/Initialization';
 import { NoopComponent } from '../../src/ui/NoopComponent/NoopComponent';
 import { Defer } from '../../src/misc/Defer';
 import { SearchInterface } from '../../src/ui/SearchInterface/SearchInterface';
+import { Analytics } from '../../src/ui/Analytics/Analytics';
+import * as SharedAnalyticsCalls from '../../src/ui/Analytics/SharedAnalyticsCalls';
+import { NoopAnalyticsClient } from '../../src/ui/Analytics/NoopAnalyticsClient';
+import { SearchEndpoint } from '../../src/rest/SearchEndpoint';
+import HistoryStore from 'coveo.analytics/dist/history';
+import { NullStorage } from 'coveo.analytics/dist/storage';
 
 export function RegisteredNamedMethodsTest() {
   describe('RegisteredNamedMethods', () => {
@@ -165,16 +177,17 @@ export function RegisteredNamedMethodsTest() {
       expect(spy).toHaveBeenCalled();
     });
 
-    describe('with analytics', () => {
+    describe('with spy analytics', () => {
       let analyticsElement: HTMLElement;
       let analytics: { [key: string]: IAnalyticsClient };
 
       beforeEach(() => {
+        const analyticsClassName = Component.computeCssClassName(Analytics);
         analyticsElement = $$('div', {
-          className: 'CoveoAnalytics'
+          className: analyticsClassName
         }).el;
         analytics = { client: mockUsageAnalytics() };
-        analyticsElement['Analytics'] = analytics;
+        analyticsElement[analyticsClassName] = analytics;
         analyticsElement['CoveoBoundComponents'] = [analytics];
         env.root.appendChild(analyticsElement);
       });
@@ -203,7 +216,22 @@ export function RegisteredNamedMethodsTest() {
             type: 'bar'
           }),
           jasmine.any(Object),
-          env.root
+          env.root,
+          undefined
+        );
+      });
+
+      it('should allow to log a custom event with a related query result', () => {
+        const fakeResult = FakeResults.createFakeResult();
+        RegisteredNamedMethod.logCustomEvent(env.root, { name: 'foo', type: 'bar' }, {}, fakeResult);
+        expect(analytics['client'].logCustomEvent).toHaveBeenCalledWith(
+          jasmine.objectContaining({
+            name: 'foo',
+            type: 'bar'
+          }),
+          jasmine.any(Object),
+          env.root,
+          fakeResult
         );
       });
 
@@ -230,6 +258,125 @@ export function RegisteredNamedMethodsTest() {
           fakeResult,
           env.root
         );
+      });
+    });
+
+    describe('with mock analytics', () => {
+      let setup: IBasicComponentSetup<Analytics>;
+
+      beforeEach(() => {
+        setup = advancedComponentSetup<Analytics>(
+          Analytics,
+          new AdvancedComponentSetupOptions(null, null, env => {
+            env.searchInterface.options.endpoint = new SearchEndpoint({
+              accessToken: 'another token',
+              queryStringArguments: { organizationId: 'another organization' },
+              restUri: 'another/uri'
+            });
+            env.queryController.historyStore = new HistoryStore(new NullStorage());
+            return env;
+          })
+        );
+      });
+
+      afterEach(() => {
+        SearchEndpoint.endpoints['default'] = null;
+        setup = null;
+      });
+
+      it('should not be noop by default', () => {
+        expect(setup.cmp.client instanceof NoopAnalyticsClient).not.toBeTruthy();
+      });
+
+      it('should become noop and update the search interface analytics client after being disabled', () => {
+        expect(setup.cmp.client instanceof NoopAnalyticsClient).not.toBeTruthy();
+        RegisteredNamedMethod.disableAnalytics(setup.env.root);
+        expect(setup.cmp.client instanceof NoopAnalyticsClient).toBeTruthy();
+        expect(setup.cmp.client).toBe(setup.env.searchInterface.usageAnalytics);
+      });
+
+      it('should not be noop and should update the search interface analytics client after being re-enabled', () => {
+        expect(setup.cmp.client instanceof NoopAnalyticsClient).not.toBeTruthy();
+        RegisteredNamedMethod.disableAnalytics(setup.env.root);
+        expect(setup.cmp.client instanceof NoopAnalyticsClient).toBeTruthy();
+        RegisteredNamedMethod.enableAnalytics(setup.env.root);
+        expect(setup.cmp.client instanceof NoopAnalyticsClient).not.toBeTruthy();
+        expect(setup.cmp.client).toBe(setup.env.searchInterface.usageAnalytics);
+      });
+
+      it('should cancel pending events when disabling analytics', () => {
+        const cancelAllPendingEventsSpy = spyOn(setup.cmp.client, 'cancelAllPendingEvents');
+        RegisteredNamedMethod.disableAnalytics(setup.env.root);
+        expect(cancelAllPendingEventsSpy).toHaveBeenCalled();
+      });
+
+      it('should clear actions history when disabling analytics', () => {
+        RegisteredNamedMethod.disableAnalytics(setup.env.root);
+        expect(setup.env.queryController.resetHistory).toHaveBeenCalled();
+      });
+
+      it('should clear visitor cookie when disabling analytics', () => {
+        const clearCookiesFunction = spyOn(setup.cmp.client.endpoint, 'clearCookies');
+        RegisteredNamedMethod.disableAnalytics(setup.env.root);
+        expect(clearCookiesFunction).toHaveBeenCalled();
+      });
+
+      it('should clear actions history when clearing local data', () => {
+        RegisteredNamedMethod.clearLocalData(setup.env.root);
+        expect(setup.env.queryController.resetHistory).toHaveBeenCalled();
+      });
+
+      it('should clear visitor cookie when clearing local data', () => {
+        const clearCookiesFunction = spyOn(setup.cmp.client.endpoint, 'clearCookies');
+        RegisteredNamedMethod.clearLocalData(setup.env.root);
+        expect(clearCookiesFunction).toHaveBeenCalled();
+      });
+
+      describe('with an Analytics component and a Searchbox component', () => {
+        let searchboxComponent: Searchbox;
+        let analyticsSubmitCall: jasmine.Spy;
+
+        beforeEach(() => {
+          const analytics = $$('div', {
+            className: 'CoveoAnalytics'
+          }).el;
+          root.appendChild(analytics);
+          RegisteredNamedMethod.init(root, {
+            Searchbox: { addSearchButton: false },
+            SearchInterface: {
+              autoTriggerQuery: false,
+              endpoint: new SearchEndpoint({
+                accessToken: 'another token',
+                queryStringArguments: { organizationId: 'another organization' },
+                restUri: 'another/uri'
+              })
+            }
+          });
+
+          searchboxComponent = <Searchbox>Component.get(searchbox);
+          analyticsSubmitCall = spyOn(SharedAnalyticsCalls, 'logSearchBoxSubmitEvent').and.callThrough();
+        });
+
+        it('when analytics is enabled, "submit" calls an activated client', () => {
+          searchboxComponent.searchbox.submit();
+          const liveAnalyticsClient = analyticsSubmitCall.calls.mostRecent().args[0] as IAnalyticsClient;
+          expect(liveAnalyticsClient.isActivated()).toBe(true);
+        });
+
+        it('when analytics is disabled, "submit" calls an unactivated client', () => {
+          RegisteredNamedMethod.disableAnalytics(root);
+          searchboxComponent.searchbox.submit();
+          const noopAnalyticsClient = analyticsSubmitCall.calls.mostRecent().args[0] as IAnalyticsClient;
+          expect(noopAnalyticsClient.isActivated()).toBe(false);
+        });
+
+        it('when analytics is re-enabled, "submit" calls an activated client', () => {
+          RegisteredNamedMethod.disableAnalytics(root);
+          RegisteredNamedMethod.enableAnalytics(root);
+          searchboxComponent.searchbox.submit();
+          const liveAnalyticsClient = analyticsSubmitCall.calls.mostRecent().args[0] as IAnalyticsClient;
+          expect(liveAnalyticsClient.isActivated()).toBe(true);
+        });
       });
     });
   });

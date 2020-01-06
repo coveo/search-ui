@@ -1,5 +1,5 @@
 import { IQueryResult } from '../../rest/QueryResult';
-import { IFieldOption } from '../Base/ComponentOptions';
+import { IFieldOption } from '../Base/IComponentOptions';
 
 export interface IResultLinkOptions {
   onClick?: (e: Event, result: IQueryResult) => any;

@@ -226,13 +226,24 @@ export class DateUtils {
   }
 
   /**
-   * Creates a string from a Date object. The resulting string is in the format required for queries.
+   * Creates a string from a Date object. The resulting string is in the date format required for queries.
    * @param date The Date object to create a string from.
    * @returns {string} A string corresponding to the `date` argument value, in the `YYYY/MM/DD` format.
    */
   static dateForQuery(date: Date): string {
     DateUtils.setLocale();
     const dateMoment = moment(date).format('YYYY/MM/DD');
+    return dateMoment;
+  }
+
+  /**
+   * Creates a string from a Date object. The resulting string is in the datetime format required for queries.
+   * @param date The Date object to create a string from.
+   * @returns {string} A string corresponding to the `date` argument value, in the `YYYY/MM/DD@HH:mm:ss` format.
+   */
+  static dateTimeForQuery(date: Date): string {
+    DateUtils.setLocale();
+    const dateMoment = moment(date).format('YYYY/MM/DD@HH:mm:ss');
     return dateMoment;
   }
 

@@ -28,12 +28,13 @@
   </div>
   <div class="coveo-main-section">
     <div class="coveo-facet-column">
-      <div class="CoveoFacet" data-title="Type" data-field="@objecttype" data-tab="SalesforceCase"></div>
-      <div class="CoveoFacet" data-title="Case Status" data-field="@sfcasestatus" data-tab="SalesforceCase"></div>
-      <div class="CoveoFacet" data-title="Case Priority" data-field="@sfcasespriority" data-tab="SalesforceCase"></div>
-      <div class="CoveoFacet" data-title="Account" data-field="@sfaccountname" data-tab="SalesforceCase"></div>
-      <div class="CoveoFacet" data-title="Owner" data-field="@sfownername" data-tab="SalesforceCase"></div>
-      <div class="CoveoTimespanFacet" data-tab="SalesforceCase"></div>
+      <div class="CoveoDynamicFacetManager">
+          <div class="CoveoDynamicFacet" data-title="Type" data-field="@objecttype" data-tab="SalesforceCase"></div>
+          <div class="CoveoDynamicFacet" data-title="Case Status" data-field="@sfcasestatus" data-tab="SalesforceCase"></div>
+          <div class="CoveoDynamicFacet" data-title="Case Priority" data-field="@sfcasespriority" data-tab="SalesforceCase"></div>
+          <div class="CoveoDynamicFacet" data-title="Account" data-field="@sfaccountname" data-tab="SalesforceCase"></div>
+          <div class="CoveoDynamicFacet" data-title="Owner" data-field="@sfownername" data-tab="SalesforceCase"></div>  
+      </div>
     </div>
     <div class="coveo-results-column">
       <div class="CoveoShareQuery"></div>

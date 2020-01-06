@@ -29,7 +29,7 @@ export interface IYouTubeThumbnailOptions {
  * containing the `iframe` from YouTube, or open the target URL in the current window (see
  * {@link YouTubeThumbnail.options.embed}).
  *
- * This component is a result template component (see [Result Templates](https://developers.coveo.com/x/aIGfAQ)).
+ * This component is a result template component (see [Result Templates](https://docs.coveo.com/en/413/)).
  */
 export class YouTubeThumbnail extends Component {
   static ID = 'YouTubeThumbnail';

@@ -1,4 +1,5 @@
 import { StringUtils } from '../../src/utils/StringUtils';
+import { FakeResults } from '../Fake';
 
 export function StringUtilsTests() {
   describe('StringUtils', () => {
@@ -39,6 +40,15 @@ export function StringUtilsTests() {
     it('should equalsCaseInsensitive correctly', () => {
       expect(StringUtils.equalsCaseInsensitive('A', 'a')).toBe(true);
       expect(StringUtils.equalsCaseInsensitive('A', 'B')).toBe(false);
+    });
+
+    it('should create string templates', () => {
+      let result = FakeResults.createFakeResult('bar');
+
+      expect(StringUtils.buildStringTemplateFromResult('abc', result)).toBe('abc');
+      expect(StringUtils.buildStringTemplateFromResult('${title}', result)).toBe('Titlebar');
+      expect(StringUtils.buildStringTemplateFromResult('${raw.source}', result)).toBe('the source');
+      expect(StringUtils.buildStringTemplateFromResult('${uri}/abc', result)).toBe('http://uri.bar.com/abc');
     });
   });
 }

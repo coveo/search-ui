@@ -17,7 +17,8 @@ import { Utils } from '../../utils/Utils';
 import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
-import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { IFieldOption } from '../Base/IComponentOptions';
 import { Initialization } from '../Base/Initialization';
 
 export interface IResultTaggingOptions {
@@ -37,7 +38,7 @@ export interface IAnalyticsResultTaggingMeta {
  * The ResultTagging component lists the current tag field values of its associated result and renders a control that
  * allows the end user to add values to a tag field.
  *
- * This component is a result template component (see [Result Templates](https://developers.coveo.com/x/aIGfAQ)).
+ * This component is a result template component (see [Result Templates](https://docs.coveo.com/en/413/)).
  *
  * **Note:**
  * > The ResultTagging component is not supported with Coveo Cloud V2. To implement the ResultTagging component in Coveo Cloud V1, contact [Coveo Support](https://support.coveo.com/s/).

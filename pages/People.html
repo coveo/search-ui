@@ -28,11 +28,13 @@
   </div>
   <div class="coveo-main-section">
     <div class="coveo-facet-column">
-      <div class="CoveoFacet" data-title="Title" data-field="@worktitle" data-tab="People"></div>
-      <div class="CoveoFacet" data-title="Office" data-field="@office" data-tab="People"></div>
-      <div class="CoveoFacet" data-title="Company" data-field="@company" data-tab="People"></div>
-      <div class="CoveoFacet" data-title="Country" data-field="@sfcountry" data-tab="People"></div>
-      <div class="CoveoFacet" data-title="State" data-field="@sfstate" data-tab="People"></div>
+      <div class="CoveoDynamicFacetManager">
+        <div class="CoveoDynamicFacet" data-title="Title" data-field="@worktitle" data-tab="People"></div>
+        <div class="CoveoDynamicFacet" data-title="Office" data-field="@office" data-tab="People"></div>
+        <div class="CoveoDynamicFacet" data-title="Company" data-field="@company" data-tab="People"></div>
+        <div class="CoveoDynamicFacet" data-title="Country" data-field="@sfcountry" data-tab="People"></div>
+        <div class="CoveoDynamicFacet" data-title="State" data-field="@sfstate" data-tab="People"></div>
+      </div>
     </div>
     <div class="coveo-results-column">
       <div class="CoveoShareQuery"></div>
@@ -58,8 +60,10 @@
       </div>
       <div class="CoveoHiddenQuery"></div>
       <div class="CoveoErrorReport"></div>
-      <div class="CoveoResultList" data-layout="list" data-wait-animation="fade" data-auto-select-fields-to-include="true"></div>
-      <div class="CoveoResultList" data-layout="card" data-wait-animation="fade" data-auto-select-fields-to-include="true"></div>
+      <div class="CoveoResultList" data-layout="list" data-wait-animation="fade"
+        data-auto-select-fields-to-include="true"></div>
+      <div class="CoveoResultList" data-layout="card" data-wait-animation="fade"
+        data-auto-select-fields-to-include="true"></div>
       <div class="CoveoPager"></div>
       <div class="CoveoLogo"></div>
       <div class="CoveoResultsPerPage"></div>

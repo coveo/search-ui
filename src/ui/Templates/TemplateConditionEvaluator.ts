@@ -4,15 +4,21 @@ import { ResponsiveComponents } from '../ResponsiveComponents/ResponsiveComponen
 import * as _ from 'underscore';
 
 export class TemplateConditionEvaluator {
-  static getFieldFromString(text: string): string[] {
-    var fields: string[] = _.map(
-      StringUtils.match(text, /(?:(?!\b@)@([a-z0-9]+(?:\.[a-z0-9]+)*\b))|\braw.([a-z0-9]+)|\braw\['([^']+)'\]|\braw\["([^"]+)"\]/gi),
-      field => {
-        return field[1] || field[2] || field[3] || field[4] || null;
-      }
+  static getFieldFromString(text: string) {
+    const acceptableCharacterInFieldName = '[a-z0-9_]';
+    const fieldWithAtSymbolPrefix = `@(${acceptableCharacterInFieldName}+)\\b`;
+    const rawFieldAccessedUsingDotOperator = `\\braw\\.(${acceptableCharacterInFieldName}+)\\b`;
+    const fieldBetweenDoubleQuotes = `"[^"]*?(${acceptableCharacterInFieldName}+)[^"]*?"`;
+    const fieldBetweenSingleQuotes = `'[^']*?(${acceptableCharacterInFieldName}+)[^']*?'`;
+    const rawFieldAccessedUsingString = `\\braw\\[(?:${fieldBetweenDoubleQuotes}|${fieldBetweenSingleQuotes})\\]`;
+    const fieldUsedInCondition = `data-condition-field-(?:not-)?(${acceptableCharacterInFieldName}+)=`;
+    const fieldMatcher = new RegExp(
+      `${fieldWithAtSymbolPrefix}|${rawFieldAccessedUsingDotOperator}|${rawFieldAccessedUsingString}|${fieldUsedInCondition}`,
+      'gi'
     );
+    const matchedFields = StringUtils.match(text, fieldMatcher);
 
-    return fields;
+    return _.map(matchedFields, match => _.find(match.splice(1), field => field));
   }
 
   static evaluateCondition(condition: string, result: IQueryResult, responsiveComponents = new ResponsiveComponents()): Boolean {

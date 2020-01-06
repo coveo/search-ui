@@ -1,272 +1,37 @@
-import { contains, each, extend, isArray, keys, map } from 'underscore';
+import { contains, each, isArray, keys, map } from 'underscore';
 import { Assert } from '../../misc/Assert';
 import { Logger } from '../../misc/Logger';
-import { IFieldDescription } from '../../rest/FieldDescription';
 import { IStringMap } from '../../rest/GenericParam';
-import { l } from '../../strings/Strings';
-import { $$ } from '../../utils/Dom';
+import { $$, Dom } from '../../utils/Dom';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { Utils } from '../../utils/Utils';
 import { Template } from '../Templates/Template';
+import { ComponentOptionLoader } from './ComponentOptionsLoader';
+import { ComponentOptionsMerger } from './ComponentOptionsMerger';
+import { ComponentOptionsPostProcessor } from './ComponentOptionsPostProcessor';
+import { ComponentOptionsValidator } from './ComponentOptionsValidator';
+import {
+  ComponentOptionsType,
+  IComponentJsonObjectOption,
+  IComponentLocalizedStringOptionArgs,
+  IComponentOptions,
+  IComponentOptionsChildHtmlElementOption,
+  IComponentOptionsChildHtmlElementOptionArgs,
+  IComponentOptionsCustomListOptionArgs,
+  IComponentOptionsFieldOptionArgs,
+  IComponentOptionsFieldsOptionArgs,
+  IComponentOptionsListOption,
+  IComponentOptionsListOptionArgs,
+  IComponentOptionsLoadOption,
+  IComponentOptionsNumberOption,
+  IComponentOptionsNumberOptionArgs,
+  IComponentOptionsObjectOptionArgs,
+  IComponentOptionsOption,
+  IFieldConditionOption,
+  IFieldOption,
+  IQueryExpression
+} from './IComponentOptions';
 import { IComponentOptionsTemplateOptionArgs, TemplateComponentOptions } from './TemplateComponentOptions';
-
-/**
- * The `IFieldOption` interface declares a type for options that should contain a field to be used in a query.
- *
- * The only constraint this type has over a basic string is that it should start with the `@` character.
- */
-export interface IFieldOption extends String {}
-
-/**
- * The `IQueryExpression` type is a string type dedicated to query expressions.
- *
- * This type is used to build a specific option for query expressions.
- */
-export type IQueryExpression = string;
-
-export interface IComponentOptionsLoadOption<T> {
-  (element: HTMLElement, name: string, option: IComponentOptionsOption<T>): T;
-}
-
-/**
- * The `IComponentOptionsPostProcessing<T>` interface describes a post process function that should allow a component
- * option to further modify its own value once all other options of that component have been built.
- */
-export interface IComponentOptionsPostProcessing<T> {
-  /**
-   * Specifies a function that should allow a component option to further modify its own value once all other options
-   * of that component have been built.
-   * @param value The value originally specified for the option.
-   * @param options The options of the component.
-   */
-  (value: T, options: any): T;
-}
-
-export interface IComponentOptionsOption<T> extends IComponentOptions<T> {
-  type?: ComponentOptionsType;
-  load?: IComponentOptionsLoadOption<T>;
-}
-
-/**
- * The `IComponentOptions` interface describes the available parameters when building any kind of component
- * option.
- */
-export interface IComponentOptions<T> {
-  /**
-   * Specifies the value the option must take when no other value is explicitly specified.
-   */
-  defaultValue?: T;
-
-  /**
-   * Specifies a function that should return the value the option must take when no other value is explicitly specified.
-   *
-   * @param element The HTMLElement on which the current option is being parsed.
-   * @return The default value of the option.
-   */
-  defaultFunction?: (element: HTMLElement) => T;
-
-  /**
-   * Specifies whether it is necessary to explicitly specify a value for the option in order for the component to
-   * function properly.
-   *
-   * **Example:**
-   *
-   * > The [`field`]{@link Facet.options.field} option of the `Facet` component is required, since a facet cannot
-   * > function properly without a field.
-   */
-  required?: boolean;
-
-  /**
-   * Specifies a function that should allow a component option to further modify its own value once all other options
-   * of that component have been built.
-   *
-   * **Example:**
-   *
-   * > By default, the [`id`]{@link Facet.options.id} option of the `Facet` component uses a post processing function to
-   * > set its value to that of the [`field`]{@link Facet.options.field} option.
-   */
-  postProcessing?: IComponentOptionsPostProcessing<T>;
-
-  /**
-   * Specifies a different markup name to use for an option, rather than the standard name (i.e., `data-` followed by
-   * the hyphened name of the option).
-   *
-   * **Note:**
-   *
-   * > This should only be used for backward compatibility reasons.
-   */
-  attrName?: string;
-
-  /**
-   * Specifies an alias, or array of aliases, which can be used instead of the actual option name.
-   *
-   * **Note:**
-   *
-   * > This can be useful to modify an option name without introducing a breaking change.
-   */
-  alias?: string | string[];
-
-  /**
-   * Specifies a section name inside which the option should appear in the Coveo JavaScript Interface Editor.
-   */
-  section?: string;
-
-  /**
-   * Specifies the name of a boolean component option which must be `true` in order for this option to function
-   * properly.
-   *
-   * **Note:**
-   *
-   * > This is mostly useful for the Coveo JavaScript Interface Editor.
-   */
-  depend?: string;
-  priority?: number;
-
-  /**
-   * Specifies a message that labels the option as deprecated. This message appears in the console upon initialization
-   * if the deprecated option is used in the page. Consequently, this message should explain as clearly as possible why
-   * the option is deprecated, and what now replaces it.
-   *
-   * **Note:**
-   *
-   * > Deprecated options do not appear in the Coveo JavaScript Interface Editor.
-   */
-  deprecated?: string;
-
-  /**
-   * Specifies a function that should indicate whether the option value is valid.
-   *
-   * @param value The option value to validate.
-   * @returns `true` if the option value is valid; `false` otherwise.
-   */
-  validator?: (value: T) => boolean;
-}
-
-export interface IComponentOptionsNumberOption extends IComponentOptionsOption<number>, IComponentOptionsNumberOptionArgs {}
-
-/**
- * The `IComponentOptionsNumberOptionArgs` interface describes the available parameters when building a
- * [number option]{@link ComponentOptions.buildNumberOption).
- */
-export interface IComponentOptionsNumberOptionArgs extends IComponentOptions<number> {
-  /**
-   * Specifies the exclusive minimum value the option can take.
-   *
-   * Configuring the option using a value strictly less than this minimum displays a warning message in the console and
-   * automatically sets the option to its minimum value.
-   */
-  min?: number;
-
-  /**
-   * Specifies the exclusive maximum value the option can take.
-   *
-   * Configuring the option using a value strictly greater than this maximum displays a warning message in the console
-   * and automatically sets the option to its maximum value.
-   */
-  max?: number;
-
-  /**
-   * Specifies whether the value of this option is a floating point number.
-   */
-  float?: boolean;
-}
-
-export interface IComponentOptionsListOption extends IComponentOptionsOption<string[]>, IComponentOptionsListOptionArgs {}
-
-/**
- * The `IComponentOptionsListOptionArgs` interface describes the available parameters when building a
- * [list option]{@link ComponentOptions.buildListOption).
- */
-export interface IComponentOptionsListOptionArgs extends IComponentOptions<string[]> {
-  /**
-   * Specifies the regular expression to use to separate the elements of the list option.
-   *
-   * Default value is a regular expression that inserts a comma character (`,`) between each word.
-   */
-  separator?: RegExp;
-
-  /**
-   * Specifies the possible values the list option elements can take.
-   */
-  values?: any;
-}
-
-export interface IComponentOptionsCustomListOptionArgs<T> extends IComponentOptions<T> {
-  separator?: RegExp;
-  values?: any;
-}
-
-export interface IComponentOptionsChildHtmlElementOption
-  extends IComponentOptionsOption<HTMLElement>,
-    IComponentOptionsChildHtmlElementOptionArgs {}
-
-export interface IComponentOptionsChildHtmlElementOptionArgs extends IComponentOptions<HTMLElement> {
-  selectorAttr?: string;
-  childSelector?: string;
-}
-
-/**
- * The `IComponentOptionsTemplateOptionArgs` interface describes the available parameters when building a
- * [template option]{@link ComponentOptions.buildTemplateOption}.
- */
-
-export interface IComponentOptionsFieldOption extends IComponentOptionsOption<string>, IComponentOptionsFieldOptionArgs {}
-
-/**
- * The `IComponentOptionsFieldOptionArgs` interface describes the available parameters when building a
- * [field option]{@link ComponentOptions.buildFieldOption}.
- */
-export interface IComponentOptionsFieldOptionArgs extends IComponentOptions<string> {
-  groupByField?: boolean;
-  includeInResults?: boolean;
-  sortByField?: boolean;
-  splitGroupByField?: boolean;
-  match?: (field: IFieldDescription) => boolean;
-}
-
-export interface IComponentOptionsFieldsOption extends IComponentOptionsOption<string[]>, IComponentOptionsFieldsOptionArgs {}
-
-/**
- * The `IComponentOptionsFieldsOptionArgs` interface describes the available parameters when building a
- * [fields option]{@link ComponentOptions.buildFieldsOption}.
- */
-export interface IComponentOptionsFieldsOptionArgs extends IComponentOptions<string[]> {
-  groupByField?: boolean;
-  includeInResults?: boolean;
-  sortByField?: boolean;
-  splitGroupByField?: boolean;
-  match?: (field: IFieldDescription) => boolean;
-}
-
-export interface IComponentOptionsObjectOption extends IComponentOptionsOption<{ [key: string]: any }>, IComponentOptionsObjectOptionArgs {}
-export interface IComponentOptionsObjectOptionArgs extends IComponentOptions<{ [key: string]: any }> {
-  subOptions: { [key: string]: IComponentOptionsOption<any> };
-}
-
-export interface IComponentJsonObjectOption<T> extends IComponentOptions<T> {}
-
-export enum ComponentOptionsType {
-  BOOLEAN,
-  NUMBER,
-  STRING,
-  LOCALIZED_STRING,
-  LIST,
-  SELECTOR,
-  CHILD_HTML_ELEMENT,
-  TEMPLATE,
-  FIELD,
-  FIELDS,
-  ICON,
-  COLOR,
-  OBJECT,
-  QUERY,
-  HELPER,
-  LONG_STRING,
-  JSON,
-  JAVASCRIPT,
-  NONE,
-  QUERY_EXPRESSION
-}
 
 const camelCaseToHyphenRegex = /([A-Z])|\W+(\w)/g;
 const fieldsSeperator = /\s*,\s*/;
@@ -462,7 +227,7 @@ export class ComponentOptions {
    * @param optionArgs The arguments to apply when building the option.
    * @returns {string} The resulting option value.
    */
-  static buildLocalizedStringOption(optionArgs?: IComponentOptions<string>): string {
+  static buildLocalizedStringOption(optionArgs?: IComponentLocalizedStringOptionArgs): string {
     return ComponentOptions.buildOption<string>(
       ComponentOptionsType.LOCALIZED_STRING,
       ComponentOptions.loadLocalizedStringOption,
@@ -506,7 +271,7 @@ export class ComponentOptions {
   /**
    * Builds a query expression option.
    *
-   * The query expression option should follow the [Coveo Cloud Query Syntax Reference](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=357).
+   * The query expression option should follow the [Coveo Cloud Query Syntax Reference](https://docs.coveo.com/en/1552/).
    *
    * **Markup Example:**
    *
@@ -596,7 +361,7 @@ export class ComponentOptions {
         const scopedkey = ComponentOptions.mergeCamelCase(name, key);
         scopedOptions[scopedkey] = optionArgs.subOptions[key];
       }
-      ComponentOptions.initOptions(element, scopedOptions, scopedValues);
+      ComponentOptions.initOptions(element, scopedOptions, scopedValues, '');
       const resultValues: {
         [name: string]: any;
       } = {};
@@ -614,6 +379,25 @@ export class ComponentOptions {
     return ComponentOptions.buildOption<{
       [key: string]: any;
     }>(ComponentOptionsType.OBJECT, loadOption, optionArgs);
+  }
+
+  /**
+   * Builds a field condition option.
+   *
+   * A field condition option defines a field-based condition that must be dynamically evaluated against,
+   * and satisfied by a query result item in order to initialize a result template component.
+   *
+   * **Markup Example:**
+   *
+   * ```html
+   * data-condition-field-author="Alice Smith, Bob Jones"
+   * data-condition-field-not-filetype="pdf"`
+   * ```
+   *
+   * @returns {string} The resulting option value.
+   */
+  static buildFieldConditionOption(): IFieldConditionOption[] {
+    return ComponentOptions.buildOption<IFieldConditionOption[]>(ComponentOptionsType.FIELD, ComponentOptions.loadFieldConditionOption);
   }
 
   static buildOption<T>(type: ComponentOptionsType, load: IComponentOptionsLoadOption<T>, optionArg: IComponentOptions<T> = {}): T {
@@ -660,80 +444,30 @@ export class ComponentOptions {
     options: {
       [name: string]: IComponentOptionsOption<any>;
     },
-    values?: any,
-    componentID?: any
+    values: any = {},
+    componentID: string
   ) {
-    const logger = new Logger(this);
-    if (values == null) {
+    if (Utils.isNullOrUndefined(values)) {
       values = {};
     }
-    const names: string[] = keys(options);
-    for (let i = 0; i < names.length; i++) {
-      const name = names[i];
-      const optionDefinition = options[name];
-      let value: any;
-      const loadFromAttribute = optionDefinition.load;
 
-      if (loadFromAttribute != null) {
-        value = loadFromAttribute(element, name, optionDefinition);
-        if (value && optionDefinition.deprecated) {
-          logger.warn(componentID + '.' + name + ': ' + optionDefinition.deprecated);
-        }
-      }
+    each(options, (optionDefinition, name) => {
+      const value = new ComponentOptionLoader(element, values, name, optionDefinition).load();
+      new ComponentOptionsMerger(optionDefinition, { value, name }, values).merge();
+      new ComponentOptionsValidator(optionDefinition, { componentID, name, value }, values).validate();
+    });
 
-      if (Utils.isNullOrUndefined(value) && values[name] != undefined) {
-        value = values[name];
-      }
-
-      if (value == null && values[name] == undefined) {
-        if (optionDefinition.defaultValue != null) {
-          if (optionDefinition.type == ComponentOptionsType.LIST) {
-            value = extend([], optionDefinition.defaultValue);
-          } else if (optionDefinition.type == ComponentOptionsType.OBJECT) {
-            value = extend({}, optionDefinition.defaultValue);
-          } else {
-            value = optionDefinition.defaultValue;
-          }
-        } else if (optionDefinition.defaultFunction != null) {
-          value = optionDefinition.defaultFunction(element);
-        }
-      }
-      if (value != null) {
-        if (optionDefinition.validator) {
-          const isValid = optionDefinition.validator(value);
-          if (!isValid) {
-            logger.warn(`${componentID} .${name} has invalid value: ${value}`);
-            if (optionDefinition.required) {
-              logger.error(`${componentID} .${name} is required and has an invalid value: ${value}. ***THIS COMPONENT WILL NOT WORK***`);
-            }
-            delete values[name];
-            continue;
-          }
-        }
-        if (optionDefinition.type == ComponentOptionsType.OBJECT && values[name] != null) {
-          values[name] = extend(values[name], value);
-        } else if (optionDefinition.type == ComponentOptionsType.LOCALIZED_STRING) {
-          values[name] = l(value);
-        } else {
-          values[name] = value;
-        }
-      }
-      if (values[name] == undefined && optionDefinition.required) {
-        logger.warn(
-          `Option "${name}" is *REQUIRED* on the component "${componentID}". The component or the search page might *NOT WORK PROPERLY*.`,
-          element
-        );
-      }
-    }
-
-    for (let i = 0; i < names.length; i++) {
-      const name = names[i];
-      const optionDefinition = options[name];
-      if (optionDefinition.postProcessing) {
-        values[name] = optionDefinition.postProcessing(values[name], values);
-      }
-    }
+    new ComponentOptionsPostProcessor(options, values, componentID).postProcess();
     return values;
+  }
+
+  static tryLoadFromAttribute(element: HTMLElement, name: string, optionDefinition: IComponentOptionsOption<any>) {
+    const loadFromAttribute = optionDefinition.load;
+    if (!loadFromAttribute) {
+      return null;
+    }
+
+    return loadFromAttribute(element, name, optionDefinition);
   }
 
   static loadStringOption<T extends string>(element: HTMLElement, name: string, option: IComponentOptions<any>): T {
@@ -764,6 +498,20 @@ export class ComponentOptions {
     const field = ComponentOptions.loadStringOption(element, name, option);
     Assert.check(!Utils.isNonEmptyString(field) || Utils.isCoveoField(field), field + ' is not a valid field');
     return field;
+  }
+
+  static loadFieldConditionOption(element: HTMLElement, name: string, option: IComponentOptionsOption<any>): IFieldConditionOption[] {
+    var attrs = Dom.nodeListToArray(element.attributes).filter(attribute =>
+      Utils.stringStartsWith(attribute.nodeName, 'data-condition-field-')
+    );
+
+    return attrs.length != 0
+      ? attrs.map(attribute => ({
+          field: attribute.nodeName.replace('data-condition-field-not-', '').replace('data-condition-field-', ''),
+          values: Utils.isNonEmptyString(attribute.nodeValue) ? attribute.nodeValue.split(/\s*,\s*/) : null,
+          reverseCondition: attribute.nodeName.indexOf('data-condition-field-not-') == 0
+        }))
+      : undefined;
   }
 
   static loadFieldsOption(element: HTMLElement, name: string, option: IComponentOptionsOption<any>): string[] {

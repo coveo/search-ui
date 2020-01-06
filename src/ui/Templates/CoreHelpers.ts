@@ -664,7 +664,14 @@ TemplateHelpers.registerFieldHelper('anchor', (href: string, options?: IAnchorUt
   return AnchorUtils.buildAnchor(href, options);
 });
 
-TemplateHelpers.registerFieldHelper('image', (src: string, options?: IImageUtilsOptions) => {
+TemplateHelpers.registerFieldHelper('image', (src: string, options?: IImageUtilsOptions, result: IQueryResult = resolveQueryResult()) => {
+  if (options && options.srcTemplate) {
+    return ImageUtils.buildImage(StringUtils.buildStringTemplateFromResult(options.srcTemplate, result), {
+      alt: options.alt,
+      height: options.height,
+      width: options.width
+    });
+  }
   return ImageUtils.buildImage(src, options);
 });
 

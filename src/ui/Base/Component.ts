@@ -214,6 +214,9 @@ export class ComponentEvents {
         } else if (args && JQueryUtils.isInstanceOfJqueryEvent(args[0])) {
           if (args[1] != undefined) {
             args = [args[1]];
+          } else if (args[0].hasOwnProperty('originalEvent')) {
+            // If the event is a jQuery Event but no args are found, let's use the ones of the originalEvent, if any.
+            args = [args[0].originalEvent];
           } else {
             args = [];
           }
@@ -261,7 +264,7 @@ export class Component extends BaseComponent {
    */
   public queryStateModel: QueryStateModel;
   /**
-   * Contains the state of different component (enabled vs disabled). Allows to get/set values. Trigger component state event when modified. Each component can listen to those events.
+   * Contains the state of different components (enabled vs disabled). Allows to get/set values. Triggers component state event when modified. Each component can listen to those events.
    */
   public componentStateModel: ComponentStateModel;
   /**
@@ -273,11 +276,7 @@ export class Component extends BaseComponent {
    */
   public searchInterface: SearchInterface;
   /**
-   * A reference to the {@link Analytics.client}.
-   */
-  public usageAnalytics: IAnalyticsClient;
-  /**
-   * Contains the state of options for differents component. Mainly used by {@link ResultLink}.
+   * Contains the state of options for different components. Mainly used by {@link ResultLink}.
    */
   public componentOptionsModel: ComponentOptionsModel;
   public ensureDom: Function;
@@ -288,18 +287,17 @@ export class Component extends BaseComponent {
    * Create a new Logger for this component.
    * Attach the component to the {@link SearchInterface}.<br/>
    * @param element The HTMLElement on which to create the component. Used to bind data on the element.
-   * @param type The unique identifier for this component. See : {@link IComponentDefinition.ID}. Used to generate the unique Coveo CSS class associated with every component.
+   * @param type The unique identifier for this component. See: {@link IComponentDefinition.ID}. Used to generate the unique Coveo CSS class associated with every component.
    * @param bindings The environment for every component. Optional, but omitting to provide one will impact performance.
    */
   constructor(public element: HTMLElement, public type: string, bindings: IComponentBindings = {}) {
     super(element, type);
     this.bind = new Component.ComponentEventClass(this);
-    this.root = bindings.root || this.resolveRoot();
+    this.root = bindings.root || Component.resolveRoot(element);
     this.queryStateModel = bindings.queryStateModel || this.resolveQueryStateModel();
     this.componentStateModel = bindings.componentStateModel || this.resolveComponentStateModel();
     this.queryController = bindings.queryController || this.resolveQueryController();
     this.searchInterface = bindings.searchInterface || this.resolveSearchInterface();
-    this.usageAnalytics = bindings.usageAnalytics || this.resolveUA();
     this.componentOptionsModel = bindings.componentOptionsModel || this.resolveComponentOptionsModel();
     this.ensureDom = _.once(() => this.createDom());
 
@@ -326,17 +324,19 @@ export class Component extends BaseComponent {
     };
   }
 
+  /**
+   * A reference to the {@link Analytics.client}.
+   */
+  public get usageAnalytics() {
+    return this.resolveUA();
+  }
+
   public createDom() {
     // By default we do nothing
   }
 
   public resolveSearchInterface(): SearchInterface {
     return <SearchInterface>Component.resolveBinding(this.element, SearchInterface);
-  }
-
-  public resolveRoot(): HTMLElement {
-    var resolvedSearchInterface = Component.resolveBinding(this.element, SearchInterface);
-    return resolvedSearchInterface ? resolvedSearchInterface.element : undefined;
   }
 
   public resolveQueryController(): QueryController {
@@ -356,8 +356,7 @@ export class Component extends BaseComponent {
   }
 
   public resolveUA(): IAnalyticsClient {
-    var searchInterface = this.resolveSearchInterface();
-    return searchInterface && searchInterface.usageAnalytics ? searchInterface.usageAnalytics : new NoopAnalyticsClient();
+    return this.searchInterface && this.searchInterface.usageAnalytics ? this.searchInterface.usageAnalytics : new NoopAnalyticsClient();
   }
 
   public resolveResult(): IQueryResult {
@@ -420,6 +419,12 @@ export class Component extends BaseComponent {
     if (jQuery) {
       jQuery(element).data(result);
     }
+  }
+
+  static resolveRoot(element: HTMLElement): HTMLElement {
+    Assert.exists(element);
+    const resolvedSearchInterface = Component.resolveBinding(element, SearchInterface);
+    return resolvedSearchInterface ? resolvedSearchInterface.element : document.body;
   }
 
   static resolveBinding(element: HTMLElement, componentClass: any): BaseComponent {

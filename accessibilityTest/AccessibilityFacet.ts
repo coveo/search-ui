@@ -29,7 +29,7 @@ export const AccessibilityFacet = () => {
       getFacetColumn().appendChild(facetElement.el);
       await afterDeferredQuerySuccess();
       (get(facetElement.el) as Facet).facetSearch.focus();
-      await afterDelay(500);
+      await afterDelay(1000);
       const axeResults = await axe.run(getRoot());
       expect(axeResults).toBeAccessible();
       done();
@@ -40,9 +40,9 @@ export const AccessibilityFacet = () => {
       getFacetColumn().appendChild(facetElement.el);
       await afterDeferredQuerySuccess();
       (get(facetElement.el) as Facet).facetSearch.focus();
-      await afterDelay(500);
+      await afterDelay(1000);
       (get(facetElement.el) as Facet).facetSearch.dismissSearchResults();
-      await afterDelay(500);
+      await afterDelay(1000);
       const axeResults = await axe.run(getRoot());
       expect(axeResults).toBeAccessible();
       done();

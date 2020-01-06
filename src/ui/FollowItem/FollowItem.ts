@@ -1,25 +1,26 @@
-import { Component } from '../Base/Component';
-import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
-import { IResultsComponentBindings } from '../Base/ResultsComponentBindings';
-import { IQueryResult } from '../../rest/QueryResult';
+import * as _ from 'underscore';
+import { ISearchAlertsEventArgs, ISearchAlertsFailEventArgs, SearchAlertsEvents } from '../../events/SearchAlertEvents';
+import { exportGlobally } from '../../GlobalExports';
 import { Assert } from '../../misc/Assert';
-import { SearchAlertsEvents, ISearchAlertsEventArgs, ISearchAlertsFailEventArgs } from '../../events/SearchAlertEvents';
-import { ISubscription, ISubscriptionItemRequest, SUBSCRIPTION_TYPE, ISubscriptionRequest } from '../../rest/Subscription';
-import { Initialization } from '../Base/Initialization';
+import { IQueryResult } from '../../rest/QueryResult';
+import { ISubscription, ISubscriptionItemRequest, ISubscriptionRequest, SUBSCRIPTION_TYPE } from '../../rest/Subscription';
 import { l } from '../../strings/Strings';
 import { $$, Dom } from '../../utils/Dom';
+import { KEYBOARD, KeyboardUtils } from '../../utils/KeyboardUtils';
+import { QueryUtils } from '../../utils/QueryUtils';
+import { SVGDom } from '../../utils/SVGDom';
+import { SVGIcons } from '../../utils/SVGIcons';
+import { Utils } from '../../utils/Utils';
 import {
   analyticsActionCauseList,
-  IAnalyticsSearchAlertsFollowDocumentMeta,
-  IAnalyticsActionCause
+  IAnalyticsActionCause,
+  IAnalyticsSearchAlertsFollowDocumentMeta
 } from '../Analytics/AnalyticsActionListMeta';
-import { QueryUtils } from '../../utils/QueryUtils';
-import * as _ from 'underscore';
-import { Utils } from '../../utils/Utils';
-import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
-import { exportGlobally } from '../../GlobalExports';
-import { SVGIcons } from '../../utils/SVGIcons';
-import { SVGDom } from '../../utils/SVGDom';
+import { Component } from '../Base/Component';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { IFieldOption } from '../Base/IComponentOptions';
+import { Initialization } from '../Base/Initialization';
+import { IResultsComponentBindings } from '../Base/ResultsComponentBindings';
 
 export interface IFollowItemOptions {
   watchedFields?: IFieldOption[];
@@ -33,9 +34,9 @@ export interface IFollowItemOptions {
  * **Note:**
  * > A {@link SearchAlerts} component must be present in the page for this component to work. It is also necessary to
  * > meet certain requirements to be able to use this component (see
- * > [Deploying Search Alerts on a Coveo JS Search Page](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=248)).
+ * > [Deploying Search Alerts on a Coveo JS Search Page](https://docs.coveo.com/en/1932/)).
  *
- * This component is a result template component (see [Result Templates](https://developers.coveo.com/x/aIGfAQ)).
+ * This component is a result template component (see [Result Templates](https://docs.coveo.com/en/413/)).
  */
 export class FollowItem extends Component {
   static ID = 'FollowItem';

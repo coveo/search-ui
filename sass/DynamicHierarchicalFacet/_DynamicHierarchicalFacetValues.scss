@@ -1,0 +1,111 @@
+@import '../Variables';
+@import '../mixins/dynamicFacet';
+
+$level-space: 30px;
+
+.coveo-dynamic-hierarchical-facet-values {
+  @include facetValues;
+
+  &.coveo-with-space {
+    .coveo-dynamic-hierarchical-facet-value,
+    .coveo-dynamic-hierarchical-facet-show-less,
+    .coveo-dynamic-hierarchical-facet-show-more {
+      padding-left: $level-space;
+
+      &.coveo-with-space {
+        padding-left: $level-space * 2;
+      }
+    }
+  }
+}
+
+.coveo-dynamic-hierarchical-facet-collapsed {
+  .coveo-dynamic-hierarchical-facet-value:not(.coveo-selected),
+  .coveo-dynamic-hierarchical-facet-show-less,
+  .coveo-dynamic-hierarchical-facet-show-more {
+    display: none;
+  }
+}
+
+button.coveo-dynamic-hierarchical-facet-value,
+button.coveo-dynamic-hierarchical-facet-all {
+  display: inline-flex;
+}
+
+.coveo-dynamic-hierarchical-facet-value,
+.coveo-dynamic-hierarchical-facet-all {
+  text-align: left;
+  cursor: pointer;
+  font-size: $font-size-regular;
+  padding: 0;
+  margin: 0;
+  background: none;
+  border: none;
+  align-items: center;
+  line-height: 27px;
+  width: 100%;
+
+  &:hover,
+  &.coveo-focused {
+    opacity: $active-text-opacity;
+  }
+}
+
+.coveo-dynamic-hierarchical-facet-value {
+  position: relative;
+
+  &.coveo-with-space {
+    padding-left: $level-space;
+  }
+
+  &:disabled {
+    cursor: auto;
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+  &.coveo-selected {
+    .coveo-dynamic-hierarchical-facet-value-label,
+    .coveo-dynamic-hierarchical-facet-value-count {
+      font-weight: bold;
+    }
+  }
+}
+
+.coveo-dynamic-hierarchical-facet-value-label {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  color: black;
+}
+
+.coveo-dynamic-hierarchical-facet-value-count {
+  margin-left: 8px;
+  color: $color-blueish-gray;
+}
+
+.coveo-dynamic-hierarchical-facet-value-arrow {
+  position: absolute;
+  top: -1px;
+  left: 0;
+}
+
+$arrow-svg-dimensions: 14px;
+.coveo-dynamic-hierarchical-facet-value-arrow-svg {
+  transform: rotate(90deg);
+  width: $arrow-svg-dimensions;
+  height: $arrow-svg-dimensions;
+  color: $coveo-blue;
+
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.coveo-dynamic-hierarchical-facet-show-more {
+  @include facetShowMore();
+}
+
+.coveo-dynamic-hierarchical-facet-show-less {
+  @include facetShowLess();
+}

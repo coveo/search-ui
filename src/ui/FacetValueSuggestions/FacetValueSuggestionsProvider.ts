@@ -1,7 +1,8 @@
+import { QueryController } from '../../Core';
 import { IIndexFieldValue } from '../../rest/FieldValue';
 import { IListFieldValuesRequest } from '../../rest/ListFieldValuesRequest';
-import { QueryController } from '../../Core';
-import { IFieldOption } from '../Base/ComponentOptions';
+import { IFieldOption } from '../Base/IComponentOptions';
+import { IQuerySuggestionKeyword } from './FacetValueSuggestions';
 
 /**
  * Used to define a row returned by an [`IFacetValueSuggestionsProvider`]{@link IFacetValueSuggestionsProvider}.
@@ -25,7 +26,7 @@ export interface IFacetValueSuggestionRow {
   /**
    * The keyword that was used in the query to retrieve results.
    */
-  keyword: string;
+  keyword: IQuerySuggestionKeyword;
   /**
    * The field that was used for the suggestions.
    */
@@ -43,7 +44,7 @@ interface IFacetValueSuggestionsResponse {
 
 interface IFacetValueBatchResponse {
   values: IIndexFieldValue[];
-  keyword: string;
+  keyword: IQuerySuggestionKeyword;
 }
 
 type IFacetValueReference = {
@@ -56,19 +57,20 @@ type IFacetValueReference = {
  */
 export interface IFacetValueSuggestionsProviderOptions {
   field: string;
+  expression?: string;
 }
 
 /**
  * Provides suggestions for the [`FacetValueSuggestions`]{@link FacetValueSuggestions} component.
  */
 export interface IFacetValueSuggestionsProvider {
-  getSuggestions(valuesToSearch: string[]): Promise<IFacetValueSuggestionRow[]>;
+  getSuggestions(valuesToSearch: IQuerySuggestionKeyword[]): Promise<IFacetValueSuggestionRow[]>;
 }
 
 export class FacetValueSuggestionsProvider implements IFacetValueSuggestionsProvider {
   constructor(private queryController: QueryController, private options: IFacetValueSuggestionsProviderOptions) {}
 
-  public async getSuggestions(valuesToSearch: string[]): Promise<IFacetValueSuggestionRow[]> {
+  public async getSuggestions(valuesToSearch: IQuerySuggestionKeyword[]): Promise<IFacetValueSuggestionRow[]> {
     const fieldsToQuery = await this.getFieldValuesToQuery(valuesToSearch);
     return this.getAllSuggestionsRows(fieldsToQuery.responses, fieldsToQuery.reference);
   }
@@ -91,11 +93,20 @@ export class FacetValueSuggestionsProvider implements IFacetValueSuggestionsProv
     }, []);
   }
 
-  private async getFieldValuesToQuery(valuesToSearch: string[]): Promise<IFacetValueSuggestionsResponse> {
+  private async getFieldValuesToQuery(valuesToSearch: IQuerySuggestionKeyword[]): Promise<IFacetValueSuggestionsResponse> {
     // The reference request will be used to get the maximum number of values for a given facet value.
     const referenceValuesRequest = this.buildReferenceFieldValueRequest();
     const queryParts = this.getQueryToExecuteParts();
-    const suggestionValuesRequests = valuesToSearch.map(value => this.buildListFieldValueRequest([...queryParts, value].join(' ')));
+
+    if (this.options.expression) {
+      queryParts.push(this.options.expression);
+    }
+
+    const suggestionValuesRequests = valuesToSearch.map(keyword => {
+      const queryToExecute = [...queryParts, keyword.text].join(' ');
+      return this.buildListFieldValueRequest(queryToExecute);
+    });
+
     const requests = [...suggestionValuesRequests, referenceValuesRequest];
     const values = await this.queryController.getEndpoint().listFieldValuesBatch({
       batch: requests

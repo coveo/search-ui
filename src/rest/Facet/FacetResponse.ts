@@ -1,13 +1,14 @@
 import { FacetValueState } from './FacetValueState';
+import { IRangeValue } from '../RangeValue';
 
 /**
  * A [values]{@link IFacetRequest.values} item in a Search API [facet response]{@link IFacetRequest}.
  */
-export interface IFacetResponseValue {
+export interface IFacetResponseValue extends IRangeValue {
   /**
    * The facet value name.
    */
-  value: string;
+  value?: string;
 
   /**
    * The facet value state to display in the search interface.
@@ -18,6 +19,16 @@ export interface IFacetResponseValue {
    * The number of query result items matching the facet value.
    */
   numberOfResults: number;
+
+  /**
+   * Whether additional values are available for the facet.
+   */
+  moreValuesAvailable?: boolean;
+
+  /**
+   * The children of this hierarchical facet value.
+   */
+  children?: IFacetResponseValue[];
 }
 
 /**

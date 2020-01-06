@@ -1,18 +1,18 @@
-import { Component } from '../Base/Component';
-import { ComponentOptions } from '../Base/ComponentOptions';
-import { IResultsComponentBindings } from '../Base/ResultsComponentBindings';
-import { ResultLink } from '../ResultLink/ResultLink';
-import { IQueryResult } from '../../rest/QueryResult';
-import { QueryUtils } from '../../utils/QueryUtils';
-import { Initialization } from '../Base/Initialization';
-import { ISearchEndpoint } from '../../rest/SearchEndpointInterface';
-import { $$ } from '../../utils/Dom';
-import { get } from '../Base/RegisteredNamedMethods';
-import { IResultLinkOptions } from '../ResultLink/ResultLinkOptions';
-import FieldTableModule = require('../FieldTable/FieldTable');
-import { Icon } from '../Icon/Icon';
 import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
+import { IQueryResult } from '../../rest/QueryResult';
+import { ISearchEndpoint } from '../../rest/SearchEndpointInterface';
+import { $$ } from '../../utils/Dom';
+import { QueryUtils } from '../../utils/QueryUtils';
+import { Component } from '../Base/Component';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { Initialization } from '../Base/Initialization';
+import { get } from '../Base/RegisteredNamedMethods';
+import { IResultsComponentBindings } from '../Base/ResultsComponentBindings';
+import { Icon } from '../Icon/Icon';
+import { ResultLink } from '../ResultLink/ResultLink';
+import { IResultLinkOptions } from '../ResultLink/ResultLinkOptions';
+import FieldTableModule = require('../FieldTable/FieldTable');
 
 export interface IThumbnailOptions extends IResultLinkOptions {
   noThumbnailClass?: string;
@@ -76,7 +76,7 @@ export class Thumbnail extends Component {
   ) {
     super(element, Thumbnail.ID, bindings);
 
-    this.options = ComponentOptions.initOptions(element, <any>Thumbnail.options, options);
+    this.options = ComponentOptions.initOptions(element, <any>Thumbnail.options, options, Thumbnail.ID);
 
     if (this.element.tagName.toLowerCase() != 'img') {
       this.img = <HTMLImageElement>$$('img').el;

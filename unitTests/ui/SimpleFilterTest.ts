@@ -195,6 +195,10 @@ export function SimpleFilterTest() {
       expect(aSimpleFilter.cmp.getSelectedCaptions()[0]).toEqual('foo1');
     });
 
+    it('should not render a clear button if enableClearButton is falsy', () => {
+      expect($$(aSimpleFilter.cmp.element).findAll('.coveo-simplefilter-eraser').length).toBe(0);
+    });
+
     describe('with more than one instance', () => {
       let anotherSimpleFilter: Mock.IBasicComponentSetup<SimpleFilter>;
 
@@ -222,6 +226,90 @@ export function SimpleFilterTest() {
 
       it('should not create more than one backdrop for the simple filters', () => {
         expect($$(aSimpleFilter.cmp.root).findAll('.coveo-dropdown-background').length).toEqual(1);
+      });
+    });
+
+    describe('with clear button functionality', () => {
+      let simpleFilterWithEraser: Mock.IBasicComponentSetup<SimpleFilter>;
+
+      function clickOnClearButton() {
+        getClearButton().trigger('click');
+      }
+
+      function selectSomeValues() {
+        simpleFilterWithEraser.cmp.selectValue('foo');
+        simpleFilterWithEraser.cmp.selectValue('bar');
+      }
+
+      function getClearButton() {
+        return $$($$(simpleFilterWithEraser.cmp.element).find('.coveo-simplefilter-eraser'));
+      }
+
+      beforeEach(() => {
+        simpleFilterWithEraser = Mock.optionsComponentSetup<SimpleFilter, ISimpleFilterOptions>(SimpleFilter, <ISimpleFilterOptions>{
+          ...aSimpleFilter.cmp.options,
+          enableClearButton: true
+        });
+        simpleFilterWithEraser.cmp.toggleContainer();
+      });
+
+      it('should create a clear button if enableClearButton is true', () => {
+        expect(getClearButton()).toBeDefined();
+      });
+
+      it('should display the clear button if there are selected values', () => {
+        selectSomeValues();
+
+        expect(getClearButton().isVisible()).toBe(true);
+      });
+
+      it('should hide the clear button after deselecting all values', () => {
+        selectSomeValues();
+        simpleFilterWithEraser.cmp.deselectValue('foo');
+        simpleFilterWithEraser.cmp.deselectValue('bar');
+
+        expect(getClearButton().isVisible()).toBe(false);
+      });
+
+      it('should deselect all values after clicking on the clear button', () => {
+        selectSomeValues();
+        clickOnClearButton();
+
+        expect(simpleFilterWithEraser.cmp.getSelectedValues().length).toBe(0);
+      });
+
+      it('should execute only one query after clicking on the clear button', () => {
+        selectSomeValues();
+        (simpleFilterWithEraser.cmp.queryController.executeQuery as jasmine.Spy).calls.reset();
+        clickOnClearButton();
+
+        expect(simpleFilterWithEraser.cmp.queryController.executeQuery).toHaveBeenCalledTimes(1);
+      });
+
+      it('should log search event when a clear button is clicked', () => {
+        selectSomeValues();
+        (simpleFilterWithEraser.env.usageAnalytics.logSearchEvent as jasmine.Spy).calls.reset();
+
+        clickOnClearButton();
+
+        expect(simpleFilterWithEraser.env.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(
+          jasmine.objectContaining({
+            name: 'clearAll',
+            type: 'simpleFilter'
+          }),
+          jasmine.objectContaining({
+            simpleFilterTitle: simpleFilterWithEraser.cmp.options.title,
+            simpleFilterField: simpleFilterWithEraser.cmp.options.field
+          })
+        );
+      });
+
+      it('should log only one search event after clicking on clear button', () => {
+        selectSomeValues();
+        (simpleFilterWithEraser.env.usageAnalytics.logSearchEvent as jasmine.Spy).calls.reset();
+        clickOnClearButton();
+
+        expect(simpleFilterWithEraser.env.usageAnalytics.logSearchEvent).toHaveBeenCalledTimes(1);
       });
     });
   });

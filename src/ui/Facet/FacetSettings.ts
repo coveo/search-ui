@@ -1,10 +1,12 @@
+import Popper from 'popper.js';
 import 'styling/_FacetSettings';
-import { each, find, map, contains, compact, filter, findWhere, escape } from 'underscore';
+import { compact, contains, each, escape, filter, find, findWhere, map } from 'underscore';
 import { InitializationEvents } from '../../events/InitializationEvents';
 import { QueryStateModel } from '../../models/QueryStateModel';
 import { l } from '../../strings/Strings';
 import { AccessibleButton } from '../../utils/AccessibleButton';
 import { $$ } from '../../utils/Dom';
+import { KEYBOARD, KeyboardUtils } from '../../utils/KeyboardUtils';
 import { LocalStorageUtils } from '../../utils/LocalStorageUtils';
 import { SVGDom } from '../../utils/SVGDom';
 import { SVGIcons } from '../../utils/SVGIcons';
@@ -12,8 +14,6 @@ import { Utils } from '../../utils/Utils';
 import { analyticsActionCauseList, IAnalyticsFacetMeta } from '../Analytics/AnalyticsActionListMeta';
 import { Facet } from './Facet';
 import { FacetSort, IFacetSortDescription } from './FacetSort';
-import Popper from 'popper.js';
-import { KEYBOARD, KeyboardUtils } from '../../utils/KeyboardUtils';
 
 export interface IFacetSettingsKlass {
   new (sorts: string[], facet: Facet): FacetSettings;
@@ -47,6 +47,14 @@ export class FacetSettings extends FacetSort {
   private onDocumentClick = () => this.close();
   private closeTimeout: number;
   private enabledSortsIgnoreRenderBecauseOfPairs: IFacetSortDescription[] = [];
+
+  private get isExpanded() {
+    return this.settingsButton && this.settingsButton.getAttribute('aria-expanded') === `${true}`;
+  }
+
+  private set isExpanded(expanded: boolean) {
+    this.settingsButton.setAttribute('aria-expanded', `${expanded}`);
+  }
 
   constructor(public sorts: string[], public facet: Facet) {
     super(sorts, facet);
@@ -146,6 +154,10 @@ export class FacetSettings extends FacetSort {
    * Close the settings menu
    */
   public close() {
+    if (!this.isExpanded) {
+      return;
+    }
+    this.isExpanded = false;
     $$(this.settingsPopup).detach();
   }
 
@@ -154,13 +166,9 @@ export class FacetSettings extends FacetSort {
    */
   public open() {
     $$(this.settingsPopup).insertAfter(this.settingsButton);
-    new Popper(this.settingsButton, this.settingsPopup, {
-      modifiers: {
-        preventOverflow: {
-          boundariesElement: this.facet.element.parentElement
-        }
-      }
-    });
+    new Popper(this.settingsButton, this.settingsPopup);
+
+    this.isExpanded = true;
 
     if (this.hideSection && this.showSection) {
       $$(this.hideSection).toggle(!$$(this.facet.element).hasClass('coveo-facet-collapsed'));
@@ -195,11 +203,13 @@ export class FacetSettings extends FacetSort {
   }
 
   private buildSettingsButton() {
-    this.settingsButton = $$('div', { className: 'coveo-facet-header-settings' }).el;
+    this.settingsButton = $$('div', { className: 'coveo-facet-header-settings', 'aria-haspopup': 'true' }).el;
     this.settingsButton.innerHTML = SVGIcons.icons.more;
     SVGDom.addClassToSVGInContainer(this.settingsButton, 'coveo-facet-settings-more-svg');
 
     this.hideElementOnMouseEnterLeave(this.settingsButton);
+
+    this.isExpanded = false;
 
     new AccessibleButton()
       .withElement(this.settingsButton)
@@ -226,6 +236,12 @@ export class FacetSettings extends FacetSort {
   private buildSettingsPopup() {
     this.settingsPopup = $$('div', { className: 'coveo-facet-settings-popup' }).el;
     this.hideElementOnMouseEnterLeave(this.settingsPopup);
+    $$(this.settingsPopup).on('focusout', (e: FocusEvent) => {
+      if (e.relatedTarget && this.settingsPopup.contains(e.relatedTarget as Node)) {
+        return;
+      }
+      this.close();
+    });
   }
 
   private buildSortSection() {

@@ -28,7 +28,7 @@ export interface IBadgeColor {
 /**
  * The Badge component outputs a field value with customizable colors and an icon preceding it.
  *
- * This component is a result template component (see [Result Templates](https://developers.coveo.com/x/aIGfAQ)). It
+ * This component is a result template component (see [Result Templates](https://docs.coveo.com/en/413/)). It
  * extends the {@link FieldValue} component. Therefore all FieldValue options are also available for a Badge component.
  */
 export class Badge extends FieldValue implements IComponentBindings {

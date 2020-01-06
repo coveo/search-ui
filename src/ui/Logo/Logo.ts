@@ -1,5 +1,5 @@
-import { exportGlobally } from '../../GlobalExports';
 import { IQuerySuccessEventArgs, QueryEvents } from '../../events/QueryEvents';
+import { exportGlobally } from '../../GlobalExports';
 import { l } from '../../strings/Strings';
 import { $$ } from '../../utils/Dom';
 import { SVGDom } from '../../utils/SVGDom';
@@ -9,7 +9,11 @@ import { IComponentBindings } from '../Base/ComponentBindings';
 import { ComponentOptions } from '../Base/ComponentOptions';
 import { Initialization } from '../Base/Initialization';
 
-export interface ILogoOptions {}
+export type ValidLogoTarget = '_top' | '_blank' | '_self' | '_parent';
+
+export interface ILogoOptions {
+  target: string;
+}
 
 /**
  * The Logo component adds a clickable Coveo logo in the search interface.
@@ -23,7 +27,20 @@ export class Logo extends Component {
     });
   };
 
-  static options: ILogoOptions = {};
+  /**
+   * The possible options for the component
+   * @componentOptions
+   */
+  static options: ILogoOptions = {
+    /**
+     * Specifies how the link to the Coveo website should be opened.
+     *
+     * Valid values supported are `_top`, `_blank`, `_self`, `_parent`.
+     *
+     * Default value is `undefined`, meaning standard browser behaviour for links will be respected.
+     */
+    target: ComponentOptions.buildStringOption<ValidLogoTarget>()
+  };
 
   /**
    * Creates a new Logo component.
@@ -35,28 +52,29 @@ export class Logo extends Component {
   constructor(public element: HTMLElement, public options?: ILogoOptions, bindings?: IComponentBindings) {
     super(element, Logo.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, Logo, options);
+    this.buildLink();
+    this.bind.onRootElement(QueryEvents.queryError, () => this.hide());
+    this.bind.onRootElement(QueryEvents.querySuccess, (data: IQuerySuccessEventArgs) => this.handleQuerySuccess(data));
+  }
 
+  private buildLink() {
     const link = $$(
       'a',
       {
         className: 'coveo-powered-by coveo-footer-logo',
-        href: 'http://www.coveo.com/',
+        href: 'https://www.coveo.com/',
         'aria-label': l('CoveoHomePage')
       },
       SVGIcons.icons.coveoPoweredBy
     );
+    this.options.target && link.setAttribute('target', this.options.target);
+
     SVGDom.addClassToSVGInContainer(link.el, 'coveo-powered-by-svg');
     this.element.appendChild(link.el);
+  }
 
-    this.bind.onRootElement(QueryEvents.noResults, () => this.hide());
-    this.bind.onRootElement(QueryEvents.querySuccess, (data: IQuerySuccessEventArgs) => {
-      if (data.results.results.length > 0) {
-        this.show();
-      } else {
-        this.hide();
-      }
-    });
-    this.bind.onRootElement(QueryEvents.queryError, () => this.hide());
+  private handleQuerySuccess(data: IQuerySuccessEventArgs) {
+    data.results.results.length > 0 ? this.show() : this.hide();
   }
 
   public hide() {

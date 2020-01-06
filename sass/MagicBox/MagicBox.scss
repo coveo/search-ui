@@ -9,7 +9,6 @@
   position: relative;
   text-align: left;
   color: $grey-900;
-  border: 1px solid $grey-500;
   .magic-box-input {
     background: $white;
     height: $height;
@@ -121,9 +120,10 @@
     .magic-box-suggestions.magic-box-hasSuggestion {
       display: block;
       .coveo-magicbox-suggestions {
-        border: 1px solid $grey-500;
+        border: $default-border;
       }
       .coveo-suggestion-container {
+        border: $default-border;
         .coveo-magicbox-suggestions {
           border: none;
         }
@@ -220,8 +220,17 @@
       top: 0;
       left: 0;
       right: 0;
-      border: none;
-      border-top: 1px solid $grey-500;
+      .coveo-magicbox-suggestions {
+        border: none;
+        border-top: $default-border;
+      }
+      .coveo-suggestion-container {
+        border: none;
+        border-top: $default-border;
+        .coveo-magicbox-suggestions {
+          border-top: none;
+        }
+      }
     }
   }
 }

@@ -1,5 +1,6 @@
 import { Component } from '../Base/Component';
-import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { IFieldOption } from '../Base/IComponentOptions';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { SettingsEvents } from '../../events/SettingsEvents';
 import { ISettingsPopulateMenuArgs } from '../Settings/Settings';

@@ -26,7 +26,6 @@ import { ComponentStateModel } from '../../models/ComponentStateModel';
 import { IAttributeChangedEventArg, Model } from '../../models/Model';
 import { QueryStateModel, QUERY_STATE_ATTRIBUTES } from '../../models/QueryStateModel';
 import { SearchEndpoint } from '../../rest/SearchEndpoint';
-import { ComponentsTypes } from '../../utils/ComponentsTypes';
 import { $$ } from '../../utils/Dom';
 import { HashUtils } from '../../utils/HashUtils';
 import { Utils } from '../../utils/Utils';
@@ -36,11 +35,13 @@ import { NoopAnalyticsClient } from '../Analytics/NoopAnalyticsClient';
 import { AriaLive, IAriaLive } from '../AriaLive/AriaLive';
 import { BaseComponent } from '../Base/BaseComponent';
 import { IComponentBindings } from '../Base/ComponentBindings';
-import { ComponentOptions, IFieldOption, IQueryExpression } from '../Base/ComponentOptions';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { IFieldOption, IQueryExpression } from '../Base/IComponentOptions';
 import { InitializationPlaceholder } from '../Base/InitializationPlaceholder';
 import { RootComponent } from '../Base/RootComponent';
 import { Debug } from '../Debug/Debug';
 import { MissingTermManager } from '../MissingTerm/MissingTermManager';
+import { OmniboxAnalytics } from '../Omnibox/OmniboxAnalytics';
 import { Context, IPipelineContextProvider } from '../PipelineContext/PipelineGlobalExports';
 import {
   MEDIUM_SCREEN_WIDTH,
@@ -51,7 +52,8 @@ import {
 import { FacetColumnAutoLayoutAdjustment } from './FacetColumnAutoLayoutAdjustment';
 import { FacetValueStateHandler } from './FacetValueStateHandler';
 import RelevanceInspectorModule = require('../RelevanceInspector/RelevanceInspector');
-import { OmniboxAnalytics } from '../Omnibox/OmniboxAnalytics';
+import { ComponentsTypes } from '../../utils/ComponentsTypes';
+import { ScrollRestorer } from './ScrollRestorer';
 
 export interface ISearchInterfaceOptions {
   enableHistory?: boolean;
@@ -78,6 +80,7 @@ export interface ISearchInterfaceOptions {
   responsiveMediumBreakpoint?: number;
   responsiveSmallBreakpoint?: number;
   responsiveMode?: ValidResponsiveMode;
+  enableScrollRestoration?: boolean;
 }
 
 export interface IMissingTermManagerArgs {
@@ -255,7 +258,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
      * Default value is `true`.
      *
      * @deprecated This option is exposed for legacy reasons. Since the
-     * [July 2017 Release (v2.2900.23)](https://developers.coveo.com/x/gSMvAg), the loading animation is composed of
+     * [July 2017 Release (v2.2900.23)](https://docs.coveo.com/en/432/), the loading animation is composed of
      * placeholders, making this option is obsolete.
      */
     hideUntilFirstQuery: ComponentOptions.buildBooleanOption({
@@ -302,7 +305,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
      * By default, the loading animation is a Coveo CSS animation (which you can customize with CSS).
      *
      * @deprecated This option is exposed for legacy reasons. Since the
-     * [July 2017 Release (v2.2900.23)](https://developers.coveo.com/x/gSMvAg), the loading animation is composed of
+     * [July 2017 Release (v2.2900.23)](https://docs.coveo.com/en/432/), the loading animation is composed of
      * placeholders, making this option is obsolete.
      */
     firstLoadingAnimation: ComponentOptions.buildChildHtmlElementOption({
@@ -396,7 +399,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
      * Specifies the name of the query pipeline to use for the queries.
      *
      * You can specify a value for this option if your index is in a Coveo Cloud organization in which pipelines have
-     * been created (see [Managing Query Pipelines](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=128)).
+     * been created (see [Adding and Managing Query Pipelines](https://docs.coveo.com/en/1791/)).
      *
      * **Note:**
      *
@@ -425,7 +428,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
      *
      * Default value is `undefined`, which means that the search interface lets the Coveo Search API determine the
      * maximum cache age. This is typically equivalent to 30 minutes (see
-     * [Query Parameters - maximumAge](https://developers.coveo.com/x/iwEv#QueryParameters-maximumAge)).
+     * [maximumAge](https://docs.coveo.com/en/1461/#RestQueryParameters-maximumAge)).
      */
     maximumAge: ComponentOptions.buildNumberOption(),
     /**
@@ -483,7 +486,12 @@ export class SearchInterface extends RootComponent implements IComponentBindings
       {
         defaultValue: 'auto'
       }
-    )
+    ),
+    /**
+     * Specifies whether to restore the last scroll position when navigating back
+     * to the search interface.
+     */
+    enableScrollRestoration: ComponentOptions.buildBooleanOption({ defaultValue: false })
   };
 
   public static SMALL_INTERFACE_CLASS_NAME = 'coveo-small-search-interface';
@@ -495,6 +503,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
   public componentOptionsModel: ComponentOptionsModel;
   public usageAnalytics: IAnalyticsClient;
   public historyManager: IHistoryManager;
+  public scrollRestorer: ScrollRestorer;
   /**
    * Allows to get and set the different breakpoints for mobile and tablet devices.
    *
@@ -551,6 +560,8 @@ export class SearchInterface extends RootComponent implements IComponentBindings
 
     this.setupEventsHandlers();
     this.setupHistoryManager(element, _window);
+
+    this.setupScrollRestorer(element, _window, this.queryStateModel);
 
     this.element.style.display = element.style.display || 'block';
 
@@ -715,7 +726,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
       return;
     }
 
-    this.historyManager = new HistoryController(element, _window, this.queryStateModel, this.queryController, this.usageAnalytics);
+    this.historyManager = new HistoryController(element, _window, this.queryStateModel, this.queryController);
   }
 
   private setupQueryMode() {
@@ -745,6 +756,12 @@ export class SearchInterface extends RootComponent implements IComponentBindings
   private setupDebugInfo() {
     if (this.options.enableDebugInfo) {
       setTimeout(() => new Debug(this.element, this.getBindings()));
+    }
+  }
+
+  private setupScrollRestorer(element: HTMLElement, _window: Window, queryStateModel: QueryStateModel) {
+    if (this.options.enableScrollRestoration) {
+      this.scrollRestorer = new ScrollRestorer(element, queryStateModel);
     }
   }
 

@@ -20,6 +20,7 @@ import { AccessibilityFacet } from './AccessibilityFacet';
 import { AccessibilityFacetRange } from './AccessibilityFacetRange';
 import { AccessibilityFacetSlider } from './AccessibilityFacetSlider';
 import { AccessibilityDynamicFacet } from './AccessibilityDynamicFacet';
+import { AccessibilityDynamicHierarchicalFacet } from './AccessibilityDynamicHierarchicalFacet';
 import { AccessibilityFieldTable } from './AccessibilityFieldTable';
 import { AccessibilityFieldValue } from './AccessibilityFieldValue';
 import { AccessibilityIcon } from './AccessibilityIcon';
@@ -48,6 +49,8 @@ import { AccessibilitySort } from './AccessibilitySort';
 import { AccessibilityTab } from './AccessibilityTab';
 import { AccessibilityTimespanFacet } from './AccessibilityTimespanFacet';
 import { AccessibilityYouTubeThumbnail } from './AccessibilityYouTubeThumbnail';
+import { AccessibilityStarResult } from './AccessibilityStarResult';
+import { AccessibilityResultPreviewsManager } from './AccessibilityResultPreviewsManager';
 
 const initialHTMLSetup = () => {
   const body = jasmine['getGlobal']().document.body;
@@ -114,6 +117,7 @@ describe('Testing ...', () => {
   AccessibilityFacetRange();
   AccessibilityFacetSlider();
   AccessibilityDynamicFacet();
+  AccessibilityDynamicHierarchicalFacet();
   AccessibilityFieldTable();
   AccessibilityFieldValue();
   AccessibilityIcon();
@@ -140,4 +144,6 @@ describe('Testing ...', () => {
   AccessibilityTab();
   AccessibilityTimespanFacet();
   AccessibilityYouTubeThumbnail();
+  AccessibilityStarResult();
+  AccessibilityResultPreviewsManager();
 });

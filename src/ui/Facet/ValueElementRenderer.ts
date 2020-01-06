@@ -172,6 +172,11 @@ export class ValueElementRenderer {
 
   private buildListItem() {
     this.listItem = $$('li', { className: 'coveo-facet-value coveo-facet-selectable' }).el;
+
+    if (!$$(this.listItem).canHandleEvent('touchstart')) {
+      $$(this.listItem).addClass('coveo-with-hover');
+    }
+
     this.listItem.setAttribute('data-value', this.facetValue.value);
   }
 

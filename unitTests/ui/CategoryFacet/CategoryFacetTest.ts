@@ -26,19 +26,30 @@ export function buildCategoryFacetResults(numberOfResults = 11, numberOfRequeste
 export function CategoryFacetTest() {
   describe('CategoryFacet', () => {
     let test: IBasicComponentSetup<CategoryFacet>;
+    let options: ICategoryFacetOptions;
     let simulateQueryData: ISimulateQueryData;
 
     beforeEach(() => {
+      options = { field: '@field' };
       simulateQueryData = buildCategoryFacetResults();
-      test = Mock.advancedComponentSetup<CategoryFacet>(
-        CategoryFacet,
-        new Mock.AdvancedComponentSetupOptions(null, { field: '@field' }, env => env.withLiveQueryStateModel())
-      );
-      test.cmp.activePath = simulateQueryData.query.categoryFacets[0].path;
+      initializeComponent();
     });
+
+    function initializeComponent() {
+      const initializedOptions = new Mock.AdvancedComponentSetupOptions(null, options, env => env.withLiveQueryStateModel());
+      test = Mock.advancedComponentSetup<CategoryFacet>(CategoryFacet, initializedOptions);
+      test.cmp.activePath = simulateQueryData.query.categoryFacets[0].path;
+    }
 
     function allCategoriesButton() {
       return $$(test.cmp.element).find('.coveo-category-facet-all-categories');
+    }
+
+    function simulateNoResults() {
+      const emptyCategoryFacetResults = FakeResults.createFakeCategoryFacetResult('@field', [], undefined, 0);
+      simulateQueryData.results = { ...simulateQueryData.results, categoryFacets: [emptyCategoryFacetResults] };
+
+      Simulate.query(test.env, simulateQueryData);
     }
 
     it('when calling getVisibleParentValues returns all the visible parent values', () => {
@@ -98,6 +109,12 @@ export function CategoryFacetTest() {
       expect($$(test.cmp.element).hasClass('coveo-hidden')).toBeTruthy();
     });
 
+    it('calling show removes the coveo hidden class', () => {
+      $$(test.cmp.element).addClass('coveo-hidden');
+      test.cmp.show();
+      expect($$(test.cmp.element).hasClass('coveo-hidden')).toBe(false);
+    });
+
     it('calling "scrollToTop" should call "scrollToTop" on the ResultListUtils', () => {
       spyOn(ResultListUtils, 'scrollToTop');
       test.cmp.scrollToTop();
@@ -106,51 +123,32 @@ export function CategoryFacetTest() {
     });
 
     describe('when there is no results', () => {
-      const simulateNoResults = () => {
-        const emptyCategoryFacetResults = FakeResults.createFakeCategoryFacetResult('@field', [], undefined, 0);
-        simulateQueryData.results = { ...simulateQueryData.results, categoryFacets: [emptyCategoryFacetResults] };
-        spyOn(test.cmp, 'hide');
-
-        Simulate.query(test.env, simulateQueryData);
-      };
-
-      it('hides the component by default', () => {
+      it('hides the component', () => {
         simulateNoResults();
-        expect(test.cmp.hide).toHaveBeenCalled();
+        expect(test.cmp.isCurrentlyDisplayed()).toBe(false);
       });
 
-      it('does not hide the component when the facet has available values', () => {
-        test.cmp.activePath = ['value1'];
-        spyOn(test.cmp, 'getAvailableValues').and.returnValue(['value1', 'value2']);
+      it(`does not call the query state model (doing so would prevent going back in history using the back button)`, () => {
+        spyOn(test.cmp.queryStateModel, 'set');
         simulateNoResults();
-        expect(test.cmp.hide).not.toHaveBeenCalled();
-      });
-
-      describe(`when the facet does not have available values,
-      when simulating no results`, () => {
-        it(`does not call the query state model (doing so would prevent going back in history using the back button)`, () => {
-          spyOn(test.cmp.queryStateModel, 'set');
-          simulateNoResults();
-          expect(test.cmp.queryStateModel.set).not.toHaveBeenCalled();
-        });
-
-        it('hides the component', () => {
-          spyOn(test.cmp, 'getAvailableValues').and.returnValue([]);
-          simulateNoResults();
-          expect(test.cmp.hide).toHaveBeenCalled();
-        });
+        expect(test.cmp.queryStateModel.set).not.toHaveBeenCalled();
       });
     });
 
-    it('should correctly evaluate isCurrentlyDisplayed() when the facet is not in an active state, but has available values', () => {
-      spyOn(test.cmp, 'getAvailableValues').and.returnValue(['value1']);
-      test.cmp.activePath = [];
+    it('when a base path is configured, when simulating a query with no results, it hides the component', () => {
+      options.basePath = ['hello'];
+      initializeComponent();
+      simulateNoResults();
+
+      expect(test.cmp.isCurrentlyDisplayed()).toBe(false);
+    });
+
+    it('should correctly evaluate isCurrentlyDisplayed() when facet is visible', () => {
       expect(test.cmp.isCurrentlyDisplayed()).toBe(true);
     });
 
-    it('should correctly evaluate isCurrentlyDisplayed() when the facet is not in an active state and has no available values', () => {
-      spyOn(test.cmp, 'getAvailableValues').and.returnValue([]);
-      test.cmp.activePath = [];
+    it('should correctly evaluate isCurrentlyDisplayed() when facet is not visible', () => {
+      test.cmp.hide();
       expect(test.cmp.isCurrentlyDisplayed()).toBe(false);
     });
 
@@ -168,12 +166,6 @@ export function CategoryFacetTest() {
         Simulate.query(test.env, simulateQueryData);
 
         expect(test.cmp.disabled).toBe(true);
-      });
-
-      it('hides the component', () => {
-        spyOn(test.cmp, 'hide');
-        Simulate.query(test.env, simulateQueryData);
-        expect(test.cmp.hide).toHaveBeenCalled();
       });
     });
 
@@ -631,6 +623,23 @@ export function CategoryFacetTest() {
         expect(ellipsis).toBeDefined();
         expect(ellipsis.previousSibling.textContent).toContain('parent4');
         expect(ellipsis.nextSibling.textContent).toContain('parent25');
+      });
+    });
+
+    describe('testing the DependsOnManager', () => {
+      beforeEach(() => {
+        spyOn(test.cmp.dependsOnManager, 'updateVisibilityBasedOnDependsOn');
+        spyOn(test.cmp.dependsOnManager, 'listenToParentIfDependentFacet');
+      });
+
+      it('should initialize the dependsOnManager', () => {
+        expect(test.cmp.dependsOnManager).toBeTruthy();
+      });
+
+      it(`when facet appearance is updated (e.g. after a successful query)
+      should call the "updateVisibilityBasedOnDependsOn" method of the DependsOnManager`, () => {
+        Simulate.query(test.env, simulateQueryData);
+        expect(test.cmp.dependsOnManager.updateVisibilityBasedOnDependsOn).toHaveBeenCalled();
       });
     });
   });

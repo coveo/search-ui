@@ -120,7 +120,7 @@ export class Searchbox extends Component {
    * @param bindings The bindings that the component requires to function normally. If not set, these will be
    * automatically resolved (with a slower execution time).
    */
-  constructor(public element: HTMLElement, public options?: ISearchboxOptions, bindings?: IComponentBindings) {
+  constructor(public element: HTMLElement, public options?: ISearchboxOptions, public bindings?: IComponentBindings) {
     super(element, Searchbox.ID, bindings);
 
     this.options = ComponentOptions.initComponentOptions(element, Searchbox, options);
@@ -129,29 +129,46 @@ export class Searchbox extends Component {
       $$(element).addClass('coveo-inline');
     }
 
+    this.initSearchBox();
+    this.initSearchButton();
+    this.applyMagicBoxIcon();
+    this.applyCustomHeight();
+  }
+
+  private initSearchBox() {
     const div = document.createElement('div');
     this.element.appendChild(div);
 
-    if (this.options.addSearchButton) {
-      const anchor = $$('a');
-      this.element.appendChild(anchor.el);
-      this.searchButton = new SearchButton(anchor.el, undefined, bindings);
-    }
-
     if (this.options.enableOmnibox) {
-      this.searchbox = new Omnibox(div, this.options, bindings);
+      this.searchbox = new Omnibox(div, this.options, this.bindings);
     } else {
-      this.searchbox = new Querybox(div, this.options, bindings);
+      this.searchbox = new Querybox(div, this.options, this.bindings);
+    }
+  }
+
+  private initSearchButton() {
+    if (!this.options.addSearchButton) {
+      return;
     }
 
+    const anchor = $$('a');
+    this.element.appendChild(anchor.el);
+    this.searchButton = new SearchButton(anchor.el, { searchbox: this.searchbox }, this.bindings);
+  }
+
+  private applyMagicBoxIcon() {
     const magicBoxIcon = $$(this.element).find('.magic-box-icon');
     magicBoxIcon.innerHTML = SVGIcons.icons.mainClear;
     SVGDom.addClassToSVGInContainer(magicBoxIcon, 'magic-box-clear-svg');
+  }
 
-    if (this.options.height) {
-      $$(element).addClass('coveo-custom-height');
-      SearchBoxResize.resize(this.element, options.height);
+  private applyCustomHeight() {
+    if (!this.options.height) {
+      return;
     }
+
+    $$(this.element).addClass('coveo-custom-height');
+    SearchBoxResize.resize(this.element, this.options.height);
   }
 }
 

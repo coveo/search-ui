@@ -29,11 +29,12 @@
   </div>
   <div class="coveo-main-section">
     <div class="coveo-facet-column">
-      <div class="CoveoFacet" data-title="Mailbox" data-field="@mailbox" data-tab="Email"></div>
-      <div class="CoveoFacet" data-title="From" data-field="@from" data-tab="Email"></div>
-      <div class="CoveoFacet" data-title="To" data-field="@to" data-tab="Email"></div>
-      <div class="CoveoFacet" data-title="File Type" data-field="@filetype" data-tab="Email"></div>
-      <div class="CoveoTimespanFacet" data-tab="Email"></div>
+      <div class="CoveoDynamicFacetManager">
+        <div class="CoveoDynamicFacet" data-title="Mailbox" data-field="@mailbox" data-tab="Email"></div>
+        <div class="CoveoDynamicFacet" data-title="From" data-field="@from" data-tab="Email"></div>
+        <div class="CoveoDynamicFacet" data-title="To" data-field="@to" data-tab="Email"></div>
+        <div class="CoveoDynamicFacet" data-title="FileType" data-field="@filetype" data-tab="Email"></div>
+      </div>
     </div>
     <div class="coveo-results-column">
       <div class="CoveoShareQuery"></div>
@@ -59,8 +60,10 @@
       </div>
       <div class="CoveoHiddenQuery"></div>
       <div class="CoveoErrorReport"></div>
-      <div class="CoveoResultList" data-layout="list" data-wait-animation="fade" data-auto-select-fields-to-include="true"></div>
-      <div class="CoveoResultList" data-layout="card" data-wait-animation="fade" data-auto-select-fields-to-include="true"></div>
+      <div class="CoveoResultList" data-layout="list" data-wait-animation="fade"
+        data-auto-select-fields-to-include="true"></div>
+      <div class="CoveoResultList" data-layout="card" data-wait-animation="fade"
+        data-auto-select-fields-to-include="true"></div>
       <div class="CoveoPager"></div>
       <div class="CoveoLogo"></div>
       <div class="CoveoResultsPerPage"></div>

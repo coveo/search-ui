@@ -1,6 +1,6 @@
 import * as _ from 'underscore';
 import { QueryController } from '../../controllers/QueryController';
-import { InitializationEvents, IInitializationEventArgs } from '../../events/InitializationEvents';
+import { IInitializationEventArgs, InitializationEvents } from '../../events/InitializationEvents';
 import { Assert } from '../../misc/Assert';
 import { Logger } from '../../misc/Logger';
 import { ComponentOptionsModel } from '../../models/ComponentOptionsModel';
@@ -12,7 +12,7 @@ import { $$ } from '../../utils/Dom';
 import { HashUtils } from '../../utils/HashUtils';
 import { JQueryUtils } from '../../utils/JQueryutils';
 import { Utils } from '../../utils/Utils';
-import { IAnalyticsNoMeta, analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
+import { analyticsActionCauseList, IAnalyticsNoMeta } from '../Analytics/AnalyticsActionListMeta';
 import { Component, IComponentDefinition } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { SearchInterface, StandaloneSearchInterface } from '../SearchInterface/SearchInterface';
@@ -757,7 +757,7 @@ export class LazyInitialization {
   public static buildErrorCallback(chunkName: string, resolve: Function) {
     return error => {
       LazyInitialization.logger
-        .warn(`Cannot load chunk for ${chunkName}. You may need to add the coveo-script class on the script tag that includes the Coveo framework. More details here https://docs.coveo.com/en/295/javascript-search-framework/lazy-versus-eager-component-loading#fixing-code-chunks-loading-path-issues
+        .warn(`Cannot load chunk for ${chunkName}. You may need to add the coveo-script class on the script tag that includes the Coveo framework. More details [here](https://docs.coveo.com/en/295/javascript-search-framework/lazy-versus-eager-component-loading#fixing-code-chunks-loading-path-issues).
         ${error}`);
       resolve(() => {});
     };

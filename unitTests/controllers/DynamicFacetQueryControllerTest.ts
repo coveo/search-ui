@@ -1,9 +1,11 @@
 import { DynamicFacetQueryController } from '../../src/controllers/DynamicFacetQueryController';
-import { DynamicFacet, IDynamicFacetOptions } from '../../src/ui/DynamicFacet/DynamicFacet';
+import { DynamicFacet } from '../../src/ui/DynamicFacet/DynamicFacet';
+import { IDynamicFacetOptions } from '../../src/ui/DynamicFacet/IDynamicFacet';
 import { DynamicFacetTestUtils } from '../ui/DynamicFacet/DynamicFacetTestUtils';
 import { QueryBuilder, SearchEndpoint } from '../../src/Core';
 import { FacetValueState } from '../../src/rest/Facet/FacetValueState';
 import { mockSearchEndpoint } from '../MockEnvironment';
+import { DependsOnManager } from '../../src/utils/DependsOnManager';
 
 export function DynamicFacetQueryControllerTest() {
   describe('DynamicFacetQueryController', () => {
@@ -11,10 +13,10 @@ export function DynamicFacetQueryControllerTest() {
     let facetOptions: IDynamicFacetOptions;
     let dynamicFacetQueryController: DynamicFacetQueryController;
     let queryBuilder: QueryBuilder;
-    let mockFacetValues = DynamicFacetTestUtils.createFakeFacetValues(1);
+    let mockFacetValues = DynamicFacetTestUtils.createFakeFacetValues(5);
 
     beforeEach(() => {
-      facetOptions = { field: '@field' };
+      facetOptions = { field: '@field', numberOfValues: 5 };
 
       initializeComponents();
     });
@@ -32,7 +34,7 @@ export function DynamicFacetQueryControllerTest() {
     }
 
     function facetRequest() {
-      return dynamicFacetQueryController.facetRequest;
+      return dynamicFacetQueryController.buildFacetRequest(queryBuilder.build());
     }
 
     function queryFacetRequests() {
@@ -48,12 +50,12 @@ export function DynamicFacetQueryControllerTest() {
       expect(queryFacetRequests().length).toBe(1);
     });
 
-    it('should send the field without the "@"', () => {
-      expect(facetRequest().field).toBe('field');
-    });
-
-    it('should send the facet type', () => {
+    it('should send the right basic facetRequest parameters', () => {
+      expect(facetRequest().facetId).toBe(facet.options.id);
+      expect(facetRequest().field).toBe(facet.fieldName);
       expect(facetRequest().type).toBe(facet.facetType);
+      expect(facetRequest().sortCriteria).toBe(facet.options.sortCriteria);
+      expect(facetRequest().injectionDepth).toBe(facet.options.injectionDepth);
     });
 
     it('should send the current values', () => {
@@ -61,7 +63,8 @@ export function DynamicFacetQueryControllerTest() {
 
       expect(currentValues[0]).toEqual({
         value: mockFacetValues[0].value,
-        state: mockFacetValues[0].state
+        state: mockFacetValues[0].state,
+        preventAutoSelect: mockFacetValues[0].preventAutoSelect
       });
     });
 
@@ -118,10 +121,54 @@ export function DynamicFacetQueryControllerTest() {
       expect(facetRequest().freezeCurrentValues).toBe(false);
     });
 
-    it('allows to enableFreezeCurrentValuesFlag', () => {
+    it(`when calling enableFreezeCurrentValuesFlag
+      allows to enable the flag`, () => {
       dynamicFacetQueryController.enableFreezeCurrentValuesFlag();
 
       expect(facetRequest().freezeCurrentValues).toBe(true);
+    });
+
+    it(`given a facet with dependent facets having selected values,
+      when calling enableFreezeCurrentValuesFlag
+      it sets the freezeCurrentValues flag to true`, () => {
+      facet.dependsOnManager = {
+        hasDependentFacets: true,
+        dependentFacetsHaveSelectedValues: true
+      } as DependsOnManager;
+
+      dynamicFacetQueryController.enableFreezeCurrentValuesFlag();
+
+      expect(facetRequest().freezeCurrentValues).toBe(true);
+    });
+
+    it(`given a facet with dependent facets without selected values,
+    when calling enableFreezeCurrentValuesFlag
+    when values are not affected
+    it sets the freezeCurrentValues flag to true`, () => {
+      facet.dependsOnManager = {
+        hasDependentFacets: true,
+        dependentFacetsHaveSelectedValues: false
+      } as DependsOnManager;
+
+      dynamicFacetQueryController.enableFreezeCurrentValuesFlag();
+
+      expect(facetRequest().freezeCurrentValues).toBe(true);
+    });
+
+    it(`given a facet with dependent facets without selected values,
+    when calling enableFreezeCurrentValuesFlag
+    when values are affected
+    it sets the freezeCurrentValues flag to true`, () => {
+      facet.dependsOnManager = {
+        hasDependentFacets: true,
+        dependentFacetsHaveSelectedValues: false
+      } as DependsOnManager;
+      facet.values.resetValues();
+      facet.values.get('allo');
+
+      dynamicFacetQueryController.enableFreezeCurrentValuesFlag();
+
+      expect(facetRequest().freezeCurrentValues).toBe(false);
     });
 
     it(`when freezeCurrentValues flag is set to true
@@ -168,7 +215,7 @@ export function DynamicFacetQueryControllerTest() {
 
       it(`should send a numberOfResults of 0 in order not to log the query as a full fleged query
         and alleviate the load on the index`, () => {
-        dynamicFacetQueryController.executeIsolatedQuery();
+        dynamicFacetQueryController.getQueryResults();
         expect(mockEndpoint.search).toHaveBeenCalledWith(
           jasmine.objectContaining({
             numberOfResults: 0
@@ -178,10 +225,10 @@ export function DynamicFacetQueryControllerTest() {
 
       it(`when there are no previous facets requests
       should create the array of facet requests`, () => {
-        dynamicFacetQueryController.executeIsolatedQuery();
+        dynamicFacetQueryController.getQueryResults();
         expect(mockEndpoint.search).toHaveBeenCalledWith(
           jasmine.objectContaining({
-            facets: [dynamicFacetQueryController.facetRequest]
+            facets: [dynamicFacetQueryController.buildFacetRequest(new QueryBuilder().build())]
           })
         );
       });
@@ -191,11 +238,11 @@ export function DynamicFacetQueryControllerTest() {
         const fakeFacet = DynamicFacetTestUtils.createAdvancedFakeFacet({ field: '@field2' }).cmp;
         fakeFacet.putStateIntoQueryBuilder(queryBuilder);
 
-        dynamicFacetQueryController.executeIsolatedQuery();
+        dynamicFacetQueryController.getQueryResults();
 
         expect(mockEndpoint.search).toHaveBeenCalledWith(
           jasmine.objectContaining({
-            facets: [queryFacetRequests()[0], dynamicFacetQueryController.facetRequest]
+            facets: [queryFacetRequests()[0], dynamicFacetQueryController.buildFacetRequest(new QueryBuilder().build())]
           })
         );
       });
@@ -206,7 +253,7 @@ export function DynamicFacetQueryControllerTest() {
         const originalFacetRequest = facetRequest();
 
         dynamicFacetQueryController.increaseNumberOfValuesToRequest(facetOptions.numberOfValues);
-        dynamicFacetQueryController.executeIsolatedQuery();
+        dynamicFacetQueryController.getQueryResults();
 
         const newFacetRequest = facetRequest();
         expect(originalFacetRequest).not.toEqual(newFacetRequest);

@@ -1,12 +1,13 @@
+import { compact, indexOf } from 'underscore';
+import { Assert } from '../../misc/Assert';
+import { Utils } from '../../utils/Utils';
+import { HtmlTemplate } from '../Templates/HtmlTemplate';
+import { Template } from '../Templates/Template';
 import { TemplateCache } from '../Templates/TemplateCache';
 import { TemplateList } from '../Templates/TemplateList';
 import { UnderscoreTemplate } from '../Templates/UnderscoreTemplate';
-import { HtmlTemplate } from '../Templates/HtmlTemplate';
-import { Template } from '../Templates/Template';
-import { IComponentOptions, IComponentOptionsOption, ComponentOptions, ComponentOptionsType } from './ComponentOptions';
-import { Assert } from '../../misc/Assert';
-import { Utils } from '../../utils/Utils';
-import { compact, indexOf } from 'underscore';
+import { ComponentOptions } from './ComponentOptions';
+import { ComponentOptionsType, IComponentOptions, IComponentOptionsOption } from './IComponentOptions';
 
 export interface IComponentOptionsTemplateOptionArgs extends IComponentOptions<Template> {
   /**

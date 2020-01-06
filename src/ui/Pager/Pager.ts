@@ -1,29 +1,28 @@
+import 'styling/_Pager';
+import {
+  IBuildingQueryEventArgs,
+  INewQueryEventArgs,
+  INoResultsEventArgs,
+  IQuerySuccessEventArgs,
+  QueryEvents
+} from '../../events/QueryEvents';
+import { ResultListEvents } from '../../events/ResultListEvents';
+import { exportGlobally } from '../../GlobalExports';
+import { Assert } from '../../misc/Assert';
+import { IAttributeChangedEventArg, MODEL_EVENTS } from '../../models/Model';
+import { QueryStateModel, QUERY_STATE_ATTRIBUTES } from '../../models/QueryStateModel';
+import { l } from '../../strings/Strings';
+import { AccessibleButton } from '../../utils/AccessibleButton';
+import { DeviceUtils } from '../../utils/DeviceUtils';
+import { $$ } from '../../utils/Dom';
+import { ResultListUtils } from '../../utils/ResultListUtils';
+import { SVGDom } from '../../utils/SVGDom';
+import { SVGIcons } from '../../utils/SVGIcons';
+import { analyticsActionCauseList, IAnalyticsActionCause, IAnalyticsPagerMeta } from '../Analytics/AnalyticsActionListMeta';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { ComponentOptions } from '../Base/ComponentOptions';
-import { DeviceUtils } from '../../utils/DeviceUtils';
-import {
-  QueryEvents,
-  INewQueryEventArgs,
-  IBuildingQueryEventArgs,
-  IQuerySuccessEventArgs,
-  INoResultsEventArgs
-} from '../../events/QueryEvents';
-import { MODEL_EVENTS, IAttributeChangedEventArg } from '../../models/Model';
-import { QueryStateModel } from '../../models/QueryStateModel';
-import { QUERY_STATE_ATTRIBUTES } from '../../models/QueryStateModel';
-import { analyticsActionCauseList, IAnalyticsPagerMeta, IAnalyticsActionCause } from '../Analytics/AnalyticsActionListMeta';
 import { Initialization } from '../Base/Initialization';
-import { Assert } from '../../misc/Assert';
-import { l } from '../../strings/Strings';
-import { $$ } from '../../utils/Dom';
-import { exportGlobally } from '../../GlobalExports';
-import { SVGIcons } from '../../utils/SVGIcons';
-import { SVGDom } from '../../utils/SVGDom';
-import 'styling/_Pager';
-import { AccessibleButton } from '../../utils/AccessibleButton';
-import { ResultListEvents } from '../../events/ResultListEvents';
-import { ResultListUtils } from '../../utils/ResultListUtils';
 
 export interface IPagerOptions {
   numberOfPages: number;
@@ -135,7 +134,10 @@ export class Pager extends Component {
     this.bind.onRootElement(QueryEvents.queryError, () => this.handleQueryError());
     this.bind.onRootElement(QueryEvents.noResults, (args: INoResultsEventArgs) => this.handleNoResults(args));
     this.bind.onQueryState(MODEL_EVENTS.CHANGE_ONE, QUERY_STATE_ATTRIBUTES.FIRST, (data: IAttributeChangedEventArg) =>
-      this.handleQueryStateModelChanged(data)
+      this.handleQueryStateFirstResultChanged(data)
+    );
+    this.bind.onQueryState(MODEL_EVENTS.CHANGE_ONE, QUERY_STATE_ATTRIBUTES.NUMBER_OF_RESULTS, (data: IAttributeChangedEventArg) =>
+      this.handleQueryStateNumberOfResultsPerPageChanged(data)
     );
     this.addAlwaysActiveListeners();
 
@@ -322,6 +324,11 @@ export class Pager extends Component {
     if (data.queryBuilder.numberOfResults == null) {
       data.queryBuilder.numberOfResults = eventArgs.count;
     }
+
+    const maxResultNumber = data.queryBuilder.firstResult + data.queryBuilder.numberOfResults;
+    const numOfExcessResults = Math.max(0, maxResultNumber - this.options.maximumNumberOfResultsFromIndex);
+
+    data.queryBuilder.numberOfResults -= numOfExcessResults;
   }
 
   private computePagerBoundary(firstResult: number, totalCount: number) {
@@ -416,13 +423,19 @@ export class Pager extends Component {
     return nextButton;
   }
 
-  private handleQueryStateModelChanged(data: IAttributeChangedEventArg) {
+  private handleQueryStateFirstResultChanged(data: IAttributeChangedEventArg) {
     if (!this.listenToQueryStateChange) {
       return;
     }
     Assert.exists(data);
     this.needToReset = false;
     const firstResult = data.value;
+    this.currentPage = this.fromFirstResultsToPageNumber(firstResult);
+  }
+
+  private handleQueryStateNumberOfResultsPerPageChanged(data: IAttributeChangedEventArg) {
+    const firstResult = this.queryStateModel.get(QUERY_STATE_ATTRIBUTES.FIRST);
+    this.searchInterface.resultsPerPage = data.value;
     this.currentPage = this.fromFirstResultsToPageNumber(firstResult);
   }
 

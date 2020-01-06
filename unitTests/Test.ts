@@ -36,6 +36,9 @@ L10NTest();
 import { PromisesShimTest } from './misc/PromisesShimTest';
 PromisesShimTest();
 
+import { EnvironmentTest } from './misc/EnvironmentTest';
+EnvironmentTest();
+
 import { ModelTest } from './models/ModelTest';
 ModelTest();
 
@@ -140,6 +143,18 @@ ComponentEventsTest();
 
 import { ComponentOptionsTest } from './ui/ComponentOptionsTest';
 ComponentOptionsTest();
+
+import { ComponentOptionLoaderTest } from './ui/ComponentOptionsLoaderTest';
+ComponentOptionLoaderTest();
+
+import { ComponentOptionsMergerTest } from './ui/ComponentOptionsMergerTest';
+ComponentOptionsMergerTest();
+
+import { ComponentOptionsValidatorTest } from './ui/ComponentOptionsValidatorTest';
+ComponentOptionsValidatorTest();
+
+import { ComponentOptionsPostProcessorTest } from './ui/ComponentOptionsPostProcessorTest';
+ComponentOptionsPostProcessorTest();
 
 import { ComponentTest } from './ui/ComponentTest';
 ComponentTest();
@@ -492,6 +507,9 @@ FacetSliderQueryControllerTest();
 import { DateUtilsTest } from './ui/DateUtilsTest';
 DateUtilsTest();
 
+import { NumberUtilsTest } from './utils/NumberUtilsTest';
+NumberUtilsTest();
+
 import { DebugForResultTest } from './ui/DebugForResultTest';
 DebugForResultTest();
 
@@ -521,6 +539,18 @@ CategoryFacetTest();
 
 import { CategoryFacetValuesTreeTest } from './ui/CategoryFacet/CategoryFacetValuesTreeTest';
 CategoryFacetValuesTreeTest();
+
+import { DynamicHierarchicalFacetTest } from './ui/DynamicHierarchicalFacet/DynamicHierarchicalFacetTest';
+DynamicHierarchicalFacetTest();
+
+import { DynamicHierarchicalFacetValueTest } from './ui/DynamicHierarchicalFacet/DynamicHierarchicalFacetValues/DynamicHierarchicalFacetValueTest';
+DynamicHierarchicalFacetValueTest();
+
+import { DynamicHierarchicalFacetValueRendererTest } from './ui/DynamicHierarchicalFacet/DynamicHierarchicalFacetValues/DynamicHierarchicalFacetValueRendererTest';
+DynamicHierarchicalFacetValueRendererTest();
+
+import { DynamicHierarchicalFacetValuesTest } from './ui/DynamicHierarchicalFacet/DynamicHierarchicalFacetValues/DynamicHierarchicalFacetValuesTest';
+DynamicHierarchicalFacetValuesTest();
 
 import { FacetValueSuggestionsTest } from './ui/FacetValueSuggestionsTest';
 FacetValueSuggestionsTest();
@@ -642,11 +672,17 @@ CategoryValueTest();
 import { CategoryFacetHeaderTest } from './ui/CategoryFacet/CategoryFacetHeaderTest';
 CategoryFacetHeaderTest();
 
+import { DynamicHierarchicalFacetBreadcrumbTest } from './ui/DynamicHierarchicalFacet/DynamicHierarchicalFacetBreadcrumbTest';
+DynamicHierarchicalFacetBreadcrumbTest();
+
 import { GrammarTest } from './magicbox/GrammarTest';
 GrammarTest();
 
 import { SuggestionsManagerTest } from './magicbox/SuggestionsManagerTest';
 SuggestionsManagerTest();
+
+import { QueryProcessorTest } from './magicbox/QueryProcessorTest';
+QueryProcessorTest();
 
 import { MagicBoxClearTest } from './magicbox/MagicBoxClearTest';
 MagicBoxClearTest();
@@ -663,6 +699,9 @@ QuerySummaryUtilsTest();
 import { CategoryFacetQueryControllerTest } from './controllers/CategoryFacetQueryControllerTest';
 CategoryFacetQueryControllerTest();
 
+import { DynamicHierarchicalFacetQueryControllerTest } from './controllers/DynamicHierarchicalFacetQueryControllerTest';
+DynamicHierarchicalFacetQueryControllerTest();
+
 import { ComponentsTypesTest } from './utils/ComponentsTypesTest';
 ComponentsTypesTest();
 
@@ -677,6 +716,9 @@ FacetUtilsTest();
 
 import { DynamicFacetTest } from './ui/DynamicFacet/DynamicFacetTest';
 DynamicFacetTest();
+
+import { DynamicFacetRangeTest } from './ui/DynamicFacet/DynamicFacetRangeTest';
+DynamicFacetRangeTest();
 
 import { DynamicFacetHeaderTest } from './ui/DynamicFacet/DynamicFacetHeader/DynamicFacetHeaderTest';
 DynamicFacetHeaderTest();
@@ -705,14 +747,26 @@ DynamicFacetSearchValueRendererTest();
 import { DynamicFacetBreadcrumbsTest } from './ui/DynamicFacet/DynamicFacetBreadcrumbsTest';
 DynamicFacetBreadcrumbsTest();
 
+import { DynamicFacetRequestBuilderTest } from './controllers/DynamicFacetRequestBuilderTest';
+DynamicFacetRequestBuilderTest();
+
 import { DynamicFacetQueryControllerTest } from './controllers/DynamicFacetQueryControllerTest';
 DynamicFacetQueryControllerTest();
+
+import { DynamicFacetRangeQueryControllerTest } from './controllers/DynamicFacetRangeQueryControllerTest';
+DynamicFacetRangeQueryControllerTest();
 
 import { DynamicFacetManagerTest } from './ui/DynamicFacetManagerTest';
 DynamicFacetManagerTest();
 
-import { DynamicFacetValueFormatterTest } from './ui/DynamicFacet/DynamicFacetValues/DynamicFacetValueFormatterTest';
-DynamicFacetValueFormatterTest();
+import { DynamicFacetValueCreatorTest } from './ui/DynamicFacet/DynamicFacetValues/DynamicFacetValueCreatorTest';
+DynamicFacetValueCreatorTest();
+
+import { DynamicFacetRangeValueCreatorTest } from './ui/DynamicFacet/DynamicFacetValues/DynamicFacetRangeValueCreatorTest';
+DynamicFacetRangeValueCreatorTest();
+
+import { DynamicFacetRangeValueParserTest } from './ui/DynamicFacet/DynamicFacetValues/DynamicFacetRangeValueParserTest';
+DynamicFacetRangeValueParserTest();
 
 import { FacetSearchControllerTest } from './controllers/FacetSearchControllerTest';
 FacetSearchControllerTest();
@@ -746,3 +800,12 @@ FieldImageTest();
 
 import { OmniboxAnalyticsTest } from './ui/OmniboxAnalyticsTest';
 OmniboxAnalyticsTest();
+
+import { StarRatingTest } from './ui/StarRatingTest';
+StarRatingTest();
+
+import { ResultPreviewsManagerTest } from './magicbox/ResultPreviewsManagerTest';
+ResultPreviewsManagerTest();
+
+import { CommerceQueryTest } from './ui/CommerceQueryTest';
+CommerceQueryTest();

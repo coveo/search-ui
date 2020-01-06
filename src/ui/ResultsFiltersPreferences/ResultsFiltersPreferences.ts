@@ -1,30 +1,29 @@
-import { Component } from '../Base/Component';
-import { ComponentOptions } from '../Base/ComponentOptions';
-import { IComponentBindings } from '../Base/ComponentBindings';
-import { LocalStorageUtils } from '../../utils/LocalStorageUtils';
+import 'styling/_ResultsFiltersPreferences';
+import * as _ from 'underscore';
+import { BreadcrumbEvents, IPopulateBreadcrumbEventArgs } from '../../events/BreadcrumbEvents';
 import { InitializationEvents } from '../../events/InitializationEvents';
 import { PreferencesPanelEvents } from '../../events/PreferencesPanelEvents';
+import { IBuildingQueryEventArgs, QueryEvents } from '../../events/QueryEvents';
+import { exportGlobally } from '../../GlobalExports';
 import { MODEL_EVENTS } from '../../models/Model';
-import { QueryEvents, IBuildingQueryEventArgs } from '../../events/QueryEvents';
 import { QueryStateModel, QUERY_STATE_ATTRIBUTES } from '../../models/QueryStateModel';
-import { BreadcrumbEvents, IPopulateBreadcrumbEventArgs } from '../../events/BreadcrumbEvents';
-import { analyticsActionCauseList, IAnalyticsCustomFiltersChangeMeta } from '../Analytics/AnalyticsActionListMeta';
-import { Tab } from '../Tab/Tab';
-import { Initialization } from '../Base/Initialization';
 import { l } from '../../strings/Strings';
-import { Utils } from '../../utils/Utils';
 import { AccessibleButton } from '../../utils/AccessibleButton';
 import { $$ } from '../../utils/Dom';
-import * as _ from 'underscore';
-import { exportGlobally } from '../../GlobalExports';
-
-import 'styling/_ResultsFiltersPreferences';
-import { Checkbox } from '../FormWidgets/Checkbox';
-import { TextInput } from '../FormWidgets/TextInput';
-import { MultiSelect } from '../FormWidgets/MultiSelect';
-import { FormGroup } from '../FormWidgets/FormGroup';
-import { SVGIcons } from '../../utils/SVGIcons';
+import { LocalStorageUtils } from '../../utils/LocalStorageUtils';
 import { SVGDom } from '../../utils/SVGDom';
+import { SVGIcons } from '../../utils/SVGIcons';
+import { Utils } from '../../utils/Utils';
+import { analyticsActionCauseList, IAnalyticsCustomFiltersChangeMeta } from '../Analytics/AnalyticsActionListMeta';
+import { Component } from '../Base/Component';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { Initialization } from '../Base/Initialization';
+import { Checkbox } from '../FormWidgets/Checkbox';
+import { FormGroup } from '../FormWidgets/FormGroup';
+import { MultiSelect } from '../FormWidgets/MultiSelect';
+import { TextInput } from '../FormWidgets/TextInput';
+import { Tab } from '../Tab/Tab';
 
 export interface IResultFilterPreference {
   selected?: boolean;
@@ -47,7 +46,7 @@ export interface IResultsFiltersPreferencesOptions {
  * are saved to local storage.
  *
  * Only advanced end users who understand the Coveo query syntax should use this feature (see
- * [Coveo Query Syntax Reference](http://www.coveo.com/go?dest=adminhelp70&lcid=9&context=10005)).
+ * [Coveo Query Syntax Reference](https://www.coveo.com/go?dest=adminhelp70&lcid=9&context=10005)).
  *
  * This component is normally accessible through the [`Settings`]{@link Settings} menu. Its usual location in the DOM is
  * inside the [`PreferencesPanel`]{@link PreferencesPanel} element.
@@ -94,9 +93,9 @@ export class ResultsFiltersPreferences extends Component {
      * **Note:**
      * > You cannot set this option directly in the component markup as an HTML attribute. You must either set it in the
      * > [`init`]{@link init} call of your search interface (see
-     * > [Components - Passing Component Options in the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsintheinitCall)),
+     * > [Passing Component Options in the init Call](https://docs.coveo.com/en/346/#passing-component-options-in-the-init-call)),
      * > or before the `init` call, using the `options` top-level function (see
-     * > [Components - Passing Component Options Before the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsBeforetheinitCall)).
+     * > [Passing Component Options Before the init Call](https://docs.coveo.com/en/346/#passing-component-options-before-the-init-call)).
      *
      * Filters should follow this definition:
      *
@@ -267,7 +266,7 @@ export class ResultsFiltersPreferences extends Component {
     const onlineHelp = $$(
       'a',
       {
-        href: 'http://www.coveo.com/go?dest=adminhelp70&lcid=9&context=10006',
+        href: 'https://www.coveo.com/go?dest=adminhelp70&lcid=9&context=10006',
         className: 'coveo-online-help'
       },
       '?'

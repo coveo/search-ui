@@ -20,7 +20,8 @@
 
 <body id="search" class='CoveoSearchInterface' data-enable-history="true">
   <div class="coveo-tab-section">
-    <a class="CoveoTab" data-id="Lithium" data-caption="Lithium" data-expression="@litopicid @filetype==lithiummessage" data-sort="date descending"></a>
+    <a class="CoveoTab" data-id="Lithium" data-caption="Lithium" data-expression="@litopicid @filetype==lithiummessage"
+      data-sort="date descending"></a>
   </div>
   <div class='coveo-search-section'>
     <div class="CoveoSearchbox" data-enable-omnibox="true"></div>
@@ -28,12 +29,14 @@
   </div>
   <div class="coveo-main-section">
     <div class="coveo-facet-column">
-      <div class="CoveoFacet" data-title="Category" data-field="@licategoryshorttitle" data-tab="Lithium"></div>
-      <div class="CoveoFacet" data-title="Board" data-field="@liboardshorttitle" data-tab="Lithium"></div>
-      <div class="CoveoFacet" data-title="Author" data-field="@limessageauthor" data-tab="Lithium"></div>
-      <div class="CoveoFacet" data-title="Year" data-field="@year" data-tab="Lithium"></div>
-      <div class="CoveoFacet" data-title="Month" data-field="@month" data-tab="Lithium"></div>
-      <div class="CoveoTimespanFacet" data-tab="Lithium"></div>
+      <div class="CoveoDynamicFacetManager">
+        <div class="CoveoDynamicFacet" data-title="Category" data-field="@licategoryshorttitle" data-tab="Lithium">
+        </div>
+        <div class="CoveoDynamicFacet" data-title="Board" data-field="@liboardshorttitle" data-tab="Lithium"></div>
+        <div class="CoveoDynamicFacet" data-title="Author" data-field="@limessageauthor" data-tab="Lithium"></div>
+        <div class="CoveoDynamicFacet" data-title="Year" data-field="@year" data-tab="Lithium"></div>
+        <div class="CoveoDynamicFacet" data-title="Month" data-field="@month" data-tab="Lithium"></div>
+      </div>
     </div>
     <div class="coveo-results-column">
       <div class="CoveoShareQuery"></div>
@@ -59,8 +62,10 @@
       </div>
       <div class="CoveoHiddenQuery"></div>
       <div class="CoveoErrorReport"></div>
-      <div class="CoveoResultList" data-layout="list" data-wait-animation="fade" data-auto-select-fields-to-include="true"></div>
-      <div class="CoveoResultList" data-layout="card" data-wait-animation="fade" data-auto-select-fields-to-include="true"></div>
+      <div class="CoveoResultList" data-layout="list" data-wait-animation="fade"
+        data-auto-select-fields-to-include="true"></div>
+      <div class="CoveoResultList" data-layout="card" data-wait-animation="fade"
+        data-auto-select-fields-to-include="true"></div>
       <div class="CoveoPager"></div>
       <div class="CoveoLogo"></div>
       <div class="CoveoResultsPerPage"></div>

@@ -1,7 +1,7 @@
 ///<reference path="Omnibox.ts"/>
 import { Omnibox, IOmniboxSuggestion } from './Omnibox';
 import { $$, Dom } from '../../utils/Dom';
-import { IQuerySuggestCompletion, IQuerySuggestRequest } from '../../rest/QuerySuggest';
+import { IQuerySuggestCompletion, IQuerySuggestRequest, IQuerySuggestResponse } from '../../rest/QuerySuggest';
 import { ComponentOptionsModel } from '../../models/ComponentOptionsModel';
 import {
   OmniboxEvents,
@@ -94,7 +94,12 @@ export class QuerySuggestAddon implements IQuerySuggestAddon {
       payload
     });
 
-    const results = await this.omnibox.queryController.getEndpoint().getQuerySuggest(payload);
+    let results: IQuerySuggestResponse;
+    try {
+      results = await this.omnibox.queryController.getEndpoint().getQuerySuggest(payload);
+    } catch {
+      return [];
+    }
     const completions = results.completions;
 
     $$(this.omnibox.getBindings().searchInterface.element).trigger(OmniboxEvents.querySuggestSuccess, <IQuerySuggestSuccessArgs>{
