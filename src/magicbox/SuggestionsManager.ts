@@ -86,7 +86,7 @@ export class SuggestionsManager {
     });
     this.suggestionsListbox = this.buildSuggestionsContainer();
     $$(this.element).append(this.suggestionsListbox.el);
-    this.addAccessibilityPropertiesForCombobox();
+    this.addAccessibilityProperties();
     this.appendEmptySuggestionOption();
   }
 
@@ -169,12 +169,12 @@ export class SuggestionsManager {
 
   public updateSuggestions(suggestions: Suggestion[]) {
     this.suggestionsListbox.empty();
-    this.inputManager.input.removeAttribute('aria-activedescendant');
+    this.inputManager.activeDescendant = null;
 
     this.currentSuggestions = suggestions;
 
     $$(this.element).toggleClass('magic-box-hasSuggestion', this.hasSuggestions);
-    $$(this.magicBoxContainer).setAttribute('aria-expanded', this.hasSuggestions.toString());
+    this.inputManager.expanded = this.hasSuggestions;
 
     this.resultPreviewsManager.displaySearchResultPreviewsForSuggestion(null);
 
@@ -379,23 +379,30 @@ export class SuggestionsManager {
 
   private updateAreaSelectedIfDefined(element: HTMLElement, value: string): void {
     if ($$(element).getAttribute('aria-selected')) {
-      $$(this.inputManager.input).setAttribute('aria-activedescendant', element.id);
+      this.inputManager.activeDescendant = element;
       $$(element).setAttribute('aria-selected', value);
     }
   }
 
-  private addAccessibilityPropertiesForCombobox() {
-    const combobox = $$(this.magicBoxContainer);
+  private addAccessibilityProperties() {
+    this.addAccessibilityPropertiesForMagicBox();
+    this.addAccessibilityPropertiesForInput();
+  }
+
+  private addAccessibilityPropertiesForMagicBox() {
+    const magicBox = $$(this.magicBoxContainer);
+
+    magicBox.setAttribute('role', 'search');
+    magicBox.setAttribute('aria-haspopup', 'listbox');
+  }
+
+  private addAccessibilityPropertiesForInput() {
     const input = $$(this.inputManager.input);
 
-    combobox.setAttribute('aria-expanded', 'false');
-    combobox.setAttribute('role', 'combobox');
-    combobox.setAttribute('aria-owns', 'coveo-magicbox-suggestions');
-    combobox.setAttribute('aria-haspopup', 'listbox');
-
-    input.el.removeAttribute('aria-activedescendant');
+    this.inputManager.activeDescendant = null;
+    this.inputManager.expanded = false;
+    input.setAttribute('aria-owns', 'coveo-magicbox-suggestions');
     input.setAttribute('aria-controls', 'coveo-magicbox-suggestions');
-    input.setAttribute('aria-autocomplete', 'list');
   }
 
   private htmlElementIsSuggestion(selected: HTMLElement) {
