@@ -12,6 +12,7 @@ import { FakeResults } from '../../Fake';
 import { ResultListUtils } from '../../../src/utils/ResultListUtils';
 import { FacetType } from '../../../src/rest/Facet/FacetRequest';
 import { DynamicFacetManager } from '../../../src/ui/DynamicFacetManager/DynamicFacetManager';
+import { ComponentsTypes } from '../../../src/utils/ComponentsTypes';
 
 export function DynamicFacetTest() {
   describe('DynamicFacet', () => {
@@ -751,7 +752,11 @@ export function DynamicFacetTest() {
     });
 
     describe('testing the DependsOnManager', () => {
+      let dependentFacet: DynamicFacet;
+
       beforeEach(() => {
+        dependentFacet = DynamicFacetTestUtils.createAdvancedFakeFacet({ field: '@dependentField', dependsOn: test.cmp.options.id }).cmp;
+        spyOn(ComponentsTypes, 'getAllFacetsInstance').and.returnValue([test.cmp, dependentFacet]);
         spyOn(test.cmp.dependsOnManager, 'updateVisibilityBasedOnDependsOn');
       });
 
@@ -769,6 +774,21 @@ export function DynamicFacetTest() {
       should call the "updateVisibilityBasedOnDependsOn" method of the DependsOnManager`, () => {
         test.cmp.reset();
         expect(test.cmp.dependsOnManager.updateVisibilityBasedOnDependsOn).toHaveBeenCalled();
+      });
+
+      it(`when facet has no selected values
+        when triggering a newQuery
+        dependent facet should be disabled`, () => {
+        $$(test.env.root).trigger(QueryEvents.newQuery);
+        expect(dependentFacet.disabled).toBe(true);
+      });
+
+      it(`when facet has selected values
+        when triggering a newQuery
+        dependent facet should be enabled`, () => {
+        test.cmp.selectValue('value');
+        $$(test.env.root).trigger(QueryEvents.newQuery);
+        expect(dependentFacet.disabled).toBe(false);
       });
     });
   });
