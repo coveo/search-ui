@@ -110,7 +110,7 @@ export function DependsOnManagerTest() {
       expect(masterMock.manager.hasDependentFacets).toBe(true);
     });
 
-    it('calling "hasDependentFacets" on a dependant facet should return false', () => {
+    it('calling "hasDependentFacets" on a dependent facet should return false', () => {
       expect(dependentMock.manager.hasDependentFacets).toBe(false);
     });
 
