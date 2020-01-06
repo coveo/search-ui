@@ -11,7 +11,7 @@ export interface ICommerceQueryOptions {
 }
 
 /**
- * The CommerceQuery component enables to set properties for listing pages in commerce sites in a convenient way
+ * This component exposes options to handle commerce-related queries.
  */
 export class CommerceQuery extends Component {
   static ID = 'CommerceQuery';
@@ -28,9 +28,13 @@ export class CommerceQuery extends Component {
    */
   static options: ICommerceQueryOptions = {
     /**
-     * Setting this property will update the tab value of a query and set the originLevel2 in the analytics event
+     * The listing page identifier.
      *
-     * This is useful for listing pages in commerce sites to leverage the Coveo ML features.
+     * In a typical Coveo for Commerce solution, all listing pages should share the same `searchHub`/`originLevel1` and be differentiated by setting this option to a unique, human-readable value.
+     *
+     * When specified, this option sets the `tab`/`originLevel2` parameter, as well as the `listing` property of the `context`/`customData` object of each query/usage analytics event originating from the listing page. This allows Coveo ML to provide relevant output for the listing page, and can also be useful for usage analytics reporting purposes.
+     *
+     * @examples ACME Furniture, ACME Jewelry, ACME Clothes
      */
     listing: ComponentOptions.buildStringOption()
   };
