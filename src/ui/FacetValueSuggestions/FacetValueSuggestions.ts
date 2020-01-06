@@ -133,7 +133,7 @@ export class FacetValueSuggestions extends Component {
     categoryFieldDelimitingCharacter: ComponentOptions.buildStringOption({ defaultValue: '|', depend: 'isCategoryField' }),
 
     /**
-     * An advanced query expression to add when requesting suggestions on the facet values.
+     * An advanced query expression to add when requesting facet value suggestions.
      *
      * Set this option to ensure that the suggestions are properly scoped when using the component with a standalone search box. For instance, if a certain [tab]{@link Tab} is automatically selected in the search interface the standalone search box is redirecting its queries to, you should set this option to that tab's [`expression`]{@link Tab.options.expression}.
      *
