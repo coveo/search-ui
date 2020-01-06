@@ -126,7 +126,7 @@ export class FacetValueSuggestions extends Component {
     isCategoryField: ComponentOptions.buildBooleanOption({ defaultValue: false }),
 
     /**
-     * The delimiting character used for the multi value field referenced by the [`field`]{@link field} option.
+     * The delimiting character used for the multi-value field referenced by the [`field`]{@link field} option.
      *
      * @examples ;, #
      */
