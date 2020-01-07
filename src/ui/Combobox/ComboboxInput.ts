@@ -50,9 +50,9 @@ export class ComboboxInput {
     this.element.setAttribute('role', 'combobox');
     this.element.setAttribute('aria-owns', listboxId);
     this.element.setAttribute('aria-haspopup', 'listbox');
+    this.element.setAttribute('aria-autocomplete', 'list');
 
     this.inputElement.setAttribute('id', `${this.combobox.id}-input`);
-    this.inputElement.setAttribute('aria-autocomplete', 'list');
     this.inputElement.setAttribute('aria-controls', listboxId);
     this.inputElement.setAttribute('aria-label', this.combobox.options.label);
 
