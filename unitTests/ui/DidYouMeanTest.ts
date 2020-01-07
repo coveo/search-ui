@@ -57,6 +57,24 @@ export function DidYouMeanTest() {
       expect(test.cmp.element.style.display).toBe('none');
     });
 
+    it("should add a href to the correction's link when there's a result", () => {
+      Simulate.query(test.env, {
+        results: FakeResults.createFakeResults(1),
+        queryCorrections: [fakeQueryCorrection]
+      });
+
+      expect(test.cmp.element.querySelector('a[href="javascript:void(0);"]')).not.toBeNull();
+    });
+
+    it("should add a tabindex to the correction's link when there's a result", () => {
+      Simulate.query(test.env, {
+        results: FakeResults.createFakeResults(1),
+        queryCorrections: [fakeQueryCorrection]
+      });
+
+      expect(test.cmp.element.querySelector('a[tabindex]')).not.toBeNull();
+    });
+
     it('should send an analytics event when doQueryWithCorrectedTerm is called', () => {
       const analyticsSpy = jasmine.createSpy('analyticsSpy');
       test.env.usageAnalytics.logSearchEvent = analyticsSpy;
