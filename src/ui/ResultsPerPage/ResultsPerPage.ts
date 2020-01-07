@@ -17,6 +17,7 @@ import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { ComponentOptions } from '../Base/ComponentOptions';
 import { Initialization } from '../Base/Initialization';
+import { uniqueId } from 'underscore';
 
 export interface IResultsPerPageOptions {
   choicesDisplayed?: number[];
@@ -212,7 +213,7 @@ export class ResultsPerPage extends Component {
     this.span = $$(
       'span',
       {
-        id: `coveo-results-per-page-text-${Math.floor(Math.random() * 10 ** 9)}`,
+        id: uniqueId('coveo-results-per-page-text-'),
         className: 'coveo-results-per-page-text'
       },
       l('ResultsPerPage')
