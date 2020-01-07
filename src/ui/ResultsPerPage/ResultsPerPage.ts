@@ -17,7 +17,6 @@ import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { ComponentOptions } from '../Base/ComponentOptions';
 import { Initialization } from '../Base/Initialization';
-import { QueryUtils } from '../../Core';
 
 export interface IResultsPerPageOptions {
   choicesDisplayed?: number[];
