@@ -32,9 +32,8 @@ export class FocusTrap {
   }
 
   private showHiddenElements() {
-    let element: HTMLElement;
-    while ((element = this.hiddenElements.pop())) {
-      element.removeAttribute('aria-hidden');
+    while (this.hiddenElements.length) {
+      this.hiddenElements.pop().removeAttribute('aria-hidden');
     }
   }
 
@@ -48,15 +47,17 @@ export class FocusTrap {
 
   private hideSiblings(allowedElement: HTMLElement) {
     const parent = allowedElement.parentElement;
-    without($$(parent).children(), allowedElement).forEach(elementToHide => {
-      this.hideElement(elementToHide);
-    });
+    if (parent) {
+      without($$(parent).children(), allowedElement).forEach(elementToHide => {
+        this.hideElement(elementToHide);
+      });
+    }
   }
 
   private hideAllExcept(allowedElement: HTMLElement) {
     this.hideSiblings(allowedElement);
     const parent = allowedElement.parentElement;
-    if (parent !== document.body) {
+    if (parent && parent !== document.body) {
       this.hideAllExcept(parent);
     }
   }

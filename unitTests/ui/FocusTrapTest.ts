@@ -77,6 +77,10 @@ export function FocusTrapTest() {
       focusTrap.disable();
     });
 
+    it('sets aria-hidden on every sibling', () => {
+      expect(rootContainer.findAll('[aria-hidden="true"]')).toEqual([firstOuterFocusableElement.el, lastOuterFocusableElement.el]);
+    });
+
     describe('when initially focusing an element outside the container', () => {
       it('selects the first element in the trapped container if the focused element is before the trapped container', async done => {
         firstOuterFocusableElement.el.focus();
@@ -150,6 +154,10 @@ export function FocusTrapTest() {
         lastOuterFocusableElement.el.focus();
         await expectSelection(lastOuterFocusableElement);
         done();
+      });
+
+      it('removes aria-hidden from every element', () => {
+        expect(rootContainer.findAll('[aria-hidden]').length).toEqual(0);
       });
     });
   });
