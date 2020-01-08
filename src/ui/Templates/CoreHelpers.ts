@@ -569,7 +569,12 @@ TemplateHelpers.registerTemplateHelper(
 );
 
 TemplateHelpers.registerTemplateHelper('highlightStreamHTMLv2', (content: string, options: IHelperStreamHighlightOptions) => {
-  return executeHighlightStreamHTML(content, options);
+  const mergedOptions = {
+    termsToHighlight: resolveTermsToHighlight(),
+    phrasesToHighlight: resolvePhrasesToHighlight(),
+    ...options
+  };
+  return executeHighlightStreamHTML(content, mergedOptions);
 });
 
 TemplateHelpers.registerFieldHelper('number', (value: any, options?: any) => {
