@@ -1,9 +1,11 @@
 import { Defer } from '../../misc/Defer';
-import { sortBy } from 'underscore';
+import { sortBy, without } from 'underscore';
+import { $$ } from '../../utils/Dom';
 
 export class FocusTrap {
   private focusInEvent: (e: FocusEvent) => void;
   private focusOutEvent: (e: FocusEvent) => void;
+  private hiddenElements: HTMLElement[];
   private enabled: boolean;
 
   private get focusableElements(): HTMLElement[] {
@@ -11,22 +13,55 @@ export class FocusTrap {
   }
 
   constructor(private container: HTMLElement) {
+    this.hiddenElements = [];
     this.enable();
   }
 
   public disable() {
     document.removeEventListener('focusin', this.focusInEvent);
     document.removeEventListener('focusout', this.focusOutEvent);
+    this.showHiddenElements();
     this.enabled = false;
   }
 
   private enable() {
     document.addEventListener('focusin', (this.focusInEvent = e => this.onFocusIn(e)));
     document.addEventListener('focusout', (this.focusOutEvent = e => this.onFocusOut(e)));
+    this.hideAllExcept(this.container);
     this.enabled = true;
   }
 
-  private getSibling(element: HTMLElement, previous = false) {
+  private showHiddenElements() {
+    let element: HTMLElement;
+    while ((element = this.hiddenElements.pop())) {
+      element.removeAttribute('aria-hidden');
+    }
+  }
+
+  private hideElement(element: HTMLElement) {
+    if (element.getAttribute('aria-hidden')) {
+      return;
+    }
+    this.hiddenElements.push(element);
+    element.setAttribute('aria-hidden', `${true}`);
+  }
+
+  private hideSiblings(allowedElement: HTMLElement) {
+    const parent = allowedElement.parentElement;
+    without($$(parent).children(), allowedElement).forEach(elementToHide => {
+      this.hideElement(elementToHide);
+    });
+  }
+
+  private hideAllExcept(allowedElement: HTMLElement) {
+    this.hideSiblings(allowedElement);
+    const parent = allowedElement.parentElement;
+    if (parent !== document.body) {
+      this.hideAllExcept(parent);
+    }
+  }
+
+  private getFocusableSibling(element: HTMLElement, previous = false) {
     const elements = this.focusableElements;
     const currentIndex = elements.indexOf(element);
     if (currentIndex === -1) {
@@ -36,7 +71,7 @@ export class FocusTrap {
   }
 
   private focusSibling(element: HTMLElement, previous = false) {
-    const sibling = this.getSibling(element, previous);
+    const sibling = this.getFocusableSibling(element, previous);
     if (sibling) {
       sibling.focus();
     }
