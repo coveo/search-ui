@@ -1,6 +1,6 @@
 import { InputManager } from '../../src/magicbox/InputManager';
 import { MagicBoxInstance } from '../../src/magicbox/MagicBox';
-import { SuggestionsManager, Suggestion } from '../../src/magicbox/SuggestionsManager';
+import { SuggestionsManager, Suggestion, suggestionListboxID } from '../../src/magicbox/SuggestionsManager';
 import { $$, Dom } from '../../src/utils/Dom';
 import { Utils } from '../../src/utils/Utils';
 import { IMockEnvironment, MockEnvironmentBuilder } from '../MockEnvironment';
@@ -298,7 +298,9 @@ export function SuggestionsManagerTest() {
       function mockInputManager() {
         return <InputManager>{
           input: $$('input').el as HTMLInputElement,
-          blur: jasmine.createSpy('blur') as () => void
+          blur: jasmine.createSpy('blur') as () => void,
+          expanded: null,
+          activeDescendant: null
         };
       }
 
@@ -316,6 +318,30 @@ export function SuggestionsManagerTest() {
             timeout
           }
         );
+      });
+
+      it('sets the accesible role of MagicBox', () => {
+        expect(magicBoxContainer.getAttribute('role')).toEqual('search');
+      });
+
+      it('sets aria-haspopup of MagicBox', () => {
+        expect(magicBoxContainer.getAttribute('aria-haspopup')).toEqual('listbox');
+      });
+
+      it("sets aria-owns of InputManager to the id of SuggestionManager's listbox", () => {
+        expect(inputManager.input.getAttribute('aria-owns')).toEqual(suggestionListboxID);
+      });
+
+      it("sets aria-controls of InputManager to the id of SuggestionManager's listbox", () => {
+        expect(inputManager.input.getAttribute('aria-controls')).toEqual(suggestionListboxID);
+      });
+
+      it('sets aria-expanded of InputManager to false', () => {
+        expect(inputManager.expanded).toEqual(false);
+      });
+
+      it("doesn't set activeDescendant in InputManager", () => {
+        expect(inputManager.activeDescendant).toBeNull();
       });
 
       describe('calling mergeSuggestions', () => {
@@ -347,6 +373,19 @@ export function SuggestionsManagerTest() {
           await waitForQuerySuggestRendered();
           suggestionElements = $$(env.root).findClass(suggestionClass);
           done();
+        });
+
+        it("doesn't set activeDescendant in InputManager", () => {
+          expect(inputManager.activeDescendant).toBeNull();
+        });
+
+        it('sets expanded in InputManager', () => {
+          expect(inputManager.expanded).toEqual(true);
+        });
+
+        it('sets activeDescendant in InputManager after focusing a suggestion', () => {
+          mouseFocusSuggestion(1);
+          expect(inputManager.activeDescendant).toEqual(suggestionElements[1]);
         });
 
         it('renders suggestions', () => {

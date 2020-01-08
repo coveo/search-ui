@@ -36,7 +36,7 @@ export interface IQuerySuggestionKeyword {
 /**
  * This component provides [`Omnibox`]{@link Omnibox} query suggestions scoped to distinct categories based on the values of a specific [`field`]{@link FacetValueSuggestions.options.field}.
  *
- * See @externaldocs [Providing Facet Value Suggestions](https://docs.coveo.com/en/340/#providing-facet-value-suggestions)
+ * @externaldocs [Providing Facet Value Suggestions](https://docs.coveo.com/en/340/#providing-facet-value-suggestions)
  *
  */
 export class FacetValueSuggestions extends Component {
@@ -55,17 +55,12 @@ export class FacetValueSuggestions extends Component {
     /**
      * The field on whose values the scoped query suggestions should be based.
      *
-     * Specifying a value for this option is required for the component to work.
-     *
      * @examples @productcategory
      */
     field: ComponentOptions.buildFieldOption({ required: true }),
 
     /**
      * The maximum number of suggestions to render in the [`Omnibox`]{@link Omnibox}.
-     *
-     * **Default:** `5`
-     * **Minimum:** `1`
      */
     numberOfSuggestions: ComponentOptions.buildNumberOption({ defaultValue: 5, min: 1 }),
 
@@ -73,8 +68,6 @@ export class FacetValueSuggestions extends Component {
      * Whether to get scoped query suggestions from the current Coveo ML query suggestions.
      *
      * **Note:** If this options is set to `true` the [`enableQuerySuggestAddon`]{@link Omnibox.options.enableQuerySuggestAddon} option of the [`Omnibox`]{@link Omnibox.option.enableQuerySuggestAddon} component must be set to `true` as well.
-     *
-     * **Default:** `true`
      */
     useQuerySuggestions: ComponentOptions.buildBooleanOption({ defaultValue: true }),
 
@@ -91,8 +84,6 @@ export class FacetValueSuggestions extends Component {
 
     /**
      * Whether to display an estimate of the number of results for each scoped query suggestions.
-     *
-     * **Default:** `false`
      *
      * **Notes:**
      * - Setting this option to `true` has no effect when the [`templateHelper`]{@link FacetValueSuggestions.options.templateHelper} options is set.
@@ -126,31 +117,27 @@ export class FacetValueSuggestions extends Component {
     }),
 
     /**
-     * Whether the [`field`]{@link FacetValueSuggestions.options.field} option references a multi value field.
+     * Whether the [`field`]{@link FacetValueSuggestions.options.field} option references a multi-value field.
      *
      * Setting this option to `true` if appropriate will allow the corresponding [`CategoryFacet`]{@link CategoryFacet} or [`DynamicHierarchicalFacet`]{@link DynamicHierarchicalFacet} component (if present) to properly handle the filter format.
      *
      * See also the [`categoryFieldDelimitingCharacter`]{@link FacetValueSuggestions.options.categoryFieldDelimitingCharacter} option.
-     *
-     * **Default:** `false`.
      */
     isCategoryField: ComponentOptions.buildBooleanOption({ defaultValue: false }),
 
     /**
-     * The delimiting character used for the multi value field referenced by the [`field`]{@link field} option, assuming the [`isCategoryField`]{@link FacetValueSuggestions.options.isCategoryField} option is set to `true`.
-     *
-     * **Default:** `|`.
+     * The delimiting character used for the multi-value field referenced by the [`field`]{@link FacetValueSuggestions.options.field} option.
      *
      * @examples ;, #
      */
     categoryFieldDelimitingCharacter: ComponentOptions.buildStringOption({ defaultValue: '|', depend: 'isCategoryField' }),
+
     /**
-     * Specifies an expression to add when looking for suggestions on the facet values
+     * An advanced query expression to add when requesting facet value suggestions.
      *
-     * **Example:**
+     * Set this option to ensure that the suggestions are properly scoped when using the component with a standalone search box. For instance, if a certain [tab]{@link Tab} is automatically selected in the search interface the standalone search box is redirecting its queries to, you should set this option to that tab's [`expression`]{@link Tab.options.expression}.
      *
-     * `@objecttype==Message`
-     *
+     * @examples @objecttype==Message
      */
     expression: ComponentOptions.buildQueryExpressionOption()
   };
