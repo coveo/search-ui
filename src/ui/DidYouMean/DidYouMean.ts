@@ -143,7 +143,6 @@ export class DidYouMean extends Component {
       this.correctedTerm = results.queryCorrections[0].correctedQuery;
 
       const correctedWordEl = $$('button', {}, correctedSentence).el;
-      correctedWordEl.tabIndex = 0;
       const didYouMean = $$('div', { className: 'coveo-did-you-mean-suggestion' }, l('didYouMean', correctedWordEl.outerHTML));
       this.element.appendChild(didYouMean.el);
 
