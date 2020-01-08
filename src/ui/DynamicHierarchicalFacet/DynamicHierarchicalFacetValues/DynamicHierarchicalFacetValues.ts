@@ -153,7 +153,11 @@ export class DynamicHierarchicalFacetValues implements IDynamicHierarchicalFacet
     const clear = $$(
       'li',
       {},
-      $$('button', { className: 'coveo-dynamic-hierarchical-facet-all', title: l('AllCategories') }, l('AllCategories'))
+      $$(
+        'button',
+        { className: 'coveo-dynamic-hierarchical-facet-all', title: this.facet.options.clearLabel },
+        this.facet.options.clearLabel
+      )
     );
     clear.on('click', () => this.facet.header.options.clear());
     $$(this.list).prepend(clear.el);
@@ -163,7 +167,7 @@ export class DynamicHierarchicalFacetValues implements IDynamicHierarchicalFacet
     const showLess = new DynamicFacetValueShowMoreLessButton({
       className: 'coveo-dynamic-hierarchical-facet-show-less',
       ariaLabel: l('ShowLessFacetResults', this.facet.options.title),
-      label: l('ShowLessCategories'),
+      label: l('ShowLess'),
       action: () => {
         this.facet.enableFreezeFacetOrderFlag();
         this.facet.showLessValues();
@@ -177,7 +181,7 @@ export class DynamicHierarchicalFacetValues implements IDynamicHierarchicalFacet
     const showMore = new DynamicFacetValueShowMoreLessButton({
       className: 'coveo-dynamic-hierarchical-facet-show-more',
       ariaLabel: l('ShowMoreFacetResults', this.facet.options.title),
-      label: l('ShowMoreCategories'),
+      label: l('ShowMore'),
       action: () => {
         this.facet.enableFreezeFacetOrderFlag();
         this.facet.showMoreValues();
