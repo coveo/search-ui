@@ -653,7 +653,7 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
   }
 
   private dependsOnReset() {
-    this.clear();
+    this.reset();
     this.updateAppearance();
   }
 
