@@ -423,6 +423,14 @@ export function DynamicHierarchicalFacetTest() {
         $$(test.env.root).trigger(QueryEvents.newQuery);
         expect(dependentFacet.disabled).toBe(false);
       });
+
+      it(`when there is a query state change
+        when parent has no selected value  
+        reset should be called on the dependent facet`, () => {
+        spyOn(dependentFacet, 'reset');
+        $$(dependentFacet.root).trigger('state:change', { attributes: test.env.queryStateModel.attributes });
+        expect(dependentFacet.reset).toHaveBeenCalledTimes(1);
+      });
     });
 
     describe('testing putStateIntoQueryBuilder', () => {
