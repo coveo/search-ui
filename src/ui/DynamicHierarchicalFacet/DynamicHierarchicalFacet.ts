@@ -238,6 +238,15 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
       section: 'Sorting'
     }),
 
+    /**
+     * The label to display to clear the facet when a value is selected.
+     *
+     * Default value is the localized string for `AllCategories`.
+     */
+    clearLabel: ComponentOptions.buildLocalizedStringOption({
+      localizedString: () => l('AllCategories')
+    }),
+
     ...ResponsiveFacetOptions
   };
 
@@ -644,7 +653,7 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
   }
 
   private dependsOnReset() {
-    this.clear();
+    this.reset();
     this.updateAppearance();
   }
 
