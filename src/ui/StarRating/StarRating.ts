@@ -48,7 +48,7 @@ export class StarRating extends Component {
      *
      * If unspecified, no number of ratings label is displayed. If the `numberOfRatingsField`'s value is `0` or less, a `(No Ratings)` label is displayed.
      */
-    numberOfRatingsField: ComponentOptions.buildFieldOption({ required: false }),
+    numberOfRatingsField: ComponentOptions.buildFieldOption(),
 
     /**
      * The scale to apply to the [`ratingField`]{@link StarRating.options.ratingField}'s value. Must be smaller than or equal to the highest possible `ratingField`'s value.
