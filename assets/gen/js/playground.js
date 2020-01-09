@@ -5940,8 +5940,8 @@ exports.ResponsiveComponents = ResponsiveComponents;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    lib: '2.7968.3-beta',
-    product: '2.7968.3-beta',
+    lib: '2.7968.4-beta',
+    product: '2.7968.4-beta',
     supportedApiVersion: 2
 };
 
@@ -8552,8 +8552,6 @@ var dict = {
     "AllItems": "All items:",
     "ShowLess": "Show less",
     "ShowMore": "Show more",
-    "ShowLessCategories": "Show fewer categories",
-    "ShowMoreCategories": "Show more categories",
     "HideFacet": "Hide Facet",
     "ShowFacet": "Show Facet",
     "AndOthers": "and {0} other<pl>s</pl>",
