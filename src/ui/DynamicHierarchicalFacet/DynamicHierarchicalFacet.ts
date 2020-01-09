@@ -239,7 +239,7 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
     }),
 
     /**
-     * When a value is selected, the label to display to clear the facet.
+     * The label to display to clear the facet when a value is selected.
      *
      * Default value is the localized string for `AllCategories`.
      */
