@@ -26,6 +26,7 @@ export interface IDynamicHierarchicalFacetOptions extends IResponsiveComponentOp
   valueCaption?: IStringMap<string>;
   dependsOn?: string;
   includeInBreadcrumb?: boolean;
+  clearLabel?: string;
 }
 
 export interface IDynamicHierarchicalFacet extends Component, IDynamicManagerCompatibleFacet, IAutoLayoutAdjustableInsideFacetColumn {

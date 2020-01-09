@@ -197,6 +197,15 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
      * **Default:** `undefined` and the hierarchical facet does not depend on any other facet to be displayed.
      */
     dependsOn: ComponentOptions.buildStringOption(),
+
+    /**
+     * The label to display to clear the facet when a value is selected.
+     *
+     * Default value is the localized string for `AllCategories`.
+     */
+    clearLabel: ComponentOptions.buildLocalizedStringOption({
+      localizedString: () => l('AllCategories')
+    }),
     ...ResponsiveFacetOptions
   };
 

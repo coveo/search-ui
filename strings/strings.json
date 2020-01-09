@@ -1778,14 +1778,6 @@
     "zh-cn": "显示较多的值",
     "zh-tw": "顯示較多的值"
   },
-  "ShowLessCategories": {
-    "en": "Show fewer categories",
-    "fr": "Afficher moins de catégories"
-  },
-  "ShowMoreCategories": {
-    "en": "Show more categories",
-    "fr": "Afficher plus de catégories"
-  },
   "HideFacet": {
     "en": "Hide Facet",
     "fr": "Cacher la facette",
