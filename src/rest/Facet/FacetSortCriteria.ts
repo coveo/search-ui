@@ -18,7 +18,7 @@ export enum FacetSortCriteria {
    */
   alphanumeric = 'alphanumeric',
   /**
-   * Sort facet values in descending number of occurences.
+   * Sort facet values in descending number of occurrences.
    */
   occurrences = 'occurrences'
 }
