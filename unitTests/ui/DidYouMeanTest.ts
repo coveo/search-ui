@@ -16,7 +16,7 @@ export function DidYouMeanTest() {
     let fakeQueryCorrection: IQueryCorrection;
 
     function getCorrectedWord() {
-      return $$(test.cmp.element).find('.coveo-did-you-mean-suggestion a');
+      return $$(test.cmp.element).find('.coveo-did-you-mean-suggestion button');
     }
 
     beforeEach(() => {
