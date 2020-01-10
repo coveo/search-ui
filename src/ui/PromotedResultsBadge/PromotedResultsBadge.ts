@@ -18,13 +18,12 @@ export interface IPromotedResultsBadgeOptions {
 }
 
 /**
- * The `PromotedResultsBadge` component adds a badge to promoted results in your interface.
+ * Depending on its configuration, this component will render badges on query result items whose ranking scores were increased by [featured results](https://docs.coveo.com/en/1961/) query pipeline rules and/or [Coveo ML ART](https://docs.coveo.com/en/1671/#automatic-relevance-tuning-art-feature).
  *
- * To be considered promoted, a result needs to either:
- * - be a Featured Result configured through a Coveo Query Pipeline (see [Adding and Managing Query Pipeline Featured Results](https://docs.coveo.com/en/1961/))
- * - be a recommended result by Coveo Machine Learning (see [Automatic Relevance Tuning (ART) Feature](https://docs.coveo.com/en/1671/#automatic-relevance-tuning-art-feature)).
+ * This component can be put anywhere in the markup configuration of a search interface. However, it is meant to be initialized only once, and should thus never be included in a result template.
  *
- * You can add this component anywhere in your search interface. The component will then add a badge to your results after they have been rendered.
+ * @externaldocs [Adding Promoted Results Badges](https://docs.coveo.com/en/3123/)
+ * @availablesince [July 2018 Release (v2.4382.10)](https://docs.coveo.com/en/1360/)
  */
 export class PromotedResultsBadge extends Component {
   static ID = 'PromotedResultsBadge';
@@ -40,33 +39,33 @@ export class PromotedResultsBadge extends Component {
    */
   static options: IPromotedResultsBadgeOptions = {
     /**
-     * Whether to show a badge when a result was promoted through a query pipeline _featured results_ rule.
-     * @externaldocs [Adding and Managing Query Pipeline Featured Results](https://docs.coveo.com/1961/)
-     *
-     * Default value is `true`.
+     * Whether to show a badge when a result was promoted by a featured results query pipeline rule.
      */
     showBadgeForFeaturedResults: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+
     /**
-     * Whether to show a badge when a result was promoted by a Coveo ML ART model.
-     * @externaldocs (Automatic Relevance Tuning (ART) Feature)[https://docs.coveo.com/en/1671/#automatic-relevance-tuning-art-feature]
-     *
-     * Default value is `false`.
+     * Whether to show a badge when a result was promoted by Coveo ML ART.
      */
     showBadgeForRecommendedResults: ComponentOptions.buildBooleanOption({ defaultValue: false }),
 
     /**
-     * Specifies the caption that should be used for "Recommended Results".
+     * The caption to show on the badge for results promoted by Coveo ML ART.
      *
      * Default value is the localized string for `Recommended`.
+     *
+     * @examples Recommended by Coveo ML
      */
     captionForRecommended: ComponentOptions.buildLocalizedStringOption({
       localizedString: () => l('Recommended'),
       depend: 'showBadgeForRecommendedResults'
     }),
+
     /**
-     * Specifies the caption that should be used for "Featured Results".
+     * The caption to show on the badge for results promoted by a _featured results_ query pipeline rule.
      *
      * Default value is the localized string for `Featured`.
+     *
+     * @examples Recommended by ACME
      */
     captionForFeatured: ComponentOptions.buildLocalizedStringOption({
       localizedString: () => l('Featured'),
@@ -74,25 +73,30 @@ export class PromotedResultsBadge extends Component {
     }),
 
     /**
-     * Specifies the color that should be used for "Featured Results".
+     * The badge color for results promoted by a _featured results_ query pipeline rule.
      *
-     * This can be specified using:
-     * - a hexadecimal value (e.g., `#f58020`)
-     * - an RGB value (e.g., `rgb(125,10,36)`)
-     * - a CSS color name (e.g., `red`)
+     * Can be specified using:
+     * - a hexadecimal value
+     * - an RGB value
+     * - a CSS color name
      *
-     * Default value is `undefined`, and is controlled through the default stylesheet of the framework.
+     * @examples #f58020, rgb(125 10 36), red
+     *
+     * Default value is controlled through the default stylesheet of the framework.
      */
     colorForFeaturedResults: ComponentOptions.buildColorOption({ depend: 'showBadgeForFeaturedResults' }),
+
     /**
-     * Specifies the color that should be used for "Recommended Results".
+     * The badge color for results promoted by Coveo ML ART.
      *
-     * This can be specified using:
-     * - a hexadecimal value (e.g., `#f58020`)
-     * - an RGB value (e.g., `rgb(125,10,36)`)
-     * - a CSS color name (e.g., `red`)
+     * Can be specified using:
+     * - a hexadecimal value
+     * - an RGB value
+     * - a CSS color name
      *
-     * Default value is `undefined`, and is controlled through the default stylesheet of the framework.
+     * @examples #f58020, rgb(125 10 36), red
+     *
+     * Default value is controlled through the default stylesheet of the framework.
      */
     colorForRecommendedResults: ComponentOptions.buildColorOption({ depend: 'showBadgeForRecommendedResults' })
   };

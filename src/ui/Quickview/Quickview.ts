@@ -24,6 +24,9 @@ import { TemplateComponentOptions } from '../Base/TemplateComponentOptions';
 import { Template } from '../Templates/Template';
 import { DefaultQuickviewTemplate } from './DefaultQuickviewTemplate';
 import { QuickviewDocument } from './QuickviewDocument';
+import { KeyboardUtils } from '../../Core';
+import { KEYBOARD } from '../../utils/KeyboardUtils';
+import { FocusTrap } from '../FocusTrap/FocusTrap';
 
 /**
  * The allowed [`Quickview`]{@link Quickview} [`tooltipPlacement`]{@link Quickview.options.tooltipPlacement} option values. The `-start` and `-end` variations indicate relative alignement. Horizontally (`top`, `bottom`), `-start` means _left_ and `-end` means _right_. Vertically (`left`, `right`), `-start` means _top_ and `-end` means _bottom_. No variation means _center_.
@@ -253,6 +256,10 @@ export class Quickview extends Component {
 
   private modalbox: Coveo.ModalBox.ModalBox;
 
+  private lastFocusedElement: HTMLElement;
+
+  private focusTrap: FocusTrap;
+
   /**
    * Creates a new `Quickview` component.
    * @param element The HTMLElement on which to instantiate the component.
@@ -267,7 +274,7 @@ export class Quickview extends Component {
     public options?: IQuickviewOptions,
     public bindings?: IResultsComponentBindings,
     public result?: IQueryResult,
-    private ModalBox = ModalBoxModule
+    private ModalBox: Coveo.ModalBox.ModalBox = ModalBoxModule
   ) {
     super(element, Quickview.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, Quickview, options);
@@ -359,7 +366,10 @@ export class Quickview extends Component {
       Quickview.resultCurrentlyBeingRendered = this.result;
       // activeElement does not exist in LockerService
       if (document.activeElement && document.activeElement instanceof HTMLElement) {
+        this.lastFocusedElement = document.activeElement;
         $$(document.activeElement as HTMLElement).trigger('blur');
+      } else {
+        this.lastFocusedElement = null;
       }
 
       const openerObject = this.prepareOpenQuickviewObject();
@@ -380,6 +390,11 @@ export class Quickview extends Component {
     if (this.modalbox != null) {
       this.modalbox.close();
       this.modalbox = null;
+      this.focusTrap.disable();
+      this.focusTrap = null;
+      if (this.lastFocusedElement && this.lastFocusedElement.parentElement) {
+        this.lastFocusedElement.focus();
+      }
     }
   }
 
@@ -453,8 +468,22 @@ export class Quickview extends Component {
         body: this.element.ownerDocument.body,
         sizeMod: 'big'
       });
+      this.makeModalboxAccessible(this.modalbox.modalBox);
       return computedModalBoxContent;
     });
+  }
+
+  private makeModalboxAccessible(modal: HTMLElement) {
+    modal.setAttribute('aria-modal', 'true');
+    this.makeModalCloseButtonAccessible(modal.querySelector('.coveo-small-close'));
+    this.focusTrap = new FocusTrap(modal);
+  }
+
+  private makeModalCloseButtonAccessible(closeButton: HTMLElement) {
+    closeButton.setAttribute('aria-label', l('Close'));
+    closeButton.tabIndex = 0;
+    closeButton.focus();
+    $$(closeButton).on('keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, () => closeButton.click()));
   }
 
   private prepareOpenQuickviewObject() {
