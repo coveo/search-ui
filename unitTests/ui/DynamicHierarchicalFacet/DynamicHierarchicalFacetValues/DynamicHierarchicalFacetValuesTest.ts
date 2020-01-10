@@ -13,7 +13,7 @@ export function DynamicHierarchicalFacetValuesTest() {
     let facet: IDynamicHierarchicalFacet;
 
     beforeEach(() => {
-      facet = DynamicHierarchicalFacetTestUtils.createFakeFacet();
+      facet = DynamicHierarchicalFacetTestUtils.createAdvancedFakeFacet({ field: '@test', clearLabel: 'Clear all test' }).cmp;
       facet.values = new DynamicHierarchicalFacetValues(facet);
     });
 
@@ -194,14 +194,18 @@ export function DynamicHierarchicalFacetValuesTest() {
           expect($$(listElement).hasClass('coveo-with-space')).toBe(true);
         });
 
-        it('list does not append the "All Categories" element', () => {
+        it('list does not append the "All Categories" button', () => {
           expect(getAllCategoriesElement()).toBeTruthy();
         });
 
-        it('clicking on the "All Categories" element should call "clear" on the facet header', () => {
+        it('clicking on the "All Categories" button should call "clear" on the facet header', () => {
           spyOn(facet.header.options, 'clear');
           $$(getAllCategoriesElement()).trigger('click');
           expect(facet.header.options.clear).toHaveBeenCalled();
+        });
+
+        it('the "All Categories" button should be defined by the "clearLabel" facet option', () => {
+          expect($$(getAllCategoriesElement()).text()).toBe(facet.options.clearLabel);
         });
       });
     });
@@ -396,6 +400,8 @@ export function DynamicHierarchicalFacetValuesTest() {
 
         it(`when clicking on the "Show more" button
           should perform the correct actions on the facet`, () => {
+          spyOn(facet, 'showMoreValues');
+          spyOn(facet, 'enableFreezeFacetOrderFlag');
           $$(moreButton()).trigger('click');
           expect(facet.enableFreezeFacetOrderFlag).toHaveBeenCalledTimes(1);
           expect(facet.showMoreValues).toHaveBeenCalledTimes(1);
@@ -422,6 +428,8 @@ export function DynamicHierarchicalFacetValuesTest() {
 
         it(`when clicking on the "Show less" button
           should perform the correct actions on the facet`, () => {
+          spyOn(facet, 'enableFreezeFacetOrderFlag');
+          spyOn(facet, 'showLessValues');
           $$(lessButton()).trigger('click');
           expect(facet.enableFreezeFacetOrderFlag).toHaveBeenCalledTimes(1);
           expect(facet.showLessValues).toHaveBeenCalledTimes(1);

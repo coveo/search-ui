@@ -210,7 +210,7 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
      *
      * See also the [`Folding`]{@link folding} and [`FoldingForThread`]{@link FoldingForThread} components.
      *
-     * **Default:** `true` if folded results are requested;`false` otherwise.
+     * **Default:** `true` if folded results are requested; `false` otherwise.
      */
     filterFacetCount: ComponentOptions.buildBooleanOption({ section: 'Filtering' }),
 
@@ -220,7 +220,7 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
      * See [`HierarchicalFacetSortCriteria`]{@link HierarchicalFacetSortCriteria} for the list and
      * description of allowed values.
      *
-     * **Default (API):** [`occurrences`]{@link HierarchicalFacetSortCriteria.occurrences}
+     * **Default (Search API):** [`occurrences`]{@link HierarchicalFacetSortCriteria.occurrences}
      */
     sortCriteria: <HierarchicalFacetSortCriteria>ComponentOptions.buildStringOption({
       postProcessing: value => {
@@ -236,6 +236,15 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
         return undefined;
       },
       section: 'Sorting'
+    }),
+
+    /**
+     * The label to display to clear the facet when a value is selected.
+     *
+     * Default value is the localized string for `AllCategories`.
+     */
+    clearLabel: ComponentOptions.buildLocalizedStringOption({
+      localizedString: () => l('AllCategories')
     }),
 
     ...ResponsiveFacetOptions
@@ -644,7 +653,7 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
   }
 
   private dependsOnReset() {
-    this.clear();
+    this.reset();
     this.updateAppearance();
   }
 
