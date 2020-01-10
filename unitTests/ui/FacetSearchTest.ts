@@ -87,6 +87,21 @@ export function FacetSearchTest() {
         });
       });
 
+      it('should add a label to facet search results', async done => {
+        var pr = new Promise((resolve, reject) => {
+          var results = FakeResults.createFakeFieldValues('foo', 10);
+          resolve(results);
+        });
+
+        var params = new FacetSearchParameters(mockFacet);
+        (<jasmine.Spy>mockFacet.facetQueryController.search).and.returnValue(pr);
+        facetSearch.triggerNewFacetSearch(params);
+        await pr;
+        const firstResultWithoutLabel = allSearchResults().find(result => !result.getAttribute('aria-label'));
+        expect(firstResultWithoutLabel).toBeFalsy();
+        done();
+      });
+
       it('should hide facet search results', done => {
         var pr = new Promise((resolve, reject) => {
           var results = FakeResults.createFakeFieldValues('foo', 10);
