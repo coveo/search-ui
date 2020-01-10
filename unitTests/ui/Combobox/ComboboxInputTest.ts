@@ -89,9 +89,9 @@ export function ComboboxInputTest() {
       expect(comboboxInput.element.getAttribute('aria-owns')).toBe(listboxId);
       expect(comboboxInput.element.getAttribute('aria-haspopup')).toBe('listbox');
       expect(comboboxInput.element.getAttribute('aria-expanded')).toBe('false');
+      expect(comboboxInput.element.getAttribute('aria-autocomplete')).toBe('list');
 
       expect(getInput().getAttribute('id')).toBe(id);
-      expect(getInput().getAttribute('aria-autocomplete')).toBe('list');
       expect(getInput().getAttribute('aria-controls')).toBe(listboxId);
       expect(getInput().getAttribute('aria-activeDescendant')).toBeFalsy();
     });
