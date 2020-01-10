@@ -9,6 +9,7 @@ import { FacetSearchParameters } from '../../src/ui/Facet/FacetSearchParameters'
 import { IIndexFieldValue } from '../../src/rest/FieldValue';
 import { Simulate } from '../Simulate';
 import { KEYBOARD } from '../../src/utils/KeyboardUtils';
+import { find } from 'underscore';
 
 export function FacetSearchTest() {
   describe('FacetSearch', () => {
@@ -97,7 +98,7 @@ export function FacetSearchTest() {
         (<jasmine.Spy>mockFacet.facetQueryController.search).and.returnValue(pr);
         facetSearch.triggerNewFacetSearch(params);
         await pr;
-        const firstResultWithoutLabel = allSearchResults().find(result => !result.getAttribute('aria-label'));
+        const firstResultWithoutLabel = find(allSearchResults(), result => !result.getAttribute('aria-label'));
         expect(firstResultWithoutLabel).toBeFalsy();
         done();
       });
