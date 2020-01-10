@@ -73,6 +73,11 @@ deploy:
     upload-dir: proda/StaticCDN/searchui/v$PACKAGE_JSON_VERSION
     acl: public_read
     skip_cleanup: true
+    on:
+      tags: true
+      repo: coveo/search-ui
+      all_branches: true
+      condition: "! $TRAVIS_TAG =~ .*beta.*"
   - provider: s3
     access_key_id: AKIAYKDJLZIT462WODCI
     secret_access_key:
