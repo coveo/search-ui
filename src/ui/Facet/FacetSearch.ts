@@ -322,6 +322,7 @@ export class FacetSearch implements IFacetSearch {
       $$(elem).setAttribute('role', 'option');
       $$(elem).setAttribute('aria-selected', 'false');
       $$(elem).addClass('coveo-facet-search-selectable');
+      $$(elem).setAttribute('aria-label', elem.querySelector('.coveo-facet-value-checkbox').getAttribute('aria-label'));
     });
   }
 
