@@ -809,3 +809,6 @@ ResultPreviewsManagerTest();
 
 import { CommerceQueryTest } from './ui/CommerceQueryTest';
 CommerceQueryTest();
+
+import { FocusTrapTest } from './ui/FocusTrapTest';
+FocusTrapTest();
