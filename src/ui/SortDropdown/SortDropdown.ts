@@ -15,12 +15,12 @@ import { SortCriteria } from '../Sort/SortCriteria';
 import { Dropdown } from '../FormWidgets/Dropdown';
 import { l } from '../../strings/Strings';
 
-export interface ISortDropdownOptions {}
-
 export interface ISortDropdownItem {
   criteria: SortCriteria;
   caption: string;
 }
+
+export interface ISortDropdownOptions {}
 
 /**
  * The `SortDropdown` component renders a dropdown that the end user can interact with to select the criterion to use when sorting query results.
@@ -41,7 +41,7 @@ export class SortDropdown extends Component {
   static options: ISortDropdownOptions = {};
 
   private dropdown: Dropdown;
-  private sortOptions: ISortDropdownItem[] = [];
+  private sortItems: ISortDropdownItem[] = [];
 
   /**
    * Creates a new `SortDropdown` component instance.
@@ -68,9 +68,9 @@ export class SortDropdown extends Component {
   }
 
   private buildDropdown() {
-    this.sortOptions = this.getSortOptions();
+    this.sortItems = this.getSortItems();
     this.dropdown = new Dropdown(
-      () => this.handleSelectChange(),
+      () => this.handleChange(),
       this.getValuesForDropdown(),
       value => this.getCaptionForValue(value),
       l('SortBy')
@@ -79,8 +79,8 @@ export class SortDropdown extends Component {
     this.update();
   }
 
-  private getSortOptions() {
-    const sortOptions: ISortDropdownItem[] = [];
+  private getSortItems() {
+    const sortItems: ISortDropdownItem[] = [];
     const sortElements = $$(this.element).findAll('.CoveoSort');
 
     each(sortElements, sortEl => {
@@ -88,23 +88,23 @@ export class SortDropdown extends Component {
 
       if (sortInstance.options.sortCriteria.length > 1) {
         this.logger.warn(
-          `Each Sort component inside a SortDropdown should have only one sort criteria. Disabling ${
+          `Each Sort component inside a SortDropdown should have only one sort criteria. Not using ${
             sortInstance.options.caption
           } in the SortDropdown.`
         );
       } else {
-        sortOptions.push({
+        sortItems.push({
           caption: sortInstance.options.caption,
           criteria: sortInstance.options.sortCriteria[0]
         });
       }
     });
 
-    return sortOptions;
+    return sortItems;
   }
 
   private getValuesForDropdown(): string[] {
-    return this.sortOptions.map(option => option.criteria.toString());
+    return this.sortItems.map(item => item.criteria.toString());
   }
 
   private handleQueryStateChanged(data: IAttributeChangedEventArg) {
@@ -117,34 +117,42 @@ export class SortDropdown extends Component {
     }
 
     const sortCriteria = <string>this.queryStateModel.get(QueryStateModel.attributesEnum.sort);
-    const optionIndex = this.getSortOptionIndex(sortCriteria);
-    optionIndex > -1 && this.dropdown.select(optionIndex, false);
+    const itemIndex = this.getSortItemIndex(sortCriteria);
+    itemIndex > -1 && this.dropdown.select(itemIndex, false);
 
-    $$(this.dropdown.getElement()).toggleClass('coveo-selected', optionIndex > -1);
+    $$(this.dropdown.getElement()).toggleClass('coveo-selected', itemIndex > -1);
   }
 
   private handleQuerySuccess(data: IQuerySuccessEventArgs) {
-    data.results.results.length == 0 ? $$(this.element).addClass('coveo-hidden') : $$(this.element).removeClass('coveo-hidden');
+    data.results.results.length == 0 ? this.hideElement() : this.showElement();
   }
 
   private handleQueryError(data: IQueryErrorEventArgs) {
-    $$(this.element).addClass('coveo-hidden');
+    this.hideElement();
   }
 
-  private handleSelectChange() {
+  private handleChange() {
     const selectedValue = this.dropdown.getValue();
     $$(this.element)
       .find(`.CoveoSort[data-sort-criteria="${selectedValue}"]`)
       .click();
   }
 
-  private getCaptionForValue(option: string) {
-    const index = this.getSortOptionIndex(option);
-    return index > -1 ? this.sortOptions[index].caption : '';
+  private getCaptionForValue(value: string) {
+    const index = this.getSortItemIndex(value);
+    return index > -1 ? this.sortItems[index].caption : '';
   }
 
-  private getSortOptionIndex(option: string) {
-    return findIndex(this.sortOptions, sortOption => sortOption.criteria.toString() === option);
+  private getSortItemIndex(itemValue: string) {
+    return findIndex(this.sortItems, sortItem => sortItem.criteria.toString() === itemValue);
+  }
+
+  private hideElement() {
+    $$(this.element).addClass('coveo-hidden');
+  }
+
+  private showElement() {
+    $$(this.element).removeClass('coveo-hidden');
   }
 }
 
