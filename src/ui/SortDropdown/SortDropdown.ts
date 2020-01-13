@@ -1,7 +1,7 @@
 import 'styling/_SortDropdown';
 import { each, findIndex } from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
-import { IQuerySuccessEventArgs, QueryEvents } from '../../events/QueryEvents';
+import { IQuerySuccessEventArgs, IQueryErrorEventArgs, QueryEvents } from '../../events/QueryEvents';
 import { IAttributeChangedEventArg, MODEL_EVENTS } from '../../models/Model';
 import { QUERY_STATE_ATTRIBUTES, QueryStateModel } from '../../models/QueryStateModel';
 import { $$ } from '../../utils/Dom';
@@ -60,6 +60,7 @@ export class SortDropdown extends Component {
       this.handleQueryStateChanged(args)
     );
     this.bind.onRootElement(QueryEvents.querySuccess, (args: IQuerySuccessEventArgs) => this.handleQuerySuccess(args));
+    this.bind.onRootElement(QueryEvents.queryError, (args: IQueryErrorEventArgs) => this.handleQueryError(args));
   }
 
   private handleAfterInitialization() {
@@ -124,6 +125,10 @@ export class SortDropdown extends Component {
 
   private handleQuerySuccess(data: IQuerySuccessEventArgs) {
     data.results.results.length == 0 ? $$(this.element).addClass('coveo-hidden') : $$(this.element).removeClass('coveo-hidden');
+  }
+
+  private handleQueryError(data: IQueryErrorEventArgs) {
+    $$(this.element).addClass('coveo-hidden');
   }
 
   private handleSelectChange() {
