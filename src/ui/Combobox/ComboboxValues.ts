@@ -46,7 +46,7 @@ export class ComboboxValues {
     this.values.forEach((value, index) => {
       const elementWrapper = $$(
         'li',
-        { id: `${this.combobox.id}-value-${index}`, className: 'coveo-combobox-value', role: 'option' },
+        { id: `${this.combobox.id}-value-${index}`, className: 'coveo-combobox-value', role: 'option', tabindex: 0 },
         value.element
       ).el;
       value.element = elementWrapper;
@@ -76,10 +76,11 @@ export class ComboboxValues {
   }
 
   private addEventListeners() {
-    this.values.forEach(({ element }) => {
-      $$(element).on('mouseenter', () => (this.mouseIsOverValue = true));
-      $$(element).on('mouseleave', () => (this.mouseIsOverValue = false));
-      $$(element).on('click', (e: MouseEvent) => this.onValueClick(e));
+    this.values.forEach(value => {
+      $$(value.element).on('mouseenter', () => (this.mouseIsOverValue = true));
+      $$(value.element).on('mouseleave', () => (this.mouseIsOverValue = false));
+      $$(value.element).on('click', (e: MouseEvent) => this.onValueClick(e));
+      $$(value.element).on('focus', () => this.setKeyboardActiveValue(value));
     });
   }
 
@@ -116,8 +117,10 @@ export class ComboboxValues {
   }
 
   private setKeyboardActiveValue(value: IComboboxValue) {
+    this.resetKeyboardActiveValue();
     this.keyboardActiveValue = value;
     this.activateFocusOnValue(this.keyboardActiveValue);
+    this.updateAccessibilityAttributes();
   }
 
   private resetKeyboardActiveValue() {
@@ -154,9 +157,7 @@ export class ComboboxValues {
     }
 
     const nextActiveValue = this.nextOrFirstValue;
-    this.resetKeyboardActiveValue();
-    this.setKeyboardActiveValue(nextActiveValue);
-    this.updateAccessibilityAttributes();
+    nextActiveValue.element.focus();
   }
 
   public moveActiveValueUp() {
@@ -165,9 +166,7 @@ export class ComboboxValues {
     }
 
     const previousActiveValue = this.previousOrLastValue;
-    this.resetKeyboardActiveValue();
-    this.setKeyboardActiveValue(previousActiveValue);
-    this.updateAccessibilityAttributes();
+    previousActiveValue.element.focus();
   }
 
   private get nextOrFirstValue() {

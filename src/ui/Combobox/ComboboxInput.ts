@@ -40,9 +40,9 @@ export class ComboboxInput {
     if (!this.combobox.options.clearOnBlur) {
       $$(this.inputElement).on('focus', () => this.combobox.onInputChange(this.textInput.getValue()));
     }
-    $$(this.inputElement).on('blur', () => this.combobox.onInputBlur());
-    $$(this.inputElement).on('keydown', (e: KeyboardEvent) => this.handleKeyboardUpDownArrows(e));
-    $$(this.inputElement).on('keyup', (e: KeyboardEvent) => this.handleKeyboardEnterEscape(e));
+    $$(this.combobox.element).on('focusout', (e: FocusEvent) => this.handleFocusOut(e));
+    $$(this.combobox.element).on('keydown', (e: KeyboardEvent) => this.handleKeyboardUpDownArrows(e));
+    $$(this.combobox.element).on('keyup', (e: KeyboardEvent) => this.handleKeyboardEnterEscape(e));
   }
 
   private addAccessibilityAttributes() {
@@ -71,6 +71,14 @@ export class ComboboxInput {
 
   public clearInput() {
     this.textInput.reset();
+  }
+
+  private handleFocusOut(event: FocusEvent) {
+    const newTarget = event.relatedTarget as HTMLElement;
+    if (newTarget && this.combobox.element.contains(newTarget)) {
+      return;
+    }
+    this.combobox.onInputBlur();
   }
 
   private handleKeyboardUpDownArrows(event: KeyboardEvent) {
