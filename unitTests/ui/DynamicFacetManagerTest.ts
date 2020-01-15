@@ -153,7 +153,7 @@ export function DynamicFacetManagerTest() {
       expect(facets[2].putStateIntoAnalytics).toHaveBeenCalledTimes(1);
     });
 
-    it(`on the querySuccess event
+    it(`on the deferredQuerySuccess event
       should call handleQueryResults on it's facets`, () => {
       triggerAfterComponentsInitialization();
       spyOn(facets[2], 'handleQueryResults').and.callThrough();

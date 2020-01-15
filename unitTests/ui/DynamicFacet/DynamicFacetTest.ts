@@ -682,21 +682,21 @@ export function DynamicFacetTest() {
       });
     });
 
-    describe('testing querySuccess', () => {
+    describe('testing deferredQuerySuccess', () => {
       beforeEach(() => {
         test.cmp.ensureDom();
       });
 
       it(`when facet as a dynamicFacetManager
         should call handleQueryResults on the facet`, () => {
-        $$(test.env.root).trigger(QueryEvents.querySuccess, { results: fakeResultsWithFacets() });
+        $$(test.env.root).trigger(QueryEvents.deferredQuerySuccess, { results: fakeResultsWithFacets() });
         expect(test.cmp.handleQueryResults).toHaveBeenCalled();
       });
 
       it(`when facet as a dynamicFacetManager
         should not call handleQueryResults on the facet`, () => {
         test.cmp.dynamicFacetManager = Mock.mockComponent(DynamicFacetManager);
-        $$(test.env.root).trigger(QueryEvents.querySuccess, { results: fakeResultsWithFacets() });
+        $$(test.env.root).trigger(QueryEvents.deferredQuerySuccess, { results: fakeResultsWithFacets() });
         expect(test.cmp.handleQueryResults).not.toHaveBeenCalled();
       });
     });
