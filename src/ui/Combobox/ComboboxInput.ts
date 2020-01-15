@@ -75,7 +75,8 @@ export class ComboboxInput {
 
   private handleFocusOut(event: FocusEvent) {
     const newTarget = event.relatedTarget as HTMLElement;
-    if (newTarget && this.combobox.element.contains(newTarget)) {
+    const isFocusedOnInput = this.combobox.element.contains(newTarget);
+    if (isFocusedOnInput) {
       return;
     }
     this.combobox.onInputBlur();

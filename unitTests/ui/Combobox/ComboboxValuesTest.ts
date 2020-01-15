@@ -53,7 +53,7 @@ export function ComboboxValuesTest() {
       return $$(getChildren()[index]).hasClass('coveo-focused');
     }
 
-    function countChildrenFocusedAtIndex(index: number) {
+    function getFocusCountAtIndex(index: number) {
       return (getChildren()[index].focus as jasmine.Spy).calls.count();
     }
 
@@ -198,7 +198,7 @@ export function ComboboxValuesTest() {
       should focus the first value`, () => {
         comboboxValues.moveActiveValueDown();
 
-        expect(countChildrenFocusedAtIndex(0)).toEqual(1);
+        expect(getFocusCountAtIndex(0)).toEqual(1);
       });
 
       it(`when a value is active
@@ -215,8 +215,8 @@ export function ComboboxValuesTest() {
         comboboxValues.moveActiveValueDown();
         comboboxValues.moveActiveValueDown();
 
-        expect(countChildrenFocusedAtIndex(0)).toEqual(1);
-        expect(countChildrenFocusedAtIndex(1)).toEqual(1);
+        expect(getFocusCountAtIndex(0)).toEqual(1);
+        expect(getFocusCountAtIndex(1)).toEqual(1);
       });
 
       it(`when the last value is active
@@ -235,8 +235,8 @@ export function ComboboxValuesTest() {
         comboboxValues.moveActiveValueDown();
         comboboxValues.moveActiveValueDown();
 
-        expect(countChildrenFocusedAtIndex(0)).toEqual(2);
-        expect(countChildrenFocusedAtIndex(1)).toEqual(1);
+        expect(getFocusCountAtIndex(0)).toEqual(2);
+        expect(getFocusCountAtIndex(1)).toEqual(1);
       });
 
       it('should call "updateAccessibilityAttributes" with the rigth attributes', () => {
@@ -268,7 +268,7 @@ export function ComboboxValuesTest() {
       should focus the last value`, () => {
         comboboxValues.moveActiveValueUp();
 
-        expect(countChildrenFocusedAtIndex(1)).toEqual(1);
+        expect(getFocusCountAtIndex(1)).toEqual(1);
       });
 
       it(`when a value is active
@@ -285,8 +285,8 @@ export function ComboboxValuesTest() {
         comboboxValues.moveActiveValueUp();
         comboboxValues.moveActiveValueUp();
 
-        expect(countChildrenFocusedAtIndex(1)).toEqual(1);
-        expect(countChildrenFocusedAtIndex(0)).toEqual(1);
+        expect(getFocusCountAtIndex(1)).toEqual(1);
+        expect(getFocusCountAtIndex(0)).toEqual(1);
       });
 
       it(`when the last value is active
@@ -305,8 +305,8 @@ export function ComboboxValuesTest() {
         comboboxValues.moveActiveValueUp();
         comboboxValues.moveActiveValueUp();
 
-        expect(countChildrenFocusedAtIndex(0)).toEqual(1);
-        expect(countChildrenFocusedAtIndex(1)).toEqual(2);
+        expect(getFocusCountAtIndex(0)).toEqual(1);
+        expect(getFocusCountAtIndex(1)).toEqual(2);
       });
 
       it('should call "updateAccessibilityAttributes" with the right attributes', () => {
