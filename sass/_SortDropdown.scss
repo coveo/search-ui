@@ -10,14 +10,16 @@
     border: none;
     cursor: pointer;
     background-position-y: -5px;
-    font-family: 'Lato', $helvetica, sans-serif;
+    font-family: inherit;
+
+    &:focus {
+      outline: thin dotted;
+      outline: 5px auto -webkit-focus-ring-color;
+      outline-offset: -2px;
+    }
   }
 
   .CoveoSort {
-    display: none;
-  }
-
-  &.coveo-hidden {
     display: none;
   }
 }
