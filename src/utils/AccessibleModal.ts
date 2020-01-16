@@ -5,8 +5,8 @@ import { $$ } from './Dom';
 import { KeyboardUtils, KEYBOARD } from './KeyboardUtils';
 
 export interface IAccessibleModalOptions {
-  overlayClose?: Coveo.ModalBox.Options['overlayClose'];
-  sizeMod: Coveo.ModalBox.Options['sizeMod'];
+  overlayClose?: boolean;
+  sizeMod: 'big';
 }
 
 export class AccessibleModal {
