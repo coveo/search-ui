@@ -108,10 +108,19 @@ export class SortDropdown extends Component {
     }
 
     const sortCriteria = <string>this.queryStateModel.get(QueryStateModel.attributesEnum.sort);
-    const itemIndex = this.getSortIndex(sortCriteria);
-    itemIndex > -1 && this.dropdown.select(itemIndex, false);
+    this.select(sortCriteria);
+  }
 
-    $$(this.dropdown.getElement()).toggleClass('coveo-selected', itemIndex > -1);
+  /**
+   * Selects a sort criteria from the options.
+   * @param sortCriteria The sort criteria to select.
+   * @param executeQuery Whether to execute a query after changing the sort criteria
+   */
+
+  public select(sortCriteria: string, executeQuery: boolean = false) {
+    const sortIndex = this.getSortIndex(sortCriteria);
+    sortIndex > -1 && this.dropdown.select(sortIndex, executeQuery);
+    $$(this.dropdown.getElement()).toggleClass('coveo-selected', sortIndex > -1);
   }
 
   private handleQuerySuccess(data: IQuerySuccessEventArgs) {

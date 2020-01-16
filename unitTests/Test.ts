@@ -812,3 +812,6 @@ CommerceQueryTest();
 
 import { FocusTrapTest } from './ui/FocusTrapTest';
 FocusTrapTest();
+
+import { SortDropdownTest } from './ui/SortDropdownTest';
+SortDropdownTest();
