@@ -26,7 +26,8 @@ import { DynamicFacetRangeQueryController } from '../../controllers/DynamicFacet
  * - [`valueCaption`]{@link DynamicFacet.options.valueCaption}
  * - [`sortCriteria`]{@link DynamicFacet.options.sortCriteria}
  *
- *  @notSupportedIn salesforcefree
+ * @notSupportedIn salesforcefree
+ * @availableSince [October 2019 Release (v2.7219)](https://docs.coveo.com/en/3084/)
  */
 export class DynamicFacetRange extends DynamicFacet implements IComponentBindings {
   static ID = 'DynamicFacetRange';
@@ -73,7 +74,7 @@ export class DynamicFacetRange extends DynamicFacet implements IComponentBinding
       section: 'CommonOptions'
     }),
     /**
-     * The currency symbol to use if the [`valueFormat`]{@link DynamicFacetRangeValueFormat.options.valueFormat} is [`currency`]{@link DynamicFacetRangeValueFormat.currency}.
+     * The currency symbol to use if the [`valueFormat`]{@link DynamicFacetRange.options.valueFormat} is [`currency`]{@link DynamicFacetRangeValueFormat.currency}.
      *
      * By default, the component uses the currency associated with the currently loaded culture file (see [Changing the Language of Your Search Interface](https://docs.coveo.com/421/)).
      */
@@ -82,8 +83,6 @@ export class DynamicFacetRange extends DynamicFacet implements IComponentBinding
      * The list of [range values]{@link IRangeValue} to request (see [Requesting Specific FacetRange Values](https://docs.coveo.com/en/2790/)).
      *
      * This value will override the [`numberOfValues`]{@link DynamicFacet.options.numberOfValues} value.
-     *
-     * **Required:** Specifying a value for this option is required for the component to work.
      */
     ranges: ComponentOptions.buildJsonOption<IRangeValue[]>({ required: true })
   };
