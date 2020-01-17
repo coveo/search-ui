@@ -102,6 +102,7 @@ export class StarRating extends Component {
 
   private renderComponent() {
     if (this.configuredFieldsAreValid) {
+      this.makeAccessible();
       for (let starNumber = 1; starNumber <= DEFAULT_SCALE; starNumber++) {
         this.renderStar(starNumber <= this.rating);
       }
@@ -109,6 +110,30 @@ export class StarRating extends Component {
         this.renderNumberOfReviews(this.numberOfRatingsField);
       }
     }
+  }
+
+  private makeAccessible() {
+    this.setDefaultTabIndex();
+    this.element.setAttribute('aria-label', this.getLabel());
+  }
+
+  private setDefaultTabIndex() {
+    if (Utils.isNullOrUndefined(this.element.getAttribute('tabindex'))) {
+      this.element.tabIndex = 0;
+    }
+  }
+
+  private getLabel() {
+    const numberOfRatingsIsKnown = !Utils.isNullOrUndefined(this.numberOfRatingsField);
+    const wasRated = !!this.numberOfRatingsField;
+    if (numberOfRatingsIsKnown && !wasRated) {
+      return l('NoRatings');
+    }
+    const label = l('Rated', this.rating, this.options.ratingScale, this.options.ratingScale);
+    if (numberOfRatingsIsKnown) {
+      return label + ' ' + l('RatedBy', this.numberOfRatingsField, this.numberOfRatingsField);
+    }
+    return label;
   }
 
   private renderStar(isChecked: boolean) {
@@ -119,7 +144,7 @@ export class StarRating extends Component {
 
   private renderNumberOfReviews(value: number) {
     const numberString = $$('span', { className: 'coveo-star-rating-label' });
-    numberString.text(value > 0 ? `(${value})` : l('No Ratings'));
+    numberString.text(value > 0 ? `(${value})` : l('NoRatings'));
     this.element.appendChild(numberString.el);
   }
 }
