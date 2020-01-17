@@ -94,7 +94,7 @@ export function AccessibleModalTest() {
       });
 
       it('gives the close button a tabindex', () => {
-        expect(closeButton.tabIndex >= 0).toEqual(true);
+        expect(closeButton.tabIndex).toEqual(0);
       });
 
       it('focuses on the close button', () => {

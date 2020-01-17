@@ -6,7 +6,7 @@ import { KeyboardUtils, KEYBOARD } from './KeyboardUtils';
 
 export interface IAccessibleModalOptions {
   overlayClose?: boolean;
-  sizeMod: 'big';
+  sizeMod: 'small' | 'normal' | 'big';
 }
 
 export class AccessibleModal {
@@ -73,10 +73,11 @@ export class AccessibleModal {
 
   private makeAccessible() {
     this.element.setAttribute('aria-modal', 'true');
-    this.makeCloseButtonAccessible(this.element.querySelector('.coveo-small-close'));
+    this.makeCloseButtonAccessible();
   }
 
-  private makeCloseButtonAccessible(closeButton: HTMLElement) {
+  private makeCloseButtonAccessible() {
+    const closeButton: HTMLElement = this.element.querySelector('.coveo-small-close');
     closeButton.setAttribute('aria-label', l('Close'));
     closeButton.tabIndex = 0;
     closeButton.focus();
