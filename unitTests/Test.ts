@@ -812,3 +812,6 @@ CommerceQueryTest();
 
 import { FocusTrapTest } from './ui/FocusTrapTest';
 FocusTrapTest();
+
+import { AccessibleModalTest } from './utils/AccessibleModalTest';
+AccessibleModalTest();
