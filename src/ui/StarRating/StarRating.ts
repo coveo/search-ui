@@ -26,7 +26,7 @@ export interface IStarRatingOptions {
 export class StarRating extends Component {
   static ID = 'StarRating';
   private rating: number;
-  private numberOfRatingsField: number;
+  private numberOfRatings: number;
 
   static doExport = () => {
     exportGlobally({
@@ -85,7 +85,7 @@ export class StarRating extends Component {
     const rawNumberOfRatings = Utils.getFieldValue(this.result, <string>this.options.numberOfRatingsField);
 
     if (rawNumberOfRatings !== undefined) {
-      this.numberOfRatingsField = Number(rawNumberOfRatings) < 0 ? 0 : Number(rawNumberOfRatings) || 0;
+      this.numberOfRatings = Number(rawNumberOfRatings) < 0 ? 0 : Number(rawNumberOfRatings) || 0;
     }
 
     this.rating = Number(rawRating) < 0 ? 0 : Number(rawRating) || 0;
@@ -106,15 +106,15 @@ export class StarRating extends Component {
       for (let starNumber = 1; starNumber <= DEFAULT_SCALE; starNumber++) {
         this.renderStar(starNumber <= this.rating);
       }
-      if (this.numberOfRatingsField !== undefined) {
-        this.renderNumberOfReviews(this.numberOfRatingsField);
+      if (this.numberOfRatings !== undefined) {
+        this.renderNumberOfReviews(this.numberOfRatings);
       }
     }
   }
 
   private makeAccessible() {
     this.setDefaultTabIndex();
-    this.element.setAttribute('aria-label', this.getLabel());
+    this.element.setAttribute('aria-label', this.getAriaLabel());
   }
 
   private setDefaultTabIndex() {
@@ -123,15 +123,15 @@ export class StarRating extends Component {
     }
   }
 
-  private getLabel() {
-    const numberOfRatingsIsKnown = !Utils.isNullOrUndefined(this.numberOfRatingsField);
-    const wasRated = !!this.numberOfRatingsField;
+  private getAriaLabel() {
+    const numberOfRatingsIsKnown = !Utils.isNullOrUndefined(this.numberOfRatings);
+    const wasRated = !!this.numberOfRatings;
     if (numberOfRatingsIsKnown && !wasRated) {
       return l('NoRatings');
     }
     const label = l('Rated', this.rating, this.options.ratingScale, this.options.ratingScale);
     if (numberOfRatingsIsKnown) {
-      return label + ' ' + l('RatedBy', this.numberOfRatingsField, this.numberOfRatingsField);
+      return label + ' ' + l('RatedBy', this.numberOfRatings, this.numberOfRatings);
     }
     return label;
   }
