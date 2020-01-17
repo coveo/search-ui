@@ -14,8 +14,6 @@ import { Sort } from '../Sort/Sort';
 import { Dropdown } from '../FormWidgets/Dropdown';
 import { l } from '../../strings/Strings';
 
-export interface ISortDropdownOptions {}
-
 /**
  * The `SortDropdown` component renders a dropdown that the end user can interact with to select the criteria to use when sorting query results.
  *
@@ -31,7 +29,7 @@ export interface ISortDropdownOptions {}
  */
 export class SortDropdown extends Component {
   static ID = 'SortDropdown';
-  static options: ISortDropdownOptions = {};
+  static options: any = {};
 
   static doExport = () => {
     exportGlobally({
@@ -49,7 +47,7 @@ export class SortDropdown extends Component {
    * @param bindings The bindings that the component requires to function normally. If not set, these will be
    * automatically resolved (with a slower execution time).
    */
-  constructor(public element: HTMLElement, public options?: ISortDropdownOptions, bindings?: IComponentBindings) {
+  constructor(public element: HTMLElement, public options?: any, bindings?: IComponentBindings) {
     super(element, SortDropdown.ID, bindings);
 
     this.options = ComponentOptions.initComponentOptions(element, SortDropdown, options);
