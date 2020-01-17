@@ -74,7 +74,8 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
      * Default value is the [`field`]{@link DynamicHierarchicalFacet.options.field} option value.
      */
     id: ComponentOptions.buildStringOption({
-      postProcessing: (value, options: IDynamicHierarchicalFacetOptions) => value || (options.field as string)
+      postProcessing: (value, options: IDynamicHierarchicalFacetOptions) => value || (options.field as string),
+      section: 'CommonOptions'
     }),
 
     /**
@@ -87,7 +88,7 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
      *
      * See [Using the Hierarchical Facet Component](https://docs.coveo.com/en/2667).
      */
-    field: ComponentOptions.buildFieldOption({ required: true }),
+    field: ComponentOptions.buildFieldOption({ required: true, section: 'CommonOptions' }),
 
     /**
      * The title to display at the top of the facet.
@@ -95,7 +96,8 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
      * Default value is the localized string for `NoTitle`.
      */
     title: ComponentOptions.buildLocalizedStringOption({
-      localizedString: () => l('NoTitle')
+      localizedString: () => l('NoTitle'),
+      section: 'CommonOptions'
     }),
 
     /**
@@ -109,7 +111,7 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
     /**
      * Whether to allow the end-user to expand and collapse this facet.
      */
-    enableCollapse: ComponentOptions.buildBooleanOption({ defaultValue: true, section: 'Filtering' }),
+    enableCollapse: ComponentOptions.buildBooleanOption({ defaultValue: true, section: 'CommonOptions' }),
 
     /**
      * Whether this facet should be collapsed by default.
@@ -117,7 +119,7 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
      * See also the [`enableCollapse`]{@link DynamicHierarchicalFacet.options.enableCollapse}
      * option.
      */
-    collapsedByDefault: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'Filtering', depend: 'enableCollapse' }),
+    collapsedByDefault: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'CommonOptions', depend: 'enableCollapse' }),
 
     /**
      * Whether to scroll back to the top of the page whenever the end-user interacts with a facet.
@@ -141,7 +143,7 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
      *
      * See also the [`numberOfValues`]{@link DynamicHierarchicalFacet.options.numberOfValues} option.
      */
-    enableMoreLess: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+    enableMoreLess: ComponentOptions.buildBooleanOption({ defaultValue: true, section: 'CommonOptions' }),
 
     /**
      * The character that specifies the hierarchical dependency.
@@ -154,7 +156,7 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
      *
      * The delimiting character is `>`.
      */
-    delimitingCharacter: ComponentOptions.buildStringOption({ defaultValue: '|' }),
+    delimitingCharacter: ComponentOptions.buildStringOption({ defaultValue: '|', section: 'CommonOptions' }),
 
     /**
      * Specifies a JSON object describing a mapping of facet values to their desired captions. See
@@ -203,7 +205,7 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
      *
      * **Default:** `undefined` and the hierarchical facet does not depend on any other facet to be displayed.
      */
-    dependsOn: ComponentOptions.buildStringOption(),
+    dependsOn: ComponentOptions.buildStringOption({ section: 'CommonOptions' }),
 
     /**
      * Whether to exclude folded result parents when estimating result counts for facet values.
@@ -244,7 +246,8 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
      * Default value is the localized string for `AllCategories`.
      */
     clearLabel: ComponentOptions.buildLocalizedStringOption({
-      localizedString: () => l('AllCategories')
+      localizedString: () => l('AllCategories'),
+      section: 'CommonOptions'
     }),
 
     ...ResponsiveFacetOptions
