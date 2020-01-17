@@ -17,22 +17,27 @@ import { l } from '../../strings/Strings';
 export interface ISortDropdownOptions {}
 
 /**
- * The `SortDropdown` component renders a dropdown that the end user can interact with to select the criterion to use when sorting query results.
+ * The `SortDropdown` component renders a dropdown that the end user can interact with to select the criteria to use when sorting query results.
+ *
+ * It is meant to be a parent of regular [`Sort`]{@link Sort} components. Example:
+ * ```
+ * <div class="CoveoSortDropdown">
+ *   <span class="CoveoSort" data-sort-criteria="relevancy" data-caption="Relevance"></span>
+ *   <span class="CoveoSort" data-sort-criteria="date descending" data-caption="Newest"></span>
+ *   <span class="CoveoSort" data-sort-criteria="date ascending" data-caption="Oldest"></span>
+ * </div>
+ * ```
+ * Each one of the children `Sort` components should have only one sort criteria to prevent the regular toggle behaviour.
  */
 export class SortDropdown extends Component {
   static ID = 'SortDropdown';
+  static options: ISortDropdownOptions = {};
 
   static doExport = () => {
     exportGlobally({
       SortDropdown: SortDropdown
     });
   };
-
-  /**
-   * Options for the component
-   * @componentOptions
-   */
-  static options: ISortDropdownOptions = {};
 
   private dropdown: Dropdown;
   private sortComponents: Sort[] = [];
