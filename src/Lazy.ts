@@ -308,3 +308,6 @@ lazyQuerySuggestPreview();
 
 import { lazyCommerceQuery } from './ui/CommerceQuery/LazyCommerceQuery';
 lazyCommerceQuery();
+
+import { lazySortDropdown } from './ui/SortDropdown/LazySortDropdown';
+lazySortDropdown();

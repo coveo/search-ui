@@ -815,3 +815,6 @@ FocusTrapTest();
 
 import { AccessibleModalTest } from './utils/AccessibleModalTest';
 AccessibleModalTest();
+
+import { SortDropdownTest } from './ui/SortDropdownTest';
+SortDropdownTest();
