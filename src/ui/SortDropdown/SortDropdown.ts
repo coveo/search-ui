@@ -119,7 +119,6 @@ export class SortDropdown extends Component {
    * @param sortCriteria The sort criteria to select.
    * @param executeQuery Whether to execute a query after changing the sort criteria
    */
-
   public select(sortCriteria: string, executeQuery: boolean = false) {
     const sortIndex = this.getSortIndex(sortCriteria);
     sortIndex > -1 && this.dropdown.select(sortIndex, executeQuery);
