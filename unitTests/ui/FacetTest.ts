@@ -681,8 +681,8 @@ export function FacetTest() {
               expect(accessibleElement.getAttribute('aria-expanded')).toEqual(true.toString());
             });
 
-            it('should set aria-owns to the given id', () => {
-              expect(accessibleElement.getAttribute('aria-owns')).toEqual(id);
+            it('should set aria-controls to the given id', () => {
+              expect(accessibleElement.getAttribute('aria-controls')).toEqual(id);
             });
           });
 
@@ -696,8 +696,8 @@ export function FacetTest() {
               expect(accessibleElement.getAttribute('aria-expanded')).toEqual(false.toString());
             });
 
-            it('should remove aria-owns', () => {
-              expect(accessibleElement.getAttribute('aria-owns')).toBeNull();
+            it('should remove aria-controls', () => {
+              expect(accessibleElement.getAttribute('aria-controls')).toBeNull();
             });
           });
         });

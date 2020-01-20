@@ -782,9 +782,9 @@ export class Facet extends Component {
     }
     const { accessibleElement } = this.searchContainer;
     if (!id) {
-      accessibleElement.removeAttribute('aria-owns');
+      accessibleElement.removeAttribute('aria-controls');
     } else {
-      accessibleElement.setAttribute('aria-owns', id);
+      accessibleElement.setAttribute('aria-controls', id);
     }
     accessibleElement.setAttribute('aria-expanded', (!!id).toString());
   }
