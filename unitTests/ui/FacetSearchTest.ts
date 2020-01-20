@@ -10,6 +10,16 @@ import { IIndexFieldValue } from '../../src/rest/FieldValue';
 import { Simulate } from '../Simulate';
 import { KEYBOARD } from '../../src/utils/KeyboardUtils';
 
+function getSetter<T>(instance: T, propertyName: keyof T) {
+  return Object.getOwnPropertyDescriptor(Object.getPrototypeOf(instance), propertyName).set.bind(instance);
+}
+
+function spyOnSetter<T>(instance: T, propertyName: keyof T) {
+  const spy = jasmine.createSpy(propertyName as string, getSetter(instance, propertyName));
+  Object.defineProperty(instance, propertyName, { set: spy });
+  return spy;
+}
+
 export function FacetSearchTest() {
   describe('FacetSearch', () => {
     var mockFacet: Facet;
@@ -87,25 +97,48 @@ export function FacetSearchTest() {
         });
       });
 
-      it('should hide facet search results', done => {
-        var pr = new Promise((resolve, reject) => {
-          var results = FakeResults.createFakeFieldValues('foo', 10);
-          resolve(results);
+      describe('when calling focus', () => {
+        it("should update the accessible element's accessibility properties", () => {
+          const setCurrentFacetSearchElementIdSpy = spyOnSetter(facetSearch, 'currentFacetSearchElementId');
+          facetSearch.focus();
+          expect(setCurrentFacetSearchElementIdSpy).toHaveBeenCalledTimes(1);
+          expect(setCurrentFacetSearchElementIdSpy).toHaveBeenCalledWith(facetSearch.facetSearchElement['facetSearchId']);
         });
+      });
 
-        (<jasmine.Spy>mockFacet.facetQueryController.search).and.returnValue(pr);
+      describe('when triggering a query', () => {
+        beforeEach(async done => {
+          const pr = new Promise((resolve, reject) => {
+            const results = FakeResults.createFakeFieldValues('foo', 10);
+            resolve(results);
+          });
 
-        var params = new FacetSearchParameters(mockFacet);
-        expect(allSearchResults().length).toBe(0);
-        expect(facetSearch.currentlyDisplayedResults).toBeUndefined();
-        facetSearch.triggerNewFacetSearch(params);
-        pr.then(() => {
-          expect(allSearchResults().length).toBe(10);
-          expect(facetSearch.currentlyDisplayedResults.length).toBe(10);
-          facetSearch.dismissSearchResults();
+          (<jasmine.Spy>mockFacet.facetQueryController.search).and.returnValue(pr);
+
+          var params = new FacetSearchParameters(mockFacet);
           expect(allSearchResults().length).toBe(0);
           expect(facetSearch.currentlyDisplayedResults).toBeUndefined();
+          facetSearch.triggerNewFacetSearch(params);
+          await pr;
           done();
+        });
+
+        describe('and calling dismissSearchResults', () => {
+          it('should hide facet search results', done => {
+            expect(allSearchResults().length).toBe(10);
+            expect(facetSearch.currentlyDisplayedResults.length).toBe(10);
+            facetSearch.dismissSearchResults();
+            expect(allSearchResults().length).toBe(0);
+            expect(facetSearch.currentlyDisplayedResults).toBeUndefined();
+            done();
+          });
+
+          it("should update the accessible element's accessibility properties", () => {
+            const setCurrentFacetSearchElementIdSpy = spyOnSetter(facetSearch, 'currentFacetSearchElementId');
+            facetSearch.dismissSearchResults();
+            expect(setCurrentFacetSearchElementIdSpy).toHaveBeenCalledTimes(1);
+            expect(setCurrentFacetSearchElementIdSpy).toHaveBeenCalledWith(null);
+          });
         });
       });
 

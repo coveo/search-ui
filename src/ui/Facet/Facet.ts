@@ -777,6 +777,9 @@ export class Facet extends Component {
   }
 
   public set currentFacetSearchElementId(id: string) {
+    if (!this.searchContainer) {
+      return;
+    }
     const { accessibleElement } = this.searchContainer;
     if (!id) {
       accessibleElement.removeAttribute('aria-owns');

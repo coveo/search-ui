@@ -654,56 +654,99 @@ export function FacetTest() {
         expect(test.cmp.facetSearch).toBeUndefined();
       });
 
-      describe(`given enableFacetSearch is set to 'true',
-      given that searching is not active`, () => {
-        const searchingCssClass = 'coveo-facet-searching';
+      describe('with more results than displayed', () => {
         const oneMoreThanNumberOfDisplayedValues = 6;
-
-        function triggerChangeOnCheckbox() {
-          const changeEvent = new Event('change');
-          test.cmp.searchContainer.checkbox.dispatchEvent(changeEvent);
-        }
 
         beforeEach(() => {
           const options = { field: '@field', enableFacetSearch: true };
           test = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, options);
           test.cmp['nbAvailableValues'] = oneMoreThanNumberOfDisplayedValues;
           test.cmp.reset();
-
-          expect(test.cmp.element.className).not.toContain(searchingCssClass);
         });
 
-        it(`when triggering a 'change' event on the searchContainer checkbox,
-        it actives searching`, () => {
-          triggerChangeOnCheckbox();
-          expect(test.cmp.element.className).toContain(searchingCssClass);
+        describe('when setting currentFacetSearchElementId', () => {
+          let accessibleElement: HTMLElement;
+          beforeEach(() => {
+            accessibleElement = test.cmp.searchContainer.accessibleElement;
+          });
+
+          describe('to a non-null value', () => {
+            const id = 'abcdef';
+            beforeEach(() => {
+              test.cmp.currentFacetSearchElementId = null;
+              test.cmp.currentFacetSearchElementId = id;
+            });
+
+            it('should set aria-expanded to true', () => {
+              expect(accessibleElement.getAttribute('aria-expanded')).toEqual(true.toString());
+            });
+
+            it('should set aria-owns to the given id', () => {
+              expect(accessibleElement.getAttribute('aria-owns')).toEqual(id);
+            });
+          });
+
+          describe('to a null value', () => {
+            beforeEach(() => {
+              test.cmp.currentFacetSearchElementId = 'abcdef';
+              test.cmp.currentFacetSearchElementId = null;
+            });
+
+            it('should set aria-expanded to false', () => {
+              expect(accessibleElement.getAttribute('aria-expanded')).toEqual(false.toString());
+            });
+
+            it('should remove aria-owns', () => {
+              expect(accessibleElement.getAttribute('aria-owns')).toBeNull();
+            });
+          });
         });
 
-        describe(`when triggering an 'Enter' keyup event on the searchContainer listItem`, () => {
-          function triggerEnterKeyOnAccessibleElement() {
-            Simulate.keyUp(test.cmp.searchContainer.accessibleElement, KEYBOARD.ENTER);
+        describe(`given enableFacetSearch is set to 'true',
+        given that searching is not active`, () => {
+          const searchingCssClass = 'coveo-facet-searching';
+
+          function triggerChangeOnCheckbox() {
+            const changeEvent = new Event('change');
+            test.cmp.searchContainer.checkbox.dispatchEvent(changeEvent);
           }
 
-          beforeEach(triggerEnterKeyOnAccessibleElement);
+          beforeEach(() => {
+            expect(test.cmp.element.className).not.toContain(searchingCssClass);
+          });
 
-          it('activates searching', () => {
+          it(`when triggering a 'change' event on the searchContainer checkbox,
+          it actives searching`, () => {
+            triggerChangeOnCheckbox();
             expect(test.cmp.element.className).toContain(searchingCssClass);
           });
 
-          it(`sets the checkbox 'checked' attribute`, () => {
-            const checkbox = test.cmp.searchContainer.checkbox;
-            const checkedAttribute = checkbox.getAttribute('checked');
-            expect(checkedAttribute).toBeTruthy();
-          });
+          describe(`when triggering an 'Enter' keyup event on the searchContainer listItem`, () => {
+            function triggerEnterKeyOnAccessibleElement() {
+              Simulate.keyUp(test.cmp.searchContainer.accessibleElement, KEYBOARD.ENTER);
+            }
 
-          it(`when triggering a second 'Enter' keyup event,
-          it removes the checkbox 'checked' attribute`, () => {
-            triggerEnterKeyOnAccessibleElement();
+            beforeEach(triggerEnterKeyOnAccessibleElement);
 
-            const checkbox = test.cmp.searchContainer.checkbox;
-            const checkedAttribute = checkbox.getAttribute('checked');
+            it('activates searching', () => {
+              expect(test.cmp.element.className).toContain(searchingCssClass);
+            });
 
-            expect(checkedAttribute).toBeFalsy();
+            it(`sets the checkbox 'checked' attribute`, () => {
+              const checkbox = test.cmp.searchContainer.checkbox;
+              const checkedAttribute = checkbox.getAttribute('checked');
+              expect(checkedAttribute).toBeTruthy();
+            });
+
+            it(`when triggering a second 'Enter' keyup event,
+            it removes the checkbox 'checked' attribute`, () => {
+              triggerEnterKeyOnAccessibleElement();
+
+              const checkbox = test.cmp.searchContainer.checkbox;
+              const checkedAttribute = checkbox.getAttribute('checked');
+
+              expect(checkedAttribute).toBeFalsy();
+            });
           });
         });
       });

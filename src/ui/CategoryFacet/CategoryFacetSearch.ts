@@ -35,6 +35,8 @@ export class CategoryFacetSearch implements IFacetSearch {
     return CategoryFacet.ID;
   }
 
+  public set currentFacetSearchElementId(id: string) {}
+
   public build() {
     this.container = $$('div', {
       className: 'coveo-category-facet-search-container',
