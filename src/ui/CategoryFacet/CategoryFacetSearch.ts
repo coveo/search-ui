@@ -38,9 +38,10 @@ export class CategoryFacetSearch implements IFacetSearch {
   public build() {
     this.container = $$('div', {
       className: 'coveo-category-facet-search-container',
-      role: 'heading',
-      'aria-level': 3
+      role: 'button'
     });
+
+    const title = this.categoryFacet.options.title;
 
     new AccessibleButton()
       .withElement(this.container)
@@ -48,7 +49,7 @@ export class CategoryFacetSearch implements IFacetSearch {
         $$(this.categoryFacet.element).addClass('coveo-category-facet-searching');
         this.focus();
       })
-      .withLabel(l('Search'))
+      .withLabel(title ? l('SearchFacetResults', this.categoryFacet.options.title) : l('Search'))
       .build();
 
     const search = this.facetSearchElement.build();
