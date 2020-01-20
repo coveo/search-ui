@@ -6,7 +6,7 @@ import { IQueryCorrection } from '../src/rest/QueryCorrection';
 import { IGroupByResult } from '../src/rest/GroupByResult';
 import { IMockEnvironment } from './MockEnvironment';
 import { FakeResults } from './Fake';
-import { $$ } from '../src/utils/Dom';
+import { $$, Dom } from '../src/utils/Dom';
 import { QueryEvents } from '../src/events/QueryEvents';
 import {
   INewQueryEventArgs,
@@ -209,25 +209,34 @@ export class Simulate {
 
   static modalBoxModule(): ModalBox {
     let content: HTMLElement;
+    let closeButton: Dom;
     const container = $$(
       'div',
       { className: 'coveo-wrapper coveo-modal-container' },
       (content = $$(
         'div',
         { className: 'coveo-modal-content' },
-        $$('header', { className: 'coveo-modal-header' }, $$('div', { className: 'coveo-quickview-close-button coveo-small-close' })).el
+        $$(
+          'header',
+          { className: 'coveo-modal-header' },
+          (closeButton = $$('div', { className: 'coveo-quickview-close-button coveo-small-close' }))
+        ).el
       ).el)
     ).el;
+    spyOn(closeButton.el, 'focus');
     const backdrop = $$('div', { className: 'coveo-modal-backdrop' }).el;
     let modalBox = <any>{};
-    modalBox.open = jasmine.createSpy('open');
-    modalBox.close = jasmine.createSpy('close');
-    modalBox.open.and.returnValue({
-      modalBox: container,
-      wrapper: content,
-      overlay: backdrop,
-      content,
-      close: modalBox.close
+    let currentValidation: () => boolean = null;
+    modalBox.close = jasmine.createSpy('close').and.callFake(() => currentValidation && currentValidation());
+    modalBox.open = jasmine.createSpy('open').and.callFake((_, { validation }) => {
+      currentValidation = validation;
+      return {
+        modalBox: container,
+        wrapper: content,
+        overlay: backdrop,
+        content,
+        close: modalBox.close
+      };
     });
     return modalBox;
   }

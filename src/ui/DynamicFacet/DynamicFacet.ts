@@ -90,7 +90,8 @@ export class DynamicFacet extends Component implements IDynamicFacet {
         }
 
         return options.field.slice(0, maxCharLength - 1);
-      }
+      },
+      section: 'CommonOptions'
     }),
 
     /**
@@ -163,7 +164,7 @@ export class DynamicFacet extends Component implements IDynamicFacet {
     /**
      * Whether to allow the end-user to expand and collapse this facet.
      */
-    enableCollapse: ComponentOptions.buildBooleanOption({ defaultValue: true, section: 'Filtering' }),
+    enableCollapse: ComponentOptions.buildBooleanOption({ defaultValue: true, section: 'CommonOptions' }),
 
     /**
      * Whether to scroll back to the top of the page whenever the end-user interacts with the facet.
@@ -203,7 +204,7 @@ export class DynamicFacet extends Component implements IDynamicFacet {
     /**
      * Whether this facet should be collapsed by default.
      */
-    collapsedByDefault: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'Filtering', depend: 'enableCollapse' }),
+    collapsedByDefault: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'CommonOptions', depend: 'enableCollapse' }),
 
     /**
      * Whether to notify the [`Breadcrumb`]{@link Breadcrumb} component when toggling values in the facet.
@@ -239,7 +240,7 @@ export class DynamicFacet extends Component implements IDynamicFacet {
      *
      * @examples document-type-facet
      */
-    dependsOn: ComponentOptions.buildStringOption(),
+    dependsOn: ComponentOptions.buildStringOption({ section: 'CommonOptions' }),
 
     /**
      * The number of items to scan for facet values.
@@ -549,7 +550,7 @@ export class DynamicFacet extends Component implements IDynamicFacet {
   private initQueryEvents() {
     this.bind.onRootElement(QueryEvents.duringQuery, () => this.ensureDom());
     this.bind.onRootElement(QueryEvents.doneBuildingQuery, (data: IDoneBuildingQueryEventArgs) => this.handleDoneBuildingQuery(data));
-    this.bind.onRootElement(QueryEvents.querySuccess, (data: IQuerySuccessEventArgs) => this.handleQuerySuccess(data.results));
+    this.bind.onRootElement(QueryEvents.deferredQuerySuccess, (data: IQuerySuccessEventArgs) => this.handleQuerySuccess(data.results));
     this.bind.onRootElement(QueryEvents.queryError, () => this.onNoValues());
   }
 

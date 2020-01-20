@@ -24,9 +24,7 @@ import { TemplateComponentOptions } from '../Base/TemplateComponentOptions';
 import { Template } from '../Templates/Template';
 import { DefaultQuickviewTemplate } from './DefaultQuickviewTemplate';
 import { QuickviewDocument } from './QuickviewDocument';
-import { KeyboardUtils } from '../../Core';
-import { KEYBOARD } from '../../utils/KeyboardUtils';
-import { FocusTrap } from '../FocusTrap/FocusTrap';
+import { AccessibleModal } from '../../utils/AccessibleModal';
 
 /**
  * The allowed [`Quickview`]{@link Quickview} [`tooltipPlacement`]{@link Quickview.options.tooltipPlacement} option values. The `-start` and `-end` variations indicate relative alignement. Horizontally (`top`, `bottom`), `-start` means _left_ and `-end` means _right_. Vertically (`left`, `right`), `-start` means _top_ and `-end` means _bottom_. No variation means _center_.
@@ -254,11 +252,9 @@ export class Quickview extends Component {
 
   public static resultCurrentlyBeingRendered: IQueryResult = null;
 
-  private modalbox: Coveo.ModalBox.ModalBox;
+  private modalbox: AccessibleModal;
 
   private lastFocusedElement: HTMLElement;
-
-  private focusTrap: FocusTrap;
 
   /**
    * Creates a new `Quickview` component.
@@ -274,7 +270,7 @@ export class Quickview extends Component {
     public options?: IQuickviewOptions,
     public bindings?: IResultsComponentBindings,
     public result?: IQueryResult,
-    private ModalBox: Coveo.ModalBox.ModalBox = ModalBoxModule
+    ModalBox: Coveo.ModalBox.ModalBox = ModalBoxModule
   ) {
     super(element, Quickview.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, Quickview, options);
@@ -296,6 +292,8 @@ export class Quickview extends Component {
         this.open();
       });
     }
+
+    this.modalbox = new AccessibleModal('coveo-quick-view', element.ownerDocument.body as HTMLBodyElement, ModalBox);
   }
 
   private buildContent() {
@@ -361,7 +359,7 @@ export class Quickview extends Component {
    * Opens the `Quickview` modal box.
    */
   public open() {
-    if (Utils.isNullOrUndefined(this.modalbox)) {
+    if (!this.modalbox.isOpen) {
       // To prevent the keyboard from opening on mobile if the search bar has focus
       Quickview.resultCurrentlyBeingRendered = this.result;
       // activeElement does not exist in LockerService
@@ -387,11 +385,8 @@ export class Quickview extends Component {
    * Closes the `Quickview` modal box.
    */
   public close() {
-    if (this.modalbox != null) {
+    if (this.modalbox.isOpen) {
       this.modalbox.close();
-      this.modalbox = null;
-      this.focusTrap.disable();
-      this.focusTrap = null;
       if (this.lastFocusedElement && this.lastFocusedElement.parentElement) {
         this.lastFocusedElement.focus();
       }
@@ -438,7 +433,7 @@ export class Quickview extends Component {
   }
 
   private animateAndOpen() {
-    const quickviewDocument = $$(this.modalbox.modalBox).find('.' + Component.computeCssClassName(QuickviewDocument));
+    const quickviewDocument = $$(this.modalbox.element).find('.' + Component.computeCssClassName(QuickviewDocument));
     if (quickviewDocument) {
       Initialization.dispatchNamedMethodCallOrComponentCreation('open', quickviewDocument, null);
     }
@@ -458,32 +453,12 @@ export class Quickview extends Component {
         this.bindings
       ).el;
 
-      this.modalbox = this.ModalBox.open(computedModalBoxContent.el, {
-        title,
-        className: 'coveo-quick-view',
-        validation: () => {
-          this.closeQuickview();
-          return true;
-        },
-        body: this.element.ownerDocument.body,
-        sizeMod: 'big'
+      this.modalbox.open(title, computedModalBoxContent.el, () => {
+        this.closeQuickview();
+        return true;
       });
-      this.makeModalboxAccessible(this.modalbox.modalBox);
       return computedModalBoxContent;
     });
-  }
-
-  private makeModalboxAccessible(modal: HTMLElement) {
-    modal.setAttribute('aria-modal', 'true');
-    this.makeModalCloseButtonAccessible(modal.querySelector('.coveo-small-close'));
-    this.focusTrap = new FocusTrap(modal);
-  }
-
-  private makeModalCloseButtonAccessible(closeButton: HTMLElement) {
-    closeButton.setAttribute('aria-label', l('Close'));
-    closeButton.tabIndex = 0;
-    closeButton.focus();
-    $$(closeButton).on('keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, () => closeButton.click()));
   }
 
   private prepareOpenQuickviewObject() {
