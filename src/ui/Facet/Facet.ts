@@ -776,6 +776,16 @@ export class Facet extends Component {
     });
   }
 
+  public set currentFacetSearchElementId(id: string) {
+    const { accessibleElement } = this.searchContainer;
+    if (!id) {
+      accessibleElement.removeAttribute('aria-owns');
+    } else {
+      accessibleElement.setAttribute('aria-owns', id);
+    }
+    accessibleElement.setAttribute('aria-expanded', (!!id).toString());
+  }
+
   public isCurrentlyDisplayed() {
     if (!$$(this.element).isVisible()) {
       return false;
@@ -1432,6 +1442,8 @@ export class Facet extends Component {
       .withLabel(l('Search'))
       .withEnterKeyboardAction(e => this.toggleSearchMenu(e))
       .build();
+
+    this.currentFacetSearchElementId = null;
 
     // Mobile do not like label. Use click event
     if (DeviceUtils.isMobileDevice()) {

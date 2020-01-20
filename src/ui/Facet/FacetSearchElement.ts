@@ -281,6 +281,7 @@ export class FacetSearchElement {
     this.combobox.setAttribute('role', 'combobox');
     this.combobox.setAttribute('aria-owns', this.facetSearchId);
     this.input.setAttribute('aria-controls', this.facetSearchId);
+    this.facetSearch.currentFacetSearchElementId = this.facetSearchId;
   }
 
   private removeAriaAttributes() {
@@ -292,5 +293,6 @@ export class FacetSearchElement {
     this.combobox.removeAttribute('aria-owns');
     this.input.removeAttribute('aria-controls');
     this.input.removeAttribute('aria-activedescendant');
+    this.facetSearch.currentFacetSearchElementId = null;
   }
 }

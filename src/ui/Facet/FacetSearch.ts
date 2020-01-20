@@ -144,6 +144,10 @@ export class FacetSearch implements IFacetSearch {
     this.facetSearchElement.focus();
   }
 
+  public set currentFacetSearchElementId(id: string) {
+    this.facet.currentFacetSearchElementId = id;
+  }
+
   public get searchResults() {
     return this.facetSearchElement.searchResults;
   }

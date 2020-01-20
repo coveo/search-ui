@@ -7,6 +7,7 @@ export interface IFacetSearch {
   facetSearchElement: FacetSearchElement;
   facetSearchPromise: Promise<IIndexFieldValue[]>;
   moreValuesToFetch: boolean;
+  currentFacetSearchElementId: string;
 
   dismissSearchResults: () => void;
   getCaptions: () => HTMLElement[];
