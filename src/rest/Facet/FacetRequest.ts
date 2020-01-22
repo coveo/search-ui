@@ -191,4 +191,11 @@ export interface IFacetRequest {
    * **Default (Search API):** `true`
    */
   filterFacetCount?: boolean;
+
+  /**
+   * Whether to prevent Coveo ML from automatically selecting values from that facet.
+   *
+   * **Default:** `false`
+   */
+  preventAutoSelect?: boolean;
 }

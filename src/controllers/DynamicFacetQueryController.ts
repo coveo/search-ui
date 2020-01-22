@@ -91,6 +91,7 @@ export class DynamicFacetQueryController {
       currentValues: this.currentValues,
       numberOfValues: this.numberOfValues,
       freezeCurrentValues: this.freezeCurrentValues,
+      preventAutoSelect: this.preventAutoSelection,
       isFieldExpanded: this.numberOfValuesToRequest > this.facet.options.numberOfValues
     };
   }
@@ -117,6 +118,7 @@ export class DynamicFacetQueryController {
     return this.facet.values.allFacetValues.map(({ value, state }) => ({
       value,
       state,
+      // TODO: remove after SEARCHAPI-4233 is completed
       preventAutoSelect: this.preventAutoSelection
     }));
   }

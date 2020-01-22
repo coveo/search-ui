@@ -490,6 +490,7 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
       return;
     }
 
+    this.enablePreventAutoSelectionFlag();
     this.logger.info('Deselect facet value');
     this.values.clearPath();
     this.updateQueryStateModel([]);
@@ -530,6 +531,11 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
   public enableFreezeFacetOrderFlag() {
     Assert.exists(this.dynamicHierarchicalFacetQueryController);
     this.dynamicHierarchicalFacetQueryController.enableFreezeFacetOrderFlag();
+  }
+
+  public enablePreventAutoSelectionFlag() {
+    Assert.exists(this.dynamicHierarchicalFacetQueryController);
+    this.dynamicHierarchicalFacetQueryController.enablePreventAutoSelectionFlag();
   }
 
   /**
