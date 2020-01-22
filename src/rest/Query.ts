@@ -10,7 +10,7 @@ import { IFacetRequest } from './Facet/FacetRequest';
  */
 export interface IFacetOptions {
   /**
-   * Describes a request to retrieve user actions in a query response.
+   * Indicates whether the facet values should be returned in their current order.
    */
   freezeFacetOrder?: Boolean;
 }
@@ -282,7 +282,7 @@ export interface IQuery {
   facets?: IFacetRequest[];
 
   /**
-   * A request to retrieve user actions in the query response.
+   * The global configuration options to apply to the requests in the [facets]{@link IQuery.facets} array.
    */
   facetOptions?: IFacetOptions;
 
