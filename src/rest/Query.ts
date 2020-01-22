@@ -10,7 +10,7 @@ import { IFacetRequest } from './Facet/FacetRequest';
  */
 export interface IFacetOptions {
   /**
-   * Indicates whether the facet values should be returned in their current order.
+   * Whether the facet values should be returned in their current order.
    */
   freezeFacetOrder?: Boolean;
 }
