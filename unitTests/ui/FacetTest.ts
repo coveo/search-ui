@@ -664,17 +664,17 @@ export function FacetTest() {
           test.cmp.reset();
         });
 
-        describe('when setting currentFacetSearchElementId', () => {
+        describe('when setting accessibility', () => {
           let accessibleElement: HTMLElement;
           beforeEach(() => {
             accessibleElement = test.cmp.searchContainer.accessibleElement;
           });
 
-          describe('to a non-null value', () => {
-            const id = 'abcdef';
+          describe('expanded', () => {
+            const searchResultsElement = $$('div', { id: 'abcdef' }).el;
             beforeEach(() => {
-              test.cmp.currentFacetSearchElementId = null;
-              test.cmp.currentFacetSearchElementId = id;
+              test.cmp.setCollapsedFacetSearchAccessibilityAttributes();
+              test.cmp.setExpandedFacetSearchAccessibilityAttributes(searchResultsElement);
             });
 
             it('should set aria-expanded to true', () => {
@@ -682,22 +682,18 @@ export function FacetTest() {
             });
 
             it('should set aria-controls to the given id', () => {
-              expect(accessibleElement.getAttribute('aria-controls')).toEqual(id);
+              expect(accessibleElement.getAttribute('aria-controls')).toEqual(searchResultsElement.id);
             });
           });
 
-          describe('to a null value', () => {
+          describe('collapsed', () => {
             beforeEach(() => {
-              test.cmp.currentFacetSearchElementId = 'abcdef';
-              test.cmp.currentFacetSearchElementId = null;
+              test.cmp.setExpandedFacetSearchAccessibilityAttributes($$('div', { id: 'abcdef' }).el);
+              test.cmp.setCollapsedFacetSearchAccessibilityAttributes();
             });
 
             it('should set aria-expanded to false', () => {
               expect(accessibleElement.getAttribute('aria-expanded')).toEqual(false.toString());
-            });
-
-            it('should remove aria-controls', () => {
-              expect(accessibleElement.getAttribute('aria-controls')).toBeNull();
             });
           });
         });

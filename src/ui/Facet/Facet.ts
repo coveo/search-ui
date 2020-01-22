@@ -776,17 +776,21 @@ export class Facet extends Component {
     });
   }
 
-  public set currentFacetSearchElementId(id: string) {
+  public setExpandedFacetSearchAccessibilityAttributes(searchResultsElement: HTMLElement) {
     if (!this.searchContainer) {
       return;
     }
+    Assert.exists(searchResultsElement);
     const { accessibleElement } = this.searchContainer;
-    if (!id) {
-      accessibleElement.removeAttribute('aria-controls');
-    } else {
-      accessibleElement.setAttribute('aria-controls', id);
+    accessibleElement.setAttribute('aria-controls', searchResultsElement.id);
+    accessibleElement.setAttribute('aria-expanded', true.toString());
+  }
+
+  public setCollapsedFacetSearchAccessibilityAttributes() {
+    if (!this.searchContainer) {
+      return;
     }
-    accessibleElement.setAttribute('aria-expanded', (!!id).toString());
+    this.searchContainer.accessibleElement.setAttribute('aria-expanded', false.toString());
   }
 
   public isCurrentlyDisplayed() {
@@ -1446,7 +1450,7 @@ export class Facet extends Component {
       .withEnterKeyboardAction(e => this.toggleSearchMenu(e))
       .build();
 
-    this.currentFacetSearchElementId = null;
+    this.setCollapsedFacetSearchAccessibilityAttributes();
 
     // Mobile do not like label. Use click event
     if (DeviceUtils.isMobileDevice()) {

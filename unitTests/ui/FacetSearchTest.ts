@@ -10,16 +10,6 @@ import { IIndexFieldValue } from '../../src/rest/FieldValue';
 import { Simulate } from '../Simulate';
 import { KEYBOARD } from '../../src/utils/KeyboardUtils';
 
-function getSetter<T>(instance: T, propertyName: keyof T) {
-  return Object.getOwnPropertyDescriptor(Object.getPrototypeOf(instance), propertyName).set.bind(instance);
-}
-
-function spyOnSetter<T>(instance: T, propertyName: keyof T) {
-  const spy = jasmine.createSpy(propertyName as string, getSetter(instance, propertyName));
-  Object.defineProperty(instance, propertyName, { set: spy });
-  return spy;
-}
-
 export function FacetSearchTest() {
   describe('FacetSearch', () => {
     var mockFacet: Facet;
@@ -99,10 +89,10 @@ export function FacetSearchTest() {
 
       describe('when calling focus', () => {
         it("should update the accessible element's accessibility properties", () => {
-          const setCurrentFacetSearchElementIdSpy = spyOnSetter(facetSearch, 'currentFacetSearchElementId');
+          const setExpandedFacetSearchAccessibilityAttributes = spyOn(facetSearch, 'setExpandedFacetSearchAccessibilityAttributes');
           facetSearch.focus();
-          expect(setCurrentFacetSearchElementIdSpy).toHaveBeenCalledTimes(1);
-          expect(setCurrentFacetSearchElementIdSpy).toHaveBeenCalledWith(facetSearch.facetSearchElement['facetSearchId']);
+          expect(setExpandedFacetSearchAccessibilityAttributes).toHaveBeenCalledTimes(1);
+          expect(setExpandedFacetSearchAccessibilityAttributes).toHaveBeenCalledWith(facetSearch.facetSearchElement['searchResults']);
         });
       });
 
@@ -134,10 +124,9 @@ export function FacetSearchTest() {
           });
 
           it("should update the accessible element's accessibility properties", () => {
-            const setCurrentFacetSearchElementIdSpy = spyOnSetter(facetSearch, 'currentFacetSearchElementId');
+            const setCollapsedFacetSearchAccessibilityAttributes = spyOn(facetSearch, 'setCollapsedFacetSearchAccessibilityAttributes');
             facetSearch.dismissSearchResults();
-            expect(setCurrentFacetSearchElementIdSpy).toHaveBeenCalledTimes(1);
-            expect(setCurrentFacetSearchElementIdSpy).toHaveBeenCalledWith(null);
+            expect(setCollapsedFacetSearchAccessibilityAttributes).toHaveBeenCalledTimes(1);
           });
         });
       });

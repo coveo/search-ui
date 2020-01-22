@@ -144,10 +144,6 @@ export class FacetSearch implements IFacetSearch {
     this.facetSearchElement.focus();
   }
 
-  public set currentFacetSearchElementId(id: string) {
-    this.facet.currentFacetSearchElementId = id;
-  }
-
   public get searchResults() {
     return this.facetSearchElement.searchResults;
   }
@@ -158,6 +154,14 @@ export class FacetSearch implements IFacetSearch {
 
   public get search() {
     return this.facetSearchElement.search;
+  }
+
+  public setExpandedFacetSearchAccessibilityAttributes(searchResultsElement: HTMLElement) {
+    this.facet.setExpandedFacetSearchAccessibilityAttributes(searchResultsElement);
+  }
+
+  public setCollapsedFacetSearchAccessibilityAttributes() {
+    this.facet.setCollapsedFacetSearchAccessibilityAttributes();
   }
 
   public keyboardEventDefaultHandler() {
