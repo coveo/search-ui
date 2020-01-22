@@ -117,13 +117,27 @@ export function CategoryValueTest() {
         expect(facetValue).toBe(caption);
       });
 
-      it(`when the categoryValue is selectable,
-      it adds a label containing the captioned value`, () => {
-        const categoryValue = buildCategoryValue().makeSelectable();
-        const labelElement = categoryValue.element.find('.coveo-category-facet-value-label');
-        const labelAttribute = labelElement.attributes['aria-label'];
+      describe('when the categoryValue is selectable', () => {
+        let labelElement: HTMLElement;
+        beforeEach(() => {
+          const categoryValue = buildCategoryValue().makeSelectable();
+          labelElement = categoryValue.element.find('.coveo-category-facet-value-label');
+        });
 
-        expect(labelAttribute.value).toContain(caption);
+        it('adds a label containing the captioned value', () => {
+          const labelAttribute = labelElement.attributes['aria-label'];
+          expect(labelAttribute.value).toContain(caption);
+        });
+
+        it('adds a label containing the results count', () => {
+          const labelAttribute = labelElement.attributes['aria-label'];
+          expect(labelAttribute.value).toContain(categoryValueDescriptor.count);
+        });
+
+        it("doesn't add plural tags", () => {
+          const labelAttribute = labelElement.attributes['aria-label'];
+          expect(labelAttribute.value).not.toContain('<pl>');
+        });
       });
     });
   });
