@@ -24,7 +24,8 @@ export class DynamicFacetRangeQueryController extends DynamicFacetQueryControlle
       start,
       end,
       endInclusive,
-      state
+      state,
+      preventAutoSelect: this.preventAutoSelection
     }));
   }
 }

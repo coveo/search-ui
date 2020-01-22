@@ -55,6 +55,7 @@ export class DynamicFacetBreadcrumbs {
 
   private valueSelectAction(facetValue: IDynamicFacetValue) {
     this.facet.deselectValue(facetValue.value);
+    this.facet.enablePreventAutoSelectionFlag();
     this.facet.triggerNewQuery(() => this.logActionToAnalytics());
   }
 
