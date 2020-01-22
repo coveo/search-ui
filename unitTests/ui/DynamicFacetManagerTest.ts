@@ -8,7 +8,6 @@ import { Simulate } from '../Simulate';
 import { FakeResults } from '../Fake';
 import { findWhere } from 'underscore';
 import { QueryEvents, QueryBuilder } from '../../src/Core';
-import { FacetValueState } from '../../src/rest/Facet/FacetValueState';
 import { DynamicFacetRange } from '../../src/ui/DynamicFacet/DynamicFacetRange';
 import { DynamicFacet } from '../../src/ui/DynamicFacet/DynamicFacet';
 import { ComponentsTypes } from '../../src/utils/ComponentsTypes';
