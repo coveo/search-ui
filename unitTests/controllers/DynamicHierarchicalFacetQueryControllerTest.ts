@@ -65,6 +65,17 @@ export function DynamicHierarchicalFacetQueryControllerTest() {
       expect(queryFacetOptions().freezeFacetOrder).toBe(true);
     });
 
+    it('preventAutoSelect should be false by default', () => {
+      expect(facetRequest().preventAutoSelect).toBe(false);
+    });
+
+    it(`when calling enablePreventAutoSelectionFlag
+      allows to enable the flag`, () => {
+      dynamicHierarchicalFacetQueryController.enablePreventAutoSelectionFlag();
+
+      expect(facetRequest().preventAutoSelect).toBe(true);
+    });
+
     it('numberOfValues should be equal to the numberOfValues option by default', () => {
       expect(facetRequest().numberOfValues).toBe(facetOptions.numberOfValues);
     });
@@ -122,7 +133,6 @@ export function DynamicHierarchicalFacetQueryControllerTest() {
 
         expect(currentValue.value).toBe(facetValue.value);
         expect(currentValue.state).toBe(facetValue.state);
-        expect(currentValue.preventAutoSelect).toBe(facetValue.preventAutoSelect);
         expect(currentValue.retrieveCount).toBe(facetValue.retrieveCount);
       });
 
