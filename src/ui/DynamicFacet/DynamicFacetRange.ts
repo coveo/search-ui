@@ -54,6 +54,9 @@ export class DynamicFacetRange extends DynamicFacet implements IComponentBinding
     /**
      * The string format to apply to the minimum and maximum value of each range displayed in the facet.
      *
+     * See [`DynamicFacetRangeValueFormat`]{@link DynamicFacetRangeValueFormat} for the list and
+     * description of allowed formats.
+     *
      * **Default:** If the [`field`]{@link DynamicFacet.options.field} contains "date", the format will be [`date`]{@link DynamicFacetRangeValueFormat.date}.
      * Else, it will be [`number`]{@link DynamicFacetRangeValueFormat.number}.
      *
