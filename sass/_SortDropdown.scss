@@ -1,0 +1,25 @@
+@import 'mixins/resultsHeaderElement';
+@import 'Variables';
+
+.CoveoSortDropdown {
+  .coveo-dropdown {
+    @include resultsHeaderElement();
+
+    text-indent: 0;
+    margin: 0;
+    border: none;
+    cursor: pointer;
+    background-position-y: -5px;
+    font-family: inherit;
+
+    &:focus {
+      outline: thin dotted;
+      outline: 5px auto -webkit-focus-ring-color;
+      outline-offset: -2px;
+    }
+  }
+
+  .CoveoSort {
+    display: none;
+  }
+}

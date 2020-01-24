@@ -776,6 +776,23 @@ export class Facet extends Component {
     });
   }
 
+  public setExpandedFacetSearchAccessibilityAttributes(searchResultsElement: HTMLElement) {
+    if (!this.searchContainer) {
+      return;
+    }
+    Assert.exists(searchResultsElement);
+    const { accessibleElement } = this.searchContainer;
+    accessibleElement.setAttribute('aria-controls', searchResultsElement.id);
+    accessibleElement.setAttribute('aria-expanded', true.toString());
+  }
+
+  public setCollapsedFacetSearchAccessibilityAttributes() {
+    if (!this.searchContainer) {
+      return;
+    }
+    this.searchContainer.accessibleElement.setAttribute('aria-expanded', false.toString());
+  }
+
   public isCurrentlyDisplayed() {
     if (!$$(this.element).isVisible()) {
       return false;
@@ -1429,9 +1446,11 @@ export class Facet extends Component {
 
     new AccessibleButton()
       .withElement(this.searchContainer.accessibleElement)
-      .withLabel(l('Search'))
+      .withLabel(l('SearchFacetResults', this.options.title))
       .withEnterKeyboardAction(e => this.toggleSearchMenu(e))
       .build();
+
+    this.setCollapsedFacetSearchAccessibilityAttributes();
 
     // Mobile do not like label. Use click event
     if (DeviceUtils.isMobileDevice()) {

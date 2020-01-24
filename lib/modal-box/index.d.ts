@@ -80,7 +80,10 @@ declare namespace Coveo.ModalBox {
      * Specify the content that you wish to put inside the modal box
      */
     body?: HTMLElement;
-    sizeMod?: 'big';
+    /**
+     * The size for the modal box
+     */
+    sizeMod?: 'small' | 'normal' | 'big';
   }
   /**
    * Open a modal box with the given content

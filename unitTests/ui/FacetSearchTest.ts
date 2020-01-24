@@ -87,25 +87,47 @@ export function FacetSearchTest() {
         });
       });
 
-      it('should hide facet search results', done => {
-        var pr = new Promise((resolve, reject) => {
-          var results = FakeResults.createFakeFieldValues('foo', 10);
-          resolve(results);
+      describe('when calling focus', () => {
+        it("should update the accessible element's accessibility properties", () => {
+          const setExpandedFacetSearchAccessibilityAttributes = spyOn(facetSearch, 'setExpandedFacetSearchAccessibilityAttributes');
+          facetSearch.focus();
+          expect(setExpandedFacetSearchAccessibilityAttributes).toHaveBeenCalledTimes(1);
+          expect(setExpandedFacetSearchAccessibilityAttributes).toHaveBeenCalledWith(facetSearch.facetSearchElement['searchResults']);
         });
+      });
 
-        (<jasmine.Spy>mockFacet.facetQueryController.search).and.returnValue(pr);
+      describe('when triggering a query', () => {
+        beforeEach(async done => {
+          const pr = new Promise((resolve, reject) => {
+            const results = FakeResults.createFakeFieldValues('foo', 10);
+            resolve(results);
+          });
 
-        var params = new FacetSearchParameters(mockFacet);
-        expect(allSearchResults().length).toBe(0);
-        expect(facetSearch.currentlyDisplayedResults).toBeUndefined();
-        facetSearch.triggerNewFacetSearch(params);
-        pr.then(() => {
-          expect(allSearchResults().length).toBe(10);
-          expect(facetSearch.currentlyDisplayedResults.length).toBe(10);
-          facetSearch.dismissSearchResults();
+          (<jasmine.Spy>mockFacet.facetQueryController.search).and.returnValue(pr);
+
+          var params = new FacetSearchParameters(mockFacet);
           expect(allSearchResults().length).toBe(0);
           expect(facetSearch.currentlyDisplayedResults).toBeUndefined();
+          facetSearch.triggerNewFacetSearch(params);
+          await pr;
           done();
+        });
+
+        describe('and calling dismissSearchResults', () => {
+          it('should hide facet search results', done => {
+            expect(allSearchResults().length).toBe(10);
+            expect(facetSearch.currentlyDisplayedResults.length).toBe(10);
+            facetSearch.dismissSearchResults();
+            expect(allSearchResults().length).toBe(0);
+            expect(facetSearch.currentlyDisplayedResults).toBeUndefined();
+            done();
+          });
+
+          it("should update the accessible element's accessibility properties", () => {
+            const setCollapsedFacetSearchAccessibilityAttributes = spyOn(facetSearch, 'setCollapsedFacetSearchAccessibilityAttributes');
+            facetSearch.dismissSearchResults();
+            expect(setCollapsedFacetSearchAccessibilityAttributes).toHaveBeenCalledTimes(1);
+          });
         });
       });
 

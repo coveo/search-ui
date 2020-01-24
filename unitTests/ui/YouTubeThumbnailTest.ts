@@ -91,7 +91,7 @@ export function YouTubeThumbnailTest() {
           <IYouTubeThumbnailOptions>{ embed: false },
           result
         );
-        test.cmp.ModalBox = modalBox;
+        test.cmp['modalbox']['modalboxModule'] = modalBox;
         test.cmp.openResultLink();
         expect(modalBox.open).not.toHaveBeenCalled();
       });
@@ -102,9 +102,20 @@ export function YouTubeThumbnailTest() {
           <IYouTubeThumbnailOptions>{ embed: true },
           result
         );
-        test.cmp.ModalBox = modalBox;
+        test.cmp['modalbox']['modalboxModule'] = modalBox;
         test.cmp.openResultLink();
         expect(modalBox.open).toHaveBeenCalled();
+      });
+
+      it('should open an accessible modal', () => {
+        test = Mock.optionsResultComponentSetup<YouTubeThumbnail, IYouTubeThumbnailOptions>(
+          YouTubeThumbnail,
+          <IYouTubeThumbnailOptions>{ embed: true },
+          result
+        );
+        test.cmp['modalbox']['modalboxModule'] = modalBox;
+        test.cmp.openResultLink();
+        expect(test.cmp['modalbox'].isOpen).toEqual(true);
       });
     });
 
