@@ -379,7 +379,12 @@ export class FacetQueryController {
     // Replace the wildcard (*) for a regex match (.*)
     // Also replace the (?) with "any character once" since it is also supported by the index
     return _.some(this.facet.options.allowedValues, allowedValue => {
-      const regex = new RegExp(`^${allowedValue.replace(/\*/g, '.*').replace(/\?/g, '.')}$`, 'gi');
+      const regexContent = allowedValue
+        .replace(/[.+^${}()|[\]\\]/g, '\\$&')
+        .replace(/\*/g, '.*')
+        .replace(/\?/g, '.');
+
+      const regex = new RegExp(`^${regexContent}$`, 'gi');
       return regex.test(value);
     });
   }
