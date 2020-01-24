@@ -1,6 +1,6 @@
 import Popper from 'popper.js';
 import 'styling/_FacetSettings';
-import { compact, contains, each, escape, filter, find, findWhere, map } from 'underscore';
+import { compact, contains, each, escape, filter, find, findWhere, map, first } from 'underscore';
 import { InitializationEvents } from '../../events/InitializationEvents';
 import { QueryStateModel } from '../../models/QueryStateModel';
 import { l } from '../../strings/Strings';
@@ -186,6 +186,10 @@ export class FacetSettings extends FacetSort {
         this.unselectItem(this.getSortItem(criteria.name));
       }
     });
+
+    if (this.sortSection) {
+      first(this.sortSection.sortItems).focus();
+    }
   }
 
   public getSortItem(sortName: string): HTMLElement {

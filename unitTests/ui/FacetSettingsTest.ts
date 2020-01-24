@@ -69,6 +69,7 @@ export function FacetSettingsTest() {
       }
 
       beforeEach(() => {
+        sorts = ['alphaascending', 'alphadescending'];
         initFacetSettings();
         facet.root.appendChild(facetSettings.settingsButton);
         expect(settingsPopup()).toBeNull();
@@ -80,6 +81,12 @@ export function FacetSettingsTest() {
 
         facetSettings.close();
         expect(settingsPopup()).toBeNull();
+      });
+
+      it('focuses on the first sort item', () => {
+        const focusSpy = spyOn(facetSettings['sortSection'].sortItems[0], 'focus');
+        facetSettings.open();
+        expect(focusSpy).toHaveBeenCalledTimes(1);
       });
 
       it('allows open and closing the popup by clicking the facetSetting button', () => {
