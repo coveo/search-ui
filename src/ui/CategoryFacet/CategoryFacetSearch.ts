@@ -41,7 +41,7 @@ export class CategoryFacetSearch implements IFacetSearch {
       role: 'button'
     });
 
-    const title = this.categoryFacet.options.title;
+    const title = this.categoryFacet.options.title || this.categoryFacet.options.field;
 
     new AccessibleButton()
       .withElement(this.container)
@@ -49,7 +49,7 @@ export class CategoryFacetSearch implements IFacetSearch {
         $$(this.categoryFacet.element).addClass('coveo-category-facet-searching');
         this.focus();
       })
-      .withLabel(title ? l('SearchFacetResults', this.categoryFacet.options.title) : l('Search'))
+      .withLabel(l('SearchFacetResults', title))
       .build();
 
     const search = this.facetSearchElement.build();
