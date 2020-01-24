@@ -9,6 +9,7 @@ export class DynamicFacetRangeQueryController extends DynamicFacetQueryControlle
   public buildFacetRequest(query: IQuery): IFacetRequest {
     return {
       ...this.requestBuilder.buildBaseRequestForQuery(query),
+      preventAutoSelect: this.preventAutoSelection,
       currentValues: this.currentValues,
       numberOfValues: this.numberOfValues,
       freezeCurrentValues: this.facet.values.hasValues
@@ -24,7 +25,9 @@ export class DynamicFacetRangeQueryController extends DynamicFacetQueryControlle
       start,
       end,
       endInclusive,
-      state
+      state,
+      // TODO: remove after SEARCHAPI-4233 is completed
+      preventAutoSelect: this.preventAutoSelection
     }));
   }
 }

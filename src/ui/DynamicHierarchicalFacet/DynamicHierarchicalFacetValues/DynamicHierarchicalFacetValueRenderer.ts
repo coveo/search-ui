@@ -57,6 +57,7 @@ export class DynamicHierarchicalFacetValueRenderer {
   private selectAction() {
     this.facet.selectPath(this.facetValue.path);
     this.facet.enableFreezeFacetOrderFlag();
+    this.facet.enablePreventAutoSelectionFlag();
     this.facet.scrollToTop();
     this.facet.triggerNewQuery(() => this.facetValue.logSelectActionToAnalytics());
   }

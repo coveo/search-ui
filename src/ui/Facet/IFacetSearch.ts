@@ -8,6 +8,8 @@ export interface IFacetSearch {
   facetSearchPromise: Promise<IIndexFieldValue[]>;
   moreValuesToFetch: boolean;
 
+  setExpandedFacetSearchAccessibilityAttributes: (searchResultsElement: HTMLElement) => void;
+  setCollapsedFacetSearchAccessibilityAttributes: () => void;
   dismissSearchResults: () => void;
   getCaptions: () => HTMLElement[];
   displayNewValues: (params?) => void;

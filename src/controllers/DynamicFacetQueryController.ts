@@ -13,6 +13,7 @@ export class DynamicFacetQueryController {
   private numberOfValuesToRequest: number;
   private freezeCurrentValues = false;
   private freezeFacetOrder = false;
+  protected preventAutoSelection = false;
 
   constructor(protected facet: IDynamicFacet) {
     this.requestBuilder = new DynamicFacetRequestBuilder({
@@ -24,13 +25,14 @@ export class DynamicFacetQueryController {
       filterFacetCount: this.facet.options.filterFacetCount
     });
     this.resetNumberOfValuesToRequest();
-    this.resetFreezeCurrentValuesDuringQuery();
+    this.resetFlagsDuringQuery();
   }
 
-  private resetFreezeCurrentValuesDuringQuery() {
+  private resetFlagsDuringQuery() {
     this.facet.bind.onRootElement(QueryEvents.duringQuery, () => {
       this.freezeCurrentValues = false;
       this.freezeFacetOrder = false;
+      this.preventAutoSelection = false;
     });
   }
 
@@ -40,6 +42,10 @@ export class DynamicFacetQueryController {
 
   public resetNumberOfValuesToRequest() {
     this.numberOfValuesToRequest = this.facet.options.numberOfValues;
+  }
+
+  public enablePreventAutoSelectionFlag() {
+    this.preventAutoSelection = true;
   }
 
   public enableFreezeCurrentValuesFlag() {
@@ -85,6 +91,7 @@ export class DynamicFacetQueryController {
       currentValues: this.currentValues,
       numberOfValues: this.numberOfValues,
       freezeCurrentValues: this.freezeCurrentValues,
+      preventAutoSelect: this.preventAutoSelection,
       isFieldExpanded: this.numberOfValuesToRequest > this.facet.options.numberOfValues
     };
   }
@@ -108,10 +115,11 @@ export class DynamicFacetQueryController {
   }
 
   protected get currentValues(): IFacetRequestValue[] {
-    return this.facet.values.allFacetValues.map(({ value, state, preventAutoSelect }) => ({
+    return this.facet.values.allFacetValues.map(({ value, state }) => ({
       value,
       state,
-      preventAutoSelect
+      // TODO: remove after SEARCHAPI-4233 is completed
+      preventAutoSelect: this.preventAutoSelection
     }));
   }
 
