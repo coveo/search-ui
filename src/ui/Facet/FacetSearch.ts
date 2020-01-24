@@ -156,6 +156,14 @@ export class FacetSearch implements IFacetSearch {
     return this.facetSearchElement.search;
   }
 
+  public setExpandedFacetSearchAccessibilityAttributes(searchResultsElement: HTMLElement) {
+    this.facet.setExpandedFacetSearchAccessibilityAttributes(searchResultsElement);
+  }
+
+  public setCollapsedFacetSearchAccessibilityAttributes() {
+    this.facet.setCollapsedFacetSearchAccessibilityAttributes();
+  }
+
   public keyboardEventDefaultHandler() {
     this.moreValuesToFetch = true;
     this.highlightCurrentQueryWithinSearchResults();

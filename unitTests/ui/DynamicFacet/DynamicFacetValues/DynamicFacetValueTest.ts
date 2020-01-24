@@ -54,12 +54,6 @@ export function DynamicFacetValueTest() {
       expect(dynamicFacetValue.isIdle).toBe(true);
     });
 
-    it('should set the preventAutoSelect flag to true when deselected', () => {
-      dynamicFacetValue.state = FacetValueState.selected;
-      dynamicFacetValue.deselect();
-      expect(dynamicFacetValue.preventAutoSelect).toBe(true);
-    });
-
     it(`when comparing with another DynamicFacetValue with a different value
       it should not equal`, () => {
       const anotherDynamicFacetValue = new DynamicFacetValue(

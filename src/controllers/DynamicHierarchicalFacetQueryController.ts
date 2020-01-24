@@ -14,6 +14,7 @@ export class DynamicHierarchicalFacetQueryController {
   private requestBuilder: DynamicFacetRequestBuilder;
   private numberOfValuesToRequest: number;
   private freezeFacetOrder = false;
+  private preventAutoSelection = false;
 
   constructor(private facet: IDynamicHierarchicalFacet) {
     this.requestBuilder = new DynamicFacetRequestBuilder({
@@ -26,12 +27,13 @@ export class DynamicHierarchicalFacetQueryController {
       filterFacetCount: this.facet.options.filterFacetCount
     });
     this.resetNumberOfValuesToRequest();
-    this.resetFreezeCurrentValuesDuringQuery();
+    this.resetFlagsDuringQuery();
   }
 
-  private resetFreezeCurrentValuesDuringQuery() {
+  private resetFlagsDuringQuery() {
     this.facet.bind.onRootElement(QueryEvents.duringQuery, () => {
       this.freezeFacetOrder = false;
+      this.preventAutoSelection = false;
     });
   }
 
@@ -47,6 +49,10 @@ export class DynamicHierarchicalFacetQueryController {
     this.freezeFacetOrder = true;
   }
 
+  public enablePreventAutoSelectionFlag() {
+    this.preventAutoSelection = true;
+  }
+
   public putFacetIntoQueryBuilder(queryBuilder: QueryBuilder) {
     Assert.exists(queryBuilder);
 
@@ -60,6 +66,7 @@ export class DynamicHierarchicalFacetQueryController {
     return {
       ...this.requestBuilder.buildBaseRequestForQuery(query),
       currentValues: this.currentValues,
+      preventAutoSelect: this.preventAutoSelection,
       numberOfValues: this.facet.values.hasSelectedValue ? 1 : this.numberOfValuesToRequest,
       isFieldExpanded: this.numberOfValuesToRequest > this.facet.options.numberOfValues
     };
@@ -93,7 +100,6 @@ export class DynamicHierarchicalFacetQueryController {
     return {
       value: facetValue.value,
       state: facetValue.state,
-      preventAutoSelect: facetValue.preventAutoSelect,
       children: this.childrenForFacetValue(facetValue),
       retrieveChildren: this.shouldRetrieveChildren(facetValue),
       retrieveCount: facetValue.retrieveCount

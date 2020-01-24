@@ -56,6 +56,7 @@ export function DynamicFacetBreadcrumbsTest() {
         initializeComponent();
         spyOn(facet, 'deselectValue');
         spyOn(facet, 'triggerNewQuery');
+        spyOn(facet, 'enablePreventAutoSelectionFlag');
       });
 
       it('should create the maximum number of breadcrumb values', () => {
@@ -91,6 +92,12 @@ export function DynamicFacetBreadcrumbsTest() {
         it should trigger a new query`, () => {
         $$(valueElements()[0]).trigger('click');
         expect(facet.triggerNewQuery).toHaveBeenCalled();
+      });
+
+      it(`when clicking on a breadcrumb value element
+        it should prevent autoselection`, () => {
+        $$(valueElements()[0]).trigger('click');
+        expect(facet.enablePreventAutoSelectionFlag).toHaveBeenCalled();
       });
 
       it(`when clicking on a breadcrumb value element

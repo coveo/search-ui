@@ -35,6 +35,10 @@ export class CategoryFacetSearch implements IFacetSearch {
     return CategoryFacet.ID;
   }
 
+  public setExpandedFacetSearchAccessibilityAttributes(searchResultsElements: HTMLElement) {}
+
+  public setCollapsedFacetSearchAccessibilityAttributes() {}
+
   public build() {
     this.container = $$('div', {
       className: 'coveo-category-facet-search-container',

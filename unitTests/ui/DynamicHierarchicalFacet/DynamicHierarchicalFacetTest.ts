@@ -50,6 +50,7 @@ export function DynamicHierarchicalFacetTest() {
       spyOn(test.cmp, 'putStateIntoQueryBuilder').and.callThrough();
       spyOn(test.cmp, 'putStateIntoAnalytics').and.callThrough();
       spyOn(test.cmp, 'handleQueryResults').and.callThrough();
+      spyOn(test.cmp, 'enablePreventAutoSelectionFlag').and.callThrough();
       spyOn(test.cmp.logger, 'warn').and.callThrough();
       spyOn(test.cmp.values, 'createFromResponse').and.callThrough();
       spyOn(test.cmp.values, 'render').and.callThrough();
@@ -343,6 +344,10 @@ export function DynamicHierarchicalFacetTest() {
 
       it('should update queryStateModel with an empty array', () => {
         testQueryStateModelValues([]);
+      });
+
+      it('should prevent autoselection', () => {
+        expect(test.cmp.enablePreventAutoSelectionFlag).toHaveBeenCalled();
       });
     });
 

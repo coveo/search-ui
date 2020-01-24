@@ -50,7 +50,6 @@ export function DynamicHierarchicalFacetValuesTest() {
           expect(testValue.displayValue).toBe(responseValue.value);
           expect(testValue.state).toBe(responseValue.state);
           expect(testValue.numberOfResults).toBe(responseValue.numberOfResults);
-          expect(testValue.preventAutoSelect).toBe(false);
           expect(testValue.moreValuesAvailable).toBe(responseValue.moreValuesAvailable);
         });
 
@@ -90,7 +89,6 @@ export function DynamicHierarchicalFacetValuesTest() {
           expect(childTestValue.displayValue).toBe(responseChildValue.value);
           expect(childTestValue.state).toBe(responseChildValue.state);
           expect(childTestValue.numberOfResults).toBe(responseChildValue.numberOfResults);
-          expect(childTestValue.preventAutoSelect).toBe(false);
           expect(childTestValue.moreValuesAvailable).toBe(responseChildValue.moreValuesAvailable);
         });
 
