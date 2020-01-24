@@ -529,12 +529,10 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
    * The flag is automatically set back to `false` after a query is built.
    */
   public enableFreezeFacetOrderFlag() {
-    Assert.exists(this.dynamicHierarchicalFacetQueryController);
     this.dynamicHierarchicalFacetQueryController.enableFreezeFacetOrderFlag();
   }
 
   public enablePreventAutoSelectionFlag() {
-    Assert.exists(this.dynamicHierarchicalFacetQueryController);
     this.dynamicHierarchicalFacetQueryController.enablePreventAutoSelectionFlag();
   }
 
