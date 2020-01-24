@@ -13,7 +13,6 @@ export class DynamicFacetValue implements IDynamicFacetValue {
   public end: RangeType;
   public endInclusive: boolean;
   public state: FacetValueState;
-  public preventAutoSelect = false;
   public numberOfResults: number;
   public position: number;
   public displayValue: string;
@@ -50,7 +49,6 @@ export class DynamicFacetValue implements IDynamicFacetValue {
 
   public deselect() {
     this.state = FacetValueState.idle;
-    this.preventAutoSelect = true;
   }
 
   public equals(arg: string | IDynamicFacetValue) {
