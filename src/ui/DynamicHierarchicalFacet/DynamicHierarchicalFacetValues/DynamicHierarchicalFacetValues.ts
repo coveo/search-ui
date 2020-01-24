@@ -47,7 +47,6 @@ export class DynamicHierarchicalFacetValues implements IDynamicHierarchicalFacet
         numberOfResults: responseValue.numberOfResults,
         state: responseValue.state,
         moreValuesAvailable: responseValue.moreValuesAvailable,
-        preventAutoSelect: false,
         path: newPath,
         displayValue,
         children
@@ -105,7 +104,6 @@ export class DynamicHierarchicalFacetValues implements IDynamicHierarchicalFacet
         numberOfResults: 0,
         state: FacetValueState.idle,
         moreValuesAvailable: false,
-        preventAutoSelect: false,
         children
       },
       this.facet

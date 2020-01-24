@@ -428,6 +428,7 @@ export class DynamicFacet extends Component implements IDynamicFacet {
       this.values.clearAll();
       this.values.render();
     }
+    this.enablePreventAutoSelectionFlag();
     this.updateAppearance();
     this.updateQueryStateModel();
   }
@@ -479,7 +480,6 @@ export class DynamicFacet extends Component implements IDynamicFacet {
    * The flag is automatically set back to `false` after a query is built.
    */
   public enableFreezeCurrentValuesFlag() {
-    Assert.exists(this.dynamicFacetQueryController);
     this.dynamicFacetQueryController.enableFreezeCurrentValuesFlag();
   }
 
@@ -493,8 +493,11 @@ export class DynamicFacet extends Component implements IDynamicFacet {
    * The flag is automatically set back to `false` after a query is built.
    */
   public enableFreezeFacetOrderFlag() {
-    Assert.exists(this.dynamicFacetQueryController);
     this.dynamicFacetQueryController.enableFreezeFacetOrderFlag();
+  }
+
+  public enablePreventAutoSelectionFlag() {
+    this.dynamicFacetQueryController.enablePreventAutoSelectionFlag();
   }
 
   public scrollToTop() {
