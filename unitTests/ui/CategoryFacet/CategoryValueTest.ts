@@ -138,6 +138,24 @@ export function CategoryValueTest() {
           const labelAttribute = labelElement.attributes['aria-label'];
           expect(labelAttribute.value).not.toContain('<pl>');
         });
+
+        it('uses the plural form of ResultCount', () => {
+          const labelAttribute = labelElement.attributes['aria-label'];
+          expect(labelAttribute.value).toMatch(/results$/);
+        });
+
+        describe('and there are no results', () => {
+          beforeEach(() => {
+            categoryValueDescriptor.count = 0;
+            const categoryValue = buildCategoryValue().makeSelectable();
+            labelElement = categoryValue.element.find('.coveo-category-facet-value-label');
+          });
+
+          it('uses the singular form of resultCount', () => {
+            const labelAttribute = labelElement.attributes['aria-label'];
+            expect(labelAttribute.value).toMatch(/result$/);
+          });
+        });
       });
     });
   });
