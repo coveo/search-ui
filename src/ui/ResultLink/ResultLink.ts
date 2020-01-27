@@ -225,6 +225,7 @@ export class ResultLink extends Component {
     })
   };
 
+  public titleElement: HTMLElement;
   private toExecuteOnOpen: (e?: Event) => void;
 
   /**
@@ -252,7 +253,6 @@ export class ResultLink extends Component {
       this.options.openQuickview = result.raw['connectortype'] == 'ExchangeCrawler' && DeviceUtils.isMobileDevice();
     }
     this.element.setAttribute('tabindex', '0');
-    this.addHeadingRoleIfFirstResultLink();
 
     Assert.exists(this.componentOptionsModel);
     Assert.exists(this.result);
@@ -278,18 +278,18 @@ export class ResultLink extends Component {
         }
       });
     }
+    this.build();
     this.renderUri(element, result);
-    this.bindEventToOpen();
   }
   public renderUri(element: HTMLElement, result?: IQueryResult) {
     if (/^\s*$/.test(this.element.innerHTML)) {
       if (!this.options.titleTemplate) {
-        this.element.innerHTML = this.result.title
+        this.titleElement.innerHTML = this.result.title
           ? HighlightUtils.highlightString(this.result.title, this.result.titleHighlights, null, 'coveo-highlight')
           : this.result.clickUri;
       } else {
         let newTitle = StringUtils.buildStringTemplateFromResult(this.options.titleTemplate, this.result);
-        this.element.innerHTML = newTitle
+        this.titleElement.innerHTML = newTitle
           ? StreamHighlightUtils.highlightStreamText(newTitle, this.result.termsToHighlight, this.result.phrasesToHighlight)
           : this.result.clickUri;
       }
@@ -359,13 +359,19 @@ export class ResultLink extends Component {
     );
   }
 
+  private build() {
+    this.element.appendChild((this.titleElement = $$('span', {}, this.result.title).el));
+    this.bindEventToOpen();
+    this.addHeadingRoleIfFirstResultLink();
+  }
+
   private addHeadingRoleIfFirstResultLink() {
     if (!this.isFirstResultLink) {
       return;
     }
 
-    this.element.setAttribute('role', 'heading');
-    this.element.setAttribute('aria-level', '2');
+    this.titleElement.setAttribute('role', 'heading');
+    this.titleElement.setAttribute('aria-level', '2');
   }
 
   private get isFirstResultLink() {
@@ -389,7 +395,6 @@ export class ResultLink extends Component {
 
       new AccessibleButton()
         .withElement(this.element)
-        .withLabel(this.result.title)
         .withSelectAction((e: Event) => this.toExecuteOnOpen(e))
         .build();
 
