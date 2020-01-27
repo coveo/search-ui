@@ -374,18 +374,24 @@ export class FacetQueryController {
   }
 
   private isValueAllowedByAllowedValueOption(value: string): boolean {
+    return _.some(this.facet.options.allowedValues, allowedValue => {
+      const regexContent = this.replaceWildcardsWithRegexEquivalent(this.escapeMostRegexCharacters(allowedValue));
+      const regex = new RegExp(`^${regexContent}$`, 'gi');
+      return regex.test(value);
+    });
+  }
+
+  private escapeMostRegexCharacters(text: String) {
+    // Regex taken from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions
+    // `*` and `?` were removed because they are used for wildcards
+    return text.replace(/[.+^${}()|[\]\\]/g, '\\$&');
+  }
+
+  private replaceWildcardsWithRegexEquivalent(text: String) {
     // Allowed value option on the facet should support * (wildcard searches)
     // We need to filter values client side the index will completeWithStandardValues
     // Replace the wildcard (*) for a regex match (.*)
     // Also replace the (?) with "any character once" since it is also supported by the index
-    return _.some(this.facet.options.allowedValues, allowedValue => {
-      const regexContent = allowedValue
-        .replace(/[.+^${}()|[\]\\]/g, '\\$&')
-        .replace(/\*/g, '.*')
-        .replace(/\?/g, '.');
-
-      const regex = new RegExp(`^${regexContent}$`, 'gi');
-      return regex.test(value);
-    });
+    return text.replace(/\*/g, '.*').replace(/\?/g, '.');
   }
 }

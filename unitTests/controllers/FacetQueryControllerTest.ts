@@ -498,7 +498,7 @@ export function FacetQueryControllerTest() {
         });
 
         describe('with regex characters', () => {
-          const regexCharacters = 'a (test) .+^${123} ["abc"]';
+          const regexCharacters = 'a (test) -/.+^${123} ["abc"]';
           beforeEach(() => {
             searchPromise = new Promise((resolve, reject) => {
               const results = FakeResults.createFakeResults();
