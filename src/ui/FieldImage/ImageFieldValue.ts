@@ -19,7 +19,7 @@ export interface IImageFieldValue {
  *
  * A typical use case of this component is to display product images in the context of commerce.
  *
- * @availableSince [September 2019 Release (v2.7023)](https://docs.coveo.com/en/2990/)
+ * @availablesince [September 2019 Release (v2.7023)](https://docs.coveo.com/en/2990/)
  */
 export class ImageFieldValue extends Component {
   static ID = 'ImageFieldValue';

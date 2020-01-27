@@ -245,7 +245,7 @@ export class Quickview extends Component {
      *
      * Default value is `bottom`.
      *
-     * @availableSince [January 2019 Release (v2.5395.12)](https://docs.coveo.com/en/2938/)
+     * @availablesince [January 2019 Release (v2.5395.12)](https://docs.coveo.com/en/2938/)
      */
     tooltipPlacement: ComponentOptions.buildCustomOption<ValidTooltipPlacement>((value: ValidTooltipPlacement) => value, {
       defaultValue: 'bottom'

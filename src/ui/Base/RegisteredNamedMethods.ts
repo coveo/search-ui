@@ -470,7 +470,7 @@ Initialization.registerNamedMethod('configureResourceRoot', (path: string) => {
  * (e.g., document.querySelector(".CoveoAnalytics"),
  * or an ancestor of such an element (e.g., document.getElementById("search").
  *
- * @availableSince [October 2019 Release (v2.7219)](https://docs.coveo.com/en/3084/)
+ * @availablesince [October 2019 Release (v2.7219)](https://docs.coveo.com/en/3084/)
  */
 export function enableAnalytics(searchRoot = document.querySelector(Component.computeSelectorForType(SearchInterface.ID)) as HTMLElement) {
   const analytics = getCoveoAnalytics(searchRoot) as Analytics;
@@ -516,7 +516,7 @@ Initialization.registerNamedMethod('clearLocalData', () => {
  * (e.g., document.querySelector(".CoveoAnalytics"),
  * or an ancestor of such an element (e.g., document.getElementById("search").
  *
- * @availableSince [October 2019 Release (v2.7219)](https://docs.coveo.com/en/3084/)
+ * @availablesince [October 2019 Release (v2.7219)](https://docs.coveo.com/en/3084/)
  */
 export function disableAnalytics(searchRoot = document.querySelector(Component.computeSelectorForType(SearchInterface.ID)) as HTMLElement) {
   const analytics = getCoveoAnalytics(searchRoot) as Analytics;

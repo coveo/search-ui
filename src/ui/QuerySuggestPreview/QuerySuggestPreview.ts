@@ -39,7 +39,7 @@ export interface IQuerySuggestPreview {
  *
  * See [Rendering Query Suggestion Result Previews](https://docs.coveo.com/en/340/#rendering-query-suggestion-result-previews).
  *
- * @availableSince [December 2019 Release (v2.7610)](https://docs.coveo.com/en/3142/)
+ * @availablesince [December 2019 Release (v2.7610)](https://docs.coveo.com/en/3142/)
  */
 export class QuerySuggestPreview extends Component implements IComponentBindings {
   static ID = 'QuerySuggestPreview';

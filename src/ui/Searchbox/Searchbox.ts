@@ -64,7 +64,7 @@ export class Searchbox extends Component {
      * (e.g., if you are only using the default CoveoFullSearch.css stylesheet with no further styling customizations,
      * the search box height will be set to 50 pixels by default).
      *
-     * @availableSince [July 2019 Release (v2.6459)](https://docs.coveo.com/en/2938/)
+     * @availablesince [July 2019 Release (v2.6459)](https://docs.coveo.com/en/2938/)
      */
     height: ComponentOptions.buildNumberOption({ min: 25 }),
 

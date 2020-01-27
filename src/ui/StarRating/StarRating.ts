@@ -23,7 +23,7 @@ export interface IStarRatingOptions {
  *
  * @isresulttemplatecomponent
  *
- * @availableSince [January 2020 Release (v2.7968)](https://docs.coveo.com/en/3163/)
+ * @availablesince [January 2020 Release (v2.7968)](https://docs.coveo.com/en/3163/)
  */
 export class StarRating extends Component {
   static ID = 'StarRating';

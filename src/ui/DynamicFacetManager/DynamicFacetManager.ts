@@ -46,7 +46,7 @@ export interface IDynamicManagerCompatibleFacet extends Component, IAutoLayoutAd
  * This component allows controlling a set of [`DynamicFacet`]{@link DynamicFacet} and [`DynamicFacetRange`]{@link DynamicFacetRange} as a group.
  *
  * See [Using Dynamic Facets](https://docs.coveo.com/en/2917/).
- * @availableSince [May 2019 Release (v2.6063)](https://docs.coveo.com/en/2909/)
+ * @availablesince [May 2019 Release (v2.6063)](https://docs.coveo.com/en/2909/)
  */
 export class DynamicFacetManager extends Component {
   static ID = 'DynamicFacetManager';
@@ -102,7 +102,7 @@ export class DynamicFacetManager extends Component {
      *
      * **Default:** `4`
      *
-     * @availableSince [September 2019 Release (v2.7023)](https://docs.coveo.com/en/2990/)
+     * @availablesince [September 2019 Release (v2.7023)](https://docs.coveo.com/en/2990/)
      */
     maximumNumberOfExpandedFacets: ComponentOptions.buildNumberOption({ defaultValue: 4, min: -1 })
   };
