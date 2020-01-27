@@ -51,6 +51,7 @@ import { Logger } from '../../misc/Logger';
  * such as dynamic navigation experience (DNE).
  *
  * @notSupportedIn salesforcefree
+ * @availableSince [May 2019 Release (v2.6063)](https://docs.coveo.com/en/2909/)
  */
 export class DynamicFacet extends Component implements IDynamicFacet {
   static ID = 'DynamicFacet';
@@ -239,6 +240,8 @@ export class DynamicFacet extends Component implements IDynamicFacet {
      * By default, the facet does not depend on any other facet to be displayed.
      *
      * @examples document-type-facet
+     *
+     * @availableSince [December 2019 Release (v2.7610)](https://docs.coveo.com/en/3142/)
      */
     dependsOn: ComponentOptions.buildStringOption({ section: 'CommonOptions' }),
 
@@ -246,6 +249,8 @@ export class DynamicFacet extends Component implements IDynamicFacet {
      * The number of items to scan for facet values.
      *
      * Setting this option to a higher value may enhance the accuracy of facet value counts at the cost of slower query performance.
+     *
+     * @availableSince [January 2020 Release (v2.7968)](https://docs.coveo.com/en/3163/)
      */
     injectionDepth: ComponentOptions.buildNumberOption({ defaultValue: 1000, min: 0 }),
 

@@ -97,6 +97,8 @@ interface IFlatHierarchy {
  * Selecting the `folder3` value in the facet would only return the `text2.txt` item.
  *
  * @notSupportedIn salesforcefree
+ *
+ * @deprecatedSince [January 2019 Release (v2.5395.12)](https://docs.coveo.com/en/2763/)
  */
 export class HierarchicalFacet extends Facet implements IComponentBindings {
   static ID = 'HierarchicalFacet';

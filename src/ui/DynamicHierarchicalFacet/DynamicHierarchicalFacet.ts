@@ -50,6 +50,8 @@ import { Logger } from '../../misc/Logger';
  * This facet requires a [`field`]{@link DynamicHierarchicalFacet.options.field} with a special format to work correctly (see [Using the Hierarchical Facet Component](https://docs.coveo.com/en/2667)).
  *
  * @notSupportedIn salesforcefree
+ *
+ * @availableSince [January 2020 Release (v2.7968)](https://docs.coveo.com/en/3163/)
  */
 export class DynamicHierarchicalFacet extends Component implements IDynamicHierarchicalFacet {
   static ID = 'DynamicHierarchicalFacet';

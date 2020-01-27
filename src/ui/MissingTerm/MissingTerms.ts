@@ -19,6 +19,8 @@ export interface IMissingTermsOptions {
 /**
  * This [result template component](https://docs.coveo.com/en/513/#using-result-template-components) renders a list of query terms
  * that were not matched by the associated result item.
+ *
+ * @availableSince [July 2019 Release (v2.6459)](https://docs.coveo.com/en/2938/)
  */
 export class MissingTerms extends Component {
   static ID = 'MissingTerms';

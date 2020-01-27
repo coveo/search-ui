@@ -146,6 +146,8 @@ export class SimpleFilter extends Component {
      * `chisquare`: sort based on the relative frequency of field values in the query result set compared to their frequency in the entire index. This means that a field value that does
      * not appear often in the index, but does appear often in the query result set will tend to appear higher.
      *
+     * @availableSince [July 2019 Release (v2.6459)](https://docs.coveo.com/en/2938/)
+     *
      */
     sortCriteria: ComponentOptions.buildStringOption<FacetSortCriterion>({
       postProcessing: (value, options: ISimpleFilterOptions) => {

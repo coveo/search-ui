@@ -22,6 +22,8 @@ export interface IStarRatingOptions {
  * The `StarRating` component renders a five-star rating widget for use in commerce result templates.
  *
  * @isresulttemplatecomponent
+ *
+ * @availableSince [January 2020 Release (v2.7968)](https://docs.coveo.com/en/3163/)
  */
 export class StarRating extends Component {
   static ID = 'StarRating';

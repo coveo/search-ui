@@ -244,6 +244,8 @@ export class Quickview extends Component {
      * > Setting this option to `top-start` will make the tooltip appear on top of the `Quickview` button, aligned to the left.
      *
      * Default value is `bottom`.
+     *
+     * @availableSince [January 2019 Release (v2.5395.12)](https://docs.coveo.com/en/2938/)
      */
     tooltipPlacement: ComponentOptions.buildCustomOption<ValidTooltipPlacement>((value: ValidTooltipPlacement) => value, {
       defaultValue: 'bottom'
