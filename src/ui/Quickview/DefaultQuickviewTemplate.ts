@@ -7,6 +7,6 @@ export class DefaultQuickviewTemplate extends Template {
   }
 
   instantiateToString(queryResult?: IQueryResult): string {
-    return '<div class="coveo-quick-view-full-height"><div class="CoveoQuickviewDocument"></div></div>';
+    return `<div class="coveo-quick-view-full-height"><div class="CoveoQuickviewDocument" data-title="${queryResult.title}"></div></div>`;
   }
 }

@@ -21,6 +21,7 @@ export const HIGHLIGHT_PREFIX = 'CoveoHighlight';
 
 export interface IQuickviewDocumentOptions {
   maximumDocumentSize?: number;
+  title?: string;
 }
 
 /**
@@ -45,7 +46,11 @@ export class QuickviewDocument extends Component {
      *
      * Default value is `0`, and the index returns the entire preview. Minimum value is `0`.
      */
-    maximumDocumentSize: ComponentOptions.buildNumberOption({ defaultValue: 0, min: 0 })
+    maximumDocumentSize: ComponentOptions.buildNumberOption({ defaultValue: 0, min: 0 }),
+    /**
+     * Specifies the title of the document.
+     */
+    title: ComponentOptions.buildStringOption()
   };
 
   private iframe: QuickviewDocumentIframe;
@@ -68,6 +73,10 @@ export class QuickviewDocument extends Component {
     super(element, QuickviewDocument.ID, bindings);
 
     this.options = ComponentOptions.initComponentOptions(element, QuickviewDocument, options);
+    if (!this.options.title) {
+      this.logger.warn('No title was specified');
+    }
+
     this.result = result || this.resolveResult();
     Assert.exists(this.result);
   }
@@ -79,7 +88,7 @@ export class QuickviewDocument extends Component {
     this.element.appendChild(container.el);
 
     this.header = new QuickviewDocumentHeader();
-    this.iframe = new QuickviewDocumentIframe();
+    this.iframe = new QuickviewDocumentIframe(this.options.title);
 
     container.append(this.header.el);
     container.append(this.iframe.el);
@@ -94,7 +103,7 @@ export class QuickviewDocument extends Component {
     this.triggerOpenQuickViewEvent({ termsToHighlight });
 
     const termsWereModified = this.wereTermsToHighlightModified(termsToHighlight);
-    
+
     if (termsWereModified) {
       this.handleTermsToHighlight(termsToHighlight, this.query);
     }
@@ -131,7 +140,7 @@ export class QuickviewDocument extends Component {
   }
 
   private triggerOpenQuickViewEvent(args: IOpenQuickviewEventArgs) {
-    $$(this.root).trigger(QuickviewEvents.openQuickview, args)
+    $$(this.root).trigger(QuickviewEvents.openQuickview, args);
   }
 
   private get query() {

@@ -7,7 +7,7 @@ export class QuickviewDocumentIframe {
   public el: HTMLElement;
   private iframeElement: HTMLIFrameElement;
 
-  constructor() {
+  constructor(private title?: string) {
     this.el = this.buildIFrame().el;
   }
 
@@ -84,6 +84,9 @@ export class QuickviewDocumentIframe {
       sandbox: 'allow-same-origin allow-top-navigation',
       src: 'about:blank'
     });
+    if (this.title) {
+      iframe.setAttribute('title', this.title);
+    }
     this.iframeElement = iframe.el as HTMLIFrameElement;
 
     const iframewrapper = $$('div', {
