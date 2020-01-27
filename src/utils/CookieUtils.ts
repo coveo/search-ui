@@ -16,7 +16,7 @@ export class Cookie {
     host = location.hostname;
     if (host.split('.').length === 1) {
       // no '.' in a domain - it's localhost or something similar
-      document.cookie = this.prefix + name + '=' + value + expires + '; path=/';
+      document.cookie = this.prefix + name + '=' + value + expires + '; SameSite=Lax; path=/';
     } else {
       // Remember the cookie on all subdomains.
       //
@@ -31,14 +31,14 @@ export class Cookie {
       domainParts.shift();
       domain = '.' + domainParts.join('.');
 
-      document.cookie = this.prefix + name + '=' + value + expires + '; path=/; domain=' + domain;
+      document.cookie = this.prefix + name + '=' + value + expires + '; SameSite=Lax; path=/; domain=' + domain;
 
       // check if cookie was successfuly set to the given domain
       // (otherwise it was a Top-Level Domain)
       if (Cookie.get(name) == null || Cookie.get(name) != value) {
         // append '.' to current domain
         domain = '.' + host;
-        document.cookie = this.prefix + name + '=' + value + expires + '; path=/; domain=' + domain;
+        document.cookie = this.prefix + name + '=' + value + expires + '; SameSite=Lax; path=/; domain=' + domain;
       }
     }
   }
