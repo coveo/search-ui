@@ -5,10 +5,11 @@ import { $$ } from '../../src/utils/Dom';
 
 export function QuickviewDocumentTest() {
   describe('QuickviewDocument', () => {
+    const title = 'foo';
     let test: Mock.IBasicComponentSetup<QuickviewDocument>;
 
     beforeEach(() => {
-      test = Mock.basicResultComponentSetup<QuickviewDocument>(QuickviewDocument);
+      test = Mock.basicResultComponentSetup<QuickviewDocument>(QuickviewDocument, { title });
     });
 
     it('should request the last query on the query controller when opening', () => {
@@ -38,6 +39,11 @@ export function QuickviewDocumentTest() {
     it('should call getDocumentHtml on the endpoint', () => {
       test.cmp.open();
       expect(test.env.searchEndpoint.getDocumentHtml).toHaveBeenCalled();
+    });
+
+    it('should pass the value of the title option to the iframe', () => {
+      test.cmp.open();
+      expect(test.cmp['iframe']['title']).toEqual(title);
     });
 
     describe('when rendering an HTML document', () => {
