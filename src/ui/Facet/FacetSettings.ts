@@ -1,11 +1,11 @@
 import Popper from 'popper.js';
 import 'styling/_FacetSettings';
-import { compact, contains, each, escape, filter, find, findWhere, map, first } from 'underscore';
+import { compact, contains, each, escape, filter, find, findWhere, map } from 'underscore';
 import { InitializationEvents } from '../../events/InitializationEvents';
 import { QueryStateModel } from '../../models/QueryStateModel';
 import { l } from '../../strings/Strings';
 import { AccessibleButton } from '../../utils/AccessibleButton';
-import { $$ } from '../../utils/Dom';
+import { $$, Dom } from '../../utils/Dom';
 import { KEYBOARD, KeyboardUtils } from '../../utils/KeyboardUtils';
 import { LocalStorageUtils } from '../../utils/LocalStorageUtils';
 import { SVGDom } from '../../utils/SVGDom';
@@ -54,6 +54,10 @@ export class FacetSettings extends FacetSort {
 
   private set isExpanded(expanded: boolean) {
     this.settingsButton.setAttribute('aria-expanded', `${expanded}`);
+  }
+
+  private get firstFocusablePopupElement() {
+    return find(Dom.nodeListToArray(this.settingsPopup.querySelectorAll('[tabindex]')), element => element.tabIndex >= 0);
   }
 
   constructor(public sorts: string[], public facet: Facet) {
@@ -187,8 +191,9 @@ export class FacetSettings extends FacetSort {
       }
     });
 
-    if (this.sortSection) {
-      first(this.sortSection.sortItems).focus();
+    const elementToFocus = this.firstFocusablePopupElement;
+    if (elementToFocus) {
+      elementToFocus.focus();
     }
   }
 

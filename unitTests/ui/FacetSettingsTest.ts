@@ -37,6 +37,13 @@ export function FacetSettingsTest() {
       facetSettings = null;
     });
 
+    it('when opened, focuses on the collapse section', () => {
+      initFacetSettings();
+      const focusSpy = spyOn(facetSettings['hideSection'], 'focus');
+      facetSettings.open();
+      expect(focusSpy).toHaveBeenCalledTimes(1);
+    });
+
     it('allows to save state', () => {
       // settings not enabled : no call to query state
       initFacetSettings();
