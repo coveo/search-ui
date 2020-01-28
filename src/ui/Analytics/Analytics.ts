@@ -168,8 +168,6 @@ export class Analytics extends Component {
      *
      * See also [`gtmDataLayerName`]{@link Analytics.options.gtmDataLayerName}.
      *
-     * **Default:** `false`
-     *
      * @availablesince [July 2019 Release (v2.6459)](https://docs.coveo.com/en/2938/)
      */
     autoPushToGtmDataLayer: ComponentOptions.buildBooleanOption({ defaultValue: false }),

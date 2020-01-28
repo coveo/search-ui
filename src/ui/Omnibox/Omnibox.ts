@@ -272,8 +272,6 @@ export class Omnibox extends Component {
      *
      * Note: This does not include the filter expression enforced by the currently selected tab, if any.
      *
-     * **Default:** `false`
-     *
      * @availablesince [September 2019 Release (v2.7023)](https://docs.coveo.com/en/2990/)
      */
     clearFiltersOnNewQuery: ComponentOptions.buildBooleanOption({ defaultValue: false })
