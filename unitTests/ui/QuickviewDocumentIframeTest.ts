@@ -5,11 +5,10 @@ import { l } from '../Test';
 
 export function QuickviewDocumentIframeTest() {
   describe('QuickviewDocumentIframe', () => {
-    const title = 'foo bar';
     let quickviewIframe: QuickviewDocumentIframe;
 
     beforeEach(() => {
-      quickviewIframe = new QuickviewDocumentIframe(title);
+      quickviewIframe = new QuickviewDocumentIframe();
     });
 
     it('should sandbox the iframe and allow same origin', () => {
@@ -18,10 +17,6 @@ export function QuickviewDocumentIframeTest() {
 
     it('should sandbox the iframe and allow top navigation', () => {
       expect(quickviewIframe.iframeHTMLElement.getAttribute('sandbox')).toContain('allow-top-navigation');
-    });
-
-    it('should pass the title to the iframe element', () => {
-      expect(quickviewIframe.iframeHTMLElement.title).toEqual(title);
     });
 
     describe('when rendering', () => {
@@ -80,6 +75,13 @@ export function QuickviewDocumentIframeTest() {
         it('should render the content of the document', async done => {
           await quickviewIframe.render(htmlDocument);
           expect(quickviewIframe.body.textContent).toContain('hello world');
+          done();
+        });
+
+        it('should render the given title', async done => {
+          const title = 'abcdef';
+          await quickviewIframe.render(htmlDocument, title);
+          expect(quickviewIframe.iframeHTMLElement.title).toEqual(title);
           done();
         });
 

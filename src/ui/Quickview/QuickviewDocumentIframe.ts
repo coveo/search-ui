@@ -7,7 +7,7 @@ export class QuickviewDocumentIframe {
   public el: HTMLElement;
   private iframeElement: HTMLIFrameElement;
 
-  constructor(private title?: string) {
+  constructor() {
     this.el = this.buildIFrame().el;
   }
 
@@ -32,7 +32,7 @@ export class QuickviewDocumentIframe {
     return meta && meta.getAttribute('content') == 'pdf2htmlEX';
   }
 
-  public render(htmlDocument: HTMLDocument): Promise<HTMLIFrameElement> {
+  public render(htmlDocument: HTMLDocument, title?: string): Promise<HTMLIFrameElement> {
     if (this.quickviewIsClosedByEndUser()) {
       return Promise.reject(null);
     }
@@ -46,6 +46,7 @@ export class QuickviewDocumentIframe {
 
       this.addClientSideTweaksToIFrameStyling(htmlDocument);
       this.writeToIFrame(htmlDocument);
+      this.iframeElement.title = title;
     });
   }
 
@@ -84,9 +85,6 @@ export class QuickviewDocumentIframe {
       sandbox: 'allow-same-origin allow-top-navigation',
       src: 'about:blank'
     });
-    if (this.title) {
-      iframe.setAttribute('title', this.title);
-    }
     this.iframeElement = iframe.el as HTMLIFrameElement;
 
     const iframewrapper = $$('div', {

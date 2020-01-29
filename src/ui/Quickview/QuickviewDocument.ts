@@ -21,7 +21,6 @@ export const HIGHLIGHT_PREFIX = 'CoveoHighlight';
 
 export interface IQuickviewDocumentOptions {
   maximumDocumentSize?: number;
-  title?: string;
 }
 
 /**
@@ -46,11 +45,7 @@ export class QuickviewDocument extends Component {
      *
      * Default value is `0`, and the index returns the entire preview. Minimum value is `0`.
      */
-    maximumDocumentSize: ComponentOptions.buildNumberOption({ defaultValue: 0, min: 0 }),
-    /**
-     * Specifies the title of the document.
-     */
-    title: ComponentOptions.buildStringOption()
+    maximumDocumentSize: ComponentOptions.buildNumberOption({ defaultValue: 0, min: 0 })
   };
 
   private iframe: QuickviewDocumentIframe;
@@ -73,9 +68,6 @@ export class QuickviewDocument extends Component {
     super(element, QuickviewDocument.ID, bindings);
 
     this.options = ComponentOptions.initComponentOptions(element, QuickviewDocument, options);
-    if (!this.options.title) {
-      this.logger.warn('No title was specified');
-    }
 
     this.result = result || this.resolveResult();
     Assert.exists(this.result);
@@ -88,7 +80,7 @@ export class QuickviewDocument extends Component {
     this.element.appendChild(container.el);
 
     this.header = new QuickviewDocumentHeader();
-    this.iframe = new QuickviewDocumentIframe(this.options.title);
+    this.iframe = new QuickviewDocumentIframe();
 
     container.append(this.header.el);
     container.append(this.iframe.el);
@@ -114,7 +106,7 @@ export class QuickviewDocument extends Component {
         requestedOutputSize: this.options.maximumDocumentSize
       } as IViewAsHtmlOptions);
 
-      await this.iframe.render(documentHTML);
+      await this.iframe.render(documentHTML, this.result.title);
 
       const documentWords = new QuickviewDocumentWords(this.iframe, this.result);
       const previewBar = new QuickviewDocumentPreviewBar(this.iframe, documentWords);
