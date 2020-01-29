@@ -20,7 +20,7 @@ export function ComboboxValuesTest() {
     let response: string[];
 
     beforeEach(() => {
-      initializeComponent();
+      initializeComponent(['clearAll']);
     });
 
     function mockComboboxValuesFocusFunction() {
@@ -35,13 +35,13 @@ export function ComboboxValuesTest() {
       mockComboboxValuesFocusFunction();
     }
 
-    function initializeComponent(additionalOptions?: Partial<IComboboxOptions>) {
+    function initializeComponent(spies: (keyof Combobox)[] = [], additionalOptions?: Partial<IComboboxOptions>) {
       combobox = new Combobox({
         ...comboboxDefaultOptions(),
         createValuesFromResponse,
         ...additionalOptions
       });
-      spyOn(combobox, 'clearAll');
+      spies.forEach(spyName => spyOn(combobox, spyName));
       comboboxValues = new ComboboxValues(combobox);
     }
 
@@ -70,6 +70,39 @@ export function ComboboxValuesTest() {
 
       it('"mouseIsOverValue" should be false', () => {
         expect(comboboxValues.mouseIsOverValue).toBe(false);
+      });
+    });
+
+    describe('when calling clearAll without values', () => {
+      function addChildToCombobox() {
+        comboboxValues.element.appendChild($$('div').el);
+      }
+
+      beforeEach(() => {
+        initializeComponent(['updateAccessibilityAttributes']);
+        addChildToCombobox();
+        comboboxValues.clearValues();
+      });
+
+      it('should log analytics', () => {
+        expect(combobox.updateAccessibilityAttributes).toHaveBeenCalledTimes(1);
+      });
+
+      // This test is added to prevent elements being removed twice simultaneously and causing an error when two events call clearAll.
+      it('should not remove DOM elements', () => {
+        expect(comboboxValues.element.childNodes.length).toBe(1);
+      });
+    });
+
+    describe('when calling clearAll with values', () => {
+      beforeEach(() => {
+        initializeComponent();
+        triggerRenderFromResponse(['foo', 'bar']);
+        comboboxValues.clearValues();
+      });
+
+      it('should remove DOM elements', () => {
+        expect(comboboxValues.element.childNodes.length).toEqual(0);
       });
     });
 
@@ -132,9 +165,7 @@ export function ComboboxValuesTest() {
 
     describe('when calling "renderFromResponse" with no values', () => {
       beforeEach(() => {
-        initializeComponent();
-        spyOn(combobox, 'updateAriaLive');
-        spyOn(combobox, 'updateAccessibilityAttributes');
+        initializeComponent(['updateAriaLive', 'updateAccessibilityAttributes']);
         triggerRenderFromResponse([]);
       });
 
