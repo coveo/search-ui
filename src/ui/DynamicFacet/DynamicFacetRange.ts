@@ -27,7 +27,7 @@ import { DynamicFacetRangeQueryController } from '../../controllers/DynamicFacet
  * - [`sortCriteria`]{@link DynamicFacet.options.sortCriteria}
  *
  * @notSupportedIn salesforcefree
- * @availableSince [October 2019 Release (v2.7219)](https://docs.coveo.com/en/3084/)
+ * @availablesince [October 2019 Release (v2.7219)](https://docs.coveo.com/en/3084/)
  */
 export class DynamicFacetRange extends DynamicFacet implements IComponentBindings {
   static ID = 'DynamicFacetRange';

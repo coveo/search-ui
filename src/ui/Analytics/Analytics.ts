@@ -168,7 +168,7 @@ export class Analytics extends Component {
      *
      * See also [`gtmDataLayerName`]{@link Analytics.options.gtmDataLayerName}.
      *
-     * **Default:** `false`
+     * @availablesince [July 2019 Release (v2.6459)](https://docs.coveo.com/en/2938/)
      */
     autoPushToGtmDataLayer: ComponentOptions.buildBooleanOption({ defaultValue: false }),
 
@@ -386,6 +386,8 @@ export class Analytics extends Component {
 
   /**
    * Removes all session information stored in the browser (e.g., analytics visitor cookies, action history, etc.)
+   *
+   * @availablesince [October 2019 Release (v2.7219)](https://docs.coveo.com/en/3084/)
    */
   public clearLocalData() {
     if (this.disabled || this.client instanceof NoopAnalyticsClient) {
