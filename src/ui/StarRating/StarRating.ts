@@ -28,7 +28,7 @@ export interface IStarRatingOptions {
 export class StarRating extends Component {
   static ID = 'StarRating';
   private rating: number;
-  private numberOfRatingsField: number;
+  private numberOfRatings: number;
 
   static doExport = () => {
     exportGlobally({
@@ -87,7 +87,7 @@ export class StarRating extends Component {
     const rawNumberOfRatings = Utils.getFieldValue(this.result, <string>this.options.numberOfRatingsField);
 
     if (rawNumberOfRatings !== undefined) {
-      this.numberOfRatingsField = Number(rawNumberOfRatings) < 0 ? 0 : Number(rawNumberOfRatings) || 0;
+      this.numberOfRatings = Number(rawNumberOfRatings) < 0 ? 0 : Number(rawNumberOfRatings) || 0;
     }
 
     this.rating = Number(rawRating) < 0 ? 0 : Number(rawRating) || 0;
@@ -104,13 +104,38 @@ export class StarRating extends Component {
 
   private renderComponent() {
     if (this.configuredFieldsAreValid) {
+      this.makeAccessible();
       for (let starNumber = 1; starNumber <= DEFAULT_SCALE; starNumber++) {
         this.renderStar(starNumber <= this.rating);
       }
-      if (this.numberOfRatingsField !== undefined) {
-        this.renderNumberOfReviews(this.numberOfRatingsField);
+      if (this.numberOfRatings !== undefined) {
+        this.renderNumberOfReviews(this.numberOfRatings);
       }
     }
+  }
+
+  private makeAccessible() {
+    this.setDefaultTabIndex();
+    this.element.setAttribute('aria-label', this.getAriaLabel());
+  }
+
+  private setDefaultTabIndex() {
+    if (Utils.isNullOrUndefined(this.element.getAttribute('tabindex'))) {
+      this.element.tabIndex = 0;
+    }
+  }
+
+  private getAriaLabel() {
+    const numberOfRatingsIsKnown = !Utils.isNullOrUndefined(this.numberOfRatings);
+    const wasRated = !!this.numberOfRatings;
+    if (numberOfRatingsIsKnown && !wasRated) {
+      return l('NoRatings');
+    }
+    const label = l('Rated', this.rating, this.options.ratingScale, this.options.ratingScale);
+    if (numberOfRatingsIsKnown) {
+      return label + ' ' + l('RatedBy', this.numberOfRatings, this.numberOfRatings);
+    }
+    return label;
   }
 
   private renderStar(isChecked: boolean) {
@@ -121,7 +146,7 @@ export class StarRating extends Component {
 
   private renderNumberOfReviews(value: number) {
     const numberString = $$('span', { className: 'coveo-star-rating-label' });
-    numberString.text(value > 0 ? `(${value})` : l('No Ratings'));
+    numberString.text(value > 0 ? `(${value})` : l('NoRatings'));
     this.element.appendChild(numberString.el);
   }
 }

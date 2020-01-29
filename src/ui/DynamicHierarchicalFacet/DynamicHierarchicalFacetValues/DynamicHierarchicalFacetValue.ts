@@ -40,10 +40,6 @@ export class DynamicHierarchicalFacetValue implements IDynamicHierarchicalFacetV
     return this.facetValue.moreValuesAvailable;
   }
 
-  public get preventAutoSelect() {
-    return this.facetValue.preventAutoSelect;
-  }
-
   public get numberOfResults() {
     return this.facetValue.numberOfResults;
   }
