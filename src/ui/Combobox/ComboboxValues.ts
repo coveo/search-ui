@@ -108,16 +108,12 @@ export class ComboboxValues {
   }
 
   public clearValues() {
-    const shouldEmptyElement = this.hasValues();
     this.mouseIsOverValue = false;
     this.resetKeyboardActiveValue();
+    $$(this.element).empty();
     $$(this.element).hide();
     this.values = [];
     this.updateAccessibilityAttributes();
-    if (!shouldEmptyElement) {
-      return;
-    }
-    $$(this.element).empty();
   }
 
   private setKeyboardActiveValue(value: IComboboxValue) {
