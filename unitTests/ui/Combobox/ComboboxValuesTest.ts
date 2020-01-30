@@ -84,7 +84,7 @@ export function ComboboxValuesTest() {
         comboboxValues.clearValues();
       });
 
-      it('should log analytics', () => {
+      it('should update accessibility attributes', () => {
         expect(combobox.updateAccessibilityAttributes).toHaveBeenCalledTimes(1);
       });
 
