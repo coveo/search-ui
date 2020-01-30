@@ -32,7 +32,7 @@ export class QuickviewDocumentIframe {
     return meta && meta.getAttribute('content') == 'pdf2htmlEX';
   }
 
-  public render(htmlDocument: HTMLDocument, title?: string): Promise<HTMLIFrameElement> {
+  public render(htmlDocument: HTMLDocument, title: string): Promise<HTMLIFrameElement> {
     if (this.quickviewIsClosedByEndUser()) {
       return Promise.reject(null);
     }
