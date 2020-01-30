@@ -3,9 +3,6 @@ export class Cookie {
   private static prefix: string = 'coveo_';
 
   static set(name: string, value: string, expiration?: number) {
-    let domain: string;
-    let domainParts: string[];
-
     const host = location.hostname;
     if (host.split('.').length === 1) {
       // no '.' in a domain - it's localhost or something similar
@@ -20,9 +17,9 @@ export class Cookie {
       // If the cookie will not be set, it means '.com'
       // is a top level domain and we need to
       // set the cookie to '.foo.com'
-      domainParts = host.split('.');
+      const domainParts = host.split('.');
       domainParts.shift();
-      domain = '.' + domainParts.join('.');
+      let domain = '.' + domainParts.join('.');
 
       document.cookie = this.buildCookie(name, value, expiration, domain);
 
@@ -43,10 +40,7 @@ export class Cookie {
   }
 
   private static buildExpiresValue(expiration: number) {
-    const date = new Date();
-    date.setTime(date.getTime() + expiration);
-
-    return '; expires=' + date.toUTCString();
+    return `; expires=${new Date(Date.now() + expiration).toUTCString()}`;
   }
 
   static get(name: string) {
