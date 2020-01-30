@@ -264,7 +264,7 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
   public header: DynamicFacetHeader;
   public values: IDynamicHierarchicalFacetValues;
   public moreValuesAvailable = false;
-  public position: number = null;
+  public position: number;
   public dynamicFacetManager: DynamicFacetManager;
   public isDynamicFacet = true;
 
@@ -380,7 +380,7 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
     const index = findIndex(results.facets, { facetId: this.options.id });
     const facetResponse = index !== -1 ? results.facets[index] : null;
 
-    this.position = facetResponse ? index + 1 : null;
+    this.position = facetResponse ? index + 1 : undefined;
     facetResponse ? this.onNewValues(facetResponse) : this.onNoValues();
 
     this.header.hideLoading();
