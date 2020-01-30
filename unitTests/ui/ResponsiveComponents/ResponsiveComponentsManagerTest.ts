@@ -8,25 +8,14 @@ import { ValidResponsiveMode } from '../../../src/ui/ResponsiveComponents/Respon
 export function ResponsiveComponentsManagerTest() {
   const SMALL_RESPONSIVE_MODE = 'small';
   let root: Dom;
-  let handleResizeEventSpies: jasmine.Spy[] = [];
-  let registerComponentSpies: jasmine.Spy[] = [];
+  let handleResizeEvent: any;
+  let registerComponent: any;
   let responsiveComponentsManager: ResponsiveComponentsManager;
-  let responsiveComponents: any[] = [];
+  let responsiveComponent: any;
   let component: any;
   const setResponsiveMode = (mode: ValidResponsiveMode) => {
     (Component.get(root.el, SearchInterface) as SearchInterface).options.responsiveMode = mode;
   };
-
-  function addNewResponsiveComponents() {
-    handleResizeEventSpies.push(jasmine.createSpy('handleResizeEvent'));
-    registerComponentSpies.push(jasmine.createSpy('registerComponent'));
-    responsiveComponents.push(function() {
-      this.needDrodpownWrapper = () => {};
-      this.handleResizeEvent = handleResizeEventSpies[handleResizeEventSpies.length - 1];
-      this.registerComponent = registerComponentSpies[registerComponentSpies.length - 1];
-      this.ID = 'id';
-    });
-  }
 
   describe('ResponsiveComponentsManager', () => {
     beforeEach(() => {
@@ -35,15 +24,19 @@ export function ResponsiveComponentsManagerTest() {
         enableAutomaticResponsiveMode: true
       });
       root = $$(searchInterfaceMock.cmp.root);
-      addNewResponsiveComponents();
+      handleResizeEvent = jasmine.createSpy('handleResizeEvent');
+      registerComponent = jasmine.createSpy('registerComponent');
+      responsiveComponent = function() {
+        this.needDrodpownWrapper = () => {};
+        this.handleResizeEvent = handleResizeEvent;
+        this.registerComponent = registerComponent;
+        this.ID = 'id';
+      };
       component = {};
       responsiveComponentsManager = new ResponsiveComponentsManager(root);
     });
 
     afterEach(() => {
-      handleResizeEventSpies.length = 0;
-      registerComponentSpies.length = 0;
-      responsiveComponents.length = 0;
       jasmine.clock().uninstall();
     });
 
@@ -54,10 +47,10 @@ export function ResponsiveComponentsManagerTest() {
 
       it('should calls handle resize event when resize listener is called', () => {
         root.width = () => 400;
-        responsiveComponentsManager.register(responsiveComponents[responsiveComponents.length - 1], root, 'id', component, {});
+        responsiveComponentsManager.register(responsiveComponent, root, 'id', component, {});
         responsiveComponentsManager.resizeListener();
         jasmine.clock().tick(250);
-        expect(handleResizeEventSpies[handleResizeEventSpies.length - 1]).toHaveBeenCalled();
+        expect(handleResizeEvent).toHaveBeenCalled();
       });
 
       describe('and the root element width is zero', () => {
@@ -66,15 +59,15 @@ export function ResponsiveComponentsManagerTest() {
         });
 
         it('should  not calls handle resize event when resize listener is called', () => {
-          responsiveComponentsManager.register(responsiveComponents[responsiveComponents.length - 1], root, 'id', component, {});
+          responsiveComponentsManager.register(responsiveComponent, root, 'id', component, {});
           responsiveComponentsManager.resizeListener();
           jasmine.clock().tick(250);
-          expect(handleResizeEventSpies[handleResizeEventSpies.length - 1]).not.toHaveBeenCalled();
+          expect(handleResizeEvent).not.toHaveBeenCalled();
         });
 
         it('should  not calls handle resize event when it registers component', () => {
-          responsiveComponentsManager.register(responsiveComponents[responsiveComponents.length - 1], root, 'id', component, {});
-          expect(handleResizeEventSpies[handleResizeEventSpies.length - 1]).not.toHaveBeenCalled();
+          responsiveComponentsManager.register(responsiveComponent, root, 'id', component, {});
+          expect(handleResizeEvent).not.toHaveBeenCalled();
         });
       });
     });
@@ -90,31 +83,35 @@ export function ResponsiveComponentsManagerTest() {
         });
 
         it('should calls handle resize event when resize listener is called', () => {
-          responsiveComponentsManager.register(responsiveComponents[responsiveComponents.length - 1], root, 'id', component, {});
+          responsiveComponentsManager.register(responsiveComponent, root, 'id', component, {});
           responsiveComponentsManager.resizeListener();
           jasmine.clock().tick(250);
-          expect(handleResizeEventSpies).toHaveBeenCalled();
+          expect(handleResizeEvent).toHaveBeenCalled();
         });
       });
     });
 
-    it('calls handle resize on all responsiveComponent registered when calling resizeAllComponentsManager', () => {
-      // Add a second responsiveComponent.
-      addNewResponsiveComponents();
-      expect(responsiveComponents.length).toBe(2);
+    it('registers component even when the corresponding responsive class has already been instanciated', () => {
+      responsiveComponentsManager.register(responsiveComponent, root, 'id', component, {});
+      responsiveComponentsManager.register(responsiveComponent, root, 'id', component, {});
 
-      ResponsiveComponentsManager.resizeAllComponentsManager();
-
-      handleResizeEventSpies.forEach(spy => {
-        expect(spy).toHaveBeenCalled();
-      });
+      expect(registerComponent).toHaveBeenCalledTimes(2);
     });
 
-    it('registers component even when the corresponding responsive class has already been instanciated', () => {
-      responsiveComponentsManager.register(responsiveComponents[responsiveComponents.length - 1], root, 'id', component, {});
-      responsiveComponentsManager.register(responsiveComponents[responsiveComponents.length - 1], root, 'id', component, {});
-
-      expect(registerComponentSpies[length - 1]).toHaveBeenCalledTimes(2);
+    it('should call resize listener of all ResponsiveComponentManager when resizeAllComponentsManager is called', () => {
+      let searchInterfaceMock = Mock.optionsSearchInterfaceSetup<SearchInterface, ISearchInterfaceOptions>(SearchInterface, {
+        enableAutomaticResponsiveMode: true
+      });
+      root = $$(searchInterfaceMock.cmp.root);
+      const anotherResponsiveComponentsManager = new ResponsiveComponentsManager(root);
+      const spyResizeListeners = [
+        spyOn(responsiveComponentsManager, 'resizeListener'),
+        spyOn(anotherResponsiveComponentsManager, 'resizeListener')
+      ];
+      ResponsiveComponentsManager.resizeAllComponentsManager();
+      spyResizeListeners.forEach(spy => {
+        expect(spy).toHaveBeenCalled();
+      });
     });
   });
 }
