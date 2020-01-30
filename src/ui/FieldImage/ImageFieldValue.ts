@@ -18,6 +18,9 @@ export interface IImageFieldValue {
  * This [result template](https://docs.coveo.com/en/413/) component renders an image from a URL retrieved in a given [`field`]{@link ImageFieldValue.options.field}.
  *
  * A typical use case of this component is to display product images in the context of commerce.
+ *
+ * @isresulttemplatecomponent
+ * @availablesince [September 2019 Release (v2.7023)](https://docs.coveo.com/en/2990/)
  */
 export class ImageFieldValue extends Component {
   static ID = 'ImageFieldValue';

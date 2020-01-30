@@ -61,11 +61,12 @@ export function DynamicFacetQueryControllerTest() {
     it('should send the current values', () => {
       const currentValues = facetRequest().currentValues;
 
-      expect(currentValues[0]).toEqual({
-        value: mockFacetValues[0].value,
-        state: mockFacetValues[0].state,
-        preventAutoSelect: mockFacetValues[0].preventAutoSelect
-      });
+      expect(currentValues[0]).toEqual(
+        jasmine.objectContaining({
+          value: mockFacetValues[0].value,
+          state: mockFacetValues[0].state
+        })
+      );
     });
 
     it('should send the correct numberOfValues, which is initially the option', () => {
@@ -126,6 +127,17 @@ export function DynamicFacetQueryControllerTest() {
       dynamicFacetQueryController.enableFreezeCurrentValuesFlag();
 
       expect(facetRequest().freezeCurrentValues).toBe(true);
+    });
+
+    it('preventAutoSelect should be false by default', () => {
+      expect(facetRequest().preventAutoSelect).toBe(false);
+    });
+
+    it(`when calling enablePreventAutoSelectionFlag
+      allows to enable the flag`, () => {
+      dynamicFacetQueryController.enablePreventAutoSelectionFlag();
+
+      expect(facetRequest().preventAutoSelect).toBe(true);
     });
 
     it(`given a facet with dependent facets having selected values,

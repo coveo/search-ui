@@ -497,6 +497,43 @@ export function FacetQueryControllerTest() {
           });
         });
 
+        describe('with regex characters', () => {
+          const regexCharacters = 'a (test) -/.+^${123} ["abc"]';
+          beforeEach(() => {
+            searchPromise = new Promise((resolve, reject) => {
+              const results = FakeResults.createFakeResults();
+              const groupByWithAToken = FakeResults.createFakeGroupByResult('@foo', regexCharacters, 2);
+              results.groupByResults[0] = groupByWithAToken;
+              resolve(results);
+            });
+            (<jasmine.Spy>mockEndpoint.search).and.returnValue(searchPromise);
+          });
+
+          it('should resolve search correctly with ? character', done => {
+            mockFacet.options.allowedValues = [`${regexCharacters}0`];
+            facetQueryController.search(facetSearchParams).then(values => {
+              expect(values).toEqual(generateMatcher([...mockFacet.options.allowedValues]));
+              done();
+            });
+          });
+
+          it('should resolve search correctly with ? character', done => {
+            mockFacet.options.allowedValues = [`${regexCharacters}?`];
+            facetQueryController.search(facetSearchParams).then(values => {
+              expect(values).toEqual(generateMatcher([`${regexCharacters}0`, `${regexCharacters}1`]));
+              done();
+            });
+          });
+
+          it('should resolve search correctly with * character', done => {
+            mockFacet.options.allowedValues = ['a (test)*'];
+            facetQueryController.search(facetSearchParams).then(values => {
+              expect(values).toEqual(generateMatcher([`${regexCharacters}0`, `${regexCharacters}1`]));
+              done();
+            });
+          });
+        });
+
         describe('with a wildcard', () => {
           beforeEach(() => {
             searchPromise = new Promise((resolve, reject) => {

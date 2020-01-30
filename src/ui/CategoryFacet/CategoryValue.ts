@@ -83,7 +83,8 @@ export class CategoryValue implements CategoryValueParent {
     const element = $$(this.element.find('.coveo-category-facet-value-label'));
     element.addClass('coveo-selectable');
 
-    const countLabel = l('ResultCount', this.categoryValueDescriptor.count.toString());
+    const count = this.categoryValueDescriptor.count;
+    const countLabel = l('ResultCount', count.toString(), count);
     const label = l('SelectValueWithResultCount', this.captionedValueDescriptorValue, countLabel);
 
     new AccessibleButton()
