@@ -109,7 +109,7 @@ export class ResponsiveComponentsManager {
     });
   }
 
-  private static resizeAllComponentsManager(): void {
+  public static resizeAllComponentsManager(): void {
     _.each(this.componentManagers, componentManager => {
       componentManager.resizeListener();
     });
