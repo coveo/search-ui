@@ -56,6 +56,10 @@ export class FacetSettings extends FacetSort {
     this.settingsButton.setAttribute('aria-expanded', `${expanded}`);
   }
 
+  private get firstFocusablePopupElement() {
+    return find($$(this.settingsPopup).findAll('[tabindex]'), element => element.tabIndex >= 0);
+  }
+
   constructor(public sorts: string[], public facet: Facet) {
     super(sorts, facet);
     this.filterDuplicateForRendering();
@@ -186,6 +190,11 @@ export class FacetSettings extends FacetSort {
         this.unselectItem(this.getSortItem(criteria.name));
       }
     });
+
+    const elementToFocus = this.firstFocusablePopupElement;
+    if (elementToFocus) {
+      elementToFocus.focus();
+    }
   }
 
   public getSortItem(sortName: string): HTMLElement {
