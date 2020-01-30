@@ -57,7 +57,7 @@ export class FacetSettings extends FacetSort {
   }
 
   private get firstFocusablePopupElement() {
-    return find(Dom.nodeListToArray(this.settingsPopup.querySelectorAll('[tabindex]')), element => element.tabIndex >= 0);
+    return find($$(this.settingsPopup).findAll('[tabindex]'), element => element.tabIndex >= 0);
   }
 
   constructor(public sorts: string[], public facet: Facet) {
