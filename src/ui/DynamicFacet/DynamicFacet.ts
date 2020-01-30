@@ -274,7 +274,7 @@ export class DynamicFacet extends Component implements IDynamicFacet {
   public dependsOnManager: DependsOnManager;
   public dynamicFacetQueryController: DynamicFacetQueryController;
   public values: DynamicFacetValues;
-  public position: number = null;
+  public position: number;
   public moreValuesAvailable = false;
   public isCollapsed: boolean;
   public isDynamicFacet = true;
@@ -620,7 +620,7 @@ export class DynamicFacet extends Component implements IDynamicFacet {
     const index = findIndex(results.facets, { facetId: this.options.id });
     const facetResponse = index !== -1 ? results.facets[index] : null;
 
-    this.position = facetResponse ? index + 1 : null;
+    this.position = facetResponse ? index + 1 : undefined;
     facetResponse ? this.onNewValues(facetResponse) : this.onNoValues();
 
     this.header.hideLoading();

@@ -513,8 +513,8 @@ export function DynamicFacetTest() {
       ]);
     });
 
-    it('facet position should be null by default', () => {
-      expect(test.cmp.position).toBeNull();
+    it('facet position should be undefined by default', () => {
+      expect(test.cmp.position).toBeUndefined();
     });
 
     it(`when "enableFacetSearch" option is false
@@ -733,8 +733,8 @@ export function DynamicFacetTest() {
           test.cmp.handleQueryResults(fakeResultsWithNoFacets());
         });
 
-        it(`facet position should be "null"`, () => {
-          expect(test.cmp.position).toBeNull();
+        it(`facet position should be "undefined"`, () => {
+          expect(test.cmp.position).toBeUndefined();
         });
 
         it(`"resetValues" should be called on the values`, () => {
