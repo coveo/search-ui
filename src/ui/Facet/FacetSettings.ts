@@ -5,7 +5,7 @@ import { InitializationEvents } from '../../events/InitializationEvents';
 import { QueryStateModel } from '../../models/QueryStateModel';
 import { l } from '../../strings/Strings';
 import { AccessibleButton } from '../../utils/AccessibleButton';
-import { $$, Dom } from '../../utils/Dom';
+import { $$ } from '../../utils/Dom';
 import { KEYBOARD, KeyboardUtils } from '../../utils/KeyboardUtils';
 import { LocalStorageUtils } from '../../utils/LocalStorageUtils';
 import { SVGDom } from '../../utils/SVGDom';
