@@ -37,6 +37,13 @@ export function FacetSettingsTest() {
       facetSettings = null;
     });
 
+    it('when opened, focuses on the collapse section', () => {
+      initFacetSettings();
+      const focusSpy = spyOn(facetSettings['hideSection'], 'focus');
+      facetSettings.open();
+      expect(focusSpy).toHaveBeenCalledTimes(1);
+    });
+
     it('allows to save state', () => {
       // settings not enabled : no call to query state
       initFacetSettings();
@@ -69,6 +76,7 @@ export function FacetSettingsTest() {
       }
 
       beforeEach(() => {
+        sorts = ['alphaascending', 'alphadescending'];
         initFacetSettings();
         facet.root.appendChild(facetSettings.settingsButton);
         expect(settingsPopup()).toBeNull();
@@ -80,6 +88,12 @@ export function FacetSettingsTest() {
 
         facetSettings.close();
         expect(settingsPopup()).toBeNull();
+      });
+
+      it('focuses on the first sort item', () => {
+        const focusSpy = spyOn(facetSettings['sortSection'].sortItems[0], 'focus');
+        facetSettings.open();
+        expect(focusSpy).toHaveBeenCalledTimes(1);
       });
 
       it('allows open and closing the popup by clicking the facetSetting button', () => {
