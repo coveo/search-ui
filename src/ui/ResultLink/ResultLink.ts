@@ -252,7 +252,6 @@ export class ResultLink extends Component {
       this.options.openQuickview = result.raw['connectortype'] == 'ExchangeCrawler' && DeviceUtils.isMobileDevice();
     }
     this.element.setAttribute('tabindex', '0');
-    this.addHeadingRoleIfFirstResultLink();
 
     Assert.exists(this.componentOptionsModel);
     Assert.exists(this.result);
@@ -357,28 +356,6 @@ export class ResultLink extends Component {
       this.setHrefIfNotAlready() ||
       this.openLinkThatIsNotAnAnchor()
     );
-  }
-
-  private addHeadingRoleIfFirstResultLink() {
-    if (!this.isFirstResultLink) {
-      return;
-    }
-
-    this.element.setAttribute('role', 'heading');
-    this.element.setAttribute('aria-level', '2');
-  }
-
-  private get isFirstResultLink() {
-    const resultRoot = $$(this.element).closest('CoveoResult');
-
-    if (!resultRoot) {
-      return false;
-    }
-
-    const resultLinkSelector = `.${Component.computeCssClassNameForType(ResultLink.ID)}`;
-    const firstResultLink = $$(resultRoot).find(resultLinkSelector);
-
-    return firstResultLink === this.element;
   }
 
   private bindOnClickIfNotUndefined() {

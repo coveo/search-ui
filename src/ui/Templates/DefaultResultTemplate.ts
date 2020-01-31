@@ -59,7 +59,9 @@ export class DefaultResultTemplate extends Template {
 
   public getFallbackTemplate(): string {
     let titleContainer = $$('div', {
-      className: 'coveo-title'
+      className: 'coveo-title',
+      role: 'heading',
+      ariaLevel: 2
     });
 
     let resultLink = $$('a', { className: 'CoveoResultLink' });
