@@ -65,7 +65,6 @@ export class ResponsiveComponentsManager {
         let responsiveComponentsManager = _.find(this.componentManagers, componentManager => root.el == componentManager.coveoRoot.el);
         if (!responsiveComponentsManager) {
           responsiveComponentsManager = new ResponsiveComponentsManager(root);
-          this.componentManagers.push(responsiveComponentsManager);
         }
 
         if (!Utils.isNullOrUndefined(options.enableResponsiveMode) && !options.enableResponsiveMode) {
@@ -151,6 +150,7 @@ export class ResponsiveComponentsManager {
     }
 
     this.bindNukeEvents();
+    ResponsiveComponentsManager.componentManagers.push(this);
   }
 
   public register(
