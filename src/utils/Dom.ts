@@ -133,19 +133,15 @@ export class Dom {
     }
   }
 
-  /**
-   * Safely removes a child, only suppressing `NotFoundError` if the child's parent was changed.
-   */
   public removeChild(child: Node) {
     const oldParent = child.parentNode;
     try {
       this.el.removeChild(child);
     } catch (e) {
-      if ((e as Error).name === 'NotFoundError') {
-        if (oldParent === child.parentNode) {
-          throw e;
-        }
-      } else {
+      if ((e as Error).name !== 'NotFoundError') {
+        throw e;
+      }
+      if (oldParent === child.parentNode) {
         throw e;
       }
     }
