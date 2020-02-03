@@ -376,22 +376,12 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     enableCollaborativeRating: ComponentOptions.buildBooleanOption({ defaultValue: false }),
 
     /**
-     * Specifies whether to filter duplicates in the search results.
+     * Whether to filter out duplicates, so that items resembling one another only appear once in the query results.
      *
-     * Setting this option to `true` forces duplicates to not appear in search results. However, {@link Facet} counts
-     * still include the duplicates, which can be confusing for the end user. This is a limitation of the index.
-     *
-     * **Example:**
-     *
-     * > The end user narrows a query down to a single item that has a duplicate. If the enableDuplicateFiltering
-     * > option is `true`, then only one item appears in the search results while the Facet count is still 2.
-     *
-     * **Note:**
-     *
-     * > It also is possible to set this option separately for each {@link Tab} component
-     * > (see {@link Tab.options.enableDuplicateFiltering}).
-     *
-     * Default value is `false`.
+     * **Notes:**
+     * - Two items must be at least 85% similar to one another to be considered duplicates.
+     * - When a pair of duplicates is found, only the highest ranked item of the two is kept in the result set.
+     * - Enabling this feature can make the total result count less precise, as only the requested page of query results is submitted to duplicate filtering.
      */
     enableDuplicateFiltering: ComponentOptions.buildBooleanOption({ defaultValue: false }),
 
