@@ -16,20 +16,41 @@ export function DynamicHierarchicalFacetValueRendererTest() {
     let element: HTMLElement;
 
     beforeEach(() => {
-      initializeComponentWithValue(DynamicHierarchicalFacetTestUtils.createFakeFacetValue());
+      facet = DynamicHierarchicalFacetTestUtils.createFakeFacet();
+      initFacetValue(DynamicHierarchicalFacetTestUtils.createFakeFacetValue());
     });
 
-    function initializeComponentWithValue(value: IDynamicHierarchicalFacetValueProperties) {
-      facet = DynamicHierarchicalFacetTestUtils.createFakeFacet();
+    function initFacetValue(value: IDynamicHierarchicalFacetValueProperties) {
       facetValue = new DynamicHierarchicalFacetValue(value, facet);
       facetValueRenderer = new DynamicHierarchicalFacetValueRenderer(facetValue, facet);
-      element = facetValueRenderer.render();
+      render();
     }
 
-    function initializeComponentWithSelectedValue() {
-      const selectedValue = DynamicHierarchicalFacetTestUtils.createFakeFacetValue();
-      selectedValue.state = FacetValueState.selected;
-      initializeComponentWithValue(selectedValue);
+    function initMultiLevelValues() {
+      const grandChildValue = DynamicHierarchicalFacetTestUtils.createFakeFacetValue();
+      grandChildValue.value = 'more';
+      grandChildValue.path = ['one', 'two', 'three'];
+
+      const childValue = DynamicHierarchicalFacetTestUtils.createFakeFacetValue();
+      childValue.value = 'two';
+      childValue.path = ['one', 'two'];
+      childValue.children = [new DynamicHierarchicalFacetValue(grandChildValue, facet)];
+
+      const parentValue = DynamicHierarchicalFacetTestUtils.createFakeFacetValue();
+      parentValue.value = 'one';
+      parentValue.path = ['one'];
+      parentValue.children = [new DynamicHierarchicalFacetValue(grandChildValue, facet)];
+
+      initFacetValue(childValue);
+    }
+
+    function selectValue() {
+      facetValue.select();
+      render();
+    }
+
+    function render() {
+      element = facetValueRenderer.render();
     }
 
     function getLabel() {
@@ -51,7 +72,7 @@ export function DynamicHierarchicalFacetValueRendererTest() {
     it('should not render XSS in the displayValue', () => {
       const fakeFacetValueWithXSS = DynamicHierarchicalFacetTestUtils.createFakeFacetValue();
       fakeFacetValueWithXSS.displayValue = '<script>alert("Hehe goodbye")</script>';
-      initializeComponentWithValue(fakeFacetValueWithXSS);
+      initFacetValue(fakeFacetValueWithXSS);
       expect(getLabel().innerHTML).toBe('&lt;script&gt;alert("Hehe goodbye")&lt;/script&gt;');
     });
 
@@ -75,10 +96,6 @@ export function DynamicHierarchicalFacetValueRendererTest() {
       expect(getButton().getAttribute('disabled')).toBeFalsy();
     });
 
-    it('button should not have the class "coveo-with-space"', () => {
-      expect($$(getButton()).hasClass('coveo-with-space')).toBe(false);
-    });
-
     it(`when clicking on the button
     should trigger the right actions`, () => {
       $$(getButton()).trigger('click');
@@ -90,84 +107,122 @@ export function DynamicHierarchicalFacetValueRendererTest() {
 
     it(`when value is selected
     button should have the class "coveo-selected"`, () => {
-      initializeComponentWithSelectedValue();
+      selectValue();
       expect($$(getButton()).hasClass('coveo-selected')).toBe(true);
     });
 
     it(`when value is selected
     button should be disabled`, () => {
-      initializeComponentWithSelectedValue();
+      selectValue();
       expect(getButton().getAttribute('disabled')).toBeTruthy();
     });
 
     describe(`testing the margin ("coveo-with-space")`, () => {
-      it(`when value is not at the first level and has no children
-        button should have the class "coveo-with-space"`, () => {
-        const childValue = DynamicHierarchicalFacetTestUtils.createFakeFacetValue();
-        childValue.path = ['a', 'path'];
-        initializeComponentWithValue(childValue);
+      function hasMargin() {
+        return $$(getButton()).hasClass('coveo-with-space');
+      }
 
-        expect($$(getButton()).hasClass('coveo-with-space')).toBe(true);
-      });
-
-      it(`when value is not at the first level and has no children, but is selected
-        button should not have the class "coveo-with-space"`, () => {
-        const childValue = DynamicHierarchicalFacetTestUtils.createFakeFacetValue();
-        childValue.path = ['a', 'path'];
-        childValue.state = FacetValueState.selected;
-        initializeComponentWithValue(childValue);
-
-        expect($$(getButton()).hasClass('coveo-with-space')).toBe(false);
+      it('button should not have the class "coveo-with-space"', () => {
+        expect(hasMargin()).toBe(false);
       });
 
       it(`when value is not at the first level but has children
         button should not have the class "coveo-with-space"`, () => {
-        const childValueWithChildren = DynamicHierarchicalFacetTestUtils.createFakeFacetValue();
-        childValueWithChildren.path = ['a', 'path'];
-        childValueWithChildren.children = [
-          new DynamicHierarchicalFacetValue(DynamicHierarchicalFacetTestUtils.createFakeFacetValue(), facet)
-        ];
-        initializeComponentWithValue(childValueWithChildren);
+        initMultiLevelValues();
 
-        expect($$(getButton()).hasClass('coveo-with-space')).toBe(false);
+        expect(hasMargin()).toBe(false);
+      });
+
+      it(`when value is not at the first level and has no children
+        button should have the class "coveo-with-space"`, () => {
+        initMultiLevelValues();
+        facetValue.children = [];
+        render();
+
+        expect(hasMargin()).toBe(true);
+      });
+
+      it(`when value is not at the first level and has no children, but is selected
+        button should not have the class "coveo-with-space"`, () => {
+        initMultiLevelValues();
+        facetValue.children = [];
+        selectValue();
+
+        expect(hasMargin()).toBe(false);
       });
     });
 
     describe(`testing the arrow`, () => {
       function getArrow() {
-        return $$(element).find('.coveo-dynamic-hierarchical-facet-value-arrow');
+        return !!$$(element).find('.coveo-dynamic-hierarchical-facet-value-arrow');
       }
 
       it('should not prepend an arrow by default', () => {
-        expect(getArrow()).toBeFalsy();
+        expect(getArrow()).toBe(false);
       });
 
       it(`when value is selected
       should not prepend an arrow`, () => {
-        initializeComponentWithSelectedValue();
-        expect(getArrow()).toBeFalsy();
+        selectValue();
+        expect(getArrow()).toBe(false);
       });
 
       describe('when value is not at the first level and has children', () => {
         beforeEach(() => {
-          const valueWithChildren = DynamicHierarchicalFacetTestUtils.createFakeFacetValue();
-          valueWithChildren.children = [new DynamicHierarchicalFacetValue(DynamicHierarchicalFacetTestUtils.createFakeFacetValue(), facet)];
-          initializeComponentWithValue(valueWithChildren);
+          initMultiLevelValues();
         });
 
         it(`when facet has no selected value
           should not prepend an arrow`, () => {
-          expect(getArrow()).toBeFalsy();
+          expect(getArrow()).toBe(false);
         });
 
-        it(`when facet has a selected value, 
-          when value is not at the first level and has children
+        it(`when facet has a selected value
           should prepend an arrow`, () => {
           facet.values.selectPath(['random value']);
           element = facetValueRenderer.render();
 
-          expect(getArrow()).toBeTruthy();
+          expect(getArrow()).toBe(true);
         });
+      });
+    });
+
+    describe(`testing the collapsed feature`, () => {
+      function displayedWhenCollapsed() {
+        return $$(getButton()).hasClass('coveo-show-when-collapsed');
+      }
+
+      function selectChildrenValue() {
+        initMultiLevelValues();
+        const children = facetValue.children[0];
+        children.select();
+        facet.values.selectPath(children.path);
+      }
+
+      it('should not display the value when collapsed by default', () => {
+        expect(displayedWhenCollapsed()).toBe(false);
+      });
+
+      it(`when value is selected
+      should display the value when collapsed`, () => {
+        selectValue();
+        expect(displayedWhenCollapsed()).toBe(true);
+      });
+
+      it(`when value is the parent of the selected value
+      should display the value when collapsed`, () => {
+        selectChildrenValue();
+        render();
+
+        expect(displayedWhenCollapsed()).toBe(true);
+      });
+
+      it(`when value is the grandparent of the selected value
+      should not display the value when collapsed`, () => {
+        selectChildrenValue();
+        initFacetValue(facet.values.allFacetValues[0]);
+
+        expect(displayedWhenCollapsed()).toBe(false);
       });
     });
   });
