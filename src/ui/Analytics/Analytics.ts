@@ -215,7 +215,10 @@ export class Analytics extends Component {
       return;
     } else {
       this.options.token = this.accessToken.token;
-      this.accessToken.subscribeToRenewal(newToken => (this.client.endpoint.endpointCaller.options.accessToken = newToken));
+      this.accessToken.subscribeToRenewal(newToken => {
+        this.options.token = newToken;
+        this.client.endpoint.endpointCaller.options.accessToken = newToken;
+      });
     }
 
     this.initializeAnalyticsClient();
@@ -510,10 +513,6 @@ export class Analytics extends Component {
       this.accessToken = this.defaultEndpoint.accessToken;
 
       this.options.token = this.defaultEndpoint.accessToken.token;
-      this.defaultEndpoint.accessToken.subscribeToRenewal(newToken => {
-        this.options.token = newToken;
-        this.initializeAnalyticsClient();
-      });
     }
 
     if (!this.options.organization && this.defaultEndpoint) {
