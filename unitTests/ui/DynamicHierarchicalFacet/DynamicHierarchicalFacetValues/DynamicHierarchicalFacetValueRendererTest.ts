@@ -2,7 +2,6 @@ import { DynamicHierarchicalFacetValue } from '../../../../src/ui/DynamicHierarc
 import { DynamicHierarchicalFacetValueRenderer } from '../../../../src/ui/DynamicHierarchicalFacet/DynamicHierarchicalFacetValues/DynamicHierarchicalFacetValueRenderer';
 import { DynamicHierarchicalFacetTestUtils } from '../DynamicHierarchicalFacetTestUtils';
 import { $$ } from '../../../../src/Core';
-import { FacetValueState } from '../../../../src/rest/Facet/FacetValueState';
 import {
   IDynamicHierarchicalFacet,
   IDynamicHierarchicalFacetValueProperties
