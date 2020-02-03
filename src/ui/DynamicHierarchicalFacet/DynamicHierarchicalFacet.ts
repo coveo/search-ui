@@ -50,6 +50,8 @@ import { Logger } from '../../misc/Logger';
  * This facet requires a [`field`]{@link DynamicHierarchicalFacet.options.field} with a special format to work correctly (see [Using the Hierarchical Facet Component](https://docs.coveo.com/en/2667)).
  *
  * @notSupportedIn salesforcefree
+ *
+ * @availablesince [January 2020 Release (v2.7968)](https://docs.coveo.com/en/3163/)
  */
 export class DynamicHierarchicalFacet extends Component implements IDynamicHierarchicalFacet {
   static ID = 'DynamicHierarchicalFacet';
@@ -262,7 +264,7 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
   public header: DynamicFacetHeader;
   public values: IDynamicHierarchicalFacetValues;
   public moreValuesAvailable = false;
-  public position: number = null;
+  public position: number;
   public dynamicFacetManager: DynamicFacetManager;
   public isDynamicFacet = true;
 
@@ -378,7 +380,7 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
     const index = findIndex(results.facets, { facetId: this.options.id });
     const facetResponse = index !== -1 ? results.facets[index] : null;
 
-    this.position = facetResponse ? index + 1 : null;
+    this.position = facetResponse ? index + 1 : undefined;
     facetResponse ? this.onNewValues(facetResponse) : this.onNoValues();
 
     this.header.hideLoading();
