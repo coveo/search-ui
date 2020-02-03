@@ -9,7 +9,7 @@ import {
 } from '../../../../src/ui/DynamicHierarchicalFacet/IDynamicHierarchicalFacet';
 
 export function DynamicHierarchicalFacetValueRendererTest() {
-  describe('DynamicHierarchicalFacetValueRendererTest', () => {
+  describe('DynamicHierarchicalFacetValueRenderer', () => {
     let facetValue: DynamicHierarchicalFacetValue;
     let facetValueRenderer: DynamicHierarchicalFacetValueRenderer;
     let facet: IDynamicHierarchicalFacet;
@@ -26,6 +26,12 @@ export function DynamicHierarchicalFacetValueRendererTest() {
       element = facetValueRenderer.render();
     }
 
+    function initializeComponentWithSelectedValue() {
+      const selectedValue = DynamicHierarchicalFacetTestUtils.createFakeFacetValue();
+      selectedValue.state = FacetValueState.selected;
+      initializeComponentWithValue(selectedValue);
+    }
+
     function getLabel() {
       return $$(element).find('.coveo-dynamic-hierarchical-facet-value-label');
     }
@@ -36,10 +42,6 @@ export function DynamicHierarchicalFacetValueRendererTest() {
 
     function getCount() {
       return $$(element).find('.coveo-dynamic-hierarchical-facet-value-count');
-    }
-
-    function getArrow() {
-      return $$(element).find('.coveo-dynamic-hierarchical-facet-value-arrow');
     }
 
     it('should render without errors', () => {
@@ -77,10 +79,6 @@ export function DynamicHierarchicalFacetValueRendererTest() {
       expect($$(getButton()).hasClass('coveo-with-space')).toBe(false);
     });
 
-    it('should not prepend an arrow', () => {
-      expect(getArrow()).toBeFalsy();
-    });
-
     it(`when clicking on the button
     should trigger the right actions`, () => {
       $$(getButton()).trigger('click');
@@ -90,66 +88,86 @@ export function DynamicHierarchicalFacetValueRendererTest() {
       expect(facet.triggerNewQuery).toHaveBeenCalled();
     });
 
-    describe('when value is selected', () => {
-      beforeEach(() => {
-        const selectedValue = DynamicHierarchicalFacetTestUtils.createFakeFacetValue();
-        selectedValue.state = FacetValueState.selected;
-        initializeComponentWithValue(selectedValue);
+    it(`when value is selected
+    button should have the class "coveo-selected"`, () => {
+      initializeComponentWithSelectedValue();
+      expect($$(getButton()).hasClass('coveo-selected')).toBe(true);
+    });
+
+    it(`when value is selected
+    button should be disabled`, () => {
+      initializeComponentWithSelectedValue();
+      expect(getButton().getAttribute('disabled')).toBeTruthy();
+    });
+
+    describe(`testing the margin ("coveo-with-space")`, () => {
+      it(`when value is not at the first level and has no children
+        button should have the class "coveo-with-space"`, () => {
+        const childValue = DynamicHierarchicalFacetTestUtils.createFakeFacetValue();
+        childValue.path = ['a', 'path'];
+        initializeComponentWithValue(childValue);
+
+        expect($$(getButton()).hasClass('coveo-with-space')).toBe(true);
       });
 
-      it('button should have the class "coveo-selected"', () => {
-        expect($$(getButton()).hasClass('coveo-selected')).toBe(true);
+      it(`when value is not at the first level and has no children, but is selected
+        button should not have the class "coveo-with-space"`, () => {
+        const childValue = DynamicHierarchicalFacetTestUtils.createFakeFacetValue();
+        childValue.path = ['a', 'path'];
+        childValue.state = FacetValueState.selected;
+        initializeComponentWithValue(childValue);
+
+        expect($$(getButton()).hasClass('coveo-with-space')).toBe(false);
       });
 
-      it('button should be disabled', () => {
-        expect(getButton().getAttribute('disabled')).toBeTruthy();
-      });
+      it(`when value is not at the first level but has children
+        button should not have the class "coveo-with-space"`, () => {
+        const childValueWithChildren = DynamicHierarchicalFacetTestUtils.createFakeFacetValue();
+        childValueWithChildren.path = ['a', 'path'];
+        childValueWithChildren.children = [
+          new DynamicHierarchicalFacetValue(DynamicHierarchicalFacetTestUtils.createFakeFacetValue(), facet)
+        ];
+        initializeComponentWithValue(childValueWithChildren);
 
-      it('should not prepend an arrow', () => {
+        expect($$(getButton()).hasClass('coveo-with-space')).toBe(false);
+      });
+    });
+
+    describe(`testing the arrow`, () => {
+      function getArrow() {
+        return $$(element).find('.coveo-dynamic-hierarchical-facet-value-arrow');
+      }
+
+      it('should not prepend an arrow by default', () => {
         expect(getArrow()).toBeFalsy();
       });
-    });
 
-    it(`when value is not at the first level and has no children
-      button should have the class "coveo-with-space"`, () => {
-      const childValue = DynamicHierarchicalFacetTestUtils.createFakeFacetValue();
-      childValue.path = ['a', 'path'];
-      initializeComponentWithValue(childValue);
-
-      expect($$(getButton()).hasClass('coveo-with-space')).toBe(true);
-    });
-
-    it(`when value is not at the first level but has children
-      button should not have the class "coveo-with-space"`, () => {
-      const childValueWithChildren = DynamicHierarchicalFacetTestUtils.createFakeFacetValue();
-      childValueWithChildren.path = ['a', 'path'];
-      childValueWithChildren.children = [
-        new DynamicHierarchicalFacetValue(DynamicHierarchicalFacetTestUtils.createFakeFacetValue(), facet)
-      ];
-      initializeComponentWithValue(childValueWithChildren);
-
-      expect($$(getButton()).hasClass('coveo-with-space')).toBe(false);
-    });
-
-    describe('when value is not at the first level and has children', () => {
-      beforeEach(() => {
-        const valueWithChildren = DynamicHierarchicalFacetTestUtils.createFakeFacetValue();
-        valueWithChildren.children = [new DynamicHierarchicalFacetValue(DynamicHierarchicalFacetTestUtils.createFakeFacetValue(), facet)];
-        initializeComponentWithValue(valueWithChildren);
-      });
-
-      it(`when facet has no selected value
-        should not prepend an arrow`, () => {
+      it(`when value is selected
+      should not prepend an arrow`, () => {
+        initializeComponentWithSelectedValue();
         expect(getArrow()).toBeFalsy();
       });
 
-      it(`when facet has a selected value, 
-        when value is not at the first level and has children
-        should prepend an arrow`, () => {
-        facet.values.selectPath(['random value']);
-        element = facetValueRenderer.render();
+      describe('when value is not at the first level and has children', () => {
+        beforeEach(() => {
+          const valueWithChildren = DynamicHierarchicalFacetTestUtils.createFakeFacetValue();
+          valueWithChildren.children = [new DynamicHierarchicalFacetValue(DynamicHierarchicalFacetTestUtils.createFakeFacetValue(), facet)];
+          initializeComponentWithValue(valueWithChildren);
+        });
 
-        expect(getArrow()).toBeTruthy();
+        it(`when facet has no selected value
+          should not prepend an arrow`, () => {
+          expect(getArrow()).toBeFalsy();
+        });
+
+        it(`when facet has a selected value, 
+          when value is not at the first level and has children
+          should prepend an arrow`, () => {
+          facet.values.selectPath(['random value']);
+          element = facetValueRenderer.render();
+
+          expect(getArrow()).toBeTruthy();
+        });
       });
     });
   });
