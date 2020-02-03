@@ -382,6 +382,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
      * - Two items must be at least 85% similar to one another to be considered duplicates.
      * - When a pair of duplicates is found, only the higher-ranked item of the two is kept in the result set.
      * - Enabling this feature can make the total result count less precise, as only the requested page of query results is submitted to duplicate filtering.
+     * - This option can also be explicitly set on the [`Tab`]{@link Tab} component. When this is the case, the `Tab` configuration prevails.
      */
     enableDuplicateFiltering: ComponentOptions.buildBooleanOption({ defaultValue: false }),
 
