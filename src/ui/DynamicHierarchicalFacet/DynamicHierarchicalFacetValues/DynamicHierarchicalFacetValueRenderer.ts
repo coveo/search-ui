@@ -57,7 +57,8 @@ export class DynamicHierarchicalFacetValueRenderer {
   }
 
   private get shouldShowWhenCollapsed() {
-    return Utils.arrayEqual(this.facetValue.path, this.facet.values.selectedPath.slice(0, -1));
+    const isParentOfTheSelectedValue = Utils.arrayEqual(this.facetValue.path, this.facet.values.selectedPath.slice(0, -1));
+    return this.facetValue.isSelected || isParentOfTheSelectedValue;
   }
 
   private selectAction() {
