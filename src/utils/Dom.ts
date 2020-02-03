@@ -129,7 +129,21 @@ export class Dom {
    */
   public empty(): void {
     while (this.el.firstChild) {
-      this.el.removeChild(this.el.firstChild);
+      this.removeChild(this.el.firstChild);
+    }
+  }
+
+  public removeChild(child: Node) {
+    const oldParent = child.parentNode;
+    try {
+      this.el.removeChild(child);
+    } catch (e) {
+      if ((e as Error).name !== 'NotFoundError') {
+        throw e;
+      }
+      if (oldParent === child.parentNode) {
+        throw e;
+      }
     }
   }
 

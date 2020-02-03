@@ -714,6 +714,26 @@ export function DomTests() {
         expect(append1.parentElement).toBeNull();
         expect(append2.parentElement).toBeNull();
       });
+
+      it('should be able to remove a child', () => {
+        const append1 = document.createElement('div');
+        const append2 = document.createElement('div');
+        el.appendChild(append1);
+        el.appendChild(append2);
+        expect(append1.parentElement).toBe(el);
+        expect(append2.parentElement).toBe(el);
+        new Dom(el).removeChild(append1);
+        expect(append1.parentElement).toBeNull();
+        expect(append2.parentElement).toBe(el);
+      });
+
+      it('should throw an error when trying to remove a child from the wrong parent', () => {
+        const append1 = document.createElement('div');
+        const append2 = document.createElement('div');
+        el.appendChild(append1);
+        append1.appendChild(append2);
+        expect(() => new Dom(el).removeChild(append2)).toThrowError();
+      });
     });
 
     describe('with jquery', () => {
