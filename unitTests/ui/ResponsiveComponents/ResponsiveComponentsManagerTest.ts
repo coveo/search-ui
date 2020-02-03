@@ -47,7 +47,7 @@ export function ResponsiveComponentsManagerTest() {
 
       it('should calls handle resize event when resize listener is called', () => {
         root.width = () => 400;
-        responsiveComponentsManager.register(responsiveComponent, root, 'foo', component, {});
+        responsiveComponentsManager.register(responsiveComponent, root, 'id', component, {});
         responsiveComponentsManager.resizeListener();
         jasmine.clock().tick(250);
         expect(handleResizeEvent).toHaveBeenCalled();
