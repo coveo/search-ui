@@ -130,5 +130,36 @@ export function AnalyticsEndpointTest() {
         response: ['foo', 'bar', 'foobar']
       });
     });
+
+    it('should renew the token when the response is a 400 with the "InvalidToken" type', done => {
+      const newToken = 'new token';
+      spyOn(endpoint.options.accessToken, 'doRenew').and.callFake(() => {
+        endpoint.endpointCaller.options.accessToken = newToken;
+        return true;
+      });
+
+      spyOn(endpoint.endpointCaller, 'call').and.callFake(() => {
+        if (endpoint.endpointCaller.options.accessToken === newToken) {
+          return Promise.resolve({
+            statusCode: 200,
+            data: { searchEventResponses: [{ visitId: 'visitid' }] }
+          });
+        }
+
+        return Promise.reject({
+          statusCode: 400,
+          data: { type: 'InvalidToken' }
+        });
+      });
+
+      const fakeSearchEvent = FakeResults.createFakeSearchEvent();
+      endpoint
+        .sendSearchEvents([fakeSearchEvent])
+        .then(() => {
+          expect(endpoint.endpointCaller.call).toHaveBeenCalledTimes(2);
+          expect(endpoint.endpointCaller.options.accessToken).toBe(newToken);
+        })
+        .then(() => done());
+    });
   });
 }
