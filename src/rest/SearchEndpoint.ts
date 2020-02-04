@@ -385,7 +385,7 @@ export class SearchEndpoint implements ISearchEndpoint {
   }
 
   /**
-   * Performs a search on the index and returns a Promise of [`IPlanResults`]{@link IPlanResults}.
+   * Gets the plan of execution of a search, without performing it.
    *
    * @param query The query to execute. Typically, the query object is built using a
    * [`QueryBuilder`]{@link QueryBuilder}.
