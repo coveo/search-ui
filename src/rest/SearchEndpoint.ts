@@ -41,6 +41,7 @@ import { BackOffRequest } from './BackOffRequest';
 import { IBackOffRequest } from 'exponential-backoff';
 import { IFacetSearchRequest } from './Facet/FacetSearchRequest';
 import { IFacetSearchResponse } from './Facet/FacetSearchResponse';
+import { IPlanResults } from './Plan';
 
 export class DefaultSearchEndpointOptions implements ISearchEndpointOptions {
   restUri: string;
@@ -382,6 +383,42 @@ export class SearchEndpoint implements ISearchEndpoint {
       return results;
     });
   }
+
+  /**
+   * Performs a search on the index and returns a Promise of [`IPlanResults`]{@link IPlanResults}.
+   *
+   * @param query The query to execute. Typically, the query object is built using a
+   * [`QueryBuilder`]{@link QueryBuilder}.
+   * @param callOptions An additional set of options to use for this call.
+   * @param callParams The options injected by the applied decorators.
+   * @returns {Promise<IPlanResults>} A Promise of plan results.
+   */
+  @path('/plan')
+  @method('POST')
+  @requestDataType('application/json')
+  @responseType('json')
+  @includeActionsHistory()
+  @includeReferrer()
+  @includeVisitorId()
+  @includeIsGuestUser()
+  public plan(query: IQuery, callOptions?: IEndpointCallOptions, callParams?: IEndpointCallParameters): Promise<IPlanResults> {
+    Assert.exists(query);
+    callParams = {
+      ...callParams,
+      requestData: {
+        ...callParams.requestData,
+        ..._.omit(query, queryParam => Utils.isNullOrUndefined(queryParam))
+      }
+    };
+
+    this.logger.info('Performing REST query PLAN', query);
+
+    return this.performOneCall<IPlanResults>(callParams, callOptions).then(results => {
+      this.logger.info('REST query successful', results, query);
+      return results;
+    });
+  }
+
   /**
    * Gets a link / URI to download a query result set to the XLSX format.
    *
