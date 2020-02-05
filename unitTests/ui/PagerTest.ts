@@ -123,7 +123,6 @@ export function PagerTest() {
 
       const anchors = $$(test.cmp.element).findAll('a.coveo-pager-list-item-text');
       expect($$(anchors[0]).text()).toBe('6');
-      expect(anchors[0].parentElement.getAttribute('tabindex')).toBe('0');
       expect($$(anchors[anchors.length - 1]).text()).toBe('10');
     });
 
@@ -136,7 +135,18 @@ export function PagerTest() {
 
       const anchors = $$(test.cmp.element).findAll('a.coveo-pager-list-item-text');
       expect($$(anchors[0]).text()).toBe('1');
-      expect(anchors[0].parentElement.getAttribute('aria-label')).toBe('Page 1');
+      expect(anchors[0].getAttribute('aria-label')).toBe('Page 1');
+    });
+
+    it('should not give any tab index to the list item', () => {
+      const builder = new QueryBuilder();
+      Simulate.query(test.env, {
+        query: builder.build(),
+        results: FakeResults.createFakeResults(100)
+      });
+
+      const anchors = $$(test.cmp.element).findAll('a.coveo-pager-list-item-text');
+      expect(anchors[0].parentElement.getAttribute('tabindex')).toBeNull();
     });
 
     it('should not reset page number on a new query if the origin is a pager', () => {

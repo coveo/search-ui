@@ -7,6 +7,9 @@
 
 .coveo-pager-list-item {
   @include pager-list-item;
+  .coveo-pager-list-item-text {
+    @include pager-list-item-button;
+  }
 }
 
 .coveo-pager-previous,

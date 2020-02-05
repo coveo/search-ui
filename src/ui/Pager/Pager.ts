@@ -254,17 +254,16 @@ export class Pager extends Component {
 
           const page = i;
           const listItem = $$('li', {
-            className: 'coveo-pager-list-item',
-            tabindex: 0
+            className: 'coveo-pager-list-item'
           }).el;
           if (page === this.currentPage) {
-            $$(listItem).addClass('coveo-active');
+            $$(listItemValue).addClass('coveo-active');
           }
 
           const clickAction = () => this.handleClickPage(page);
 
           new AccessibleButton()
-            .withElement(listItem)
+            .withElement(listItemValue)
             .withLabel(l('PageNumber', i.toString(10)))
             .withClickAction(clickAction)
             .withEnterKeyboardAction(clickAction)
