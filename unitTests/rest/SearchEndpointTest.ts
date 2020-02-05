@@ -14,7 +14,7 @@ import { AjaxError } from '../../src/rest/AjaxError';
 import _ = require('underscore');
 import { Utils } from '../../src/utils/Utils';
 import { IFacetSearchResponse } from '../../src/rest/Facet/FacetSearchResponse';
-import { IPlanResults } from '../../src/rest/Plan';
+import { IPlan } from '../../src/rest/Plan';
 
 export function SearchEndpointTest() {
   describe('SearchEndpoint', () => {
@@ -337,7 +337,7 @@ export function SearchEndpointTest() {
           );
 
           promiseSuccess
-            .then((data: IPlanResults) => {
+            .then((data: IPlan) => {
               expect(jasmine.Ajax.requests.mostRecent().responseType).toBe('json');
             })
             .catch((e: IErrorResponse) => {

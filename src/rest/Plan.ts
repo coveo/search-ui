@@ -3,7 +3,7 @@ import { ITrigger } from './Trigger';
 /**
  * Describes the plan of execution of a search
  */
-export interface IPlanResults {
+export interface IPlan {
   processingOutput: {
     triggers: ITrigger<any>[];
   };
