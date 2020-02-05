@@ -33,14 +33,6 @@ interface IComponentInitialization {
   arguments: [IResponsiveComponentConstructor, Dom, string, Component, IResponsiveComponentOptions];
 }
 
-/**
- * The ResponsiveComponentManager manages the responsiveness of the {@link ResponsiveComponents}.
- *
- * It listens to the resize event on the window. If it occurs, it will notify the {@link ResponsiveComponents}
- * that are registered on it. They can also be notified manually with {@link ResponsiveComponentManager.resizeAllComponentsManager}.
- *
- * The ResponsiveComponentManager is not instantiable with DOM and should be only used in JavaScript.
- */
 export class ResponsiveComponentsManager {
   static doExport = () => {
     exportGlobally({
@@ -64,14 +56,7 @@ export class ResponsiveComponentsManager {
   private searchInterface: SearchInterface;
   private logger: Logger;
 
-  /**
-   * Register a class and will instantiate it after the framework initialization is complete.
-   * Create a {@link ResponsiveComponentManager} if none are found on the {@param root}.
-   * @param responsiveComponentConstructor the class to register.
-   * @param root the root HTMLElement (the {@link SearchInterface}).
-   * @param ID the ID of the class.
-   * @param options the responsiveness options of the class.
-   */
+  // Register takes a class and will instantiate it after framework initialization has completed.
   public static register(
     responsiveComponentConstructor: IResponsiveComponentConstructor,
     root: Dom,
@@ -130,9 +115,6 @@ export class ResponsiveComponentsManager {
     });
   }
 
-  /**
-   * Inform all {@link ResponsiveComponentManager} that they should handle a resize.
-   */
   public static resizeAllComponentsManager(): void {
     _.each(this.componentManagers, componentManager => {
       componentManager.resizeListener();
@@ -178,13 +160,6 @@ export class ResponsiveComponentsManager {
     ResponsiveComponentsManager.componentManagers.push(this);
   }
 
-  /**
-   * Register a class and will instantiate it after the framework initialization is complete.
-   * @param responsiveComponentConstructor the class to register.
-   * @param root the root HTMLElement (the {@link SearchInterface}).
-   * @param ID the ID of the class.
-   * @param options the responsiveness options of the class.
-   */
   public register(
     responsiveComponentConstructor: IResponsiveComponentConstructor,
     root: Dom,
