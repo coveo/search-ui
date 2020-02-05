@@ -41,12 +41,14 @@ export function DynamicFacetRangeQueryControllerTest() {
     it('should send the current values', () => {
       const currentValues = facetRequest().currentValues;
       const facetValue = facetValues()[0];
-      expect(currentValues[0]).toEqual({
-        start: facetValue.start,
-        end: facetValue.end,
-        endInclusive: facetValue.endInclusive,
-        state: facetValue.state
-      });
+      expect(currentValues[0]).toEqual(
+        jasmine.objectContaining({
+          start: facetValue.start,
+          end: facetValue.end,
+          endInclusive: facetValue.endInclusive,
+          state: facetValue.state
+        })
+      );
     });
 
     describe('when there are values', () => {

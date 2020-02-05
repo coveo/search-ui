@@ -50,7 +50,6 @@ export function DynamicHierarchicalFacetValuesTest() {
           expect(testValue.displayValue).toBe(responseValue.value);
           expect(testValue.state).toBe(responseValue.state);
           expect(testValue.numberOfResults).toBe(responseValue.numberOfResults);
-          expect(testValue.preventAutoSelect).toBe(false);
           expect(testValue.moreValuesAvailable).toBe(responseValue.moreValuesAvailable);
         });
 
@@ -90,7 +89,6 @@ export function DynamicHierarchicalFacetValuesTest() {
           expect(childTestValue.displayValue).toBe(responseChildValue.value);
           expect(childTestValue.state).toBe(responseChildValue.state);
           expect(childTestValue.numberOfResults).toBe(responseChildValue.numberOfResults);
-          expect(childTestValue.preventAutoSelect).toBe(false);
           expect(childTestValue.moreValuesAvailable).toBe(responseChildValue.moreValuesAvailable);
         });
 
@@ -184,7 +182,7 @@ export function DynamicHierarchicalFacetValuesTest() {
         });
       });
 
-      describe('when there is a value selected', () => {
+      describe('when there is a value selected (single level)', () => {
         beforeEach(() => {
           facet.values.selectPath(facet.values.allFacetValues[0].path);
           listElement = facet.values.render();
@@ -194,7 +192,7 @@ export function DynamicHierarchicalFacetValuesTest() {
           expect($$(listElement).hasClass('coveo-with-space')).toBe(true);
         });
 
-        it('list does not append the "All Categories" button', () => {
+        it('list does append the "All Categories" button', () => {
           expect(getAllCategoriesElement()).toBeTruthy();
         });
 
@@ -204,9 +202,20 @@ export function DynamicHierarchicalFacetValuesTest() {
           expect(facet.header.options.clear).toHaveBeenCalled();
         });
 
+        it('the "All Categories" button should  have the class "coveo-with-space"', () => {
+          expect($$(getAllCategoriesElement()).hasClass('coveo-show-when-collapsed')).toBe(true);
+        });
+
         it('the "All Categories" button should be defined by the "clearLabel" facet option', () => {
           expect($$(getAllCategoriesElement()).text()).toBe(facet.options.clearLabel);
         });
+      });
+
+      it(`when there is a value selected (multiple level)
+      the "All Categories" button should have the class "coveo-with-space"`, () => {
+        facet.values.selectPath(['hello', 'goodbye']);
+        listElement = facet.values.render();
+        expect($$(getAllCategoriesElement()).hasClass('coveo-show-when-collapsed')).toBe(false);
       });
     });
 

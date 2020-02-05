@@ -50,6 +50,7 @@ export function DynamicHierarchicalFacetTest() {
       spyOn(test.cmp, 'putStateIntoQueryBuilder').and.callThrough();
       spyOn(test.cmp, 'putStateIntoAnalytics').and.callThrough();
       spyOn(test.cmp, 'handleQueryResults').and.callThrough();
+      spyOn(test.cmp, 'enablePreventAutoSelectionFlag').and.callThrough();
       spyOn(test.cmp.logger, 'warn').and.callThrough();
       spyOn(test.cmp.values, 'createFromResponse').and.callThrough();
       spyOn(test.cmp.values, 'render').and.callThrough();
@@ -344,6 +345,10 @@ export function DynamicHierarchicalFacetTest() {
       it('should update queryStateModel with an empty array', () => {
         testQueryStateModelValues([]);
       });
+
+      it('should prevent autoselection', () => {
+        expect(test.cmp.enablePreventAutoSelectionFlag).toHaveBeenCalled();
+      });
     });
 
     describe('when calling selectPath', () => {
@@ -627,8 +632,8 @@ export function DynamicHierarchicalFacetTest() {
           test.cmp.handleQueryResults(fakeResultsWithNoFacets());
         });
 
-        it(`facet position should be "null"`, () => {
-          expect(test.cmp.position).toBeNull();
+        it(`facet position should be "undefined"`, () => {
+          expect(test.cmp.position).toBeUndefined();
         });
 
         it(`"resetValues" should be called on the values`, () => {

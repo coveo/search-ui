@@ -27,7 +27,7 @@ import { DynamicFacetRangeQueryController } from '../../controllers/DynamicFacet
  * - [`sortCriteria`]{@link DynamicFacet.options.sortCriteria}
  *
  * @notSupportedIn salesforcefree
- * @availableSince [October 2019 Release (v2.7219)](https://docs.coveo.com/en/3084/)
+ * @availablesince [October 2019 Release (v2.7219)](https://docs.coveo.com/en/3084/)
  */
 export class DynamicFacetRange extends DynamicFacet implements IComponentBindings {
   static ID = 'DynamicFacetRange';
@@ -53,6 +53,9 @@ export class DynamicFacetRange extends DynamicFacet implements IComponentBinding
     field: ComponentOptions.buildFieldOption({ required: true, section: 'CommonOptions' }),
     /**
      * The string format to apply to the minimum and maximum value of each range displayed in the facet.
+     *
+     * See [`DynamicFacetRangeValueFormat`]{@link DynamicFacetRangeValueFormat} for the list and
+     * description of allowed formats.
      *
      * **Default:** If the [`field`]{@link DynamicFacet.options.field} contains "date", the format will be [`date`]{@link DynamicFacetRangeValueFormat.date}.
      * Else, it will be [`number`]{@link DynamicFacetRangeValueFormat.number}.

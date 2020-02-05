@@ -1,4 +1,3 @@
-import { IErrorResponse } from './EndpointCaller';
 import { Logger } from '../misc/Logger';
 import { debounce } from 'underscore';
 
@@ -23,10 +22,6 @@ export class AccessToken {
       500,
       false
     );
-  }
-
-  public isExpired(error: IErrorResponse) {
-    return error != null && error.statusCode === 419;
   }
 
   public async doRenew(onError?: (error: Error) => void): Promise<Boolean> {

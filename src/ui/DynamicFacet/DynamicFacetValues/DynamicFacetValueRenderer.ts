@@ -50,6 +50,7 @@ export class DynamicFacetValueRenderer implements IValueRenderer {
     this.toggleSelectedClass();
     this.facet.enableFreezeCurrentValuesFlag();
     this.facet.enableFreezeFacetOrderFlag();
+    this.facet.enablePreventAutoSelectionFlag();
     this.facet.scrollToTop();
     this.facet.triggerNewQuery(() => this.facetValue.logSelectActionToAnalytics());
   }

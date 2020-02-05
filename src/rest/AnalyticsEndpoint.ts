@@ -115,7 +115,7 @@ export class AnalyticsEndpoint {
       return results.data;
     } catch (error) {
       AnalyticsEndpoint.pendingRequest = null;
-      if (this.options.accessToken.isExpired(error)) {
+      if (this.isAnalyticsTokenExpired(error)) {
         const successfullyRenewed = await this.options.accessToken.doRenew();
         if (successfullyRenewed) {
           return this.sendToService(data, path, paramName);
@@ -124,6 +124,10 @@ export class AnalyticsEndpoint {
 
       throw error;
     }
+  }
+
+  private isAnalyticsTokenExpired(error: IErrorResponse) {
+    return error != null && error.statusCode === 400 && error.data && error.data.type === 'InvalidToken';
   }
 
   private executeRequest(
