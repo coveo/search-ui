@@ -632,8 +632,8 @@ export function DynamicHierarchicalFacetTest() {
           test.cmp.handleQueryResults(fakeResultsWithNoFacets());
         });
 
-        it(`facet position should be "null"`, () => {
-          expect(test.cmp.position).toBeNull();
+        it(`facet position should be "undefined"`, () => {
+          expect(test.cmp.position).toBeUndefined();
         });
 
         it(`"resetValues" should be called on the values`, () => {

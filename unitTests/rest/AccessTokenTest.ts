@@ -9,14 +9,6 @@ export function AccessTokenTest() {
       token = new AccessToken('el accesso tokeno');
     });
 
-    it('should correctly detect an expired status code', () => {
-      expect(token.isExpired({ statusCode: 419 })).toBeTruthy();
-    });
-
-    it('should correctly detect a status code that is not expired', () => {
-      expect(token.isExpired({ statusCode: 500 })).toBeFalsy();
-    });
-
     it('should properly return that the renew was not successful if there is no renew function', async done => {
       const renewSuccessful = await token.doRenew();
       expect(renewSuccessful).toBeFalsy();

@@ -148,15 +148,14 @@ export class DynamicHierarchicalFacetValues implements IDynamicHierarchicalFacet
   }
 
   private prependAllCategories() {
-    const clear = $$(
-      'li',
-      {},
-      $$(
-        'button',
-        { className: 'coveo-dynamic-hierarchical-facet-all', title: this.facet.options.clearLabel },
-        this.facet.options.clearLabel
-      )
+    const clearButton = $$(
+      'button',
+      { className: 'coveo-dynamic-hierarchical-facet-all', title: this.facet.options.clearLabel },
+      this.facet.options.clearLabel
     );
+    clearButton.toggleClass('coveo-show-when-collapsed', this.facet.values.selectedPath.length === 1);
+
+    const clear = $$('li', {}, clearButton);
     clear.on('click', () => this.facet.header.options.clear());
     $$(this.list).prepend(clear.el);
   }

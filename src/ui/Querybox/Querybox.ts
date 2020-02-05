@@ -152,84 +152,48 @@ export class Querybox extends Component {
 
     /**
      * Whether to convert a basic expression containing at least a certain number of keywords (see the
-     * [`partialMatchKeywords`]{@link Querybox.options.partialMatchKeywords} option) to a *partial match expression*, so
+     * [`partialMatchKeywords`]{@link Querybox.options.partialMatchKeywords} option) to *partial match expression*, so
      * that items containing at least a certain number of those keywords (see the
      * [`partialMatchThreshold`]{@link Querybox.options.partialMatchThreshold} option) will match the expression.
      *
      * **Notes:**
+     * - Only the basic expression of the query (see [`q`]{@link q}) can be converted to a partial match expression.
+     * - When the [`enableQuerySyntax`]{@link Querybox.options.enableQuerySyntax} option is set to `true`, this feature has no effect if the basic expression contains advanced query syntax (field expressions, operators, etc.).
      *
-     * > - Only the basic expression of the query (see [`q`]{@link q}) can be converted to a partial match expression.
-     * > - When the [`enableQuerySyntax`]{@link Querybox.options.enableQuerySyntax} option is set to `true`, this
-     * > feature has no effect on a basic expression containing query syntax (field expressions, operators, etc.).
-     *
-     * **Example:**
-     *
-     * > With the following markup configuration, if a basic expression contains at least 4 keywords, items containing
-     * > at least 75% of those keywords (round up) will match the query.
-     * > ```html
-     * > <div class='CoveoQuerybox' data-enable-partial-match='true' data-partial-match-keywords='4' data-partial-match-threshold='75%'></div>
-     * > ```
-     * > For instance, if the basic expression is `Coveo custom component configuration help`, items containing
-     * > all 5 of those keywords, or 4 of them (75% of 5 rounded up) will match the query.
-     *
-     * Default value is `false`, which implies that an item must contain all of the basic expression keywords to match
-     * the query.
      * @notSupportedIn salesforcefree
      */
     enablePartialMatch: ComponentOptions.buildBooleanOption({ defaultValue: false }),
 
     /**
-     * The minimum number of keywords that need to be present in a basic expression to convert it to a partial match
-     * expression.
+     * The minimum number of keywords that need to be present in the basic expression to convert it to a partial match expression.
      *
      * See also the [`partialMatchThreshold`]{@link Querybox.options.partialMatchThreshold} option.
      *
      * **Notes:**
-     * > - This option has no meaning unless the [`enablePartialMatch`]{@link Querybox.options.enablePartialMatch}
-     * > option is set to `true`.
-     * > - Repeated keywords in a basic expression count as a single keyword.
-     * > - Thesaurus expansions in a basic expression count towards the `partialMatchKeywords` count.
-     * > - Stemming expansions **do not** count towards the `partialMatchKeywords` count.
      *
-     * **Example:**
-     * > If the `partialMatchKeywords` value is `7`, the basic expression will have to contain at least 7 keywords
-     * > to be converted to a partial match expression.
+     * - Repeated keywords count as a single keyword.
+     * - Thesaurus expansions count towards the `partialMatchKeywords` count.
+     * - Stemming expansions **do not** count towards the `partialMatchKeywords` count.
      *
-     * Default value is `5`.
      * @notSupportedIn salesforcefree
      */
     partialMatchKeywords: ComponentOptions.buildNumberOption({ defaultValue: 5, min: 1, depend: 'enablePartialMatch' }),
 
     /**
-     * An absolute or relative value indicating the minimum number (rounded up) of partial match expression keywords an
-     * item must contain to match the expression.
+     * An absolute or relative value indicating the minimum number of partial match expression keywords an item must contain to match the expression.
      *
      * See also the [`partialMatchKeywords`]{@link Querybox.options.partialMatchKeywords} option.
      *
      * **Notes:**
-     * > - This option has no meaning unless the [`enablePartialMatch`]{@link Querybox.options.enablePartialMatch}
-     * > option is set to `true`.
-     * > - A keyword and its stemming expansions count as a single keyword when evaluating whether an item meets the
-     * > `partialMatchThreshold`.
+     * - A keyword and its stemming expansions count as a single keyword when evaluating whether an item meets the `partialMatchThreshold`.
+     * - When a relative `partialMatchThreshold` does not yield a whole integer, the fractional part is truncated (e.g., `3.6` becomes `3`).
      *
-     * **Examples:**
-     * > If the `partialMatchThreshold` value is `50%` and the partial match expression contains exactly 9 keywords,
-     * > items will have to contain at least 5 of those keywords to match the query (50% of 9, rounded up).
-     *
-     * > With the same configuration, if the partial match expression contains exactly 12 keywords, items will have to
-     * > contain at least 6 of those keywords to match the query (50% of 12).
-     *
-     * > If the `partialMatchThreshold` value is `2`, items will always have to contain at least 2 of the partial match
-     * > expression keywords to match the query, no matter how many keywords the partial match expression actually
-     * > contains.
-     *
-     * Default value is `50%`.
      * @notSupportedIn salesforcefree
      */
     partialMatchThreshold: ComponentOptions.buildStringOption({ defaultValue: '50%', depend: 'enablePartialMatch' }),
 
     /**
-     * Specifies whether to trigger a query when clearing the `Querybox`.
+     * Whether to trigger a query when clearing the `Querybox`.
      *
      * Default value is `false`.
      */
