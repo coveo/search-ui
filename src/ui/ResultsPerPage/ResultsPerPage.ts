@@ -236,7 +236,7 @@ export class ResultsPerPage extends Component {
       }).el;
 
       const listItemButton = $$(
-        'a',
+        'div',
         {
           className: 'coveo-results-per-page-list-item-text'
         },
