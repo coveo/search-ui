@@ -61,8 +61,8 @@ export function PrintableUriTest() {
         '<parent name="Generator became sentient and refuses to cut power"`' +
         ' uri="https://na17.salesforce.com/kA0o00000003Wpk" /><parent name="un autre test" uri="http//:google.ca" /></parents>';
       test = Mock.advancedResultComponentSetup<PrintableUri>(PrintableUri, fakeResult, undefined);
-      expect($$(test.cmp.element).findAll('.CoveoResultLink.coveo-printable-uri-part')[0].innerText).toEqual('Organization');
-      expect($$(test.cmp.element).findAll('.CoveoResultLink.coveo-printable-uri-part')[1].innerText).toEqual('Technical_Article__ka');
+      expect($$(test.cmp.element).findAll('.coveo-printable-uri-part')[0].innerText).toEqual('Organization');
+      expect($$(test.cmp.element).findAll('.coveo-printable-uri-part')[1].innerText).toEqual('Technical_Article__ka');
     });
 
     it('should add the list role to its element', () => {
