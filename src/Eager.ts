@@ -168,9 +168,6 @@ quickviewRegisterFields();
 import { Recommendation } from './ui/Recommendation/Recommendation';
 Recommendation.doExport();
 
-import { ResponsiveComponentsManager } from './Core';
-ResponsiveComponentsManager.doExport();
-
 import { ResultAttachments } from './ui/ResultAttachments/ResultAttachments';
 ResultAttachments.doExport();
 

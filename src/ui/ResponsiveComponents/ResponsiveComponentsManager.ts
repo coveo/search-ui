@@ -8,7 +8,6 @@ import { QueryEvents } from '../../events/QueryEvents';
 import { Logger } from '../../misc/Logger';
 import { DeviceUtils } from '../../utils/DeviceUtils';
 import { debounce } from 'underscore';
-import { exportGlobally } from '../../GlobalExports';
 
 export interface IResponsiveComponentOptions {
   enableResponsiveMode?: boolean;
@@ -34,12 +33,6 @@ interface IComponentInitialization {
 }
 
 export class ResponsiveComponentsManager {
-  static doExport = () => {
-    exportGlobally({
-      ResponsiveComponentsManager: ResponsiveComponentsManager
-    });
-  };
-
   public static DROPDOWN_HEADER_WRAPPER_CSS_CLASS = 'coveo-dropdown-header-wrapper';
 
   private static componentManagers: ResponsiveComponentsManager[] = [];
