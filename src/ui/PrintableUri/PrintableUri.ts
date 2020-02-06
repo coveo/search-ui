@@ -53,6 +53,7 @@ export class PrintableUri extends Component {
     this.options = ComponentOptions.initComponentOptions(element, PrintableUri, options);
     this.options = _.extend({}, this.options, this.componentOptionsModel.get(ComponentOptionsModel.attributesEnum.resultLink));
     this.renderUri(this.element, this.result);
+    this.addAccessibilityAttributes();
   }
 
   /**
@@ -89,14 +90,14 @@ export class PrintableUri extends Component {
     } else if (this.options.titleTemplate) {
       const link = new ResultLink(this.buildElementForResultLink(result.printableUri), this.options, this.bindings, this.result);
       this.links.push(link);
-      this.element.appendChild(link.element);
+      this.element.appendChild(this.makeLinkAccessible(link.element));
     } else {
       this.renderShortenedUri();
     }
   }
 
   private buildSeparator(): HTMLElement {
-    const separator = $$('span', { className: 'coveo-printable-uri-separator' }, ' > ');
+    const separator = $$('span', { className: 'coveo-printable-uri-separator', role: 'separator' }, ' > ');
     return separator.el;
   }
 
@@ -127,7 +128,7 @@ export class PrintableUri extends Component {
       const token = this.buildHtmlToken(parent.getAttribute('name'), parent.getAttribute('uri'));
       tokens.push(token);
 
-      element.appendChild(token);
+      element.appendChild(this.makeLinkAccessible(token));
     }
   }
 
@@ -150,12 +151,23 @@ export class PrintableUri extends Component {
     });
     const link = new ResultLink(this.buildElementForResultLink(this.result.printableUri), this.options, this.bindings, resultPart);
     this.links.push(link);
-    this.element.appendChild(link.element);
+    this.element.appendChild(this.makeLinkAccessible(link.element));
+  }
+
+  private makeLinkAccessible(link: HTMLElement) {
+    return $$(
+      'span',
+      {
+        className: 'coveo-printable-uri-part',
+        role: 'listitem'
+      },
+      link
+    ).el;
   }
 
   private buildElementForResultLink(title: string): HTMLElement {
     return $$('a', {
-      className: 'CoveoResultLink coveo-printable-uri-part',
+      className: 'CoveoResultLink',
       title
     }).el;
   }
@@ -167,6 +179,10 @@ export class PrintableUri extends Component {
       this.result.phrasesToHighlight,
       new DefaultStreamHighlightOptions()
     );
+  }
+
+  private addAccessibilityAttributes() {
+    this.element.setAttribute('role', 'list');
   }
 }
 
