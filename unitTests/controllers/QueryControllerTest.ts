@@ -1,4 +1,4 @@
-import { QueryController } from '../../src/controllers/QueryController';
+import { QueryController, IQueryOptions } from '../../src/controllers/QueryController';
 import { IBuildingQueryEventArgs, QueryEvents } from '../../src/events/QueryEvents';
 import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
 import { $$ } from '../../src/utils/Dom';
@@ -22,6 +22,16 @@ export function QueryControllerTest() {
     afterEach(() => {
       test = null;
     });
+
+    function defaultOptions(): IQueryOptions {
+      return {
+        searchAsYouType: false,
+        beforeExecuteQuery: () => {},
+        cancel: false,
+        logInActionsHistory: false,
+        shouldRedirectStandaloneSearchbox: true
+      };
+    }
 
     it('should correctly raise errors from the endpoint', done => {
       const spy = <jasmine.Spy>test.env.searchEndpoint.search;
@@ -156,7 +166,14 @@ export function QueryControllerTest() {
     });
 
     describe('trigger query events', () => {
-      it('should trigger newQuery', done => {
+      it('executeQuery should call createQueryBuilder', () => {
+        spyOn(test.cmp, 'createQueryBuilder').and.callThrough();
+        test.cmp.executeQuery();
+
+        expect(test.cmp.createQueryBuilder).toHaveBeenCalled();
+      });
+
+      it('executeQuery should trigger newQuery', done => {
         const spy = jasmine.createSpy('spy');
         $$(test.env.root).on('newQuery', spy);
         const search = <jasmine.Spy>test.env.searchEndpoint.search;
@@ -180,7 +197,7 @@ export function QueryControllerTest() {
         }, 10);
       });
 
-      it('should trigger buildingQuery', done => {
+      it('createQueryBuilder should trigger buildingQuery', done => {
         const spy = jasmine.createSpy('spy');
         $$(test.env.root).on('buildingQuery', spy);
         const search = <jasmine.Spy>test.env.searchEndpoint.search;
@@ -190,7 +207,7 @@ export function QueryControllerTest() {
           })
         );
 
-        test.cmp.executeQuery();
+        test.cmp.createQueryBuilder(defaultOptions());
         setTimeout(() => {
           expect(spy).toHaveBeenCalledWith(
             jasmine.any(Object),
@@ -204,7 +221,7 @@ export function QueryControllerTest() {
         }, 10);
       });
 
-      it('should trigger doneBuildingQuery', done => {
+      it('createQueryBuilder should trigger doneBuildingQuery', done => {
         const spy = jasmine.createSpy('spy');
         $$(test.env.root).on('doneBuildingQuery', spy);
         const search = <jasmine.Spy>test.env.searchEndpoint.search;
@@ -213,7 +230,7 @@ export function QueryControllerTest() {
             resolve(FakeResults.createFakeResults());
           })
         );
-        test.cmp.executeQuery();
+        test.cmp.createQueryBuilder(defaultOptions());
         setTimeout(() => {
           expect(spy).toHaveBeenCalledWith(
             jasmine.any(Object),
@@ -227,7 +244,7 @@ export function QueryControllerTest() {
         }, 10);
       });
 
-      it('should trigger querySuccess', done => {
+      it('executeQuery should trigger querySuccess', done => {
         const spy = jasmine.createSpy('spy');
         $$(test.env.root).on('querySuccess', spy);
         const search = <jasmine.Spy>test.env.searchEndpoint.search;
@@ -270,7 +287,7 @@ export function QueryControllerTest() {
         done();
       });
 
-      it('should trigger preprocessResults', done => {
+      it('executeQuery should trigger preprocessResults', done => {
         const spy = jasmine.createSpy('spy');
         $$(test.env.root).on('preprocessResults', spy);
         const search = <jasmine.Spy>test.env.searchEndpoint.search;
@@ -296,7 +313,7 @@ export function QueryControllerTest() {
         }, 10);
       });
 
-      it('should trigger noResults', done => {
+      it('executeQuery should trigger noResults', done => {
         const spy = jasmine.createSpy('spy');
         $$(test.env.root).on('noResults', spy);
         const search = <jasmine.Spy>test.env.searchEndpoint.search;
@@ -323,7 +340,7 @@ export function QueryControllerTest() {
         }, 10);
       });
 
-      it('should cancel the query if set during an event', () => {
+      it('executeQuery should cancel the query if set during an event', () => {
         $$(test.env.root).on('newQuery', (e, args) => {
           args.cancel = true;
         });
