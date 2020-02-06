@@ -5,6 +5,7 @@ import { l } from '../Test';
 
 export function QuickviewDocumentIframeTest() {
   describe('QuickviewDocumentIframe', () => {
+    const title = 'abcdef';
     let quickviewIframe: QuickviewDocumentIframe;
 
     beforeEach(() => {
@@ -73,13 +74,19 @@ export function QuickviewDocumentIframeTest() {
         });
 
         it('should render the content of the document', async done => {
-          await quickviewIframe.render(htmlDocument);
+          await quickviewIframe.render(htmlDocument, title);
           expect(quickviewIframe.body.textContent).toContain('hello world');
           done();
         });
 
+        it('should render the given title', async done => {
+          await quickviewIframe.render(htmlDocument, title);
+          expect(quickviewIframe.iframeHTMLElement.title).toEqual(title);
+          done();
+        });
+
         it('should add additional styling in the header of the document', async done => {
-          await quickviewIframe.render(htmlDocument);
+          await quickviewIframe.render(htmlDocument, title);
           expect(quickviewIframe.document.head.children.length).toBeGreaterThan(0);
           done();
         });
@@ -88,13 +95,13 @@ export function QuickviewDocumentIframeTest() {
           const link = $$('a', { href: 'the internets.com' }).el;
           htmlDocument.body.appendChild(link);
 
-          await quickviewIframe.render(htmlDocument);
+          await quickviewIframe.render(htmlDocument, title);
           expect(link.getAttribute('target')).toBe('_top');
           done();
         });
 
         it('should resolve with the iframe element when the document is done rendering', async done => {
-          const resolved = await quickviewIframe.render(htmlDocument);
+          const resolved = await quickviewIframe.render(htmlDocument, title);
           expect(resolved).toBe(quickviewIframe.iframeHTMLElement);
           done();
         });
@@ -102,7 +109,7 @@ export function QuickviewDocumentIframeTest() {
         it('should not do anything if the users closes the quickview before rendering the document', async done => {
           quickviewIframe.el.remove();
           try {
-            await quickviewIframe.render(htmlDocument);
+            await quickviewIframe.render(htmlDocument, title);
           } catch (err) {
             expect(err).toBeNull();
             done();
@@ -110,7 +117,7 @@ export function QuickviewDocumentIframeTest() {
         });
 
         it('should detect old quickview document', async done => {
-          await quickviewIframe.render(htmlDocument);
+          await quickviewIframe.render(htmlDocument, title);
           expect(quickviewIframe.isNewQuickviewDocument()).toBeFalsy();
           done();
         });
@@ -122,7 +129,7 @@ export function QuickviewDocumentIframeTest() {
           });
           htmlDocument.head.appendChild(meta.el);
 
-          await quickviewIframe.render(htmlDocument);
+          await quickviewIframe.render(htmlDocument, title);
           expect(quickviewIframe.isNewQuickviewDocument()).toBeTruthy();
           done();
         });
