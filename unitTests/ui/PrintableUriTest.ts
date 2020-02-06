@@ -6,6 +6,26 @@ import { $$ } from '../../src/utils/Dom';
 import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
 import { FakeResults } from '../Fake';
 
+interface IParent {
+  name: string;
+  uri: string;
+}
+
+function generateParentsXMLFromList(parents: IParent[]) {
+  return `<?xml version="1.0" encoding="utf-16"?><parents>${parents
+    .map(parent => `<parent name="${parent.name}" uri="${parent.uri}"/>`)
+    .join('')}</parents>`;
+}
+
+const parents: IParent[] = [
+  { name: 'All resources', uri: 'somewebsiteroot.com' },
+  { name: 'Media', uri: 'somewebsiteroot.com/media' },
+  { name: 'Videos', uri: 'somewebsiteroot.com/media-videos' },
+  { name: 'Donut videos', uri: 'somewebsiteroot.com/donuts' }
+];
+
+const parentsXml = generateParentsXMLFromList(parents);
+
 export function PrintableUriTest() {
   describe('PrintableUri', function() {
     let test: Mock.IBasicComponentSetup<PrintableUri>;
@@ -41,8 +61,36 @@ export function PrintableUriTest() {
         '<parent name="Generator became sentient and refuses to cut power"`' +
         ' uri="https://na17.salesforce.com/kA0o00000003Wpk" /><parent name="un autre test" uri="http//:google.ca" /></parents>';
       test = Mock.advancedResultComponentSetup<PrintableUri>(PrintableUri, fakeResult, undefined);
-      expect($$(test.cmp.element).findAll('.CoveoResultLink.coveo-printable-uri-part')[0].innerText).toEqual('Organization');
-      expect($$(test.cmp.element).findAll('.CoveoResultLink.coveo-printable-uri-part')[1].innerText).toEqual('Technical_Article__ka');
+      expect($$(test.cmp.element).findAll('.coveo-printable-uri-part')[0].innerText).toEqual('Organization');
+      expect($$(test.cmp.element).findAll('.coveo-printable-uri-part')[1].innerText).toEqual('Technical_Article__ka');
+    });
+
+    it('should add the list role to its element', () => {
+      test = Mock.advancedResultComponentSetup<PrintableUri>(PrintableUri, fakeResult, undefined);
+      expect(test.cmp.element.getAttribute('role')).toEqual('list');
+    });
+
+    it('should seperate every parent element with a separator', () => {
+      fakeResult.raw.parents = parentsXml;
+      test = Mock.advancedResultComponentSetup<PrintableUri>(PrintableUri, fakeResult, undefined);
+      const elements = $$(test.cmp.element).children();
+      for (let i = 0; i < parents.length * 2 - 1; i++) {
+        expect(elements[i].className.split(' ')).toEqual(i % 2 === 0 ? ['coveo-printable-uri-part'] : ['coveo-printable-uri-separator']);
+      }
+    });
+
+    it('should give the listitem role to every parent', () => {
+      fakeResult.raw.parents = parentsXml;
+      test = Mock.advancedResultComponentSetup<PrintableUri>(PrintableUri, fakeResult, undefined);
+      const elements = $$(test.cmp.element).findAll('.coveo-printable-uri-part');
+      elements.forEach(element => expect(element.getAttribute('role')).toEqual('listitem'));
+    });
+
+    it('should give the separator role to every separator', () => {
+      fakeResult.raw.parents = parentsXml;
+      test = Mock.advancedResultComponentSetup<PrintableUri>(PrintableUri, fakeResult, undefined);
+      const elements = $$(test.cmp.element).findAll('.coveo-printable-uri-separator');
+      elements.forEach(element => expect(element.getAttribute('role')).toEqual('separator'));
     });
 
     it('should shorten the printable uri correctly if the title is not a uri', () => {

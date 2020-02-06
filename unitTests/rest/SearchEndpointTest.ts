@@ -14,7 +14,7 @@ import { AjaxError } from '../../src/rest/AjaxError';
 import _ = require('underscore');
 import { Utils } from '../../src/utils/Utils';
 import { IFacetSearchResponse } from '../../src/rest/Facet/FacetSearchResponse';
-import { IPlanResults } from '../../src/rest/Plan';
+import { IPlan } from '../../src/rest/Plan';
 
 export function SearchEndpointTest() {
   describe('SearchEndpoint', () => {
@@ -311,45 +311,66 @@ export function SearchEndpointTest() {
           });
         });
 
-        it('for plan', done => {
-          const qbuilder = new QueryBuilder();
-          qbuilder.expression.add('batman');
-          qbuilder.numberOfResults = 153;
-          qbuilder.enableCollaborativeRating = true;
-          const promiseSuccess = ep.plan(qbuilder.build());
+        describe('for /plan', () => {
+          let qbuilder: QueryBuilder;
+          let promise: Promise<IPlan>;
+          beforeEach(() => {
+            qbuilder = new QueryBuilder();
+            qbuilder.expression.add('batman');
+            qbuilder.numberOfResults = 153;
+            qbuilder.enableCollaborativeRating = true;
+            promise = ep.plan(qbuilder.build());
+          });
 
-          expect(jasmine.Ajax.requests.mostRecent().url).toContain(ep.getBaseUri() + '/plan?');
-          expect(jasmine.Ajax.requests.mostRecent().url).toContain('organizationId=myOrgId');
-          expect(jasmine.Ajax.requests.mostRecent().url).toContain('potatoe=mashed');
-          expect(JSON.parse(jasmine.Ajax.requests.mostRecent().params)).toEqual(
-            jasmine.objectContaining({
-              q: 'batman',
-              numberOfResults: 153,
-              enableCollaborativeRating: true,
-              actionsHistory: []
-            })
-          );
-          expect(jasmine.Ajax.requests.mostRecent().method).toBe('POST');
-          expect(jasmine.Ajax.requests.mostRecent().requestHeaders).toEqual(
-            jasmine.objectContaining({
-              'Content-Type': 'application/json; charset="UTF-8"'
-            })
-          );
+          function mockResponse(done) {
+            promise.then(() => done());
 
-          promiseSuccess
-            .then((data: IPlanResults) => {
-              expect(jasmine.Ajax.requests.mostRecent().responseType).toBe('json');
-            })
-            .catch((e: IErrorResponse) => {
-              fail(e);
-              return e;
-            })
-            .then(() => done());
+            jasmine.Ajax.requests.mostRecent().respondWith({
+              status: 200,
+              responseText: JSON.stringify({})
+            });
+          }
 
-          jasmine.Ajax.requests.mostRecent().respondWith({
-            status: 200,
-            responseText: JSON.stringify({}),
-            responseType: 'json'
+          it('calls the right endpoint', done => {
+            expect(jasmine.Ajax.requests.mostRecent().url).toContain(ep.getBaseUri() + '/plan?');
+
+            mockResponse(done);
+          });
+
+          it('calls the right HTTP method', done => {
+            expect(jasmine.Ajax.requests.mostRecent().method).toBe('POST');
+
+            mockResponse(done);
+          });
+
+          it('contains the right url parameters', done => {
+            expect(jasmine.Ajax.requests.mostRecent().url).toContain('organizationId=myOrgId');
+            expect(jasmine.Ajax.requests.mostRecent().url).toContain('potatoe=mashed');
+
+            mockResponse(done);
+          });
+
+          it('contains the right request headers', done => {
+            expect(jasmine.Ajax.requests.mostRecent().requestHeaders).toEqual(
+              jasmine.objectContaining({
+                'Content-Type': 'application/json; charset="UTF-8"'
+              })
+            );
+
+            mockResponse(done);
+          });
+
+          it('contains the right params', done => {
+            expect(JSON.parse(jasmine.Ajax.requests.mostRecent().params)).toEqual(
+              jasmine.objectContaining({
+                q: 'batman',
+                numberOfResults: 153,
+                enableCollaborativeRating: true,
+                actionsHistory: []
+              })
+            );
+
+            mockResponse(done);
           });
         });
 

@@ -41,7 +41,7 @@ import { BackOffRequest } from './BackOffRequest';
 import { IBackOffRequest } from 'exponential-backoff';
 import { IFacetSearchRequest } from './Facet/FacetSearchRequest';
 import { IFacetSearchResponse } from './Facet/FacetSearchResponse';
-import { IPlanResults } from './Plan';
+import { IPlan } from './Plan';
 
 export class DefaultSearchEndpointOptions implements ISearchEndpointOptions {
   restUri: string;
@@ -323,6 +323,23 @@ export class SearchEndpoint implements ISearchEndpoint {
     return this.caller.useJsonp;
   }
 
+  @includeActionsHistory()
+  @includeReferrer()
+  @includeVisitorId()
+  @includeIsGuestUser()
+  private buildCompleteCall(request: any, callOptions?: IEndpointCallOptions, callParams?: IEndpointCallParameters) {
+    Assert.exists(request);
+    callParams = {
+      ...callParams,
+      requestData: {
+        ...callParams.requestData,
+        ..._.omit(request, queryParam => Utils.isNullOrUndefined(queryParam))
+      }
+    };
+
+    return { options: callOptions, params: callParams };
+  }
+
   /**
    * Performs a search on the index and returns a Promise of [`IQueryResults`]{@link IQueryResults}.
    *
@@ -337,25 +354,13 @@ export class SearchEndpoint implements ISearchEndpoint {
   @path('/')
   @method('POST')
   @responseType('text')
-  @includeActionsHistory()
-  @includeReferrer()
-  @includeVisitorId()
-  @includeIsGuestUser()
   public search(query: IQuery, callOptions?: IEndpointCallOptions, callParams?: IEndpointCallParameters): Promise<IQueryResults> {
-    Assert.exists(query);
-    callParams = {
-      ...callParams,
-      requestData: {
-        ...callParams.requestData,
-        ..._.omit(query, queryParam => Utils.isNullOrUndefined(queryParam))
-      }
-    };
-
+    const call = this.buildCompleteCall(query, callOptions, callParams);
     this.logger.info('Performing REST query', query);
 
     const start = new Date();
 
-    return this.performOneCall<IQueryResults>(callParams, callOptions).then(results => {
+    return this.performOneCall<IQueryResults>(call.params, call.options).then(results => {
       this.logger.info('REST query successful', results, query);
 
       // Version check
@@ -391,29 +396,17 @@ export class SearchEndpoint implements ISearchEndpoint {
    * [`QueryBuilder`]{@link QueryBuilder}.
    * @param callOptions An additional set of options to use for this call.
    * @param callParams The options injected by the applied decorators.
-   * @returns {Promise<IPlanResults>} A Promise of plan results.
+   * @returns {Promise<IPlan>} A Promise of plan results.
    */
   @path('/plan')
   @method('POST')
   @requestDataType('application/json')
   @responseType('json')
-  @includeActionsHistory()
-  @includeReferrer()
-  @includeVisitorId()
-  @includeIsGuestUser()
-  public plan(query: IQuery, callOptions?: IEndpointCallOptions, callParams?: IEndpointCallParameters): Promise<IPlanResults> {
-    Assert.exists(query);
-    callParams = {
-      ...callParams,
-      requestData: {
-        ...callParams.requestData,
-        ..._.omit(query, queryParam => Utils.isNullOrUndefined(queryParam))
-      }
-    };
-
+  public plan(query: IQuery, callOptions?: IEndpointCallOptions, callParams?: IEndpointCallParameters): Promise<IPlan> {
+    const call = this.buildCompleteCall(query, callOptions, callParams);
     this.logger.info('Performing REST query PLAN', query);
 
-    return this.performOneCall<IPlanResults>(callParams, callOptions).then(results => {
+    return this.performOneCall<IPlan>(call.params, call.options).then(results => {
       this.logger.info('REST query successful', results, query);
       return results;
     });
@@ -820,26 +813,15 @@ export class SearchEndpoint implements ISearchEndpoint {
   @path('/querySuggest')
   @method('POST')
   @responseType('text')
-  @includeActionsHistory()
-  @includeReferrer()
-  @includeVisitorId()
-  @includeIsGuestUser()
   public getQuerySuggest(
     request: IQuerySuggestRequest,
     callOptions?: IEndpointCallOptions,
     callParams?: IEndpointCallParameters
   ): Promise<IQuerySuggestResponse> {
-    callParams = {
-      ...callParams,
-      requestData: {
-        ...callParams.requestData,
-        ..._.omit(request, parameter => Utils.isNullOrUndefined(parameter))
-      }
-    };
-
+    const call = this.buildCompleteCall(request, callOptions, callParams);
     this.logger.info('Performing REST query to get query suggest', request);
 
-    return this.performOneCall<IQuerySuggestResponse>(callParams, callOptions).then(response => {
+    return this.performOneCall<IQuerySuggestResponse>(call.params, call.options).then(response => {
       this.logger.info('REST query successful', response);
       return response;
     });
@@ -875,17 +857,10 @@ export class SearchEndpoint implements ISearchEndpoint {
     callOptions?: IEndpointCallOptions,
     callParams?: IEndpointCallParameters
   ): Promise<IFacetSearchResponse> {
-    callParams = {
-      ...callParams,
-      requestData: {
-        ...callParams.requestData,
-        ..._.omit(request, parameter => Utils.isNullOrUndefined(parameter))
-      }
-    };
-
+    const call = this.buildCompleteCall(request, callOptions, callParams);
     this.logger.info('Performing REST query to get facet search results', request);
 
-    const response = await this.performOneCall<IFacetSearchResponse>(callParams, callOptions);
+    const response = await this.performOneCall<IFacetSearchResponse>(call.params, call.options);
     this.logger.info('REST query successful', response);
     return response;
   }
