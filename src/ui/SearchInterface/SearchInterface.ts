@@ -54,7 +54,6 @@ import { FacetValueStateHandler } from './FacetValueStateHandler';
 import RelevanceInspectorModule = require('../RelevanceInspector/RelevanceInspector');
 import { ComponentsTypes } from '../../utils/ComponentsTypes';
 import { ScrollRestorer } from './ScrollRestorer';
-import { ExecutionPlan } from '../../rest/Plan';
 
 export interface ISearchInterfaceOptions {
   enableHistory?: boolean;

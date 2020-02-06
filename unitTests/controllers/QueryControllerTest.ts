@@ -5,6 +5,7 @@ import { $$ } from '../../src/utils/Dom';
 import { FakeResults } from '../Fake';
 import * as Mock from '../MockEnvironment';
 import { Simulate } from '../Simulate';
+import { ExecutionPlan } from '../../src/rest/Plan';
 
 export function QueryControllerTest() {
   describe('QueryController', () => {
@@ -328,6 +329,50 @@ export function QueryControllerTest() {
         });
         test.cmp.executeQuery();
         expect(test.env.searchEndpoint.search).not.toHaveBeenCalled();
+      });
+    });
+
+    describe('when calling fetchQueryExecutionPlan', () => {
+      it('should call createQueryBuilder', () => {
+        spyOn(test.cmp, 'createQueryBuilder').and.callThrough();
+        test.cmp.fetchQueryExecutionPlan();
+
+        expect(test.cmp.createQueryBuilder).toHaveBeenCalled();
+      });
+
+      it('should call plan on the endpoint', async done => {
+        await test.cmp.fetchQueryExecutionPlan();
+        expect(test.env.searchEndpoint.plan).toHaveBeenCalled();
+        done();
+      });
+
+      it(`when successful
+        shoud return an ExecutionPlan`, async done => {
+        const planSpy = <jasmine.Spy>test.env.searchEndpoint.plan;
+        const fakeExecutionPlan = new ExecutionPlan(FakeResults.createFakePlanResponse());
+        planSpy.and.returnValue(
+          new Promise((resolve, reject) => {
+            resolve(fakeExecutionPlan);
+          })
+        );
+
+        const newPlan = await test.cmp.fetchQueryExecutionPlan();
+        expect(newPlan).toBe(fakeExecutionPlan);
+        done();
+      });
+
+      it(`when unsuccessful
+        shoud return null`, async done => {
+        const planSpy = <jasmine.Spy>test.env.searchEndpoint.plan;
+        planSpy.and.returnValue(
+          new Promise((resolve, reject) => {
+            reject(new Error('no'));
+          })
+        );
+
+        const newPlan = await test.cmp.fetchQueryExecutionPlan();
+        expect(newPlan).toBeNull();
+        done();
       });
     });
 
