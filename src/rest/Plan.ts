@@ -1,9 +1,6 @@
 import { ITrigger, ITriggerRedirect } from './Trigger';
 
-/**
- * Describes the plan of execution of a search
- */
-export interface IPlan {
+export interface IPlanResponse {
   preprocessingOutput: {
     triggers: ITrigger<any>[];
   };
@@ -13,9 +10,22 @@ export interface IPlan {
   };
 }
 
+/**
+ * Describes the plan of execution of a search
+ */
 export class ExecutionPlan {
-  static getRedirectTriggers(results: IPlan) {
-    const redirects: ITriggerRedirect[] = results.preprocessingOutput.triggers.filter(trigger => trigger.type === 'redirect');
-    return redirects.length ? redirects[0] : null;
+  constructor(private response: IPlanResponse) {}
+
+  public get basicExpression() {
+    return this.response.parsedInput.basicExpression;
+  }
+
+  public get largeExpression() {
+    return this.response.parsedInput.largeExpression;
+  }
+
+  public get redirectionURL() {
+    const redirects: ITriggerRedirect[] = this.response.preprocessingOutput.triggers.filter(trigger => trigger.type === 'redirect');
+    return redirects.length ? redirects[0].content : null;
   }
 }

@@ -176,7 +176,7 @@ export class QueryController extends RootComponent {
 
   /**
    * Returns the plan of execution of a search
-   * @returns {IPlan}
+   * @returns {ExecutionPlan}
    */
   public async fetchQueryExecutionPlan() {
     const query = this.createQueryBuilder(new DefaultQueryOptions()).build();

@@ -1180,18 +1180,18 @@ export class StandaloneSearchInterface extends SearchInterface {
     data.cancel = true;
 
     if (!this.searchboxIsEmpty() || this.options.redirectIfEmpty) {
-      this.checkForRedirect(dataToSendOnBeforeRedirect.searchPageUri);
+      this.doRedirect(dataToSendOnBeforeRedirect.searchPageUri);
     }
   }
 
-  private async checkForRedirect(searchPage: string) {
-    const planResults = await this.queryController.fetchQueryExecutionPlan();
-    const redirectTrigger = planResults && ExecutionPlan.getRedirectTriggers(planResults);
-    if (!redirectTrigger) {
+  private async doRedirect(searchPage: string) {
+    const executionPlan = await this.queryController.fetchQueryExecutionPlan();
+    const redirectionURL = executionPlan && executionPlan.redirectionURL;
+    if (!redirectionURL) {
       return this.redirectToSearchPage(searchPage);
     }
 
-    this.redirectToURL(redirectTrigger.content);
+    this.redirectToURL(redirectionURL);
   }
 
   public redirectToURL(url: string) {

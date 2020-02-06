@@ -15,7 +15,7 @@ import { ISubscriptionRequest, ISubscription } from '../rest/Subscription';
 import { ISentryLog } from './SentryLog';
 import { IFacetSearchRequest } from './Facet/FacetSearchRequest';
 import { IFacetSearchResponse } from './Facet/FacetSearchResponse';
-import { IPlan } from './Plan';
+import { ExecutionPlan } from './Plan';
 
 /**
  * The possible options when creating a {@link SearchEndpoint}
@@ -94,7 +94,7 @@ export interface ISearchEndpoint {
   getAuthenticationProviderUri(provider: string, returnUri: string, message: string): string;
   isJsonp(): boolean;
   search(query: IQuery, callOptions?: IEndpointCallOptions): Promise<IQueryResults>;
-  plan(query: IQuery, callOptions?: IEndpointCallOptions): Promise<IPlan>;
+  plan(query: IQuery, callOptions?: IEndpointCallOptions): Promise<ExecutionPlan>;
   getExportToExcelLink(query: IQuery, numberOfResults: number, callOptions?: IEndpointCallOptions): string;
   getRawDataStream(documentUniqueId: string, dataStreamType: string, callOptions?: IViewAsHtmlOptions): Promise<ArrayBuffer>;
   getDocument(documentUniqueID: string, callOptions?: IGetDocumentOptions): Promise<IQueryResult>;

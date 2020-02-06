@@ -41,7 +41,7 @@ import { BackOffRequest } from './BackOffRequest';
 import { IBackOffRequest } from 'exponential-backoff';
 import { IFacetSearchRequest } from './Facet/FacetSearchRequest';
 import { IFacetSearchResponse } from './Facet/FacetSearchResponse';
-import { IPlan } from './Plan';
+import { IPlanResponse, ExecutionPlan } from './Plan';
 
 export class DefaultSearchEndpointOptions implements ISearchEndpointOptions {
   restUri: string;
@@ -396,19 +396,19 @@ export class SearchEndpoint implements ISearchEndpoint {
    * [`QueryBuilder`]{@link QueryBuilder}.
    * @param callOptions An additional set of options to use for this call.
    * @param callParams The options injected by the applied decorators.
-   * @returns {Promise<IPlan>} A Promise of plan results.
+   * @returns {Promise<ExecutionPlan>} A Promise of plan results.
    */
   @path('/plan')
   @method('POST')
   @requestDataType('application/json')
   @responseType('json')
-  public plan(query: IQuery, callOptions?: IEndpointCallOptions, callParams?: IEndpointCallParameters): Promise<IPlan> {
+  public plan(query: IQuery, callOptions?: IEndpointCallOptions, callParams?: IEndpointCallParameters): Promise<ExecutionPlan> {
     const call = this.buildCompleteCall(query, callOptions, callParams);
     this.logger.info('Performing REST query PLAN', query);
 
-    return this.performOneCall<IPlan>(call.params, call.options).then(results => {
-      this.logger.info('REST query successful', results, query);
-      return results;
+    return this.performOneCall<IPlanResponse>(call.params, call.options).then(planResponse => {
+      this.logger.info('REST query successful', planResponse, query);
+      return new ExecutionPlan(planResponse);
     });
   }
 
