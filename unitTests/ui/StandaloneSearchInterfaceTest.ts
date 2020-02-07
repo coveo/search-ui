@@ -1,33 +1,143 @@
 import * as Mock from '../MockEnvironment';
-import { StandaloneSearchInterface } from '../../src/ui/SearchInterface/SearchInterface';
+import { StandaloneSearchInterface, IStandaloneSearchInterfaceOptions } from '../../src/ui/SearchInterface/SearchInterface';
+import { QueryEvents, $$, StandaloneSearchInterfaceEvents } from '../../src/Core';
+import { INewQueryEventArgs } from '../../src/events/QueryEvents';
+import { ExecutionPlan } from '../../src/rest/Plan';
+import { FakeResults } from '../Fake';
 import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
+
 export function StandaloneSearchInterfaceTest() {
   describe('StandaloneSearchInterface', () => {
     let cmp: StandaloneSearchInterface;
+    let options: IStandaloneSearchInterfaceOptions;
     let windoh = window;
 
     beforeEach(() => {
       windoh = Mock.mockWindow();
+      options = {
+        searchPageUri: 'https://connect.coveo.com/s/global-search/'
+      };
+      initializeComponent();
     });
 
-    afterEach(() => {
-      windoh = null;
-      cmp = null;
+    function initializeComponent() {
+      cmp = new StandaloneSearchInterface(document.createElement('div'), options, undefined, windoh);
+    }
+
+    it(`on a newQuery event
+    should call handleRedirect`, () => {
+      spyOn(cmp, 'handleRedirect');
+      $$(cmp.root).trigger(QueryEvents.newQuery);
+      expect(cmp.handleRedirect).toHaveBeenCalled();
     });
 
-    describe('with a complex search page uri', () => {
+    describe('when calling handleRedirect', () => {
+      let newQueryArgs: INewQueryEventArgs;
+
+      beforeEach(() => {
+        newQueryArgs = {
+          cancel: false,
+          searchAsYouType: false,
+          shouldRedirectStandaloneSearchbox: true
+        };
+      });
+
+      function handleRedirect() {
+        cmp.handleRedirect(null, newQueryArgs);
+      }
+
+      it(`when shouldRedirectStandaloneSearchbox is false
+      should not trigger the StandaloneSearchInterfaceEvents.beforeRedirect event`, () => {
+        const spy = jasmine.createSpy('spy');
+        $$(cmp.root).on(StandaloneSearchInterfaceEvents.beforeRedirect, spy);
+        newQueryArgs.shouldRedirectStandaloneSearchbox = false;
+
+        handleRedirect();
+
+        expect(spy).not.toHaveBeenCalled();
+      });
+
+      describe(`when shouldRedirectStandaloneSearchbox is true (default)`, () => {
+        it(`should trigger the StandaloneSearchInterfaceEvents.beforeRedirect event`, () => {
+          const spy = jasmine.createSpy('spy');
+          $$(cmp.root).on(StandaloneSearchInterfaceEvents.beforeRedirect, spy);
+
+          handleRedirect();
+
+          expect(spy).toHaveBeenCalledWith(
+            jasmine.objectContaining({}),
+            jasmine.objectContaining({
+              searchPageUri: options.searchPageUri,
+              cancel: false
+            })
+          );
+        });
+
+        it(`calls fetchQueryExecutionPlan`, () => {
+          spyOn(cmp.queryController, 'fetchQueryExecutionPlan');
+
+          handleRedirect();
+
+          expect(cmp.queryController.fetchQueryExecutionPlan).toHaveBeenCalledWith();
+        });
+
+        it(`when fetchQueryExecutionPlan returns an execution plan with a redirectionURL
+        should call redirectToURL`, async done => {
+          const plan = new ExecutionPlan(FakeResults.createFakePlanResponse());
+          const promise = Promise.resolve(plan);
+          spyOn(cmp.queryController, 'fetchQueryExecutionPlan').and.returnValue(promise);
+          spyOn(cmp, 'redirectToURL');
+
+          handleRedirect();
+          await promise;
+
+          expect(cmp.redirectToURL).toHaveBeenCalledWith(plan.redirectionURL);
+          done();
+        });
+
+        it(`when fetchQueryExecutionPlan returns an execution plan without a redirectionURL
+        should call redirectToSearchPage`, async done => {
+          const planResponse = FakeResults.createFakePlanResponse();
+          planResponse.preprocessingOutput.triggers = [];
+          const plan = new ExecutionPlan(planResponse);
+          const promise = Promise.resolve(plan);
+          spyOn(cmp.queryController, 'fetchQueryExecutionPlan').and.returnValue(promise);
+          spyOn(cmp, 'redirectToSearchPage');
+
+          handleRedirect();
+          await promise;
+
+          expect(cmp.redirectToSearchPage).toHaveBeenCalledWith(options.searchPageUri);
+          done();
+        });
+
+        it(`when fetchQueryExecutionPlan returns no execution plan
+        should call redirectToSearchPage`, async done => {
+          const promise = Promise.resolve(null);
+          spyOn(cmp.queryController, 'fetchQueryExecutionPlan').and.returnValue(promise);
+          spyOn(cmp, 'redirectToSearchPage');
+
+          handleRedirect();
+          await promise;
+
+          expect(cmp.redirectToSearchPage).toHaveBeenCalledWith(options.searchPageUri);
+          done();
+        });
+      });
+    });
+
+    describe('calling redirectToSearchPage with a complex search page uri', () => {
       it('should merge the url fragments with the state', done => {
-        cmp = new StandaloneSearchInterface(document.createElement('div'), { searchPageUri: '/mypage#t=MyTab' }, undefined, windoh);
         expect(windoh.location.href).not.toContain('key=value');
         expect(windoh.location.href).not.toContain('t=MyTab');
 
-        let spy = jasmine.createSpy('foo');
+        const spy = jasmine.createSpy('foo');
         spy.and.returnValue({
           key: 'value'
         });
 
         cmp.queryStateModel.getAttributes = spy;
-        cmp.queryController.executeQuery();
+        cmp.redirectToSearchPage('/mypage#t=MyTab');
 
         setTimeout(() => {
           expect(spy).toHaveBeenCalled();
@@ -37,16 +147,15 @@ export function StandaloneSearchInterfaceTest() {
       });
 
       it('should merge the url query string correctly', done => {
-        cmp = new StandaloneSearchInterface(document.createElement('div'), { searchPageUri: '/mypage?debug=true' }, undefined, windoh);
         expect(windoh.location.href).not.toContain('debug=true');
 
-        let spy = jasmine.createSpy('foo');
+        const spy = jasmine.createSpy('foo');
         spy.and.returnValue({
           key: 'value'
         });
 
         cmp.queryStateModel.getAttributes = spy;
-        cmp.queryController.executeQuery();
+        cmp.redirectToSearchPage('/mypage?debug=true');
 
         setTimeout(() => {
           expect(spy).toHaveBeenCalled();
@@ -56,12 +165,6 @@ export function StandaloneSearchInterfaceTest() {
       });
 
       it('should merge the fragment and query string parameter correctly', done => {
-        cmp = new StandaloneSearchInterface(
-          document.createElement('div'),
-          { searchPageUri: '/mypage?debug=true#t=MyTab' },
-          undefined,
-          windoh
-        );
         expect(windoh.location.href).not.toContain('debug=true');
 
         let spy = jasmine.createSpy('foo');
@@ -70,7 +173,7 @@ export function StandaloneSearchInterfaceTest() {
         });
 
         cmp.queryStateModel.getAttributes = spy;
-        cmp.queryController.executeQuery();
+        cmp.redirectToSearchPage('/mypage?debug=true#t=MyTab');
 
         setTimeout(() => {
           expect(spy).toHaveBeenCalled();
@@ -80,14 +183,12 @@ export function StandaloneSearchInterfaceTest() {
       });
     });
 
-    describe('with a standard searchPageUri', () => {
-      beforeEach(() => {
-        cmp = new StandaloneSearchInterface(document.createElement('div'), { searchPageUri: 'foo' }, undefined, windoh);
-      });
+    describe('calling redirectToSearchPage with a standard search page uri', () => {
+      const searchPageUri = 'foo';
 
       it('should redirect on new query', done => {
         expect(windoh.location.href).not.toContain('foo');
-        cmp.queryController.executeQuery();
+        cmp.redirectToSearchPage('foo');
         setTimeout(() => {
           expect(windoh.location.href).toContain('foo');
           done();
@@ -101,7 +202,7 @@ export function StandaloneSearchInterfaceTest() {
           key: 'value'
         });
         cmp.queryStateModel.getAttributes = spy;
-        cmp.queryController.executeQuery();
+        cmp.redirectToSearchPage(searchPageUri);
         setTimeout(() => {
           expect(spy).toHaveBeenCalled();
           expect(windoh.location.href).toContain('key=value');
@@ -111,7 +212,7 @@ export function StandaloneSearchInterfaceTest() {
 
       it('should get the meta from the analytics client', done => {
         cmp.usageAnalytics.logSearchEvent(analyticsActionCauseList.omniboxAnalytics, { foo: 'bar' });
-        cmp.queryController.executeQuery();
+        cmp.redirectToSearchPage(searchPageUri);
         setTimeout(() => {
           expect(windoh.location.href).toContain('firstQueryMeta={"foo":"bar"}');
           done();
@@ -120,7 +221,7 @@ export function StandaloneSearchInterfaceTest() {
 
       it('should get the cause from the analytics client', done => {
         cmp.usageAnalytics.logSearchEvent(analyticsActionCauseList.omniboxAnalytics, { foo: 'bar' });
-        cmp.queryController.executeQuery();
+        cmp.redirectToSearchPage(searchPageUri);
         setTimeout(() => {
           expect(windoh.location.href).toContain('firstQueryCause=omniboxAnalytics');
           done();
@@ -130,7 +231,7 @@ export function StandaloneSearchInterfaceTest() {
       it('should transform search box submit to search from link', done => {
         // for legacy reason, searchbox submit were always logged a search from link in an external search box.
         cmp.usageAnalytics.logSearchEvent(analyticsActionCauseList.searchboxSubmit, { foo: 'bar' });
-        cmp.queryController.executeQuery();
+        cmp.redirectToSearchPage(searchPageUri);
         setTimeout(() => {
           expect(windoh.location.href).toContain('firstQueryCause=searchFromLink');
           done();
