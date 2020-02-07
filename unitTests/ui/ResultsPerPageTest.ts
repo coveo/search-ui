@@ -167,11 +167,11 @@ export function ResultsPerPageTest() {
         Simulate.query(test.env, {
           results: FakeResults.createFakeResults(100)
         });
-        expect($$(test.cmp.element).findAll('.coveo-results-per-page-list-item-text').length).toBe(4);
+        expect($$(test.cmp.element).findAll('a.coveo-results-per-page-list-item-text').length).toBe(4);
         expect(test.env.queryController.options.resultsPerPage).toBe(15);
       });
 
-      it('choicesDisplayed elements display the right aria-label', () => {
+      it('choicesDisplayed links display the right aria-label', () => {
         test = Mock.optionsComponentSetup<ResultsPerPage, IResultsPerPageOptions>(ResultsPerPage, {
           choicesDisplayed: [10, 25, 50]
         });
@@ -179,33 +179,9 @@ export function ResultsPerPageTest() {
           results: FakeResults.createFakeResults(100)
         });
 
-        const anchors = $$(test.cmp.element).findAll('.coveo-results-per-page-list-item-text');
+        const anchors = $$(test.cmp.element).findAll('a.coveo-results-per-page-list-item-text');
         expect($$(anchors[0]).text()).toBe('10');
-        expect(anchors[0].getAttribute('aria-label')).toBe('Display 10 results per page');
-      });
-
-      it('choicesDisplayed list items should not have a tab index', () => {
-        test = Mock.optionsComponentSetup<ResultsPerPage, IResultsPerPageOptions>(ResultsPerPage, {
-          choicesDisplayed: [10, 25, 50]
-        });
-        Simulate.query(test.env, {
-          results: FakeResults.createFakeResults(100)
-        });
-
-        const anchors = $$(test.cmp.element).findAll('.coveo-results-per-page-list-item-text');
-        expect(anchors[0].parentElement.getAttribute('tabindex')).toBeNull();
-      });
-
-      it('choicesDisplayed elements should be divs', () => {
-        test = Mock.optionsComponentSetup<ResultsPerPage, IResultsPerPageOptions>(ResultsPerPage, {
-          choicesDisplayed: [10, 25, 50]
-        });
-        Simulate.query(test.env, {
-          results: FakeResults.createFakeResults(100)
-        });
-
-        const anchors = $$(test.cmp.element).findAll('.coveo-results-per-page-list-item-text');
-        anchors.forEach(anchor => expect(anchor instanceof HTMLDivElement).toBeTruthy());
+        expect(anchors[0].parentElement.getAttribute('aria-label')).toBe('Display 10 results per page');
       });
 
       it('initialChoice allows to choose the first choice of the number of results per page options', () => {

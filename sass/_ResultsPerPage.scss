@@ -15,10 +15,7 @@
 
 .coveo-results-per-page-list-item {
   @include pager-list-item;
-  .coveo-results-per-page-list-item-text {
-    @include pager-list-item-button;
-    padding: 4px;
-  }
+  padding: 4px;
 }
 
 .coveo-results-per-page-no-results {

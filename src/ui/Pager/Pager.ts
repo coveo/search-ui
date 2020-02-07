@@ -248,22 +248,23 @@ export class Pager extends Component {
       this.currentPage = pagerBoundary.currentPage;
       if (pagerBoundary.end - pagerBoundary.start > 0) {
         for (let i = pagerBoundary.start; i <= pagerBoundary.end; i++) {
-          const listItemValue = document.createElement('div');
+          const listItemValue = document.createElement('a');
           $$(listItemValue).addClass(['coveo-pager-list-item-text', 'coveo-pager-anchor']);
           $$(listItemValue).text(i.toString(10));
 
           const page = i;
           const listItem = $$('li', {
-            className: 'coveo-pager-list-item'
+            className: 'coveo-pager-list-item',
+            tabindex: 0
           }).el;
           if (page === this.currentPage) {
-            $$(listItemValue).addClass('coveo-active');
+            $$(listItem).addClass('coveo-active');
           }
 
           const clickAction = () => this.handleClickPage(page);
 
           new AccessibleButton()
-            .withElement(listItemValue)
+            .withElement(listItem)
             .withLabel(l('PageNumber', i.toString(10)))
             .withClickAction(clickAction)
             .withEnterKeyboardAction(clickAction)

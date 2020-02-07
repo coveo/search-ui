@@ -121,8 +121,9 @@ export function PagerTest() {
         results: FakeResults.createFakeResults(1000)
       });
 
-      const anchors = $$(test.cmp.element).findAll('.coveo-pager-list-item-text');
+      const anchors = $$(test.cmp.element).findAll('a.coveo-pager-list-item-text');
       expect($$(anchors[0]).text()).toBe('6');
+      expect(anchors[0].parentElement.getAttribute('tabindex')).toBe('0');
       expect($$(anchors[anchors.length - 1]).text()).toBe('10');
     });
 
@@ -133,31 +134,9 @@ export function PagerTest() {
         results: FakeResults.createFakeResults(100)
       });
 
-      const anchors = $$(test.cmp.element).findAll('.coveo-pager-list-item-text');
+      const anchors = $$(test.cmp.element).findAll('a.coveo-pager-list-item-text');
       expect($$(anchors[0]).text()).toBe('1');
-      expect(anchors[0].getAttribute('aria-label')).toBe('Page 1');
-    });
-
-    it('should not give any tab index to the list item', () => {
-      const builder = new QueryBuilder();
-      Simulate.query(test.env, {
-        query: builder.build(),
-        results: FakeResults.createFakeResults(100)
-      });
-
-      const anchors = $$(test.cmp.element).findAll('.coveo-pager-list-item-text');
-      expect(anchors[0].parentElement.getAttribute('tabindex')).toBeNull();
-    });
-
-    it('should use divs for the elements', () => {
-      const builder = new QueryBuilder();
-      Simulate.query(test.env, {
-        query: builder.build(),
-        results: FakeResults.createFakeResults(100)
-      });
-
-      const anchors = $$(test.cmp.element).findAll('.coveo-pager-list-item-text');
-      anchors.forEach(anchor => expect(anchor instanceof HTMLDivElement).toBeTruthy());
+      expect(anchors[0].parentElement.getAttribute('aria-label')).toBe('Page 1');
     });
 
     it('should not reset page number on a new query if the origin is a pager', () => {
@@ -224,7 +203,7 @@ export function PagerTest() {
         // Page 1 to 5
         execQuery(test, 10, 0, 1000);
 
-        let anchors = $$(test.cmp.element).findAll('.coveo-pager-list-item-text');
+        let anchors = $$(test.cmp.element).findAll('a.coveo-pager-list-item-text');
         expect($$(anchors[0]).text()).toBe('1');
         expect($$(anchors[anchors.length - 1]).text()).toBe('5');
 
@@ -232,7 +211,7 @@ export function PagerTest() {
         // Page 1 to 2
         execQuery(test, 500, 0, 1000);
 
-        anchors = $$(test.cmp.element).findAll('.coveo-pager-list-item-text');
+        anchors = $$(test.cmp.element).findAll('a.coveo-pager-list-item-text');
         expect($$(anchors[0]).text()).toBe('1');
         expect($$(anchors[anchors.length - 1]).text()).toBe('2');
       });
@@ -318,7 +297,7 @@ export function PagerTest() {
         Simulate.query(test.env, {
           results: FakeResults.createFakeResults(1000)
         });
-        expect($$(test.cmp.element).findAll('.coveo-pager-list-item-text').length).toBe(22);
+        expect($$(test.cmp.element).findAll('a.coveo-pager-list-item-text').length).toBe(22);
       });
 
       it('enableNavigationButton can enable or disable nav buttons', () => {
@@ -359,7 +338,7 @@ export function PagerTest() {
           results: FakeResults.createFakeResults(1000) // return much more results than 31, but the option should still work properly
         });
 
-        const anchors = $$(test.cmp.element).findAll('.coveo-pager-list-item-text');
+        const anchors = $$(test.cmp.element).findAll('a.coveo-pager-list-item-text');
         // 31 results max from the index
         // divided by 10 results per page
         // means 4 pages
