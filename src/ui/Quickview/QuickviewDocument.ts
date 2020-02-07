@@ -68,6 +68,7 @@ export class QuickviewDocument extends Component {
     super(element, QuickviewDocument.ID, bindings);
 
     this.options = ComponentOptions.initComponentOptions(element, QuickviewDocument, options);
+
     this.result = result || this.resolveResult();
     Assert.exists(this.result);
   }
@@ -94,7 +95,7 @@ export class QuickviewDocument extends Component {
     this.triggerOpenQuickViewEvent({ termsToHighlight });
 
     const termsWereModified = this.wereTermsToHighlightModified(termsToHighlight);
-    
+
     if (termsWereModified) {
       this.handleTermsToHighlight(termsToHighlight, this.query);
     }
@@ -105,7 +106,7 @@ export class QuickviewDocument extends Component {
         requestedOutputSize: this.options.maximumDocumentSize
       } as IViewAsHtmlOptions);
 
-      await this.iframe.render(documentHTML);
+      await this.iframe.render(documentHTML, this.result.title);
 
       const documentWords = new QuickviewDocumentWords(this.iframe, this.result);
       const previewBar = new QuickviewDocumentPreviewBar(this.iframe, documentWords);
@@ -131,7 +132,7 @@ export class QuickviewDocument extends Component {
   }
 
   private triggerOpenQuickViewEvent(args: IOpenQuickviewEventArgs) {
-    $$(this.root).trigger(QuickviewEvents.openQuickview, args)
+    $$(this.root).trigger(QuickviewEvents.openQuickview, args);
   }
 
   private get query() {
