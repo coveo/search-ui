@@ -31,7 +31,7 @@ export function StandaloneSearchInterfaceTest() {
       expect(cmp.handleRedirect).toHaveBeenCalled();
     });
 
-    describe('when calling handleRedirect', () => {
+    describe('calling handleRedirect', () => {
       let newQueryArgs: INewQueryEventArgs;
 
       beforeEach(() => {
@@ -123,6 +123,28 @@ export function StandaloneSearchInterfaceTest() {
           expect(cmp.redirectToSearchPage).toHaveBeenCalledWith(options.searchPageUri);
           done();
         });
+      });
+    });
+
+    describe('calling redirectToURL', () => {
+      const redirectionURL = 'https://www.coveo.com/fr/solutions/commerce';
+
+      it('should modify the window location', () => {
+        expect(windoh.location.href).not.toContain(redirectionURL);
+        cmp.redirectToURL(redirectionURL);
+
+        expect(windoh.location.href).toContain(redirectionURL);
+      });
+
+      it('should call the right analytics event', () => {
+        spyOn(cmp.usageAnalytics, 'logCustomEvent');
+        cmp.redirectToURL(redirectionURL);
+
+        expect(cmp.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(
+          analyticsActionCauseList.triggerRedirect,
+          { redirectedTo: redirectionURL },
+          cmp.element
+        );
       });
     });
 
