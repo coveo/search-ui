@@ -232,32 +232,32 @@ export class ResultsPerPage extends Component {
     const numResultsList: number[] = this.options.choicesDisplayed;
     for (var i = 0; i < numResultsList.length; i++) {
       const listItem = $$('li', {
-        className: 'coveo-results-per-page-list-item',
-        tabindex: 0
+        className: 'coveo-results-per-page-list-item'
       }).el;
+
+      const listItemButton = $$(
+        'div',
+        {
+          className: 'coveo-results-per-page-list-item-text'
+        },
+        numResultsList[i].toString()
+      ).el;
+
       const resultsPerPage = numResultsList[i];
       if (resultsPerPage === this.currentResultsPerPage) {
-        $$(listItem).addClass('coveo-active');
+        $$(listItemButton).addClass('coveo-active');
       }
 
       const clickAction = () => this.handleClickPage(resultsPerPage);
 
       new AccessibleButton()
-        .withElement(listItem)
+        .withElement(listItemButton)
         .withLabel(l('DisplayResultsPerPage', numResultsList[i].toString()))
         .withClickAction(clickAction)
         .withEnterKeyboardAction(clickAction)
         .build();
 
-      listItem.appendChild(
-        $$(
-          'a',
-          {
-            className: 'coveo-results-per-page-list-item-text'
-          },
-          numResultsList[i].toString()
-        ).el
-      );
+      listItem.appendChild(listItemButton);
       this.list.appendChild(listItem);
     }
   }

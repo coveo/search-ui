@@ -6,12 +6,15 @@
 }
 
 @mixin pager-list-item {
-  @include defaultRoundedBorder();
-  margin: 5px 6px;
-  padding: 4px 8px;
   list-style: none;
   display: inline-block;
   vertical-align: baseline;
+  margin: 5px 6px;
+}
+
+@mixin pager-list-item-button {
+  @include defaultRoundedBorder();
+  padding: 4px 8px;
   @include clickable();
   font-size: $font-size-smaller;
   &.coveo-active,
