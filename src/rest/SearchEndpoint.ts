@@ -402,14 +402,13 @@ export class SearchEndpoint implements ISearchEndpoint {
   @method('POST')
   @requestDataType('application/json')
   @responseType('json')
-  public plan(query: IQuery, callOptions?: IEndpointCallOptions, callParams?: IEndpointCallParameters): Promise<ExecutionPlan> {
+  public async plan(query: IQuery, callOptions?: IEndpointCallOptions, callParams?: IEndpointCallParameters): Promise<ExecutionPlan> {
     const call = this.buildCompleteCall(query, callOptions, callParams);
     this.logger.info('Performing REST query PLAN', query);
 
-    return this.performOneCall<IPlanResponse>(call.params, call.options).then(planResponse => {
-      this.logger.info('REST query successful', planResponse, query);
-      return new ExecutionPlan(planResponse);
-    });
+    const planResponse = await this.performOneCall<IPlanResponse>(call.params, call.options);
+    this.logger.info('REST query successful', planResponse, query);
+    return new ExecutionPlan(planResponse);
   }
 
   /**

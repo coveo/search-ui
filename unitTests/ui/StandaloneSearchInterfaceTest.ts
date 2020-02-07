@@ -54,7 +54,7 @@ export function StandaloneSearchInterfaceTest() {
 
         handleRedirect();
 
-        expect(spy).not.toHaveBeenCalled();
+        expect(spy).not.toHaveBeenCalledTimes(1);
       });
 
       describe(`when shouldRedirectStandaloneSearchbox is true (default)`, () => {
@@ -79,7 +79,7 @@ export function StandaloneSearchInterfaceTest() {
 
           handleRedirect();
 
-          expect(cmp.queryController.fetchQueryExecutionPlan).toHaveBeenCalled();
+          expect(cmp.queryController.fetchQueryExecutionPlan).toHaveBeenCalledTimes(1);
         });
 
         it(`when fetchQueryExecutionPlan returns an execution plan with a redirectionURL
