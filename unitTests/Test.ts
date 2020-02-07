@@ -18,6 +18,9 @@ BackOffRequestTest();
 import { FacetSortCriteriaTest } from './rest/Facet/FacetSortCriteriaTest';
 FacetSortCriteriaTest();
 
+import { PlanTest } from './rest/PlanTest';
+PlanTest();
+
 import { CookieUtilsTest } from './utils/CookieUtilsTest';
 CookieUtilsTest();
 
