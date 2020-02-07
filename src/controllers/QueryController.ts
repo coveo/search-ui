@@ -32,6 +32,7 @@ import { QueryUtils } from '../utils/QueryUtils';
 import { UrlUtils } from '../utils/UrlUtils';
 import { Utils } from '../utils/Utils';
 import { IAnalyticsClient } from '../ui/Analytics/AnalyticsClient';
+import { ExecutionPlan } from '../rest/Plan';
 
 /**
  * Possible options when performing a query with the query controller
@@ -178,7 +179,7 @@ export class QueryController extends RootComponent {
    * Returns the plan of execution of a search
    * @returns {ExecutionPlan}
    */
-  public async fetchQueryExecutionPlan() {
+  public async fetchQueryExecutionPlan(): Promise<ExecutionPlan> {
     const query = this.createQueryBuilder(new DefaultQueryOptions()).build();
     this.logger.debug('Fetching query execution plan');
     try {
