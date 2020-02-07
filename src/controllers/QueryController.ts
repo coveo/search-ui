@@ -178,11 +178,11 @@ export class QueryController extends RootComponent {
    * Returns the plan of execution of a search
    * @returns {ExecutionPlan}
    */
-  public async fetchQueryExecutionPlan() {
+  public fetchQueryExecutionPlan() {
     const query = this.createQueryBuilder(new DefaultQueryOptions()).build();
     this.logger.debug('Fetching query execution plan');
     try {
-      return await this.getEndpoint().plan(query);
+      return this.getEndpoint().plan(query);
     } catch (error) {
       return null;
     }

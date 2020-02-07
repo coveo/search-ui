@@ -21,7 +21,7 @@ export function StandaloneSearchInterfaceTest() {
     });
 
     function initializeComponent() {
-      cmp = new StandaloneSearchInterface(document.createElement('div'), options, undefined, windoh);
+      cmp = new StandaloneSearchInterface(document.createElement('div'), options, {}, windoh);
     }
 
     it(`on a newQuery event
@@ -43,7 +43,7 @@ export function StandaloneSearchInterfaceTest() {
       });
 
       function handleRedirect() {
-        cmp.handleRedirect(null, newQueryArgs);
+        cmp.handleRedirect(new Event(''), newQueryArgs);
       }
 
       it(`when shouldRedirectStandaloneSearchbox is false
@@ -59,6 +59,7 @@ export function StandaloneSearchInterfaceTest() {
 
       describe(`when shouldRedirectStandaloneSearchbox is true (default)`, () => {
         it(`should trigger the StandaloneSearchInterfaceEvents.beforeRedirect event`, () => {
+          spyOn(cmp.queryController, 'fetchQueryExecutionPlan');
           const spy = jasmine.createSpy('spy');
           $$(cmp.root).on(StandaloneSearchInterfaceEvents.beforeRedirect, spy);
 
@@ -78,7 +79,7 @@ export function StandaloneSearchInterfaceTest() {
 
           handleRedirect();
 
-          expect(cmp.queryController.fetchQueryExecutionPlan).toHaveBeenCalledWith();
+          expect(cmp.queryController.fetchQueryExecutionPlan).toHaveBeenCalled();
         });
 
         it(`when fetchQueryExecutionPlan returns an execution plan with a redirectionURL

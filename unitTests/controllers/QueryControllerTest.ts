@@ -350,11 +350,12 @@ export function QueryControllerTest() {
     });
 
     describe('when calling fetchQueryExecutionPlan', () => {
-      it('should call createQueryBuilder', () => {
+      it('should call createQueryBuilder', async done => {
         spyOn(test.cmp, 'createQueryBuilder').and.callThrough();
-        test.cmp.fetchQueryExecutionPlan();
+        await test.cmp.fetchQueryExecutionPlan();
 
         expect(test.cmp.createQueryBuilder).toHaveBeenCalled();
+        done();
       });
 
       it('should call plan on the endpoint', async done => {
