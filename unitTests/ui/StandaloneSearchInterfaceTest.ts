@@ -28,7 +28,7 @@ export function StandaloneSearchInterfaceTest() {
     should call handleRedirect`, () => {
       spyOn(cmp, 'handleRedirect');
       $$(cmp.root).trigger(QueryEvents.newQuery);
-      expect(cmp.handleRedirect).toHaveBeenCalled();
+      expect(cmp.handleRedirect).toHaveBeenCalledTimes(1);
     });
 
     describe('calling handleRedirect', () => {
