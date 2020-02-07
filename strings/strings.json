@@ -7524,5 +7524,9 @@
   "NoRatings": {
     "en": "No ratings",
     "fr": "Aucune évaluation"
+  },
+  "Pagination": {
+    "en": "Pagination",
+    "fr": "Pagination"
   }
 }
