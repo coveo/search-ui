@@ -61,6 +61,8 @@ export interface IFacetSliderOptions extends ISliderOptions, IResponsiveComponen
  * > or before the `init` call, using the `options` top-level function (see
  * > [Passing Component Options Before the init Call](https://docs.coveo.com/en/346/#passing-component-options-before-the-init-call)).
  * @notSupportedIn salesforcefree
+ *
+ * @availablesince [July 2015 Release (v1.0.20)](https://docs.coveo.com/en/289/#july-2015-release-v1020)
  */
 export class FacetSlider extends Component {
   /**

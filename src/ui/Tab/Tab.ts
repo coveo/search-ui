@@ -203,6 +203,8 @@ export class Tab extends Component {
      * to `false` on one Tab to disable responsive mode.
      *
      * Default value is `true`.
+     *
+     * @availablesince [October 2016 Release (v1.1550.5)](https://docs.coveo.com/en/309/#october-2016-release-v115505)
      */
     enableResponsiveMode: ComponentOptions.buildBooleanOption({ defaultValue: true, section: 'ResponsiveOptions' }),
 

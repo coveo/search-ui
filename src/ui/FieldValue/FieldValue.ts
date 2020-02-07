@@ -196,6 +196,8 @@ export class FieldValue extends Component {
      * Specifies a caption to display before the value.
      *
      * Default value is `undefined`.
+     *
+     * @availablesince [January 2017 Release (v1.1865.9)](https://docs.coveo.com/en/396/#january-2017-release-v118659)
      */
     textCaption: ComponentOptions.buildLocalizedStringOption(),
 

@@ -132,6 +132,8 @@ export class Quickview extends Component {
      * `contentTemplate`, otherwise the component will throw an error when opened.
      *
      * Default value is `false`.
+     *
+     * @availablesince [September 2015 Release (v1.0.59)](https://docs.coveo.com/en/289/#september-2015-release-v1059)
      */
     alwaysShow: ComponentOptions.buildBooleanOption({ defaultValue: false }),
 

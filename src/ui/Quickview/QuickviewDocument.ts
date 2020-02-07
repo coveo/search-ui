@@ -31,6 +31,8 @@ export interface IQuickviewDocumentOptions {
  * `Quickview` component includes the `QuickviewDocument` component.
  *
  * This component is a result template component (see [Result Templates](https://docs.coveo.com/en/413/)).
+ *
+ * @availablesince [July 2015 Release (v1.0.20)](https://docs.coveo.com/en/289/#july-2015-release-v1020)
  */
 export class QuickviewDocument extends Component {
   static ID = 'QuickviewDocument';

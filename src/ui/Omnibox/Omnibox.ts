@@ -187,6 +187,8 @@ export class Omnibox extends Component {
      * > query suggestion.
      *
      * Default value is `true`.
+     *
+     * @availablesince [December 2015 Release (v1.0.273)](https://docs.coveo.com/en/289/#december-2015-release-v10273)
      */
     enableQuerySuggestAddon: ComponentOptions.buildBooleanOption({
       defaultValue: true,
@@ -214,6 +216,8 @@ export class Omnibox extends Component {
 
     /**
      * Specifies a placeholder for the input.
+     *
+     * @availablesince [July 2016 Release (v1.667.24)](https://docs.coveo.com/en/309/#july-2016-release-v166724)
      */
     placeholder: ComponentOptions.buildLocalizedStringOption(),
 

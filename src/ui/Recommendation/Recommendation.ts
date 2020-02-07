@@ -59,6 +59,8 @@ export interface IRecommendationOptions extends ISearchInterfaceOptions {
  * Recommendation component always acts as a full-fledged search interface. Therefore, you can include any component
  * inside the Recommendation component (Searchbox, Facet, Sort, etc.), just as you would inside the main SearchInterface
  * component.
+ *
+ * @availablesince [July 2016 Release (v1.667.24)](https://docs.coveo.com/en/309/#july-2016-release-v166724)
  */
 export class Recommendation extends SearchInterface implements IComponentBindings {
   static ID = 'Recommendation';

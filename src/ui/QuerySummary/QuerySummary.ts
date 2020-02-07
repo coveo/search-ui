@@ -59,6 +59,8 @@ export class QuerySummary extends Component {
      * Specifies whether to display the {@link QuerySummary.options.noResultsFoundMessage} message when there are no search results.
      *
      * Default value is `true`.
+     *
+     * @availablesince [August 2018 Release (v2.4609.6)](https://docs.coveo.com/410/#august-2018-release-v246096)
      */
     enableNoResultsFoundMessage: ComponentOptions.buildBooleanOption({ defaultValue: true }),
 
@@ -73,6 +75,8 @@ export class QuerySummary extends Component {
      * > On your page, they see this message: `There were no results found for "query without results"`.
      *
      * Default value is `No results for ${query}`.
+     *
+     * @availablesince [August 2018 Release (v2.4609.6)](https://docs.coveo.com/410/#august-2018-release-v246096)
      */
     noResultsFoundMessage: ComponentOptions.buildLocalizedStringOption({
       localizedString: () => l('noResultFor', '${query}'),
