@@ -4,6 +4,7 @@ import { TemplateCache } from '../../src/ui/Templates/TemplateCache';
 import { Template } from '../../src/ui/Templates/Template';
 import { IQueryResult } from '../../src/rest/QueryResult';
 import { Simulate } from '../Simulate';
+import { $$ } from '../../src/utils/Dom';
 export function DefaultResultTemplateTest() {
   describe('DefaultResultTemplate', () => {
     let result: IQueryResult;
@@ -51,6 +52,15 @@ export function DefaultResultTemplateTest() {
         it('should be able to instantiate to string if there is something in the cache', () => {
           let created = new DefaultResultTemplate().instantiateToString(result);
           expect(created).toEqual(dataToString(result));
+        });
+
+        it('should add accessibility attributes to the fallback template', () => {
+          const fallbackTemplateHTML = new DefaultResultTemplate().getFallbackTemplate();
+          const fallbackTemplateElement = $$('div').el;
+          fallbackTemplateElement.innerHTML = fallbackTemplateHTML;
+          const fallbackTemplateTitleElement: HTMLElement = fallbackTemplateElement.querySelector('.coveo-title');
+          expect(fallbackTemplateTitleElement.getAttribute('role')).toEqual('heading');
+          expect(fallbackTemplateTitleElement.getAttribute('aria-level')).toEqual('2');
         });
 
         describe("if there's template with conditions", () => {

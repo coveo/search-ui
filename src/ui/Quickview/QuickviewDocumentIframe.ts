@@ -32,7 +32,7 @@ export class QuickviewDocumentIframe {
     return meta && meta.getAttribute('content') == 'pdf2htmlEX';
   }
 
-  public render(htmlDocument: HTMLDocument): Promise<HTMLIFrameElement> {
+  public render(htmlDocument: HTMLDocument, title: string): Promise<HTMLIFrameElement> {
     if (this.quickviewIsClosedByEndUser()) {
       return Promise.reject(null);
     }
@@ -46,6 +46,7 @@ export class QuickviewDocumentIframe {
 
       this.addClientSideTweaksToIFrameStyling(htmlDocument);
       this.writeToIFrame(htmlDocument);
+      this.iframeElement.title = title;
     });
   }
 

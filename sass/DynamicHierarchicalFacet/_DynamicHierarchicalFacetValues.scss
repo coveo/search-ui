@@ -20,10 +20,13 @@ $level-space: 20px;
 }
 
 .coveo-dynamic-hierarchical-facet-collapsed {
-  .coveo-dynamic-hierarchical-facet-value:not(.coveo-selected),
+  .coveo-dynamic-hierarchical-facet-all,
+  .coveo-dynamic-hierarchical-facet-value,
   .coveo-dynamic-hierarchical-facet-show-less,
   .coveo-dynamic-hierarchical-facet-show-more {
-    display: none;
+    &:not(.coveo-show-when-collapsed) {
+      display: none;
+    }
   }
 }
 

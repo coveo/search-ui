@@ -146,7 +146,8 @@ export class YouTubeThumbnail extends Component {
       src: `https://www.youtube.com/embed/${this.extractVideoId()}?autoplay=1`,
       allowfullscreen: 'allowfullscreen',
       width: '100%',
-      height: '100%'
+      height: '100%',
+      title: this.result.title
     });
 
     const div = $$('div');

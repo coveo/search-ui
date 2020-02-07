@@ -45,31 +45,10 @@ export function ResultLinkTest() {
         return $$('div', { className: 'CoveoResultLink' }).el;
       }
 
-      function getResultLinks() {
-        return $$(template).findAll('.CoveoResultLink');
-      }
-
       beforeEach(() => {
         template = buildResultWithTwoResultLinks();
         const result = FakeResults.createFakeResult();
         Initialization.automaticallyCreateComponentsInsideResult(template, result);
-      });
-
-      it('adds a role attribute with value "heading" to the first result link', () => {
-        const [firstLink] = getResultLinks();
-        expect(firstLink.getAttribute('role')).toBe('heading');
-      });
-
-      it('sets the aria-level attribute to "2" to the first result link', () => {
-        const [firstLink] = getResultLinks();
-        expect(firstLink.getAttribute('aria-level')).toBe('2');
-      });
-
-      it(`does not add accessibility attributes to the second result link`, () => {
-        const secondLink = getResultLinks()[1];
-
-        expect(secondLink.getAttribute('role')).toBeNull();
-        expect(secondLink.getAttribute('aria-level')).toBeNull();
       });
     });
 
