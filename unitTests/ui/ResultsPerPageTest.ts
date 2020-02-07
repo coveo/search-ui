@@ -237,6 +237,49 @@ export function ResultsPerPageTest() {
         });
         expect(test.env.queryController.options.resultsPerPage).toBe(initialChoice);
       });
+
+      describe('with choices displayed 5, 10, 15 and 20', () => {
+        const initialChoice = 10;
+        const choicesDisplayed = [5, initialChoice, 15, 20];
+        let choiceElements: HTMLElement[];
+        beforeEach(() => {
+          test = Mock.optionsComponentSetup<ResultsPerPage, IResultsPerPageOptions>(ResultsPerPage, {
+            initialChoice,
+            choicesDisplayed
+          });
+          Simulate.initialization(test.env);
+          Simulate.query(test.env, {
+            results: FakeResults.createFakeResults(100)
+          });
+          choiceElements = $$(test.cmp['list']).children();
+        });
+
+        it('gives the radiogroup role to the container', () => {
+          expect(test.cmp['list'].getAttribute('role')).toEqual('radiogroup');
+        });
+
+        it('gives the radio role to the choices', () => {
+          choiceElements.forEach(choiceElement => expect(choiceElement.getAttribute('role')).toEqual('radio'));
+        });
+
+        it('sets the aria-checked attribute on choice elements', () => {
+          choiceElements.forEach((choiceElement, index) => {
+            expect(choiceElement.getAttribute('aria-checked')).toEqual((index === 1).toString());
+          });
+        });
+
+        it('sets tabindex to -1 on every link element', () => {
+          choiceElements.forEach(choiceElement => {
+            expect(choiceElement.children.item(0).getAttribute('tabindex')).toEqual('-1');
+          });
+        });
+
+        it('sets aria-hidden to true on every link element', () => {
+          choiceElements.forEach(choiceElement => {
+            expect(choiceElement.children.item(0).getAttribute('aria-hidden')).toEqual('true');
+          });
+        });
+      });
     });
   });
 }
