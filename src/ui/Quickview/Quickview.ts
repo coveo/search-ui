@@ -24,6 +24,7 @@ import { TemplateComponentOptions } from '../Base/TemplateComponentOptions';
 import { Template } from '../Templates/Template';
 import { DefaultQuickviewTemplate } from './DefaultQuickviewTemplate';
 import { QuickviewDocument } from './QuickviewDocument';
+import { AccessibleModal } from '../../utils/AccessibleModal';
 
 /**
  * The allowed [`Quickview`]{@link Quickview} [`tooltipPlacement`]{@link Quickview.options.tooltipPlacement} option values. The `-start` and `-end` variations indicate relative alignement. Horizontally (`top`, `bottom`), `-start` means _left_ and `-end` means _right_. Vertically (`left`, `right`), `-start` means _top_ and `-end` means _bottom_. No variation means _center_.
@@ -242,7 +243,7 @@ export class Quickview extends Component {
      * **Example:**
      * > Setting this option to `top-start` will make the tooltip appear on top of the `Quickview` button, aligned to the left.
      *
-     * Default value is `bottom`.
+     * @availablesince [January 2019 Release (v2.5395.12)](https://docs.coveo.com/en/2938/)
      */
     tooltipPlacement: ComponentOptions.buildCustomOption<ValidTooltipPlacement>((value: ValidTooltipPlacement) => value, {
       defaultValue: 'bottom'
@@ -251,7 +252,9 @@ export class Quickview extends Component {
 
   public static resultCurrentlyBeingRendered: IQueryResult = null;
 
-  private modalbox: Coveo.ModalBox.ModalBox;
+  private modalbox: AccessibleModal;
+
+  private lastFocusedElement: HTMLElement;
 
   /**
    * Creates a new `Quickview` component.
@@ -267,7 +270,7 @@ export class Quickview extends Component {
     public options?: IQuickviewOptions,
     public bindings?: IResultsComponentBindings,
     public result?: IQueryResult,
-    private ModalBox = ModalBoxModule
+    ModalBox: Coveo.ModalBox.ModalBox = ModalBoxModule
   ) {
     super(element, Quickview.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, Quickview, options);
@@ -289,6 +292,8 @@ export class Quickview extends Component {
         this.open();
       });
     }
+
+    this.modalbox = new AccessibleModal('coveo-quick-view', element.ownerDocument.body as HTMLBodyElement, ModalBox);
   }
 
   private buildContent() {
@@ -354,12 +359,15 @@ export class Quickview extends Component {
    * Opens the `Quickview` modal box.
    */
   public open() {
-    if (Utils.isNullOrUndefined(this.modalbox)) {
+    if (!this.modalbox.isOpen) {
       // To prevent the keyboard from opening on mobile if the search bar has focus
       Quickview.resultCurrentlyBeingRendered = this.result;
       // activeElement does not exist in LockerService
       if (document.activeElement && document.activeElement instanceof HTMLElement) {
+        this.lastFocusedElement = document.activeElement;
         $$(document.activeElement as HTMLElement).trigger('blur');
+      } else {
+        this.lastFocusedElement = null;
       }
 
       const openerObject = this.prepareOpenQuickviewObject();
@@ -377,9 +385,11 @@ export class Quickview extends Component {
    * Closes the `Quickview` modal box.
    */
   public close() {
-    if (this.modalbox != null) {
+    if (this.modalbox.isOpen) {
       this.modalbox.close();
-      this.modalbox = null;
+      if (this.lastFocusedElement && this.lastFocusedElement.parentElement) {
+        this.lastFocusedElement.focus();
+      }
     }
   }
 
@@ -423,7 +433,7 @@ export class Quickview extends Component {
   }
 
   private animateAndOpen() {
-    const quickviewDocument = $$(this.modalbox.modalBox).find('.' + Component.computeCssClassName(QuickviewDocument));
+    const quickviewDocument = $$(this.modalbox.element).find('.' + Component.computeCssClassName(QuickviewDocument));
     if (quickviewDocument) {
       Initialization.dispatchNamedMethodCallOrComponentCreation('open', quickviewDocument, null);
     }
@@ -443,15 +453,9 @@ export class Quickview extends Component {
         this.bindings
       ).el;
 
-      this.modalbox = this.ModalBox.open(computedModalBoxContent.el, {
-        title,
-        className: 'coveo-quick-view',
-        validation: () => {
-          this.closeQuickview();
-          return true;
-        },
-        body: this.element.ownerDocument.body,
-        sizeMod: 'big'
+      this.modalbox.open(title, computedModalBoxContent.el, () => {
+        this.closeQuickview();
+        return true;
       });
       return computedModalBoxContent;
     });

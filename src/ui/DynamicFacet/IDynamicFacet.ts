@@ -62,6 +62,7 @@ export interface IDynamicFacet extends Component, IDynamicManagerCompatibleFacet
   toggleCollapse(): void;
   enableFreezeCurrentValuesFlag(): void;
   enableFreezeFacetOrderFlag(): void;
+  enablePreventAutoSelectionFlag(): void;
   scrollToTop(): void;
   logAnalyticsEvent(actionCause: IAnalyticsActionCause, facetMeta: IAnalyticsFacetMeta): void;
   triggerNewQuery(beforeExecuteQuery?: () => void): void;
@@ -88,7 +89,6 @@ export interface IDynamicFacetValueProperties extends IRangeValue {
   state: FacetValueState;
   numberOfResults: number;
   position: number;
-  preventAutoSelect?: boolean;
 }
 
 export interface IDynamicFacetValue extends IDynamicFacetValueProperties {

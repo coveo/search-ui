@@ -49,6 +49,16 @@ export function DynamicFacetValuesTest() {
       return $$(element).find('.coveo-dynamic-facet-show-less');
     }
 
+    function values() {
+      const element = dynamicFacetValues.render();
+      return $$(element).findAll('.coveo-dynamic-facet-value');
+    }
+
+    function selectedCollapsedValues() {
+      const element = dynamicFacetValues.render();
+      return $$(element).find('.coveo-dynamic-facet-collapsed-values');
+    }
+
     it('should return allFacetValues correctly', () => {
       expect(dynamicFacetValues.allFacetValues.length).toBe(mockFacetValues.length);
       expect(dynamicFacetValues.allFacetValues[0].equals(mockFacetValues[0].value)).toBe(true);
@@ -77,6 +87,11 @@ export function DynamicFacetValuesTest() {
       expect(dynamicFacetValues.hasActiveValues).toBe(true);
     });
 
+    it('when there are selected values, it should append an element for collapsed selected values', () => {
+      expect(selectedCollapsedValues()).toBeTruthy();
+      expect(selectedCollapsedValues().textContent).toBe(dynamicFacetValues.selectedValues.join(', '));
+    });
+
     it('when there are no selected values, hasSelectedValues should return false', () => {
       mockFacetValues = DynamicFacetTestUtils.createFakeFacetValues();
       initializeComponent();
@@ -87,6 +102,12 @@ export function DynamicFacetValuesTest() {
       mockFacetValues = DynamicFacetTestUtils.createFakeFacetValues();
       initializeComponent();
       expect(dynamicFacetValues.hasActiveValues).toBe(false);
+    });
+
+    it('when there are selected values, it should not append an element for collapsed selected values', () => {
+      mockFacetValues = DynamicFacetTestUtils.createFakeFacetValues();
+      initializeComponent();
+      expect(selectedCollapsedValues()).toBeFalsy();
     });
 
     it('when there are idle values, hasIdleValues should return true', () => {
@@ -138,17 +159,15 @@ export function DynamicFacetValuesTest() {
       expect(() => dynamicFacetValues.render()).not.toThrow();
     });
 
-    it('renders the correct number of children', () => {
-      const element = dynamicFacetValues.render();
-      expect(element.childElementCount).toBe(mockFacetValues.length);
+    it('renders the correct number of values', () => {
+      expect(values().length).toBe(mockFacetValues.length);
     });
 
-    it('does not renders children that are idle and without result', () => {
+    it('does not renders values that are idle and without result', () => {
       mockFacetValues[0].numberOfResults = 0;
       initializeComponent();
 
-      const element = dynamicFacetValues.render();
-      expect(element.childElementCount).toBe(mockFacetValues.length - 1);
+      expect(values().length).toBe(mockFacetValues.length - 1);
     });
 
     it(`when moreValuesAvailable is false

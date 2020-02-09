@@ -50,35 +50,39 @@ export function ComboboxInputTest() {
 
     it(`when triggering blur on the input
     should call the "onInputBlur" method of the combobox`, () => {
-      $$(getInput()).trigger('blur');
+      const relatedTarget = document.body;
+      const eventData: Partial<FocusEvent> = {
+        relatedTarget
+      };
+      $$(combobox.element).trigger('focusout', eventData);
       expect(combobox.onInputBlur).toHaveBeenCalled();
     });
 
     it(`when pressing the down arrow on the keyboard
     should call the "moveActiveValueDown" method of the combobox values`, () => {
       spyOn(combobox.values, 'moveActiveValueDown');
-      Simulate.keyDown(getInput(), KEYBOARD.DOWN_ARROW);
+      Simulate.keyDown(combobox.element, KEYBOARD.DOWN_ARROW);
       expect(combobox.values.moveActiveValueDown).toHaveBeenCalled();
     });
 
     it(`when pressing the up arrow on the keyboard
     should call the "moveActiveValueUp" method of the combobox values`, () => {
       spyOn(combobox.values, 'moveActiveValueUp');
-      Simulate.keyDown(getInput(), KEYBOARD.UP_ARROW);
+      Simulate.keyDown(combobox.element, KEYBOARD.UP_ARROW);
       expect(combobox.values.moveActiveValueUp).toHaveBeenCalled();
     });
 
     it(`when pressing enter button of the keyboard
     should call the "selectActiveValue" method of the combobox values`, () => {
       spyOn(combobox.values, 'selectActiveValue');
-      Simulate.keyUp(getInput(), KEYBOARD.ENTER);
+      Simulate.keyUp(combobox.element, KEYBOARD.ENTER);
       expect(combobox.values.selectActiveValue).toHaveBeenCalled();
     });
 
     it(`when pressing escape button of the keyboard
     should call the "clearAll" method of the combobox`, () => {
       spyOn(combobox, 'clearAll');
-      Simulate.keyUp(getInput(), KEYBOARD.ESCAPE);
+      Simulate.keyUp(combobox.element, KEYBOARD.ESCAPE);
       expect(combobox.clearAll).toHaveBeenCalled();
     });
 
@@ -89,9 +93,9 @@ export function ComboboxInputTest() {
       expect(comboboxInput.element.getAttribute('aria-owns')).toBe(listboxId);
       expect(comboboxInput.element.getAttribute('aria-haspopup')).toBe('listbox');
       expect(comboboxInput.element.getAttribute('aria-expanded')).toBe('false');
+      expect(comboboxInput.element.getAttribute('aria-autocomplete')).toBe('list');
 
       expect(getInput().getAttribute('id')).toBe(id);
-      expect(getInput().getAttribute('aria-autocomplete')).toBe('list');
       expect(getInput().getAttribute('aria-controls')).toBe(listboxId);
       expect(getInput().getAttribute('aria-activeDescendant')).toBeFalsy();
     });

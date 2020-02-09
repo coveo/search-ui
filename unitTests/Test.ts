@@ -809,3 +809,12 @@ ResultPreviewsManagerTest();
 
 import { CommerceQueryTest } from './ui/CommerceQueryTest';
 CommerceQueryTest();
+
+import { FocusTrapTest } from './ui/FocusTrapTest';
+FocusTrapTest();
+
+import { AccessibleModalTest } from './utils/AccessibleModalTest';
+AccessibleModalTest();
+
+import { SortDropdownTest } from './ui/SortDropdownTest';
+SortDropdownTest();

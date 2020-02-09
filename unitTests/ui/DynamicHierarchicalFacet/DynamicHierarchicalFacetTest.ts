@@ -50,6 +50,7 @@ export function DynamicHierarchicalFacetTest() {
       spyOn(test.cmp, 'putStateIntoQueryBuilder').and.callThrough();
       spyOn(test.cmp, 'putStateIntoAnalytics').and.callThrough();
       spyOn(test.cmp, 'handleQueryResults').and.callThrough();
+      spyOn(test.cmp, 'enablePreventAutoSelectionFlag').and.callThrough();
       spyOn(test.cmp.logger, 'warn').and.callThrough();
       spyOn(test.cmp.values, 'createFromResponse').and.callThrough();
       spyOn(test.cmp.values, 'render').and.callThrough();
@@ -344,6 +345,10 @@ export function DynamicHierarchicalFacetTest() {
       it('should update queryStateModel with an empty array', () => {
         testQueryStateModelValues([]);
       });
+
+      it('should prevent autoselection', () => {
+        expect(test.cmp.enablePreventAutoSelectionFlag).toHaveBeenCalled();
+      });
     });
 
     describe('when calling selectPath', () => {
@@ -447,6 +452,14 @@ export function DynamicHierarchicalFacetTest() {
         test.cmp.selectPath(['value']);
         $$(test.env.root).trigger(QueryEvents.newQuery);
         expect(dependentFacet.disabled).toBe(false);
+      });
+
+      it(`when there is a query state change
+        when parent has no selected value  
+        reset should be called on the dependent facet`, () => {
+        spyOn(dependentFacet, 'reset');
+        $$(dependentFacet.root).trigger('state:change', { attributes: test.env.queryStateModel.attributes });
+        expect(dependentFacet.reset).toHaveBeenCalledTimes(1);
       });
     });
 
@@ -572,21 +585,21 @@ export function DynamicHierarchicalFacetTest() {
       });
     });
 
-    describe('testing querySuccess', () => {
+    describe('testing deferredQuerySuccess', () => {
       beforeEach(() => {
         test.cmp.ensureDom();
       });
 
       it(`when facet as a dynamicFacetManager
         should call handleQueryResults on the facet`, () => {
-        $$(test.env.root).trigger(QueryEvents.querySuccess, { results: fakeResultsWithFacets() });
+        $$(test.env.root).trigger(QueryEvents.deferredQuerySuccess, { results: fakeResultsWithFacets() });
         expect(test.cmp.handleQueryResults).toHaveBeenCalled();
       });
 
       it(`when facet as a dynamicFacetManager
         should not call handleQueryResults on the facet`, () => {
         test.cmp.dynamicFacetManager = Mock.mockComponent(DynamicFacetManager);
-        $$(test.env.root).trigger(QueryEvents.querySuccess, { results: fakeResultsWithFacets() });
+        $$(test.env.root).trigger(QueryEvents.deferredQuerySuccess, { results: fakeResultsWithFacets() });
         expect(test.cmp.handleQueryResults).not.toHaveBeenCalled();
       });
     });
@@ -619,8 +632,8 @@ export function DynamicHierarchicalFacetTest() {
           test.cmp.handleQueryResults(fakeResultsWithNoFacets());
         });
 
-        it(`facet position should be "null"`, () => {
-          expect(test.cmp.position).toBeNull();
+        it(`facet position should be "undefined"`, () => {
+          expect(test.cmp.position).toBeUndefined();
         });
 
         it(`"resetValues" should be called on the values`, () => {

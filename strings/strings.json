@@ -1778,14 +1778,6 @@
     "zh-cn": "显示较多的值",
     "zh-tw": "顯示較多的值"
   },
-  "ShowLessCategories": {
-    "en": "Show fewer categories",
-    "fr": "Afficher moins de catégories"
-  },
-  "ShowMoreCategories": {
-    "en": "Show more categories",
-    "fr": "Afficher plus de catégories"
-  },
   "HideFacet": {
     "en": "Hide Facet",
     "fr": "Cacher la facette",
@@ -7520,5 +7512,17 @@
     "en": "Deselect all active filters on {0} field",
     "fr": "Effacer tout de filtres actifs dans {0}",
     "es-es": "Quitar los filtros activos en el campo {0}"
+  },
+  "Rated": {
+    "en": "Rated {0} out of {1} star<pl>s</pl>",
+    "fr": "Évalué {0} sur {1} étoile<pl>s<pl/>"
+  },
+  "RatedBy": {
+    "en": "by {0} user<pl>s</pl>",
+    "fr": "par {0} utilisateur<pl>s</pl>"
+  },
+  "NoRatings": {
+    "en": "No ratings",
+    "fr": "Aucune évaluation"
   }
 }

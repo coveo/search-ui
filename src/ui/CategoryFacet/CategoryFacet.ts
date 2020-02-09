@@ -79,6 +79,7 @@ export type CategoryValueDescriptor = {
  * This facet requires a [`field`]{@link CategoryFacet.options.field} with a special format to work correctly (see [Using the Category Facet Component](https://docs.coveo.com/en/2667)).
  *
  * @notSupportedIn salesforcefree
+ * @availablesince [January 2019 Release (v2.5395.12)]({{ site.baseurl }}/2938/)
  */
 export class CategoryFacet extends Component implements IAutoLayoutAdjustableInsideFacetColumn {
   static doExport = () => {
@@ -279,6 +280,8 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
      * for the dependent category facet to be visible.
      *
      * **Default:** `undefined` and the category facet does not depend on any other facet to be displayed.
+     *
+     * @availablesince [September 2019 Release (v2.7023)](https://docs.coveo.com/en/2990/)
      */
     dependsOn: ComponentOptions.buildStringOption(),
     ...ResponsiveFacetOptions

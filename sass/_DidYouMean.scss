@@ -1,9 +1,13 @@
 @import 'Variables';
+
 .CoveoDidYouMean {
   padding: 10px 0;
   text-align: left;
-  a {
+  button {
     @include clickable();
+    border: none;
+    font-size: 1em;
+    padding: 0;
     text-decoration: none;
     &:hover {
       text-decoration: underline;
