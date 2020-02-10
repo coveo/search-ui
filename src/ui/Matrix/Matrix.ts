@@ -62,8 +62,6 @@ export interface IMatrixOptions {
  * inside the results by restricting the row field and the column field to match the values of the selected cell.
  *
  * @notSupportedIn salesforcefree
- *
- * @availablesince [July 2015 Release (v1.0.20)](https://docs.coveo.com/en/289/#july-2015-release-v1020)
  */
 export class Matrix extends Component {
   static ID = 'Matrix';
