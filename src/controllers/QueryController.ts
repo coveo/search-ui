@@ -176,7 +176,7 @@ export class QueryController extends RootComponent {
   }
 
   /**
-   * Returns the plan of execution of a search
+   * Returns the plan of execution of a search request, without executing it.
    * @returns {ExecutionPlan}
    */
   public async fetchQueryExecutionPlan(): Promise<ExecutionPlan> {
