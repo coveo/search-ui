@@ -36,10 +36,15 @@ export function StarRatingTest() {
     });
   }
 
-  describe('When the component is instantiated', () => {
+  describe('StarRating', () => {
     it('should have correct class type', () => {
       initStarRatingComponent('0', '0');
       expect(test.cmp.element.classList.contains(CONTAINER_CSS_CLASS)).toBe(true);
+    });
+
+    it('should have a tabindex of 0', () => {
+      initStarRatingComponent('0', '0');
+      expect(test.cmp.element.tabIndex).toEqual(0);
     });
 
     describe('The star elements', () => {
@@ -85,7 +90,7 @@ export function StarRatingTest() {
 
         const testLabel = $$(test.cmp.element).find(`.${STAR_LABEL_CSS_CLASS}`);
         expect(testLabel).toBeDefined();
-        expect(testLabel.textContent).toEqual(l('No Ratings'));
+        expect(testLabel.textContent).toEqual(l('NoRatings'));
       });
 
       it('should display a label with "No Ratings" shown when a negative number is given', () => {
@@ -94,7 +99,7 @@ export function StarRatingTest() {
 
         const testLabel = $$(test.cmp.element).find(`.${STAR_LABEL_CSS_CLASS}`);
         expect(testLabel).toBeDefined();
-        expect(testLabel.textContent).toEqual(l('No Ratings'));
+        expect(testLabel.textContent).toEqual(l('NoRatings'));
       });
 
       it('should display the number when they are provided', () => {
@@ -112,7 +117,66 @@ export function StarRatingTest() {
 
         const testLabel = $$(test.cmp.element).find(`.${STAR_LABEL_CSS_CLASS}`);
         expect(testLabel).toBeDefined();
-        expect(testLabel.textContent).toEqual(l('No Ratings'));
+        expect(testLabel.textContent).toEqual(l('NoRatings'));
+      });
+    });
+
+    describe('the accessibility label', () => {
+      const rating = 3;
+      const scale = 5;
+
+      function getLabel() {
+        return test.cmp.element.getAttribute('aria-label');
+      }
+
+      describe('without a number of ratings', () => {
+        beforeEach(() => {
+          initStarRatingComponent(rating.toString(), undefined, scale);
+        });
+
+        it('should have a label', () => {
+          expect(getLabel()).toBeTruthy();
+        });
+
+        it('should describe the rating and rating scale', () => {
+          expect(getLabel()).toContain(rating.toString());
+          expect(getLabel()).toContain(scale.toString());
+        });
+      });
+
+      describe('with a number of ratings', () => {
+        describe('above 0', () => {
+          const numberOfRatings = 9;
+
+          beforeEach(() => {
+            initStarRatingComponent(rating.toString(), numberOfRatings.toString(), scale);
+          });
+
+          it('should have a label', () => {
+            expect(getLabel()).toBeTruthy();
+          });
+
+          it('should describe the rating, rating scale and number of ratings', () => {
+            expect(getLabel()).toContain(rating.toString());
+            expect(getLabel()).toContain(scale.toString());
+            expect(getLabel()).toContain(numberOfRatings.toString());
+          });
+        });
+
+        describe('equal to 0', () => {
+          beforeEach(() => {
+            initStarRatingComponent(rating.toString(), '0', scale);
+          });
+
+          it('should have a label', () => {
+            expect(getLabel()).toBeTruthy();
+          });
+
+          it('should describe that there are no ratings', () => {
+            expect(getLabel()).not.toContain(rating.toString());
+            expect(getLabel()).not.toContain(scale.toString());
+          });
+        });
       });
     });
 

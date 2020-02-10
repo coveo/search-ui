@@ -12,6 +12,7 @@ import { Initialization } from '../Base/Initialization';
 import { get } from '../Base/RegisteredNamedMethods';
 import { IResultsComponentBindings } from '../Base/ResultsComponentBindings';
 import { ResultLink } from '../ResultLink/ResultLink';
+import { AccessibleModal } from '../../utils/AccessibleModal';
 
 export interface IYouTubeThumbnailOptions {
   width: string;
@@ -71,14 +72,14 @@ export class YouTubeThumbnail extends Component {
 
   public resultLink: Dom;
 
-  private modalbox: Coveo.ModalBox.ModalBox;
+  private modalbox: AccessibleModal;
 
   constructor(
     public element: HTMLElement,
     public options?: IYouTubeThumbnailOptions,
     public bindings?: IResultsComponentBindings,
     public result?: IQueryResult,
-    public ModalBox = ModalBoxModule
+    ModalBox = ModalBoxModule
   ) {
     super(element, YouTubeThumbnail.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, YouTubeThumbnail, options);
@@ -123,6 +124,10 @@ export class YouTubeThumbnail extends Component {
     Initialization.automaticallyCreateComponentsInsideResult(element, result, {
       ResultLink: this.options.embed ? { onClick: () => this.openYoutubeIframe() } : null
     });
+
+    this.modalbox = new AccessibleModal('coveo-youtube-player', element.ownerDocument.body as HTMLBodyElement, ModalBox, {
+      overlayClose: true
+    });
   }
 
   /**
@@ -141,21 +146,19 @@ export class YouTubeThumbnail extends Component {
       src: `https://www.youtube.com/embed/${this.extractVideoId()}?autoplay=1`,
       allowfullscreen: 'allowfullscreen',
       width: '100%',
-      height: '100%'
+      height: '100%',
+      title: this.result.title
     });
 
     const div = $$('div');
 
     div.append(iframe.el);
 
-    this.modalbox = this.ModalBox.open(div.el, {
-      overlayClose: true,
-      title: DomUtils.getQuickviewHeader(this.result, { showDate: true, title: this.result.title }, this.bindings).el,
-      className: 'coveo-youtube-player',
-      validation: () => true,
-      body: this.element.ownerDocument.body,
-      sizeMod: 'big'
-    });
+    this.modalbox.open(
+      DomUtils.getQuickviewHeader(this.result, { showDate: true, title: this.result.title }, this.bindings).el,
+      div.el,
+      () => true
+    );
 
     $$($$(this.modalbox.wrapper).find('.coveo-quickview-close-button')).on('click', () => {
       this.modalbox.close();

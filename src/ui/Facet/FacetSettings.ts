@@ -48,6 +48,18 @@ export class FacetSettings extends FacetSort {
   private closeTimeout: number;
   private enabledSortsIgnoreRenderBecauseOfPairs: IFacetSortDescription[] = [];
 
+  private get isExpanded() {
+    return this.settingsButton && this.settingsButton.getAttribute('aria-expanded') === `${true}`;
+  }
+
+  private set isExpanded(expanded: boolean) {
+    this.settingsButton.setAttribute('aria-expanded', `${expanded}`);
+  }
+
+  private get firstFocusablePopupElement() {
+    return find($$(this.settingsPopup).findAll('[tabindex]'), element => element.tabIndex >= 0);
+  }
+
   constructor(public sorts: string[], public facet: Facet) {
     super(sorts, facet);
     this.filterDuplicateForRendering();
@@ -146,6 +158,10 @@ export class FacetSettings extends FacetSort {
    * Close the settings menu
    */
   public close() {
+    if (!this.isExpanded) {
+      return;
+    }
+    this.isExpanded = false;
     $$(this.settingsPopup).detach();
   }
 
@@ -153,8 +169,10 @@ export class FacetSettings extends FacetSort {
    * Open the settings menu
    */
   public open() {
-    $$(this.settingsPopup).insertAfter(this.facet.element.parentElement);
+    $$(this.settingsPopup).insertAfter(this.settingsButton);
     new Popper(this.settingsButton, this.settingsPopup);
+
+    this.isExpanded = true;
 
     if (this.hideSection && this.showSection) {
       $$(this.hideSection).toggle(!$$(this.facet.element).hasClass('coveo-facet-collapsed'));
@@ -172,6 +190,11 @@ export class FacetSettings extends FacetSort {
         this.unselectItem(this.getSortItem(criteria.name));
       }
     });
+
+    const elementToFocus = this.firstFocusablePopupElement;
+    if (elementToFocus) {
+      elementToFocus.focus();
+    }
   }
 
   public getSortItem(sortName: string): HTMLElement {
@@ -189,11 +212,13 @@ export class FacetSettings extends FacetSort {
   }
 
   private buildSettingsButton() {
-    this.settingsButton = $$('div', { className: 'coveo-facet-header-settings' }).el;
+    this.settingsButton = $$('div', { className: 'coveo-facet-header-settings', 'aria-haspopup': 'true' }).el;
     this.settingsButton.innerHTML = SVGIcons.icons.more;
     SVGDom.addClassToSVGInContainer(this.settingsButton, 'coveo-facet-settings-more-svg');
 
     this.hideElementOnMouseEnterLeave(this.settingsButton);
+
+    this.isExpanded = false;
 
     new AccessibleButton()
       .withElement(this.settingsButton)
@@ -220,6 +245,12 @@ export class FacetSettings extends FacetSort {
   private buildSettingsPopup() {
     this.settingsPopup = $$('div', { className: 'coveo-facet-settings-popup' }).el;
     this.hideElementOnMouseEnterLeave(this.settingsPopup);
+    $$(this.settingsPopup).on('focusout', (e: FocusEvent) => {
+      if (e.relatedTarget && this.settingsPopup.contains(e.relatedTarget as Node)) {
+        return;
+      }
+      this.close();
+    });
   }
 
   private buildSortSection() {

@@ -23,9 +23,16 @@ export function ComboboxValuesTest() {
       initializeComponent();
     });
 
+    function mockComboboxValuesFocusFunction() {
+      comboboxValues['values'].forEach(value => {
+        spyOn(value.element, 'focus').and.callFake(() => comboboxValues['setKeyboardActiveValue'](value));
+      });
+    }
+
     function triggerRenderFromResponse(newResponse: string[]) {
       response = newResponse;
       comboboxValues.renderFromResponse(response);
+      mockComboboxValuesFocusFunction();
     }
 
     function initializeComponent(additionalOptions?: Partial<IComboboxOptions>) {
@@ -44,6 +51,10 @@ export function ComboboxValuesTest() {
 
     function isChildrenActiveAtIndex(index: number) {
       return $$(getChildren()[index]).hasClass('coveo-focused');
+    }
+
+    function getFocusCountAtIndex(index: number) {
+      return (getChildren()[index].focus as jasmine.Spy).calls.count();
     }
 
     describe('when being initialized', () => {
@@ -94,6 +105,10 @@ export function ComboboxValuesTest() {
         $$(valueElement).trigger('mouseleave');
 
         expect(comboboxValues.mouseIsOverValue).toBe(false);
+      });
+
+      it('should add a tabindex to every value', () => {
+        getChildren().forEach(valueElement => expect(valueElement.tabIndex).toEqual(0));
       });
 
       describe('when a value is clicked', () => {
@@ -179,6 +194,13 @@ export function ComboboxValuesTest() {
         expect(isChildrenActiveAtIndex(0)).toBe(true);
       });
 
+      it(`when no value is active
+      should focus the first value`, () => {
+        comboboxValues.moveActiveValueDown();
+
+        expect(getFocusCountAtIndex(0)).toEqual(1);
+      });
+
       it(`when a value is active
       should activate the next value`, () => {
         comboboxValues.moveActiveValueDown();
@@ -186,6 +208,15 @@ export function ComboboxValuesTest() {
 
         expect(isChildrenActiveAtIndex(0)).toBe(false);
         expect(isChildrenActiveAtIndex(1)).toBe(true);
+      });
+
+      it(`when a value is active
+      should focus the next value`, () => {
+        comboboxValues.moveActiveValueDown();
+        comboboxValues.moveActiveValueDown();
+
+        expect(getFocusCountAtIndex(0)).toEqual(1);
+        expect(getFocusCountAtIndex(1)).toEqual(1);
       });
 
       it(`when the last value is active
@@ -196,6 +227,16 @@ export function ComboboxValuesTest() {
 
         expect(isChildrenActiveAtIndex(1)).toBe(false);
         expect(isChildrenActiveAtIndex(0)).toBe(true);
+      });
+
+      it(`when the last is active
+      should focus the first value`, () => {
+        comboboxValues.moveActiveValueDown();
+        comboboxValues.moveActiveValueDown();
+        comboboxValues.moveActiveValueDown();
+
+        expect(getFocusCountAtIndex(0)).toEqual(2);
+        expect(getFocusCountAtIndex(1)).toEqual(1);
       });
 
       it('should call "updateAccessibilityAttributes" with the rigth attributes', () => {
@@ -223,6 +264,13 @@ export function ComboboxValuesTest() {
         expect(isChildrenActiveAtIndex(1)).toBe(true);
       });
 
+      it(`when no value is active
+      should focus the last value`, () => {
+        comboboxValues.moveActiveValueUp();
+
+        expect(getFocusCountAtIndex(1)).toEqual(1);
+      });
+
       it(`when a value is active
       should activate the previous value`, () => {
         comboboxValues.moveActiveValueUp();
@@ -230,6 +278,15 @@ export function ComboboxValuesTest() {
 
         expect(isChildrenActiveAtIndex(1)).toBe(false);
         expect(isChildrenActiveAtIndex(0)).toBe(true);
+      });
+
+      it(`when a value is active
+      should focus the previous value`, () => {
+        comboboxValues.moveActiveValueUp();
+        comboboxValues.moveActiveValueUp();
+
+        expect(getFocusCountAtIndex(1)).toEqual(1);
+        expect(getFocusCountAtIndex(0)).toEqual(1);
       });
 
       it(`when the last value is active
@@ -240,6 +297,16 @@ export function ComboboxValuesTest() {
 
         expect(isChildrenActiveAtIndex(0)).toBe(false);
         expect(isChildrenActiveAtIndex(1)).toBe(true);
+      });
+
+      it(`when the last value is active
+      should focus the last value`, () => {
+        comboboxValues.moveActiveValueUp();
+        comboboxValues.moveActiveValueUp();
+        comboboxValues.moveActiveValueUp();
+
+        expect(getFocusCountAtIndex(0)).toEqual(1);
+        expect(getFocusCountAtIndex(1)).toEqual(2);
       });
 
       it('should call "updateAccessibilityAttributes" with the right attributes', () => {

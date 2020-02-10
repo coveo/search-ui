@@ -549,6 +549,20 @@ export function SearchInterfaceTest() {
           const searchInterface = setupSearchInterface({});
           expect(searchInterface.responsiveComponents.getSmallScreenWidth()).toBe(SMALL_SCREEN_WIDTH);
         });
+
+        it('enableScrollRestoration should create a scroll restoration instance if true', () => {
+          setupSearchInterface({
+            enableScrollRestoration: true
+          });
+          expect(cmp.scrollRestorer).toBeDefined();
+        });
+
+        it('enableScrollRestoration should not create a scroll restoration instance if false', () => {
+          setupSearchInterface({
+            enableScrollRestoration: false
+          });
+          expect(cmp.scrollRestorer).toBeUndefined();
+        });
       });
 
       describe('when allowQueriesWithoutKeywords if true', () => {

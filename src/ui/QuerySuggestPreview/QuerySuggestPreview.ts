@@ -38,6 +38,8 @@ export interface IQuerySuggestPreview {
  * This component should be initialized on a `div` which can be nested anywhere inside the root element of your search interface.
  *
  * See [Rendering Query Suggestion Result Previews](https://docs.coveo.com/en/340/#rendering-query-suggestion-result-previews).
+ *
+ * @availablesince [December 2019 Release (v2.7610)](https://docs.coveo.com/en/3142/)
  */
 export class QuerySuggestPreview extends Component implements IComponentBindings {
   static ID = 'QuerySuggestPreview';

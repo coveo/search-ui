@@ -11,7 +11,12 @@ import {
   QueryEvents
 } from '../../events/QueryEvents';
 import { IResultLayoutPopulateArgs, ResultLayoutEvents } from '../../events/ResultLayoutEvents';
-import { IChangeLayoutEventArgs, IDisplayedNewResultEventArgs, ResultListEvents } from '../../events/ResultListEvents';
+import {
+  IChangeLayoutEventArgs,
+  IDisplayedNewResultEventArgs,
+  IDisplayedNewResultsEventArgs,
+  ResultListEvents
+} from '../../events/ResultListEvents';
 import { exportGlobally } from '../../GlobalExports';
 import { Assert } from '../../misc/Assert';
 import { Defer } from '../../misc/Defer';
@@ -250,6 +255,8 @@ export class ResultList extends Component {
      * Whether to scroll back to the top of the page when the end-user interacts with a facet.
      *
      * **Note:** Setting this option to `false` has no effect on dynamic facets. To disable this behavior on a `DynamicFacet` component, you must set its own [`enableScrollToTop`]{@link DynamicFacet.options.enableScrollToTop} option to `false`.
+     *
+     * @availablesince [July 2019 Release (v2.6459)](https://docs.coveo.com/en/2938/)
      */
     enableScrollToTop: ComponentOptions.buildBooleanOption({
       defaultValue: true,
@@ -496,7 +503,10 @@ export class ResultList extends Component {
   }
 
   protected triggerNewResultsDisplayed() {
-    $$(this.element).trigger(ResultListEvents.newResultsDisplayed, {});
+    const args: IDisplayedNewResultsEventArgs = {
+      isInfiniteScrollEnabled: this.options.enableInfiniteScroll
+    };
+    $$(this.element).trigger(ResultListEvents.newResultsDisplayed, args);
   }
 
   private async fetchAndRenderMoreResults(count: number): Promise<IQueryResults> {

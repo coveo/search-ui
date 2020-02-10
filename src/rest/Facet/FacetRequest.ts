@@ -199,4 +199,11 @@ export interface IFacetRequest {
    * **Default (Search API):** `[]`
    */
   basePath?: string[];
+
+  /**
+   * Whether to prevent Coveo ML from automatically selecting values from that facet.
+   *
+   * **Default:** `false`
+   */
+  preventAutoSelect?: boolean;
 }

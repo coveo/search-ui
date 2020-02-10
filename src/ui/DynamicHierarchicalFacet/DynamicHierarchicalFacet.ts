@@ -50,6 +50,8 @@ import { Logger } from '../../misc/Logger';
  * This facet requires a [`field`]{@link DynamicHierarchicalFacet.options.field} with a special format to work correctly (see [Using the Hierarchical Facet Component](https://docs.coveo.com/en/2667)).
  *
  * @notSupportedIn salesforcefree
+ *
+ * @availablesince [January 2020 Release (v2.7968)](https://docs.coveo.com/en/3163/)
  */
 export class DynamicHierarchicalFacet extends Component implements IDynamicHierarchicalFacet {
   static ID = 'DynamicHierarchicalFacet';
@@ -74,7 +76,8 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
      * Default value is the [`field`]{@link DynamicHierarchicalFacet.options.field} option value.
      */
     id: ComponentOptions.buildStringOption({
-      postProcessing: (value, options: IDynamicHierarchicalFacetOptions) => value || (options.field as string)
+      postProcessing: (value, options: IDynamicHierarchicalFacetOptions) => value || (options.field as string),
+      section: 'CommonOptions'
     }),
 
     /**
@@ -87,7 +90,7 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
      *
      * See [Using the Hierarchical Facet Component](https://docs.coveo.com/en/2667).
      */
-    field: ComponentOptions.buildFieldOption({ required: true }),
+    field: ComponentOptions.buildFieldOption({ required: true, section: 'CommonOptions' }),
 
     /**
      * The title to display at the top of the facet.
@@ -95,7 +98,8 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
      * Default value is the localized string for `NoTitle`.
      */
     title: ComponentOptions.buildLocalizedStringOption({
-      localizedString: () => l('NoTitle')
+      localizedString: () => l('NoTitle'),
+      section: 'CommonOptions'
     }),
 
     /**
@@ -109,7 +113,7 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
     /**
      * Whether to allow the end-user to expand and collapse this facet.
      */
-    enableCollapse: ComponentOptions.buildBooleanOption({ defaultValue: true, section: 'Filtering' }),
+    enableCollapse: ComponentOptions.buildBooleanOption({ defaultValue: true, section: 'CommonOptions' }),
 
     /**
      * Whether this facet should be collapsed by default.
@@ -117,7 +121,7 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
      * See also the [`enableCollapse`]{@link DynamicHierarchicalFacet.options.enableCollapse}
      * option.
      */
-    collapsedByDefault: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'Filtering', depend: 'enableCollapse' }),
+    collapsedByDefault: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'CommonOptions', depend: 'enableCollapse' }),
 
     /**
      * Whether to scroll back to the top of the page whenever the end-user interacts with a facet.
@@ -141,7 +145,7 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
      *
      * See also the [`numberOfValues`]{@link DynamicHierarchicalFacet.options.numberOfValues} option.
      */
-    enableMoreLess: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+    enableMoreLess: ComponentOptions.buildBooleanOption({ defaultValue: true, section: 'CommonOptions' }),
 
     /**
      * The character that specifies the hierarchical dependency.
@@ -154,7 +158,7 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
      *
      * The delimiting character is `>`.
      */
-    delimitingCharacter: ComponentOptions.buildStringOption({ defaultValue: '|' }),
+    delimitingCharacter: ComponentOptions.buildStringOption({ defaultValue: '|', section: 'CommonOptions' }),
 
     /**
      * Specifies a JSON object describing a mapping of facet values to their desired captions. See
@@ -203,14 +207,14 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
      *
      * **Default:** `undefined` and the hierarchical facet does not depend on any other facet to be displayed.
      */
-    dependsOn: ComponentOptions.buildStringOption(),
+    dependsOn: ComponentOptions.buildStringOption({ section: 'CommonOptions' }),
 
     /**
      * Whether to exclude folded result parents when estimating result counts for facet values.
      *
      * See also the [`Folding`]{@link folding} and [`FoldingForThread`]{@link FoldingForThread} components.
      *
-     * **Default:** `true` if folded results are requested;`false` otherwise.
+     * **Default:** `true` if folded results are requested; `false` otherwise.
      */
     filterFacetCount: ComponentOptions.buildBooleanOption({ section: 'Filtering' }),
 
@@ -220,7 +224,7 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
      * See [`HierarchicalFacetSortCriteria`]{@link HierarchicalFacetSortCriteria} for the list and
      * description of allowed values.
      *
-     * **Default (API):** [`occurrences`]{@link HierarchicalFacetSortCriteria.occurrences}
+     * **Default (Search API):** [`occurrences`]{@link HierarchicalFacetSortCriteria.occurrences}
      */
     sortCriteria: <HierarchicalFacetSortCriteria>ComponentOptions.buildStringOption({
       postProcessing: value => {
@@ -239,28 +243,16 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
     }),
 
     /**
-     * The path to use as the path prefix for every query.
+     * The label to display to clear the facet when a value is selected.
      *
-     * **Example:**
-     *
-     * You have the following files indexed on a file system:
-     * ```
-     * c:\
-     *    folder1\
-     *      text1.txt
-     *    folder2\
-     *      folder3\
-     *        text2.txt
-     * ```
-     * Setting the `basePath` to `c` would display `folder1` and `folder2` in the `DynamicHierarchicalFacet`, but omit `c`.
-     *
-     * This options accepts an array of values. To specify a "deeper" starting path in your tree, you need to use comma-separated values.
-     *
-     * For example, setting `data-base-path="c,folder1"` on the component markup would display `folder3` in the `DynamicHierarchicalFacet`, but omit `c` and `folder1`.
-     *
+     * Default value is the localized string for `AllCategories`.
      */
-    basePath: ComponentOptions.buildListOption<string>({ defaultValue: [] }),
+    clearLabel: ComponentOptions.buildLocalizedStringOption({
+      localizedString: () => l('AllCategories'),
+      section: 'CommonOptions'
+    }),
 
+    basePath: ComponentOptions.buildListOption<string>({ defaultValue: [] }),
     ...ResponsiveFacetOptions
   };
 
@@ -273,7 +265,7 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
   public header: DynamicFacetHeader;
   public values: IDynamicHierarchicalFacetValues;
   public moreValuesAvailable = false;
-  public position: number = null;
+  public position: number;
   public dynamicFacetManager: DynamicFacetManager;
   public isDynamicFacet = true;
 
@@ -312,7 +304,7 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
 
   private initQueryEvents() {
     this.bind.onRootElement(QueryEvents.doneBuildingQuery, (data: IDoneBuildingQueryEventArgs) => this.handleDoneBuildingQuery(data));
-    this.bind.onRootElement(QueryEvents.querySuccess, (data: IQuerySuccessEventArgs) => this.handleQuerySuccess(data.results));
+    this.bind.onRootElement(QueryEvents.deferredQuerySuccess, (data: IQuerySuccessEventArgs) => this.handleQuerySuccess(data.results));
     this.bind.onRootElement(QueryEvents.duringQuery, () => this.ensureDom());
     this.bind.onRootElement(QueryEvents.queryError, () => this.onNoValues());
   }
@@ -389,7 +381,7 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
     const index = findIndex(results.facets, { facetId: this.options.id });
     const facetResponse = index !== -1 ? results.facets[index] : null;
 
-    this.position = facetResponse ? index + 1 : null;
+    this.position = facetResponse ? index + 1 : undefined;
     facetResponse ? this.onNewValues(facetResponse) : this.onNoValues();
 
     this.header.hideLoading();
@@ -501,6 +493,7 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
       return;
     }
 
+    this.enablePreventAutoSelectionFlag();
     this.logger.info('Deselect facet value');
     this.values.clearPath();
     this.updateQueryStateModel([]);
@@ -539,8 +532,11 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
    * The flag is automatically set back to `false` after a query is built.
    */
   public enableFreezeFacetOrderFlag() {
-    Assert.exists(this.dynamicHierarchicalFacetQueryController);
     this.dynamicHierarchicalFacetQueryController.enableFreezeFacetOrderFlag();
+  }
+
+  public enablePreventAutoSelectionFlag() {
+    this.dynamicHierarchicalFacetQueryController.enablePreventAutoSelectionFlag();
   }
 
   /**
@@ -667,7 +663,7 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
   }
 
   private dependsOnReset() {
-    this.clear();
+    this.reset();
     this.updateAppearance();
   }
 

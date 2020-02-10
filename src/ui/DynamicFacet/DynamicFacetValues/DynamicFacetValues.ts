@@ -47,6 +47,10 @@ export class DynamicFacetValues implements IDynamicFacetValues {
     return this.facetValues.filter(value => value.isSelected).map(({ value }) => value);
   }
 
+  private get selectedDisplayValues() {
+    return this.facetValues.filter(value => value.isSelected).map(({ displayValue }) => displayValue);
+  }
+
   public get activeValues() {
     return this.facetValues.filter(value => !value.isIdle);
   }
@@ -150,6 +154,24 @@ export class DynamicFacetValues implements IDynamicFacetValues {
     }
   }
 
+  private appendSelectedCollapsedValues(fragment: DocumentFragment) {
+    if (!this.hasSelectedValues) {
+      return;
+    }
+
+    const selectedValues = this.selectedDisplayValues.join(', ');
+    fragment.appendChild(
+      $$(
+        'li',
+        {
+          className: 'coveo-dynamic-facet-collapsed-values',
+          ariaLabel: `${l('CurrentSelections')}: ${selectedValues}`
+        },
+        selectedValues
+      ).el
+    );
+  }
+
   public render() {
     const fragment = document.createDocumentFragment();
     $$(this.list).empty();
@@ -159,6 +181,8 @@ export class DynamicFacetValues implements IDynamicFacetValues {
     });
 
     this.appendShowMoreLess(fragment);
+
+    this.appendSelectedCollapsedValues(fragment);
 
     this.list.appendChild(fragment);
     return this.list;

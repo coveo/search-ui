@@ -33,7 +33,6 @@ export class DynamicHierarchicalFacetTestUtils {
       displayValue: value,
       moreValuesAvailable: false,
       numberOfResults: Math.ceil(Math.random() * 100000),
-      preventAutoSelect: false,
       path: [value]
     };
   }

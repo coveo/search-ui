@@ -61,6 +61,7 @@ export function DynamicFacetValueRendererTest() {
         expect(facet.toggleSelectValue).toHaveBeenCalledTimes(1);
         expect(facet.enableFreezeCurrentValuesFlag).toHaveBeenCalledTimes(1);
         expect(facet.enableFreezeFacetOrderFlag).toHaveBeenCalledTimes(1);
+        expect(facet.enablePreventAutoSelectionFlag).toHaveBeenCalledTimes(1);
         expect(facet.scrollToTop).toHaveBeenCalledTimes(1);
         expect(dynamicFacetValue.logSelectActionToAnalytics).toHaveBeenCalledTimes(1);
       });

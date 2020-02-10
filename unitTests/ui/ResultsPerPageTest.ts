@@ -23,6 +23,15 @@ export function ResultsPerPageTest() {
 
     afterEach(() => (test = null));
 
+    it('should be accessible', () => {
+      const label = test.cmp['span'];
+      const list = test.cmp['list'];
+
+      expect(label.id).toBeTruthy();
+      expect(list.getAttribute('aria-labelledby')).toEqual(label.id);
+      expect(list.getAttribute('role')).toEqual('group');
+    });
+
     describe('when calling #setResultsPerPage', () => {
       const numOfResults = 50;
 

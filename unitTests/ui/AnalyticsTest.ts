@@ -55,7 +55,8 @@ export function AnalyticsTest() {
         SearchEndpoint.endpoints['default'] = new SearchEndpoint({
           accessToken: 'some token',
           queryStringArguments: { organizationId: 'organization' },
-          restUri: 'some/uri'
+          restUri: 'some/uri',
+          renewAccessToken: async () => 'a renewed token'
         });
         test = Mock.basicComponentSetup<Analytics>(Analytics);
       });
@@ -66,6 +67,15 @@ export function AnalyticsTest() {
 
       it('use access token from default endpoint if not specified', () => {
         expect(test.cmp.options.token).toBe('some token');
+        expect(test.cmp.client.endpoint.endpointCaller.options.accessToken).toBe('some token');
+      });
+
+      it('renews the token correctly', done => {
+        SearchEndpoint.endpoints['default'].accessToken.doRenew().then(() => {
+          expect(test.cmp.options.token).toBe('a renewed token');
+          expect(test.cmp.client.endpoint.endpointCaller.options.accessToken).toBe('a renewed token');
+          done();
+        });
       });
 
       it('uses organization from default endpoint if not specified', () => {

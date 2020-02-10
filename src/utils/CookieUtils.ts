@@ -3,20 +3,10 @@ export class Cookie {
   private static prefix: string = 'coveo_';
 
   static set(name: string, value: string, expiration?: number) {
-    let domain: string, domainParts: string[], date, expires: string, host: string;
-
-    if (expiration) {
-      date = new Date();
-      date.setTime(date.getTime() + expiration);
-      expires = '; expires=' + date.toGMTString();
-    } else {
-      expires = '';
-    }
-
-    host = location.hostname;
+    const host = location.hostname;
     if (host.split('.').length === 1) {
       // no '.' in a domain - it's localhost or something similar
-      document.cookie = this.prefix + name + '=' + value + expires + '; path=/';
+      document.cookie = this.buildCookie(name, value, expiration);
     } else {
       // Remember the cookie on all subdomains.
       //
@@ -27,28 +17,38 @@ export class Cookie {
       // If the cookie will not be set, it means '.com'
       // is a top level domain and we need to
       // set the cookie to '.foo.com'
-      domainParts = host.split('.');
+      const domainParts = host.split('.');
       domainParts.shift();
-      domain = '.' + domainParts.join('.');
+      let domain = '.' + domainParts.join('.');
 
-      document.cookie = this.prefix + name + '=' + value + expires + '; path=/; domain=' + domain;
+      document.cookie = this.buildCookie(name, value, expiration, domain);
 
       // check if cookie was successfuly set to the given domain
       // (otherwise it was a Top-Level Domain)
       if (Cookie.get(name) == null || Cookie.get(name) != value) {
         // append '.' to current domain
         domain = '.' + host;
-        document.cookie = this.prefix + name + '=' + value + expires + '; path=/; domain=' + domain;
+        document.cookie = this.buildCookie(name, value, expiration, domain);
       }
     }
   }
 
+  private static buildCookie(name: string, value: string, expiration?: number, domain?: string) {
+    const expires = expiration ? this.buildExpiresValue(expiration) : '';
+    const domainCookie = domain ? `; domain=${domain}` : '';
+    return `${this.prefix}${name}=${value}${expires}${domainCookie}; SameSite=Lax; path=/`;
+  }
+
+  private static buildExpiresValue(expiration: number) {
+    return `; expires=${new Date(Date.now() + expiration).toUTCString()}`;
+  }
+
   static get(name: string) {
-    let nameEQ = this.prefix + name + '=';
-    let ca = document.cookie.split(';');
+    const nameEQ = `${this.prefix}${name}=`;
+    const ca = document.cookie.split(';');
     for (let i = 0; i < ca.length; i++) {
       let c = ca[i];
-      while (c.charAt(0) == ' ') {
+      while (c.charAt(0) === ' ') {
         c = c.substring(1, c.length);
       }
 

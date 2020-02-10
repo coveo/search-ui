@@ -133,7 +133,7 @@ export class Sort extends Component {
   /**
    * Selects this `Sort` component.
    *
-   * Triggers a query if selecting this component toggles its current [`sortCriteria`]{@link Sort.options.sortCriteria}.
+   * Updates the state model if selecting this component toggles its current [`sortCriteria`]{@link Sort.options.sortCriteria}.
    *
    * @param direction The sort direction. Can be one of: `ascending`, `descending`.
    */
@@ -151,6 +151,22 @@ export class Sort extends Component {
     }
 
     this.queryStateModel.set(QueryStateModel.attributesEnum.sort, this.currentCriteria.toString());
+  }
+
+  /**
+   * Selects this `Sort` component, then triggers a query if selecting this component toggles its current [`sortCriteria`]{@link Sort.options.sortCriteria}.
+   *
+   * Also logs an event in the usage analytics with the new current sort criteria.
+   */
+
+  public selectAndExecuteQuery() {
+    var oldCriteria = this.currentCriteria;
+    this.select();
+    if (oldCriteria != this.currentCriteria) {
+      this.queryController.deferExecuteQuery({
+        beforeExecuteQuery: () => logSortEvent(this.usageAnalytics, this.currentCriteria.sort + this.currentCriteria.direction)
+      });
+    }
   }
 
   public enable() {
@@ -242,13 +258,7 @@ export class Sort extends Component {
   }
 
   private handleClick() {
-    var oldCriteria = this.currentCriteria;
-    this.select();
-    if (oldCriteria != this.currentCriteria) {
-      this.queryController.deferExecuteQuery({
-        beforeExecuteQuery: () => logSortEvent(this.usageAnalytics, this.currentCriteria.sort + this.currentCriteria.direction)
-      });
-    }
+    this.selectAndExecuteQuery();
   }
 
   private isToggle(): boolean {
