@@ -14,7 +14,7 @@ import { AjaxError } from '../../src/rest/AjaxError';
 import _ = require('underscore');
 import { Utils } from '../../src/utils/Utils';
 import { IFacetSearchResponse } from '../../src/rest/Facet/FacetSearchResponse';
-import { IPlan } from '../../src/rest/Plan';
+import { ExecutionPlan } from '../../src/rest/Plan';
 
 export function SearchEndpointTest() {
   describe('SearchEndpoint', () => {
@@ -313,7 +313,7 @@ export function SearchEndpointTest() {
 
         describe('for /plan', () => {
           let qbuilder: QueryBuilder;
-          let promise: Promise<IPlan>;
+          let promise: Promise<ExecutionPlan>;
           beforeEach(() => {
             qbuilder = new QueryBuilder();
             qbuilder.expression.add('batman');
