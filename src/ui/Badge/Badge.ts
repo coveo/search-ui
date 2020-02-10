@@ -30,8 +30,6 @@ export interface IBadgeColor {
  *
  * This component is a result template component (see [Result Templates](https://docs.coveo.com/en/413/)). It
  * extends the {@link FieldValue} component. Therefore all FieldValue options are also available for a Badge component.
- *
- * @availablesince [July 2015 Release (v1.0.20)](https://docs.coveo.com/en/289/#july-2015-release-v1020)
  */
 export class Badge extends FieldValue implements IComponentBindings {
   static ID = 'Badge';

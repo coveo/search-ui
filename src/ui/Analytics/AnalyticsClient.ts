@@ -94,8 +94,6 @@ export interface IAnalyticsClient {
    * @param result The result that was clicked.
    * @param element The HTMLElement that the user has clicked in the interface. Default value is the element on which
    * the `Analytics` component is bound.
-   *
-   * @availablesince [July 2017 Minor Release (v1.2537.24)](https://docs.coveo.com/en/396/#july-2017-minor-release-v1253724)
    */
   logClickEvent<TMeta>(
     actionCause: IAnalyticsActionCause,
