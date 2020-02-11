@@ -194,8 +194,8 @@ export interface IFacetRequest {
   filterFacetCount?: boolean;
 
   /**
-   * The path to use as the path prefix for every query.
-
+   * The base path shared by all values for a given hierarchical facet.
+   *
    * **Default (Search API):** `[]`
    */
   basePath?: string[];
