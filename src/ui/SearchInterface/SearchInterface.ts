@@ -53,7 +53,6 @@ import { FacetColumnAutoLayoutAdjustment } from './FacetColumnAutoLayoutAdjustme
 import { FacetValueStateHandler } from './FacetValueStateHandler';
 import RelevanceInspectorModule = require('../RelevanceInspector/RelevanceInspector');
 import { ComponentsTypes } from '../../utils/ComponentsTypes';
-import { ResponsiveComponentsManager } from '../../Core';
 
 export interface ISearchInterfaceOptions {
   enableHistory?: boolean;
@@ -1206,13 +1205,6 @@ export class StandaloneSearchInterface extends SearchInterface {
     setTimeout(() => {
       this._window.location.href = `${link.protocol}//${link.host}${pathname}${link.search}${hash}${HashUtils.encodeValues(stateValues)}`;
     }, 0);
-  }
-
-  /**
-   * Notify all {@link ResponsiveComponentManager} on the page that they should handle a resize.
-   */
-  public resizeAllComponentsManager() {
-    ResponsiveComponentsManager.resizeAllComponentsManager();
   }
 
   private searchboxIsEmpty(): boolean {
