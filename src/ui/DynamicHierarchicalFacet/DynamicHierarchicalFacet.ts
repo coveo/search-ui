@@ -252,6 +252,7 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
       section: 'CommonOptions'
     }),
 
+    basePath: ComponentOptions.buildListOption<string>({ defaultValue: [] }),
     ...ResponsiveFacetOptions
   };
 

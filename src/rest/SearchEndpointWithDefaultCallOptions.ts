@@ -22,6 +22,7 @@ import { ISentryLog } from './SentryLog';
 import * as _ from 'underscore';
 import { IFacetSearchRequest } from './Facet/FacetSearchRequest';
 import { IFacetSearchResponse } from './Facet/FacetSearchResponse';
+import { ExecutionPlan } from './Plan';
 
 export class SearchEndpointWithDefaultCallOptions implements ISearchEndpoint {
   options: ISearchEndpointOptions;
@@ -48,6 +49,10 @@ export class SearchEndpointWithDefaultCallOptions implements ISearchEndpoint {
 
   public search(query: IQuery, callOptions?: IEndpointCallOptions): Promise<IQueryResults> {
     return this.endpoint.search(query, this.enrichCallOptions(callOptions));
+  }
+
+  public plan(query: IQuery, callOptions?: IEndpointCallOptions): Promise<ExecutionPlan> {
+    return this.endpoint.plan(query, this.enrichCallOptions(callOptions));
   }
 
   public getExportToExcelLink(query: IQuery, numberOfResults: number, callOptions?: IEndpointCallOptions): string {

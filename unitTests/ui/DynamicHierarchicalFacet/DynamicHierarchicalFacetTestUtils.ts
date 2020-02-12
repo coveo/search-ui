@@ -19,7 +19,7 @@ export class DynamicHierarchicalFacetTestUtils {
       numberOfValues: 5,
       pageSize: 10,
       enableMoreLess: true,
-      basePath: [],
+      basePath: ['hello', 'world'],
       ...options
     };
   }

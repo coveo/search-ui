@@ -14,6 +14,7 @@ import { AjaxError } from '../../src/rest/AjaxError';
 import _ = require('underscore');
 import { Utils } from '../../src/utils/Utils';
 import { IFacetSearchResponse } from '../../src/rest/Facet/FacetSearchResponse';
+import { ExecutionPlan } from '../../src/rest/Plan';
 
 export function SearchEndpointTest() {
   describe('SearchEndpoint', () => {
@@ -307,6 +308,69 @@ export function SearchEndpointTest() {
 
           jasmine.Ajax.requests.mostRecent().respondWith({
             status: 500
+          });
+        });
+
+        describe('for /plan', () => {
+          let qbuilder: QueryBuilder;
+          let promise: Promise<ExecutionPlan>;
+          beforeEach(() => {
+            qbuilder = new QueryBuilder();
+            qbuilder.expression.add('batman');
+            qbuilder.numberOfResults = 153;
+            qbuilder.enableCollaborativeRating = true;
+            promise = ep.plan(qbuilder.build());
+          });
+
+          function mockResponse(done) {
+            promise.then(() => done());
+
+            jasmine.Ajax.requests.mostRecent().respondWith({
+              status: 200,
+              responseText: JSON.stringify({})
+            });
+          }
+
+          it('calls the right endpoint', done => {
+            expect(jasmine.Ajax.requests.mostRecent().url).toContain(ep.getBaseUri() + '/plan?');
+
+            mockResponse(done);
+          });
+
+          it('calls the right HTTP method', done => {
+            expect(jasmine.Ajax.requests.mostRecent().method).toBe('POST');
+
+            mockResponse(done);
+          });
+
+          it('contains the right url parameters', done => {
+            expect(jasmine.Ajax.requests.mostRecent().url).toContain('organizationId=myOrgId');
+            expect(jasmine.Ajax.requests.mostRecent().url).toContain('potatoe=mashed');
+
+            mockResponse(done);
+          });
+
+          it('contains the right request headers', done => {
+            expect(jasmine.Ajax.requests.mostRecent().requestHeaders).toEqual(
+              jasmine.objectContaining({
+                'Content-Type': 'application/json; charset="UTF-8"'
+              })
+            );
+
+            mockResponse(done);
+          });
+
+          it('contains the right params', done => {
+            expect(JSON.parse(jasmine.Ajax.requests.mostRecent().params)).toEqual(
+              jasmine.objectContaining({
+                q: 'batman',
+                numberOfResults: 153,
+                enableCollaborativeRating: true,
+                actionsHistory: []
+              })
+            );
+
+            mockResponse(done);
           });
         });
 
