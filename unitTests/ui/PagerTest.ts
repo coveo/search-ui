@@ -8,6 +8,8 @@ import { registerCustomMatcher } from '../CustomMatchers';
 import { FakeResults } from '../Fake';
 import * as Mock from '../MockEnvironment';
 import { Simulate } from '../Simulate';
+import { l } from '../../src/strings/Strings';
+import { find } from 'underscore';
 
 export function PagerTest() {
   describe('Pager', () => {
@@ -127,16 +129,69 @@ export function PagerTest() {
       expect($$(anchors[anchors.length - 1]).text()).toBe('10');
     });
 
-    it('should set the aria-label on elements correctly', () => {
-      const builder = new QueryBuilder();
-      Simulate.query(test.env, {
-        query: builder.build(),
-        results: FakeResults.createFakeResults(100)
+    describe('with 100 fake results', () => {
+      let listItems: HTMLElement[];
+      beforeEach(() => {
+        const builder = new QueryBuilder();
+        builder.firstResult = 50;
+        Simulate.query(test.env, {
+          query: builder.build(),
+          results: FakeResults.createFakeResults(100)
+        });
+        listItems = $$(test.cmp.element).findAll('.coveo-pager-list-item');
       });
 
-      const anchors = $$(test.cmp.element).findAll('a.coveo-pager-list-item-text');
-      expect($$(anchors[0]).text()).toBe('1');
-      expect(anchors[0].parentElement.getAttribute('aria-label')).toBe('Page 1');
+      it('should set the aria-label on the navigation element', () => {
+        expect(test.cmp['list'].getAttribute('aria-label')).toEqual(l('Pagination'));
+      });
+
+      it('should set the role on the navigation element', () => {
+        expect(test.cmp['list'].getAttribute('role')).toEqual('navigation');
+      });
+
+      it('should set the aria-label on elements correctly', () => {
+        listItems.forEach((listItem, index) => {
+          if (index !== 0 && index !== listItems.length - 1) {
+            const pageNumber = parseInt($$(listItem).text());
+            expect(listItem.getAttribute('aria-label')).toEqual(l('PageNumber', pageNumber.toString()));
+          }
+        });
+      });
+
+      it('should set the role on elements', () => {
+        listItems.forEach(listItem => expect(listItem.getAttribute('role')).toEqual('button'));
+      });
+
+      it('should not make the next arrow a toggle', () => {
+        expect(test.cmp.element.querySelector('.coveo-pager-next').getAttribute('aria-pressed')).toBeNull();
+      });
+
+      it('should not make the previous arrow a toggle', () => {
+        expect(test.cmp.element.querySelector('.coveo-pager-previous').getAttribute('aria-pressed')).toBeNull();
+      });
+
+      it('should set aria-pressed to true on the active page element', () => {
+        const activeElement = find(listItems, listItem => $$(listItem).text() === test.cmp.currentPage.toString());
+        expect(activeElement.getAttribute('aria-pressed')).toEqual(true.toString());
+      });
+
+      it('should set aria-pressed to false on every inactive page element', () => {
+        listItems.forEach((listItem, index) => {
+          if (index !== 0 && index !== listItems.length - 1) {
+            if ($$(listItem).text() !== test.cmp.currentPage.toString()) {
+              expect(listItem.getAttribute('aria-pressed')).toEqual(false.toString());
+            }
+          }
+        });
+      });
+
+      it('should set tabindex to -1 on every link element', () => {
+        listItems.forEach(listItem => expect(listItem.children.item(0).getAttribute('tabindex')).toEqual('-1'));
+      });
+
+      it('should set aria-hidden to true on every link element', () => {
+        listItems.forEach(listItem => expect(listItem.children.item(0).getAttribute('aria-hidden')).toEqual('true'));
+      });
     });
 
     it('should not reset page number on a new query if the origin is a pager', () => {
