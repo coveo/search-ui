@@ -14,6 +14,7 @@ import _ = require('underscore');
 import { IFieldDescription } from '../src/rest/FieldDescription';
 import { ICategoryFacetResult } from '../src/rest/CategoryFacetResult';
 import { range } from 'underscore';
+import { IPlanResponse } from '../src/rest/Plan';
 
 export class FakeResults {
   static createFakeResults(count = 10, token = ''): IQueryResults {
@@ -444,6 +445,18 @@ export class FakeResults {
       fieldSourceType: null,
       defaultValue: null,
       description: 'a description'
+    };
+  }
+
+  static createFakePlanResponse(): IPlanResponse {
+    return {
+      preprocessingOutput: {
+        triggers: [{ type: 'redirect', content: 'https://www.coveo.com/fr/solutions/commerce' }]
+      },
+      parsedInput: {
+        basicExpression: 'commerce',
+        largeExpression: 'coveo commerce solutions'
+      }
     };
   }
 }

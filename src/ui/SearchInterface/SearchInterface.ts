@@ -29,7 +29,7 @@ import { SearchEndpoint } from '../../rest/SearchEndpoint';
 import { $$ } from '../../utils/Dom';
 import { HashUtils } from '../../utils/HashUtils';
 import { Utils } from '../../utils/Utils';
-import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
+import { analyticsActionCauseList, IAnalyticsTriggerRedirect } from '../Analytics/AnalyticsActionListMeta';
 import { IAnalyticsClient } from '../Analytics/AnalyticsClient';
 import { NoopAnalyticsClient } from '../Analytics/NoopAnalyticsClient';
 import { AriaLive, IAriaLive } from '../AriaLive/AriaLive';
@@ -54,7 +54,6 @@ import { FacetValueStateHandler } from './FacetValueStateHandler';
 import RelevanceInspectorModule = require('../RelevanceInspector/RelevanceInspector');
 import { ComponentsTypes } from '../../utils/ComponentsTypes';
 import { ScrollRestorer } from './ScrollRestorer';
-import { ResponsiveComponentsManager } from '../../Core';
 
 export interface ISearchInterfaceOptions {
   enableHistory?: boolean;
@@ -1180,8 +1179,28 @@ export class StandaloneSearchInterface extends SearchInterface {
     data.cancel = true;
 
     if (!this.searchboxIsEmpty() || this.options.redirectIfEmpty) {
-      this.redirectToSearchPage(dataToSendOnBeforeRedirect.searchPageUri);
+      this.doRedirect(dataToSendOnBeforeRedirect.searchPageUri);
     }
+  }
+
+  private async doRedirect(searchPage: string) {
+    const executionPlan = await this.queryController.fetchQueryExecutionPlan();
+    const redirectionURL = executionPlan && executionPlan.redirectionURL;
+    if (!redirectionURL) {
+      return this.redirectToSearchPage(searchPage);
+    }
+
+    this.redirectToURL(redirectionURL);
+  }
+
+  public redirectToURL(url: string) {
+    this.usageAnalytics.logCustomEvent<IAnalyticsTriggerRedirect>(
+      analyticsActionCauseList.triggerRedirect,
+      { redirectedTo: url },
+      this.element
+    );
+
+    this._window.location.replace(url);
   }
 
   public redirectToSearchPage(searchPage: string) {
@@ -1213,13 +1232,6 @@ export class StandaloneSearchInterface extends SearchInterface {
     setTimeout(() => {
       this._window.location.href = `${link.protocol}//${link.host}${pathname}${link.search}${hash}${HashUtils.encodeValues(stateValues)}`;
     }, 0);
-  }
-
-  /**
-   * Notify all {@link ResponsiveComponentManager} on the page that they should handle a resize.
-   */
-  public resizeAllComponentsManager() {
-    ResponsiveComponentsManager.resizeAllComponentsManager();
   }
 
   private searchboxIsEmpty(): boolean {

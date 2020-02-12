@@ -24,7 +24,8 @@ export class DynamicHierarchicalFacetQueryController {
       sortCriteria: <FacetSortCriteria>this.facet.options.sortCriteria,
       injectionDepth: this.facet.options.injectionDepth,
       delimitingCharacter: this.facet.options.delimitingCharacter,
-      filterFacetCount: this.facet.options.filterFacetCount
+      filterFacetCount: this.facet.options.filterFacetCount,
+      basePath: this.facet.options.basePath
     });
     this.resetNumberOfValuesToRequest();
     this.resetFlagsDuringQuery();
