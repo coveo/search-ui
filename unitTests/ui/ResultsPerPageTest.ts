@@ -29,7 +29,7 @@ export function ResultsPerPageTest() {
 
       expect(label.id).toBeTruthy();
       expect(list.getAttribute('aria-labelledby')).toEqual(label.id);
-      expect(list.getAttribute('role')).toEqual('group');
+      expect(list.getAttribute('role')).toEqual('radiogroup');
     });
 
     describe('when calling #setResultsPerPage', () => {
