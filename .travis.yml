@@ -20,13 +20,7 @@ script:
 - echo $PACKAGE_JSON_VERSION
 - yarn run injectTag
 - yarn run build
-- if [ "x$TRAVIS_TAG" != "x" ]; then yarn run minimize ; fi
-- yarn run unitTests
-- if [ "x$TRAVIS_TAG" != "x" ]; then yarn run accessibilityTests ; fi
-- set +e
-- yarn run uploadCoverage
-- set -e
-- yarn run validateTypeDefinitions
+- yarn run accessibilityTests
 after_success:
 - if [ "x$TRAVIS_TAG" != "x" ]; then bash ./deploy.doc.sh ; fi
 - yarn run docsitemap
