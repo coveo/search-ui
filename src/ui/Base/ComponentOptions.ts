@@ -203,6 +203,8 @@ export class ComponentOptions {
 
   /**
    * @deprecated Use buildJsonOption instead
+   *
+   * @deprecatedsince [2017 Javascript Search Framework Releases](https://docs.coveo.com/en/373/#december-2017-release-v236794)
    */
   static buildJsonObjectOption<T>(optionArgs?: IComponentJsonObjectOption<T>): T {
     return ComponentOptions.buildJsonOption(optionArgs);

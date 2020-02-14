@@ -43,6 +43,8 @@ export interface IDistanceOptions {
  * Components relying on the current distance should be disabled until this component successfully provides a distance.
  *
  * See also [`DistanceEvents`]{@link DistanceEvents}.
+ *
+ * @availablesince [November 2017 Release (v2.3477.9)](https://docs.coveo.com/en/373/#november-2017-release-v234779)
  */
 export class DistanceResources extends Component {
   public static ID = 'DistanceResources';

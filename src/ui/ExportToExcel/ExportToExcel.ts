@@ -22,6 +22,8 @@ export interface IExportToExcelOptions {
 /**
  * The ExportToExcel component renders an item in the {@link Settings} menu to allow the end user to export the current
  * search results to the Microsoft Excel format (.xlsx).
+ *
+ * @availablesince [November 2015 Release (v1.0.139)](https://docs.coveo.com/en/289/#november-2015-release-v10139)
  */
 export class ExportToExcel extends Component {
   static ID = 'ExportToExcel';
@@ -46,6 +48,8 @@ export class ExportToExcel extends Component {
      * Consequently, you should avoid setting this value above the default index limit of 1000 search results.
      *
      * Default value is `100`. Minimum value is `1`.
+     *
+     * @availablesince [February 2016 Release (v1.0.318)](https://docs.coveo.com/en/309/#february-2016-release-v10318)
      */
     numberOfResults: ComponentOptions.buildNumberOption({ defaultValue: 100, min: 1 }),
     /**
