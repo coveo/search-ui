@@ -141,8 +141,11 @@ export class Pager extends Component {
     );
     this.addAlwaysActiveListeners();
 
-    this.list = document.createElement('ul');
-    $$(this.list).addClass('coveo-pager-list');
+    this.list = $$('ul', {
+      className: 'coveo-pager-list',
+      role: 'navigation',
+      ariaLabel: l('Pagination')
+    }).el;
     element.appendChild(this.list);
   }
 
@@ -248,18 +251,26 @@ export class Pager extends Component {
       this.currentPage = pagerBoundary.currentPage;
       if (pagerBoundary.end - pagerBoundary.start > 0) {
         for (let i = pagerBoundary.start; i <= pagerBoundary.end; i++) {
-          const listItemValue = document.createElement('a');
-          $$(listItemValue).addClass(['coveo-pager-list-item-text', 'coveo-pager-anchor']);
-          $$(listItemValue).text(i.toString(10));
+          const listItemValue = $$(
+            'a',
+            {
+              className: 'coveo-pager-list-item-text coveo-pager-anchor',
+              tabindex: -1,
+              ariaHidden: 'true'
+            },
+            i.toString(10)
+          ).el;
 
           const page = i;
           const listItem = $$('li', {
             className: 'coveo-pager-list-item',
             tabindex: 0
           }).el;
-          if (page === this.currentPage) {
+          const isCurrentPage = page === this.currentPage;
+          if (isCurrentPage) {
             $$(listItem).addClass('coveo-active');
           }
+          $$(listItem).setAttribute('aria-pressed', isCurrentPage.toString());
 
           const clickAction = () => this.handleClickPage(page);
 
@@ -367,7 +378,9 @@ export class Pager extends Component {
     });
 
     const previousLink = $$('a', {
-      title: l('Previous')
+      title: l('Previous'),
+      tabindex: -1,
+      ariaHidden: 'true'
     });
 
     const previousIcon = $$(
@@ -398,7 +411,9 @@ export class Pager extends Component {
     });
 
     const nextLink = $$('a', {
-      title: l('Next')
+      title: l('Next'),
+      tabindex: -1,
+      ariaHidden: 'true'
     });
 
     const nextIcon = $$(
