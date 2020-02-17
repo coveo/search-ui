@@ -773,7 +773,7 @@ export function DynamicFacetTest() {
       it(`when calling reset
       should call the "updateVisibilityBasedOnDependsOn" method of the DependsOnManager`, () => {
         test.cmp.reset();
-        expect(test.cmp.dependsOnManager.updateVisibilityBasedOnDependsOn).not.toHaveBeenCalled();
+        expect(test.cmp.dependsOnManager.updateVisibilityBasedOnDependsOn).toHaveBeenCalled();
       });
 
       it(`when facet has no selected values
