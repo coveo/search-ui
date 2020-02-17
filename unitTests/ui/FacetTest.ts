@@ -680,10 +680,6 @@ export function FacetTest() {
             it('should set aria-expanded to true', () => {
               expect(accessibleElement.getAttribute('aria-expanded')).toEqual(true.toString());
             });
-
-            it('should set aria-controls to the given id', () => {
-              expect(accessibleElement.getAttribute('aria-controls')).toEqual(searchResultsElement.id);
-            });
           });
 
           describe('collapsed', () => {
