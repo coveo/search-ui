@@ -56,5 +56,21 @@ export function LocalStorageHistoryControllerTest() {
         expect(env.queryStateModel.setMultiple).toHaveBeenCalledWith(jasmine.objectContaining({ q: queryInHash }));
       });
     });
+
+    it('calling #setState saves the passed values in localstorage', () => {
+      const newState = { q: 'hello world' };
+      spyOn(localStorageHistoryController.storage, 'save');
+
+      localStorageHistoryController.setState(newState);
+      expect(localStorageHistoryController.storage.save).toHaveBeenCalledWith(newState);
+    });
+
+    it('calling #replaceState saves the passed values in localstorage', () => {
+      const newState = { q: 'hello world' };
+      spyOn(localStorageHistoryController.storage, 'save');
+
+      localStorageHistoryController.replaceState(newState);
+      expect(localStorageHistoryController.storage.save).toHaveBeenCalledWith(newState);
+    });
   });
 }
