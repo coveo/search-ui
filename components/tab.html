@@ -424,8 +424,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L291">ui/Tab/Tab.ts
-									:291</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L284">ui/Tab/Tab.ts
+									:284</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -459,8 +459,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L265">ui/Tab/Tab.ts
-									:265</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L258">ui/Tab/Tab.ts
+									:258</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -818,8 +818,8 @@ data-constant&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L226">ui/Tab/Tab.ts
-							:226</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L219">ui/Tab/Tab.ts
+							:219</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -842,29 +842,23 @@ data-constant&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L172">ui/Tab/Tab.ts
-							:172</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L163">ui/Tab/Tab.ts
+							:163</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<dl class="tsd-deprecated">
 						</dl>
 						<div class="lead">
-							<p>Specifies whether to filter duplicates in the search results when the user selects the Tab.</p>
+							<p>Whether to filter out duplicates, so that items resembling one another only appear once in the query results.</p>
 						</div>
-						<p>Setting this option to <code>true</code> forces duplicates to not appear in the search results. However, <a href="facet.html">Facet</a>
-						counts still include duplicates, which can be confusing for the end user. This is a limitation of the index.</p>
-						<p><strong>Example:</strong></p>
-						<blockquote>
-							<p>The end user narrows a query down to one item that has a duplicate. If this options is <code>true</code> and the user
-							selects the Tab, only one item appears in the search results while the Facet count is still 2.</p>
-						</blockquote>
-						<p><strong>Note:</strong></p>
-						<blockquote>
-							<p>It is also possible to enable duplicate filtering for the entire <a href="searchinterface.html">SearchInterface</a> rather than for a
-							single Tab (see <a href="searchinterface.html#options.enableduplicatefiltering">SearchInterface.options.enableDuplicateFiltering</a>).</p>
-						</blockquote>
-						<p>Default value is <code>false</code>.</p>
+						<p><strong>Notes:</strong></p>
+						<ul>
+							<li>Two items must be at least 85% similar to one another to be considered duplicates.</li>
+							<li>When a pair of duplicates is found, only the higher-ranked item of the two is kept in the result set.</li>
+							<li>Enabling this feature can make the total result count less precise, as only the requested page of query results is submitted to duplicate filtering.</li>
+							<li>The default value for this option can be modified through the <a href="searchinterface.html">SearchInterface</a> component.</li>
+						</ul>
 						<dl class="tsd-comment-tags">
 							<dt>Default</dt>
 							<dd><p><code>false</code></p>
@@ -884,8 +878,8 @@ data-enable-duplicate-filtering&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L216">ui/Tab/Tab.ts
-							:216</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L209">ui/Tab/Tab.ts
+							:209</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -902,6 +896,9 @@ data-enable-duplicate-filtering&#x3D;&#x27;false&#x27;</pre>
 						<dl class="tsd-comment-tags">
 							<dt>Default</dt>
 							<dd><p><code>true</code></p>
+							</dd>
+							<dt>Available since</dt>
+							<dd><p><a href="https://docs.coveo.com/en/309/#october-2016-release-v115505">October 2016 Release (v1.1550.5)</a></p>
 							</dd>
 						</dl>
 					</div>
@@ -1039,8 +1036,8 @@ data-enable-responsive-mode&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L204">ui/Tab/Tab.ts
-							:204</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L195">ui/Tab/Tab.ts
+							:195</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1073,8 +1070,8 @@ data-enable-responsive-mode&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L183">ui/Tab/Tab.ts
-							:183</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L174">ui/Tab/Tab.ts
+							:174</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1134,8 +1131,8 @@ data-enable-responsive-mode&#x3D;&#x27;false&#x27;</pre>
 								<p>Overwrites <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#constructor">constructor</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L227">ui/Tab/Tab.ts
-									:227</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L220">ui/Tab/Tab.ts
+									:220</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">

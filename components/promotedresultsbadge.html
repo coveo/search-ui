@@ -212,15 +212,20 @@
 			</div>
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
+					<dl class="tsd-deprecated">
+					</dl>
 					<div class="lead">
-						<p>The <code>PromotedResultsBadge</code> component adds a badge to promoted results in your interface.</p>
+						<p>Depending on its configuration, this component will render badges on query result items whose ranking scores were increased by <a href="https://docs.coveo.com/en/1961/">featured results</a> query pipeline rules and/or <a href="https://docs.coveo.com/en/1671/#automatic-relevance-tuning-art-feature">Coveo ML ART</a>.</p>
 					</div>
-					<p>To be considered promoted, a result needs to either:</p>
-					<ul>
-						<li>be a Featured Result configured through a Coveo Query Pipeline (see <a href="https://docs.coveo.com/en/1961/">Adding and Managing Query Pipeline Featured Results</a>)</li>
-						<li>be a recommended result by Coveo Machine Learning (see <a href="https://docs.coveo.com/en/1671/#automatic-relevance-tuning-art-feature">Automatic Relevance Tuning (ART) Feature</a>).</li>
-					</ul>
-					<p>You can add this component anywhere in your search interface. The component will then add a badge to your results after they have been rendered.</p>
+					<p>This component can be put anywhere in the markup configuration of a search interface. However, it is meant to be initialized only once, and should thus never be included in a result template.</p>
+					<dl class="tsd-comment-tags">
+						<dt>Available since</dt>
+						<dd><p><a href="https://docs.coveo.com/en/1360/">July 2018 Release (v2.4382.10)</a></p>
+						</dd>
+						<dt>Additional documentation</dt>
+						<dd><p><a href="https://docs.coveo.com/en/3123/">Adding Promoted Results Badges</a></p>
+						</dd>
+					</dl>
 				</div>
 			</section>
 			<div class="preview-container tsd-panel">
@@ -670,15 +675,15 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/PromotedResultsBadge/PromotedResultsBadge.ts#L71">ui/PromotedResultsBadge/PromotedResultsBadge.ts
-							:71</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/PromotedResultsBadge/PromotedResultsBadge.ts#L70">ui/PromotedResultsBadge/PromotedResultsBadge.ts
+							:70</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<dl class="tsd-deprecated">
 						</dl>
 						<div class="lead">
-							<p>Specifies the caption that should be used for &quot;Featured Results&quot;.</p>
+							<p>The caption to show on the badge for results promoted by a <em>featured results</em> query pipeline rule.</p>
 						</div>
 						<p>Default value is the localized string for <code>Featured</code>.</p>
 						<dl class="tsd-comment-tags">
@@ -689,7 +694,7 @@
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
-						<pre>data-caption-for-featured&#x3D;&#x27;foo&#x27;</pre>
+						<pre>data-caption-for-featured&#x3D;&#x27;Recommended by ACME&#x27;</pre>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
@@ -699,15 +704,15 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/PromotedResultsBadge/PromotedResultsBadge.ts#L62">ui/PromotedResultsBadge/PromotedResultsBadge.ts
-							:62</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/PromotedResultsBadge/PromotedResultsBadge.ts#L58">ui/PromotedResultsBadge/PromotedResultsBadge.ts
+							:58</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<dl class="tsd-deprecated">
 						</dl>
 						<div class="lead">
-							<p>Specifies the caption that should be used for &quot;Recommended Results&quot;.</p>
+							<p>The caption to show on the badge for results promoted by Coveo ML ART.</p>
 						</div>
 						<p>Default value is the localized string for <code>Recommended</code>.</p>
 						<dl class="tsd-comment-tags">
@@ -718,7 +723,7 @@
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
-						<pre>data-caption-for-recommended&#x3D;&#x27;foo&#x27;</pre>
+						<pre>data-caption-for-recommended&#x3D;&#x27;Recommended by Coveo ML&#x27;</pre>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
@@ -728,23 +733,23 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/PromotedResultsBadge/PromotedResultsBadge.ts#L86">ui/PromotedResultsBadge/PromotedResultsBadge.ts
-							:86</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/PromotedResultsBadge/PromotedResultsBadge.ts#L87">ui/PromotedResultsBadge/PromotedResultsBadge.ts
+							:87</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<dl class="tsd-deprecated">
 						</dl>
 						<div class="lead">
-							<p>Specifies the color that should be used for &quot;Featured Results&quot;.</p>
+							<p>The badge color for results promoted by a <em>featured results</em> query pipeline rule.</p>
 						</div>
-						<p>This can be specified using:</p>
+						<p>Can be specified using:</p>
 						<ul>
-							<li>a hexadecimal value (e.g., <code>#f58020</code>)</li>
-							<li>an RGB value (e.g., <code>rgb(125,10,36)</code>)</li>
-							<li>a CSS color name (e.g., <code>red</code>)</li>
+							<li>a hexadecimal value</li>
+							<li>an RGB value</li>
+							<li>a CSS color name</li>
 						</ul>
-						<p>Default value is <code>undefined</code>, and is controlled through the default stylesheet of the framework.</p>
+						<p>Default value is controlled through the default stylesheet of the framework.</p>
 						<dl class="tsd-comment-tags">
 							<dt>Only effective when</dt>
 							<dd><p><a href="promotedresultsbadge.html#options.showbadgeforfeaturedresults"><code>showBadgeForFeaturedResults</code></a> is set to <code>true</code></p>
@@ -753,7 +758,9 @@
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
-						<pre>data-color-for-featured-results&#x3D;&#x27;foo&#x27;</pre>
+						<pre>data-color-for-featured-results&#x3D;&#x27;#f58020&#x27;
+data-color-for-featured-results&#x3D;&#x27;rgb(125 10 36)&#x27;
+data-color-for-featured-results&#x3D;&#x27;red&#x27;</pre>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
@@ -763,23 +770,23 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/PromotedResultsBadge/PromotedResultsBadge.ts#L97">ui/PromotedResultsBadge/PromotedResultsBadge.ts
-							:97</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/PromotedResultsBadge/PromotedResultsBadge.ts#L101">ui/PromotedResultsBadge/PromotedResultsBadge.ts
+							:101</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<dl class="tsd-deprecated">
 						</dl>
 						<div class="lead">
-							<p>Specifies the color that should be used for &quot;Recommended Results&quot;.</p>
+							<p>The badge color for results promoted by Coveo ML ART.</p>
 						</div>
-						<p>This can be specified using:</p>
+						<p>Can be specified using:</p>
 						<ul>
-							<li>a hexadecimal value (e.g., <code>#f58020</code>)</li>
-							<li>an RGB value (e.g., <code>rgb(125,10,36)</code>)</li>
-							<li>a CSS color name (e.g., <code>red</code>)</li>
+							<li>a hexadecimal value</li>
+							<li>an RGB value</li>
+							<li>a CSS color name</li>
 						</ul>
-						<p>Default value is <code>undefined</code>, and is controlled through the default stylesheet of the framework.</p>
+						<p>Default value is controlled through the default stylesheet of the framework.</p>
 						<dl class="tsd-comment-tags">
 							<dt>Only effective when</dt>
 							<dd><p><a href="promotedresultsbadge.html#options.showbadgeforrecommendedresults"><code>showBadgeForRecommendedResults</code></a> is set to <code>true</code></p>
@@ -788,7 +795,9 @@
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
-						<pre>data-color-for-recommended-results&#x3D;&#x27;foo&#x27;</pre>
+						<pre>data-color-for-recommended-results&#x3D;&#x27;#f58020&#x27;
+data-color-for-recommended-results&#x3D;&#x27;rgb(125 10 36)&#x27;
+data-color-for-recommended-results&#x3D;&#x27;red&#x27;</pre>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
@@ -798,23 +807,19 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/PromotedResultsBadge/PromotedResultsBadge.ts#L48">ui/PromotedResultsBadge/PromotedResultsBadge.ts
-							:48</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/PromotedResultsBadge/PromotedResultsBadge.ts#L44">ui/PromotedResultsBadge/PromotedResultsBadge.ts
+							:44</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<dl class="tsd-deprecated">
 						</dl>
 						<div class="lead">
-							<p>Whether to show a badge when a result was promoted through a query pipeline <em>featured results</em> rule.</p>
+							<p>Whether to show a badge when a result was promoted by a featured results query pipeline rule.</p>
 						</div>
 						<dl class="tsd-comment-tags">
 							<dt>Default</dt>
 							<dd><p><code>true</code></p>
-							</dd>
-							<dt>Additional documentation</dt>
-							<dd><p><a href="https://docs.coveo.com/1961/">Adding and Managing Query Pipeline Featured Results</a></p>
-								<p>Default value is <code>true</code>.</p>
 							</dd>
 						</dl>
 					</div>
@@ -831,23 +836,19 @@ data-show-badge-for-featured-results&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/PromotedResultsBadge/PromotedResultsBadge.ts#L55">ui/PromotedResultsBadge/PromotedResultsBadge.ts
-							:55</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/PromotedResultsBadge/PromotedResultsBadge.ts#L49">ui/PromotedResultsBadge/PromotedResultsBadge.ts
+							:49</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<dl class="tsd-deprecated">
 						</dl>
 						<div class="lead">
-							<p>Whether to show a badge when a result was promoted by a Coveo ML ART model.</p>
+							<p>Whether to show a badge when a result was promoted by Coveo ML ART.</p>
 						</div>
 						<dl class="tsd-comment-tags">
 							<dt>Default</dt>
 							<dd><p><code>false</code></p>
-							</dd>
-							<dt>Additional documentation</dt>
-							<dd><p>(Automatic Relevance Tuning (ART) Feature)[<a href="https://docs.coveo.com/en/1671/#automatic-relevance-tuning-art-feature]">https://docs.coveo.com/en/1671/#automatic-relevance-tuning-art-feature]</a></p>
-								<p>Default value is <code>false</code>.</p>
 							</dd>
 						</dl>
 					</div>

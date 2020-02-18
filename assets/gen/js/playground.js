@@ -2544,7 +2544,21 @@ var Dom = /** @class */ (function () {
      */
     Dom.prototype.empty = function () {
         while (this.el.firstChild) {
-            this.el.removeChild(this.el.firstChild);
+            this.removeChild(this.el.firstChild);
+        }
+    };
+    Dom.prototype.removeChild = function (child) {
+        var oldParent = child.parentNode;
+        try {
+            this.el.removeChild(child);
+        }
+        catch (e) {
+            if (e.name !== 'NotFoundError') {
+                throw e;
+            }
+            if (oldParent === child.parentNode) {
+                throw e;
+            }
         }
     };
     /**
@@ -3357,6 +3371,7 @@ var TimeSpanUtils_1 = __webpack_require__(8);
 var UrlUtils_1 = __webpack_require__(9);
 var AccessToken_1 = __webpack_require__(36);
 var BackOffRequest_1 = __webpack_require__(37);
+var Plan_1 = __webpack_require__(39);
 var DefaultSearchEndpointOptions = /** @class */ (function () {
     function DefaultSearchEndpointOptions() {
         this.version = 'v2';
@@ -3564,6 +3579,11 @@ var SearchEndpoint = /** @class */ (function () {
     SearchEndpoint.prototype.isJsonp = function () {
         return this.caller.useJsonp;
     };
+    SearchEndpoint.prototype.buildCompleteCall = function (request, callOptions, callParams) {
+        Assert_1.Assert.exists(request);
+        callParams = __assign({}, callParams, { requestData: __assign({}, callParams.requestData, _.omit(request, function (queryParam) { return Utils_1.Utils.isNullOrUndefined(queryParam); })) });
+        return { options: callOptions, params: callParams };
+    };
     /**
      * Performs a search on the index and returns a Promise of [`IQueryResults`]{@link IQueryResults}.
      *
@@ -3577,11 +3597,10 @@ var SearchEndpoint = /** @class */ (function () {
      */
     SearchEndpoint.prototype.search = function (query, callOptions, callParams) {
         var _this = this;
-        Assert_1.Assert.exists(query);
-        callParams = __assign({}, callParams, { requestData: __assign({}, callParams.requestData, _.omit(query, function (queryParam) { return Utils_1.Utils.isNullOrUndefined(queryParam); })) });
+        var call = this.buildCompleteCall(query, callOptions, callParams);
         this.logger.info('Performing REST query', query);
         var start = new Date();
-        return this.performOneCall(callParams, callOptions).then(function (results) {
+        return this.performOneCall(call.params, call.options).then(function (results) {
             _this.logger.info('REST query successful', results, query);
             // Version check
             // If the SearchAPI doesn't give us any apiVersion info, we assume version 1 (before apiVersion was implemented)
@@ -3604,6 +3623,32 @@ var SearchEndpoint = /** @class */ (function () {
             QueryUtils_1.QueryUtils.setIndexAndUidOnQueryResults(query, results, results.searchUid, results.pipeline, results.splitTestRun);
             QueryUtils_1.QueryUtils.setTermsToHighlightOnQueryResults(query, results);
             return results;
+        });
+    };
+    /**
+     * Gets the plan of execution of a search request, without performing it.
+     *
+     * @param query The query to execute. Typically, the query object is built using a
+     * [`QueryBuilder`]{@link QueryBuilder}.
+     * @param callOptions An additional set of options to use for this call.
+     * @param callParams The options injected by the applied decorators.
+     * @returns {Promise<ExecutionPlan>} A Promise of plan results.
+     */
+    SearchEndpoint.prototype.plan = function (query, callOptions, callParams) {
+        return __awaiter(this, void 0, void 0, function () {
+            var call, planResponse;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        call = this.buildCompleteCall(query, callOptions, callParams);
+                        this.logger.info('Performing REST query PLAN', query);
+                        return [4 /*yield*/, this.performOneCall(call.params, call.options)];
+                    case 1:
+                        planResponse = _a.sent();
+                        this.logger.info('REST query successful', planResponse, query);
+                        return [2 /*return*/, new Plan_1.ExecutionPlan(planResponse)];
+                }
+            });
         });
     };
     /**
@@ -3853,9 +3898,9 @@ var SearchEndpoint = /** @class */ (function () {
      */
     SearchEndpoint.prototype.getQuerySuggest = function (request, callOptions, callParams) {
         var _this = this;
-        callParams = __assign({}, callParams, { requestData: __assign({}, callParams.requestData, _.omit(request, function (parameter) { return Utils_1.Utils.isNullOrUndefined(parameter); })) });
+        var call = this.buildCompleteCall(request, callOptions, callParams);
         this.logger.info('Performing REST query to get query suggest', request);
-        return this.performOneCall(callParams, callOptions).then(function (response) {
+        return this.performOneCall(call.params, call.options).then(function (response) {
             _this.logger.info('REST query successful', response);
             return response;
         });
@@ -3874,13 +3919,13 @@ var SearchEndpoint = /** @class */ (function () {
      */
     SearchEndpoint.prototype.facetSearch = function (request, callOptions, callParams) {
         return __awaiter(this, void 0, void 0, function () {
-            var response;
+            var call, response;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        callParams = __assign({}, callParams, { requestData: __assign({}, callParams.requestData, _.omit(request, function (parameter) { return Utils_1.Utils.isNullOrUndefined(parameter); })) });
+                        call = this.buildCompleteCall(request, callOptions, callParams);
                         this.logger.info('Performing REST query to get facet search results', request);
-                        return [4 /*yield*/, this.performOneCall(callParams, callOptions)];
+                        return [4 /*yield*/, this.performOneCall(call.params, call.options)];
                     case 1:
                         response = _a.sent();
                         this.logger.info('REST query successful', response);
@@ -4175,14 +4220,22 @@ var SearchEndpoint = /** @class */ (function () {
         accessTokenInUrl()
     ], SearchEndpoint.prototype, "getAuthenticationProviderUri", null);
     __decorate([
-        path('/'),
-        method('POST'),
-        responseType('text'),
         includeActionsHistory(),
         includeReferrer(),
         includeVisitorId(),
         includeIsGuestUser()
+    ], SearchEndpoint.prototype, "buildCompleteCall", null);
+    __decorate([
+        path('/'),
+        method('POST'),
+        responseType('text')
     ], SearchEndpoint.prototype, "search", null);
+    __decorate([
+        path('/plan'),
+        method('POST'),
+        requestDataType('application/json'),
+        responseType('json')
+    ], SearchEndpoint.prototype, "plan", null);
     __decorate([
         path('/'),
         accessTokenInUrl()
@@ -4249,11 +4302,7 @@ var SearchEndpoint = /** @class */ (function () {
     __decorate([
         path('/querySuggest'),
         method('POST'),
-        responseType('text'),
-        includeActionsHistory(),
-        includeReferrer(),
-        includeVisitorId(),
-        includeIsGuestUser()
+        responseType('text')
     ], SearchEndpoint.prototype, "getQuerySuggest", null);
     __decorate([
         path('/facet'),
@@ -5158,9 +5207,9 @@ document.addEventListener('DOMContentLoaded', function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(4);
 var SearchEndpoint_1 = __webpack_require__(7);
-var PlaygroundConfiguration_1 = __webpack_require__(39);
-var QueryEvents_1 = __webpack_require__(41);
-var DefaultLanguage_1 = __webpack_require__(42);
+var PlaygroundConfiguration_1 = __webpack_require__(40);
+var QueryEvents_1 = __webpack_require__(42);
+var DefaultLanguage_1 = __webpack_require__(43);
 DefaultLanguage_1.setLanguageAfterPageLoaded();
 var Playground = /** @class */ (function () {
     function Playground(body) {
@@ -5940,8 +5989,8 @@ exports.ResponsiveComponents = ResponsiveComponents;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    lib: '2.7968.16',
-    product: '2.7968.16',
+    lib: '2.8521.1-beta',
+    product: '2.8521.1-beta',
     supportedApiVersion: 2
 };
 
@@ -6914,19 +6963,10 @@ var Cookie = /** @class */ (function () {
     function Cookie() {
     }
     Cookie.set = function (name, value, expiration) {
-        var domain, domainParts, date, expires, host;
-        if (expiration) {
-            date = new Date();
-            date.setTime(date.getTime() + expiration);
-            expires = '; expires=' + date.toGMTString();
-        }
-        else {
-            expires = '';
-        }
-        host = location.hostname;
+        var host = location.hostname;
         if (host.split('.').length === 1) {
             // no '.' in a domain - it's localhost or something similar
-            document.cookie = this.prefix + name + '=' + value + expires + '; path=/';
+            document.cookie = this.buildCookie(name, value, expiration);
         }
         else {
             // Remember the cookie on all subdomains.
@@ -6938,25 +6978,33 @@ var Cookie = /** @class */ (function () {
             // If the cookie will not be set, it means '.com'
             // is a top level domain and we need to
             // set the cookie to '.foo.com'
-            domainParts = host.split('.');
+            var domainParts = host.split('.');
             domainParts.shift();
-            domain = '.' + domainParts.join('.');
-            document.cookie = this.prefix + name + '=' + value + expires + '; path=/; domain=' + domain;
+            var domain = '.' + domainParts.join('.');
+            document.cookie = this.buildCookie(name, value, expiration, domain);
             // check if cookie was successfuly set to the given domain
             // (otherwise it was a Top-Level Domain)
             if (Cookie.get(name) == null || Cookie.get(name) != value) {
                 // append '.' to current domain
                 domain = '.' + host;
-                document.cookie = this.prefix + name + '=' + value + expires + '; path=/; domain=' + domain;
+                document.cookie = this.buildCookie(name, value, expiration, domain);
             }
         }
     };
+    Cookie.buildCookie = function (name, value, expiration, domain) {
+        var expires = expiration ? this.buildExpiresValue(expiration) : '';
+        var domainCookie = domain ? "; domain=" + domain : '';
+        return "" + this.prefix + name + "=" + value + expires + domainCookie + "; SameSite=Lax; path=/";
+    };
+    Cookie.buildExpiresValue = function (expiration) {
+        return "; expires=" + new Date(Date.now() + expiration).toUTCString();
+    };
     Cookie.get = function (name) {
-        var nameEQ = this.prefix + name + '=';
+        var nameEQ = "" + this.prefix + name + "=";
         var ca = document.cookie.split(';');
         for (var i = 0; i < ca.length; i++) {
             var c = ca[i];
-            while (c.charAt(0) == ' ') {
+            while (c.charAt(0) === ' ') {
                 c = c.substring(1, c.length);
             }
             if (c.indexOf(nameEQ) == 0) {
@@ -7035,9 +7083,6 @@ var AccessToken = /** @class */ (function () {
             _this.triedRenewals = 0;
         }, 500, false);
     }
-    AccessToken.prototype.isExpired = function (error) {
-        return error != null && error.statusCode === 419;
-    };
     AccessToken.prototype.doRenew = function (onError) {
         return __awaiter(this, void 0, void 0, function () {
             var _this = this;
@@ -7307,9 +7352,61 @@ function delayBeforeExecuting(delay) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+/**
+ * The plan of execution of a search request.
+ */
+var ExecutionPlan = /** @class */ (function () {
+    function ExecutionPlan(response) {
+        this.response = response;
+    }
+    Object.defineProperty(ExecutionPlan.prototype, "basicExpression", {
+        /**
+         * Gets the final value of the basic expression (`q`) after the search request has been processed in the query pipeline, but before it is sent to the index.
+         */
+        get: function () {
+            return this.response.parsedInput.basicExpression;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ExecutionPlan.prototype, "largeExpression", {
+        /**
+         * Gets the final value of the large expression (`lq`) after the search request has been processed in the query pipeline, but before it is sent to the index.
+         */
+        get: function () {
+            return this.response.parsedInput.largeExpression;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ExecutionPlan.prototype, "redirectionURL", {
+        /**
+         * Gets the URL to redirect the browser to, if the search request satisfies the condition of a `redirect` trigger rule in the query pipeline.
+         *
+         * Returns `null` otherwise.
+         */
+        get: function () {
+            var redirects = this.response.preprocessingOutput.triggers.filter(function (trigger) { return trigger.type === 'redirect'; });
+            return redirects.length ? redirects[0].content : null;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return ExecutionPlan;
+}());
+exports.ExecutionPlan = ExecutionPlan;
+
+
+/***/ }),
+/* 40 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(4);
 var SearchEndpoint_1 = __webpack_require__(7);
-var SearchSectionBuilder_1 = __webpack_require__(40);
+var SearchSectionBuilder_1 = __webpack_require__(41);
 var SectionBuilder_1 = __webpack_require__(14);
 var getComponentContainerElement = function () {
     return Dom_1.$$(document.body).find('.component-container');
@@ -7792,7 +7889,7 @@ exports.PlaygroundConfiguration = {
 
 
 /***/ }),
-/* 40 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7858,7 +7955,7 @@ exports.SearchSectionBuilder = SearchSectionBuilder;
 
 
 /***/ }),
-/* 41 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8001,13 +8098,13 @@ exports.QueryEvents = QueryEvents;
 
 
 /***/ }),
-/* 42 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var Globalize = __webpack_require__(43);
+var Globalize = __webpack_require__(44);
 var merge = function (obj1, obj2) {
     var obj3 = {};
     for (var attrname in obj1) {
@@ -8827,8 +8924,12 @@ var dict = {
     "OpenFiltersDropdown": "Open the filters dropdown",
     "CloseFiltersDropdown": "Close the filters dropdown",
     "NoValuesFound": "No values found.",
-    "QuerySuggestPreview": "Product recommendations for",
     "To": "to",
+    "DeselectFilterValues": "Deselect all active filters on {0} field",
+    "Rated": "Rated {0} out of {1} star<pl>s</pl>",
+    "RatedBy": "by {0} user<pl>s</pl>",
+    "NoRatings": "No ratings",
+    "Pagination": "Pagination",
 };
 function defaultLanguage() {
     var locales = String["locales"] || (String["locales"] = {});
@@ -8851,14 +8952,14 @@ exports.setLanguageAfterPageLoaded = setLanguageAfterPageLoaded;
 
 
 /***/ }),
-/* 43 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(global) {module.exports = global["Globalize"] = __webpack_require__(44);
+/* WEBPACK VAR INJECTION */(function(global) {module.exports = global["Globalize"] = __webpack_require__(45);
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
 
 /***/ }),
-/* 44 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! globalize - v0.1.1 - 2013-04-30
