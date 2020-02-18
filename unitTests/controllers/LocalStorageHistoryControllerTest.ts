@@ -1,5 +1,5 @@
 import * as Mock from '../MockEnvironment';
-import { LocalStorageHistoryController, InitializationEvents, $$ } from '../../src/Core';
+import { LocalStorageHistoryController, InitializationEvents, $$, QueryStateModel } from '../../src/Core';
 
 export function LocalStorageHistoryControllerTest() {
   describe('LocalStorageHistoryController', () => {
@@ -14,7 +14,7 @@ export function LocalStorageHistoryControllerTest() {
     });
 
     describe(`with state in localstorage, when triggering the ${InitializationEvents.restoreHistoryState} event`, () => {
-      const modelInLocalStorage: Record<string, string> = { q: 'localstorage' };
+      const modelInLocalStorage: Record<string, string> = { q: 'hello' };
 
       function emitRestoreHistoryStateEvent() {
         $$(env.root).trigger(InitializationEvents.restoreHistoryState);
@@ -28,19 +28,32 @@ export function LocalStorageHistoryControllerTest() {
         spyOn(env.queryStateModel, 'setMultiple');
         emitRestoreHistoryStateEvent();
 
-        expect(env.queryStateModel.setMultiple).toHaveBeenCalledWith(jasmine.objectContaining(modelInLocalStorage));
+        expect(env.queryStateModel.setMultiple).toHaveBeenCalledWith(jasmine.objectContaining({ q: modelInLocalStorage.q }));
+      });
+
+      it('if localstorage does not have a value defined, it uses the default value', () => {
+        const key = 'layout';
+        expect(modelInLocalStorage[key]).toBeUndefined();
+
+        spyOn(env.queryStateModel, 'setMultiple');
+        emitRestoreHistoryStateEvent();
+
+        expect(env.queryStateModel.setMultiple).toHaveBeenCalledWith(
+          jasmine.objectContaining({ [key]: QueryStateModel.defaultAttributes.layout })
+        );
       });
 
       it(`if an attribute has a value in the url hash, it prioritizes the url hash value over the local storage value`, () => {
-        const hashQueryAttributeValue = 'queryInUrl';
-        const urlHash = `#q=${hashQueryAttributeValue}`;
+        const queryInHash = 'world';
+        const urlHash = `#q=${queryInHash}`;
         mockWindow.location.replace(urlHash);
-        spyOn(env.queryStateModel, 'setMultiple');
 
-        expect(hashQueryAttributeValue).not.toEqual(modelInLocalStorage.q);
+        expect(queryInHash).not.toEqual(modelInLocalStorage.q);
+
+        spyOn(env.queryStateModel, 'setMultiple');
         emitRestoreHistoryStateEvent();
 
-        expect(env.queryStateModel.setMultiple).toHaveBeenCalledWith(jasmine.objectContaining({ q: hashQueryAttributeValue }));
+        expect(env.queryStateModel.setMultiple).toHaveBeenCalledWith(jasmine.objectContaining({ q: queryInHash }));
       });
     });
   });
