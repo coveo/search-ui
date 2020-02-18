@@ -1,11 +1,16 @@
 import * as Mock from '../MockEnvironment';
-import { LocalStorageHistoryController, InitializationEvents, $$, QueryStateModel } from '../../src/Core';
+import { LocalStorageHistoryController, InitializationEvents, $$, QueryStateModel, Model } from '../../src/Core';
 
 export function LocalStorageHistoryControllerTest() {
   describe('LocalStorageHistoryController', () => {
     let localStorageHistoryController: LocalStorageHistoryController;
     let env: Mock.IMockEnvironment;
     let mockWindow: Window;
+
+    function emitAllEvent() {
+      const allEvent = env.queryStateModel.getEventName(Model.eventTypes.all);
+      $$(env.root).trigger(allEvent);
+    }
 
     beforeEach(() => {
       mockWindow = Mock.mockWindow();
@@ -71,6 +76,32 @@ export function LocalStorageHistoryControllerTest() {
 
       localStorageHistoryController.replaceState(newState);
       expect(localStorageHistoryController.storage.save).toHaveBeenCalledWith(newState);
+    });
+
+    describe('with a model containing a defined attribute', () => {
+      const queryAttributeKey = 'q';
+
+      beforeEach(() => env.queryStateModel.set(queryAttributeKey, 'hello'));
+
+      it('when triggering the #all event, it calls #setState with the model attributes', () => {
+        spyOn(localStorageHistoryController, 'setState');
+        emitAllEvent();
+
+        expect(localStorageHistoryController.setState).toHaveBeenCalledWith(env.queryStateModel.getAttributes());
+      });
+
+      it(`when calling #withThoseAttribute with a defined attribute key,
+      when triggering the #all event, it calls #setState with the model attributes less the omitted keys`, () => {
+        localStorageHistoryController.withoutThoseAttribute([queryAttributeKey]);
+
+        spyOn(localStorageHistoryController, 'setState');
+        emitAllEvent();
+
+        const expectedState = {};
+
+        expect(localStorageHistoryController.setState).toHaveBeenCalledWith(expectedState);
+        expect(env.queryStateModel.getAttributes()).not.toEqual(expectedState);
+      });
     });
   });
 }
