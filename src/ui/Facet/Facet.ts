@@ -782,7 +782,6 @@ export class Facet extends Component {
     }
     Assert.exists(searchResultsElement);
     const { accessibleElement } = this.searchContainer;
-    accessibleElement.setAttribute('aria-controls', searchResultsElement.id);
     accessibleElement.setAttribute('aria-expanded', true.toString());
   }
 
