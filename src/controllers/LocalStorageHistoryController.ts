@@ -6,8 +6,9 @@ import { Assert } from '../misc/Assert';
 import { InitializationEvents } from '../events/InitializationEvents';
 import { RootComponent } from '../ui/Base/RootComponent';
 import { $$ } from '../utils/Dom';
-import * as _ from 'underscore';
+import { each, omit } from 'underscore';
 import { IHistoryManager } from './HistoryManager';
+import { HashUtils } from '../utils/HashUtils';
 
 /**
  * This component acts like the {@link HistoryController} excepts that is saves the {@link QueryStateModel} in the local storage.<br/>
@@ -38,7 +39,7 @@ export class LocalStorageHistoryController extends RootComponent implements IHis
       this.storage = new LocalStorageUtils<{ [key: string]: any }>(LocalStorageHistoryController.ID);
       Assert.exists(this.model);
       Assert.exists(this.queryController);
-      $$(this.element).on(InitializationEvents.restoreHistoryState, () => this.updateModelFromLocalStorage());
+      $$(this.element).on(InitializationEvents.restoreHistoryState, () => this.initModelFromLocalStorageAndUrlHash());
       $$(this.element).on(this.model.getEventName(Model.eventTypes.all), () => this.updateLocalStorageFromModel());
     }
   }
@@ -55,26 +56,45 @@ export class LocalStorageHistoryController extends RootComponent implements IHis
     this.omit = attributes;
   }
 
+  public setState(values: Record<string, any>) {
+    this.storage.save(values);
+  }
+
   private updateLocalStorageFromModel() {
-    const attributes = _.omit(this.model.getAttributes(), this.omit);
+    const attributes = omit(this.model.getAttributes(), this.omit);
     this.setState(attributes);
     this.logger.debug('Saving state to localstorage', attributes);
   }
 
-  private updateModelFromLocalStorage() {
-    const toSet: { [key: string]: any } = {};
-    const loadedFromStorage = this.storage.load();
-    _.each(<_.Dictionary<any>>this.model.attributes, (value, key?, obj?) => {
-      var valToSet = loadedFromStorage ? loadedFromStorage[key] : undefined;
-      if (valToSet == undefined) {
-        valToSet = this.model.defaultAttributes[key];
-      }
-      toSet[key] = valToSet;
-    });
-    this.model.setMultiple(toSet);
+  private initModelFromLocalStorageAndUrlHash() {
+    const model = {
+      ...this.localStorageModel,
+      ...this.urlHashModel
+    };
+
+    this.model.setMultiple(model);
   }
 
-  public setState(values: Record<string, any>) {
-    this.storage.save(values);
+  private get localStorageModel() {
+    const model: Record<string, any> = {};
+    const storedValues = this.storage.load() || {};
+
+    each(this.model.attributes, (value, key) => {
+      const storedValue = storedValues[key];
+      const defaultValue = this.model.defaultAttributes[key];
+      const valueToSet = storedValue == undefined ? defaultValue : storedValue;
+
+      model[key] = valueToSet;
+    });
+
+    return model;
+  }
+
+  private get urlHashModel(): Record<string, any> {
+    const model: Record<string, any> = {};
+    const hash = HashUtils.getHash(this.windoh);
+
+    each(this.model.attributes, (value, key) => (model[key] = HashUtils.getValue(key, hash)));
+    return model;
   }
 }
