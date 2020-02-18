@@ -94,7 +94,14 @@ export class LocalStorageHistoryController extends RootComponent implements IHis
     const model: Record<string, any> = {};
     const hash = HashUtils.getHash(this.windoh);
 
-    each(this.model.attributes, (value, key) => (model[key] = HashUtils.getValue(key, hash)));
+    each(this.model.attributes, (value, key) => {
+      const valueInUrl = HashUtils.getValue(key, hash);
+
+      if (valueInUrl) {
+        model[key] = valueInUrl;
+      }
+    });
+
     return model;
   }
 }
