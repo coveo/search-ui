@@ -4,11 +4,17 @@ const revisionInfo = Downloader.revisionInfo(Downloader.currentPlatform(), Chrom
 
 process.env.CHROME_BIN = revisionInfo.executablePath;
 
+/**
+ * @type {import('karma').ConfigOptions}
+ */
 var configuration = {
   singleRun: true,
-  browsers: ['ChromeHeadless'],
+  browsers: ['ChromeHeadless-Accessibility'],
   frameworks: ['jasmine'],
   browserNoActivityTimeout: 90000,
+  browserDisconnectTimeout: 120000,
+  captureTimeout: 120000,
+  processKillTimeout: 120000,
   browserDisconnectTolerance: 10,
   files: [
     {
@@ -30,7 +36,13 @@ var configuration = {
     }
   ],
   reporters: ['spec'],
-  plugins: ['karma-jasmine', 'karma-chrome-launcher', 'karma-spec-reporter']
+  plugins: ['karma-jasmine', 'karma-chrome-launcher', 'karma-spec-reporter'],
+  customLaunchers: {
+    'ChromeHeadless-Accessibility': {
+      base: 'Chrome',
+      flags: ['--headless', '--remote-debugging-port=9222', '--no-sandbox', '--max_old_space_size=4096']
+    }
+  }
 };
 
 module.exports = function(config) {
