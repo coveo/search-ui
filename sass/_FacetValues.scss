@@ -12,6 +12,7 @@
     height: #{$pixel-size};
     box-sizing: content-box;
     @include defaultRoundedBorder();
+    border-color: grey;
     text-align: center;
     vertical-align: middle;
     margin-right: 15px;
@@ -241,6 +242,7 @@
   right: 5px;
   background: white;
   @include defaultRoundedBorder();
+  border-color: grey;
   height: 13px;
   width: 13px;
   opacity: 0;
@@ -261,6 +263,6 @@
   top: 2px;
   left: 2px;
   .coveo-exclusion-svg {
-    fill: $color-light-grey;
+    fill: grey;
   }
 }
