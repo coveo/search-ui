@@ -79,6 +79,7 @@ export class AccessibleModal {
   private makeCloseButtonAccessible() {
     const closeButton: HTMLElement = this.element.querySelector('.coveo-small-close');
     closeButton.setAttribute('aria-label', l('Close'));
+    closeButton.setAttribute('role', 'button');
     closeButton.tabIndex = 0;
     closeButton.focus();
     $$(closeButton).on('keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, () => closeButton.click()));

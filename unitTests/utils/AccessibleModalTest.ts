@@ -93,6 +93,10 @@ export function AccessibleModalTest() {
         expect(closeButton.getAttribute('aria-label')).toBeTruthy();
       });
 
+      it('gives the close button a role', () => {
+        expect(closeButton.getAttribute('aria-role')).toEqual('button');
+      });
+
       it('gives the close button a tabindex', () => {
         expect(closeButton.tabIndex).toEqual(0);
       });
