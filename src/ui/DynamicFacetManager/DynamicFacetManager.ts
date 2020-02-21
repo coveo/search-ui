@@ -45,7 +45,7 @@ export interface IDynamicManagerCompatibleFacet extends Component, IAutoLayoutAd
  * The `DynamicFacetManager` component is meant to be a parent for multiple [DynamicFacet]{@link DynamicFacet} & [DynamicFacetRange]{@link DynamicFacetRange} components.
  * This component allows controlling a set of [`DynamicFacet`]{@link DynamicFacet} and [`DynamicFacetRange`]{@link DynamicFacetRange} as a group.
  *
- * See [Using Dynamic Facets](https://docs.coveo.com/en/2917/).
+ * @externaldocs [Using Dynamic Facets](https://docs.coveo.com/en/2917/).
  * @availablesince [May 2019 Release (v2.6063)](https://docs.coveo.com/en/2909/)
  */
 export class DynamicFacetManager extends Component {
@@ -64,7 +64,7 @@ export class DynamicFacetManager extends Component {
      */
     enableReorder: ComponentOptions.buildBooleanOption({ defaultValue: true, section: 'Filtering' }),
     /**
-     * A function to execute whenever facets are updated in the query response (see [Defining Custom Dynamic Facet Behaviors](https://docs.coveo.com/en/2917/javascript-search-framework/using-dynamic-facets#defining-custom-dynamic-facet-behaviors)).
+     * A function to execute whenever facets are updated in the query response @externaldocs [Defining Custom Dynamic Facet Behaviors](https://docs.coveo.com/en/2917/javascript-search-framework/using-dynamic-facets#defining-custom-dynamic-facet-behaviors).
      *
      * **Note:**
      * > You cannot set this option directly in the component markup as an HTML attribute. You must either set it in the
@@ -77,7 +77,7 @@ export class DynamicFacetManager extends Component {
       return null;
     }),
     /**
-     * A custom sort function to execute on facets on every successful query response (see [Using Custom Dynamic Facet Sort Functions](https://docs.coveo.com/en/2917/javascript-search-framework/using-dynamic-facets#using-custom-dynamic-facet-sort-functions)).
+     * A custom sort function to execute on facets on every successful query response @externaldocs [Using Custom Dynamic Facet Sort Functions](https://docs.coveo.com/en/2917/javascript-search-framework/using-dynamic-facets#using-custom-dynamic-facet-sort-functions).
      *
      * **Note:**
      * > If specified, the function must implement the JavaScript compareFunction (see [Array.prototype.sort](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort).
