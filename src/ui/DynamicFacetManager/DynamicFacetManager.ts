@@ -64,7 +64,7 @@ export class DynamicFacetManager extends Component {
      */
     enableReorder: ComponentOptions.buildBooleanOption({ defaultValue: true, section: 'Filtering' }),
     /**
-     * A function to execute whenever facets are updated in the query response (see [Implementing Custom Dynamic Facet Behaviors](https://docs.coveo.com/en/2902/#implementing-custom-dynamic-facet-behaviors)).
+     * A function to execute whenever facets are updated in the query response (see [Defining Custom Dynamic Facet Behaviors](https://docs.coveo.com/en/2917/javascript-search-framework/using-dynamic-facets#defining-custom-dynamic-facet-behaviors)).
      *
      * **Note:**
      * > You cannot set this option directly in the component markup as an HTML attribute. You must either set it in the
@@ -77,7 +77,7 @@ export class DynamicFacetManager extends Component {
       return null;
     }),
     /**
-     * A custom sort function to execute on facets on every successful query response (see [Implementing a Custom Dynamic Facet Sort Function](https://docs.coveo.com/en/2902/#implementing-a-custom-dynamic-facet-sort-function)).
+     * A custom sort function to execute on facets on every successful query response (see [Using Custom Dynamic Facet Sort Functions](https://docs.coveo.com/en/2917/javascript-search-framework/using-dynamic-facets#using-custom-dynamic-facet-sort-functions)).
      *
      * **Note:**
      * > If specified, the function must implement the JavaScript compareFunction (see [Array.prototype.sort](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort).
