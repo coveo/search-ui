@@ -8,7 +8,6 @@ import { RootComponent } from '../ui/Base/RootComponent';
 import { $$ } from '../utils/Dom';
 import { each, omit } from 'underscore';
 import { IHistoryManager } from './HistoryManager';
-import { HashUtils } from '../utils/HashUtils';
 
 /**
  * This component acts like the {@link HistoryController} excepts that is saves the {@link QueryStateModel} in the local storage.<br/>
@@ -39,7 +38,7 @@ export class LocalStorageHistoryController extends RootComponent implements IHis
       this.storage = new LocalStorageUtils<{ [key: string]: any }>(LocalStorageHistoryController.ID);
       Assert.exists(this.model);
       Assert.exists(this.queryController);
-      $$(this.element).on(InitializationEvents.restoreHistoryState, () => this.initModelFromLocalStorageAndUrlHash());
+      $$(this.element).on(InitializationEvents.restoreHistoryState, () => this.initModelFromLocalStorage());
       $$(this.element).on(this.model.getEventName(Model.eventTypes.all), () => this.updateLocalStorageFromModel());
     }
   }
@@ -66,12 +65,8 @@ export class LocalStorageHistoryController extends RootComponent implements IHis
     this.logger.debug('Saving state to localstorage', attributes);
   }
 
-  private initModelFromLocalStorageAndUrlHash() {
-    const model = {
-      ...this.localStorageModel,
-      ...this.urlHashModel
-    };
-
+  private initModelFromLocalStorage() {
+    const model = this.localStorageModel;
     this.model.setMultiple(model);
   }
 
@@ -85,21 +80,6 @@ export class LocalStorageHistoryController extends RootComponent implements IHis
       const valueToSet = storedValue == undefined ? defaultValue : storedValue;
 
       model[key] = valueToSet;
-    });
-
-    return model;
-  }
-
-  private get urlHashModel(): Record<string, any> {
-    const model: Record<string, any> = {};
-    const hash = HashUtils.getHash(this.windoh);
-
-    each(this.model.attributes, (value, key) => {
-      const valueInUrl = HashUtils.getValue(key, hash);
-
-      if (valueInUrl) {
-        model[key] = valueInUrl;
-      }
     });
 
     return model;

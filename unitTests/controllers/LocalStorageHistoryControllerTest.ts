@@ -47,19 +47,6 @@ export function LocalStorageHistoryControllerTest() {
           jasmine.objectContaining({ [key]: QueryStateModel.defaultAttributes.layout })
         );
       });
-
-      it(`if an attribute has a value in the url hash, it prioritizes the url hash value over the local storage value`, () => {
-        const queryInHash = 'world';
-        const urlHash = `#q=${queryInHash}`;
-        mockWindow.location.replace(urlHash);
-
-        expect(queryInHash).not.toEqual(modelInLocalStorage.q);
-
-        spyOn(env.queryStateModel, 'setMultiple');
-        emitRestoreHistoryStateEvent();
-
-        expect(env.queryStateModel.setMultiple).toHaveBeenCalledWith(jasmine.objectContaining({ q: queryInHash }));
-      });
     });
 
     it('calling #setState saves the passed values in localstorage', () => {
