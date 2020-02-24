@@ -210,6 +210,8 @@ export function mockWindow(): Window {
   mockWindow.addEventListener = jasmine.createSpy('addEventListener');
   mockWindow.removeEventListener = jasmine.createSpy('removeEventListener');
   mockWindow.dispatchEvent = jasmine.createSpy('dispatchEvent');
+  mockWindow.localStorage = mock<Storage>(localStorage);
+
   return <Window>mockWindow;
 }
 

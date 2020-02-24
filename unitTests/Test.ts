@@ -57,6 +57,9 @@ FacetQueryControllerTest();
 import { HistoryControllerTest } from './controllers/HistoryControllerTest';
 HistoryControllerTest();
 
+import { LocalStorageHistoryControllerTest } from './controllers/LocalStorageHistoryControllerTest';
++LocalStorageHistoryControllerTest();
+
 import { QueryControllerTest } from './controllers/QueryControllerTest';
 QueryControllerTest();
 
