@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>ResultPreviewsManagerEvents | Coveo JavaScript Search Framework - Reference Documentation</title>
+	<title>ExecutionPlan | Coveo JavaScript Search Framework - Reference Documentation</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link href='https://fonts.googleapis.com/css?family=Lato:100,300,400,700' rel='stylesheet' type='text/css'/>
@@ -129,13 +129,16 @@
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-class">
-						<a href="resultpreviewsmanagerevents.html" class="tsd-kind-icon">Result<wbr>Previews<wbr>Manager<wbr>Events</a>
+						<a href="executionplan.html" class="tsd-kind-icon">Execution<wbr>Plan</a>
 						<ul>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static">
-								<a href="resultpreviewsmanagerevents.html#populatesearchresultpreviews" class="tsd-kind-icon">populate<wbr>Search<wbr>Result<wbr>Previews</a>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
+								<a href="executionplan.html#basicexpression" class="tsd-kind-icon">basic<wbr>Expression</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static">
-								<a href="resultpreviewsmanagerevents.html#updateresultpreviewsmanageroptions" class="tsd-kind-icon">update<wbr>Result<wbr>Previews<wbr>Manager<wbr>Options</a>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
+								<a href="executionplan.html#largeexpression" class="tsd-kind-icon">large<wbr>Expression</a>
+							</li>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
+								<a href="executionplan.html#redirectionurl" class="tsd-kind-icon">redirectionURL</a>
 							</li>
 						</ul>
 					</li>
@@ -156,18 +159,17 @@
 							<a href="../globals.html">Globals</a>
 						</li>
 						<li>
-							<a href="resultpreviewsmanagerevents.html">ResultPreviewsManagerEvents</a>
+							<a href="executionplan.html">ExecutionPlan</a>
 						</li>
 					</ul>
-					<h1>Class ResultPreviewsManagerEvents</h1>
+					<h1>Class ExecutionPlan</h1>
 				</div>
 			</div>
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>Those are the string definitions of events for ResultPreviewsManager.</p>
+						<p>The plan of execution of a search request.</p>
 					</div>
-					<p>Those events should be bound to the element returned by <code>resolveRoot</code>.</p>
 				</div>
 			</section>
 			<div class="preview-container tsd-panel">
@@ -178,59 +180,97 @@
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section ">
-							<h3>Properties</h3>
+							<h3>Accessors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><a href="resultpreviewsmanagerevents.html#populatesearchresultpreviews" class="tsd-kind-icon">populate<wbr>Search<wbr>Result<wbr>Previews</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><a href="resultpreviewsmanagerevents.html#updateresultpreviewsmanageroptions" class="tsd-kind-icon">update<wbr>Result<wbr>Previews<wbr>Manager<wbr>Options</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="executionplan.html#basicexpression" class="tsd-kind-icon">basic<wbr>Expression</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="executionplan.html#largeexpression" class="tsd-kind-icon">large<wbr>Expression</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="executionplan.html#redirectionurl" class="tsd-kind-icon">redirectionURL</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
-				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static">
-					<a name="populatesearchresultpreviews" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagStatic">Static</span> populate<wbr>Search<wbr>Result<wbr>Previews</h3>
-					<div class="tsd-signature tsd-kind-icon">populate<wbr>Search<wbr>Result<wbr>Previews<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/events/ResultPreviewsManagerEvents.ts#L46">events/ResultPreviewsManagerEvents.ts
-							:46</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Executed when a {@link Suggestion} is focused and waiting for search result previews.
-							This always receives <a href="../interfaces/ipopulatesearchresultpreviewseventargs.html">IPopulateSearchResultPreviewsEventArgs</a> as arguments.</p>
-						</div>
-					</div>
+				<h2>Accessors</h2>
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class">
+					<a name="basicexpression" class="tsd-anchor"></a>
+					<h3>basic<wbr>Expression</h3>
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in
+										<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Plan.ts#L43">rest/Plan.ts
+									:43</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Gets the final value of the basic expression (<code>q</code>) after the search request has been processed in the query pipeline, but before it is sent to the index.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+						</li>
+					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static">
-					<a name="updateresultpreviewsmanageroptions" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagStatic">Static</span> update<wbr>Result<wbr>Previews<wbr>Manager<wbr>Options</h3>
-					<div class="tsd-signature tsd-kind-icon">update<wbr>Result<wbr>Previews<wbr>Manager<wbr>Options<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/events/ResultPreviewsManagerEvents.ts#L41">events/ResultPreviewsManagerEvents.ts
-							:41</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Executed when a {@link Suggestion} is focused before {@link PopulateSearchResultPreviews} is called to fetch more options.
-							This always receives <a href="../interfaces/iupdateresultpreviewsmanageroptionseventargs.html">IUpdateResultPreviewsManagerOptionsEventArgs</a> as arguments.</p>
-						</div>
-					</div>
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class">
+					<a name="largeexpression" class="tsd-anchor"></a>
+					<h3>large<wbr>Expression</h3>
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in
+										<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Plan.ts#L50">rest/Plan.ts
+									:50</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Gets the final value of the large expression (<code>lq</code>) after the search request has been processed in the query pipeline, but before it is sent to the index.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class">
+					<a name="redirectionurl" class="tsd-anchor"></a>
+					<h3>redirectionURL</h3>
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in
+										<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Plan.ts#L59">rest/Plan.ts
+									:59</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Gets the URL to redirect the browser to, if the search request satisfies the condition of a <code>redirect</code> trigger rule in the query pipeline.</p>
+								</div>
+								<p>Returns <code>null</code> otherwise.</p>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+						</li>
+					</ul>
 				</section>
 			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">ResultPreviewsManagerEvents</span>
+						<span class="target">ExecutionPlan</span>
 					</li>
 				</ul>
 			</section>
