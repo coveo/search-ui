@@ -1200,7 +1200,7 @@ export class StandaloneSearchInterface extends SearchInterface {
       this.element
     );
 
-    this._window.location.replace(url);
+    this._window.location.assign(url);
   }
 
   public redirectToSearchPage(searchPage: string) {
