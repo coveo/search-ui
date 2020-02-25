@@ -363,6 +363,18 @@ export class Component extends BaseComponent {
     return Component.getResult(this.element);
   }
 
+  protected removeTabSupport() {
+    if (this.element.hasAttribute('data-tab')) {
+      this.logger.warn('The "data-tab" attribute is not supported for this component and was removed.');
+      this.element.removeAttribute('data-tab');
+    }
+
+    if (this.element.hasAttribute('data-tab-not')) {
+      this.logger.warn('The "data-tab-not" attribute is not supported for this component and was removed.');
+      this.element.removeAttribute('data-tab-not');
+    }
+  }
+
   private initDebugInfo() {
     $$(this.element).on('dblclick', (e: MouseEvent) => {
       if (e.altKey) {
