@@ -152,9 +152,6 @@
 							<li class=" tsd-kind-method tsd-parent-kind-coveo-component">
 								<a href="sort.html#select" class="tsd-kind-icon">select</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-coveo-component">
-								<a href="sort.html#selectandexecutequery" class="tsd-kind-icon">select<wbr>And<wbr>Execute<wbr>Query</a>
-							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-coveo-component tsd-is-inherited tsd-is-static">
 								<a href="sort.html#get" class="tsd-kind-icon">get</a>
 							</li>
@@ -246,7 +243,6 @@
 								<li class="tsd-kind-method tsd-parent-kind-coveo-component"><a href="sort.html#getcurrentcriteria" class="tsd-kind-icon">get<wbr>Current<wbr>Criteria</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-coveo-component"><a href="sort.html#match" class="tsd-kind-icon">match</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-coveo-component"><a href="sort.html#select" class="tsd-kind-icon">select</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-coveo-component"><a href="sort.html#selectandexecutequery" class="tsd-kind-icon">select<wbr>And<wbr>Execute<wbr>Query</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-coveo-component tsd-is-inherited tsd-is-static"><a href="sort.html#get" class="tsd-kind-icon">get</a></li>
 							</ul>
 						</section>
@@ -404,8 +400,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Sort/Sort.ts#L187">ui/Sort/Sort.ts
-									:187</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Sort/Sort.ts#L171">ui/Sort/Sort.ts
+									:171</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -428,8 +424,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Sort/Sort.ts#L195">ui/Sort/Sort.ts
-									:195</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Sort/Sort.ts#L179">ui/Sort/Sort.ts
+									:179</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -469,7 +465,7 @@
 								<div class="lead">
 									<p>Selects this <code>Sort</code> component.</p>
 								</div>
-								<p>Updates the state model if selecting this component toggles its current <a href="sort.html#options.sortcriteria"><code>sortCriteria</code></a>.</p>
+								<p>Triggers a query if selecting this component toggles its current <a href="sort.html#options.sortcriteria"><code>sortCriteria</code></a>.</p>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -480,31 +476,6 @@
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-coveo-component">
-					<a name="selectandexecutequery" class="tsd-anchor"></a>
-					<h3>select<wbr>And<wbr>Execute<wbr>Query</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-coveo-component">
-						<li class="tsd-signature tsd-kind-icon">select<wbr>And<wbr>Execute<wbr>Query<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Sort/Sort.ts#L162">ui/Sort/Sort.ts
-									:162</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Selects this <code>Sort</code> component, then triggers a query if selecting this component toggles its current <a href="sort.html#options.sortcriteria"><code>sortCriteria</code></a>.</p>
-								</div>
-								<p>Also logs an event in the usage analytics with the new current sort criteria.</p>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
