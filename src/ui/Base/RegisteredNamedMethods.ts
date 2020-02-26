@@ -53,6 +53,8 @@ export function initSearchbox(element: HTMLElement, searchPageUri: string, optio
   searchInterfaceOptions.searchPageUri = searchPageUri;
   searchInterfaceOptions.autoTriggerQuery = false;
   searchInterfaceOptions.enableHistory = false;
+  searchInterfaceOptions = { ...searchInterfaceOptions, ...options.StandaloneSearchInterface };
+
   options = _.extend({}, options, { StandaloneSearchInterface: searchInterfaceOptions });
   return Initialization.initializeFramework(element, options, () => {
     return Initialization.initStandaloneSearchInterface(element, options);

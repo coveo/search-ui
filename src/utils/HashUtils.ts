@@ -13,7 +13,7 @@ export class HashUtils {
     arrayEndRegExp: /\]$/
   };
 
-  public static getHash(w = window): string {
+  public static getHash(w: Window = window): string {
     Assert.exists(w);
 
     // window.location.hash returns the DECODED hash on Firefox (it's a well known bug),
