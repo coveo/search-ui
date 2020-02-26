@@ -22,7 +22,7 @@ export function BackOffRequestTest() {
 
     it(`when calling #enqueue with a request that resolves successfully,
     it returns the successful response`, done => {
-      const request = BackOffRequest.enqueue(() => Promise.resolve(mockSuccessResponse));
+      const request = BackOffRequest.enqueue({ fn: () => Promise.resolve(mockSuccessResponse) });
 
       request.then(response => {
         expect(response).toBe(mockSuccessResponse);
@@ -34,8 +34,8 @@ export function BackOffRequestTest() {
     it processes the requests in series`, done => {
       let firstRequestEnded = false;
 
-      const firstRequest = BackOffRequest.enqueue(() => timeUnitsToResolveIn(2));
-      const secondRequest = BackOffRequest.enqueue(() => timeUnitsToResolveIn(1));
+      const firstRequest = BackOffRequest.enqueue({ fn: () => timeUnitsToResolveIn(2) });
+      const secondRequest = BackOffRequest.enqueue({ fn: () => timeUnitsToResolveIn(1) });
 
       firstRequest.then(() => (firstRequestEnded = true));
       secondRequest.then(() => {
@@ -47,7 +47,7 @@ export function BackOffRequestTest() {
     it(`when calling #enqueue with a request that returns an error,
     it returns a rejected promise with the error`, done => {
       const error = { error: true };
-      const request = BackOffRequest.enqueue(() => Promise.reject(error));
+      const request = BackOffRequest.enqueue({ fn: () => Promise.reject(error) });
 
       request.catch(e => {
         expect(e).toBe(error);
