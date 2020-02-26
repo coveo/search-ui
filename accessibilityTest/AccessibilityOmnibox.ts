@@ -3,6 +3,11 @@ import { $$, Component, Omnibox, get, Dom, Facet, AnalyticsSuggestions, Analytic
 import { afterQuerySuccess, getRoot, getSearchSection, afterDelay, getResultsColumn } from './Testing';
 import { KEYBOARD } from '../src/utils/KeyboardUtils';
 import { times } from 'underscore';
+import { ContrastChecker } from './ContrastChecker';
+
+function getSuggestionsBox() {
+  return getSearchSection().querySelector<HTMLElement>('.coveo-magicbox-suggestions');
+}
 
 export const AccessibilityOmnibox = () => {
   describe('Omnibox', () => {
@@ -70,6 +75,11 @@ export const AccessibilityOmnibox = () => {
         input = omniboxElement.find('input') as HTMLInputElement;
         input.focus();
         done();
+      });
+
+      it('should have good contrast on the border of the suggestions box', () => {
+        const borderContrast = ContrastChecker.getContrastWithBackground(getSuggestionsBox(), 'borderBottomColor');
+        expect(borderContrast).toBeGreaterThan(ContrastChecker.MinimumContrastRatio);
       });
 
       it('should be accessible when navigating using keyboard down arrow once', async done => {

@@ -11,12 +11,16 @@ export interface IColor {
 export class ContrastChecker {
   public static readonly MinimumContrastRatio = 3;
 
-  public static getContrastWithBackground(element: HTMLElement, colorAttributeName: keyof CSSStyleDeclaration = 'color') {
+  public static getContrastWithBackground(
+    element: HTMLElement,
+    colorAttributeName: keyof CSSStyleDeclaration = 'color',
+    backgroundElement: HTMLElement = element
+  ) {
     const color = ContrastChecker.getColor(element, colorAttributeName);
     if (!color) {
       return null;
     }
-    const backgroundColor = ContrastChecker.getBackground(element);
+    const backgroundColor = ContrastChecker.getBackground(backgroundElement);
     return this.getContrastBetweenRelativeLuminances(this.getRelativeLuminance(color), this.getRelativeLuminance(backgroundColor));
   }
 
