@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>ResultPreviewsManagerEvents | Coveo JavaScript Search Framework - Reference Documentation</title>
+	<title>IDisplayedNewResultsEventArgs | Coveo JavaScript Search Framework - Reference Documentation</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link href='https://fonts.googleapis.com/css?family=Lato:100,300,400,700' rel='stylesheet' type='text/css'/>
@@ -128,14 +128,11 @@
 					<a id="globals-toc-link" href=../globals.html><b>Globals</b></a>
 				</ul>
 				<ul class="current">
-					<li class="current tsd-kind-class">
-						<a href="resultpreviewsmanagerevents.html" class="tsd-kind-icon">Result<wbr>Previews<wbr>Manager<wbr>Events</a>
+					<li class="current tsd-kind-interface">
+						<a href="idisplayednewresultseventargs.html" class="tsd-kind-icon">IDisplayed<wbr>New<wbr>Results<wbr>Event<wbr>Args</a>
 						<ul>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static">
-								<a href="resultpreviewsmanagerevents.html#populatesearchresultpreviews" class="tsd-kind-icon">populate<wbr>Search<wbr>Result<wbr>Previews</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static">
-								<a href="resultpreviewsmanagerevents.html#updateresultpreviewsmanageroptions" class="tsd-kind-icon">update<wbr>Result<wbr>Previews<wbr>Manager<wbr>Options</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="idisplayednewresultseventargs.html#isinfinitescrollenabled" class="tsd-kind-icon">is<wbr>Infinite<wbr>Scroll<wbr>Enabled</a>
 							</li>
 						</ul>
 					</li>
@@ -156,18 +153,18 @@
 							<a href="../globals.html">Globals</a>
 						</li>
 						<li>
-							<a href="resultpreviewsmanagerevents.html">ResultPreviewsManagerEvents</a>
+							<a href="idisplayednewresultseventargs.html">IDisplayedNewResultsEventArgs</a>
 						</li>
 					</ul>
-					<h1>Class ResultPreviewsManagerEvents</h1>
+					<h1>Interface IDisplayedNewResultsEventArgs</h1>
 				</div>
 			</div>
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>Those are the string definitions of events for ResultPreviewsManager.</p>
+						<p>The <code>IDisplayedNewResultsEventArgs</code> interface describes the object that all
+						<a href="../classes/resultlistevents.html#newresultsdisplayed"><code>newResultsDisplayed</code></a> event handlers receive as an argument.</p>
 					</div>
-					<p>Those events should be bound to the element returned by <code>resolveRoot</code>.</p>
 				</div>
 			</section>
 			<div class="preview-container tsd-panel">
@@ -180,8 +177,7 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><a href="resultpreviewsmanagerevents.html#populatesearchresultpreviews" class="tsd-kind-icon">populate<wbr>Search<wbr>Result<wbr>Previews</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><a href="resultpreviewsmanagerevents.html#updateresultpreviewsmanageroptions" class="tsd-kind-icon">update<wbr>Result<wbr>Previews<wbr>Manager<wbr>Options</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="idisplayednewresultseventargs.html#isinfinitescrollenabled" class="tsd-kind-icon">is<wbr>Infinite<wbr>Scroll<wbr>Enabled</a></li>
 							</ul>
 						</section>
 					</div>
@@ -189,39 +185,21 @@
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static">
-					<a name="populatesearchresultpreviews" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagStatic">Static</span> populate<wbr>Search<wbr>Result<wbr>Previews</h3>
-					<div class="tsd-signature tsd-kind-icon">populate<wbr>Search<wbr>Result<wbr>Previews<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="isinfinitescrollenabled" class="tsd-anchor"></a>
+					<h3>is<wbr>Infinite<wbr>Scroll<wbr>Enabled</h3>
+					<div class="tsd-signature tsd-kind-icon">is<wbr>Infinite<wbr>Scroll<wbr>Enabled<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/events/ResultPreviewsManagerEvents.ts#L46">events/ResultPreviewsManagerEvents.ts
-							:46</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/events/ResultListEvents.ts#L30">events/ResultListEvents.ts
+							:30</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Executed when a {@link Suggestion} is focused and waiting for search result previews.
-							This always receives <a href="../interfaces/ipopulatesearchresultpreviewseventargs.html">IPopulateSearchResultPreviewsEventArgs</a> as arguments.</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static">
-					<a name="updateresultpreviewsmanageroptions" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagStatic">Static</span> update<wbr>Result<wbr>Previews<wbr>Manager<wbr>Options</h3>
-					<div class="tsd-signature tsd-kind-icon">update<wbr>Result<wbr>Previews<wbr>Manager<wbr>Options<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/events/ResultPreviewsManagerEvents.ts#L41">events/ResultPreviewsManagerEvents.ts
-							:41</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Executed when a {@link Suggestion} is focused before {@link PopulateSearchResultPreviews} is called to fetch more options.
-							This always receives <a href="../interfaces/iupdateresultpreviewsmanageroptionseventargs.html">IUpdateResultPreviewsManagerOptionsEventArgs</a> as arguments.</p>
+							<p>Whether the results are being displayed in a <a href="../components/resultlist.html"><code>ResultList</code></a> with infinite scroll enabled.
+							See <a href="../components/resultlist.html#options.enableinfinitescroll"><code>enableInfiniteScroll</code></a> option).</p>
 						</div>
 					</div>
 				</section>
@@ -230,7 +208,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">ResultPreviewsManagerEvents</span>
+						<span class="target">IDisplayedNewResultsEventArgs</span>
 					</li>
 				</ul>
 			</section>
