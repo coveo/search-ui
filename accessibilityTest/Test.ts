@@ -51,6 +51,7 @@ import { AccessibilityTimespanFacet } from './AccessibilityTimespanFacet';
 import { AccessibilityYouTubeThumbnail } from './AccessibilityYouTubeThumbnail';
 import { AccessibilityStarResult } from './AccessibilityStarResult';
 import { AccessibilityResultPreviewsManager } from './AccessibilityResultPreviewsManager';
+import { AccessibilitySettings } from './AccessibilitySettings';
 
 const initialHTMLSetup = () => {
   const body = jasmine['getGlobal']().document.body;
@@ -146,4 +147,5 @@ describe('Testing ...', () => {
   AccessibilityYouTubeThumbnail();
   AccessibilityStarResult();
   AccessibilityResultPreviewsManager();
+  AccessibilitySettings();
 });
