@@ -25,6 +25,7 @@ export class DynamicHierarchicalFacetValues implements IDynamicHierarchicalFacet
   }
 
   public createFromResponse(response: IFacetResponse) {
+    this._selectedPath = [];
     this.facetValues = response.values.map(responseValue => this.createFacetValueFromResponse(responseValue));
   }
 
