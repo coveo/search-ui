@@ -1,3 +1,5 @@
+@import '../../../Variables';
+
 .coveo-checkbox-button {
   position: relative;
 
@@ -6,13 +8,17 @@
   padding: 0;
 
   background: $pure-white;
-  border: 1px solid $medium-grey;
+  border: 1px solid $color-light-contrast-grey;
   border-radius: $border-radius;
   outline: none;
 
   transition: all 200ms;
 
   cursor: pointer;
+}
+
+button.coveo-checkbox-button {
+  @extend .coveo-checkbox-button;
 }
 
 input[type='checkbox'].coveo-checkbox {
