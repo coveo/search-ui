@@ -212,6 +212,7 @@ export class InputManager {
   }
 
   private addAccessibilitiesProperties() {
+    this.input.setAttribute('autocomplete', 'off');
     this.input.setAttribute('type', 'text');
     this.input.setAttribute('role', 'combobox');
     this.input.setAttribute('form', 'coveo-dummy-form');
