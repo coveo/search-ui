@@ -17,10 +17,6 @@
   cursor: pointer;
 }
 
-button.coveo-checkbox-button {
-  @extend .coveo-checkbox-button;
-}
-
 input[type='checkbox'].coveo-checkbox {
   display: none;
 
