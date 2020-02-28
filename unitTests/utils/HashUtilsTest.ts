@@ -8,7 +8,7 @@ export function HashUtilsTest() {
       expect(typeof value == 'string').toBe(true);
     });
 
-    it('parse the t parameter as a string when the value has two characters', () => {
+    it('parses the t parameter as a string when the value has two characters', () => {
       const toParse = '#t=ab';
       const value = HashUtils.getValue('t', toParse);
       expect(typeof value == 'string').toBe(true);
