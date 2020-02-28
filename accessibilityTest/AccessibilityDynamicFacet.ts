@@ -32,13 +32,25 @@ export const AccessibilityDynamicFacet = () => {
       done();
     });
 
-    it('should have good contrast on the first value', async done => {
+    it('should have good contrast on the first value while focused', async done => {
       getFacetColumn().appendChild(dynamicFacet);
       await afterDeferredQuerySuccess();
 
       const firstValue = getFirstValue();
       firstValue.classList.add('coveo-focused');
       const contrast = ContrastChecker.getContrastWithBackground(firstValue.querySelector('.coveo-checkbox-span-label'));
+      expect(contrast).not.toBeLessThan(ContrastChecker.MinimumHighContrastRatio);
+
+      done();
+    });
+
+    it("should have good contrast on the first value's count while focused", async done => {
+      getFacetColumn().appendChild(dynamicFacet);
+      await afterDeferredQuerySuccess();
+
+      const firstValue = getFirstValue();
+      firstValue.classList.add('coveo-focused');
+      const contrast = ContrastChecker.getContrastWithBackground(firstValue.querySelector('.coveo-checkbox-span-label-suffix'));
       expect(contrast).not.toBeLessThan(ContrastChecker.MinimumHighContrastRatio);
 
       done();
