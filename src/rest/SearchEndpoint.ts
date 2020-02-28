@@ -58,9 +58,13 @@ export class DefaultSearchEndpointOptions implements ISearchEndpointOptions {
 /**
  * The `SearchEndpoint` class allows the framework to perform HTTP requests against the Search API (e.g., searching, getting query suggestions, getting the HTML preview of an item, etc.).
  *
- * @externaldocumentation https://docs.coveo.com/331/
+ * **Note:**
  *
- * **Note:** When writing custom code that interacts with the Search API, be aware that executing queries directly through an instance of this class will _not_ trigger any [query events](https://docs.coveo.com/417/#query-events). In some cases, this may be what you want. However, if you _do_ want query events to be triggered (e.g., to ensure that standard components update themselves as expected), use the [`queryController`]{@link QueryController} instance instead.
+ * When writing custom code that interacts with the Search API, be aware that executing queries directly through an instance of this class will *not* trigger any [query events](https://docs.coveo.com/en/417/#query-events).
+ *
+ * In some cases, this may be what you want. However, if you *do* want query events to be triggered (e.g., to ensure that standard components update themselves as expected), use the [`queryController`]{@link QueryController} instance instead.
+ *
+ * @externaldocs [JavaScript Search Framework Endpoint](https://docs.coveo.com/en/331/)
  */
 export class SearchEndpoint implements ISearchEndpoint {
   /**
