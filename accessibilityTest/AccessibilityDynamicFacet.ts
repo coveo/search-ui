@@ -1,7 +1,8 @@
 import * as axe from 'axe-core';
 import { $$, Component, DynamicFacet } from 'coveo-search-ui';
-import { afterQuerySuccess, afterDelay, getFacetColumn, getRoot, inDesktopMode, resetMode } from './Testing';
+import { afterQuerySuccess, afterDelay, getFacetColumn, getRoot, inDesktopMode, resetMode, afterDeferredQuerySuccess } from './Testing';
 import { KEYBOARD } from '../src/Core';
+import { ContrastChecker } from './ContrastChecker';
 
 export const AccessibilityDynamicFacet = () => {
   describe('DynamicFacet', () => {
@@ -31,8 +32,24 @@ export const AccessibilityDynamicFacet = () => {
       done();
     });
 
+    it('should have good contrast on the first value', async done => {
+      getFacetColumn().appendChild(dynamicFacet);
+      await afterDeferredQuerySuccess();
+
+      const firstValue = getFirstValue();
+      firstValue.classList.add('coveo-focused');
+      const contrast = ContrastChecker.getContrastWithBackground(firstValue.querySelector('.coveo-checkbox-span-label'));
+      expect(contrast).not.toBeLessThan(ContrastChecker.MinimumHighContrastRatio);
+
+      done();
+    });
+
     function getInput() {
       return $$(dynamicFacet).find('input');
+    }
+
+    function getFirstValue() {
+      return $$(dynamicFacet).find('.coveo-dynamic-facet-value');
     }
 
     function triggerKeyboardEvent(name: string, key: KEYBOARD, input: HTMLElement) {
