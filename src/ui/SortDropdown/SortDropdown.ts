@@ -1,5 +1,5 @@
 import 'styling/_SortDropdown';
-import { findIndex } from 'underscore';
+import { findIndex, partition } from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 import { IQuerySuccessEventArgs, IQueryErrorEventArgs, QueryEvents } from '../../events/QueryEvents';
 import { IAttributeChangedEventArg, MODEL_EVENTS } from '../../models/Model';
@@ -51,6 +51,7 @@ export class SortDropdown extends Component {
     super(element, SortDropdown.ID, bindings);
 
     this.options = ComponentOptions.initComponentOptions(element, SortDropdown, options);
+    this.removeTabSupport();
 
     this.bind.oneRootElement(InitializationEvents.afterInitialization, () => this.handleAfterInitialization());
     this.bind.onQueryState(MODEL_EVENTS.CHANGE_ONE, QUERY_STATE_ATTRIBUTES.SORT, (args: IAttributeChangedEventArg) =>
@@ -126,7 +127,19 @@ export class SortDropdown extends Component {
   }
 
   private handleQuerySuccess(data: IQuerySuccessEventArgs) {
-    data.results.results.length ? this.showElement() : this.hideElement();
+    if (!data.results.results.length) {
+      return this.hideElement();
+    }
+
+    const [hiddenSorts, visibleSorts] = partition(this.sortComponents, sortComponent => sortComponent.disabled);
+    hiddenSorts.forEach(hiddenSort => this.dropdown.hideValue(hiddenSort.options.sortCriteria.toString()));
+    visibleSorts.forEach(visibleSorts => this.dropdown.showValue(visibleSorts.options.sortCriteria.toString()));
+
+    if (!visibleSorts.length) {
+      return this.hideElement();
+    }
+
+    this.showElement();
   }
 
   private handleQueryError(data: IQueryErrorEventArgs) {

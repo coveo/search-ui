@@ -95,6 +95,21 @@ export class Dropdown implements IFormWidget, IFormWidgetSettable {
     });
   }
 
+  private findOption(value: string) {
+    const option = $$(this.element).find(`option[value="${value}"]`);
+    return option;
+  }
+
+  public showValue(value: string) {
+    const option = this.findOption(value);
+    option && option.removeAttribute('hidden');
+  }
+
+  public hideValue(value: string) {
+    const option = this.findOption(value);
+    option && option.setAttribute('hidden', 'true');
+  }
+
   private selectOption(option: HTMLOptionElement, executeOnChange = true) {
     this.selectElement.value = option.value;
     if (executeOnChange) {
