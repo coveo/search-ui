@@ -5989,8 +5989,8 @@ exports.ResponsiveComponents = ResponsiveComponents;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    lib: '2.8521.3-beta',
-    product: '2.8521.3-beta',
+    lib: '2.8521.4-beta',
+    product: '2.8521.4-beta',
     supportedApiVersion: 2
 };
 
@@ -7827,6 +7827,33 @@ exports.PlaygroundConfiguration = {
             'data-sort-criteria': 'date descending,date ascending',
             'data-caption': 'Date'
         }, 'span')
+            .build())
+            .withComponent('CoveoResultList')
+            .build(),
+        toExecute: function () {
+            getSearchInterfaceElement().style.padding = '20px';
+            Dom_1.$$(getSearchInterfaceElement()).on('buildingQuery', function (e, args) {
+                args.queryBuilder.numberOfResults = 3;
+            });
+        }
+    },
+    SortDropdown: {
+        show: true,
+        element: new SectionBuilder_1.SectionBuilder()
+            .withDomElement(new SectionBuilder_1.SectionBuilder(Dom_1.$$('div', { className: 'coveo-sort-section' }))
+            .withDomElement(Dom_1.$$('div', { className: 'CoveoSortDropdown' }, Dom_1.$$('span', {
+            className: 'CoveoSort',
+            'data-sort-criteria': 'relevancy',
+            'data-caption': 'relevancy'
+        }), Dom_1.$$('span', {
+            className: 'CoveoSort',
+            'data-sort-criteria': 'date descending',
+            'data-caption': 'Newest'
+        }), Dom_1.$$('span', {
+            className: 'CoveoSort',
+            'data-sort-criteria': 'date ascending',
+            'data-caption': 'Oldest'
+        })))
             .build())
             .withComponent('CoveoResultList')
             .build(),
