@@ -120,10 +120,10 @@
     .magic-box-suggestions.magic-box-hasSuggestion {
       display: block;
       .coveo-magicbox-suggestions {
-        border: $default-border;
+        border: $default-low-contrast-border;
       }
       .coveo-suggestion-container {
-        border: $default-border;
+        border: $default-low-contrast-border;
         .coveo-magicbox-suggestions {
           border: none;
         }
@@ -222,11 +222,11 @@
       right: 0;
       .coveo-magicbox-suggestions {
         border: none;
-        border-top: $default-border;
+        border-top: $default-low-contrast-border;
       }
       .coveo-suggestion-container {
         border: none;
-        border-top: $default-border;
+        border-top: $default-low-contrast-border;
         .coveo-magicbox-suggestions {
           border-top: none;
         }

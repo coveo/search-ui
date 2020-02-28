@@ -2,7 +2,7 @@
 .CoveoSettings {
   margin: 0 0 0 36px;
   border-radius: 50%;
-  border: $default-border;
+  border: $default-low-contrast-border;
   width: 40px;
   height: 40px;
   order: 1;
@@ -38,7 +38,7 @@
 .coveo-settings-advanced-menu {
   position: absolute;
   background: $color-blueish-white-grey;
-  @include defaultRoundedBorder();
+  @include defaultRoundedLowContrastBorder();
   min-width: 160px;
   z-index: 11;
   &:before {
