@@ -8,6 +8,12 @@ export function HashUtilsTest() {
       expect(typeof value == 'string').toBe(true);
     });
 
+    it('parse the t parameter as a string when the value has two characters', () => {
+      const toParse = '#t=ab';
+      const value = HashUtils.getValue('t', toParse);
+      expect(typeof value == 'string').toBe(true);
+    });
+
     it('parses the q parameter as a string when the value looks like an object', () => {
       const toParse = '#q={"test": 1}';
       const value = HashUtils.getValue('q', toParse);

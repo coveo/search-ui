@@ -306,8 +306,11 @@ export class Model extends BaseComponent {
 
   private validateOther(attribute: string, value: any) {
     if (!Utils.isNullOrUndefined(this.defaultAttributes[attribute])) {
-      if (typeof value !== typeof this.defaultAttributes[attribute]) {
-        this.logger.error(`Non-matching type for ${attribute}. Expected ${typeof this.defaultAttributes[attribute]} and got ${value}`);
+      const valueType = typeof value;
+      const attributeType = typeof this.defaultAttributes[attribute];
+
+      if (valueType !== attributeType) {
+        this.logger.error(`Non-matching type for ${attribute}. Expected ${attributeType} and got ${valueType}`);
         return false;
       }
     }
