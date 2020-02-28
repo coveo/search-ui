@@ -64,9 +64,9 @@ export class ContrastChecker {
   public static combineColors(color: IColor, backgroundColor: IColor): IColor {
     const { alphaRatio } = color;
     return {
-      redRatio: backgroundColor.redRatio - alphaRatio * (1 - color.redRatio),
-      greenRatio: backgroundColor.greenRatio - alphaRatio * (1 - color.greenRatio),
-      blueRatio: backgroundColor.blueRatio - alphaRatio * (1 - color.blueRatio),
+      redRatio: (1 - alphaRatio) * backgroundColor.redRatio + alphaRatio * color.redRatio,
+      greenRatio: (1 - alphaRatio) * backgroundColor.greenRatio + alphaRatio * color.greenRatio,
+      blueRatio: (1 - alphaRatio) * backgroundColor.blueRatio + alphaRatio * color.blueRatio,
       alphaRatio: backgroundColor.alphaRatio
     };
   }
