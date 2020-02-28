@@ -37,8 +37,7 @@ import { TimeSpan } from '../utils/TimeSpanUtils';
 import { UrlUtils } from '../utils/UrlUtils';
 import { IGroupByResult } from './GroupByResult';
 import { AccessToken } from './AccessToken';
-import { BackOffRequest } from './BackOffRequest';
-import { IBackOffRequest } from 'exponential-backoff';
+import { BackOffRequest, IBackOffRequest } from './BackOffRequest';
 import { IFacetSearchRequest } from './Facet/FacetSearchRequest';
 import { IFacetSearchResponse } from './Facet/FacetSearchResponse';
 import { IPlanResponse, ExecutionPlan } from './Plan';
@@ -1180,11 +1179,10 @@ export class SearchEndpoint implements ISearchEndpoint {
 
   private async backOffThrottledRequest<T>(request: () => Promise<T>) {
     try {
-      const backOffRequest: IBackOffRequest<T> = {
-        fn: () => request(),
-        retry: (e, attempt) => this.retryIf429Error(e, attempt)
-      };
-      return await BackOffRequest.enqueue<T>(backOffRequest);
+      const options = { retry: (e, attempt) => this.retryIf429Error(e, attempt) };
+      const backoffRequest: IBackOffRequest<T> = { fn: request, options };
+
+      return await BackOffRequest.enqueue<T>(backoffRequest);
     } catch (e) {
       throw this.handleErrorResponse(e);
     }
