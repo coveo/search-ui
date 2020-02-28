@@ -172,5 +172,24 @@ export function SortDropdownTest() {
       const hiddenSort = $$(test.cmp.element).find(`option[hidden][value="${sorts[0].options.sortCriteria}"]`);
       expect(hiddenSort).toBeFalsy();
     });
+
+    it(`when all children Sort components are disabled
+      should hide the parent SortDropdown`, () => {
+      sorts.forEach(sort => sort.disable());
+      triggerQuerySuccessWithResults([{}, {}]);
+
+      expect($$(test.cmp.element).isVisible()).toBe(false);
+    });
+
+    it(`when all children Sort components are disabled then enabled
+      should show the parent SortDropdown`, () => {
+      sorts.forEach(sort => sort.disable());
+      triggerQuerySuccessWithResults([{}, {}]);
+
+      sorts[0].enable();
+      triggerQuerySuccessWithResults([{}, {}]);
+
+      expect($$(test.cmp.element).isVisible()).toBe(true);
+    });
   });
 }

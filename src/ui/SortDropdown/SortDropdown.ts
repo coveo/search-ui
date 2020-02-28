@@ -102,12 +102,6 @@ export class SortDropdown extends Component {
     return this.sortComponents.map(sort => sort.options.sortCriteria.toString());
   }
 
-  private updateValuesVisibility() {
-    const [hiddenSorts, visibleSorts] = partition(this.sortComponents, sortComponent => sortComponent.disabled);
-    hiddenSorts.forEach(hiddenSort => this.dropdown.hideValue(hiddenSort.options.sortCriteria.toString()));
-    visibleSorts.forEach(visibleSorts => this.dropdown.showValue(visibleSorts.options.sortCriteria.toString()));
-  }
-
   private handleQueryStateChanged(data: IAttributeChangedEventArg) {
     this.update();
   }
@@ -133,8 +127,19 @@ export class SortDropdown extends Component {
   }
 
   private handleQuerySuccess(data: IQuerySuccessEventArgs) {
-    this.updateValuesVisibility();
-    data.results.results.length ? this.showElement() : this.hideElement();
+    if (!data.results.results.length) {
+      return this.hideElement();
+    }
+
+    const [hiddenSorts, visibleSorts] = partition(this.sortComponents, sortComponent => sortComponent.disabled);
+    hiddenSorts.forEach(hiddenSort => this.dropdown.hideValue(hiddenSort.options.sortCriteria.toString()));
+    visibleSorts.forEach(visibleSorts => this.dropdown.showValue(visibleSorts.options.sortCriteria.toString()));
+
+    if (!visibleSorts.length) {
+      return this.hideElement();
+    }
+
+    this.showElement();
   }
 
   private handleQueryError(data: IQueryErrorEventArgs) {
