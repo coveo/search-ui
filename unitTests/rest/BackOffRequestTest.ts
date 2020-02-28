@@ -1,4 +1,3 @@
-import { IBackOffRequest } from 'exponential-backoff';
 import { BackOffRequest, setBackOffModule } from '../../src/rest/BackOffRequest';
 
 export function BackOffRequestTest() {
@@ -9,7 +8,7 @@ export function BackOffRequestTest() {
     afterAll(() => restoreBackOffDependency());
 
     function stubBackOffDependency() {
-      setBackOffModule((request: IBackOffRequest<{}>) => request.fn());
+      setBackOffModule((request: () => Promise<any>) => request());
     }
 
     function restoreBackOffDependency() {
