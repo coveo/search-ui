@@ -69,7 +69,7 @@ gulp.task('externalDefs', function() {
       './lib/jstimezonedetect/index.d.ts',
       './lib/coveoanalytics/index.d.ts',
       './lib/map/index.d.ts',
-      './node_modules/exponential-backoff/dist/backoff.d.ts'
+      './node_modules/exponential-backoff/dist/*.d.ts'
     ])
     .pipe(concat('Externals.d.ts'))
     .pipe(replace(/import.*$/gm, ''))
