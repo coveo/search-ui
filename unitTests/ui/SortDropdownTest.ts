@@ -159,8 +159,8 @@ export function SortDropdownTest() {
       sorts[0].disable();
       triggerQuerySuccessWithResults([{}, {}]);
 
-      const hiddenSort = $$(test.cmp.element).find(`option[hidden][value="${sorts[0].options.sortCriteria}"]`);
-      expect(hiddenSort).toBeTruthy();
+      const disabledSort = $$(test.cmp.element).find(`option[value="${sorts[0].options.sortCriteria}"]`);
+      expect(disabledSort).toBeFalsy();
     });
 
     it(`when re-enabling a Sort component
@@ -169,8 +169,8 @@ export function SortDropdownTest() {
       sorts[0].enable();
       triggerQuerySuccessWithResults([{}, {}]);
 
-      const hiddenSort = $$(test.cmp.element).find(`option[hidden][value="${sorts[0].options.sortCriteria}"]`);
-      expect(hiddenSort).toBeFalsy();
+      const enabledSort = $$(test.cmp.element).find(`option[value="${sorts[0].options.sortCriteria}"]`);
+      expect(enabledSort).toBeTruthy();
     });
 
     it(`when all children Sort components are disabled

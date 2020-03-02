@@ -1,5 +1,5 @@
 import 'styling/_SortDropdown';
-import { findIndex, partition } from 'underscore';
+import { findIndex } from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 import { IQuerySuccessEventArgs, IQueryErrorEventArgs, QueryEvents } from '../../events/QueryEvents';
 import { IAttributeChangedEventArg, MODEL_EVENTS } from '../../models/Model';
@@ -65,8 +65,19 @@ export class SortDropdown extends Component {
     this.buildDropdown();
   }
 
+  private clearDropdown() {
+    this.dropdown && this.element.removeChild(this.dropdown.getElement());
+    this.dropdown = null;
+  }
+
   private buildDropdown() {
-    this.sortComponents = this.getSortComponents();
+    this.sortComponents = this.getEnabledSortComponents();
+    this.clearDropdown();
+
+    if (!this.sortComponents.length) {
+      return;
+    }
+
     this.dropdown = new Dropdown(
       () => this.handleChange(),
       this.getValuesForDropdown(),
@@ -77,7 +88,7 @@ export class SortDropdown extends Component {
     this.update();
   }
 
-  private getSortComponents() {
+  private getEnabledSortComponents() {
     const sortComponents = $$(this.element)
       .findAll(`.${Component.computeCssClassNameForType('Sort')}`)
       .map(sortElement => {
@@ -93,7 +104,7 @@ export class SortDropdown extends Component {
           return;
         }
       })
-      .filter(sortCmp => sortCmp);
+      .filter(sortCmp => sortCmp && !sortCmp.disabled);
 
     return sortComponents;
   }
@@ -131,11 +142,9 @@ export class SortDropdown extends Component {
       return this.hideElement();
     }
 
-    const [hiddenSorts, visibleSorts] = partition(this.sortComponents, sortComponent => sortComponent.disabled);
-    hiddenSorts.forEach(hiddenSort => this.dropdown.hideValue(hiddenSort.options.sortCriteria.toString()));
-    visibleSorts.forEach(visibleSorts => this.dropdown.showValue(visibleSorts.options.sortCriteria.toString()));
+    this.buildDropdown();
 
-    if (!visibleSorts.length) {
+    if (!this.sortComponents.length) {
       return this.hideElement();
     }
 
