@@ -150,6 +150,30 @@ export const isInit = () => {
   return get(getRoot(), SearchInterface) != null;
 };
 
+export const afterQuerySelector = <T extends Element = Element>(parentNode: HTMLElement, selector: string) => {
+  return observeUntil(
+    parentNode,
+    {
+      childList: true,
+      subtree: true
+    },
+    () => parentNode.querySelector<T>(selector)
+  );
+};
+
+export const observeUntil = <T>(element: Node, options: MutationObserverInit, callback: (records: MutationRecord[]) => T) => {
+  return new Promise<T>(resolve => {
+    const observer = new MutationObserver(records => {
+      const result = callback(records);
+      if (result) {
+        observer.disconnect();
+        resolve(result);
+      }
+    });
+    observer.observe(element, options);
+  });
+};
+
 const afterEvent = (event: string) => {
   const resolvesAfterEvent = resolve => {
     $$(getRoot()).one(event, async () => {
