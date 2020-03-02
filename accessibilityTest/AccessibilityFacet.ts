@@ -1,6 +1,6 @@
 import * as axe from 'axe-core';
 import { $$, Component, Facet, get, Dom } from 'coveo-search-ui';
-import { afterDeferredQuerySuccess, getFacetColumn, getRoot, inDesktopMode, resetMode, afterQuerySelector } from './Testing';
+import { afterDeferredQuerySuccess, getFacetColumn, getRoot, inDesktopMode, resetMode, waitUntilSelectorIsPresent } from './Testing';
 import { ContrastChecker } from './ContrastChecker';
 
 export const AccessibilityFacet = () => {
@@ -67,7 +67,7 @@ export const AccessibilityFacet = () => {
       describe('after focusing on the search button', () => {
         beforeEach(async done => {
           (get(facetElement.el) as Facet).facetSearch.focus();
-          await afterQuerySelector(document.body, '.coveo-facet-search-results');
+          await waitUntilSelectorIsPresent(document.body, '.coveo-facet-search-results');
           done();
         });
 

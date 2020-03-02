@@ -150,7 +150,7 @@ export const isInit = () => {
   return get(getRoot(), SearchInterface) != null;
 };
 
-export const afterQuerySelector = <T extends Element = Element>(parentNode: HTMLElement, selector: string) => {
+export const waitUntilSelectorIsPresent = <T extends Element = Element>(parentNode: HTMLElement, selector: string) => {
   return observeUntil(
     parentNode,
     {
