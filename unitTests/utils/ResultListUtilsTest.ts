@@ -16,7 +16,6 @@ export const ResultListUtilsTest = () => {
       resultList = Mock.optionsComponentSetup<ResultList, IResultListOptions>(ResultList, options).cmp;
       resultList.disabled = disabled;
       root.element.appendChild(resultList.element);
-      return resultList;
     }
 
     function initSearchInterface() {
@@ -134,7 +133,7 @@ export const ResultListUtilsTest = () => {
 
       it(`when the top of the searchInterface is in the view port
       should not scroll`, () => {
-        const resultList = appendResultListToRoot();
+        appendResultListToRoot();
         spyOn(resultList.searchInterface.element, 'getBoundingClientRect').and.returnValue({ top: -100 });
 
         utils.scrollToTop(root.element);
