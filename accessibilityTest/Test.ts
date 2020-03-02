@@ -88,6 +88,7 @@ describe('Testing ...', () => {
     initialHTMLSetup();
     Coveo.Logger.disable();
     Coveo.SearchEndpoint.configureSampleEndpointV2();
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = 15000;
     done();
   });
 
