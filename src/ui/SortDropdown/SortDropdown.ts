@@ -65,14 +65,14 @@ export class SortDropdown extends Component {
     this.buildDropdown();
   }
 
-  private deletePreviousDropdown() {
+  private clearDropdown() {
     this.dropdown && this.element.removeChild(this.dropdown.getElement());
     this.dropdown = null;
   }
 
   private buildDropdown() {
     this.sortComponents = this.getEnabledSortComponents();
-    this.deletePreviousDropdown();
+    this.clearDropdown();
 
     if (!this.sortComponents.length) {
       return;
