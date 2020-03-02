@@ -24,21 +24,20 @@ export class ResultListUtils {
   }
 
   public static scrollToTop(root: HTMLElement) {
-    const isTopOfRootVisible = root.getBoundingClientRect().top >= 0;
-    if (isTopOfRootVisible) {
-      return;
-    }
-
     const resultList = ResultListUtils.getActiveResultList(root);
     if (!resultList) {
       new Logger(this).warn('No active ResultList, scrolling to the top of the Window');
       return window.scrollTo(0, 0);
     }
 
+    const searchInterfacePosition = resultList.searchInterface.element.getBoundingClientRect().top;
+    if (searchInterfacePosition > 0) {
+      return;
+    }
+
     const scrollContainer = resultList.options.infiniteScrollContainer;
 
     if (typeof scrollContainer.scrollTo === 'function') {
-      const searchInterfacePosition = resultList.searchInterface.element.getBoundingClientRect().top;
       scrollContainer.scrollTo(0, window.pageYOffset + searchInterfacePosition);
     } else {
       (<HTMLElement>scrollContainer).scrollTop = 0;
