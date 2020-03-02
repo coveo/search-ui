@@ -24,6 +24,11 @@ export class ResultListUtils {
   }
 
   public static scrollToTop(root: HTMLElement) {
+    const isTopOfRootVisible = root.getBoundingClientRect().top >= 0;
+    if (isTopOfRootVisible) {
+      return;
+    }
+
     const resultList = ResultListUtils.getActiveResultList(root);
     if (!resultList) {
       new Logger(this).warn('No active ResultList, scrolling to the top of the Window');
