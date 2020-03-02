@@ -1,5 +1,4 @@
 import { Dropdown } from '../../src/ui/FormWidgets/Dropdown';
-import { $$ } from '../../src/Core';
 
 export function DropdownTest() {
   describe('Dropdown', () => {
@@ -63,24 +62,6 @@ export function DropdownTest() {
       it("should not change selection if the value doesn't exist", () => {
         dropdown.setValue('random');
         expect(dropdown.getValue()).toEqual(values[0]);
-      });
-    });
-
-    describe('hideValue and showValue', () => {
-      function hiddenOption() {
-        return $$(dropdown.getElement()).find('option[hidden][value=three]');
-      }
-
-      it('should hide option with specified value', () => {
-        dropdown.hideValue('three');
-        expect(hiddenOption()).toBeTruthy();
-      });
-
-      it('should show hidden option with specified value', () => {
-        dropdown.hideValue('three');
-        dropdown.showValue('three');
-
-        expect(hiddenOption()).toBeFalsy();
       });
     });
   });
