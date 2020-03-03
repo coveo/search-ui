@@ -262,7 +262,7 @@ export function StandaloneSearchInterfaceTest() {
       });
     });
 
-    describe(`when the StandAloneInterface is using localstorage for history, when calling redirectToSearchPage`, () => {
+    describe(`when the StandaloneSearchInterface is using localstorage for history, when calling redirectToSearchPage`, () => {
       beforeEach(() => {
         options.enableHistory = true;
         options.useLocalStorageForHistory = true;

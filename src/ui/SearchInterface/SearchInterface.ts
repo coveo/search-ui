@@ -1219,17 +1219,11 @@ export class StandaloneSearchInterface extends SearchInterface {
   }
 
   private get encodedHashValues() {
-    const values = this.modelAttributesToIncludeInUrl;
-    const uaCausedBy = this.uaCausedBy;
-    const uaMeta = this.usageAnalytics.getCurrentEventMeta();
-
-    if (uaCausedBy != null) {
-      values['firstQueryCause'] = uaCausedBy;
-    }
-
-    if (uaMeta != null && !isEmpty(uaMeta)) {
-      values['firstQueryMeta'] = uaMeta;
-    }
+    const values = {
+      ...this.modelAttributesToIncludeInUrl,
+      ...this.uaCausedByAttribute,
+      ...this.uaMetadataAttribute
+    };
 
     return HashUtils.encodeValues(values);
   }
@@ -1239,11 +1233,21 @@ export class StandaloneSearchInterface extends SearchInterface {
     return usingLocalStorageHistory ? {} : this.queryStateModel.getAttributes();
   }
 
+  private get uaCausedByAttribute() {
+    const uaCausedBy = this.uaCausedBy;
+    return uaCausedBy ? { firstQueryCause: uaCausedBy } : {};
+  }
+
   private get uaCausedBy() {
     const uaCausedBy = this.usageAnalytics.getCurrentEventCause();
     const isSearchboxSubmit = uaCausedBy === analyticsActionCauseList.searchboxSubmit.name;
     // For legacy reasons, searchbox submit were always logged as a search from link in an external search box.
     return isSearchboxSubmit ? analyticsActionCauseList.searchFromLink.name : uaCausedBy;
+  }
+
+  private get uaMetadataAttribute() {
+    const uaMeta = this.usageAnalytics.getCurrentEventMeta();
+    return uaMeta && !isEmpty(uaMeta) ? { firstQueryMeta: uaMeta } : {};
   }
 
   private searchboxIsEmpty(): boolean {
