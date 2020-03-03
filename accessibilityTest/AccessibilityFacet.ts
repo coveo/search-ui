@@ -1,6 +1,7 @@
 import * as axe from 'axe-core';
-import { $$, Component, Facet, get } from 'coveo-search-ui';
+import { $$, Component, Facet, get, Dom } from 'coveo-search-ui';
 import { afterDeferredQuerySuccess, afterDelay, getFacetColumn, getRoot, inDesktopMode, resetMode } from './Testing';
+import { ContrastChecker } from './ContrastChecker';
 
 export const AccessibilityFacet = () => {
   describe('Facet', () => {
@@ -24,38 +25,72 @@ export const AccessibilityFacet = () => {
       done();
     });
 
-    it('search should be accessible', async done => {
-      const facetElement = getFacetElement();
-      getFacetColumn().appendChild(facetElement.el);
-      await afterDeferredQuerySuccess();
-      (get(facetElement.el) as Facet).facetSearch.focus();
-      await afterDelay(1000);
-      const axeResults = await axe.run(getRoot());
-      expect(axeResults).toBeAccessible();
-      done();
-    });
+    describe('with facet element', () => {
+      let facetElement: Dom;
 
-    it('should still be accessible when search has been opened', async done => {
-      const facetElement = getFacetElement();
-      getFacetColumn().appendChild(facetElement.el);
-      await afterDeferredQuerySuccess();
-      (get(facetElement.el) as Facet).facetSearch.focus();
-      await afterDelay(1000);
-      (get(facetElement.el) as Facet).facetSearch.dismissSearchResults();
-      await afterDelay(1000);
-      const axeResults = await axe.run(getRoot());
-      expect(axeResults).toBeAccessible();
-      done();
-    });
+      function getMagnifierSVG() {
+        return facetElement.el.querySelector<HTMLElement>('.coveo-facet-search-magnifier-svg');
+      }
 
-    it('settings should be accessible', async done => {
-      const facetElement = getFacetElement();
-      getFacetColumn().appendChild(facetElement.el);
-      await afterDeferredQuerySuccess();
-      facetElement.find('.coveo-facet-header-settings').click();
-      const axeResults = await axe.run(getRoot());
-      expect(axeResults).toBeAccessible();
-      done();
+      function getExcludeIcon() {
+        return facetElement.el.querySelector<HTMLElement>('.coveo-facet-value-exclude-svg');
+      }
+
+      function getSearchButton() {
+        return facetElement.el.querySelector<HTMLElement>('.coveo-facet-search-button .coveo-facet-value-checkbox');
+      }
+
+      beforeEach(async done => {
+        facetElement = getFacetElement();
+        getFacetColumn().appendChild(facetElement.el);
+        await afterDeferredQuerySuccess();
+        done();
+      });
+
+      it('settings should be accessible', async done => {
+        facetElement.find('.coveo-facet-header-settings').click();
+        const axeResults = await axe.run(getRoot());
+        expect(axeResults).toBeAccessible();
+        done();
+      });
+
+      it('should have good contrast on exclude buttons', () => {
+        const borderContrast = ContrastChecker.getContrastWithBackground(getExcludeIcon(), 'borderBottomColor');
+        expect(borderContrast).toBeGreaterThan(ContrastChecker.MinimumContrastRatio);
+      });
+
+      it('should have good contrast on the search button', () => {
+        const borderContrast = ContrastChecker.getContrastWithBackground(getSearchButton(), 'borderBottomColor');
+        expect(borderContrast).toBeGreaterThan(ContrastChecker.MinimumContrastRatio);
+      });
+
+      describe('after focusing on the search button', () => {
+        beforeEach(async done => {
+          (get(facetElement.el) as Facet).facetSearch.focus();
+          await afterDelay(1000);
+          done();
+        });
+
+        it('search should be accessible', async done => {
+          const axeResults = await axe.run(getRoot());
+          expect(axeResults).toBeAccessible();
+          done();
+        });
+
+        it('should still be accessible when search has been opened', async done => {
+          (get(facetElement.el) as Facet).facetSearch.dismissSearchResults();
+          await afterDelay(1000);
+          const axeResults = await axe.run(getRoot());
+          expect(axeResults).toBeAccessible();
+          done();
+        });
+
+        it('should have good contrast on the search icon', async done => {
+          const contrast = ContrastChecker.getContrastWithBackground(getMagnifierSVG());
+          expect(contrast).toBeGreaterThan(ContrastChecker.MinimumContrastRatio);
+          done();
+        });
+      });
     });
   });
 };

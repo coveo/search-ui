@@ -13,6 +13,7 @@ export class AccessibleModal {
   private focusTrap: FocusTrap;
   private activeModal: Coveo.ModalBox.ModalBox;
   private options: IAccessibleModalOptions;
+  private initiallyFocusedElement: HTMLElement;
 
   public get isOpen() {
     return !!this.focusTrap;
@@ -48,6 +49,7 @@ export class AccessibleModal {
     if (this.isOpen) {
       return;
     }
+    this.initiallyFocusedElement = document.activeElement as HTMLElement;
     this.activeModal = this.modalboxModule.open(content, {
       title,
       className: this.className,
@@ -79,6 +81,7 @@ export class AccessibleModal {
   private makeCloseButtonAccessible() {
     const closeButton: HTMLElement = this.element.querySelector('.coveo-small-close');
     closeButton.setAttribute('aria-label', l('Close'));
+    closeButton.setAttribute('role', 'button');
     closeButton.tabIndex = 0;
     closeButton.focus();
     $$(closeButton).on('keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, () => closeButton.click()));
@@ -87,5 +90,8 @@ export class AccessibleModal {
   private onModalClose() {
     this.focusTrap.disable();
     this.focusTrap = null;
+    if (this.initiallyFocusedElement && document.body.contains(this.initiallyFocusedElement)) {
+      this.initiallyFocusedElement.focus();
+    }
   }
 }

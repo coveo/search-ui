@@ -138,5 +138,58 @@ export function SortDropdownTest() {
 
       expect(selectElement.value).toBe(prevValue);
     });
+
+    it(`when adding tab attributes
+    should remove them`, () => {
+      test = Mock.advancedComponentSetup<SortDropdown>(SortDropdown, <Mock.AdvancedComponentSetupOptions>{
+        cmpOptions: {},
+        modifyBuilder: builder => {
+          builder.element.setAttribute('data-tab', 'allo');
+          builder.element.setAttribute('data-tab-not', 'bye');
+          return builder.withLiveQueryStateModel();
+        }
+      });
+
+      expect(test.cmp.element.hasAttribute('data-tab')).toBe(false);
+      expect(test.cmp.element.hasAttribute('data-tab-not')).toBe(false);
+    });
+
+    it(`when disabling a Sort component
+      should hide it's corresponding option`, () => {
+      sorts[0].disable();
+      triggerQuerySuccessWithResults([{}, {}]);
+
+      const disabledSort = $$(test.cmp.element).find(`option[value="${sorts[0].options.sortCriteria}"]`);
+      expect(disabledSort).toBeFalsy();
+    });
+
+    it(`when re-enabling a Sort component
+      should show it's corresponding option`, () => {
+      sorts[0].disable();
+      sorts[0].enable();
+      triggerQuerySuccessWithResults([{}, {}]);
+
+      const enabledSort = $$(test.cmp.element).find(`option[value="${sorts[0].options.sortCriteria}"]`);
+      expect(enabledSort).toBeTruthy();
+    });
+
+    it(`when all children Sort components are disabled
+      should hide the parent SortDropdown`, () => {
+      sorts.forEach(sort => sort.disable());
+      triggerQuerySuccessWithResults([{}, {}]);
+
+      expect($$(test.cmp.element).isVisible()).toBe(false);
+    });
+
+    it(`when all children Sort components are disabled then enabled
+      should show the parent SortDropdown`, () => {
+      sorts.forEach(sort => sort.disable());
+      triggerQuerySuccessWithResults([{}, {}]);
+
+      sorts[0].enable();
+      triggerQuerySuccessWithResults([{}, {}]);
+
+      expect($$(test.cmp.element).isVisible()).toBe(true);
+    });
   });
 }

@@ -174,11 +174,11 @@ $min-width: 180px;
 }
 
 .coveo-simplefilter-eraser {
+  @include justify-content(flex-end);
   position: relative;
   top: 1px;
-  margin: 0 5px 0 10px;
+  padding: 0 10px;
   pointer-events: auto;
-  padding: 0;
   vertical-align: middle;
   border: none;
   background-color: transparent;
