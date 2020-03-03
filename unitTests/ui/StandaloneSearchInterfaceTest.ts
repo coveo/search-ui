@@ -261,5 +261,40 @@ export function StandaloneSearchInterfaceTest() {
         }, 0);
       });
     });
+
+    describe(`when the StandAloneInterface is using localstorage for history, when calling redirectToSearchPage`, () => {
+      beforeEach(() => {
+        options.enableHistory = true;
+        options.useLocalStorageForHistory = true;
+        initializeComponent();
+      });
+
+      it('does not include the state in the url hash', done => {
+        let spy = jasmine.createSpy('foo');
+        spy.and.returnValue({ key: 'value' });
+        cmp.queryStateModel.getAttributes = spy;
+        cmp.redirectToSearchPage(options.searchPageUri);
+
+        setTimeout(() => {
+          expect(windoh.location.href).not.toContain('key=value');
+          done();
+        }, 0);
+      });
+
+      it('includes the #firstQueryCause and #firstQueryMeta when a search event is logged', done => {
+        const cause = analyticsActionCauseList.omniboxAnalytics;
+        const metadata = { foo: 'bar' };
+
+        cmp.usageAnalytics.logSearchEvent(cause, metadata);
+        cmp.redirectToSearchPage(options.searchPageUri);
+
+        setTimeout(() => {
+          const href = windoh.location.href;
+          expect(href).toContain(`firstQueryCause=${cause.name}`);
+          expect(href).toContain(`firstQueryMeta=${JSON.stringify(metadata)}`);
+          done();
+        }, 0);
+      });
+    });
   });
 }

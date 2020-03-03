@@ -1204,22 +1204,6 @@ export class StandaloneSearchInterface extends SearchInterface {
   }
 
   public redirectToSearchPage(searchPage: string) {
-    const stateValues = this.queryStateModel.getAttributes();
-    let uaCausedBy = this.usageAnalytics.getCurrentEventCause();
-
-    if (uaCausedBy != null) {
-      // for legacy reason, searchbox submit were always logged a search from link in an external search box.
-      // transform them if that's what we hit.
-      if (uaCausedBy == analyticsActionCauseList.searchboxSubmit.name) {
-        uaCausedBy = analyticsActionCauseList.searchFromLink.name;
-      }
-      stateValues['firstQueryCause'] = uaCausedBy;
-    }
-    const uaMeta = this.usageAnalytics.getCurrentEventMeta();
-    if (uaMeta != null && !isEmpty(uaMeta)) {
-      stateValues['firstQueryMeta'] = uaMeta;
-    }
-
     const link = document.createElement('a');
     link.href = searchPage;
     link.href = link.href; // IE11 needs this to correctly fill the properties that are used below.
@@ -1230,8 +1214,36 @@ export class StandaloneSearchInterface extends SearchInterface {
     // By using a setTimeout, we allow other possible code related to the search box / magic box time to complete.
     // eg: onblur of the magic box.
     setTimeout(() => {
-      this._window.location.href = `${link.protocol}//${link.host}${pathname}${link.search}${hash}${HashUtils.encodeValues(stateValues)}`;
+      this._window.location.href = `${link.protocol}//${link.host}${pathname}${link.search}${hash}${this.encodedHashValues}`;
     }, 0);
+  }
+
+  private get encodedHashValues() {
+    const values = this.modelAttributesToIncludeInUrl;
+    const uaCausedBy = this.uaCausedBy;
+    const uaMeta = this.usageAnalytics.getCurrentEventMeta();
+
+    if (uaCausedBy != null) {
+      values['firstQueryCause'] = uaCausedBy;
+    }
+
+    if (uaMeta != null && !isEmpty(uaMeta)) {
+      values['firstQueryMeta'] = uaMeta;
+    }
+
+    return HashUtils.encodeValues(values);
+  }
+
+  private get modelAttributesToIncludeInUrl() {
+    const usingLocalStorageHistory = this.historyManager instanceof LocalStorageHistoryController;
+    return usingLocalStorageHistory ? {} : this.queryStateModel.getAttributes();
+  }
+
+  private get uaCausedBy() {
+    const uaCausedBy = this.usageAnalytics.getCurrentEventCause();
+    const isSearchboxSubmit = uaCausedBy === analyticsActionCauseList.searchboxSubmit.name;
+    // For legacy reasons, searchbox submit were always logged as a search from link in an external search box.
+    return isSearchboxSubmit ? analyticsActionCauseList.searchFromLink.name : uaCausedBy;
   }
 
   private searchboxIsEmpty(): boolean {
