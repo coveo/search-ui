@@ -1,44 +1,103 @@
-import { Utils } from './Utils';
-import { QueryStateModel, QueryEvents, Component, $$ } from '../Core';
-import { ComponentEvents } from '../ui/Base/Component';
+import { isFunction } from 'underscore';
+import { QueryStateModel, QueryEvents, Component } from '../Core';
 import { MODEL_EVENTS } from '../models/Model';
 import { ComponentsTypes } from './ComponentsTypes';
+import { $$ } from './Dom';
 
 export interface IDependentFacet {
   reset: () => void;
-  toggleDependentFacet: (dependentFacet: Component) => void;
-  element: HTMLElement;
-  root: HTMLElement;
-  dependsOn: string;
-  id: string;
-  queryStateModel: QueryStateModel;
-  bind: ComponentEvents;
+  ref: Component;
+}
+
+export interface IDependentFacetCondition {
+  (facet: Component): boolean;
 }
 
 export class DependsOnManager {
+  private parentFacet: Component;
+
   constructor(private facet: IDependentFacet) {
-    this.facet.bind.onRootElement(QueryEvents.newQuery, () => this.handleNewQuery());
-    this.updateVisibilityBasedOnDependsOn();
+    this.facet.ref.bind.onRootElement(QueryEvents.newQuery, () => this.handleNewQuery());
+
+    if (this.getDependsOn(this.facet.ref)) {
+      this.setupDependentFacet();
+    }
   }
 
-  public listenToParentIfDependentFacet() {
-    if (!this.isDependentFacet) {
-      return;
+  private setupDependentFacet() {
+    this.parentFacet = this.getParentFacet(this.facet.ref);
+
+    if (this.parentFacet) {
+      this.facet.ref.bind.onQueryState(MODEL_EVENTS.CHANGE, undefined, () => this.resetIfConditionUnfullfiled());
     }
-    this.facet.bind.onQueryState(MODEL_EVENTS.CHANGE, undefined, () => this.resetIfParentFacetHasNoSelectedValues());
   }
 
-  public updateVisibilityBasedOnDependsOn() {
-    if (!this.isDependentFacet) {
-      return;
+  private resetIfConditionUnfullfiled() {
+    const condition = this.getDependsOnCondition(this.facet.ref);
+
+    if (!condition(this.parentFacet)) {
+      this.facet.reset();
+    }
+  }
+
+  private getId(component: Component) {
+    const id = component.options.id;
+    return id ? `${id}` : null;
+  }
+
+  private getDependsOn(component: Component) {
+    const dependsOn = component.options.dependsOn;
+    return dependsOn ? `${dependsOn}` : null;
+  }
+
+  private getDependsOnCondition(component: Component): IDependentFacetCondition {
+    const conditionOption = component.options.dependsOnCondition;
+    return conditionOption && isFunction(conditionOption) ? conditionOption : () => this.parentHasSelectedValues(component);
+  }
+
+  private parentHasSelectedValues(component: Component) {
+    const parent = this.getParentFacet(component);
+    return parent && this.valuesExistForFacetWithId(this.getId(parent));
+  }
+
+  private valuesExistForFacetWithId(facetId: string) {
+    const values = this.facet.ref.queryStateModel.get(QueryStateModel.getFacetId(facetId));
+    return !!values && !!values.length;
+  }
+
+  private get allFacetsInInterface() {
+    return ComponentsTypes.getAllFacetsInstance(this.facet.ref.root);
+  }
+
+  private getParentFacet(component: Component) {
+    const parent = this.allFacetsInInterface.filter(
+      potentialParentFacet => this.getId(potentialParentFacet) === this.getDependsOn(component)
+    );
+
+    if (!parent.length) {
+      component.logger.warn('DependsOn reference does not exist', this.getDependsOn(this.facet.ref));
+      return null;
     }
 
-    $$(this.facet.element).toggleClass('coveo-hidden', !this.parentFacetHasSelectedValues);
+    return parent[0];
   }
 
   private get dependentFacets() {
-    const allFacets = ComponentsTypes.getAllFacetsInstance(this.facet.root);
-    return allFacets.filter(facet => this.facet.id === facet.options.dependsOn);
+    return this.allFacetsInInterface.filter(
+      potentialDependentFacet => this.getId(this.facet.ref) === this.getDependsOn(potentialDependentFacet)
+    );
+  }
+
+  private handleNewQuery() {
+    this.dependentFacets.forEach(dependentFacet => {
+      const condition = this.getDependsOnCondition(dependentFacet);
+      if (condition(this.facet.ref)) {
+        return dependentFacet.enable();
+      }
+
+      dependentFacet.disable();
+      $$(dependentFacet.element).addClass('coveo-hidden');
+    });
   }
 
   public get hasDependentFacets() {
@@ -46,37 +105,6 @@ export class DependsOnManager {
   }
 
   public get dependentFacetsHaveSelectedValues() {
-    return this.dependentFacets.some(facet => this.valuesExistForFacetWithId(facet.options.id));
-  }
-
-  private get isDependentFacet() {
-    return Utils.isNonEmptyString(this.facetDependsOnField);
-  }
-
-  private get facetDependsOnField() {
-    return this.facet.dependsOn;
-  }
-
-  private resetIfParentFacetHasNoSelectedValues() {
-    if (this.parentFacetHasSelectedValues) {
-      return;
-    }
-
-    this.facet.reset();
-  }
-
-  private get parentFacetHasSelectedValues() {
-    return this.valuesExistForFacetWithId(this.facetDependsOnField);
-  }
-
-  private valuesExistForFacetWithId(facetId: string) {
-    const values = this.facet.queryStateModel.get(QueryStateModel.getFacetId(facetId));
-    return values != null && values.length != 0;
-  }
-
-  private handleNewQuery() {
-    this.dependentFacets.forEach(dependentFacet => {
-      this.facet.toggleDependentFacet(dependentFacet);
-    });
+    return this.dependentFacets.some(dependentFacet => this.valuesExistForFacetWithId(this.getId(dependentFacet)));
   }
 }

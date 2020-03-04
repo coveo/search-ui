@@ -425,7 +425,6 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     }
 
     this.show();
-    this.dependsOnManager.updateVisibilityBasedOnDependsOn();
   }
 
   public handleQuerySuccess(args: IQuerySuccessEventArgs) {
@@ -791,19 +790,12 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   private initQueryStateEvents() {
     this.queryStateModel.registerNewAttribute(this.queryStateAttribute, this.options.basePath);
     this.bind.onQueryState<IAttributesChangedEventArg>(MODEL_EVENTS.CHANGE, undefined, data => this.handleQueryStateChanged(data));
-    this.dependsOnManager.listenToParentIfDependentFacet();
   }
 
   private initDependsOnManager() {
     const facetInfo: IDependentFacet = {
       reset: () => this.dependsOnReset(),
-      toggleDependentFacet: dependentFacet => this.toggleDependentFacet(dependentFacet),
-      element: this.element,
-      root: this.root,
-      dependsOn: this.options.dependsOn,
-      id: this.options.id,
-      queryStateModel: this.queryStateModel,
-      bind: this.bind
+      ref: this
     };
     this.dependsOnManager = new DependsOnManager(facetInfo);
   }
@@ -811,10 +803,6 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   private dependsOnReset() {
     this.changeActivePath(this.options.basePath);
     this.clear();
-  }
-
-  private toggleDependentFacet(dependentFacet: Component) {
-    this.activePath.length ? dependentFacet.enable() : dependentFacet.disable();
   }
 
   private addFading() {

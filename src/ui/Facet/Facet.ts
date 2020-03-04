@@ -1317,7 +1317,7 @@ export class Facet extends Component {
   protected updateAppearanceDependingOnState() {
     $$(this.element).toggleClass('coveo-active', this.values.hasSelectedOrExcludedValues());
     $$(this.element).toggleClass('coveo-facet-empty', !this.isAnyValueCurrentlyDisplayed());
-    this.dependsOnManager.updateVisibilityBasedOnDependsOn();
+    $$(this.element).toggleClass('coveo-hidden', !this.getDisplayedFacetValues().length);
     $$(this.facetHeader.eraserElement).toggleClass('coveo-facet-header-eraser-visible', this.values.hasSelectedOrExcludedValues());
   }
 
@@ -1341,7 +1341,6 @@ export class Facet extends Component {
     this.queryStateModel.registerNewAttribute(this.lookupValueAttributeId, {});
 
     this.bind.onQueryState(MODEL_EVENTS.CHANGE, undefined, (args: IAttributesChangedEventArg) => this.handleQueryStateChanged(args));
-    this.dependsOnManager.listenToParentIfDependentFacet();
   }
 
   protected initComponentStateEvents() {
@@ -1541,19 +1540,9 @@ export class Facet extends Component {
   private initDependsOnManager() {
     const facetInfo: IDependentFacet = {
       reset: () => this.reset(),
-      toggleDependentFacet: dependentFacet => this.toggleDependentFacet(dependentFacet),
-      element: this.element,
-      root: this.root,
-      dependsOn: this.options.dependsOn,
-      id: this.options.id,
-      queryStateModel: this.queryStateModel,
-      bind: this.bind
+      ref: this
     };
     this.dependsOnManager = new DependsOnManager(facetInfo);
-  }
-
-  private toggleDependentFacet(dependentFacet: Component) {
-    this.getSelectedValues().length ? dependentFacet.enable() : dependentFacet.disable();
   }
 
   private dependsOnUpdateParentDisplayValue() {

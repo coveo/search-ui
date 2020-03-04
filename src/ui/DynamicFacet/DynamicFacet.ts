@@ -576,7 +576,6 @@ export class DynamicFacet extends Component implements IDynamicFacet {
     this.includedAttributeId = QueryStateModel.getFacetId(this.options.id);
     this.queryStateModel.registerNewAttribute(this.includedAttributeId, []);
     this.bind.onQueryState(MODEL_EVENTS.CHANGE, undefined, this.handleQueryStateChanged);
-    this.dependsOnManager.listenToParentIfDependentFacet();
   }
 
   protected initBreadCrumbEvents() {
@@ -692,20 +691,10 @@ export class DynamicFacet extends Component implements IDynamicFacet {
   private initDependsOnManager() {
     const facetInfo: IDependentFacet = {
       reset: () => this.reset(),
-      toggleDependentFacet: dependentFacet => this.toggleDependentFacet(dependentFacet),
-      element: this.element,
-      root: this.root,
-      dependsOn: this.options.dependsOn,
-      id: this.options.id,
-      queryStateModel: this.queryStateModel,
-      bind: this.bind
+      ref: this
     };
 
     this.dependsOnManager = new DependsOnManager(facetInfo);
-  }
-
-  private toggleDependentFacet(dependentFacet: Component) {
-    this.values.hasSelectedValues ? dependentFacet.enable() : dependentFacet.disable();
   }
 
   public createDom() {
@@ -756,9 +745,7 @@ export class DynamicFacet extends Component implements IDynamicFacet {
     this.toggleSearchDisplay();
     $$(this.element).toggleClass('coveo-dynamic-facet-collapsed', this.isCollapsed);
     $$(this.element).toggleClass('coveo-active', this.values.hasSelectedValues);
-    $$(this.element).removeClass('coveo-hidden');
-    this.dependsOnManager.updateVisibilityBasedOnDependsOn();
-    !this.values.hasDisplayedValues && $$(this.element).addClass('coveo-hidden');
+    $$(this.element).toggleClass('coveo-hidden', !this.values.hasDisplayedValues);
   }
 
   private toggleSearchDisplay() {

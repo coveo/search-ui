@@ -369,9 +369,7 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
   private updateAppearance() {
     this.header.toggleCollapse(this.isCollapsed);
     $$(this.element).toggleClass('coveo-dynamic-hierarchical-facet-collapsed', this.isCollapsed);
-    $$(this.element).removeClass('coveo-hidden');
-    this.dependsOnManager.updateVisibilityBasedOnDependsOn();
-    !this.values.allFacetValues.length && $$(this.element).addClass('coveo-hidden');
+    $$(this.element).toggleClass('coveo-hidden', !this.values.allFacetValues.length);
   }
 
   private handleQuerySuccess(results: IQueryResults) {
@@ -655,30 +653,15 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
   private initQueryStateEvents() {
     this.queryStateModel.registerNewAttribute(this.queryStateAttribute, []);
     this.bind.onQueryState<IAttributesChangedEventArg>(MODEL_EVENTS.CHANGE, undefined, data => this.handleQueryStateChanged(data));
-    this.dependsOnManager.listenToParentIfDependentFacet();
   }
 
   private initDependsOnManager() {
     const facetInfo: IDependentFacet = {
-      reset: () => this.dependsOnReset(),
-      toggleDependentFacet: dependentFacet => this.toggleDependentFacet(dependentFacet),
-      element: this.element,
-      root: this.root,
-      dependsOn: this.options.dependsOn,
-      id: this.options.id,
-      queryStateModel: this.queryStateModel,
-      bind: this.bind
+      reset: () => this.reset(),
+      ref: this
     };
+
     this.dependsOnManager = new DependsOnManager(facetInfo);
-  }
-
-  private dependsOnReset() {
-    this.reset();
-    this.updateAppearance();
-  }
-
-  private toggleDependentFacet(dependentFacet: Component) {
-    this.values.hasSelectedValue ? dependentFacet.enable() : dependentFacet.disable();
   }
 
   private notImplementedError() {
