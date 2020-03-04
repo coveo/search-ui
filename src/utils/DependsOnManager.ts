@@ -20,6 +20,7 @@ export class DependsOnManager {
     this.facet.ref.bind.onRootElement(QueryEvents.newQuery, () => this.handleNewQuery());
 
     if (this.getDependsOn(this.facet.ref)) {
+      $$(this.facet.ref.element).addClass('coveo-hidden');
       this.setupDependentFacet();
     }
   }
