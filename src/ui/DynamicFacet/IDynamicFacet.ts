@@ -2,7 +2,7 @@ import { IAutoLayoutAdjustableInsideFacetColumn } from '../SearchInterface/Facet
 import { IFieldOption } from '../Base/IComponentOptions';
 import { IResponsiveComponentOptions } from '../ResponsiveComponents/ResponsiveComponentsManager';
 import { IDynamicManagerCompatibleFacet } from '../DynamicFacetManager/DynamicFacetManager';
-import { DependsOnManager } from '../../utils/DependsOnManager';
+import { DependsOnManager, IDependentFacetCondition } from '../../utils/DependsOnManager';
 import { DynamicFacetQueryController } from '../../controllers/DynamicFacetQueryController';
 import { FacetType } from '../../rest/Facet/FacetRequest';
 import { IAnalyticsFacetMeta, IAnalyticsActionCause } from '../Analytics/AnalyticsActionListMeta';
@@ -30,6 +30,7 @@ export interface IDynamicFacetOptions extends IResponsiveComponentOptions {
   numberOfValuesInBreadcrumb?: number;
   valueCaption?: Record<string, string>;
   dependsOn?: string;
+  dependsOnCondition?: IDependentFacetCondition;
   injectionDepth?: number;
   filterFacetCount?: boolean;
 }

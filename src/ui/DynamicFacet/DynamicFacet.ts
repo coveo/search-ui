@@ -33,7 +33,7 @@ import { DynamicFacetSearch } from '../DynamicFacetSearch/DynamicFacetSearch';
 import { ResultListUtils } from '../../utils/ResultListUtils';
 import { IQueryResults } from '../../rest/QueryResults';
 import { FacetType } from '../../rest/Facet/FacetRequest';
-import { DependsOnManager, IDependentFacet } from '../../utils/DependsOnManager';
+import { DependsOnManager, IDependentFacet, IDependentFacetCondition } from '../../utils/DependsOnManager';
 import { DynamicFacetValueCreator } from './DynamicFacetValues/DynamicFacetValueCreator';
 import { Logger } from '../../misc/Logger';
 
@@ -244,6 +244,16 @@ export class DynamicFacet extends Component implements IDynamicFacet {
      * @availablesince [December 2019 Release (v2.7610)](https://docs.coveo.com/en/3142/)
      */
     dependsOn: ComponentOptions.buildStringOption({ section: 'CommonOptions' }),
+
+    /**
+     * A function ...
+     */
+    dependsOnCondition: ComponentOptions.buildCustomOption<IDependentFacetCondition>(
+      () => {
+        return null;
+      },
+      { depend: 'dependsOn', section: 'CommonOptions' }
+    ),
 
     /**
      * The number of items to scan for facet values.

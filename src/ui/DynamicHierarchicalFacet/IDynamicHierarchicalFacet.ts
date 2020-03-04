@@ -3,7 +3,7 @@ import { IFieldOption } from '../Base/IComponentOptions';
 import { IStringMap } from '../../rest/GenericParam';
 import { Component } from '../Base/Component';
 import { IAutoLayoutAdjustableInsideFacetColumn } from '../SearchInterface/FacetColumnAutoLayoutAdjustment';
-import { DependsOnManager } from '../../utils/DependsOnManager';
+import { DependsOnManager, IDependentFacetCondition } from '../../utils/DependsOnManager';
 import { DynamicFacetHeader } from '../DynamicFacet/DynamicFacetHeader/DynamicFacetHeader';
 import { DynamicHierarchicalFacetQueryController } from '../../controllers/DynamicHierarchicalFacetQueryController';
 import { FacetType } from '../../rest/Facet/FacetRequest';
@@ -28,6 +28,7 @@ export interface IDynamicHierarchicalFacetOptions extends IResponsiveComponentOp
   delimitingCharacter?: string;
   valueCaption?: IStringMap<string>;
   dependsOn?: string;
+  dependsOnCondition?: IDependentFacetCondition;
   includeInBreadcrumb?: boolean;
   filterFacetCount?: boolean;
   clearLabel?: string;

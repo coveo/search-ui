@@ -27,7 +27,7 @@ import {
 import { ResponsiveFacetOptions } from '../ResponsiveComponents/ResponsiveFacetOptions';
 import { DynamicFacetHeader } from '../DynamicFacet/DynamicFacetHeader/DynamicFacetHeader';
 import { IStringMap } from '../../rest/GenericParam';
-import { DependsOnManager, IDependentFacet } from '../../utils/DependsOnManager';
+import { DependsOnManager, IDependentFacet, IDependentFacetCondition } from '../../utils/DependsOnManager';
 import { ResultListUtils } from '../../utils/ResultListUtils';
 import { FacetType } from '../../rest/Facet/FacetRequest';
 import { DynamicHierarchicalFacetValues } from './DynamicHierarchicalFacetValues/DynamicHierarchicalFacetValues';
@@ -208,6 +208,16 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
      * **Default:** `undefined` and the hierarchical facet does not depend on any other facet to be displayed.
      */
     dependsOn: ComponentOptions.buildStringOption({ section: 'CommonOptions' }),
+
+    /**
+     * A function ...
+     */
+    dependsOnCondition: ComponentOptions.buildCustomOption<IDependentFacetCondition>(
+      () => {
+        return null;
+      },
+      { depend: 'dependsOn', section: 'CommonOptions' }
+    ),
 
     /**
      * Whether to exclude folded result parents when estimating result counts for facet values.
@@ -651,7 +661,7 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
   private initDependsOnManager() {
     const facetInfo: IDependentFacet = {
       reset: () => this.dependsOnReset(),
-      toggleDependentFacet: dependentFacet => this.toggleDependentFacet(dependentFacet),
+      toggleDependentFacet: (dependentFacet, isConditionFullfiled) => this.toggleDependentFacet(dependentFacet, isConditionFullfiled),
       element: this.element,
       root: this.root,
       dependsOn: this.options.dependsOn,
@@ -667,8 +677,8 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
     this.updateAppearance();
   }
 
-  private toggleDependentFacet(dependentFacet: Component) {
-    this.values.hasSelectedValue ? dependentFacet.enable() : dependentFacet.disable();
+  private toggleDependentFacet(dependentFacet: Component, isConditionFullfiled: boolean) {
+    this.values.hasSelectedValue && isConditionFullfiled ? dependentFacet.enable() : dependentFacet.disable();
   }
 
   private notImplementedError() {
