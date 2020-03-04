@@ -47,7 +47,8 @@ export const getResultList = () => {
   }
 
   const newResultList = $$('div', {
-    className: 'CoveoResultList'
+    className: 'CoveoResultList',
+    dataAutoSelectFieldsToInclude: 'true'
   });
 
   getResultsColumn().appendChild(newResultList.el);
@@ -155,7 +156,8 @@ export const waitUntilSelectorIsPresent = <T extends Element = Element>(parentNo
     parentNode,
     {
       childList: true,
-      subtree: true
+      subtree: true,
+      attributes: true
     },
     () => parentNode.querySelector<T>(selector)
   );
