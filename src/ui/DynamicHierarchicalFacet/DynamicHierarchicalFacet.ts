@@ -661,7 +661,7 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
   private initDependsOnManager() {
     const facetInfo: IDependentFacet = {
       reset: () => this.dependsOnReset(),
-      toggleDependentFacet: (dependentFacet, isConditionFullfiled) => this.toggleDependentFacet(dependentFacet, isConditionFullfiled),
+      toggleDependentFacet: dependentFacet => this.toggleDependentFacet(dependentFacet),
       element: this.element,
       root: this.root,
       dependsOn: this.options.dependsOn,
@@ -677,8 +677,8 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
     this.updateAppearance();
   }
 
-  private toggleDependentFacet(dependentFacet: Component, isConditionFullfiled: boolean) {
-    this.values.hasSelectedValue && isConditionFullfiled ? dependentFacet.enable() : dependentFacet.disable();
+  private toggleDependentFacet(dependentFacet: Component) {
+    this.values.hasSelectedValue ? dependentFacet.enable() : dependentFacet.disable();
   }
 
   private notImplementedError() {
